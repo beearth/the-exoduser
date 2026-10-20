@@ -1,3 +1,7 @@
+## 2026-10-21 — MAP11-15 Godot 제품 보스룸·맵 성능
+
+[경계 마감·120fps 검수 계약](MAP11_FINISH_PERFORMANCE_20261021.md). 웹 본편/기존 stage LOCK·보호 전투 설계를 변경하지 않는다.
+
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
 ## 2026-10-20 — MAPLOOK-HOLE Godot 독립 소환굴 오버레이

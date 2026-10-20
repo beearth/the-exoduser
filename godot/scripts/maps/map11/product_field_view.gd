@@ -4,7 +4,11 @@ var gate_leaves: Array[Node2D]=[]
 var gate_open: float=0.0
 func _ready() -> void:
  recipe=load("res://scripts/maps/map11/field_recipe.tres")
- _build_ground();_build_mass()
+ _build_ground()
+ # Static five-tap soil filter baked once; world-space three-scale blend is unchanged.
+ _surface.material.shader=preload("res://scripts/maps/map11/product_surface.gdshader")
+ _surface.material.set_shader_parameter("ground",load("res://assets/maps/map11/field_ground_filtered.png"))
+ _build_mass()
  _shadow=MapLook._make_radial_texture(128,[0.0,.35,.7,1.0],[.7,.5,.15,0.0])
  for variant in VARIANTS: _textures.append(load(PROP_DIR+"rotforest_tree_%02d.png"%variant))
  _build_forest("BACK",850,690,1320,Color(.28,.31,.33))
@@ -45,7 +49,14 @@ func _rgba(id: String,file: String,foot: Vector2,height_: float,mirror: bool) ->
  var shadow:=Sprite2D.new();shadow.texture=_contact;shadow.position=Vector2(20,12);shadow.scale=Vector2(height_*.006,height_*.0012);shadow.modulate=Color(0,0,0,.6);shadow.z_index=-1;root.add_child(shadow)
  _rows.append({"node":root,"foot":foot,"rect":Rect2(foot+sprite.offset*sprite.scale,size_*sprite.scale).grow(55)})
 func update_product(point: Vector2,delta: float) -> void:
+ var inverse:=get_global_transform_with_canvas().affine_inverse()
+ var view:=Rect2(inverse*Vector2.ZERO,get_viewport_rect().size/get_viewport().get_camera_2d().zoom).grow(200)
+ for row in _decal_rows:
+  var extent: float=(row.size as Vector2).length()*.5
+  row.node.visible=view.intersects(Rect2(row.position-Vector2.ONE*extent,Vector2.ONE*extent*2.0))
  for row in _rows:
+  row.node.visible=view.intersects(row.rect.grow(200))
+  if not row.node.visible:continue
   var foreground: bool=row.foot.y>=point.y and (row.rect.has_point(point) or row.rect.has_point(point-Vector2(0,55)))
   row.node.modulate.a=move_toward(row.node.modulate.a,.15 if foreground else 1.0,delta*10)
  # Proximity is presentation only; never changes the authoritative gate lock.

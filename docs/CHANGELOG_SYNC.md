@@ -56072,3 +56072,10 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 - 별도 sparse worktree에서 단독 계측/콜백별 상위10·18단계 기록. physics 22.007→30.845ms로 목표 미달 유지.
 - Mac asleep>1000 tick 빈 할당/redraw 생략, map11 options Nil→NOT_READY guard. PC 코어·맵 룩·번역 무수정.
 - engine STATUS 및47L 회귀 문서의 원인·검수·미해결 증거 동기화.
+
+
+## 2026-10-21 — MAP11-15 보스룸 경계·맵 성능
+
+- 기반 db9219b4 / codex/map11-15-20261021. R1700 collision·provider·Marker·전투/저장 불변. 제품 arena만 시각 바닥 불규칙 감쇠+root32/BACK forest32로 큰 검은 원호 제거, 랜드마크 보존.
+- 제품 field 화면 밖 row/decal cull. 기존 바닥 5tap1024² cache로15→3lookup, 기존 fog5octave2048² cache로60hash/sin→3lookup. 원 NativeScreenLighting 소스/단일패스/UV·TIME·색·alpha 유지, cache근사 오차는 별도 fixed-TIME 비교.
+- 1920×1080 실창 실제 Player 입력600틱/공간, 최종24/0. field 평균189.38fps/p95 6.987ms, arena188.81fps/p95 6.741ms. 이번 표본120fps p95 목표PASS; 전체밀집/Windows 미검수. [현행 수치·원본·§23 보고](4.1맵디자인+설정/MAP11_FINISH_PERFORMANCE_20261021.md). 전후2쌍+1x는 ~/exoduser-wt/_out/map11-15/captures/.
