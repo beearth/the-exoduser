@@ -8,6 +8,7 @@
 
 | 문서 | 역할 |
 |---|---|
+| [출시 전 홍보 기획](PROMOTION_PLAN_20261020.md) | **2026-10-20 신규.** 캠페인 DEFY THE FALL — 경쟁작 일정, 메시지, 채널, 단계별 일정(~2027-03), 성과 측정, 결정 D1~D5 |
 | [해외 홍보팀 구성·채널 설계](FOREIGN_PROMOTION_TEAM_20261003.md) | 담당 구조, 커뮤니티 판정, 14일 실험 설계, 측정 규칙 |
 | [데모 공개·마케팅 착수 기록](DEMO_MARKETING_LAUNCH_20261008.md) | Reddit·Discord·itch.io 실제 상태, UTM, 크리에이터 17개 조사 |
 | [대표 트레일러 홍보팀 검토](HERO_TRAILER_PROMOTION_REVIEW_20261008.md) · [30초 1차 편집](HERO_TRAILER_PRODUCTION_20261008.md) · [아트 티저](TRAILER_ART_REFRESH_20261009.md) | 영상 소재 상태. 10-08 편집본은 사용자 거절·원본 버전 불일치로 배포 제외, 10-09 아트 티저는 검토 후보·미게시 |
@@ -94,6 +95,9 @@
 | 2026-10-19 ~ 10-26 (검색 요약) | Steam Next Fest 10월 회차 | 진행 중. 데모 공개가 등록 마감 이후라 **미참가** |
 | 2026-10-25 | 파일럿 18일차 | §5 측정표 작성 |
 | 2026-12-01 JST | INDIE Live Expo | 09-28 신청 접수. 10-20 검색 기준 출품 라인업 미발표. 선정 여부는 주최 측 메일 확인 필요 |
+| 2026-12 초 (추정) | Diablo IV 시즌 15 종료 | 제3자 추정. [홍보 기획 §1](PROMOTION_PLAN_20261020.md#1-경쟁작-일정과-진입-창) |
+| 2026-12-06 | 대형 ARPG 크리에이터 연락 마감(기획안) | PoE2 1.0 전에 끝냄 |
+| 2026-12-11 | **Path of Exile 2 1.0 정식 출시·무료화** | 12월 중순~1월 ARPG 관심 집중 → 외부 연락 대신 제작·Next Fest 등록 |
 | 2027-01-10 23:59 PST | **Steam Next Fest 2월 회차 등록 마감** | 참가 여부 결정 필요(PROMO-011) |
 | 2027-01-25 | 프레스 프리뷰 시작부터 데모를 노출하기 위한 데모 빌드·상점 페이지 제출 기한 | 참가 시 |
 | 2027-02-08 | 필수 항목 심사 제출 기한 | 참가 시 |
@@ -123,13 +127,23 @@ Next Fest 참가 조건(웹 검색 요약 기준, Steamworks 직접 열람은 �
 | PROMO-013 | P1 | Steamworks UTM 기준값 기록(§5 측정표) | 사용자 Steamworks, 10-25 이후 | 대기 |
 | PROMO-014 | P2 | 공개용 트레일러 승인(10-09 아트 티저 검토 후보) | 사용자 승인 | 대기 |
 | PROMO-015 | P2 | Discord 개발 소식 2호 게시 | 001 후, 사용자 확인 | 초안 완료 |
+| PROMO-016 | P1 | 주간 핵심 클립 촬영 체계 — 영문 UI, 일반 플레이 녹화, 15–30초 편집 | 촬영 담당 | 미착수 |
+| PROMO-017 | P1 | Steam 이벤트 격주 발행, 커버 800×450 템플릿 | 사용자 확인 | 미착수 |
+| PROMO-018 | P2 | 숏폼 채널 운영 — YouTube Shorts 주 1편부터 | 기획 D2 결정 | 결정 대기 |
+| PROMO-019 | P1 | Next Fest 전 데모 갱신 범위 결정 | 기획 D5, 12월 | 결정 대기 |
+| PROMO-020 | P1 | Next Fest 보도자료 영·한 | 기획 Phase 3 | 미착수 |
+| PROMO-021 | P2 | Next Fest 라이브 방송 계획 | 기획 Phase 3 | 미착수 |
+| PROMO-022 | P1 | 중형 인디 ARPG 크리에이터 2차 후보 10곳 조사 | 기획 W3(11-09~15) | 미착수 |
+| PROMO-023 | P2 | r/ARPG 등 추가 커뮤니티 홍보 규칙 확인 | 로그인 브라우저 | 미착수 |
+| PROMO-024 | P2 | 국내 홍보 범위 결정 | 기획 D3 | 결정 대기 |
+| PROMO-025 | P2 | 본편 출시 캠페인 기획서 | Next Fest 후 | 미착수 |
 
 ## 9. 2026-10-20 세션 기록
 
 | 항목 | 내용 |
 |---|---|
 | 열람 | 해외 홍보팀(10-03), 데모 공개·착수 기록(10-08), 트레일러 검토·제작·아트 티저(10-08~09), 촬영 manifest, INDIE Live Expo 신청, FDG 회사 자료 안내, 홈페이지 캐릭터 갤러리, Steam 업데이트 규칙, v0.7.0 패치노트, 총괄 마스터·팀 시작 규칙 |
-| 신규 | `marketing/presskit/EXODUSER_HELL_LORD_PRESS_KIT.md`, `marketing/promotion/OUTREACH_AND_POSTS_20261020.md`, 이 문서 |
+| 신규 | `marketing/presskit/EXODUSER_HELL_LORD_PRESS_KIT.md`, `marketing/promotion/OUTREACH_AND_POSTS_20261020.md`, 이 문서, 후속 지시 “앞으로 홍보기획해볼까”에 따른 [출시 전 홍보 기획](PROMOTION_PLAN_20261020.md) |
 | 갱신 | [총괄 팀 등록부](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md#3-팀-등록부) PROMO 행, 해외 홍보팀·착수 기록 상단에 이 문서 안내 |
 | 웹 조사 | Next Fest 2월 회차 일정·참가 조건, INDIE Live Expo 12월 라인업, 우선 후보 연락처, 게임명 검색 노출(§2·§6·§7) |
 | 외부 실행 | 로그인·게시·발송·초대·Steam 공지 **0건** |
