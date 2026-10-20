@@ -145,4 +145,4 @@ R의 브랜치·HEAD·tracked INDEX/WORK는 시작 시와 같은 상태로 보�
 
 첫 커밋 시 `.githooks`의 `tools/docs-sync-check.mjs:34–44`가 진행로그 누락을 거부했다. `ALLOW_MISSING_DOCS` 우회 없이 위 최소 변경로그 append를 포함해 정상 커밋한다.
 
-구현 결과 커밋 SHA: **제출 메타데이터 기록 시 기입**. 최종 제출 HEAD와 원격 ref 대조는 `~/exoduser-wt/_out/starter-regions-fix/DONE.txt`·`submission.json`에 기록한다. 이번 결과는 지정 starter 테스트의 기대 정정이며 전체 게임·실창·시각 품질 검수 완료를 뜻하지 않는다.
+구현 결과 커밋 SHA: **`2c61d82debf2006f19d3bd446dcc137084b44cc8`** (parent=`c7c910fd04559a78be0e64295a97390d01fd2d09`). 후속 문서 커밋은 제출 SHA 기록과 이번 append 구간의 줄바꿈만 정리한다. 최종 제출 HEAD와 원격 ref 대조는 `~/exoduser-wt/_out/starter-regions-fix/DONE.txt`·`submission.json`에 기록한다. 이번 결과는 지정 starter 테스트의 기대 정정이며 전체 게임·실창·시각 품질 검수 완료를 뜻하지 않는다.
