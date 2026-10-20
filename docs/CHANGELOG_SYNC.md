@@ -1,3 +1,13 @@
+## 2026-10-20 META-01 순수 XP 곡선·제품 State 미연결
+
+| 항목 | 변경·검수 |
+|---|---|
+| 새 파일 | `godot/scripts/native_source_meta_exp_curve.gd` 및 Godot 생성 UID, `godot/tests/test_source_meta_exp_curve.gd`. RefCounted의 `required_exp(level: int) -> int`만 제공 |
+| 원본 상수·공식 | 최신 main `f84e26ee0`, `game.html:43128–43133`: Lv<1000 `(15+2.5lv+.05lv²)×1.001^lv` 절삭, Lv≥1000 `5,000,000+(lv−999)²×10,000`. 양수 하위 구간 floori·초월64비트, 신규 maxExp15는 별도 초기값 유지 |
+| 순수 검수 | 새 Godot20/0·skip0, 실제 JS 원본1..1500 대조1500일치/불일치0, 기존 웹 oracle4/0. 자연플레이·영구저장 검수 아님 |
+| 제품 한계·보호 | 사용자 공용0줄 지시 우선: State preload/caller 수정0, 제품999→1000 일반식 불일치 잔존. XP 지급·SP/AP·회복·초월gate·HUD·Q/E·세이브0줄, 일반/데모 game.mats 차이 보호 |
+| 회귀·근거 | 지정15종 중14통과·p1002g 알려진1실패, 추가p2001c45/0·전부skip0. 최종 실측은 [meta-01 보고서](engine/orders/reports/meta-01_REPORT.md)에 기록. exit code·실행그룹·skip·stderr와 알려진p1002g 선재실패를 분리. 원로그 `~/exoduser-wt/_out/meta-01/` |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
