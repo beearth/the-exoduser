@@ -56,6 +56,16 @@
 
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
+## 2026-10-20 BC2-05 beanRain wind/active 순수 상태 계산
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 인수BC2-04 02763cb81eab888c20f5774ed7eac03fd90250e0 끝분기. fetch main2c3c211f와game/index동일byte, 추가CH3문서는미병합. 기존장catalog·BC07 helper·BC05clock 재사용, 기존파일0줄 |
+| 계산 | G41207~41231 wind/active. 원문cnt1+ToInt32(phase*.3), angle→speed→coin→x→y·black도속도draw소비, rawblack/red·sourceundefined메타데이터, XY질의1회·recover30 유지 |
+| 검증 | 원본1,988상황/19,275event/8,771RNG/1,138raw탄/1,246충돌. 신규35,164/0, 기존BC01~08 무수정131,655/0·BC2-01~04포함250,837/0. 최종exit0/skip0/ERROR0/stderr0byte |
+| 검출·보호 | 격리6결함 모두실패검출, raw로그보존·검사약화0. OS.execute출력join·node인자·UTF-8파일. 공용6·타담당·기존제품/테스트·원본·저장·바이너리0. 실제spawn/hurtP/parry/Main연결HOLD |
+| 제출 | [BC2-05 보고서](engine/orders/reports/bc2-05_REPORT.md). 원로그~/exoduser-wt/_out/bc2-05/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/remote일치/DONE후자기WT제거 |
+
 ## 2026-10-20 BC2-04 vortex wind/active 순수 상태 계산
 
 | 항목 | 현재 정확 계약 |
