@@ -1,0 +1,261 @@
+{
+  "source_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "source_lines": [
+    "game.html:31119-31362",
+    "game.html:23294-23304",
+    "game.html:31063-31080",
+    "game.html:39413-39415"
+  ],
+  "cases": [
+    {
+      "spec": {
+        "name": "normal",
+        "u": 0.5,
+        "level": 1,
+        "diff": 5
+      },
+      "draws": 11,
+      "expected": {
+        "etype": 40,
+        "x": 3969.25,
+        "y": 494.75,
+        "lv": 1,
+        "el": 3,
+        "elite": 0,
+        "mods": [],
+        "hp": 262,
+        "mhp": 262,
+        "atk": 15,
+        "baseAtk": 31,
+        "eShield": 0,
+        "eShieldMax": 0,
+        "poise": 875,
+        "maxPoise": 875,
+        "r": 22,
+        "speed": 0.46950000000000003,
+        "st2": 55,
+        "facing": 3.141592653589793,
+        "projT": 240,
+        "bossPatT": 40,
+        "_bossOrbitAng": 3.141592653589793,
+        "_wraithPhaseT": 150,
+        "_wraithPhaseCd": 280,
+        "_erraticAng": 3.141592653589793,
+        "_mob8Col": 6,
+        "_mob8Row": 0
+      }
+    },
+    {
+      "spec": {
+        "name": "magic_m29",
+        "u": 0.01,
+        "level": 1,
+        "diff": 5
+      },
+      "draws": 12,
+      "expected": {
+        "etype": 40,
+        "x": 3969.25,
+        "y": 494.75,
+        "lv": 1,
+        "el": 3,
+        "elite": 1,
+        "mods": [
+          "M29"
+        ],
+        "hp": 525,
+        "mhp": 525,
+        "atk": 20,
+        "baseAtk": 40,
+        "eShield": 0,
+        "eShieldMax": 0,
+        "poise": 1751,
+        "maxPoise": 1751,
+        "r": 21.6432,
+        "speed": 0.41070000000000007,
+        "st2": 30.5,
+        "facing": 0.06283185307179587,
+        "projT": 181.2,
+        "bossPatT": 30.2,
+        "_bossOrbitAng": 0.06283185307179587,
+        "_wraithPhaseT": 120.6,
+        "_wraithPhaseCd": 240.8,
+        "_erraticAng": 0.06283185307179587,
+        "_mob8Col": 6,
+        "_mob8Row": 0
+      }
+    },
+    {
+      "spec": {
+        "name": "magic_m30",
+        "u": 0.02,
+        "second": 0.75,
+        "level": 500,
+        "diff": 5
+      },
+      "draws": 12,
+      "expected": {
+        "etype": 40,
+        "x": 3969.25,
+        "y": 494.75,
+        "lv": 500,
+        "el": 3,
+        "elite": 1,
+        "mods": [
+          "M30"
+        ],
+        "hp": 58616532,
+        "mhp": 58616532,
+        "atk": 399,
+        "baseAtk": 799,
+        "eShield": 0,
+        "eShieldMax": 0,
+        "poise": 195388440,
+        "maxPoise": 195388440,
+        "r": 21.6864,
+        "speed": 0.41190000000000004,
+        "st2": 31,
+        "facing": 0.12566370614359174,
+        "projT": 182.4,
+        "bossPatT": 30.4,
+        "_bossOrbitAng": 0.12566370614359174,
+        "_wraithPhaseT": 121.2,
+        "_wraithPhaseCd": 241.6,
+        "_erraticAng": 0.12566370614359174,
+        "_mob8Col": 6,
+        "_mob8Row": 0
+      }
+    },
+    {
+      "spec": {
+        "name": "compound501",
+        "u": 0.8,
+        "level": 501,
+        "diff": 5
+      },
+      "draws": 11,
+      "expected": {
+        "etype": 40,
+        "x": 3969.25,
+        "y": 494.75,
+        "lv": 501,
+        "el": 3,
+        "elite": 0,
+        "mods": [],
+        "hp": 29290950,
+        "mhp": 29290950,
+        "atk": 308,
+        "baseAtk": 616,
+        "eShield": 0,
+        "eShieldMax": 0,
+        "poise": 97636500,
+        "maxPoise": 97636500,
+        "r": 23.2,
+        "speed": 0.5055000000000001,
+        "st2": 70,
+        "facing": 5.026548245743669,
+        "projT": 276,
+        "bossPatT": 46,
+        "_bossOrbitAng": 5.026548245743669,
+        "_wraithPhaseT": 168,
+        "_wraithPhaseCd": 304,
+        "_erraticAng": 5.026548245743669,
+        "_mob8Col": 6,
+        "_mob8Row": 0
+      }
+    },
+    {
+      "spec": {
+        "name": "diff10",
+        "u": 0.5,
+        "level": 501,
+        "diff": 10
+      },
+      "draws": 11,
+      "expected": {
+        "etype": 40,
+        "x": 3969.25,
+        "y": 494.75,
+        "lv": 1001,
+        "el": 3,
+        "elite": 0,
+        "mods": [],
+        "hp": 104941433,
+        "mhp": 104941433,
+        "atk": 1069,
+        "baseAtk": 2138,
+        "eShield": 0,
+        "eShieldMax": 0,
+        "poise": 349804777,
+        "maxPoise": 349804777,
+        "r": 22,
+        "speed": 0.46950000000000003,
+        "st2": 55,
+        "facing": 3.141592653589793,
+        "projT": 240,
+        "bossPatT": 40,
+        "_bossOrbitAng": 3.141592653589793,
+        "_wraithPhaseT": 150,
+        "_wraithPhaseCd": 280,
+        "_erraticAng": 3.141592653589793,
+        "_mob8Col": 6,
+        "_mob8Row": 0
+      }
+    },
+    {
+      "spec": {
+        "name": "relocated",
+        "u": 0.5,
+        "level": 1,
+        "diff": 5,
+        "blocked": true,
+        "safe": {
+          "x": 4000.25,
+          "y": 510
+        }
+      },
+      "draws": 11,
+      "expected": {
+        "etype": 40,
+        "x": 4000.25,
+        "y": 510,
+        "lv": 1,
+        "el": 3,
+        "elite": 0,
+        "mods": [],
+        "hp": 262,
+        "mhp": 262,
+        "atk": 15,
+        "baseAtk": 31,
+        "eShield": 0,
+        "eShieldMax": 0,
+        "poise": 875,
+        "maxPoise": 875,
+        "r": 22,
+        "speed": 0.46950000000000003,
+        "st2": 55,
+        "facing": 3.141592653589793,
+        "projT": 240,
+        "bossPatT": 40,
+        "_bossOrbitAng": 3.141592653589793,
+        "_wraithPhaseT": 150,
+        "_wraithPhaseCd": 280,
+        "_erraticAng": 3.141592653589793,
+        "_mob8Col": 7,
+        "_mob8Row": 0
+      }
+    },
+    {
+      "spec": {
+        "name": "null_safe",
+        "u": 0.5,
+        "level": 1,
+        "diff": 5,
+        "blocked": true,
+        "safe": null
+      },
+      "draws": 0,
+      "expected": null
+    }
+  ]
+}

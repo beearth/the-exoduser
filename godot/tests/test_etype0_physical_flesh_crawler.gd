@@ -141,22 +141,22 @@ func _test_admission() -> void:
 	var report: Dictionary = world.get_encounter_report()
 	var actors: Array = world.get_enemies()
 	# game.html:31120-31162 and 31608-31648 define the unchanged source records/order.
-	_check(world.ready_for_player and report.get("source_count") == 16 and report.get("supported_count") == 9 and report.get("unsupported_count") == 7 and actors.size() == 9, "actual world preserves source16 with nine exact supported actors and unsupported7")
-	if actors.size() != 9 or report.get("records", []).size() != 16:
+	_check(world.ready_for_player and report.get("source_count") == 16 and report.get("supported_count") == 10 and report.get("unsupported_count") == 6 and actors.size() == 10, "actual world preserves source16 with ten exact supported actors and unsupported6")
+	if actors.size() != 10 or report.get("records", []).size() != 16:
 		world.free()
 		return
 	var orders: Array = []
 	for registered in actors:
 		orders.append(registered.source_order)
-	_check(orders == [0, 1, 4, 8, 10, 12, 13, 14, 15], "actual registry preserves exact supported source order")
-	_check(actors[7].get_script() == CrawlerScript and actors[7].source_order == 14 and str(actors[7].name) == "ch1_initial_015", "actual eighth registered actor is the exact crawler class/order/id")
+	_check(orders == [0, 1, 4, 8, 10, 11, 12, 13, 14, 15], "actual registry preserves exact supported source order")
+	_check(actors[8].get_script() == CrawlerScript and actors[8].source_order == 14 and str(actors[8].name) == "ch1_initial_015", "actual ninth registered actor is the exact crawler class/order/id")
 	_check(actors[3].get_script() == IceScript and str(actors[3].name) == "ch1_initial_009" and report["records"][8]["consumer_profile"] == "native_ch1_etype4_ice_soul_flame_v1", "ice neighbor uses its dedicated identity and profile")
-	_check(actors[6].get_script() == SpineScript and str(actors[6].name) == "ch1_initial_014" and report["records"][13]["consumer_profile"] == "native_ch1_etype4_physical_spine_beast_v1", "spine neighbor uses its dedicated identity and profile")
+	_check(actors[7].get_script() == SpineScript and str(actors[7].name) == "ch1_initial_014" and report["records"][13]["consumer_profile"] == "native_ch1_etype4_physical_spine_beast_v1", "spine neighbor uses its dedicated identity and profile")
 	var entry: Dictionary = report["records"][14]
 	_check(entry["record"] == record and entry["source_support"] == record["support"] and entry["consumer_profile"] == PROFILE and entry["status"] == "supported", "current capability and untouched source declaration coexist in actual report")
 	_check(report["records"][2]["status"] == "unsupported", "guardian remains explicitly unported")
-	_check(report["records"][15]["status"] == "supported" and report["records"][15]["consumer_profile"] == "native_ch1_etype1_lightning_hive_bloater_v1" and actors[8].get_script() == HiveScript and str(actors[8].name) == "ch1_initial_016", "neighboring lightning archer uses its exact dedicated class and profile")
-	var actor = actors[7]
+	_check(report["records"][15]["status"] == "supported" and report["records"][15]["consumer_profile"] == "native_ch1_etype1_lightning_hive_bloater_v1" and actors[9].get_script() == HiveScript and str(actors[9].name) == "ch1_initial_016", "neighboring lightning archer uses its exact dedicated class and profile")
+	var actor = actors[8]
 	_check(_json_equal(actor.data, _config["runtime"]) and _json_equal(actor.initial_timers, record["initial_timers"]), "actual configure preserves the admitted profile and original timers without normalization")
 	for native_key in _config["runtime"]["native_final"]:
 		_check(record["native_final"].has(native_key) and _json_equal(actor.data["native_final"][native_key], record["native_final"][native_key]), "every admitted native field preserves its full source origin: " + native_key)
@@ -176,7 +176,7 @@ func _test_admission() -> void:
 	var main: Node = MainScript.new()
 	main.set("world", world)
 	var summary: Dictionary = main.call("_encounter_summary")
-	_check(summary["supported_count"] == 9 and summary["unsupported_count"] == 7 and summary["records"][14]["status"] == "supported", "main metadata reads actual current capability, not the frozen declaration")
+	_check(summary["supported_count"] == 10 and summary["unsupported_count"] == 6 and summary["records"][14]["status"] == "supported", "main metadata reads actual current capability, not the frozen declaration")
 	main.free()
 	world.free()
 

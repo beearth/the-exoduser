@@ -183,21 +183,21 @@ func _test_admission() -> void:
 	var report: Dictionary = world.get_encounter_report()
 	var actors: Array = world.get_enemies()
 	# game.html:31120-31162 and 31608-31648 define the unchanged source records/order.
-	_check(world.ready_for_player and report.get("source_count") == 16 and report.get("supported_count") == 9 and report.get("unsupported_count") == 7 and actors.size() == 9, "actual world consumes source16 into nine exact actors and seven explicit unsupported records")
-	if actors.size() != 9 or report.get("records", []).size() != 16:
+	_check(world.ready_for_player and report.get("source_count") == 16 and report.get("supported_count") == 10 and report.get("unsupported_count") == 6 and actors.size() == 10, "actual world consumes source16 into ten exact actors and six explicit unsupported records")
+	if actors.size() != 10 or report.get("records", []).size() != 16:
 		world.free()
 		return
 	var orders: Array = []
 	for registered in actors:
 		orders.append(registered.source_order)
-	_check(orders == [0, 1, 4, 8, 10, 12, 13, 14, 15], "actual registry preserves exact supported source order")
-	_check(actors[6].get_script() == SpineScript and actors[6].source_order == 13 and str(actors[6].name) == "ch1_initial_014" and actors[7].source_order == 14 and actors[7].get_script() == CrawlerScript and str(actors[7].name) == "ch1_initial_015", "exact spine actor registers before the unchanged dedicated crawler")
+	_check(orders == [0, 1, 4, 8, 10, 11, 12, 13, 14, 15], "actual registry preserves exact supported source order")
+	_check(actors[7].get_script() == SpineScript and actors[7].source_order == 13 and str(actors[7].name) == "ch1_initial_014" and actors[8].source_order == 14 and actors[8].get_script() == CrawlerScript and str(actors[8].name) == "ch1_initial_015", "exact spine actor registers before the unchanged dedicated crawler")
 	var entry: Dictionary = report["records"][13]
 	_check(_equal(entry["record"], record) and _equal(entry["source_support"], record["support"]) and entry["consumer_profile"] == PROFILE and entry["status"] == "supported", "full original record and snapshot support coexist with current capability")
 	_check(report["records"][2]["status"] == "unsupported", "guardian remains explicitly unsupported")
 	_check(report["records"][8]["status"] == "supported" and report["records"][8]["consumer_profile"] == "native_ch1_etype4_ice_soul_flame_v1" and actors[3].get_script() == IceScript and str(actors[3].name) == "ch1_initial_009", "ice type4 uses its exact dedicated class and profile")
-	_check(report["records"][15]["status"] == "supported" and report["records"][15]["consumer_profile"] == "native_ch1_etype1_lightning_hive_bloater_v1" and actors[8].get_script() == HiveScript and str(actors[8].name) == "ch1_initial_016", "lightning archer uses its exact dedicated class and profile")
-	var actor = actors[6]
+	_check(report["records"][15]["status"] == "supported" and report["records"][15]["consumer_profile"] == "native_ch1_etype1_lightning_hive_bloater_v1" and actors[9].get_script() == HiveScript and str(actors[9].name) == "ch1_initial_016", "lightning archer uses its exact dedicated class and profile")
+	var actor = actors[7]
 	_check(_equal(actor.data, _config["runtime"]) and _equal(actor.initial_timers, record["initial_timers"]) and _equal(actor.native_flags, _config["runtime"]["native_flags"]), "actual configure copies source-derived profile, initial clocks and flags")
 	for key in _config["runtime"]["native_final"]:
 		_check(record["native_final"].has(key) and _equal(actor.data["native_final"][key], record["native_final"][key]), "every consumed native field retains source origin: " + key)

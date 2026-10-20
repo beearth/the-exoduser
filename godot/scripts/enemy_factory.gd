@@ -10,6 +10,8 @@ const ICE_SOUL_SCRIPT = preload("res://scripts/enemy_tank_ice_soul_flame.gd")
 const HIVE_LIGHTNING_SCRIPT = preload("res://scripts/enemy_archer_lightning_hive_bloater.gd")
 const ICE_WARRIOR_SCRIPT = preload("res://scripts/enemy_melee_ch1_ice_warrior.gd")
 const ICE_WARRIOR_CONFIG_FILE = "res://data/etype20_ch1_ice_warrior.json"
+const SHADOW_SCRIPT = preload("res://scripts/enemy_ch1_shadow_twin.gd")
+const SHADOW_CONFIG_FILE = "res://data/etype47_ch1_shadow_twin.json"
 const HIVE_LIGHTNING_CONFIG_FILE = "res://data/etype1_lightning_hive_bloater.json"
 const HIVE_LIGHTNING_PROFILE = "native_ch1_etype1_lightning_hive_bloater_v1"
 const HIVE_LIGHTNING_CONFIG_SCHEMA = "exoduser.godot.etype1-lightning-hive-bloater.v1"
@@ -125,6 +127,12 @@ func _validate_record(value: Variant, index: int, ids: Dictionary, errors: Array
 				for path in record["animation"][group].values():
 					if not ResourceLoader.exists(path):
 						errors.append(label + ": required original ice warrior texture missing: " + path)
+		elif _is_shadow_target(record):
+			if record["runtime"] != null or record["support"]["runtime_supported"] != false:
+				errors.append(label + ": shadow source snapshot must remain unported/runtime=null")
+			for group in ["base_textures", "walk_textures"]:
+				for path in record["animation"][group].values():
+					if not ResourceLoader.exists(path): errors.append(label + ": missing original shadow texture: " + path)
 		elif _is_flesh_target(record):
 			# The old export declares this unported. Preserve that snapshot;
 			# admission belongs to this separate, source-derived consumer config.
@@ -149,7 +157,7 @@ func _validate_record(value: Variant, index: int, ids: Dictionary, errors: Array
 		errors.append("%s: unported profile must have runtime=null and runtime_supported=false" % label)
 
 func unsupported_reason(record: Dictionary) -> String:
-	if _is_ice_warrior_target(record) or _is_flesh_target(record) or _is_spine_target(record) or _is_ice_soul_target(record) or _is_hive_lightning_target(record):
+	if _is_shadow_target(record) or _is_ice_warrior_target(record) or _is_flesh_target(record) or _is_spine_target(record) or _is_ice_soul_target(record) or _is_hive_lightning_target(record):
 		return ""
 	if record.get("etype") != 4:
 		return "native_type_ai_not_ported"
@@ -164,6 +172,12 @@ func unsupported_reason(record: Dictionary) -> String:
 	if record["support"].get("ai_profile") != MEDIUM_PROFILE:
 		return "native_ai_profile_not_ported"
 	return ""
+
+func _is_shadow_target(record: Dictionary) -> bool:
+	var config: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SHADOW_CONFIG_FILE))
+	if config.get("schema") != "exoduser.godot.etype47-ch1-shadow-twin.v1" or not _json_equal(config.get("orders"), [11]): return false
+	if config.get("source_sha256") != "91fd1a88b394152cd8b0de653f1bde5139b7829f331787581616f7ef3c0724fa" or FileAccess.get_sha256("res://data/encounters.json") != config.source_sha256: return false
+	return _integer(record.get("order")) and int(record.order) == 11 and _json_equal(record, _ice_warrior_source.records[11])
 
 func _is_ice_warrior_target(record: Dictionary) -> bool:
 	if _ice_warrior_config.get("schema") != "exoduser.godot.etype20-ch1-ice-warrior.v1" or not _json_equal(_ice_warrior_config.get("orders"), [4, 10, 12]):
@@ -580,9 +594,13 @@ func consume_atomic(source: Variant, owner_world: Node2D) -> Dictionary:
 			var ice_soul = _is_ice_soul_target(record)
 			var hive_lightning = _is_hive_lightning_target(record)
 			var ice_warrior = _is_ice_warrior_target(record)
+			var shadow = _is_shadow_target(record)
 			var enemy: CharacterBody2D
 			var runtime: Dictionary
-			if ice_warrior:
+			if shadow:
+				enemy = SHADOW_SCRIPT.new()
+				runtime = SHADOW_SCRIPT.build_shadow_runtime(record)
+			elif ice_warrior:
 				enemy = ICE_WARRIOR_SCRIPT.new()
 				runtime = ICE_WARRIOR_SCRIPT.build_runtime(record)
 			elif hive_lightning:
@@ -601,7 +619,11 @@ func consume_atomic(source: Variant, owner_world: Node2D) -> Dictionary:
 				enemy = ENEMY_SCRIPT.new()
 				runtime = record["runtime"]
 			enemy.configure(runtime.duplicate(true), owner_world)
-			if ice_warrior:
+			if shadow:
+				report["records"][-1]["consumer_profile"] = SHADOW_SCRIPT.SHADOW_PROFILE
+				report["records"][-1]["source_support"] = record["support"].duplicate(true)
+				report["records"][-1]["consumer_config"] = SHADOW_CONFIG_FILE
+			elif ice_warrior:
 				report["records"][-1]["consumer_profile"] = ICE_WARRIOR_SCRIPT.PROFILE
 				report["records"][-1]["source_support"] = record["support"].duplicate(true)
 				report["records"][-1]["consumer_config"] = ICE_WARRIOR_CONFIG_FILE

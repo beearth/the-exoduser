@@ -1003,6 +1003,19 @@ func get_native_world_identity() -> Array:
 	# Preserve source ens reference identity. Dynamic appends do not replace it.
 	return _enemies
 
+func read_native_initial_encounter_spawn_context() -> Dictionary:
+	var main := get_parent()
+	if not is_instance_valid(main): return {}
+	var state: Node = main.get("source_state")
+	var services: RefCounted = main.get("source_initialization_services")
+	if not is_instance_valid(state) or not is_instance_valid(services): return {}
+	var current_g: Variant = state.read_current_g()
+	var current_p: Variant = state.read_current_p()
+	var options: Variant = services.read_current_options()
+	if not current_g is Dictionary or not current_p is Dictionary or not options is Dictionary: return {}
+	return {"stage": current_g.get("stage"), "player_level": current_p.get("lv", 1),
+		"difficulty": options.get("diff"), "stage_difficulty_offset": current_g.get("_stageDiffOff", 0)}
+
 func localize_native_text(value: Variant) -> Variant:
 	# The current native slice uses the original Korean strings. Other locales
 	# and the original settings/localization owner have not been ported here.

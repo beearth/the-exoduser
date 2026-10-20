@@ -1,0 +1,19 @@
+{
+  "schema": "exoduser.godot.etype47-ch1-shadow-twin.v1",
+  "source_sha256": "91fd1a88b394152cd8b0de653f1bde5139b7829f331787581616f7ef3c0724fa",
+  "orders": [11],
+  "profile": "native_ch1_etype47_shadow_twin_v1",
+  "source_lines": {
+    "constructor": "game.html:31120-31362",
+    "clone_and_teleport": "game.html:39407-39429",
+    "teleport_landing": "game.html:20006-20048",
+    "common_charge": "game.html:20122-20155,40505-40518"
+  },
+  "scope": {
+    "initial_encounters_only": true,
+    "spawn_hole_connection": false,
+    "clone_registered": false,
+    "preteleport_circle": false,
+    "full_teleport_particle_light_shake_parity": false
+  }
+}

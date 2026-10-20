@@ -24,7 +24,7 @@ func _run() -> void:
 	for frame in range(12):
 		await physics_frame
 	var world: Node2D = main.get("world")
-	_check(world.get_encounter_report().get("supported_count") == 9, "actual Main installs source nine actors")
+	_check(world.get_encounter_report().get("supported_count") == 10, "actual Main installs source ten actors")
 	var tested := 0
 	for enemy in world.get_enemies():
 		if enemy.get("etype") != 20:

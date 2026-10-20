@@ -195,7 +195,7 @@ func _exact_admission() -> bool:
 		print("FACTORY_ERRORS " + JSON.stringify(result.get("errors")))
 		holder.free()
 		return true
-	_check(result["source_count"] == 16 and result["supported_count"] == 9 and result["unsupported_count"] == 7, "actual capability9/7, source16 unchanged")
+	_check(result["source_count"] == 16 and result["supported_count"] == 10 and result["unsupported_count"] == 6, "actual capability10/6, source16 unchanged")
 	var selected: Node = null
 	for actor in result["instances"]:
 		actor.process_mode = Node.PROCESS_MODE_DISABLED
@@ -295,7 +295,7 @@ func _projectile_vfx() -> bool:
 	_tick(shot)
 	_near(shot.get_snapshot()["render_phase"], 0, "physics never advances visible render phase")
 	_render_tick(shot, 9)
-	_near(shot.get_snapshot()["render_phase"], 1.08, "nine actual visible render calls")
+	_near(shot.get_snapshot()["render_phase"], 1.08, "ten actual visible render calls")
 	_check(sprite.region_rect == Rect2(254, 0, 254, 137), "source+.12 render selects actual frame1")
 	_near(sprite.modulate.a, 1, "source flight alpha1")
 	visual["holder"].free()

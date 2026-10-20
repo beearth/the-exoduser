@@ -21,6 +21,7 @@ var _last_idle: Dictionary = {}
 var _font: SystemFont
 var _render_now = 0.0
 var _render_slow_factor = 1.0
+var _effect_color := Color("#8833cc")
 
 func configure(actor: Node2D, target: Node2D, world: Node2D, state_ref: Dictionary, profile: Dictionary) -> bool:
 	if _configured:
@@ -339,6 +340,7 @@ func _spawn_effect(kind: String, origin: Vector2, size: float, duration: float, 
 	if fresh:
 		effect = TPVisual.new()
 	effect.configure(kind, origin, end, size, duration, _textures.get(kind), _world.get_instance_id(), cap > 0)
+	effect.source_color = _effect_color
 	# A reused per-world slot belongs to one render driver at a time. Older
 	# controllers can retain read-only observations, but must not age it twice.
 	effect.render_driver_instance = get_instance_id()
@@ -441,6 +443,7 @@ class DeliveredPhysicalShot extends ExoduserPhysicalProjectile:
 		return {"damage": damage, "life_ticks": life_ticks, "global_position": [global_position.x, global_position.y], "local_position": [position.x, position.y], "birth_position_global": [birth_position.x, birth_position.y], "configured_global_origin": [bridge_global_origin.x, bridge_global_origin.y], "heading": [heading.x, heading.y], "native_frame": native_frame, "release_native_frame": release_native_frame, "distance_travelled": distance_travelled, "speed": speed, "birth_prephase": birth_prephase.duplicate(true), "birth_explicit_phase_calls": birth_explicit_phase_calls, "explicit_native_ticks": explicit_native_ticks, "auto_physics_calls": auto_physics_calls, "owner_independent": true}
 
 class TPVisual extends Node2D:
+	var source_color := Color("#8833cc")
 	var kind = ""
 	var origin = Vector2.ZERO
 	var endpoint = Vector2.ZERO
@@ -600,7 +603,7 @@ class TPVisual extends Node2D:
 	func _draw() -> void:
 		if not active:
 			return
-		var col = Color("#8833cc")
+		var col = source_color
 		if kind == "impact" and original != null and t / duration < 0.5:
 			draw_circle(Vector2.ZERO, draw_size * 0.2, Color(col.r, col.g, col.b, 0.5 * (1.0 - 2.0 * t / duration)))
 		elif kind == "bolt" and segments.size() >= 2:

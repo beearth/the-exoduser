@@ -52,8 +52,8 @@ func _run() -> void:
 	root.add_child(world)
 	var report: Dictionary = factory.consume_atomic(source, world)
 	_check(report.get("valid") == true, "canonical source accepted")
-	_check(report.get("supported_count") == 9 and report.get("unsupported_count") == 7,
-		"three exact etype20 records added, 9 supported and 7 unsupported")
+	_check(report.get("supported_count") == 10 and report.get("unsupported_count") == 6,
+		"three exact etype20 records added, 10 supported and 6 unsupported")
 	_check(JSON.stringify(source) == before, "source export remains immutable")
 	world.actors = report.get("instances", [])
 	for actor in world.actors:
