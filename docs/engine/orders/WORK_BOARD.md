@@ -32,6 +32,13 @@
 | P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | Mac Codex ENGINE (`01a1235a-f2b8-73d1-bf58-c51c7dfb7638`, ROOT 관측) | codex/p3-003-20261020 | `godot/scripts/native_regions.gd`, `godot/tests/test_p3003_regions.gd`, `docs/engine/FDG_P3_003_REGIONS_20261020.md`, `docs/engine/orders/reports/P3-003_REPORT.md` | 배정됨 · 새 worktree 준비 전(코드 착수 전) |
 
 ## 공용(누구도 단독 소유 아님 — 수정 시 최소 줄·보고 필수)
+
+### FEATURE-INVENTORY PC 배정 (2026-10-20 사용자 최신 지시)
+
+| 작업ID | 담당·브랜치 | 소유 파일 | 상태 |
+|---|---|---|---|
+| FEATURE-INVENTORY | PC Codex · codex/feature-inventory-pc-20261020 | docs/engine/FDG_FEATURE_INVENTORY_20261020.md, docs/engine/orders/reports/FEATURE-INVENTORY_REPORT.md; 관련 계획 문서에 snapshot 링크만 추가 | 검수 대기 · 1,061행, 원본/근거3389참조·등록집합 대조. 정적 첫22통과/1서식실패 후 해당1검사만 수정·통과. 게임 실행/실플레이 인수 아님. P3-003은 Mac ENGINE 소유로 무수정. 커밋 SHA는 보고서 마감 단락/원격 ref에서 확인 |
+
 `godot/scripts/main.gd`, `hud.gd`, `world.gd`, `player.gd`, `native_normal_enemy_hurte.gd`(공용 피해 집행자), `native_source_new_run_state.gd`(G/P 소유자)
 
 ## 검수·병합 완료 기록 (최근)
