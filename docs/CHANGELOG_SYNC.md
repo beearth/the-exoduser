@@ -94,6 +94,43 @@
 | 범위 | Main/State/전투/런타임/테스트0줄. fixture 관측을 제품으로 대체하지 않음. XP20·INV21·skills16/17은 미인수 저장 필드 계약만 표시 |
 | 문서·검증 | [차단·인터페이스 요청](engine/orders/reports/demo11-06_REPORT.md), docs/15 현행 보충. 원본 제한 행·정적 소유/호출점 점검, Godot/테스트0·PASS 주장0. _out/demo11-06/ 증거·DONE 후 자기WT 제거 |
 
+## 2026-10-21 DEMO11-enemy-base 후속 — D9fd31a64 공통 이관
+
+| 항목 | 동작 보존·범위 |
+|---|---|
+| 병합·공통화 | 정상merge9157697c(9fd31a64). D5종 factory prepared entry→common World/origin admission·동일35 탄/World epoch. 기존 Main D facade·D actor/ctor RNG/탄 수치 body·PC 보호 경로 byte 보존 |
+| 후행·검증 | D selected-only/자동schedulerHOLD·25 death/이동탄 PC contact 후행 유지. 이관집중21/0+기존D158/0+공통0 31/0+35 43/0=253/0·ERROR0, 관련suite 각1회. 30actor600틱 mean2.824/p993.980/max8.380ms(최대예산초과). 결과는 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md). [8.0 계약](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+
+## 2026-10-21 DEMO11-enemy-base — 자연 소환 단일 기반
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·경로 | 하니스 공백만 최종 교정(실행문 불변). main0138c5bb9 +439b763da9 +Acf7408d4 정상FF. P3 constructor body 동일 추출→factory EOF append19/0→실제 World registry→43 origin, 기존 World clock·scheduler·동일35 registry 재사용 |
+| 검증·경계 | 신규31/0+관련415/0=446/0 각suite1회(신규 초기실패 제외), 실제 자연0 spawn/tick/legacy PC interface 처치/origin1, 실제30 actor600틱 벤치 유효1회 mean2.904/p994.221/max8.669ms(최대는8.333예산 초과). 보호경로/저장/에셋0, 전체타입/fullv3/전체120fps 완료 아님. 관련회귀·범위·대체위치 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md), [8.0](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+
+## 2026-10-21 DEMO11-etype-a selected0 P3→MAP11→43 origin 인계
+
+- main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.
+- 부분 구현·통합 BLOCKED:1/4 자연 constructor/등록·5/6 미구현·PC 보호 도메인·자연 source scheduler 미완. 5종 동시 스폰 벤치0회(미충족 명시), 요청 거절 시간을 대체 성능으로 제출하지 않음.
+- 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
+## 2026-10-21 DEMO11-etype-d 재개 — factory append-only·실제 D5종 등록
+
+| 항목 | 결과·경계 |
+|---|---|
+| 사용자 판정 반영 | 이전9627cf75에서 같은branch 재개. factory EOF D등록+18/−0·Main+7/−0, 기존등록/생성/P2-008b/registry+30/−0(D clock 인계)·State/World/PC 보호/저장/맵0줄 |
+| 실제 경로 | 기존 enemy.gd HP/poise owner·World phase/RNG·BC09/35 carrier·43 origin 재사용. 5종실스폰·tick/비치명hurtE,4종최종사망→지역kill,18 Player HP감소·24둔화·25생존zone.25사망prefix/이동탄PCcontact·29종autoscheduler 후행 |
+| 검증 | 신규158/0(런타임29·ctor8+원문90·사망18·clock13), 기존factory3그룹/0·관련83/0 각1회. clock 인계 수정 후 최종 벤치14/0·5actor각270tick max4.252ms<8.333ms, 기존Camera WARNING1/ERROR0·렌더FPS미검증. 실패 하니스 로그보존·실패만수정 |
+| 문서·제출 | [타입별 결과/공용줄/A·B·C 통합안](engine/orders/reports/demo11-etype-d_REPORT.md),8.0·자기WORK_BOARD 갱신. 새공통helper0·보호경로0, 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d/resume-* 원로그 |
+
+## 2026-10-21 DEMO11-etype-d — 자연 D 5종 NOT_READY·원문/admission 검증
+
+| 항목 | 결과·한계 |
+|---|---|
+| 기준 | main0138c5bb9 +43/9b763da9 정상FF, gap61ab71be §4.1 읽기참조. A/B/C 파일 읽기만·새 공통helper0 |
+| 판정 | 18/19/23/24/25 **NOT_READY·실제 actor0·구현 완료 아님**. 기존 Marker adapter query와 factory/PC 옵션 거부 확인. 24 freeze 공개API는 존재,18 drainHeal 소비0,25 생존D/사망I 원문 보존 |
+| 검증 | 새 Godot34/0+원문JS349/0은 admission/source 계약 검사뿐. 기존43 각1회40/0, **5종 실제 벤치 NOT_RUN_NO_ACTORS**·가짜 성능/전투 PASS0 |
+| 범위 | 제품/Main/State/World/Player/PC 보호·맵·저장0줄, 새 tests·8.0·자기 docs만. [타입별 근거/필요 접점](engine/orders/reports/demo11-etype-d_REPORT.md). 자기branch push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d 원로그 |
+
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
 - 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.

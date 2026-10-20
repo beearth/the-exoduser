@@ -677,3 +677,50 @@ func _finite_json(value: Variant) -> bool:
 	elif value != null and not value is String and not value is bool:
 		return false
 	return true
+
+# Append-only natural registry. Initial source16 validation/dispatch above is unchanged.
+# Each added type must supply its actual kernel, source constructor and geometry.
+const NATURAL_REGISTRATIONS = {
+	18: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	19: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	23: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	24: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	25: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	0: {"actor":preload("res://scripts/native_natural_enemy_actor.gd"),
+		"constructor":"build_natural_etype0_runtime","profile":FLESH_PROFILE,"radius_base":10.0,"source_color":"#dd4455"}
+}
+func natural_registration(etype: int) -> Dictionary:
+	return NATURAL_REGISTRATIONS.get(etype,{}).duplicate()
+func prepare_natural(holes: Node,hole: Dictionary,site: Dictionary,source: Dictionary,owner: Node) -> Dictionary:
+	var entry:=natural_registration(int(source.etype))
+	if entry.is_empty():return {"ready":false,"reason":"natural_etype_not_registered","etype":source.etype}
+	var journal: Dictionary={"spawn_n":source.spawn_n,"requested":[site.position.x,site.position.y]}
+	var runtime: Dictionary=holes.call(entry.constructor,hole,site.position,source.elite,source.mods,source.speed_u,source.radius_u,source.literal,journal)
+	runtime.native_final["col"]=entry.source_color # G30909; old P3 profile omitted col.
+	var actor: CharacterBody2D=entry.actor.new()
+	actor.configure(runtime,holes.world)
+	actor.bind_natural_owner(owner)
+	return {"ready":true,"actor":actor,"runtime":runtime}
+# DEMO11-etype-d: append-only natural admission, no existing profile path changed.
+const DEMO11_D_ETYPES=[18,19,23,24,25]
+const DEMO11_D_ACTOR=preload("res://scripts/native_demo11_etype_d_actor.gd")
+func create_demo11_d(native_record: Dictionary, owner_world: Node2D, owner: Node) -> Dictionary:
+	if native_record.get("etype") not in DEMO11_D_ETYPES:return {"ready":false,"reason":"outside_D"}
+	if native_record.get("stage")!=0 or native_record.get("elite")!=0 or native_record.get("mods")!=[]:return {"ready":false,"reason":"D_elite_mod_owner_NOT_READY"}
+	if not is_instance_valid(owner_world) or not is_instance_valid(owner) or owner.get_parent()!=owner_world:return {"ready":false,"reason":"D_actual_owner_required"}
+	if owner.get_script().resource_path!="res://scripts/native_demo11_etype_d_spawn.gd":return {"ready":false,"reason":"D_actual_spawn_owner_required"}
+	var errors: Array=[]
+	if not _has_keys(native_record,["id","order","element","stage","level","spawn_position","hp","attack","radius","poise","speed_pixels_per_tick","initial_idle_ticks","initial_projectile_ticks","factory_random_seed","native_final"],"D",errors):return {"ready":false,"reason":"D_record_incomplete"}
+	for key in ["hp","attack","radius","poise","speed_pixels_per_tick","initial_idle_ticks","initial_projectile_ticks"]:
+		if not _number(native_record[key]):return {"ready":false,"reason":"D_nonfinite_record"}
+	if not native_record.native_final is Dictionary:return {"ready":false,"reason":"D_native_identity_required"}
+	var actor=DEMO11_D_ACTOR.new();actor.d_owner=owner;actor.configure(native_record,owner_world)
+	actor.slam_t=native_record.native_final.slamT;actor.slam_cd=native_record.native_final.slamCd
+	actor.slime_t=native_record.native_final._iceSlimeT;actor.slime_cd=native_record.native_final._iceSlimeCd
+	return {"ready":true,"actor":actor}
+
+# Profile constructors stay at their original source-owned implementation.
+func prepare_natural_profile(record: Dictionary,world: Node2D,component: Node) -> Dictionary:
+	var entry:=natural_registration(int(record.get("etype",-1)))
+	if not entry.get("prepared_record_only",false):return {"ready":false,"reason":"natural_profile_constructor_not_registered"}
+	return call(entry.factory_method,record,world,component)
