@@ -1,3 +1,13 @@
+## 2026-10-20 BC2-02 chapter 데이터 수용 접점 HOLD
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 기준·선행 | fetch main26c050a99a711e793a6c2413395acda09b0c1614. BC2-01 main미포함으로사용자예외에따라인수끝6e6f2f58633bb7a54fa0cf1a9cd3df3dc1535aba에서분기. 최신main의BC01~03·game/index와동일byte재대조 |
+| 차단·필요위치 | BC02~06의CH1 catalog고정/진입guard,BC07의si0~3직접guard로CH2계산수용불가. BC04의59전역manifest요구·BC06의새10start미소유도구분. 기존owner의데이터인수·guard·token/ack계약결정필요 |
+| 보호·판정 | 공용·타담당0줄조건상기존모듈수정불가. 공통식복제·stage위장·continuation우회·부분helper를전체구현으로보고0. **BC2-02 HOLD/기능미구현**,후속단위/실전/Main진행0 |
+| 검토·실행 | 정적파일/행/caller/인수분석만. Godot/게임/Node원본하니스/신규·회귀테스트0,실행PASS0. R HEAD/branch/tracked INDEX/WORK·원본·제품·기존테스트·저장형식·바이너리변경0 |
+| 산출 | [BC2-02 보고서](engine/orders/reports/bc2-02_REPORT.md)+이절만commit. QA-007 출력전체join/UTF-8·node인자규칙을후속검증조건에기록. 원로그~/exoduser-wt/_out/bc2-02/,push·원격일치·DONE후자기worktree제거 |
+
 ## 2026-10-20 BC2-01 2장 보스 읽기 전용 catalog
 
 | 항목 | 현재 정확 계약 |
