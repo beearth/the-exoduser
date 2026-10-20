@@ -1,3 +1,13 @@
+## 2026-10-21 EC4-03 etype50 불규칙 이동·무작위 windup 순수 정책
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | fetch main823c24bae + EC4-02 51342270 정상merge=b2062cc6. mainEC3-03 API/실제EC2-02 Constructor.Draws·기존Formula.js_to_int32 재사용, rebase0 |
+| 원본·계약 | G39510–39518만. timer감소→만료angle/timer→d50/250 이동/canMv→cached d<30+r 확률.03sp/추가U·telegraph20/windup10..29. raw_now ms그대로·공통writer/RNGowner복제0 |
+| 검증 | 원본JS4,174사례·신규58,696/0, 회귀9종0실패/ERROR·WARNING0. timer/state/RNG/콜순서exact·XY만고정8εS/최대0.941εS. 실제맵/실actor동등성미확인 |
+| 실패·검출 | 최초overflow 하니스1실패보존·경로독립/무콜백 단정추가, JS double큰정수검사추가. 변이8종검출→byte복원→최종재실행. UTF-8파일oracle/명시node인자/출력join·단정행근거 |
+| 보호·제출 | 기존1633파일동일·공용export2/Main/State/저장/다른담당/R0줄. [EC4-03 보고서](engine/orders/reports/ec4-03_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-03/. Godot gate/30초대기·각격리명·정상훅·자기branch push/remoteSHA/DONE뒤자기worktree제거 |
+
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
 
 | 항목 | 구현·검수 근거 |
