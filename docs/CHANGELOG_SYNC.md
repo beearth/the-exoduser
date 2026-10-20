@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## 2026-10-20 SND-01 순수 사운드 분류·플랫폼 한도 정책
 
 | id / 항목 | 현재 계약 |
@@ -12,7 +11,7 @@
 | 격리 | 새 테스트 `EXODUSER-snd-01-Isolated-20261020`, 프로세스 내 ProjectSettings로 effective OS userdir 확인. Main 부팅0이므로 override.cfg 사용0. 회귀 격리·수치·원로그는 [snd-01 보고서](engine/orders/reports/snd-01_REPORT.md) 참조 |
 | 기존 회귀 | Godot 8종 실행: contracts5그룹/0실패, 7개 테스트 합계619단정/1실패. 검기220/1(halt6), 지옥강타12/0이나 종료 리소스 ERROR1. **회귀 인수 BLOCKED**, 기존 파일 수정·skip·단정 완화 없음 |
 | 인수 한계 | 순수 정책 모듈까지이며 기존 전투음에 연결하지 않음. 경로·볼륨 공식·원본 음원은 변경하지 않음. 실청취·실게임 사운드·PC 실행은 미확인 |
-=======
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
@@ -81,7 +80,6 @@
 | G·지역·HUD | starter G48(원본40+지역7+`_totalSpawned`1, 원본30625), 지역 total23/60/53/32 합168, 시작 HUD0/32를 실제 회귀 로그로 확인 |
 | 범위 밖·보호 | 설정 UI·저장복원·리바인딩·FPS cap 적용·Tier 자동검출·실물 패드·실플레이/시각 검수 미구현·미검수. docs/2_3·Q/E·세이브 형식 보호, 변경0 |
 | 제출·원로그 | 구현 `517825ebf017f105484fb81b01fe98f31fb8f21f`, 자기 branch `codex/settings-s01-20261020`. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35/`, [상세 보고서](engine/orders/reports/settings-s01_REPORT.md). 최초 실패·보완 이력 보존, 훅 우회0 |
->>>>>>> origin/main
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
