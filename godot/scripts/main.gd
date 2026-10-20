@@ -433,6 +433,8 @@ func _ready() -> void:
 
 	native_demo_anglers=preload("res://scripts/native_demo11_anglers.gd").install_native_boot(self)
 	if not native_pets.bind_demo_owners(self): push_warning("DEMO11-44 pet owner binding not ready.")
+
+	native_demo_fire_devils = preload("res://scripts/native_demo11_fire_devils.gd").install_native_boot(self) # DEMO11-32
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -3349,3 +3351,10 @@ func request_native_inventory_ui(action: String, item: Dictionary={}, data: Dict
 # DEMO11-31: MAP11 provides four distinct child Marker2Ds in source slot order.
 func bind_native_demo_anglers(provider: Node2D, markers: Array) -> bool:
 	return is_instance_valid(native_demo_anglers) and native_demo_anglers.bind_provider(provider,markers)
+
+# DEMO11-32 — MAP11 supplies Marker2D placement, PC supplies contact/hit ingress.
+var native_demo_fire_devils: Node2D
+func bind_native_fire_devil_map(provider: Node2D) -> bool:
+	return is_instance_valid(native_demo_fire_devils) and native_demo_fire_devils.bind_map_provider(provider)
+func read_native_fire_devils() -> Dictionary:
+	return native_demo_fire_devils.snapshot() if is_instance_valid(native_demo_fire_devils) else {"status":"NOT_READY"}

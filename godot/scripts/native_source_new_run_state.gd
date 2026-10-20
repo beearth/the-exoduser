@@ -1838,3 +1838,9 @@ func apply_native_inventory_ui(owner: Node, action: String, item: Dictionary, da
 	var result: Dictionary=owner.source_inventory_ui.execute(action,item,data,_inventory,_demo11_storage["0"],int(_demo11_globals.get("BAG_MAX",300)))
 	_inventory_ui_busy=false
 	return result
+
+# DEMO11-32 — FD collection only; no generic enemy/reward/region ownership.
+func claim_native_fire_devil_records(owner: Node, records: Array) -> bool:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or owner!=_player.get_parent().get("native_demo_fire_devils") or owner.get_parent()!=_world or _g.get("stage")!=0 or _g.get("_bossArena",false) or _g.get("_fdSpawned",false) or records.size()!=4:return false
+	_g["_fdStage"]=0;_g["_fdSpawned"]=true;_g["_fireDevils"]=records
+	return true
