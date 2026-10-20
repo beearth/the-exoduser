@@ -1,6 +1,6 @@
 # QS-01 — 물약 정의·회복량·자동 CD 순수 계산 이식
 
-2026-10-20 KST · QS-01 순수 모듈 검수 완료·정상 체크포인트 / 검수 대기. 기존 G/지역/HUD 3suite 미실행 한계는 아래에 명시한다. **순수 계산만 구현**했으며, 자동 물약 발동·HP/악의 변경·Main 연결은 하지 않았다.
+2026-10-20 KST · QS-01 순수 모듈 및 승인된 기존 G/지역/HUD 3suite 검수 완료 / 검수 대기. 이전 실패·미실행 이력은 아래에 분리 보존한다. **순수 계산만 구현**했으며, 자동 물약 발동·HP/악의 변경·Main 연결은 하지 않았다.
 
 ## 기준·소유·변경 경로
 
@@ -119,17 +119,17 @@ PROJECT=/Users/fordeargamers/exoduser-wt/qs-01/godot
 | 키 집합 진단 | 진단 전용 별도 실행(exit0), **기존 suite PASS가 아님**. `_ready` 직후 G48, boot40+region7+`_totalSpawned`와 누락0/추가0. 정렬 배열의 순서 비교가 키 집합 검사와 달랐음을 확인. 8프레임 뒤 추가키는 `_dmgPeakShow` 1개(G49); State :348의 표시값 초기화 writer 존재. 최초 실패/잘못된 `_intro` 추정은 보존 | `main-key-diagnostic.gd`, `main-keys-diagnostic-03.*` |
 | 최신 G 계약 | starter checkpoint는 원본40+지역7+소환굴1=**48키**. `_totalSpawned` 원본30625. 자연 프레임이 진행한 뒤의 동적 표시키와 구분 | 최신 `test_native_main_source_starter_state.gd:10~18,98~103` |
 
-### 기존 G·지역·HUD suite 실행 제약
+### 기존 G·지역·HUD suite 실행 제약 — 승인 전 이력
 
-다음 기존 suite는 각각 다른 격리명을 코드에서 강제한다. 최신 QS-01 배정은 Main 테스트에 `EXODUSER-qs-01-Isolated-20261020`을 지정했으므로, 이 값으로 실행하면 starter는 exit2, HUD는 전부 SKIP, 지역 actual은 isolation 단정 실패가 된다. 이를 PASS로 보고하지 않기 위해, **기존 suite를 수정하거나 격리 검사를 우회하지 않았고 실제 실행도 아직 하지 않았다**. 각 suite의 기존 격리명 사용 허용을 비동기 질문으로 요청한 상태다. 위 별도 Main probe는 기존 suite 대체가 아니다.
+다음 기존 suite는 각각 다른 격리명을 코드에서 강제한다. 최신 QS-01 배정은 Main 테스트에 `EXODUSER-qs-01-Isolated-20261020`을 지정했으므로, 이 값으로 실행하면 starter는 exit2, HUD는 전부 SKIP, 지역 actual은 isolation 단정 실패가 된다. 이를 PASS로 보고하지 않기 위해, **기존 suite를 수정하거나 격리 검사를 우회하지 않았고 실제 실행도 아직 하지 않았다**. 당시 각 suite의 기존 격리명 사용 허용을 비동기 질문으로 요청했다. 이후 명시 승인 후 실행한 결과는 아래 추가 검수 절을 따른다. 위 별도 Main probe는 기존 suite 대체가 아니다.
 
 | 기존 파일 | 코드가 강제하는 격리명 | 상태 |
 |---|---|---|
-| `test_native_main_source_starter_state.gd:21,29` | `EXODUSER-MainSourceStarter-Isolated-20261014` | 격리명 예외 승인 대기·미실행 |
-| `test_p3003_regions.gd:3,63` | `EXODUSER-P3003-Isolated-20261020` | 격리명 예외 승인 대기·미실행. core fixture의 `[8,15,15,15]`는 실제 맵의 `[23,60,53,32]`로 교체하지 않음 |
-| `test_p2002a_hud.gd:8,25~32` | `EXODUSER-P2002A-Isolated-20261020` | 격리명 예외 승인 대기·미실행 |
+| `test_native_main_source_starter_state.gd:21,29` | `EXODUSER-MainSourceStarter-Isolated-20261014` | 승인 전 미실행(후속 실행은 아래 참조) |
+| `test_p3003_regions.gd:3,63` | `EXODUSER-P3003-Isolated-20261020` | 승인 전 미실행(후속 실행은 아래 참조). core fixture의 `[8,15,15,15]`는 실제 맵의 `[23,60,53,32]`로 교체하지 않음 |
+| `test_p2002a_hud.gd:8,25~32` | `EXODUSER-P2002A-Isolated-20261020` | 승인 전 미실행(후속 실행은 아래 참조) |
 
-변경로그 기록은 이후 사용자 명시 지시로 승인됐다. 이 세 기존 suite의 격리명 예외는 별도로 미승인·미실행 상태이며, 정상 커밋 요청과 구분한다. 해당 미실행을 성공으로 표시하지 않는다.
+변경로그 기록은 이후 사용자 명시 지시로 승인됐다. 이 세 기존 suite도 이후 사용자 명시 승인으로 파일 상수에 맞는 격리명에서 실행했다. 이 절은 승인 전 상황이며, 당시 미실행을 소급 성공으로 표시하지 않는다.
 
 
 ## 최종 통합 기준 — 9528ea35b
@@ -146,7 +146,7 @@ PROJECT=/Users/fordeargamers/exoduser-wt/qs-01/godot
 | 범위 | 최종 main 대비 기존 제품11경로 hash 보존, 공용6·helper·기존 테스트 수정0. 새 모듈/테스트+UID2개·이 보고서·승인된 변경로그만 commit 대상. override0byte | `baseline-final-main.json`, 최종 scope 영수증 |
 | docs 검색 | 최종 코드 작성 후 docs 전체 keyword 검색 로그 보존. 원본 수치 변경0; 새 구현 상태를 보고서/변경로그로 동기화 | `docs-keyword-final-scan.log` |
 
-기존 starter/지역/HUD 3suite는 여전히 미실행이다. 19a 기준 별도 Main 관측값·probe 실패를 9528 기준 기존 suite 통과로 승격하지 않는다. 이 보고서는 QS-01 독립 계산 모듈의 검수/제출 기록이다.
+해당 체크포인트 당시 기존 starter/지역/HUD 3suite는 미실행이었다. 19a 기준 별도 Main 관측값·probe 실패를 9528 기준 기존 suite 통과로 승격하지 않는다. 이 보고서는 QS-01 독립 계산 모듈의 검수/제출 기록이다.
 
 
 ## 정상 구현 체크포인트 영수증
@@ -159,4 +159,31 @@ PROJECT=/Users/fordeargamers/exoduser-wt/qs-01/godot
 | 실제 범위 | 신규 모듈·신규 테스트·자기UID2개·본 보고서와 CHANGELOG_SYNC의 신규11줄. 기존 변경로그 삭제0·기존 제품/공용6/기존 테스트 변경0 |
 | 최종 검수 수치 | QS-01 318/0, contracts5그룹/0, 자원회복173/0. 전부 원앱4.7.2·격리실행. Camera2D WARNING1 보존 |
 | 원격 확인 | 이 SHA 기록용 후속 doc-only commit까지 정상 push한 최종 branch SHA/ref 대조는 Git 밖 `DONE.txt`에 기록. report의 구현 SHA와 최종 문서 커밋 SHA는 구분 |
-| 남은 검증 | G/지역/HUD 기존3suite 격리명 충돌로 미실행. 이전 별도probe 실패·진단 보존. 자동 사용/runtime·실플레이 인수 미완 |
+| 남은 검증 | 당시 G/지역/HUD 기존3suite는 미실행(후속 승인 실행 결과는 아래 참조). 이전 별도probe 실패·진단 보존. 자동 사용/runtime·실플레이 인수 미완 |
+
+
+## 격리명 예외 승인 후 기존 회귀 3종 — 최종 추가 검수
+
+사용자 후속 지시가 두 요청을 모두 명시 승인했다. **새 테스트에만 작업용 격리명**, 기존 회귀에는 각 파일의 `USERDIR`/`ISOLATED_DIRECTORY`를 사용한다는 `MAC_ORDERS_20261020.md:19~26` 규칙도 확인했다. 테스트 파일·제품 파일·훅을 수정하지 않고 각 실행 직전에 `override.cfg`의 격리 이름을 바꿨으며, `finally`에서 매번 비웠다. 실제 저장 폴더 `EXODUSER-Godot-Native-First`는 사용하지 않았다.
+
+기준 main은 fetch 결과 변동 없는 `9528ea35b429498fcf42fe3723008219ed0ed7e1`, 실제 테스트 HEAD는 `e38c083cd64a3f8d830d6579f5a7d700b083a7c2`다. 코드는 그대로이며 이후 변경은 본 보고서·변경로그뿐이다. 원본 Godot `/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot`을 사용했다.
+
+| 기존 suite / 실제 격리 이름 | 실제 결과 | 시간·로그 |
+|---|---|---|
+| `test_native_main_source_starter_state.gd` / `EXODUSER-MainSourceStarter-Isolated-20261014` | **5그룹·148단정·0실패**, exit0. source boot G40와 current G40+지역7+소환굴1 정확 키 집합 계약 통과 | 81.503초 / `starter-approved-01.*` |
+| `test_p3003_regions.gd` / `EXODUSER-P3003-Isolated-20261020` | **43단정·0실패**, exit0. core/display/actual 전체. actual 지역 total `[23,60,53,32]`, current3, 4지역 same-G 상태 확인 | 15.018초 / `regions-approved-01.*` |
+| `test_p2002a_hud.gd` / `EXODUSER-P2002A-Isolated-20261020` | **2그룹·36단정·0실패·SKIP0**, exit0. initial kill_text=`0 / 32`, 처치/레벨업 갱신 계약 통과 | 16.126초 / `hud-approved-01.*` |
+| 진단/한계 | 각 stderr에 Camera2D physics interpolation WARNING1(합3), **ERROR/스크립트오류0**. HUD 기존 fixture는 `forced_actor_fields=2`이며 자연 입력/실플레이 인수 아님 | 원 stderr508/367/450byte 각각 보존 |
+| 무변경 | 위3개 기존 테스트의 실행 전후 SHA-256 동일. 제품·공용6파일도 기존 baseline과 동일, override0byte | `approved-suite-before.json`, `approved-suite-summary.json`, 최종 scope 영수증 |
+
+실제 명령은 공통 `--headless --path /Users/fordeargamers/exoduser-wt/qs-01/godot --script` 뒤 다음 각 경로를 붙였다. `.command.json`에는 전체 argv와 사용한 격리명을 함께 기록했다.
+
+```text
+res://tests/test_native_main_source_starter_state.gd
+res://tests/test_p3003_regions.gd
+res://tests/test_p2002a_hud.gd
+```
+
+이 추가 실행은 실제로 기존 suite를 실행한 증거다. 앞선 별도 Main probe의8단정1실패·키시점 probe3단정2실패·진단-only 실행은 그대로 보존하며 합산한 단일 PASS로 바꾸지 않는다. 지역 fixture `[8,15,15,15]`도 변경하지 않았다. 신규318/0·contracts5그룹/0·자원회복173/0은 앞선 동일 코드의 실행이며 이번 doc-only 변경을 이유로 반복하지 않았다.
+
+추가 docs 동기화는 CHANGELOG_SYNC.md 맨 위의 새 승인 후 검수 절로 기록했다. 기존 전체 내용은 byte suffix 동일, 훅 우회0. 기존 미실행으로 남았던 회귀3종은 이제 실행 완료이며, 남은 것은 QS-02 이후 런타임 자동 사용·효과·대장간·실플레이 인수다. 구현 SHA `2da719dc603c3a2c57032357ef82dae474af6a3b`는 변하지 않는다. 추가 문서 제출 SHA/ref 대조는 갱신된 `DONE.txt`에 기록한다.

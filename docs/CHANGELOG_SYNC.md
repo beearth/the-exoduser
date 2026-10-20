@@ -1,3 +1,15 @@
+## 2026-10-20 QS-01 기존 G·지역·HUD 회귀 승인 후 검수
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 추가 승인·격리 | 새 QS-01 테스트는 작업용 격리명, 기존 회귀는 각 파일의 USERDIR/ISOLATED_DIRECTORY 사용. 원본 Godot4.7.2만 실행하고 각 실행 후 override.cfg 0byte. 기존 테스트 수정0 |
+| 원본 근거 | game.html:16714~16718 boot G40·30625 _totalSpawned·31655→60698~60699 지역7키. starter current G48=40+7+1, HUD60321~60322는 현재 지역 분모 |
+| 실제 회귀 | test_native_main_source_starter_state 전체5그룹 148/0·지역test_p3003_regions 전체43/0·HUDtest_p2002a_hud 전체2그룹36/0(SKIP0). 모두 exit0·ERROR0, 각 실행 Camera2D WARNING1 보존 |
+| 관측값 | 지역 total23/60/53/32(합168), 현재지역3, 실제 초기 HUD 0 / 32. 원본·기존 테스트 기대값/제품 수치 수정0. HUD suite의 기존 fixture actor필드쓰기2회는 자연 플레이 증거와 구분 |
+| 기존 증거 | 앞선 QS-01 318/0·contracts5그룹/0·자원회복173/0은 동일 코드의 선행 실행으로 보존. 승인 전 미실행 기록과 별도 probe 실패/진단을 이번 suite 성공으로 소급하지 않음 |
+| 보존·범위 밖 | 기존 제품·공용6·기존 테스트 변경0. 이 신규 절만 prepend해 기존 변경로그 바이트 보존. 자동 물약 런타임·실플레이 인수는 범위 밖. 훅 우회/main push/force/rebase/reset0 |
+| 제출 근거 | 기준main9528ea35b429498fcf42fe3723008219ed0ed7e1, 테스트HEAD e38c083cd64a3f8d830d6579f5a7d700b083a7c2. [QS-01 보고서](engine/orders/reports/qs-01_REPORT.md)·원로그 ~/exoduser-wt/_out/qs-01/*-approved-01.* |
+
 ## 2026-10-20 QS-01 물약 정의·회복량·자동 CD 순수 계산 이식
 
 | id / 적용 위치 | 현재 정확 계약 |
