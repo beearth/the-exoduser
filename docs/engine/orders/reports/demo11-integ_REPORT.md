@@ -90,3 +90,18 @@
 | 인계 | 기본 MAP11/--map11=off 분기 수용. off 런타임 별도 검사는 미실행. 이전 BGM8실패/EL·19ui·37 하니스 미검증 유지. MAP11+37 지역 진행·모든 Marker 소비자 자동 연결·최종 처치/부활·전체 E2E 미확인 |
 
 공용 변경 줄 범위는 원로그 supplement-map11-prod/shared-file-hunks.diff의 3b01908d 대비 hunk에 기록했다. 보호 전투 핵심 임의 변경0, 번역 CRLF 보존. 최초 준비 실패는 PASS에 합산하지 않는다. 원로그: ~/exoduser-wt/_out/demo11-integ/supplement-map11-prod/.
+
+
+## 2026-10-21 보충: 최신 적 기반·장비24b·MAP11-10
+
+제출8d8f5342 위에 bb3ced49→049cc1aa→e8888106 순서로 정상 merge. 과거1f0a71fb/F merge 이력 보존, 최신 bb3ced49가 둘을 포함하므로 재merge0.
+
+| 순서·merge | 충돌 해소·대표1회 |
+|---|---|
+| bb3ced49 /32cfb639 | docs 번역/UI/CHANGELOG/WORK_BOARD 독립 기록 병존. Main/State 오래된 의존 함수 이동 충돌은 기존 통합 보존(commit 자체 State 변경0), Main에는 고유 E-spawn API만 추가. factory F는 최신 단일 등록표/prepared capability. base3 104/0 ERROR0,18spawn/tick·16death, B8/D25 사망HOLD |
+| 049cc1aa /78fb93b7 | CHANGELOG 병존. Main loaded restore/applyStats 후 affix 초기cache rebuild, 기존 기능+24b cache API 병존. test_demo11_24b_system_effects 131/0 ERROR0, 실제Main·13종/13oracle 사례·직접kill fixture(자연loot 아님) |
+| e8888106 /f9141344 | CHANGELOG 병존·코드충돌0. 선행 맵 아트/preview/shader 원작성 byte merge. test_map11_seam 18/0 ERROR0, geometry/seam receipt 검사 |
+
+합계253/0, 각suite1회·exit0. 적/장비는 기존 하니스 전제 --map11=off, 맵은 preview scene. 새MAP11 전체 적/장비/자연진행 PASS 주장0. editor 준비 ERROR0·assertion 합산0, 새벤치0/최종E2E0/문지기29 전용suite 미실행. 틱 경로 목록생성API 신규추가0(diff 검색). 이전41 BGM8실패·EL/19ui/37 하니스 미검증·MAP11↔37 region/progression HOLD 유지. F admission은 공통기반으로 갱신했으나 보호 projectile/swoop/slam NOT_READY 해제0.
+
+공용 변경hunk(8d8f5342 대비): main.gd: -98,0 +99,2, -261,0 +264,2, -1033 +1037,3, -1259,0 +1266,6, -2503 +2515, -2561 +2573, -2665,0 +2678, -3301,0 +3315, -3467,0 +3482,13; world.gd: 0; native_source_new_run_state.gd: 0. 상세 supplement-latest/shared-file-hunks.diff. 원본game.html blob불변, 보호전투 임의수정0. 번역 충돌 해소에 남은12개 LF를 push전 발견하여 byte방식으로 CRLF 복구: 최종CRLF4987/loneLF0. 테스트 약화0. 원로그 ~/exoduser-wt/_out/demo11-integ/supplement-latest/. 격리 각테스트상수·gate·override종료0byte·원격일치·R대조·DONE 보존.

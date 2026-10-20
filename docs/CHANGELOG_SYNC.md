@@ -1,3 +1,8 @@
+## 2026-10-21 DEMO11-INTEG 보충: 최신 적 기반·24b·MAP11-10
+
+- bb3ced49→049cc1aa→e8888106 정상merge, 기존기능 보존·F공통화/문지기29 경계/장비cache/맵seam 인수. 번역CRLF 보존.
+- 대표104/0+131/0+18/0=253/0 ERROR0·각1회. 기존실패/하니스미검증/MAP11 progression HOLD 유지. [보고서](engine/orders/reports/demo11-integ_REPORT.md)에 충돌/공용hunk/범위 기록.
+
 ## 2026-10-21 DEMO11-INTEG 보충: MAP11-PROD
 
 - a5ad5e4e 마지막 merge, 공용 기존 기능 보존. MAP11의 legacy region 부재 시37 연결 HOLD, Main 부팅 scope 교정.
