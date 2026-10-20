@@ -1,4 +1,5 @@
 extends SceneTree
+const TRANSPORT = preload("res://tests/qa007/oracle_transport.gd")
 ## NW-01: source-backed readonly MAP_OBJS query. No Main/Player/World boot.
 const USERDIR := "EXODUSER-nw-01-Isolated-20261020"
 const QUERY = preload("res://port_modules/world_interaction_query/producer.gd")
@@ -86,18 +87,16 @@ func _normal(label: String, player: Variant, objects: Variant, pressed: Variant,
 
 func _run() -> void:
 	_start("source_oracle")
-	var node_binary := "node"
-	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--node-bin="):
-			node_binary = arg.trim_prefix("--node-bin=")
+	var node_binary := TRANSPORT.node_binary()
 	var source_path := ProjectSettings.globalize_path("res://../game.html")
 	var oracle_path := ProjectSettings.globalize_path("res://../tools/nw01_world_interaction_oracle.cjs")
 	_check(FileAccess.get_sha256(source_path) == SOURCE_SHA, "current source hash")
 	_check(FileAccess.file_exists(oracle_path), "tracked oracle exists")
-	var output: Array = []
-	var code: int = OS.execute(node_binary, PackedStringArray([oracle_path, source_path]), output, true)
+	var receipt := TRANSPORT.execute_file(node_binary, oracle_path, source_path)
+	var code: int = receipt.code
+	var output: String = receipt.diagnostics
 	_check(code == 0, "source oracle exit0; output=" + str(output).left(300))
-	var data: Variant = JSON.parse_string("".join(output)) if code == 0 else null
+	var data: Variant = receipt.data if code == 0 else null
 	_check(data is Dictionary and data.get("cases") is Array, "oracle JSON/cases available; no skip")
 	if not data is Dictionary or not data.get("cases") is Array:
 		_end()

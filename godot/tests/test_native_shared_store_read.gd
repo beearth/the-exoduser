@@ -1,10 +1,11 @@
 extends SceneTree
+const TRANSPORT = preload("res://tests/qa007/oracle_transport.gd")
 const SHARED = preload("res://port_modules/save_adapter/source_shared_store.gd")
 const USERDIR := "EXODUSER-sv-shared-read-Isolated-20261020"
 var checks := 0
 var failures := 0
 var artifacts := ""
-var node_bin := "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node"
+var node_bin := TRANSPORT.node_binary()
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--artifacts-dir="): artifacts = arg.trim_prefix("--artifacts-dir=")
@@ -79,8 +80,8 @@ func _run() -> void:
 	if artifacts.is_empty(): printerr("SV_SHARED_READ_NEEDS_ARTIFACT_DIRECTORY"); quit(2); return
 	var output: Array = []
 	var status := OS.execute(node_bin, [ProjectSettings.globalize_path("res://../tools/sv_shared_read_oracle.cjs"), ProjectSettings.globalize_path("res://..")], output, true)
-	check(status == 0 and output.size() == 1, "exact original source oracle executed")
-	var probe: Variant = JSON.parse_string(str(output[0])) if not output.is_empty() else null
+	check(status == 0 and not output.is_empty(), "exact original source oracle executed")
+	var probe: Variant = TRANSPORT.decode_output(output)
 	if not probe is Dictionary or status != 0: printerr(output); quit(2); return
 	check(probe.source_unchanged and probe.actual_storage_reads == 0 and probe.actual_storage_writes == 0 and probe.actual_server_calls == 0 and probe.source_writer_helpers_executed == 0, "only fixture getters and writer stubs, source bytes unchanged")
 	DirAccess.make_dir_recursive_absolute(artifacts)

@@ -8,7 +8,7 @@ const SOURCE_SHA = '4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685
 const FRAGMENT_SHA = '9eea8397b33211a9a7b4ba18372d4fb60a5ab6cffa497687254d47b66d6c265f';
 const sha = data => crypto.createHash('sha256').update(data).digest('hex');
 function main() {
-  if (process.argv.length !== 3) throw Error('usage: node nw01_world_interaction_oracle.cjs <game.html>');
+  if ((process.argv.length !== 3 && process.argv.length !== 4)) throw Error('usage: node nw01_world_interaction_oracle.cjs <game.html> [utf8-output.json]');
   const bytes = fs.readFileSync(process.argv[2]), html = bytes.toString('utf8');
   if (sha(bytes) !== SOURCE_SHA) throw Error('current game.html source hash differs: review source before changing expectations');
   const unique = marker => {
@@ -72,7 +72,7 @@ function main() {
     vm.runInContext(dst+'\n'+gate+'\n'+loop+'\n}',ctx,{timeout:1000});
     return {...c,expected:{ready:true,matched:selected!==null,source_index:selected,type:selected===null?null:c.objects[selected].type,reason:null,source:'game.html:32829–32853'},oracle_random_calls:randomCalls,oracle_portal_calls:portalCalls};
   });
-  process.stdout.write(JSON.stringify({source:{file:'game.html',source_sha256:SOURCE_SHA,start_line:32828,end_line:32853,fragment_sha256:FRAGMENT_SHA,connected:false},
-    fragments:{loop,distance:dst,gate},cases:results,real_storage_io:false,real_game_booted:false})+'\n');
+  require('./oracle_json_output.cjs')({source:{file:'game.html',source_sha256:SOURCE_SHA,start_line:32828,end_line:32853,fragment_sha256:FRAGMENT_SHA,connected:false},
+    fragments:{loop,distance:dst,gate},cases:results,real_storage_io:false,real_game_booted:false});
 }
 try { main(); } catch(error) { console.error(error.stack); process.exitCode=1; }
