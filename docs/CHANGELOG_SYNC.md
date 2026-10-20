@@ -1,3 +1,25 @@
+## 2026-10-21 EC3-05 etype42 시체 흡수·분비 순수 leaf
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 기준·의존 | fetch 최신main823c24bae + 승인EC3-04 113eb78d 정상merge9258eac1. rebase/reset/force0, 기존main CHANGELOG byte 전부 보존. WORK_BOARD etype47/factory와 신규42 leaf 경로 중복0 |
+| 원본 | G39337–39356. idle밖동결/clock각1회·180+60U reset, ens현재length/index/dead/좌표4읽기순서/Math.hypot strict80·첫일치. HP min(mhp,hp+ToInt32(.15mhp))→corpse.x/y−9999→parts8→독립cached60<d<1200/SpitCd/eShootWind60/D3 |
+| callback·경계 | 순차 ACK/readback 없으면 진행0. 등록시P조회0·나중fire당현재P조회1, eProjAt2.5/.8/D/200/#dd4466/5 후late actor text25. deadpool소유/registry삭제/Playerheal대체/실writer0. source hypot 실제adapter·actor/World/State/바인딩은HOLD, oracle receipt를실제제품증거로집계0 |
+| 재사용·보호 | EC2-02 Draws·기존ToInt32/JS truthy·EC3-02 초기3draw 재사용. 신규leaf/test·UID2·보고서만, 공용/다른담당/기존테스트/저장0줄·기존405파일/R 불변 |
+| 검수 | 신규 첫실행44738/0·원문1890tick/callback2496·허용오차0/skip0/exit0/ERROR0/WARNING0. 회귀10종260284단정/0·12그룹/0·ERROR0. Mac종료WARNING3 원문보존/이전Mac stderr byte동일, 총괄의PC823 WARNING0과구분·원인미확인 |
+| 격리·인계 | EXODUSER-ec3-05-Isolated-20261020·기존각상수, 매Godot pgrep2이상30초대기/override0byte. 명시node인자/출력join·UTF8임시JSON/binary64/source pin. [보고서](engine/orders/reports/ec3-05_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-05/. 자기branch push/remote일치/DONE후자기WT제거 |
+
+## 2026-10-20 EC3-04 etype41 guard·강타 순수 상태·명령
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 경고 선재 | main249c26fad detached sparse에서 spawn_holes298/0·element4그룹/0, ERROR0·WARNING2+1 재현. EC3-03/이번 회귀 stderr 전체 byte 동일. Camera2D2건·ObjectDB8누수1건 선재, 원인수정 주장0 |
+| 기준·의존 | fetch 최신main56c939fb + 승인EC3-03 01d036d4 정상merge491ae9aa, CHANGELOG 기존main byte 보존 정리4453ca21. rebase/reset/force0. WORK_BOARD etype47/factory 소유와 중복0 |
+| 원본·계약 | G39318–39334·42156. idle 밖 동결/guard2회·slash1회감소/진입90+40U 후같은tick감소·동시강타/45·1200strict. windup18·telegraph20 선적용→즉시hurtP ToInt32(atk×1.3)→late-read parts6/text30/shake3. guard local dmg half trunc 위치만, 정면방패·반격0 |
+| 재사용·보호 | EC2-02 Draws·기존 combat_stat_formula ToInt32 직접재사용, EC3-02 초기4draw 연속검수. 신규leaf/test·UID2·보고서만, 공용Main/State/다른담당/기존테스트/저장0줄·기존397파일/R 불변. 실제피격/Player/FX/actor writer 연결HOLD |
+| 검수 | 최종신규36588/0·원문2902tick+피해256+suffix16·허용오차0, 회귀9종223696단정/0·12그룹/0·exit0/ERROR0. 초기fixture의guard=false누락에의한1272실패원문보존, 원본초기값복원만/제품·guard·단정완화0 |
+| 격리·인계 | 신규EXODUSER-ec3-04-Isolated-20261020·기존각상수, 매Godot pgrep2이상30초대기/override0byte. 명시node인자/출력join·UTF8임시JSON/binary64/pin. [보고서](engine/orders/reports/ec3-04_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-04/. 자기branch push/remote일치/DONE후자기·baseline WT제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
