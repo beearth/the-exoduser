@@ -2300,6 +2300,29 @@ func read_native_skill_dispatch_cost_context() -> Dictionary:
 	return {"ready":true,"st_discount":maxf(.60,1.0-float(passives.pAtk)*.04)*maxf(.5,1.0-float(passives.pMelee)*.05)*(1.0+minf(0.0,values.stCostRed)),
 		"magic_cost":magic,"cd_red":values.cooldownRed+values.helmCooldown+values.endCooldownAll+values.skillCdRed-values._lHelmFree-(values._lNeckLow if float(p.hp)<=float(p.mhp)*.5 else 0.0)}
 
+# DEMO11-17: minimal callable seam for PC's future K/L UI; no layout/input takeover.
+var _native_skill_management: RefCounted
+
+func _skill_management_service() -> RefCounted:
+	if _native_skill_management==null:
+		var service: RefCounted=preload("res://scripts/native_skill_management.gd").new()
+		if not service.configure(self,source_state): return null
+		_native_skill_management=service
+	return _native_skill_management
+
+func request_native_skill_management(command: Dictionary) -> Dictionary:
+	var service: RefCounted=_skill_management_service()
+	if service==null: return {"accepted":false,"committed":false,"reason":"skill_service_unready","prefix":[]}
+	return service.request(command)
+
+func bind_native_skill_management_handoff(receiver: Callable) -> bool:
+	var service: RefCounted=_skill_management_service()
+	return service!=null and service.bind_handoff(receiver)
+
+func read_native_skill_management() -> Dictionary:
+	return source_state.read_native_skill_management_snapshot() if is_instance_valid(source_state) else {}
+
+
 func dispatch_native_skill_slot(slot_key: String) -> Dictionary:
 	var adapter: Node = world.get_node_or_null("NativeSkillSlots") if is_instance_valid(world) else null
 	if not is_instance_valid(adapter): return {"accepted":false,"reason":"skill_dispatcher_unavailable"}

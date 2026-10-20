@@ -74,6 +74,15 @@
 | 회귀 | 각1회 신규214/0(원본10사례)·META06 1034/0·META01 20/0·P2001c45/0=1313/0, exit0/skip0/ERROR0. Camera2D WARNING·P2001c ObjectDB2 WARNING 원문 기록, 누수0 주장0 |
 | 제출 | [DEMO11-20 보고서](engine/orders/reports/demo11-20_REPORT.md)·META추적 소비 갱신. 원로그 ~/exoduser-wt/_out/demo11-20/, 매Godot gate/override0·정상훅·자기branch push·remoteSHA/DONE뒤자기worktree제거 |
 
+## 2026-10-21 DEMO11-17 K/L 학습·강화·환불 State 원장 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0 + DEMO11-16 3be8055f 정상merge d4e71d79. CHANGELOG main bytes 보존. XP726cf925는 readonly/검증용3way모델만, 제품 반입0 |
+| 연결 | SK-S01~05 식 그대로 learn_up/minus/reset·실제SP/악의·skills/선택/slots commit. Main+23/State+78 추가만. 최종 handoff 실패prefix 보존·최근32요청 재생·paused UI 허용/시전 가드유지. PC UI 배치/전투핵심/피해/저장/맵 변경0 |
+| 검증 | 신규100/0·관련4회귀 각1회24,110/0·원문JS 기존9,358+실제8건 불일치0. XPsignal SP12→학습SP2 모델16/0. paused경계2실패 재현→해당 신규만100/0. 최종ERROR/SKIP0·목록생성API/tick추가0 |
+| 제출·경계 | [보고서](engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
 ## 2026-10-21 DEMO11-16 성능 규칙 후속·동일 브랜치 재검증
 
 | 항목 | 근거 |
@@ -218,6 +227,14 @@
 | 구현·의존 | 신규 native_ch1_boss_selector.gd·test_boss_ch1_bc04_selector.gd·bc04_REPORT.md. BC03 349ec241 끝에서 분기. 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
 | 원본 | 최신 main e556b617 game.html:38373–38442. CD감소→idle/거리/타이머 gate→combo 또는59-slot score→상위6가중 선택·history/streak·idxCD·조건부 난수 순서를 보존. startPattern은 BC06용 command 경계 |
 | 검증·한계 | 원본 독립 oracle2,723건·가중 경계25건·난수20,746회 대조. 신규 최초21,899단정/0실패/skip0/ERROR0; BC01 681/0·BC02 5,257/0·BC03 31,976/0·contracts5/5·import 정상, 모두ERROR0. actor/전투·Main 연결은 후속 의존. 원로그 `_out/bc04/`, push·SHA대조·DONE 후 자기 sparse worktree 제거 |
+
+## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위·공용 | main0105159934 기준. Main +26/-0로 demo=true/stage0/last0 manifest 선택·실제 World/State stage 대조. State/전투/저장/지형0. 개발 route 거부, manifest deep copy. |
+| 재사용·검증 | 기존 META-06 cap100/entry/loop 그대로 위임. 신규22/0·META06 1034/0·인트로18/0·원문JS995/0, 각1회. 잘못된 stage 거부 의도 ERROR1 외 예상 밖 오류0. 실제 XP writer는 DEMO11-20 후속. |
+| 인계 | [공개 API·공용 변경 줄·보고서](engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
 
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
