@@ -1,5 +1,6 @@
 extends SceneTree
-## IT-03: current crystalEffects -> existing resource adapter. Fixture writes only.
+## IT-03 crystal helper regression; IT-04 updates this same owner's resource
+## expectations to include authored socketQ. Fixture writes only.
 const Crystal := preload("res://port_modules/player_crystal_resource_source/producer.gd")
 const Parameters := preload("res://port_modules/player_resource_parameters_source/producer.gd")
 const Affix := preload("res://port_modules/equipment_affix_reader/producer.gd")
@@ -18,7 +19,7 @@ class ResourceFixture extends RefCounted:
 	func _init(crystals: Array) -> void:
 		for slot in Affix.SLOT_NAMES:
 			inv.equipped[slot] = null
-		# Socket q must not affect this IT-03 consumer (IT-04 is separate).
+		# IT-04 now applies these authored socket qualities in the resource consumer.
 		inv.equipped.ring1 = {"crystals": crystals, "socketQ": [100, 100, 100]}
 	func player() -> Dictionary: return p
 	func inventory() -> Dictionary: return inv
@@ -57,7 +58,7 @@ func run() -> void:
 	print("IT03_RESULT ", JSON.stringify({"checks": checks, "failures": failures,
 		"groups": groups, "oracle_inputs": oracle.size(), "userdir": OS.get_user_data_dir(),
 		"main_booted": false, "live_state_writes": 0, "fixture_sink_only": true,
-		"source": "game.html:15289-15296,15316"}))
+		"source": "game.html:15289-15296,15316;IT04:27934-27939"}))
 	quit(0 if checks > 0 and failures == 0 else 1)
 
 func check(condition: bool, label: String) -> void:
@@ -163,11 +164,11 @@ func test_resource_consumer() -> void:
 	var parameters: Variant = bind(fixture, crystal)
 	var result: Dictionary = parameters.run_apply_stats()
 	check(result.ready and result.dispatched == [Parameters.KIND_APPLY_STATS, Parameters.KIND_INVALIDATE, Parameters.KIND_RECALC_ST], "existing dispatch order")
-	near(fixture.p._crystalStats.mp, 6.25, "quality used exactly once; socket not applied")
-	near(fixture.p._crystalStats.st, 11.325, "quality after enhancement")
-	near(fixture.p.mpR, .05 + .0375 / 60.0, "source MP regeneration")
-	near(fixture.p.stR, .05 + .06795 / 60.0, "source ST regeneration")
-	check(fixture.p.mmp == 106 and fixture.p.mp == 106 and fixture.p.mst == 111 and fixture.p.st == 111, "original resource integer truncation/caps")
+	near(fixture.p._crystalStats.mp, 18.75, "IT04 crystal quality once, then matching gold socket x3")
+	near(fixture.p._crystalStats.st, 22.65, "IT04 enhanced bronze crystal with gold socket x2")
+	near(fixture.p.mpR, .05 + .1125 / 60.0, "source MP regeneration after socket x3")
+	near(fixture.p.stR, .05 + .1359 / 60.0, "source ST regeneration after socket x2")
+	check(fixture.p.mmp == 118 and fixture.p.mp == 118 and fixture.p.mst == 122 and fixture.p.st == 122, "original resource integer truncation/caps")
 	check(fixture.inv == inventory_before and is_same(fixture.inv.equipped.ring1.crystals, crystals), "consumer preserves inventory values and identity")
 	var calls: Array = crystal.call_log()
 	check(calls.size() == 2 and calls[0].id == "cr_deep_well" and calls[1].id == "cr_last_breath", "original crystal iteration order and null skip")
@@ -177,14 +178,14 @@ func test_resource_consumer() -> void:
 	var before: Dictionary = fixture.p.duplicate(true)
 	parameters = bind(fixture, Crystal.new())
 	result = parameters.run_apply_stats()
-	check(not result.ready and result.reason == "crystal_effects_not_array" and result.dispatched.is_empty() and result.phase1.packet == null, "unsupported quality refuses resource packet")
+	check(not result.ready and result.reason.begins_with("socket_multiplier_not_ready@1:") and result.dispatched.is_empty() and result.phase1.packet == null, "unsupported quality refuses resource packet")
 	check(fixture.p == before and fixture.packets.is_empty() and parameters.dispatch_count() == 0, "no partial fixture writes")
 	parameters.clear()
-	# Initial equipment/legacy q omission keeps the old neutral results.
+	# Missing crystal q stays neutral (q50); the authored gold socket still applies x2.
 	fixture = ResourceFixture.new([{"id": "cr_deep_well", "star": 0}])
 	parameters = bind(fixture, Crystal.new())
-	check(parameters.run_apply_stats().ready and fixture.p.mmp == 105 and fixture.p.mst == 100, "legacy neutral initial caps")
-	near(fixture.p.mpR, .0505, "legacy neutral initial regeneration")
+	check(parameters.run_apply_stats().ready and fixture.p.mmp == 110 and fixture.p.mst == 100, "legacy q50 with authored gold socket initial caps")
+	near(fixture.p.mpR, .051, "legacy q50 with authored socket regeneration")
 	parameters.clear()
 
 func test_purity() -> void:

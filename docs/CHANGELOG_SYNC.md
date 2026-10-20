@@ -1,3 +1,14 @@
+## 2026-10-20 IT-04 — 장착 결정의 홈 배율 합산
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 범위·의존 | 지정 resource parameters producer·신규 equipped_socket_multiplier 테스트·같은 아이템 담당의 IT-03 통합 기대값8개·전용 docs 동기화. IT-03 50d1a5a0에서 분기(앞 단위 포함, 기준 main 미포함). 공용6파일·다른 담당·IT-01/02/03 producer·JSON 변경0 |
+| 원본 | origin/main 284d7faf49295b2f5061937a47ce96038032ed3c game.html:27934~27939, socketMul15322~15326.17슬롯/ci 순서로 falsy skip→IT-01 socket(item,ci)→기존 crystal_effects(c)→각 value×socket.multiplier 합산. provider arity1/원 c 참조·packet/sink 그대로 |
+| 값·보존 | socket100/gold결정×3, socket100/silver·bronze×2, socket1×1. 품질·star/enh는 IT-03에서만1회, 홈 배율은 합산부에서만1회. 누락/짧은/null/0 홈은1. 새 writer/RNG/저장 schema·복원 변경0 |
+| 오류 | 미지원 socket/provider·잘못된 packet·비유한 합계/unknown stat/overflow는 NOT_READY·packet=null·첫 sink0회, 첫 실패 후 다음 결정 호출 중단. NaN이 뒤 ~~에서0으로 숨겨져 dispatch되던 경로를 finite guard로 차단. 정상 source 값 보정0 |
+| 검수 | 신규1,713/0, 원본 직접대조15,523/0(817입력·14,706 binary64 합계 완전일치). IT-01 177/0·IT-02 2,205/0·IT-03 7,731/0·contracts5그룹/0·P2-001c39/0·관련 실제 Main 초기 자원48/0. P2-001c Camera2D·ObjectDB4개 잔류 경고 보존. 첫 실패/기대값 전환은 [IT-04 보고서](engine/orders/reports/it-04_REPORT.md) |
+| 실행·한계 | full worktree ENOSPC 후 Git 자체 cleanup, 같은 branch의 sparse worktree 약1.6GiB로 준비. R/타 worktree 삭제0. 신규 EXODUSER-it-04-Isolated-20261020, 기존 회귀 각 상수. Godot2이상이면30초 대기·실행마다 override 후0byte. 실화면·자연 장착·PC·저장 왕복 미검수 |
+
 ## 2026-10-20 IT-03 — 결정 효과의 품질 배율 적용
 
 | id / 적용 위치 | 현재 정확 계약 |
