@@ -117,6 +117,18 @@
 | 기존 회귀 | Godot 8종 실행: contracts5그룹/0실패, 7개 테스트 합계619단정/1실패. 검기220/1(halt6), 지옥강타12/0이나 종료 리소스 ERROR1. **회귀 인수 BLOCKED**, 기존 파일 수정·skip·단정 완화 없음 |
 | 인수 한계 | 순수 정책 모듈까지이며 기존 전투음에 연결하지 않음. 경로·볼륨 공식·원본 음원은 변경하지 않음. 실청취·실게임 사운드·PC 실행은 미확인 |
 
+## 2026-10-20 SV-COLLECT 원본 저장 수집 읽기 전용 collector
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·범위 | 재부팅 worktree b8871831·미커밋 collector/test/report 확인·별도 백업 후 최신 origin/main284d7faf까지 정상 fast-forward. 추적 문서 §4의1/SV-COLLECT만. 공용6·기존테스트·game.html·project.godot·R 파일 수정0 |
+| 신규 파일 | save_adapter/source_save_collector.gd·test_native_save_collector.gd 및 자기 UID2개. current_readers/collect는 같은 live Player/World owner bundle을 읽고 경로별 원본 필드를 deep detached payload로 반환. 제품 설치/저장 호출/encoder/마이그레이션0 |
+| 원본 계약 | Cloud3543–3575·Local63905–63931·Web64062–64088·Demo62131–62159·Demo50061996–62017, queue51219–51221. 67/67/67/67/49필드의 각 default·순서·원본 차이 유지. queue known string·중복/순서·260상한, rawgrit은 실소유 holder만 |
+| 누락·경계 | 각 reader synchronous1회, owner loss/누락/미지원 carrier는 HOLD+payload=null, write_authorized=false/main_connected=false. demo/demo500 skillSlots는 원본 배열전개 조건을 유지(비배열HOLD); 다른3경로 직접 할당은 원본대로 보존. Unicode string spread는 미검증HOLD |
+| 실제 검수 | 최종 collector37871/실패0(원본40 projection+슬롯경계10평가+실제Main). 기존test_contracts 전체5그룹/실패0·SV-CONTRACT3023/실패0. 전3실행exit0·ERROR/SCRIPT ERROR0, collector Camera2D 경고1·ObjectDB경고0 |
+| Main 한계 | 실제 P/G/INV/STATS/PASSIVES/rawgrit/reward7reader를 소비했으나 save_globals owner 부재로 정확히HOLD. 장착17·rawgrit ready=true/raw0 관측. 부분값을 full save로 쓰거나 부트상수로 채우지 않음. 저장/복원/형식/Q/E·2_3 보호 |
+| 실행·제출 | 전역Godot count2이상이면30초대기·이 작업은순차1개. 신규격리EXODUSER-sv-collect-Isolated-20261020, 회귀각상수, 매종료override0byte. 정상훅·자기경로 stage·자기branch만push. [보고서](engine/orders/reports/sv-collect_REPORT.md), 원로그~/exoduser-wt/_out/sv-collect/, 최종branch/SHA/수치DONE.txt |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
