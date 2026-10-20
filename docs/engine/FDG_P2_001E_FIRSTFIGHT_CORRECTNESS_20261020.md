@@ -55,3 +55,20 @@ P2-001d 대조표의 결함 추정 3건을 원본 행 단위로 재조사. **①
   mats/hp 단정은 상대값이라 영향 없음).
 - 웹 재대조: 위 통합 표 — 같은 시드 재현은 불가(RNG 엔진 상이)하나 공식 레벨에서
   정수 일치 확인. 웹 실측은 기존 Playwright 방식(서버 무접촉·격리 프로필·저장 차단).
+
+## 추가 회귀 정합 (총괄 지적 — 초기화 계열 3종 기대값 정정)
+- 원본 새 게임 실제 순서(행 근거): 로컬 경로 63956(G 할당) → 63987(defaultItems 장착) →
+  64019 `applyStats()` → 64025 `initStage(G.stage)` → **31567 풀충전** — 즉 부팅 완료
+  시점의 hp/mp/shield/st는 '초기화 마지막 소스 쓰기'가 아니라 31567 충전값이 원본.
+  제품(refill)은 이 순서와 일치 → 테스트 기대값만 정정(약화 없음).
+- test_native_main_source_player_initialization: readback 루프에서 hp/mp/shield를
+  'cap(mhp/mmp/mshield) 일치 + 마지막 쓰기 ≤ cap'으로 — st 제외와 동일 논리,
+  소유자 readback(같은 ref·같은 값 경로) 검증은 유지. **117/5 → 117/2(기준선, movement 2건 선재)**.
+- test_native_main_source_starter_state: 고정 350 기준(hp==250/mp==160/st<200) →
+  mhp−100/mmp/mst 상대 기대(의도: 공격=ST만 소모·MP 발명 없음·피해 100 정확 차감).
+  **145/3 → 145/2(기준선 — base 7e892c7d4 실측으로 선재 2건 동일성 확인: _fireZones/hpR·resource_sink)**.
+- test_native_source_player_regeneration_phase(fractional): 고정 '−2' 기대는 피해 하한
+  `~~(max_hp×0.005)`(제품 기존 규칙)가 mhp≥600 롤에서 3이 되는 롤 의존 — 풀충전으로
+  hp가 mhp 근처가 되며 상시 노출됐다. 기대 피해를 같은 하한 규칙으로 계산 + 소수 보존
+  단정 추가. **88/1 → 88/0(기준선)**. lesson 30/0 유지.
+
