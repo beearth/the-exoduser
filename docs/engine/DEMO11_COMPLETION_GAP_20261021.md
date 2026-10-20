@@ -4,7 +4,7 @@
 
 | 항목 | 기준 |
 |---|---|
-| 사용자 새 방침 | **2026-10-21: 1-1 데모만 먼저. 맵 지형·배치·룩 이식은 폐기하고 새로 제작. 이 문서는 코드 작업만 제안** |
+| 사용자 새 방침 | **2026-10-21: 1-1 데모 코드 우선, 맵 지형은 새로 제작. main의 기존 맵 룩(광원·그림자·흔들림)은 유지·재사용**. 웹 맵 추가 이식·룩 재제작은 잔여 코드 작업에서 제외 |
 | 고정 소스 | fetch 후 origin/main `0105159934d0c2a8b167bd51518dca1e0fafe50a`. G=`game.html`, I=`index.html`, 아래 행은 이 commit의 1-based 행. R의 HTML이나 미병합 브랜치를 main으로 세지 않음 |
 | 원문 동일성 | G SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`; I `36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12` |
 | 선행 읽기 | WORK_BOARD 역할/진행/보존·공용 접점, FEATURE_INVENTORY 기준·1061행 taxonomy, 기존 SOURCE_TRACE의 원본/현재 Godot/후속 단위 절. 상세 수식·데이터는 아래 기존 추적을 참조하고 재전사하지 않음 |
@@ -68,11 +68,11 @@
 | D12 | Q/E 현재 허용 carrier 반사·자원 일부 | G38470·Q/E 원본 보호 | 완료(Main에 연결) | main:1187–1327·1692–1846, Q adapter/Player. “full_doparry:false/full_e_parity:false”; 아래 D13의 전체판정과 구분 |
 | D13 | Q 홀딩/블랙 자연입장·E 물리5종·방패충전·기폭/평화·보스 접촉 | G16911·38470·43415 | 통합 결정 대기 | main:1221·1689·1846에서 남은 경계 명시. 보호 owner 승인·같은 writer 재사용, E에 blackBean 패링 부여 금지 |
 | D14 | 시작4종 자연 발동·리젠 | G62185–62193·35912–36715 | 완료(Main에 연결) | `native_skill_slots.gd:146–159,212,303,345,511,826` giantSlam/spikeTrap/holyDome/iceOrb; main:766 이후 리젠. 고정키 4cast이지 일반 슬롯 dispatcher 아님 |
-| D15 | K/L 학습·강화·슬롯·추천·합체 UI/효과 | G3913·44161–48193,44608–44629 | 독립 모듈만(Main 미연결) | `skill_management_source/{catalog,slot_rules,learn,upgrade,refund,batch_recommend,fusion_rules,fuse_commit}`·cost는 존재. Main/HUD 호출0; 51후보/22합체의 실제 도달성+각 효과 필요 |
+| D15 | K/L 학습·강화·슬롯·추천·합체 UI/효과 | G3913·44161–48193,44608–44629 | 통합 결정 대기 | **[1-1 필수 연결] PC/Mac 집행 권한 사용자 결정 없음.** `skill_management_source/{catalog,slot_rules,learn,upgrade,refund,batch_recommend,fusion_rules,fuse_commit}`·cost는 존재. Main/HUD 호출0; 51후보/22합체의 실제 도달성+각 효과 필요 웹 전투 스킬 창은 PC 개편 중; Godot UI는 새 레이아웃 확정/인수에 의존(개편 branch·SHA 미확인). |
 | D16 | 처치 XP·악의·기본 레벨 증가·SP/AP·HP/ST/MP회복 | G43103–43174 | 완료(Main에 연결) | hurte→State:523–557·resource level heal·HUD. cap100/큐/연출/저장은 아래 D17·D30; 초월 구현을 요구하지 않음 |
-| D17 | demo XP cap100·스탯/AP 투자·예약 패시브·성장 연출 | G43137–43174·51219–51260 | 독립 모듈만(Main 미연결) | `native_meta_exp_gate_policy.gd:7,28–49`·point/passive_queue 존재. State는1000만검사·큐와levelSFX/save 미이식 표기. 정책 재작성 없이 실제 owner 연결 |
+| D17 | demo XP cap100·스탯/AP 투자·예약 패시브·성장 연출 | G43137–43174·51219–51260 | 통합 결정 대기 | **[1-1 필수 연결] PC/Mac 집행 권한 사용자 결정 없음.** `native_meta_exp_gate_policy.gd:7,28–49`·point/passive_queue 존재. State는1000만검사·큐와levelSFX/save 미이식 표기. 정책 재작성 없이 실제 owner 연결 |
 | D18 | 초기 허용 적·일반 hurtE·피격·일부 탄 | G31120·42110·43415 | 완료(Main에 연결) | World:3037–3057→factory:151–179, Player:1031–1045. 초기 정확 profile 일부만. 새 맵의 임의 동등 actor admission·모든 상태/속성 완료 아님 |
-| D19 | 소환굴29타입·초기 미지원·동적spawn 정상 전투 | G30969–31025·31608–31655·35648–35688 | 통합 결정 대기 | P2-008b(etype47 등) 진행중. factory exact record 가드와 World:2941의 type7 late 설치 API는 범용 생성기 아님. 기존 actor 통합은 대기, 범용 admission은 미착수. §4 id별 검증 후 재사용 |
+| D19 | 소환굴29타입·초기 미지원·동적spawn 정상 전투 | G30969–31025·31608–31655·35648–35688 | 통합 결정 대기 | **P2-008b `codex/p2-008b-ch1-enemies-pc-20261020` 최신 `b406e4bc`: order11·order9 등록, 미검수·미병합(PC 제공). 초기16 지원9→11은 후보이며 완료 아님.** factory exact record 가드와 World:2941의 type7 late 설치 API는 범용 생성기 아님. 기존 actor 통합은 대기, 범용 admission은 미착수. §4 id별 검증 후 재사용 |
 | D20 | 현재 etype0 소환굴·지역귀속/분모·정화 배너의 연결 경계 | G35648–35694·60697–60968 | 완료(Main에 연결) | main:267·269–275→`native_spawn_hole_system.gd`/`native_regions.gd:42,106,118,143`. 현재 소환굴 runtime etype0 제한 등 원문전체 동치와 새 맵 분리 작업은 남음 |
 | D21 | hell0 정예M29/M30·강제 문지기/호위 전투 | G31033–31167·31620–31636 | 독립 모듈만(Main 미연결) | `enemy_mod_m29.gd`·`native_m30_modifier.gd`·type3/type7조립 일부. 전체 natural actor pipeline·같은tick lock·Q/E actual서비스 연결 미완; EL 추적 재사용 |
 | D22 | 앵글러/화마귀/곰치 전투·필드탄·처치/기상 | G18628–18755·60969–61779 | 미착수 | FIELDBOSS 추적 존재, 해당 제품 전투 owner 없음. `_fbDone`와 보스 개방을 생략해 “완료” 처리 금지 |
@@ -82,18 +82,19 @@
 | D26 | 드랍 roll·보상 journal | G32002–32034·43103–43116 | 완료(Main에 연결) | hurte:691–760·kill_reward/drop_item_source·State drop bags. 바닥 표시/줍기는 아래 D27 |
 | D27 | 바닥 표시·거리/필터·줍기·INV반입·아이템 음 | G32002·41449·16398 | 통합 결정 대기 | WORK_BOARD P2-006a main병합 표기와달리 현재main native_world_drops·pickup제품파일/소비자미발견; hurte:734에floor_item_render_pickup unported. P2-006b 진행분 먼저 회수/확인 |
 | D28 | INV 가방·장비UI·장착/해제·재계산/비교·효과 | G16273·16293·16398·49470·49608–49755·50151 | 독립 모듈만(Main 미연결) | `native_inventory_contract.gd`·layout(TI00/01), item/table/affix/currentINV reader존재. 초기 장착과 일반 equip transaction/UI는 별개 |
-| D29 | 물약·QS·자동HP·장비 물약효과 | G27677–27684·28071–28084·28202–28267·35893–35910 | 독립 모듈만(Main 미연결) | QS-01 `potion_recovery_source/producer.gd`; addPotion은 hp→악의+1(State:508)만. 자동 CD/HP writer/수동slot 입력 자연 소비자 없음. MP/ST 물약 신규 발명 금지 |
-| D30 | demo 저장IO·load 실제 자원/INV/skills·자동저장/복귀 | G3603–3938·62127–62213·63674–63681; I3486–3520 | 독립 모듈만(Main 미연결) | save_adapter 9파일과 SV-CONTRACT 존재. Main은 fresh; `source_save_lifecycle_owner` 등 자연호출0. QA session 파일은 제품 save 아님 |
+| D29 | 물약·QS·자동HP·장비 물약효과 | G27677–27684·28071–28084·28202–28267·35893–35910 | 통합 결정 대기 | **[1-1 필수 연결] PC/Mac 집행 권한 사용자 결정 없음.** QS-01 `potion_recovery_source/producer.gd`; addPotion은 hp→악의+1(State:508)만. 자동 CD/HP writer/수동slot 입력 자연 소비자 없음. MP/ST 물약 신규 발명 금지 |
+| D30 | demo 저장IO·load 실제 자원/INV/skills·자동저장/복귀 | G3603–3938·62127–62213·63674–63681; I3486–3520 | 통합 결정 대기 | **[1-1 필수 연결] PC/Mac 집행 권한 사용자 결정 없음.** save_adapter 9파일과 SV-CONTRACT 존재. Main은 fresh; `source_save_lifecycle_owner` 등 자연호출0. QA session 파일은 제품 save 아님 |
 | D31 | 사망→쓰러짐/확률부활·사망UI·재시작/로비 | G43721–43865·63674–63681 | 통합 결정 대기 | Player:1031–1045는 hp0 terminal dead. REVIVE_SHIELD 파생수식이 자연 revival/UI는 아님. Lv100 이하 자연부활도 존재하므로 제외 불가 |
 | D32 | 클리어집계·랭크·stageClear→demoEnd·재진입 | G41921–42124·43896·63659–63681 | 미착수 | `world.get_exit_position:980`은 좌표reader일뿐 보스조건/종료state machine 아님. demoEnd/lobby제품 UI 없음 |
 | D33 | 기본 HUD·Lv/XP/SP/AP·자원·킬/악의·시작아이콘·pause | G HUD/updateQS/입력; G28267 이후 | 완료(Main에 연결) | hud:88–118·804–870·1089–1149, main 실제 binding. D34와 구분 |
 | D34 | 새 선택스킬/물약/보스HP·전투표시·인벤/성장창·입력설정 | G28267–28675·44050·32108 이후 | 통합 결정 대기 | P2-009a(native_skill_slots 등) 진행중, SETTINGS-S01 read view만. HUD 기존부분유지하고 새상태를 실제owner에서 읽어야함 |
 | D35 | 현재 공격·사망·시작4스킬 일부 사운드 | G12341–12904·각cast | 완료(Main에 연결) | main:1898–2177·2385–2436·skill_slots 실제 AudioStream 호출. 전체 사운드/OPT 믹스/청감완료 아님 |
-| D36 | 공통 SFX backend/mix·BGM/영상·음성·정지/복귀 | G12341–12904·62199·63209–63440; I2249–2320 | 독립 모듈만(Main 미연결) | `native_sound_backend.gd:2` 연결0 명시, sound_source/{bgm_catalog,bgm_selection,bgm_lifecycle,...} 존재. Main:474–477 BGM callback도미공급. SND01~08 재사용 |
+| D36 | 공통 SFX backend/mix·BGM/영상·음성·정지/복귀 | G12341–12904·62199·63209–63440; I2249–2320 | 통합 결정 대기 | **[1-1 필수 연결] PC/Mac 집행 권한 사용자 결정 없음.** `native_sound_backend.gd:2` 연결0 명시, sound_source/{bgm_catalog,bgm_selection,bgm_lifecycle,...} 존재. Main:474–477 BGM callback도미공급. SND01~08 재사용 |
 | D37 | 펫/아이리스·대사 반응·코드 상호작용 | G9390·9777–9810·31652·44050·60697–60968 | 통합 결정 대기 | main:240–243→native_pets는실제연결, P2-004b 대사있음. 인벤/보스/레슨/상호작용 trigger 전체는 각새owner통합후확인. 새 맵 배치 제작은제외 |
 | D38 | 기본 자동석궁·일반볼트/장비활 선택·피해/관통 | G17446–17460·28703–28765·35139–35629 | 독립 모듈만(Main 미연결) | W01 `port_modules/auto_bow_spec/producer.gd`는 존재하나 actual 발사/normalBow 피해 consumer 없음. 펫의석궁위치코드를 자동사격 완료로 세지 않음 |
 | D39 | 일반보스 신성력/실드·즉시부활·180tick 폴백·최종사망 | G31180–31185·42515–42649·34493–34535·41921–41927 | 미착수 | REVIVE_SHIELD §1.3 B01~B09 소유. si0도 revPts200과일반부활을거치므로 si3피날레 제외가 모든 보스부활 제외는 아님. BC phase packet과도 별도 |
-| D40 | 설정4탭·볼륨/언어/FPS/전체화면·저장복원 | G2705·44006·48635 이후; I 로비언어 인계 | 독립 모듈만(Main 미연결) | SETTINGS-S01 read view·현재 OPT35와 일부 sfx/프레임 소비자는 있으나 패널/저장·전체 live writer는 없음. 새 맵 룩 제작/원본 그래픽 이식은 제외하고 설정값-서비스 인터페이스만 조정 |
+| D40 | 설정4탭·볼륨/언어/FPS/전체화면·저장복원 | G2705·44006·48635 이후; I 로비언어 인계 | 독립 모듈만(Main 미연결) | SETTINGS-S01 read view·현재 OPT35와 일부 sfx/프레임 소비자는 있으나 패널/저장·전체 live writer는 없음. main 기존 룩 유지·재사용, 새 룩 제작/웹 그래픽 추가 이식은 제외하고 설정값-서비스 인터페이스만 조정 |
+| D41 | 공용 파일 연결 8건(저장·XP·자동물약·강화·스킬·BGM 등) | PC 총괄 제공 사실(2026-10-21) | 통합 결정 대기 | **[1-1 데모 필수]** 필요한 연결은 남아 있으나 PC 집행/Mac 권한 부여 중 사용자 결정 없음. 관련05/06·17~20·25·27·41 등의 후보 표기는 권한 부여가 아님. 8건과 단위ID의 정확한 1:1 대응표는 미확인 |
 
 참조: [LOBBY](FDG_SOURCE_TRACE_LOBBY_20261020.md) §1/3/4, [CH1_ENEMIES](FDG_SOURCE_TRACE_CH1_ENEMIES_20261020.md) §1/4/5, [ELITES](FDG_SOURCE_TRACE_ELITES_20261020.md) §1/4/5, [FIELDBOSS](FDG_SOURCE_TRACE_FIELDBOSS_20261020.md) §2/4/5, [BOSS_CH1](FDG_SOURCE_TRACE_BOSS_CH1_20261020.md) 순서안, [SKILLS](FDG_SOURCE_TRACE_SKILLS_20261020.md) §1/3/4, [WEAPONS](FDG_SOURCE_TRACE_WEAPONS_20261020.md) §1/6, [ITEMS](FDG_SOURCE_TRACE_ITEMS_20261020.md) §1/3/4, [INVENTORY](FDG_SOURCE_TRACE_INVENTORY_20261020.md) §2/4/5, [QUICKSLOT](FDG_SOURCE_TRACE_QUICKSLOT_20261020.md) §1/3/4, [SAVE](FDG_SOURCE_TRACE_SAVE_20261020.md) §1/3/4, [META](FDG_SOURCE_TRACE_META_20261020.md) §1/6/7, [REVIVE_SHIELD](FDG_SOURCE_TRACE_REVIVE_SHIELD_20261020.md) §1/3/4, [SETTINGS](FDG_SOURCE_TRACE_SETTINGS_20261020.md) §1/3/4, [SOUND](FDG_SOURCE_TRACE_SOUND_20261020.md) §1/3/4, [NPC_WORLD](FDG_SOURCE_TRACE_NPC_WORLD_20261020.md) §2–4. 원본 수식·데이터를 새로 베끼지 않고 기존 단위를 재사용한다.
 
@@ -119,7 +120,7 @@
 | DEMO11-14 | P0 | 분노 획득·100%·Space발동/종료·공존기술 우선순위 | Mac 보호 owner | 09/12/13·State/자원 소유 승인 | M |
 | DEMO11-15 | P1 | 레슨 step1..7의 실제 소비자 인계·allows 배선·skip/실패/복원, 각step 독립 인수 | Mac | 10~14·P2-001l; 기본/step0/8 재작성0 | L |
 | DEMO11-16 | P0 | 실제 SKILL_SLOTS/active/ULT dispatcher(고정4키 유지검수 포함), 비용·쿨 권위 단일화 | Mac; PC P2-009a 회수 | 01/02/09·기존4cast/HUD·SK-S04 slot_rules | M |
-| DEMO11-17 | P1 | K/L 학습/강화/환불·SP/악의 commit 및 UI(식은 기존 core), 한 transaction 실패prefix 인수 | Mac | 16/20·SK-S01~05 policies·State writer 승인 | M |
+| DEMO11-17 | P1 | K/L 학습/강화/환불·SP/악의 commit 및 UI(식은 기존 core), 한 transaction 실패prefix 인수 | Mac | 16/20·SK-S01~05 policies·State writer 권한 대기·PC 웹 스킬 창 새 레이아웃 확정/인수 의존 | M |
 | DEMO11-18 | P1 | 데모 합체 허용/흡수/성급·되돌리기 UI를 실제 owner에 연결, 효과는 §4 조건부 항목 | Mac | 01/17/06·fusion_rules/fuse_commit; 금지키 확인 | M |
 | DEMO11-19 | P1 | AP/스탯/패시브 투자·예약큐→applyStats·표시, XP tick과 같은 owner순서 | Mac | 20/06·META point/passive_queue·현 provider | M |
 | DEMO11-20 | P0 | 실제 addExp에 META-06 entry/loop cap100 연결·레벨 회복/표시/저장 인계: 99→100/대량XP/이미100 | Mac State 담당 | 01·현재 State:523·META-06(수식 새 구현0) | S |
@@ -149,7 +150,7 @@
 | DEMO11-44 | P1 | 펫·아이리스 생존/회복/대사 이벤트를 새 전투·클리어owner와 연결 | Mac 펫 담당 | 31/37/39·P2-004b/기존native_pets 재사용 | M |
 | DEMO11-45 | P2 | 상자/봉화/상인/제단 등 새 맵에 채택된 상호작용 코드 1종씩, 배치·룩 제외 | Mac 월드/경제 담당 | 01/03/21/27·NPC_WORLD; 원본 기본 경로/선택분기 구분 | L |
 | DEMO11-46 | P1 | Mac 배포 실행·설정/5슬롯 왕복·종료저장·재시작, PC 수동 Windows 실행 인수 | Mac 플랫폼; PC 수동QA | 04~09/38~42/50·P5-001a 템플릿/export 현황 재확인 | M |
-| DEMO11-47 | P0 최종 | 신규/이어하기→레슨/사망/재입장→Lv100→전투/줍기/장착/물약→1-1clear→종료→로비 E2E | Mac 총괄; PC 수동QA | 필수 활성단위 전체·조건부 §4 도달분; 시각/청취/성능 별도 증거 | M |
+| DEMO11-47 | P0 최종 | 신규/이어하기→레슨/사망/재입장→Lv100→전투/줍기/장착/물약→1-1clear→종료→로비 E2E | Mac 총괄; PC 수동QA | 필수 활성단위 전체·조건부 §4 도달분; 실창·청취·목표60fps/약16.7ms 예산·프레임시간p95/p99 별도 인수(아래 성능 기준) | M |
 | DEMO11-48 | P0 | 기본 자동석궁 한 owner: W01 spec→타깃/ST/발사→normalBow 실제 탄/피해·관통/반사/해제 | Mac 무기/탄 담당 | 03/09·기존 신규 INV/W01/projectile store·보호 hurtE;22는장비교체후회귀 | M |
 | DEMO11-49 | P0 | si0 일반보스 revPts/실드·즉시부활/180tick 폴백·최종사망 owner: 부활대기중clear 금지 | Mac 부활/보스 보호 owner | 34/36·REVIVE_SHIELD B01~B09·원문42515~42649/34493~34535 | L |
 | DEMO11-50 | P1 | 설정 UI→현재 OPT writer·볼륨/언어/FPS/전체화면/접근성·저장복원: 제어1개씩 S02~S10에 맞춰 인수 | Mac 설정/UI 담당; PC 수동장치QA | 06/09/40/41·SETTINGS-S01/S02~S10; 새 맵 gfx는서비스계약만,맵룩이식0 | L |
@@ -184,7 +185,7 @@ L 표시는 한 번에 무검수 대형 패치하라는 지시가 아니다. 예
 | DEMO11-68 | 18 | P0 / Mac | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
 | DEMO11-69 | 19 | P0 / Mac | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
 | DEMO11-70 | 20 | P0 / Mac(기존 P2-008a writer 재사용) | 03/30/43·기존 factory exact profile 재사용; 임의 공격 추가 금지 |
-| DEMO11-71 | 21 | P0 / Mac | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
+| DEMO11-71 | 21 | P0 / Mac(PC P2-008b order9·b406e4bc 후보 먼저 회수) | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
 | DEMO11-72 | 23 | P0 / Mac | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
 | DEMO11-73 | 24 | P0 / Mac | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
 | DEMO11-74 | 25 | P0 / Mac | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
@@ -192,7 +193,7 @@ L 표시는 한 번에 무검수 대형 패치하라는 지시가 아니다. 예
 | DEMO11-76 | 27 | P0 / Mac | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
 | DEMO11-77 | 28 | P0 / Mac | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
 | DEMO11-78 | 29 | P0 / Mac | 03/30/43·문지기 후처리·사망탄·gate 귀속 포함 |
-| DEMO11-79 | 47 | P0 / Mac(PC P2-008b etype47 진행분 먼저 회수) | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
+| DEMO11-79 | 47 | P0 / Mac(PC P2-008b order11·b406e4bc 후보 먼저 회수) | 03/30/43·main actor/원소 profile 있으면 재작성0; 미지원 상태/탄/피해만 인수 |
 
 ### 4.2 reqLv≤100 51후보 — 6종의 현재 자연 cast와 나머지 효과
 
@@ -277,6 +278,7 @@ G44161–44224 등록 literal을 read-only 평가해 reqLv>100 네 종과 나머
 | 정적 대조 | G/I demo 분기·등록 literal·Native Main/World/Player/State/HUD·소유자 호출·실제 파일목록 대조. ignored 여부가 아니라 Git tree를 기준으로 port_modules도 확인 |
 | read-only 검산 | SKILL_LIST55/명시reqLv>100 4/후보51, HELL_SPAWN0 31/opening29를 원본 literal로 계산. 숫자/원문 변경0. 도달성/실행 검증으로 포장0 |
 | 기존 오류/문서 차이 | WORK_BOARD와실파일 불일치 D24/D27, 실제 cap100 미연결 D01/D17, STEP_HALTS와낡은주석 D08/D09를 표로만 기록. 기존 설계·다른담당문서 수정0 |
+| 성능 인수(1-1 필수) | **목표 안정적 60fps(프레임 예산 약16.7ms)**. [웹 성능 목표](../12퍼포먼스·최적화/CLAUDE_CODE_인수인계_전체작업보고서_2026-08-10.md):17 및 [웹 실측 참고](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md):25–40의 1600×900 High100·생존50·20초 59.95fps를 참고(동일 Godot 성능 증거 아님). PC는 프레임당 수십ms 제보, 원인 미확정·이번 재측정0. PC/Mac 기기·해상도·룩/옵션·적/탄 수·전투/구간·측정시간을 고정해 실제 출력FPS와 프레임시간 평균/p95/p99/최대, CPU/GPU(가능 시)를 기록. 평균FPS만으로 스파이크 통과 판정 금지, 꼬리 지연 허용치는 실측 후 총괄 확정. 시뮬60Hz·headless·FPS상한은 실제60fps 인수 아님 |
 | 필수 후속 검수 | 활성 코드 단위마다 원본 행·정상/경계/실패·실제 Main owner readback·기존 회귀. 최종47은 처음부터 끝까지 1-1 완주, 죽음/이어하기/장비·물약·Lv100·보스·종료 저장복귀. 헤드리스는 실창/입력/소리/배포 인수 대체 불가 |
 | 이번 실행 | Godot/import/서버/게임/테스트 실행0. docs-sync 정상 훅 및 문서 범위·원문 hash·내부 ID·경로 정적 검사만. 테스트 PASS 숫자 인용/새 완료율0 |
 | Git/인계 | `codex/demo11-gap-20261021`, sparse worktree. 이 문서+CHANGELOG_SYNC 절만 commit, 경로지정 add·자기branch 일반push·원격SHA대조→`~/exoduser-wt/_out/demo11-gap/DONE.txt`→자기worktree제거. R branch/HEAD/index/tracked work 불변·main push0 |
