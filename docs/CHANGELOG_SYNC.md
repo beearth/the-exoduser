@@ -1,3 +1,11 @@
+## 2026-10-20 BC06 — 1장 보스 패턴 시작 command packet
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 구현·의존 | 신규 native_ch1_boss_pattern_start.gd·test_boss_ch1_bc06_start.gd·bc06_REPORT.md. BC05 e1850171 끝에서 분기, 공용/타 담당 코드·기존 테스트·원본·설계 docs·R 수정0 |
+| 원본 | 최신 main e556b617 game.html:37701–38233의 CH1 union24 start만. 전조 signed32/si2 1.4/개별 fallback·grab/chase 별도식·jump reader·상태 쓰기/큐/즉시 탄/UI·SFX 요청 순서와 보호 Set 읽기 보존. 실제 owner ack 없이 진행0 |
+| 검증·경계 | 최초14,077/2는 fixture 입력·float 비교 오류로 원로그 보존. 수정 후14,099/0·662건/이벤트6,607/RNG1,137 대조, BC01 681/0·BC02 5,257/0·BC03 31,976/0·BC04 21,899/0·BC05 18,424/0·contracts5/5·import 정상, 최종/회귀 ERROR0. 실전/Main 연결·피해/패링 성공 인수 아님. push·SHA대조·DONE 뒤 자기 sparse worktree 제거 |
+
 ## 2026-10-20 BC05 — 1장 보스 phase·시계 전이 packet
 
 | id / 적용 위치 | 현재 정확 계약 |
