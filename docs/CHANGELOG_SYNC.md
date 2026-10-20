@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
@@ -109,6 +110,17 @@
 | 의존 / HOLD | main에 CH2 catalog·bridge 없음, BC3-01은56353bdb BLOCKED·미구현. BC4-01은 CH2/CH3 provider 정식 인수 전 BLOCKED. BC02 색상·BC08 guard·실counter/HP0/Main 배선은 통합 요청만 |
 | 실행 / 제출 | Godot·import·게임·실창·테스트 실행0,정적 조사를 전투 PASS로 합산0. [CH4 추적·지시서](engine/FDG_SOURCE_TRACE_BOSS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-boss-ch4/. 자기 branch push·원격SHA·DONE 후 자기 worktree 제거 |
 >>>>>>> c50fb353
+=======
+## 2026-10-20 TRACE-MAPS-CH4 4장 7에리어 원본 추적·구현 지시서
+
+| 항목 | 추적·검수 근거 |
+|---|---|
+| 기준 / 범위 | 시작 main6d987cb8a에서 --no-checkout+sparse 분기, 마감249c26fa의 G/M 동일 및 CLI helper/작업판 변동 추가 대조. 신규 추적 문서1+이 절만. 코드·테스트·공용·설계/LOCK·에셋·저장·R 변경0, Godot/브라우저 실행0 |
+| 원문 | G16631–16713·M6–55·G30042–30694·31533–31669 등 si14~20 전수. 전부200²/T40·compose/handProps 부재·최종굴94/분모7350·4분면·별도 팔각arena128×108·20→21. raw/실효/실게임을 구분 |
+| 검산 / 의존 | 고정 Git 원문 AST/발췌 VM과 전체 재현94항목 차이0. CH4 등록7·pool31·원화byte·굴94 전수 부록. CH2-02는 main 존재, CH3-01 stage10은 원격 fcd7fcaa. 단일 exporter 0/1/4+observer 및 인수된10 보존 지시 |
+| 표현 / 후속 | 웹 맵1:1 복제가 아닌 PoE2·No Rest 목표의 깊이/생동감/부분 조명 확장 별도 절. 게임플레이/충돌·출구·스폰·지역은 불변. CH4-01 상세 지시서와18단위·공용 접점·docs 차이 표. 실제 배치/종주/시각/성능은 미확인 |
+| 자료 / 제출 | [4장 추적·지시서](engine/FDG_SOURCE_TRACE_MAPS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-maps-ch4/. 정상 훅·경로 지정 stage·자기 branch push/원격SHA→DONE→자기 WT 제거, main push/강제 push/reset0 |
+>>>>>>> d4c783bc
 
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
