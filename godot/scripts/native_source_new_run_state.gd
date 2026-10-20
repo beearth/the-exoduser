@@ -144,6 +144,9 @@ func initialize_new_run(player: Node2D, world: Node, source_resources: Node) -> 
 	_resources = source_resources
 	_source_packets = packets.duplicate(true)
 	_g = packets["g_file_init"]["values"].duplicate(true)
+	# P2-001e — 새 게임 G 할당(63956): G.mats=_loadSharedMats()||1000. 공유 악의
+	# 저장소(_loadSharedMats 48527, localStorage)는 미이식 → 0||1000 = 기본 1000 경로.
+	_g["mats"] = 1000
 	_stats = packets["stats_fresh_reset"]["values"].duplicate(true)
 	_passives = packets["passives_file_init"]["values"].duplicate(true)
 	_inventory = packets["inventory_fresh_reset"]["values"].duplicate(true)
@@ -367,6 +370,23 @@ func read_native_reward_bags() -> Dictionary:
 
 # addPotion(type,count) — 28250~28263. 'hp' → 즉시 악의 전환(G.mats), 그 외는 POT에
 # 없어 버림(원문 2026-10-10 폐지 주석). 반환 texts는 원문 addTxt 인자.
+# P2-001e — initStage 진입 자원 풀충전(31567): hp/st/mp는 자원 authority 경유,
+# 쉴드는 P dict 소유(P.shield=P.mshield). 31567의 나머지(s='idle'/iframes 360/kb 리셋/
+# 상태이상 클리어)는 신규 부팅 경로에선 초기값과 동일 — 스테이지 '전환' 소비자는 미이식 기록.
+func apply_native_stage_entry_refill(owner: Node) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_stage_entry_owner_not_current"}
+	var refill: Dictionary = _resources.commit_native_stage_entry_refill(owner)
+	if refill.get("accepted") != true:
+		return {"applied": false, "reason": str(refill.get("reason"))}
+	_p["hp"] = refill["hp"]
+	_p["st"] = refill["st"]
+	_p["mp"] = refill["mp"]
+	_p["shield"] = _p.get("mshield", 0)
+	return {"applied": true, "hp": _p["hp"], "st": _p["st"], "mp": _p["mp"],
+		"shield": _p["shield"], "mshield": _p.get("mshield", 0),
+		"unported": ["initStage_31567_나머지(상태리셋)·스테이지전환_재호출"]}
+
 func apply_native_add_potion(owner: Node, type: String, count: int) -> Dictionary:
 	if not _feel_owner_current(owner) or count < 1:
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}

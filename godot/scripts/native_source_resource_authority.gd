@@ -165,6 +165,20 @@ func commit_native_level_up_heal(owner: Node) -> Dictionary:
 	_committing = false
 	return {"accepted": true, "hp": _player.hp, "st": _player.stamina, "mp": _owned.mp}
 
+# P2-001e — initStage 진입 자원 풀충전(game.html:31567): P.hp=P.mhp; P.st=P.mst;
+# P.mp=P.mmp. hp/st=플레이어 노드, mp=이 authority 소유(_owned) — level_up_heal(155)과
+# 동일 소유 경로. 쉴드(P.shield=P.mshield)는 state의 P dict 소유라 state 쪽에서 처리.
+func commit_native_stage_entry_refill(owner: Node) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused 			or not is_instance_valid(owner) or owner != _player.get_parent() 			or owner.get("source_resources") != self or owner.get("world") != _world:
+		return {"accepted": false, "reason": "actual_stage_entry_refill_owner_not_ready"}
+	_committing = true
+	_player.hp = _player.max_hp
+	_player.stamina = _player.max_stamina
+	_owned.mp = float(_owned.mmp)
+	_last_source_write = {"field": "hp/st/mp", "phase": "native_stage_entry_refill_31567"}
+	_committing = false
+	return {"accepted": true, "hp": _player.hp, "st": _player.stamina, "mp": _owned.mp}
+
 func read_current_resource_parameters() -> Dictionary:
 	var error = _current_error()
 	if not error.is_empty():

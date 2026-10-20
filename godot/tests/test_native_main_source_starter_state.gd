@@ -109,7 +109,10 @@ func _test_public_actor_sync() -> Dictionary:
 	main.player.receive_damage(100, "magic")
 	var current: Dictionary = bundle["current_p"].call()
 	check(is_same(p, current) and current["st"] == main.player.stamina and current["hp"] == main.player.hp and current["s"] == main.player.state, "same owned P readthrough after real attack/damage")
-	check(current["st"] < 200.0 and current["hp"] == 250.0 and current["mp"] == 160.0, "actual native resource changes, no invented MP cost")
+	# P2-001e: 원본 새 게임 순서(applyStats 64019 → initStage 64025 → 31567 풀충전)로
+	# 부팅 완료 시 hp=mhp/mp=mmp/st=mst. 고정 350 기준(hp==250/mp==160)은 원본 순서와
+	# 달라 기대값만 정정 — 의도(공격=ST만 소모, MP 발명 없음, 피해 100 정확 차감)는 동일.
+	check(current["st"] < current["mst"] and current["hp"] == current["mhp"] - 100.0 and current["mp"] == current["mmp"], "actual native resource changes, no invented MP cost")
 	var frame: float = main.world.get_native_frame()
 	var deadline = Time.get_ticks_msec() + 4000
 	while main.world.get_native_frame() <= frame and Time.get_ticks_msec() < deadline: await process_frame

@@ -213,7 +213,14 @@ func _test_fractional_hp_damage() -> Dictionary:
 	var fractional: float = s.main.player.hp
 	check(fractional > 250.0 and fractional != floor(fractional), "real public damage then source fractional healing")
 	s.main.player.receive_damage(2, "magic")
-	check(is_equal_approx(s.main.player.hp, fractional - 2.0), "next public damage preserves fractional HP")
+	# P2-001e: 부팅이 원본 31567 풀충전이라 hp가 mhp(시작 장비 롤 ~580-623) 근처가 됐고,
+	# 피해 하한 ~~(max_hp×0.005)는 mhp>=600 롤에서 3이다 — 고정 '-2' 기대는 롤 의존.
+	# 의도(정수 피해가 소수 HP를 보존)를 유지하며 기대 피해를 같은 하한 규칙으로 계산.
+	var two_defence: float = s.main.player.energy_def
+	var two_reduction: float = minf(0.75, two_defence / (two_defence + 2500.0))
+	var two_capped: int = mini(2, int(floor(s.main.player.max_hp * 0.33)))
+	var expected_two: int = maxi(maxi(1, int(floor(s.main.player.max_hp * 0.005))), int(floor(two_capped * (1.0 - two_reduction))))
+	check(is_equal_approx(s.main.player.hp, fractional - float(expected_two)) 		and s.main.player.hp != floor(s.main.player.hp), "next public damage preserves fractional HP")
 	var after_damage: float = s.main.player.hp
 	await destroy_actual_main(s.main)
 	var capped = await make_bound_scene({"hpR": 1000.0})
