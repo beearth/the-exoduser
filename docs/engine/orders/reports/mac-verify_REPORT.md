@@ -213,7 +213,7 @@ ERROR: 4 resources still in use at exit (run with --verbose for details).
 | 제품·테스트 코드 | 변경 0. import 파생 캐시·override·로컬 로그는 커밋하지 않음 |
 | 로컬 실행 산출물 | 위 OUT의 원로그·실행 json·실행 기록기·PC 근거·manifest, 별도 Application Support 백업 |
 | 검증 source SHA | 위 1차/2차 두 전체 SHA |
-| 보고서 체크포인트 SHA | 제출 시 기록 |
+| 보고서 체크포인트 SHA | `52b4a0c5f6cd1c8ab817b5b48f8de70708ba1e06` (아래 결과·원문을 처음 보존한 소유 커밋; 최종 제출 tip은 DONE/submission으로 대조) |
 | 최종 원격 제출 SHA | `codex/mac-verify-20261020`의 최종 tip 및 OUT `DONE.txt`/`submission.json`에서 확인; 보고서 자신의 SHA를 본문에 자기 참조하지 않음 |
 
 스테이징은 위 두 문서의 경로를 지정한다. 자기 브랜치만 비강제 push하며 원격 ref SHA를 읽어 대조한 뒤 `DONE.txt`에 최종 브랜치·SHA·요약을 기록한다.
