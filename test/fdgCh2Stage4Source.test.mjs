@@ -153,9 +153,9 @@ test('CLI stage4 output cannot replace source, another stage, a foreign schema, 
  try {
   const output=path.join(tmp,'si4.json');assert.equal(cli(output).status,0);assert.deepEqual(JSON.parse(fs.readFileSync(output)),actual);
   const saved=fs.readFileSync(output);
-  for(const stage of ['-1','2','3','5','6','7','8','9','04','4x']){const p=cli(output,stage);assert.equal(p.status,1);assert.match(p.stderr,/UNSUPPORTED_STAGE/);assert.deepEqual(fs.readFileSync(output),saved);}
+  for(const stage of ['-1','2','3','10','6','7','8','9','04','4x']){const p=cli(output,stage);assert.equal(p.status,1);assert.match(p.stderr,/UNSUPPORTED_STAGE/);assert.deepEqual(fs.readFileSync(output),saved);}
   for(const seed of ['-1','NaN','Infinity','1.5','4294967296'])assert.equal(cli(output,'4',seed).status,1);
-  for(const stage of [-1,2,3,5,6,7,8,9,'4',4.1])assert.throws(()=>buildAreaSnapshot(root,{stage}),/UNSUPPORTED_STAGE/);
+  for(const stage of [-1,2,3,10,6,7,8,9,'4',4.1])assert.throws(()=>buildAreaSnapshot(root,{stage}),/UNSUPPORTED_STAGE/);
   for(const target of ['godot/data/map.json','godot/data/ch1_map_source/si0.json','godot/data/ch1_map_source/si1.json','godot/data/ch2_map_source/si5.json','game.html'])assert.equal(cli(path.join(root,target)).status,1);
   const bad=path.join(tmp,'bad.json');fs.writeFileSync(bad,JSON.stringify({...actual,stage:5}));const badBefore=fs.readFileSync(bad);assert.equal(cli(bad).status,1);assert.deepEqual(fs.readFileSync(bad),badBefore);
   fs.writeFileSync(bad,'{"schema":"exoduser.ch1-area-source.v1","stage":1}');assert.equal(cli(bad).status,1);

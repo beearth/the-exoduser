@@ -1,3 +1,16 @@
+## 2026-10-20 CH2-03 si5 원본 snapshot·순수 계약
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 단위 | fetch main26c050a99a711e793a6c2413395acda09b0c1614(선행맵단위 main포함), codex/ch2-03-20261020. 추적§4.3의 두작업 중 첫source만. si5 독립소비/Main/공용연결0 |
+| 공유 범위 | export_ch1_area_source30추가/18삭제(stage5·부재entry·STG·CLI). 기존stage4 Node 음성검사2곳의 미지원5를10으로 교체. 원 함수/0·1·4 전체깊은 비교 차이0, 기존artifact 수정0 |
+| 원문 / artifact | game SHA4d911cdd…/65692행 동일. si5.json111604byte/SHA18bdcdbb…·200²/T40. tile SHA5b40eb67…/counts38986·36·3·0·975, START4020/7420·gate metadata y5/exit y7·code3타일0 |
+| 부재 / 기술값 | compose5·hand/path/empty undefined를 null carrier+정확4경로mask로 보존. 빈hand/si4 path복사0. 원STG5:벌레굴2구역·점액 괴수·monLv200·hellFloor1·isHellBoss=false. catalog47/meta77·29PNG/47byte참조 |
+| 굴 / 계약 |11굴/900·NW250/NE300/SW250/SE100. seeded RNG12회/final3458361656, 최종timer순서1..7·9..12(draw8제거). stage5_contract 순수API·동일raw참조·full_stage_ready/runtime/visual=false. 최종objects/collision NOT_OBSERVED |
+| 신규 / 회귀 |Node10/0·Godot344/0. sourceNode29/0·CH2WorldNode7/0·asset6/0·pit6/0. Godot CH2-01 362/0·CH1 63/0·75/0·189/0·CH2World894/0·contracts5그룹/0·굴298/0·지역43/0. 맵Node28/9선재이름순서동일 |
+| 이력 / 보호 |최초Node8/2→9/1→10/0:부재extraction_head·후보간격 검사 가정 수정, 원문값은그대로. Godot ERROR0/Camera2D·ObjectDB8경고보존. 기존3147파일SHA동일, 공용6/P2-006a/P3/제품map/원본PNG0줄 |
+| 상세 / 제출 |[CH2-03 보고서](engine/orders/reports/ch2-03_REPORT.md), ~/exoduser-wt/_out/ch2-03/. source-only/si5화면미검수. Node경로인자·UTF-8/join출력·매Godot전2이상30초대기·상수격리/override finally0byte. 자기branch원격일치/DONE뒤 자기WT/cache제거, R불변 |
+
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
 ## 2026-10-20 NW-03 MAP_OBJS action의 독립 명령 계획
