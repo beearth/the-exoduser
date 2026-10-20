@@ -434,3 +434,8 @@ setter·`make_read_only()`·필드 보충·schema 정규화·item whitelist·rea
 - 원본 `game.html/index.html` 및 지정 설계 5파일의 hash·행 수는 `~/exoduser-wt/_out/trace-inventory/baseline.json`, INV 관련 463개 직접 검색 행의 색인은 `web-inventory-reference-index.txt`에 보존했다. 검색 색인만으로 동작 인수를 주장하지 않으며 실제 분기·legacy 도달성은 본문에 따로 추적했다.
 - Godot·웹 실행·테스트 재실행·UI 조작·실제 저장소 접근은 하지 않았다. 나열한 테스트는 기존 검사 정의, TI-* 테스트는 향후 아이디어다. 실플레이 인수·전체 이식 완료·진행률·ETA는 기재하지 않는다.
 - 최종 자기 브랜치 커밋 SHA·원격 ref 대조·R 보존 확인 및 한 줄 요약은 `~/exoduser-wt/_out/trace-inventory/DONE.txt`에 기록한다. main push·병합·force·reset·타 worktree 변경은 수행하지 않는다.
+
+
+### 2026-10-21 DEMO11-22r — TI-04 runtime 선행 조건 해소
+
+과거 위 runtime refresh 미인수/HOLD는 당시 main 기준의 기록이다. main `45be76e4`에서 PC `a28117c1` 및 `PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md` 인수를 확인했다. 일반17슬롯 transaction은 기존 TI-00/01 reader/grid를 재사용하고 PC `equipment_refresh` 호출로만 실제 스탯을 갱신한다. 상세 검증·남은 inventory UI/SFX/lesson/저장 접점은 [DEMO11-22r 보고서](orders/reports/demo11-22r_REPORT.md)를 따른다. 전투 핵심/초기화 guard/저장 형식은 변경하지 않는다.

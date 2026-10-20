@@ -1486,7 +1486,8 @@ func apply_native_forge_enhance(owner: Node, item: Dictionary) -> Dictionary:
 
 func apply_native_forge_transfer_prefix(owner: Node, old: Dictionary, item: Dictionary) -> Dictionary:
 	# This entry is for the actual equip owner, not an independent forge transfer button.
-	if _forge_committing or not _forge_owner_current(owner) or not owner.source_forge.owns_transfer_handoff(old,item):
+	if _forge_committing or not _forge_owner_current(owner) or not _equipment_owner_current(owner) \
+			or not _equipment_committing or not owner.source_equipment.owns_transfer_handoff(old,item):
 		return {"status":"NOT_READY","reason":"actual_equip_continuation_not_bound"}
 	_forge_committing = true
 	var result: Dictionary = FORGE_TRANSACTION.transfer_prefix(old,item,_g)
@@ -1507,3 +1508,21 @@ func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
 	_forge_committing = false
 	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
 		"unported":["dbSaveNow, source flash/particle feedback"]}
+
+# DEMO11-22r: one actual INV/wallet owner, synchronous UI event transaction.
+var _equipment_committing := false
+func _equipment_owner_current(owner: Node) -> bool:
+	return _current_error().is_empty() and is_instance_valid(owner) and not owner.is_queued_for_deletion() \
+		and owner == _player.get_parent() and owner.get("source_state") == self and owner.get("world") == _world \
+		and owner.get_script() != null and owner.get_script().resource_path == "res://scripts/main.gd" \
+		and is_instance_valid(owner.get("source_equipment")) \
+		and owner.source_equipment.get_script().resource_path == "res://scripts/native_inventory_equipment.gd" \
+		and owner.source_equipment.is_bound_to(owner,self)
+func is_native_equipment_transaction_active() -> bool: return _equipment_committing
+func apply_native_equipment_transaction(owner: Node, operation: String, item: Dictionary, slot: String) -> Dictionary:
+	if _equipment_committing or not _equipment_owner_current(owner):
+		return {"applied":false,"reason":"equipment_owner_or_reentry_rejected"}
+	_equipment_committing = true
+	var result: Dictionary = owner.source_equipment.execute(operation,item,slot,_inventory,_g,_native_crystal_bag)
+	_equipment_committing = false
+	return result
