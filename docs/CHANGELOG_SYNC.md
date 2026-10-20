@@ -1,3 +1,9 @@
+## 2026-10-21 MAP11-10 — G3/G4 root shoulder·수피/피부 접합
+
+- main0138c5bb + MAP11-09 283c2077 정상merge(FF). 독립 field_seam_preview에서 기존 RGBA 바닥3회전/3스케일·필터·월드 origin 연속 UV, root shoulder60개/오염·부드러운 접지 그림자, 어두운 분기 alpha 균열30조각. 새이미지/AI생성0·원본PNG0줄.
+- 승인 geometry/provider·Main/State/World/제품카메라·전투/저장·기존G1/G2소스0줄. 8시점/1x와 실제 source shader split·master crop/bleed tile 재조립 표본, 600tick 벤치1회는 [G3/G4 보고서](4.1맵디자인+설정/MAP11_SURFACE_SEAM_G3G4_20261021.md). 제품 World streamer 설치/전체 맵 bake 완료 아님.
+- 초기 신규14/0 이후 접지/마스크 시각 수정, 최종14/0·actual walk49/0, source split/baked bleed tile 표본 오차0·최종final-04 재검증ERROR0/WARNING0. 벤치1회600tick/9.999748s/평균1399.44fps/p95≤0.92ms·p99≤1.51ms이며 마지막 균열 소스/마스크/크기 교체 전 표본(재측정0); 상세 범위는 보고서. 밝은 입자/점무늬 균열 추출 proof는 폐기·로그보존. 기존 고해상도 균열 alpha/음영만 재사용, G3/G4 RETOUCH·총괄 눈 검수 대기. 격리 실경로/pgrep·30초/override0byte·자기branch push/원격SHA/DONE뒤자기WT제거.
+
 ## 2026-10-21 MAP11-09 — G2 외곽 BACK/MID/FRONT 생체 숲 조립
 
 - G1 구조 PASS(임시 승인)를 인수. main0138c5bb + MAP11-11 263498f6 merge(FF), field_outer_preview 독립 씬에서 LEFT/RIGHT/TOP/START 외곽을 세 겹으로 조립. 기존 보스룸 rotforest RGBA8종 공유, 152instance(BACK48/MID59/FRONT45), 시작/보스문 시야 개방·밑동 y정렬·캐시 rect 가림/복구·map-look 방사 그림자 재사용. 아트 생성0.
