@@ -12,6 +12,10 @@
 
 > **2026-10-20 사용자 지시 "대기 중인 검수 건은 PC에서 병합해. 병합본 테스트 재실행 후 main에 넣어."** → PC Claude가 11+1건 병합(3f73456fa~2826b6738). 최종 main 기본 회귀 18종 중 17 PASS, p1002g 1실패(P2-008a-FIX 대기).
 
+## DEMO11-22r · 2026-10-21 Mac 단위
+
+- 담당: 이 Mac Codex 창. 최종 main `0138c5bb` 정상merge `da098350`, PC runtime `a28117c1`/드랍 종료수정`72e602d1` 포함. 실제 INV17슬롯 장착/해제·PC equipment refresh·rollback·DEMO11-27 이전 continuation 기능 검증 완료: 신규442/0·직접회귀2614/0·ERROR/누수/잔류0. 전투 핵심/피해식/저장/UI owner 변경 없음. 제출 근거는 [단위 보고서](reports/demo11-22r_REPORT.md)와 외부 `_out/demo11-22r/`.
+
 ## 역할 (2026-10-20 사용자 지시 기준)
 | 역할 | 누구 | 하는 일 |
 |---|---|---|

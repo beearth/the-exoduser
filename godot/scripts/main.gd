@@ -3269,3 +3269,32 @@ func request_native_music_scene(scene: String,segment: String="") -> Dictionary:
 func bind_native_boss_music(actor: Node) -> Dictionary:
 	if not is_instance_valid(_music_lifecycle):return {"ready":false,"reason":"music_owner_not_ready"}
 	return _music_lifecycle.bind_boss_actor(actor)
+
+# DEMO11-22r: event-only equipment transaction. PC refresh owns all actor writes.
+const InventoryEquipmentScript = preload("res://scripts/native_inventory_equipment.gd")
+var source_equipment: RefCounted
+func request_native_equip_item(item: Dictionary, target: String = "") -> Dictionary:
+	return _request_native_equipment("equip", item, target)
+func request_native_unequip_item(slot: String) -> Dictionary:
+	return _request_native_equipment("unequip", {}, slot)
+func _request_native_equipment(operation: String, item: Dictionary, slot: String) -> Dictionary:
+	if not _native_main_service_live(): return {"applied":false,"reason":"equipment_Main_not_live"}
+	if not is_instance_valid(source_equipment):
+		source_equipment = InventoryEquipmentScript.new()
+		if not source_equipment.configure(self, source_state):
+			source_equipment = null
+			return {"applied":false,"reason":"equipment_binding_failed"}
+	return source_state.apply_native_equipment_transaction(self, operation, item, slot)
+func capture_native_equipment_caches(caller: RefCounted) -> Dictionary:
+	if caller != source_equipment or not source_state.is_native_equipment_transaction_active() \
+			or not is_instance_valid(source_providers) or not source_providers.is_native_source_providers_ready(): return {}
+	var bundle: Dictionary = source_providers.get_provider_bundle()
+	return {"affix":bundle.affix.capture_affix_cache_token(),
+		"reference":bundle.reference.capture_eq_stat_cache_token(),"legendary":_source_l_eq_cache}
+func restore_native_equipment_caches(caller: RefCounted, token: Dictionary) -> bool:
+	if caller != source_equipment or not source_state.is_native_equipment_transaction_active(): return false
+	var bundle: Dictionary = source_providers.get_provider_bundle()
+	bundle.affix.restore_affix_cache_token(token.affix)
+	bundle.reference.restore_eq_stat_cache_token(token.reference)
+	_source_l_eq_cache = token.legendary
+	return true
