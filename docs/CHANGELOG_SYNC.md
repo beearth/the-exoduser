@@ -55431,3 +55431,11 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`을 자기 branch에 ff merge 후 신규 unit112/0·actualMain12/0·contracts5군/실패0 재확인. 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0, 수치 출력 합660/0. G48/지역23·60·53·32/합168·시작HUD0/32 확인. 실행별 근거는 아래 보고서를 따른다.
 - 최초 unit1단정 실패·보완, 최초 커밋의 필수 변경로그 누락 거부·기존 초기화 회귀의 격리guard 거부는 과거 실행으로 보존한다. 이 append는 필수 문서 동기화 정상 경로이며 훅 우회0.
 - [원본 행·API·실행별 결과·기준 SHA·남은 범위](engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
+## 2026-10-21 i18n-title-fix — 영문 로비 타이틀
+
+| 항목 | 동기화 내용 |
+|---|---|
+| 공식 영문명 | Steam 상점명과 동일한 `EXODUSER: HELL LORD` |
+| 런타임 | `index.html` 문서 제목과 영어 로비 `지옥의 길` 번역을 `HELL: EXODUSER`에서 정정. 다른 언어의 고유 UI 번역·게임플레이 문자열은 변경하지 않음 |
+| 번역 목록 | `docs/16번역·로컬라이제이션/번역대상_전체목록.md` No.1621/1931을 같은 제목으로 동기화하며 CRLF 유지 |
+
