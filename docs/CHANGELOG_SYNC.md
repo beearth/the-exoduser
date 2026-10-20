@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## 2026-10-20 LOOK-001 룩 4안 비교 자료 준비
 
 | id / 적용 위치 | 현재 정확 계약 |
@@ -175,6 +176,18 @@
 | 검증 / 한계 | Node로 inline13개 문법·원본 MAP루프22입력 관측22/22, native 구현/회귀 PASS 아님. 독립 독자 검토 반영. Godot·GUI·사용자 저장·서버 실행0. 원로그 `~/exoduser-wt/_out/trace-npc-world/` |
 | 상세 / 정리 | [NPC·월드 추적·1번 지시서](FDG_SOURCE_TRACE_NPC_WORLD_20261020.md). 자기 브랜치 push·원격SHA 확인·DONE 후 자기 sparse worktree만 제거, 브랜치·원로그 보존 |
 >>>>>>> 5e8cbd23
+=======
+## 2026-10-20 TRACE-MAPS-CH2 2장 6에리어 원본 추적·이식 설계
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 범위 | origin/main e556b617190c325ca39f5add04357f5dea5ca87e, codex/trace-maps-ch2-20261020. 새 추적 문서1개와 이 절만 변경. 제품·원본·테스트·에셋 수정0 |
+| 선행 | main에 CH1 추적 문서가 없어 원격 trace-maps-ch1 668cfded와 CH1-01 677b86fa·CH1-02 d0f7eaf4·CH1-03 aada9b28 결과/도구를 읽음. CH1-04 원격 미게시로 소비자 결과는 미확인 |
+| 원본 | game.html SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4. si4~9 모두200²/T40. si4만 path22/w30·hand105, si5~9는 기본 필드. 굴11/11/14/14/12/11·분모900/900/1100/1100/900/850 및4분면을 원문 발췌 VM으로 관측 |
+| 전수 추적 | raw배치105·소환굴73·CH2등록47 전수표, docs 차이표, Godot 의존/결손, 에리어별 순서안·CH2-01 구현 지시서, 공용 접점. CH2 원화29개는 source/Godot 대응 Git blob 전부 동일. 실제 배치/collider·시각 완료와 구분 |
+| 검산 / 한계 | source VM6맵 재실행·길이/합계·배치 tuple·등록 blob 총176검산/0차이. Godot·브라우저·실플레이0. CH1 공통 알고리즘/전투·저장 권위 재구현0. 최신 전략§8에 따라 표현 제작과 게임플레이 원본 보존을 분리 |
+| 제출 | [2장 추적 문서](engine/FDG_SOURCE_TRACE_MAPS_CH2_20261020.md), 원로그 ~/exoduser-wt/_out/trace-maps-ch2/. 자기 branch push·원격 SHA 대조·DONE 후 자기 sparse worktree 제거, R 불변 |
+>>>>>>> 18070adf
 
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
