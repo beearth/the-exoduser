@@ -1,5 +1,26 @@
 # snd-01 — 순수 사운드 분류·플랫폼 한도 정책
 
+## 2026-10-20 최신 main merge 재확인 — 완료
+
+**SND-01 완료. 아래 최초 BLOCKED 기록은 당시 이력이다.** 사용자 지정 재확인 기준에 따라 최신 main을 정상 merge하고 지옥강타 종료 ERROR 소멸을 확인했다. 기존 제품·테스트의 자체 수정은 0줄이다.
+
+| 항목 | SHA / 실측 근거 |
+|---|---|
+| 최초 SND-01 / 이전 base | `ea1dcd8addf28cef593901388effccde45c2c96b` / `9528ea35b429498fcf42fe3723008219ed0ed7e1` |
+| 최신 fetch main | `284d7faf49295b2f5061937a47ce96038032ed3c`, 요청 최소 `2826b6738900dd479cb187bd58116de0d673422b` 및 QA-002 포함 |
+| 정상 merge / 실행 HEAD | merge `477a387a09749d090c464358a74c0e34325e0b93`(parents ea1dcd8a, 284d7faf). CHANGELOG의 양쪽 추가절 통합을 정정한 `2c0bc0cba66c6095e91eec5e7a2d416964a74c5e`에서 실행. force·rebase 없음 |
+| 선재 결함 1 | **test_p1002g_kislash_hurte 검기 halt(P2-008a)**. 기존 220/1, halt6. P2-008a main merge `9528ea35b429498fcf42fe3723008219ed0ed7e1`, 제출 `46409ee4eabcd4760f0c420d6d6a15beaf9e3b28`. 최신 main WORK_BOARD의 P2-008a-FIX 행이 etype20 포이즈 경로 halt와 p1002g 1실패를 같은 선재 결함으로 기록. 이번 검기 재실행·수정 없음 |
+| 선재 결함 2 | **test_p2005b 종료 ERROR(QA-002 이전 base)**. 원 실행 ea1dcd8a/base9528ea35의 12/0·종료 resources ERROR1. QA-002 제출 `3edabeb5edff25e2ff0682b7a70254334e87abb4`, main merge `073c7a6a` 포함 뒤 아래 종료 ERROR0 확인. 사용자 기준에 따라 SND-01 회귀가 아닌 선재 결함으로 확정 |
+| 첫 재확인 giant-slam-01 | **INVALID / 부팅 실패**. main에서 추가된 검기 텍스처의 WT import 캐시 부재. 1/1·exit1 로그 보존. 종료 결함 판정 근거로 쓰지 않음. WT 엔진 캐시 준비 후 다시 실행했으며 원본 에셋 수정·생성·복사 없음 |
+| 캐시 준비 import-after-merge | exit0 / stderr 비어 있음. main에서 온 기존 에셋의 WT 엔진 캐시만 준비 |
+| 유효 재확인 giant-slam-02 | **12단정 / 0실패 / skipped0 / exit0 / stderr ERROR0 / ObjectDB 경고0**. Camera2D WARNING1 보존. seed20261020, group9+3, lv1 CD1800·damage280·radius500, 원 기존 단정 그대로 |
+| 과부하·격리 | 실행 직전 count2일 때 30초 간격 9회 대기 후 count1에서 시작. `EXODUSER-P2005B-Isolated-20261020` override 사용 후 0바이트 확인. 대기 시각/count·argv·PID·HEAD·로그 SHA는 meta에 보존 |
+| 원로그 | `~/exoduser-wt/_out/snd-01/recheck-20261020/`의 merge·정정 로그, giant-slam-01/02 및 import-after-merge `.out/.err/.engine.log/.meta.json`. 실행기 `~/exoduser-wt/_out/snd-02/run_godot.py` |
+
+main과 비교한 제품 스크립트·game.html·에셋 diff는 0이다. merge 중 CHANGELOG 충돌 표식이 로컬 merge 커밋에 들어간 실수는 후속 2c0bc0cb에서 양쪽 절을 보존해 정정했고, push 전 표식 부재와 정상 훅을 확인했다. 재검증 결과는 실청취·실게임·PC 인수를 의미하지 않는다. 후속 SND-02는 별도 브랜치에서 진행한다.
+
+## 최초 검증 이력
+
 ## 범위와 기준
 
 **구현·순수 검증 완료 / 기존 회귀 인수 BLOCKED.** SND-01의 독립 계산 모듈을 구현했다. 기존 재생기·전투음·게임 owner에는 연결하지 않았다. **실청취·실게임 사운드 인수는 미확인**이다. 회귀 실행 결과는 아래 원로그와 함께 별도로 기록한다.

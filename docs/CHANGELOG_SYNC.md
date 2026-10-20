@@ -1,3 +1,12 @@
+## 2026-10-20 SND-01 최신 main merge·선재 결함 재확인
+
+| id / 항목 | 현재 계약 |
+|---|---|
+| 기준 | SND-01 ea1dcd8a에 최신 main284d7faf(QA-002 073c7a6a 포함)을 정상 merge477a387a. 실행HEAD2c0bc0cb. 제품·기존 테스트 자체 변경0, force·rebase 없음 |
+| 재확인 | p2005b 12단정/0실패/skipped0/exit0/stderr ERROR0/ObjectDB0. 기존 Camera2D WARNING1. 최초 캐시 부재 부팅 실패는 INVALID로 보존 후 WT 캐시 준비 |
+| 선재 결함 | test_p1002g_kislash_hurte 검기 halt(P2-008a, merge9528ea35/제출46409ee4e), test_p2005b 종료 ERROR(QA-002 이전 base9528ea35/원 SND-01 ea1dcd8a). QA-002 반영 뒤 종료 ERROR 소멸로 사용자 기준의 SND-01 완료. [상세 SHA·원로그](engine/orders/reports/snd-01_REPORT.md) |
+| 격리·과부하 | p2005b USERDIR 그대로 override 매번 사용 후0byte. 실행 전 pgrep count2 이상이면30초 대기. count2 대기9회→count1에서 실행. 원본 음원·공용6파일 자체 변경0 |
+
 ## 2026-10-20 SND-01 순수 사운드 분류·플랫폼 한도 정책
 
 | id / 항목 | 현재 계약 |
