@@ -1,3 +1,14 @@
+## 2026-10-20 NW-02 개인 포탈 순수 상태전이 proposal
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | 최신main e556b617, 선행 NW-01 미병합으로 d9865e4c 끝에서 분기. 신규 producer/test/oracle·자기UID2·보고서만. 공용6·다른 담당·기존 제품/테스트·저장·원본·R 파일 변경0 |
+| 계약 | G18309–18322 설치/사용,30160–30161·31534–31535 reset prefix. strict200/88·첫 배열순·set/append·좌표/속도/cam/FX 순서. 명령만 반환, Main·State·실제 이동/입력 연결0 |
+| 원본 / 신규 검수 | 최신main game 전체/발췌hash 고정, 실제 원문VM68상황+native 계약107상황. 최종1851/0(exit0). 경계2종/역순/vx/zone guard 결함주입에서 각각12/9/15/48/11실패 검출 |
+| 회귀 / 실패 기록 | NW01 2304/0·contracts5그룹/0·regions43/0. 최종 ERROR/ObjectDB/resource0, region 기존 Camera2D WARNING1. 최초 `_set` 상속 충돌 컴파일 실패 원문 보존 후 함수명 수정, 가짜 PASS/검사 약화0 |
+| 격리 / 제한 | Godot12회 매run pgrep count1, 지정/기존상수 userdir·override finally0byte. AppSupport 기존68파일 백업·변경0. 실제 제품 포탈/GUI/PC 동등성 미검증, NW03 미착수 |
+| 상세 / 제출 | [NW-02 보고서](engine/orders/reports/nw-02_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-02/`. 정상 훅·자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |
+
 ## 2026-10-20 NW-01 MAP_OBJS 첫 상호작용 대상 읽기 질의
 
 | 항목 | 구현·검수 근거 |
