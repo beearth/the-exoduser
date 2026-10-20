@@ -1,5 +1,7 @@
 # P2-005B — 시작 스킬 발동 1차: 지옥강타 1(Space) (2026-10-20)
 
+> 2026-10-21 DEMO11-16 현재 연결 갱신: 현재 giantSlam 비용은 50 고정이 아니라 원문 stCost의 레벨 .45·현재 passive/affix 할인·mst90% 캡이다. 쿨은 기존 max(60,1800−12(lv−1))에 현재 _cdRed를 적용한다. 비용은 State→ResourceAuthority의 단일 검증 후 commit이며 피해 본문과 hurtE 경로는 그대로다. 아래는 당시 인수 이력이다. [현재 계약](DEMO11_SKILL_DISPATCH_20261021.md).
+
 착수 전 docs/2_1 스킬관리+합체시스템.md 숙지. 범위가 커 우선순위대로 **giantSlam(Space)
 완전 이식**까지 — spikeTrap(1)·holyDome(F)·iceOrb(Ctrl)은 다음 차수(해당 키는 기존대로
 무반응 유지). Q/E·2_3 규칙 미접촉, 레슨 파일 미접촉.

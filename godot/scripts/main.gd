@@ -15,6 +15,7 @@ const SourceProvidersScript = preload("res://scripts/native_source_player_provid
 const SourceInitializationScript = preload("res://scripts/native_source_player_initialization.gd")
 const SourceInitializationServicesScript = preload("res://scripts/native_source_player_initialization_services.gd")
 const SourceLessonScript = preload("res://port_modules/parry_lesson_source/producer.gd")
+const AutoPotionScript = preload("res://scripts/native_potion_recovery.gd") # DEMO11-25
 const RegenerationPhaseScript = preload("res://scripts/native_source_player_regeneration_phase.gd") # P2-005d
 const NativeSpriteInspector = preload("res://port_modules/native_sprite_resource_readiness/producer.gd")
 const NativePlayerSpriteExpectation = preload("res://scripts/native_player_sprite_expectation.gd")
@@ -42,6 +43,8 @@ const NATIVE_VERSION_CONFIG := {"schema": "fdg.native-content-version.v1", "cont
 		"latest_full_game": false},
 	"steam": {"version": null, "version_status": "NOT_VERIFIED", "parity": "NOT_VERIFIED", "accessible": false}}
 
+signal native_sound_event(kind: String, data: Dictionary) # DEMO11-40 audio-only observation
+var _combat_sound_consumer: Node
 signal source_document_visibility_changed
 
 # Platform samples only: never source dt/sp/acc or a gameplay update witness.
@@ -81,6 +84,7 @@ var _source_l_eq_cache: Variant = null
 var _source_l_eq_write_context: Dictionary = {}
 var source_initialization_result: Dictionary = {}
 var source_lesson: RefCounted
+var source_potion: RefCounted = AutoPotionScript.new() # DEMO11-25, Main lifetime
 var source_regeneration: RefCounted # P2-005d — 원본 자연 회복 단계(배선 후 Player 레거시 0.28 비활성)
 var _source_lesson_file_init_attempted: bool = false
 var _source_lesson_file_init_publish_calls: int = 0
@@ -106,6 +110,7 @@ var _native_source_object_registration: Dictionary = {}
 
 # Policy is selected only by the production boot, never URL/test metadata.
 var _native_demo11_policy: Dictionary = {}
+var native_demo_boss_actor: Node2D
 
 func read_native_demo_policy() -> Dictionary:
 	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
@@ -114,6 +119,21 @@ func evaluate_native_demo_exp_gate(state: Dictionary, today: String, in_loop: bo
 	if _native_demo11_policy.get("status") != "READY":
 		return {"allowed": false, "reason": "boot_not_started", "state": state.duplicate(true)}
 	return Demo11Authority.exp_gate(state, today, in_loop)
+
+func read_native_demo_boss() -> Dictionary:
+	return native_demo_boss_actor.snapshot() if is_instance_valid(native_demo_boss_actor) else {"status":"NOT_READY","reason":"actor_not_installed"}
+
+func spawn_native_demo_boss(request: Dictionary) -> Dictionary:
+	if not is_instance_valid(native_demo_boss_actor) or request.get("si") != read_native_demo_policy().get("stage"):
+		return {"status":"REJECTED","reason":"demo_actor_or_stage_unavailable"}
+	var current: Variant = source_state.read_current_p() if is_instance_valid(source_state) else null
+	if not current is Dictionary: return {"status":"NOT_READY","reason":"current_player_unavailable"}
+	var inputs := request.duplicate(true)
+	inputs["player_level"] = current.lv
+	return native_demo_boss_actor.spawn(inputs)
+
+func bind_native_demo_boss_owner(command: String, handler: Callable) -> bool:
+	return is_instance_valid(native_demo_boss_actor) and native_demo_boss_actor.bind_owner(command,handler)
 
 func _ready() -> void:
 	_native_demo11_policy = Demo11Authority.boot_manifest("demo")
@@ -305,6 +325,7 @@ func _ready() -> void:
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
+	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -1028,6 +1049,7 @@ func _update_native_screen_flash() -> void:
 		_native_flash_rect.color = Color(1, 1, 1, 0)
 
 func _physics_process(_delta: float) -> void:
+	source_potion.advance_native.call_deferred(self, _delta * 60.0, Engine.get_physics_frames()) # DEMO11-25: late 60Hz phase, after child regen
 	if not get_tree().paused and is_instance_valid(player) and is_instance_valid(camera):
 		player.z_index = clampi(int(player.position.y / 4.0), -4096, 4095)
 		camera.position = player.position
@@ -1653,6 +1675,8 @@ func _restart() -> void:
 	get_tree().reload_current_scene()
 
 func _record_event(kind: String, data: Dictionary) -> void:
+	if kind in ["native_attack_audio_queued","native_skill_sample_requested"]:
+		native_sound_event.emit(kind,data.duplicate(true))
 	if kind=="native_input_unavailable" and is_instance_valid(hud):
 		hud.show_native_input_status("Q 보호막: 실제 실행 소유자 연결 대기" if data.get("action")=="parry" else ("E 처내기: 동작 연결 대기" if data.get("action")=="shield_bash" else "Space: 원본 분노 스킬 슬롯 연결 대기"))
 	if is_instance_valid(capture):
@@ -2021,6 +2045,10 @@ func _install_native_attack_audio() -> void:
 	AudioServer.set_bus_name(source,_attack_audio_bus)
 	AudioServer.set_bus_send(source,_attack_audio_output)
 	_attack_audio_reason=""
+	_combat_sound_consumer=preload("res://scripts/native_combat_sound_consumer.gd").new()
+	add_child(_combat_sound_consumer)
+	if not _combat_sound_consumer.configure(self,_attack_audio_streams):
+		_attack_audio_reason="combat_sound_consumer_unavailable"
 	for enemy in world.get_enemies():_bind_native_attack_enemy_audio(enemy)
 	world.child_entered_tree.connect(_on_native_attack_audio_child_entered)
 
@@ -2103,6 +2131,11 @@ func _advance_native_attack_audio() -> void:
 	if _attack_audio_hit_cd>0:_attack_audio_hit_cd-=1
 	if _death_sfx_cd>0:_death_sfx_cd-=1
 	var settings: Dictionary=read_native_attack_audio_settings()
+	if is_instance_valid(_combat_sound_consumer):
+		_attack_audio_queue.clear() # subscribed event is the sole playback owner
+		var character: Variant=player.get_native_character_profile_snapshot().get("index")
+		_combat_sound_consumer.flush(settings,character if character is int else -1,get_tree().paused)
+		return
 	if settings.get("ready")!=true:
 		_attack_audio_queue.clear()
 		for entry in _attack_audio_active.duplicate():_finish_native_attack_audio(entry.id,"source_lost")
@@ -2183,12 +2216,14 @@ func _finish_native_attack_audio(id: int, reason: String) -> void:
 		return
 
 func get_native_attack_audio_snapshot() -> Dictionary:
+	if is_instance_valid(_combat_sound_consumer): return _combat_sound_consumer.snapshot()
 	var voices: Array=[]
 	for entry in _attack_audio_active:
 		if is_instance_valid(entry.player):voices.append({"id":entry.id,"key":entry.key,"playing":entry.player.playing,"position":entry.player.get_playback_position(),"bus":str(entry.player.bus)})
 	return {"scope":"CURRENT_ATTACK_SAMPLE_PLAYBACK_PARTIAL","settings":read_native_attack_audio_settings(),"driver":AudioServer.get_driver_name(),"source_bus":str(_attack_audio_bus),"output_bus":str(_attack_audio_output),"decoded_original_samples":_attack_audio_streams.size(),"active":voices,"queued":_attack_audio_queue.size(),"starts":_attack_audio_starts,"ends":_attack_audio_ended,"recent":_attack_audio_log.duplicate(true),"render_epoch":_attack_audio_render_epoch,"hit_cd":_attack_audio_hit_cd,"original_master_EQ_compressor_ported":false,"voice_BGM_other_skill_ported":false,"subjective_sound_equivalence_verified":false}
 
 func _dispose_native_attack_audio() -> void:
+	if is_instance_valid(_combat_sound_consumer): _combat_sound_consumer.close()
 	_attack_audio_queue.clear()
 	for entry in _attack_audio_active.duplicate():_finish_native_attack_audio(entry.id,"owner_exit")
 	for binding in _attack_audio_bindings.values():
@@ -2241,6 +2276,58 @@ func _native_fireball_ready_scalar(result: Variant) -> Variant:
 	if not result is Dictionary or result.get("status")!="READY":return null
 	var value: Variant=result.get("value")
 	return value if (value is int or value is float) and is_finite(float(value)) else null
+
+# DEMO11-16: cost inputs only; no combat/damage/active-owner changes.
+func read_native_skill_dispatch_cost_context() -> Dictionary:
+	var b: Dictionary = _native_fireball_provider_bundle()
+	if b.is_empty(): return {"ready":false,"reason":"providers_unready"}
+	var passives: Variant = source_state.read_current_passives()
+	var p: Variant = source_state.read_current_p()
+	if not passives is Dictionary or not p is Dictionary: return {"ready":false}
+	for key in ["pAtk", "pMelee"]:
+		if not (passives.get(key) is int or passives.get(key) is float) or not is_finite(float(passives[key])): return {"ready":false}
+	var values: Dictionary = {}
+	for key in ["stCostRed","cooldownRed","helmCooldown","endCooldownAll","skillCdRed"]:
+		var v: Variant = _native_fireball_ready_scalar(b.affix.eq_affix(key))
+		if v == null: return {"ready":false,"reason":"affix_unready:"+key}
+		values[key] = v
+	for key in ["_lHelmFree","_lNeckLow"]:
+		var v: Variant = _native_fireball_ready_scalar(b.formula.l_eq(key))
+		if v == null: return {"ready":false,"reason":"legend_unready:"+key}
+		values[key] = v
+	var magic: Variant = read_native_fireball_magic_cost()
+	if magic == null: return {"ready":false,"reason":"magic_cost_unready"}
+	return {"ready":true,"st_discount":maxf(.60,1.0-float(passives.pAtk)*.04)*maxf(.5,1.0-float(passives.pMelee)*.05)*(1.0+minf(0.0,values.stCostRed)),
+		"magic_cost":magic,"cd_red":values.cooldownRed+values.helmCooldown+values.endCooldownAll+values.skillCdRed-values._lHelmFree-(values._lNeckLow if float(p.hp)<=float(p.mhp)*.5 else 0.0)}
+
+# DEMO11-17: minimal callable seam for PC's future K/L UI; no layout/input takeover.
+var _native_skill_management: RefCounted
+
+func _skill_management_service() -> RefCounted:
+	if _native_skill_management==null:
+		var service: RefCounted=preload("res://scripts/native_skill_management.gd").new()
+		if not service.configure(self,source_state): return null
+		_native_skill_management=service
+	return _native_skill_management
+
+func request_native_skill_management(command: Dictionary) -> Dictionary:
+	var service: RefCounted=_skill_management_service()
+	if service==null: return {"accepted":false,"committed":false,"reason":"skill_service_unready","prefix":[]}
+	return service.request(command)
+
+func bind_native_skill_management_handoff(receiver: Callable) -> bool:
+	var service: RefCounted=_skill_management_service()
+	return service!=null and service.bind_handoff(receiver)
+
+func read_native_skill_management() -> Dictionary:
+	return source_state.read_native_skill_management_snapshot() if is_instance_valid(source_state) else {}
+
+
+func dispatch_native_skill_slot(slot_key: String) -> Dictionary:
+	var adapter: Node = world.get_node_or_null("NativeSkillSlots") if is_instance_valid(world) else null
+	if not is_instance_valid(adapter): return {"accepted":false,"reason":"skill_dispatcher_unavailable"}
+	return adapter.dispatch_native_slot(slot_key)
+
 
 func read_native_fireball_magic_cost() -> Variant:
 	var b: Dictionary=_native_fireball_provider_bundle()
@@ -2891,3 +2978,15 @@ func is_native_source_play_time_context_current(services: RefCounted, state: Nod
 		return false
 	return state.is_native_play_time_owner_current(
 		self, player, world, source_resources, raw_g, require_g_identity)
+
+# DEMO11-40: existing skill sound callsites supply already resolved pitch/gain.
+func request_native_skill_sample(path: String, gain: float, rate: float) -> void:
+	if read_native_attack_audio_settings().get("ready")!=true or get_tree().paused:return
+	var key: String=path.get_file().get_basename()
+	if is_instance_valid(_combat_sound_consumer) and not _attack_audio_streams.has(key):
+		var stream:=AudioStreamMP3.new()
+		stream.data=FileAccess.get_file_as_bytes(path)
+		if stream.data.is_empty() or stream.get_length()<=0:return
+		_attack_audio_streams[key]=stream
+		_combat_sound_consumer.install_sample(key,stream)
+	_record_event("native_skill_sample_requested",{"key":key,"gain":gain,"rate":rate,"character":player.get_native_character_profile_snapshot().get("index",-1)})
