@@ -43,6 +43,57 @@
 | 검증 | 신규 300/0(원본 JS oracle 200필드 일치·무료충전0·clamp·재진입/외부 owner/실패 무변이)·4830/0(321 fixture 직접 대조+flow e2e 321/321). 회귀 11종+restore flow 각1회 0실패. refresh 1회 약15ms(이벤트 전용), 틱 경로 코드0→300틱 벤치 생략 |
 | 인계 | [계약](engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-runtime-stats_REPORT.md). Mac 호출자 연결·결정 장착 oracle·HUD 화면 확인은 미실행 |
 
+
+## 2026-10-21 DEMO11-21fix 수명 회귀 하니스 제출
+
+- 같은 브랜치에 실제 실행한 신규 owner 수명 테스트9/0 원문을 포함한다. root test_* ignore에는 자기 파일만 경로 지정 추가, 훅 우회0. 기존 검사·제품 코드 추가 변경0. [근거](engine/orders/reports/demo11-21fix_REPORT.md).
+
+## 2026-10-21 DEMO11-21fix pending draw owner 수명 보호
+
+- 기존 demo11-21 branch에 mainac3764bfe 정상 merge. 드랍 owner(Main/State) tree exit 즉시 configured=false, draw/beam/input/physics/snapshot live guard. 이전 에셋/드랍 식/피해·Main/State0줄.
+- 새 수명9검사·기존 starter148 및 드랍 직접 관련 스위트 결과는 [보고서](engine/orders/reports/demo11-21fix_REPORT.md), 원로그 _out/demo11-21fix/. 스위트별1회·기존 검사 유지, 목록 생성 API0. 로비 RETOUCH는 자기 기존04 branch에서 별도 진행.
+
+## 2026-10-21 DEMO11-21 성능 수정 main 후속 통합
+
+- 같은 브랜치에 main8dbbf2b0(aa1eaea5a 포함)을 정상 merge11a617f5. rebase·force0.
+- 드랍·State·production source·신규 테스트 목록 생성 API0, PC 캐시3곳 확인. 자체 제품 변경0행, 로컬 성능 실측 주장0.
+- 신규24/0·관련 기존36/0 각각1회, import 포함5회 ERROR/ObjectDB/resource0. [후속 보고](engine/orders/reports/demo11-21_REPORT.md), followup-* 로그·기존 DONE에 새 SHA 추가.
+
+## 2026-10-21 DEMO11-21 기존 드랍 제품 자연 INV 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 제품 | main01051599에서 원격 P2-006a48f0d8e7/P2-006be69fe444 정상 merge. main tree 미반영을 확인하고 기존 제품 회수, 표시 byte 재사용·재구현0 |
+| 공용 / 원본 | Main252–257 +6행, State432/565–566/584–659 +79행, 삭제0. G32002–32034/16721/32935–32941/16411–16424 journal→R→동일 실제 INV. 보호 전투·맵·저장0 |
+| 검증 | 신규24/0·직접 관련 P2 회귀3종 36/0, 각1회. 실제 Main·Input 이벤트·production rollDrop RNG fixture, 동일 객체/좌표/비자동장착/중복차단. 자연 처치·시각 PASS 주장0 |
+| 제출 | [보고서](engine/orders/reports/demo11-21_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-21/. Godot7회(최초 종료실패2 보존·MP3 소유자 수는 보고서 구분), 최종/관련 종료 ERROR/ObjectDB/resource0, gate30초 대기9회·override0byte. 자기 push/remote SHA/DONE 후 worktree 제거 |
+
+## 2026-10-20 P2-006b — 효과 종료 후 드랍·LMB 관측
+
+- 지정 b933b2da5에 A 구현이 빠져 있어 승인된 A 제출 3커밋을 작업 브랜치에만 cherry-pick했다. 충돌한 설계/변경로그는 기존 DOC-SYNC·P3 기록과 A 기록을 모두 보존했다. main 변경·병합 없음.
+- game.html51736의 nearest 계약을 드랍 어댑터 1줄로 명시(수치·원본 에셋 불변). 189/189 원본·대상 SHA-256 재대조. 기능 회귀18/0·17/0·HUD36/0·스킬27/0, 필터 RED1/1→GREEN1/0.
+- LMB 빈 칸은 기존 A 검수 하니스의 activeLMBSk='weapon' 주입 결과. 원본44118/44134에도 weapon 아이콘이 없고 idle/공격/복귀 모두 빈 칸, kiSlash 복원 시 아이콘 복원(6/0). 제품 입력·HUD 수정 없음.
+- death_blood 렌더 클록 종료까지 기다려 transient0 뒤 자연 드랍·6등급 1x 캡처. 빔 밝기/그림자·전체 장면 동등성은 RETOUCH, Native Computer Use 거부로 OS 캡처/수동 키 미확인. 상세 `docs/engine/orders/reports/P2-006b_REPORT.md`.
+
+
+# 2026-10-20 P2-006a PC 드랍·줍기 부분 이식
+
+- `native_world_drops.gd` 신규 어댑터와 main 시작 hook 6줄, state 런타임 드랍 식별·가방 반입 연결. 스킨·고유 누끼·ADD 빔·R 프레스/9틱 홀드·가득 참·원본 SFX를 이식했다. 게임 설계 수치·Q/E·레슨·세이브 형식은 변경하지 않았다.
+- 원본 에셋 189개 SHA-256 동일. 17+18+39=74 assertions/0 failures, 실제 창의 자연 처치 후 일반 드랍 viewport 1920×1080 보존. 수동 R 입력/OS 창 캡처 권한은 거부돼 미확인이다.
+- 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/engine/orders/reports/P2-006a_REPORT.md`.
+
+## 2026-10-21 DEMO11-04 로비 명조·Cinzel / 아트 겹침 RETOUCH
+
+- 같은04 branch026a2e00에 최신main969c194e 정상 merge e20fbaf6. drop72e602d1 push·remote 확인 후 별도 진행, 공통 새 branch명보다 명시 같은 branch 지시 우선.
+- 자기 view5행만 치환: 본문/버튼/입력 hell명조·제목hell_title(Cinzel)·#dfd6c2, 아트 y290 아래로 분리. Main/State/전투/저장owner0줄·이미지/문구 변경0. 기존48+폰트/경계4=52/0, 관련스위트1회.
+- 목록/삭제1920×1080+1x3곳은 _out/demo11-21fix/captures/. [기존 보고서 후속](engine/orders/reports/demo11-04_REPORT.md), UI_FOUNDATION 최신 로비 한정 토큰 갱신. **화면 비교 자료 준비·맥북총괄 재검수 대기**, 시각 승인 주장0.
+
+## 2026-10-21 DEMO11-04 실제 로컬5슬롯 요청 UI·화면 비교 자료 준비
+
+- main8dbbf2b0 + DEMO11-05 f2889355 정상merge61d4d92e. 기존 actual storage/slot reader 재사용, 새로하기 metadata/이어하기 payload 요청·확인 삭제. IO 성공+readback만 목록 반영, stale/lock/읽기 실패 보호. 복원/입장 성공 주장0.
+- 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
+- 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

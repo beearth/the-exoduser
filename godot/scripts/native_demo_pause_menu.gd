@@ -24,7 +24,7 @@ func configure(main: Node) -> bool:
  _main=weakref(main)
  _settings=SETTINGS.new()
  if not _settings.configure(main.source_initialization_services): return false
- settings_bridge=preload("res://scripts/native_settings_lobby_bridge.gd").new()
+ settings_bridge=preload("res://scripts/native_settings_preferences.gd").new()
  if not settings_bridge.configure(main):return false
  name="NativeDemoPauseMenu"
  layer=80
