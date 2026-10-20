@@ -1,3 +1,14 @@
+## 2026-10-20 FB-01 필드보스 순수 catalog·초기값
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 의존 | 최신 원본 main ad497089c7955d3e344e1488e5286e9b0ddd9092. 추적 문서 미병합으로 trace-fieldboss 끝200d8e93에서 codex/fb-01-20261020 분기. 원본 HTML은 동일 byte/행 |
+| 구현 | 신규 fieldboss_source/catalog.gd. 사이트·속성·지역 mapping·문지기 후대입 규칙과 세 계열25/20/28키 초기 객체. 문지기 build는 NOT_READY. live G/P/State·지역·보스·native_skill_slots·공용 코드0줄 |
+| 독립 검증 | 최신 원본 JS 생성자205객체와 IEEE-754 입력 대조. 최종10,201단정/0실패·exit0·ERROR0. 첫8,412/12실패는 JSON 파서1 ULP 입력 차이로 보존,진단10/0. 기대값·decimal입력·catalog 코드 변경 없이 입력 비트 복원 |
+| 회귀 / 변조 | 실행 gate 대기 중. 실제 결과는 fb-01 보고서와 원로그로 마감하며 아직 완료로 보지 않음 |
+| 보호 / 한계 | 기존 Godot1,297파일·editor설정 hash 동일. 실제 actor/AI/전투/보상/State/Main 연결0. 본편/화면/PC 인수 미확인,FB-S10 공용 통합 HOLD |
+| 상세 | [FB-01 보고서](engine/orders/reports/fb-01_REPORT.md), 원로그 ~/exoduser-wt/_out/fb-01/. 자기 branch push·원격 확인·DONE 후 자기 worktree 제거 |
+
 ## 2026-10-20 TRACE-FIELDBOSS 필드보스 원본 추적·이식 설계
 
 | 항목 | 변경·검수 근거 |
