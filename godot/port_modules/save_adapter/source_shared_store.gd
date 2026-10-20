@@ -10,6 +10,8 @@ const MATS_KEY := "hellcave_sharedMats"
 const STORAGE_MAX := 200
 const MAX_SAFE := 9007199254740991 # int64 literal -> double is exact; avoid decimal float lexer rounding.
 var _graph := GRAPH.new()
+# Optional native transport decoder; default source-read contract unchanged.
+var native_number_decoder := Callable()
 
 # Grammar comes from the accepted strict reader. Decode integer lexemes through
 # int64 instead of Godot JSON's decimal path, which rounds the 2^53-1 boundary.
@@ -17,6 +19,7 @@ class ExactJSON extends RefCounted:
 	var source := ""
 	var at := 0
 	var held := ""
+	var number_decoder := Callable()
 	func space() -> void:
 		while at < source.length() and source[at] in [" ", "\t", "\r", "\n"]: at += 1
 	func string_value() -> Variant:
@@ -63,6 +66,10 @@ class ExactJSON extends RefCounted:
 			return float(text.to_int())
 		var mantissa: String = text.to_lower().split("e")[0].replace("-", "").replace(".", "").trim_prefix("+")
 		while mantissa.begins_with("0") and mantissa.length() > 1: mantissa = mantissa.substr(1)
+		if number_decoder.is_valid():
+			var exact: Dictionary=number_decoder.call(text)
+			if exact.get("ready",false): return exact.value
+			held="native_number_outside_supported_domain"; return null
 		var number: float = text.to_float()
 		if mantissa.length() > 15 or not is_finite(number) or absf(number) >= 1e12:
 			held = "json_decimal_precision_unproven"; return null
@@ -98,7 +105,7 @@ func read_storage(mode: String, observation: Variant) -> Dictionary:
 	if not scanner.held.is_empty(): return _receipt("HOLD", scanner.held)
 	if not valid or scanner.at != raw.length():
 		return _receipt("SOURCE_THROW", "qa_json_parse_exception") if mode == "qa_fixture" else _value([], "normal_json_exception", true)
-	var decoder := ExactJSON.new(); decoder.source = raw
+	var decoder := ExactJSON.new(); decoder.source = raw; decoder.number_decoder=native_number_decoder
 	var value: Variant = decoder.value()
 	if not decoder.held.is_empty(): return _receipt("HOLD", decoder.held)
 	if mode == "browser_origin" and not value is Array: return _value([], "normal_non_array", true)

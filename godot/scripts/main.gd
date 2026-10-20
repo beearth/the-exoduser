@@ -451,6 +451,12 @@ func _ready() -> void:
 			player.process_mode=Node.PROCESS_MODE_PAUSABLE
 			world.process_mode=Node.PROCESS_MODE_PAUSABLE
 		_demo11_session.start_lifecycle(self)
+		source_inventory_ui=preload("res://scripts/native_inventory_panel.gd").new()
+		var inventory_layer:=CanvasLayer.new()
+		inventory_layer.layer=40
+		add_child(inventory_layer)
+		inventory_layer.add_child(source_inventory_ui)
+		source_inventory_ui.configure(self,source_state)
 
 	_native_salvage_panel=preload("res://scripts/native_salvage_panel.gd").new()
 	_native_salvage_panel.configure(self)
@@ -3328,3 +3334,9 @@ func enter_native_demo_arena(provider: Node, spawn_options: Dictionary) -> Dicti
 	return native_demo_encounter.enter(provider,spawn_options) if is_instance_valid(native_demo_encounter) else {"status":"NOT_READY"}
 func leave_native_demo_arena(provider: Node) -> bool:
 	return is_instance_valid(native_demo_encounter) and native_demo_encounter.leave(provider)
+
+# DEMO11-23b. UI-only request owner, opt-in save route above.
+var source_inventory_ui: Control
+func request_native_inventory_ui(action: String, item: Dictionary={}, data: Dictionary={}) -> Dictionary:
+	if not _native_main_service_live() or not is_instance_valid(source_inventory_ui): return {"applied":false,"reason":"inventory_not_ready"}
+	return source_state.apply_native_inventory_ui(self,action,item,data)

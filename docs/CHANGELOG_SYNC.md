@@ -57,6 +57,16 @@
 | 검수·문서 | [보고서](engine/orders/reports/demo11-07_REPORT.md)·[계약](engine/DEMO11_LOBBY_ENTRY_20261021.md)·LOBBY/INTRO·번역16문구 동기화. 내부 viewport1920×1080 2장+1x crop2장. 기존 관련 회귀 각1회, 수치는 보고서 참조 |
 
 
+
+## 2026-10-21 DEMO11-23b — 실제 가방·공유창고 UI
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 의존 | main0138+승인22r d276/진단2e0d. 명시06c 완료93f118fb가 main 미포함이므로 중복 owner 방지용 정상merge fb76706. State 끝 양측 함수 보존 |
+| 연결 | 기존 State INV/STORAGE·06c IO/복원 단일owner. UI 선택/drag/필터/정렬·두 카드/상세·22r 장착. Main+12/State+14 추가만, 전투0·저장형식0. native JSON 소수ID exact decoder·원문 계산 유지 |
+| 검증 | 신규/집중1305/0(기능1286·저장10·guide5·null4), 직접회귀4종 각1회150073/0. 원문16가방160아이템·510 JS Number bit 일치. 최종ERROR/누수/잔류0 |
+| 화면·번역 | 실창1920×1080 3장+1x크롭3개, source factory/실제 입출고 fixture. 87 KO/EN·번역 CRLF prefix 보존. 화면 비교 자료 준비·총괄 검수 대기. [보고서](engine/orders/reports/demo11-23b_REPORT.md) |
+
 ## 2026-10-21 DEMO11-06c — PC 복원 handoff·단일 자원 writer·loaded 시작
 
 - main0138c5bb(PC a28117c1 포함) + 06b 재통합cadd5311 기반. PC 보호3종 관측을 기존 `_handoff`에 연결, State 임시 직접 HP/ST/MP·cap/rate writer를 PC raw restore writer로 대체했다. 지급 없는 실제 초기화 dispatcher 완료 후 restore→PC applyStats→기존 stage-entry refill→전체 Main boot→loaded 시작·저장 gate 해제. 신규 지급/슬롯/fresh intro 혼합0.
@@ -96,6 +106,14 @@
 | 경계·보호 | Main 공개 opt-in. 실제 etype 생성/등록·새 MAP11 provider·스케줄러 재개 후행, legacy 좌표 검색 차단. origin 불변/중복 kill 거절, 예정 분모 단1회. State·World·PC 전투/피해·저장·맵 제작0줄, 공용 줄 범위 보고 |
 | 검증·성능 | 신규40/0·P3-002 298/0·P3-003 43/0 각1회(381/0). 최종 ERROR0, Camera 경고각1 및 P3-002 ObjectDB8 종료 경고 보존. 최초 Main 들여쓰기 import parse 실패 교정 이력 보존. 후보요청10,000틱×3 벽시계1회: 평균0.1204ms/p99 0.202ms(실제 적 생성/전체게임 제외) |
 | 근거·제출 | [소비자 ABI](engine/DEMO11_STAGE_SPAWN_ADAPTER_20261021.md)·P3 docs·[보고서](engine/orders/reports/demo11-43_REPORT.md). 신규 틱 목록API0. 원로그 _out/demo11-43/, pgrep 2이상30초 대기·격리명·override finally제거. 자기branch push/원격일치/DONE 후 WT제거 |
+
+## 2026-10-21 DEMO11-23 — BLOCKED / 실제 공유창고 owner 필요
+
+| 항목 | 진단·검수 근거 |
+|---|---|
+| 기준 | main0138c5bb + 승인22r d276e02e 정상FF merge |
+| BLOCKED | SV-SHARED 계산 전용·실제 STORAGE/입출고/공유 setter 부재. 새 owner 금지 준수. 제품·Main/State·테스트·전투·저장0줄 |
+| 검증 | 기존 shared-read1회149486/0·ERROR/누수/잔류0, 실제 IO0. UI/3캡처 미생성·텍스트0·번역 CRLF 보존. [인수 요청](engine/orders/reports/demo11-23_REPORT.md) |
 
 
 ## 2026-10-21 DEMO11-22r — 일반17슬롯 장착·PC runtime refresh 연결

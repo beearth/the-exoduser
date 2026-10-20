@@ -1822,3 +1822,19 @@ func commit_native_demo_encounter(owner: Node, clear: bool, chest_position: Vect
 	if not _g.get("_clearRecords") is Dictionary:_g["_clearRecords"]={}
 	_g._clearRecords["0"]=result.record.duplicate(true)
 	return {"applied":true,"result":result}
+
+# DEMO11-06c: loaded start only, after PC restore/applyStats and normal boot.
+
+# DEMO11-23b: reuse the sole 06c STORAGE/INV owner. No second stash.
+var _inventory_ui_busy := false
+func _inventory_ui_owner(owner: Node) -> bool:
+	return _current_error().is_empty() and is_instance_valid(owner) and owner==_player.get_parent() and owner.get("source_state")==self and is_instance_valid(owner.get("source_inventory_ui")) and owner.source_inventory_ui.is_bound_to(owner,self) and _demo11_storage.get("0") is Array
+func read_native_inventory_ui(owner: Node) -> Dictionary:
+	if not _inventory_ui_owner(owner) or not (_inventory.bag+_demo11_storage["0"]).all(func(it): return it is Dictionary): return {"ready":false}
+	return {"ready":true,"inventory":_inventory,"store":_demo11_storage["0"],"capacity":int(_demo11_globals.get("BAG_MAX",300))}
+func apply_native_inventory_ui(owner: Node, action: String, item: Dictionary, data: Dictionary) -> Dictionary:
+	if _inventory_ui_busy or _equipment_committing or not _inventory_ui_owner(owner): return {"applied":false,"reason":"owner_or_reentry"}
+	_inventory_ui_busy=true
+	var result: Dictionary=owner.source_inventory_ui.execute(action,item,data,_inventory,_demo11_storage["0"],int(_demo11_globals.get("BAG_MAX",300)))
+	_inventory_ui_busy=false
+	return result
