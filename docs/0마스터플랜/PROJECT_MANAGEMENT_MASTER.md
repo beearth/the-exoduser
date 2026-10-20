@@ -450,3 +450,8 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+
+## 2026-10-20 Steam 상점 미디어 작업 인수
+
+[실적 대장](../13출시·마케팅/STEAM_STORE_MEDIA_REMASTER_20261020.md)에 원본·산출물·검수·남은 단계를 기록했다. App4749590/item1189321의 한·영 About 2필드만 저장 변경, 스틸8+짧은 영상3 등록. 베타에서 한·영 각각 스틸6+영상3 로드 확인. 헬거너는 기존 대형 저격형 리볼버로 고정·후보 회수. 전체 시네마틱2편 출력 검증과 Steam 상단 업로드는 별개이며 후자는 파일 drag/drop 제약으로 미완료. 새 플레이 스크린샷·캡슐·기존 게임플레이 영상 최신화·공개 게시도 남음. 게임 소스·기존 실행창·SteamPipe·세이브를 디스크 편집하지 않았다. 자기 산출물+보고서만 별도 복구 대상으로 삼고 타인 WIP/공유 인덱스는 보존한다.

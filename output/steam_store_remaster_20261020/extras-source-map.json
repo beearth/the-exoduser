@@ -1,0 +1,58 @@
+[
+  {
+    "id": "world_descent",
+    "source": "output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4",
+    "time": 6.5,
+    "output": "extras/world_descent_20261020.jpg",
+    "usage": "About cinematic artwork; not gameplay screenshot"
+  },
+  {
+    "id": "world_crimson_river",
+    "source": "output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4",
+    "time": 34.5,
+    "output": "extras/world_crimson_river_20261020.jpg",
+    "usage": "About cinematic artwork; not gameplay screenshot"
+  },
+  {
+    "id": "world_maw",
+    "source": "output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4",
+    "time": 44.5,
+    "output": "extras/world_maw_20261020.jpg",
+    "usage": "About cinematic artwork; not gameplay screenshot"
+  },
+  {
+    "id": "world_seal",
+    "source": "output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4",
+    "time": 53,
+    "output": "extras/world_seal_20261020.jpg",
+    "usage": "About cinematic artwork; not gameplay screenshot"
+  },
+  {
+    "id": "world_tower",
+    "source": "output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4",
+    "time": 93,
+    "output": "extras/world_tower_20261020.jpg",
+    "usage": "About cinematic artwork; not gameplay screenshot"
+  },
+  {
+    "id": "warrior_story",
+    "source": "video/warrior_story_v23_clean.mp4",
+    "time": 2.5,
+    "output": "extras/warrior_story_20261020.jpg",
+    "usage": "About cinematic artwork; not gameplay screenshot"
+  },
+  {
+    "id": "warrior_cathedral",
+    "source": "video/warrior_story_v23_clean.mp4",
+    "time": 94.2,
+    "output": "extras/warrior_cathedral_20261020.jpg",
+    "usage": "About cinematic artwork; not gameplay screenshot"
+  },
+  {
+    "id": "nemesia_story",
+    "source": "video/warrior_story_v23_clean.mp4",
+    "time": 90.5,
+    "output": "extras/nemesia_story_20261020.jpg",
+    "usage": "About cinematic artwork; not gameplay screenshot"
+  }
+]

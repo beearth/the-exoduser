@@ -1,0 +1,43 @@
+{
+  "capturedAt": "2026-10-20T11:34:44.080Z",
+  "root": "G:\\exoduser",
+  "branch": "main",
+  "head": "e556b617190c325ca39f5add04357f5dea5ca87e",
+  "originMain": "e556b617190c325ca39f5add04357f5dea5ca87e",
+  "index": "",
+  "trackedWork": "M .gitignore\n M \"docs/17\\352\\262\\214\\354\\236\\204\\354\\225\\204\\355\\212\\270\\355\\214\\200/ART_TEAM_MASTER.md\"\n M docs/cinematic/WORLD_INTRO_INGAME_20260907.md\n M docs/cinematic/WORLD_INTRO_REMASTER_MODEL_TEST_20261012.md\n M docs/cinematic/WORLD_INTRO_V13_EXODUS_20260907.md\n M index.html\n D output/fdg_cost_check_raw.mp4\n D output/fdg_reference_1280x720.png\n D output/fdg_reference_1920x1080.png\n D output/fdg_sora_1080p_3s.png\n D output/fdg_sora_1080p_5s.mp4\n D output/fdg_sora_1080p_contact.png\n D output/game_start_guide_centered_2048x1152.png\n D output/game_start_guide_cinematic_2560x1080.png\n D output/warrior_higgsfield_contact_20260908.jpg\n M test/worldIntroPlayer.test.js\n M test/worldIntroSubtitles.test.js\n M tools/guard.baseline.json",
+  "references": [
+    {
+      "path": "output/charselect_remaster_20261019/hellgunner_raw.png",
+      "bytes": 2858860,
+      "sha256": "d6ff5390b85b6cbab87457d66fc8551edfb0100a32bc7694eb6fe2421c381890"
+    },
+    {
+      "path": "output/charselect_remaster_20261019/hell_rifle_v1.png",
+      "bytes": 3051911,
+      "sha256": "6ca13d1d3b3318bab012e447935c2c81cc8ae9124717761421f17d6623861c26"
+    },
+    {
+      "path": "output/charselect_remaster_20261019/transmuter_raw.png",
+      "bytes": 4993912,
+      "sha256": "2cf611a1f55f74661ba10fe9755c403f083b50ef27b10f54302d9de5379168cc"
+    },
+    {
+      "path": "assets/fdg/character-reference/transmuter.reference.png",
+      "bytes": 6821177,
+      "sha256": "0dce0b7c7c1e49a58cdd1abb45f70aaaef2464cecbc7c0a0956b35d7f1630b84"
+    }
+  ],
+  "correctedRevolverReferences": [
+    {
+      "path": "output/charselect_remaster_20261019/hellgunner_revolver_1k.png",
+      "bytes": 1366265,
+      "sha256": "c78fa5ba6f23f52b4190a9b4d586aa16069a45cf865642502e753f0ba8034dd5"
+    },
+    {
+      "path": "output/charselect_remaster_20261019/hell_revolver_v1.png",
+      "bytes": 2835541,
+      "sha256": "9d9a6175439cac96acaa0abe9d743d651935b96f4355055673abe46023d43ae5"
+    }
+  ]
+}

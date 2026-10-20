@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-20T12:00:52.335Z",
+  "languages": 30,
+  "changed": [
+    {
+      "lang": "english",
+      "key": "app[content][about]",
+      "beforeLength": 1663,
+      "afterLength": 2559
+    },
+    {
+      "lang": "koreana",
+      "key": "app[content][about]",
+      "beforeLength": 1366,
+      "afterLength": 1737
+    }
+  ]
+}

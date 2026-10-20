@@ -1,0 +1,42 @@
+{
+  "provider": "MagicLight Toolbox",
+  "model": "GPT Image 2.5 sunburst",
+  "aspect": "9:16",
+  "displayedPointsPerJob": 200,
+  "jobCount": 3,
+  "nominalPoints": 600,
+  "balanceDeltaAttribution": false,
+  "runtimeAssetReplaced": false,
+  "jobs": [
+    {
+      "id": "7518273104715362304",
+      "status": "REJECTED_WRONG_RIFLE_CONCEPT",
+      "output": "hellgunner_rifle_REJECTED.png",
+      "references": [
+        "output/charselect_remaster_20261019/hellgunner_raw.png",
+        "output/charselect_remaster_20261019/hell_rifle_v1.png"
+      ],
+      "prompt": "Edit image 1: preserve her face, auburn ponytail, red irises, black scale armor and crimson cloak. Replace only the old weapon with the oversized long rifle in image 2: same barrel, lever, red crystal row, cloth-wrapped stock and bayonet. Two-handed shoulder grip: right hand on trigger grip, left under fore-end, stock at right shoulder. Full body and entire rifle inside frame, 6% margin. White background, matte dark fantasy painting, no dots, sparks, text or scenery."
+    },
+    {
+      "id": "7518273316615790592",
+      "status": "CANDIDATE_NOT_RUNTIME_ADOPTED",
+      "output": "transmuter_bow_candidate.png",
+      "references": [
+        "output/charselect_remaster_20261019/transmuter_raw.png",
+        "assets/fdg/character-reference/transmuter.reference.png"
+      ],
+      "prompt": "Edit woman in image 1 only. Keep her face, silver hair, black hood and matte iron armor. Replace the scythe with a large pure blue energy longbow inspired by the male archer at right in image 2. Her LEFT claw gauntlet holds the round blue core: its energy forms the bow limbs. Right hand draws the luminous bowstring to her cheek, arrow aimed left. No physical bow shaft. Full body, boots and entire bow inside frame, 6% margin. White background, matte painting, no dots, particles, scenery or text."
+    },
+    {
+      "id": "7518274902784147456",
+      "status": "FIXED_REVOLVER_CONCEPT_CANDIDATE",
+      "output": "hellgunner_sniper_revolver_remaster.png",
+      "references": [
+        "output/charselect_remaster_20261019/hellgunner_revolver_1k.png",
+        "output/charselect_remaster_20261019/hell_revolver_v1.png"
+      ],
+      "prompt": "REMASTER ONLY. Image 1 is the fixed design: preserve EXACT face, costume, pose, two-hand grip, weapon orientation and gun-to-body size ratio. Image 2 defines the SAME giant sniper revolver: very long thick vent-rib barrel, huge fluted cylinder, exposed hammer, red-wrapped pistol grip, bayonet. Do not shorten, shrink or redesign it. No rifle stock, no lever. Repaint cleaner at high resolution, matte black iron, muted crimson. Entire figure and gun visible, white background, no dots or text."
+    }
+  ]
+}

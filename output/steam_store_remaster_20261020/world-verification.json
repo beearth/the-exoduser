@@ -1,0 +1,85 @@
+{
+  "file": "output/steam_store_remaster_20261020/world_steam_blackstart_1080p30.mp4",
+  "programs": [],
+  "stream_groups": [],
+  "streams": [
+    {
+      "codec_name": "h264",
+      "codec_type": "video",
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "30/1"
+    },
+    {
+      "codec_name": "aac",
+      "codec_type": "audio",
+      "sample_rate": "48000",
+      "channels": 2,
+      "r_frame_rate": "0/0"
+    }
+  ],
+  "format": {
+    "duration": "113.701000",
+    "size": "102204634"
+  },
+  "sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+  "blackFirst12": false,
+  "fadeFrames": [
+    {
+      "frame": 0,
+      "time": 0,
+      "mean": 0.05555555555555555,
+      "max": 2
+    },
+    {
+      "frame": 6,
+      "time": 0.2,
+      "mean": 0.05555555555555555,
+      "max": 2
+    },
+    {
+      "frame": 11,
+      "time": 0.36666666666666664,
+      "mean": 0.05555555555555555,
+      "max": 2
+    },
+    {
+      "frame": 12,
+      "time": 0.4,
+      "mean": 0.05555555555555555,
+      "max": 2
+    },
+    {
+      "frame": 18,
+      "time": 0.6,
+      "mean": 6.921440972222222,
+      "max": 37
+    },
+    {
+      "frame": 24,
+      "time": 0.8,
+      "mean": 17.68142361111111,
+      "max": 90
+    },
+    {
+      "frame": 30,
+      "time": 1,
+      "mean": 29.133680555555557,
+      "max": 136
+    },
+    {
+      "frame": 36,
+      "time": 1.2,
+      "mean": 40.33680555555556,
+      "max": 180
+    },
+    {
+      "frame": 39,
+      "time": 1.3,
+      "mean": 40.96050347222222,
+      "max": 182
+    }
+  ],
+  "decodeExit": 0,
+  "decodeErrors": ""
+}

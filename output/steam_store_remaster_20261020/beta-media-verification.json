@@ -1,0 +1,62 @@
+{
+  "verifiedAt": "2026-10-20T12:12:59.874Z",
+  "appId": 4749590,
+  "itemId": 1189321,
+  "scope": "About beta draft, not upper trailer gallery or public publish",
+  "english": {
+    "images": 6,
+    "allLoaded": true,
+    "naturalWidth": 1560,
+    "videos": [
+      {
+        "duration": 8,
+        "width": 1170,
+        "height": 658,
+        "readyState": 4
+      },
+      {
+        "duration": 6.9,
+        "width": 1170,
+        "height": 658,
+        "readyState": 4
+      },
+      {
+        "duration": 8,
+        "width": 1170,
+        "height": 658,
+        "readyState": 4
+      }
+    ]
+  },
+  "koreana": {
+    "images": 6,
+    "allLoaded": true,
+    "naturalWidth": 1560,
+    "videos": [
+      {
+        "duration": 8,
+        "width": 1170,
+        "height": 658,
+        "readyState": 4
+      },
+      {
+        "duration": 6.9,
+        "width": 1170,
+        "height": 658,
+        "readyState": 4
+      },
+      {
+        "duration": 8,
+        "width": 1170,
+        "height": 658,
+        "readyState": 4
+      }
+    ]
+  },
+  "uniqueExtras": {
+    "stills": 8,
+    "clips": 3
+  },
+  "publicPublished": false,
+  "fullTrailersUploaded": false
+}

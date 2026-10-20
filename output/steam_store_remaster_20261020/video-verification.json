@@ -1,0 +1,135 @@
+{
+  "at": "2026-10-20T11:50:22.381Z",
+  "note": "RGB decode is the black-frame authority; scaled gray diagnostic can introduce nonzero values.",
+  "records": [
+    {
+      "file": "world_steam_blackstart_1080p30.mp4",
+      "sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1"
+        },
+        {
+          "codec_name": "aac",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2,
+          "r_frame_rate": "0/0"
+        }
+      ],
+      "format": {
+        "duration": "113.701000",
+        "size": "102204634"
+      },
+      "blackFirst12RgbMax": 0,
+      "blackStartPass": true,
+      "decodeExit": 0,
+      "decodeErrors": ""
+    },
+    {
+      "file": "warrior_steam_blackstart_1080p30.mp4",
+      "sha256": "e6bf731d5e54abed2fab62ab8d86588888452c50f3aa0110321ccde6a5106794",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1"
+        },
+        {
+          "codec_name": "aac",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2,
+          "r_frame_rate": "0/0"
+        }
+      ],
+      "format": {
+        "duration": "96.805000",
+        "size": "89580978"
+      },
+      "blackFirst12RgbMax": 0,
+      "blackStartPass": true,
+      "decodeExit": 0,
+      "decodeErrors": ""
+    },
+    {
+      "file": "extras/world_motion_20261020.mp4",
+      "sha256": "539d35831254fb05c1e7da1c70754c370122d74779a03c4694d963af99ea7ea0",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "30/1"
+        }
+      ],
+      "format": {
+        "duration": "8.000000",
+        "size": "4673420"
+      },
+      "blackFirst12RgbMax": 0,
+      "blackStartPass": true,
+      "decodeExit": 0,
+      "decodeErrors": ""
+    },
+    {
+      "file": "extras/warrior_motion_20261020.mp4",
+      "sha256": "35c3b1d77df85b5c834b59595d4fc46b69e23915df81de9e9f3ce2bced62f91c",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "30/1"
+        }
+      ],
+      "format": {
+        "duration": "8.000000",
+        "size": "4409645"
+      },
+      "blackFirst12RgbMax": 0,
+      "blackStartPass": true,
+      "decodeExit": 0,
+      "decodeErrors": ""
+    },
+    {
+      "file": "extras/nemesia_motion_20261020.mp4",
+      "sha256": "e95a6883c514c1ea7ca2f5cb3f0887c3e466b28bce0a3e8718f756a3b5369a95",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "30/1"
+        }
+      ],
+      "format": {
+        "duration": "6.900000",
+        "size": "3117054"
+      },
+      "blackFirst12RgbMax": 0,
+      "blackStartPass": true,
+      "decodeExit": 0,
+      "decodeErrors": ""
+    }
+  ]
+}
