@@ -873,7 +873,7 @@ func _apply_poise_hit(amount: int) -> Dictionary:
 		_log(19974, "poise_hit_no_entry", {"amt": amount})
 		return {"ok": true, "staggered": false, "route": "no_entry"}
 	# flesh_crawler: 기존 v3 field-owner 계약으로만 포이즈 코어 적용 (이중 owner 금지).
-	if _enemy.has_method("apply_native_source_poise_hit"):
+	if _enemy.has_method("apply_native_source_poise_hit") and not _enemy.has_method("apply_native_normal_enemy_poise_core"):
 		return _poise_via_source_field_call(amount)
 	if not _enemy.has_method("apply_native_normal_enemy_poise_core"):
 		_halt(42490, "enemy_poise_owner_missing")

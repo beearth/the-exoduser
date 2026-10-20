@@ -1,5 +1,9 @@
 # 일반 type0 실제 동기 poise owner — 2026-10-17
 
+## P2-008a-FIX 후속 dispatch 경계 / 2026-10-20
+
+이 문서의 type0 실제 v3 field-owner 계약은 변경하지 않는다. `native_normal_enemy_hurte.gd:876`에서 field-call은 `apply_native_source_poise_hit`가 **있고 전용 `apply_native_normal_enemy_poise_core`가 없을 때만** 선택한다. 상속 때문에 두 메서드가 모두 존재하는 etype20 및 파생 소비자는 실제 dedicated core 하나만 실행한다. core가 거부되면 기존 halt 그대로이며 type0 호출로 fallback하지 않는다. type0은 여전히 v3 한 경로만 쓴다. 원본 `19972-19983` 수치·후반부 처리·단일 owner·actual World 가드는 불변이다. [빙결전사 재현/회귀](orders/reports/P2-008a-FIX_REPORT.md).
+
 | 항목 | 현재 범위 |
 |---|---|
 | TASK / 실제 actor | `ROOT-NORMAL-ENEMY-SYNC-POISE-OWNER-20261017`; 정상 Factory의 `ch1_initial_015 / order14 / etype0 / physical / elite0 / mods[]` |

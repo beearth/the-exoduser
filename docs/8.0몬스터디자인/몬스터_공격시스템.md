@@ -1,5 +1,9 @@
 > 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
 
+## P2-008a-FIX — 빙결전사 포이즈 owner 선택 / 2026-10-20
+
+etype20 order4/10/12는 원본 poise/maxPoise875·poiseR0를 보존한다(HP는 각각2187/875/875로 별개). 원본 `game.html:19972-19983`대로 잔여 피해만큼 한 번 감소·poiseR0, break 시 poise0/stun·maxStun180. 원 회복 `38660-38664`는200tick마다 trunc875×.15=131이다. inherited type0 메서드가 존재한다는 이유로 잘못 선택하던 field-call 대신, 명시된 `apply_native_normal_enemy_poise_core`를 우선한다. type0의 v3 owner·권한·수치·기존 검사/정지 동작은 유지하며 이중 owner/폴백/정지 숨김 없음. 3프로필 실제 근접 검기 충돌에서55check/0·halt0·poise875→775, p1002g247/0. 실제 창 플레이 PASS와 별개다. [재현/수정/회귀 보고](../engine/orders/reports/P2-008a-FIX_REPORT.md)
+
 ## P2-008b 2차 PC 후보 — order9 추가 / 2026-10-20
 
 현재 후보는 초기16 중 **지원11/미지원5**(추가 order11/type47, order9/type21). type21 설계명 빙궁수와 달리 실제 레코드는 dark3/spine_beast이며, range800·거리유지520~680·공통 charge60/탄 life240·정규화 dmg62→기존 dark hit80 magic을 그대로 소비한다. 새 얼음 공격/빙결 없음. 다음 order5/type25는 주기 dark 장판 무효과와 사망 ice 장판3개의 서로 다른 경로를 인수하지 않아 정직 정지한다. 상세 원본 행·수치·테스트·남은 개체: [P2-008b 정본](../engine/FDG_P2_008B_CH1_ENEMIES_20261020.md). 아래 1차10/6·이전9/7 수치는 체크포인트 이력이다.

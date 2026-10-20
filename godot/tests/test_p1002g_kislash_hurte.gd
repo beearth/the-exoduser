@@ -337,6 +337,23 @@ func _cast_and_verify(target_entry: Dictionary) -> bool:
 		return false
 	var killed_in_swing = 0
 	var potion_mats_in_swing = 0
+	var killed_owners: Dictionary = {}
+	var all_enemies: Array = active_main.get("world").get_enemies()
+	for outcome in new_outcomes:
+		if outcome.get("killed") != true:
+			continue
+		var owner_id: int = int(outcome.get("enemy_id", 0))
+		var owner: Node = instance_from_id(owner_id) as Node
+		_check(outcome.get("ok") == true, "every kill receipt completed hurtE")
+		_check(is_instance_valid(owner) and all_enemies.has(owner) and owner.get("alive") == false and float(owner.get("hp")) <= 0.0,
+			"every counted kill belongs to an actual dead World actor")
+		_check(not killed_owners.has(owner_id), "one kill per actual owner in cast")
+		killed_owners[owner_id] = true
+		killed_in_swing += 1
+		potion_mats_in_swing += _potion_hp_from_draws(outcome.get("rng_draws", []))
+		diag.get_or_add("actual_kill_owners", []).append({"id": owner_id,
+			"source_order": owner.get("source_order") if is_instance_valid(owner) else null,
+			"tracked": tracked.has(owner_id), "alive": owner.get("alive") if is_instance_valid(owner) else null})
 	for outcome in new_outcomes:
 		var id: int = int(outcome.get("enemy_id", 0))
 		if not tracked.has(id) or not pre.has(id) or pre[id]["alive"] != true:
@@ -401,8 +418,6 @@ func _cast_and_verify(target_entry: Dictionary) -> bool:
 			_check(draws.size() == 1 and str(draws[0]["purpose"]) == "crit",
 				"rand consumed exactly once (crit) on non-kill (%s)" % tag)
 		else:
-			killed_in_swing += 1
-			potion_mats_in_swing += _potion_hp_from_draws(draws)
 			_verify_kill(entry, node, outcome, draws, tag)
 	if killed_in_swing > 0:
 		var g: Dictionary = active_main.get("source_state").read_current_g()

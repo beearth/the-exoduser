@@ -1,5 +1,19 @@
 # P2-008a — 1-1 미지원 적 source 추적·부분 이식
 
+## P2-008a-FIX 포이즈 후속 정정 / 2026-10-20
+
+최초 후보의 직접 `apply_native_normal_enemy_poise_core` 계약/실드 검증만으로 실제 hurtE 포이즈 dispatch까지 검증한 것은 아니었다. 실제 경로는 상속된 type0 전용 `apply_native_source_poise_hit` 메서드 유무를 먼저 보고 잘못 들어가 `42490 source_field_call_unavailable`로 정지했다. 실행자 조건1줄로 명시된 전용 core를 우선하고, type0의 기존 field-owner 조건·메서드·원 수치를 변경하지 않았다. owner 거부 시 원 정지는 유지하고 두 경로를 연속 호출하지 않는다.
+
+| 항목 | 원본 / 확인 |
+|---|---|
+| 세 actor 초기 포이즈 | order4/10/12 모두 poise875/maxPoise875/poiseR0. HP2187/875/875와 구분. `31164` 및 gate caller 적용 이후 원 record |
+| `_poiseHit` | `19972-19983` amt≤0/사망 무변경, poise−=amt 한 번·R0, zero clamp·일반 stun/max180 |
+| 자연 회복 | `38660-38664` 200tick / trunc875×.15=131, max875 cap. 새 배율/별도 포이즈 owner 없음 |
+| 실제 재현 | 원본 옵션의 근접 Crescent 충돌→hurtE, 명시 fixture base100/실드0. 수정 전3halt·포이즈875 유지, 수정 후3개 모두 halt0·HP−100/poise875→775/R0 |
+| 검증 | 새55check/0 및 p1002g247/0. p1002g는 기존6대상 검증을 유지하고 모든 실제 처치 owner를 대조하도록 집계 누락을 보정(검사27개 추가) |
+
+원로그·필수 회귀·커밋은 [P2-008a-FIX 보고서](orders/reports/P2-008a-FIX_REPORT.md). 이하 최초 이식 당시 기록은 보존한다.
+
 ## 범위·원본
 
 이 문서는 `codex/p2-008a-ch1-enemies-pc-20261020` 후보의 현행이다. main/Mac/배포본 갱신을 뜻하지 않는다. QA-001의 6지원/10미지원은 당시 정확한 이력이며 이번 후보는 **9지원/7미지원, 총16개체**다. **종류 수가 아니라 원본 레코드 수**이며, 새 구현은 etype20 한 종류의 정확한 세 프로필(order4/10/12)이다. `encounters.json`의 support=false/runtime=null은 추출 당시 영수증이므로 바꾸지 않았다.
