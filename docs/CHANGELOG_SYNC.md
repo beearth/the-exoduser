@@ -1,3 +1,15 @@
+## 2026-10-20 CH3-05 — si13 원본·독립 소비자
+
+| 항목 / 적용 위치 | 현재 계약·실측 |
+|---|---|
+| 의존 / 범위 | CH3-04 36d3f123 끝 분기·provenance 선행수정9af85131 포함. 최신main 일괄merge는 총괄 후속. 공용 도구 두 개0추가/0삭제·World/Main/State/타담당0줄 |
+| 구현 | stage13 전용 source/resource adapter·si13 snapshot/manifest·순수계약·readonly reader·standalone scene/fixture·Node/Godot. 원 게임 함수 수정0·bootstrap11은 선언만, 독립 fresh si13 native 전수 일치 |
+| 원문 | 기본200²/T40·raw20/catalog61/base77/cross0·tile38986/36/3/0/975·START4020,7420/EXIT4020,300. isHellBoss=true·얼음 속 봉인 괴물·12굴950·NW150/NE300/SW350/SE150. 원 timer13draw 중 제거굴 draw9도 보존 |
+| 아레나 / 자산 | 별도128×108 십자 arena·처치 전 exit벽/isolated opening 후3폭 변경만 원문 검증, 실제 kill/진입/보스 연결0. 원 texture12 byte참조·생성/변환/제품복사0 |
+| 실측 | 새Node8/0·순수Godot411/0·GPU809/0, isW/canMv6870각·LOS400·tile Physics40000 차이0. 기존source79/0·Godot5610/0+contracts5그룹. map9는 이번 main6d 대조군 실패 이름/순서 동일 |
+| 시각 / 미완 | GPU8뷰+OFF1+1x크롭4 직접 확인, VISUAL RETOUCH(반복 지면·접합·톤/테두리·접지·북쪽 경계). 제품 gameplay/fullstage/전투FPS 완료 주장0. Camera2D/ObjectDB8 경고 원문 보존 |
+| 보호 / 제출 | 기존 tracked는 CHANGELOG 외2614개 byte동일. 정상훅·매실행pgrep/30초대기·격리/override비움·자기branch push/원격일치→DONE→WT제거·R불변. [보고서](engine/orders/reports/ch3-05_REPORT.md), ~/exoduser-wt/_out/ch3-05/ |
+
 ## 2026-10-20 CH3-04 — si12 원본·독립 소비자
 
 | 항목 / 적용 위치 | 현재 계약·실측 |
