@@ -981,7 +981,57 @@ func emit_native_hurte_impact(x: float, y: float, ang: float) -> Dictionary:
 	adapter.spawn_native_impact(x, y, ang, int(counter["post"]) > 2, int(counter["pre"]) > 3)
 	return {"applied": true, "imp_per_frame": counter["post"]}
 
+# P2-001c — deathFX 사운드 디스패치(24790~24830, 첫 스테이지 비보스 etype 0/1/4):
+# 프레임 버스트(mark/N/throttled, cd 5), 레이어 볼륨 1→.72-.16n(min .32)·피치 1→
+# _r(1.05+n*.03,.06), 변형 선택은 _pickDeathVar(24756 — 오디오 전용 RNG, 기존
+# _native_attack_audio_random_unit 스트림), r>=40 25% monster_die1(비해당)·15% death_grunt.
+# 좌우 팬(_layPan)은 현 재생 경로(비위치 버스)가 지원하지 않아 미이식 — 기록.
+func request_native_death_sound(etype: int, radius: float) -> Dictionary:
+	if read_native_attack_audio_settings().get("ready") != true:
+		return {"accepted": false, "reason": "actual_audio_source_not_ready"}
+	if _death_sfx_frame_mark != _attack_audio_render_epoch: # 24799~24803
+		_death_sfx_frame_mark = _attack_audio_render_epoch
+		_death_sfx_frame_n = 0
+		_death_sfx_throttled = _death_sfx_cd > 0
+		if not _death_sfx_throttled:
+			_death_sfx_cd = 5
+	if _death_sfx_throttled or _death_sfx_frame_n >= 6: # 24805 _maxVoices=6(비보스)
+		return {"accepted": false, "reason": "death_sfx_frame_throttled"}
+	var n: int = _death_sfx_frame_n
+	_death_sfx_frame_n += 1
+	var lay_v: float = 1.0 if n == 0 else maxf(0.32, 0.72 - (n - 1) * 0.16) # 24807
+	var lay_pit: float = 1.0 if n == 0 else (1.05 + n * 0.03) * (1.0 + (_native_attack_audio_random_unit() - 0.5) * 2.0 * 0.06) # 24809 _r
+	# _deathSfxKey(24762): etype4 → death_bone 풀, etype0/1(HUMANOID) → death_humanoid 풀.
+	var pool_key: String = "death_bone" if etype in DEATH_BONE_ETYPES else "death_humanoid"
+	var pool: Array = DEATH_VARIANTS[pool_key]
+	var key: String = pool[clampi(int(_native_attack_audio_random_unit() * pool.size()), 0, pool.size() - 1)] # _pickDeathVar
+	var volume: float = (0.825 if radius < 40.0 else 1.05) * lay_v # 24818 (비ARMOR)
+	var gain: float = volume * (1.0 + (_native_attack_audio_random_unit() - 0.5) * 2.0 * 0.08) # _r(v,.08)
+	var rate: float = (1.0 + (_native_attack_audio_random_unit() - 0.5) * 2.0 * 0.12) * lay_pit # _r(1,.12)
+	_queue_native_attack_sample(key, gain, rate, false, {"phase": "death_sfx", "etype": etype, "layer": n})
+	if n == 0 and radius >= 40.0 and _native_attack_audio_random_unit() < 0.25: # 24820 — 첫 스테이지 r<40 비도달
+		_queue_native_attack_sample("death_monster1", 0.75, 0.8 * (1.0 + (_native_attack_audio_random_unit() - 0.5) * 2.0 * 0.15), false, {"phase": "death_sfx_heavy"})
+	if n == 0 and _native_attack_audio_random_unit() < 0.15: # 24821
+		_queue_native_attack_sample("death_grunt", 0.45, 1.0 + (_native_attack_audio_random_unit() - 0.5) * 2.0 * 0.15, false, {"phase": "death_sfx_grunt"})
+	_death_sound_dispatches += 1
+	return {"accepted": true, "key": key, "layer": n}
+
+# P2-001c — rollDrop OPT 게이트: minPickRar(기본0)·_minPickLvThr(32001: tier 0→-1).
+func read_native_feel_opt_drop_filters() -> Dictionary:
+	var options: Variant = source_initialization_services.read_current_options() if is_instance_valid(source_initialization_services) else null
+	if not options is Dictionary or not (options.get("minPickRar") is int or options.get("minPickRar") is float) \
+			or not (options.get("minPickLvTier") is int or options.get("minPickLvTier") is float):
+		return {"ready": false, "reason": "actual_current_OPT_pick_filters_missing"}
+	var tier: int = int(options["minPickLvTier"])
+	var threshold: int = -1 if tier <= 0 else maxi(0, (1000 if tier == 7 else tier * 100) - 100)
+	return {"ready": true, "min_pick_rar": int(options["minPickRar"]), "min_pick_lv_thr": threshold}
+
+# P2-001c — 43100 _diffPct용 공개 접근 (services 소유 모듈).
+func read_native_signed_difficulty() -> Variant:
+	return source_initialization_services.read_native_signed_difficulty() if is_instance_valid(source_initialization_services) else null
+
 # P2-001b: 처치 전반부 시각 — deathFX(42704~)+대형 버스트(42720)+시체(42722)+핏자국.
+# P2-001c: deathFX 선두의 사망 사운드(24790~)를 실디스패치하고 결과를 어댑터에 전달.
 func spawn_native_death_fx_front(enemy: Node2D, ang: float, dmg: int, radius: float,
 		mhp: float, enemy_color: String) -> Dictionary:
 	var death_fx: Dictionary = read_native_feel_opt_death_fx()
@@ -990,8 +1040,11 @@ func spawn_native_death_fx_front(enemy: Node2D, ang: float, dmg: int, radius: fl
 	var adapter: Variant = world.get("_native_death_fx") if is_instance_valid(world) else null
 	if not is_instance_valid(adapter) or not adapter.has_method("spawn_native_death_front"):
 		return {"applied": false, "reason": "actual_death_fx_adapter_missing"}
-	adapter.spawn_native_death_front(enemy, ang, dmg, radius, mhp, enemy_color, bool(death_fx["value"]))
-	return {"applied": true}
+	var etype_value: Variant = enemy.get("etype")
+	var sound: Dictionary = request_native_death_sound(int(etype_value) if etype_value is int else 0, radius)
+	adapter.spawn_native_death_front(enemy, ang, dmg, radius, mhp, enemy_color, bool(death_fx["value"]),
+		sound.get("accepted") == true)
+	return {"applied": true, "death_sound": sound}
 
 # P2-001b: 처치 후반부 시각 — 고어(42726~31, provider 롤 값 재사용)+데드 임팩트(42732).
 func spawn_native_death_fx_tail(x: float, y: float, radius: float, roll_pick: float,
@@ -1761,7 +1814,40 @@ const ATTACK_SAMPLE_PATHS := {
 	"monster_hit1":"res://assets/sfx/attack_source/monster_hit1.mp3",
 	"monster_hit_flesh1":"res://assets/sfx/attack_source/monster_hit_flesh1.mp3",
 	"monster_hit_flesh2":"res://assets/sfx/attack_source/monster_hit_flesh2.mp3",
-	"flat_hit":"res://assets/sfx/attack_source/flat_hit.mp3"}
+	"flat_hit":"res://assets/sfx/attack_source/flat_hit.mp3",
+	# P2-001c: 첫 스테이지 6마리(etype 0/1/4)가 쓰는 사망 사운드만 복사 (원본 바이트
+	# 그대로, death_skull/death_grunt는 레지스트리 키(10254/10298)와 같은 이름으로 복사).
+	"death_monster1":"res://assets/sfx/death/death_monster1.mp3",
+	"death_monster2":"res://assets/sfx/death/death_monster2.mp3",
+	"death_monster3":"res://assets/sfx/death/death_monster3.mp3",
+	"death_monster4":"res://assets/sfx/death/death_monster4.mp3",
+	"death_flesh":"res://assets/sfx/death/death_flesh.mp3",
+	"death_flesh2":"res://assets/sfx/death/death_flesh2.mp3",
+	"death_crack1":"res://assets/sfx/death/death_crack1.mp3",
+	"death_crack2":"res://assets/sfx/death/death_crack2.mp3",
+	"death_bone_shatter1":"res://assets/sfx/death/death_bone_shatter1.mp3",
+	"death_bone_shatter2":"res://assets/sfx/death/death_bone_shatter2.mp3",
+	"death_bone_shatter3":"res://assets/sfx/death/death_bone_shatter3.mp3",
+	"death_bone_shatter4":"res://assets/sfx/death/death_bone_shatter4.mp3",
+	"death_bone":"res://assets/sfx/death/death_bone.mp3",
+	"death_bone2":"res://assets/sfx/death/death_bone2.mp3",
+	"death_bone3":"res://assets/sfx/death/death_bone3.mp3",
+	"death_skull":"res://assets/sfx/death/death_skull.mp3",
+	"death_crush2":"res://assets/sfx/death/death_crush2.mp3",
+	"death_ghoul3_v2":"res://assets/sfx/death/death_ghoul3_v2.mp3",
+	"death_ghoul3_v3":"res://assets/sfx/death/death_ghoul3_v3.mp3",
+	"death_ghoul3_v4":"res://assets/sfx/death/death_ghoul3_v4.mp3",
+	"death_grunt":"res://assets/sfx/death/death_grunt.mp3"}
+
+# P2-001c: 사망 사운드 변형 풀 — _DEATH_VARIANTS(24735~)의 첫 스테이지 해당 분류만.
+const DEATH_VARIANTS := {
+	"death_humanoid": ["death_monster1", "death_monster2", "death_monster3", "death_monster4",
+		"death_flesh", "death_flesh2", "death_crack1", "death_crack2",
+		"death_bone_shatter1", "death_bone_shatter2"],
+	"death_bone": ["death_bone", "death_bone2", "death_bone3", "death_skull",
+		"death_bone_shatter1", "death_bone_shatter2", "death_bone_shatter3", "death_bone_shatter4",
+		"death_crush2", "death_ghoul3_v2", "death_ghoul3_v3", "death_ghoul3_v4"]}
+const DEATH_BONE_ETYPES := [4, 10, 12, 14, 23, 82, 83, 85] # 24728 _BONE_ET
 const ATTACK_HIT_CATEGORIES := [
 	{"types":[3,11,13,15,16,17,18,19,45,46,72],"key":"monster_hit1","pitch":1.3},
 	{"types":[7,9,26,40,47,48,66,76,78,84,86,88,95,96],"key":"monster_hit","pitch":0.7},
@@ -1782,6 +1868,12 @@ var _attack_audio_serial := 0
 var _attack_audio_seen_serial := -1
 var _attack_audio_seen_phases: Dictionary={}
 var _attack_audio_hit_cd := 0
+# P2-001c: 사망 사운드 디스패치 상태 (24799~24812) — 크로스프레임 cd 5·프레임당 6보이스.
+var _death_sfx_cd := 0
+var _death_sfx_frame_mark := -1
+var _death_sfx_frame_n := 0
+var _death_sfx_throttled := false
+var _death_sound_dispatches := 0
 var _attack_audio_render_epoch := 0
 var _attack_audio_log: Array=[]
 var _attack_audio_random_trace: Array=[]
@@ -1889,6 +1981,7 @@ func _queue_native_attack_sample(key: String, gain: float, rate: float, priority
 func _advance_native_attack_audio() -> void:
 	_attack_audio_render_epoch+=1
 	if _attack_audio_hit_cd>0:_attack_audio_hit_cd-=1
+	if _death_sfx_cd>0:_death_sfx_cd-=1
 	var settings: Dictionary=read_native_attack_audio_settings()
 	if settings.get("ready")!=true:
 		_attack_audio_queue.clear()

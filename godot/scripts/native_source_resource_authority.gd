@@ -150,6 +150,21 @@ func commit_native_q_parry_reward(owner: Node, amount: float) -> Dictionary:
 	_committing=false
 	return {"accepted":true,"hp":_player.hp,"st":_player.stamina,"mp":_owned.mp,"iframes":_player.iframes,"poise":_player.poise}
 
+# P2-001c — addExp 레벨업 20% 회복(43160): hp/st/mp=min(max, +~~(max*.2)).
+# hp/st는 플레이어 노드, mp는 이 authority 소유 — q_parry_reward(140)와 동일 소유 경로.
+func commit_native_level_up_heal(owner: Node) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused \
+			or not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world:
+		return {"accepted": false, "reason": "actual_level_heal_owner_not_ready"}
+	_committing = true
+	_player.hp = minf(_player.max_hp, _player.hp + float(int(_player.max_hp * 0.2)))
+	_player.stamina = minf(_player.max_stamina, _player.stamina + float(int(_player.max_stamina * 0.2)))
+	_owned.mp = minf(float(_owned.mmp), float(_owned.mp) + float(int(float(_owned.mmp) * 0.2)))
+	_last_source_write = {"field": "hp/st/mp", "phase": "native_level_up_heal_43160"}
+	_committing = false
+	return {"accepted": true, "hp": _player.hp, "st": _player.stamina, "mp": _owned.mp}
+
 func read_current_resource_parameters() -> Dictionary:
 	var error = _current_error()
 	if not error.is_empty():

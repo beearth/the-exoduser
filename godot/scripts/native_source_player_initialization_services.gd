@@ -533,6 +533,10 @@ func _read_parameter_provider(key: String, args: Array) -> Variant:
 	var callback: Variant = maps.get(key)
 	return callback.callv(args) if callback is Callable and callback.is_valid() else null
 
+# P2-001c: 43100 _diffPct 소비자용 공개 래퍼 (9278 _diffSigned — OPT.diff(5)-5).
+func read_native_signed_difficulty() -> Variant:
+	return _read_signed_difficulty()
+
 func _read_signed_difficulty() -> Variant:
 	return _signed_difficulty.diff_signed() if is_source_context_ready() else null
 

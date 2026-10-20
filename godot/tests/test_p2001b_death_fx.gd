@@ -187,7 +187,9 @@ func _test_weapon_hit_and_kill_fx() -> void:
 			for draw in draws:
 				purposes.append(str(draw["purpose"]))
 			var revived: bool = purposes.has("revive_as_ghoul")
-			_check(draws.size() == (9 if revived else 8), "kill provider rolls unchanged 8/9 (got %d)" % draws.size())
+			var prefix_count: int = (9 if revived else 8) # P2-001c: 이후 drop:* 롤이 이어짐
+			var drop_tail_ok := draws.size() > prefix_count and str(purposes[prefix_count]) == "drop:drop_gate"
+			_check(drop_tail_ok, "kill rolls = fixed prefix + rollDrop tail (got %s)" % str(purposes))
 			var snapshot2: Dictionary = _adapter().get_snapshot()
 			var metrics: Dictionary = snapshot2["metrics"]
 			_check(int(metrics["death_fx"]) >= 1, "deathFX front executed (42704)")
@@ -196,8 +198,8 @@ func _test_weapon_hit_and_kill_fx() -> void:
 			_check(int(metrics["death_impacts"]) >= 1, "death impact spawned (42732)")
 			_check(int(metrics["blood_anims"]) >= 1, "death_blood sheet anim (24851~)")
 			_check(int(snapshot2["counts"]["stains"]) >= 1, "floor stain active (24903)")
-			_check(int(metrics["death_sound_skipped_missing_assets"]) >= 1,
-				"death sound skipped+counted (assets missing — 보고 목록)")
+			_check(int(metrics.get("death_sounds_dispatched", 0)) >= 1,
+				"death sound dispatched (P2-001c: 에셋 복사 후 실재생)")
 			var body: Variant = enemy.get("_body")
 			_check(is_instance_valid(body) and body.visible == false,
 				"enemy sprite hidden on death (corpse replaces — drawEn alive gate)")

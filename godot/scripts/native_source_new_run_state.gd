@@ -347,6 +347,99 @@ func apply_native_update_feel_decay(owner: Node, sp: float) -> Dictionary:
 			_g["shake"] = 0
 	return {"applied": true, "shake": _g.get("shake", 0), "hit_stop": _g.get("hitStop", 0)}
 
+# ═══ P2-001c: 처치 보상 owner — addPotion(28250)·addExp(43134)·드랍 레코드 ═══
+var _native_drop_records: Array = []
+# 결정/소켓석 최소 owner (원본 CRYSTAL_BAG/STONE_BAG — 캡 9999, HUD/합성 소비자는 미이식).
+var _native_crystal_bag: Array = []
+var _native_stone_bag: Array = []
+
+func apply_native_drop_bags(owner: Node, crystal: Variant, stone: Variant) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	if crystal is Dictionary:
+		_native_crystal_bag.append(crystal)
+	if stone is Dictionary:
+		_native_stone_bag.append(stone)
+	return {"applied": true, "crystal_bag": _native_crystal_bag.size(), "stone_bag": _native_stone_bag.size()}
+
+func read_native_reward_bags() -> Dictionary:
+	return {"crystal": _native_crystal_bag, "stone": _native_stone_bag} if _current_error().is_empty() else {}
+
+# addPotion(type,count) — 28250~28263. 'hp' → 즉시 악의 전환(G.mats), 그 외는 POT에
+# 없어 버림(원문 2026-10-10 폐지 주석). 반환 texts는 원문 addTxt 인자.
+func apply_native_add_potion(owner: Node, type: String, count: int) -> Dictionary:
+	if not _feel_owner_current(owner) or count < 1:
+		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	if type == "hp":
+		_g["mats"] = int(_feel_num(_g.get("mats"))) + count
+		# SFX.pickup: 오디오 에셋 미복사 — 미이식 기록 (보고 목록).
+		return {"applied": true, "accepted": true, "mats": _g["mats"],
+			"texts": [{"dx": 0.0, "dy": -20.0, "text": "+%d" % count, "color": "#cc66ff", "life": 25}],
+			"unported": ["SFX.pickup"]}
+	return {"applied": true, "accepted": false} # POT에 'hp'만 존재(27677) → 버림
+
+# addExp(v) — 43134~43176. v는 호출측(실행자)이 43140~43144(1/3·expBonus)까지 적용한
+# 최종값. 레벨업: sp+3/2렙당 ap+1(43153~43155), 20% 회복(43160 — 자원 authority 경유),
+# 300/700 스킬 해금(43169~43171). 미이식: SFX.levelup·showPH·_levelUpVfx(연출),
+# dbSaveForce(세이브 금지 지시), 패시브 예약 큐(포트에 큐 시스템 부재 → 0 투자).
+func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
+	if not _feel_owner_current(owner) or final_value < 0:
+		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	_p["exp"] = int(_feel_num(_p.get("exp"))) + final_value
+	var levels := 0
+	var ap_gain := 0
+	while int(_feel_num(_p.get("exp"))) >= int(_feel_num(_p.get("maxExp"))):
+		# 1000렙 초월 게이트(43138/43148): lv<1000 구간 — 미도달. 도달 시 미이식 정지.
+		if int(_feel_num(_p.get("lv"))) >= 1000:
+			return {"applied": false, "reason": "unported_branch_active:transcend_level_gate"}
+		_p["lv"] = int(_feel_num(_p.get("lv"))) + 1
+		levels += 1
+		_p["exp"] = int(_feel_num(_p.get("exp"))) - int(_feel_num(_p.get("maxExp")))
+		# _calcMaxExp(43128): lv<1000 → ~~((15+lv*2.5+lv*lv*.05)*1.001^lv)
+		var lv: float = _feel_num(_p.get("lv"))
+		_p["maxExp"] = int((15.0 + lv * 2.5 + lv * lv * 0.05) * pow(1.001, lv))
+		_p["sp"] = int(_feel_num(_p.get("sp"))) + 3
+		if int(lv) % 2 == 0:
+			_p["ap"] = int(_feel_num(_p.get("ap"))) + 1
+			ap_gain += 1
+	var texts: Array = []
+	if levels > 0:
+		var heal: Dictionary = _resources.commit_native_level_up_heal(owner) if _resources.has_method("commit_native_level_up_heal") else {"accepted": false}
+		if heal.get("accepted") != true:
+			return {"applied": false, "reason": "level_heal_authority_refused"}
+		var lv_text: String = "SP +%d" % (levels * 3)
+		if ap_gain > 0:
+			lv_text += " AP +%d" % ap_gain
+		texts.append({"dx": 0.0, "dy": -40.0, "text": lv_text, "color": "#ffdd00", "life": 60}) # 43166 (비악마화 #ffdd00)
+		for unlock in [[300, "blueShot"], [700, "burstLoop"], [700, "voidScarecrow"]]: # 43169~43171
+			if int(_feel_num(_p.get("lv"))) >= int(unlock[0]) and not (_p.get("skills") as Dictionary).has(unlock[1]):
+				(_p["skills"] as Dictionary)[unlock[1]] = 1
+	return {"applied": true, "exp": _p.get("exp"), "lv": _p.get("lv"), "max_exp": _p.get("maxExp"),
+		"levels": levels, "ap_gain": ap_gain, "sp": _p.get("sp"), "ap": _p.get("ap"), "texts": texts,
+		"unported": ["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx", "dbSaveForce(세이브_금지)", "passive_queue(큐_시스템_부재)"]}
+
+# rollDrop 레코드 owner — 원본 worldItems(_wiPush 16721: 20개 초과 시 최저 rarity 축출).
+func append_native_drop_records(owner: Node, records: Array) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	for record in records:
+		_native_drop_records.append(record)
+		while _native_drop_records.size() > 20: # _wiPush 축출 규칙
+			var min_index := 0
+			var min_rarity := INF
+			for i in range(_native_drop_records.size()):
+				var item: Variant = (_native_drop_records[i] as Dictionary).get("item")
+				var rarity: float = float((item as Dictionary).get("rarity", 0)) if item is Dictionary else -1.0
+				if rarity < min_rarity:
+					min_rarity = rarity
+					min_index = i
+			_native_drop_records[min_index] = _native_drop_records[-1]
+			_native_drop_records.resize(_native_drop_records.size() - 1)
+	return {"applied": true, "count": _native_drop_records.size()}
+
+func read_native_drop_records() -> Array:
+	return _native_drop_records if _current_error().is_empty() else []
+
 func read_current_p() -> Variant:
 	if not _current_error().is_empty():
 		return null

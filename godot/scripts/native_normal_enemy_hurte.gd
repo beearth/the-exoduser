@@ -15,6 +15,7 @@ extends RefCounted
 ## 실행 문장·단락 근거의 전체 표: docs/engine/FDG_P1_002E_MELEE_HURTE_TRACE_20261019.md
 
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
+const DROP_SOURCE = preload("res://port_modules/kill_reward/drop_item_source.gd") # P2-001c
 const UNDEAD_ETYPES: Array[int] = [4, 10, 12, 14, 23, 40, 47, 82, 83, 85] # game.html:24729 _UNDEAD_ET
 const SPECIAL_HIT_ETYPES: Array[int] = [99, 92, 91, 93, 40, 41, 57, 6, 63, 74, 85, 87] # 42136~42182·42508 특수 피격/사망 분기 보유 etype — 활성 시 정지
 const PROVIDER_KEYS: Array[String] = ["eq_affix", "u_eq", "p_atk_mul", "melee_ref",
@@ -621,18 +622,99 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	var potion_type: Variant = _rand(43093, "potion_type")
 	if potion_type == null: return false
 	var potion_names: Array = ["hp", "st", "mp"]
-	_log(43092, "potion_rolled", {"gate": potion_gate, "type": potion_names[int(float(potion_type) * 3.0)], "addPotion": "UNPORTED"})
-	# ── 43099~43103: 콤보 보상 계산 + 기본 악의 ──
-	# _comboPct/_diffPct/_comboBonus: 소비자(addExp/엘리트 악의)가 이 처치에서 미이식·단락.
+	var potion_kind: String = potion_names[clampi(int(float(potion_type) * 3.0), 0, 2)]
+	# P2-001c — addPotion(28250): hp → 악의 즉시 전환(G.mats)+텍스트, st/mp → 버림(POT 27677).
+	var potion: Dictionary = _state.apply_native_add_potion(_main, potion_kind, 1)
+	if potion.get("applied") != true:
+		_halt(43095, "add_potion_owner_refused:" + str(potion.get("reason")))
+		return false
+	if potion.get("accepted") == true:
+		for text in potion.get("texts", []): # addPotion 내부 '+1' 텍스트 (P 위치 기준, 28255)
+			_emit_text(_js_num(view.get("x")) + float(text["dx"]), _js_num(view.get("y")) + float(text["dy"]),
+				text["text"], text["color"], text["life"])
+		# 호출부 텍스트(43095): POT.hp name '악의 추출' col '#33cc66' (적 위치 기준).
+		_emit_text(_enemy.global_position.x, _enemy.global_position.y - 8.0, "악의 추출 +1", "#33cc66", 30)
+	_log(43092, "potion_applied", {"gate": potion_gate, "type": potion_kind, "accepted": potion.get("accepted")})
+	# ── 43099~43101: 콤보 보상 계수 — _comboPct=⌊combo/100⌋×.05, _diffPct=max(0,_diffSigned())×.10 ──
+	var diff_signed: Variant = _main.read_native_signed_difficulty() if _main.has_method("read_native_signed_difficulty") else null
+	if not diff_signed is Dictionary or str(diff_signed.get("status")) != "READY":
+		_halt(43100, "signed_difficulty_not_ready")
+		return false
+	var combo_pct: float = float(FORMULA.js_to_int32(_js_num(g.get("combo")) / 100.0)) * 0.05
+	var diff_pct: float = maxf(0.0, float(diff_signed["value"])) * 0.10
+	var combo_bonus: float = 1.0 + combo_pct + diff_pct
 	var mats: int = int(_js_num(g.get("mats"))) + 4
 	if not _g_writes(43103, [{"field": "mats", "value": mats}]):
 		return false
 	_log(43103, "mats", {"mats": mats})
-	# 43110 rollDrop: 장비 드롭 시스템 미이식 (내부 RNG 포함 비소비 — 이후 소비 지점 없음).
-	# 43112~43114 addExp(5 at lv1): 경험치 체계 미이식 — 기대값 기록.
+	# ── 43110 rollDrop — P2-001c: 원본 롤 순서·RNG 소비 그대로(provider rand), 레코드만 생성 ──
+	# dropBonus=statDropBonus(27999), _curseMul=1(P._greedCurse 부재). 바닥 표시·줍기는 미이식.
+	var lck: Variant = _lck_total(view, _state.read_current_inventory().get("equipped", {}))
+	if lck == null: return false
+	if not passives.has("pDrop"):
+		_halt(43110, "passives_shape:pDrop")
+		return false
+	var drop_rate_affix: Variant = _affix("dropRate", 43110)
+	if drop_rate_affix == null: return false
+	var crystal_drop: float = 0.0
+	if view.get("_crystalStats") is Dictionary:
+		crystal_drop = _js_num((view["_crystalStats"] as Dictionary).get("drop")) * 0.01
+	var drop_bonus: float = 1.0 + float(lck) * 0.0015 + _js_num(passives["pDrop"]) * 0.08 + float(drop_rate_affix) + crystal_drop
+	var drop_filters: Dictionary = _main.read_native_feel_opt_drop_filters() if _main.has_method("read_native_feel_opt_drop_filters") else {}
+	if drop_filters.get("ready") != true:
+		_halt(43110, "drop_opt_filters_not_ready:" + str(drop_filters.get("reason")))
+		return false
+	var bags: Dictionary = _state.read_native_reward_bags()
+	var dropper: RefCounted = DROP_SOURCE.new(func(tag): return _rand(43110, "drop:" + str(tag)))
+	var drop_result: Variant = dropper.roll_drop(
+		{"ib": false, "etype": int(fields["etype"]), "elite": int(fields["elite"]),
+			"drop_tier": 0, "x": _enemy.global_position.x, "y": _enemy.global_position.y},
+		{"stage": int(_js_num(g.get("stage"))), "drop_bonus": drop_bonus,
+			"min_pick_rar": drop_filters["min_pick_rar"], "min_pick_lv_thr": drop_filters["min_pick_lv_thr"],
+			"plv": int(_js_num(view.get("lv"))), "crystal_bag_len": (bags.get("crystal", []) as Array).size(),
+			"crystal_bag_max": 9999, "stone_bag_len": (bags.get("stone", []) as Array).size(), "stone_bag_max": 9999})
+	if not drop_result is Dictionary:
+		if _halt_reason.is_empty():
+			_halt(43110, "roll_drop_rng_aborted")
+		return false
+	if not (drop_result["world_items"] as Array).is_empty():
+		var records: Dictionary = _state.append_native_drop_records(_main, drop_result["world_items"])
+		if records.get("applied") != true:
+			_halt(43110, "drop_records_owner_refused:" + str(records.get("reason")))
+			return false
+	if drop_result.get("crystal") != null or drop_result.get("stone") != null:
+		if _state.apply_native_drop_bags(_main, drop_result.get("crystal"), drop_result.get("stone")).get("applied") != true:
+			_halt(43110, "drop_bags_owner_refused")
+			return false
+	for text in drop_result.get("texts", []): # 결정/소켓석 획득 텍스트 (원문 addTxt 인자)
+		_emit_text(float(text["x"]), float(text["y"]), text["text"], text["color"], text["life"])
+	_log(43110, "roll_drop", {"items": (drop_result["world_items"] as Array).size(),
+		"crystal": drop_result.get("crystal") != null, "stone": drop_result.get("stone") != null,
+		"unported": ["floor_item_render_pickup", "playItemDropSfx", "_crAutoProcess(기본 OFF)"]})
+	# ── 43112~43114 addExp: ~~(max(5,~~(eLv×.4))×_expMul), _expMul=1×_comboBonus ──
 	var enemy_lv: float = maxf(1.0, _js_num(fields.get("lv")) if fields.get("lv") != null else 10.0)
-	_log(43114, "unported_skip:rollDrop_addExp_checkRooms", {"addExp_expected": int(maxf(5.0, float(FORMULA.js_to_int32(enemy_lv * 0.4))))})
-	# 43115 checkRooms / 43116 dbSaveNow(10킬): 미이식 (세이브는 지시로 금지).
+	var exp_raw: int = FORMULA.js_to_int32(maxf(5.0, float(FORMULA.js_to_int32(enemy_lv * 0.4))) * combo_bonus)
+	# addExp 전처리(43140~43144): v=~~(v/3) → nc().expBonus → eq_affix('expBonus').
+	var exp_value: int = FORMULA.js_to_int32(float(exp_raw) / 3.0)
+	var necklace: Variant = (_state.read_current_inventory().get("equipped", {}) as Dictionary).get("necklace")
+	var neck_bonus: float = _js_num((necklace as Dictionary).get("expBonus")) if necklace is Dictionary else 0.0
+	if neck_bonus > 0.0:
+		exp_value = FORMULA.js_to_int32(float(exp_value) * (1.0 + neck_bonus))
+	var exp_affix: Variant = _affix("expBonus", 43143)
+	if exp_affix == null: return false
+	if float(exp_affix) > 0.0:
+		exp_value = FORMULA.js_to_int32(float(exp_value) * (1.0 + float(exp_affix)))
+	var exp_result: Dictionary = _state.apply_native_add_exp(_main, exp_value)
+	if exp_result.get("applied") != true:
+		_halt(43134, "add_exp_owner_refused:" + str(exp_result.get("reason")))
+		return false
+	for text in exp_result.get("texts", []): # 43166 'SP +N' (P 위치)
+		_emit_text(_js_num(view.get("x")) + float(text["dx"]), _js_num(view.get("y")) + float(text["dy"]),
+			text["text"], text["color"], text["life"])
+	_log(43112, "add_exp", {"raw": exp_raw, "value": exp_value, "combo_bonus": combo_bonus,
+		"lv": exp_result.get("lv"), "exp": exp_result.get("exp"), "levels": exp_result.get("levels"),
+		"unported": exp_result.get("unported")})
+	# 43115 checkRooms: 미이식 / 43116 dbSaveNow(10킬): 세이브 금지 지시로 미이식.
 	if kills % 10 == 0:
 		_log(43116, "unported_skip:dbSaveNow", {"kills": kills})
 	return true

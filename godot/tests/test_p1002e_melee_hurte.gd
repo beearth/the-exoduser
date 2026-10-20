@@ -305,7 +305,11 @@ func _test_overflow_and_kill_pipeline() -> void:
 			_check(int(g.get("combo")) == int(g_before.get("combo", 0)) + 1, "G.combo incremented (42714)")
 			_check(int(g.get("comboTimer")) == mini(1200, int(g_before.get("comboTimer", 0)) + 60), "G.comboTimer +60 capped (42715)")
 			_check(int(g.get("_chainCnt", 0)) == (0 if int(g_before.get("_chainCnt", 0)) + 1 >= 5 else int(g_before.get("_chainCnt", 0)) + 1), "G._chainCnt chain rule (42756)")
-			_check(int(g.get("mats")) == int(g_before.get("mats", 0)) + 4, "G.mats +4 (43103)")
+			var potion_mats := 0
+			for draw0 in outcome.get("rng_draws", []):
+				if str(draw0.get("purpose")) == "potion_type" and int(float(draw0.get("value", 1.0)) * 3.0) == 0:
+					potion_mats = 1 # P2-001c: 물약 hp → G.mats +1 (28253)
+			_check(int(g.get("mats")) == int(g_before.get("mats", 0)) + 4 + potion_mats, "G.mats +4(+물약hp) (43103/28253)")
 			_check(str(enemy.get("state")) == "dead", "enemy state dead")
 			# RNG: 크리1 + 부활1(+구울1) + 고어3(r≥18) + 장판1(el=3≠P) + 물약2 = 8 또는 9.
 			var draws: Array = outcome.get("rng_draws", [])
@@ -325,8 +329,17 @@ func _test_overflow_and_kill_pipeline() -> void:
 			if revived:
 				expected_order.append("revive_as_ghoul")
 			expected_order.append_array(["gore_common_or_rare", "gore_piece_index", "gore_large_extra", "death_zone", "potion_gate", "potion_type"])
-			_check(purposes == expected_order, "kill-hit rand order matches source (got %s)" % str(purposes))
-			_check(draws.size() == (9 if revived else 8), "kill-hit rand count 8/9")
+			# P2-001c: 43110 rollDrop 이식으로 처치 롤 뒤에 drop:* 롤이 이어진다 —
+			# 접두 순서는 기존 고정, 꼬리는 전부 drop:* (게이트 롤 최소 1회).
+			_check(purposes.slice(0, expected_order.size()) == expected_order,
+				"kill-hit rand prefix matches source (got %s)" % str(purposes))
+			var drop_tail: Array = purposes.slice(expected_order.size())
+			var tail_ok := drop_tail.size() >= 1
+			for tail_purpose in drop_tail:
+				if not str(tail_purpose).begins_with("drop:"):
+					tail_ok = false
+			_check(tail_ok and str(drop_tail[0]) == "drop:drop_gate" if drop_tail.size() >= 1 else false,
+				"rollDrop rolls follow (first=drop_gate 32018) — got %s" % str(drop_tail))
 			observations["kill_hits_total"] = hits
 			observations["final_g"] = {"kills": g.get("kills"), "mats": g.get("mats"), "combo": g.get("combo"), "_chainCnt": g.get("_chainCnt"), "rifts": (g.get("rifts") as Array).size()}
 			return

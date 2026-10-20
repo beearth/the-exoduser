@@ -163,15 +163,19 @@ func spawn_native_impact(x: float, y: float, ang: float, lite: bool, no_flash: b
 
 # ── 처치 전반부: deathFX 코어(24805~24870) + 대형 사망 버스트(25396~) + 시체(24964~) + 핏자국(24903~) ──
 func spawn_native_death_front(enemy: Node2D, ang: float, dmg: int, radius: float, mhp: float,
-		enemy_color: String, death_fx_enabled: bool) -> void:
+		enemy_color: String, death_fx_enabled: bool, sound_handled: bool = false) -> void:
 	if not _configured:
 		return
 	_metrics.death_fx += 1
 	var fx: Variant = world.get("_native_hit_fx")
 	var x: float = enemy.global_position.x
 	var y: float = enemy.global_position.y
-	# deathFX 사운드(24790~24830): sfx/death 에셋 미복사 — 미이식(목록 보고).
-	_metrics.death_sound_skipped_missing_assets += 1
+	# deathFX 사운드(24790~24830): P2-001c부터 main 오디오 owner가 실디스패치 —
+	# 처리 못 한 경우(스로틀/에셋 부재)만 스킵 카운터.
+	if sound_handled:
+		_metrics["death_sounds_dispatched"] = int(_metrics.get("death_sounds_dispatched", 0)) + 1
+	else:
+		_metrics.death_sound_skipped_missing_assets += 1
 	# 중심 플래시 링 tp3 (24833) + 중심 원형 플래시 tp1 ×1 (24836~24839) — 비보스.
 	if is_instance_valid(fx) and fx.has_method("emit_source_particle"):
 		fx.emit_source_particle({"x": x, "y": y, "vx": 0.0, "vy": 0.0, "color": "#ffffff",

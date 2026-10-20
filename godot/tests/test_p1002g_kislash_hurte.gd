@@ -336,6 +336,7 @@ func _cast_and_verify(target_entry: Dictionary) -> bool:
 	if new_outcomes.is_empty():
 		return false
 	var killed_in_swing = 0
+	var potion_mats_in_swing = 0
 	for outcome in new_outcomes:
 		var id: int = int(outcome.get("enemy_id", 0))
 		if not tracked.has(id) or not pre.has(id) or pre[id]["alive"] != true:
@@ -401,6 +402,7 @@ func _cast_and_verify(target_entry: Dictionary) -> bool:
 				"rand consumed exactly once (crit) on non-kill (%s)" % tag)
 		else:
 			killed_in_swing += 1
+			potion_mats_in_swing += _potion_hp_from_draws(draws)
 			_verify_kill(entry, node, outcome, draws, tag)
 	if killed_in_swing > 0:
 		var g: Dictionary = active_main.get("source_state").read_current_g()
@@ -414,7 +416,8 @@ func _cast_and_verify(target_entry: Dictionary) -> bool:
 			expected_chain = 0 if expected_chain + 1 >= 5 else expected_chain + 1
 		_check(int(g.get("comboTimer")) == expected_timer, "G.comboTimer +60/kill capped (42715)")
 		_check(int(g.get("_chainCnt", 0)) == expected_chain, "G._chainCnt chain rule (42756)")
-		_check(int(g.get("mats")) == int(g_before.get("mats", 0)) + 4 * killed_in_swing, "G.mats +4/kill (43103)")
+		_check(int(g.get("mats")) == int(g_before.get("mats", 0)) + 4 * killed_in_swing + potion_mats_in_swing,
+			"G.mats +4/kill + 물약hp 전환 (43103/28253)")
 	return true
 
 func _verify_kill(entry: Dictionary, node: Node, outcome: Dictionary, draws: Array, tag: String) -> void:
@@ -439,9 +442,15 @@ func _verify_kill(entry: Dictionary, node: Node, outcome: Dictionary, draws: Arr
 	if el != 0:
 		expected_order.append("death_zone")
 	expected_order.append_array(["potion_gate", "potion_type"])
-	_check(purposes == expected_order, "kill-hit rand order matches source (%s: got %s)" % [tag, str(purposes)])
-	var expected_count: int = (8 if revived else 7) + (1 if el != 0 else 0)
-	_check(draws.size() == expected_count, "kill-hit rand count %d (el=%d, revived=%s) (%s)" % [expected_count, el, str(revived), tag])
+	# P2-001c: 43110 rollDrop 이식 — 접두 고정 + drop:* 꼬리 (게이트 롤 최소 1회).
+	_check(purposes.slice(0, expected_order.size()) == expected_order,
+		"kill-hit rand prefix matches source (%s: got %s)" % [tag, str(purposes)])
+	var drop_tail: Array = purposes.slice(expected_order.size())
+	var tail_ok := drop_tail.size() >= 1 and str(drop_tail[0]) == "drop:drop_gate"
+	for tail_purpose in drop_tail:
+		if not str(tail_purpose).begins_with("drop:"):
+			tail_ok = false
+	_check(tail_ok, "rollDrop rolls follow prefix (first=drop_gate) (%s: got %s)" % [tag, str(drop_tail)])
 	entry["killed_checked"] = true
 
 func _test_per_enemy_coverage() -> void:
@@ -486,3 +495,10 @@ func _test_per_enemy_coverage() -> void:
 	observations["cast_damages"] = []
 	for spawn in crescent_spawns:
 		(observations["cast_damages"] as Array).append({"step": spawn.get("step"), "tier": spawn.get("tier"), "damage": spawn.get("damage")})
+
+static func _potion_hp_from_draws(draws: Array) -> int:
+	# P2-001c: 43093 potion_type 롤 <1/3 → 'hp' → addPotion이 G.mats +1 (28253).
+	for draw in draws:
+		if str(draw.get("purpose")) == "potion_type":
+			return 1 if int(float(draw.get("value", 1.0)) * 3.0) == 0 else 0
+	return 0
