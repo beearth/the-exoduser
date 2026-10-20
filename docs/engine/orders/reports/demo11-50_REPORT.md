@@ -1,5 +1,15 @@
 # DEMO11-50 — 설정 차단 해소·현재 OPT 설정 UI
 
+## 2026-10-21 눈 검수 RETOUCH — 슬라이더·토글
+
+사용자 PASS인 패널·탭·드롭다운·폰트 배치를 보존하고, HSlider의 흑철 트랙(8px)·금빛 채움·뼈색 테두리 마름모 손잡이(22×30)를 적용했다. 헤어라인은 rgba(164,147,115,.5), 채움 #9c8457/#b9a075다. panelFit 및 전체화면 CheckButton은 같은 테마의 88×40 아이콘과 26×26 손잡이, 켬 체크/끔 가로획으로 상태를 구분한다. 기존 native 키보드·드래그·toggled 신호와 commit 경로는 유지한다. 아이콘은 로컬 SVG 코드로 구성하며 원본 이미지 변경0, 새 표시 문구0/추가 번역키0이다. 최종 시각 승인은 맥북총괄 재검수 대기다.
+
+최신 fetch origin/main `0138c5bb9188d27cee10cb1a901d075092ddb88f`를 정상 merge `61de88f365d56d202a70887ca13dd7bdaeeb495d`했다. add/add 충돌의 main 로비용 native_settings_lobby_bridge.gd 및 UID는 origin/main byte 그대로 보존했다. 자체 S10 구현은 native_settings_preferences.gd/UID로 이름만 분리(기존 구현 byte 동일)하고 pause preload27 한 줄을 바꿨다. 로비 언어·장치 API를 설정 저장 API로 덮어쓰지 않기 위한 판단이다. UI_FOUNDATION/WORK_BOARD 충돌은 양쪽 절/행을 모두 보존했다. main으로부터 들어온 변경과 이번 자체 변경은 구분하며 Main/State/전투 자체 수정0이다. 공용 자체 변경은 pause27 preload 1줄(+1/-1, merge 해결)뿐이고, retouch는 panel76·115·130 및146–169(+27/-2)다. 틱 함수/목록 생성API 추가0, 성능 벤치 미실시다.
+
+실제 GPU 관련 통합 suite `test_demo11_50_settings.gd` **1회 53/0, skip0**, 종료0·ERROR0·override0bytes. 기존 실제 UI 조작/실패prefix/저장 및 새 Main 복원/보호BINDS·난이도 보존 검사까지 포함한다. stderr에는 Main264의 Camera2D physics interpolation WARNING1건이 있으며 원문 보존, 자체 경고 수정은 하지 않았다. 임포트 종료0·ERROR0. 다른 회귀 중복 실행0. 매 Godot 실행 전 프로세스 수 gate 로그를 남겼으며 실제 사용자 저장 폴더 접근0이다.
+
+현재 캡처 `~/exoduser-wt/_out/demo11-50/captures/01-system.png`, `02-sound.png`는 각각1920×1080, 대응 `*-1x.png`는 좌표(410,10) 1100×1060 무배율 크롭이다. 두 전체 화면을 도구로 확인해 금빛 채움·손잡이와 OFF 토글의 테두리/가로획이 보이는 것을 확인했다. 최초 제출 캡처는 captures/pre-retouch-5ac5dcfc/에 보존한다. 새 원로그·gate·명령·tested byte 해시는 `_out/demo11-50/retouch-20261021/`, 최종 SHA/원격일치/R불변/제거는 DONE.txt 참조. PC 실행·동기화 미확인.
+
 기준 origin/main `45be76e49d0090316b91a6b7b383d81835e29192`, 의존 DEMO11-09 `dc9f34ea49347de328c1ba66db85671ba442c9e6`, 정상 merge `319ca387c11f5ed9c2e17d4f0532eac6b3a7c768`. 브랜치 `codex/demo11-50-20261021`. CHANGELOG 충돌은 최신 main 전체 byte를 보존하고 의존09 절만 위에 유지했다. force/rebase/reset/main push0. R은 실제 실행 source가 아니며 sparse WT→동일 byte의 격리 project에서 검수했다. PC 실행/동기화는 미확인이다.
 
 ## 차단 해소와 공용 변경
@@ -12,7 +22,7 @@
 | native_demo_pause_menu.gd | +14/-8,10·17·27–28·48–49·65·71–76·161 | 새 bridge와 설정 panel 연결, 준비중/BLOCKED 반환을 실제 writer에 위임, Q 패링·E 방패(불꽃칼날) 안내. Esc/back/resume/review 우선순위 보존 |
 | Main/State 및 전투 | 이번 자체변경0 | Main은 의존09 merge의 +10/-0만(4–6·332–334·1668·1679–1681). State/player/world/HUD/QE·hurtE/hurtP·분노·방패·docs2_3 자체변경0, 기준merge 대비 byte 동일 |
 
-신규 native_settings_lobby_bridge.gd(S10)와 native_settings_panel.gd(S02/S04/S09)가 기존 OPT/입력/IO owner만 호출한다. 사용자 지정 S10은 이번 설정 저장·복원 허가로 인수하며, 최초 추적 순서안의 로비/장치 read-only 후보와 보호 HOLD를 임의로 전체 이식하지 않는다. S01 missing/loss 진단은 유지하고 실제 initializer의3필드를 보완했다. 원본 game.html SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`,6311·48876·48879–48904·49062–49066·49208–49255·49395–49437 근거. 원본/대형 JSON을 모델 출력으로 전수 덤프하지 않았다.
+신규 native_settings_preferences.gd(S10, 최초 제출명 native_settings_lobby_bridge.gd)와 native_settings_panel.gd(S02/S04/S09)가 기존 OPT/입력/IO owner만 호출한다. 사용자 지정 S10은 이번 설정 저장·복원 허가로 인수하며, 최초 추적 순서안의 로비/장치 read-only 후보와 보호 HOLD를 임의로 전체 이식하지 않는다. S01 missing/loss 진단은 유지하고 실제 initializer의3필드를 보완했다. 원본 game.html SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`,6311·48876·48879–48904·49062–49066·49208–49255·49395–49437 근거. 원본/대형 JSON을 모델 출력으로 전수 덤프하지 않았다.
 
 설정은 시스템/화면/사운드/조작4탭. 볼륨0..100, ko/en, 원본 cap30/60/**120**/144/244/0, fullscreen/windowed, textScale80..160/10·panelFit·shake를 한 제어씩 연결했다. 현재 Main 지원 언어가2개여서 다른 언어를 번역 완료처럼 제공하지 않는다. cap은 Engine.max_fps이고 물리60Hz 및 scheduler 본문을 수정하지 않는다. 안내 글자 확대는 현재 설정 UI의 소비 범위이며 전체 HUD/기존 guide 일괄 이식 완료가 아니다. 키 변경/리스닝/reset/장치 inputMode 변경은 제공하지 않는다.
 

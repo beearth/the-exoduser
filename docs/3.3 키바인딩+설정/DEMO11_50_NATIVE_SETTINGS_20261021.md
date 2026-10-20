@@ -1,5 +1,7 @@
 # DEMO11-50 — native 설정 UI·허용 OPT 저장/복원
 
+2026-10-21 RETOUCH: 설정 HSlider는 흑철8px 트랙·금빛 채움·22×30 뼈색 테두리 손잡이, panelFit/전체화면은88×40 금빛 테마 토글(26×26 손잡이·체크/가로획)로 표시한다. 원본 입력·writer·범위는 불변, 새 번역 문구0. 최신 main 병합의 로비 언어/장치 bridge 이름 충돌을 피하도록 설정 저장 구현만 `native_settings_preferences.gd`로 분리했고 `native_settings_lobby_bridge.gd`는 main 로비용 byte를 보존한다. 캡처2장+1x크롭·GPU53/0 및 재검수 자료는 [보고서](../engine/orders/reports/demo11-50_REPORT.md) 참조.
+
 기준 origin/main45be76e49 + DEMO11-09 dc9f34ea 정상 merge319ca387. 원본 game.html:6311의 textScale100/panelFittrue/diffV2=1을 기존 source_options_state 초기화에 추가해 실제38필드를 완성했다. S01은 readonly/missing/loss 검증을 유지하고 임의 read-time fallback을 추가하지 않는다.
 
 ## 현재 허용 제어와 권위

@@ -72,7 +72,7 @@ func _build() -> void:
 				if caps[i]==opt.get("fpsCap"): cap.select(i)
 			_row(content,text("fps"),cap,scale);controls.fpsCap=cap
 			cap.item_selected.connect(func(index:int):_change({"fpsCap":cap.get_item_metadata(index)}))
-			var fullscreen:=CheckButton.new();fullscreen.button_pressed=get_window().mode==Window.MODE_FULLSCREEN
+			var fullscreen:=CheckButton.new();_theme_toggle(fullscreen);fullscreen.button_pressed=get_window().mode==Window.MODE_FULLSCREEN
 			_row(content,text("fullscreen"),fullscreen,scale);controls.fullscreen=fullscreen
 			fullscreen.toggled.connect(func(value:bool):_result(_menu.settings_bridge.request_screen("fullscreen" if value else "windowed")))
 			_label(content,text("fps_note"),int(17*scale))
@@ -109,6 +109,7 @@ func _row(parent: Node,title: String,control: Control,scale: float) -> void:
 func _slider(parent: Node,key: String,low: float,high: float,step: float,value: float,scale: float,label_key: String="") -> void:
 	var row:=HBoxContainer.new();row.add_theme_constant_override("separation",16)
 	var slider:=HSlider.new();slider.min_value=low;slider.max_value=high;slider.step=step;slider.value=value;slider.custom_minimum_size=Vector2(340,44);slider.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	_theme_slider(slider)
 	row.add_child(slider)
 	var number:=_label(row,"%d%%" % value,19,"cinzel_hell");number.custom_minimum_size.x=90
 	_row(parent,text(label_key if not label_key.is_empty() else key),row,scale)
@@ -123,7 +124,7 @@ func _slider(parent: Node,key: String,low: float,high: float,step: float,value: 
 func _keyboard_slider_commit(key: String,slider: HSlider) -> void:
 	if is_instance_valid(slider):_change({key:slider.value},key=="textScale")
 func _toggle(parent: Node,key: String,value: bool,scale: float) -> void:
-	var button:=CheckButton.new();button.button_pressed=value;_row(parent,text(key),button,scale);controls[key]=button
+	var button:=CheckButton.new();_theme_toggle(button);button.button_pressed=value;_row(parent,text(key),button,scale);controls[key]=button
 	button.toggled.connect(func(next:bool):_change({key:next},true))
 func _button(parent: Node,value: String,callback: Callable) -> Button:
 	var button:=Button.new();button.text=value;button.custom_minimum_size.y=48
@@ -146,3 +147,27 @@ func _rebuild(tab: String) -> void:
 	if is_instance_valid(_panel):remove_child(_panel);_panel.queue_free()
 	_build()
 	if controls.get(focus_key) is Control and not (controls[focus_key] is BaseButton and controls[focus_key].disabled):controls[focus_key].grab_focus()
+
+# Native input semantics are retained; only local settings control visuals change.
+func _control_box(fill: Color, height: float) -> StyleBoxFlat:
+	var box:=StyleBoxFlat.new();box.bg_color=fill
+	box.border_color=Color(164.0/255,147.0/255,115.0/255,0.5)
+	box.set_border_width_all(1);box.content_margin_top=height/2;box.content_margin_bottom=height/2
+	box.set_corner_radius_all(2)
+	return box
+func _vector_icon(svg: String) -> ImageTexture:
+	var image:=Image.new();image.load_svg_from_string(svg)
+	return ImageTexture.create_from_image(image)
+func _theme_slider(slider: HSlider) -> void:
+	slider.add_theme_stylebox_override("slider",_control_box(Color("171414"),8))
+	slider.add_theme_stylebox_override("grabber_area",_control_box(Color("9c8457"),8))
+	slider.add_theme_stylebox_override("grabber_area_highlight",_control_box(Color("b9a075"),8))
+	var handle:=_vector_icon('<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30"><path d="M11 1 L21 15 L11 29 L1 15 Z" fill="#a49373" stroke="#dfd6c2"/><path d="M11 7 L16 15 L11 23 L6 15 Z" fill="#382c21"/></svg>')
+	for key in ["grabber","grabber_highlight","grabber_disabled"]:slider.add_theme_icon_override(key,handle)
+func _theme_toggle(button: CheckButton) -> void:
+	for checked in [false,true]:
+		var x:=58 if checked else 4
+		var icon:=_vector_icon('<svg xmlns="http://www.w3.org/2000/svg" width="88" height="40"><rect x="1" y="3" width="86" height="34" rx="3" fill="%s" stroke="#a49373"/><rect x="%d" y="7" width="26" height="26" rx="2" fill="%s" stroke="#dfd6c2"/><path d="%s" fill="none" stroke="%s" stroke-width="2"/></svg>' % ["#51432d" if checked else "#171414",x,"#c5b28a" if checked else "#534a3e","M64 19 L69 24 L78 14" if checked else "M12 20 L22 20","#211b16" if checked else "#dfd6c2"])
+		for suffix in ["","_disabled"]:
+			button.add_theme_icon_override(("checked" if checked else "unchecked")+suffix,icon)
+	button.add_theme_stylebox_override("focus",_control_box(Color(0.64,0.57,0.45,0.08),0))
