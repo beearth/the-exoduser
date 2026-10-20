@@ -21,7 +21,7 @@
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
-| P2-008b | 초기16 order11/type47·order9/type21 exact 소비자 | PC Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd exact 등록 구역·etype47/21 전용 스크립트/테스트/프로필·보고서 | **2종 부분 완료·검수 대기** — 초기11지원/5미지원·Godot19종 최종0실패, 원본 clone 비등록 보존. 다음 order5 장판/사망 경로 미인수 정직 정지·TP 전체FX/실창 미검수·소환굴 연결0 |
+| P2-008b | 초기16 order11/type47·order9/type21 exact 소비자 | PC Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd exact 등록 구역·etype47/21 전용 스크립트/테스트/프로필·보고서 | **2종 부분 완료·검수 대기** — 구현 `934783ad5`→`eb608f516` 원격 대조, 초기11지원/5미지원·Godot19종 최종0실패·原 clone 비등록. 다음 order5 장판/사망 경로 미인수 정직 정지·TP 전체FX/실창 미검수·소환굴 연결0 |
 | DOC-SYNC | 오늘 통합분 원본 수치·설계 docs 동기화 감사 | PC Codex | codex/doc-sync-pc-20261020 | DOC-SYNC_REPORT.md 및 설계 문서10개 정정 구역(2_3 제외) | **검수 완료·main 병합(Claude 총괄)** — 설계 문서 10종 원본 기준 정정, 코드 무변경. 2_4는 P2-004b와 충돌 → 상세 문장 유지+정정 주석 |
 | P2-001l | 패링 연습 단계 0~7·입력 제한(allows) | PC heavy 담당 | claude/p2-001l-lesson-steps-20261020 | native_parry_lesson_flow.gd 등 레슨 파일, player.gd·main.gd 입력 처리 함수 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 병합본 독립 재실행 9종 0실패(L·K·H·J·QE·5c·HUD·지역·시작스킬), 화면 RETOUCH·step1~7·챕터2 미이식 |
 | P2-006a | 드랍 바닥 표시·줍기·인벤 반입 | PC heavy 담당 — **Claude 사용 한도로 중단**(작업 폴더 G:\exoduser-wt\p2-002a-hud에 진행분 보존) | claude/p2-006a-drop-pickup-20261020 | 드랍 렌더·줍기 신규 스크립트 | **기능 완료·main 병합 / 디자인 미검수(RETOUCH)** — 총괄 독립: world_drops 18/0·pickup_contract 17/0·HUD 36/0·시작 스킬 27/0. 원본 에셋 189개 해시 일치(Codex). 처치 직후 캡처에서 드랍이 피 효과에 가려 판독 불가 → P2-006b 화면 마감 | |

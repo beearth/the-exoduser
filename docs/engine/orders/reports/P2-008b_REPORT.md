@@ -141,7 +141,7 @@ TDD: `red-21/test_etype21_ch1_dark_archer.*.log` 먼저 미등록1/1실패, 구�
 
 ### ④ 2차 커밋
 
-2차 구현 SHA는 다음 기록 체크포인트에서 기입한다. 1차 구현 `934783ad53a5f4100ec16ddf5ef230cd4087b760`과 기록 `f48c94eb6c4067646e3ee7c977266d397c700e08`은 자기 원격 브랜치에서 읽기 대조 완료.
+2차 구현 SHA **`eb608f51645d36bb56a9c4f55cdb49c2a6502083`**, 자기 브랜치 push 후 `git ls-remote origin refs/heads/codex/p2-008b-ch1-enemies-pc-20261020`로 동일 SHA 대조 완료. 1차 구현 `934783ad53a5f4100ec16ddf5ef230cd4087b760`과 기록 `f48c94eb6c4067646e3ee7c977266d397c700e08`도 원격 보존. 본 기록 커밋은 구현 SHA와 구분한다. 최종 tracked 미커밋은 사용자 지시대로 제외한 `tools/guard.baseline.json`뿐이며 override.cfg 포함 없음.
 
 ### ⑤ 다음 경계 — 미지원5 정직 정지
 
