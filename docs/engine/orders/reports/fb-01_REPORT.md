@@ -2,7 +2,7 @@
 
 ## 결과와 기준
 
-상태: **검증 완료·제출 후보**. 원본 사이트와 초기 객체를 생성하는 순수 catalog를 구현했다. 실제 필드보스 생성·AI·전투·보상·State/Main 연결은 구현하지 않았다.
+상태: **구현·독립 검증 완료 / 소환굴 종료 경고 보존(전체 회귀 clean PASS 아님)**. 원본 사이트와 초기 객체를 생성하는 순수 catalog를 구현했다. 실제 필드보스 생성·AI·전투·보상·State/Main 연결은 구현하지 않았다.
 
 | 항목 | 근거 |
 | --- | --- |
@@ -73,10 +73,17 @@ host 경계와 원본 계산을 구분한다. 좌표/레벨은 유한 Number만 
 | import-03 | — groups / — | exit0 / ERROR0 / 경고0 |
 | regions-02 | 43 / 0 | exit0 / ERROR0 / 경고1 |
 | holes-02 | 298 / 0 | exit0 / ERROR0 / 경고2 |
+| holes-baseline-01 | 298 / 0 | exit0 / ERROR0 / 경고2 |
 
 변조는 저장소 밖 복사본에만 적용했다. HP배율·타일+.5·가짜문지기생성·RNG소비를 각각 바꾼다. **명시적 단정 실패/exit1/ERROR0/205표본 실행**일 때만 검출로 인정한다. parse error·잘못된 경로·SKIP·실행 미완료를 검출 성공으로 세지 않는다. 검출 수와 실제 실패 수는 verification-batch.json 및 각 mutation meta를 기준으로 한다. 저장소 모듈은 변조하지 않는다.
 
 최초 regions-01/holes-01은 단정43/0·298/0,exit0이지만 이미지2개 로드 ERROR 때문에 전체 실패다. 초기 sparse 범위에서 기존 tracked godot/img/map_dragon_skeleton.png/map_dragon_3d.png 및각.import가 빠진 작업 환경 누락으로 판정했다. 필요한4파일만 sparse에 추가하고 원본 Git blob과 동일 byte임을 확인했다. 코드/기대값은 바꾸지 않고 재import 후 실패한 두 회귀만 재검사했다. 첫 holes 실행의 ObjectDB8 경고도 원문 보존한다(sparse-assets-correction.json).
+
+holes-02는 자산 ERROR0·298/0·exit0이지만 ObjectDB8 경고가 남아 clean 종료 PASS가 아니다. verbose는 RefCounted8개/각 reference count0을 보고하며 잔존 resource ERROR는 없다. 실제 누수 원인/필요 수정 줄은 미확인이다. 새 catalog의 런타임 연결은 scripts/scenes 검색0이며 기존 코드·테스트는 동일 byte다(no-runtime-binding.json).
+
+baseline 대조는 자기 새 catalog/test/fixture/uid5개를 저장소 밖으로 잠시 옮겨 실행한 뒤 finally에서 같은 SHA로 복원한다. 기존 제품 파일은 바꾸지 않는다. holes-baseline-01과 baseline-comparison-files.json의 결과로 새 코드 없는 기준 상태의 재현 여부를 판정한다. baseline 결과는298/0·exit0·ERROR0이며 같은 ObjectDB8 경고가 재현됐다. 따라서 이 의존 기준의 선재 종료 경고로 기록하고 FB-01 회귀로 귀속하지 않는다. 제거한 자기5파일은 모두 같은 SHA로 복원했다. 전체 회귀 clean PASS로 승격하지 않으며 runner meta의 pass 필드는 exit/ERROR/단정만 검사하므로 이 경고까지 해결됐다는 뜻이 아니다.
+
+종료 경고의 원인과 실제 수정 줄 수는 미확인이다. 기존 test_p3002_spawn_holes.gd59–67의 Main free 후 즉시 quit 경로는 후속 진단 접점일 뿐이며 원인으로 확정하지 않는다. 기존 하니스/공용 수리가 필요해지면 소유 조정 후 별도 작업으로 중지·보고한다. 경고 수리를 위해 공용/기존 테스트를 수정하지 않는다.
 
 sparse add에서 지원하지 않는 옵션을 사용한 준비 명령1회는 실패로 보존했다. 자기 import-02 대기 runner를 엔진 시작 전에 종료(exit143)하고,올바르게4파일이 materialize된 후 import-03을 실행했다. 다른 Godot 프로세스는 종료하지 않았다. import-02는 실행/PASS에 세지 않는다.
 
