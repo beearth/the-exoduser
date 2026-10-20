@@ -44,3 +44,36 @@
 - VISUAL VERDICT: **RETOUCH** — 요청한 아트2장 적용·가독성·성능 범위 통과, 기존 입구 직선 지면 접합은 잔여. 자동 PASS를 전체 맵 시각 PASS로 대체하지 않음.
 - NEXT PASS: 입구 지면 전이 마감·전체8뷰 반복성·밀집 전투 검수.
 
+
+
+## MAP11-16b RETOUCH — 2026-10-21
+
+기준 22342eb7, branch codex/map11-16b-20261021. R 읽기 전용, 신규 생성 없음.
+
+| ID | 현행 수치 / 적용 |
+|---|---|
+| FLOOR_BLEND | 760/1130/1830 world UV 유지; mix(mix(a,b,blend×.18),c,.08). 주 텍스처 균열 윤곽 보존 |
+| FLOOR_COLOR | relief=dot(sample, [.299,.587,.114]); skin=[.22,.165,.14]+relief×.95+sample×[.28,.16,.14]; blood=clamp(R−1.15G,0,.24); skin+=blood×[1.30,−.72,−.62]. 동측 damp 기존 유지. 비발광 |
+| FOG | MAP11 fog_pass에서 NativeFogGL modulate.a .32 / NativeFog2D·NativeVignette .45, 종료 시1 복원. 화면 전체 alpha 배율이며 바닥 geometry mask는 아님. 기존 패스·FBM cache·중앙 fog 감쇠 유지 |
+| EDGE | 제품 surface polygon만95unit 이하 간격 세분화, y<−3800에서 y+=sin(x×.017+1.3)×48+sin(x×.039)×23. 기존 뿌리 apron과 결합. 충돌·provider·통로 불변 |
+| TREE | 기존 height7/width5/brightness6/rotation6에 신규 나무만 추가 scaleX [.76,1.21,.91,1.13,.84], scaleY [1.13,.86,1.05,.94], brightness [.72,1.18,.92,1.06,.83], rotation [−.14,.12,−.07,.17,−.10,.04,.09], flip=mirror XOR serial%3==0. 회전·scale 반영 AABB 재계산. 수량 불변 |
+| QA | 벤치1회 23 PASS/0 FAIL, field600틱 p95 6.985ms / arena600틱7.101ms ≤8.33ms. 1920×1080/240cap/60Hz/Compatibility. 이후 shader 기본 명도만 상향하고 캡처 전용1회; 최종 명도 버전 성능 재측정 안 함 |
+| CAPTURE | _out/MAP11-16b/captures의01_field/02_outer_forest/03_boss_entrance 각1600×900 + 각640×600 1x; before_after.png 전후3뷰 비교 |
+| SAVE | import·실행 모두 EXODUSER-map11-16b-Isolated-20261021. project.godot 원 byte 복원. 실제 저장폴더 접근0 |
+
+### MAP PRODUCTION REPORT
+
+- STAGE: Godot CH1-1 MAP11-16b.
+- MASTER: silhouette/regions/main route/side spaces 기존 유지, 남시작→북출구.
+- OUTER MASS: LEFT/RIGHT/TOP/SOUTH 수량·feet 유지, 신규 hole 추가 없음.
+- LARGE: 기존 승인 Seedream+8종, 신규 나무 scale/rotation/mirror/명도 변형 확대, 추가 배치0.
+- MEDIUM: 기존 root apron·그림자 유지, 북측 시각 가장자리 요철로 직선 분절.
+- GROUND: 주 텍스처 가중치 확대·붉은 균열 강화·안개 감쇠, 캐릭터 비발광 배경 대비 유지.
+- PLAYABLE: main arenas/travel/breathing/threat·충돌 불변. 실제 Player 걷기 통과. 밀집 전투 미검수.
+- LANDMARK: primary 시체나무/제단, secondary 관문, tertiary 기존 유지.
+- CAMERA QA: 필드 LANDMARK/서측 SIDE L/EXIT 3뷰+1x 비교. START/EARLY/ARENA/SIDE R/LATE 전체8뷰 미인수.
+- TECH QA: 관련 하니스 통과, route/provider 소스 변경0, tick 목록 API 추가0, pageerror/404 N/A. loading 오류 없음. 성능 수치와 최종 명도 미측정 한계 위 표.
+- FILES: stage-owned product_field_view/product_surface/fog_pass/capture_map11_art 및 본 문서; concurrent/unrelated 수정0.
+- GIT: 경로지정 stage, 자기 branch 정상 push·원격 SHA 대조; main/deploy0; PC 미확인.
+- VISUAL VERDICT: RETOUCH. 요청한 바닥·입구·반복 개선, 전체8뷰/밀집전투 최종 인수는 남음.
+- NEXT PASS: 총괄 눈 검수 및 전체8뷰/밀집전투 가독성.

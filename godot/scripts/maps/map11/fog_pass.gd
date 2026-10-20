@@ -1,6 +1,7 @@
 extends Node
 ## MAP11-only static FBM cache. Existing fog pass/UV/time/color/compositing owner remain.
 var source: ColorRect
+var reduced: Array[CanvasItem]=[]
 var original: ShaderMaterial
 func configure(main: Node) -> void:
  var lighting: Node=main.get_node_or_null("NativeScreenLighting")
@@ -19,5 +20,13 @@ func configure(main: Node) -> void:
  material_.shader=shader_
  material_.set_shader_parameter("fbm_cache",load("res://assets/maps/map11/fog_fbm_filtered.png"))
  source.material=material_
+ # MAP11 only: retain edge atmosphere, uncover the central combat floor.
+ for id in ["NativeFogGL","NativeFog2D","NativeVignette"]:
+  var overlay: CanvasItem=lighting.get_node_or_null(id)
+  if overlay!=null:
+   overlay.modulate.a=.32 if id=="NativeFogGL" else .45
+   reduced.append(overlay)
 func _exit_tree() -> void:
+ for overlay in reduced:
+  if is_instance_valid(overlay):overlay.modulate.a=1.0
  if is_instance_valid(source) and original!=null:source.material=original

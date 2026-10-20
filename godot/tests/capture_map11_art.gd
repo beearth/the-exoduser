@@ -1,6 +1,6 @@
 extends SceneTree
 ## MAP11-16 actual Main render + real Player input walking; no combat completion.
-const USERDIR="EXODUSER-map11-16-Isolated-20261021"
+const USERDIR="EXODUSER-map11-16b-Isolated-20261021"
 var main: Node
 var output: String=""
 var failures: int=0

@@ -7,6 +7,7 @@ var flesh_tree_instances: int=0
 func _ready() -> void:
  recipe=load("res://scripts/maps/map11/field_recipe.tres")
  _build_ground()
+ _retouch_ground_edge()
  # MAP11-16 approved fissure tile, mipmapped; world-space three-scale blend retained.
  _surface.material.shader=preload("res://scripts/maps/map11/product_surface.gdshader")
  _surface.material.set_shader_parameter("ground",load("res://assets/maps/map11/floor_fissure_seedream_tile.png"))
@@ -77,6 +78,29 @@ func _add_tree(layer: String,side: String,foot: Vector2,height_: float,tone: Col
  _textures[idx]=original
  if use_flesh:
   var sprite: Sprite2D=_forest_rows.back().node.get_child(0)
-  sprite.modulate*=Color(.84,.82,.82,1.0)
+  var serial: int=flesh_tree_instances
+  sprite.modulate*=Color(.84,.82,.82,1.0)*[.72,1.18,.92,1.06,.83][serial%5]
+  sprite.scale*=Vector2([.76,1.21,.91,1.13,.84][serial%5],[1.13,.86,1.05,.94][serial%4])
+  sprite.rotation+=[-.14,.12,-.07,.17,-.10,.04,.09][serial%7]
+  sprite.flip_h=mirror != (serial%3==0)
+  var row: Dictionary=_forest_rows.back()
+  var size_: Vector2=sprite.texture.get_size()
+  var bounds:=Rect2(sprite.transform*sprite.offset,Vector2.ZERO)
+  for corner in [Vector2(size_.x,0),size_,Vector2(0,size_.y)]:bounds=bounds.expand(sprite.transform*(sprite.offset+corner))
+  row.rect=Rect2(bounds.position+foot,bounds.size).grow(55)
   sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   flesh_tree_instances+=1
+
+# Render edge only: provider/collision stays locked. Uneven tissue lip under gate roots.
+func _retouch_ground_edge() -> void:
+ var points:=PackedVector2Array()
+ for i in range(recipe.outer.size()):
+  var a: Vector2=recipe.outer[i]
+  var b: Vector2=recipe.outer[(i+1)%recipe.outer.size()]
+  var count: int=maxi(1,int(ceil(a.distance_to(b)/95.0)))
+  for j in range(count):
+   var point: Vector2=a.lerp(b,float(j)/count)
+   if point.y< -3800.0:
+    point.y+=sin(point.x*.017+1.3)*48.0+sin(point.x*.039)*23.0
+   points.append(point)
+ _surface.polygon=points
