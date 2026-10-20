@@ -1,3 +1,8 @@
+## 2026-10-21 DEMO11-48 자동 석궁 보호 접점 진단
+
+- main0138c5bb9 기준. W01/INV/store/DEMO11-35 재사용 경계를 추적하고 실제 hurtE normalBow 옵션 선행 거부를 격리 재현했다. 피해·반사·패링 우회0, 제품/Main/State/보호 파일0줄.
+- **BLOCKED**: PC normalBow 피해·반사 접점과 projectile frame 발행 계약 필요. 제품 owner·실제 전투·120fps 벤치 미구현/미실행이며 통과 주장0. [보고서](engine/orders/reports/demo11-48_REPORT.md), docs/2_2 인터페이스 요청·22r 장비교체 후속, 원로그 _out/demo11-48/.
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
