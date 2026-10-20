@@ -1,3 +1,12 @@
+## 2026-10-20 MAPLOOK-TOXIC 화면 비교 자료 준비
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 독립 표시 | scripts/maplook/toxic_surface.gd + maplook_toxic_surface.gdshader. m_c1pool(6700,1740)·pit_poison(6500,5580)·m_c1gtoxic(6740,1620)·m_c1gtoxicf(6500,5460)의 원본 Texture2D 참조 overlay4개. 기존 MODULES 자동 설치·기본 하니스OFF 유지 |
+| 액면/보존 | 원본3×3 alpha 안쪽만 불규칙 흐름·끊어진 반사·고정 seed20261020+id.hash() 거품8개/표면·낮은 회녹 증기. 자기 노드만 blend_mix; 원본 texture/material/visible/z·공용 제품·map.json·원본PNG 변경0, 신규 이미지/AI·광원·공유RNG·게임플레이 쓰기0 |
+| 검수 | 최종 실창GPU80/0; 기존688검사+8그룹/0. contracts 초기 CLI60FPS로1실패→원래240FPS 인자로5그룹/0, 초기 알파 누출33→2→0 로그 보존. 최종 ERROR0, 기존Camera2D·ObjectDB(P3002 8/HUD2) 경고 보존 |
+| 비교 자료 | ON 실창1920×1080 북/남 전체 전후·1x4곳·좌before/우after 비교, PNG26장. ~/exoduser-wt/_out/maplook-toxic/. 상태=화면 비교 자료 준비, VISUAL RETOUCH(남쪽 원화 원형 테두리/중앙 고리 잔존). [보고서](engine/orders/reports/maplook-toxic_REPORT.md) |
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
