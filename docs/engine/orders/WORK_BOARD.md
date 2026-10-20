@@ -8,6 +8,8 @@
 > - PC Claude = **PC(Windows) 구동 테스트 담당**. 가끔 main을 PC Godot 4.7.2로 돌려 회귀와 실창 동작을 확인하고, 결함은 이 표에 행으로 올린다. PC에서는 새 자동 작업을 배정하지 않는다.
 > - PC VS Code Codex에서 이미 돌고 있던 P2-006b·P2-008b(+P2-008a-FIX 우선)·P2-009a는 PC가 켜져 있는 동안 계속 진행한다. 결과 브랜치는 맥북총괄이 검수한다. PC가 꺼져 멈추면 Mac이 인수한다.
 
+> **2026-10-20 사용자 운영 원칙(확정)**: "PC는 수동작업 전용이고 맥은 자동전용", "총괄은 클로드 코딩작업은 코덱스". → 자동으로 도는 구현·추적은 Mac Codex, 배정·검수는 Claude(Mac 맥북총괄 = 자동 트랙, PC Claude = 사용자가 직접 시키는 수동 작업). PC Codex 신규 자동 배정 없음.
+
 ## 역할 (2026-10-20 사용자 지시 기준)
 | 역할 | 누구 | 하는 일 |
 |---|---|---|
@@ -58,6 +60,7 @@
 | TRACE-ITEMS | 7 아이템·어픽스 원본 추적(문서만) | Mac Codex 01a1589e-f8d5 | codex/trace-items-20261020 | 추적 문서 1개 | 검수 대기 — 33486451a (맥북총괄 검수) |
 | P2-008a | 1-1 초기 미지원 적: etype20 빙결전사 exact 3개체(order4/10/12) | PC VS Code Codex | codex/p2-008a-ch1-enemies-pc-20261020 → main | enemy_melee_ch1_ice_warrior.gd·etype20 json·factory 등록 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 원본 39057~39060 빈 근접 분기·40499 _meleeET 제외·31154 _noProjEtypes[20] 확인(무공격 = 원본 동작), 병합본 14종 0실패, 지원 9/미지원 7, 화면·실플레이 미 |
 | TRACE-CH1-ENEMIES | 1장 미이식 적 원본 추적(문서만) — PC P2-008a 구현과 겹치지 않게 P2-008a 범위는 참고만 | Mac Codex 01a1589f-0218 | codex/trace-ch1-enemies-20261020 | 추적 문서 1개 | 진행 중 |
+| LOOK-001 | Godot 룩 테스트 4안(현행·2D 강화·3D Forward+·3D Compatibility) 비교 자료 — [전략 문서](../FDG_GODOT_CUSTOM_STRATEGY_20261020.md) §5 | Mac Codex(맥북총괄 배정) | codex/look-001-20261020 | 신규 토글·셰이더·godot/assets/derived/ — 원본 모드·회귀 변화 0 | 배정 요청(2026-10-20 PC 총괄) |
 | P2-008a-FIX | P2-008a 빙결전사 포이즈 경로 정지 결함 수정(crawler 413 etype≠0 거부 → hurtE 42490 halt, p1002g 1실패) | PC VS Code Codex(P2-008a 작성자, P2-008b 스레드에 최우선 큐) | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_melee_ch1_ice_warrior.gd 등 | 진행 대기 — main b8a6b0192에서 p1002g 1실패 재현(19a713578 통과). PC 정지 시 Mac 인수 |
 | P2-008b | 1-1 미지원 적 다음 개체(order11 etype47 우선) | PC VS Code Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd·신규 적 스크립트 | 진행 중(P2-008a-FIX 뒤) |
 | P2-009a | 피드백 UI | PC VS Code Codex | codex/p2-009a-feedback-ui 계열 | native_skill_slots.gd 등 | 진행 중 |
