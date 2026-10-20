@@ -1,7 +1,7 @@
 extends RefCounted
 ## DEMO11-24b: value cache, not a second INV/formula/regen/cooldown owner.
 ## Rebuilt only at boot or accepted runtime refresh. Tick readers never rebuild.
-const IDS=["lckFlatR","mpCostRed","dropRate","stCostRed","skillCdRed","potionPower","lckFlatN","expBonus","lifeHealPow","skillBoost","cooldownRed","helmCooldown","endCooldownAll"]
+const IDS=["lckFlatR","mpCostRed","dropRate","stCostRed","skillCdRed","potionPower","potionCdRed","lckFlatN","expBonus","lifeHealPow","skillBoost","cooldownRed","helmCooldown","endCooldownAll"]
 var _main: WeakRef
 var _values: Dictionary={}
 var _ready:=false
