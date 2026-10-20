@@ -1,3 +1,13 @@
+## 2026-10-20 META-04 SP/AP 투자·환불 순수 계산
+
+| 항목 | 변경·검수 |
+|---|---|
+| 신규 API | native_meta_point_policy.gd·test_meta_point_policy.gd 및 자기 UID2개. rank/stat/passive/refund/grit/createPlan/evaluatePlan의8개 순수 API만 |
+| 원본 | main284d7faf stat-panel-ui.js4–23·256–274 및 game.html27690–27728·27894–27896·51204–51274. 4스탯500/legacyVIT전체환불·근성1SP·AP[1,1,1,2,2,2,3,3,3,5] 합23. stale/key/safe잔액/max(cap,current)·감소환급·no-op 결과 보존 |
+| 검수 | 신규1076/0·원본 JS 969API exact대조/0불일치. META-03 68/0·META-02 70/0·META-01 20/0·contracts5case/0·p2001c45/0, SKIP0·exit0·ERROR0. 첫 하니스 TypeError/Parse Error·부동소수 MAX리터럴의 실제 경계거부를 실패로 보존. 상수를 정확한 int로 수정 후 신규+회귀 전체 재검 |
+| 의존·보호 | META-03 미통합으로5b672e7c parent. 공용6·raw_grit_restore·기존META/테스트·원본·저장·Q/E0줄. raw holder 재사용 가능 경계만 보고서에 설명, State/큐/UI/writer연결0. 전체환불/구저장migration 혼합0 |
+| 증거 | Godot pgrep2이상30초대기·각 격리상수/작업명·override매회0byte. [META-04 보고서](engine/orders/reports/meta-04_REPORT.md)·~/exoduser-wt/_out/meta-04/·STATUS=REVIEW_PENDING |
+
 ## 2026-10-20 META-03 레거시 분해 가치 순수 규칙
 
 | 항목 | 변경·검수 |
