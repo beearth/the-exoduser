@@ -1,3 +1,9 @@
+## 2026-10-21 DEMO11-INTEG — Mac 33후보 통합 검증용 브랜치
+
+- 최신origin/main0138c5bb9에서 지정33개SHA 순차 merge,31은44 의존 포함/no-op. 코드 통합c6932a85·모든 target ancestor. main push/rebase/force0, 기능 추가보다 기존 각 owner/PC 코드·수명/분기 보존. 표에 충돌 파일/해소 근거/단계SHA/대표 검사 기록.
+- 대표 suite 각1회:29개 ERROR0 PASS.41 BGM55검사8실패,EL-01 class 준비 중단·19ui/37 SVG import ERROR는 하니스 미검증으로 인계(재실행0·원로그 보존). 전체 E2E/최종 인수 PASS 아님. 후속 class/asset 준비 import ERROR0.
+- 번역 CRLF4,975/loneLF0·원본game blob불변·중복함수/선언/marker0. [통합 보고서·수정/검증 인계](engine/orders/reports/demo11-integ_REPORT.md), _out/demo11-integ/manifest·audit·author_actions·원로그. 자기branch 정상push/remoteSHA/DONE 뒤 자기WT제거, R불변 확인.
+
 ## 2026-10-21 DEMO11-38 PC 반송 merge 충돌 해소
 
 | 항목 | 근거 |
