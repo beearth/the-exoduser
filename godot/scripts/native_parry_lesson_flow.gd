@@ -13,6 +13,9 @@ extends Node
 ## 표시·스킵만, 가짜 진행 없음). Q/E 전투 판정·2_3 규칙 불변 — 레슨 전용 데미지 적용
 ## (hurtEnemy의 e.hp=0 직접 처리)은 원본도 hurtE 본문 밖(42111 위임)이다.
 
+const StepConsumers := preload("res://scripts/native_demo11_lesson_steps.gd")
+var step_consumers := StepConsumers.new()
+
 const PANEL_LAYER := 30
 const TRANSITION_TICKS := 90.0        # 489 transitionTicks=90
 const MOVE_GOAL := 120.0              # 514 moveDistance>=120
@@ -30,7 +33,7 @@ const STEP_TIPS: Array[String] = [
 	"탄을 바라보고 [E]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.",
 	"[Q]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.",
 	"[E]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.",
-	"이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.",
+	"마우스로 열린 바닥을 가리키고 왼쪽 Shift로 1·2·3단 사슬이동을 차례로 연습하세요. 이동이 끝나면 Shift를 놓으세요.",
 	"WASD 또는 방향키를 누른 채 Space를 누르세요. 전격이동을 5번 발동하면 성공입니다.",
 	"Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.",
 	"몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요."] # 159 tips
@@ -129,6 +132,7 @@ func configure(owner_world: Node2D, owner_player: Node2D, state_node: Node, owne
 	_ring.z_as_relative = false
 	_ring.z_index = 4004
 	add_child(_ring)
+	step_consumers.configure(world)
 	_configured = true
 	return true
 
@@ -141,10 +145,12 @@ func _release_saved_enemies() -> void:
 			enemy.free() # Node owns and frees its CollisionShape2D/Sprite2D children.
 
 func _exit_tree() -> void:
+	step_consumers.leave("exit_tree")
 	_release_saved_enemies()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
+		step_consumers.leave("predelete")
 		_release_saved_enemies() # Also covers free() before the owner ever enters Tree.
 
 ## 차징 링(원본: 적 투사체 차징 경고 링 — 가이드 문구 "몬스터 주위의 링", 색=탄 종류).
@@ -209,11 +215,11 @@ func native_lesson_tick() -> bool:
 		_render()
 	if phase == "intro":
 		return true # 484
-	if phase == "success" or phase == "done":
+	if phase == "success" or phase == "done" or phase == "deferred":
 		transition_ticks -= 1.0 # _dtSp=1/렌더프레임 (61849)
 		if transition_ticks > 0.0:
 			return false
-		if phase == "done":
+		if phase == "done" or (phase == "deferred" and step == 7):
 			# 챕터2 자원 연습(496) 미이식 — 바로 finish(497).
 			_finish()
 			return false
@@ -228,11 +234,16 @@ func native_lesson_tick() -> bool:
 			practice_halted = _start_trap_practice()
 		elif step >= 0 and step <= 7:
 			practice_halted = str(STEP_HALTS.get(step, ""))
+			if step >= 1:
+				_enter_additional_step()
 			if step == 0:
 				parryEnemy = null
 				parry_cooldown = 45.0
 		_render()
 	if phase != "practice":
+		return false
+	if step >= 1 and step <= 7:
+		_tick_additional_step()
 		return false
 	# 508~509 연습 중 유지: HP/MP/ST 리필·iframes 0·kb 0 (레슨 저장분 기준)
 	_practice_refill()
@@ -258,6 +269,35 @@ func native_lesson_tick() -> bool:
 		_tick_parry_practice()
 		return false
 	return false
+
+## DEMO11-15: 실제 Main의 기존 lesson flow가 소유하는 step1..7 소비자 진입점.
+## 반환 true는 바인딩 수락이며 전투 성공이 아니다. 실제 PC owner는 world 자손만 허용.
+func bind_native_lesson_step(number: int, consumer: Node) -> bool:
+	var accepted := step_consumers.bind_consumer(number, consumer)
+	if accepted and active and phase == "practice" and step == number:
+		pending = ""
+		_enter_additional_step()
+		_render()
+	return accepted
+
+func _enter_additional_step() -> void:
+	step_consumers.enter(step, {"world": world, "player": player, "state": state, "flow": self})
+	var result: Dictionary = step_consumers.results[step]
+	practice_halted = str(result.reason) if result.status == "NOT_READY" else ""
+
+func _tick_additional_step() -> void:
+	# 수동 진입·독립 인수도 같은 admission 사용. 기본/0/8 refill은 변경하지 않는다.
+	if step_consumers.current != step:
+		_enter_additional_step()
+	var was_retrying := step_consumers.retry_ticks > 0
+	var outcome := step_consumers.tick()
+	practice_halted = str(step_consumers.results[step].reason)
+	if outcome == "complete":
+		_complete_step()
+	elif outcome == "defer":
+		pending = "deferred" # checks/성공 credit 변경0.
+	if was_retrying != (step_consumers.retry_ticks > 0):
+		_render() # 매 틱 UI 트리/스타일 재생성 없이 실패/복구 경계만 갱신.
 
 ## step0 — 원본 tickParryEnemy(204~229): 적 유지→차징 60틱→암흑탄 발사→패링 관측.
 ## 처치 판정: Q 반사(관측) 후 반사 블루빈(parryBlueBean — 유일 가해자, 적 atk0)이
@@ -384,6 +424,7 @@ func skip_all() -> void:
 	if not active:
 		return
 	_metrics.skips += 1
+	step_consumers.skip_remaining()
 	_finish()
 
 # ═══ 42111 위임 — hurtEnemy(646~683)의 left/right 분기 (rage/reflected/trap 미이식) ═══
@@ -717,6 +758,10 @@ func allows(action: String) -> bool:
 	if phase != "intro" and is_direction:
 		return true
 	if phase == "practice":
+		if step >= 1 and step <= 7 and step_consumers.focus_ticks > 0:
+			return false
+		if step == 7 and action == "bow" and _direction_held():
+			return false # parry-lesson.js:46/683: 분노는 방향을 놓은 뒤 Space.
 		return action in _actions()
 	return false
 
@@ -739,6 +784,7 @@ func _actions() -> Array:
 
 # ═══ start / finish ═══
 func _start() -> void:
+	step_consumers.reset()
 	active = true
 	seen = true
 	phase = "intro"
@@ -770,6 +816,7 @@ func _start() -> void:
 	_render()
 
 func _finish() -> void:
+	step_consumers.leave("finish")
 	# 685~700 finish 슬라이스
 	if world.has_method("restore_native_lesson_enemies"):
 		# 레슨 전용 스폰 적은 복원 대상이 아님(원본 ens=saved.ens 교체가 자연 폐기) —
@@ -1072,6 +1119,7 @@ func _render() -> void:
 	if phase == "practice": status_text = "연습 중"
 	elif phase == "success": status_text = "성공"
 	elif phase == "done": status_text = "COMPLETE"
+	elif phase == "deferred": status_text = "다음 연습"
 	_ui["status"].text = status_text
 	# 127 data-kind = (step%2===0 ? magic : physical) — 상태/홀드/미터가 kind 색을 따른다(실측)
 	var kind_color: Color = COL_KIND_MAGIC if step % 2 == 0 else COL_KIND_PHYSICAL
@@ -1145,12 +1193,18 @@ func _render() -> void:
 		_ui["hint"].text = "몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n" \
 			+ "%s 가시덫 설치 · %s 설치 후 이동 · 처치 %d/10" % [
 				"✓" if trap_zone != null else "□", "✓" if trap_escaped else "□", trap_kills]
-		if practice_halted != "":
-			_ui["hint"].text += "\n(정지: %s)" % practice_halted
 	elif step >= 0 and step <= 7: # 139~143 title/tips/key()
 		_ui["keycap"].text = STEP_KEYS[step]
 		_ui["title"].text = STEP_TITLES[step]
 		_ui["hint"].text = STEP_TIPS[step]
+		if step >= 1 and step_consumers.retry_ticks > 0:
+			var failure_kind := str(step_consumers.results[step].get("failure_kind", "retry"))
+			if failure_kind == "miss":
+				_ui["hint"].text = "패링 실패! 탄에 맞았습니다. 체력을 회복하고 다시 연습합니다." # JS458; PC 실제 miss만.
+			elif step == 2 or step == 3:
+				_ui["hint"].text = "[%s]를 다시 길게 누르세요. 충전이 끝나고 탄이 가까워지면 키를 떼세요." % STEP_KEYS[step] # JS590.
+			else:
+				_ui["hint"].text = "다시 시도하세요."
 		if step == 0: # 181~186 updateParryPractice(step0=마법) — title·hint 덮어쓰기
 			_ui["title"].text = "마법탄을 패링해 몬스터를 처치하세요"
 			_ui["hint"].text = "몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. " 				+ "이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 [Q]로 패링하세요." 				+ "
@@ -1187,11 +1241,12 @@ func get_snapshot() -> Dictionary:
 		"left_kills": left_kills, "right_kills": right_kills,
 		"left_full_charge_kill": left_full_charge_kill, "practice_halted": practice_halted,
 		"attack_enemies": _alive_attack_enemies(),
+		"additional_steps": step_consumers.snapshot(),
 		"metrics": _metrics.duplicate(true), "saved_enemies": _saved_enemies.size(),
 		"unported": [
-			"practice step 8(가시덫 — 시작 스킬 트랙 진행 중)·0~7 패링/사슬/대시/분노·챕터2 자원 연습 — 도달 시 정지·스킵만",
+			"step1..7 PC 소비자 미바인딩은 단계별 NOT_READY·성공 체크 없이 보류/다음 연습; 챕터2 자원 연습 미이식",
 			"dismissed()(localStorage skipKey — 포트 설정 저장 owner 부재) — 세션 내 seen 플래그만",
-			"allows()/allowKey() 입력 강제 배선(시작 스킬 트랙과 입력 경로 충돌 회피 — API만 제공)",
+			"PC 이동/전투 소비자 연결은 additional_steps.results 참조; 기존 Player allows 퍼널 재사용",
 			"start/finish의 projs/pProjs/worldItems/spawnHoles/rifts/_fireZones/스킬·슬롯·BINDS2 저장·복원(포트 미보유 상태)",
 			"clearShot/resetPose·focusTicks·레슨 성공/사망 연출 보조(rage 분기 등)",
 			"폰트(P2-007a): Nanum Myeongjo·Cinzel 원본 스택 적용 — Gowun Batang(3순위) 미보유"]}
