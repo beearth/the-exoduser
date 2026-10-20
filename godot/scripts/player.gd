@@ -392,10 +392,25 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("weapon"):
 		_weapon_held = true
-		request_attack()
+		if not _native_lesson_blocks_action("weapon"): # P2-001l
+			request_attack()
 	elif event.is_action_released("weapon"):
 		if not _accessibility_hold:
 			release_attack()
+
+## P2-001l — 레슨 allows 입력 게이트(원본 14290 isAct/isJust 래핑 상응): 레슨 활성 중
+## 단계 허용 외 입력만 차단. 전투 판정 로직은 불변 — 입력 게이트 1곳.
+func _native_lesson_blocks_action(action: String) -> bool:
+	var main: Node = get_parent()
+	if main == null:
+		return false
+	var sequence: Variant = main.get("source_intro_sequence")
+	if not is_instance_valid(sequence):
+		return false
+	var flow: Variant = sequence.get("lesson_flow")
+	if not is_instance_valid(flow) or flow.get("active") != true or not flow.has_method("allows_native_action"):
+		return false
+	return not flow.allows_native_action(action)
 
 func handle_native_input_event(event: InputEvent) -> Dictionary:
 	var result := {"handled":false,"accepted":false,"reason":"unmapped_event"}
@@ -409,6 +424,10 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 		if not event.is_action(action): continue
 		result.handled=true
 		result.action=action
+		if _native_lesson_blocks_action(action): # P2-001l 레슨 입력 제한(32 allows)
+			_native_input_held[action]=false
+			result.reason="parry_lesson_input_locked"
+			return result
 		if event is InputEventKey and event.echo:
 			result.reason="key_repeat_ignored"
 			return result
