@@ -3465,3 +3465,9 @@ func request_native_map11_transition(route: String) -> Dictionary:
 
 func bind_native_map11_gate_owner(owner: Node) -> bool:
 	return is_instance_valid(native_map11) and native_map11.bind_gate_owner(owner)
+
+# DEMO11-enemy-base3: Mac guard actor and honest type3/7 natural boundary.
+func request_native_etype_e_spawn(owner: Node,group_id: String,source: Dictionary) -> Dictionary:
+	var profile: Node=world.get_node_or_null("Demo11EtypeE")
+	if profile==null:profile=preload("res://scripts/native_demo11_etype_e_spawn.gd").install(self)
+	return profile.spawn_selected(owner,group_id,source)

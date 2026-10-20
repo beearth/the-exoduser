@@ -146,6 +146,14 @@
 
 ## 2026-10-21 DEMO11-etype-b 재개 — append-only 등록·실제 actor5
 
+
+## 2026-10-21 DEMO11-enemy-base3 — F 공통 이관·Mac29·3/7 경계
+
+| 항목 | 범위·검증 |
+|---|---|
+| 의존·구현 | 1f0a71fb 위 F ef64bd17/E70d1ca22 정상merge. F registration→common/43, 별도 Mac29 forced constructor/World actor/warning60/실제35 carrier·8사망 packet 모델.3/7은 실제 PC readiness 거절 |
+| 보호·근거 | PC damage/parry/final death/gate writer·State/World0, F actor/constructor body·factory679 prefix byte 보존. 신규543/0+관련126/0=669/0·factory3그룹/실패0·최종ERROR0. 실제18종spawn/tick·16PC처치/origin, 별도29실제8탄/terminal PCI-11 HOLD. 30actor600tick mean2.869/p994.010/max8.526ms(최대예산초과, 최적화0). 공용 hunk는 [보고서](engine/orders/reports/demo11-enemy-base3_REPORT.md). [8.0 기반](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md)·[9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) 동기화 |
+
 ## 2026-10-21 DEMO11-enemy-base2 — A·B·D 공통 기반 이관
 
 | 항목 | 범위·검증 |
@@ -218,6 +226,9 @@
 
 - main0138c5bb9 + DEMO11-43 9b763da9 정상 merge. B 전용 직접호출 preflight·기존 하니스 상속, 공통 helper 재작성/A 파일 변경0. **5종 모두 NOT_READY**, 실제 자연 스폰·특수 상태·전투 구현 완료 아님.
 - 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
+## 2026-10-21 DEMO11-etype-e 자연 kernel 등록 전제 BLOCKED
+
+- main0138c5bb에43/9b763da9·EL/654845e4·37/05f41cc7 정상 merge, 양쪽 기능 보존. type3 PC hurtE owner·type7 실제 M29·29 attack/death/gate 경계 미준비를 etype별 보고. PC factory 중첩 건너뜀, own 제품0줄·자연 등록0. 거절 계약 검증과 3종 벤치 미실행 근거는 [보고서](engine/orders/reports/demo11-etype-e_REPORT.md). 8.0/8.2 갱신, 가짜 READY/성능 PASS0.
 
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 

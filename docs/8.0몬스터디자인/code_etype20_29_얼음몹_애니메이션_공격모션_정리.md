@@ -1,4 +1,10 @@
+> 2026-10-21 DEMO11-enemy-base3: 과거 E70d1ca22 BLOCKED 절 이후 Mac29 consumer를 DEMO11-enemy-base3에서 구현했다. 기존 profile/atlas·forced guard constructor·공격/warning60/35 실탄·8사망 packet 모델이며 최종 죽음/gate는PCI-11 HOLD. F 고유 owner 미지원은 보존,3/7은 실제 PC fields/M29 준비 전 자연 등록0. 상세는 demo11-enemy-base3 보고서.
+
 # code etype20~29 얼음몹 애니메이션/공격모션 정리
+
+## 2026-10-21 DEMO11-etype-e 자연 등록 경계
+
+etype29 자산 존재는 전투 actor/사망탄/gate 연결 완료가 아니다. 최신 main+43/EL-01/37 기준에 exact29 공격/death producer와 actor는 미구현이며, PC 최종 사망·부활 뒤 G42737–42744 gate writer도 미연결이다. EL-01 forced 후처리만으로 가짜 문지기를 등록하지 않는다. etype3는 PC 공용 hurtE field-owner 부재, exact type7은 실제 M29 서비스 부재로 각각 NOT_READY. 공용 factory는 PC 중첩 구간을 보존한다. [etype별 BLOCKED·원본행·재개 접점](../engine/orders/reports/demo11-etype-e_REPORT.md). 3종 자연 입장/성능 PASS를 뜻하지 않는다.
 > 정확한 월드 챕터 표기: `1장 = 썩은 숲`, `2장 = 벌레굴`, `3장 = 지옥의 겨울`
 > 기준: `game.html`의 `ATLAS_ENEMY_LAYOUT` etype 20~29, `몬스터_총관리.md` AI 노트, `img/pixellab_all` 대표 자산 현황
 > 작성일: 2026-04-04

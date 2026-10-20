@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-enemy-base3: F ef64bd17 등록/World/43을 단일 공통 prepared admission에 이관했다. A/B/D/F18종과 별도 문지기29로 단일 표19종이며3/7은 PC 조건 전 미등록이다. Mac29 constructor/attack/warning60/common35·사망8packet 모델은 이번 범위, PCI-11 final death/gate/죽은actor retention·F 특수 owner는 후행. source-selected slice와 전체 자동 CDF/전투를 구분한다.
+
 > 2026-10-21 DEMO11-enemy-base2: A(d931ebe2)·B(c6d19973) 이관: 실제15종 등록은 NATURAL_REGISTRATIONS 단일 표, A/B 상수는 참조 view다. source-selected 입력 검증·원문 constructor는 각 profile에 유지하고 actor preparation→World/43은 common.admit_source_record 하나로 인수한다. 기존 source0 자동 P3 actor와 선택 A0 actor는 etype0 entry의 계약 variant이며 수치·탄을 서로 치환하지 않는다. A 기존 physical carrier는35에서 단일 clock으로 호출하고 PC body는 유지. B 탄 profile 부재·B8/D25 사망 경계는 후행이다.
 
 # DEMO11-enemy-base — 자연 적 생성·등록 공통 계약

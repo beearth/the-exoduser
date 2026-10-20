@@ -1,3 +1,5 @@
+> 2026-10-21 DEMO11-enemy-base3: DEMO11-enemy-base3: F source-selected common 이관 및 Mac29 World phase/warning60/common35. PC contact·PCI-11 terminal gate 대기.3/7 실제 readiness 경계·source RNG 미소비. 자세한 수치·검증은 demo11-enemy-base3_REPORT.md.
+
 > 2026-10-21 DEMO11-enemy-base2: A d931ebe2·B c6d19973를 D 공통 admission으로 이관했다. 등록15종 중 B8/D25 사망 PC prefix는 기존 HOLD이며 나머지13종은 통합 생명주기로 확인한다. 단일 factory 표·World/43·35 registry, A 고유 legacy carrier와 B 탄 owner 부재는 보존한다. 상세/검증/공용 diff는 `docs/engine/orders/reports/demo11-enemy-base2_REPORT.md`.
 
 ## 2026-10-21 DEMO11-enemy-base 공통 기반
