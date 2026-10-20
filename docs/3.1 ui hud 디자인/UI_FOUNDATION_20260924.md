@@ -290,3 +290,10 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 - Godot 포트 UI는 웹과 같은 글꼴 토큰을 쓴다: `--font-hell`(Nanum Myeongjo→Noto Serif KR), `--font-hell-title`(Cinzel Decorative→Nanum Myeongjo→Noto Serif KR), `'Cinzel',var(--font-hell)`(타이머·화폐·키 표기), `'Cinzel',serif`(진행 표시·레슨 키캡), body `--font`(Noto Sans KR — 쿨다운 초·안내 노트·버튼), 펫 자막 `'Malgun Gothic',sans-serif`(시스템에 없으면 Noto Sans KR). 단일 공급자 `godot/scripts/native_ui_fonts.gd`, 글꼴 파일 `godot/assets/fonts/ofl/`(OFL 동봉).
 - 굵기는 game.html @import 로드 굵기 기준 브라우저 매칭 그대로(Cinzel은 700/900만 로드 → 일반 굵기 요청도 700으로 보임).
 - 인트로 시작 대사+키 안내 4컷(`#introKeys`)을 원본 CSS 607~640 값으로 이식 — 웹 Chromium 1920×1080 실측과 패널 높이·요소 위치 ±0.1px. 상세·근거 표: [docs/engine/FDG_P2_007A_UI_POLISH_20261020.md](../engine/FDG_P2_007A_UI_POLISH_20261020.md).
+
+
+## 2026-10-21 DEMO11-09 네이티브 일시정지 메뉴 (설정 반영 BLOCKED)
+
+기존 Main._toggle_pause/HUD pause 연결과 clear_native_input_states·review 캐릭터 선택 guard를 유지하며 메뉴 표시만 추가한다. Settings 하위 화면에서 Esc/뒤로는 pause로 복귀, pause의 Esc/재개는 기존 경로를 사용한다. 일반 메뉴에서만 개발 캐릭터 선택판을 가리고 review 모드 우선권은 그대로다. 흑철 패널·기존 날개 문장·금빛 헤어라인·뼈색 글자, native_ui_fonts의 hell/hell_title/cinzel_hell, 이모지·새 이미지0.
+
+S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.
