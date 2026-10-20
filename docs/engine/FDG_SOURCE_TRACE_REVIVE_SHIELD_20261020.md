@@ -179,25 +179,174 @@ A3/B3의 피날레35%/points20/1회와 17063–17080은 별도 예외로 일치�
 
 `rg --files` 기본 검색은 ignore 규칙 때문에 일부 test_ 파일을 생략하므로, 테스트 대조는 `rg --no-ignore` 및 직접 파일 읽기로 수행했다. 테스트가 없다고 기본 rg 결과만으로 판단하지 않았다. 기존 MAC-VERIFY 보고서의 타 SHA 실행 결과는 이번 SHA 실행 증거로 재사용하지 않는다.
 
-## 4. 작게 나눈 후속 이식 순서안
+## 4. 작게 나눈 후속 이식 순서안 — 구현 지시서 보강
 
-다음은 **구현 배정안**이며 이번에 파일을 만들거나 수정하지 않았다. 소유 예정 파일명은 아직 확정되지 않은 제안이다. 공용 파일 연결은 총괄의 소유권 조정 후 해당 담당이 수행한다. 모든 단위는 원본 수치·RNG/쓰기 순서를 유지하며 값 조정이 아니다.
+### 4.0 다음 차례 적용 기준
 
-| 순서 / 작은 단위 | 원본 행 근거 | 소유 예정 파일(신규 제안) | 검증 테스트 아이디어 | 선행 조건 / 완료 경계 |
-|---|---|---|---|---|
-| R1 일반 예약 계약 보완 | 42627–42635 | `godot/scripts/native_enemy_revival_source.gd` | lv99/100/500/1000, elite0/1/2, suppression0/=.chance/>chance, roll 경계, 2번째ghoul롤의 조건부 호출·RNG 개수, revived/ghoul 재예약없음 | 현 hurtE normal branch 재사용·중복롤 금지. holyPrison 미연결은 별도 명시. timer90/120/좌표 예약까지만 |
-| R2 일반 본모습 타이머·수명 | 34362–34383,34493–34545 | `native_enemy_revival_runtime.gd` | 89→90/119→120 틱, pause·레슨detach·죽은 객체·삭제/ownerloss, 동일 actor identity·HP풀/poise풀/kb0/recover60/실드미충전, body/collision·spatial 복구 | R1 및 World phase/sp·수명 소유 합의. G07 dead 조기반환 해결 필요. 맵/충돌 형상 변경을 제안하는 단위가 아님 |
-| R3 구울 데이터·생성 | 41591–41627 | `native_ghoul_source.gd`, `native_ghoul_actor.gd` | r24/25/39/40·elite2 크기승격, mhp/baseAtk×2, 실드=새HP, gd.hpMul 미소비, RNG(speed·idle·VFX) 순서·원객체/신객체 구분·_revived 재부활차단 | R2, factory/동적등록 API·P3-002 담당 조정. 초기16 record를 임의 수정하지 않음 |
-| R4 일반 부활 시각·읽기 표시 | 52701–52799,54502–54516,41579–41588,10299–10314 | `native_enemy_revival_presentation.gd` | pending/본모습/구울 전환·fallback·text·VFX수명9frame, 1x 실제카메라에서 몸체/실드bar/시체 공존 확인 | R2/R3 실제 호출과 기존 byte 에셋 인수. 생성/모델교체 없음. 시각 PASS는 화면 검수 후만 |
-| S1 플레이어 에너지실드 흡수 | 43504–43573 | `native_player_energy_shield.gd` | **기존 방어 결과** 입력에서 shield>dmg/=dmg/<dmg/0, HP최소피해 재적용0, regenT 쓰기조건, raw/overflow/실드숫자, DOT 동일 추가HP분배 | State P dict와 Player HP authority 경계 확정. 기존 Q/E·2_3 접두는 **보호**; 이를 바꾸는 테스트/설계 제안 제외 |
-| S2 실드 리젠·HUD ring | 32757–32759,28056/28059,60273–60280 | `native_player_energy_shield_regeneration.gd`, `native_energy_shield_ring.gd` | regenT180 경계·pMRegen0/10·timer 양수→0 프레임에는 regen안함, baseINT+lv와 장비INT 분리;0/부분/풀 실드 ring·alpha 및 1x 화면 | S1, 단일 clock+현재P 쓰기·중복리젠 방지. 기존 HP/MP/ST regen 단위를 그대로 유지 |
-| P1 플레이어 부활 판정 데이터 | 43726–43751,32723 | `native_player_revival_source.gd` | reviveOnce priority/used, lv 자연 cap·pHuman clamp·weakRev 영역 경계·pDemon CD·reviveCd 배율 순서, 사망 순간 저장roll·재판정없음 | 장비/passive/implicit reader 인수. weakRev 실효 consumer 없으면 미연결. **저장 형식 보호**, 런타임 상태만 |
-| P2 fallen→resolve 실제 흐름 | 32982–32994,43847–43894,58907–58944 | `native_player_revival_runtime.gd`, `native_fallen_presentation.gd` | 중복die 억제·300sp/pause·성공120iframe·HP/MP/ST만풀(실드강제충전0)·demonCd·실패dead·G.on false·유니크성공한정, 1x 카운트다운/실패 UI | P1/S1/S2, HP authority 및 Main 단계 합의. Q/E 입력은 **보호**; 소비자가 기존 상태 조건을 존중하는지만 관측 |
-| B1 일반 보스 즉시부활 데이터 | 31181,42515–42622 | `native_boss_revival_source.gd` | 선차감cost10/억제+2~5/zone+3/풀피+2, pts0/roll경계·H7 상한/하한·r절삭/min10, 성공return으로 보상0·RNG 순서 | **보스 actor/hurtE/phase owner가 선행**. 현재 boss_hurtE halt를 가짜 READY로 바꾸지 않음. 탄·Q/E 규칙 **보호** |
-| B2 보스 폴백·완전사망 읽기 gate | 42640–42649,34493–34535,41816–41832 | `native_boss_revival_runtime.gd`, `native_boss_revival_status.gd` | 판정 snapshot이180sp 뒤 그대로, 추가10소모·HP50/실드0·즉시강화 재실행0·pending문닫힘/최종문열림1회·SFX wrapper 오류후순서 | B1 및 보스 아레나/종료 owner 준비. 지도 내용 수정은 소유 확정 전 보류. 일반 timer와 상태값 혼용 금지 |
-| B3 피날레 예외·보스 시각 | 17054–17080,35830–35864,41554–41577 | `native_druid_finale_revival.gd`, `native_boss_revival_presentation.gd` | demo stage3만, 첫deaths/pts·chance clamp,35%HP·baseATK1.6/pts0·2번째부활없음, 기본보스100/50과분리; bossShieldF0·timer/points1x | B2, 실제 피날레/보스 패턴·기존 VFX/음향 인수. 원본 없는 boss_revive_boom을 존재한다고 가정 금지 |
+이 절만 2026-10-20 맥북총괄/PC 총괄 보충 지시에 따라 보강했다. **이번 제출은 문서만 수정**하며, 다음 차례에 같은 창에서 **1번 R1**을 구현한다. 아래 새 파일/API는 구현 지시용이며 현재 존재/완료를 뜻하지 않는다. 나머지 단위도 명시한 선행 조건이 충족된 뒤 한 단위씩 진행한다.
 
-사망 화면 retry/리플레이·로비는 원본 흐름으로 추적했지만, 기존 저장 형식을 손대는 새 단위는 제안하지 않는다. 저장/로드는 **보호** 상태로 후속 범위 인수가 필요하다. 인수 전에는 현 상태의 읽기 대조만 한다. 약화/보스 특수 부활·악의슬라임은 별도 원본 단위이며 위 첫 일반몹 단위 완료에 묶지 않는다.
+| 기준 | 지시 |
+|---|---|
+| 이번 문서 브랜치 | `codex/trace-revive-shield-20261020`, 보강 전 HEAD `f801fcd99a6a997b2f7c663599c4ba89c1698ec7` |
+| 보강 시 재조회 | fetch 성공. `origin/main=ad6ac68a2e009c4d299fe1dd2264182355ee992c`의 작업판·P4 작업표 확인. TRACE-REVIVE-SHIELD는 이 창의 문서 작업, P4-001은 여전히 범위 확정 단계 |
+| 원본 행 | §1/§6의 동결 base `788ba758…`. 보강 기준 main과 `game.html/index.html`의 diff0 확인. 따라서 이 절의 game.html 행도 같은 원본이다 |
+| 현재 코드 행 | 이 절은 보강 기준 `ad6ac68a…` 기준. R1의 hurtE·World·Main·State는 최초 추적 base와 diff0. player.gd는 레슨 등 후속 변경으로 행이 이동했으므로 아래 현재 함수 시작행을 사용 |
+| 다음 구현 시작 | 다시 fetch→HEAD/INDEX/WORK·작업판·정확 소유 경로 확인. 이 문서 브랜치를 유지·보존하고, 새 구현 worktree `~/exoduser-wt/revive-shield-r1`, 자기 브랜치 `codex/revive-shield-r1-20261020`를 그때 최신 origin/main에서 만든다. 이미 같은 작업/경로가 있으면 재사용 가능 여부를 확인하고 중복 생성/덮어쓰기 금지. R 및 다른 Codex worktree는 보존 |
+| 공용 파일 줄 수 | 아래 숫자는 **실제 diff가 아닌 최소 연결 설계의 줄 예산**이다. 지정 함수/앵커 안에서만 수정하고 실제 증감 행은 구현 보고에서 별도 기록. 예산을 넘기는 소유 범위 확대가 필요하면 해당 지점은 BLOCKED로 보고하며 임의로 다른 시스템을 고치지 않음 |
+| 보호 | **docs/2_3·Q/E·세이브 형식 보호.** 보호 경로의 함수·수치·입력·직렬화 변경 지시가 아니다. 기존 값/호출 결과를 관측하며 보호 접두 이후의 명시 범위만 연결 |
+| 검증 실행 원칙 | 모든 새 테스트는 시작 즉시 실제 ProjectSettings의 custom userdir를 검사하고 불일치 시 **실패 exit1**(SKIP를 PASS로 계산 금지). 자기 구현 WT에 기존 `godot/override.cfg`가 있으면 덮어쓰지 말고 BLOCKED. 없을 때만 해당 단위 이름을 설정한 임시 override를 만들고 finally에서 자기 파일만 제거. 원사용자 폴더/전역 설정 수정 금지 |
+| 공통 실행 틀 | Godot4.7.2 실행 파일 존재/버전 확인 후 `Godot --headless --path <자기 WT>/godot --script res://tests/<아래 파일명>.gd`. `config/use_custom_user_dir=true`, `config/custom_user_dir_name=<아래 이름>`를 임시 override에 설정. stdout/stderr/exit·assertion·SKIP·seed/RNG·forced-field 수를 `~/exoduser-wt/_out/<구현ID>/`에 기록. 실제 앱/서버/PC 실행창을 자동 재시작하지 않음 |
+| 충돌 현황 | P3-002는 소환굴·World 동적등록, P2-006b는 world_drops 표시, QA-002는 기존 테스트, TRACE-INVENTORY/QUICKSLOT/SAVE/SETTINGS/META는 각 문서 소유. P2-001l·P2-004b·P2-006a는 보강 조회 시 main 병합 상태지만 공용 파일 소유는 재확인 필요. 신규 예정 경로는 당시 main의 tracked 목록에서 미존재 확인 후 생성 |
+
+### 4.1 1번 R1 — 일반 적 부활 **예약** 원본 계약과 실제 hurtE 연결
+
+**산출 범위:** 원본 42627–42638을 독립 실행자로 옮기고 기존 `_kill_pipeline`의 예약 블록을 그 실행자로 연결한다. 기존 일반 적/전용4종의 실제 caller와 같은 owner API를 사용한다. **타이머 소진·생환·구울 actor 생성은 R2/R3**이며 R1 완료로 주장하지 않는다. 현재 90f만 예약하는 경로를 엘리트120f·신성력·holyPrison·원본 쓰기 순서까지 대조 가능하게 만든다. 신규 엘리트 생성/팩토리 지원 확대는 R1 범위가 아니다.
+
+#### ① 만들 파일·수정할 파일
+
+| 경로 | 구현 지시 / 최소 변경 구역 |
+|---|---|
+| 신규 `godot/scripts/native_enemy_revival_source.gd` | `extends RefCounted`; 공개 `execute(fields: Dictionary, position: Vector2, callbacks: Dictionary) -> Dictionary`. 동기 호출만, await·자체 RNG·전역/싱글턴·actor 생성 없음. `FORMULA.js_to_int32` 재사용. 아래 순서를 실행하며 반환은 `ok, skipped, scheduled, chance, normal_roll, ghoul_roll, prefix_writes, line, reason`을 포함. 실패에 미소비 난수/미작성 필드를 가짜0으로 채우지 않음 |
+| 수정 **공용** `godot/scripts/native_normal_enemy_hurte.gd` | 상단 DROP_SOURCE 상수 다음에 REVIVAL_SOURCE preload **1행 추가**. `_kill_pipeline` 535–554의 기존 예약20행만 교체, 새 호출/콜백/결과 기록 **12–20행 목표**. 콜백은 기존 `_affix`, `_state.read_current_g`, `_rand`, `_bookkeeping`, `_emit_text`, `_log`를 그대로 전달. 뒤의 on-kill/사망/region/드랍·EXP 블록(555행 이후)은 무수정. 보스151행 halt·언데드203–208·실드364–377·레슨 위임은 무수정 |
+| 신규 `godot/tests/test_revive_shield_r1_source.gd` | 순수 실행자 fixture. 난수열·G·필드·sink는 테스트 소유; 관측된 callback 순서/쓰기 prefix를 명시적으로 수집. 실제 사용자 State/세이브 읽기 없음 |
+| 신규 `godot/tests/test_revive_shield_r1_hurte_binding.gd` | 새 실행자와 **실제 hurtE 연결** 검증. 실제 Main/World/지원 적 owner의 공개 공격→죽음에서 예약 이벤트/필드/RNG 접두와 기존 보상 흐름을 확인. 테스트 한정 강제 필드/상태 설정을 쓰면 목록·횟수를 기록하고 자연 실플레이로 주장하지 않음 |
+| 수정 docs | 이 추적 문서의 R1 구현 결과/검증·미완 범위만 동기화. 코드 변경 뒤 `rg --no-ignore 'normal_revive\|_reviveTimer\|antiRevive\|holyPrison' docs` 실행. 기존 설계 불일치 표는 사실 관측으로 유지; 설계 폴더 정정은 이번 배정 밖. 새 공식/상수는 이 문서에 일치시키고 코드와 함께 자기 브랜치에 커밋 |
+| **수정0** | main.gd/hud.gd/world.gd/player.gd/native_source_new_run_state.gd, enemy.gd·전용owner·factory·기존 테스트·작업판·설계 폴더. 기존 enemy owner의 bookkeeping whitelist(부록 G06)가 필요한 6필드를 이미 허용하므로 API 확대 불필요 |
+
+#### ② 원본 식·필드·순서 그대로 옮길 내용
+
+1. **42627 가드 먼저:** `!ib && !_revived && !_isGhoul`. 가드 제외는 affix/G/RNG/sink/text 호출0. 본 함수에서 보스 경로를 열지 않는다.
+2. **42628 부활력:** `(elite>0 ? (elite>=2 ? .6 : .5) : .5) + js_to_int32((lv||1)/100)*.10`. 원본 `||`/`~~`를 무조건 max(1,lv)·floor로 바꾸지 않는다. 현재 실제 owner의 유한 숫자 계약과 원본 0→1 fallback을 명시 지원하고 그 밖 표현은 미지원 진단으로 정지한다. 전역 JS coercion 확대는 하지 않는다.
+3. **42629–42631 억제 읽기:** `_affix('antiRevive',42629)` **1회**→그 뒤 current G 읽기. G._fireZones 부재/원본 falsy는 추가억제0; truthy Array는 순서대로 `type=='holyPrison'`인 존만 방문한다. `distance(position,zone.xy)<zone.r`(등호 제외)인 **첫 존만** `.15+((zone.lv||1)-1)*(.15/9)` 가산하고 break. holyDome/spikeTrap은 억제 아님. 실제 원본에서 방문하지 않을 다른 타입의 x/y/lv를 미리 읽거나 전체 배열 clone하지 않는다. 지원 밖 truthy 목록/방문 필드/owner 소실은 성공0으로 대체하지 않고 현재 지점 정지. 존 생성 스킬 자체는 만들지 않는다.
+4. **42632–42633:** `final=max(0,pow-suppress)`; **상한1 clamp 없음**. final<=0이면 normal 난수0회. >0일 때 기존 `_rand(42633,'normal_revive')` 1회, strict `< final`일 때만 예약 성공. `Math.random` 대체 randf/randi 호출 금지.
+5. **42634 먼저 commit:** 성공이면 `_bookkeeping`으로 `_revived=true`, `_reviveTimer=(elite>0?120:90)`, `_reviveX=position.x`, `_reviveY=position.y`의 **4필드 쓰기를 먼저** 한다. 이 sink가 거절되면 2번째 난수는 뽑지 않는다. 현재 코드처럼 두 난수 이후 한꺼번에 5필드를 쓰지 않는다.
+6. **42635 나중 sample/commit:** 첫 쓰기 성공 뒤 `_rand(42635,'revive_as_ghoul')` 1회→`_reviveAsGhoul=(roll<.5)`만 두 번째 `_bookkeeping`으로 쓴다. 난수/둘째sink 실패 시 42634의 이미 적용된4필드는 보존, retry/rollback/refund/가짜ghoul값 없음. 기존 parent `_rand/_affix/_bookkeeping`이 기록한 halt가 있으면 보존하며 새 포괄 오류로 덮지 않는다.
+7. **42636–42638 실패 안내:** 예약 실패이고 suppress>0인 경우에만 `(x,y-30,'✟ 신성력 억제!','#ffffff',50)`을 기존 text callback으로1회 전달. 성공·가드 제외·suppress0 실패는 안내0. 진단 `normal_revive_rolled`의 기존 normal/ghoul RNG purpose는 유지하고 `resurrection:'UNPORTED'`를 계속 명시한다.
+8. **42702 이후 계속:** R1 결과 ok면 기존 death/kill/region/드랍 경로로 계속. 일반 예약을 보스처럼 return하여 보상을 생략하거나, 기존 kills를 되돌리지 않는다. 모듈이 G/P·actor를 직접 수정하지 않고 기존 owner sink로만 쓴다.
+
+#### ③ 새 테스트·핵심 단정·격리 폴더
+
+두 새 테스트 공통 userdir는 **`EXODUSER-ReviveShield-R1-Isolated-20261020`**. 테스트 시작 gate가 실제 설정 일치를 확인한다. helper의 타입/실패 경계 fixture와 실제 Main 연결 증거를 따로 보고한다.
+
+| 테스트군 | 구체 입력 → 기대 결과 | 원본 근거 |
+|---|---|---|
+| 가드/무소비 | ib=true / _revived=true / _isGhoul=true 각각→skipped, 모든 callback0·쓰기0. 부정 가드는 별도로 통과 | 42627 |
+| 숫자 표 | elite0: lv99→.5,100→.6,500→1.0,1000→1.5; elite1 lv100→.6; elite2 lv100→.7. lv0은 lv1로 해석→.5 | 42628 |
+| strict threshold | elite0/lv99/sup0에서 normal .499999→성공, .5→실패; 성공 뒤 ghoul .499999→true, .5→false. lv1000에서 .999999도 성공(chance1.5를1로 줄이지 않음) | 42633,42635 |
+| RNG 수·순서 | 가드/최종확률0→0회; normal 실패→`normal_revive`1회; 성공→`normal_revive`→4필드commit→`revive_as_ghoul`→1필드commit. 다른 RNG0 | 42627–42635 |
+| 예약값 | elite0 성공→90, elite1/2 성공→120; pos(12.5,-7)→동일 X/Y. `_revived` true와 `_reviveAsGhoul` 분리쓰기. HP/alive/eShield/G/P/보상 변경0(순수 fixture 범위) | 42634–42635 |
+| 존 첫1개 | elite0 lv100/gear .2 + 내부 holyPrison Lv1→final .25, Lv10→.1(허용오차1e-12). Lv1과Lv10 동시 내부·Lv1먼저면 .25로 유지. missing/0 zone.lv→Lv1 | 42629–42632 |
+| 거리·분류 | pos(0,0),zone(3,4),r5→경계 제외; r5.01→포함. holyDome/spikeTrap 목록은 추가억제0; 빈/부재 목록은0. type불일치 존은 x/y/lv reader0 | 42631 |
+| 완전억제·안내 | pow.5/sup.5→final0·RNG0·안내1(white/50/y-30); pow.5/sup.6도0. pow.5/sup0에서 roll.5실패→안내0 | 42632–42638 |
+| 실패 prefix | affix불가→G/RNG/쓰기0; currentG불가→RNG/쓰기0; normal RNG불가→쓰기0; 첫sink거절→ghoul RNG0; ghoul RNG불가/둘째sink거절→선행4필드 보존. 새 helper가 parent halt 지점을 덮지 않음 | 원본 42629→42631→42633→42634→42635 순서 + 기존 native owner 거절 경계 |
+| 실제 hurtE | 실제 Main의 공개 공격을 사용해 지원 generic1종과 전용4종 각각 처치. RNG trace의 기존 접두·조건부ghoul과 실제 native_final 예약값이 일치하고 죽은 상태를 유지. region/kills/드랍 경로가 종전처럼1회 진행. R2 생환은 실행/주장하지 않음 | 42627–42638→42702→43114; 현 actor/owner 연결 |
+| 기존 회귀 | 새 연결 테스트 통과 후 `test_p1002e_melee_hurte`, `test_p1002f_dedicated_hurte`, `test_p1002g_kislash_hurte`, `test_p2005c_spike_holy`를 해당 기존 테스트의 격리 USERDIR로 각각 실행. baseline과 오류/실패를 구분, RNG에 따른 assertion수 변동은 실제 값으로 기록 | §3.2 실제 기존 assertion |
+
+#### ④ 선행·충돌·인수 기준
+
+- 현재 기존 `_affix/_rand/_bookkeeping/_emit_text/_log`(hurtE 933/951/966/980 및 `_log`)와 State.read_current_g, 실제 generic/전용4종의 필드 API는 존재한다. 따라서 **R1은 보스·R2·구울 actor·holyPrison 스킬 생성 완료를 기다리지 않고** 구현 가능하다. holyPrison의 계산은 명시 fixture와 현재 G 목록 읽기로 검증하되 자연 시전 실효로 보고하지 않는다.
+- 구현 직전 최신 작업표에서 공용 hurtE의 **535–554 예약 블록+preload1행**만 충돌 없는지 확인한다. 다른 담당이 같은 블록을 수정 중이면 해당 통합은 BLOCKED, 같은 정책을 다른 공용 경로에 우회 삽입하지 않는다. P3-002의 world 동적등록, P2-006b 표시, QA-002 기존 테스트는 건드리지 않는다.
+- 완료 조건은 신규 **모듈+실제 hurtE 호출+새 테스트2개+관련 추적 docs**의 자기 경로 커밋·비강제 push·원격 SHA 일치다. scalar helper 시험만으로 실제 연결 완료 선언 금지. timer가90/120에서 줄어들지 않고 실제 생환이 없다는 기존 미완 범위를 명시한다. 실행 불가/actual integration 미검증이면 그 부분은 BLOCKED 또는 미확인으로 보고하고 PASS를 만들지 않는다.
+
+### 4.2 2번 R2 — 죽은 예약 객체의 타이머·본모습 복구
+
+① 신규 `godot/scripts/native_enemy_revival_runtime.gd`, `godot/tests/test_revive_shield_r2_original_form.gd`. 수정 `enemy.gd` 및 `native_dedicated_enemy_hurte_owner.gd`에 기존 owner identity 검증을 재사용한 **생환 쓰기 메서드 각1개**(각25–40행 예상). 공용 `main.gd` owner 설치(preload1+생성/configure2=3행 목표); `world.gd::advance_native_owner_phase`(2976)에서 owner AI 뒤/particle 전(2993 부근) 죽은 예약 처리 **호출1행** + owner binding 메서드 **6–10행**. 레슨detach/restore는 별도 복제 배열을 만들지 않고 현재 `_enemies` 목록을 읽는 계약으로 보존. hud/player/hurtE/State 공용 수정0.
+
+② 원본34362–34383의 보존·죽은pending최대20,34493–34545의 timer-=sp→0→본모습분기: 기존 actor identity/pos,HP=mhp/recover60/stunned0/kb0/poise=max/추적·alert true; **shield 재충전 없음**. alive false에서 actor physics139가 return하므로 timer는 World phase에서만1회 소비. 기존 source sp와 World `_native_ticks`의 동등성이 입증되지 않으면 physics delta를 원본 sp라고 임의 선언하지 말고 연결을 BLOCKED로 남긴다. ghoul=true 예약은 R3 미완으로 명시 정지/대기하며 임의 본모습 변환 금지.
+
+③ userdir **`EXODUSER-ReviveShield-R2-Isolated-20261020`**. 테스트에서 일반90:sp89→남1/생환0,추가1→남0/생환1; elite120도119+1, pause·레슨detach 시 소모0, timer분기 중복1회금지, 실제 같은 instance·body visible/collision layer&mask의 **원래값 복원**·spatial query 재참여, HP100→100/poise원max/kb0/recover60, 남은shield7→7. 죽은20/21 보존 정책·ownerloss·삭제 요청 경계도 별도 fixture. 시각·자연전투는 실제 화면이 있을 때만 판정.
+
+④ R1, 원본 sp 전달·dead lifetime 인수, P3-002 World phase/등록 및 레슨 저장목록 소유 조정 선행. 임의 collision 상수·map geometry 변경 없음. actor별 원래collision/body 소유 복원이 확인되지 않으면 해당 actor만 BLOCKED.
+
+### 4.3 3번 R3 — 구울 표·새 actor·동적 등록
+
+① 신규 `godot/scripts/native_ghoul_source.gd`, `native_ghoul_actor.gd`, `godot/tests/test_revive_shield_r3_ghoul.gd`. R2 runtime의 ghoul 분기만 신규 source→actor에 연결. `enemy_factory.gd`에 초기 exact-id 경로와 분리한 `create_native_ghoul` 메서드1개(30–45행 예상); **공용 world.gd** 기존 동적 등록 반환부2850–2855를 재사용하는 호출 **1–2행**만 연결하고 초기16/record는 무수정. actor의 owner API는 전용owner 위임, 공용 main/hud/player/hurtE/State 수정0.
+
+② 원본41591–41627 전량: type100/101/102·r16/26/42·spd.55/.4/.28·elite2승격; HP=orig.mhp*2/ATK=orig.baseAtk*2/poise=~~HP*.4/실드=새HP. room `orig.room||G.curRoom`,lv `orig.lv||((stage+1)*100)`,speed rand*.08/st2=30+rand*20/facing/P·drop/exp·_isGhoul/_revived/alert/추적·상태목록 초기화까지 표E10 준수. 정의표 hpMul/atkMul은 쓰지 않음. spawn→VFX의 RNG 순서도 구분.
+
+③ userdir **`EXODUSER-ReviveShield-R3-Isolated-20261020`**. r24→100/25→101/39→101/40→102,elite2에서100→101·101→102·102유지. origHP100/baseATK10→새HP200/ATK20/poise80/실드200,고정speed롤.5→각spd+.04. 원시체 instance와 새구울 instance 다름, 등록1회/queries 포함, _revived=true로 두번째예약0. 기존 소환굴 테스트는 담당 인수 후 영향 범위만 회귀.
+
+④ R2·P3-002의 동적등록/owner phase·factory 인수 선행. 당시 작업표의 World 등록부 소유와 충돌하면 연결만 BLOCKED. 생성 에셋·맵 geometry 변경 없음, 구울 새 모델 생성 없음.
+
+### 4.4 4번 R4 — 부활 대기·구울 표시
+
+① 신규 `godot/scripts/native_enemy_revival_presentation.gd`, `godot/tests/test_revive_shield_r4_presentation.gd`. R2 runtime에 읽기 snapshot1개, R3 ghoul의 `_draw`에 presentation 위임1개. **공용 main.gd** 설치3행 목표·hud.gd는 이번 수정0(적 로컬/월드 표현). 기존 NativeFloatingText/VFX/particle 소비자는 그대로 재사용하고 확인된 원본 자산을 쓸 때만 해당 byte 사본을 소유 경로에 추가.
+
+② 원본52701–52799·54502–54516·41579–41588·34594–34599: timer/확률/void표시,파란HPoverlay,burst spd5/frame>=9제거,시체→본체 가시성,ghoul ready=false fallback. 등록 주석19629의 없는 boss_revive_boom을 가져온 것으로 간주하지 않음. boss 전용grand는 B3로 분리.
+
+③ userdir **`EXODUSER-ReviveShield-R4-Isolated-20261020`**. timer90→표시ceil(90/60)=2초,0→pending숨김; burst에 sp1을 45회 전달→9frame 도달 제거(단일 sp45 호출과 구분; 원본은 update당 frame++ 최대1회); shield200/200·HPfull은바숨김,shield100/200은파랑50%. 기존1x카메라에서 시체/포탈/새구울/HP바 비교 캡처, 기술assertion과 VISUAL 판정 분리.
+
+④ R2/R3 실제 호출과 byte 에셋·폰트 사용권/경로 인수. P2-006b 드랍 라벨/피 표시와 시각 중첩 관측만 하고 그 소유파일은 수정하지 않음. 실제 화면 검수 불가면 시각 미확인으로 남김.
+
+### 4.5 5번 S1 — 플레이어 에너지실드 선흡수
+
+① **파일/연결:** 신규 `godot/scripts/native_player_energy_shield.gd`, `godot/tests/test_revive_shield_s1_absorption.gd`. **공용 player.gd**의 현재 `_apply_native_damage`909·`_receive_native_burn_damage`1030 함수에서 최종 방어 결과와 HP 대입 사이에 위임을 각각 **3–5행** 추가한다. **공용 State**에는 shield/regenT만 허용하는 owner commit 메서드 **12–20행**, **main.gd**에는 설치/연결3행 목표. 기존 HP authority API를 재사용하며 별도 authority 수정이 필요하면 먼저 그 소유 파일/정확 구역을 확정한다. hud/world/hurtE 수정0.
+
+② **원본:** 43542–43573의 선흡수만 옮긴다. max>0 && shield>0에서 regenT180, a>=shield면 overflow·shield0, 미만이면 a0·fullBlock이다. 앞의 DR/barrier/조건DR/minDamage를 다시 계산하지 않고 **이미 계산된 피해를 입력**으로 받는다. Q/E·2_3 접두는 **보호**. u_d20 발생 접점은 기록하되 다음 Q 소비 변경은 제안하지 않는다.
+
+③ **검증:** userdir **`EXODUSER-ReviveShield-S1-Isolated-20261020`**. HP100·최종피해30일 때 shield50→20/HP100/t180, shield30→0/HP100/t180, shield10→0/HP80/t180, shield0→HP70/기존 timer 유지. direct·DOT 두 실제 Player 경로에서 동일 분배, 최소피해 재적용0, 기본 유니크값0에서 새 RNG0을 단정한다. 현재 P identity·HP authority·telemetry와 실패 prefix도 검사한다.
+
+④ **선행/충돌:** S1은 현재 State P와 실제 Player HP authority의 동기 쓰기 경계 인수가 선행이다. TRACE-SAVE의 **세이브 형식은 보호**, runtime만 다룬다. Q/E 수정이 필요한 접근은 범위 밖으로 BLOCKED 처리한다. 독립된 실드 잔량을 P와 Player 양쪽에 중복 누적하지 않는다.
+
+### 4.6 6번 S2 — 실드 리젠·HP구슬 링
+
+① **파일/연결:** 신규 `godot/scripts/native_player_energy_shield_regeneration.gd`, `native_energy_shield_ring.gd`, `godot/tests/test_revive_shield_s2_regeneration_ring.gd`. **공용 main.gd**에서 기존 source clock의 동일 sp 단계 연결 **1–2행**+설치3행; **State**는 S1 commit 재사용(필요하면 허용 필드 검증2–4행); **hud.gd::_refresh** HP 갱신 뒤 ring.update **1행**+생성/바인딩2–3행 목표. 기존 HP/MP/ST regen 모듈과 world/player/hurtE 수정0.
+
+② **원본:** 32757–32759,28056/28059,60273–60280. timer 감소는 `sp/(1-min(.3,pMRegen*.03))`; else 실드 증가는 `(.3+(STATS.int+~~(lv*.5))*.003)*(1+pMRegen*.03)*sp`. 장비 INT를 새로 더하지 않는다. ring은 ratio clamp0..100·alpha max(.1,ratio), mshield0일 때 alpha0, 숫자 옆 실드 문자는 빈값이며 푸른 glow를 사용한다.
+
+③ **검증:** userdir **`EXODUSER-ReviveShield-S2-Isolated-20261020`**. baseINT10/lv2/pMRegen0/sp1→증가 .333; passive10→.4329·timer 감소1/.7. timer1/sp1이면 그 update에는 regen0, 다음 update부터 증가한다. 최대치 clamp·pause 소모0, 장비INT100을 더해도 이 regen량은 불변이다. ring0/.5/1의 채움0/50/100%, mshield0 조건을 포함한 alpha·1x 화면을 확인한다.
+
+④ **선행/충돌:** S1·단일 source sp·현재 P 쓰기 인수. 실제 sp가 없으면 임의 delta 보충 없이 연결을 BLOCKED로 남긴다. P2-007a의 HUD 폰트 및 TRACE-META 성장 계산은 소유 구역을 보존한다. Q 실드 burst 모듈은 **보호**, 에너지실드 모듈로 바꾸지 않는다.
+
+### 4.7 7번 P1 — 플레이어 사망 순간 부활 판정
+
+① **파일/연결:** 신규 `godot/scripts/native_player_revival_source.gd`, `godot/tests/test_revive_shield_p1_player_chance.gd`. **공용 파일 수정0**인 판정·순서 단위다. 장비/implicit/passive/zone/RNG/runtime sink를 명시 callable로 주입하고 소비 순서를 기록한다. 실제 death caller 연결은 P2에서만 한다. 기존 PASSIVES migration·저장은 **보호**.
+
+② **원본:** 43726–43751,32723. reviveOnce 우선 및 used 가드; 자연=min(100,~~(lv*.03)), demon*2, gear/zone*100, human*10을 사용해 chance를0..100으로 제한한다. 첫 weakRev 존은 `.10+(lv-1)*.01`. cd=`~~(max(6000,36000-demon*1800)*(1+reviveCd))`, can=chance>0 && 기존cd<=0, roll=rand*100을 사전 저장한다. reviveOnce는 HP/MP/ST와 iframe120만 복구하며 실드 충전 대입은 없다.
+
+③ **검증:** userdir **`EXODUSER-ReviveShield-P1-Isolated-20261020`**. lv1000/demon10/human1/gear.06/zoneLv1→chance56%; human10이면0%. demon10/cdAffix0→18000f, -.4이면10800f. 최소6000 적용 순서를 확인하는 demon17은 **테스트 한정 원본 수식 fixture**이며 제품 max10을 늘리지 않는다(배율-.4 후3600f). cooldown 양수이면 can=false, reviveOnce 우선 경로의 fallen RNG0, weakRevLv10=.19·거리 등호 제외를 단정한다.
+
+④ **선행/충돌:** 실제 reader의 지원 범위·현재 값 인수. TRACE-INVENTORY 장비 효과는 읽기만 하며 그 파일을 수정하지 않는다. 이 단계의 fixture 성공을 실제 death caller 완료로 보고하지 않는다.
+
+### 4.8 8번 P2 — 실제 fallen·부활 성공/실패·패널
+
+① **파일/연결:** 신규 `godot/scripts/native_player_revival_runtime.gd`, `native_fallen_presentation.gd`, `godot/tests/test_revive_shield_p2_fallen_flow.gd`. **공용 player.gd**의 direct/DOT 죽음 블록(현재909/1030 함수 안)을 death owner 위임으로 각각 **2–3행** 교체한다. **main.gd** 설치3행+source phase1행; **State**의 fallen runtime 전용 commit **15–25행**; **hud.gd** panel bind/update 각1행(합2) 목표. Q/E 입력·직렬화 수정0. authority 확장이 필요하면 정확한 파일/owner 범위를 먼저 확정한다.
+
+② **원본:** 32982–32994/43721–43751/43847–43894/58907–58944. 중복 die 거절→fallen300/iframe9999→sp 소모→저장 roll 판정. 성공은 HP/MP/ST full·idle·iframe120·CD·u_d21 성공 한정 분노, 실패는 dead/G.on=false/HUD 정리·death 표시다. 전투 부활에서 실드/기동/소모품은 완충하지 않는다. retry 저장·로드 구현은 **보호**로 제외한다.
+
+③ **검증:** userdir **`EXODUSER-ReviveShield-P2-Isolated-20261020`**. sp1×299 뒤 fallen 남1, 추가1에서 resolve1회. pause·중복 die의 추가 판정0. chance50에서 roll49.999 성공/50 실패. 성공 전 shield7→후7, HP/MP/ST max·iframe120; 실패 시 G.on=false/dead·유니크 분노0, u_d21=20 성공에서만 분노+20(max clamp). 패널280×88·카운트52px·하단8px 및 실제1x 화면을 확인한다.
+
+④ **선행/충돌:** P1/S1/S2·현재 자원 authority·허용된 source sp·death UI owner 인수. 보호 Q/E 입력을 바꿔 fallen을 우회하지 않는다. 버튼 저장·로비 왕복 미완은 별도로 남기고 전체 사망 흐름 완료로 승격하지 않는다.
+
+### 4.9 9번 B1 — 일반 보스 즉시부활
+
+① **파일/연결:** 신규 `godot/scripts/native_boss_revival_source.gd`, `godot/tests/test_revive_shield_b1_boss_immediate.gd`. 선행 보스 담당이 소유할 actor의 revive 쓰기 API에 위임한다. **공용 hurtE**의 현재151행 boss halt를 무조건 제거하지 않는다. 완성된 보스 피격 owner의 HP0 접점에 dispatcher **2–4행**만 연결하고 **main.gd** 설치3행 목표, 다른 공용 수정0. 보스 owner의 정확한 경로는 아직 없어 **미확인/BLOCKED 선행 조건**이다.
+
+② **원본:** 31181/42515–42622. 시작 pts=200+round(si*5.882), 판정 전 cost=10+억제 추가~~min(5,sup*10+2)+zone3+풀피2, deaths 증가. chance=max(0,2+stage*.05-(deaths-1)*.15-sup), pts>0 && roll<chance. HP full/실드0/poise 새 max25%, ATK1.5(H7=2), SPD cap1.6/2, CD floor60/20, r>=10·scale>=.4, 성공 시 kill 꼬리 return. 투사체 패링·Q/E는 **보호**.
+
+③ **검증:** userdir **`EXODUSER-ReviveShield-B1-Isolated-20261020`**. stage0/pts200/첫deaths/플레이어 비풀피/sup0→cost10/pts190/chance2; 풀피이면12/188. gear sup.2+zoneLv1(.15)+풀피→추가5+3+2로 cost20/pts180. maxPoise100→150·poise37, atk100→150, speed1.5→cap1.6, patCd70→60; H7은 atk200/speed cap2/CD floor20. pts0이면 부활 RNG0·성공 보상0·반경 절삭·teleport canMv→safePt·실패 prefix도 검사한다.
+
+④ **선행/충돌:** 실제 보스 actor/hurtE/phase·보호 접두 인수 전에는 실제 연결 BLOCKED. helper 결과를 제품 연결 완료로 보고하지 않는다. P3-002 동반부활 등록 및 TRACE-META 보스 보상 소유를 확인한다.
+
+### 4.10 10번 B2 — 보스180sp 폴백·완전사망 gate
+
+① **파일/연결:** 신규 `godot/scripts/native_boss_revival_runtime.gd`, `native_boss_revival_status.gd`, `godot/tests/test_revive_shield_b2_boss_fallback.gd`. B1 보스 owner의 timer/resolve 접점 **2–4행**, R2 runtime의 보스 위임1개. **공용 world.gd** pending 보스 getter **6–10행**, **main.gd** 기존 종료 소비자에 alive/pending 읽기 **1–2행** 목표. 아레나 종료 owner의 정확한 파일은 현재 **미확인/BLOCKED**, 다른 경로에서 문 열림을 만들지 않는다. hud/State/player는 준비된 runtime API를 재사용해 수정0 목표.
+
+② **원본:** 42640–42649/34493–34535/41816–41832. timer180·저장 chance=max(0,1.5+stage*.05-deaths*.25-sup)/roll, resolve는 저장값만 사용한다. pts 고갈 시 chance0/roll1. 성공은 추가10 차감·HP50%/실드0/recover60/iframe90/judged=false·축소/포탈이며 즉시 부활 강화를 다시 하지 않는다. 실패는 timer0/revived=false, 30프레임 종료 체크에서 gate를 해방한다.
+
+③ **검증:** userdir **`EXODUSER-ReviveShield-B2-Isolated-20261020`**. stage0/deaths1/sup0→chance1.25; sp1×179 대기/추가1 resolve, 대기 중 장비·존을 바꿔도 저장 chance 불변. HP100→50/실드0/pts190→180, ATK·maxPoise 추가 강화0, pending 동안 종료0/최종 사망 뒤 종료1회. SFX throw 경계는34525/34534처럼 기록 후 후속 진행하며 실제 음향 재생 증거와 분리한다.
+
+④ **선행/충돌:** B1/R2·보스 아레나 종료 owner 및 단일 클리어 판정 인수. 새 맵·gate geometry 변경0. P3-003 지역 보상/TRACE-META 카운터는 소유자 연결 요청만 하며 임의 수정하지 않는다.
+
+### 4.11 11번 B3 — 피날레 예외·보스 부활 표시
+
+① **파일/연결:** 신규 `godot/scripts/native_druid_finale_revival.gd`, `native_boss_revival_presentation.gd`, `godot/tests/test_revive_shield_b3_finale.gd`. B1/B2 dispatcher에 피날레 predicate **2–4행**, 실제 보스 owner의 전용 write API 위임. **공용 main.gd** presentation 설치3행·**hud.gd** 보스 status 읽기/update2행 목표. player/World/State/hurtE의 다른 블록 수정0. 확인된 기존 원본 에셋 byte 인수만 허용하고 없는 boss_revive_boom 생성·등록을 제안하지 않는다.
+
+② **원본:** 17054–17080/31181/35830–35864/41554–41577. demo && laststage==stage==3 && ib, 시작pts20, 첫 deaths==1 && pts>0에서 clamp(1-sup,0,1)의 폴백1회. HP35%/pts0/phase3/lastStand/baseATK1.6/rest90/iframe90/spawn0/grand0. 일반 보스 grand는 flash14/hitstop16/slowMo90/shake30/링3층·light r14/9/5이다. bossShieldF는 원본 width0%이며 일반 적 overlay로 대체하지 않는다.
+
+③ **검증:** userdir **`EXODUSER-ReviveShield-B3-Isolated-20261020`**. demo/stage3/ib=true/deaths1/pts>0/sup.2→chance.8; 일반 모드·stage2는 예외 제외, 둘째 death·pts0은 chance0. HP100→35/baseATK100→160/phase3/pts0, 추가100%·50% 복구0. 일반 grand와 피날레의 spawn/grand 차이를 각각 검사하고 1x 보스 이름·막/lastStand·카운트다운·실드bar0%·VFX 캡처를 기술 결과와 분리한다.
+
+④ **선행/충돌:** B2·실제 피날레 actor/막/음향·byte 에셋 인수. Q/E·세이브 형식 **보호**. 게임 흐름/실제 화면 연결이 없으면 해당 부분은 BLOCKED이며 fixture 성공을 제품 완료로 보고하지 않는다.
 
 ## 5. 공용 파일 연결 필요 지점 — 이번 변경 0
 
