@@ -37,3 +37,22 @@ Main 기존 호환 bus 2개는 남지만 그 경로의 voice는 0이며 음량�
 현재 샘플 소비자 연결과 중복·수명 검수까지다. SND-04/05/06의 새 보이스/BGM, 미이식 합성층,
 원본 EQ/압축/automation의 native 출력과 청감 인수는 후속 HOLD다. 보호 전투 경로에 추가 신호가
 필요하면 PC owner 인터페이스 요청으로 넘기며 이 단위에서 판정 hook을 추가하지 않았다.
+
+
+2026-10-21 성능 규칙 후속: 같은 브랜치에서 최신 origin/main
+`aa1eaea5a1fa70b31eae6fd907662ee13471c08d`를 rebase 없이 정상 merge했다.
+PC의 Q/E·resource adapter·regeneration phase 캐시 수정 3파일은 main과 동일 byte로만
+인수했으며 Mac이 보호 판정을 추가 수정하지 않았다. 해당 성능 문서를 읽고 Main/skill 음향/
+consumer/graph/backend/mix와 sound_source 10개 모듈의 목록 생성 API를 점검해
+`get_method_list/get_property_list/get_signal_list` 호출 0건을 확인했다.
+설치 때만 graph를 구성하고 tick은 기존 구독·queue·backend 경로를 사용한다.
+이번 단위 제품·테스트는 1888729c와 동일하므로 새 캐시 수정은 필요 없었다.
+성능 개선 수치를 자체 측정했다고 주장하지 않으며 Performance 지표는 사용하지 않았다.
+필요한 추가 계측은 물리 N틱 고정 벽시계 벤치로 한정한다. 후속 관련 테스트는 모두 각1회: 신규44/0·SND03 606/0·SND07 2004/0·SND08mix 5728/0, exit0·SCRIPT ERROR0. 기존 테스트 수정0.
+
+앞 제출의 정리 순서 예외도 보존한다: 미추적 생성물 whitelist 검사가 실패했는데 shell의
+다음 명령이 계속되어 DONE 최종 작성 전에 자기 worktree가 제거되었다.
+원격 커밋 1888729c·13개 경로·R 불변을 제거 후 다시 검증하고 DONE을 확정했다.
+당시 whitelist는 실행 후 0byte인 override.cfg도 거부했다(후속 목록에서 확인).
+미추적 생성물의 완전한 목록 검사를 성공으로 주장하지 않으며 외부 cleanup-order-exception.txt에 기록했다.
+후속 정리는 Python 단일 순차 절차에서 검증→DONE 작성→worktree 제거 순서를 강제한다.

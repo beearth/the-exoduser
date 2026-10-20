@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-40 성능 규칙 후속 main merge
+
+| 항목 | 후속 반영·검수 |
+|---|---|
+| 기준·통합 | 같은 branch에 main aa1eaea5a 정상 merge, rebase0. PC 캐시 수정3파일은 main 동일 byte, 이번 단위 제품/테스트1888729c와 동일 |
+| tick 규칙 | Main/skill 음향/consumer/graph/backend/mix/sound_source 목록 생성 API0건. 신규 캐시 불필요, Performance 수치 주장0·필요 시 물리 N틱 벽시계 벤치 |
+| 검증·기록 | 직접 관련 스위트만1회 재실행, 수치는 [보고서](engine/orders/reports/demo11-40_REPORT.md). 원로그 followup-*; 앞 정리 순서 예외도 보존. 정상 push/remote SHA/DONE 추가 후 WT 제거 |
+
 ## 2026-10-21 DEMO11-40 전투 sample consumer 연결
 
 | 항목 | 구현·검증 근거 |
