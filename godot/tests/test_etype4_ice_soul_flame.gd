@@ -6,6 +6,7 @@ const FactoryScript = preload("res://scripts/enemy_factory.gd")
 const WorldScript = preload("res://scripts/world.gd")
 const PlayerScript = preload("res://scripts/player.gd")
 const IceScript = preload("res://scripts/enemy_tank_ice_soul_flame.gd")
+const HiveScript = preload("res://scripts/enemy_archer_lightning_hive_bloater.gd")
 const IceProjectile = preload("res://scripts/enemy_projectile_ice.gd")
 const STEP = 1.0 / 60.0
 const PROFILE = "native_ch1_etype4_ice_soul_flame_v1"
@@ -238,13 +239,18 @@ func _test_admission() -> void:
 	var world = WorldScript.new()
 	get_root().add_child(world)
 	var report = world.get_encounter_report()
-	_expect(world.ready_for_player and report["installed"] and report["source_count"] == 16 and report["supported_count"] == 5 and report["unsupported_count"] == 11, "actual World consumes16 with five exact profiles and eleven explicit unsupported")
+	# game.html:31120-31162 and 31608-31648 define the unchanged source records/order.
+	_expect(world.ready_for_player and report["installed"] and report["source_count"] == 16 and report["supported_count"] == 6 and report["unsupported_count"] == 10, "actual World consumes16 with six exact profiles and ten explicit unsupported")
 	var orders: Array = []
 	var ice: Node = null
+	var hive: Node = null
 	for actor in world.get_enemies():
 		orders.append(actor.source_order)
 		if actor.source_order == 8: ice = actor
-	_expect(orders == [0,1,8,13,14] and ice is IceScript, "actual registry preserves source order and dedicated ice class")
+		if actor.source_order == 15: hive = actor
+	_expect(orders == [0,1,8,13,14,15] and ice is IceScript, "actual registry preserves source order and dedicated ice class")
+	_expect(hive is HiveScript and str(hive.name) == "ch1_initial_016" and report["records"][15]["status"] == "supported" and report["records"][15]["consumer_profile"] == "native_ch1_etype1_lightning_hive_bloater_v1", "added lightning hive has exact dedicated class/identity/profile")
+	_expect(report["records"][2]["status"] == "unsupported", "guardian remains explicitly unported")
 	_expect(report["records"][8]["record"] == record and report["records"][8]["consumer_profile"] == PROFILE, "readonly factory retains complete original record beside new capability")
 	for key in _config["runtime"]["native_final"]:
 		_expect(_config["runtime"]["native_final"][key] == raw[key], "subset origin exact: " + key)
@@ -318,7 +324,11 @@ func _test_projectile() -> void:
 	_step(shot)
 	_expect(_near(shot.heading.angle(),0.00655,0.000001) and _near(shot.life_ticks,119.333), "post-decay life>30 takes exact first homing step")
 	var sprite: Sprite2D = shot.get_node("WaterFlight")
-	_expect(sprite.texture != null and sprite.modulate.a == 1 and shot.get_snapshot()["portable_export_dependency_packaged"] == false, "existing external original texture loads, alpha1 and export limit explicit")
+	var animation: Dictionary = _config["runtime"]["projectile"]["animation"]
+	# game.html:24026 flight / 8926,18812 impact; byte-identical Godot copies are internal.
+	# FDG_GODOT_ETYPE4_ICE_SOUL_FLAME_20261013.md:9-11 records the copy/hash contract.
+	_expect(sprite.texture != null and sprite.modulate.a == 1 and shot.get_snapshot()["portable_export_dependency_packaged"] == true, "packaged original water texture loads with alpha1 and declared dependency")
+	_expect(animation["texture"] == "res://assets/vfx/water_blue_projectile_sheet.png" and animation["external_original_file"] == false and animation["packaged_original_copy"] == true and sprite.texture != null and sprite.texture.resource_path == animation["texture"] and ResourceLoader.exists(animation["texture"], "Texture2D"), "actual flight Resource uses the internal original-copy path")
 	_step(shot,134)
 	var stopped_heading = shot.heading
 	_expect(shot.life_ticks < 30, "135th decay crosses homing lifetime boundary")
@@ -342,6 +352,8 @@ func _test_projectile() -> void:
 	var impact = rejected["holder"].get_children().filter(func(x): return x.name == "WaterImpact")
 	_expect(impact.size() == 1 and impact[0].texture != null, "actual original water impact sheet consumed")
 	if impact.size() == 1:
+		var impact_profile: Dictionary = _config["runtime"]["projectile"]["impact"]
+		_expect(impact_profile["texture"] == "res://assets/vfx/Water_ImpactWater_Sheet.png" and impact_profile["external_original_file"] == false and impact_profile["packaged_original_copy"] == true and impact[0].texture != null and impact[0].texture.resource_path == impact_profile["texture"] and ResourceLoader.exists(impact_profile["texture"], "Texture2D"), "actual impact Resource uses its internal original-copy path")
 		_step(impact[0],22)
 		_expect(_near(impact[0].scale.x*impact[0].texture.get_width()/4.0,216,0.001), "real impact reaches radius72 times3 at22/66")
 	rejected["holder"].free()
