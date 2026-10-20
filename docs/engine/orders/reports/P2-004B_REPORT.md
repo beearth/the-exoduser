@@ -76,7 +76,11 @@ docs 전체 관련검색은 재개 후 `rg -n P2-004B docs/`로 다시 수행했
 
 ### ④ 커밋·원격
 
-본체 커밋 SHA는 실제 커밋 생성 후 후속 영수증에 기록한다. 자기 브랜치 `git push origin HEAD`와 원격 ref SHA 읽기 대조까지 수행하고 보고한다. main push/병합은 하지 않는다.
+본체 커밋 **`1b4d409fb6e9126916a794cd80a8e99b2734c1ea`** (parent `f1df29a86dc3966bab87a7f4910ae6819e167294`),17파일 +8898/−66줄. 경로 지정 add, 테스트4경로는 add -f로 인수했다. `git push origin HEAD` 후 `git ls-remote origin refs/heads/codex/p2-004b-pc-20261020`에서 위 SHA 일치를 확인했다(`content-push.out/.err`, `push-1b4d409fb6e9126916a794cd80a8e99b2734c1ea.json`). main push/병합 없음.
+
+기존 commit hook guard.js가 자동 실행한 인라인9스크립트 문법 등은 PASS였으나, `tools/guard.baseline.json` lines를64266→65693으로 자동 갱신했다. `guard-before-commit.json`·`content-hook-baseline.diff`에 보존 후 자동변경1줄만 apply_patch로 원복했다. 훅을 우회하거나 무관한 도구 변경을 커밋하지 않았다. 훅 출력은 Godot 검수 결과와 별개다.
+
+본 보고서의 SHA는 코드·검수 본체 체크포인트다. 이를 인용하는 후속 보고 커밋의 자기 SHA는 사전 기입하지 않으며, 최종 원격 push 영수증/사용자 최종응답으로 대조한다. 최종 보고 commit·push에도 기존 hook의 동일 자동변경이 있으면 같은 보존·원복 절차를 적용한다.
 
 ### ⑤ 남은 것
 
