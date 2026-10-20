@@ -32,6 +32,13 @@
 | P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | Mac Codex ENGINE (`01a1235a-f2b8-73d1-bf58-c51c7dfb7638`, ROOT 관측) | codex/p3-003-20261020 | `godot/scripts/native_regions.gd`, `godot/tests/test_p3003_regions.gd`, `docs/engine/FDG_P3_003_REGIONS_20261020.md`, `docs/engine/orders/reports/P3-003_REPORT.md` | 배정됨 · 새 worktree 준비 전(코드 착수 전) |
 
 ## 공용(누구도 단독 소유 아님 — 수정 시 최소 줄·보고 필수)
+
+### PC P3-003 중복 작업 마감 (2026-10-20, PC 브랜치 전용 이력)
+
+- 재개 시 최신 통합 worktree의 공동판에서 P3-003 **Mac ENGINE 단독** 및 PC 중복 배정 중단·FEATURE-INVENTORY 전환을 확인했다. 위 Mac 소유 행을 바꾸거나 지역 구현을 다시 작성하지 않는다.
+- PC 구 worktree `G:/exoduser-wt/codex-p3-003`는 실행 중 `.git`·소스가 소실되었으며 실행 주체는 미확인이다. 원로그는 `G:/exoduser-wt/_out/P3-003-pc/`에 남아 있다.
+- 브랜치 `codex/p3-003-pc-20261020`를 문서 전용 `G:/exoduser-wt/codex-p3-003-report-20261020`에서 보존 마감한다. [PC 마감 보고](reports/P3-003_REPORT.md)는 **코드 인수 보고가 아니며 Mac 동명 보고서를 대체하지 않는다**. 이 메모와 PC 보고서만 검수 대기; 제품 코드 변경·main 반영 없음.
+
 `godot/scripts/main.gd`, `hud.gd`, `world.gd`, `player.gd`, `native_normal_enemy_hurte.gd`(공용 피해 집행자), `native_source_new_run_state.gd`(G/P 소유자)
 
 ## 검수·병합 완료 기록 (최근)
