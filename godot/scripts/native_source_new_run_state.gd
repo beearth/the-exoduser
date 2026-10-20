@@ -236,6 +236,29 @@ func apply_native_normal_enemy_hurte_g_writes(owner: Node, writes: Array) -> Dic
 			_g[write["field"]] = write["value"]
 	return {"applied": true, "count": writes.size()}
 
+# ═══ P2-001h: 인트로 커튼 시퀀스 G owner — 원본 63283 G._intro=true;G.on=false /
+# 63413 G.on=true / 63440 G._intro=null. stage0 흐름에서 G.on 점등은 커튼 오픈 소관:
+# update clock(P1-002.D)의 phase_g_on(32580 if(!G.on)return)과 G.stageTime 진행이
+# 이 쓰기부터 열린다. 파일 초기값 on=false(bootstrap source_boot_g)와 초기화 계약
+# "pre-stage on=false"는 시퀀스 미기동 상태 그대로 유효하다.
+func apply_native_intro_curtain_g_writes(owner: Node, step: String) -> Dictionary:
+	if not _current_error().is_empty() or not is_instance_valid(owner) 			or not owner.is_inside_tree() or get_tree().paused 			or owner.get("world") != _world or owner.get("player") != _player:
+		return {"applied": false, "reason": "intro_curtain_g_owner_not_current"}
+	var script: Script = owner.get_script() as Script
+	if script == null or script.resource_path != "res://scripts/native_intro_curtain_sequence.gd":
+		return {"applied": false, "reason": "intro_curtain_g_owner_script_mismatch"}
+	match step:
+		"begin":   # 63283 G._intro=true;G.on=false
+			_g["_intro"] = true
+			_g["on"] = false
+		"open":    # 63413 G.on=true
+			_g["on"] = true
+		"dispose": # 63440 G._intro=null
+			_g["_intro"] = null
+		_:
+			return {"applied": false, "reason": "intro_curtain_g_step_unsupported:" + step}
+	return {"applied": true, "on": _g.get("on"), "intro": _g.get("_intro")}
+
 # ═══ P2-001a: 타격 피드백 G owner — 피해 숫자 펌프·히트스톱(원본 비활성)·셰이크 ═══
 # 프레임 예산 카운터(원본 전역 _txtPerFrame/_impPerFrame, 61848 리셋·42397 증가·25415 증가).
 # 임팩트 시스템 미이식 → _imp_per_frame는 리셋만 되고 0 유지(원문 min(4,12-0)=4).

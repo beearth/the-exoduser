@@ -2854,6 +2854,27 @@ func register_summoned_enemy(enemy: CharacterBody2D) -> Dictionary:
 	return {"valid": true, "errors": [], "registered": true,
 		"registry_index": _enemies.size() - 1, "native_frame": _native_frame}
 
+func register_native_curtain_ring_enemy(enemy: CharacterBody2D, source_order: int) -> Dictionary:
+	# P2-001h — _openIntroCurtain(63425~63432) 커튼 오픈 런타임 스폰 등록.
+	# install_native_encounters(2967~2974)와 같은 초기형 경로(자체 _physics_process AI,
+	# P1-002 hurtE owner API 그대로). 고정 캡처(encounters.json)·factory 레코드 가드는
+	# 소비/확장하지 않는다 — 원본에서 이 5마리는 커튼 시점 live RNG 런타임 소환.
+	if not is_instance_valid(enemy) or enemy.get_parent() != null or not is_instance_valid(player):
+		return {"valid": false, "errors": ["curtain_enemy_instance_or_target_invalid"]}
+	if not enemy.has_method("set_player") or not enemy.has_signal("telemetry_event") or _enemies.has(enemy):
+		return {"valid": false, "errors": ["curtain_enemy_consumer_interface_invalid"]}
+	var script: Script = enemy.get_script() as Script
+	if script == null or script.resource_path != "res://scripts/enemy_melee_flesh_crawler.gd":
+		return {"valid": false, "errors": ["curtain_enemy_actual_etype0_script_required"]}
+	enemy.set_player(player)
+	enemy.telemetry_event.connect(_forward_event)
+	_enemies.append(enemy)
+	_native_initial_order_by_instance[enemy.get_instance_id()] = source_order
+	add_child(enemy)
+	_native_dynamic_spawn_count += 1
+	return {"valid": true, "errors": [], "registered": true,
+		"registry_index": _enemies.size() - 1, "native_frame": _native_frame}
+
 func register_native_initial_consumer(enemy: CharacterBody2D, record: Dictionary) -> Dictionary:
 	# This is an explicit late installation API. Main/factory never calls it
 	# automatically, and the original source record/support/runtime is retained.
