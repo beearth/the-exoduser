@@ -117,6 +117,20 @@ func commit_native_q_mana_cost(owner: Node, amount: float) -> Dictionary:
 func get_native_q_mana_commit_snapshot() -> Dictionary:
 	return {"commits":_q_mana_commits,"spent":_q_mana_spent}
 
+# P2-005d — useMp(31996): P.mp=max(0,mp−c), 실소비 반환(파쇄 보너스 _ioBon=spent×2 46757 용).
+func commit_native_skill_mana_spend(owner: Node, amount: float) -> Dictionary:
+	if not is_native_source_resources_ready() or _committing or get_tree().paused \
+			or not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world \
+			or not is_finite(amount) or amount < 0.0:
+		return {"accepted": false, "reason": "actual_skill_mana_owner_or_amount_not_ready"}
+	var before: float = float(_owned["mp"])
+	_committing = true
+	_owned["mp"] = maxf(0.0, before - amount)
+	_last_source_write = {"field": "mp", "before": before, "value": _owned["mp"], "phase": "native_actual_skill_mana_cost"}
+	_committing = false
+	return {"accepted": true, "before": before, "after": _owned["mp"], "spent": before - float(_owned["mp"])}
+
 func commit_native_e_stamina_cost(owner: Node, amount: float) -> Dictionary:
 	if not is_native_source_resources_ready() or _committing or get_tree().paused or not is_instance_valid(owner) or owner!=_player.get_parent() or owner.get("source_resources")!=self or owner.get("world")!=_world or not is_finite(amount) or amount<=0.0 or _player.hp<=0.0 or _player.stamina<amount:
 		return {"accepted":false,"reason":"actual_e_cost_gate"}

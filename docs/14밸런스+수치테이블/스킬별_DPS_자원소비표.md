@@ -46,17 +46,17 @@ stCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × 할인계수
   - 할인계수(석궁계): pBowCost()                    → 최소 0.60
 mpCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × pMagicCost() → 최소 0.40
 
-COST_BASE: (단발성 기본 250, 기본공격 10)
-  weapon:10, finisher:250, shield:10, giantSlam:50
-  charge:250, bladeDash:250
-  bow:250, bladeShot:250, blastShot:250, shieldThrow:250, fanShot:250
-  magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:250
+COST_BASE (코드 31960~31966 기준 — 2026-10-20 코드 대조 정정; 구 250 모델 표기는 폐기):
+  weapon:10, finisher:50, shield:10, giantSlam:50
+  charge:50, bladeDash:50
+  bow:35, bladeShot:35, blastShot:35, shieldThrow:35, fanShot:35
+  magic:10, blink:50, iceOrb:50, dimBreach:50, exBolt:50, mortar:50
   whirlTick:0.4, sBlockTick:0.4, qsTick:0.5
 
-DPS스케일 (_COST_DPS): 각 스킬의 DPS 성장률과 동일
-  물리(+10%): giantSlam, charge, bladeDash, finisher
-  석궁(+5~10%): bow/fanShot(5%), bladeShot/blastShot(10%), shieldThrow(8%)
-  마법(+10~15%): magic/iceOrb/mortar(15%), blink/dimBreach/exBolt(10%)
+DPS스케일 (_COST_DPS, 코드 31974~31979 기준 — 2026-10-20 정정):
+  물리(+30~45%): giantSlam/charge/finisher(45%), bladeDash(30%)
+  석궁(+15~30%): bow/fanShot(15%), bladeShot/blastShot(30%), shieldThrow(25%)
+  마법(+30~35%): magic/iceOrb/mortar(35%), blink/dimBreach/exBolt(30%)
 
 채널링: 기본 30/초 × (1+(Lv-1)×DPS스케일)
   회전참: 30+Lv당5 (Lv1=30, Lv10=75, Lv20=125)
@@ -101,7 +101,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | detonate | 기폭팔 | 없음 (흡수) | 패링 축적 에너지 | 없음 | 기본: skMul×tierMul(19/32/48) + 흡수량(감소후차이)×단계×2.5, 범위 150→285 | Q 2초(120f) 홀드 후 **홀드당 1회** 폭발. 계속 홀드해도 반복하지 않고 Q 재입력 시 재무장 (2026-09-04) |
 | guardian | 악의 보호자 | 없음 | 패시브 | 3초마다 생성 | 자동 방어구체 (Lv1=2개, Lv당+1) | 투사체 자동 파괴 |
 | ghostWalk | 뇌전걸음 | 없음 | 무료 | **1200f (20초)** | INT×3.5 × (1+(Lv-1)×0.15) | 5초 유령화, 적/탄 수×10% 폭발뎀, 캡=Lv×5(최대50) |
-| iceOrb | 얼음보주 | MP | 250×DPS (마법할인) | max(600, 1200-(Lv-1)×60)f = **20→10초** | INT×5 × (1+(Lv-1)×0.15) | 파쇄: 칼날 4+Lv×4발(8→44발) |
+| iceOrb | 얼음보주 | MP | **50**×(1+(Lv-1)×0.35)×pMagicCost (코드 31964·31978·28041 — Lv1=50) | max(600, 1200-(Lv-1)×60)f = **20→10초** (돔 쿨감 적용 36687) | base=magicRef×statInt×pMagicMul×**_skMul(8+(Lv-1)×3.2)**+useMp×2(_ioBon 46757) — 칼날/파쇄 각 base×30% (코드 44511 b8 g6.4·46771~46772) | 파쇄: 칼날 4+Lv×4발(8→44발)·파쇄AoE r=(100+5Lv)×(1+(Lv-1)×0.1)·파편당 냉기저항 -10% |
 | peaceShield | 평화의보호 | MP(틱) | 홀드 중 MP 지속소모 | 없음 | HP 1.5→3.0%/초 회복(10초간 성장) + 크기비례 DR, DOT 흡수율 절반 | 1렙부터 배움 가능 |
 | voidScarecrow | 유령 허수아비 | ST | 100 고정 | **600f (10초)** 회수 후 | 탄막 흡수 → HP/MP/ST 각 100/개 | 레벨 제한 없음, 용량 20+(Lv-1)×3 |
 | explodeScarecrow | 폭발 허수아비 | — | — | **600f (10초)** 폭발 후 | 탄막 흡수 → 재입력 시 1초 부풀기 후 **연쇄 폭발** (10스택당 1회, 1초 간격, 매회 +30% 확대). 데미지(적 개별): `max(고정뎀, HP%뎀)×falloff` — 고정=(magicBase+dmgPool)×min(200,50+10스택당50), HP%=해당적maxHP×(흡수/최대흡수)×25% (만충=자기HP25%) | 판정 min(2000, 500+10스택당500), VFX=판정×50%. 연쇄 2차×1.3 3차×1.6. 화염 마법판정, 흡수 1렙10~20렙30 |

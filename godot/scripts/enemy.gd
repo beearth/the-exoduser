@@ -44,6 +44,13 @@ var _stun_ticks = 0.0
 # slowPct=_spikeTrapSlowPct 45506=min(.95,.91+.02(lv−1)) / 38613 kb도 동일 감쇠).
 var _spike_slow := 0.0
 var _spike_slow_lv := 1
+# P2-005d — 냉기 프리즌(42446~42460·38644~38657): 게이지·빙결·면역·얼음파편 저항깎기.
+# _iceResDown(아이스스톰 디버프)은 미이식 — 축적 배율 1 고정 기록.
+var _freeze_gauge := 0.0
+var _freeze_max := 0.0
+var _frozen := 0.0
+var _frozen_immune := 0.0
+var _ice_shard_res := 0.0
 var _poise_regen = 0.0
 var _hit_flash = 0.0
 var _motion_ms = 0.0
@@ -134,6 +141,22 @@ func _physics_process(delta: float) -> void:
 	var ticks = delta * 60.0
 	_motion_ms += delta * 1000.0
 	_hit_flash = maxf(0.0, _hit_flash - ticks)
+	if _frozen > 0.0: # 38644~38649 프리즌: 행동불가 (파란 틴트·_cancelProjCharge 상당=charge 리셋)
+		charge_ticks = 0.0
+		_frozen = maxf(0.0, _frozen - ticks)
+		if _frozen == 0.0:
+			_freeze_gauge = 0.0
+			_frozen_immune = 300.0 if (data.get("native_final", {}) as Dictionary).get("ib") == true else 120.0
+		velocity = Vector2.ZERO
+		_update_animation()
+		queue_redraw()
+		return
+	if _frozen_immune > 0.0: # 38651
+		_frozen_immune = maxf(0.0, _frozen_immune - ticks)
+	if _ice_shard_res > 0.0: # 38653 — ~5초에 10% 회복
+		_ice_shard_res = maxf(0.0, _ice_shard_res - 0.002 * ticks)
+	if _freeze_gauge > 0.0: # 38657 — 안 맞으면 자연 감소
+		_freeze_gauge = maxf(0.0, _freeze_gauge - ticks * 0.3)
 	if _knockback.length_squared() > 0.02:
 		var next = global_position + _knockback * ticks
 		if world.can_move(next, radius):
@@ -297,7 +320,8 @@ func read_native_normal_enemy_hurte_fields(caller_world: Node) -> Dictionary:
 		"_revived": native.get("_revived") == true, "_isGhoul": native.get("_isGhoul") == true,
 		"_isDecoy": native.get("_isDecoy") == true, "_aDefM": native.get("_aDefM"),
 		"_shockStk": float(native.get("_shockStk", 0.0)), "_cursed": float(native.get("_cursed", 0.0)),
-		"_frozen": float(native.get("_frozen", 0.0)), "bleed": float(native.get("bleed", 0.0)),
+		"_frozen": _frozen, "_frozenImmune": _frozen_immune, "_iceShardRes": _ice_shard_res,
+		"bleed": float(native.get("bleed", 0.0)),
 		"bleedT": float(native.get("bleedT", 0.0)), "_weakPhys": float(native.get("_weakPhys", 0.0)),
 		"_shockDR": float(native.get("_shockDR", 0.0)), "_blinkWeak": float(native.get("_blinkWeak", 0.0))}
 
@@ -331,6 +355,27 @@ func apply_native_normal_enemy_field_write(field: String, value: Variant) -> Dic
 			if not (value is int or value is float) or not is_finite(float(value)):
 				return {"applied": false, "reason": "native_enemy_stunned_value_unsupported"}
 			_stun_ticks = maxf(_stun_ticks, float(value))
+		"freeze_hit": # P2-005d — 42446~42458: value=[dmg]. 게이트·축적·발동을 적이 소유.
+			if not value is Array or (value as Array).size() != 1 \
+					or not (value[0] is int or value[0] is float) or not is_finite(float(value[0])):
+				return {"applied": false, "reason": "native_enemy_freeze_value_unsupported"}
+			if _frozen > 0.0 or _frozen_immune > 0.0: # 42446 (e._frozen||0)<=0&&(e._frozenImmune||0)<=0
+				return {"applied": true, "field": field, "triggered": false, "skipped": true}
+			var frozen_boss: bool = (data.get("native_final", {}) as Dictionary).get("ib") == true
+			if _freeze_max <= 0.0: # 42447 e._freezeMax=e.ib?500:100
+				_freeze_max = 500.0 if frozen_boss else 100.0
+			# 42449~42451: _iceResMul=1(아이스스톰 미이식 기록)·_iceShardMul=1+_iceShardRes·보스 30%
+			var freeze_add: float = (float(value[0]) * 0.3 if frozen_boss else float(value[0])) \
+				* (1.0 + _ice_shard_res)
+			_freeze_gauge = minf(_freeze_max, _freeze_gauge + freeze_add)
+			if _freeze_gauge >= _freeze_max: # 42453~42456
+				_frozen = 180.0
+				_freeze_gauge = 0.0
+				queue_redraw()
+				return {"applied": true, "field": field, "triggered": true, "gauge": 0.0}
+			return {"applied": true, "field": field, "triggered": false, "gauge": _freeze_gauge}
+		"ice_shard_res": # P2-005d — 35584: e._iceShardRes=min(1, +0.10)
+			_ice_shard_res = minf(1.0, _ice_shard_res + 0.10)
 		"spike_slow": # P2-005c — 가시덫(37471): e._spikeSlow=max(,90), value=[틱, lv]
 			if not value is Array or (value as Array).size() != 2:
 				return {"applied": false, "reason": "native_enemy_spike_slow_value_unsupported"}

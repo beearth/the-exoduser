@@ -738,7 +738,7 @@ func _physics_process(delta: float) -> void:
 		var divisor: float = 8.0 if state == "idle" else 16.0
 		stamina = minf(max_stamina, stamina + _stamina_regen_base / divisor * ticks)
 	var move_input: Vector2 = Vector2(float(_native_input_held.get("move_right",false))-float(_native_input_held.get("move_left",false)),float(_native_input_held.get("move_down",false))-float(_native_input_held.get("move_up",false))).normalized() if _native_attack_selection_bound else Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var speed_scale: float = 1.0 if state == "idle" else (0.0 if state in ["stagger", "pStun"] else 0.8)
+	var speed_scale: float = 1.0 if state == "idle" else (0.0 if state in ["stagger", "pStun", "iceOrb"] else 0.8) # P2-005d: 33040 얼음보주 전행동 차단
 	if is_instance_valid(_native_q_control) and _native_q_control.is_native_q_control_ready() and (state=="sBlock" or _native_q_control.q_movement_scale==0.0):speed_scale=_native_q_control.q_movement_scale
 	# Native _freezeSlow is consumed inside the entered idle case, before
 	# its positive-value half-speed check. Attack/stun/recovery clocks freeze it.
@@ -830,6 +830,20 @@ func _physics_process(delta: float) -> void:
 		var fireball_context: Dictionary=_world.get_native_projectile_fx_context()
 		native_fireball_phase_tick.emit(fireball_context.dt_sp,_world.get_native_frame(),fireball_entered_state)
 
+# P2-005d — 얼음보주 상태 전환(46758 P.s='iceOrb' / 46819 P.s='idle'): 소유=스킬 슬롯 어댑터,
+# idle↔iceOrb 왕복만 허용. 상태 'iceOrb'는 이동 0(741)·공격 차단(state!=idle 579)·피격 무적(876).
+func set_native_ice_orb_state(active: bool) -> bool:
+	if active:
+		if state != "idle":
+			return false
+		state = "iceOrb"
+	else:
+		if state != "iceOrb":
+			return false
+		state = "idle"
+	stats_changed.emit()
+	return true
+
 func receive_damage(amount: int, damage_type: String = "phys", source_direction: Vector2 = Vector2.ZERO, native_knockback_strength: float = -1.0) -> void:
 	_apply_native_damage(amount, amount, damage_type, source_direction, native_knockback_strength)
 
@@ -875,6 +889,8 @@ func receive_native_projectile_contact(projectile: Object, raw_amount: int, dama
 
 func _apply_native_damage(amount: int, raw_amount: int, damage_type: String, source_direction: Vector2, native_knockback_strength: float) -> void:
 	if hp <= 0 or iframes > 0.0:
+		return
+	if state == "iceOrb": # P2-005d — 34889s 전 피격 경로의 !P._ioActive 무적 게이트
 		return
 	if not is_instance_valid(_native_combat_qe) and is_instance_valid(_native_q_control) and state=="sBlock" and damage_type in ["phys","magic","parry"]:
 		var q_reaction: Dictionary = _native_q_control.resolve_q_control_damage(amount,false)

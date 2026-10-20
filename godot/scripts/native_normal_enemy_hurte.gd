@@ -66,8 +66,12 @@ static func resolve_basic_attack_element(main: Node) -> Dictionary:
 #   P2-005c 확장. isDot 분기(42121 revive 통과·42191 피격음 스킵·42332/42334 스턴/빙결
 #   ×1.5 스킵·42345 쉴드 (!dot‖shieldHit)·블루 텍스트 !dot·42387 피크 _quiet2·42472 kb
 #   스킵·42486 poise !dot)를 원본 행 그대로 반영.
+#   iceOrb 칼날(46782)·파쇄(46792): {iceBlade:true, magic:true} — P2-005d 확장.
+#   iceBlade=42386/42396 _quiet·_quiet2(피크 표시·피 스플래시 억제), magic=42417 _isMagicDmg(임팩트 생략)
+#   + 크리 보정 42309 critRateSpell(마법) 선택.
 const SUPPORTED_OPT_KEYS: Array[String] = ["kbMult", "poiseMult", "noPoise", "poiseHit",
-	"poiseSkill", "noImpact", "_lessonAttack", "_lessonFullCharge", "_kiFull", "dot", "shieldHit"]
+	"poiseSkill", "noImpact", "_lessonAttack", "_lessonFullCharge", "_kiFull", "dot", "shieldHit",
+	"iceBlade", "magic"]
 
 func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: float, atk_el: int, opts: Dictionary = {}) -> Dictionary:
 	_main = main
@@ -79,6 +83,8 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	var kb_mult: float = float(opts["kbMult"]) if opts.has("kbMult") else 1.0
 	var is_dot: bool = opts.get("dot", false) == true          # 42118 isDot
 	var shield_hit_opt: bool = opts.get("shieldHit", false) == true
+	var is_ice_blade: bool = opts.get("iceBlade", false) == true # 42386/42396 _quiet 항목
+	var is_magic: bool = opts.get("magic", false) == true        # 42417 _isMagicDmg
 	var poise_mult: float = float(opts["poiseMult"]) if opts.has("poiseMult") else 1.0
 	var poise_hit: bool = opts.get("poiseHit") == true
 	var ki_full: bool = opts.get("_kiFull") == true
@@ -309,7 +315,8 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	if view.get("_rageSkCtx") != null and not (view.get("_rageSkCtx") is bool and view.get("_rageSkCtx") == false):
 		return _halt(42306, "unported_branch_active:rage_skill_context")
 	# ── 42309~42323: 크리티컬 ──
-	var crit_rate_melee: Variant = _affix("critRateMelee", 42311)
+	# 42307~42309: !_isMagicDmg&&!_isArrow → critRateMelee / _isMagicDmg → critRateSpell
+	var crit_rate_melee: Variant = _affix("critRateSpell" if is_magic else "critRateMelee", 42311)
 	if crit_rate_melee == null: return _result_now()
 	var cr_bonus: float = float(crit_rate_melee) * 100.0
 	# _lDagForce: P._lNextCrit 부재 → false (l_eq 미읽기).
@@ -408,7 +415,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		# 42384 _dpsDmg: HUD DPS 미이식.
 		# 42386~42390 G._dmgPeakShow.
 		var show: Variant = g.get("_dmgPeakShow")
-		if not is_dot and (not show is Dictionary or float(dmg) > _js_num(show.get("dmg"))): # 42387 _quiet2(dot 포함) 스킵
+		if not is_dot and not is_ice_blade and (not show is Dictionary or float(dmg) > _js_num(show.get("dmg"))): # 42387 _quiet2(dot·iceBlade 포함) 스킵
 			if not _g_writes(42388, [{"field": "_dmgPeakShow", "value": {"x": enemy.global_position.x, "y": enemy.global_position.y, "dmg": dmg, "crit": is_crit}}]):
 				return _result_now()
 		# 42399~42411 피/스플래시, 42415 화면 플래시, 42417~19 임팩트: P2-001b 이식 —
@@ -429,7 +436,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		if feel.get("applied") != true:
 			return _halt(42416, "hit_feel_owner_refused:" + str(feel.get("reason")))
 		_log(42416, "hit_feel", {"over_budget": feel.get("over_budget"), "shake": feel.get("shake")})
-		if feel.get("over_budget") != true: # 42398 게이트 (42396 _quiet=false 고정)
+		if feel.get("over_budget") != true and not is_ice_blade: # 42398 게이트 + 42396 _quiet(iceBlade)
 			var blood: Dictionary = _main.emit_native_hurte_hit_blood(_enemy.global_position.x,
 				_enemy.global_position.y,
 				str((_enemy.data.get("native_final", {}) as Dictionary).get("col", "#cc4444")),
@@ -437,8 +444,8 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 			if blood.get("applied") != true:
 				return _halt(42399, "hit_blood_owner_refused:" + str(blood.get("reason")))
 			_log(42399, "hit_blood", {"dmg": dmg})
-			# 42417~42419: _isMagicDmg=false 고정 — kiSlash는 opts.noImpact로 생략(원문).
-			if opts.get("noImpact") != true:
+			# 42417~42419: _isMagicDmg(opts.magic) — 마법·kiSlash(noImpact)는 임팩트 생략(원문).
+			if opts.get("noImpact") != true and not is_magic:
 				var impact: Dictionary = _main.emit_native_hurte_impact(_enemy.global_position.x,
 					_enemy.global_position.y, ang)
 				if impact.get("applied") != true:
@@ -450,9 +457,21 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 			if dv == null: return _result_now()
 			if float(dv) > 0.0:
 				return _halt(42421, "unported_branch_active:" + dot_affix)
-		# 42446~42460 냉기 프리즌: atkEl==2만.
+		# 42446~42460 냉기 프리즌(P2-005d 이식): atkEl==2 → 빙결 게이지 축적.
+		# 게이트(_frozen/_frozenImmune)·초기화(_freezeMax ib?500:100)·_fzAdd=(ib?dmg*.3:dmg)
+		# ×_iceResMul(아이스스톰 미이식=1 고정 기록)×(1+_iceShardRes)·발동(_frozen=180)은
+		# 적(owner)이 "freeze_hit" 쓰기에서 소유. ❄프리즌! 텍스트(42458)는 트리거 시만
+		# (파티클 12입자·_TXT_BUDGET 게이트는 미이식 기록 — 표시 전용).
 		if atk_el == 2:
-			return _halt(42446, "unported_branch_active:freeze_gauge")
+			var freeze: Dictionary = _enemy.apply_native_normal_enemy_field_write("freeze_hit", [float(dmg)])
+			if freeze.get("applied") != true:
+				return _halt(42446, "enemy_field_owner_refused:freeze_hit:" + str(freeze.get("reason")))
+			_log(42446, "freeze_gauge", {"gauge": freeze.get("gauge"), "triggered": freeze.get("triggered")})
+			if freeze.get("triggered") == true and is_instance_valid(_world):
+				var text_adapter: Variant = _world.get_node_or_null("NativeFloatingText")
+				if text_adapter != null and text_adapter.has_method("emit_native_text"):
+					text_adapter.emit_native_text(_enemy.global_position.x,
+						_enemy.global_position.y - 25.0, "❄프리즌!", "#44ddff", 50)
 	# ── 42462~42476: 넉백 (dmg>0 블록 밖 — 쉴드 전량 흡수 타에도 실행, 양 0) ──
 	# _isRanged/_isMH/_isBB/_noKB/_isMagicProj 전부 false (opts 고정, atkEl≠EL.L은 위에서 정지).
 	var kb_amount: float = minf(float(dmg) * 0.25 * kb_mult, 15.0 * kb_mult)
