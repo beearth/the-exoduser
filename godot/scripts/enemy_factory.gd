@@ -722,3 +722,21 @@ func create_demo11_etype_b(runtime: Dictionary, world: Node2D) -> Dictionary:
 	var result: Dictionary=world.register_summoned_enemy(actor)
 	if not result.get("valid",false): actor.free();return {"ready":false,"reason":"B_world_registration_rejected","errors":result.get("errors")}
 	return {"ready":true,"registered":true,"actor":actor,"full_combat_ready":false}
+
+# DEMO11-etype-d: append-only natural admission, no existing profile path changed.
+const DEMO11_D_ETYPES=[18,19,23,24,25]
+const DEMO11_D_ACTOR=preload("res://scripts/native_demo11_etype_d_actor.gd")
+func create_demo11_d(native_record: Dictionary, owner_world: Node2D, owner: Node) -> Dictionary:
+	if native_record.get("etype") not in DEMO11_D_ETYPES:return {"ready":false,"reason":"outside_D"}
+	if native_record.get("stage")!=0 or native_record.get("elite")!=0 or native_record.get("mods")!=[]:return {"ready":false,"reason":"D_elite_mod_owner_NOT_READY"}
+	if not is_instance_valid(owner_world) or not is_instance_valid(owner) or owner.get_parent()!=owner_world:return {"ready":false,"reason":"D_actual_owner_required"}
+	if owner.get_script().resource_path!="res://scripts/native_demo11_etype_d_spawn.gd":return {"ready":false,"reason":"D_actual_spawn_owner_required"}
+	var errors: Array=[]
+	if not _has_keys(native_record,["id","order","element","stage","level","spawn_position","hp","attack","radius","poise","speed_pixels_per_tick","initial_idle_ticks","initial_projectile_ticks","factory_random_seed","native_final"],"D",errors):return {"ready":false,"reason":"D_record_incomplete"}
+	for key in ["hp","attack","radius","poise","speed_pixels_per_tick","initial_idle_ticks","initial_projectile_ticks"]:
+		if not _number(native_record[key]):return {"ready":false,"reason":"D_nonfinite_record"}
+	if not native_record.native_final is Dictionary:return {"ready":false,"reason":"D_native_identity_required"}
+	var actor=DEMO11_D_ACTOR.new();actor.d_owner=owner;actor.configure(native_record,owner_world)
+	actor.slam_t=native_record.native_final.slamT;actor.slam_cd=native_record.native_final.slamCd
+	actor.slime_t=native_record.native_final._iceSlimeT;actor.slime_cd=native_record.native_final._iceSlimeCd
+	return {"ready":true,"actor":actor}

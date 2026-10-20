@@ -29,6 +29,24 @@
 - main0138c5bb9 + DEMO11-43 9b763da9 정상 merge. B 전용 직접호출 preflight·기존 하니스 상속, 공통 helper 재작성/A 파일 변경0. **5종 모두 NOT_READY**, 실제 자연 스폰·특수 상태·전투 구현 완료 아님.
 - 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
 
+## 2026-10-21 DEMO11-etype-d 재개 — factory append-only·실제 D5종 등록
+
+| 항목 | 결과·경계 |
+|---|---|
+| 사용자 판정 반영 | 이전9627cf75에서 같은branch 재개. factory EOF D등록+18/−0·Main+7/−0, 기존등록/생성/P2-008b/registry+30/−0(D clock 인계)·State/World/PC 보호/저장/맵0줄 |
+| 실제 경로 | 기존 enemy.gd HP/poise owner·World phase/RNG·BC09/35 carrier·43 origin 재사용. 5종실스폰·tick/비치명hurtE,4종최종사망→지역kill,18 Player HP감소·24둔화·25생존zone.25사망prefix/이동탄PCcontact·29종autoscheduler 후행 |
+| 검증 | 신규158/0(런타임29·ctor8+원문90·사망18·clock13), 기존factory3그룹/0·관련83/0 각1회. clock 인계 수정 후 최종 벤치14/0·5actor각270tick max4.252ms<8.333ms, 기존Camera WARNING1/ERROR0·렌더FPS미검증. 실패 하니스 로그보존·실패만수정 |
+| 문서·제출 | [타입별 결과/공용줄/A·B·C 통합안](engine/orders/reports/demo11-etype-d_REPORT.md),8.0·자기WORK_BOARD 갱신. 새공통helper0·보호경로0, 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d/resume-* 원로그 |
+
+## 2026-10-21 DEMO11-etype-d — 자연 D 5종 NOT_READY·원문/admission 검증
+
+| 항목 | 결과·한계 |
+|---|---|
+| 기준 | main0138c5bb9 +43/9b763da9 정상FF, gap61ab71be §4.1 읽기참조. A/B/C 파일 읽기만·새 공통helper0 |
+| 판정 | 18/19/23/24/25 **NOT_READY·실제 actor0·구현 완료 아님**. 기존 Marker adapter query와 factory/PC 옵션 거부 확인. 24 freeze 공개API는 존재,18 drainHeal 소비0,25 생존D/사망I 원문 보존 |
+| 검증 | 새 Godot34/0+원문JS349/0은 admission/source 계약 검사뿐. 기존43 각1회40/0, **5종 실제 벤치 NOT_RUN_NO_ACTORS**·가짜 성능/전투 PASS0 |
+| 범위 | 제품/Main/State/World/Player/PC 보호·맵·저장0줄, 새 tests·8.0·자기 docs만. [타입별 근거/필요 접점](engine/orders/reports/demo11-etype-d_REPORT.md). 자기branch push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d 원로그 |
+
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
 - 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.

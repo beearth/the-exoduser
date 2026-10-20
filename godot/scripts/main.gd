@@ -3093,3 +3093,10 @@ func request_native_etype_b_spawn(owner: Node, group_id: String, source: Diction
 		_native_etype_b_spawn=preload("res://scripts/native_demo11_etype_b_spawn.gd").new()
 		_native_etype_b_spawn.configure(self)
 	return _native_etype_b_spawn.spawn_selected(owner,group_id,source)
+
+# DEMO11-etype-d: explicit natural selected-type entry; no scheduler reroll.
+func spawn_native_demo11_d(group_id: String,etype: int,element: int=-1) -> Dictionary:
+	var owner: Node=world.get_node_or_null("Demo11EtypeD")
+	if owner==null:
+		owner=preload("res://scripts/native_demo11_etype_d_spawn.gd").install(self)
+	return owner.spawn_selected(group_id,etype,element)
