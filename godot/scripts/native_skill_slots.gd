@@ -150,7 +150,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			dispatch_native_slot({"rage_slot":"Space","skill_slot_1":"1","skill_slot_2":"2","skill_slot_3":"3","skill_slot_4":"4","area_slot_f":"F","ct_slot":"Ctrl","ult_slot":"Z"}[action])
 			return
 
+signal native_dispatch_observed(slot_key: String, result: Dictionary)
+
 func dispatch_native_slot(slot_key: String) -> Dictionary:
+	var result := _dispatch_native_slot_owned(slot_key)
+	native_dispatch_observed.emit(slot_key, result.duplicate(true))
+	return result
+
+func _dispatch_native_slot_owned(slot_key: String) -> Dictionary:
 	if not _configured or get_tree().paused: return {"accepted":false,"reason":"dispatcher_not_configured_or_paused"}
 	var p: Variant = _state.read_current_p()
 	var g: Variant = _state.read_current_g()

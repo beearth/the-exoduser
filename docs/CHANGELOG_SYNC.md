@@ -1,3 +1,11 @@
+## 2026-10-21 DEMO11-42 — HUD 새 owner 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위 | main ac3764bfe의 DEMO11-34 보스 actor HP readback·선택 슬롯/쿨/State 자원·dispatcher 실패 표시. 기존 HUD/4cast 유지, UI 창·전투·저장 writer0 |
+| 공용 | Main +1, HUD selector +6, NativeSkillSlots 결과 관찰 wrapper +7, State0. 기존 dispatcher 본문·전투 실행부 바이트 동일 |
+| 문서·검증 | [UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), [보고서](engine/orders/reports/demo11-42_REPORT.md). 신규 문구 번역대상_전체목록 등록. 격리 Main 통합·직접 관련 회귀·GPU 캡처/1x 크롭 결과는 보고서 참조 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

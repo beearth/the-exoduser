@@ -729,6 +729,12 @@ func _build_native_first_fight_hud() -> void:
 
 
 func _native_slot_skill_id(slot_id: String, p: Dictionary) -> String:
+	# DEMO11-42: same selected owner as dispatcher; protected fixed keys below stay unchanged.
+	var dispatch = preload("res://scripts/native_skill_dispatch.gd")
+	for key in dispatch.HUD_SLOTS:
+		if dispatch.HUD_SLOTS[key] == slot_id:
+			var selected: Dictionary = dispatch.RULES.slot_value(key,p,p.get("skillSlots"),p.get("ultSlot"))
+			return str(selected.value) if selected.get("status") == "READY" and selected.get("value") != null and int(p.get("skills",{}).get(selected.value,0)) > 0 else ""
 	var skills: Dictionary = p.get("skills") if p.get("skills") is Dictionary else {}
 	var fused: Dictionary = p.get("_fused") if p.get("_fused") is Dictionary else {}
 	var slots: Array = p.get("skillSlots") if p.get("skillSlots") is Array else []

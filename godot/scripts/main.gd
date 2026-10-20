@@ -326,6 +326,7 @@ func _ready() -> void:
 	_bind_native_startup_services()
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
+	preload("res://scripts/native_demo11_hud_owner.gd").install_native_boot(self) # DEMO11-42 display only
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
