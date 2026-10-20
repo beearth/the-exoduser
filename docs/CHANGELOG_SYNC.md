@@ -24,6 +24,17 @@
 | 범위 | DEMO11-19/22/06 BLOCKED 인터페이스 해제. 초기화 단회 guard 수정0. 새 `native_source_player_runtime_stat_refresh.gd`(원본 producer 6종 pass별 신규·overlay 단계 적용·3 sink 사전검증→동기 일괄 commit→readback, 모드 apply_stats/equipment_refresh=G16287–16292), `native_source_protected_restore_handoff.gd`(protected_qe/active_sync/wing). 공용 순수 추가: Main+39·Player+56·State+47·authority+106 |
 | 검증 | 신규 300/0(원본 JS oracle 200필드 일치·무료충전0·clamp·재진입/외부 owner/실패 무변이)·4830/0(321 fixture 직접 대조+flow e2e 321/321). 회귀 11종+restore flow 각1회 0실패. refresh 1회 약15ms(이벤트 전용), 틱 경로 코드0→300틱 벤치 생략 |
 | 인계 | [계약](engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-runtime-stats_REPORT.md). Mac 호출자 연결·결정 장착 oracle·HUD 화면 확인은 미실행 |
+## 2026-10-21 DEMO11-04 로비 명조·Cinzel / 아트 겹침 RETOUCH
+
+- 같은04 branch026a2e00에 최신main969c194e 정상 merge e20fbaf6. drop72e602d1 push·remote 확인 후 별도 진행, 공통 새 branch명보다 명시 같은 branch 지시 우선.
+- 자기 view5행만 치환: 본문/버튼/입력 hell명조·제목hell_title(Cinzel)·#dfd6c2, 아트 y290 아래로 분리. Main/State/전투/저장owner0줄·이미지/문구 변경0. 기존48+폰트/경계4=52/0, 관련스위트1회.
+- 목록/삭제1920×1080+1x3곳은 _out/demo11-21fix/captures/. [기존 보고서 후속](engine/orders/reports/demo11-04_REPORT.md), UI_FOUNDATION 최신 로비 한정 토큰 갱신. **화면 비교 자료 준비·맥북총괄 재검수 대기**, 시각 승인 주장0.
+
+## 2026-10-21 DEMO11-04 실제 로컬5슬롯 요청 UI·화면 비교 자료 준비
+
+- main8dbbf2b0 + DEMO11-05 f2889355 정상merge61d4d92e. 기존 actual storage/slot reader 재사용, 새로하기 metadata/이어하기 payload 요청·확인 삭제. IO 성공+readback만 목록 반영, stale/lock/읽기 실패 보호. 복원/입장 성공 주장0.
+- 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
+- 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
 
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
