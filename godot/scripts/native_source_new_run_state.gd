@@ -201,7 +201,8 @@ func commit_native_e_wave_state(owner: Node, waves: Array, counter: int) -> bool
 # ═══ P1-002.E: 기본 근접 hurtE의 G 효과 owner 쓰기 ═══
 # hurtE가 갱신하는 G 필드만 화이트리스트로 허용 (42357/42388/42702/42714/42756/43103).
 const NORMAL_HURTE_G_NUMERIC: Array[String] = ["kills", "_stageKills", "combo",
-	"comboTimer", "comboMax", "_chainCnt", "_chainT", "mats"]
+	"comboTimer", "comboMax", "_chainCnt", "_chainT", "mats",
+	"slowMo"] # P1-002.G: 그로기 슬로모(19996) — 소비자 미이식, G 기록만
 const NORMAL_HURTE_G_DICT: Array[String] = ["_dmgPeak", "_dmgPeakShow"]
 
 func apply_native_normal_enemy_hurte_g_writes(owner: Node, writes: Array) -> Dictionary:

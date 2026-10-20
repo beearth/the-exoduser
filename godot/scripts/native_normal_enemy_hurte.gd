@@ -57,9 +57,27 @@ static func resolve_basic_attack_element(main: Node) -> Dictionary:
 		return {"ready": false, "line": 33360, "reason": "unported_branch_active:_lGloveElem_random_element"}
 	return {"ready": true, "line": 33360, "value": 0}
 
-func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: float, atk_el: int) -> Dictionary:
+# P1-002.G: 실제 존재하는 두 호출부 opts 프로필만 받는다 —
+#   weapon(37617): {kbMult:1, poiseMult:1.5, noPoise:false, poiseHit:false, poiseSkill:false, _lessonAttack:'weapon'}
+#   kiSlash(19837): {poiseHit:true, kbMult:0.5, noImpact:true, _lessonAttack:'kiSlash', _lessonFullCharge:…, _kiFull:…}
+# hurtE 본문이 읽는 키만 효과를 갖고, 목록 밖 키는 가짜 구성 방지를 위해 정지한다.
+const SUPPORTED_OPT_KEYS: Array[String] = ["kbMult", "poiseMult", "noPoise", "poiseHit",
+	"poiseSkill", "noImpact", "_lessonAttack", "_lessonFullCharge", "_kiFull"]
+
+func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: float, atk_el: int, opts: Dictionary = {}) -> Dictionary:
 	_main = main
 	_world = world
+	for opt_key in opts:
+		if opt_key not in SUPPORTED_OPT_KEYS:
+			return _halt(42110, "hurte_opts_unsupported:" + str(opt_key))
+	# 42265~42266: kbM/psM — undefined면 1.0 (원문 기본값).
+	var kb_mult: float = float(opts["kbMult"]) if opts.has("kbMult") else 1.0
+	var poise_mult: float = float(opts["poiseMult"]) if opts.has("poiseMult") else 1.0
+	var poise_hit: bool = opts.get("poiseHit") == true
+	var ki_full: bool = opts.get("_kiFull") == true
+	var source_label: String = str(opts.get("_lessonAttack", "weapon"))
+	# noImpact: 소비처(42417 _addImpact)가 미이식이라 효과 지점 없음 — 수용만.
+	# noPoise/poiseSkill/_lessonFullCharge: hurtE 본문(비lesson)에서 미읽기 — 수용만.
 	_enemy = enemy
 	if not is_instance_valid(main) or not main.has_method("get_native_normal_enemy_damage_provider_callbacks"):
 		return _halt(0, "actual_main_hurte_entry_missing")
@@ -141,7 +159,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	#    가 enemy_damage(raw>0, source weapon) 수신으로 동일 분류/8틱 쿨다운/랜덤 폴백 수행.
 	enemy.report_native_normal_enemy_hurte_event("enemy_damage", {"id": enemy.data["id"],
 		"raw_amount": dmg, "amount": 0, "absorbed": 0.0, "eShield": fields["eShield"],
-		"hp": fields["hp"], "source": "weapon", "phase": "hurtE_42191_hit_sfx"})
+		"hp": fields["hp"], "source": source_label, "phase": "hurtE_42191_hit_sfx"})
 	_log(42191, "hit_sfx_requested", {"raw_amount": dmg})
 	# ── 42197~42205: 감전 스택/감전 부여/저주 ──
 	if float(fields.get("_shockStk", 0.0)) > 0.0:
@@ -251,10 +269,9 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	# ── 42263: 최소 1 ──
 	if dmg < 1 and not sh_blocked:
 		dmg = 1
-	# ── 42265~42272: 넉백/포이즈 배율·판정 플래그 (기본 무기 opts 고정) ──
-	var kb_mult := 1.0        # opts.kbMult (비WW weapon)
-	# psM=1.5는 poiseHit 전용 — 기본 무기는 42486 블록 미진입이라 미사용.
-	# _isPure/_isArrow/_isGunpowder/_isMagicDmg 전부 false.
+	# ── 42265~42272: kbM/psM은 진입부에서 opts로 결정됨(두 프로필 모두 아래 플래그는 false) ──
+	# _isPure/_isArrow/_isGunpowder/_isMagicDmg: weapon·kiSlash 둘 다
+	# pure/maxDist/magic/explode/beam 키가 없고 atkEl=0 → 전부 false.
 	# ── 42275~42283: 타입별 뎀% — 근접만 해당 ──
 	var melee_pct: Variant = _affix("meleeDmgPct", 42276)
 	if melee_pct == null: return _result_now()
@@ -278,18 +295,25 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	var crit_rate_melee: Variant = _affix("critRateMelee", 42311)
 	if crit_rate_melee == null: return _result_now()
 	var cr_bonus: float = float(crit_rate_melee) * 100.0
-	# _lDagForce: P._lNextCrit 부재 → false (l_eq 미읽기). _ksFC: opts._kiFull 없음 → 0.
+	# _lDagForce: P._lNextCrit 부재 → false (l_eq 미읽기).
 	if _js_num(view.get("_lNextCrit")) > 0.0:
 		return _halt(42314, "unported_branch_active:legendary_dagger_forced_crit")
+	# 42313 _ksFC: 기검참 3단 풀차지(_kiFull)에서만 kiSlashFullCrit 어픽스 읽기 —
+	# >0이면 확정 치명 + 치명 피해 +_ksFC (스타터 0).
+	var ks_fc: float = 0.0
+	if ki_full:
+		var ks_affix: Variant = _affix("kiSlashFullCrit", 42313)
+		if ks_affix == null: return _result_now()
+		ks_fc = minf(1.0, float(ks_affix))
 	var stat_crit: Variant = _stat_crit(view, passives, equipped)
 	if stat_crit == null: return _result_now()
 	var crit_roll: Variant = _rand(42316, "crit")
 	if crit_roll == null: return _result_now()
-	var is_crit: bool = float(crit_roll) * 100.0 < float(stat_crit) + cr_bonus
+	var is_crit: bool = float(crit_roll) * 100.0 < float(stat_crit) + cr_bonus or ks_fc > 0.0
 	if is_crit:
 		var crit_dmg: Variant = _stat_crit_dmg(view, passives, equipped)
 		if crit_dmg == null: return _result_now()
-		dmg = FORMULA.js_to_int32(float(dmg) * float(crit_dmg))
+		dmg = FORMULA.js_to_int32(float(dmg) * (float(crit_dmg) + ks_fc))
 		# G._sStats — 부트 G에 부재 → 게이트 false.
 		var axe: Variant = _l_eq("_lAxeBleed", 42318)
 		if axe == null: return _result_now()
@@ -397,13 +421,39 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	# 근접 교전=시야 내 고정: e.kb += cos/sin×amt (뷰포트-밖 좌표이동 분기는 미도달·미이식).
 	enemy.add_native_knockback(Vector2(cos(ang), sin(ang)) * kb_amount)
 	_log(42476, "knockback", {"amount": kb_amount})
-	# ── 42486~42498: 포이즈 — opts.poiseHit=false(기본 무기) → 블록 전체 단락 ──
-	_log(42486, "poise_skipped:not_poiseHit", {})
+	# ── 42486~42498: 포이즈 — poiseHit 전용(kiSlash). amt는 쉴드 흡수 후 잔여 dmg ──
+	# (쉴드 전량 흡수 타는 amt=0 → 원문 _poiseHit amt<=0 가드로 포이즈 무변경.)
+	# isDot=false 고정, ib는 42124에서 정지 → 보스 _pImmune/저항 분기 비활성.
+	var staggered := false
+	if poise_hit:
+		var poise_amount: int = FORMULA.js_to_int32(float(dmg) * poise_mult)
+		var stagger_bns: Variant = _affix("staggerBns", 42489)
+		if stagger_bns == null: return _result_now()
+		if float(stagger_bns) > 0.0:
+			poise_amount += FORMULA.js_to_int32(float(stagger_bns))
+		var poise_result: Dictionary = _apply_poise_hit(poise_amount)
+		if poise_result.get("ok") != true: return _result_now()
+		staggered = poise_result.get("staggered") == true
+		_log(42490, "poise_hit", {"amt": poise_amount, "staggered": staggered, "route": poise_result.get("route")})
+		if staggered:
+			if not _stagger_break_tail(): return _result_now()
+			var explosion: Variant = _affix("staggerExplosion", 42492)
+			if explosion == null: return _result_now()
+			if float(explosion) > 0.0:
+				return _halt(42492, "unported_branch_active:staggerExplosion")
+			var hammer: Variant = _l_eq("_lHammerShock", 42495)
+			if hammer == null: return _result_now()
+			var mace: Variant = _l_eq("_lMaceShock", 42495)
+			if mace == null: return _result_now()
+			if maxf(float(hammer), float(mace)) > 0.0:
+				return _halt(42495, "unported_branch_active:legendary_stagger_shockwave")
+	else:
+		_log(42486, "poise_skipped:not_poiseHit", {})
 	# 피해 적용 결과 telemetry (기존 소비자 호환 shape).
 	var hp_after: float = hp_before - float(dmg) if dmg > 0 else hp_before
 	enemy.report_native_normal_enemy_hurte_event("native_hurte_damage", {"id": enemy.data["id"],
 		"raw_amount": base_damage, "amount": dmg, "absorbed": absorbed,
-		"eShield": maxf(0.0, shield - absorbed), "hp": hp_after, "source": "weapon", "crit": is_crit})
+		"eShield": maxf(0.0, shield - absorbed), "hp": hp_after, "source": source_label, "crit": is_crit})
 	# ── 42500~43117: 처치 파이프라인 ──
 	var killed := false
 	if dmg > 0 and hp_after <= 0.0:
@@ -414,7 +464,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		"hp_before": hp_before, "hp_after": hp_after, "shield_before": shield,
 		"shield_after": maxf(0.0, shield - absorbed), "is_crit": is_crit,
 		"stat_crit": stat_crit, "crit_roll": crit_roll, "killed": killed,
-		"shield_blocked": sh_blocked})
+		"shield_blocked": sh_blocked, "staggered": staggered, "source": source_label})
 
 # ── 42500~43117 처치 파이프라인 (실행 분기만) ──
 func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, dmg: int, ang: float, atk_el: int) -> bool:
@@ -652,6 +702,69 @@ func _stat_crit_dmg(view: Dictionary, passives: Dictionary, equipped: Dictionary
 	if crystal is Dictionary:
 		value += _js_num(crystal.get("cdmg")) * 0.01
 	return value
+
+# ── 42490 _poiseHit(game.html:19973~20001) — 적별 포이즈 코어 owner 경유 ──
+func _apply_poise_hit(amount: int) -> Dictionary:
+	# 19974: !e||!e.alive||amt<=0 → false (상태 무변경·RNG 없음).
+	if amount <= 0 or _enemy.get("alive") != true:
+		_log(19974, "poise_hit_no_entry", {"amt": amount})
+		return {"ok": true, "staggered": false, "route": "no_entry"}
+	# flesh_crawler: 기존 v3 field-owner 계약으로만 포이즈 코어 적용 (이중 owner 금지).
+	if _enemy.has_method("apply_native_source_poise_hit"):
+		return _poise_via_source_field_call(amount)
+	if not _enemy.has_method("apply_native_normal_enemy_poise_core"):
+		_halt(42490, "enemy_poise_owner_missing")
+		return {"ok": false}
+	var core: Dictionary = _enemy.apply_native_normal_enemy_poise_core(amount)
+	if core.get("applied") != true:
+		_halt(42490, "enemy_poise_owner_refused:" + str(core.get("reason")))
+		return {"ok": false}
+	return {"ok": true, "staggered": core.get("staggered") == true, "route": "owner_core"}
+
+func _poise_via_source_field_call(amount: int) -> Dictionary:
+	var invocation: Variant = _world.begin_native_normal_enemy_field_call(_enemy)
+	if invocation == null:
+		# legacy pending poise 잔류 등 — 폴백 금지, 정지.
+		_halt(42490, "source_field_call_unavailable")
+		return {"ok": false}
+	var call := {"kind": "poise_hit", "line": 42490, "amt": amount,
+		"commit": {"from": invocation.get_cursors(), "enemy_writes": [], "owner_requests": [],
+			"presentation": [], "events": []}}
+	var result: Dictionary = invocation.poise_hit(call)
+	_world.end_native_normal_enemy_field_call(invocation)
+	if result.get("ok") == true:
+		return {"ok": true, "staggered": result.get("staggered") == true, "route": "v3_field_call"}
+	# v3 코어는 그로기 성립 시 19985(연출 꼬리)에서 의도적으로 멈춘다 — 코어 적용 완료
+	# 보고를 그로기 성립으로 받고, 꼬리(19985~20001)는 본 실행자가 수행한다.
+	if result.get("poise_core_applied") == true and result.get("core_staggered") == true \
+			and int(_js_num(result.get("next_source_line"))) == 19985:
+		_log(19985, "v3_poise_core_staggered_tail_by_hurte", {"reason": result.get("reason")})
+		return {"ok": true, "staggered": true, "route": "v3_field_call"}
+	_halt(42490, "source_poise_call_failed:" + str(result.get("reason")))
+	return {"ok": false}
+
+# 그로기 성립 꼬리(19985~20001): 유니크 게이트·텍스트·슬로모. SFX/파티클 미이식 기록.
+func _stagger_break_tail() -> bool:
+	# 19985~19993: _uqScCtx(천공쇄기 시전 컨텍스트) — 본 경로 부재(falsy) → 환급 게이트 단락.
+	var orb: Variant = _u_eq("_uPoiseOrbFracture", 19994)
+	if orb == null: return false
+	if float(orb) > 0.0:
+		_halt(19994, "unported_branch_active:_uPoiseOrbFracture")
+		return false
+	# 19995 SFX.groggy: 오디오 미이식 — enemy_stagger telemetry로 사실만 보고.
+	_enemy.report_native_normal_enemy_hurte_event("enemy_stagger",
+		{"id": _enemy.data["id"], "ticks": 180.0, "phase": "hurtE_42490"})
+	# 19996 addTxt(그로기) — 기존 NativeFloatingText (원문 문자열·색·수명).
+	_emit_text(_enemy.global_position.x, _enemy.global_position.y - 22.0, "💥 그로기!", "#ff8800", 60)
+	# 19996 슬로모: G._noHitStopT 게이트 후 G.slowMo=20 (소비자 미이식 — G 쓰기만).
+	var g: Variant = _state.read_current_g()
+	if not g is Dictionary:
+		_halt(19996, "current_g_not_ready")
+		return false
+	if not (_js_num(g.get("_noHitStopT")) > 0.0):
+		if not _g_writes(19996, [{"field": "slowMo", "value": 20}]): return false
+	_log(19995, "stagger_break_tail", {"sfx_groggy": "UNPORTED", "particles": "UNPORTED"})
+	return true
 
 # ── provider/owner 헬퍼 ──
 func _affix(id: String, line: int) -> Variant:

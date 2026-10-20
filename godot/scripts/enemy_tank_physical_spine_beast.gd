@@ -410,3 +410,6 @@ func report_native_normal_enemy_hurte_event(kind: String, payload: Dictionary) -
 
 func add_native_knockback(value: Vector2) -> void:
 	if alive and value.is_finite(): _knockback += value
+
+func apply_native_normal_enemy_poise_core(amount: int) -> Dictionary:
+	return HURTE_OWNER.apply_poise_core(self, amount)

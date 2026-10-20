@@ -1050,7 +1050,9 @@ func _melee_contact() -> void:
 				if attack_element.get("ready") != true:
 					telemetry_event.emit("native_hurte_halt", attack_element)
 					continue
-				var outcome: Dictionary = NORMAL_HURTE.new().execute(main, _world, enemy, amount, offset.angle(), int(attack_element.value))
+				# 원본 37617 opts 그대로 (P1-002.G: opts는 실행자 인자).
+				var outcome: Dictionary = NORMAL_HURTE.new().execute(main, _world, enemy, amount, offset.angle(), int(attack_element.value),
+					{"kbMult": 1.0, "poiseMult": 1.5, "noPoise": false, "poiseHit": false, "poiseSkill": false, "_lessonAttack": "weapon"})
 				outcome["enemy_id"] = enemy.get_instance_id()
 				outcome["base_damage"] = amount
 				telemetry_event.emit("native_hurte", outcome)

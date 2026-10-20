@@ -4,6 +4,9 @@ extends Area2D
 const SHEET = preload("res://assets/vfx/ki_slash_radiant_sheet.png")
 const ADDITIVE = preload("res://assets/vfx/radiant.gdshader")
 const HIT_EFFECT = preload("res://scripts/hit_effect.gd")
+# P1-002.G: 검기 피해도 원본 hurtE(game.html:19837) 경로 — 실행자·owner API 계약은 player.gd와 공유.
+const NORMAL_HURTE = preload("res://scripts/native_normal_enemy_hurte.gd")
+const PLAYER_SCRIPT = preload("res://scripts/player.gd")
 @export var damage: int = 0
 @export var radius: float = 55.0
 @export var life_frames: float = 0.0
@@ -136,14 +139,37 @@ func _physics_process(delta: float) -> void:
 			continue
 		_hits[enemy.get_instance_id()] = true
 		var hit_direction: Vector2 = (enemy.global_position - global_position).normalized()
-		# Native crescent poiseHit=true, psM=1; weapon hitArc has poiseHit=false.
-		# This slice's enemy port consumes raw packets; gear/element/crit are absent.
-		if enemy.has_method("receive_poise_damage"):
-			enemy.receive_poise_damage(damage)
-		enemy.receive_damage(damage, hit_direction, "kiSlash")
+		if _has_native_hurte_owner_api(enemy):
+			# P1-002.G: 원본 19837 hurtE — opts {poiseHit:true, kbMult:0.5, noImpact:true,
+			# _kiFull: step3 풀차지(chargeScale>=2.2)}. atkEl은 c.el=0 (spawnCrescent 16802,
+			# _fireKiSlashCrescent가 el 0 고정 전달). ang=atan2(e-c) (검기 위치 기준).
+			# 정지(NOT_READY/미이식 활성) 시 단순화 경로 폴백 금지 — 정지 지점까지만 적용.
+			var main: Node = _world.get_parent() if is_instance_valid(_world) else null
+			var ki_full: bool = step == 3 and charge_scale >= 2.2 - 1e-6
+			var outcome: Dictionary = NORMAL_HURTE.new().execute(main, _world, enemy, damage,
+				(enemy.global_position - global_position).angle(), 0,
+				{"poiseHit": true, "kbMult": 0.5, "noImpact": true, "_lessonAttack": "kiSlash",
+					"_lessonFullCharge": ki_full, "_kiFull": ki_full})
+			outcome["enemy_id"] = enemy.get_instance_id()
+			outcome["base_damage"] = damage
+			outcome["step"] = step
+			_notify("native_hurte", outcome)
+			if outcome.get("ok") != true:
+				_notify("native_hurte_halt", outcome)
+		else:
+			# hurtE owner 미보유 적: 기존 경로 유지 (레거시 포이즈 유예 + receive_damage).
+			if enemy.has_method("receive_poise_damage"):
+				enemy.receive_poise_damage(damage)
+			enemy.receive_damage(damage, hit_direction, "kiSlash")
 		_play_hit(enemy.global_position)
 		_notify("crescent_hit", {"step": step, "damage": damage, "enemy_id": enemy.get_instance_id(), "tier": int(round((charge_scale - 1.0) / 0.4)), "hit_stop_ticks": 6 if step == 3 else 3, "shake": 8 if step == 3 else 0})
 	_update_visual()
+
+func _has_native_hurte_owner_api(enemy: Node) -> bool:
+	for method in PLAYER_SCRIPT.NORMAL_HURTE_OWNER_METHODS:
+		if not enemy.has_method(method):
+			return false
+	return true
 
 func _enemies() -> Array:
 	if is_instance_valid(_world) and _world.has_method("get_enemies"):

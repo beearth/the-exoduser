@@ -102,6 +102,27 @@ static func apply_bookkeeping(enemy: Node, fields: Dictionary) -> Dictionary:
 		native[field] = fields[field]
 	return {"applied": true, "count": fields.size()}
 
+# ── P1-002.G: 42490 포이즈 — 원본 _poiseHit(19973~19983) 코어 (spine/ice/hive 전용;
+#    flesh_crawler는 기존 v3 field-owner 계약 apply_native_source_poise_hit 경로) ──
+static func apply_poise_core(enemy: Node, amount: int) -> Dictionary:
+	if not owner_current(enemy):
+		return {"applied": false, "reason": "native_enemy_hurte_owner_not_current"}
+	if enemy.get("alive") != true or amount <= 0: # 19974: 상태 무변경 false
+		return {"applied": true, "staggered": false, "entered": false}
+	enemy.set("poise", float(enemy.get("poise")) - float(amount))
+	enemy.set("_poise_regen", 0.0)
+	if float(enemy.get("poise")) <= 0.0:
+		enemy.set("poise", 0.0)
+		enemy.set("_stun_ticks", maxf(float(enemy.get("_stun_ticks")), 180.0))
+		var native: Variant = (enemy.get("data") as Dictionary).get("native_final")
+		if native is Dictionary:
+			var previous: float = 0.0
+			if native.get("_maxStunned") is int or native.get("_maxStunned") is float:
+				previous = float(native["_maxStunned"])
+			native["_maxStunned"] = maxf(previous, 180.0)
+		return {"applied": true, "staggered": true, "entered": true}
+	return {"applied": true, "staggered": false, "entered": true}
+
 # ── 42383: HP 쓰기 (enemy.gd apply_native_normal_enemy_hp_write와 동일 계약) ──
 static func apply_hp_write(enemy: Node, write: Dictionary) -> Dictionary:
 	var report := {"status": "NOT_READY", "applied": false, "owner": enemy,

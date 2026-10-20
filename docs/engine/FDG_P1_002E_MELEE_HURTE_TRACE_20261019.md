@@ -320,6 +320,91 @@ receive_damage에 부분 이식돼 있던 스턴×1.5·eShield 흡수·즉시반
   선재 실패 (본 변경 무관).
 - 원로그: `scratchpad/p1-002f/` (baseline / run1~3 / regress).
 
+## §kiSlash — 검기 피해의 hurtE 경로 (P1-002.G, 2026-10-20)
+
+caller: `updateCrescents`(19822~) 비행/충돌 루프 →
+`hurtE(e, c.dmg, atan2(e.y-c.y,e.x-c.x), true, {poiseHit:true, kbMult:0.5, noImpact:true, _lessonAttack:'kiSlash', _lessonFullCharge:…, _kiFull:step3&&chargeScale≥2.2}, c.el)`(19837).
+Godot: `crescent.gd` 충돌 루프가 hurtE owner API 보유 적(6마리: generic eye_mass 2 + 전용 4종)에
+같은 실행자를 호출 — opts는 실행자 인자(`SUPPORTED_OPT_KEYS` 목록 밖 키는 정지).
+owner 미보유 적은 기존 receive_damage 경로 유지, 정지 시 폴백 금지 동일.
+
+### caller 측 (19822~19852)
+
+| 행 | 문장 | Godot |
+|---|---|---|
+| 19833 | `shQuery(c.x,c.y,c.r+8)` 스캔 → `dst<c.r+e.r && !_hitSet.has(e) && hasLOS` | crescent.gd 동일(get_enemies 스캔 + distance + _hits + LOS) |
+| 19837 | `hurtE(e,c.dmg,atan2(e-c),true,opts,c.el)` | **신규: 실행자 호출** (atkEl=c.el=0 고정 — 16802 `c.el=el||0`, 16841 spawnCrescent el 인자 0) |
+| 19838~19840 | step3: `G.hitStop=max(,6);shake(8)` / else hitStop 3 | 🚫 히트스톱·쉐이크 미이식 (crescent_hit telemetry에 수치만 보고 — 기존 유지) |
+| 19841 | `_playKiSlashHit` | 기존 `_play_hit`(HIT_EFFECT)로 이식돼 있음 — 유지 |
+| 19845 | `_hurtFieldMobs(...)` | 🚫 필드몹 미이식 (E와 동일) |
+
+### c.dmg 대조 (16816 `_fireKiSlashCrescent` ↔ crescent.gd `configure`)
+
+원본: `~~(meleeRef()×7.0×statStr()×pAtkMul()×_skMul('kiSlash')×_mul×_ukcMul)`, el=0.
+`_skMul`(44556)=`b+(lv-1)×g×0.5`, kiSlash `{b:12.0, g:10.08}`(44543 — 2026-09-10 "기본공격 3배" 이후 값).
+crescent.gd: `js_to_int32(melee_ref×7.0×stat_str×p_atk_mul×(12.0+(lv-1)×10.08×0.5)×2^tier)` —
+combat.json(12.0/10.08/0.5/7.0)과 함께 **원본과 일치(수치 변경 없음)**. 차이 1건:
+`_ukcMul`(유니크 u_n03 `_uKiChargeDmg`, 차징 3타 +50~100%) **미이식** — 스타터 0이라 현재 영향 0, 표에 고정.
+(참고: CLAUDE.md "기검참 b:2.0 → 최종 14×" 표기는 위 2026-09-10 변경 전 구버전 — 현행 원본은 b=12.0, Lv1 84×/타.)
+
+### hurtE 본문 — weapon 프로필과 달라지는 행만
+
+| 행 | weapon(37617) | kiSlash(19837) |
+|---|---|---|
+| 42265~66 | kbM=1, psM=1.5(미사용) | **kbM=0.5, psM=1.0**(poiseMult 미전달 기본값) |
+| 42269~72 | 플래그 전부 false | 동일 (pure/maxDist/magic/beam 없음, atkEl=0) |
+| 42275 | meleeDmgPct | 동일 (비마법·비화살·비DOT → 근접 뎀%) |
+| 42313 | _ksFC=0 (키 없음) | **_kiFull일 때 eq_affix('kiSlashFullCrit') 읽기** → min(1,v); >0이면 확정 치명+치명피해+v (스타터 0). 크리 RNG 롤은 두 프로필 모두 항상 1회(42316 `||` 좌변 평가) |
+| 42336 | 실질 미도달 | **그로기 후속타 ×1.5 실제 발생** (아래 포이즈로 stunned=180 유발 가능) |
+| 42417~19 | _addImpact 🚫 | noImpact=true — 소비처 자체가 미이식이라 효과 지점 없음(수용만) |
+| 42466~76 | kbAmt=min(잔여×.25, 15) | **kbAmt=min(잔여×.25×.5, 15×.5)** |
+| 42486~98 | poiseHit=false → 단락 | **블록 진입** — 아래 |
+
+### 42486~42498 포이즈 블록 + `_poiseHit`(19973~20001)
+
+| 행 | 문장 | 구현 |
+|---|---|---|
+| 42487 | `!isDot && opts.poiseHit && !(isBoss&&_pImmune>0)` | 진입 (ib는 42124 정지로 비보스 고정) |
+| 42488 | `amt=~~(dmg×psM)` — **dmg는 쉴드 흡수 후 잔여** | ✅ **쉴드 전량 흡수 타는 amt=0 → 19974 가드로 포이즈 무변경** (레거시 receive_poise_damage는 쉴드 이전 전체 피해로 선적용했음 — 원본대로 교정) |
+| 42489 | `staggerBns>0 → amt+=~~staggerBns` | ✅ 읽기(0) |
+| 42490 | `_poiseHit(e,amt)` 19973~19983 코어: alive/amt 가드, `poise-=amt; poiseR=0`; 붕괴 시 `poise=0; stunned=max(,180); _maxStunned=max(\|\|0,180)` | ✅ owner 경유 — generic/spine/ice/hive: `apply_native_normal_enemy_poise_core`(신규, 코어 그대로. _maxStunned는 native_final 북키핑 — 원본처럼 붕괴 시에만 키 생성). **flesh_crawler: 기존 v3 field-owner 계약**(`world.begin_native_normal_enemy_field_call` → `poise_hit(42490, 빈 prefix)`) — 코어가 19985에서 정지 보고(`core_staggered`)하면 그로기 성립으로 받고 꼬리는 실행자가 수행(이중 owner 금지) |
+| 19985~19993 | 유니크 u_d11 환급: `_uqScCtx` 게이트 | ✂ 컨텍스트 부재(천공쇄기 미이식) |
+| 19994 | `_uEq('_uPoiseOrbFracture')` | ✅ 읽기(0; >0이면 정지) |
+| 19995~19997 | SFX.groggy·파티클 | 🚫 (enemy_stagger telemetry로 사실 보고) |
+| 19996 | `addTxt('💥 그로기!','#ff8800',60)` | ✅ NativeFloatingText |
+| 19996 | `!(G._noHitStopT>0) → G.slowMo=20` | ✅ G owner 쓰기 (화이트리스트 `slowMo` 추가 — 소비자 미이식) |
+| 42491~42493 | 붕괴 시 staggerExplosion | ✅ 읽기(0; >0 정지) |
+| 42494~42497 | _lHammerShock/_lMaceShock | ✅ 읽기(각 0; >0 정지) |
+
+RNG: 포이즈 코어·꼬리에 게임플레이 RNG 없음 → **비처치 1회(크리)/처치 7·8/8·9 — weapon 프로필과 동일**.
+
+### P1-002.G 구현·검증 결과 (2026-10-20, PC Godot 4.7.2 headless)
+
+구현 파일: native_normal_enemy_hurte.gd(opts 인자·_ksFC·포이즈 블록·_poiseHit 코어/꼬리),
+crescent.gd(owner API 적 → hurtE 라우팅, 레거시 경로는 미보유 적만),
+enemy.gd + native_dedicated_enemy_hurte_owner.gd(+spine/ice/hive 위임)의
+`apply_native_normal_enemy_poise_core`, native_source_new_run_state.gd(G 화이트리스트 slowMo),
+player.gd(37617 opts 명시 전달).
+
+- `godot/tests/test_p1002g_kislash_hurte.gd`(격리 EXODUSER-P1002G-Isolated-20261020,
+  공개 request_attack → crescent_requested → 충돌 루프): 6마리 전원 추적·교차타 포함
+  전 outcome 검증. **5연속 220/0·168/0·220/0·168/0·168/0 PASS** — 쉴드 선흡수/오버플로
+  산술, 포이즈 = 잔여 dmg×1(전액 흡수 타는 포이즈 무변경), 그로기(스턴 180·G.slowMo=20·
+  owner 경로: flesh=v3_field_call, 나머지=owner_core), 처치 RNG 7/8(el0)·8/9(el≠0,
+  eye_mass el3 포함), c.dmg 공식 전 캐스트 일치(lv1 skMul 12.0, 예: melee_ref16 → 940,
+  tier3 ×8=7526), 풀차지(_kiFull) 1회 실측, v3 호출 스택 청산·레거시 유예 0, halt 0.
+  스타터 무기 롤에 따라 비처치 타 존재 런(940: 2타 처치)과 1타 처치 런이 모두 커버됨.
+- 회귀: p1002e 102/0 동일, p1002f 225/0, contracts 5/0, flesh_crawler 1(선재 동일).
+- 화면 검수(1920×1080 실제 창, 대상 화면 좌표 출력·크롭 내 대상 가시 확인):
+  검기 적중 시 #66ddff 흡수 숫자(875)·'💥 그로기!' 텍스트 표시, 쉴드 바 렌더는 F와
+  동일 코드(만땅 파랑 → 소진/사망). kiSlash는 1타 흡수가 항상 875 전액이라 부분 바
+  상태는 화면에 남지 않음 — 부분 상태는 F(동일 _draw)에서 검증 완료.
+- 잔여 차이(G): ① `_ukcMul`(u_n03 _uKiChargeDmg) 미이식(스타터 0) ② 그로기 꼬리의
+  SFX.groggy·파티클·슬로모 소비자 미이식(G.slowMo 기록만) ③ G.hitStop/shake(19838)·
+  _hurtFieldMobs(19845) 미이식 유지 ④ 다른 피해 경로(Q/E·투사체)는 여전히
+  receive_damage 직통(수정 금지 범위) ⑤ CLAUDE.md 기검참 "b:2.0→14×" 표기는 현행
+  원본(b=12.0, 84×/타)과 불일치 — 본 작업 범위 밖, 보고만.
+
 ## 구현·검증 결과 (2026-10-19, PC Godot 4.7.2 headless)
 
 구현 파일:

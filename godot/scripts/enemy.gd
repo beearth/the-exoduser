@@ -356,6 +356,27 @@ func apply_native_normal_enemy_death_write() -> Dictionary:
 	queue_redraw()
 	return {"applied": true}
 
+# P1-002.G: 42490 포이즈 — 원본 _poiseHit(game.html:19973~19983) 코어의 적 측 owner.
+# 연출 꼬리(19985~)는 hurtE 실행자 소관. 레거시 receive_poise_damage와 별개 경로.
+func apply_native_normal_enemy_poise_core(amount: int) -> Dictionary:
+	if not _native_enemy_hp_owner_is_current():
+		return {"applied": false, "reason": "native_enemy_hurte_owner_not_current"}
+	if not alive or amount <= 0: # 19974: 상태 무변경 false
+		return {"applied": true, "staggered": false, "entered": false}
+	poise = poise - float(amount)
+	_poise_regen = 0.0
+	if poise <= 0.0:
+		poise = 0.0
+		_stun_ticks = maxf(_stun_ticks, 180.0)
+		var native: Variant = data.get("native_final")
+		if native is Dictionary:
+			var previous: float = 0.0
+			if native.get("_maxStunned") is int or native.get("_maxStunned") is float:
+				previous = float(native["_maxStunned"])
+			native["_maxStunned"] = maxf(previous, 180.0)
+		return {"applied": true, "staggered": true, "entered": true}
+	return {"applied": true, "staggered": false, "entered": true}
+
 # hurtE 실행자가 적 명의의 telemetry를 내보낼 때 사용 (오디오 소비자 등 기존 배선 호환).
 func report_native_normal_enemy_hurte_event(kind: String, payload: Dictionary) -> void:
 	telemetry_event.emit(kind, payload)
