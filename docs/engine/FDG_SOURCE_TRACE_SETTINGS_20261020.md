@@ -686,23 +686,207 @@ index.html에는 `BINDS`·`BINDS2`·`OPT`·`fpsCap` 선언/접근이 없다(정�
 | G/P owner | godot/scripts/native_source_new_run_state.gd:361–375·436 이후 | 현재 G/P·feel 상태/시작 스킬 제공 | apply_native_skill_shake는100 상수 소비; 실제 OPT.shake 변경 연계 없음. G/P/세이브 형식 보호 |
 | 아직 없는 독립 설정 모듈 | godot/scripts·port_modules·tests 전체 검색 | options owner와 frame prefix는 위에 있음 | _applyTierPreset/detectTier/_GFX_PRESETS/BINDS2 remap/gpKeyMap/hellcave_settings UI 동일 구현은 없음. native_perspective_view._settings는 별도 실험 view 설정이며 원본 OPT 아님 |
 
-## 4. 작은 이식 단위 순서안(미착수)
+## 4. 작은 이식 단위 순서안 — 후속 구현 지시서(2026-10-20 보강)
 
-제품 파일 소유 확정과 PC 총괄 인수 뒤 한 단위씩 진행한다. 아래 새 파일명은 **소유 예정 후보**이며 존재/배정 확정으로 보고하지 않는다. 기존 OPT owner 및 callback을 우선 재사용하고, 공용 파일은 총괄의 해당 지점 배선만 요청한다. 기존 세이브 형식/QE 의미 변경은 제안하지 않는다.
+이번 보강은 **이 절만 변경**한다. 다음 차례의 첫 구현은 **S01**이다. 이 문서 보강 커밋에 코드·테스트 구현을 섞지 않는다. S02 이후는 순서대로 각 선행 조건과 소유 범위를 확인한다. 여기서 정한 파일명·API·테스트 이름은 후속 구현 계약이며 현재 존재/실행/PASS를 뜻하지 않는다.
 
-| 순서/단위 | 원본 행 근거 | 소유 예정 파일 | 검증 테스트 아이디어 | 선행 조건/보호 |
-| --- | --- | --- | --- | --- |
-| S01 원본 default/read view | 6311·6254–6308 | 기존 port_modules/npc_interaction/source_options_state.gd 소유 담당 + 신규 native_settings_read_view.gd; tests/test_native_settings_read_view.gd | 38개 baseline/초기값·추가 key raw 보존/동일 dict identity; missing/loss NOT_READY. readonly UI 모델만 | 기존 OPT owner 담당 합의; 보호 diffV2는 관측만, 세이브 포맷 변경 없음 |
-| S02 settings panel shell | 2700–2900·44049–44079·48873 | scripts/native_settings_panel.gd 신규, scenes/ui/native_settings_panel.tscn 신규 | 4탭·닫기·키보드 focus·paused 중 재렌더 유지·가독성/화면 크기 1x 확인 | S01; P2-007a UI 담당 조율, 기존 HUD 전체 재작성 금지 |
-| S03 비보호 입력표시/리스닝 모델 | 6188–6206·6236–6253·48720–48760·48843–48872 | scripts/native_settings_input_model.gd 신규, tests/test_native_settings_input_model.gd | 이동/설정/비전투키만 주·보조 표시, repeat 취소·보조삭제·Escape 대기취소, 충돌검사는 원본 표본 readonly 계약 검사 | S02; Q/E·charge↔공격 보호 의미는 보호로 남김. 실제 전투 소비/복원 연결을 이 단위에 넣지 않음; reset18/20 불일치 총괄 판정 필요 |
-| S04 FPS UI·측정 표시(읽기) | 2823·49062–49063·49266–49290·60372–60420 | scripts/native_settings_performance_view.gd 신규, tests/test_native_settings_performance_view.gd | 단계30/60/120/144/244/0 라벨, cap와 실제FPS 구분, bench 미실시 표시 | S01/S02; Engine.max_fps 실제 적용은 S05 이후 별도 배선 인수 |
-| S05 FPS prefix 연결 범위 인수 | 60509·61803–61810·60467·61875 이후 | 기존 source_frame_entry/producer.gd owner, 신규 tests/test_native_settings_fps_contract.gd; main/services 연결은 총괄 | 0/각cap·interval−1 경계/첫 timestamp 부재/시간 역행·lastTs 보존; cap RETURN 시 update/render 실제 호출을 각각 관측 | S04; 기존 240 cap와 원본 rAF/scheduler 차이 인수. 필수 phase 미소유를 우회하지 않음; physics60Hz와 분리 |
-| S06 Tier pure decision/readout | 9168–9230·49257–49290 | scripts/native_settings_tier_policy.gd 신규, tests/test_native_settings_tier_policy.gd | 점수 경계45/80/120·GPU min·119delta/120samples·hidden/250ms 리셋·Electron/mobile 구분 fixture | S04/S05; Godot GPU name→웹 regex의 실제 OS 대응 미확인. 새 benchmark 실측은 QA 일정 조율 |
-| S07 자동/수동 preset 표 모델 | 9232–9240·49077–49115 | scripts/native_settings_graphics_presets.gd 신규, tests/test_native_settings_graphics_presets.gd | 자동4/수동5 전체 필드/역순 detect/사용자설정 유지조건/atmos 비적용 경계 정확 비교 | S01/S06; 저장은 호출하지 않는 명시 fixture. protected 영속화는 별도 HOLD |
-| S08 기존 visual/audio 소비자 연결 | 4396–4435·48907–48915·49064–49129·55409–55419 | 기존 native_screen_lighting.gd/native_death_fx_adapter.gd 등 각 owner, 신규 settings consumer 계약 테스트 | shake0/80/100·sfx0/60/100·deathFx/parts gate·fog/grain/brightness 토글 전후 실제 소비 확인, 기본경로 보존 | S07; main/world/state seam은 §5 총괄 조정. 리사이즈/맵 카메라 영향은 맵팀 사전조건, 이번 맵 변경 설계 없음 |
-| S09 안내 크기·panel fit·커서 | 48879–48904·48635–48670·49130–49205 | native_settings_panel.gd·신규 native_settings_display_view.gd, 해당 UI 테스트 | textScale80..160/10 round clamp·panelFit·자동 min(viewport/1920,viewport/1080)·커서30..200/5, 포커스/리프 유지와1x | S02/S08; UI 기존 Hell Gothic/언어 담당 합의, 신규 아트 생성 없음 |
-| S10 로비 언어/장치 read-only 인계 | index1122–1250·2157–2242·4066–4132·4728–4738 | scripts/native_settings_lobby_bridge.gd 후보·로비담당 소유 예정 파일은 미확인 | URL/사용자/Steam/browser/en 순서의 명시 fixture, 4select 동기·IME/repeat·장치교체의 상태제거 | 로비 소유자 배정이 선행. hellLang/inputMode persistent write는 보호/HOLD |
-| HOLD 영속화·게임패드 실제 입력 | 48876·49293–49438·13494–14112 | 예정 파일 미정 / 보호 | 현행 payload·로드 순서·구 이관·고정키 주입을 readonly 추적 자료로 인계 | 세이브 형식·Q/E·2_3 보호. 이번 변경/새 형식/이관 수정/반사 또는 공격 의미 변경 제안 없음 |
+보강 전 조회: `git fetch origin` 및 명시 `git fetch origin refs/heads/main:refs/remotes/origin/main` 성공. 재조회 main=`b933b2da55e9bc7a29a41cd7d7093d437ce334cf`, 문서 branch HEAD=`d7132ac22fe5889a764ad6725f375c99291f3997`. 원본 두 HTML·OPT owner·Services·기존 초기화 테스트는 이 두 ref 사이 diff0이다. 따라서 아래 원본/연결 행은 기존 고정본 기준을 유지한다. 후속 구현 시 다시 fetch·해당 파일 diff·작업판 소유권을 확인한다. 이번 보강 때문에 기존 WT를 main에 merge/rebase하거나 R을 수정하지 않는다.
+
+최신 작업판의 충돌 경계: P2-001l은 main/player 입력 함수, P2-007a는 글꼴/가이드 패널, P3-002는 world 동적 등록, QA-002·STARTER-REGIONS는 지정 기존 테스트, TRACE-SAVE는 저장 추적 문서, DOC-SYNC는 지정 설계 docs다. **S01은 아래 신규 2파일만 소유**하므로 이들과 코드 소유가 겹치지 않는다. 기존 owner 파일에 새 필드를 추가해야 시작할 수 있는 단위로 만들지 않는다.
+
+### 4.0 공통 실행·판정 규칙
+
+- 각 단위의 `신규`·`수정` 목록 밖 제품 파일은 변경하지 않는다. 기존 공용 파일의 줄 수는 **후속 배선의 예상 diff 상한**이며 이미 편집한 줄 수가 아니다. 현재 고정본의 함수/문장 anchor로 위치를 식별하고, 행이 밀렸으면 함수 기준으로 다시 확인한다.
+- 신규 테스트는 `extends SceneTree`, `_check` 누적·구간별 결과·최종 `quit(0/1/2)`를 갖는다. `0`은 실행한 필수 단정 전부 통과, `1`은 단정 실패, `2`는 격리/필수 환경 불충족이다. guard skip을 PASS로 기록하지 않는다. stdout/stderr·실행 ref·검사 수를 `_out/trace-settings/Sxx/`에 보존한다.
+- 프로젝트 격리는 **자기 소유 staging 복사본** `_out/trace-settings/Sxx/project/`에서 한다. 제품 scripts는 같은 byte를 복사하고, 그 사본의 `project.godot`에서만 `config/use_custom_user_dir=true`, 아래의 `config/custom_user_dir_name`을 지정한다. 실제 `OS.get_user_data_dir()` 끝 경로도 확인한다. R/공용 WT/다른 담당 project.godot·override.cfg·전역 editor_settings·사용자 세이브는 수정하지 않는다. staging에 필요한 resource/import가 없거나 접근 승인이 없으면 그 실행을 **BLOCKED**로 보고한다. 새 기본값·dummy owner·타 WT 캐시로 우회하지 않는다.
+- 명령 틀: `"$GODOT_SETTINGS_BIN" --headless --path "$TRACE_SETTINGS_S01_PROJECT" --script res://tests/test_native_settings_read_view.gd -- --only=unit`. 두 변수에는 확인된 Godot 바이너리와 위 자기 staging의 절대경로를 지정한다. S01의 `--only=actual_main`은 동일 파일의 별도 실행이다. S02 이후는 해당 테스트 파일/프로젝트 경로로 치환한다. 프로젝트 격리설정과 테스트 내 `USERDIR` 일치가 실행 전제다.
+- unit은 명시 입력/명시 시험용 provider 범위, actual_main은 실제 Main/Services 경로, GUI는 1x 시각/입력 인수다. 서로 다른 증거를 하나의 전체 PASS로 합치지 않는다. GUI/실물패드가 필요한 단위는 테스트 통과 후에도 해당 검증 미완을 남긴다.
+- 세이브 형식·Q/E 의미/판정·`docs/2_3`는 **보호**다. 저장 writer/새 저장키/이관·QE 행동 변경은 아래 단위에 넣지 않는다. 설계 docs의 D01–D18 불일치는 이 문서 표로만 보존한다. 제품 코드 변경 시 필요한 관련 docs 기록은 이 추적 문서의 구현 기록 절/자기 보고서에 남기며, 타 담당 설계 문서를 임의로 고치지 않는다.
+
+### 4.1 S01 — 원본 기본값 비교 및 실제 OPT 읽기 어댑터(다음 구현)
+
+**결과:** 기존 `source_options_state.gd`가 소유한 실제 OPT를 매번 읽고 원본 대비 누락을 노출하는 재사용 가능한 `RefCounted` 어댑터를 만든다. 원본 기본값은 **비교용 상수**다. 누락 필드를 보충하거나 실제 OPT 대신 반환하지 않는다. UI·저장·입력·Tier·Engine cap·게임 상태를 바꾸지 않는 첫 단위다.
+
+#### ① 소유 파일·수정 지점
+
+| 구분 | 정확 경로 | 작업 |
+| --- | --- | --- |
+| 신규 제품 | `godot/scripts/native_settings_read_view.gd` | `extends RefCounted`; 아래 API·비교 상수·weak owner reader 구현 |
+| 신규 테스트 | `godot/tests/test_native_settings_read_view.gd` | unit/actual_main 두 실행군, 아래 필수 단정 및 격리 guard 구현 |
+| 수정 제품 | 없음 | `source_options_state.gd`·Services·Main·HUD·World·Player·hurtE·G/P owner 모두 **0줄** |
+| 수정 기존 테스트 | 없음 | 기존 `test_native_main_source_player_initialization.gd`의 OPT35 기대/60Hz·240cap를 바꾸지 않음 |
+| 문서 | 이 문서의 S01 아래 구현 기록 | 실제 source SHA·새2파일·실행별 결과/한계만 추가. 기존 설계 docs 불일치표는 정정하지 않음 |
+
+`source_options_state.gd:8–17`은 현재 35개 literal이고, `native_source_player_initialization_services.gd:489–495`는 `read_current_options()`/`get_source_options_state()`를 제공한다. 이 API를 **읽어 재사용**한다. protected `diffV2`를 포함해 기존 OPT에 3필드를 덧붙이는 방식은 S01이 아니다. 실제 Main에 어댑터를 상시 장착하는 배선도 다음 UI 소비 단위로 남긴다. S01의 실제 연결 검증은 테스트가 실제 `main.source_initialization_services`에 어댑터를 연결해 수행한다.
+
+#### ② 원본·상수·API 계약
+
+원본 `game.html:6311`의 초기값 38개와 `IS_ELECTRON?100:80` 분기를 옮긴다. 기본 reference는 다음 literal과 일치해야 한다. 객체 key의 의미/값을 별도 수식으로 재해석하지 않는다.
+
+```gdscript
+const SOURCE_DEFAULT_REFERENCE := {
+    "shake":80, "textScale":100, "panelFit":true, "hitStop":0,
+    "parts":80, "sfxVol":60, "bgmVol":60, "diff":5, "diffV2":1,
+    "minPickRar":0, "minPickLvTier":0, "fpsCap":0, "petAuto":true,
+    "bossDebug":false, "bloom":true, "trail":true, "slash":true,
+    "postfx":true, "deathFx":true, "lighting":true, "torch":true,
+    "ambPart":false, "fog":true, "bossFog":true, "grain":true,
+    "autoPotThr":0.99, "cursor":0, "cursorSize":50, "quality":"high",
+    "resScale":100, "ssaa":1, "outline":true, "bgmTrack":"auto",
+    "lang":"ko", "crAutoFuse":-1, "crAutoEnh":-1, "showFps":false,
+    "atmos":2
+}
+```
+
+| API | 정확 동작·반환 |
+| --- | --- |
+| `get_source_default_reference(is_electron: bool = false) -> Dictionary` | 비교용 deep duplicate 1개 반환; `parts=100 if is_electron else 80`. 이 값은 실제 owner나 UI 현재값으로 쓰지 않는다. 반환 사본을 고쳐도 다음 반환/상수에 영향0 |
+| `configure(source_owner: Object) -> bool` | 유효한 owner·`read_current_options` method 확인 후 WeakRef로 1회 bind. 실제 reader 호출0, 초기화/phase 변경0. 같은/다른 owner로 재configure는 false, 원 binding 유지. 시험용 provider는 테스트 안에서만 정의 |
+| `read_current_options_view() -> Dictionary` | 매 호출마다 weak owner 생존·method 존재 확인, `read_current_options()` **1회**. 반환이 Dictionary면 그 **동일 ref**를 `options`에 보존. comparison constant 순서로 present/missing key를 계산; 값 coercion·clamp·copy·보충0 |
+| READY packet | `{status:"READY",options:<actual ref>,expected_count:38,current_count:<actual size>,missing_keys:[],extra_keys:[...]}`. 38개 expected key 존재만 뜻하며 개별 값의 정규화·저장복원 완료/전제품 준비를 뜻하지 않음 |
+| READY_PARTIAL packet | Dictionary는 있으나 expected key 누락 시 `{status:"READY_PARTIAL",options:<same actual ref>,expected_count:38,current_count:<actual size>,missing_keys:[...],extra_keys:[...]}`. 현재 native OPT35의 예상 missing set은 `textScale,panelFit,diffV2`(원본 선언 순서) |
+| NOT_READY packet | 미configure/owner해제/reader없음/reader가 null 또는 비Dictionary 반환이면 `{status:"NOT_READY",reason:<구체 원인>}`. `options`/임의 default payload 없음. reader 결과가 비Dictionary였음을 진단하되 자동 재시도/새 owner 생성0 |
+
+`extra_keys`는 actual dict key 중 reference에 없는 key를 **원 key type 그대로** 나열한다. 실제 current 값/컨테이너 identity·순서를 변경하지 않는다. 비교용 reference는 진단이며 `source_options_state.gd`의 실제 owner authority와 중복 singleton을 만들지 않는다. Q/E/BINDS 표·이름 `6254–6308`은 S01의 구현 범위에서 제외한다(후속 S03). `diffV2=1`은 비교 reference 관측만이며 보호된 실제 OPT·저장 마커에 쓰지 않는다.
+
+#### ③ 새 테스트·단정·격리
+
+`USERDIR="EXODUSER-TraceSettings-S01-Isolated-20261020"`. 실제 userdir 및 project 설정이 다르면 exit2. 테스트의 `_initialize()`에서 `--only=unit`/`--only=actual_main`만 허용하고 각 실행 결과를 분리한다.
+
+| 군 | 필수 단정·근거 값 |
+| --- | --- |
+| U1 reference | key set 정확38 및 모든 값이 위 literal/6311과 일치. false→parts80, true→100. 두 reference의 identity 다름; 반환 사본 수정 뒤 재조회해 원본값 유지 |
+| U2 bind/호출수 | 테스트 파일 내부 `CountingOptionsOwner`(RefCounted, `read_current_options`, dict holder, read_count) 사용. configure 호출수0, view 1회마다 reader1회. 2회 configure=false 및 기존 owner 유지 |
+| U3 live raw values | 명시38키 dict를 provider로 전달→READY; `is_same(packet.options,provider.options)` true. provider가 이후 `shake=0`·`sfxVol=0`으로 바뀌면 다음 read에서 정확0 관측. nested extra dict/array·null·false를 보충/강제변환하지 않고 동일ref/raw type 보존 |
+| U4 누락·추가 | copy fixture에서 `textScale,panelFit,diffV2` 제거→READY_PARTIAL/current_count35/missing 정확3. 추가 `fixture_extra` 넣으면 extra_keys에만 보고·원값 보존. field 누락을100/true/1로 채우지 않음 |
+| U5 상실·실패 | 미configure·해제된 RefCounted owner·null·Array 반환→NOT_READY/options key 없음; reader 추가 재시도0. invalid owner bind 거부. dict 제공 객체가 살아있는 것과 그 내부 dict가 유효한 것을 구별 |
+| U6 부작용 경계 | 어댑터에 Node/OS/audio/storage/InputMap/Engine writer 없음 정적 검사. 테스트 전후 Engine.max_fps·physics Hz·InputMap action/events 목록 동일; 어댑터가 signal/timer 생성하지 않음 |
+| M1 실제Main | 기존 main.tscn을 격리 사본에서 인스턴스화하고 실제 `source_initialization_services`가 준비되면 configure. owner의 실제 `read_current_options()` 결과와 packet.options `is_same` true. 현 baseline OPT35/누락 3개/READY_PARTIAL; `diff5`, `sfxVol60`, `fpsCap0`, `parts80` 원본6311/기존 owner 대조. 기존 count를38로 고치지 않음 |
+| M2 실제불변 | 서비스를 통해 읽은 before/after OPT deep value와 identity 동일, `get_source_options_state().get_last_status().phase`는 기존 `current_pre_restore` 유지. Engine240·physics60을 어댑터가 바꾸지 않음(기존 초기화 테스트193). 새 어댑터 때문에 Main 새생성·actor setter·save 호출0 |
+
+unit에서는 dependency owner를 명시 test double로 쓰지만 이를 actual Main 증거로 올리지 않는다. M1/M2에서는 `_g/_p` 직접 주입·private options 주입·readiness guard 해제·fallback owner 설치를 금지한다. 시작 레슨/스테이지의 기존 비결정성에 영향을 주는 actor 필드를 비교 대상으로 억지 고정하지 않는다. resource/import가 없어 actual_main이 못 뜨면 unit 결과만 남기고 actual_main **BLOCKED**로 보고한다.
+
+완료 조건: 신규 2파일만 구현, unit 필수군 통과, actual_main의 동일 owner/ref/누락 3개/부작용0 확인 및 로그. 실제 Main 실행이 BLOCKED면 S01은 `부분 구현·실제 연결 인수 대기`이며 전체 완료로 표시하지 않는다. UI·세이브 복원·게임 전체 설정 이식 완료 주장은 하지 않는다.
+
+#### ④ 선행 조건·충돌·바로 시작 순서
+
+1. fetch 후 WORK_BOARD의 TRACE-SETTINGS/S01 및 위 신규 2경로 소유 중복을 확인한다. 동일 파일을 다른 담당이 소유하면 **BLOCKED**로 보고하며 다른 경로로 몰래 옮기지 않는다.
+2. 현재 source owner/Services의 공개 reader와 누락 3개이 그대로인지 확인한다. 이미 타 담당이 최신38개를 이식했다면 owner 수정 없이 actual 기대를 새 source 근거로 재확정하고 문서에 기록한다. 오래된35를 맞추려고 제품을 되돌리지 않는다.
+3. 신규 어댑터→신규 테스트 순으로 구현하고 unit→별도 actual_main 순으로 실행한다. P2-001l의 main/player·QA-002 기존 테스트는 열람만 한다.
+4. 새2파일+자기 구현 기록만 경로 지정 stage/commit/push, remote SHA 대조, DONE 갱신. S02가 요구하는 공용입력 소유 해제가 안 됐다면 S01만 정상 인계하고 S02의 해당 배선은 BLOCKED로 남긴다. 무단 후속 충돌 편집은 하지 않는다.
+
+### 4.2 S02 — 설정 패널 기본 구조·개폐(읽기 화면)
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/scripts/native_settings_panel.gd`, `godot/scenes/ui/native_settings_panel.tscn`, `godot/tests/test_native_settings_panel.gd` |
+| 수정 파일/공용 최소 지점 | 통합 시 `main.gd`만 **예상20–26줄**: preload/field2줄, `_ready()`의 `hud.bind_native_source_state(source_state)` 뒤 패널 생성·add_child·Services configure·닫기 signal 연결5–7줄, `_unhandled_input` pause branch1178의 호출1줄을 새 helper로 변경, 개폐 helper12–16줄. HUD/world/player/hurtE/G/P owner0줄. P2-001l의 input ownership 해제 전 이 배선은 BLOCKED |
+| 원본/옮길 내용 | game2700–2921 UI/close,44049–44079 panel pause/close; `ui-panels.js:76–118`의 game/display/audio/controls4탭. 기존 자산·폰트 재사용. S01의 현재35/누락 3개은 화면에서 미연결로 표시하며 현재값을 reference로 채우지 않음 |
+| 개폐 구체 순서 | helper는 기존 `_toggle_pause()`를 재사용한다. 패널 열림→hide/close→기존 pause 해제; 패널 닫힘+게임 진행중→기존 pause→기존 캐릭터 선택 패널 hide→설정 open; 패널 닫힘+다른 원인 pause→기존 resume만. `_toggle_pause()`가 캐릭터 미선택 guard 등으로 거부하면 패널 열림도 거부. 닫기 signal/Escape는 같은 helper, 한번의 입력에 두 toggle 금지. 기존 HUD debug pause signal은 유지 |
+| 새 테스트/원본 값 | `test_native_settings_panel.gd`: tab4개, 시작 hidden, close signal1회, Enter/Space/Tab focus, Escape open/close 1회, pause 동안 visible 유지, 현재값 미연결 표시. main+panel 동시 actor 진행 정지·닫기 후 재개, 입력 echo로 2회 토글0. source44049–44079 대비 개폐 확인 |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S02-Isolated-20261020` |
+| 선행·충돌/검수 | S01 완료, P2-001l input 배선 해제/조정 및 P2-007a UI 자산 소유 확인. 먼저 scene unit 제작은 가능하나 main 배선 미인수 상태를 제품 연결 완료로 보고하지 않음. 1280×720·1920×1080·2560×1440 실제 1x에서4탭/닫기/스크롤 확인 필요 |
+
+### 4.3 S03 — 비보호 키바인딩 표시·리스닝 상태 모델
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/scripts/native_settings_input_model.gd`, `godot/tests/test_native_settings_input_model.gd` |
+| 수정 파일/공용 최소 지점 | S02의 `native_settings_panel.gd` controls 탭에 model 생성·행 생성/대기/취소/삭제 signal 연결. `main.gd`·`player.gd` 등 공용0줄. InputMap/현재 전투 BINDS writer 설치0 |
+| 원본/옮길 내용 | game6188–6206의 20개 초기 주/보조 구조,6254–6308 표시명,48720–48760 main/alt/delete/reset,48847–48872 F5·대기 overlay. 실제 의미가 Q/E인 행과 charge↔공격 충돌 경로는 보호 표시·편집 disabled. 원본 reset18/초기20 불일치는 그대로 보고하고 reset제품 연결은 HOLD |
+| 모델 API | `configure(primary,secondary)`는 편집용 사본만 소유; `begin_capture(action,alternate)`, `cancel_capture()`, `accept_code(code,is_repeat)`, `remove_secondary(action)`, `read_view()`. 모델이 사용하는 코드 문자열은 원본 `KeyW`/`mouse0` 형태. normal 이동/패널 등 비보호 행의 임시 편집 결과만 UI에 표시; persistent save 및 실제 combat rebind 아님을 인수 범위에 명시 |
+| 새 테스트/원본 값 | `test_native_settings_input_model.gd`: 초기 20개/보조 null 20개, up=KeyW/settings=Escape/interact=KeyR, begin 뒤 저장/주값 변경0, repeat=true 무시, Escape 취소, 보조삭제 시 주키 보존, 허용 비보호 임시코드 설정 후 source dict 불변. Q/E/보호행 편집0. 원본48752 reset18은 별도 mismatch 단정이며20복원으로 임의 수리하지 않음 |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S03-Isolated-20261020` |
+| 선행·충돌/검수 | S02 controls 탭, P2-001l 입력 제한과 분리된 모델만. 실제 리바인딩 소비자는 별도 승인 범위/소유 확정 전 BLOCKED. 주/보조키 표시·대기·취소 접근성 실제 1x 확인 |
+
+### 4.4 S04 — FPS 단계·진단 읽기 화면
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/scripts/native_settings_performance_view.gd`, `godot/tests/test_native_settings_performance_view.gd` |
+| 수정 파일/공용 최소 지점 | `native_settings_panel.gd` display 탭에 읽기 값/단계 label 연결. 공용 6파일 0줄. Engine.max_fps writer0 |
+| 원본/옮길 상수·공식 | game2823·49062–49063·49362–49365: `_FPS_STEPS=[30,60,120,144,244,0]`, index0..5/기본5/0라벨무제한. 49266–49286 bench 상태·미실시 문구,60387–60390의500ms 관측창·FPS=trunc(frames×1000/elapsed). 60391–60397의동적 몹수/particle cap조절은 이 단위에 넣지 않음 |
+| API/범위 | `read_cap_steps()`/`describe_current(options_view,measured_metrics)`; source cap와 measured FPS·Engine cap240을 별도 필드로 표시. 측정치는 명시 제공 metrics만 사용, 값이 없으면 미측정. 아직 작동하지 않는 cap slider를 활성 UI로 오인시키지 않음 |
+| 새 테스트/원본 값 | `test_native_settings_performance_view.gd`: 6단계 및244 보존, cap0→무제한, 실제fps≠cap 허용(예:cap144/관측90), 빈 benchmark→벤치미실시,1000ms/60frames→60·500ms/61frames→122 계산. 위 계산은 명시 관측 fixture이며 실제 장치 FPS 인수 아님 |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S04-Isolated-20261020` |
+| 선행·충돌/검수 | S01/S02, 기존 `performance_capture.gd` metrics 읽기만. P5/MAC-LIVE 실측과 섞지 않음; GPU 벤치 새 측정0 |
+
+### 4.5 S05 — 기존 FPS prefix의 실제 제어 경계 인수
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/tests/test_native_settings_fps_contract.gd`. 기존 producer를 중복 구현하는 신규 제품 파일 없음 |
+| 수정 파일/공용 최소 지점 | 첫 구현은 제품 0줄: 기존 `source_frame_entry/producer.gd:190–212`, Services252–300의 actual callback을 검증. 이후 runtime cap 수정이 필요하면 **이 단위의 진단 결과를 먼저 인계**하고 배선 재확정. `main.gd:109`의240 제거/OPT0직결은 현 단계 계획0줄이며 전체 loop owner 인수 전 BLOCKED |
+| 원본/옮길 상수·공식 | game60509·61803–61810: interval=1000/cap, elapsed<interval−1이면rAF return; cap0은 비교 생략, 통과 뒤lastTs갱신.60467/61876–61881의PHYS_STEP=1000/60과별개. 기존 producer 식을 그대로 이용 |
+| 새 테스트/원본 값 | `test_native_settings_fps_contract.gd`: actual producer에 source update clock prefix를 configure/declare한 뒤 `begin_frame→phase_timestamp→phase_fps_cap`; cap0으로 lastTs를 관측하고 end_frame 후 다음 callback을 시작한다.  cap0 첫timestamp 통과/lastTs 설정, cap60·lastTs1000에서timestamp1015(15<15.6667) RETURN·lastTs1000 유지,1016 CONTINUE·lastTs1016.144/244 경계는1000/cap−1의 양쪽ε로 비교. 처음부터cap60·lastTs미확정이면기존 NOT_READY. Services 실제 callback의 cap RETURN 뒤 update prefix 호출 여부를 관측·기록 |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S05-Isolated-20261020` |
+| 선행·충돌/완료 경계 | S04, Services/clock 담당 인수. 검증의 scope는prefix 계약 및 제어흐름 결손. cap RETURN 뒤 update가 멈추지 않으면 해당 자연연결 FAIL 유지, 240→0 같은 치환으로 PASS 처리 금지. 기존 전체 scheduler `_acc` owner 미구현을 이 설정 task가 대신 만들지 않음 |
+
+### 4.6 S06 — Tier 점수·표본 정책 순수 모델
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/scripts/native_settings_tier_policy.gd`, `godot/tests/test_native_settings_tier_policy.gd` |
+| 수정 파일/공용 최소 지점 | S04 `native_settings_performance_view.gd` 진단 view에 policy snapshot 연결. 공용 6파일 0줄, RenderingServer/OS에 임의 벤치 설치0 |
+| 원본/옮길 상수·공식 | game9168–9195 GPU명 regex 4/3/2/1 그대로, Electron A·mobile C 분기;9196–9229:120samples(첫0/119delta),hidden 또는gap>250ms discard,avgFPS=1000/mean(delta),≥120→4/≥80→3/≥45→2/그외1,combined=min(gpuScore,fpsScore). saved raw가없거나bloom undefined일때만autoapply 후보(9220–9222) |
+| API | `score_gpu_name(renderer,is_electron,is_mobile)`, `push_observation(now_ms,hidden)`, `read_benchmark()`, `should_apply_auto_preset(saved_settings_present,bloom_present)` 순수 입력. OS GPU값 실측 adapter는 미확인으로 남기고 저장/OPT write 0 |
+| 새 테스트/원본 값 | `test_native_settings_tier_policy.gd`:44.999/45/79.999/80/119.999/120 FPS 경계;GPU2+FPS4→B,GPU4+FPS1→C;119개gap8ms→125FPS/S(총120samples);250ms연속→C,250ms초과·hidden이면partial sample discard; Electron A/mobile C와 빈 bench 미실시. GPU명 Apple M3→4/M1→3/미지명→기본2. saved 존재+bloom 존재는 자동적용 false |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S06-Isolated-20261020` |
+| 선행·충돌/검수 | S04 표시 준비. S05가 runtime BLOCKED여도 정책 모델만 개발 가능하며 실제 FPS/Tier 자동검출 인수와 분리한다. P5 실측 작업에 새 GPU 부하를 겹치지 않는다 |
+
+### 4.7 S07 — 자동 4·수동 5 그래픽 프리셋 모델
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/scripts/native_settings_graphics_presets.gd`, `godot/tests/test_native_settings_graphics_presets.gd` |
+| 수정 파일/공용 최소 지점 | `native_settings_panel.gd` display 탭5버튼/현재선택표시, S06view 후보연결. 공용 6파일 0줄. 버튼은proposal packet 생성만; 실제OPT/저장은S08권한전write0 |
+| 원본/옮길 상수·공식 | game9232–9240 automatic S/A/B/C fields;49077–49115 manual Lowest/Low/Medium/High/Ultra·_detectPreset역순 완전비교·_applyPreset의11개 효과 값. §1.5표값 그대로;manual은atmos/quality/fpsCap를쓰지않음 |
+| API | `describe_tier(tier)`/`describe_manual(index)`는별개table copy; `detect_manual(actual_options)`는4→0 역순 11필드 비교 후 미일치−1; `propose_manual(index)`는원본 write key만 반환. source OPT에 병합·save 호출하지 않음 |
+| 새 테스트/원본 값 | `test_native_settings_graphics_presets.gd`: 자동parts100/80/60/40·atmos2/2/1/0,수동parts5/10/20/30/50;autoB postfx=false/lighting=false/ambPart=true와manual중간postfx=true/lighting=true/ambPart=false구별;manual울트라50≠autoS100;11필드1개불일치→−1,manual packet에atmos/fpsCap/quality/bossFog없음 |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S07-Isolated-20261020` |
+| 선행·충돌/검수 | S01/S02/S06. gfx 모델은 독립 파일이며 월드/VFX 수치 또는 에셋 재작성 없음. readonly/proposal 단계와 실제 효과 적용을 분리하여 인계 |
+
+### 4.8 S08 — 비보호 메모리 설정과 기존 소비자 연결
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/scripts/native_settings_options_actions.gd`, `godot/tests/test_native_settings_option_consumers.gd` |
+| 수정 파일/공용 최소 지점 | 자기 `native_settings_panel.gd` signal 연결. 기존 `native_screen_lighting.gd` configure/`_process`에OPT reader추가. `main.gd` 조명configure호출235행에reader인자 **1줄변경**,field/helper추가0; 기존 parts/deathFx/shake/SFX getter1033–1045/1150–1156/2007–2014는그대로 사용. HUD/player/world/hurtE/G/Powner0줄로시작 |
+| 원본/옮길 상수·공식 | game48907·48911–48913,49117–49129의bool/percent핸들러와실제소비자19924 shake=n×OPT.shake/100,10044 SFX/100,4482 bloom/4694 lighting/55335–55373 fog/55409–55419 grain·brightness. 옵션은기존actualdict의동일key만명시write,save0. diff/diffV2/QE/보호필드writer없음 |
+| 실행범위 | actions는허용비보호키(shake/sfxVol/parts/deathFx 및연결한visual flags)에한해현행UI입력값을반영한다. 허용목록밖은거부·dict불변. reader없는효과는비활성화된설정항목으로표시. shader파라미터/visibility를실제OPT에서갱신; 원본렌더합성동등성이없는항목은미연결을명시 |
+| 새 테스트/원본 값 | `test_native_settings_option_consumers.gd`: shake80+n8→6.4/0→0/100→8, sfx60→.6/0→0·busmute; parts/deathFx실제adaptergate;fogfalse시해당fog레이어숨김·lightingfalse시lightmap미적용;기존actual OPTidentity유지. 보호키diff/diffV2및없는keywrite거부,세이브호출0. fixture값만갱신한것과실제Main효과관측을별도군으로분리 |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S08-Isolated-20261020` |
+| 선행·충돌/제한 | S07 및 각 visual/audio owner의 반영 인수. P2-007a/P3-002와 해당 배선 1줄 소유 확정. world의 별도 particle policy 100과 G/P skill shake 상수 100이 남으면 불일치 보고만 하고 공용 피해/저장 파일로 확장하지 않는다. resScale은 카메라/맵 담당 인수 전 BLOCKED, physics 값 변경 0 |
+
+### 4.9 S09 — 안내 크기·panel fit·커서(표시 전용)
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/scripts/native_settings_display_view.gd`, `godot/tests/test_native_settings_display_view.gd` |
+| 수정 파일/공용 최소 지점 | 자기 `native_settings_panel.gd` 및scene만우선수정. 공용 6파일 0줄. 현owner에textScale/panelFit가없으므로실제메모리설정반영은owner담당확정전BLOCKED;누락을source OPT에임의추가/저장하지않음 |
+| 원본/옮길 상수·공식 | game48880–48900: autoScale=min(sw/1920,sh/1080),finite>0만·4자리; textScale=clamp(Math.round((+value&#124;&#124;100)/10)×10,80,160),textScale/100·2자리; panelFit!==false.48669–48670 cursorSize30..200/5;49130–49205기존cursor2종·build/hover. §1.9CSS fit폭min1920/viewport−24와zoom관계 |
+| API/경계 | `compute_layout(viewport,raw_text_scale,panel_fit)`는명시입력계산만·UIview값반환. missingactualfield는미연결표시유지. pointerimage경로는기존img/cursors만재사용,새아트/전역OScursor설정0 |
+| 새 테스트/원본 값 | `test_native_settings_display_view.gd`: 1920×1080→1,2560×1440→1.3333,640×360→.3333,7680×4320→4;잘못된viewport면직전유효scale유지;raw 85→90 / 0→100 / 70→80 / 170→160 (JS round/falsy 근거),panelFitfalse만off. guidescale=max(1,auto)×text/100,HUD자동scale는text에영향0. 1280/1920/울트라와이드에서panel경계확인 |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S09-Isolated-20261020` |
+| 선행·충돌/검수 | S02/S08,UI담당과guide/font소유합의. source_options_state기본 필드 추가와기존 OPT35 테스트 수정은다른소유변경이므로별도범위확정필요. 이 단위계산·표시PASS로설정복원완료주장금지 |
+
+### 4.10 S10 — 로비 언어·장치 읽기 인계
+
+| 항목 | 구현 지시 |
+| --- | --- |
+| 만들 파일 | `godot/scripts/native_settings_lobby_bridge.gd`, `godot/tests/test_native_settings_lobby_bridge.gd` |
+| 수정 파일/공용 최소 지점 | 현재Godot로비소유파일미확정이므로수정 0줄,공용 6파일 0줄. bridge는 명시 reader 입력·snapshot/우선순위 모델만. 실제로비장착은담당/scene확정전BLOCKED |
+| 원본/옮길 상수·공식 | index2157–2164:URLlang→저장hellLang→Steam→browser→en,resolve지원검증;2232–2242네select동기화;1122–1250 _GP.connected/active분리·DEAD.25;4728–4738inputMode hint. 문자열언어목록은localization-runtime의actualsupportedreader를주입받고ko/en으로축소하지않음 |
+| API | `resolve_language(observations,supported_codes)`/`read_device_view(observations)`;관측dict는외부reader가제공. 직접localStorage/SteamAPI/OS설정write0. gameplayframe/주입키/BINDS writer없음 |
+| 새 테스트/원본 값 | `test_native_settings_lobby_bridge.gd`: URLko+저장en→ko,무효URL+저장ko→ko,저장없음+Steamen→en,모두없음→en;지원밖언어는다음후보. connected=true/active=false를동일시하지않음,장치교체때prev/axes표시초기화,DEAD.25경계. 이시험은native로비실장착/실물pad인수아님 |
+| 격리 사용자 폴더 | `EXODUSER-TraceSettings-S10-Isolated-20261020` |
+| 선행·충돌/검수 | 로비 담당 소유 확정·i18n reader 제공 필요. TRACE-SAVE의 형식 보호 유지; hellLang/inputMode 영속화는 아래 HOLD. S10 모델과 실제 4 select/focus/IME 검증은 구분 |
+
+### 4.11 HOLD — 보호된 영속화·Q/E·실제 게임패드 주입
+
+- 원본 근거: game48876·49293–49438(설정/프리셋 저장·복원),13494–14112(패드맵/주입),index2159–2164·4728(언어/모드 저장).
+- 만들/수정할 제품·테스트 파일: **없음(보호)**. 공용 파일 수정 0줄. 새로운 세이브 키·JSON 형식·migration·Q/E 반사/판정·실전 입력 변경을 제안하지 않는다.
+- 검증: 기존 형식·원본 행을 읽어 총괄/TRACE-SAVE 담당에게 인계하는 것만. 실행/격리 사용자 폴더 추가 없음. 이 HOLD를 S01 완료 조건이나 임의 fallback으로 흡수하지 않는다.
 
 ## 5. 공용 파일 연결 지점(목록만, 수정 없음)
 
