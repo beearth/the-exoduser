@@ -6,6 +6,8 @@ extends SceneTree
 ## holyDome 게이트 13006(_hdCd만)·activateHolyDome 46706~46713(쿨 1800·존 r500+20lv·
 ## maxT720+30lv)·리젠 32706~32709((10+2lv)/60 플랫+자연리젠 2배)·쿨 2배속 35936.
 const USERDIR = "EXODUSER-P2005C-Isolated-20261020"
+# QA-002: 테스트 소유 입력. 제품 RNG 호출 순서는 변경하지 않는다.
+const QA002_TEST_SEED = 20261020
 const GROUPS = ["spike_trap_cast_zone_and_dot", "holy_dome_cast_regen_and_cd_boost"]
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 const DOME = preload("res://port_modules/holy_dome_presence_source/producer.gd")
@@ -21,6 +23,8 @@ var forced_actor_fields = 0
 var hurte_outcomes: Array = []
 
 func _initialize() -> void:
+	seed(QA002_TEST_SEED) # 프로세스당 1회; Main 재부팅은 같은 스트림을 이어간다.
+	observations["qa002_test_seed"] = QA002_TEST_SEED
 	call_deferred("_run")
 
 func _run() -> void:
@@ -39,6 +43,9 @@ func _run() -> void:
 		rows.append(row)
 		print("P2005C_GROUP ", JSON.stringify(row))
 	_cleanup()
+	# QA-002: AudioServer mix/main-thread 청소 기회만 제공한다(제품 오디오 조작 없음).
+	for _frame in range(12):
+		await process_frame
 	print("P2005C_RESULT ", JSON.stringify({"groups": rows, "assertions": assertions,
 		"failures": failures, "skipped": skipped, "observations": observations,
 		"forced_actor_fields": forced_actor_fields, "fallback_paths_used": false}))

@@ -658,8 +658,9 @@ func _build_subtitle_panel() -> void:
 	_bubble_label.add_theme_constant_override("shadow_offset_y", 1)
 	_bubble_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_bubble_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	if ResourceLoader.exists("res://assets/fonts/NotoSerifKR-VF.ttf"):
-		_bubble_label.add_theme_font_override("font", load("res://assets/fonts/NotoSerifKR-VF.ttf"))
+	# P2-007a — #petSubtitle(2587) font-family:'Malgun Gothic',sans-serif + #petBubbleTxt 700.
+	# 시스템에 Malgun Gothic이 있으면 그것, 없으면 총칭 sans-serif 대리 Noto Sans KR(번들).
+	_bubble_label.add_theme_font_override("font", preload("res://scripts/native_ui_fonts.gd").stack("pet", 700))
 
 
 func _show_bubble(who: String, txt: String) -> void:

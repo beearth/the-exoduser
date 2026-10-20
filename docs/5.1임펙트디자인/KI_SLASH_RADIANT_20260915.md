@@ -65,3 +65,18 @@
 | 테스트 | `test/kiSlashRadiantRender.test.js`에 검은 층 계약(GPU 블렌드 순서 `[true,false,true,false,true,false]`, Canvas2D drawImage 10회) 추가. `kiSlashHoldCharge` 샌드박스에 `_kiHitShadows` 보강 |
 | 실화면 | 1600×900 GPU: 실버 칼날 테두리에 검은 잉크 번짐이 붙어 어두운 바닥에서도 윤곽이 선다. 명중광도 실버 |
 | 미반영 | `ART_TEAM_MASTER.md`는 타세션 편집 중이라 이번에 쓰지 않음 — 다음 아트 정리 때 현황표에 이 문서 링크 추가 |
+
+## Godot 이식 동기화 (P2-007a, 2026-10-20)
+
+Godot 포트(`godot/`)가 구 청색 `ki_slash_radiant_sheet.png` + 3타 hue150으로 남아 있던 것을 위 "실버+블랙" 현행으로 맞췄다. 상세: [FDG_P2_007A_UI_POLISH_20261020.md](../engine/FDG_P2_007A_UI_POLISH_20261020.md) §B.
+
+| 원본 | Godot |
+|---|---|
+| `ki_slash_silver_sheet.png` / `ki_slash_hit_silver_sheet.png` | `godot/assets/vfx/` 동명 파일(바이트 복사). `crescent.gd`·`hit_effect.gd`·`player.gd`(차지 미리보기) 참조 |
+| `_kiSlashPalette`=0, 색 변환 폐지 | `_palette=0`, radiant 셰이더 `hue_degrees` 0 (단계·캐릭터 무관) |
+| `_kiSlashShadowSurface` 검은 층(blur 5px·max RGB×alpha×2.4·#050406·일반 합성) | 신규 `godot/assets/vfx/ki_slash_ink.gdshader`(가우시안 σ5 11×11 탭, `blend_mix`). 비행: 칼날보다 먼저·1.14배·alpha×.9. 명중: `.85×(1−fr×.18)`·1.14배(풀차지 섬광 제외) |
+| 칼날 가산(`lighter` / GL `_setBlend(true)` ONE,ONE premultiplied) | radiant 셰이더 `blend_add` 유지 |
+| VFX 풀 명중 alpha `1−(frame/4)×.3`(54584) | `hit_effect.gd` 가산 스프라이트 alpha 동일 공식(기존 누락 보정) |
+| (원근 3D 뷰) | `native_perspective_view.gd`가 잉크 층을 지면 평면·일반 합성·render_priority −1로 미러 |
+
+웹 원본 함수(`_drawRadiantKiSlash`, 명중 잉크+VFX Canvas2D 경로)를 같은 조건으로 그린 PNG와 Godot 렌더의 채널 평균 절대차 0.04~0.23/255.

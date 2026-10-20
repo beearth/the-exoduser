@@ -16,6 +16,8 @@ extends SceneTree
 
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 const USERDIR = "EXODUSER-P1002F-Isolated-20261020"
+# QA-002: 테스트 소유 입력. 제품 RNG 호출 순서는 변경하지 않는다.
+const QA002_TEST_SEED = 20261020
 const GROUPS = ["setup", "combat", "per_enemy_coverage"]
 const TARGETS: Array = [
 	{"group": "flesh_crawler", "id": "ch1_initial_015", "script": "res://scripts/enemy_melee_flesh_crawler.gd",
@@ -46,6 +48,8 @@ var reject_events: Array = []
 var player_damage_count: int = 0
 
 func _initialize() -> void:
+	seed(QA002_TEST_SEED) # 프로세스당 1회; Main 재부팅은 같은 스트림을 이어간다.
+	observations["qa002_test_seed"] = QA002_TEST_SEED
 	call_deferred("_run")
 
 func _run() -> void:

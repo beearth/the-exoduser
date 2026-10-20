@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## 2026-10-20 SND-01 순수 사운드 분류·플랫폼 한도 정책
 
 | id / 항목 | 현재 계약 |
@@ -11,6 +12,76 @@
 | 격리 | 새 테스트 `EXODUSER-snd-01-Isolated-20261020`, 프로세스 내 ProjectSettings로 effective OS userdir 확인. Main 부팅0이므로 override.cfg 사용0. 회귀 격리·수치·원로그는 [snd-01 보고서](engine/orders/reports/snd-01_REPORT.md) 참조 |
 | 기존 회귀 | Godot 8종 실행: contracts5그룹/0실패, 7개 테스트 합계619단정/1실패. 검기220/1(halt6), 지옥강타12/0이나 종료 리소스 ERROR1. **회귀 인수 BLOCKED**, 기존 파일 수정·skip·단정 완화 없음 |
 | 인수 한계 | 순수 정책 모듈까지이며 기존 전투음에 연결하지 않음. 경로·볼륨 공식·원본 음원은 변경하지 않음. 실청취·실게임 사운드·PC 실행은 미확인 |
+=======
+## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 범위 | origin/main `c7b21c63b25f7a8e25b9e0ec29e4fc7f21e8d91d`, `codex/qa-002-20261020`. 테스트 10개와 관련 docs만 변경. 제품 RNG·제품 스크립트 변경 0 |
+| 테스트 입력 | p1002e/f/g, p2001b/c/e, p2005b/c/d의 `_initialize()`에서 seed 20261020을 프로세스당 1회만 고정. Main 재부팅 재시드 없음; 기존 단정·임계값·group·skip 유지 |
+| 종료 / 조명 | p2005b/c 마지막 cleanup 뒤 process_frame 12회 대기. p2003a는 headless·텍스처 null 확인 뒤 get_image, GUI 이미지 누락은 실패로 기록. 기존 픽셀 3검사 유지 |
+| 실측 | 시드 9종 31회 모두 그룹별·총 검사 수 일치. 조명 headless 10/0·GUI 12/0을 포함한 fixed 33회 모두 exit 0·검사 실패 0·stderr ERROR 0 |
+| 종료 진단 | B/C 각 3회 ERROR·ObjectDB 경고 0. 각 테스트 verbose 1회씩에서 개별 잔존 객체·리소스 0. 다른 E/F/G ObjectDB 경고 7/33은 미해결로 보존 |
+| 보존 / 한계 | Godot 4.7.2 원본·격리 override 사용 후 삭제, import 전 App Support 68파일 백업. R 불변. 전체 RNG 결정성·PC 같은 seed 재검증·제품 오디오 전면 해결은 주장하지 않음 |
+| 상세 | [QA-002 보고서](engine/orders/reports/QA-002_REPORT.md), 원로그 `/Users/fordeargamers/exoduser-wt/_out/qa-002/` |
+
+## 2026-10-20 SV-CONTRACT 원본 저장 5생산자 key set·타입 계약 테스트
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 새 파일·기준 | `godot/tests/test_native_save_contract.gd` 및 `docs/engine/orders/reports/sv-contract_REPORT.md`. 기준 main `f84e26ee0bbc929fb595b4c0af292b423588f325`, 병합된 SAVE 추적 문서 부록 C. 제품·기존 테스트·공용6파일 직접 수정0행 |
+| 원본 행 | 최신 WT `game.html`: Cloud3543–3575, Local63905–63931, Web64062–64088, Demo62131–62159, Demo50061996–62017. 예약 helper51219–51221. 저장 object 리터럴과 순수 helper만 읽기·평가하며 저장/API/복원 본문은 실행하지 않음 |
+| 필드·타입 | player/inv/game만 한 단계 펼쳐 67/67/67/67/49필드·union68·부록 C317표현식 대조. 5생산자×5입력=25평가에서 key/type·기본값·예약큐260상한·불투명 아이템 필드·JSON Number/bool/null 구분·음성 검출 확인 |
+| 실제 검수 | 최종 main에서 저장 계약3023검사/실패0, test_contracts 전체5그룹/실패단정0, 시간 생산자 계약17/0, EXP4건/실패0, 지역 fixture core27/0·display7/0. 각각 exit0. 최초 setup exit2 및 비교 오류3020/10은 원로그에 실패로 보존·최종 성공과 합산하지 않음 |
+| 격리·제한 | 지정 Godot4.7.2 및 `EXODUSER-sv-contract-Isolated-20261020` 사용, override.cfg는0byte로 비움·커밋 제외. 기존 Main starter/소환굴/HUD 테스트는 고정 격리 이름 충돌로 exit2/전부SKIP이며 PASS로 세지 않음. G48·지역23/60/53/32·HUD0/32의 실제 Main 재실측은 미확인 |
+| 보호·범위 밖 | 세이브 형식·마이그레이션·Q/E·docs/2_3는 보호, 변경·변경 제안0. 저장/복원 제품 이식·사용자 슬롯·자동저장·API·클라우드·실플레이·PC 인수는 미실행/미확인. 로그 `~/exoduser-wt/_out/sv-contract/` |
+
+## 2026-10-20 QS-01 기존 G·지역·HUD 회귀 승인 후 검수
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 추가 승인·격리 | 새 QS-01 테스트는 작업용 격리명, 기존 회귀는 각 파일의 USERDIR/ISOLATED_DIRECTORY 사용. 원본 Godot4.7.2만 실행하고 각 실행 후 override.cfg 0byte. 기존 테스트 수정0 |
+| 원본 근거 | game.html:16714~16718 boot G40·30625 _totalSpawned·31655→60698~60699 지역7키. starter current G48=40+7+1, HUD60321~60322는 현재 지역 분모 |
+| 실제 회귀 | test_native_main_source_starter_state 전체5그룹 148/0·지역test_p3003_regions 전체43/0·HUDtest_p2002a_hud 전체2그룹36/0(SKIP0). 모두 exit0·ERROR0, 각 실행 Camera2D WARNING1 보존 |
+| 관측값 | 지역 total23/60/53/32(합168), 현재지역3, 실제 초기 HUD 0 / 32. 원본·기존 테스트 기대값/제품 수치 수정0. HUD suite의 기존 fixture actor필드쓰기2회는 자연 플레이 증거와 구분 |
+| 기존 증거 | 앞선 QS-01 318/0·contracts5그룹/0·자원회복173/0은 동일 코드의 선행 실행으로 보존. 승인 전 미실행 기록과 별도 probe 실패/진단을 이번 suite 성공으로 소급하지 않음 |
+| 보존·범위 밖 | 기존 제품·공용6·기존 테스트 변경0. 이 신규 절만 prepend해 기존 변경로그 바이트 보존. 자동 물약 런타임·실플레이 인수는 범위 밖. 훅 우회/main push/force/rebase/reset0 |
+| 제출 근거 | 기준main9528ea35b429498fcf42fe3723008219ed0ed7e1, 테스트HEAD e38c083cd64a3f8d830d6579f5a7d700b083a7c2. [QS-01 보고서](engine/orders/reports/qs-01_REPORT.md)·원로그 ~/exoduser-wt/_out/qs-01/*-approved-01.* |
+
+## 2026-10-20 QS-01 물약 정의·회복량·자동 CD 순수 계산 이식
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 신규 파일 | potion_recovery_source/producer.gd·test_p4001a_potion_recovery_source.gd 및 자기 UID2개. hp_definition/pot_heal/enhanced_heal/auto_cooldown만 구현. [QS-01 보고서](engine/orders/reports/qs-01_REPORT.md) |
+| 원본 근거 | 최신 통합 main 9528ea35b429498fcf42fe3723008219ed0ed7e1의 game.html:27677~27679(POT.hp 7필드),28072(0강100/1강150/그 외 lv×100),35894·35903(회복량 ToInt32),35898~35902(자동 CD) |
+| 정확 수치 | CD=max(6,ToInt32(420×(((1−장갑)−벨트)−회복력))). 장갑/벨트는 unary+ 뒤 falsy0·각 상한0.2, 회복력 min(pRegen×0.03,0.3)에는 기본0 추가 없음. 문자열0.10/0.20·pRegen5→230f, 각 상한 조합→126f. 기존 helper read-only 재사용 |
+| 최종 검수 | 원본 Godot4.7.2: 신규318/0, contracts5그룹/0, 관련 자원회복173/0(exit0). 원본 발췌 Node CD18입력/0불일치. 자원회복에 Camera2D WARNING1·ERROR0. 이전 실행 수치/독립 Main probe 실패·진단은 보고서에 분리 보존 |
+| 범위 밖·보호 | 공용6파일·기존 제품·기존 테스트 변경0. 자동발동/HP·악의 쓰기/런타임 owner/clock/효과/대장간 미연결. Q/E·2_3·세이브 보호. G·지역·HUD 기존3suite는 격리명 충돌로 미실행이며 별도 probe를 suite PASS로 세지 않음 |
+| 정상 동기화 | 사용자 명시 지시로 이 절만 prepend, 기존 바이트 보존. docs-sync-check 직접 확인 후 함께 stage·정상 훅 검사. 훅 우회/main push/force/rebase/reset 없음. 원로그 ~/exoduser-wt/_out/qs-01/ |
+
+## 2026-10-20 SETTINGS-S01 BLOCKED 해소·격리 규칙 확정 재검증
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| main 기준 / 실행 하니스 | 재fetch main `9528ea35b429498fcf42fe3723008219ed0ed7e1`, 자기 branch merge는 Already up to date. 신규 테스트만 S01 격리, 기존 회귀는 각 USERDIR/ISOLATED_DIRECTORY. 최초 exit2는 하니스 이름 불일치이며 원로그 보존 |
+| 새 파일·원본 근거 | `native_settings_read_view.gd`·`test_native_settings_read_view.gd` 기존 제출 그대로. 원본 game.html:6311의38필드 비교용 reference·raw 읽기 view, 48752–48753 reset18/초기20 생략 근거만 기록(S03 적용) |
+| 전체 실제 재실행 | unit112/0·actualMain12/0·기존OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0 = 660/0, 계약5군/실패0·관찰자2군/실패0. 전9회 exit0/ERROR0, Camera2D 기존 WARNING는 상세 보고서에 분리 |
+| G·지역·HUD / 보존 | G48키·지역23/60/53/32 합168·시작HUD0/32 확인. 기존 OPT owner·공용6파일·제품·테스트 변경0, override0byte. 보호 docs/2_3·Q/E·세이브 형식 변경0 |
+| 범위 밖·원로그 | OPT35/누락3 NOT_READY 유지. UI·저장복원·리바인딩·FPS cap 적용·Tier·S03 reset·실플레이 미구현/미검수. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35-userdir-confirmed/`, [보고서](engine/orders/reports/settings-s01_REPORT.md). 정상 훅·자기 branch push만 수행 |
+
+## 2026-10-20 SETTINGS-S01 원본 설정 default·읽기 전용 view
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 신규 제품 / `godot/scripts/native_settings_read_view.gd` | 원본 `game.html:6311` OPT38개 비교용 사본, browser parts80/Electron100. 실제 OPT ref·raw 값·추가 key 보존. 누락/owner 상실은 NOT_READY, 보충·clamp·저장0 |
+| 실제 owner / 변경 경계 | 기존 `source_options_state.gd`35개는 무수정. 누락 textScale/panelFit/diffV2 3개를 진단 ref로 노출하며 usable options를 만들지 않음. 공용6파일·기존 테스트 수정0 |
+| 신규 테스트 / `godot/tests/test_native_settings_read_view.gd` | S01 격리 `EXODUSER-settings-s01-Isolated-20261020`에서 unit112/0·actual Main12/0. 실제 지정 Godot4.7.2 실행, override 종료 후0byte |
+| 원본 reset 근거 / `game.html:6188–6197,48752–48753` | 초기20/reset18, irisToggle·bladeToggle 생략 그대로 4단정 기록. reset 적용은 S03이며 이번 구현0 |
+| 최종 main / 기존 회귀 | 기준 `9528ea35b429498fcf42fe3723008219ed0ed7e1` ff merge 후 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0. 신규 포함 합660단정·check/0실패 + contracts5군/실패0. 기존 회귀는 각 guard의 전용 격리 이름 사용 |
+| G·지역·HUD | starter G48(원본40+지역7+`_totalSpawned`1, 원본30625), 지역 total23/60/53/32 합168, 시작 HUD0/32를 실제 회귀 로그로 확인 |
+| 범위 밖·보호 | 설정 UI·저장복원·리바인딩·FPS cap 적용·Tier 자동검출·실물 패드·실플레이/시각 검수 미구현·미검수. docs/2_3·Q/E·세이브 형식 보호, 변경0 |
+| 제출·원로그 | 구현 `517825ebf017f105484fb81b01fe98f31fb8f21f`, 자기 branch `codex/settings-s01-20261020`. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35/`, [상세 보고서](engine/orders/reports/settings-s01_REPORT.md). 최초 실패·보완 이력 보존, 훅 우회0 |
+>>>>>>> origin/main
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
@@ -54473,3 +54544,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 원본 초기 미지원10개체의 수치·AI·투사체·스킨을 정리하고, 시작점 거리상 최초인 type20 및 동일 원분기 order4/10/12를 전용 consumer로 등록했다. 이 브랜치 source16은 지원9/미지원7이며 main/배포 갱신 주장이 아니다.
 - 원본 _meleeET에서20 제외·_noProjEtypes[20]=1을 보존하여 가짜 근접 피해/탄막/빙결을 만들지 않았다. 쉴드·포이즈·hurtE owner·원본 atlas16개의 byte 동일 복사본을 재사용했다. 공용 main/player/world/피해 집행자·Q/E·레슨·세이브·맵 수정0.
 - 필수 회귀4종 379 assertions+8케이스/0fail, 신규72check는 최초45성공+이동3개 한정 재검+별도 bridge8/경계16 ledger다. 실제 화면/public 플레이 미검수. 정본 `docs/engine/FDG_P2_008A_CH1_ENEMIES_20261020.md`, 제출 `docs/engine/orders/reports/P2-008a_REPORT.md`.
+
+
+## 2026-10-20 — SETTINGS-S01 원본 설정 기본값·읽기 전용 view
+
+- 제품 신규 `godot/scripts/native_settings_read_view.gd`와 신규 테스트만. 실제 OPT owner·공용6파일·입력/QE·세이브 형식 변경0. 원본 game.html:6311의38개 기본값은 비교용 사본이며 actual OPT35를 보충하지 않는다. missing3(textScale/panelFit/diffV2)는 NOT_READY·진단 raw ref로 표시한다.
+- game.html:48752–48753 reset18/초기20 및 irisToggle/bladeToggle 생략을 원본 그대로 source evidence로 기록. 실제 reset은S03이며 이번 구현0.
+- 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`을 자기 branch에 ff merge 후 신규 unit112/0·actualMain12/0·contracts5군/실패0 재확인. 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0, 수치 출력 합660/0. G48/지역23·60·53·32/합168·시작HUD0/32 확인. 실행별 근거는 아래 보고서를 따른다.
+- 최초 unit1단정 실패·보완, 최초 커밋의 필수 변경로그 누락 거부·기존 초기화 회귀의 격리guard 거부는 과거 실행으로 보존한다. 이 append는 필수 문서 동기화 정상 경로이며 훅 우회0.
+- [원본 행·API·실행별 결과·기준 SHA·남은 범위](engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
