@@ -76,6 +76,24 @@
 | 검증·성능 | 신규40/0·P3-002 298/0·P3-003 43/0 각1회(381/0). 최종 ERROR0, Camera 경고각1 및 P3-002 ObjectDB8 종료 경고 보존. 최초 Main 들여쓰기 import parse 실패 교정 이력 보존. 후보요청10,000틱×3 벽시계1회: 평균0.1204ms/p99 0.202ms(실제 적 생성/전체게임 제외) |
 | 근거·제출 | [소비자 ABI](engine/DEMO11_STAGE_SPAWN_ADAPTER_20261021.md)·P3 docs·[보고서](engine/orders/reports/demo11-43_REPORT.md). 신규 틱 목록API0. 원로그 _out/demo11-43/, pgrep 2이상30초 대기·격리명·override finally제거. 자기branch push/원격일치/DONE 후 WT제거 |
 
+## 2026-10-21 DEMO11-19ui 성장 별자리·투자/환불/예약 UI
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·권위 | main0138c5bb9 + 19r0c136318 정상 merge. 기존 POINT/19r/PC apply_stats 재사용, UI 별도 writer·틱 호출0 |
+| 화면·범위 | 웹31중심·260단계/원본 인체 선화/효과 추출. 계획·리셋 확인·예약/취소, 숫자 hell 명조·개발 문구0. Main 설치+5만, State/보호 전투0 |
+| 검증 | 신규36/0·19r383/0·PC290/0, 최종 렌더12/0·전체2장/1x4장(사용자 눈 검수 대기), 상세는 [보고서](engine/orders/reports/demo11-19ui_REPORT.md). CRLF·격리 OS 경로·실행 gate 원로그 보존. 실창 수동/사용자 디자인 승인과 구분 |
+| docs | 3.1 UI·3.2 메타·번역목록·자기 작업판 동기화. 자기 branch 정상 push/원격 SHA/DONE 후 자기 WT 제거 |
+
+## 2026-10-21 DEMO11-19r 실제 성장 투자·예약→PC runtime refresh
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·권위 | main45be76e49에 PC a28117c1 포함, 별도merge0. 기존 META04/05·rawgrit실제holder·PC Main API만 사용, 보호전투/원본0 |
+| 연결 | Main+12/State+31/-2. stat/passive/grit/plan/reset/queue→실제commit·PCstatus/readback, 실패시할당/XP복구. XP 큐→재계산→새cap heal→handoff. 틱호출/새목록API0 |
+| 검증·인계 | 신규383/0·원문24사례·실제PC거부복구2, 초기숫자비교하니스25실패보존·실패suite만재실행. 기존6suite2827/0 각1회·합3210/0(skip0/ERROR0). 관련회귀결과·줄범위·plan 2→1pass 근거는 [보고서](engine/orders/reports/demo11-19r_REPORT.md). 기존HUD최소표시/새full UI·세이브IO0 |
+| 제출 | META·번역목록·자기WORK_BOARD 갱신, 정상훅·정확경로staging·자기branch push/remote/DONE 뒤WT제거, R불변 |
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 

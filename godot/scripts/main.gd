@@ -316,6 +316,11 @@ func _ready() -> void:
 	else:
 		if not _bind_native_source_regeneration_boot():
 			return
+	# DEMO11-19ui: event-only growth presentation, existing 19r owner.
+	var growth_panel := preload("res://scripts/native_growth_panel.gd").new()
+	growth_panel.name = "NativeGrowthPanel"
+	growth_panel.configure(self)
+	add_child(growth_panel)
 	source_forge = ForgeScript.new() # DEMO11-27, existing actors/State only
 	source_forge.configure(self)
 	add_child(source_forge)
@@ -3101,3 +3106,15 @@ func spawn_native_demo11_d(group_id: String,etype: int,element: int=-1) -> Dicti
 	if owner==null:
 		owner=preload("res://scripts/native_demo11_etype_d_spawn.gd").install(self)
 	return owner.spawn_selected(group_id,etype,element)
+
+# DEMO11-19r: future growth UI calls this event API; existing status is minimum
+# confirmation display. No key binding or combat tick path is added.
+func request_native_growth(command: Dictionary) -> Dictionary:
+	var result: Dictionary=source_state.apply_native_growth(self,command)
+	if result.get("applied")==true and is_instance_valid(hud):
+		var current: Dictionary=source_state.read_native_growth(self)
+		hud.set_status("SP %d · AP %d · QUEUE %d" % [int(current.sp),int(current.ap),current.queue.size()])
+	return result
+
+func read_native_growth() -> Dictionary:
+	return source_state.read_native_growth(self)
