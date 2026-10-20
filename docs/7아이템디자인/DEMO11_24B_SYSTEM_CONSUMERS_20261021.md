@@ -21,7 +21,7 @@ Main 소유의 `native_system_equipment_affixes.gd`는 **값 캐시**다. 실제
 
 13개 READY는 **이 게임 시스템 소비 부분**에 한정한다. LCK의 치명타, stCostRed/mpCostRed의 다른 보호 실행자, skillBoost의 공격 배율, 쿨감4종의 미지원 보호 스킬은 pc-iface-pack 요청에 별도 남긴다. 기존 transaction effect receipt의 `game_system_cached / system_component_only`를 전체 피해 효과 구현 완료로 읽지 않는다.
 
-① 중 보류1개 `potionCdRed`: G28202–28245 `useQuickslot` 내부에는 소비 식이 있지만 최신 game.html에는 그 함수 호출이 없고 HP 퀵슬롯 폐지 이력이 있다. 네이티브의 실제 owner는 자동 물약이다. 원본 자동 물약 G35898–35902는 이 affix를 읽지 않으므로 자동 물약 쿨에 임의로 더하지 않는다. 수동 퀵슬롯을 되살리는 UI/owner 결정이 먼저 필요하며 NOT_READY다. 이 id도 드랍은 되므로③이 아니다.
+`potionCdRed`는 2026-10-21 후속에서 자동 물약 owner에 연결했다. 수동 QSLOTS/UI는 되살리지 않는다. 자동 owner는 G35898–35902의 장갑·벨트·회복력 식에 G28228–28231의 `_potCdAffix=Math.min(_eqAffix('potionCdRed'),.2)`를 같은 차감 순서로 추가한다. 데이터 tier는 음수이므로 원본 signed 결과(최대 tier -0.22 → 512f)를 방향 보정 없이 보존한다. 장착/해제 refresh cache와 자동 사용의 0·최대·해제복귀 경계만 검수하며, 드랍은 계속③이 아니다.
 
 ## 실제 인트로 뒤 회복 identity 인계
 
@@ -115,7 +115,7 @@ Main은 native intro `phase=done` 및 등록된 lesson inactive를 본 뒤 **단
 | 76 | `counterHit` | 230 | ② PC 보호 | NOT_READY | 정의 G14461 / 소비 G43600 |
 | 77 | `skChainAssaultDmg` | 226 | 소비처 미확인 | NOT_READY | 정의 G14633 / 소비 미확인 |
 | 78 | `hybStrInt` | 224 | 소비처 미확인 | NOT_READY | 정의 G14774 / 소비 미확인 |
-| 79 | `potionCdRed` | 222 | ① 게임 시스템 | NOT_READY | 정의 G14680 / 소비 G28228 |
+| 79 | `potionCdRed` | 222 | ① 게임 시스템 | READY 자동 물약 CD 검증 | 정의 G14680 / 소비 G28228,G35898–35902 |
 | 80 | `dropRateAcc` | 221 | 소비처 미확인 | NOT_READY | 정의 G14684 / 소비 미확인 |
 | 81 | `splashDmg` | 221 | 소비처 미확인 | NOT_READY | 정의 G14715 / 소비 미확인 |
 | 82 | `skMaliceStormDmg` | 220 | 소비처 미확인 | NOT_READY | 정의 G14621 / 소비 미확인 |

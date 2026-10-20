@@ -3,7 +3,15 @@
 | 항목 | 구현·검수 근거 |
 |---|---|
 | 기준·분류 | 동일 branch의 인수5a3af410 + fetch main0138c5bb(ancestor) 정상merge 확인. 306id=게임14/PC50/드랍0인id0/소비처미확인242. hurtE 동적 원소8id 포함. 드랍되는 미사용 id를 드랍0으로 위장하지 않음 |
-| 연결·경계 | 기존 owner가 있는13id를 빈도순 연결: 장착/PC 성공 refresh 시 값 cache, 틱 원본 affix 사전조회0. 기존 보상·스킬 quote/자원/쿨·자동물약·자연/영역 HP 식 재사용. potionCdRed는 폐지된 수동 퀵슬롯 식만 있어 자동 물약에 임의 적용0. PC/혼합 소비는 pc-iface-pack.json으로 인계 |
+| 연결·경계 | 기존 owner가 있는13id를 빈도순 연결: 장착/PC 성공 refresh 시 값 cache, 틱 원본 affix 사전조회0. 기존 보상·스킬 quote/자원/쿨·자동물약·자연/영역 HP 식 재사용. potionCdRed는 후속 자동 물약 CD owner에 연결되어 cache14id가 되었으며, G28228–28231의 cap/signed 차감 순서를 G35898–35902의 자동 420f 식에 추가했다. PC/혼합 소비는 pc-iface-pack.json으로 인계 |
+
+## 2026-10-21 potion-cd-fix — potionCdRed 자동 물약 CD
+
+| 항목 | 변경·검증 경계 |
+|---|---|
+| 근거/식 | 원본 `game.html:28228–28231`의 `Math.min(_eqAffix('potionCdRed'),.2)`를 자동 `35898–35902`의 장갑·벨트·회복력 차감 뒤에 동일 순서로 반영. 기본/해제 `0→420f`, 최고 data tier `-0.22→512f`; 원본 signed 값의 방향 보정 없음 |
+| 런타임 | 장착/해제 refresh 값 cache에 `potionCdRed`를 추가하고, 실제 자동 사용 때만 cache를 조회한다. 틱마다 원본 affix reader 재구축·새 INV/저장/UI/수동 퀵슬롯 owner 생성0 |
+| 검사 | `test_demo11_25b_auto_potion.gd`에 0·최대 tier·장착 해제 복귀 경계와 cache read 순서를 추가. 이 sparse worktree의 실제 Main 구동은 기존 `assets/vfx/ki_slash_silver_sheet.png` import 부재로 완료되지 않았으며, 해당 외부 에셋/import 문제를 제품 수정으로 우회하지 않음 |
 | 실제 회복·공용 | intro/lesson ens 교체 뒤 기존 phase가 부팅 identity를 고정해 회복 진입0인 문제를 검출. 실제 완료·같은 Main/World/Player/State·원본 script/binding·1회 사용을 검사하는 명시 identity 인계. 기존 advance clock/sink guard 유지. Main+23/-3·State0·World/lesson/Player/hurtE/저장0, 순수 수식/테이블 변경0 |
 | 검증·제출 | 신규131/0·13id 원문13사례 exact JS 불일치0. 직접 회귀6종 각1회4,167/0(639+442+2560+88+45+393), 기존6파일 동일. 최종ERROR/누수/잔류0·격리/pgrep gate/override0byte. [보고서](engine/orders/reports/demo11-24b_REPORT.md)·[306행 분류표](7아이템디자인/DEMO11_24B_SYSTEM_CONSUMERS_20261021.md)·원로그 _out/demo11-24b/ |
 

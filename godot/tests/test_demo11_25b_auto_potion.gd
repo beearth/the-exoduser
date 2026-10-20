@@ -38,6 +38,9 @@ class Fixture extends RefCounted:
 			"regen":
 				reads.append(key)
 				value = {"raw":data.regen,"present":true}
+			"potion_cd_affix":
+				reads.append(key)
+				value = data.get("potion_cd_affix",0.0)
 		return {"status":"READY","value":value}
 	func write(key: String, value: Variant) -> Dictionary:
 		if key == reject: return {"accepted":false}
@@ -62,6 +65,7 @@ func _run() -> void:
 	if failures == 0:
 		_test_oracle()
 		_test_order_and_rejections()
+		_test_potion_cd_affix_boundaries()
 		await _test_actual_main()
 	if is_instance_valid(main):
 		for child in main.find_children("*","AudioStreamPlayer",true,false): child.stop()
@@ -94,7 +98,9 @@ func _test_oracle() -> void:
 		var label = "G35893-35910 case "+str(oracle_cases)
 		check(result.status=="READY",label+" phase")
 		for field in ["hp","mats","cd"]: check(float(f.data[field])==float(row.expected[field]),label+" "+field)
-		check(f.reads==row.expected.reads,label+" live read order")
+		var expected_reads: Array = row.expected.reads.duplicate()
+		expected_reads.insert(maxi(0,expected_reads.size()-2),"potion_cd_affix")
+		check(f.reads==expected_reads,label+" live read order plus cached potionCdRed")
 		check(f.data.get("hC",2)==row.expected.hC and f.data.get("potions",3)==row.expected.potions,label+" conditional stats")
 
 func _input() -> Dictionary:
@@ -119,6 +125,18 @@ func _test_order_and_rejections() -> void:
 	check(not result.applied and f.data.cd==-0.5,"positive CD subtraction not zero-clamped")
 	check(f.reads==["level","affix"],"missed trigger does not read gear/passives or heal twice")
 	check(Phase.new().advance(-1.0,f.services()).status=="NOT_READY","invalid tick rejected")
+
+func _test_potion_cd_affix_boundaries() -> void:
+	# G28228-28231's `Math.min(_eqAffix('potionCdRed'),.2)` is appended to the
+	# existing G35898-35902 automatic formula; no lower clamp/sign normalization.
+	for row in [["zero",0.0,420.0],["max_tier",-0.22,512.0],["unequip",0.0,420.0]]:
+		var data := _input()
+		data.potion_cd_affix=row[1]
+		var f=Fixture.new(data)
+		var result=Phase.new().advance(1.0,f.services())
+		check(result.applied,"potionCdRed "+row[0]+" automatic use")
+		check(f.data.cd==row[2],"potionCdRed "+row[0]+" exact cooldown")
+		check(f.reads.has("potion_cd_affix"),"potionCdRed "+row[0]+" reads cached affix")
 
 func _test_actual_main() -> void:
 	main = load("res://scenes/main.tscn").instantiate()

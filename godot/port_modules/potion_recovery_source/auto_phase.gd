@@ -52,7 +52,9 @@ func _advance(sp: float) -> Dictionary:
 	if not _failed.is_empty(): return _result(false)
 	var regen: Variant = _r("regen")
 	if not _failed.is_empty(): return _result(false)
-	var cooldown: Dictionary = _math.auto_cooldown(gl.raw, gl.present, belt.raw, belt.present, regen.raw, regen.present)
+	var potion_cd_affix: Variant = _r("potion_cd_affix")
+	if not _failed.is_empty(): return _result(false)
+	var cooldown: Dictionary = _math.auto_cooldown(gl.raw, gl.present, belt.raw, belt.present, regen.raw, regen.present, potion_cd_affix, true)
 	if cooldown.status != "READY":
 		_failed = cooldown.reason
 		return _result(false)

@@ -41,7 +41,8 @@ func enhanced_heal(level: Variant, potion_power: Variant) -> Dictionary:
 
 func auto_cooldown(gloves_raw: Variant, gloves_present: bool,
 		belt_raw: Variant, belt_present: bool,
-		p_regen_raw: Variant, p_regen_present: bool) -> Dictionary:
+		p_regen_raw: Variant, p_regen_present: bool,
+		potion_cd_affix_raw: Variant = 0, potion_cd_affix_present: bool = true) -> Dictionary:
 	if gloves_present and not _source_scalar(gloves_raw):
 		return _unsupported("unsupported_gloves_pot_cd", gloves_raw)
 	# game.html:35899 -- unary + precedes ||0, then Math.min.
@@ -55,8 +56,13 @@ func auto_cooldown(gloves_raw: Variant, gloves_present: bool,
 		return _unsupported("unsupported_p_regen", p_regen_raw)
 	# game.html:35901 -- multiplication coerces, but there is NO ||0 here.
 	var regen: float = _source_min(_coerce.js_to_number(p_regen_raw, p_regen_present) * 0.03, 0.3)
-	# game.html:35902 -- preserve left-to-right subtraction and signed wrap.
-	var frames: int = Formula.js_to_int32(420.0 * (((1.0 - gloves) - belt) - regen))
+	if potion_cd_affix_present and not _source_scalar(potion_cd_affix_raw):
+		return _unsupported("unsupported_potion_cd_red", potion_cd_affix_raw)
+	# game.html:28228-28231. The original uses Math.min without a lower clamp;
+	# retain its signed value and left-to-right subtraction exactly.
+	var potion_cd_affix: float = _source_min(_coerce.js_to_number(potion_cd_affix_raw, potion_cd_affix_present), 0.2)
+	# G35898-35902 plus G28228-28231 -- preserve signed wrap and ~~ conversion.
+	var frames: int = Formula.js_to_int32(420.0 * ((((1.0 - gloves) - belt) - regen) - potion_cd_affix))
 	return _ready(maxi(6, frames))
 
 

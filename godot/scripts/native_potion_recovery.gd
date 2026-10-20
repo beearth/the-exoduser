@@ -81,6 +81,10 @@ func _read(key: String) -> Dictionary:
 			var passives: Variant = state.read_current_passives()
 			if not passives is Dictionary: return {"status":"NOT_READY"}
 			return _ready({"raw":passives.get("pRegen"),"present":passives.has("pRegen")})
+		"potion_cd_affix":
+			# G28228-28231: same cached _eqAffix source and Math.min cap as the
+			# retired manual quickslot; the native owner is the live auto-potion.
+			return main.read_native_system_equipment_affix("potionCdRed")
 	return {"status":"NOT_READY"}
 
 func _write(key: String, value: Variant) -> Dictionary:
