@@ -1,3 +1,13 @@
+## 2026-10-20 TRACE-LOBBY 재개 — 로비·내러티브 원본 추적 마감
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 산출물 | `docs/engine/FDG_SOURCE_TRACE_LOBBY_20261020.md` 1개. 재부팅 전 커밋 aac16bd1의 진행분을 보존하여 최신 origin/main 284d7faf 기준으로 재대조 |
+| 원본 근거 | index.html 4,742행·game.html 65,692행의 최신 main blob/SHA-256 확인. 화면·외형·full/ea/demo·로비→게임·컷신/대사/자막·전체 cue·함수/UI/에셋 행 색인 |
+| 불일치·이식안 | 설계 차이는 표로만 기록. 기존 Godot 의존/공백·공용 접점·10단위 순서안, 1번 LB-01은 신규 카탈로그/테스트만·공용 0줄 목표 |
+| 소유·보호 | SETTINGS S10·SAVE SV-LOBBY-VIEW는 참조, P2-001i·P2-007a는 의존. 코드·테스트·설계 docs·DESIGN LOCK·WORK_BOARD·R 불변. 이 절 외 기존 문서 수정 없음 |
+| 검증·한계 | 57개 기존 receipt 파일 및 최신 main 동일성·행/표/링크 정적 확인. Godot 미실행. 보존된 Node 원로그 77통과/3파일 acorn 부재로 본문 미실행은 전체 PASS가 아니며 재실행하지 않음. 자기 브랜치만 정상 push·원격 SHA 확인, main push·force·훅 우회 없음 |
+
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.

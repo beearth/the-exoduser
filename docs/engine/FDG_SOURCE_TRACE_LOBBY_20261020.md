@@ -5,14 +5,23 @@
 | 항목 | 확인값 / 경계 |
 |---|---|
 | 작업 | `trace-lobby` / `codex/trace-lobby-20261020` / `~/exoduser-wt/trace-lobby` |
-| 원본 기준 | fetch한 최신 `origin/main=f84e26ee0bbc929fb595b4c0af292b423588f325`. 이 ref에서 신규 worktree/branch 생성. `index.html` 4,742행·`game.html` 65,692행이며 아래 행은 이 두 파일 기준 |
-| 읽은 배정 기준 | `orders/WORK_BOARD.md` 전체(TRACE-LOBBY 진행 중 행68), `FDG_GAME_DEVELOPMENT_PLAN.md` 단계표33–45·작업표 P2-001i73/P4-00190, `FDG_FEATURE_INVENTORY_20261020.md:1203–1215` |
+| 원본 기준 | 재개 시 `git fetch origin main` 및 원격 ref 대조로 고정한 최신 `origin/main=284d7faf49295b2f5061937a47ce96038032ed3c`. 기존 worktree의 시작점은 `f84e26ee0bbc929fb595b4c0af292b423588f325`, 보존된 문서 커밋은 `aac16bd1f7b518f55f2b5eb7e05e6b8507f8ae3e`. 두 HTML은 최신 main과 byte 동일. `index.html` 4,742행·`game.html` 65,692행이며 아래 행은 이 최신 main의 두 파일 기준 |
+| 읽은 배정 기준 | `orders/WORK_BOARD.md` 전체와 최신 main 변경분(TRACE-LOBBY 진행 중 행77), `FDG_GAME_DEVELOPMENT_PLAN.md` 단계표33–45·작업표 P2-001i73/P4-00190, `FDG_FEATURE_INVENTORY_20261020.md:1203–1215`. FEATURE-INVENTORY의 과거 snapshot 판정과 이번 정적 관측을 구분 |
 | 중복 소유 제외 | P2-001i 부팅→커튼, P2-007a 글꼴·키 가이드 패널은 이미 다른 담당의 이식. 재작성하지 않고 의존으로만 표시. 작업표의 인수 이력과 이번 실행 증거는 별개 |
 | 기존 추적 참조 | [SETTINGS S10](FDG_SOURCE_TRACE_SETTINGS_20261020.md): 언어·장치 read-only 인계. [SAVE SV-LOBBY-VIEW](FDG_SOURCE_TRACE_SAVE_20261020.md): 슬롯 UI/메타/요청 수명·저장 전송. 이 문서는 화면·스토리·경로의 접점을 추적하며 그 모듈을 별도 중복 구현하지 않음 |
-| 작성 범위 | 이 추적 문서 1개 신규. 코드·테스트·기존 설계 docs·WORK_BOARD 변경 0. 문서-only staged 검사에 추가 변경로그 요구가 없으면 CHANGELOG_SYNC도 수정하지 않음 |
+| 작성 범위 | 산출 추적 문서 1개를 기존 진행분에서 마감. 코드·테스트·기존 설계 docs·WORK_BOARD 변경 0. 사용자 재개 지시에 따라 `docs/CHANGELOG_SYNC.md` 맨 위에 기존 형식의 추적 절만 추가. 훅 우회 없음 |
 | 보호 | `docs/2_3`·Q/E 의미/판정·세이브 형식 **보호**, 변경 제안 없음. 이름/charIdx/cutsceneDone/demo active 교환은 원본 참조만. DESIGN_LOCK 3개는 읽기만 |
 | 기준 R | `/Users/fordeargamers/Projects/exoduser-migration-20261001`, HEAD `dd49171c5b88e211575a41f185395d6c0a14b184`. branch/INDEX/WORK 불변. R의 HTML은 원본 근거로 사용하지 않음 |
 | 증거 수준 | 원본·Godot 파일/기존 테스트 정적 대조와 §6의 실제 Node 실행. Godot 새 실행·GUI·미디어 디코딩·로그인·실제 저장·실플레이·PC 실행은 **미확인**. 아직 이식하지 않은 계획을 구현 완료로 세지 않음 |
+
+최신 main 재대조에서 기존 receipt의 소스·공용·설계 57개 파일은 모두 동일했다. 재부팅 이전 커밋/원격 브랜치를 보존하며 rebase·force·main push 없이 자기 브랜치에 후속 문서 커밋을 추가한다. 최신 main의 다른 변경을 이 worktree에 병합하지 않았으며, 새 의존 파일은 `git show <main SHA>:<path>`로 읽었다.
+
+| 원본 파일 | 최신 main Git blob | SHA-256 |
+|---|---|---|
+| `index.html` | `88b4940cd5870793e509942224532e06a4a80bdb` | `36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12` |
+| `game.html` | `e755a2d98211ac2a6b4a53d8a1e3e7abe4714400` | `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4` |
+
+최신 main에 있는 기존 추적 12종의 로비 접점도 재확인했다. SETTINGS S10·SAVE SV-LOBBY-VIEW가 각각 언어/장치와 슬롯/저장 수명의 권위다. INVENTORY §2.3·META §4/저장 접점·REVIVE-SHIELD U10/I01은 슬롯과 복귀, WEAPONS §4.5·ITEMS/CH1_ENEMIES의 index 행은 소개/간접 진행 표시다. SOUND §1.4는 로비 음원·영상 믹스를 담당한다. SKILLS·QUICKSLOT·BOSS_CH1은 공용 UI/입력 의존만 참조하며 이 문서에서 재설계하지 않는다.
 
 기능 목록의 `LOBBY-prologue/story-intro/load`는 오래된 snapshot의 분류다. 최신 파일을 확인해 인게임 커튼/간이 선택/boot writer가 있다는 사실만 갱신 관측하고, 원본 로비·시네마틱 전체와 구분한다. 원본의 서로 다른 시네마틱은 다음과 같다.
 
@@ -121,6 +130,10 @@ I3199–3237의 각 항목은 id/name/cls/desc/folder/fw/fh/portrait/bust/emblem
 
 G10452–10500 `_charIdx` 캐시·_loadCharAtlas는 늦은 이전 캐릭터 로딩 가드가 있다. `dbRestore` G3603–3607은 player가 없어도 슬롯 charIdx 우선·유효 정수/게임 CHAR_LIST 범위 밖이면0이다. 해당 **저장 형식 보호**. 선택 팝업의5 preview와 Godot Main의 paused 시험용2선택 UI를 서로 대체하지 않는다.
 
+| 별도 게임 내 선택 선언 | 원본 행 | 호출·완료 경계 |
+|---|---|---|
+| `_showCharCreate(onDone)` | G63211–63275 | `CHAR_LIST` 2카드, 현재 `_charIdx`/0 초기 선택, south.png 첫 프레임·실패색, 클릭 선택/더블클릭 확정·좌우/Enter. 중복 overlay 또는 1캐릭터 이하면 즉시 callback. confirm 1회만 `_loadCharAtlas(sel)`→키 리스너 해제→400ms 후 제거/callback. game.html 전수 검색에서 선언 외 직접 caller 없음. 정상 부트에서 실제 노출되는지는 **미확인**이며 index 생성 팝업이나 Godot 간이 picker의 live 연결 근거로 세지 않음 |
+
 ### 1.4 세계관·전사 영상·게임 대사 컷신·커튼
 
 | 데이터·함수·입력 | 근거 | 정확 계약 |
@@ -140,8 +153,8 @@ G10452–10500 `_charIdx` 캐시·_loadCharAtlas는 늦은 이전 캐릭터 로�
 | cutscene state | G62859–62879 | INTRO_CUTSCENE/null, _cutSeq PRO/INTRO, lineIdx/start/WaitInput/SkipHold/Holding/LastT, img cache, overlay canvas. frame clock은 performance.now |
 | 시작·분기 | G62909–62943 | force?PRO:INTRO, boss/plate skip, stage!=0 또는 cutsceneDone면 bypass. 첫2이미지 즉시·나머지400ms preload, G.on=false/HUD hide/BGM fade300→400ms 후선택. PRO만 voice 시작 |
 | 다음·완료 | G62945–62982 | speaker text reveal 중 첫 advance는 전체표시, 다음은 다음cue. PRO 끝→INTRO로 전환·voice stop/hold reset; INTRO 끝→G._cutsceneDone=true·BGM→_startIntro |
-| 렌더·스킵 | G62984–63204 / G13176–13182·13333·13379·13881–13890·61887 | Space/B hold2000ms, render dt<=100, key Enter/Z·click/A 부분진행. 무대사/무speaker는 dur 자동. 와이드16:9·극세로9:16 한계clip, vignette/colorGrade/shake/camera, SFX1회. G61887은 일반 render보다 우선 컷신 render |
-| narrative·대화 자막 | G63080–63186 | narrative는 마지막줄ch*.88·font max14/ch*.031·행간1.5, title중앙 예외. speaker창은 text_cfg.speed로 visible chars·완료후입력대기, RTL speaker/name/텍스트위치 분기. 타입writer와 per-line duration은 별개 |
+| 렌더·스킵 | G62984–63204 / G13176–13182·13333·13379·13881–13890·61887 | Space/B hold2000ms, render dt<=100, key Enter/Z·click/A 부분진행; Escape/패드 Start 새 누름은 즉시 `_cutsceneEnd`(PRO 중이면 INTRO로 전환). Space keyup·blur/hidden은 hold와 누적값 초기화, 패드 B release 분기는 holding만 false(기존 누적값 유지). 무대사/무speaker는 dur 자동. 와이드16:9·극세로9:16 한계clip, vignette/colorGrade/shake/camera, SFX1회. G61887은 일반 render보다 우선 컷신 render |
+| narrative·대화 자막 | G63080–63186 | narrative는 마지막줄ch*.88·font max14/ch*.031·행간1.5, title중앙 예외. 두 자막 모두 `ExoduserI18n.wrapText(text,cw*.84,measure,lang)` 사용. speaker창은 text_cfg.speed 또는50ms/문자로 visible chars·완료후입력대기, RTL speaker/name/텍스트위치 분기. 타입writer와 per-line duration은 별개 |
 | 기상4컷 | G63209·63276–63440 | 눈을 떠/정신 차려/이제 진짜 지옥이야/야! 몬스터다!!!. _INTRO_KEY_STEPS4, 다음250ms debounce, Space2000ms/Esc/Start skip, 완료900ms cleanup·커튼 open·iframes600·500px safety·580px 5링·bonfire t300/r280. 이미 P2-001i/P2-007a 담당. Q/E/난이도저장 보호 |
 | 게임 boot·복원 연결 | G62460–62585·63890–64160 | online/local-server/web branches saved metadata→dbRestore, ready/start stage/map loading→stage0 _startIntroCutscene. G64044–64048/G64159–64160가 로컬/web 대응. 별도 plate/boss/test 신규 경로는 보호된 원본 그대로 관측 |
 | 장 전환·복귀 | G63534–63664·63673–63692 | random19 numeric loading, next-stage5초 후callback/900ms fade, boot pct clamp/8→100·hide. demo 마지막nextStage→demoEnd. 복귀는 save await/catch→로비, beforeunload는완료보장아닌시도. 저장 상세는 SAVE 참조 |
@@ -168,6 +181,7 @@ G10452–10500 `_charIdx` 캐시·_loadCharAtlas는 늦은 이전 캐릭터 로�
 |---|---|---|---|
 | 11내러티브·로어디자인.md:1,36,46–66 | 상단v23공통+29언어22cue, 본문에 현재v21/v22·96.4초 표현 혼재 | character-story-player17–23 v23 clean+20261008-killu-montage·22cue | **이력/현행 혼재**. v23상단은경로와일치, 현재v21/v22라는후속문장은경로와불일치. 현행파일실제길이/편집후96.4초유지는이번미디어미검수→미확인 |
 | 동일문서17 | 메인로비3종 preload/swap 20260913-lobby-detail2, rd picker20260930-loading-remaster5 | I3709–3718 crypt v2 고정, I2751/2758 rd 캐시20261006-rd13-grip | **현행 경로·캐시 불일치**, numeric19 캐시는20260930유지. 문서변경 0 |
+| 동일문서29(다중 행) | 기존 명시적 개행 split 유지 | G63111 narrative·63135 speaker가 `ExoduserI18n.wrapText` 사용, 폭 `cw*.84`, 실제 폰트 measure와 언어를 전달 | **줄바꿈 설명이 현행보다 좁음**. 하단88% 앵커는 일치. 자동 줄바꿈·RTL 결과의 실화면 검수는 **미확인** |
 | 캐릭터선택_리모델링_기획서.md:246 | 전사 idle_warrior_higgsfield_4k·133frame·rate.75 | I3200 cs3_4k?v20260929-cs3 | **후속 교체 이력**. LOBBY_ANCESTOR_ART25이후CS3기록으로대체. 코드현행영상규격의 실제프레임·길이는미확인 |
 | LOBBY_ANCESTOR_ART_20260928.md:12 | 실버테일 idle_silvertail.mp4/poster_idle_silvertail.jpg,20260927-restored | I3207 *_4k.mp4/*_4k.jpg?v20260929-remaster | **현행 SELECTED_MEDIA 행 경로가 뒤처짐**. 캐릭터선택문서42–52의9/29리마스터기록과구분 |
 | 캐릭터선택 기획서313–335 / LOBBY_ANCESTOR_ART11 / lobby_full_patch1265 | demo 고정1카드·신규칸없음 또는 slotname demo, 기존3종random배경 | I3488–3519·3555–3649 demo5슬롯/이름카드·생성; I3713 crypt고정 | **예전 설명이 남음**. 현재demo5/개발Infinity는SAVE U01–U09참조. 새 저장 정책 제안없음 |
@@ -192,8 +206,8 @@ G10452–10500 `_charIdx` 캐시·_loadCharAtlas는 늦은 이전 캐릭터 로�
 | UI 마감·4컷패널 | native_intro_key_guide_panel.gd:1–90, native_ui_fonts.gd; sequence189–252 | test_p2007a_ui_polish.gd:8–29,139이후 font/가이드·Tab/Enter/skip/click | P2-007a 의존. legacyunported의HUD/ens문구는현재호출begin164–180과상충하므로실제호출우선. 패드폴링·OPT.diff저장은여전히공백 표시 |
 | boot 로딩writer | hud.gd:125–218,369–385; main.gd:547–605 | native initialization/post-stage/asset-wait 계열기존 테스트가동일HUD writer/readback 사용 | source showBootLoading전체/19배경·chapter transition·tips·cinematic→load 통합없음 |
 | 스토리asset | godot/assets/sfx/voice/voice_wakeup.mp3·fonts실파일 | 키가이드VOICE_PATH 및existingtest_resource존재검사 | 검색한godot/assets에는로비crypt/ancestor/charselect/cutscene/world/warrior/title영상대응없음. 원본파일 존재와Godotimport·디코드성공은별개 |
-| 저장·메타 | SAVE §3의source_state/current readers·lifecycle·partialproviders | 기존저장계약/owner테스트참조 | SV-LOBBY-VIEW의목록UI·인증·IO/복원은선행/별도 담당. 여기서새saveformat/더미슬롯·기본복원값을만들지않음 |
-| 설정 인계 | main.gd:547부근KO/EN boot subset, source_options_state.gd35current | SETTINGS §3/S10, SETTINGS-S01은작업판검수대기브랜치이며이main편입여부를가정하지않음 | hellLang/inputMode·29언어·로비언어popup는S10owner. UI전역locale를원본설정권위로대체하지않음 |
+| 저장·메타 | SAVE §3의source_state/current readers·lifecycle·partialproviders· 최신 main에 `godot/tests/test_native_save_contract.gd` 존재 | SV-CONTRACT main 편입을 실제 파일과 작업판56행으로 확인. 3,023/0은 작업판의 PC 과거 결과이며 이번 재실행 아님 | SV-LOBBY-VIEW의목록UI·인증·IO/복원은선행/별도 담당. 저장 계약 테스트 존재를 로비 저장 구현으로 세지 않음. 여기서새saveformat/더미슬롯·기본복원값을만들지않음 |
+| 설정 인계 | main.gd:547부근KO/EN boot subset, source_options_state.gd35current· 최신 main의 `godot/scripts/native_settings_read_view.gd:1–81`, `godot/tests/test_native_settings_read_view.gd` | SETTINGS-S01 main 편입을 실제 파일과 작업판58행으로 확인. owner weakref read view·default reference38개·누락 시 NOT_READY. 현재35/누락3(textScale/panelFit/diffV2)은 작업판 기록과 기존 source 대조, 이번 Godot 미실행 | SETTINGS S10의hellLang/inputMode·29언어·로비언어popup consumer는 별도 공백. default reference를 live 설정으로 채우거나 UI전역locale를설정권위로대체하지않음 |
 | 로비·시네마틱전체 | scripts/port_modules/scenes/tests 정적 검색 결과 | Node원본테스트§6만실행 | 계정·splash·캐릭터생성·v23/world영상·subtitle·speaker canvas·로비복귀전체E2E는미이식/실플레이미확인 |
 
 ## 4. 작은 이식 단위 순서안 — 아직 구현 안 함
@@ -215,7 +229,7 @@ G10452–10500 `_charIdx` 캐시·_loadCharAtlas는 늦은 이전 캐릭터 로�
 | 원본 값 단정 | 3개 id와 순서·각 3필드의 정확한 집합 검사. **9개 문자열을 독립 기대값으로 개별 비교**. full limits=`All Chapters · No Level Cap`, ea limits=`Lv.500 · Chapter 1 (1-1~1-4) · 8~15h`, demo limits=`Lv.1 START · Stage 1-1 Only · Lv.100 Cap · 1~2h`. quote 3개는 모두 `멘트 준비 중` |
 | 수명·경계 단정 | entry API 3개가 catalog와 일치. 두 번 조회한 Dictionary identity가 다름. 반환 사본의 nested label 변경·extra 추가가 다음 조회에 영향을 주지 않음. unknown·대문자·빈 id는 `{}`이며 정상 3개 entry는 불변. read 전후 InputMap actions/events·Engine cap/physics·locale·ProjectSettings 불변 |
 | 독립 oracle | 테스트는 최신 WT의 `res://../index.html` 1260–1272 블록도 읽어 원본 표와 대조. 제품 상수를 그대로 expected로 재사용하지 않음. Node acorn 의존을 추가하지 않음. 행 이동·문자열 차이는 실패로 보고하고 기준을 재확인하며 R HTML로 대체하지 않음 |
-| 실행 명령 | 지정 원앱 Godot `/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path <WT>/godot --script res://tests/test_native_lobby_build_catalog.gd`. 단정 수는 실제 실행 후 기록. 기존 `test_contracts.gd`는 해당 테스트의 격리 정책에 따라 실행. 이 pure module은 Main을 부팅하지 않음 |
+| 실행 명령 | 후속 구현을 배정받았을 때만 실행. 직전 `pgrep -f "Godot.app/Contents/MacOS/Godot" \| wc -l` 결과가2 이상이면30초씩 대기 후 재확인. 지정 원앱 Godot `/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path <WT>/godot --script res://tests/test_native_lobby_build_catalog.gd`. 단정 수는 실제 실행 후 기록. 기존 `test_contracts.gd`는 해당 테스트의 격리 정책에 따라 실행. 이 pure module은 Main을 부팅하지 않음. 이번 추적 작업에서는 실행하지 않음 |
 | 선행·충돌 | 총괄의 LB-01 배정과 snapshot 행 재확인. SAVE/SETTINGS/P2-001i/P2-007a 소유 파일 수정 0·persist0. 기존 owner 수정이 필요해지면 범위를 확장하지 않고 BLOCKED로 보고 |
 | 인수·남는 것 | 9개 원본 문자열 일치·사본 독립성·부작용0의 실제 실행 로그와 보고서를 제출. 카탈로그가 게임에 배선됐다고 보고하지 않으며 후속 UI·routing은 미배선으로 남김 |
 
@@ -256,15 +270,15 @@ G10452–10500 `_charIdx` 캐시·_loadCharAtlas는 늦은 이전 캐릭터 로�
 
 | 확인 | 실제 결과 |
 |---|---|
-| 소스 고정·보존 | origin/main f84e26ee에서worktree. 57개소스/공용/설계파일SHA-256 receipt, 작성후동일성 검사. 원본 두 HTML·DESIGN_LOCK·기존 제품/테스트수정 0 |
+| 소스 고정·보존 | 기존 worktree와 `aac16bd1` 커밋에서 재개. 최신 main `284d7faf`와 원본 두 HTML·기존 receipt 57파일 모두 byte 동일. 재개 전후 소스/설계 hash와 R HEAD/branch/INDEX/WORK 대조. 원본 두 HTML·DESIGN_LOCK·기존 제품/테스트수정 0 |
 | 정적 전수 | index named 선언145개·UI id141개·직접 경로119개의 부록, `_LOBBY_BUILD`전체 참조、스토리지경계, game대상컷신/boot/input caller대조. `.gd/.tscn` 및ignoredtests도검색 |
 | 데이터 산출 | Node vm의새빈context에서원본data declaration리터럴만읽어CHAR_VISUALS5/CIN20/PRO34×4/INTRO27·26·26·26 count확인. 브라우저app·인증·저장·영상실행아님 |
-| 기존 원본 Node12파일 | `node --test test/lobbyStageInfo.test.js test/lobbyCharacterSelectionInfo.test.js test/lobbySelectedScene.test.js test/characterStoryCreation.test.js test/characterStoryControls.test.js test/worldIntroPlayer.test.js test/worldIntroSubtitles.test.js test/worldIntroHandoff.test.js test/fdgIntroDuration.test.js test/releaseTarget.test.js test/lobbyCreationResponse.test.js test/lobbyConfirmTransition.test.js` |
-| Node 실제결과 | **exit1 / tests80 / pass77 / fail3 / skipped0**. fail3는characterStoryCreation/lobbyCreationResponse/releaseTarget 파일의 `ERR_MODULE_NOT_FOUND: Cannot find package 'acorn'`로본문 미실행. **해당3파일검증 BLOCKED(환경 의존)**. 전체 PASS아님. 의존설치·다른WTnode_modules차용·테스트수정등우회없음 |
-| Node 통과범위 | 실제77건은FDGwatchdog/fallback·selectedscene/언어·stageformat·worldplayer/subtitle29×32·storycontrol·confirmstale 등 격리원본 계약. 테스트파일오류3건을제품불일치3건으로세지않음. 원로그/명령JSON은아래출력경로 |
+| 기존 원본 Node12파일(재부팅 이전 실행) | `node --test test/lobbyStageInfo.test.js test/lobbyCharacterSelectionInfo.test.js test/lobbySelectedScene.test.js test/characterStoryCreation.test.js test/characterStoryControls.test.js test/worldIntroPlayer.test.js test/worldIntroSubtitles.test.js test/worldIntroHandoff.test.js test/fdgIntroDuration.test.js test/releaseTarget.test.js test/lobbyCreationResponse.test.js test/lobbyConfirmTransition.test.js` |
+| Node 보존 원로그 실제결과 | **exit1 / tests80 / pass77 / fail3 / skipped0**. fail3는characterStoryCreation/lobbyCreationResponse/releaseTarget 파일의 `ERR_MODULE_NOT_FOUND: Cannot find package 'acorn'`로본문 미실행. **해당3파일검증 BLOCKED(환경 의존)**. 전체 PASS아님. 의존설치·다른WTnode_modules차용·테스트수정등우회없음 |
+| Node 통과범위 | 실제77건은FDGwatchdog/fallback·selectedscene/언어·stageformat·worldplayer/subtitle29×32·storycontrol·confirmstale 등 격리원본 계약. 테스트파일오류3건을제품불일치3건으로세지않음. 원로그/명령JSON은아래출력경로. 재개 시 원본 동일성을 확인했으며 같은 테스트를 재실행하지 않음 |
 | Godot | 실제 파일·기존 테스트내용읽기만. Godot컴파일/실행·P2-001i/P2-007a독립재검수·video codec·시각품질은이번**미실행/미확인**. 문서-only추적 완료와플레이인수를구분 |
-| Git 인계 | 자기branch에이 문서1경로만stage→docs-sync-check --staged 직접 실행→정상commit/push·원격SHA대조. pre-commit다른문서요구시원문기록/BLOCKED·우회금지. 실제명령결과·SHA는DONE/receipt참조 |
-| 로그·DONE | `/Users/fordeargamers/exoduser-wt/_out/trace-lobby/`: source-contract-tests.log/command.json, source-and-design-receipt.json, verification.json, DONE.txt. 과거settings로그와분리 |
+| Git 인계 | 자기 branch에 추적 문서와 사용자 허용 `docs/CHANGELOG_SYNC.md` 두 경로만 명시 stage→docs-sync-check --staged 직접 실행→정상 pre-commit·commit/push→원격 SHA 대조. main push·force·git add -A·훅 우회 없음. WORK_BOARD는 읽기만 하고 DONE으로 검수 인계 |
+| 로그·DONE | `/Users/fordeargamers/exoduser-wt/_out/trace-lobby/`: 이전 source-contract-tests.log/command.json, source-and-design-receipt.json, verification.json을 보존. 재개 결과는 resume-baseline.json/resume-verification.json/resume-docs-sync-check-staged.log와 DONE.txt에 분리 |
 
 미확인 항목이기능 공백/후속 선행인경우해당 단위 HOLD이며추적 문서 자체를구현으로승격하지않는다. 현재문서 작성·Git제출의장애와선택 검증3파일의환경 BLOCKED를구분해 인계한다.
 
@@ -812,3 +826,89 @@ I 전체 src/href/data-src/poster 및 assets/img/video/bgm/sfx/sprites 상대 �
 - `rg --files --no-ignore godot/tests`로 ignore된 실제 테스트도 확인했다. 기본 검색에 안 보인다는 이유로 테스트 부재 판정하지 않는다.
 - cue 데이터는 새 빈 Node vm context에서 선언 리터럴만 읽고 행의 id로 대조했다. 앱·VTT 렌더·영상 디코딩 증거가 아니다.
 - URL 파일 존재는 query 제거 상대 경로 기준이며 API/CDN·동적 fallback·누락 파일은 미확인이다. 외부 CSS 장식 texture와 동적 audio sample은 별도 의존 모듈 범위다.
+
+
+## 부록 F. 게임 측 선언·실제 진입 caller·외부 전사 cue 보충
+
+### F.1 게임 측 named 함수 선언
+
+아래는 원본 game.html에서 컷신·기상·전환/로딩 범위의 선언을 전수 재추출한 행 색인이다. 기상/키 안내는 P2-001i·P2-007a 의존이며 이 표가 해당 파일의 소유권을 뜻하지 않는다. 중첩 함수는 부모 범위와 함께 해석한다.
+
+| 함수 | game.html 행 |
+|---|---|
+| `_proVoiceStop` | 62745 |
+| `_playSfxSafe` | 62871 |
+| `_playVoiceSafe` | 62872 |
+| `_getCutsceneImg` | 62881 |
+| `_cutVignette` | 62892 |
+| `_cutColorGrade` | 62898 |
+| `_cutShake` | 62907 |
+| `_startIntroCutscene` | 62910 |
+| `_cutsceneAdvance` | 62945 |
+| `_cutsceneGetLines` | 62958 |
+| `_cutsceneEnd` | 62966 |
+| `_renderIntroCutscene` | 62984 |
+| `_showCharCreate` | 63211 |
+| `paint` | 63227 |
+| `confirm` | 63257 |
+| `onKey` | 63265 |
+| `_startIntro` | 63276 |
+| `_introGuideText` | 63302 |
+| `_introGuidePad` | 63303 |
+| `_introGuideKeys` | 63308 |
+| `_renderIntroGuide` | 63311 |
+| `_disposeIntroGuide` | 63330 |
+| `_finishIntroGuide` | 63342 |
+| `_advanceIntroGuide` | 63351 |
+| `_startIntroGuide` | 63357 |
+| `poll` | 63388 |
+| `_openIntroCurtain` | 63410 |
+| `_pickTransitionRd` | 63537 |
+| `showStageTransition` | 63547 |
+| `_bootPerfMark` | 63575 |
+| `_bootPerfReport` | 63581 |
+| `showBootLoading` | 63588 |
+| `setBootLoading` | 63609 |
+| `hideBootLoading` | 63616 |
+
+### F.2 `_startIntroCutscene` 실제 호출과 전후 권위
+
+| caller / 원본 행 | 호출 조건·진입 경계 |
+|---|---|
+| `_startDemoNew` G62112–62219 / 호출62214 | 맵·미니맵/100% 로딩 완료·`_dbReady=true`·autosave 시작 뒤 stage0이고 cutsceneDone이 false면 컷신, 아니면 G.on/무적/모닥불. demo 저장 형식은 SAVE 참조 |
+| `_startTestChar` G62349–62441 / 호출62438 | 기본 로딩 최소3000ms의 남은 시간+200ms 뒤, stage0·미완이면 컷신. 그 밖에는 G.on 및 MAP QA 무적 분기. 실험용 전투·스킬 초기화는 추적 소유 범위 밖 |
+| `startGameFromDB` G62443–62585 / 호출62575 | 세션/캐릭터·저장 복원·맵 준비 후 최소5000ms의 남은 시간+400ms 뒤 stage0·plate test 아님이면 호출. 함수 내부가 완료 flag·강제 PRO 여부를 다시 검사. 인증 실패 시 로비 이동도 이 범위. 저장 포맷·인증 동작 변경 없음 |
+| `_boot` G63791 이후 로컬 서버 경로 / 호출64046 | `/api/load`·초기 상태/복원·stage 준비 후 stage0이고 boss test가 아니면 호출. story 쿼리만으로 완료 flag를 만드는 코드 없음 |
+| `_boot` 브라우저 경로 / 호출64160 | localStorage 복원·기본 상태·맵 로딩 후 boss 분기 우선, 그 다음 stage0이면 호출(plate 우회는 호출된 함수 내부). stage가 다르면 G.on·무적300·모닥불 |
+| 컷신 자체의 마지막 gate G62910–62943 | boss/plate test 우선 우회. 강제 `cutscene=1`이 아니면서 stage≠0 또는 완료이면 우회; 나머지는 PRO/INTRO 선택. 위 caller의 조건 때문에 강제 쿼리만으로 모든 stage에서 호출된다고 단정하지 않음 |
+
+### F.3 신규 전사 영상의 모든 부분 스킵 시각
+
+`character-story-player.js:3`의 CUES22개다. 비교식은 `cue > video.currentTime + .05`이고 값은 초 단위다. subtitle의 시작/끝 시간 전체나 실제 미디어 길이를 이 배열로 대신하지 않는다.
+
+| 순번 | 원본 cue 초 |
+|---|---|
+| 1 | 1 |
+| 2 | 5.5 |
+| 3 | 10 |
+| 4 | 16 |
+| 5 | 22.5 |
+| 6 | 28 |
+| 7 | 33.5 |
+| 8 | 39 |
+| 9 | 42.24 |
+| 10 | 46.5 |
+| 11 | 51 |
+| 12 | 53.48 |
+| 13 | 56.019999999999996 |
+| 14 | 59.5 |
+| 15 | 59.98 |
+| 16 | 65 |
+| 17 | 70.67 |
+| 18 | 76 |
+| 19 | 81.5 |
+| 20 | 88 |
+| 21 | 90.33333333333333 |
+| 22 | 92.9 |
+
+원본 불일치는 §2 표에만 보고하며 코드·설계 문서는 수정하지 않았다. 위 함수/시각은 정적 추적이며 영상 디코딩·실제 입력·E2E 인수는 **미확인**이다.
