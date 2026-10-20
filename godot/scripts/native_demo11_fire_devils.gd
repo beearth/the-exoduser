@@ -1,6 +1,6 @@
 extends Node2D
-## DEMO11-32, FD-only. No shared field-boss helper, terrain, protected writer,
-## invented placement or private projectile pool. Integration candidate with31.
+const COMMON=preload("res://scripts/native_fieldboss_common.gd")
+## FD-only state machine; shared provider/contact/registry facade lives in COMMON.
 const TICK = preload("res://scripts/native_demo11_fire_devil_tick.gd")
 const MARKERS := ["FireDevil1","FireDevil2","FireDevil3","FireDevil4"]
 signal presentation_requested(index: int, event: Dictionary)
@@ -31,19 +31,13 @@ static func install_native_boot(main: Node) -> Node2D:
 	family.process_physics_priority=3
 	return family
 func _live() -> bool:
-	return is_instance_valid(_main) and is_instance_valid(_main.world) and not _main.is_queued_for_deletion() and is_inside_tree() and get_parent()==_main.world and _main.world.get_parent()==_main
+	return COMMON.fire_live(_main,self)
 func _provider_live() -> bool:
-	if not _live() or not is_instance_valid(_provider) or not _main.world.is_ancestor_of(_provider) or _provider.is_queued_for_deletion():return false
-	for i in range(4):
-		if not is_instance_valid(_markers[i]) or _provider.get_node_or_null("Markers/"+MARKERS[i])!=_markers[i] or not _markers[i].is_inside_tree():return false
-	return true
+	return _live() and COMMON.named_provider_current(_main.world,_provider,_markers,MARKERS)
 func bind_map_provider(provider: Node2D) -> bool:
 	if not _live() or is_instance_valid(_provider) or not is_instance_valid(provider) or not _main.world.is_ancestor_of(provider):return false
-	var markers: Array=[]
-	for key in MARKERS:
-		var marker: Node=provider.get_node_or_null("Markers/"+key)
-		if not marker is Marker2D or not marker.global_position.is_finite():return false
-		markers.append(marker)
+	var markers: Array=COMMON.named_markers(provider,MARKERS)
+	if markers.size()!=4:return false
 	var state: Variant=_main.source_state.read_current_g()
 	var p: Variant=_main.source_state.read_current_p()
 	if not state is Dictionary or not p is Dictionary or state.get("stage")!=0 or state.get("_bossArena",false) or state.get("_fdSpawned",false) or not _number(p.get("lv")):return false
@@ -78,7 +72,7 @@ func advance_source_frame(frame: Dictionary) -> bool:
 	if not _g.get("on",false) or c.lesson_active or c.first_forest_active:return false
 	if _g.get("stage")!=0 or _g.get("_bossArena",false) or c.qa_storage_active:
 		clear_family();return false
-	if frame.get("ready")!=true or not frame.get("serial") is int or frame.serial<=_serial or not _number(frame.get("sp")) or frame.sp<0 or not TICK.valid_player(frame.get("player")) or not c.get("camera") is Vector2 or not c.camera.is_finite() or not c.get("viewport") is Vector2 or not c.viewport.is_finite() or c.viewport.x<=0 or c.viewport.y<=0:return false
+	if frame.get("ready")!=true or not frame.get("serial") is int or not COMMON.fresh_serial(frame.serial,_serial) or not _number(frame.get("sp")) or frame.sp<0 or not TICK.valid_player(frame.get("player")) or not c.get("camera") is Vector2 or not c.camera.is_finite() or not c.get("viewport") is Vector2 or not c.viewport.is_finite() or c.viewport.x<=0 or c.viewport.y<=0:return false
 	if not c.get("aggro_active") is bool or (c.aggro_active and not is_instance_valid(c.get("aggro_target_node"))):_reason="aggro_target_unbound";return false
 	if is_instance_valid(_kernel) and not _kernel.done:_reason="owner_pending";return false
 	_busy=true;_frame=frame.duplicate(true);_serial=frame.serial;_index=0;_reason=""
@@ -118,14 +112,14 @@ func _spawn(props: Dictionary) -> Dictionary:
 	if not is_instance_valid(registry):return {"ack":false,"reason":"registry_unbound"}
 	# Reuse35's actual birth, class/drop RNG and actual carrier append. Its
 	# specialized elemBall rejection remains visible; no generic impersonation.
-	var response: Variant=registry._birth_request({"command":"spawnProj_owner","args":[props],"frame":_frame})
+	var response: Variant=COMMON.birth_fire(registry,props,_frame)
 	if response is Dictionary and response.get("ack")==true:_born+=1;return response
 	return {"ack":false,"reason":"registry_specialized_owner_required"}
 func apply_hit(owner: Node,index: int,damage: float) -> Dictionary:
-	if _busy or not _provider_live() or owner!=_hit_owner or not is_instance_valid(owner) or owner.is_queued_for_deletion() or not _main.is_ancestor_of(owner) or get_tree().paused or not _g.get("on",false) or _g.get("stage")!=0 or _g.get("_bossArena",false) or index<0 or index>=4 or not is_finite(damage):return {"accepted":false}
+	if not COMMON.hit_owner_admitted(_main,owner,_hit_owner,_busy,_provider_live(),_g,true) or index<0 or index>=4 or not is_finite(damage):return {"accepted":false}
 	var m: Variant=_records[index]
 	if m==null or m.hp<=0 or (m.hid and m.emT<=0) or m.hitCd>0:return {"accepted":false}
-	m.hp-=maxi(1,TICK.i32(damage));m.hitCd=8
+	COMMON.hit_cd8(m,damage,true)
 	presentation_requested.emit(index,{"kind":"hit","hp":m.hp})
 	if m.hp<=0:
 		_records[index]=null;_nodes[index].queue_free()
@@ -135,12 +129,11 @@ func apply_hit(owner: Node,index: int,damage: float) -> Dictionary:
 func clear_family() -> void:
 	_records.clear();_kernel=null
 	if not _g.is_empty():_g["_fireDevils"]=null
-	for member in _nodes:
-		if is_instance_valid(member):member.queue_free()
+	COMMON.free_views(_nodes,false)
 	_nodes=[];_provider=null;_markers=[];_reason="family_cleared"
 func snapshot() -> Dictionary:
 	return {"status":"DORMANT" if not _provider_live() else ("READY" if _reason.is_empty() else "WAITING_OWNER"),"reason":_reason,"records":_records.duplicate(true),"ticks":_ticks,"serial":_serial,"projectile_requests_admitted":_born,"pending":_kernel.pending.duplicate(true) if _kernel!=null else {},"PC_contact_bound":_pc_contact.is_valid(),"hit_owner_bound":is_instance_valid(_hit_owner),"placement":"MAP11_Markers_only","full_combat_ready":false}
 func _exit_tree() -> void:
 	if not _g.is_empty() and is_same(_g.get("_fireDevils"),_records):_g["_fireDevils"]=null
 	_kernel=null
-func _number(v: Variant) -> bool:return (v is int or v is float) and is_finite(float(v))
+func _number(v: Variant) -> bool:return COMMON.number(v)

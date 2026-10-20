@@ -1,4 +1,5 @@
 extends RefCounted
+const SHARED=preload("res://scripts/native_fieldboss_common.gd")
 ## Fire Devil only. G61460–61504,61661–61725. Pending owners resume after the
 ## already committed source prefix; never re-run that prefix or its RNG.
 var m: Dictionary
@@ -121,16 +122,9 @@ func pump() -> void:
 				events.append({"kind":"landing_impact"});done=true
 	_busy=false
 static func valid_player(value: Variant) -> bool:
-	if not value is Dictionary or not value.get("s") is String:return false
-	for k in ["x","y","r","iframes"]:
-		if not value.get(k) is float and not value.get(k) is int:return false
-		if not is_finite(float(value[k])):return false
-	return value.r>=0
+	return SHARED.valid_player(value)
 static func i32(value: float) -> int:
-	var v: float=fmod(value,4294967296.0)
-	v=ceil(v) if v<0 else floor(v)
-	if v<0:v+=4294967296.0
-	return int(v-4294967296.0 if v>=2147483648.0 else v)
+	return SHARED.fire_i32(value)
 static func initial(at: Vector2, lv: float) -> Dictionary:
 	var hp: int=i32((1800+(lv if lv!=0 else 1)*350)*2.5)
 	return {"x":at.x,"y":at.y,"homeX":at.x,"homeY":at.y,"r":100,"hp":hp,"mhp":hp,"t":0,"frame":6,"_moving":false,"walkT":0,"chargeWalkT":0,"atk":i32((18+lv*2.8)*1.2),"hitCd":0,"shotCd":90,"tpCd":0,"emT":0,"emMax":54,"tpX":at.x,"tpY":at.y,"hid":1,"spawnIn":1,"asleep":1,"enChg":0,"burst":0,"burstGap":0,"el":1,"_fmKind":"fd"}

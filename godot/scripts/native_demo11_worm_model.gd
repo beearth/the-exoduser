@@ -1,6 +1,6 @@
 extends RefCounted
 ## G61203–61328. WM only; no Player damage/movement/parry writer.
-const COMMON=preload("res://scripts/native_demo11_angler_model.gd")
+const COMMON=preload("res://scripts/native_fieldboss_common.gd")
 static func initial(at: Vector2,level: float,asleep: bool=true) -> Dictionary:
  var hp: int=COMMON.i32(150+level*45)
  return {"x":at.x,"y":at.y,"homeX":at.x,"homeY":at.y,"r":56,"hp":hp,"mhp":hp,"frame":0,"ft":0,"shotF":-1,"atk":COMMON.i32((16+level*2.5)*1.2),"hitCd":0,"face":0,"phase":"hide","shots":0,"hideT":0 if asleep else 54,"popHit":0,"tpX":at.x,"tpY":at.y,"asleep":1 if asleep else 0}
@@ -94,7 +94,7 @@ static func advance(w: Dictionary,p: Dictionary,c: Dictionary,rng: Callable,wall
 static func can_hit(w: Dictionary) -> bool:return w.hp>0 and not (w.phase=="hide" and float(w.get("hideT",0))>54)
 static func apply_hit(w: Dictionary,damage: float) -> bool:
  if float(w.get("hitCd",0))>0:return false
- w.hp-=maxi(1,COMMON.i32(damage));w.hitCd=8
+ COMMON.hit_cd8(w,damage)
  return true
 
 static func can_fire(w: Dictionary,c: Dictionary) -> bool:

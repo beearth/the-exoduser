@@ -1,3 +1,9 @@
+## 2026-10-21 fieldboss-unify — 31·32·33 공통 helper 한 파일
+
+- 최신main0138c5bb9 +31/76bcae8d·32/4a10102a·33/f650c8d7 정상merge b51e2c78, 충돌은 양쪽 추가 보존. `native_fieldboss_common.gd`로 math/provider/PC readback/CD8/단일 registry field facade·clock 비교 이동. HP/공격/면역·슬롯null/보상·warning/즉시탄·FD continuation 차이 유지. 자기 Main/State·보호 경로0줄.
+- 기존 테스트 byte 무수정·각1회31 1402/0·32 906/0·33 7874/0, 관련PC11/0·35 29/0. 신규 provider-loss 경계 ScriptError3건은 실패 기록 후 수명 인자만 수정·실패 suite만 재실행14/0·ERROR0(기능 합10,236/0). 최신main에MAP11 제품provider 없으므로 Marker 이름/순서 표만, 맵/자동bind/원본좌표0.
+- [보고서](engine/orders/reports/fieldboss-unify_REPORT.md)에 단일 helper의6영역·보존 정책·MAP11 계약·검사/실패/공용 범위 기록. _out/fieldboss-unify/ 원로그, 정상훅·경로 지정stage·자기push/remoteSHA/DONE 뒤 자기WT제거, R불변.
+
 ## 2026-10-21 DEMO11-32 화마귀 family 소비자·실제35 registry 인계
 
 - 최신main0138c5bb9 기준 FD 전용 source tick/4슬롯·MAP11 Marker 소비자 구현. Main+8/State+6 추가만, 31 공통코드·PC 보호 피해/QE·35 registry·맵0줄.

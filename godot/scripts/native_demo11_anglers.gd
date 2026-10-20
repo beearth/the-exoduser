@@ -1,4 +1,5 @@
 extends Node2D
+const COMMON=preload("res://scripts/native_fieldboss_common.gd")
 ## G32143,60973–61141,20060–20093. Native World remains sole frame owner.
 signal presentation_requested(index: int, event: Dictionary)
 signal pc_interaction_requested(request: Dictionary)
@@ -36,13 +37,9 @@ static func install_native_boot(main: Node) -> Node2D:
  if not g.has("_fbDone"):g["_fbDone"]=false # G31569 new-run default; never reset an existing clear.
  return family
 func _live() -> bool:
- return is_instance_valid(_main) and get_parent()==_world and _main.get("native_demo_anglers")==self and _main.world==_world and _main.source_state==_state and is_same(_state.read_current_g(),_g)
+ return COMMON.collection_live(_main,self,_world,_g,"native_demo_anglers",_state,true)
 func bind_provider(provider: Node2D,markers: Array) -> bool:
- if not _live() or is_instance_valid(_provider) or not is_instance_valid(provider) or not _world.is_ancestor_of(provider) or markers.size()!=4:return false
- var seen: Dictionary={}
- for marker in markers:
-  if not marker is Marker2D or not provider.is_ancestor_of(marker) or seen.has(marker.get_instance_id()) or not marker.global_position.is_finite():return false
-  seen[marker.get_instance_id()]=true
+ if not _live() or is_instance_valid(_provider) or not COMMON.markers_valid(_world,provider,markers,4):return false
  _provider=provider;_markers=markers.duplicate();_reason="awaiting_live_tick"
  return true
 func bind_pc_source(owner: Node,event: StringName,interaction: Callable=Callable()) -> bool:
@@ -71,17 +68,12 @@ func _pc_readback(index: int,hp: float,final_death: bool,serial: int) -> void:
   if other is Dictionary:any_alive=true
  if not any_alive:_g._fbDone=true;family_defeated.emit()
 func _provider_live() -> bool:
- if not is_instance_valid(_provider) or not _world.is_ancestor_of(_provider):return false
- for marker in _markers:
-  if not is_instance_valid(marker) or not _provider.is_ancestor_of(marker):return false
- return true
+ return COMMON.provider_current(_world,_provider,_markers)
 func _rng() -> float:return _world.sample_native_random_unit()
 func _clear() -> void:
  _main.native_demo_boss_projectiles.retire_field_projectiles(self)
  _g._fieldBoss=null;_g._fieldBosses=null
- for view in _views:
-  if is_instance_valid(view):view.queue_free()
- _views.clear();_warnings.clear();_frame={"ready":false}
+ COMMON.free_views(_views);_warnings.clear();_frame={"ready":false}
 func advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
  _frame={"ready":false}
  if not _live() or not _provider_live():return
@@ -91,7 +83,7 @@ func advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
  if lesson.get("ready")!=true or lesson.get("active")!=false:_reason="lesson_guard";return
  var clock: Dictionary=_world.get_native_projectile_fx_context()
  var serial: int=int(clock.frame_reset_epoch)
- if serial<=_serial:return
+ if not COMMON.fresh_serial(serial,_serial):return
  _serial=serial
  if _g.get("_fbStage")!=0:
   _g._fbStage=0;_g._fbSpawned=false;_g._fbAnnounced=false;_clear()
@@ -103,9 +95,7 @@ func advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
    _g._fieldBosses.append(fb)
    var view: Node2D=VIEW.new();view.name="Angler%d"%i;view.record=fb;view.set_meta("field_index",i);add_child(view);view.global_position=Vector2(fb.x,fb.y);_views.append(view)
   _g._fbSpawned=true
- var p: Dictionary=_state.read_current_p().duplicate(true)
- p.x=_main.player.global_position.x;p.y=_main.player.global_position.y
- p.r=_main.player.radius;p.iframes=_main.player.iframes;p.s=_main.player.state
+ var p: Dictionary=COMMON.player_snapshot(_main)
  var context: Dictionary={"lesson_active":false,"qa_storage_active":false,"aggro_active":false}
  for key in ["_voidScarecrow","_explodeScarecrow"]:
   if _g.get(key) is Dictionary and _g[key].get("aggroOn",false):_reason="actual_aggro_reader_required";return
@@ -138,7 +128,7 @@ func _interaction(request: Dictionary) -> Variant:
  var response: Variant=_pc_interaction.call(request) if _pc_interaction.is_valid() else null
  if request.kind=="body" and response is Dictionary and response.get("ack")==true:
   var after: Variant=response.get("player")
-  if not after is Dictionary or after.get("x")!=_main.player.global_position.x or after.get("y")!=_main.player.global_position.y or after.get("r")!=_main.player.radius or after.get("iframes")!=_main.player.iframes or after.get("s")!=_main.player.state:return null
+  if not COMMON.readback_matches(after,{"x":_main.player.global_position.x,"y":_main.player.global_position.y,"r":_main.player.radius,"iframes":_main.player.iframes,"s":_main.player.state},["x","y","r","iframes","s"]):return null
  return response
 func _birth(props: Dictionary) -> bool:
  var receipt: Variant=_main.native_demo_boss_projectiles.birth_field_projectile(self,props,_frame)
@@ -160,6 +150,6 @@ func advance_warnings(sp: float,_native_frame: float,_enemies: Array) -> void:
 func read_projectile_frame() -> Dictionary:
  return _frame if _live() and not _g.get("_bossArena",false) and _g.get("on",false) else {"ready":false}
 func read_targets() -> Array:
- return _views.filter(func(view):return is_instance_valid(view) and not view.is_queued_for_deletion())
+ return COMMON.current_targets(_views)
 func snapshot() -> Dictionary:
  return {"provider_bound":is_instance_valid(_provider),"serial":_serial,"births":_births,"warnings":_warnings.size(),"cancelled":_cancelled,"blocked":_blocked.duplicate(true),"reason":_reason,"pc_bound":is_instance_valid(_pc_owner),"damage_parry_verified":false}

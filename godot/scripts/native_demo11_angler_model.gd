@@ -1,10 +1,9 @@
 extends RefCounted
+const SHARED=preload("res://scripts/native_fieldboss_common.gd")
 ## G60973–61141. Source-order field AI; damage/displacement is a PC callback.
 const ELEMENTS := [2,1,3,4]
 static func i32(value: float) -> int:
- if not is_finite(value):return 0
- var n: float=fposmod(floor(value) if value>=0 else ceil(value),4294967296.0)
- return int(n-4294967296.0 if n>=2147483648.0 else n)
+ return SHARED.i32(value)
 static func make(at: Vector2, level: float, element: int) -> Dictionary:
  var hp: int=i32((1800+(level if level!=0 else 1.0)*350)*7.5)
  return {"x":at.x,"y":at.y,"homeX":at.x,"homeY":at.y,"r":120,"hp":hp,"mhp":hp,"alive":true,"t":0,"frame":0,"atk":i32((20+level*3)*1.2),"hitCd":0,"shotCd":120,"tpCd":0,"tpT":0,"tpMax":54,"tpX":at.x,"tpY":at.y,"hid":1,"burst":0,"burstGap":0,"spawnIn":1,"asleep":1,"enChg":0,"el":element}
