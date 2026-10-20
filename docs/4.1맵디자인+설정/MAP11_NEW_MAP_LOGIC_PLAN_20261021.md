@@ -422,7 +422,7 @@ setup-only Sprite2D 12개, z−2986(기존 소형−2985·캐릭터/적 아래),
 증거: `~/exoduser-wt/_out/MAP11-19/captures/`, 최종 verification.json·final-verification.log. 성능 개선율/전플랫폼120fps를 주장하지 않는다.
 
 
-## 17. MAP11-20 — 지옥 세로 소품·바닥 중간톤 복원 (2026-10-21)
+## 17. MAP11-20 — 지옥 세로 소품·바닥 중간톤 복원 (2026-10-21, 접지 수정 전 이력)
 
 기준 `319d16862de3454c6e88830b084a22ec2b779472` / `codex/map11-19-20261021`, 그 아래 MAP11-18 `2e735e1d`와 MAP11-17 `ff59c3c7` 조명만 계승한다. MAP11-16/16b/17b 및 `*_REJECT.png` 반입0. 사용자 방향은 **화면에서 형태가 바로 읽히는 뼈무더기 등 지옥 소품**이다. 비교 작품 자산 복제0. §15/16은 이전 수치 이력이며 아래 변경분이 우선한다. **VISUAL VERDICT: RETOUCH / 성능 gate FAIL — 인수 완료 아님.**
 
@@ -500,3 +500,67 @@ Apple M5 Pro/Godot4.7.2 GL/1920×1080/240cap/60Hz/5적 fixture. 직전 `pgrep -x
 | NEXT PASS | 필드p95 초과의 별도원인분리·예산복구, 혈흔 가장자리/꼬챙이와숲 접합 눈검수. 이번1회제한 안에서 추가벤치/새작업 자동착수0 |
 
 증거: `~/exoduser-wt/_out/MAP11-20/captures/`, `captures/verification.json`, `final-verification.log`, `godot-process-monitor.json`, `DONE.txt`.
+
+
+## 18. MAP11-20 최우선 추가 지시 — 떠 보이는 소품 접지 수정 (2026-10-21)
+
+사용자 지적 **“에셋들이 왜 붕붕 떠다니냐”**를 같은 `codex/map11-20-20261021`에 반영한다. 부모 `f7bddb46ea407ce412f61d194ee5653d8e48db3e`이며 §17의 배치/원화/중간톤은 유지하되 **pivot .94·offset 그림자·정렬·접지에 관한 현행값은 본 절이 우선**한다. MAP11-16/16b/17b·REJECT·PC 전투 코어 반입/수정0.
+
+### 18.1 원인과 실제 수정
+
+| id | 변경 전 | 현행 |
+|---|---|---|
+| FOOT | 텍스처 높이×.94를 접지로 가정. alpha 여백·거울반전·기울기 미반영 | 오프라인 **alpha≥32/255의 픽셀 사각형 convex hull** 18개(16 PNG+철문 region2개). 최종 scale/rotation/flip_h를 적용한 불투명 윤곽 bbox의 bottom center를 저작 foot에 정렬 |
+| DEPTH | field 나무/랜드마크 y×.35, arena 80+y/10 및 부모z. 새hell만 y/4 | field·arena·새hell·관문 leaf 모두 **z_as_relative=false, clamp(int(global_foot.y/4),−4096,4095)**. 실제 캐릭터 Main Y/4와 같은 foot. 254개 적용, 플레이어/적 코드 수정0 |
+| AO_OFFSET | 공용foot+(0,8), hell foot+(0,3), 하위preview shadow +(0,15)/(20,12) 등 | 실제 제품 접촉 AO는 **position=foot**, 추가xy 이동0. preview 나무 하위AO는 기존대로 숨김. 별도 떨어진 원형 소품AO를 아래 lower-alpha 접촉마스크로 대체. 플레이어 본체/전투는 불변; 공용helper의player AO도 호출foot(0,4)에+8을더하지않아 기존localy12→4 |
+| CAST | source를뒤집어(+15,+8)에투사, 밑동~그림자 사이 틈/분리된 검정 형상 | **제품 세로소품 투사 그림자8개 제거, 현행0**. 원점만 맞춘 첫수정에서도 제단 bulk와 분리돼 보이는 것을 실제1x크롭에서 확인해 제거 |
+| CONTACT | 하나의 타원으로 가는뿌리 끝과 큰제단 몸통을 함께 받침 | **원화 하단 alpha를 따르는 마스크16종**으로 각 실제 lower silhouette 아래에 짙은 접촉부+바깥 Gaussian 감쇠. 제단의 가는뿌리/시체나무/뼈무더기/창울타리 접지에 같은 변환. 필드·arena AO252개, material unlit/alpha.85 공유. 새 본체/광원0 |
+| FLOOR_ROOT | prop_g_root 3개가 세로_rgba+별도AO | LowWetRootMass/EarlyFallenLog/GateRootApron은 **바닥_stamp**. width=기존높이×원종횡비, height=기존높이×.40, 회전0/기존flip·ground material, 별도AO/투사0. inherited _surface의 shoulder AO도 제품에서 제거 |
+| FLOOR_BLOOD | 기존혈흔 PNG의 베이지색/밝은 relief가 바닥에서 따로 읽힘 | 공유 ground_blood shader1개. red=R−max(G,B), mask=smoothstep(.09,.20,red)×[1−smoothstep(.75,1,length(UV×2−1))]; RGB=(.24,.032,.023)×instanceTint, alpha=sourceAlpha×mask×instanceAlpha. source highlight/베이지 spill 제거, 새그림자0 |
+| FLOOR_DEBRIS | 작은 bone/flesh 높이비 .42~.72 | kind≥2의 scale.y만 ×.48 → 실제 높이/폭 **.2016~.3456**, 낮은 바닥 파편22개. root/blood는 기존 높이비 유지. 큰패치12·소형총66 유지. 모든 데칼은 ground z−2986/−2985, 그림자/세로pivot0 |
+| SWAY | 제품 MAP11은 generic NativeMapLook 중복설치guard로 일반 sway 미사용 | 새 whole-prop translation/회전 애니메이션0. 기존 forest 최종 저작rotation은 setup에서만 적용. 실제시간 경과 전후 모든 field standing node.position/sprite.transform 동일 확인. **발치 고정, 새 가지 애니메이션 구현 주장0** |
+
+### 18.2 불투명 발치·접촉 마스크 재현 계약
+
+`ground_contact_data.gd`/`ground_contact.gd`는 setup-only. 원본 PNG는 변경하지 않는다. alpha≥32/255 외곽 edge의 convex hull에 각 픽셀의 네 모서리를 포함한다. flip_h이면 x=W−x, sprite의 최종 회전·비균일 scale basis로 hull을 변환한다. B=bbox(변환 hull), shift=(−B.center.x,−B.end.y), `sprite.offset=basisInverse×shift`. source 크기 기준 scale·저작foot·provider좌표는 유지하고 **불투명 bbox bottom y=0**이 된다. 캐시 cull rect도 이 최종 bbox+55(field)/65(arena)로 갱신한다. 픽셀/목록/ResourceLoader의 tick 호출0; 오프라인 shape 수18, runtime GPU image readback0.
+
+접촉 마스크는 raw alpha를 사용해 foot 근처의 가는 뿌리까지 이어 준다. source H/W에 대해 pad=max(4,round(H×.025)), max-filter size=max(3,round(H×.012))를 홀수로 만들고 Gaussian sigma=max(1,H×.007), lower fade=smoothstep((y−.68H)/(.14H)). y0=round(.72H)부터 하단+pad만 crop, 최대512×256 Lanczos. source coordinate offset=(−pad,y0−pad), source size=(W+2pad,H+2pad−y0). RGB=0/alpha=가공mask, mipmap=true/linear mipmap. Sprite의 scale/offset에 crop 및 thumbnail ratio를 역으로 적용하여 source 하단 윤곽과 **동일 world transform**을 유지한다. flip_h/회전도 동일하고 노드 position은 foot 그대로다. 타원 그림자를 아래로 이동시켜 틈을 숨기는 방식0.
+
+| 파일 / 경로 | 역할 |
+|---|---|
+| godot/scripts/maps/map11/ground_contact.gd + ground_contact_data.gd | setup pivot/absolute Y정렬·원본불투명hull |
+| godot/scripts/maps/map11/ground_contact_masks.gd | 16개 접촉 PNG preload 및 source crop 변환 |
+| godot/assets/map/map11/contact_masks/*.png(.import) | 기존 alpha에서 파생한 접촉마스크16장, 신규 AI 생성0 |
+| godot/tools/map11_20_build_contact_data.py --report <bounds.json> | root에서 원본 alpha→hull/data 생성, Pillow/NumPy/SciPy |
+| godot/tools/map11_20_bake_contact_masks.py --bounds <bounds.json> --report <masks.json> | 동일 root에서 lower alpha contact PNG/data 재현 |
+| product_field_view / product_arena_view / product_detail / product_lighting | 제품 소비자 적용. preview본편 외 source/PC 전투 writer 수정0 |
+
+### 18.3 검수·판정
+
+최종 관련 하니스 `capture_map11_grounding.gd` **1557 checks/0 fail**, 세워진254개 opaque bbox foot 오차 최대 **0.0003662109375 world px**, AO252개 모두 같은foot/원본좌표변환 일치, 분리된 projection0. 실제 gate→arena 진입 PASS. field 세로소품 위치·sprite.transform 시간 경과 전후 동일, 낮은 파편 높이비 PASS. SCRIPT/Parse/ERROR0. 초기 import의 packed-shape 선언 오류는 최종 전 수정했고 초기 로그는 보존. 수치가 통과한 초기preview에도 제단그림자 분리가 보여 actual foot crop으로 추가보정했다. 최종검수결과만 위 통과 수치이며 범용 suite/벤치 반복0.
+
+증거: **`~/exoduser-wt/_out/MAP11-20/captures/grounding/`** (원본 작업증거는 `grounding/captures/`에도 동일). f7bddb46의 3뷰 after를 before 원본 byte복사·SHA256 동일 확인, 새 after 같은 저작카메라3뷰1600×900/3200×900 비교. HUD·광원위상·카메라 settling 약수px 차이가 있어 픽셀동일 diff 검사는 아님. **제단·큰시체나무·새피라미드·꼬챙이·피구덩이·관문 발치 원배율440×230**, 같은좌표 전후880×230을 별도저장. arena 제단은 after440×230 추가(동일before는없음). crop별좌표/원본뷰는 grounding-verification.json. 1x리사이즈/색보정0.
+
+| 판정 | 실제 범위 |
+|---|---|
+| CONTACT VISUAL | **PASS(검수한 1x 발치7개·3뷰)**. 제단 아래로 떨어진 검정 투사형상/타원 제거, 실제 뿌리끝·시체나무 밑동·새소품 lower edge 바로아래에 접촉암부 연결 확인. 나머지254개는 기하검사이며 개별눈검수254개PASS로 확대0 |
+| 전체 VISUAL VERDICT | **RETOUCH 유지**. 큰바닥패치의둥근 실루엣·기존암부/관문뒤cutoff·전체아트/밀집전투 가독성 잔여 |
+| PERFORMANCE | **이번수정본 미측정**. 요청 벤치1회 제한 유지. 앞 f7bddb46의 field p95 10.598ms FAIL / arena7.168ms PASS는 이력이며 새코드 측정값으로 복사0. 예산충족/성능회복 주장0 |
+| USER DATA | EXODUSER-map11-20-Grounding-Isolated-20261021만 실행. 실제저장폴더0·project.godot 원byte복원. 동시Godot 최대1 |
+
+### 18.4 MAP PRODUCTION REPORT (§23)
+
+| 필드 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 MAP11-20 추가접지. silhouette/regions/main route/side spaces 보존. GATE4 structure-ground integration→8 camera/tech |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH·major holes 보존. 같은root foot에서 불투명bbox 위치/정렬 수정. 접지부만 더함 |
+| LARGE / MEDIUM | 기존 source/composites/overlap·connection 보존. 새AI원화0, 반복silhouette/남은hole 해결범위아님 |
+| GROUND | detached cast0, attached alpha-contact16종/252instance. flat root3·혈흔material·낮은bone/flesh22. 바닥데칼 자체shadow0 |
+| PLAYABLE | main arena/travel/breathing/threat geometry·충돌/LOS/스폰 불변. realgate→arena PASS. Player/Q/E/저장/PC core 수정0; 밀집전투 미검수 |
+| LANDMARK | primary심장제단/secondary관문·시체나무·hell props의foot 고정. 권위anchor/배치height/point light변경0 |
+| CAMERA QA | LANDMARK·SIDE L·EXIT 3뷰 전후·필드발치6쌍1x/arena제단1x 추가. START/EARLY/SIDE R/LATE·전체arena전투 미검수 |
+| TECH QA | 최종1557/0, opaquefoot254/AO252/projection0/actualgatePASS. pageerror404 N/A. 기존cutoff잔여, loading·shader ERROR0. performance미측정/이전fail미해결 |
+| FILES | 제품4adapter+ground_contact helper/data/mask-data+ground_blood shader+maskPNG/import16+재현도구2+하니스+관련docs. concurrent/unrelated0 |
+| GIT | 같은branch f7bddb46의정상자식 commit/push·원격expected SHA보존. R HEAD/INDEX/WORK읽기만, main push/force/reset/rebase/반려merge/배포0. SHA/제거는DONE |
+| VISUAL VERDICT | **RETOUCH(전체) / CONTACT VISUAL PASS(직접검수발치)** |
+| NEXT PASS | 전체성능 예산·기존암부/지면패치 접합·밀집전투 별도과제. 이번지시 뒤 신규작업/추가벤치 자동착수0 |

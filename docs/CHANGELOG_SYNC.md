@@ -55549,3 +55549,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 기준319d1686. MagicLight Seedream 5.0 Pro 승인3장 key/despill/main island/bbox/mipmap, skull3·corpse4·spikepit1 setup배치·배우Y/4깊이·ground AO. 폐기/REJECT반입0.
 - 기존patch12 중간톤·뼈색/혈흔대비복원, alpha.96·중심2개이동/소형66유지. 아레나R1700·전투/저장/geometry불변. 설계 §17·아트현황에전체수치/원본SHA/재현도구기록.
 - 동일3뷰1600×900 before/after+1x·가림2뷰. 최종68checks/1FAIL: fieldp95 **10.598ms>8.33 FAIL**, arena7.168ms PASS. 단독벤치1회·다른Godot0·추가재측정0. **VISUAL VERDICT RETOUCH**, 인수완료아님. 증거/SHA `_out/MAP11-20/DONE.txt`. 정상hook/자기branch push만, main배포0.
+
+
+## 2026-10-21 MAP11-20 추가 — 떠 보이는 소품 접지
+
+- 같은branch f7bddb46 후속. alpha-hull bbox bottom pivot/회전·flip·worldY/4 254개, offsetAO/분리cast8제거. source lower-alpha contact16종/252개를같은foot에 연결. 새AI원화0·provider/충돌/전투/저장0.
+- ground root3개는flat/shadow0. 작은피flat material, bone/flesh22높이×.48. source/foot고정·whole-prop bob0. 하단접촉PNG변환/재현도구·전체수치는 설계§18·아트현황.
+- 실제제단·시체나무·hell·관문/arena제단1x직접검수. 최종1557/0, foot오차최대.000366worldpx. CONTACT VISUAL PASS(검수7개), 전체RETOUCH. 벤치추가0/수정본p95미측정, 이전10.598ms실패미해결. 증거/SHA `_out/MAP11-20/DONE.txt`.

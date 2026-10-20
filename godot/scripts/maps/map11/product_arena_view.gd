@@ -1,4 +1,5 @@
 extends "res://scripts/maps/map11/arena_preview.gd"
+const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
 ## Original arena floor/props only. Product Main owns actual actors and camera.
 func _ready() -> void:
  _build_floor();_build_props();set_process(false);set_physics_process(false)
@@ -34,8 +35,16 @@ func _build_props() -> void:
   var foot:=Vector2.from_angle(angle)*(2220+float(i%3)*90)
   _prop("BackForest%02d"%i,"rotforest_tree_%02d.png"%[4,7,2,11,5,1,6,3][i%8],foot,1000+float(i%4)*95,i%3==0)
   var sprite: Sprite2D=get_node("BackForest%02d"%i)
-  sprite.modulate=Color(.47,.48,.49,1);sprite.z_index=-430
+  sprite.modulate=Color(.47,.48,.49,1)
  super._build_props()
+
+func _prop(id: String,file: String,foot: Vector2,height: float,mirror: bool=false) -> void:
+ super._prop(id,file,foot,height,mirror)
+ var sprite: Sprite2D=get_node(id)
+ var bounds: Rect2=GroundContact.align(sprite)
+ GroundContact.depth(sprite,sprite.global_position)
+ if foot.length()>RADIUS:
+  _rim_sprites.back().rect=Rect2(foot+bounds.position,bounds.size).grow(65)
 
 func update_product_occlusion(point: Vector2,delta: float) -> void:
  var view:=_camera_rect()

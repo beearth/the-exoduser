@@ -1,14 +1,17 @@
 extends Node2D
 ## Setup-only decoration/material adapter. No authority, polling or actor writers.
+const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
 const PATHS=["res://assets/map/props/prop_g_root.png","res://assets/gore/blood_splat_1.png","res://assets/map/ch1/floor_objects/bones.png","res://assets/gore/flesh_chunk_3.png","res://assets/gore/bone_2.png"]
 var material_: ShaderMaterial
 var root_material: ShaderMaterial
+var blood_material: ShaderMaterial
 var decorated: int=0
 var outlined: int=0
 var _world: Node
 func configure(scene: Node2D,main: Node) -> void:
  material_=ShaderMaterial.new();material_.shader=preload("res://scripts/maps/map11/actor_rim.gdshader")
  root_material=ShaderMaterial.new();root_material.shader=preload("res://scripts/maps/map11/ground_story.gdshader")
+ blood_material=ShaderMaterial.new();blood_material.shader=preload("res://scripts/maps/map11/ground_blood.gdshader")
  _attach(main.player,false)
  _world=main.world
  for enemy in _world.get_enemies():_attach(enemy,true)
@@ -71,9 +74,12 @@ func _stamp(parent: Node2D,texture_: Texture2D,at: Vector2,width: float,rng: Ran
  var sprite:=Sprite2D.new();sprite.name="GroundStory%03d"%decorated;sprite.texture=texture_
  sprite.position=at;sprite.rotation=rng.randf_range(-PI,PI);sprite.flip_h=rng.randf()>.5
  sprite.scale=Vector2(width, width*rng.randf_range(.42,.72))/texture_.get_size()
+ if kind>=2:sprite.scale.y*=.48
+ sprite.set_meta("ground_kind",kind)
  var tone: float=rng.randf_range(.48,.78)
  sprite.modulate=Color(tone,tone*.88,tone*.82,.48 if kind==0 else (.27 if kind==1 else .65))
  if kind==0:sprite.material=root_material
+ if kind==1:sprite.material=blood_material
  sprite.z_index=-2985;parent.add_child(sprite);decorated+=1
 
 
@@ -91,7 +97,6 @@ const HELL_ROWS=[
  [1,Vector2(2520,-60),164.0,false],
  [2,Vector2(-480,-3770),184.0,true]]
 func _hell_props(scene: Node2D) -> void:
- var contact: Texture2D=scene.lighting_look._contact_texture
  for i in range(HELL_ROWS.size()):
   var row: Array=HELL_ROWS[i]
   var foot: Vector2=row[1]
@@ -100,16 +105,14 @@ func _hell_props(scene: Node2D) -> void:
   var size_: Vector2=texture_.get_size()
   var prop:=Node2D.new();prop.name="HellProp%02d"%i;prop.position=foot
   # Absolute depth avoids inherited field/background layer offsets.
-  prop.z_as_relative=false;prop.z_index=clampi(int(foot.y/4.0),-2000,4000)
+  GroundContact.depth(prop,foot)
   scene.field_view.add_child(prop)
   var sprite:=Sprite2D.new();sprite.name="Silhouette";sprite.texture=texture_
   sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   sprite.centered=false;sprite.offset=Vector2(-size_.x*.5,-size_.y*.94)
   sprite.scale=Vector2.ONE*height_/size_.y;sprite.flip_h=row[3]
   prop.add_child(sprite)
+  GroundContact.align(sprite)
   # Ground-plane AO cannot paint over another actor when it crosses the foot.
-  var shadow:=Sprite2D.new();shadow.name="HellFootAO%02d"%i;shadow.texture=contact
-  shadow.position=foot+Vector2(0,3);shadow.scale=Vector2(height_*.64,height_*.13)/128.0
-  shadow.modulate=Color(0,0,0,.64);shadow.z_index=-2987
-  shadow.material=scene.lighting_look._unlit;scene.field_view.add_child(shadow)
+  GroundContact.shadow(scene.field_view,sprite,foot,-2987,.85,scene.lighting_look._unlit)
   hell_props.append(prop)

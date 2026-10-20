@@ -286,3 +286,14 @@ MAP11-19 런타임 최종 판정 **RETOUCH**: 원화의 큰 형태는 읽히나 
 | patch_cracked_flesh_slab.png (보정) | 위MAP11-19 승인원본 재사용 | 원화PASS | gamma.64×1.4上限.94·(1,.84,.72), alpha.96, 4개 |
 
 소품 `godot/assets/map/map11/props/`, 바닥 `godot/assets/map/map11/patches/`. SHA/bbox/재현도구·크기·전체좌표·Y/4정렬·발치AO는 설계 **§17**. 신규생성0/REJECT0/PC전투코어0. 원화PASS와 런타임인수는 구분한다. 최종 **VISUAL VERDICT: RETOUCH**, 필드p95 **10.598ms FAIL** / 아레나7.168ms PASS(단독1회). 3뷰1600×900 전후/1x 및가림2뷰는 `_out/MAP11-20/captures/`. 전체품질완료·인수PASS 아님.
+
+
+### MAP11-20 접지 추가수정 — 2026-10-21 현행
+
+| 대상 | 가공/현행 | 검수 |
+|---|---|---|
+| 기존 세로소품/나무/제단/hell3종 | 불투명alpha≥32/255 hull 기반 회전/반전후bbox bottom pivot, 절대worldY/4 정렬. source원화/배치anchor불변 | 254개 발치최대오차.000366worldpx / 시간경과foot고정 |
+| contact_masks16장 | 기존alpha하단에서 파생, max512×256 RGBA+mip. source와같은foot/변환, detached cast8→0/접촉AO252개 | 제단·시체나무·skull/corpse/pit·관문+arena제단1x 접지눈검수 PASS. 새AI생성0 |
+| 바닥뿌리/작은피/뼈·육편 | 뿌리3개floor전환·별도shadow0, 피는flat dark-red mask, 작은bone/flesh22개높이×.48 | 전체1557/0. 원화·전체맵판정은별개 |
+
+이전 MAP11-20의 .94pivot/foot+(0,3)AO·MAP11-17의+(0,8)/투사그림자 설명은 이력이다. 현행값/생성수식은 설계 **§18**, 증거 `_out/MAP11-20/captures/grounding/`. **CONTACT VISUAL PASS(검수발치7개), 전체VISUAL RETOUCH**, 새수정본성능미측정(앞field10.598ms실패를해결완료로표시0).
