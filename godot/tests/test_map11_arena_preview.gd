@@ -1,5 +1,5 @@
 extends SceneTree
-const USERDIR = "EXODUSER-map11-01b-Isolated-20261021"
+const USERDIR = "EXODUSER-map11-01c-Isolated-20261021"
 var checks: int = 0
 var failures: int = 0
 func _initialize() -> void: call_deferred("_run")
@@ -35,7 +35,8 @@ func _run() -> void:
 	check(ids.size() == 23 and ids.has("burrowStrike"),"BC01 actual final si0 set")
 	for excluded in ["teleStrike","tailSwipe","cageTrap"]: check(not ids.has(excluded),"no historical/other stage move "+excluded)
 	check(r.look_script == "res://scripts/native_map_look.gd","actual shared look script reused")
-	check(r.shadow_count == 51 and r.occluders == 51 and r.lights == 8,"actual look factories populated")
+	check(r.shadow_count == 51 and r.occluders == 51 and r.lights == 4,"actual look factories populated")
+	check(r.contact_shadows == 2 and r.floor_decals == 4 and r.local_light_pools == 3,"contact shadows/real RGBA patches/local pools installed")
 	check(not r.live_combat and not r.clear_writer and not r.tick_path_list_api,"presentation-only no writers/path trace API")
 	# Real physics contact, not only implementation-shaped metadata comparisons.
 	var query := PhysicsShapeQueryParameters2D.new()

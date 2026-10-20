@@ -37,6 +37,14 @@
 | 구현 | 새 StageRecipe Resource·analytic circle/solid·LOS/연속sweep·저작route 도달성 검증·runtime revision adapter. content_valid와 NOT_READY 분리, missing/중복/외부/막힌route/잘못된extent 거부. Main/State/World/factory/카메라/아트·기존preview·전투·저장 변경0 |
 | 검증 | 신규54/0·집중 malformed schema3/0 각1회, 최종ERROR/WARNING0. 첫 하니스 typed Array SCRIPT ERROR1 원문 보존·수정후해당실패만재실행. 직접 CPU질의30000회 벽시계37.282ms/3질의평균3.7282µs 벤치1회, 실제데모FPS주장0 |
 | 인계 | field4지역·일반flow·소비자제품연결은 미제공/미연결 명시. pgrep≥2/30초 gate·격리userdir·override0byte. 자기branch 정상push/remoteSHA/DONE뒤자기WT제거, R불변 |
+## 2026-10-21 MAP11-01c — 생체 바닥·배우 접지·국소광 RETOUCH
+
+| 항목 | 구현·검수 경계 |
+|---|---|
+| 기준·범위 | 같은 codex/map11-01-20261021에 main45be76e49·인수1b b12bf9a1 정상merge e71b6567. R1700/zoom.65/Marker·충돌·공격범위 유지. Main/State/전투·저장·카메라·원본RGBA byte변경0 |
+| 표현 | 기존root/tissue RGBA4patch·가변폭 곡선동맥/좁은심장색·배우접지2·ambient/vignette·8→4광원(적색2+작은온광+냉광). 캐시rect 기반foregroundfade. 4시점+body/탄막1920×1080 6장·literal1x8장, 01b 비교보드 |
+| 검증 | 신규35/0·직접회귀16/0 각1회, ERROR0·회귀 기존Camera WARNING1(main261). GPU캡처ERROR/WARNING0, 고정600tick 벽시계벤치1회10.000049s/평균513.10fps/p95≤2.24ms·p99≤2.36ms(M5Pro/preview한정) |
+| 인계 | [3차 보고서·전후2표·D03 미실행prompt2안](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS3_20261021.md). 서비스로그인/잔액미확인·생성0, 시각 RETOUCH/인수대기·실제Q/E 동시전투미검수. pgrep/30초 gate·override0byte, 자기branch push/remoteSHA/DONE후자기WT제거·R불변 |
 
 ## 2026-10-21 MAP11-01b — D05 원형 축소·바닥 조명 proof
 
@@ -46,6 +54,17 @@
 | 표현·보호 | 기존 RGBA 피부 재착색 shader·균열 심장선·main MAP-LOOK/hell·Cinzel 글꼴 토큰 재사용, 4시점+body/탄막 1920×1080 및1x6장. 생성0·Main/State/전투·저장0줄, 새 표시문구 번역목록 등록 |
 | 검수 | 신규34/0·직접회귀16/0 각1회, ERROR0·회귀 기존Camera WARNING1. 600tick@60Hz 벽시계벤치1회10.000336s/평균501.48fps/p95≤2.36ms·p99≤2.81ms(M5Pro/preview한정). 캡처ERROR/WARNING0 |
 | 인계 | [2차 보고서](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS2_20261021.md) 비교2표. 외곽 가지 겹침·재질 최종 아트 RETOUCH/시각검수대기. 자기branch push/remoteSHA/DONE후 자기WT제거, R불변 |
+
+
+## 2026-10-21 MAP11-01 독립 보스룸 blockout·GPU 카메라 보드
+
+| 항목 | 구현·실측·검수 경계 |
+|---|---|
+| 기준·씬 | main8dbbf2b0 최신fetch, 독립scenes/maps/map11/arena_preview.tscn·R2200/무기둥·회피고리/4Marker·남북표시용아치. 제품main경로/Main/World/Player/State/save 변경0 |
+| 재사용·범위 | 기존MAP-LOOK 광원/그림자/sway shader·원process 그대로 조립, prop51/light8/shadow2. 기존RGBA/단색만·생성0. BC01 실제si0 23무브·BC01~10 몸체/탄막공간 표시, 공격약화/실제AI·탄·피해·보상writer0 |
+| 증거 | GPU1920×1080 4시점+body/탄막2·각1x크롭=12PNG·BOARD.html을 _out/map11-01/captures/에 보존. R2200은D05대기, fissure2304+691.2가rim밖795.2임을그대로표시. 벽가대비/최종피부재질RETOUCH |
+| 검수·성능 | 신규34/0·ERROR/WARNING0, MAP-LOOK회귀16/0·ERROR0·미수정main Camera2D WARNING1. sparse누락PNG2보충후실패회귀만재실행. 고정600물리tick@60Hz 벽시계벤치1회 9.999128s/7691render/평균769.17fps·p95≤1.46ms/p99≤1.54ms(M5Pro24GB/uncapped). preview측정이며전체데모/PC120fps·GPU3ms검증아님 |
+| 보고·인계 | [MAP11-01 보고서](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_20261021.md) 표2개. 틱경로목록API0·매Godot pgrep/2이상30초대기/override0byte. 자기branch push/remoteSHA/DONE후자기WT제거, R불변·D05_PENDING |
 
 
 

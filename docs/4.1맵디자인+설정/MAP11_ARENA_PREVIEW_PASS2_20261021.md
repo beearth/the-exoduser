@@ -1,5 +1,7 @@
 # MAP11-01b — 원형 축소·피부 바닥/조명 proof
 
+> 후속: 맥북총괄 1x 눈 검수 RETOUCH(바닥 단조·배우 접지 부재·낮은 국소광 대비)를 반영한 [MAP11-01c 3차 proof](MAP11_ARENA_PREVIEW_PASS3_20261021.md). 아래 수치는 01b 이력으로 보존한다.
+
 STATUS=REVIEW_PENDING. 사용자 D05 **원형 유지·조금 작게**를 R1700 시작안으로 반영했다. 형태·축소 방침은 확정, 이 수치와 material proof의 시각 인수는 맥북총괄 검수 대기다. 제품 main 연결0. 최신 main `ac3764bfe5476b56e2f2388b1f2d9baeff731885`에 인수된 1차 `3c2b1ea45bd103564f03898c5000b4f78b87844d`를 merge한 `f612dbee`가 작업 기준이다. 사용자 메시지 앞부분의 같은 branch 표현보다 명시 경로/브랜치 규칙을 따라 `codex/map11-01b-20261021`로 제출한다. 다른 담당 WIP 반입0, rebase0.
 
 | 항목 | 1차 3c2b1ea4 | 2차 판단·결과 |
