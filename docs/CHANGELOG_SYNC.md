@@ -56051,3 +56051,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - `native_pets.gd`: 초상 2장 preload 보유, 발화 틱 ResourceLoader 호출 제거.
 - 47h 하네스의 레슨 시작 대기 및 실제 origin 집계 관측, 계약 신호 주입 제거. 47j 집중 검증 추가. 18단계 재실행은 1회로 제한했으며 최종 후속 검증과 구분한다.
 - 현재 범위·수치·잔여: `docs/engine/orders/reports/demo11-47j_REPORT.md`, 상태 표 `DEMO11_STATUS_20261021.md`.
+
+## 2026-10-21 DEMO11-47k
+
+MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options와 arena geometry 선전환·실패복귀, E2E 제품 게이트 호출 관측 추가. PC HP/final/prefix owner 대기와 미검증 자연 입장 범위를 engine 상태표·47k 보고서에 기록. 보호 전투/비주얼/번역 변경 없음.

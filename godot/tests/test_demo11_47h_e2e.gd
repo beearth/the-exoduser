@@ -247,8 +247,17 @@ func run() -> void:
  await done(verdict(growth.get("applied",false) and queue.get("applied",false) and commit.get("applied",false),growth_ok),"" if growth_ok else "growth/applyStats/queue owner not ready",{"verified_growth_readback":growth_ok,"before":growth_before,"stat_applied":growth.get("applied"),"queue_added":queue.get("applied"),"queue_committed":commit.get("applied"),"refresh":commit.get("refresh",{}),"readback":main.read_native_growth() if main.has_method("read_native_growth") else {}})
  begin("bossroom_gate")
  var encounter: Node=main.get("native_demo_encounter");var encounter_snapshot: Dictionary=encounter.snapshot() if is_instance_valid(encounter) else {}
+ var gate_receipt: Dictionary={}
+ var provider: Node=main.read_native_map11_provider()
+ if is_instance_valid(provider):
+  var sites: Dictionary=provider.transition_sites()
+  if sites.get("field_gate") is Marker2D:
+   main.player.global_position=sites.field_gate.global_position
+   gate_receipt=main.request_native_map11_transition("enter")
+   await physics_frame
+   encounter_snapshot=encounter.snapshot()
  var gate_ok: bool=encounter_snapshot.get("provider_bound",false) and encounter_snapshot.get("phase") in ["arena","exit","clear"]
- await done("PASS" if gate_ok else "NOT_READY","" if gate_ok else "actual MAP11 gate/arena prerequisites not satisfied",{"encounter":encounter_snapshot,"gate_flags_written":false})
+ await done("PASS" if gate_ok else "NOT_READY","" if gate_ok else "actual MAP11 gate/arena prerequisites not satisfied",{"encounter":encounter_snapshot,"gate_flags_written":false,"entry_receipt":gate_receipt,"fieldboss":main.native_demo_anglers.snapshot(),"regions":main.get_node("NativeRegions").snapshot(),"boss":main.read_native_demo_boss()})
  begin("boss_defeat_signal")
  var flow: Node=main.get("native_demo_end_flow")
  var boss: Node=main.native_demo_boss_actor

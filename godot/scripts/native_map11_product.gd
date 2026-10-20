@@ -40,7 +40,10 @@ func request_transition(route: String) -> Dictionary:
  if _gate_owner!=null:
   if not is_instance_valid(_gate_owner.get_ref()):return {"status":"NOT_READY","reason":"gate_owner_retired"}
   if route=="enter":
-   var receipt: Dictionary=provider().request_gate_enter(main.player.global_position,{})
+   var options: Dictionary=main.source_initialization_services.read_current_options()
+   var g: Dictionary=main.source_state.read_current_g()
+   if not options.get("diff") is int:return {"status":"NOT_READY","reason":"actual_difficulty_required"}
+   var receipt: Dictionary=provider().request_gate_enter(main.player.global_position,{"difficulty_index":options.diff,"stage_diff_offset":g.get("_stageDiffOff",0),"room":0})
    if receipt.get("status")!="READY":return receipt
   elif not provider().request_gate_leave(main.player.global_position):return {"status":"NOT_READY","reason":"gate_owner_leave"}
  var destination: Marker2D=_sites.arena_entry if route=="enter" else _sites.field_return

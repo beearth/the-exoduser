@@ -3532,6 +3532,7 @@ func _install_native_map11_combat_owners() -> void:
 	if not regions.configure(self):return
 	var bound: Dictionary=bind_native_spawn_stage_provider(world.map11_provider)
 	if not bound.get("ready",false):return
+	if not bind_native_demo_anglers(world.map11_provider,world.map11_provider.fieldboss_markers()):return
 	native_demo_encounter.configure(self,regions)
 	if not native_map11.bind_gate_owner(native_demo_encounter):return
 	bind_native_natural_enemy_base(_read_native_map11_natural_context,true)
