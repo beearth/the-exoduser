@@ -1,5 +1,74 @@
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
+## 2026-10-20 SV-SAVE-PRIMITIVE 격리 메모리 primitive 판단·7번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·판단 | origin/main e556b617에 앞 단위 없어 승인 RESTORE-FLOW000e26d1에서 분기. --no-checkout+no-cone sparse 약20MiB. 자기 소유 MemoryFixture만으로 분리 가능해 그 범위만 구현, 제품쓰기 readiness는항상HOLD |
+| 신규 파일 | source_save_primitive.gd·test_native_save_primitive.gd·sv_save_primitive_oracle.cjs. 직렬화된 bytes를 가상 token에 atomic/direct 메모리 연산. host backend/경로/serializer/서버/Callable 주입 없음. 상태별 ACK는공급 응답/clock만 계산 |
+| 원본 근거 | server95–116 wx→write/close→rename·자기temp finally, NW129–139 직접write·예외500 차이. game3580–3585 cloud 현재charId 비교·63932–63940 local j.ok/폴백·64089–64092 web 성공시각. X10 catch scope의 setter0/시각미갱신을 fixture 재현, 오류타입 자체는정적추론·원문수정0 |
+| 보호·HOLD | 실제First 저장폴더 접근0·공용6/형식/원본4/기존모듈 변경0. product_write_authorized=false·network/hostIO0. 실제namespace/path/codec/SDK/LS/서버/State/Main/lifecycle연결·내구성 미구현HOLD, fixture 통과를제품저장PASS로승격0 |
+| 검수 | 신규10388/실패0(쓰기29·가상경쟁4·cloud21/local48/web2 ACK), 기존SV-CONTRACT3023/0·선행FLOW819262/0. 최종종별exit0·ERROR/SCRIPT ERROR/경고0. 최초exit0이나RESULT없는파싱오류는PASS아님·예약어수정·원로그보존 |
+| 제출 | Godot전역2이상30초대기·자기순차1개. 신규EXODUSER-sv-save-primitive-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-save-primitive_REPORT.md), ~/exoduser-wt/_out/sv-save-primitive/ |
+
+## 2026-10-20 SV-RESTORE-FLOW 복원 순서·부분 실패 계산 6번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | origin/main e556b617에 앞 단위 없어 승인 SV-SHARED-READ9bde0cfe에서 분기. --no-checkout+no-cone sparse 약20MiB. COLLECT/TRANSPORT/PLAYER/ITEMS/SHARED 의존, 공용6·타 담당·기존 모듈 직접수정0 |
+| 신규 파일 | source_restore_flow.gd·test_native_restore_flow.gd·sv_restore_flow_oracle.cjs. 3771행 직전 현재 snapshot/원본 표/보호 관측을 받아 skills→fused→숙련도→합체 보정→active→slots→sanitize를 detached 계산. 중간 trace·실패 단계·마지막 완료 snapshot 제공, 부분 적용 권한0 |
+| 원본 근거 | game3771–3908/3499–3530·SKILL_LIST55/pairs32/groups32·cap9999·Lv300/700. holy 한 번 순회·슬롯0–3/4/5·문자열/0·rename/흡수·2회 복원 원래 순서 보존, 기존 저장 형식/마이그레이션 정책 변경0 |
+| 보호·HOLD | Q/E inline·active sync·WingStrike는 owner before/after 관측 없거나 stale/허용밖이면HOLD. 제품 보호 helper/writer 호출0. 모든 READY는계산만, 실제 State/Main/표인수/applyStats/initStage·표시 미연결HOLD. 실제 저장/서버/IO0 |
+| 검수 | 최종 신규819262/실패0(321fixture×2=642 원본 평가·각12단계), 기존SV-CONTRACT3023/0·선행SHARED149486/0. 최종종별 exit0·ERROR/SCRIPT ERROR/경고0. 초기137실패·음의0 1실패·확장2실패/SCRIPT ERROR2 수정·원로그 보존 |
+| 제출 | Godot전역2이상30초대기·자기순차1개. 신규EXODUSER-sv-restore-flow-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-restore-flow_REPORT.md), ~/exoduser-wt/_out/sv-restore-flow/ |
+
+## 2026-10-20 SV-SHARED-READ 공유 읽기·이관 계산 5번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | origin/main e556b617에 앞 단위 없어 승인 SV-RESTORE-ITEMS9b5fdf46에서 분기. --no-checkout+no-cone sparse 약20MiB. SV-COLLECT/TRANSPORT/RESTORE-PLAYER/ITEMS 의존, 기존 파일·공용6 직접수정0 |
+| 신규 파일 | source_shared_store.gd·test_native_shared_store_read.gd·sv_shared_read_oracle.cjs. mode/읽기 관측/현재 snapshot만 받아 shared getter·max 비가산·빈 shared legacy slice200·층별 concat/캡을 detached 계산. 후속 readback 없으면HOLD |
+| 원본 근거 | game3726–3729/3741–3752/48521–48548, STORAGE_MAX16259. 일반 parseInt/QA Number·일반 Array 검증/QA JSON 타입·예외 차이, MAX_SAFE9007199254740991·재조회 순서 보존. 상한은 정확한 int64→double, 저장 형식/마이그레이션 정책 변경0 |
+| 보호·HOLD | 모든 candidate execute_authorized=false, IO/서버/실제연결0. namespace/live G/STORAGE/세터·캐시·dirty/timer·ACK 미연결HOLD. 실제 성공을 가정하지 않고 관측값으로 계산, 비지원 정밀도/형태는 정상 빈 값으로 제조하지 않음 |
+| 검수 | 신규149486/실패0(읽기100/store17/복원131×2), SV-CONTRACT3023/0·선행ITEMS126863/0. 최종3실행 exit0·ERROR/SCRIPT ERROR/경고0. 초기59실패·확장188실패 상한/음의0/문자열 변환 오류 수정·원로그 보존 |
+| 제출 | Godot 전역2이상30초대기·자기순차1개. 신규 EXODUSER-sv-shared-read-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-shared-read_REPORT.md), ~/exoduser-wt/_out/sv-shared-read/ |
+
+## 2026-10-20 SV-RESTORE-ITEMS 아이템 복원 계산 4번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신 origin/main e556b617에 앞 단위 없어 승인 c88014b6에서 분기. --no-checkout+no-cone sparse 약20MiB. SV-COLLECT/TRANSPORT-READ/RESTORE-PLAYER 의존, IT-01~04는 참조만·파일 이송/병합/수정0 |
+| 신규 파일 | source_inventory_restore.gd·test_native_inventory_restore.gd·sv_restore_items_oracle.cjs. 현재 INV·STORAGE 전후 권위·upgrades/potLv snapshot과 기존 source tables로 detached plan만 계산. 제품 writer/저장/서버/형식·기존 마이그레이션 정책 변경0 |
+| 원본 근거 | 최신main game3628–3683/3735/3754–3769. 17칸 fallback과 기존5키 보충·br/???/shield/bow·affixes·weapon 공속/표시 marker·uniqueArt·ID18·crystal q50/socketQ1/stone q number1–100·upgrades/potLv 순서 유지. 동적 필드·중복/alias 보존 |
+| 보호·한계 | 공용6·타 담당·기존 테스트·원본4파일·데이터·project.godot·R 직접수정0. 누락 owner/비지원 carrier는HOLD, READY는계산만. shared load/legacy storage transfer/clamp/persist 및 실제 인벤/효과/재시작 연결HOLD. IT 품질/효과를 복원 보정에 대입하지 않음 |
+| 검수 | 신규126863/실패0(272fixture·원본544평가), 기존SV-CONTRACT3023/0·선행player78620/0. 최종3실행 exit0·ERROR/SCRIPT ERROR/경고0. 첫110161/36+SCRIPT ERROR1은 fixture alias 전달/strict 문자열 비교 수정·원로그 보존 |
+| 제출 | 전역Godot2이상30초대기·자기순차1개. 신규 EXODUSER-sv-restore-items-Isolated-20261020, 회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-restore-items_REPORT.md), ~/exoduser-wt/_out/sv-restore-items/ |
+
+## 2026-10-20 SV-RESTORE-PLAYER 읽기·복원 계산 3번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | origin/main e556b617 조회 후 선행 SV-COLLECT b8b8a8fa / SV-TRANSPORT-READ 판정955f3573에서 분기·main 정상 병합 f25dd675. --no-checkout+no-cone sparse 시작, 원로그 외부 보존·최종 remote SHA/DONE 뒤 자기 worktree 제거 |
+| 신규 파일 | source_player_restore.gd·test_native_player_restore.gd·sv_restore_player_oracle.cjs. calculate(serialized,current)는 실제 현재 cap/할당 snapshot을 받아 detached plan만 반환. 제품 writer·저장·서버·constructor·형식/마이그레이션 정책 변경0 |
+| 원본 근거 | game3597–3602/3611–3623/3685–3715/43128–43133 최신main byte동일. EXP finite Number/수치문자 구분·SP/AP 보너스 원값·queue 배열 원값·현재 자원 후 cap 대입·legacy pShield→pDef→skills→rawgrit 순서와 JS + 유지 |
+| 보호·한계 | 공용6·타 담당·기존 테스트·원본4파일·project.godot·R 직접수정0. charIdx/rage/mask/atlas/Q/E writer 미연결. READY는 계산만·full_restore_verified=false. actor HP/ST·authority MP 실제 적용/readback은 연결 HOLD. raw_grit_restore writer 호출0 |
+| 검수 | 신규78620/실패0(201fixture·원본603평가)·SV-CONTRACT3023/실패0·선행 슬롯읽기5952/실패0, 최종3실행 exit0·ERROR/경고0. 576실패 StringName 키 수정과 큰수 oracle 전달6/3실패 원로그 보존. 로비 전체 회귀 8실패(main에서도 동일, QA-005 진단 중)는 원문만 기록 |
+| 실행·제출 | Godot 전역2이상30초대기·자기작업 순차1개. 신규 EXODUSER-sv-restore-player-Isolated-20261020·기존각USERDIR상수, 종료override0byte. 정상훅·자기경로 stage·자기branch만push. [보고서](engine/orders/reports/sv-restore-player_REPORT.md), ~/exoduser-wt/_out/sv-restore-player/DONE.txt |
+
+## 2026-10-20 SV-TRANSPORT-READ fixture 슬롯 읽기 2번 단위
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준·의존 | 최신 origin/main284d7faf에 SV-COLLECT가 없어 승인된 b8b8a8fa 끝에서 codex/sv-transport-read-20261020 분기. full checkout 디스크부족 실패 후 필요한 파일만 sparse. 공용6·기존테스트·원본4파일·project.godot·R 파일 수정0 |
+| 신규 파일 | source_slot_reader.gd·test_native_slot_reader.gd·sv_transport_read_oracle.cjs. dev_server/nw_native target을 caller가 명시하고 메모리 fixture만 읽음. 실제 endpoint·namespace·계정·파일 IO·저장·복원·마이그레이션·세이브 형식 변경0 |
+| 원본 근거 | server198–213/node118–126의 목록6필드·JSON손상제외·순서·첫.json제거·development유무. index3522–3550의5칸 fallback·엄격development/test/build gate·stale 무적용, game63968의j.ok&&j.data admission. ??0과\|\|0 차이 유지 |
+| 결과·HOLD | 404/500/transport/parse/rejected/metadata/player candidate 구분. full_save_verified=false·쓰기/restore권한없음. unknown target/context/status·비배열slots·lone UTF16 surrogate/depth128초과는HOLD(빈슬롯/손상으로제조하지않음). _demoSyncActiveSave writer 미연결 |
+| 실제 검수 | 신규5952검사/실패0·기존SV-CONTRACT3023/실패0, 전2실행exit0·ERROR/SCRIPT ERROR/경고0. 원본서버12·JSON37·로비156·load32상황 대조. 첫5950/12실패는 StringName development key를 문자열로 변환해 수정·원로그보존 |
+| 기존 회귀 BLOCKED | developerCharacterSlots 전체30건/22통과/8실패. origin/main 원본만 별도평가해같은30/22/8·실패이름동일. _demoSyncActiveSave 미정의 등 기존하니스/UI범위. 해당파일수정0·전체PASS승격0 |
+| 실행·제출 | 매Godot실행전전역count확인·2이상30초대기·작업내순차1개. 신규EXODUSER-sv-transport-read-Isolated-20261020, 기존회귀각상수·종료override0byte. 정상훅·자기branch push만. [보고서](engine/orders/reports/sv-transport-read_REPORT.md), ~/exoduser-wt/_out/sv-transport-read/DONE.txt에SHA/수치 |
+
+## 2026-10-20 SV-COLLECT 원본 저장 수집 읽기 전용 collector
+
 | id / 항목 | 현재 계약 |
 |---|---|
 | 기준 / 의존 | 최신main e556b617의 game.html12408–12545/12756–12776/12827–12840. main미포함 SND-07 a0c67301 끝 분기(main은이미ancestor). 자기no-checkout/sparseWT |
