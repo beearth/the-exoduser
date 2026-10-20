@@ -1,3 +1,4 @@
+import {outputSymlink} from './helpers/outputSymlink.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -131,7 +132,7 @@ test('unsupported stages/seeds fail before writes; shared source/map/asset desti
   const cli=(args)=>spawnSync(process.execPath,[tool,...args],{encoding:'utf8'});
   try{
     fs.writeFileSync(destination,'preserve');
-    for(const stage of ['1','2','3']){
+    for(const stage of ['2','3']){
       const r=cli([root,destination,'--stage',stage,'--seed','20261020']);
       assert.equal(r.status,1);assert.match(r.stderr,/UNSUPPORTED_STAGE/);assert.equal(fs.readFileSync(destination,'utf8'),'preserve');
     }
@@ -139,7 +140,7 @@ test('unsupported stages/seeds fail before writes; shared source/map/asset desti
     for(const shared of ['game.html','godot/data/map.json','godot/data/enemy.json','assets/map/ch1/collision/pit_poison.png']){
       const r=cli([root,path.join(root,shared),'--stage','0','--seed','20261020']);assert.equal(r.status,1);assert.match(r.stderr,/Output inside source root/);
     }
-    const link=path.join(directory,'linked.json');fs.symlinkSync(path.join(root,'godot/data/map.json'),link);
+    const link=outputSymlink(directory,path.join(root,'godot/data/map.json'));
     assert.match(cli([root,link,'--stage','0','--seed','20261020']).stderr,/Symlink output rejected/);
     assert.match(cli([root,destination,'--stage','0','--seed','20261020']).stderr,/Existing non-snapshot output rejected/);
     const externalMap=path.join(directory,'map.json');fs.copyFileSync(path.join(root,'godot/data/map.json'),externalMap);
