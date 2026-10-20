@@ -76,3 +76,5 @@ Godot4.7.2.stable.official.ed1daf0bf 원앱, Node v24.15.0. 전체 asset import�
 원로그 ~/exoduser-wt/_out/sv-transport-read/: source-oracle.json, summary.json, *.command.json, *.stdout.log, *.stderr.log, *.engine.log, process-guard.jsonl, node-baseline-comparison.json, protected-provenance.json. 순수 fixture라 screenshot·실플레이·PC·실제 endpoint/namespace 검증은 범위 밖이다.
 
 정상 pre-commit docs-sync-check를 유지하고 자기 파일만 명시 stage한다. test_* ignore 때문에 신규 테스트만 -f로 추가하며 훅을 우회하지 않는다. main push·force push·git add -A·R 파일 쓰기0. 자기 branch만 push하고 원격 ref SHA를 대조한다. 최종 branch·SHA·수치는 DONE.txt에 남긴다.
+
+총괄 판정(2026-10-20): 로비 회귀8실패는 최신 main에서도 동일한 선재 결함(QA-005 진단 중)이므로 SV-TRANSPORT-READ를 완료 처리한다.
