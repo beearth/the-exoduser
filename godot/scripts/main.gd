@@ -45,6 +45,7 @@ const NATIVE_VERSION_CONFIG := {"schema": "fdg.native-content-version.v1", "cont
 
 signal native_sound_event(kind: String, data: Dictionary) # DEMO11-40 audio-only observation
 var _combat_sound_consumer: Node
+var _music_lifecycle: Node
 signal source_document_visibility_changed
 
 # Platform samples only: never source dt/sp/acc or a gameplay update witness.
@@ -322,10 +323,12 @@ func _ready() -> void:
 	_build_native_character_selection_ui()
 	_install_native_q_control()
 	_install_native_attack_audio()
+	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
+	if is_instance_valid(_music_lifecycle): _music_lifecycle.bind_intro(source_intro_sequence)
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -537,6 +540,7 @@ func _on_native_window_visibility_changed() -> void:
 	source_document_visibility_changed.emit()
 
 func _exit_tree() -> void:
+	if is_instance_valid(_music_lifecycle): _music_lifecycle.close()
 	_dispose_native_attack_audio()
 	var window: Window = _native_startup_window.get_ref() if _native_startup_window != null else null
 	if is_instance_valid(window) and window.visibility_changed.is_connected(_on_native_window_visibility_changed):
@@ -2967,3 +2971,22 @@ func request_native_skill_sample(path: String, gain: float, rate: float) -> void
 		_attack_audio_streams[key]=stream
 		_combat_sound_consumer.install_sample(key,stream)
 	_record_event("native_skill_sample_requested",{"key":key,"gain":gain,"rate":rate,"character":player.get_native_character_profile_snapshot().get("index",-1)})
+
+# DEMO11-41 sound-only services; no combat or State authority is delegated.
+func _install_native_music_lifecycle() -> void:
+	_music_lifecycle=preload("res://scripts/native_music_lifecycle.gd").new()
+	add_child(_music_lifecycle)
+	_music_lifecycle.configure(self,str(get_meta("native_audio_source_root",ProjectSettings.globalize_path("res://../"))))
+
+func request_native_lifecycle_voice(owner: Node,path: String,rate: float) -> Dictionary:
+	var settings: Dictionary=read_native_attack_audio_settings()
+	if settings.get("ready")!=true or not is_instance_valid(_music_lifecycle):return {"accepted":false,"reason":"audio_owner_not_ready"}
+	return _music_lifecycle.request_voice(owner,path,rate,float(settings.sfx_gain))
+
+func request_native_music_scene(scene: String,segment: String="") -> Dictionary:
+	if not is_instance_valid(_music_lifecycle):return {"ready":false,"reason":"music_owner_not_ready"}
+	return _music_lifecycle.transition(scene,segment)
+
+func bind_native_boss_music(actor: Node) -> Dictionary:
+	if not is_instance_valid(_music_lifecycle):return {"ready":false,"reason":"music_owner_not_ready"}
+	return _music_lifecycle.bind_boss_actor(actor)

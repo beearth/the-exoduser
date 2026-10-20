@@ -46,6 +46,14 @@
 | 기준·범위 | main01051599 + DEMO11-01 65f55e76 + BC08 체인adc90ec7 정상merge=4fd1323c. Main +17/-0로 actor 설치·spawn·조회·owner API. BC01~10/State/피해·패링·HP/poise·저장·맵0줄. |
 | 검증 | 신규167/0 + phase PC readback28/0, 기존BC01~10 354093/0·데모권위22/0·인트로18/0. 실패165/4 및28/1 원문 보존·해당 실패 검사만 수정 재실행. 통과 기존 각1회·검사 약화0. |
 | 인계·한계 | [공개 계약·공용 줄·보고서](engine/orders/reports/demo11-34_REPORT.md). 자연 arena·source clock/prefix·탄/VFX/SFX 및 PC36/49 보호 owner는 미연결 대기, 가짜 ack 없음. 원로그 ~/exoduser-wt/_out/demo11-34/, 자기push/remoteSHA/DONE뒤WT제거·R불변. |
+## 2026-10-21 DEMO11-41 실제 BGM/voice media lifecycle
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0e(DEMO11-01) + DEMO11-40 85d57b39 정상 merge. SND05/06 원모듈 무수정. Main 음향+23/-0·인트로 음향 signal·기상 voice 재생 함수만, State/보호 전투/저장/맵0 |
+| 연결 | 실제 AudioStreamPlayer/Timer·원음 lazy read·별도 BGM OPT bus/기존 SND08 voice bus. guide/opening/player_died 구독, fade·cache6·pause/복귀·오류·종료 정리. 소리 전용 RNG, tick 목록 API0 |
+| 검수 | 최종 CoreAudio55/0, 기존 무수정 SND05 1308/0·SND06 2400/0·DEMO11-40 44/0·P2007A115/0. 첫 하니스 API/숨김·작은 창 좌표 실패는 보고서에 구분, 기존40 ObjectDB4 경고는 과거에도 동일/verbose 재검0·새55검사 누수경고0, 성공 합산0 |
+| HOLD·제출 | 로비/전체 영화 owner 요청 API만, DEMO11-34는 native_boss_music_changed(phase,stage) 계약만. 외부 bgm export 포함·청감/PCM 미확인. [공용 행·보고서](engine/orders/reports/demo11-41_REPORT.md), 원로그~/exoduser-wt/_out/demo11-41/. 원격일치/DONE 후 WT 제거 |
 
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
 
