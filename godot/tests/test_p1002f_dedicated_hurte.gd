@@ -155,6 +155,13 @@ func _heal_player() -> void:
 		active_main.get("player").set("hp", float(p.get("mhp", 350)))
 		forced_actor_fields += 1
 
+# request 직전 같은 프레임의 배치·조준: 대상의 현재 좌표 기준으로만 계산한다.
+func _place_for_swing(player: Node2D, enemy: Node, gap: float) -> void:
+	var stand: Vector2 = _pick_stand(enemy, gap)
+	player.global_position = stand
+	player.set("facing", (enemy.global_position - stand).normalized())
+	forced_actor_fields += 2
+
 # 배치 후보 8방위 중 이동 가능하고 다른 살아있는 적(추적 외 포함)에서 가장 먼 지점.
 # 수렴한 무리 속에 서면 스윙 시작 2틱 안 피격 스태거(제품 정상 동작)로 접촉이 취소된다.
 func _pick_stand(enemy: Node, gap: float) -> Vector2:
@@ -215,6 +222,18 @@ func _test_setup() -> void:
 	var selection: Dictionary = active_main.get("player").get_native_attack_selection_snapshot()
 	_check(selection.get("ready") == true and selection.get("route") == "basic_melee",
 		"basic_melee LMB route selected")
+	# 공격 방향 결정 근거 실측: _attack_direction=facing(request 시점, player.gd:599),
+	# facing의 포인터 덮어쓰기(707~712)가 이 headless 런에서 발화하는지 기록.
+	var probe: Node2D = active_main.get("player")
+	probe.set("facing", Vector2.RIGHT)
+	forced_actor_fields += 1
+	await physics_frame
+	var facing_after: Vector2 = probe.get("facing")
+	observations["aim_basis"] = {
+		"pointer_provider_bound": probe.get("_native_ground_pointer_bound") == true,
+		"mouse_world": [snappedf(probe.get_global_mouse_position().x, 0.1), snappedf(probe.get_global_mouse_position().y, 0.1)],
+		"player_pos": [snappedf(probe.global_position.x, 0.1), snappedf(probe.global_position.y, 0.1)],
+		"facing_write_survives_frame": facing_after.distance_to(Vector2.RIGHT) < 0.001}
 
 func _alive_tracked() -> Array:
 	var out: Array = []
@@ -258,12 +277,6 @@ func _swing_and_verify(target_entry: Dictionary) -> bool:
 	var r: float = float(enemy.get("radius"))
 	var contact_safe: bool = bool(target_entry["target"]["contact_safe"])
 	var gap: float = (r + 15.0) if contact_safe else (47.0 + r - 8.0)
-	# 배치: 수렴한 다른 몹(추적 외 포함) 무리 속에 서면 2틱 윈도 안 피격 스태거로
-	# 스윙이 취소된다(제품 정상 동작) — 이동 가능하고 다른 적에서 가장 먼 방향 선택.
-	var stand: Vector2 = _pick_stand(enemy, gap)
-	player.global_position = stand
-	player.set("facing", (enemy.global_position - stand).normalized())
-	forced_actor_fields += 2
 	# 사전 스냅샷: 추적 4종 전원 + G.
 	var pre: Dictionary = {}
 	for id in tracked:
@@ -283,6 +296,15 @@ func _swing_and_verify(target_entry: Dictionary) -> bool:
 			_heal_player()
 			if player.get("state") == "idle":
 				break
+	# 배치·조준은 모든 대기가 끝난 뒤 request 직전 같은 프레임에 — 대기 중 원거리 적
+	# (hive 후퇴 AI)이 거리를 벌리므로 대기 전에 계산한 좌표를 재사용하면 사거리 밖이
+	# 된다(인수 2차 실패 실측: dist 147~172·aim_err 135°). 스윙 방향의 근거(aim_basis
+	# 실측): facing은 headless에서도 매 프레임 마우스 위치로 덮어써지지만(707~712,
+	# facing_write_survives_frame=false), 기본 근접 방향은 request_attack 시점에
+	# _attack_direction=facing으로 래치되고(599) swing 상태에서 갱신되지 않으므로
+	# (782는 windup 전용), facing 기록과 request를 같은 프레임에 하면 그 값이 스윙
+	# 방향이 된다 — 적중 스윙 aim_err=0.0이 증거 (개입은 forced_actor_fields 집계).
+	_place_for_swing(player, enemy, gap)
 	var accepted: bool = player.request_attack()
 	if not accepted:
 		# 거부 즉시 release — 홀드(_weapon_held)가 남으면 제품의 홀드 자동 재공격이
@@ -292,10 +314,10 @@ func _swing_and_verify(target_entry: Dictionary) -> bool:
 		for i in range(600):
 			await physics_frame
 			_heal_player()
-			player.global_position = stand
 			if player.get("state") == "idle" and float(player.get("stamina")) >= 20.0:
 				break
-		player.set("facing", (enemy.global_position - stand).normalized())
+		# 회복 대기 직후에도 request 직전 현재 좌표로 재배치·재조준 (좌표 재사용 금지).
+		_place_for_swing(player, enemy, gap)
 		accepted = player.request_attack()
 		if not accepted:
 			player.release_attack()

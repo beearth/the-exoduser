@@ -302,6 +302,17 @@ receive_damage에 부분 이식돼 있던 스턴×1.5·eShield 흡수·즉시반
   ② 고정 서쪽 배치가 수렴한 몹 무리(추적 외 포함) 한가운데가 되면 스윙 시작 2틱 안
   피격 스태거(제품 정상 동작)로 접촉 취소. 수정: 8방위 중 이동 가능하고 다른 적에서
   가장 먼 지점 선택(`_pick_stand`). 미적중 상한(dry 8)은 그대로 — 상한 완화 없음.
+  ③ (인수 2차 실패) 대기(아이들 복귀·스태미나 회복 최대 600프레임) 전에 계산한 배치
+  좌표·facing을 대기 후 재사용 → 원거리 적(hive 후퇴 AI)이 그 사이 거리를 벌려
+  사거리 밖(실측 dist 147~172)·조준 이탈(aim_err 135°). 수정: 모든 대기가 끝난 직후
+  **request_attack 직전 같은 프레임**에 대상 현재 좌표로 재배치·재조준
+  (`_place_for_swing`). 공격 방향의 근거(aim_basis 실측): facing은 headless에서도
+  매 프레임 마우스 위치(뷰포트 원점 → 플레이어 좌상단 고정점)로 **덮어써진다**
+  (player.gd 707~712, `facing_write_survives_frame=false` 관측). 그러나 기본 근접의
+  방향은 `_attack_direction = facing`으로 **request_attack 시점에 래치**되고(599),
+  swing 상태에서는 갱신되지 않으므로(782는 windup 전용), 테스트가 facing 기록과
+  request_attack을 **같은 프레임**에 수행하면 그 값이 그대로 스윙 방향이 된다 —
+  적중 스윙의 aim_err=0.0이 그 증거. `_place_for_swing`은 이 래치 직전에 실행된다.
 - 회귀 (기준선 = main 91565d492 동일 테스트): test_p1002e_melee_hurte **102/0 동일**,
   test_contracts·test_etype0_physical_burn·test_etype1_lightning_hive_bloater·
   test_native_main_source_lesson PASS 동일, test_etype0_physical_flesh_crawler(1)·
