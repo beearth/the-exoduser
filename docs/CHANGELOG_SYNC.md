@@ -1,3 +1,14 @@
+## 2026-10-20 BC2-02 승인 반영: 장 catalog 일반화·2장 재사용
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 승인·기준 | 맥북총괄이 Mac 소유 BC02~07 수정 명시 승인. 기존 HOLD d7116024 재개, main26c050a99 정상 merge bb7d7ec3·BC2-01 의존 유지 |
+| 일반화 | 마지막 선택 catalog 인자·기본 null=기존 CH1, 명시 provider/source/token 문맥 검증. BC01 전역manifest+BC2-01 CH2조회 재사용, 공통 표/수식 복제0 |
+| 2장 계산 | 실제si4~9 생성·score·선택·phase/clock·공통22시작·근접6state 재사용. dropTier 원본 hell+1 cap4, 내부 phase 전달. 신규10start는 owner_required |
+| 전후 회귀 | 기존 BC01~BC08 파일·검사 무수정, 전후 각각131,655검사/0실패. BC2-01 전후7,169/0. 신규최종44,891/0·원본fixture3,725개, skip0·exit0·ERROR0 |
+| 실패·경계 | 초기1,674·36실패 원문/수정 보존. Node인자·출력join/UTF-8·IEEE754 RNG전송. 공용6·타담당·원본·저장·기존테스트·바이너리0. 실제전투/Main 연결HOLD, 후속 미착수 |
+| 제출 | [BC2-02 보고서](engine/orders/reports/bc2-02_REPORT.md), 원로그~/exoduser-wt/_out/bc2-02/approved/. 매Godot pgrep/30초대기·상수격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+
 ## 2026-10-20 BC2-02 chapter 데이터 수용 접점 HOLD
 
 | 항목 | 현재 정확 계약 |

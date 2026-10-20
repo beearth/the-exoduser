@@ -4,6 +4,7 @@ extends RefCounted
 ## ps is a read-only Dictionary or null; Q/E/player-stat counters are never written.
 
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
+const CatalogContext = preload("res://scripts/native_boss_catalog_context.gd")
 const _FACE_MOVES = ["jump", "charge", "slashCombo", "sweep", "tailSwipe", "beanStorm"]
 
 
@@ -17,10 +18,14 @@ static func source_receipt() -> Dictionary:
 
 ## rng("boss_score")->numeric unit in [0,1). Gates return READY with -1/0 and no draw.
 ## Invalid/missing source shape returns NOT_READY with null score, not a neutral score.
-## Only si0..3 are owned here. move is the same source metadata argument as _bossScore.
+## Null catalog owns si0..3; an explicit chapter catalog supplies its own stage Set.
+## move is the same source metadata argument as _bossScore.
 static func evaluate_move(si: int, move: Dictionary, distance: float, ps: Variant,
-		phase: int, enemy: Dictionary, rng: Callable = Callable()) -> Dictionary:
-	var boss: Dictionary = Catalog.boss_for_stage(si)
+		phase: int, enemy: Dictionary, rng: Callable = Callable(), chapter_catalog: Variant = null) -> Dictionary:
+	var resolved: Dictionary = CatalogContext.resolve(chapter_catalog)
+	if not resolved["ready"]: return _not_ready(resolved["reason"])
+	var data_catalog: Variant = resolved["catalog"]
+	var boss: Dictionary = data_catalog.boss_for_stage(si)
 	if not boss.get("supported", false): return _not_ready("unsupported_chapter_stage")
 	if not move.get("id") is String: return _not_ready("move_id_missing")
 	var id: String = move["id"]

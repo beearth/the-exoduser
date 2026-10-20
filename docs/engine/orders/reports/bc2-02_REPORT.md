@@ -1,86 +1,95 @@
-# BC2-02 — chapter 데이터 수용 접점 판정: HOLD
+# BC2-02 — 장 catalog 일반화와 2장 공통 계산 재사용
 
-## 판정·기준
+## 판정·승인·기준
 
-**HOLD — 구현하지 않음.** BC2-02는 인수된 2장 추적 문서 §5.2의 2번 ‘BC02~BC07 chapter 데이터 접점·인수형식/guard/snapshot/ack 통합 결정’이다. 기존 모듈의 실제 진입점이 CH1 전용이므로, 자기 소유 새 파일만 추가해서 2장 계산까지 재사용할 수 없다. 사용자 지시의 **공용·다른 담당 파일 0줄**을 지켰으며 필요한 위치와 재개 조건을 아래에 남긴다. 다음 BC2-03이나 실제 전투·Main 연결로 진행하지 않았다.
+**BC2-02 계산 접점 구현 및 원본 대조 자료 준비.** 이전 `d7116024`의 HOLD 이후 맥북총괄이 “BC02~BC07은 Mac Codex가 만든 Mac 소유 모듈(main 병합분 포함)이므로 맥북총괄이 수정을 허용”한다고 승인했다. 승인 조건인 장 catalog 인자화, 기본 CH1 동작 보존, 기존 BC01~BC08 테스트 무수정·동일 검사 수·0실패를 이번 실행에서 검증했다. 공용 6파일·PC/클라우드 담당 파일에는 작업 수정을 하지 않았다.
 
-| 항목 | 확인 내용 |
+| 항목 | 근거 |
 |---|---|
-| 작업·브랜치 | `bc2-02` / `codex/bc2-02-20261020` / `~/exoduser-wt/bc2-02` |
-| 최신 main | fetch 결과 `26c050a99a711e793a6c2413395acda09b0c1614`, 요청 하한26c050a99와 일치 |
-| 선행·실제 분기 기준 | BC2-01 catalog는 위 main에 없음. 사용자 지정 예외에 따라 인수된 `codex/bc2-01-20261020` 끝 `6e6f2f58633bb7a54fa0cf1a9cd3df3dc1535aba`에서 분기. 최신main을 포함한 것으로 주장하지 않음 |
-| 기준 재대조 | 최신main의 BC01~03 제품 파일은 선행 끝의 동일 파일과 byte 일치. game.html·index.html도 최신main과 byte 일치. 차단 판단은 최신main 및 최신 원격 BC04~07을 대상으로 함 |
-| 원본 | game.html65,692행/SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`; index.html4,742행/SHA256 `36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12` |
-| 작업 방식 | --no-checkout worktree + 필요한 경로만 non-cone sparse-checkout. 빈 index는 `read-tree -mu HEAD`로 초기화. 웹 에셋·Godot 자산·실행 캐시를 받지 않음 |
-| 변경·실행 | 이 보고서+허용CHANGELOG_SYNC 맨위절만 변경. 제품·신규테스트·기존테스트·공용·다른 담당·원본·저장형식·바이너리0줄. **Godot0/게임0/Node원본하니스0/테스트0**. 실행PASS 없음 |
-| R | `/Users/fordeargamers/Projects/exoduser-migration-20261001` HEAD `dd49171c5b88e211575a41f185395d6c0a14b184`, branch `codex/mac-live-play-time-main-20261017`; HEAD/branch/tracked INDEX/WORK 보존 |
-| 순서안 근거 | trace-boss-ch2 `ddf0549597e645b507cac672cba29df2639712c3` §4.2/§5.2/§6, BC2-01 REPORT의 ‘다음 단위·공용 접점’. 추적 문서는 기준main에 없어 승인 SHA에서 읽기 참조만 함 |
+| 작업·브랜치 | `bc2-02` / `codex/bc2-02-20261020` |
+| 기준 동기화 | fetch한 최신 main `26c050a99a711e793a6c2413395acda09b0c1614`. 기존 HOLD 끝에서 같은 브랜치를 재개하고 정상 merge `bb7d7ec3faee277c341cdd5936772e88cae7f84f`로 main을 포함. 기존 원격 이력 재작성 없음 |
+| 선행 | BC2-01은 main 미포함으로 인수 끝 `6e6f2f58633bb7a54fa0cf1a9cd3df3dc1535aba`를 유지. CH2 catalog는 수정하지 않고 공개 API만 호출 |
+| worktree | `worktree add --no-checkout` + non-cone sparse-checkout. 웹 대용량 에셋은 받지 않음. 외부 최소 Godot 프로젝트로 원본/수정 모듈과 무수정 회귀 파일을 검증 |
+| 원본 | 최신 main game.html 65,692행, SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`; index.html 4,742행, SHA256 `36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12`. 둘 다 수정0 |
+| 보호 | 공용 6파일·다른 담당·기존 테스트·원본·저장·형식·씬·프로젝트 설정·바이너리 변경0. latest main의 다른 담당 변경은 기준 merge로만 수용, 이 작업 코드 diff와 구별 |
+| R | `/Users/fordeargamers/Projects/exoduser-migration-20261001`의 HEAD `dd49171c5b88e211575a41f185395d6c0a14b184`, branch `codex/mac-live-play-time-main-20261017`, tracked index/work 보존 |
 
-이 HOLD는 실제 Main 연결이 현재 반드시 필요하다는 판정이 아니다. **그 전 단계인 공통 계산 모듈의 데이터 수용 계약부터 기존 담당 파일 수정이 필요**하다는 판정이다. 기존 stage guard를 지우거나 새 파일에 공통식을 복제하는 방식으로 공용0줄을 형식적으로 맞추지 않는다.
+## 구현 계약·변경 위치
 
-## 확인한 모듈·원격
+| 파일 (`godot/scripts/`) | 변경·호출 계약 |
+|---|---|
+| native_boss_catalog_context.gd | 새 읽기 provider 검증. null은 원래 CH1 catalog를 즉시 선택하고 token도 원래 모양 유지. 명시 provider는 source hash·전역59기술/combos·manifest 및 공개 메서드를 확인. continuation은 script 참조·경로·source hash를 묶어 누락/변조를 NOT_READY로 반환 |
+| native_ch1_boss_spawn_contract.gd (BC02) | 마지막 선택 인자 `chapter_catalog=null` 추가. 실제 si/hell/Set을 읽으며 RNG·배치·초기화 순서 유지. 원본 G31170의 `min(hell+1,4)`로 dropTier 계산: CH1=1 유지, CH2=2. 전역 CD59칸 유지 |
+| native_ch1_boss_utility.gd (BC03) | 마지막 선택 인자 추가. 장의 stage/Set 검증만 공급받고 원래 score·gate·난수 계산 재사용. stage 위장 없음 |
+| native_ch1_boss_selector.gd (BC04) | 마지막 선택 인자 추가. 59 score·combo·선택·Utility 내부 호출까지 같은 provider 전달. cooldown/RNG/이력/command 순서 보존 |
+| native_ch1_boss_phase.gd (BC05) | phase_transition/clock_step/begin_phase_effects 마지막 선택 인자, phase_effect_step은 token 문맥 사용. clock의 dispatch_phase 내부 phase_transition에도 전달. 원래 helper ack/readback·full_tick_complete=false 유지 |
+| native_ch1_boss_pattern_start.gd (BC06) | begin_start 마지막 선택 인자, next_start는 token 문맥. CH2 공통22기술만 기존24개 시작 구현에서 재사용. 신규10은 `pattern_start_owner_required`로 닫힘. 임의 프로그램으로 소유 경계 우회 없음 |
+| native_ch1_boss_melee_states.gd (BC07) | begin_tick 마지막 선택 인자, next_tick은 같은 token의 stage 검증. CH2 공통 slashCombo/slam/sweep 3계열·6state의 기존 수식/command 계산을 실제 si4~9로 재사용 |
+| native_ch2_boss_catalog_bridge.gd | BC01의 전역59 manifest + BC2-01의 장별 공개 읽기 API를 결합. move/phase/combo 표나 공통 수식 복제0 |
+| native_ch2_boss_reuse.gd | 2장 전용 진입점. 위 모듈에 bridge를 명시 전달하며 continuation도 CH2 provider/si4~9인지 확인. 전역 catalog 설정·live singleton 없음 |
 
-| 단위 | 읽은 기준 / SHA | 모듈(`godot/scripts/` 아래) |
+명시 catalog를 생략하는 기존 호출의 인자 순서·실패 규약·결과 키·token 형태는 유지한다. 원래 CH1 source_receipt도 유지한다. BC04~07 제품과 UID는 승인된 원격 버전을 가져와 일반화했다. BC08 제품과 기존 BC04~08 테스트는 외부 검증 프로젝트에서만 읽고 이번 제품 변경으로 가져오지 않았다.
+
+## 의존 버전과 무수정 회귀
+
+BC01~03은 위 최신 main과 동일 원본이다. 나머지 원격 제품/테스트 기준은 BC04 `818e9b2027afa37fadbf13a6b79b885abdb95f6b`, BC05 `e1850171849de176ad7d5df61e2cd296705ad7b7`, BC06 `1110eec6c2deacd43c6c20dd52affff33d4e4d47`, BC07 `edcbc480491a2b9c55abbb99fcda3dc47073583c`, BC08 `1b901f124bc4d1f2eaf55cb615a216abce69c634`다. 파일별 SHA256은 `approved/dependencies.json`, 최종 byte 대조는 `approved/scope-verification.json`에 기록한다.
+
+| 무수정 기존 테스트 | 일반화 전 검사 / 실패 | 최종 일반화 후 검사 / 실패 | 테스트 파일 |
+|---|---:|---:|---|
+| BC01 | 681 / 0 | 681 / 0 | 동일 byte |
+| BC02 | 5,257 / 0 | 5,257 / 0 | 동일 byte |
+| BC03 | 31,976 / 0 | 31,976 / 0 | 동일 byte |
+| BC04 | 21,899 / 0 | 21,899 / 0 | 동일 byte |
+| BC05 | 18,424 / 0 | 18,424 / 0 | 동일 byte |
+| BC06 | 14,099 / 0 | 14,099 / 0 | 동일 byte |
+| BC07 | 14,531 / 0 | 14,531 / 0 | 동일 byte |
+| BC08 | 24,788 / 0 | 24,788 / 0 | 동일 byte |
+| **BC01~BC08 합계** | **131,655 / 0** | **131,655 / 0** | 검사 수·파일 동일 |
+| BC2-01 추가 회귀 | 7,169 / 0 | 7,169 / 0 | 동일 byte |
+| **신규 BC2-02** | 해당 없음 | **44,891 / 0** | 지정 격리 테스트 |
+
+`before-bc01`~`before-bc08`은 일반화 전, `verified-bc01`~`verified-bc08`은 마지막 제품 수정 후 결과다. 중간 `after-*`, `final-*`도 각각 같은 기존 검사 수/0실패지만 합계에 중복 산입하지 않는다. 기존 검사 축소·skip·기대값 변경0. 모든 위 최종 실행은 exit0, ERROR0, stderr 빈 값이다. 이번 작업에서 전체 contracts/로비/실전·시각·성능·PC 검증은 수행하지 않았다.
+
+## 2장 독립 원본 fixture 대조
+
+새 `godot/tests/test_boss_ch2_bc2_02_reuse.gd`와 `bc2_02_source_oracle.cjs`가 원본 game.html을 Node VM으로 직접 평가한다. 기존 BC02~07 원본 하니스의 발췌/driver를 재사용하고 CH2 실제 si4~9 입력을 추가했다. 기대 결과는 Godot 제품 모듈에서 만들지 않는다. 원본 전체 hash 불일치·필수 인자 누락은 실패이며 PASS/skip으로 처리하지 않는다.
+
+| 원본 대조 영역 | 최종 fixture 수 | 검증 내용·한계 |
+|---|---:|---|
+| BC02 생성 수치 | 36 | 6stage×6level, 81필드·정수HP/ATK/부활점·6난수·배치 reader 순서. G31119–31363, 성장/난도 helper 참조 |
+| BC03 score | 1,770 | 6stage×59기술×5phase, 원본 gate/score/RNG 수. G37650–37699, 최종 Set 전체 참조 |
+| BC04 selector | 168 | 각 stage gate와 각5phase의 양수 선택 사례, enemy/player_stats/start 요청/난수 ledger·입력 불변. G38373–38442. 전체 입력 공간 전수 주장은 아님 |
+| BC05 phase·clock | 143 | phase 수치, threshold·각 checkpoint의 처음/중간/마지막 사례, dispatch_phase 재진입 포함. G38235–38313 및 원래10개 clock 발췌 |
+| BC06 시작 | 792 | 공통22기술의 enemy/queue/전체 event 순서·RNG·nested readback. G37701–38233. 신규10 start 제외 |
+| BC07 근접 | 816 | 공통6state의 enemy/player/globals/전체 event 순서·RNG·주입된 contact readback. G41074–41183. 실제 피해·패링 성공 판정 아님 |
+| **합계** | **3,725** | 순수 계산·fixture 대조 |
+
+추가 경계 검사: null/명시CH1 provider, 잘못된 source receipt·누락형태·무난수 거절, 미지원 stage, 신규10기술 NOT_READY, token provider/hash/path 누락·변조, 합성 owner ack/readback 금지. 실제 시각/전투 성공을 증명하는 검사는 아니다.
+
+실행 명령은 `run_one.py` 원로그에 argv 전체로 남겼다. 신규 실행은 `-- --source-game=/Users/fordeargamers/exoduser-wt/bc2-02/game.html --node-bin=/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node`. 기존 BC02/03에도 source-game 절대경로 인자를 전달했다. Node 경로는 제품 코드에 고정하지 않고 필수 인자로 받는다. `OS.execute` 출력은 `"".join(output)`으로 읽고 fixture는 자기 userdir에 UTF-8로 쓴다. Godot JSON 숫자 변환 때문에 RNG의 원래 IEEE754 bit를 hex로 함께 운반하며 정수 프로토콜 필드만 명시적으로 int 복원했다. 허용오차를 늘리거나 기대값을 제품값으로 바꾸지 않았다.
+
+## 실패 이력·수정 근거
+
+| 실행 | 실제 관측 | 후속 조치 |
 |---|---|---|
-| BC01 | 최신main `26c050a99a711e793a6c2413395acda09b0c1614` | native_ch1_boss_catalog.gd |
-| BC02 | 같은main | native_ch1_boss_spawn_contract.gd |
-| BC03 | 같은main | native_ch1_boss_utility.gd |
-| BC04 | origin/codex/bc04-20261020 `818e9b2027afa37fadbf13a6b79b885abdb95f6b` | native_ch1_boss_selector.gd |
-| BC05 | origin/codex/bc05-20261020 `e1850171849de176ad7d5df61e2cd296705ad7b7` | native_ch1_boss_phase.gd |
-| BC06 | origin/codex/bc06-20261020 `1110eec6c2deacd43c6c20dd52affff33d4e4d47` | native_ch1_boss_pattern_start.gd |
-| BC07 | origin/codex/bc07-20261020 `edcbc480491a2b9c55abbb99fcda3dc47073583c` | native_ch1_boss_melee_states.gd |
-| BC2-01 | 인수된 선행 `6e6f2f58633bb7a54fa0cf1a9cd3df3dc1535aba` | native_ch2_boss_catalog.gd |
+| reuse-01 | 41,472검사 / 1,674실패, exit1. phase effect 경계 driver의 RNG 누락으로 SCRIPT ERROR도 발생 | JSON 전송에서 최댓값 직전 난수가 1로 반올림되고 phase 배열이 float가 된 하니스 문제 수정. 원래 binary bit 복원/정수 필드 명시, effect RNG 주입. 원본 기대값 유지 |
+| reuse-02 | 44,515 / 36실패, exit1 | 모두 CH2 dropTier의 실제 제품 결함. 기존1 고정을 원본 G31170의 hell+1 cap4로 수정. CH1은 원래1 유지 |
+| reuse-03 | 44,515 / 0, exit0 | 위 수정 후 원본 대조. 마지막 clock 확장 전의 중간 결과 |
+| 추가 정적 발견 | clock dispatch_phase의 내부 호출이 provider를 누락 | 같은 chapter_catalog 전달로 수정하고, 원본 clock 사례를 fixture에 추가한 뒤 최종 회귀 전체 재실행 |
+| reuse-04 | 44,891 / 0, exit0 | 최종 확대 대조. fixture 3,725개, skip0·ERROR0·stderr 빈 값 |
 
-BC04~07은 제품 worktree에 이송하지 않고 외부 원로그로 읽었다. 각 파일의 Git blob·SHA256·진입점/guard/caller 행은 `dependencies.json`, `source-and-interface-audit.json`, `api-excerpts.txt`에 보존한다.
+초기 실패의 stdout/stderr/engine/gate/JSON 및 수정 전 파일 snapshot을 모두 보존했다. 초기 오류를 PASS로 합산하지 않았다.
 
-## 필요한 수정 위치·근거
+## 다음 단위·실제 연결 HOLD
 
-행은 위 표의 각 파일 기준이다. 아래는 **정적 코드 분기 분석**이며 Godot에서 호출해 얻은 실행 실패 수가 아니다.
+BC2-03 신규10기술 시작과 후속 신규 state/queue 단위, 실제 전투/Main/State/World 연결은 구현하지 않았다. 새 재사용 진입점은 enemy/player/queue snapshot·command·continuation을 반환하는 계산 경계다. 실제 `Main` enemy 생성/AI dispatch, State 상태 적용, 효과 executor의 ack/readback, 투사체/범위 큐, 피해/패링/부활 owner 연결은 별도 통합 결정이 필요하며 **HOLD**다. 공용 6파일을 바꾸어 연결하지 않았다.
 
-| 소유 파일 / 위치 | 현재 코드·차단 | 담당자가 정해야 할 접점 |
-|---|---|---|
-| BC01 catalog:164–171,182–205 | boss_for_stage/moves/combos는최종4 Set만허용,move_by_id는CH1 union24만제공 | CH1 catalog 자체를CH2까지무단확장하지않고 chapter별데이터를선택하는공식접점이필요. BC01은전역59 manifest와기존CH1데이터의정본으로유지 |
-| BC02 spawn_contract:7,33–43,139–142 | Catalog가preload고정. request.si=4~9는boss_for_stage에서unsupported_chapter_stage,실수치계산전반환. 함수인수에catalog/provider없음 | 기존입력/RNG/충돌reader규약을유지하면서 chapter데이터를받는진입점. 실제si·element·ib/etype·global CD수59를검증한뒤동일계산을재사용할owner변경필요 |
-| BC03 utility:6,21–30 | Catalog고정,동일stage거절. move인수로CH2메타데이터를넣어도먼저CH1 boss범위와Set검사 | 실제si와그stage의허용Set을공급할계약. si2얼굴가점·si0/3streak분기등기존원본특례유지. score공식복제금지 |
-| BC04 selector:6–7,20–27,67–75,87–104,116 | Catalog/Utility가고정,stage거절외에도연속combo·59score행·최종선택·combo조회모두CH1에묶임. 내부Utility.evaluate_move도같이거절 | 단순맨앞guard확장이아닌catalog조회와score호출의일관된chapter문맥이필요. 59score슬롯/원본ordinal·CD감산·RNG순서·이력쓰기보존 |
-| BC05 phase:26–28,38,70–72,193–194,209–215,340 | phase_transition/clock_step/begin_phase_effects와continuation단계모두CH1 catalog검증. 공통phase는읽을수있어도전체상태/효과진입은막힘 | 최초진입과재개token이같은chapter/si·데이터receipt를쓰도록계약. 원본phase순서·checkpoint·helper ack/readback을유지. 실제executor연결은별도HOLD |
-| BC06 pattern_start:6,39–44,207,211–215 | begin_start가CH1 stage/union24에고정. next_start는이미작성된program을이어가는소비자이며외부catalog를받아정식시작하는API가아님 | 공통22기술의정식시작진입과새10기술의미지원경계를명시. catalog교체만으로새10의start프로그램이생기지않음. 임의continuation/program작성으로begin_start를우회하지않음 |
-| BC07 melee_states:13–17,23–26,73 | begin_tick은si0~3직접검사,next_tick도token.si0~3직접검사. Catalog주입만으로해결되지않음. slam반경은실제si사용 | 소유근접6state 중CH2공통slash/slam/sweep만재사용할stage계약과token검증필요. complete enemy_after/player_after readback·full_tick_complete=false 유지 |
+CH2 catalog는 기존 물리 일반보스(si4~9) 범위만 인수했다. 다른 장·다른 속성·특수 보스 provider 지원과 실제 통합 성능은 **미확인**이다.
 
-### 단순 연결로 해결되지 않는 차이
+## 격리·산출물
 
-| 확인점 | 근거·영향 |
-|---|---|
-| BC2-01의ready와계산모듈ready는별개 | CH2 catalog의boss_for_stage(4~9) 지원은이미있지만BC02~06의lexical Catalog는여전히CH1 preload다. 새외부모듈을만들어도그상수binding이교체되지않음 |
-| 전역manifest와장별데이터구분 | BC04:87/104는source_receipt.move_manifest의59개전역순서를필요로한다. BC2-01 source_receipt:40–52에는집합수/범위가있고 **move_manifest키는없다**. 따라서단순preload치환도정식해결안이아님. 기존BC01전역manifest와CH2장별조회가함께필요 |
-| 사용가능한부분helper도확인 | BC04 pick_top_six:128–159는59개score를받는독립계산으로재사용가능하다. 그러나score생성·CD/이력·combo·start경계의차단을해결하지않으므로이helper만호출하고BC2-02가구현됐다고할수없음 |
-| stage위장불가 | BC07 slam식73의1000+si*30+phase*80은si4/phase0에서1120,si0위장은1000이된다(원본game.html41125). BC02초기revPts도si4=224/si0=200(game.html31181). 결과만사후보정하면원본계산을새파일에복제하게됨 |
-| 신규10시작은다음소유단위 | 32개등록데이터와22개재사용시작/새10개start구현은별개. BC06의chapter범위만넓히고모든32기술이실행지원됐다고표시하면안됨. 신규10은원래다음BC2-03의소유범위이며이번착수0 |
+매 Godot 호출 전 `pgrep -f "Godot.app/Contents/MacOS/Godot" | wc -l`을 실행하고 2이상이면30초씩 대기했다. 이 작업의 Godot 호출은 직렬이다. 신규 userdir는 `EXODUSER-bc2-02-Isolated-20261020`, 기존 회귀는 각 테스트의 상수 이름이다. 실행마다 override.cfg를 설정하고 finally에서0byte로 비웠다. 실제 저장 폴더를 테스트 대상으로 사용하지 않았다.
 
-## 총괄·기존 owner에게 넘길 결정
+변경 제품은 승인 BC02~07의6모듈+읽기 context/bridge/CH2 entry3개, 기존 UID4개·신규 UID4개, 신규 테스트/원본 하니스, 이 보고서, CHANGELOG_SYNC 맨위절이다. 기존 BC01/BC08/BC2-01 및 기존 테스트 변경0. 바이너리는 커밋하지 않는다.
 
-아래는 재개에 필요한 계약 요구사항이며 채택·구현·검증된 새 API가 아니다. 기존 담당 파일의 구체적인 변경 줄 수와 최종 함수 signature는 owner 구현 전이라 **미확인**이다.
-
-| 결정 | 최소 요구·보존 조건 |
-|---|---|
-| 읽기 데이터 공급 | 전역receipt/gamehash/59 manifest,실제si의boss/Set,move_by_id,5phase,combo 조회를구분한다. BC01·BC2-01 공개읽기API를재사용하고공통수치테이블/공식복제0. 공급누락·hash불일치·미지원기술은NOT_READY,부분성공금지 |
-| 기존 호출 호환 | CH1 기존호출·반환·실패규약·기본데이터선택을그대로보존하는추가진입점또는명시적데이터인수를owner가결정한다. 전역static catalog변경·stage위장·별칭클래스로guard우회금지 |
-| chapter/state 문맥 | 최초packet과continuation의실제si/chapter/지원기술/원본receipt를같은권위로검증한다. ctx에값만첨가하고기존함수가그값을읽는다고가정하지않음 |
-| 순수 계산과집행 구분 | 현재snapshot/RNG/충돌reader·단일command/ack·실제owner readback경계를유지한다. no live actor/Main/State/World/피해/패링/큐/저장연결. 실제연결요구가나오면그단위는HOLD |
-| 재사용 지원범위 | BC02/03/04/05의공통계산,BC06의공통22시작,BC07의근접3기술6state를구분. 새10start와새4state/6queue를한번에끌어오지않음 |
-| 회귀·원본검증 | BC01~BC07·BC2-01 기존상수격리명으로실행,신규는EXODUSER-bc2-02-Isolated-20261020. CH1동일결과·모든CH2slot·stage/phase밖·미지원기술·의존오류·입력불변·RNG소비/중단·ack/readback 실패를독립원본fixture와검증. 이번에는실행하지않음 |
-| QA-007 하니스 | 새하니스가Node를호출하면node실행경로를인자로받고,OS.execute의출력은전체join또는임시파일UTF-8로읽는다. output[0]만해석하거나고정Node경로/심볼릭링크를전제하지않음. BC02/BC03계열의source-game 절대경로인수유지. 누락인수를PASS/skip으로감추지않음 |
-
-공용·다른 담당 파일 0줄 조건이 유지되는 현재 배정에서는 위 owner 변경을 수행할 수 없다. 총괄의 수정 소유권·진입점 계약 결정이 반영된 선행을 받은 뒤에만 재사용 단위를 재개할 수 있다. 현재 보고서는 그 결정을 대신한 자동 승인이나 보호 범위 완화가 아니다.
-
-## 정적 확인·제출 범위
-
-| 검토 | 관측·한계 |
-|---|---|
-| 원격·기준 | 최신main/BC2-01의포함여부,BC01~07파일존재/공개인수/guard/caller경로를확인. 선행에있는BC01~03은최신main과동일byte |
-| 코드·원본 | 코드수정0,새공통식/adapter/token생성0. 원본game/index hash·행수와최신main동일byte를확인 |
-| 실행 | Godot0/게임0/Node원본하니스0/신규·회귀테스트0. 전역Godot실행gate를건너뛴실행도없음. 기존BC2-01의114,036/0등을이번PASS로재사용하지않음 |
-| 산출물 | `docs/engine/orders/reports/bc2-02_REPORT.md`와CHANGELOG_SYNC맨위절만commit. 별도제품파일·테스트·UID없음 |
-| 원로그·정리 | `~/exoduser-wt/_out/bc2-02/`: baseline/dependencies/source-and-interface-audit/api-excerpts/docs-matches·정상commit/push원문·remoteSHA·DONE. push/remote일치/DONE후자기worktree제거,브랜치·원로그보존 |
-
-판정은 **BC2-02 HOLD, 기능 미구현**이다. 실제 전투·Main 연결을 수행하지 않았고 후속 단위로 넘어가지 않았다.
+원로그는 `~/exoduser-wt/_out/bc2-02/approved/`(전후 프로젝트·실행·scope·정상 hook·push·remote 검증)에, 이전 HOLD 로그는 같은 작업 root에 보존한다. 자기 브랜치만 정상 push하고 원격 SHA 일치 확인 후 root `DONE.txt`에 브랜치·SHA·최종 수치를 쓰고 자기 worktree를 제거한다. 최종 SHA는 순환 참조를 피하기 위해 커밋 내부 보고서 대신 외부 DONE/remote 검증에 기록한다.
