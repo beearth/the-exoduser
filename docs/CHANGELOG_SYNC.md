@@ -1,3 +1,22 @@
+## 2026-10-20 CH1-06 선행 CH1-05 의존 통합 체크포인트
+
+| 항목 | 경계 |
+|---|---|
+| 기준/의존 | 최신 main26c050a99에서 승인 CH1-05 c13802c0을 병합. 추출기 stage2와 main의 CH2 stage4/observeNative/장별 출력 경계를 함께 보존. CH1-06 신규 구현·검수는 후속 커밋 |
+| 보호 | Main·공용6파일·맵공유 파일·CH2 전용 파일 변경0. 기존 CHANGELOG 본문 바이트 보존, CH1-05 절 복원. 통합 검증 전 개발 체크포인트 |
+
+## 2026-10-20 CH1-05 si2 공통필드·원본 군락 조립
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 디스크 | 시작fetch main e556b617, CH1-04 5487245c 미병합으로 그 끝 분기. 도중main8524bbbb로 공용ref전진·관련원본변경0/game SHA4d911cdd… 동일. --no-checkout+sparse151패턴·필요원본42경로만 추가·WT약1.5GiB. push/SHA/DONE 뒤 자기WT 제거·branch/log 유지 |
+| 원문 / 조립 | source extractor stage2 추가·si2.json·새 stage2 resource pipeline/순수 composition/test/preview. 원문 전체initMapObjects와 의존 실행, isTileRLEtrue/SI_TO_FLOOR2/초기boss_gate_col(4020,160) 보존. source 삽입large37→lm3→mega1→unique5→providedFloor16→scatter89→normal140→editor1·최종stable layer/y로292objects·SHA6a65accc… 확정 |
+| 정확 값 / 자산 | si2 200²/T40·RLE[1,40000]→최종tile38986/36/3/0/975·SHA5b40eb67…·START4020/7420/gate5/exits7·holes13/1000/분면250/300/250/200. groves/empty각3원값·retired34exact-ID. byte동일51PNG/34729509byte+import51, 실Sprite291/analytic47/tile1union4rect. 원본bitmap편집0 |
+| 표시 / 경계 | CH1-04 consumer stage2명시분기, 다른stage폴백거부. flip68/rot7/anchor15/eyeAtlas13/hardAlpha25/key1·key-before-native-filter GPU probe2. source-only 관측패스 소비·새live random placement 아님. Main/제품World/P/저장0·P3/적factory/보스/전환미연결·full_stage_readyfalse |
+| 신규 검증 | Node8/0·headless1243/0·최종GPU1635/0/Apple M5 Pro·8PNG1920×1080. isW8262/canMv8262/LOS400불일치0·physics40000센터/union0오차·BFS191/왕복382·96렌더프레임1570.144ms(60cap). 초기Node경로/출처ref 실패·Gd타입/엔진ERROR원문보존후해소 |
+| 회귀 / 보호 | CH1-01 9/0·63/0, CH1-02 6/0·189/0, CH1-03 9/0·75/0, CH1-04 5/0·GPU410/0(8PNG기준byte동일), P3001Node6/0·contracts5그룹/0·P3002 298/0·P3003 43/0·encounter3그룹/0. 맵28/9기준동일·새실패0. 보호1394파일SHA동일·공용/타인/공유맵0줄·R보존 |
+| 시각 / 상세 | **VISUAL FAIL**: 원본조립 기술범위DONE, 반복 patch/보라색경계/외곽/접지·조명·생동감·전투미술 미완. 기술PASS로 시각인수 대체0. [CH1-05 보고서](engine/orders/reports/ch1-05_REPORT.md), ~/exoduser-wt/_out/ch1-05/. 매Godot전2이상30초대기·suite상수격리·override finally0byte·정상훅 |
+
 ## 2026-10-20 SND-08 독립 원문 믹스·합성·레시피 모델
 
 ## 2026-10-20 NW-03 MAP_OBJS action의 독립 명령 계획

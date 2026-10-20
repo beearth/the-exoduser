@@ -3,6 +3,10 @@ extends Node2D
 const Resources = preload("res://scripts/native_ch1_area_resources.gd")
 const USERDIR := "EXODUSER-ch1-04-Isolated-20261020"
 @export var preview_active := true
+@export var area_stage := 1
+var composition_passes: Array=[]
+var _analytic_colliders: Array=[]
+var _eye_views: Array=[]
 var ready_for_fixture := false
 var resource_errors: Array = []
 var raw: Dictionary = {}
@@ -20,11 +24,18 @@ func configure(source: Dictionary, resources: Dictionary) -> void:
  raw = source
  bundle = resources
  _configured = true
+ if source.get("stage")==2:area_stage=2
 
 func _ready() -> void:
- if ProjectSettings.get_setting("application/config/custom_user_dir_name","") != USERDIR or not ProjectSettings.get_setting("application/config/use_custom_user_dir",false):
+ if area_stage not in [1,2]:
+  resource_errors=["unsupported_area_stage"]
+  return
+ var isolated_name: String="EXODUSER-ch1-05-Isolated-20261020" if area_stage==2 else USERDIR
+ if ProjectSettings.get_setting("application/config/custom_user_dir_name","") != isolated_name or not ProjectSettings.get_setting("application/config/use_custom_user_dir",false):
   resource_errors = ["isolated_userdir_required"]
   return
+ if area_stage==2 and not _configured:
+  raw=JSON.parse_string(FileAccess.get_file_as_string("res://data/ch1_map_source/si2.json"))
  var result: Dictionary = Resources.new().read_resources(raw,bundle)
  resource_errors = result.errors
  if not result.ready:
@@ -32,6 +43,15 @@ func _ready() -> void:
  raw = result.raw
  bundle = result.bundle
  textures = result.textures
+ _analytic_colliders=bundle.colliders
+ if area_stage==2:
+  composition_passes=result.composition.passes
+  _analytic_colliders=[]
+  for collider in bundle.colliders:
+   var decoded: Dictionary=collider.duplicate()
+   var bits:=Marshalls.base64_to_raw(collider.f64)
+   for i in 6:decoded[["x","y","rx","ry","oy","rotation"][i]]=bits.decode_double(i*8)
+   _analytic_colliders.append(decoded)
  _install_ground()
  _install_walls()
  _install_props()
@@ -49,10 +69,15 @@ func _ready() -> void:
  camera.enabled = preview_active
  camera.zoom = Vector2.ONE
  actor.add_child(camera)
+ if area_stage==2:_update_stage2_eyes()
  ready_for_fixture = true
  set_process(preview_active)
 
 func _install_ground() -> void:
+ if area_stage==1:_install_stage1_vista()
+ _install_floor()
+
+func _install_stage1_vista() -> void:
  var vista_texture: Texture2D = textures[bundle.vista.texture]
  var vista := Sprite2D.new()
  vista.name = "Vista"
@@ -62,6 +87,8 @@ func _install_ground() -> void:
  vista.scale = Vector2(fit,fit)
  vista.z_index = -10
  add_child(vista)
+
+func _install_floor() -> void:
  var floor_texture: Texture2D = textures[bundle.floor.texture]
  var floor_view := Polygon2D.new()
  floor_view.name = "SourceFloor"
@@ -104,6 +131,9 @@ func _install_walls() -> void:
  # Props use exact source analytic ellipses/circles below, not polygon approximations.
 
 func _install_props() -> void:
+ if area_stage==2:
+  _install_stage2_props()
+  return
  var layers: Dictionary = {}
  for p in bundle.props:
   var layer: int = int(p.get("metadata",{}).get("_renderLayer") if p.get("metadata",{}).get("_renderLayer") != null else 0)
@@ -143,13 +173,18 @@ func is_wall_xy(px: float, py: float) -> bool:
   return true
  if int(raw.tiles[ty*200+tx]) == 1:
   return true
- for c in bundle.colliders:
+ for c in _analytic_colliders:
   var dx: float = px-float(c.x)
   var dy: float = py-float(c.y)-float(c.oy)
   var rx: float = c.rx
   var ry: float = c.ry
   var blocked := false
-  if c.shape == "circle":
+  if c.shape == "rect":
+   var angle: float=c.rotation
+   var local_x:=dx*cos(angle)+dy*sin(angle)
+   var local_y:=-dx*sin(angle)+dy*cos(angle)
+   blocked=absf(local_x)<rx and absf(local_y)<ry
+  elif c.shape == "circle":
    blocked = dx*dx+dy*dy < rx*rx
   else:
    blocked = dx*dx/(rx*rx)+dy*dy/(ry*ry) < 1.0
@@ -179,6 +214,7 @@ func move_fixture_to(target: Vector2) -> bool:
   if not can_move_xy(p.x,p.y,fixture_radius):
    return false
  actor.position = target
+ if area_stage==2:_update_stage2_eyes()
  return true
 
 func route_to_exit() -> Array[Vector2]:
@@ -234,3 +270,59 @@ func _process(delta: float) -> void:
   if not move_fixture_to(next):
    move_fixture_to(Vector2(next.x,actor.position.y))
    move_fixture_to(Vector2(actor.position.x,next.y))
+
+func _install_stage2_props() -> void:
+ var group:=Node2D.new()
+ group.name="PropLayer0"
+ group.y_sort_enabled=true
+ add_child(group)
+ var materials: Dictionary={}
+ for p in bundle.props:
+  if p.retired or p.view=="invisible_system_collider":continue
+  var sprite:=Sprite2D.new()
+  sprite.name=p.type+"_"+str(p.source_index)
+  sprite.set_meta("source_index",p.source_index)
+  sprite.set_meta("source_type",p.type)
+  var texture: Texture2D=textures[p.texture]
+  if p.has("atlas"):
+   var atlas:=AtlasTexture.new()
+   atlas.atlas=texture
+   atlas.region=Rect2(0,0,40,40)
+   texture=atlas
+   _eye_views.append({"sprite":sprite,"atlas":atlas,"source":p})
+  sprite.texture=texture
+  sprite.centered=false
+  sprite.position=Vector2(p.x,p.y)
+  var size:=texture.get_size()
+  sprite.offset=Vector2(-size.x*p.pivot[0],-size.y if p.anchor_bottom else -size.y*p.pivot[1])
+  sprite.scale=Vector2(p.draw_size[0]/size.x,p.draw_size[1]/size.y)
+  sprite.rotation=deg_to_rad(float(p.rotation))
+  sprite.flip_h=p.flip_h
+  var key: String="hard" if p.hard_alpha else "magenta" if p.magenta_key else ""
+  if not key.is_empty():
+   if not materials.has(key):
+    var shader:=Shader.new()
+    # Source _hardAlphaSpr/_keyMagentaSpr run on image pixels BEFORE sampling.
+    # Fetch and key each texel, then interpolate premultiplied colors for the native view.
+    shader.code="shader_type canvas_item;\nvec4 source_pixel(sampler2D src,ivec2 p){vec4 c=texelFetch(src,clamp(p,ivec2(0),textureSize(src,0)-ivec2(1)),0);"
+    if key=="hard":shader.code+="if(c.a<1.0)c.a=0.0;"
+    else:shader.code+="if(c.r>200.0/255.0&&c.b>200.0/255.0&&c.g<90.0/255.0)c.a=0.0;else if(c.r>150.0/255.0&&c.b>150.0/255.0&&c.g<120.0/255.0&&(c.r-c.g)>50.0/255.0)c.a=floor(c.a*255.0*0.12)/255.0;"
+    shader.code+="c.rgb*=c.a;return c;}\nvoid fragment(){vec2 p=UV*vec2(textureSize(TEXTURE,0))-vec2(0.5);ivec2 b=ivec2(floor(p));vec2 f=fract(p);vec4 c=mix(mix(source_pixel(TEXTURE,b),source_pixel(TEXTURE,b+ivec2(1,0)),f.x),mix(source_pixel(TEXTURE,b+ivec2(0,1)),source_pixel(TEXTURE,b+ivec2(1,1)),f.x),f.y);if(c.a>0.0)c.rgb/=c.a;COLOR=c;}"
+    var material:=ShaderMaterial.new()
+    material.shader=shader
+    materials[key]=material
+   sprite.material=materials[key]
+  group.add_child(sprite)
+  sprites.append(sprite)
+
+func _update_stage2_eyes() -> void:
+ if actor==null:return
+ for view in _eye_views:
+  var source: Dictionary=view.source
+  var dx: float=actor.position.x-float(source.x)
+  var dy: float=actor.position.y-float(source.y)
+  var frame:=0
+  if dx*dx+dy*dy>1600.0:
+   var index:=int(((atan2(dy,dx)+PI)/TAU)*8.0+.5)%8
+   frame=[3,4,5,6,7,8,1,2][index]
+  view.atlas.region=Rect2(frame*40,0,40,40)

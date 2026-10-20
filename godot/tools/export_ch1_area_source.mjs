@@ -1,4 +1,4 @@
-// CH1-01/03 and CH2-01: native stage0/1/4 source snapshots, never map.json/PNG.
+// CH1-01/03/05 and CH2-01: native stage0/1/2/4 snapshots, never map.json/PNG.
 // Stage0 base 284d7faf / stage1 main e556b617; unchanged game SHA 4d911cdd...; exact ranges below.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -29,7 +29,7 @@ export function captureJSON(value, undefinedPaths = [], at = '', active = new Se
 }
 
 export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, observeNative} = {}) {
-  if (![0,1,4].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0, 1 and 4 are supported');
+  if (![0,1,2,4].includes(stage)) throw new Error('UNSUPPORTED_STAGE: only stages 0, 1, 2 and 4 are supported');
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('Invalid uint32 seed');
   if (observeNative !== undefined && typeof observeNative !== 'function') throw new Error('Invalid native observer');
   const root = fs.realpathSync(sourceRoot);
@@ -109,6 +109,9 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
     initial_obj_meta:_OBJ_META,${stage === 4 ? 'ch2_deco_raw:_CH_DECO[1]' : 'ch1_deco_raw:_CH_DECO[0]'},chapter_stages:CHAPTER_STAGES,
     spawn_holes_final:G.spawnHoles.map(h=>({...h,count:_spawnHoleCount(h.size,${stage})})),
     total_spawned:G._totalSpawned,exit_center_tile:[_exitCX,_exitCY]})`);
+  if (stage === 2) Object.assign(generated,evaluate(`({composition_raw:_MAP_COMPOSE[2],
+    source_state:{is_tile_rle:G._isTileRLE,si_to_hell:SI_TO_HELL,si_to_floor:SI_TO_FLOOR,initial_map_objects:Array.from(MAP_OBJS)},
+    template_tile_rle:template.tileRLE})`));
   const undefinedPaths = [], data = captureJSON(generated,undefinedPaths);
   if (data.tiles.length !== 40000) throw new Error('Incomplete native tile grid');
   const totals = captureJSON(evaluate('G._regions.map(r=>r.total)'));
@@ -169,8 +172,8 @@ export function buildStage0Snapshot(sourceRoot, options = {}) {
 }
 
 export function main(args) {
-  if (args.length !== 6 || args[2] !== '--stage' || args[4] !== '--seed' || !['0','1','4'].includes(args[3])) {
-    throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1|4> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
+  if (args.length !== 6 || args[2] !== '--stage' || args[4] !== '--seed' || !['0','1','2','4'].includes(args[3])) {
+    throw new Error('Usage: export_ch1_area_source.mjs <source-root> <output-json> --stage <0|1|2|4> --seed <uint32>; UNSUPPORTED_STAGE otherwise');
   }
   const root=fs.realpathSync(args[0]), output=path.resolve(args[1]);
   const relative=path.relative(root,output);
@@ -194,7 +197,7 @@ export function main(args) {
   const result=buildAreaSnapshot(root,{stage:Number(args[3]),seed:Number(args[5])});
   fs.mkdirSync(path.dirname(output),{recursive:true});
   fs.writeFileSync(output,JSON.stringify(result)+'\n');
-  console.log(JSON.stringify({schema:result.schema,stage:result.stage,tiles:result.tiles.length,hand_props:result.hand_props_raw.length,
+  console.log(JSON.stringify({schema:result.schema,stage:result.stage,tiles:result.tiles.length,hand_props:result.hand_props_raw?.length??null,
     base_meta:Object.keys(result.initial_obj_meta).length,...(chapter === 2 ? {ch2_deco:result.ch2_deco_raw.length} : {ch1_deco:result.ch1_deco_raw.length}),
     holes:result.spawn_holes_final.length,total:result.total_spawned,region_totals:result.region_totals,
     tile_sha256:result.runtime_tile_sha256,output}));

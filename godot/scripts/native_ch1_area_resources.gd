@@ -1,5 +1,6 @@
 extends RefCounted
 ## CH1-04 standalone resource reader. Product map, resource owners and Main are untouched.
+const Stage2 = preload("res://port_modules/ch1_map_source/stage2_composition.gd")
 const Contract = preload("res://port_modules/ch1_map_source/stage1_contract.gd")
 const SOURCE := "res://data/ch1_map_source/si1.json"
 const RESOURCES := "res://data/ch1_map_source/si1_resources.json"
@@ -8,7 +9,9 @@ func read_resources(raw: Dictionary = {}, bundle: Dictionary = {}) -> Dictionary
  if raw.is_empty():
   raw = JSON.parse_string(FileAccess.get_file_as_string(SOURCE))
  if bundle.is_empty():
-  bundle = JSON.parse_string(FileAccess.get_file_as_string(RESOURCES))
+  bundle = JSON.parse_string(FileAccess.get_file_as_string("res://data/ch1_map_source/si2_resources.json" if Contract.literal(raw.get("stage"),2) else RESOURCES))
+ if Contract.literal(raw.get("stage"),2):
+  return _read_stage2(raw,bundle)
  var errors: Array = []
  var source_check: Dictionary = Contract.new().validate_area(raw)
  if source_check.status != "READY":
@@ -49,3 +52,25 @@ func read_resources(raw: Dictionary = {}, bundle: Dictionary = {}) -> Dictionary
    errors.append("floor_mask_hash")
  return {"ready":errors.is_empty(),"errors":errors,"raw":raw,"bundle":bundle,"textures":textures,
   "scope":"si1_standalone_only","main_bound":false,"full_stage_ready":false}
+
+func _read_stage2(raw: Dictionary,bundle: Dictionary) -> Dictionary:
+ var composition: Dictionary=Stage2.assemble(raw,bundle)
+ if composition.status!="READY":return {"ready":false,"errors":[composition.reason]}
+ var textures: Dictionary={}
+ var errors: Array=[]
+ for a in bundle.assets:
+  if not a is Dictionary or not a.get("texture") is String:
+   errors.append("stage2_asset_record")
+   continue
+  var target: String=a.texture
+  if not target.begins_with("res://assets/map/ch1_si2/") or target.contains(".."):
+   errors.append("stage2_asset_scope:"+target)
+   continue
+  if not FileAccess.file_exists(target) or FileAccess.get_sha256(target)!=a.get("sha256"):
+   errors.append("stage2_asset_bytes_missing_or_changed:"+target)
+   continue
+  var texture:=load(target) as Texture2D
+  if texture==null:errors.append("stage2_texture_missing:"+target)
+  else:textures[target]=texture
+ return {"ready":errors.is_empty(),"errors":errors,"raw":raw,"bundle":bundle,"textures":textures,
+  "composition":composition,"scope":"si2_standalone_only","main_bound":false,"full_stage_ready":false}
