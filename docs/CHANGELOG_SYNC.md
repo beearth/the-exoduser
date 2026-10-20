@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-24 — 데모 affix 소비·빈도·보호 경로 인계
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·분모 | fetch main0138c5bb + 인수22r d276e02e 정상merge(FF). 원본 G14364–14856/G15131–15178/G16646–16650/G32002–32033에서 데모 후보398레코드/396id. 원본 롤 등급별100,000회·총400,000회 고정seed 관측 빈도 표, 실제 한 판 혼합 빈도는 미확인 |
+| 연결 | 기존 PC equipment_refresh1회만 재사용. 장착 receipt에 id별 실제 합산·before/after·READY/NOT_READY/PARTIAL 추가. 스탯18 검증, hurtE 직접72id·기타306id는 미완료. 원본 수식/tiers 복제0·Main/State/전투/저장0줄·기존 장착 파일+1줄(:135) |
+| 검증·인계 | 신규639/0·원문18사례360필드 exact Number 불일치0. 직접 회귀2종 각1회735/0(22r442+PC293). ERROR/누수/잔류0. 데모필터 native 차이7id·hurtE72id는 보호 owner에 계약 요청. [보고서](engine/orders/reports/demo11-24_REPORT.md)·[빈도/전수표](7아이템디자인/DEMO11_24_EFFECT_CONSUMPTION_20261021.md)·원로그 _out/demo11-24/. tick/목록 API/공유 RNG0·각 격리 상수·override0byte |
 
 ## 2026-10-21 DEMO11-22r — 일반17슬롯 장착·PC runtime refresh 연결
 
