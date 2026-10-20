@@ -157,7 +157,7 @@ func _camera() -> Vector2:
 	return camera.global_position if is_instance_valid(camera) else _player.global_position
 func _retain_expired(shot: Node) -> bool:
 	return shot.life_ticks > -900 and not shot.raw.get("redBean",false) and shot.global_position.distance_squared_to(_camera())<=6250000.0
-func _physics_process(_delta: float) -> void:
+func _demo47i_physics_body(_delta: float) -> void:
 	if _natural_source!=null and is_instance_valid(_natural_source.get_ref()) and _natural_source.get_ref().frame_ready(_world.get_native_frame()):return
 	if _live() and is_instance_valid(_d_owner) and _d_reader.is_valid():
 		var frame: Dictionary=_d_reader.call()
@@ -313,3 +313,16 @@ func admit_profile_projectile(owner: Node,actor: Node,origin: Vector2,profile: D
 	return shot
 func _profile_event(kind: String,packet: Dictionary,id: int) -> void:
 	if kind=="enemy_projectile_end":_retire(id,str(packet.get("reason","profile_end")))
+
+func _physics_process(_delta: float) -> void:
+	var tree_root: Window=get_tree().root
+	if not tree_root.has_meta("demo47i_stage"):
+		_demo47i_physics_body(_delta);return
+	var started: int=Time.get_ticks_usec()
+	_demo47i_physics_body(_delta)
+	var elapsed: int=Time.get_ticks_usec()-started
+	var perf: Dictionary=tree_root.get_meta("demo47i_perf",{})
+	var key: String=str(tree_root.get_meta("demo47i_stage"))+"|native_demo11_boss_projectiles.gd::_physics_process"
+	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
+	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
+	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)

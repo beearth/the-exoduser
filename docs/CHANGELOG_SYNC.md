@@ -56037,3 +56037,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-21 integ-fix 보충 — Dummy 관측 분리·perf/etype9 경계
 
 41은 실제AudioServer driver가Dummy일 때 재생/비동기콜백13관측을 이유와 함께skip하며, 모든driver 공통 요청·상태/handle 정리9검사를 추가했다. Dummy51/0/skip13·CoreAudio64/0/skip0, 기존etype-B42/0으로deadPool owner 거부 확인. 각조건1회·ERROR0·exit0, runner는PASS_WITH_SKIPS와JSON.skipped를명시한다. 제품SND06/media/visibility코드 변경0. perf aaf52dc0cb4439e828c9fe1a6560b0dd3e8ab1e7은이미ancestor(추가merge0);PC약22ms/tick 해결·120fps인수주장0. etype9는PC P2-008b 확인전NOT_READY유지. 실제청음은사용자실창검수. [근거·한계·로그](engine/orders/reports/integ-fix_AUDIO_SUPPLEMENT.md).
+
+
+## DEMO11-47i (2026-10-21)
+
+- b07f5c56 + 47h merge, isolated E2E 1회 13 PASS / 5 NOT_READY / 0 FAIL. field_MAP11 actual product 관측, headless logical visibility 보정, Mac callback opt-in 계측. 자동물약/적 처치/전투 gate/보스 최종사망 미해소, revival PCI 묶음 A 대기. 전체 E2E 완료 아님. 상세 docs/engine/orders/reports/demo11-47i_REPORT.md 및 DEMO11_STATUS_20261021.md.

@@ -34,6 +34,7 @@ func arg(key: String,fallback: String="") -> String:
   if a.begins_with(key+"="):return a.substr(key.length()+1)
  return fallback
 func begin(id: String) -> void:
+ root.set_meta("demo47i_stage",id)
  active={"id":id,"start_us":Time.get_ticks_usec(),"physics_samples":[],"frame_samples":[],"evidence":{},"checkpoint":checkpoint};process_last=0;action_start=Time.get_ticks_usec()
 func action_end() -> void:active.action_us=Time.get_ticks_usec()-action_start
 func mark_checkpoint(reason: String) -> void:
@@ -156,9 +157,10 @@ func run() -> void:
     var description: Variant=child.describe()
     if description is Dictionary and description.get("runtime_ready")==true:
      main.bind_native_spawn_stage_provider(child);adapter=main.get("native_stage_spawn_adapter");break
- var field_ready: bool=adapter!=null and adapter.is_current()
+ var product: Node=main.get("native_map11")
+ var field_ready: bool=is_instance_valid(product) and product.current() and product.snapshot().space=="field" and main.world.ready_for_player
  if not field_ready:mark_checkpoint("MAP11 production provider absent; remaining actual subsystems run as conditional checkpoints")
- await done("PASS" if field_ready else "NOT_READY","" if field_ready else "MAP11_provider_absent",{"stage":g.get("stage"),"World_ready":main.world.ready_for_player,"actual_provider":field_ready,"fixture_provider_created":false})
+ await done("PASS" if field_ready else "NOT_READY","" if field_ready else "MAP11_provider_absent",{"stage":g.get("stage"),"World_ready":main.world.ready_for_player,"actual_provider":field_ready,"spawn_adapter_bound":adapter!=null,"fixture_provider_created":false})
  begin("enemy_kill")
  var target: Node
  for e in main.world.get_enemies():
@@ -267,7 +269,7 @@ func finish() -> void:
  var counts: Dictionary={"PASS":0,"NOT_READY":0,"FAIL":0}
  for row in rows:counts[row.status]+=1
  var overall: String="FAIL" if counts.FAIL>0 else ("NOT_READY" if counts.NOT_READY>0 or checkpoint else "PASS")
- var result: Dictionary={"overall":overall,"counts":counts,"failures":counts.FAIL,"stages":rows,"stage_order_complete":rows.size()==ORDER.size(),"continuous_E2E":overall=="PASS" and not checkpoint,"headless":DisplayServer.get_name()=="headless","userdir":OS.get_user_data_dir(),"physics_hz":Engine.physics_ticks_per_second,"budget_ms":1000.0/120,"performance_scope":"headless callback CPU span and process_frame wall intervals; GPU excluded; command_span_ms includes asynchronous waits; not a CPU timer","visual_audio_QA":false}
+ var result: Dictionary={"overall":overall,"counts":counts,"failures":counts.FAIL,"stages":rows,"stage_order_complete":rows.size()==ORDER.size(),"continuous_E2E":overall=="PASS" and not checkpoint,"headless":DisplayServer.get_name()=="headless","userdir":OS.get_user_data_dir(),"profile_calls":root.get_meta("demo47i_perf",{}),"physics_hz":Engine.physics_ticks_per_second,"budget_ms":1000.0/120,"performance_scope":"headless callback CPU span and process_frame wall intervals; GPU excluded; command_span_ms includes asynchronous waits; not a CPU timer","visual_audio_QA":false}
  if not arg("--results-path").is_empty():
   var file:=FileAccess.open(arg("--results-path"),FileAccess.WRITE)
   if file!=null:file.store_string(JSON.stringify(result,"\t"));file.close()

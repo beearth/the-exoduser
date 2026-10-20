@@ -231,7 +231,7 @@ static func _load_frames(pattern: String, count: int) -> Array:
 	return frames
 
 
-func _physics_process(_delta: float) -> void:
+func _demo47i_physics_body(_delta: float) -> void:
 	if not _configured or not is_instance_valid(_player):
 		return
 	_tick += 1.0
@@ -936,3 +936,16 @@ func get_native_pets_snapshot() -> Dictionary:
 			"crow _fly 애니(원본 미등록 dead)·cat t 및 대사 셔플은 월드와 분리한 로컬 RNG",
 			"tut_charge 후속(firstCharge — 사슬기동 미이식)·parry 카운터(패링 콜백 미배선)",
 			"이리스 LIT 색층(ci0 색 글로우 — P2-003a 색층 전체 미이식과 동일 경계)"]}
+
+func _physics_process(_delta: float) -> void:
+	var tree_root: Window=get_tree().root
+	if not tree_root.has_meta("demo47i_stage"):
+		_demo47i_physics_body(_delta);return
+	var started: int=Time.get_ticks_usec()
+	_demo47i_physics_body(_delta)
+	var elapsed: int=Time.get_ticks_usec()-started
+	var perf: Dictionary=tree_root.get_meta("demo47i_perf",{})
+	var key: String=str(tree_root.get_meta("demo47i_stage"))+"|native_pets.gd::_physics_process"
+	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
+	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
+	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)

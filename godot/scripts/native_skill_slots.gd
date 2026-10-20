@@ -179,7 +179,7 @@ func _commit_skill_quote(q: Dictionary) -> Dictionary:
 	return _state.commit_native_skill_dispatch_cost(_main,q.st,q.mp,q.mats)
 
 
-func _physics_process(_delta: float) -> void:
+func _demo47i_physics_body(_delta: float) -> void:
 	if not _configured:
 		return
 	# 35936~35937: 회복의 영역 안이면 _hdCdBonus=sp — 적용 대상은 cd별로 원본 라인 그대로:
@@ -843,3 +843,16 @@ func get_native_skill_slots_snapshot() -> Dictionary:
 			"P._atkBon 이월(+~~(cost×1.5) — 직전 weapon 스윙 보너스)", "보스 _poiseHit 25% 경로(비도달)",
 			"파편 파티클 32(파티클 풀)·crater 폴백", "SFX.slam 합성 3층(playSub/Dist/Noise — 샘플만 복사)",
 			"'screen' 블렌드 정확 재현(가산 근사)", "_detonateAssaultFlames·slamStorm/pillarSlam 합체 분기(미보유)"]}
+
+func _physics_process(_delta: float) -> void:
+	var tree_root: Window=get_tree().root
+	if not tree_root.has_meta("demo47i_stage"):
+		_demo47i_physics_body(_delta);return
+	var started: int=Time.get_ticks_usec()
+	_demo47i_physics_body(_delta)
+	var elapsed: int=Time.get_ticks_usec()-started
+	var perf: Dictionary=tree_root.get_meta("demo47i_perf",{})
+	var key: String=str(tree_root.get_meta("demo47i_stage"))+"|native_skill_slots.gd::_physics_process"
+	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
+	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
+	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)

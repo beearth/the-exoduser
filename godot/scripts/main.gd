@@ -762,6 +762,8 @@ func read_native_document_hidden() -> Variant:
 	if not is_instance_valid(window) or window.is_queued_for_deletion() \
 			or not window.is_inside_tree() or window != get_window():
 		return null
+	# Headless has no desktop minimize state; visible logical root owns simulation visibility.
+	if DisplayServer.get_name()=="headless":return not window.visible
 	return not window.visible or window.mode == Window.MODE_MINIMIZED
 
 func get_native_document_visibility_snapshot() -> Dictionary:
@@ -1263,7 +1265,7 @@ func _update_native_screen_flash() -> void:
 	else:
 		_native_flash_rect.color = Color(1, 1, 1, 0)
 
-func _physics_process(_delta: float) -> void:
+func _demo47i_physics_body(_delta: float) -> void:
 	# Known intro ens replacement: one owner-validated handoff, never a tick rebind.
 	if not _native_system_intro_handoff_done and is_instance_valid(source_regeneration) and is_instance_valid(source_intro_sequence) and source_intro_sequence.phase=="done":
 		var flow: Variant=source_intro_sequence.lesson_flow
@@ -3503,3 +3505,16 @@ func _retranslate_native_ui(what: int) -> void:
 				if _character_picker.get_item_id(i)==choice.index:
 					_character_picker.set_item_text(i,UI.text(str(choice.name)))
 					if not choice.available:_character_picker.set_item_tooltip(i,UI.text("원본 시트가 준비되지 않았습니다"))
+
+func _physics_process(_delta: float) -> void:
+	var tree_root: Window=get_tree().root
+	if not tree_root.has_meta("demo47i_stage"):
+		_demo47i_physics_body(_delta);return
+	var started: int=Time.get_ticks_usec()
+	_demo47i_physics_body(_delta)
+	var elapsed: int=Time.get_ticks_usec()-started
+	var perf: Dictionary=tree_root.get_meta("demo47i_perf",{})
+	var key: String=str(tree_root.get_meta("demo47i_stage"))+"|main.gd::_physics_process"
+	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
+	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
+	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)

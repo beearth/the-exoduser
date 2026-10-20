@@ -402,7 +402,7 @@ func advance_particle_pre_projectile(ticks: float) -> bool:
 	queue_redraw()
 	return true
 
-func _physics_process(delta: float) -> void:
+func _demo47i_physics_body(delta: float) -> void:
 	if not _configured:
 		return
 	_metrics.boom_post_steps += 1
@@ -624,3 +624,16 @@ func get_native_e_wave_draw_rows() -> Array:
 		color.a=minf(1.0,alpha*1.4)
 		rows.append({"position":point,"size":float(particle.size)*(0.7 if context.hi_fps else 1.0),"color":color})
 	return rows
+
+func _physics_process(delta: float) -> void:
+	var tree_root: Window=get_tree().root
+	if not tree_root.has_meta("demo47i_stage"):
+		_demo47i_physics_body(delta);return
+	var started: int=Time.get_ticks_usec()
+	_demo47i_physics_body(delta)
+	var elapsed: int=Time.get_ticks_usec()-started
+	var perf: Dictionary=tree_root.get_meta("demo47i_perf",{})
+	var key: String=str(tree_root.get_meta("demo47i_stage"))+"|native_projectile_hit_fx.gd::_physics_process"
+	var row: Dictionary=perf.get(key,{"max_us":0,"calls":0,"total_us":0})
+	row.max_us=maxi(row.max_us,elapsed);row.calls+=1;row.total_us+=elapsed
+	perf[key]=row;tree_root.set_meta("demo47i_perf",perf)
