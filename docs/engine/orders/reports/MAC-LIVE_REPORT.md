@@ -131,3 +131,5 @@ FDG_GODOT_BIN=/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/M
 각 후속 결과는 자기 `codex/` 브랜치에만 제출하며 main push·병합·force·reset은 하지 않는다. 이번 실시간 재시도 최종 SHA·원격 대조는 로컬 `~/exoduser-wt/_out/mac-live/DONE.txt`, `realtime-remote-verification.json`에 남긴다. 이전 Movie Maker 제출 대조는 `movie-remote-verification.json`에 보존했다.
 
 후속 Movie Maker 결과 본문 커밋: `a8bb9b730cc81c9b92bc0a13fa158db879574950`. 이후 커밋은 제출 SHA를 기록하는 메타데이터 변경이며, 최종 branch tip·원격 SHA는 `DONE.txt`와 `movie-remote-verification.json`에 기록한다.
+
+실시간 재시도 결과 본문 커밋: `3259b390ecbba6633053ef117e99704abf62e106`. 최종 제출 SHA는 이 값을 기록하는 후속 메타데이터 커밋을 포함하며 `DONE.txt`, `realtime-remote-verification.json`에서 확인한다.
