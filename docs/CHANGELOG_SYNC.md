@@ -1,16 +1,3 @@
-## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
-
-| 항목 | 추적·검토 근거 |
-|---|---|
-| 기준 / 범위 | fetch main2c3c211f의game/index 원문. 새CH4추적문서1개+이절만, 코드·테스트·공용·다른담당·설계·원본·저장·R 변경0. --no-checkout+sparse, Godot/import/게임/실저장 실행0 |
-| 분모 / 수치 | si14..20의7에리어. 일반31=기존21(0..19/47)+신규10(50..59), weight165/R9·36/비R22·129. 실제HP식·catalog10행·생성23필드+아군_eyeBuff·직접etype/case전체행색인 |
-| 차이 / 경계 | docs대조16행. 9999정예보정후공통탄조건, 53baseAtk30%, 58 idle60기록, 51death50분리와59nullpush/무cap 소환 차이, 55/59death50:50과원문30%주석차이. 제품보정0 |
-| 의존 | main EC2-01/02 포함. 원격미병합EC2-03→06·EC3-01/02와CH3문서20b2139a를읽기참조. 마감신규EC3-02 fb8e80d0의Draws실재사용/38slice 경계반영, 임의merge/actor지원승격0 |
-| 순서안 / 관측 | EC4-01~14, 첫단위는API·가드·원문golden·RNG/UTF-8 oracle·회귀·공용0줄지시서. 원문선택63/CDF구간31/HP산술24/AI·death명시fixture17, 제품테스트PASS합산0 |
-| 제출 | [CH4 적 추적](engine/FDG_SOURCE_TRACE_ENEMIES_CH4_20261020.md), 원로그 ~/exoduser-wt/_out/trace-enemies-ch4/. 독립독자검토·정적행/표/링크대조, 정상훅·자기branch push·원격SHA/DONE후자기worktree제거 |
-
->>>>>>> bc2bafff
-=======
 ## 2026-10-20 EC3-03 etype40 위상 순수 상태·명령
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
@@ -29,10 +16,24 @@
 | 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
 | 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
 | 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
+
+| 항목 | 추적·검토 근거 |
+|---|---|
+| 기준 / 범위 | fetch main2c3c211f의game/index 원문. 새CH4추적문서1개+이절만, 코드·테스트·공용·다른담당·설계·원본·저장·R 변경0. --no-checkout+sparse, Godot/import/게임/실저장 실행0 |
+| 분모 / 수치 | si14..20의7에리어. 일반31=기존21(0..19/47)+신규10(50..59), weight165/R9·36/비R22·129. 실제HP식·catalog10행·생성23필드+아군_eyeBuff·직접etype/case전체행색인 |
+| 차이 / 경계 | docs대조16행. 9999정예보정후공통탄조건, 53baseAtk30%, 58 idle60기록, 51death50분리와59nullpush/무cap 소환 차이, 55/59death50:50과원문30%주석차이. 제품보정0 |
+| 의존 | main EC2-01/02 포함. 원격미병합EC2-03→06·EC3-01/02와CH3문서20b2139a를읽기참조. 마감신규EC3-02 fb8e80d0의Draws실재사용/38slice 경계반영, 임의merge/actor지원승격0 |
+| 순서안 / 관측 | EC4-01~14, 첫단위는API·가드·원문golden·RNG/UTF-8 oracle·회귀·공용0줄지시서. 원문선택63/CDF구간31/HP산술24/AI·death명시fixture17, 제품테스트PASS합산0 |
+| 제출 | [CH4 적 추적](engine/FDG_SOURCE_TRACE_ENEMIES_CH4_20261020.md), 원로그 ~/exoduser-wt/_out/trace-enemies-ch4/. 독립독자검토·정적행/표/링크대조, 정상훅·자기branch push·원격SHA/DONE후자기worktree제거 |
+
+>>>>>>> bc2bafff
 ## 2026-10-20 TRACE-BOSS-CH3 3장 보스 원본 추적·작은 이식 단위
 
 | 항목 | 추적·검토 근거 |
