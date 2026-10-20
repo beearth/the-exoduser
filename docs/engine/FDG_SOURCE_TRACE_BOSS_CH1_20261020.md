@@ -791,3 +791,5 @@ BC11/12/13도 각각 큐·상태별 독립 테스트 그룹으로 나눠 한 그
 | 보호 | docs/2_3/Q/E/세이브 형식은 보호 표기만. 새로운 분류·입력·필드·마이그레이션 제안 없음 |
 | 실행 인수 | 일반/QA/옛 피날레의 실제 도달·화면·사운드·자연 AI 전투·PC/Mac 동기 실행은 이번 조사에서 미확인 |
 | 후속 첫 단위 | BC01 신규 catalog+test만, 공용0줄. 다음 배정에서 원본 SHA/소유/격리 실행 도구를 다시 확인 후 구현 |
+
+DEMO11-34(2026-10-21)는 기존 BC01~10을 변경하지 않고 stage0 Node2D actor·요청 assembler를 Main에 설치한다. 원본 clock/prefix/실제 owner가 미공급인 경계는 정지하며, 자연 arena/피해·패링·HP/poise·부활·실제 탄 registry/렌더 인수로 확대하지 않는다. 새 공개 API와 Main 변경 줄·PC36/49 인계는 [DEMO11-34 보고서](orders/reports/demo11-34_REPORT.md)를 따른다.
