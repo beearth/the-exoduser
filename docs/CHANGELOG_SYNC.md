@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 ## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
 
@@ -135,6 +136,18 @@
 | 표현 / 후속 | 웹 맵1:1 복제가 아닌 PoE2·No Rest 목표의 깊이/생동감/부분 조명 확장 별도 절. 게임플레이/충돌·출구·스폰·지역은 불변. CH4-01 상세 지시서와18단위·공용 접점·docs 차이 표. 실제 배치/종주/시각/성능은 미확인 |
 | 자료 / 제출 | [4장 추적·지시서](engine/FDG_SOURCE_TRACE_MAPS_CH4_20261020.md). 원로그 ~/exoduser-wt/_out/trace-maps-ch4/. 정상 훅·경로 지정 stage·자기 branch push/원격SHA→DONE→자기 WT 제거, main push/강제 push/reset0 |
 >>>>>>> d4c783bc
+=======
+## 2026-10-20 p2001i-diag — 종료 오디오 수명 진단·기준 main 비재현
+
+| id / 적용 위치 | 실제 관측·계약 |
+|---|---|
+| 기준 / 범위 | 요청 main6d987cb8에서 --no-checkout+sparse worktree, 같은 branch 재개. 제품·기존6종 테스트·공용6·레슨·allows·Q/E·원본 수정0. WORK_BOARD 자기 진단 행·이 절·보고서만 |
+| 원문 재현 | I18/0·UI115/0·H125/0·J21/0·K32/0·L66/0 = 377/0, skip0·전부 exit0/ERROR0/ObjectDB0/leak0/resource0. I 원문 추가2회 각각18/0·종료 누수0. H 조건부 매직 적 분모125 그대로 |
+| 객체·생성 위치 | 음성 Node는 native_intro_key_guide_panel.gd625 new/628 MP3 load/633 add_child/635 play. 실제 경로·생성stack·Stream/Playback ID 추적. Main Node727→0, 현행 대기 뒤 음성 WeakRef2개 무효·voice_cachedfalse |
+| 음성 대조 / 판정 | 저장소 밖 동일18단정 진단본에서만 종료12프레임+200ms 제거 → ERROR1·ObjectDB2객체·MP3리소스1·Orphan StringName1. Stream/Playback ID 각각9223372280157967279/9223372280225076142 정확일치. 비동기 오디오 정리 전 quit 문제; 원문 main 오류 재현으로 포장0·레슨 제품 결함 주장0 |
+| 이미 반영 / 소유 | QA-004 680a2758이 기준조상, I 원문 SHA88840f7a…는 QA-004 최종본과byte동일. 기존 보관 적 해제/하니스 대기 유지, 다른 담당 P2-007a 제품 패치0. 별도 총괄 원로그와의 동일건 여부 미확정 |
+| 실패·제출 | 첫 외부 probe 들여쓰기 Parse Error는 로그/초안 보존·통과 제외. [보고서](engine/orders/reports/p2001i-diag_REPORT.md)에 원문·전후/OLD·NEW·소유·제한. ~/exoduser-wt/_out/p2001i-diag/. 자기branch 정상훅/push·원격일치·DONE 뒤 자기WT 제거, R 보존 |
+>>>>>>> 5bd08967
 
 ## 2026-10-20 QA-007 테스트 Windows 이식성
 
