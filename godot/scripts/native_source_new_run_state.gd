@@ -432,6 +432,7 @@ func apply_native_update_feel_decay(owner: Node, sp: float) -> Dictionary:
 
 # ═══ P2-001c: 처치 보상 owner — addPotion(28250)·addExp(43134)·드랍 레코드 ═══
 var _native_drop_records: Array = []
+var _native_drop_serial := 0 # 포트 전용 식별자(세이브 비대상) — 어댑터 신규 감지·픽 커밋 키
 # 결정/소켓석 최소 owner (원본 CRYSTAL_BAG/STONE_BAG — 캡 9999, HUD/합성 소비자는 미이식).
 var _native_crystal_bag: Array = []
 var _native_stone_bag: Array = []
@@ -504,6 +505,17 @@ func read_native_skill_management_snapshot() -> Dictionary:
 	return {"p":p.duplicate(true),"g":{"mats":_g.get("mats")},
 		"slots":actual.get("skillSlots",[]).duplicate(true),"ultimate":actual.get("ultSlot")}
 
+# DEMO11-18: readonly fusion model is rooted in this actual State and demo boot.
+func read_native_skill_fusion(owner: Node, key: String) -> Dictionary:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or owner!=_player.get_parent() \
+		or owner.get("source_state")!=self or owner.get("world")!=_world:
+		return {"status":"NOT_READY","reason":"actual_fusion_owner_unavailable"}
+	var boot: Dictionary=owner.read_native_demo_policy()
+	if boot.get("status")!="READY" or boot.get("demo")!=true or boot.get("build_target")!="demo":
+		return {"status":"NOT_READY","reason":"actual_demo_fusion_policy_required"}
+	return preload("res://scripts/native_skill_fusion.gd").inspect(key,read_native_skill_management_snapshot())
+
+
 func commit_native_skill_management(owner: Node, command: Dictionary) -> Dictionary:
 	var rejected: Dictionary={"accepted":false,"committed":false,"prefix":[]}
 	# Source K/L handlers have no G.paused guard. UI data transactions may run
@@ -535,6 +547,9 @@ func commit_native_skill_management(owner: Node, command: Dictionary) -> Diction
 	match command.action:
 		"learn_up":
 			plan=UP.preview(command.skill_id,before,"ui") if S.lv(before.get("p",{}),command.skill_id)>=1 else LEARN.preview(command.skill_id,before,"ui")
+		"fuse":
+			var live: Dictionary=read_native_skill_fusion(owner,command.skill_id)
+			plan=preload("res://scripts/native_skill_fusion.gd").preview(command.skill_id,before) if live.status=="READY" else live
 		"minus": plan=REFUND.minus_preview(command.skill_id,before)
 		"reset": plan=REFUND.reset_preview(command.skill_id,before,command.get("confirmed",false))
 		_:
@@ -561,6 +576,10 @@ func commit_native_skill_management(owner: Node, command: Dictionary) -> Diction
 		"serial":_skill_management_serial,"branch":value.branch,"before":before,
 		"after":read_native_skill_management_snapshot(),"active_proposals":value.protected_active_proposals.duplicate(true),
 		"prefix":["ledger","active_selection","slots"],"runtime_writer":"actual_current_State","saved":false}
+	if command.action=="fuse" or value.branch in ["fusion_reset","fusion_minus","fusion_upgraded"]:
+		result["fusion_combat_handoff"]={"status":"HOLD","damage_execution":false,"shield_execution":false,
+			"requested":command.skill_id,"fusion_key":command.skill_id if command.action=="fuse" else value.details.get("key",value.details.get("fusion_key")),
+			"source":"_execFuse / _skResetSkill ledger boundary; combat owner not called"}
 	_skill_management_committed[id]={"command":command.duplicate(true),"result":result.duplicate(true)}
 	if _skill_management_committed.size()>32: _skill_management_committed.erase(_skill_management_committed.keys()[0])
 	_skill_management_busy=false
@@ -703,6 +722,8 @@ func append_native_drop_records(owner: Node, records: Array) -> Dictionary:
 	if not _feel_owner_current(owner):
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}
 	for record in records:
+		record["_wiSerial"] = _native_drop_serial # 포트 전용(세이브 비대상)
+		_native_drop_serial += 1
 		_native_drop_records.append(record)
 		while _native_drop_records.size() > 20: # _wiPush 축출 규칙
 			var min_index := 0
@@ -719,6 +740,82 @@ func append_native_drop_records(owner: Node, records: Array) -> Dictionary:
 
 func read_native_drop_records() -> Array:
 	return _native_drop_records if _current_error().is_empty() else []
+
+# P2-006a — 줍기 확정(worldItems picked): 원본은 픽 시 it.picked=true(32940/32966) 후
+# 프레임말 정리(34385)가 제거 — 동치로 표시+제거를 한 번에 커밋한다.
+func commit_native_world_item_picked(owner: Node, serial: int) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	for i in range(_native_drop_records.size()):
+		var record: Dictionary = _native_drop_records[i]
+		if int(record.get("_wiSerial", -1)) == serial and record.get("picked") != true:
+			record["picked"] = true
+			_native_drop_records.remove_at(i) # 34385 프레임말 정리 동치
+			return {"applied": true, "item": record.get("item")}
+	return {"applied": false, "reason": "native_world_item_not_found_or_picked"}
+
+
+# P2-006a — pickupItem(16398~16424) 일반 장비 경로: 빈 장착 슬롯 여부와 무관하게 INV.bag.
+# bonePart(16400~16411)는 도감(_boneRegister)·유골함 지급 미이식 → 정지·기록(폴백 금지).
+# 그리드: ITEM_SIZE 전 슬롯 [2,2](bonePart [1,1])·INV_COLS=10·rows=max(10,ceil(300×4/10))=120
+# (15830~15834·16181). _invGrid(16190)는 같은 분류(_invCategoryKey 16188)·배치된(_gx≠null)
+# 아이템만 점유. 성공 시 _gx/_gy/_pickT 기록. _invAutoSortIfClosed(재정렬·재배치)는 인벤 UI
+# 소유 — 미이식 기록(제거 없는 픽업만으로는 행우선 채움이라 용량 동일).
+func apply_native_pickup_item(owner: Node, item: Dictionary) -> Dictionary:
+	if not _feel_owner_current(owner):
+		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	if str(item.get("slot", "")) == "bonePart":
+		return {"applied": false, "reason": "unported_branch_active:bone_register_codex"}
+	var bag: Array = _inventory.get("bag", [])
+	var size: Vector2i = _native_pickup_size(item)
+	var rows: int = 120 # _invRows()=max(10,ceil(BAG_MAX 300×4/INV_COLS 10))
+	var grid: Dictionary = {}
+	for other in bag: # _invGrid: equipment 분류만(현 아이템은 비 bonePart → equipment)
+		if not other is Dictionary or other.get("_gx") == null or other.get("_gy") == null:
+			continue
+		if _native_pickup_category(other) != _native_pickup_category(item):
+			continue
+		var other_size: Vector2i = _native_pickup_size(other)
+		for dy in range(other_size.y):
+			for dx in range(other_size.x):
+				grid[Vector2i(int(other["_gx"]) + dx, int(other["_gy"]) + dy)] = true
+	var found := Vector2i(-1, -1)
+	for y in range(rows - int(size[1]) + 1): # _invFindSpace(16200)
+		for x in range(10 - int(size[0]) + 1):
+			var ok := true
+			for dy in range(int(size[1])):
+				for dx in range(int(size[0])):
+					if grid.has(Vector2i(x + dx, y + dy)):
+						ok = false
+						break
+				if not ok:
+					break
+			if ok:
+				found = Vector2i(x, y)
+				break
+		if found.x >= 0:
+			break
+	if found.x < 0: # 16403/16419: push 후 공간 없음 → pop·알림·false
+		return {"applied": false, "reason": "bag_full", "notify": "가방에 공간이 없습니다!"}
+	item["_gx"] = found.x
+	item["_gy"] = found.y
+	item["_pickT"] = int(Time.get_unix_time_from_system() * 1000.0) # Date.now()
+	bag.append(item)
+	_inventory["bag"] = bag
+	return {"applied": true, "gx": found.x, "gy": found.y, "bag_count": bag.size(),
+		"unported": ["_invAutoSortIfClosed(인벤 UI 소유)", "dbSaveForce(세이브 금지)",
+			"_systemLesson.pickedUp", "펫 대사(item_unique/item_pickup/_petOnFirstLegend)"]}
+
+
+func _native_pickup_size(item: Dictionary) -> Vector2i:
+	return Vector2i(2, 2) if str(item.get("slot", "")) in ["weapon", "shield", "boots", "armor",
+		"helmet", "bow", "gloves", "pants", "belt", "necklace", "ring1", "ring2", "cape",
+		"bracelet", "headband", "headband2", "ossuary"] else Vector2i(1, 1)
+
+
+func _native_pickup_category(item: Dictionary) -> String:
+	return "ossuary" if str(item.get("slot", "")) in ["ossuary", "bonePart"] else "equipment"
+
 
 func read_current_p() -> Variant:
 	if not _current_error().is_empty():
@@ -905,6 +1002,53 @@ func _source_initialization_write_error(packet: Dictionary, write_index: int) ->
 	if not _live(owner):
 		return "source_initializer_owner_lost_during_validation"
 	return _source_initialization_lifecycle_error()
+
+# PC-RUNTIME-STATS — runtime applyStats batch sink for the P-dict fields that
+# have no actor/resource owner. Constructor seam above is unchanged. Only the
+# actual Main-owned refresh module, inside its synchronous commit window.
+const RUNTIME_STAT_REFRESH_PATH = "res://scripts/native_source_player_runtime_stat_refresh.gd"
+const RUNTIME_STAT_REFRESH_P_FIELDS = ["_effStats", "baseAtk", "hpR", "_oocSpeed", "_crystalStats", "mshield", "shield"]
+var _runtime_stat_commits := 0
+
+func validate_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> String:
+	var error := _current_error()
+	if not error.is_empty():
+		return error
+	if _initializing or _source_initializer_committing or not is_instance_valid(owner) \
+			or owner != _player.get_parent() or owner.get("source_state") != self or owner.get("world") != _world:
+		return "state_runtime_refresh_owner_mismatch"
+	if not _live(refresh) or refresh.get_script() == null \
+			or refresh.get_script().resource_path != RUNTIME_STAT_REFRESH_PATH \
+			or owner.get("source_runtime_stat_refresh") != refresh:
+		return "state_runtime_refresh_module_mismatch"
+	var window: Variant = refresh.is_native_runtime_stat_refresh_committing(owner)
+	if not window is bool or not window:
+		return "state_runtime_refresh_not_in_commit_window"
+	for field in fields:
+		if field not in RUNTIME_STAT_REFRESH_P_FIELDS:
+			return "state_runtime_refresh_field_denied:" + str(field)
+		var value: Variant = fields[field]
+		if field == "_effStats":
+			if not _initialization_numeric_object(value, ["str", "dex", "int", "vit", "lck"]):
+				return "state_runtime_refresh_effective_stats_invalid"
+		elif field == "_crystalStats":
+			if not _initialization_numeric_object(value, SOURCE_RESOURCES.PARAMETERS.CR_INIT_KEYS):
+				return "state_runtime_refresh_crystal_stats_invalid"
+		elif not _number(value):
+			return "state_runtime_refresh_value_invalid:" + str(field)
+	if fields.has("shield") and float(fields["shield"]) > float(fields.get("mshield", _p.get("mshield", 0))):
+		return "state_runtime_refresh_shield_above_mshield"
+	return ""
+
+func commit_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> Dictionary:
+	var error := validate_native_runtime_stat_refresh(owner, refresh, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	for field in fields:
+		var value: Variant = fields[field]
+		_p[field] = value.duplicate(true) if value is Dictionary else value
+	_runtime_stat_commits += 1
+	return {"accepted": true, "fields": fields.keys(), "commits": _runtime_stat_commits}
 
 static func _initialization_tag(packet: Dictionary, write: Dictionary) -> Dictionary:
 	return {"field": write["field"], "source": write["source"], "kind": packet["kind"],
@@ -1400,3 +1544,45 @@ func commit_native_auto_potion(owner: Node, field: String, value: Variant) -> Di
 			_p.hp = receipt.hp # actual HP readback, not a second HP owner
 		_: return {"accepted":false}
 	return {"accepted":true}
+
+# DEMO11-27: forge-only authority. Shop transactions are permitted while its UI pauses gameplay.
+const FORGE_TRANSACTION = preload("res://scripts/native_meta_enhancement_transaction.gd")
+var _forge_committing = false
+
+func _forge_owner_current(owner: Node) -> bool:
+	return _current_error().is_empty() and is_instance_valid(owner) and not owner.is_queued_for_deletion() \
+		and owner == _player.get_parent() and owner.get("source_state") == self and owner.get("world") == _world \
+		and owner.get_script() != null and owner.get_script().resource_path == "res://scripts/main.gd" \
+		and is_instance_valid(owner.get("source_forge")) and owner.source_forge.is_bound_to(owner,self)
+
+func apply_native_forge_enhance(owner: Node, item: Dictionary) -> Dictionary:
+	if _forge_committing or not _forge_owner_current(owner) or not owner.source_forge.owns_selection(item):
+		return {"status":"NOT_READY","reason":"forge_owner_or_selection_not_current"}
+	_forge_committing = true
+	var result: Dictionary = FORGE_TRANSACTION.attempt(item,_g,Callable(_world,"sample_native_random_unit"))
+	_forge_committing = false
+	return result
+
+func apply_native_forge_transfer_prefix(owner: Node, old: Dictionary, item: Dictionary) -> Dictionary:
+	# This entry is for the actual equip owner, not an independent forge transfer button.
+	if _forge_committing or not _forge_owner_current(owner) or not owner.source_forge.owns_transfer_handoff(old,item):
+		return {"status":"NOT_READY","reason":"actual_equip_continuation_not_bound"}
+	_forge_committing = true
+	var result: Dictionary = FORGE_TRANSACTION.transfer_prefix(old,item,_g)
+	_forge_committing = false
+	return result
+
+func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
+	if _forge_committing or not _forge_owner_current(owner): return {"status":"NOT_READY","reason":"forge_owner_not_current"}
+	# G50694-50705: single selection only; modifier-key stale batch callbacks are not introduced.
+	var lv: int = _auto_potion_level
+	var cost: int = FORGE_TRANSACTION.Policy.malice_cost(float((lv+1)*5))
+	if lv>=10 or float(_p.get("lv",1))<float((lv+1)*100):
+		return {"status":"READY","paid":false,"reason":"potion_level_gate"}
+	if float(_g.mats)<float(cost): return {"status":"READY","paid":false,"reason":"insufficient_malice","cost":cost}
+	_forge_committing = true
+	_auto_potion_level += 1 # G50705 level write precedes the malice debit
+	_g.mats -= cost
+	_forge_committing = false
+	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
+		"unported":["dbSaveNow, source flash/particle feedback"]}

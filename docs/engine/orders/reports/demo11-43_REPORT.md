@@ -31,3 +31,11 @@
 남은 것: MAP11 제품 provider의 content/runtime 인수, 실제 etype 선택/constructor/등록 후 origin 등록, 기존 source 스폰 tick 순서로의 scheduler 재개, 동적 그룹 추가/취소 owner receipt, polygon 미니맵/자연 플레이/양 플랫폼 성능 검증. 새 provider가 없는 현재 main 부팅은 이 adapter를 자동 가동하지 않는다. 기존 소환굴 RNG/스폰 위치 탐색으로 새 지도에서 성공한 척하지 않는다.
 
 최종: 신규40/0 + P3-002 298/0 + P3-003 43/0 = **381/0**, 각1회. 초기 import parse 실패는 별도 보존하며 통과 수에 합산하지 않았다. 벽시계 벤치1회. 추가 회귀·전체 게임 성능·PC 검증·실제 MAP11 자연 전투는 미실행이다.
+
+## 최신 main 충돌 해소 후속 (2026-10-21)
+
+사용자 PC 반송에 따라 같은 브랜치의 c5551464에 최신 origin/main `0138c5bb9188d27cee10cb1a901d075092ddb88f`를 정상 merge했다. DEMO11-21·04 보고서와 제품이 포함된 main이다. Main 말미의 PC runtime-stat refresh 전체를 보존하고 기존 opt-in adapter 12줄(최종 3019–3030)을 함께 유지했다. 이번 후속 제품 로직 변경0, State·전투·저장 변경0. CHANGELOG 양쪽 절을 보존했다. EL-01 최종654845e4에는 c5551464가 조상이 아니므로 조건부 재병합 대상이 아니다.
+
+번역 목록은 직접 편집하지 않았고 merge 대상 main blob과 byte 동일하다. CRLF 4,225개·bare LF0, `file`의 CRLF 판정 및 `git diff HEAD --stat`을 원로그 `merge-translation*`/`merge-diff-stat.txt`에 보존한다.
+
+후속 검증은 import 및 신규40/0·P3-002 298/0·P3-003 43/0를 각각1회 실행해 합계381/0, exit0·ERROR0이다. 각 테스트 파일 상수 격리 이름을 사용했고 매 실행 전 pgrep gate를 준수했다. Camera 경고각1·P3-002 ObjectDB8 종료 경고는 이전 제출과 동일 문구로 보존했다(선재 원인 판정 아님). 후보 adapter 벽시계10,000틱×3query 1회: 평균0.1190416ms/p99 0.196ms/max0.582ms, 전체게임 성능 아님. merge-* 원로그를 별도 보존한다. R branch/HEAD/index/work snapshot 동일. `git diff --check`의 번역 CRLF trailing-whitespace 보고는 main byte 자체이며 EOL 변환하지 않았다.

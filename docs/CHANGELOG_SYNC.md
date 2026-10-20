@@ -1,3 +1,7 @@
+## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
+
+- 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.
+
 ## 2026-10-21 DEMO11-43 — MAP11 동적 spawn·지역 예산·origin kill 공통 접점
 
 | 항목 | 구현·검수 근거 |
@@ -6,6 +10,84 @@
 | 경계·보호 | Main 공개 opt-in. 실제 etype 생성/등록·새 MAP11 provider·스케줄러 재개 후행, legacy 좌표 검색 차단. origin 불변/중복 kill 거절, 예정 분모 단1회. State·World·PC 전투/피해·저장·맵 제작0줄, 공용 줄 범위 보고 |
 | 검증·성능 | 신규40/0·P3-002 298/0·P3-003 43/0 각1회(381/0). 최종 ERROR0, Camera 경고각1 및 P3-002 ObjectDB8 종료 경고 보존. 최초 Main 들여쓰기 import parse 실패 교정 이력 보존. 후보요청10,000틱×3 벽시계1회: 평균0.1204ms/p99 0.202ms(실제 적 생성/전체게임 제외) |
 | 근거·제출 | [소비자 ABI](engine/DEMO11_STAGE_SPAWN_ADAPTER_20261021.md)·P3 docs·[보고서](engine/orders/reports/demo11-43_REPORT.md). 신규 틱 목록API0. 원로그 _out/demo11-43/, pgrep 2이상30초 대기·격리명·override finally제거. 자기branch push/원격일치/DONE 후 WT제거 |
+
+
+## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 | main33755331 + DEMO11-17 c698aa86 정상merge85e4485d. CHANGELOG main byte 보존·의존17절 추가. 새 합체키/정책식 변경0 |
+| 연결·HOLD | 기존 fusion_rules/fuse_commit guarded+demo true→실제State. 원 허용22/금지10키·shieldFuse 별도HOLD, 성급override·SP선지급/멤버환불·흡수·host/최대그룹undo. Main+12/State+18 추가만. 피해/방패 실행·PC UI 배치·맵·저장0 |
+| 검증 | 실제Main378/0+집중7/0, 관련4회귀 각1회36,804/0. 실제 원장26건·기존S05 9,358건 원문JS 불일치0. StringName fixture/ScriptError 로그보존·강화인계key 누락1건→집중만7/0. 최종ERROR/SKIP0 |
+| 제출 | [보고서](engine/orders/reports/demo11-18_REPORT.md)·docs/2_1 성급/15체크리스트 적용·원로그 _out/demo11-18/. tick/목록생성API0·격리/gate/override0byte·정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
+## 2026-10-21 DEMO11-17 K/L 학습·강화·환불 State 원장 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0 + DEMO11-16 3be8055f 정상merge d4e71d79. CHANGELOG main bytes 보존. XP726cf925는 readonly/검증용3way모델만, 제품 반입0 |
+| 연결 | SK-S01~05 식 그대로 learn_up/minus/reset·실제SP/악의·skills/선택/slots commit. Main+23/State+78 추가만. 최종 handoff 실패prefix 보존·최근32요청 재생·paused UI 허용/시전 가드유지. PC UI 배치/전투핵심/피해/저장/맵 변경0 |
+| 검증 | 신규100/0·관련4회귀 각1회24,110/0·원문JS 기존9,358+실제8건 불일치0. XPsignal SP12→학습SP2 모델16/0. paused경계2실패 재현→해당 신규만100/0. 최종ERROR/SKIP0·목록생성API/tick추가0 |
+| 제출·경계 | [보고서](engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
+## 2026-10-21 PC-RUNTIME-STATS — 런타임 applyStats 재계산·DEMO11-06 보호 handoff/자원 restore writer
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위 | DEMO11-19/22/06 BLOCKED 인터페이스 해제. 초기화 단회 guard 수정0. 새 `native_source_player_runtime_stat_refresh.gd`(원본 producer 6종 pass별 신규·overlay 단계 적용·3 sink 사전검증→동기 일괄 commit→readback, 모드 apply_stats/equipment_refresh=G16287–16292), `native_source_protected_restore_handoff.gd`(protected_qe/active_sync/wing). 공용 순수 추가: Main+39·Player+56·State+47·authority+106 |
+| 검증 | 신규 300/0(원본 JS oracle 200필드 일치·무료충전0·clamp·재진입/외부 owner/실패 무변이)·4830/0(321 fixture 직접 대조+flow e2e 321/321). 회귀 11종+restore flow 각1회 0실패. refresh 1회 약15ms(이벤트 전용), 틱 경로 코드0→300틱 벤치 생략 |
+| 인계 | [계약](engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-runtime-stats_REPORT.md). Mac 호출자 연결·결정 장착 oracle·HUD 화면 확인은 미실행 |
+
+
+## 2026-10-21 DEMO11-21fix 수명 회귀 하니스 제출
+
+- 같은 브랜치에 실제 실행한 신규 owner 수명 테스트9/0 원문을 포함한다. root test_* ignore에는 자기 파일만 경로 지정 추가, 훅 우회0. 기존 검사·제품 코드 추가 변경0. [근거](engine/orders/reports/demo11-21fix_REPORT.md).
+
+## 2026-10-21 DEMO11-21fix pending draw owner 수명 보호
+
+- 기존 demo11-21 branch에 mainac3764bfe 정상 merge. 드랍 owner(Main/State) tree exit 즉시 configured=false, draw/beam/input/physics/snapshot live guard. 이전 에셋/드랍 식/피해·Main/State0줄.
+- 새 수명9검사·기존 starter148 및 드랍 직접 관련 스위트 결과는 [보고서](engine/orders/reports/demo11-21fix_REPORT.md), 원로그 _out/demo11-21fix/. 스위트별1회·기존 검사 유지, 목록 생성 API0. 로비 RETOUCH는 자기 기존04 branch에서 별도 진행.
+
+## 2026-10-21 DEMO11-21 성능 수정 main 후속 통합
+
+- 같은 브랜치에 main8dbbf2b0(aa1eaea5a 포함)을 정상 merge11a617f5. rebase·force0.
+- 드랍·State·production source·신규 테스트 목록 생성 API0, PC 캐시3곳 확인. 자체 제품 변경0행, 로컬 성능 실측 주장0.
+- 신규24/0·관련 기존36/0 각각1회, import 포함5회 ERROR/ObjectDB/resource0. [후속 보고](engine/orders/reports/demo11-21_REPORT.md), followup-* 로그·기존 DONE에 새 SHA 추가.
+
+## 2026-10-21 DEMO11-21 기존 드랍 제품 자연 INV 연결
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 제품 | main01051599에서 원격 P2-006a48f0d8e7/P2-006be69fe444 정상 merge. main tree 미반영을 확인하고 기존 제품 회수, 표시 byte 재사용·재구현0 |
+| 공용 / 원본 | Main252–257 +6행, State432/565–566/584–659 +79행, 삭제0. G32002–32034/16721/32935–32941/16411–16424 journal→R→동일 실제 INV. 보호 전투·맵·저장0 |
+| 검증 | 신규24/0·직접 관련 P2 회귀3종 36/0, 각1회. 실제 Main·Input 이벤트·production rollDrop RNG fixture, 동일 객체/좌표/비자동장착/중복차단. 자연 처치·시각 PASS 주장0 |
+| 제출 | [보고서](engine/orders/reports/demo11-21_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-21/. Godot7회(최초 종료실패2 보존·MP3 소유자 수는 보고서 구분), 최종/관련 종료 ERROR/ObjectDB/resource0, gate30초 대기9회·override0byte. 자기 push/remote SHA/DONE 후 worktree 제거 |
+
+## 2026-10-20 P2-006b — 효과 종료 후 드랍·LMB 관측
+
+- 지정 b933b2da5에 A 구현이 빠져 있어 승인된 A 제출 3커밋을 작업 브랜치에만 cherry-pick했다. 충돌한 설계/변경로그는 기존 DOC-SYNC·P3 기록과 A 기록을 모두 보존했다. main 변경·병합 없음.
+- game.html51736의 nearest 계약을 드랍 어댑터 1줄로 명시(수치·원본 에셋 불변). 189/189 원본·대상 SHA-256 재대조. 기능 회귀18/0·17/0·HUD36/0·스킬27/0, 필터 RED1/1→GREEN1/0.
+- LMB 빈 칸은 기존 A 검수 하니스의 activeLMBSk='weapon' 주입 결과. 원본44118/44134에도 weapon 아이콘이 없고 idle/공격/복귀 모두 빈 칸, kiSlash 복원 시 아이콘 복원(6/0). 제품 입력·HUD 수정 없음.
+- death_blood 렌더 클록 종료까지 기다려 transient0 뒤 자연 드랍·6등급 1x 캡처. 빔 밝기/그림자·전체 장면 동등성은 RETOUCH, Native Computer Use 거부로 OS 캡처/수동 키 미확인. 상세 `docs/engine/orders/reports/P2-006b_REPORT.md`.
+
+
+# 2026-10-20 P2-006a PC 드랍·줍기 부분 이식
+
+- `native_world_drops.gd` 신규 어댑터와 main 시작 hook 6줄, state 런타임 드랍 식별·가방 반입 연결. 스킨·고유 누끼·ADD 빔·R 프레스/9틱 홀드·가득 참·원본 SFX를 이식했다. 게임 설계 수치·Q/E·레슨·세이브 형식은 변경하지 않았다.
+- 원본 에셋 189개 SHA-256 동일. 17+18+39=74 assertions/0 failures, 실제 창의 자연 처치 후 일반 드랍 viewport 1920×1080 보존. 수동 R 입력/OS 창 캡처 권한은 거부돼 미확인이다.
+- 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/engine/orders/reports/P2-006a_REPORT.md`.
+
+## 2026-10-21 DEMO11-04 로비 명조·Cinzel / 아트 겹침 RETOUCH
+
+- 같은04 branch026a2e00에 최신main969c194e 정상 merge e20fbaf6. drop72e602d1 push·remote 확인 후 별도 진행, 공통 새 branch명보다 명시 같은 branch 지시 우선.
+- 자기 view5행만 치환: 본문/버튼/입력 hell명조·제목hell_title(Cinzel)·#dfd6c2, 아트 y290 아래로 분리. Main/State/전투/저장owner0줄·이미지/문구 변경0. 기존48+폰트/경계4=52/0, 관련스위트1회.
+- 목록/삭제1920×1080+1x3곳은 _out/demo11-21fix/captures/. [기존 보고서 후속](engine/orders/reports/demo11-04_REPORT.md), UI_FOUNDATION 최신 로비 한정 토큰 갱신. **화면 비교 자료 준비·맥북총괄 재검수 대기**, 시각 승인 주장0.
+
+## 2026-10-21 DEMO11-04 실제 로컬5슬롯 요청 UI·화면 비교 자료 준비
+
+- main8dbbf2b0 + DEMO11-05 f2889355 정상merge61d4d92e. 기존 actual storage/slot reader 재사용, 새로하기 metadata/이어하기 payload 요청·확인 삭제. IO 성공+readback만 목록 반영, stale/lock/읽기 실패 보호. 복원/입장 성공 주장0.
+- 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
+- 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
 
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
@@ -24,6 +106,15 @@
 | 검증 | 신규79/0·별도 프로세스 재읽기5/0·경로 IO 실패 집중8/2→수리 후8/0. 기존 primitive10,388/0·reader5,952/0 각1회, 정상 ERROR/WARNING0. 최초 신규75/0과 집중 실패 로그 보존/중복 합산0 |
 | 보호·제출 | Main/State/전투/맵/기존 SV/사용자 First 저장소 변경0. demo 전용 namespace만 IO, 새 adapter/test/UID·SAVE 추적 보충·[DEMO11-05 보고서](engine/orders/reports/demo11-05_REPORT.md). 원로그 ~/exoduser-wt/_out/demo11-05/, pgrep/30초 gate·각 격리명·override 종료0byte. 정상 훅·자기 branch push/원격 일치/DONE 뒤 자기 worktree 제거 |
 
+## 2026-10-21 DEMO11-27 G 대장간 실제 결제·결과 UI / 이전 caller HOLD
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0에서 인수25b최종a03a0cbc 정상merge. META-02 견적·META-03 refund 재사용. META-07의 과거 State 권한 BLOCKED를 이번 허용 범위에서 해소. DEMO11-26은 원본 폐지로 불필요/취소 |
+| 구현 | 장비 live견적→악의차감→World RNG1→성공+1, 실패단계유지. HP물약Lv100/cost3/회복150 연결. Main18/86/294–296 추가5행·State1261–1302 추가42행, 전투핵심0. 이전은 실제equip caller 없으므로 거래prefix/API·견적만/실장착 HOLD |
+| 검증·화면 | 신규1918/0·원본336강화+48이전, 직접회귀 META02 70/0·META03 68/0·auto2560/0·contracts5그룹/0 각1회. Camera 기존WARNING 기록·ERROR0. Hell Gothic/게임폰트/이모지0, KO/EN35쌍등록. 1920×1080+1320×960 1x crop, 실제UI/State+촬영자금fixture/총괄눈검수대기 |
+| 잔여·인계 | SFX/입자/펫/실저장·교체후통계는 별도. [DEMO11-27 보고서](engine/orders/reports/demo11-27_REPORT.md) 2표, 3.2메타·2_8 갱신. 자기branch push/원격SHA/DONE 후 자기WT제거, R보호 |
+
 ## 2026-10-21 DEMO11-25 성능 규칙 후속 — 최신 main 정상 merge
 
 | 항목 | 근거 |
@@ -39,6 +130,15 @@
 | 공용·보호 | Main17/84/1007 추가3줄, State1227–1260 추가34줄, authority672–685 추가14줄. 기존 줄 수정/삭제0, 피해·PC 전투 핵심·저장·맵·웹 원본·R0. 관련 2_8 docs 갱신 |
 | 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
 | 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
+
+## 2026-10-21 DEMO11-35 실제 보스 일반 탄 registry·출생·수명
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·연결 | main8dbbf2b0 + demo11-34 e1f51f67 정상merge(FF). BC09·기존FULL class·ordinary motion 재사용, 실제Node append뒤만ack. Main+2/actor+6, 일반kernel motion추출+34/-21·기존피해블록byte보존. State/PC피해·패링·HP·저장·맵0. |
+| 검증 | 신규53/0·BC09 56664/0·일반탄4그룹/0·actor162/phase28/권위22/intro18 모두0실패. 실패기능29/4(thorn원문12)·격리28/1·VM JSON경계는 해당실패만 정정. pool84/rate7/SHA3그룹 불일치0. |
+| 벤치1회·한계 | 256탄·실제물리240틱 벽시계: mean.723392/p95.830/max1.049ms(<8.333ms). 빈색drawERROR256으로 전체cleanPASS집계제외; 색fallback수정 후 실제draw6/0, 재벤치0. 자연clock/arena·특수owner·PCcontact/정식렌더 후행. |
+| 문서·제출 | [공개API·공용줄·보고서](engine/orders/reports/demo11-35_REPORT.md), 8.1보스디자인바이블 코드상태 갱신. _out/demo11-35/ 원문 보존, 자기push/remoteSHA/DONE 후 자기WT제거·R불변. |
 
 ## 2026-10-21 DEMO11-34 최신 main 성능 캐시 수정 정상 merge
 
@@ -91,6 +191,7 @@
 | 연결 | SK-S01~05 식 그대로 learn_up/minus/reset·실제SP/악의·skills/선택/slots commit. Main+23/State+78 추가만. 최종 handoff 실패prefix 보존·최근32요청 재생·paused UI 허용/시전 가드유지. PC UI 배치/전투핵심/피해/저장/맵 변경0 |
 | 검증 | 신규100/0·관련4회귀 각1회24,110/0·원문JS 기존9,358+실제8건 불일치0. XPsignal SP12→학습SP2 모델16/0. paused경계2실패 재현→해당 신규만100/0. 최종ERROR/SKIP0·목록생성API/tick추가0 |
 | 제출·경계 | [보고서](engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+
 
 ## 2026-10-21 DEMO11-16 성능 규칙 후속·동일 브랜치 재검증
 
@@ -244,6 +345,7 @@
 | 범위·공용 | main0105159934 기준. Main +26/-0로 demo=true/stage0/last0 manifest 선택·실제 World/State stage 대조. State/전투/저장/지형0. 개발 route 거부, manifest deep copy. |
 | 재사용·검증 | 기존 META-06 cap100/entry/loop 그대로 위임. 신규22/0·META06 1034/0·인트로18/0·원문JS995/0, 각1회. 잘못된 stage 거부 의도 ERROR1 외 예상 밖 오류0. 실제 XP writer는 DEMO11-20 후속. |
 | 인계 | [공개 API·공용 변경 줄·보고서](engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
+
 
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
