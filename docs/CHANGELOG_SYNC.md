@@ -1,3 +1,13 @@
+## 2026-10-20 EC3-03 etype40 위상 순수 상태·명령
+
+| id / 적용 위치 | 정확 계약·실제 검수 |
+|---|---|
+| 기준·의존 | main249c26fad + 승인EC3-02 fb8e80d0 정상merge 기준0aa7690e. rebase/reset/force0. WORK_BOARD P2-008b etype47/factory와 경로 중복0 |
+| 원본 | G39289–39316·42154. idle 외곽/2회T감소/진입60+30U후같은tick감소/Cd대입·d30/50/1200 엄격경계/해제후추가일반이동. cached d와 현재좌표재조준·canMv순서·FX/shot raw요청 보존 |
+| 순수 범위 | 신규phase leaf/test·UID2·보고서만. EC2-02 Draws 직접재사용·EC3-02 init 연속stream 검사. HP/CH2식복제0·실actor/피격/이동/projectile writer0·Main/State/공용/다른담당/저장0줄, 실제소비HOLD |
+| 검수·실패 | 최종33177/0·원문2688tick+hurt16조합, 회귀8종190519단정/0·12그룹/0, 전부exit0/ERROR0. 초기수치비교61→2실패 원문보존, 입력scale·재조준조건수로forward error 정정·기존33029단정유지+148추가. trig최대차3.41e−13, timer/분기/순서/소비exact. 종료Camera2/ObjectDB8누수1 WARNING보존 |
+| 격리·인계 | 신규EXODUSER-ec3-03-Isolated-20261020/기존각상수·매Godot pgrep2이상30초대기·override0byte. 명시node인자/출력join/UTF8임시JSON/binary64·원본pin. [보고서](engine/orders/reports/ec3-03_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-03/. 자기branch push/remote일치/DONE후자기WT제거 |
+
 ## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
 
 | id / 적용 위치 | 정확 계약·실제 검수 |
