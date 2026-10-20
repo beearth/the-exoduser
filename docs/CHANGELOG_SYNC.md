@@ -1,3 +1,13 @@
+## 2026-10-20 BC4-01 4장 보스 읽기 전용 catalog
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 / 의존 | main 823c24bae 기준, CH2 a3b5391c·CH3 ec9f1449가 main 조상임을 확인. 미병합 반입 없음. trace-boss-ch4 §5.1 구현 |
+| 원본 / 소유 | G9983–9990/10010/16692, 7Set 39..45. 공유39=CH3 37+CH2 2·신규6, combo54=공유46+신규8. idx60/ordinal31·combo56 보존. 공유 literal·phase 공식 복제 없음 |
+| 검증 | 독립 원문 VM·전체/4구간 SHA·정수/binary64 정확 비교. 신규 90060/0, 기존 관련 회귀 96232/0·contracts 5그룹/0. 의존 불일치·깊은 복사·RNG/씬 불변 검증 |
+| 격리 / HOLD | Godot 7회 --verbose ERROR/ObjectDB/resource0·stderr0byte, gate 30초 대기 36회·override0byte. 공용 Main/State/hurtE·저장·spawn 색·BC08·기존 파일 0줄. 실전 연결 HOLD |
+| 산출물 | [보고서](engine/orders/reports/bc4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/bc4-01/. 자기 브랜치 push·원격 일치·DONE 후 worktree 제거. main의 기존 CHANGELOG byte·선재 표식 보존 |
+
 ## 2026-10-20 BC-INTEG-01 생성 원소색·BC08 장 catalog 통합
 
 | 항목 | 변경·검수 근거 |
