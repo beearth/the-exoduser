@@ -291,6 +291,17 @@ receive_damage에 부분 이식돼 있던 스턴×1.5·eShield 흡수·즉시반
   순차 규칙으로 기대값 계산)·RNG 순서/횟수(위 표: 7/8/8/9 — death_zone은 el≠P인
   ice/hive만, 구울 롤은 부활 성공 시만) 전부 원본 산술과 일치. 포이즈 불변·
   _pending_poise=0·v3 field-owner 경로 ready·halt 0건.
+- **비결정 실패 진단·하니스 수정 (2026-10-20 총괄 인수 중 발견)**: 초기 테스트가 간헐
+  실패(연속 8회 미적중 → 중단). 스윙별 진단 로그(swing_log: 수락여부·조준각·거리·
+  거부사유·피격수)를 넣어 재현 — 원인은 **테스트 하니스 2종, 제품 결함 아님**(값 검증
+  125건 전부 정상·halt 0):
+  ① 거부된 `request_attack` 후 `release_attack()` 미호출 → `_weapon_held` 잔류 →
+  제품의 홀드 자동 재공격(player.gd `state=="idle" and held`)이 스태미나가 5 될 때마다
+  즉시 소비 → 영구 자원 고갈(실측: stamina_insufficient 수백 회/시도, stamina ~1.5 고정).
+  수정: 거부 즉시 release + idle·stamina≥20 회복 대기 후 1회 재시도.
+  ② 고정 서쪽 배치가 수렴한 몹 무리(추적 외 포함) 한가운데가 되면 스윙 시작 2틱 안
+  피격 스태거(제품 정상 동작)로 접촉 취소. 수정: 8방위 중 이동 가능하고 다른 적에서
+  가장 먼 지점 선택(`_pick_stand`). 미적중 상한(dry 8)은 그대로 — 상한 완화 없음.
 - 회귀 (기준선 = main 91565d492 동일 테스트): test_p1002e_melee_hurte **102/0 동일**,
   test_contracts·test_etype0_physical_burn·test_etype1_lightning_hive_bloater·
   test_native_main_source_lesson PASS 동일, test_etype0_physical_flesh_crawler(1)·

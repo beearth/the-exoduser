@@ -40,6 +40,10 @@ var halts: Array = []
 var tracked: Dictionary = {} # enemy_id → {target, node, poise0, full_absorb, overflow_hits, killed_checked, kill_rng_ok, hits}
 var stat_crit: float = 0.0
 var stat_crit_dmg: float = 1.5
+# 스윙별 진단 로그: 미적중 원인(거부 사유·조준각·플레이어 상태·피격 수)을 남긴다.
+var swing_log: Array = []
+var reject_events: Array = []
+var player_damage_count: int = 0
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -104,6 +108,10 @@ func _on_player_event(kind: String, data: Dictionary) -> void:
 		hurte_outcomes.append(data.duplicate(true))
 	elif kind == "native_hurte_halt":
 		halts.append(data.duplicate(true))
+	elif kind in ["stamina_insufficient", "attack_parameters_rejected", "active_lmb_rejected", "player_died"]:
+		reject_events.append({"kind": kind, "data": data.duplicate(true)})
+	elif kind == "player_damage":
+		player_damage_count += 1
 
 func _find_enemy(id: String) -> Node:
 	for enemy in active_main.get("world").get_enemies():
@@ -146,6 +154,26 @@ func _heal_player() -> void:
 		p["hp"] = p.get("mhp", 350)
 		active_main.get("player").set("hp", float(p.get("mhp", 350)))
 		forced_actor_fields += 1
+
+# 배치 후보 8방위 중 이동 가능하고 다른 살아있는 적(추적 외 포함)에서 가장 먼 지점.
+# 수렴한 무리 속에 서면 스윙 시작 2틱 안 피격 스태거(제품 정상 동작)로 접촉이 취소된다.
+func _pick_stand(enemy: Node, gap: float) -> Vector2:
+	var world: Node = active_main.get("world")
+	var best: Vector2 = enemy.global_position + Vector2(-gap, 0)
+	var best_score: float = -INF
+	for i in range(8):
+		var stand: Vector2 = enemy.global_position + Vector2.from_angle(TAU * float(i) / 8.0) * gap
+		if world.has_method("can_move") and not world.can_move(stand, 15.0):
+			continue
+		var nearest: float = INF
+		for other in world.get_enemies():
+			if other == enemy or not is_instance_valid(other) or other.get("alive") != true:
+				continue
+			nearest = minf(nearest, stand.distance_to(other.global_position) - float(other.get("radius")))
+		if nearest > best_score:
+			best_score = nearest
+			best = stand
+	return best
 
 func _test_setup() -> void:
 	var booted: bool = await _boot_main()
@@ -219,6 +247,9 @@ func _test_combat() -> void:
 			dry_swings += 1
 	_check(_alive_tracked().size() == 0, "all 4 dedicated enemies killed (swings=%d)" % swings)
 	observations["total_swings"] = swings
+	observations["swing_log"] = swing_log
+	if _alive_tracked().size() > 0:
+		observations["reject_events_tail"] = reject_events.slice(maxi(0, reject_events.size() - 10))
 
 func _swing_and_verify(target_entry: Dictionary) -> bool:
 	var player: Node2D = active_main.get("player")
@@ -227,9 +258,11 @@ func _swing_and_verify(target_entry: Dictionary) -> bool:
 	var r: float = float(enemy.get("radius"))
 	var contact_safe: bool = bool(target_entry["target"]["contact_safe"])
 	var gap: float = (r + 15.0) if contact_safe else (47.0 + r - 8.0)
-	var stand: Vector2 = enemy.global_position + Vector2(-gap, 0)
+	# 배치: 수렴한 다른 몹(추적 외 포함) 무리 속에 서면 2틱 윈도 안 피격 스태거로
+	# 스윙이 취소된다(제품 정상 동작) — 이동 가능하고 다른 적에서 가장 먼 방향 선택.
+	var stand: Vector2 = _pick_stand(enemy, gap)
 	player.global_position = stand
-	player.set("facing", Vector2.RIGHT)
+	player.set("facing", (enemy.global_position - stand).normalized())
 	forced_actor_fields += 2
 	# 사전 스냅샷: 추적 4종 전원 + G.
 	var pre: Dictionary = {}
@@ -240,20 +273,46 @@ func _swing_and_verify(target_entry: Dictionary) -> bool:
 				"hp": float(node.get("hp"))}
 	var g_before: Dictionary = (active_main.get("source_state").read_current_g() as Dictionary).duplicate(true)
 	var before_outcomes: int = hurte_outcomes.size()
+	var before_halts: int = halts.size()
+	var before_rejects: int = reject_events.size()
+	var before_damage: int = player_damage_count
+	var diag: Dictionary = {"t": str(target_entry["target"]["group"])}
 	if player.get("state") != "idle":
 		for i in range(240):
 			await physics_frame
+			_heal_player()
 			if player.get("state") == "idle":
 				break
 	var accepted: bool = player.request_attack()
 	if not accepted:
-		for i in range(300):
+		# 거부 즉시 release — 홀드(_weapon_held)가 남으면 제품의 홀드 자동 재공격이
+		# 스태미나가 5가 될 때마다 바로 소비해 영원히 회복 대기 상태가 된다
+		# (diag2 실측: stamina_insufficient 수백 회·stamina ~1.5 고정).
+		player.release_attack()
+		for i in range(600):
 			await physics_frame
+			_heal_player()
 			player.global_position = stand
-			if player.get("state") == "idle" and float(player.get("stamina")) >= 10.0:
+			if player.get("state") == "idle" and float(player.get("stamina")) >= 20.0:
 				break
+		player.set("facing", (enemy.global_position - stand).normalized())
 		accepted = player.request_attack()
+		if not accepted:
+			player.release_attack()
+	# 진단: 요청 수락 여부·조준각(요청 시점 _attack_direction과 적 방향의 각도)·거리.
+	diag["accepted"] = accepted
+	var attack_direction: Vector2 = player.get("_attack_direction")
+	var offset0: Vector2 = enemy.global_position - player.global_position
+	diag["aim_err_deg"] = snappedf(rad_to_deg(absf(attack_direction.angle_to(offset0))), 0.1)
+	diag["dist"] = snappedf(offset0.length(), 0.1)
+	diag["p_state"] = str(player.get("state"))
+	diag["p_hp"] = float(player.get("hp"))
+	diag["stamina"] = snappedf(float(player.get("stamina")), 0.1)
 	if not accepted:
+		diag["reject_count"] = reject_events.size() - before_rejects
+		diag["rejects"] = reject_events.slice(before_rejects, mini(reject_events.size(), before_rejects + 2))
+		diag["dmg_during"] = player_damage_count - before_damage
+		swing_log.append(diag)
 		return false
 	for i in range(300):
 		await physics_frame
@@ -264,7 +323,13 @@ func _swing_and_verify(target_entry: Dictionary) -> bool:
 		if player.get("state") == "idle":
 			break
 		await physics_frame
+		_heal_player()
 	var new_outcomes: Array = hurte_outcomes.slice(before_outcomes)
+	diag["outcomes"] = new_outcomes.size()
+	diag["halts"] = halts.size() - before_halts
+	diag["dmg_during"] = player_damage_count - before_damage
+	diag["p_state_end"] = str(player.get("state"))
+	swing_log.append(diag)
 	if new_outcomes.is_empty():
 		return false
 	# ── 이 스윙의 모든 추적 대상 outcome 검증 (교차타 포함) ──
