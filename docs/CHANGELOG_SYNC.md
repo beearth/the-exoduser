@@ -229,6 +229,10 @@
 | 검증 | 신규1402/0+PC집중11/0+기존200/0=기능1613/0. 벤치1회263/0 cleanPASS, 4actor/256energy·240틱 mean1.133850/max4.649ms<8.333ms. 초기2실행 예외/기대값 실패·자기PID종료 원문보존/실패만수정, PC후속은집중11만. |
 | 문서·제출 | [계약·범위·실패/성능](engine/orders/reports/demo11-31_REPORT.md), FIELD cadence/visibility·fieldboss 추적 현행 보충. 자기branch 일반push/원격일치/DONE 후 WT제거·R불변, _out/demo11-31 원로그. |
 
+## 2026-10-21 type7-fix — 낡은 지원 집계 기대값
+
+- 원본16행/supportfalse/runtimeNULL 불변. 현재 factory 얼음전사3행 지원 근거로 기본9/7·type7 명시 설치10/6 정확 기대값을 교정하고 order집합 검사를 추가했다. 제품0줄·검사 완화0. [보고서](engine/orders/reports/type7-fix_REPORT.md).
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 

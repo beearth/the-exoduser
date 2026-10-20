@@ -249,7 +249,8 @@ func _exact_source_actual_assembly() -> void:
 	f["world"].add_child(runtime)
 	var report_before: Dictionary = f["world"].get_encounter_report()
 	var original_orders = _registry_orders(f["world"])
-	_expect(report_before["source_count"] == 16 and report_before["supported_count"] == 6 and report_before["unsupported_count"] == 10, "fresh actual source default remains6/10 before explicit fixture installation")
+	_expect(original_orders == [0, 1, 4, 8, 10, 12, 13, 14, 15], "exact admitted source orders include ice-warrior4/10/12; type7 remains absent")
+	_expect(report_before["source_count"] == 16 and report_before["supported_count"] == 9 and report_before["unsupported_count"] == 7, "fresh actual source default is9/7 after ice-warrior orders4/10/12 admission")
 	_expect(_record["id"] == "ch1_initial_004" and _record["order"] == 3 and _record["etype"] == 7 and _record["native_final"].size() == 337, "exact original record3/etype7/full337 is used")
 	_expect(_record["support"]["runtime_supported"] == false and _record["runtime"] == null, "original source unsupported/runtimeNULL remains authoritative")
 	var payload: Dictionary = RuntimeScript.project_actor_payload(_record)
@@ -296,7 +297,7 @@ func _exact_source_actual_assembly() -> void:
 	_expect(is_same(f["identity"], f["world"].get_native_world_identity()), "source registry insertion preserves actual Array generation identity")
 	_expect(installed["registry_result"]["source_order"] == 3 and installed["registry_result"]["registry_index"] == orders.find(3), "World returns actual inserted order/index")
 	var report: Dictionary = f["world"].get_encounter_report()
-	_expect(report["supported_count"] == 7 and report["unsupported_count"] == 9 and report["source_count"] == 16, "private fixture's explicit consumer overlay changes6/10 to7/9")
+	_expect(report["supported_count"] == 10 and report["unsupported_count"] == 6 and report["source_count"] == 16, "private fixture's explicit type7 overlay changes9/7 to10/6")
 	var row: Dictionary = report["records"][3]
 	_expect(row["record"] == _original_record and row["source_support"] == _record["support"] and row["record"]["runtime"] == null, "installed row preserves the original complete record and source supportfalse/runtimeNULL")
 	_expect(row["status"] == "supported" and row["consumer_config"] == "res://scripts/native_type7_runtime.gd", "only the separate actual consumer overlay is supported")
