@@ -86,3 +86,7 @@ func close() -> void:
 	if _mix!=null: _mix.dispose()
 	_samples.clear()
 func _exit_tree() -> void: close()
+
+# DEMO11-41 voice shares the existing SND08 sample mix; music has separate OPT gain.
+func mix_output_bus() -> String:
+	return _graph.bus_name(_mix.snapshot().bus) if not _closed and _mix!=null else ""

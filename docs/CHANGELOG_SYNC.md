@@ -15,6 +15,23 @@
 | 제출 | 자기branch 일반push·remote SHA/DONE 뒤 자기worktree제거, R 불변. 원로그 ~/exoduser-wt/_out/demo11-38/, Godot2이상30초gate·격리·override0 |
 
 
+## 2026-10-21 DEMO11-41M — 최신 main 충돌 해소
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 | 기존 DEMO11-41 8939bbd1에 최신 origin/main45be76e4(969c194e6 이후)를 정상 merge. Main 기존 모든 줄 순서 보존, 보스 actor/투사체 설치·PC runtime-stat API와 BGM bind/API 공존 |
+| 범위 | 신규 기능·전투·State 수정0. sound owner tick 목록 생성 API0. 기존 관련 테스트만 각1회, 수치는 보고서 참조 |
+| 문서 | [병합 보고서](engine/orders/reports/demo11-41m_REPORT.md), 원로그 _out/demo11-41m/. 자기 branch 일반 push·원격 SHA·DONE 후 worktree 제거 |
+
+## 2026-10-21 DEMO11-41 실제 BGM/voice media lifecycle
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | main8dbbf2b0e(DEMO11-01) + DEMO11-40 85d57b39 정상 merge. SND05/06 원모듈 무수정. Main 음향+23/-0·인트로 음향 signal·기상 voice 재생 함수만, State/보호 전투/저장/맵0 |
+| 연결 | 실제 AudioStreamPlayer/Timer·원음 lazy read·별도 BGM OPT bus/기존 SND08 voice bus. guide/opening/player_died 구독, fade·cache6·pause/복귀·오류·종료 정리. 소리 전용 RNG, tick 목록 API0 |
+| 검수 | 최종 CoreAudio55/0, 기존 무수정 SND05 1308/0·SND06 2400/0·DEMO11-40 44/0·P2007A115/0. 첫 하니스 API/숨김·작은 창 좌표 실패는 보고서에 구분, 기존40 ObjectDB4 경고는 과거에도 동일/verbose 재검0·새55검사 누수경고0, 성공 합산0 |
+| HOLD·제출 | 로비/전체 영화 owner 요청 API만, DEMO11-34는 native_boss_music_changed(phase,stage) 계약만. 외부 bgm export 포함·청감/PCM 미확인. [공용 행·보고서](engine/orders/reports/demo11-41_REPORT.md), 원로그~/exoduser-wt/_out/demo11-41/. 원격일치/DONE 후 WT 제거 |
+
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
 | 항목 | 구현·검수 근거 |
