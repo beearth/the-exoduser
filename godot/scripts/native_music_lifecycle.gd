@@ -60,7 +60,7 @@ func _player_event(kind: String,_data: Dictionary) -> void:
 	if kind=="player_died":transition("death")
 func _visibility() -> void:
 	var hidden: Variant=_main.read_native_document_hidden()
-	media.suspend(get_tree().paused or (hidden is bool and hidden))
+	media.suspend((get_tree().paused and _scene!="intro") or (hidden is bool and hidden)) # DEMO11-08: cinematic pauses gameplay, not its BGM.
 func transition(scene: String, key: String="") -> Dictionary:
 	if _closed or scene not in ["lobby","intro","guide","field","boss","death","victory","stop"]:return {"ready":false,"reason":"scene_unsupported"}
 	if scene==_scene and key.is_empty():return {"ready":true,"duplicate":true}
