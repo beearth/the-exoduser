@@ -320,6 +320,10 @@ func apply_native_normal_enemy_field_write(field: String, value: Variant) -> Dic
 			if not (value is int or value is float) or not is_finite(float(value)):
 				return {"applied": false, "reason": "native_enemy_stun_value_unsupported"}
 			_hit_stun = float(value)
+		"stunned": # P2-005b — 지옥강타 1 스턴(46556~46560): e.stunned=Math.max(e.stunned, v)
+			if not (value is int or value is float) or not is_finite(float(value)):
+				return {"applied": false, "reason": "native_enemy_stunned_value_unsupported"}
+			_stun_ticks = maxf(_stun_ticks, float(value))
 		_:
 			return {"applied": false, "reason": "native_enemy_hurte_field_unsupported:" + field}
 	return {"applied": true, "field": field, "applied_value": value}

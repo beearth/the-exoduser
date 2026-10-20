@@ -421,6 +421,17 @@ func apply_native_stage_entry_refill(owner: Node) -> Dictionary:
 # SKILL_SLOTS(27681 전역 6칸)·ULT_SLOT(27682 null)의 포트 보관처 = 이 P dict의
 # "skillSlots"/"ultSlot" (원본 전역 — 소유 위치 기록). 스킬 발동 로직은 범위 밖:
 # 지급·표시 전용이며 미구현 스킬 키는 기존대로 무반응(player space_rage_slot_not_connected).
+# P2-005b — 스킬 시전 악의 소비 (46454: G.mats -= _malCost(20)=10). 게이트는 호출측.
+func apply_native_skill_cast_cost(owner: Node, mats_cost: int) -> Dictionary:
+	if not _feel_owner_current(owner) or mats_cost < 0:
+		return {"applied": false, "reason": "actual_skill_cost_owner_not_current"}
+	var mats: int = int(_feel_num(_g.get("mats")))
+	if mats < mats_cost:
+		return {"applied": false, "reason": "insufficient_mats"}
+	_g["mats"] = mats - mats_cost
+	return {"applied": true, "mats": _g["mats"], "spent": mats_cost}
+
+
 func apply_native_new_game_starting_skills(owner: Node) -> Dictionary:
 	if not _feel_owner_current(owner):
 		return {"applied": false, "reason": "actual_starting_skills_owner_not_current"}
