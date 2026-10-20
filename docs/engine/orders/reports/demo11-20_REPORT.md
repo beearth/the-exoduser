@@ -48,8 +48,17 @@ G16646–16647은 default demo와cap100, G43137은 XP 누적 전 entry min-clamp
 
 ## 검증·제출
 
-관련 suite만 각각 **1회**, 실패0이므로 재실행0이다. 신규 `test_demo11_20_exp_cap` **214/0(원본 oracle10사례)**, META-06 **1034/0**, META-01 **20/0**, P2001c 처치 보상 **45/0**: 합 **1313/0**, 모두exit0/skip0/ERROR0. headless editor import1회는 시험 통과 수에 합산하지 않는다. pgrep -f Godot.app/Contents/MacOS/Godot | wc -l을 동일 argv 파이프로 매run 확인했고 수2일 때30초 대기했다. 원로그 `~/exoduser-wt/_out/demo11-20/`(L)의 godot-gate.jsonl/result/stdout/stderr, override는 각run 설정 후0byte다. 신규 USERDIR는 EXODUSER-demo11-20-Isolated-20261021, 기존3회귀는 파일 상수 이름 사용.
+최초 제출 검증은 관련 suite만 각각 **1회**, 실패0이므로 그 단계의 재실행0이다. 신규 `test_demo11_20_exp_cap` **214/0(원본 oracle10사례)**, META-06 **1034/0**, META-01 **20/0**, P2001c 처치 보상 **45/0**: 합 **1313/0**, 모두exit0/skip0/ERROR0. headless editor import1회는 시험 통과 수에 합산하지 않는다. pgrep -f Godot.app/Contents/MacOS/Godot | wc -l을 동일 argv 파이프로 매run 확인했고 수2일 때30초 대기했다. 원로그 `~/exoduser-wt/_out/demo11-20/`(L)의 godot-gate.jsonl/result/stdout/stderr, override는 각run 설정 후0byte다. 신규 USERDIR는 EXODUSER-demo11-20-Isolated-20261021, 기존3회귀는 파일 상수 이름 사용.
 
 신규 테스트는 Camera2D physics interpolation WARNING1, 기존 P2001c는 같은 Camera2D WARNING와 종료 **ObjectDB2 누수 WARNING**를 관측했다. 원문 보존·누수0 주장0이며, 본 단위에서 원인이나 main 대비 선재 여부를 단정하지 않고 추가 실행/피해 경로 수정은 하지 않았다. 신규 테스트 종료는 실제 Main queue_free 뒤12frame+200ms 정리한다. 코드 외 변경 후 회귀를 반복하지 않았다.
 
 원본·큰 JSON 전체를 출력하지 않았으며 Node는 --node-bin 명시, OS.execute는 모든 chunk를 join했다. UI 실창/스크린샷·PC/실제 세이브/복원 검증은 미실행. 수식·자원 회복 원본·Main/HUD/피해/맵/저장 collector·META 정책·docs/2_3는 변경0이다. 관련 META 추적 문서와 CHANGELOG·자기 WORK_BOARD 행만 갱신한다. 정상 훅·정확 경로 staging·자기 branch 일반push·원격 SHA/DONE 후 자기worktree 제거, R branch/head·tracked INDEX/WORK 보존. 실제 최종 SHA·원격·정리 결과는 L/DONE.txt와 final-receipt.json을 따른다.
+
+
+## 후속 — 성능 수정 main 병합 (2026-10-21)
+
+기존 제출726cf925를 유지한 같은 브랜치에 최신 origin/main **aa1eaea5a1fa70b31eae6fd907662ee13471c08d**를 정상 merge했다(rebase0/충돌0). 상위 기준은 [GODOT_METHOD_LIST_TICK_COST_20261021](../../../12퍼포먼스·최적화/GODOT_METHOD_LIST_TICK_COST_20261021.md)다. 상위 PC 수정은 native_combat_qe_adapter/native_resource_regeneration_adapter/native_source_player_regeneration_phase의 정적 arity cache이며, 본 담당이 피해·Q/E·회복 공용 코드를 추가 수정한 것이 아니다.
+
+이번 단위 State·META-01/06·신규 테스트/oracle의 get_method_list/get_property_list/get_signal_list 호출은 **0개**다. 이 파일들의 제품/테스트 바이트는726cf925와 동일하다(`L/followup-list-api-audit.json`). State의 기존 advance_native_fireball_clock도 같은 파일 내 목록 생성 호출이 없다. 새 cache 수정은 필요없었다. 성능 수치가 개선됐다는 별도 Mac 측정 주장은 하지 않으며 Performance 지표·벽시계 벤치 모두 실행하지 않았다. 후속 성능 확인이 필요할 때는 물리 N틱 고정 벽시계 방식만 사용한다.
+
+후속 병합본의 동일 직접 관련4suite를 각각 **1회** 재실행했다: 신규 **214/0**, META-06 **1034/0**, META-01 **20/0**, P2001c **45/0**, 합 **1313/0**, skip0·exit0·ERROR0. 최초 로그는 보존하고 `followup-` 접두어로 별도 기록했다. 매Godot gate·각파일 격리명·override0byte를 확인했다. P2001c의 ObjectDB2 종료 WARNING는 후속에서도 관측했으며 원문을 보존한다. 별도 성능 벤치는 실행하지 않았다. 정상 merge commit의 신규SHA·원격 일치·추가 DONE·자기 worktree 제거·R 불변은 L/DONE.txt와 final-receipt.json에 기록한다.

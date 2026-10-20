@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-20 후속 — 성능 수정 main merge·틱 목록 API 점검
+
+| 항목 | 근거·검수 |
+|---|---|
+| 기준 / 병합 | 기존726cf925의 같은 branch에 최신main aa1eaea5a 정상merge(rebase0·충돌0). PC 정적arity캐시3모듈·성능규칙문서 인수 |
+| 자기 코드 점검 | State/META01/06/신규테스트·oracle 목록생성API0, 자기 제품/테스트 바이트726cf925와동일·추가수정0. PC Q/E/회복 코드 별도수정0 |
+| 검증 / 측정 | 후속 직접관련4suite 각1회: 214/0+1034/0+20/0+45/0=1313/0, skip0·ERROR0. P2001c ObjectDB2 WARNING 원문보존. 별도성능수치 주장0·Performance미사용·벤치미실행, 필요시고정물리N틱벽시계만 |
+| 제출 | [후속 보고서](engine/orders/reports/demo11-20_REPORT.md), 원로그 followup-*·기존로그보존. 정상훅·자기branch 일반push·원격SHA·기존DONE에새SHA추가후자기worktree제거 |
+
 ## 2026-10-21 DEMO11-20 실제 State addExp cap100·레벨업 인계
 
 | 항목 | 근거·검수 |

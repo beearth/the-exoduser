@@ -538,14 +538,24 @@ static func _callable_live(value: Variant, world: Variant, count: int) -> bool:
 	return value is Callable and value.is_valid() and value.get_argument_count() == count \
 		and _provider_live(value.get_object(), world)
 
+static var _METHOD_ARITY_CACHE: Dictionary = {}
 static func _method_accepts(value: Variant, name: String, count: int) -> bool:
 	if not _live(value) or not value.has_method(name):
 		return false
-	for method in value.get_method_list():
-		if String(method["name"]) == name:
-			var maximum = method["args"].size()
-			return count >= maximum - method["default_args"].size() and count <= maximum
-	return false
+	# PERF(2026-10-21): get_method_list()는 대상 스크립트+엔진 기본 메서드 수백 개를 매번 복사한다.
+	# 틱마다 수십 번 불려 물리 1틱을 ~18ms 썼다(PC 실측). 인자 범위는 스크립트가 바뀌지 않는 한
+	# 불변이므로 (스크립트|클래스, 메서드)별로 한 번만 계산해 재사용한다. 판정 결과는 동일.
+	var arity_script: Variant = value.get_script()
+	var arity_key: String = (str(arity_script.get_instance_id()) if arity_script != null else str(value.get_class())) + ":" + name
+	var arity: Variant = _METHOD_ARITY_CACHE.get(arity_key)
+	if arity == null:
+		arity = []
+		for method in value.get_method_list():
+			if String(method["name"]) == name:
+				arity = [method["args"].size() - method["default_args"].size(), method["args"].size()]
+				break
+		_METHOD_ARITY_CACHE[arity_key] = arity
+	return arity.size() == 2 and count >= arity[0] and count <= arity[1]
 
 static func _number(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value))
