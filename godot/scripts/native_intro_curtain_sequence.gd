@@ -35,6 +35,16 @@ static func install_native_boot(main: Node) -> Node2D:
 	var harness_boot: bool = main.get_tree() != null and main.get_tree().get_script() != null
 	var mode: String = str(main.get_meta("native_intro_boot", "auto"))
 	if mode == "intro" or (mode == "auto" and not harness_boot):
+		# P2-001j — 32111 패링 레슨 흐름 owner. 인트로 부팅 경로에서만 설치(휴면 설치본에
+		# 붙이면 테스트가 수동 시퀀스로 G.on을 켠 뒤 레슨이 자동 개입해 기준선을 흔든다 —
+		# 원본도 레슨은 stage0 신규 게임 흐름에서만 시작·seen 재시작 금지 468~474).
+		var flow: Node = LESSON_FLOW_SCRIPT.new()
+		flow.name = "NativeParryLessonFlow"
+		if flow.configure(owner_world, main.get("player"), main.get("source_state"), seq):
+			seq.add_child(flow)
+			seq.lesson_flow = flow
+		else:
+			flow.free()
 		seq.begin_native_intro()
 	return seq
 
@@ -56,6 +66,7 @@ const ETYPE0_R := 10.0                # 30859 ETYPE_R[0]
 const MOB8_TOTAL := 40                # 23292
 const MOB8_COLS := 8
 const FLESH_SCRIPT := preload("res://scripts/enemy_melee_flesh_crawler.gd")
+const LESSON_FLOW_SCRIPT := preload("res://scripts/native_parry_lesson_flow.gd") # P2-001j
 const FLESH_CONFIG_FILE := "res://data/etype0_physical_flesh_crawler.json"
 const BARRIER_TEXTURE := "res://assets/sprites/bonfire_barrier.png" # 원본 sprites/bonfire_barrier.png(18977)
 
@@ -64,6 +75,7 @@ var player: Node2D
 var curtain_view: Control
 var state: Node
 var hud: Node
+var lesson_flow: Node # P2-001j — 32111 패링 레슨 흐름 owner(인트로 부팅 경로 한정 설치)
 var phase := "idle" # idle -> guide -> opening -> done
 var guide_step := 0
 var _guide_ready_at_ms := 0
@@ -370,6 +382,7 @@ func get_snapshot() -> Dictionary:
 		"bonfire": bonfire.duplicate(true), "barrier_texture": _barrier_texture != null,
 		"metrics": _metrics.duplicate(true), "spawn_journal": spawn_journal.duplicate(true),
 		"state_g_receipts": _state_g_receipts.duplicate(true),
+		"lesson_flow_installed": is_instance_valid(lesson_flow),
 		"unported": [
 			"63279 ens.length=0 (설치 제거 API 부재 — 퍼지도 후보 계수만)",
 			"63358 OPT.diff=5 강제 저장(설정 owner 분리)",

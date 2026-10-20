@@ -59,9 +59,8 @@ live update_clock_result를 관측 기록한다.
 
 ## 잔여 (목록)
 1. 가이드 4컷 패널 UI(원본 텍스트/레이아웃 63357~63407)·voice_wakeup — 입력 진행만 이식.
-2. 커튼 직후 패링 레슨 자동 시작(parry-lesson.js — 웹 실흐름에 존재) 미이식.
+2. ~~커튼 직후 패링 레슨 자동 시작~~ — **P2-001j에서 흐름 슬라이스 이식**(`FDG_P2_001J_LESSON_FLOW_AND_CLOCK_20261020.md`).
 3. 인트로 컷신(영상/대사, _startIntroCutscene)·로비/캐릭터 선택 선행 화면.
-4. stageTime 실진행 — update clock의 system_lesson 관측·panel_inputs 등 gap 소유
-   (P1-002.D services 소관).
+4. ~~stageTime 실진행~~ — **P2-001j에서 개통**(관측·영수증 소유, HUD 타이머 진행 검증).
 5. OPT.diff=5 강제 저장(63358, 설정 owner 분리).
 6. initialization 테스트 2실패(병합 main 선재 — HUD/이동 트랙).

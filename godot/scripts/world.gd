@@ -2854,6 +2854,27 @@ func register_summoned_enemy(enemy: CharacterBody2D) -> Dictionary:
 	return {"valid": true, "errors": [], "registered": true,
 		"registry_index": _enemies.size() - 1, "native_frame": _native_frame}
 
+func detach_native_enemies_for_lesson() -> Array:
+	# P2-001j — parry-lesson.js start() 398~400: saved.ens=ens; ens=[] — 레슨 동안
+	# live 배열에서 분리(노드 보존·트리 제거로 AI 정지). 제거(free) 아님.
+	var saved: Array = []
+	for enemy in _enemies:
+		if is_instance_valid(enemy):
+			remove_child(enemy)
+			saved.append(enemy)
+	_enemies = []
+	return saved
+
+func restore_native_lesson_enemies(saved: Array) -> Dictionary:
+	# P2-001j — parry-lesson.js finish() 689: ens = this.saved.ens 복원.
+	var restored := 0
+	for enemy in saved:
+		if is_instance_valid(enemy) and enemy.get_parent() == null and not _enemies.has(enemy):
+			_enemies.append(enemy)
+			add_child(enemy)
+			restored += 1
+	return {"restored": restored}
+
 func clear_native_enemies_for_intro() -> Dictionary:
 	# P2-001i — _startIntro(63279) `ens.length=0`: 설치/동적 적 전부 제거. 원본도
 	# 레코드가 아니라 live 배열을 비우므로 encounters 리포트(동결 기록)는 유지한다.

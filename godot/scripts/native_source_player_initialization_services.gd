@@ -3,6 +3,7 @@ extends RefCounted
 ## Actual-current readers and original helper assembly for the ordered caller.
 ## No plans, source arithmetic, actor writes, bootstrap, restore or clock here.
 
+const GapFlowWitness = preload("res://port_modules/source_update_clock_prefix/gap_flow_witness.gd") # P2-001j
 const PROVIDERS = preload("res://scripts/native_source_player_providers.gd")
 const STATE = preload("res://scripts/native_source_new_run_state.gd")
 const RESOURCES = preload("res://scripts/native_source_resource_authority.gd")
@@ -322,26 +323,31 @@ func _advance_native_source_update_clock(main: Node, callback_id: String) -> Dic
 		result = _source_update_clock_write_step(main, state, g,
 			clock.phase_parry_lesson(_native_update_clock_parry_lesson_observation()))
 	if result.get("status") == "CONTINUE":
-		# _EDITOR_MODE (game.html:3463 file-init const) has no owned port holder yet.
-		result = _source_update_clock_write_step(main, state, g, clock.phase_editor({}))
+		# P2-001j — _EDITOR_MODE(3464 file-init: ?editor==='1')는 URL 파라미터 상수.
+		# 이 포트의 캐노니컬 부팅엔 쿼리 표면이 없어 현재값은 항상 false(비에디터 부팅).
+		result = _source_update_clock_write_step(main, state, g,
+			clock.phase_editor({"editor_mode": false, "source": "game.html:3464 const _EDITOR_MODE", "port_boot": "no_query_surface"}))
 	if result.get("status") == "CONTINUE":
-		# panel/input callbacks between the early gates — no actual owner (gap).
-		result = _source_update_clock_write_step(main, state, g, clock.phase_panel_inputs(null))
+		# P2-001j — gap_flow_witness: 구간 내 return 부재(정적 소스 사실) 영수증.
+		result = _source_update_clock_write_step(main, state, g,
+			clock.phase_panel_inputs(GapFlowWitness.receipt("panel_inputs")))
 	if result.get("status") == "CONTINUE":
 		result = _source_update_clock_write_step(main, state, g, clock.phase_paused(g))
 	if result.get("status") == "CONTINUE":
-		# source body between the early gate and 32580 — no actual owner (gap).
-		result = _source_update_clock_write_step(main, state, g, clock.phase_body_gap_to_hitstop(null))
+		result = _source_update_clock_write_step(main, state, g,
+			clock.phase_body_gap_to_hitstop(GapFlowWitness.receipt("body_gap_to_hitstop")))
 	if result.get("status") == "CONTINUE":
 		result = _source_update_clock_write_step(main, state, g, clock.phase_hitstop(g))
 	if result.get("status") == "CONTINUE":
 		# source between 32594 and 32680 — no actual owner (gap).
-		result = _source_update_clock_write_step(main, state, g, clock.phase_gap_hitstop_to_sp(null))
+		result = _source_update_clock_write_step(main, state, g,
+			clock.phase_gap_hitstop_to_sp(GapFlowWitness.receipt("gap_hitstop_to_sp")))
 	if result.get("status") == "CONTINUE":
 		result = _source_update_clock_write_step(main, state, g, clock.phase_sp(g))
 	if result.get("status") == "CONTINUE":
 		# source between 32684 and 32741 — no actual owner (gap).
-		result = _source_update_clock_write_step(main, state, g, clock.phase_gap_sp_to_stage_time(null))
+		result = _source_update_clock_write_step(main, state, g,
+			clock.phase_gap_sp_to_stage_time(GapFlowWitness.receipt("gap_sp_to_stage_time")))
 	if result.get("status") == "CONTINUE":
 		result = _source_update_clock_write_step(main, state, g, clock.phase_stage_play_time(g))
 	var summary: Dictionary = {"status": result.get("status"), "last": result,
@@ -368,7 +374,11 @@ func _source_update_clock_write_step(main: Node, state: Node, g: Dictionary, res
 ## this port has no current holder/witness for it. Presence is not invented —
 ## the absent observation makes the producer halt NOT_READY at system_lesson.
 func _native_update_clock_system_lesson_observation() -> Dictionary:
-	return {}
+	# P2-001j — 포트 실황 관측: window._systemLesson(system-lesson.js:2) 모듈은 미이식
+	# → 현재값 부재 = presence "absent". 원본은 파일 로드로 항상 존재하나 32107의 호출은
+	# 반환을 무시하므로(절대 update를 끊지 않음) absent/called 모두 CONTINUE — 흐름 동등.
+	# 미이식 효과는 시스템 안내 체크리스트 UI뿐(잔여 목록).
+	return {"presence": "absent"}
 
 ## window._parryLesson: Main.source_lesson holder is the actual current value.
 ## Only an explicit falsy witness authority maps to presence "falsy" (no call);
@@ -378,6 +388,13 @@ func _native_update_clock_parry_lesson_observation() -> Dictionary:
 	var main: Variant = _ref(_main)
 	if not _live(main):
 		return {}
+	# P2-001j — 인트로 부팅 경로의 레슨 흐름 owner가 있으면 32111 위치 그대로 여기서
+	# tick을 1회 호출(틱의 유일한 호출자 = 이 phase 슬롯 — 원본과 동일 위치/횟수).
+	var sequence: Variant = main.get("source_intro_sequence")
+	if is_instance_valid(sequence):
+		var flow: Variant = sequence.get("lesson_flow")
+		if is_instance_valid(flow) and flow.has_method("native_lesson_tick"):
+			return {"presence": "called", "tick_result": flow.native_lesson_tick()}
 	var holder: Variant = main.get("source_lesson")
 	if not holder is RefCounted or not is_instance_valid(holder) \
 			or holder.get_script() != SOURCE_LESSON_HOLDER:

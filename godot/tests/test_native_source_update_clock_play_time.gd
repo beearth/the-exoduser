@@ -213,9 +213,13 @@ func _test_actual_main_frame_callback_halt() -> void:
 		and result.get("reason", "") != "source_native_update_not_entered",
 		"update clock driver actually ran in the native frame callback")
 	var update_state: Variant = result.get("update_state", {}) if result is Dictionary else {}
+	# P2-001j 갱신: system_lesson 관측(absent — 원본 32107은 반환 무시라 흐름 동등)·
+	# editor 증인·gap 영수증이 소유되면서, pre-stage(G.on=false) 부팅의 정직한 현재
+	# 게이트는 원본 첫 실게이트 32108 `if(!G.on)return` = g_on RETURNED다.
 	_check(update_state is Dictionary
-		and update_state.get("not_ready_at") == "system_lesson",
-		"honest current halt at system_lesson (no _systemLesson holder in this port)")
+		and update_state.get("returned_at") == "g_on"
+		and str(update_state.get("not_ready_at", "")) == "",
+		"honest current gate: RETURNED at g_on pre-stage (32108 if(!G.on)return)")
 	var play: Dictionary = main.source_initialization_services.read_normal_enemy_play_time()
 	_check(play.get("status") == "NOT_READY", "play_time stays NOT_READY (no fabricated writes)")
 	var g: Variant = main.source_state.read_current_g()
