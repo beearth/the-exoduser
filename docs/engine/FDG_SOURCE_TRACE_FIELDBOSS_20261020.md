@@ -12,7 +12,11 @@
 | 증거 수준 | 파일·선언·호출 정적 추적. 순수 상수·생성자만 별도 JS VM에서 평가. Godot/import/게임/서버/브라우저/테스트 실행 0. 아래 검수 항목은 후속 계획이며 PASS가 아님 |
 | 보호 | Q/E 입력·패링·자원, docs/2_3, save 형식·복원, State/main/World/피해·드랍 소유 파일 변경 0. getter 존재를 writer 권한으로 해석하지 않음 |
 
-### 0.1 선행 문서와 중복 방지
+### 0.1 마감 시 main 진행 재확인
+
+자기 브랜치 첫 push 후 원격 main이 `299e48ac4dfbb7cedd313e791173c0d8ff20cb0a`로 진행되어 다시 fetch·정적 대조했다. **game.html·index.html은 시작 pin과 동일 byte/SHA/행 수**이므로 이 문서의 원본 행 근거는 이 마감 main에서도 그대로다. 지역·State·normal hurtE·소환굴·factory·World·HUD의 조사 파일도 변경 없다. Main 차이는234행 뒤 표시용 native_map_look 부트2줄 추가뿐이며, 본문의 시작 pin Main263–271은 마감 main265–273에 해당한다. 추가된 MAP-LOOK/일반 적 표시·포이즈 수정 등 다른 변경을 이 추적의 실행 인수나 완료 범위로 포함하지 않는다. 전체 변경 경로와 byte 대조는 외부 main-advance.json에 보존했다. 후속 구현은 다시 최신 main/소유 경계를 확인한다.
+
+### 0.2 선행 문서와 중복 방지
 
 | 먼저 읽은 근거 | 이번 문서의 경계 |
 | --- | --- |
@@ -22,7 +26,7 @@
 | [작업판](orders/WORK_BOARD.md) P3-002/P3-003 병합 행, [기능 목록](FDG_FEATURE_INVENTORY_20261020.md) FIELD 4항목 | 과거 snapshot과 최신 main 구현을 구분. 타인 WIP/미병합 branch를 현재 완료로 포함하지 않음 |
 | [CH1 일반 적 추적](FDG_SOURCE_TRACE_CH1_ENEMIES_20261020.md) §1.1·§1.2·§2 | 문지기 ch1_initial_003/etype29·호위·일반 AI·피해·드랍 상세는 기존 담당에 위임. 여기서는 필드/게이트 접점만 연결 |
 
-### 0.2 ‘지역별 4종’과 FIELD 분모 4의 구분
+### 0.3 ‘지역별 4종’과 FIELD 분모 4의 구분
 
 지역 담당 필드보스는 **같은 앵글러 생성자의 4개체(SW물/SE불/NW암/NE뇌)**다. 서로 다른 네 전용 보스 AI 선언은 없다. 이 네 지역 인스턴스를 주 대상으로 추적한다. 기능 목록의 FIELD 분모 4는 **앵글러·곰치·화염악마·문지기라는 네 항목**이므로 보조 세 계열도 함께 추적한다. 두 집합을 합쳐 ‘서로 다른 네 생물종이 지역마다 한 마리’라는 계약으로 만들지 않는다.
 
@@ -216,7 +220,7 @@ Q/E owner를 수정하거나 기존 일반 탄을 큰탄으로 위장하는 작�
 | 초기값 입력 | 앵글러/FD: 유한Number player_level/tx/ty/tile_size(현재40),앵글러element필수. WM:유한Number player_level/x/y와asleep bool필수. 누락/타입/비유한은{status:NOT_READY,reason:...,writes:0}. host검증과원본식clamp구분. lv\|\|1와rawlv위치/ToInt32/식순서보존 |
 | READY 출력 | {status:READY,value:<원본생성객체>,source_ref:<pin/행>}. 키/타입/누락그대로. FB alive=true,WM/FD에없는alive/ib/el일괄추가금지. homeX와_homeX구분. WM는픽셀직접,FB/FD는+.5tile. 죽음배열/싱글턴생성없음 |
 | 문지기 제한 | catalog는hell→etype7개/강화순서/.10/후대입필드목록만. build_initial(gate_guard)는NOT_READY:requires_approved_mkEn_input. mkEn/RNG/elite/실드/맵바닥을가짜기본값으로대체금지. frozen3500/62를보편값으로사용금지 |
-| 고정 검사 | §0.2의4사이트/el/mapping,WM/FD4사이트,§1.3의7레벨×3계열HP/ATK와전체초기dict를독립기대값으로대조. lv0에서HPfallback만적용. 음수/소수/Int32경계는별도JSoracle확보. shape/키부재검사. 반환변이후다음호출/입력/다른개체불변 |
+| 고정 검사 | §0.3의4사이트/el/mapping,WM/FD4사이트,§1.3의7레벨×3계열HP/ATK와전체초기dict를독립기대값으로대조. lv0에서HPfallback만적용. 음수/소수/Int32경계는별도JSoracle확보. shape/키부재검사. 반환변이후다음호출/입력/다른개체불변 |
 | 실패 검사 | kind/필수키/원소/좌표/Number/NaN/Inf오류. 원소허용집합은angler사이트[2,1,3,4];다른원소를READY로치환금지. RNG호출0증거. unknownkind를READY/0HP로통과시키면실패. 기대값을구현출력에서생성하지않음 |
 | 실행 계획 | 다음구현때만신규격리명 EXODUSER-fb-s01-Isolated-20261020. Godot전사용자pgrep gate. 관련기존 test_contracts/test_p3003_regions/test_p3002_spawn_holes는각상수격리명. skip/exit/ERROR/원로그보존. 현재실행0,미측정검사수/PASS발명금지 |
 | 완료 조건 | 자기모듈/테스트/관련docs만정상hookcommit·자기branchpush·원격SHA확인. 공용0줄/원본불변/정확검증로그. 공용writer필요시S01확장없이BLOCKED보고 |
