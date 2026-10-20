@@ -87,6 +87,11 @@ func _stamp(parent: Node2D,texture_: Texture2D,at: Vector2,width: float,rng: Ran
 # No polling, actor writers, physics/LOS changes or texture loads after setup.
 var hell_props: Array[Node2D]=[]
 const HELL_TEXTURES=[preload("res://assets/map/map11/props/hell_skull_pyramid.png"),preload("res://assets/map/map11/props/hell_impaled_corpse.png"),preload("res://assets/map/map11/props/hell_spike_pit.png")]
+const SKULL_25D=[
+ [preload("res://assets/map/map11/props/skull_25d/skull_0_diffuse.png"),preload("res://assets/map/map11/props/skull_25d/skull_0_normal.png")],
+ [preload("res://assets/map/map11/props/skull_25d/skull_1_diffuse.png"),preload("res://assets/map/map11/props/skull_25d/skull_1_normal.png")],
+ [preload("res://assets/map/map11/props/skull_25d/skull_2_diffuse.png"),preload("res://assets/map/map11/props/skull_25d/skull_2_normal.png")],
+]
 const HELL_ROWS=[
  [0,Vector2(-680,-2570),185.0,false],
  [0,Vector2(-3010,-1030),166.0,true],
@@ -101,6 +106,13 @@ func _hell_props(scene: Node2D) -> void:
   var row: Array=HELL_ROWS[i]
   var foot: Vector2=row[1]
   var texture_: Texture2D=HELL_TEXTURES[row[0]]
+  var contact_key: String=texture_.resource_path
+  if row[0]==0:
+   var canvas:=CanvasTexture.new()
+   canvas.diffuse_texture=SKULL_25D[i][0];canvas.normal_texture=SKULL_25D[i][1]
+   canvas.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+   canvas.specular_color=Color(.12,.10,.08);canvas.specular_shininess=.16
+   texture_=canvas;contact_key=SKULL_25D[i][0].resource_path
   var height_: float=row[2]
   var size_: Vector2=texture_.get_size()
   var prop:=Node2D.new();prop.name="HellProp%02d"%i;prop.position=foot
@@ -110,9 +122,9 @@ func _hell_props(scene: Node2D) -> void:
   var sprite:=Sprite2D.new();sprite.name="Silhouette";sprite.texture=texture_
   sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   sprite.centered=false;sprite.offset=Vector2(-size_.x*.5,-size_.y*.94)
-  sprite.scale=Vector2.ONE*height_/size_.y;sprite.flip_h=row[3]
+  sprite.scale=Vector2.ONE*height_/size_.y;sprite.flip_h=row[3] if row[0]!=0 else false
   prop.add_child(sprite)
-  GroundContact.align(sprite)
+  GroundContact.align(sprite,contact_key)
   # Ground-plane AO cannot paint over another actor when it crosses the foot.
   GroundContact.shadow(scene.field_view,sprite,foot,-2987,.85,scene.lighting_look._unlit)
   hell_props.append(prop)

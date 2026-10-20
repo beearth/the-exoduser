@@ -55556,3 +55556,9 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 같은branch f7bddb46 후속. alpha-hull bbox bottom pivot/회전·flip·worldY/4 254개, offsetAO/분리cast8제거. source lower-alpha contact16종/252개를같은foot에 연결. 새AI원화0·provider/충돌/전투/저장0.
 - ground root3개는flat/shadow0. 작은피flat material, bone/flesh22높이×.48. source/foot고정·whole-prop bob0. 하단접촉PNG변환/재현도구·전체수치는 설계§18·아트현황.
 - 실제제단·시체나무·hell·관문/arena제단1x직접검수. 최종1557/0, foot오차최대.000366worldpx. CONTACT VISUAL PASS(검수7개), 전체RETOUCH. 벤치추가0/수정본p95미측정, 이전10.598ms실패미해결. 증거/SHA `_out/MAP11-20/DONE.txt`.
+
+
+## 2026-10-21 MAP11-25D
+- 372a9c5a 기준 격리 브랜치: 외부 Meshy GLB의 orthographic 3뷰 diffuse/normal/foot → CanvasTexture 피라미드3개. 런타임 GLB0, 기존 접지/Y정렬/PointLight 유지.
+- 관련 SSOT: MAP11_NEW_MAP_LOGIC_PLAN_20261021 §19, ART_TEAM_MASTER MAP11-25D. 전체docs 키워드검색은 _out/MAP11-25D/docs-all-keywords.txt.
+- 실제 Main 전후3뷰/광원near-far/normal-off대조/+Y교정, 벤치1회 field7.243ms/arena7.041ms. 최종 재렌더전 성능측정 제약을 명시. VISUAL RETOUCH(모델 하단·재질 잔여). 실제 저장폴더/PC전투 변경0.

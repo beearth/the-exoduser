@@ -297,3 +297,19 @@ MAP11-19 런타임 최종 판정 **RETOUCH**: 원화의 큰 형태는 읽히나 
 | 바닥뿌리/작은피/뼈·육편 | 뿌리3개floor전환·별도shadow0, 피는flat dark-red mask, 작은bone/flesh22개높이×.48 | 전체1557/0. 원화·전체맵판정은별개 |
 
 이전 MAP11-20의 .94pivot/foot+(0,3)AO·MAP11-17의+(0,8)/투사그림자 설명은 이력이다. 현행값/생성수식은 설계 **§18**, 증거 `_out/MAP11-20/captures/grounding/`. **CONTACT VISUAL PASS(검수발치7개), 전체VISUAL RETOUCH**, 새수정본성능미측정(앞field10.598ms실패를해결완료로표시0).
+
+
+## MAP11-25D — 2026-10-21: 3D 소스 → 2D 노멀 조명 파이프라인
+
+| 항목 | 인수 기록 |
+|---|---|
+| 원화 출처 | MagicLight Toolbox Seedream → MAP11-20 `hell_skull_pyramid.png`. 신규 AI 이미지 생성0 |
+| 3D 변환 | 사용자 제공 Meshy image-to-3D/PBR, 약30k poly. 원본 `outputs/map11-art-proof-20261021/3d/skull_pyramid.glb`, 13,867,284bytes, SHA256 `c2d33f27fae370feb594917bab529d6d442f58739ca397e59907fb536452838d`. R 원본 읽기만, Git/runtime 반입0 |
+| 렌더 | Godot SubViewport1024² + orthographic Camera3D, elevation36.86989765°/지면압축.6/추가Y압축1.0. yaw−20/+20/+65°. diffuse·view-space normal·발치metadata, GPU CLI로 제작. 순수headless dummy 렌더는 미지원/오류파일로 종료 |
+| 게임 출력 | `assets/map/map11/props/skull_25d/`: 375×370/352×332/381×350 diffuse+normal3쌍, 접촉AO3장, 모두mip. 표시높이185/166/175의2배. CanvasTexture OpenGL +X/+Y/+Z(green invert=false). footprint/발치/원본SHA는같은폴더 JSON3종 |
+| 적용 | `product_detail.gd` 피라미드3개만. 기존PointLight2D 실제노멀수광, 원위치/절대Y/4/opaque foot/하단AO 유지. 원본2D PNG는보존. PC전투·Main·Player·저장수정0 |
+| 검수 | 기준372a9c5a 실Main before/after3뷰1600×900/나란히3200×900/1x. 같은카메라near/far+normal-off대조. +Y교정 위1.0/아래0.0 PASS. 상세카메라근거/필터/AO/수치/제약은 MAP11 설계§19 |
+| 성능 | 1회 field p95 7.243ms/arena7.041ms, 이전field10.598보다악화미관측. 마지막offline재렌더전측정이며최종PNG재측정0/최종성능보증·개선율주장0 |
+| 판정 | **VISUAL VERDICT: RETOUCH**. 노멀조명반응성립, Meshy 하단형상/암부·재질원화명암잔여. 사진붙임느낌완전해소·전체맵완성판정아님 |
+
+도구 `godot/tools/map11_25d_render.gd`, `map11_25d_contacts.py`; export의tools/tests제외유지. 증거 `~/exoduser-wt/_out/MAP11-25D/`와 `DONE.txt`. MAP11-20의기존2D피라미드설명은이력이며이브랜치현행은§19.

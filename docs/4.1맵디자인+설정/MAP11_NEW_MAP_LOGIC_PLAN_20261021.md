@@ -564,3 +564,67 @@ Apple M5 Pro/Godot4.7.2 GL/1920×1080/240cap/60Hz/5적 fixture. 직전 `pgrep -x
 | GIT | 같은branch f7bddb46의정상자식 commit/push·원격expected SHA보존. R HEAD/INDEX/WORK읽기만, main push/force/reset/rebase/반려merge/배포0. SHA/제거는DONE |
 | VISUAL VERDICT | **RETOUCH(전체) / CONTACT VISUAL PASS(직접검수발치)** |
 | NEXT PASS | 전체성능 예산·기존암부/지면패치 접합·밀집전투 별도과제. 이번지시 뒤 신규작업/추가벤치 자동착수0 |
+
+
+## 19. MAP11-25D — GLB → 조명 반응 2D 소품 (2026-10-21)
+
+기준 `372a9c5a69884b76a568e6f94504a9b089aabb91`의 정상 자식 브랜치 `codex/map11-25d-20261021`. §17/18의 2D 피라미드 **3개만** 아래 렌더로 대체한다. 다른 소품·충돌·이동·스폰·PC 전투·저장 코드는 변경0. 전체 시각 판정 **RETOUCH**: 노멀 조명은 동작하지만 Meshy 하단 복원 형상과 재질에 추가 제작이 필요하다.
+
+### 19.1 투영 측정과 오프라인 렌더
+
+| 항목 | 규약 / 근거 |
+|---|---|
+| 기존 소품 측정 | `hell_spike_pit.png` 지면 rim 수동 기준점 좌(220,590)/우(824,590)/뒤(522,410)/앞(522,772). 장축604px·단축362px → .59933775, 원형 지면 가정 고도36.82248°. 창과 뼈의 가림·원화 자체 변형 때문에 약 ±4° 추정이며 물리 카메라의 유일한 복원값은 아님. 표시 앵커 `projection-pit-anchors.png`, 수치 `projection-measurement.json` |
+| 기존 캐릭터 측정 | `assets/player/south.png` 첫48×48 프레임의 alpha≥32 bbox=(11,14)~(33,44), 22×30px. 투구/어깨 상면이 보이는 세워진 3/4 형상. 원화만으로 물리 각도는 유일하게 계산할 수 없음. 수직 몸체 비율을 유지해 추가 Y압축을 하지 않는 교차 기준. `character-projection-review.png`는 검토용 nearest10배 |
+| 선택 카메라 | Camera3D orthographic, 위치(0,6,8)에서 원점 관측. 수평 azimuth0°, 지면 위 elevation36.86989765°(내려다보는 pitch −36.86989765°), 지면 깊이 투영sin(elevation)=.6. 렌더 후 추가 세로압축1.0. 모델 yaw −20°/+20°/+65°로3변형 |
+| 렌더 공간 | SubViewport1024×1024, transparent RGBA8, own_world_3d. 외부 GLB를 GLTFDocument로 **오프라인에서만** 생성. mesh world AABB 중심 정렬, orthographic size=AABB.size.length×1.08, near .01/far100. runtime GLB/3D로드0 |
+| diffuse | 원본 PBR base-color×albedo_color를 unshaded 균일 출력. 새 방향광·투사그림자 베이크0. RGB=min(source×1.6,.85). Meshy base-color 자체에 남은 원화 명암은 제거했다고 주장하지 않음 |
+| 하단 잔여물 | 모델 중심 기준 world_y<−.40×modelHeight AND source luma(.299R+.587G+.114B)<.18만 discard. diffuse/normal 동일 조건. 검은 받침을 줄였으나 하단 뼈/재질의 어두운 윤곽 잔여로 RETOUCH |
+| normal | view-space N과 원본 tangent normal(texture×2−1, xy×original.normal_scale×.35)을 T/B/N으로 합성·정규화. RGB=.5×N+.5, 카메라 오른쪽 +X/위 +Y/관측자 쪽 +Z. **green invert=false**. 동일 프레임·crop·alpha. Lanczos 축소 뒤 픽셀 벡터 재정규화 |
+| Godot 규약 확인 | CanvasTexture OpenGL식 X+/Y+/Z+. 엔진이 green을 화면 아래 좌표로 변환하므로 이중 반전하지 않음. 공식 [CanvasTexture](https://docs.godotengine.org/en/stable/classes/class_canvastexture.html), [Canvas shader source](https://github.com/godotengine/godot/blob/master/drivers/gles3/shaders/canvas.glsl). 실제 +Y 노멀(.5,.9,.8)의 위 광원 중심값1.0/아래0.0 → `normal-y-verification.json` PASS |
+| 해상도 / mip | alpha crop 뒤 최종 표시높이185/166/175의 정확히2배370/332/350px. diffuse/normal/contact PNG 모두 mipmaps=true·linear mipmap. sprite uniform scale .5, flat 데칼용 Y압축 적용0 |
+| headless 제한 | stock Godot4.7.2 macOS `--headless`는 dummy renderer라 PNG frame_post_draw가 오지 않음(직접 확인). `--headless --rendering-driver metal --rendering-method mobile`도 실제 렌더 불가. 도구는 headless에서 render_error.json+exit4로 즉시 종료. import/alpha/AO는 headless/CLI 가능. PNG는 GPU CLI로 검증, 순수headless 렌더 완료 주장0. Linux Xvfb는 미검증 |
+
+`godot/tools/map11_25d_render.gd` 실행: `Godot --path godot --script res://tools/map11_25d_render.gd -- --source=<외부GLB절대경로> --output=<PNG출력폴더>`. `godot/tools/map11_25d_contacts.py`는 Pillow/NumPy/SciPy로 새 hull/contact만 재생성한다. export 도구 포함0(`export_presets.cfg`의 tools/*,tests/* 제외 유지).
+
+### 19.2 적용·발치 계약
+
+| id / 위치 | yaw | diffuse / normal 각각 | alpha≥32 bbox 바닥중앙 | 표시높이 / 크기 |
+|---|---|---|---|---|
+| HellProp00 (−680,−2570) | −20° | skull_0_*.png 375×370 | (187.5,370) | 185px /187.5×185 |
+| HellProp01 (−3010,−1030) | +20° | skull_1_*.png 352×332 | (176,332) | 166px /176×166 |
+| HellProp02 (1570,−1750) | +65° | skull_2_*.png 381×350 | (190.5,350) | 175px /190.5×175 |
+
+출력은 `godot/assets/map/map11/props/skull_25d/`. Sprite2D의 CanvasTexture에 diffuse+normal 연결, specular_color=(.12,.10,.08), shininess=.16. 노멀 반전 대신3개 모두flip_h=false(기존 두번째 반전은 별도yaw로 대체). 기존 PlayerKey/Heart/WestTissue/EastTissue 등의 PointLight2D를 사용하며 새 게임 광원0.
+
+발치는 §18과 같은 alpha≥32 hull의 pixel-square bbox bottom center, 절대z=clamp(int(worldFoot.y/4),−4096,4095). CanvasTexture.resource_path가 비므로 **diffuse PNG의 명시key**를 GroundContact.align에 전달. 공용 hull/mask registry에3건 추가, 다른18hull/16mask 불변. AO는 §18.2와 같은 lower-alpha max-filter/Gaussian/pad/crop, position=foot/추가이동0, alpha.85/unlit/z−2987. 새cast shadow0. `feet.json`은opaque bbox, `render.json`은카메라/프레임crop, `source_manifest.json`은3D출처.
+
+### 19.3 검수·성능·판정
+
+| 검사 | 결과 / 한계 |
+|---|---|
+| before/after | before는372a9c5a의 실제Main. field(−850,−2400)/west(−3150,−1050)/east(1570,−1680),1600×900. compare_*.png는3200×900 좌우, compare_*_1x.png는640×270(원배율320×270×2). resize/색보정0. HUD/실시간위상 미세차이 잔여 |
+| 광원 증명 | 같은카메라/Player/prop에서 기존PlayerKey만 foot+(−85,−120)→foot+(−700,100) 이동. near/far 각1600×900·1x, normal-off near/far 대조도 보존. near normal-vs-flat 고정100×103px ROI 평균RGB차7.79874/255, 차>3은7286px. near평균luma67.30587→far41.55141. near/far 같은crop assert |
+| 접지·Y | CanvasTexture/normal존재, prop00 불투명bounds=(−93.75,−185) size(187.5,185),bottom0·절대Y/4 확인. 3종alpha≥32 bbox/foot은feet.json. 기존 다른prop 변경0 |
+| 성능1회 | 1920×1080 실제Main, field/arena 각600physics ticks/실입력4방향. field p95=7.243ms,p99=8.299ms,평균178.514fps,draw148. arena p95=7.041ms,p99=8.699ms,평균177.586fps,draw136. checks3/fail0. 이전field10.598ms보다악화미관측. fresh동일조건before0/별도MAP11-PERF미통합/밀집전투미측정. **마지막오프라인재렌더전 측정**(최종yaw1폭353→352px,노드/광원수동일),최종PNG재측정0·개선율/최종엄밀성능보증0 |
+| 동시실행 | perf시작전pgrep1(기존Godot81277),bench포함최대2. 기존프로세스중단/변경0. 2개이상이면대기하는시작감시와perf-processes.json. 벤치재실행0 |
+| 저장·runtime | EXODUSER-map11-25D-Isolated-20261021만실행. 실제저장폴더0,project.godot은commit전원byte복원. GLB는원outputs만,게임에는PNG9장+metadata. Main/Player/PC전투core수정0. 틱목록API/ResourceLoader추가0 |
+| VISUAL VERDICT | **RETOUCH**. 실제면방향의수광이바뀌는2.5D파이프라인성립. Meshy하부형상/암부윤곽/원texture명암·작은표시detail은추가art pass필요. 사진붙임느낌완전해소·AAA완성은미달 |
+
+### 19.4 MAP PRODUCTION REPORT (§23)
+
+| 필드 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 MAP11-25D. 기존silhouette/regions/main route/side spaces유지. 승인GATE6소랜드마크소재교체→GATE4접지→8camera/tech |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH·major holes변경0 |
+| LARGE / MEDIUM | Meshy skull1모델3yaw/기존3배치만. 다른composite/overlap/connections유지. 새scatter0,source하단잔여RETOUCH |
+| GROUND | opaque foot+기존lower-alpha AO,source발치접지. cast0.floor/stain변경0 |
+| PLAYABLE | main arenas/travel/breathing/threat spaces·collision/LOS불변. 벤치실보행/arena gate PASS. 밀집전투·탄/패링가독성미검수 |
+| LANDMARK | primary제단/secondary문유지,tertiary skull3만2.5D |
+| CAMERA QA | ARENA주변field/SIDE L/SIDE R의3뷰. START/EARLY/LATE/EXIT/arena최종아트검수는범위밖 |
+| TECH QA | normalY교정PASS,normal on/off조명차PASS,loading/최종script parse ERROR0. 실제gate확인,collision변경0,web pageerror/404 N/A.seam외형/발치RETOUCH |
+| FILES | product_detail/contact registry추가3건/PNG9·import9·metadata3/offline tools2/QA harness3/설계·ART·CHANGELOG. concurrent/unrelated변경0 |
+| GIT | 전용branch/path지정add/hook유효. main push/force/reset/rebase/타작업merge/배포0. SHA/remote대조·worktree제거는_out/MAP11-25D/DONE.txt |
+| VISUAL VERDICT / NEXT | **RETOUCH**. 모델하단·재질재제작이후보. 이번뒤새생성/별도backlog자동착수0 |
+
+증거: `~/exoduser-wt/_out/MAP11-25D/captures/`, `normal-y-verification.json`, `light-response.json`, `projection-measurement.json`, `perf.json`, `perf-processes.json`, `DONE.txt`.
