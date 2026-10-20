@@ -26,11 +26,11 @@
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | 시작 요청됨 |
 | P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | 시작 요청됨 |
 | MAC-VERIFY | 최근 통합분 Mac 테스트·Mac 실창 첫 전투 녹화 | Mac VS Code Codex 01a1586e-c1b7(맥북총괄 관측, 17:59 착수) | codex/mac-verify-20261020 | 없음(관측 전용) | 진행 중 |
-| P5-001a | Mac 실행판(run.command)·macOS export 프리셋·템플릿 점검 | Mac VS Code Codex 01a1586f-09bf(맥북총괄 관측) | codex/p5-001a-mac-20261020 | 없음(점검·보고 전용) | 배정 |
+| P5-001a | Mac 실행판·macOS export 점검 | Mac Codex 01a1586f-09bf | — | 없음 | BLOCKED(쓰기·네트워크) — 읽기 결과는 계획 문서 P5-001a 행에 기록, Full Access 후 재개 |
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | PC Codex(codex exec) | codex/qa-001-pc-20261020 | 지정 테스트 7종 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 실패 18건+스크립트 오류 1건 해소, 제품 코드 0줄, 총괄 독립 재실행 7종 0실패 |
 | P3-001 | 맵 pit_poison 타원 충돌 계약 | PC Codex(codex exec) | codex/p3-001-pc-20261020 | engine/fdg/map-source-adapter.js, godot/data/map.json, 맵 계약 테스트 | **검수 완료·main 병합(Claude 총괄 대리 커밋 3081760c5)** — Godot 195/195·Node 10, 실창 미검증 |
 | P2-004b | 펫 대사 카테고리 160여 종 | **PC Codex**(codex exec) | codex/p2-004b-pc-20261020 | native_pets.gd 대사 테이블 | 진행 중 |
-| P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | Mac Codex ENGINE (`01a1235a-f2b8-73d1-bf58-c51c7dfb7638`, ROOT 관측) | codex/p3-003-20261020 | `godot/scripts/native_regions.gd`, `godot/tests/test_p3003_regions.gd`, `docs/engine/FDG_P3_003_REGIONS_20261020.md`, `docs/engine/orders/reports/P3-003_REPORT.md`; 공용 최소 hook: `main.gd::_ready`의 HUD/state bind 직후 NativeRegions 생성·configure(약6줄, 입력·리젠 제외), `hud.gd::_draw_native_minimap`의 base-cache draw 직후 호출(약3줄), `_refresh_native_first_fight_hud`의 지역 kill/진행 표시(약10줄), `get_native_minimap_corner_snapshot().unported`의 현행 미연결 진단 문자열1줄; `docs/engine/FDG_P2_002B_MINIMAP_CORNER_20261020.md`에는 P3 부분 연결의 날짜·현행 P3문서 링크만 추가(기존 검수 이력 보존); `docs/CHANGELOG_SYNC.md`에는 P3 날짜·구현/검사/미연결 경계·문서 링크의 짧은 append만 | **검수 대기** · 원격 `919f6a28ab4e64e8a07cd403551777d8dbc77e6a`(공식 connector 전달, 로컬 `8d7e67a6`와 전체 tree 동일); core27/0·실Main9/0 및 순서정정9/0, C/실분모/화면 미완 |
+| P3-003 | 지역 시스템 | Mac Codex ENGINE(채택) + PC 총괄 통합 | codex/p3-003-20261020 → main | native_regions.gd 등 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 42702 _regKill 연결 포함 |
 | FEATURE-INVENTORY | 전체 기능 분모 표·이식 상태 판정 | **PC VS Code Codex 1**(P3-003 중복 배정을 중단하고 전환 — P3-003은 Mac ENGINE 단독) | codex/feature-inventory-pc-20261020 | docs/engine/FDG_FEATURE_INVENTORY_20261020.md | 진행 중 |
 
 ## 공용(누구도 단독 소유 아님 — 수정 시 최소 줄·보고 필수)
