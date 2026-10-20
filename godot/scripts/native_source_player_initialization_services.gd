@@ -661,6 +661,13 @@ func read_normal_enemy_parry_lesson_active() -> Dictionary:
 		return {"status":"NOT_READY", "ready":false,
 			"reason":"actual_normal_enemy_lesson_context_lost", "context_reason":post_error,
 			"provider":"parry_lesson_active", "read_result":result}
+	# P2-001k — 42111 위임용 현재 레슨 참조(활성일 때만). holder가 보유한 현재 lesson
+	# 객체 그대로 전달 — hurtE는 native_lesson_hurt_enemy 보유 여부로만 위임한다.
+	if result.get("active") == true:
+		var holder: Variant = _ref(_main).get("source_lesson")
+		if holder is RefCounted and is_instance_valid(holder) and holder.has_method("get_current_lesson_reference"):
+			result = result.duplicate(true)
+			result["lesson_reference"] = holder.get_current_lesson_reference()
 	return result
 
 func read_normal_enemy_player_view() -> Variant:
