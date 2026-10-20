@@ -11,6 +11,17 @@
 | 회귀 | CH1 Node18/0·asset6/0·pit6/0. Godot CH1-01/02/03=63/0·189/0·75/0, contracts5그룹/실패0, P3002 298/0·P3003 43/0. 맵 Node37건28통과/9실패는 baseline 실패명 동일·새 실패0. 기존 ObjectDB8누수/Camera2D 경고·미이식 전투 보존 |
 | 제출 / 경계 | [CH2-01 보고서](engine/orders/reports/ch2-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ch2-01/. 시각·플레이 가능 인수 아님. 자기 branch push·원격 일치·DONE 후 자기 sparse WT/임시 cache 정리, R 불변 |
 
+## 2026-10-20 CH1-04 si1 standalone World·실리소스 소비
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 기준 / 디스크 | main e556b617/game SHA4d911cdd… 동일. CH1-03 aada9b28가 main에 없어 그 끝 분기. --no-checkout+sparse109패턴·원본 추가2파일만, import WT약1.4GiB. 자기branch push·remote SHA·DONE 뒤 자기WT 제거·branch/log 유지 |
+| 산출물 / 원문 | 신규 native_ch1_area_world/resources·preview scene·si1_resources·export_ch1_area_resources·Node/Godot tests/UID3. 최신 원문 전체 initMapObjects/metadata in-place merge·occ-foot/isW/canMv/LOS/soilEdgeA 격리 실행, hand12+별도lore1=13objects·breakable0. 원문/에셋 편집0 |
+| 리소스 / 충돌 | 원본10asset 8683434byte 동일 복사+import10. si1 source tile c7994170…/200²/T40·START4020/7420·gate metadata31/exits33·nearFloor12보정0·LANDMARK5/GAMEPLAY7. 실제 Sprite12중심pivot/keepAR/layer0 소비. wall25590cell exact union313 RectangleShape2D, props5원문 analytic. stage0 hill/chunks64복제0·Physics2D prop shape0 |
+| 신규 검증 | Node5/0, headless88/0, GPU410/0·8PNG1920×1080/Apple M5 Pro. physics40000센터/union0오차, 원문 isW6966/canMv6966/LOS400 차이0·BFS157/fixture왕복314성공·80렌더프레임1302.098ms(60cap). 원본 double 입력 IEEE754 carrier로 JSON849입력 반올림/경계12차이 해소·실패원로그보존 |
+| 회귀 | CH1-01 9/0·63/0, CH1-02 6/0·189/0, CH1-03 9/0·75/0, P3001 Node6/0, contracts5그룹/0·P3002 298/0·P3003 43/0·encounter3그룹/0. 맵Node28/9기준 동일·새실패0. Godot ERROR0, 기존Camera2D/ObjectDB8경고잔존 |
+| 경계 / 상세 | 독립World1·Main/제품World/실P/저장0, 제품지역·굴·적/보스·전환/clear미연결·full_stage_ready=false. 공유맵/공용6/타인파일0줄, 기존1371파일SHA동일·R보존. VISUAL RETOUCH(확대vista/반복바닥/접지/광원). [보고서](engine/orders/reports/ch1-04_REPORT.md), ~/exoduser-wt/_out/ch1-04/. 매Godot전2이상30초대기·suite상수격리·override finally0byte |
+
 ## 2026-10-20 CH1-03 si1 원본 데이터·순수 계약
 
 | id / 적용 위치 | 현재 정확 계약 |
