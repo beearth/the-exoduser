@@ -70,7 +70,7 @@
 | SV-COLLECT | 세이브 수집 어댑터(port_modules/save_adapter) | Mac Codex ttys007 | codex/sv-collect-20261020 | 신규 모듈·테스트 | 진행 중 |
 | TRACE-ELITES | 정예 modifier·오라 원본 추적(문서만) | Mac Codex ttys004 | codex/trace-elites-20261020 | 추적 문서 | 진행 중 |
 | W01 | 무기 1번 단위 구현(공용 0줄) | Mac Codex(무기 스레드) | codex/w01-20261020 | 신규 파일·테스트 | 진행 중 |
-| P2-008a-FIX | P2-008a 빙결전사 포이즈 경로 정지 결함 수정(crawler 413 etype≠0 거부 → hurtE 42490 halt, p1002g 1실패) | PC VS Code Codex(P2-008a 작성자, P2-008b 스레드에 최우선 큐) | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_melee_ch1_ice_warrior.gd 등 | 미착수 — PC Codex가 큐 메시지보다 P2-008b를 먼저 진행(2a05d13f7까지 수정 커밋 없음). 최종 main 2826b6738에서 p1002g 1실패 계속. **Mac 인수 권장**(PC는 수동 전용) |
+| P2-008a-FIX | P2-008a 빙결전사 포이즈 경로 정지 결함 수정(crawler 413 etype≠0 거부 → hurtE 42490 halt, p1002g 1실패) | PC VS Code Codex(P2-008a 작성자, P2-008b 스레드에 최우선 큐) | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_melee_ch1_ice_warrior.gd 등 | **main 병합(PC Claude 2026-10-20)** — Mac 49528efdb: 빙결전사 3프로필 정확 도메인(crawler 413 일반화)·p1002g 집계 정정(halts==0·_verify_kill 유지 diff 확인). PC 병합본 p1002g·p1002f·factory·etype20·crawler·fix_poise·contracts 0실패 |
 | P2-008b | 1-1 미지원 적 다음 개체(order11 etype47 우선) | PC VS Code Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd·신규 적 스크립트 | 진행 중 — 2a05d13f7: order11 etype47·order9 등록(지원 9→11 추정). 미검수·미병합. 빙결전사와 같은 crawler 상속이면 포이즈 halt 확장 여부 확인 필요 |
 | P2-009a | 피드백 UI | PC VS Code Codex | codex/p2-009a-feedback-ui 계열 | native_skill_slots.gd 등 | 진행 중 |
 | SK-S01 | 스킬 1번 단위 구현 | Mac Codex | codex/sk-s01-20261020 | 신규 파일·테스트 | 진행 중 |

@@ -18,6 +18,18 @@
 | 보호 | 공용 제품 파일·소환굴 owner 변경 0줄. 새 이미지·광원·공유 RNG 소비·세이브 쓰기 0. 기본 실행 연결은 총괄 담당 |
 | 검수 | 신규 actual Main67/0·소환굴298/0·starter148/0·contracts5그룹/0. 실창1920×1080·1x 대기/소환·시퀀스 검수, 작업자 국소PASS/총괄통합 미검수. 10초ABBA 추가평균+.111792ms, 최대편차+.810ms(원인 미분리). 소환 full샷의 HUD 구슬 빈 표시 별도 미진단. [보고서](engine/orders/reports/MAPLOOK-HOLE_REPORT.md), `G:\exoduser-wt\_out\MAPLOOK-HOLE-pc\visual-03\` |
 
+## 2026-10-20 P2-008a-FIX 빙결전사 포이즈 필드 소유권·집계 정정 승인 후 검수
+
+| id / 적용 위치 | 현재 정확 계약 |
+|---|---|
+| 제품 수정 | crawler의 정확 type0 소유 검사를 virtual predicate로 재사용하고 빙결전사 exact order4/10/12만 id·etype20·elite/el·mods[]·ib=false·전용 script로 허용. 제품2파일 +15/−3, 공용6파일·P2-008b 변경0 |
+| 원본 근거 | 착수 main284d7faf의 game.html19973–20001·42490 비보스 포이즈 경로. ETYPE_POISE[20]=15(30888) 대신 mkEn31164의 실제 poise=maxPoise=_hp=875 사용. 붕괴0/리젠0/stun180/기존 더 큰 max 보존. 보상42702·42714–42716·42756–42758·43103 및 HP물약28253은 모든 처치 대상 |
+| 승인 집계 정정 | 사용자 최신 검수 지시로 proposed-p1002g-accounting.patch 승인·test_p1002g_kislash_hurte.gd +4/−2줄 적용. 모든 ok·killed 결과로 전역 보상 기대값 정정. 추적 _verify_kill·_check 호출43곳(정의1곳)·비교식/임계값·실제220검사 유지, 단정 삭제/완화0 |
+| 전후·반복 | 수정 전220/1·halt6 → 제품 수정 후220/6·halt0 → 승인 집계 정정 후 **220/0·halt0·ERROR0·SKIP0·exit0 3회**. 선행 집중 검사80/0·원본 JS발췌5경계 유지 |
+| 회귀 재실행 | 필수15종 **1,407검사+8케이스/0실패·exit0·SKIP0**. p2001h/j/k 종료 리소스 ERROR 합2건은 사용자 판정상 QA-003 진단 중인 선재 문제로 원문 보존. 경고와 assertion 결과 구분 |
+| PC 재현만 | 첫 f48c94eb order11 동일42490 halt·order9 미지원. 재조회 b406e4bc는 order11/9 owner_core 완료·동일 halt 미재현. PC 원본 SHA1284파일 변경0·기존 증거 재사용 |
+| 과부하·제출 | Godot4.7.2 매 실행 전 pgrep 수 확인·2이상30초 대기. p1002g 및 기존 회귀 각각 파일 상수 격리명·override 매회0byte. [FIX 보고서](engine/orders/reports/p2-008a-fix_REPORT.md)·원로그 ~/exoduser-wt/_out/p2-008a-fix/approved-*·STATUS=REVIEW_PENDING |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |

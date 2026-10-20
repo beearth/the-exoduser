@@ -342,6 +342,10 @@ func _cast_and_verify(target_entry: Dictionary) -> bool:
 	var killed_in_swing = 0
 	var potion_mats_in_swing = 0
 	for outcome in new_outcomes:
+		# G is global: include every completed kiSlash kill, also untracked factory actors.
+		if outcome.get("ok") == true and outcome.get("killed") == true:
+			killed_in_swing += 1
+			potion_mats_in_swing += _potion_hp_from_draws(outcome.get("rng_draws", []))
 		var id: int = int(outcome.get("enemy_id", 0))
 		if not tracked.has(id) or not pre.has(id) or pre[id]["alive"] != true:
 			continue
@@ -405,8 +409,6 @@ func _cast_and_verify(target_entry: Dictionary) -> bool:
 			_check(draws.size() == 1 and str(draws[0]["purpose"]) == "crit",
 				"rand consumed exactly once (crit) on non-kill (%s)" % tag)
 		else:
-			killed_in_swing += 1
-			potion_mats_in_swing += _potion_hp_from_draws(draws)
 			_verify_kill(entry, node, outcome, draws, tag)
 	if killed_in_swing > 0:
 		var g: Dictionary = active_main.get("source_state").read_current_g()
