@@ -25,6 +25,7 @@
 | P2-006a | 드랍 바닥 표시·줍기·인벤 반입 | PC heavy 담당 — **Claude 사용 한도로 중단**(작업 폴더 G:\exoduser-wt\p2-002a-hud에 진행분 보존) | claude/p2-006a-drop-pickup-20261020 | 드랍 렌더·줍기 신규 스크립트 | 중단·인계 대기 |
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | 시작 요청됨 |
 | P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | 시작 요청됨 |
+| MAC-LIVE | Mac 전용 실창 실행·부팅→인트로→커튼→첫 전투 30초 녹화(사용자 별도 배정) | Mac VS Code Codex | codex/mac-live-20261020 | docs/engine/orders/reports/MAC-LIVE_REPORT.md(코드 수정 없음) | 검수 대기(BLOCKED) — 화면 기록 권한 false·녹화 exit 1·영상 미생성, Main 미실행. SHA는 제출 기록 참조 |
 | MAC-VERIFY | 최근 통합분 Mac 테스트·Mac 실창 첫 전투 녹화 | Mac VS Code Codex 01a1586e-c1b7(맥북총괄 관측, 17:59 착수) | codex/mac-verify-20261020 | 없음(관측 전용) | 진행 중 |
 | P5-001a | Mac 실행판·macOS export 점검 | Mac Codex 01a1586f-09bf | — | 없음 | BLOCKED(쓰기·네트워크) — 읽기 결과는 계획 문서 P5-001a 행에 기록, Full Access 후 재개 |
 | QA-001 | 기존 실패 테스트 7종 원인 진단 | PC Codex(codex exec) | codex/qa-001-pc-20261020 | 지정 테스트 7종 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 실패 18건+스크립트 오류 1건 해소, 제품 코드 0줄, 총괄 독립 재실행 7종 0실패 |
