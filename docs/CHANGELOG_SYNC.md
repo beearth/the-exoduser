@@ -1,3 +1,12 @@
+## 2026-10-21 DEMO11-50 — 설정 차단 해소·허용 OPT 저장/복원·UI
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준 | origin/main45be76e49 + DEMO11-09dc9f34ea 정상 merge319ca387. Main/State/전투 핵심 자체 변경0 |
+| S01/S10 | 기존 OPT owner에 원본 초기textScale100/panelFittrue/diffV2=1 추가(38필드), 허용7필드 writer. 기존 demo11-05 IO에 원본settings/lang/screen 키 추가, 실제 user 폴더 거절·전용demo namespace. 보호 저장필드 보존/키복원0/저장 실패prefix 명시 |
+| UI/문서 | pause 설정→4탭, 볼륨/ko-en/120포함render cap/전체화면/접근성. Q 패링·E 방패(불꽃칼날) 안내 수정. 기존crest·Hell Gothic·폰트, 번역대상 등록. [현행계약](3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md), [수치·공용줄·캡처 보고서](engine/orders/reports/demo11-50_REPORT.md) |
+| 경계 | 키변경/BINDS·inputMode 이관/난이도·QE/Player save0, BGM 재생 owner HOLD 명시. tick 목록생성API0. 관련회귀각1회/격리GPU·캡처 및 최종 SHA는 보고서와 _out/demo11-50/DONE.txt |
+
 ## 2026-10-21 DEMO11-09 pause·입력 안내 / 설정 반영 BLOCKED
 
 | 항목 | 구현·검수 근거 |

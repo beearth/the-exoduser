@@ -33,8 +33,9 @@ func _run() -> void:
  check(menu.read_input_profile()==profile,"existing Main BINDS view reused")
  check(profile.primary.parry=="KeyQ" and profile.primary.shield=="KeyE" and profile.primary.settings=="Escape","Q/E/Esc authority unchanged")
  var settings: Dictionary=menu.read_settings()
- check(settings.status=="NOT_READY" and settings.missing_keys==["textScale","panelFit","diffV2"],"S01 missing fields remain NOT_READY")
- check(not menu.request_settings({"sfxVol":0}).applied,"no fake setting writer when S01 incomplete")
+ check(settings.status=="READY" and settings.missing_keys.is_empty(),"S01 source38 ready")
+ check(menu.request_settings({"sfxVol":0}).get("persisted",false),"real OPT writer and adapter persist setting")
+ before.sfxVol=0
  check(options==before and is_same(options,main.source_initialization_services.read_current_options()),"rejected setting preserves actual OPT identity and bytes")
  main.call("_toggle_pause")
  check(paused and menu.is_menu_visible(),"existing pause route presents menu")
@@ -45,7 +46,7 @@ func _run() -> void:
  check(main.world.get_native_frame()==frame,"world clock frozen during menu")
  menu.buttons.settings.pressed.emit()
  check(paused and menu.get_snapshot().page=="settings","settings view opens without resuming")
- check(menu.get_snapshot().settings_apply_status=="BLOCKED","blocked apply is explicit")
+ check(menu.get_snapshot().settings_apply_status=="READY","actual settings owner ready")
  check(not menu.request_settings({"diffV2":1,"lang":"en","binds":{}}).applied,"protected/unknown writes not accepted")
  main.call("_toggle_pause")
  check(paused and menu.get_snapshot().page=="pause","Escape semantic returns from settings before resume")
@@ -84,5 +85,5 @@ func _run() -> void:
  main.queue_free()
  for i in 16:await process_frame
  await create_timer(0.2).timeout
- print("DEMO1109_RESULT ",JSON.stringify({"assertions":checks,"failures":failures,"skip":0,"settings_apply":"BLOCKED:S01_missing_and_S10_absent","saved_settings_restored":false}))
+ print("DEMO1109_RESULT ",JSON.stringify({"assertions":checks,"failures":failures,"skip":0,"settings_apply":"READY","settings_io_implemented":true}))
  quit(1 if failures else 0)

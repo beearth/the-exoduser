@@ -7,7 +7,7 @@ const Primitive = preload("res://port_modules/save_adapter/source_save_primitive
 const Lifecycle = preload("res://port_modules/save_adapter/source_save_lifecycle_owner.gd")
 const MAX_BYTES := 16 * 1024 * 1024 # Operational bound; reject without truncation.
 const MAX_REQUESTS := 128 # Explicit release, never silently evict idempotency receipts.
-const KEYS := ["hellsave_demo", "hellsave_demo_active", "hellsave_demo_0", "hellsave_demo_1", "hellsave_demo_2", "hellsave_demo_3", "hellsave_demo_4"]
+const KEYS := ["hellcave_settings", "hellLang", "hellcave_screen", "hellsave_demo", "hellsave_demo_active", "hellsave_demo_0", "hellsave_demo_1", "hellsave_demo_2", "hellsave_demo_3", "hellsave_demo_4"]
 var _root := ""
 var _requests: Dictionary = {}
 var _pending := ""
@@ -123,7 +123,9 @@ func _begin(id: String, key: String, raw: String, remove: bool) -> Dictionary:
 	if _requests.size() >= MAX_REQUESTS: return _error("request_receipts_full")
 	if not remove:
 		if raw.to_utf8_buffer().size() > MAX_BYTES: return _error("value_too_large")
-		if key == "hellsave_demo_active":
+		if key == "hellLang":
+			if raw not in ["ko","en"]: return _error("unsupported_native_language")
+		elif key == "hellsave_demo_active":
 			if raw not in ["0", "1", "2", "3", "4"]: return _error("invalid_active_slot")
 		else:
 			var parsed := Reader.parse_fixture_json(raw)
