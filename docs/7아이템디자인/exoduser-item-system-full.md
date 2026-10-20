@@ -24,6 +24,7 @@
 | 스킨 | 27790–27795, 27857–27881 | uniqueArt _cut.png → 기본 컷아웃 → 속성 스킨. 유골 bone_{part}.png는 속성 접미사 없음. 누락 변형 phys 폴백 |
 | 빔 | 27817–27855, 52582–52588 | 원본 2장, 2열 정사각 셀, layerLv 1~10 우선·rarity [0,2,3,4,5,6]. 60×160, 180ms 프레임, ADD 합성, alpha .46+sin(now/400+x)×.05 |
 | 마스크·바운스 | 27835–27837, 52485 | RGB max≤24 alpha0, 24~72 선형 alpha. y=sin(now/300+x)×3. 스킨 34px |
+| P2-006b 샘플링 | 51736, 52579–52594 | 원본 `imageSmoothingEnabled=false`에 맞춰 native_world_drops의 texture_filter를 NEAREST로 명시. 빔 자식도 상속. 크기·색·등급표·수명 수치 변경 없음 |
 | 라벨·수명 | 52579–52594, 41632–41642 | 장비 분기에는 이름 라벨·TTL 없음. 임의 추가하지 않음. mat 수명/슬라임 생성은 별도 미이식 |
 | 드랍·획득음 | 16266–16271 | rarity 0~1 common·2~3 rare·4~5 legend, 45ms 게이트. 획득음 6종. 원본 샘플 vol .5, pitch 편차 .04/.05 및 .92~1.08 후단 변동 |
 | 오디오 위치 | 12372–12385 | 드랍 1200px 이내 감쇠0, 이후800px 선형 감쇠를 제곱. pan=clamp(dx/600,−.7,.7). 획득음 비공간. 실제 OPT.sfxVol 적용 |
@@ -31,6 +32,8 @@
 | 검수 한계 | P2-006a 보고서 참조 | 그림자 blur 근사·유골 습득 미이식. 일반 장비 자연 드랍 렌더 관측, 네이티브 수동 키 입력 검수는 권한 거부로 미확인 |
 
 에셋별 원경로/복사경로/bytes/SHA-256: [P2-006a_ASSETS.json](../engine/orders/reports/P2-006a_ASSETS.json). 상세 범위·실행·복구점: [P2-006a_REPORT.md](../engine/orders/reports/P2-006a_REPORT.md).
+
+P2-006b 후속: 121 물리틱만으로 death_blood의 종료를 보장하지 않는다. 원본 54581–54582의 16프레임×frameTime4는 렌더 프레임 기준이다. 실제 transient 카운트가 0인 뒤 자연 일반 드랍·등급0~5 원배율 좌표 크롭을 비교했다. 라벨은 원본에도 없으므로 추가하지 않는다. 밝기·그림자·전체 장면 동등성은 RETOUCH이며 [P2-006b 보고서](../engine/orders/reports/P2-006b_REPORT.md)를 따른다.
 
 
 > **2026-10-10 명칭 변경: 보석/결정 → 유물 (코드 식별자 crystal*·세이브 키 crystalBag/crystals 유지).**

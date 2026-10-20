@@ -54450,3 +54450,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - `native_world_drops.gd` 신규 어댑터와 main 시작 hook 6줄, state 런타임 드랍 식별·가방 반입 연결. 스킨·고유 누끼·ADD 빔·R 프레스/9틱 홀드·가득 참·원본 SFX를 이식했다. 게임 설계 수치·Q/E·레슨·세이브 형식은 변경하지 않았다.
 - 원본 에셋 189개 SHA-256 동일. 17+18+39=74 assertions/0 failures, 실제 창의 자연 처치 후 일반 드랍 viewport 1920×1080 보존. 수동 R 입력/OS 창 캡처 권한은 거부돼 미확인이다.
 - 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/engine/orders/reports/P2-006a_REPORT.md`.
+
+## 2026-10-20 P2-006b — 효과 종료 후 드랍·LMB 관측
+
+- 지정 b933b2da5에 A 구현이 빠져 있어 승인된 A 제출 3커밋을 작업 브랜치에만 cherry-pick했다. 충돌한 설계/변경로그는 기존 DOC-SYNC·P3 기록과 A 기록을 모두 보존했다. main 변경·병합 없음.
+- game.html51736의 nearest 계약을 드랍 어댑터 1줄로 명시(수치·원본 에셋 불변). 189/189 원본·대상 SHA-256 재대조. 기능 회귀18/0·17/0·HUD36/0·스킬27/0, 필터 RED1/1→GREEN1/0.
+- LMB 빈 칸은 기존 A 검수 하니스의 activeLMBSk='weapon' 주입 결과. 원본44118/44134에도 weapon 아이콘이 없고 idle/공격/복귀 모두 빈 칸, kiSlash 복원 시 아이콘 복원(6/0). 제품 입력·HUD 수정 없음.
+- death_blood 렌더 클록 종료까지 기다려 transient0 뒤 자연 드랍·6등급 1x 캡처. 빔 밝기/그림자·전체 장면 동등성은 RETOUCH, Native Computer Use 거부로 OS 캡처/수동 키 미확인. 상세 `docs/engine/orders/reports/P2-006b_REPORT.md`.
