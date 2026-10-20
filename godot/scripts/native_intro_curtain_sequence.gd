@@ -1,5 +1,6 @@
 class_name ExoduserNativeIntroCurtainSequence
 extends Node2D
+signal native_audio_phase_changed(phase: String) # DEMO11-41 audio observation only
 ## P2-001h — 인트로 커튼 오픈 시퀀스 owner (원본 행 근거, 현 리포 game.html 기준).
 ## 체인: 인트로 컷신 종료 → _startIntro(63277~63293: ens 전부 제거·OPT.diff=5 강제(63358)·
 ## bonfire.t=0·G._intro=true·G.on=false·P.iframes=9999·커튼 닫힘 표시) → 키 가이드 4컷
@@ -179,6 +180,7 @@ func begin_native_intro() -> Dictionary:
 	if is_instance_valid(hud) and hud.has_method("set_native_intro_hud_visible"):
 		hud.set_native_intro_hud_visible(false) # 63287 부트로딩 숨김 + HUD 미표시(63414 .on 전)
 	phase = "guide"
+	native_audio_phase_changed.emit(phase)
 	guide_step = 0
 	_guide_ready_at_ms = Time.get_ticks_msec() + GUIDE_READY_MS
 	_space_held_at_ms = -1 # 63377 state.cancelHold()
@@ -221,6 +223,7 @@ func finish_native_guide() -> Dictionary:
 	if is_instance_valid(hud) and hud.has_method("set_native_intro_hud_visible"):
 		hud.set_native_intro_hud_visible(true) # 63414 hud/hudTop/... .on 표시
 	_on_flag = true               # 63413 G.on=true
+	native_audio_phase_changed.emit(phase)
 	_apply_state_g("open")        # state G.on 점등 — update clock g_on(32580)·stageTime 개방
 	player.set("iframes", 600.0)  # 63413 P.iframes=600
 	# 63417~63420: 1-1은 tileRLE → room/corridor 리스폰 생략(원문 게이트 그대로).
