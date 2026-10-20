@@ -1,5 +1,9 @@
 # QA-002 — 테스트 결정성·종료 오디오 정리·조명 하니스 (2026-10-20)
 
+**최신 main 통합 재검증:** 기준 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`, 실행 merge `e6f414b69d390b2613b1e273ceb8156ba97860f2`. G48·지역23/60/53/32·시작 HUD0/32 확인. 최신 테스트29회 중27회 통과, 검기2회는220/1로 실패했다. 별도 진단에서 새 etype20 포이즈 소유자 연결의 `source_field_call_unavailable`/42490을 확인했다. 제품 수정 없이 원로그·수정안만 보고한다. 얼음보주5회22/0·조명10/0 및12/0·B/C 종료 정리는 통과했다. 상세는 §9.
+
+아래 §1–8·이전 보충·기존 부록은 c7 단계의 역사 기록이다. 최신 결과와 합산하지 않는다.
+
 기준 소스 `c7b21c63b25f7a8e25b9e0ec29e4fc7f21e8d91d`에서 별도 worktree `/Users/fordeargamers/exoduser-wt/qa-002` / 브랜치 `codex/qa-002-20261020`로 수행했다. 수정은 테스트 10개와 이 보고서·작업판·동기화 일지에 한정한다. 제품 코드·제품 RNG 경로·원본 RNG 호출 순서는 변경하지 않았다.
 
 고정 후 33회 중 exit 0·assertion 실패 0·skip 없음은 **33/33**, stderr ERROR 합계는 **0**다. 시드를 넣은 9종의 그룹별 검사 수·총수·실패 수 반복 일치는 **9/9**다. p2005b/c 종료 정리는 **이번 6회 모두 ERROR 0·ObjectDB 경고 0; 각 테스트 verbose 1회(총2회)에서 Leaked instance 0·Resource still in use 0**이다. ObjectDB 경고가 남은 고정 실행은 **7/33**이며 별도 표에 모두 공개했다.
@@ -434,7 +438,372 @@ WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for deta
 
 브랜치: `codex/qa-002-20261020`. **테스트·보고서 체크포인트 SHA: `edad09b072be7b20eca144723cdc6ffebdce7ab3`.** 뒤따르는 문서 영수증 커밋은 이 체크포인트를 기록한다. 최종 tip·원격 ref 대조·한 줄 요약은 `/Users/fordeargamers/exoduser-wt/_out/qa-002/DONE.txt`에 보존한다.
 
-## 부록. 마지막 RESULT 원문
+## 9. 최신 main 통합 후 재검증
+
+최신 기준 `origin/main=9528ea35b429498fcf42fe3723008219ed0ed7e1`을 통합한 merge HEAD `e6f414b69d390b2613b1e273ceb8156ba97860f2`에서 새로 실행했다. main에는 사용자 변경 `19a713578`과 P3-002 `43aa97ffe`가 포함된다. 이 절의 로그는 `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/`의 **30 metadata / 90 원파일**만 사용한다. 위 역사 기록의 c7 고정33회·baseline3회·기존 MAC-VERIFY와 합산하거나 동일 분모로 취급하지 않는다.
+
+최신 실행은 **테스트29회+import1회=총30회**다. 검증 판정: **FAIL** (346/350 증거 검증 조건). exit0·실패0·skip 없음 **28/30**(import1회 포함), stderr ERROR 합계 **0**, ObjectDB 경고 발생 실행 **4/30**. 시드9종 반복 검사 수 일치는 **9/9**다. 하드코딩한 PASS가 아니라 완료된 원로그·현재 소스·아래 관측값을 대조한 판정이다.
+
+### 9.1 기준·백업·제품 보존
+
+| 항목 | 근거 |
+| --- | --- |
+| 기준 main / merge HEAD | `9528ea35b429498fcf42fe3723008219ed0ed7e1` / `e6f414b69d390b2613b1e273ceb8156ba97860f2` |
+| import 전 백업 | `/Users/fordeargamers/exoduser-wt/_backup/godot-appsupport-20261020-qa-002/p3002-9528ea35` / 68파일 / manifest `/Users/fordeargamers/exoduser-wt/_out/qa-002/p3002-backup.json`; byte 재대조 일치 |
+| 엔진 | `/Users/fordeargamers/.codex/tools/godot-4.7.2/Godot.app/Contents/MacOS/Godot` / `4.7.2.stable.official.ed1daf0bf` |
+| 격리·override | 각 JSON에 격리 이름·override_removed 기록. 실제 저장 폴더 사용 없음. 생성시 override 존재=False |
+| upstream 통합 | 이전 QA 체크포인트 `3edabeb5edff25e2ff0682b7a70254334e87abb4`→merge 사이 75경로 변경은 승인된 upstream 병합분. 이를 QA-002의 제품 직접 작성으로 계산하지 않음 |
+| 제품 추가 작성 | 실행 기준 고정 main 9528ea35b429498fcf42fe3723008219ed0ed7e1 대비 제품 diff 0경로. Godot/tests 제외 Godot 제품 전체·웹 진입 파일을 읽기 대조 |
+| 공유 remote ref와 실행 기준 구분 | 생성시 origin/main=f84e26ee0bbc929fb595b4c0af292b423588f325은 관측만 기록. 병렬 fetch로 이동할 수 있으므로 판정은 merge 부모에 보존된 고정 SHA를 사용. 현재 tip의 문서 후속 커밋도 실행 당시 source HEAD와 구분 |
+| 코드·문서 | 이번 최신 검증에서 레포 제품/테스트 코드 추가 작성 0. 앞선 QA-002 테스트10파일 변경은 유지. upstream 제품 변경은 정상 통합했으며 변경 전제와 새 분모를 이 절에 구분 |
+| 원로그 | `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/<slug>.out`, `.err`, `.json` 각30개. old fixed/ 경로는 아래 명시한 과거 비교 열만 사용 |
+
+제품 파일을 직접 고친 작업은 없고 upstream 제품·테스트를 정상 통합한 뒤 검증했다. 신규 제품/테스트 코드 변경이 없는 이 실행 단계에서는 docs 전체 키워드 검색을 재실행하지 않았다. 기존 코드 변경 후 docs 검색 근거는 위 역사 절에 보존한다. 커밋·push·R 종료 대조·DONE 최종 tip은 최종 completion/DONE 영수증을 따른다.
+
+### 9.2 최신 Main 관측값과 시작 G 계약
+
+| 관측 원문 JSON 위치 | 실제 값 | 독립 확인 기준 | 결과 |
+| --- | --- | --- | --- |
+| regions: observations.actual.regions[*].total | [23, 60, 53, 32] | [23,60,53,32] | 일치 |
+| regions: observations.actual.current | 3 | 3 | 일치 |
+| spawn-holes: observations.kill_text_boot | '0 / 32' | '0 / 32' | 일치 |
+| hud: observations.initial.kill_text | '0 / 32' | '0 / 32' | 일치 |
+| starter: exact key 계약 검사 실행 | G40+region7+spawnHole1=48 | preserved boot40 / current40+7+1 exact | 성공 |
+
+위 지역 totals·current·HUD 문자는 RESULT에 실린 **실제 Main 관측값**을 이 증거 프로그램이 독립 대조한 것이다. 기존 지역 테스트가 해당 실제 totals 배열을 literal로 단정했다고 주장하지 않는다. `test_p3003_regions.gd:28`의 fixture totals `[8,15,15,15]`는 별도 소유 fixture이며 그대로 유지했다. 이를 실제 맵의 `[23,60,53,32]`로 바꾸지 않았다.
+
+starter는 `BOOT_G_KEYS`40·`REGION_INIT_G_KEYS`7·`SPAWN_HOLE_INIT_G_KEYS`1의 정확 키 집합 계약을 **테스트에서** 실행한다. `test_native_main_source_starter_state.gd:77–86`은 size·중복·각 키 존재를 검사하고 `:98–103`은 preserved boot40과 실제 current G48을 나누어 단정한다. 이 RESULT에는 실제 G 키 전체 목록을 별도 관측 필드로 출력하지 않으므로 표는 테스트의 정확 집합 단정 통과 근거이며 별도 키덤프 계측으로 포장하지 않는다.
+
+### 9.3 핵심 6종 재검증
+
+| 테스트 | 검사 수 또는 case 수 | 실패 | 그룹별 수치 | exit | ERROR | ObjectDB |
+| --- | --- | --- | --- | --- | --- | --- |
+| test_p3002_spawn_holes | 298검사 | 0 | placement_and_g=42/0; dormant_gate=3/0; schedule_and_rng=211/0; alive_cap_wait=5/0; full_run_and_completion=22/0; etype0_actor_hurte=15/0 | 0 | 0 | 0 |
+| test_p2002a_hud | 36검사 | 0 | hud_initial_values_and_overlay=29/0; hud_updates_on_kill_and_levelup=7/0 | 0 | 0 | 0 |
+| test_p2002b_minimap_corner | 16검사 | 0 | minimap_cache_and_corner_initial=13/0; corner_updates_via_owner=3/0 | 0 | 0 | 0 |
+| test_native_main_source_starter_state | 148검사 | 0 | startup_state_and_items=95/0; public_actor_sync=8/0; original_provider_consumers=15/0; once_and_tree_gates=11/0; lifecycle_and_grit_loss=19/0 | 0 | 0 | 0 |
+| test_p3003_regions | 43검사 | 0 | 개별 그룹 수 미출력 | 0 | 0 | 0 |
+| test_encounter_factory | 3case 통과(총 assertion 수 미출력) | 0 | 개별 그룹 수 미출력 | 0 | 0 | 0 |
+
+starter의 수치는 `checks`이고 encounter는 `passed` case 수·`failed_assertions` 실패 수다. encounter의 3case를 assertion3개라고 바꾸지 않았다. 지역 테스트의 fixture/actual 경계·full game 미완 표기도 RESULT 원문대로 유지한다.
+
+### 9.4 시작 장비 seed9종 반복과 새 분모
+
+| 대상 | 반복 | 최신 총 검사 분포 | 그룹별 검사/실패 | 반복 일치 | 과거 c7 fixed/ 총수(역사 비교) |
+| --- | --- | --- | --- | --- | --- |
+| melee | 2 | 93×2 | providers_ready=15/0; shield_absorb_hits=54/0; overflow_and_kill_pipeline=24/0 | 일치 | 93×5 |
+| dedicated | 2 | 357×2 | setup=31/0; combat=305/0; per_enemy_coverage=21/0 | 일치 | 357×3 |
+| kislash | 2 | 220×2 | setup=20/0; combat=167/0; per_enemy_coverage=33/1 | 일치 | 214×3 |
+| death-fx | 2 | 43×2 | assets_and_adapter=5/0; weapon_hit_and_kill_fx=29/0; lifetimes_and_kislash_noimpact=9/0 | 일치 | 43×3 |
+| kill-rewards | 2 | 45×2 | drop_module_pure=16/0; reward_owner_units=8/0; live_kill_rewards=21/0 | 일치 | 45×3 |
+| natural-lmb | 2 | 18×2 | new_run_init_refill_and_mats=10/0; natural_lmb_dual_hit_values=8/0 | 일치 | 18×3 |
+| giant-slam | 2 | 12×2 | cast_costs_and_damage=9/0; cooldown_gate_and_hud_sweep=3/0 | 일치 | 12×3 |
+| spike-holy | 2 | 20×2 | spike_trap_cast_zone_and_dot=12/0; holy_dome_cast_regen_and_cd_boost=8/0 | 일치 | 20×3 |
+| ice-orb | 5 | 22×5 | cast_state_invuln_and_block=6/0; auto_shatter_blades_and_freeze=11/0; freeze_trigger_direct=5/0 | 일치 | 22×5 |
+
+E 최신 분모는 93×2, D(ice-orb)는 22×5다. P3-002·새 admitted 적·upstream 데이터/타이밍이 포함된 최신 소스의 분모이며 c7의 93×5 / 22×5와 동일해야 한다는 전제를 두지 않는다. 각 기준 소스 안의 반복에서 그룹·총수·실패 수가 같은지를 판정한다.
+
+테스트 seed는 여전히20261020·프로세스 초기화1회다. 제품 RNG 경로·원본 소비 순서·독립 RNG 인스턴스·실시간 clock/UID는 바꾸지 않았다. 반복 분모 일치를 전체 observations·모든 seed·다른 머신의 bit 단위 결정성으로 확대하지 않는다. 조건부 단정은 기존대로 유지했다.
+
+#### 얼음보주5회 조건부2검사 관측
+
+| 최신 실행 | base_dmg | blade_dmg | piece>=100 | 그룹 검사 수(6/11/5) | 총 검사/실패 |
+| --- | --- | --- | --- | --- | --- |
+| ice-orb-01 | 408 | 122 | True | 6/11/5 | 22/0 |
+| ice-orb-02 | 408 | 122 | True | 6/11/5 | 22/0 |
+| ice-orb-03 | 408 | 122 | True | 6/11/5 | 22/0 |
+| ice-orb-04 | 408 | 122 | True | 6/11/5 | 22/0 |
+| ice-orb-05 | 408 | 122 | True | 6/11/5 | 22/0 |
+
+중간 auto_shatter_blades_and_freeze 그룹의11개는 기본9개와 기존 조건부2개로 구성된다. `expected_piece=base_dmg×0.3`의 정수값이100 이상이고 타깃이 유효·생존한 조건에서 쉴드/프리즌 상태와 얼음파편저항 단정2개가 수행된다. 최신 각 실행의22/0·그룹6/11/5·piece>=100을 별도 증거 검증 조건으로 대조했다. 이 표는 새 seed·제품 변경을 넣은 결과가 아니라 기존 고정 seed20261020을 새 main에서 실행한 관측이다.
+
+PC가 제공한 반례 `base_dmg327→blade_dmg98`은100 미만이라 해당 조건부2개가 수행되지 않아20개가 될 수 있음을 설명하는 **PC 제공 증거**다. 이 절에서 새로 실행한 Mac 관측으로 기록하지 않았으며 위 최신5회와 혼합하지 않는다.
+
+### 9.5 강타·가시/홀리 종료 진단과 조명
+
+| 실행 | 검사/실패 | ERROR | ObjectDB | verbose 객체 | verbose 리소스 |
+| --- | --- | --- | --- | --- | --- |
+| giant-slam-01 | 12/0 | 0 | 0 | 0 | 0 |
+| giant-slam-02 | 12/0 | 0 | 0 | 미수집(비verbose) | 미수집(비verbose) |
+| spike-holy-01 | 20/0 | 0 | 0 | 0 | 0 |
+| spike-holy-02 | 20/0 | 0 | 0 | 미수집(비verbose) | 미수집(비verbose) |
+
+B/C 각2회 총4회에서 ERROR·ObjectDB 경고를 수집했고, 각 첫 실행만 --verbose(총2회)로 개별 Leaked instance·Resource still in use를 수집했다. 비verbose의 개별 리소스 미출력을 0계측으로 간주하지 않았다. 이전 하니스 cleanup 뒤12 process_frame 대기와 제품 읽기전용 조건을 유지했다. 이 관측을 제품 장시간 오디오 수명 전체 수리로 선언하지 않는다.
+
+| 조명 모드 | 구조/밝기 그룹 | 총 검사/실패 | ERROR | 밝기 관측 |
+| --- | --- | --- | --- | --- |
+| lighting-headless | overlay_structure_and_params=9/0; overlay_darkens_screen=1/0 | 10/0 | 0 | "headless_dummy_renderer_probe_covers" |
+| lighting-window | overlay_structure_and_params=9/0; overlay_darkens_screen=3/0 | 12/0 | 0 | {"off_center": 44.0007026741864, "off_edge": 38.6287331085814, "on_center": 40.0699004620794, "on_edge": 29.9017034882507} |
+
+헤드리스10개는 기존 구조9+토글1이고 GUI12개는 구조9+실제 픽셀3이다. headless/null 확인 뒤 get_image 호출 순서와 GUI 이미지 부재의 명시 실패를 유지했다. 이미 열린 게임을 재시작하지 않고 전용 격리 창으로 실행했다.
+
+### 9.6 최신30회 전체 실행 수치
+
+각 행의 `post-main-9528ea35/<slug>`에 대해 `/Users/fordeargamers/exoduser-wt/_out/qa-002/` 아래 같은 basename의 `.out`·`.err`·`.json` 3파일을 보존했다.
+
+| 로그 basename | 검사/case | 실패 | exit | ERROR | ObjectDB | 초 |
+| --- | --- | --- | --- | --- | --- | --- |
+| post-main-9528ea35/import | —(import) | 0 | 0 | 0 | 0 | 5.048 |
+| post-main-9528ea35/spawn-holes | 298검사 | 0 | 0 | 0 | 0 | 12.583 |
+| post-main-9528ea35/hud | 36검사 | 0 | 0 | 0 | 0 | 15.327 |
+| post-main-9528ea35/minimap | 16검사 | 0 | 0 | 0 | 0 | 13.373 |
+| post-main-9528ea35/starter | 148검사 | 0 | 0 | 0 | 0 | 71.957 |
+| post-main-9528ea35/regions | 43검사 | 0 | 0 | 0 | 0 | 27.228 |
+| post-main-9528ea35/encounter | 3case 통과(총 assertion 수 미출력) | 0 | 0 | 0 | 0 | 5.829 |
+| post-main-9528ea35/melee-01 | 93검사 | 0 | 0 | 0 | 1 | 28.309 |
+| post-main-9528ea35/melee-02 | 93검사 | 0 | 0 | 0 | 0 | 26.61 |
+| post-main-9528ea35/dedicated-01 | 357검사 | 0 | 0 | 0 | 0 | 70.834 |
+| post-main-9528ea35/dedicated-02 | 357검사 | 0 | 0 | 0 | 1 | 61.945 |
+| post-main-9528ea35/kislash-01 | 220검사 | 1 | 1 | 0 | 0 | 38.842 |
+| post-main-9528ea35/kislash-02 | 220검사 | 1 | 1 | 0 | 0 | 30.465 |
+| post-main-9528ea35/death-fx-01 | 43검사 | 0 | 0 | 0 | 1 | 61.374 |
+| post-main-9528ea35/death-fx-02 | 43검사 | 0 | 0 | 0 | 1 | 39.587 |
+| post-main-9528ea35/kill-rewards-01 | 45검사 | 0 | 0 | 0 | 0 | 28.072 |
+| post-main-9528ea35/kill-rewards-02 | 45검사 | 0 | 0 | 0 | 0 | 27.32 |
+| post-main-9528ea35/natural-lmb-01 | 18검사 | 0 | 0 | 0 | 0 | 16.395 |
+| post-main-9528ea35/natural-lmb-02 | 18검사 | 0 | 0 | 0 | 0 | 17.008 |
+| post-main-9528ea35/giant-slam-01 | 12검사 | 0 | 0 | 0 | 0 | 15.862 |
+| post-main-9528ea35/giant-slam-02 | 12검사 | 0 | 0 | 0 | 0 | 15.672 |
+| post-main-9528ea35/spike-holy-01 | 20검사 | 0 | 0 | 0 | 0 | 16.0 |
+| post-main-9528ea35/spike-holy-02 | 20검사 | 0 | 0 | 0 | 0 | 16.243 |
+| post-main-9528ea35/ice-orb-01 | 22검사 | 0 | 0 | 0 | 0 | 22.989 |
+| post-main-9528ea35/ice-orb-02 | 22검사 | 0 | 0 | 0 | 0 | 21.093 |
+| post-main-9528ea35/ice-orb-03 | 22검사 | 0 | 0 | 0 | 0 | 19.369 |
+| post-main-9528ea35/ice-orb-04 | 22검사 | 0 | 0 | 0 | 0 | 21.831 |
+| post-main-9528ea35/ice-orb-05 | 22검사 | 0 | 0 | 0 | 0 | 20.045 |
+| post-main-9528ea35/lighting-headless | 10검사 | 0 | 0 | 0 | 0 | 18.468 |
+| post-main-9528ea35/lighting-window | 12검사 | 0 | 0 | 0 | 0 | 16.288 |
+
+### 9.7 검증 불일치·남은 경고
+
+| 검증 조건 | FAIL 근거 |
+| --- | --- |
+| kislash-01: exit/permission/timeout | exit=1, permission_blocked=False, timeout=False |
+| kislash-01: failures/skip | failures=1, skipped=[] |
+| kislash-02: exit/permission/timeout | exit=1, permission_blocked=False, timeout=False |
+| kislash-02: failures/skip | failures=1, skipped=[] |
+
+`/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/melee-01.err`
+
+```text
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+```
+
+`/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/dedicated-02.err`
+
+```text
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+```
+
+`/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/death-fx-01.err`
+
+```text
+WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+```
+
+`/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/death-fx-02.err`
+
+```text
+WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+```
+
+`/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/kislash-01` 진단 원문(stderr ERROR·stdout 단정 실패·verbose 잔존 객체/리소스)
+
+```text
+P1002G_FAIL per_enemy_coverage no native_hurte_halt emitted across combat
+```
+
+`/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/kislash-02` 진단 원문(stderr ERROR·stdout 단정 실패·verbose 잔존 객체/리소스)
+
+```text
+P1002G_FAIL per_enemy_coverage no native_hurte_halt emitted across combat
+```
+
+실제 첫 전투 영상·전체 기능 이식·fieldboss 전투·모든 플랫폼 품질 인수는 이 테스트 결과로 승격하지 않는다. 앞선 c7 역사 수치와 현재 main 수치를 분리 보존하며 남은 제품 구현 범위는 원본 RESULT의 fixture/미연결 플래그를 따른다.
+
+### 9.7.1 새 제품 회귀 — etype20 포이즈 소유자 연결
+
+최신 main의 원본 검기 테스트 2회는 각각 **220검사/1실패**, exit1·ERROR0이다. 두 실행 모두 setup20/0·combat167/0·per_enemy_coverage33/1, `halt_count=6`으로 일치한다. 검사 수 결정성과 기능 통과를 구분한다. 과거 c7의 214/0을 최신 결과로 승격하지 않는다.
+
+```text
+P1002G_FAIL per_enemy_coverage no native_hurte_halt emitted across combat
+```
+
+원본 테스트의 TARGETS6은 검사할 적의 선택이며 extra actor 제거·충돌 제외가 아니다(`test_p1002g_kislash_hurte.gd:197–209,345–347`). 실제 검기는 월드 전체 적을 검사하고(`crescent.gd:131–158`), halt 수집과 마지막 무halt 단정은 전체 전투를 대상으로 한다(`test_p1002g_kislash_hurte.gd:111–115,497–498`). 따라서 새 etype20을 제외하거나 halt 단정을 완화하지 않았다.
+
+원래 2회 로그에는 halt count만 있어 적/사유 원문을 별도 수집했다. 레포 밖 `kislash_halt_probe.gd`가 원본 테스트를 상속하고 `_on_player_event`에서 읽기 출력한 뒤 원본 super를 호출한다. seed·단정·fixture·공격·종료와 레포 테스트 파일은 변경하지 않았다. 이 **추가 진단 1회**는 위 29회 테스트와 별도이며 같은 220/1·exit1·ERROR0, 6건의 원문 payload를 보존했다. 아래 actor ID 귀속은 이 진단 1회에서 실제 확인한 것이며 원래 2회에 동일 instance ID가 있었다고 주장하지 않는다.
+
+| 진단 순서 | 실제 actor ID | 원본 record ID | order | etype | reason | halted_at | v3 구성 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 131600485169 | ch1_initial_005 | 4 | 20 | `source_field_call_unavailable` | 42490 | false |
+| 2 | 131885697847 | ch1_initial_013 | 12 | 20 | `source_field_call_unavailable` | 42490 | false |
+| 3 | 131600485169 | ch1_initial_005 | 4 | 20 | `source_field_call_unavailable` | 42490 | false |
+| 4 | 131885697847 | ch1_initial_013 | 12 | 20 | `source_field_call_unavailable` | 42490 | false |
+| 5 | 131600485169 | ch1_initial_005 | 4 | 20 | `source_field_call_unavailable` | 42490 | false |
+| 6 | 131801811765 | ch1_initial_011 | 10 | 20 | `source_field_call_unavailable` | 42490 | false |
+
+6건 모두 `res://scripts/enemy_melee_ch1_ice_warrior.gd`이며 `has_v3_poise=true`, `has_normal_poise_core=true`, `v3_configured=false`다. 원문 전체는 `post-main-9528ea35-diagnostic/native-hurte-halt.out/.json`에 보존했다. 첫 outcome의 원문 JSON 값은 다음과 같다(전체 actor record·나머지 payload는 원로그).
+
+```json
+{"base_damage":1176,"enemy_id":131600485169,"fallback_used":false,"halted_at":42490,"journal":[{"data":{"atk_el":0,"dmg":1176,"enemy_el":0,"mult":1.0},"line":37614,"op":"elMul"},{"data":{},"line":42117,"op":"unported_skip:_petOnAtk"},{"data":{"raw_amount":1176},"line":42191,"op":"hit_sfx_requested"},{"data":{"dmg":1176,"value":1.0},"line":42207,"op":"statStr"},{"data":{"bonus":0.0,"dmg":1176,"is_crit":false,"roll":0.595349445473403,"stat_crit":0.0},"line":42316,"op":"crit"},{"data":{"value":0.0},"line":42347,"op":"enemy_field:eShield"},{"data":{"absorbed":875.0,"dmg":301,"shield_left":0.0},"line":42345,"op":"eShield_absorb"},{"data":{"value":true},"line":42380,"op":"enemy_field:alerted"},{"data":{"value":5.0},"line":42382,"op":"enemy_field:contact_clamp"},{"data":{"hp":1886.0},"line":42383,"op":"hp_write"},{"data":{"value":6.0},"line":42412,"op":"enemy_field:hit_flash"},{"data":{"value":4.0},"line":42414,"op":"enemy_field:hit_stun"},{"data":{"over_budget":false,"shake":3.2},"line":42416,"op":"hit_feel"},{"data":{"dmg":301},"line":42399,"op":"hit_blood"},{"data":{"amount":7.5},"line":42476,"op":"knockback"},{"data":{"reason":"source_field_call_unavailable"},"line":42490,"op":"HALT"}],"ok":false,"reason":"source_field_call_unavailable","rng_draws":[{"line":42316,"purpose":"crit","value":0.595349445473403}],"step":2}
+```
+
+| 정적 소유 경로 | 근거·판정 |
+| --- | --- |
+| 새 etype20 | `enemy_melee_ch1_ice_warrior.gd:1`이 flesh crawler 상속, `:96–101`에 정상 포이즈 core 구현 보유 |
+| 잘못 우선되는 경로 | `native_normal_enemy_hurte.gd:875–877`이 상속된 `apply_native_source_poise_hit`의 존재만 보고 etype0 전용 v3 경로 우선; 정상 core보다 먼저 return |
+| exact owner 거부 | `enemy_melee_flesh_crawler.gd:121,409`의 정확 etype0/script/id 소유 조건이 etype20을 거부 |
+| 실제 HALT 연결 | `world.gd:3417–3423`의 field call 생성 실패 → `native_normal_enemy_hurte.gd:888–891`의 `source_field_call_unavailable` / 42490 → `crescent.gd:157–158`의 native_hurte_halt. 진단 payload와 일치 |
+| 기존 검수 공백 | `test_etype20_ch1_hurte_bridge.gd:35–40`은 poiseHit=false·base100·shield875라 쉴드 초과 후 포이즈 진입을 검증하지 않음 |
+| 부분 적용 | 피해 실행자의 HP 쓰기(:411)가 포이즈(:496)보다 앞선다. 첫 진단 journal도 shield875 흡수→잔여301→HP1886 쓰기 후 HALT를 기록. 무피해 정지라고 해석하지 않음 |
+
+진단 journal의 actor별 HP 쓰기는 `ch1_initial_005: 1886→710→-466`, `ch1_initial_013: 574→-602`, `ch1_initial_011: 574`다. HP≤0 쓰기 2건도 포이즈 HALT 이후 `native_normal_enemy_hurte.gd:497`의 조기 return으로 해당 호출의 완료 telemetry(:516)·처치 파이프라인(:521–523)에 도달하지 못한다. 종료 시 실제 alive·충돌·보상·지역 최종값은 별도 계측하지 않았으므로 영구 불사나 보상 손실 발생까지 확정하지 않는다. 후속 게임 상태 불일치 가능성이 있는 제품 회귀로 전달한다.
+
+**제품 결함으로 보고한다.** 소유 범위는 P2-008a 새 actor와 공용 hurtE 포이즈 연결이다. PC 담당 제품 파일은 읽기만 했다. 수정안은 etype0 exact v3 계약을 보존하면서 명시적 소유자/능력 경로로 etype20의 정상 포이즈 core를 연결하는 것이다. 실패 후 폴백으로 전환하거나 extra actor/halt 검사를 제외하는 방식은 사용하지 않는다. PC 수정 후 쉴드 초과·포이즈 파괴·처치와 이 검기 회귀를 다시 검증해야 한다.
+
+추가 진단은 1회·원로그 3파일이며 전체 최신 실행은 **기본30회(29테스트+import1)+진단1회=31회**다. 기본30회와 추가 진단의 stderr ERROR는 모두0이다. 재검증의 FAIL은 위 제품 회귀 때문이며 권한 차단이나 실행 우회는 없었다.
+
+### 9.8 최신 실행 LAST RESULT 원문
+
+아래는 시드9종 각각의 마지막 반복1개·핵심6종·조명2모드의 대표 LAST RESULT 원문17개다(import는 RESULT 미출력). 전체29회 테스트의 수치·로그 경로는9.6표에 남겼으며 나머지 반복의 LAST RESULT 원문도 같은 basename의 보존 `.json`/`.out`에서 확인할 수 있다. 선택한 JSON은 축약하거나 새 수치로 치환하지 않았다. 명령·격리 이름·시간·HEAD·실행 당시 test_sha256도 같은 JSON을 따른다.
+
+#### spawn-holes
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/spawn-holes.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/spawn-holes.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/spawn-holes.json`
+
+```text
+P3002_RESULT {"assertions":298,"failures":0,"fallback_paths_used":false,"groups":[{"assertions":42,"failures":0,"group":"placement_and_g"},{"assertions":3,"failures":0,"group":"dormant_gate"},{"assertions":211,"failures":0,"group":"schedule_and_rng"},{"assertions":5,"failures":0,"group":"alive_cap_wait"},{"assertions":22,"failures":0,"group":"full_run_and_completion"},{"assertions":15,"failures":0,"group":"etype0_actor_hurte"}],"observations":{"etypes_seen_near4":[12,6,26,11,1,0,21,8,27,16,17,23,47,7,4,13],"full_run_ticks":3374,"g_on_at_boot":false,"hurte_target":"ch1_spawn_hole_01_02","kill_text_boot":"0 / 32","metrics":{"actors_registered":10,"advance_calls":4507,"alive_waits":5,"center_forced":0,"completed":14,"consumer_rejected":0,"mken_null":0,"revive_decays":150,"rng_calls":2454,"spawn_attempts":168,"spawned":168,"spiral_fallbacks":0,"triggered":14,"unported_spawns":158},"near4_spawns":39},"skipped":[]}
+```
+
+#### hud
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/hud.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/hud.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/hud.json`
+
+```text
+P2002A_RESULT {"assertions":36,"failures":0,"fallback_paths_used":false,"forced_actor_fields":4,"groups":[{"assertions":29,"failures":0,"group":"hud_initial_values_and_overlay"},{"assertions":7,"failures":0,"group":"hud_updates_on_kill_and_levelup"}],"observations":{"after_kill":{"debug_overlay_visible":false,"exp_fill_px":60.0,"exp_text":"6 / 20","kill_text":"0 / 32","lv_text":"2","malice_text":"1,004","ready":true,"serif_font_loaded":true,"slot_icon_files":{"qs0":"spikeTrap","qs1":"","qs2":"","qs3":"","qs5":"holyDome","qsE":"fireball","qsQ":"peaceShield","skSlot0":"chargeBoost","skSlot1":"giantSlam","skSlotCT":"iceOrb","skSlotLMB":"kiSlash","skSlotRMB":"shieldThrow","ultSlot":""},"timer_text":"00:00","unported":["미니맵(mmWrap)","hudCorner 화폐(✦ SP/◇ CP)","지역(_regCur) 분모·진행바 4지역","쿨다운 sweep(쿨다운 소유자 미이식)","Cinzel·Nanum Myeongjo 폰트(Noto Serif KR 폴백)","숫자/F/Z 슬롯 스킬(시작 스킬 지급 EXTERNAL 미이식)","타이머 전진(G.on 점등 미이식 — 초기화·커튼 계약이 pre-stage on=false 유지 명시: 타이머 UI는 G.stageTime 소비만)"]},"initial":{"debug_overlay_visible":false,"exp_fill_px":0.0,"exp_text":"0 / 15","kill_text":"0 / 32","lv_text":"1","malice_text":"1,000","ready":true,"serif_font_loaded":true,"slot_icon_files":{"qs0":"spikeTrap","qs1":"","qs2":"","qs3":"","qs5":"holyDome","qsE":"fireball","qsQ":"peaceShield","skSlot0":"chargeBoost","skSlot1":"giantSlam","skSlotCT":"iceOrb","skSlotLMB":"kiSlash","skSlotRMB":"shieldThrow","ultSlot":""},"timer_text":"00:00","unported":["미니맵(mmWrap)","hudCorner 화폐(✦ SP/◇ CP)","지역(_regCur) 분모·진행바 4지역","쿨다운 sweep(쿨다운 소유자 미이식)","Cinzel·Nanum Myeongjo 폰트(Noto Serif KR 폴백)","숫자/F/Z 슬롯 스킬(시작 스킬 지급 EXTERNAL 미이식)","타이머 전진(G.on 점등 미이식 — 초기화·커튼 계약이 pre-stage on=false 유지 명시: 타이머 UI는 G.stageTime 소비만)"]}},"skipped":[]}
+```
+
+#### minimap
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/minimap.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/minimap.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/minimap.json`
+
+```text
+P2002B_RESULT {"assertions":16,"failures":0,"fallback_paths_used":false,"forced_actor_fields":0,"groups":[{"assertions":13,"failures":0,"group":"minimap_cache_and_corner_initial"},{"assertions":3,"failures":0,"group":"corner_updates_via_owner"}],"observations":{"after_levelup":{"cp_text":"◇ 1,754","minimap_cache_ready":true,"minimap_enemy_points":9,"minimap_origin":[4.0,4.0],"minimap_portrait_loaded":true,"minimap_sc":0.61,"sp_text":"✦ 3 +1","unported":["필드보스 전투·게이트 연출·정화 SFX 미연결(P3-003 잔여)","출구 ▲(!bossAlive 조건 — 신규 true)","분산 빌드(_mmTickBuild — 고정 맵 1회 빌드 근사)","맵 오브젝트 마커(bonfire/trap/altar — 1장 데이터에 없음)","frame drop-shadow·brightness 필터(953)","hudCorner box-shadow·inset 하이라이트 근사 생략","Cinzel 폰트(Noto Serif KR 폴백)","spCnt 클릭(J 능력치 패널 미이식)","나눔명조 1순위(웹폰트 — 사용자 승인 대기 목록)","적 점 색 데이터 차(규칙 ELC[e.el] 동일 — 웹 el0 회백 vs 포트 encounter element_id 3 보라: 데이터 소유 wt-p2g)"]},"initial":{"cp_text":"◇ 1,744","minimap_cache_ready":true,"minimap_enemy_points":9,"minimap_origin":[4.0,4.0],"minimap_portrait_loaded":true,"minimap_sc":0.61,"sp_text":"✦ 0","unported":["필드보스 전투·게이트 연출·정화 SFX 미연결(P3-003 잔여)","출구 ▲(!bossAlive 조건 — 신규 true)","분산 빌드(_mmTickBuild — 고정 맵 1회 빌드 근사)","맵 오브젝트 마커(bonfire/trap/altar — 1장 데이터에 없음)","frame drop-shadow·brightness 필터(953)","hudCorner box-shadow·inset 하이라이트 근사 생략","Cinzel 폰트(Noto Serif KR 폴백)","spCnt 클릭(J 능력치 패널 미이식)","나눔명조 1순위(웹폰트 — 사용자 승인 대기 목록)","적 점 색 데이터 차(규칙 ELC[e.el] 동일 — 웹 el0 회백 vs 포트 encounter element_id 3 보라: 데이터 소유 wt-p2g)"]}},"skipped":[]}
+```
+
+#### starter
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/starter.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/starter.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/starter.json`
+
+```text
+MAIN_STARTER_SUITE_RESULT {"actual_Main":true,"checks":148,"failures":0,"full_automatic_source_pipeline_proven":false,"full_bootstrap_completed":false,"full_derived_parameters_proven":false,"groups":5,"input_fixtures":false,"old_suites":0,"results":[{"checks":95,"elapsed_ms":10529,"failures":0,"group":"startup_state_and_items","observation":{"bag":10,"equipped":15,"mk_item_entries":26,"rng_draws":911,"source_boot_current":false,"time_calls":25,"uid_window_ms":[1792490694780.0,1792490699948.0]}},{"checks":8,"elapsed_ms":10717,"failures":0,"group":"public_actor_sync","observation":{"hp":548.03125,"manual_actor_setters":false,"mp":268.0,"s":"idle","st":272.03125}},{"checks":15,"elapsed_ms":10779,"failures":0,"group":"original_provider_consumers","observation":{"binding_ready":true,"fusion_holyDome":0,"grit_total":{"ready":true,"reason":"","source":"game.html:28559 _gritTotal()","status":"READY","value":0.0},"parameters":{"conditional_unbound":[],"missing":[],"missing_upstream":{"crystal_effects":"conditional: 실제 player_crystal_resource_source.crystalEffects provider (@15951)","current_INV":"현재 INV authority (equipped) — ITEM/ENGINE","current_P":"현재 P getter 필수: 실제 actor/resources와 owned source fields — ENGINE","current_STATS":"현재 STATS authority — BUILD","grit":"현재 _grit 전역 (@28556) authority — BUILD","install_sink":"packet 적용 + KIND_INVALIDATE 를 affix/eqStat 캐시 소유자에서 실행하는 sink 설치 — ENGINE"},"ready":true,"status":"READY"}}},{"checks":11,"elapsed_ms":10153,"failures":0,"group":"once_and_tree_gates","observation":{"retry":"ALREADY_ATTEMPTED","rng_after":912,"rng_before":912}},{"checks":19,"elapsed_ms":27955,"failures":0,"group":"lifecycle_and_grit_loss","observation":{"actual_actor_resource_refill":false,"grit_after":{"ready":false,"reason":"grit_not_number:Nil","source":"game.html:28559 _gritTotal()","status":"NOT_READY","value":null},"grit_before":{"ready":true,"reason":"","source":"game.html:28559 _gritTotal()","status":"READY","value":0.0},"lost_state_provider_ready":false}}],"userdir":"/Users/fordeargamers/Library/Application Support/EXODUSER-MainSourceStarter-Isolated-20261014"}
+```
+
+#### regions
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/regions.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/regions.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/regions.json`
+
+```text
+P3003_RESULT {"C_kill_hook_bound":false,"P3_002_holes_finalization_bound":false,"assertions":43,"failed":[],"failures":0,"fixture_not_full_game":true,"observations":{"actual":{"cleared":0,"current":3,"full_fieldboss_combat":false,"init_count":1,"kill_calls":0,"pending_effects":[],"ready":true,"regions":[{"cleared":false,"fbIdx":2,"id":0,"kills":0,"nameEn":"Northwest · Dark","nameKo":"북서 · 어둠","total":23,"x0":0.0,"x1":100.0,"y0":0.0,"y1":100.0},{"cleared":false,"fbIdx":3,"id":1,"kills":0,"nameEn":"Northeast · Lightning","nameKo":"북동 · 번개","total":60,"x0":100.0,"x1":200.0,"y0":0.0,"y1":100.0},{"cleared":false,"fbIdx":0,"id":2,"kills":0,"nameEn":"Southwest · Water","nameKo":"남서 · 물","total":53,"x0":0.0,"x1":100.0,"y0":100.0,"y1":200.0},{"cleared":false,"fbIdx":1,"id":3,"kills":0,"nameEn":"Southeast · Fire","nameKo":"남동 · 불","total":32,"x0":100.0,"x1":200.0,"y0":100.0,"y1":200.0}],"sites":[{"color":"(0.2, 0.5333, 1.0, 1.0)","pos":"(35.685, 96.68501)","radius":3.0},{"color":"(1.0, 0.3333, 0.1333, 1.0)","pos":"(90.585, 91.805)","radius":3.0},{"color":"(0.6, 0.2, 0.8, 1.0)","pos":"(32.025, 25.925)","radius":3.0},{"color":"(1.0, 0.9333, 0.0, 1.0)","pos":"(90.585, 25.925)","radius":3.0}]},"core_groups":"source static contracts/owned fixtures only","display":"in-memory generated minimap mask pixels; no PNG originals; no actual screen verdict"}}
+```
+
+#### encounter
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/encounter.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/encounter.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/encounter.json`
+
+```text
+GODOT_ENCOUNTER_FACTORY_RESULT {"failed_assertions":0,"only":[],"passed":3,"performance_evidence":false,"public_play_evidence":false,"simulation_ticks":0}
+```
+
+#### melee-02
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/melee-02.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/melee-02.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/melee-02.json`
+
+```text
+P1002E_RESULT {"assertions":93,"failures":0,"fallback_paths_used":false,"forced_actor_fields":25,"groups":[{"assertions":15,"failures":0,"group":"providers_ready"},{"assertions":54,"failures":0,"group":"shield_absorb_hits"},{"assertions":24,"failures":0,"group":"overflow_and_kill_pipeline"}],"observations":{"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"final_g":{"_chainCnt":1,"combo":1,"kills":1,"mats":1005,"rifts":0},"kill_hits_total":6,"kill_rng_draws":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"play_time_not_read_on_path":"NOT_READY","provider_statuses":{"el_mul":"READY","eq_affix":"READY","l_eq":"READY","melee_ref":"READY","p_atk_mul":"READY","p_dot_pool":"READY","parry_lesson_active":"READY","play_time":"NOT_READY","player_view":"READY","rand":"READY","stat_str":"READY","u_eq":"READY"},"qa002_test_seed":20261020,"shield_phase_hits":6},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### dedicated-02
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/dedicated-02.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/dedicated-02.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/dedicated-02.json`
+
+```text
+P1002F_RESULT {"assertions":357,"failures":0,"fallback_paths_used":false,"forced_actor_fields":135,"groups":[{"assertions":31,"failures":0,"group":"setup"},{"assertions":305,"failures":0,"group":"combat"},{"assertions":21,"failures":0,"group":"per_enemy_coverage"}],"observations":{"aim_basis":{"facing_write_survives_frame":false,"mouse_world":[3060.0,6460.0],"player_pos":[4020.0,7420.0],"pointer_provider_bound":false},"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"halt_count":0,"hits_flesh_crawler":12,"hits_hive_bloater":12,"hits_ice_soul_flame":12,"hits_spine_beast":12,"kill_rng_flesh_crawler":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"kill_rng_hive_bloater":["crit","normal_revive","revive_as_ghoul","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"kill_rng_ice_soul_flame":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:drop_rarity","drop:drop_slot","drop:drop_element","drop:atk_skew","drop:base_weapon_antirevive","drop:base_shield_hp","drop:base_shield_st","drop:base_shield_antirevive","drop:base_boots_st","drop:base_boots_hp","drop:base_armor_st","drop:base_armor_hp","drop:base_bow_antirevive","drop:base_gloves_hp","drop:base_gloves_st","drop:base_pants_st","drop:base_pants_hp","drop:base_cape_hp","drop:base_cape_st","drop:base_belt_shield","drop:base_belt_mp","drop:base_necklace_shield","drop:base_necklace_mp","drop:base_ring1_shield","drop:base_ring1_mp","drop:base_ring2_shield","drop:base_ring2_mp","drop:base_bracelet_shield","drop:base_bracelet_mp","drop:base_headband_shield","drop:base_headband_mp","drop:base_ossuary_mp","drop:item_id","drop:stat_edef","drop:implicit_value","drop:drop_jitter_x","drop:drop_jitter_y","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"kill_rng_spine_beast":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"qa002_test_seed":20261020,"swing_log":[{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":277.0,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":272.1,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":267.2,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":6,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":262.4,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":0,"halts":0,"outcomes":3,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":258.1,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":253.3,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":248.3,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":243.5,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":233.6,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":11,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":228.7,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":224.6,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":219.7,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":214.8,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":205.0,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":200.1,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":195.2,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":190.3,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":185.4,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":12,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":180.6,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":0,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":176.4,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":61.1,"dmg_during":0,"halts":0,"outcomes":3,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":171.5,"t":"flesh_crawler"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":166.6,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":161.7,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":0,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":156.8,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":151.9,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":0,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":147.1,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":142.2,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":0,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":137.3,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":132.4,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":127.5,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":122.6,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.4,"dmg_during":0,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":117.8,"t":"spine_beast"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":1,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":112.9,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":73.9,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":107.9,"t":"ice_soul_flame"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":103.0,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":98.2,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":93.3,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":4,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":88.4,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":83.5,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":3,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":78.7,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":2,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":73.8,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":68.9,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":64.0,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":59.1,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":54.3,"t":"hive_bloater"},{"accepted":true,"aim_err_deg":0.0,"dist":35.6,"dmg_during":0,"halts":0,"outcomes":1,"p_hp":676.0,"p_state":"swing","p_state_end":"idle","stamina":49.4,"t":"hive_bloater"}],"total_swings":46},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### kislash-02
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/kislash-02.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/kislash-02.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/kislash-02.json`
+
+```text
+P1002G_RESULT {"assertions":220,"failures":1,"fallback_paths_used":false,"forced_actor_fields":20,"groups":[{"assertions":20,"failures":0,"group":"setup"},{"assertions":167,"failures":0,"group":"combat"},{"assertions":33,"failures":1,"group":"per_enemy_coverage"}],"observations":{"aim_basis":{"facing_write_survives_frame":false,"pointer_provider_bound":false},"cast_damages":[{"damage":1176,"step":1,"tier":0},{"damage":1176,"step":2,"tier":0},{"damage":9408,"step":3,"tier":3},{"damage":1176,"step":1,"tier":0},{"damage":1176,"step":2,"tier":0},{"damage":1176,"step":3,"tier":0},{"damage":1176,"step":1,"tier":0}],"expected_stat_crit":0.0,"expected_stat_crit_dmg":1.5,"halt_count":6,"hits_eye_mass_01":2,"hits_eye_mass_02":1,"hits_flesh_crawler":2,"hits_hive_bloater":2,"hits_ice_soul_flame":2,"hits_spine_beast":2,"kill_rng_eye_mass_01":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"kill_rng_eye_mass_02":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:drop_rarity","drop:drop_slot","drop:drop_element","drop:atk_skew","drop:base_weapon_antirevive","drop:base_shield_hp","drop:base_shield_st","drop:base_shield_antirevive","drop:base_boots_st","drop:base_boots_hp","drop:base_armor_st","drop:base_armor_hp","drop:base_bow_antirevive","drop:base_gloves_hp","drop:base_gloves_st","drop:base_pants_st","drop:base_pants_hp","drop:base_cape_hp","drop:base_cape_st","drop:base_belt_shield","drop:base_belt_mp","drop:base_necklace_shield","drop:base_necklace_mp","drop:base_ring1_shield","drop:base_ring1_mp","drop:base_ring2_shield","drop:base_ring2_mp","drop:base_bracelet_shield","drop:base_bracelet_mp","drop:base_headband_shield","drop:base_headband_mp","drop:base_ossuary_mp","drop:item_id","drop:stat_def","drop:stat_bonus_st","drop:stat_charge","drop:stat_charge_w","drop:armor_bonus_range","drop:armor_bonus_charge","drop:armor_stat_count_r1","drop:armor_stat_pick","drop:armor_stat_value","drop:affix_weight","drop:affix_value","drop:affix_weight","drop:affix_value","drop:implicit_value","drop:drop_jitter_x","drop:drop_jitter_y","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"kill_rng_flesh_crawler":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","potion_gate","potion_type","drop:drop_gate","drop:drop_rarity","drop:drop_slot","drop:drop_element","drop:atk_skew","drop:base_weapon_antirevive","drop:base_shield_hp","drop:base_shield_st","drop:base_shield_antirevive","drop:base_boots_st","drop:base_boots_hp","drop:base_armor_st","drop:base_armor_hp","drop:base_bow_antirevive","drop:base_gloves_hp","drop:base_gloves_st","drop:base_pants_st","drop:base_pants_hp","drop:base_cape_hp","drop:base_cape_st","drop:base_belt_shield","drop:base_belt_mp","drop:base_necklace_shield","drop:base_necklace_mp","drop:base_ring1_shield","drop:base_ring1_mp","drop:base_ring2_shield","drop:base_ring2_mp","drop:base_bracelet_shield","drop:base_bracelet_mp","drop:base_headband_shield","drop:base_headband_mp","drop:base_ossuary_mp","drop:item_id","drop:stat_def","drop:stat_bonus_st","drop:implicit_value","drop:drop_jitter_x","drop:drop_jitter_y","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"kill_rng_hive_bloater":["crit","normal_revive","revive_as_ghoul","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"kill_rng_ice_soul_flame":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","death_zone","potion_gate","potion_type","drop:drop_gate","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"kill_rng_spine_beast":["crit","normal_revive","gore_common_or_rare","gore_piece_index","gore_large_extra","potion_gate","potion_type","drop:drop_gate","drop:drop_rarity","drop:drop_slot","drop:drop_element","drop:atk_skew","drop:base_weapon_antirevive","drop:base_shield_hp","drop:base_shield_st","drop:base_shield_antirevive","drop:base_boots_st","drop:base_boots_hp","drop:base_armor_st","drop:base_armor_hp","drop:base_bow_antirevive","drop:base_gloves_hp","drop:base_gloves_st","drop:base_pants_st","drop:base_pants_hp","drop:base_cape_hp","drop:base_cape_st","drop:base_belt_shield","drop:base_belt_mp","drop:base_necklace_shield","drop:base_necklace_mp","drop:base_ring1_shield","drop:base_ring1_mp","drop:base_ring2_shield","drop:base_ring2_mp","drop:base_bracelet_shield","drop:base_bracelet_mp","drop:base_headband_shield","drop:base_headband_mp","drop:base_ossuary_mp","drop:item_id","drop:stat_def","drop:stat_bonus_st","drop:implicit_value","drop:drop_jitter_x","drop:drop_jitter_y","drop:bone_gate","drop:crystal_gate","drop:stone_gate"],"melee_ref":20.0,"qa002_test_seed":20261020,"swing_log":[{"accepted":true,"dist":120.0,"halts":0,"outcomes":1,"p_state":"swing","stamina":272.0,"t":"eye_mass_01"},{"accepted":true,"dist":120.0,"halts":0,"outcomes":1,"p_state":"swing","stamina":262.3,"t":"eye_mass_01"},{"accepted":true,"dist":120.0,"halts":0,"outcomes":1,"p_state":"windup","stamina":252.6,"t":"eye_mass_02","windup_hold":130},{"accepted":true,"dist":120.0,"halts":0,"outcomes":2,"p_state":"swing","stamina":243.3,"t":"ice_soul_flame"},{"accepted":true,"dist":120.0,"halts":2,"outcomes":4,"p_state":"swing","stamina":233.6,"t":"ice_soul_flame"},{"accepted":true,"dist":120.0,"halts":2,"outcomes":5,"p_state":"windup","stamina":224.0,"t":"hive_bloater","windup_hold":1},{"accepted":true,"dist":120.0,"halts":2,"outcomes":3,"p_state":"swing","stamina":214.3,"t":"flesh_crawler"}],"total_casts":7},"public_attack_api_used":true,"public_play_evidence":false,"skipped":[]}
+```
+
+#### death-fx-02
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/death-fx-02.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/death-fx-02.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/death-fx-02.json`
+
+```text
+P2001B_RESULT {"assertions":43,"failures":0,"fallback_paths_used":false,"forced_actor_fields":34,"groups":[{"assertions":5,"failures":0,"group":"assets_and_adapter"},{"assertions":29,"failures":0,"group":"weapon_hit_and_kill_fx"},{"assertions":9,"failures":0,"group":"lifetimes_and_kislash_noimpact"}],"observations":{"final_metrics":{"blood_anims":1,"corpses":1,"death_fx":1,"death_impacts":1,"death_sound_skipped_missing_assets":0,"death_sounds_dispatched":1,"gore_pieces":2,"impacts":7,"rng_calls":304,"stains":1},"kill_metrics":{"blood_anims":1,"corpses":1,"death_fx":1,"death_impacts":1,"death_sound_skipped_missing_assets":0,"death_sounds_dispatched":1,"gore_pieces":2,"impacts":7,"rng_calls":304,"stains":1},"pool_limits":{"corpses":120,"di":12,"gore":120,"impacts":12,"stains":30},"qa002_test_seed":20261020},"skipped":[]}
+```
+
+#### kill-rewards-02
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/kill-rewards-02.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/kill-rewards-02.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/kill-rewards-02.json`
+
+```text
+P2001C_RESULT {"assertions":45,"failures":0,"fallback_paths_used":false,"forced_actor_fields":33,"groups":[{"assertions":16,"failures":0,"group":"drop_module_pure"},{"assertions":8,"failures":0,"group":"reward_owner_units"},{"assertions":21,"failures":0,"group":"live_kill_rewards"}],"observations":{"death_sound_dispatches":1,"exp_unit":{"exp":5,"lv":2,"maxExp":20,"unported":["SFX.levelup","showPH_LEVEL_UP","_levelUpVfx","dbSaveForce(세이브_금지)","passive_queue(큐_시스템_부재)"]},"kill_journal":{"add_exp":{"combo_bonus":1.0,"exp":6,"levels":0,"lv":2,"raw":5,"unported":["SFX.levelup","showPH_LEVEL_UP","_levelUpVfx","dbSaveForce(세이브_금지)","passive_queue(큐_시스템_부재)"],"value":1},"potion":{"accepted":true,"gate":0.652739715995267,"type":"hp"},"roll_drop":{"crystal":false,"items":0,"stone":false,"unported":["floor_item_render_pickup","playItemDropSfx","_crAutoProcess(기본 OFF)"]}},"pure_draw_tags_b":["drop_gate","drop_rarity","drop_slot","drop_element","atk_skew","base_weapon_antirevive","base_shield_hp","base_shield_st","base_shield_antirevive","base_boots_st","base_boots_hp","base_armor_st"],"qa002_test_seed":20261020},"skipped":[]}
+```
+
+#### natural-lmb-02
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/natural-lmb-02.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/natural-lmb-02.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/natural-lmb-02.json`
+
+```text
+P2001E_RESULT {"assertions":18,"failures":0,"fallback_paths_used":false,"forced_actor_fields":2,"groups":[{"assertions":10,"failures":0,"group":"new_run_init_refill_and_mats"},{"assertions":8,"failures":0,"group":"natural_lmb_dual_hit_values"}],"observations":{"expected":{"ki":1176,"weapon":162,"wp_atk":5.0},"init":{"activeLMBSk":"kiSlash","mats":1000,"mhp":676.0,"mshield":325.0},"measured":{"attempt":0,"ki":1176,"weapon":162},"qa002_test_seed":20261020},"skipped":[]}
+```
+
+#### giant-slam-02
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/giant-slam-02.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/giant-slam-02.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/giant-slam-02.json`
+
+```text
+P2005B_RESULT {"assertions":12,"failures":0,"fallback_paths_used":false,"forced_actor_fields":1,"groups":[{"assertions":9,"failures":0,"group":"cast_costs_and_damage"},{"assertions":3,"failures":0,"group":"cooldown_gate_and_hud_sweep"}],"observations":{"cast":[{"cd":1800.0,"dmg":280,"hits":1,"lv":1,"radius":500.0}],"cooldown":{"skSlot1":{"pct":0.996666666666667,"text":"29.9s"}},"qa002_test_seed":20261020},"skipped":[]}
+```
+
+#### spike-holy-02
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/spike-holy-02.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/spike-holy-02.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/spike-holy-02.json`
+
+```text
+P2005C_RESULT {"assertions":20,"failures":0,"fallback_paths_used":false,"forced_actor_fields":2,"groups":[{"assertions":12,"failures":0,"group":"spike_trap_cast_zone_and_dot"},{"assertions":8,"failures":0,"group":"holy_dome_cast_regen_and_cd_boost"}],"observations":{"dome":{"presence":true,"zone":{"lv":1,"maxT":750.0,"r":520.0,"t":10.0,"type":"holyDome","x":3418.65649414062,"y":6699.56201171875}},"qa002_test_seed":20261020,"spike":{"cast_log":[{"cd":600.0,"dmg":405,"lv":1,"skill":"spikeTrap"},{"rejected":true,"skill":"spikeTrap"}],"hits":1,"zone":[{"_tickTimer":24.0,"dmg":405,"el":0,"lv":1,"maxT":600.0,"r":300.0,"t":49.0,"type":"spikeTrap","x":3420.0,"y":6700.0},{"lv":1,"maxT":750.0,"r":520.0,"t":10.0,"type":"holyDome","x":3418.65649414062,"y":6699.56201171875}]}},"skipped":[]}
+```
+
+#### ice-orb-05
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/ice-orb-05.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/ice-orb-05.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/ice-orb-05.json`
+
+```text
+P2005DIO_RESULT {"assertions":22,"failures":0,"fallback_paths_used":false,"forced_actor_fields":1,"groups":[{"assertions":6,"failures":0,"group":"cast_state_invuln_and_block"},{"assertions":11,"failures":0,"group":"auto_shatter_blades_and_freeze"},{"assertions":5,"failures":0,"group":"freeze_trigger_direct"}],"observations":{"cast":{"expected_cost":50,"mp_spent":50.0},"freeze":{"immune":120.0,"outcome_ok":true},"qa002_test_seed":20261020,"shatter":{"aoe":1,"blades":3,"frozen":0.0,"log":{"base_dmg":408,"blade_dmg":122,"blades":8,"cd":1200.0,"lv":1,"shatter_dmg":122,"skill":"iceShatter"}}},"skipped":[]}
+```
+
+#### lighting-headless
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/lighting-headless.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/lighting-headless.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/lighting-headless.json`
+
+```text
+P2003A_RESULT {"assertions":10,"failures":0,"fallback_paths_used":false,"forced_actor_fields":0,"groups":[{"assertions":9,"failures":0,"group":"overlay_structure_and_params"},{"assertions":1,"failures":0,"group":"overlay_darkens_screen"}],"observations":{"brightness":"headless_dummy_renderer_probe_covers","params":{"light_a":0.847233870729381}},"skipped":[]}
+```
+
+#### lighting-window
+
+원로그: `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/lighting-window.out` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/lighting-window.err` · `/Users/fordeargamers/exoduser-wt/_out/qa-002/post-main-9528ea35/lighting-window.json`
+
+```text
+P2003A_RESULT {"assertions":12,"failures":0,"fallback_paths_used":false,"forced_actor_fields":0,"groups":[{"assertions":9,"failures":0,"group":"overlay_structure_and_params"},{"assertions":3,"failures":0,"group":"overlay_darkens_screen"}],"observations":{"brightness":{"off_center":44.0007026741864,"off_edge":38.6287331085814,"on_center":40.0699004620794,"on_edge":29.9017034882507},"params":{"light_a":0.833451723773859}},"skipped":[]}
+```
+
+## 부록. c7b21c63 단계 마지막 RESULT 원문
 
 각 고정 대상의 마지막 반복 1개와 조명 두 모드의 마지막 RESULT를 축약 없이 싣는다. 나머지 반복의 마지막 RESULT도 실행별 JSON 및 stdout에 원문으로 보존했다. 그룹 분포·전체 표는 모든 반복을 사용한다.
 
