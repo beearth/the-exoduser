@@ -307,3 +307,9 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 - 사용자 최신 로비 검수 지시를 이 씬에 우선 적용한다. 슬롯·동작 버튼·안내·이름 입력의 기본 폰트는 `NativeUIFont.stack("hell",400)`(Nanum Myeongjo→Noto Serif KR), 제목은 `hell_title,700`(Cinzel Decorative→Nanum Myeongjo)이다. 이 씬에서는 이전 기본 sans-serif 토큰을 사용하지 않는다. 다른 게임 UI 폰트 토큰/공급자는 변경하지 않는다. 기본 문자색은 #dfd6c2다.
 - 왼쪽 아트는 (175,290) 600×560으로 배치하고 EXODUSER/지옥의 길 제목은 y132/y215에 유지한다. 두 제목의 실제 rect가 아트 시작 y290 위에 끝나는지 검사한다. 명칭을 덮던 마스크 위 배치를 제거하고 금빛 구분선/하단 명조 문구는 유지한다. 원화·문장 byte와 크기 계약은 그대로다.
 - 재캡처 자료는 `~/exoduser-wt/_out/demo11-21fix/captures/`의 목록·삭제확인1920×1080과 목록/확인/제목-아트 경계1x크롭이다. **화면 비교 자료 준비·맥북총괄 재검수 대기**, 시각 승인/완료로 세지 않는다. 새 문구0으로 번역 등록 변경0.
+
+## 2026-10-21 DEMO11-09 네이티브 일시정지 메뉴 (설정 반영 BLOCKED)
+
+기존 Main._toggle_pause/HUD pause 연결과 clear_native_input_states·review 캐릭터 선택 guard를 유지하며 메뉴 표시만 추가한다. Settings 하위 화면에서 Esc/뒤로는 pause로 복귀, pause의 Esc/재개는 기존 경로를 사용한다. 일반 메뉴에서만 개발 캐릭터 선택판을 가리고 review 모드 우선권은 그대로다. 흑철 패널·기존 날개 문장·금빛 헤어라인·뼈색 글자, native_ui_fonts의 hell/hell_title/cinzel_hell, 이모지·새 이미지0.
+
+S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.

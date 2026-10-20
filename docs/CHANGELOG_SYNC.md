@@ -234,6 +234,15 @@
 | 문서 | [수명 경계](engine/DEMO11_INTRO_LIFECYCLE_20261021.md)·[보고서](engine/orders/reports/demo11-08_REPORT.md)·sound·번역21문구 동기화. 영화 음성/연출 동등성 미확인·export 패키징 HOLD |
 
 
+## 2026-10-21 DEMO11-09 pause·입력 안내 / 설정 반영 BLOCKED
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | mainac3764bfe, Main+10/-0만 공용추가. 기존 pause/clear입력/review guard 유지, 메뉴→settings back 계층·기존 프로필 읽기. State/전투/저장/맵0 |
+| 설정 권위 | S01 재사용·missing3 NOT_READY 유지. S10 구현/S08 writer 부재로 설정 반영·언어/inputMode 복원 BLOCKED. 임의 기본값 채움·키변경·별도OPT writer0 |
+| 화면·검증 | Hell Gothic/기존폰트·crest/이모지0, 번역·3.1UI 갱신. 신규29/0+S01unit112/0+actual12/0=153/0·각1회·재실행0. [보고서](engine/orders/reports/demo11-09_REPORT.md)에 결과·공용줄·인계 제안, captures 시각 검수 대기 |
+| 제출 | 원로그 _out/demo11-09/, Godot gate/격리/override0. 정상훅·자기branch push/remote/DONE 뒤 WT제거, R 불변 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |

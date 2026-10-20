@@ -155,3 +155,8 @@
 | DOM 경계 | 프리뷰 canvas를 card.appendChild로 추가. 새 helper·consumer는 부모 textContent/innerHTML을 교체하지 않으며 기존 자식 sentinel 보존을 own DOM 대역으로 확인 |
 | 새 검사 | 실제 원 helper·consumer + own 알파 배열/Canvas/Image/DOM 대역 신규6군 및 main inline 구문1 첫 통과. 첫 셀·전체 알파 제약·빈 이미지·read 실패·known/unknown fallback·load/error·자식 보존·원 R와 현 main의3way byte 비교 |
 | 검수 한계 | 실제 PNG/atlas/asset byte·실 canvas 픽셀을 읽거나 가공하지 않음. 실 모델/rig/게임 내 sprite·설정 UI창/native/HUD/PC 미검수. 합성 draw 관측은 실제 미리보기·잘림 품질 PASS, 모델 수정, 신규 캐릭터·24장/24FPS 완료 증거가 아님 |
+
+
+## 2026-10-21 DEMO11-09 Godot 데모 일시정지 접점
+
+이 단위는 기존 Main pause/입력 profile 권위를 소비하는 최소 pause 메뉴·설정 진입/뒤로만 제공한다. 원본4탭·설정값·키변경·저장 복원 포팅 완료가 아니다. S01은 current OPT35의 missing3를 NOT_READY로 보존하고, S10 언어/inputMode bridge·허용 option writer는 main에 없어 설정 적용은 BLOCKED다. 실제 숫자/키를 바꿀 수 있는 UI를 꾸미지 않고 준비 중 안내를 표시한다. [소유 경계·필요 인터페이스·실행 근거](../engine/orders/reports/demo11-09_REPORT.md), `_out/demo11-09/captures/` 화면은 맥북총괄 검수 대기.
