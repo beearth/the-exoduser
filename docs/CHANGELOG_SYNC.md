@@ -133,6 +133,15 @@
 | 검증 | 기존 관련 테스트1회60/0(기존52 유지+8추가), import·실창 캡처 포함 ERROR/누수/잔류0. 1920×1080 전체1장+삭제/목록1x크롭2개, 숫자01/02 구분·폰트/클리핑 육안 확인 |
 | 제출 | `_out/demo11-04b/captures/` 및 DONE.txt. 각 실행 pgrep gate·격리 userdir·override0byte. 경로지정stage·정상hook·자기branch push/원격SHA 확인 후 자기WT제거. PC/맥북총괄 눈 재검수 대기 |
 
+## 2026-10-21 DEMO11-19ui 성장 별자리·투자/환불/예약 UI
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·권위 | main0138c5bb9 + 19r0c136318 정상 merge. 기존 POINT/19r/PC apply_stats 재사용, UI 별도 writer·틱 호출0 |
+| 화면·범위 | 웹31중심·260단계/원본 인체 선화/효과 추출. 계획·리셋 확인·예약/취소, 숫자 hell 명조·개발 문구0. Main 설치+5만, State/보호 전투0 |
+| 검증 | 신규36/0·19r383/0·PC290/0, 최종 렌더12/0·전체2장/1x4장(사용자 눈 검수 대기), 상세는 [보고서](engine/orders/reports/demo11-19ui_REPORT.md). CRLF·격리 OS 경로·실행 gate 원로그 보존. 실창 수동/사용자 디자인 승인과 구분 |
+| docs | 3.1 UI·3.2 메타·번역목록·자기 작업판 동기화. 자기 branch 정상 push/원격 SHA/DONE 후 자기 WT 제거 |
+
 ## 2026-10-21 DEMO11-19r 실제 성장 투자·예약→PC runtime refresh
 
 | 항목 | 구현·검수 근거 |

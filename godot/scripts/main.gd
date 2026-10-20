@@ -378,6 +378,11 @@ func _ready() -> void:
 	else:
 		if not _bind_native_source_regeneration_boot():
 			return
+	# DEMO11-19ui: event-only growth presentation, existing 19r owner.
+	var growth_panel := preload("res://scripts/native_growth_panel.gd").new()
+	growth_panel.name = "NativeGrowthPanel"
+	growth_panel.configure(self)
+	add_child(growth_panel)
 	source_forge = ForgeScript.new() # DEMO11-27, existing actors/State only
 	source_forge.configure(self)
 	add_child(source_forge)
