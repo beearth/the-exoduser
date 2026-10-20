@@ -119,6 +119,7 @@ var _native_demo11_policy: Dictionary = {}
 var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
 var native_demo_encounter: Node
+var native_demo_anglers: Node2D
 
 func read_native_demo_policy() -> Dictionary:
 	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
@@ -352,6 +353,7 @@ func _ready() -> void:
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
+	native_demo_anglers=preload("res://scripts/native_demo11_anglers.gd").install_native_boot(self)
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -3068,6 +3070,7 @@ func invalidate_native_runtime_refresh_legendary_cache(refresh: Object) -> bool:
 	_source_l_eq_cache = null
 	return true
 
+
 # DEMO11-38: end-of-demo navigation only. No stage initialization/advance here.
 func _open_native_demo_wishlist(url: String) -> void:
 	if url==NativeDemoEndFlow.WISHLIST_URL:
@@ -3088,3 +3091,8 @@ func enter_native_demo_arena(provider: Node, spawn_options: Dictionary) -> Dicti
 	return native_demo_encounter.enter(provider,spawn_options) if is_instance_valid(native_demo_encounter) else {"status":"NOT_READY"}
 func leave_native_demo_arena(provider: Node) -> bool:
 	return is_instance_valid(native_demo_encounter) and native_demo_encounter.leave(provider)
+
+
+# DEMO11-31: MAP11 provides four distinct child Marker2Ds in source slot order.
+func bind_native_demo_anglers(provider: Node2D, markers: Array) -> bool:
+	return is_instance_valid(native_demo_anglers) and native_demo_anglers.bind_provider(provider,markers)

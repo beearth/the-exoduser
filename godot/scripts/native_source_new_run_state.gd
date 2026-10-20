@@ -1587,6 +1587,7 @@ func apply_native_forge_potion_upgrade(owner: Node) -> Dictionary:
 	return {"status":"READY","paid":true,"level":_auto_potion_level,"cost":cost,"remaining":_g.mats,
 		"unported":["dbSaveNow, source flash/particle feedback"]}
 
+
 # DEMO11-38 narrow progression writer; never touches stage, map or combat values.
 var _native_demo_clear_phase := 0
 func commit_native_demo_clear(owner: Node, stage_index: int, end: bool) -> bool:
