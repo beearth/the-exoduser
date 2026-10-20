@@ -2,7 +2,7 @@
 
 | 항목 | 원문·인수 근거 |
 |---|---|
-| 기준·판정 | 최신 main0138c5bb9 + DEMO11-43 9b763da9 정상FF. C5종은 PC web/trap 상태·급강하 근접패링·hurtE 분열 사망prefix/Marker 자식 접점 전 NOT_READY, 등록0 |
+| 기준·판정 | 최신 main0138c5bb9 + DEMO11-43 9b763da9 정상FF(최종 로그 보존). C5종은 PC web/trap 상태·급강하 근접패링·hurtE 분열 사망prefix/Marker 자식 접점 전 NOT_READY, 등록0 |
 | 범위·검증 | 제품/공용/저장/테스트/에셋0줄·새helper0. A/B 통합 후보만 기록. Godot/회귀/5종 벽시계 벤치 미실행·성능 PASS 없음. [보고서](engine/orders/reports/demo11-etype-c_REPORT.md), [8.0 인수 경계](8.0몬스터디자인/DEMO11_ETYPE_C_NATIVE_ADMISSION_20261021.md) |
 
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속

@@ -35,4 +35,4 @@
 
 관련 게임 테스트 **미실행(통과/실패 수 없음)**, Godot **실행0회**. 5종 실제 동시 스폰이 인수 불가하므로 고정 N 물리 벽시계120fps 예산 벤치 **미실행**. 빈 actor·요청 거부 루프/모델만 재어 5종 벤치 PASS로 보고하지 않는다. PC 접점 인수 뒤 실제5종×N틱, elapsed/mean/p95/p99/max·8333.333µs 예산을1회 측정해야 한다. 코드 변경0이어서 관련 스위트를 형식상 재실행하지 않았고 UI 추가0으로 캡처/번역0이다.
 
-정적 증거: `_out/demo11-etype-c/source-lines.txt`의 행번호 원문 발췌, `native-interface-audit.json`의 실제 소스 해시·관련 API/필드, `gap-c-rows.txt`, `basis.json`, 정상 merge 로그. 원본/큰 JSON 통째 출력0. 첫 merge는 --no-checkout 상태에서 checkout 전 시도해 Git이 거절했고, sparse read-tree 후 정상 fast-forward했으며 거절 로그도 별도 보존한다. 관련 문서 동기화·정상 훅·자기 branch 일반 push/remote SHA·DONE 뒤 자기 WT 제거, R start/end 비교 결과는 원로그 DONE.txt. **최종 판정 BLOCKED; DEMO11-63~67 제작 완료 아님.**
+정적 증거: `_out/demo11-etype-c/source-lines.txt`의 행번호 원문 발췌, `native-interface-audit.json`의 실제 소스 해시·관련 API/필드, `gap-c-rows.txt`, `basis.json`, 정상 merge 로그. 원본/큰 JSON 통째 출력0. 첫 merge는 --no-checkout 상태에서 checkout 전 시도해 Git이 거절했고, sparse read-tree 후 정상 fast-forward했으며 최종 정상 merge 로그를 보존한다. 관련 문서 동기화·정상 훅·자기 branch 일반 push/remote SHA·DONE 뒤 자기 WT 제거, R start/end 비교 결과는 원로그 DONE.txt. **최종 판정 BLOCKED; DEMO11-63~67 제작 완료 아님.**
