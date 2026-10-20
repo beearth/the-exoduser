@@ -138,7 +138,7 @@ docs/ 전체를 관련 테스트명·movement_damage_preserves_source_speed·app
 
 ## ④ 커밋·원격 반영
 
-- 코드·검증·관련 docs 커밋: PATCH_COMMIT_PENDING
+- 코드·검증·관련 docs 커밋: e9f7d7da43378d91d60ab019f08f2f62aea21eff
 - 브랜치: codex/qa-001-pc-20261020
 - 최초 push 전 원격 동일 브랜치: 없음(ls-remote 확인).
 - 후속 문서 커밋은 위 패치 SHA 및 작업판 검수 대기 상태를 기록한다. 최종 HEAD·원격 readback은 작업 종료 메시지와 G 출력 폴더의 delivery.json에 기록한다.

@@ -26,7 +26,7 @@
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | 시작 요청됨 |
 | P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | 시작 요청됨 |
 | MAC-VERIFY | 최근 통합분 Mac 테스트·Mac 실창 첫 전투 녹화 | Mac Codex ttys001(맥북총괄 관측) | codex/mac-verify-20261020 | 없음(관측 전용) | 진행 중 |
-| QA-001 | 기존 실패 테스트 7종 원인 진단 | PC Codex (사용자 PC 재배정, 이 worktree) | codex/qa-001-pc-20261020 | 지정 테스트 7종, QA-001_REPORT.md, WORK_BOARD.md의 QA-001 행 | 진행 중 · 기준 HEAD f1df29a86 |
+| QA-001 | 기존 실패 테스트 7종 원인 진단 | PC Codex (사용자 PC 재배정, 이 worktree) | codex/qa-001-pc-20261020 | 지정 테스트 7종, QA-001_REPORT.md, WORK_BOARD.md의 QA-001 행 | 검수 대기 · 패치 e9f7d7da4 · 18실패+SCRIPT ERROR1 해소 (9종 기준선+영향 그룹 근거) |
 | P3-001 | 맵 pit_poison 타원 충돌 계약 | Mac Codex ttys003 | codex/p3-001-20261020 | engine/fdg/map-source-adapter.js, 맵 계약 테스트 | 대기→착수 |
 | P2-004b | 펫 대사 카테고리 160여 종 | Mac Codex ttys004 | codex/p2-004b-20261020 | native_pets.gd 대사 테이블 | 대기→착수 |
 | P3-003 | 지역 시스템(G._regions·필드보스 사이트·지역 처치·미니맵 마커) | **Codex 총괄 배정 대기**(Mac, 다음 빈 Codex) | codex/p3-003-20261020 | 지역 신규 스크립트 | 대기 |
