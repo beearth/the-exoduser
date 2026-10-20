@@ -1,4 +1,5 @@
 extends CanvasLayer
+const UI = preload("res://scripts/native_demo_ui_i18n.gd")
 
 signal pause_requested
 signal restart_requested
@@ -107,17 +108,17 @@ func bind_native_source_state(state: Node) -> bool:
 func set_pause_state(paused: bool) -> void:
 	_paused = paused
 	if is_instance_valid(_pause_button):
-		_pause_button.text = "플레이 재개  Esc" if paused else "일시정지  Esc"
-		_status_text.text = "일시정지 · 측정에서 제외" if paused else "정상 플레이 · 실제 입력"
+		_pause_button.text = UI.text("플레이 재개  Esc") if paused else UI.text("일시정지  Esc")
+		_status_text.text = UI.text("일시정지 · 측정에서 제외") if paused else UI.text("정상 플레이 · 실제 입력")
 
 func show_native_input_status(message: String) -> void:
 	var status: Label = _root.get_node_or_null("NativeInputStatus") if is_instance_valid(_root) else null
-	if is_instance_valid(status): status.text=message
+	if is_instance_valid(status): status.text=UI.text(message)
 
 
 func set_status(message: String) -> void:
 	if is_instance_valid(_status_text):
-		_status_text.text = message
+		_status_text.text = UI.text(message)
 
 
 ## Native UI writer only. Main supplies already localized text; original
@@ -220,9 +221,9 @@ func set_telemetry(metrics: Dictionary) -> void:
 	if not is_instance_valid(_telemetry_text):
 		return
 	if int(metrics.get("sample_count", 0)) == 0:
-		_telemetry_text.text = "1080p · 목표 240FPS  |  정상 플레이 표본 대기\nGPU 완료시간 미측정"
+		_telemetry_text.text = UI.text("1080p · 목표 240FPS  |  정상 플레이 표본 대기\nGPU 완료시간 미측정")
 		return
-	_telemetry_text.text = "프레임 간격 %.2fms  |  CPU %.2f / 물리 %.2fms\n적탄 최대 %d · 표본 %d  |  GPU 완료시간 미측정" % [
+	_telemetry_text.text = UI.text("프레임 간격 %.2fms  |  CPU %.2f / 물리 %.2fms\n적탄 최대 %d · 표본 %d  |  GPU 완료시간 미측정") % [
 		float(metrics.get("frame_ms", 0.0)),
 		float(metrics.get("cpu_process_ms", 0.0)),
 		float(metrics.get("cpu_physics_ms", 0.0)),
@@ -241,10 +242,10 @@ func _process(delta: float) -> void:
 func _refresh() -> void:
 	if is_instance_valid(_player) and is_instance_valid(_q_control_text):
 		var q: Dictionary = _player.get_native_q_control_snapshot()
-		_q_control_text.text=("Q MP %.1f / %.1f · 다크볼 패링 / Space 미완" % [q.mana,q.max_mana]) if q.get("ready")==true else "Q 실제 소유자 연결 대기"
+		_q_control_text.text=(UI.text("Q MP %.1f / %.1f · 다크볼 패링 / Space 미완") % [q.mana,q.max_mana]) if q.get("ready")==true else UI.text("Q 실제 소유자 연결 대기")
 	if is_instance_valid(_player) and is_instance_valid(_e_control_text):
 		var e: Dictionary = _player.get_native_e_control_snapshot()
-		_e_control_text.text=("E %s · ST비용 %.1f · 합체파동 연결 · 전체 E 미완" % [e.state,e.cost]) if e.get("ready")==true else "E 캐릭터 선택/실제 소유자 대기"
+		_e_control_text.text=(UI.text("E %s · ST비용 %.1f · 합체파동 연결 · 전체 E 미완") % [e.state,e.cost]) if e.get("ready")==true else UI.text("E 캐릭터 선택/실제 소유자 대기")
 	if not is_instance_valid(_hp_text) or not is_instance_valid(_player):
 		return
 	var snapshot: Dictionary = _player.call("get_snapshot")
@@ -252,7 +253,7 @@ func _refresh() -> void:
 	var max_hp := float(snapshot.get("max_hp", 350.0))
 	var stamina := float(snapshot.get("stamina", 0.0))
 	var max_stamina := float(snapshot.get("max_stamina", 200.0))
-	_hp_text.text = "생명력\n%d\n/ %d" % [roundi(hp), roundi(max_hp)]
+	_hp_text.text = UI.text("생명력\n%d\n/ %d") % [roundi(hp), roundi(max_hp)]
 	_hp_fill.set_shader_parameter("fill_ratio", hp / max_hp if max_hp > 0.0 else 0.0)
 	_stamina_text.text = "SP\n%d\n/ %d" % [roundi(stamina), roundi(max_stamina)]
 	_stamina_fill.set_shader_parameter("fill_ratio", stamina / max_stamina if max_stamina > 0.0 else 0.0)
@@ -260,7 +261,7 @@ func _refresh() -> void:
 	var frames := float(snapshot.get("charge_frames", 0.0))
 	var combo := int(snapshot.get("combo_step", 0))
 	var displayed_step := 3 if state == "windup" else clampi(combo, 0, 3)
-	_combo_text.text = "연속 공격  %d / 3" % displayed_step
+	_combo_text.text = UI.text("연속 공격  %d / 3") % displayed_step
 	_charge_bar.value = clampf(frames, 0.0, 120.0)
 	var level := 0
 	if frames >= 120.0:
@@ -270,19 +271,19 @@ func _refresh() -> void:
 	elif frames >= 40.0:
 		level = 1
 	if state == "dead":
-		_charge_text.text = "쓰러졌습니다 · 새 씬 재시작"
+		_charge_text.text = UI.text("쓰러졌습니다 · 새 씬 재시작")
 	elif state == "windup":
-		_charge_text.text = "3타 충전  %d단계 · %.0f / 120F" % [level, frames]
+		_charge_text.text = UI.text("3타 충전  %d단계 · %.0f / 120F") % [level, frames]
 	elif frames > 0.0:
-		_charge_text.text = "충전  %d단계 · %.0f / 120F" % [level, frames]
+		_charge_text.text = UI.text("충전  %d단계 · %.0f / 120F") % [level, frames]
 	else:
-		_charge_text.text = "3타 홀드 · 40F / 80F / 120F"
+		_charge_text.text = UI.text("3타 홀드 · 40F / 80F / 120F")
 	var alive := 0
 	if is_instance_valid(_world) and _world.has_method("get_enemies"):
 		for enemy in _world.call("get_enemies"):
 			if is_instance_valid(enemy) and not enemy.is_queued_for_deletion() and float(enemy.get("hp")) > 0.0:
 				alive += 1
-	_objective_text.text = "남쪽 입구 → 북쪽 출구  ·  남은 적 %d" % alive
+	_objective_text.text = UI.text("남쪽 입구 → 북쪽 출구  ·  남은 적 %d") % alive
 	_refresh_native_first_fight_hud()
 	_refresh_native_minimap_and_corner()
 
@@ -300,33 +301,33 @@ func _build_ui() -> void:
 	_root.theme = theme
 	var title_panel := _panel(Vector2(24, 20), Vector2(710, 84))
 	_debug_overlay_nodes.append(title_panel)
-	_label(title_panel, "지옥의 길", Vector2(16, 9), 26, INK)
+	_label(title_panel, UI.text("지옥의 길"), Vector2(16, 9), 26, INK)
 	_label(title_panel, "GODOT  ·  NATIVE FIRST PLAY", Vector2(176, 17), 15, DIM_INK)
-	_objective_text = _label(title_panel, "남쪽 입구 → 북쪽 출구", Vector2(16, 47), 17, DIM_INK)
+	_objective_text = _label(title_panel, UI.text("남쪽 입구 → 북쪽 출구"), Vector2(16, 47), 17, DIM_INK)
 	var action_box := HBoxContainer.new()
 	action_box.name = "PublicActions"
 	_root.add_child(action_box)
 	action_box.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	_set_anchor_offsets(action_box, Vector2(-418, 25), Vector2(378, 44))
 	action_box.add_theme_constant_override("separation", 10)
-	_pause_button = _button("일시정지  Esc")
+	_pause_button = _button(UI.text("일시정지  Esc"))
 	_pause_button.name = "PauseResume"
 	_pause_button.pressed.connect(func() -> void: pause_requested.emit())
 	action_box.add_child(_pause_button)
-	var restart := _button("새 씬 재시작")
+	var restart := _button(UI.text("새 씬 재시작"))
 	restart.name = "RestartGodotScene"
 	restart.pressed.connect(func() -> void: restart_requested.emit())
 	action_box.add_child(restart)
 	_debug_overlay_nodes.append(action_box)
 	var hp_orb := _resource_orb(false)
-	_hp_text = _label(hp_orb, "생명력\n350\n/ 350", Vector2(0, 43), 20, Color.WHITE)
+	_hp_text = _label(hp_orb, UI.text("생명력\n350\n/ 350"), Vector2(0, 43), 20, Color.WHITE)
 	_hp_text.size.x = ORB_SIZE
 	_hp_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var stamina_orb := _resource_orb(true)
 	_stamina_text = _label(stamina_orb, "SP\n200\n/ 200", Vector2(ORB_SIZE / 2, 44), 17, Color("88dd88"))
 	_stamina_text.size.x = ORB_SIZE / 2
 	_stamina_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var mp_scope := _label(stamina_orb, "MP\n미이식", Vector2(0, 54), 14, Color("88bbff"))
+	var mp_scope := _label(stamina_orb, UI.text("MP\n미이식"), Vector2(0, 54), 14, Color("88bbff"))
 	mp_scope.size.x = ORB_SIZE / 2
 	mp_scope.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var meters := Control.new()
@@ -336,22 +337,22 @@ func _build_ui() -> void:
 	_set_anchor_offsets(meters, Vector2(-369, -182), Vector2(738, 164))
 	meters.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_texture(meters, "res://assets/ui/ui_bar_only.png", Vector2.ZERO, meters.size, Color(0.8, 0.8, 0.8))
-	_combo_text = _label(meters, "연속 공격  0 / 3", Vector2(190, 53), 19, Color("c9965a"))
-	_charge_text = _label(meters, "3타 홀드 · 40F / 80F / 120F", Vector2(190, 85), 16, INK)
+	_combo_text = _label(meters, UI.text("연속 공격  0 / 3"), Vector2(190, 53), 19, Color("c9965a"))
+	_charge_text = _label(meters, UI.text("3타 홀드 · 40F / 80F / 120F"), Vector2(190, 85), 16, INK)
 	_charge_bar = _bar(meters, Vector2(190, 117), Vector2(358, 8), Color("b5985b"), 120)
 	var telemetry := _panel(Vector2(-560, 86), Vector2(536, 92), false, true)
 	_debug_overlay_nodes.append(telemetry)
-	_status_text = _label(telemetry, "정상 플레이 · 실제 입력", Vector2(14, 8), 16, INK)
-	_telemetry_text = _label(telemetry, "1080p · 목표 240FPS  |  정상 플레이 표본 대기\nGPU 완료시간 미측정", Vector2(14, 34), 14, DIM_INK)
-	var controls := _label(_root, "WASD 이동  ·  마우스 조준  ·  좌클릭 홀드/해제: 공격·3타 충전  ·  E 탭/홀드: 처내기/차징  ·  Esc 정지", Vector2(24, 116), 15, DIM_INK)
+	_status_text = _label(telemetry, UI.text("정상 플레이 · 실제 입력"), Vector2(14, 8), 16, INK)
+	_telemetry_text = _label(telemetry, UI.text("1080p · 목표 240FPS  |  정상 플레이 표본 대기\nGPU 완료시간 미측정"), Vector2(14, 34), 14, DIM_INK)
+	var controls := _label(_root, UI.text("WASD 이동  ·  마우스 조준  ·  좌클릭 홀드/해제: 공격·3타 충전  ·  E 탭/홀드: 처내기/차징  ·  Esc 정지"), Vector2(24, 116), 15, DIM_INK)
 	controls.name = "PublicInputHelp"
 	_debug_overlay_nodes.append(controls)
-	var status := _label(_root, "Q 보호막·E 처내기·Space 분노 슬롯: 연결 대기  ·  원본 저장 키 설정 복원 미지원", Vector2(24, 143), 14, DIM_INK)
+	var status := _label(_root, UI.text("Q 보호막·E 처내기·Space 분노 슬롯: 연결 대기  ·  원본 저장 키 설정 복원 미지원"), Vector2(24, 143), 14, DIM_INK)
 	status.name="NativeInputStatus"
 	_debug_overlay_nodes.append(status)
-	_q_control_text=_label(_root,"Q 실제 소유자 연결 대기",Vector2(24,166),14,DIM_INK)
+	_q_control_text=_label(_root,UI.text("Q 실제 소유자 연결 대기"),Vector2(24,166),14,DIM_INK)
 	_q_control_text.name="QControlManaStatus"
-	_e_control_text=_label(_root,"E 실제 소유자 대기",Vector2(24,189),14,DIM_INK)
+	_e_control_text=_label(_root,UI.text("E 실제 소유자 대기"),Vector2(24,189),14,DIM_INK)
 	_e_control_text.name="EControlStatus"
 	_debug_overlay_nodes.append(_q_control_text)
 	_debug_overlay_nodes.append(_e_control_text)
@@ -469,7 +470,7 @@ func _panel(position_value: Vector2, size_value: Vector2, bottom: bool = false, 
 
 func _label(parent: Node, message: String, position_value: Vector2, font_size: int, color: Color) -> Label:
 	var leaf := Label.new()
-	leaf.text = message
+	UI.bind(leaf,message)
 	leaf.position = position_value
 	leaf.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	leaf.add_theme_color_override("font_color", color)
@@ -499,7 +500,7 @@ func _bar(parent: Node, position_value: Vector2, size_value: Vector2, color: Col
 
 func _button(message: String) -> Button:
 	var button := Button.new()
-	button.text = message
+	UI.bind(button,message)
 	button.custom_minimum_size = Vector2(184, 44)
 	button.focus_mode = Control.FOCUS_NONE
 	var normal := StyleBoxFlat.new()
@@ -545,7 +546,7 @@ func _native_hud_label(parent: Control, text: String, pos: Vector2, size_px: int
 		color: Color, weight: float = 400.0, font_stack: String = "hell") -> Label:
 	var label := Label.new()
 	parent.add_child(label)
-	label.text = text
+	UI.bind(label,text)
 	label.position = pos
 	label.add_theme_font_override("font", NATIVE_UI_FONTS.stack(font_stack, int(weight)))
 	label.add_theme_font_size_override("font_size", size_px)
@@ -618,11 +619,11 @@ func _build_native_first_fight_hud() -> void:
 	border.add_theme_stylebox_override("panel", border_style)
 	var label_color := Color("cbbd9f")
 	var row_value_color := Color("eee4d4")
-	_native_hud_label(panel, "레벨", Vector2(12, 11), 12, label_color)               # hudLevelLabel
+	_native_hud_label(panel, UI.text("레벨"), Vector2(12, 11), 12, label_color)               # hudLevelLabel
 	var lv_label := _native_hud_label(panel, "1", Vector2(12, 8), 15, Color("f2e6cb"), 700.0)
 	lv_label.size.x = panel_size.x - 24
 	lv_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_native_hud_label(panel, "경험치", Vector2(12, 32), 12, label_color)             # hudExpLabel
+	_native_hud_label(panel, UI.text("경험치"), Vector2(12, 32), 12, label_color)             # hudExpLabel
 	var exp_label := _native_hud_label(panel, "0 / 0", Vector2(12, 32), 12, Color("dfcfaa"))
 	exp_label.size.x = panel_size.x - 24
 	exp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -641,11 +642,11 @@ func _build_native_first_fight_hud() -> void:
 	_exp_fill = _native_gradient_rect(exp_bg, Vector2.ZERO, Vector2(0, 2),
 		Color(122.0 / 255, 101.0 / 255, 72.0 / 255, 0.55), Color(196.0 / 255, 171.0 / 255, 124.0 / 255, 0.85))
 	(_exp_fill as TextureRect).texture.fill_to = Vector2(1, 0)  # 90deg 가로 그라디언트
-	_native_hud_label(panel, "지역 처치", Vector2(12, 70), 12, label_color)          # hudKillLabel
+	_native_hud_label(panel, UI.text("지역 처치"), Vector2(12, 70), 12, label_color)          # hudKillLabel
 	var kill_label := _native_hud_label(panel, "0 / 0", Vector2(12, 70), 12, row_value_color)
 	kill_label.size.x = panel_size.x - 24
 	kill_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_native_hud_label(panel, "악의", Vector2(12, 91), 12, label_color)               # hudMaliceLabel
+	_native_hud_label(panel, UI.text("악의"), Vector2(12, 91), 12, label_color)               # hudMaliceLabel
 	var malice_label := _native_hud_label(panel, "0", Vector2(12, 91), 12, row_value_color)
 	malice_label.size.x = panel_size.x - 24
 	malice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -1169,3 +1170,6 @@ func get_native_minimap_corner_snapshot() -> Dictionary:
 			"spCnt 클릭(J 능력치 패널 미이식)",
 			"적 점 색 데이터 차(규칙 ELC[e.el] 동일 — 웹 el0 회백 vs 포트 encounter element_id 3 보라: 데이터 소유 wt-p2g)"]}
 
+
+func _notification(what: int) -> void:
+	if what==NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(_root):call_deferred("_refresh")

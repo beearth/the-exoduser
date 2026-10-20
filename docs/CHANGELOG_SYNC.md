@@ -1,3 +1,10 @@
+## 2026-10-21 DEMO11-i18n — Native UI KO/EN 전수 점검
+
+- 기준 main0138c5bb. 현재 표시189키/204회+동적 경계5개=194키를 cached KO-key→EN으로 연결. 직접 무번역105키·기존 EN누락57키/장비명3개 보완. State/전투/저장/원본 번역 데이터0행.
+- 등록 누락99·무번호50을 No.3338–3486 신규149개로 연결, 기존45번호 재사용·No.3334 EN 보완. 번역 목록 CRLF/기존 본문(No.3334 외) bytes 보존.
+- 신규735/0·관련5회귀 최종2187/0·원문 EN exact Node3/0·추출기 Python4/0. 최초 HUD 종료 ERROR는 원본 main에서도 drop_common.mp3 잔류 재현, 제품 오디오 수정0. 실패 기록 보존.
+- 영어 로비+1x 및 보조 인트로/대장간 캡처8/0·자체 눈 검수. 인벤토리23b·종료38·설정50 등 미병합 UI는 목록만(12파일/312후보), 요청 캡처2종 NOT_READY. [보고서](engine/orders/reports/demo11-i18n_REPORT.md)·[전수표521행](engine/orders/reports/demo11-i18n_STRINGS.csv), _out/demo11-i18n/.
+
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 

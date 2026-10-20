@@ -1,0 +1,114 @@
+{
+  "main": "0138c5bb9188d27cee10cb1a901d075092ddb88f",
+  "unmerged": [
+    {
+      "branch": "codex/demo11-04b-20261021",
+      "sha": "2665f02d76197edbf35f73d1fc3a587d2fc12162",
+      "path": "godot/scripts/native_demo_lobby_screen.gd",
+      "candidate_occurrences": 27,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-07-20261021",
+      "sha": "5d07f978c6c9eac964ba3c526cb85aca994595bc",
+      "path": "godot/scripts/native_demo_lobby_entry.gd",
+      "candidate_occurrences": 5,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-08-20261021",
+      "sha": "fa55755dbd6901242fd199ab4ac3285fa9083a9c",
+      "path": "godot/scripts/native_story_intro.gd",
+      "candidate_occurrences": 5,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-09-20261021",
+      "sha": "dc9f34ea49347de328c1ba66db85671ba442c9e6",
+      "path": "godot/scripts/native_demo_pause_menu.gd",
+      "candidate_occurrences": 12,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-19ui-20261021",
+      "sha": "c6f9989ba12d38e173ec2539e355d3ca56aa81bf",
+      "path": "godot/scripts/native_growth_panel.gd",
+      "candidate_occurrences": 28,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-23b-20261021",
+      "sha": "0fd59ed6bd3c9b32e01329b231304d3474e51929",
+      "path": "godot/scripts/native_inventory_panel.gd",
+      "candidate_occurrences": 87,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-28-20261021",
+      "sha": "c4f92cde30c54675c5efb726bb9f0f0054146afd",
+      "path": "godot/scripts/native_salvage_panel.gd",
+      "candidate_occurrences": 25,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-29-20261021",
+      "sha": "ff7d85c3ed9f849bac3062f549ab4955e638e471",
+      "path": "godot/scripts/native_workshop_panel.gd",
+      "candidate_occurrences": 43,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-38-20261021",
+      "sha": "5ff66f3274556e4620970548f52af3441e69023d",
+      "path": "godot/scripts/native_demo_end_view.gd",
+      "candidate_occurrences": 12,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-42-20261021",
+      "sha": "4f1f52089bb0c127fc3a1a874b274a3b30074ab3",
+      "path": "godot/scripts/hud.gd",
+      "candidate_occurrences": 34,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-50-20261021",
+      "sha": "07c2dad4bd3be655414ad19dbfec528aae8da029",
+      "path": "godot/scripts/native_settings_panel.gd",
+      "candidate_occurrences": 22,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    },
+    {
+      "branch": "codex/demo11-50-20261021",
+      "sha": "07c2dad4bd3be655414ad19dbfec528aae8da029",
+      "path": "godot/scripts/native_demo_pause_menu.gd",
+      "candidate_occurrences": 12,
+      "mode": "LIST_ONLY_NO_CHECKOUT_NO_EXECUTION"
+    }
+  ],
+  "stats": {
+    "main_files": 7,
+    "main_literal_occurrences": 204,
+    "main_literal_unique": 189,
+    "catalog_keys": 194,
+    "hardcoded_keys_before": 105,
+    "static_english_missing_before": 57,
+    "new_english_data_names": 3,
+    "registry_before": {
+      "unnumbered": 50,
+      "numbered": 45,
+      "missing": 99
+    },
+    "allocated": {
+      "allocated_from": 3338,
+      "allocated_through": 3486,
+      "allocated_count": 149
+    },
+    "unmerged_files": 12,
+    "unmerged_candidate_occurrences": 312,
+    "csv_rows": 521,
+    "source_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+    "source_en_keys": 2773,
+    "registered_all_main": true
+  }
+}

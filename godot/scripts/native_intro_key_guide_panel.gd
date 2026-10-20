@@ -1,4 +1,5 @@
 extends Control
+const UI = preload("res://scripts/native_demo_ui_i18n.gd")
 ## P2-007a — 인트로 시작 대사 + 키 안내 4컷 패널(#introKeys) 표시 소유자. 표시·클릭·음성만 소유하고
 ## 진행/스킵 판정(250ms 쓰로틀·Enter/Space/Esc·Space 2초 홀드·Tab)은 ExoduserNativeIntroCurtainSequence가 한다.
 ## 원본 근거(game.html, 읽기 전용):
@@ -185,6 +186,7 @@ func bind(parent: Node, main: Node = null) -> bool:
 	if parent == null or not parent.is_inside_tree():
 		return false
 	_main = main
+	language=TranslationServer.get_locale()
 	name = "NativeIntroKeyGuide"
 	process_mode = Node.PROCESS_MODE_ALWAYS # CSS transition·rAF는 일시정지 무관
 	mouse_filter = Control.MOUSE_FILTER_IGNORE # pointer-events:none (표시 전)
@@ -198,7 +200,7 @@ func bind(parent: Node, main: Node = null) -> bool:
 
 # ── 문자열 조립 (63308~63326 그대로) ──
 func _l(pair: Array) -> String:
-	return str(pair[0]) if language == "ko" or pair.size() < 2 or pair[1] == null else str(pair[1])
+	return UI.text(str(pair[0]),language)
 
 
 func _key_name(code: String) -> String:
@@ -212,6 +214,7 @@ func _key_name(code: String) -> String:
 
 
 func _guide_keys(key: String) -> String:
+	if UI.catalog().messages.has(key):return UI.text(key,language)
 	# 63310: key.split('/').map(k => BINDS[k] ? keyName(BINDS[k],true) : _T(k)).join(' / ')
 	var parts: Array = []
 	for k in key.split("/"):
@@ -240,7 +243,7 @@ func compose_step(index: int) -> Dictionary:
 	for row in data["rows"]:
 		if pad and row[1] == null:
 			continue
-		rows.append({"key": css_collapse(str(row[1]) if pad else _guide_keys(str(row[0]))),
+		rows.append({"key": css_collapse(UI.text(str(row[1]),language) if pad else _guide_keys(str(row[0]))),
 			"desc": css_collapse(_l([row[2], row[3]]))})
 	var hint := (("A · " + _l(PAD_HINT_NEXT) + " / Start · " + _l(PAD_HINT_SKIP)) if pad else _l(HINT))
 	return {"progress": "%d / %d" % [index + 1, KEY_STEPS.size()],
@@ -659,3 +662,8 @@ func get_snapshot() -> Dictionary:
 		"not_rendered": NOT_RENDERED.duplicate(),
 		"unported": ["게임패드 표기·A/Start 폴링(63394~63399 — 패드 입력 owner 미이식)",
 			"언어 전환(_L 영어 경로 — 포트 언어 설정 owner 부재, 데이터는 보유)"]}
+
+func _notification(what: int) -> void:
+	if what==NOTIFICATION_TRANSLATION_CHANGED and not _nodes.is_empty() and step>=0:
+		language=TranslationServer.get_locale()
+		call_deferred("_layout_step",compose_step(step))
