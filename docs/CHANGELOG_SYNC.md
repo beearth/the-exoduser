@@ -1,3 +1,13 @@
+## 2026-10-21 DEMO11-20 실제 State addExp cap100·레벨업 인계
+
+| 항목 | 근거·검수 |
+|---|---|
+| 기준 / 권한 | main010515993 + GAP61ab71be 읽기참조. 사용자 “나눠서” 승인으로 State addExp 구역만 +62/−8; Main/HUD/PC 전투·피해/맵/저장 형식0줄 |
+| 연결 | META-06 entry/loop cap100·META-01 curve 재사용(수식신규0). 99→100·대량XP/이미100·full mode, 회복은 기존authority1회·HUDpull/SPAPtext 유지 |
+| 인계 | 임시 State demo=true·DEMO11-01 setter 접점, native_level_up_handoff는 회복/해금 뒤1회·detached/재진입거부. save requested=true/committed=false, actualcollector save_globals미소유HOLD 유지·새IO0 |
+| 회귀 | 각1회 신규214/0(원본10사례)·META06 1034/0·META01 20/0·P2001c45/0=1313/0, exit0/skip0/ERROR0. Camera2D WARNING·P2001c ObjectDB2 WARNING 원문 기록, 누수0 주장0 |
+| 제출 | [DEMO11-20 보고서](engine/orders/reports/demo11-20_REPORT.md)·META추적 소비 갱신. 원로그 ~/exoduser-wt/_out/demo11-20/, 매Godot gate/override0·정상훅·자기branch push·remoteSHA/DONE뒤자기worktree제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection

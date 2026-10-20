@@ -6,6 +6,9 @@ extends Node
 const BOOTSTRAP = preload("res://port_modules/native_new_run_bootstrap_source/producer.gd")
 const STARTER_FACTORY = preload("res://port_modules/starter_item_factory_source/producer.gd")
 const SOURCE_RESOURCES = preload("res://scripts/native_source_resource_authority.gd")
+const EXP_GATE = preload("res://scripts/native_meta_exp_gate_policy.gd")
+const EXP_CURVE = preload("res://scripts/native_source_meta_exp_curve.gd")
+signal native_level_up_handoff(packet: Dictionary)
 const CLAIM_META = "native_source_new_run_state_owner"
 const INITIALIZED_META = "native_source_new_run_state_initialized"
 const RESOURCE_FIELDS = ["st", "mst", "stR", "mp", "mmp", "mpR"]
@@ -519,23 +522,62 @@ func apply_native_add_potion(owner: Node, type: String, count: int) -> Dictionar
 # addExp(v) — 43134~43176. v는 호출측(실행자)이 43140~43144(1/3·expBonus)까지 적용한
 # 최종값. 레벨업: sp+3/2렙당 ap+1(43153~43155), 20% 회복(43160 — 자원 authority 경유),
 # 300/700 스킬 해금(43169~43171). 미이식: SFX.levelup·showPH·_levelUpVfx(연출),
-# dbSaveForce(세이브 금지 지시), 패시브 예약 큐(포트에 큐 시스템 부재 → 0 투자).
+# DEMO11-20: demo defaults true like G16646. DEMO11-01 supplies the actual
+# build mode through configure_native_demo_exp_mode once its owner is current.
+# Save/UI effects are explicit handoffs; no serializer, IO or passive investment.
+var _native_demo_exp_mode := true
+var _native_add_exp_active := false
+var _native_level_up_serial := 0
+var _native_level_up_last: Dictionary = {}
+
+func configure_native_demo_exp_mode(owner: Node, demo_mode: bool) -> bool:
+	if not _feel_owner_current(owner) or _native_add_exp_active:
+		return false
+	_native_demo_exp_mode = demo_mode
+	return true
+
+func read_native_level_up_handoff() -> Dictionary:
+	return _native_level_up_last.duplicate(true) if _current_error().is_empty() else {}
+
+func _native_exp_result(levels: int, ap_gain: int, texts: Array, gate_reason: String) -> Dictionary:
+	return {"applied": true, "exp": _p.get("exp"), "lv": _p.get("lv"), "max_exp": _p.get("maxExp"),
+		"levels": levels, "ap_gain": ap_gain, "sp": _p.get("sp"), "ap": _p.get("ap"), "texts": texts,
+		"demo_mode": _native_demo_exp_mode, "gate_reason": gate_reason,
+		"handoff": _native_level_up_last.duplicate(true) if levels > 0 else {},
+		"unported": ["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx", "dbSaveForce_IO:DEMO11-06_owner_pending", "passive_queue:DEMO11-19_owner_pending"]}
+
 func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
-	if not _feel_owner_current(owner) or final_value < 0:
+	if not _feel_owner_current(owner) or final_value < 0 or _native_add_exp_active:
 		return {"applied": false, "reason": "actual_reward_owner_not_current"}
+	_native_add_exp_active = true
+	# Only demo cap adoption: the pre-existing non-demo transcendence HOLD below
+	# remains unchanged. No new daily clock or date/count writes in this unit.
+	if _native_demo_exp_mode:
+		var entry: Dictionary = EXP_GATE.entry_gate(_p, true, "")
+		_p["exp"] = entry["state"]["exp"]
+		if not entry["allowed"]:
+			_native_add_exp_active = false
+			return _native_exp_result(0, 0, [], str(entry["reason"]))
 	_p["exp"] = int(_feel_num(_p.get("exp"))) + final_value
 	var levels := 0
 	var ap_gain := 0
+	var gate_reason := ""
 	while int(_feel_num(_p.get("exp"))) >= int(_feel_num(_p.get("maxExp"))):
+		if _native_demo_exp_mode:
+			var loop: Dictionary = EXP_GATE.loop_gate(_p, true, "")
+			_p["exp"] = loop["state"]["exp"]
+			if not loop["allowed"]:
+				gate_reason = str(loop["reason"])
+				break
 		# 1000렙 초월 게이트(43138/43148): lv<1000 구간 — 미도달. 도달 시 미이식 정지.
 		if int(_feel_num(_p.get("lv"))) >= 1000:
+			_native_add_exp_active = false
 			return {"applied": false, "reason": "unported_branch_active:transcend_level_gate"}
 		_p["lv"] = int(_feel_num(_p.get("lv"))) + 1
 		levels += 1
 		_p["exp"] = int(_feel_num(_p.get("exp"))) - int(_feel_num(_p.get("maxExp")))
-		# _calcMaxExp(43128): lv<1000 → ~~((15+lv*2.5+lv*lv*.05)*1.001^lv)
 		var lv: float = _feel_num(_p.get("lv"))
-		_p["maxExp"] = int((15.0 + lv * 2.5 + lv * lv * 0.05) * pow(1.001, lv))
+		_p["maxExp"] = EXP_CURVE.required_exp(int(lv))
 		_p["sp"] = int(_feel_num(_p.get("sp"))) + 3
 		if int(lv) % 2 == 0:
 			_p["ap"] = int(_feel_num(_p.get("ap"))) + 1
@@ -544,17 +586,29 @@ func apply_native_add_exp(owner: Node, final_value: int) -> Dictionary:
 	if levels > 0:
 		var heal: Dictionary = _resources.commit_native_level_up_heal(owner) if _resources.has_method("commit_native_level_up_heal") else {"accepted": false}
 		if heal.get("accepted") != true:
+			_native_add_exp_active = false
 			return {"applied": false, "reason": "level_heal_authority_refused"}
+		var demonic := _feel_num(_passives.get("pDemon")) > _feel_num(_passives.get("pHuman"))
+		var level_color := "#d38aff" if demonic else "#ffdd00"
 		var lv_text: String = "SP +%d" % (levels * 3)
 		if ap_gain > 0:
 			lv_text += " AP +%d" % ap_gain
-		texts.append({"dx": 0.0, "dy": -40.0, "text": lv_text, "color": "#ffdd00", "life": 60}) # 43166 (비악마화 #ffdd00)
+		texts.append({"dx": 0.0, "dy": -40.0, "text": lv_text, "color": level_color, "life": 60}) # G43161–43165
 		for unlock in [[300, "blueShot"], [700, "burstLoop"], [700, "voidScarecrow"]]: # 43169~43171
 			if int(_feel_num(_p.get("lv"))) >= int(unlock[0]) and not (_p.get("skills") as Dictionary).has(unlock[1]):
 				(_p["skills"] as Dictionary)[unlock[1]] = 1
-	return {"applied": true, "exp": _p.get("exp"), "lv": _p.get("lv"), "max_exp": _p.get("maxExp"),
-		"levels": levels, "ap_gain": ap_gain, "sp": _p.get("sp"), "ap": _p.get("ap"), "texts": texts,
-		"unported": ["SFX.levelup", "showPH_LEVEL_UP", "_levelUpVfx", "dbSaveForce(세이브_금지)", "passive_queue(큐_시스템_부재)"]}
+		_native_level_up_serial += 1
+		_native_level_up_last = {"serial": _native_level_up_serial, "lv": _p["lv"],
+			"exp": _p["exp"], "maxExp": _p["maxExp"], "sp": _p["sp"], "ap": _p["ap"],
+			"levels": levels, "heal": heal.duplicate(true),
+			"presentation": {"title": "TRANSCEND!" if int(_p["lv"]) > 1000 else "LEVEL UP!",
+				"color": level_color, "duration_ms": 2500, "demonic": demonic, "source_line": 43162},
+			"save": {"requested": true, "committed": false, "method": "dbSaveForce", "source_line": 43171}}
+		# Once after recovery/unlocks, even for multi-level XP. Signal observers
+		# receive detached data and cannot reenter addExp or change mode mid-grant.
+		native_level_up_handoff.emit(_native_level_up_last.duplicate(true))
+	_native_add_exp_active = false
+	return _native_exp_result(levels, ap_gain, texts, gate_reason)
 
 # rollDrop 레코드 owner — 원본 worldItems(_wiPush 16721: 20개 초과 시 최저 rarity 축출).
 func append_native_drop_records(owner: Node, records: Array) -> Dictionary:
