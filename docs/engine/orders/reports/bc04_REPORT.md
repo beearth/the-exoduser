@@ -78,7 +78,7 @@ Godot `4.7.2.stable.official.ed1daf0bf`로 실행했다. 아래 시간은 engine
 
 신규 oracle 난수 호출 총20,746회이며 score14,130·roulette759·pattern timer1,137·combo gate1,137·choice617·combo timer1,262·feint480·delay1,110·retry timer114다. 기존 회귀의 USERDIR은 각 테스트 상수 `EXODUSER-bc01-Isolated-20261020`, `EXODUSER-bc02-Isolated-20261020`, `EXODUSER-bc03-Isolated-20261020` 그대로다. 전체 회귀5개(import 포함)의 receipt는 `suite-summary.json`이다.
 
-cold import가 생성한 기존 코드/테스트의 미추적 UID136개는 import 이후 생성된 자기 파일임을 확인해 `_out/bc04/import-generated-uids/`로 옮겨 보존했다. 목록/해시는 `import-generated-uids.json`이다. 사전 존재 UID는 건드리지 않았고 자기 신규 두 UID만 제출한다.
+cold import가 생성한 기존 코드/테스트의 미추적 UID136개는 import 이후 생성된 자기 파일임을 확인해 `_out/bc04/import-generated-uids/`로 옮겨 보존했다. 목록/해시는 `import-generated-uids.json`이다. 사전 존재 UID는 건드리지 않았고 자기 신규 두 UID만 제출한다. 추가로 import가 만든 미추적 에셋 메타데이터35개도 생성 시각을 확인해 `_out/bc04/import-generated-metadata/`에 보존했다. 목록/해시는 `import-generated-metadata.json`이다. 최초 정적 마감 검사는 이35개를 발견해 중단했다. 이어지는 셸 명령이 로컬 커밋87ce58d1을 먼저 작성한 점을 확인했으며, push 전 메타데이터를 보존하고 전체 마감 검사를 다시 통과시킨 뒤 이 경위를 후속 문서 커밋에 기록했다. Godot 테스트 결과와 제품 byte는 바뀌지 않았다.
 
 | 마감 확인 | 결과 |
 |---|---|
