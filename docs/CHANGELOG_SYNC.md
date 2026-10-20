@@ -32,6 +32,32 @@
 | PC 재현만 | 첫 f48c94eb order11 동일42490 halt·order9 미지원. 재조회 b406e4bc는 order11/9 owner_core 완료·동일 halt 미재현. PC 원본 SHA1284파일 변경0·기존 증거 재사용 |
 | 과부하·제출 | Godot4.7.2 매 실행 전 pgrep 수 확인·2이상30초 대기. p1002g 및 기존 회귀 각각 파일 상수 격리명·override 매회0byte. [FIX 보고서](engine/orders/reports/p2-008a-fix_REPORT.md)·원로그 ~/exoduser-wt/_out/p2-008a-fix/approved-*·STATUS=REVIEW_PENDING |
 
+## 2026-10-20 QA-004 레슨 보관 적·자식 종료 해제
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 의존 | fetch main `284d7faf49295b2f5061937a47ce96038032ed3c`, 사용자 허용 QA-003 `41279ac0fbe625164c33e51f709a9b98bf6bee4d`에서 codex/qa-004-20261020 분기. QA-003 하니스 선행 의존 |
+| 제품 수정 | 소유 인계된 native_parry_lesson_flow.gd에 lifecycle15줄만 추가. EXIT_TREE/PREDELETE 때 보관 배열부터 비우고 유효·부모없는 적만free→자식 자동해제. 중복/기해제 안전·다른 부모에 복원된 적 보존. 원래 진행/finish/allows/input/QE bytes 그대로·공용6파일0줄 |
+| 원인 분리 | QA-003 actual UI의 적5+자식15/17리소스 미해제 해결. 제품만 수정한 UI115/0에서18리소스→음성1·66객체→음성2로 감소. 음성은 하니스 종결 대기로 별도 처리 |
+| 수명 회귀 | 새 actual lesson script+Node fixture5그룹98검사: 수정전86실패/exit1→수정후98/0·ERROR0·ObjectDB0·개별leak0·리소스0. Tree exit/free/pre-Tree/queue_free/중복·복원소유 검사 |
+| 지정·기본 회귀 | UI115/0·H124/0·J21/0·K32/0·L66/0·QE155/0·contracts5군/실패0·factory3군/실패0·source_lesson30/0, 추가I3회18/0. 최종13실행 모두exit0·ERROR0·ObjectDB0·leak0·리소스0. Camera 보간 WARNING은 보존 |
+| 검사 보존 | J/K/L/QE 총수·그룹별 수 baseline 동일, UI115 동일. H125→124는 magic1→0으로 기존 조건부 mods단정1 차이(원본 조건/RNG/seed 불변), 분모 일치로 보고하지 않음 |
+| 종료 하니스 | H/J/K/UI에12프레임+monotonic200ms 대기6줄, inherited I에는200ms3줄만 추가. 첫 I는12프레임 뒤 음성 ERROR1이 남아 실패 보존. assertion/임계값/group/skip 약화0·제품 오디오 조작0 |
+| 환경·보호 | full checkout 디스크부족 exit128 후 Git 자동정리, 동일 branch/path sparse checkout으로 복구(다른WT/사용자데이터 삭제0). Godot 전pgrep·2이상이면30초대기·파일상수 격리·실행후override0byte·R보존 |
+| 상세 | [QA-004 보고서](engine/orders/reports/qa-004_REPORT.md), 원로그·count/hash 비교·실패/중간 관측·DONE.txt `~/exoduser-wt/_out/qa-004/`. 실제 종료 수명/지정회귀 범위이며 레슨 단계·입력 정책 확장0 |
+
+## 2026-10-20 QA-003 종료 리소스 소유자 진단·인트로 하니스 정리
+
+| 항목 | 변경·검수 근거 |
+| --- | --- |
+| 기준 / 범위 | fetch 후 main `284d7faf49295b2f5061937a47ce96038032ed3c`, `codex/qa-003-20261020`. 인트로 테스트 종료 대기3줄·보고서·본 절만 변경. 제품·UI 테스트·공용6파일 0줄 |
+| 인트로 소유자 / 수정 | VoiceWakeup 자식의 AudioStreamMP3·PlaybackMP3 ObjectID가 verbose leak와 각각 일치. Main.free 뒤 process_frame12회만 추가(QA-002 방식); 기존 검사·기대값·skip·제품 오디오 조작0 |
+| 인트로 검수 | 수정 후 verbose3회 모두18/0·SKIP0·exit0·stderr ERROR0·ObjectDB 경고0·leak0·리소스0. 그룹8/5/5 유지, Camera2D 보간 WARNING 각1 보존 |
+| UI 제품 결함 / BLOCKED | 레슨 owner _saved_enemies에 parent=null·queued=false 적5마리 보관 후 영구 파괴 때 미해제. 적5개·자식15개의 ObjectID가 leak에 모두 일치. 원본 UI115/0이지만 baseline은 리소스18(적 관련17+음성1)·ERROR21 |
+| UI 대기 비교 / 수정안 | 진단 복사본만12프레임 대기해도115/0·ERROR21·leak64·리소스17 잔류. 제품 담당이 lesson owner 영구 파괴 시 소유 detached 적을 해제하는 방안만 제안; 제품 수정·UI 해결 선언0 |
+| 부하 / 격리 / 보존 | 매 실행 전 pgrep 개수 확인, 2이상이면30초씩 대기. 기존 회귀는 각 상수 격리명, 신규 진단은 EXODUSER-qa-003-Isolated-20261020. 실행마다 override.cfg 작성 후0byte. R·검사 조건 불변 |
+| 상세 | [QA-003 보고서](engine/orders/reports/qa-003_REPORT.md), 원로그·ObjectID 대조·DONE.txt `~/exoduser-wt/_out/qa-003/`. 첫 진단 get_path 추가 ERROR3도 실패로 보존 |
+
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
 | 항목 | 변경·검수 근거 |
