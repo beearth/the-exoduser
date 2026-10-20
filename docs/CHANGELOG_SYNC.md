@@ -1,3 +1,12 @@
+## 2026-10-20 BC3-04 laser wind/active 독립 소비자
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·의존 | 최신 main01051599 + BC3-03 1a34782c 정상 merge a4854769. Main/World/State/저장·공용 기존 파일 0줄 |
+| 원문·경계 | G40710–40747/12463. .04추적·lock/80/sweep·10단위 벽·HP1%/iframe60·입자 RNG. 공용 clock 이후 입력, 벽/효과/보호 contact/readback만. 실제 피해·패링 연결0 |
+| 검증 | 원문53사례/865event/193RNG·신규966/0, 기존 catalog 1회43,491/0. 최초 하니스 들여쓰기 parse 실패 보존·실패 신규만 재실행. 최종 ERROR/SKIP0·핵심 결함5종·UTF-8/join/node-bin |
+| 제출 | [보고서](engine/orders/reports/bc3-04_REPORT.md), 원로그 ~/exoduser-wt/_out/bc3-04/. 격리명/gate/override0byte·정상 훅·자기 branch push/remoteSHA/DONE 뒤 자기 worktree 제거 |
+
 ## 2026-10-20 BC3-03 3장 신규 7기술 시작 command/ack 계획
 
 | 항목 | 구현·검수 근거 |
