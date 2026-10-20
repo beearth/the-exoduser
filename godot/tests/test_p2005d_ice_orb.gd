@@ -6,6 +6,8 @@ extends SceneTree
 ## pMagicMul×_skMul(8))+_ioBon·칼날/파쇄 30%·쿨 max(600,1200−60(lv−1)))·칼날 히트 35581~35585
 ## (비보스 빙결스턴 30·_iceShardRes+0.10·관통 95%)·냉기 프리즌 42446~42460(게이지 100 → _frozen 180).
 const USERDIR = "EXODUSER-P2005D-Isolated-20261020"
+# QA-002: 테스트 소유 입력. 제품 RNG 호출 순서는 변경하지 않는다.
+const QA002_TEST_SEED = 20261020
 const GROUPS = ["cast_state_invuln_and_block", "auto_shatter_blades_and_freeze", "freeze_trigger_direct"]
 const NORMAL_HURTE = preload("res://scripts/native_normal_enemy_hurte.gd")
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
@@ -22,6 +24,8 @@ var hurte_outcomes: Array = []
 var cast_mp_spent := 0.0
 
 func _initialize() -> void:
+	seed(QA002_TEST_SEED) # 프로세스당 1회; Main 재부팅은 같은 스트림을 이어간다.
+	observations["qa002_test_seed"] = QA002_TEST_SEED
 	call_deferred("_run")
 
 func _run() -> void:

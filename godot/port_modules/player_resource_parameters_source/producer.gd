@@ -3,6 +3,9 @@ extends RefCounted
 ## player_resource_parameters_source/producer.gd — 원 applyStats/recalcSt 의 MP/ST 자원 parameter 파생
 ## (mmp/mpR/stR/mst + 상한 Math.min 으로 내려가는 mp/st) plan + 단일 sink dispatch.
 ## TASK GODOT-PORT-PLAYER-RESOURCE-PARAMETERS-SOURCE-FIRST-20261013
+## IT-04: latest origin/main 284d7faf game.html:27934-27939 applies
+## IT-01 socketMul(item,ci) once to every crystal effect before summation.
+## Older anchors below retain the initial port's provenance.
 ##
 ## 자체 clock/_process/_physics_process 없음. 상태는 매 호출 provider 에서 현재값으로 읽는다(캐시/스냅샷 없음).
 ## Player/World/P/STATS/PASSIVES/INV 직접 쓰기 0 — 결과는 오직 resource_sink(packet) 로만 나간다.
@@ -40,6 +43,7 @@ extends RefCounted
 
 const AffixReader := preload("res://port_modules/equipment_affix_reader/producer.gd")
 const CombatStatFormula := preload("res://port_modules/combat_stat_formula/producer.gd")
+const ItemQuality := preload("res://port_modules/item_quality_source/producer.gd")
 
 const READY := "READY"
 const NOT_READY := "NOT_READY"
@@ -97,6 +101,7 @@ var _sink: Callable = Callable()
 var _owners: Array[Object] = []  # 메서드 Callable 은 ObjectID 만 보유 → RefCounted owner 강하게 유지
 var _configured: bool = false
 var _coerce: AffixReader = AffixReader.new()  # JS ToNumber 재사용 (inventory reader 미바인딩 — 계산 전용)
+var _socket_quality: ItemQuality = ItemQuality.new() # readonly IT-01; no new provider or inventory authority
 var _fail: String = ""
 var _dispatch_count: int = 0
 var _last: Dictionary = {}
@@ -401,8 +406,12 @@ func read_source_grit_total() -> Dictionary:
 		"reason": "", "source": "game.html:28559 _gritTotal()"}
 
 
-## for(const {stat,value} of crystalEffects(c)) _cr[stat]+=value
-func _accumulate_crystal(cr: Dictionary, c: Variant) -> void:
+## game.html:27937-27938: socketMul precedes crystalEffects; provider arity stays1.
+func _accumulate_crystal(cr: Dictionary, item: Variant, ci: int, c: Variant) -> void:
+	var socket: Dictionary = _socket_quality.socket(item, ci)
+	if not socket.ready:
+		_set_fail("socket_multiplier_not_ready@" + str(ci) + ":" + socket.reason)
+		return
 	var cc := _provider(PROVIDER_CRYSTAL_EFFECTS)
 	if not cc.is_valid():
 		_set_fail("provider_missing:" + PROVIDER_CRYSTAL_EFFECTS)
@@ -423,7 +432,13 @@ func _accumulate_crystal(cr: Dictionary, c: Variant) -> void:
 			return
 		var key: String = stat
 		var before: float = float(cr[key]) if cr.has(key) else NAN   # undefined+value
-		cr[key] = before + float(value)
+		var accumulated: float = before + float(value) * float(socket.multiplier)
+		# Refuse invalid provider numbers/unknown stats and overflow before a
+		# later resource ~~ conversion can hide NaN as zero and dispatch it.
+		if not is_finite(accumulated):
+			_set_fail("crystal_sum_non_finite:" + key)
+			return
+		cr[key] = accumulated
 
 
 static func _w(field: String, value: Variant, source: String, expr: String) -> Dictionary:
@@ -516,9 +531,12 @@ func plan_apply_stats() -> Dictionary:
 			continue
 		var crs: Variant = _prop_val(it, "crystals")
 		if crs is Array:
-			for c: Variant in crs:
+			for ci in crs.size():
+				var c: Variant = crs[ci]
 				if AffixReader.js_truthy(c):
-					_accumulate_crystal(cr, c)
+					_accumulate_crystal(cr, it, ci, c)
+					if _fail != "":
+						return _not_ready(_fail)
 		elif crs is String or crs is StringName or crs is Object or _prop_has(crs, "length"):
 			_set_fail("unsupported_crystals_shape:" + sl)
 		# number/bool/length 없는 Dictionary: .length=undefined → 0회 반복

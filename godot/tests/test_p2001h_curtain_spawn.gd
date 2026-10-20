@@ -42,6 +42,12 @@ func _run() -> void:
 			active_main.get_parent().remove_child(active_main)
 		active_main.free()
 	active_main = null
+	# QA-004: Main 해제 후 AudioServer mix/main-thread 종료 정리 기회(QA-003 방식).
+	for _frame in range(12):
+		await process_frame
+	var _qa004_exit_after_ms: int = Time.get_ticks_msec() + 200
+	while Time.get_ticks_msec() < _qa004_exit_after_ms:
+		await process_frame
 	print("P2001H_RESULT ", JSON.stringify({"groups": rows, "assertions": assertions,
 		"failures": failures, "skipped": skipped, "observations": observations,
 		"fallback_paths_used": false}))

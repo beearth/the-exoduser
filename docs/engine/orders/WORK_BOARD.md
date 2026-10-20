@@ -10,6 +10,8 @@
 
 > **2026-10-20 사용자 운영 원칙(확정)**: "PC는 수동작업 전용이고 맥은 자동전용", "총괄은 클로드 코딩작업은 코덱스". → 자동으로 도는 구현·추적은 Mac Codex, 배정·검수는 Claude(Mac 맥북총괄 = 자동 트랙, PC Claude = 사용자가 직접 시키는 수동 작업). PC Codex 신규 자동 배정 없음.
 
+> **2026-10-20 사용자 지시 "대기 중인 검수 건은 PC에서 병합해. 병합본 테스트 재실행 후 main에 넣어."** → PC Claude가 11+1건 병합(3f73456fa~2826b6738). 최종 main 기본 회귀 18종 중 17 PASS, p1002g 1실패(P2-008a-FIX 대기).
+
 ## 역할 (2026-10-20 사용자 지시 기준)
 | 역할 | 누구 | 하는 일 |
 |---|---|---|
@@ -36,7 +38,7 @@
 | P3-002 | 소환굴 시스템·후속 스폰·지역 처치 분모 | 클라우드 세션 cloud-spawnholes | claude/p3-002-spawn-holes | 소환굴 신규 스크립트, world 동적 등록 호출부 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 지역 초기화 순서 원본 31655 정정, 298/0·회귀 10종 0실패 |
 | P2-007a | UI 마감: 원본 글꼴(나눔명조·Cinzel)·검기 색·인트로 가이드 패널 | 클라우드 세션 cloud-ui-polish | claude/p2-007a-ui-polish | assets/fonts, crescent.gd 색, 인트로 가이드 패널 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — PC(Windows) 병합본 p2007a 115/0(Malgun Gothic 실존 시 원본 CSS 3순위 체인으로 테스트 기대값 정정, 제품 무변경)·회귀 13종 0실패. p1002g 실패 1건은 main 선재(P2-008a 빙결전사 포이즈 경로)로 별도. 종료 resources 17 잔류 경고 |
 | MAC-VERIFY | 최근 통합분 Mac 헤드리스 테스트 | Mac VS Code Codex 01a1586e-c1b7 | codex/mac-verify-20261020 (394c01388) | 없음 | **검수 완료·보고서 main 반영(Claude 총괄)** — 17종 실패 0, p1002e 검사 수 변동은 시작 장비 RNG(기지), stderr ERROR 3종은 QA-002 |
-| QA-002 | 테스트 결정성(시작 장비 시드, 테스트 한정)·p2005b/c 종료 누수·p2003a dummy 텍스처 ERROR | Mac VS Code Codex 01a1586e-c1b7(맥북총괄 배정) | codex/qa-002-20261020 | 해당 테스트·(제품 결함 시 수정안만) | 검수 대기 — 3edabeb5e (맥북총괄 검수) |
+| QA-002 | 테스트 결정성(시작 장비 시드, 테스트 한정)·p2005b/c 종료 누수·p2003a dummy 텍스처 ERROR | Mac VS Code Codex 01a1586e-c1b7(맥북총괄 배정) | codex/qa-002-20261020 | 해당 테스트·(제품 결함 시 수정안만) | **main 병합(PC Claude 2026-10-20, 사용자 지시)** — 병합본 10종+contracts 재실행: 10종 0실패·stderr ERROR 0(p2005c/p2003a 누수 해소 확인), p1002g 1실패는 main 선재 P2-008a 포이즈 결함(동일 라벨) |
 | P5-001a | Mac 실행판·macOS export 점검 | Mac VS Code Codex 01a1586f-09bf | codex/p5-001a-mac-20261020 (67d625aaa) | 없음 | **검수 완료·보고서 main 반영** — Mac 네이티브 실행 CONFIRMED, 화면 관찰은 Godot 앱 제어 권한 미승인으로 BLOCKED, macOS 프리셋·4.7.2 export 템플릿 없음 |
 | MAC-LIVE | Mac 실창 첫 전투 녹화 | Mac Codex(trace-meta로 전환) | codex/mac-live-20261020 (8b727b15b) | 없음 | BLOCKED — Godot 앱 제어 미승인으로 게임 창 녹화 불가. 부팅 렌더(Movie Maker 30초) 정상, 엔진 FPS 평균 138·최저 45(36표본) |
 | MAC-TESTSWEEP | MAC-VERIFY 외 godot/tests 32종 Mac 헤드리스 | Mac VS Code Codex 01a1586f-2389 | codex/mac-testsweep-20261020 (cd6055eed) | 없음 | **검수 완료·보고서 main 반영** — 29 통과·3 미통과: starter_state 148/1(P3-003 병합 회귀, PC 재현 — STARTER-REGIONS 수정 배정), type3_spawn_recipe(외부 oracle 누락), windows_native_package(Windows export 전제) |
@@ -51,22 +53,48 @@
 | P2-004b | 펫 대사 카테고리 160여 종 | **PC Codex**(codex exec) | codex/p2-004b-pc-20261020 | native_pets.gd 대사 테이블 | **검수 완료·main 병합(Claude 총괄)** — 원문 171/0, 대사 822/0, 런타임 10/0, 펫 회귀 20/0, Node 1/1(총괄 독립). 선언 연결 60·데이터 전용 111, 자연 발화 전체·실화면 미검증 | |
 | P3-003 | 지역 시스템 | Mac Codex ENGINE(채택) + PC 총괄 통합 | codex/p3-003-20261020 → main | native_regions.gd 등 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 42702 _regKill 연결 포함 |
 | FEATURE-INVENTORY | 전체 기능 분모 표·이식 상태 판정 | **PC VS Code Codex 1**(P3-003 중복 배정을 중단하고 전환 — P3-003은 Mac ENGINE 단독) | codex/feature-inventory-pc-20261020 | docs/engine/FDG_FEATURE_INVENTORY_20261020.md | **main 병합(Claude 총괄 2026-10-20)** — 1,061행 분모, 완료(격리) 6·실플레이 0 |
-| SV-CONTRACT | 세이브 5경로 key set 계약 테스트(제품 무변경) | Mac Codex 창6 01a158a5-5a79 | codex/sv-contract-20261020 | tests/test_native_save_contract.gd(신규) | 진행 중 |
-| QS-01 | 퀵슬롯 1번 단위: 신규 계산 모듈+테스트(공용 0줄) | Mac Codex 창5 01a158a5-5597 | codex/qs-01-20261020 | 신규 모듈·테스트만 | 검수 대기 — e38c083cd (맥북총괄 검수) |
-| SETTINGS-S01 | 설정 원본 default 읽기 전용 view(source_options_state.gd 무수정) | Mac Codex 창7 01a158a5-6274 | codex/settings-s01-20261020 | native_settings_read_view.gd·test(신규) | 검수 대기 — 883426bb2 (맥북총괄 검수) |
+| SV-CONTRACT | 세이브 5경로 key set 계약 테스트(제품 무변경) | Mac Codex 창6 01a158a5-5a79 | codex/sv-contract-20261020 | tests/test_native_save_contract.gd(신규) | **main 병합(PC Claude 2026-10-20, 사용자 지시)** — PC Windows 병합본 3,023/0(실행 시 `-- --node-bin=C:/nvm4w/nodejs/node.exe` 필요: 기본 node shim 깨짐)·contracts·starter 0실패 |
+| QS-01 | 퀵슬롯 1번 단위: 신규 계산 모듈+테스트(공용 0줄) | Mac Codex 창5 01a158a5-5597 | codex/qs-01-20261020 | 신규 모듈·테스트만 | **main 병합(PC Claude 2026-10-20, 사용자 지시)** — PC 병합본 318/0, 원본 28072·35894 대조 일치, 재생 바인딩·p2005d 재생·contracts 0실패. 자동 물약 런타임 연결은 다음 단위 |
+| SETTINGS-S01 | 설정 원본 default 읽기 전용 view(source_options_state.gd 무수정) | Mac Codex 창7 01a158a5-6274 | codex/settings-s01-20261020 | native_settings_read_view.gd·test(신규) | **main 병합(PC Claude 2026-10-20, 사용자 지시)** — PC 병합본 unit 112/0·actual_main 12/0(`-- --only=unit|actual_main` 필수), starter·HUD·contracts 0실패. OPT actual 35/누락 3(textScale·panelFit·diffV2) NOT_READY 유지 |
 | TRACE-WEAPONS | 2_2 무기·활·속성 원본 추적(문서만) | Mac Codex 창4 01a1586f-2389 | codex/trace-weapons-20261020 | FDG_SOURCE_TRACE_WEAPONS 문서 | 진행 중 |
 | TRACE-BOSS-CH1 | 8.1 1장 보스 무브셋·HP·패턴 추적(문서만) | Mac Codex 창8 01a158a5-6b36 | codex/trace-boss-ch1-20261020 | FDG_SOURCE_TRACE_BOSS_CH1 문서 | 진행 중 |
 | TRACE-SKILLS | 2_1 스킬·합체 원본 추적(문서만) | Mac Codex 01a1589e-e914 | codex/trace-skills-20261020 | 추적 문서 1개 | 검수 대기 — 17255c3e9 (맥북총괄 검수) |
 | TRACE-ITEMS | 7 아이템·어픽스 원본 추적(문서만) | Mac Codex 01a1589e-f8d5 | codex/trace-items-20261020 | 추적 문서 1개 | 검수 대기 — 33486451a (맥북총괄 검수) |
 | P2-008a | 1-1 초기 미지원 적: etype20 빙결전사 exact 3개체(order4/10/12) | PC VS Code Codex | codex/p2-008a-ch1-enemies-pc-20261020 → main | enemy_melee_ch1_ice_warrior.gd·etype20 json·factory 등록 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 원본 39057~39060 빈 근접 분기·40499 _meleeET 제외·31154 _noProjEtypes[20] 확인(무공격 = 원본 동작), 병합본 14종 0실패, 지원 9/미지원 7, 화면·실플레이 미 |
 | TRACE-CH1-ENEMIES | 1장 미이식 적 원본 추적(문서만) — PC P2-008a 구현과 겹치지 않게 P2-008a 범위는 참고만 | Mac Codex 01a1589f-0218 | codex/trace-ch1-enemies-20261020 | 추적 문서 1개 | 진행 중 |
-| LOOK-001 | Godot 룩 테스트 4안(현행·2D 강화·3D Forward+·3D Compatibility) 비교 자료 — [전략 문서](../FDG_GODOT_CUSTOM_STRATEGY_20261020.md) §5 | Mac Codex(맥북총괄 배정) | codex/look-001-20261020 | 신규 토글·셰이더·godot/assets/derived/ — 원본 모드·회귀 변화 0 | 배정 요청(2026-10-20 PC 총괄) |
-| P2-008a-FIX | P2-008a 빙결전사 포이즈 경로 정지 결함 수정(crawler 413 etype≠0 거부 → hurtE 42490 halt, p1002g 1실패) | PC VS Code Codex(P2-008a 작성자, P2-008b 스레드에 최우선 큐) | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_melee_ch1_ice_warrior.gd 등 | 진행 대기 — main b8a6b0192에서 p1002g 1실패 재현(19a713578 통과). PC 정지 시 Mac 인수 |
-| P2-008b | 1-1 미지원 적 다음 개체(order11 etype47 우선) | PC VS Code Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd·신규 적 스크립트 | 진행 중(P2-008a-FIX 뒤) |
+| LOOK-001 | Godot 룩 테스트 4안(현행·2D 강화·3D Forward+·3D Compatibility) 비교 자료 — [전략 문서](../FDG_GODOT_CUSTOM_STRATEGY_20261020.md) §5 | Mac Codex(맥북총괄 배정) | codex/look-001-20261020 | 신규 토글·셰이더·godot/assets/derived/ — 원본 모드·회귀 변화 0 | **비교 자료 준비** — 4안·1x크롭12·30초FPS 확보. 기존main p1002g220/1(halt6) 후보동일, 회귀0조건BLOCKED. [보고서](reports/look-001_REPORT.md) |
+| QA-004 | Mac Codex 구현 단위 | Mac Codex | codex/qa-004-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| QA-003 | Mac Codex 구현 단위 | Mac Codex | codex/qa-003-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| META-01 | Mac Codex 구현 단위 | Mac Codex | codex/meta-01-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| META-02 | Mac Codex 구현 단위 | Mac Codex | codex/meta-02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| META-03 | Mac Codex 구현 단위 | Mac Codex | codex/meta-03-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| IT-02 | Mac Codex 구현 단위 | Mac Codex | codex/it-02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| IT-03 | Mac Codex 구현 단위 | Mac Codex | codex/it-03-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| IT-04 | Mac Codex 구현 단위 | Mac Codex | codex/it-04-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| SK-S02 | Mac Codex 구현 단위 | Mac Codex | codex/sk-s02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| SK-S03 | Mac Codex 구현 단위 | Mac Codex | codex/sk-s03-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| BC02 | Mac Codex 구현 단위 | Mac Codex | codex/bc02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| BC03 | Mac Codex 구현 단위 | Mac Codex | codex/bc03-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| SND-02 | Mac Codex 구현 단위 | Mac Codex | codex/snd-02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| SND-03 | Mac Codex 구현 단위 | Mac Codex | codex/snd-03-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| SND-04 | Mac Codex 구현 단위 | Mac Codex | codex/snd-04-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| TI-00 | Mac Codex 구현 단위 | Mac Codex | codex/ti-00-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| TI-01 | Mac Codex 구현 단위 | Mac Codex | codex/ti-01-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| CH1-01 | Mac Codex 구현 단위 | Mac Codex | codex/ch1-01-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| CH1-02 | Mac Codex 구현 단위 | Mac Codex | codex/ch1-02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| MAP-LOOK | 맵 표현 강화 1·2차(부분 광원·요철·접지 그림자·근경 원근·흔들림·빛줄기·지역 환경광·번개) — PoE2·No Rest 레퍼런스 | PC Claude 직접 | claude/map-look-20261020 → main | native_map_look.gd·map_look_*.gdshader·data/map_look_ch1.json | **main 병합(PC Claude 2026-10-20)** — test_map_look 16/0·회귀 13종 0실패(p1002g는 P2-008a-FIX 대기). 실게임 기본 ON·하니스 OFF. [문서](../../4.1맵디자인+설정/MAP_LOOK_GODOT_PASS1_20261020.md) |
+| MAPLOOK-HOLE | 소환굴 공허 연출 모듈 | PC VS Code Codex | codex/maplook-hole-pc-20261020 | scripts/maplook/spawn_hole_fx.gd | **main 병합(MAP-LOOK과 함께)** 67/0 |
+| MAPLOOK-TOXIC / SHADOW / MIST | 독액 수면 / 캐릭터 접지 그림자 / 월드 바닥 안개 모듈 | PC VS Code Codex | codex/maplook-{toxic,shadow,mist}-pc-20261020 | scripts/maplook/ 각 1파일 | 큐 대기(아직 착수 전) |
+| BC01 | 1장 보스 1번 단위 구현(공용 0줄) | Mac Codex ttys009 | codex/bc01-20261020 | 신규 파일·테스트 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| SV-COLLECT | 세이브 수집 어댑터(port_modules/save_adapter) | Mac Codex ttys007 | codex/sv-collect-20261020 | 신규 모듈·테스트 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| TRACE-ELITES | 정예 modifier·오라 원본 추적(문서만) | Mac Codex ttys004 | codex/trace-elites-20261020 | 추적 문서 | 진행 중 |
+| W01 | 무기 1번 단위 구현(공용 0줄) | Mac Codex(무기 스레드) | codex/w01-20261020 | 신규 파일·테스트 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| P2-008a-FIX | P2-008a 빙결전사 포이즈 경로 정지 결함 수정(crawler 413 etype≠0 거부 → hurtE 42490 halt, p1002g 1실패) | PC VS Code Codex(P2-008a 작성자, P2-008b 스레드에 최우선 큐) | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_melee_ch1_ice_warrior.gd 등 | **main 병합(PC Claude 2026-10-20)** — Mac 49528efdb: 빙결전사 3프로필 정확 도메인(crawler 413 일반화)·p1002g 집계 정정(halts==0·_verify_kill 유지 diff 확인). PC 병합본 p1002g·p1002f·factory·etype20·crawler·fix_poise·contracts 0실패 |
+| P2-008b | 1-1 미지원 적 다음 개체(order11 etype47 우선) | PC VS Code Codex | codex/p2-008b-ch1-enemies-pc-20261020 | enemy_factory.gd·신규 적 스크립트 | 진행 중 — 2a05d13f7: order11 etype47·order9 등록(지원 9→11 추정). 미검수·미병합. 빙결전사와 같은 crawler 상속이면 포이즈 halt 확장 여부 확인 필요 |
 | P2-009a | 피드백 UI | PC VS Code Codex | codex/p2-009a-feedback-ui 계열 | native_skill_slots.gd 등 | 진행 중 |
-| SK-S01 | 스킬 1번 단위 구현 | Mac Codex | codex/sk-s01-20261020 | 신규 파일·테스트 | 진행 중 |
-| SND-01 | 사운드 1번 단위 구현 | Mac Codex | codex/snd-01-20261020 | 신규 파일 2·테스트 | 진행 중 |
-| IT-01 | 아이템 1번 단위 구현 | Mac Codex | codex/it-01-20261020 | 신규 파일·테스트 | 진행 중 |
+| SK-S01 | 스킬 1번 단위 구현 | Mac Codex | codex/sk-s01-20261020 | 신규 파일·테스트 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| SND-01 | 사운드 1번 단위 구현 | Mac Codex | codex/snd-01-20261020 | 신규 파일 2·테스트 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
+| IT-01 | 아이템 1번 단위 구현 | Mac Codex | codex/it-01-20261020 | 신규 파일·테스트 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
 | TRACE-MAPS-CH1 | 1장 맵 원본 추적 | Mac Codex | codex/trace-maps-ch1-20261020 | 추적 문서 | 진행 중 |
 | TRACE-LOBBY | 로비·캐릭터 선택 원본 추적 | Mac Codex | codex/trace-lobby-20261020 | 추적 문서 | 진행 중 |
 | TRACE-SOUND | 6 사운드 원본 추적(문서만) | Mac Codex 01a1589f-0bf8 | codex/trace-sound-20261020 | 추적 문서 1개 | 검수 대기 — 16a198403 (맥북총괄 검수) |
