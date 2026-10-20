@@ -42,6 +42,8 @@ const NATIVE_VERSION_CONFIG := {"schema": "fdg.native-content-version.v1", "cont
 		"latest_full_game": false},
 	"steam": {"version": null, "version_status": "NOT_VERIFIED", "parity": "NOT_VERIFIED", "accessible": false}}
 
+signal native_sound_event(kind: String, data: Dictionary) # DEMO11-40 audio-only observation
+var _combat_sound_consumer: Node
 signal source_document_visibility_changed
 
 # Platform samples only: never source dt/sp/acc or a gameplay update witness.
@@ -1653,6 +1655,8 @@ func _restart() -> void:
 	get_tree().reload_current_scene()
 
 func _record_event(kind: String, data: Dictionary) -> void:
+	if kind in ["native_attack_audio_queued","native_skill_sample_requested"]:
+		native_sound_event.emit(kind,data.duplicate(true))
 	if kind=="native_input_unavailable" and is_instance_valid(hud):
 		hud.show_native_input_status("Q 보호막: 실제 실행 소유자 연결 대기" if data.get("action")=="parry" else ("E 처내기: 동작 연결 대기" if data.get("action")=="shield_bash" else "Space: 원본 분노 스킬 슬롯 연결 대기"))
 	if is_instance_valid(capture):
@@ -2021,6 +2025,10 @@ func _install_native_attack_audio() -> void:
 	AudioServer.set_bus_name(source,_attack_audio_bus)
 	AudioServer.set_bus_send(source,_attack_audio_output)
 	_attack_audio_reason=""
+	_combat_sound_consumer=preload("res://scripts/native_combat_sound_consumer.gd").new()
+	add_child(_combat_sound_consumer)
+	if not _combat_sound_consumer.configure(self,_attack_audio_streams):
+		_attack_audio_reason="combat_sound_consumer_unavailable"
 	for enemy in world.get_enemies():_bind_native_attack_enemy_audio(enemy)
 	world.child_entered_tree.connect(_on_native_attack_audio_child_entered)
 
@@ -2103,6 +2111,11 @@ func _advance_native_attack_audio() -> void:
 	if _attack_audio_hit_cd>0:_attack_audio_hit_cd-=1
 	if _death_sfx_cd>0:_death_sfx_cd-=1
 	var settings: Dictionary=read_native_attack_audio_settings()
+	if is_instance_valid(_combat_sound_consumer):
+		_attack_audio_queue.clear() # subscribed event is the sole playback owner
+		var character: Variant=player.get_native_character_profile_snapshot().get("index")
+		_combat_sound_consumer.flush(settings,character if character is int else -1,get_tree().paused)
+		return
 	if settings.get("ready")!=true:
 		_attack_audio_queue.clear()
 		for entry in _attack_audio_active.duplicate():_finish_native_attack_audio(entry.id,"source_lost")
@@ -2183,12 +2196,14 @@ func _finish_native_attack_audio(id: int, reason: String) -> void:
 		return
 
 func get_native_attack_audio_snapshot() -> Dictionary:
+	if is_instance_valid(_combat_sound_consumer): return _combat_sound_consumer.snapshot()
 	var voices: Array=[]
 	for entry in _attack_audio_active:
 		if is_instance_valid(entry.player):voices.append({"id":entry.id,"key":entry.key,"playing":entry.player.playing,"position":entry.player.get_playback_position(),"bus":str(entry.player.bus)})
 	return {"scope":"CURRENT_ATTACK_SAMPLE_PLAYBACK_PARTIAL","settings":read_native_attack_audio_settings(),"driver":AudioServer.get_driver_name(),"source_bus":str(_attack_audio_bus),"output_bus":str(_attack_audio_output),"decoded_original_samples":_attack_audio_streams.size(),"active":voices,"queued":_attack_audio_queue.size(),"starts":_attack_audio_starts,"ends":_attack_audio_ended,"recent":_attack_audio_log.duplicate(true),"render_epoch":_attack_audio_render_epoch,"hit_cd":_attack_audio_hit_cd,"original_master_EQ_compressor_ported":false,"voice_BGM_other_skill_ported":false,"subjective_sound_equivalence_verified":false}
 
 func _dispose_native_attack_audio() -> void:
+	if is_instance_valid(_combat_sound_consumer): _combat_sound_consumer.close()
 	_attack_audio_queue.clear()
 	for entry in _attack_audio_active.duplicate():_finish_native_attack_audio(entry.id,"owner_exit")
 	for binding in _attack_audio_bindings.values():
@@ -2920,3 +2935,15 @@ func is_native_source_play_time_context_current(services: RefCounted, state: Nod
 		return false
 	return state.is_native_play_time_owner_current(
 		self, player, world, source_resources, raw_g, require_g_identity)
+
+# DEMO11-40: existing skill sound callsites supply already resolved pitch/gain.
+func request_native_skill_sample(path: String, gain: float, rate: float) -> void:
+	if read_native_attack_audio_settings().get("ready")!=true or get_tree().paused:return
+	var key: String=path.get_file().get_basename()
+	if is_instance_valid(_combat_sound_consumer) and not _attack_audio_streams.has(key):
+		var stream:=AudioStreamMP3.new()
+		stream.data=FileAccess.get_file_as_bytes(path)
+		if stream.data.is_empty() or stream.get_length()<=0:return
+		_attack_audio_streams[key]=stream
+		_combat_sound_consumer.install_sample(key,stream)
+	_record_event("native_skill_sample_requested",{"key":key,"gain":gain,"rate":rate,"character":player.get_native_character_profile_snapshot().get("index",-1)})

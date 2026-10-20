@@ -59,6 +59,23 @@
 | 검증 | 최신main 신규393/0·원문72조합. 01051599 기준 직접 기존5스위트 각1회 합계12,232/0. 최초 하니스 실패·교정·캐시병합 후 신규만 확인. 최종ERROR/SKIP0·고정4키·atomic 실패prefix 검사 |
 | 경계·제출 | 보호 active 인계·pStun·Space 분노 우선순위 인터페이스 HOLD, 조건부 ULT96/97 실제효과 미완료. [현재 계약](engine/DEMO11_SKILL_DISPATCH_20261021.md)·[보고서](engine/orders/reports/demo11-16_REPORT.md)에 공용 diff 구역. 자기branch push/remoteSHA/DONE 후 자기WT 제거 |
 
+## 2026-10-21 DEMO11-40 성능 규칙 후속 main merge
+
+| 항목 | 후속 반영·검수 |
+|---|---|
+| 기준·통합 | 같은 branch에 main aa1eaea5a 정상 merge, rebase0. PC 캐시 수정3파일은 main 동일 byte, 이번 단위 제품/테스트1888729c와 동일 |
+| tick 규칙 | Main/skill 음향/consumer/graph/backend/mix/sound_source 목록 생성 API0건. 신규 캐시 불필요, Performance 수치 주장0·필요 시 물리 N틱 벽시계 벤치 |
+| 검증·기록 | 직접 관련 스위트만1회 재실행, 수치는 [보고서](engine/orders/reports/demo11-40_REPORT.md). 원로그 followup-*; 앞 정리 순서 예외도 보존. 정상 push/remote SHA/DONE 추가 후 WT 제거 |
+
+## 2026-10-21 DEMO11-40 전투 sample consumer 연결
+
+| 항목 | 구현·검증 근거 |
+|---|---|
+| 기준·권한 | main01051599, gap61ab71be DEMO11-40/D35/D36 참조. 사용자 “나눠서” 승인 내 Main 음향 접점·기존 skill 음향 함수만 수정, State/PC 보호 전투/저장/맵0줄 |
+| 연결 | 기존 queued event 구독→SND03 flush→SND07 단일 backend→SND08 graph/OPT. legacy voice 사용0·기존 RNG 유지·현재 skill sample도 공유·종료 unsubscribe/voice/timer/bus 정리 |
+| 검수 | 신규44/0(실제 Main 공격1회·중복거절·스킬·OPT0·bus순서·종료원복). 기존 무수정03 606/0·07 2004/0·08mix5728/0. 실패 후 수정·격리명 오류는 보고서 보존, 관련 회귀만 실행 |
+| 제한·제출 | EQ/comp 역할 bus는 명시적 bypass, DSP/PCM/청감 동등성 HOLD. [보고서](engine/orders/reports/demo11-40_REPORT.md), 관련 사운드 SSOT·추적 갱신. 원로그~/exoduser-wt/_out/demo11-40/. 자기 branch push/remoteSHA/DONE 뒤 WT 제거 |
+
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
 
 ## 2026-10-20 EC4-02 4장 catalog·23필드 초기 literal projection
