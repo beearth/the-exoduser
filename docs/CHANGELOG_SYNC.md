@@ -1,3 +1,9 @@
+## 2026-10-21 MAP11-09 — G2 외곽 BACK/MID/FRONT 생체 숲 조립
+
+- G1 구조 PASS(임시 승인)를 인수. main0138c5bb + MAP11-11 263498f6 merge(FF), field_outer_preview 독립 씬에서 LEFT/RIGHT/TOP/START 외곽을 세 겹으로 조립. 기존 보스룸 rotforest RGBA8종 공유, 152instance(BACK48/MID59/FRONT45), 시작/보스문 시야 개방·밑동 y정렬·캐시 rect 가림/복구·map-look 방사 그림자 재사용. 아트 생성0.
+- 승인 field geometry/지역/anchor·provider·Main/State/World/제품 카메라·전투·저장0줄(인수 의존 기준). G1 내부 회색 blockout은 그대로이며 새 검수 텍스트만 번역 목록에 등록.
+- 신규 headless26/0·직접 actual walk49/0 각1회, ERROR0/WARNING0. 8시점+전체/가림 보충과 literal1x, 600tick 벤치1회10.000054s/평균1438.29fps/p95≤1.17ms·p99≤1.66ms(독립 preview·제품 전투 성능 주장0); 직접 회귀 결과는 [G2 보고서](4.1맵디자인+설정/MAP11_OUTER_ASSEMBLY_G2_20261021.md). G2 눈 검수 대기 RETOUCH, G1 구조 임시 승인과 구별. 격리 user dir/pgrep·30초/override0byte·자기branch push/remoteSHA/DONE후자기WT제거.
+
 ## 2026-10-21 MAP11-11 — 필드·아레나 collider/LOS/flow provider
 
 - main0138c5bb + 인수된6bcc483d·3f9c87a4 정상merge. 승인 geometry 동일. 독립 runtime의 static collider/4지역/22anchor/field↔arena gate callback과 DEMO11-37·43 이름 계약은 [보고서 첫 표](4.1맵디자인+설정/MAP11_FIELD_PROVIDER_20261021.md).
