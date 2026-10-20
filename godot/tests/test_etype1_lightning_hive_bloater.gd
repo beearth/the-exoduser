@@ -195,7 +195,7 @@ func _exact_admission() -> bool:
 		print("FACTORY_ERRORS " + JSON.stringify(result.get("errors")))
 		holder.free()
 		return true
-	_check(result["source_count"] == 16 and result["supported_count"] == 6 and result["unsupported_count"] == 10, "actual capability6/10, source16 unchanged")
+	_check(result["source_count"] == 16 and result["supported_count"] == 9 and result["unsupported_count"] == 7, "actual capability9/7, source16 unchanged")
 	var selected: Node = null
 	for actor in result["instances"]:
 		actor.process_mode = Node.PROCESS_MODE_DISABLED

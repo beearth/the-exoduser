@@ -39,6 +39,10 @@ var alerted = false
 var facing = 0.0
 var eShield = 0.0
 var eShieldMax = 0.0
+# P2-001l — 가시덫 감속(37471) 수용: native_skill_slots._spike_trap_tick(412~)이 모든
+# 적에서 `_spike_slow`를 읽으므로(부재 시 런타임 오류) enemy.gd(45·334·188)와 동일 계약.
+var _spike_slow := 0.0
+var _spike_slow_lv := 1
 var eRes: Array = []
 var poise = 0.0
 var max_poise = 0.0
@@ -204,7 +208,11 @@ func _physics_process(delta: float) -> void:
 		return
 	st2 -= ticks
 	if state == "idle":
-		_move_native(Vector2.from_angle(facing) * float(data["speed_pixels_per_tick"]) * float(data["idle_movement_multiplier"]), ticks)
+		var native_speed: float = float(data["speed_pixels_per_tick"])
+		if _spike_slow > 0.0: # 34398 — 가시덫 감속 소비(enemy.gd 188~190 동일)
+			_spike_slow = maxf(0.0, _spike_slow - ticks)
+			native_speed *= 1.0 - minf(0.95, 0.91 + 0.02 * float(_spike_slow_lv - 1))
+		_move_native(Vector2.from_angle(facing) * native_speed * float(data["idle_movement_multiplier"]), ticks)
 		_apply_separation(ticks)
 		# Source uses the distance sampled before direct idle movement.
 		if distance < radius + float(player.get("radius")) + float(data["contact_extra_radius"]) and float(player.get("iframes")) <= 0.0 and st2 <= 0.0:
@@ -502,6 +510,12 @@ func read_native_normal_enemy_hurte_fields(caller_world: Node) -> Dictionary:
 	return HURTE_OWNER.read_fields(self, caller_world)
 
 func apply_native_normal_enemy_field_write(field: String, value: Variant) -> Dictionary:
+	if field == "spike_slow": # P2-001l — 37471 e._spikeSlow=max(,90) (enemy.gd 334~338 동일)
+		if not (value is Array and value.size() == 2):
+			return {"applied": false, "reason": "native_enemy_spike_slow_value_unsupported"}
+		_spike_slow = maxf(_spike_slow, float(value[0]))
+		_spike_slow_lv = int(value[1])
+		return {"applied": true, "field": field, "applied_value": value}
 	return HURTE_OWNER.apply_field_write(self, HURTE_CONTACT_FIELD, field, value)
 
 func apply_native_normal_enemy_bookkeeping(fields: Dictionary) -> Dictionary:

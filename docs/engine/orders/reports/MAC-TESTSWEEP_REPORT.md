@@ -214,3 +214,7 @@ PC 접근·PC 새 실행은 하지 않았다. 문서에 검사 수가 없는 PAS
 실행 결과 최초 커밋 SHA: **`bd5bc5d185f8148696d9504044d143d430dc38a7`** (parent=`7c4a2442bfc46f5d25c1bd9bf287a9324d8d5e5a`, 코드·테스트 변경 0). 후속 메타데이터 커밋은 이 SHA와 작업판 제출 행만 기록한다. 이 본문 자체를 포함하는 최종 제출 HEAD와 원격 ref 대조 결과는 `~/exoduser-wt/_out/mac-testsweep/DONE.txt` 및 `submission.json`에 기록한다. 로컬 커밋만으로 원격 제출 완료를 선언하지 않는다.
 
 남은 검수: 누락 oracle을 정식 전제로 제공한 type3 생성자 검사, Windows export ICU 패키지 검사, 렌더러를 사용하는 실창·시각 검수. 이번 보고서는 Mac 헤드리스 결과이며 PC/Mac 전체 동기화·전체 Godot 이식 완료·시각 품질 PASS를 주장하지 않는다.
+
+## PC 총괄 후속 판정 — 2026-10-20
+
+PC 총괄의 STARTER-REGIONS 배정에서 `test_type3_spawn_recipe`(외부 oracle 누락)와 `test_windows_native_package`(Windows export 전제)는 **Mac 결함 아님**으로 확정했다. 위 최초 실행 결과·원로그는 보존한다. `visual_*.gd` 9종은 Mac에서 실행하지 않는다. starter의 G40 회귀 수리는 [STARTER-REGIONS_REPORT.md](STARTER-REGIONS_REPORT.md)에 별도로 기록한다.

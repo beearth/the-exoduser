@@ -914,7 +914,7 @@ func get_native_first_fight_hud_snapshot() -> Dictionary:
 		"debug_overlay_visible": _debug_overlay_visible,
 		"serif_font_loaded": ResourceLoader.exists(SERIF_FONT_PATH),
 		"unported": ["미니맵(mmWrap)", "hudCorner 화폐(✦ SP/◇ CP)", "지역(_regCur) 분모·진행바 4지역",
-			"G._totalSpawned 기록(스포너=world 소유 — wt-p2g 경합)", "쿨다운 sweep(쿨다운 소유자 미이식)",
+			"쿨다운 sweep(쿨다운 소유자 미이식)",
 			"Cinzel·Nanum Myeongjo 폰트(Noto Serif KR 폴백)", "숫자/F/Z 슬롯 스킬(시작 스킬 지급 EXTERNAL 미이식)",
 			"타이머 전진(G.on 점등 미이식 — 초기화·커튼 계약이 pre-stage on=false 유지 명시: 타이머 UI는 G.stageTime 소비만)"]}
 
@@ -1179,8 +1179,7 @@ func get_native_minimap_corner_snapshot() -> Dictionary:
 		"minimap_portrait_loaded": _minimap_portrait != null,
 		"sp_text": _sp_label.text if is_instance_valid(_sp_label) else "",
 		"cp_text": _cp_label.text if is_instance_valid(_cp_label) else "",
-		"unported": ["지역 처치 C후크·소환굴확정분모·필드보스전투 미연결(P3-003)",
-			"소환굴 점 데이터(G.spawnHoles — 웹 14건 실측·포트 스포너가 G에 미기록: world 소유)",
+		"unported": ["필드보스 전투·게이트 연출·정화 SFX 미연결(P3-003 잔여)",
 			"출구 ▲(!bossAlive 조건 — 신규 true)", "분산 빌드(_mmTickBuild — 고정 맵 1회 빌드 근사)",
 			"맵 오브젝트 마커(bonfire/trap/altar — 1장 데이터에 없음)", "frame drop-shadow·brightness 필터(953)",
 			"hudCorner box-shadow·inset 하이라이트 근사 생략", "Cinzel 폰트(Noto Serif KR 폴백)",

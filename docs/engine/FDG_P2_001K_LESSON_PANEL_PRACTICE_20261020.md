@@ -29,7 +29,7 @@
 | 사망 연출 | 664~668 | deathFX 코어+_addCorpse+_addGorePiece('flesh')+_addDeathImpact — 대형 버스트·provider 고어 롤 없음 | adapter `spawn_native_lesson_kill_fx` 신설(동일 구성) |
 | 풀차지 | 19837 | `_lessonFullCharge: c.step===3&&c.chargeScale>=2.2` | 포트 crescent가 이미 동일 opts 전달 — 그대로 소비 |
 | 유지 | 508~509 | 연습 중 HP/MP/ST 리필·iframes 0 | state p + player 반영 |
-| 순서 | 501 | -3→-2→-1→**8(가시덫)**→0..7, 전환 90틱 | 동일. **step 8 도달 시 정지**(가시덫=시작 스킬 트랙 진행 중·0~7 패링/사슬/대시/분노 미이식 — 패널은 원본 내용 표시·스킵만, 가짜 진행 금지) |
+| 순서 | 501 | -3→-2→-1→**8(가시덫)**→0..7, 전환 90틱 | P2-001l 후속: step 8 실제 가시덫 10처치+120px 탈출→0 실제 Q 반사 처치→1 정직 정지. 1~7·챕터2는 미이식. [현행 문서](FDG_P2_001L_LESSON_STEPS_ALLOWS_20261020.md) |
 | 종료 | 685~700 | ens/HP/좌표/스냅샷 복원 | 적·bonfire·LMB·HP·좌표 복원(+레슨 전용 적 정리) |
 | dismissed | 16~22 | localStorage skipKey | 포트 설정 저장 owner 부재 — 세션 seen만(잔여) |
 | allows | 30~34 | 단계별 입력 제한 | API 제공(allows/_actions). **입력 강제 배선은 보류** — 시작 스킬 트랙(플레이어 입력)과 충돌 회피, 보고 명시 |

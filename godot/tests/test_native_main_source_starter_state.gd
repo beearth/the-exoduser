@@ -4,6 +4,18 @@ extends SceneTree
 const MAIN = preload("res://scenes/main.tscn")
 const STATE = preload("res://scripts/native_source_new_run_state.gd")
 const PROVIDERS = preload("res://scripts/native_source_player_providers.gd")
+const BOOTSTRAP = preload("res://port_modules/native_new_run_bootstrap_source/producer.gd")
+# game.html:16714-16718 file-init literal; keep this contract separate from
+# initStage:31655 -> _regionInit:60698-60699 writes on the live current G.
+const BOOT_G_KEYS = ["on", "paused", "stage", "kills", "mats", "cam", "shake", "parts", "txts",
+	"forgeOpen", "forgeTab", "forgeExpanded", "forgeSort", "rooms", "curRoom", "map", "mw", "mh",
+	"hitStop", "slowMo", "stageCleared", "_stageDiffOff", "exits", "bossAlive", "_chainCnt", "_chainT",
+	"rifts", "spawnHoles", "atkTickets", "maxAtkTickets", "_irisSz", "combo", "comboTimer", "comboMax",
+	"stageTime", "_zones", "_curZone", "_zoneState", "_portals", "_playerPortalPair"]
+const REGION_INIT_G_KEYS = ["_regions", "_regMidX", "_regMidY", "_regCurIdx", "_regBannerCd",
+	"_regGateIdx", "_bossClearT"]
+# P3-002: initStage genFromTemplate 30625 `G._totalSpawned=Σ_spawnHoleCount` (spawnHoles는 이미 G40).
+const SPAWN_HOLE_INIT_G_KEYS = ["_totalSpawned"]
 const GROUPS = ["startup_state_and_items", "public_actor_sync", "original_provider_consumers",
 	"once_and_tree_gates", "lifecycle_and_grit_loss"]
 const ISOLATED_DIRECTORY = "EXODUSER-MainSourceStarter-Isolated-20261014"
@@ -62,6 +74,16 @@ func destroy_main(main: Node2D) -> void:
 	main.queue_free()
 	await process_frame
 
+static func _has_exact_keys(value: Variant, expected_keys: Array) -> bool:
+	if not value is Dictionary or value.size() != expected_keys.size():
+		return false
+	var unique_keys: Dictionary = {}
+	for key in expected_keys:
+		if unique_keys.has(key) or not value.has(key):
+			return false
+		unique_keys[key] = true
+	return true
+
 func _test_startup_state_and_items() -> Dictionary:
 	var before_ms = floor(Time.get_unix_time_from_system() * 1000.0)
 	var main = make_main()
@@ -70,14 +92,21 @@ func _test_startup_state_and_items() -> Dictionary:
 	var providers: Dictionary = main.source_providers.get_provider_bundle()
 	var g: Dictionary = state.read_current_g()
 	var p: Dictionary = state.read_current_p()
-	check(g.size() == 40 and state.read_current_stats().size() == 5 and state.read_current_passives().size() == 26, "actual G40/STATS5/PAS26 source constructors")
+	var snap: Dictionary = state.get_snapshot()
+	var source_boot_g: Dictionary = BOOTSTRAP.source_boot_g()
+	var preserved_boot_g: Dictionary = snap["source_boot_inputs"]["g_file_init"]
+	check(_has_exact_keys(source_boot_g["values"], BOOT_G_KEYS) \
+		and _has_exact_keys(preserved_boot_g["values"], BOOT_G_KEYS) \
+		and preserved_boot_g == source_boot_g \
+		and _has_exact_keys(g, BOOT_G_KEYS + REGION_INIT_G_KEYS + SPAWN_HOLE_INIT_G_KEYS) \
+		and state.read_current_stats().size() == 5 and state.read_current_passives().size() == 26,
+		"preserved source boot G40; actual G40+region7+spawnHole1/STATS5/PAS26")
 	check(is_same(g, providers["current_g"].call()) and is_same(p, providers["current_p"].call()), "same G/P references across actual providers")
 	# QA-001: boot packet and actual post-applyStats P are different phases.
 	# game.html:27930,27944 write hpR before new-game initStage (64019,64025).
 	check(not g.has("_fireZones") and not STATE.source_boot_p()["values"].has("hpR"), "unpublished stage zone and constructor-only HP rate remain absent")
 	var hp_rate_writes: Array = state.get_snapshot()["source_initializer_writes"].filter(func(write): return write["field"] == "hpR")
 	check(not hp_rate_writes.is_empty() and p.has("hpR") and p["hpR"] == hp_rate_writes.back()["value"], "current HP rate equals the final original initialization write")
-	var snap: Dictionary = state.get_snapshot()
 	for packet in snap["source_boot_inputs"].values():
 		check(packet["current"] == false and packet["derived"] == false, "source input packet stays noncurrent/nonderived")
 	check(snap["current_installed"] == true and snap["main_full_ready"] == false and snap["derived_parameters_ready"] == false, "constructed actual current remains scoped pre-applyStats")

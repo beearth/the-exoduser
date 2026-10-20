@@ -14,7 +14,8 @@ extends Node2D
 ## RNG: mkEn(31120~)의 etype0 비보스 경로 소비 순서를 world.sample_native_random_unit()
 ## (공유 스트림)으로 그대로 재현 — (1)rollElite(31063) (2)매직일 때만 rollMods(31072:
 ## hell0 attacks=[M29,M30] 1회) (3)spd(31138) (4)r(31140) (5)st2(31149) (6)facing(31149)
-## (7)projT(31152) (8)bossPatT(31156). aura는 elite>=2 전용(hell0 ELITE_PROB=[.03,0,0] →
+## (7)projT(31152) (8)bossPatT(31156) (9)_bossOrbitAng(31260) (10)_erraticAng(31300)
+## — (9)(10)은 P3-002 정정(원본 실측 비보스 9회+매직 1). aura는 elite>=2 전용(hell0 ELITE_PROB=[.03,0,0] →
 ## 매직까지만), etype 게이트 타이머들은 etype0에서 미소비(원본도 조건부 평가로 무소비).
 
 ## P2-001i — 실제 부팅 자동 연결. 원본 부팅 분기: 64483 bosstest→즉시 on / 64484
@@ -263,6 +264,10 @@ func _spawn_ring_enemy(index: int, x: float, y: float) -> bool:
 	var facing := _unit("facing", draws) * TAU
 	var proj_t := 180.0 + _unit("projT", draws) * 120.0
 	var boss_pat_t := 30.0 + _unit("bossPatT", draws) * 20.0
+	# P3-002 정정: 객체 리터럴의 무조건 소비 2회(31260 _bossOrbitAng·31300 _erraticAng) —
+	# 원본 실측(Playwright) 비보스 etype0 = 9회(+매직 rollMods 1). AI 소비자 없음(기록만).
+	var boss_orbit_ang := _unit("_bossOrbitAng", draws) * TAU
+	var erratic_ang := _unit("_erraticAng", draws) * TAU
 	# HP v14(31146~31148)·pacing(31119)·ATK(31153~31154): si=0 → ×(1+0*.02).
 	var base_curve: float
 	if mon_lv <= 500:
@@ -322,6 +327,8 @@ func _spawn_ring_enemy(index: int, x: float, y: float) -> bool:
 	native["eShieldMax"] = hp
 	native["projT"] = proj_t
 	native["projCd"] = proj_cd
+	native["_bossOrbitAng"] = boss_orbit_ang
+	native["_erraticAng"] = erratic_ang
 	native["_mob8Col"] = skin_idx % MOB8_COLS
 	native["_mob8Row"] = skin_idx / MOB8_COLS
 	var enemy: CharacterBody2D = FLESH_SCRIPT.new()

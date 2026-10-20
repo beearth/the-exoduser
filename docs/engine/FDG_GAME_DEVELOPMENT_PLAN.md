@@ -1,5 +1,7 @@
 # EXODUSER Godot 이식 — 총 목표와 단계별 실행 기준
 
+> P2-001l PC 인수 후보(2026-10-20): `claude/p2-001l-lesson-steps-20261020`, 구현 `92df86c30`. step 8 실제 가시덫→step 0 Q 반사·allows 연결, L 66/0·K 갱신32/0. step1~7·챕터2·시각 동등성은 미완이며 main 통합 아님. [인수 보고서](orders/reports/P2-001l_REPORT.md) 참조; 아래 기존 K 행의 미이식 범위는 당시 이력이다.
+
 기준일: 2026-10-19 KST · 현재 계획 작업 **P1-002 진행 중(하위 C/D/E)**. 2026-10-19 사용자 지시로 총괄은 PC Claude 세션이 맡는다(Codex 담당 인계는 Git docs 경유). 이 상단 계획이 단계·작업 배정의 단일 기준이다. 아래 이전 기록은 작성 당시의 이력으로 보존한다.
 
 ## 총 목표와 사용자 인수 기준
@@ -11,6 +13,10 @@
 첫 전투의 화면·입력·타격·시작→전투→종료 흐름을 원본과 같은 조건에서 비교한다. 코드나 테스트만 통과한 상태를 플레이 품질 인수로 승격하지 않는다. 전체 기능 분모는 아직 확정되지 않았으므로 **전체 진행률과 ETA를 기입하지 않는다.**
 
 ## 현재 위치와 증거를 읽는 법
+
+### 2026-10-20 FEATURE-INVENTORY — 고정 snapshot 분모 검토본
+
+[기능별 목록](FDG_FEATURE_INVENTORY_20261020.md)은 PC 작업 HEAD `2845f96e97d4803e4fb8ab4f3d5c0ff8e80d4353`의 원본·Godot 코드·기존 격리 검수 이력으로 1,061개 leaf 기능을 열거했다. 없음387 / 일부665 / 완료(격리 검수)6 / 실플레이 인수0 / 미확인3이며, 해당 snapshot의 단순 격리 완료 비율은 6/1,061=0.57%다. 최신 main·다른 브랜치 제출·사용자 실행판의 전체 프로젝트 진행률이 아니며, 위의 전체 합의 범위/인수 경계는 유지한다. 보스19종 등 옛 요약과 실제 등록(35스테이지 보스 슬롯)의 대응 미확인도 목록에 남겼다. 목록 기준·범위는 총괄 검토 대기이며 ETA·가중치 환산은 하지 않는다.
 
 현재 제품 연결은 **P1 진행 중**이며, **P0-001 계획 기준은 ROOT 인수 완료**다. P0 전체와 카드·실제 구현 완료를 뜻하지 않는다. 다음 실제 구현은 **P0-002 연결 카드와 P1-002의 범위·완료 조건을 ROOT가 인수한 뒤** 착수한다.
 
@@ -80,6 +86,7 @@
 | P3-001 | P3 | 맵 pit_poison 원→타원 충돌(MAP-021) | PC Codex: engine/fdg/map-source-adapter.js 계약, godot/data/map.json(독 웅덩이 1개만), export_world.mjs | 원본 _OBJ_META.pit_poison colW80·colH58·colOy7 | [보고서](orders/reports/P3-001_REPORT.md). Godot 195/195·Node 10(Codex), 총괄 Node 계약 테스트 4/4·map.json 구조 diff 확인 | **main 통합(2026-10-20)** — 실창 미검증 | 총괄 대리 커밋(Codex 샌드박스 .git 권한) |
 | P5-001a | P5 | Mac 실행판·macOS export 점검(읽기) | Mac Codex(BLOCKED — 쓰기·네트워크 권한) | — | 읽기 결과: Godot 4.7.2 원본 앱 OK, export_presets.cfg에 macOS 프리셋 없음(Windows·Web만), 서명·공증 설정 없음, 4.7.2 export 템플릿 미설치 | 점검만 | Mac 디버그 export 전에 ① macOS 프리셋 추가 ② 4.7.2 export 템플릿 설치(다운로드) 필요 — 다음 Mac 작업 |
 | P3-001 | P3 | 첫 콘텐츠 묶음의 원본 범위·소비자·자산·품질 조건 확정 | 기존 해당 전문팀 오더 경로. 정확 파일/자산은 묶음 확정 시 기입 | 실제 게임에 쓰는 범위와 원본 수치·해당 자산의 확정 장수·clip 재생FPS 등 품질 규격(화면FPS와 구분)을 명시하고 인수 | 기존 개별 이력만 보유, 이번 새 산출물 없음 | 미배정 | 기존 담당 경유. 전체 콘텐츠 조사·새 producer 자동 추가 없음 |
+| P3-002 | P3 | 1-1 소환굴(SPAWN_HOLE) 배치·트리거·순차 소환·완료 + G.spawnHoles/G._totalSpawned 기록(미니맵 점·HUD 분모) | scripts/native_spawn_hole_system.gd(신규), world.gd(register_native_spawn_hole_enemy), native_source_new_run_state.gd(apply_native_spawn_hole_g_writes), main.gd(부팅 1줄), assets/vfx/vfx_void_black.png(원본 복사), tests/test_p3002_spawn_holes.gd·visual_p3002_capture.gd, 커튼 RNG 정정(native_intro_curtain_sequence.gd·test_p2001h) | 배치 genFromTemplate 30486~30625·30050·maps_data.js 9~51, 수량 31029~31030, 갱신 35636~35693(게이트 32112~32137), 렌더 52616~52644, 미니맵 60216~60223, rollEtype 30993·mkEn 31120~(무조건 _bossOrbitAng 31260·_erraticAng 31300) | [작업 문서](FDG_P3_002_SPAWN_HOLES_20261020.md). 클라우드 Godot 4.7.2: p3002 296/0 · p2001h 124/0 · p2001i 18/0 · p1002f 381/0 · p2002a 36/0 · contracts 5/0 · encounter_factory 기준선 3실패 동일(라벨 일치) | **브랜치 `claude/p3-002-spawn-holes` — PC 총괄 검수 대기, main 미통합** | 원본 실측(Playwright): 14굴·분모 168·S 일정 211~968 일치, mkEn 난수 etype 29종 0불일치. etype≠0(28종) 액터는 전용 스크립트 미이식으로 정직 정지(RNG·카운트만), etype0 탄 parry class(원본 magic) 차이, 화면 1x 검수는 PC |
 | P4-001 | P4 | 다음 게임 흐름 한 경로의 UI·데이터·저장 허용 범위 확정 | 기존 HUD/설정/저장/메타진행 담당 경로; 작업 전 exactscope | 데이터·UI 결정과 보호 범위를 확인하고 해당 흐름의 완료 조건 고정 | 이번 새 인수 근거 없음 | 미배정·개별 HOLD 유지 | Q/E·2_3·세이브·외부 WIP 보호 유지 |
 | P5-001 | P5 | PC·Mac 검수 버전과 실행/성능/패키지 인수 조건 확정 | 지정할 플랫폼 실행판·패키지 경로 | 실제 대상·버전·권한·측정 기준과 전달 결과를 각각 인수 | [P1-001 소스 통합 영수증](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>)는 소스 정렬만 증명 | 미배정·대상 미확정 | build/reload/import/PC 전달을 문서 지시로 실행하지 않음 |
 | P6-001 | P6 | 합의한 범위의 누락·회귀·최종 인수표 확정 | P0에서 확정할 범위와 각 작업 증거 | 확정 범위의 미완/실패·회귀·플랫폼·사용자 인수 결과 추적 | 전체 범위 인수 근거 없음 | 미배정 | 전체 분모·최종 인수 기준 확정 전 완료율/출시 선언 없음 |
