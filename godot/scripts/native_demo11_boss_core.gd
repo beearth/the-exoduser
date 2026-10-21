@@ -61,6 +61,9 @@ static func install_native_boot(owner_main: Node) -> Node2D:
 	var world: Node = owner_main.get("world")
 	if not is_instance_valid(world) or not is_instance_valid(owner_main.get("native_demo_boss_actor")):
 		return null
+	# 테스트 전용 스위치: actor 프로토콜 fixture 테스트(DEMO11-34 등)가 owner 를 직접 묶을 때 Main 메타로 끈다.
+	if str(owner_main.get_meta("native_pc_boss_core", "on")) == "off":
+		return null
 	var core := new()
 	core.name = "Demo11BossCore"
 	world.add_child(core)
