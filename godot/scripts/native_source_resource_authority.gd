@@ -5,6 +5,7 @@ extends Node
 ## No automatic clock, formula duplication, applyStats/recalcSt or save writes.
 
 const PARAMETERS = preload("res://port_modules/player_resource_parameters_source/producer.gd")
+const VALIDATION_PASS = preload("res://scripts/native_source_validation_pass.gd")
 const CLAIM_META = "native_source_resource_authority_owner"
 const INITIALIZED_META = "native_source_resource_authority_initialized"
 const SOURCE_FIELDS = ["st", "mst", "stR", "mp", "mmp", "mpR"]
@@ -50,6 +51,8 @@ var _source_initializer_committing = false
 var _source_initializer_seen: Array = []
 var _source_initializer_writes: Array[Dictionary] = []
 var _source_initializer_rejections = 0
+var _validation_pass := -1
+var _validation_error := ""
 
 func _init() -> void:
 	set_process(false)
@@ -597,7 +600,26 @@ func _constructor_error(player: Node2D, world: Node, boot: Dictionary) -> String
 			return "invalid_source_boot_value:" + field
 	return ""
 
+## PC-SOURCE-PERF: nested repeats inside one outermost source validation reuse
+## this pass's result (native_source_validation_pass.gd). No cross-call carry.
 func _current_error() -> String:
+	if VALIDATION_PASS.reusable(_validation_pass):
+		return _validation_error
+	var pass_id := VALIDATION_PASS.enter()
+	var error := _current_error_uncached()
+	VALIDATION_PASS.leave()
+	_validation_pass = pass_id
+	_validation_error = error
+	return error
+
+## Exactly `_parameters_valid(read_current_resource_parameters())` of the State
+## holder without building the packet: READY requires this owner's
+## _current_error() to be empty, and that same check already proves st/mst
+## (actual Player stamina/max_stamina) and mp/mmp/stR/mpR are finite numbers.
+func is_current_resource_parameters_ready() -> bool:
+	return _current_error().is_empty()
+
+func _current_error_uncached() -> String:
 	# is_instance_valid precedes every type test and every stored typed call.
 	if not _initialized or not _live(self) or not _live(_player) or not _live(_world):
 		return "missing_initialized_resource_authority"

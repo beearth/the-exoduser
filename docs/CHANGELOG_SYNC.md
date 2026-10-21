@@ -1,3 +1,9 @@
+## 2026-10-22 PC-SOURCE-PERF — PC source 검증 중복 제거(검증 패스 메모)
+
+- Services→Providers→State→Resources 검증이 서로를 반복 호출(필드 렌더 프레임당 State 183회·Resources 797회)하던 것을 "바깥 검증 1회" 범위 메모로 바꿨다(`native_source_validation_pass.gd`). 호출 사이·틱 이월 0, 검사 항목/순서/반환 문자열 변경 0. State 판정용 resource packet 생성은 동치 bool로 교체.
+- Windows 헤드리스 `--fixed-fps 120` 교차 3회: 필드 p95 21.06→9.93ms, 평균 14.02→5.68ms, process 8.71→2.20ms. 단독 회차 6.18ms. 부하 동시 실행 회차는 8.33ms 목표 미달이라 재측정 필요. hurtE 비치명 9.9→4.1~4.3ms, 치명 32.9→16.7~17.5ms(부분 적용, 남은 원인 기록).
+- 신규 test_pc_source_validation_cache 280/0. 회귀 18종 실패 행은 기준선과 MAP11 ON/OFF 모두 동일. E2E PASS13/NR5/FAIL0. [보고서](engine/orders/reports/pc-source-perf_REPORT.md)·[원인/수치](12퍼포먼스·최적화/GODOT_SOURCE_VALIDATION_PASS_MEMO_20261022.md).
+
 ## 2026-10-21 AUDIO-01 — Godot 1-1 ARPG 오디오 믹스
 
 - 기준 cb154e8d, 별도 codex/audio-01-20261021. Master/Music/Ambience/SFX/UI/Voice와 상대 trim field −14dB / boss +7dB / Ambience −11dB. 사용자 OPT 슬라이더·저장 값 유지.

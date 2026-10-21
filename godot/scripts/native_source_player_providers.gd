@@ -15,6 +15,7 @@ const CRYSTAL = preload("res://port_modules/player_crystal_resource_source/produ
 const GRIT = preload("res://port_modules/player_grit_source/producer.gd")
 const RAW_GRIT = preload("res://port_modules/save_adapter/raw_grit_restore.gd")
 const PARAMETERS = preload("res://port_modules/player_resource_parameters_source/producer.gd")
+const VALIDATION_PASS = preload("res://scripts/native_source_validation_pass.gd")
 const CLAIM_META = "native_source_player_providers_owner"
 const INITIALIZED_META = "native_source_player_providers_initialized"
 const LINEAGE = "new_run/source_raw_grit_declaration"
@@ -59,6 +60,8 @@ var _configured = false
 var _configuring = false
 var _last_error = "unconfigured"
 var _bindings: Dictionary = {}
+var _validation_pass := -1
+var _validation_error := ""
 
 func configure(player: Node2D, world: Node, state: Node, resources: Node) -> bool:
 	if _configured or _configuring:
@@ -185,7 +188,14 @@ func get_provider_bundle() -> Dictionary:
 func get_provider(name: String) -> Object:
 	return _providers.get(name) if is_native_source_providers_ready() else null
 
+## One domain read = one validation pass (owner check + State read share it).
 func _read_domain(key: String) -> Variant:
+	VALIDATION_PASS.open_read()
+	var value: Variant = _read_domain_in_pass(key)
+	VALIDATION_PASS.leave()
+	return value
+
+func _read_domain_in_pass(key: String) -> Variant:
 	if not _context_error().is_empty() or not DOMAINS.has(key):
 		return null
 	return _state.call(DOMAINS[key])
@@ -235,7 +245,19 @@ static func _ownership_error(player: Variant, world: Variant, state: Variant, re
 		return "actual_player_removed_from_tree"
 	return ""
 
+## PC-SOURCE-PERF: nested repeats inside one outermost source validation reuse
+## this pass's result (native_source_validation_pass.gd). No cross-call carry.
 func _context_error() -> String:
+	if VALIDATION_PASS.reusable(_validation_pass):
+		return _validation_error
+	var pass_id := VALIDATION_PASS.enter()
+	var error := _context_error_uncached()
+	VALIDATION_PASS.leave()
+	_validation_pass = pass_id
+	_validation_error = error
+	return error
+
+func _context_error_uncached() -> String:
 	if not _configured and not _configuring:
 		return "unconfigured"
 	var error = _ownership_error(_player, _world, _state, _resources)
