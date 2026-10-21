@@ -92,3 +92,8 @@ VISUAL VERDICT: **FAIL**.
 NEXT PASS: 카메라 보존 조건 안에서 source 발/층 투영 대응 재설계, floor clone 확대 흔적 제거, 북 경계 노출·중복 silhouette·국소 pod와 입 동작.
 
 운영 예외: 최초 fetch를 R cwd에서 실행하여 R read-only 지시를 엄격히 지키지 못했다. tracked INDEX/WORK/HEAD/branch 수정0이나 공용 remote refs/FETCH_HEAD는 갱신 가능. 이후 모든 수정/실행/정리는 별도 WT cwd에서 수행. 테스트 source 인수 누락도 위 결과에 숨김 없이 기록했다.
+
+
+## MAP11-30p 성능 후속 (2026-10-21)
+
+위 수치·리소스 설명은 해당 제작차수 이력이다. 장면/충돌을 유지한 정적합성·바닥패스통합·안개zero-alpha영역제거·미사용15texture preload 제거의 현행 후보는 [MAP11-30p](MAP11_30P_PERFORMANCE_20261021.md)를 따른다. 시각유지 PASS, 유효p95 **8.558ms**/focus_lost0/104draw로 **8.33ms 성능예산 FAIL**. 원본 floor/veins와 소품 source는 보존한다.

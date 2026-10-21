@@ -62,3 +62,8 @@ FILES: stage-owned target30 floor/backmass/veins/split, product_arena_view/look/
 GIT: 자기경로만stage/정상hook/자기branch비강제push. 원격SHA검증·WT제거결과는외부DONE.txt. main/PC/Steam배포0.
 VISUAL VERDICT: **RETOUCH**.
 NEXT PASS: 실제 actor/충돌접촉과 .6 표시의 계약 통합,경계feather/안개/바깥clone이음,성능예산초과 원인분리. 새부품 추가로 덮지 않음.
+
+
+## MAP11-30p 성능 후속 (2026-10-21)
+
+위 수치·리소스 설명은 해당 제작차수 이력이다. 장면/충돌을 유지한 정적합성·바닥패스통합·안개zero-alpha영역제거·미사용15texture preload 제거의 현행 후보는 [MAP11-30p](MAP11_30P_PERFORMANCE_20261021.md)를 따른다. 시각유지 PASS, 유효p95 **8.558ms**/focus_lost0/104draw로 **8.33ms 성능예산 FAIL**. 원본 floor/veins와 소품 source는 보존한다.

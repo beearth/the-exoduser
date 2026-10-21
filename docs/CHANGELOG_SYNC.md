@@ -56234,3 +56234,9 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - 전체 vertex호흡 제거,pod3영역국소UV±.006/.16Hz,입2영역2자세UV .018/.55Hz. 신규이미지생성/inpaint/3D/틱목록API/ResourceLoader0.
 - 실제Main1920×1080/1x비교 RETOUCH. 관련검사1회33/34PASS,마지막preview노드가정FAIL→recipe반경assert로수정/재실행0. p95단회8.734ms/p99 9.768/focus_lost0,8.33예산FAIL. 자연보스전/PC/접촉일치 검수아님.
 - 정확한수치/경계/차이표/MAP PRODUCTION REPORT: `4.1맵디자인+설정/MAP11_30B_PROJECTION_20261021.md`. 목표문서차이표누적. 외부증거 `_out/MAP11-30b/`.
+
+
+## 2026-10-21 MAP11-30p — 보스룸 장면 유지 성능 후보
+
+- 정적접지/root/BACK15층합성,ground패스통합·조직crop별effect·fog zero-alpha cull·미사용15texture preload정리. source/collision/R1700/PCcore보존.
+- 시각유지PASS/관련검사1회34PASS,최종유효p95 8.558ms/focus_lost0/104draw. **8.33ms예산FAIL,복구완료아님**. MAP11_30P_PERFORMANCE_20261021 및 TARGET_FRAMES 하단성능행에수치·실패후보·운영이탈기록.

@@ -16,10 +16,9 @@ func _ready() -> void:
   row.sprite.set_meta("finale_retired",true)
  _mount_target()
 func _mount_target() -> void:
- var surface:=ShaderMaterial.new();surface.shader=SURFACE
- surface.set_shader_parameter("ground",true)
- surface.set_shader_parameter("legacy_curve",TargetLook.LEGACY_CURVE)
+ var surface:=ShaderMaterial.new();surface.shader=preload("res://scripts/maps/map11/target30_ground.gdshader")
  surface.set_shader_parameter("pulse_mask",TargetLook.VEINS)
+ surface.set_shader_parameter("static_underlay",preload("res://assets/maps/map11/target30/static_underlay.png"))
  surface.set_shader_parameter("pulse_strength",TargetLook.VEIN_STRENGTH)
  surface.set_shader_parameter("pulse_hz",TargetLook.PULSE_HZ)
  surface.set_shader_parameter("glow_color",TargetLook.GLOW)
@@ -30,8 +29,8 @@ func _mount_target() -> void:
  pods.set_shader_parameter("pod_scale",TargetLook.POD_SCALE);pods.set_shader_parameter("pod_glow",TargetLook.POD_GLOW)
  pods.set_shader_parameter("pulse_hz",TargetLook.PULSE_HZ);pods.set_shader_parameter("glow_color",TargetLook.GLOW)
  var unlit:=CanvasItemMaterial.new();unlit.light_mode=CanvasItemMaterial.LIGHT_MODE_UNSHADED
- var back:=Sprite2D.new();back.name="Target30BackMass";back.texture=TargetLook.BACKMASS
- back.scale=Vector2.ONE*TargetLook.SOURCE_SCALE;back.position=TargetLook.SCREEN_CENTER;back.offset=Vector2.ZERO;back.z_index=-446;back.material=unlit;back.modulate=Color.WHITE;add_child(back)
+ var back:=Sprite2D.new();back.name="Target30BackMass";back.texture=preload("res://assets/maps/map11/target30/static_underlay.png")
+ back.scale=Vector2.ONE*TargetLook.SOURCE_SCALE;back.position=TargetLook.SCREEN_CENTER;back.offset=Vector2.ZERO;back.z_index=-446;back.material=unlit;back.modulate=Color.WHITE;add_child(back);back.hide()
  var rows: Array=TargetLook.SPLIT.data.regions
  for i in range(rows.size()):
   var row: Dictionary=rows[i];var foot:=Vector2(row.foot[0],row.foot[1])
@@ -40,16 +39,25 @@ func _mount_target() -> void:
   sprite.centered=false;sprite.offset=offset_;sprite.scale=Vector2.ONE*row.scale;sprite.position=foot
   var local_mat: ShaderMaterial=pods.duplicate()
   local_mat.set_shader_parameter("source_box",Vector4(row.box[0],row.box[1],row.box[2]-row.box[0],row.box[3]-row.box[1]))
+  # Preserve all tissue ellipses intersecting each crop, including the west feather overlap.
+  var pod_regions: Array[Vector4]=[Vector4(215,298,65,85),Vector4.ZERO,Vector4.ZERO,Vector4(1268,78,55,70),Vector4(1820,502,70,80),Vector4(215,298,65,85),Vector4.ZERO]
+  var mouth_regions: Array[Vector4]=[Vector4(310,215,70,95),Vector4.ZERO,Vector4.ZERO,Vector4.ZERO,Vector4(1785,363,110,85),Vector4.ZERO,Vector4.ZERO]
+  local_mat.set_shader_parameter("pod_region",pod_regions[i])
+  local_mat.set_shader_parameter("mouth_region",mouth_regions[i])
   sprite.material=local_mat;sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   GroundContact.depth(sprite,global_position+foot);add_child(sprite)
   var rect:=Rect2(foot+offset_*row.scale,sprite.texture.get_size()*row.scale)
   _target_rows.append({"sprite":sprite,"rect":rect})
-  for part in [1,2]:
-   var apron:=Sprite2D.new();apron.name=("Target30Root_" if part==1 else "Target30Contact_")+row.id
-   apron.texture=TargetLook.TEXTURES[i][part];apron.centered=false;apron.offset=offset_
-   apron.scale=sprite.scale;apron.position=foot;apron.z_index=-447 if part==1 else -448;apron.material=unlit
-   add_child(apron)
  var mist:=Polygon2D.new();mist.name="Target30PerimeterMist";mist.polygon=_circle_points(Vector2.ZERO,2820,128)
+ # The inner disc has exactly zero fog alpha. Omit it rather than shading it.
+ var ring:=mist.polygon
+ ring.append_array(_circle_points(Vector2.ZERO,1450,128))
+ mist.polygon=ring
+ var faces: Array[PackedInt32Array]=[]
+ for i in range(128):
+  var next: int=(i+1)%128
+  faces.append(PackedInt32Array([i,next,next+128,i+128]))
+ mist.polygons=faces
  var uv:=PackedVector2Array()
  for p in mist.polygon:uv.append((p+Vector2.ONE*2820)/5640)
  mist.uv=uv;mist.texture=TargetLook.FOG_TEXTURE;mist.texture_repeat=CanvasItem.TEXTURE_REPEAT_ENABLED;mist.z_index=700
