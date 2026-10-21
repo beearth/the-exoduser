@@ -7,6 +7,9 @@ extends SceneTree
 ## forced_actor_fields로 집계. 공격 자체는 공개 API, 피해 적용은 제품 경로만 사용.
 ## 기대값은 원본 공식(game.html 37608~43116)을 owner 값으로 재계산해 비교한다.
 ## Main 부팅 그룹은 격리 사용자 폴더(USERDIR) 필수 — 아니면 SKIP.
+## 맵 전제(INTEG-9 2026-10-22): 대상은 기존 맵 부팅 배치 적이다. MAP11 기본 ON은 부팅 직후 빈 필드라
+##   Main 메타 `native_map11="off"`(= `--map11=off`)로 기존 맵 부팅을 **명시**하고 부팅 맵 단정 1개를 둔다
+##   (test_pc_final_death 방식). CLI --map11=on이면 그 단정이 실패로 드러낸다. 판정 기준은 그대로다.
 
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 const USERDIR = "EXODUSER-P1002E-Isolated-20261019"
@@ -75,9 +78,11 @@ func _boot_main() -> bool:
 		_check(false, "actual Main PackedScene loads")
 		return false
 	active_main = packed.instantiate()
+	active_main.set_meta("native_map11", "off") # 기존 맵 부팅 명시(머리말 맵 전제)
 	root.add_child(active_main)
 	for i in range(8):
 		await physics_frame
+	_check(active_main.read_native_map11_provider() == null, "legacy map booted explicitly (map11 off)")
 	var world: Variant = active_main.get("world")
 	if not is_instance_valid(world) or world.get("ready_for_player") != true:
 		_check(false, "actual World ready_for_player")

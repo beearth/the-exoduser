@@ -7,11 +7,15 @@
 // Math.random call sites are classified by their SOURCE LINE (stack trace, lineOffset aligned):
 // gameplay lines consume the scenario-supplied values in order; presentation lines get 0.5.
 // usage: node oracle.cjs <game.html> <scenario.json> <out.json>   (UTF-8 files)
+// INTEG-9 (2026-10-22): source bytes = immutable snapshot godot/source_snapshot/game.html (snapshot.cjs, SHA-pinned
+// 4d911cdd…85e5d4), same as the Mac bc2_*/demo11_16 oracles. Root game.html moves (189899b4… title line) and is never read.
+// The first positional arg is kept for caller compatibility (PC test / Mac adapter pass it) but not used for bytes.
 'use strict';
-const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict'), crypto = require('node:crypto');
+const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 const [sourcePath, scenarioPath, outputPath] = process.argv.slice(2);
 assert(sourcePath && scenarioPath && outputPath, 'usage: node oracle.cjs <game.html> <scenario.json> <out.json>');
-const raw = fs.readFileSync(sourcePath);
+const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
+const raw = SNAPSHOT.readBytes(); // throws on snapshot SHA mismatch
 const sha256 = crypto.createHash('sha256').update(raw).digest('hex');
 const lines = raw.toString('utf8').split('\n');
 const L = (n) => lines[n - 1];
@@ -172,5 +176,5 @@ for (const c of scenario.cases || []) {
   row.gameplay_random_lines = R.out.random.filter((x) => x.gameplay).map((x) => x.line);
   results.push(row);
 }
-fs.writeFileSync(outputPath, JSON.stringify({ schema: 'pc-combat-pack-b-oracle.v1', source_sha256: sha256, cases: results }, null, 1), 'utf8');
+fs.writeFileSync(outputPath, JSON.stringify({ schema: 'pc-combat-pack-b-oracle.v1', source_sha256: sha256, source_snapshot: path.relative(path.join(__dirname, '..'), SNAPSHOT.sourcePath).split(path.sep).join('/'), cases: results }, null, 1), 'utf8');
 console.log('ORACLE_DONE', results.length, results.filter((r) => r.exception).length);

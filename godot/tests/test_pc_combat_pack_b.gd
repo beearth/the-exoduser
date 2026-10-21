@@ -15,6 +15,12 @@ extends SceneTree
 ##   가지므로 Main 기본(MAP11 ON) 부팅을 그대로 쓴다. MAP11 필드보스 존재 중 석궁 경로는 tests/test_pc_followups_fieldboss.gd.
 ## Mac 생성 시 자동 bind(world._bind_pcib_actor): register_summoned_enemy 직후 type3는 이미 bound일 수 있다(제품 동작).
 ##   pci02는 bound actor를 그대로 다루고, unbound 검사는 새 actor를 만든 뒤 자동 bind를 명시 해제해 쓴다.
+## INTEG-9 전제(2026-10-22):
+##   원본 = 고정 스냅샷 res://source_snapshot/game.html(SHA 4d911cdd…, snapshot.gd/.cjs). 루트 game.html은 읽지 않는다.
+##   Mac 테스트 관례(bc09 등)대로 --source-game= 값은 받아도 스냅샷 경로로 고정한다. oracle도 snapshot.cjs로 읽는다.
+##   PCI-09: Main 부팅 때 Mac consumer 3종(native_demo11_pcib_death_effects: etype8/29 + C15 etype15_death_split)이
+##   이미 등록돼 있는 것이 정상 전제. 통합 Main에서는 그 등록·단일 owner·PC 중복 추가 거절을 판정하고,
+##   consumer가 없어야 하는 검사(NOT_READY·recorder 등록·순서)는 테스트가 만든 격리 서비스 인스턴스 위에서 한다.
 
 const USERDIR := "EXODUSER-pc-combat-b-Isolated-20261021"
 const GAME_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
@@ -24,6 +30,8 @@ const CATALOG := preload("res://port_modules/item_armor_element/source_item_cata
 const Binding := preload("res://scripts/type3_native_binding.gd")
 const SpawnRecipe := preload("res://scripts/type3_spawn_recipe.gd")
 const HURTE := preload("res://scripts/native_normal_enemy_hurte.gd")
+const CombatPackB := preload("res://scripts/native_combat_pack_b.gd")
+const SNAPSHOT := preload("res://source_snapshot/snapshot.gd")
 const GROUPS := ["setup", "pci03_facade_normalbow", "pci03_lethal_kill", "pci03_refusals",
 	"pci05_carrier_kill_pierce", "pci05_recycle_reuse_pierce", "pci05_wall_bounce", "pci06_interactions",
 	"pci02_type3_bind", "pci09_death_prefix", "perf_bench"]
@@ -48,7 +56,9 @@ var current_group := ""
 var rows: Array = []
 var observations: Dictionary = {}
 var forced := 0
-var source_path := ""
+var source_path: String = ProjectSettings.globalize_path(SNAPSHOT.PATH) # INTEG-9: 고정 스냅샷
+var source_game_arg := ""
+var pci09_actual_service: RefCounted = null # 격리 서비스로 바꿔 끼운 동안 원래 서비스(복원용)
 var node_bin := ""
 var artifacts_dir := ""
 var token_serial := 0
@@ -61,7 +71,9 @@ var death_order: Array = []
 
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path = arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="):
+			source_game_arg = arg.trim_prefix("--source-game=")
+			source_path = ProjectSettings.globalize_path(SNAPSHOT.PATH) # Mac 관례: 값과 무관하게 스냅샷
 		elif arg.begins_with("--node-bin="): node_bin = arg.trim_prefix("--node-bin=")
 		elif arg.begins_with("--artifacts-dir="): artifacts_dir = arg.trim_prefix("--artifacts-dir=")
 	seed(20261021)
@@ -102,6 +114,9 @@ func check(ok: bool, label: String) -> void:
 		print("PCB_FAIL ", current_group, " ", label)
 
 func _cleanup() -> void:
+	if pci09_actual_service != null and is_instance_valid(main):
+		main.set("native_combat_pack_b", pci09_actual_service)
+		pci09_actual_service = null
 	if is_instance_valid(main):
 		if main.get_parent() != null:
 			main.get_parent().remove_child(main)
@@ -261,6 +276,8 @@ func _compare_hurte(name: String, row: Dictionary, receipt: Dictionary, e: Node,
 func _test_setup() -> void:
 	var packed: Variant = load("res://scenes/main.tscn")
 	check(packed is PackedScene, "main_scene_loads")
+	check(SNAPSHOT.SHA256 == GAME_SHA256 and source_path == ProjectSettings.globalize_path(SNAPSHOT.PATH) 		and FileAccess.get_sha256(source_path) == GAME_SHA256, "source_snapshot_pinned:" + source_path)
+	observations["source_game"] = {"path": SNAPSHOT.PATH, "sha256": GAME_SHA256, "cli_arg_ignored": source_game_arg}
 	main = packed.instantiate()
 	var own_legacy_fixture: bool = (get_script() as Script).resource_path == LEGACY_FIXTURE_SCRIPT
 	if own_legacy_fixture:
@@ -719,6 +736,33 @@ func _final_death_consumer(payload: Dictionary) -> void:
 func _test_pci09_death_prefix() -> void:
 	var pool: Array = _enemies_alive()
 	if pool.is_empty(): return
+	var actual: RefCounted = main.get("native_combat_pack_b")
+	# (1) 통합 Main: Mac PCI-09 consumer 3종이 부팅 때 등록된 상태가 정상 전제(C15 b1366b26 계열 etype15 포함).
+	var pcib: Variant = main.get("native_pcib_death_effects")
+	check(pcib != null and pcib.get("main") == main, "mac_pcib_death_effects_installed_at_boot")
+	var consumers: Dictionary = actual.get("_death_consumers")
+	for row in [[8, "etype8_death_explosion", "_explode"], [15, "etype15_death_split", "_split"], [29, "etype29_death_shots", "_shots"]]:
+		var rec: Variant = (pcib.receipts as Dictionary).get(row[0]) if pcib != null else null
+		check(rec is Dictionary and rec.status == "APPLIED" and rec.get("profile") == row[1], "mac_consumer_registered_at_boot:" + str(row[1]))
+		var live: Variant = consumers.get(row[1])
+		check(live is Dictionary and live.consumer == Callable(pcib, row[2]), "mac_consumer_is_live_single_owner:" + str(row[1]))
+	check(consumers.size() == 3, "no_other_death_consumer_at_boot:" + str(consumers.keys()))
+	var gate15: Dictionary = actual.read_native_death_prefix_gate(15, {})
+	check(gate15.get("required") == true and gate15.get("ready") == true, "etype15_gate_ready_with_mac_consumer")
+	check(actual.read_native_death_prefix_gate(15, {"_splitDone": true}).get("required") == false, "etype15_split_child_not_required")
+	var rev15: int = int((consumers.get("etype15_death_split", {}) as Dictionary).get("revision", -1))
+	var pc_add: Dictionary = main.register_native_enemy_death_effect("etype15_death_split", Callable(self, "_prefix_consumer"), {"token": _tok("reg")})
+	check(pc_add.status == "REJECTED" and pc_add.reason == "profile_already_has_live_consumer", "pc_consumer_not_added_beside_mac:" + str(pc_add.reason))
+	check(not actual.unregister_native_enemy_death_effect("etype15_death_split", Callable(self, "_prefix_consumer")), "pc_callable_cannot_unregister_mac_consumer")
+	var after_live: Variant = (actual.get("_death_consumers") as Dictionary).get("etype15_death_split")
+	check(after_live is Dictionary and after_live.consumer == Callable(pcib, "_split") and int(after_live.revision) == rev15 		and (actual.get("_death_consumers") as Dictionary).size() == 3, "mac_consumer_unchanged_no_duplicate")
+	# (2) consumer 없는 전제: 같은 Main에 붙인 격리 서비스 인스턴스(제품 configure 그대로, consumer 0).
+	#     hurtE 실행자는 main.native_combat_pack_b를 읽으므로 이 그룹 동안만 바꿔 끼우고 끝에서 복원(forced +1).
+	var isolated: RefCounted = CombatPackB.new()
+	check(isolated.configure(main) and (isolated.get("_death_consumers") as Dictionary).is_empty(), "isolated_service_configured_without_consumers")
+	pci09_actual_service = actual
+	main.set("native_combat_pack_b", isolated)
+	forced += 1
 	var e: Node = pool[0]
 	e.set("etype", 15)
 	forced += 1
@@ -761,7 +805,11 @@ func _test_pci09_death_prefix() -> void:
 		if ops[j] == "death_prefix:etype15_death_split": n09 += 1; i09 = j
 		if ops[j] == "final_death_published": n11 += 1; i11 = j
 	check(n09 == 1 and n11 == 1 and i09 < i11 and ops.has("final_death_deferred_after_pci09"), "journal_pci09_before_pci11_once_each")
-	check(main.get("native_combat_pack_b").unregister_native_enemy_death_effect("etype15_death_split", Callable(self, "_prefix_consumer")), "unregister_consumer")
+	check(main.get("native_combat_pack_b") == isolated and isolated.unregister_native_enemy_death_effect("etype15_death_split", Callable(self, "_prefix_consumer")), "unregister_consumer")
+	main.set("native_combat_pack_b", actual)
+	pci09_actual_service = null
+	var restored: Variant = (actual.get("_death_consumers") as Dictionary).get("etype15_death_split")
+	check(main.get("native_combat_pack_b") == actual and restored is Dictionary and restored.consumer == Callable(pcib, "_split") 		and actual.read_native_death_prefix_gate(15, {}).get("ready") == true, "actual_service_restored_mac_consumer_live")
 
 func _test_perf_bench() -> void:
 	# 물리 300틱 벽시계: (a) 탄 0 (b) normalBow 30발 비행 pass를 매 틱 실행. 틱 경로 목록 생성 API 0.
