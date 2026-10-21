@@ -183,3 +183,14 @@ if r.committed: main.request_native_runtime_stat_refresh("apply_stats", "forge:r
 - `native_normal_enemy_hurte.gd` 부활 판정 블록에 지역 변수 2줄, G42732 뒤 발행 블록 추가.
 - `main.gd` `_ready` 끝 1줄(`_install_native_player_life()`).
 Q/E 판정·패링·hurtP 분기·피해 수식·세이브 형식·docs/2_3 변경 0.
+
+## 7. 회귀 테스트 맵 전제 (PC-FOLLOWUPS 2026-10-21)
+
+MAP11이 데모 1-1 기본 부팅(ON)이 된 뒤 `test_pc_final_death`·`test_pc_enemy_revive`는 기본 부팅에서 대상 적 0으로 실패했다(`S3 at least 2 real hurtE kills (got 0)`, `at least 4 revivable actors booted (got 0)`). 두 테스트는 **부팅 때 배치된 기존 맵 적**(전용 owner 3종+generic)을 Main 처리 정지 장면에서 실제 hurtE로 처치·부활시키는 계약 검사이고, MAP11은 부팅 직후 적이 없다(hole·스케줄러 자연 스폰).
+
+| 테스트 | 조치 | 판정 |
+|---|---|---|
+| test_pc_final_death | Main 메타 `native_map11="off"`(= `--map11=off`)로 기존 맵 부팅을 테스트 안에서 명시, 부팅 맵 확인 단정 1개 추가 | 기존 단정 그대로(약화 0). 단정 수는 G42633 부활 롤 결과(final/revival_pending 수)에 따라 60~61 |
+| test_pc_enemy_revive | 같은 방식 | 기존 단정 그대로 + 부팅 맵 단정 1개 = 51 |
+
+API·계약 자체는 맵과 무관하다. MAP11 기본 ON에서의 실제 처치→PCI-11 경로는 `test_pc_followups_fieldboss.gd`(자동 석궁 자연 적 처치)와 E2E가 관측한다.

@@ -1,6 +1,8 @@
 // PC-COMBAT-PACK-B independent oracle: runs UNTOUCHED game.html statements in a Node VM.
 // Extracted verbatim: elMul(G14344), _mkPProj/_resetPProj/_recyclePProj/_getPProj(G17309-17362),
 // _hurtFieldMobs(G18733-18756), the pProjs update block(G35176-35630), hurtE(G42110-43119).
+// PC-FOLLOWUPS: also _fmXY/_fmCanHit(G18628-18634), _fmDeathFx/_fmApply(G18677-18712), _fbAliveCount/_fbMarkDead
+// (G61031-61042) so field-boss contacts inside the pProjs block run the real source writers.
 // Every other identifier resolves to a recording stub (Proxy `with` scope). No product-module imports.
 // Math.random call sites are classified by their SOURCE LINE (stack trace, lineOffset aligned):
 // gameplay lines consume the scenario-supplied values in order; presentation lines get 0.5.
@@ -19,6 +21,10 @@ assert(L(14344).startsWith('function elMul(a,d){'), 'G14344 elMul');
 assert(L(17309).startsWith('function _mkPProj(){') && L(17330).startsWith('function _resetPProj(p){'), 'G17309/17330');
 assert(L(17359).startsWith('function _recyclePProj(p){') && L(17360).startsWith('function _getPProj(){') && L(17362) === '}', 'G17359-17362');
 assert(L(18733).startsWith('function _hurtFieldMobs(') && L(18756) === '}', 'G18733-18756');
+assert(L(18628).startsWith('function _fmXY(m,isFb){') && L(18629).startsWith('function _fmCanHit(m,isFb){') && L(18634) === '}', 'G18628-18634');
+assert(L(18677).startsWith('function _fmDeathFx(m,isFb,dmg){') && L(18699).startsWith('function _fmApply(m,dmg,isFb){') && L(18712) === '}', 'G18677-18712');
+assert(L(18692).includes('Math.random()<.8') && L(18693).includes('Math.random()*_gPick.length') && L(18694).includes("Math.random()<.5?'flesh'"), 'G18692-18694 fm gore');
+assert(L(61031).startsWith('function _fbAliveCount(){') && L(61036).startsWith('function _fbMarkDead(fb){') && L(61042) === '}', 'G61031-61042');
 assert(L(35176) === '  {let w=0;for(let i=0;i<pProjs.length;i++){' && L(35629) === '  }pProjs.length=w;' && L(35630) === '  }', 'G35176-35630 pProjs block');
 assert(L(35617).includes('if(!e.alive&&p.normalBow){') && L(35572).includes('Math.random()<_sP'), 'G35617/35572');
 assert(L(42110) === 'function hurtE(e,dmg,ang,noSound,opts,atkEl=0){' && L(43118).startsWith('  }finally{_shBufI--}') && L(43119) === '}', 'G42110-43119 hurtE');
@@ -30,7 +36,8 @@ assert(L(17448).startsWith('const XBOW_DMG=28;') && L(17450).startsWith('const X
 
 const scenario = JSON.parse(fs.readFileSync(scenarioPath, 'utf8'));
 const GAMEPLAY_LINES = new Set([42179, 42211, 42316, 42371, 42372, 42373, 42374, 42375, 42376, 42377, 42378, 42440, 42537, 42604,
-  42633, 42635, 42648, 42729, 42730, 42731, 42749, 42794, 42818, 42946, 43092, 43093, 35341, 35365, 35558, 35572, 35585, 35608]);
+  42633, 42635, 42648, 42729, 42730, 42731, 42749, 42794, 42818, 42946, 43092, 43093, 35341, 35365, 35558, 35572, 35585, 35608,
+  18692, 18693, 18694]);
 const RANDOM_LINE_OFFSET = { hurte: 42110, pproj: 35176, pool: 17309, fieldmobs: 18733 };
 
 function makeRun(cfg) {
@@ -113,12 +120,16 @@ function makeRun(cfg) {
   run(span(17309, 17362) + '\n__px._mkPProj=_mkPProj;__px._resetPProj=_resetPProj;__px._recyclePProj=_recyclePProj;__px._getPProj=_getPProj;', 17309);
   ctx._pprojFree = [];
   run(span(18733, 18756) + '\n__px._hurtFieldMobs=_hurtFieldMobs;', 18733);
+  run(span(18628, 18634) + '\n__px._fmXY=_fmXY;__px._fmCanHit=_fmCanHit;', 18628);
+  run(span(18677, 18712) + '\n__px._fmDeathFx=_fmDeathFx;__px._fmApply=_fmApply;', 18677);
+  run(span(61031, 61042) + '\n__px._fbAliveCount=_fbAliveCount;__px._fbMarkDead=_fbMarkDead;', 61031);
   run(span(42110, 43119) + '\n__px.hurtE=hurtE;', 42110);
   const realHurt = ctx.hurtE;
   return { out, ctx, run, realHurt, stubHurt, setFeed: (f) => { feed = f.slice(); } };
 }
 
 function safe(v) { try { return JSON.parse(JSON.stringify(v, (k, x) => (x instanceof Set ? '[Set]' : (typeof x === 'object' && x && x.__isEnemy ? 'enemy:' + x.id : x)))); } catch (e) { return '[unserializable]'; } }
+const fbView = (G) => (Array.isArray(G._fieldBosses) ? G._fieldBosses.map((m) => (m ? { id: m.id, hp: m.hp, hitCd: m.hitCd, alive: m.alive, _deathFxDone: !!m._deathFxDone } : null)) : null);
 const packetView = (p) => ({ x: p.x, y: p.y, vx: p.vx, vy: p.vy, dist: p.dist, dmg: p.dmg, bounces: p.bounces || 0, _bounceCool: p._bounceCool || 0, _pierceRate: p._pierceRate === undefined ? null : p._pierceRate, pierce: p.pierce, hitSet: p._hitSet ? [...p._hitSet].map((e) => e.id) : [], trLen: p._trLen });
 
 const results = [];
@@ -150,7 +161,7 @@ for (const c of scenario.cases || []) {
       for (let t = 0; t < c.ticks && R.ctx.pProjs.length > 0; t++) {
         R.out.calls.push({ call: 'TICK', args: [t] });
         R.run(span(35176, 35630), 35176);
-        row.ticks.push({ t, live: R.ctx.pProjs.length, p: packetView(pp) });
+        row.ticks.push({ t, live: R.ctx.pProjs.length, p: packetView(pp), fbs: fbView(R.ctx.G), fbDone: R.ctx.G._fbDone === true });
         if (R.ctx.pProjs.length === 0) { row.fate = R.ctx._pprojFree.length > recycledBefore ? 'recycled' : 'dropped'; row.fate_tick = t; }
       }
     }

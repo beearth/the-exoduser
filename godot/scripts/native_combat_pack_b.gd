@@ -483,16 +483,19 @@ func _step_view(packet: RefCounted, out: Dictionary, release_receipt: Variant) -
 	var admission: Variant = _admissions.get(packet.get_instance_id())
 	var contacts: Array = []
 	var reflects: Array = []
+	var field_contacts: Array = []
 	for ev in out.get("events", []):
 		if ev.get("event") == "enemy_contact":
 			contacts.append(ev)
 		elif ev.get("event") == "wall_reflect":
 			reflects.append(ev)
+		elif ev.get("event") == "field_mob_contact": # 35279 _hurtFieldMobs (필드보스 — hurtE 아님, _fmApply)
+			field_contacts.append(ev)
 	if out.get("release") is Dictionary:
 		_admissions.erase(packet.get_instance_id())
 	return {"step_status": out.status, "packet_id": packet.get_instance_id(),
 		"admission_serial": admission.serial if admission is Dictionary else null,
-		"collision_receipt": contacts, "reflect_receipt": reflects,
+		"collision_receipt": contacts, "reflect_receipt": reflects, "field_mob_receipt": field_contacts,
 		"expired": out.status in ["DEAD_DISTANCE", "DEAD_WALL"], "release_receipt": release_receipt,
 		"released_once": out.get("release") is Dictionary, "reason": out.get("reason", "")}
 
@@ -583,4 +586,5 @@ func get_snapshot() -> Dictionary:
 		profiles.append(p)
 	return {"schema": SCHEMA, "configured": is_instance_valid(_main), "last_error": _last_error,
 		"counts": _counts.duplicate(), "bindings": live_bindings, "death_profiles": profiles,
-		"blocked_packets": _blocked.size(), "receipt_cache": _receipts.size(), "last_pass": _last_pass.duplicate(true)}
+		"blocked_packets": _blocked.size(), "receipt_cache": _receipts.size(), "last_pass": _last_pass.duplicate(true),
+		"field_mob_owner": _arrow.read_field_owner_snapshot() if _arrow != null else {}}
