@@ -1,6 +1,11 @@
 extends RefCounted
 ## MAP11-22 authored exterior tableau. Setup-only PNG/normal resources and foot circles.
 const Textures=preload("res://scripts/maps/map11/tour_textures.gd")
+const PILLARS=[
+ [preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_0_diffuse.png"),preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_0_normal.png")],
+ [preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_1_diffuse.png"),preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_1_normal.png")],
+ [preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_2_diffuse.png"),preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_2_normal.png")]
+]
 const Contact=preload("res://scripts/maps/map11/ground_contact.gd")
 # asset, view, local foot, image height, foot collision radius
 const ROWS=[
@@ -31,7 +36,7 @@ static func mount(scene: Node2D) -> void:
   var row: Array=ROWS[i]
   var foot: Vector2=row[2]
   assert(foot.length()-row[4]>1700.0)
-  var pair: Array=Textures.ASSETS[row[0]][row[1]]
+  var pair: Array=PILLARS[row[1]] if row[0]=="tour_chained_pillar" else Textures.ASSETS[row[0]][row[1]]
   var canvas:=CanvasTexture.new();canvas.diffuse_texture=pair[0];canvas.normal_texture=pair[1]
   canvas.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   canvas.specular_color=Color(.10,.08,.06);canvas.specular_shininess=.12

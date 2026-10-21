@@ -1,0 +1,56 @@
+[
+  {
+    "key": "res://assets/maps/map11/finale_pillar/tour_chained_pillar_0_diffuse.png",
+    "size": [
+      650,
+      1200
+    ],
+    "bbox": [
+      0,
+      0,
+      650,
+      1200
+    ],
+    "foot": [
+      325.0,
+      1200
+    ],
+    "sha256": "be4b9d88805bd5cf7f7e1b82c310791ef159f0fd5d6ab96cff5fcdb446f540f7"
+  },
+  {
+    "key": "res://assets/maps/map11/finale_pillar/tour_chained_pillar_1_diffuse.png",
+    "size": [
+      663,
+      1200
+    ],
+    "bbox": [
+      0,
+      0,
+      663,
+      1200
+    ],
+    "foot": [
+      331.5,
+      1200
+    ],
+    "sha256": "91fb0aaaa872fb78e52715b3630bdf976b3cdc4b3f6ea9a942463dbfb366fe3b"
+  },
+  {
+    "key": "res://assets/maps/map11/finale_pillar/tour_chained_pillar_2_diffuse.png",
+    "size": [
+      591,
+      1200
+    ],
+    "bbox": [
+      0,
+      0,
+      591,
+      1200
+    ],
+    "foot": [
+      295.5,
+      1200
+    ],
+    "sha256": "79d80da1cb53b874bc4c9ca140a4b799a6dc6adf807bf7380d3d8982fba79096"
+  }
+]

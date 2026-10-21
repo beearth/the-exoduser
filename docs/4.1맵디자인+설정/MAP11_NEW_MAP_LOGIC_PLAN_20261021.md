@@ -1239,6 +1239,8 @@ silhouette_source_idle_no_ai는 기존 boss atlas의414×620 idle 셀, source �
 | 캡처 | after 21검사/0실패, 추가 idle/overview 4장. 전후4쌍·literal1x·PNG 비교 파일 보존. after/silhouette/perf 최종 로그 SCRIPT/Parse/ERROR0; 준비부 오류 별도 보존 |
 
 
+> 현행 MAP11-22e는 §26 우선. 아래 §25는 22d 제작 이력.
+
 ## 25. MAP11-22d — 입장에서 읽히는 붉은 의식의 원 4차
 
 기준 **660a9dc2**, branch `codex/map11-22d-20261021`. 신규 이미지 생성 없이 필드의 붉은 뿌리 균열 원본 `assets/map/ch3/floor_objects/prop_ice_gcrack.png`를 재조합한다. 22c multiply 링은 아래 보조층으로 약화했다. PC 전투 코어·저장·공통 rim shader·적·카메라·충돌 변경0.
@@ -1279,3 +1281,53 @@ silhouette_source_idle_no_ai는 기존 boss atlas의414×620 idle 셀, source �
 | GIT | 전용 branch 정상 hook commit/push 후 원격SHA 대조·worktree 제거. SHA는 외부 DONE.txt. main merge/push/deploy0 |
 | VISUAL VERDICT | **RETOUCH** — 요청한 입장 붉은 원·깨끗한 중앙·player1x 가독성은 시각 PASS. 최종 TECH 성능 gate는 미검증이므로 전체 PASS 아님 |
 | NEXT PASS | PID81277이 사용자 작업으로 종료된 환경에서 arena 명목 표본1회·focus_lost0·p95≤8.33ms 확인. 실제 보스 전투는 기존 PC gate 대기 |
+
+
+## 26. MAP11-22e — 보스룸 진홍 링·죄수 석주 마감
+
+기준 `cba6bbf50b9142ebd5a1080fd1f60b40827076f3`, 전용 branch `codex/map11-22e-20261021`. R 읽기 전용, 전용 worktree에서 작업. 신규 AI 에셋 생성0, 기존 GLB의 오프라인 PNG 재렌더만 수행.
+
+| id / 적용 | 현행 수치·계약 |
+|---|---|
+| 링 밝기·채도 | 기존 tissue+glow 계산 후 L=.299r+.587g+.114b; `mix(vec3(L),tissue,.82)*.82`. RGB 명도18%·휘도기준 채도18% 감소. 기존 glow_strength 명시 .10 / alpha .88 / pulse .75TIME / PNG·R·36+7stamp 불변. 심장 제단 계열의 낮은 붉은 조직색, 새 광원0 |
+| 보스룸 석주 | `arena_finale.gd` setup 전용 PILLARS preload 배열. Finale02/03/07/14 기존 view1/2/0/2를 각각 yaw0°/+45°/−45°/+45°로 표시. field 공유 tour_textures는 보존 |
+| 재렌더 원본·도구 | R의 `outputs/map11-art-proof-20261021/3d/tour_chained_pillar.glb` 읽기만. 기존 `map11_21_render.gd` 파생 `map11_22e_render.gd`: yaw [−45,0,45], elevation36.8699°, orthographic, camera size=bounds diagonal×1.08, base cut .04, 각 높이1200px, alpha bbox 동일 crop diffuse/normal, 3방향×2 PNG. runtime GLB0 |
+| runtime PNG | `godot/assets/maps/map11/finale_pillar/`. diffuse·normal 6장 + 파생 AO3장(총9 PNG), offline alpha≥32/255 convex hull·foot metadata3항목·AO maximum filter/gaussian blur를 기존 도구와 동일하게 계산. `map11_22e_contacts.py`는 새 경로3개만 기존 contact data/masks에 추가. CanvasTexture/mipmap·발 기준 opaque bbox 정렬·y/4 깊이·접촉 그림자 유지. 기존 석주 foot 위치·높이·충돌 반경·R1700·PC 전투 코어 불변. depth PNG는 검수 출력에만 보관 |
+| 링 리소스 비용 | 기존 단일 texture/draw 유지. 추가 tick 목록 API·ResourceLoader0, 런타임3D0, 개발 상태 UI 문구0 |
+| 실행 격리 | `EXODUSER-map11-22e-Isolated-20261021`. project.godot 원본 byte 복원 후 commit 제외. 실제 EXODUSER-Godot-Native-First 저장 폴더 접근0 |
+| 캡처 | 외부 `_out/MAP11-22e/captures/`, before/after 새 촬영 각 entry(0,1100)·center(0,0)·finale(0,−1650), 1600×900; literal1x crop(480,150,640,600). nominal arena presentation이며 자연 보스전 완료 아님 |
+| 성능 조건 | PID81277 공존·보존, 우리 Godot 순차1개. 같은 코드 fixture/1920×1080/600틱/240FPS 상한·vsync off, before 다음 after. field와 nominal arena 각1회+포커스 실패 시1회 재시도. focus_lost0만 유효. 반복 재측정으로 수치를 골라 통과시키지 않음 |
+
+검수 수치·판정은 아래 최종 기록을 따른다. 각 실행 원문 JSON/log는 외부 출력에 보존하며 무효 표본으로 성능 통과를 주장하지 않는다.
+
+
+### 26.1 최종 검수와 성능 판정
+
+| 조건 / 표본 | field p95 | arena(명목) p95 | 유효성 |
+|---|---|---|---|
+| before cba6bbf5 / PID81277 공존 | N/A | N/A | 두 구간 모두 최초+1회 재시도 focus_lost>0, 실제 보행0; 무효. 각 rejected raw 수치는 before.json에만 보존 |
+| after / PID81277 공존 | 12.709ms | 12.808ms | 각 최초1회 focus_lost0, 실제 보행1621.081/1621.154px. 유효한 느린 표본은 재시도0 |
+| 상대 비교 | 산출 불가 | 산출 불가 | before 유효 표본 부재. 변경이 성능을 개선/악화했다고 결론내리지 않음 |
+| 120Hz 목표8.33ms | FAIL | FAIL | 공존 조건 실측; 단독·PC·dense combat·GPU timestamp 측정 아님 |
+
+관련 최종 검사1회 **312 checks / 0 failures**(구조·PNG/normal·foot·route/충돌 계약+보행/포커스). **이 숫자는 8.33ms 목표 PASS가 아니다**: 새 benchmark22e는 성능 목표를 assert하지 않고 raw JSON에 기록하며 위 표에서 별도 FAIL 판정. 최초 after 연결 검수에서 사전 opaque hull 부재를 발견해 중단했고, 새 경로3개 hull/AO를 추가한 뒤 최종 검수했다. 초기 오류 로그도 보존. before의 310checks/2fail은 포커스 실패2건이며 최종 제품 통과 숫자로 사용하지 않음. 최종 runtime SCRIPT/ERROR 없음(기존 Camera2D interpolation warning만).
+
+benchmark는 arena presentation을 명시 활성화하지만 native product_space는 field로 남는다. 따라서 **명목 arena**이며 자연 gate/보스전 진입·실전 성능으로 보고하지 않는다. field/arena는 동일 실행 fixture에서 각각 실제 입력으로 이동했으며 PID81277은 종료/재시작하지 않았다. before 무효를 숨기거나 추가 재시도로 표본을 골라내지 않았다.
+
+
+### 26.2 MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 boss. silhouette·regions·남입장→중앙combat void→북finale·side spaces 보존 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH 기존mass·holes 유지 |
+| LARGE / MEDIUM | 기존 GLB offline 재렌더. composites/overlap·반복수·연결 보존, filler0·새hole0 |
+| GROUND | 링 밝기·채도 .82/.82, 기존alpha/형상 보존. 새3방향 opaque hull/AO로 foot 정합 |
+| PLAYABLE | R1700·travel/breathing/threat·route/collision 불변. center1x player 실루엣 분리. 자연 보스/밀집 전투 미검수 |
+| LANDMARK | primary 북finale·secondary 서해골/동처형 유지. 석주 머리·상체·묶인 손/인체 옆선이 실제 finale에서 드러남. 어두운 의복 대비 잔여 |
+| CAMERA QA | START entry PASS(감쇠 뒤 원 가시성), ARENA center PASS(1x 림·중앙 보호), LANDMARK/EXIT finale 각도 개선 확인·어두운 죄수 의복 대비 잔여. EARLY/SIDE L/SIDE R/LATE 추가 종주 미실시. before/after 새촬영9/0·12/0, 원본+literal1x+무보정 compare각3쌍 |
+| TECH QA | 최종 관련312/0, route/collision/PNG로딩 PASS, SCRIPT/ERROR0·기존Camera2D warning만, native pageerror/404 N/A, seam 신규변경0. 공존 성능8.33ms FAIL·before 무효·상대비교불가 |
+| FILES | stage-owned ritual shader·arena finale·새 PNG/normal/AO/metadata·contact data/masks3행·offline render/contact·capture/benchmark22e·docs. concurrent/unrelated0. project byte복원 |
+| GIT | 전용branch 정상hook commit/push·원격SHA대조·push후 worktree제거. SHA는 외부DONE.txt. main merge/push·deploy0 |
+| VISUAL VERDICT | **RETOUCH**. 링 감쇠·원 가시성·죄수 각도 개선. 의복 대비/기존 외곽 반복 잔여·성능 목표 미달. 전체AAA·실보스전·PC 인수완료 주장0 |
+| NEXT PASS | 별도 승인단위에서 before/after 유효 비교·공존 비용 진단. 이번 focus 재시도 한도를 넘겨 추가 표본을 만들지 않음 |

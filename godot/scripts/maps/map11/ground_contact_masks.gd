@@ -41,4 +41,7 @@ const MASKS={
  "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_0_contact.png"),"offset":Vector2(-11,410),"size":Vector2(387,141)},
  "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_1_contact.png"),"offset":Vector2(-11,410),"size":Vector2(416,141)},
  "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_2_contact.png"),"offset":Vector2(-11,410),"size":Vector2(391,141)},
+ "res://assets/maps/map11/finale_pillar/tour_chained_pillar_0_diffuse.png": {"texture":preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_0_contact.png"),"offset":Vector2(-24,912),"size":Vector2(698,312)},
+ "res://assets/maps/map11/finale_pillar/tour_chained_pillar_1_diffuse.png": {"texture":preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_1_contact.png"),"offset":Vector2(-24,912),"size":Vector2(711,312)},
+ "res://assets/maps/map11/finale_pillar/tour_chained_pillar_2_diffuse.png": {"texture":preload("res://assets/maps/map11/finale_pillar/tour_chained_pillar_2_contact.png"),"offset":Vector2(-24,912),"size":Vector2(639,312)},
 }
