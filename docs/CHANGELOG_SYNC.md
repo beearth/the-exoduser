@@ -566,6 +566,15 @@
 | 인계 | [계약](engine/PC_LIFECYCLE_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-life-pack_REPORT.md)·docs/2_5 이식 상태 절. 원로그 `_out/pc-life-pack/` |
 
 
+## 2026-10-21 PC-COMBAT-PACK-B — normalBow hurtE·신규 actor hurtE owner·normalBow 탄 carrier·사망 중간 prefix
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위 | 요청 PCI-03/02/05/06/09(pc-iface-pack). 기준 main c06184592, 브랜치 claude/pc-combat-pack-b2-20261021. 신규 `native_combat_pack_b.gd`(facade·bind·admit/pass·interaction·death-effect 등록, token 재생)·`native_player_arrow_carrier.gd`(G35176–35628 normalBow: 벽 반사·통일/패시브/킬 관통·재활용, 기존 World 플레이어 탄 store 재사용)·`native_bound_enemy_hurte_owner.gd`. 공용: hurtE 실행자 +130/−5(기존 줄 5개, 동작 동일)·Main +29·type3_native_binding +51 순수 추가 |
+| 상태 | PCI-03·02·05(플레이어)·09 완료, PCI-06 부분(적 탄 Q는 기존 Q 반사 위임, E/접촉 NOT_READY), beam NOT_READY, PCI-07/08 미구현(설계). type3는 bind 전 hurtE 0행 정지(폴백 없음) |
+| 검증 | 신규 349/0(원본 game.html VM oracle: hurtE 비치명/치명·carrier 킬관통/재사용 관통/벽 반사 궤적·접촉·RNG 행 순서 일치). 회귀 19종 각 1회 0실패·ERROR 0, type7_runtime은 base와 같은 2실패. 30발 300틱 16.59ms/틱(실시간) |
+| 인계 | [계약](engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-combat-pack-b_REPORT.md)·2_2 석궁 절·FDG type3/P1-002E 절. 실제 발사 owner(DEMO11-48)·source sp·화면 확인 미실행 |
+
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
 | 항목 | 구현·검수 근거 |

@@ -279,3 +279,54 @@ func get_snapshot() -> Dictionary:
 	snapshot["source_global_frame_not_written_into_actor_clock"] = true
 	snapshot["full_type7_actor_registered"] = false
 	return snapshot
+
+# ── PC-COMBAT-PACK-B PCI-02: 공용 hurtE field owner (bind 프로토콜, 순수 추가) ───────
+## Main.bind_native_enemy_hurte_owner(actor, ctx)가 1회 계약 검사 후 accept_*를 호출한다. bind 전에는 아래
+## owner 메서드가 전부 not-ready/거절(hurtE는 그 지점에서 정지, receive_damage 폴백 없음).
+## 구현은 native_bound_enemy_hurte_owner.gd(원본 필드 dict `_native`에 위임). 기존 receive_damage 경로는 그대로.
+const BoundHurteOwner = preload("res://scripts/native_bound_enemy_hurte_owner.gd")
+var native_hurte_owner_token := ""
+var _hurte_owner_service: RefCounted
+## hurtE 실행자·지역 처치·사망 FX가 읽는 최소 레코드(원본 e.col=ETYPE_COL[3] / ib=false). 원소 id는 넣지 않는다.
+var data: Dictionary:
+	get: return {"id": "type3:%d" % get_instance_id(), "native_final": {"col": str(get_native_modifier_state().get("col", "#66ee66")), "ib": false}}
+
+func accept_native_hurte_owner_binding(service: RefCounted, owner_token: String) -> bool:
+	if not _binding_configured or service == null or owner_token.is_empty() or not native_hurte_owner_token.is_empty():
+		return false
+	if not service.has_method("is_native_hurte_binding_live"):
+		return false
+	_hurte_owner_service = service
+	native_hurte_owner_token = owner_token
+	return true
+
+func release_native_hurte_owner_binding(service: RefCounted, owner_token: String) -> bool:
+	if service != _hurte_owner_service or owner_token != native_hurte_owner_token:
+		return false
+	_hurte_owner_service = null
+	native_hurte_owner_token = ""
+	return true
+
+func read_native_normal_enemy_hurte_fields(caller_world: Node) -> Dictionary:
+	return BoundHurteOwner.read_fields(self, caller_world, _hurte_owner_service, native_hurte_owner_token)
+
+func apply_native_normal_enemy_field_write(field: String, value: Variant) -> Dictionary:
+	return BoundHurteOwner.apply_field_write(self, _hurte_owner_service, native_hurte_owner_token, field, value)
+
+func apply_native_normal_enemy_bookkeeping(fields: Dictionary) -> Dictionary:
+	return BoundHurteOwner.apply_bookkeeping(self, _hurte_owner_service, native_hurte_owner_token, fields)
+
+func apply_native_normal_enemy_hp_write(write: Dictionary) -> Dictionary:
+	return BoundHurteOwner.apply_hp_write(self, _hurte_owner_service, native_hurte_owner_token, write)
+
+func apply_native_normal_enemy_death_write() -> Dictionary:
+	return BoundHurteOwner.apply_death_write(self, _hurte_owner_service, native_hurte_owner_token)
+
+func report_native_normal_enemy_hurte_event(kind: String, payload: Dictionary) -> void:
+	telemetry_event.emit(kind, payload)
+
+func add_native_knockback(value: Vector2) -> void:
+	BoundHurteOwner.apply_knockback(self, _hurte_owner_service, native_hurte_owner_token, value)
+
+func apply_native_normal_enemy_poise_core(amount: int) -> Dictionary:
+	return BoundHurteOwner.apply_poise_core(self, _hurte_owner_service, native_hurte_owner_token, amount)

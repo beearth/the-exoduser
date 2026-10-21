@@ -32,6 +32,21 @@ var _world: Node2D
 var _enemy: Node
 var _halt_reason := ""
 var _halt_line := 0
+# ── PC-COMBAT-PACK-B (PCI-03/09) 관측·상태 — 기존 반환 shape는 바꾸지 않는다 ──
+const NORMAL_BOW_STORE = preload("res://scripts/native_player_projectile_store.gd")
+## normalBow 패킷에서 hurtE 본문(42110~43119)이 읽는 키 중 이 실행자가 이식하지 않은 분기의 키 — truthy면 쓰기 전 거절.
+const NORMAL_BOW_FALSY_REQUIRED: Array[String] = ["pure", "explode", "proj", "beam", "bladeShard", "bladeOrb",
+	"maliceHunt", "mhBlade", "blueBean", "ltnChaser", "lightning", "parryBlueBean", "bleed", "poison", "detonate",
+	"_blastKill", "_lClubWall", "noKB", "noStun", "magic", "dot", "iceBlade", "poiseHit", "_kiFull"]
+const TYPE_AFFIX_IDS: Array[String] = ["meleeDmgPct", "rangedDmgPct", "projDmgPct", "spellDmgPct", "beamDmgPct",
+	"dotDmgPct", "critRateMelee", "critRateSpell", "critRateBow"]
+const DEATH_PREFIX_LINES := {8: 42784, 15: 42794, 29: 42818} # consumer 호출 위치(15/29는 그 블록의 첫 Math.random 행)
+var source_opts: Variant = null
+var hurte_profile := "direct_opts"
+var type_affix_reads: Array = []
+var death_prefix_receipts: Array = []
+var _packet_mode := false
+var _deferred_final_death: Dictionary = {}
 
 # ── 33360 wSwing: _wEl=(wp().el||0)||(_lEq('_lGloveElem')>0?1+~~(rand*4):0) ──
 static func resolve_basic_attack_element(main: Node) -> Dictionary:
@@ -76,7 +91,19 @@ const SUPPORTED_OPT_KEYS: Array[String] = ["kbMult", "poiseMult", "noPoise", "po
 func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: float, atk_el: int, opts: Dictionary = {}) -> Dictionary:
 	_main = main
 	_world = world
+	# PC-COMBAT-PACK-B PCI-03: 35407 `hurtE(e,dmg,ang,..,p,p.el)` — normalBow 패킷 자체가 opts. 원본 패킷은
+	# source_opts로 보존(동일성)하고, hurtE 본문이 읽는 키만 JS 의미로 투영한 view로 아래 기존 문장을 실행한다.
+	source_opts = opts
+	if _is_normal_bow_packet(opts):
+		var gate: Dictionary = _normal_bow_packet_gate(opts, atk_el)
+		if gate.get("ok") != true:
+			return _halt(42110, str(gate.get("reason")))
+		_packet_mode = true
+		hurte_profile = "normalBow_packet"
+		opts = gate.get("view")
 	for opt_key in opts:
+		if _packet_mode:
+			break
 		if opt_key not in SUPPORTED_OPT_KEYS:
 			return _halt(42110, "hurte_opts_unsupported:" + str(opt_key))
 	# 42265~42266: kbM/psM — undefined면 1.0 (원문 기본값).
@@ -89,6 +116,8 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	var poise_hit: bool = opts.get("poiseHit") == true
 	var ki_full: bool = opts.get("_kiFull") == true
 	var source_label: String = str(opts.get("_lessonAttack", "weapon"))
+	if _packet_mode:
+		source_label = "normalBow"
 	# noImpact: 소비처(42417 _addImpact)가 미이식이라 효과 지점 없음 — 수용만.
 	# noPoise/poiseSkill/_lessonFullCharge: hurtE 본문(비lesson)에서 미읽기 — 수용만.
 	_enemy = enemy
@@ -125,7 +154,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		# (원본 동일 — 레슨 전용 처리로 조기 return).
 		var lesson_ref: Variant = lesson.get("lesson_reference")
 		if is_instance_valid(lesson_ref) and lesson_ref.has_method("native_lesson_hurt_enemy"):
-			var delegated: Dictionary = lesson_ref.native_lesson_hurt_enemy(_enemy, dmg, ang, opts)
+			var delegated: Dictionary = lesson_ref.native_lesson_hurt_enemy(_enemy, dmg, ang, source_opts)
 			_log(42111, "parry_lesson_delegated", delegated)
 			return _finish(true, {"applied": false, "returned_at": 42111, "lesson_delegated": true,
 				"lesson_result": delegated})
@@ -134,6 +163,10 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	if not fields["alive"] or float(fields["hp"]) <= 0.0:
 		_log(42112, "dead_guard_return", {})
 		return _finish(true, {"applied": false, "returned_at": 42112})
+	# PCI-09: 사망 중간 prefix 필수 consumer(etype 8/15/29)가 없으면 첫 쓰기·RNG 전에 정지(원자성).
+	var prefix_gate: Dictionary = _death_prefix_gate(int(fields["etype"]), fields)
+	if prefix_gate.get("required") == true and prefix_gate.get("ready") != true:
+		return _halt(42110, "death_prefix_consumer_not_ready:" + str(prefix_gate.get("profile")))
 	# 42115 _shBufI++ / 43118 -- : JS shQuery 재진입 버퍼 가드 — Godot 구조상 불필요(no-op).
 	# 42117 _petOnAtk(): 펫 시스템 미이식.
 	_log(42117, "unported_skip:_petOnAtk", {})
@@ -296,11 +329,15 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	# _isPure/_isArrow/_isGunpowder/_isMagicDmg: weapon·kiSlash 둘 다
 	# pure/maxDist/magic/explode/beam 키가 없고 atkEl=0 → 전부 false.
 	# ── 42275~42283: 타입별 뎀% — 근접만 해당 ──
-	var melee_pct: Variant = _affix("meleeDmgPct", 42276)
+	var melee_pct: Variant = _type_damage_affix(42276) # 비패킷: meleeDmgPct 그대로 / 패킷: 42277 rangedDmgPct+projDmgPct
 	if melee_pct == null: return _result_now()
 	if float(melee_pct) > 0.0:
 		dmg = FORMULA.js_to_int32(float(dmg) * (1.0 + float(melee_pct)))
 	# 42285~42291: _weakPhys/_weakMag/_weakPj/_shockDR/_blinkWeak — 필드 부재(falsy) 단락.
+	# PCI-03 42287 `_weakPj&&_isArrow` — 투사체 피격 증가(패킷 전용). _weakPhys는 아래 기존 정지 가드 유지.
+	if _packet_mode and _js_num(fields.get("_weakPj")) > 0.0:
+		dmg = FORMULA.js_to_int32(float(dmg) * (1.0 + _js_num(fields.get("_weakPj"))))
+		_log(42287, "weakPj", {"dmg": dmg})
 	for weak_field in ["_weakPhys", "_shockDR", "_blinkWeak"]:
 		if _js_num(fields.get(weak_field)) > 0.0:
 			return _halt(42286, "unported_branch_active:" + weak_field)
@@ -316,7 +353,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		return _halt(42306, "unported_branch_active:rage_skill_context")
 	# ── 42309~42323: 크리티컬 ──
 	# 42307~42309: !_isMagicDmg&&!_isArrow → critRateMelee / _isMagicDmg → critRateSpell
-	var crit_rate_melee: Variant = _affix("critRateSpell" if is_magic else "critRateMelee", 42311)
+	var crit_rate_melee: Variant = _affix(_crit_rate_affix_id(is_magic), 42311) # 패킷(_isArrow): 42312 critRateBow
 	if crit_rate_melee == null: return _result_now()
 	var cr_bonus: float = float(crit_rate_melee) * 100.0
 	# _lDagForce: P._lNextCrit 부재 → false (l_eq 미읽기).
@@ -475,12 +512,13 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	# ── 42462~42476: 넉백 (dmg>0 블록 밖 — 쉴드 전량 흡수 타에도 실행, 양 0) ──
 	# _isRanged/_isMH/_isBB/_noKB/_isMagicProj 전부 false (opts 고정, atkEl≠EL.L은 위에서 정지).
 	var kb_amount: float = minf(float(dmg) * 0.25 * kb_mult, 15.0 * kb_mult)
-	var club: Variant = _l_eq("_lClubKB", 42472)
+	# 42466 _isRanged(maxDist&&!magic / normalBow) → 넉백 분기 전체 미진입(_lEq 미읽기)
+	var club: Variant = 0.0 if _packet_mode else _l_eq("_lClubKB", 42472)
 	if club == null: return _result_now()
 	if float(club) > 0.0:
 		return _halt(42472, "unported_branch_active:_lClubKB")
 	# 근접 교전=시야 내 고정: e.kb += cos/sin×amt (뷰포트-밖 좌표이동 분기는 미도달·미이식).
-	if not is_dot: # 42472 조건 &&!isDot
+	if not is_dot and not _packet_mode: # 42472 조건 &&!isDot (패킷 = _isRanged 넉백 없음)
 		enemy.add_native_knockback(Vector2(cos(ang), sin(ang)) * kb_amount)
 		_log(42476, "knockback", {"amount": kb_amount})
 	# ── 42486~42498: 포이즈 — poiseHit 전용(kiSlash). amt는 쉴드 흡수 후 잔여 dmg ──
@@ -521,6 +559,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	if dmg > 0 and hp_after <= 0.0:
 		killed = true
 		if not _kill_pipeline(fields, view, passives, dmg, ang, atk_el):
+			_flush_deferred_final_death() # 42733~42824 사이 정지(M26 등)에도 PCI-11 단회 발행
 			return _result_now()
 	return _finish(true, {"applied": true, "dmg_to_hp": dmg, "absorbed": absorbed,
 		"hp_before": hp_before, "hp_after": hp_after, "shield_before": shield,
@@ -630,11 +669,17 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	_log(42732, "death_fx_tail", {})
 	# PCI-11 — G42733 앵커(42734~42744 보스/문지기 사망 문맥 직전): 최종/부활대기 단회 신호.
 	# 관찰 전용 발행 — 실패해도 이미 확정된 처치 prefix를 되돌리지 않고 파이프라인을 계속한다.
-	if _main.has_method("publish_native_enemy_death"):
-		var published: Dictionary = _main.publish_native_enemy_death(_enemy, {"revival_pending": revival_pending,
+	# PC-COMBAT-PACK-B 병합: PCI-09 사망 중간 prefix(42784/42792/42817)가 있는 사망은 그 prefix 뒤로 발행을
+	# 미룬다(순서 = PCI-09 → PCI-11, 각 1회). prefix 없는 사망은 종전 그대로 이 앵커에서 발행.
+	var final_ctx: Dictionary = {"revival_pending": revival_pending,
 			"kill_receipt": {"line": 42702, "kills": kills, "stage_kills": stage_kills,
 				"reg_kill_applied": reg_kill.get("applied") == true, "dmg": dmg, "ang": ang, "atk_el": atk_el,
-				"executor": "native_normal_enemy_hurte"}})
+				"executor": "native_normal_enemy_hurte"}}
+	if _main.has_method("publish_native_enemy_death") and _death_prefix_gate(int(fields["etype"]), fields).get("required") == true:
+		_deferred_final_death = final_ctx
+		_log(42733, "final_death_deferred_after_pci09", {"etype": int(fields["etype"])})
+	elif _main.has_method("publish_native_enemy_death"):
+		var published: Dictionary = _main.publish_native_enemy_death(_enemy, final_ctx)
 		_log(42733, "final_death_published", published)
 	# 42737~42745 문지기: 단락. 42747~42754 잔해: elite0 → _debC=0 단락(RNG 미소비).
 	# ── 42756~42762: 킬 체인 ──
@@ -656,6 +701,12 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 			_halt(42764, "unported_branch_active:mod_M26_empower")
 			return false
 	# 42769~42944: _plagued/특수 etype 사망 효과 — etype 가드로 전부 단락.
+	# PCI-09: 그중 42784(8 폭발)·42792(15 분열)·42817(29 사망탄)은 Main 서비스에 등록된 동기 consumer를
+	# 원본 위치에서 호출(최종 died/PCI-11 신호 전). consumer RNG는 같은 provider(_rand)로 이어 기록.
+	var prefix_ok: bool = _death_prefix_dispatch(fields, ang, dmg)
+	_flush_deferred_final_death() # PCI-11은 PCI-09 prefix 뒤(성공·정지 모두 단회)
+	if not prefix_ok:
+		return false
 	# ── 42946~42963: 속성 사망 장판 ──
 	if fields["ib"] != true and fields.get("_isDecoy") != true and int(fields["el"]) != 0:
 		var zone_roll: Variant = null
@@ -941,6 +992,8 @@ func _stagger_break_tail() -> bool:
 
 # ── provider/owner 헬퍼 ──
 func _affix(id: String, line: int) -> Variant:
+	if id in TYPE_AFFIX_IDS:
+		type_affix_reads.append(id)
 	var result: Dictionary = _providers["eq_affix"].call(id)
 	if str(result.get("status")) not in AFFIX_READY:
 		return _halt_null(line, "eq_affix_not_ready:" + id + ":" + str(result.get("reason")))
@@ -1024,3 +1077,95 @@ func _finish(ok: bool, extra: Dictionary) -> Dictionary:
 		"rng_draws": rng_draws.duplicate(true), "fallback_used": false}
 	result.merge(extra, true)
 	return result
+
+# ── PC-COMBAT-PACK-B PCI-03: normalBow 패킷 opts 프로필 ─────────────────────────
+static func _is_normal_bow_packet(opts: Dictionary) -> bool:
+	return opts.get("normalBow") is bool and opts.get("normalBow") == true
+
+static func _opt_truthy(value: Variant) -> bool:
+	if value == null or value is NORMAL_BOW_STORE.SourceUndefined: return false
+	if value is bool: return value
+	if value is int or value is float: return float(value) != 0.0 and not is_nan(float(value))
+	if value is String: return not (value as String).is_empty()
+	return true
+
+## 쓰기·RNG 전 판정. 반환 view는 hurtE 본문이 읽는 키만 JS 의미(undefined=키 없음)로 담는다.
+## 패킷 원본(Packet.fields)은 변경하지 않는다.
+func _normal_bow_packet_gate(opts: Dictionary, atk_el: int) -> Dictionary:
+	for key in NORMAL_BOW_FALSY_REQUIRED:
+		if _opt_truthy(opts.get(key)):
+			return {"ok": false, "reason": "normalbow_packet_opt_unported:" + key}
+	var max_dist: Variant = opts.get("maxDist")
+	if not opts.has("maxDist") or max_dist is NORMAL_BOW_STORE.SourceUndefined:
+		# 42270 _isArrow는 maxDist!==undefined 필요 — 없으면 근접 분류가 되는 다른 프로필(미이식).
+		return {"ok": false, "reason": "normalbow_packet_maxDist_undefined_unported"}
+	if atk_el == 1:
+		# 42700 _isBurnDeath(atkEl===EL.F) 화상 사망·불타는 시체 분기 미이식 — 치명 여부를 쓰기 전에 알 수 없어 전체 거절.
+		return {"ok": false, "reason": "unported_branch_possible:burn_death_42700_fire_arrow"}
+	var view: Dictionary = {"maxDist": max_dist, "normalBow": true}
+	for key in ["kbMult", "poiseMult"]:
+		if opts.has(key) and opts[key] != null and not opts[key] is NORMAL_BOW_STORE.SourceUndefined:
+			if not (opts[key] is int or opts[key] is float) or not is_finite(float(opts[key])):
+				return {"ok": false, "reason": "normalbow_packet_opt_not_number:" + key}
+			view[key] = float(opts[key])
+	for key in ["noImpact", "shieldHit"]:
+		if _opt_truthy(opts.get(key)):
+			view[key] = true
+	return {"ok": true, "view": view}
+
+## 42275~42283 타입별 뎀% — 비패킷은 기존과 같은 meleeDmgPct 1회 읽기(동작 동일).
+## 패킷(_isArrow): rangedDmgPct + projDmgPct 합(원본 _tyAx 합연산 후 1회 곱).
+func _type_damage_affix(line: int) -> Variant:
+	if not _packet_mode:
+		return _affix("meleeDmgPct", line)
+	var ranged: Variant = _affix("rangedDmgPct", 42277)
+	if ranged == null: return null
+	var proj: Variant = _affix("projDmgPct", 42277)
+	if proj == null: return null
+	return float(ranged) + float(proj)
+
+## 42309~42312 크리 보너스 어픽스 — 비패킷은 기존 식 그대로. 패킷(_isArrow, !_isMagicDmg): critRateBow.
+func _crit_rate_affix_id(is_magic: bool) -> String:
+	if _packet_mode:
+		return "critRateBow"
+	return "critRateSpell" if is_magic else "critRateMelee"
+
+# ── PC-COMBAT-PACK-B PCI-09: 사망 중간 prefix ────────────────────────────────────
+func _death_prefix_gate(etype: int, fields: Dictionary) -> Dictionary:
+	if not DEATH_PREFIX_LINES.has(etype):
+		return {"required": false}
+	var service: Variant = _main.get("native_combat_pack_b") if is_instance_valid(_main) else null
+	if service == null:
+		return {"required": true, "ready": false, "profile": "etype%d" % etype}
+	return service.read_native_death_prefix_gate(etype, fields)
+
+func _death_prefix_dispatch(fields: Dictionary, ang: float, dmg: int) -> bool:
+	var etype: int = int(fields["etype"])
+	var gate: Dictionary = _death_prefix_gate(etype, fields)
+	if gate.get("required") != true:
+		return true
+	var line: int = DEATH_PREFIX_LINES[etype]
+	var service: Variant = _main.get("native_combat_pack_b")
+	if gate.get("ready") != true or service == null:
+		_halt(line, "death_prefix_consumer_lost:" + str(gate.get("profile")))
+		return false
+	var profile: String = str(gate.get("profile"))
+	var reader: Callable = func() -> Variant: return _rand(line, "death_prefix:" + profile)
+	var receipt: Dictionary = service.dispatch_native_death_prefix(_enemy, etype, fields, ang, dmg, reader)
+	death_prefix_receipts.append(receipt)
+	_log(line, "death_prefix:" + profile, {"applied": receipt.get("applied"), "token": receipt.get("death_prefix_token")})
+	if receipt.get("applied") != true:
+		if _halt_reason.is_empty():
+			_halt(line, str(receipt.get("reason")))
+		return false
+	return true
+
+## PCI-09 prefix 뒤로 미룬 PCI-11 최종 사망 발행(단회). 관찰 전용 — 실패해도 처치 prefix를 되돌리지 않는다.
+func _flush_deferred_final_death() -> void:
+	if _deferred_final_death.is_empty():
+		return
+	var ctx: Dictionary = _deferred_final_death
+	_deferred_final_death = {}
+	var published: Dictionary = _main.publish_native_enemy_death(_enemy, ctx)
+	published["deferred_after_pci09"] = true
+	_log(42733, "final_death_published", published)

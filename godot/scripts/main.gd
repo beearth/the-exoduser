@@ -38,6 +38,7 @@ const QAdapterScript = preload("res://scripts/native_combat_qe_adapter.gd")
 const NativeFireballPhaseScript = preload("res://scripts/native_fireball_phase.gd")
 const QBurstDrawScript = preload("res://port_modules/character_clip/shield_burst_draw_caller.gd")
 const M29ContactServicesScript = preload("res://scripts/native_m29_contact_services.gd") # PC-M29-PARRY
+const CombatPackBScript = preload("res://scripts/native_combat_pack_b.gd") # PC-COMBAT-PACK-B
 const SOURCE_BOOT_EN_LABELS := {"맵 에셋 로딩...": "Loading map assets...",
 	"맵 캐시 생성 중...": "Building map cache...", "완료": "Complete"}
 # Recorded pins only. The baseline is not the compiled HEAD, and a source pin
@@ -68,6 +69,7 @@ var native_fireball_phase: RefCounted
 var native_fireball_delivery: Node
 var native_q_control: RefCounted
 var native_m29_contact: RefCounted # PC-M29-PARRY: M29 비투사체 접촉 서비스(준비 구역 설치)
+var native_combat_pack_b: RefCounted # PC-COMBAT-PACK-B: PCI-02/03/05/06/09 서비스(준비 구역 설치)
 var _q_burst_draw: Node2D
 var _q_view: SubViewport
 var _q_canvas: Node2D
@@ -421,6 +423,7 @@ func _ready() -> void:
 	if not native_demo_pause_menu.configure(self):push_error("Native pause menu settings reader rejected")
 	_install_native_q_control()
 	native_m29_contact = M29ContactServicesScript.install_native_boot(self) # PC-M29-PARRY
+	native_combat_pack_b = CombatPackBScript.install_native_boot(self) # PC-COMBAT-PACK-B
 	_install_native_attack_audio()
 	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
@@ -3566,6 +3569,32 @@ func _read_native_map11_natural_context() -> Dictionary:
 	var lesson: Dictionary=read_native_normal_enemy_lesson_status()
 	return {"lesson_active":lesson.get("ready")!=true or lesson.get("active")!=false,
 		"qa_storage_active":false,"aggro_active":false}
+# ── PC-COMBAT-PACK-B (2026-10-21): 공개 API — 실제 집행은 native_combat_pack_b.gd ──────────
+# 계약: docs/engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md. 미설치면 REJECTED 영수증(쓰기 0).
+func _pack_b_unavailable(kind: String) -> Dictionary:
+	return {"request": kind, "status": "REJECTED", "accepted": false, "reason": "pc_combat_pack_b_service_not_installed", "mutation": "none"}
+
+func request_native_hurte(actor: Variant, damage: Variant, angle: Variant, no_sound: bool, opts: Variant, attack_element: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.request_native_hurte(actor, damage, angle, no_sound, opts, attack_element, ctx) if native_combat_pack_b != null else _pack_b_unavailable("hurte")
+
+func bind_native_enemy_hurte_owner(actor: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.bind_native_enemy_hurte_owner(actor, ctx) if native_combat_pack_b != null else _pack_b_unavailable("bind")
+
+func register_native_enemy_death_effect(profile: Variant, consumer: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.register_native_enemy_death_effect(profile, consumer, ctx) if native_combat_pack_b != null else _pack_b_unavailable("death_effect")
+
+func admit_native_source_projectile(owner: Variant, packet: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.admit_native_source_projectile(owner, packet, ctx) if native_combat_pack_b != null else _pack_b_unavailable("admit")
+
+func advance_native_source_projectile(handle: Variant, sp: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.advance_native_source_projectile(handle, sp, ctx) if native_combat_pack_b != null else _pack_b_unavailable("advance")
+
+func advance_native_player_projectile_pass(sp: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.advance_native_player_projectile_pass(sp, ctx) if native_combat_pack_b != null else _pack_b_unavailable("pass")
+
+func resolve_native_projectile_interaction(packet: Variant, target: Variant, event: Dictionary, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.resolve_native_projectile_interaction(packet, target, event, ctx) if native_combat_pack_b != null else _pack_b_unavailable("interaction")
+
 # ═══ PCI-01 (PC-LIFE-PACK 2026-10-21) — 플레이어 생명주기 ═══
 # 계약: docs/engine/PC_LIFECYCLE_CONTRACT_20261021.md. 부팅 때 1회 구성(HP0 토큰 발급용
 # telemetry 연결). 틱 경로 코드 0. 기존 player.gd HP0 블록·피해 경로 수정 0.
