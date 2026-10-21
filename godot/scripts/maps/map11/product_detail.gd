@@ -8,12 +8,16 @@ var _world: Node
 func configure(scene: Node2D,main: Node) -> void:
  material_=ShaderMaterial.new();material_.shader=preload("res://scripts/maps/map11/actor_rim.gdshader")
  _attach(main.player,false)
+ var boss_view:=preload("res://scripts/boss11_scene_actor.gd").new()
+ boss_view.name="Boss11SceneActor";scene.add_child(boss_view)
+ boss_view.configure(main.native_demo_boss_actor,material_)
  _world=main.world
  for enemy in _world.get_enemies():_attach(enemy,true)
  _world.child_entered_tree.connect(_actor_entered)
  # MAP11-21: removed flat bone/blood/flesh patches and broad floor scatter.
  _hell_props(scene)
  preload("res://scripts/maps/map11/arena_finale.gd").mount(scene)
+ scene.arena_view.retire_legacy_finale()
  # New arena feet stay wholly beyond R1700.
  set_process(false);set_physics_process(false)
 func _actor_entered(actor: Node) -> void:
@@ -24,8 +28,18 @@ func _attach(actor: Node,enemy: bool) -> void:
  var sprite: CanvasItem=actor.get("_body") if enemy else actor.get("_sprite")
  if not is_instance_valid(sprite):return
  if sprite.material==material_:return
+ # Legacy fallback was 2.5; the identical web warrior art is drawn at 2.0.
+ # Presentation sprite only. Radius, speed, reach and owner visual_scale unchanged.
+ if not enemy and is_equal_approx(sprite.scale.x,2.5):sprite.scale=Vector2.ONE*2.0
  sprite.material=material_
- sprite.set_instance_shader_parameter("rim_color",Color(.62,.20,.16,.30) if enemy else Color(.78,.72,.59,.38))
+ sprite.set_instance_shader_parameter("rim_color",Color(.62,.20,.22,.36))
+ if not actor.has_node("SceneContactShadow"):
+  var shadow:=Sprite2D.new();shadow.name="SceneContactShadow"
+  shadow.texture=preload("res://assets/maps/map11/target30/actor_contact.png")
+  shadow.scale=Vector2(1.1,.42) if enemy else Vector2(.34,.13)
+  shadow.position=Vector2(0,2) if enemy else Vector2(0,20.0*sprite.scale.y);shadow.z_index=-1
+  var unlit:=CanvasItemMaterial.new();unlit.light_mode=CanvasItemMaterial.LIGHT_MODE_UNSHADED
+  shadow.material=unlit;actor.add_child(shadow)
  outlined+=1
 # Static feet use the same y/4 depth contract as Main/player and enemies.
 # No polling, actor writers, physics/LOS changes or texture loads after setup.

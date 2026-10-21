@@ -56308,3 +56308,37 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 | Mac E2E / contract ORDER | 물약 uses 단계 시작 기준, 생존 검사 후 자연 fallen 관측. storage=on 1회 PASS13/NOT_READY5/FAIL0·ERROR0. |
 | B/F fixture helper / PC Mac wrapper·oracle | 실제 Main 부팅 보존, 새 테스트 P3 cohort. F33/33, B42검사2실패(옛 B8·deadPool 기대); PC355검사3실패+SCRIPT ERROR1(자동bind/unbound). PC 원본 판정식·구현 byte 유지. |
 | 성능·상태 | enemy_kill max22.553/p95 8.516ms, 석궁 max_tick_us1571·fired0; field_mob_owner_unported 경계 유지. STATUS47행 및 PCIB 보고서 d절 동기화. 전체 클리어·성능 목표 달성 아님. |
+
+
+## 2026-10-21 MAP11-30
+- 보스룸 목표 원화 paint-over split 첫 시제품. target30 룩/측정RGB curve/층/2shader, 기존 arena 시각 hide와 source-adapter 보존, 원형R1700·외곽충돌·BOSS11예고/카메라 불변.
+- 관련 수치/원본/실제 캡처/FAIL 차이표는 `4.1맵디자인+설정/MAP11_30_TARGET_SPLIT_20261021.md`, 목표 문서 하단 누적. p95단회7.747ms/focus_lost0. BC source 인수누락 실패와 시각 FAIL을 숨기지 않음. 독립branch, main/PC 배포 없음.
+
+## 2026-10-21 MAP11-30b — 보스룸 축척·투영 대응
+
+- source2000px→화면1920px/world2.6666666667, logicalY .6 역/정투영 쌍으로 원화 타원 비율 유지. 같은 크기 미러clone, BACK 역floor mask,7소품 화면기준 배치/외곽7충돌원(반경90,min>1700),R1700/provider/PC전투코어 유지.
+- 전체 vertex호흡 제거,pod3영역국소UV±.006/.16Hz,입2영역2자세UV .018/.55Hz. 신규이미지생성/inpaint/3D/틱목록API/ResourceLoader0.
+- 실제Main1920×1080/1x비교 RETOUCH. 관련검사1회33/34PASS,마지막preview노드가정FAIL→recipe반경assert로수정/재실행0. p95단회8.734ms/p99 9.768/focus_lost0,8.33예산FAIL. 자연보스전/PC/접촉일치 검수아님.
+- 정확한수치/경계/차이표/MAP PRODUCTION REPORT: `4.1맵디자인+설정/MAP11_30B_PROJECTION_20261021.md`. 목표문서차이표누적. 외부증거 `_out/MAP11-30b/`.
+
+
+## 2026-10-21 MAP11-30p — 보스룸 장면 유지 성능 후보
+
+- 정적접지/root/BACK15층합성,ground패스통합·조직crop별effect·fog zero-alpha cull·미사용15texture preload정리. source/collision/R1700/PCcore보존.
+- 시각유지PASS/관련검사1회34PASS,최종유효p95 8.558ms/focus_lost0/104draw. **8.33ms예산FAIL,복구완료아님**. MAP11_30P_PERFORMANCE_20261021 및 TARGET_FRAMES 하단성능행에수치·실패후보·운영이탈기록.
+
+## 2026-10-21 — MAP11-30c 캐릭터 축척·장면 접지·정적 바닥 디테일
+
+| 범위 | 반영/검수 |
+|---|---|
+| 기준/소유 | 사용자 지정30p `7504d2c9`, 격리branch `codex/map11-30c-20261021`; R tracked/INDEX 변경0. 시작R fetch 메타데이터 쓰기 예외는 상세보고서에 기록 |
+| 표시/카메라 | 같은 전사source2.0, 보스r×14.1/620, 웹프레이밍입장.563700169/근접최대.8; R1700/속도/충돌/사거리/PCcore 보존 |
+| 접지/팔레트 | 공유ambient(.89,.77,.81)/red rim(.62,.20,.22,.36), soft analytic128² AO. 기존root crack 재보정·정적floor합성, 새이미지생성/점/디더링0 |
+| 검수 | MAP30b34/34,arena35/35,BOSS03 18/18,BC08 24788/0. BOSS02 17/18: 이전midpoint.49 기대1fail→상수참조로 수정/재실행0. 유효성능1회p95 7.738ms/focus_lost0; 후검토소규모보정 경계 별도 |
+| 인수 | 목표비교/근접/3종1x/실제Main live0·2초 보존. VISUAL RETOUCH: 원화결부드러움/기존overview접합/자연전투 미검수. [상세계약·측정·MAP REPORT](4.1맵디자인+설정/MAP11_30C_SCALE_INTEGRATION_20261021.md), 외부 `_out/MAP11-30c/DONE.txt`에SHA/원격/정리 |
+
+## 2026-10-21 INTEG-6 merge
+
+- PCIB-WIRE `660d6b433927a13fbe9fecffdeb185a64b3d9fc9` + MAP11-30c `0f0a2888d07cbadb01f366b0f77d8b506a60bb30` merge only.
+- main.gd 3衝突: PC preload/fields/boot配線を全保持、30c非衝突変更も保持。音響docはPC追加保持、CHANGELOGは両履歴を別節保持。PCコア/マップ新規変更なし。
+- INTEG-6 validation results will be recorded in engine/DEMO11_STATUS_20261021.md and external INTEG-6/DONE.txt.

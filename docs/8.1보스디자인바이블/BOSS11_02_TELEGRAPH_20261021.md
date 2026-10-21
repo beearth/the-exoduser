@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-30c 제품 카메라/캐릭터 후속: [축척·접지·검수 계약](../4.1맵디자인+설정/MAP11_30C_SCALE_INTEGRATION_20261021.md). 전투 source 도형/범위 보존, 카메라는 최대.8/근접source framing으로 변경. 아래 기존 차수 캡처/성능은 당시 이력.
+
 # BOSS11-02 — 다크드루이드 텔레그래프와 아레나 카메라
 
 기준 `391158e30b3418330a425ec4ee6d7f71ce0c1cbd`, 작업 branch `codex/boss11-02-20261021`. **VISUAL VERDICT: RETOUCH / 보스전 데모 완성 인수 불가.** 위험 면·충전의 정지 표본은 개선됐지만 전23패턴 자연 전투와 유효 성능 표본은 확보하지 못했다. PC 전투 코어/판정/피해/패링/HP/저장/번역 목록 byte 변경0. 본체 atlas와 공유 림은 BOSS11-01 그대로다. 새 이미지0.
@@ -55,14 +57,14 @@
 
 | 항목 | 값/연결 |
 |---|---|
-| ARENA_ZOOM | .36 (BOSS11-03). 기존 field .70에서 축소, 원래 zoom을 configure에서 보존 |
+| ARENA_ZOOM | 최대.8 (MAP11-30c). 근접≤1100은 웹 source framing의.3..8; 정면입장(0,800)에서는.563700169. field .70/원래zoom 보존 |
 | TRANSITION_SECONDS | 1.0초, smoothstep `t²(3-2t)`; 재전환 때 현재 blend부터 이어감 |
-| ARENA_CENTER_WEIGHT | .85. 실제 player 위치에서 arena center로 blend×.85만큼 화면 중심 이동 |
+| ARENA_CENTER_WEIGHT | .5 (MAP11-30c 먼거리 midpoint). 근접은 source boss/player bbox/여백으로 계산한 center를 사용 |
 | 처리 | physics priority100, 기존 Camera2D 하나의 zoom/global_position만 작성. hit-fx의 shake offset writer 보존 |
 | 진입/퇴장 | product_scene.activate_space → _frame_arrival → set_arena. 기존 별도 arrival camera 생성/긴 reveal은 이1초 전환으로 대체 |
 | 클리어 | 기존 native_demo_boss_defeated(stage) 신호를 읽어 set_arena(false). 신호 발생·게이트·보스 HP·사망 판정 변경0 |
 | 복귀 | 보존 zoom과 player follow로1초 복귀. 신규 카메라/게임 UI 개발 문구0 |
-| 한계 | 1600×900에서 기존 .28 대비 캐릭터 선형 크기×1.286. .36에서도 phase4 slam 전체 수직 수용은 불가(높이950.4px). HUD 밖 화살표로 남은 위험 방향 표시. fissure 끝의 외곽 mass 가림은 유지 |
+| 한계 | camera는 캐릭터 source bbox를 맞추며 최대slam 전체를 자동 수용하지 않음. phase4 R1320/지름2640은zoom.8에서2112px로1080px보다 큼. 기존 HUD 밖 방향cue/도형world수치/외곽mass 가림 보존. 자연 전투 판독성은 별도 검수 |
 
 ## 캡처·테스트·성능
 

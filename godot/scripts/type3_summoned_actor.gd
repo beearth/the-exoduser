@@ -367,31 +367,6 @@ func _cancel_charge() -> void:
 func receive_poise_damage(amount: float) -> void:
 	if alive and amount > 0.0: _pending_poise += amount
 
-## PC-M29-PARRY: source _poiseHit(e,amt) core (game.html:19972-19983) on this
-## actor's raw fields. Damage-free (M29 parry G40534). The presentation tail
-## (19984-19997: unique refund/token, SFX.groggy, addTxt, slowMo, particles)
-## is not ported here; callers record it as remaining.
-func apply_native_source_poise_core(amount: float) -> Dictionary:
-	if not _configured: return {"ready": false, "reason": "actor_not_configured"}
-	if not is_finite(amount): return {"ready": false, "reason": "non_finite_poise_amount"}
-	if not alive or amount <= 0.0: return {"ready": true, "source_return": false, "entered": false, "staggered": false}
-	var ib_raw: Variant = _native.get("ib")
-	var boss: bool = (ib_raw is bool and ib_raw) or ((ib_raw is int or ib_raw is float) and float(ib_raw) != 0.0)
-	var immune: Variant = _native.get("_pImmune")
-	if boss and (immune is int or immune is float) and float(immune) > 0.0:
-		return {"ready": true, "source_return": false, "entered": false, "staggered": false, "boss_immune": true}
-	_native["poise"] = float(_native["poise"]) - amount
-	_native["poiseR"] = 0.0
-	if float(_native["poise"]) > 0.0:
-		return {"ready": true, "source_return": false, "entered": true, "staggered": false}
-	_native["poise"] = 0.0
-	var stun_ticks: float = 90.0 if boss else 180.0
-	for key in ["stunned", "_maxStunned"]:
-		var previous: Variant = _native.get(key)
-		_native[key] = maxf(float(previous) if (previous is int or previous is float) else 0.0, stun_ticks)
-	if boss: _native["_pImmune"] = 300.0
-	return {"ready": true, "source_return": true, "entered": true, "staggered": true, "stun_ticks": stun_ticks, "presentation_tail_ported": false}
-
 func receive_damage(amount: int, direction: Vector2, source: String, opts: Dictionary = {}) -> void:
 	var pending = _pending_poise
 	_pending_poise = 0.0

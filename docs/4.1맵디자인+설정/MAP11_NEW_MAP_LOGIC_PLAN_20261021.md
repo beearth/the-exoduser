@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.
+
 # MAP11 — 1-1 새 맵 제작 로직 설계안
 
 > map11-plan · 2026-10-21 보스룸 우선 보충 · **문서 전용 / REVIEW_PENDING**. 기준 main `0105159934d0c2a8b167bd51518dca1e0fafe50a`. **2026-10-21 보충 방침: 보스전/보스룸 디자인부터, 데모를 먼저 완벽하게 완성하며 Godot 이식은 병행한다.** 웹 맵 이식은 종료하고 **보스룸 → 1-1 필드 → 데모 전체 인수** 순서로 제작 로직·분위기·테마·전체 디자인을 완성한 다음, 승인된 같은 로직으로 1-2 → 1-3을 순서대로 만든다. 이번 작업은 코드·에셋 생성·Godot 실행·화면 캡처 0. 현재 main이나 새 맵의 시각 완성·성능 PASS를 선언하지 않는다.
@@ -1468,3 +1470,8 @@ native product_space는 둘 다 field로 남는 기존 명목 arena fixture이�
 | GIT | 경로 지정 add·정상hook·전용branch push 및 remote SHA 대조 후 worktree 제거. main push/deploy/merge/force/reset/rebase0 |
 | VISUAL VERDICT | **RETOUCH** — 네 마감 보정 확인, 외곽 전체·전투 가독성 범위 및 성능 전후 gate 남음. AAA/본편 인수완료 주장0 |
 | NEXT PASS | 유효 before 조건이 확보된 별도 승인 측정에서 맵 비용 비증가 판정. 실전 탄막·전체 외곽 종주 인수 별도 |
+
+
+## MAP11-30 — 보스룸 목표 원화 층 분해 첫 시제품 (2026-10-21)
+
+8e45a9bc 위에 main c0618459 목표 문서3파일만 merge62038597. R1700/collision/카메라.36/보스예고 보존, 기존 의식링·7종 finale 표현은 hide하고 목표 원화 단일 바닥/7경계/뿌리AO/전경/둘레fog/보라pulse로 교체한 **독립 branch 시제품**이다. 이전 절의 구형 root ring/finale 표현은 이 branch에서는 숨김 상태이며 원본 구현·외부 충돌은 유지한다. 원화2000×1125→floor4096²/world4800², 경계발R1755, 새 shader2. 실제 same-scene **FAIL**: 투영·바닥clone확대·북 경계/중복·마스크 접합 차이 잔여. 테스트/성능을 visual PASS로 대신하지 않는다. 단회 명목arena p95 **7.747ms / focus_lost0**, 120Hz 목표 PASS이나 자연전투/PC 측정 아님. preview35/visual18/BC01 통과, BC02~10은 하니스source/node 인수 오류로 전체 PASS 아님. [모든 값·층·차이·MAP PRODUCTION REPORT](MAP11_30_TARGET_SPLIT_20261021.md). 최종SHA/원격/정리는 `~/exoduser-wt/_out/MAP11-30/DONE.txt`. main/PC 적용0.

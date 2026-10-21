@@ -1,0 +1,215 @@
+{
+  "source_sha256": "705d98bb20c0ed78e29158e8b427171e50d7488110afef9972bb065f37d473ac",
+  "source_size": [
+    2000,
+    1125
+  ],
+  "floor_size": [
+    4096,
+    4096
+  ],
+  "world_extent": 10922.666666666666,
+  "source_scale": 2.6666666666666665,
+  "projection_y": 0.6,
+  "screen_center_y": 120,
+  "source_floor_ellipse": [
+    1000,
+    550,
+    820,
+    350
+  ],
+  "radius": 1700,
+  "boundary_radius": 1755,
+  "regions": [
+    {
+      "id": "west_mouth",
+      "box": [
+        1,
+        1,
+        664,
+        475
+      ],
+      "source_foot": [
+        335,
+        450
+      ],
+      "foot": [
+        -1773.3333333333333,
+        -180.0
+      ],
+      "collision_foot": [
+        -1773.3333333333333,
+        -500.0
+      ],
+      "offset": [
+        -334,
+        -449
+      ],
+      "scale": 2.6666666666666665
+    },
+    {
+      "id": "north_west",
+      "box": [
+        433,
+        1,
+        850,
+        194
+      ],
+      "source_foot": [
+        625,
+        170
+      ],
+      "foot": [
+        -1000.0,
+        -926.6666666666665
+      ],
+      "collision_foot": [
+        -1000.0,
+        -1744.4444444444443
+      ],
+      "offset": [
+        -192,
+        -169
+      ],
+      "scale": 2.6666666666666665
+    },
+    {
+      "id": "north_heart",
+      "box": [
+        803,
+        1,
+        1197,
+        261
+      ],
+      "source_foot": [
+        985,
+        235
+      ],
+      "foot": [
+        -40.0,
+        -753.3333333333333
+      ],
+      "collision_foot": [
+        -50.54580298422775,
+        -1839.305608592732
+      ],
+      "offset": [
+        -182,
+        -234
+      ],
+      "scale": 2.6666666666666665
+    },
+    {
+      "id": "north_east",
+      "box": [
+        1112,
+        1,
+        1528,
+        317
+      ],
+      "source_foot": [
+        1310,
+        302
+      ],
+      "foot": [
+        826.6666666666666,
+        -574.6666666666666
+      ],
+      "collision_foot": [
+        1069.2063740163994,
+        -1497.4637657595272
+      ],
+      "offset": [
+        -198,
+        -301
+      ],
+      "scale": 2.6666666666666665
+    },
+    {
+      "id": "east_mouth",
+      "box": [
+        1378,
+        1,
+        1999,
+        664
+      ],
+      "source_foot": [
+        1790,
+        583
+      ],
+      "foot": [
+        2106.6666666666665,
+        174.66666666666666
+      ],
+      "collision_foot": [
+        2106.6666666666665,
+        91.1111111111111
+      ],
+      "offset": [
+        -412,
+        -582
+      ],
+      "scale": 2.6666666666666665
+    },
+    {
+      "id": "south_west",
+      "box": [
+        1,
+        377,
+        480,
+        1120
+      ],
+      "source_foot": [
+        215,
+        950
+      ],
+      "foot": [
+        -2093.333333333333,
+        1153.3333333333333
+      ],
+      "collision_foot": [
+        -2093.333333333333,
+        1722.2222222222222
+      ],
+      "offset": [
+        -214,
+        -573
+      ],
+      "scale": 2.6666666666666665
+    },
+    {
+      "id": "south_east",
+      "box": [
+        1401,
+        623,
+        1999,
+        1120
+      ],
+      "source_foot": [
+        1800,
+        1010
+      ],
+      "foot": [
+        2133.333333333333,
+        1313.3333333333333
+      ],
+      "collision_foot": [
+        2133.333333333333,
+        1988.888888888889
+      ],
+      "offset": [
+        -399,
+        -387
+      ],
+      "scale": 2.6666666666666665
+    }
+  ],
+  "curve": {
+    "resource": "legacy_to_target_curve.png",
+    "source_target": "identity: already painted in target look",
+    "calibration": "baseline ROI 650,400,600,300 -> target ROI 650,400,700,300; channel quantiles .1,.3,.5,.7,.9"
+  },
+  "new_generation": false,
+  "dither": false,
+  "method": "same-scale reflected source clone; uniform screen calibration; logical Y inverse .6 then render .6; no model"
+}

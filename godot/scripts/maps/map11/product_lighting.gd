@@ -99,7 +99,7 @@ func _process(delta: float) -> void:
  # Only the space transition changes this instance uniform. Repeated uploads
  # are unnecessary when the value is unchanged.
  if arena!=_rim_arena:
-  _rim_player.set_instance_shader_parameter("rim_color",Color(.92,.82,.70,.62) if arena else Color(.78,.72,.59,.38))
+  _rim_player.set_instance_shader_parameter("rim_color",Color(.62,.20,.22,.36) if arena else Color(.78,.72,.59,.38))
   _rim_arena=arena
  _player_light.global_position=_player.global_position+Vector2(0,-36)
  var size_: Vector2=get_viewport_rect().size/_camera.zoom
@@ -130,7 +130,7 @@ void fragment(){
  float side=smoothstep(1800.0,3000.0,abs(p.x));
  float north=smoothstep(3900.0,4700.0,-p.y)*(1.0-smoothstep(500.0,1000.0,abs(p.x)));
  float depth=max(side,north);
- if(arena){depth=smoothstep(1650.0,2450.0,length(p-arena_origin));}
+ if(arena){depth=0.0;} // MAP11-30 target perimeter pass owns arena fog.
  float f=texture(fbm_cache,p/11000.0+vec2(TIME*.0015,0.0)).r;
  COLOR=vec4(.12,.17,.23,depth*(.045+.065*f));
 }

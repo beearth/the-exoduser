@@ -35,7 +35,7 @@ func run() -> void:
  var view:=Camera2D.new();root.add_child(view);view.zoom=Vector2.ONE*.7;view.offset=Vector2(7,9)
  var camera:=Camera.new();root.add_child(camera);camera.set_physics_process(false);camera.configure(view,player,Vector2.ZERO)
  camera.set_arena(true);camera._physics_process(.5)
- check(is_equal_approx(view.zoom.x,.49),"one second smoothstep midpoint")
+ check(is_equal_approx(view.zoom.x,(.7+Camera.ARENA_ZOOM)/2),"one second smoothstep midpoint")
  camera._physics_process(.5)
  check(is_equal_approx(view.zoom.x,Camera.ARENA_ZOOM),"entry zoom reached")
  check(view.offset==Vector2(7,9),"single shake offset owner preserved")

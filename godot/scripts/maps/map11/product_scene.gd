@@ -60,7 +60,7 @@ func _physics_process(delta: float) -> void:
    get_parent().get_parent().camera.zoom=Vector2.ONE*.70
    get_parent().get_parent().camera.offset=Vector2(0,-180)
    boss_camera=preload("res://scripts/boss11_camera.gd").new();add_child(boss_camera)
-   boss_camera.configure(get_parent().get_parent().camera,_actor,arena_view.global_position)
+   boss_camera.configure(get_parent().get_parent().camera,_actor,arena_view.global_position,get_parent().get_parent().native_demo_boss_actor)
    boss_visual=preload("res://scripts/boss11_visual_reader.gd").new();boss_visual.z_index=349;add_child(boss_visual)
    boss_visual.configure(get_parent().get_parent())
    get_parent().get_parent().native_demo_boss_defeated.connect(func(_stage: int):boss_camera.set_arena(false))
