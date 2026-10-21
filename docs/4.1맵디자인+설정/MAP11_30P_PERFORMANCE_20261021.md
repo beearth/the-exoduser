@@ -86,3 +86,8 @@ NEXT PASS: 성능예산결과및기존feather/clone/표시충돌접촉잔여를�
 | 검수 제약 | 관련검사34/34는초기정적합성버전에서1회. 이후패스통합/15preload정리는실제Main캡처·shader/script ERROR0·픽셀비교로확인;동일테스트재실행0. pod/mouth OFF가GPU ALU를얼마나제거했는지컴파일러검증없음 |
 
 **VISUAL VERDICT: RETOUCH (기존잔여 유지), 이번화면보존 PASS / 성능예산 FAIL. 요청된 예산복구 완료가 아니다.**
+
+
+## MAP11-30c 후속 후보
+
+> 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.

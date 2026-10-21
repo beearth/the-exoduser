@@ -56240,3 +56240,13 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 
 - 정적접지/root/BACK15층합성,ground패스통합·조직crop별effect·fog zero-alpha cull·미사용15texture preload정리. source/collision/R1700/PCcore보존.
 - 시각유지PASS/관련검사1회34PASS,최종유효p95 8.558ms/focus_lost0/104draw. **8.33ms예산FAIL,복구완료아님**. MAP11_30P_PERFORMANCE_20261021 및 TARGET_FRAMES 하단성능행에수치·실패후보·운영이탈기록.
+
+## 2026-10-21 — MAP11-30c 캐릭터 축척·장면 접지·정적 바닥 디테일
+
+| 범위 | 반영/검수 |
+|---|---|
+| 기준/소유 | 사용자 지정30p `7504d2c9`, 격리branch `codex/map11-30c-20261021`; R tracked/INDEX 변경0. 시작R fetch 메타데이터 쓰기 예외는 상세보고서에 기록 |
+| 표시/카메라 | 같은 전사source2.0, 보스r×14.1/620, 웹프레이밍입장.563700169/근접최대.8; R1700/속도/충돌/사거리/PCcore 보존 |
+| 접지/팔레트 | 공유ambient(.89,.77,.81)/red rim(.62,.20,.22,.36), soft analytic128² AO. 기존root crack 재보정·정적floor합성, 새이미지생성/점/디더링0 |
+| 검수 | MAP30b34/34,arena35/35,BOSS03 18/18,BC08 24788/0. BOSS02 17/18: 이전midpoint.49 기대1fail→상수참조로 수정/재실행0. 유효성능1회p95 7.738ms/focus_lost0; 후검토소규모보정 경계 별도 |
+| 인수 | 목표비교/근접/3종1x/실제Main live0·2초 보존. VISUAL RETOUCH: 원화결부드러움/기존overview접합/자연전투 미검수. [상세계약·측정·MAP REPORT](4.1맵디자인+설정/MAP11_30C_SCALE_INTEGRATION_20261021.md), 외부 `_out/MAP11-30c/DONE.txt`에SHA/원격/정리 |

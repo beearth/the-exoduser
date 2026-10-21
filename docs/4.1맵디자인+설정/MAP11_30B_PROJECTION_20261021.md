@@ -67,3 +67,8 @@ NEXT PASS: 실제 actor/충돌접촉과 .6 표시의 계약 통합,경계feather
 ## MAP11-30p 성능 후속 (2026-10-21)
 
 위 수치·리소스 설명은 해당 제작차수 이력이다. 장면/충돌을 유지한 정적합성·바닥패스통합·안개zero-alpha영역제거·미사용15texture preload 제거의 현행 후보는 [MAP11-30p](MAP11_30P_PERFORMANCE_20261021.md)를 따른다. 시각유지 PASS, 유효p95 **8.558ms**/focus_lost0/104draw로 **8.33ms 성능예산 FAIL**. 원본 floor/veins와 소품 source는 보존한다.
+
+
+## MAP11-30c 후속 후보
+
+> 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.

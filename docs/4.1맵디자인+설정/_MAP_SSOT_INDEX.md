@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.
+
 > **2026-10-21 MAP11-23 현행:** [설계서 §28](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21). 외곽 변형/PNG소품 교체·입구4주 변주·처형장 기존fade·pit grading. 전체 **RETOUCH**, before 유효성 실패로 맵비용 전후 비교 미검증. after p95 field9.449/arena8.509ms·focus_lost0. 아래는 제작 이력.
 
 > 2026-10-21 MAP11-21d 현행: [설계서 §20.7](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21). 04정상variant0/06죄수정면yaw0+opaque-depth·pit1.5배/게이트뒤root-dark PNG. **VISUAL RETOUCH, 성능검수 FAIL**: 단회96checks/3fail, p95 field9.530/arena7.212ms, focus_lost1648/1749. 아래21c이하는 이력.
