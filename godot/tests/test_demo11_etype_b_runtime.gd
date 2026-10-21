@@ -63,10 +63,7 @@ func run() -> void:
   var before: int=actor.hp
   var result: Dictionary=HURTE.new().execute(b_main,b_main.world,actor,1,0.0,0,{})
   damage_rows.append({"etype":actor.etype,"before":before,"after":actor.hp,"receipt":result})
-  if actor.etype==8:
-   check(not result.ok and actor.hp==before and str(result.reason).contains("etype8_protected_death_blast_owner_required"),"only type8 refused before missing protected death")
-  else:
-   check(result.ok and actor.hp<before and actor.alive,"actual protected hurtE nonlethal HP write "+str(actor.etype)+":"+str(result.get("reason")))
+  check(result.ok and actor.hp<before and actor.alive,"bound PC protected hurtE nonlethal HP write "+str(actor.etype)+":"+str(result.get("reason")))
  if b_actors.size()==5:
   # Let the real hurtE hit-stun prefix expire before testing unrelated B states.
   for tick in range(16):
@@ -83,12 +80,12 @@ func run() -> void:
   berserk.advance_native_phase(0.5,2,[])
   check(berserk.attack==46 and is_equal_approx(berserk.data.speed_pixels_per_tick,speed*2.2),"enrage once")
   var shaman: Node=b_actors[1]
-  shaman.b_source.reviveT=0;shaman.alerted=true;shaman.advance_native_phase(0.5,1,[])
-  check(shaman.b_fault=="actual_dead_pool_revive_owner_required","missing real deadPool not counterfeit revival")
+  shaman.state="idle";shaman.b_source.reviveT=0;shaman.alerted=true;shaman.advance_native_phase(0.5,1,[])
+  check(shaman.b_fault.is_empty() and shaman.b_source.reviveT==60.0,"PC lifecycle empty corpse pool SOURCE_RETURN schedules 60 ticks")
   var womb: Node=b_actors[3]
   womb.state="eSummon";womb.st2=0;womb.alerted=true;womb.advance_native_phase(0.5,1,[])
   check(womb.b_fault=="actual_type3_count2to3_MAP11_spawn_owner_required","no wrong type7 count or unapproved child coordinates")
- print("ETYPE_B_RUNTIME_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"registered":b_actors.size(),"damage_rows":damage_rows,"combat_scope":"nonlethal_hurtE_types9to12; type8_refused","source_scheduler_auto_tick":false,"MAP11_product_provider":false}))
+ print("ETYPE_B_RUNTIME_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"registered":b_actors.size(),"damage_rows":damage_rows,"combat_scope":"nonlethal_hurtE_types8to12; PC lifecycle empty corpse pool","source_scheduler_auto_tick":false,"MAP11_product_provider":false}))
  b_main.free()
  await process_frame
  quit(0 if failures==0 else 1)
