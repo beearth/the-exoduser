@@ -56204,3 +56204,9 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 ## 2026-10-21 MAP11-PERF2
 - 06c8a260 기준4커밋 동일 PID81277 공존 비교: 최초arena 초과22c. floor static bake+단일pass pulse, 기존ring atlas annulus/cull, rim uniform 전환cache. 관련316/0, field9.313/arena9.108ms 목표FAIL. 설계서§27/성능SSOT에 원인·조치·전수표·한계 동기화. PCcore/save/user PID 변경0.
 - 추가 범위분리: map 표시만 제외field8.685/arena8.225, 표시+프레젠테이션tick 제외8.493/8.117ms(모두focus0). 제품 성능통과로 사용하지 않음. 목표 미달·잔여 공통비용 분석 필요.
+
+## 2026-10-21 BOSS11-01 — 보스 가독성 격리 후보
+
+- cb154e8d 기준 신규 상수·fixture만 추가. 기존 보스 idle atlas·실제 DEMO11-42 HP 위젯·공유 림과 범위 도형의 before/after20뷰+1x20크롭. 제품 보스 렌더/전투·게이트·HP·패링·최종사망 변경0.
+- **RETOUCH/요청 미완료**: 6범위 도형 후보 외17패턴 실제 렌더 미검수, 실제 탄/HPreadback 증거0. BC01~10 각1회354093assertions/실패0; 추가 actor fixture spawn 거부→hp접근 오류. 단회 명목arena p95 8.383ms/focus0, 목표8.33 초과. PID81277 보존.
+- 수치·가독성 표·캡처 의미·운영 예외·MAP PRODUCTION REPORT: `8.1보스디자인바이블/BOSS11_01_READABILITY_20261021.md`. 외부 `~/exoduser-wt/_out/BOSS11-01/DONE.txt`에 SHA/원격 보존/증거 경로 기록.
