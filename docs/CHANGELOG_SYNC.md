@@ -56227,3 +56227,10 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 ## 2026-10-21 MAP11-30
 - 보스룸 목표 원화 paint-over split 첫 시제품. target30 룩/측정RGB curve/층/2shader, 기존 arena 시각 hide와 source-adapter 보존, 원형R1700·외곽충돌·BOSS11예고/카메라 불변.
 - 관련 수치/원본/실제 캡처/FAIL 차이표는 `4.1맵디자인+설정/MAP11_30_TARGET_SPLIT_20261021.md`, 목표 문서 하단 누적. p95단회7.747ms/focus_lost0. BC source 인수누락 실패와 시각 FAIL을 숨기지 않음. 독립branch, main/PC 배포 없음.
+
+## 2026-10-21 MAP11-30b — 보스룸 축척·투영 대응
+
+- source2000px→화면1920px/world2.6666666667, logicalY .6 역/정투영 쌍으로 원화 타원 비율 유지. 같은 크기 미러clone, BACK 역floor mask,7소품 화면기준 배치/외곽7충돌원(반경90,min>1700),R1700/provider/PC전투코어 유지.
+- 전체 vertex호흡 제거,pod3영역국소UV±.006/.16Hz,입2영역2자세UV .018/.55Hz. 신규이미지생성/inpaint/3D/틱목록API/ResourceLoader0.
+- 실제Main1920×1080/1x비교 RETOUCH. 관련검사1회33/34PASS,마지막preview노드가정FAIL→recipe반경assert로수정/재실행0. p95단회8.734ms/p99 9.768/focus_lost0,8.33예산FAIL. 자연보스전/PC/접촉일치 검수아님.
+- 정확한수치/경계/차이표/MAP PRODUCTION REPORT: `4.1맵디자인+설정/MAP11_30B_PROJECTION_20261021.md`. 목표문서차이표누적. 외부증거 `_out/MAP11-30b/`.

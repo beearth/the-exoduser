@@ -19,15 +19,22 @@ m=Image.new('L',im.size);ImageDraw.Draw(m).polygon(floor_poly,fill=255)
 y,x=np.mgrid[:H,:W].astype(np.float32)
 def reflect(v,lo,hi):
  t=(v-lo)%(2*(hi-lo));return lo+np.minimum(t,2*(hi-lo)-t)
-clone=np.asarray(im.crop((530,330,1470,820)).resize(im.size,Image.Resampling.BICUBIC))
+clone=cv2.remap(a,reflect(x,650,1350).astype('float32'),reflect(y,350,780).astype('float32'),cv2.INTER_CUBIC,borderMode=cv2.BORDER_REFLECT_101)
 w=np.asarray(m.filter(ImageFilter.GaussianBlur(20)),dtype=np.float32)/255
 floor=(a*w[...,None]+clone*(1-w[...,None])).astype('uint8')
-# Source floor ellipse -> unchanged circular simulation plane. Fixed camera .36.
+# Screen-calibrated split: 2000 source px -> 1920 screen px at zoom .36.
+# Logical ground Y is inverse projected by .6, then projected once for Canvas2D.
+# They cancel for painted pixels: never stretch the source ellipse into a circle.
 n=4096; yy,xx=np.mgrid[:n,:n].astype(np.float32)
-wx=(xx/(n-1)-.5)*4800; wy=(yy/(n-1)-.5)*4800
-sx=1000+wx*(820/1700);sy=550+wy*(350/1700)
+source_scale=(1920/2000)/.36; projection_y=.6
+extent=n*source_scale
+wx=(xx/(n-1)-.5)*extent
+logical_y=(yy/(n-1)-.5)*extent/projection_y
+sx=1000+wx/source_scale;sy=562.5+logical_y*projection_y/source_scale
 b=cv2.remap(floor,sx,sy,cv2.INTER_CUBIC,borderMode=cv2.BORDER_REFLECT_101)
-r=np.hypot(wx,wy); alpha=np.clip((2050-r)/300,0,1); alpha=alpha*alpha*(3-2*alpha)
+# Large arena coverage uses the same source-sized reflected clones; no upscaled crop.
+r=np.hypot(wx,logical_y*projection_y)
+alpha=np.clip((5400-r)/800,0,1);alpha=alpha*alpha*(3-2*alpha)
 Image.fromarray(np.dstack([b,(alpha*255).astype('uint8')])).save(out/'floor.png')
 # Purple veins are selected from existing chroma only, not painted random points.
 purple=np.clip((b[:,:,0].astype(float)+b[:,:,2]-2*b[:,:,1]-12)/70,0,1)
@@ -62,22 +69,25 @@ for i,(name,poly,foot) in enumerate(regions):
  apron=im.convert('RGBA');apron.putalpha(Image.fromarray((mx*apron_weight*180).astype('uint8')));apron.crop(box).save(out/(name+'_root.png'))
  shadow=cv2.GaussianBlur((mx*apron_weight).astype('float32'),(0,0),12)
  sh=np.zeros((H,W,4),dtype='uint8');sh[:,:,3]=(shadow*130).astype('uint8');Image.fromarray(sh).crop(box).save(out/(name+'_shadow.png'))
- v=np.array([(foot[0]-1000)/820,(foot[1]-550)/350]);v=v/np.linalg.norm(v)*1755
- meta.append(dict(id=name,box=box,source_foot=foot,foot=[round(float(z),3) for z in v],offset=[box[0]-foot[0],box[1]-foot[1]],scale=2.25))
+ # Exact source screen foot, plus unprojected collision foot outside combat disk.
+ visual=np.array([(foot[0]-1000)*source_scale,(foot[1]-562.5)*source_scale+120])
+ logical=np.array([visual[0],(visual[1]-120)/projection_y])
+ if np.linalg.norm(logical)<1840:logical*=1840/np.linalg.norm(logical)
+ meta.append(dict(id=name,box=box,source_foot=foot,foot=visual.tolist(),collision_foot=logical.tolist(),offset=[box[0]-foot[0],box[1]-foot[1]],scale=source_scale))
 # Foreground branches only: lower border, continuous alpha edge, no screen overlay.
 fg=Image.new('L',im.size)
 ImageDraw.Draw(fg).polygon([(0,880),(130,920),(380,990),(530,955),(620,1015),(810,1060),(1020,1100),(1170,1060),(1320,1040),(1450,1025),(1560,1030),(1700,970),(1880,885),(2000,830),(2000,1125),(0,1125)],fill=255)
 rgba=im.convert('RGBA');rgba.putalpha(fg.filter(ImageFilter.GaussianBlur(1)));rgba.crop((0,820,2000,1125)).save(out/'foreground.png')
 # Source perimeter as distant continuous mass, behind the independently sorted
 # front silhouettes. Circular world mask below removes every combat floor pixel.
-bg=im.convert('RGBA'); bg_alpha=np.clip((np.hypot((x-1000)*2.9,(y-550)*2.9)-1650)/350,0,1)
+bg=im.convert('RGBA'); bg_alpha=1-np.asarray(m.filter(ImageFilter.GaussianBlur(20)),dtype=float)/255
 bg.putalpha(Image.fromarray((bg_alpha*255).astype('uint8')));bg.save(out/'backmass.png')
 # No stochastic fog: grayscale structure copied from the source gray perimeter.
 fog=im.crop((1440,30,1696,286)).resize((256,256),Image.Resampling.LANCZOS).convert('L').filter(ImageFilter.GaussianBlur(14));fog.save(out/'fog.png')
 # RGB curves (source pixels remain identity); applied to legacy environment only.
 # 0, .25, .5, .75, 1 -> .025,.29,.56,.79,1.0, channel gains 1.04,.94,1.02.
 curve={'resource':'legacy_to_target_curve.png','source_target':'identity: already painted in target look','calibration':'baseline ROI 650,400,600,300 -> target ROI 650,400,700,300; channel quantiles .1,.3,.5,.7,.9'}
-manifest={'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'source_size':[W,H],'floor_size':[n,n],'world_extent':4800,'source_floor_ellipse':[1000,550,820,350],'radius':1700,'boundary_radius':1755,'regions':meta,'curve':curve,'new_generation':False,'dither':False,'method':'source-adjacent reflected clone, feathered source polygons, cubic inverse projection; no inpainting model'}
+manifest={'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'source_size':[W,H],'floor_size':[n,n],'world_extent':extent,'source_scale':source_scale,'projection_y':projection_y,'screen_center_y':120,'source_floor_ellipse':[1000,550,820,350],'radius':1700,'boundary_radius':1755,'regions':meta,'curve':curve,'new_generation':False,'dither':False,'method':'same-scale reflected source clone; uniform screen calibration; logical Y inverse .6 then render .6; no model'}
 (out/'split.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps(manifest,ensure_ascii=False))
 # Optional baseline frame makes the independent current-frame -> target RGB curve.

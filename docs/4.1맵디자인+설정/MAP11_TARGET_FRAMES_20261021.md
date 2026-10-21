@@ -45,3 +45,5 @@
 |---|---|---|---|---|
 | 2026-10-21 | MAP11-30 보스룸 입장: 중앙→북 경계 | `~/exoduser-wt/_out/MAP11-30/captures/compare_target_vs_game.png` | 단일 원화 층 분해 첫 시제품. floor 세로 확대·clone/반사·북 경계 잘림·mouth 배치/중복·crop 접합 잔여. 아직 같은 장면 아님 | **FAIL** |
 | 2026-10-21 | 같은 구도 1x | `~/exoduser-wt/_out/MAP11-30/captures/compare_1x.png` | 전체 덩어리 호흡만, 국소 pod/입2프레임 미완. 전역 LUT 대신 source identity+legacy용 측정 curve 보관. [정확 수치·단회 검수](MAP11_30_TARGET_SPLIT_20261021.md) | FAIL / 첫 시제품 보존 |
+
+| 2026-10-21 | MAP11-30b 보스룸 같은 입장 구도1920×1080/1x | `~/exoduser-wt/_out/MAP11-30b/captures/compare_target_vs_game.png`, `compare_1x.png` | source 1px→화면.96px/균일world2.6667로 바닥 결·타원·나무 위치를 목표 화면에 대응. BACK 중복/직선 경계 크게 감소. 잔여: 일부 feather/clone/안개 차이, 화면 foot와 unprojected collision 접촉 미검수. 알주머니 국소UV/입2자세 추가. p95 **8.734ms**, focus_lost0, 단회 유효이나8.33초과 | **RETOUCH**, 성능예산 FAIL. [정확값·검수](MAP11_30B_PROJECTION_20261021.md) |

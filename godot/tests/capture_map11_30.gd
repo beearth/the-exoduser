@@ -1,7 +1,7 @@
 extends "res://tests/benchmark_map11_21.gd"
 ## Actual Main presentation; source idle boss is a capture fixture, not live combat.
 func _run() -> void:
- if OS.get_user_data_dir().get_file()!="EXODUSER-MAP11-30-Isolated":quit(2);return
+ if OS.get_user_data_dir().get_file()!="EXODUSER-MAP11-30b-Isolated":quit(2);return
  var tag: String="after"
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
@@ -36,7 +36,7 @@ func _run() -> void:
   body.material=scene.get_node("MAP11Detail").material_;arena.add_child(body)
   await frame_capture(tag+"_entry")
   var f:=FileAccess.open(output.path_join(tag+"_receipt.json"),FileAccess.WRITE)
-  f.store_string(JSON.stringify({"viewport":[1920,1080],"camera_local":main.camera.global_position-arena.global_position,"offset":main.camera.offset,"zoom":main.camera.zoom,"player_local":main.player.global_position-arena.global_position,"crop":[560,170,800,700],"boss":"source idle fixture, no AI/HP/gate writes","space":"nominal arena"},"  "))
+  f.store_string(JSON.stringify({"viewport":[1920,1080],"canvas_transform":str(arena.get_global_transform_with_canvas()),"camera_center_local":str(main.camera.get_screen_center_position()-arena.global_position),"camera_local":main.camera.global_position-arena.global_position,"offset":main.camera.offset,"zoom":main.camera.zoom,"player_local":main.player.global_position-arena.global_position,"crop":[560,170,800,700],"boss":"source idle fixture, no AI/HP/gate writes","space":"nominal arena"},"  "))
  main.queue_free()
  for i in range(16):await process_frame
  quit(0)
