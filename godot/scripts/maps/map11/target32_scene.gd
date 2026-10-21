@@ -38,6 +38,7 @@ func _ready() -> void:
  var mist:=ShaderMaterial.new();mist.shader=preload("res://scripts/maps/map11/target32_fog.gdshader")
  mist.set_shader_parameter("fog_color",Look.FOG);mist.set_shader_parameter("opacity",Look.FOG_ALPHA);fog.material=mist;add_child(fog)
  layers.append({"node":fog,"rect":Rect2(fog.position-fog.texture.get_size()*fog.scale*.5,fog.texture.get_size()*fog.scale)})
+ preload("res://scripts/maps/map11/north32c_tour.gd").mount(self,_unlit)
  set_process(false);set_physics_process(false)
 func update_view(point: Vector2,delta: float) -> void:
  if not is_instance_valid(_camera):_camera=get_viewport().get_camera_2d()

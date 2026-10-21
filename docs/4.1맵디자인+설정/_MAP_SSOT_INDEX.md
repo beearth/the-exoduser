@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-32c 최신 후보: [계측·북쪽 디테일·VRAM 압축](MAP11_32C_MEASURED_FIELD_20261021.md). 기준/현재 p95 9.485/9.520ms, 최종9.122ms/p99 10.247ms/focus0. 전체 VRAM p95 3257505721→2825851708bytes. 237checks/0fail. source clock/input CPU 원인은 PC 인계, core수정0. **VISUAL RETOUCH / PERFORMANCE FAIL**, main 인수/PC 동기화 완료 아님. 아래32b는 이전 후보 이력.
+
 > 2026-10-21 MAP11-32b 최신 후보: [정적 bake·북접합 리터치·검수](MAP11_32B_FIELD_BAKE_20261021.md). START zoom.70 유지, 북미러/검은공백 제거. 관련237/0, 유효p95 **11.806ms**/p99 **12.905ms**/focus0, **124draw/225objects**. VISUAL RETOUCH / 성능 FAIL, main 인수금지. 아래32는 이전 후보 이력.
 
 > 2026-10-21 MAP11-32 필드 첫 구역 검토 후보: [목표 장면 분해·룩·층·발 충돌·실측](MAP11_32_FIELD_TARGET_SPLIT_20261021.md). START `(0,3700)`→첫 통로만, 원화 배율1.3714285714/기존 줌.70·투영.6 유지. 입구 TOUR4개를 source 고목으로 대체, 다른13개 유지. main/PC 반영 아님. 최종 판정·단회 성능은 해당 보고서 하단.

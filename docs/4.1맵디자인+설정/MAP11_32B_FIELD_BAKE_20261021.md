@@ -1,3 +1,5 @@
+> 후속 MAP11-32c: [수정 전 a/b·층별계측 / VRAM 압축 / 북쪽3무리](MAP11_32C_MEASURED_FIELD_20261021.md). 아래 수치는32b 당시 이력이며,26import의 현행 compress/mode는2(S3TC)다.
+
 # MAP11-32b — 첫 필드 정적 bake와 북접합 리터치
 
 기준 `d953e3492171a20abe7bc43df50939eca4b04fc0`, 동일 `codex/map11-32-20261021`. START/카메라 zoom `.70`, offset `(0,-180)`, source 균일 배율 `1.3714285714`, actor scale·provider/충돌/경로/스폰/PC 전투 코어는 보존한다. 아래는 측정한 최종 후보 계약이며 검수 결과는 외부 `~/exoduser-wt/_out/MAP11-32b/`와 문서 하단에 기록한다.

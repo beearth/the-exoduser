@@ -1,3 +1,10 @@
+## 2026-10-21 — MAP11-32c 계측·VRAM 압축·북쪽 관광 디테일
+
+- 기준 f85cfb9a, 동일 codex/map11-32-20261021 검토 후보. 수정 전30c/current 및7층A/B·내장함수 프로파일로 source clock/domain 검증 CPU 비용 확인, PC 코어 변경0.
+- 맵 질의 중복 runtime_ready scan만 제거, provider의 기존 전체 유효성·충돌/경로/스폰 검사 유지. 지면26import compress/mode2 S3TC/BC, 원본PNG 불변. 기존1-1 root/pool/blood/skull로 북쪽 비대칭3무리·foot/contact·저채도 전이, tick 로딩/할당·runtime3D·신규생성0.
+- 6종 각1회237checks/0fail. 최종 단회p95 9.122ms/p99 10.247ms/focus0, VRAM p95 3257505721→2825851708bytes(−411.657MiB). 성능8.33ms 미달 FAIL, GPU API0은 미계측. VISUAL RETOUCH, main/PC 인수·배포 아님.
+- SSOT/계측표/함수명/캡처: [MAP11_32C_MEASURED_FIELD_20261021.md](4.1맵디자인+설정/MAP11_32C_MEASURED_FIELD_20261021.md), 외부 `~/exoduser-wt/_out/MAP11-32c/`.
+
 ## 2026-10-21 MAP11-23
 
 - 신규 검수 스크립트2개의 Godot UID도 함께 보존.

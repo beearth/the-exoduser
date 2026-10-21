@@ -36,9 +36,10 @@ func _finish_arrival() -> void:
   get_parent().get_parent().camera.make_current()
   _arrival_camera.queue_free();_arrival_camera=null
 func can_move(point: Vector2,radius: float) -> bool:
- return current() and provider.can_move(point,radius,active_space)
+ # Provider queries perform the complete runtime_ready check themselves.
+ return is_instance_valid(provider) and is_instance_valid(start_marker) and provider.can_move(point,radius,active_space)
 func line_of_sight(a: Vector2,b: Vector2) -> bool:
- return current() and provider.line_of_sight(a,b,active_space)
+ return is_instance_valid(provider) and is_instance_valid(start_marker) and provider.line_of_sight(a,b,active_space)
 
 var _fade: ColorRect
 var _fade_tween: Tween

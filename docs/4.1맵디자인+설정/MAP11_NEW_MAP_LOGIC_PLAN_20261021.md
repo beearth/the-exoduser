@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-32c 최신 후보: [계측·북쪽 디테일·VRAM 압축](MAP11_32C_MEASURED_FIELD_20261021.md). 기준/현재 p95 9.485/9.520ms, 최종9.122ms/p99 10.247ms/focus0. 전체 VRAM p95 3257505721→2825851708bytes. 237checks/0fail. source clock/input CPU 원인은 PC 인계, core수정0. **VISUAL RETOUCH / PERFORMANCE FAIL**, main 인수/PC 동기화 완료 아님. 아래32b는 이전 후보 이력.
+
 > 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.
 
 # MAP11 — 1-1 새 맵 제작 로직 설계안
