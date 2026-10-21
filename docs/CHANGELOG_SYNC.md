@@ -56344,3 +56344,5 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - INTEG-6 validation results will be recorded in engine/DEMO11_STATUS_20261021.md and external INTEG-6/DONE.txt.
 
 - 자동 병합이 충돌 표시 없이 제거한 PC API EOF/M29·type3와 관련 docs/ctx/SFX 도구/package 변경은 기준 브랜치 바이트 그대로 보존했다. 첫 import ERROR2(preload 누락) 뒤 수정·재import하며 관련 테스트/E2E 실행 전 발견했다. 최종 main.gd는 PC 기준과 동일 바이트다.
+
+- INTEG-6 final validation: import ERROR0; relevant suites once (map11_product 4 assertion failures + _bossArena SCRIPT ERROR preserved); PCIB31/31, PCIA and BC01-10 pass. E2E once PASS12/NOT_READY6/FAIL0, natural HP0 not observed in 45s; PASS13 target unmet. Bossroom once valid focus_lost0 p95 9.827ms >8.33ms budget FAIL. Details: engine/DEMO11_STATUS_20261021.md.
