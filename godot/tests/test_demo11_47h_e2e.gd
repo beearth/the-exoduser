@@ -259,10 +259,48 @@ func run() -> void:
  await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
  begin("revival_interface")
  var life_api: bool=main.has_method("request_native_player_life_transition") and is_instance_valid(main.native_demo_life)
+ var pickup_position: Vector2=main.player.global_position
  var life: Dictionary=main.native_demo_life.snapshot() if life_api else {}
- # Observe product transitions only. Never write HP/iframes/roll or emit a death.
- var observed: bool=life.get("receipts",[]).any(func(r):return r.get("op") in ["fallen_enter","revive_once"] and r.get("status")=="APPLIED")
- await done("PASS" if observed else "NOT_READY","" if observed else "natural HP0 not observed; PCI-01 product consumer connected",{"interface_present":life_api,"consumer_snapshot":life,"lethal_damage_forced":false,"transition_injected":false})
+ var natural_trace: Array=[]
+ var hp_before: float=main.player.hp
+ var min_hp: float=hp_before
+ var contact_frames:=0
+ var started:=Time.get_ticks_msec()
+ var deadline:=started+45000
+ # Only test-owned placement. Actual scheduler/AI/attack/hurtP/life owners run.
+ # Do not call damage, mutate HP/iframes/RNG, or emit any life signal.
+ while life_api and Time.get_ticks_msec()<deadline:
+  life=main.native_demo_life.snapshot()
+  var phase: String=str(life.get("phase",{}).get("phase",""))
+  if phase in ["hp0","fallen","dead"]:break
+  var attacker: Node
+  for enemy in main.world.get_enemies():
+   if is_instance_valid(enemy) and enemy.get("alive")==true and main.native_natural_enemies.owns_actor(enemy):
+    attacker=enemy;break
+  if is_instance_valid(attacker):
+   main.player.global_position=attacker.global_position+Vector2(24,0)
+   contact_frames+=1
+  await physics_frame
+  if main.player.hp<min_hp:
+   min_hp=main.player.hp
+   natural_trace.append({"ms":Time.get_ticks_msec()-started,"hp":min_hp,"phase":main.read_native_player_life_phase().duplicate(true)})
+ var countdown: Array=[]
+ var resolve_deadline:=Time.get_ticks_msec()+15000
+ while life_api and Time.get_ticks_msec()<resolve_deadline:
+  life=main.native_demo_life.snapshot()
+  var phase: String=str(life.get("phase",{}).get("phase",""))
+  if phase=="dead" or (phase=="alive" and not life.receipts.is_empty()):break
+  if phase not in ["hp0","fallen"]:break
+  if countdown.is_empty() or float(countdown[-1].remaining)-float(life.remaining)>=30:
+   countdown.append({"phase":phase,"remaining":life.remaining,"ms":Time.get_ticks_msec()-started})
+  await physics_frame
+ life=main.native_demo_life.snapshot() if life_api else {}
+ var entered: bool=life.get("receipts",[]).any(func(r):return r.get("op")=="fallen_enter" and r.get("status")=="APPLIED")
+ var resolved: bool=life.get("receipts",[]).any(func(r):return r.get("op") in ["revive_resolve","final_death"] and r.get("status")=="APPLIED")
+ var observed: bool=min_hp<=0 and entered and countdown.size()>1 and resolved
+ # Preserve INTEG-5b pickup at the kill position after this observation detour.
+ main.player.global_position=pickup_position
+ await done("PASS" if observed else "NOT_READY","" if observed else ("natural HP0 not observed within 45s of AI contact" if min_hp>0 else "natural HP0 observed; fallen/countdown/resolve incomplete"),{"interface_present":life_api,"consumer_snapshot":life,"lethal_damage_forced":false,"transition_injected":false,"hp_before":hp_before,"min_hp":min_hp,"contact_frames":contact_frames,"natural_damage_trace":natural_trace,"countdown_trace":countdown,"fallen_applied":entered,"resolve_applied":resolved,"elapsed_ms":Time.get_ticks_msec()-started})
  begin("item_pickup")
  var inv: Dictionary=main.source_state.read_current_inventory();var before_size: int=inv.bag.size();var records: Array=main.source_state.read_native_drop_records()
  if records.is_empty():

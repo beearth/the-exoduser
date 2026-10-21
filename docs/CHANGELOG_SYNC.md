@@ -56283,3 +56283,10 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 | BGM 필수 source-root 보완, map11_product 선재 계약 오류 대조 | override14/0, lifecycle51/0(Dummy13 skip), map 동일4 FAIL 및 _bossArena 오류. INTEG5B_VALIDATION_20261021.md 및 외부 INTEG-5b/DONE.txt |
 
 게임 제품·전투·맵·저장 계약 변경 없음. 기존 INTEG5 검수 문서는 보완 문서 링크를 추가하고 과거 관측을 보존한다.
+
+## 2026-10-21 PCIA-WIRE-b
+
+| 변경 | 검수 |
+|---|---|
+| INTEG-5b merge, 픽업 수정·PCI-01 관측 모두 보존 | PCIA_WIRE_B_REPORT_20261021.md |
+| E2E 자연 적 접촉 45초 + fallen countdown/분기 15초 읽기 | HP/iframe/RNG/신호 주입0, PC 계약 구현 변경0 |

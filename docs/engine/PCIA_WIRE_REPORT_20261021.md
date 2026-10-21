@@ -76,3 +76,7 @@ PASS12 / NOT_READY6 / FAIL0. 엔진 ERROR0, result contract validation 오류0. 
 | lobby_return | NOT_READY | actual lobby navigation not completed |
 
 이번 변경은 부활/사망 호출부 연결이며 1-1 전체 데모 완료가 아니다. 보스 final은 PC 계약대로 NOT_READY다. retry stage 재구성은 별도 미연결이며 EXP 차감 전에 차단한다.
+
+## PCIA-WIRE-b 후속
+
+INTEG-5b `6833f71f` 병합과 자연 피격·countdown 관측 보강은 [PCIA_WIRE_B_REPORT_20261021.md](PCIA_WIRE_B_REPORT_20261021.md)를 따른다. 위 표는 최초 PCIA-WIRE 실행의 관측 이력이다.
