@@ -102,3 +102,50 @@ E2E 상세(1회, 결과 그대로):
 | 필드보스 4마리 전멸 → `_fbDone`/gate 실제 경로 | 이번 테스트는 1마리 처치까지만 관측(나머지 생존 `_fbDone` false). 4마리 전멸·gate 개방 미관측 |
 | 실제 화면 검수 | 화면 요소 추가 0. 실창 캡처 없음 |
 | Mac 측 실행 | 미실행(PC Windows만) |
+
+## 8. INTEG-9 전제 갱신 (2026-10-22, PC Claude)
+
+worktree `G:\exoduser-wt\pc-tests-integ9`, branch `claude/pc-tests-integ9-20261022`, base Mac INTEG-9 `1c3f67a1`(INTEG-8 fe897b08 + pc-followups 2ab089c8). **PC 소유 테스트의 전제만 수정. 제품 코드·Mac 소유 파일 수정 0, 판정 약화·삭제 0.**
+
+### 8.1 수정 내용
+
+| 대상 | 원인 | 수정 |
+|---|---|---|
+| `test_pc_combat_pack_b` + `pc_combat_pack_b_source_oracle.cjs` (Mac 래퍼 `test_pc_combat_pack_b_mac`·`mac_pcib_source_oracle.cjs`는 무수정으로 상속) — oracle SHA 6건 | 루트 `game.html`이 189899b4…86c7e로 바뀜. 고정 원본은 INTEG-5부터 `godot/source_snapshot/game.html`(4d911cdd…85e5d4) | Mac 관례(bc09·bc2_02_reuse: `source_path` 기본값 = `snapshot.gd` PATH, `--source-game=` 값을 받아도 스냅샷 경로로 고정 / bc2_*·demo11_16 oracle: `require('../source_snapshot/snapshot.cjs').readBytes()`)를 그대로 따름. oracle은 스냅샷 bytes만 읽고(SHA 불일치면 throw), 첫 위치 인자는 호출 호환용으로 유지. 결과 JSON에 `source_snapshot` 기록. `GAME_SHA256` 리터럴 단정·`oracle_utf8_payload_sha` 단정 그대로 + setup에 `source_snapshot_pinned`(snapshot.gd SHA = 리터럴 = 파일 실제 SHA) 1개 추가 |
+| `test_pc_combat_pack_b` pci09 — C15 전제 충돌 8건 | Main 부팅 때 Mac `native_demo11_pcib_death_effects.gd`가 PCI-09 3 profile(`etype8_death_explosion`·`etype29_death_shots`·C15 `etype15_death_split`, b1366b26 계열)을 이미 등록. 테스트는 미등록 전제(NOT_READY → 새 등록 APPLIED) | **(1) 통합 Main**: Mac consumer 3종 부팅 등록(receipt APPLIED·profile 일치)·각 profile의 live consumer가 Mac Callable(`_explode`/`_split`/`_shots`)·consumer 총 3개·etype15 gate ready·`_splitDone` 자식 required=false·PC recorder 같은 profile 등록 REJECTED(`profile_already_has_live_consumer`)·PC Callable로 unregister false·이후 Mac consumer revision 불변(중복·교체 0)을 단정. **(2) consumer 0 경로**: 같은 Main에 제품 `configure()`로 만든 격리 서비스 인스턴스(consumer 0 단정)를 이 그룹 동안만 `main.native_combat_pack_b`에 끼워(forced +1) 기존 단정 그대로 수행 — NOT_READY 쓰기·RNG 0, 등록 APPLIED, 단일 owner, 미지 profile 거절, PCI-11 구독, 치명 APPLIED·consumer 1회·journal 위치 42792(고어 뒤·물약 앞)·RNG 42794<43092 interleave·PCI-09→PCI-11 각 1회·unregister. 그룹 끝에서 원래 서비스 복원 + Mac consumer live 재단정(`_cleanup`도 미복원 시 복원) |
+| `test_p1002e/f/g` — MAP11 전제 | 기본 부팅(MAP11 ON)은 빈 필드. 대상은 기존 맵 부팅 배치(generic etype4·initial 전용 4종·crescent 6마리) | `test_pc_final_death` 방식: `_boot_main()`에서 Main 메타 `native_map11="off"` 명시 + 부팅 직후 `read_native_map11_provider()==null` 단정 1개. CLI `--map11=on`이면 그 단정이 실패로 드러냄 |
+| `test_pc_m29_parry` + `pc_m29_parry_source_oracle.cjs` (총괄 추가 지시) — SHA 2건 | pack_b와 같은 원인(루트 game.html ≠ 스냅샷) | pack_b와 같은 방식. `untouched_source_sha256`·`oracle_utf8_payload` 단정 그대로 + `source_snapshot_pinned` 1개 추가 |
+
+기대값 메모: p1002 e/f/g는 지시 기대값 93/357/220에 **부팅 맵 단정 1개씩이 더해져 94/358/221**이다(실패 0).
+
+### 8.2 테스트 결과 (수정 전 → 후, 각 1회 · 수정한 테스트는 기본 실행)
+
+공통: NODE_PATH=G:/exoduser/node_modules(junction 0). 매 실행 직전 `godot/override.cfg`를 만들어 격리 userdir 지정(테스트 USERDIR 상수, 없으면 `EXODUSER-pc-tests-integ9-Isolated-20261022`), 종료 후 override.cfg 제거(초반 실행은 삭제, 세션 중 `rm`이 권한 거부된 뒤로는 worktree 밖 `_out/pc-tests-integ9/moved/`로 이동 — worktree에 남은 override.cfg 0). 수정 안 한 PC 테스트는 `--source-game=<godot/source_snapshot/game.html> --node-bin=…`. 로그 `G:\exoduser-wt\_out\pc-tests-integ9\`.
+
+| 테스트 | 수정 전 | 수정 후 | ERROR |
+|---|---|---|---|
+| test_pc_combat_pack_b (인자: --node-bin만) | 362/14 (`--source-game=루트 game.html`, exit 1) | **378/0** | 0 |
+| test_pc_combat_pack_b_mac (Mac 래퍼, MAP11) | 380/14 (같은 조건) | **396/0** | 0 |
+| test_p1002e / f / g (인자 없음) | 15/3 · 6/4 · 8/6 | **94/0 · 358/0 · 221/0** | 0 |
+| test_pc_m29_parry (인자: --node-bin만) | 100/2 (`--source-game=루트 game.html`, HEAD 원문 임시 사본으로 재현) | **101/0** | 0 |
+| test_pc_followups_fieldboss | — | 167/0 | 0 |
+| test_pc_final_death / enemy_revive | — | 61/0 · 51/0 | 0 |
+| test_pc_player_life / recalc_st / pet_portrait_cache | — | 101/0 · 49/0 · 23/0 | 0 |
+| test_pc_runtime_stat_refresh | — | 288/0 | 0 |
+| test_native_qe_binding | — | 155/0 | 0 |
+| test_pcib_mac_calls | — | 31/0 | 0 |
+| test_demo11_etype15_runtime / etype_b_runtime / etype_f_runtime (Mac) | — | 151/0 · 42/0 · 33/0 | 0 |
+| E2E `test_demo11_47h_e2e --demo11-storage=on` | — | **PASS13 / NOT_READY5 / FAIL0**, exit 0, SCRIPT ERROR 0 (Mac 결과와 같음) | 0 |
+
+- E2E NR 5: bossroom_gate·boss_defeat_signal·clear·demo_end·lobby_return(Mac 기록과 같은 미지원 단계).
+- 하니스 사고(기록): 회귀 1차 묶음에서 `test_pc_final_death`가 내 스크립트의 artifacts 폴더 미생성으로 `store_string` null SCRIPT ERROR 후 멈춤(약 17분) → 내 worktree 경로가 명령줄에 있는 Godot만 종료, 폴더 생성을 고친 뒤 final_death부터 끝까지 다시 1회 실행(위 표). 테스트 코드 문제 아님.
+- `--import`: 1회(새 worktree에 `.godot` 없음, 46초, ERROR 0). 생긴 미추적 `.uid`/`.import`는 커밋하지 않음.
+- 실사용 userdir(`EXODUSER-Godot-Native-First`) 사용 0.
+
+### 8.3 보고만 (총괄 추가 지시 — 소유·원인 확인)
+
+| 테스트 | 관측(이 SHA, 1회) | 원인 | 조치 |
+|---|---|---|---|
+| test_native_main_source_starter_state | 기본 실행 148 중 1실패 `preserved source boot G40; actual G40+region7+spawnHole1/STATS5/PAS26` + SCRIPT ERROR 6. `--map11=off`도 같은 실패 | 진단 probe(`_out/.../probe/probe_gkeys.gd`, 테스트 상속·커밋 안 함): 부팅 G 40키·보존 boot G 일치·STATS5·PAS26 정상, 현재 G에 **기대 목록 밖 키 `_fbDone` 1개**(49키). writer = Mac `native_demo11_anglers.gd:43` `if not g.has("_fbDone"): g["_fbDone"]=false`(원본 G31569 initStage `G._fbDone=false`). 즉 원본에 있는 initStage 쓰기를 Mac이 이식했고 테스트의 정확 키 목록이 아직 모름 = **테스트 전제 문제** | **수정 안 함**: 키 계약 절(BOOT/REGION/SPAWN_HOLE 키 목록)은 Mac STARTER-REGIONS(2c61d82de)가 정한 부분이고 writer도 Mac 소유라 소유 판정이 PC 단독이 아님. 제안: `REGION_INIT_G_KEYS`처럼 `FIELD_BOSS_INIT_G_KEYS = ["_fbDone"]`(G31569, Mac anglers)를 정확 키 합에 추가 |
+| (같은 실행의 SCRIPT ERROR) | `native_demo11_arrow_view.gd:11` Nil→Array 5건, `native_demo11_hud_owner.gd:124` freed instance 1건 | 아래와 같음 | 보고만 |
+| test_native_source_player_regeneration_phase | 88/0, exit 0, **SCRIPT ERROR 1** | 제품 Mac `native_demo11_arrow_view.gd:11` `var packets: Array=main.world.read_native_player_projectiles(main)`. World store `read_live()`는 owner 검사(`_owner_error`: Main/World/Player/source/provider 생애주기)가 실패하면 **null**을 돌려준다(설계상 정상 반환). arrow_view는 `is_instance_valid(main)`만 보고 null을 타입 있는 Array에 넣는다. 이 테스트는 harness 부팅(`native_source_regeneration_boot=external`)·Main 교체로 provider/생애주기 불일치 구간에 `_draw`가 돈다 | **제품 코드(Mac) 문제 → 보고만**. 제안: `var packets: Variant=...; if not packets is Array: return` |

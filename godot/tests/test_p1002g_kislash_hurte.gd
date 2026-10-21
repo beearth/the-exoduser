@@ -14,6 +14,9 @@ extends SceneTree
 ## 거부 즉시 release, 스윙별 진단 로그, dry 상한 8 (완화 없음).
 ## 테스트 소유 개입(forced_actor_fields 집계): activeLMBSk 직접 기록, 배치/조준, P.hp 회복.
 ## Main 부팅 그룹은 격리 사용자 폴더(USERDIR) 필수 — 아니면 SKIP.
+## 맵 전제(INTEG-9 2026-10-22): 대상은 기존 맵 부팅 배치 적이다. MAP11 기본 ON은 부팅 직후 빈 필드라
+##   Main 메타 `native_map11="off"`(= `--map11=off`)로 기존 맵 부팅을 **명시**하고 부팅 맵 단정 1개를 둔다
+##   (test_pc_final_death 방식). CLI --map11=on이면 그 단정이 실패로 드러낸다. 판정 기준은 그대로다.
 
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 const USERDIR = "EXODUSER-P1002G-Isolated-20261020"
@@ -97,9 +100,11 @@ func _boot_main() -> bool:
 		_check(false, "actual Main PackedScene loads")
 		return false
 	active_main = packed.instantiate()
+	active_main.set_meta("native_map11", "off") # 기존 맵 부팅 명시(머리말 맵 전제)
 	root.add_child(active_main)
 	for i in range(8):
 		await physics_frame
+	_check(active_main.read_native_map11_provider() == null, "legacy map booted explicitly (map11 off)")
 	var world: Variant = active_main.get("world")
 	if not is_instance_valid(world) or world.get("ready_for_player") != true:
 		_check(false, "actual World ready_for_player")

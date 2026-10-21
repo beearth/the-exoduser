@@ -1,3 +1,13 @@
+## 2026-10-22 INTEG-9 전제 갱신 — PC 소유 테스트(묶음 B·M29·P1-002 E/F/G)
+
+- base Mac INTEG-9 1c3f67a1, branch claude/pc-tests-integ9-20261022. 제품 코드·Mac 소유 파일 수정 0, 판정 약화·삭제 0.
+- 원본 SHA: test_pc_combat_pack_b·test_pc_m29_parry와 두 oracle(.cjs)이 루트 game.html(189899b4) 대신 고정 스냅샷 godot/source_snapshot/game.html(4d911cdd)을 읽음. Mac 관례(snapshot.gd PATH 기본값, --source-game 값 무시, snapshot.cjs readBytes) 그대로. SHA 단정 유지 + source_snapshot_pinned 단정 추가.
+- PCI-09: Main 부팅 때 Mac consumer 3종(etype8/29 + C15 etype15_death_split)이 등록된 상태를 정상 전제로 단정(등록·단일 owner·PC 중복 등록 REJECTED·revision 불변). consumer 0 경로는 같은 Main에 configure한 격리 서비스 인스턴스를 그 그룹 동안만 끼워 기존 단정 그대로 검사 후 복원.
+- p1002e/f/g: 테스트 안에서 native_map11="off" 명시 + 부팅 맵 단정 1개(test_pc_final_death 방식). 기본 실행 94/0·358/0·221/0(= 93/357/220 + 단정 1).
+- 결과(각 1회): 묶음 B 직접 362/14→378/0, Mac 래퍼 380/14→396/0, m29 100/2→101/0. 회귀 PC 11종·Mac etype15/b/f 전부 0실패·ERROR 0, E2E storage=on PASS13/NR5/FAIL0·SCRIPT ERROR 0.
+- 보고만: starter_state 148/1은 현재 G의 _fbDone(Mac anglers, 원본 G31569)이 키 목록 밖 — 테스트 전제 문제지만 키 계약·writer가 Mac 소유라 미수정. regeneration_phase SCRIPT ERROR 1은 제품 Mac arrow_view.gd:11이 read_native_player_projectiles의 null을 Array에 넣는 것.
+- [상세](engine/orders/reports/pc-followups_REPORT.md#8-integ-9-전제-갱신-2026-10-22-pc-claude), 로그 `G:/exoduser-wt/_out/pc-tests-integ9/`. main push·실행 중 창 갱신 주장 없음.
+
 ## 2026-10-22 INTEG-9 — PC 후속 병합·Mac E2E 하니스
 
 - INTEG-8 fe897b08 + PC followups 2ab089c87 정상 merge. CHANGELOG 양쪽 이력 보존; PC 구현/테스트 제출본·맵 비주얼·project.godot·override 추적 해제 유지.

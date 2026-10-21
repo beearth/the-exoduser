@@ -7,9 +7,12 @@ extends SceneTree
 ##  - warning/impact/detonate 소비자와 emit_charged_projectile 는 테스트 기록기(실제 VFX/SFX 아님).
 ##  - 접촉 대기 540틱 동안 Player 위치를 actor 기준 ±300px 로 재배치(fixture_player_repositions 집계).
 ##  - poise 코어 oracle 대조는 미등록 fixture actor 의 raw poise/ib/_pImmune/stunned 를 강제 설정(forced_raw_fields 집계).
+## INTEG-9 전제(2026-10-22): 원본 = 고정 스냅샷 res://source_snapshot/game.html(SHA 4d911cdd…, snapshot.gd/.cjs).
+##  루트 game.html은 읽지 않는다. Mac 테스트 관례(bc09 등)대로 --source-game= 값은 받아도 스냅샷 경로로 고정. oracle도 snapshot.cjs.
 const USERDIR := "EXODUSER-pc-m29-parry-Isolated-20261021"
 const GAME_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
 const MAIN := preload("res://scripts/main.gd")
+const SNAPSHOT := preload("res://source_snapshot/snapshot.gd")
 const Binding := preload("res://scripts/type3_native_binding.gd")
 const SpawnRecipe := preload("res://scripts/type3_spawn_recipe.gd")
 const Services := preload("res://scripts/native_m29_contact_services.gd")
@@ -23,7 +26,7 @@ class FixtureRandom extends RefCounted:
 
 var assertions := 0
 var failures := 0
-var source_path := ""
+var source_path: String = ProjectSettings.globalize_path(SNAPSHOT.PATH) # INTEG-9: 고정 스냅샷
 var node_bin := ""
 var artifacts_dir := ""
 var main: Node
@@ -54,7 +57,7 @@ func check(ok: bool, label: String) -> void:
 
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path = arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(SNAPSHOT.PATH) # Mac 관례: 값과 무관하게 스냅샷
 		elif arg.begins_with("--node-bin="): node_bin = arg.trim_prefix("--node-bin=")
 		elif arg.begins_with("--artifacts-dir="): artifacts_dir = arg.trim_prefix("--artifacts-dir=")
 	call_deferred("_run")
@@ -100,6 +103,7 @@ func _group_async(name: String, callback: Callable) -> void:
 # ── oracle ───────────────────────────────────────────────────────────────────
 func _oracle_group() -> void:
 	check(not source_path.is_empty() and FileAccess.get_sha256(source_path) == GAME_SHA256, "untouched_source_sha256")
+	check(SNAPSHOT.SHA256 == GAME_SHA256 and source_path == ProjectSettings.globalize_path(SNAPSHOT.PATH), "source_snapshot_pinned:" + source_path)
 	check(not node_bin.is_empty() and FileAccess.file_exists(node_bin), "explicit_node_bin")
 	var out_dir := artifacts_dir if not artifacts_dir.is_empty() else OS.get_user_data_dir()
 	var out_path := out_dir.path_join("pc_m29_parry_oracle.json")

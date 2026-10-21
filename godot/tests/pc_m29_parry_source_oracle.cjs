@@ -2,11 +2,15 @@
 // Extracted verbatim: isPWin(G38469), _lParryWinTicks(G16622), _PARRY_WIN(G8670), doParry(G38470-38575),
 // _poiseHit(G19972-19998), eModHitP(G31098-31116), case'eCharge'(G40527-40538).
 // Every other identifier is a recording stub. No product-module imports. Output is a UTF-8 JSON file.
+// INTEG-9 (2026-10-22): source bytes = immutable snapshot godot/source_snapshot/game.html (snapshot.cjs, SHA-pinned
+// 4d911cdd…85e5d4), same as the Mac bc2_*/demo11_16 oracles. Root game.html moves (189899b4… title line) and is never read.
+// The first positional arg is kept for caller compatibility but not used for bytes.
 'use strict';
 const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 const [sourcePath, outputPath] = process.argv.slice(2);
 assert(sourcePath && outputPath, 'usage: node oracle.cjs <game.html> <out.json>');
-const raw = fs.readFileSync(sourcePath);
+const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
+const raw = SNAPSHOT.readBytes(); // throws on snapshot SHA mismatch
 const sha256 = crypto.createHash('sha256').update(raw).digest('hex');
 const lines = raw.toString('utf8').split('\n');
 const L = (n) => lines[n - 1];
@@ -116,7 +120,7 @@ runCase('charge_state_immune', { s: 'charge' }, {});
 runCase('iframes_skip', { s: 'sBlock', _sbParryT: 10, iframes: 3 }, {});
 runCase('sBash_after_window_damage', { s: 'sBash', st2: 4 }, {});
 
-fs.writeFileSync(outputPath, JSON.stringify({ source_sha256: sha256, source_lines: { isPWin: 38469, lParryWinTicks: 16622, PARRY_WIN: 8670,
+fs.writeFileSync(outputPath, JSON.stringify({ source_sha256: sha256, source_snapshot: 'source_snapshot/game.html', source_lines: { isPWin: 38469, lParryWinTicks: 16622, PARRY_WIN: 8670,
   doParry: [38470, 38575], poiseHit: [19972, 19998], eModHitP: [31098, 31116], eCharge: [40527, 40538] },
   pwin, cases }, null, 1), 'utf8');
 console.log('ORACLE_OK pwin=' + pwin.length + ' cases=' + cases.length);
