@@ -434,3 +434,7 @@ provider 사전 확인 (라이브 Main 부팅 프로브): 12종 중 **11 READY**
 2. 기본 근접이 치는 포이즈 피해 0은 원본과 동일 (기존 enemy.gd 주석과 일치).
 3. 넉백 뷰포트-밖 좌표이동 분기(42476 else) 미구현 — 근접 교전에서 미도달.
 4. 피격음 랜덤 폴백은 기존 오디오 소비자(_on_native_attack_enemy_audio)의 오디오 전용 RNG — provider rand 스트림과 분리 (원본은 동일 Math.random 스트림).
+
+## PC-COMBAT-PACK-B — normalBow 패킷 opts 프로필 (2026-10-21)
+
+35407 `hurtE(e,dmg,ang,_isTurretProj||p.blueBean,p,p.el)`의 패킷 opts를 실행자가 수용한다(`opts.normalBow===true`일 때). 원본 패킷은 `source_opts`로 동일성 보존, hurtE가 읽는 키만 view로 투영해 위 표의 같은 문장을 실행한다. 이 프로필에서 바뀌는 행: 42270 `_isArrow=true`·`_isGunpowder=true`·`_isMagicDmg=false`, 42276–42277 타입%=`rangedDmgPct+projDmgPct`, 42287 `_weakPj`, 42312 `critRateBow`, 42466 `_isRanged`(넉백·`_lClubKB` 미진입). 미이식 키 truthy·maxDist 없음·불 원소(42700 화상 사망)는 42110에서 쓰기 전 정지. 원본 VM 대조(같은 RNG 값 공급): 비치명/치명 각 1건 HP·쉴드·생존·킬 수·RNG 행 순서·타입 어픽스 읽기 일치. 상세 [PC_COMBAT_PACK_B_CONTRACT_20261021 §3·§8](PC_COMBAT_PACK_B_CONTRACT_20261021.md).

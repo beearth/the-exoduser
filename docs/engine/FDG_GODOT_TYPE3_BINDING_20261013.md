@@ -90,3 +90,7 @@ E는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-
 | FILES/GIT | worker소유newbinding+uid/test/SSOT/E/type3-binding only. root완료/공유파일과다른worker 변경되돌림0. workerGit0, parent code+docscheckpoint완료SHA추정0 |
 | VISUAL VERDICT | **RETOUCH** — actualprovider/전체AI/소환·원render/audio/공개input·GPU/최저1080p240미검증 |
 | NEXT PASS | actualQE/FX/sound/emitterprovider인수→parentfreshstage첫meaningfulsubset→실패만수리. type7전체등록은모든필수caller準備후별도 |
+
+## PC-COMBAT-PACK-B PCI-02 추가 — 공용 hurtE field owner (2026-10-21)
+
+`type3_native_binding.gd`에 bind 프로토콜 owner 메서드 10개와 읽기 속성 `data`(`{id:"type3:<instance_id>", native_final:{col, ib:false}}`)를 **순수 추가**했다. 구현은 `native_bound_enemy_hurte_owner.gd`가 actor의 원본 필드 dict(`get_native_modifier_state()`)에 위임한다. `Main.bind_native_enemy_hurte_owner(actor, {token})`로 bind해야 동작한다 — bind 전에는 hurtE가 0행에서 정지(쓰기 0)하며 `receive_damage` 폴백은 없다(Player 근접·검기 포함). 기존 `receive_damage`·M29/M30·poise 코어·AI 경로 본문 변경 0. 메서드 목록·live identity 규칙: [PC_COMBAT_PACK_B_CONTRACT_20261021 §4](PC_COMBAT_PACK_B_CONTRACT_20261021.md). `freeze_hit`(42446 냉기 게이지)은 type3 미이식(거절).
