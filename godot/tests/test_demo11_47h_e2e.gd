@@ -243,20 +243,15 @@ func run() -> void:
  var origin_before: int=main.native_natural_enemies.counts.origin_kills if is_instance_valid(main.native_natural_enemies) else 0
  var home: Vector2=main.player.global_position;var attacks:=0;var accepted:=0;var event_start:=event_rows.size()
  if is_instance_valid(target):
-  mark_checkpoint("test-owned Player placement/facing only; actual request_attack -> swing -> hurtE, no HP/alive/damage/RNG writes")
+  mark_checkpoint("placement only; actual automatic crossbow timer -> W01 -> PC packet flight -> hurtE; no injected projectile/damage")
   var deadline:=Time.get_ticks_msec()+45000
-  while target.alive and attacks<200 and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
-   if main.player.state!="idle":await physics_frame;continue
-   main.player.global_position=target.global_position+Vector2(-(47+float(target.radius)-8),0);main.player.facing=Vector2.RIGHT
-   attacks+=1
-   if main.player.request_attack():accepted+=1
-   main.player.release_attack()
-   await settle(36)
-   if event_rows.slice(event_start).any(func(e):return e.id==target.get_instance_id() and (e.kind=="native_hurte_halt" or (e.kind=="native_hurte" and e.ok==false))):break
-  main.player.release_attack();main.player.global_position=home
+  while target.alive and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
+   main.player.global_position=target.global_position+Vector2(-180,0)
+   await settle(6)
+  main.player.global_position=home
  var region_after: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
  var killed: bool=is_instance_valid(target) and not target.alive and region_after>region_before
- await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
+ await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"automatic_crossbow":main.native_auto_crossbow.snapshot(),"natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
  begin("revival_interface")
  var life_api: bool=main.has_method("request_native_player_life_transition") and is_instance_valid(main.native_demo_life)
  var life: Dictionary=main.native_demo_life.snapshot() if life_api else {}

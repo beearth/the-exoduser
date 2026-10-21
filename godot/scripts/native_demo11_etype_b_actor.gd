@@ -25,9 +25,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void: pass
 func is_native_registry_ready() -> bool: return b_ready
 func read_native_normal_enemy_hurte_fields(caller_world: Node) -> Dictionary:
- # PC's existing kill pipeline has no source 42784 death-blast dispatch.
- # Refuse this type, rather than accepting a lethal hit with missing effects.
- if etype==8: return {"ready":false,"reason":"etype8_protected_death_blast_owner_required"}
+ # PCI-09 now gates etype8 before all writes when its consumer is absent.
  return super.read_native_normal_enemy_hurte_fields(caller_world)
 func _b_stop(reason: String) -> void:
  b_fault=reason

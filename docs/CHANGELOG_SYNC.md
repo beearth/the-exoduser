@@ -56283,3 +56283,13 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 | 범위 | `docs/engine/ctx/`에 이동·Q/E·분노·스킬·성장·INV·물약·forge·save·적AI·드루이드·필드보스·사망/부활·demo·HUD/사운드 15 pack과 README를 추가했다. 제품 코드/Godot 실행 변경0. |
 | 원본 | R `game.html` 65,692행 / SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4` 기준 행을 기록하고, 상세 수치/전수표는 기존 `FDG_SOURCE_TRACE_*`를 재사용했다. |
 | 경계 | 각 pack은 origin/main Godot의 실제 경로와 gap의 연결 상태를 분리한다. 2_3 Q/E·돌진/방패, 저장 형식, PC 전투 핵심은 보호이며 module 존재를 전체 이식 완료로 승격하지 않는다. |
+
+## 2026-10-21 PCIB-WIRE — Mac 호출부 부분 연결·NOT_READY
+
+| 항목 | 동기화 내용 |
+|---|---|
+| 기준 | PCIA e606abe0 위 main abc3dd442 merge. PC 공개 API와 Mac EOF 호출부를 모두 보존. |
+| 코드 | W01/자동석궁 owner·World 기존 sp→PCI05·동일 opts PCI03, actor 등록 직후 PCI02 bind, B8/29 PCI09 consumer 및 B8/29 옛 Mac 사망 거절 연결. PC 전투 core·MAP11 시각 무수정. |
+| 검증 | 최종 import ERROR0, W01 361/0, 새 Mac 호출31/0·B8 prefix1회, BC01~10 PASS. 기존 B/F fixture6/5실패, PC suite12실패+SCRIPT ERROR4. normalBow30 단위16.63912ms/tick. |
+| 미완 | E2E10PASS/8NOT_READY/0FAIL·ERROR0. MAP11 _fieldBosses 때문에 PC normalBow admit가 전부 거절되어 실제 발사/처치0. C15 constructor/Marker child 부재로 consumer 미등록. 적 탄 E/접촉·PCI07/08·B/F hostile emission 미완. |
+| 근거 | engine/PCIB_WIRE_REPORT_20261021.md 및 DEMO11_STATUS_20261021.md. 오류·재검증·초기 R cwd 이탈도 기록. 최종SHA/18단계 표는 ~/exoduser-wt/_out/PCIB-WIRE/DONE.txt. |

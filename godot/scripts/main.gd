@@ -424,6 +424,9 @@ func _ready() -> void:
 	_install_native_q_control()
 	native_m29_contact = M29ContactServicesScript.install_native_boot(self) # PC-M29-PARRY
 	native_combat_pack_b = CombatPackBScript.install_native_boot(self) # PC-COMBAT-PACK-B
+	native_auto_crossbow=preload("res://scripts/native_demo11_auto_crossbow.gd").new()
+	native_auto_crossbow.configure(self)
+	for actor in world.get_native_world_identity():world._bind_pcib_actor(actor)
 	_install_native_attack_audio()
 	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
@@ -449,6 +452,8 @@ func _ready() -> void:
 		_install_native_waking_intro_once()
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
+	native_pcib_death_effects=preload("res://scripts/native_demo11_pcib_death_effects.gd").new()
+	native_pcib_death_effects.configure(self)
 
 	preload("res://scripts/native_demo11_hud_owner.gd").install_native_boot(self) # DEMO11-42 display only
 
@@ -2350,7 +2355,7 @@ func request_native_attack_sound(caller: Node, phase: String, step: int, attack_
 	return _queue_native_attack_sample(key,0.85,pitch,true,{"phase":phase,"attack_serial":attack_serial,"character":profile.index,"step":step})
 
 func _on_native_attack_enemy_audio(kind: String, data: Dictionary, enemy: Node) -> void:
-	if kind!="enemy_damage" or data.get("source") not in ["weapon","kiSlash"] or get_tree().paused or not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or enemy.get_parent()!=world or not world.get_native_world_identity().has(enemy):return
+	if kind!="enemy_damage" or data.get("source") not in ["weapon","kiSlash","normalBow"] or get_tree().paused or not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or enemy.get_parent()!=world or not world.get_native_world_identity().has(enemy):return
 	if float(data.get("raw_amount",data.get("amount",0)))<=0.0 or _attack_audio_hit_cd>0:return
 	if read_native_attack_audio_settings().get("ready")!=true or player.get_native_character_profile_snapshot().get("ready")!=true:return
 	var type: Variant=enemy.get("etype")
@@ -3518,7 +3523,9 @@ func request_native_etype_e_spawn(owner: Node,group_id: String,source: Dictionar
 
 # DEMO11-24b: source producer cache values, updated in the accepted commit signal.
 func _refresh_native_system_affix_cache(receipt: Dictionary) -> void:
-	if receipt.get("committed")==true:source_system_affixes.rebuild(self)
+	if receipt.get("committed")==true:
+		source_system_affixes.rebuild(self)
+		if is_instance_valid(native_auto_crossbow):native_auto_crossbow.invalidate_equipment()
 func read_native_system_equipment_affix(id: Variant) -> Dictionary:
 	if not _native_main_service_live():return {"status":"NOT_READY","reason":"main_not_live"}
 	return source_system_affixes.eq_affix(id)
@@ -3700,3 +3707,10 @@ func request_native_recalc_st(owner: Node, ctx: Dictionary = {}) -> Dictionary:
 	return request_native_runtime_stat_refresh("recalc_st", str(ctx.get("reason", "recalc_st")))
 
 var native_demo_life: Node
+
+# PCIB Mac source-emission owner.
+var native_auto_crossbow: RefCounted
+func advance_native_auto_crossbow_source(sp: float, dt_sp: float) -> void:
+	if is_instance_valid(native_auto_crossbow):native_auto_crossbow.advance_source(sp,dt_sp)
+
+var native_pcib_death_effects: RefCounted

@@ -5,6 +5,7 @@ const NativePlayerProjectileStoreScript = preload("res://scripts/native_player_p
 var _native_player_projectiles: RefCounted
 const NativeFireballWorldConsumerScript = preload("res://scripts/native_fireball_world_consumer.gd")
 var _native_player_projectile_consumer: RefCounted
+var _native_auto_crossbow: RefCounted
 
 signal telemetry_event(kind: String, data: Dictionary)
 signal native_resource_load_changed(entry: RefCounted, phase: String)
@@ -2878,6 +2879,7 @@ func register_summoned_enemy(enemy: CharacterBody2D) -> Dictionary:
 	enemy.telemetry_event.connect(_forward_event)
 	_enemies.append(enemy)
 	add_child(enemy)
+	_bind_pcib_actor(enemy)
 	_native_dynamic_spawn_count += 1
 	# Runtime children join actual combat queries; the initial source16 report
 	# remains the frozen initial installation rather than a fabricated snapshot.
@@ -2943,6 +2945,7 @@ func register_native_curtain_ring_enemy(enemy: CharacterBody2D, source_order: in
 	_enemies.append(enemy)
 	_native_initial_order_by_instance[enemy.get_instance_id()] = source_order
 	add_child(enemy)
+	_bind_pcib_actor(enemy)
 	_native_dynamic_spawn_count += 1
 	return {"valid": true, "errors": [], "registered": true,
 		"registry_index": _enemies.size() - 1, "native_frame": _native_frame}
@@ -2963,6 +2966,7 @@ func register_native_spawn_hole_enemy(enemy: CharacterBody2D, source_order: int)
 	_enemies.append(enemy)
 	_native_initial_order_by_instance[enemy.get_instance_id()] = source_order
 	add_child(enemy)
+	_bind_pcib_actor(enemy)
 	_native_dynamic_spawn_count += 1
 	return {"valid": true, "errors": [], "registered": true,
 		"registry_index": _enemies.size() - 1, "native_frame": _native_frame}
@@ -3000,6 +3004,7 @@ func register_native_initial_consumer(enemy: CharacterBody2D, record: Dictionary
 	_enemies.insert(registry_index, enemy)
 	_native_initial_order_by_instance[enemy.get_instance_id()] = order
 	add_child(enemy)
+	_bind_pcib_actor(enemy)
 	rows[order]["status"] = "supported"
 	rows[order]["reason"] = ""
 	rows[order]["consumer_profile"] = "native_ch1_etype7_physical_flesh_crawler_v1"
@@ -3059,6 +3064,10 @@ func advance_native_birth_phase() -> void:
 		_native_projectile_emitter.advance_birth_phase(_native_birth_ticks, _native_frame)
 	if _native_natural_enemy_base!=null and is_instance_valid(_native_natural_enemy_base.get_ref()):
 		_native_natural_enemy_base.get_ref().advance_projectiles(_native_frame)
+	# Mac supplies the same established native source sp as natural owners.
+	# No second delta clock; exactly one call in this World birth phase.
+	if is_instance_valid(_native_auto_crossbow):
+		_native_auto_crossbow.advance_source(_native_birth_ticks,_native_birth_ticks)
 	# Source player pProjs follow all enemy projectile births, before HitFX3.
 	if is_instance_valid(_native_player_projectile_consumer):
 		_native_player_projectile_consumer.advance_native(self)
@@ -3088,6 +3097,7 @@ func install_native_encounters(source: Variant) -> Dictionary:
 			enemy.set_player(player)
 		enemy.telemetry_event.connect(_forward_event)
 		add_child(enemy)
+		_bind_pcib_actor(enemy)
 	telemetry_event.emit("native_encounters_installed", {"source_count": prepared["source_count"], "supported_count": prepared["supported_count"], "unsupported_count": prepared["unsupported_count"]})
 	return get_encounter_report()
 
@@ -3568,3 +3578,9 @@ func register_native_natural_enemy(owner: Node,actor: CharacterBody2D) -> Dictio
 # Transport/view switch only. Damage/clock/registry/RNG code above is unchanged.
 func activate_map11_space(space: String) -> bool:
 	return _native_map11_selected and is_instance_valid(_native_map11_scene) and _native_map11_scene.activate_space(space)
+
+# Creation-time PC owner binding; never reflection in the tick path.
+func _bind_pcib_actor(actor: Node) -> void:
+	var main: Node=get_parent()
+	if is_instance_valid(main) and main.has_method("bind_native_enemy_hurte_owner"):
+		main.bind_native_enemy_hurte_owner(actor,{"token":"actor-bind/%s"%actor.get_instance_id()})

@@ -77,9 +77,8 @@ func advance_native_phase(sp: float,frame: float,_enemies: Array) -> void:
  n.x=global_position.x;n.y=global_position.y;n.s=state;n.st2=st2
 func receive_damage(amount: int,direction: Vector2,source: String,options: Dictionary={}) -> void:
  if not is_instance_valid(gate_owner) or not gate_owner.current() or not alive:return
- var result: Dictionary=preload("res://scripts/native_normal_enemy_hurte.gd").new().execute(world.get_parent(),world,self,amount,direction.angle(),0,options)
+ var result: Dictionary=world.get_parent().request_native_hurte(self,amount,direction.angle(),false,options,0,{"token":"gate29-hit/%s/%s"%[get_instance_id(),Time.get_ticks_usec()]})
  if not result.get("ok",false):gate_not_ready.hurtE=str(result.get("reason"))
 func apply_native_normal_enemy_death_write() -> Dictionary:
- var request: Dictionary=gate_owner.request_final_death(self)
- gate_not_ready.final_death=request.get("reason","PCI11_final_death_commit_required")
- return {"applied":false,"reason":gate_not_ready.final_death} # PC writes alive/final death/gate.
+ # PC owns the death write; PCI-09 then precedes PCI-11 in the same execution.
+ return super.apply_native_normal_enemy_death_write()
