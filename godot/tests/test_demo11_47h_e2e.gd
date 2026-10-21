@@ -242,16 +242,31 @@ func run() -> void:
  var region_before: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
  var origin_before: int=main.native_natural_enemies.counts.origin_kills if is_instance_valid(main.native_natural_enemies) else 0
  var home: Vector2=main.player.global_position;var attacks:=0;var accepted:=0;var event_start:=event_rows.size()
+ var crossbow_observation: Dictionary={}
  if is_instance_valid(target):
-  mark_checkpoint("placement only; actual automatic crossbow timer -> W01 -> PC packet flight -> hurtE; no injected projectile/damage")
-  var deadline:=Time.get_ticks_msec()+45000
-  while target.alive and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
+  mark_checkpoint("placement only; actual automatic crossbow timer/flight/hurtE, then existing melee input if PC field owner blocks bow; no injected damage")
+  var bow_deadline:=Time.get_ticks_msec()+45000
+  while target.alive and Time.get_ticks_msec()<bow_deadline and main.player.hp>main.player.max_hp*.2:
    main.player.global_position=target.global_position+Vector2(-180,0)
    await settle(6)
-  main.player.global_position=home
+   if str(main.native_auto_crossbow.reason).begins_with("field_mob_owner_unported:"):break
+  crossbow_observation=main.native_auto_crossbow.snapshot().duplicate(true)
+  # The PC bow admission boundary is final. It does not disable the existing
+  # independent melee owner; restore PCIA's actual request_attack path unchanged.
+  if target.alive and str(crossbow_observation.get("reason","")).begins_with("field_mob_owner_unported:"):
+   var deadline:=Time.get_ticks_msec()+45000
+   while target.alive and attacks<200 and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
+    if main.player.state!="idle":await physics_frame;continue
+    main.player.global_position=target.global_position+Vector2(-(47+float(target.radius)-8),0);main.player.facing=Vector2.RIGHT
+    attacks+=1
+    if main.player.request_attack():accepted+=1
+    main.player.release_attack()
+    await settle(36)
+    if event_rows.slice(event_start).any(func(e):return e.id==target.get_instance_id() and (e.kind=="native_hurte_halt" or (e.kind=="native_hurte" and e.ok==false))):break
+  main.player.release_attack() # Keep real kill location through R pickup, as in PCIA.
  var region_after: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
  var killed: bool=is_instance_valid(target) and not target.alive and region_after>region_before
- await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"automatic_crossbow":main.native_auto_crossbow.snapshot(),"natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
+ await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"automatic_crossbow":crossbow_observation,"kill_path":"melee" if attacks>0 else "automatic_crossbow","natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
  begin("revival_interface")
  var life_api: bool=main.has_method("request_native_player_life_transition") and is_instance_valid(main.native_demo_life)
  var life: Dictionary=main.native_demo_life.snapshot() if life_api else {}

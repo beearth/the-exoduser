@@ -59,3 +59,39 @@
 - 지정 worktree에서 코드·검사·격리 실행. PID81277 미조작, Godot 실행 최대2개. 서버 재시작·실제 Native-First 저장소 접근·main push·force/reset/rebase/hook 비활성0.
 - **절차 이탈**: 초기 도구 호출 1회에서 cwd 누락으로 R의 world.gd를 같은 내용으로 다시 쓰고 R에서 editor import를 1회 실행했다. R tracked INDEX/WORK diff는 그 직후0이며 게임 실행0. R `.godot` editor metadata 접근 가능성은 부인하지 않는다. 이후 모든 mutation에 worktree cwd 검사를 적용했다. 이 작업을 R 완전 읽기전용 준수로 보고하지 않는다.
 - 전체 완료에 필요한 PC 범위: normalBow `_hurtFieldMobs` 실제 consumer 또는 현 MAP11과 호환되는 무변이 admission 계약. Mac 범위: 인수된 C15 constructor/자식 Marker owner, B/F source hostile emission, 29 실제 사망/순서/표현 QA. 임의 branch 반입·gate 우회 없이 후속 인수 필요.
+
+## PCIB-WIRE-b 회귀 수정 (2026-10-21, 후속 검수)
+
+지정 원격 기준 `e9ca8aa0600294df756b9d4a265537a484788a6a`에서 시작했다. 보고된 화살 view의 TIP/LIGHT/FIN_A/FIN_B const 오류는 이 SHA에서 이미 인스턴스 `var PackedVector2Array(...)` 초기화로 수정되어 있다. 새 worktree의 import ERROR0 및 실제 Main을 생성하는 Mac 호출부31/31로 재확인했다. 추가 const 수정0, PC 구현 변경0. 잔여 suite 실패를 컴파일 실패로 분류하지 않는다.
+
+| 변경 위치 | 현재 동작 / 수치 | 근거 |
+|---|---|---|
+| `test_demo11_47h_e2e.gd` enemy_kill | 자동 석궁 실제 timer/flight/hurtE를 최대45000ms 관측. PC `field_mob_owner_unported:` 정지가 확인되면 대기를 끝내고 별도 기존 근접 입력 검사 | PCIB에서 근접 검사를 석궁 대기로 교체한 것이 enemy_kill 회귀 원인 |
+| 근접 경로 | PCIA의 request_attack→release_attack→36 physics frames, 최대200회/45000ms. idle·실제 HP20% 초과 조건과 hurtE 거절시 중단을 보존 | HP/alive/피해/RNG 주입0. PC 석궁 admission을 우회하지 않음 |
+| 관측 | automatic_crossbow는 근접 시작 전 snapshot 복사. kill_path는 실제 attacks>0이면 melee | 근접 처치를 석궁 처치로 세지 않음 |
+| 위치 | 근접 후 실제 처치 위치를 R 줍기까지 유지, 기존 auto_potion 단계에서 home 복원 | PCIA 입력 순서 복구 |
+
+요청 suite는 격리 user dir에서 각1회 실행했다. B/F는 MAP11 provider가 이미 소유하는 adapter에 옛 fixture를 재bind해 실패(각6/5실패, 생성0): **Mac 호출부/테스트 fixture 통합 전제 충돌**. PC pack B는81검사12실패 및 런타임 script 오류4: 초기 적 fixture 부족2실패+인덱스 오류3, 벽 oracle/현 geometry 불일치7실패, Mac 자동 bind와 unbound 전제 충돌3실패+readback 오류1. **Mac 호출부/fixture 통합 충돌**로 분류하며 PC 구현 결함 확정 또는 인수 누락으로 단정하지 않는다. 테스트·PC 계약 구현·맵 geometry 수정0(수정한 검사는 Mac E2E뿐). 세부 원로그 및 E2E18행 최종표는 `~/exoduser-wt/_out/PCIB-WIRE-b/DONE.txt`에 보존한다.
+
+최종 E2E1회: **PASS11 / NOT_READY7 / FAIL0, exit0, ERROR0**. 목표 PASS13 미달. enemy_kill은 실제 근접3회/accepted3·region kill_calls0→1로 PASS 회복. 석궁 fired0/hits0/kills0, PC `field_mob_owner_unported:_fieldBosses` 거절이며 **NOT_READY**. PC 경계 우회0. auto_potion은 진입 uses1→대기 중3으로 실제 사용이 있으나, 기존 stage oracle은 대기 후 uses_before3 이후 증가만 인정하여 NOT_READY. 대기20초 timeout·최종HP0/fallen도 실제 관측됐지만 revival 단계 뒤에 일어난 사건이다. 결과를 소급 PASS로 바꾸거나 2회째 실행하지 않았다. 후속 과제는 늦은 자연 부활/물약 관측을 정확한 stage oracle에 연결하는 것. 진단의 PCIA PASS13은 지정 PCIA 보고서의 PASS12와도 차이가 있어 기록 그대로 구분한다. 이 실행은 checkpoint 포함이며 연속 클리어 완료가 아니다.
+
+| # | 단계 | 결과 | 사유 |
+|---|---|---|---|
+| 1 | isolation | PASS |  |
+| 2 | new_game | PASS |  |
+| 3 | character_create | PASS |  |
+| 4 | intro_skip | PASS |  |
+| 5 | field_MAP11 | PASS |  |
+| 6 | enemy_kill | PASS |  |
+| 7 | revival_interface | NOT_READY | natural HP0 not observed; PCI-01 product consumer connected |
+| 8 | item_pickup | PASS |  |
+| 9 | equip | PASS |  |
+| 10 | auto_potion | NOT_READY | real hurtP/iframe/threshold/clock did not produce auto-potion |
+| 11 | level_up | PASS |  |
+| 12 | stat_passive_invest | PASS |  |
+| 13 | bossroom_gate | NOT_READY | actual MAP11 gate/arena prerequisites not satisfied |
+| 14 | boss_defeat_signal | NOT_READY | PCI-11_missing_actual_boss_damage_and_final_death_owner |
+| 15 | clear | NOT_READY | clear consumer did not accept contract |
+| 16 | demo_end | NOT_READY | next/end route not admitted |
+| 17 | save_handoff | PASS |  |
+| 18 | lobby_return | NOT_READY | actual lobby navigation not completed |

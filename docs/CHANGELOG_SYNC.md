@@ -56293,3 +56293,9 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 | 검증 | 최종 import ERROR0, W01 361/0, 새 Mac 호출31/0·B8 prefix1회, BC01~10 PASS. 기존 B/F fixture6/5실패, PC suite12실패+SCRIPT ERROR4. normalBow30 단위16.63912ms/tick. |
 | 미완 | E2E10PASS/8NOT_READY/0FAIL·ERROR0. MAP11 _fieldBosses 때문에 PC normalBow admit가 전부 거절되어 실제 발사/처치0. C15 constructor/Marker child 부재로 consumer 미등록. 적 탄 E/접촉·PCI07/08·B/F hostile emission 미완. |
 | 근거 | engine/PCIB_WIRE_REPORT_20261021.md 및 DEMO11_STATUS_20261021.md. 오류·재검증·초기 R cwd 이탈도 기록. 최종SHA/18단계 표는 ~/exoduser-wt/_out/PCIB-WIRE/DONE.txt. |
+
+### 2026-10-21 PCIB-WIRE-b
+- 지정 e9ca8aa0의 화살 view 배열 var 수정이 이미 포함됨을 확인: 새 import ERROR0, Main 실제 생성 Mac 호출부31/31.
+- E2E enemy_kill의 실제 석궁 관측과 PC field owner 차단을 기록하고, 차단시 기존 PCIA 근접 request_attack 검사·처치 위치 유지 복구. PC 구현/맵/번역 변경0.
+- B/F6·5 및 PC pack B12실패+런타임 오류4는 fixture/provider/geometry/자동 bind 전제 충돌로 별도 기록. 각 suite1회, 최종 E2E/원격SHA는 PCIB-WIRE-b DONE 참조.
+- 최종 E2E1회 PASS11/NOT_READY7/FAIL0·ERROR0. enemy_kill 근접3회 PASS 회복, 석궁0/0/0 NOT_READY. 목표13 미달·후반 물약/fallen 관측의 단계 판정 한계 기록.
