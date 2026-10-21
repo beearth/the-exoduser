@@ -2,10 +2,10 @@ extends RefCounted
 ## Shared authored feet: visuals and provider collision consume exactly these rows.
 ## [asset, yaw variant, foot, display height, collision radius, scene index]
 const ROWS=[
- ["hell_impaled_corpse",0,Vector2(-580,3400),318.5,27.0,0],
- ["hell_impaled_corpse",1,Vector2(-400,3260),299.0,27.0,0],
- ["hell_impaled_corpse",2,Vector2(-690,3190),325.0,27.0,0],
- ["hell_impaled_corpse",0,Vector2(-490,3080),286.0,25.0,0],
+ ["hell_impaled_corpse",0,Vector2(-620,3430),338.0,27.0,0],
+ ["hell_impaled_corpse",1,Vector2(-395,3280),263.0,27.0,0],
+ ["hell_impaled_corpse",2,Vector2(-735,3135),357.0,27.0,0],
+ ["hell_impaled_corpse",0,Vector2(-470,3025),292.0,25.0,0],
  ["tour_cocoon_tree",0,Vector2(-3210,1450),442.0,62.0,1],
  ["tour_cocoon_tree",1,Vector2(-3440,1240),409.5,58.0,1],
  ["tour_cocoon_tree",2,Vector2(-3220,1010),422.5,60.0,1],

@@ -1,6 +1,7 @@
 extends "res://scripts/maps/map11/field_seam_preview.gd"
 ## MAP11-14 product assembly; no preview actor, UI, collision or gameplay writer.
 const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
+const TourTextures=preload("res://scripts/maps/map11/tour_textures.gd")
 var gate_leaves: Array[Node2D]=[]
 var gate_open: float=0.0
 func _ready() -> void:
@@ -70,8 +71,26 @@ func _add_tree(layer: String,side: String,foot: Vector2,height_: float,tone: Col
  super._add_tree(layer,side,foot,height_,tone,idx,mirror)
  var row: Dictionary=_forest_rows.back()
  var sprite: Sprite2D=row.node.get_child(0)
- # Rotation/anisotropic scale are already final: use transformed opaque hull.
- var bounds: Rect2=GroundContact.align(sprite)
+ # Setup-only deterministic silhouette variation; replace rather than add sprites.
+ var seed_: int=absi(int(foot.x)*31+int(foot.y)*17+idx*113)
+ var serial: int=_forest_rows.size()-1
+ sprite.rotation_degrees=[-6.0,3.5,-2.0,7.0,-4.5,1.5,5.0][seed_%7]
+ sprite.scale.x*=[.86,1.06,.94,1.15,.90,1.02,1.10][(seed_/7)%7]
+ sprite.flip_h=bool(seed_%2)
+ sprite.modulate=tone*Color([.87,1.04,.95,1.09,.92][(seed_/11)%5],.96,.98,1.0)
+ var key: String=""
+ if layer!="BACK" and serial%9 in [2,6]:
+  var asset: String="tour_cocoon_tree" if serial%9==2 else "hell_impaled_corpse"
+  sprite.texture=TourTextures.ASSETS[asset][seed_%3][0]
+  sprite.scale=Vector2.ONE*((510.0 if asset=="tour_cocoon_tree" else 390.0)/sprite.texture.get_height())
+  sprite.scale.x*=[.90,1.12,1.0][seed_%3]
+  key=sprite.texture.resource_path
+  row.variant=asset
+  # Existing contact ellipse follows the smaller replacement, no extra draw.
+  var shadow: Sprite2D=row.node.get_child(1)
+  shadow.scale=Vector2(2.4,.48) if asset=="tour_cocoon_tree" else Vector2(1.15,.24)
+ # Re-align the transformed opaque hull once; culling and fade share it.
+ var bounds: Rect2=GroundContact.align(sprite,key)
  GroundContact.depth(row.node,row.node.global_position)
  row.rect=Rect2(foot+bounds.position,bounds.size).grow(55)
 func update_product(point: Vector2,delta: float) -> void:

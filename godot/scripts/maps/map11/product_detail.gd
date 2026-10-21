@@ -46,8 +46,14 @@ func _hell_props(scene: Node2D) -> void:
   var sprite:=Sprite2D.new();sprite.name="Silhouette";sprite.texture=canvas
   sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   sprite.scale=Vector2.ONE*row[3]/canvas.get_height()
+  if row[5]==0:
+   sprite.rotation_degrees=[-6.0,4.0,-3.0,8.0][i]
+   sprite.flip_h=i in [1,3]
   prop.add_child(sprite)
-  GroundContact.align(sprite,pair[0].resource_path)
+  var bounds: Rect2=GroundContact.align(sprite,pair[0].resource_path)
+  # Reuse product culling/fade: no second tick loop or new material.
+  if row[5]==2:
+   scene.field_view._rows.append({"node":prop,"foot":foot,"rect":Rect2(foot+bounds.position,bounds.size).grow(55)})
   GroundContact.shadow(scene.field_view,sprite,foot,-2987,.58,scene.lighting_look._unlit)
   hell_props.append(prop)
  for site in Tour.SCENES:

@@ -1,3 +1,5 @@
+> **2026-10-21 MAP11-23 현행:** [설계서 §28](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21). 외곽 변형/PNG소품 교체·입구4주 변주·처형장 기존fade·pit grading. 전체 **RETOUCH**, before 유효성 실패로 맵비용 전후 비교 미검증. after p95 field9.449/arena8.509ms·focus_lost0. 아래는 제작 이력.
+
 > **2026-10-21 MAP11-PERF2:** [설계서 §27](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#27-map11-perf2--보스룸-성능-회귀-분리부분-복구). 첫 arena 회귀22c; 4커밋 동일공존 비교·요소분리·floor bake/ring annulus/cull. 복구field9.313/arena9.108ms, 8.33ms 목표FAIL. 아래는 이전 이력.
 
 > **2026-10-21 MAP11-22e:** [설계서 §26](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#26-map11-22e--보스룸-진홍-링죄수-석주-마감). 링 밝기·채도 각18% 감소, 보스룸 전용 죄수 정면 PNG3방향. PID81277 공존 측정·포커스 유효성은 §26 최종 기록 참조. 아래 22d 이하 이력.

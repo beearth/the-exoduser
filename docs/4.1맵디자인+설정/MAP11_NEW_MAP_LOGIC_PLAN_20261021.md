@@ -668,6 +668,8 @@ MAP PRODUCTION REPORT (§23)
 | VISUAL VERDICT / NEXT PASS | RETOUCH. 모델 backside/하단 형상·치열은 룩만으로 복원 한계. 새 생성/후속백로그 착수0 |
 
 
+> **MAP11-23 현행 마감은 §28 우선.** 외곽 변형·입구4주·처형장 fade·구덩이 grading 보정. 성능 전후 유효비교 미충족으로 전체 RETOUCH.
+
 ## 20. MAP11-21 — 1-1 지옥 관광 코스 (2026-10-21)
 
 사용자 지정 기준 `46768e84e59f753baf2185f2bf45927349324d3a`(codex/map11-25db-20261021)에서 분기한 후보. **VISUAL VERDICT: RETOUCH**. §16~19.5의 패치12/평면 scatter/소품8/해골3배치·85%샤프닝은 이전 후보의 이력이다. 이번 후보의 현행은 아래15소품·6장면·21yaw다. 원본 웹 본편/PC 전투·보호설계는 변경하지 않았다.
@@ -1404,3 +1406,65 @@ before(06c8a260)/after entry·center 각1600×900 원본과 literal1x(480,150,64
 | GIT | explicit paths·정상hook commit/전용branch push·remote SHA대조 후 worktree제거, main/deploy0 |
 | VISUAL VERDICT | **RETOUCH** — entry/center 외형 보존, 전체 성능 gate 미달. AAA/실보스전/PC 완료 주장0 |
 | NEXT PASS | 맵 표시 제외 진단과 남은 CPU/UI/공존 비용을 구분, 범위 밖 combat core 변경으로 목표를 맞추지 않음 |
+
+
+## 28. MAP11-23 — 남은 RETOUCH 마감 (2026-10-21)
+
+기준 `0a2e99576baca664cb958708cf8ec2c2ae7acbe2` (`codex/map11-22p-20261021`), 전용 `codex/map11-23-20261021`. R 읽기 전용, `~/exoduser-wt/MAP11-23` no-checkout/sparse 작업. 신규 생성0, 런타임 PNG만, PC combat core·실제 저장폴더·main 변경0. 기존6장면/보스 의식 무대/PERF2 bake 보존.
+
+### 28.1 마감 계약
+
+| id / 위치 | 현행 값·구현 | 보존·비용 |
+|---|---|---|
+| forest silhouette | product_field_view setup에서 seed=abs(int(foot.x)×31+int(foot.y)×17+idx×113). rotation degrees [-6,3.5,-2,7,-4.5,1.5,5][seed%7], x scale×[.86,1.06,.94,1.15,.90,1.02,1.10][(seed/7)%7], flip=seed%2 | 기존 height/foot/geometry 유지, RNG·tick 변형0 |
+| forest tone | 기존 tone×Color([.87,1.04,.95,1.09,.92][(seed/11)%5],.96,.98,1) | 명도·색 변주 setup 1회, 새 material0 |
+| forest prop mix | BACK 제외, 전역 serial%9==2/6 나무를 기존 tour_cocoon_tree/hell_impaled_corpse diffuse PNG(seed%3 yaw)로 **교체**. 높이510/390, 폭배율 [.90,1.12,1][seed%3]. 기존 접지 ellipse scale=(2.4,.48)/(1.15,.24) | sprite/접지 draw 수 추가0. 외곽 비보행 장식, 새 충돌0. normal 추가0. 변형 후 opaque hull로 foot 재정렬·rect cache |
+| 03 execution occlusion | Tour rows7/8/9/10만 기존 field._rows에 등록. opaque rect.grow(55), foot 앞뒤 y 기준과 point/point−(0,55) 포함 시 alpha .15, 그 외1; move_toward 속도 delta×10 | 기존 update_product의 cull/fade 재사용, cached rows +4. 별도 tick loop·ResourceLoader·목록/경로 API·새 shader0 |
+| 06 pit | 기존 yaw1 diffuse만 offline grading, alpha·normal·spike·rim 보존. 마스크 R>180/G<45/B<40/alpha>0 (15988px). r=sqrt(((x−223)/110)^2+((y−270)/62)^2), e=smoothstep(.28,1,r), gain=clamp(.83−.58e−.13clamp((270−y)/65,0,1),.18,.83), RGB×gain 반올림 | 기존 PNG 동일 경로/465×400. 추가 pass/draw/texture0. 재현 godot/tools/grade_map11_23_pit.py, 입력은 기준 SHA 원본 (중복 실행 금지) |
+| unchanged | scene02/04/05 관광 props·scene03 feet/shape·gate·R1700·finale·floor bake/ritual ring·light cap/energy | 캐릭터·VFX·UI 개발문구·공용 전투/저장 수정0 |
+
+입구 row0~3은 같은 provider 소비 테이블로 발치 충돌도 일치시킨다. radius는 기존27/27/27/25 유지, 관련 provider route compile PASS.
+
+| row | yaw | foot x,y | display height | rotation degrees | flip_h |
+|---|---|---|---|---|---|
+| 0 | 0 | −620,3430 | 338 | −6 | false |
+| 1 | 1 | −395,3280 | 263 | 4 | true |
+| 2 | 2 | −735,3135 | 357 | −3 | false |
+| 3 | 0 | −470,3025 | 292 | 8 | true |
+
+### 28.2 캡처·실제 검수
+
+외부 `~/exoduser-wt/_out/MAP11-23/captures/`: before는 **기준 0a2e9957에서 이번에 새 촬영**, after도 실제 Main. 01~06 +07_boss_entry 각1600×900 원본과 literal1x rect(480,150,640,600), 무보정 compare 각쌍. after08/09는 wheel 뒤/앞 보충컷. product camera/actor 위치 동일, 시간·조명 위상·초기 캐릭터 수치는 실행별 차이. 초반 기존 지역 진입 배너는 정상 게임 UI이며 새 개발문구가 아니다. 자연 gate/실보스전/밀집전투 검수 아님.
+
+직접 원본/1x/board 확인: 01 기울기·크기·간격 차이, 02/03 외곽 수관 폭·기울기·빈틈의 차이, 03 뒤에서 wheel/기둥 fade·앞에서 복귀, 06 붉은 공동 가장자리 암부 확인. 04/05·07의 기존 구성 유지. 외곽 전체 종주/모든 반복 구간·실전 탄막 가독성까지 PASS로 승격하지 않음.
+
+관련 suite 단회 **495checks/4fail**: 4건은 카메라가 다른 곳인 상태에서 컬링된 처형장 소품의 alpha를 검사한 하니스 오류. 제품 코드를 바꾸거나 성능을 재측정하지 않았다. 이 부정확한 probe는 제출 benchmark에서 제거하고 실제 카메라 이동 캡처로 대체. 캡처 검수 **37checks/0fail**, row7~10 각각 뒤 alpha.15/앞1 실제 확인 포함. route compile·tour17 foot 충돌·변형 forest opaque foot·arena/PERF2 계약 검사에 실패0. before capture21/0, 최종 runtime SCRIPT/ERROR0(기존 Camera2D interpolation warning만). suite 전체 재실행0. 외부 benchmark-measured.gd에 초기 검사 원본 보존.
+
+### 28.3 성능 — 전후 유효 비교 미충족
+
+PID81277 보존·우리 Godot 순차1개. 4.7.2 GL/Apple M5 Pro,1920×1080/vsync off/max_fps240/physics60Hz/4방향×150틱, 동일 격리 `EXODUSER-MAP11-23-Isolated`, 외부 snapshot worker_pool/max_threads=1. before/after 각각 field·명목arena **시도1회, 재측정0**. 원래 프로젝트 설정은 변경하지 않았다.
+
+| 표본 | field p95 ms | nominal arena p95 ms | focus_lost / 보행 / 판정 |
+|---|---|---|---|
+| before 0a2e9957 | N/A (무효 raw12.273) | raw7.969 | field focus_lost1312/보행226.770px로 무효. arena focus_lost0이나 보행0px로 fixture 요건 실패. 둘 다 유효 비교 기준으로 사용0 |
+| after | 9.449 | 8.509 | 각 focus_lost0, 보행1646.811/1646.738px, 유효. p95≤8.33ms 목표 양쪽 미달 |
+
+native product_space는 둘 다 field로 남는 기존 명목 arena fixture이다. before focus 불량에서 사망/상태·충돌 때문에 arena 보행0이 됐는지 원인은 확정하지 않는다. **전후 맵 표현비용 비증가 및 약0.8ms 유지 미검증**. draw를 늘리지 않는 구조 변경이지만 CPU row4 추가/가시 면적 차이를 성능 PASS 근거로 대신하지 않는다. 전체 성능 gate RETOUCH/미충족. raw JSON·초기 오류·로그 모두 외부 보존. 유효한 느린 after를 재측정해 교체하지 않음.
+
+### 28.4 MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1; silhouette/6regions/main route/side spaces 유지. G1~6 재설계 없이 G7마감→G8camera→TECH |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH 기존 foot/mass 유지, 폭·기울기·색 및 일부 PNG 교체로 반복 끊기. major holes 신규 생성 의도0; 전체 종주 미검수 |
+| LARGE | 기존 rotforest8종 + 기존 cocoon/corpse PNG, composites/overlap은 기존 배치, 반복 완전 제거 선언0 |
+| MEDIUM | 기존 연결 유지, 숲 내 소품 대체. remaining holes 전체 신규 조사 없음 |
+| GROUND | 기존 shadow/contamination/structure integration 유지, 새 silhouette opaque foot 재정렬. pit 공동 음영만 offline |
+| PLAYABLE | main arenas/travel/breathing/threat spaces 유지. 입구4주 foot 소폭변경 route compile PASS. 처형장 가림 실캐릭터 확인, dense combat 미검수 |
+| LANDMARK | primary 시체나무/심장제단·북finale, secondary6관광장면, tertiary 보존 |
+| CAMERA QA | START01/EARLY02/ARENA03/SIDE L02·03/LANDMARK04·05/LATE06/EXIT07 전후. SIDE R 독립 새컷 없음, 전체8보드 종주PASS 아님 |
+| TECH QA | route/collision 검사 PASS; native pageerror/404 N/A; 신규 loading/SCRIPT/ERROR0. seam 별도 새검사0, performance 위 유효성 실패 |
+| FILES | product_field_view/product_detail/tour_layout/pit diffuse/grade tool/전용 benchmark·capture/관련docs. concurrent·unrelated touched0 |
+| GIT | 경로 지정 add·정상hook·전용branch push 및 remote SHA 대조 후 worktree 제거. main push/deploy/merge/force/reset/rebase0 |
+| VISUAL VERDICT | **RETOUCH** — 네 마감 보정 확인, 외곽 전체·전투 가독성 범위 및 성능 전후 gate 남음. AAA/본편 인수완료 주장0 |
+| NEXT PASS | 유효 before 조건이 확보된 별도 승인 측정에서 맵 비용 비증가 판정. 실전 탄막·전체 외곽 종주 인수 별도 |
