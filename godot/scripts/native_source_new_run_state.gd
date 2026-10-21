@@ -11,6 +11,7 @@ const STARTER_FACTORY = preload("res://port_modules/starter_item_factory_source/
 const SOURCE_RESOURCES = preload("res://scripts/native_source_resource_authority.gd")
 const EXP_GATE = preload("res://scripts/native_meta_exp_gate_policy.gd")
 const EXP_CURVE = preload("res://scripts/native_source_meta_exp_curve.gd")
+const VALIDATION_PASS = preload("res://scripts/native_source_validation_pass.gd")
 signal native_level_up_handoff(packet: Dictionary)
 const CLAIM_META = "native_source_new_run_state_owner"
 const INITIALIZED_META = "native_source_new_run_state_initialized"
@@ -89,6 +90,8 @@ var _source_initializer_committing = false
 var _source_initializer_seen: Array = []
 var _source_initializer_writes: Array[Dictionary] = []
 var _source_initializer_rejections = 0
+var _validation_pass := -1
+var _validation_error := ""
 
 func _init() -> void:
 	set_process(false)
@@ -835,7 +838,14 @@ func _native_pickup_category(item: Dictionary) -> String:
 	return "ossuary" if str(item.get("slot", "")) in ["ossuary", "bonePart"] else "equipment"
 
 
+## One P read = one validation pass (owner check + resource packet share it).
 func read_current_p() -> Variant:
+	VALIDATION_PASS.open_read()
+	var value: Variant = _read_current_p_in_pass()
+	VALIDATION_PASS.leave()
+	return value
+
+func _read_current_p_in_pass() -> Variant:
 	if not _current_error().is_empty():
 		return null
 	var parameters: Dictionary = _resources.read_current_resource_parameters()
@@ -1238,7 +1248,19 @@ func _constructor_error(player: Node2D, world: Node, resources: Node) -> String:
 		return "world_has_other_player"
 	return _actual_fields_error(player, world, resources)
 
+## PC-SOURCE-PERF: nested repeats inside one outermost source validation reuse
+## this pass's result (native_source_validation_pass.gd). No cross-call carry.
 func _current_error() -> String:
+	if VALIDATION_PASS.reusable(_validation_pass):
+		return _validation_error
+	var pass_id := VALIDATION_PASS.enter()
+	var error := _current_error_uncached()
+	VALIDATION_PASS.leave()
+	_validation_pass = pass_id
+	_validation_error = error
+	return error
+
+func _current_error_uncached() -> String:
 	if not _initialized or not _live(self) or not _live(_player) \
 			or not _live(_world) or not _live(_resources):
 		return "missing_initialized_new_run_state"
@@ -1278,7 +1300,9 @@ static func _actual_fields_error(player: Node2D, world: Node, resources: Node) -
 	for field in ["hp", "max_hp", "radius", "iframes"]:
 		if not _number(player.get(field)):
 			return "missing_current_actual_player_field:" + field
-	if not _parameters_valid(resources.read_current_resource_parameters()):
+	# Same READY/finite-field verdict as _parameters_valid(read_current_resource_parameters())
+	# (proof at the authority method); the script identity was checked above.
+	if not resources.is_current_resource_parameters_ready():
 		return "current_source_resources_not_ready"
 	return ""
 

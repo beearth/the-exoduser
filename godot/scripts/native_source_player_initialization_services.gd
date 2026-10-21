@@ -19,6 +19,7 @@ const SOURCE_CLOCK_PREFIX = preload("res://port_modules/source_update_clock_pref
 const SOURCE_FRAME_ENTRY = preload("res://port_modules/source_frame_entry/producer.gd")
 const SOURCE_LESSON_HOLDER = preload("res://port_modules/parry_lesson_source/producer.gd")
 const SIGNED_DIFFICULTY = preload("res://port_modules/kill_reward/source_difficulty_signed.gd")
+const VALIDATION_PASS = preload("res://scripts/native_source_validation_pass.gd")
 const SCHEMA = "exoduser.godot.source-player-initialization-services.v1"
 const CACHE_APIS = ["read_captured_resource_plan", "read_captured_crystal_stats", "read_captured_cohort", "read_current_initialization_cohort_id", "read_hp_initial_gap"]
 
@@ -119,6 +120,10 @@ var _last_error = "unconfigured"
 var _invalidating = false
 var _invalidations = 0
 var _attack_plan_delegations = 0
+var _owner_validation_pass := -1
+var _owner_validation_error := ""
+var _context_validation_pass := -1
+var _context_validation_error := ""
 
 func configure(player: Node2D, world: Node, state: Node, resources: Node,
 		providers: Object, dispatcher: Object, bridges: Dictionary = {}) -> bool:
@@ -530,7 +535,14 @@ func _make_provider_maps(bundle: Dictionary) -> Dictionary:
 			EFFECTIVE_STATS.PROVIDER_COHORT: Callable(_readers, "cohort"),
 			EFFECTIVE_STATS.PROVIDER_CURRENT_COHORT: Callable(_readers, "current_cohort")}}
 
+## One domain read = one validation pass (context check + provider read share it).
 func _read_domain(key: String) -> Variant:
+	VALIDATION_PASS.open_read()
+	var value: Variant = _read_domain_in_pass(key)
+	VALIDATION_PASS.leave()
+	return value
+
+func _read_domain_in_pass(key: String) -> Variant:
 	if not is_source_context_ready(): return null
 	var bundle: Dictionary = _providers.get_ref().get_provider_bundle()
 	var reader: Variant = bundle.get(key)
@@ -772,7 +784,19 @@ func _read_normal_enemy_provider(callback: String, args: Array) -> Dictionary:
 		"melee_ref": return bundle.reference.melee_ref()
 	return {"status": "NOT_READY", "reason": "normal_enemy_provider_not_bound", "provider": callback}
 
+## PC-SOURCE-PERF: nested repeats inside one outermost source validation reuse
+## this pass's result (native_source_validation_pass.gd). No cross-call carry.
 func _source_owner_error() -> String:
+	if VALIDATION_PASS.reusable(_owner_validation_pass):
+		return _owner_validation_error
+	var pass_id := VALIDATION_PASS.enter()
+	var error := _source_owner_error_uncached()
+	VALIDATION_PASS.leave()
+	_owner_validation_pass = pass_id
+	_owner_validation_error = error
+	return error
+
+func _source_owner_error_uncached() -> String:
 	if not _configured and not _configuring: return "unconfigured"
 	var player: Variant = _ref(_player)
 	var world: Variant = _ref(_world)
@@ -808,6 +832,16 @@ func _source_owner_error() -> String:
 	return ""
 
 func _context_error() -> String:
+	if VALIDATION_PASS.reusable(_context_validation_pass):
+		return _context_validation_error
+	var pass_id := VALIDATION_PASS.enter()
+	var error := _context_error_uncached()
+	VALIDATION_PASS.leave()
+	_context_validation_pass = pass_id
+	_context_validation_error = error
+	return error
+
+func _context_error_uncached() -> String:
 	var owner_error: String = _source_owner_error()
 	if not owner_error.is_empty(): return owner_error
 	var providers: Variant = _ref(_providers)

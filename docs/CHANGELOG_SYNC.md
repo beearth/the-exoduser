@@ -17,6 +17,11 @@
 - 실제 MAP11: Mac 자동 석궁 fired23/hits23/kills1(필드보스 존재 중), 원본 VM 대조 3사례 일치. 신규 test_pc_followups_fieldboss 167/0.
 - 테스트 전제: 묶음 B pci02는 Mac 생성 시 자동 bind를 인정하고 unbound 검사는 새 actor를 명시 해제해 사용(Mac 래퍼 MAP11 408/0, 직접 362/0). 묶음 A final_death/enemy_revive는 부팅 배치 기존 맵 적 전제를 Main 메타 `native_map11="off"`로 테스트 안에서 명시(60/0·51/0). 판정 약화 0.
 - E2E storage=on 1회 PASS10/NR8/FAIL0·exit0, Mac 하니스 `test_demo11_47h_e2e.gd:161` float(null) SCRIPT ERROR 7507(etype1 자연 actor에 `_contact_ticks` 없음) — Mac 수정 필요, PC 미수정. 600틱 벤치 mean 전 9.77/10.03 → 후 10.03/10.27/10.51ms(변동 폭 안), MAP11 hurtE 접촉 1회 10~14ms(치명 50ms) 스파이크 HOLD. [계약 §5a](engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md) · [보고서](engine/orders/reports/pc-followups_REPORT.md).
+## 2026-10-22 PC-SOURCE-PERF — PC source 검증 중복 제거(검증 패스 메모)
+
+- Services→Providers→State→Resources 검증이 서로를 반복 호출(필드 렌더 프레임당 State 183회·Resources 797회)하던 것을 "바깥 검증 1회" 범위 메모로 바꿨다(`native_source_validation_pass.gd`). 호출 사이·틱 이월 0, 검사 항목/순서/반환 문자열 변경 0. State 판정용 resource packet 생성은 동치 bool로 교체.
+- Windows 헤드리스 `--fixed-fps 120` 교차 3회: 필드 p95 21.06→9.93ms, 평균 14.02→5.68ms, process 8.71→2.20ms. 단독 회차 6.18ms. 부하 동시 실행 회차는 8.33ms 목표 미달이라 재측정 필요. hurtE 비치명 9.9→4.1~4.3ms, 치명 32.9→16.7~17.5ms(부분 적용, 남은 원인 기록).
+- 신규 test_pc_source_validation_cache 280/0. 회귀 18종 실패 행은 기준선과 MAP11 ON/OFF 모두 동일. E2E PASS13/NR5/FAIL0. [보고서](engine/orders/reports/pc-source-perf_REPORT.md)·[원인/수치](12퍼포먼스·최적화/GODOT_SOURCE_VALIDATION_PASS_MEMO_20261022.md).
 
 ## 2026-10-21 AUDIO-01 — Godot 1-1 ARPG 오디오 믹스
 
