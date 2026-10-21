@@ -1,3 +1,9 @@
+## 2026-10-21 PCIA-WIRE-c — E2E 부활 관측 순서
+
+- 하네스 revival_interface를 생존 단계 5개 뒤 12번째로 이동. 두 진단 계약 ORDER도 동기화. 제품/PC 계약·전투·맵 변경0.
+- 격리 E2E 1회(--demo11-storage=on): PASS13/NOT_READY5/FAIL0, engine/contract errors0. 자연 fallen→countdown→final_death PASS, revive 성공 미관측.
+- import PASS, Python 진단 계약 테스트5 PASS. Godot 타 작업 중첩 제약과 18단계 표는 `engine/PCIA_WIRE_C_REPORT_20261021.md` 참조.
+
 ## 2026-10-21 AUDIO-01 — Godot 1-1 ARPG 오디오 믹스
 
 - 기준 cb154e8d, 별도 codex/audio-01-20261021. Master/Music/Ambience/SFX/UI/Voice와 상대 trim field −14dB / boss +7dB / Ambience −11dB. 사용자 OPT 슬라이더·저장 값 유지.
