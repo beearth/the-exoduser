@@ -3,6 +3,12 @@
 - 기존 zoom branch + MAP11-32c merge, 테스트 전용 offset 보정·표시 보스1/배수·원본12/비교판3. 플레이어 전신/HUD 가림 확인.
 - 실제 move_up 접근600ticks/약591world, 보스 source clock owner_gap_no_receipt/ticks0/idle. 근접 실전은 미완료, 주입·PC core 수정0, exit6 보존. 제품 기본/UI/맵 비주얼 불변.
 - [픽셀표·장면 구분·눈검수·한계](engine/ZOOM_01B_REPORT_20261022.md), 외부 ~/exoduser-wt/_out/ZOOM-01b/.
+## 2026-10-21 PC-FOLLOWUPS — 석궁 필드보스 정지 해제 · PC 묶음 B/A 테스트 전제
+
+- 기준 Mac integ6 d5b842df, branch claude/pc-followups-20261021. carrier가 `_fieldBosses` 존재만으로 거절하던 경계를 제거하고 원본 35279 `_hurtFieldMobs`(G18733–18756)를 이식: 신규 PC owner `native_field_mob_hit_owner.gd`가 hitSet 선기록→hitCd(18700)→`max(1,ToInt32(dmg))`·hitCd8(18702)→고어 롤 RNG 3회(18692–18694)→최종 사망을 처리하고, HP·사망 반영은 Mac family 기존 seam `bind_pc_source`(index,hp,final_death,serial)로만 쓴다. 필드몹 적중은 hit=true, 적 루프 관통 분기가 원본처럼 hit=false로 되돌림. 웜/화마귀·단독 `_fieldBoss`는 실제 접촉 스텝만 쓰기 전 거절(NOT_READY 사유: 제품 PC hit owner·hitSet 키 계약 없음). 표현(숫자·처치 연출) 미이식.
+- 실제 MAP11: Mac 자동 석궁 fired23/hits23/kills1(필드보스 존재 중), 원본 VM 대조 3사례 일치. 신규 test_pc_followups_fieldboss 167/0.
+- 테스트 전제: 묶음 B pci02는 Mac 생성 시 자동 bind를 인정하고 unbound 검사는 새 actor를 명시 해제해 사용(Mac 래퍼 MAP11 408/0, 직접 362/0). 묶음 A final_death/enemy_revive는 부팅 배치 기존 맵 적 전제를 Main 메타 `native_map11="off"`로 테스트 안에서 명시(60/0·51/0). 판정 약화 0.
+- E2E storage=on 1회 PASS10/NR8/FAIL0·exit0, Mac 하니스 `test_demo11_47h_e2e.gd:161` float(null) SCRIPT ERROR 7507(etype1 자연 actor에 `_contact_ticks` 없음) — Mac 수정 필요, PC 미수정. 600틱 벤치 mean 전 9.77/10.03 → 후 10.03/10.27/10.51ms(변동 폭 안), MAP11 hurtE 접촉 1회 10~14ms(치명 50ms) 스파이크 HOLD. [계약 §5a](engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md) · [보고서](engine/orders/reports/pc-followups_REPORT.md).
 
 ## 2026-10-21 AUDIO-01 — Godot 1-1 ARPG 오디오 믹스
 

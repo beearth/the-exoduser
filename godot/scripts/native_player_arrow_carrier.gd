@@ -13,14 +13,19 @@ extends RefCounted
 ##   35433 _uBowPoisonRicochet → 35472 mult>=2 약점 경직 → 35473 G.hitStop(표현) →
 ##   35562 통일 관통(_pierceRate) → 35606 패시브 관통(pierce>0) → 35617 석궁 킬관통 → 35624 hit=true break →
 ##   35628 hit이면 _recyclePProj.
+## 35279 _hurtFieldMobs(G18733–18756): 필드보스(G._fieldBosses 4슬롯)는 PC 필드몹 owner(native_field_mob_hit_owner.gd)가
+## 원본 순서(hitSet 선기록→hitCd→_fmApply→_fmDeathFx 롤→_fbMarkDead)로 처리하고 HP·최종 사망은 Mac family PC readback seam에
+## 쓴다. 필드몹 적중(n>0)은 hit=true로 시작하고, 이어지는 적 루프의 관통 분기(hit=false;continue)가 원본처럼 다시 끈다.
+## 웜/화마귀는 실제 접촉이 생기는 스텝만 쓰기 전에 거절한다(존재만으로는 거절하지 않음 — 일반 몹 발사·명중·처치 유지).
 ## 사전 거절(쓰기·RNG 0): 이 carrier가 실행하지 않는 분기가 활성인 패킷(fireball/burst/explosive/magic/
-## 유도/독사/역병/체인/블루콩/터렛/_aoeR/_uqRico/_uqEcho/칼날메아리), 필드몹 존재, _uBowPoisonRicochet>0,
+## 유도/독사/역병/체인/블루콩/터렛/_aoeR/_uqRico/_uqEcho/칼날메아리), 웜/화마귀 실제 접촉, _uBowPoisonRicochet>0,
 ## 약점 배율(mult>=2) 경직 분기. 접촉 도중 hurtE가 정지하면 그 패킷만 blocked(유지)하고 pass를 멈춘다
 ## (기존 fireball consumer와 같은 규약 — 이미 적용된 prefix는 되돌리지 않는다).
 ## 표현 전용(미이식·기록만): 트레일 렌더, 서브파티클(35212), 벽 반사 파티클, 소멸 임팩트(35273),
 ## bow_hit 사운드(35454/35624), G.hitStop(35473, 소비자 32585 완전 비활성), 관통 텍스트, 히트 파티클.
 
 const STORE = preload("res://scripts/native_player_projectile_store.gd")
+const FIELD_OWNER = preload("res://scripts/native_field_mob_hit_owner.gd")
 const TRAIL_MAX := 6 # 35179 normalBow: arcMissile/fireball/mhBlade/plagueBlade 아님 → 6
 const REFUSED_TRUTHY_FLAGS: Array[String] = ["fireball", "fireBeamProj", "burstBolt", "explosive", "magic",
 	"mhBlade", "plagueHoming", "plagueBlade", "venomBlade", "ltnChaser", "bladeOrb", "iceBlade", "blueBean",
@@ -33,6 +38,7 @@ var _service_ref: WeakRef # 서비스가 carrier를 소유 — 순환 참조(Ref
 var _main: Node
 var _world: Node2D
 var _contact_serial := 0
+var _field_owner: Node # 필드몹 owner(Main 자식). 필드몹 목록이 처음 보일 때 생성, seam 바인딩은 첫 실제 접촉 때.
 
 func configure(service: RefCounted, main: Node, world: Node2D) -> bool:
 	if _service_ref != null or service == null or not is_instance_valid(main) or not is_instance_valid(world):
@@ -49,24 +55,40 @@ static func is_normal_bow_packet(packet: Variant) -> bool:
 	return packet is STORE.Packet and packet.fields is Dictionary and packet.fields.get("normalBow") is bool \
 		and packet.fields.get("normalBow") == true
 
-## pass(또는 단일 스텝)당 1회 계산하는 공용 환경: 필드몹 부재 확인 + provider/유니크 값의 지연 캐시.
+## pass(또는 단일 스텝)당 1회 계산하는 공용 환경: 현재 G·필드몹 목록 참조 + provider/유니크 값의 지연 캐시.
 ## 원본처럼 _uBowPoisonRicochet(35433)는 첫 적 접촉 때, _uBowPierce(35562)는 _pierceRate>0 관통 판정 때만 읽는다
 ## (값은 pass 안에서 장비가 바뀌지 않으므로 같다). 실측(헤드리스): provider 사전 ~0.28ms·u_eq ~0.49ms/회 —
 ## 발·틱마다 읽지 않도록 캐시한다(빈 pass는 비용 0).
 func build_env() -> Dictionary:
 	var env := {"ok": false, "reason": ""}
-	# 35279 _hurtFieldMobs: 필드 보스/웜/화염악마 owner 미이식 — 존재하면 거절(없으면 원본도 0).
 	var g: Variant = _main.source_state.read_current_g() if is_instance_valid(_main.get("source_state")) else null
 	if not g is Dictionary:
 		env.reason = "current_g_not_ready"
 		return env
-	for key in ["_fieldBosses", "_fieldBoss", "_worms", "_fireDevils"]:
-		var v: Variant = g.get(key)
-		if (v is Array and not (v as Array).is_empty()) or v is Dictionary:
-			env.reason = "field_mob_owner_unported:" + key
+	# 35279 _hurtFieldMobs 입력(읽기 전용 참조). 필드몹 목록이 비어 있으면 원본도 0 — owner 생성 없이 비용 0.
+	if FIELD_OWNER.has_field_mobs(g):
+		var owner: Node = _ensure_field_owner()
+		if owner == null:
+			env.reason = "field_mob_owner_not_installed"
 			return env
+		env["field"] = owner.read_env(g)
 	env.ok = true
 	return env
+
+func _ensure_field_owner() -> Node:
+	if is_instance_valid(_field_owner) and _field_owner.get_parent() == _main:
+		return _field_owner
+	var owner: Node = FIELD_OWNER.new()
+	owner.name = "PCFieldMobHitOwner"
+	if not owner.configure(_main):
+		owner.free()
+		return null
+	_main.add_child(owner)
+	_field_owner = owner
+	return owner
+
+func read_field_owner_snapshot() -> Dictionary:
+	return _field_owner.snapshot() if is_instance_valid(_field_owner) else {"bound": false, "installed": false}
 
 func _env_providers(env: Dictionary) -> Dictionary:
 	if not env.has("providers"):
@@ -171,9 +193,25 @@ func step(packet: RefCounted, sp: float, ctx: Dictionary, env: Dictionary = {}) 
 		events.append({"event": "expired", "line": 35220 if dead == "DEAD_DISTANCE" else 35256,
 			"packet_id": packet.get_instance_id(), "presentation": "_addImpact_UNPORTED"})
 		return {"status": dead, "events": events, "release": {"recycle": false}}
-	# 35279 _hurtFieldMobs → 0 (preflight에서 필드몹 부재 확인)
 	var hit := false
 	var hit_set: Dictionary = f["_hitSet"]
+	# 35279 if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet,null)){hit=true;…}
+	var fenv: Variant = env.get("field")
+	if fenv is Dictionary and fenv.active == true:
+		var hit_r: float = (float(f.r) if _truthy(f.r) else 6.0) + 8.0
+		var raw_dmg: float = float(f.dmg) if _truthy(f.dmg) else (float(f.atk) if _truthy(f.get("atk")) and _num(f.get("atk")) else 10.0)
+		var sc: Dictionary = _field_owner.scan(fenv, float(f.x), float(f.y), hit_r, hit_set)
+		if sc.ok != true:
+			return {"status": "REFUSED", "reason": str(sc.reason), "events": events, "release": null}
+		if not (sc.contacts as Array).is_empty():
+			var fm: Dictionary = _field_owner.apply(sc.contacts, raw_dmg, hit_set, func(_line: int, _purpose: String) -> Variant: return _rand_value(env))
+			events.append_array(fm.events)
+			if not str(fm.get("refused_reason", "")).is_empty():
+				return {"status": "REFUSED", "reason": str(fm.refused_reason), "events": events, "release": null}
+			if not str(fm.partial_reason).is_empty():
+				return {"status": "PARTIAL", "reason": str(fm.partial_reason), "events": events, "release": null}
+			if int(fm.n) > 0:
+				hit = true
 	var query_r: float = float(f.r) + 20.0
 	var candidates: Array = _world.query_native_enemies(float(f.x), float(f.y), query_r)
 	for e in candidates:
@@ -231,6 +269,7 @@ func step(packet: RefCounted, sp: float, ctx: Dictionary, env: Dictionary = {}) 
 			contact["unified_pierce"] = {"rate": pr_rate, "pierced": f["_pierced"], "guaranteed": gtd}
 			if int(f["_pierced"]) <= gtd:
 				contact["outcome"] = "pierce_guaranteed_35571"
+				hit = false
 				continue
 			var over: int = int(f["_pierced"]) - gtd
 			var survive: float = maxf(0.0, 1.0 - float(over) * 0.1)
@@ -240,6 +279,7 @@ func step(packet: RefCounted, sp: float, ctx: Dictionary, env: Dictionary = {}) 
 					return {"status": "PARTIAL", "reason": "rand_not_ready:unified_pierce", "events": events, "release": null}
 				if float(roll) < survive:
 					contact["outcome"] = "pierce_roll_35572"
+					hit = false
 					continue
 		# 35606 패시브 관통 (normalBow는 _fireXbow가 pierce=XBOW_PIERCE?0.5:0 으로 덮어씀 → 기본 0)
 		var pierce: float = float(f.get("pierce", 0)) if _num(f.get("pierce")) else 0.0
@@ -258,11 +298,13 @@ func step(packet: RefCounted, sp: float, ctx: Dictionary, env: Dictionary = {}) 
 				hit_set[eid] = true
 				contact["outcome"] = "passive_pierce_35608"
 				contact["presentation"].append("pierce_text_UNPORTED")
+				hit = false
 				continue
 		# 35617 석궁 킬관통
 		if e.get("alive") != true:
 			hit_set[eid] = true
 			contact["outcome"] = "kill_pierce_35617"
+			hit = false
 			continue
 		contact["outcome"] = "hit_release_35625"
 		hit = true
@@ -281,7 +323,7 @@ func _any_contact(events: Array) -> bool:
 func _contact_count(events: Array) -> int:
 	var n := 0
 	for ev in events:
-		if ev.get("event") == "enemy_contact":
+		if ev.get("event") == "enemy_contact" or ev.get("event") == "field_mob_contact": # 필드몹 접촉도 hitSet/HP 쓰기 prefix
 			n += 1
 	return n
 
@@ -294,6 +336,15 @@ func _unique_from(providers: Dictionary, stat: String) -> Variant:
 	if not cb is Callable or not (cb as Callable).is_valid():
 		return null
 	var result: Variant = cb.call(stat)
+	if not result is Dictionary or str(result.get("status")) != "READY" or not _num(result.get("value")):
+		return null
+	return float(result.value)
+
+func _rand_value(env: Dictionary) -> Variant:
+	var cb: Variant = _env_providers(env).get("rand")
+	if not cb is Callable or not (cb as Callable).is_valid():
+		return null
+	var result: Variant = cb.call()
 	if not result is Dictionary or str(result.get("status")) != "READY" or not _num(result.get("value")):
 		return null
 	return float(result.value)

@@ -98,12 +98,35 @@ main.advance_native_source_projectile(handle, sp, ctx) -> Receipt{step_status, p
 | 발사(Mac) | `world.borrow_native_player_projectile(main)`로 패킷을 빌려 `_fireXbow` G28712 필드(x=ox+cdx·10, vx=cdx·spec.spd, dmg, el, maxDist=spec.range, dist0, r3, stagger0, kb0, pierce0, pierceMax0, normalBow/ghostXbow true)를 채운다 |
 | admit | owner=Main Player만(터렛/펫 석궁 미이식), phase=borrowed, normalBow 사전 검사 통과 → store publish. 적 탄 Dictionary는 `NOT_READY hostile_birth_owner_is_existing_demo11_35_registry`(기존 `_birth_request` 사용) |
 | pass | store 배열 순서(35176)로 normalBow만 1스텝, 그 외 패킷은 제자리 유지(기존/향후 owner 소유). 호출자가 **실제 source sp**와 프레임 serial token을 준다. 같은 token 두 번째 호출은 재집행 0 |
-| 1스텝(35179–35628) | 트레일6→spd→_bounceCool→이동→`dist>maxDist` 소멸(재활용 없이 drop) / `isW` → `canBounce=dist<maxDist·0.5&&bounces<2` 반사(스텝백·탈출5회·h/v 반전·bounces++·_bounceCool=6) 또는 소멸 → 필드몹(부재 확인) → `query_native_enemies(x,y,r+20)` → hitSet 스킵 → `dst<e.r+p.r` → hurtE(§3, 패킷=opts) → 35562 통일 관통(`_pierceRate`: 재활용 패킷은 `_resetPProj`가 50+pierceFlat → 4회 보장 후 확률, RNG 35572) → 35606 패시브 관통(RNG 35608) → 35617 **석궁 킬관통**(처치한 적은 hitSet 후 계속) → 적중 시 `_recyclePProj`(store retire recycle) |
-| 사전 거절(쓰기 0) | fireball/burst/explosive/magic/유도/독사/역병/체인/블루콩/터렛/_aoeR/_uqRico/_uqEcho/칼날메아리 활성 패킷, 필드몹 존재, `_uBowPoisonRicochet>0`(35433, 첫 접촉 hurtE 전 확인), 약점 배율 `mult>=2` 경직(35472) |
+| 1스텝(35179–35628) | 트레일6→spd→_bounceCool→이동→`dist>maxDist` 소멸(재활용 없이 drop) / `isW` → `canBounce=dist<maxDist·0.5&&bounces<2` 반사(스텝백·탈출5회·h/v 반전·bounces++·_bounceCool=6) 또는 소멸 → **35279 필드몹(§5a)** → `query_native_enemies(x,y,r+20)` → hitSet 스킵 → `dst<e.r+p.r` → hurtE(§3, 패킷=opts) → 35562 통일 관통(`_pierceRate`: 재활용 패킷은 `_resetPProj`가 50+pierceFlat → 4회 보장 후 확률, RNG 35572) → 35606 패시브 관통(RNG 35608) → 35617 **석궁 킬관통**(처치한 적은 hitSet 후 계속) → 적중 시 `_recyclePProj`(store retire recycle) |
+| 사전 거절(쓰기 0) | fireball/burst/explosive/magic/유도/독사/역병/체인/블루콩/터렛/_aoeR/_uqRico/_uqEcho/칼날메아리 활성 패킷, `_uBowPoisonRicochet>0`(35433, 첫 접촉 hurtE 전 확인), 약점 배율 `mult>=2` 경직(35472), **웜/화마귀 실제 접촉 스텝(§5a)**. ~~필드몹 존재~~(2026-10-21 PC-FOLLOWUPS에서 해제 — 존재만으로는 거절하지 않음) |
 | 정지 | 접촉 도중 hurtE PARTIAL → 그 패킷 blocked(유지·이후 미처리), pass 나머지는 제자리(이번 pass 중단) |
 | 표현(미이식·기록) | 트레일 렌더, 서브파티클 35212, 벽 반사 파티클, 소멸 임팩트 35273, bow_hit 사운드 35454/35624, G.hitStop 35473(소비자 32585 완전 비활성), 관통 텍스트, 히트 파티클 |
 
 단일 handle 호출은 pass가 열려 있지 않을 때만 허용한다(원본은 배열 순서로 일괄 처리 — 여러 발이면 pass를 쓴다).
+
+## 5a. 35279 `_hurtFieldMobs` — 필드보스 지원 범위 (PC-FOLLOWUPS 2026-10-21)
+
+원본 `if(_hurtFieldMobs(p.x,p.y,(p.r||6)+8,p.dmg||p.atk||10,p._hitSet,null)){hit=true;…}`(G35279, 함수 G18733–18756). 이전 묶음 B는 `G._fieldBosses/_fieldBoss/_worms/_fireDevils` 중 하나라도 비어 있지 않으면 **admit와 pass 전체를 쓰기 전에 거절**(`field_mob_owner_unported:<key>`)해서 MAP11(앵글러 4슬롯 상시 존재)에서 기본 자동 석궁 발사가 0이었다. 이제 존재만으로는 거절하지 않는다.
+
+| 원본 | 이식(소유) |
+|---|---|
+| G18734 `fbs=G._fieldBosses\|\|(G._fieldBoss?[G._fieldBoss]:[])` | pass당 1회 `read_env(g)` — 현재 G 배열 참조(복사 0), null/사망 슬롯 제외 후보 |
+| G18629 `_fmCanHit(fb,1)`: `hp>0 && (!hid\|\|tpT>0\|\|emT>0)` / G18628 `_fmXY`: `tpT>0`이면 (tpX,tpY) | `native_field_mob_hit_owner.gd` `can_hit_fb`/`fb_xy` (같은 식) |
+| G18738 `dst<hitR+(fb.r\|\|120) && !hitSet.has(fb)` → `hitSet.add(fb)` | hitSet 키 = 같은 record를 그리는 family actor 노드의 Godot instance id(fireball 계약 `hit_set_key_kind=godot_instance_id`). **hitCd 거절보다 먼저** 기록 |
+| G18700 `if(hitCd>0)return false` | 피해 0·n 미증가 → 화살은 hit=false로 계속 비행(원본 그대로 관통처럼 지나감) |
+| G18701–18702 `dmg=max(1,~~dmg); hp-=dmg; hitCd=8` | 피해 = `max(1, ToInt32(p.dmg\|\|p.atk\|\|10))`(elMul·hurtE 없음 — 원본도 _fmApply만). `hitCd=8`은 PC가 같은 record에 기록. **HP는 Mac family 기존 seam** `bind_pc_source(owner,&"field_boss_health")` 신호 `(index, hp, final_death, serial)`로 반영(family `_pc_readback`이 `fb.hp=hp`) |
+| G18706 `hp<=0` → G18677 `_fmDeathFx`: `_deathFxDone` 가드·기록, 고어 롤 Math.random 3회(18692 common/rare, 18693 index, 18694 isFb 추가) | hurtE 42729–42731과 같은 gameplay RNG provider·원본 순서로 3회 소비, `_deathFxDone=true` 기록. 시각(deathFX/시체/고어 조각/임팩트/shake/flash)·`showPH('필드보스 처치!')`는 **표현 미이식**(영수증 `presentation`) |
+| G18708 → G61036 `_fbMarkDead`: `alive=false`, 슬롯 null, `_fieldBoss` 해제, 생존 0이면 `_fbDone=true` | family readback(final_death=true, **hp=0**)이 그대로 수행. family는 hp<0을 받지 않으므로 최종 사망은 hp=0으로 보고 — 원본의 음수 hp는 슬롯이 즉시 null이 되어 이후 관측되지 않는다(일치 범위 밖: 사망 record의 hp 값만 0 vs 음수) |
+| 반환 n>0 → `hit=true` | carrier `hit=true`로 적 루프 시작. 이어지는 적 접촉의 관통 분기(35571/35572/35608/35617 `hit=false;continue`)가 원본처럼 hit을 다시 끈다(같은 스텝 필드보스 적중 + 일반 적 킬관통 → 화살 계속 비행) |
+| G18744 웜 `_worms` / G18751 화마귀 `_fireDevils` | **NOT_READY 유지(접촉 시에만)**: 실제 접촉이 성립하는 스텝은 쓰기 전에 `REFUSED field_mob_owner_unported:_worms\|_fireDevils`. 이유: 두 family의 PC hit seam(`bind_hit_owner`/`apply_hit`)은 있으나 제품 PC 연결 owner·hitSet 키 계약이 아직 없음(MAP11에는 두 family가 배치되지 않음). 존재만으로는 거절하지 않는다 |
+| `_fieldBosses` 없이 `_fieldBoss` 단독 | 접촉 시 `REFUSED field_mob_owner_unported:_fieldBoss_singleton_without_slots`(family readback이 4슬롯 배열 전제) |
+
+- 영수증: pass/advance 결과에 `field_mob_receipt[]`(line 35279, index, key, hp_before/hp_after, dmg, outcome `hit_18702`/`hitcd_reject_18700`/`final_death_18706`, serial, rng_draws, fbDone_after, presentation). `collision_receipt`(hurtE 적 접촉)와 분리 — Mac `native_demo11_auto_crossbow.gd`의 hits/kills 집계는 hurtE 적 접촉만 센다.
+- 바인딩: PC owner 노드 `PCFieldMobHitOwner`(Main 자식)는 필드몹 목록이 처음 보이는 pass에서 생성, family seam 바인딩은 **첫 실제 필드보스 접촉 때 1회**(lazy). 다른 owner가 seam을 이미 잡았으면 그 접촉은 쓰기 전에 `REFUSED field_boss_pc_source_bind_refused`/`field_boss_pc_source_bound_to_other_owner`. 쓰기 전 확인: family 설치·같은 G·`stage==0`·`!_bossArena`·`_fieldBosses` 배열.
+- 정지: readback 불일치(family 가드가 신호를 무시) → `PARTIAL field_boss_family_readback_not_applied:index<i>`(hitSet·hitCd 쓰기 prefix 유지, 롤백 없음). RNG provider 미준비 → `PARTIAL rand_not_ready:fm_gore_*`.
+- 웜/화마귀·단독 필드보스 접촉 거절은 스텝 이동(35206) 뒤 접촉 시점에서 일어난다 — 기존 약점 배율 거절(35472)과 같은 규약(이동 prefix 유지, 그 패킷은 blocked).
+- 틱 경로 비용(헤드리스 GDScript 실측): 스텝당 scan ≈ 6 µs(4슬롯·접촉 없음), pass당 env ≈ 2.5 µs. 목록 생성 API 0.
 
 ## 6. PCI-06 — `resolve_native_projectile_interaction`
 
@@ -175,5 +198,7 @@ consumer.call(prefix_context) -> Dictionary{applied: bool, ...}
 | PCI-07 web 둔화 / PCI-08 덫 접촉 순서 | **미구현** — 설계만 보고서에 기록 |
 | normalBow 피격음·bow_hit·hitStop·파티클 | 표현 미이식(§5). 42191 피격음 이벤트는 source `normalBow`로 나가지만 기존 DEMO11-40 소비자 필터(`weapon`/`kiSlash`)가 재생하지 않는다 |
 | 불 원소 석궁 | 쓰기 전 REJECTED (§3) |
+| 필드몹 — 필드보스(앵글러) | **지원**(§5a, PC-FOLLOWUPS). 표현(데미지 숫자·처치 연출·showPH)만 미이식 |
+| 필드몹 — 웜/화마귀·`_fieldBoss` 단독 | 실제 접촉 스텝만 REFUSED(§5a). 제품 PC hit owner 연결 필요 |
 | 터렛/펫 석궁(_gxFiring/G.pets.xbow) | admit REJECTED |
 | World 틱 자동 구동 | 미연결(실제 source sp 미발행). fireball consumer와 같은 pass 통합은 fireball 의존성 준비 시 단일 pass로 병합 필요 |

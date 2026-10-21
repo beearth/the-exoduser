@@ -9,6 +9,12 @@ extends SceneTree
 ## 테스트 소유 개입(forced 집계): 발사 owner(Mac DEMO11-48) 대신 _fireXbow(G28703–28712) 필드로 패킷을 채움,
 ##   source sp=1.0 을 테스트가 공급(실제 source clock 미발행), 플레이어 배치/HP 회복, PCI-09용 etype 강제.
 ## Main 부팅 그룹은 격리 사용자 폴더(USERDIR) 필수 — 아니면 SKIP.
+## 맵 전제(PC-FOLLOWUPS 2026-10-21): 이 파일 자체의 fixture(부팅 배치 적 ≥3, 200×200 타일 isW 스냅샷 `_wall_model`)는
+##   기존 맵 전제다 → 이 스크립트로 직접 실행할 때만 Main 메타 `native_map11="off"`(= `--map11=off`)로 기존 맵 부팅을 **명시**한다.
+##   상속 래퍼(Mac `test_pc_combat_pack_b_mac.gd`: MAP11 적 seed·MAP11 isW 모델 / `test_pcib_mac_calls.gd`)는 자기 fixture를
+##   가지므로 Main 기본(MAP11 ON) 부팅을 그대로 쓴다. MAP11 필드보스 존재 중 석궁 경로는 tests/test_pc_followups_fieldboss.gd.
+## Mac 생성 시 자동 bind(world._bind_pcib_actor): register_summoned_enemy 직후 type3는 이미 bound일 수 있다(제품 동작).
+##   pci02는 bound actor를 그대로 다루고, unbound 검사는 새 actor를 만든 뒤 자동 bind를 명시 해제해 쓴다.
 
 const USERDIR := "EXODUSER-pc-combat-b-Isolated-20261021"
 const GAME_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
@@ -24,6 +30,7 @@ const GROUPS := ["setup", "pci03_facade_normalbow", "pci03_lethal_kill", "pci03_
 const TYPE_AFFIXES := ["meleeDmgPct", "rangedDmgPct", "projDmgPct", "spellDmgPct", "beamDmgPct", "dotDmgPct",
 	"critRateMelee", "critRateSpell", "critRateBow"]
 const XBOW_DMG := 28 # G17448
+const LEGACY_FIXTURE_SCRIPT := "res://tests/test_pc_combat_pack_b.gd" # 이 파일 직접 실행일 때만 기존 맵 부팅(머리말)
 
 class FixtureRandom extends RefCounted:
 	var sequence: Array
@@ -255,6 +262,9 @@ func _test_setup() -> void:
 	var packed: Variant = load("res://scenes/main.tscn")
 	check(packed is PackedScene, "main_scene_loads")
 	main = packed.instantiate()
+	var own_legacy_fixture: bool = (get_script() as Script).resource_path == LEGACY_FIXTURE_SCRIPT
+	if own_legacy_fixture:
+		main.set_meta("native_map11", "off") # 기존 맵 부팅 명시(위 머리말). CLI --map11=on이면 아래 전제 검사가 실패로 드러낸다.
 	root.add_child(main)
 	for i in range(8):
 		await physics_frame
@@ -262,6 +272,8 @@ func _test_setup() -> void:
 	player = main.get("player")
 	state = main.get("source_state")
 	check(is_instance_valid(world) and world.get("ready_for_player") == true, "actual_world_ready")
+	if own_legacy_fixture:
+		check(main.read_native_map11_provider() == null, "legacy_map_booted_explicitly(map11 off)")
 	var service: Variant = main.get("native_combat_pack_b")
 	check(service != null and service.get_snapshot().configured == true, "pack_b_service_installed")
 	for method in ["request_native_hurte", "bind_native_enemy_hurte_owner", "admit_native_source_projectile",
@@ -630,19 +642,47 @@ func _test_pci02_type3_bind() -> void:
 	check(actor.configure(recipe, player, world, interfaces), "type3_binding_configured")
 	var reg: Dictionary = world.register_summoned_enemy(actor)
 	check(reg.get("valid") == true, "type3_registered_in_world:" + str(reg.get("errors")))
-	var hp0: float = float(actor.hp)
+	var service: RefCounted = main.get("native_combat_pack_b")
+	# 생성 시 자동 bind(Mac 제품)가 있으면 그 binding을 그대로 인정 — live identity·같은 owner 서비스여야 한다.
+	var auto_token: Variant = actor.get("native_hurte_owner_token")
+	var auto_bound: bool = auto_token is String and service.is_native_hurte_binding_live(actor, auto_token)
+	observations["type3_creation_auto_bind"] = auto_bound
+	# ── unbound 검사: 새 actor를 만들고, 자동 bind가 있으면 명시 해제해 unbound 상태를 만든다 ──
+	var free_recipe := _type3_recipe(site + Vector2(0, 120))
+	check(not free_recipe.is_empty(), "type3_unbound_recipe")
+	if free_recipe.is_empty(): return
+	var loose := Binding.new()
+	check(loose.configure(free_recipe, player, world, interfaces), "type3_unbound_actor_configured")
+	check(world.register_summoned_enemy(loose).get("valid") == true, "type3_unbound_actor_registered")
+	var loose_token: Variant = loose.get("native_hurte_owner_token")
+	if loose_token is String and service.is_native_hurte_binding_live(loose, loose_token):
+		check(service.release_native_enemy_hurte_owner(loose, loose_token), "explicit_release_of_creation_auto_bind")
+		forced += 1
+	check(not (loose.get("native_hurte_owner_token") is String and service.is_native_hurte_binding_live(loose, str(loose.get("native_hurte_owner_token")))), "loose_actor_explicitly_unbound")
+	var hp0: float = float(loose.hp)
 	var rng0 := _rng_count()
-	var pkt: RefCounted = _borrow_arrow(actor.global_position - Vector2(80, 0), actor.global_position, 40)
-	var unbound: Dictionary = main.request_native_hurte(actor, 40, 0.0, false, pkt.fields, 0, {"token": _tok("hurte")})
-	check(unbound.status == "REJECTED" and str(unbound.reason).find("PCI-02") >= 0 and float(actor.hp) == hp0 and _rng_count() == rng0, "unbound_new_actor_refused_no_mutation")
-	var direct: Dictionary = HURTE.new().execute(main, world, actor, 40, 0.0, 0, {"kbMult": 1.0, "poiseMult": 1.5, "noPoise": false, "poiseHit": false, "poiseSkill": false, "_lessonAttack": "weapon"})
-	check(direct.get("ok") == false and int(direct.get("halted_at", -1)) == 0 and float(actor.hp) == hp0, "direct_executor_unbound_fail_closed")
-	var bound: Dictionary = main.bind_native_enemy_hurte_owner(actor, {"token": _tok("bind")})
-	check(bound.status == "APPLIED" and str(bound.owner_token).begins_with("pc-hurte-owner:"), "type3_bound:" + str(bound.reason))
-	check(bound.readback.etype == 3 and float(bound.readback.hp) == hp0, "bind_readback_actual_fields")
-	check((bound.write_methods as Array).has("apply_native_normal_enemy_hp_write"), "write_methods_reported")
+	var pkt: RefCounted = _borrow_arrow(loose.global_position - Vector2(80, 0), loose.global_position, 40)
+	var unbound: Dictionary = main.request_native_hurte(loose, 40, 0.0, false, pkt.fields, 0, {"token": _tok("hurte")})
+	check(unbound.status == "REJECTED" and str(unbound.reason).find("PCI-02") >= 0 and float(loose.hp) == hp0 and _rng_count() == rng0, "unbound_new_actor_refused_no_mutation")
+	var direct: Dictionary = HURTE.new().execute(main, world, loose, 40, 0.0, 0, {"kbMult": 1.0, "poiseMult": 1.5, "noPoise": false, "poiseHit": false, "poiseSkill": false, "_lessonAttack": "weapon"})
+	check(direct.get("ok") == false and int(direct.get("halted_at", -1)) == 0 and float(loose.hp) == hp0, "direct_executor_unbound_fail_closed")
+	var rebound: Dictionary = main.bind_native_enemy_hurte_owner(loose, {"token": _tok("bind")})
+	check(rebound.status == "APPLIED" and str(rebound.owner_token).begins_with("pc-hurte-owner:"), "unbound_actor_bind_applied:" + str(rebound.reason))
+	check(rebound.get("readback") is Dictionary and rebound.readback.etype == 3 and float(rebound.readback.hp) == hp0, "bind_readback_actual_fields")
+	check(rebound.get("write_methods") is Array and (rebound.write_methods as Array).has("apply_native_normal_enemy_hp_write"), "write_methods_reported")
+	# ── bound actor(자동 bind 또는 여기서 bind) ──
+	var bound: Dictionary = {}
+	if auto_bound:
+		bound = {"status": "APPLIED", "owner_token": auto_token}
+		check(str(auto_token).begins_with("pc-hurte-owner:"), "creation_auto_bind_token_from_pc_service")
+	else:
+		bound = main.bind_native_enemy_hurte_owner(actor, {"token": _tok("bind")})
+		check(bound.status == "APPLIED" and str(bound.get("owner_token", "")).begins_with("pc-hurte-owner:"), "type3_bound:" + str(bound.reason))
+	check(actor.read_native_normal_enemy_hurte_fields(world).get("ready") == true and int(actor.read_native_normal_enemy_hurte_fields(world).etype) == 3, "bound_actor_readback_ready")
 	var again: Dictionary = main.bind_native_enemy_hurte_owner(actor, {"token": _tok("bind")})
 	check(again.status == "REJECTED" and again.reason == "actor_already_bound", "double_bind_rejected")
+	var again_loose: Dictionary = main.bind_native_enemy_hurte_owner(loose, {"token": _tok("bind")})
+	check(again_loose.status == "REJECTED" and again_loose.reason == "actor_already_bound", "double_bind_rejected_after_rebind")
 	var existing: Dictionary = main.bind_native_enemy_hurte_owner(_enemies_alive()[0], {"token": _tok("bind")})
 	check(existing.status == "NOT_REQUIRED", "existing_owner_needs_no_bind")
 	# 실제 normalBow 탄으로 type3 처치까지(실제 carrier 경로).
@@ -661,7 +701,6 @@ func _test_pci02_type3_bind() -> void:
 	check(hit_type3 and actor.alive == false and actor.state == "dead", "type3_killed_by_normalbow_via_shared_hurte")
 	observations["type3"] = {"hp0": hp0, "contacts": flight.contacts.size(), "fate": flight.fate}
 	# stale: world identity 교체(레슨 분리) 뒤에는 live binding 아님.
-	var service: RefCounted = main.get("native_combat_pack_b")
 	check(service.is_native_hurte_binding_live(actor, str(actor.native_hurte_owner_token)), "binding_live_before_identity_change")
 	check(service.release_native_enemy_hurte_owner(actor, str(bound.owner_token)), "release_binding")
 	check(not service.is_native_hurte_binding_live(actor, str(bound.owner_token)), "released_binding_not_live")

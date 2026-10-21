@@ -2,6 +2,9 @@ extends SceneTree
 ## PCI-10 — request_native_enemy_revive on the actual booted Main.
 ## 실제 hurtE로 처치한 시체를 같은 identity로 부활시키고, 원본 주술사 블록(G38944–38958, VM oracle)과
 ## 선택 순서·필드 값을 대조한다. 실패 경로는 무변이.
+## 맵 전제(PC-FOLLOWUPS 2026-10-21): 실제 hurtE로 처치·부활시킬 대상은 **부팅 시 배치된 기존 맵 적**(전용 owner·generic)이고
+##   이 테스트는 Main 처리를 끈 정지 장면에서 검사한다. MAP11 기본 ON은 부팅 직후 적 0(자연 스폰은 hole·스케줄러 진행 필요)이라
+##   Main 메타 `native_map11="off"`(= `--map11=off`)로 기존 맵 부팅을 **명시**한다. 판정 기준은 그대로다.
 const USERDIR = "EXODUSER-pc-life-pack-Isolated-20261021"
 const NORMAL_HURTE = preload("res://scripts/native_normal_enemy_hurte.gd")
 var checks := 0
@@ -70,8 +73,10 @@ func _run() -> void:
 	check(OS.get_user_data_dir().get_file() == USERDIR, "isolated userdir")
 	if failures > 0: quit(1); return
 	main = load("res://scenes/main.tscn").instantiate()
+	main.set_meta("native_map11", "off") # 기존 맵 부팅 명시(머리말 맵 전제)
 	root.add_child(main)
 	for i in 8: await physics_frame
+	check(main.read_native_map11_provider() == null, "legacy map booted explicitly (map11 off)")
 	main.process_mode = Node.PROCESS_MODE_DISABLED
 	world = main.world
 	var sub: Dictionary = main.subscribe_native_final_enemy_death(_on_cancel, {"subscriber": main, "events": ["cancel"]})
