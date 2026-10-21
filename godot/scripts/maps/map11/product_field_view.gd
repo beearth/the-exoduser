@@ -27,6 +27,11 @@ func _build_mass() -> void:
  _rgba("D01LowHeartAltar","prop_altar.png",Vector2(-250,-2320),220,false)
  _rgba("D01ExposedTissue","prop_cocoon.png",Vector2(-260,-2370),110,false)
  _stamp(load(ROOT_PATHS[0]),Vector2(-250,-2650),Vector2(1150,380),.10,_root_material,false,"shoulder")
+ # Static baked recess hides the old straight floor edge; no collision or tick work.
+ var recess:=Sprite2D.new();recess.name="GateOrganicRecess"
+ recess.texture=preload("res://assets/maps/map11/gate_organic_recess.png")
+ recess.position=Vector2(0,-4250);recess.scale=Vector2(4800.0/3072.0,900.0/640.0)
+ recess.z_index=-2986;add_child(recess)
  # Existing skull/black-iron gate is split into two texture regions at setup.
  # No generated art, opaque bar proxies, collision or lock writer.
  for i in range(3):

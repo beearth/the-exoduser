@@ -11,6 +11,17 @@
     0.9392846408175533,
     0.8319378247241185
   ],
+  "blood_red_gain": null,
+  "blood_red_bias": null,
+  "retouch_21c": {
+    "skull_chroma": 0.2,
+    "skull_tint": [
+      1.02,
+      1.0,
+      0.93
+    ],
+    "basin_chroma": 0.72
+  },
   "ao_strength": 0.35,
   "exposure": 1.85,
   "foot_luma_threshold": 0.15,
@@ -25,5 +36,14 @@
   ],
   "normal_xy_gain": 1.35,
   "denoise_median": 3,
-  "denoise_gaussian": 0.28
+  "denoise_gaussian": 0.28,
+  "retouch_21d": {
+    "variant": 2,
+    "yaw": 0,
+    "opaque_depth": true,
+    "preserved_variants": [
+      0,
+      1
+    ]
+  }
 }

@@ -61,7 +61,7 @@ void fragment(){
  float rim=pow(1.0-max(n.z,0.0),3.0)*max(dot(n,normalize(vec3(.6,.45,-.2))),0.0);
  vec3 baked=color.rgb*(.48+.78*diffuse)+vec3(.10,.075,.045)*rim;
  ALBEDO=depth_pass ? vec3(clamp((view_depth+10.0)/depth_span+.5,.0,1.0)) : (normal_pass ? n*.5+.5 : baked);
- ALPHA=1.0;
+ // Opaque geometry writes depth; transparent SubViewport supplies silhouette alpha.
 }
 """
  var cut_ratios={"tour_cocoon_tree":.065,"skull_pyramid":.055,"tour_torture_wheel":.045,"tour_chained_pillar":.04,"tour_blood_basin":.035,"hell_impaled_corpse":.03,"hell_spike_pit":.02}
@@ -79,9 +79,10 @@ void fragment(){
     if original.normal_enabled and original.normal_texture:
      mat.set_shader_parameter("has_detail",true);mat.set_shader_parameter("detail_normal",original.normal_texture);mat.set_shader_parameter("detail_strength",original.normal_scale*.35)
    mesh.set_surface_override_material(surface,mat);materials.append(mat)
+ var yaws: Array=[-20.0,0.0,0.0] if prefix=="tour_chained_pillar" else [-20.0,0.0,20.0]
  var rows: Array=[]
  for i in range(3):
-  pivot.rotation.y=deg_to_rad([-20.0,0.0,20.0][i])
+  pivot.rotation.y=deg_to_rad(yaws[i])
   var images: Array[Image]=[]
   for pass_ in range(3):
    for mat in materials:
@@ -105,7 +106,7 @@ void fragment(){
       var n:=Vector3(c.r*2.0-1.0,c.g*2.0-1.0,c.b*2.0-1.0).normalized()
       cropped.set_pixel(x,y,Color(n.x*.5+.5,n.y*.5+.5,n.z*.5+.5,c.a))
    cropped.save_png(output.path_join("%s_%d_%s.png"%[prefix,i,["diffuse","normal","depth"][pass_]]))
-  rows.append({"variant":i,"yaw_degrees":[-20,0,20][i],"size":[target.x,target.y],"foot":[target.x*.5,target.y],"source_crop":[rect.position.x,rect.position.y,rect.size.x,rect.size.y]})
+  rows.append({"variant":i,"yaw_degrees":yaws[i],"size":[target.x,target.y],"foot":[target.x*.5,target.y],"source_crop":[rect.position.x,rect.position.y,rect.size.x,rect.size.y]})
  var file:=FileAccess.open(output.path_join("render.json"),FileAccess.WRITE)
  file.store_string(JSON.stringify({"base_cut_ratio":cut_ratios.get(prefix,.04),"base_cut_y":cut_y,"elevation_degrees":rad_to_deg(atan2(6.0,8.0)),"ground_depth_compression":.6,"projection":"orthographic","normal":"view XYZ encoded .5*n+.5; +Y up/OpenGL; CanvasTexture decodes green to screen-down","variants":rows},"  "))
  quit()

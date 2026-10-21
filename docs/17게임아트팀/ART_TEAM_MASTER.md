@@ -348,3 +348,7 @@ MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이�
 ### MAP11-21c (2026-10-21)
 
 해골 회갈/아이보리chroma.20·cut.055/대야chroma.72·04광원.58/05광원.72, 입구·처형장·관문무리보정. 02보존. [설계서 §20.6](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#206-map11-21c--관광-코스-2차-보정-2026-10-21) 수치·좌표 SSOT. field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. 96checks/0fail, **VISUAL RETOUCH**(04내부평면/06림·01반복/03부분가림 잔여). 캡처 _out/MAP11-21c/captures/.
+
+
+### MAP11-21d (2026-10-21) 마감
+04 왼쪽 정상변형0으로 교체. 06 죄수variant2는yaw0+불투명depth로재렌더(0/1 PNG보존), pit height300/radius157.5/foot(-590,-3770)로1.5배. 게이트뒤3072×640 root-dark PNG로직선경계은폐. 01/02승인보존,03/05확인만. [설계서 §20.7](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21)가현행SSOT. **VISUAL RETOUCH**(03가림/05질감/06림·암부). 단회96checks/3fail; p95 field9.530/arena7.212ms, focus_lost1648/1749로성능검수FAIL. 캡처 _out/MAP11-21d/captures/, SHA·최종판정 DONE.txt.

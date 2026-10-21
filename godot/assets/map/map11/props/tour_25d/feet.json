@@ -254,20 +254,20 @@
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_diffuse.png",
     "size": [
-      323,
-      600
+      287,
+      520
     ],
     "bbox": [
       0,
       0,
-      323,
-      600
+      287,
+      520
     ],
     "foot": [
-      161.5,
-      600
+      143.5,
+      520
     ],
-    "sha256": "289ff7df2e57d6e16a5ebc65ec6cf0542c146c386e955cc642533414a338ca67"
+    "sha256": "2b845bbf64f8a46977a50fab91c4f05256e63352f638e3e7b0713ea2c30c915d"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_0_diffuse.png",

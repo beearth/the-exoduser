@@ -381,7 +381,7 @@
     "yaw": [
       -20,
       0,
-      20
+      0
     ],
     "textures": [
       {
@@ -435,29 +435,30 @@
       {
         "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_contact.png",
         "size": [
-          347,
-          156
+          307,
+          134
         ],
-        "sha256": "c7a157b0f023e26fc9d67088dc15a38e1b2c37024fdadd2432af536ae8277973"
+        "sha256": "8721632e805a105d2d1726fcc32b2b97c7df5821798b287fa097dadbb361f521"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_diffuse.png",
         "size": [
-          323,
-          600
+          287,
+          520
         ],
-        "sha256": "289ff7df2e57d6e16a5ebc65ec6cf0542c146c386e955cc642533414a338ca67"
+        "sha256": "2b845bbf64f8a46977a50fab91c4f05256e63352f638e3e7b0713ea2c30c915d"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_normal.png",
         "size": [
-          323,
-          600
+          287,
+          520
         ],
-        "sha256": "710cb3dcceb2ccc654b8b8e4b0112c5bc88d491a73eab188e53d9b70134ea7ff"
+        "sha256": "97aead73c297c65cfc7ea79ae969911617e60d095118f3d05ed2648332ae1244"
       }
     ],
-    "retouch": "MAP11-21b offline height discard; saturation1.06/contrast1.10; basin red attenuation; runtime PNG only"
+    "retouch": "MAP11-21b offline height discard; saturation1.06/contrast1.10; basin red attenuation; runtime PNG only",
+    "retouch_21d": "variant2 opaque depth/front yaw0; variants0/1 unchanged"
   },
   {
     "id": "tour_cocoon_tree",

@@ -55583,3 +55583,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-21 MAP11-21c
 - 기준06bae2f2 관광2차: 해골chroma.20/tint(1.02,1,.93)/cut.055·대야chroma.72·04/05광원energy.58/.72, 01/03/06무리보정. PNG runtime/격리userdir/PC core보존.
 - 설계서§20.6·SSOT·ART·manifest/contact 동기화. 단회96checks/0fail, p95 field7.581/arena7.286ms, focus이탈0. 6장면before/after1600×900+1x 확보. VISUAL RETOUCH(04내부평면·06림/01반복/03가림 잔여).
+
+
+## 2026-10-21 MAP11-21d
+- 기준2ab6eaea: 04왼쪽정상variant0, 06죄수variant2 yaw0+offline불투명depth/PNG만, pit1.5배(height300/radius157.5/foot-590,-3770), 게이트뒤root-dark정적PNG로직선경계은폐.
+- 설계서§20.7·SSOT·ART·manifest/contact동기화. 6장면before/after1600×900+1x. VISUAL RETOUCH. 단회96checks/3fail, p95 field9.530/arena7.212ms, focus_lost1648/1749로성능검수FAIL. 재시도0/PC core0/R읽기만.

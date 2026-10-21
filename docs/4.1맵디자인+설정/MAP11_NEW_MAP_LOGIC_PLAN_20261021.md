@@ -884,3 +884,42 @@ MAP PRODUCTION REPORT
 | GIT | 전용branch 경로지정add/정상hook/비강제push 및 remoteSHA대조 후 worktree제거. 최종SHA _out/MAP11-21c/DONE.txt. main push/merge/reset/rebase/배포0 |
 | VISUAL VERDICT | **RETOUCH**. 6장면 모두 02 수준에는 미달. 특히04 내부평면과06 구덩이 평면림,01 얇은 반복소재,03 일부가림 |
 | NEXT PASS | 04 내부면 보강·06 림접합·01 덩어리연결 필요. 이번작업에서 신규생성/후속백로그 착수0 |
+
+
+### 20.7 MAP11-21d — 지옥 관광 코스 3차 보정 마감 (2026-10-21)
+
+기준 `2ab6eaea2da9b16699113be883b226d2800eeece`, 전용 `codex/map11-21d-20261021`. **이 절이 현행이며 §20.6 이하 수치는 이력**이다. 새 생성 없이 기존 GLB의 offline PNG 및 기존 뿌리 PNG를 사용했다. 6장면 모두 02 수준이라는 최종 합격은 **미달(RETOUCH)**이다.
+
+| 대상 / id | 현행 변경 | 보존 / 적용 위치 |
+|---|---|---|
+| 04 왼쪽 피라미드 / row12 | yaw variant2(+20°) → variant0(-20°), 속 빈 내부면 변형 제외 | foot(-1740,-2250), height247, radius68; 정상 variant0 PNG 재사용. 뼈 chroma.20·cut.055 유지. 두 더미의 실루엣 유사성은 남음 |
+| 06 죄수 석주 / row16 | variant2 yaw +20° → 0°. offline shader에서 ALPHA=1 출력을 없애 불투명 geometry depth 기록; 잘못 겹치던 면 정렬 해결 | foot(-700,-3890), height331.5/radius45 유지. diffuse/normal 3번째만 교체, variant0/1 PNG 동일byte 보존하여 03 무변. metadata/hull/contact/manifest 동기화 |
+| 06 창 울타리 피 구덩이 / row14 | height200 → 300(1.5배), radius105 → 157.5(1.5배), foot(-530,-3770) → (-590,-3770) | 서측으로60 이동, 중앙 접근로 확보. authoritative route sweep/발치 충돌 검증 통과. source의 평면림·순적색 인상은 잔존 |
+| 게이트 뒤 직선 경계 | `gate_organic_recess.png` 3072×640 RGBA 정적 합성, world4800×900/center(0,-4250), z=-2986 | 기존 prop_g_root 9겹과 어둠의 불규칙 smoothstep 전이. 직선 바닥 경계를 덮고 기존 큰 나무/게이트 유지. collision0·tick 작업0·추가 PNG1/최대1 draw. RGBA 원시7.5MiB, GPU 실측아님 |
+| recess bake 공식 | y,x grid640×3072; edge=610+15sin(x/143)+8sin(x/49), a=clamp((edge-y)/230,0,1), alpha=255a²(3-2a), RGB(22,12,14) | root crop→thumbnail660×330×9, x=370i-220/y=260+23(i%3), 홀수mirror. root feather smoothstep(clamp((1-max(abs(2u-1),abs(2v-1)))/.45,0,1))×.55. RGB=(23,12,14)+L×(.18,.10,.10), L=.299R+.587G+.114B. `map11_21d_recess.py` 재현 |
+| 01/02/03/05 | 배치/PNG/광원 변경0 | 01·02 기존 사용자 합격 유지. 03·05는 실제 화면 비교 확인만 수행 |
+| 실행 계약 | 격리 `EXODUSER-map11-21d-Isolated-20261021`, R 파일변경0. project.godot 실행 후 원byte 복원/commit제외 | Godot 기존1+자체1 이하, offline/import/capture/bench 순차. 최초 headless import SIGSEGV(폰트) 후 GUI import 성공, 이후 증분 import 성공. 기존 Godot 강제종료0 |
+| 런타임 계약 | PNG만 사용; GLB 로딩은 offline tool에만 존재 | tick 목록API/ResourceLoader 추가0, UI 개발문구0, PC전투코어0, 실제 저장 폴더 접근0 |
+| 캡처 | `~/exoduser-wt/_out/MAP11-21d/captures/` | before는 기준2ab6eaea의 21c after 동일byte 복사. after6장1600×900+각1x320×270. compare3200×900/compare_1x640×270, 무축소. manifest SHA256/크기. HUD/RNG/광원위상은 비결정적 |
+| 단회 관련검수 | 96checks/3fail(93pass) | route/17props/foot/normal/Ydepth/collision/실제관문이행 통과. field p95 예산1건 및 field/arena 포커스2건 실패. 관련 테스트·벤치 재시도0 |
+| 성능 / field | p95 **9.530ms**, p99 11.474ms, draw132, focus_lost_frames1648 | 목표8.33ms 초과. 612physics ticks/1678render frames. foreground 요청에도 창 포커스 미유지, 포커스 유지 조건 성능판정 불가 |
+| 성능 / arena | p95 **7.212ms**, p99 7.640ms, draw136, focus_lost_frames1749 | 610physics ticks/1779render frames. 수치 예산내이나 포커스 조건 실패이므로 성능검수 PASS 선언하지 않음 |
+| 측정 한계 | macOS GL /1920×1080/240cap/60Hz, 기존 Godot1 공존, 실제 Player4방향×150틱 | 단회 실행만. Windows/밀집전투/GPU timestamp 미검수. 코드 변경에 따른 성능 회귀라고 단정하지 않음 |
+
+MAP PRODUCTION REPORT
+
+| 구역 | 보고 |
+|---|---|
+| STAGE / MASTER | CH1-1. 기존 silhouette/6regions/main route/side spaces 유지. GATE6 랜드마크→4 ground→8 camera→TECH |
+| OUTER MASS | LEFT/RIGHT/SOUTH 유지, TOP의 직선 경계는 뿌리+암부 전이 PNG로 가림. 새 major hole 없음 |
+| LARGE | 기존7GLB/PNG 보존, 06 variant2만 정면 재렌더. 04 정상 형태 재사용, 동일 실루엣 반복은 잔여 |
+| MEDIUM | 게이트 뒤 기존 나무 mass와 root/dark recess 연결. 무작위 scatter0 |
+| GROUND | 기존 alpha-contact/오염 유지. 06 신규 PNG 하단 feather로 연결, 초기 검은 덩어리 캡처는 폐기하고 최종본으로 교체 |
+| PLAYABLE | 주요 arena/travel/breathing/threat 보존. 서측 pit 1.5배/60좌측 이동, route/collision/실제보행/관문 PASS. 밀집전투 가독성 미검수 |
+| LANDMARK | primary heart 유지, secondary6무리/17소품, tertiary 외곽 유지 |
+| CAMERA QA | START01 기존승인 유지. EARLY02 비교기준 유지. SIDE L03 일부외곽가림·재질거침으로 RETOUCH. LANDMARK04 내부빈면 해결/반복형태잔여,05 저채도 조화는 유지하나 대야·작은더미 source 질감차로 RETOUCH. EXIT06 죄수정면/크기/직선경계 해결, pit 평면림·진한 적색과 죄수암부 가독성은 RETOUCH. MAIN ARENA/LATE 새 시각검수 없음 |
+| TECH QA | route/collision/foot/normal/Ydepth/loading PASS. native pageerror/404 N/A. 06 기존 직선 seam 은폐. runtime SCRIPT/Parse/ERROR0, 기존 Camera2D interpolation warning. perf/포커스 FAIL |
+| FILES | 본인 layout/product_field_view/offline tools/variant2 PNG+metadata/contact+격리검수스크립트/설계서·SSOT·ART·CHANGELOG. 타인 변경0 |
+| GIT | 지정branch 정상hook/경로add/비강제push, remoteSHA 확인 후 worktree제거. SHA는 _out/MAP11-21d/DONE.txt. main반영/배포0 |
+| VISUAL VERDICT | **RETOUCH** — 6장면 모두02수준에는 미달. 사용자 승인01/02를 취소하는 판정 아님. 이번 지시 보정 마감본을 제출하되 전체 아트/성능 합격으로 표시하지 않음 |
+| NEXT PASS | 총괄 인수검토. 03가림/05재질/06림·암부 및 포커스 유지 성능검수는 잔여. 이번세션 후속백로그 착수0 |

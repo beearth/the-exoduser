@@ -2,7 +2,7 @@ extends "res://tests/capture_map11_hell_props.gd"
 ## Single final related verification + one 600-tick benchmark per space.
 const Tour=preload("res://scripts/maps/map11/tour_layout.gd")
 func _run() -> void:
- if OS.get_user_data_dir().get_file()!="EXODUSER-map11-21c-Isolated-20261021":quit(2);return
+ if OS.get_user_data_dir().get_file()!="EXODUSER-map11-21d-Isolated-20261021":quit(2);return
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
  if output.is_empty():quit(3);return
@@ -33,6 +33,7 @@ func _run() -> void:
   if str(child.name).begins_with("FloorPatch") or str(child.name).begins_with("GroundStory"):patches+=1
  check(patches==0,"flat patches and broad scatter removed")
  check(scene.lighting_look.pools.size()==14,"eight existing plus six scene light pools")
+ DisplayServer.window_move_to_foreground()
  results.append(await measure("field",Vector2(-850,-2400)))
  main.player.global_position=main.read_native_map11_provider().transition_sites().field_gate.global_position
  for i in range(40):await physics_frame

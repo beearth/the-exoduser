@@ -14,9 +14,9 @@ const ROWS=[
  ["tour_chained_pillar",0,Vector2(-3780,-1190),300.0,48.0,2],
  ["tour_chained_pillar",1,Vector2(-3550,-700),275.0,45.0,2],
  ["skull_pyramid",0,Vector2(-1500,-2370),260.0,72.0,3],
- ["skull_pyramid",2,Vector2(-1740,-2250),247.0,68.0,3],
+ ["skull_pyramid",0,Vector2(-1740,-2250),247.0,68.0,3],
  ["tour_blood_basin",1,Vector2(-600,-2390),221.0,75.0,4],
- ["hell_spike_pit",1,Vector2(-530,-3770),200.0,105.0,5],
+ ["hell_spike_pit",1,Vector2(-590,-3770),300.0,157.5,5],
  ["skull_pyramid",1,Vector2(-810,-2520),145.0,44.0,4],
  ["tour_chained_pillar",2,Vector2(-700,-3890),331.5,45.0,5]]
 const SCENES=[
