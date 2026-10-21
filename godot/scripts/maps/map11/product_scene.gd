@@ -8,6 +8,7 @@ var field_view: Node2D
 var arena_view: Node2D
 var active_space: String="field"
 func _ready() -> void:
+ var clarity:=preload("res://scripts/maps/map11/clarity_pass.gd").new();clarity.name="WorldClarity";add_child(clarity)
  provider=Runtime.new();provider.name="Map11Provider";add_child(provider)
  if not provider.runtime_ready():return
  sites=provider.transition_sites()

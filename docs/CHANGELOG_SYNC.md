@@ -1,3 +1,9 @@
+## 2026-10-21 — SHARP-01 렌더·임포트 선명도
+
+- c335f345 기준 새 codex/sharp-01-20261021. Retina effective HiDPI는이미true, fixed viewport확대문제를canvas_items/native framebuffer로정정. base/카메라/actor scale보존, default window1920×1080. 지면26import Lossless0·원본PNG불변, transform-only snap, HUD아래약한5tap screen pass1개(이웃범위/변화량제한).
+- before/afterSTART·보스입장1920×1080+바닥/껍질/캐릭터1x, 선명도PASS. field/provider/seam각1회113/0. 최종 native2560 p95 9.793/p99 11.219ms/focus0, video_mem3291730949bytes; 120fps미달. 포커스전표본0/타작업겹침2표본무효보존, 단독유효1회만판정.
+- PCcore·runtime3D·tick로딩/할당·신규이미지/외부업스케일·번역수정0. [현재값/조치/효과와검수](4.1맵디자인+설정/SHARP_01_RENDER_CLARITY_20261021.md), 외부 `~/exoduser-wt/_out/SHARP-01/`.
+
 ## 2026-10-21 — MAP11-32c 계측·VRAM 압축·북쪽 관광 디테일
 
 - 기준 f85cfb9a, 동일 codex/map11-32-20261021 검토 후보. 수정 전30c/current 및7층A/B·내장함수 프로파일로 source clock/domain 검증 CPU 비용 확인, PC 코어 변경0.

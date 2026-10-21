@@ -1,3 +1,5 @@
+> 2026-10-21 SHARP-01 품질 후보: [HiDPI·무손실·렌더 선명도](SHARP_01_RENDER_CLARITY_20261021.md). 기준c335f345. canvas_items/native resolve, 지면26import mode0, 단일 제한형clarity pass. 1080p 전후1x 선명도PASS, native2560 p95 9.793ms/p99 11.219ms/focus0, 113checks/0fail. 120fps미달/전체맵아트PASS·PC인수 아님. 아래32c의 mode2/VRAM은 당시 이력.
+
 # MAP11-32c — 계측으로 찾은 CPU 비용, 지면 VRAM 압축, 북쪽 관광 디테일
 
 기준/expected remote `f85cfb9ab42112a91bf2264540bebaa724761b96`, 동일 `codex/map11-32-20261021`. 로컬 전용 WT `~/exoduser-wt/MAP11-32c`, 증거 `~/exoduser-wt/_out/MAP11-32c/`. main/PC 인수·배포 아님. **PERFORMANCE FAIL / VISUAL RETOUCH**. 코어 병목을 수정했다고 주장하지 않는다.

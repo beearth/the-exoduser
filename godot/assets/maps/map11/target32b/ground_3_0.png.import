@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cpyek1ahc3ywy"
-path.s3tc="res://.godot/imported/ground_3_0.png-fd7fd229269c023b991b4298952b516c.s3tc.ctex"
+path="res://.godot/imported/ground_3_0.png-fd7fd229269c023b991b4298952b516c.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/maps/map11/target32b/ground_3_0.png"
-dest_files=["res://.godot/imported/ground_3_0.png-fd7fd229269c023b991b4298952b516c.s3tc.ctex"]
+dest_files=["res://.godot/imported/ground_3_0.png-fd7fd229269c023b991b4298952b516c.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

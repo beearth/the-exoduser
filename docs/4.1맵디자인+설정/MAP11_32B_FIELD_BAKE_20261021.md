@@ -1,4 +1,4 @@
-> 후속 MAP11-32c: [수정 전 a/b·층별계측 / VRAM 압축 / 북쪽3무리](MAP11_32C_MEASURED_FIELD_20261021.md). 아래 수치는32b 당시 이력이며,26import의 현행 compress/mode는2(S3TC)다.
+> 후속 MAP11-32c: [수정 전 a/b·층별계측 / VRAM 압축 / 북쪽3무리](MAP11_32C_MEASURED_FIELD_20261021.md). 아래 수치는32b 당시 이력이며,26import는32c 당시 compress/mode2(S3TC)였다. [SHARP-01 품질 후보](SHARP_01_RENDER_CLARITY_20261021.md)는무손실0으로전환한다.
 
 # MAP11-32b — 첫 필드 정적 bake와 북접합 리터치
 

@@ -1,3 +1,5 @@
+> 2026-10-21 SHARP-01 품질 후보: [HiDPI·무손실·렌더 선명도](SHARP_01_RENDER_CLARITY_20261021.md). 기준c335f345. canvas_items/native resolve, 지면26import mode0, 단일 제한형clarity pass. 1080p 전후1x 선명도PASS, native2560 p95 9.793ms/p99 11.219ms/focus0, 113checks/0fail. 120fps미달/전체맵아트PASS·PC인수 아님. 아래32c의 mode2/VRAM은 당시 이력.
+
 > 2026-10-21 MAP11-32c 최신 후보: [계측·북쪽 디테일·VRAM 압축](MAP11_32C_MEASURED_FIELD_20261021.md). 기준/현재 p95 9.485/9.520ms, 최종9.122ms/p99 10.247ms/focus0. 전체 VRAM p95 3257505721→2825851708bytes. 237checks/0fail. source clock/input CPU 원인은 PC 인계, core수정0. **VISUAL RETOUCH / PERFORMANCE FAIL**, main 인수/PC 동기화 완료 아님. 아래32b는 이전 후보 이력.
 
 > 2026-10-21 MAP11-32b 최신 후보: [정적 bake·북접합 리터치·검수](MAP11_32B_FIELD_BAKE_20261021.md). START zoom.70 유지, 북미러/검은공백 제거. 관련237/0, 유효p95 **11.806ms**/p99 **12.905ms**/focus0, **124draw/225objects**. VISUAL RETOUCH / 성능 FAIL, main 인수금지. 아래32는 이전 후보 이력.
