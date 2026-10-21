@@ -56161,3 +56161,10 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 ## 2026-10-21 INTEG-3 지옥 관광 코스 통합
 
 MAP11-21d→20p 순차 merge, append 양쪽 보존. 공통16개 접지 마스크 atlas 참조와 신규 관광 마스크 병합. 최초 충돌해결 구조오류 복원 및 단회 검수 실패·oracle 인수 누락은 숨기지 않고 기록한다. [검수·충돌 근거](engine/INTEG3_DEMO11_20261021.md). 외부 DONE에 최종 SHA/18단계/성능/6장면 증거.
+
+
+## 2026-10-21 INTEG-3b — 통합 실패 원인 분리
+
+| 변경 | 검증 / 남은 문제 |
+|---|---|
+| benchmark_map11_21 focus 대기10초·최대3시도·손실시600틱 전체제외·실제 공간/입력 궤적 기록; low_processor 해제·240cap·VSync OFF는 벤치에만 적용 | 재import ERROR0·chest26/0·anglers1402/0·auto_potion2569/0. product 선재4실패+_bossArena 오류 baseline85415a66 재현. E2E12PASS/6NOT_READY·ERROR0. 유효field9.265/9.596ms로8.33ms FAIL; arena명목·PC대기. 별도 render thread crash 미채택. 제품/맵/보호core 수정0. 상세 docs/engine/INTEG3B_DEMO11_20261021.md |

@@ -33,15 +33,79 @@ func _run() -> void:
   if str(child.name).begins_with("FloorPatch") or str(child.name).begins_with("GroundStory"):patches+=1
  check(patches==0,"flat patches and broad scatter removed")
  check(scene.lighting_look.pools.size()==14,"eight existing plus six scene light pools")
+ OS.low_processor_usage_mode=false
+ DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+ Engine.max_fps=240
  DisplayServer.window_move_to_foreground()
  results.append(await measure("field",Vector2(-850,-2400)))
  main.player.global_position=main.read_native_map11_provider().transition_sites().field_gate.global_position
  for i in range(40):await physics_frame
  check(main.native_map11.snapshot().space=="arena","real gate entry")
  results.append(await measure("arena",scene.arena_view.global_position+Vector2(1250,80)))
- for result in results:check(result.p95_ms<=8.33,result.space+" p95 within 8.33ms")
+ for result in results:
+  if result.valid:check(result.p95_ms<=8.33,result.space+" p95 within 8.33ms")
  var f:=FileAccess.open(output,FileAccess.WRITE)
- f.store_string(JSON.stringify({"samples":results,"checks":checks,"failures":failures,"props":evidence_rows,"viewport":[1920,1080],"physics_hz":Engine.physics_ticks_per_second,"user_dir":OS.get_user_data_dir(),"scope":"one GUI run; real Player input, 600 ticks per space; existing Godot coexists; no dense-combat/Windows/GPU timestamp claim"},"  "))
+ f.store_string(JSON.stringify({"samples":results,"checks":checks,"failures":failures,"props":evidence_rows,"viewport":[1920,1080],"physics_hz":Engine.physics_ticks_per_second,"user_dir":OS.get_user_data_dir(),"command_line":OS.get_cmdline_args(),"max_fps":Engine.max_fps,"low_processor_usage_mode":OS.low_processor_usage_mode,"scope":"GUI real Player input, 600 ticks per attempt; focus-interrupted attempts rejected in full, at most three attempts; arena nominal while real gate is PC pending; existing Godot coexists; no dense-combat/Windows/GPU timestamp claim"},"  "))
  main.queue_free()
  for i in range(16):await process_frame
  quit(0 if failures==0 else 1)
+
+# A focus interruption invalidates the entire 600-tick attempt, including its p95.
+# Retry for focus only; a valid slow sample is never retried to pass the budget.
+func measure(space: String, origin: Vector2) -> Dictionary:
+ var rejected: Array=[]
+ for attempt in range(3):
+  DisplayServer.window_move_to_foreground()
+  var deadline: int=Time.get_ticks_msec()+10000
+  while not DisplayServer.window_is_focused() and Time.get_ticks_msec()<deadline:
+   await process_frame
+  var row: Dictionary=await _measure_attempt(space,origin)
+  if row.valid:
+   row.rejected_focus_attempts=rejected
+   row.attempt=attempt+1
+   check(row.input_accepted and row.walk_distance>200.0,space+" actual Player walking")
+   check(true,space+" window focused throughout sample")
+   return row
+  rejected.append(row)
+ check(false,space+" no uninterrupted focused sample after three attempts")
+ return {"space":space,"valid":false,"p95_ms":null,"focus_lost_frames":-1,"rejected_focus_attempts":rejected}
+
+func _measure_attempt(space: String,origin: Vector2) -> Dictionary:
+ root.grab_focus()
+ root.size=Vector2i(1920,1080);root.content_scale_size=Vector2i(1920,1080)
+ DisplayServer.window_set_size(Vector2i(1920,1080))
+ await settle(origin)
+ intervals.clear()
+ var last: int=Time.get_ticks_usec()
+ var start: int=last
+ var frame_start: int=Engine.get_process_frames()
+ var tick_start: int=Engine.get_physics_frames()
+ var sample_frames: Array[float]=[]
+ var focus_lost: Array[int]=[]
+ DisplayServer.window_move_to_foreground()
+ for i in range(30):await process_frame
+ var sampler: Callable=func():
+  if not DisplayServer.window_is_focused():focus_lost.append(Engine.get_process_frames())
+  var now: int=Time.get_ticks_usec()
+  sample_frames.append(float(now)/1000.0)
+ process_frame.connect(sampler)
+ var actions: Array[String]=["move_left","move_down","move_right","move_up"]
+ var corners: Array[Vector2]=[main.player.global_position]
+ var input_ok: bool=true
+ for action in actions:
+  var event:=InputEventAction.new();event.action=action;event.pressed=true
+  input_ok=input_ok and main.player.handle_native_input_event(event).get("accepted",false)
+  for i in range(150):
+   main.player.handle_native_input_event(event)
+   await physics_frame
+  event.pressed=false;main.player.handle_native_input_event(event)
+  corners.append(main.player.global_position)
+ print("BENCH_END ",space," wall_us=",Time.get_ticks_usec()-start)
+ process_frame.disconnect(sampler)
+ var elapsed: int=Time.get_ticks_usec()-start
+ for i in range(1,sample_frames.size()):intervals.append(sample_frames[i]-sample_frames[i-1])
+ intervals.sort()
+
+ var walk_distance: float=0.0
+ for i in range(1,corners.size()):walk_distance+=corners[i-1].distance_to(corners[i])
+ return ({"walk_distance":walk_distance,"product_space":main.native_map11.snapshot().space,"valid":focus_lost.is_empty(),"focus_lost_frames":focus_lost.size(),"space":space,"input_accepted":input_ok,"path_corners":str(corners),"walk_speed":main.player.get("_movement_speed"),"ticks":Engine.get_physics_frames()-tick_start,"wall_us":elapsed,"render_frames":Engine.get_process_frames()-frame_start,"mean_fps":(Engine.get_process_frames()-frame_start)*1000000.0/elapsed,"p95_ms":intervals[int(intervals.size()*.95)],"p99_ms":intervals[int(intervals.size()*.99)],"draw_calls":Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),"objects":Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME)})

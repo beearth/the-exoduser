@@ -1018,3 +1018,8 @@ MAP PRODUCTION REPORT
 | GIT / USER DATA | codex/map11-20p-20261021 정상 부모372a9c5a, 경로지정 stage·정상hook·비강제 branch push/readback. main push/merge/배포0. 격리 user dir만 실행, project 원byte 복원 후 자기 worktree 제거 |
 | VISUAL VERDICT | **PASS(이번 성능 작업의 화면 동등성만) / 전체 맵 RETOUCH 유지** |
 | NEXT / 한계 | 과거 FAIL의 단일 GPU 원인은 미확정. 창 포커스/외부 실행 상태를 계속 기록해 재현성을 유지. Windows/밀집전투 검수는 별도 배정 |
+
+
+## INTEG-3b 통합 재검수 (2026-10-21)
+
+[상세 재검수](../engine/INTEG3B_DEMO11_20261021.md). 68a6939e 재import ERROR0, chest26/0·anglers1402/0·auto_potion2569/0. product4실패+_bossArena 오류는85415a66에서 동일 재현해 선재 기록만. E2E12PASS/6NOT_READY·blocked_by 유지. benchmark_map11_21은 focus 손실시600틱 전체 제외·최대3회 자동 재측정·실제 공간/인수 기록을 추가했다. 유효 Safe foreground field9.265ms, App Nap 인수 조건9.596ms로 모두8.33ms 초과 FAIL. arena는 실제 gate PC 대기로 명목 표본뿐이다. separate render thread는crash로 미채택. 맵 시각·충돌·제품 Godot 설정·PC core 수정0, 기존 RETOUCH 유지.
