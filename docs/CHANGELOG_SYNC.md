@@ -1,3 +1,10 @@
+## 2026-10-22 — UPSCALE-01 원본 업스케일·북쪽 접합
+
+- SHARP-01 6da38c312326635fcb1424bebbac2b26b4a41350 부모. 로컬 Real-ESRGAN x4plus로 최초 원화/북소품 원본 처리, 필드1.5×/보스2×실사용 밀도·55PNG 무손실·최대2048tile. 원본/재현스크립트/해시 보존, 평균RGB·chroma복원·새샤픈0. anime비교 제외.
+- 북 root판 irregular alpha·blood/moss source균열따라fade, 중복확대그림자 제거·skull16world foot그림자. 카메라/캐릭터·보스scale/PCcore/runtime3D/실제저장 변경0. before/after3곳1920+literal1x 선명도/접합 제한범위PASS.
+- 지정5종각1회182checks/0fail. 유효field단회native1440 p95 9.798/p99 10.732ms/focus0, VRAM3706543901bytes. 동일1080capture before3268263209→after3683076161(+395.596458MiB),120fps미달. 전체map/PC인수 아님.
+- [파이프라인·해상도·보정·메모리·MAP REPORT](4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#upscale-01--로컬-real-esrgan-적용-2026-10-22-10-21-지시), art현황표 갱신. 외부 `~/exoduser-wt/_out/UPSCALE-01/DONE.txt`.
+
 ## 2026-10-21 — SHARP-01 렌더·임포트 선명도
 
 - c335f345 기준 새 codex/sharp-01-20261021. Retina effective HiDPI는이미true, fixed viewport확대문제를canvas_items/native framebuffer로정정. base/카메라/actor scale보존, default window1920×1080. 지면26import Lossless0·원본PNG불변, transform-only snap, HUD아래약한5tap screen pass1개(이웃범위/변화량제한).

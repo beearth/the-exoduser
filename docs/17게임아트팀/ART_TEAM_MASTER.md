@@ -352,3 +352,13 @@ MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이�
 
 ### MAP11-21d (2026-10-21) 마감
 04 왼쪽 정상변형0으로 교체. 06 죄수variant2는yaw0+불투명depth로재렌더(0/1 PNG보존), pit height300/radius157.5/foot(-590,-3770)로1.5배. 게이트뒤3072×640 root-dark PNG로직선경계은폐. 01/02승인보존,03/05확인만. [설계서 §20.7](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21)가현행SSOT. **VISUAL RETOUCH**(03가림/05질감/06림·암부). 단회96checks/3fail; p95 field9.530/arena7.212ms, focus_lost1648/1749로성능검수FAIL. 캡처 _out/MAP11-21d/captures/, SHA·최종판정 DONE.txt.
+
+
+## UPSCALE-01 현황표 (2026-10-22)
+
+| 작업 | 적용·규격 | 검수·판정 |
+|---|---|---|
+| 최초원화2장 업스케일 | 로컬 Real-ESRGAN x4plus, x4추론→field1.5×/arena2×밀도. anime비교 제외. floor/clone/고목/둘레/전경을 같은logical source좌표에서 재분해,55PNG 무손실·최대2048 | 1920×1080 3곳+literal1x. 선명도 PASS; model/source/해상도/보정·메모리 SSOT는 [목표화면 UPSCALE-01](../4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#upscale-01--로컬-real-esrgan-적용-2026-10-22-10-21-지시) |
+| 북접합 | root판 irregular alpha, blood/moss 기존균열을 따라fade, 넓은복제그림자 제거·skull foot16world 짧은접촉. 새생성/inpaint/runtime3D0 | 제한범위 PASS, 전체map clone/crop/다른zoom·PC 미검수 |
+| 성능·메모리 | 유효field1회p95 9.798/p99 10.732ms/focus0/native1440. 실제VRAM 1080before3268263209→after3683076161bytes(+395.596458MiB). 새PNG145.523388MiB/RGBA429.890106MiB | 지정5종각1회182checks/0fail. **120fps 미달**. 기존81277 보존/자기Godot종료·main배포0 |
+| 인계 | `codex/upscale-01-20261021`, parent6da38c312326635fcb1424bebbac2b26b4a41350 | exactSHA/원격readback/captures: `~/exoduser-wt/_out/UPSCALE-01/DONE.txt` |

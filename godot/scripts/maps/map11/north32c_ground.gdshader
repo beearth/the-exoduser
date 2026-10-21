@@ -10,10 +10,7 @@ void fragment(){
  vec3 tone=mix(vec3(.333,.318,.369),vec3(.271,.294,.251),moss);
  tone=mix(tone,vec3(.208,.122,.161),vein);
  art.rgb=mix(art.rgb,tone*(.45+l*1.1),.82);
- vec2 p=(UV-vec2(.5))*2.0;
- float angle=atan(p.y,p.x);
- float edge=length(p)+.045*sin(angle*5.0+.7)+.025*sin(angle*9.0);
- art.a*=1.0-smoothstep(.60,.99,edge);
+ // Irregular texture-following alpha is authored offline; no second oval cutoff.
  if(contact){art.rgb=vec3(0.0);}
  COLOR=art;
 }

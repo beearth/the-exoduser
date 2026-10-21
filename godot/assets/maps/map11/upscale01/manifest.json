@@ -1,0 +1,652 @@
+{
+  "tool": "/Users/fordeargamers/exoduser-wt/_tools/realesrgan/bin/realesrgan-ncnn-vulkan",
+  "model": "realesrgan-x4plus",
+  "inference_scale": 4,
+  "runtime_density": {
+    "field": 1.5,
+    "arena": 2
+  },
+  "assets": [
+    {
+      "file": "assets/maps/map11/upscale01/north/blood.png",
+      "size": [
+        1024,
+        1053
+      ],
+      "rgba_bytes": 4313088,
+      "png_bytes": 1094274,
+      "lossless": true,
+      "sha256": "a45df36ffd8fb7d4e527e230a3fbf85aaa22cc059aaed6efddc61411e12a4c97"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/north/bones0.png",
+      "size": [
+        562,
+        600
+      ],
+      "rgba_bytes": 1348800,
+      "png_bytes": 497697,
+      "lossless": true,
+      "sha256": "bcd282b45589e832524ad25ae399df514a26478de9fbefafd2bc5d9def954eae"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/north/bones2.png",
+      "size": [
+        621,
+        600
+      ],
+      "rgba_bytes": 1490400,
+      "png_bytes": 515613,
+      "lossless": true,
+      "sha256": "babdeb595f0b8a2233a6d35b060ee9cd56f3401b913e15b92a95a110f866c307"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/north/moss.png",
+      "size": [
+        1280,
+        1040
+      ],
+      "rgba_bytes": 5324800,
+      "png_bytes": 1738432,
+      "lossless": true,
+      "sha256": "f911e483894c496c37aa8b9cb9e9f9a374a6e37de7af531200c00d66c1aafd87"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/north/root.png",
+      "size": [
+        1024,
+        1022
+      ],
+      "rgba_bytes": 4186112,
+      "png_bytes": 1923082,
+      "lossless": true,
+      "sha256": "941a2a43affdae655d924cca56b9c7a9fa48cf28a5e8b32472acb4ac16278f74"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/east_mouth.png",
+      "size": [
+        1242,
+        1326
+      ],
+      "rgba_bytes": 6587568,
+      "png_bytes": 2446477,
+      "lossless": true,
+      "sha256": "32c54ab6818b515f7402ca1d87fc6be7e921abd4ddab5dbf8adb582f57226fa1"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_0_0.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 2191733,
+      "lossless": true,
+      "sha256": "04659b724a156bc442afc27912aef5bdbee9d6a73ab2e079c9baf9263716fb99"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_0_1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6083082,
+      "lossless": true,
+      "sha256": "562d47910ddb559eb5ca7a2697fe979e5b1597df0b793169535bf11b2778dadf"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_0_2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6206774,
+      "lossless": true,
+      "sha256": "51a67d372bdeb69ad38e8e35f182718bd730b5068e8f30f01bd872cabaa27d40"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_0_3.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 2238643,
+      "lossless": true,
+      "sha256": "6107cef37470a8812959b54c7cbc52c118932e4f61501a4cfa7e79a7b3141deb"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_0_4.png",
+      "size": [
+        2048,
+        10
+      ],
+      "rgba_bytes": 81920,
+      "png_bytes": 160,
+      "lossless": true,
+      "sha256": "5d9ad71e1f984fed36c3140b388fcc25a6a1b550d070c43c4d3c01478cfdc2fc"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_1_0.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6008167,
+      "lossless": true,
+      "sha256": "2cef0b1c2325ee0bf9f2b8c781ec0c1f4e9747fd2628f5d5f2b4723cf22cc881"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_1_1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6560351,
+      "lossless": true,
+      "sha256": "9157db071dbd8cee393017383bb7964caaf1b3f3ec1124b2f81e4580ad88e44b"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_1_2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6412932,
+      "lossless": true,
+      "sha256": "0c9f2b19f8f75cb0e1fe5b56f9f89c882d4d14c928d337cabd116ce8785c8f31"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_1_3.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 5968135,
+      "lossless": true,
+      "sha256": "000a79f2bb22deb93dcce5a393d5b6842251e1c3d9f021f13a79e1263405beae"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_1_4.png",
+      "size": [
+        2048,
+        10
+      ],
+      "rgba_bytes": 81920,
+      "png_bytes": 160,
+      "lossless": true,
+      "sha256": "5d9ad71e1f984fed36c3140b388fcc25a6a1b550d070c43c4d3c01478cfdc2fc"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_2_0.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6034513,
+      "lossless": true,
+      "sha256": "b18911c7f1eafd3b0c5b508b28acbd5d8ebb7e4aa06c32187e2dd28df627a7f8"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_2_1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6471243,
+      "lossless": true,
+      "sha256": "f23df8b989d8fc28edf94e1b75c6cbc265e2b0be0cc64aa5433b9f16bf578e57"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_2_2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6403921,
+      "lossless": true,
+      "sha256": "28a680d917a98fb48e6b9358d859cff7e537e4bb289410eacc99624712cc7c75"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_2_3.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6017270,
+      "lossless": true,
+      "sha256": "4819b5bcb9c006155830a55d354a60d36b24fe6655f39505685826ec0bb775df"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_2_4.png",
+      "size": [
+        2048,
+        10
+      ],
+      "rgba_bytes": 81920,
+      "png_bytes": 160,
+      "lossless": true,
+      "sha256": "5d9ad71e1f984fed36c3140b388fcc25a6a1b550d070c43c4d3c01478cfdc2fc"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_3_0.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 2292132,
+      "lossless": true,
+      "sha256": "d387d9a872d7ddb3a1fe51a0e76aa89c7358367fd3def17506f8cd989732af50"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_3_1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6181202,
+      "lossless": true,
+      "sha256": "9f8c4c13289573231004e1d09930945b5d8018e6419d9eb1eb1c46b913ff6df4"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_3_2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6162765,
+      "lossless": true,
+      "sha256": "ca8538aaac3a12db39b5d3f9822a65af76c0d1e25e5c8037f597c59fea625c1b"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_3_3.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 2256964,
+      "lossless": true,
+      "sha256": "e1f977061c3aa0ed2ce90d1a4f8e82b72d45323c019cb3505fa97a74165c41b0"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_3_4.png",
+      "size": [
+        2048,
+        10
+      ],
+      "rgba_bytes": 81920,
+      "png_bytes": 160,
+      "lossless": true,
+      "sha256": "5d9ad71e1f984fed36c3140b388fcc25a6a1b550d070c43c4d3c01478cfdc2fc"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_4_0.png",
+      "size": [
+        10,
+        2048
+      ],
+      "rgba_bytes": 81920,
+      "png_bytes": 161,
+      "lossless": true,
+      "sha256": "f5e1a85229490c29ca931288c0675c34730cbf93a779ca0f10409d48a2091116"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_4_1.png",
+      "size": [
+        10,
+        2048
+      ],
+      "rgba_bytes": 81920,
+      "png_bytes": 161,
+      "lossless": true,
+      "sha256": "f5e1a85229490c29ca931288c0675c34730cbf93a779ca0f10409d48a2091116"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_4_2.png",
+      "size": [
+        10,
+        2048
+      ],
+      "rgba_bytes": 81920,
+      "png_bytes": 161,
+      "lossless": true,
+      "sha256": "f5e1a85229490c29ca931288c0675c34730cbf93a779ca0f10409d48a2091116"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_4_3.png",
+      "size": [
+        10,
+        2048
+      ],
+      "rgba_bytes": 81920,
+      "png_bytes": 161,
+      "lossless": true,
+      "sha256": "f5e1a85229490c29ca931288c0675c34730cbf93a779ca0f10409d48a2091116"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/floor_4_4.png",
+      "size": [
+        10,
+        10
+      ],
+      "rgba_bytes": 400,
+      "png_bytes": 71,
+      "lossless": true,
+      "sha256": "0c384837a297a57dfc850792315daeb53b575fbf0572775700bb9403ac6cbbcf"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/foreground_0.png",
+      "size": [
+        2000,
+        610
+      ],
+      "rgba_bytes": 4880000,
+      "png_bytes": 1714588,
+      "lossless": true,
+      "sha256": "a952bafd6d7df5dea36b610af70b6a2405c2a2cb51824025e6c2cf6d9a498956"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/foreground_1.png",
+      "size": [
+        2000,
+        610
+      ],
+      "rgba_bytes": 4880000,
+      "png_bytes": 1773112,
+      "lossless": true,
+      "sha256": "114b28aeaf304854e78ab152a7f0a158080d48ea7ab0e15579cb61a2d7a42edd"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/north_east.png",
+      "size": [
+        832,
+        632
+      ],
+      "rgba_bytes": 2103296,
+      "png_bytes": 803231,
+      "lossless": true,
+      "sha256": "f1681be205b290a59dfb5d39bddb6fad7402b19efbde906b07bf9f9748c040d7"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/north_heart.png",
+      "size": [
+        788,
+        520
+      ],
+      "rgba_bytes": 1639040,
+      "png_bytes": 615218,
+      "lossless": true,
+      "sha256": "76a96a1d44b248cb9beffb979082dc78120a9ae1aaaac2e3505849218708fe98"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/north_west.png",
+      "size": [
+        834,
+        386
+      ],
+      "rgba_bytes": 1287696,
+      "png_bytes": 473875,
+      "lossless": true,
+      "sha256": "0e51166a99891ee3ff7cba35233c5bca5169d60e343f3cc2b730f308313258b7"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/south_east.png",
+      "size": [
+        1196,
+        994
+      ],
+      "rgba_bytes": 4755296,
+      "png_bytes": 1783651,
+      "lossless": true,
+      "sha256": "ed0ee05a4155b1f68632bd6f560867f0b18bbb69515187fd72222971e689bcad"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/south_west.png",
+      "size": [
+        958,
+        1486
+      ],
+      "rgba_bytes": 5694352,
+      "png_bytes": 2137863,
+      "lossless": true,
+      "sha256": "61076238c45f44fb94ce4bae5327ddb34cad4e6283220ca886e4b76754e891d8"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target30/west_mouth.png",
+      "size": [
+        1326,
+        948
+      ],
+      "rgba_bytes": 5028192,
+      "png_bytes": 1984145,
+      "lossless": true,
+      "sha256": "7d40c9af563a7699cd5e0fcf102cec25c92904e80498005f38c71b6bc37b5599"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_0_0.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6232636,
+      "lossless": true,
+      "sha256": "e673cc2fbf5b10eab68eff39403603be356d2e5b83c87c886c03b9830b7a046e"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_0_1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6760686,
+      "lossless": true,
+      "sha256": "3a13298c7a2a85f3104ebd28bfc145b441a86b1e0e8ed3567db8d599c331d6bf"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_0_2.png",
+      "size": [
+        2048,
+        1498
+      ],
+      "rgba_bytes": 12271616,
+      "png_bytes": 4722515,
+      "lossless": true,
+      "sha256": "d818fed238170a06cb0fc81059ac3c5a0fd5b6ce52748fcfc65b84aac4df2ae3"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_1_0.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6171257,
+      "lossless": true,
+      "sha256": "33f414420d47bb7701458748f7c98d430ff903d76d44f95206ad884953780316"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_1_1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "rgba_bytes": 16777216,
+      "png_bytes": 6703171,
+      "lossless": true,
+      "sha256": "d27acd8b294a86061fb018da1d7081c0f1fc9d6d31dea739a16ade09f869b547"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_1_2.png",
+      "size": [
+        2048,
+        1498
+      ],
+      "rgba_bytes": 12271616,
+      "png_bytes": 4668274,
+      "lossless": true,
+      "sha256": "9660be99507f0a314d675c6b85e95504b5755a5a13cccb2a704c54bdcd01c5f2"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_2_0.png",
+      "size": [
+        710,
+        2048
+      ],
+      "rgba_bytes": 5816320,
+      "png_bytes": 2196453,
+      "lossless": true,
+      "sha256": "108463cc826d1e7a664e1cbcfae32671ac20a307f4b1c0b55c291b14878d10c2"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_2_1.png",
+      "size": [
+        710,
+        2048
+      ],
+      "rgba_bytes": 5816320,
+      "png_bytes": 2238182,
+      "lossless": true,
+      "sha256": "f2ccd3ada23ab92cf7b3a7c37b7f9d1e339b9b07d2e30740e635983baefb2353"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/floor_2_2.png",
+      "size": [
+        710,
+        1498
+      ],
+      "rgba_bytes": 4254320,
+      "png_bytes": 1597686,
+      "lossless": true,
+      "sha256": "619374109e2fc46deb10709dc252f5e03301ddf9fbeead1ef58140e215f8bb01"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/foreground_32b_0.png",
+      "size": [
+        232,
+        285
+      ],
+      "rgba_bytes": 264480,
+      "png_bytes": 101731,
+      "lossless": true,
+      "sha256": "adafb962404ee78a49bb334ecb1e1beab752757cf32910f6f3e0130cc0f5b98e"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/foreground_32b_1.png",
+      "size": [
+        352,
+        262
+      ],
+      "rgba_bytes": 368896,
+      "png_bytes": 163364,
+      "lossless": true,
+      "sha256": "db4e0cd09aeb7c7bb5dadf2b8e47c04dc7245ea05ddec0c076fe0aed95f3c083"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/left_mid.png",
+      "size": [
+        742,
+        615
+      ],
+      "rgba_bytes": 1825320,
+      "png_bytes": 780775,
+      "lossless": true,
+      "sha256": "212ab4774f1ea4f39df2d973ea1321add69585e3507291023e607e1532a96859"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/left_near.png",
+      "size": [
+        1467,
+        1388
+      ],
+      "rgba_bytes": 8144784,
+      "png_bytes": 3202188,
+      "lossless": true,
+      "sha256": "7d1e0047686857f76f8ceac2cfbebcb7d71016a53b3049da44c0fc5330a89b8c"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/right_mid.png",
+      "size": [
+        674,
+        682
+      ],
+      "rgba_bytes": 1838672,
+      "png_bytes": 761756,
+      "lossless": true,
+      "sha256": "9b19b36958d93934926fd0400d3b0f4d7a0532b167ee2233811bbf48515b864b"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/right_near.png",
+      "size": [
+        1233,
+        1538
+      ],
+      "rgba_bytes": 7585416,
+      "png_bytes": 3007417,
+      "lossless": true,
+      "sha256": "62c81b0011e7d751bde8d6bd4a0cbdbf32a75d595bfec4c898f60eef6f6bee71"
+    },
+    {
+      "file": "assets/maps/map11/upscale01/target32/white_tree.png",
+      "size": [
+        512,
+        291
+      ],
+      "rgba_bytes": 595968,
+      "png_bytes": 291801,
+      "lossless": true,
+      "sha256": "1857dd24af0b226dd2930bf5a2306a439b6a5434e19b45c124ef7aa49c15ddab"
+    }
+  ],
+  "sources": [
+    {
+      "source": "/Users/fordeargamers/exoduser-wt/_out/MAP11-30/ch1_field_corridor_target.png",
+      "sha256": "b201213d99079074fb5372eb1fd37c661335ac6f759a7564251ff64bd556df32",
+      "size": [
+        2000,
+        1125
+      ],
+      "model_output_sha256": "51dcd33bbd34725e9fa7fe4d03a22bfef0eee371a76499d1147dc29fd3aadd82",
+      "mean_rgb_delta": [
+        3.64971923828125,
+        2.2948455810546875,
+        1.9544754028320312
+      ],
+      "chroma_gain": 1.0225173234939575,
+      "corrected_sha256": "00638db4871d6f3fa764cb6b752679108c5609c6c9be3caf0831666b97ffef16"
+    },
+    {
+      "source": "/Users/fordeargamers/exoduser-wt/_out/MAP11-30/ch1_boss_arena_target.png",
+      "sha256": "705d98bb20c0ed78e29158e8b427171e50d7488110afef9972bb065f37d473ac",
+      "size": [
+        2000,
+        1125
+      ],
+      "model_output_sha256": "8f90e47a1f790fbf87089bb7d234169454029f3586a61659bb94b4ce383715c2",
+      "mean_rgb_delta": [
+        2.6397018432617188,
+        2.0251522064208984,
+        0.5989856719970703
+      ],
+      "chroma_gain": 1.0565422773361206,
+      "corrected_sha256": "bdd5bb0ab62d01a879e1278441592d8a8f1c508aff033c62323418adf5169208"
+    }
+  ],
+  "memory_rgba_bytes": 450772448,
+  "model_comparison": "x4plus chosen: bark/fissures retained; anime flattens material planes. External model_compare.png"
+}
