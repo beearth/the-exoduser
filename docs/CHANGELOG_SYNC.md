@@ -76,6 +76,15 @@
 - 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
 - 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
 
+## 2026-10-21 PC-M29-PARRY — M29 비투사체 접촉 패링 제공자(DEMO11-30 재개 접점1)
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | origin/main969c194e6, PC 전투 핵심. 신규 native_m29_contact_services.gd: player_context(live isPWin G38469)·handle_m29_parry(parryBank→doParry 기존 writer→_poiseHit20)·emit_m29_event(warning/impact/detonate 단일소유 라우팅)·m29_readiness. 투사체 facade·반사 경로 호출0, projectile:true 거부 |
+| 공용 | main.gd +22/−5: preload·필드·준비구역 설치1줄·보상식/bank읽기/서비스 getter. 기존 Q반사 bank읽기·Q/E 보상식 3곳을 같은 식 helper로 단일화(동작 동일). type3_summoned_actor.gd +25/−0 `_poiseHit` 코어. 2_3 수정금지 docs·Q/E 판정·피해식·저장 변경0 |
+| 검증 | 원문 VM oracle(isPWin 480행·패링/피해 순서·보상·poise 코어) 일치, 실제 Main 신규100/0(실접촉 패링·피해·거부·재진입). 회귀 qe155/0·type3binding4그룹·m29 143/0·type3actor118/0·m30 4그룹·p1002g220/0·starter148/0·regen88/0·demo34 166/0·contracts5/0, type7 runtime 2실패는 base부터 동일(무관). 물리틱 16.66ms(M29 actor 有) |
+| 인계·HOLD | [계약](engine/PC_M29_PARRY_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-m29-parry_REPORT.md). 자연스폰·EL-01·단일lock·실제 FX 소비자·doParry 나머지·is_tile_wall 확정은 미연결 |
+
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
 | 항목 | 구현·검수 근거 |
@@ -55424,3 +55433,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`을 자기 branch에 ff merge 후 신규 unit112/0·actualMain12/0·contracts5군/실패0 재확인. 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0, 수치 출력 합660/0. G48/지역23·60·53·32/합168·시작HUD0/32 확인. 실행별 근거는 아래 보고서를 따른다.
 - 최초 unit1단정 실패·보완, 최초 커밋의 필수 변경로그 누락 거부·기존 초기화 회귀의 격리guard 거부는 과거 실행으로 보존한다. 이 append는 필수 문서 동기화 정상 경로이며 훅 우회0.
 - [원본 행·API·실행별 결과·기준 SHA·남은 범위](engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
+## 2026-10-21 ctx-pack — 1-1 Godot 이식 원본 context pack
+
+| 항목 | 동기화 내용 |
+|---|---|
+| 범위 | `docs/engine/ctx/`에 이동·Q/E·분노·스킬·성장·INV·물약·forge·save·적AI·드루이드·필드보스·사망/부활·demo·HUD/사운드 15 pack과 README를 추가했다. 제품 코드/Godot 실행 변경0. |
+| 원본 | R `game.html` 65,692행 / SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4` 기준 행을 기록하고, 상세 수치/전수표는 기존 `FDG_SOURCE_TRACE_*`를 재사용했다. |
+| 경계 | 각 pack은 origin/main Godot의 실제 경로와 gap의 연결 상태를 분리한다. 2_3 Q/E·돌진/방패, 저장 형식, PC 전투 핵심은 보호이며 module 존재를 전체 이식 완료로 승격하지 않는다. |
