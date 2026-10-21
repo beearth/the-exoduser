@@ -478,3 +478,8 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 ## 2026-10-22 ZOOM-01b 재촬영 부분 제출
 
 MAP11-32c c335f345를 기존 ZOOM-01에 merge. 새 필드 START와 HUD 안전 프레이밍 보정, 원본12장·비교판3장 보존. 근접4장은 실제 이동 후 idle 실패증거이며 실전 캡처 아님. 지정 소스 보스 clock owner_gap_no_receipt / ticks_completed0으로 공격 주입 없이 (c) 완료 불가. 제품 카메라/스케일/UI·PC core·맵 비주얼 변경0. VISUAL RETOUCH. [표·눈검수·실행/안전 경계](../engine/ZOOM_01B_REPORT_20261022.md), SHA/원격/정리는 ~/exoduser-wt/_out/ZOOM-01b/DONE.txt.
+
+
+## 2026-10-22 — INTEG-8 통합
+
+INTEG-7 + C15 + ZOOM을 merge2회로 통합. import ERROR0·회귀33종355,135/0·E2E13/5/0(저장ON/주입0), 성능60초 포커스 미확보 — 미측정. 제품 카메라/스케일·맵 비주얼·PC 코어/계약/PC 테스트 보존. 자연 gate 이후5단계 NR 유지. [현황 행](../engine/DEMO11_STATUS_20261021.md#integ-8--etype15-분열-actor--테스트-전용-zoom-통합-2026-10-22), 최종 SHA·원격·정리 근거 `~/exoduser-wt/_out/INTEG-8/DONE.txt`.

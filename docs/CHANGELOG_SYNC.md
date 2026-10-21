@@ -56427,3 +56427,8 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 |oracle/회귀|원본 constructor/분열 블록 VM 대조 + 최종 C15 151/0. 기존 B1회42/2(부재 기대 stale 검사, ERROR0), F1회33/0, pcib_mac_calls1회31/0. baseline 기존 C suite 없음|
 |E2E|storage=on 단1회 PASS13/NR5/FAIL0·ERROR0, 주입0. 이후 C15 tick const/kb 제자리 갱신 정리 및 최종 C15 재확인; E2E 추가0|
 |보존/남은 범위|PC core/계약/PC 테스트·game.html·번역·맵 visual 변경0. projectile consumer·분열 라벨·공통 부활 재스폰 남음. R 실수 문서 쓰기는 원래 bytes로 복원, tracked diff0 확인. 상세: docs/8.0몬스터디자인/ETYPE15_NATIVE_20261022.md|
+
+
+## 2026-10-22 INTEG-8
+- INTEG-7 기준 C15→ZOOM 순서 merge 2회. 문서 충돌은 양쪽 원문 합집합; PC 계약/구현/PC 테스트·맵 비주얼·project.godot·제품 카메라/스케일 보존. etype-b stale 기대 갱신본42/0, C15 151/0·F33/0.
+- import ERROR0, 회귀33종355,135checks/0fail/ERROR0, E2E 저장ON·주입0 각1회 PASS13/NR5/FAIL0. 성능은60초 포커스 미확보 — 미측정(유효0). 상세: docs/engine/DEMO11_STATUS_20261021.md INTEG-8, ~/exoduser-wt/_out/INTEG-8/DONE.txt.
