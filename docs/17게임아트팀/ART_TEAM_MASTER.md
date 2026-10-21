@@ -362,3 +362,13 @@ MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이�
 | 북접합 | root판 irregular alpha, blood/moss 기존균열을 따라fade, 넓은복제그림자 제거·skull foot16world 짧은접촉. 새생성/inpaint/runtime3D0 | 제한범위 PASS, 전체map clone/crop/다른zoom·PC 미검수 |
 | 성능·메모리 | 유효field1회p95 9.798/p99 10.732ms/focus0/native1440. 실제VRAM 1080before3268263209→after3683076161bytes(+395.596458MiB). 새PNG145.523388MiB/RGBA429.890106MiB | 지정5종각1회182checks/0fail. **120fps 미달**. 기존81277 보존/자기Godot종료·main배포0 |
 | 인계 | `codex/upscale-01-20261021`, parent6da38c312326635fcb1424bebbac2b26b4a41350 | exactSHA/원격readback/captures: `~/exoduser-wt/_out/UPSCALE-01/DONE.txt` |
+
+
+## MAP11-33 현황표 (2026-10-22)
+
+| 항목 | 현행 | 검수/경계 |
+|---|---|---|
+| 마감 리터치 | START foreground 하단 불규칙fade/북쪽 고목5컷 공통수평선 분산/해골dense-foot578·582+짧은AO24·alpha.68+국소soil | 3장면1920×1080·literal1x13board, UPSCALE선명도유지PASS. 전체맵RETOUCH유지 |
+| 메모리 | 필드bake353.376343→223.464821MiB data, legacy아레나renderer 상속/로드제거. 1-1전체보수GPU1,267,507,176→988,351,648bytes(≤1.0GB) | Main타장포함cache보수1,574,538,764bytes는1GB초과·별도잔류. 전체목록·경계·공식은 [목표화면 MAP11-33](../4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22) |
+| 검수 | field41/provider54/seam18/30b34/arena35=182checks/0fail, 각1회 | 필드성능1회시도는 macOS loginwindow/포커스미확보로측정시작전종료. p95 N/A·유효샘플0, 재측정필요 |
+| 인계 | 같은codex/upscale-01-20261021, parent24662224dd40a5de45e68b5dec9d5d2c4a2736b1 | SHA/원격검증/캡처/표: ~/exoduser-wt/_out/MAP11-33/DONE.txt·REPORT.md. main/PC인수/배포아님 |

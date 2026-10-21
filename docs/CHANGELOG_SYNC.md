@@ -56287,3 +56287,14 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 ## 2026-10-21 — MAP11-32b 북접합 / 성능 FAIL 후보 보존
 
 [최종 계약·검수·MAP REPORT](4.1맵디자인+설정/MAP11_32B_FIELD_BAKE_20261021.md). 같은branch/기준d953e349, START zoom.70·provider/PCcore/actor스케일 보존. 북접합 무반사native패치·정적지면22tile·전경trim. 관련6종 각1회237/0. 유효field1회 p95 **11.806ms**,p99 **12.905ms**,focus_lost0; draw/objects **118/219→124/225**. **VISUAL RETOUCH / 성능 FAIL, 해소 완료 아님**. 유효 느린표본 재측정0. 외부 `_out/MAP11-32b/DONE.txt`에 최종SHA·원격·clean WT제거 기록; main/PC/배포0.
+
+
+## 2026-10-22 — MAP11-33 고해상도 마감·텍스처 예산
+
+| 범위 | 반영/검수 |
+|---|---|
+| 기준 | UPSCALE-01 24662224dd40a5de45e68b5dec9d5d2c4a2736b1, 같은codex/upscale-01-20261021. R읽기전용/별도WT |
+| 리터치 | 좌하단foreground하단 불규칙fade/북고목공통수평선 분산/해골피벗578·582/AO높이24·alpha.68/하부흙오염. 원화RGB·밀도·카메라·전투core보존 |
+| 메모리 | 정적field22tile 무손실trim/불투명5장RGB/legacy아레나제품상속로드제거. 1-1보수GPU1,267,507,176→988,351,648bytes. Main타장포함cache보수1,574,538,764bytes는별도잔류 |
+| 검수 | 지정5종각1회182checks/0fail. 실제Main3곳1920×1080/1x13board 선명도유지·국소리터치PASS, 전체맵RETOUCH. 성능1회시도는loginwindow/포커스실패로측정시작전종료(p95 N/A/유효0) |
+| SSOT | [전체수치·텍스처전후목록·§23](4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22), ART_TEAM_MASTER 현황, 외부 _out/MAP11-33/DONE.txt·REPORT.md·captures. main/PC/배포0 |

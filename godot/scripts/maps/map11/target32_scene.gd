@@ -1,7 +1,7 @@
 extends Node2D
 ## One field region, setup preloads and cached references only during updates.
 const Look=preload("res://scripts/maps/map11/target32_layout.gd")
-const TEXTURES=[preload("res://assets/maps/map11/upscale01/target32/left_near.png"),preload("res://assets/maps/map11/upscale01/target32/left_mid.png"),preload("res://assets/maps/map11/upscale01/target32/right_mid.png"),preload("res://assets/maps/map11/upscale01/target32/right_near.png"),preload("res://assets/maps/map11/upscale01/target32/white_tree.png")]
+const TEXTURES=[preload("res://assets/maps/map11/finish33/left_near.png"),preload("res://assets/maps/map11/finish33/left_mid.png"),preload("res://assets/maps/map11/finish33/right_mid.png"),preload("res://assets/maps/map11/finish33/right_near.png"),preload("res://assets/maps/map11/finish33/white_tree.png")]
 var rows: Array[Dictionary]=[]
 var foreground: Array[Dictionary]=[]
 var layers: Array[Dictionary]=[]
@@ -19,7 +19,7 @@ func _ready() -> void:
   sway.set_shader_parameter("white_tree",i==4);s.material=sway if i==4 else _unlit;add_child(s)
   rows.append({"sprite":s,"foot":s.position,"rect":Rect2(s.position+s.offset*s.scale,s.texture.get_size()*s.scale)})
  var fragments: Array=preload("res://assets/maps/map11/target32/bake_32b.json").data.foreground
- var fg_textures=[preload("res://assets/maps/map11/upscale01/target32/foreground_32b_0.png"),preload("res://assets/maps/map11/upscale01/target32/foreground_32b_1.png")]
+ var fg_textures=[preload("res://assets/maps/map11/finish33/foreground_0.png"),preload("res://assets/maps/map11/upscale01/target32/foreground_32b_1.png")]
  for i in range(fragments.size()):
   var box: Array=fragments[i].source_box
   var fg:=Sprite2D.new();fg.name="Target32Parallax%d"%i;fg.texture=fg_textures[i]

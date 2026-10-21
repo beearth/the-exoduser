@@ -1,4 +1,6 @@
-extends "res://scripts/maps/map11/arena_legacy_view.gd"
+extends Node2D
+const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
+var _rim_sprites: Array[Dictionary]=[]
 ## MAP11-30: one scene decomposed from the approved target. No geometry/actor writes.
 const TargetLook=preload("res://scripts/maps/map11/target30_look.gd")
 const SURFACE=preload("res://scripts/maps/map11/target30_surface.gdshader")
@@ -8,13 +10,10 @@ var _foreground: Node2D
 var _target_camera: Camera2D
 var _target_origin:=Vector2.ZERO
 func _ready() -> void:
- super._ready()
- # Retain baseline identifiers/collision, suppress incompatible visual pieces only.
- for child in get_children():
-  if child is CanvasItem:child.hide()
- _ritual.hide()
- for row in _rim_sprites:
-  row.sprite.set_meta("finale_retired",true)
+ # The provider owns collision; legacy art was built only to be hidden here.
+ # Keep the accepted scene API/arrays; omit the retired visual setup.
+ set_process(false);set_physics_process(false)
+ set_process_input(false);set_process_unhandled_input(false);set_process_unhandled_key_input(false)
  _mount_target()
 func _mount_target() -> void:
  _floor_tiles=preload("res://scripts/maps/map11/upscale01_tiles.gd").mount(self,"arena",TargetLook.SCREEN_CENTER,TargetLook.SOURCE_SCALE,-449)
@@ -23,8 +22,6 @@ func _mount_target() -> void:
  pods.set_shader_parameter("pod_scale",TargetLook.POD_SCALE);pods.set_shader_parameter("pod_glow",TargetLook.POD_GLOW)
  pods.set_shader_parameter("pulse_hz",TargetLook.PULSE_HZ);pods.set_shader_parameter("glow_color",TargetLook.GLOW)
  var unlit:=CanvasItemMaterial.new();unlit.light_mode=CanvasItemMaterial.LIGHT_MODE_UNSHADED
- var back:=Sprite2D.new();back.name="Target30BackMass";back.texture=preload("res://assets/maps/map11/target30/static_underlay.png")
- back.scale=Vector2.ONE*TargetLook.SOURCE_SCALE;back.position=TargetLook.SCREEN_CENTER;back.offset=Vector2.ZERO;back.z_index=-446;back.material=unlit;back.modulate=Color.WHITE;add_child(back);back.hide()
  var rows: Array=TargetLook.SPLIT.data.regions
  for i in range(rows.size()):
   var row: Dictionary=rows[i];var foot:=Vector2(row.foot[0],row.foot[1])
@@ -93,3 +90,13 @@ func update_product_occlusion(point: Vector2,delta: float) -> void:
   var fade: float=.25 if row.rect.has_point(point) and sprite.position.y>point.y else 1.0
   sprite.modulate.a=move_toward(sprite.modulate.a,fade,delta*8.0)
  _foreground.position=Vector2(0,(820-562.5)*TargetLook.SOURCE_SCALE+120)-(_target_camera.get_screen_center_position()-global_position-_target_origin)*TargetLook.PARALLAX
+
+# Same presentation helpers, with no legacy renderer/preload dependency.
+func _circle_points(center: Vector2,radius: float,count: int=128) -> PackedVector2Array:
+ var points:=PackedVector2Array()
+ for i in range(count):points.append(center+Vector2.from_angle(TAU*float(i)/count)*radius)
+ return points
+func _camera_rect() -> Rect2:
+ var inverse:=get_global_transform_with_canvas().affine_inverse()
+ var size_: Vector2=get_viewport_rect().size
+ return Rect2(inverse*Vector2.ZERO,size_/get_viewport().get_camera_2d().zoom).grow(100)

@@ -78,9 +78,7 @@ func _mount_contacts() -> void:
   var sprite: Sprite2D=row.sprite
   if not sprite.has_meta("finale_retired"):
    GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.26,_unlit)
- for id in ["NorthHeartAltar","EntryArch_VisualOnly","ClearArch_VisualOnly"]:
-  var sprite: Sprite2D=scene.arena_view.get_node(id)
-  if sprite.position.length()<=1700.0:GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.40,_unlit)
+ # Retired legacy altar/arches were always hidden by the target scene.
  _contact(_player,Vector2(0,4),Vector2(62,20),-1,.75)
 
 func _contact(parent: Node2D,foot: Vector2,size_: Vector2,z: int,alpha: float) -> void:

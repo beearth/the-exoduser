@@ -119,3 +119,6 @@ GIT: 동일branch/정상hooks/경로add/비강제push만, expected f85cfb9a. 최
 **VISUAL VERDICT: RETOUCH / PERFORMANCE: FAIL (CPU 원인 인계).**
 
 NEXT PASS: PC source clock/domain/resource 중복 검증의 비용을 소유권/즉시실효성 계약을 보존하며 검토. 맵 이미지만 다시 bake해 성능 달성했다고 주장하지 않는다. GPU API0 환경의 실제 GPU timestamp는 별도 지원 도구가 필요하다.
+
+
+> 2026-10-22 MAP11-33 후속: 이 문서의 과거 자산·메모리·북접합 수치는 당시 이력이다. 현행은 [목표화면 MAP11-33](MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22). legacy아레나제품로드 제거/field bake 무손실trim·RGB/국소리터치, 1-1보수GPU988,351,648bytes. 182검사0fail, 성능은포커스미확보로p95 N/A(유효0).
