@@ -56355,3 +56355,6 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - E2E: 자연 소유 actor0/1/4/6/18/19·can_move 검증+(24,0) 위치만 배치. 자동물약 단계 직접피해/물약추가 제거, 정상 자동소비 유지. 부활 최대120000ms+resolution15000ms; 최종 PASS13/NOT_READY5/FAIL0·ERROR0·validator[]. 자연접촉1478프레임·HP0/fallen_enter/final_death 실측. 총E2E2회(초기 배치 후보누락 후 보정), gate13은PC 미완료.
 - 성능1회: actual Main/World/Player의 test-only transport로 authoritative arena,1920×1080·실제입력600틱,focus_lost0,p95 9.261ms/p99 10.989ms. 30c7.738 대비+1.523ms,8.33ms 미달. TIME_PROCESS/PHYSICS·draw·viewport CPU/GPU·3callback 분해와 측정한계 기록. PC 함수 수정0.
 - 문서: `docs/engine/INTEG6B_REGRESSION_20261021.md`, `DEMO11_STATUS_20261021.md` INTEG-6 행, `PCIB_WIRE_REPORT_20261021.md`, `docs/4.1맵디자인+설정/MAP11_PRODUCTION_BINDING_20261021.md`. 이전 수치는 이력 보존. 원자료·최종SHA: `~/exoduser-wt/_out/INTEG-6b/DONE.txt`.
+
+## 2026-10-21 INTEG-6c BGM merge
+- PC `3baceb7340fe578fccc63bacfe38737d236eeec0`를 merge로 통합. 데모 boss 카탈로그 = `bgm/1장_썩은숲/Ashen Druid - Boss.mp3` (−12.4 LUFS). AUDIO-01 믹스 코드는 무변경. 사운드 문서 충돌은 SFX Forge·보스 BGM 양쪽 기록 보존.
