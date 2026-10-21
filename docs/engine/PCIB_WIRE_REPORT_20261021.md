@@ -95,3 +95,61 @@
 | 16 | demo_end | NOT_READY | next/end route not admitted |
 | 17 | save_handoff | PASS |  |
 | 18 | lobby_return | NOT_READY | actual lobby navigation not completed |
+
+
+## PCIB-WIRE-c 하니스 관측·fixture 회복 (2026-10-21)
+
+기준 `cf21177e`, 같은 `codex/demo11-pcib-wire-20261021`의 후속이다. PCIA `e606abe0`와 비교해 PCIB에서 revival 단계가 생존 검사 뒤의 자연 접촉 대기에서 enemy_kill 직후의 즉시 snapshot으로 옮겨진 것을 확인했다. 제품 피해·생명 owner는 변경하지 않는다.
+
+| id / 파일 | 현행 하니스 계약 | 제품·PC 경계 |
+|---|---|---|
+| auto_potion / test_demo11_47h_e2e.gd | 단계 진입 `potion_entry.uses`와 `mats_before`를 대기 **전**에 캡처한다. 대기 중 실제 uses 증가도 같은 단계의 증거다. 사용 증가 시 cooldown 대기를 종료하고 uses 증가·mats 감소·실제 cd>0를 검증한다. | HP/iframe/cd 직접 쓰기0. 기존 receive_damage 경유와 실제 물약 owner 사용. |
+| revival_interface / E2E·demo11_47h_contract.py | item_pickup→equip→auto_potion→level_up→stat_passive_invest 다음에 관측한다. 실제 APPLIED fallen_enter 영수증이 앞 단계에서 이미 발생하면 해당 영수증을 전달받는다. 없으면 기존 PCIA의 45초 자연 AI 접촉·15초 resolution 관측을 수행한다. PASS는 실제 fallen_enter와 이전 영수증 또는 이번 HP0 관측이 모두 있어야 한다. resolution/countdown은 별도 증거이며 완전 부활을 주장하지 않는다. | 피해·HP·life signal·RNG 주입0. 위치만 기존 검사처럼 배치한다. 18단계 순서는 validator와 일치. |
+| B/F fixture / mac_pcib_fixture_main.gd | 실제 Main과 MAP11 geometry로 정상 부팅한 직후 테스트 helper가 기존 P3 spawn/regions 및 자연 scheduler 노드를 보존·비활성화하고 새 P3 cohort를 설치한다. 테스트에서만 Main/world/projectile의 자연 owner 참조를 비워 공개 bind가 새 owner를 구성하게 한다. B/F fixture provider가 새 cohort 첫 바인딩의 주인이 된다. 기존 owner 내부 상태·PC 구현은 변경하지 않는다. | 제품 Main/adapter/P3/PC 구현 변경0. fixture의 별도 Marker·예산·constructor 검사는 유지. |
+| PC pack B / test_pc_combat_pack_b_mac.gd | 원본 test_pc_combat_pack_b.gd의 모든 테스트 그룹·판정식 상속. 초기 fixture만 실제 intro ring constructor로 etype0 최대8개 공급한다. 원래 PC setup의 >=3 검사 유지. | 주입/배치 등 PC fixture 개입은 forced로 기록. E2E와 분리. |
+| PC wall oracle / Mac 래퍼 | 현 MAP11 provider의 bound polygon·blocks_move circle solids를 읽어 공급. 음수 좌표를 허용하며 옛 0..8000/tile/ellipse fixture 가정 제거. Mac oracle 래퍼는 PC oracle의 isW 입력 seam만 바꾸고 원본 source gameplay·RNG·비교 판정식은 그대로 실행한다. | PC 테스트/PC oracle 파일 byte 불변. 맵 geometry·비주얼 변경0. Mac _wall_model_matches는 공급된 geometry와 실제 World.is_world_blocked를 비교한다. |
+| 성능 | E2E의 physics callback max/p95와 기존 automatic_crossbow.max_tick_us를 같은 실행에서 기록한다. | 단회 CPU headless 계측. 원인 확정·GPU/실화면 검수·석궁 정지 경계 해제를 뜻하지 않는다. |
+
+검수 최종표·원인 분류·최종 SHA·remote readback은 `~/exoduser-wt/_out/PCIB-WIRE-c/DONE.txt`와 원로그에 보존한다. PC type3 신규 actor가 Mac 자동 bind 뒤에도 unbound여야 한다는 PC fixture 전제는 제품 구현을 바꿔 맞추지 않고 별도 분류한다. 보스·clear·demo_end·lobby의 기존 PC 의존 경계는 유지한다.
+
+MAP PRODUCTION REPORT: STAGE MAP11 / 범위 test oracle 입력 적응만. MASTER·OUTER MASS·LARGE·MEDIUM·GROUND·LANDMARK·PLAYABLE·CAMERA QA는 이 작업의 변경/인수 대상이 아니다. TECH QA는 현 polygon/circle 데이터의 oracle/World 대조만. FILES는 Mac 하니스와 관련 docs. GIT는 지정 branch만, deploy0. **VISUAL VERDICT: RETOUCH**(기존 상태 유지, 시각 검수 미수행). NEXT PASS: 기존 맵 담당 검수 범위 유지.
+
+
+## PCIB-WIRE-d 검증 재개 (2026-10-21)
+
+c의 미커밋 WIP를 같은 worktree에서 인수했다. 첫 시도에서 테스트 Main 상속 script는 PC 초기화의 실제 Main resource_path 검증에 거절되고, Mac PC 래퍼는 혼합 들여쓰기로 parse 오류가 났다. 원로그는 `_out/PCIB-WIRE-d/attempt1`에 보존했다. 실제 Main 정상 부팅 후 새 fixture cohort를 설치하는 helper 및 들여쓰기로 수정했다. 두 번째 시도에서 발견한 기존 자연 base의 이전 adapter 참조는 기존 base 노드를 비활성 보존하고 테스트 참조를 비운 뒤 공개 bind로 새 base를 구성해 해결했다. 세 번째 지정 validation이 최종 결과다. 첫 시도에서 오류 후 종료하지 않은 자기 F Godot PID54569만 TERM 종료, 이후 모든 자기 Godot 종료 확인 대상이다.
+
+| fixture | 최종 | 원인 분류 |
+|---|---|---|
+| import | exit0·ERROR0 | 컴파일 정상 |
+| test_pcib_mac_calls | 31/31 PASS·ERROR0 | 실제 호출부 정상 |
+| B runtime | 42검사2실패·등록5·SCRIPT ERROR0 | provider 충돌 해소. 잔여는 etype8 보호 death consumer 부재에 따른 비치명 거절 기대와 옛 deadPool owner 부재 기대. 현재 B8 consumer·PCI10 실제 owner 연결과 전제 불일치. PC owner/판정 변경으로 맞추지 않음 |
+| F runtime | 33/33 PASS·등록3·ERROR0 | provider 충돌 해소; 실제 탄/강타 피해 전체 인수는 별도 |
+| PC pack B Mac wrapper | 355검사3실패·SCRIPT ERROR1 | 초기 실제 etype0 fixture와 현 MAP11 벽 oracle 해소. 잔여 pci02 unbound 기대2개 및 재bind 기대1개가 Mac 자동bind와 충돌, 뒤 readback 접근 오류1개. PC 원본 test·oracle·계약 구현 SHA256 동일. 원본 PC suite는 이 래퍼에서 상속 실행, 별도 원본 중복 실행0 |
+
+실패를 PASS로 완화하지 않았다. PC suite 내 기존 perf group은 validation 재시도에 포함되어 여러 번 실행됐으며, 요청 성능값은 별도의 E2E 단회 계측만 사용한다. E2E는 storage=on·격리 userdir, 81277만 존재할 때 시작했다. 맵 geometry/비주얼·PC core·번역 목록 수정0, R에서 실행/import/편집0. 기존 c의 작업 이력과 d의 실행을 구분한다.
+
+E2E 단회 storage=on: PASS13 / NOT_READY5 / FAIL0, exit0·ERROR0·validator []. auto_potion uses0→1/mats1004→1003/cd394. revival 실제 자연접촉 minHP0, fallen_enter APPLIED, countdown300→0 및 final_death APPLIED. 부활 성공이나 연속 클리어 PASS를 주장하지 않는다. 석궁 fired/hits/kills0, field_mob_owner_unported:_fieldBosses 유지. 근접2회로 enemy_kill PASS. CPU headless 계측이며 8.333ms 예산 초과, 개선 완료 아님. 계측 시작 pgrep는81277만, 종료 후 MAP11-32b import가 잠깐 관측됨(정확한 시작시각 미확보; 실행 도중 전체 독점은 감시하지 않아 확정 불가). 추가 성능 실행0.
+
+enemy_kill physics max 22.553ms / p95 8.516ms; automatic_crossbow.max_tick_us=1571.
+
+| # | 단계 | 결과 | 사유 |
+|---|---|---|---|
+| 1 | isolation | PASS |  |
+| 2 | new_game | PASS |  |
+| 3 | character_create | PASS |  |
+| 4 | intro_skip | PASS |  |
+| 5 | field_MAP11 | PASS |  |
+| 6 | enemy_kill | PASS |  |
+| 7 | item_pickup | PASS |  |
+| 8 | equip | PASS |  |
+| 9 | auto_potion | PASS |  |
+| 10 | level_up | PASS |  |
+| 11 | stat_passive_invest | PASS |  |
+| 12 | revival_interface | PASS |  |
+| 13 | bossroom_gate | NOT_READY | actual MAP11 gate/arena prerequisites not satisfied |
+| 14 | boss_defeat_signal | NOT_READY | PCI-11_missing_actual_boss_damage_and_final_death_owner |
+| 15 | clear | NOT_READY | clear consumer did not accept contract |
+| 16 | demo_end | NOT_READY | next/end route not admitted |
+| 17 | save_handoff | PASS |  |
+| 18 | lobby_return | NOT_READY | actual lobby navigation not completed |

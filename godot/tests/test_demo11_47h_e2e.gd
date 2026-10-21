@@ -5,7 +5,7 @@ const Store=preload("res://port_modules/save_adapter/demo_local_storage.gd")
 const Shared=preload("res://port_modules/save_adapter/demo_shared_local_storage.gd")
 const Drop=preload("res://port_modules/kill_reward/drop_item_source.gd")
 const EXP_CURVE=preload("res://scripts/native_source_meta_exp_curve.gd")
-const ORDER=["isolation","new_game","character_create","intro_skip","field_MAP11","enemy_kill","revival_interface","item_pickup","equip","auto_potion","level_up","stat_passive_invest","bossroom_gate","boss_defeat_signal","clear","demo_end","save_handoff","lobby_return"]
+const ORDER=["isolation","new_game","character_create","intro_skip","field_MAP11","enemy_kill","item_pickup","equip","auto_potion","level_up","stat_passive_invest","revival_interface","bossroom_gate","boss_defeat_signal","clear","demo_end","save_handoff","lobby_return"]
 var rows: Array=[]
 var active: Dictionary={}
 var main: Node
@@ -267,12 +267,6 @@ func run() -> void:
  var region_after: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
  var killed: bool=is_instance_valid(target) and not target.alive and region_after>region_before
  await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"automatic_crossbow":crossbow_observation,"kill_path":"melee" if attacks>0 else "automatic_crossbow","natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
- begin("revival_interface")
- var life_api: bool=main.has_method("request_native_player_life_transition") and is_instance_valid(main.native_demo_life)
- var life: Dictionary=main.native_demo_life.snapshot() if life_api else {}
- # Observe product transitions only. Never write HP/iframes/roll or emit a death.
- var observed: bool=life.get("receipts",[]).any(func(r):return r.get("op") in ["fallen_enter","revive_once"] and r.get("status")=="APPLIED")
- await done("PASS" if observed else "NOT_READY","" if observed else "natural HP0 not observed; PCI-01 product consumer connected",{"interface_present":life_api,"consumer_snapshot":life,"lethal_damage_forced":false,"transition_injected":false})
  begin("item_pickup")
  var inv: Dictionary=main.source_state.read_current_inventory();var before_size: int=inv.bag.size();var records: Array=main.source_state.read_native_drop_records()
  if records.is_empty():
@@ -293,20 +287,21 @@ func run() -> void:
  var equipped: bool=equip.get("applied",false) and inv.equipped.values().any(func(v):return v is Dictionary and is_same(v,item)) and refresh_readback(equip.get("refresh",{}))
  await done(verdict(equip.get("applied",false),equipped),"" if equipped else str(equip.get("reason","equipment_refresh_not_ready")),{"applied":equip.get("applied",false),"same_item_equipped":equipped,"refresh_readback":refresh_readback(equip.get("refresh",{})),"refresh":equip.get("refresh",{})})
  begin("auto_potion")
- # A previous natural-combat heal may still own the real cooldown. Wait before
- # applying further hurtP, rather than killing Player during a cooldown fixture.
+ # Count from stage entry, including a real natural heal during cooldown wait.
+ # Stop waiting on use so its actual material/cooldown receipt remains observable.
  main.player.global_position=home
  var potion: RefCounted=main.get("source_potion")
  var potion_entry: Dictionary={"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"uses":potion.get_snapshot().uses if is_instance_valid(potion) else -1}
+ var used_before: int=int(potion_entry.uses)
+ var mats_before: float=float(g.get("mats",0))
  var wait_start:=Time.get_ticks_msec()
  var cooldown_deadline:=wait_start+20000
- while (main.player.iframes>0 or main.source_state.read_native_potion_runtime().cd>0) and Time.get_ticks_msec()<cooldown_deadline:
+ while (main.player.iframes>0 or main.source_state.read_native_potion_runtime().cd>0) and Time.get_ticks_msec()<cooldown_deadline and (not is_instance_valid(potion) or potion.get_snapshot().uses==used_before):
   await physics_frame
  if g.get("mats",0)<=0:main.source_state.apply_native_add_potion(main,"hp",1)
- var potion_after_wait: Dictionary={"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"wait_ms":Time.get_ticks_msec()-wait_start,"timed_out":Time.get_ticks_msec()>=cooldown_deadline}
+ var potion_after_wait: Dictionary={"uses":potion.get_snapshot().uses if is_instance_valid(potion) else -1,"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"wait_ms":Time.get_ticks_msec()-wait_start,"timed_out":Time.get_ticks_msec()>=cooldown_deadline}
  var damage_path: Array=[]
- var used_before: int=potion.get_snapshot().uses if is_instance_valid(potion) else 0
- var mats_before: float=float(g.get("mats",0));var requests:=0
+ var requests:=0
  if is_instance_valid(potion):
   var until:=Time.get_ticks_msec()+15000
   while Time.get_ticks_msec()<until and potion.get_snapshot().uses==used_before and main.player.hp>1:
@@ -335,6 +330,49 @@ func run() -> void:
  var growth_after: Dictionary=main.read_native_growth()
  var growth_ok: bool=growth.get("applied",false) and queue.get("applied",false) and commit.get("applied",false) and growth_after.stats.str==growth_before.stats.str+1 and growth_after.passives.pVital==growth_before.passives.pVital+1 and growth_after.queue.is_empty() and refresh_readback(commit.get("refresh",{}))
  await done(verdict(growth.get("applied",false) and queue.get("applied",false) and commit.get("applied",false),growth_ok),"" if growth_ok else "growth/applyStats/queue owner not ready",{"verified_growth_readback":growth_ok,"before":growth_before,"stat_applied":growth.get("applied"),"queue_added":queue.get("applied"),"queue_committed":commit.get("applied"),"refresh":commit.get("refresh",{}),"readback":main.read_native_growth() if main.has_method("read_native_growth") else {}})
+ # Observe potentially terminal life resolution only after all living-player checks.
+ begin("revival_interface")
+ var life_api: bool=main.has_method("request_native_player_life_transition") and is_instance_valid(main.native_demo_life)
+ var life: Dictionary=main.native_demo_life.snapshot() if life_api else {}
+ var natural_trace: Array=[]
+ var hp_before: float=main.player.hp
+ var prior_fallen: bool=life.get("receipts",[]).any(func(r):return r.get("op")=="fallen_enter" and r.get("status")=="APPLIED")
+ var min_hp: float=hp_before
+ var contact_frames:=0
+ var started:=Time.get_ticks_msec()
+ var deadline:=started+45000
+ # Only test-owned placement. Actual scheduler/AI/attack/hurtP/life owners run.
+ # Do not call damage, mutate HP/iframes/RNG, or emit any life signal.
+ while life_api and Time.get_ticks_msec()<deadline:
+  life=main.native_demo_life.snapshot()
+  var phase: String=str(life.get("phase",{}).get("phase",""))
+  if prior_fallen or phase in ["hp0","fallen","dead"]:break
+  var attacker: Node
+  for enemy in main.world.get_enemies():
+   if is_instance_valid(enemy) and enemy.get("alive")==true and main.native_natural_enemies.owns_actor(enemy):
+    attacker=enemy;break
+  if is_instance_valid(attacker):
+   main.player.global_position=attacker.global_position+Vector2(24,0)
+   contact_frames+=1
+  await physics_frame
+  if main.player.hp<min_hp:
+   min_hp=main.player.hp
+   natural_trace.append({"ms":Time.get_ticks_msec()-started,"hp":min_hp,"phase":main.read_native_player_life_phase().duplicate(true)})
+ var countdown: Array=[]
+ var resolve_deadline:=Time.get_ticks_msec()+15000
+ while life_api and Time.get_ticks_msec()<resolve_deadline:
+  life=main.native_demo_life.snapshot()
+  var phase: String=str(life.get("phase",{}).get("phase",""))
+  if phase=="dead" or (phase=="alive" and not life.receipts.is_empty()):break
+  if phase not in ["hp0","fallen"]:break
+  if countdown.is_empty() or float(countdown[-1].remaining)-float(life.remaining)>=30:
+   countdown.append({"phase":phase,"remaining":life.remaining,"ms":Time.get_ticks_msec()-started})
+  await physics_frame
+ life=main.native_demo_life.snapshot() if life_api else {}
+ var entered: bool=life.get("receipts",[]).any(func(r):return r.get("op")=="fallen_enter" and r.get("status")=="APPLIED")
+ var resolved: bool=life.get("receipts",[]).any(func(r):return r.get("op") in ["revive_resolve","final_death"] and r.get("status")=="APPLIED")
+ var observed: bool=entered and (prior_fallen or min_hp<=0)
+ await done("PASS" if observed else "NOT_READY","" if observed else ("natural HP0 not observed within 45s of AI contact" if min_hp>0 else "natural HP0 observed; fallen/countdown/resolve incomplete"),{"interface_present":life_api,"consumer_snapshot":life,"lethal_damage_forced":false,"transition_injected":false,"transferred_prior_fallen_receipt":prior_fallen,"observation_scope":"actual natural fallen receipt; resolution reported separately","hp_before":hp_before,"min_hp":min_hp,"contact_frames":contact_frames,"natural_damage_trace":natural_trace,"countdown_trace":countdown,"fallen_applied":entered,"resolve_applied":resolved,"elapsed_ms":Time.get_ticks_msec()-started})
  begin("bossroom_gate")
  var encounter: Node=main.get("native_demo_encounter");var encounter_snapshot: Dictionary=encounter.snapshot() if is_instance_valid(encounter) else {}
  var gate_receipt: Dictionary={}

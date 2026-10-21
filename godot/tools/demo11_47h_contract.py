@@ -1,5 +1,5 @@
 """Public diagnostic-result contract: partial/checkpoint routes cannot claim E2E PASS."""
-ORDER=['isolation','new_game','character_create','intro_skip','field_MAP11','enemy_kill','revival_interface','item_pickup','equip','auto_potion','level_up','stat_passive_invest','bossroom_gate','boss_defeat_signal','clear','demo_end','save_handoff','lobby_return']
+ORDER=['isolation','new_game','character_create','intro_skip','field_MAP11','enemy_kill','item_pickup','equip','auto_potion','level_up','stat_passive_invest','revival_interface','bossroom_gate','boss_defeat_signal','clear','demo_end','save_handoff','lobby_return']
 USERDIR='EXODUSER-demo11-47h-Isolated-20261021'
 def validate_result(result):
  errors=[];rows=result.get('stages',[])

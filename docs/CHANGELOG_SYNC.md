@@ -56299,3 +56299,12 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - E2E enemy_kill의 실제 석궁 관측과 PC field owner 차단을 기록하고, 차단시 기존 PCIA 근접 request_attack 검사·처치 위치 유지 복구. PC 구현/맵/번역 변경0.
 - B/F6·5 및 PC pack B12실패+런타임 오류4는 fixture/provider/geometry/자동 bind 전제 충돌로 별도 기록. 각 suite1회, 최종 E2E/원격SHA는 PCIB-WIRE-b DONE 참조.
 - 최종 E2E1회 PASS11/NOT_READY7/FAIL0·ERROR0. enemy_kill 근접3회 PASS 회복, 석궁0/0/0 NOT_READY. 목표13 미달·후반 물약/fallen 관측의 단계 판정 한계 기록.
+
+
+## 2026-10-21 PCIB-WIRE-d
+
+| 파일/항목 | 변경·검수 |
+|---|---|
+| Mac E2E / contract ORDER | 물약 uses 단계 시작 기준, 생존 검사 후 자연 fallen 관측. storage=on 1회 PASS13/NOT_READY5/FAIL0·ERROR0. |
+| B/F fixture helper / PC Mac wrapper·oracle | 실제 Main 부팅 보존, 새 테스트 P3 cohort. F33/33, B42검사2실패(옛 B8·deadPool 기대); PC355검사3실패+SCRIPT ERROR1(자동bind/unbound). PC 원본 판정식·구현 byte 유지. |
+| 성능·상태 | enemy_kill max22.553/p95 8.516ms, 석궁 max_tick_us1571·fired0; field_mob_owner_unported 경계 유지. STATUS47행 및 PCIB 보고서 d절 동기화. 전체 클리어·성능 목표 달성 아님. |

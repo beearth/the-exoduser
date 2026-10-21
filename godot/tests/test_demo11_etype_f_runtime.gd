@@ -16,6 +16,7 @@ func boot_f() -> void:
  check(OS.get_user_data_dir().ends_with(F_DIR),"actual F userdir")
  f_main=load("res://scenes/main.tscn").instantiate()
  root.add_child(f_main)
+ preload("res://tests/mac_pcib_fixture_main.gd").install(f_main)
  await physics_frame
  check(f_main.source_state.apply_native_intro_curtain_g_writes(f_main.source_intro_sequence,"open").get("applied",false),"test-owned request through existing intro G.on writer")
  f_main.world.set_physics_process(false) # deterministic test-only manual owner phase
