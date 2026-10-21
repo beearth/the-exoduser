@@ -102,7 +102,22 @@
 | 불 원소 석궁·터렛/펫 석궁·필드몹 존재 | 쓰기 전 거절 |
 | type3 냉기(freeze_hit 42446) | type3 owner 미이식 → 냉기 공격은 그 지점 정지 |
 | 실제 etype 8/15/29 actor·Mac consumer | 미구현(테스트는 기존 적에 etype15 강제 + 기록기 consumer) |
-| PCI-11과의 순서 | 계약상 PCI-11 발행은 `_kill_pipeline` 완료 뒤 — 묶음 A 구현과 대조 미확인 |
+| PCI-11과의 순서 | 묶음 A 병합(46b8f7187)에서 해소: PCI-09 profile 사망은 G42733 발행을 prefix 뒤로 미룸. 같은 사망 PCI-09→PCI-11 각 1회 단정(구독 소비자 순서·버스 published +1·저널) 통과. 실제 Mac 소비자 연결은 미확인 |
 | 화면 검수 | 화면 요소 추가 0이라 캡처 없음. 실제 플레이에서 화살이 맞고 적이 죽는 화면은 미확인(발사 owner 미병합) |
 | 성능 | 헤드리스·다른 Godot 2개 동시 실행 상태 측정. Mac/릴리스 빌드 미측정 |
 | 공유 저장소 | 커밋 때 자동 gc가 `G:/exoduser/.git`의 기존 손상 loose object `05194456…`로 실패(이번 커밋 객체는 읽기 확인). 원인 조사·복구는 하지 않음 |
+
+## 9. origin/main 0edeec658(PC 묶음 A) 병합 (merge 46b8f7187)
+
+rebase 없이 merge. 충돌은 `main.gd` 파일 끝(묶음 B 공개 API ↔ 묶음 A PCI-01/10/11/12 블록) 1곳 — 양쪽 보존. hurtE 실행자는 자동 병합 후 PCI-11 발행 순서만 조정(계약 §7). 병합 결과 기준 각 1회(모두 exit0·ERROR 0):
+
+| 테스트 | 결과 |
+|---|---|
+| test_pc_combat_pack_b | 353/0 (순서 단정 4개 추가) |
+| test_pc_player_life / final_death / enemy_revive / recalc_st / pet_portrait_cache | 101/0 · 60/0 · 50/0 · 49/0 · 23/0 |
+| test_contracts / starter_state / regen_phase / qe_binding | 5 PASS · 148/0 · 88/0 · 155/0 |
+| test_p1002e / f / g · pc_m29_parry · pc_runtime_stat_refresh | 93/0 · 357/0 · 220/0 · 100/0 · 287/0 |
+| test_demo11_boss_actor · boss_projectiles / auto / coordinates / draw · bc09 | 163/0 · 29/0 · 14/0 · 4/0 · 6/0 · 56664/0 |
+| test_native_auto_bow_spec · p2001b_death_fx · p2001c_kill_rewards | 361/0 · 43/0 · 45/0 |
+
+30발 300틱 벤치(병합 후): 4986ms, 16.62ms/틱(실시간 유지).

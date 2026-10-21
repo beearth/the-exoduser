@@ -137,7 +137,7 @@ consumer.call(prefix_context) -> Dictionary{applied: bool, ...}
 
 - profile당 단일 owner(살아 있는 consumer가 있으면 REJECTED).
 - **필수 consumer가 없으면** 해당 etype에 대한 hurtE는 42112 생존 가드 직후, **첫 쓰기·RNG 전**에 NOT_READY `death_prefix_consumer_not_ready:<profile>`(치명 여부를 RNG 전에 알 수 없으므로 비치명 타격도 막힌다 — 원자성 우선의 의도된 보수 선택).
-- 호출 위치: 처치 파이프라인에서 42702 사망 확정·킬 카운트·고어(42729–42731)·킬 체인(42756)·M26 스캔(42764) **뒤**, 42946 속성 사망 장판·43092 물약·rollDrop·addExp **앞**. 최종 died/PCI-11 신호보다 앞이다 — **묶음 A의 PCI-11 최종 처치 발행은 `_kill_pipeline`이 true로 끝난 뒤(또는 최소 42824 이후)에 둬야 한다.**
+- 호출 위치: 처치 파이프라인에서 42702 사망 확정·킬 카운트·고어(42729–42731)·킬 체인(42756)·M26 스캔(42764) **뒤**, 42946 속성 사망 장판·43092 물약·rollDrop·addExp **앞**. 최종 died/PCI-11 신호보다 앞이다. **묶음 A(0edeec658) 병합 후 순서**: 묶음 A의 PCI-11 발행 앵커는 G42733(42732 사망 FX 꼬리 직후)이다. PCI-09 profile 사망(etype 8/15/29, 15는 `_splitDone` 아님)은 그 발행을 미뤄 prefix dispatch 직후 단회 발행한다(prefix 성공·정지 모두, 42733~42824 사이 다른 정지도 `execute`에서 단회 flush) → 같은 사망에서 **PCI-09 → PCI-11 각 1회**. 저널에는 42733 `final_death_deferred_after_pci09` 다음 `death_prefix:<profile>` 다음 `final_death_published`. prefix 없는 사망은 묶음 A 앵커 그대로(test_pc_final_death S3 순서 유지).
 - `prefix_context`: `{profile, source_lines, death_prefix_token, actor, etype, x, y, r, el, lv, kill_ang, dmg, rand: Callable()->float|null, hurt_enemy: Callable(=request_native_hurte), main, world}`. `rand`는 hurtE와 같은 provider이며 draw가 실행자 `rng_draws`에 원본 행(42794/42818)으로 기록된다 → 원본 RNG interleave 보존. 중첩 hurtE(폭발)는 `hurt_enemy`로 호출(깊이 16 제한).
 - consumer가 `applied:false`를 돌려주면 그 위치에서 PARTIAL 정지(앞선 prefix 유지). Marker child 예약은 Mac 공통 owner가 consumer 안에서 수행한다.
 
