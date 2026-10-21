@@ -37,6 +37,7 @@ const SourcePostStageScript = preload("res://port_modules/source_post_stage_owne
 const QAdapterScript = preload("res://scripts/native_combat_qe_adapter.gd")
 const NativeFireballPhaseScript = preload("res://scripts/native_fireball_phase.gd")
 const QBurstDrawScript = preload("res://port_modules/character_clip/shield_burst_draw_caller.gd")
+const M29ContactServicesScript = preload("res://scripts/native_m29_contact_services.gd") # PC-M29-PARRY
 const SOURCE_BOOT_EN_LABELS := {"맵 에셋 로딩...": "Loading map assets...",
 	"맵 캐시 생성 중...": "Building map cache...", "완료": "Complete"}
 # Recorded pins only. The baseline is not the compiled HEAD, and a source pin
@@ -66,6 +67,7 @@ var native_perspective_view: Node
 var native_fireball_phase: RefCounted
 var native_fireball_delivery: Node
 var native_q_control: RefCounted
+var native_m29_contact: RefCounted # PC-M29-PARRY: M29 비투사체 접촉 서비스(준비 구역 설치)
 var _q_burst_draw: Node2D
 var _q_view: SubViewport
 var _q_canvas: Node2D
@@ -418,6 +420,7 @@ func _ready() -> void:
 	add_child(native_demo_pause_menu)
 	if not native_demo_pause_menu.configure(self):push_error("Native pause menu settings reader rejected")
 	_install_native_q_control()
+	native_m29_contact = M29ContactServicesScript.install_native_boot(self) # PC-M29-PARRY
 	_install_native_attack_audio()
 	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
@@ -452,6 +455,11 @@ func _ready() -> void:
 	native_demo_fire_devils = preload("res://scripts/native_demo11_fire_devils.gd").install_native_boot(self) # DEMO11-32
 
 	native_demo_worms=preload("res://scripts/native_demo11_worms.gd").install_native_boot(self)
+	_install_native_player_life() # PCI-01 HP0 death_token 발급 owner(이벤트 전용, 틱 0)
+	native_demo_life=preload("res://scripts/native_demo11_life.gd").new()
+	add_child(native_demo_life)
+	native_demo_life.configure(self)
+	native_demo_encounter.bind_pcia(self)
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -1518,9 +1526,7 @@ func reflect_native_q_source_projectile(projectile: Node, distance: float) -> Di
 	if distance>=radius:return {"reflected":false,"reason":"outside_source_q_radius","radius":radius}
 	var bank: float = 0.0
 	if is_black:
-		var bank_raw: Variant = p.get("parryBank")
-		var affix: Object = source_providers.get_provider_bundle().affix
-		bank=affix.js_to_number(bank_raw if affix.js_truthy(bank_raw) else 0,true)
+		bank=read_native_source_parry_bank(p)
 		if not is_finite(bank):return {"reflected":false,"reason":"actual_black_bank_nonfinite"}
 	var st: Dictionary = current.stats
 	var base: int = maxi(current_source_parry_int(float(raw.dmg)*(1.0+minf(1.0,float(st.parry_scale)/300.0))*0.5*float(st.parry_dmg_mul)*(1.0+float(st.parry_bonus))*float(st.leg_shield_parry)),int(st.ki_floor))
@@ -1537,7 +1543,7 @@ func reflect_native_q_source_projectile(projectile: Node, distance: float) -> Di
 	var target: Dictionary = _q_homing_target.query()
 	if target.get("ok")!=true:return {"reflected":false,"reason":target.get("error")}
 	var reward_multiplier: float = 1.5 if is_black else 1.0
-	var reward: int = current_source_parry_int(50.0*(1.0+float(st.parry_bonus))*(1.0+current.regen_lv*0.2)*reward_multiplier)
+	var reward: int = native_source_parry_reward(float(st.parry_bonus),current.regen_lv,reward_multiplier)
 	if reward<0:return {"reflected":false,"reason":"source_parry_reward_negative"}
 	var result: Dictionary
 	if is_black:
@@ -1558,6 +1564,22 @@ func reflect_native_q_source_projectile(projectile: Node, distance: float) -> Di
 
 func current_source_parry_int(value: float) -> int:
 	return source_providers.get_provider_bundle().formula.js_to_int32(value)
+
+# PC-M29-PARRY: doParry 보상식(G38483~38484 _prBase, 빨콩/무지개 외 기본 50) 단일 소유.
+# Q 반사(×1/×1.5)·E 파동 반사·M29 접촉 패링이 같은 식을 공유한다(식·평가 순서 기존과 동일).
+func native_source_parry_reward(parry_bonus: float, regen_lv: float, multiplier: float) -> int:
+	return current_source_parry_int(50.0*(1.0+parry_bonus)*(1.0+regen_lv*0.2)*multiplier)
+
+# PC-M29-PARRY: (P.parryBank||0) 읽기 단일 소유 — 비유한값은 호출자가 거부한다.
+func read_native_source_parry_bank(p: Dictionary) -> float:
+	var bank_raw: Variant = p.get("parryBank")
+	var affix: Object = source_providers.get_provider_bundle().affix
+	return affix.js_to_number(bank_raw if affix.js_truthy(bank_raw) else 0,true)
+
+# PC-M29-PARRY: type3 binding 의 M29 서비스 4종(player_context/handle_m29_parry/emit_m29_event/m29_readiness).
+# 미설치면 {}. FX 소비자 등록은 native_m29_contact.bind_m29_fx_consumer 로 한다.
+func get_native_m29_services() -> Dictionary:
+	return native_m29_contact.get_type3_m29_interfaces() if native_m29_contact != null else {}
 
 
 func read_native_e_control_source() -> Dictionary:
@@ -2113,7 +2135,7 @@ func _reflect_native_e_wave(projectile: Node, raw: Dictionary) -> Dictionary:
 		if distance<nearest:nearest=distance;target=enemy
 	var result: Dictionary=projectile.apply_native_q_reflection(current_source_parry_int(float(base)*1.5),target,{"source_opt":current.options,"p_dot_pool":Callable(self,"_read_native_q_dot_pool"),"camera_position":func():return camera.global_position,"query_enemies":Callable(world,"query_native_enemies")},true)
 	if result.get("reflected")!=true:return result
-	var reward: int=current_source_parry_int(50.0*(1.0+float(st.parry_bonus))*(1.0+current.regen_lv*0.2))
+	var reward: int=native_source_parry_reward(float(st.parry_bonus),current.regen_lv,1.0)
 	var resources: Dictionary=source_resources.commit_native_q_parry_reward(self,float(reward))
 	_e_wave_reflections+=1
 	player.telemetry_event.emit("e_wave_projectile_reflected",{"frame":world.get_native_frame(),"base":base,"result":result,"resources":resources,"full_doparry":false})
@@ -3544,3 +3566,108 @@ func _read_native_map11_natural_context() -> Dictionary:
 	var lesson: Dictionary=read_native_normal_enemy_lesson_status()
 	return {"lesson_active":lesson.get("ready")!=true or lesson.get("active")!=false,
 		"qa_storage_active":false,"aggro_active":false}
+# ═══ PCI-01 (PC-LIFE-PACK 2026-10-21) — 플레이어 생명주기 ═══
+# 계약: docs/engine/PC_LIFECYCLE_CONTRACT_20261021.md. 부팅 때 1회 구성(HP0 토큰 발급용
+# telemetry 연결). 틱 경로 코드 0. 기존 player.gd HP0 블록·피해 경로 수정 0.
+const PlayerLifeScript = preload("res://scripts/native_source_player_life.gd")
+signal native_player_life_phase_changed(snapshot: Dictionary)
+var source_player_life: RefCounted
+
+func _install_native_player_life() -> void:
+	if is_instance_valid(source_player_life):
+		return
+	var life: RefCounted = PlayerLifeScript.new()
+	source_player_life = life
+	var configured: Dictionary = life.configure(self)
+	if configured.get("ready") != true:
+		source_player_life = null
+		push_warning("PCI-01 player life owner not configured: " + str(configured.get("reason")))
+		return
+	life.native_player_life_phase_changed.connect(func(snapshot: Dictionary) -> void:
+		native_player_life_phase_changed.emit(snapshot))
+
+## op = fallen_enter | revive_once | revive_resolve | final_death | respawn | lobby_prepare.
+## request = {op, request_id:String(단회), player:Node(실제 Main.player), death_token:String,
+##   roll_receipt?:{can_revive,roll,chance,cd_frames}, step?:"exp_loss"|"reset"}.
+func request_native_player_life_transition(request: Dictionary) -> Dictionary:
+	if not is_instance_valid(source_player_life):
+		return {"status": "NOT_READY", "accepted": false, "reason": "player_life_owner_not_configured",
+			"op": request.get("op"), "token": request.get("request_id"), "replayed": false}
+	return source_player_life.request(self, request)
+
+## 읽기 전용: {phase, death_token, clear_blocked, readback{hp,mp,st,iframes,state,...}}.
+func read_native_player_life_phase() -> Dictionary:
+	if not is_instance_valid(source_player_life):
+		return {"configured": false, "phase": "unknown", "clear_blocked": true,
+			"reason": "player_life_owner_not_configured"}
+	return source_player_life.read_phase()
+
+# ═══ PCI-11 (PC-LIFE-PACK 2026-10-21) — 적 최종 처치 인계 ═══
+# 발행: native_normal_enemy_hurte._kill_pipeline G42733 앵커(처치 이벤트 전용, 틱 0).
+# Mac37 clear sink 복제 없음 — 구독자가 문지기/게이트/clear 귀속을 소비한다.
+const FinalEnemyDeathScript = preload("res://scripts/native_final_enemy_death.gd")
+## 최종 사망만(부활 대기/취소 제외). Mac DEMO11-37 bind_final_death_source(owner,event) 호환 시그니처.
+signal native_enemy_final_death(actor: Node, stage_index: int)
+var source_final_enemy_death: RefCounted
+
+func _final_enemy_death_bus() -> RefCounted:
+	if not is_instance_valid(source_final_enemy_death):
+		var bus: RefCounted = FinalEnemyDeathScript.new()
+		if not bus.configure(self):
+			return null
+		source_final_enemy_death = bus
+	return source_final_enemy_death
+
+## consumer.call(payload) — payload {event:"final_death"|"revival_pending"|"cancel", actor, death_token,
+## life_phase, stage, provider_revision, kill_receipt, gate_guard, player_life{phase,death_token,clear_blocked}}.
+## ctx = {subscriber: Node(Main 자신 또는 Main 자손, 필수), events?: Array}.
+func subscribe_native_final_enemy_death(consumer: Callable, ctx: Dictionary) -> Dictionary:
+	if not _native_main_service_live():
+		return {"status": "NOT_READY", "accepted": false, "reason": "final_death_bus_Main_not_live"}
+	var bus: RefCounted = _final_enemy_death_bus()
+	if bus == null:
+		return {"status": "NOT_READY", "accepted": false, "reason": "final_death_bus_not_configured"}
+	return bus.subscribe(consumer, ctx)
+
+func unsubscribe_native_final_enemy_death(subscription_id: String) -> bool:
+	return is_instance_valid(source_final_enemy_death) and source_final_enemy_death.unsubscribe(subscription_id)
+
+## hurtE 처치 파이프라인 전용 발행 지점(G42733). 다른 호출자 사용 금지.
+func publish_native_enemy_death(enemy: Node, context: Dictionary) -> Dictionary:
+	var bus: RefCounted = _final_enemy_death_bus()
+	if bus == null:
+		return {"published": false, "reason": "final_death_bus_not_configured"}
+	return bus.publish(enemy, context)
+
+func read_native_final_enemy_death_snapshot() -> Dictionary:
+	if not is_instance_valid(source_final_enemy_death):
+		return {"configured": false, "coverage": FinalEnemyDeathScript.coverage()}
+	return source_final_enemy_death.get_snapshot()
+
+# ═══ PCI-10 (PC-LIFE-PACK 2026-10-21) — 주술사 시체 부활(G38944–38958) ═══
+# caster tick/reviveT·reviveCd는 caster owner(Mac B9) 소유. 이 요청은 시체 선택·같은 identity 부활·
+# next_timer 반환. ctx = {request_id:String, revive_cd:number(caster e.reviveCd)}. 틱 경로 코드 0.
+const EnemyCorpseReviveScript = preload("res://scripts/native_enemy_corpse_revive.gd")
+var source_enemy_corpse_revive: RefCounted
+
+func request_native_enemy_revive(caster: Node, ctx: Dictionary) -> Dictionary:
+	if not _native_main_service_live():
+		return {"status": "NOT_READY", "accepted": false, "reason": "enemy_revive_Main_not_live", "revived": false}
+	if not is_instance_valid(source_enemy_corpse_revive):
+		var module: RefCounted = EnemyCorpseReviveScript.new()
+		if not module.configure(self):
+			return {"status": "NOT_READY", "accepted": false, "reason": "enemy_revive_not_configured", "revived": false}
+		source_enemy_corpse_revive = module
+	return source_enemy_corpse_revive.request(self, caster, ctx)
+
+# ═══ PCI-12 (PC-LIFE-PACK 2026-10-21) — 원본 recalcSt() 단독 writer(G16425–16431) ═══
+# 기존 runtime stat refresh owner의 "recalc_st" 모드: 캐시 3종 무효화 → 기존
+# resource_parameters.run_recalc_st → ST/mST commit만. 재련/빈 슬롯 제작(G50836·51176) 뒤
+# 별도 applyStats 1회는 호출자(Mac29)가 request_native_runtime_stat_refresh("apply_stats")로.
+func request_native_recalc_st(owner: Node, ctx: Dictionary = {}) -> Dictionary:
+	if owner != self:
+		return {"status": "REJECTED", "ready": false, "committed": false,
+			"reason": "runtime_stat_refresh_foreign_owner", "mode": "recalc_st", "caller_reason": str(ctx.get("reason", ""))}
+	return request_native_runtime_stat_refresh("recalc_st", str(ctx.get("reason", "recalc_st")))
+
+var native_demo_life: Node

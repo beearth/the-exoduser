@@ -92,7 +92,7 @@ func done(status: String,reason: String="",evidence: Dictionary={}) -> void:
  await settle()
  var blocked: Array=[]
  if status=="NOT_READY":
-  if active.id=="revival_interface":blocked=["PCI-01"]
+  if active.id=="revival_interface":blocked=["natural_HP0_observation"]
   elif active.id=="bossroom_gate":blocked=["PC_fieldboss_HP_final_readback"]
   elif active.id in ["boss_defeat_signal","clear","demo_end","lobby_return"]:blocked=["bossroom_gate","PC_fieldboss_HP_final_readback","boss_source_updateE_prefix","PCI-11"]
  var row: Dictionary={"blocked_by":blocked,"id":active.id,"status":status,"reason":reason,"checkpoint":active.checkpoint,"command_span_ms":active.action_us/1000.0,"wall_ms":(Time.get_ticks_usec()-active.start_us)/1000.0,"physics_callback":stats(active.physics_samples),"process_frame_interval":stats(active.frame_samples),"evidence":active.evidence}
@@ -258,8 +258,11 @@ func run() -> void:
  var killed: bool=is_instance_valid(target) and not target.alive and region_after>region_before
  await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
  begin("revival_interface")
- var life_api: bool=main.has_method("request_native_player_life_transition")
- await done("NOT_READY","PC_life_transition_not_exercised" if life_api else "PC_life_transition_API_absent",{"interface_present":life_api,"lethal_damage_forced":false})
+ var life_api: bool=main.has_method("request_native_player_life_transition") and is_instance_valid(main.native_demo_life)
+ var life: Dictionary=main.native_demo_life.snapshot() if life_api else {}
+ # Observe product transitions only. Never write HP/iframes/roll or emit a death.
+ var observed: bool=life.get("receipts",[]).any(func(r):return r.get("op") in ["fallen_enter","revive_once"] and r.get("status")=="APPLIED")
+ await done("PASS" if observed else "NOT_READY","" if observed else "natural HP0 not observed; PCI-01 product consumer connected",{"interface_present":life_api,"consumer_snapshot":life,"lethal_damage_forced":false,"transition_injected":false})
  begin("item_pickup")
  var inv: Dictionary=main.source_state.read_current_inventory();var before_size: int=inv.bag.size();var records: Array=main.source_state.read_native_drop_records()
  if records.is_empty():

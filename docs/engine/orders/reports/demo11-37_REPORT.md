@@ -1,3 +1,7 @@
+## 2026-10-21 PCIA-WIRE 현행 연결 보충
+
+아래 기존 제출 기록은 당시 상태다. PC 묶음 A 인수 후 DEMO11-39 PCI-01 소비자·DEMO11-37 PCI-11 clear 보류·B9 PCI-10·DEMO11-29 PCI-12 호출을 연결했다. 재련/빈 슬롯 제작의 recalcSt 부재 HOLD는 해제했으며, 보스 final 및 retry stage 재구성은 여전히 NOT_READY다. 상세 구현/남은 범위/검증은 docs/engine/PCIA_WIRE_REPORT_20261021.md를 따른다.
+
 # DEMO11-37 — 지역 gate·보스룸·최종 사망 이후 진행 인계
 
 기준 `origin/main ac3764bfe5476b56e2f2388b1f2d9baeff731885`. DEMO11-35 `727f6a0225b6d2b1d72df5efa5d82071b15c6b53`와 DEMO11-38 `ae49b21c202d8a75426f5098d47b71ff04ee9147` 정상 merge 결과 `e7d855b64b0e4f8daaa316a0c5bdd246b46025fe`. main 코드·35 탄·38 종료 기능 모두 보존, rebase0. MAP11-01 `3c2b1ea45bd103564f03898c5000b4f78b87844d`는 Marker 계약만 읽었으며 지형·프리뷰·에셋 merge0.

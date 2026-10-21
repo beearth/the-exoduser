@@ -71,7 +71,8 @@ func enter(provider: Node, spawn_options: Dictionary) -> Dictionary:
  if _phase=="arena":arena_entered.emit(_actor)
  return receipt
 func _final_death(actor: Node, stage_index: int) -> void:
- if _busy or _phase!="arena" or not _provider_live(_provider) or not is_instance_valid(_death_owner) or not _main.is_ancestor_of(_death_owner) or actor!=_actor or actor!=_main.native_demo_boss_actor or stage_index!=0:return
+ if _busy or _phase!="arena" or not _provider_live(_provider) or not is_instance_valid(_death_owner) or (_death_owner!=_main and not _main.is_ancestor_of(_death_owner)) or actor!=_actor or actor!=_main.native_demo_boss_actor or stage_index!=0:return
+ if _main.read_native_player_life_phase().get("clear_blocked",true):return
  _busy=true
  var result: Dictionary=_main.source_state.commit_native_demo_encounter(self,false,_markers.Boss.global_position)
  if result.get("applied")==true:_phase="exit"
@@ -81,7 +82,7 @@ func _final_death(actor: Node, stage_index: int) -> void:
   reward_ready.emit(result.chest.duplicate(true))
 func leave(provider: Node) -> bool:
  # Provider owns actual Exit contact. Merely killing the boss never clears.
- if _busy or _phase!="exit" or not _provider_live(provider):return false
+ if _busy or _phase!="exit" or not _provider_live(provider) or _main.read_native_player_life_phase().get("clear_blocked",true):return false
  if _main.get_native_startup_language_snapshot().get("status")!="READY":return false
  _busy=true
  var result: Dictionary=_main.source_state.commit_native_demo_encounter(self,true,Vector2.ZERO)
@@ -93,3 +94,35 @@ func leave(provider: Node) -> bool:
  return _main.native_demo_end_flow.get_snapshot().phase=="clear"
 func snapshot() -> Dictionary:
  return {"phase":_phase,"provider_bound":is_instance_valid(_provider),"pc_final_source_bound":is_instance_valid(_death_owner),"boss_death_detection":false,"map_contact_owner":"MAP11 provider","markers":MARKERS.duplicate()}
+
+# PCI-11 subscriptions retain identity/token/provider while fallen. Boss coverage
+# remains NOT_READY: this consumer never fabricates a boss death event.
+var _pcia_subscription := ""
+var _pcia_pending: Dictionary={}
+func bind_pcia(main: Node) -> void:
+ if not _pcia_subscription.is_empty():return
+ var r: Dictionary=main.subscribe_native_final_enemy_death(_pcia_death,{"subscriber":self,"events":["final_death","revival_pending","cancel"]})
+ if r.get("accepted",false):_pcia_subscription=str(r.subscription_id)
+ main.native_player_life_phase_changed.connect(_pcia_phase)
+func _pcia_death(payload: Dictionary) -> void:
+ if payload.get("event")!="final_death":
+  if _pcia_pending.get("death_token")==payload.get("death_token"):_pcia_pending.clear()
+  return
+ if payload.get("actor")!=_actor or payload.get("stage")!=0 or not _provider_live(_provider):return
+ _pcia_pending={"payload":payload.duplicate(),"provider":weakref(_provider),"actor":weakref(_actor)}
+ if not payload.get("player_life",{}).get("clear_blocked",true):_pcia_resume()
+func _pcia_phase(snapshot: Dictionary) -> void:
+ if snapshot.get("phase") in ["dead","respawning","lobby"]:_pcia_pending.clear()
+ elif snapshot.get("phase")=="alive":_pcia_resume.call_deferred()
+func _pcia_resume() -> void:
+ if _pcia_pending.is_empty() or _main.read_native_player_life_phase().get("clear_blocked",true):return
+ var pending: Dictionary=_pcia_pending
+ _pcia_pending={}
+ if pending.provider.get_ref()!=_provider or pending.actor.get_ref()!=_actor or not _provider_live(_provider):return
+ var revision: Dictionary=pending.payload.get("provider_revision",{})
+ if revision.get("main")!=_main.get_instance_id() or revision.get("world")!=_main.world.get_instance_id():return
+ if _main.source_state.read_current_g().get("stage")!=pending.payload.stage:return
+ var bus: RefCounted=_main.source_final_enemy_death
+ if not is_instance_valid(bus) or bus.read_open_token(_actor).get("death_token")!=pending.payload.death_token:return
+ _death_owner=_main
+ _final_death(_actor,int(pending.payload.stage))

@@ -62,7 +62,7 @@ func _refresh() -> void:
 		_content.add_child(_label(tr2("빈 장비 칸에는 자동 장착됩니다. 이미 장착했다면 가방으로 보냅니다.","An empty equipment slot is filled automatically. Otherwise the item goes to your bag."),20))
 		var grid:=GridContainer.new();grid.columns=3;grid.add_theme_constant_override("h_separation",14);grid.add_theme_constant_override("v_separation",12);_content.add_child(grid)
 		var labels=[["weapon","무기","Weapon"],["bow","활","Bow"],["armor","갑옷","Armor"],["shield","보조무기","Off-hand"],["helmet","왕관","Crown"],["pants","바지","Pants"],["gloves","장갑","Gloves"],["boots","부츠","Boots"],["belt","벨트","Belt"],["necklace","목걸이","Necklace"],["ring","반지","Ring"],["cape","망토","Cape"],["bracelet","팔찌","Bracelet"],["headband","귀걸이","Earring"]]
-		for row in labels:_action(tr2(row[1],row[2]),"equipment_craft",{"slot":row[0]},float(g.mats)>=100000 and not preload("res://scripts/native_workshop_transaction.gd").requires_recalc_st("equipment_craft",inv,row[0]),grid)
+		for row in labels:_action(tr2(row[1],row[2]),"equipment_craft",{"slot":row[0]},float(g.mats)>=100000,grid)
 		return
 	var defs: Dictionary=preload("res://port_modules/kill_reward/drop_item_source.gd").load_tables().CRYSTAL_DEFS
 	if _tab=="gems":
@@ -102,7 +102,7 @@ func _refresh() -> void:
 			for affix in item.get("affixes",[]):
 				var shown: Dictionary=presentation.affix_view(affix)
 				if shown.get("ready",false):_content.add_child(_label(str(shown.name)+"  "+str(shown.value_text),18))
-			_action(tr2("재련  100 악의","Reforge  100 Malice"),"reroll",{"slot":slot,"item":item},false) # PC recalcSt-only writer missing: no debit/RNG or development text.
+			_action(tr2("재련  100 악의","Reforge  100 Malice"),"reroll",{"slot":slot,"item":item},float(g.mats)>=100) # PCI-12 recalcSt precedes applyStats.
 			continue
 		_content.add_child(_label(_item_name(item),24,Color("dfd6c2")))
 		var sockets: Array=item.get("crystals",[]);var quality: Array=item.get("socketQ",[])

@@ -1,3 +1,7 @@
+## 2026-10-21 PCIA-WIRE 현행 연결 보충
+
+아래 기존 제출 기록은 당시 상태다. PC 묶음 A 인수 후 DEMO11-39 PCI-01 소비자·DEMO11-37 PCI-11 clear 보류·B9 PCI-10·DEMO11-29 PCI-12 호출을 연결했다. 재련/빈 슬롯 제작의 recalcSt 부재 HOLD는 해제했으며, 보스 final 및 retry stage 재구성은 여전히 NOT_READY다. 상세 구현/남은 범위/검증은 docs/engine/PCIA_WIRE_REPORT_20261021.md를 따른다.
+
 ## 2026-10-21 DEMO11-29 — 데모 작업대 실제 거래 연결(부분 인수)
 
 원본 game.html G16646–16650과 G50549 이후를 확인했다. 보석·소켓·제작·재련은 데모 전용 금지 분기가 없고, G51085 장비 제작 목록에는 유골함이 없다. 소켓 최대5/품질1–100은 [v0.7.0](../13출시·마케팅/patch_notes/v0.7.0.md) 기준이다. 기존 ITEMS/NPC_WORLD 순서안을 대체하지 않는다.

@@ -109,7 +109,7 @@ func _run() -> void:
  var reroll_rng: int=main.world.get_native_runtime_snapshot().random_draw_count
  var reroll_mats: Variant=g.mats
  var held: Dictionary=main.request_native_workshop("reroll",{"slot":"weapon","item":weapon})
- check(not held.applied and held.reason=="NOT_READY:PC_recalc_st_before_apply_stats" and weapon==reroll_before and g.mats==reroll_mats and main.world.get_native_runtime_snapshot().random_draw_count==reroll_rng,"reroll HOLD before payment or RNG; no substitute resource writer")
+ check(held.applied and held.recalc_st.committed and held.refresh.committed and g.mats==reroll_mats-100 and main.world.get_native_runtime_snapshot().random_draw_count>reroll_rng,"PCI-12 reroll consumes source price/RNG and commits recalcSt then applyStats")
  var after: Dictionary=weapon.duplicate(true);after.erase("affixes")
  check(after==preserved and is_same(weapon.crystals,held_crystals),"reroll changes only affixes; socket identity preserved")
  g.mats=99
@@ -131,9 +131,10 @@ func _run() -> void:
  check(not bad.nested.applied and not bad.forge.get("paid",false) and not bad.pickup.applied and not bad.workshop_pickup.applied,"equipment/workshop/forge/pickup lock blocks callback reentry")
  check(main.player.hp<=original_hp,"no Mac HP/refill writer")
  var empty: Variant=inv.equipped.bow;inv.equipped.bow=null
+ g.mats=200000
  var empty_mats: Variant=g.mats;draws=main.world.get_native_runtime_snapshot().random_draw_count
  var empty_result: Dictionary=main.request_native_workshop("equipment_craft",{"slot":"bow"})
- check(not empty_result.applied and empty_result.reason=="NOT_READY:PC_recalc_st_before_apply_stats" and inv.equipped.bow==null and g.mats==empty_mats and main.world.get_native_runtime_snapshot().random_draw_count==draws,"empty-slot craft HOLD before debit and RNG")
+ check(empty_result.applied and empty_result.recalc_st.committed and empty_result.refresh.committed and inv.equipped.bow is Dictionary and g.mats==empty_mats-100000 and main.world.get_native_runtime_snapshot().random_draw_count>draws,"PCI-12 empty slot craft equips and commits recalcSt before applyStats")
  inv.equipped.bow=empty
  var file: String=OS.get_user_data_dir().path_join("workshop-cases.json")
  var output: String=OS.get_user_data_dir().path_join("workshop-original.json")

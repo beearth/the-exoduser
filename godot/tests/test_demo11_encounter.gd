@@ -56,6 +56,12 @@ func _run() -> void:
  check(g.get("_bossUnlocked")==true and encounter.snapshot().phase=="gate","actual P3 gate signal consumed")
  check(main.enter_native_demo_arena(root,options).status=="NOT_READY","unbound provider rejected")
  var spawned: Dictionary=main.enter_native_demo_arena(map,options)
+ if spawned.get("status")=="NOT_READY":
+  check(encounter.snapshot().phase=="gate" and not main.leave_native_demo_arena(map),"PC boss NOT_READY preserves gate and rejects clear")
+  var bus: Dictionary=main.read_native_final_enemy_death_snapshot()
+  check(not bus.is_empty(),"PCI-11 actual subscriber installed")
+  print("DEMO37_RESULT ",JSON.stringify({"assertions":assertions,"failures":failures,"skipped":["boss HP/final-death/reward/clear NOT_READY"],"boss_receipt":spawned,"natural_boss_death_verified":false}))
+  main.free();quit(1 if failures else 0);return
  check(spawned.status=="READY" and encounter.snapshot().phase=="arena" and g._bossArena,"actual actor spawn and arena transition")
  check(main.player.global_position==map.get_node("Markers/Entry").global_position,"provider Entry marker used")
  check(main.enter_native_demo_arena(map,options).status=="NOT_READY" and not main.leave_native_demo_arena(map),"no duplicate entry or living-boss clear")

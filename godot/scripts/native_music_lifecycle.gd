@@ -66,7 +66,7 @@ func _boss_exit() -> void:
 	_boss=null
 	if not _closed and _scene=="boss":transition("field")
 func _player_event(kind: String,_data: Dictionary) -> void:
-	if kind=="player_died":transition("death")
+	if kind=="player_died" and not is_instance_valid(_main.get("native_demo_life")):transition("death")
 	else:arpg_mix.combat_event(kind)
 func _combat_audio_event(kind: String,_data: Dictionary) -> void:
 	arpg_mix.combat_event(kind)

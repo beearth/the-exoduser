@@ -6,7 +6,7 @@ const Quality=preload("res://port_modules/item_quality_source/producer.gd")
 const DUST=[50,200,500,1500,5000] # G15380
 const STAR_COST=[1.0,1.5,2.5,4.0,7.0] # G15285
 const CRAFT_SLOTS=["weapon","bow","armor","shield","helmet","pants","gloves","boots","belt","necklace","ring","cape","bracelet","headband"] # G51085; ossuary absent
-## G50836/G51176 need a PC recalcSt-only writer before applyStats.
+## PCI-12 owns G50836/G51176 recalcSt before applyStats.
 ## No substitute equipment_refresh or restore-only sink is used.
 static func craft_target(inv: Dictionary,slot: String) -> String:
  if slot=="ring":return "ring1" if inv.equipped.get("ring1")==null else ("ring2" if inv.equipped.get("ring2")==null else "ring1")
@@ -46,7 +46,7 @@ func execute(op: String,a: Dictionary,inv: Dictionary,g: Dictionary,gems: Array,
  var slot: String=str(a.get("slot",""))
  if op in ["attach","detach","unseal","upgrade","reroll"]:
   if not item is Dictionary or not inv.equipped.get(slot) is Dictionary or not is_same(item,inv.equipped[slot]):return reject("stale_equipment")
- if requires_recalc_st(op,inv,slot):return reject("NOT_READY:PC_recalc_st_before_apply_stats")
+ var needs_recalc: bool=requires_recalc_st(op,inv,slot)
  var gi: int=int(a.get("gem_index",-1));var si: int=int(a.get("socket_index",-1))
  var gem: Variant=gems[gi] if gi>=0 and gi<gems.size() else null
  if gem is Dictionary and (not gem.get("star") is float and not gem.get("star") is int or int(gem.get("star",-1)) not in range(5)):return reject("gem_shape")
@@ -145,6 +145,11 @@ func execute(op: String,a: Dictionary,inv: Dictionary,g: Dictionary,gems: Array,
     else:
      result.created=made;result.pickup=pickup # G51178 ignores pickupItem false: price/RNG remain spent even when full.
  if generator.aborted:failure="source_rng_rejected"
+ if failure.is_empty() and needs_refresh:
+  if needs_recalc:
+   var recalc: Dictionary=main.request_native_recalc_st(main,{"reason":"workshop:"+op})
+   result.recalc_st=recalc
+   if not recalc.get("committed",false):failure="recalc_st_rejected"
  if failure.is_empty() and needs_refresh:
   var refresh: Dictionary=main.request_native_runtime_stat_refresh("apply_stats","workshop:"+op)
   result.refresh=refresh

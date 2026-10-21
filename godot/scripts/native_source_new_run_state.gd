@@ -1532,6 +1532,7 @@ func apply_native_source_update_clock_writes(main: Node, services: RefCounted,
 # DEMO11-38 narrow progression writer; never touches stage, map or combat values.
 var _native_demo_clear_phase := 0
 func commit_native_demo_clear(owner: Node, stage_index: int, end: bool) -> bool:
+	if _player.get_parent().read_native_player_life_phase().get("clear_blocked",true):return false
 	# End UI owns the paused run; permit only this writer after its clear receipt.
 	if not _current_error().is_empty() or not is_instance_valid(owner) \
 			or owner!=_player.get_parent() or owner.get("source_state")!=self or owner.get("world")!=_world: return false
@@ -1795,6 +1796,7 @@ func apply_native_growth(owner: Node,command: Dictionary) -> Dictionary:
 var _native_demo_encounter_phase := 0
 func commit_native_demo_encounter(owner: Node, clear: bool, chest_position: Vector2) -> Dictionary:
 	var main: Node=_player.get_parent()
+	if main.read_native_player_life_phase().get("clear_blocked",true):return {"applied":false,"reason":"player_life_clear_blocked"}
 	if not _feel_owner_current(main) or not is_instance_valid(owner) or owner!=main.get("native_demo_encounter") or owner.get_parent()!=main or _g.get("stage")!=0 or not _g.get("_bossArena",false):return {"applied":false}
 	if _native_demo_encounter_phase!=(1 if clear else 0):return {"applied":false}
 	if not clear:
@@ -1890,3 +1892,66 @@ func commit_native_map11_chest(main: Node,chest: Node,reward: Dictionary) -> Dic
 	_g.mats=int(_feel_num(_g.get("mats")))+5
 	var hp_extract: Dictionary=apply_native_add_potion(main,"hp",2)
 	return {"applied":true,"records":reward.records.size(),"mats":_g.mats,"hp_extract":hp_extract,"save_requested":true,"save_committed":false,"persistent_opened":false}
+# ═══ PCI-01 (PC-LIFE-PACK 2026-10-21) — 생명주기 P sink. ═══
+# 원본 die/_fallenResolve/retry/goToLobby가 P에 쓰는 필드만:
+#   _reviveOnceUsed(G43727) _fallenAng(G43732) _demonRevCd(G43851) exp(G63477) shield(G63521·63454·63678)
+# Main.source_player_life의 동기 commit 창 안에서만. restore=true는 같은 창의 롤백(부재 키 복원 포함).
+const PLAYER_LIFE_PATH = "res://scripts/native_source_player_life.gd"
+const PLAYER_LIFE_P_FIELDS = ["shield", "exp", "_reviveOnceUsed", "_demonRevCd", "_fallenAng"]
+const PLAYER_LIFE_ABSENT = "__absent__"
+var _player_life_commits := 0
+
+func read_native_player_life_p(keys: Array) -> Dictionary:
+	var out: Dictionary = {}
+	for key in keys:
+		out[key] = _p[key] if _p.has(key) else PLAYER_LIFE_ABSENT
+	return out
+
+func validate_native_player_life_p(owner: Node, life: Object, fields: Dictionary) -> String:
+	var error := _current_error()
+	if not error.is_empty():
+		return error
+	if _initializing or _source_initializer_committing or not is_instance_valid(owner) \
+			or owner != _player.get_parent() or owner.get("source_state") != self or owner.get("world") != _world:
+		return "state_player_life_owner_mismatch"
+	if not _live(life) or life.get_script() == null or life.get_script().resource_path != PLAYER_LIFE_PATH \
+			or owner.get("source_player_life") != life:
+		return "state_player_life_module_mismatch"
+	var window: Variant = life.is_native_player_life_committing(owner)
+	if not window is bool or not window:
+		return "state_player_life_not_in_commit_window"
+	for field in fields:
+		if field not in PLAYER_LIFE_P_FIELDS:
+			return "state_player_life_field_denied:" + str(field)
+		var value: Variant = fields[field]
+		if field == "_reviveOnceUsed":
+			if not value is bool:
+				return "state_player_life_bool_required:" + field
+		elif not _number(value):
+			return "state_player_life_value_invalid:" + str(field)
+	if fields.has("shield") and (float(fields["shield"]) < 0.0 or not _number(_p.get("mshield")) \
+			or float(fields["shield"]) > float(_p["mshield"])):
+		return "state_player_life_shield_out_of_range"
+	if fields.has("exp") and float(fields["exp"]) < 0.0:
+		return "state_player_life_exp_negative"
+	return ""
+
+func commit_native_player_life_p(owner: Node, life: Object, fields: Dictionary, restore: bool = false) -> Dictionary:
+	if restore:
+		var window: Variant = life.is_native_player_life_committing(owner) if _live(life) \
+			and owner.get("source_player_life") == life else false
+		if not window is bool or not window:
+			return {"accepted": false, "reason": "state_player_life_not_in_commit_window"}
+		for field in fields:
+			if str(fields[field]) == PLAYER_LIFE_ABSENT and fields[field] is String:
+				_p.erase(field)
+			else:
+				_p[field] = fields[field]
+		return {"accepted": true, "restored": true}
+	var error := validate_native_player_life_p(owner, life, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	for field in fields:
+		_p[field] = int(fields[field]) if field == "exp" and float(fields[field]) == floorf(float(fields[field])) else fields[field]
+	_player_life_commits += 1
+	return {"accepted": true, "fields": fields.keys(), "commits": _player_life_commits}

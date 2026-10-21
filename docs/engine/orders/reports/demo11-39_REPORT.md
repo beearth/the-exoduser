@@ -1,3 +1,7 @@
+## 2026-10-21 PCIA-WIRE 현행 연결 보충
+
+아래 기존 제출 기록은 당시 상태다. PC 묶음 A 인수 후 DEMO11-39 PCI-01 소비자·DEMO11-37 PCI-11 clear 보류·B9 PCI-10·DEMO11-29 PCI-12 호출을 연결했다. 재련/빈 슬롯 제작의 recalcSt 부재 HOLD는 해제했으며, 보스 final 및 retry stage 재구성은 여전히 NOT_READY다. 상세 구현/남은 범위/검증은 docs/engine/PCIA_WIRE_REPORT_20261021.md를 따른다.
+
 # DEMO11-39 — BLOCKED / PC 부활 집행 인터페이스 필요
 
 기준 `origin/main` = `0138c5bb9188d27cee10cb1a901d075092ddb88f` (fetch 후). 브랜치 `codex/demo11-39-20261021`. 사용자 지시의 Main/State 단위 권한은 적용하되, **HP 피해·무적·Q/E 보호 경로는 수정하지 않는다**. 문서/인계만 제출하며 구현·화면 준비 완료가 아니다.

@@ -1,3 +1,7 @@
+## 2026-10-21 PCIA-WIRE 현행 연결 보충
+
+아래 기존 제출 기록은 당시 상태다. PC 묶음 A 인수 후 DEMO11-39 PCI-01 소비자·DEMO11-37 PCI-11 clear 보류·B9 PCI-10·DEMO11-29 PCI-12 호출을 연결했다. 재련/빈 슬롯 제작의 recalcSt 부재 HOLD는 해제했으며, 보스 final 및 retry stage 재구성은 여전히 NOT_READY다. 상세 구현/남은 범위/검증은 docs/engine/PCIA_WIRE_REPORT_20261021.md를 따른다.
+
 # DEMO11-etype-b — etype 8~12 등록·실제 스폰 재개 결과
 
 **등록·스폰 5종 확인 / 보호·공통 접점은 종별 NOT_READY 유지. 전체 자연 전투 완료 판정 아님.** 사용자 후속 승인에 따라 `49a250ef6dfb3b5e621d11b415c2993505910dd3` 위, 같은 `codex/demo11-etype-b-20261021` 브랜치에서 진행했다. 기준 main `0138c5bb9188d27cee10cb1a901d075092ddb88f`, 의존 DEMO11-43 `9b763da9900c3c225fa60caa556f5b8c9ea227a3`는 그대로다.

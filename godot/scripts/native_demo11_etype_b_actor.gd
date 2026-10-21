@@ -67,10 +67,10 @@ func advance_native_phase(ticks: float, _frame: float, _enemies: Array) -> void:
  if etype==9 and state=="idle":
   b_source.reviveT-=ticks
   if b_source.reviveT<=0:
-   if not b_revive_pool.is_valid(): _b_stop("actual_dead_pool_revive_owner_required");return
-   var receipt: Variant=b_revive_pool.call(self,150.0)
-   if not receipt is Dictionary or receipt.get("ready")!=true: _b_stop("actual_dead_pool_revive_rejected");return
-   b_source.reviveT=b_source.reviveCd if receipt.get("revived")==true else 60.0
+   var main: Node=player.get_parent()
+   var receipt: Dictionary=main.request_native_enemy_revive(self,{"request_id":"b9:%d:%d"%[get_instance_id(),b_ticks],"revive_cd":b_source.reviveCd})
+   if not receipt.get("accepted",false): _b_stop(str(receipt.get("reason","corpse_revive_rejected")));return
+   b_source.reviveT=receipt.next_timer
   if d<100: _move_native(-Vector2.from_angle(facing)*float(data.speed_pixels_per_tick),ticks)
  if etype==10 and state=="idle":
   b_source.stealthT-=ticks

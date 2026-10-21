@@ -532,6 +532,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, dmg: int, ang: float, atk_el: int) -> bool:
 	# 42502~42511 디코이/도플갱어: etype 가드로 비활성. 42516~42625 보스: ib 가드.
 	# ── 42627~42636: 일반몹 부활 판정 ──
+	var revival_pending := false
 	if fields.get("_revived") != true and fields.get("_isGhoul") != true:
 		var rev_pow: float = 0.5 + float(int(maxf(1.0, float(fields.get("lv", 1))) / 100.0)) * 0.10
 		var suppress: Variant = _affix("antiRevive", 42629)
@@ -545,6 +546,7 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 				var ghoul: Variant = _rand(42635, "revive_as_ghoul")
 				if ghoul == null: return false
 				# 부활 예약 플래그만 기록 — 재스폰 타이머 동작은 미이식.
+				revival_pending = true # PCI-11: 이번 사망은 부활 대기(G42633)
 				if not _bookkeeping({"_revived": true, "_reviveTimer": 90.0,
 						"_reviveX": _enemy.global_position.x, "_reviveY": _enemy.global_position.y,
 						"_reviveAsGhoul": float(ghoul) < 0.5}):
@@ -626,6 +628,14 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 		_halt(42732, "death_fx_owner_refused:" + str(tail.get("reason")))
 		return false
 	_log(42732, "death_fx_tail", {})
+	# PCI-11 — G42733 앵커(42734~42744 보스/문지기 사망 문맥 직전): 최종/부활대기 단회 신호.
+	# 관찰 전용 발행 — 실패해도 이미 확정된 처치 prefix를 되돌리지 않고 파이프라인을 계속한다.
+	if _main.has_method("publish_native_enemy_death"):
+		var published: Dictionary = _main.publish_native_enemy_death(_enemy, {"revival_pending": revival_pending,
+			"kill_receipt": {"line": 42702, "kills": kills, "stage_kills": stage_kills,
+				"reg_kill_applied": reg_kill.get("applied") == true, "dmg": dmg, "ang": ang, "atk_el": atk_el,
+				"executor": "native_normal_enemy_hurte"}})
+		_log(42733, "final_death_published", published)
 	# 42737~42745 문지기: 단락. 42747~42754 잔해: elite0 → _debC=0 단락(RNG 미소비).
 	# ── 42756~42762: 킬 체인 ──
 	var chain_count: int = int(_js_num(g.get("_chainCnt"))) + 1

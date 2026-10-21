@@ -805,3 +805,56 @@ func commit_native_auto_potion_hp(owner: Node, state_owner: Node, amount: float)
 	_last_source_write = {"field":"hp","phase":"native_auto_potion_35904","amount":amount}
 	_committing = false
 	return {"accepted":true,"hp":_player.hp}
+
+# ═══ PCI-01 (PC-LIFE-PACK 2026-10-21) — 생명주기 자원 sink(hp/st/mp). ═══
+# 1회부활·악마화 부활·retry·로비 준비의 원본 대입(hp=mhp 등)만. Main.source_player_life의
+# 동기 commit 창 안에서만 수락. restore=true는 같은 창의 롤백(상한 검사 생략).
+const PLAYER_LIFE_PATH = "res://scripts/native_source_player_life.gd"
+var _player_life_commits := 0
+
+func read_native_player_life_resources() -> Dictionary:
+	if not _live(_player):
+		return {}
+	return {"hp": _player.hp, "st": _player.stamina, "mp": _owned.get("mp")}
+
+func validate_native_player_life_resources(owner: Node, life: Object, fields: Dictionary) -> String:
+	if _initializing or _committing or _source_initializer_committing or not is_native_source_resources_ready():
+		return "resource_player_life_not_ready_or_reentrant"
+	if not is_instance_valid(owner) or owner != _player.get_parent() \
+			or owner.get("source_resources") != self or owner.get("world") != _world:
+		return "resource_player_life_owner_mismatch"
+	if not is_instance_valid(life) or life.get_script() == null \
+			or life.get_script().resource_path != PLAYER_LIFE_PATH or owner.get("source_player_life") != life:
+		return "resource_player_life_module_mismatch"
+	var window: Variant = life.is_native_player_life_committing(owner)
+	if not window is bool or not window:
+		return "resource_player_life_not_in_commit_window"
+	for field in fields:
+		if field not in ["hp", "st", "mp"] or not _number(fields[field]) or float(fields[field]) < 0.0:
+			return "resource_player_life_field_or_value_denied:" + str(field)
+	if fields.has("hp") and float(fields["hp"]) > float(_player.max_hp):
+		return "resource_player_life_hp_above_mhp"
+	if fields.has("st") and float(fields["st"]) > float(_player.max_stamina):
+		return "resource_player_life_st_above_mst"
+	if fields.has("mp") and float(fields["mp"]) > float(_owned["mmp"]):
+		return "resource_player_life_mp_above_mmp"
+	return ""
+
+func commit_native_player_life_resources(owner: Node, life: Object, fields: Dictionary, restore: bool = false) -> Dictionary:
+	if restore:
+		var window: Variant = life.is_native_player_life_committing(owner) if is_instance_valid(life) \
+			and owner.get("source_player_life") == life else false
+		if not window is bool or not window:
+			return {"accepted": false, "reason": "resource_player_life_not_in_commit_window"}
+	else:
+		var error := validate_native_player_life_resources(owner, life, fields)
+		if not error.is_empty():
+			return {"accepted": false, "reason": error}
+	_committing = true
+	if fields.has("hp"): _player.hp = float(fields["hp"])
+	if fields.has("st"): _player.stamina = float(fields["st"])
+	if fields.has("mp"): _owned["mp"] = float(fields["mp"])
+	_committing = false
+	_player_life_commits += 1
+	_last_source_write = {"phase": "native_player_life", "fields": fields.keys(), "restore": restore}
+	return {"accepted": true, "fields": fields.keys(), "commits": _player_life_commits}

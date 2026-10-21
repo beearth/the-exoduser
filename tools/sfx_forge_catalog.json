@@ -1,0 +1,19 @@
+{
+  "about": "SFX Forge 카탈로그 — `npm run sfx:forge -- batch --catalog tools/sfx_forge_catalog.json --only <key,...>`. category별 공통 꼬리(장르·감쇠·금지)는 tools/sfx_forge.mjs CATEGORY_PRESETS가 붙인다. text에는 소리 자체만 적는다.",
+  "sounds": [
+    { "category": "skill", "key": "ki_slash_cast", "text": "A crescent of cold silver sword energy released from a heavy blade swing: a sharp airy slice with a thin metallic ring and a brief spectral hiss" },
+    { "category": "skill", "key": "giant_slam_cast", "text": "A giant infernal hammer slamming the ground: a deep earth-shaking boom, cracking stone and a short burst of hellfire embers" },
+    { "category": "skill", "key": "ice_orb_cast", "text": "A frost orb conjured and launched: crystalline ice forming with a glassy crackle and a cold breathy whoosh" },
+    { "category": "skill", "key": "spike_trap_cast", "text": "Iron spikes erupting from scorched earth: a fast grinding metal thrust with a dry crunch of soil" },
+    { "category": "hit", "key": "blade_flesh", "text": "A heavy sword cutting into a demon's flesh: a wet meaty slash with a short gritty tear" },
+    { "category": "hit", "key": "blade_bone", "text": "A sword striking a skeleton: a hard bony crack with a dry splintering rattle" },
+    { "category": "hit", "key": "parry_clang", "text": "A perfectly timed parry: a bright tight steel-on-steel clang with a short sparking ring" },
+    { "category": "hit", "key": "crit_heavy", "text": "A critical heavy strike on an armored demon: a punchy deep impact with a crunching armor dent and a low thump" },
+    { "category": "ui", "key": "menu_open", "text": "A heavy iron grimoire opening: a low creak with a soft leather thud and faint ember crackle" },
+    { "category": "ui", "key": "menu_close", "text": "A heavy iron grimoire closing: a muted leather thud with a short metal latch click" },
+    { "category": "ui", "key": "button_hover", "text": "A tiny dry bone tick, very soft and subtle" },
+    { "category": "ui", "key": "button_confirm", "text": "A confident iron latch locking with a small warm ember flare" },
+    { "category": "ui", "key": "skill_learn", "text": "An infernal rune igniting: a rising ember whoosh ending in a soft resonant metallic glow" },
+    { "category": "ambient", "key": "hell_forest_bed", "text": "A burnt dead forest in hell: distant low wind, faint crackling embers and creaking dead branches" }
+  ]
+}

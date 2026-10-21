@@ -556,6 +556,14 @@
 - 등록 누락99·무번호50을 No.3338–3486 신규149개로 연결, 기존45번호 재사용·No.3334 EN 보완. 번역 목록 CRLF/기존 본문(No.3334 외) bytes 보존.
 - 신규735/0·관련5회귀 최종2187/0·원문 EN exact Node3/0·추출기 Python4/0. 최초 HUD 종료 ERROR는 원본 main에서도 drop_common.mp3 잔류 재현, 제품 오디오 수정0. 실패 기록 보존.
 - 영어 로비+1x 및 보조 인트로/대장간 캡처8/0·자체 눈 검수. 인벤토리23b·종료38·설정50 등 미병합 UI는 목록만(12파일/312후보), 요청 캡처2종 NOT_READY. [보고서](engine/orders/reports/demo11-i18n_REPORT.md)·[전수표521행](engine/orders/reports/demo11-i18n_STRINGS.csv), _out/demo11-i18n/.
+## 2026-10-21 PC-LIFE-PACK — PCI-01 생명주기·PCI-11 최종 처치·PCI-10 시체 부활·PCI-12 recalcSt·PCI-13 펫 초상 캐시
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위 | Mac DEMO11-39/37·B9·29·perf 차단 해제용 PC API. 신규 `native_source_player_life.gd`(HP0 death_token·op 6종·원본 G43721–43751/43847–43872/63476–63477/63521–63526/63678)·`native_final_enemy_death.gd`(hurtE G42733 단회 final/revival_pending/cancel, clear_blocked)·`native_enemy_corpse_revive.gd`(G38944–38958 같은 identity). refresh `recalc_st` 모드(G16425–16431). native_pets 초상 강한 참조 캐시. 공용 파일은 끝 추가 위주(기존 줄 수정: pets 3·refresh 3) |
+| 검증 | 신규 5종 101/60/50/49/23 단정 0실패(원본 VM oracle 41+14+16필드 일치). 회귀 18종 merge 전후 각1회 0실패(의도 ERROR: demo11_authority 1). 틱 경로 코드0. 펫 발화 17~30ms→15~65µs, configure +41~45ms |
+| HOLD | 보스(ib) final death NOT_READY(G42124 boss hurtE·HP/부활 owner 부재), 일반몹 재스폰 미이식, u_d21 분노 writer 미연결. Mac 호출자 연결 미구현 |
+| 인계 | [계약](engine/PC_LIFECYCLE_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-life-pack_REPORT.md)·docs/2_5 이식 상태 절. 원로그 `_out/pc-life-pack/` |
 
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
@@ -676,6 +684,14 @@
 | 범위 | main ac3764bfe의 DEMO11-34 보스 actor HP readback·선택 슬롯/쿨/State 자원·dispatcher 실패 표시. 기존 HUD/4cast 유지, UI 창·전투·저장 writer0 |
 | 공용 | Main +1, HUD selector +6, NativeSkillSlots 결과 관찰 wrapper +7, State0. 기존 dispatcher 본문·전투 실행부 바이트 동일 |
 | 문서·검증 | [UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), [보고서](engine/orders/reports/demo11-42_REPORT.md). 신규 문구 번역대상_전체목록 등록. 격리 Main 통합·직접 관련 회귀·GPU 캡처/1x 크롭 결과는 보고서 참조 |
+## 2026-10-21 PC-M29-PARRY — M29 비투사체 접촉 패링 제공자(DEMO11-30 재개 접점1)
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 기준·범위 | origin/main969c194e6, PC 전투 핵심. 신규 native_m29_contact_services.gd: player_context(live isPWin G38469)·handle_m29_parry(parryBank→doParry 기존 writer→_poiseHit20)·emit_m29_event(warning/impact/detonate 단일소유 라우팅)·m29_readiness. 투사체 facade·반사 경로 호출0, projectile:true 거부 |
+| 공용 | main.gd +22/−5: preload·필드·준비구역 설치1줄·보상식/bank읽기/서비스 getter. 기존 Q반사 bank읽기·Q/E 보상식 3곳을 같은 식 helper로 단일화(동작 동일). type3_summoned_actor.gd +25/−0 `_poiseHit` 코어. 2_3 수정금지 docs·Q/E 판정·피해식·저장 변경0 |
+| 검증 | 원문 VM oracle(isPWin 480행·패링/피해 순서·보상·poise 코어) 일치, 실제 Main 신규100/0(실접촉 패링·피해·거부·재진입). 회귀 qe155/0·type3binding4그룹·m29 143/0·type3actor118/0·m30 4그룹·p1002g220/0·starter148/0·regen88/0·demo34 166/0·contracts5/0, type7 runtime 2실패는 base부터 동일(무관). 물리틱 16.66ms(M29 actor 有) |
+| 인계·HOLD | [계약](engine/PC_M29_PARRY_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-m29-parry_REPORT.md). 자연스폰·EL-01·단일lock·실제 FX 소비자·doParry 나머지·is_tile_wall 확정은 미연결 |
 
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
@@ -56251,3 +56267,10 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - Source contract and refresh steps: docs/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md. Live web game.html and protected combat/map visual files unchanged.
 
 - INTEG-5 validation: import ERROR0; SND02/05/06, BC01-10, AUDIO01, lobby and field suites pass. BGM/41 harness missing source-root -> unverified; map11 product existing gate/key error retained; E2E NOT_READY, FAIL0/ERROR0 with PC blocked_by preserved. See docs/engine/INTEG5_VALIDATION_20261021.md.
+## 2026-10-21 ctx-pack — 1-1 Godot 이식 원본 context pack
+
+| 항목 | 동기화 내용 |
+|---|---|
+| 범위 | `docs/engine/ctx/`에 이동·Q/E·분노·스킬·성장·INV·물약·forge·save·적AI·드루이드·필드보스·사망/부활·demo·HUD/사운드 15 pack과 README를 추가했다. 제품 코드/Godot 실행 변경0. |
+| 원본 | R `game.html` 65,692행 / SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4` 기준 행을 기록하고, 상세 수치/전수표는 기존 `FDG_SOURCE_TRACE_*`를 재사용했다. |
+| 경계 | 각 pack은 origin/main Godot의 실제 경로와 gap의 연결 상태를 분리한다. 2_3 Q/E·돌진/방패, 저장 형식, PC 전투 핵심은 보호이며 module 존재를 전체 이식 완료로 승격하지 않는다. |
