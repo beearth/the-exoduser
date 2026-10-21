@@ -27,9 +27,9 @@ void fragment() {
  float charged = 1.0-smoothstep(progress-0.012,progress+0.012,charge);
  float front = 1.0-smoothstep(0.0,0.025,abs(charge-progress));
  float flash = progress>1.0 ? max(0.0,1.0-(progress-1.0)/0.12) : 0.0;
- vec3 bone = vec3(1.0,0.87,0.65);
- vec3 col = mix(bone,vec3(1.0,0.97,0.85),max(front,flash));
- float alpha = mix(0.16,0.38,charged)+front*0.16+flash*0.3;
+ vec3 bone = vec3(1.0,0.46,0.24);
+ vec3 col = mix(bone,vec3(1.0,0.94,0.72),max(front,flash));
+ float alpha = mix(0.07,0.17,charged)+front*0.38+flash*0.3;
  col=mix(col,bone,edge);alpha=mix(alpha,0.95,edge);
  col=mix(col,vec3(0.055,0.045,0.035),ink);alpha=mix(alpha,0.94,ink);
  if (shape.r>0.9 && shape.g>0.1) alpha *= 0.38; // Travel cue, not a damage strip.

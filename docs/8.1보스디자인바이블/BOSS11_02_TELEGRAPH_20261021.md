@@ -34,6 +34,8 @@
 
 ## 공유 셰이더/머티리얼 계약
 
+아래 현재 규칙 표는 BOSS11-03으로 갱신했다. 위 패턴별 검수와 아래 BOSS11-02 캡처/성능 기록은 당시 이력이다. 최신 검수는 `BOSS11_03_CAMERA_COLOR_20261021.md` 참조.
+
 | 항목 | 코드값/계약 |
 |---|---|
 | 파일 | shaders/boss11_telegraph.gdshader + scripts/boss11_telegraph.gd |
@@ -41,8 +43,8 @@
 | 진행 uniform | `instance uniform float progress`1개. 각 mark의 instance parameter를 갱신해 서로 다른 타이머가 공유 material을 덮지 않음. 틱 material/resource 생성0 |
 | 도형 데이터 | vertex COLOR: R0=원/.4=도넛/.7=부채꼴/1=띠, G=도넛 내경비 또는 궤적 flag.5, B=도넛 half-gap radians 또는 sector spread/TAU. 별도 uniform 없음 |
 | 좌표 | 로컬 정점 -1..1, mask 반경.98, 배치 scale=extent/.98. 텍스처/새 이미지 불필요 |
-| 색 | bone RGB(1,.87,.65), 충전 전면·섬광 RGB(1,.97,.85), ink RGB(.055,.045,.035). 기존 blue/green 탄색 변경0 |
-| 면 alpha | 기본.16 → 충전.38, 진행 전면 +.16, 섬광 +.3 |
+| 색 | warm RGB(1,.46,.24), 충전 전면·섬광 RGB(1,.94,.72), ink RGB(.055,.045,.035). 기존 blue/green 탄색 변경0 |
+| 면 alpha | 기본.07 → 충전.17, 진행 전면 +.38, 섬광 +.3 |
 | 경계 | derivative AA: max(fwidth(d),.0001); 먹색2.5~1.7 screen px, 밝은 경계4.5~3.5 screen px; 밝은 경계 alpha.95/먹색.94 |
 | 진행 경계 | charge=반경비(띠는 길이비, 도넛은 띠 폭비). 진행 경계 smoothstep 폭±.012, 전면 범위.025 |
 | 섬광 | progress>1에서 `max(0,1-(progress-1)/.12)`; clamp 상한1.12. 활성 상태1.12는 섬광0 |
@@ -53,14 +55,14 @@
 
 | 항목 | 값/연결 |
 |---|---|
-| ARENA_ZOOM | .28. 기존 field .70에서 축소, 원래 zoom을 configure에서 보존 |
+| ARENA_ZOOM | .36 (BOSS11-03). 기존 field .70에서 축소, 원래 zoom을 configure에서 보존 |
 | TRANSITION_SECONDS | 1.0초, smoothstep `t²(3-2t)`; 재전환 때 현재 blend부터 이어감 |
 | ARENA_CENTER_WEIGHT | .85. 실제 player 위치에서 arena center로 blend×.85만큼 화면 중심 이동 |
 | 처리 | physics priority100, 기존 Camera2D 하나의 zoom/global_position만 작성. hit-fx의 shake offset writer 보존 |
 | 진입/퇴장 | product_scene.activate_space → _frame_arrival → set_arena. 기존 별도 arrival camera 생성/긴 reveal은 이1초 전환으로 대체 |
 | 클리어 | 기존 native_demo_boss_defeated(stage) 신호를 읽어 set_arena(false). 신호 발생·게이트·보스 HP·사망 판정 변경0 |
 | 복귀 | 보존 zoom과 player follow로1초 복귀. 신규 카메라/게임 UI 개발 문구0 |
-| 한계 | 1600×900에서 플레이어 약20px로 작음. slam의 하단은 고정 HUD에 가리며 fissure 끝은 외곽 mass와 겹침. .28은 후보 값이며 완성 카메라 인수 아님 |
+| 한계 | 1600×900에서 기존 .28 대비 캐릭터 선형 크기×1.286. .36에서도 phase4 slam 전체 수직 수용은 불가(높이950.4px). HUD 밖 화살표로 남은 위험 방향 표시. fissure 끝의 외곽 mass 가림은 유지 |
 
 ## 캡처·테스트·성능
 

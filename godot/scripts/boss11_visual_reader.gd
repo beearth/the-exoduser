@@ -15,6 +15,7 @@ func _ready() -> void:
 func configure(owner_main: Node) -> void:
  main=owner_main
  actor=main.native_demo_boss_actor
+ marks.bind_player(main.player)
 func _process(delta: float) -> void:
  if not visible or not is_instance_valid(actor) or not is_instance_valid(main):return
  var enemy: Dictionary=actor.get("_enemy")

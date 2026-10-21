@@ -6,7 +6,14 @@ const CAPACITY=32
 static var shared_material: ShaderMaterial
 var marks: Array[Polygon2D]=[]
 var used:=0
+var overlay: Node2D
+func bind_player(player: Node2D) -> void:
+ overlay.player=player
+ var projection: Dictionary=player.get_native_projection_metadata()
+ if projection.get("ready",false):overlay.foot_offset=player.to_local(projection.world_foot)
 func _ready() -> void:
+ var layer:=CanvasLayer.new();layer.layer=6;add_child(layer)
+ overlay=preload("res://scripts/boss11_screen_cues.gd").new();overlay.marks=self;layer.add_child(overlay)
  if shared_material==null:
   shared_material=ShaderMaterial.new();shared_material.shader=SHADER
  for i in range(CAPACITY):

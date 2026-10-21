@@ -1,6 +1,6 @@
 extends Node
 ## Presentation only: no gate/clear/actor state writes.
-const ARENA_ZOOM=0.28
+const ARENA_ZOOM=0.36
 const TRANSITION_SECONDS=1.0
 const ARENA_CENTER_WEIGHT=0.85
 var camera: Camera2D

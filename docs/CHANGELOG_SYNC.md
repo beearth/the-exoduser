@@ -56216,3 +56216,9 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - 391158e3 기준 공통 shader/material1개·progress instance uniform1개·32mark pool·source enemy/G 읽기 전용 renderer. 원/부채/띠/빈틈 도넛·충전·섬광, arena zoom.28/1초 전환 및 퇴장/기존 clear 신호 복귀. PC 코어·판정·피해·패링·저장·번역 byte·기존 보스 atlas/림 불변.
 - before/after12보드(전용11패턴+기존 projectile 도형), 0/50/95% 및 flash 포함56PNG. 전23패턴 자연 실행 미검수, fissure 종착 가림·작은 플레이어가 남아 **RETOUCH/전체 요청 미완료**. BC01~10 각1회354093assertions/실패0, visual18검사/실패0.
 - arena 명목 단회는 focus_lost1449로 INVALID. 원시p95 8.628ms는 유효 결과가 아니며 기존8.383ms 대비 악화 없음 미입증. 재측정0·PID81277 보존. 상세 규칙/전체 수치/한계/맵 보고는 `8.1보스디자인바이블/BOSS11_02_TELEGRAPH_20261021.md`, SHA/정리는 외부 BOSS11-02/DONE.txt.
+
+
+## 2026-10-21 BOSS11-03 — 카메라·색감 격리 조정
+
+- 기준 cae51580, branch codex/boss11-03-20261021. arena .36 단일 값, 채움 RGB(1,.46,.24)/alpha.07→.17, 충전 RGB(1,.94,.72)/전면+.38, 외곽선 유지. 화면 밖 화살표와 발 접촉 표시 추가. PC 코어/판정/번역/저장 변경0.
+- 2640×.36=950.4px이므로 900px 전체 최대 원 수용은 불가; 요청 구간에서 잘림 최소 값 선택. VISUAL VERDICT RETOUCH. 현재 수치/검수 경계는 `8.1보스디자인바이블/BOSS11_03_CAMERA_COLOR_20261021.md`, SHA/성능/캡처/정리는 외부 BOSS11-03/DONE.txt.
