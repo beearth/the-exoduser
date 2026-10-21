@@ -14,6 +14,7 @@ func configure(scene: Node2D,main: Node) -> void:
  # MAP11-21: removed flat bone/blood/flesh patches and broad floor scatter.
  _hell_props(scene)
  preload("res://scripts/maps/map11/arena_finale.gd").mount(scene)
+ scene.arena_view.retire_legacy_finale()
  # New arena feet stay wholly beyond R1700.
  set_process(false);set_physics_process(false)
 func _actor_entered(actor: Node) -> void:

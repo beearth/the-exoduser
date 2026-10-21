@@ -56222,3 +56222,8 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 
 - 기준 cae51580, branch codex/boss11-03-20261021. arena .36 단일 값, 채움 RGB(1,.46,.24)/alpha.07→.17, 충전 RGB(1,.94,.72)/전면+.38, 외곽선 유지. 화면 밖 화살표와 발 접촉 표시 추가. PC 코어/판정/번역/저장 변경0.
 - 2640×.36=950.4px이므로 900px 전체 최대 원 수용은 불가; 요청 구간에서 잘림 최소 값 선택. VISUAL VERDICT RETOUCH. 현재 수치/검수 경계는 `8.1보스디자인바이블/BOSS11_03_CAMERA_COLOR_20261021.md`, SHA/성능/캡처/정리는 외부 BOSS11-03/DONE.txt.
+
+
+## 2026-10-21 MAP11-30
+- 보스룸 목표 원화 paint-over split 첫 시제품. target30 룩/측정RGB curve/층/2shader, 기존 arena 시각 hide와 source-adapter 보존, 원형R1700·외곽충돌·BOSS11예고/카메라 불변.
+- 관련 수치/원본/실제 캡처/FAIL 차이표는 `4.1맵디자인+설정/MAP11_30_TARGET_SPLIT_20261021.md`, 목표 문서 하단 누적. p95단회7.747ms/focus_lost0. BC source 인수누락 실패와 시각 FAIL을 숨기지 않음. 독립branch, main/PC 배포 없음.

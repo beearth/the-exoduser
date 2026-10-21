@@ -43,4 +43,5 @@
 
 | 날짜 | 장면 | 비교 캡처 | 남은 차이 | 판정 |
 |---|---|---|---|---|
-| — | — | — | — | 미착수 |
+| 2026-10-21 | MAP11-30 보스룸 입장: 중앙→북 경계 | `~/exoduser-wt/_out/MAP11-30/captures/compare_target_vs_game.png` | 단일 원화 층 분해 첫 시제품. floor 세로 확대·clone/반사·북 경계 잘림·mouth 배치/중복·crop 접합 잔여. 아직 같은 장면 아님 | **FAIL** |
+| 2026-10-21 | 같은 구도 1x | `~/exoduser-wt/_out/MAP11-30/captures/compare_1x.png` | 전체 덩어리 호흡만, 국소 pod/입2프레임 미완. 전역 LUT 대신 source identity+legacy용 측정 curve 보관. [정확 수치·단회 검수](MAP11_30_TARGET_SPLIT_20261021.md) | FAIL / 첫 시제품 보존 |

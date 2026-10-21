@@ -130,7 +130,7 @@ void fragment(){
  float side=smoothstep(1800.0,3000.0,abs(p.x));
  float north=smoothstep(3900.0,4700.0,-p.y)*(1.0-smoothstep(500.0,1000.0,abs(p.x)));
  float depth=max(side,north);
- if(arena){depth=smoothstep(1650.0,2450.0,length(p-arena_origin));}
+ if(arena){depth=0.0;} // MAP11-30 target perimeter pass owns arena fog.
  float f=texture(fbm_cache,p/11000.0+vec2(TIME*.0015,0.0)).r;
  COLOR=vec4(.12,.17,.23,depth*(.045+.065*f));
 }
