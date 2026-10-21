@@ -2968,3 +2968,7 @@ G/Esc·확인/취소·잠금/장착 보호 및 실제 wallet/INV readback은 검
 ### DEMO11-28 RETOUCH — 미연결 섹션 숨김·희귀도 표식 (2026-10-21)
 
 이 절이 위 native 분해 초기 캡처 설명보다 우선한다. 자동 분해/연결 대기 섹션을 제거하고 게임 문구에 개발 상태를 노출하지 않는다. 저장 실패는 일반 오류로, 분해 불가 장비는 플레이어 관점으로 표시한다. 아이템명은 뼈색#dfd6c2, 원본 rarity palette는 왼쪽3px 표식과 등급명으로 전달한다(기존 웹 INV borderLeft G50299 재사용). 흑철/금빛선/hell·Cinzel/확인 대화상자·레이아웃 크기는 유지한다. 새 1920×1080 3장·1x9크롭은 `_out/demo11-28/retouch/captures/`, 맥북총괄 눈 검수 대기. [RETOUCH 보고서](../engine/orders/reports/demo11-28_RETOUCH_REPORT.md).
+
+## 2026-10-21 LOBBY-01 native 생성 화면
+
+Godot 시연판 생성 화면은 웹 CHAR_VISUALS의 원본 5인 초상·전사 원화를 동일 byte로 재사용한다. 기존 Hell Gothic hell/hell_title·뼈색·흑철·금선·붉은 행동 버튼 계약을 유지하며, 웹 UI의 CSS·동작은 바꾸지 않는다. 대형 초상/소개/잠긴4인 벡터 자물쇠/이름/생성·취소의 실제 native 규격과 검수는 [LOBBY-01](../engine/LOBBY_01_20261021.md)에 기록한다.
