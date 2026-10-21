@@ -1,6 +1,7 @@
 extends Node
 ## DEMO11-41 only sound authority. No combat/State writer and no polling reflection.
 const CATALOG=preload("res://port_modules/sound_source/bgm_catalog.gd")
+const DEMO_CATALOG=preload("res://scripts/native_demo11_bgm_catalog.gd") # DEMO11 1-1 field BGM override (game.html untouched)
 const SELECT=preload("res://port_modules/sound_source/bgm_selection.gd")
 const LIFE=preload("res://port_modules/sound_source/bgm_lifecycle.gd")
 const MEDIA=preload("res://scripts/native_music_media.gd")
@@ -23,9 +24,13 @@ var _boss: WeakRef
 var _intro: WeakRef
 var _closed := false
 var _options_signature: Array=[]
+# Demo boot (DEMO11-01 policy READY) swaps only the act BGM list; any other boot keeps the source catalog.
+func _make_catalog(main: Node) -> RefCounted:
+	if main.has_method("read_native_demo_policy") and main.read_native_demo_policy().get("status")=="READY":return DEMO_CATALOG.new()
+	return CATALOG.new()
 func configure(main: Node,source_root: String) -> bool:
 	if is_instance_valid(_main) or not is_inside_tree():return false
-	_main=main;_rng.randomize();_catalog=CATALOG.new()
+	_main=main;_rng.randomize();_catalog=_make_catalog(main)
 	process_mode=Node.PROCESS_MODE_ALWAYS
 	_field=_catalog.stage_key(0).key
 	_bus="EXODUSER-BGM-%s" % get_instance_id()
