@@ -1,0 +1,40 @@
+{
+  "static_inputs": {
+    "backmass.png": "104cd4128b8227c689e7b8004ae6cbd543246952bd5e7079f2e9679349628ff3",
+    "east_mouth_root.png": "f337135d73f81f07ceeef9b110eed4900b94dcfd87d3a6264b4818ff4ed28a62",
+    "east_mouth_shadow.png": "f31ec5943a2a338b5212bbbc36532306ea10c0ec2807cf82213b275616e0b22a",
+    "north_east_root.png": "9ed64527fd2af48f79a87710d37954c0de1adc46b99fdb009f116b26cb0a9e6d",
+    "north_east_shadow.png": "166cd448881524c55c73bafa869c1757cd3abfafc4cc59e8ef6ae43d0007933b",
+    "north_heart_root.png": "3590f96c0a340e75e4ddfbdd2e0a84dc9517f8efe46d0a1e0ccb182e554bd004",
+    "north_heart_shadow.png": "022419715e03eeca017d28650f60add190692d3238953ee87f1dcdc5ebbea07a",
+    "north_west_root.png": "0bafd50117e1a283311f02e76722bdf871a16c1ddc9e1a410a693b5a345929d9",
+    "north_west_shadow.png": "cd7a5bbc8e8088d2ab2348837c7bb3279c132b6714bdca5d07be36c4f2e50a77",
+    "south_east_root.png": "0a29f38e54a5ed1220665e01bd0fbe19a0551248bdd66825276a0f76128d05cd",
+    "south_east_shadow.png": "374d9d17cc92ba880a5413033207c0bf5f2dba00b7af26c22fbd90c269bf0a72",
+    "south_west_root.png": "d1188b509f30c629d0f7c2be66a43a4d6a8ff1408927b97f6a879da37c74e76f",
+    "south_west_shadow.png": "f1e967a15764eba8bae01801abf34e894ab0e5d6cd4d08c9b8bc1870a9a5a4f4",
+    "west_mouth_root.png": "f267c156a7e86c214f68f7725a2722a62adf7f9098b3674fee51ad9199ed8ecf",
+    "west_mouth_shadow.png": "8e6250666bde526d55452dc09349441be326d637d0359edcd25fde9cf92a7bb7"
+  },
+  "excluded_live_assets": [
+    "east_mouth.png",
+    "fog.png",
+    "foreground.png",
+    "north_east.png",
+    "north_heart.png",
+    "north_west.png",
+    "south_east.png",
+    "south_west.png",
+    "veins.png",
+    "west_mouth.png"
+  ],
+  "live_runtime": [
+    "local pod UV/glow",
+    "vein pulse",
+    "perimeter fog flow",
+    "two-pose mouth",
+    "camera parallax foreground"
+  ],
+  "floor_and_clones": "existing floor.png remains separate; pulse mask is sampled live",
+  "output_sha256": "4ad0a398ebf486f62a74aad2c9dc9f62b270176221b06fcb02e3c3c2423293d5"
+}

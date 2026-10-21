@@ -56240,3 +56240,8 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 
 - 정적접지/root/BACK15층합성,ground패스통합·조직crop별effect·fog zero-alpha cull·미사용15texture preload정리. source/collision/R1700/PCcore보존.
 - 시각유지PASS/관련검사1회34PASS,최종유효p95 8.558ms/focus_lost0/104draw. **8.33ms예산FAIL,복구완료아님**. MAP11_30P_PERFORMANCE_20261021 및 TARGET_FRAMES 하단성능행에수치·실패후보·운영이탈기록.
+
+## 2026-10-21 MAP11-30p PC 추가 지시 — 동작층 bake 제외
+
+- 정적 bake 15입력 허용목록 / 동작 10파일 제외 manifest 추가. static_underlay는 7504d2c9와 동일 byte, 제품 런타임 변경 0.
+- 실제 TIME 0/2.004490초 비교 1장 추가: pod·핏줄·안개 변화, 입 13표본에서 정확히 2자세, 카메라 100 world px → 전경 −8. 최종 하니스 2 checks / 0 fail, ERROR 0. 기존 8.558ms 성능 FAIL 유지.
