@@ -1,0 +1,206 @@
+{
+  "size": [
+    2048,
+    1024
+  ],
+  "grid_cell": [
+    512,
+    256
+  ],
+  "pixel_changes": 0,
+  "atlas_sha256": "f2129077f8109e9a9ba4564111ecdd673a69f39c81c3abd34f2c21b189e7731a",
+  "entries": [
+    {
+      "source": "res://assets/map/map11/contact_masks/prop_altar.png",
+      "source_key": "res://assets/map/props/prop_altar.png",
+      "region": [
+        0,
+        0,
+        512,
+        149
+      ],
+      "source_sha256": "cd63025aee9ccb52df298be13fcf98f606718b619e7dad2978c7f8310fbff82a",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/prop_corpsetree.png",
+      "source_key": "res://assets/map/props/prop_corpsetree.png",
+      "region": [
+        512,
+        0,
+        512,
+        195
+      ],
+      "source_sha256": "4ba6944d0194d8c9fd94a38500d0fda1f5699584f0bcf9d96c336308fc6f24b8",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/prop_cocoon.png",
+      "source_key": "res://assets/map/props/prop_cocoon.png",
+      "region": [
+        1024,
+        0,
+        512,
+        141
+      ],
+      "source_sha256": "4bf8a2238bd6dd13a9df6838e689ba3d496133cc1e6ab2a5cfaedb5e3603ae60",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/bone_arch.png",
+      "source_key": "res://assets/map/props/bone_arch.png",
+      "region": [
+        1536,
+        0,
+        299,
+        115
+      ],
+      "source_sha256": "dda71dd988d6897fda228a91609514af20bc5e14c86af9e5a0124ca4b49a2a2a",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/prop_g_root.png",
+      "source_key": "res://assets/map/props/prop_g_root.png",
+      "region": [
+        0,
+        256,
+        512,
+        160
+      ],
+      "source_sha256": "41422bdaa1a23f2148ede1305066de5a5c4758e0e168eb4e88e707a9cecc500c",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/rotforest_tree_01.png",
+      "source_key": "res://assets/map/props/rotforest_tree_01.png",
+      "region": [
+        512,
+        256,
+        512,
+        161
+      ],
+      "source_sha256": "f061950e876f7811fa2c0e4ac18358c4d4ade3e81d6fdda5b571a5f0bdf062eb",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/rotforest_tree_02.png",
+      "source_key": "res://assets/map/props/rotforest_tree_02.png",
+      "region": [
+        1024,
+        256,
+        512,
+        161
+      ],
+      "source_sha256": "8aa2d86fdab8e582a4595c4a2f65b01c378ce04c75504782726bde3d121fa4f2",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/rotforest_tree_03.png",
+      "source_key": "res://assets/map/props/rotforest_tree_03.png",
+      "region": [
+        1536,
+        256,
+        512,
+        161
+      ],
+      "source_sha256": "82a75f78a1c4f69ea8022bfc5cdb0475206f3444fcdbb170bef2177e08dd7576",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/rotforest_tree_04.png",
+      "source_key": "res://assets/map/props/rotforest_tree_04.png",
+      "region": [
+        0,
+        512,
+        512,
+        161
+      ],
+      "source_sha256": "d0e7ad2513b8297ffdcb533818b34079f4b1a95c389b2b6ad95b08f01fc90759",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/rotforest_tree_05.png",
+      "source_key": "res://assets/map/props/rotforest_tree_05.png",
+      "region": [
+        512,
+        512,
+        512,
+        161
+      ],
+      "source_sha256": "fb02a8bde8a24c6aa33f0f643138fad86f1b917d8853fc0d229da7f0debee09f",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/rotforest_tree_06.png",
+      "source_key": "res://assets/map/props/rotforest_tree_06.png",
+      "region": [
+        1024,
+        512,
+        512,
+        161
+      ],
+      "source_sha256": "3195a451af0f804c9953a6cc531664d1cdd862a1fa76cf303c995a6c0f63ae44",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/rotforest_tree_07.png",
+      "source_key": "res://assets/map/props/rotforest_tree_07.png",
+      "region": [
+        1536,
+        512,
+        512,
+        161
+      ],
+      "source_sha256": "86af32d8816641a8115751a8bb16c4354ac6642b5c4a43781d7749464f4e32ef",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/rotforest_tree_11.png",
+      "source_key": "res://assets/map/props/rotforest_tree_11.png",
+      "region": [
+        0,
+        768,
+        512,
+        161
+      ],
+      "source_sha256": "85eb5d31dbe5e5e903f526c93b87055981778c3964605db5c7e60edcd47da10f",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/hell_skull_pyramid.png",
+      "source_key": "res://assets/map/map11/props/hell_skull_pyramid.png",
+      "region": [
+        512,
+        768,
+        512,
+        158
+      ],
+      "source_sha256": "56afc693ba235e65f89a1ceb106ea516ff6257efc803f52cb9f1f6a6fd591702",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/hell_spike_pit.png",
+      "source_key": "res://assets/map/map11/props/hell_spike_pit.png",
+      "region": [
+        1024,
+        768,
+        512,
+        140
+      ],
+      "source_sha256": "0e4f881ed2b400e03fef7083b68aa8a4639469c6dc92291c95b72705ac265cb6",
+      "pixels_identical": true
+    },
+    {
+      "source": "res://assets/map/map11/contact_masks/hell_impaled_corpse.png",
+      "source_key": "res://assets/map/map11/props/hell_impaled_corpse.png",
+      "region": [
+        1536,
+        768,
+        454,
+        256
+      ],
+      "source_sha256": "cc973d3f8c4d760d31515b0d6cba4f4992228355dfdd0bf23425ab9b2a1ce6ea",
+      "pixels_identical": true
+    }
+  ]
+}

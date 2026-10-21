@@ -56152,3 +56152,8 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 ## 2026-10-21 MAP11-21d
 - 기준2ab6eaea: 04왼쪽정상variant0, 06죄수variant2 yaw0+offline불투명depth/PNG만, pit1.5배(height300/radius157.5/foot-590,-3770), 게이트뒤root-dark정적PNG로직선경계은폐.
 - 설계서§20.7·SSOT·ART·manifest/contact동기화. 6장면before/after1600×900+1x. VISUAL RETOUCH. 단회96checks/3fail, p95 field9.530/arena7.212ms, focus_lost1648/1749로성능검수FAIL. 재시도0/PC core0/R읽기만.
+## 2026-10-21 MAP11-PERF — 접촉 마스크 공용 아틀라스·회귀 조건 분리
+
+- 기준372a9c5a/branch codex/map11-20p-20261021. 기존16mask RGBA를2048×1024 lossless atlas로 묶고 AtlasTexture 논리size/offset·252instance·254foot·패치/광원·PC전투코어 불변. AI생성0. 원본PNG 보존·16영역픽셀/sourceSHA 동일. base RGBA 메모리5,171,524→8,388,608bytes tradeoff 기록.
+- 81277 공존 고정 배경·우리Godot1개, 원본35틱정착/600틱/1920×1080/240cap. 최종 confirm-before7.268/7.410 → after7.342/7.421ms, 두 공간≤8.33 PASS(52/0). draw148/136→142/127. p95 유의한 단축 주장0; before도 정상포커스에서는PASS. 과거10.598/초기9.681ms의 단일GPU원인 미확정. focus-loss FAIL 및70틱탐색 포함 전부 보존·구분.
+- 실제Main 동일3뷰1600×900·나란히3200×900/7발치 눈검수: 화면 동등성PASS·전체맵RETOUCH 유지. before1557/0, after2062/0(단일atlasRID 포함), foot오차.000366worldpx. §19에원인표·전후표·atlas16region·제약·MAP REPORT 기록. 격리userdir·project원byte복원/R읽기만. Git SHA/원격readback/정리 증거: ~/exoduser-wt/_out/MAP11-PERF/DONE.txt.
