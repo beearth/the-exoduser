@@ -1475,3 +1475,8 @@ native product_space는 둘 다 field로 남는 기존 명목 arena fixture이�
 ## MAP11-30 — 보스룸 목표 원화 층 분해 첫 시제품 (2026-10-21)
 
 8e45a9bc 위에 main c0618459 목표 문서3파일만 merge62038597. R1700/collision/카메라.36/보스예고 보존, 기존 의식링·7종 finale 표현은 hide하고 목표 원화 단일 바닥/7경계/뿌리AO/전경/둘레fog/보라pulse로 교체한 **독립 branch 시제품**이다. 이전 절의 구형 root ring/finale 표현은 이 branch에서는 숨김 상태이며 원본 구현·외부 충돌은 유지한다. 원화2000×1125→floor4096²/world4800², 경계발R1755, 새 shader2. 실제 same-scene **FAIL**: 투영·바닥clone확대·북 경계/중복·마스크 접합 차이 잔여. 테스트/성능을 visual PASS로 대신하지 않는다. 단회 명목arena p95 **7.747ms / focus_lost0**, 120Hz 목표 PASS이나 자연전투/PC 측정 아님. preview35/visual18/BC01 통과, BC02~10은 하니스source/node 인수 오류로 전체 PASS 아님. [모든 값·층·차이·MAP PRODUCTION REPORT](MAP11_30_TARGET_SPLIT_20261021.md). 최종SHA/원격/정리는 `~/exoduser-wt/_out/MAP11-30/DONE.txt`. main/PC 적용0.
+
+
+## MAP11-32 — 첫 필드 구역 목표 장면 분해 (2026-10-21)
+
+[장면·룩 고정값·층·충돌·검수 SSOT](MAP11_32_FIELD_TARGET_SPLIT_20261021.md). 30c 기반 독립 후보. 기존 시작/경로/스폰·카메라·actor 스케일을 보존하고 START~EARLY 한 곳을 승인 원화로 분해한다. 입구 TOUR scene0의4개 art/solid/light/torch를 제외하고 원화 source 발3개 circle을 provider/physics에 함께 연결한다. 나머지 TOUR13개/5장면·원래22점 outer/14anchors/15routes/4regions/주전투장R1600 유지. 기존 절의17props/6장면은 MAP11-21~23 당시 이력이며 이 후보 입구에는 적용하지 않는다. 정적 clone/mirror·뿌리/AO는 bake, 안개/가지/흰 나무/핏줄 TIME 효과만 분리. 새 생성/모델inpaint/runtime3D/PC전투 수정0. 최종 비교·단회 결과는 링크 보고서 및 외부 `_out/MAP11-32/DONE.txt`.

@@ -461,3 +461,8 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 
 - 기준 cae51580, branch codex/boss11-03-20261021. arena .36 단일 값, 채움 RGB(1,.46,.24)/alpha.07→.17, 충전 RGB(1,.94,.72)/전면+.38, 외곽선 유지. 화면 밖 화살표와 발 접촉 표시 추가. PC 코어/판정/번역/저장 변경0.
 - 2640×.36=950.4px이므로 900px 전체 최대 원 수용은 불가; 요청 구간에서 잘림 최소 값 선택. VISUAL VERDICT RETOUCH. 현재 수치/검수 경계는 `8.1보스디자인바이블/BOSS11_03_CAMERA_COLOR_20261021.md`, SHA/성능/캡처/정리는 외부 BOSS11-03/DONE.txt.
+
+
+## 2026-10-21 MAP11-32 — 첫 필드 목표 장면 분해 검토 후보
+
+사용자 지정30c 기반 별도 `codex/map11-32-20261021`. START~EARLY 한 곳의 source 장면 분해/입구 TOUR 교체/원형foot3개만, 플레이어·보스scale 및 PC전투 변경0. [룩·층·검수·MAP REPORT](../4.1맵디자인+설정/MAP11_32_FIELD_TARGET_SPLIT_20261021.md). main/PC/실행 중인PID81277에는 미반영. 최종SHA·원격검증·비교·성능·정리는 `~/exoduser-wt/_out/MAP11-32/DONE.txt`.

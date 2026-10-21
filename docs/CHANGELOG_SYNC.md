@@ -56250,3 +56250,15 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 | 접지/팔레트 | 공유ambient(.89,.77,.81)/red rim(.62,.20,.22,.36), soft analytic128² AO. 기존root crack 재보정·정적floor합성, 새이미지생성/점/디더링0 |
 | 검수 | MAP30b34/34,arena35/35,BOSS03 18/18,BC08 24788/0. BOSS02 17/18: 이전midpoint.49 기대1fail→상수참조로 수정/재실행0. 유효성능1회p95 7.738ms/focus_lost0; 후검토소규모보정 경계 별도 |
 | 인수 | 목표비교/근접/3종1x/실제Main live0·2초 보존. VISUAL RETOUCH: 원화결부드러움/기존overview접합/자연전투 미검수. [상세계약·측정·MAP REPORT](4.1맵디자인+설정/MAP11_30C_SCALE_INTEGRATION_20261021.md), 외부 `_out/MAP11-30c/DONE.txt`에SHA/원격/정리 |
+
+
+## 2026-10-21 — MAP11-32 필드 입구 목표 장면 분해
+
+| 범위 | 계약 / 검수 |
+|---|---|
+| 소유 | 30c 기반 격리 branch/WT MAP11-32, START~첫통로1곳 |
+| 표시 | source2000×1125→1920×1080, 줌.70·배율1.3714285714·투영.6; floor/source clone/고목5구간/rootAO/전경/낮은안개/흰빛/핏줄펄스 |
+| 권위 | 입구tour4개 제거+source foot3개 provider/physics 동일, 나머지13개 유지. outer/route/spawn/arena/actor scale/PCcore/save 불변 |
+| 근거 | [정확값·실제Main비교·단회 관련검사/성능·MAP REPORT](4.1맵디자인+설정/MAP11_32_FIELD_TARGET_SPLIT_20261021.md), 외부 `_out/MAP11-32/DONE.txt`에SHA/원격/정리. 새생성·inpaint·runtime3D0 |
+
+MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·북경계·좌우뿌리 캡처. **VISUAL RETOUCH**, 유효1회p95 **11.676ms**/focus_lost0·118draw **성능FAIL**. background1666focuslost 선행표본은 전부무효/통과값으로 사용0. 제품/에셋 최종바이트를 유효측정했고 이후 수정0.

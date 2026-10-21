@@ -49,6 +49,7 @@ const TEXTURES=preload("res://scripts/maps/map11/tour_textures.gd")
 func _hell_props(scene: Node2D) -> void:
  for i in range(Tour.ROWS.size()):
   var row: Array=Tour.ROWS[i]
+  if row[5]==0:continue # Retired only inside the target entrance region.
   var foot: Vector2=row[2]
   var pair: Array=TEXTURES.ASSETS[row[0]][row[1]]
   var canvas:=CanvasTexture.new()
@@ -71,6 +72,7 @@ func _hell_props(scene: Node2D) -> void:
   GroundContact.shadow(scene.field_view,sprite,foot,-2987,.58,scene.lighting_look._unlit)
   hell_props.append(prop)
  for site in Tour.SCENES:
+  if site.id=="01_entrance":continue
   scene.lighting_look._pool("Tour_"+site.id,site.light,"field",site.radius,site.color,site.energy,.025)
   if site.source=="횃불" or site.source=="관문 횃불":_torch(scene,site.light)
 

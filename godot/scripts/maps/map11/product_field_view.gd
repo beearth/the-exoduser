@@ -2,6 +2,8 @@ extends "res://scripts/maps/map11/field_seam_preview.gd"
 ## MAP11-14 product assembly; no preview actor, UI, collision or gameplay writer.
 const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
 const TourTextures=preload("res://scripts/maps/map11/tour_textures.gd")
+const Target32=preload("res://scripts/maps/map11/target32_layout.gd")
+var target32: Node2D
 var gate_leaves: Array[Node2D]=[]
 var gate_open: float=0.0
 func _ready() -> void:
@@ -16,6 +18,15 @@ func _ready() -> void:
  _build_forest("BACK",850,690,1320,Color(.28,.31,.33))
  _build_forest("MID",350,510,1030,Color(.52,.49,.49))
  _build_forest("FRONT",60,620,720,Color(.70,.64,.61))
+ # Retire only the selected entrance art, preserving all other field regions.
+ var keep: Array[Dictionary]=[]
+ for row in _rows:
+  if Target32.in_region(row.foot):row.node.hide()
+  else:keep.append(row)
+ _rows=keep
+ for row in _decal_rows:
+  if Target32.in_region(row.position):row.node.hide();row.node.set_meta("target32_retired",true)
+ target32=preload("res://scripts/maps/map11/target32_scene.gd").new();target32.name="Target32FirstRegion";add_child(target32)
  set_process(false);set_physics_process(false)
  set_process_input(false);set_process_unhandled_input(false);set_process_unhandled_key_input(false)
 func _build_mass() -> void:
@@ -96,7 +107,9 @@ func _add_tree(layer: String,side: String,foot: Vector2,height_: float,tone: Col
 func update_product(point: Vector2,delta: float) -> void:
  var inverse:=get_global_transform_with_canvas().affine_inverse()
  var view:=Rect2(inverse*Vector2.ZERO,get_viewport_rect().size/get_viewport().get_camera_2d().zoom).grow(200)
+ target32.update_view(point,delta)
  for row in _decal_rows:
+  if row.node.has_meta("target32_retired"):continue
   var extent: float=(row.size as Vector2).length()*.5
   row.node.visible=view.intersects(Rect2(row.position-Vector2.ONE*extent,Vector2.ONE*extent*2.0))
  for row in _rows:
