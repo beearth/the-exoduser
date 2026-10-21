@@ -56236,3 +56236,9 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - godot/override.cfg에 시연 전용 EXODUSER-DEMO-PLAY-20261021 userdir 지정. 기존 새 게임 로비를 별도 scene 인수로 실행하며 제품 플래그 주입 없음.
 - import ERROR0, 일반 로비 headless ERROR0. 각1회 검사 31개 중28개 통과, BC 통합 baseline 인수 누락·구 BOSS11-02 기대값·기존 map11_product 실패는 별도 기록. 재실행 없음.
 - 상세: engine/DEMO_PLAY_20261021.md. RUN/DONE은 ~/exoduser-wt/_out/DEMO-PLAY/. worktree 유지, GUI 미실행, PC/main 변경 없음.
+
+## 2026-10-21 LOBBY-01 — Godot 시연판 로비·생성 화면
+
+- 첫 빈 슬롯 새로하기 초기 포커스/강조, 웹 원본 5인 초상 및 전사 대형 원화·소개, 잠긴4인 감광/벡터 자물쇠, 이름 Enter 제출·취소 포커스 구현.
+- 저장/active/인트로 및 전투 코드 변경 없음. 기존 Hell Gothic 폰트/색, 한영 catalog·번역 목록3487–3489(CRLF 보존), `docs/engine/LOBBY_01_20261021.md` 동기화.
+- 기존 로비 회귀 1회60/60 PASS, 격리 UI 입력·검증·metadata 캡처 하니스 PASS. 1600×900 5장 직접 검수: VISUAL PASS. 실물 패드 미검증. 근거 `~/exoduser-wt/_out/LOBBY-01/`.

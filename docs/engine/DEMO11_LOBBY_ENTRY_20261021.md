@@ -11,3 +11,7 @@ Main은 pending 입장에서 인트로를 미리 만들지 않는다. active가 
 `game.cutsceneDone`은 원본 game.html:62914/62977·:62144 직렬화 경계를 따른다. 저장 읽기에서 이미 true이면 영화 재생을 건너뛰고 기존 기상 4컷 owner로 인계한다. 이 단위의 metadata-only 신규 흐름에는 저장된 Player 전투 상태 복원 의미가 없다. 미완이면 INTRO가 끝나거나 skip된 뒤 기존 State의 `_cutsceneDone`만 true로 기록한다. State는 실제 자기 Main의 입장/완료 receipt만 받는다. 완료 전에 온 callback·타 owner는 거절한다. 기존 collector가 이 필드를 직렬화하며, 이번 변경이 부분 game save를 새로 만들거나 슬롯에 game 필드를 추가하지 않는다. 취소/오류만으로 완료 flag를 쓰지 않는다.
 
 Hell Gothic 표면·폰트는 DEMO11-04의 helper/게임 토큰을 재사용한다. 이름 입력도 hell 명조·뼈색·금선·붉은 선택색이다. 신규 표시 문구는 번역 전체 목록에 등록했다. 실제 viewport 캡처2장과 1x crop은 `_out/demo11-07/captures/`에 있다. 관련 검증·공용 파일별 줄 범위는 [보고서](orders/reports/demo11-07_REPORT.md)에 기록한다.
+
+## 2026-10-21 LOBBY-01 화면 개편
+
+기존 단순 이름 폼과 비활성 텍스트 버튼 5개는 전사 대형 원화·소개·5인 초상 카드로 대체했다. 첫 빈 슬롯의 새로하기 강조·초기 포커스, 이름 Enter 제출, 잠금 장식과 생성 화면 초점 격리를 적용했다. 저장/active/인트로 경계·이름 검증 정책은 이 문서의 DEMO11-07 계약 그대로다. [화면·에셋·입력 상세](LOBBY_01_20261021.md).

@@ -43,12 +43,17 @@ func _ready() -> void:
 		status.text = tr_text("새 전사 기록을 만들었습니다.","New warrior record created.")
 		new_game_requested.emit(slot,data))
 	menu.continue_requested.connect(func(slot: int, data: Dictionary):
-		status.text = tr_text("선택한 기록을 확인했습니다. 이어하기는 준비 중입니다.","Selected record checked. Continue is not available yet.")
+		status.text = tr_text("선택한 기록을 확인했습니다.","Selected record checked.")
 		continue_requested.emit(slot,data))
 	_entry_enabled=bool(get_meta("native_lobby_entry_enabled",get_tree().get_script()==null))
 	if _entry_enabled:new_game_requested.connect(_queue_entry)
 	menu.open()
-	cards[0].grab_focus()
+	var first_empty := 0
+	for i in menu.rows.size():
+		if menu.rows[i].kind=="empty":
+			first_empty=i
+			break
+	cards[first_empty].grab_focus()
 
 func tr_text(ko: String, en: String) -> String: return UI.text(ko)
 func _input(event: InputEvent) -> void:
@@ -57,7 +62,7 @@ func _input(event: InputEvent) -> void:
 	if _form.visible and name_input.has_focus(): return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
 		if modal.visible: _close_modal()
-		elif _form.visible: _form.hide(); cards[maxi(0,_form_slot)].grab_focus()
+		elif _form.visible: _close_form()
 		get_viewport().set_input_as_handled()
 
 func _box(rect: Rect2, fill: Color, edge: Color, parent: Node = self) -> Panel:
@@ -96,7 +101,7 @@ func _image(path: String, rect: Rect2, parent: Node = self) -> TextureRect:
 	var t := TextureRect.new()
 	t.name=path.get_file().get_basename()
 	t.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
-	t.texture=load(path); t.position=rect.position; t.size=rect.size
+	t.texture=load(path) if FileAccess.file_exists(path) else null; t.position=rect.position; t.size=rect.size
 	t.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	t.mouse_filter=Control.MOUSE_FILTER_IGNORE; parent.add_child(t)
 	return t
@@ -112,7 +117,7 @@ func _build() -> void:
 	_label(tr_text("끝나지 않은 여정은 이곳에 남는다.","An unfinished journey waits here."),Vector2(185,936),650,22)
 	_box(Rect2(968,76,842,906),Color(0.035,0.027,0.033,0.95),GOLD)
 	_label(tr_text("전사의 기록","WARRIOR RECORDS"),Vector2(1010,105),720,40,self,true)
-	_label(tr_text("로컬 데모  /  다섯 개의 저장 슬롯","LOCAL DEMO  /  FIVE SAVE SLOTS"),Vector2(1010,168),700,18)
+	_label(tr_text("새로운 여정을 시작하세요","Begin a new journey"),Vector2(1010,168),700,18)
 	for i in 5:
 		var b := _button("",Rect2(1010,235+i*108,758,94),_choose.bind(i))
 		b.alignment=HORIZONTAL_ALIGNMENT_LEFT
@@ -125,30 +130,46 @@ func _build() -> void:
 	status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	status.size.y=75
 	_label(tr_text("로컬 기록은 이 기기에 보관됩니다.","Local records are stored on this device."),Vector2(1010,998),800,17)
-	_form=_box(Rect2(1000,440,780,440),Color("131014"),GOLD)
+	_form=_box(Rect2(0,0,1920,1080),Color("09080b"),GOLD)
 	_form.hide()
-	_label(tr_text("새 전사의 이름","New warrior name"),Vector2(22,10),650,25,_form,true)
-	_label(tr_text("엑소듀서 전사 · 흑철의 전사","WARRIOR · BLACK IRON"),Vector2(24,59),700,21,_form)
-	var english=["WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"]
+	_image("res://assets/ui/demo_lobby/abyss.png",Rect2(0,0,1020,1080),_form).modulate=Color("81717b")
+	_image("res://assets/ui/demo_lobby/charselect/warrior_cut.png",Rect2(90,112,850,940),_form).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_image("res://assets/ui/demo_lobby/crest.png",Rect2(365,32,270,90),_form).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_label("EXODUSER",Vector2(320,920),650,54,_form,true)
+	_box(Rect2(1020,90,800,910),Color("100d10"),GOLD,_form)
+	_label(tr_text("새 전사의 이름","New warrior name"),Vector2(1060,120),700,38,_form,true)
+	_box(Rect2(1060,205,720,1),GOLD,GOLD,_form)
+	_label(tr_text("엑소듀서 전사","WARRIOR"),Vector2(1060,234),710,40,_form,true)
+	_label(tr_text("거대검을 휘두르는 흑철의 전사","A black-iron warrior wielding a greatsword"),Vector2(1060,304),710,23,_form)
+	var portraits=["portrait_warrior.png","portrait_silvertail.png","portrait_hellgunner.jpg","portrait_transmuter.jpg","portrait_spearmage.jpg"]
+	var english=["WARRIOR","SILVERTAIL","HELLGUNNER","TRANSMUTER","SPEARMAGE"]
 	for index in 5:
-		var b:=_button(tr_text(Entry.CHARACTERS[index],english[index]),Rect2(24+index*146,112,138,60),_select_character.bind(index),_form)
-		b.add_theme_font_size_override("font_size",16)
-		b.disabled=index!=0
+		var b:=_button("",Rect2(1060+index*146,408,136,190),_select_character.bind(index),_form)
+		var portrait:=_image("res://assets/ui/demo_lobby/charselect/"+portraits[index],Rect2(5,5,126,134),b)
+		portrait.modulate=Color.WHITE if index==0 else Color("51494c")
+		var caption:=_label(tr_text(Entry.CHARACTERS[index],english[index]),Vector2(4,143),128,18,b)
+		caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		caption.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		caption.size.y=46
 		b.tooltip_text=tr_text("출시 준비 중","Coming soon") if index!=0 else tr_text("생성 가능한 전사","Available warrior")
+		if index!=0:
+			var lock:=LockMark.new();lock.position=Vector2(54,55);lock.mouse_filter=Control.MOUSE_FILTER_IGNORE;b.add_child(lock)
 		character_buttons.append(b)
-	_label(tr_text("다른 전사들은 출시 준비 중입니다.","Other warriors are coming soon."),Vector2(24,180),710,18,_form)
-	creation_error=_label("",Vector2(24,360),710,18,_form)
-	creation_error.add_theme_color_override("font_color",Color("ce8972"))
-	name_input=LineEdit.new(); name_input.max_length=8; name_input.position=Vector2(24,246); name_input.size=Vector2(470,56)
+	_label(tr_text("다른 전사들은 출시 준비 중입니다.","Other warriors are coming soon."),Vector2(1060,612),710,20,_form)
+	_label(tr_text("이름은 2~8자여야 합니다.","Name must be 2–8 characters."),Vector2(1060,678),710,20,_form)
+	name_input=LineEdit.new(); name_input.max_length=8; name_input.position=Vector2(1060,740); name_input.size=Vector2(710,64)
 	var input_box:=StyleBoxFlat.new();input_box.bg_color=Color("0b090b");input_box.border_color=GOLD;input_box.set_border_width_all(1);input_box.content_margin_left=16
 	name_input.add_theme_stylebox_override("normal",input_box)
 	var focused: StyleBoxFlat=input_box.duplicate();focused.border_color=Color("c59c65");focused.set_border_width_all(2);name_input.add_theme_stylebox_override("focus",focused)
 	name_input.add_theme_color_override("font_color",BONE)
 	name_input.add_theme_color_override("selection_color",Color("602820"))
 	name_input.add_theme_color_override("caret_color",Color("c59c65"))
-	name_input.add_theme_font_override("font",Fonts.stack("hell",400)); name_input.add_theme_font_size_override("font_size",22); _form.add_child(name_input)
-	_button(tr_text("새로하기","New game"),Rect2(516,246,236,56),_create,_form,true)
-	_button(tr_text("취소","Cancel"),Rect2(516,310,236,48),func(): _form.hide(); cards[maxi(0,_form_slot)].grab_focus(),_form)
+	name_input.add_theme_font_override("font",Fonts.stack("hell",400)); name_input.add_theme_font_size_override("font_size",26); _form.add_child(name_input)
+	name_input.text_submitted.connect(func(_value: String): _create())
+	creation_error=_label("",Vector2(1060,810),710,20,_form)
+	creation_error.add_theme_color_override("font_color",Color("ce8972"))
+	_button(tr_text("새로하기","New game"),Rect2(1060,890,460,66),_create,_form,true)
+	_button(tr_text("취소","Cancel"),Rect2(1540,890,230,66),_close_form,_form)
 	modal=Control.new(); modal.size=Vector2(1920,1080); add_child(modal)
 	var veil := ColorRect.new(); veil.color=Color(0,0,0,0.85); veil.size=modal.size; modal.add_child(veil)
 	var dialog := _box(Rect2(540,330,840,410),Color("100d10"),GOLD,modal)
@@ -168,9 +189,26 @@ func _build() -> void:
 	confirm.focus_previous=confirm.get_path_to(cancel); confirm.focus_next=confirm.get_path_to(cancel)
 	modal.hide()
 
+class LockMark extends Control:
+	func _draw() -> void:
+		draw_arc(Vector2(14,8),10,PI,TAU,20,Color("dfd6c2"),2,true)
+		draw_rect(Rect2(2,8,24,22),Color("161014"))
+		draw_rect(Rect2(2,8,24,22),Color("bba27d"),false,2)
+		draw_line(Vector2(14,16),Vector2(14,23),Color("dfd6c2"),2,true)
+
+func _close_form() -> void:
+	_form.hide()
+	for b in cards: b.focus_mode=Control.FOCUS_ALL
+	start.focus_mode=Control.FOCUS_ALL
+	erase.focus_mode=Control.FOCUS_ALL
+	cards[maxi(0,_form_slot)].grab_focus()
+
 func _choose(slot: int) -> void:
 	if not menu.select_slot(slot): return
 	if menu.rows[slot].kind=="empty":
+		for b in cards: b.focus_mode=Control.FOCUS_NONE
+		start.focus_mode=Control.FOCUS_NONE
+		erase.focus_mode=Control.FOCUS_NONE
 		_form_slot=slot; character_index=0; creation_error.text=""; _form.show(); name_input.clear(); name_input.grab_focus()
 	else: _form.hide()
 func _select_character(index: int) -> void:
@@ -196,7 +234,7 @@ func _entry_error(reason: String) -> String:
 		"character_locked":return tr_text("출시 준비 중","Coming soon")
 		"duplicate_name":return tr_text("이미 같은 이름의 캐릭터가 있습니다.","A warrior with this name already exists.")
 		"active_save_sync_required":return tr_text("이전 전사의 저장 동기화가 필요합니다.","The previous warrior's save must be synchronized.")
-		"saved_player_restore_required":return tr_text("이어하기 복원 연결이 필요합니다.","Continue requires the save restore connection.")
+		"saved_player_restore_required":return tr_text("입장하지 못했습니다. 기록은 보존됩니다.","Unable to enter. Your record is preserved.")
 		_:return tr_text("입장하지 못했습니다. 기록은 보존됩니다.","Unable to enter. Your record is preserved.")
 func _queue_entry(slot: int,_data: Dictionary) -> void:
 	call_deferred("_launch_entry",slot)
@@ -213,6 +251,7 @@ func _render() -> void:
 		elif row.kind=="corrupt": text=tr_text("읽을 수 없는 기록 — 삭제 후 다시 생성","Unreadable record — delete to create again")
 		elif row.kind=="unavailable": text=tr_text("저장소를 열 수 없습니다.","Cannot open the save store.")
 		cards[i].text = "   %02d     %s" % [i+1,text]
+		cards[i].add_theme_font_size_override("font_size",28 if row.kind=="empty" else 22)
 		cards[i].disabled=not menu.ready
 		cards[i].modulate=Color("ffdfaa") if menu.selected==i else Color.WHITE
 	start.disabled=menu.selected<0 or not menu.ready or menu.rows[menu.selected].kind not in ["saved","new"]
@@ -220,9 +259,9 @@ func _render() -> void:
 	erase.disabled=menu.selected<0 or not menu.ready or menu.rows[menu.selected].kind=="empty"
 	status.text=tr_text("로컬 기록을 선택하거나 빈 슬롯에서 새 전사를 만드세요.","Select a local record or create a warrior in an empty slot.") if menu.last_error.is_empty() else tr_text("요청 실패 · ","Request failed · ")+menu.last_error
 	modal_error.text=tr_text("요청 실패 · ","Request failed · ")+menu.last_error if not menu.last_error.is_empty() else ""
-	for b in cards: b.focus_mode=Control.FOCUS_NONE if modal.visible else Control.FOCUS_ALL
-	start.focus_mode=Control.FOCUS_NONE if modal.visible else Control.FOCUS_ALL
-	erase.focus_mode=Control.FOCUS_NONE if modal.visible else Control.FOCUS_ALL
+	for b in cards: b.focus_mode=Control.FOCUS_NONE if modal.visible or _form.visible else Control.FOCUS_ALL
+	start.focus_mode=Control.FOCUS_NONE if modal.visible or _form.visible else Control.FOCUS_ALL
+	erase.focus_mode=Control.FOCUS_NONE if modal.visible or _form.visible else Control.FOCUS_ALL
 func _show_modal() -> void:
 	_form.hide()
 	var row: Dictionary=menu.rows[menu.pending_delete.slot]
