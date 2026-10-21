@@ -4,6 +4,7 @@ const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
 const TourTextures=preload("res://scripts/maps/map11/tour_textures.gd")
 const Target32=preload("res://scripts/maps/map11/target32_layout.gd")
 var target32: Node2D
+var ground_bake: Node2D
 var gate_leaves: Array[Node2D]=[]
 var gate_open: float=0.0
 func _ready() -> void:
@@ -27,6 +28,8 @@ func _ready() -> void:
  for row in _decal_rows:
   if Target32.in_region(row.position):row.node.hide();row.node.set_meta("target32_retired",true)
  target32=preload("res://scripts/maps/map11/target32_scene.gd").new();target32.name="Target32FirstRegion";add_child(target32)
+ ground_bake=preload("res://scripts/maps/map11/field_ground_bake.gd").new()
+ if not ground_bake.mount(self):ground_bake.free();ground_bake=null
  set_process(false);set_physics_process(false)
  set_process_input(false);set_process_unhandled_input(false);set_process_unhandled_key_input(false)
 func _build_mass() -> void:
@@ -108,6 +111,7 @@ func update_product(point: Vector2,delta: float) -> void:
  var inverse:=get_global_transform_with_canvas().affine_inverse()
  var view:=Rect2(inverse*Vector2.ZERO,get_viewport_rect().size/get_viewport().get_camera_2d().zoom).grow(200)
  target32.update_view(point,delta)
+ if ground_bake!=null:ground_bake.update_view(view)
  for row in _decal_rows:
   if row.node.has_meta("target32_retired"):continue
   var extent: float=(row.size as Vector2).length()*.5

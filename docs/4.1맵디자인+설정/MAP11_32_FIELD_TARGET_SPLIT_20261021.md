@@ -1,3 +1,5 @@
+> 2026-10-21 MAP11-32b 후속 후보: [북접합·정적 bake·최종 단회 검수](MAP11_32B_FIELD_BAKE_20261021.md). 기존 바닥/reflected apron/전경/고목 shader 계약은 아래 MAP11-32 제작 이력이다. 현행 후보는 zoom.70 유지, 비대칭 무반사 북접합·지면22tile·전경trim. p95 **11.806ms**,124draw/225objects, **성능 FAIL / VISUAL RETOUCH**. 해소 완료 아님.
+
 # MAP11-32 — 시작 필드 목표 장면 분해
 
 기준 `origin/codex/map11-30c-20261021`, `0f0a2888`. 별도 `codex/map11-32-20261021` 검토 후보이며 main·PC·실행 중인 다른 게임에는 적용하지 않는다. R의 HEAD/branch/tracked INDEX/WORK는 보존했다. 최초 fetch와 worktree 등록은 R cwd에서 실행되어 공용 Git refs/FETCH_HEAD/metadata는 갱신되었다. 이후 파일 변경·실행·커밋은 지정 WT cwd에서만 수행한다.

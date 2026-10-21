@@ -1480,3 +1480,8 @@ native product_space는 둘 다 field로 남는 기존 명목 arena fixture이�
 ## MAP11-32 — 첫 필드 구역 목표 장면 분해 (2026-10-21)
 
 [장면·룩 고정값·층·충돌·검수 SSOT](MAP11_32_FIELD_TARGET_SPLIT_20261021.md). 30c 기반 독립 후보. 기존 시작/경로/스폰·카메라·actor 스케일을 보존하고 START~EARLY 한 곳을 승인 원화로 분해한다. 입구 TOUR scene0의4개 art/solid/light/torch를 제외하고 원화 source 발3개 circle을 provider/physics에 함께 연결한다. 나머지 TOUR13개/5장면·원래22점 outer/14anchors/15routes/4regions/주전투장R1600 유지. 기존 절의17props/6장면은 MAP11-21~23 당시 이력이며 이 후보 입구에는 적용하지 않는다. 정적 clone/mirror·뿌리/AO는 bake, 안개/가지/흰 나무/핏줄 TIME 효과만 분리. 새 생성/모델inpaint/runtime3D/PC전투 수정0. 최종 비교·단회 결과는 링크 보고서 및 외부 `_out/MAP11-32/DONE.txt`.
+
+
+## 2026-10-21 — MAP11-32b 북접합 / 성능 FAIL 후보 보존
+
+[최종 계약·검수·MAP REPORT](MAP11_32B_FIELD_BAKE_20261021.md). 같은branch/기준d953e349, START zoom.70·provider/PCcore/actor스케일 보존. 북접합 무반사native패치·정적지면22tile·전경trim. 관련6종 각1회237/0. 유효field1회 p95 **11.806ms**,p99 **12.905ms**,focus_lost0; draw/objects **118/219→124/225**. **VISUAL RETOUCH / 성능 FAIL, 해소 완료 아님**. 유효 느린표본 재측정0. 외부 `_out/MAP11-32b/DONE.txt`에 최종SHA·원격·clean WT제거 기록; main/PC/배포0.
