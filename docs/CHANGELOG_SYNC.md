@@ -1,3 +1,11 @@
+## 2026-10-22 INTEG-9 — PC 후속 병합·Mac E2E 하니스
+
+- INTEG-8 fe897b08 + PC followups 2ab089c87 정상 merge. CHANGELOG 양쪽 이력 보존; PC 구현/테스트 제출본·맵 비주얼·project.godot·override 추적 해제 유지.
+- Mac E2E 접촉 순위의 없는/null 타이머는 기본0, attack 숫자형 검사. 접촉 공격 없는 etype1은 배치 후보 제외. 석궁45000ms 시간 초과도 기존 근접 request_attack fallback 허용. kill/region 판정 불변·피해/HP/사망 주입0. 사격구간 fired/hits 증가량·physics p95/max 증거 기록.
+- import ERROR0. 회귀40종 1회: 나머지38종 실패0, PC 묶음 B 직접·Mac 각각14실패(원본SHA6+기등록C15 consumer8), guard 종료로 perf 최종그룹 미완료. PC 테스트 수정/재실행0. p1002e/f/g는 PC 기존 맵 배치 전제로 --map11=off 93/0·357/0·220/0.
+- 저장ON E2E PASS13/NR5/FAIL0·SCRIPT ERROR0. 석궁20발/16명중/1처치·근접0. headless 사격구간 physics4583표본 p95 8.265ms/max23.423ms. timeout 분기는 이번 실측 미도달; GUI 별도성능 미측정·PC source-perf 대기.
+- [상세 상태](engine/DEMO11_STATUS_20261021.md#integ-9--2026-10-22-통합-검수-완료pc-묶음-b-실패-보존), 외부 `~/exoduser-wt/_out/INTEG-9/DONE.txt`. 정상 hook 유지, main/PC 실행 동기화 주장 없음.
+
 ## 2026-10-22 ZOOM-01b — 새 필드 줌 비교 재촬영(부분)
 
 - 기존 zoom branch + MAP11-32c merge, 테스트 전용 offset 보정·표시 보스1/배수·원본12/비교판3. 플레이어 전신/HUD 가림 확인.

@@ -157,15 +157,16 @@ func place_in_natural_contact() -> Dictionary:
  var best_cooldown: float=0.0
  for enemy in main.world.get_enemies():
   if not is_instance_valid(enemy) or enemy.get("alive")!=true or not main.native_natural_enemies.owns_actor(enemy):continue
-  if enemy.get("etype") not in [0,1,4,6,18,19]:continue
+  # Hive bloater (etype1) has ranged stages only, no natural melee contact.
+  if enemy.get("etype") not in [0,4,6,18,19]:continue
   var point: Vector2=enemy.global_position+Vector2(24,0)
   if not main.world.can_move(point,main.player.radius):continue
   var raw_cooldown: Variant=enemy.get("st2" if enemy.etype in [0,6] else "_contact_ticks")
-  # New natural actor families need their own admitted contact-timer contract.
-  # Never invent zero cooldown or cast missing owner fields to float.
-  if not (raw_cooldown is float or raw_cooldown is int):continue
-  var cooldown: float=float(raw_cooldown)
-  var value: float=float(enemy.get("attack"))/(1.0+maxf(0.0,cooldown))
+  # Placement ranking only; absent timer is zero, never a product timer write.
+  var cooldown: float=float(raw_cooldown) if raw_cooldown is float or raw_cooldown is int else 0.0
+  var raw_attack: Variant=enemy.get("attack")
+  if not (raw_attack is float or raw_attack is int):continue
+  var value: float=float(raw_attack)/(1.0+maxf(0.0,cooldown))
   if enemy.get("state")!="idle":value*=.01
   if value>score:best=enemy;score=value;best_cooldown=cooldown
  if not is_instance_valid(best):return {"placed":false}
@@ -268,16 +269,22 @@ func run() -> void:
  var home: Vector2=main.player.global_position;var attacks:=0;var accepted:=0;var event_start:=event_rows.size()
  var crossbow_observation: Dictionary={}
  if is_instance_valid(target):
-  mark_checkpoint("placement only; actual automatic crossbow timer/flight/hurtE, then existing melee input if PC field owner blocks bow; no injected damage")
+  mark_checkpoint("placement only; actual automatic crossbow timer/flight/hurtE, then existing melee input if bow times out or PC field owner blocks bow; no injected damage")
+  var bow_sample_start: int=active.physics_samples.size()
+  var bow_before: Dictionary=main.native_auto_crossbow.snapshot()
   var bow_deadline:=Time.get_ticks_msec()+45000
   while target.alive and Time.get_ticks_msec()<bow_deadline and main.player.hp>main.player.max_hp*.2:
    main.player.global_position=target.global_position+Vector2(-180,0)
    await settle(6)
    if str(main.native_auto_crossbow.reason).begins_with("field_mob_owner_unported:"):break
   crossbow_observation=main.native_auto_crossbow.snapshot().duplicate(true)
+  crossbow_observation["physics_callback"]=stats(active.physics_samples.slice(bow_sample_start))
+  crossbow_observation["fired_delta"]=int(crossbow_observation.fired)-int(bow_before.fired)
+  crossbow_observation["hits_delta"]=int(crossbow_observation.hits)-int(bow_before.hits)
+  crossbow_observation["timed_out"]=Time.get_ticks_msec()>=bow_deadline
   # The PC bow admission boundary is final. It does not disable the existing
   # independent melee owner; restore PCIA's actual request_attack path unchanged.
-  if target.alive and str(crossbow_observation.get("reason","")).begins_with("field_mob_owner_unported:"):
+  if target.alive and (crossbow_observation.timed_out or str(crossbow_observation.get("reason","")).begins_with("field_mob_owner_unported:")):
    var deadline:=Time.get_ticks_msec()+45000
    while target.alive and attacks<200 and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
     if main.player.state!="idle":await physics_frame;continue
