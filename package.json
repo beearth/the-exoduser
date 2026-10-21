@@ -41,7 +41,7 @@
     "pixellab:ch1:8dir": "node tools/complete_ch1_8dir.mjs",
     "pixellab:ch1:atlas-sync": "node tools/sync_ch1_monster_atlas_sources.mjs",
     "elevenlabs:tts": "node tools/elevenlabs_tts.mjs",
-    "sfx:forge": "node --env-file=.env.local tools/sfx_forge.mjs",
+    "sfx:forge": "node --env-file-if-exists=.env.local tools/sfx_forge.mjs",
     "docs:check": "node tools/docs-sync-check.mjs",
     "docs:check:staged": "node tools/docs-sync-check.mjs --staged",
     "hooks:install": "git config core.hooksPath .githooks",

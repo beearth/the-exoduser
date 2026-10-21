@@ -10,7 +10,7 @@
 | 도구 | `tools/sfx_forge.mjs` |
 | 카탈로그 | `tools/sfx_forge_catalog.json` (`{ "sounds": [ {category,key,text,...} ] }`) |
 | 테스트 | `test/sfxForge.test.js` (API 호출 없음, stub client) |
-| 실행 | `npm run sfx:forge -- <gen\|batch\|promote\|list> ...` (`node --env-file=.env.local`) |
+| 실행 | `npm run sfx:forge -- <gen\|batch\|promote\|list> ...` (`node --env-file-if-exists=.env.local` — 파일이 없어도 dry-run 가능, 실제 생성은 키 필요) |
 | SDK / 모델 | `@elevenlabs/elevenlabs-js` `textToSoundEffects.convert` / `eleven_text_to_sound_v2` |
 | 키 | `.env.local`의 `ELEVENLABS_API_KEY`(gitignore, `npx -y @elevenlabs/cli@latest onboard` 가 저장). 도구는 키를 읽거나 출력하지 않는다 |
 | 기본 형식 | `mp3_44100_128` |
