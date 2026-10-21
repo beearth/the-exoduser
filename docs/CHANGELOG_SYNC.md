@@ -1,5 +1,7 @@
 ## 2026-10-21 MAP11-23
 
+- 신규 검수 스크립트2개의 Godot UID도 함께 보존.
+
 - 기존 PNG만 사용해 외곽 반복 변형·일부 소품 교체, 입구4주 간격/각도/크기, 처형장 기존 fade, pit offline 음영 보정. 신규 runtime draw/pass0, cached cull/fade rows+4. PCcore/실제저장/main 무변경.
 - before/after 각7시점1600×900+literal1x, 보충가림2컷. suite단회495/4(카메라 미이동 probe 오류), 실제카메라 capture37/0. before focus/보행 요건 실패, after9.449/8.509ms focus_lost0. 비용 비증가 미검증, **RETOUCH**. [수치·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21).
 
