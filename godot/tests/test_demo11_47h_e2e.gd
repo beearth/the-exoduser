@@ -253,7 +253,7 @@ func run() -> void:
    main.player.release_attack()
    await settle(36)
    if event_rows.slice(event_start).any(func(e):return e.id==target.get_instance_id() and (e.kind=="native_hurte_halt" or (e.kind=="native_hurte" and e.ok==false))):break
-  main.player.release_attack();main.player.global_position=home
+  main.player.release_attack() # Keep the actual kill location through R pickup; home restoration is below in auto_potion.
  var region_after: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
  var killed: bool=is_instance_valid(target) and not target.alive and region_after>region_before
  await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
@@ -272,8 +272,11 @@ func run() -> void:
  records=main.source_state.read_native_drop_records()
  if not records.is_empty() and records[0].get("item") is Dictionary:item=records[0].item
  await settle(3);key(KEY_R,true);await process_frame;key(KEY_R,false);await settle(3)
+ var pickup_records: Array=[]
+ for record in records:
+  pickup_records.append({"x":record.get("x"),"y":record.get("y"),"type":record.get("type"),"picked":record.get("picked",false),"same_item":record.get("item") is Dictionary and is_same(record.item,item)})
  var picked: bool=not item.is_empty() and inv.bag.any(func(v):return is_same(v,item)) and inv.bag.size()>before_size
- await done("PASS" if picked else "NOT_READY","" if picked else "actual R pickup did not admit item",{"synthetic_R_via_Input":true,"bag_before":before_size,"bag_after":inv.bag.size(),"same_item_identity":picked,"handwritten_item":false})
+ await done("PASS" if picked else "NOT_READY","" if picked else "actual R pickup did not admit item",{"synthetic_R_via_Input":true,"player_position":str(main.player.global_position),"home_position":str(home),"camera_position":str(main.camera.get_screen_center_position()),"records":pickup_records,"bag_before":before_size,"bag_after":inv.bag.size(),"same_item_identity":picked,"handwritten_item":false})
  begin("equip")
  var equip: Dictionary={"reason":"item_or_interface_absent"}
  if not item.is_empty() and main.has_method("request_native_equip_item"):equip=main.request_native_equip_item(item)

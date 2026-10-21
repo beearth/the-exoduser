@@ -56251,3 +56251,12 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - Source contract and refresh steps: docs/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md. Live web game.html and protected combat/map visual files unchanged.
 
 - INTEG-5 validation: import ERROR0; SND02/05/06, BC01-10, AUDIO01, lobby and field suites pass. BGM/41 harness missing source-root -> unverified; map11 product existing gate/key error retained; E2E NOT_READY, FAIL0/ERROR0 with PC blocked_by preserved. See docs/engine/INTEG5_VALIDATION_20261021.md.
+
+## 2026-10-21 INTEG-5b 검수 보완
+
+| 변경 | 검수·문서 |
+|---|---|
+| test_demo11_47h_e2e.gd: 처치 뒤 조기 home 복귀 제거, R 픽업 위치 읽기 증거 추가 | 기준86864efc 1회·수정후1회. 자연 드랍 실제 R 반입·같은 item 장착 PASS. 전체12 PASS/6 NOT_READY/0 FAIL |
+| BGM 필수 source-root 보완, map11_product 선재 계약 오류 대조 | override14/0, lifecycle51/0(Dummy13 skip), map 동일4 FAIL 및 _bossArena 오류. INTEG5B_VALIDATION_20261021.md 및 외부 INTEG-5b/DONE.txt |
+
+게임 제품·전투·맵·저장 계약 변경 없음. 기존 INTEG5 검수 문서는 보완 문서 링크를 추가하고 과거 관측을 보존한다.

@@ -85,3 +85,7 @@
 PC 대기 계약 PCI-01 / PC_fieldboss_HP_final_readback / boss_source_updateE_prefix / PCI-11 및 상위 bossroom_gate 의존 유지. 신호/HP/완료 플래그 주입0. item_pickup/equip의 NOT_READY도 완화하지 않았다.
 
 최종 제출 SHA와 원격 대조, 로그/원본 결과 JSON, worktree 제거 내역은 `~/exoduser-wt/_out/INTEG-5/DONE.txt`에 기록한다.
+
+## INTEG-5b 보완
+
+BGM 필수 인수 보완, 기준 E2E 비교 및 픽업 하니스 순서 수정 결과는 [INTEG5B_VALIDATION_20261021.md](INTEG5B_VALIDATION_20261021.md)를 따른다. 본 문서의 INTEG-5 최초 관측은 이력으로 보존한다.
