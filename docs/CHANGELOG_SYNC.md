@@ -56249,3 +56249,5 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - Merge lobby-01 b977c5ff then field-BGM db6539b7e; no conflicts.
 - 76 existing files (tests54/products12/port_modules7/tools3) now identify the immutable source snapshot. Product runtime logic unchanged.
 - Source contract and refresh steps: docs/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md. Live web game.html and protected combat/map visual files unchanged.
+
+- INTEG-5 validation: import ERROR0; SND02/05/06, BC01-10, AUDIO01, lobby and field suites pass. BGM/41 harness missing source-root -> unverified; map11 product existing gate/key error retained; E2E NOT_READY, FAIL0/ERROR0 with PC blocked_by preserved. See docs/engine/INTEG5_VALIDATION_20261021.md.
