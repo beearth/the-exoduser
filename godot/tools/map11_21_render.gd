@@ -55,7 +55,7 @@ void fragment(){
  vec3 n=normalize(NORMAL);
  if(has_detail){vec3 t=texture(detail_normal,UV).xyz*2.0-1.0;t.xy*=detail_strength;n=normalize(TANGENT*t.x+BINORMAL*t.y+n*t.z);}
  vec4 color=texture(base_color,UV)*tint;
- // Preserve dark soil pedestal; no ground plane.
+ if(world_height < base_cut_y){discard;} // Offline pedestal removal in all passes.
  // View axes right/up/towards camera; CanvasTexture itself flips green to screen-down.
  float diffuse=max(dot(n,normalize(vec3(-.55,.72,.8))),0.0);
  float rim=pow(1.0-max(n.z,0.0),3.0)*max(dot(n,normalize(vec3(.6,.45,-.2))),0.0);
@@ -64,11 +64,14 @@ void fragment(){
  ALPHA=1.0;
 }
 """
+ var cut_ratios={"tour_cocoon_tree":.065,"skull_pyramid":.12,"tour_torture_wheel":.045,"tour_chained_pillar":.04,"tour_blood_basin":.035,"hell_impaled_corpse":.03,"hell_spike_pit":.02}
+ var cut_y: float=-bounds.size.y*.5+bounds.size.y*float(cut_ratios.get(prefix,.04))
  var materials: Array[ShaderMaterial]=[]
  for mesh in meshes:
   for surface in range(mesh.mesh.get_surface_count()):
    var original: Material=mesh.get_active_material(surface)
    var mat:=ShaderMaterial.new();mat.shader=shader
+   mat.set_shader_parameter("base_cut_y",cut_y)
    mat.set_shader_parameter("depth_span",bounds.size.length())
    if original is BaseMaterial3D:
     mat.set_shader_parameter("base_color",original.albedo_texture)
@@ -104,7 +107,7 @@ void fragment(){
    cropped.save_png(output.path_join("%s_%d_%s.png"%[prefix,i,["diffuse","normal","depth"][pass_]]))
   rows.append({"variant":i,"yaw_degrees":[-20,0,20][i],"size":[target.x,target.y],"foot":[target.x*.5,target.y],"source_crop":[rect.position.x,rect.position.y,rect.size.x,rect.size.y]})
  var file:=FileAccess.open(output.path_join("render.json"),FileAccess.WRITE)
- file.store_string(JSON.stringify({"elevation_degrees":rad_to_deg(atan2(6.0,8.0)),"ground_depth_compression":.6,"projection":"orthographic","normal":"view XYZ encoded .5*n+.5; +Y up/OpenGL; CanvasTexture decodes green to screen-down","variants":rows},"  "))
+ file.store_string(JSON.stringify({"base_cut_ratio":cut_ratios.get(prefix,.04),"base_cut_y":cut_y,"elevation_degrees":rad_to_deg(atan2(6.0,8.0)),"ground_depth_compression":.6,"projection":"orthographic","normal":"view XYZ encoded .5*n+.5; +Y up/OpenGL; CanvasTexture decodes green to screen-down","variants":rows},"  "))
  quit()
 func collect(node: Node,meshes: Array[MeshInstance3D]) -> void:
  if node is MeshInstance3D:meshes.append(node)

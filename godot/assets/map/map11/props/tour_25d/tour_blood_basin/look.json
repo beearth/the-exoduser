@@ -11,13 +11,23 @@
     0.78,
     0.78
   ],
+  "blood_red_gain": [
+    0.42,
+    0.75,
+    0.85
+  ],
+  "blood_red_bias": [
+    0.025,
+    0.008,
+    0.008
+  ],
   "ao_strength": 0.35,
   "exposure": 1.85,
   "foot_luma_threshold": 0.15,
   "foot_lift": 0.11,
   "foot_start": 0.65,
-  "saturation": 0.9,
-  "contrast": 1.04,
+  "saturation": 1.06,
+  "contrast": 1.1,
   "unsharp": [
     0.7,
     25,

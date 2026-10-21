@@ -110,7 +110,11 @@ func measure(space: String,origin: Vector2) -> Dictionary:
  var frame_start: int=Engine.get_process_frames()
  var tick_start: int=Engine.get_physics_frames()
  var sample_frames: Array[float]=[]
+ var focus_lost: Array[int]=[]
+ DisplayServer.window_move_to_foreground()
+ for i in range(30):await process_frame
  var sampler: Callable=func():
+  if not DisplayServer.window_is_focused():focus_lost.append(Engine.get_process_frames())
   var now: int=Time.get_ticks_usec()
   sample_frames.append(float(now)/1000.0)
  process_frame.connect(sampler)
@@ -130,8 +134,9 @@ func measure(space: String,origin: Vector2) -> Dictionary:
  var elapsed: int=Time.get_ticks_usec()-start
  for i in range(1,sample_frames.size()):intervals.append(sample_frames[i]-sample_frames[i-1])
  intervals.sort()
+ check(focus_lost.is_empty(),space+" window focused throughout sample")
  check(input_ok and corners[0].distance_to(corners[1])>200.0,space+" actual Player walking")
- return ({"space":space,"input_accepted":input_ok,"path_corners":str(corners),"walk_speed":main.player.get("_movement_speed"),"ticks":Engine.get_physics_frames()-tick_start,"wall_us":elapsed,"render_frames":Engine.get_process_frames()-frame_start,"mean_fps":(Engine.get_process_frames()-frame_start)*1000000.0/elapsed,"p95_ms":intervals[int(intervals.size()*.95)],"p99_ms":intervals[int(intervals.size()*.99)],"draw_calls":Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),"objects":Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME)})
+ return ({"focus_lost_frames":focus_lost.size(),"space":space,"input_accepted":input_ok,"path_corners":str(corners),"walk_speed":main.player.get("_movement_speed"),"ticks":Engine.get_physics_frames()-tick_start,"wall_us":elapsed,"render_frames":Engine.get_process_frames()-frame_start,"mean_fps":(Engine.get_process_frames()-frame_start)*1000000.0/elapsed,"p95_ms":intervals[int(intervals.size()*.95)],"p99_ms":intervals[int(intervals.size()*.99)],"draw_calls":Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),"objects":Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME)})
 
 # Setup/capture only. Never enumerate nodes or reflect methods in the tick path.
 func diagnose(view: Node) -> Dictionary:

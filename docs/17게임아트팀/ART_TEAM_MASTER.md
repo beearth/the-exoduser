@@ -336,3 +336,10 @@ MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이�
 
 
 최종 단회 검수: **84 checks / 0 failures**, field p95 **7.594ms** / arena **7.146ms**, 각각≤8.33ms PASS. field p99 10.878ms / arena p99 8.196ms; 실보행·provider route·15원형충돌·노멀·bbox 틈0·Y/4·관문 PASS. 재측정0. 기존81277 공존 총최대2. 최종 캡처·벤치 SCRIPT/Parse/ERROR0(기존camera physics 경고만). 초기 배치진단/빈crop 오류는 수정 이력 로그에 보존했으며 최종PASS와 구분. torch 실물은 벽부착형 원화여서 단독 지지대 설득력도 RETOUCH 항목이다.
+
+
+### MAP11-21b (2026-10-21)
+
+지옥 관광 6무리/17소품, 대표1.3배·GLB offline 받침 높이절단·채도1.06/대비1.10·대야 순적색 감쇠. 원본/PC보존, PNG runtime. [설계서 §20.5](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#205-map11-21b--관광-무리받침-제거-보정-2026-10-21)의 좌표/수치/검수 계약을 따른다.
+
+최종 단회96checks/0fail, focus이탈0, p95 field7.344/arena7.003ms. VISUAL VERDICT: RETOUCH(고치/해골 바닥판 제거·무리 개선, 구덩이 평면림/원GLB 빈면·외곽가림 잔여). 비교6장면+1x·발치2장 _out/MAP11-21b/captures/.

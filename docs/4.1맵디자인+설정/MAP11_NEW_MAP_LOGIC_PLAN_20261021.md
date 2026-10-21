@@ -751,3 +751,70 @@ MAP PRODUCTION REPORT (§23)
 
 
 최종 단회 검수: **84 checks / 0 failures**, field p95 **7.594ms** / arena **7.146ms**, 각각≤8.33ms PASS. field p99 10.878ms / arena p99 8.196ms; 실보행·provider route·15원형충돌·노멀·bbox 틈0·Y/4·관문 PASS. 재측정0. 기존81277 공존 총최대2. 최종 캡처·벤치 SCRIPT/Parse/ERROR0(기존camera physics 경고만). 초기 배치진단/빈crop 오류는 수정 이력 로그에 보존했으며 최종PASS와 구분. torch 실물은 벽부착형 원화여서 단독 지지대 설득력도 RETOUCH 항목이다.
+
+
+### 20.5 MAP11-21b — 관광 무리·받침 제거 보정 (2026-10-21)
+
+기준 `129281f1dad07bc4a92fbdf306054cc488c192af`, 전용 `codex/map11-21b-20261021`. §20.1~20.4의 15배치/받침보존/sat.90/contrast1.04/이전 좌표는 기준 후보 이력이며 이 절이 현행이다. R은 소스 읽기만, Godot 실행·import는 MAP11-21b worktree/격리 user dir만 사용한다.
+
+| 항목 | 현행 계약 |
+|---|---|
+| 무리 | 입구 시체4 / 고치3 / 바퀴2+사슬2 / 해골2 / 피대야+해골2 / 구덩이+사슬2 = 17소품. 대표 고치·바퀴·해골·대야 기존 높이×1.3. 추가 해골145/사슬255 |
+| 바닥판 제거 | offline shader world_height < -bounds.size.y×.5 + bounds.size.y×cut_ratio 에서 diffuse/normal/depth 모두 discard. GLB 원본 byte 보존. cocoon.065/skull.12/wheel.045/pillar.04/basin.035/corpse.03/pit.02. 원판을 제거하고 높이 위 뿌리·뼈만 잔존. 재crop·foot/hull·contactAO21 재생성 |
+| 톤 | saturation1.06/contrast1.10/pivot.25/ceiling.94. exposure1.85/normalXY1.35/AO.35/detailnormal source×.35/median3+blur.28/unsharp(.7,25,4) 유지 |
+| 피대야 | RGB red>green×1.8 및 red>blue×1.6 픽셀만 RGB×(.42,.75,.85)+(.025,.008,.008), 순색 빨강 감쇠. source topology/UV 빈면 복구 주장은 아님 |
+| 발치·충돌 | 기존 원형 발치 반경 유지, 추가2개44/45. 모든 ROWS는 시각·provider 공통, Y/4 정렬·opaque bbox 하단 중앙·접촉AO alpha.58 유지. route/anchor clearance96/arena R1700 보존 |
+| 빛 | 장면별6 pool의 대표 무리 인접 좌표 조정. 기존8+6=14등록/활성pool4+player1 cap 유지. 아래 SCENES 원문이 좌표·색·반경·에너지 SSOT, 각pulse.025 |
+| 런타임 | PNG diffuse/normal/contact만. 3D runtime0·tick 목록API/ResourceLoader 추가0·PC전투/Main/Player/UI 개발상태문구 변경0 |
+| 실행 | EXODUSER-map11-21b-Isolated-20261021, project.godot 실행용 변경은 원byte 복원 후 commit 제외. PID81277 조작0 |
+| 캡처 | _out/MAP11-21b/captures/. 기준129281f1의 기존 after_01~06을 before로 복사, 동일6카메라 after1600×900. compare는 양측 원배율3200×900, 1x320×270 각쌍은640×270. review_1600x900은 50% 축소 개요임을 표시. 발치 after_foot_04/11_1x 2장. 실시간광원/HUD/RNG 차이 잔존 |
+
+| id | asset | yaw variant | foot | height | radius | scene |
+|---|---|---|---|---|---|---|
+| 0 | hell_impaled_corpse | 0 | -650,3450 | 245.0 | 27.0 | 0 |
+| 1 | hell_impaled_corpse | 1 | -400,3300 | 230.0 | 27.0 | 0 |
+| 2 | hell_impaled_corpse | 2 | -820,3200 | 250.0 | 27.0 | 0 |
+| 3 | hell_impaled_corpse | 0 | -510,3060 | 220.0 | 25.0 | 0 |
+| 4 | tour_cocoon_tree | 0 | -3210,1450 | 442.0 | 62.0 | 1 |
+| 5 | tour_cocoon_tree | 1 | -3440,1240 | 409.5 | 58.0 | 1 |
+| 6 | tour_cocoon_tree | 2 | -3220,1010 | 422.5 | 60.0 | 1 |
+| 7 | tour_torture_wheel | 0 | -3850,-800 | 351.0 | 65.0 | 2 |
+| 8 | tour_torture_wheel | 2 | -3680,-1130 | 318.5 | 58.0 | 2 |
+| 9 | tour_chained_pillar | 0 | -3930,-1260 | 300.0 | 48.0 | 2 |
+| 10 | tour_chained_pillar | 1 | -3700,-650 | 275.0 | 45.0 | 2 |
+| 11 | skull_pyramid | 0 | -1500,-2370 | 260.0 | 72.0 | 3 |
+| 12 | skull_pyramid | 2 | -1740,-2250 | 247.0 | 68.0 | 3 |
+| 13 | tour_blood_basin | 1 | -600,-2390 | 221.0 | 75.0 | 4 |
+| 14 | hell_spike_pit | 1 | -530,-3770 | 200.0 | 105.0 | 5 |
+| 15 | skull_pyramid | 1 | -810,-2520 | 145.0 | 44.0 | 4 |
+| 16 | tour_chained_pillar | 2 | -760,-3920 | 255.0 | 45.0 | 5 |
+
+장면별 SCENES (GDScript 원문; 값 단일 계약):
+```gdscript
+[
+ {"id":"01_entrance","name":"숲 입구","camera":Vector2(-200,3290),"light":Vector2(-560,3240),"radius":930.0,"color":Color(1.0,.46,.20),"energy":.85,"source":"횃불"},
+ {"id":"02_hanging_forest","name":"매달린 숲","camera":Vector2(-3070,1250),"light":Vector2(-3290,1250),"radius":1000.0,"color":Color(.92,.36,.19),"energy":.88,"source":"생체 발광"},
+ {"id":"03_execution","name":"처형장 공터","camera":Vector2(-3450,-800),"light":Vector2(-3770,-990),"radius":900.0,"color":Color(1.0,.42,.16),"energy":1.0,"source":"횃불"},
+ {"id":"04_skull_fork","name":"해골 길목","camera":Vector2(-1350,-1870),"light":Vector2(-1570,-2400),"radius":740.0,"color":Color(1.0,.43,.20),"energy":.90,"source":"뼈 제단"},
+ {"id":"05_heart_altar","name":"심장 제단","camera":Vector2(-440,-2190),"light":Vector2(-660,-2490),"radius":610.0,"color":Color(1.0,.25,.13),"energy":.95,"source":"심장 제단"},
+ {"id":"06_boss_entrance","name":"보스룸 입구","camera":Vector2(-160,-3570),"light":Vector2(-650,-3830),"radius":650.0,"color":Color(1.0,.38,.15),"energy":.86,"source":"관문 횃불"}]
+```
+
+
+#### 최종 검수 / MAP PRODUCTION REPORT
+
+| 구역 | 보고 |
+|---|---|
+| STAGE / MASTER | CH1-1 관광코스 보정. 기존 silhouette/regions/main route/side spaces 보존. GATE6 무리→4 접지→8 실카메라→TECH |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes 변경0 |
+| LARGE / MEDIUM | 기존 외곽 composite/overlap/connections 보존. 소품17개를 4/3/4/2/2/2 무리로 연결. 고치 가지 중첩·깊이 차이 확보, 같은 source 반복은 잔존 |
+| GROUND | 고치·해골의 둥근 털뭉치 바닥판 제거 확인. 실제 발치04/11 1x에서 뿌리/뼈·접촉AO로 바닥 접합. flat patches/scatter0 유지. 구덩이의 넓은 평면 가장자리·원GLB 빈면 잔존 |
+| PLAYABLE | 기존 arenas/travel/breathing/threat 유지. provider route/anchor clearance96 및17 발치/관문/실제 보행 검수 통과. 밀집전투 미검수 |
+| LANDMARK | 기존 primary heart 유지; 6 secondary 장면 대표소품1.3배/주변 동반소품·국소광 |
+| CAMERA QA | START/입구4(외곽 가림 일부), EARLY/고치3, SIDE L/바퀴+사슬4(1개 외곽 가림), LANDMARK/해골2·심장대야+해골2, EXIT/구덩이+사슬2. 6곳 before/after 및1x 확보. arena 신규 캡처 없음 |
+| TECH QA | 단회96 checks/0 failures. field p95 7.344ms/p99 7.861ms/draw133, arena p95 7.003ms/p99 7.495ms/draw136. 각 p95≤8.33ms PASS, 전 sample frame focus_lost0. 1920×1080/macOS GL/60Hz/240cap. 4방향×150틱 입력; focus settle30 render frames가 wall/tick 집계에 포함돼610/609 ticks, p95는 sampler 연결 후 프레임 간격만. field/arena 각1회, 재측정0 |
+| 오류·환경 | 최종 import/render/capture/perf SCRIPT/Parse/ERROR 로그 검사. 기존 Camera2D physics warning 유지. PID81277 조작0. 성능 측정 시 기존81277+자체bench만. 자체 capture 종료 경계에서 benchmark를 시작했으므로 전체 실행의 최대 동시 수를 연속감시로 입증하지 않음. web pageerror/404=N/A native, floor seam원본변경0, loading/normal/foot/Y-depth PASS |
+| FILES | tour_25d PNG/metadata/hulls/masks, tour_layout, offline render/grade, capture/benchmark/focus evidence, 설계·ART·CHANGELOG. 타인WIP/PC core변경0 |
+| GIT | 기준129281f1 자식의 전용branch. 경로지정add·정상hook commit/push·remoteSHA 대조 후 worktree 제거, SHA는 _out/MAP11-21b/DONE.txt. main push/force/reset/rebase/배포0 |
+| VISUAL VERDICT | **RETOUCH**. 무리 구성과 고치·해골 바닥판 제거는 개선 확인. 구덩이의 평평한 림·대야/해골 일부 빈면·원GLB 거친 세부와 가림은 잔여, 완성품 PASS 아님 |
+| NEXT PASS | 남은 GLB UV/빈면·구덩이 접합과 외곽 가림 개선 필요. 이번 요청 외 신규생성/후속백로그 착수0 |

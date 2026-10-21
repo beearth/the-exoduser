@@ -55574,3 +55574,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 지옥 관광6장면15소품+6광원·기존횃불3, 평면bone/blood/cracked패치와넓은scatter 제거. 공통좌표SSOT를field원형충돌에연결.
 - 설계서§20·ART_TEAM_MASTER 좌표/수치/원본출처·검수·RETOUCH 경계 동기화. 전체docs관련검색은 _out/MAP11-21/docs-search.txt.
 - Main/Player/PC전투보호코드0, R읽기만, 격리저장·기존81277보존. 성능단회와캡처결과는 DONE.txt/perf.json.
+
+
+## 2026-10-21 MAP11-21b
+- 기준129281f1 관광코스 보정: 6무리17소품/대표1.3배, offline 바닥판 높이절단·diffuse/normal/contact 재생성, sat1.06/contrast1.10·대야 붉은 재질 감쇠.
+- tour_layout 좌표/광원·contact hull/manifest·격리 capture/단회 focused benchmark 동기화. 설계서 §20.5와 ART 기록.

@@ -2,7 +2,7 @@ extends "res://tests/capture_map11_hell_props.gd"
 ## Single final related verification + one 600-tick benchmark per space.
 const Tour=preload("res://scripts/maps/map11/tour_layout.gd")
 func _run() -> void:
- if OS.get_user_data_dir().get_file()!="EXODUSER-map11-21-Isolated-20261021":quit(2);return
+ if OS.get_user_data_dir().get_file()!="EXODUSER-map11-21b-Isolated-20261021":quit(2);return
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
  if output.is_empty():quit(3);return
@@ -15,7 +15,7 @@ func _run() -> void:
  var detail: Node=scene.get_node("MAP11Detail")
  var provider=preload("res://scripts/maps/map11/field_provider.gd").new()
  check(provider.compile(preload("res://scripts/maps/map11/field_recipe.gd").new()),"all authored route sweeps and anchors clear")
- check(detail.hell_props.size()==15,"15 standing props across six scenes")
+ check(detail.hell_props.size()==17,"17 standing props across six scenes")
  var evidence_rows: Array=[]
  for i in range(detail.hell_props.size()):
   var prop: Node2D=detail.hell_props[i]

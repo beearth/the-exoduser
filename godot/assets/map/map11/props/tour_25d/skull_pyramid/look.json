@@ -16,8 +16,8 @@
   "foot_luma_threshold": 0.15,
   "foot_lift": 0.11,
   "foot_start": 0.65,
-  "saturation": 0.9,
-  "contrast": 1.04,
+  "saturation": 1.06,
+  "contrast": 1.1,
   "unsharp": [
     0.7,
     25,

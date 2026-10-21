@@ -23,7 +23,7 @@ func capture(id: String,prop: Node2D) -> Image:
  metrics[id]={"crop":[rect.position.x,rect.position.y,rect.size.x,rect.size.y],"foot":str(point)}
  return image
 func run() -> void:
- if OS.get_user_data_dir().get_file()!="EXODUSER-map11-21-Isolated-20261021":quit(2);return
+ if OS.get_user_data_dir().get_file()!="EXODUSER-map11-21b-Isolated-20261021":quit(2);return
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
   if arg.begins_with("--tag="):tag=arg.trim_prefix("--tag=")
@@ -38,16 +38,13 @@ func run() -> void:
  var scene: Node=main.world.get_node("Map11ProductScene")
  var detail: Node=scene.get_node("MAP11Detail")
  var prop: Node2D=detail.hell_props[0]
- await settle(Vector2(-850,-2400));await capture("field",detail.hell_props[13])
- await settle(Vector2(-3150,-1050));await capture("west",detail.hell_props[7])
- await settle(Vector2(1570,-1680));await capture("east",detail.hell_props[12])
  for site in preload("res://scripts/maps/map11/tour_layout.gd").SCENES:
   var target: Node2D
   for i in range(detail.hell_props.size()):
    if preload("res://scripts/maps/map11/tour_layout.gd").ROWS[i][5]==preload("res://scripts/maps/map11/tour_layout.gd").SCENES.find(site):
     target=detail.hell_props[i];break
   await settle(site.camera);await capture(site.id,target)
- for index in [7,13]:
+ for index in [4,11]:
   var target: Node2D=detail.hell_props[index]
   await settle(target.global_position+Vector2(0,210));await capture("foot_%02d"%index,target)
  var file:=FileAccess.open(output.path_join(tag+"_verification.json"),FileAccess.WRITE);file.store_string(JSON.stringify(metrics,"  "))

@@ -2,56 +2,56 @@
   {
     "key": "res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_0_diffuse.png",
     "size": [
-      218,
+      128,
       490
     ],
     "bbox": [
       0,
       0,
-      218,
+      128,
       490
     ],
     "foot": [
-      109.0,
+      64.0,
       490
     ],
-    "sha256": "a171a05bb74832255b24d1c2b75e1d46fc6ddcc4be442965a6679d80c546f25c"
+    "sha256": "330950e5a9aede5e0e434483302cb427d4bcfd3f3ac1d0a69bbaa5d4ee42e4dd"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_1_diffuse.png",
     "size": [
-      224,
+      160,
       490
     ],
     "bbox": [
       0,
       0,
-      224,
+      160,
       490
     ],
     "foot": [
-      112.0,
+      80.0,
       490
     ],
-    "sha256": "65aabfd7189220a36ec8ebfd15bbe768d622ace80bb34b2bc132230926a77dfa"
+    "sha256": "c45b9e7050ab5539f142bff24370fc959c1144d6384abbe0863b0b5f01d1195c"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_2_diffuse.png",
     "size": [
-      253,
+      191,
       490
     ],
     "bbox": [
       0,
       0,
-      253,
+      191,
       490
     ],
     "foot": [
-      126.5,
+      95.5,
       490
     ],
-    "sha256": "147c09b44b4b674b72bdd607a9332d4ce0324b255b5f8fd9a8bb3224fb711de4"
+    "sha256": "0b9fb9a56470bbb524104d473e467c9c1b1f945e7a7391448fab681047de43ca"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_0_diffuse.png",
@@ -69,7 +69,7 @@
       227.5,
       400
     ],
-    "sha256": "32408f861eedbbe8cde47c1984a7d916bd76c9e4a577adbeea4fa1b3b39cfac7"
+    "sha256": "f950fc5fdd140017400df79003ae4b5d4f375a09349f97595b13e2ef5deeb608"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_1_diffuse.png",
@@ -87,7 +87,7 @@
       232.5,
       400
     ],
-    "sha256": "89708a0d538acd021ecc498b634653af260e70ea8fd4a783afa7ca24ba7c33ab"
+    "sha256": "54645321e2876a3c6b60d68e3a18fc844bbe21e00efe30fd93ffc7b93f5cbb15"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_2_diffuse.png",
@@ -105,276 +105,276 @@
       226.0,
       400
     ],
-    "sha256": "3b643de096eb881d2fda0452a412bf97841350e2d5972b8d30969486cd1a8329"
+    "sha256": "420d86e93c97ed00de3f57a61a7f0ee0eb15e731e67c5bd70f83c24b5a6e5243"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_diffuse.png",
     "size": [
-      405,
+      390,
       400
     ],
     "bbox": [
       0,
       0,
-      405,
+      390,
       400
     ],
     "foot": [
-      202.5,
+      195.0,
       400
     ],
-    "sha256": "bbcfd1fa5224945ec8a40ad4baffc92f4bd55c1c24a0e0fbab77f03cd7162fa4"
+    "sha256": "0a2d36215cad0b305fbf4207dcbd6803ef71a77c0d90b431722bbaafcc5d4e22"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_diffuse.png",
     "size": [
-      408,
+      396,
       400
     ],
     "bbox": [
       0,
       0,
-      408,
+      396,
       400
     ],
     "foot": [
-      204.0,
+      198.0,
       400
     ],
-    "sha256": "dc1c5625bc4f7fcd223c151f582943e26893e233f40be3655440a60785156c66"
+    "sha256": "8ff88662789fd72a013afa476253516505a8e16f6840cb338ff7767cc19371cf"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_diffuse.png",
     "size": [
-      425,
+      375,
       400
     ],
     "bbox": [
       0,
       0,
-      425,
+      375,
       400
     ],
     "foot": [
-      212.5,
+      187.5,
       400
     ],
-    "sha256": "c85bcd1be07b73d1684ee15b826dbbfba47cdab0219cc91766fe13ab3050cb80"
+    "sha256": "c2c8d6517c75a389580e0f1eac083226118dac2e4d4a7af3e4707efdee05b35b"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_0_diffuse.png",
     "size": [
-      346,
+      351,
       340
     ],
     "bbox": [
       0,
       0,
-      346,
+      351,
       340
     ],
     "foot": [
-      173.0,
+      175.5,
       340
     ],
-    "sha256": "8e67ddb417527f3ae840a5dc0cc90ed4a29d9091b6db00fd186095b2a66e184d"
+    "sha256": "00c4f5e3cb31963c9783d581c647fa28ecebfed38db00739f6084ca55c30a50a"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_1_diffuse.png",
     "size": [
-      350,
+      355,
       340
     ],
     "bbox": [
       0,
       0,
-      350,
+      355,
       340
     ],
     "foot": [
-      175.0,
+      177.5,
       340
     ],
-    "sha256": "3ccbec2a392c7f545730f0686e7d7051c013c103d5433429ba3858d5ae5e3ff4"
+    "sha256": "7b6116e9459941176ad7549d3e704db4c1235d8739c7924971373d1535c0810a"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_2_diffuse.png",
     "size": [
-      345,
+      349,
       340
     ],
     "bbox": [
       0,
       0,
-      345,
+      349,
       340
     ],
     "foot": [
-      172.5,
+      174.5,
       340
     ],
-    "sha256": "a7785bab2f83a52308012c09cd5dcff59453fb24d31605ab28ce56830d194837"
+    "sha256": "70eaea847b6ae03fffae535e6855a82175ea19d3347ca8f9e51625229e4b4bed"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_0_diffuse.png",
     "size": [
-      379,
+      311,
       600
     ],
     "bbox": [
       0,
       0,
-      379,
+      311,
       600
     ],
     "foot": [
-      189.5,
+      155.5,
       600
     ],
-    "sha256": "bd88c5e00125a2d304c5955c43f0ddd5df5159575cfb4725a8ec64a86c9b3e30"
+    "sha256": "4dd99e71b2c8565d038fb3e62f338056cf39205e534128268c27b865e17b678e"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_1_diffuse.png",
     "size": [
-      371,
+      332,
       600
     ],
     "bbox": [
       0,
       0,
-      371,
+      332,
       600
     ],
     "foot": [
-      185.5,
+      166.0,
       600
     ],
-    "sha256": "c6cebda9837391256b5ad5fd46a2d568ad5066dcbb550e6a7c0cacc7ea69c386"
+    "sha256": "ed0cbc44855d86c35927be1c537867dc296ef669affd6e73477c025bed4bf233"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_diffuse.png",
     "size": [
-      343,
+      323,
       600
     ],
     "bbox": [
       0,
       0,
-      343,
+      323,
       600
     ],
     "foot": [
-      171.5,
+      161.5,
       600
     ],
-    "sha256": "ff9947d4009142276092758cbd3fba8cbb8f65fc4edee15f2d18d6eb8a74d850"
+    "sha256": "289ff7df2e57d6e16a5ebc65ec6cf0542c146c386e955cc642533414a338ca67"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_0_diffuse.png",
     "size": [
-      578,
+      639,
       680
     ],
     "bbox": [
       0,
       0,
-      578,
+      639,
       680
     ],
     "foot": [
-      289.0,
+      319.5,
       680
     ],
-    "sha256": "3bc961abd9449e652f7927f9588412f9c17492b31160da7cdc19dd98bdf17e1a"
+    "sha256": "f8759901a89aaef36a6de03e8aa78281e5db4efe29ffd99a1160084d355479b2"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_1_diffuse.png",
     "size": [
-      622,
+      688,
       680
     ],
     "bbox": [
       0,
       0,
-      622,
+      688,
       680
     ],
     "foot": [
-      311.0,
+      344.0,
       680
     ],
-    "sha256": "9bf27075c41ae9236e21077bc84f0b2486598c9272c0cd8bf7165048c9cc6de7"
+    "sha256": "9f7ecc05db2d5e8375e10355faed3661df8719c2a5fb496914af7ad6697a60b1"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_2_diffuse.png",
     "size": [
-      562,
+      615,
       680
     ],
     "bbox": [
       0,
       0,
-      562,
+      615,
       680
     ],
     "foot": [
-      281.0,
+      307.5,
       680
     ],
-    "sha256": "a51e376091818139b6e25ba71056500f7e07351f6563c15b9a64e5528905fcd9"
+    "sha256": "75bd1bb789a8b38f2595b7e1d5a79c2de484dc1ef695f6d50029878d6cec8a91"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_0_diffuse.png",
     "size": [
-      336,
+      365,
       540
     ],
     "bbox": [
       0,
       0,
-      336,
+      365,
       540
     ],
     "foot": [
-      168.0,
+      182.5,
       540
     ],
-    "sha256": "e3a06eedae269576932235216ef1f719095caeeacade0a9021788872783b08e4"
+    "sha256": "ec73cd90b1f03fd5d714c262dba28716a9b80e8b7a0d8550c7dcc752f62a6c05"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_1_diffuse.png",
     "size": [
-      362,
+      394,
       540
     ],
     "bbox": [
       0,
       0,
-      362,
+      394,
       540
     ],
     "foot": [
-      181.0,
+      197.0,
       540
     ],
-    "sha256": "8d8034283b2b1cd26828ec74839a94be4450223583d68ec8394865134f04363a"
+    "sha256": "c6b60755c86258d52b2b9202c0dc8ef290da960c32f1b2a952c47b0e2183a4ad"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_2_diffuse.png",
     "size": [
-      338,
+      369,
       540
     ],
     "bbox": [
       0,
       0,
-      338,
+      369,
       540
     ],
     "foot": [
-      169.0,
+      184.5,
       540
     ],
-    "sha256": "62c4b6c9298ffd62113f0b4258fac48120a9b15d530c4ac3a3afa3e32066c9a6"
+    "sha256": "268845a84c0230c770940c9d23c17fe02026d473a074a2b9fb2dba12faafc43c"
   }
 ]

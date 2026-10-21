@@ -1,4 +1,6 @@
 {
+  "base_cut_ratio": 0.02,
+  "base_cut_y": -0.40943567276001,
   "elevation_degrees": 36.869897645844,
   "ground_depth_compression": 0.6,
   "normal": "view XYZ encoded .5*n+.5; +Y up/OpenGL; CanvasTexture decodes green to screen-down",
