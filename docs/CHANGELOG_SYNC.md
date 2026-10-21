@@ -56178,3 +56178,8 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 ## 2026-10-21 MAP11-22b 보스룸 2차 보정
 - ce5bec02 계열: dark flesh/blood 전투면, 기존32 root 의식 링, legacy 반복8개/AO 제거 및 제단 cull 현재 bounds 정정, finale PNG LOD−.6, 짧은 arena 입장 카메라. PC core/provider/save/신규이미지0.
 - 설계·전체 수치·4컷/1x·범위표본·단회 성능·RETOUCH 한계: `4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §23. 실제 SHA/p95/captures/정리는 외부 MAP11-22b/DONE.txt.
+
+
+## 2026-10-21 MAP11-22c
+- arena_shoulder에 R1470 혈관 링·R960/590 얕은 홈·저주파 얼룩·8.38초 국소 red≤3.5% 맥동을 기존 relief와 곱합성. 신규 draw/이미지/3D/PC core/save 변경0.
+- 설계서 §24에 파라미터·캡처 출처·가독성 제한·MAP PRODUCTION REPORT 기록. 시각 RETOUCH, 단회 성능은 해당 절과 외부 DONE.txt 참조.

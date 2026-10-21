@@ -1123,6 +1123,8 @@ MAP PRODUCTION REPORT
 Extra stage literal1x: after_finale_stage_1x.png = after_04_finale.png rect(340,0,970,540). Three exact-camera pairs: compare_01_entry/02_center/03_edge.png and each _1x.png; no resize/color correction.
 
 
+> **MAP11-22c 바닥 현행은 §24 우선.** §23의 바닥 무맥동 설명은 이전 이력이며 외곽·입장 구도는 유지한다.
+
 ## 23. MAP11-22b — 보스룸 혈색·의식 테두리·입장 구도 2차 보정
 
 기준 `ce5bec02a38ac54c74f6c5bc3467bf60f3799bb1` (`integ3 1ba728fa` 계열), 전용 `codex/map11-22b-20261021`. R 읽기 전용, MAP11-22b sparse worktree에서만 제작. §22의 19개 PNG/normal 무대·발치 원·광원·R1700/anchors/provider·PC core는 그대로다. 신규 이미지/3D 로딩/공용 전투·저장 수정0.
@@ -1179,3 +1181,57 @@ Extra stage literal1x: after_finale_stage_1x.png = after_04_finale.png rect(340,
 | 캡처 | 최종after21검사/0실패(4컷+통상입구+범위2컷, 각1600×900/1x). before4컷12검사/0실패. 원본+4쌍 나란히/1x·동배율입구·무대확대 보존 |
 | 로그 | before.log/after-reviewed.log/perf.log에 SCRIPT/Parse/ERROR0. 기존 Camera2D physics interpolation warning은 유지. perf.json과 captures receipt 보존 |
 | 범위 | 벽시계 frame interval이며 GPU timestamp/실전 전투/dense combat/Windows 검증 아님. 재측정0 |
+
+
+## 24. MAP11-22c — 전투 바닥 의식의 원 3차
+
+기준 a31e73deafe48fb92b1ffdc2f1d22a88bd555fc9, 전용 codex/map11-22c-20261021. 신규 이미지 생성 없이 기존 SkinFloor의 arena_shoulder 셰이더 안에서 곱셈 합성한다. 기존 5tap relief·R2480 시각 mesh·R1700 충돌·외곽 뿌리32·북 finale·카메라·광원은 유지한다. 별도 draw/texture/노드/프레임 할당 추가0. TIME만 맥동에 사용한다.
+
+| id / 파라미터 | 현행 수치·공식 | 적용·의도 |
+|---|---|---|
+| ritual_radius / ritual_strength | 1470 / .62 | r=length(point), a=atan(y,x), warp=26sin(7a+.4)+14sin(13a−1.2). width=38+14sin(5a+.7)+8sin(11a), 16~60. ring=1−smoothstep(.45width,width+18,abs(r−1470−warp)) |
+| 접지 / vessel | contact=1−smoothstep(width,width+65,d). RGB×[1−(.36,.64,.59)×max(ring,.82branch)×.62]×(1−.09contact) | 기존 relief와 곱해 조직이 바닥에 붙음. 높이/충돌/스티커 quad0 |
+| 안쪽 가지 | axis=abs(sin(3.5a+.30sin(.008r))); branch=(1−smoothstep(.018,.080,axis))×smoothstep(1040,1290,r)×(1−smoothstep(1460,1550,r)) | 7방향 가는 혈관. 중앙1040 안쪽 branch0 |
+| groove_strength / 얕은 홈2 | .26; 반경960/590, warp 각각 .65/.40. d=min(abs(r−960−.65warp),abs(r−590−.40warp)); groove=(1−smoothstep(3,16,d))×breaks | breaks=.55+.45smoothstep(−.6,.6,sin(9a+.003r)). RGB×[1−(.23,.60,.53)×groove×.26]. 가늘고 저대비인 붉은 살 갈라짐 |
+| 홈 가장자리 | lip=(1−smoothstep(2,7,abs(d−13)))×breaks; RGB×(1+.035lip) | 발광 없이 얕은 입술 relief |
+| 큰 얼룩 | p=point/470; m=sin(px+.37py)sin(.83py−.29px); RGB×[1+(.065m−.025)×smoothstep(280,1050,r)] | 중심R280 무늬 추가0, 바깥쪽 저주파 명암−9~+4%. 마른 피·조직 명암 |
+| pulse_strength | .035; pulse=(.5+.5sin(.75TIME))×smoothstep(.55,.90,sin(3a+.8)); red×(1+vessel×pulse×.035) | 주기 약8.38초, 일부 링 red 최대3.5%, 중앙 맥동0. GDScript update/할당0 |
+
+### 캡처 및 가독성
+
+`~/exoduser-wt/_out/MAP11-22c/captures/`: before는 **a31e73de 최종22b after 원본을 byte 동일 복사**, 재촬영이 아니다. after는22c 실제 Main 렌더. entry/center/edge/finale 4쌍 1600×900 및 rect(480,150,640,600) literal1x, compare는 무보정 좌우 결합. 시간·광원·랜덤 초기스탯 차이가 있어 픽셀 회귀 판정은 아니다. ritual_overview는 검수 전용 zoom.20 조망. 게임 UI에 개발 상태 문구 추가0.
+
+silhouette_source_idle_no_ai는 기존 boss atlas의414×620 idle 셀, source 높이620.4, foot(220,−80), 기존 enemy rim(.62,.20,.16,.30)을 테스트에서만 표시한다. 실제 player는 제품 그대로. 보스/플레이어 경계는 읽히지만 보스 검은 깃털·플레이어 검은 의상 전체가 바닥보다 밝다는 판정은 불충족. 보스 AI·실제 telegraph/dense combat 검수가 아니다. preview 색상/범위 표본도 실제 전투가 아니다.
+
+### MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 boss R1700, 남입장→중앙 combat void→북무대; side spaces·silhouette·route 보존 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH 기존 부패숲 보존, major holes 이번 수정0 |
+| LARGE | 기존 PNG19·32 roots 재사용, 신규 assets/composites/overlap 변경0; 기존 반복 잔여 |
+| MEDIUM | 기존 외곽 연결 유지, 새 filler0·hole 수정0 |
+| GROUND | 기존 접지/그림자 유지, 저대비 마른피·혈관1470·홈960/590를 동일 바닥 재질에 곱합성 |
+| PLAYABLE | R1700·회피·이동·탄 공간·여백 불변, 중앙280 무늬/펄스0. 실루엣 경계 확인, 확실한 밝기 우위는 미달 |
+| LANDMARK | primary 북혈조/secondary 서해골·동처형/tertiary 사슬 보존 |
+| CAMERA QA | START entry/ARENA center/SIDE L edge/LANDMARK finale 및1x 확인. EARLY/SIDE R/LATE/EXIT 별도 종주0. overview에서 동심원 확인 |
+| TECH QA | 아래 단회 arena 결과 참조. route/collision은 기존 관련 검사, pageerror/404 native N/A. 새 texture seam/loading0, runtime3D0. tick 목록 API·ResourceLoader0 |
+| FILES | stage-owned arena_shoulder.gdshader + capture/benchmark22c·본 절·성능문서·CHANGELOG. concurrent/unrelated0 |
+| GIT | 전용 branch 정상 hook commit/push·원격 SHA 확인 후 worktree 제거, 실제 SHA는 외부 DONE. main merge/push/deploy0 |
+| VISUAL VERDICT | **RETOUCH** — 원의 구조와 중앙 저대비 가독성은 확인. 외곽 굵은 혈관은 기존 뿌리에 일부 묻힘. 검은 캐릭터/보스 전체의 확실한 밝기 우위 미달, 실제 보스 전투는 PC gate 대기 |
+| NEXT PASS | actor 승인 범위에서 검은 의상·깃털의 밝기 분리와 실제 보스 전조/탄/패링 중첩 검수. 외곽 혈관 접합 국소 리터치 |
+
+실행은 격리 user dir EXODUSER-map11-22c-Isolated-20261021. project.godot은 원래 byte로 복구하고 commit 제외. PID81277 보존, Godot 순차실행/동시≤2. 검사 준비부에서 기본 uniform get_shader_parameter가 Nil을 반환해 중단된 로그는 perf-setup-error.log에 보존; **측정 시작 전 오류로 표본0**. 해당 구현값 복제 검사를 제거한 뒤 관련 검사·명목 arena 표본을 1회 실행하며 재측정하지 않는다.
+
+
+### MAP11-22c 단회 결과 — 유효 성능 미검증
+
+| 항목 | 결과 |
+|---|---|
+| 관련 검사 | 308검사 / 1실패: 포커스 조건 실패. floor shader·기존 arena 계약 검사는 통과 |
+| 명목 표본 | attempt1 / 추가 표본0. **valid=false, focus_lost_frames=1547** |
+| p95 / p99 관측 | 8.105ms / 8.531ms. **무효 표본이므로 ≤8.33ms PASS 근거로 사용할 수 없음** |
+| 조건 | 1920×1080, 240cap/vsync0/60Hz, Godot4.7.2 GL Apple M5 Pro, PID81277 보존. draw120/objects248; 벽시계 frame interval, GPU timestamp 아님 |
+| 입력 | 4방향×150ticks 실제 Player input, 이동1638.80px. nominal arena 명시 활성화, product_space=field, PC gate 대기 |
+| 제한 | 사용자 단회 제한에 따라 포커스 실패 재측정0. **성능 완료 조건 미달**, 별도 배정에서 focus0 표본 필요 |
+| 캡처 | after 21검사/0실패, 추가 idle/overview 4장. 전후4쌍·literal1x·PNG 비교 파일 보존. after/silhouette/perf 최종 로그 SCRIPT/Parse/ERROR0; 준비부 오류 별도 보존 |
