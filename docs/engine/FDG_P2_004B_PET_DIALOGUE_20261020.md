@@ -250,3 +250,7 @@ Godot randf 상한1.0과 웹 Math.random 상한미포함 차이 때문에 셔플
 | diff_7 | 27 | bid / T2 | 4 / 9999 / 4 | crow: …아직 살아있단 게 신기하군. | cat: 다른 사람들 이 정도 못 와! | 9729 | 미연결 |
 | diff_10 | 27 | bid / T2 | 4 / 9999 / 4 | crow: +5단. …너는 이제 인간이 아니야. | cat: 최고난이도! 너 진짜 광기야! | 9730 | 미연결 |
 | diff_back | 27 | bid / T2 | 4 / 600 / 4 | crow: …일반으로 내려왔군. 가끔은 쉬어가야지. | cat: 일반 모드! 편하게 즐기자! | 9731 | 미연결 |
+
+## 2026-10-21 INTEG-6c 후속 계약
+
+INTEG-6c Mac 44_boss_average·44_pet_events는 MAP11 ON의 실제 provider/arena Marker로 검증한다. 평균은 Player를 실제 Boss Marker로 배치한 기존500반경 exact atk 검사(5/0), pet events는75/0. 원 피해·대사·펫 구현 변경 없음. 최종사망 시그널 fixture는 observer 계약이며 자연보스 처치 증거 아님. 상세·실패이력·한계: [INTEG-6c](INTEG6C_REGRESSION_20261021.md) (engine 기준 상대경로).

@@ -1,17 +1,20 @@
 extends SceneTree
 const USERDIR="EXODUSER-demo11-23b-Isolated-20261021"
 class GuideObservation extends Node2D:
+	var phase: String="guide"
 	func get_snapshot() -> Dictionary: return {"phase":"guide"}
 var checks: int=0
 var failures: int=0
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	preload("res://tests/mac_harness_safety.gd").arm(self, 120.0)
+	call_deferred("run")
 func check(ok: bool,label: String) -> void:
 	checks+=1
 	if not ok: failures+=1; printerr("DEMO11_23B_GATE_FAIL ",label)
 func run() -> void:
 	check(OS.get_user_data_dir().get_file()==USERDIR,"isolated namespace")
 	if failures: quit(2); return
-	var main:=preload("res://scripts/main.gd").new(); main.set_meta("demo11_storage",true); root.add_child(main)
+	var main:=preload("res://scripts/main.gd").new(); main.set_meta("demo11_storage",true); main.set_meta("native_intro_boot","dormant"); root.add_child(main)
 	for i in 8: await physics_frame
 	check(main.read_native_demo11_load_result().get("committed",false),"actual loaded owner")
 	var ui: Control=main.source_inventory_ui; var original: Node2D=main.source_intro_sequence

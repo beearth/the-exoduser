@@ -48,3 +48,7 @@ G60709–60710의 분모는 **예정 소환 수**이며 actor 등록/요청/처�
 | PC 대기 | fieldboss bind_pc_source의 실제 HP/final readback owner, 보스 source_updateE_prefix 및 피해/PCI-11 final owner 미바인딩. 따라서 실제 개방/입장/보스 자연 스폰·AI/HP 감소는 아직 미관측. Mac 배선 완료를 bossroom_gate PASS로 주장하지 않음 |
 
 상세 검증과 남은 경계: `orders/reports/demo11-47k_REPORT.md`. 이전 47j의 family/options 미배선 상태는 이 절에서 위 범위만 대체한다.
+
+## 2026-10-21 INTEG-6c 후속 계약
+
+test_demo11_43_stage_spawn_adapter는 자체 provider·기존 World actor를 검증하는 legacy 계약이므로 --map11=off 필수(누락시exit2). 제품 MAP11 provider 경로는37/44 및 E2E에서 별도로 검사한다. adapter 수치·구현은 변경하지 않았다. 최종40/0. 상세·실패이력·한계: [INTEG-6c](INTEG6C_REGRESSION_20261021.md) (engine 기준 상대경로).

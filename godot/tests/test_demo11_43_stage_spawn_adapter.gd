@@ -34,8 +34,12 @@ class Provider extends Node2D:
    if a.id==request.hole_id:
     return {"ready":kind=="hole","revision":revision,"position":a.marker.global_position+Vector2(request.radius,0),"region_id":a.region_id,"site_id":"wrong" if bad_site else a.id}
   return {"ready":false}
-func _initialize() -> void:call_deferred("run")
+func _initialize() -> void:
+ preload("res://tests/mac_harness_safety.gd").arm(self, 120.0)
+ call_deferred("run")
 func run() -> void:
+ # Legacy map contract: own dormant/provider/intro fixture, no MAP11 product binding.
+ if "--map11=off" not in OS.get_cmdline_user_args():push_error("legacy contract requires --map11=off");quit(2);return
  check(OS.get_user_data_dir().ends_with(USERDIR),"actual isolated directory")
  var main=load("res://scenes/main.tscn").instantiate()
  root.add_child(main)

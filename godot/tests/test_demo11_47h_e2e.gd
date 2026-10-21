@@ -67,7 +67,9 @@ class Stamp extends Node:
   if physics.is_valid():physics.call()
  func _process(_delta: float) -> void:
   if process.is_valid():process.call()
-func _initialize() -> void:call_deferred("run")
+func _initialize() -> void:
+ preload("res://tests/mac_harness_safety.gd").arm(self, 420.0)
+ call_deferred("run")
 func arg(key: String,fallback: String="") -> String:
  for a in OS.get_cmdline_user_args():
   if a.begins_with(key+"="):return a.substr(key.length()+1)
@@ -158,7 +160,11 @@ func place_in_natural_contact() -> Dictionary:
   if enemy.get("etype") not in [0,1,4,6,18,19]:continue
   var point: Vector2=enemy.global_position+Vector2(24,0)
   if not main.world.can_move(point,main.player.radius):continue
-  var cooldown: float=float(enemy.get("st2" if enemy.etype in [0,6] else "_contact_ticks"))
+  var raw_cooldown: Variant=enemy.get("st2" if enemy.etype in [0,6] else "_contact_ticks")
+  # New natural actor families need their own admitted contact-timer contract.
+  # Never invent zero cooldown or cast missing owner fields to float.
+  if not (raw_cooldown is float or raw_cooldown is int):continue
+  var cooldown: float=float(raw_cooldown)
   var value: float=float(enemy.get("attack"))/(1.0+maxf(0.0,cooldown))
   if enemy.get("state")!="idle":value*=.01
   if value>score:best=enemy;score=value;best_cooldown=cooldown

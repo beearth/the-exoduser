@@ -56358,3 +56358,8 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 
 ## 2026-10-21 INTEG-6c BGM merge
 - PC `3baceb7340fe578fccc63bacfe38737d236eeec0`를 merge로 통합. 데모 boss 카탈로그 = `bgm/1장_썩은숲/Ashen Druid - Boss.mp3` (−12.4 LUFS). AUDIO-01 믹스 코드는 무변경. 사운드 문서 충돌은 SFX Forge·보스 BGM 양쪽 기록 보존.
+
+## 2026-10-21 INTEG-6c Mac harness / override
+- override.cfg 추적 해제·로컬byte보존·ignore, project user dir은 origin/main abc3dd44의 기존 EXODUSER-Godot-Native-First. stage/export에서 로컬override 제외. 실제 저장소 사용0.
+- MAP11 제품 검증37/44/23b와 legacy 계약42/43/41 모드 분리, 판정 유지. 공용 Mac helper에 격리복원/3PID게이트/오류·감시종료/headless캡처skip; E2E timer-null 하니스 오류수정.
+- 최종 회귀 실패0·import ERROR0·E2E PASS13/NR5/FAIL0·validator[]; 최초 실패·재실행과 한계는 [INTEG6C_REGRESSION_20261021.md](engine/INTEG6C_REGRESSION_20261021.md). PC코어/PC테스트/맵비주얼/번역 수정0.

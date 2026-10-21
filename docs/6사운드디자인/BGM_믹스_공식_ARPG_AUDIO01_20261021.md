@@ -49,3 +49,7 @@
 청음: 이 브랜치를 별도 검수 checkout으로 연 뒤 `godot/override.cfg`에 `[application]` 아래 `config/use_custom_user_dir=true`, `config/custom_user_dir_name="EXODUSER-AUDIO-01-Listening-Isolated"`를 지정한다. `godot/run.command --windowed` 실행(해당 checkout import가 없으면 먼저 같은 격리 override에서 Godot `--headless --editor --import --path godot`). 기존 PID81277은 그대로 두고 자기 프로세스만 하나 실행한다. 필드에서 120~180초+fade 2.5초 뒤 20~40초 휴지, 공격/피격 시 효과음 가독성, 보스 입장 2.5초 fade-in 및 클리어 복귀를 듣는다. BGM/SFX 슬라이더 0·중간값을 비교한다. 실제 저장 폴더를 지정하지 않는다.
 
 **인수 HOLD:** 숲 환경음의 실제 파일 연결·루프 청음·BGM과 조성 일치, 선율/드론 적합성, 실제 스피커 레벨, PC 실행. 환경음 파일이 확정되기 전 AUDIO-01 전체 완료로 올리지 않는다.
+
+## 2026-10-21 INTEG-6c 후속 계약
+
+INTEG-6c에서 PC boss BGM3baceb734를 merge. 새 데모boss곡 −12.4LUFS와 기존 Music boss−7dB/필드−14dB·간헐120~180초/휴지20~40초·duck−5dB는 서로 다른 경계이며 기존 믹스 구현·수치 무변경. 최종 AUDIO-0130/0·41 66/0·catalog18/0(CoreAudio), 실제 청음 미검수. 로컬override는 이제 untracked/ignored이며 청음 후 원존재/byte로 복원한다. 상세·실패이력·한계: [INTEG-6c](../engine/INTEG6C_REGRESSION_20261021.md).

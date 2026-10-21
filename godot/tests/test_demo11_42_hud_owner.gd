@@ -7,8 +7,12 @@ var capture_dir:=""
 func check(ok: bool,label: String) -> void:
 	checks+=1
 	if not ok: failures+=1;printerr("DEMO11_42_FAIL ",label)
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	preload("res://tests/mac_harness_safety.gd").arm(self, 120.0)
+	call_deferred("run")
 func run() -> void:
+	# Legacy map contract: own dormant/provider/intro fixture, no MAP11 product binding.
+	if "--map11=off" not in OS.get_cmdline_user_args():push_error("legacy contract requires --map11=off");quit(2);return
 	check(OS.get_user_data_dir().ends_with(USERDIR),"isolated_user_dir")
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--captures="): capture_dir=arg.trim_prefix("--captures=")
@@ -89,7 +93,7 @@ func run() -> void:
 	hud.set_native_intro_hud_visible(true)
 	hud._refresh()
 	view.refresh_native_owners()
-	if not capture_dir.is_empty():
+	if not capture_dir.is_empty() and preload("res://tests/mac_harness_safety.gd").can_capture():
 		check(DirAccess.make_dir_recursive_absolute(capture_dir)==OK,"capture_directory_ready")
 		await create_timer(1.1,true).timeout # existing real-time curtain owner finishes; no forced hide
 		check(not main.get_native_intro_curtain_view().visible,"source_curtain_finished_before_capture")
@@ -99,8 +103,8 @@ func run() -> void:
 		view._observe("Z",{"accepted":false,"reason":"executor_interface_required"})
 		await capture("03-ultimate-hold")
 		check(FileAccess.file_exists(capture_dir.path_join("01-owner-ready.png")),"GPU_capture_written")
-		for label: Label in [hud._mp_text,hud._stamina_text,view._selection,view._failure]:
-			check(not label.text.contains("미이식") and not label.text.contains("미구현") and not label.text.contains("연결 대기"),"player_facing_text_has_no_development_words")
+	for label: Label in [hud._mp_text,hud._stamina_text,view._selection,view._failure]:
+		check(not label.text.contains("미이식") and not label.text.contains("미구현") and not label.text.contains("연결 대기"),"player_facing_text_has_no_development_words")
 	var parent: Node=actor.get_parent();parent.remove_child(actor)
 	view.refresh_native_owners();check(not view.snapshot().boss_visible,"detached_actor_not_displayed")
 	parent.add_child(actor)
@@ -111,6 +115,7 @@ func run() -> void:
 	finish()
 func get_tree_pause(value: bool) -> void: paused=value
 func capture(label: String) -> void:
+	if not preload("res://tests/mac_harness_safety.gd").can_capture():return
 	for i in 3: await process_frame
 	await RenderingServer.frame_post_draw
 	var image: Image=root.get_texture().get_image()
@@ -120,5 +125,5 @@ func capture(label: String) -> void:
 	image.get_region(Rect2i(580,815,760,265)).save_png(capture_dir.path_join(label+"-skills-1x.png"))
 	image.get_region(Rect2i(1260,815,300,265)).save_png(capture_dir.path_join(label+"-resources-1x.png"))
 func finish() -> void:
-	print("DEMO11_42_RESULT ",JSON.stringify({"assertions":checks,"failures":failures,"skip":0,"damage_or_shield_writes":0}))
+	print("DEMO11_42_RESULT ",JSON.stringify({"assertions":checks,"failures":failures,"skip":0,"capture_skipped_headless":not capture_dir.is_empty() and not preload("res://tests/mac_harness_safety.gd").can_capture(),"damage_or_shield_writes":0}))
 	quit(0 if failures==0 else 1)

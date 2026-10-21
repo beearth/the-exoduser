@@ -19,7 +19,9 @@ func check(value: bool,label: String) -> void:
 	assertions+=1
 	if not value:failures+=1;printerr("AUDIO_01_FAIL ",label)
 func record(music: Node,label: String) -> void:print("AUDIO_01_STATE ",label," ",JSON.stringify(music.arpg_mix.snapshot()))
-func _initialize() -> void:call_deferred("run")
+func _initialize() -> void:
+	preload("res://tests/mac_harness_safety.gd").arm(self, 120.0)
+	call_deferred("run")
 func run() -> void:
 	check(OS.get_user_data_dir().get_file()=="EXODUSER-AUDIO-01-Isolated","isolated user directory")
 	for bus in ["Master","Music","Ambience","SFX","UI","Voice"]:

@@ -17,6 +17,7 @@ class NoPolicyMain extends Node:
 
 
 func _initialize() -> void:
+	preload("res://tests/mac_harness_safety.gd").arm(self, 120.0)
 	call_deferred("_run")
 
 

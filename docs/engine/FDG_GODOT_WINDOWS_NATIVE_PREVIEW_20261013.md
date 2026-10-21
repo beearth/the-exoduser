@@ -137,3 +137,7 @@
 | FILES / GIT | 이 worker 새test/SSOT만, Git/stage/rollback0. 정상 code+docs checkpoint는 부모 담당; 실제 성공 전 commit 완료표시0 |
 | VISUAL VERDICT | **RETOUCH** — 실제 Windows 플레이/전체UI·원화·전체AI/status·전체맵경로/최소사양1080p240 미검증 |
 | NEXT PASS | 성공 package를 Windows 실제 기기로 실행해 공개 입력/물탄·감속·UI/driver/performance 확인. 기술 package 검사는 이를 대체하지 않음 |
+
+## 2026-10-21 INTEG-6c 후속 계약
+
+INTEG-6c에서 stage_project는 로컬 override.cfg를 복사하지 않는다(Web builder도 공용 helper 사용). Windows/Web export exclude_filter에도 override.cfg를 추가했다. 로컬파일은 보존하며 프로젝트 기본 저장 이름은 origin/main 기존값을 따른다. 소형stage fixture 검증PASS, 실제 재수출/배포0. 위 artifact해시·당시builder 크기는 과거 검수값이며 현재 파일 byte의 해시로 해석하지 않는다. 상세·실패이력·한계: [INTEG-6c](INTEG6C_REGRESSION_20261021.md) (engine 기준 상대경로).

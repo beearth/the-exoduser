@@ -51,7 +51,7 @@ def require_project_settings(project):
 def stage_project(project, stage):
     """Copy mutable metadata/code; link original asset/data bytes read-only."""
     skipped = {".godot", ".git", "tests", "tools"}
-    excluded_files = {"README.md", "run.command", "export_presets.cfg"}
+    excluded_files = {"README.md", "run.command", "export_presets.cfg", "override.cfg"}
     linked = []
     copied = []
     stage.mkdir()

@@ -8,12 +8,16 @@ class FinalSource extends Node:
 func check(ok: bool, label: String) -> void:
  assertions+=1
  if not ok:failures+=1;print("DEMO37_FAIL ",label)
-func _initialize() -> void:call_deferred("_run")
+func _initialize() -> void:
+ preload("res://tests/mac_harness_safety.gd").arm(self, 120.0)
+ call_deferred("_run")
 func argument(key: String) -> String:
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with(key+"="):return arg.substr(key.length()+1)
  return ""
 func _run() -> void:
+ # Current product MAP11 owns geometry and provider binding.
+ if "--map11=off" in OS.get_cmdline_user_args():push_error("MAP11 product contract requires default on");quit(2);return
  check(OS.get_user_data_dir().get_file()==USERDIR,"isolation")
  var output: Array=[]
  var code: int=OS.execute(argument("--node-bin"),PackedStringArray([ProjectSettings.globalize_path("res://tests/demo11_37_source_oracle.mjs"),"--source-game="+argument("--source-game")]),output,true)
@@ -32,13 +36,12 @@ func _run() -> void:
  var encounter: Node=main.native_demo_encounter
  var g: Dictionary=main.source_state.read_current_g()
  var regions: Node=main.get_node("NativeRegions")
- check(encounter.snapshot().phase=="field" and not encounter.snapshot().provider_bound,"actual boot installs dormant coordinator")
- var map: Node2D=Node2D.new();main.world.add_child(map)
- var markers: Node2D=Node2D.new();markers.name="Markers";map.add_child(markers)
- check(not main.bind_native_demo_arena_provider(map),"missing marker fail closed")
- for name in ["Entry","Boss","Exit","Return"]:
-  var marker:=Marker2D.new();marker.name=name;marker.position=Vector2(4020,7200);markers.add_child(marker)
- check(main.bind_native_demo_arena_provider(map) and not main.bind_native_demo_arena_provider(map),"marker-only provider bound once")
+ check(encounter.snapshot().phase=="field" and encounter.snapshot().provider_bound,"actual MAP11 boot binds coordinator")
+ var map: Node2D=main.read_native_map11_provider()
+ var invalid:=Node2D.new();main.world.add_child(invalid)
+ check(not main.bind_native_demo_arena_provider(invalid),"foreign missing-marker provider rejected")
+ invalid.queue_free()
+ check(is_instance_valid(map) and not main.bind_native_demo_arena_provider(map),"actual MAP11 Marker provider remains single-bound")
  var pc:=FinalSource.new();main.world.add_child(pc)
  check(main.bind_native_demo_final_death_source(pc,&"final_death") and not main.bind_native_demo_final_death_source(pc,&"final_death"),"PC final signal bound once")
  pc.final_death.emit(main.native_demo_boss_actor,0)
@@ -56,12 +59,6 @@ func _run() -> void:
  check(g.get("_bossUnlocked")==true and encounter.snapshot().phase=="gate","actual P3 gate signal consumed")
  check(main.enter_native_demo_arena(root,options).status=="NOT_READY","unbound provider rejected")
  var spawned: Dictionary=main.enter_native_demo_arena(map,options)
- if spawned.get("status")=="NOT_READY":
-  check(encounter.snapshot().phase=="gate" and not main.leave_native_demo_arena(map),"PC boss NOT_READY preserves gate and rejects clear")
-  var bus: Dictionary=main.read_native_final_enemy_death_snapshot()
-  check(not bus.is_empty(),"PCI-11 actual subscriber installed")
-  print("DEMO37_RESULT ",JSON.stringify({"assertions":assertions,"failures":failures,"skipped":["boss HP/final-death/reward/clear NOT_READY"],"boss_receipt":spawned,"natural_boss_death_verified":false}))
-  main.free();quit(1 if failures else 0);return
  check(spawned.status=="READY" and encounter.snapshot().phase=="arena" and g._bossArena,"actual actor spawn and arena transition")
  check(main.player.global_position==map.get_node("Markers/Entry").global_position,"provider Entry marker used")
  check(main.enter_native_demo_arena(map,options).status=="NOT_READY" and not main.leave_native_demo_arena(map),"no duplicate entry or living-boss clear")

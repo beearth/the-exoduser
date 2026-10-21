@@ -15,11 +15,15 @@ func check_media(ok: bool,label: String) -> void:
 func record_state(music: Node,label: String) -> void:
 	var s: Dictionary=music.snapshot()
 	state_evidence.append({"label":label,"scene":s.scene,"key":s.key,"suspended":s.media.suspended,"timers":s.media.timers})
-func _initialize() -> void:call_deferred("_run")
+func _initialize() -> void:
+	preload("res://tests/mac_harness_safety.gd").arm(self, 120.0)
+	call_deferred("_run")
 func check(ok: bool,label: String) -> void:
 	assertions+=1
 	if not ok:failures+=1;printerr("DEMO11_41_FAIL ",label)
 func _run() -> void:
+	# Legacy map contract: own dormant/provider/intro fixture, no MAP11 product binding.
+	if "--map11=off" not in OS.get_cmdline_user_args():push_error("legacy contract requires --map11=off");quit(2);return
 	var source_root: String=""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--source-root="):source_root=arg.trim_prefix("--source-root=")
@@ -93,7 +97,10 @@ func _run() -> void:
 	boss.native_boss_music_changed.emit("entered",0)
 	boss.free();check(music.snapshot().key=="hell1","actor exit restores field")
 	main.player.telemetry_event.emit("player_died",{})
-	check(music.snapshot().scene=="death" and music.media.snapshot().timers>0,"death event requests terminal timer")
+	check(is_instance_valid(main.native_demo_life) and music.snapshot().scene=="field","installed life owner suppresses premature legacy death music")
+	# Audio-only public seam used by native_demo11_life._final_ui; no life/HP injection.
+	check(main.request_native_music_scene("death").ready,"final-life consumer music request accepted")
+	check(music.snapshot().scene=="death" and music.media.snapshot().timers>0,"final-life music request starts terminal timer")
 	record_state(music,"death requested")
 	await create_timer(0.68).timeout
 	check_media(music.snapshot().key=="death" and music.life.snapshot_state().cur.playing(),"existing death signal fade and terminal playback")

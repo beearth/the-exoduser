@@ -29,3 +29,7 @@
 ## 주의
 
 HUD 숫자/AudioStream 존재를 전체 HUD·청감 PASS로 보고하지 않는다. 옵트인 mix/BGM/lobby 영상 owner, 전투 event, PC UI 담당의 범위를 섞지 않으며 Q/E 소리를 이유로 보호 전투 경로를 바꾸지 않는다.
+
+## 2026-10-21 INTEG-6c 후속 계약
+
+INTEG-6c 현행: HUD42는 --map11=off 수동 intro 계약, headless 캡처만 skip하고 UI문구검사 유지(37/0). 음악41은 --map11=off 및 life owner가 legacy player_died 음악을 억제함을 검사한 뒤 공개 death music seam 검증(66/0 CoreAudio). 데모boss곡은 Ashen Druid - Boss.mp3(−12.4LUFS), AUDIO-01 boss bus−7dB·간헐필드·덕킹 수치 유지. 상세·실패이력·한계: [INTEG-6c](../INTEG6C_REGRESSION_20261021.md).

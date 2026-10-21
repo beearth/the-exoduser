@@ -9,12 +9,16 @@ class FinalSource extends Node:
 func check(ok: bool, label: String) -> void:
  assertions+=1
  if not ok:failures+=1;print("DEMO44_FAIL ",label)
-func _initialize() -> void:call_deferred("_run")
+func _initialize() -> void:
+ preload("res://tests/mac_harness_safety.gd").arm(self, 120.0)
+ call_deferred("_run")
 func argument(key: String) -> String:
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with(key+"="):return arg.substr(key.length()+1)
  return ""
 func _run() -> void:
+ # Current product MAP11 owns geometry and provider binding.
+ if "--map11=off" in OS.get_cmdline_user_args():push_error("MAP11 product contract requires default on");quit(2);return
  check(OS.get_user_data_dir().get_file()==USERDIR,"isolation")
  var oracle_path: String=OS.get_user_data_dir().path_join("pet-survival-oracle.json")
  var output: Array=[]
@@ -50,18 +54,14 @@ func _run() -> void:
  check(main.player.hp==hp_before,"pet read never heals or damages")
  # Empty current bubble only in this explicit event fixture; normal CD tests are separate.
  pets.set("_pet_bubble",{"who":null,"source":"","txt":"","t":0.0,"mt":0.0,"pair":null,"pair_fired":false})
- check(encounter.snapshot().phase=="field" and not encounter.snapshot().provider_bound,"actual boot installs dormant coordinator")
- var map: Node2D=Node2D.new();main.world.add_child(map)
- var markers: Node2D=Node2D.new();markers.name="Markers";map.add_child(markers)
- check(not main.bind_native_demo_arena_provider(map),"missing marker fail closed")
- for name in ["Entry","Boss","Exit","Return"]:
-  var marker:=Marker2D.new();marker.name=name;marker.position=Vector2(4020,7200);markers.add_child(marker)
- check(main.bind_native_demo_arena_provider(map) and not main.bind_native_demo_arena_provider(map),"marker-only provider bound once")
-
- var field_markers: Array=[]
- for i in range(4):
-  var fm:=Marker2D.new();fm.position=Vector2(6000+i*500,7000);map.add_child(fm);field_markers.append(fm)
- check(main.bind_native_demo_anglers(map,field_markers),"actual field owner receives authored Marker fixture")
+ check(encounter.snapshot().phase=="field" and encounter.snapshot().provider_bound,"actual MAP11 boot binds coordinator")
+ var map: Node2D=main.read_native_map11_provider()
+ var invalid:=Node2D.new();main.world.add_child(invalid)
+ check(not main.bind_native_demo_arena_provider(invalid),"foreign missing-marker provider rejected")
+ invalid.queue_free()
+ check(is_instance_valid(map) and not main.bind_native_demo_arena_provider(map),"actual MAP11 Marker provider remains single-bound")
+ var field_markers: Array=map.fieldboss_markers()
+ check(main.native_demo_anglers.snapshot().provider_bound and field_markers.size()==4 and not main.bind_native_demo_anglers(map,field_markers),"actual product field Marker provider bound once")
  for frame in range(3):await physics_frame
  check(pets.call("_demo_targets").is_empty(),"source iris only searches ens; field actors remain excluded")
  var pc:=FinalSource.new();main.world.add_child(pc)

@@ -140,3 +140,7 @@ PC 전투 이동/패링/방패/분노/hurtE/hurtP 및 readonly port 모듈, docs
 ## INTEG-2 통합 후 관측 (2026-10-21)
 
 47m→MAP11-15→17 순차 merge. 단위3989/0,E2E12 PASS/6 NOT_READY/0 FAIL·ERROR0. auto_potion 이번 표본 실제 피해1회/uses0→1로 PASS,과거0요청 원인은 HP/iframe 미기록이라 미확정. 하네스 경계 관측만 추가. benchmark1회 exit4(arena 전환 확인 실패·시간JSON 없음),E2E physics max22.414ms로 예산미달. PC blocked_by 유지. 상세·18단계·한계: [INTEG-2 보고서](INTEG2_DEMO11_20261021.md). 이전 실행 수치는 당시 이력으로 보존한다.
+
+## 2026-10-21 INTEG-6c 후속 계약
+
+INTEG-6c에서 신규 natural actor의 없는 contact timer를 float(null)로 읽던 하니스 오류를 수정했다. 실제 numeric cooldown이 확인된 natural actor만 배치 후보이며 임의0·피해/HP/사망주입 없음. 기존 run_demo11_47h CLI는 공용 mac_harness를 사용해 override 존재/byte복원·PID3미만·SCRIPT ERROR/timeout 비0종료를 보장한다. 최종 E2E PASS13/NR5/FAIL0·validator[]. 상세·실패이력·한계: [INTEG-6c](INTEG6C_REGRESSION_20261021.md) (engine 기준 상대경로).
