@@ -1,3 +1,8 @@
+## 2026-10-21 MAP11-22d
+
+- 기존 field crack36+inward7을2048² 정적 bake로 재사용, R1470 링을 약한 진홍 unshaded로 명확히 표시. 보조 multiply .62→.14, arena ambient 중심(.70,.60,.61), player instance rim(.92,.82,.70,.62). PC코어/공유shader/충돌 변경0.
+- entry/center before660a9dc2·after·literal1x 보존, 관련검사 단회308/0·capture9/0. PID81277 존재로 성능 표본0/p95 N/A, 유효 성능 미검증. 전체 RETOUCH. [현행 수치·제약·MAP PRODUCTION REPORT](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#25-map11-22d--입장에서-읽히는-붉은-의식의-원-4차).
+
 ## 2026-10-21 DEMO11-47l — E2E 기능 회귀·정직한 PC 의존 구분
 
 - 기존 전역 `test_*` ignore 때문에 새 검수 파일3개의 정확한 경로만 allowlist로 등록. 강제add·hook우회 없이 결과 재현용 검수 스크립트를 함께 보존.

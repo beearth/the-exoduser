@@ -18,6 +18,7 @@ func _build_floor() -> void:
  var material_:=ShaderMaterial.new()
  material_.shader=preload("res://scripts/maps/map11/arena_shoulder.gdshader")
  floor_.material=material_
+ _build_ritual()
  # Low silhouettes bridge the floor and the forest; never add collision.
  var root_material:=ShaderMaterial.new()
  root_material.shader=preload("res://scripts/maps/map11/organic_decal.gdshader")
@@ -100,3 +101,12 @@ func _camera_rect() -> Rect2:
  var inverse:=get_global_transform_with_canvas().affine_inverse()
  var size_: Vector2=get_viewport_rect().size
  return Rect2(inverse*Vector2.ZERO,size_/get_viewport().get_camera_2d().zoom).grow(100)
+
+# Authored decal composition baked offline: one static texture, one draw, no tick work.
+func _build_ritual() -> void:
+ var ring:=Sprite2D.new();ring.name="RitualRootCracks"
+ ring.texture=preload("res://assets/maps/map11/ritual_root_cracks.png")
+ ring.scale=Vector2.ONE*(3600.0/2048.0);ring.z_index=-419
+ var mat:=ShaderMaterial.new();mat.shader=preload("res://scripts/maps/map11/ritual_cracks.gdshader")
+ mat.set_shader_parameter("glow_strength",.10)
+ ring.material=mat;add_child(ring)

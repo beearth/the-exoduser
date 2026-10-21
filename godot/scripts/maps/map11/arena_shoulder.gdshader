@@ -1,7 +1,7 @@
 shader_type canvas_item;
 // MAP11-22c: integrated multiply relief, no extra pass or texture.
 uniform float ritual_radius = 1470.0;
-uniform float ritual_strength = 0.62;
+uniform float ritual_strength = 0.14;
 uniform float groove_strength = 0.26;
 uniform float pulse_strength = 0.035;
 varying vec2 floor_point;

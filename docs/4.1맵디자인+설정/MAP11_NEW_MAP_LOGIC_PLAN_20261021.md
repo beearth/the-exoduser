@@ -339,7 +339,7 @@ Tissue 2등은 setup에서 FRONT row의 가장 가까운 foot를 선택(목표 W
 | id | 현행 수치 / 경계 |
 |---|---|
 | 공유 외곽선 | `actor_rim.gdshader` ShaderMaterial **1개**를 player._sprite / enemy._body에 부착. player.gd·enemy.gd 수정0. `px=fwidth(UV)×1.35`로 화면 약1.35px 안쪽 림; 좌우상하 alpha 최소 n, edge=smoothstep(.06,.65,src.a−n)×step(.35,src.a). 원 alpha·원 sprite tint/피격표시 보존. quad 확장·후광·새 광원0 |
-| player / enemy | instance rim_color player RGB(.78,.72,.59)/mix.38, enemy RGB(.62,.20,.16)/mix.30. setup/child_entered_tree deferred1회만 설정; 공유 material 중복부착 제외. 새 spawn은 동일 signal로 인수. 틱 material parameter 갱신0 |
+| player / enemy | instance rim_color player RGB(.78,.72,.59)/mix.38, enemy RGB(.62,.20,.16)/mix.30. setup/child_entered_tree deferred1회 부착; 공유 material 중복부착 제외. 새 spawn은 동일 signal로 인수. **22d 제품 player는 arena에서 (.92,.82,.70,.62), field에서 기존값으로 lighting process가 instance rim_color 1회/프레임 갱신**. shared shader·enemy 값 보존 |
 | 숲 하한 | field_forest_depth에서 기존 fog·west/east 보정 후 **조명 적용 전** RGB 하한(.075,.069,.072). 기존 BACK fog.48/MID.13/FRONT0, ambient·지역광·AO·vignette 유지. 최종 화면 모든 픽셀에 동일 하한을 강제하는 screen wash 아님 |
 | 격리 | 실행 project user dir `EXODUSER-map11-18-Isolated-20261021`; 검수 후 project.godot 원 byte 복원. 실제 EXODUSER-Godot-Native-First 실행0 |
 
@@ -1183,6 +1183,8 @@ Extra stage literal1x: after_finale_stage_1x.png = after_04_finale.png rect(340,
 | 범위 | 벽시계 frame interval이며 GPU timestamp/실전 전투/dense combat/Windows 검증 아님. 재측정0 |
 
 
+> **현행 MAP11-22d는 §25 우선.** 아래 §24의 .62·추가 draw/texture0·multiply만 사용·광원 유지 설명은 22c 이력이다.
+
 ## 24. MAP11-22c — 전투 바닥 의식의 원 3차
 
 기준 a31e73deafe48fb92b1ffdc2f1d22a88bd555fc9, 전용 codex/map11-22c-20261021. 신규 이미지 생성 없이 기존 SkinFloor의 arena_shoulder 셰이더 안에서 곱셈 합성한다. 기존 5tap relief·R2480 시각 mesh·R1700 충돌·외곽 뿌리32·북 finale·카메라·광원은 유지한다. 별도 draw/texture/노드/프레임 할당 추가0. TIME만 맥동에 사용한다.
@@ -1235,3 +1237,45 @@ silhouette_source_idle_no_ai는 기존 boss atlas의414×620 idle 셀, source �
 | 입력 | 4방향×150ticks 실제 Player input, 이동1638.80px. nominal arena 명시 활성화, product_space=field, PC gate 대기 |
 | 제한 | 사용자 단회 제한에 따라 포커스 실패 재측정0. **성능 완료 조건 미달**, 별도 배정에서 focus0 표본 필요 |
 | 캡처 | after 21검사/0실패, 추가 idle/overview 4장. 전후4쌍·literal1x·PNG 비교 파일 보존. after/silhouette/perf 최종 로그 SCRIPT/Parse/ERROR0; 준비부 오류 별도 보존 |
+
+
+## 25. MAP11-22d — 입장에서 읽히는 붉은 의식의 원 4차
+
+기준 **660a9dc2**, branch `codex/map11-22d-20261021`. 신규 이미지 생성 없이 필드의 붉은 뿌리 균열 원본 `assets/map/ch3/floor_objects/prop_ice_gcrack.png`를 재조합한다. 22c multiply 링은 아래 보조층으로 약화했다. PC 전투 코어·저장·공통 rim shader·적·카메라·충돌 변경0.
+
+| id / 적용 | 수치·공식·계약 |
+|---|---|
+| bake source / output | `godot/tools/bake_map11_22d_ritual.py`(Pillow), 기존 RGBA 크랙 1종 → `godot/assets/maps/map11/ritual_root_cracks.png`, 2048² RGBA / world3600². 비압축 RGBA 환산16MiB, runtime 1 texture / 1 Sprite2D / 1 draw 추가. AI 생성0 |
+| 원 둘레36 stamp | a=TAU×i/36, R=1470+18sin(7a); world width620+45(i%3), height340+18(i%4); 회전a±.10, 홀수 mirror. 겹침으로 이음매 숨김. 배치 중심R1452~1488 |
+| inward branches7 | a=TAU(i+.24)/7, 중심R1140, world760×310, 회전a, 홀수 mirror. 원본 가지 모양 보존; 중앙에 새 decal 없음 |
+| bake alpha | 원본 alpha×clamp((r−650)/100)×clamp((1730−r)/100), 두 clamp는0~1. 중앙R650 완전 투명, 특히 요구된R280 새 균열0. 별도 높이/충돌0 |
+| RitualRootCracks | scale3600/2048, z−419; 기존 SkinFloor와 roots 위·배우 아래. 정적 composition, 틱 bake/load0 |
+| ritual_cracks.gdshader | unshaded 알파 합성. relief=.299r+.587g+.114b; tissue=mix((.22,.037,.031),(.43,.105,.075),smoothstep(.25,.70,relief)); RGB+= (.10,.012,.008)×(.75+.25pulse), pulse=.5+.5sin(.75TIME); alpha=source.a×.88. glow_strength은 setup에서 **명시 .10** 설정·Nil 방지. 주기8.38초, 원래 alpha/relief 유지, PointLight 추가0 |
+| 22c 보조층 | ritual_strength .62→**.14**; R1470·warp·가지7·홈960/590·groove .26·pulse .035·얼룩·R2480 mesh·fade 그대로. 위 링의 암부 접지 보조 |
+| arena 노출 | inner=1−smoothstep(1350,1850,player의 arena중심 거리), arena 밖0. 기존 ambient=(.38,.43,.52).lerp((.48,.43,.46),approach×.75)를 (.70,.60,.61)로 inner만큼 lerp. 중심/입장 전투면을 어두운 살빛으로; 북finale r≥1850 기존 대비 유지. 전역 CanvasModulate이므로 플레이어 위치에 따른 노출 전환이며 국소 라이트가 아님 |
+| player rim | MAP11-18 공유 material/shader 그대로. instance `rim_color` arena (.92,.82,.70,.62), field (.78,.72,.59,.38). enemy (.62,.20,.16,.30) 유지. 기존 lighting process에서 player sprite 파라미터1회/프레임, 새 목록 API/ResourceLoader/노드 검색0 |
+| 실행 격리 | `EXODUSER-map11-22d-Isolated-20261021`, project 설정은 원래 byte 복원·commit 제외. 실제 Native-First 저장 경로 사용0. 초기 capture guard는 별도 Demo 설정 때문에 scene instantiate 전 exit2; 수정 후 격리 실행 |
+
+### 캡처·단회 관련 검사·성능 제한
+
+`~/exoduser-wt/_out/MAP11-22d/captures/`: before entry/center는 **660a9dc2의22c after 원본을 byte 동일 복사**(재촬영 아님). after는 제품 Main 1600×900·동일 입장(0,1100)/중앙(0,0) fixture. 각 원본과 literal1x crop(480,150,640,600), 무보정 좌우 compare 보존. entry 전용 기존 줌 전환 때문에 entry는 넓은 조망이며 center receipt zoom(.7,.7). 시간/스탯 차이로 pixel 회귀 증거가 아니다. entry에서 붉은 원 한눈에 확인, center는 새 균열 없이 깨끗, 1x player 외곽이 바닥과 분리됨. 기존 홈2·중앙 피부결은 유지. 검은 의상 내부가 발광하는 연출은 아님. 실제 보스 AI·탄막·dense combat 검수 아님.
+
+관련 자동 검사는 **1회 308 checks / 0 failures**, 명시 glow uniform float/.10 확인 포함. 캡처9checks/0fail. 최종 로그 Parse/SCRIPT/ERROR0(기존 Camera2D physics interpolation warning만). **성능 표본0, p95=N/A, 유효=false(미측정)**: 보호 대상 PID81277 Godot이 존재하여 사용자 조건 “다른 Godot 없을 때” 불충족. 이를 닫거나 포커스를 빼앗지 않았고, 잘못된 공존 측정도 하지 않았다. 테스트의 `--verify-only`로 관련 검사만 수행. benchmark는 다른 Godot 확인 시 표본 전 exit4, 조건 해소 시 1회만 측정하며 focus_lost_frames0일 때만 p95≤8.33ms 판정 가능. 22c 무효 p95를 이번 결과로 사용하지 않는다. 동시 Godot≤2/순차 실행.
+
+### MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 boss, silhouette·regions·남입장→중앙combat void→북finale·side spaces 그대로 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH 보존, major holes 신규 수정0 |
+| LARGE | 기존 PNG/32roots·composites·overlap 보존, 기존 외곽 반복 잔여 |
+| MEDIUM | 기존 연결 보존, filler0·새 hole0 |
+| GROUND | 기존 field crack 재사용36+7stamp→단일 bake, 접지 보조 .14 multiply·약한 진홍 unshaded층 |
+| PLAYABLE | R1700·route·collision·회피/탄 공간 불변, R280 새 패턴0, player1x 실루엣 분리 확인 |
+| LANDMARK | primary 북무대, secondary 서해골/동처형 보존; 중심 전투면 노출만 올림 |
+| CAMERA QA | START entry/ARENA center·literal1x PASS(요청한 가독성 범위). EARLY/SIDE L/SIDE R/LANDMARK/LATE/EXIT 추가 종주 미실시 |
+| TECH QA | 관련308/0, capture9/0. route/collision 기존 계약검사 PASS, pageerror/404 native N/A; texture 로딩 오류0·runtime3D0. 성능은 PID81277 보존으로 미측정 |
+| FILES | stage-owned arena_shoulder/product_arena_view/product_lighting/ritual shader+bake+PNG·import·capture/benchmark22d·관련 docs, concurrent/unrelated0 |
+| GIT | 전용 branch 정상 hook commit/push 후 원격SHA 대조·worktree 제거. SHA는 외부 DONE.txt. main merge/push/deploy0 |
+| VISUAL VERDICT | **RETOUCH** — 요청한 입장 붉은 원·깨끗한 중앙·player1x 가독성은 시각 PASS. 최종 TECH 성능 gate는 미검증이므로 전체 PASS 아님 |
+| NEXT PASS | PID81277이 사용자 작업으로 종료된 환경에서 arena 명목 표본1회·focus_lost0·p95≤8.33ms 확인. 실제 보스 전투는 기존 PC gate 대기 |

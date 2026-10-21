@@ -91,7 +91,9 @@ func _process(delta: float) -> void:
  _time+=delta
  var arena: bool=scene.active_space=="arena"
  var approach: float=1.0 if arena else smoothstep(-2600.0,-4100.0,_player.global_position.y)
- _ambient.color=Color(.38,.43,.52).lerp(Color(.48,.43,.46),approach*.75)
+ var inner: float=1.0-smoothstep(1350.0,1850.0,(_player.global_position-scene.arena_view.global_position).length()) if arena else 0.0
+ _ambient.color=Color(.38,.43,.52).lerp(Color(.48,.43,.46),approach*.75).lerp(Color(.70,.60,.61),inner)
+ _player.get("_sprite").set_instance_shader_parameter("rim_color",Color(.92,.82,.70,.62) if arena else Color(.78,.72,.59,.38))
  _player_light.global_position=_player.global_position+Vector2(0,-36)
  var size_: Vector2=get_viewport_rect().size/_camera.zoom
  var center: Vector2=_camera.get_screen_center_position()
