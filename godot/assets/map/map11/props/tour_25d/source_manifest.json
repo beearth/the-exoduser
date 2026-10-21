@@ -1,0 +1,639 @@
+[
+  {
+    "id": "hell_impaled_corpse",
+    "provenance": [
+      "MagicLight Seedream",
+      "Meshy image-to-3D",
+      "Godot offline 2.5D render"
+    ],
+    "concept": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/hell_impaled_corpse.png",
+    "concept_sha256": "098d7ec7c8e56327ea519d533d290592fe7657d626f371bbaedb71f7ca14a08f",
+    "glb": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/3d/hell_impaled_corpse.glb",
+    "glb_sha256": "debda2683f780e8826dd7b25a6fd04f42b4c2ff1155fb9a0f597feafb02f26e2",
+    "yaw": [
+      -20,
+      0,
+      20
+    ],
+    "textures": [
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_0_contact.png",
+        "size": [
+          238,
+          128
+        ],
+        "sha256": "e28d4c6b324046aa30da71e6b13c2f348e86545fc5946e0d46cba84832b65228"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_0_diffuse.png",
+        "size": [
+          218,
+          490
+        ],
+        "sha256": "0cab4832706d92d156201ba8a09a513a9b4ae540993c557fbb00e56d7d42d659"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_0_normal.png",
+        "size": [
+          218,
+          490
+        ],
+        "sha256": "8b0dba17f699f2acea5bffa1cf03fea558f7b790c9d0c8e14cfafece20b9c98b"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_1_contact.png",
+        "size": [
+          244,
+          128
+        ],
+        "sha256": "8767a69239b0a25c755a270df330eb473e0ecbcf4d1318cd61c917c6ea8856dc"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_1_diffuse.png",
+        "size": [
+          224,
+          490
+        ],
+        "sha256": "bd007ec8d51b84a4b59124596aff261388e707fa13075fe62f462765abafa395"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_1_normal.png",
+        "size": [
+          224,
+          490
+        ],
+        "sha256": "580951beb3a4d4d42d57dff9bd173580c47b40202d69b59a0c69d7c27f3b2468"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_2_contact.png",
+        "size": [
+          273,
+          128
+        ],
+        "sha256": "52939c51cd41196ea901684fb72da5dda227469b11582b0ba21705cc06ee4980"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_2_diffuse.png",
+        "size": [
+          253,
+          490
+        ],
+        "sha256": "c528529f15aa0f4e9e82e099a06139d375cba3cf7ce54d908b9603ab51a8ead6"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_2_normal.png",
+        "size": [
+          253,
+          490
+        ],
+        "sha256": "c32e2f1f497e7892b17c13644897592ab37a1f29282118872cc1674755bb508e"
+      }
+    ]
+  },
+  {
+    "id": "hell_spike_pit",
+    "provenance": [
+      "MagicLight Seedream",
+      "Meshy image-to-3D",
+      "Godot offline 2.5D render"
+    ],
+    "concept": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/hell_spike_pit.png",
+    "concept_sha256": "c886733d0084a69c08ffe698178092bc5acf44280a5284bfc2a1233421a4f6f2",
+    "glb": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/3d/hell_spike_pit.glb",
+    "glb_sha256": "e97ee541bdc5cbc2d366f5dacc85b01e9044adf43c897614127b83105be4de0f",
+    "yaw": [
+      -20,
+      0,
+      20
+    ],
+    "textures": [
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_0_contact.png",
+        "size": [
+          471,
+          104
+        ],
+        "sha256": "c711a4c1d73bf4502a173c5eb2766e62a57bb0ae507b2e746f995a25f72c1866"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_0_diffuse.png",
+        "size": [
+          455,
+          400
+        ],
+        "sha256": "42f3be32334db78472abb358cfd4804160639b24f93eaa2494c9849238ba6c00"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_0_normal.png",
+        "size": [
+          455,
+          400
+        ],
+        "sha256": "029ef6c7dcb6cb06c5fe24bbd91de2cda822b03c8d49585cceb9c8555c2e2c57"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_1_contact.png",
+        "size": [
+          481,
+          104
+        ],
+        "sha256": "bc9b264e71111fb17967204c703be4696fc818f1c4831f8f6d9bba573f84c5b4"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_1_diffuse.png",
+        "size": [
+          465,
+          400
+        ],
+        "sha256": "63442071a247f86d9b7ce2f0f146e9ba713e5532b2a1e987716df890ad2aa1e5"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_1_normal.png",
+        "size": [
+          465,
+          400
+        ],
+        "sha256": "26b0148974677957c7db04ba2c6651743a8b517f6f53c915714c7c351b2e9ec2"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_2_contact.png",
+        "size": [
+          468,
+          104
+        ],
+        "sha256": "c523c2fb428990c37243f1125049b042125ccdc6a34811e9b0d05c7403e54b6e"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_2_diffuse.png",
+        "size": [
+          452,
+          400
+        ],
+        "sha256": "f4740062ea3a17195d10197a7e96aa0ac0e287e7c45c64828b767f8157c2973f"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_2_normal.png",
+        "size": [
+          452,
+          400
+        ],
+        "sha256": "59f9d8641ad3ba49c869e3d86a9a445e59ad23db15dac5d5088bc43cd5c776c5"
+      }
+    ]
+  },
+  {
+    "id": "skull_pyramid",
+    "provenance": [
+      "MagicLight Seedream",
+      "Meshy image-to-3D",
+      "Godot offline 2.5D render"
+    ],
+    "concept": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/hell_skull_pyramid.png",
+    "concept_sha256": "4102a4f95a12265464a18fda9596ddf5de5861aefa9be053c10fcfdfdb52c48c",
+    "glb": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/3d/skull_pyramid.glb",
+    "glb_sha256": "c2d33f27fae370feb594917bab529d6d442f58739ca397e59907fb536452838d",
+    "yaw": [
+      -20,
+      0,
+      20
+    ],
+    "textures": [
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_contact.png",
+        "size": [
+          421,
+          104
+        ],
+        "sha256": "3dd9779dab77319822f58a2aece1fe930c21b6bec705872151a405c3d36e9292"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_diffuse.png",
+        "size": [
+          405,
+          400
+        ],
+        "sha256": "491bd315d6c87205c2d77010a135cb9a9fd3684cae1f95ce3da1d7880967a7b2"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_normal.png",
+        "size": [
+          405,
+          400
+        ],
+        "sha256": "2edc9ecd3f14f3ca0982fb7929b6c1306fcdc92c4fd49fe844210c03a8eb3b00"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_contact.png",
+        "size": [
+          424,
+          104
+        ],
+        "sha256": "27ced7502016aec80bb2114e396754a4f044a4385c1f1fb870e9e13a28e65299"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_diffuse.png",
+        "size": [
+          408,
+          400
+        ],
+        "sha256": "1fc430ea6fa9719be071d23f5b94cb7342acc3a6b63df7346e2114f5ad139399"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_normal.png",
+        "size": [
+          408,
+          400
+        ],
+        "sha256": "a69a294d3fd1d3084a81eb30cf625ab9da6688ca69b17b5ed680a6468ee7a0a7"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_contact.png",
+        "size": [
+          441,
+          104
+        ],
+        "sha256": "f9c5670fa55691e1b5d5eb1c23ab1b2483eb43613e63300f3d5ff905c134cab5"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_diffuse.png",
+        "size": [
+          425,
+          400
+        ],
+        "sha256": "eaba0243f35549c8f270fd88b5e089d2cb95b3909e121772ebd100ad741a0d87"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_normal.png",
+        "size": [
+          425,
+          400
+        ],
+        "sha256": "0d2c5d82340ffbe5736b7bfb1016ce8db2fc9423bc3644ea289a049d0a6ceb73"
+      }
+    ]
+  },
+  {
+    "id": "tour_blood_basin",
+    "provenance": [
+      "MagicLight Seedream",
+      "Meshy image-to-3D",
+      "Godot offline 2.5D render"
+    ],
+    "concept": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/tour_blood_basin.png",
+    "concept_sha256": "fa6ddfc750d0083a17c90b28ef2e0c4bab6167da784e863c366022bca7a3d190",
+    "glb": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/3d/tour_blood_basin.glb",
+    "glb_sha256": "94c60c00a49ac96665d6a857d7bfd6eb112347430938bed1d8e996fa3d3bcda8",
+    "yaw": [
+      -20,
+      0,
+      20
+    ],
+    "textures": [
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_0_contact.png",
+        "size": [
+          360,
+          89
+        ],
+        "sha256": "2c71b6340e1da599885edf91f18bf70763e8fa1cde319215b28a3812fbcc076d"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_0_diffuse.png",
+        "size": [
+          346,
+          340
+        ],
+        "sha256": "95d0687fc08b5bc70331ffda82191fc94d81903018e654521778e74200e097d0"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_0_normal.png",
+        "size": [
+          346,
+          340
+        ],
+        "sha256": "1fb83c4cf35a2ea6ffda8a56c4fac192323613db432ee2a143436441905faea7"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_1_contact.png",
+        "size": [
+          364,
+          89
+        ],
+        "sha256": "1b10c24bb204b8fba42ffba79d13ffb82b1d1c2c99e7161ec264bcc4cf3e57ee"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_1_diffuse.png",
+        "size": [
+          350,
+          340
+        ],
+        "sha256": "850f21457732697997bb3be715ed3aefcbc8a1f0d61b41bf72b5bfddaf84b86d"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_1_normal.png",
+        "size": [
+          350,
+          340
+        ],
+        "sha256": "9e32edfafcb39e3aa52564bf41da1f2239bd3cbac426d4cc5454f40e9827c291"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_2_contact.png",
+        "size": [
+          359,
+          89
+        ],
+        "sha256": "00d4d9825583b101998b83512698f14df57ab875dbb79baed6a19a7e7a7da5e2"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_2_diffuse.png",
+        "size": [
+          345,
+          340
+        ],
+        "sha256": "7003f4304737d2720c6e04667093ef9b458efe6ef5e6bade7bb9a2a308b993de"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_2_normal.png",
+        "size": [
+          345,
+          340
+        ],
+        "sha256": "32c19c024a599eba3f03b12ba6e6be606823173cd32eb7f93356e02dddec0e49"
+      }
+    ]
+  },
+  {
+    "id": "tour_chained_pillar",
+    "provenance": [
+      "MagicLight Seedream",
+      "Meshy image-to-3D",
+      "Godot offline 2.5D render"
+    ],
+    "concept": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/tour_chained_pillar.png",
+    "concept_sha256": "cedf2431414d572b4a5d261eddc70fdbb528ee91a51250e668cae2f29afbf85d",
+    "glb": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/3d/tour_chained_pillar.glb",
+    "glb_sha256": "a6de644d4c7bbbd68611eeefbabc6d564f02bdab6ad9bb812c10758987c2f51b",
+    "yaw": [
+      -20,
+      0,
+      20
+    ],
+    "textures": [
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_0_contact.png",
+        "size": [
+          403,
+          156
+        ],
+        "sha256": "70126fd6f70c15e154aea0b4e27c8180bdd868791348f07ff6523e7f3065a1d7"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_0_diffuse.png",
+        "size": [
+          379,
+          600
+        ],
+        "sha256": "216f1193bb1e8dc6577eead0a5567da33a1034200b627d5aef580c253c8b403e"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_0_normal.png",
+        "size": [
+          379,
+          600
+        ],
+        "sha256": "831326c7eaaabe2bc52cf666bf7295f87ac31165f8b132d313aafb412a75133c"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_1_contact.png",
+        "size": [
+          395,
+          156
+        ],
+        "sha256": "ea850caa377ce8daddac1748d85fb47501ac4359c167ba1810277ff5efed1e46"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_1_diffuse.png",
+        "size": [
+          371,
+          600
+        ],
+        "sha256": "2642d8f05ff1c94c8c3450b4650bebce2985f0ed93668a23b4ceac7a421dc033"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_1_normal.png",
+        "size": [
+          371,
+          600
+        ],
+        "sha256": "78c4a7a2cbd1a0df69dee54f80a764644f6fd1060a38d54ff8dda17812a1ef17"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_contact.png",
+        "size": [
+          367,
+          156
+        ],
+        "sha256": "236413dfc4bb88970699da1f05f5dea96e14a07af588f2cfcc865c0e107044d6"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_diffuse.png",
+        "size": [
+          343,
+          600
+        ],
+        "sha256": "00f5ec86a6a38c82641f47f6b6c965b33ff0f510cf2e218cc6b76b3f28422750"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_normal.png",
+        "size": [
+          343,
+          600
+        ],
+        "sha256": "36e856f3df83a5e7188aca88ae7cb786cc0f3c0cf7a9c52251ae77150eea1d28"
+      }
+    ]
+  },
+  {
+    "id": "tour_cocoon_tree",
+    "provenance": [
+      "MagicLight Seedream",
+      "Meshy image-to-3D",
+      "Godot offline 2.5D render"
+    ],
+    "concept": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/tour_cocoon_tree.png",
+    "concept_sha256": "a8bc7b89af59841520b3ddd4ef1acf1e30df98d4c39cff29b796b083a3cff5ae",
+    "glb": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/3d/tour_cocoon_tree.glb",
+    "glb_sha256": "af408ee34bf2aa49f2bc730368166c5583f8a92e5335e4938e13cb0d257dc9d8",
+    "yaw": [
+      -20,
+      0,
+      20
+    ],
+    "textures": [
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_0_contact.png",
+        "size": [
+          512,
+          150
+        ],
+        "sha256": "d9c78cfd8d516c5df84a44c2cb226896b3f9becd06da4239b3f1ab777062b642"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_0_diffuse.png",
+        "size": [
+          578,
+          680
+        ],
+        "sha256": "75664e9507800f4b4e6e07ed06fc63857a22dcfea30bec46e9da1043aab869b0"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_0_normal.png",
+        "size": [
+          578,
+          680
+        ],
+        "sha256": "3d46d80182a7ac3576f882268db12f4853b9a1b917b274c89deb00d657ccb993"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_1_contact.png",
+        "size": [
+          512,
+          140
+        ],
+        "sha256": "df1fa02c4dfa46b6bef030edef5025cbec648123e1e2a9afe643e2faba1f7385"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_1_diffuse.png",
+        "size": [
+          622,
+          680
+        ],
+        "sha256": "151b91b8d8a6de8eb6751fb2874b2c93f79bce12fc1cddda047ef11892574494"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_1_normal.png",
+        "size": [
+          622,
+          680
+        ],
+        "sha256": "e2a3980dc818f37e3b0e48ed995df192d174acfae3a44a937661128c418d261a"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_2_contact.png",
+        "size": [
+          512,
+          154
+        ],
+        "sha256": "616e35ec308e6aeada68c2174ffafd5f17a54c512ca50012ec442eb9e77fe0ca"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_2_diffuse.png",
+        "size": [
+          562,
+          680
+        ],
+        "sha256": "7efb71bd6ae5801426c52b4bc07466abda166aaade83dfacc8ec39ce50e01ac4"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_2_normal.png",
+        "size": [
+          562,
+          680
+        ],
+        "sha256": "24e6f10c2a0e0bcf36cf1328448fef847d4ea4e4b2bbab8253f6da26f9cc7756"
+      }
+    ]
+  },
+  {
+    "id": "tour_torture_wheel",
+    "provenance": [
+      "MagicLight Seedream",
+      "Meshy image-to-3D",
+      "Godot offline 2.5D render"
+    ],
+    "concept": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/tour_torture_wheel.png",
+    "concept_sha256": "af77555598fa5a05a185dc8710de0473612919b7b444b62ce7fd25d3a069d052",
+    "glb": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/3d/tour_torture_wheel.glb",
+    "glb_sha256": "00ab98db2bbaa3fdd65fdf019990d509389c6cb3a24001e792ae61dd3fbd9e46",
+    "yaw": [
+      -20,
+      0,
+      20
+    ],
+    "textures": [
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_0_contact.png",
+        "size": [
+          358,
+          141
+        ],
+        "sha256": "815cdd226a8b24412a91c196cb094a8eb4b1066562f674c6cff7960baa8f4c3b"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_0_diffuse.png",
+        "size": [
+          336,
+          540
+        ],
+        "sha256": "8d99d8f76ad181e8c9a170b43bd88a4c1d9fb30268a9b6f4e13c76b8f15e99d9"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_0_normal.png",
+        "size": [
+          336,
+          540
+        ],
+        "sha256": "89e9688fb8f9d4712a408d708fb1f20bad600a01f09fb20b9e4a5ef5062624bb"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_1_contact.png",
+        "size": [
+          384,
+          141
+        ],
+        "sha256": "63569112d0afb520e703463e8221a51d6b6f150f5cf166f96ad5dc2de58ff66a"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_1_diffuse.png",
+        "size": [
+          362,
+          540
+        ],
+        "sha256": "7a22e1d93bad970ac22824f25876aba7de8f4f85c3d7a7348d75ba1c0cf25d3f"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_1_normal.png",
+        "size": [
+          362,
+          540
+        ],
+        "sha256": "2de737f5f5882407531434ba4484ea4a538fba374fea7a354ef0febbe6af3265"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_2_contact.png",
+        "size": [
+          360,
+          141
+        ],
+        "sha256": "360c8a3d7960bf88d4e8068beab44193e08e25d3b112bc3cfdee1386c2f4be52"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_2_diffuse.png",
+        "size": [
+          338,
+          540
+        ],
+        "sha256": "9f581ed2c649f86eb3f2ab1e533663cc6c4eba676e8bdea66a57f2efd4adbccf"
+      },
+      {
+        "file": "godot/assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_2_normal.png",
+        "size": [
+          338,
+          540
+        ],
+        "sha256": "19b20004d01a19c4db83e07595a7a9b5cb0ac20a2ebd460d1aa6f2d4ab4ceef2"
+      }
+    ]
+  }
+]

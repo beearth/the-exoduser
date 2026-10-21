@@ -1,0 +1,29 @@
+{
+  "concept": "tour_blood_basin.png",
+  "concept_sha256": "fa6ddfc750d0083a17c90b28ef2e0c4bab6167da784e863c366022bca7a3d190",
+  "concept_median": [
+    0.2549019607843137,
+    0.06666666666666667,
+    0.07450980392156863
+  ],
+  "rgb_gain": [
+    1.18,
+    0.78,
+    0.78
+  ],
+  "ao_strength": 0.35,
+  "exposure": 1.85,
+  "foot_luma_threshold": 0.15,
+  "foot_lift": 0.11,
+  "foot_start": 0.65,
+  "saturation": 0.9,
+  "contrast": 1.04,
+  "unsharp": [
+    0.7,
+    25,
+    4
+  ],
+  "normal_xy_gain": 1.35,
+  "denoise_median": 3,
+  "denoise_gaussian": 0.28
+}

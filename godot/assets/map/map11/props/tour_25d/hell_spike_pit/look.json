@@ -1,0 +1,29 @@
+{
+  "concept": "hell_spike_pit.png",
+  "concept_sha256": "c886733d0084a69c08ffe698178092bc5acf44280a5284bfc2a1233421a4f6f2",
+  "concept_median": [
+    0.25882352941176473,
+    0.14901960784313725,
+    0.12941176470588237
+  ],
+  "rgb_gain": [
+    1.18,
+    0.871723581040471,
+    0.78
+  ],
+  "ao_strength": 0.35,
+  "exposure": 1.85,
+  "foot_luma_threshold": 0.15,
+  "foot_lift": 0.11,
+  "foot_start": 0.65,
+  "saturation": 0.9,
+  "contrast": 1.04,
+  "unsharp": [
+    0.7,
+    25,
+    4
+  ],
+  "normal_xy_gain": 1.35,
+  "denoise_median": 3,
+  "denoise_gaussian": 0.28
+}

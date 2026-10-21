@@ -55567,3 +55567,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-21 MAP11-25Db
 - 설계서 §19.5/ART_TEAM_MASTER 동기화. 기존 GLB의 NW 음영·offline AO·warm grade·normal 강화,흙받침 보존. PNG/hull/contact 해당3건만.
 - VISUAL VERDICT RETOUCH: A 원화보다 우수 기준 미달. perf1회checks3/fail0. _out/MAP11-25Db에A/B/C3뷰·1x/수치/DONE. 전체docs검색 docs-all-search.txt.
+
+
+## 2026-10-21 MAP11-21
+- 기준46768e84 전용branch: 사용자GLB7종×3yaw offline PNG diffuse+normal, 발치 밝기/약한샤프닝/콘셉트팔레트/AO.
+- 지옥 관광6장면15소품+6광원·기존횃불3, 평면bone/blood/cracked패치와넓은scatter 제거. 공통좌표SSOT를field원형충돌에연결.
+- 설계서§20·ART_TEAM_MASTER 좌표/수치/원본출처·검수·RETOUCH 경계 동기화. 전체docs관련검색은 _out/MAP11-21/docs-search.txt.
+- Main/Player/PC전투보호코드0, R읽기만, 격리저장·기존81277보존. 성능단회와캡처결과는 DONE.txt/perf.json.

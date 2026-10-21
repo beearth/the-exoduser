@@ -318,3 +318,21 @@ MAP11-19 런타임 최종 판정 **RETOUCH**: 원화의 큰 형태는 읽히나 
 ## MAP11-25Db — 2026-10-21 룩 보정 후보
 
 기존 MAP11-25D 절은1ca4603f 당시 이력. 현 수치·조명·AO·색·해상도·검수는 설계서 §19.5가 SSOT. NW key(.48+.78N·L),rim(.10,.075,.045),offline depth AO .55,exposure1.85/RGB(1.10,1.025,.86)/contrast1.12/saturation.92/normalXY1.65. PNG374×370/352×332/382×350,원래3배치만. 원GLB/콘셉트 읽기,신규생성0,PNG만runtime. near-vs-flat10.87783/255. A/B/C3뷰1x 확인 결과 **RETOUCH**: B보다 대비는 좋아졌으나 A보다 치열과 backside/검은 받침이 나쁨. 성능1회 field7.312ms/arena7.158ms p95,checks3/fail0,엄밀회귀판정불가. 증거 ~/exoduser-wt/_out/MAP11-25Db/DONE.txt 및 captures/.
+
+
+## MAP11-21 현황표 — 1-1 지옥 관광 코스 (2026-10-21)
+
+MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이력. 이번 전용branch의 현행은 [설계서 §20](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#20-map11-21--1-1-지옥-관광-코스-2026-10-21).
+
+| 산출물 | 출처 | 규격·적용 | 판정 |
+|---|---|---|---|
+| 7종3yaw=21종 | **MagicLight Seedream → Meshy image-to-3D → Godot 2.5D 렌더** | diffuse+normal21쌍/AO21, runtime PNG만. 새AI생성/과금0. 원본GLB 읽기만 | RETOUCH |
+| 입구/매달린숲/처형장/해골갈림길/심장/보스입구 | 위 모델15개 손배치 | 시체4/고치3/바퀴2+석주2/해골2/대야1/구덩이1, 빛웅덩이6+기존torch3 재사용. 실제좌표·크기·원형충돌은 §20 | 장면 구분 확인, GLB 면/재질 잔여 |
+| 바닥 | 기존피부·동맥 보존 | bone/blood/cracked patch와 넓은scatter runtime0. 뼈는 세워진 소품 발치 조각만 | 평면뼈장판 제거 |
+| 접지/렌더 | 25Db ortho/AO/key 재사용 | 발치lift.11/AO.35/unsharp25%/median3+blur.28/normalXY1.35. opaque bbox foot0·접촉AO.58·Y/4 | 기술수치는 perf.json, 시각 RETOUCH |
+| 검수 | 실제 Main / 격리user dir | 장면6×1600×900+1x/3뷰before-after/발치2장. 기존81277보존·동시최대2 | _out/MAP11-21/DONE.txt |
+
+전체 동일게임톤 PASS를 선언하지 않는다. skull 검은 면·대야 과포화·pillar/wheel의 원GLB 형상·고치 반복은 남는다. 원화 PASS, Meshy 결과, 2.5D 렌더·런타임 인수를 구분한다. source_manifest.json에 source/concept/GLB/PNG hash와 크기, 각look.json에 콘셉트median palette gain. commit/push/성능은 DONE.txt에 실제 결과만 기록.
+
+
+최종 단회 검수: **84 checks / 0 failures**, field p95 **7.594ms** / arena **7.146ms**, 각각≤8.33ms PASS. field p99 10.878ms / arena p99 8.196ms; 실보행·provider route·15원형충돌·노멀·bbox 틈0·Y/4·관문 PASS. 재측정0. 기존81277 공존 총최대2. 최종 캡처·벤치 SCRIPT/Parse/ERROR0(기존camera physics 경고만). 초기 배치진단/빈crop 오류는 수정 이력 로그에 보존했으며 최종PASS와 구분. torch 실물은 벽부착형 원화여서 단독 지지대 설득력도 RETOUCH 항목이다.

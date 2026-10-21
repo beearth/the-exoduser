@@ -664,3 +664,90 @@ MAP PRODUCTION REPORT (§23)
 | FILES | skull_25d PNG9+metadata,해당 hull/mask3건,offline render/finish,격리 QA harness,설계/ART/CHANGELOG. concurrent/unrelated tracked 변경0 |
 | GIT | base1ca4603f 자식,경로지정add/hook유효. SHA/remote/worktree제거 DONE.txt. main/강제/reset/rebase/배포0 |
 | VISUAL VERDICT / NEXT PASS | RETOUCH. 모델 backside/하단 형상·치열은 룩만으로 복원 한계. 새 생성/후속백로그 착수0 |
+
+
+## 20. MAP11-21 — 1-1 지옥 관광 코스 (2026-10-21)
+
+사용자 지정 기준 `46768e84e59f753baf2185f2bf45927349324d3a`(codex/map11-25db-20261021)에서 분기한 후보. **VISUAL VERDICT: RETOUCH**. §16~19.5의 패치12/평면 scatter/소품8/해골3배치·85%샤프닝은 이전 후보의 이력이다. 이번 후보의 현행은 아래15소품·6장면·21yaw다. 원본 웹 본편/PC 전투·보호설계는 변경하지 않았다.
+
+### 20.1 장면과 광원
+
+진행 순서는 START→서측 숲→서측 처형장→상단 갈림길→심장→관문이다. 주 전투면/기존 분기 동선과 외곽 mass는 보존하며, 모든 새 소품은 field에만 존재한다. arena 원점(0,-8000)의 R1700 내부에는 추가0. 원래8광원+아래6광원=14등록, 기존 화면 밖/space 컬링·최대4 pool+player1 cap 유지. 광원은 field에서만 켜지며 radius 사각형과 카메라의 교집합을 사용한다.
+
+| 순서·장면 | 소품 | 카메라(Player 위치) | 광원 위치 | 반경 | RGB / 에너지 / 맥동 | 실물 광원·근거 |
+|---|---|---|---|---|---|---|
+| 1 숲 입구 | 꼬챙이 시체4 | (-200,3290) | (-410,3270) | 930 | (1,.46,.20) / .85 / .025 | 기존 횃불 PNG 재사용 |
+| 2 매달린 숲 | 고치 나무3 | (-3070,1250) | (-3220,1230) | 1000 | (.92,.36,.19) / .88 / .025 | 고치 조직 생체 발광 연출; 고치 움직임 신규0 |
+| 3 처형장 공터 | 고문 바퀴2+사슬 석주2 | (-3450,-800) | (-3510,-1050) | 900 | (1,.42,.16) / 1 / .025 | 기존 횃불 PNG 재사용 |
+| 4 해골 길목 | 두개골 피라미드2 | (-1350,-1870) | (-1270,-2310) | 740 | (1,.43,.20) / .90 / .025 | 뼈 제단의 빛 웅덩이; 해골 자체 애니메이션0 |
+| 5 심장 제단 | 피 대야1 | (-440,-2190) | (-600,-2460) | 610 | (1,.25,.13) / .95 / .025 | 기존 심장 제단 빛과 연계 |
+| 6 보스룸 입구 | 창 울타리 피 구덩이1 | (-160,-3570) | (-540,-3880) | 650 | (1,.38,.15) / .86 / .025 | 관문 횃불+기존 관문 조명 |
+
+`tour_layout.gd`가 좌표·variant·크기·충돌의 공통 SSOT. `field_recipe.gd`가 동일 ROWS를 `blocks_move=true/blocks_los=false` 원형 solid로 provider에 등록하므로 물리·이동 쿼리가 같은 발치를 쓴다. 기존 route clearance96와 anchor를 유지한다. 초기 배치의 3경로 침범은 수정; 최종 provider 검수 결과는 아래 기술 기록. field revision1 계약은 유지, content hash에는 새 solids가 포함된다.
+
+| id | GLB/PNG 이름 | yaw | 발치 | 표시 높이 | 충돌 반경 | 장면 |
+|---|---|---|---|---|---|---|
+| 00 | hell_impaled_corpse | -20° | (-610,3460) | 245.0 | 27.0 | 1 |
+| 01 | hell_impaled_corpse | 0° | (460,3200) | 230.0 | 27.0 | 1 |
+| 02 | hell_impaled_corpse | 20° | (-850,3060) | 250.0 | 27.0 | 1 |
+| 03 | hell_impaled_corpse | -20° | (200,2910) | 220.0 | 25.0 | 1 |
+| 04 | tour_cocoon_tree | -20° | (-3200,1580) | 340.0 | 62.0 | 2 |
+| 05 | tour_cocoon_tree | 0° | (-3400,1080) | 315.0 | 58.0 | 2 |
+| 06 | tour_cocoon_tree | 20° | (-3300,650) | 325.0 | 60.0 | 2 |
+| 07 | tour_torture_wheel | -20° | (-3870,-670) | 270.0 | 65.0 | 3 |
+| 08 | tour_torture_wheel | 20° | (-2750,-1070) | 245.0 | 58.0 | 3 |
+| 09 | tour_chained_pillar | -20° | (-3810,-1170) | 300.0 | 48.0 | 3 |
+| 10 | tour_chained_pillar | 0° | (-3100,-700) | 275.0 | 45.0 | 3 |
+| 11 | skull_pyramid | -20° | (-1500,-2370) | 200.0 | 72.0 | 4 |
+| 12 | skull_pyramid | 20° | (-1730,-1810) | 190.0 | 68.0 | 4 |
+| 13 | tour_blood_basin | 0° | (-600,-2390) | 170.0 | 75.0 | 5 |
+| 14 | hell_spike_pit | 0° | (-530,-3770) | 200.0 | 105.0 | 6 |
+
+### 20.2 렌더·팔레트·접지 계약
+
+| 항목 | 현행 |
+|---|---|
+| 출처 | 사용자 제공 MagicLight Seedream 원화 → Meshy image-to-3D GLB → Godot offline 2.5D. 신규 AI 생성/과금0. source_manifest.json에 원본·GLB·PNG hash/규격 |
+| 입력 | R/outputs/map11-art-proof-20261021/3d/의 지정7GLB. 파일은 읽기만, GLB/preview/depth는 runtime 리소스에 넣지 않음 |
+| 렌더 | `godot/tools/map11_21_render.gd`: 1024² SubViewport, ortho(0,6,8), 고도36.86989765°,지면 압축.6, yaw -20/0/+20 각각3개. diffuse/normal/depth 동일 bbox crop. 7×3=21 diffuse+21 normal; AO용 depth는 _out/raw만 |
+| 높이 | skull400 / cocoon680 / wheel540 / pillar600 / basin340 / corpse490 / pit400 raster px. 표의 표시 높이 대비2배를 기본으로 함; 실제 파일별 가로폭은 render.json/source_manifest.json |
+| 키라이트 | view normalize(-.55,.72,.8), ambient.48+key.78×NdotL; rim RGB(.10,.075,.045), detail-normal strength=source*.35 |
+| AO | depth 2/5/10px×8방향, bias.008/ramp.06/range.22/sigma.65 유지, strength.55→.35 |
+| 그레이딩 | exposure1.85, 원 콘셉트의 녹색 key/명도≤.12 제외 median chroma gain clip .78~1.18. 파일별 RGB gain은 각look.json. saturation.90/contrast1.04/pivot.25/ceiling.94 |
+| 발치 명도 | 하단65~100%에 dark-luma threshold.15, 최대lift.11×RGB(1,.87,.78). 검은 texel discard0·원래 alpha 보존 |
+| 표면 | unsharp(.7,25%,threshold4), median3+Gaussian.28px로 고주파 잔점 완화. 전 후보85%보다 감소. 원GLB의 topology/UV 빈 면을 복구한 것은 아님 |
+| 노멀 | view XY1.35×후 normalize, green반전0. CanvasTexture diffuse+normal, specular(.10,.08,.06)/shininess.12, linear+mip |
+| 발치 | alpha≥32/255 convex hull bbox의 하단중앙을 foot에 정확히 맞춤. GroundContact.align; offset의 .94 보정 사용0, Y/4 절대 z정렬 유지 |
+| 접촉AO | lower78% mask, pad2%height, maxfilter.8%height/gaussian.5%height, fade77~90%. 최대512×256. sprite와 같은 crop/scale/rotation, 바닥z-2987/alpha.58. 틈0, 다른 actor 위에 그리는 shadow0 |
+| 바닥 | patch_bone_pile / patch_bloodpool_roots / patch_cracked_flesh_slab 배치 전부0, FloorPatch와 GroundStory scatter 생성0. 파일은 복구용으로 보존. 기존 생체 바닥/동맥 불변. 뼈는 GLB 발치 조각만 |
+| 횃불 | 기존 diablo_field_torch_base_v1.png·flame_v1.png 재사용, 3실물. base alpha bbox/표시높이125/foot=light+(0,90). flame4×2/셀418×472/8프레임9fps/native AnimatedSprite2D, offset(18,-87)/scale.12. 작은 시각 fixture이며 신규 이동장애물0 |
+| 실행 | 모든 import/render/capture/perf cwd는 ~/exoduser-wt/MAP11-21. 실제 저장폴더 사용0, EXODUSER-map11-21-Isolated-20261021(기준before만 기존25Db 격리명)으로 실행 후 project.godot 원byte복원. 기존81277 보존, 자체1개씩 동시최대2 |
+| 런타임 경계 | PNG preload만; GLB runtime0, 틱의 목록API/ResourceLoader 추가0. tools/tests export제외 유지. PC/Main/Player 코드수정0, 게임UI 개발문구 추가0 |
+
+### 20.3 시각·기술 검수와 인수 경계
+
+실제 Main 1600×900 6장면+각1x crop, 기준46768e84와 동일 field/west/east 카메라3뷰 before/after, 별도 발치2뷰+320×270 원배율 crop. 비교는 스케일/색보정 없이 side-by-side. camera zoom.70/offset(0,-180), 실시간 조명 위상·HUD/RNG 시작 상태 차이는 남는다. 기준3뷰는 이번 worktree에서 변경 전 직접 캡처했다. 저장 경로 `~/exoduser-wt/_out/MAP11-21/captures/`.
+
+**RETOUCH 근거:** 장소별 스토리 소재는 구분되고 평면 뼈장판이 사라졌으나, skull pedestal의 평평한 검은 면·blood basin의 과포화 붉은 면·일부 pillar/wheel GLB의 거친 세부/빈 면·매달린 숲의 반복 실루엣이 남는다. PNG 룩 조정만으로 원GLB 형상 한계를 해결했다고 주장하지 않는다. 최종 인수 PASS/AAA 완성/Steam 배포가 아니다.
+
+벤치와 최종 assertion 수치는 _out/MAP11-21/perf.json 및 DONE.txt를 따른다. 기존 PID81277 공존 조건의 macOS GL 1920×1080/240cap/60Hz, field/arena 각각 실제 Player 입력4방향×150=600틱을 단회 측정. Windows/밀집전투/GPU timestamp/실행중인 다른창 자동갱신은 미검수.
+
+### 20.4 MAP PRODUCTION REPORT
+
+| 구역 | 보고 |
+|---|---|
+| STAGE / MASTER | CH1-1 관광 코스. 기존 silhouette·주동선·side pocket·arena/breathing/travel void 유지. DETAIL GATE6→4접지→8카메라→TECH |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH와 기존 major hole 변경0. 이번 대형외곽 제작 PASS 주장이 아님 |
+| LARGE / MEDIUM | 기존 연결/composite/overlap 불변. 신규는 장면별7종15개,3yaw씩 렌더. 반복 고치나무 실루엣 잔여 |
+| GROUND | 평면 패치·scatter 제거, 발치bbox/AO 고정. GLB pedestal 잔여 RETOUCH |
+| PLAYABLE | 기존 route/anchor clearance96 보존, 새 발치 원만 추가. field/arena 실보행·관문은 최종perf 검수, 밀집전투 미검수 |
+| LANDMARK | 기존primary heart 유지, secondary6장면 소품과 주변광으로 연결. 중앙 combat void 신규 배치0 |
+| CAMERA QA | START/EARLY=입구·매달린숲; SIDE L=처형장; LANDMARK=해골·심장; EXIT=구덩이. 기존field/west/east3뷰 전후. arena 신규캡처0 |
+| TECH QA | route/collision/normal/depth/ground gap 및 성능 최종 단회 검수. pageerror/404=N/A native. 바닥 청크/seam 원본변경0 |
+| FILES | tour_25d PNG/metadata, tour_layout/textures, product_detail, field_recipe, contact data/masks, offline tools/capture/benchmark, 본설계·ART·CHANGELOG. 타인 WIP 수정0 |
+| GIT | 전용branch만 정상hook commit/push 후 원격SHA 읽기대조, worktree 제거. merge/main push/force/reset/rebase/deploy0 |
+| VISUAL VERDICT | **RETOUCH** |
+| NEXT PASS | 원 GLB의 빈 면/검은 pedestal/대야 재질 복구가 필요. 새 생성·다음백로그 자동착수0 |
+
+
+최종 단회 검수: **84 checks / 0 failures**, field p95 **7.594ms** / arena **7.146ms**, 각각≤8.33ms PASS. field p99 10.878ms / arena p99 8.196ms; 실보행·provider route·15원형충돌·노멀·bbox 틈0·Y/4·관문 PASS. 재측정0. 기존81277 공존 총최대2. 최종 캡처·벤치 SCRIPT/Parse/ERROR0(기존camera physics 경고만). 초기 배치진단/빈crop 오류는 수정 이력 로그에 보존했으며 최종PASS와 구분. torch 실물은 벽부착형 원화여서 단독 지지대 설득력도 RETOUCH 항목이다.
