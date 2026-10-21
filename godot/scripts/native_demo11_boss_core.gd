@@ -12,6 +12,8 @@ const SPACE = preload("res://scripts/native_boss_space.gd")
 const BODY = preload("res://scripts/native_demo11_boss_body.gd")
 const PROJ = preload("res://scripts/native_ch1_boss_projectile_patterns.gd")
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
+const DEATH = preload("res://scripts/native_demo11_boss_death.gd")
+const QUEUES = preload("res://scripts/native_ch1_boss_queues.gd")
 const T := 40.0
 const BOSS_SFX0 := {"howl": "boss_howl", "howlP": 0.7, "die": "death_boss", "dieP": 0.7, "hit": "boss_hit", "hitP": 0.7, "hurt": "monster_hurt", "hurtP": 0.7} # 24758
 const OWNED_COMMANDS := ["source_updateE_prefix", "phase_transition_commit", "source_updateE_suffix", "source_global_write",
@@ -47,9 +49,13 @@ var counters := {"ticks": 0, "alive_ticks": 0, "dead_ticks": 0, "prefix": 0, "pr
 	"phase_commits": 0, "global_writes": 0, "contacts": 0, "hurtP": 0, "player_damage": 0, "parries": 0,
 	"presentation_ported": 0, "presentation_unported": 0, "boss_hits": 0, "boss_damage": 0, "deaths": 0,
 	"immediate_revives": 0, "fallback_revives": 0, "final_deaths": 0, "projectile_contacts": 0,
-	"projectile_hits": 0, "rhythm_volleys": 0, "orb_volleys": 0, "rng_prefix": 0, "not_ready": 0}
+	"projectile_hits": 0, "rhythm_volleys": 0, "orb_volleys": 0, "rng_prefix": 0, "not_ready": 0,
+	"queue_hits": 0, "mines_spawned": 0, "summon_unported": 0, "projectile_reflected": 0}
 var _unported: Dictionary = {}
 var _last_contact: Dictionary = {}
+var _death_exec: Object
+var _mines: Array = []
+var _q_sp := 0.0
 
 static func install_native_boot(owner_main: Node) -> Node2D:
 	var world: Node = owner_main.get("world")
@@ -182,7 +188,9 @@ func _tick_alive(sp: float) -> void:
 	var frame := _build_frame(sp)
 	_current_frame = frame
 	if not actor.begin_tick(frame):
-		_error = "actor_begin_tick_rejected:" + str(actor.snapshot().get("reason"))
+		var asnap: Dictionary = actor.snapshot()
+		_error = "actor_begin_tick_rejected:" + str(asnap.get("reason")) + ":stage=" + str(asnap.get("stage")) \
+			+ ":pending=" + str(asnap.get("pending", {}).get("command", ""))
 		counters.not_ready += 1
 	else:
 		var snap: Dictionary = actor.snapshot()
@@ -190,68 +198,23 @@ func _tick_alive(sp: float) -> void:
 			_error = "actor_not_ready:" + str(snap.reason)
 	_last_frame = frame
 
-## 사망 후 34496–34535: _reviveTimer 소진 → 2차 판정
+## 사망 후 34493–34535: _reviveTimer 소진 → 2차 판정(순수 모듈 native_demo11_boss_death.gd)
 func _tick_dead(sp: float) -> void:
 	counters.dead_ticks += 1
 	if _n(E.get("_reviveTimer")) <= 0: return
-	E._reviveTimer = _n(E._reviveTimer) - sp
-	# 34499–34500 부활 전조 파티클(시각 RNG 소비)
-	if _rng("revive_precursor_gate", 34499) > 0.85:
-		var a: float = _rng("revive_precursor_angle", 34499) * PI * 2
-		var r: float = 15 + _rng("revive_precursor_radius", 34499) * 20
-		var sz: float = 2 + _rng("revive_precursor_size", 34500) * 2
-		var life: float = 10 + _rng("revive_precursor_life", 34500) * 6
-		_present_pool_part(_n(E.get("_reviveX")) + cos(a) * r, _n(E.get("_reviveY")) + sin(a) * r, -sin(a) * 1.5, cos(a) * 1.5, "#6622aa", sz, life)
-	if E._reviveTimer > 0: return
-	E._reviveTimer = 0
-	var roll: float = _n(E.get("_bossRevRoll")) if E.get("_bossRevRoll") != null else 1.0
-	if roll < _n(E.get("_bossRevChance")):
-		# 34504–34523 폴백 부활 성공
-		E._revPts = maxf(0.0, _n(E.get("_revPts")) - 10)
-		E.alive = true
-		E.x = E._reviveX
-		E.y = E._reviveY
-		E.hp = FORMULA.js_to_int32(_n(E.mhp) * 0.5)
-		E.eShield = 0
-		E.eShieldMax = 0
-		E.s = "recover"
-		E.st2 = 60
-		E.stunned = 0
-		E.kb = {"x": 0, "y": 0}
-		E.reviveIframes = 90
-		E._bossRevJudged = false
-		_g_write({"bossAlive": true})
-		if not PREFIX._t(E.get("_origR")): E._origR = E.r
-		var rv_scale: float = maxf(0.40, _n(E.get("_revPts")) / maxf(1.0, _n(E.get("_maxRevPts")) if PREFIX._t(E.get("_maxRevPts")) else 150.0))
-		E.r = maxf(10.0, FORMULA.js_to_int32(_n(E._origR) * rv_scale))
-		var shrink: int = FORMULA.js_to_int32((1 - rv_scale) * 100)
-		_text(E.x, _n(E.y) - 50, _tr("☠ 지옥에서 귀환!"), "#ff4400", 100)
-		_text(E.x, _n(E.y) - 30, _tr("부활 성공! 부활력 ") + str(int(_n(E._revPts))) + "/" + str(int(_n(E.get("_maxRevPts")))), "#ff8844", 60)
-		if shrink > 0: _text(E.x, _n(E.y) - 70, "▼ " + str(shrink) + "%", "#aaffcc", 55)
-		_unported_note("playVFXAng:boss_revive_boom")
-		E._tpWarnT = 0
-		E._tpWarnX = 0
-		E._tpWarnY = 0
-		E._spawnT = 55
-		E._bossReviveVFXPending = 40
-		_rng("boss_revive_sfx_pitch", 34522) # playSample('boss_revive',1.0,_r(1.0,.08))
-		_unported_note("playSample:boss_revive")
-		counters.fallback_revives += 1
-		_cancel_open_death("boss_fallback_revive_34504")
-		_push_actor_sync()
-	else:
-		# 34525–34532 완전 사망
-		E._bossRevived = false
-		E._reviveTimer = 0
-		_text(E.get("_reviveX"), _n(E.get("_reviveY")) - 50, _tr("☠ 완전 사망!"), "#ff2222", 100)
-		var depleted: bool = _n(E.get("_revPts")) <= 0
-		_text(E.get("_reviveX"), _n(E.get("_reviveY")) - 30, _tr("부활력 고갈!") if depleted else _tr("부활 실패..."), "#ff4444" if depleted else "#888888", 60)
-		_shake(8)
-		_g_write({"_flashT": 4, "_flashCol": "#ffffff"})
-		_rng("boss_final_death_sfx_pitch", 34530) # playSample('boss_final_death',1.0,_r(1.0,.05))
-		_unported_note("playSample:boss_final_death")
-		_publish_final("fallback_failed_34525")
-		_push_actor_sync()
+	_death_exec = null
+	var r: Dictionary = DEATH.fallback_tick(E, sp, self)
+	if r.get("ok") != true:
+		_error = "boss_fallback_tick:" + str(r.get("reason"))
+		return
+	match str(r.outcome):
+		"revived":
+			counters.fallback_revives += 1
+			_cancel_open_death("boss_fallback_revive_34502")
+			_push_actor_sync()
+		"final":
+			_publish_final("fallback_failed_34527", {"anchor": "G34525"})
+			_push_actor_sync()
 
 ## 사망 상태를 actor 에 반영(AI 미실행 return_update prefix) — HUD/뷰가 actor 스냅샷을 읽는다.
 func _push_actor_sync() -> void:
@@ -271,7 +234,8 @@ func _build_frame(sp: float) -> Dictionary:
 	var context := {"frame": float(g.get("frame", main.world.get_native_frame())) if _numv(g.get("frame")) else float(main.world.get_native_frame()),
 		"druid_finale": false, "vfx_available": true, "thorn_first": false, "drop_counter": drop,
 		"etype_range": PREFIX.ETYPE0_RANGE, "element_color": "#bbbbbb", "shake": shake_opt, "hit_stop": hit_stop_opt,
-		"lesson_active": _lesson_active(), "qa_storage_active": false, "aggro_active": false, "aggro_target": null}
+		"lesson_active": _lesson_active(), "qa_storage_active": false, "aggro_active": false, "aggro_target": null,
+		"pc_core": self} # PC-BOSS-CORE: misc 상태 모듈 owner(native_ch1_boss_misc_states.gd)
 	var globals := _globals_live()
 	for key in ["shake", "_flashT", "_flashCol", "hitStop", "slowMo"]:
 		if g.has(key): globals[key] = g[key]
@@ -725,155 +689,55 @@ func observe_boss_hurte_event(kind: String, payload: Dictionary) -> void:
 		counters.boss_damage += _n(payload.get("amount")) + _n(payload.get("absorbed"))
 
 ## 42515–42649 보스 사망 분기 (executor 가 hp<=0 직후 호출). 반환 {ok, revived, pending, reason}
-func resolve_boss_death(_b: Node, executor: Object, ctx: Dictionary) -> Dictionary:
+func resolve_boss_death(_b: Node, executor: Object, _ctx: Dictionary) -> Dictionary:
 	counters.deaths += 1
-	E.deaths = int(_n(E.get("deaths"))) + 1
-	var si := 0
-	var bhell := 0 # STG[0].hell
-	var is_h7: bool = bhell == 6
-	var suppress: Variant = executor.call("_affix", "antiRevive", 42523)
-	if suppress == null: return {"ok": false, "reason": "antiRevive_not_ready"}
-	var b_suppress: float = float(suppress)
-	var hp_zone := false # G._fireZones holyPrison: 부트 G 부재
-	var rev_cost := 10
-	if b_suppress > 0: rev_cost += FORMULA.js_to_int32(minf(5.0, b_suppress * 10 + 2))
-	if hp_zone: rev_cost += 3
-	if float(main.player.hp) >= float(main.player.max_hp): rev_cost += 2
-	E._revPts = maxf(0.0, _n(E.get("_revPts")) - rev_cost)
-	var do_revive := false
-	var rev_base: float = 2.00 + si * 0.05
-	var rev_ch: float = maxf(0.0, rev_base - (_n(E.deaths) - 1) * 0.15 - b_suppress)
-	if _n(E._revPts) > 0:
-		var roll: Variant = executor.call("_rand", 42543, "boss_immediate_revive")
-		if roll == null: return {"ok": false, "reason": "rand_not_ready"}
-		do_revive = float(roll) < rev_ch
-	var rev_pct: int = FORMULA.js_to_int32(rev_ch * 100)
-	var bx: float = _n(E.x)
-	var by: float = _n(E.y)
-	if do_revive:
-		_text(bx, by - 55, _tr("💀 ") + str(int(E.deaths)) + "차 부활! " + str(rev_pct) + "%", "#ff2244" if rev_pct >= 80 else ("#ff8844" if rev_pct >= 50 else "#ffcc44"), 50)
-		_text(bx, by - 70, "부활력 -" + str(rev_cost) + " (" + str(int(_n(E._revPts))) + "/" + str(int(_n(E.get("_maxRevPts")))) + ")", "#ffdd44" if rev_cost >= 13 else "#ffffff", 60)
-		if b_suppress > 0: _text(bx, by - 85, _tr("✟ 신성력 억제! +") + str(FORMULA.js_to_int32(minf(5.0, b_suppress * 10 + 2))), "#ffffff", 50)
-	elif _n(E._revPts) <= 0:
-		_text(bx, by - 55, _tr("☠ 부활력 고갈!"), "#ff2222", 80)
-		_text(bx, by - 40, "0/" + str(int(_n(E.get("_maxRevPts")))), "#ff4444", 50)
-	elif b_suppress > 0:
-		_text(bx, by - 40, _tr("✟ 신성력 억제! (") + str(rev_pct) + "%)", "#ffffff", 60)
-	else:
-		_text(bx, by - 40, _tr("부활 실패 (") + str(rev_pct) + "%)", "#bbbbbb", 40)
-	if do_revive:
-		_immediate_revive(is_h7)
+	_death_exec = executor
+	var r1: Dictionary = DEATH.immediate(E, self)
+	if r1.get("ok") != true:
+		_death_exec = null
+		return {"ok": false, "reason": r1.get("reason")}
+	if r1.get("revived") == true:
 		counters.immediate_revives += 1
+		_death_exec = null
+		_sync_body()
 		return {"ok": true, "revived": true, "pending": false}
-	# 42641–42649 2차 폴백 예약
-	var pending := false
-	if not PREFIX._t(E.get("_bossRevJudged")):
-		E._bossRevJudged = true
-		E._reviveTimer = 180
-		E._reviveX = E.x
-		E._reviveY = E.y
-		var sup2: Variant = executor.call("_affix", "antiRevive", 42644)
-		if sup2 == null: return {"ok": false, "reason": "antiRevive_not_ready"}
-		if _n(E.get("_revPts")) <= 0:
-			E._bossRevChance = 0
-			E._bossRevRoll = 1
-		else:
-			E._bossRevChance = maxf(0.0, (1.50 + si * 0.05) - _n(E.deaths) * 0.25 - float(sup2))
-			var r2: Variant = executor.call("_rand", 42647, "boss_fallback_revive_roll")
-			if r2 == null: return {"ok": false, "reason": "rand_not_ready"}
-			E._bossRevRoll = float(r2)
-		E._bossRevived = true
-		pending = true
-	return {"ok": true, "revived": false, "pending": pending}
+	var r2: Dictionary = DEATH.fallback_reserve(E, self)
+	_death_exec = null
+	if r2.get("ok") != true: return {"ok": false, "reason": r2.get("reason")}
+	return {"ok": true, "revived": false, "pending": r2.get("pending") == true}
 
-## 42561–42622 1차 즉시 부활(성공)
-func _immediate_revive(is_h7: bool) -> void:
-	E.hp = E.mhp
-	E.eShield = 0
-	E.eShieldMax = 0
-	E._bossPhase = 0
-	E.alive = true
-	E.s = "recover"
-	E.st2 = 90
-	E.stunned = 0
-	E._bossRevJudged = true
-	E._comboSeq = null
-	E._comboIdx = 0
-	E._feinting = false
-	E._delaying = 0
-	E.maxPoise = FORMULA.js_to_int32(_n(E.maxPoise) * 1.5)
-	E.poise = FORMULA.js_to_int32(_n(E.maxPoise) * 0.25)
-	E.reviveIframes = 90
-	E.atk = FORMULA.js_to_int32(_n(E.atk) * (2.0 if is_h7 else 1.5))
-	E.speed = minf(_n(E.speed) * 1.25, 2.0 if is_h7 else 1.6)
-	E.bossPatCd = maxf(20.0 if is_h7 else 60.0, _n(E.bossPatCd) - 30)
-	if not PREFIX._t(E.get("_origR")): E._origR = E.r
-	var rv_scale: float = maxf(0.40, _n(E.get("_revPts")) / maxf(1.0, _n(E.get("_maxRevPts")) if PREFIX._t(E.get("_maxRevPts")) else 150.0))
-	E.r = maxf(10.0, FORMULA.js_to_int32(_n(E._origR) * rv_scale))
-	var shrink: int = FORMULA.js_to_int32((1 - rv_scale) * 100)
-	if shrink > 0: _text(E.x, _n(E.y) - 85, "▼ " + str(shrink) + "%", "#aaffcc", 55)
-	var ox: float = _n(E.x)
-	var oy: float = _n(E.y)
-	_unported_note("playVFXAng:boss_revive_boom")
-	_unported_note("_addBlastLight")
-	var p_b: Dictionary = _player_b()
-	var tp_ang: float = _n(p_b.facing) + PI + (_rng("boss_revive_tp_angle", 42596) - 0.5) * 0.8
-	var tp_dist: float = 80 + _n(E.deaths) * 20
-	var tx: float = _n(p_b.x) + cos(tp_ang) * tp_dist
-	var ty: float = _n(p_b.y) + sin(tp_ang) * tp_dist
-	if pf_can_move(tx, ty, _n(E.r)):
-		E.x = tx; E.y = ty
-	else:
-		var sp_w: Variant = main.world.native_safe_point(_b2w(_n(p_b.x) + cos(tp_ang) * 50, _n(p_b.y) + sin(tp_ang) * 50).x,
-			_b2w(_n(p_b.x) + cos(tp_ang) * 50, _n(p_b.y) + sin(tp_ang) * 50).y, space.len_to_world(_n(E.r)))
-		if sp_w is Dictionary:
-			var b := _w2b(Vector2(float(sp_w.x), float(sp_w.y)))
-			E.x = b.x; E.y = b.y
-	_unported_note("_addTpBolt")
-	_text(E.x, _n(E.y) - 50, _tr("🔥부활!"), "#ff4400", 40)
-	E._tpWarnT = 0
-	E._tpWarnX = 0
-	E._tpWarnY = 0
-	E._spawnT = 55
-	E._bossReviveVFXPending = 40
-	_rng("boss_revive_sfx_pitch", 42601)
-	_unported_note("playSample:boss_revive")
-	# 42603–42609 부활 충격파
-	var wave_r: float = 100 + _n(E.deaths) * 30
-	var wave_dmg: int = FORMULA.js_to_int32(_n(E.atk) * (0.5 + _n(E.deaths) * 0.15))
-	p_b = _player_b()
-	if PREFIX._dst(_n(p_b.x), _n(p_b.y), _n(E.x), _n(E.y)) < wave_r and float(main.player.iframes) <= 0 and str(main.player.state) != "charge":
-		_hurt_player(wave_dmg, {"dtype": "magic"}, Vector2.ZERO)
-		var ka: float = atan2(_n(p_b.y) - _n(E.y), _n(p_b.x) - _n(E.x))
-		_player_kb_add(cos(ka) * 12, sin(ka) * 12)
-		_present("addTxt", [p_b.x, _n(p_b.y) - 20, {"call": "_T", "args": ["🌊충격파!"]}, "#ff4400", 30], 42608)
-	for k in range(36):
-		var a: float = PI * 2 * k / 36.0
-		var spd: float = 10.0 if is_h7 else 7.0
-		_present_pool_part(_n(E.x) + cos(a) * 20, _n(E.y) + sin(a) * 20, cos(a) * spd, sin(a) * spd, "#ff4400",
-			3 + _rng("revive_ring_size", 42610) * 3, 18 + _rng("revive_ring_life", 42610) * 8)
-	# 42612–42619 2차 부활부터 분노 폭발 탄
-	if _n(E.deaths) >= 2:
-		var cnt: int = 8 + int(_n(E.deaths)) * 4
-		for bi in range(cnt):
-			var ba: float = PI * 2 * bi / cnt
-			var red: bool = bi % 2 == 0
-			var col: String = "#cc1100" if red else "hsl(" + str(int(bi * 360.0 / cnt)) + ",100%,60%)"
-			var props := {"x": E.x, "y": E.y, "vx": cos(ba) * 3, "vy": sin(ba) * 3, "dmg": FORMULA.js_to_int32(_n(E.atk) * (0.8 if red else 0.6)),
-				"el": E.el, "friendly": false, "life": 600, "ml": 600, "col": col, "sz": 2.0 if red else 1.8}
-			if red:
-				props.redBean = true
-				props.homing = true
-			_spawn_boss_projectile(props)
-		_text(E.x, _n(E.y) - 65, _tr("💀 분노 폭발!"), "#ff0000", 50)
-	# 42620 동반부활: G._killedBosses 비어 있음 → RNG 0(단락)
-	var g: Dictionary = main.source_state.read_current_g()
-	if g.get("_killedBosses") is Array and not (g._killedBosses as Array).is_empty():
-		_note_unported("companion_revive_10pct")
-	var mult: String = str(int(pow(2, _n(E.deaths))))
-	_text(E.x, _n(E.y) - 35, ("👿 " if is_h7 else "💀 ") + str(int(E.deaths)) + "차 부활! (×" + mult + ")", "#ff0044" if is_h7 else "#ff2244", 70)
-	_text(E.x, _n(E.y) - 20, "HP " + str(int(_n(E.mhp))), "#ff4488" if is_h7 else "#ff6666", 50)
-	_sync_body()
+# ── 사망 판정 env(bd_*) — native_demo11_boss_death.gd ──
+func bd_affix(id: String, line: int) -> Variant:
+	if _death_exec != null: return _death_exec.call("_affix", id, line)
+	var b: Dictionary = main.source_providers.get_provider_bundle() if main.get("source_providers") != null else {}
+	var r: Dictionary = b.affix.eq_affix(id) if b.get("affix") != null else {}
+	return float(r.get("value", 0)) if str(r.get("status")) in ["READY", "READY_PARTIAL_AFTER_SOURCE_THROW"] else null
+func bd_rng(tag: String, line: int) -> Variant:
+	if _death_exec != null: return _death_exec.call("_rand", line, tag)
+	return _rng(tag, line)
+func bd_text(x: Variant, y: Variant, text: String, col: String, life: Variant) -> void: _text(x, y, text, col, life)
+func bd_present(cmd: String, args: Array, line: int) -> void: _present(cmd, args, line)
+func bd_hurt_player(dmg: int, opts: Dictionary) -> void: _hurt_player(dmg, opts, Vector2.ZERO)
+func bd_kb_add(kx: float, ky: float) -> void: _player_kb_add(kx, ky)
+func bd_can_move(x: float, y: float, r: float) -> bool: return pf_can_move(x, y, r)
+func bd_safe_pt(x: float, y: float, r: float) -> Variant:
+	var w: Vector2 = _b2w(x, y)
+	var v: Variant = main.world.native_safe_point(w.x, w.y, space.len_to_world(r))
+	if not v is Dictionary: return null
+	var b: Vector2 = _w2b(Vector2(float(v.x), float(v.y)))
+	return {"x": b.x, "y": b.y}
+func bd_spawn_proj(props: Dictionary) -> void: _spawn_boss_projectile(props)
+func bd_g_write(fields: Dictionary) -> void: _g_write(fields)
+func bd_tr(text: String) -> String: return _tr(text)
+func bd_lang_ko() -> bool:
+	var lang: Dictionary = main.get_native_startup_language_snapshot() if main.has_method("get_native_startup_language_snapshot") else {}
+	return str(lang.get("language", "ko")) == "ko"
+func bd_player_full_hp() -> bool: return float(main.player.hp) >= float(main.player.max_hp)
+func bd_player() -> Dictionary: return _player_b()
+func bd_killed_bosses() -> Array:
+	var kb: Variant = main.source_state.read_current_g().get("_killedBosses")
+	return kb if kb is Array else []
+
 
 func _spawn_boss_projectile(props: Dictionary) -> void:
 	var projectiles: Variant = main.get("native_demo_boss_projectiles")
@@ -907,7 +771,7 @@ func _publish_final(why: String, ctx: Dictionary = {}) -> Dictionary:
 	if r.get("published") == true:
 		_final_published = true
 		counters.final_deaths += 1
-		_g_write({"bossAlive": false})
+		# G.bossAlive 해제는 원본 30프레임 clear poll(41816–41838) 소관 = Mac37 encounter/commit. PC 는 쓰지 않는다.
 	r["why"] = why
 	return r
 
@@ -926,22 +790,99 @@ func _cancel_open_death(reason: String) -> void:
 # ═══════════════════════════════ queue 위상: 리듬탄·ORB ═══════════════════════════════
 func advance_queue(ticks: float, _frame: float, _enemies: Array) -> void:
 	if not _live() or ticks <= 0.0 or not is_instance_valid(body) or main.get_tree().paused: return
-	var g: Dictionary = main.source_state.read_current_g()
-	if g.get("bossAlive") != true: return
 	if _current_frame.is_empty(): return
-	var p: Dictionary = _player_b()
-	var e: Dictionary = E.duplicate(true)
-	for mode in ["rhythm", "orbs"]:
-		var ctx: Dictionary = _module_context()
-		var projectiles: Variant = main.get("native_demo_boss_projectiles")
-		if is_instance_valid(projectiles) and projectiles.has_method("read_drop_counter"): ctx["drop_counter"] = int(projectiles.read_drop_counter())
-		var started: Dictionary = PROJ.begin_pattern(0, mode, e, p, ticks, ctx, _globals_live())
-		if started.get("status") != "READY":
-			_note_unported("queue_" + mode + ":" + str(started.get("reason")))
-			continue
-		var r: Dictionary = _run_projectile_module(started, e, p)
-		if r.get("ok") != true:
-			_note_unported("queue_" + mode + ":" + str(r.get("reason")))
+	_q_sp = ticks
+	# 34678–34687 보스 지뢰(투사체 루프) → 37015–37079 전역 큐 → 37080–37126 리듬탄·ORB → 37129 용암
+	if not _mines.is_empty():
+		_mines = QUEUES.tick_mines(_mines, ticks, self)
+	var g: Dictionary = main.source_state.read_current_g()
+	var lists := {}
+	for name in ["_chaseAoes", "_fissures", "_tideWaves", "_seekerMines", "_poisonPools"]:
+		if g.get(name) is Array: lists[name] = g[name]
+	if not lists.is_empty():
+		var updated: Dictionary = QUEUES.tick(lists, ticks, self, 0)
+		if not updated.is_empty(): _g_write(updated)
+	if g.get("bossAlive") == true:
+		var p: Dictionary = _player_b()
+		var e: Dictionary = E.duplicate(true)
+		for mode in ["rhythm", "orbs"]:
+			var ctx: Dictionary = _module_context()
+			var projectiles: Variant = main.get("native_demo_boss_projectiles")
+			if is_instance_valid(projectiles) and projectiles.has_method("read_drop_counter"): ctx["drop_counter"] = int(projectiles.read_drop_counter())
+			var before_volley: float = _n(main.source_state.read_current_g().get("_druidParryVolley"))
+			var started: Dictionary = PROJ.begin_pattern(0, mode, e, p, ticks, ctx, _globals_live())
+			if started.get("status") != "READY":
+				_note_unported("queue_" + mode + ":" + str(started.get("reason")))
+				continue
+			var r: Dictionary = _run_projectile_module(started, e, p)
+			if r.get("ok") != true:
+				_note_unported("queue_" + mode + ":" + str(r.get("reason")))
+			if mode == "rhythm" and _n(main.source_state.read_current_g().get("_druidParryVolley")) > before_volley: counters.rhythm_volleys += 1
+	var lava: Variant = QUEUES.tick_lava(main.source_state.read_current_g(), ticks, self)
+	if lava is Array: _g_write({"_lavaPools": lava})
+
+# ── 전역 큐 env(q_*) — native_ch1_boss_queues.gd ──
+func q_player() -> Dictionary: return _player_b()
+func q_hurt(dmg: int, opts: Dictionary) -> void:
+	counters.queue_hits += 1
+	_hurt_player(dmg, opts, Vector2.ZERO)
+func q_kb_add(kx: float, ky: float) -> void: _player_kb_add(kx, ky)
+func q_is_p_win() -> bool: return _is_p_win()
+func q_parry(bank_add: int, _in_dmg: float) -> void: _do_parry(float(bank_add))
+func q_rng(tag: String, line: int) -> float: return _rng(tag, line)
+func q_present(cmd: String, args: Array, line: int) -> void: _present(cmd, args, line)
+func q_text(x: Variant, y: Variant, text: String, col: String, life: Variant) -> void: _text(x, y, text, col, life)
+func q_shake(n: float) -> void: _shake(n)
+func q_shake_set(n: float) -> void:
+	var opt: Variant = main.source_initialization_services.read_current_options() if is_instance_valid(main.get("source_initialization_services")) else null
+	var s: float = float(opt.get("shake", 100)) if opt is Dictionary and _numv(opt.get("shake")) else 100.0
+	_g_write({"shake": n * s / 100.0})
+func q_tr(text: String) -> String: return _tr(text)
+func q_status(field: String, _value: Variant) -> void: _note_unported("player_status:" + field)
+func q_el_mul(a: int) -> float:
+	var inv: Variant = main.source_state.read_current_inventory()
+	var armor: Variant = inv.get("equipped", {}).get("armor") if inv is Dictionary else null
+	var d: int = int(_n(armor.get("el"))) if armor is Dictionary else 0
+	return QUEUES.el_mul(a, d)
+
+# ── 미이식 상태 모듈 owner(misc_*) — native_ch1_boss_misc_states.gd ──
+func misc_present(cmd: String, args: Array, line: int) -> void: _present(cmd, args, line)
+func misc_g_write(fields: Dictionary) -> void: _g_write(fields)
+func misc_text(x: Variant, y: Variant, text: String, col: String, life: Variant) -> void: _text(x, y, text, col, life)
+func misc_L(ko: String, en: String) -> String: return ko if bd_lang_ko() else en
+func misc_hurt(e: Dictionary, p: Dictionary, dmg: int, opts: Dictionary, _line: int) -> Dictionary:
+	_set_E(e)
+	_hurt_player(dmg, opts, Vector2.ZERO)
+	return {"e": E.duplicate(true), "p": _readback_player(p)}
+func misc_kb_add(p: Dictionary, kx: float, ky: float) -> Dictionary:
+	_player_kb_add(kx, ky)
+	return _readback_player(p)
+func misc_is_p_win() -> bool: return _is_p_win()
+func misc_parry(bank_add: int) -> void: _do_parry(float(bank_add))
+func misc_poise_hit(e: Dictionary, amount: int) -> Dictionary:
+	_set_E(e)
+	_boss_poise_hit(amount)
+	return E.duplicate(true)
+func misc_spawn_projectile(e: Dictionary, props: Dictionary, _line: int) -> void:
+	var projectiles: Variant = main.get("native_demo_boss_projectiles")
+	if not is_instance_valid(projectiles): return
+	projectiles.call("_birth_request", {"command": "_spawnBossProjectile", "args": [props], "enemy": e.duplicate(true), "frame": _current_frame})
+func misc_spawn_mine(_e: Dictionary, props: Dictionary) -> void:
+	# 16938 wrapper(_druidPoison si0) → 16956 독 class: el=EL.P, col 녹색. 정지탄이라 밀도/배율 후처리 없음(16962).
+	var m: Dictionary = props.duplicate(true)
+	m._druidPoison = true
+	m.el = 0
+	m.col = "#66dd22"
+	_mines.append(m)
+	counters.mines_spawned += 1
+func misc_append_queue(name: String, item: Dictionary) -> void:
+	var g: Dictionary = main.source_state.read_current_g()
+	var list: Array = (g.get(name) as Array).duplicate(true) if g.get(name) is Array else []
+	list.append(item)
+	_g_write({name: list})
+func misc_summon_unported(_x: float, _y: float, et: int, _el: int) -> void:
+	counters.summon_unported += 1
+	_note_unported("summon_mkEn_etype" + str(et))
 
 func _globals_live() -> Dictionary:
 	var g: Dictionary = main.source_state.read_current_g()
@@ -956,13 +897,16 @@ func _globals_live() -> Dictionary:
 	return out
 
 # ═══════════════════════════════ 보스 투사체 → 플레이어 ═══════════════════════════════
-## Mac registry 가 매 이동 뒤 호출. 기존 carrier 접촉 계약(enemy_projectile_physical 34880~ 계열)을 재사용.
+## Mac registry 가 매 이동 뒤 호출. 원본 적 탄→플레이어 일반 경로(34845–34847 판정 반경, 35043 게이트,
+## 35044 Q 마법 반사 = 기존 Q owner, 35089 일반 피해)만 이식. E(물리) 패링·빨콩/흰/다크/무지개 전용 분기·회전 흡수는
+## 보호 Q/E 소유라 미이식(카운터 기록) — 그 경우에도 원본 일반 피해 식으로 떨어진다(계약 §9).
 func _projectile_contact(request: Dictionary) -> Dictionary:
 	counters.projectile_contacts += 1
 	var node: Variant = request.get("node")
 	if not is_instance_valid(node) or not _live(): return {"ack": true, "action": "keep"}
 	var pl: Node2D = main.player
 	var raw: Dictionary = request.get("projectile", {})
+	if raw.get("friendly") == true: return {"ack": true, "action": "keep"}
 	var before: Vector2 = request.get("before", node.global_position)
 	var after: Vector2 = request.get("after", node.global_position)
 	var seg := after - before
@@ -970,17 +914,33 @@ func _projectile_contact(request: Dictionary) -> Dictionary:
 	var dist: float = after.distance_to(pt)
 	if seg.length_squared() > 1.0:
 		var t: float = clampf((pt - before).dot(seg) / seg.length_squared(), 0.0, 1.0)
-		dist = (before + seg * t).distance_to(pt)
-	var pr: float = space.len_to_world(_n(raw.get("r")) if PREFIX._t(raw.get("r")) else 8.0)
-	if dist >= float(pl.radius) + pr: return {"ack": true, "action": "keep"}
-	if float(pl.hp) <= 0.0 or float(pl.iframes) > 0.0 or str(pl.state) == "charge": return {"ack": true, "action": "keep"}
+		dist = minf(dist, (before + seg * t).distance_to(pt))
+	# 34847 _pCollR = P.r + (p.sz||1)*3, 일반 판정 _normalR = _pCollR + 4 (패링 창 밖)
+	var sz: float = _n(raw.get("sz")) if PREFIX._t(raw.get("sz")) else 1.0
+	var coll_r: float = float(pl.radius) + space.len_to_world(sz * 3.0)
+	if dist >= coll_r + 4.0: return {"ack": true, "action": "keep"}
+	if float(pl.hp) <= 0.0: return {"ack": true, "action": "keep"}
 	var reaction: Dictionary = pl.try_native_q_projectile_reflection(node, dist) if pl.has_method("try_native_q_projectile_reflection") else {}
-	if reaction.get("reflected") == true: return {"ack": true, "action": "retire"}
-	var magic: bool = str(raw.get("parryClass", "")) == "magic"
-	var dmg: int = FORMULA.js_to_int32(_n(raw.get("dmg")) * (1.3 if magic else 1.0))
-	_hurt_player(dmg, {"dtype": "magic" if magic else "phys"}, seg.normalized() if seg.length_squared() > 0 else Vector2.ZERO)
+	if reaction.get("reflected") == true:
+		counters.projectile_reflected += 1
+		return {"ack": true, "action": "retire"}
+	if float(pl.iframes) > 0.0 or str(pl.state) == "charge": return {"ack": true, "action": "keep"}
+	# 35089 일반 피해: ~~((p.dmg||10)*elMul(p.el,ar().el)), dtype redBean?'parry':'magic', knockback=정규화 속도×2
+	var base_dmg: float = _n(raw.get("dmg")) if PREFIX._t(raw.get("dmg")) else 10.0
+	var dmg: int = FORMULA.js_to_int32(base_dmg * q_el_mul(int(_n(raw.get("el")))))
+	var red: bool = raw.get("redBean", false) == true
+	var v := Vector2(_n(raw.get("vx")), _n(raw.get("vy")))
+	var kb := Vector2(0, 2)
+	if v.length() > 0.001: kb = v.normalized() * 2.0
+	elif (pt - after).length() > 0.001: kb = (pt - after).normalized() * 2.0
+	var before_hp: float = float(pl.hp)
+	pl.receive_damage(dmg, "parry" if red else "magic", kb, space.len_to_world(kb.length()))
+	if before_hp > float(pl.hp): counters.player_damage += before_hp - float(pl.hp)
 	counters.projectile_hits += 1
-	if raw.get("redBean", false) and not raw.get("_druidPoison", false) and pl.has_method("apply_native_burn"):
+	if raw.get("blackBean", false) or raw.get("gbBean", false) or raw.get("bwBean", false) or raw.get("parryClass") == "physical":
+		_note_unported("projectile_special_or_E_parry_branch")
+	# 35090 빨콩 화상(독 드루이드 탄 제외)
+	if red and not raw.get("_druidPoison", false) and pl.has_method("apply_native_burn"):
 		pl.apply_native_burn(dmg * 2.0)
 	return {"ack": true, "action": "retire"}
 
