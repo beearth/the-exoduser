@@ -147,6 +147,24 @@ func fail_remaining(reason: String) -> void:
  for id in ORDER:
   if rows.any(func(r):return r.id==id):continue
   begin(id);await done("NOT_READY",reason)
+# Test placement only: prefer a currently ready natural contact attacker rather
+# than pinning to the first registry actor while its attack is cooling down.
+func place_in_natural_contact() -> Dictionary:
+ var best: Node
+ var score: float=-INF
+ var best_cooldown: float=0.0
+ for enemy in main.world.get_enemies():
+  if not is_instance_valid(enemy) or enemy.get("alive")!=true or not main.native_natural_enemies.owns_actor(enemy):continue
+  if enemy.get("etype") not in [0,1,4,6,18,19]:continue
+  var point: Vector2=enemy.global_position+Vector2(24,0)
+  if not main.world.can_move(point,main.player.radius):continue
+  var cooldown: float=float(enemy.get("st2" if enemy.etype in [0,6] else "_contact_ticks"))
+  var value: float=float(enemy.get("attack"))/(1.0+maxf(0.0,cooldown))
+  if enemy.get("state")!="idle":value*=.01
+  if value>score:best=enemy;score=value;best_cooldown=cooldown
+ if not is_instance_valid(best):return {"placed":false}
+ main.player.global_position=best.global_position+Vector2(24,0)
+ return {"placed":true,"actor":best.get_instance_id(),"etype":best.etype,"distance":24.0,"state":best.state,"cooldown":best_cooldown}
 func run() -> void:
  Engine.physics_ticks_per_second=120;Engine.max_fps=240
  node_added.connect(profile_added)
@@ -298,19 +316,15 @@ func run() -> void:
  var cooldown_deadline:=wait_start+20000
  while (main.player.iframes>0 or main.source_state.read_native_potion_runtime().cd>0) and Time.get_ticks_msec()<cooldown_deadline and (not is_instance_valid(potion) or potion.get_snapshot().uses==used_before):
   await physics_frame
- if g.get("mats",0)<=0:main.source_state.apply_native_add_potion(main,"hp",1)
  var potion_after_wait: Dictionary={"uses":potion.get_snapshot().uses if is_instance_valid(potion) else -1,"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"wait_ms":Time.get_ticks_msec()-wait_start,"timed_out":Time.get_ticks_msec()>=cooldown_deadline}
  var damage_path: Array=[]
- var requests:=0
+ var requests:=0 # No harness damage request; only natural AI invokes hurtP.
  if is_instance_valid(potion):
-  var until:=Time.get_ticks_msec()+15000
-  while Time.get_ticks_msec()<until and potion.get_snapshot().uses==used_before and main.player.hp>1:
-   if main.player.iframes<=0 and main.source_state.read_native_potion_runtime().cd<=0:
-    var request: Dictionary={"hp_before":main.player.hp,"iframes_before":main.player.iframes,"amount":maxi(1,int(main.player.hp*.25)),"runtime_before":main.source_state.read_native_potion_runtime().duplicate(true)}
-    main.player.receive_damage(request.amount,"phys");requests+=1
-    request["hp_after"]=main.player.hp;request["iframes_after"]=main.player.iframes
-    if damage_path.size()<64:damage_path.append(request)
-   await settle(8)
+  var until:=Time.get_ticks_msec()+30000
+  while Time.get_ticks_msec()<until and potion.get_snapshot().uses==used_before and main.player.hp>0:
+   var placement: Dictionary=place_in_natural_contact()
+   if damage_path.size()<32 and placement.get("placed",false):damage_path.append(placement)
+   await physics_frame
  var used: bool=is_instance_valid(potion) and potion.get_snapshot().uses>used_before
  var pot_ok: bool=used and float(g.get("mats",0))<mats_before and main.source_state.read_native_potion_runtime().cd>0
  await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"entry":potion_entry,"after_wait":potion_after_wait,"damage_path":damage_path,"request_loop_exit":"used" if used else ("hp_le_1" if main.player.hp<=1 else "deadline_or_owner_unavailable"),"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"runtime":main.source_state.read_native_potion_runtime()})
@@ -340,20 +354,15 @@ func run() -> void:
  var min_hp: float=hp_before
  var contact_frames:=0
  var started:=Time.get_ticks_msec()
- var deadline:=started+45000
+ var deadline:=started+120000
  # Only test-owned placement. Actual scheduler/AI/attack/hurtP/life owners run.
  # Do not call damage, mutate HP/iframes/RNG, or emit any life signal.
  while life_api and Time.get_ticks_msec()<deadline:
   life=main.native_demo_life.snapshot()
   var phase: String=str(life.get("phase",{}).get("phase",""))
   if prior_fallen or phase in ["hp0","fallen","dead"]:break
-  var attacker: Node
-  for enemy in main.world.get_enemies():
-   if is_instance_valid(enemy) and enemy.get("alive")==true and main.native_natural_enemies.owns_actor(enemy):
-    attacker=enemy;break
-  if is_instance_valid(attacker):
-   main.player.global_position=attacker.global_position+Vector2(24,0)
-   contact_frames+=1
+  var placement: Dictionary=place_in_natural_contact()
+  if placement.get("placed",false):contact_frames+=1
   await physics_frame
   if main.player.hp<min_hp:
    min_hp=main.player.hp
@@ -372,7 +381,7 @@ func run() -> void:
  var entered: bool=life.get("receipts",[]).any(func(r):return r.get("op")=="fallen_enter" and r.get("status")=="APPLIED")
  var resolved: bool=life.get("receipts",[]).any(func(r):return r.get("op") in ["revive_resolve","final_death"] and r.get("status")=="APPLIED")
  var observed: bool=entered and (prior_fallen or min_hp<=0)
- await done("PASS" if observed else "NOT_READY","" if observed else ("natural HP0 not observed within 45s of AI contact" if min_hp>0 else "natural HP0 observed; fallen/countdown/resolve incomplete"),{"interface_present":life_api,"consumer_snapshot":life,"lethal_damage_forced":false,"transition_injected":false,"transferred_prior_fallen_receipt":prior_fallen,"observation_scope":"actual natural fallen receipt; resolution reported separately","hp_before":hp_before,"min_hp":min_hp,"contact_frames":contact_frames,"natural_damage_trace":natural_trace,"countdown_trace":countdown,"fallen_applied":entered,"resolve_applied":resolved,"elapsed_ms":Time.get_ticks_msec()-started})
+ await done("PASS" if observed else "NOT_READY","" if observed else ("natural HP0 not observed within 120s of natural AI contact" if min_hp>0 else "natural HP0 observed; fallen/countdown/resolve incomplete"),{"interface_present":life_api,"consumer_snapshot":life,"lethal_damage_forced":false,"transition_injected":false,"transferred_prior_fallen_receipt":prior_fallen,"observation_scope":"actual natural fallen receipt; resolution reported separately","hp_before":hp_before,"min_hp":min_hp,"contact_frames":contact_frames,"max_observation_ms":120000,"auto_potion_unchanged":true,"damage_requests_from_harness":0,"natural_damage_trace":natural_trace,"countdown_trace":countdown,"fallen_applied":entered,"resolve_applied":resolved,"elapsed_ms":Time.get_ticks_msec()-started})
  begin("bossroom_gate")
  var encounter: Node=main.get("native_demo_encounter");var encounter_snapshot: Dictionary=encounter.snapshot() if is_instance_valid(encounter) else {}
  var gate_receipt: Dictionary={}

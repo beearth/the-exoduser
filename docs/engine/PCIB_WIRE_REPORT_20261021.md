@@ -104,7 +104,7 @@
 | id / 파일 | 현행 하니스 계약 | 제품·PC 경계 |
 |---|---|---|
 | auto_potion / test_demo11_47h_e2e.gd | 단계 진입 `potion_entry.uses`와 `mats_before`를 대기 **전**에 캡처한다. 대기 중 실제 uses 증가도 같은 단계의 증거다. 사용 증가 시 cooldown 대기를 종료하고 uses 증가·mats 감소·실제 cd>0를 검증한다. | HP/iframe/cd 직접 쓰기0. 기존 receive_damage 경유와 실제 물약 owner 사용. |
-| revival_interface / E2E·demo11_47h_contract.py | item_pickup→equip→auto_potion→level_up→stat_passive_invest 다음에 관측한다. 실제 APPLIED fallen_enter 영수증이 앞 단계에서 이미 발생하면 해당 영수증을 전달받는다. 없으면 기존 PCIA의 45초 자연 AI 접촉·15초 resolution 관측을 수행한다. PASS는 실제 fallen_enter와 이전 영수증 또는 이번 HP0 관측이 모두 있어야 한다. resolution/countdown은 별도 증거이며 완전 부활을 주장하지 않는다. | 피해·HP·life signal·RNG 주입0. 위치만 기존 검사처럼 배치한다. 18단계 순서는 validator와 일치. |
+| revival_interface / E2E·demo11_47h_contract.py | item_pickup→equip→auto_potion→level_up→stat_passive_invest 다음에 관측한다. 실제 APPLIED fallen_enter 영수증이 앞 단계에서 이미 발생하면 해당 영수증을 전달받는다. 없으면 INTEG-6b 현행 하니스의 최대120초 자연 AI 접촉·15초 resolution 관측을 수행한다(당시 c/d 검수는45초 이력). PASS는 실제 fallen_enter와 이전 영수증 또는 이번 HP0 관측이 모두 있어야 한다. resolution/countdown은 별도 증거이며 완전 부활을 주장하지 않는다. | 피해·HP·life signal·RNG 주입0. 위치만 기존 검사처럼 배치한다. 18단계 순서는 validator와 일치. |
 | B/F fixture / mac_pcib_fixture_main.gd | 실제 Main과 MAP11 geometry로 정상 부팅한 직후 테스트 helper가 기존 P3 spawn/regions 및 자연 scheduler 노드를 보존·비활성화하고 새 P3 cohort를 설치한다. 테스트에서만 Main/world/projectile의 자연 owner 참조를 비워 공개 bind가 새 owner를 구성하게 한다. B/F fixture provider가 새 cohort 첫 바인딩의 주인이 된다. 기존 owner 내부 상태·PC 구현은 변경하지 않는다. | 제품 Main/adapter/P3/PC 구현 변경0. fixture의 별도 Marker·예산·constructor 검사는 유지. |
 | PC pack B / test_pc_combat_pack_b_mac.gd | 원본 test_pc_combat_pack_b.gd의 모든 테스트 그룹·판정식 상속. 초기 fixture만 실제 intro ring constructor로 etype0 최대8개 공급한다. 원래 PC setup의 >=3 검사 유지. | 주입/배치 등 PC fixture 개입은 forced로 기록. E2E와 분리. |
 | PC wall oracle / Mac 래퍼 | 현 MAP11 provider의 bound polygon·blocks_move circle solids를 읽어 공급. 음수 좌표를 허용하며 옛 0..8000/tile/ellipse fixture 가정 제거. Mac oracle 래퍼는 PC oracle의 isW 입력 seam만 바꾸고 원본 source gameplay·RNG·비교 판정식은 그대로 실행한다. | PC 테스트/PC oracle 파일 byte 불변. 맵 geometry·비주얼 변경0. Mac _wall_model_matches는 공급된 geometry와 실제 World.is_world_blocked를 비교한다. |
@@ -153,3 +153,14 @@ enemy_kill physics max 22.553ms / p95 8.516ms; automatic_crossbow.max_tick_us=15
 | 16 | demo_end | NOT_READY | next/end route not admitted |
 | 17 | save_handoff | PASS |  |
 | 18 | lobby_return | NOT_READY | actual lobby navigation not completed |
+
+
+## INTEG-6b 자연 접촉 관측 보정 (2026-10-21)
+
+| 경로 | 현행 규칙 | 보호 경계 |
+|---|---|---|
+| `test_demo11_47h_e2e.gd::place_in_natural_contact` | 실제 natural registry 소유·alive인 etype0/1/4/6/18/19 중 idle/현재 쿨다운과 공격력으로 접촉 후보를 고른다. World can_move를 통과한 actor+(24,0)에 실제 Player만 배치한다. AI/상태/공격/쿨다운·피해는 쓰지 않는다. | 자연 공격 가능 위치를 제공하는 하니스. 생성/RNG/HP/iframes/사망 신호 주입0 |
+| auto_potion | 기존 단계 진입 uses/mats/cd readback 유지. iframe/CD 최대20000ms 대기 후 자연 접촉만 최대30000ms 관측. 기존 receive_damage 직접호출과 검사 중 물약 추가를 제거했다. | 실제 자동물약 설정·임계치·CD·소비 유지 |
+| revival_interface | 최대120000ms 자연 접촉, 실제 fallen_enter+자연HP0 관측을 PASS 조건으로 유지. 이후15000ms resolution 관측. | 자동물약 정상 동작 유지. PASS 개수 때문에 회복을 끄거나 피해·사망을 주입하지 않음 |
+
+검수 수치·18단계·차단 사유는 [INTEG-6b 보고](INTEG6B_REGRESSION_20261021.md). 이전 단회 결과는 당시 이력으로 보존한다.

@@ -22,7 +22,9 @@ func _run() -> void:
  check(main.world.get_start_position()==start.global_position,"World start authority")
  check(p.anchors("*").size()==22 and p.anchors("hole").size()==4,"contract22Markers4holes")
  check(main.world.get_enemies().is_empty(),"no legacy coordinate encounters on MAP11")
- check(not main.has_node("NativeRegions") and not main.world.has_node("NativeSpawnHoleSystem"),"legacy region/hole installation excluded")
+ check(main.has_node("NativeRegions") and main.world.has_node("NativeSpawnHoleSystem"),"MAP11 combat owners installed")
+ check(main.native_demo_encounter.snapshot().provider_bound,"actual encounter provider bound")
+ check(main.native_map11.snapshot().gate_owner_bound,"default combat gate owner bound")
  var sites: Dictionary=p.transition_sites()
  var p_before: Dictionary=main.source_state.read_current_p().duplicate(true)
  check(main.request_native_map11_transition("enter").reason=="not_at_gate","remote gate denied")
@@ -40,12 +42,22 @@ func _run() -> void:
   var target: Vector2=marker.global_position
   check(p.sweep_fraction(last,target,15,"field")==1.0,"authored swept route "+suffix)
   main.player.global_position=target;last=target
+ var field_before: Vector2=main.player.global_position
+ var camera_before: Vector2=main.camera.global_position
  var enter: Dictionary=main.request_native_map11_transition("enter")
- check(enter.status=="READY" and enter.space=="arena","Main actual gate transport")
+ var g: Dictionary=main.source_state.read_current_g()
+ print("MAP11_DEFAULT_GATE ",JSON.stringify({"entry":enter,"encounter":main.native_demo_encounter.snapshot(),"anglers":main.native_demo_anglers.snapshot(),"bossUnlocked":g.get("_bossUnlocked",false),"fbDone":g.get("_fbDone",false),"product_space":main.native_map11.snapshot().space}))
+ check(enter.get("status")=="NOT_READY","fresh default gate preserves combat prerequisites")
+ check(main.player.global_position==field_before and main.camera.global_position==camera_before and not g.get("_bossArena",false),"denied gate preserves Player camera State")
+ # Separate transport fixture: no combat unlock, completion or E2E claim.
+ var transport: Node=preload("res://tests/map11_transport_fixture.gd").install(main)
+ check(is_instance_valid(transport),"explicit map-only transport fixture")
+ enter=main.request_native_map11_transition("enter")
+ check(enter.get("status")=="READY" and enter.get("space")=="arena","map-only actual gate transport")
  check(main.player.global_position==sites.arena_entry.global_position,"actual Player at arena Entry Marker")
  check(main.camera.global_position==sites.arena_entry.global_position,"actual camera follows transition")
- var g: Dictionary=main.source_state.read_current_g()
- check(g._bossArena==true and g.mw==128 and g.mh==108,"source arena flag + gameplay extent128x108")
+ check(g.get("_bossArena",false)==true and g.get("mw")==128 and g.get("mh")==108,"source arena flag + gameplay extent128x108")
+ check(transport.snapshot().space=="arena","authoritative product space arena")
  check(main.source_state.read_current_p().hp==p_before.hp,"transport does not refill HP")
  check(main.world.can_move(sites.boss.global_position,15),"actual arena query")
  check(not main.world.can_move(sites.boss.global_position+Vector2(1750,0),15),"actual arena boundary")
@@ -60,5 +72,5 @@ func _run() -> void:
  main.queue_free()
  for i in 16:await process_frame
  await create_timer(.2).timeout
- print("MAP11_PROD_RESULT ",JSON.stringify({"assertions":checks,"failures":failures,"path":"actual Main fresh→field Marker route→gate→arena; exit pending PC completion","manual_play":false}))
+ print("MAP11_PROD_RESULT ",JSON.stringify({"assertions":checks,"failures":failures,"production_gate":"NOT_READY_PC_fieldboss","path":"actual Main default gate denial; separate map-only transport fixture→arena Entry; exit pending PC completion","manual_play":false}))
  quit(1 if failures else 0)

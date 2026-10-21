@@ -56346,3 +56346,12 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - 자동 병합이 충돌 표시 없이 제거한 PC API EOF/M29·type3와 관련 docs/ctx/SFX 도구/package 변경은 기준 브랜치 바이트 그대로 보존했다. 첫 import ERROR2(preload 누락) 뒤 수정·재import하며 관련 테스트/E2E 실행 전 발견했다. 최종 main.gd는 PC 기준과 동일 바이트다.
 
 - INTEG-6 final validation: import ERROR0; relevant suites once (map11_product 4 assertion failures + _bossArena SCRIPT ERROR preserved); PCIB31/31, PCIA and BC01-10 pass. E2E once PASS12/NOT_READY6/FAIL0, natural HP0 not observed in 45s; PASS13 target unmet. Bossroom once valid focus_lost0 p95 9.827ms >8.33ms budget FAIL. Details: engine/DEMO11_STATUS_20261021.md.
+
+
+## 2026-10-21 — INTEG-6b 제품 회귀 하니스·자연 HP0·authoritative arena 계측
+
+- 변경: `godot/tests/test_map11_product.gd`, `test_demo11_47h_e2e.gd`, 신규 `map11_transport_fixture.gd(.uid)`, `benchmark_integ6b_arena.gd(.uid)`. 게임/PC 전투·계약/맵 비주얼/번역 바이트 변경0.
+- 원인: 660d6b43·0f0a2888·c0b71595 각각1회 모두4실패+Dictionary SCRIPT ERROR1. 구형 owner 미설치·열린 gate 전제와 거절 뒤 키 직접 접근을 교정. default PC gate 차단은 유지, 별도 map-only transport 실제 Player/Entry/camera/arena 검증43/0.
+- E2E: 자연 소유 actor0/1/4/6/18/19·can_move 검증+(24,0) 위치만 배치. 자동물약 단계 직접피해/물약추가 제거, 정상 자동소비 유지. 부활 최대120000ms+resolution15000ms; 최종 PASS13/NOT_READY5/FAIL0·ERROR0·validator[]. 자연접촉1478프레임·HP0/fallen_enter/final_death 실측. 총E2E2회(초기 배치 후보누락 후 보정), gate13은PC 미완료.
+- 성능1회: actual Main/World/Player의 test-only transport로 authoritative arena,1920×1080·실제입력600틱,focus_lost0,p95 9.261ms/p99 10.989ms. 30c7.738 대비+1.523ms,8.33ms 미달. TIME_PROCESS/PHYSICS·draw·viewport CPU/GPU·3callback 분해와 측정한계 기록. PC 함수 수정0.
+- 문서: `docs/engine/INTEG6B_REGRESSION_20261021.md`, `DEMO11_STATUS_20261021.md` INTEG-6 행, `PCIB_WIRE_REPORT_20261021.md`, `docs/4.1맵디자인+설정/MAP11_PRODUCTION_BINDING_20261021.md`. 이전 수치는 이력 보존. 원자료·최종SHA: `~/exoduser-wt/_out/INTEG-6b/DONE.txt`.
