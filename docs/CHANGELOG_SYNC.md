@@ -56168,3 +56168,8 @@ MAP11-21d→20p 순차 merge, append 양쪽 보존. 공통16개 접지 마스크
 | 변경 | 검증 / 남은 문제 |
 |---|---|
 | benchmark_map11_21 focus 대기10초·최대3시도·손실시600틱 전체제외·실제 공간/입력 궤적 기록; low_processor 해제·240cap·VSync OFF는 벤치에만 적용 | 재import ERROR0·chest26/0·anglers1402/0·auto_potion2569/0. product 선재4실패+_bossArena 오류 baseline85415a66 재현. E2E12PASS/6NOT_READY·ERROR0. 유효field9.265/9.596ms로8.33ms FAIL; arena명목·PC대기. 별도 render thread crash 미채택. 제품/맵/보호core 수정0. 상세 docs/engine/INTEG3B_DEMO11_20261021.md |
+
+
+## 2026-10-21 MAP11-22 보스룸 관광 종착지
+
+R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원·북 혈조/고문바퀴 무대·4광원을 구성했다. 전투면 바닥 shader opacity .16/.12, 남측 가림 완화. 상세 수치/좌표/검수 경계는 `4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §22. VISUAL RETOUCH; 독립 울타리 에셋 미제공, PC gate/실전전투 미검수. 단회 성능 실측과 원격SHA는 외부 MAP11-22 DONE 및 설계서에 기록.

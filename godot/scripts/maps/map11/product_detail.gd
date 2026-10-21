@@ -13,7 +13,8 @@ func configure(scene: Node2D,main: Node) -> void:
  _world.child_entered_tree.connect(_actor_entered)
  # MAP11-21: removed flat bone/blood/flesh patches and broad floor scatter.
  _hell_props(scene)
- # Arena R1700 remains untouched; all new stamps belong to field.
+ preload("res://scripts/maps/map11/arena_finale.gd").mount(scene)
+ # New arena feet stay wholly beyond R1700.
  set_process(false);set_physics_process(false)
 func _actor_entered(actor: Node) -> void:
  # Deferred once so a newly spawned actor has finished building its sprite.

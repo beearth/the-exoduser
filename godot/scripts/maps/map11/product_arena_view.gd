@@ -1,6 +1,6 @@
 extends "res://scripts/maps/map11/arena_preview.gd"
 const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
-## Original arena floor/props only. Product Main owns actual actors and camera.
+## Arena exterior finale presentation; Product Main owns actual actors and camera.
 func _ready() -> void:
  _build_floor();_build_props();set_process(false);set_physics_process(false)
 
@@ -13,6 +13,8 @@ func _build_floor() -> void:
  var floor_: Polygon2D=get_node("SkinFloor")
  floor_.polygon=_circle_points(Vector2.ZERO,2480,192)
  floor_.uv=floor_.polygon
+ for item in get_node("RGBAFloorDecals").get_children():item.material.set_shader_parameter("opacity",.16)
+ for item in get_node("IrregularFissureDecals").get_children():item.material.set_shader_parameter("opacity",.12)
  var material_:=ShaderMaterial.new()
  material_.shader=preload("res://scripts/maps/map11/arena_shoulder.gdshader")
  floor_.material=material_
@@ -37,6 +39,34 @@ func _build_props() -> void:
   var sprite: Sprite2D=get_node("BackForest%02d"%i)
   sprite.modulate=Color(.47,.48,.49,1)
  super._build_props()
+ # Keep the rear mass; remove the repeated inner corpse-tree curtain at focal bays.
+ for row in _rim_sprites:
+  var item: Sprite2D=row.sprite
+  if str(item.name).begins_with("LivingCorpse") or str(item.name).begins_with("Cocoon"):
+   item.modulate.a=0.0;item.set_meta("finale_retired",true)
+  elif str(item.name).begins_with("OuterTree"):
+   var a: float=item.position.angle()
+   if item.position.y < -1250 or item.position.x < -1450 or (item.position.x>1450 and item.position.y<700):
+    item.position*=1.22
+    var bounds: Rect2=item.get_meta("opaque_ground_bounds")
+    row.rect=Rect2(item.position+bounds.position,bounds.size).grow(65)
+    GroundContact.depth(item,item.global_position)
+ # South foreground must frame the entrance instead of covering the player lane.
+ for row in _rim_sprites:
+  var item: Sprite2D=row.sprite
+  if item.position.y>800 and (str(item.name).begins_with("OuterTree") or str(item.name).begins_with("BackForest")):
+   item.position*=1.30;item.scale*=.70
+   var bounds: Rect2=GroundContact.align(item)
+   row.rect=Rect2(item.position+bounds.position,bounds.size).grow(65)
+   GroundContact.depth(item,item.global_position)
+ # Existing portal nodes remain addressable; feet move beyond the combat disk.
+ get_node("EntryArch_VisualOnly").position=Vector2(0,1880)
+ get_node("ClearArch_VisualOnly").position=Vector2(0,-2110)
+ get_node("NorthHeartAltar").position=Vector2(0,-2220)
+ for id in ["EntryArch_VisualOnly","ClearArch_VisualOnly","NorthHeartAltar"]:
+  var item: Sprite2D=get_node(id)
+  GroundContact.depth(item,item.global_position)
+
 
 func _prop(id: String,file: String,foot: Vector2,height: float,mirror: bool=false) -> void:
  super._prop(id,file,foot,height,mirror)
@@ -50,7 +80,7 @@ func update_product_occlusion(point: Vector2,delta: float) -> void:
  var view:=_camera_rect()
  for row in _rim_sprites:
   var sprite: Sprite2D=row.sprite
-  sprite.visible=view.intersects(row.rect.grow(120))
+  sprite.visible=not sprite.has_meta("finale_retired") and view.intersects(row.rect.grow(120))
   if not sprite.visible:continue
   var alpha: float=.22 if (row.rect.has_point(point) or row.rect.has_point(point-Vector2(0,55))) and sprite.position.y>point.y-100 and not str(sprite.name).begins_with("BackForest") else 1.0
   sprite.modulate.a=move_toward(sprite.modulate.a,alpha,delta*8.0)

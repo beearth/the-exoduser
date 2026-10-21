@@ -1023,3 +1023,99 @@ MAP PRODUCTION REPORT
 ## INTEG-3b 통합 재검수 (2026-10-21)
 
 [상세 재검수](../engine/INTEG3B_DEMO11_20261021.md). 68a6939e 재import ERROR0, chest26/0·anglers1402/0·auto_potion2569/0. product4실패+_bossArena 오류는85415a66에서 동일 재현해 선재 기록만. E2E12PASS/6NOT_READY·blocked_by 유지. benchmark_map11_21은 focus 손실시600틱 전체 제외·최대3회 자동 재측정·실제 공간/인수 기록을 추가했다. 유효 Safe foreground field9.265ms, App Nap 인수 조건9.596ms로 모두8.33ms 초과 FAIL. arena는 실제 gate PC 대기로 명목 표본뿐이다. separate render thread는crash로 미채택. 맵 시각·충돌·제품 Godot 설정·PC core 수정0, 기존 RETOUCH 유지.
+
+
+## 22. MAP11-22 — 1-1 보스룸 관광 종착지 (2026-10-21)
+
+현행 D05는 **원형 R1700**이다. 문서 앞부분 R2200은 최초 제안 이력이다. 기준 `1ba728fad6038a3417b61924cb7023caa5134a44`, 전용 `codex/map11-22-20261021`. R 체크아웃은 읽기만, MAP11-22 sparse worktree에서 제작. 실제 PC gate/보스전 완료·배포·PC/Mac/main 동기화 주장은 하지 않는다.
+
+### 변경 전 1600×900 세 화면 진단
+
+| 화면 | 관측 문제 | 대응 |
+|---|---|---|
+| 입장 직후 (0,1100) | 남쪽 거대 나무가 플레이어 주변과 HUD 뒤를 뒤덮음. 전투면과 장식 경계 불분명 | 남쪽 foreground를 바깥으로 옮기고 줄여 입장 전투면 확보 |
+| 중앙 (0,0) | 전투용 빈 면은 충분하지만 관광 종착지의 서사가 없음. 바닥 균열 대비가 큼 | 중앙 세로소품 추가0, 바닥만 낮은 대비로 정리. 북쪽 대표 무대는 접근 카메라에서 확인 |
+| 서측 가장자리 (−1450,−300) | 시체나무/고치 실루엣 반복과 거대 나무 겹침. 뼈·처형 소품 부재 | 내부 시체나무/고치 시각 은퇴, 앞나무 외측 이동, 해골 피라미드+꼬챙이+사슬 군집 |
+
+최초 before 촬영 후 동일 기준본에서 중앙 좌표를 실제(0,0)로 바로잡아 before 3컷 재보존. 마지막 after도 같은 카메라 3점/zoom .70/offset(0,−180). 게임 시간·광원 위상·무작위 초기 스탯은 다르므로 픽셀 동일성 비교가 아니다. 추가 대표무대 after는 플레이어(0,−1650), before 보충컷은(0,−1540)으로 **추가4번은 동일시점 쌍으로 주장하지 않는다**.
+
+### 현행 구현 계약
+
+| 항목 | 값 / 적용 위치 |
+|---|---|
+| 외곽·중앙 | R1700·provider·anchors·effect metric128×108/T40 불변. 새 소품19개 발치 충돌 원 전체가 원 바깥. 중앙 세로소품0 |
+| 배치 소유 | `arena_finale.gd` ROWS를 Sprite와 StaticBody2D 자식 CollisionShape2D가 공통 소비. arena 원점(0,−8000), 아래 좌표는 원점 기준. 외측 원은 이동 가능한 원 내부/LOS 계약에 영향을 주지 않아 provider 수정0 |
+| PNG/2.5D | 통합본 `tour_25d/` diffuse+normal PNG만 재사용. `CanvasTexture`, LINEAR_WITH_MIPMAPS, specular(.10,.08,.06)/shininess.12. GLB 런타임 로딩0·새 에셋 생성0 |
+| 접지·깊이 | opaque bbox 하단 중앙=저작foot, GroundContact.align/depth/shadow. absolute world foot Y/4 clamp(−4096,4095). 새 AO alpha.35/z−440(local ground plane). 기존 arena rim AO .85→.40, field AO 불변 |
+| 가림·컬링 | 기존 cached `_rim_sprites`에 새 bounds+65 등록. 기존 화면rect 컬링+플레이어 overlap fade .22 유지. 틱 목록 API/ResourceLoader/새 tick 열거0 |
+| 기존 외곽 | LivingCorpse12+Cocoon12는 finale_retired meta로 시각 은퇴; 외측 forest 유지. OuterTree 중 y<−1250 또는 x<−1450 또는 x>1450 & y<700은 위치×1.22. 이후 y>800인 OuterTree/BackForest는 위치×1.30·scale×.70 및 opaque 재정렬. row rect/depth 재계산 |
+| 기존 포털 | EntryArch (0,1880), ClearArch(0,−2110), NorthHeartAltar(0,−2220). 모두 외곽. 이동 후 depth 갱신, 기존 노드명 보존. 기존 NorthHeartAltar의 cached cull rect는 이전 좌표 기준으로 남아 있어 경계 pop 가능성이 RETOUCH 잔여; Entry/Clear는 기존 개별 cull 대상 아님 |
+| 바닥 | 기존 shader가 COLOR를 덮어 부모 modulate alpha가 적용되지 않음 확인. `field_decal.gdshader`·`organic_decal.gdshader`에 opacity default1 추가. 아레나 RGBAFloorDecals만 .16, IrregularFissureDecals만 .12. 기본값1로 필드/preview 소비자 원래 픽셀 유지 |
+| 환경광 | arena 접근 혼합 목표(.49,.34,.36)→(.48,.43,.46), 기존 approach×.75. 중앙 밝기·냉색 player key·actor rim 유지. 기존 field 북쪽 approach 혼합도 같은 목표색을 공유하므로 북접근 색조 역시 영향; 이번 field 최종 카메라 미검수 |
+| 광원 | 기존 ArenaHeart1 제거+새4=기존14→17등록. 화면교차/space 필터·최대4 pool+player1 cap 유지. ArenaEntry/ArenaTissue 순서 뒤에 새4가 등록되므로 북쪽2개가 모두 켜짐은 북쪽 뷰에서 확인; 전체4가 항상 동시 점등되는 것은 아님 |
+| 새 생성 필요 목록 | **독립된 창 울타리 PNG/normal**: 제공7종/현행 승인 PNG에 없어 생성하지 않음. 이번에는 hell_spike_pit의 가시 가장자리와 꼬챙이 군집으로 처형 테두리 구성. 요청한 독립 울타리 완료로 보고하지 않음 |
+
+| id | 기존 PNG asset | view | local foot | height | circle R |
+|---|---|---:|---|---:|---:|
+| Finale00 | tour_blood_basin | 1 | (-130,-1820) | 400.0 | 90.0 |
+| Finale01 | tour_torture_wheel | 0 | (180,-1910) | 640.0 | 85.0 |
+| Finale02 | tour_chained_pillar | 1 | (-490,-1810) | 540.0 | 60.0 |
+| Finale03 | tour_chained_pillar | 2 | (590,-1740) | 475.0 | 55.0 |
+| Finale04 | skull_pyramid | 0 | (-1490,-1060) | 520.0 | 95.0 |
+| Finale05 | skull_pyramid | 2 | (-1770,-600) | 390.0 | 80.0 |
+| Finale06 | hell_impaled_corpse | 1 | (-1650,-920) | 480.0 | 32.0 |
+| Finale07 | tour_chained_pillar | 0 | (-1880,50) | 560.0 | 60.0 |
+| Finale08 | hell_impaled_corpse | 2 | (-1770,480) | 430.0 | 32.0 |
+| Finale09 | hell_spike_pit | 0 | (-1540,1080) | 310.0 | 130.0 |
+| Finale10 | hell_impaled_corpse | 0 | (-1050,1500) | 370.0 | 30.0 |
+| Finale11 | skull_pyramid | 1 | (850,1630) | 300.0 | 70.0 |
+| Finale12 | hell_impaled_corpse | 0 | (1490,1110) | 510.0 | 32.0 |
+| Finale13 | hell_impaled_corpse | 2 | (1650,790) | 450.0 | 32.0 |
+| Finale14 | tour_chained_pillar | 2 | (1840,360) | 600.0 | 65.0 |
+| Finale15 | hell_spike_pit | 1 | (1910,-220) | 350.0 | 145.0 |
+| Finale16 | hell_impaled_corpse | 1 | (1810,-590) | 490.0 | 32.0 |
+| Finale17 | tour_torture_wheel | 2 | (1500,-1110) | 440.0 | 70.0 |
+| Finale18 | skull_pyramid | 1 | (1110,-1490) | 350.0 | 75.0 |
+
+| light | local position | radius | color | energy | pulse |
+|---|---|---:|---|---:|---:|
+| FinaleBasin | (−280,−1900) | 870 | (1,.31,.17) | 1.15 | .018 |
+| FinaleWheel | (350,−2020) | 790 | (1,.47,.25) | 1.05 | .020 |
+| FinaleSkulls | (−1640,−1040) | 760 | (.95,.31,.19) | .94 | .025 |
+| FinaleEast | (1750,160) | 750 | (1,.26,.13) | .85 | .020 |
+
+보스 문서 `BOSS_00_FOREST_NORMAL_OBSIDIAN_FLAME_DESTROYER.md` 상단의 현행 si0 다크드루이드 배정 및 `BOSS_BATTLE_SETTINGS.md`/본 설계 BC표를 우선 확인했다. 새 prop 원 전체가 R1700 바깥이므로 centered slam1320 전투면과 비충돌. **tide1750·fissure2304/explosion691.2는 원을 넘을 수 있어 범위를 축소하지 않는다.** 보스 이동 후 패턴·패링·탄막/전조의 실제 중첩은 PC gate 대기이며 정적 범위 확인을 실전 PASS로 확대하지 않는다.
+
+### MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 arena 종착지. 원형silhouette 보존, 남입장→중앙combat void→북무대. 서측 뼈/동측 처형/북측 혈조 3지역; 별도 side route 추가0 |
+| OUTER MASS | LEFT 해골·사슬 앞면 / RIGHT 처형·가시 구덩이 / TOP 혈조·바퀴·기존 부패숲 / SOUTH 입구 시야 개방. back mass 보존, 검정 recess는 잔여검수 |
+| LARGE | 통합본 offline GLB bake PNG 재사용19; northern stage를 basin/wheel/pillars로 합성, 실제 variant0/1/2 비대칭. 과거 나무 반복은 완전 해소 아님 |
+| MEDIUM | 기존 roots/forest를 접합층으로 유지. 별도 filler/신규 에셋0. 북무대 일부 실루엣·재질 거침 잔여 |
+| GROUND | opaque foot AO/노멀·광원 반응; 중앙 균열·조직은 shader opacity .12/.16. 새 광범위 patch0 |
+| PLAYABLE | arena R1700·중앙 combat/breathing void와 남북 travel 축 유지. 외곽 threat tableau. 새 발치원 원밖. 실전 boss/projectile/parry/loot readability 미검수 |
+| LANDMARK | primary 북 혈조+고문바퀴+광원2; secondary 서해골·동처형; tertiary rim 시체/사슬. 북출구는 기존 marker 불변 |
+| CAMERA QA | START=입장 / ARENA=중앙 / SIDE L=서가장자리 before/after1600×900+1x. LANDMARK=북무대 after 추가. EARLY/SIDE R/LATE/EXIT 개별 최종 카메라 검수0 |
+| TECH QA | 최종 관련 테스트·arena 단회 측정은 아래 실측. pageerror/404 N/A(native). PNG preload/기존shader기본값 유지. PC gate·실전전투·전체route 종주 미검수 |
+| FILES | stage-owned arena_finale/product_arena_view/product_detail/product_lighting, shared field_decal/organic_decal(default1), capture/benchmark_map11_22, 본 절/CHANGELOG. concurrent/unrelated touched0; project.godot 격리설정은 실행후 원복해 커밋0 |
+| GIT | 기준1ba728fa→전용branch 정상commit/push. main push/merge/deploy0. 실제SHA·원격대조·worktree정리는 외부 DONE.txt에 기록 |
+| VISUAL VERDICT | **RETOUCH**. 종착지 대표무대와 열린 전투면은 개선. 독립 창울타리 미제공, 기존 아트 대비 새 bake의 거친 재질·광택, 남측/서측 접지암부(시각 은퇴한 기존 prop AO 포함) 및 잔여 반복, 실제 보스 전조·탄막 중첩 미검수로 압도적 최종완성 PASS 선언0 |
+| NEXT PASS | 제공 에셋 범위에서 독립 울타리는 생산하지 않음. PC gate 이후 다크드루이드 phase0~4 전조·패링/VFX·가장자리 회피 실전 QA 필요. 새 에셋은 별도 공급 목록만 남김 |
+
+증거 경로: `~/exoduser-wt/_out/MAP11-22/captures/`. 01_entry·02_center·03_edge의 `before_*.png/after_*.png`, 동일rect(480,150,640,600) 1x. 나란히 이미지는 `compare_*.png` 및 `compare_*_1x.png`, 원배율 리사이즈/색보정0. 북무대 after 추가컷은 동일쌍3컷에 포함하지 않음. 격리 user dir `EXODUSER-map11-22-Isolated-20261021`. PID81277 보존, 자체 Godot 순차 실행(총≤2), 자동재시작/실제세이브/신규생성0.
+
+### MAP11-22 final single-run verification
+
+| Item | Result |
+|---|---|
+| Related checks | 106 checks / 0 failures. 19 exterior foot circles, opaque bbox, normals, world Y/4, provider routes/anchors, floor opacity and source pattern extents verified |
+| Nominal arena p95 / p99 | **7.934ms / 8.365ms**; p95 budget <=8.33ms PASS |
+| Focus | focus_lost_frames **0**, valid=true, attempt1, retries0 |
+| Conditions | 1920x1080, 240cap, vsync0, 60Hz, Apple M5 Pro, Godot4.7.2 GL, PID81277 coexists. Mean 161.59fps; draw121 / objects251 |
+| Input | 4 directions x150 ticks; settling included in 611ticks/1646frames wall count. p95 uses sampler-connected intervals only. Walk1611.50px |
+| Scope | Nominal arena presentation explicitly activated. Native snapshot product_space=field; actual PC gate pending. No live boss/dense combat/Windows/GPU timestamp claim |
+| Logs | perf.json/perf.log; final capture+benchmark SCRIPT/Parse/ERROR0, existing camera interpolation warning only |
+
+Extra stage literal1x: after_finale_stage_1x.png = after_04_finale.png rect(340,0,970,540). Three exact-camera pairs: compare_01_entry/02_center/03_edge.png and each _1x.png; no resize/color correction.
