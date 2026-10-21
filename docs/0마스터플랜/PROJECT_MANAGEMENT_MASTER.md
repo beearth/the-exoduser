@@ -461,6 +461,9 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 
 - 기준 cae51580, branch codex/boss11-03-20261021. arena .36 단일 값, 채움 RGB(1,.46,.24)/alpha.07→.17, 충전 RGB(1,.94,.72)/전면+.38, 외곽선 유지. 화면 밖 화살표와 발 접촉 표시 추가. PC 코어/판정/번역/저장 변경0.
 - 2640×.36=950.4px이므로 900px 전체 최대 원 수용은 불가; 요청 구간에서 잘림 최소 값 선택. VISUAL VERDICT RETOUCH. 현재 수치/검수 경계는 `8.1보스디자인바이블/BOSS11_03_CAMERA_COLOR_20261021.md`, SHA/성능/캡처/정리는 외부 BOSS11-03/DONE.txt.
+## 2026-10-21 AUDIO-01 1-1 믹스 제출
+
+사용자 지정 cb154e8d 기반 별도 codex/audio-01-20261021. [오디오 담당 상세·수치·검증 경계](../6사운드디자인/BGM_믹스_공식_ARPG_AUDIO01_20261021.md): Music −14dB/보스 +7dB, 이벤트 덕킹 −5dB, field 간헐 사이클 구현. 숲 환경음 파일 미확인으로 실제 베드·조성·사용자 청음 HOLD. 독립 branch 제출이며 main 반영·기존 창 최신화·PC 동기화 완료 아님. DONE/원격 SHA는 ~/exoduser-wt/_out/AUDIO-01/DONE.txt.
 
 
 ## 2026-10-21 MAP11-32 — 첫 필드 목표 장면 분해 검토 후보
@@ -471,3 +474,7 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 ## 2026-10-21 — MAP11-32b 북접합 / 성능 FAIL 후보 보존
 
 [최종 계약·검수·MAP REPORT](../4.1맵디자인+설정/MAP11_32B_FIELD_BAKE_20261021.md). 같은branch/기준d953e349, START zoom.70·provider/PCcore/actor스케일 보존. 북접합 무반사native패치·정적지면22tile·전경trim. 관련6종 각1회237/0. 유효field1회 p95 **11.806ms**,p99 **12.905ms**,focus_lost0; draw/objects **118/219→124/225**. **VISUAL RETOUCH / 성능 FAIL, 해소 완료 아님**. 유효 느린표본 재측정0. 외부 `_out/MAP11-32b/DONE.txt`에 최종SHA·원격·clean WT제거 기록; main/PC/배포0.
+
+## 2026-10-22 ZOOM-01b 재촬영 부분 제출
+
+MAP11-32c c335f345를 기존 ZOOM-01에 merge. 새 필드 START와 HUD 안전 프레이밍 보정, 원본12장·비교판3장 보존. 근접4장은 실제 이동 후 idle 실패증거이며 실전 캡처 아님. 지정 소스 보스 clock owner_gap_no_receipt / ticks_completed0으로 공격 주입 없이 (c) 완료 불가. 제품 카메라/스케일/UI·PC core·맵 비주얼 변경0. VISUAL RETOUCH. [표·눈검수·실행/안전 경계](../engine/ZOOM_01B_REPORT_20261022.md), SHA/원격/정리는 ~/exoduser-wt/_out/ZOOM-01b/DONE.txt.
