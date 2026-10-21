@@ -56157,3 +56157,7 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 - 기준372a9c5a/branch codex/map11-20p-20261021. 기존16mask RGBA를2048×1024 lossless atlas로 묶고 AtlasTexture 논리size/offset·252instance·254foot·패치/광원·PC전투코어 불변. AI생성0. 원본PNG 보존·16영역픽셀/sourceSHA 동일. base RGBA 메모리5,171,524→8,388,608bytes tradeoff 기록.
 - 81277 공존 고정 배경·우리Godot1개, 원본35틱정착/600틱/1920×1080/240cap. 최종 confirm-before7.268/7.410 → after7.342/7.421ms, 두 공간≤8.33 PASS(52/0). draw148/136→142/127. p95 유의한 단축 주장0; before도 정상포커스에서는PASS. 과거10.598/초기9.681ms의 단일GPU원인 미확정. focus-loss FAIL 및70틱탐색 포함 전부 보존·구분.
 - 실제Main 동일3뷰1600×900·나란히3200×900/7발치 눈검수: 화면 동등성PASS·전체맵RETOUCH 유지. before1557/0, after2062/0(단일atlasRID 포함), foot오차.000366worldpx. §19에원인표·전후표·atlas16region·제약·MAP REPORT 기록. 격리userdir·project원byte복원/R읽기만. Git SHA/원격readback/정리 증거: ~/exoduser-wt/_out/MAP11-PERF/DONE.txt.
+
+## 2026-10-21 INTEG-3 지옥 관광 코스 통합
+
+MAP11-21d→20p 순차 merge, append 양쪽 보존. 공통16개 접지 마스크 atlas 참조와 신규 관광 마스크 병합. 최초 충돌해결 구조오류 복원 및 단회 검수 실패·oracle 인수 누락은 숨기지 않고 기록한다. [검수·충돌 근거](engine/INTEG3_DEMO11_20261021.md). 외부 DONE에 최종 SHA/18단계/성능/6장면 증거.

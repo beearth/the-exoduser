@@ -1,5 +1,5 @@
 extends RefCounted
-## Original lower-alpha masks packed losslessly into one GPU texture; logical sizes/feet unchanged.
+## Lower-silhouette contact masks, baked from original alpha; no displaced cast shadows.
 const MASKS={
  "res://assets/map/props/prop_altar.png": {"texture":preload("res://assets/map/map11/contact_masks/atlas/prop_altar.tres"),"offset":Vector2(-19,523),"size":Vector2(858,249)},
  "res://assets/map/props/prop_corpsetree.png": {"texture":preload("res://assets/map/map11/contact_masks/atlas/prop_corpsetree.tres"),"offset":Vector2(-35,973),"size":Vector2(1213,462)},
@@ -17,3 +17,28 @@ const MASKS={
  "res://assets/map/map11/props/hell_skull_pyramid.png": {"texture":preload("res://assets/map/map11/contact_masks/atlas/hell_skull_pyramid.tres"),"offset":Vector2(-25,697),"size":Vector2(1074,331)},
  "res://assets/map/map11/props/hell_spike_pit.png": {"texture":preload("res://assets/map/map11/contact_masks/atlas/hell_spike_pit.tres"),"offset":Vector2(-22,620),"size":Vector2(1068,293)},
  "res://assets/map/map11/props/hell_impaled_corpse.png": {"texture":preload("res://assets/map/map11/contact_masks/atlas/hell_impaled_corpse.tres"),"offset":Vector2(-26,711),"size":Vector2(601,339)},
+ "res://assets/map/map11/props/skull_25d/skull_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/skull_25d/skull_0_contact.png"),"offset":Vector2(-9,257),"size":Vector2(392,122)},
+ "res://assets/map/map11/props/skull_25d/skull_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/skull_25d/skull_1_contact.png"),"offset":Vector2(-8,231),"size":Vector2(368,109)},
+ "res://assets/map/map11/props/skull_25d/skull_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/skull_25d/skull_2_contact.png"),"offset":Vector2(-9,243),"size":Vector2(400,116)},
+ "res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_0_contact.png"),"offset":Vector2(-10,372),"size":Vector2(148,128)},
+ "res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_1_contact.png"),"offset":Vector2(-10,372),"size":Vector2(180,128)},
+ "res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/hell_impaled_corpse/hell_impaled_corpse_2_contact.png"),"offset":Vector2(-10,372),"size":Vector2(211,128)},
+ "res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_0_contact.png"),"offset":Vector2(-8,304),"size":Vector2(471,104)},
+ "res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_1_contact.png"),"offset":Vector2(-8,304),"size":Vector2(481,104)},
+ "res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/hell_spike_pit/hell_spike_pit_2_contact.png"),"offset":Vector2(-8,304),"size":Vector2(468,104)},
+ "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_contact.png"),"offset":Vector2(-8,304),"size":Vector2(391,104)},
+ "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_contact.png"),"offset":Vector2(-8,304),"size":Vector2(406,104)},
+ "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_contact.png"),"offset":Vector2(-8,304),"size":Vector2(430,104)},
+ "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_0_contact.png"),"offset":Vector2(-7,258),"size":Vector2(365,89)},
+ "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_1_contact.png"),"offset":Vector2(-7,258),"size":Vector2(369,89)},
+ "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_2_contact.png"),"offset":Vector2(-7,258),"size":Vector2(363,89)},
+ "res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_0_contact.png"),"offset":Vector2(-12,456),"size":Vector2(335,156)},
+ "res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_1_contact.png"),"offset":Vector2(-12,456),"size":Vector2(356,156)},
+ "res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_2_contact.png"),"offset":Vector2(-10,396),"size":Vector2(307,134)},
+ "res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_0_contact.png"),"offset":Vector2(-14,516),"size":Vector2(667,178)},
+ "res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_1_contact.png"),"offset":Vector2(-14,516),"size":Vector2(716,178)},
+ "res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_cocoon_tree/tour_cocoon_tree_2_contact.png"),"offset":Vector2(-14,516),"size":Vector2(643,178)},
+ "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_0_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_0_contact.png"),"offset":Vector2(-11,410),"size":Vector2(387,141)},
+ "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_1_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_1_contact.png"),"offset":Vector2(-11,410),"size":Vector2(416,141)},
+ "res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_2_diffuse.png": {"texture":preload("res://assets/map/map11/props/tour_25d/tour_torture_wheel/tour_torture_wheel_2_contact.png"),"offset":Vector2(-11,410),"size":Vector2(391,141)},
+}
