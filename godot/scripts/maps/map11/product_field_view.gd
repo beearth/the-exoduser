@@ -1,5 +1,6 @@
 extends "res://scripts/maps/map11/field_seam_preview.gd"
 ## MAP11-14 product assembly; no preview actor, UI, collision or gameplay writer.
+const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
 var gate_leaves: Array[Node2D]=[]
 var gate_open: float=0.0
 func _ready() -> void:
@@ -26,6 +27,11 @@ func _build_mass() -> void:
  _rgba("D01LowHeartAltar","prop_altar.png",Vector2(-250,-2320),220,false)
  _rgba("D01ExposedTissue","prop_cocoon.png",Vector2(-260,-2370),110,false)
  _stamp(load(ROOT_PATHS[0]),Vector2(-250,-2650),Vector2(1150,380),.10,_root_material,false,"shoulder")
+ # Static baked recess hides the old straight floor edge; no collision or tick work.
+ var recess:=Sprite2D.new();recess.name="GateOrganicRecess"
+ recess.texture=preload("res://assets/maps/map11/gate_organic_recess.png")
+ recess.position=Vector2(0,-4250);recess.scale=Vector2(4800.0/3072.0,900.0/640.0)
+ recess.z_index=-2986;add_child(recess)
  # Existing skull/black-iron gate is split into two texture regions at setup.
  # No generated art, opaque bar proxies, collision or lock writer.
  for i in range(3):
@@ -40,13 +46,34 @@ func _build_mass() -> void:
   leaf.region_rect=Rect2(infill.position+Vector2(side*55,0),Vector2(55,193));leaf.centered=false
   leaf.offset=Vector2(-27.5,-193);leaf.scale=Vector2.ONE*(405.0/193.0)
   leaf.position=Vector2((-1 if side==0 else 1)*27.5*leaf.scale.x,-3890)
-  leaf.set_meta("closed_x",leaf.position.x);leaf.z_index=int(-3830*.35)+2;add_child(leaf);gate_leaves.append(leaf)
+  GroundContact.align(leaf,"res://assets/map/ch1/collision/cage_gate.png#"+str(side))
+  leaf.set_meta("closed_x",leaf.position.x);add_child(leaf);GroundContact.depth(leaf,leaf.global_position);gate_leaves.append(leaf)
 func _rgba(id: String,file: String,foot: Vector2,height_: float,mirror: bool) -> void:
- var root:=Node2D.new();root.name=id;root.position=foot;root.z_index=int(foot.y*.35);add_child(root)
- var sprite:=Sprite2D.new();sprite.texture=load(PROP_DIR+file);sprite.centered=false
- var size_: Vector2=sprite.texture.get_size();sprite.offset=Vector2(-size_.x*.5,-size_.y*.94);sprite.scale=Vector2.ONE*(height_/size_.y);sprite.flip_h=mirror;root.add_child(sprite)
- var shadow:=Sprite2D.new();shadow.texture=_contact;shadow.position=Vector2(20,12);shadow.scale=Vector2(height_*.006,height_*.0012);shadow.modulate=Color(0,0,0,.6);shadow.z_index=-1;root.add_child(shadow)
- _rows.append({"node":root,"foot":foot,"rect":Rect2(foot+sprite.offset*sprite.scale,size_*sprite.scale).grow(55)})
+ var texture_: Texture2D=load(PROP_DIR+file)
+ if file=="prop_g_root.png":
+  # Low root aprons are floor decals, never vertical props or shadow casters.
+  _stamp(texture_,foot,Vector2(height_*texture_.get_width()/texture_.get_height(),height_*.40),0.0,_root_material,mirror,"shoulder")
+  return
+ var root:=Node2D.new();root.name=id;root.position=foot;add_child(root)
+ GroundContact.depth(root,root.global_position)
+ var sprite:=Sprite2D.new();sprite.texture=texture_;sprite.scale=Vector2.ONE*(height_/texture_.get_height());sprite.flip_h=mirror
+ root.add_child(sprite)
+ var bounds: Rect2=GroundContact.align(sprite)
+ _rows.append({"node":root,"foot":foot,"rect":Rect2(foot+bounds.position,bounds.size).grow(55)})
+func _build_ground() -> void:
+ super._build_ground()
+ # Inherited preview shoulder AO is intentionally absent on product floor decals.
+ for child in _surface.get_children():
+  if child is Sprite2D and child.texture==_contact and child.z_index==0:
+   _surface.remove_child(child);child.queue_free()
+func _add_tree(layer: String,side: String,foot: Vector2,height_: float,tone: Color,idx: int,mirror: bool) -> void:
+ super._add_tree(layer,side,foot,height_,tone,idx,mirror)
+ var row: Dictionary=_forest_rows.back()
+ var sprite: Sprite2D=row.node.get_child(0)
+ # Rotation/anisotropic scale are already final: use transformed opaque hull.
+ var bounds: Rect2=GroundContact.align(sprite)
+ GroundContact.depth(row.node,row.node.global_position)
+ row.rect=Rect2(foot+bounds.position,bounds.size).grow(55)
 func update_product(point: Vector2,delta: float) -> void:
  var inverse:=get_global_transform_with_canvas().affine_inverse()
  var view:=Rect2(inverse*Vector2.ZERO,get_viewport_rect().size/get_viewport().get_camera_2d().zoom).grow(200)

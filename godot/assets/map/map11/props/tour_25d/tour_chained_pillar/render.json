@@ -1,0 +1,65 @@
+{
+  "base_cut_ratio": 0.04,
+  "base_cut_y": -0.875083663463593,
+  "elevation_degrees": 36.869897645844,
+  "ground_depth_compression": 0.6,
+  "normal": "view XYZ encoded .5*n+.5; +Y up/OpenGL; CanvasTexture decodes green to screen-down",
+  "projection": "orthographic",
+  "variants": [
+    {
+      "foot": [
+        155.5,
+        600
+      ],
+      "size": [
+        311,
+        600
+      ],
+      "source_crop": [
+        323,
+        162,
+        354,
+        684
+      ],
+      "variant": 0,
+      "yaw_degrees": -20
+    },
+    {
+      "foot": [
+        166.0,
+        600
+      ],
+      "size": [
+        332,
+        600
+      ],
+      "source_crop": [
+        311,
+        156,
+        387,
+        700
+      ],
+      "variant": 1,
+      "yaw_degrees": 0
+    },
+    {
+      "foot": [
+        143.5,
+        520
+      ],
+      "size": [
+        287,
+        520
+      ],
+      "source_crop": [
+        311,
+        156,
+        387,
+        700
+      ],
+      "variant": 2,
+      "yaw_degrees": 0.0
+    }
+  ],
+  "retouch_21d": "variant 2 yaw 0 opaque depth; 0/1 preserved from 21c"
+}

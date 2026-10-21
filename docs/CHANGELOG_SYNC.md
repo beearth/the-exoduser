@@ -56094,3 +56094,61 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 ## 2026-10-21 INTEG-2b MAP11 perf
 
 벤치 G.on 주입 제거·제품 guide/lesson 경로 사용, 공간별 즉시 JSON/600틱 p95 및 실제 gate receipt 기록. field p95 15.391ms(미달), arena gate_or_provider로 미측정; 제품 gate/PC 미인수 우회0. 상세: engine/INTEG2b_MAP11_PERF_20261021.md.
+## 2026-10-21 MAP11-18 — 바닥 군락·캐릭터 림
+
+- 채택 ff59c3c7 직계, 기존 RGBA5종/군락9+나무 발치 총130sprite. 신규생성·텍스처교체0.
+- 공유 actor rim material1개/약1.35screenpx inner edge, player뼈색/적암적색 setup-only. player.gd/전투코어 불변. 숲 prelight RGB하한(.075,.069,.072).
+- 현행 수치·금지구역·에셋·검수·MAP PRODUCTION REPORT: [MAP11 설계서 §15](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#15-map11-18--바닥-장식캐릭터-림-2026-10-21).
+
+
+## 2026-10-21 MAP11-19 큰 바닥 패치
+
+- 기준2e735e1d / MAP11-17 채택 조명 유지. 사용자 제공 MagicLight Seedream 5.0 Pro 3장을 keyed RGBA+mipmap으로 가공. REJECT/16/16b/17b 미사용.
+- field12개 폭310~375, 기존 소형 군락 축소·재배치, arena/충돌/전투 변경0. 설계 §16·아트 현황표 동기화.
+- 동일3뷰/1x·단독1회 성능 결과와 visual 판정은 설계 §16 및 _out/MAP11-19/DONE.txt. main push/배포0.
+
+
+## 2026-10-21 MAP11-20 지옥 세로소품·바닥패치 가시성
+
+- 기준319d1686. MagicLight Seedream 5.0 Pro 승인3장 key/despill/main island/bbox/mipmap, skull3·corpse4·spikepit1 setup배치·배우Y/4깊이·ground AO. 폐기/REJECT반입0.
+- 기존patch12 중간톤·뼈색/혈흔대비복원, alpha.96·중심2개이동/소형66유지. 아레나R1700·전투/저장/geometry불변. 설계 §17·아트현황에전체수치/원본SHA/재현도구기록.
+- 동일3뷰1600×900 before/after+1x·가림2뷰. 최종68checks/1FAIL: fieldp95 **10.598ms>8.33 FAIL**, arena7.168ms PASS. 단독벤치1회·다른Godot0·추가재측정0. **VISUAL VERDICT RETOUCH**, 인수완료아님. 증거/SHA `_out/MAP11-20/DONE.txt`. 정상hook/자기branch push만, main배포0.
+
+
+## 2026-10-21 MAP11-20 추가 — 떠 보이는 소품 접지
+
+- 같은branch f7bddb46 후속. alpha-hull bbox bottom pivot/회전·flip·worldY/4 254개, offsetAO/분리cast8제거. source lower-alpha contact16종/252개를같은foot에 연결. 새AI원화0·provider/충돌/전투/저장0.
+- ground root3개는flat/shadow0. 작은피flat material, bone/flesh22높이×.48. source/foot고정·whole-prop bob0. 하단접촉PNG변환/재현도구·전체수치는 설계§18·아트현황.
+- 실제제단·시체나무·hell·관문/arena제단1x직접검수. 최종1557/0, foot오차최대.000366worldpx. CONTACT VISUAL PASS(검수7개), 전체RETOUCH. 벤치추가0/수정본p95미측정, 이전10.598ms실패미해결. 증거/SHA `_out/MAP11-20/DONE.txt`.
+
+
+## 2026-10-21 MAP11-25D
+- 372a9c5a 기준 격리 브랜치: 외부 Meshy GLB의 orthographic 3뷰 diffuse/normal/foot → CanvasTexture 피라미드3개. 런타임 GLB0, 기존 접지/Y정렬/PointLight 유지.
+- 관련 SSOT: MAP11_NEW_MAP_LOGIC_PLAN_20261021 §19, ART_TEAM_MASTER MAP11-25D. 전체docs 키워드검색은 _out/MAP11-25D/docs-all-keywords.txt.
+- 실제 Main 전후3뷰/광원near-far/normal-off대조/+Y교정, 벤치1회 field7.243ms/arena7.041ms. 최종 재렌더전 성능측정 제약을 명시. VISUAL RETOUCH(모델 하단·재질 잔여). 실제 저장폴더/PC전투 변경0.
+
+
+## 2026-10-21 MAP11-25Db
+- 설계서 §19.5/ART_TEAM_MASTER 동기화. 기존 GLB의 NW 음영·offline AO·warm grade·normal 강화,흙받침 보존. PNG/hull/contact 해당3건만.
+- VISUAL VERDICT RETOUCH: A 원화보다 우수 기준 미달. perf1회checks3/fail0. _out/MAP11-25Db에A/B/C3뷰·1x/수치/DONE. 전체docs검색 docs-all-search.txt.
+
+
+## 2026-10-21 MAP11-21
+- 기준46768e84 전용branch: 사용자GLB7종×3yaw offline PNG diffuse+normal, 발치 밝기/약한샤프닝/콘셉트팔레트/AO.
+- 지옥 관광6장면15소품+6광원·기존횃불3, 평면bone/blood/cracked패치와넓은scatter 제거. 공통좌표SSOT를field원형충돌에연결.
+- 설계서§20·ART_TEAM_MASTER 좌표/수치/원본출처·검수·RETOUCH 경계 동기화. 전체docs관련검색은 _out/MAP11-21/docs-search.txt.
+- Main/Player/PC전투보호코드0, R읽기만, 격리저장·기존81277보존. 성능단회와캡처결과는 DONE.txt/perf.json.
+
+
+## 2026-10-21 MAP11-21b
+- 기준129281f1 관광코스 보정: 6무리17소품/대표1.3배, offline 바닥판 높이절단·diffuse/normal/contact 재생성, sat1.06/contrast1.10·대야 붉은 재질 감쇠.
+- tour_layout 좌표/광원·contact hull/manifest·격리 capture/단회 focused benchmark 동기화. 설계서 §20.5와 ART 기록.
+
+## 2026-10-21 MAP11-21c
+- 기준06bae2f2 관광2차: 해골chroma.20/tint(1.02,1,.93)/cut.055·대야chroma.72·04/05광원energy.58/.72, 01/03/06무리보정. PNG runtime/격리userdir/PC core보존.
+- 설계서§20.6·SSOT·ART·manifest/contact 동기화. 단회96checks/0fail, p95 field7.581/arena7.286ms, focus이탈0. 6장면before/after1600×900+1x 확보. VISUAL RETOUCH(04내부평면·06림/01반복/03가림 잔여).
+
+
+## 2026-10-21 MAP11-21d
+- 기준2ab6eaea: 04왼쪽정상variant0, 06죄수variant2 yaw0+offline불투명depth/PNG만, pit1.5배(height300/radius157.5/foot-590,-3770), 게이트뒤root-dark정적PNG로직선경계은폐.
+- 설계서§20.7·SSOT·ART·manifest/contact동기화. 6장면before/after1600×900+1x. VISUAL RETOUCH. 단회96checks/3fail, p95 field9.530/arena7.212ms, focus_lost1648/1749로성능검수FAIL. 재시도0/PC core0/R읽기만.

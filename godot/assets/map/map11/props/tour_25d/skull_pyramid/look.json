@@ -1,0 +1,40 @@
+{
+  "concept": "hell_skull_pyramid.png",
+  "concept_sha256": "4102a4f95a12265464a18fda9596ddf5de5861aefa9be053c10fcfdfdb52c48c",
+  "concept_median": [
+    0.25098039215686274,
+    0.1803921568627451,
+    0.1411764705882353
+  ],
+  "rgb_gain": [
+    1.18,
+    0.9367719652661246,
+    0.78
+  ],
+  "blood_red_gain": null,
+  "blood_red_bias": null,
+  "retouch_21c": {
+    "skull_chroma": 0.2,
+    "skull_tint": [
+      1.02,
+      1.0,
+      0.93
+    ],
+    "basin_chroma": 0.72
+  },
+  "ao_strength": 0.35,
+  "exposure": 1.85,
+  "foot_luma_threshold": 0.15,
+  "foot_lift": 0.11,
+  "foot_start": 0.65,
+  "saturation": 1.06,
+  "contrast": 1.1,
+  "unsharp": [
+    0.7,
+    25,
+    4
+  ],
+  "normal_xy_gain": 1.35,
+  "denoise_median": 3,
+  "denoise_gaussian": 0.28
+}

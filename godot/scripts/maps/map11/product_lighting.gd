@@ -1,6 +1,7 @@
 extends "res://scripts/native_map_look.gd"
 ## MAP11-only presentation adapter. NativeMapLook creates lights, radial gradients and
 ## silhouette materials; authoritative actors/geometry and original textures stay intact.
+const GroundContact=preload("res://scripts/maps/map11/ground_contact.gd")
 var scene: Node2D
 var pools: Array[Dictionary]=[]
 var _camera: Camera2D
@@ -69,31 +70,19 @@ func _mount_contacts() -> void:
   for child in root_.get_children():
    if child is Sprite2D and child.z_index==-1:child.hide()
   var sprite: Sprite2D=root_.get_child(0)
-  var width: float=sprite.texture.get_width()*absf(sprite.scale.x)
-  _contact(scene.field_view,row.foot,Vector2(clampf(width*.52,80,500),clampf(width*.095,24,100)),-2990,.78)
-  if root_.name.begins_with("D01") or root_.name=="GateBoneFrame":
-   _projection(scene.field_view,sprite,row.foot,root_.z_index-1)
+  GroundContact.shadow(scene.field_view,sprite,row.foot,-2990,.85,_unlit)
  for row in scene.arena_view._rim_sprites:
   var sprite: Sprite2D=row.sprite
-  var width: float=sprite.texture.get_width()*absf(sprite.scale.x)
-  _contact(scene.arena_view,sprite.position,Vector2(clampf(width*.48,90,480),clampf(width*.085,24,96)),-440,.8)
+  GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.85,_unlit)
  for id in ["NorthHeartAltar","EntryArch_VisualOnly","ClearArch_VisualOnly"]:
   var sprite: Sprite2D=scene.arena_view.get_node(id)
-  _contact(scene.arena_view,sprite.position,Vector2(240,60),-440,.82)
-  _projection(scene.arena_view,sprite,sprite.position,-439)
+  if sprite.position.length()<=1700.0:GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.85,_unlit)
  _contact(_player,Vector2(0,4),Vector2(62,20),-1,.75)
 
 func _contact(parent: Node2D,foot: Vector2,size_: Vector2,z: int,alpha: float) -> void:
  var shadow:=Sprite2D.new();shadow.name="LightContactAO";shadow.texture=_contact_texture
- shadow.position=foot+Vector2(0,8);shadow.scale=size_/128.0;shadow.modulate=Color(0,0,0,alpha)
+ shadow.position=foot;shadow.set_meta("contact_foot",foot);shadow.set_meta("ground_contact_kind","ao");shadow.scale=size_/128.0;shadow.modulate=Color(0,0,0,alpha)
  shadow.z_index=z;shadow.material=_unlit;parent.add_child(shadow)
-
-func _projection(parent: Node2D,source_: Sprite2D,foot: Vector2,z: int) -> void:
- var shadow:=Sprite2D.new();shadow.name="LightProjectedSilhouette";shadow.texture=source_.texture
- shadow.centered=false;shadow.offset=source_.offset;shadow.flip_h=source_.flip_h
- shadow.scale=Vector2(source_.scale.x,-source_.scale.y*.24);shadow.skew=deg_to_rad(-32)
- shadow.position=foot+Vector2(15,8);shadow.z_index=z
- shadow.material=_silhouette_material(Color(.005,.008,.014,.42),4.0);parent.add_child(shadow)
 
 func _process(delta: float) -> void:
  if not is_instance_valid(_player):return

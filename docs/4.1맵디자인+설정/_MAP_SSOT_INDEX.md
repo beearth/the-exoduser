@@ -1,3 +1,11 @@
+> 2026-10-21 MAP11-21d 현행: [설계서 §20.7](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21). 04정상variant0/06죄수정면yaw0+opaque-depth·pit1.5배/게이트뒤root-dark PNG. **VISUAL RETOUCH, 성능검수 FAIL**: 단회96checks/3fail, p95 field9.530/arena7.212ms, focus_lost1648/1749. 아래21c이하는 이력.
+
+> 2026-10-21 MAP11-21c 현행: [설계서 §20.6](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#206-map11-21c--관광-코스-2차-보정-2026-10-21). 해골chroma.20/cut.055·대야chroma.72·04/05광원감쇠·01/03/06무리보정. 96검사/0fail, field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. **VISUAL RETOUCH**, 04내부평면/06림 잔여. 아래21b이하는 이력.
+
+> 2026-10-21 MAP11-21b 현행 보정: [설계서 §20.5](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#205-map11-21b--관광-무리받침-제거-보정-2026-10-21). 17소품/6무리, 대표1.3배, offline 높이절단으로 Meshy 바닥판 제거, PNG normal/contact 재생성. 아래 MAP11-21은 기준 후보 이력. 판정·성능은 §20.5의 최종 검수 기록 참조.
+
+> 2026-10-21 **MAP11-21 지옥 관광 코스 후보**: [설계서 §20](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#20-map11-21--1-1-지옥-관광-코스-2026-10-21). 7GLB×3yaw offline diffuse/normal, 6장면15소품·발치원충돌·빛웅덩이6. bone/blood/cracked 평면패치·scatter0. **VISUAL RETOUCH**, 성능 단회84checks/0fail, 상세p95는 §20. 기존웹/PC본편 인수완료가 아니며 아래 25Db/20의 수치는 해당후보 이력.
+
 > 2026-10-21 **MAP11-17 조명 현행**: [설계서 §14](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21). 기준 MAP11-15 `1f797a8b`, MAP11-16/16b 미사용. MAP11 전용 CanvasModulate/광원·접지·외곽 안개가 현행이며 아래 MAP11-15의 전면 안개·광원 수치는 당시 이력이다. 1080p p95 필드7.857ms/아레나7.580ms, **VISUAL VERDICT: RETOUCH**. 독립 프리뷰와 웹 본편은 제품과 구분한다.
 
 ## 2026-10-21 — MAP11-15 Godot 제품 보스룸·맵 성능

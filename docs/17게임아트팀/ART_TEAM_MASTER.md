@@ -259,3 +259,96 @@
 ### 8.5 포인트
 
 MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 구간 ART 사용: cin_remember 200 + emg1 200×2 = 600. 다른 세션 사용분이 섞일 수 있음.
+
+
+## MAP11-19 현황표 — 2026-10-21 (MAP11-20 이전 가공 이력)
+
+| 에셋 | 출처 / 생성일 | 원화 검수 | 런타임 인수 |
+|---|---|---|---|
+| patch_bloodpool_roots.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS, 1920² 녹색배경 | 키잉·spill 제거·feather·bbox, RGBA996×1024, field4개 |
+| patch_bone_pile.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS, 명도 보정 지시 | 턱뼈 분리조각 제외·RGB×.72, RGBA1024×956, field4개 |
+| patch_cracked_flesh_slab.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS, 1920² 녹색배경 | 키잉·spill 제거·feather·bbox, RGBA1011×1024, field4개 |
+
+사용 경로 `godot/assets/map/map11/patches/`; 배치/수치/런타임 판정은 MAP11_NEW_MAP_LOGIC_PLAN_20261021.md §16. `patch_flesh_mound_REJECT.png` 미사용. 원본 R은 변경하지 않았고 원화 PASS와 전체 게임화면 PASS는 구분한다.
+
+MAP11-19 런타임 최종 판정 **RETOUCH**: 원화의 큰 형태는 읽히나 암부 재질·일부 반복 인접/혈흔 실루엣 추가 보정 필요. 단독 p95 field7.004/arena6.780ms, 전체 시각 PASS 아님.
+
+
+## MAP11-20 현황표 — 2026-10-21
+
+| 에셋 | 출처 / 생성일 | 원화 검수 | 현행 런타임 가공·배치 |
+|---|---|---|---|
+| hell_skull_pyramid.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS / 1920² 녹색배경 | 색거리key·spill제거·main island·bbox·꼭대기구멍투명, RGBA1024×1003+mip / 3개 높이166~185 |
+| hell_impaled_corpse.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS / 1920² 녹색배경 | 작은분리피방울/점제거·key·spill·bbox·중간톤, RGBA549×1024+mip / 4개 높이158~182·양측2개씩 |
+| hell_spike_pit.png | MagicLight Seedream 5.0 Pro / 2026-10-21 | 맥북총괄 PASS / 1920² 녹색배경 | key·spill·bbox·중간톤, RGBA1024×891+mip / 접근로왼쪽1개 높이184 |
+| patch_bone_pile.png (보정) | 위MAP11-19 승인원본 재사용 | 원화PASS / 기존런타임암부실패 | RGB×.72폐기→gamma.48×1.42上限.94·뼈색(1,.90,.68). alpha.96·index1이동, 4개·원해상도유지 |
+| patch_bloodpool_roots.png (보정) | 위MAP11-19 승인원본 재사용 | 원화PASS | gamma.57×1.5上限.94·(1,.76,.62) 찬색억제, alpha.96·index0이동, 4개 |
+| patch_cracked_flesh_slab.png (보정) | 위MAP11-19 승인원본 재사용 | 원화PASS | gamma.64×1.4上限.94·(1,.84,.72), alpha.96, 4개 |
+
+소품 `godot/assets/map/map11/props/`, 바닥 `godot/assets/map/map11/patches/`. SHA/bbox/재현도구·크기·전체좌표·Y/4정렬·발치AO는 설계 **§17**. 신규생성0/REJECT0/PC전투코어0. 원화PASS와 런타임인수는 구분한다. 최종 **VISUAL VERDICT: RETOUCH**, 필드p95 **10.598ms FAIL** / 아레나7.168ms PASS(단독1회). 3뷰1600×900 전후/1x 및가림2뷰는 `_out/MAP11-20/captures/`. 전체품질완료·인수PASS 아님.
+
+
+### MAP11-20 접지 추가수정 — 2026-10-21 현행
+
+| 대상 | 가공/현행 | 검수 |
+|---|---|---|
+| 기존 세로소품/나무/제단/hell3종 | 불투명alpha≥32/255 hull 기반 회전/반전후bbox bottom pivot, 절대worldY/4 정렬. source원화/배치anchor불변 | 254개 발치최대오차.000366worldpx / 시간경과foot고정 |
+| contact_masks16장 | 기존alpha하단에서 파생, max512×256 RGBA+mip. source와같은foot/변환, detached cast8→0/접촉AO252개 | 제단·시체나무·skull/corpse/pit·관문+arena제단1x 접지눈검수 PASS. 새AI생성0 |
+| 바닥뿌리/작은피/뼈·육편 | 뿌리3개floor전환·별도shadow0, 피는flat dark-red mask, 작은bone/flesh22개높이×.48 | 전체1557/0. 원화·전체맵판정은별개 |
+
+이전 MAP11-20의 .94pivot/foot+(0,3)AO·MAP11-17의+(0,8)/투사그림자 설명은 이력이다. 현행값/생성수식은 설계 **§18**, 증거 `_out/MAP11-20/captures/grounding/`. **CONTACT VISUAL PASS(검수발치7개), 전체VISUAL RETOUCH**, 새수정본성능미측정(앞field10.598ms실패를해결완료로표시0).
+
+
+## MAP11-25D — 2026-10-21: 3D 소스 → 2D 노멀 조명 파이프라인
+
+| 항목 | 인수 기록 |
+|---|---|
+| 원화 출처 | MagicLight Toolbox Seedream → MAP11-20 `hell_skull_pyramid.png`. 신규 AI 이미지 생성0 |
+| 3D 변환 | 사용자 제공 Meshy image-to-3D/PBR, 약30k poly. 원본 `outputs/map11-art-proof-20261021/3d/skull_pyramid.glb`, 13,867,284bytes, SHA256 `c2d33f27fae370feb594917bab529d6d442f58739ca397e59907fb536452838d`. R 원본 읽기만, Git/runtime 반입0 |
+| 렌더 | Godot SubViewport1024² + orthographic Camera3D, elevation36.86989765°/지면압축.6/추가Y압축1.0. yaw−20/+20/+65°. diffuse·view-space normal·발치metadata, GPU CLI로 제작. 순수headless dummy 렌더는 미지원/오류파일로 종료 |
+| 게임 출력 | `assets/map/map11/props/skull_25d/`: 375×370/352×332/381×350 diffuse+normal3쌍, 접촉AO3장, 모두mip. 표시높이185/166/175의2배. CanvasTexture OpenGL +X/+Y/+Z(green invert=false). footprint/발치/원본SHA는같은폴더 JSON3종 |
+| 적용 | `product_detail.gd` 피라미드3개만. 기존PointLight2D 실제노멀수광, 원위치/절대Y/4/opaque foot/하단AO 유지. 원본2D PNG는보존. PC전투·Main·Player·저장수정0 |
+| 검수 | 기준372a9c5a 실Main before/after3뷰1600×900/나란히3200×900/1x. 같은카메라near/far+normal-off대조. +Y교정 위1.0/아래0.0 PASS. 상세카메라근거/필터/AO/수치/제약은 MAP11 설계§19 |
+| 성능 | 1회 field p95 7.243ms/arena7.041ms, 이전field10.598보다악화미관측. 마지막offline재렌더전측정이며최종PNG재측정0/최종성능보증·개선율주장0 |
+| 판정 | **VISUAL VERDICT: RETOUCH**. 노멀조명반응성립, Meshy 하단형상/암부·재질원화명암잔여. 사진붙임느낌완전해소·전체맵완성판정아님 |
+
+도구 `godot/tools/map11_25d_render.gd`, `map11_25d_contacts.py`; export의tools/tests제외유지. 증거 `~/exoduser-wt/_out/MAP11-25D/`와 `DONE.txt`. MAP11-20의기존2D피라미드설명은이력이며이브랜치현행은§19.
+
+
+## MAP11-25Db — 2026-10-21 룩 보정 후보
+
+기존 MAP11-25D 절은1ca4603f 당시 이력. 현 수치·조명·AO·색·해상도·검수는 설계서 §19.5가 SSOT. NW key(.48+.78N·L),rim(.10,.075,.045),offline depth AO .55,exposure1.85/RGB(1.10,1.025,.86)/contrast1.12/saturation.92/normalXY1.65. PNG374×370/352×332/382×350,원래3배치만. 원GLB/콘셉트 읽기,신규생성0,PNG만runtime. near-vs-flat10.87783/255. A/B/C3뷰1x 확인 결과 **RETOUCH**: B보다 대비는 좋아졌으나 A보다 치열과 backside/검은 받침이 나쁨. 성능1회 field7.312ms/arena7.158ms p95,checks3/fail0,엄밀회귀판정불가. 증거 ~/exoduser-wt/_out/MAP11-25Db/DONE.txt 및 captures/.
+
+
+## MAP11-21 현황표 — 1-1 지옥 관광 코스 (2026-10-21)
+
+MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이력. 이번 전용branch의 현행은 [설계서 §20](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#20-map11-21--1-1-지옥-관광-코스-2026-10-21).
+
+| 산출물 | 출처 | 규격·적용 | 판정 |
+|---|---|---|---|
+| 7종3yaw=21종 | **MagicLight Seedream → Meshy image-to-3D → Godot 2.5D 렌더** | diffuse+normal21쌍/AO21, runtime PNG만. 새AI생성/과금0. 원본GLB 읽기만 | RETOUCH |
+| 입구/매달린숲/처형장/해골갈림길/심장/보스입구 | 위 모델15개 손배치 | 시체4/고치3/바퀴2+석주2/해골2/대야1/구덩이1, 빛웅덩이6+기존torch3 재사용. 실제좌표·크기·원형충돌은 §20 | 장면 구분 확인, GLB 면/재질 잔여 |
+| 바닥 | 기존피부·동맥 보존 | bone/blood/cracked patch와 넓은scatter runtime0. 뼈는 세워진 소품 발치 조각만 | 평면뼈장판 제거 |
+| 접지/렌더 | 25Db ortho/AO/key 재사용 | 발치lift.11/AO.35/unsharp25%/median3+blur.28/normalXY1.35. opaque bbox foot0·접촉AO.58·Y/4 | 기술수치는 perf.json, 시각 RETOUCH |
+| 검수 | 실제 Main / 격리user dir | 장면6×1600×900+1x/3뷰before-after/발치2장. 기존81277보존·동시최대2 | _out/MAP11-21/DONE.txt |
+
+전체 동일게임톤 PASS를 선언하지 않는다. skull 검은 면·대야 과포화·pillar/wheel의 원GLB 형상·고치 반복은 남는다. 원화 PASS, Meshy 결과, 2.5D 렌더·런타임 인수를 구분한다. source_manifest.json에 source/concept/GLB/PNG hash와 크기, 각look.json에 콘셉트median palette gain. commit/push/성능은 DONE.txt에 실제 결과만 기록.
+
+
+최종 단회 검수: **84 checks / 0 failures**, field p95 **7.594ms** / arena **7.146ms**, 각각≤8.33ms PASS. field p99 10.878ms / arena p99 8.196ms; 실보행·provider route·15원형충돌·노멀·bbox 틈0·Y/4·관문 PASS. 재측정0. 기존81277 공존 총최대2. 최종 캡처·벤치 SCRIPT/Parse/ERROR0(기존camera physics 경고만). 초기 배치진단/빈crop 오류는 수정 이력 로그에 보존했으며 최종PASS와 구분. torch 실물은 벽부착형 원화여서 단독 지지대 설득력도 RETOUCH 항목이다.
+
+
+### MAP11-21b (2026-10-21)
+
+지옥 관광 6무리/17소품, 대표1.3배·GLB offline 받침 높이절단·채도1.06/대비1.10·대야 순적색 감쇠. 원본/PC보존, PNG runtime. [설계서 §20.5](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#205-map11-21b--관광-무리받침-제거-보정-2026-10-21)의 좌표/수치/검수 계약을 따른다.
+
+최종 단회96checks/0fail, focus이탈0, p95 field7.344/arena7.003ms. VISUAL VERDICT: RETOUCH(고치/해골 바닥판 제거·무리 개선, 구덩이 평면림/원GLB 빈면·외곽가림 잔여). 비교6장면+1x·발치2장 _out/MAP11-21b/captures/.
+
+
+### MAP11-21c (2026-10-21)
+
+해골 회갈/아이보리chroma.20·cut.055/대야chroma.72·04광원.58/05광원.72, 입구·처형장·관문무리보정. 02보존. [설계서 §20.6](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#206-map11-21c--관광-코스-2차-보정-2026-10-21) 수치·좌표 SSOT. field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. 96checks/0fail, **VISUAL RETOUCH**(04내부평면/06림·01반복/03부분가림 잔여). 캡처 _out/MAP11-21c/captures/.
+
+
+### MAP11-21d (2026-10-21) 마감
+04 왼쪽 정상변형0으로 교체. 06 죄수variant2는yaw0+불투명depth로재렌더(0/1 PNG보존), pit height300/radius157.5/foot(-590,-3770)로1.5배. 게이트뒤3072×640 root-dark PNG로직선경계은폐. 01/02승인보존,03/05확인만. [설계서 §20.7](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21)가현행SSOT. **VISUAL RETOUCH**(03가림/05질감/06림·암부). 단회96checks/3fail; p95 field9.530/arena7.212ms, focus_lost1648/1749로성능검수FAIL. 캡처 _out/MAP11-21d/captures/, SHA·최종판정 DONE.txt.

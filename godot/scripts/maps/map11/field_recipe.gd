@@ -32,6 +32,9 @@ func _init() -> void:
 	solids.append({"id":"map11.field.wet_mass","center":Vector2(2100,100),"radius":720.0,"blocks_move":true,"blocks_los":true})
 	solids.append({"id":"map11.field.corpse_tree","center":Vector2(-250,-2700),"radius":220.0,"blocks_move":true,"blocks_los":true})
 	solids.append({"id":"map11.field.heart_altar","center":Vector2(-250,-2320),"radius":100.0,"blocks_move":true,"blocks_los":false})
+	# MAP11-21 side-story props: authoritative circular feet, same SSOT as PNGs.
+	for row in preload("res://scripts/maps/map11/tour_layout.gd").ROWS:
+		solids.append({"id":"map11.field.tour_"+str(solids.size()),"center":row[2],"radius":row[4],"blocks_move":true,"blocks_los":false})
 	var clips: Array[PackedVector2Array] = [PackedVector2Array([Vector2(-10000,-10000),Vector2(0,-10000),Vector2.ZERO,Vector2(-10000,0)]),PackedVector2Array([Vector2(0,-10000),Vector2(10000,-10000),Vector2(10000,0),Vector2.ZERO]),PackedVector2Array([Vector2(-10000,0),Vector2.ZERO,Vector2(0,10000),Vector2(-10000,10000)]),PackedVector2Array([Vector2.ZERO,Vector2(10000,0),Vector2(10000,10000),Vector2(0,10000)])]
 	for i in range(4):
 		var clipped: Array[PackedVector2Array] = Geometry2D.intersect_polygons(outer,clips[i])

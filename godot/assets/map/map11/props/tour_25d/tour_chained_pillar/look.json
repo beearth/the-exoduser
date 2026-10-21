@@ -1,0 +1,49 @@
+{
+  "concept": "tour_chained_pillar.png",
+  "concept_sha256": "cedf2431414d572b4a5d261eddc70fdbb528ee91a51250e668cae2f29afbf85d",
+  "concept_median": [
+    0.1843137254901961,
+    0.13725490196078433,
+    0.12156862745098039
+  ],
+  "rgb_gain": [
+    1.18,
+    0.9392846408175533,
+    0.8319378247241185
+  ],
+  "blood_red_gain": null,
+  "blood_red_bias": null,
+  "retouch_21c": {
+    "skull_chroma": 0.2,
+    "skull_tint": [
+      1.02,
+      1.0,
+      0.93
+    ],
+    "basin_chroma": 0.72
+  },
+  "ao_strength": 0.35,
+  "exposure": 1.85,
+  "foot_luma_threshold": 0.15,
+  "foot_lift": 0.11,
+  "foot_start": 0.65,
+  "saturation": 1.06,
+  "contrast": 1.1,
+  "unsharp": [
+    0.7,
+    25,
+    4
+  ],
+  "normal_xy_gain": 1.35,
+  "denoise_median": 3,
+  "denoise_gaussian": 0.28,
+  "retouch_21d": {
+    "variant": 2,
+    "yaw": 0,
+    "opaque_depth": true,
+    "preserved_variants": [
+      0,
+      1
+    ]
+  }
+}

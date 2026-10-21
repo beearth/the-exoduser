@@ -1,0 +1,29 @@
+{
+  "concept": "hell_impaled_corpse.png",
+  "concept_sha256": "098d7ec7c8e56327ea519d533d290592fe7657d626f371bbaedb71f7ca14a08f",
+  "concept_median": [
+    0.2627450980392157,
+    0.16470588235294117,
+    0.11372549019607843
+  ],
+  "rgb_gain": [
+    1.18,
+    0.9056330374932078,
+    0.78
+  ],
+  "ao_strength": 0.35,
+  "exposure": 1.85,
+  "foot_luma_threshold": 0.15,
+  "foot_lift": 0.11,
+  "foot_start": 0.65,
+  "saturation": 1.06,
+  "contrast": 1.1,
+  "unsharp": [
+    0.7,
+    25,
+    4
+  ],
+  "normal_xy_gain": 1.35,
+  "denoise_median": 3,
+  "denoise_gaussian": 0.28
+}

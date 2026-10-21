@@ -1,0 +1,14 @@
+{
+  "source_concept": "MagicLight Toolbox Seedream, hell_skull_pyramid.png (MAP11-20 accepted source)",
+  "conversion": "Meshy image-to-3D, PBR, user supplied 2026-10-21",
+  "glb_source": "outputs/map11-art-proof-20261021/3d/skull_pyramid.glb",
+  "glb_bytes": 13867284,
+  "glb_sha256": "c2d33f27fae370feb594917bab529d6d442f58739ca397e59907fb536452838d",
+  "runtime": "PNG only; CanvasTexture diffuse+normal, no GLB imported into res://",
+  "renderer": "tools/map11_25d_render.gd; GPU CLI; headless imports and alpha/contact processing supported, dummy PNG renderer unsupported",
+  "metadata": [
+    "render.json",
+    "feet.json"
+  ],
+  "limitations": "Reconstructed material contains source shading; low dark base remnants removed below -0.40*modelHeight at source luma<0.18; source geometry remains RETOUCH"
+}

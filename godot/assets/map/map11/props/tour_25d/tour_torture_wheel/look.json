@@ -1,0 +1,29 @@
+{
+  "concept": "tour_torture_wheel.png",
+  "concept_sha256": "af77555598fa5a05a185dc8710de0473612919b7b444b62ce7fd25d3a069d052",
+  "concept_median": [
+    0.21176470588235294,
+    0.13725490196078433,
+    0.10588235294117647
+  ],
+  "rgb_gain": [
+    1.18,
+    0.9099938120420781,
+    0.78
+  ],
+  "ao_strength": 0.35,
+  "exposure": 1.85,
+  "foot_luma_threshold": 0.15,
+  "foot_lift": 0.11,
+  "foot_start": 0.65,
+  "saturation": 1.06,
+  "contrast": 1.1,
+  "unsharp": [
+    0.7,
+    25,
+    4
+  ],
+  "normal_xy_gain": 1.35,
+  "denoise_median": 3,
+  "denoise_gaussian": 0.28
+}

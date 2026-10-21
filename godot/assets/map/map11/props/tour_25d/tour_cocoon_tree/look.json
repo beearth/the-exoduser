@@ -1,0 +1,29 @@
+{
+  "concept": "tour_cocoon_tree.png",
+  "concept_sha256": "a8bc7b89af59841520b3ddd4ef1acf1e30df98d4c39cff29b796b083a3cff5ae",
+  "concept_median": [
+    0.18823529411764706,
+    0.14901960784313725,
+    0.13725490196078433
+  ],
+  "rgb_gain": [
+    1.18,
+    0.9521566347777717,
+    0.8769863741374214
+  ],
+  "ao_strength": 0.35,
+  "exposure": 1.85,
+  "foot_luma_threshold": 0.15,
+  "foot_lift": 0.11,
+  "foot_start": 0.65,
+  "saturation": 1.06,
+  "contrast": 1.1,
+  "unsharp": [
+    0.7,
+    25,
+    4
+  ],
+  "normal_xy_gain": 1.35,
+  "denoise_median": 3,
+  "denoise_gaussian": 0.28
+}

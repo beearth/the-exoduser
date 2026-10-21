@@ -1,0 +1,64 @@
+{
+  "base_cut_ratio": 0.035,
+  "base_cut_y": -0.559859998226166,
+  "elevation_degrees": 36.869897645844,
+  "ground_depth_compression": 0.6,
+  "normal": "view XYZ encoded .5*n+.5; +Y up/OpenGL; CanvasTexture decodes green to screen-down",
+  "projection": "orthographic",
+  "variants": [
+    {
+      "foot": [
+        175.5,
+        340
+      ],
+      "size": [
+        351,
+        340
+      ],
+      "source_crop": [
+        214,
+        220,
+        595,
+        577
+      ],
+      "variant": 0,
+      "yaw_degrees": -20
+    },
+    {
+      "foot": [
+        177.5,
+        340
+      ],
+      "size": [
+        355,
+        340
+      ],
+      "source_crop": [
+        210,
+        218,
+        604,
+        579
+      ],
+      "variant": 1,
+      "yaw_degrees": 0
+    },
+    {
+      "foot": [
+        174.5,
+        340
+      ],
+      "size": [
+        349,
+        340
+      ],
+      "source_crop": [
+        215,
+        217,
+        595,
+        580
+      ],
+      "variant": 2,
+      "yaw_degrees": 20
+    }
+  ]
+}
