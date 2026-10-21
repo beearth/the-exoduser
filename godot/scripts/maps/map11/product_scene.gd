@@ -23,21 +23,14 @@ func activate_space(space: String) -> bool:
   _transition_fade()
   _frame_arrival(space)
  active_space=space;field_view.visible=space=="field";arena_view.visible=space=="arena";return true
+var boss_visual: Node2D
+var boss_camera: Node
 var _arrival_tween: Tween
 var _arrival_camera: Camera2D
 func _frame_arrival(space: String) -> void:
  if _arrival_tween!=null:_arrival_tween.kill()
  _finish_arrival()
- if space!="arena" or not is_instance_valid(_actor):return
- # Dedicated presentation camera leaves the shared shake writer and gameplay camera intact.
- _arrival_camera=Camera2D.new();_arrival_camera.name="ArenaArrivalCamera"
- _arrival_camera.position=Vector2(0,-1400);_arrival_camera.zoom=Vector2.ONE*.20
- _actor.add_child(_arrival_camera);_arrival_camera.make_current()
- _arrival_tween=create_tween()
- _arrival_tween.tween_interval(1.0)
- _arrival_tween.tween_property(_arrival_camera,"zoom",Vector2.ONE*.70,.9).set_trans(Tween.TRANS_SINE)
- _arrival_tween.parallel().tween_property(_arrival_camera,"position",Vector2.ZERO,.9).set_trans(Tween.TRANS_SINE)
- _arrival_tween.tween_callback(_finish_arrival)
+ if is_instance_valid(boss_camera):boss_camera.set_arena(space=="arena")
 func _finish_arrival() -> void:
  if is_instance_valid(_arrival_camera):
   get_parent().get_parent().camera.make_current()
@@ -66,7 +59,13 @@ func _physics_process(delta: float) -> void:
    detail.configure(self,get_parent().get_parent())
    get_parent().get_parent().camera.zoom=Vector2.ONE*.70
    get_parent().get_parent().camera.offset=Vector2(0,-180)
+   boss_camera=preload("res://scripts/boss11_camera.gd").new();add_child(boss_camera)
+   boss_camera.configure(get_parent().get_parent().camera,_actor,arena_view.global_position)
+   boss_visual=preload("res://scripts/boss11_visual_reader.gd").new();boss_visual.z_index=349;add_child(boss_visual)
+   boss_visual.configure(get_parent().get_parent())
+   get_parent().get_parent().native_demo_boss_defeated.connect(func(_stage: int):boss_camera.set_arena(false))
  if not is_instance_valid(_actor):return
+ if is_instance_valid(boss_visual):boss_visual.visible=active_space=="arena"
  if active_space=="field":field_view.update_product(field_view.to_local(_actor.global_position),delta)
  else:arena_view.update_product_occlusion(arena_view.to_local(_actor.global_position),delta)
 func _transition_fade() -> void:

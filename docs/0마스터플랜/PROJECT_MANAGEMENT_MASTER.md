@@ -450,3 +450,8 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+
+## BOSS11-02 · 2026-10-21 독립 검토 후보
+
+기준391158e3, `codex/boss11-02-20261021`. 채움/경계/충전 공유 셰이더와 읽기 전용 상태 reader, 아레나 zoom.28/1초 전환을 추가했다. PC 전투·판정·피해·패링·저장 변경0. BC01~10 각1회와 visual18 통과. 명목 arena 단일 측정은 focus_lost1449로 INVALID이며 기존8.383ms 대비 악화 없음 미입증. 전23패턴 자연 전투 및 전체 보스전 완성 인수 아님: **RETOUCH**. 상세 규칙/캡처 한계는 [BOSS11-02 보고](../8.1보스디자인바이블/BOSS11_02_TELEGRAPH_20261021.md), SHA/원격/정리는 `~/exoduser-wt/_out/BOSS11-02/DONE.txt`. main/PC/실행본 적용0.

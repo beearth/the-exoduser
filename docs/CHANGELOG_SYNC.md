@@ -56210,3 +56210,9 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - cb154e8d 기준 신규 상수·fixture만 추가. 기존 보스 idle atlas·실제 DEMO11-42 HP 위젯·공유 림과 범위 도형의 before/after20뷰+1x20크롭. 제품 보스 렌더/전투·게이트·HP·패링·최종사망 변경0.
 - **RETOUCH/요청 미완료**: 6범위 도형 후보 외17패턴 실제 렌더 미검수, 실제 탄/HPreadback 증거0. BC01~10 각1회354093assertions/실패0; 추가 actor fixture spawn 거부→hp접근 오류. 단회 명목arena p95 8.383ms/focus0, 목표8.33 초과. PID81277 보존.
 - 수치·가독성 표·캡처 의미·운영 예외·MAP PRODUCTION REPORT: `8.1보스디자인바이블/BOSS11_01_READABILITY_20261021.md`. 외부 `~/exoduser-wt/_out/BOSS11-01/DONE.txt`에 SHA/원격 보존/증거 경로 기록.
+
+## 2026-10-21 BOSS11-02 — 채움 텔레그래프·카메라 검토 후보
+
+- 391158e3 기준 공통 shader/material1개·progress instance uniform1개·32mark pool·source enemy/G 읽기 전용 renderer. 원/부채/띠/빈틈 도넛·충전·섬광, arena zoom.28/1초 전환 및 퇴장/기존 clear 신호 복귀. PC 코어·판정·피해·패링·저장·번역 byte·기존 보스 atlas/림 불변.
+- before/after12보드(전용11패턴+기존 projectile 도형), 0/50/95% 및 flash 포함56PNG. 전23패턴 자연 실행 미검수, fissure 종착 가림·작은 플레이어가 남아 **RETOUCH/전체 요청 미완료**. BC01~10 각1회354093assertions/실패0, visual18검사/실패0.
+- arena 명목 단회는 focus_lost1449로 INVALID. 원시p95 8.628ms는 유효 결과가 아니며 기존8.383ms 대비 악화 없음 미입증. 재측정0·PID81277 보존. 상세 규칙/전체 수치/한계/맵 보고는 `8.1보스디자인바이블/BOSS11_02_TELEGRAPH_20261021.md`, SHA/정리는 외부 BOSS11-02/DONE.txt.
