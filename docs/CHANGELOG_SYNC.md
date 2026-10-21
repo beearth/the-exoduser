@@ -55556,3 +55556,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 같은branch f7bddb46 후속. alpha-hull bbox bottom pivot/회전·flip·worldY/4 254개, offsetAO/분리cast8제거. source lower-alpha contact16종/252개를같은foot에 연결. 새AI원화0·provider/충돌/전투/저장0.
 - ground root3개는flat/shadow0. 작은피flat material, bone/flesh22높이×.48. source/foot고정·whole-prop bob0. 하단접촉PNG변환/재현도구·전체수치는 설계§18·아트현황.
 - 실제제단·시체나무·hell·관문/arena제단1x직접검수. 최종1557/0, foot오차최대.000366worldpx. CONTACT VISUAL PASS(검수7개), 전체RETOUCH. 벤치추가0/수정본p95미측정, 이전10.598ms실패미해결. 증거/SHA `_out/MAP11-20/DONE.txt`.
+
+
+## 2026-10-21 MAP11-PERF — 접촉 마스크 공용 아틀라스·회귀 조건 분리
+
+- 기준372a9c5a/branch codex/map11-20p-20261021. 기존16mask RGBA를2048×1024 lossless atlas로 묶고 AtlasTexture 논리size/offset·252instance·254foot·패치/광원·PC전투코어 불변. AI생성0. 원본PNG 보존·16영역픽셀/sourceSHA 동일. base RGBA 메모리5,171,524→8,388,608bytes tradeoff 기록.
+- 81277 공존 고정 배경·우리Godot1개, 원본35틱정착/600틱/1920×1080/240cap. 최종 confirm-before7.268/7.410 → after7.342/7.421ms, 두 공간≤8.33 PASS(52/0). draw148/136→142/127. p95 유의한 단축 주장0; before도 정상포커스에서는PASS. 과거10.598/초기9.681ms의 단일GPU원인 미확정. focus-loss FAIL 및70틱탐색 포함 전부 보존·구분.
+- 실제Main 동일3뷰1600×900·나란히3200×900/7발치 눈검수: 화면 동등성PASS·전체맵RETOUCH 유지. before1557/0, after2062/0(단일atlasRID 포함), foot오차.000366worldpx. §19에원인표·전후표·atlas16region·제약·MAP REPORT 기록. 격리userdir·project원byte복원/R읽기만. Git SHA/원격readback/정리 증거: ~/exoduser-wt/_out/MAP11-PERF/DONE.txt.

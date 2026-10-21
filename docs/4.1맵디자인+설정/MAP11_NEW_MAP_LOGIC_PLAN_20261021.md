@@ -504,6 +504,8 @@ Apple M5 Pro/Godot4.7.2 GL/1920×1080/240cap/60Hz/5적 fixture. 직전 `pgrep -x
 
 ## 18. MAP11-20 최우선 추가 지시 — 떠 보이는 소품 접지 수정 (2026-10-21)
 
+> 당시 접지 수정 이력. 후속 성능 측정·공용 아틀라스는 §19 MAP11-PERF를 따른다.
+
 사용자 지적 **“에셋들이 왜 붕붕 떠다니냐”**를 같은 `codex/map11-20-20261021`에 반영한다. 부모 `f7bddb46ea407ce412f61d194ee5653d8e48db3e`이며 §17의 배치/원화/중간톤은 유지하되 **pivot .94·offset 그림자·정렬·접지에 관한 현행값은 본 절이 우선**한다. MAP11-16/16b/17b·REJECT·PC 전투 코어 반입/수정0.
 
 ### 18.1 원인과 실제 수정
@@ -564,3 +566,98 @@ Apple M5 Pro/Godot4.7.2 GL/1920×1080/240cap/60Hz/5적 fixture. 직전 `pgrep -x
 | GIT | 같은branch f7bddb46의정상자식 commit/push·원격expected SHA보존. R HEAD/INDEX/WORK읽기만, main push/force/reset/rebase/반려merge/배포0. SHA/제거는DONE |
 | VISUAL VERDICT | **RETOUCH(전체) / CONTACT VISUAL PASS(직접검수발치)** |
 | NEXT PASS | 전체성능 예산·기존암부/지면패치 접합·밀집전투 별도과제. 이번지시 뒤 신규작업/추가벤치 자동착수0 |
+
+
+## 19. MAP11-PERF — 성능 원인 분리·접촉 마스크 아틀라스 (2026-10-21)
+기준은 `codex/map11-20-20261021`의 **372a9c5a69884b76a568e6f94504a9b089aabb91**(접지 수정 포함), 반영 branch는 `codex/map11-20p-20261021`이다. §17~18의 수치는 당시 이력이다. 이번 변경은 접촉 그림자의 텍스처 바인딩만 공용 아틀라스로 바꾼다. 소품 원화·패치·접지 위치·alpha·정렬·광원·충돌·PC 전투 코어는 그대로다.
+
+### 19.1 원인 분리와 측정 조건
+
+- 최초 단독 1회: 수정 기준본 field **9.681ms FAIL**, arena **7.159ms PASS**. 당시 포커스 이벤트는 미기록이다. 최초 import가 불완전하여 측정 진입 전에 실패한 실행은 별도 `baseline/run.log`에 보존했고, 유효 측정은 `baseline/measured.log`이다.
+- 이후 사용자 추가 지시로 **PID 81277 공존**을 고정 배경 조건으로 바꿨다. 해당 Godot(인자 없음, 08:11:48 시작)은 종료/변경하지 않았다. 우리 Godot는 항상 1개만 추가했다. 각 실행의 `process-monitor.json`에 두 PID를 기록했다.
+- Apple M5 Pro / macOS 26.6.2(25G83) / AC / Godot 4.7.2 GL Compatibility / render 1920×1080 / 240 cap / physics 60Hz. 실제 Main·intro 완료·5적 fixture, 실제 Player 네 방향 각 150틱, 공간별 600틱. 모든 절대치는 해당 기기·현재 실행 조건의 프레임 간격 p95이며 GPU timestamp가 아니다.
+- 원본 `capture_map11_hell_props.gd`의 **정착 35틱**과 측정 본문은 유지했다. 새 `benchmark_map11_perf.gd`는 이를 상속하여 A/B를 측정 전에 1회 적용하고, 측정 밖에서 노드/AABB를 조사한다. 포커스 이벤트는 Window 신호로 기록하므로 틱 목록 API·ResourceLoader 추가가 없다. 기본 비교는 공간별 시작 전에 창을 foreground로 요청하며, `--keep-focus`는 요청을 생략한다.
+- 탐색 `fixed-*` 8회에는 원본보다 정착 35틱이 더 있었음(총 70틱)을 발견했다. 해당 값은 별도 탐색으로 분리하고 최종 35틱 비교에 섞지 않았다. 모든 실패·이전 값도 `all-measurements.json`에 남겼다. 새 native 캐릭터의 스탯/속도와 실제 경로 좌표는 실행 JSON에 보존했다. 작은 ms 차이의 통계적 우열을 주장하지 않는다.
+
+| 조사 축 | 관측·근거 | 판정 / 조치 |
+|---|---|---|
+| 신규 세로소품 3종 | skull 1024×1003 / impaled 549×1024 / pit 1024×891. 원본 mipmaps=true, LINEAR_WITH_MIPMAPS. alpha=0 영역 각각 47.0% / 69.1% / 40.7% | 원본 크기·filter 유지. 절반 해상도 탐색 10.968/7.446ms는 포커스 미기록·초기 조건 혼재라 개선 근거로 채택하지 않음 |
+| 소품·PointLight2D | 조명 제외 탐색 7.367/7.123ms, 동일색 셰이더 7.611/7.537ms(둘 다 70틱). 35틱 alpha=0 discard는 before 7.304/7.274 → 7.520/7.467ms | 조명/색상 변경 및 discard 셰이더 채택 안 함. 8개 pool·최대 4개 pool+player 설정 유지. 큰 텍스처 조명 비용을 단일 원인으로 확정 못함 |
+| 반투명 패치 12개 | 35틱 patch OFF에서 draw139/136으로 줄었지만 9.531/8.437ms, 종료 시 두 공간 모두 unfocused | 패치 제거는 복구책이 아님. 패치 모양·원본·alpha·조명 유지 |
+| 접촉 mask 252 instance / 16종 | contact OFF 탐색(70틱)은 field draw148→137, p95 7.421ms. mask는 기존에도 unshaded | 텍스처 전환 감소가 가능한 확정 비용. 픽셀/치수 보존 공용 atlas를 채택, instance/레이어/접지 계약 유지 |
+| 정렬·노드 | field 657 sprite / arena 217 sprite(설정 조사), 세로 254. 정적 absolute z=y/4. runtime update는 기존 cached row 사용 | 정렬 노드 수·기하 변경 없음. 새 per-tick 열거/정렬/리소스 로딩 없음 |
+| 포커스/외부 상태 | patch OFF 실패 및 제품 첫 검수 arena 실패에 focus loss 기록. 첫 제품검수 field7.345 / arena9.534ms, arena focus_exited 기록 보존 | 정상 포커스 대조에서 before도 이미 예산 PASS. 과거 10.598/초기9.681ms의 단일 GPU 원인을 확정한 것이 아님. focus/외부 실행 상태가 혼입된 회귀 값과 정상 포커스 값을 분리 |
+| 최종 atlas 효과 | draw field148→142 / arena136→127, objects254/249 그대로 | draw 감소는 확정. p95의 유의한 단축이나 원인 100% 제거를 주장하지 않음. 아래 최종본 양 공간 예산 PASS 확인 |
+
+**아래 모든 행은 PID 81277 공존, 공간별 600틱·35틱 정착이다.** draw는 측정 종료 프레임의 field/arena snapshot이다. `exact-*`는 foreground 강제 없이 현재 포커스 유지; `atlas-*`, `confirm-*`, `final-product`는 시작 시 foreground 요청 및 이벤트 기록. 손실 실행을 숨기거나 통과 값으로 덮어쓰지 않았다.
+
+| 순서/조건 | field p95 ms | arena p95 ms | draw field/arena | 포커스 |
+|---|---:|---:|---:|---|
+| before / `exact-before1` | 7.304 | 7.274 | 148/136 | 유지 |
+| A/B: alpha0 discard / `exact-cutout` | 7.520 | 7.467 | 148/136 | 유지 |
+| before / `exact-before2` | 7.709 | 7.498 | 148/136 | 유지 |
+| A/B: patch OFF / FAIL / `exact-patches` | 9.531 | 8.437 | 139/136 | 손실 있음 |
+| before / `atlas-before1` | 7.292 | 7.242 | 148/136 | 유지 |
+| A/B: 공용 atlas / `atlas-ab` | 7.452 | 7.341 | 142/127 | 유지 |
+| before / `atlas-before2` | 7.549 | 7.474 | 148/136 | 유지 |
+| 제품 첫 검수 / arena FAIL / `final-product` | 7.345 | 9.534 | 142/140 | 손실 있음 |
+| 최종 대조 before / `confirm-before` | 7.268 | 7.410 | 148/136 | 유지 |
+| 최종 제품 after / `confirm-after` | 7.342 | 7.421 | 142/127 | 유지 |
+
+최종 `confirm-after`: **52checks/0fail**, field **7.342ms**, arena **7.421ms**, 양쪽 ≤8.33ms PASS. 포커스 시작/종료 true·전환 이벤트 0. 바로 앞 `confirm-before`도 PASS였으므로 atlas가 과거 FAIL을 단독으로 고쳤다고 해석하지 않는다. Windows·밀집전투·GPU timestamp·일반 백그라운드 부하에서의 보장/배포 검수는 아니다.
+
+### 19.2 채택한 리소스 계약
+
+| 항목 | 값 / 적용 위치 |
+|---|---|
+| runtime 변경 | `ground_contact_masks.gd` 16개 texture 참조를 원본 PNG→`contact_masks/atlas/*.tres`로 변경. offset/size 숫자 및 `ground_contact.gd` 불변 |
+| atlas | `assets/map/map11/contact_masks/atlas/contact_atlas.png`, RGBA **2048×1024**, grid **512×256**, 16 region. 원본 16 PNG 유지·RGBA 영역별 동일 픽셀·다운스케일/새 원화 생성 0 |
+| region | 각 `AtlasTexture`는 원본 마스크의 논리 width/height를 유지, `filter_clip=true`. 아래 좌표 및 `atlas/manifest.json`에 source SHA256 기록 |
+| sampling | 원본과 동일 lossless import/compress mode0·mipmaps=true·size_limit0·fix_alpha_border=true. Sprite의 LINEAR_WITH_MIPMAPS 및 black alpha .85·unshaded 유지 |
+| 메모리 tradeoff | RGBA base 원본 합계 5,171,524 bytes → atlas 8,388,608 bytes. mip 포함 근사치는 각각 ×4/3. 바인딩 절감을 위해 base 약3.07MiB 증가; 실제 VRAM 절감 주장 없음 |
+| 재현 | `godot/tools/map11_perf_atlas.py`(Pillow). 원본 PNG·manifest에서 재생성, 16 region RGBA 및 source SHA가 HEAD와 일치 검증. `ground_contact_atlas.gd`는 A/B용 static region table |
+
+| mask id | atlas region x,y,w,h (px) | 원본 논리 size / offset |
+|---|---|---|
+| prop_altar | 0,0,512,149 | 858,249 / -19,523 |
+| prop_corpsetree | 512,0,512,195 | 1213,462 / -35,973 |
+| prop_cocoon | 1024,0,512,141 | 876,242 / -18,512 |
+| bone_arch | 1536,0,299,115 | 299,115 / -9,241 |
+| prop_g_root | 0,256,512,160 | 1050,329 / -25,694 |
+| rotforest_tree_01 | 512,256,512,161 | 1076,339 / -26,711 |
+| rotforest_tree_02 | 1024,256,512,161 | 1076,339 / -26,711 |
+| rotforest_tree_03 | 1536,256,512,161 | 1076,339 / -26,711 |
+| rotforest_tree_04 | 0,512,512,161 | 1076,339 / -26,711 |
+| rotforest_tree_05 | 512,512,512,161 | 1076,339 / -26,711 |
+| rotforest_tree_06 | 1024,512,512,161 | 1076,339 / -26,711 |
+| rotforest_tree_07 | 1536,512,512,161 | 1076,339 / -26,711 |
+| rotforest_tree_11 | 0,768,512,161 | 1076,339 / -26,711 |
+| hell_skull_pyramid | 512,768,512,158 | 1074,331 / -25,697 |
+| hell_spike_pit | 1024,768,512,140 | 1068,293 / -22,620 |
+| hell_impaled_corpse | 1536,768,454,256 | 601,339 / -26,711 |
+
+### 19.3 시각·접지 검수와 증거
+
+- 동일 3뷰 START/FIELD(-850,-2400), OUTER FOREST(-3150,-1050), BOSS ENTRANCE(0,-3500), 1600×900·zoom .70. before는 이번 실행의 **372a9c5a 실제 Main**이고 after는 최종 atlas 제품이다. 원래 372 캡처의 byte 사본도 `captures/before-archived-372a9c5a/`에 보존했다.
+- `captures/{before,after}/01_field.png`, `02_outer_forest.png`, `03_boss_entrance.png`; `captures/*_before_after.png`는 **3200×900·좌 before / 우 after**, 색보정·리사이즈 0. light pool phase는 리뷰 하니스에서 2.0으로 고정. fog/TIME·캐릭터 애니메이션·HP/SP/화폐 등 native 실행 상태 차이는 남으므로 전체 화면 pixel-identical 주장 없음.
+- 직접 3쌍+7발치(altar/corpse_tree/skull/impaled/spike_pit/gate/arena_altar) 원배율 검수: 소품·패치 실루엣·접지 모양의 눈에 띄는 변화 없음. **성능 작업의 시각 동등성 PASS**. 기존 둥근 패치/암부/관문 뒤 직선 cutoff 등 전체 맵 RETOUCH는 유지.
+- before grounding **1557/0**, after **2062/0**. 세로254·contact252·projection0·최대 foot 오차0.0003662109375worldpx·실제 gate→arena PASS. 추가 505checks는 252 contact의 AtlasTexture·2048×1024 크기 및 모든 contact가 단일 GPU texture RID를 공유하는지 확인한다. `capture_map11_perf.gd --require-atlas`로 검증.
+- `~/exoduser-wt/_out/MAP11-PERF/`: `all-measurements.json`, 각 실행 `verification.json`/`run.log`/`process-monitor.json`, `capture-manifest.json`, `atlas-verification.json`, 캡처/발치 비교·Git 증거. 최종 SHA·원격 readback·정리 결과는 `DONE.txt`.
+
+### 19.4 MAP PRODUCTION REPORT
+
+| 구분 | 이번 검수 |
+|---|---|
+| STAGE / MASTER | CH1-1 MAP11-PERF, 372a9c5a silhouette·regions·main route·side spaces 보존. GATE8 camera→TECH 성능 작업 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH 질량·기존 hole/cutoff 불변 |
+| LARGE | 기존 소품/합성/겹침/반복 실루엣 불변, 신규 AI 원화 0 |
+| MEDIUM | 기존 연결 및 남은 hole 불변 |
+| GROUND | contact 252개를 동일 픽셀 atlas region으로, 원본 크기/offset/foot/alpha 유지. 패치/오염 불변 |
+| PLAYABLE | arena/travel/breathing/threat 공간 불변, 실제 Player 보행/관문 검수. 밀집전투 미검수 |
+| LANDMARK | 제단/관문/원화 소품 배치 불변 |
+| CAMERA QA | FIELD/OUTER/BOSS 3뷰 + 발치7 PASS(동등성). EARLY/SIDE R/LATE/전체8뷰 신규 검수 없음 |
+| TECH QA | 52/0 최종벤치, 2062/0 접지·RID. route/collision 소스 불변, 실제 gate PASS. runtime SCRIPT/Parse/ERROR0. pageerror/404 N/A. 기존 seam/cutoff 잔여. source PNG0변경·mip/로딩 확인 |
+| FILES | contact atlas/table·재현 도구·벤치/시각 하니스·본 docs/CHANGELOG만. PC core/player.gd/docs2_3·R source 수정0 |
+| GIT / USER DATA | codex/map11-20p-20261021 정상 부모372a9c5a, 경로지정 stage·정상hook·비강제 branch push/readback. main push/merge/배포0. 격리 user dir만 실행, project 원byte 복원 후 자기 worktree 제거 |
+| VISUAL VERDICT | **PASS(이번 성능 작업의 화면 동등성만) / 전체 맵 RETOUCH 유지** |
+| NEXT / 한계 | 과거 FAIL의 단일 GPU 원인은 미확정. 창 포커스/외부 실행 상태를 계속 기록해 재현성을 유지. Windows/밀집전투 검수는 별도 배정 |
