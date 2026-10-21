@@ -1,0 +1,35 @@
+{
+  "created_at": "2026-10-21T00:05:14.293Z",
+  "provider": "MagicLight Toolbox",
+  "model": "GPT Image 2.5 sunburst",
+  "task_id": "7518462142332321792",
+  "status": "completed",
+  "count": 1,
+  "aspect_ratio": "4:3",
+  "displayed_cost_points": 200,
+  "observed_balance_before": 39890,
+  "balance_scope": "Existing tab display before submission; other concurrent tasks exist",
+  "reference": "output/hellgunner_male_refined_20261021/hellgunner_male_refined.png",
+  "reference_role": "Targeted weapon edit, preserve male identity, costume, pose and dual-pistol composition",
+  "reference_sha256": "2b2202a71a401be3aa6e7dc4d5df3b46816b414564af48d70a4d070a1e61c92b",
+  "prompt": "첨부된 남성 헬거너 원화의 총기 부분만 수정. 인물 얼굴·머리·갑옷·코트·자세·쌍권총 구도·원근·배경·색과 그림 질감은 그대로 유지. 두 대형 권총을 각각 총열 하나·총구 하나인 리볼버로 바꾼다. 화면 왼쪽 큰 총의 앞면에는 커다란 원형 발사구 단 하나, 오른쪽 총의 앞면에도 단 하나만 보인다. 총구 주위의 작은 구멍들과 여러 개의 가는 총열 다발을 모두 제거. 굵고 연속된 단일 총신을 정교한 흑철 외장으로 감싸고, 외장 표면에는 막힌 세로 홈·회전 잠금 링·가느다란 진홍 무늬를 둔다. 게틀링 같은 복잡하고 육중한 회전 구조는 총의 뒤쪽 대형 리볼버 실린더에 모은다. 큰 실린더·해머·손잡이·하부 총검과 강한 무기 비례는 유지. 탄환이 나오는 구멍은 한 총당 정확히 하나이며 중앙 총구를 둘러싼 추가 구멍은 없다. 새로운 무기나 팔·장식·문자 추가 없음. 인물과 의상은 재디자인하지 말고 원본 전체 구도를 유지.",
+  "completed_observed_at": "2026-10-21T00:11:46.504Z",
+  "result_url": "https://skillsrc.octask.ai/gpt-image-2/7518462142332321792/65fa07c9-13e8-c5bd-6037-52a5cb3a7dbf_0.png",
+  "completed_evidence": "Exact task card completed and Generated image preview opened",
+  "file": "hellgunner_single_muzzle.png",
+  "sha256": "b317a269f81af95c72834aed2ff62efb777c18afa0d2ae7fdd06d102d5929c38",
+  "size": [
+    3312,
+    2480
+  ],
+  "format": "PNG",
+  "visual_verdict": "Both weapons show one forward firing bore each; large rear cylinders and male identity/dual-pistol composition are retained visually.",
+  "visible_weapon_count": 2,
+  "visible_muzzles_per_weapon": [
+    1,
+    1
+  ],
+  "user_adopted": false,
+  "runtime_integrated": false,
+  "cost_scope": "One completed request at displayed 200pt. No post-completion balance refresh for this task; shared account delta not inferred."
+}

@@ -1,0 +1,15 @@
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const root=path.resolve(__dirname,'../..');fs.mkdirSync(path.join(__dirname,'original'),{recursive:true});
+const notes={
+ 'docs/17게임아트팀/ART_TEAM_MASTER.md':'> **2026-10-21 최신 총구 정정:** 사용자 “대형 쌍권총도 나쁘지는 않지만 원하는 건 게틀링 리볼버고 총구는 하나”에 따라 [단일 총구 수정](HELLGUNNER_SINGLE_MUZZLE_20261021.md)을 진행한다. 남성 인물/쌍권총 구도는 유지하는 시안이며 각 총의 다총열/다총구를 단일 총신/발사구1개로 바꾼다. 게틀링 같은 인상은 굵은 회전 실린더로 표현하는 제작 해석. MagicLight Sunburst200pt1장 task7518462142332321792 생성 중, 게임 적용 아님.',
+ 'docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md':'> **2026-10-21 헬거너 최신 무기 정정:** [한 총당 총구 하나인 게틀링형 리볼버](../17게임아트팀/HELLGUNNER_SINGLE_MUZZLE_20261021.md)로 남성안의 무기만 수정. 이전 다총열 해석은 사용자 요청과 달랐다. 쌍권총/남성 구도는 유지하는 원화 시안, MagicLight Sunburst200pt1장 task7518462142332321792 생성 중. 발사 방식/게임 코드/에셋 변경 별도.',
+ 'docs/11내러티브·로어디자인/NEW_HEROES_DESIGN_LOCK.md':'> **2026-10-21 사용자 최신 헬거너 정정:** “대형 쌍권총이나 나쁘지는 않은데 일단 내가 원하는 건 게틀링 리볼버고 총구는 하나야.” 무기 하나마다 발사구1개인 리볼버가 우선이며, 아래 과거 여러 총열/여러 총구 시안은 오해 이력이다. [현재 단일 총구 제작 대장](../17게임아트팀/HELLGUNNER_SINGLE_MUZZLE_20261021.md) 참조. 큰 회전 실린더와 단일 총신으로 위압감을 유지하는 것은 이번 원화 해석이며 실제 발사 기구/밸런스는 확정하지 않음.',
+ 'docs/17게임아트팀/HELLGUNNER_MALE_REFINED_20261021.md':'> **사용자 후속 정정 — 총구 하나가 우선:** 남성 대형 쌍권총 방향은 “나쁘지는 않다”는 제한적 평가이나 다총구는 요청과 다르다. [한 총당 총구 하나인 수정 시안](HELLGUNNER_SINGLE_MUZZLE_20261021.md)이 현재 작업이다. 아래 다총열 결과를 무기 최종 채택으로 기록하지 않는다.'
+};
+for(const [file,note] of Object.entries(notes)){
+ const s=fs.readFileSync(path.join(root,file),'utf8'),b=path.join(__dirname,'original',path.basename(file));if(!fs.existsSync(b))fs.writeFileSync(b,s);
+ if(s.includes(note))continue;const i=s.indexOf('\n'),nl=s.includes('\r\n')?'\r\n':'\n';fs.writeFileSync(path.join(root,file),s.slice(0,i+1)+nl+note+nl+s.slice(i+1));
+}
+const source='output/hellgunner_male_refined_20261021/hellgunner_male_refined.png';
+const r={created_at:new Date().toISOString(),provider:'MagicLight Toolbox',model:'GPT Image 2.5 sunburst',task_id:'7518462142332321792',status:'generating',count:1,aspect_ratio:'4:3',displayed_cost_points:200,observed_balance_before:39890,balance_scope:'Existing tab display before submission; other concurrent tasks exist',reference:source,reference_role:'Targeted weapon edit, preserve male identity, costume, pose and dual-pistol composition',reference_sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,source))).digest('hex'),prompt:'첨부된 남성 헬거너 원화의 총기 부분만 수정. 인물 얼굴·머리·갑옷·코트·자세·쌍권총 구도·원근·배경·색과 그림 질감은 그대로 유지. 두 대형 권총을 각각 총열 하나·총구 하나인 리볼버로 바꾼다. 화면 왼쪽 큰 총의 앞면에는 커다란 원형 발사구 단 하나, 오른쪽 총의 앞면에도 단 하나만 보인다. 총구 주위의 작은 구멍들과 여러 개의 가는 총열 다발을 모두 제거. 굵고 연속된 단일 총신을 정교한 흑철 외장으로 감싸고, 외장 표면에는 막힌 세로 홈·회전 잠금 링·가느다란 진홍 무늬를 둔다. 게틀링 같은 복잡하고 육중한 회전 구조는 총의 뒤쪽 대형 리볼버 실린더에 모은다. 큰 실린더·해머·손잡이·하부 총검과 강한 무기 비례는 유지. 탄환이 나오는 구멍은 한 총당 정확히 하나이며 중앙 총구를 둘러싼 추가 구멍은 없다. 새로운 무기나 팔·장식·문자 추가 없음. 인물과 의상은 재디자인하지 말고 원본 전체 구도를 유지.'};
+fs.writeFileSync(path.join(__dirname,'generation-receipt.json'),JSON.stringify(r,null,2));console.log(JSON.stringify({task:r.task_id,status:r.status,prompt_length:r.prompt.length}));
