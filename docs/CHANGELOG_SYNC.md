@@ -1,3 +1,10 @@
+## 2026-10-21 AUDIO-01 — Godot 1-1 ARPG 오디오 믹스
+
+- 기준 cb154e8d, 별도 codex/audio-01-20261021. Master/Music/Ambience/SFX/UI/Voice와 상대 trim field −14dB / boss +7dB / Ambience −11dB. 사용자 OPT 슬라이더·저장 값 유지.
+- Field 120~180초 → 2.5초 fade → 20~40초 rest → 재시작. 지역·보스 2.5초 crossfade, boss clear/exit field 복귀. 기존 이벤트만 구독하여 Music −5dB duck, attack .2초 / hold 2초 / release 1.5초. tick 목록 API/ResourceLoader 추가 없음.
+- [수치·코드 위치·버스·청음 절차](6사운드디자인/BGM_믹스_공식_ARPG_AUDIO01_20261021.md). 새 가속 테스트 30/0(최종 경고0), 관련 DEMO11-41 1회 51/0/skip13 Dummy. 실제 청감·숲 환경음 파일 연결·조성 일치는 HOLD. 새 음원/PC 전투 core/번역 사용자 문구 변경 없음.
+- 결과·SHA·증거: ~/exoduser-wt/_out/AUDIO-01/DONE.txt. 독립 branch 제출, main 반영·PC 동기화 완료 아님.
+
 ## 2026-10-21 MAP11-23
 
 - 신규 검수 스크립트2개의 Godot UID도 함께 보존.

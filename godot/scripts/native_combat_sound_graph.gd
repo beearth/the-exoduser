@@ -28,7 +28,7 @@ func commit() -> void:
 	for id in ids:
 		AudioServer.set_bus_send(AudioServer.get_bus_index(_nodes[id].bus),bus_name(_nodes[id].to))
 func _depth(id: int) -> int: return 0 if id==0 else 1+_depth(_nodes[id].to)
-func bus_name(id: int) -> String: return "Master" if id==0 else _nodes[id].bus
+func bus_name(id: int) -> String: return "SFX" if id==0 else _nodes[id].bus
 func disconnect_node(id: int) -> void:
 	if not _nodes.has(id): return
 	var index: int=AudioServer.get_bus_index(_nodes[id].bus)

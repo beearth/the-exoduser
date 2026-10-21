@@ -74,10 +74,14 @@ class NativeAudio extends RefCounted:
 	var on_error := Callable()
 	var node: AudioStreamPlayer
 	var rate := 1.0
+	var envelope := 1.0:
+		set(value):
+			envelope=value
+			if is_instance_valid(node):node.volume_linear=volume*envelope
 	var volume := 1.0:
 		set(value):
 			volume=value
-			if is_instance_valid(node):node.volume_linear=value
+			if is_instance_valid(node):node.volume_linear=value*envelope
 	var current_time := 0.0:
 		get:return node.get_playback_position() if playing() else current_time
 		set(value):
@@ -101,14 +105,20 @@ class NativeAudio extends RefCounted:
 				match path.get_extension().to_lower():
 					"mp3":
 						var mp3:=AudioStreamMP3.new();mp3.data=FileAccess.get_file_as_bytes(path);mp3.loop=loop;stream=mp3
-					"wav":stream=AudioStreamWAV.load_from_file(path)
-					"ogg":stream=AudioStreamOggVorbis.load_from_file(path)
+					"wav":
+						stream=AudioStreamWAV.load_from_file(path)
+						if loop and stream!=null:
+							stream.loop_mode=AudioStreamWAV.LOOP_FORWARD
+							stream.loop_end=int(stream.get_length()*stream.mix_rate)
+					"ogg":
+						stream=AudioStreamOggVorbis.load_from_file(path)
+						if stream!=null:stream.loop=loop
 			if stream==null or stream.get_length()<=0:
 				driver.set_timeout(_failed.bind(reject),1);return
 			node=AudioStreamPlayer.new();node.process_mode=Node.PROCESS_MODE_ALWAYS
 			node.stream=stream;node.bus=output;driver.host.add_child(node)
 			node.finished.connect(_ended)
-		node.volume_linear=volume;node.pitch_scale=rate;node.play(current_time)
+		node.volume_linear=volume*envelope;node.pitch_scale=rate;node.play(current_time)
 		if node.playing:
 			if success.is_valid():driver.set_timeout(success,1)
 		elif reject.is_valid():driver.set_timeout(reject,1)

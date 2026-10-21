@@ -450,3 +450,7 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+## 2026-10-21 AUDIO-01 1-1 믹스 제출
+
+사용자 지정 cb154e8d 기반 별도 codex/audio-01-20261021. [오디오 담당 상세·수치·검증 경계](../6사운드디자인/BGM_믹스_공식_ARPG_AUDIO01_20261021.md): Music −14dB/보스 +7dB, 이벤트 덕킹 −5dB, field 간헐 사이클 구현. 숲 환경음 파일 미확인으로 실제 베드·조성·사용자 청음 HOLD. 독립 branch 제출이며 main 반영·기존 창 최신화·PC 동기화 완료 아님. DONE/원격 SHA는 ~/exoduser-wt/_out/AUDIO-01/DONE.txt.
