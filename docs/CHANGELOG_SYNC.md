@@ -56229,3 +56229,10 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 
 - 기준 cae51580, branch codex/boss11-03-20261021. arena .36 단일 값, 채움 RGB(1,.46,.24)/alpha.07→.17, 충전 RGB(1,.94,.72)/전면+.38, 외곽선 유지. 화면 밖 화살표와 발 접촉 표시 추가. PC 코어/판정/번역/저장 변경0.
 - 2640×.36=950.4px이므로 900px 전체 최대 원 수용은 불가; 요청 구간에서 잘림 최소 값 선택. VISUAL VERDICT RETOUCH. 현재 수치/검수 경계는 `8.1보스디자인바이블/BOSS11_03_CAMERA_COLOR_20261021.md`, SHA/성능/캡처/정리는 외부 BOSS11-03/DONE.txt.
+
+## 2026-10-21 DEMO-PLAY Mac 시연 실행 준비
+
+- cb154e8d 기준 전체 worktree에 boss11-03(8e45a9bc) fast-forward 및 audio-01(aa8e4c60) merge(cad3fe18). 총괄 문서 append 충돌은 양쪽 보고 보존.
+- godot/override.cfg에 시연 전용 EXODUSER-DEMO-PLAY-20261021 userdir 지정. 기존 새 게임 로비를 별도 scene 인수로 실행하며 제품 플래그 주입 없음.
+- import ERROR0, 일반 로비 headless ERROR0. 각1회 검사 31개 중28개 통과, BC 통합 baseline 인수 누락·구 BOSS11-02 기대값·기존 map11_product 실패는 별도 기록. 재실행 없음.
+- 상세: engine/DEMO_PLAY_20261021.md. RUN/DONE은 ~/exoduser-wt/_out/DEMO-PLAY/. worktree 유지, GUI 미실행, PC/main 변경 없음.
