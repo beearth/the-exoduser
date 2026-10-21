@@ -27,9 +27,15 @@ for i in range(3):
  if prefix=="tour_blood_basin":
   red=(rgb[:,:,0]>rgb[:,:,1]*1.8)&(rgb[:,:,0]>rgb[:,:,2]*1.6)
   rgb[red]=rgb[red]*np.array([.42,.75,.85])+np.array([.025,.008,.008])
+ if prefix=="skull_pyramid":
+  lum=(rgb*np.array([.2126,.7152,.0722])).sum(axis=2)
+  rgb=(lum[:,:,None]+.20*(rgb-lum[:,:,None]))*np.array([1.02,1.0,.93])
+ if prefix=="tour_blood_basin":
+  lum=(rgb*np.array([.2126,.7152,.0722])).sum(axis=2)
+  rgb=lum[:,:,None]+.72*(rgb-lum[:,:,None])
  a[:,:,:3]=np.clip(rgb,0,.94)
  out=Image.fromarray(np.uint8(np.clip(a,0,1)*255)).filter(ImageFilter.UnsharpMask(radius=.7,percent=25,threshold=4));out=out.filter(ImageFilter.MedianFilter(3)).filter(ImageFilter.GaussianBlur(.28));out.putalpha(im.getchannel('A'));out.save(dst/f'{prefix}_{i}_diffuse.png')
  n=np.asarray(Image.open(raw/f'{prefix}_{i}_normal.png').convert('RGBA')).astype(float)/255;v=n[:,:,:3]*2-1;v[:,:,:2]*=1.35;v/=np.maximum(np.linalg.norm(v,axis=2)[:,:,None],1e-6);n[:,:,:3]=v*.5+.5
  Image.fromarray(np.uint8(np.clip(n,0,1)*255)).save(dst/f'{prefix}_{i}_normal.png')
 (dst/'render.json').write_bytes((raw/'render.json').read_bytes())
-(dst/'look.json').write_text(json.dumps({'concept':concept.name,'concept_sha256':hashlib.sha256(concept.read_bytes()).hexdigest(),'concept_median':median.tolist(),'rgb_gain':gain.tolist(),'blood_red_gain':[.42,.75,.85] if prefix=='tour_blood_basin' else None,'blood_red_bias':[.025,.008,.008] if prefix=='tour_blood_basin' else None,'ao_strength':.35,'exposure':1.85,'foot_luma_threshold':.15,'foot_lift':.11,'foot_start':.65,'saturation':1.06,'contrast':1.10,'unsharp':[.7,25,4],'normal_xy_gain':1.35,'denoise_median':3,'denoise_gaussian':.28},indent=2))
+(dst/'look.json').write_text(json.dumps({'concept':concept.name,'concept_sha256':hashlib.sha256(concept.read_bytes()).hexdigest(),'concept_median':median.tolist(),'rgb_gain':gain.tolist(),'blood_red_gain':[.42,.75,.85] if prefix=='tour_blood_basin' else None,'blood_red_bias':[.025,.008,.008] if prefix=='tour_blood_basin' else None,'retouch_21c':{'skull_chroma':.20,'skull_tint':[1.02,1.0,.93],'basin_chroma':.72},'ao_strength':.35,'exposure':1.85,'foot_luma_threshold':.15,'foot_lift':.11,'foot_start':.65,'saturation':1.06,'contrast':1.10,'unsharp':[.7,25,4],'normal_xy_gain':1.35,'denoise_median':3,'denoise_gaussian':.28},indent=2))

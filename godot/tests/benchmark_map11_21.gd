@@ -2,7 +2,7 @@ extends "res://tests/capture_map11_hell_props.gd"
 ## Single final related verification + one 600-tick benchmark per space.
 const Tour=preload("res://scripts/maps/map11/tour_layout.gd")
 func _run() -> void:
- if OS.get_user_data_dir().get_file()!="EXODUSER-map11-21b-Isolated-20261021":quit(2);return
+ if OS.get_user_data_dir().get_file()!="EXODUSER-map11-21c-Isolated-20261021":quit(2);return
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
  if output.is_empty():quit(3);return
@@ -40,7 +40,7 @@ func _run() -> void:
  results.append(await measure("arena",scene.arena_view.global_position+Vector2(1250,80)))
  for result in results:check(result.p95_ms<=8.33,result.space+" p95 within 8.33ms")
  var f:=FileAccess.open(output,FileAccess.WRITE)
- f.store_string(JSON.stringify({"samples":results,"checks":checks,"failures":failures,"props":evidence_rows,"viewport":[1920,1080],"physics_hz":Engine.physics_ticks_per_second,"user_dir":OS.get_user_data_dir(),"scope":"one GUI run; real Player input, 600 ticks per space; existing PID81277 coexists; no dense-combat/Windows/GPU timestamp claim"},"  "))
+ f.store_string(JSON.stringify({"samples":results,"checks":checks,"failures":failures,"props":evidence_rows,"viewport":[1920,1080],"physics_hz":Engine.physics_ticks_per_second,"user_dir":OS.get_user_data_dir(),"scope":"one GUI run; real Player input, 600 ticks per space; existing Godot coexists; no dense-combat/Windows/GPU timestamp claim"},"  "))
  main.queue_free()
  for i in range(16):await process_frame
  quit(0 if failures==0 else 1)

@@ -343,3 +343,8 @@ MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이�
 지옥 관광 6무리/17소품, 대표1.3배·GLB offline 받침 높이절단·채도1.06/대비1.10·대야 순적색 감쇠. 원본/PC보존, PNG runtime. [설계서 §20.5](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#205-map11-21b--관광-무리받침-제거-보정-2026-10-21)의 좌표/수치/검수 계약을 따른다.
 
 최종 단회96checks/0fail, focus이탈0, p95 field7.344/arena7.003ms. VISUAL VERDICT: RETOUCH(고치/해골 바닥판 제거·무리 개선, 구덩이 평면림/원GLB 빈면·외곽가림 잔여). 비교6장면+1x·발치2장 _out/MAP11-21b/captures/.
+
+
+### MAP11-21c (2026-10-21)
+
+해골 회갈/아이보리chroma.20·cut.055/대야chroma.72·04광원.58/05광원.72, 입구·처형장·관문무리보정. 02보존. [설계서 §20.6](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#206-map11-21c--관광-코스-2차-보정-2026-10-21) 수치·좌표 SSOT. field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. 96checks/0fail, **VISUAL RETOUCH**(04내부평면/06림·01반복/03부분가림 잔여). 캡처 _out/MAP11-21c/captures/.

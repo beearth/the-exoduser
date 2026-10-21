@@ -11,6 +11,17 @@
     0.9367719652661246,
     0.78
   ],
+  "blood_red_gain": null,
+  "blood_red_bias": null,
+  "retouch_21c": {
+    "skull_chroma": 0.2,
+    "skull_tint": [
+      1.02,
+      1.0,
+      0.93
+    ],
+    "basin_chroma": 0.72
+  },
   "ao_strength": 0.35,
   "exposure": 1.85,
   "foot_luma_threshold": 0.15,

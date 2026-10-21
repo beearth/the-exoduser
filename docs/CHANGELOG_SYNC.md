@@ -55579,3 +55579,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-21 MAP11-21b
 - 기준129281f1 관광코스 보정: 6무리17소품/대표1.3배, offline 바닥판 높이절단·diffuse/normal/contact 재생성, sat1.06/contrast1.10·대야 붉은 재질 감쇠.
 - tour_layout 좌표/광원·contact hull/manifest·격리 capture/단회 focused benchmark 동기화. 설계서 §20.5와 ART 기록.
+
+## 2026-10-21 MAP11-21c
+- 기준06bae2f2 관광2차: 해골chroma.20/tint(1.02,1,.93)/cut.055·대야chroma.72·04/05광원energy.58/.72, 01/03/06무리보정. PNG runtime/격리userdir/PC core보존.
+- 설계서§20.6·SSOT·ART·manifest/contact 동기화. 단회96checks/0fail, p95 field7.581/arena7.286ms, focus이탈0. 6장면before/after1600×900+1x 확보. VISUAL RETOUCH(04내부평면·06림/01반복/03가림 잔여).

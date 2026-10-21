@@ -110,42 +110,6 @@
   {
     "key": "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_diffuse.png",
     "size": [
-      390,
-      400
-    ],
-    "bbox": [
-      0,
-      0,
-      390,
-      400
-    ],
-    "foot": [
-      195.0,
-      400
-    ],
-    "sha256": "0a2d36215cad0b305fbf4207dcbd6803ef71a77c0d90b431722bbaafcc5d4e22"
-  },
-  {
-    "key": "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_diffuse.png",
-    "size": [
-      396,
-      400
-    ],
-    "bbox": [
-      0,
-      0,
-      396,
-      400
-    ],
-    "foot": [
-      198.0,
-      400
-    ],
-    "sha256": "8ff88662789fd72a013afa476253516505a8e16f6840cb338ff7767cc19371cf"
-  },
-  {
-    "key": "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_diffuse.png",
-    "size": [
       375,
       400
     ],
@@ -159,7 +123,43 @@
       187.5,
       400
     ],
-    "sha256": "c2c8d6517c75a389580e0f1eac083226118dac2e4d4a7af3e4707efdee05b35b"
+    "sha256": "64f1db7dbb9ff27627111483e3caff7eab2c2d567be622d28c12bab2e6e68bc2"
+  },
+  {
+    "key": "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_diffuse.png",
+    "size": [
+      390,
+      400
+    ],
+    "bbox": [
+      0,
+      0,
+      390,
+      400
+    ],
+    "foot": [
+      195.0,
+      400
+    ],
+    "sha256": "7ae54334f94a3a062d52af8fbb1519a3b0c133fe012e533bd8c7797b418931f5"
+  },
+  {
+    "key": "res://assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_diffuse.png",
+    "size": [
+      414,
+      400
+    ],
+    "bbox": [
+      0,
+      0,
+      414,
+      400
+    ],
+    "foot": [
+      207.0,
+      400
+    ],
+    "sha256": "12c43baacd68bcd4c5adba1180e62b482af9f24f2d2a2884f46137c2ddee097e"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_0_diffuse.png",
@@ -177,7 +177,7 @@
       175.5,
       340
     ],
-    "sha256": "00c4f5e3cb31963c9783d581c647fa28ecebfed38db00739f6084ca55c30a50a"
+    "sha256": "27e10ba89041260a5e84ebd5fa1a96e042c6579d4beb5d097316e5719f332b17"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_1_diffuse.png",
@@ -195,7 +195,7 @@
       177.5,
       340
     ],
-    "sha256": "7b6116e9459941176ad7549d3e704db4c1235d8739c7924971373d1535c0810a"
+    "sha256": "11290130ce017b5fcacb4c9286e6f908f7d68500559e6aa86355175aecfe9c13"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_2_diffuse.png",
@@ -213,7 +213,7 @@
       174.5,
       340
     ],
-    "sha256": "70eaea847b6ae03fffae535e6855a82175ea19d3347ca8f9e51625229e4b4bed"
+    "sha256": "df1f91daa60769a976fbfd2aea2dec8390d0ba31598463835d25f474ba8dbf9e"
   },
   {
     "key": "res://assets/map/map11/props/tour_25d/tour_chained_pillar/tour_chained_pillar_0_diffuse.png",

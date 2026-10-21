@@ -818,3 +818,69 @@ MAP PRODUCTION REPORT (§23)
 | GIT | 기준129281f1 자식의 전용branch. 경로지정add·정상hook commit/push·remoteSHA 대조 후 worktree 제거, SHA는 _out/MAP11-21b/DONE.txt. main push/force/reset/rebase/배포0 |
 | VISUAL VERDICT | **RETOUCH**. 무리 구성과 고치·해골 바닥판 제거는 개선 확인. 구덩이의 평평한 림·대야/해골 일부 빈면·원GLB 거친 세부와 가림은 잔여, 완성품 PASS 아님 |
 | NEXT PASS | 남은 GLB UV/빈면·구덩이 접합과 외곽 가림 개선 필요. 이번 요청 외 신규생성/후속백로그 착수0 |
+
+
+### 20.6 MAP11-21c — 관광 코스 2차 보정 (2026-10-21)
+
+기준 `06bae2f2f4b172481313fe865df572412fd3c7ba`, 전용 `codex/map11-21c-20261021`. 이 절이 현행이며 §20.5 수치는 당시 이력이다. 합격 기준은 6장면 모두 02 매달린 숲 수준인지 눈으로 판단한다.
+
+| 항목 | 현행 / 검수 |
+|---|---|
+| 해골 톤 | 기존 concept/AO/exposure/sat1.06/contrast1.10 후 luminance(.2126,.7152,.0722) 기준 chroma×.20, RGB tint(1.02,1,.93). 탁한 아이보리·회갈색. 3yaw PNG diffuse/normal/contact 재생성 |
+| 해골 절단 | cut ratio .12→.055, cut_y=-bounds.size.y×.5+bounds.size.y×.055. 바닥판 감소는 유지하나 낮은 피라미드 내부의 평면/빈 면 인상은 남음. 원GLB 바이트 보존, 완전 복구 주장0 |
+| 피대야 | 기존 red gain(.42,.75,.85)+bias(.025,.008,.008) 후 chroma×.72. normal·contact 규격 보존 |
+| 광원 | 04 Color(.86,.80,.68)/energy.58 (이전1,.43,.20/.90), 05 Color(.90,.46,.36)/energy.72 (이전1,.25,.13/.95). radius740/610 불변. 기존8+6 pool/활성4+player1 유지. 아래 SCENES가 전체 수치 |
+| 무리 | 총17/6무리 유지. 입구4 높이×1.3 및 간격 축소. 처형장4 x+100~150으로 외곽가림 감소, 사슬1 일부가림 잔존. 06 사슬255→331.5 및 발치(-700,-3890), 구덩이와 무리 연결. 02 무변 |
+| runtime | PNG만, GLB는 offline render 도구에서만. 틱 목록API·ResourceLoader 추가0/PC전투코어·UI변경0 |
+| 실행 | 격리 EXODUSER-map11-21c-Isolated-20261021. project.godot은 실행 후 원byte 복원·commit제외. R 읽기만. 자체 Godot는 각 subprocess 완료 후 다음 시작; 각 실행 전 기존PID81277 1개 확인(processes.log). 초기 headless import는 --quit 누락으로 import 완료 뒤 종료신호 후 정상 --quit 재실행, 런타임/벤치 중복0 |
+| 캡처 | _out/MAP11-21c/captures/. before는 기준06bae2f2의 MAP11-21b after PNG를 동일byte 복사. after 6곳1600×900. compare 각3200×900/무축소, before/after_1x320×270 및 compare_1x640×270. foot04/11 추가. manifest hash/크기. 실시간HUD/RNG/광원 위상차이 잔존 |
+| 단회 검수 | 96checks/0fail. field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. 1920×1080/macOS GL/240cap/60Hz, 실제Player 4방향×150틱/field+arena 각1회. p95≤8.33ms 및 전표본 focus유지 PASS. 밀집전투/Windows/GPU timestamp 미검수 |
+
+| id | asset | yaw variant | foot | height | radius | scene |
+|---|---|---|---|---|---|---|
+| 0 | hell_impaled_corpse | 0 | -580,3400 | 318.5 | 27.0 | 0 |
+| 1 | hell_impaled_corpse | 1 | -400,3260 | 299.0 | 27.0 | 0 |
+| 2 | hell_impaled_corpse | 2 | -690,3190 | 325.0 | 27.0 | 0 |
+| 3 | hell_impaled_corpse | 0 | -490,3080 | 286.0 | 25.0 | 0 |
+| 4 | tour_cocoon_tree | 0 | -3210,1450 | 442.0 | 62.0 | 1 |
+| 5 | tour_cocoon_tree | 1 | -3440,1240 | 409.5 | 58.0 | 1 |
+| 6 | tour_cocoon_tree | 2 | -3220,1010 | 422.5 | 60.0 | 1 |
+| 7 | tour_torture_wheel | 0 | -3750,-820 | 351.0 | 65.0 | 2 |
+| 8 | tour_torture_wheel | 2 | -3600,-1090 | 318.5 | 58.0 | 2 |
+| 9 | tour_chained_pillar | 0 | -3780,-1190 | 300.0 | 48.0 | 2 |
+| 10 | tour_chained_pillar | 1 | -3550,-700 | 275.0 | 45.0 | 2 |
+| 11 | skull_pyramid | 0 | -1500,-2370 | 260.0 | 72.0 | 3 |
+| 12 | skull_pyramid | 2 | -1740,-2250 | 247.0 | 68.0 | 3 |
+| 13 | tour_blood_basin | 1 | -600,-2390 | 221.0 | 75.0 | 4 |
+| 14 | hell_spike_pit | 1 | -530,-3770 | 200.0 | 105.0 | 5 |
+| 15 | skull_pyramid | 1 | -810,-2520 | 145.0 | 44.0 | 4 |
+| 16 | tour_chained_pillar | 2 | -700,-3890 | 331.5 | 45.0 | 5 |
+
+SCENES 현행 원문:
+```gdscript
+[
+ {"id":"01_entrance","name":"숲 입구","camera":Vector2(-200,3290),"light":Vector2(-560,3240),"radius":930.0,"color":Color(1.0,.46,.20),"energy":.85,"source":"횃불"},
+ {"id":"02_hanging_forest","name":"매달린 숲","camera":Vector2(-3070,1250),"light":Vector2(-3290,1250),"radius":1000.0,"color":Color(.92,.36,.19),"energy":.88,"source":"생체 발광"},
+ {"id":"03_execution","name":"처형장 공터","camera":Vector2(-3450,-800),"light":Vector2(-3770,-990),"radius":900.0,"color":Color(1.0,.42,.16),"energy":1.0,"source":"횃불"},
+ {"id":"04_skull_fork","name":"해골 길목","camera":Vector2(-1350,-1870),"light":Vector2(-1570,-2400),"radius":740.0,"color":Color(.86,.80,.68),"energy":.58,"source":"뼈 제단"},
+ {"id":"05_heart_altar","name":"심장 제단","camera":Vector2(-440,-2190),"light":Vector2(-660,-2490),"radius":610.0,"color":Color(.90,.46,.36),"energy":.72,"source":"심장 제단"},
+ {"id":"06_boss_entrance","name":"보스룸 입구","camera":Vector2(-160,-3570),"light":Vector2(-650,-3830),"radius":650.0,"color":Color(1.0,.38,.15),"energy":.86,"source":"관문 횃불"}]
+```
+
+MAP PRODUCTION REPORT
+
+| 구역 | 보고 |
+|---|---|
+| STAGE / MASTER | CH1-1 지옥 관광. 기존 silhouette/regions/main route/side spaces 보존. GATE6 무리→4 접지→8 camera→TECH |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH/major holes 변경0 |
+| LARGE | 원본7GLB·기존PNG 사용. 입구크기/처형장간격/관문사슬 보정. 02 source반복·가지 composite 유지 |
+| MEDIUM | 기존연결 유지. 처형장 가림 감소, 해골 내부 평면 잔여 |
+| GROUND | alpha접촉AO/hull 재생성. 바닥오염/그림자 원본 유지. 해골절단낮춤; 구덩이 평면림 잔여 |
+| PLAYABLE | arenas/travel/breathing/threat 기존. route/발치충돌/실제보행/관문이행 PASS. 밀집전투 가독성 미검수 |
+| LANDMARK | primary heart 유지, secondary6무리, tertiary 기존외곽 |
+| CAMERA QA | START01 크기개선/얇은 반복소재 잔여. EARLY02 승인수준 보존. SIDE L03 외곽가림 감소/상단사슬부분가림. LANDMARK04 뼈색개선/내부평면 잔여,05 저채도 개선/거친 source 잔여. EXIT06 사슬스케일 개선/구덩이 평면림 잔여. MAIN ARENA/LATE 신규시각판정 없음 |
+| TECH QA | route/collision/loading/normal/foot/Ydepth/p95 PASS. native pageerror/404 N/A. floorseam 원본불변. 로그 SCRIPT/Parse/ERROR0, 기존Camera2D physics warning. import/capture/bench순차 실행 |
+| FILES | tour PNG/meta/hulls/masks/layout/offline tools/격리 capture·benchmark/설계서·SSOT·ART. 타인WIP변경0 |
+| GIT | 전용branch 경로지정add/정상hook/비강제push 및 remoteSHA대조 후 worktree제거. 최종SHA _out/MAP11-21c/DONE.txt. main push/merge/reset/rebase/배포0 |
+| VISUAL VERDICT | **RETOUCH**. 6장면 모두 02 수준에는 미달. 특히04 내부평면과06 구덩이 평면림,01 얇은 반복소재,03 일부가림 |
+| NEXT PASS | 04 내부면 보강·06 림접합·01 덩어리연결 필요. 이번작업에서 신규생성/후속백로그 착수0 |

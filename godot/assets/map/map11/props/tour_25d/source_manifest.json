@@ -203,77 +203,77 @@
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_contact.png",
         "size": [
-          406,
+          391,
           104
         ],
-        "sha256": "bc86cca9d95854e6536865b482a8586aa55ad5b63ad03d989856aad551d2a806"
+        "sha256": "064df7dd54a7be96982872374a4597913b63172ae4f337974591eee8321ffe16"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_diffuse.png",
         "size": [
-          390,
+          375,
           400
         ],
-        "sha256": "0a2d36215cad0b305fbf4207dcbd6803ef71a77c0d90b431722bbaafcc5d4e22"
+        "sha256": "64f1db7dbb9ff27627111483e3caff7eab2c2d567be622d28c12bab2e6e68bc2"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_0_normal.png",
         "size": [
-          390,
+          375,
           400
         ],
-        "sha256": "742dda183193bfc794c293655bf958dfa755f85f0573f6bbf0af72fdbae6eeda"
+        "sha256": "3c58bb68600a4d851967e27ce6d95e9db75a4310c36d3c3c4e3255c92e12b371"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_contact.png",
         "size": [
-          412,
+          406,
           104
         ],
-        "sha256": "9a122ada2f514fb4c44a10445dc9316b4e728926d102600b864679d40a4e7bcd"
+        "sha256": "3f1436657104573e6f0def05fb250e3c7b693392b798faa5c0f4fdec86e851d3"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_diffuse.png",
         "size": [
-          396,
+          390,
           400
         ],
-        "sha256": "8ff88662789fd72a013afa476253516505a8e16f6840cb338ff7767cc19371cf"
+        "sha256": "7ae54334f94a3a062d52af8fbb1519a3b0c133fe012e533bd8c7797b418931f5"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_1_normal.png",
         "size": [
-          396,
+          390,
           400
         ],
-        "sha256": "1af4583323309800c24007ea29083764eb3436d61f244f4dfed32cefaa9caacd"
+        "sha256": "d73e32a412e01c0a1b2a4bb153b28e5082849dd7fbc63cc9d80f28012fccfa8d"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_contact.png",
         "size": [
-          391,
+          430,
           104
         ],
-        "sha256": "65be15b80d021d8b12262415b42a1dd1885dfde0f7e0d9ecacf6526797c9915b"
+        "sha256": "5f74373e726852a7622c9c019a8217a60e2e2cbf3106333a0e5680628f0031f5"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_diffuse.png",
         "size": [
-          375,
+          414,
           400
         ],
-        "sha256": "c2c8d6517c75a389580e0f1eac083226118dac2e4d4a7af3e4707efdee05b35b"
+        "sha256": "12c43baacd68bcd4c5adba1180e62b482af9f24f2d2a2884f46137c2ddee097e"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/skull_pyramid/skull_pyramid_2_normal.png",
         "size": [
-          375,
+          414,
           400
         ],
-        "sha256": "8f83c07cf89f010d85fa9e994fe0dcacdacd9f59bc4578ca369bb69b8e4f8548"
+        "sha256": "51f7978b3665249baaed597ec93a3dd362a58962f930806bd9224b845c7a1420"
       }
     ],
-    "retouch": "MAP11-21b offline height discard; saturation1.06/contrast1.10; basin red attenuation; runtime PNG only"
+    "retouch": "MAP11-21c low chroma grade; skull cut .055; PNG only"
   },
   {
     "id": "tour_blood_basin",
@@ -306,7 +306,7 @@
           351,
           340
         ],
-        "sha256": "00c4f5e3cb31963c9783d581c647fa28ecebfed38db00739f6084ca55c30a50a"
+        "sha256": "27e10ba89041260a5e84ebd5fa1a96e042c6579d4beb5d097316e5719f332b17"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_0_normal.png",
@@ -330,7 +330,7 @@
           355,
           340
         ],
-        "sha256": "7b6116e9459941176ad7549d3e704db4c1235d8739c7924971373d1535c0810a"
+        "sha256": "11290130ce017b5fcacb4c9286e6f908f7d68500559e6aa86355175aecfe9c13"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_1_normal.png",
@@ -354,7 +354,7 @@
           349,
           340
         ],
-        "sha256": "70eaea847b6ae03fffae535e6855a82175ea19d3347ca8f9e51625229e4b4bed"
+        "sha256": "df1f91daa60769a976fbfd2aea2dec8390d0ba31598463835d25f474ba8dbf9e"
       },
       {
         "file": "godot/assets/map/map11/props/tour_25d/tour_blood_basin/tour_blood_basin_2_normal.png",
@@ -365,7 +365,7 @@
         "sha256": "8f0d29a5e4d38a1f88da841773421eb35fb5d2826f908e81a1e60623e4ec9e7a"
       }
     ],
-    "retouch": "MAP11-21b offline height discard; saturation1.06/contrast1.10; basin red attenuation; runtime PNG only"
+    "retouch": "MAP11-21c low chroma grade; skull cut .055; PNG only"
   },
   {
     "id": "tour_chained_pillar",

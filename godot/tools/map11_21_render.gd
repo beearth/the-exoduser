@@ -64,7 +64,7 @@ void fragment(){
  ALPHA=1.0;
 }
 """
- var cut_ratios={"tour_cocoon_tree":.065,"skull_pyramid":.12,"tour_torture_wheel":.045,"tour_chained_pillar":.04,"tour_blood_basin":.035,"hell_impaled_corpse":.03,"hell_spike_pit":.02}
+ var cut_ratios={"tour_cocoon_tree":.065,"skull_pyramid":.055,"tour_torture_wheel":.045,"tour_chained_pillar":.04,"tour_blood_basin":.035,"hell_impaled_corpse":.03,"hell_spike_pit":.02}
  var cut_y: float=-bounds.size.y*.5+bounds.size.y*float(cut_ratios.get(prefix,.04))
  var materials: Array[ShaderMaterial]=[]
  for mesh in meshes:
