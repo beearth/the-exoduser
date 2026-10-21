@@ -1,8 +1,9 @@
+const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 // Independent VM of untouched game.html statements; no product-module imports.
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath);
-const raw=fs.readFileSync(sourcePath),lines=raw.toString().split('\n');
-assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),'4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4');
+const raw=SNAPSHOT.readBytes(),lines=raw.toString().split('\n');
+assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),SNAPSHOT.sha256);
 const state='\n'.repeat(40662)+'function stateTick(e,sp){switch(e.s){\n'+lines.slice(40663,40977).map((s,i)=>i+40664<=40708||i+40664>=40942?s:'').join('\n')+'\n}}';
 const idle='\n'.repeat(38314)+lines.slice(38314,38356).join('\n')+'\n}';
 const switchStart=lines.findIndex((s,i)=>i>40440&&s.includes("switch(e.s){case'idle'"));assert.equal(switchStart,40455);

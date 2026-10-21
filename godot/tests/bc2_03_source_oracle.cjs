@@ -1,8 +1,9 @@
+const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 // BC2-03 independent original-source oracle. Adapted from the adopted BC06 VM driver.
 // Expected packets/events come only from game.html, never GDScript implementation.
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath,'source and UTF-8 fixture path required');
-const raw=fs.readFileSync(sourcePath),lines=raw.toString().split('\n');
+const raw=SNAPSHOT.readBytes(),lines=raw.toString().split('\n');
 const ranges=[[9820,9957],[9960,10011],[14333,14333],[14338,14338],[16631,16631],[16938,16938],[17248,17252],[31723,31723],[37701,38233]],src=Array(lines.length).fill('');for(const[a,b]of ranges)for(let n=a;n<=b;n++)src[n-1]=lines[n-1];
 let events=[],cursor=0,units=[.5],nested=0,queueSeen=new Set(),target=null,eProxy=null,collision=true,safe=null,safeCounter=0;const siteCount={};
 const ln=()=>+(new Error().stack.match(/exoduser-game.html:(\d+):/)||[])[1];
@@ -31,7 +32,7 @@ function run(name,si,id,phase,enemy=base(phase),d=100,extra=0,context={thorn_fir
  cases.push({name,si,id,phase,enemy,d,extra,context,units:seq,nested,collision,safe,initial_queues:initialQueues,expected:{enemy:clone(target),events:clone(events),queues:finalQueues,cursor}});
 }
 
-const hash=crypto.createHash('sha256').update(raw).digest('hex');assert.equal(hash,'4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4');
+const hash=crypto.createHash('sha256').update(raw).digest('hex');assert.equal(hash,SNAPSHOT.sha256);
 const ids=['vortex','beanRain','fanWave','spiralBullet','wallPush','shieldBash2','fireRain','shockGrid','donutSlam','crossWipe'];
 for(let si=4;si<10;si++)for(let phase=0;phase<5;phase++)for(let mi=0;mi<ids.length;mi++)for(const mode of [0,1]){
  const e=base((phase+si+mode)%5);e.el=0;

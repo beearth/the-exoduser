@@ -2,7 +2,7 @@ extends SceneTree
 const Policy = preload("res://scripts/native_ch3_enemy_phase_policy.gd")
 const Catalog = preload("res://scripts/native_ch3_enemy_catalog_policy.gd")
 const USERDIR = "EXODUSER-ec3-03-Isolated-20261020"
-const SOURCE_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const BLOCK_SHA256 = "c4e332b65a6b554dab5e23e1f688b1506cafbfc9cd6b6d8b8352cb4366874b95"
 const HURT_SHA256 = "45b2a3771bf13a71a006f7c21368e51d0513893837671756add66718c406c7c7"
 const SOURCE_PROBE = """
@@ -144,7 +144,7 @@ func _run() -> void:
 	print("EC3_03_RESULT ",JSON.stringify({"assertions":assertions,"failures":failures,"oracle_cases":oracle_cases,"source_sha256":source_sha,"skipped":[],"max_trig_absolute_error":max_trig_error,"max_trig_epsilon_units":max_trig_epsilon_units,"full_tick":false,"product_connected":false}))
 	quit(0 if failures == 0 and oracle_cases > 0 else 1)
 func _oracle() -> Dictionary:
-	var source: String = ProjectSettings.globalize_path("res://../game.html").simplify_path()
+	var source: String = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH).simplify_path()
 	var helper: String = OS.get_user_data_dir().path_join("ec3-03-source-oracle.cjs")
 	var receipt: String = OS.get_user_data_dir().path_join("ec3-03-source-oracle.json")
 	_check(FileAccess.file_exists(source) and not FileAccess.file_exists(helper) and not FileAccess.file_exists(receipt),"source/no temporary overwrite")

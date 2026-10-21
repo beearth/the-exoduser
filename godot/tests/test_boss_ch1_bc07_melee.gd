@@ -6,7 +6,7 @@ const Start = preload("res://scripts/native_ch1_boss_pattern_start.gd")
 const Phase = preload("res://scripts/native_ch1_boss_phase.gd")
 const Spawn = preload("res://scripts/native_ch1_boss_spawn_contract.gd")
 const USERDIR = "EXODUSER-bc07-Isolated-20261020"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const ORACLE_ROWS = [
 	"{\"name\":\"matrix-normal\",\"si\":0,\"enemy\":{\"s\":\"bossSlashWind\",\"ib\":true,\"etype\":0,\"_bossPhase\":0,\"x\":0,\"y\":0,\"r\":44,\"facing\":0,\"st2\":3,\"atk\":46,\"baseAtk\":46,\"el\":0,\"_slashIdx\":0,\"_slashCnt\":3,\"_sweepDir\":1,\"_isTail\":true,\"poise\":321,\"maxPoise\":1000,\"reviveIframes\":0,\"keep\":{\"unowned\":91}},\"player\":{\"x\":-582.6055711659993,\"y\":1273.0163975559544,\"r\":12,\"iframes\":0,\"s\":\"idle\",\"baseAtk\":11,\"parryBank\":0,\"kb\":{\"x\":2,\"y\":3},\"keep\":92},\"sp\":0.5,\"options\":{\"shake\":125,\"hit_stop\":75},\"units\":[0.875,0.125,0.5,0],\"nested\":2,\"collision\":false,\"responses\":[],\"expected\":{\"enemy\":{\"s\":\"bossSlashWind\",\"ib\":true,\"etype\":0,\"_bossPhase\":0,\"x\":0,\"y\":0,\"r\":44,\"facing\":2,\"st2\":3,\"atk\":46,\"baseAtk\":46,\"el\":0,\"_slashIdx\":0,\"_slashCnt\":3,\"_sweepDir\":1,\"_isTail\":true,\"poise\":321,\"maxPoise\":1000,\"reviveIframes\":0,\"keep\":{\"unowned\":91},\"_weaponAng\":-0.565001927111755},\"player\":{\"x\":-582.6055711659993,\"y\":1273.0163975559544,\"r\":12,\"iframes\":0,\"s\":\"idle\",\"baseAtk\":11,\"parryBank\":0,\"kb\":{\"x\":2,\"y\":3},\"keep\":92},\"events\":[{\"kind\":\"write\",\"field\":\"facing\",\"value\":2,\"source_line\":41075},{\"kind\":\"write\",\"field\":\"_weaponAng\",\"value\":-0.565001927111755,\"source_line\":41076},{\"kind\":\"rng\",\"value\":{\"field\":\"wind_particle_gate\",\"source_line\":41077,\"unit\":0.875}},{\"kind\":\"rng\",\"value\":{\"field\":\"wind_particle_vx\",\"source_line\":41077,\"unit\":0.125}},{\"kind\":\"rng\",\"value\":{\"field\":\"wind_particle_vy\",\"source_line\":41077,\"unit\":0.5}},{\"kind\":\"command\",\"value\":{\"command\":\"poolPart\",\"source_line\":41077,\"args\":[0,0,-1.125,0,\"#ff8844\",2,6],\"executed\":false}}],\"cursor\":5,\"globals\":{\"shake\":71,\"hitStop\":99}}}",
 	"{\"name\":\"matrix-parry\",\"si\":0,\"enemy\":{\"s\":\"bossSlashWind\",\"ib\":true,\"etype\":0,\"_bossPhase\":0,\"x\":0,\"y\":0,\"r\":44,\"facing\":0,\"st2\":3,\"atk\":46,\"baseAtk\":46,\"el\":0,\"_slashIdx\":0,\"_slashCnt\":3,\"_sweepDir\":1,\"_isTail\":true,\"poise\":321,\"maxPoise\":1000,\"reviveIframes\":0,\"keep\":{\"unowned\":91}},\"player\":{\"x\":-582.6055711659993,\"y\":1273.0163975559544,\"r\":12,\"iframes\":0,\"s\":\"idle\",\"baseAtk\":11,\"parryBank\":0,\"kb\":{\"x\":2,\"y\":3},\"keep\":92},\"sp\":0.5,\"options\":{\"shake\":125,\"hit_stop\":75},\"units\":[0.875,0.125,0.5,0],\"nested\":2,\"collision\":false,\"responses\":[],\"expected\":{\"enemy\":{\"s\":\"bossSlashWind\",\"ib\":true,\"etype\":0,\"_bossPhase\":0,\"x\":0,\"y\":0,\"r\":44,\"facing\":2,\"st2\":3,\"atk\":46,\"baseAtk\":46,\"el\":0,\"_slashIdx\":0,\"_slashCnt\":3,\"_sweepDir\":1,\"_isTail\":true,\"poise\":321,\"maxPoise\":1000,\"reviveIframes\":0,\"keep\":{\"unowned\":91},\"_weaponAng\":-0.565001927111755},\"player\":{\"x\":-582.6055711659993,\"y\":1273.0163975559544,\"r\":12,\"iframes\":0,\"s\":\"idle\",\"baseAtk\":11,\"parryBank\":0,\"kb\":{\"x\":2,\"y\":3},\"keep\":92},\"events\":[{\"kind\":\"write\",\"field\":\"facing\",\"value\":2,\"source_line\":41075},{\"kind\":\"write\",\"field\":\"_weaponAng\",\"value\":-0.565001927111755,\"source_line\":41076},{\"kind\":\"rng\",\"value\":{\"field\":\"wind_particle_gate\",\"source_line\":41077,\"unit\":0.875}},{\"kind\":\"rng\",\"value\":{\"field\":\"wind_particle_vx\",\"source_line\":41077,\"unit\":0.125}},{\"kind\":\"rng\",\"value\":{\"field\":\"wind_particle_vy\",\"source_line\":41077,\"unit\":0.5}},{\"kind\":\"command\",\"value\":{\"command\":\"poolPart\",\"source_line\":41077,\"args\":[0,0,-1.125,0,\"#ff8844\",2,6],\"executed\":false}}],\"cursor\":5,\"globals\":{\"shake\":71,\"hitStop\":99}}}",
@@ -665,14 +665,14 @@ const ORACLE_ROWS = [
 var assertions: int=0
 var failures: int=0
 var scenario: String="isolation"
-var source_path: String=""
+var source_path: String=ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 var source_events: int=0
 var source_draws: int=0
 var source_contacts: int=0
 
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path=arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	call_deferred("_run")
 
 func _run() -> void:

@@ -1,3 +1,4 @@
+import SNAPSHOT from '../source_snapshot/snapshot.cjs';
 // CH1-04: isolated si1 resources from latest source; never promotes map.json or stage0 assets.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -20,9 +21,9 @@ export function rectangles(tiles,accept){
 }
 export function buildResources(root){
  root=fs.realpathSync(root);const raw=buildAreaSnapshot(root,{stage:1,seed:20261020});
- const source=fs.readFileSync(path.join(root,'game.html'),'utf8');
- const mainGame=execFileSync('git',['show','origin/main:game.html'],{cwd:root,maxBuffer:16*1024*1024});
- if(sha(mainGame)!==sha(source))throw new Error('Latest main game.html mismatch');
+ const source=SNAPSHOT.readBytes().toString('utf8');
+ const mainGame=SNAPSHOT.readBytes();
+ if(sha(mainGame)!==sha(source))throw new Error('Source snapshot mismatch');
  const {parseExpressionAt}=createRequire(path.join(root,'package.json'))('acorn'),symbols={};
  function record(n,a,b){symbols[n]={file:'game.html',line:source.slice(0,a).split('\n').length,end:source.slice(0,b).split('\n').length,sha256:sha(source.slice(a,b))};return source.slice(a,b);}
  function expr(n,k){const m=new RegExp('(?:const|var|let)\\s+'+n+'\\s*=').exec(source);if(!m)throw Error('Missing '+n);let a=parseExpressionAt(source,m.index+m[0].length,{ecmaVersion:'latest'});if(k!==undefined)a=a.properties.find(p=>String(p.key.value??p.key.name)===String(k)).value;return record(n+(k===undefined?'':'.'+k),a.start,a.end);}

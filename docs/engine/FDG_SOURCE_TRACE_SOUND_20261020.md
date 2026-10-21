@@ -1045,3 +1045,7 @@ SND05/06 원모듈 무수정, 실제 BGM/voice adapter와 현재 guide/opening/p
 ## 2026-10-21 AUDIO-01 native 1-1 상대 믹스
 
 DEMO11-41 뒤의 현행 native 믹스·bus routing·field cycle·ducking·voice 분리는 [AUDIO-01 공식](../6사운드디자인/BGM_믹스_공식_ARPG_AUDIO01_20261021.md)을 따른다. 원본 추적 수치/readonly source 모듈은 보존했다. 숲 환경음 실파일과 청음은 HOLD이며 음향 전체 인수 완료가 아니다.
+
+## 2026-10-21 원본 대조 경로 후속
+
+SND의 고정 원본 대조는 이제 루트 live game.html 대신 `godot/source_snapshot/game.html`을 사용한다. 원 SHA와 기존 행 번호/음향 수치는 유지한다. [INTEG-5 스냅샷 계약·갱신 절차](INTEG5_SOURCE_SNAPSHOT_20261021.md)를 따른다. 위 원본 main/작업 경로는 작성 당시 이력이다.

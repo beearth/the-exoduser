@@ -6,7 +6,7 @@ extends SceneTree
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
 const USERDIR = "EXODUSER-bc01-Isolated-20261020"
 const SOURCE_MAIN = "c3cf8ce6b0cc1a5c381240260e03dff71c68af8d"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const GROUPS = ["receipt_and_sparse_ids", "four_final_sets", "all_move_fields",
 	"all_phase_fields", "combo_membership_phase_order", "copy_isolation", "invalid_inputs"]
 

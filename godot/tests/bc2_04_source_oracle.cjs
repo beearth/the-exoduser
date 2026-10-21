@@ -1,8 +1,9 @@
+const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 // BC2-04 independent source VM: exact vortex switch body, UTF-8 file only.
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath,'source and UTF-8 output path required');
-const raw=fs.readFileSync(sourcePath),hash=crypto.createHash('sha256').update(raw).digest('hex');
-assert.equal(hash,'4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4');
+const raw=SNAPSHOT.readBytes(),hash=crypto.createHash('sha256').update(raw).digest('hex');
+assert.equal(hash,SNAPSHOT.sha256);
 const lines=raw.toString().split('\n');assert(lines[40904].includes("case'bossVortexWind'"));assert(lines[40907].includes("case'bossVortex'"));
 const source='\n'.repeat(40903)+'function tick(e,sp){switch(e.s){\n'+lines.slice(40904,40940).join('\n')+'\n}}';
 let events=[],responses=[],cursor=0,units=[],nested=0,damageNested=0,collisionIndex=0,collisions=[],active=true,windIndex=0;

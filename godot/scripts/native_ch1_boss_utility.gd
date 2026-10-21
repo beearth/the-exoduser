@@ -10,7 +10,7 @@ const _FACE_MOVES = ["jump", "charge", "slashCombo", "sweep", "tailSwipe", "bean
 
 static func source_receipt() -> Dictionary:
 	return {"source_main": "284d7faf49295b2f5061937a47ce96038032ed3c",
-		"game_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+		"game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
 		"source_lines": [37650, 37699], "rng_line": 37693,
 		"dependency": "BC02 3d510c2b400f26342dcf5e9899a38034fd1e7c0a",
 		"face_moves": _FACE_MOVES.duplicate(true), "live_selection_connected": false}

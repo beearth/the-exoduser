@@ -1,7 +1,8 @@
+const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 // Executes exact original switch bytes. Writes only the caller-owned UTF-8 fixture.
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath,'source and output required');
-const raw=fs.readFileSync(sourcePath),hash=crypto.createHash('sha256').update(raw).digest('hex');assert.equal(hash,'4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4');
+const raw=SNAPSHOT.readBytes(),hash=crypto.createHash('sha256').update(raw).digest('hex');assert.equal(hash,SNAPSHOT.sha256);
 const lines=raw.toString().split('\n');assert(lines[40570].includes("case'bossFanWaveAim'"));assert(lines[40603].includes("e.s='bossRec';e.st2=40"));
 const src='\n'.repeat(40569)+'function tick(e){switch(e.s){\n'+lines.slice(40570,40605).join('\n')+'\n}}';
 const clone=x=>JSON.parse(JSON.stringify(x));const ln=()=>+(new Error().stack.match(/exoduser-game.html:(\d+):/)||[])[1];

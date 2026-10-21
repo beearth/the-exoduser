@@ -1,9 +1,10 @@
+import SNAPSHOT from '../source_snapshot/snapshot.cjs';
 import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';import readline from 'node:readline';import crypto from 'node:crypto';
 // Only selected source ranges enter memory; source and test output are streamed.
 const [source,logPath,resultPath]=process.argv.slice(2);assert.ok(source&&logPath&&resultPath,'source/log/result arguments');
 const ranges=[[3913,3931],[16649,16649],[28080,28085],[44094,44110],[44161,44357],[44362,44390],[44453,44488],[44608,44661],[47192,47326],[47678,47980]];
-const lines=[];let lineNumber=0;const hash=crypto.createHash('sha256');for await(const chunk of fs.createReadStream(source))hash.update(chunk);const sourceHash=hash.digest('hex');assert.equal(sourceHash,'4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4');
-for await(const line of readline.createInterface({input:fs.createReadStream(source),crlfDelay:Infinity})){lineNumber++;if(ranges.some(([a,b])=>lineNumber>=a&&lineNumber<=b))lines[lineNumber-1]=line;}
+const lines=[];let lineNumber=0;const hash=crypto.createHash('sha256');for await(const chunk of fs.createReadStream(SNAPSHOT.sourcePath))hash.update(chunk);const sourceHash=hash.digest('hex');assert.equal(sourceHash,SNAPSHOT.sha256);
+for await(const line of readline.createInterface({input:fs.createReadStream(SNAPSHOT.sourcePath),crlfDelay:Infinity})){lineNumber++;if(ranges.some(([a,b])=>lineNumber>=a&&lineNumber<=b))lines[lineNumber-1]=line;}
 const src=lines.join('\n'),cut=(a,b)=>lines.slice(a-1,b).join('\n');
 function extract(name){let a=src.indexOf('function '+name+'(');assert.ok(a>=0,name);if(src.slice(a-6,a)==='async ')a-=6;const b=src.indexOf('{',a);let d=1,q='',e=false,l=false,k=false;for(let i=b+1;i<src.length;i++){let c=src[i],n=src[i+1];if(l){if(c==='\n')l=false;continue;}if(k){if(c==='*'&&n==='/'){k=false;i++;}continue;}if(q){if(e)e=false;else if(c==='\\')e=true;else if(c===q)q='';continue;}if(c==='/'&&n==='/'){l=true;i++;continue;}if(c==='/'&&n==='*'){k=true;i++;continue;}if(c==='\''||c==='"'||c==='`'){q=c;continue;}if(c==='{')d++;else if(c==='}'&&--d===0)return src.slice(a,i+1);}throw Error(name);}
 const names=['_skillUpSpCost','_fuseUpSpCost','_skillSpentSp','_malCost','_isFused','isDimBreach','_getFuseKey','_getAbsorbed','_getAllAbsorbed','_isAbsorbed','_canFuse','_syncActiveSkAfterReset','_fuseGemGroup','_skCtx','_skLearnUp','_execFuse','_learnSkillAuto','_skillBatchUp','_skillRecAuto','_skLevelDown','_skResetSkill'];

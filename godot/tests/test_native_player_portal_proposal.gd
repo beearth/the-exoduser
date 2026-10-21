@@ -3,7 +3,7 @@ const TRANSPORT = preload("res://tests/qa007/oracle_transport.gd")
 ## NW-02: unchanged JS oracle, explicit native domain, disconnected command proposals.
 const USERDIR := "EXODUSER-nw-02-Isolated-20261020"
 const PRODUCER = preload("res://port_modules/player_portal_proposal/producer.gd")
-const SHA := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SHA := preload("res://source_snapshot/snapshot.gd").SHA256
 var _producer = PRODUCER.new()
 var _checks := 0
 var _failures := 0
@@ -101,7 +101,7 @@ func _base() -> Dictionary:
 
 
 func _run() -> void:
-	var source := ProjectSettings.globalize_path("res://../game.html")
+	var source := ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	var oracle := ProjectSettings.globalize_path("res://../tools/nw02_player_portal_oracle.cjs")
 	_check(FileAccess.get_sha256(source) == SHA, "latest pinned main source SHA")
 	_check(FileAccess.file_exists(oracle), "tracked oracle exists")

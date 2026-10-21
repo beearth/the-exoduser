@@ -4,7 +4,7 @@ extends RefCounted
 ## Fusion membership/explicit star ownership remains FUSION's existing constants.
 const FUSION = preload("res://port_modules/fusion_star_source/producer.gd")
 const SOURCE_PIN := "284d7faf49295b2f5061937a47ce96038032ed3c"
-const SOURCE_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 := preload("res://source_snapshot/snapshot.gd").SHA256
 
 ## game.html:44082-44092 SKILL_CATS
 const CATEGORIES := [

@@ -6,7 +6,7 @@ const CATALOG = preload("res://port_modules/sound_source/catalog.gd")
 const PHASE = preload("res://port_modules/sound_source/queue_phase.gd")
 const USERDIR := "EXODUSER-snd-04-Isolated-20261020"
 const SOURCE_MAIN := "284d7faf49295b2f5061937a47ce96038032ed3c"
-const SOURCE_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 := preload("res://source_snapshot/snapshot.gd").SHA256
 const FIXTURE := "res://tests/fixtures/sound_source_voice_selector_oracle.json"
 var assertions := 0
 var failures := 0
@@ -40,7 +40,7 @@ func _run() -> void:
 	if not isolated:
 		_finish()
 		return
-	var source_path := ProjectSettings.globalize_path("res://").path_join("../game.html").simplify_path()
+	var source_path := ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	_check(FileAccess.get_file_as_string(source_path).sha256_text() == SOURCE_SHA256, "source byte match pinned main")
 	var fixture: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE))
 	_check(fixture is Dictionary, "fixture parses")

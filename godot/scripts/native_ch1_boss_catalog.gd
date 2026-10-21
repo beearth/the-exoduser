@@ -69,7 +69,7 @@ const _MOVE_MANIFEST = [
 
 const _RECEIPT = {
 	"source_main": "c3cf8ce6b0cc1a5c381240260e03dff71c68af8d",
-	"source_game_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+	"source_game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
 	"global_move_count": 59,
 	"global_combo_count": 68,
 	"ch1_union_count": 24,

@@ -2,7 +2,7 @@ extends RefCounted
 ## CH1-03 source-only contract. No World/Main, IO, RNG state or runtime ownership.
 ## Native game.html17972-17987/18172-18177/30042-30085/30218-30694.
 const SCHEMA := "exoduser.ch1-area-source.v1"
-const GAME_SHA := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA := preload("res://source_snapshot/snapshot.gd").SHA256
 const TILE_SHA := "c7994170661e29348e27bdad098020edcb761a11943e68bdea60f9d744236dc1"
 const MASK_SHA := "c540f7be7e05019d9ada9d0d08a1dea55d4f2e7e73f5d023c476f7f676cf7adf"
 const GEOMETRY_FILE := "assets/map/ch1/geometry/ch1_si1_geometry.js"

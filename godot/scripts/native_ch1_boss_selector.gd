@@ -10,7 +10,7 @@ const Utility = preload("res://scripts/native_ch1_boss_utility.gd")
 
 static func source_receipt() -> Dictionary:
 	return {"source_main": "e556b617190c325ca39f5add04357f5dea5ca87e",
-		"game_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+		"game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
 		"source_lines": [38373, 38442], "dependency": "BC03 349ec241c12e403499a4b063a94e692fdd396543",
 		"demo_last_stage": 0, "finale_requires_stage": 3, "live_selection_connected": false}
 

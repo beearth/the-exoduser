@@ -28,7 +28,7 @@ const _WINDS = {
 
 static func source_receipt() -> Dictionary:
 	return {"source_main":"e556b617190c325ca39f5add04357f5dea5ca87e",
-		"game_sha256":"4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+		"game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency":"BC05 e1850171849de176ad7d5df61e2cd296705ad7b7",
 		"function_range":[37702,38233], "header_range":[37701,37710], "ch1_cases":24,
 		"protected_parry_read_only":true, "parryable_ids":_PARRYABLE.duplicate(),

@@ -3,7 +3,7 @@ extends SceneTree
 const Policy = preload("res://scripts/native_ch3_enemy_catalog_policy.gd")
 const Constructor = preload("res://scripts/native_ch2_enemy_constructor_policy.gd")
 const USERDIR = "EXODUSER-ec3-02-Isolated-20261020"
-const SOURCE_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const FIELD_SHA256 = "31221a11f3cdd18e3e5cc9db723685e663e207b69faa136fa24f3f28a55d680a"
 const CATALOG_SHA256 = "2dbfc1df07aa9d46f52e8336d8c2a9b240bfaf10844cd5b52ef7dc024b3a5e41"
 const SOURCE_PROBE = """
@@ -120,7 +120,7 @@ func _run() -> void:
 	quit(0 if failures == 0 and oracle_cases > 0 else 1)
 
 func _oracle() -> Dictionary:
-	var source: String = ProjectSettings.globalize_path("res://../game.html").simplify_path()
+	var source: String = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH).simplify_path()
 	var helper: String = OS.get_user_data_dir().path_join("ec3-02-source-oracle.cjs")
 	var receipt: String = OS.get_user_data_dir().path_join("ec3-02-source-oracle.json")
 	_check(FileAccess.file_exists(source) and not FileAccess.file_exists(helper) and not FileAccess.file_exists(receipt),"source/no temporary overwrite")

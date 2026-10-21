@@ -1,7 +1,7 @@
 extends RefCounted
 ## NW-02: disconnected commands only. Snapshot names are native fixture carriers.
 ## map_present/zone_available are explicit caller booleans, not live map/zone readers.
-const SOURCE_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 := preload("res://source_snapshot/snapshot.gd").SHA256
 const PORTAL_SHA256 := "4eae4f08342dd95a93c73982f266bec0cf7eb4a54237d4574190aa9d9a1ddfef"
 const PLACE := "game.html:18309–18315"
 const USE := "game.html:18316–18322"

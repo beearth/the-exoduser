@@ -4,7 +4,7 @@ extends RefCounted
 ## Metadata rec is not an instruction to change the runtime recovery duration.
 const Shared = preload("res://scripts/native_ch1_boss_catalog.gd")
 const SOURCE_MAIN = "0119f3048a459a458ba142d98f68126b8e281be1"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const _NAMES = ["벌레 수호자", "점액 괴수", "기생충 모체", "거대 알주머니", "살벽의 군주", "여왕 구더기"]
 const _BASE = ["slashCombo", "slam", "sweep", "charge", "jump", "burst", "shock", "fan", "spin", "grab", "multiDash", "poisonTrail", "summon", "mine", "vortex", "chaseAoe", "elemBall", "beanStorm", "beanRain", "groundFissure", "tideWave", "lavaPools", "fireRain", "shockGrid", "donutSlam", "crossWipe", "rapidMissile"]
 const _UNLOCKS = ["seekerMines", "fanWave", "wallPush", "shieldBash2", "spiralBullet"]

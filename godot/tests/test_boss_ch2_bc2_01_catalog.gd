@@ -4,7 +4,7 @@ extends SceneTree
 const Catalog = preload("res://scripts/native_ch2_boss_catalog.gd")
 const Shared = preload("res://scripts/native_ch1_boss_catalog.gd")
 const USERDIR = "EXODUSER-bc2-01-Isolated-20261020"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const EXPECTED_MOVES = [
 	{"id": "burst", "idx": 0, "tele": 45, "rec": 40, "canFeint": false, "canDelay": 0, "range": [0, 999], "phase": [0, 1, 2, 3, 4], "combo": ["fan", "shock", "charge"], "tags": ["aoe", "ranged"], "cd": 140, "source_ordinal": 0, "source_line": 9821},
 	{"id": "fan", "idx": 1, "tele": 25, "rec": 35, "canFeint": false, "canDelay": 0.3, "range": [60, 300], "phase": [0, 1, 2, 3, 4], "combo": ["charge", "mine", "multiDash"], "tags": ["ranged", "frontal"], "cd": 100, "source_ordinal": 1, "source_line": 9822},
@@ -117,7 +117,7 @@ var source_game := ""
 
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_game=arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_game = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	call_deferred("_run")
 
 func _check(condition: bool, message: String) -> void:

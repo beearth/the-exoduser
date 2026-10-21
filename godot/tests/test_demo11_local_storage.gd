@@ -1,7 +1,7 @@
 extends SceneTree
 const Store = preload("res://port_modules/save_adapter/demo_local_storage.gd")
 const USERDIR := "EXODUSER-demo11-05-Isolated-20261021"
-const SOURCE_SHA := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA := preload("res://source_snapshot/snapshot.gd").SHA256
 var checks := 0
 var failures := 0
 var now := 0.0
@@ -28,7 +28,7 @@ func _run() -> void:
 	if OS.get_user_data_dir().get_file() != USERDIR: printerr("DEMO11_05_INVALID_ISOLATION"); quit(2); return
 	check(not Store.accepts_namespace("/synthetic/EXODUSER-Godot-Native-First"), "protected real namespace rejected by pure guard, no host access")
 	check(not Store.accepts_namespace("/synthetic/EXODUSER-other"), "non-demo namespace rejected")
-	check(FileAccess.get_sha256(ProjectSettings.globalize_path("res://../game.html")) == SOURCE_SHA, "current source pin")
+	check(FileAccess.get_sha256(ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)) == SOURCE_SHA, "current source pin")
 	folder = OS.get_user_data_dir().path_join("demo_local_storage")
 	if DirAccess.dir_exists_absolute(folder):
 		check(DirAccess.rename_absolute(folder, folder + "-preserved-" + str(Time.get_ticks_usec())) == OK, "preserve previous isolated evidence")

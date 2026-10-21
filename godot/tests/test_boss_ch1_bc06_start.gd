@@ -5,7 +5,7 @@ const Spawn = preload("res://scripts/native_ch1_boss_spawn_contract.gd")
 const Selector = preload("res://scripts/native_ch1_boss_selector.gd")
 const Phase = preload("res://scripts/native_ch1_boss_phase.gd")
 const USERDIR = "EXODUSER-bc06-Isolated-20261020"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const PARRY_SOURCE = ["charge", "slashCombo", "slam", "sweep", "tailSwipe", "spin", "multiDash", "teleStrike", "swordWave", "jump", "judgeCut", "delaySlash", "perilThrust", "phantomSwords", "crescendoCombo", "tideWave", "rewindStrike", "mirrorClone", "shieldBash2", "mirrorGuard", "chainLightning", "cageTrap", "doppelganger"]
 const ORACLE_ROWS = [
 	"{\"name\":\"all24\",\"si\":0,\"id\":\"slashCombo\",\"phase\":0,\"enemy\":{\"ib\":true,\"etype\":0,\"_bossPhase\":0,\"x\":10,\"y\":20,\"r\":44,\"atk\":46,\"el\":0,\"col\":\"#abcdef\",\"facing\":0.25,\"s\":\"idle\",\"st2\":10,\"_feinting\":true,\"_isTail\":true,\"_druidFanWindMax\":999,\"poise\":321,\"reviveIframes\":7,\"keep\":{\"unowned\":91}},\"d\":120,\"extra\":0,\"context\":{\"thorn_first\":true,\"player_x\":100,\"player_y\":200,\"map_width\":128,\"map_height\":108},\"units\":[0,0.5,0.875,0.125],\"nested\":2,\"collision\":true,\"safe\":null,\"initial_queues\":{\"_chaseAoes\":[{\"keep\":\"old\"}],\"_fissures\":[{\"keep\":\"old\"}],\"_tideWaves\":[{\"keep\":\"old\"}],\"_seekerMines\":[{\"keep\":\"old\"}],\"_poisonPools\":[{\"keep\":\"old\"}],\"_lavaPools\":[{\"keep\":\"old\"}]},\"expected\":{\"enemy\":{\"ib\":true,\"etype\":0,\"_bossPhase\":0,\"x\":10,\"y\":20,\"r\":44,\"atk\":46,\"el\":0,\"col\":\"#abcdef\",\"facing\":0.25,\"s\":\"bossSlashWind\",\"st2\":15,\"_feinting\":true,\"_isTail\":true,\"_druidFanWindMax\":999,\"poise\":321,\"reviveIframes\":7,\"keep\":{\"unowned\":91},\"_atkParryable\":true,\"_slashCnt\":3,\"_slashIdx\":0,\"_weaponAng\":0},\"events\":[{\"kind\":\"write\",\"field\":\"_atkParryable\",\"value\":true,\"source_line\":37703},{\"kind\":\"write\",\"field\":\"s\",\"value\":\"bossSlashWind\",\"source_line\":37734},{\"kind\":\"write\",\"field\":\"st2\",\"value\":15,\"source_line\":37734},{\"kind\":\"write\",\"field\":\"_slashCnt\",\"value\":3,\"source_line\":37734},{\"kind\":\"write\",\"field\":\"_slashIdx\",\"value\":0,\"source_line\":37734},{\"kind\":\"write\",\"field\":\"_weaponAng\",\"value\":0,\"source_line\":37734},{\"kind\":\"command\",\"value\":{\"command\":\"addTxt\",\"source_line\":37734,\"args\":[10,-10,\"translated:\\u2694 \\ub09c\\ud0c0!\",\"#ff8844\",45],\"executed\":false}}],\"queues\":{\"_chaseAoes\":[{\"keep\":\"old\"}],\"_fissures\":[{\"keep\":\"old\"}],\"_tideWaves\":[{\"keep\":\"old\"}],\"_seekerMines\":[{\"keep\":\"old\"}],\"_poisonPools\":[{\"keep\":\"old\"}],\"_lavaPools\":[{\"keep\":\"old\"}]},\"cursor\":2}}",
@@ -675,13 +675,13 @@ const ORACLE_ROWS = [
 var assertions: int = 0
 var failures: int = 0
 var scenario: String = "isolation"
-var source_path: String = ""
+var source_path: String = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 var source_events: int = 0
 var source_draws: int = 0
 
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path = arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	call_deferred("_run")
 
 func _run() -> void:

@@ -4,7 +4,7 @@ const TRANSPORT = preload("res://tests/qa007/oracle_transport.gd")
 const USERDIR := "EXODUSER-nw-01-Isolated-20261020"
 const QUERY = preload("res://port_modules/world_interaction_query/producer.gd")
 const EXPECTED_SOURCE := "game.html:32829–32853"
-const SOURCE_SHA := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA := preload("res://source_snapshot/snapshot.gd").SHA256
 const FRAGMENT_SHA := "9eea8397b33211a9a7b4ba18372d4fb60a5ab6cffa497687254d47b66d6c265f"
 var _query = QUERY.new()
 var _checks := 0
@@ -88,7 +88,7 @@ func _normal(label: String, player: Variant, objects: Variant, pressed: Variant,
 func _run() -> void:
 	_start("source_oracle")
 	var node_binary := TRANSPORT.node_binary()
-	var source_path := ProjectSettings.globalize_path("res://../game.html")
+	var source_path := ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	var oracle_path := ProjectSettings.globalize_path("res://../tools/nw01_world_interaction_oracle.cjs")
 	_check(FileAccess.get_sha256(source_path) == SOURCE_SHA, "current source hash")
 	_check(FileAccess.file_exists(oracle_path), "tracked oracle exists")

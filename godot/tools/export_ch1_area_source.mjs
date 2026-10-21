@@ -1,3 +1,4 @@
+import SNAPSHOT from '../source_snapshot/snapshot.cjs';
 import {isInsideRoot, isMatchingSnapshot, isDirectExecution} from './cli_paths.mjs';
 // CH1-01/03 and CH2-01: native stage0/1/4 source snapshots, never map.json/PNG.
 // Stage0 base 284d7faf / stage1 main e556b617; unchanged game SHA 4d911cdd...; exact ranges below.
@@ -35,7 +36,7 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
   if (observeNative !== undefined && typeof observeNative !== 'function') throw new Error('Invalid native observer');
   const root = fs.realpathSync(sourceRoot);
   const {parseExpressionAt} = createRequire(path.join(root, 'package.json'))('acorn');
-  const source = fs.readFileSync(path.join(root, 'game.html'), 'utf8');
+  const source = SNAPSHOT.readBytes().toString('utf8');
   const files = {'game.html': sha(source)}, symbols = {};
   const line = offset => source.slice(0, offset).split('\n').length;
   function fragment(name, start, end) {
@@ -148,7 +149,7 @@ export function buildAreaSnapshot(sourceRoot, {stage = 0, seed = 20261020, obser
     geometry.mask_sha256=sha(Buffer.from(geometry.mask));
     geometry.editor_tile_rle_sha256=sha(JSON.stringify(geometry.editor_tile_rle));
   }
-  const snapshot = {schema:stage === 4 ? CH2_SCHEMA : SCHEMA,stage,source:{main_sha:execFileSync('git',['rev-parse',stage === 0 ? 'HEAD' : 'origin/main'],{cwd:root,encoding:'utf8'}).trim(),
+  const snapshot = {schema:stage === 4 ? CH2_SCHEMA : SCHEMA,stage,source:{main_sha:SNAPSHOT.originalCommit,
     ...(stage !== 0 ? {extraction_head:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim()} : {}),
     game_sha256:files['game.html'],files,symbols,selection:`default empty URL → _getFixedMapForStage(${stage}) → _cloneField11(${stage}) → genFromTemplate`},
     grid:{width:200,height:200,tile_size:40},...data,...ch2,...(geometry ? {source_geometry:geometry} : {}),runtime_tile_sha256:sha(Buffer.from(data.tiles)),

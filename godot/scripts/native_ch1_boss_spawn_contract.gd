@@ -19,7 +19,7 @@ const _RNG_SITES = [
 static func source_receipt() -> Dictionary:
 	return {
 		"source_main": "284d7faf49295b2f5061937a47ce96038032ed3c",
-		"game_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+		"game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency": "BC01 e4396da5e7541562542ab65053d8ecac0bf16e52",
 		"source_lines": [9272, 9276, 31033, 31034, 31119, 31120, 31185, 31210, 31260, 31300, 31359],
 		"scope": "81 numeric/common/boss fields; no ordinary-etype timers, actor or skin binding",

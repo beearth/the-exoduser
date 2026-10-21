@@ -2,7 +2,7 @@ extends RefCounted
 ## NW-03: ordered MAP action commands only; no actual state/economy/RNG dispatch.
 const QUERY = preload("res://port_modules/world_interaction_query/producer.gd")
 const SOURCE := "game.html:32829–32853"
-const SOURCE_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 := preload("res://source_snapshot/snapshot.gd").SHA256
 const FRAGMENT_SHA256 := "9eea8397b33211a9a7b4ba18372d4fb60a5ab6cffa497687254d47b66d6c265f"
 var _query = QUERY.new()
 

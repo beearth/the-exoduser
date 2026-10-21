@@ -12,7 +12,7 @@ const CHECKPOINTS = ["lesson_gate", "telegraph", "after_wall_push", "after_knock
 
 static func source_receipt() -> Dictionary:
 	return {"source_main": "e556b617190c325ca39f5add04357f5dea5ca87e",
-		"game_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+		"game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency": "BC04 818e9b2027afa37fadbf13a6b79b885abdb95f6b",
 		"phase_writes": [38236, 38259], "phase_effect_continuation": [38271, 38312], "source_boss_phase_hitstop": 6,
 		"clock_ranges": [[38584, 38592], [38614, 38635], [38771, 38772],

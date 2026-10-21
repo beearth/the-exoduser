@@ -1,3 +1,4 @@
+import SNAPSHOT from '../source_snapshot/snapshot.cjs';
 import {isInsideRoot, isDirectExecution} from './cli_paths.mjs';
 // CH2-02: continue the shared native generator context, no Main or asset writes.
 import fs from 'node:fs';
@@ -11,8 +12,8 @@ import {buildAreaSnapshot,captureJSON} from './export_ch1_area_source.mjs';
 import {rectangles} from './export_ch1_area_resources.mjs';
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 export function buildResources(root){
- root=fs.realpathSync(root);const source=fs.readFileSync(path.join(root,'game.html'),'utf8');
- if(sha(execFileSync('git',['show','origin/main:game.html'],{cwd:root,maxBuffer:16*1024*1024}))!==sha(source))throw Error('Latest main source mismatch');
+ root=fs.realpathSync(root);const source=SNAPSHOT.readBytes().toString('utf8');
+ if(sha(SNAPSHOT.readBytes())!==sha(source))throw Error('Source snapshot mismatch');
  const {parseExpressionAt}=createRequire(path.join(root,'package.json'))('acorn'),symbols={};
  const record=(n,a,b)=>{symbols[n]={file:'game.html',line:source.slice(0,a).split('\n').length,end:source.slice(0,b).split('\n').length,sha256:sha(source.slice(a,b))};return source.slice(a,b);};
  function expr(n){const m=new RegExp('(?:const|let|var)\\s+'+n+'\\s*=').exec(source);if(!m)throw Error('Missing '+n);const a=parseExpressionAt(source,m.index+m[0].length,{ecmaVersion:'latest'});return record(n,a.start,a.end);}

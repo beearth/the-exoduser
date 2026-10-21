@@ -96,7 +96,7 @@ func _nr(p: Variant, objects: Variant, deps: Variant, reason: String) -> void:
 
 
 func _run() -> void:
-	var source := ProjectSettings.globalize_path("res://../game.html")
+	var source := ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	var oracle := ProjectSettings.globalize_path("res://../tools/nw03_map_action_oracle.cjs")
 	_check(FileAccess.get_sha256(source) == PRODUCER.SOURCE_SHA256, "pinned latest-main game SHA")
 	_check(FileAccess.file_exists(oracle), "tracked oracle available")

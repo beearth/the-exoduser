@@ -2,7 +2,7 @@ extends SceneTree
 ## BC2-05: exact source VM -> self-owned UTF-8 fixture, no stdout data protocol.
 const Rain = preload("res://scripts/native_ch2_boss_bean_rain.gd")
 const USERDIR = "EXODUSER-bc2-05-Isolated-20261020"
-const HASH = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const HASH = preload("res://source_snapshot/snapshot.gd").SHA256
 var assertions := 0
 var failures := 0
 var label := "startup"
@@ -11,7 +11,7 @@ var node_bin := ""
 var summary: Dictionary = {}
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path=arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 		if arg.begins_with("--node-bin="): node_bin=arg.trim_prefix("--node-bin=")
 	call_deferred("_run")
 func check(ok: bool,message: String) -> void:

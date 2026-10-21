@@ -56242,3 +56242,10 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - 첫 빈 슬롯 새로하기 초기 포커스/강조, 웹 원본 5인 초상 및 전사 대형 원화·소개, 잠긴4인 감광/벡터 자물쇠, 이름 Enter 제출·취소 포커스 구현.
 - 저장/active/인트로 및 전투 코드 변경 없음. 기존 Hell Gothic 폰트/색, 한영 catalog·번역 목록3487–3489(CRLF 보존), `docs/engine/LOBBY_01_20261021.md` 동기화.
 - 기존 로비 회귀 1회60/60 PASS, 격리 UI 입력·검증·metadata 캡처 하니스 PASS. 1600×900 5장 직접 검수: VISUAL PASS. 실물 패드 미검증. 근거 `~/exoduser-wt/_out/LOBBY-01/`.
+
+
+## 2026-10-21 INTEG-5 immutable source snapshot
+
+- Merge lobby-01 b977c5ff then field-BGM db6539b7e; no conflicts.
+- 76 existing files (tests54/products12/port_modules7/tools3) now identify the immutable source snapshot. Product runtime logic unchanged.
+- Source contract and refresh steps: docs/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md. Live web game.html and protected combat/map visual files unchanged.

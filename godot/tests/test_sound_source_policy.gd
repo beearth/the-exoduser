@@ -3,7 +3,7 @@ extends SceneTree
 ## Oracle: game.html @ 9528ea35b, 12220–12245 / 12342–12356.
 const POLICY = preload("res://port_modules/sound_source/policy.gd")
 const USERDIR = "EXODUSER-snd-01-Isolated-20261020"
-const SOURCE_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const SOURCE_SAMPLE_CASES = [
 	["sword_slash", 2, "sword_slash", false, false],
 	["sword_swing1", 10, "g_swing", true, false],

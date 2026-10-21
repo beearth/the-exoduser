@@ -7,7 +7,7 @@ const Spawn=preload("res://scripts/native_ch1_boss_spawn_contract.gd")
 const Shared=preload("res://scripts/native_ch1_boss_catalog.gd")
 const Bridge=preload("res://scripts/native_ch2_boss_catalog_bridge.gd")
 const USERDIR="EXODUSER-bc-integ-01-Isolated-20261020"
-const GAME_SHA256="4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256=preload("res://source_snapshot/snapshot.gd").SHA256
 const MOVE_BEFORE="c8e73bbc31c4f55c1952dbd4057c40eabd98b70057272fc5a7784fc96a4abc2f"
 const SPAWN_BEFORE="e7159c70ba57b9b6a700bd89a32cc616d02c2676eb1780a83068c4d57a17d734"
 # These readers are fixture data only, not a new production CH3/4/5/6/7 catalog.
@@ -48,7 +48,7 @@ var baseline_move_path: String=""
 var baseline_spawn_path: String=""
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path=arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 		if arg.begins_with("--node-bin="): node_bin=arg.trim_prefix("--node-bin=")
 		if arg.begins_with("--baseline-bc08="): baseline_move_path=arg.trim_prefix("--baseline-bc08=")
 		if arg.begins_with("--baseline-bc02="): baseline_spawn_path=arg.trim_prefix("--baseline-bc02=")

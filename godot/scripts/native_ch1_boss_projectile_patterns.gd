@@ -9,7 +9,7 @@ const BAND_EXCLUSIONS = ["titanEye","web","mine","trap","bomb","swordWave","elem
 const PHYSICAL_EXCLUSIONS = ["blackBean","gbBean","blueBean","waterBean","fireMagic","web","mine","trap","bomb","swordWave","elemBall","_coralSpike","phantomSword","pierce","poisonZone","iceZone","blizzard","dimRift"]
 
 static func source_receipt() -> Dictionary:
-	return {"source_main":"26c050a99a711e793a6c2413395acda09b0c1614","game_sha256":"4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+	return {"source_main":"26c050a99a711e793a6c2413395acda09b0c1614","game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency":"BC08 1b901f124bc4d1f2eaf55cb615a216abce69c634","pool_ranges":[[16858,16884]],
 		"ranges":[[16938,16995],[17043,17046],[20121,20155],[37080,37127],[38357,38371],[40562,40569],[40646,40662],[41185,41205]],
 		"start_cases_owned_by_BC06":[[37769,37791],[38212,38230]],"live_spawn_connected":false,"class_or_QE_execution_verified":false,"full_tick_complete":false}

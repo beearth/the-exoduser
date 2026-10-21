@@ -8,7 +8,7 @@ const STATES = ["bossChargeWind","bossCharge","bossJumpWind","bossJump","bossMul
 
 static func source_receipt() -> Dictionary:
 	return {"source_main":"a00893ad9b93750d7ce70b90f5bd501b578daccb",
-		"game_sha256":"4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+		"game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency":"BC07 edcbc480491a2b9c55abbb99fcda3dc47073583c",
 		"ranges":[[38315,38355],[40483,40517],[40664,40708],[40942,40977]],
 		"live_combat_connected":false,"damage_or_parry_execution_verified":false,"full_tick_complete":false}

@@ -5,7 +5,7 @@ extends RefCounted
 ## 31029-31030: source count formula; 60709-60710: quadrant totals.
 const SCHEMA := "exoduser.ch1-area-source.v1"
 const SOURCE_SCOPE := "source_snapshot_only"
-const GAME_SHA := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA := preload("res://source_snapshot/snapshot.gd").SHA256
 const TILE_SHA := "655b5c872be2c42c1f202d14728b1c9ee8741eff5bf1a6655461d113564fc0aa"
 const SOURCE_FILES := ["game.html", "maps_data.js", "assets/map/ch1/production_finish/layout.js"]
 const SOURCE_SYMBOLS := ["T", "CHAPTER_STAGES", "_MAP_COMPOSE.0", "_OBJ_META", "_CH_DECO.0",

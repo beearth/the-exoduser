@@ -6,7 +6,7 @@ extends SceneTree
 const Spawn = preload("res://scripts/native_ch1_boss_spawn_contract.gd")
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
 const USERDIR = "EXODUSER-bc02-Isolated-20261020"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const SOURCE_MAIN = "284d7faf49295b2f5061937a47ce96038032ed3c"
 const UNITS = [0.0, 0.25, 0.5, 0.75, 0.875, 0.125]
 const RNG_FIELDS = ["st2", "facing", "projT", "bossPatT", "_bossOrbitAng", "_erraticAng"]
@@ -77,12 +77,12 @@ var assertions: int = 0
 var failures: int = 0
 var group: String = ""
 var groups: Array = []
-var source_path: String = ""
+var source_path: String = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--source-game="):
-			source_path = arg.trim_prefix("--source-game=")
+			source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	call_deferred("_run")
 
 func _run() -> void:
@@ -93,7 +93,7 @@ func _run() -> void:
 		finish(2)
 		return
 	check(not source_path.is_empty() and FileAccess.get_sha256(source_path) == GAME_SHA256,
-		"independent fixture applies to supplied latest-main game.html hash")
+		"independent fixture applies to immutable source snapshot hash")
 	for name: String in GROUPS:
 		group = name
 		var before: int = assertions

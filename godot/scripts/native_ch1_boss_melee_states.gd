@@ -7,7 +7,7 @@ const STATES = ["bossSlashWind","bossSlash","bossSlamWind","bossSlam","bossSweep
 
 static func source_receipt() -> Dictionary:
 	return {"source_main":"e556b617190c325ca39f5add04357f5dea5ca87e",
-		"game_sha256":"4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+		"game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency":"BC06 1110eec6c2deacd43c6c20dd52affff33d4e4d47",
 		"source_ranges":[[41074,41109],[41111,41142],[41144,41183]],"states":STATES.duplicate(),
 		"live_combat_connected":false,"damage_or_parry_execution_verified":false,"new_hit_latch":false}

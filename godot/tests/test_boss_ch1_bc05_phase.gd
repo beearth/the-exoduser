@@ -6,7 +6,7 @@ const Phase = preload("res://scripts/native_ch1_boss_phase.gd")
 const Spawn = preload("res://scripts/native_ch1_boss_spawn_contract.gd")
 const Selector = preload("res://scripts/native_ch1_boss_selector.gd")
 const USERDIR = "EXODUSER-bc05-Isolated-20261020"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const ORACLE_ROWS = [
 	"{\"name\":\"phase-threshold\",\"method\":\"phase\",\"si\":0,\"enemy\":{\"_bossPhase\":0,\"hp\":1,\"mhp\":1,\"atk\":46,\"baseAtk\":46,\"speed\":0.5,\"maxPoise\":1000,\"poise\":321,\"poiseR\":9,\"bossPatCd\":35,\"stunned\":0,\"s\":\"idle\",\"st2\":0,\"bossPatT\":0,\"_comboSeq\":[\"charge\"],\"_comboIdx\":1,\"_feinting\":true,\"_delaying\":5,\"_moveCDs\":[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],\"_lastMoves\":[\"charge\"],\"ib\":true,\"alive\":true,\"etype\":0,\"x\":10,\"y\":20,\"r\":44,\"reviveIframes\":0,\"kb\":{\"x\":3,\"y\":4},\"eShield\":800,\"eShieldMax\":1000,\"_revPts\":200,\"_maxRevPts\":200,\"deaths\":0,\"_aAtkM\":1,\"keep\":{\"unowned\":77}},\"sp\":1,\"context\":{},\"unit\":0.5,\"expected\":{\"enemy\":{\"_bossPhase\":0,\"hp\":1,\"mhp\":1,\"atk\":46,\"baseAtk\":46,\"speed\":0.5,\"maxPoise\":1000,\"poise\":321,\"poiseR\":9,\"bossPatCd\":35,\"stunned\":0,\"s\":\"idle\",\"st2\":0,\"bossPatT\":0,\"_comboSeq\":[\"charge\"],\"_comboIdx\":1,\"_feinting\":true,\"_delaying\":5,\"_moveCDs\":[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],\"_lastMoves\":[\"charge\"],\"ib\":true,\"alive\":true,\"etype\":0,\"x\":10,\"y\":20,\"r\":44,\"reviveIframes\":0,\"kb\":{\"x\":3,\"y\":4},\"eShield\":800,\"eShieldMax\":1000,\"_revPts\":200,\"_maxRevPts\":200,\"deaths\":0,\"_aAtkM\":1,\"keep\":{\"unowned\":77}},\"write_keys\":[],\"commands\":[],\"rng_ledger\":[],\"continuation_required\":false,\"returns_update\":false}}",
 	"{\"name\":\"phase-threshold\",\"method\":\"phase\",\"si\":1,\"enemy\":{\"_bossPhase\":0,\"hp\":0.80000001,\"mhp\":1,\"atk\":46,\"baseAtk\":46,\"speed\":0.5,\"maxPoise\":1000,\"poise\":321,\"poiseR\":9,\"bossPatCd\":35,\"stunned\":0,\"s\":\"idle\",\"st2\":0,\"bossPatT\":0,\"_comboSeq\":[\"charge\"],\"_comboIdx\":1,\"_feinting\":true,\"_delaying\":5,\"_moveCDs\":[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],\"_lastMoves\":[\"charge\"],\"ib\":true,\"alive\":true,\"etype\":0,\"x\":10,\"y\":20,\"r\":44,\"reviveIframes\":0,\"kb\":{\"x\":3,\"y\":4},\"eShield\":800,\"eShieldMax\":1000,\"_revPts\":200,\"_maxRevPts\":200,\"deaths\":0,\"_aAtkM\":1,\"keep\":{\"unowned\":77}},\"sp\":1,\"context\":{},\"unit\":0.5,\"expected\":{\"enemy\":{\"_bossPhase\":0,\"hp\":0.80000001,\"mhp\":1,\"atk\":46,\"baseAtk\":46,\"speed\":0.5,\"maxPoise\":1000,\"poise\":321,\"poiseR\":9,\"bossPatCd\":35,\"stunned\":0,\"s\":\"idle\",\"st2\":0,\"bossPatT\":0,\"_comboSeq\":[\"charge\"],\"_comboIdx\":1,\"_feinting\":true,\"_delaying\":5,\"_moveCDs\":[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],\"_lastMoves\":[\"charge\"],\"ib\":true,\"alive\":true,\"etype\":0,\"x\":10,\"y\":20,\"r\":44,\"reviveIframes\":0,\"kb\":{\"x\":3,\"y\":4},\"eShield\":800,\"eShieldMax\":1000,\"_revPts\":200,\"_maxRevPts\":200,\"deaths\":0,\"_aAtkM\":1,\"keep\":{\"unowned\":77}},\"write_keys\":[],\"commands\":[],\"rng_ledger\":[],\"continuation_required\":false,\"returns_update\":false}}",
@@ -1062,13 +1062,13 @@ const EFFECT_ROWS = [
 var assertions: int = 0
 var failures: int = 0
 var scenario: String = "isolation"
-var source_path: String = ""
+var source_path: String = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 var source_draws: int = 0
 var source_continuations: int = 0
 
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path = arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	call_deferred("_run")
 
 func _run() -> void:

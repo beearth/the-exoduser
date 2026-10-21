@@ -9,7 +9,7 @@ const Start = Reuse
 const Melee = Reuse
 const Default = preload("res://scripts/native_ch1_boss_catalog.gd")
 const USERDIR = "EXODUSER-bc2-02-Isolated-20261020"
-const HASH = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const HASH = preload("res://source_snapshot/snapshot.gd").SHA256
 class WrongSource:
 	extends RefCounted
 	static func source_receipt() -> Dictionary:
@@ -29,7 +29,7 @@ var oracle_counts: Dictionary = {}
 
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path=arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 		if arg.begins_with("--node-bin="): node_bin=arg.trim_prefix("--node-bin=")
 	call_deferred("_run")
 func check(ok: bool,message: String) -> void:

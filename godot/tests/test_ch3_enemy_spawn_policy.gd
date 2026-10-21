@@ -2,7 +2,7 @@ extends SceneTree
 ## EC3-01: original roll functions only; no actor/World/State or product RNG owner.
 const Policy = preload("res://scripts/native_ch3_enemy_spawn_policy.gd")
 const USERDIR = "EXODUSER-ec3-01-Isolated-20261020"
-const SOURCE_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const FUNCTION_SHA256 = {"rollEtype": "b816226c2ae3db962ca2d82dc4730ab8817e6cbc314a42509dea6ee791f23d71", "rollEl": "84f0a33ae64d8d6a47eaaa8d46dd0084c315c3ac4b999a549593b6f6d55efbd6", "literals": "efb24d2f80a6e6f22057177c85fd920f73b47a4e0b27bfe1f28e11eb39f7e99c"}
 const SOURCE_PROBE = """
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
@@ -106,7 +106,7 @@ func _run() -> void:
 	print("EC3_01_RESULT ",JSON.stringify({"assertions":assertions,"failures":failures,"oracle_cases":oracle_cases,"source_sha256":source_sha,"skipped":[],"product_connected":false,"public_play_evidence":false}))
 	quit(0 if failures == 0 and oracle_cases > 0 else 1)
 func _oracle() -> Dictionary:
-	var source: String = ProjectSettings.globalize_path("res://../game.html").simplify_path()
+	var source: String = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH).simplify_path()
 	var helper: String = OS.get_user_data_dir().path_join("ec3-01-source-oracle.cjs")
 	var result_path: String = OS.get_user_data_dir().path_join("ec3-01-source-oracle.json")
 	_check(FileAccess.file_exists(source) and not FileAccess.file_exists(helper) and not FileAccess.file_exists(result_path),"source/no temporary overwrite")

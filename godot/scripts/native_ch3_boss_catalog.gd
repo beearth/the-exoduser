@@ -5,7 +5,7 @@ extends RefCounted
 const Shared = preload("res://scripts/native_ch2_boss_catalog_bridge.gd")
 const SOURCE_MAIN = "249c26fad989071a94c19128e524ce0bbcb2c8c9"
 const DEPENDENCY_SHA = "a3b5391c54bb62b9f784bf2acac12bfbd2747192"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const _MANIFEST_SHA256 = "3566a0b356c41a32fad3da622a541cb89784942eb7335debb0e53ede3090e47b"
 const _NAMES = ["얼음 망령", "서리의 기사", "얼어붙은 감시자", "얼음 속 봉인 괴물"] # G16691
 const _BASE = ["slashCombo", "slam", "sweep", "charge", "jump", "burst", "shock", "fan", "spin", "grab", "multiDash", "summon", "mine", "vortex", "chaseAoe", "elemBall", "beanStorm", "beanRain", "fanWave", "laser", "tideWave", "groundFissure", "seekerMines", "shieldBash2", "lavaPools", "fireRain", "shockGrid", "donutSlam", "crossWipe", "safeCorner", "tidalWipe", "rapidMissile"] # G9976–9977, cage removed G10010

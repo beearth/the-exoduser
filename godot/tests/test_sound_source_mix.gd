@@ -5,7 +5,7 @@ const ADMISSION = preload("res://port_modules/sound_source/node_admission.gd")
 const GRAPH = preload("res://tests/sound_source_graph_fake.gd")
 const USERDIR := "EXODUSER-snd-08-Isolated-20261020"
 const SOURCE_MAIN := "e556b617190c325ca39f5add04357f5dea5ca87e"
-const SOURCE_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 := preload("res://source_snapshot/snapshot.gd").SHA256
 const FIXTURE := "res://tests/fixtures/sound_source_mix_oracle.json"
 var assertions := 0
 var failures := 0
@@ -48,8 +48,8 @@ func _run() -> void:
 	if not isolated:
 		_finish()
 		return
-	var path := ProjectSettings.globalize_path("res://").path_join("../game.html").simplify_path()
-	_check(FileAccess.get_file_as_string(path).sha256_text() == SOURCE_SHA256, "pinned latest main bytes")
+	var path := ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
+	_check(FileAccess.get_file_as_string(path).sha256_text() == SOURCE_SHA256, "immutable source snapshot bytes")
 	var fixture: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE))
 	_check(fixture is Dictionary, "oracle parses")
 	if not fixture is Dictionary:

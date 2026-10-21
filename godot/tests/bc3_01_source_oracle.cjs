@@ -1,10 +1,11 @@
+const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 // BC3-01r independent oracle: evaluate only exact original registration declarations.
 // Never import the Godot catalog. All numbers carry integers or binary64 bits.
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const [sourcePath,targetPath]=process.argv.slice(2);assert(sourcePath&&targetPath,'explicit source/output paths required');
-const raw=fs.readFileSync(sourcePath),source=raw.toString('utf8'),lines=source.split('\n');
+const raw=SNAPSHOT.readBytes(),source=raw.toString('utf8'),lines=source.split('\n');
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
-assert.equal(sha(raw),'4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4');
+assert.equal(sha(raw),SNAPSHOT.sha256);
 const pins=[{"first": 9820, "last": 10011, "sha256": "bd4f7cfcf870711b9031268470775d592a9067efd1c03bbf479034bcb72c7ee1"}, {"first": 14333, "last": 14333, "sha256": "a0bb447f773a52c3c7a8dade348dccb9ff74c0823ab8ee5976618ddb0cee4340"}, {"first": 14338, "last": 14338, "sha256": "117540421830f822266f9f5c1361147f7a4744641ec03d8a95a36da137bc1f22"}, {"first": 16633, "last": 16712, "sha256": "a96f67cf2591f091f9a83a930ae73772c7048dbf5245b25341b899369ee2f6dd"}];
 for(const p of pins)assert.equal(sha(lines.slice(p.first-1,p.last).join('\n')),p.sha256,`source range ${p.first}..${p.last}`);
 for(const name of ['BOSS_MOVES','BOSS_COMBOS','BOSS_PHASES','HELL_BOSSES'])assert.equal((source.match(new RegExp('^const '+name+'[= ]','gm'))||[]).length,1,'unique declaration '+name);

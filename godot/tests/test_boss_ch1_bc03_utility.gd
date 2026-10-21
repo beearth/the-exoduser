@@ -4,7 +4,7 @@ const Utility = preload("res://scripts/native_ch1_boss_utility.gd")
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
 const Spawn = preload("res://scripts/native_ch1_boss_spawn_contract.gd")
 const USERDIR = "EXODUSER-bc03-Isolated-20261020"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const GROUPS = ["source_6577_scores_and_draws", "gate_order_and_no_rng",
     "history_counter_combo_boundaries", "provider_failures", "bc02_and_readonly_scope"]
 const SOURCE_MOVES = [
@@ -6677,11 +6677,11 @@ var assertions: int = 0
 var failures: int = 0
 var groups: Array = []
 var current_group: String = ""
-var source_path: String = ""
+var source_path: String = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path = arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	call_deferred("_run")
 
 func _run() -> void:

@@ -1,7 +1,8 @@
+const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 // Exact source beanRain switch -> self-owned UTF-8 fixture; no Godot imports.
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath,'source and UTF-8 output required');
-const raw=fs.readFileSync(sourcePath),hash=crypto.createHash('sha256').update(raw).digest('hex');assert.equal(hash,'4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4');
+const raw=SNAPSHOT.readBytes(),hash=crypto.createHash('sha256').update(raw).digest('hex');assert.equal(hash,SNAPSHOT.sha256);
 const lines=raw.toString().split('\n');assert(lines[41206].includes("case'bossBeanRainWind'"));assert(lines[41210].includes("case'bossBeanRain'"));
 const src='\n'.repeat(41205)+'function tick(e,sp){switch(e.s){\n'+lines.slice(41206,41231).join('\n')+'\n}}';
 let events=[],cursor=0,units=[],nested=0,collision=true,siteIndex={},target=null,eProxy=null;

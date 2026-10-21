@@ -7,7 +7,7 @@ const STATES = ["bossGrabWind", "bossGrab", "bossDruidDive", "bossDruidUnder", "
 
 static func source_receipt() -> Dictionary:
 	return {"source_main":"6d987cb8a31d0aadd2b6a8cf1e9a781d1fb76d4d",
-		"game_sha256":"4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+		"game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
 		"source_ranges":[[40837,40867],[41047,41072]],
 		"live_combat_connected":false,"damage_or_parry_execution_verified":false,
 		"forced_player_writer_verified":false,"iframe_immunity_verified":false,"full_tick_complete":false}

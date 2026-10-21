@@ -4,7 +4,7 @@ const Selector = preload("res://scripts/native_ch1_boss_selector.gd")
 const Catalog = preload("res://scripts/native_ch1_boss_catalog.gd")
 const Spawn = preload("res://scripts/native_ch1_boss_spawn_contract.gd")
 const USERDIR = "EXODUSER-bc04-Isolated-20261020"
-const GAME_SHA256 = "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const ORACLE_ROWS = [
 	"{\"name\":\"matrix\",\"si\":0,\"enemy\":{\"_bossPhase\":0,\"stunned\":0,\"s\":\"idle\",\"bossPatT\":0,\"bossPatCd\":35,\"_moveCDs\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"_comboSeq\":null,\"_comboIdx\":0,\"_lastMoves\":[\"charge\",\"burst\",\"charge\",\"slashCombo\",\"burst\"],\"_meleeStreak\":0,\"_feinting\":true,\"custom_keep\":{\"value\":17}},\"sp\":0.5,\"d\":19,\"ps\":null,\"units\":[0],\"debug\":true,\"expected\":{\"enemy\":{\"_bossPhase\":0,\"stunned\":0,\"s\":\"idle\",\"bossPatT\":-0.5,\"bossPatCd\":35,\"_moveCDs\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"_comboSeq\":null,\"_comboIdx\":0,\"_lastMoves\":[\"charge\",\"burst\",\"charge\",\"slashCombo\",\"burst\"],\"_meleeStreak\":0,\"_feinting\":true,\"custom_keep\":{\"value\":17},\"_combatSt\":\"retreat\"},\"player_stats\":null,\"start_pattern\":null,\"rng_ledger\":[]}}",
 	"{\"name\":\"matrix\",\"si\":0,\"enemy\":{\"_bossPhase\":0,\"stunned\":0,\"s\":\"idle\",\"bossPatT\":0,\"bossPatCd\":35,\"_moveCDs\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"_comboSeq\":null,\"_comboIdx\":0,\"_lastMoves\":[\"charge\",\"burst\",\"charge\",\"slashCombo\",\"burst\"],\"_meleeStreak\":0,\"_feinting\":true,\"custom_keep\":{\"value\":17}},\"sp\":0.5,\"d\":19,\"ps\":null,\"units\":[0.125],\"debug\":true,\"expected\":{\"enemy\":{\"_bossPhase\":0,\"stunned\":0,\"s\":\"idle\",\"bossPatT\":-0.5,\"bossPatCd\":35,\"_moveCDs\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"_comboSeq\":null,\"_comboIdx\":0,\"_lastMoves\":[\"charge\",\"burst\",\"charge\",\"slashCombo\",\"burst\"],\"_meleeStreak\":0,\"_feinting\":true,\"custom_keep\":{\"value\":17},\"_combatSt\":\"retreat\"},\"player_stats\":null,\"start_pattern\":null,\"rng_ledger\":[]}}",
@@ -2760,13 +2760,13 @@ const PICK_ROWS = [
 
 var assertions: int = 0
 var failures: int = 0
-var source_path: String = ""
+var source_path: String = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 var scenario: String = "isolation"
 var total_draws: int = 0
 
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--source-game="): source_path = arg.trim_prefix("--source-game=")
+		if arg.begins_with("--source-game="): source_path = ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
 	call_deferred("_run")
 
 func _run() -> void:

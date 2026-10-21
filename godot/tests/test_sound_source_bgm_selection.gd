@@ -4,7 +4,7 @@ const CATALOG = preload("res://port_modules/sound_source/bgm_catalog.gd")
 const SELECT = preload("res://port_modules/sound_source/bgm_selection.gd")
 const USERDIR := "EXODUSER-snd-05-Isolated-20261020"
 const SOURCE_MAIN := "e556b617190c325ca39f5add04357f5dea5ca87e"
-const SOURCE_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SOURCE_SHA256 := preload("res://source_snapshot/snapshot.gd").SHA256
 const FIXTURE := "res://tests/fixtures/sound_source_bgm_oracle.json"
 
 class FixtureCatalog extends RefCounted:
@@ -61,8 +61,8 @@ func _run() -> void:
 	if not isolated:
 		_finish()
 		return
-	var source_path := ProjectSettings.globalize_path("res://").path_join("../game.html").simplify_path()
-	_check(FileAccess.get_file_as_string(source_path).sha256_text() == SOURCE_SHA256, "source bytes match latest pinned main")
+	var source_path := ProjectSettings.globalize_path(preload("res://source_snapshot/snapshot.gd").PATH)
+	_check(FileAccess.get_file_as_string(source_path).sha256_text() == SOURCE_SHA256, "source bytes match immutable snapshot")
 	var fixture: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE))
 	_check(fixture is Dictionary, "fixture parses")
 	if not fixture is Dictionary:
