@@ -9,9 +9,12 @@ var _fog_material: ShaderMaterial
 var _contact_texture: Texture2D
 var _unlit: CanvasItemMaterial
 var _backdrop: ColorRect
+var _rim_player: CanvasItem
+var _rim_arena: bool=false
 
 func configure_product(product: Node2D,main: Node) -> void:
  scene=product;_player=main.player;_camera=main.camera
+ _rim_player=_player.get("_sprite")
  _light_texture=_make_radial_texture(256,[0.0,.35,.7,1.0],[1.0,.62,.2,0.0])
  _contact_texture=_make_radial_texture(128,[0.0,.28,.65,1.0],[1.0,.85,.30,0.0])
  _unlit=CanvasItemMaterial.new();_unlit.light_mode=CanvasItemMaterial.LIGHT_MODE_UNSHADED
@@ -25,7 +28,7 @@ func configure_product(product: Node2D,main: Node) -> void:
  _pool("EastTissue",Vector2(1850,-2000),"field",380,Color(.85,.20,.09),.5,.05)
  var offset: Vector2=scene.arena_view.global_position
  _pool("ArenaEntry",offset+Vector2(0,1120),"arena",620,Color(1.0,.32,.10),.72,.035)
- _pool("ArenaHeart",offset+Vector2(0,-1740),"arena",730,Color(1.0,.17,.085),.88,.045)
+ # Finale northern pair replaces the old single heart pool.
  _pool("ArenaTissue",offset+Vector2(1550,-450),"arena",500,Color(.90,.19,.08),.56,.045)
  _mount_contacts()
  # The screen-space GL fog/env wash destroys local contrast; MAP11 uses a
@@ -73,10 +76,11 @@ func _mount_contacts() -> void:
   GroundContact.shadow(scene.field_view,sprite,row.foot,-2990,.85,_unlit)
  for row in scene.arena_view._rim_sprites:
   var sprite: Sprite2D=row.sprite
-  GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.85,_unlit)
+  if not sprite.has_meta("finale_retired"):
+   GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.26,_unlit)
  for id in ["NorthHeartAltar","EntryArch_VisualOnly","ClearArch_VisualOnly"]:
   var sprite: Sprite2D=scene.arena_view.get_node(id)
-  if sprite.position.length()<=1700.0:GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.85,_unlit)
+  if sprite.position.length()<=1700.0:GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.40,_unlit)
  _contact(_player,Vector2(0,4),Vector2(62,20),-1,.75)
 
 func _contact(parent: Node2D,foot: Vector2,size_: Vector2,z: int,alpha: float) -> void:
@@ -86,10 +90,17 @@ func _contact(parent: Node2D,foot: Vector2,size_: Vector2,z: int,alpha: float) -
 
 func _process(delta: float) -> void:
  if not is_instance_valid(_player):return
+ _camera=get_viewport().get_camera_2d()
  _time+=delta
  var arena: bool=scene.active_space=="arena"
  var approach: float=1.0 if arena else smoothstep(-2600.0,-4100.0,_player.global_position.y)
- _ambient.color=Color(.38,.43,.52).lerp(Color(.49,.34,.36),approach*.75)
+ var inner: float=1.0-smoothstep(1350.0,1850.0,(_player.global_position-scene.arena_view.global_position).length()) if arena else 0.0
+ _ambient.color=Color(.38,.43,.52).lerp(Color(.48,.43,.46),approach*.75).lerp(Color(.70,.60,.61),inner)
+ # Only the space transition changes this instance uniform. Repeated uploads
+ # are unnecessary when the value is unchanged.
+ if arena!=_rim_arena:
+  _rim_player.set_instance_shader_parameter("rim_color",Color(.92,.82,.70,.62) if arena else Color(.78,.72,.59,.38))
+  _rim_arena=arena
  _player_light.global_position=_player.global_position+Vector2(0,-36)
  var size_: Vector2=get_viewport_rect().size/_camera.zoom
  var center: Vector2=_camera.get_screen_center_position()

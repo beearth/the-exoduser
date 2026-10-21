@@ -1,3 +1,15 @@
+## 2026-10-21 MAP11-23
+
+- 신규 검수 스크립트2개의 Godot UID도 함께 보존.
+
+- 기존 PNG만 사용해 외곽 반복 변형·일부 소품 교체, 입구4주 간격/각도/크기, 처형장 기존 fade, pit offline 음영 보정. 신규 runtime draw/pass0, cached cull/fade rows+4. PCcore/실제저장/main 무변경.
+- before/after 각7시점1600×900+literal1x, 보충가림2컷. suite단회495/4(카메라 미이동 probe 오류), 실제카메라 capture37/0. before focus/보행 요건 실패, after9.449/8.509ms focus_lost0. 비용 비증가 미검증, **RETOUCH**. [수치·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21).
+
+## 2026-10-21 MAP11-22d
+
+- 기존 field crack36+inward7을2048² 정적 bake로 재사용, R1470 링을 약한 진홍 unshaded로 명확히 표시. 보조 multiply .62→.14, arena ambient 중심(.70,.60,.61), player instance rim(.92,.82,.70,.62). PC코어/공유shader/충돌 변경0.
+- entry/center before660a9dc2·after·literal1x 보존, 관련검사 단회308/0·capture9/0. PID81277 존재로 성능 표본0/p95 N/A, 유효 성능 미검증. 전체 RETOUCH. [현행 수치·제약·MAP PRODUCTION REPORT](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#25-map11-22d--입장에서-읽히는-붉은-의식의-원-4차).
+
 ## 2026-10-21 DEMO11-47l — E2E 기능 회귀·정직한 PC 의존 구분
 
 - 기존 전역 `test_*` ignore 때문에 새 검수 파일3개의 정확한 경로만 allowlist로 등록. 강제add·hook우회 없이 결과 재현용 검수 스크립트를 함께 보존.
@@ -56168,3 +56180,27 @@ MAP11-21d→20p 순차 merge, append 양쪽 보존. 공통16개 접지 마스크
 | 변경 | 검증 / 남은 문제 |
 |---|---|
 | benchmark_map11_21 focus 대기10초·최대3시도·손실시600틱 전체제외·실제 공간/입력 궤적 기록; low_processor 해제·240cap·VSync OFF는 벤치에만 적용 | 재import ERROR0·chest26/0·anglers1402/0·auto_potion2569/0. product 선재4실패+_bossArena 오류 baseline85415a66 재현. E2E12PASS/6NOT_READY·ERROR0. 유효field9.265/9.596ms로8.33ms FAIL; arena명목·PC대기. 별도 render thread crash 미채택. 제품/맵/보호core 수정0. 상세 docs/engine/INTEG3B_DEMO11_20261021.md |
+
+
+## 2026-10-21 MAP11-22 보스룸 관광 종착지
+
+R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원·북 혈조/고문바퀴 무대·4광원을 구성했다. 전투면 바닥 shader opacity .16/.12, 남측 가림 완화. 상세 수치/좌표/검수 경계는 `4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §22. VISUAL RETOUCH; 독립 울타리 에셋 미제공, PC gate/실전전투 미검수. 단회 성능 실측과 원격SHA는 외부 MAP11-22 DONE 및 설계서에 기록.
+
+
+## 2026-10-21 MAP11-22b 보스룸 2차 보정
+- ce5bec02 계열: dark flesh/blood 전투면, 기존32 root 의식 링, legacy 반복8개/AO 제거 및 제단 cull 현재 bounds 정정, finale PNG LOD−.6, 짧은 arena 입장 카메라. PC core/provider/save/신규이미지0.
+- 설계·전체 수치·4컷/1x·범위표본·단회 성능·RETOUCH 한계: `4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §23. 실제 SHA/p95/captures/정리는 외부 MAP11-22b/DONE.txt.
+
+
+## 2026-10-21 MAP11-22c
+- arena_shoulder에 R1470 혈관 링·R960/590 얕은 홈·저주파 얼룩·8.38초 국소 red≤3.5% 맥동을 기존 relief와 곱합성. 신규 draw/이미지/3D/PC core/save 변경0.
+- 설계서 §24에 파라미터·캡처 출처·가독성 제한·MAP PRODUCTION REPORT 기록. 시각 RETOUCH, 단회 성능은 해당 절과 외부 DONE.txt 참조.
+
+
+## 2026-10-21 MAP11-22e
+- cba6bbf5 기준 링 brightness/saturation .82/.82와 보스룸 chained pillar PNG yaw −45/0/45 마감. PC core/저장/공용 field 보존. 설계서 §26에 수치·캡처·PID81277 공존 성능 유효성 기록.
+
+
+## 2026-10-21 MAP11-PERF2
+- 06c8a260 기준4커밋 동일 PID81277 공존 비교: 최초arena 초과22c. floor static bake+단일pass pulse, 기존ring atlas annulus/cull, rim uniform 전환cache. 관련316/0, field9.313/arena9.108ms 목표FAIL. 설계서§27/성능SSOT에 원인·조치·전수표·한계 동기화. PCcore/save/user PID 변경0.
+- 추가 범위분리: map 표시만 제외field8.685/arena8.225, 표시+프레젠테이션tick 제외8.493/8.117ms(모두focus0). 제품 성능통과로 사용하지 않음. 목표 미달·잔여 공통비용 분석 필요.
