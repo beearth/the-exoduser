@@ -8,6 +8,7 @@ func _ready() -> void:
 
 # Visual shoulder overlaps the unchanged provider's R1700 collision.
 var _shoulders: Array[Sprite2D]=[]
+var _ritual: MeshInstance2D
 func _build_floor() -> void:
  super._build_floor()
  var floor_: Polygon2D=get_node("SkinFloor")
@@ -16,7 +17,9 @@ func _build_floor() -> void:
  for item in get_node("RGBAFloorDecals").get_children():item.material.set_shader_parameter("opacity",.16)
  for item in get_node("IrregularFissureDecals").get_children():item.material.set_shader_parameter("opacity",.12)
  var material_:=ShaderMaterial.new()
- material_.shader=preload("res://scripts/maps/map11/arena_shoulder.gdshader")
+ material_.shader=preload("res://scripts/maps/map11/arena_floor_cached.gdshader")
+ material_.set_shader_parameter("baked_base",preload("res://assets/maps/map11/baked_floor/arena_floor_base.png"))
+ material_.set_shader_parameter("baked_pulse",preload("res://assets/maps/map11/baked_floor/arena_floor_pulse.png"))
  floor_.material=material_
  _build_ritual()
  # Low silhouettes bridge the floor and the forest; never add collision.
@@ -88,6 +91,7 @@ func _prop(id: String,file: String,foot: Vector2,height: float,mirror: bool=fals
 
 func update_product_occlusion(point: Vector2,delta: float) -> void:
  var view:=_camera_rect()
+ _ritual.visible=view.intersects(Rect2(-1800,-1800,3600,3600))
  for row in _rim_sprites:
   var sprite: Sprite2D=row.sprite
   sprite.visible=not sprite.has_meta("finale_retired") and view.intersects(row.rect.grow(120))
@@ -104,9 +108,22 @@ func _camera_rect() -> Rect2:
 
 # Authored decal composition baked offline: one static texture, one draw, no tick work.
 func _build_ritual() -> void:
- var ring:=Sprite2D.new();ring.name="RitualRootCracks"
+ var ring:=MeshInstance2D.new();ring.name="RitualRootCracks"
+ # Keep the original 2048 atlas UVs, omit only its fully transparent center
+ # and outside. All arrays are built once; no tick allocations or loads.
+ var vertices:=PackedVector3Array();var uvs:=PackedVector2Array();var indices:=PackedInt32Array()
+ for i in range(128):
+  var direction:=Vector2.from_angle(TAU*float(i)/128.0)
+  for radius in [640.0,1740.0]:
+   var point: Vector2=direction*radius
+   vertices.append(Vector3(point.x,point.y,0));uvs.append((point+Vector2.ONE*1800.0)/3600.0)
+  var a: int=i*2;var b: int=((i+1)%128)*2
+  indices.append_array(PackedInt32Array([a,a+1,b+1,a,b+1,b]))
+ var arrays:=[];arrays.resize(Mesh.ARRAY_MAX)
+ arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_TEX_UV]=uvs;arrays[Mesh.ARRAY_INDEX]=indices
+ var mesh_:=ArrayMesh.new();mesh_.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays);ring.mesh=mesh_
  ring.texture=preload("res://assets/maps/map11/ritual_root_cracks.png")
- ring.scale=Vector2.ONE*(3600.0/2048.0);ring.z_index=-419
+ ring.z_index=-419
  var mat:=ShaderMaterial.new();mat.shader=preload("res://scripts/maps/map11/ritual_cracks.gdshader")
  mat.set_shader_parameter("glow_strength",.10)
- ring.material=mat;add_child(ring)
+ ring.material=mat;add_child(ring);_ritual=ring

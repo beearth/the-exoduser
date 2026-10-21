@@ -1331,3 +1331,76 @@ benchmark는 arena presentation을 명시 활성화하지만 native product_spac
 | GIT | 전용branch 정상hook commit/push·원격SHA대조·push후 worktree제거. SHA는 외부DONE.txt. main merge/push·deploy0 |
 | VISUAL VERDICT | **RETOUCH**. 링 감쇠·원 가시성·죄수 각도 개선. 의복 대비/기존 외곽 반복 잔여·성능 목표 미달. 전체AAA·실보스전·PC 인수완료 주장0 |
 | NEXT PASS | 별도 승인단위에서 before/after 유효 비교·공존 비용 진단. 이번 focus 재시도 한도를 넘겨 추가 표본을 만들지 않음 |
+
+
+## 27. MAP11-PERF2 — 보스룸 성능 회귀 분리·부분 복구
+
+기준 `06c8a26029d253eb2590869e92a885450b80a148` / branch `codex/map11-22p-20261021`. R 읽기 전용, `--no-checkout` sparse worktree에서 작업. 커밋별 godot/는 git archive로 외부 snapshot에 읽어 동일 하니스를 적용했다. merge/rebase/reset/force/main push/배포0. 최종 SHA·원격 대조·제거 근거는 `_out/MAP11-PERF2/DONE.txt`.
+
+### 27.1 성능: 같은 PID81277 공존 조건
+
+모든 유효 표본은 PID81277 보존·우리 Godot 순차1개, Godot4.7.2 GL Compatibility/Apple M5 Pro, GUI1920×1080, vsync off/max_fps240, physics60Hz, 실제 Player 4방향×150틱=600틱. focus_lost0만 유효. 각 커밋 field·명목 arena 최초 표본1회, 느린 유효 표본을 재측정해 교체하지 않았다. native product_space는 field로 남으므로 자연 gate/실보스전·밀집전투·PC 결과가 아니다. 격리 user dir `EXODUSER-MAP11-PERF2-Isolated`, Native-First 접근0. 초기 병렬 font import crash 후 실험용 project의 worker_pool/max_threads=1로 import/runtime 전체 비교 조건을 맞췄다. 실제 project.godot은 byte 복원하고 커밋에서 제외.
+
+| 커밋 / 단계 | field p95 | arena(명목) p95 | 유효성 |
+|---|---|---|---|
+| 22b a31e73de | 8.433ms | 8.211ms | 각 최초1회 focus_lost0 |
+| 22c 660a9dc2 | 8.389ms | 9.841ms | 각 최초1회 focus_lost0 |
+| 22d cba6bbf5 | 9.365ms | 9.013ms | 각 최초1회 focus_lost0 |
+| 22e 06c8a260 | 9.355ms | 9.407ms | 각 최초1회 focus_lost0 |
+| PERF2 복구본 | 9.313ms | 9.108ms | 각 최초1회 focus_lost0 |
+
+최초 arena 목표 초과 커밋은 **22c 660a9dc2**: 22b 대비 +1.630ms, field는 −.044ms. 바닥에 추가된 픽셀별 atan/sin·혈관·홈·얼룩 계산이 첫 회귀 후보이며 분리 표본도 관련 비용을 보여준다. 22d/22e의 arena 값은 단조 증가하지 않으며 field도 22d부터 약9.35ms로 높아졌다. 단회 순차표본이므로 전체 변화량을 개별 shader 하나의 인과 비용으로 확정하지 않는다. 이전22e DONE의12.709/12.808ms는 이번 측정으로 대체하거나 동일 실행으로 취급하지 않는다.
+
+| 22e에서 한 요소만 분리(외부 fixture만 변경) | field p95 | arena p95 |
+|---|---|---|
+| 22e 바닥만 22b 셰이더 | 9.522ms | 8.976ms |
+| 22e 균열 링 숨김 | 9.350ms | 8.866ms |
+| 22e point light 비활성 | 9.316ms | 9.113ms |
+| 22e actor rim material 제거 | 9.844ms | 9.141ms |
+| 22e 림 uniform 전환 때만 갱신 | 9.390ms | 9.166ms |
+
+각 분리 표본도 focus_lost0. **22d 링은 원래부터 36+7 stamp를2048² 한 장에 bake한1draw**이며, runtime43 decal 또는 여러 발광 레이어가 추가된 상태가 아니었다. 22d에는 새 광원이 없고 ambient 노출과 player rim 색만 바뀌었다. actor rim 적용 범위 확대도22d 변경이 아니다. 조명·림 전체 제거는 최종 제품에 적용하지 않았다. uniform-only 초기1회는 Sprite2D/AnimatedSprite2D 참조 타입 오류로 중단·폐기했고 CanvasItem으로 고친 뒤 표본1회만 사용했다. 해당 오류 로그도 외부 보존.
+
+### 27.2 현행 복구 계약
+
+| id / 위치 | 조치·정확한 수치 | 비용·보존 |
+|---|---|---|
+| arena floor | `bake_map11_perf2.gd`로 승인22e `arena_shoulder.gdshader`의 정적 relief·3중 색·얼룩·R1470 혈관·R960/590 홈·외곽 alpha를4096² RGBA에 GPU offline bake. 범위[-2480,2480]²/4960world, 기존192점 polygon/texture_scale1.2 그대로 | 새 원화 생성0, 기존 texture+수식 재합성. 원본 shader는 재현용 보존 |
+| pulse |4096² R8 계수(vessel×angular gate), base와 분리. runtime `arena_floor_cached.gdshader`에서2fetch/1lit pass, red×(1+mask×(.5+.5sin(.75TIME))×.035) | 원래3.5% 최대·주기8.38초 유지. shader TIME/위상 자체는 runtime 연속 |
+| memory | base RGBA64MiB + pulse R8 16MiB=source decoded80MiB, GPU import format에 따라 달라짐 | 성능과 메모리 교환; 실제 GPU 절감 주장0. PNG2장, 생성 도구 포함 |
+| ritual ring | 기존2048² PNG·22e색·glow .10·alpha .88·단일unshaded pass 그대로. Sprite full quad 대신 MeshInstance2D annulus128sector/256vertex/256triangle. innerR640/outerR1740, 원 UV=(point+1800)/3600 | alpha0인 R<650 및 R>1730만 생략, 모양·레이어 z−419 불변. tick 목록/ResourceLoader/배열할당0 |
+| ring culling | cached mesh reference + 기존 camera rect와[-1800,1800]² 교차 때만 visible | 매틱 node/path 조회0, 화면 밖 draw 제외 |
+| rim uniform | CanvasItem reference setup 캐시, field↔arena 전환 때만 색 갱신 | player field(.78,.72,.59,.38)/arena(.92,.82,.70,.62), enemy색·적용범위·전투코어 불변 |
+| PNG/normal·광원 |22e 죄수 석주·normal/AO·기존 point light cap/energy·노출 유지 | PC combat/provider/recipe/foot/충돌/저장 writer 수정0 |
+
+### 27.3 검수·남은 한계
+
+복구본 관련 **316 checks/0 failures**, 이것은8.33ms 통과와 별개다. 복구 후 **field9.313ms / 명목 arena9.108ms**, 둘 다 focus_lost0·실제 보행 유효지만 **120Hz 목표 FAIL**. 이번22e 표본 대비−.042/−.299ms이며 보스룸 regression 완전 복구라고 보고하지 않는다. 유효한 느린 표본을 숨기거나 반복해서 통과값을 고르지 않았다.
+
+before(06c8a260)/after entry·center 각1600×900 원본과 literal1x(480,150,640,600), 무보정 비교는 외부 captures/. 링 위치·색·끊김·바닥 홈·player 실루엣을 직접 비교했다. HP/MP/펫/플레이 시간은 실행별 값이 다르며 픽셀 동일성 주장은 아니다. 초기 import crash/개발 중 타입 오류는 폐기 근거로 보존, 최종 runtime SCRIPT/ERROR0(기존 Camera2D interpolation warning만).
+
+### 27.3a 잔여 비용의 범위 분리
+
+| 복구본에서 표시만/표시+갱신 제외한 진단(제품 수치 아님) | field p95 | arena p95 | 조건 |
+|---|---|---|---|
+| Map11ProductScene.hide + fog/backdrop.hide |8.685ms|8.225ms|각1회 focus_lost0, 보행 유효; map CPU 갱신은 유지 |
+| 위 표시 제외 + scene physics/lighting process 비활성 |8.493ms|8.117ms|각1회 focus_lost0, 보행 유효; 전투/Player/UI는 유지 |
+
+후자의 field도8.33ms를 넘었다. **이 단회 진단으로 절대적인 성능 하한이나 core 원인을 확정하지 않는다.** 다만 맵 표시와 갱신을 전부 없앤 상태도 목표를 보장하지 못하므로, 맵 패턴을 더 지우거나 금지된 PC combat core 변경으로 이번 결과를 통과 처리하지 않는다. 잔여 공통 시뮬레이션/UI/프레임 스케줄링·공존 변동 비용의 별도 프로파일링이 필요하다. Performance CPU monitors의 초단위 갱신 값은 raw JSON에만 보존하며 frame별 CPU/GPU timestamp 프로파일로 주장하지 않는다. 복구 결과는 **부분 복구 / 목표 미달**이다.
+
+### 27.4 MAP PRODUCTION REPORT
+
+| 항목 | 결과 |
+|---|---|
+| STAGE / MASTER | CH1-1 boss, silhouette·regions·main route·side spaces 기존22e 보존 |
+| OUTER MASS | LEFT/RIGHT/TOP/SOUTH·major holes 변경0 |
+| LARGE / MEDIUM | 기존 source PNG/normal·composites/overlap·반복·연결 그대로 |
+| GROUND | 기존 수식 offline cache, 링 atlas 유지·투명면만 제외. shadow/contamination/structure integration 보존 |
+| PLAYABLE | R1700·main arena/travel/breathing/threat·collision/전투코어 불변, 실제 걷기/실루엣 확인. dense combat 미검수 |
+| LANDMARK | primary 북finale/secondary 서해골·동처형/tertiary 보존 |
+| CAMERA QA | START entry / ARENA center 전후 확인. EARLY/SIDE L/SIDE R/LANDMARK/LATE/EXIT 신규 종주 없음 |
+| TECH QA | 관련316/0, capture before6/0·after9/0. native pageerror/404 N/A, 신규 seam/로딩ERROR0, 성능 목표FAIL |
+| FILES | stage-owned floor bake/shader/PNG·ring mesh/cull·lighting reference/cache·capture/benchmark·관련docs, 타인/공통core 변경0 |
+| GIT | explicit paths·정상hook commit/전용branch push·remote SHA대조 후 worktree제거, main/deploy0 |
+| VISUAL VERDICT | **RETOUCH** — entry/center 외형 보존, 전체 성능 gate 미달. AAA/실보스전/PC 완료 주장0 |
+| NEXT PASS | 맵 표시 제외 진단과 남은 CPU/UI/공존 비용을 구분, 범위 밖 combat core 변경으로 목표를 맞추지 않음 |
