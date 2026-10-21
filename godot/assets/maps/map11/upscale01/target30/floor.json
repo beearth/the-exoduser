@@ -1,0 +1,412 @@
+{
+  "tiles": [
+    {
+      "file": "floor_0_0.png",
+      "position": [
+        0.0,
+        0.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_1_0.png",
+      "position": [
+        1023.0,
+        0.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_2_0.png",
+      "position": [
+        2046.0,
+        0.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_3_0.png",
+      "position": [
+        3069.0,
+        0.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_4_0.png",
+      "position": [
+        4092.0,
+        0.0
+      ],
+      "core": [
+        8,
+        2046
+      ],
+      "size": [
+        10,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_0_1.png",
+      "position": [
+        0.0,
+        1023.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_1_1.png",
+      "position": [
+        1023.0,
+        1023.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_2_1.png",
+      "position": [
+        2046.0,
+        1023.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_3_1.png",
+      "position": [
+        3069.0,
+        1023.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_4_1.png",
+      "position": [
+        4092.0,
+        1023.0
+      ],
+      "core": [
+        8,
+        2046
+      ],
+      "size": [
+        10,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_0_2.png",
+      "position": [
+        0.0,
+        2046.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_1_2.png",
+      "position": [
+        1023.0,
+        2046.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_2_2.png",
+      "position": [
+        2046.0,
+        2046.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_3_2.png",
+      "position": [
+        3069.0,
+        2046.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_4_2.png",
+      "position": [
+        4092.0,
+        2046.0
+      ],
+      "core": [
+        8,
+        2046
+      ],
+      "size": [
+        10,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_0_3.png",
+      "position": [
+        0.0,
+        3069.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_1_3.png",
+      "position": [
+        1023.0,
+        3069.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_2_3.png",
+      "position": [
+        2046.0,
+        3069.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_3_3.png",
+      "position": [
+        3069.0,
+        3069.0
+      ],
+      "core": [
+        2046,
+        2046
+      ],
+      "size": [
+        2048,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_4_3.png",
+      "position": [
+        4092.0,
+        3069.0
+      ],
+      "core": [
+        8,
+        2046
+      ],
+      "size": [
+        10,
+        2048
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_0_4.png",
+      "position": [
+        0.0,
+        4092.0
+      ],
+      "core": [
+        2046,
+        8
+      ],
+      "size": [
+        2048,
+        10
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_1_4.png",
+      "position": [
+        1023.0,
+        4092.0
+      ],
+      "core": [
+        2046,
+        8
+      ],
+      "size": [
+        2048,
+        10
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_2_4.png",
+      "position": [
+        2046.0,
+        4092.0
+      ],
+      "core": [
+        2046,
+        8
+      ],
+      "size": [
+        2048,
+        10
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_3_4.png",
+      "position": [
+        3069.0,
+        4092.0
+      ],
+      "core": [
+        2046,
+        8
+      ],
+      "size": [
+        2048,
+        10
+      ],
+      "density": 2
+    },
+    {
+      "file": "floor_4_4.png",
+      "position": [
+        4092.0,
+        4092.0
+      ],
+      "core": [
+        8,
+        8
+      ],
+      "size": [
+        10,
+        10
+      ],
+      "density": 2
+    }
+  ],
+  "box": [
+    0,
+    0,
+    4096,
+    4096
+  ],
+  "density": 2,
+  "bleed": 1
+}

@@ -1,0 +1,87 @@
+[
+  {
+    "name": "root",
+    "source": "/Users/fordeargamers/exoduser-wt/UPSCALE-01/assets/map/ch1/floor_objects/prop_g_root.png",
+    "source_sha256": "3aa9a299c9042750d67cd992035b3d4381154ce1f90dca7043534d4821c2d3dc",
+    "source_size": [
+      1000,
+      998
+    ],
+    "model": "realesrgan-x4plus",
+    "inference": 4,
+    "output_size": [
+      1024,
+      1022
+    ],
+    "output_rgba_bytes": 4186112,
+    "sha256": "941a2a43affdae655d924cca56b9c7a9fa48cf28a5e8b32472acb4ac16278f74"
+  },
+  {
+    "name": "moss",
+    "source": "/Users/fordeargamers/exoduser-wt/UPSCALE-01/assets/map/ch1/collision/prop_pool.png",
+    "source_sha256": "9596d6656170dd7775a2800165a76e11a04445293d7a691b00dbbe25db353f57",
+    "source_size": [
+      860,
+      699
+    ],
+    "model": "realesrgan-x4plus",
+    "inference": 4,
+    "output_size": [
+      1280,
+      1040
+    ],
+    "output_rgba_bytes": 5324800,
+    "sha256": "f911e483894c496c37aa8b9cb9e9f9a374a6e37de7af531200c00d66c1aafd87"
+  },
+  {
+    "name": "blood",
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/outputs/map11-art-proof-20261021/patch_bloodpool_roots.png",
+    "source_sha256": "fe6c47ada456d77e05d53b645cf60f7e1840a6b3d3ca6c1294e5da4fee27f057",
+    "source_size": [
+      1920,
+      1920
+    ],
+    "model": "realesrgan-x4plus",
+    "inference": 4,
+    "output_size": [
+      1024,
+      1053
+    ],
+    "output_rgba_bytes": 4313088,
+    "sha256": "a45df36ffd8fb7d4e527e230a3fbf85aaa22cc059aaed6efddc61411e12a4c97"
+  },
+  {
+    "name": "bones0",
+    "source": "/Users/fordeargamers/exoduser-wt/_out/MAP11-21c/raw/skull_pyramid/skull_pyramid_0_diffuse.png",
+    "source_sha256": "e6e536276d151ad7d7122a94d5d69080c71194c44e9c2e8f4b2d73caf76f4774",
+    "source_size": [
+      375,
+      400
+    ],
+    "model": "realesrgan-x4plus",
+    "inference": 4,
+    "output_size": [
+      562,
+      600
+    ],
+    "output_rgba_bytes": 1348800,
+    "sha256": "bcd282b45589e832524ad25ae399df514a26478de9fbefafd2bc5d9def954eae"
+  },
+  {
+    "name": "bones2",
+    "source": "/Users/fordeargamers/exoduser-wt/_out/MAP11-21c/raw/skull_pyramid/skull_pyramid_2_diffuse.png",
+    "source_sha256": "640f5d9a91c5354380d943ac90ad6f1dd97e3e242a9421f7979998854f019bbf",
+    "source_size": [
+      414,
+      400
+    ],
+    "model": "realesrgan-x4plus",
+    "inference": 4,
+    "output_size": [
+      621,
+      600
+    ],
+    "output_rgba_bytes": 1490400,
+    "sha256": "babdeb595f0b8a2233a6d35b060ee9cd56f3401b913e15b92a95a110f866c307"
+  }
+]

@@ -1,3 +1,11 @@
+> 2026-10-21 SHARP-01 품질 후보: [HiDPI·무손실·렌더 선명도](SHARP_01_RENDER_CLARITY_20261021.md). 기준c335f345. canvas_items/native resolve, 지면26import mode0, 단일 제한형clarity pass. 1080p 전후1x 선명도PASS, native2560 p95 9.793ms/p99 11.219ms/focus0, 113checks/0fail. 120fps미달/전체맵아트PASS·PC인수 아님. 아래32c의 mode2/VRAM은 당시 이력.
+
+> 2026-10-21 MAP11-32c 최신 후보: [계측·북쪽 디테일·VRAM 압축](MAP11_32C_MEASURED_FIELD_20261021.md). 기준/현재 p95 9.485/9.520ms, 최종9.122ms/p99 10.247ms/focus0. 전체 VRAM p95 3257505721→2825851708bytes. 237checks/0fail. source clock/input CPU 원인은 PC 인계, core수정0. **VISUAL RETOUCH / PERFORMANCE FAIL**, main 인수/PC 동기화 완료 아님. 아래32b는 이전 후보 이력.
+
+> 2026-10-21 MAP11-32b 최신 후보: [정적 bake·북접합 리터치·검수](MAP11_32B_FIELD_BAKE_20261021.md). START zoom.70 유지, 북미러/검은공백 제거. 관련237/0, 유효p95 **11.806ms**/p99 **12.905ms**/focus0, **124draw/225objects**. VISUAL RETOUCH / 성능 FAIL, main 인수금지. 아래32는 이전 후보 이력.
+
+> 2026-10-21 MAP11-32 필드 첫 구역 검토 후보: [목표 장면 분해·룩·층·발 충돌·실측](MAP11_32_FIELD_TARGET_SPLIT_20261021.md). START `(0,3700)`→첫 통로만, 원화 배율1.3714285714/기존 줌.70·투영.6 유지. 입구 TOUR4개를 source 고목으로 대체, 다른13개 유지. main/PC 반영 아님. 최종 판정·단회 성능은 해당 보고서 하단.
+
 > 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.
 
 > **2026-10-21 MAP11-23 현행:** [설계서 §28](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21). 외곽 변형/PNG소품 교체·입구4주 변주·처형장 기존fade·pit grading. 전체 **RETOUCH**, before 유효성 실패로 맵비용 전후 비교 미검증. after p95 field9.449/arena8.509ms·focus_lost0. 아래는 제작 이력.

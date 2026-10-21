@@ -1,3 +1,7 @@
+> 2026-10-21 SHARP-01 품질 후보: [HiDPI·무손실·렌더 선명도](SHARP_01_RENDER_CLARITY_20261021.md). 기준c335f345. canvas_items/native resolve, 지면26import mode0, 단일 제한형clarity pass. 1080p 전후1x 선명도PASS, native2560 p95 9.793ms/p99 11.219ms/focus0, 113checks/0fail. 120fps미달/전체맵아트PASS·PC인수 아님. 아래32c의 mode2/VRAM은 당시 이력.
+
+> 2026-10-21 MAP11-32c 최신 후보: [계측·북쪽 디테일·VRAM 압축](MAP11_32C_MEASURED_FIELD_20261021.md). 기준/현재 p95 9.485/9.520ms, 최종9.122ms/p99 10.247ms/focus0. 전체 VRAM p95 3257505721→2825851708bytes. 237checks/0fail. source clock/input CPU 원인은 PC 인계, core수정0. **VISUAL RETOUCH / PERFORMANCE FAIL**, main 인수/PC 동기화 완료 아님. 아래32b는 이전 후보 이력.
+
 > 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.
 
 # MAP11 — 1-1 새 맵 제작 로직 설계안
@@ -1475,3 +1479,13 @@ native product_space는 둘 다 field로 남는 기존 명목 arena fixture이�
 ## MAP11-30 — 보스룸 목표 원화 층 분해 첫 시제품 (2026-10-21)
 
 8e45a9bc 위에 main c0618459 목표 문서3파일만 merge62038597. R1700/collision/카메라.36/보스예고 보존, 기존 의식링·7종 finale 표현은 hide하고 목표 원화 단일 바닥/7경계/뿌리AO/전경/둘레fog/보라pulse로 교체한 **독립 branch 시제품**이다. 이전 절의 구형 root ring/finale 표현은 이 branch에서는 숨김 상태이며 원본 구현·외부 충돌은 유지한다. 원화2000×1125→floor4096²/world4800², 경계발R1755, 새 shader2. 실제 same-scene **FAIL**: 투영·바닥clone확대·북 경계/중복·마스크 접합 차이 잔여. 테스트/성능을 visual PASS로 대신하지 않는다. 단회 명목arena p95 **7.747ms / focus_lost0**, 120Hz 목표 PASS이나 자연전투/PC 측정 아님. preview35/visual18/BC01 통과, BC02~10은 하니스source/node 인수 오류로 전체 PASS 아님. [모든 값·층·차이·MAP PRODUCTION REPORT](MAP11_30_TARGET_SPLIT_20261021.md). 최종SHA/원격/정리는 `~/exoduser-wt/_out/MAP11-30/DONE.txt`. main/PC 적용0.
+
+
+## MAP11-32 — 첫 필드 구역 목표 장면 분해 (2026-10-21)
+
+[장면·룩 고정값·층·충돌·검수 SSOT](MAP11_32_FIELD_TARGET_SPLIT_20261021.md). 30c 기반 독립 후보. 기존 시작/경로/스폰·카메라·actor 스케일을 보존하고 START~EARLY 한 곳을 승인 원화로 분해한다. 입구 TOUR scene0의4개 art/solid/light/torch를 제외하고 원화 source 발3개 circle을 provider/physics에 함께 연결한다. 나머지 TOUR13개/5장면·원래22점 outer/14anchors/15routes/4regions/주전투장R1600 유지. 기존 절의17props/6장면은 MAP11-21~23 당시 이력이며 이 후보 입구에는 적용하지 않는다. 정적 clone/mirror·뿌리/AO는 bake, 안개/가지/흰 나무/핏줄 TIME 효과만 분리. 새 생성/모델inpaint/runtime3D/PC전투 수정0. 최종 비교·단회 결과는 링크 보고서 및 외부 `_out/MAP11-32/DONE.txt`.
+
+
+## 2026-10-21 — MAP11-32b 북접합 / 성능 FAIL 후보 보존
+
+[최종 계약·검수·MAP REPORT](MAP11_32B_FIELD_BAKE_20261021.md). 같은branch/기준d953e349, START zoom.70·provider/PCcore/actor스케일 보존. 북접합 무반사native패치·정적지면22tile·전경trim. 관련6종 각1회237/0. 유효field1회 p95 **11.806ms**,p99 **12.905ms**,focus_lost0; draw/objects **118/219→124/225**. **VISUAL RETOUCH / 성능 FAIL, 해소 완료 아님**. 유효 느린표본 재측정0. 외부 `_out/MAP11-32b/DONE.txt`에 최종SHA·원격·clean WT제거 기록; main/PC/배포0.

@@ -1,0 +1,139 @@
+{
+  "source_sha256": "b201213d99079074fb5372eb1fd37c661335ac6f759a7564251ff64bd556df32",
+  "source_size": [
+    2000,
+    1125
+  ],
+  "source_scale": 1.3714285714285714,
+  "projection_y": 0.6,
+  "center": [
+    0,
+    3520
+  ],
+  "floor_box": [
+    -600,
+    -600,
+    2600,
+    1725
+  ],
+  "regions": [
+    {
+      "id": "left_near",
+      "box": [
+        -277,
+        1,
+        701,
+        926
+      ],
+      "source_foot": [
+        255,
+        880
+      ],
+      "radius": 0,
+      "offset": [
+        -532,
+        -879
+      ]
+    },
+    {
+      "id": "left_mid",
+      "box": [
+        381,
+        1,
+        876,
+        411
+      ],
+      "source_foot": [
+        610,
+        365
+      ],
+      "radius": 80,
+      "offset": [
+        -229,
+        -364
+      ]
+    },
+    {
+      "id": "right_mid",
+      "box": [
+        1232,
+        1,
+        1681,
+        456
+      ],
+      "source_foot": [
+        1410,
+        410
+      ],
+      "radius": 90,
+      "offset": [
+        -178,
+        -409
+      ]
+    },
+    {
+      "id": "right_near",
+      "box": [
+        1455,
+        1,
+        2277,
+        1026
+      ],
+      "source_foot": [
+        1810,
+        980
+      ],
+      "radius": 0,
+      "offset": [
+        -355,
+        -979
+      ]
+    },
+    {
+      "id": "white_tree",
+      "box": [
+        860,
+        1,
+        1201,
+        195
+      ],
+      "source_foot": [
+        1000,
+        160
+      ],
+      "radius": 48,
+      "offset": [
+        -140,
+        -159
+      ]
+    }
+  ],
+  "palette": {
+    "ground": "55515e",
+    "vein": "351f29",
+    "moss": "454b40",
+    "fog": "787482",
+    "white": "b9b5c4"
+  },
+  "ground_quantiles": [
+    [
+      44.0,
+      34.0,
+      42.0
+    ],
+    [
+      70.0,
+      62.0,
+      73.0
+    ],
+    [
+      91.0,
+      81.0,
+      95.0
+    ]
+  ],
+  "new_generation": false,
+  "dither": false,
+  "clone": "native-scale reflected central ground; no inpaint",
+  "root_ao": "source painted root aprons/contact shadows baked in floor; no extra ellipse over tree roots"
+}

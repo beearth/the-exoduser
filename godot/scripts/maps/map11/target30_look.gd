@@ -21,15 +21,15 @@ const POD_GLOW=.055
 const PULSE_HZ=.16
 const PARALLAX=.08
 const SPLIT=preload("res://assets/maps/map11/target30/split.json")
-const FLOOR=preload("res://assets/maps/map11/target30/floor_30c.png")
+
 const VEINS=preload("res://assets/maps/map11/target30/veins.png")
-const FOREGROUND=preload("res://assets/maps/map11/target30/foreground.png")
+
 const FOG_TEXTURE=preload("res://assets/maps/map11/target30/fog.png")
 const TEXTURES=[
- [preload("res://assets/maps/map11/target30/west_mouth.png")],
- [preload("res://assets/maps/map11/target30/north_west.png")],
- [preload("res://assets/maps/map11/target30/north_heart.png")],
- [preload("res://assets/maps/map11/target30/north_east.png")],
- [preload("res://assets/maps/map11/target30/east_mouth.png")],
- [preload("res://assets/maps/map11/target30/south_west.png")],
- [preload("res://assets/maps/map11/target30/south_east.png")]]
+ [preload("res://assets/maps/map11/upscale01/target30/west_mouth.png")],
+ [preload("res://assets/maps/map11/upscale01/target30/north_west.png")],
+ [preload("res://assets/maps/map11/upscale01/target30/north_heart.png")],
+ [preload("res://assets/maps/map11/upscale01/target30/north_east.png")],
+ [preload("res://assets/maps/map11/upscale01/target30/east_mouth.png")],
+ [preload("res://assets/maps/map11/upscale01/target30/south_west.png")],
+ [preload("res://assets/maps/map11/upscale01/target30/south_east.png")]]

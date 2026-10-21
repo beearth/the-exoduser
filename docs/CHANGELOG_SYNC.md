@@ -4,6 +4,25 @@
 - Field 120~180초 → 2.5초 fade → 20~40초 rest → 재시작. 지역·보스 2.5초 crossfade, boss clear/exit field 복귀. 기존 이벤트만 구독하여 Music −5dB duck, attack .2초 / hold 2초 / release 1.5초. tick 목록 API/ResourceLoader 추가 없음.
 - [수치·코드 위치·버스·청음 절차](6사운드디자인/BGM_믹스_공식_ARPG_AUDIO01_20261021.md). 새 가속 테스트 30/0(최종 경고0), 관련 DEMO11-41 1회 51/0/skip13 Dummy. 실제 청감·숲 환경음 파일 연결·조성 일치는 HOLD. 새 음원/PC 전투 core/번역 사용자 문구 변경 없음.
 - 결과·SHA·증거: ~/exoduser-wt/_out/AUDIO-01/DONE.txt. 독립 branch 제출, main 반영·PC 동기화 완료 아님.
+## 2026-10-22 — UPSCALE-01 원본 업스케일·북쪽 접합
+
+- SHARP-01 6da38c312326635fcb1424bebbac2b26b4a41350 부모. 로컬 Real-ESRGAN x4plus로 최초 원화/북소품 원본 처리, 필드1.5×/보스2×실사용 밀도·55PNG 무손실·최대2048tile. 원본/재현스크립트/해시 보존, 평균RGB·chroma복원·새샤픈0. anime비교 제외.
+- 북 root판 irregular alpha·blood/moss source균열따라fade, 중복확대그림자 제거·skull16world foot그림자. 카메라/캐릭터·보스scale/PCcore/runtime3D/실제저장 변경0. before/after3곳1920+literal1x 선명도/접합 제한범위PASS.
+- 지정5종각1회182checks/0fail. 유효field단회native1440 p95 9.798/p99 10.732ms/focus0, VRAM3706543901bytes. 동일1080capture before3268263209→after3683076161(+395.596458MiB),120fps미달. 전체map/PC인수 아님.
+- [파이프라인·해상도·보정·메모리·MAP REPORT](4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#upscale-01--로컬-real-esrgan-적용-2026-10-22-10-21-지시), art현황표 갱신. 외부 `~/exoduser-wt/_out/UPSCALE-01/DONE.txt`.
+
+## 2026-10-21 — SHARP-01 렌더·임포트 선명도
+
+- c335f345 기준 새 codex/sharp-01-20261021. Retina effective HiDPI는이미true, fixed viewport확대문제를canvas_items/native framebuffer로정정. base/카메라/actor scale보존, default window1920×1080. 지면26import Lossless0·원본PNG불변, transform-only snap, HUD아래약한5tap screen pass1개(이웃범위/변화량제한).
+- before/afterSTART·보스입장1920×1080+바닥/껍질/캐릭터1x, 선명도PASS. field/provider/seam각1회113/0. 최종 native2560 p95 9.793/p99 11.219ms/focus0, video_mem3291730949bytes; 120fps미달. 포커스전표본0/타작업겹침2표본무효보존, 단독유효1회만판정.
+- PCcore·runtime3D·tick로딩/할당·신규이미지/외부업스케일·번역수정0. [현재값/조치/효과와검수](4.1맵디자인+설정/SHARP_01_RENDER_CLARITY_20261021.md), 외부 `~/exoduser-wt/_out/SHARP-01/`.
+
+## 2026-10-21 — MAP11-32c 계측·VRAM 압축·북쪽 관광 디테일
+
+- 기준 f85cfb9a, 동일 codex/map11-32-20261021 검토 후보. 수정 전30c/current 및7층A/B·내장함수 프로파일로 source clock/domain 검증 CPU 비용 확인, PC 코어 변경0.
+- 맵 질의 중복 runtime_ready scan만 제거, provider의 기존 전체 유효성·충돌/경로/스폰 검사 유지. 지면26import compress/mode2 S3TC/BC, 원본PNG 불변. 기존1-1 root/pool/blood/skull로 북쪽 비대칭3무리·foot/contact·저채도 전이, tick 로딩/할당·runtime3D·신규생성0.
+- 6종 각1회237checks/0fail. 최종 단회p95 9.122ms/p99 10.247ms/focus0, VRAM p95 3257505721→2825851708bytes(−411.657MiB). 성능8.33ms 미달 FAIL, GPU API0은 미계측. VISUAL RETOUCH, main/PC 인수·배포 아님.
+- SSOT/계측표/함수명/캡처: [MAP11_32C_MEASURED_FIELD_20261021.md](4.1맵디자인+설정/MAP11_32C_MEASURED_FIELD_20261021.md), 외부 `~/exoduser-wt/_out/MAP11-32c/`.
 
 ## 2026-10-21 MAP11-23
 
@@ -56363,3 +56382,30 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - override.cfg 추적 해제·로컬byte보존·ignore, project user dir은 origin/main abc3dd44의 기존 EXODUSER-Godot-Native-First. stage/export에서 로컬override 제외. 실제 저장소 사용0.
 - MAP11 제품 검증37/44/23b와 legacy 계약42/43/41 모드 분리, 판정 유지. 공용 Mac helper에 격리복원/3PID게이트/오류·감시종료/headless캡처skip; E2E timer-null 하니스 오류수정.
 - 최종 회귀 실패0·import ERROR0·E2E PASS13/NR5/FAIL0·validator[]; 최초 실패·재실행과 한계는 [INTEG6C_REGRESSION_20261021.md](engine/INTEG6C_REGRESSION_20261021.md). PC코어/PC테스트/맵비주얼/번역 수정0.
+
+## 2026-10-21 — MAP11-32 필드 입구 목표 장면 분해
+
+| 범위 | 계약 / 검수 |
+|---|---|
+| 소유 | 30c 기반 격리 branch/WT MAP11-32, START~첫통로1곳 |
+| 표시 | source2000×1125→1920×1080, 줌.70·배율1.3714285714·투영.6; floor/source clone/고목5구간/rootAO/전경/낮은안개/흰빛/핏줄펄스 |
+| 권위 | 입구tour4개 제거+source foot3개 provider/physics 동일, 나머지13개 유지. outer/route/spawn/arena/actor scale/PCcore/save 불변 |
+| 근거 | [정확값·실제Main비교·단회 관련검사/성능·MAP REPORT](4.1맵디자인+설정/MAP11_32_FIELD_TARGET_SPLIT_20261021.md), 외부 `_out/MAP11-32/DONE.txt`에SHA/원격/정리. 새생성·inpaint·runtime3D0 |
+
+MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·북경계·좌우뿌리 캡처. **VISUAL RETOUCH**, 유효1회p95 **11.676ms**/focus_lost0·118draw **성능FAIL**. background1666focuslost 선행표본은 전부무효/통과값으로 사용0. 제품/에셋 최종바이트를 유효측정했고 이후 수정0.
+
+
+## 2026-10-21 — MAP11-32b 북접합 / 성능 FAIL 후보 보존
+
+[최종 계약·검수·MAP REPORT](4.1맵디자인+설정/MAP11_32B_FIELD_BAKE_20261021.md). 같은branch/기준d953e349, START zoom.70·provider/PCcore/actor스케일 보존. 북접합 무반사native패치·정적지면22tile·전경trim. 관련6종 각1회237/0. 유효field1회 p95 **11.806ms**,p99 **12.905ms**,focus_lost0; draw/objects **118/219→124/225**. **VISUAL RETOUCH / 성능 FAIL, 해소 완료 아님**. 유효 느린표본 재측정0. 외부 `_out/MAP11-32b/DONE.txt`에 최종SHA·원격·clean WT제거 기록; main/PC/배포0.
+
+
+## 2026-10-22 — MAP11-33 고해상도 마감·텍스처 예산
+
+| 범위 | 반영/검수 |
+|---|---|
+| 기준 | UPSCALE-01 24662224dd40a5de45e68b5dec9d5d2c4a2736b1, 같은codex/upscale-01-20261021. R읽기전용/별도WT |
+| 리터치 | 좌하단foreground하단 불규칙fade/북고목공통수평선 분산/해골피벗578·582/AO높이24·alpha.68/하부흙오염. 원화RGB·밀도·카메라·전투core보존 |
+| 메모리 | 정적field22tile 무손실trim/불투명5장RGB/legacy아레나제품상속로드제거. 1-1보수GPU1,267,507,176→988,351,648bytes. Main타장포함cache보수1,574,538,764bytes는별도잔류 |
+| 검수 | 지정5종각1회182checks/0fail. 실제Main3곳1920×1080/1x13board 선명도유지·국소리터치PASS, 전체맵RETOUCH. 성능1회시도는loginwindow/포커스실패로측정시작전종료(p95 N/A/유효0) |
+| SSOT | [전체수치·텍스처전후목록·§23](4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22), ART_TEAM_MASTER 현황, 외부 _out/MAP11-33/DONE.txt·REPORT.md·captures. main/PC/배포0 |

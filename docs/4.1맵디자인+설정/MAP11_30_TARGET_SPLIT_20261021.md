@@ -97,3 +97,6 @@ NEXT PASS: 카메라 보존 조건 안에서 source 발/층 투영 대응 재설
 ## MAP11-30p 성능 후속 (2026-10-21)
 
 위 수치·리소스 설명은 해당 제작차수 이력이다. 장면/충돌을 유지한 정적합성·바닥패스통합·안개zero-alpha영역제거·미사용15texture preload 제거의 현행 후보는 [MAP11-30p](MAP11_30P_PERFORMANCE_20261021.md)를 따른다. 시각유지 PASS, 유효p95 **8.558ms**/focus_lost0/104draw로 **8.33ms 성능예산 FAIL**. 원본 floor/veins와 소품 source는 보존한다.
+
+
+> 2026-10-22 MAP11-33 후속: 이 문서의 과거 자산·메모리·북접합 수치는 당시 이력이다. 현행은 [목표화면 MAP11-33](MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22). legacy아레나제품로드 제거/field bake 무손실trim·RGB/국소리터치, 1-1보수GPU988,351,648bytes. 182검사0fail, 성능은포커스미확보로p95 N/A(유효0).
