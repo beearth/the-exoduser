@@ -6,6 +6,8 @@ const CATALOG := preload("res://port_modules/sound_source/bgm_catalog.gd")
 const DEMO_CATALOG := preload("res://scripts/native_demo11_bgm_catalog.gd")
 const NEW_TRACK := "bgm/1장_썩은숲/Rotten Forest - Ashen Gate.mp3"
 const SOURCE_TRACK := "bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3"
+const BOSS_TRACK := "bgm/1장_썩은숲/Ashen Druid - Boss.mp3"
+const SOURCE_BOSS := "bgm/공통/boss.mp3"
 var assertions := 0
 var failures := 0
 
@@ -31,7 +33,7 @@ func _run() -> void:
 		if arg.begins_with("--source-root="):
 			source_root = arg.trim_prefix("--source-root=")
 	check(OS.get_user_data_dir().get_file() == USERDIR, "actual isolated userdir")
-	check(not source_root.is_empty() and FileAccess.file_exists(source_root.path_join(NEW_TRACK)), "new track file exists under source root")
+	check(not source_root.is_empty() and FileAccess.file_exists(source_root.path_join(NEW_TRACK)) and FileAccess.file_exists(source_root.path_join(BOSS_TRACK)), "new track files exist under source root")
 	if failures:
 		finish()
 		return
@@ -42,11 +44,13 @@ func _run() -> void:
 	var demo: RefCounted = DEMO_CATALOG.new()
 	check(demo.tracks_for("hell1").get("entries") == [NEW_TRACK], "demo catalog hell1 replaced")
 	check(demo.snapshot().tracks.hell1 == [NEW_TRACK], "demo snapshot hell1 replaced for selector copy")
+	check(source.tracks_for("boss").get("entries") == [SOURCE_BOSS], "source catalog boss unchanged")
+	check(demo.tracks_for("boss").get("entries") == [BOSS_TRACK], "demo catalog boss replaced")
 	var same := true
 	var src_snap: Dictionary = source.snapshot()
 	var demo_snap: Dictionary = demo.snapshot()
 	for key in src_snap.tracks:
-		if key != "hell1" and src_snap.tracks[key] != demo_snap.tracks.get(key):
+		if not key in ["hell1", "boss"] and src_snap.tracks[key] != demo_snap.tracks.get(key):
 			same = false
 	check(same and src_snap.tracks.size() == demo_snap.tracks.size(), "every other key identical to source")
 	check(demo.all_random_entries().get("entries") == source.all_random_entries().get("entries"), "shared random pool unchanged")
@@ -70,6 +74,10 @@ func _run() -> void:
 	check(s.key == "hell1", "field keeps hell1 key")
 	var last_src: String = str(music.life.snapshot_state().selection.get("last_src", ""))
 	check(last_src == NEW_TRACK, "field selects the new track (%s)" % last_src)
+	check(main.request_native_music_scene("boss").get("ready") == true, "boss scene request")
+	await process_frame
+	var boss_src: String = str(music.life.snapshot_state().selection.get("last_src", ""))
+	check(music.snapshot().key == "boss" and boss_src == BOSS_TRACK, "boss selects the new boss track (%s)" % boss_src)
 
 	# A boot without demo policy keeps the source catalog.
 	var plain := NoPolicyMain.new()
