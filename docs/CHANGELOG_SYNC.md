@@ -1,3 +1,9 @@
+## 2026-10-22 ZOOM-01b — 새 필드 줌 비교 재촬영(부분)
+
+- 기존 zoom branch + MAP11-32c merge, 테스트 전용 offset 보정·표시 보스1/배수·원본12/비교판3. 플레이어 전신/HUD 가림 확인.
+- 실제 move_up 접근600ticks/약591world, 보스 source clock owner_gap_no_receipt/ticks0/idle. 근접 실전은 미완료, 주입·PC core 수정0, exit6 보존. 제품 기본/UI/맵 비주얼 불변.
+- [픽셀표·장면 구분·눈검수·한계](engine/ZOOM_01B_REPORT_20261022.md), 외부 ~/exoduser-wt/_out/ZOOM-01b/.
+
 ## 2026-10-21 AUDIO-01 — Godot 1-1 ARPG 오디오 믹스
 
 - 기준 cb154e8d, 별도 codex/audio-01-20261021. Master/Music/Ambience/SFX/UI/Voice와 상대 trim field −14dB / boss +7dB / Ambience −11dB. 사용자 OPT 슬라이더·저장 값 유지.
@@ -56382,6 +56388,9 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - override.cfg 추적 해제·로컬byte보존·ignore, project user dir은 origin/main abc3dd44의 기존 EXODUSER-Godot-Native-First. stage/export에서 로컬override 제외. 실제 저장소 사용0.
 - MAP11 제품 검증37/44/23b와 legacy 계약42/43/41 모드 분리, 판정 유지. 공용 Mac helper에 격리복원/3PID게이트/오류·감시종료/headless캡처skip; E2E timer-null 하니스 오류수정.
 - 최종 회귀 실패0·import ERROR0·E2E PASS13/NR5/FAIL0·validator[]; 최초 실패·재실행과 한계는 [INTEG6C_REGRESSION_20261021.md](engine/INTEG6C_REGRESSION_20261021.md). PC코어/PC테스트/맵비주얼/번역 수정0.
+## 2026-10-21 ZOOM-01
+- 제품 기본값 변경 없이 테스트 전용 `capture_zoom01.gd -- --zoom-preview=1.0|2.0|2.5|3.0` 및 원본 비교판 생성기 추가.
+- Mac etype-b 테스트를 PC 자동 bind·lifecycle 빈 시체 풀 계약에 맞춤. 1회 42 checks / 0 failures. PC 구현·PC 테스트·번역 미수정. 상세: `docs/engine/ZOOM_01_REPORT_20261021.md`.
 
 ## 2026-10-21 — MAP11-32 필드 입구 목표 장면 분해
 

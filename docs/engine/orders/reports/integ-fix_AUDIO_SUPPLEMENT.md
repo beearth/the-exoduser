@@ -14,7 +14,7 @@ PC Windows headless/Dummy에서 보고된 5종(초기 lobby/intro/field, death, 
 |---|---|
 | Mac headless / Dummy | **51통과/0실패/13 skip**, ERROR0·exit0. PASS_WITH_SKIPS. 실제 재생·deferred callback 관측을 통과로 계산하지 않음 |
 | Mac 실제 창 / CoreAudio | **64통과/0실패/skip0**, ERROR0·exit0. 실제 재생 상태·missing error/reject·즉시 실패 handle 해제까지 엄격 검증 |
-| etype-B 기존 runtime suite | **42통과/0실패/skip0**, ERROR0·exit0. type9 실제 deadPool owner 누락 시 정확히 `actual_dead_pool_revive_owner_required`로 정지함을 포함 |
+| etype-B 기존 runtime suite | **42통과/0실패/skip0**, ERROR0·exit0. 당시 PC lifecycle 통합 전 type9 deadPool owner 누락 거절을 검사한 과거 결과. 2026-10-21 ZOOM-01 이후 현행 기대는 PC lifecycle 빈 풀 SOURCE_RETURN / next_timer=60이며 B8도 자동 bind 후 비치명 hurtE 성공 |
 
 재사용 runner `run_integ_fix.py --suite 41 --audio-mode headless|window`는 mode를 명시하고 실제 driver는 테스트가 읽는다. skip 결과가 하나라도 있으면 runner도 PASS_WITH_SKIPS를 출력하고 JSON.skipped를 보존한다. 전체 editor import·격리 USERDIR·명시 source-root/Node·pgrep count≥2시30초 대기·override finally0byte는 유지한다. 이번 실행은 커밋할 runner를 직접 사용했으며 import는 준비로 분리했다. Windows 실행·사용자 실제 청음·PCM 동등성은 실행하지 않았고 사용자 실창 검수 항목으로 남긴다. Camera2D physics interpolation 기존 WARNING 유지.
 
