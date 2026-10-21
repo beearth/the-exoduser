@@ -2,7 +2,7 @@
 // ElevenLabs MCP launcher for Claude Code (stdio).
 // Reads ELEVENLABS_API_KEY from .env, then .env.local (wins; where `elevenlabs onboard` stores it),
 // at launch so the key never lives in MCP config.
-// Generated audio goes to G:/exoduser-wt/_out/elevenlabs (keeps large files off C:).
+// Generated audio goes to ../exoduser-wt/_out/elevenlabs next to the repo (G: on PC, ~ on Mac; keeps large files off C:).
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -15,9 +15,9 @@ for (const name of ['.env', '.env.local']) {
     if (m && m[1].trim()) env.ELEVENLABS_API_KEY = m[1].trim().replace(/^(['"])(.*)\1$/, '$2');
   } catch (_) { /* file missing: the server reports a missing key itself */ }
 }
-const outDir = 'G:/exoduser-wt/_out/elevenlabs';
+const outDir = process.env.ELEVENLABS_MCP_BASE_PATH || path.resolve(root, '..', 'exoduser-wt', '_out', 'elevenlabs');
 fs.mkdirSync(outDir, { recursive: true });
-env.ELEVENLABS_MCP_BASE_PATH = env.ELEVENLABS_MCP_BASE_PATH || outDir;
+env.ELEVENLABS_MCP_BASE_PATH = outDir;
 
 const child = spawn('uvx', ['elevenlabs-mcp'], { env, stdio: 'inherit', shell: process.platform === 'win32' });
 child.on('exit', (code) => process.exit(code ?? 0));
