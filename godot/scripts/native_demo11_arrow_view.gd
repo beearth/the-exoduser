@@ -7,8 +7,9 @@ var FIN_B=PackedVector2Array([Vector2(-6.93,0),Vector2(-11.385,3),Vector2(-4.95,
 const COLORS=[Color("bbbbbb"),Color("ff6644"),Color("77ddff"),Color("aa77ee"),Color("ffdd55"),Color("eeeebb"),Color("88bb66")]
 var main: Node
 func _draw() -> void:
- if not is_instance_valid(main):return
- var packets: Array=main.world.read_native_player_projectiles(main)
+ if not is_instance_valid(main) or not is_instance_valid(main.world):return
+ var packets: Variant=main.world.read_native_player_projectiles(main)
+ if not packets is Array:return
  for packet in packets:
   var f: Dictionary=packet.fields
   if f.get("normalBow")!=true:continue

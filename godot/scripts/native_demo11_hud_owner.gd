@@ -107,21 +107,21 @@ func refresh_native_owners() -> void:
 	var extent:=get_viewport_rect().size
 	_boss.position=Vector2(extent.x*.5,18)
 	var hovered:=false
-	var hud: Node=_main.get("hud") if is_instance_valid(_main) else null
+	var hud: Variant=_main.get("hud") if is_instance_valid(_main) else null
 	if is_instance_valid(hud):
 		for key in DISPATCH.HUD_SLOTS:
-			var icon: Control=hud._slot_icons.get(DISPATCH.HUD_SLOTS[key])
-			if is_instance_valid(icon) and icon.get_global_rect().has_point(get_global_mouse_position()):
+			var icon: Variant=hud._slot_icons.get(DISPATCH.HUD_SLOTS[key])
+			if is_instance_valid(icon) and icon is Control and icon.get_global_rect().has_point(get_global_mouse_position()):
 				_selected=key;hovered=true;break
 	var center:=extent.x*.5
 	var top:=extent.y-164
 	if is_instance_valid(hud):
-		var icon: Control=hud._slot_icons.get(DISPATCH.HUD_SLOTS.get(_selected,""))
-		if is_instance_valid(icon):center=icon.get_global_rect().get_center().x;top=icon.get_global_rect().position.y-52
+		var icon: Variant=hud._slot_icons.get(DISPATCH.HUD_SLOTS.get(_selected,""))
+		if is_instance_valid(icon) and icon is Control:center=icon.get_global_rect().get_center().x;top=icon.get_global_rect().position.y-52
 	_strip.position=Vector2(clampf(center-160,8,extent.x-328),top)
 	_selection.position=_strip.position+Vector2(0,4)
 	_failure.position=Vector2(clampf(center-330,8,extent.x-668),top-32)
-	var state: Node=_main.get("source_state") if is_instance_valid(_main) else null
+	var state: Variant=_main.get("source_state") if is_instance_valid(_main) else null
 	var p: Variant=state.read_current_p() if is_instance_valid(state) else null
 	var g: Variant=state.read_current_g() if is_instance_valid(state) else null
 	var live:=is_instance_valid(_main) and _main.is_inside_tree() and is_instance_valid(_adapter) and _adapter.is_inside_tree() and p is Dictionary and g is Dictionary

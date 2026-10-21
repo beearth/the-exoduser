@@ -65,3 +65,12 @@ VISUAL VERDICT: PASS（이번 owner 표시의 가독성/연결 범위, Mac 총�
 캡처는 실제 Main HUD/기존 월드 렌더 위에서 fixture-only 보스 HP62.5%, 슬롯3 재배정/쿨·미연결 ULT 상태를 보여준다. arena 진입/실제 보스 피해/보스 전투 완성 증거가 아니다. 사용자 눈 검수용 원본과 1x 크롭은 `_out/demo11-42/captures/`에 둔다. 신규 이미지 에셋은 만들지 않았고 기존 에셋은 byte 그대로 COW 복제해 격리 import 캐시만 생성했다.
 
 정상 pre-commit 훅과 경로 지정 staging을 거쳐 자기 branch만 일반 push한다. 원격 SHA 일치·R 보존·DONE 작성 후 자기 worktree/생성 검수 project를 제거하고 원로그·캡처·보고서 사본은 유지한다. 최종 SHA는 `_out/demo11-42/DONE.txt`.
+
+
+## INTEG-10 수명 보충 (2026-10-22)
+
+| 관측 | 처리 |
+|---|---|
+| starter의 source_state 해제 후 HUD refresh line124 | typed Node 대입 자체가 유효성 검사 전에 SCRIPT ERROR. hud/source_state를 Variant 수신 후 is_instance_valid 검사 |
+| 동적 slot icon 참조 | Variant 수신 후 유효한 Control일 때만 좌표/hover 조회 |
+| 제품 범위 | 기존 레이아웃·문구·주기0.1초·선택2.5초·거절3초 그대로. 게임 상태 쓰기0. 최초 재현 로그와 해당 suite 재검수는 DEMO11_STATUS INTEG-10 참조 |

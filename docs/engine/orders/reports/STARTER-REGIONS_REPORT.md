@@ -150,3 +150,8 @@ R의 브랜치·HEAD·tracked INDEX/WORK는 시작 시와 같은 상태로 보�
 ## 총괄 병합 메모(PC Claude 2026-10-20)
 
 병합 직전 main에 P3-002 소환굴(43aa97ffe)이 들어와 원본 30625 `G._totalSpawned` 키가 G에 추가됐다. 이 수정본 그대로는 148/1이 재발해, 정확 키 집합 검사를 유지한 채 `SPAWN_HOLE_INIT_G_KEYS=["_totalSpawned"]` 1개를 원본 행 주석과 함께 추가했다. 병합본 재실행 148/0, ASSERT_FAIL 0.
+
+
+## INTEG-10 보충 (2026-10-22)
+
+위 2026-10-20 G47/148검사 기록은 당시 이력이다. 현재 실제 G exact 집합은 boot40 + region7 + spawnHole1(`_totalSpawned`) + FIELD_BOSS_INIT_G_KEYS1(`_fbDone`) = 49키. `_fbDone`은 원본 game.html:31569 initStage와 native_demo11_anglers.gd:43의 최초 초기화에 대응한다. 원boot40 snapshot 및 `_has_exact_keys`의 키 수/중복/개별 키 동일성 판정은 보존한다. Mac 첫 실행에서 이 키 검사는95/0 통과했고, 후반 수명 검사에서 HUD의 해제된 source_state typed 대입 오류가 재현되어 별도 수정했다. 최종 재검수와 최초 로그는 DEMO11_STATUS INTEG-10 및 외부 DONE에 기록한다.

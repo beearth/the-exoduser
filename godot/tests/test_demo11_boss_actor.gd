@@ -1,5 +1,6 @@
 extends SceneTree
 ## Assembler fixtures prove ordering/protocol only, never protected gameplay.
+## Legacy map contract: run with --map11=off; MAP11 product/gate has separate tests.
 const MAIN = preload("res://scripts/main.gd")
 const ACTOR = preload("res://scripts/native_demo11_boss_actor.gd")
 const USERDIR := "EXODUSER-demo11-34-Isolated-20261021"

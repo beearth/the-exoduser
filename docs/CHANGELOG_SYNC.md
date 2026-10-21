@@ -56461,3 +56461,11 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 ## 2026-10-22 INTEG-8
 - INTEG-7 기준 C15→ZOOM 순서 merge 2회. 문서 충돌은 양쪽 원문 합집합; PC 계약/구현/PC 테스트·맵 비주얼·project.godot·제품 카메라/스케일 보존. etype-b stale 기대 갱신본42/0, C15 151/0·F33/0.
 - import ERROR0, 회귀33종355,135checks/0fail/ERROR0, E2E 저장ON·주입0 각1회 PASS13/NR5/FAIL0. 성능은60초 포커스 미확보 — 미측정(유효0). 상세: docs/engine/DEMO11_STATUS_20261021.md INTEG-8, ~/exoduser-wt/_out/INTEG-8/DONE.txt.
+
+
+## 2026-10-22 INTEG-10 — PC source 검증 패스 메모 통합 및 Mac 수명 검증
+
+- INTEG-9를 부모로 PC source-perf 9310d52a7 및 PC tests f9475ab1e를 merge. CHANGELOG 충돌은 양쪽 보존, PC 구현·테스트 byte/INTEG-9 맵·project·override 미추적 계약 보존.
+- boss_actor는 옛 맵 고정 좌표 assembler fixture로 분류, INTEG-6c suite에 --map11=off 명시. 과거 원로그 spawn 실패→빈 enemy.hp SCRIPT ERROR→quit 미도달 확인. 공용 외부 감시 타이머 유지.
+- Mac starter exact G에 원본 G31569의 `_fbDone` 한 키를 추가(boot40+region7+spawnHole1+fieldBoss1). Array/null arrow 조회 및 HUD 해제된 source_state를 유효성 검사 전에 typed 대입하던 오류 수정. 판정 완화·전투 코어/맵/카메라 변경0.
+- 단회 회귀·E2E·GUI 측정 및 최초 HUD 오류/실패 suite 재검수 근거는 [DEMO11_STATUS INTEG-10](engine/DEMO11_STATUS_20261021.md)와 외부 INTEG-10 DONE.txt 참조. PC Windows 최종 검증은 별도.

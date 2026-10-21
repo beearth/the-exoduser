@@ -7,6 +7,8 @@ import shutil
 from mac_harness import run
 
 SUITES = [
+    # Fixed-coordinate assembler protocol fixture; MAP11 product path is tested separately.
+    ("boss_actor", "test_demo11_boss_actor", "EXODUSER-demo11-34-Isolated-20261021", True, False),
     ("bgm_override", "test_demo11_field_bgm_override", "EXODUSER-demo11-field-bgm-Isolated-20261021", False, True),
     ("41", "test_demo11_41_music_lifecycle", "EXODUSER-demo11-41-Isolated-20261021", True, True),
     ("AUDIO-01", "test_audio_01_mix", "EXODUSER-AUDIO-01-Isolated", False, True),

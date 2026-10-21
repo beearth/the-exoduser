@@ -15,6 +15,8 @@ const BOOT_G_KEYS = ["on", "paused", "stage", "kills", "mats", "cam", "shake", "
 const REGION_INIT_G_KEYS = ["_regions", "_regMidX", "_regMidY", "_regCurIdx", "_regBannerCd",
 	"_regGateIdx", "_bossClearT"]
 # P3-002: initStage genFromTemplate 30625 `G._totalSpawned=Σ_spawnHoleCount` (spawnHoles는 이미 G40).
+# game.html:31569 initStage -> native_demo11_anglers.gd:43 (preserve existing clear).
+const FIELD_BOSS_INIT_G_KEYS = ["_fbDone"]
 const SPAWN_HOLE_INIT_G_KEYS = ["_totalSpawned"]
 const GROUPS = ["startup_state_and_items", "public_actor_sync", "original_provider_consumers",
 	"once_and_tree_gates", "lifecycle_and_grit_loss"]
@@ -98,9 +100,9 @@ func _test_startup_state_and_items() -> Dictionary:
 	check(_has_exact_keys(source_boot_g["values"], BOOT_G_KEYS) \
 		and _has_exact_keys(preserved_boot_g["values"], BOOT_G_KEYS) \
 		and preserved_boot_g == source_boot_g \
-		and _has_exact_keys(g, BOOT_G_KEYS + REGION_INIT_G_KEYS + SPAWN_HOLE_INIT_G_KEYS) \
+		and _has_exact_keys(g, BOOT_G_KEYS + REGION_INIT_G_KEYS + SPAWN_HOLE_INIT_G_KEYS + FIELD_BOSS_INIT_G_KEYS) \
 		and state.read_current_stats().size() == 5 and state.read_current_passives().size() == 26,
-		"preserved source boot G40; actual G40+region7+spawnHole1/STATS5/PAS26")
+		"preserved source boot G40; actual G40+region7+spawnHole1+fieldBoss1/STATS5/PAS26")
 	check(is_same(g, providers["current_g"].call()) and is_same(p, providers["current_p"].call()), "same G/P references across actual providers")
 	# QA-001: boot packet and actual post-applyStats P are different phases.
 	# game.html:27930,27944 write hpR before new-game initStage (64019,64025).

@@ -360,3 +360,12 @@ SourceParameters의현재 P/Crystal requirement 진단문자열2개는첫성공�
 | 검수 분리 | 기존 owner34case477(설정163·행동314) 인수, 원17 중15통과2실패와 별도2true는 보존. V12 후보 원11case43행동true/setup signedzero1false·exit1 전체FAIL과 별도4case19행동+setup4 true의 한정 보완은 각각 유지. 원성공 검수·parse 재실행 없음 |
 | 실제 실행·보류 | 이번은 소스 정렬이다. 사용자 열린 앱·compiled export·PC 실행·실제 Main/State clock·자연 전투·JS·최신 게임 인수는 미확인. V12 제품 copy·World hook·build/reload/import/PC 전달 없음 |
 | 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
+
+
+### INTEG-10 live G starter exact 키 갱신 (2026-10-22)
+
+| 단계 | 정확 키 계약 |
+|---|---|
+| 원 file init | BOOT_G_KEYS 40, 원 snapshot/packet 변경0 |
+| 실제 Main 부팅 후 | boot40 + region7 + spawnHole1 + fieldBoss1 = 49키. FIELD_BOSS_INIT_G_KEYS=["_fbDone"], game.html:31569 initStage → native_demo11_anglers.gd:43. 기존 clear 값은 보존 |
+| Mac starter 검증 | test_native_main_source_starter_state의 `_has_exact_keys` 키 수/중복/각 키 존재 판정 그대로. 사용자 제공148/1 원인은 live G의 추가 `_fbDone` 한 키이며, 판정 완화 없이 원본 이식 근거를 expected에 반영. 이번 실제 결과는 DEMO11_STATUS INTEG-10 표 참조 |
