@@ -56173,3 +56173,8 @@ MAP11-21d→20p 순차 merge, append 양쪽 보존. 공통16개 접지 마스크
 ## 2026-10-21 MAP11-22 보스룸 관광 종착지
 
 R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원·북 혈조/고문바퀴 무대·4광원을 구성했다. 전투면 바닥 shader opacity .16/.12, 남측 가림 완화. 상세 수치/좌표/검수 경계는 `4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §22. VISUAL RETOUCH; 독립 울타리 에셋 미제공, PC gate/실전전투 미검수. 단회 성능 실측과 원격SHA는 외부 MAP11-22 DONE 및 설계서에 기록.
+
+
+## 2026-10-21 MAP11-22b 보스룸 2차 보정
+- ce5bec02 계열: dark flesh/blood 전투면, 기존32 root 의식 링, legacy 반복8개/AO 제거 및 제단 cull 현재 bounds 정정, finale PNG LOD−.6, 짧은 arena 입장 카메라. PC core/provider/save/신규이미지0.
+- 설계·전체 수치·4컷/1x·범위표본·단회 성능·RETOUCH 한계: `4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §23. 실제 SHA/p95/captures/정리는 외부 MAP11-22b/DONE.txt.

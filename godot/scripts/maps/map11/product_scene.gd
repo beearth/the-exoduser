@@ -19,8 +19,29 @@ func current() -> bool:
  return is_instance_valid(provider) and provider.runtime_ready() and is_instance_valid(start_marker)
 func activate_space(space: String) -> bool:
  if not current() or space not in ["field","arena"]:return false
- if space!=active_space:_transition_fade()
+ if space!=active_space:
+  _transition_fade()
+  _frame_arrival(space)
  active_space=space;field_view.visible=space=="field";arena_view.visible=space=="arena";return true
+var _arrival_tween: Tween
+var _arrival_camera: Camera2D
+func _frame_arrival(space: String) -> void:
+ if _arrival_tween!=null:_arrival_tween.kill()
+ _finish_arrival()
+ if space!="arena" or not is_instance_valid(_actor):return
+ # Dedicated presentation camera leaves the shared shake writer and gameplay camera intact.
+ _arrival_camera=Camera2D.new();_arrival_camera.name="ArenaArrivalCamera"
+ _arrival_camera.position=Vector2(0,-1400);_arrival_camera.zoom=Vector2.ONE*.20
+ _actor.add_child(_arrival_camera);_arrival_camera.make_current()
+ _arrival_tween=create_tween()
+ _arrival_tween.tween_interval(1.0)
+ _arrival_tween.tween_property(_arrival_camera,"zoom",Vector2.ONE*.70,.9).set_trans(Tween.TRANS_SINE)
+ _arrival_tween.parallel().tween_property(_arrival_camera,"position",Vector2.ZERO,.9).set_trans(Tween.TRANS_SINE)
+ _arrival_tween.tween_callback(_finish_arrival)
+func _finish_arrival() -> void:
+ if is_instance_valid(_arrival_camera):
+  get_parent().get_parent().camera.make_current()
+  _arrival_camera.queue_free();_arrival_camera=null
 func can_move(point: Vector2,radius: float) -> bool:
  return current() and provider.can_move(point,radius,active_space)
 func line_of_sight(a: Vector2,b: Vector2) -> bool:

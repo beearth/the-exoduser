@@ -25,6 +25,7 @@ const ROWS=[
  ["skull_pyramid",1,Vector2(1110,-1490),350.0,75.0]]
 static func mount(scene: Node2D) -> void:
  var arena: Node2D=scene.arena_view
+ var surface:=ShaderMaterial.new();surface.shader=preload("res://scripts/maps/map11/finale_surface.gdshader")
  var feet:=StaticBody2D.new();feet.name="FinaleExteriorFootCircles";arena.add_child(feet)
  for i in range(ROWS.size()):
   var row: Array=ROWS[i]
@@ -34,7 +35,7 @@ static func mount(scene: Node2D) -> void:
   var canvas:=CanvasTexture.new();canvas.diffuse_texture=pair[0];canvas.normal_texture=pair[1]
   canvas.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   canvas.specular_color=Color(.10,.08,.06);canvas.specular_shininess=.12
-  var sprite:=Sprite2D.new();sprite.name="Finale%02d"%i;sprite.texture=canvas;sprite.position=foot
+  var sprite:=Sprite2D.new();sprite.name="Finale%02d"%i;sprite.texture=canvas;sprite.position=foot;sprite.material=surface
   sprite.scale=Vector2.ONE*row[3]/canvas.get_height()
   sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
   arena.add_child(sprite)

@@ -20,22 +20,23 @@ func _build_floor() -> void:
  floor_.material=material_
  # Low silhouettes bridge the floor and the forest; never add collision.
  var root_material:=ShaderMaterial.new()
- root_material.shader=preload("res://scripts/maps/map11/field_decal.gdshader")
+ root_material.shader=preload("res://scripts/maps/map11/organic_decal.gdshader")
+ root_material.set_shader_parameter("opacity",.92)
  for i in range(32):
   var angle: float=TAU*float(i)/32.0
   var root_:=Sprite2D.new();root_.name="RootShoulder%02d"%i
   root_.texture=load(PROP_DIR+"prop_g_root.png")
-  root_.position=Vector2.from_angle(angle)*(1800+float(i%3)*65)
-  root_.scale=Vector2(740+float(i%4)*70,430+float(i%3)*55)/root_.texture.get_size()
+  root_.position=Vector2.from_angle(angle)*(1530+float(i%3)*45)
+  root_.scale=Vector2(850+float(i%4)*70,650+float(i%3)*55)/root_.texture.get_size()
   root_.rotation=angle+PI*.5+float(i%3-1)*.13;root_.flip_h=i%2==0
-  root_.material=root_material;root_.z_index=-410;add_child(root_);_shoulders.append(root_)
+  root_.material=root_material;root_.z_index=-430;add_child(root_);_shoulders.append(root_)
 
 func _build_props() -> void:
  # Back forest fills the recess beyond the roots, behind the approved front trees.
  for i in range(32):
-  var angle: float=TAU*(float(i)+.37)/32.0
+  var angle: float=TAU*(float(i)+.37+sin(float(i)*2.4)*.18)/32.0
   var foot:=Vector2.from_angle(angle)*(2220+float(i%3)*90)
-  _prop("BackForest%02d"%i,"rotforest_tree_%02d.png"%[4,7,2,11,5,1,6,3][i%8],foot,1000+float(i%4)*95,i%3==0)
+  _prop("BackForest%02d"%i,"rotforest_tree_%02d.png"%[4,7,2,11,5,1,6,3][i%8],foot,880+float((i*7)%5)*92,i%3==0)
   var sprite: Sprite2D=get_node("BackForest%02d"%i)
   sprite.modulate=Color(.47,.48,.49,1)
  super._build_props()
@@ -45,6 +46,10 @@ func _build_props() -> void:
   if str(item.name).begins_with("LivingCorpse") or str(item.name).begins_with("Cocoon"):
    item.modulate.a=0.0;item.set_meta("finale_retired",true)
   elif str(item.name).begins_with("OuterTree"):
+   # Rear mass remains continuous; remove alternate front silhouettes in focal bays.
+   if int(str(item.name).trim_prefix("OuterTree"))%3==1:
+    item.modulate.a=0.0;item.set_meta("finale_retired",true)
+    continue
    var a: float=item.position.angle()
    if item.position.y < -1250 or item.position.x < -1450 or (item.position.x>1450 and item.position.y<700):
     item.position*=1.22
@@ -66,6 +71,10 @@ func _build_props() -> void:
  for id in ["EntryArch_VisualOnly","ClearArch_VisualOnly","NorthHeartAltar"]:
   var item: Sprite2D=get_node(id)
   GroundContact.depth(item,item.global_position)
+  for row in _rim_sprites:
+   if row.sprite==item:
+    var bounds: Rect2=item.get_meta("opaque_ground_bounds")
+    row.rect=Rect2(item.position+bounds.position,bounds.size).grow(65)
 
 
 func _prop(id: String,file: String,foot: Vector2,height: float,mirror: bool=false) -> void:

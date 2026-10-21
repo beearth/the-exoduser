@@ -73,7 +73,8 @@ func _mount_contacts() -> void:
   GroundContact.shadow(scene.field_view,sprite,row.foot,-2990,.85,_unlit)
  for row in scene.arena_view._rim_sprites:
   var sprite: Sprite2D=row.sprite
-  GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.40,_unlit)
+  if not sprite.has_meta("finale_retired"):
+   GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.26,_unlit)
  for id in ["NorthHeartAltar","EntryArch_VisualOnly","ClearArch_VisualOnly"]:
   var sprite: Sprite2D=scene.arena_view.get_node(id)
   if sprite.position.length()<=1700.0:GroundContact.shadow(scene.arena_view,sprite,sprite.position,-440,.40,_unlit)
@@ -86,6 +87,7 @@ func _contact(parent: Node2D,foot: Vector2,size_: Vector2,z: int,alpha: float) -
 
 func _process(delta: float) -> void:
  if not is_instance_valid(_player):return
+ _camera=get_viewport().get_camera_2d()
  _time+=delta
  var arena: bool=scene.active_space=="arena"
  var approach: float=1.0 if arena else smoothstep(-2600.0,-4100.0,_player.global_position.y)
