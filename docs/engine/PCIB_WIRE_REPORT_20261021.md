@@ -164,3 +164,7 @@ enemy_kill physics max 22.553ms / p95 8.516ms; automatic_crossbow.max_tick_us=15
 | revival_interface | 최대120000ms 자연 접촉, 실제 fallen_enter+자연HP0 관측을 PASS 조건으로 유지. 이후15000ms resolution 관측. | 자동물약 정상 동작 유지. PASS 개수 때문에 회복을 끄거나 피해·사망을 주입하지 않음 |
 
 검수 수치·18단계·차단 사유는 [INTEG-6b 보고](INTEG6B_REGRESSION_20261021.md). 이전 단회 결과는 당시 이력으로 보존한다.
+
+## 2026-10-22 ETYPE-C15 후속
+
+위 etype15 “미연결”은 당시 지정 baseline 관측 이력이다. `codex/etype-c15-20261022`는 native_demo11_etype15_actor/spawn 및 Marker 자식 admission을 추가하고 PCI09 consumer를 등록했다. 원본/검수/남은 경계는 [ETYPE15_NATIVE_20261022](../8.0몬스터디자인/ETYPE15_NATIVE_20261022.md)를 따른다. PC core/계약/PC 테스트 변경 없음.

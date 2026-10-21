@@ -13,7 +13,7 @@ func _run() -> void:
  check(is_instance_valid(main.native_auto_crossbow) and world._native_auto_crossbow==main.native_auto_crossbow,"World single crossbow owner")
  check(main.native_pcib_death_effects.receipts[8].status=="APPLIED","etype8 PCI09 registered")
  check(main.native_pcib_death_effects.receipts[29].status=="APPLIED","etype29 PCI09 registered")
- check(main.native_pcib_death_effects.receipts[15].status=="NOT_READY","etype15 missing constructor remains prewrite gated")
+ check(main.native_pcib_death_effects.receipts[15].status=="APPLIED","etype15 PCI09 registered")
  var recipe: Dictionary=_type3_recipe(player.global_position+Vector2(160,0))
  check(not recipe.is_empty(),"canonical type3 recipe")
  if not recipe.is_empty():

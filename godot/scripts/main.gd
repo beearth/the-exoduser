@@ -3714,3 +3714,10 @@ func advance_native_auto_crossbow_source(sp: float, dt_sp: float) -> void:
 	if is_instance_valid(native_auto_crossbow):native_auto_crossbow.advance_source(sp,dt_sp)
 
 var native_pcib_death_effects: RefCounted
+
+var _native_etype15_spawn: RefCounted
+func request_native_etype15_spawn(owner: Node,group_id: String,source: Dictionary) -> Dictionary:
+	if _native_etype15_spawn==null:
+		_native_etype15_spawn=preload("res://scripts/native_demo11_etype15_spawn.gd").new()
+		_native_etype15_spawn.configure(self)
+	return _native_etype15_spawn.spawn_selected(owner,group_id,source)

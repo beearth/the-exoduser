@@ -168,6 +168,8 @@ func spawn_hole(h: Dictionary) -> bool:
 	# DEMO11-47j: dispatch the already-selected A profile; preserve all source draws.
 	if etype in [1,4,5,6]:
 		last_receipt=main.request_native_etype_a_spawn(holes,h.spawn_group_id,source)
+	elif etype==15:
+		last_receipt=main.request_native_etype15_spawn(holes,h.spawn_group_id,source)
 	else:
 		last_receipt=spawn_selected(holes,h.spawn_group_id,source)
 	if last_receipt.get("registered",false):
@@ -201,7 +203,7 @@ func projectile_component(actor: Node) -> Node:
 	return reference.get_ref() if reference is WeakRef else null
 
 func admit_source_record(component: RefCounted,group: String,record: Dictionary,site: Dictionary,source: Dictionary) -> Dictionary:
-	if _busy or component not in [main._native_etype_a_spawn,main._native_etype_b_spawn,main._native_etype_f_spawn] or not adapter.is_current() or get_tree().paused:return _no("actual_source_profile_required")
+	if _busy or component not in [main._native_etype_a_spawn,main._native_etype_b_spawn,main._native_etype_f_spawn,main._native_etype15_spawn] or not adapter.is_current() or get_tree().paused:return _no("actual_source_profile_required")
 	if not site.get("ready",false) or site.get("spawn_group_id")!=group:return _no("source_profile_site_receipt_required")
 	var token:=group+"/"+str(source.spawn_n)
 	if _used.has(token):return _no("source_prefix_already_consumed")
@@ -216,3 +218,10 @@ func emit_profile_projectile(actor: Node,origin: Vector2,profile: Dictionary) ->
 func permits_profile_element(actor: Node,props: Dictionary) -> bool:
 	var component: Node=projectile_component(actor)
 	return component!=null and actor.etype==29 and component.get_script().resource_path=="res://scripts/native_demo11_etype_e_spawn.gd" and component.authorizes_props(actor,props)
+
+func admit_split_record(component: RefCounted,record: Dictionary,site: Dictionary) -> Dictionary:
+	if _busy or component!=main._native_etype15_spawn or not adapter.is_current() or not site.get("ready",false) or not owns_actor(site.get("split_parent")):return _no("split_actual_parent_required")
+	_busy=true
+	var built: Dictionary=factory.prepare_natural_profile(record,main.world,component)
+	if not built.get("ready",false):_busy=false;return built
+	return _admit_prepared(built.actor,site.spawn_group_id,site)

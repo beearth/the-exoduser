@@ -56363,3 +56363,13 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - override.cfg 추적 해제·로컬byte보존·ignore, project user dir은 origin/main abc3dd44의 기존 EXODUSER-Godot-Native-First. stage/export에서 로컬override 제외. 실제 저장소 사용0.
 - MAP11 제품 검증37/44/23b와 legacy 계약42/43/41 모드 분리, 판정 유지. 공용 Mac helper에 격리복원/3PID게이트/오류·감시종료/headless캡처skip; E2E timer-null 하니스 오류수정.
 - 최종 회귀 실패0·import ERROR0·E2E PASS13/NR5/FAIL0·validator[]; 최초 실패·재실행과 한계는 [INTEG6C_REGRESSION_20261021.md](engine/INTEG6C_REGRESSION_20261021.md). PC코어/PC테스트/맵비주얼/번역 수정0.
+
+## 2026-10-22 — ETYPE-C15 Mac actor·분열 PCI09 연결
+
+|항목|변경/검수|
+|---|---|
+|원본|INTEG5 game.html SHA256 4d911cdd…85e5d4 고정; 기존 2~3 분열 표기를 정확히 2로 수정|
+|제품|전용 etype15 actor/constructor·자연 dispatch·부모 Marker provenance를 잇는 자식 admission·World 생성 직후 PCI02(existing owner NOT_REQUIRED)·PCI09 consumer 등록. `_splitDone` 실제 readback; PC 사망/보상 writer 복제0|
+|oracle/회귀|원본 constructor/분열 블록 VM 대조 + 최종 C15 151/0. 기존 B1회42/2(부재 기대 stale 검사, ERROR0), F1회33/0, pcib_mac_calls1회31/0. baseline 기존 C suite 없음|
+|E2E|storage=on 단1회 PASS13/NR5/FAIL0·ERROR0, 주입0. 이후 C15 tick const/kb 제자리 갱신 정리 및 최종 C15 재확인; E2E 추가0|
+|보존/남은 범위|PC core/계약/PC 테스트·game.html·번역·맵 visual 변경0. projectile consumer·분열 라벨·공통 부활 재스폰 남음. R 실수 문서 쓰기는 원래 bytes로 복원, tracked diff0 확인. 상세: docs/8.0몬스터디자인/ETYPE15_NATIVE_20261022.md|
