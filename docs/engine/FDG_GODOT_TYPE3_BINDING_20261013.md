@@ -44,6 +44,7 @@ E는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-
 | emit_m29_event(actor,event)->bool | 원 windup/charge/recover/spark/trail/player_damage/parry event를actual warning/impact/sound provider에위임. rejected provider는runtime_binding_error로기록,빈FX를PASS로처리하지않음 |
 | m29_readiness()->Dictionary | combat_qe/warning_fx/impact_fx/detonate_sound 각각bool true필수. configure와ownerphase전확인;하나라도미준비면binding/phase거부. 준비값은actualparentprovider권위이며constructor recorder의test문맥과구분 |
 | SOUND actual parent API | `res://port_modules/sound_m29/caller.gd` Node를add_child후 `on_detonate()->handle`, `cancel_event(handle)` 사용. 기존sound15조건PASS는부모동결자료이며이번재실행0; 실제provider결선·공개청취는별도 |
+| PC 제공자(2026-10-21 PC-M29-PARRY) | `player_context`/`handle_m29_parry`/`emit_m29_event`/`m29_readiness` 실제 제공자 = `main.get_native_m29_services()`(native_m29_contact_services.gd). handle은 parryBank→doParry 기존 writer(보상·iframes25·poise+1)→actor `apply_native_source_poise_core(20)` 순서, projectile=false만 수용. FX 3능력은 실제 소비자 등록 전 false. 상세 [PC_M29_PARRY_CONTRACT_20261021.md](PC_M29_PARRY_CONTRACT_20261021.md) |
 
 ## modifier source order / exact damage dtype
 
