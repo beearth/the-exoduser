@@ -431,3 +431,7 @@ func add_native_knockback(value: Vector2) -> void:
 
 func apply_native_normal_enemy_poise_core(amount: int) -> Dictionary:
 	return HURTE_OWNER.apply_poise_core(self, amount)
+
+# PCI-10 (PC-LIFE-PACK 2026-10-21): 시체 부활 writer(G38949–38950). 공용 구현 HURTE_OWNER.apply_corpse_revive.
+func apply_native_enemy_corpse_revive(caller_world: Node) -> Dictionary:
+	return HURTE_OWNER.apply_corpse_revive(self, caller_world, "_state_ticks")

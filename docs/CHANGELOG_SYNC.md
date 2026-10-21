@@ -1,3 +1,12 @@
+## 2026-10-21 PC-LIFE-PACK — PCI-01 생명주기·PCI-11 최종 처치·PCI-10 시체 부활·PCI-12 recalcSt·PCI-13 펫 초상 캐시
+
+| 항목 | 구현·검수 근거 |
+|---|---|
+| 범위 | Mac DEMO11-39/37·B9·29·perf 차단 해제용 PC API. 신규 `native_source_player_life.gd`(HP0 death_token·op 6종·원본 G43721–43751/43847–43872/63476–63477/63521–63526/63678)·`native_final_enemy_death.gd`(hurtE G42733 단회 final/revival_pending/cancel, clear_blocked)·`native_enemy_corpse_revive.gd`(G38944–38958 같은 identity). refresh `recalc_st` 모드(G16425–16431). native_pets 초상 강한 참조 캐시. 공용 파일은 끝 추가 위주(기존 줄 수정: pets 3·refresh 3) |
+| 검증 | 신규 5종 101/60/50/49/23 단정 0실패(원본 VM oracle 41+14+16필드 일치). 회귀 18종 merge 전후 각1회 0실패(의도 ERROR: demo11_authority 1). 틱 경로 코드0. 펫 발화 17~30ms→15~65µs, configure +41~45ms |
+| HOLD | 보스(ib) final death NOT_READY(G42124 boss hurtE·HP/부활 owner 부재), 일반몹 재스폰 미이식, u_d21 분노 writer 미연결. Mac 호출자 연결 미구현 |
+| 인계 | [계약](engine/PC_LIFECYCLE_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-life-pack_REPORT.md)·docs/2_5 이식 상태 절. 원로그 `_out/pc-life-pack/` |
+
 
 ## 2026-10-21 PC-COMBAT-PACK-B — normalBow hurtE·신규 actor hurtE owner·normalBow 탄 carrier·사망 중간 prefix
 

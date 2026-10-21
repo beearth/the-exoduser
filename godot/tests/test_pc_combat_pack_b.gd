@@ -50,6 +50,7 @@ var oracle_cases: Array = []
 var oracle_out: Dictionary = {}
 var prefix_calls: Array = []
 var reused_packets: Dictionary = {}
+var death_order: Array = []
 
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
@@ -667,9 +668,14 @@ func _test_pci02_type3_bind() -> void:
 
 func _prefix_consumer(ctx: Dictionary) -> Dictionary:
 	var roll: Variant = ctx.rand.call()
+	death_order.append("PCI-09:" + str(ctx.actor.get_instance_id()))
 	prefix_calls.append({"profile": ctx.profile, "token": ctx.death_prefix_token, "lines": ctx.source_lines, "roll": roll,
 		"actor_alive": ctx.actor.get("alive"), "kills": state.read_current_g().get("kills")})
 	return {"applied": roll != null, "spawned": 0, "note": "test_recorder_consumer"}
+
+func _final_death_consumer(payload: Dictionary) -> void:
+	var actor: Variant = payload.get("actor")
+	death_order.append("PCI-11:" + (str(actor.get_instance_id()) if is_instance_valid(actor) else "?"))
 
 func _test_pci09_death_prefix() -> void:
 	var pool: Array = _enemies_alive()
@@ -686,6 +692,10 @@ func _test_pci09_death_prefix() -> void:
 	var dup: Dictionary = main.register_native_enemy_death_effect("etype15_death_split", Callable(self, "_prefix_consumer"), {"token": _tok("reg")})
 	check(dup.status == "REJECTED", "single_owner_per_profile")
 	check(main.register_native_enemy_death_effect("bogus", Callable(self, "_prefix_consumer"), {"token": _tok("reg")}).status == "REJECTED", "unknown_profile_rejected")
+	var sub: Variant = main.subscribe_native_final_enemy_death(Callable(self, "_final_death_consumer"), {"subscriber": main}) if main.has_method("subscribe_native_final_enemy_death") else null
+	check(sub is Dictionary and sub.get("accepted") == true, "pci11_subscription_for_order_witness:" + str(sub.get("reason") if sub is Dictionary else "no_api"))
+	var published0: int = int(main.read_native_final_enemy_death_snapshot().get("published", 0))
+	death_order.clear()
 	var big: int = int(float(e.get("hp")) + float(e.get("eShield"))) + 100
 	var r1: Dictionary = main.request_native_hurte(e, big, 0.0, false, {"kbMult": 1.0, "poiseMult": 1.5, "noPoise": false, "poiseHit": false, "poiseSkill": false, "_lessonAttack": "weapon"}, 0, {"token": _tok("hurte")})
 	check(r1.status == "APPLIED" and r1.alive_after == false, "lethal_with_consumer_applied:" + str(r1.reason))
@@ -700,6 +710,18 @@ func _test_pci09_death_prefix() -> void:
 	var lines: Array = _gameplay_lines(r1.rng_draws)
 	var at: int = lines.find(42794)
 	check(at > 0 and lines.find(43092) > at, "consumer_rng_interleaved_in_source_order")
+	var eid: String = str(e.get_instance_id())
+	check(death_order == ["PCI-09:" + eid, "PCI-11:" + eid], "same_death_pci09_then_pci11_once_each:" + str(death_order))
+	check(int(main.read_native_final_enemy_death_snapshot().get("published", 0)) == published0 + 1, "pci11_published_exactly_once")
+	if sub is Dictionary and sub.get("subscription_id") is String: main.unsubscribe_native_final_enemy_death(sub.subscription_id)
+	var n09 := 0
+	var n11 := 0
+	var i09 := -1
+	var i11 := -1
+	for j in range(ops.size()):
+		if ops[j] == "death_prefix:etype15_death_split": n09 += 1; i09 = j
+		if ops[j] == "final_death_published": n11 += 1; i11 = j
+	check(n09 == 1 and n11 == 1 and i09 < i11 and ops.has("final_death_deferred_after_pci09"), "journal_pci09_before_pci11_once_each")
 	check(main.get("native_combat_pack_b").unregister_native_enemy_death_effect("etype15_death_split", Callable(self, "_prefix_consumer")), "unregister_consumer")
 
 func _test_perf_bench() -> void:

@@ -46,6 +46,7 @@ var hurte_profile := "direct_opts"
 var type_affix_reads: Array = []
 var death_prefix_receipts: Array = []
 var _packet_mode := false
+var _deferred_final_death: Dictionary = {}
 
 # ── 33360 wSwing: _wEl=(wp().el||0)||(_lEq('_lGloveElem')>0?1+~~(rand*4):0) ──
 static func resolve_basic_attack_element(main: Node) -> Dictionary:
@@ -558,6 +559,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	if dmg > 0 and hp_after <= 0.0:
 		killed = true
 		if not _kill_pipeline(fields, view, passives, dmg, ang, atk_el):
+			_flush_deferred_final_death() # 42733~42824 사이 정지(M26 등)에도 PCI-11 단회 발행
 			return _result_now()
 	return _finish(true, {"applied": true, "dmg_to_hp": dmg, "absorbed": absorbed,
 		"hp_before": hp_before, "hp_after": hp_after, "shield_before": shield,
@@ -569,6 +571,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, dmg: int, ang: float, atk_el: int) -> bool:
 	# 42502~42511 디코이/도플갱어: etype 가드로 비활성. 42516~42625 보스: ib 가드.
 	# ── 42627~42636: 일반몹 부활 판정 ──
+	var revival_pending := false
 	if fields.get("_revived") != true and fields.get("_isGhoul") != true:
 		var rev_pow: float = 0.5 + float(int(maxf(1.0, float(fields.get("lv", 1))) / 100.0)) * 0.10
 		var suppress: Variant = _affix("antiRevive", 42629)
@@ -582,6 +585,7 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 				var ghoul: Variant = _rand(42635, "revive_as_ghoul")
 				if ghoul == null: return false
 				# 부활 예약 플래그만 기록 — 재스폰 타이머 동작은 미이식.
+				revival_pending = true # PCI-11: 이번 사망은 부활 대기(G42633)
 				if not _bookkeeping({"_revived": true, "_reviveTimer": 90.0,
 						"_reviveX": _enemy.global_position.x, "_reviveY": _enemy.global_position.y,
 						"_reviveAsGhoul": float(ghoul) < 0.5}):
@@ -663,6 +667,20 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 		_halt(42732, "death_fx_owner_refused:" + str(tail.get("reason")))
 		return false
 	_log(42732, "death_fx_tail", {})
+	# PCI-11 — G42733 앵커(42734~42744 보스/문지기 사망 문맥 직전): 최종/부활대기 단회 신호.
+	# 관찰 전용 발행 — 실패해도 이미 확정된 처치 prefix를 되돌리지 않고 파이프라인을 계속한다.
+	# PC-COMBAT-PACK-B 병합: PCI-09 사망 중간 prefix(42784/42792/42817)가 있는 사망은 그 prefix 뒤로 발행을
+	# 미룬다(순서 = PCI-09 → PCI-11, 각 1회). prefix 없는 사망은 종전 그대로 이 앵커에서 발행.
+	var final_ctx: Dictionary = {"revival_pending": revival_pending,
+			"kill_receipt": {"line": 42702, "kills": kills, "stage_kills": stage_kills,
+				"reg_kill_applied": reg_kill.get("applied") == true, "dmg": dmg, "ang": ang, "atk_el": atk_el,
+				"executor": "native_normal_enemy_hurte"}}
+	if _main.has_method("publish_native_enemy_death") and _death_prefix_gate(int(fields["etype"]), fields).get("required") == true:
+		_deferred_final_death = final_ctx
+		_log(42733, "final_death_deferred_after_pci09", {"etype": int(fields["etype"])})
+	elif _main.has_method("publish_native_enemy_death"):
+		var published: Dictionary = _main.publish_native_enemy_death(_enemy, final_ctx)
+		_log(42733, "final_death_published", published)
 	# 42737~42745 문지기: 단락. 42747~42754 잔해: elite0 → _debC=0 단락(RNG 미소비).
 	# ── 42756~42762: 킬 체인 ──
 	var chain_count: int = int(_js_num(g.get("_chainCnt"))) + 1
@@ -685,7 +703,9 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	# 42769~42944: _plagued/특수 etype 사망 효과 — etype 가드로 전부 단락.
 	# PCI-09: 그중 42784(8 폭발)·42792(15 분열)·42817(29 사망탄)은 Main 서비스에 등록된 동기 consumer를
 	# 원본 위치에서 호출(최종 died/PCI-11 신호 전). consumer RNG는 같은 provider(_rand)로 이어 기록.
-	if not _death_prefix_dispatch(fields, ang, dmg):
+	var prefix_ok: bool = _death_prefix_dispatch(fields, ang, dmg)
+	_flush_deferred_final_death() # PCI-11은 PCI-09 prefix 뒤(성공·정지 모두 단회)
+	if not prefix_ok:
 		return false
 	# ── 42946~42963: 속성 사망 장판 ──
 	if fields["ib"] != true and fields.get("_isDecoy") != true and int(fields["el"]) != 0:
@@ -1139,3 +1159,13 @@ func _death_prefix_dispatch(fields: Dictionary, ang: float, dmg: int) -> bool:
 			_halt(line, str(receipt.get("reason")))
 		return false
 	return true
+
+## PCI-09 prefix 뒤로 미룬 PCI-11 최종 사망 발행(단회). 관찰 전용 — 실패해도 처치 prefix를 되돌리지 않는다.
+func _flush_deferred_final_death() -> void:
+	if _deferred_final_death.is_empty():
+		return
+	var ctx: Dictionary = _deferred_final_death
+	_deferred_final_death = {}
+	var published: Dictionary = _main.publish_native_enemy_death(_enemy, ctx)
+	published["deferred_after_pci09"] = true
+	_log(42733, "final_death_published", published)

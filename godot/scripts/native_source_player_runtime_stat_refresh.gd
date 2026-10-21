@@ -35,9 +35,13 @@ const SCHEMA = "exoduser.godot.source-runtime-stat-refresh.v1"
 
 const MODE_APPLY_STATS = "apply_stats"
 const MODE_EQUIPMENT = "equipment_refresh"
-const MODES = [MODE_APPLY_STATS, MODE_EQUIPMENT]
+## PCI-12 (PC-LIFE-PACK 2026-10-21): 원본 recalcSt() 단독 호출(G16425–16431) — 캐시 3종 무효화 →
+## 기존 resource_parameters.run_recalc_st → ST/mST만 commit. applyStats/clamp 추가 없음.
+const MODE_RECALC_ST = "recalc_st"
+const MODES = [MODE_APPLY_STATS, MODE_EQUIPMENT, MODE_RECALC_ST]
 const MODE_SOURCE = {MODE_APPLY_STATS: "game.html applyStats() (port anchors 28564-28624; current main G27902-27966)",
-	MODE_EQUIPMENT: "game.html _refreshEquipmentStats() G16287-16292"}
+	MODE_EQUIPMENT: "game.html _refreshEquipmentStats() G16287-16292",
+	MODE_RECALC_ST: "game.html recalcSt() G16425-16431 (단독 호출 지점 G50836·G51176 — 뒤따르는 applyStats는 호출자 몫)"}
 ## 원본 G16288/16291: 장착 refresh가 보관·clamp하는 4자원과 그 상한.
 const KEEP_FIELDS = {"hp": "mhp", "mp": "mmp", "st": "mst", "shield": "mshield"}
 ## 원본 recalcSt(G16426)와 _refreshEquipmentStats(G16289)의 무효화 대상 3종.
@@ -185,7 +189,7 @@ func refresh(owner: Node, mode: String, reason: String = "") -> Dictionary:
 		if not _invalidate_caches():
 			return _finish_failure(receipt, _pass_error)
 	receipt["kept"] = keep.duplicate()
-	if not _run_apply_stats():
+	if not (_run_recalc_st_only() if mode == MODE_RECALC_ST else _run_apply_stats()):
 		return _finish_failure(receipt, _pass_error)
 	if mode == MODE_EQUIPMENT:
 		# G16291 P.hp=Math.min(P.mhp,_eqHP) ... — min(new max, old current).
@@ -349,6 +353,33 @@ func _run_apply_stats() -> bool:
 		return _fail("runtime_stat_refresh_invalidation_count")
 	return true
 
+## PCI-12: 원본 recalcSt() 단독. 기존 producer run_recalc_st가 [KIND_INVALIDATE](캐시 3종 무효화,
+## G16426) → plan_recalc_st(현재 P overlay/STATS/PASSIVES/INV) → [KIND_RECALC_ST](mst/st, G16431)를
+## 같은 sink로 공급한다. 수식 복제 0, st=min(st,mst) 원문 유지.
+func _run_recalc_st_only() -> bool:
+	if _overlay.is_empty():
+		return _fail("runtime_stat_refresh_current_P_unavailable")
+	var bundle: Dictionary = _ref(_providers).get_provider_bundle()
+	if bundle.is_empty():
+		return _fail("runtime_stat_refresh_provider_bundle_not_ready")
+	var maps: Dictionary = _pass_provider_maps(bundle)
+	if maps.is_empty():
+		return _fail("runtime_stat_refresh_provider_map_missing")
+	_bridge = Bridge.new(self)
+	maps["resource_parameters"][RESOURCE.PROVIDER_PLAYER] = Callable(_bridge, "p")
+	_helpers = {"resource_parameters": RESOURCE.new()}
+	var binding: Variant = _helpers["resource_parameters"].configure(maps["resource_parameters"], Callable(_bridge, "resource_packet"))
+	if not binding is Dictionary or binding.get("ready") != true:
+		return _fail("runtime_stat_refresh_original_helper_binding_not_ready")
+	if not _run("resource_parameters", "run_recalc_st", []):
+		return false
+	if _invalidations != 1:
+		return _fail("runtime_stat_refresh_invalidation_count")
+	for field in _written:
+		if field not in ["mst", "st"]:
+			return _fail("recalc_st_wrote_outside_st_mst:" + str(field))
+	return true
+
 ## Same keys/targets as Services._make_provider_maps (the initialization wiring),
 ## but bound to the original provider objects directly for this one synchronous
 ## pass. The full Main/Services/Providers context is validated at pass start and
@@ -454,6 +485,8 @@ func _consume_resource_command(packet: Dictionary) -> bool:
 		_trace.append({"kind": packet["kind"], "source": packet["source"], "writes": 0})
 		# recalcSt first line (current main G16426 also clears _lEqCache).
 		return _invalidate_caches()
+	if _mode == MODE_RECALC_ST and packet.get("kind") == RESOURCE.KIND_RECALC_ST:
+		return _consume_writes(packet) # PCI-12 단독 recalcSt: applyStats 자원 쓰기 선행 없음(원본 단독 호출)
 	if packet.get("kind") != RESOURCE.KIND_RECALC_ST or _resource_indices.size() != _resource_plan["packet"]["writes"].size():
 		return _fail("source_recalc_not_after_apply_stats")
 	return _consume_writes(packet)

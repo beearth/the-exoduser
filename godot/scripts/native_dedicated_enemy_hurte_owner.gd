@@ -174,3 +174,41 @@ static func apply_death_write(enemy: Node) -> Dictionary:
 		{"id": (enemy.get("data") as Dictionary)["id"], "position": [enemy.global_position.x, enemy.global_position.y]})
 	enemy.queue_redraw()
 	return {"applied": true}
+
+# ── PCI-10 (PC-LIFE-PACK 2026-10-21): 주술사 시체 부활 G38949–38950 — 같은 노드(identity) 복귀 ──
+# corpse.alive=true;hp=~~(mhp*.5);eShield=0;eShieldMax=0;s='recover';st2=60;stunned=0;
+# poise=maxPoise;reviveIframes=0. recover_field = 각 전용 적의 recover→idle 전이 타이머
+# (flesh_crawler st2 / spine·ice _contact_ticks / hive _state_ticks — 기존 상태기계 그대로).
+# 사망 쓰기(apply_death_write)가 끈 충돌·본체 표시를 _ready 값(layer4/mask1|2)으로 되돌린다.
+static func apply_corpse_revive(enemy: Node, caller_world: Node, recover_field: String) -> Dictionary:
+	if caller_world != enemy.get("world") or not owner_current(enemy):
+		return {"applied": false, "reason": "native_enemy_revive_owner_not_current"}
+	if enemy.get("alive") != false:
+		return {"applied": false, "reason": "native_enemy_revive_not_dead"}
+	var native: Variant = (enemy.get("data") as Dictionary).get("native_final")
+	if not native is Dictionary or not (enemy.get("mhp") is int or enemy.get("mhp") is float) \
+			or not (enemy.get(recover_field) is int or enemy.get(recover_field) is float):
+		return {"applied": false, "reason": "native_enemy_revive_fields_missing"}
+	var hp_value: int = int(float(enemy.get("mhp")) * 0.5) # ~~(mhp*.5) (양수)
+	enemy.set("alive", true)
+	enemy.set("hp", hp_value)
+	enemy.set("eShield", 0.0)
+	enemy.set("eShieldMax", 0.0)
+	enemy.set("state", "recover")
+	enemy.set(recover_field, 60.0)
+	enemy.set("_stun_ticks", 0.0)
+	enemy.set("poise", enemy.get("max_poise"))
+	native["reviveIframes"] = 0.0
+	enemy.set("collision_layer", 4)
+	enemy.set("collision_mask", 1 | 2)
+	enemy.set("_moving", false)
+	var body: Variant = enemy.get("_body")
+	if is_instance_valid(body):
+		body.visible = true
+	var walk: Variant = enemy.get("_walk")
+	if is_instance_valid(walk):
+		walk.visible = false
+	enemy.emit_signal("telemetry_event", "enemy_revived",
+		{"id": (enemy.get("data") as Dictionary)["id"], "hp": hp_value, "source_line": 38949})
+	enemy.queue_redraw()
+	return {"applied": true, "hp": hp_value, "recover_field": recover_field}
