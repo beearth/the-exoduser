@@ -461,3 +461,6 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 
 - 기준 cae51580, branch codex/boss11-03-20261021. arena .36 단일 값, 채움 RGB(1,.46,.24)/alpha.07→.17, 충전 RGB(1,.94,.72)/전면+.38, 외곽선 유지. 화면 밖 화살표와 발 접촉 표시 추가. PC 코어/판정/번역/저장 변경0.
 - 2640×.36=950.4px이므로 900px 전체 최대 원 수용은 불가; 요청 구간에서 잘림 최소 값 선택. VISUAL VERDICT RETOUCH. 현재 수치/검수 경계는 `8.1보스디자인바이블/BOSS11_03_CAMERA_COLOR_20261021.md`, SHA/성능/캡처/정리는 외부 BOSS11-03/DONE.txt.
+## 2026-10-21 AUDIO-01 1-1 믹스 제출
+
+사용자 지정 cb154e8d 기반 별도 codex/audio-01-20261021. [오디오 담당 상세·수치·검증 경계](../6사운드디자인/BGM_믹스_공식_ARPG_AUDIO01_20261021.md): Music −14dB/보스 +7dB, 이벤트 덕킹 −5dB, field 간헐 사이클 구현. 숲 환경음 파일 미확인으로 실제 베드·조성·사용자 청음 HOLD. 독립 branch 제출이며 main 반영·기존 창 최신화·PC 동기화 완료 아님. DONE/원격 SHA는 ~/exoduser-wt/_out/AUDIO-01/DONE.txt.

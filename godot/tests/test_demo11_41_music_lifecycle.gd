@@ -46,7 +46,7 @@ func _run() -> void:
 		check(s.scene==scene and cur!=null,"scene transition selects native handle "+scene)
 		record_state(music,scene)
 		check_media(cur!=null and cur.playing(),"actual original track plays "+scene)
-		check(cur.output==s.BGM_bus and AudioServer.get_bus_send(AudioServer.get_bus_index(s.BGM_bus))=="Master","BGM independent of SFX volume")
+		check(cur.output==s.BGM_bus and AudioServer.get_bus_send(AudioServer.get_bus_index(s.BGM_bus))=="Music","BGM independent of SFX volume")
 		check(is_equal_approx(cur.volume,0.6),"live OPT bgmVol60")
 		var same: RefCounted=cur
 		check(main.request_native_music_scene(scene).get("duplicate",false),"duplicate scene does not restart")
@@ -68,8 +68,8 @@ func _run() -> void:
 	var vs: Dictionary=music.snapshot()
 	check(vs.voices==1,"one voice")
 	var voice_audio: RefCounted=music._voices[voice.id].audio
-	check(voice_audio.output==main._combat_sound_consumer.mix_output_bus(),"voice routes to existing SND08 mbus")
-	check_media(voice_audio.playing(),"voice plays on existing SND08 mbus")
+	check(voice_audio.output=="Voice","voice routes to Voice bus")
+	check_media(voice_audio.playing(),"voice plays on Voice bus")
 	check(is_equal_approx(voice_audio.volume,0.6),"voice sample OPT gain")
 	music.media.suspend(true);check(not voice_audio.playing(),"voice suspended")
 	music.media.suspend(false);check_media(voice_audio.playing(),"voice resumed")

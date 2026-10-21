@@ -1041,3 +1041,7 @@ SND05/06 원모듈 무수정, 실제 BGM/voice adapter와 현재 guide/opening/p
 로비/전체 영화는 scene 요청 API만, DEMO11-34 보스는 native_boss_music_changed(phase,stage) 계약만
 준비했다. State/전투/저장/맵은 수정하지 않았다. 원본 root 음원 읽기·export packaging 및 청감 한계와
 공용 변경 행은 [보고서](orders/reports/demo11-41_REPORT.md)에 기록한다.
+
+## 2026-10-21 AUDIO-01 native 1-1 상대 믹스
+
+DEMO11-41 뒤의 현행 native 믹스·bus routing·field cycle·ducking·voice 분리는 [AUDIO-01 공식](../6사운드디자인/BGM_믹스_공식_ARPG_AUDIO01_20261021.md)을 따른다. 원본 추적 수치/readonly source 모듈은 보존했다. 숲 환경음 실파일과 청음은 HOLD이며 음향 전체 인수 완료가 아니다.
