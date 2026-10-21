@@ -681,6 +681,7 @@ func _finite_json(value: Variant) -> bool:
 # Append-only natural registry. Initial source16 validation/dispatch above is unchanged.
 # Each added type must supply its actual kernel, source constructor and geometry.
 const NATURAL_REGISTRATIONS = {
+	15: {"actor":preload("res://scripts/native_demo11_etype15_actor.gd"),"factory_method":"create_demo11_etype15","prepared_record_only":true},
 	26: {"actor":preload("res://scripts/native_demo11_etype_f_actor.gd"),"factory_method":"create_demo11_etype_f","prepared_record_only":true},
 	27: {"actor":preload("res://scripts/native_demo11_etype_f_actor.gd"),"factory_method":"create_demo11_etype_f","prepared_record_only":true},
 	28: {"actor":preload("res://scripts/native_demo11_etype_f_actor.gd"),"factory_method":"create_demo11_etype_f","prepared_record_only":true},
@@ -773,4 +774,11 @@ func create_demo11_gate_guard(runtime: Dictionary,world: Node2D,component: Objec
 	var actor=NATURAL_REGISTRATIONS[29].actor.new()
 	actor.gate_owner=component;actor.configure(runtime,world)
 	if not actor.is_native_registry_ready():actor.free();return {"ready":false,"reason":"guard_profile_rejected"}
+	return {"ready":true,"actor":actor}
+
+func create_demo11_etype15(runtime: Dictionary, world: Node2D, component: Object) -> Dictionary:
+	if runtime.get("etype")!=15 or component==null or component.get_script().resource_path!="res://scripts/native_demo11_etype15_spawn.gd":return {"ready":false,"reason":"C15_constructor_required"}
+	var actor: CharacterBody2D=NATURAL_REGISTRATIONS[15].actor.new()
+	actor.configure(runtime,world)
+	if not actor.is_native_registry_ready():actor.free();return {"ready":false,"reason":"C15_profile_rejected"}
 	return {"ready":true,"actor":actor}

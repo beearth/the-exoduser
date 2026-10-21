@@ -7,9 +7,11 @@ func configure(owner: Node) -> void:
  main=owner
  receipts[8]=main.register_native_enemy_death_effect("etype8_death_explosion",_explode,{"token":"pcib/death8"})
  receipts[29]=main.register_native_enemy_death_effect("etype29_death_shots",_shots,{"token":"pcib/death29"})
- # No etype15 actor/child admission exists in the accepted baseline. Keep its
- # pre-write PC gate, rather than registering a consumer that would halt after death.
- receipts[15]={"status":"NOT_READY","reason":"accepted_etype15_constructor_and_MAP11_child_admission_absent"}
+ receipts[15]=main.register_native_enemy_death_effect("etype15_death_split",_split,{"token":"pcib/death15"})
+func _split(c: Dictionary) -> Dictionary:
+ calls[15]+=1
+ if main._native_etype15_spawn==null:return {"applied":false,"reason":"C15_constructor_not_initialized"}
+ return main._native_etype15_spawn.split_death(c)
 func _explode(c: Dictionary) -> Dictionary:
  var actor: Node=c.actor
  var origin:=Vector2(c.x,c.y)

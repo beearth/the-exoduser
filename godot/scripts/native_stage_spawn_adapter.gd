@@ -126,3 +126,17 @@ func record_actor_kill(actor: Node2D) -> Dictionary:
  return result
 func snapshot() -> Dictionary:
  return {"bound":_bound,"context":_context.duplicate(),"groups":_groups.size(),"origins":_origins.size(),"site_requests":_requests,"actual_etype_registration":false,"dynamic_budget_changes":"HOLD_owner_receipts"}
+
+# C15 only: retain the parent's Marker origin and source offset/safePt. No budget growth.
+func request_split_child(parent: Node2D, requested: Vector2) -> Dictionary:
+ if not is_current() or not is_instance_valid(parent) or parent.etype!=15 or not _origins.has(parent.get_instance_id()):return _no("split_parent_origin_not_current")
+ var origin: Dictionary=_origins[parent.get_instance_id()]
+ if origin.actor.get_ref()!=parent or parent.get_parent()!=_world:return _no("split_parent_identity_lost")
+ var group: Dictionary=_groups[origin.group]
+ if not is_instance_valid(group.marker) or not group.marker.is_inside_tree():return _no("split_marker_lost")
+ var point: Vector2=requested
+ if not _world.can_move(point,10.0):
+  var safe: Variant=_world.native_safe_point(point.x,point.y,10.0)
+  if not safe is Dictionary:return {"ready":false,"mken_null":true,"reason":"source_mkEn_null"}
+  point=Vector2(safe.x,safe.y)
+ return {"ready":true,"position":point,"spawn_group_id":origin.group,"region_id":origin.region_id,"revision":_context.revision,"split_parent":parent}
