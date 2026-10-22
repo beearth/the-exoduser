@@ -463,6 +463,9 @@ func _ready() -> void:
 	collision_layer = 2
 	collision_mask = 1 | 4
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
+	var input_window: Window = get_window()
+	if input_window != null and not input_window.window_input.is_connected(_track_held_input_while_paused):
+		input_window.window_input.connect(_track_held_input_while_paused)
 	if combat.is_empty():
 		var decoded = JSON.parse_string(FileAccess.get_file_as_string("res://data/combat.json"))
 		if decoded is Dictionary:
@@ -605,6 +608,21 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 		result.reason="" if result.accepted else "action_not_admitted"
 		return result
 	return result
+
+## PC-INPUT-PARITY — 원본 keydown/keyup(G13214 `K[e.code]=true;KH[e.code]=true` / G13330 `KH[e.code]=false`)은
+## G.paused와 무관하게 눌림 상태를 갱신한다. Godot은 PAUSABLE Player가 일시정지 동안 입력을 못 받아,
+## 인벤토리·성장창 등 일시정지 패널을 연 사이 뗀 이동키가 닫은 뒤에도 눌린 채 남았다(계속 걷기).
+## 일시정지 중에만 이동 눌림(누름·반복·뗌)과 패링 뗌을 기록한다. 발동(공격·패링 시작·스킬)은 하지 않는다.
+func _track_held_input_while_paused(event: InputEvent) -> void:
+	if not _native_attack_selection_bound or not is_inside_tree() or not get_tree().paused:
+		return
+	if not event is InputEventKey:
+		return
+	for action in ["move_left","move_right","move_up","move_down"]:
+		if event.is_action(action):
+			_native_input_held[action]=event.is_pressed()
+	if event.is_action("parry") and not event.is_pressed():
+		_native_input_held["parry"]=false
 
 func clear_native_input_states() -> void:
 	_native_input_held.clear()
@@ -907,7 +925,9 @@ func _physics_process(delta: float) -> void:
 	var switch_state: String = state
 	if is_instance_valid(_native_move_skills):
 		switch_state = _native_move_skills.advance_state(ticks) # G32985 이동 틱 + case bladeDash(G33943)·stagger(G34333)·pStun(G34341)
-	var speed_scale: float = 1.0 if switch_state == "idle" else (0.0 if switch_state in ["stagger", "pStun", "iceOrb", "bladeDash"] else 0.8) # P2-005d: 33040 얼음보주 전행동 차단 / PC-MOVE-SKILLS: case 'bladeDash'는 보행 없음
+	if switch_state in GIANT_SLAM_STATES:
+		_advance_native_giant_slam_state(ticks)
+	var speed_scale: float = 1.0 if switch_state == "idle" else (0.0 if switch_state in ["stagger", "pStun", "iceOrb", "bladeDash"] else (0.35 if switch_state in GIANT_SLAM_STATES else 0.8)) # P2-005d: 33040 얼음보주 전행동 차단 / PC-MOVE-SKILLS: case 'bladeDash'는 보행 없음
 	if is_instance_valid(_native_q_control) and _native_q_control.is_native_q_control_ready() and (state=="sBlock" or _native_q_control.q_movement_scale==0.0):speed_scale=_native_q_control.q_movement_scale
 	# Native _freezeSlow is consumed inside the entered idle case, before
 	# its positive-value half-speed check. Attack/stun/recovery clocks freeze it.
@@ -1028,11 +1048,34 @@ func _physics_process(delta: float) -> void:
 		var fireball_context: Dictionary=_world.get_native_projectile_fx_context()
 		native_fireball_phase_tick.emit(fireball_context.dt_sp,_world.get_native_frame(),fireball_entered_state)
 
+# PC-SKILL-STATES — 거인강타 상태(원본 46460 P.s='gSlamWindup';P.st2=10 / 33949~33960):
+# case gSlamWindup|gSlam1|gSlamRecover — 보행 (P.speed+bt().spd)×sp×.35, st2 소진 시
+# Windup→gSlam1(st2 10)→gSlamRecover(st2 12)→idle. 피해는 시전 즉시(46462 '즉시 히트')라 스킬 슬롯이 이미 처리.
+# 이 상태 동안 공격·다른 슬롯은 state!=idle 게이트로 막힌다(원본과 같음).
+const GIANT_SLAM_STATES: Array[String] = ["gSlamWindup", "gSlam1", "gSlamRecover"]
+var _gsl_st2: float = 0.0
+func enter_native_giant_slam_state() -> bool:
+	if hp <= 0.0 or state in ["fallen", "dead"]:
+		return false
+	state = "gSlamWindup"
+	_gsl_st2 = 10.0
+	stats_changed.emit()
+	return true
+
+func _advance_native_giant_slam_state(ticks: float) -> void:
+	_gsl_st2 -= ticks # 32792 P.st2-=sp
+	if state == "gSlamWindup" and _gsl_st2 <= 0.0:
+		state = "gSlam1"; _gsl_st2 = 10.0
+	elif state == "gSlam1" and _gsl_st2 <= 0.0:
+		state = "gSlamRecover"; _gsl_st2 = 12.0
+	elif state == "gSlamRecover" and _gsl_st2 <= 0.0:
+		state = "idle"
+
 # P2-005d — 얼음보주 상태 전환(46758 P.s='iceOrb' / 46819 P.s='idle'): 소유=스킬 슬롯 어댑터,
 # idle↔iceOrb 왕복만 허용. 상태 'iceOrb'는 이동 0(741)·공격 차단(state!=idle 579)·피격 무적(876).
 func set_native_ice_orb_state(active: bool) -> bool:
 	if active:
-		if state != "idle":
+		if state != "idle" and state not in GIANT_SLAM_STATES: # 46758 P.s='iceOrb'는 거인강타 상태도 덮어쓴다
 			return false
 		state = "iceOrb"
 	else:

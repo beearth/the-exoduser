@@ -59,7 +59,9 @@ func _ready() -> void:
 		status.text = tr_text("선택한 기록을 확인했습니다.","Selected record checked.")
 		continue_requested.emit(slot,data))
 	_entry_enabled=bool(get_meta("native_lobby_entry_enabled",get_tree().get_script()==null))
-	if _entry_enabled:new_game_requested.connect(_queue_entry)
+	if _entry_enabled:
+		new_game_requested.connect(_queue_entry)
+		_request_main_preload() # PC-INPUT-PARITY: 로비 동안 Main 리소스를 백그라운드로 읽어 진입 정지를 줄인다
 	menu.open()
 	var first_empty := 0
 	for i in menu.rows.size():
@@ -304,10 +306,50 @@ func _launch_entry(slot: int) -> void:
 	_launching=true
 	var movie: CanvasLayer=_begin_movie("warrior")
 	await movie.finished
+	# PC-INPUT-PARITY: 진입(Main 로드·_ready·첫 프레임)을 입력 콜백 안에서 한 프레임에 몰아 하면
+	# 20초 정지 동안 쌓인 OS 키 메시지가 Godot Windows 키 버퍼(512)를 넘어 뒤쪽(뗌 포함)이 버려진다.
+	# 웹 index→game.html 이동처럼 검은 화면에서 로드를 기다리되, 프레임마다 이벤트 펌프가 돌게 나눈다.
+	_show_entry_black()
+	await _await_main_preload()
+	if not is_inside_tree() or is_queued_for_deletion():return
+	# 검은 프레임을 그린 직후(frame_post_draw) 진입한다. Main의 첫 _process와 첫 그리기(셰이더 컴파일 등)는
+	# 다음 프레임(이벤트 펌프 뒤)으로 넘어가 한 프레임 정지가 둘로 나뉜다. 타이머·call_deferred는 같은 프레임
+	# 그리기 앞에 실행돼 나뉘지 않았다(측정: 80/62회 넘침). 그리기를 건너뛰는 헤드리스·최소화 창은 기다리지 않는다.
+	if DisplayServer.get_name()!="headless" and get_window().mode!=Window.MODE_MINIMIZED:
+		await RenderingServer.frame_post_draw
+	if not is_inside_tree() or is_queued_for_deletion():return
+	_launch_entry_now(slot)
+func _launch_entry_now(slot: int) -> void:
+	if not is_inside_tree() or is_queued_for_deletion():return
 	var result: Dictionary=entry.launch(self,slot)
 	if not result.ready:
 		_launching=false
+		if is_instance_valid(_entry_black):_entry_black.queue_free()
 		status.text=_entry_error(result.reason)
+const MAIN_SCENE_PATH:="res://scenes/main.tscn"
+var _main_preload_requested:=false
+var _main_preload_ref: Resource
+var _entry_black: CanvasLayer
+func _request_main_preload() -> void:
+	# 같은 리소스를 백그라운드 스레드로 미리 읽는다(entry.launch의 load()는 캐시를 받음). 진입 계약·순서 불변.
+	if _main_preload_requested:return
+	_main_preload_requested=true
+	if ResourceLoader.has_cached(MAIN_SCENE_PATH):return
+	if ResourceLoader.load_threaded_request(MAIN_SCENE_PATH)!=OK:_main_preload_requested=false
+func _await_main_preload() -> void:
+	_request_main_preload()
+	if ResourceLoader.has_cached(MAIN_SCENE_PATH) and _main_preload_ref!=null:return
+	while ResourceLoader.load_threaded_get_status(MAIN_SCENE_PATH)==ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+		await get_tree().process_frame
+	if ResourceLoader.load_threaded_get_status(MAIN_SCENE_PATH)==ResourceLoader.THREAD_LOAD_LOADED:
+		_main_preload_ref=ResourceLoader.load_threaded_get(MAIN_SCENE_PATH)
+	await get_tree().process_frame # 입력 콜백(영상 건너뛰기) 밖으로 나온다
+func _show_entry_black() -> void:
+	# 영상 패널과 같은 검은 바탕(parity_video_intro layer 100)을 진입까지 유지 — 로비가 한 프레임도 비치지 않게.
+	if is_instance_valid(_entry_black):return
+	_entry_black=CanvasLayer.new();_entry_black.layer=100;_entry_black.process_mode=Node.PROCESS_MODE_ALWAYS
+	var black:=ColorRect.new();black.color=Color.BLACK;black.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);black.mouse_filter=Control.MOUSE_FILTER_STOP
+	_entry_black.add_child(black);add_child(_entry_black)
 func _render() -> void:
 	for i in cards.size():
 		var row: Dictionary = menu.rows[i] if menu.rows.size()==5 else {"kind":"unavailable"}
