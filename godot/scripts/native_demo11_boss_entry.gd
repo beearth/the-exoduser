@@ -11,7 +11,7 @@ extends Node
 ##   _enterBossArena 30749–30839 중 PC 부분: 잔여 적 → _stageKills, ens=[], spawnHoles/rifts=[], hitStop/slowMo 0, P.iframes90·kb0,
 ##                 G._crT=0, 봉인 연출(파티클 32·shake 8·'⚠ 봉인됨!')
 ##   hurtP 43420 G._bossLoadPhase>0 이면 무적 — PC 피해 경로(보스 코어·앵글러 owner)가 이 값을 읽는다.
-##   렌더 52089–52127 로딩 오버레이(검정 페이드 + 보라 안개 + 장식선 + 보스 이름 + 부제) — 같은 수치로 그린다.
+##   렌더 52089–52122 로딩 오버레이(검정 페이드 + 보라 안개 + 장식선 + 보스 이름 + 부제) — 같은 수치로 그린다.
 ##
 ## 소유: 게이트 문 판정 cadence·로딩 상태(G._bossLoadPhase/_bossLoadT/_bossLoadFade/_crT)·진입 PC 부수효과·오버레이.
 ## 비소유: 실제 아레나 전환·플레이어 이동·보스 스폰 = 기존 encounter(DEMO11-37)·MAP11 transport. 이 노드는 MAP11
@@ -189,7 +189,7 @@ func _enter_arena(p: Node, spawn_options: Dictionary) -> Dictionary:
 			survivors += 1
 	_g_write({"_stageKills": _n(g.get("_stageKills")) + survivors}) # G._stageKills=(G._stageKills||0)+_survCnt
 	main.world.clear_native_enemies_for_intro()
-	# 30785 G.spawnHoles=[];G.rifts=[] — 소환굴 시스템이 G 와 같은 배열을 들고 있으므로 제자리에서 비운다(발동 중인 굴의 지연 소환 차단).
+	# 30771 G.spawnHoles=[];G.rifts=[] — 소환굴 시스템이 G 와 같은 배열을 들고 있으므로 제자리에서 비운다(발동 중인 굴의 지연 소환 차단).
 	for key in ["spawnHoles", "rifts"]:
 		if g.get(key) is Array: (g[key] as Array).clear()
 	var receipt: Dictionary = encounter.enter(p, spawn_options if not spawn_options.is_empty() else _enter_options)
@@ -197,19 +197,19 @@ func _enter_arena(p: Node, spawn_options: Dictionary) -> Dictionary:
 		return receipt
 	counters.arena_swaps += 1
 	var pl: Node2D = main.player
-	# 30781 P.s='idle';P.iframes=90;P._hurtCd=0;P.kb={x:0,y:0}
+	# 30780 P.s='idle';P.iframes=90;P._hurtCd=0;P.kb={x:0,y:0}
 	pl.iframes = 90.0
 	if pl.has_method("get_native_knockback") and pl.has_method("apply_native_posthurt_knockback"):
 		pl.apply_native_posthurt_knockback(-pl.get_native_knockback())
-	# 30761 G.hitStop=0;G.slowMo=0 · 30796 G._crT=0
+	# 30761 G.hitStop=0;G.slowMo=0 · 30797 G._crT=0
 	_g_write({"hitStop": 0.0, "slowMo": 0.0, "_crT": 0.0})
 	_seal_presentation()
 	return receipt
 
-## 30797 G.pets.cat.t=~~(Math.random()*100) 1회 → 30802–30808 봉인 파티클 16+16 → 30809 shake → 30810 포효 _r 1회
+## 30798 G.pets.cat.t=~~(Math.random()*100) 1회 → 30805–30810 봉인 파티클 16+16 → 30811 shake → 30812 포효 _r 1회 → 30813 문구
 func _seal_presentation() -> void:
 	var pl: Node2D = main.player
-	_rng() # 30797 G.pets…cat.t (펫 재배치 미이식, RNG 위치만 원본 순서)
+	_rng() # 30798 G.pets…cat.t (펫 재배치 미이식, RNG 위치만 원본 순서)
 	var col := Color(80.0 / 255.0, 180.0 / 255.0, 40.0 / 255.0, 0.8) # _BOSS_ATHEME[0].rc+'.8)'
 	var px: float = pl.global_position.x
 	var py: float = pl.global_position.y
@@ -226,7 +226,7 @@ func _seal_presentation() -> void:
 		var life: float = 15.0 + _rng() * 10.0
 		_part(px + cos(a) * 10.0, py + sin(a) * 10.0, cos(a) * v, sin(a) * v, col, sz, life)
 	_g_write({"shake": 8.0 * _opt_shake() / 100.0})
-	_rng() # 30810 playSample(_bsf.howl,.6,_r(_bsf.howlP,.15)) — 재생 미이식, 피치 RNG 는 호출 위치 소비
+	_rng() # 30812 playSample(_bsf.howl,.6,_r(_bsf.howlP,.15)) — 재생 미이식, 피치 RNG 는 호출 위치 소비
 	_text(px, py - 50.0, "⚠ " + _tr("봉인됨!"), "rgba(80,180,40,.8)", 70)
 
 ## 41797–41809 입장 연출(첫 2틱)
@@ -286,7 +286,7 @@ func _exit_check(g: Dictionary) -> void:
 			_part(pos.x + cos(a) * 20.0, pos.y + sin(a) * 20.0, -cos(a) * v, -sin(a) * v, Color("#8833cc"), sz, life)
 		return
 	if g.get("bossAlive") != true and g.get("_bossArena") == true and provider.gate_contact(pos, "leave"):
-		# 41926~ 아레나 출구 → 스테이지 클리어(encounter.leave). transport 의 leave 요청을 이 틱에만 통과시킨다.
+		# 41919~ 아레나 출구 → 스테이지 클리어(encounter.leave). transport 의 leave 요청을 이 틱에만 통과시킨다.
 		counters.leave_ready += 1
 		_leave_ready = true
 		var product: Variant = main.get("native_map11")

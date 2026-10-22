@@ -1,5 +1,5 @@
 extends CanvasLayer
-## PC-BOSS-PARITY (2026-10-22) — 보스 아레나 로딩 오버레이(원본 렌더 game.html 52089–52127 그대로).
+## PC-BOSS-PARITY (2026-10-22) — 보스 아레나 로딩 오버레이(원본 렌더 game.html 52089–52122 그대로).
 ## G._bossLoadPhase/_bossLoadT/_bossLoadFade 만 읽는다(쓰기 0). 원본은 캔버스(게임 화면) 위·DOM HUD 아래에
 ## 그리므로 HUD(10)·펫 자막(9) 아래 layer 8 에 둔다. 좌표는 1920×1080 캔버스 픽셀(C.width/C.height).
 const UI_FONTS = preload("res://scripts/native_ui_fonts.gd")

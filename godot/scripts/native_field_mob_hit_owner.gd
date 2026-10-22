@@ -252,9 +252,9 @@ func snapshot() -> Dictionary:
 # ══════════════ PC-BOSS-PARITY (2026-10-22) — 앵글러 몸 충돌·착지 강타 PC interaction + hitArc 37646 ══════════════
 ## 앵글러 family(native_demo11_anglers.gd, Mac)의 모델은 플레이어가 몸(r+P.r+8) 안에 들어오거나 착지 강타 범위에
 ## 있으면 PC interaction 없이는 그 개체를 정지(blocked "PC_body_or_slam_owner_required")한다. 그 PC 측이 여기다.
-##   G61081 충돌체: 통과 불가 — d<fb.r+P.r 이면 P를 원 밖(fb.r+P.r)으로 밀고 d=fb.r+P.r
-##   G61082 d<fb.r+P.r+8 && P.iframes<=0 && P.s!=='charge' → hurtP(fb.atk)
-##   G61121 착지 강타(모델이 거리·iframes·charge 판정 후 요청) → hurtP(~~fb.atk), P.kb+=dir*18, addTxt '심해강타'
+##   G61085 충돌체: 통과 불가 — d<fb.r+P.r 이면 P를 원 밖(fb.r+P.r)으로 밀고 d=fb.r+P.r
+##   G61086 d<fb.r+P.r+8 && P.iframes<=0 && P.s!=='charge' → hurtP(fb.atk)
+##   G61119–61122 착지 강타(모델이 거리·iframes·charge 판정 후 요청) → hurtP(~~fb.atk), P.kb+=dir*18, addTxt '심해강타'
 ## hurtP 는 기존 PC 경로(player.receive_damage, 보스 코어와 같은 adapter)를 쓴다. 43420 보스 로딩 중 무적은 여기서도 지킨다.
 ## G37646 hitArc 끝 _hurtFieldMobs(P.x,P.y,range,baseDmg): 근접 무기 타격도 필드보스를 친다. player.gd(PC 이동 담당 소유)를
 ## 고치지 않고, 같은 타격이 내보내는 telemetry "melee_contact_resolved"{damage=baseDmg(패시브 배율 후), range}로 받는다.
@@ -320,22 +320,22 @@ func serve_angler_interaction(request: Dictionary) -> Variant:
 		"body":
 			angler_counts.body += 1
 			var d: float = pl.global_position.distance_to(at)
-			if d < fr + pr: # G61081
+			if d < fr + pr: # G61085
 				var pa: float = atan2(pl.global_position.y - at.y, pl.global_position.x - at.x)
 				pl.global_position = Vector2(at.x + cos(pa) * (fr + pr), at.y + sin(pa) * (fr + pr))
 				d = fr + pr
 				angler_counts.body_push += 1
-			if d < fr + pr + 8.0 and float(pl.iframes) <= 0.0 and str(pl.state) != "charge": # G61082
+			if d < fr + pr + 8.0 and float(pl.iframes) <= 0.0 and str(pl.state) != "charge": # G61086
 				angler_counts.body_hurt += 1
 				_hurt_p(int(_num(f.get("atk"), 0.0)))
 			return {"ack": true, "player": _player_frame()}
 		"slam":
 			angler_counts.slam += 1
-			_hurt_p(_js_int(_num(f.get("atk"), 0.0))) # G61121
+			_hurt_p(_js_int(_num(f.get("atk"), 0.0))) # G61120
 			var ka: float = atan2(pl.global_position.y - at.y, pl.global_position.x - at.x)
 			if pl.has_method("apply_native_posthurt_knockback"):
-				pl.apply_native_posthurt_knockback(Vector2(cos(ka) * 18.0, sin(ka) * 18.0)) # G61122
-			_text(pl.global_position.x, pl.global_position.y - 30.0, "\U01f4a5심해강타!", "#ff4444", 40) # G61123
+				pl.apply_native_posthurt_knockback(Vector2(cos(ka) * 18.0, sin(ka) * 18.0)) # G61121
+			_text(pl.global_position.x, pl.global_position.y - 30.0, "\U01f4a5심해강타!", "#ff4444", 40) # G61122
 			return {"ack": true, "player": _player_frame()}
 	return null
 
