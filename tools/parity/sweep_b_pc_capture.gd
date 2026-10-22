@@ -50,6 +50,7 @@ func _run() -> void:
 		"death": await run_death()
 		"clear": await run_clear()
 		"forge": await run_forge()
+		"growth": await run_growth()
 		_: L("unknown_mode", mode)
 	var f := FileAccess.open(out.path_join("godot_log_%s.json" % mode), FileAccess.WRITE)
 	f.store_string(JSON.stringify(logrows, "\t")); f.close()
@@ -214,3 +215,11 @@ func run_forge() -> void:
 	forge.choose_tab("upgrade"); await secs(0.3)
 	await tap(KEY_G); await secs(0.5)
 	L("forge_closed", {"paused": paused, "snap": forge.get_snapshot()})
+
+func run_growth() -> void:
+	if not await enter_play(): return
+	await tap(KEY_J); await secs(1.5); await shot("081_growth")
+	var gp: Node = main.get_node_or_null("NativeGrowthPanel")
+	if is_instance_valid(gp):
+		gp.select_node("pMagic"); await secs(0.8); await shot("081_growth_magic")
+		gp.close_panel()

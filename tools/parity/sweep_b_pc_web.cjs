@@ -240,7 +240,7 @@ const probe = async (page, name, sels) => { const r = await page.evaluate(`(${PR
       await wait(1500);
       await page.keyboard.down('KeyJ'); await wait(120); await page.keyboard.up('KeyJ'); await wait(1800);
       await shot('081_growth');
-      await probe(page, '081_growth', ['#statPanel .growth-inspector', '#statPanel .growth-inspector *', '#statLeft', '#statLeft *', '#statPanel .growth-header *', '#statPanel .growth-footer', '#statPanel .growth-footer *', '#statPanel .growth-tree-toolbar *', '#statPanel .panel-nav *']);
+      await probe(page, '081_growth', ['#statPanel .growth-inspector', '#statPanel .growth-inspector *', '#statPanel .growth-paths *', '#statPanel .growth-filter', '#statPanel .growth-path-hint', '#statPanel .growth-search, #statPanel input', '#statPanel .growth-section-heading, #statPanel .growth-section-heading *', '#statPanel .growth-live-label', '#statPanel .growth-tree-origin', '#statPanel .growth-stat', '#statPanel .growth-passive', '#statPanel .growth-star', '#statPanel .growth-tree-links path', '#statPanel .growth-header *', '#statPanel .growth-footer', '#statPanel .growth-footer *', '#statPanel .growth-tree-toolbar *', '#statPanel .panel-nav *']);
       fs.writeFileSync(path.join(OUT, 'growth_inspector.html'), await ev(`(document.querySelector('#statPanel .growth-inspector')||{}).outerHTML||''`));
       // 마법 패시브 선택 상태
       await ev(`(()=>{const b=document.querySelector('#statPanel [data-passive="pMagic"] button, #statPanel [data-passive="pMagic"]');if(b)b.click()})()`); await wait(900);
