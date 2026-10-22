@@ -463,6 +463,9 @@ func _ready() -> void:
 	collision_layer = 2
 	collision_mask = 1 | 4
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
+	var input_window: Window = get_window()
+	if input_window != null and not input_window.window_input.is_connected(_track_held_input_while_paused):
+		input_window.window_input.connect(_track_held_input_while_paused)
 	if combat.is_empty():
 		var decoded = JSON.parse_string(FileAccess.get_file_as_string("res://data/combat.json"))
 		if decoded is Dictionary:
@@ -605,6 +608,21 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 		result.reason="" if result.accepted else "action_not_admitted"
 		return result
 	return result
+
+## PC-INPUT-PARITY — 원본 keydown/keyup(G13214 `K[e.code]=true;KH[e.code]=true` / G13330 `KH[e.code]=false`)은
+## G.paused와 무관하게 눌림 상태를 갱신한다. Godot은 PAUSABLE Player가 일시정지 동안 입력을 못 받아,
+## 인벤토리·성장창 등 일시정지 패널을 연 사이 뗀 이동키가 닫은 뒤에도 눌린 채 남았다(계속 걷기).
+## 일시정지 중에만 이동 눌림(누름·반복·뗌)과 패링 뗌을 기록한다. 발동(공격·패링 시작·스킬)은 하지 않는다.
+func _track_held_input_while_paused(event: InputEvent) -> void:
+	if not _native_attack_selection_bound or not is_inside_tree() or not get_tree().paused:
+		return
+	if not event is InputEventKey:
+		return
+	for action in ["move_left","move_right","move_up","move_down"]:
+		if event.is_action(action):
+			_native_input_held[action]=event.is_pressed()
+	if event.is_action("parry") and not event.is_pressed():
+		_native_input_held["parry"]=false
 
 func clear_native_input_states() -> void:
 	_native_input_held.clear()
