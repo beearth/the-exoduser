@@ -98,7 +98,7 @@ func configure(main: Node,state: Node) -> bool:
  presenter=Present.new(Drop.load_tables().AFFIX_POOL,func(v): return str(v),func(ko,en): return str(ko if language.begins_with("ko") else en))
  specials=Special.new(Drop.load_tables().LEGENDARY_SPECIAL,Drop.load_tables().UNIQUE_SPECIAL,func(value): return str(value))
  set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); mouse_filter=Control.MOUSE_FILTER_STOP
- _build(); hide()
+ hide()
  skill_forge=preload("res://scripts/native_skill_forge.gd").new();get_parent().add_child(skill_forge);skill_forge.configure(main,self)
  return true
 func _input(event: InputEvent) -> void:
@@ -113,12 +113,16 @@ func _input(event: InputEvent) -> void:
 func open_panel() -> bool:
  if is_instance_valid(skill_forge) and skill_forge.visible:skill_forge.close_panel()
  if not model().get("ready",false): return false
+ if get_child_count()==0:_build()
+ else:Surface.resume_art(self)
  _was_paused=get_tree().paused; get_tree().paused=true; show()
  var prepared: Dictionary=_main.get_ref().request_native_inventory_ui("layout") # G44049-44050
  if not prepared.get("applied",false): close_panel(); return false
  refresh_view(); return true
 func close_panel() -> void:
  hide(); get_tree().paused=_was_paused; selected={}
+ # Keep controls/scroll/filter state; detach only reloadable image references.
+ Surface.suspend_art(self);_textures.clear()
 func _exit_tree() -> void:
  if visible and is_inside_tree(): get_tree().paused=_was_paused
 func model() -> Dictionary:
@@ -286,6 +290,7 @@ func _item_button(item: Dictionary,source: String,rect: Rect2,parent: Node) -> B
    else: perform("deposit" if page=="storage" else "equip",item))
  return b
 func refresh_view() -> void:
+ if not visible:return
  if page=="ossuary":
   for child in get_children():
    if child is CanvasItem:child.hide()

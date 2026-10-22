@@ -56617,3 +56617,9 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 |---|---|---|
 | Retry 표시 이미지 | native_demo11_life.gd retry | headless는 표시 캡처 생략. GUI는 Image가 null/empty가 아닐 때만 ImageTexture 생성. respawn/EXP/save/재시작·E2E 판정 변경0 |
 | 통합 | BOSS-02 1b86c02f + INTRO-01b 015d4034 | 보스·맵/UI·HUD·인트로 체인 보존. 문서4 충돌은 양쪽 이력 유지, 번역 CRLF 보존. PC HUD 미인수로 제외. VRAM DONE 최초 부재 후 도착50900cfd, 진행 중 시험 종료 경계에서 추가 통합 |
+## 2026-10-22 — VRAM-01 맵 외 텍스처 수명·예산 분해 (PARTIAL)
+
+- 기준 015d40344a8abd9f0e59148b91638b113c00a140. 인벤토리 최초 열기 구성/닫기 그림 참조 해제, Surface WeakRef 캐시, 스킬 header/sigil 이벤트 로드/닫기 stage·아이콘 해제. 아트/수치/저장·전투/맵·보스 변경0.
+- `docs/12퍼포먼스·최적화/VRAM_01_TEXTURE_BUDGET_20261022.md`에 큰 순 표·예산·전후 monitor·수명 계약·미분해 차액 기록. 관련 UI02/UI03 문서 연결. 재현용 one-shot 원격 GPU 덤프/캡처 도구 추가.
+- 관련 inventory suite 단회1281 checks 실패0; storage=on 입력 E2E 단회 PASS/주입0/SCRIPT ERROR0. 필수 정적 1x 크롭 차이0, 재열기 인벤토리 내부 전체 차이0(12px 바깥 필드 애니메이션 차이 보존). 자기 child 종료·override 복원. PID81277 보존.
+- 맵 외 ≤1.0GB 목표는 미달·미검증. MAP03은 기준 조상에 없고 보호 범위라 미통합. monitor와 목록의 약0.94GB 차이는 원인 미분해로 남김. 완료/동기화/배포 주장 없음. 근거 `~/exoduser-wt/_out/VRAM-01/`.

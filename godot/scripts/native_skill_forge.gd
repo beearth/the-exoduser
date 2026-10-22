@@ -48,6 +48,8 @@ func open_panel() -> bool:
  old_pause=get_tree().paused;get_tree().paused=true;show();render();return true
 func close_panel() -> void:
  hide();get_tree().paused=old_pause
+ if is_instance_valid(stage):remove_child(stage);stage.queue_free();stage=null
+ icons.clear()
 func _exit_tree() -> void:
  if visible and is_inside_tree():get_tree().paused=old_pause
 func skill_name(id: String) -> String:
@@ -132,7 +134,7 @@ func disc(id: String,rect: Rect2,selected: bool=false,parent: Node=null) -> Text
  var icon: Texture2D=icon_for(id)
  if selected:
   var halo:=Halo.new();halo.position=rect.position-Vector2.ONE*18;halo.size=rect.size+Vector2.ONE*36;halo.radius=rect.size.x*.5;halo.mouse_filter=Control.MOUSE_FILTER_IGNORE;(stage if parent==null else parent).add_child(halo)
- var n:=TextureRect.new();n.position=rect.position;n.size=rect.size;n.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;n.texture=icon if icon!=null else preload("res://assets/ui/parity_ui_03/sigil.png");n.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var n:=TextureRect.new();n.position=rect.position;n.size=rect.size;n.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;n.texture=icon if icon!=null else load("res://assets/ui/parity_ui_03/sigil.png");n.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var mat:=ShaderMaterial.new();mat.shader=disc_shader;mat.set_shader_parameter("selected",1.0 if selected else 0.0);mat.set_shader_parameter("has_icon",icon!=null);n.material=mat
  (stage if parent==null else parent).add_child(n);return n
 func render() -> void:
@@ -142,12 +144,12 @@ func render() -> void:
  Surface.panel(stage,Rect2(0,0,1920,1080),Color(0,0,0,.7))
  Surface.iron(stage,Rect2(12,12,1896,1056),Color("171719ee"),Color("080b0df5"))
  var backdrop_clip:=Control.new();backdrop_clip.position=Vector2(12,12);backdrop_clip.size=Vector2(1896,1056);backdrop_clip.clip_contents=true;backdrop_clip.mouse_filter=Control.MOUSE_FILTER_IGNORE;stage.add_child(backdrop_clip)
- var background_sigil:=TextureRect.new();background_sigil.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;background_sigil.texture=preload("res://assets/ui/parity_ui_03/sigil.png");background_sigil.position=Vector2(638,-150);background_sigil.size=Vector2.ONE*620;background_sigil.modulate.a=.15;background_sigil.mouse_filter=Control.MOUSE_FILTER_IGNORE;backdrop_clip.add_child(background_sigil)
+ var background_sigil:=TextureRect.new();background_sigil.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;background_sigil.texture=load("res://assets/ui/parity_ui_03/sigil.png");background_sigil.position=Vector2(638,-150);background_sigil.size=Vector2.ONE*620;background_sigil.modulate.a=.15;background_sigil.mouse_filter=Control.MOUSE_FILTER_IGNORE;backdrop_clip.add_child(background_sigil)
  Surface.frame(stage,Rect2(12,12,1896,1056),60,true)
  for i in 5:
   Surface.button(stage,["설정 [ESC]","인벤토리 [TAB]","대장간 [G]","스킬 [K]","능력치 [J]"][i],Rect2(36+i*369.6,26,367.6,32),func():navigate(i),i==3)
  var header_clip:=Control.new();header_clip.position=Vector2(819.6,79);header_clip.size=Vector2(280.8,71.76);header_clip.clip_contents=true;header_clip.mouse_filter=Control.MOUSE_FILTER_IGNORE;stage.add_child(header_clip)
- var header:=TextureRect.new();header.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;header.texture=preload("res://assets/ui/parity_ui_03/header.png");header.position=Vector2(0,-70.2);header.size=Vector2(280.8,280.8);header.mouse_filter=Control.MOUSE_FILTER_IGNORE;header_clip.add_child(header)
+ var header:=TextureRect.new();header.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;header.texture=load("res://assets/ui/parity_ui_03/header.png");header.position=Vector2(0,-70.2);header.size=Vector2(280.8,280.8);header.mouse_filter=Control.MOUSE_FILTER_IGNORE;header_clip.add_child(header)
  var title_plate:=TitlePlate.new();title_plate.image=Surface.texture("img/ui/iron_covenant_20260924/button.webp");title_plate.position=Vector2(819.6,150.76);title_plate.size=Vector2(280.8,49.92);title_plate.mouse_filter=Control.MOUSE_FILTER_IGNORE;stage.add_child(title_plate)
  text("전투 스킬",Rect2(819.6,155,280.8,34),19,Color("f7e7bb"),true).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
  Surface.panel(stage,Rect2(36,212.47,1848,792.53),Color("0b0809"),Color("3b332c"))
@@ -174,7 +176,7 @@ func render_altar(m: Dictionary) -> void:
  # JS renderAltar geometry; CSS mid width1122, H554, TOP10 BOT78.
  var W:=1134.0;var H:=564.89;var cy:=10+(H-88)/2;var R:=minf(W*.3,(H-88)*.4);var node_size:=minf(92,R*.56);R=minf(R,(H-88)/2-node_size/2-16)
  var cx:=960.0;cy+=339.11
- var plate:=TextureRect.new();plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.texture=preload("res://assets/ui/parity_ui_03/sigil.png");var radius: float=maxf(R*1.32,R+node_size*.65);plate.position=Vector2(cx-radius,cy-radius);plate.size=Vector2.ONE*radius*2;plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var plate:=TextureRect.new();plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.texture=load("res://assets/ui/parity_ui_03/sigil.png");var radius: float=maxf(R*1.32,R+node_size*.65);plate.position=Vector2(cx-radius,cy-radius);plate.size=Vector2.ONE*radius*2;plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var mat:=ShaderMaterial.new();mat.shader=rune_shader;plate.material=mat;stage.add_child(plate);plate.hide()
  var core_size: float=maxf(48,minf(150,minf(R*1.02,(R-node_size/2)*1.3)))
  if not m.host.is_empty():disc(m.host,Rect2(cx-core_size/2,cy-core_size/2,core_size,core_size),true)
