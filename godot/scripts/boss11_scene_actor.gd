@@ -22,7 +22,7 @@ var _level_width:=0.0
 func configure(reader: Node,_shared: ShaderMaterial=null) -> void:
  actor=reader
  _level_font=SystemFont.new();_level_font.font_names=PackedStringArray(["monospace"]);_level_font.font_weight=700
- body=Sprite2D.new();body.name="BossSceneBody";body.region_enabled=true;body.centered=false
+ body=Sprite2D.new();body.name="BossSceneBody";body.region_enabled=true;body.centered=false;body.show_behind_parent=true
  add_child(body)
   # Source 6028: shared WebGPU/WebGL X proxy ignores globalCompositeOperation.
  # The two .42 redraws in 10970-10971 therefore use source-over, not ADD.
@@ -51,6 +51,9 @@ func render_at(now: float) -> void:
   show();body.hide();global_position=Vector2(e.get("x",0),e.get("y",0));z_as_relative=false;z_index=clampi(int(global_position.y/4),-4096,4095);_name_top=float(e.get("_teleDropY",0))-float(e.get("r",44))*2;return
  body.show()
  show();global_position=Vector2(e.get("x",0),e.get("y",0));z_as_relative=false;z_index=clampi(int(global_position.y/4),-4096,4095)
+ if e.get("s")=="bossJump":
+  var jump_p: float=1-float(e.get("st2",0))/40
+  global_position.y-=(jump_p*2 if jump_p<.5 else 1-(jump_p-.5)*2)*60
  var s: String=e.get("s","");var rem: float=e.get("st2",0)
  var dir: int=posmod(roundi(float(e.get("facing",0))/(PI/4))+6,8)
  var sheet: String="base8";var cols:=4;var rows:=2;var frame: int=dir;var directional:=false

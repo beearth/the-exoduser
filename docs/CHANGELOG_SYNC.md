@@ -56808,3 +56808,9 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - boss Lv 텍스트·폭을 level 변경 시 캐시하여 draw 문자열 할당 제거.
 
 - SWEEP-A 신규 표시 helper5개 .gd.uid 원격 보존.
+
+
+## 2026-10-22 SWEEP-A boss composition
+
+- 아레나 음수좌표에서 source 경고→body→쉴드/eyes/bar 순서 복원(ground z−2500,body behind parent).
+- source53141 jump visual60px만 적용,PC physics 위치/AI 변경0. 상세 §12.

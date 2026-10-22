@@ -42,6 +42,7 @@ void fragment(){
 var _fx_circles: Array[Sprite2D]=[]
 var _fx_used:=0
 func _ready() -> void:
+ z_as_relative=false;z_index=-2500
  var gradient:=Gradient.new();gradient.colors=PackedColorArray([Color.WHITE,Color.WHITE])
  var white:=GradientTexture2D.new();white.gradient=gradient;white.width=2;white.height=2
  var shader_:=Shader.new();shader_.code=FX_SHADER
