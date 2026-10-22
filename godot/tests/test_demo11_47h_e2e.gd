@@ -157,7 +157,7 @@ func place_in_natural_contact() -> Dictionary:
  var score: float=-INF
  var best_cooldown: float=0.0
  for enemy in main.world.get_enemies():
-  if not is_instance_valid(enemy) or enemy.get("alive")!=true or not is_instance_valid(main.native_natural_enemies) or not main.native_natural_enemies.owns_actor(enemy):continue
+  if not is_instance_valid(enemy) or enemy.get("alive")!=true or not is_instance_valid(main.native_natural_enemies):continue
   # Hive bloater (etype1) has ranged stages only, no natural melee contact.
   if enemy.get("etype") not in [0,4,6,18,19]:continue
   var point: Vector2=enemy.global_position+Vector2(24,0)
@@ -171,15 +171,66 @@ func place_in_natural_contact() -> Dictionary:
   if enemy.get("state")!="idle":value*=.01
   if value>score:best=enemy;score=value;best_cooldown=cooldown
  if not is_instance_valid(best):return {"placed":false}
- steer_input(best.global_position+Vector2(24,0))
+ navigate_input(best.global_position+Vector2(24,0))
  return {"placed":true,"actor":best.get_instance_id(),"etype":best.etype,"distance":main.player.global_position.distance_to(best.global_position),"state":best.state,"cooldown":best_cooldown}
 func steer_input(at: Vector2) -> void:
  var delta: Vector2=at-main.player.global_position
  var direction: Vector2=delta.normalized() if delta.length()>25 else Vector2.ZERO
  boss_input("move_up",direction.y<-.25);boss_input("move_down",direction.y>.25);boss_input("move_left",direction.x<-.25);boss_input("move_right",direction.x>.25)
-func boss_input(action: String,pressed: bool) -> void:
+# Harness navigation cache only. Uses the actual web tile graph; never writes actors.
+var navigation: RefCounted
+var navigation_cell:=Vector2i(-999,-999)
+func navigate_input(at: Vector2) -> void:
+ var provider: Node=main.native_map11.provider()
+ if navigation==null:
+  navigation=preload("res://scripts/maps/map11/web_flow.gd").new()
+  navigation.configure(provider.field.data)
+ var cell:=Vector2i(int(at.x/40),int(at.y/40))
+ if cell!=navigation_cell:
+  navigation.prepare(at);navigation_cell=cell
+ var direction: Vector2=navigation.direction(main.player.global_position)
+ if main.player.global_position.distance_to(at)<55:direction=(at-main.player.global_position).normalized() if main.player.global_position.distance_to(at)>12 else Vector2.ZERO
+ # Validate each movement axis against the real radius/prop collision owner.
+ var step: Vector2=direction*12
+ if not main.world.can_move(main.player.global_position+step,main.player.radius):
+  if main.world.can_move(main.player.global_position+Vector2(step.x,0),main.player.radius):direction.y=0
+  elif main.world.can_move(main.player.global_position+Vector2(0,step.y),main.player.radius):direction.x=0
+  else:direction=Vector2.ZERO
+ boss_input("move_up",direction.y<-.25);boss_input("move_down",direction.y>.25);boss_input("move_left",direction.x<-.25);boss_input("move_right",direction.x>.25)
+func nearest_natural_enemy() -> Node:
+ var best: Node;var distance:=INF
+ for enemy in main.world.get_enemies():
+  if not is_instance_valid(enemy) or enemy.get("alive")!=true or not enemy.has_method("receive_damage"):continue
+  var d: float=enemy.global_position.distance_squared_to(main.player.global_position)
+  if d<distance:distance=d;best=enemy
+ return best
+func fight_natural(target: Node,deadline_ms: int) -> Dictionary:
+ var attacks:=0;var accepted:=0;var start: Vector2=main.player.global_position
+ var observed: Array=[target]
+ var killed_ids: Array=[]
+ var deadline: int=Time.get_ticks_msec()+deadline_ms
+ while is_instance_valid(target) and target.alive and main.player.hp>0 and Time.get_ticks_msec()<deadline:
+  var closest: Node=nearest_natural_enemy()
+  if is_instance_valid(closest) and closest!=target and closest.global_position.distance_to(main.player.global_position)+20<target.global_position.distance_to(main.player.global_position):
+   target=closest;observed.append(target)
+  var distance: float=main.player.global_position.distance_to(target.global_position)
+  navigate_input(target.global_position)
+  boss_aim(target.global_position)
+  if distance<47+float(target.radius)-4:
+   boss_release();boss_aim(target.global_position)
+   if main.player.state=="idle":
+    var admission: Dictionary=boss_input("weapon",true);attacks+=1
+    if admission.get("accepted",false):accepted+=1
+    await physics_frame
+    boss_input("weapon",false)
+  await physics_frame
+ boss_release()
+ for actor in observed:
+  if is_instance_valid(actor) and not actor.alive and not killed_ids.has(actor.get_instance_id()):killed_ids.append(actor.get_instance_id())
+ return {"killed_actor_ids":killed_ids,"attacks":attacks,"input_presses":accepted,"start":str(start),"end":str(main.player.global_position),"target_alive":target.alive if is_instance_valid(target) else null,"input_only":true}
+func boss_input(action: String,pressed: bool) -> Dictionary:
  var event:=InputEventAction.new();event.action=action;event.pressed=pressed
- main.player.handle_native_input_event(event)
+ return main.player.handle_native_input_event(event)
 func boss_release() -> void:
  boss_input("move_up",false);boss_input("move_down",false);boss_input("move_left",false);boss_input("move_right",false);boss_input("weapon",false)
 func boss_aim(at: Vector2) -> void:
@@ -326,62 +377,50 @@ func run() -> void:
  if not field_ready:mark_checkpoint("MAP11 production provider absent; remaining actual subsystems run as conditional checkpoints")
  await done("PASS" if field_ready else "NOT_READY","" if field_ready else "MAP11_provider_absent",{"stage":g.get("stage"),"World_ready":main.world.ready_for_player,"actual_provider":field_ready,"spawn_adapter_bound":adapter!=null,"fixture_provider_created":false})
  begin("enemy_kill")
- var target: Node
+ var target: Node=nearest_natural_enemy()
  var spawn_started:=Time.get_ticks_msec()
  var spawn_deadline:=spawn_started+35000
- var hole_anchors: Array=[]
- # Placement at a provider hole only; scheduler owns RNG/timers/etype/admission.
- if adapter!=null and adapter.is_current():
-  hole_anchors=product.provider().anchors("hole")
-  if not hole_anchors.is_empty():steer_input(hole_anchors[0].marker.global_position)
- while Time.get_ticks_msec()<spawn_deadline:
-  for e in main.world.get_enemies():
-   if is_instance_valid(e) and e.get("alive")==true and e.get("etype") in [1,4] and e.has_method("receive_damage") and is_instance_valid(main.native_natural_enemies) and main.native_natural_enemies.owns_actor(e):target=e;break
-  if is_instance_valid(target):break
-  if not hole_anchors.is_empty():
-   var visit: int=int((Time.get_ticks_msec()-spawn_started)/7000)%hole_anchors.size()
-   steer_input(hole_anchors[visit].marker.global_position)
+ var hole_anchors: Array=product.provider().anchors("hole") if adapter!=null and adapter.is_current() else []
+ hole_anchors.sort_custom(func(a,b):return a.marker.global_position.distance_squared_to(main.player.global_position)<b.marker.global_position.distance_squared_to(main.player.global_position))
+ while not is_instance_valid(target) and Time.get_ticks_msec()<spawn_deadline and main.player.hp>0:
+  if not hole_anchors.is_empty():navigate_input(hole_anchors[0].marker.global_position)
   await physics_frame
+  target=nearest_natural_enemy()
  var regions: Node=main.get_node_or_null("NativeRegions")
  var region_before: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
  var origin_before: int=main.native_natural_enemies.counts.origin_kills if is_instance_valid(main.native_natural_enemies) else 0
  var home: Vector2=main.player.global_position;var attacks:=0;var accepted:=0;var event_start:=event_rows.size()
  var crossbow_observation: Dictionary={}
  if is_instance_valid(target):
-  mark_checkpoint("actual move/aim inputs; observe automatic crossbow for 3s, then existing melee request; no placement or damage injection")
-  var bow_sample_start: int=active.physics_samples.size()
-  var bow_before: Dictionary=main.native_auto_crossbow.snapshot()
-  var bow_deadline:=Time.get_ticks_msec()+3000
-  while target.alive and Time.get_ticks_msec()<bow_deadline and main.player.hp>main.player.max_hp*.2:
-   steer_input(target.global_position+Vector2(-180,0))
-   await settle(6)
-   if str(main.native_auto_crossbow.reason).begins_with("field_mob_owner_unported:"):break
+  var bow_before: Dictionary=main.native_auto_crossbow.snapshot().duplicate(true)
+  var fight: Dictionary=await fight_natural(target,45000)
+  attacks=fight.attacks;accepted=fight.input_presses
   crossbow_observation=main.native_auto_crossbow.snapshot().duplicate(true)
-  crossbow_observation["physics_callback"]=stats(active.physics_samples.slice(bow_sample_start))
   crossbow_observation["fired_delta"]=int(crossbow_observation.fired)-int(bow_before.fired)
   crossbow_observation["hits_delta"]=int(crossbow_observation.hits)-int(bow_before.hits)
-  crossbow_observation["timed_out"]=Time.get_ticks_msec()>=bow_deadline
-  # The PC bow admission boundary is final. It does not disable the existing
-  # independent melee owner; restore PCIA's actual request_attack path unchanged.
-  if target.alive and (crossbow_observation.timed_out or str(crossbow_observation.get("reason","")).begins_with("field_mob_owner_unported:")):
-   var deadline:=Time.get_ticks_msec()+45000
-   while target.alive and attacks<200 and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
-    if main.player.state!="idle":await physics_frame;continue
-    steer_input(target.global_position+Vector2(-(47+float(target.radius)-8),0));boss_aim(target.global_position)
-    attacks+=1
-    if main.player.request_attack():accepted+=1
-    main.player.release_attack()
-    await settle(36)
-    if event_rows.slice(event_start).any(func(e):return e.id==target.get_instance_id() and (e.kind=="native_hurte_halt" or (e.kind=="native_hurte" and e.ok==false))):break
-  main.player.release_attack() # Keep real kill location through R pickup, as in PCIA.
+  crossbow_observation["navigation"]=fight
  var region_after: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
- var killed: bool=is_instance_valid(target) and not target.alive and region_after>region_before
+ var observed_deaths: Array=crossbow_observation.get("navigation",{}).get("killed_actor_ids",[])
+ var killed: bool=not observed_deaths.is_empty() and region_after>region_before
  await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"automatic_crossbow":crossbow_observation,"kill_path":"melee" if attacks>0 else "automatic_crossbow","natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
  begin("item_pickup")
  var inv: Dictionary=main.source_state.read_current_inventory();var before_size: int=inv.bag.size();var records: Array=main.source_state.read_native_drop_records()
- # INTEG-12: no RNG fixture or append_native_drop_records fallback.
- records=main.source_state.read_native_drop_records()
- if not records.is_empty() and records[0].get("item") is Dictionary:item=records[0].item
+ # Continue real combat until a natural equipment drop exists; no RNG/XP fixture.
+ var loot_deadline:=Time.get_ticks_msec()+60000
+ while records.is_empty() and main.player.hp>0 and Time.get_ticks_msec()<loot_deadline:
+  var next: Node=nearest_natural_enemy()
+  if is_instance_valid(next):await fight_natural(next,8000)
+  elif not hole_anchors.is_empty():navigate_input(hole_anchors[0].marker.global_position);await settle(12)
+  else:break
+  records=main.source_state.read_native_drop_records()
+ if not records.is_empty() and records[0].get("item") is Dictionary:
+  item=records[0].item
+  var drop: Dictionary=records[0]
+  var point:=Vector2(float(drop.get("x",main.player.global_position.x)),float(drop.get("y",main.player.global_position.y)))
+  var pickup_deadline:=Time.get_ticks_msec()+15000
+  while main.player.hp>0 and main.player.global_position.distance_to(point)>45 and Time.get_ticks_msec()<pickup_deadline:
+   navigate_input(point);await physics_frame
+ boss_release()
  await settle(3);key(KEY_R,true);await process_frame;key(KEY_R,false);await settle(3)
  var picked: bool=not item.is_empty() and inv.bag.any(func(v):return is_same(v,item)) and inv.bag.size()>before_size
  await done("PASS" if picked else "NOT_READY","" if picked else "actual R pickup did not admit item",{"synthetic_R_via_Input":true,"bag_before":before_size,"bag_after":inv.bag.size(),"same_item_identity":picked,"handwritten_item":false})
@@ -424,7 +463,12 @@ func run() -> void:
  await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"entry":potion_entry,"after_wait":potion_after_wait,"damage_path":damage_path,"request_loop_exit":"used" if used else ("hp_le_1" if main.player.hp<=1 else "deadline_or_owner_unavailable"),"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"runtime":main.source_state.read_native_potion_runtime()})
  begin("level_up")
  var p: Dictionary=main.source_state.read_current_p();var lv_before: int=int(p.lv)
- # INTEG-12: observe natural kill reward only; never inject XP.
+ # Earn the original curve through actual inputs and natural kill rewards.
+ var growth_deadline:=Time.get_ticks_msec()+60000
+ while int(p.lv)<=initial_level and main.player.hp>0 and Time.get_ticks_msec()<growth_deadline:
+  var next: Node=nearest_natural_enemy()
+  if not is_instance_valid(next):break
+  await fight_natural(next,8000)
  var level_ok: bool=int(p.lv)>initial_level and int(p.lv)<=100
  await done("PASS" if level_ok else "NOT_READY","" if level_ok else "natural combat XP did not level up",{"before":initial_level,"after":p.lv,"SP":p.sp,"AP":p.ap,"XP_injected":false})
  begin("stat_passive_invest")

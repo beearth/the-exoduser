@@ -56655,3 +56655,9 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - intro/E2E에 fresh UUID 격리 namespace. PC 테스트/스킬창 변경0. 42는 실행 인자 누락으로 시작 전 거부, 재실행0; 완료로 주장하지 않는다.
 - 최종 E2E18단계·남은 제약: [INTEG12C_BOOT_REPLAY_20261022.md](engine/INTEG12C_BOOT_REPLAY_20261022.md), 외부 `_out/INTEG-12c/DONE.txt` 참조.
 - 최종 E2E18단계: overall NOT_READY, PASS7/NOT_READY11/FAIL0·SCRIPT ERROR0·native crash0. 실제 Retry 후 scene reload/HP복원 확인. 마지막 State reader null guard는 최종 check-only exit0으로 구분, suite 재실행0.
+
+## 2026-10-22 INTEG-13 — 스킬 merge 및 Mac 전투 접근 하니스
+
+- 기준32d1684d + SKILL-01 0c8fd56f를 merge. 문서 충돌 양쪽 이력 보존, 제품 UI·PC writer·부팅/life 원소유 코드 유지.
+- `godot/tests/test_demo11_47h_e2e.gd`: 실제 웹 BFS 접근·실제 registry 최근접 적(커튼5마리 포함)·더 가까운 타겟 재선택·드랍 좌표 접근·자연 XP 전투 대기. HP/피해/드랍/XP 주입 없음. PC 코어/PC 테스트/hud-stats 수정 없음.
+- [INTEG-13 검수](engine/INTEG13_SKILL_COMBAT_20261022.md): suite 각1회 ERROR0, 단회 E2E7PASS/11NOT_READY. 최종 접근 보강 GUI14회 공격 승인/처치0·자연 사망. PASS13 회복/종주 완료로 주장하지 않음.
