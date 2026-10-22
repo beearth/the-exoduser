@@ -54,6 +54,8 @@ var _env: ColorRect
 var _boss_light_source: Dictionary={}
 var _boss_color: Sprite2D
 var _configured := false
+# Snapshot9072: the Mac WebGPU reference does not start its separate THREE fog.
+var _source_fog_disabled: bool = OS.get_name() == "macOS"
 var _stage_draws := 0
 
 const LIGHTMAP_SHADER := "
@@ -199,12 +201,12 @@ func configure(world: Node, player: Node2D) -> bool:
 	_light_values.resize(12)
 	for i in _static_lights.size():
 		var color_sprite:=Sprite2D.new();color_sprite.texture=load("res://assets/map/web_parity/detail02/color%d.png"%([3,0,4][mini(i,2)]))
-		var add_material:=CanvasItemMaterial.new();add_material.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD;color_sprite.material=add_material
+		var add_material:=CanvasItemMaterial.new();add_material.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX;color_sprite.material=add_material
 		color_sprite.name="NativeStaticColor%d"%i
 		color_sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(color_sprite);_static_colors.append(color_sprite)
 	_iris_color=Sprite2D.new();_iris_color.name="NativeIrisColor"
 	_iris_color.texture=load("res://assets/map/web_parity/detail02/color0.png")
-	var iris_add:=CanvasItemMaterial.new();iris_add.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD;_iris_color.material=iris_add
+	var iris_add:=CanvasItemMaterial.new();iris_add.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX;_iris_color.material=iris_add
 	_iris_color.modulate.a=0;_iris_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_iris_color)
 	_boss_color=Sprite2D.new();_boss_color.name="NativeBossColor"
 	_boss_color.texture=preload("res://assets/map/web_parity/detail02/color0.png")
@@ -229,6 +231,7 @@ func configure(world: Node, player: Node2D) -> bool:
 	_filter_rect = _shader_rect("NativeColorFilter", FILTER_SHADER)
 	_fog_gl = _shader_rect("NativeFogGL", FOG_GL_SHADER)
 	(_fog_gl.material as ShaderMaterial).set_shader_parameter("u_col", FOG_GL_COL)
+	_fog_gl.visible=not _source_fog_disabled
 	_configured = true
 	return true
 
@@ -351,4 +354,4 @@ func observe_arena_boss_light(e: Dictionary) -> void:
 # Snapshot9072: Mac WebGPU explicitly skips the THREE fog start. Arena parity
 # follows this observed source gate; the field's established presentation is retained.
 func set_arena_source_fog_disabled(disabled: bool) -> void:
-	if is_instance_valid(_fog_gl):_fog_gl.visible=not disabled
+	if is_instance_valid(_fog_gl):_fog_gl.visible=not (disabled or _source_fog_disabled)

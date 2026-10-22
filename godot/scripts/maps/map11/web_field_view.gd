@@ -65,10 +65,10 @@ func _ready() -> void:
   _props.append({"sprite":sprite,"row":row,"occ":occ,"s":float(row.metadata.sz)*float(size.x/float(row.metadata.sz)) if not row.metadata.get("keepAR",false) else float(row.metadata.sz),"alpha":1.0})
 func configure(main: Node) -> void:
  _main=main;_actor=main.player;_camera=main.camera
- # Source 25500: createRadialGradient(320,320,0,320,320,320), additive.
+ # Source25500/51943: point stamp; X proxy6028 ignores lighter, so source-over.
  _point=Sprite2D.new()
  _point.texture=load("res://assets/map/web_parity/detail02/point.png")
- var light_mat:=CanvasItemMaterial.new();light_mat.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD;_point.material=light_mat;_point.z_index=-2700;add_child(_point)
+ var light_mat:=CanvasItemMaterial.new();light_mat.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX;_point.material=light_mat;_point.z_index=-2700;add_child(_point)
  _camera.zoom=Vector2.ONE;_camera.offset=Vector2.ZERO;_camera.position_smoothing_enabled=false
  _camera.limit_left=-20000;_camera.limit_top=-20000;_camera.limit_right=20000;_camera.limit_bottom=20000
  _camera.global_position=_actor.global_position

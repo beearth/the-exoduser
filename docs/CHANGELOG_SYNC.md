@@ -56758,3 +56758,8 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 ## PARITY-UI-06 후속 — 2026-10-22
 
 스킬 제단 배경 광/2D emissive·결과 카드 배지/장식·잠금 캐릭터 상세 전환 후속은 `docs/engine/PARITY_UI_06_20261022.md`를 따른다. 이전 수치는 이력이며 전체 동일성은 RETOUCH, 영상 HOLD 유지. 보스/아레나 owner 변경0.
+
+
+## 2026-10-22 SWEEP-A 첫 표시 단위
+
+- 지정 boss03/ui06 merge 통합. Mac field THREE fog gate와 static/iris/point 합성을 정본 proxy에 맞춤. 원본행·표시수치는 engine/SWEEP_A_20261022.md. 11위치 내부 viewport 재캡처 ERROR0; 전체 동일성/자연종주 미완료.

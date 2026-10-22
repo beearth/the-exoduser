@@ -40,3 +40,14 @@ p2002a/b·contracts PASS·초기화 117/2·시작 145/2·재생 88/0·레슨 30/
 ## 남은 것
 이리스 펫 광원(펫 시스템) / LIT 색층·블룸 실광원(보스 접근·화염장판 시) / ATMOS 입자·
 갓레이(PP) / 보스아레나 비네트 분기 / 베이스 맵 페인팅 톤(맵 SSOT) / 하프해상도 라이트맵.
+
+
+## SWEEP-A 현행 표시 보정 — 2026-10-22
+
+|대상|현행 계약|정본 행|
+|---|---|---|
+|Mac 별도 THREE 안개|OS macOS에서 field/arena 모두 숨김. arena→field 전환도 다시 켜지 않음. Windows 기본 경로 유지.|G9072|
+|정적12광원/이리스 색층|원본 offscreen lighter 이후 main X proxy의 lighter no-op에 맞춰 MIX(source-over). 색·반경·알파·half lightmap 수치 불변.|G4715-4726,G6028,G55201|
+|플레이어 point.png|필드도 아레나와 같은 MIX. 640² stamp·좌표 불변.|G25500,G51943-51948|
+
+SWEEP-A 11위치 engine viewport 재캡처 map-lighting/godot, ERROR0. 맵 geometry/전투/저장/새 문자열 변경0. 전체 동일성은 [SWEEP-A 차이 목록](SWEEP_A_20261022.md)을 따른다. 과거 검수·계수는 당시 이력이다.
