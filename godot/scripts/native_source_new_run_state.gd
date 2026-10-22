@@ -1910,6 +1910,21 @@ func apply_native_forge_enhance(owner: Node, item: Dictionary) -> Dictionary:
 	_forge_committing = false
 	return result
 
+# PC-SYS-4: G28141~28149 _doAiEnhance의 상태 쓰기 부분. 대상은 INV.equipped[G._aiEnhSlot] 실제 참조.
+# 성공(res.ok) 시 G28167 shake(8) = G.shake=max(G.shake,8*OPT.shake/100)(대장간 열림=일시정지 중에도 원본은 값만 쓴다).
+func apply_native_forge_ai_enhance(owner: Node, slot: String, target: float, budget: float, opt_shake: float) -> Dictionary:
+	if _forge_committing or not _forge_owner_current(owner) or not is_finite(target) or not is_finite(budget) or not is_finite(opt_shake):
+		return {"status":"NOT_READY","reason":"forge_owner_not_current"}
+	var equipped: Variant = _inventory.get("equipped")
+	if not equipped is Dictionary or not (equipped as Dictionary).get(slot) is Dictionary:
+		return {"status":"NOT_READY","reason":"ai_enhance_slot_item_absent"}
+	_forge_committing = true
+	var result: Dictionary = FORGE_TRANSACTION.ai_enhance(equipped[slot], target, budget, _g, Callable(_world,"sample_native_random_unit"))
+	if result.get("ok") == true:
+		_g["shake"] = maxf(_feel_num(_g.get("shake")), 8.0 * opt_shake / 100.0)
+	_forge_committing = false
+	return result
+
 func apply_native_forge_transfer_prefix(owner: Node, old: Dictionary, item: Dictionary) -> Dictionary:
 	# This entry is for the actual equip owner, not an independent forge transfer button.
 	if _forge_committing or not _forge_owner_current(owner) or not _equipment_owner_current(owner) \

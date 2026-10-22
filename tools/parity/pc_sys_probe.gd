@@ -196,4 +196,18 @@ func run_keycap() -> void:
 func run_forge() -> void:
 	if not await enter_play(): return
 	await tap(KEY_G); await secs(1.5)
-	await shot("forge_open")
+	var forge: Node = main.get("source_forge")
+	var w: Dictionary = main.source_state.read_current_inventory().equipped.weapon
+	# 웹 관측과 같은 고정 조건: 악의 1000(새 게임 기본 — 격리 폴더 공유 악의가 남아 있을 수 있음), 무기 +0
+	g().mats = 1000; w.enh = 0
+	forge._ai_slot = "weapon"; forge._ai_target = -1; forge._refresh(); await secs(0.6)
+	L("ai_before", {"mats": g().mats, "enh": w.get("enh", 0), "target": forge._ai_target, "rarity": w.get("rarity")})
+	await shot("forge_ai_before")
+	var txt0: int = int(main.world.get_native_text_snapshot().get("emitted", 0)) if main.world.get_native_text_snapshot() is Dictionary else 0
+	L("ai_press_1", forge._do_ai_enhance())
+	L("ai_after_1", {"mats": g().mats, "enh": w.get("enh", 0), "target": forge._ai_target, "text": main.world.get_native_text_snapshot()})
+	await secs(0.3); await shot("forge_ai_after")
+	g().mats = 200000; forge._ai_target = 3; forge._refresh(); await secs(0.3)
+	L("ai_press_rich", forge._do_ai_enhance())
+	L("ai_after_rich", {"mats": g().mats, "enh": w.get("enh", 0), "target": forge._ai_target, "shake": g().get("shake"), "text": main.world.get_native_text_snapshot()})
+	await secs(0.3); await shot("forge_ai_rich_after")

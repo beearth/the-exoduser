@@ -130,8 +130,17 @@ L('route_override_files', diff.length);
       await ev(`(()=>{G._aiEnhSlot='weapon';G._aiTarget=undefined;renderForge()})()`); await wait(600);
       L('ai_before', await ev(`({mats:G.mats,enh:INV.equipped.weapon.enh||0,target:G._aiTarget,rarity:INV.equipped.weapon.rarity})`));
       await shot('forge_ai_before');
+      // 관측용 래퍼(동작 불변): renderForge 직전 #aiEnhResult 내용과 addTxt 호출을 기록
+      await ev(`(()=>{window.__ai={calls:0,beforeRender:[],txt:[]};const rf=window.renderForge;window.renderForge=function(){const r=document.getElementById('aiEnhResult');window.__ai.beforeRender.push(r?r.innerHTML:null);return rf.apply(this,arguments)};const at=window.addTxt;window.addTxt=function(x,y,t,c,l){window.__ai.txt.push({t,c,l});return at.apply(this,arguments)};const da=window._doAiEnhance;window._doAiEnhance=function(){window.__ai.calls++;return da.apply(this,arguments)}})()`);
       // 원본 버튼 onclick=_doAiEnhance()
       await ev(`[...document.querySelectorAll('#fgGrid .id-btn.equip')].find(b=>/강화 시작/.test(b.textContent)).click()`);
+      L('ai_trace', await ev(`window.__ai`));
+      // 악의를 충분히 준 경우(목표 +3)도 관측
+      await ev(`(()=>{G.mats=200000;G._aiTarget=3;renderForge()})()`); await wait(300);
+      await ev(`(()=>{window.__ai={calls:0,beforeRender:[],txt:[]}})()`);
+      await ev(`[...document.querySelectorAll('#fgGrid .id-btn.equip')].find(b=>/강화 시작/.test(b.textContent)).click()`);
+      L('ai_trace_rich', await ev(`({ai:window.__ai,mats:G.mats,enh:INV.equipped.weapon.enh,target:G._aiTarget})`));
+      await wait(200); await shot('forge_ai_rich_after');
       await wait(300);
       L('ai_after', await ev(`({mats:G.mats,enh:INV.equipped.weapon.enh||0,target:G._aiTarget,result:(document.getElementById('aiEnhResult')||{}).innerHTML,txts:(G.txts||[]).slice(-3).map(t=>({t:t.t||t.text||t.txt,c:t.c||t.col}))})`));
       await shot('forge_ai_after');
