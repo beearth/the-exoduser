@@ -125,8 +125,8 @@ func refresh_native_owners() -> void:
 	var p: Variant=state.read_current_p() if is_instance_valid(state) else null
 	var g: Variant=state.read_current_g() if is_instance_valid(state) else null
 	var live:=is_instance_valid(_main) and _main.is_inside_tree() and is_instance_valid(_adapter) and _adapter.is_inside_tree() and p is Dictionary and g is Dictionary
-	_strip.visible=live and (hovered or _selection_seconds>0)
-	_selection.visible=_strip.visible;_failure.visible=live and _failure_seconds>0
+	_strip.visible=false # No counterpart in web #skBar.
+	_selection.visible=false;_failure.visible=false
 	_boss.visible=false
 	_snapshot={"ready":live,"boss_visible":false,"selected_key":_selected,"failure_reason":_last_failure if _failure_seconds>0 else ""}
 	if not live: return

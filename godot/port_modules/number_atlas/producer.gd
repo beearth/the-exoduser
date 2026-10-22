@@ -25,7 +25,7 @@ extends Node
 ## Headless never bakes pixels (explicit "unavailable_headless").
 ##
 ## Known port differences (RETOUCH, not hidden):
-##   - "Pirata One" is not in Godot assets; the source's 2nd stack entry "Noto Sans KR" is used.
+##   - Pirata One source face is bundled (Google Fonts OFL); browser/Godot rasterisation differs.
 ##   - textBaseline 'top' approximated as baseline = top + font ascent (44 px).
 ##   - shadowBlur 12 -> Gaussian sigma = 12/2 = 6 (HTML spec definition), truncated at radius 18,
 ##     weight-normalised. Browser (Skia) blur implementations approximate differently.
@@ -33,7 +33,7 @@ extends Node
 ##   - Every pass is derived from one glyph mask per cell (shifted for outline/highlight), so the
 ##     glyph shapes are identical by construction; the browser rasterises each fillText separately.
 
-const FONT_PATH := "res://assets/fonts/NotoSansKR.ttf"   # existing, loaded read-only
+const FONT_PATH := "res://assets/fonts/ofl/pirataone/PirataOne-Regular.ttf"   # existing, loaded read-only
 
 # ── source constants ─────────────────────────────────────────────────────────
 const SRC_NUM_W := 48
@@ -308,8 +308,8 @@ func load_source_font() -> Font:
 		fv.variation_opentype = {wght: SRC_FONT_WEIGHT}
 		bold_mode = "wght_axis_900"
 	else:
-		fv.variation_embolden = 0.9
-		bold_mode = "synthetic_embolden_0.9_no_wght_axis"
+		fv.variation_embolden = 0.0
+		bold_mode = "source_static_face_no_synthetic_bold"
 	_font = fv
 	font_status = "loaded:" + FONT_PATH
 	return _font

@@ -56493,3 +56493,9 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 웹 1-1 구조/충돌/36손배치·14소환굴·게이트·카메라1.0을 보존하고, 원본61군락 얼굴·소품국소변형/시체나무매듭5/야영지손3·늪/독구덩이/pool 버블, 실제half960×540·정적12광원/iris색층·원본clock/DOM안개 합성을 연결했다. 원본64청크의 이웃64px 문맥을 x4plus로 처리해 색/알파 보존 core1334/1000world·공통1px bleed로 사용한다. 원본64장은 보존/폴백이다. UI/인트로/PC/저장 변경0.
 
 회귀19,978/0, alpha64/64·bleed224/224, 새 웹40000타일/36앵커집합 불일치0. 지정4지점 1x 구조·VISUAL PASS. E2E주입0 단회는HP0/처치0으로NOT_READY; GUI단회는60초포커스실패로성능/VRAM미측정. 원본행·수치·147PNG 출처·비교경로·남은차이·MAP PRODUCTION REPORT는 `docs/engine/PARITY_MAP_02_20261022.md`, No.별현황은 PARITY_DIFF_LIST 최신절을 따른다. main/PC/Steam 반영 없음.
+
+## 2026-10-22 PARITY-HUD-01 표시 이식
+
+- 기준6b4336b6. 구슬 원본PNG/링/눈/숫자·SP표기·미니맵·타이머/목표패널·원본방향PNG·스킬바 배치를 웹행/CSS에 대응했다. 별도스킬선택/실패띠 숨김. PC계산·전투·맵·카메라·B화면 변경0.
+- 원본_buildNumAtlas canvas480×168/Pirata One를 직접공급하고40개숫자pool을시작할당했다. 이미지17개import는축소mipmap, 슬롯ResourceLoader는boot만. crossbow57행null 옵션을Variant검사로방어했다(제보의투사체Array방어는기존화살표뷰에존재).
+- docs전체검색·관련상세표/차이표 동기화. 관련HUD회귀1회17/0. 무주입E2E1회storage=on·SCRIPT ERROR0, HP0/처치0으로자연완주NOT_READY. 최종시각은RETOUCH(노란기동게이지실소유값미공급·CSS glow/세부AA등). 1x비교/표시fixture 범위를PARITY_HUD_01_20261022.md·_out/PARITY-HUD-01/DONE.txt에명시.

@@ -354,9 +354,6 @@ func _ready() -> void:
 	hud.name = "HUD"
 	add_child(hud)
 	hud.bind(player, world)
-	if _native_map11_enabled():
-		var legacy_minimap: Node = hud.find_child("NativeMinimap",true,false)
-		if is_instance_valid(legacy_minimap): legacy_minimap.hide()
 	# P2-003a — 원본 조명·안개·비네트·색보정 오버레이 (월드 위·HUD 아래, 표시 전용)
 	var screen_lighting: CanvasLayer = preload("res://scripts/native_screen_lighting.gd").new()
 	screen_lighting.name = "NativeScreenLighting"
