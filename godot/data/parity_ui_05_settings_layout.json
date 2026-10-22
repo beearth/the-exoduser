@@ -1,0 +1,6315 @@
+{
+  "system": {
+    "rect": [
+      45,
+      325,
+      1830,
+      652
+    ],
+    "height": 1099,
+    "nodes": [
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "ui-section-heading",
+        "text": "",
+        "rect": [
+          25,
+          25,
+          1780,
+          52
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 18,
+        "weight": "600",
+        "color": "rgb(228, 213, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(228, 213, 184)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-game-heading-text",
+        "cls": "",
+        "text": "게임 · 시스템",
+        "rect": [
+          39,
+          38.40625,
+          100.578125,
+          25.1875
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 18,
+        "weight": "600",
+        "color": "rgb(228, 213, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(228, 213, 184)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "settings-jump-button",
+        "text": "시스템",
+        "rect": [
+          1658.421875,
+          35,
+          55.84375,
+          32
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 12,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "settings-jump-button",
+        "text": "게임 설정",
+        "rect": [
+          1720.265625,
+          35,
+          70.734375,
+          32
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 12,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "settings-group-heading",
+        "text": "시스템",
+        "rect": [
+          25,
+          95,
+          1780,
+          43.5
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 17,
+        "weight": "600",
+        "color": "rgb(217, 194, 156)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 194, 156) rgb(217, 194, 156) rgba(178, 142, 93, 0.42)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          25,
+          146.5,
+          874,
+          65
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optLang",
+        "cls": "set-name",
+        "text": "Language",
+        "rect": [
+          37,
+          165.703125,
+          323,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "select",
+        "id": "optLang",
+        "cls": "",
+        "text": "",
+        "rect": [
+          376,
+          158.5,
+          511,
+          40
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(228, 213, 175)",
+        "background": "rgb(12, 16, 12)",
+        "border": "rgb(125, 108, 74)",
+        "align": "start",
+        "radius": "0px",
+        "value": "ko",
+        "options": [
+          [
+            "ko",
+            "한국어"
+          ],
+          [
+            "en",
+            "English"
+          ],
+          [
+            "zh",
+            "中文简体"
+          ],
+          [
+            "zht",
+            "繁體中文"
+          ],
+          [
+            "ja",
+            "日本語"
+          ],
+          [
+            "es",
+            "Español (España)"
+          ],
+          [
+            "ru",
+            "Русский"
+          ],
+          [
+            "de",
+            "Deutsch"
+          ],
+          [
+            "ptbr",
+            "Português (Brasil)"
+          ],
+          [
+            "fr",
+            "Français"
+          ],
+          [
+            "pl",
+            "Polski"
+          ],
+          [
+            "it",
+            "Italiano"
+          ],
+          [
+            "uk",
+            "Українська"
+          ],
+          [
+            "tr",
+            "Türkçe"
+          ],
+          [
+            "vi",
+            "Tiếng Việt"
+          ],
+          [
+            "th",
+            "ไทย"
+          ],
+          [
+            "id",
+            "Bahasa Indonesia"
+          ],
+          [
+            "ms",
+            "Bahasa Melayu"
+          ],
+          [
+            "ar",
+            "العربية"
+          ],
+          [
+            "sv",
+            "Svenska"
+          ],
+          [
+            "da",
+            "Dansk"
+          ],
+          [
+            "no",
+            "Norsk"
+          ],
+          [
+            "fi",
+            "Suomi"
+          ],
+          [
+            "cs",
+            "Čeština"
+          ],
+          [
+            "hu",
+            "Magyar"
+          ],
+          [
+            "ro",
+            "Română"
+          ],
+          [
+            "nl",
+            "Nederlands"
+          ],
+          [
+            "el",
+            "Ελληνικά"
+          ],
+          [
+            "bg",
+            "Български"
+          ]
+        ],
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          931,
+          146.5,
+          874,
+          322.28125
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-label",
+        "text": "캐릭터 선택",
+        "rect": [
+          948,
+          159.5,
+          840,
+          39
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "600",
+        "color": "rgb(200, 181, 143)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(200, 181, 143) rgb(200, 181, 143) rgb(73, 65, 54)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "settings-choice settings-character-choice",
+        "text": "엑소듀서 전사\n다크 판타지 전사. 거대검+검은 갑옷\n✓ 선택됨",
+        "rect": [
+          948,
+          210.5,
+          220,
+          245.28125
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(204, 170, 102)",
+        "align": "center",
+        "radius": "6px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "canvas",
+        "id": "",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1014,
+          228.5,
+          88,
+          88
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "settings-choice-name",
+        "text": "엑소듀서 전사",
+        "rect": [
+          1007.203125,
+          328.5,
+          101.578125,
+          25.5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 17,
+        "weight": "700",
+        "color": "rgb(255, 204, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(255, 204, 0)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-character-description-0",
+        "cls": "settings-choice-description",
+        "text": "다크 판타지 전사. 거대검+검은 갑옷",
+        "rect": [
+          966,
+          362,
+          184,
+          44.78125
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(192, 184, 169)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(192, 184, 169)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "settings-choice-selected",
+        "text": "✓ 선택됨",
+        "rect": [
+          1030.78125,
+          406.78125,
+          54.4375,
+          31
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "600",
+        "color": "rgb(255, 204, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(255, 204, 0)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "settings-choice settings-character-choice",
+        "text": "실버테일\n블레이드 댄서. 회전대검, 단검 하나",
+        "rect": [
+          1182,
+          210.5,
+          220,
+          245.28125
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(108, 88, 64)",
+        "align": "center",
+        "radius": "6px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "canvas",
+        "id": "",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1248,
+          228.5,
+          88,
+          88
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "settings-choice-name",
+        "text": "실버테일",
+        "rect": [
+          1259.6875,
+          328.5,
+          64.625,
+          25.5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 17,
+        "weight": "700",
+        "color": "rgb(204, 204, 204)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(204, 204, 204)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-character-description-1",
+        "cls": "settings-choice-description",
+        "text": "블레이드 댄서. 회전대검, 단검 하나",
+        "rect": [
+          1200,
+          362,
+          184,
+          44.78125
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(192, 184, 169)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(192, 184, 169)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          25,
+          219.5,
+          874,
+          205
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settingsPresetLabel",
+        "cls": "set-label",
+        "text": "세팅 프리셋 저장/불러오기",
+        "rect": [
+          42,
+          232.5,
+          840,
+          39
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "600",
+        "color": "rgb(220, 201, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(220, 201, 166) rgb(220, 201, 166) rgb(73, 65, 54)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "saveP1",
+        "cls": "",
+        "text": "세팅1 저장",
+        "rect": [
+          42,
+          283.5,
+          417,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "loadP1",
+        "cls": "",
+        "text": "세팅1",
+        "rect": [
+          465,
+          283.5,
+          417,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "saveP2",
+        "cls": "",
+        "text": "세팅2 저장",
+        "rect": [
+          42,
+          333.5,
+          417,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "loadP2",
+        "cls": "",
+        "text": "세팅2",
+        "rect": [
+          465,
+          333.5,
+          417,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          25,
+          432.5,
+          874,
+          130
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "",
+        "text": "전체화면 (F11)",
+        "rect": [
+          42,
+          445.5,
+          840,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "toLobbyBtn2",
+        "cls": "",
+        "text": "캐릭터 선택 (로비)",
+        "rect": [
+          42,
+          497.5,
+          840,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          25,
+          570.5,
+          874,
+          70
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "resetBtn",
+        "cls": "",
+        "text": "게임 리셋 (처음부터)",
+        "rect": [
+          42,
+          583.5,
+          840,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(217, 160, 140)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(137, 83, 70)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "quitSection",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          931,
+          570.5,
+          874,
+          70
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "quitBtn",
+        "cls": "",
+        "text": "게임 종료",
+        "rect": [
+          948,
+          583.5,
+          840,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(217, 160, 140)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(137, 83, 70)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "settings-game-options",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          25,
+          658.5,
+          1780,
+          417
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-label",
+        "text": "게임 설정",
+        "rect": [
+          42,
+          671.5,
+          1746,
+          39
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "600",
+        "color": "rgb(200, 181, 143)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(200, 181, 143) rgb(200, 181, 143) rgb(73, 65, 54)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          730.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optDiff",
+        "cls": "set-name",
+        "text": "난이도",
+        "rect": [
+          54,
+          747.203125,
+          316.53125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optDiff",
+        "cls": "",
+        "text": "",
+        "rect": [
+          386.53125,
+          757.5,
+          372.46875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "0",
+        "max": "10",
+        "step": "",
+        "value": "5",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optDiffVal",
+        "cls": "set-range-val",
+        "text": "일반",
+        "rect": [
+          775,
+          750.203125,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          931,
+          730.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optAutoPot",
+        "cls": "set-name",
+        "text": "자동 물약",
+        "rect": [
+          943,
+          747.203125,
+          316.53125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optAutoPot",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1275.53125,
+          757.5,
+          372.46875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "30",
+        "max": "99",
+        "step": "1",
+        "value": "99",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optAutoPotVal",
+        "cls": "set-range-val",
+        "text": "HP 99% 이하",
+        "rect": [
+          1664,
+          750.203125,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          798.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optMinRar",
+        "cls": "set-name",
+        "text": "최소 줍기 등급",
+        "rect": [
+          54,
+          815.203125,
+          316.53125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optMinRar",
+        "cls": "",
+        "text": "",
+        "rect": [
+          386.53125,
+          825.5,
+          372.46875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "0",
+        "max": "4",
+        "step": "",
+        "value": "0",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optMinRarVal",
+        "cls": "set-range-val",
+        "text": "일반 이상",
+        "rect": [
+          775,
+          818.203125,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          931,
+          798.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optMinLv",
+        "cls": "set-name",
+        "text": "최소 줍기 티어",
+        "rect": [
+          943,
+          815.203125,
+          316.53125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optMinLv",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1275.53125,
+          825.5,
+          372.46875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "0",
+        "max": "7",
+        "step": "",
+        "value": "0",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optMinLvVal",
+        "cls": "set-range-val",
+        "text": "사용 안 함",
+        "rect": [
+          1664,
+          818.203125,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          866.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optCrAutoFuse",
+        "cls": "set-name",
+        "text": "유물 자동합성",
+        "rect": [
+          54,
+          883.203125,
+          316.53125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optCrAutoFuse",
+        "cls": "",
+        "text": "",
+        "rect": [
+          386.53125,
+          893.5,
+          372.46875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "-1",
+        "max": "3",
+        "step": "1",
+        "value": "-1",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optCrAutoFuseVal",
+        "cls": "set-range-val",
+        "text": "사용 안 함",
+        "rect": [
+          775,
+          886.203125,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          931,
+          866.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optCrAutoEnh",
+        "cls": "set-name",
+        "text": "유물 자동강화",
+        "rect": [
+          943,
+          883.203125,
+          316.53125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optCrAutoEnh",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1275.53125,
+          893.5,
+          372.46875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "-1",
+        "max": "4",
+        "step": "1",
+        "value": "-1",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optCrAutoEnhVal",
+        "cls": "set-range-val",
+        "text": "사용 안 함",
+        "rect": [
+          1664,
+          886.203125,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          934.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optXbowAuto",
+        "cls": "",
+        "text": "",
+        "rect": [
+          863,
+          952,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": true,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "석궁 자동발사 (T)",
+        "rect": [
+          54,
+          951.203125,
+          801,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          931,
+          934.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optBlPullMode",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1752,
+          952,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "버스트루프 당기기 (H)",
+        "rect": [
+          943,
+          951.203125,
+          801,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          1002.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optBladeAuto",
+        "cls": "",
+        "text": "",
+        "rect": [
+          863,
+          1020,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "기동:칼날개 AUTO",
+        "rect": [
+          54,
+          1019.203125,
+          801,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          931,
+          1002.5,
+          857,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optBossDbg",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1752,
+          1020,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "보스 AI 디버그",
+        "rect": [
+          943,
+          1019.203125,
+          801,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      }
+    ]
+  },
+  "screen": {
+    "rect": [
+      45,
+      325,
+      1830,
+      652
+    ],
+    "height": 917,
+    "nodes": [
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "ui-section-heading",
+        "text": "화면",
+        "rect": [
+          25,
+          25,
+          1780,
+          45.1875
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 18,
+        "weight": "600",
+        "color": "rgb(228, 213, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(228, 213, 184)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          25,
+          88.1875,
+          874,
+          617
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-label",
+        "text": "화면 효과",
+        "rect": [
+          42,
+          101.1875,
+          840,
+          39
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "600",
+        "color": "rgb(200, 181, 143)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(200, 181, 143) rgb(200, 181, 143) rgb(73, 65, 54)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          152.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optShake",
+        "cls": "set-name",
+        "text": "화면 흔들림",
+        "rect": [
+          54,
+          168.890625,
+          310.078125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optShake",
+        "cls": "",
+        "text": "",
+        "rect": [
+          380.078125,
+          179.1875,
+          361.921875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "0",
+        "max": "100",
+        "step": "",
+        "value": "80",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optShakeVal",
+        "cls": "set-range-val",
+        "text": "80%",
+        "rect": [
+          758,
+          171.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          212.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optTextScale",
+        "cls": "set-name",
+        "text": "안내 글자 크기",
+        "rect": [
+          54,
+          228.890625,
+          310.078125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optTextScale",
+        "cls": "",
+        "text": "",
+        "rect": [
+          380.078125,
+          239.1875,
+          361.921875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "80",
+        "max": "160",
+        "step": "10",
+        "value": "100",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optTextScaleVal",
+        "cls": "set-range-val",
+        "text": "100%",
+        "rect": [
+          758,
+          231.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          272.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optPanelFit",
+        "cls": "",
+        "text": "",
+        "rect": [
+          846,
+          289.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": true,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "설정 창 화면에 맞추기",
+        "rect": [
+          54,
+          288.890625,
+          784,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          332.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optParts",
+        "cls": "set-name",
+        "text": "파티클 양",
+        "rect": [
+          54,
+          348.890625,
+          310.078125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optParts",
+        "cls": "",
+        "text": "",
+        "rect": [
+          380.078125,
+          359.1875,
+          361.921875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "5",
+        "max": "100",
+        "step": "5",
+        "value": "60",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optPartsVal",
+        "cls": "set-range-val",
+        "text": "60%",
+        "rect": [
+          758,
+          351.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          392.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optFps",
+        "cls": "set-name",
+        "text": "FPS 제한",
+        "rect": [
+          54,
+          408.890625,
+          310.078125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optFps",
+        "cls": "",
+        "text": "",
+        "rect": [
+          380.078125,
+          419.1875,
+          361.921875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "0",
+        "max": "5",
+        "step": "1",
+        "value": "5",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optFpsVal",
+        "cls": "set-range-val",
+        "text": "제한없음",
+        "rect": [
+          758,
+          411.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          452.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optResScale",
+        "cls": "set-name",
+        "text": "해상도 스케일",
+        "rect": [
+          54,
+          468.890625,
+          310.078125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optResScale",
+        "cls": "",
+        "text": "",
+        "rect": [
+          380.078125,
+          479.1875,
+          361.921875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "50",
+        "max": "100",
+        "step": "10",
+        "value": "100",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optResScaleVal",
+        "cls": "set-range-val",
+        "text": "100%",
+        "rect": [
+          758,
+          471.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          512.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optIrisSz",
+        "cls": "set-name",
+        "text": "유령불꽃 크기",
+        "rect": [
+          54,
+          528.890625,
+          310.078125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optIrisSz",
+        "cls": "",
+        "text": "",
+        "rect": [
+          380.078125,
+          539.1875,
+          361.921875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "1",
+        "max": "100",
+        "step": "",
+        "value": "20",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optIrisSzVal",
+        "cls": "set-range-val",
+        "text": "20",
+        "rect": [
+          758,
+          531.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          572.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optBrightness",
+        "cls": "set-name",
+        "text": "화면 명암",
+        "rect": [
+          54,
+          588.890625,
+          310.078125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optBrightness",
+        "cls": "",
+        "text": "",
+        "rect": [
+          380.078125,
+          599.1875,
+          361.921875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "70",
+        "max": "130",
+        "step": "",
+        "value": "100",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optBrightnessVal",
+        "cls": "set-range-val",
+        "text": "100%",
+        "rect": [
+          758,
+          591.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          42,
+          632.1875,
+          840,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optIrisGlow",
+        "cls": "set-name",
+        "text": "유령 글로우",
+        "rect": [
+          54,
+          648.890625,
+          310.078125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optIrisGlow",
+        "cls": "",
+        "text": "",
+        "rect": [
+          380.078125,
+          659.1875,
+          361.921875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "100",
+        "max": "400",
+        "step": "",
+        "value": "250",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optIrisGlowVal",
+        "cls": "set-range-val",
+        "text": "250",
+        "rect": [
+          758,
+          651.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          931,
+          88.1875,
+          874,
+          590
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-label",
+        "text": "그래픽 품질",
+        "rect": [
+          948,
+          101.1875,
+          840,
+          39
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "600",
+        "color": "rgb(200, 181, 143)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(200, 181, 143) rgb(200, 181, 143) rgb(73, 65, 54)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "",
+        "text": "최저",
+        "rect": [
+          948,
+          156.1875,
+          161.59375,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "",
+        "text": "낮음",
+        "rect": [
+          1117.59375,
+          156.1875,
+          161.609375,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "",
+        "text": "중간",
+        "rect": [
+          1287.203125,
+          156.1875,
+          161.59375,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "",
+        "text": "높음",
+        "rect": [
+          1456.796875,
+          156.1875,
+          161.609375,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "",
+        "text": "울트라",
+        "rect": [
+          1626.40625,
+          156.1875,
+          161.59375,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          948,
+          216.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optBloom",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1322,
+          233.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "블룸 효과",
+        "rect": [
+          960,
+          232.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          1378,
+          216.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optTrail",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1752,
+          233.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": true,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "잔상 트레일",
+        "rect": [
+          1390,
+          232.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          948,
+          280.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optSlash",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1322,
+          297.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": true,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "슬래시 이펙트",
+        "rect": [
+          960,
+          296.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          1378,
+          280.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optPostfx",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1752,
+          297.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "후처리 효과",
+        "rect": [
+          1390,
+          296.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          948,
+          344.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optDeathFx",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1322,
+          361.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": true,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "사망 이펙트",
+        "rect": [
+          960,
+          360.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          1378,
+          344.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optLighting",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1752,
+          361.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "동적 조명",
+        "rect": [
+          1390,
+          360.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          948,
+          408.1875,
+          410,
+          65
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optTorch",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1322,
+          428.1875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": true,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "횃불 조명 (어둠)",
+        "rect": [
+          960,
+          427.390625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          1378,
+          408.1875,
+          410,
+          65
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optAtmos",
+        "cls": "set-name",
+        "text": "분위기 효과",
+        "rect": [
+          1390,
+          427.390625,
+          312,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "select",
+        "id": "optAtmos",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1710,
+          420.1875,
+          66,
+          40
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(228, 213, 175)",
+        "background": "rgb(12, 16, 12)",
+        "border": "rgb(125, 108, 74)",
+        "align": "start",
+        "radius": "0px",
+        "value": "1",
+        "options": [
+          [
+            "0",
+            "끔"
+          ],
+          [
+            "1",
+            "간략"
+          ],
+          [
+            "2",
+            "전체"
+          ]
+        ],
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          948,
+          477.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optAmbPart",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1322,
+          494.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": true,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "앰비언트 파티클",
+        "rect": [
+          960,
+          493.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          1378,
+          477.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optFog",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1752,
+          494.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "안개 효과",
+        "rect": [
+          1390,
+          493.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          948,
+          541.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optGrain",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1322,
+          558.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "필름 그레인",
+        "rect": [
+          960,
+          557.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          1378,
+          541.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optOutline",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1752,
+          558.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": true,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "캐릭터 외곽선",
+        "rect": [
+          1390,
+          557.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          948,
+          605.1875,
+          410,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "check",
+        "id": "optShowFps",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1322,
+          622.6875,
+          24,
+          24
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(165, 142, 101)",
+        "align": "start",
+        "radius": "50%",
+        "min": "",
+        "max": "",
+        "step": "",
+        "value": "on",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "프레임 표시 (FPS)",
+        "rect": [
+          960,
+          621.890625,
+          354,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          25,
+          723.1875,
+          1780,
+          171
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-label",
+        "text": "하드웨어 진단",
+        "rect": [
+          42,
+          736.1875,
+          1746,
+          39
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "600",
+        "color": "rgb(200, 181, 143)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(200, 181, 143) rgb(200, 181, 143) rgb(73, 65, 54)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "",
+        "text": "GPU:",
+        "rect": [
+          59,
+          810.9375,
+          587.59375,
+          21.75
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.6,
+        "weight": "400",
+        "color": "rgb(136, 136, 136)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "diagGpu",
+        "cls": "",
+        "text": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+        "rect": [
+          59,
+          835.6875,
+          587.59375,
+          21.75
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.6,
+        "weight": "400",
+        "color": "rgb(170, 238, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(170, 238, 255)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "",
+        "text": "WebGL:",
+        "rect": [
+          675.59375,
+          810.9375,
+          273.796875,
+          21.75
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.6,
+        "weight": "400",
+        "color": "rgb(136, 136, 136)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "diagGL",
+        "cls": "",
+        "text": "-",
+        "rect": [
+          675.59375,
+          835.6875,
+          273.796875,
+          21.75
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.6,
+        "weight": "400",
+        "color": "rgb(170, 238, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(170, 238, 255)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "diagTierLabel",
+        "cls": "",
+        "text": "성능 등급:",
+        "rect": [
+          978.390625,
+          806.234375,
+          273.796875,
+          21.75
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.6,
+        "weight": "400",
+        "color": "rgb(136, 136, 136)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "diagTier",
+        "cls": "",
+        "text": "B",
+        "rect": [
+          978.390625,
+          830.984375,
+          273.796875,
+          28.140625
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 17.6,
+        "weight": "700",
+        "color": "rgb(255, 204, 68)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(255, 204, 68)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "diagBenchLabel",
+        "cls": "",
+        "text": "벤치 FPS:",
+        "rect": [
+          1281.1875,
+          810.9375,
+          273.796875,
+          21.75
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.6,
+        "weight": "400",
+        "color": "rgb(136, 136, 136)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "diagBenchFps",
+        "cls": "",
+        "text": "측정 중...",
+        "rect": [
+          1281.1875,
+          835.6875,
+          273.796875,
+          21.75
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.6,
+        "weight": "400",
+        "color": "rgb(170, 238, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(170, 238, 255)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "btnRedetect",
+        "cls": "",
+        "text": "재진단",
+        "rect": [
+          1598,
+          787.1875,
+          190,
+          94
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "600",
+        "color": "rgb(223, 201, 157)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(143, 124, 85)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      }
+    ]
+  },
+  "sound": {
+    "rect": [
+      45,
+      325,
+      1830,
+      652
+    ],
+    "height": 650,
+    "nodes": [
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "ui-section-heading",
+        "text": "사운드",
+        "rect": [
+          25,
+          25,
+          1780,
+          45.1875
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 18,
+        "weight": "600",
+        "color": "rgb(228, 213, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(228, 213, 184)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          25,
+          88.1875,
+          874,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optSfx",
+        "cls": "set-name",
+        "text": "효과음 볼륨",
+        "rect": [
+          37,
+          104.890625,
+          323,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optSfx",
+        "cls": "",
+        "text": "",
+        "rect": [
+          376,
+          115.1875,
+          383,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "0",
+        "max": "100",
+        "step": "",
+        "value": "60",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optSfxVal",
+        "cls": "set-range-val",
+        "text": "60%",
+        "rect": [
+          775,
+          107.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          931,
+          88.1875,
+          874,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optBgm",
+        "cls": "set-name",
+        "text": "음악 볼륨",
+        "rect": [
+          943,
+          104.890625,
+          323,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optBgm",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1282,
+          115.1875,
+          383,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "0",
+        "max": "100",
+        "step": "",
+        "value": "60",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "optBgmVal",
+        "cls": "set-range-val",
+        "text": "60%",
+        "rect": [
+          1681,
+          107.890625,
+          112,
+          19.59375
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(217, 197, 158)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(217, 197, 158)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          25,
+          166.1875,
+          1100,
+          65
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optBgmTrack",
+        "cls": "set-name",
+        "text": "BGM 선택",
+        "rect": [
+          37,
+          185.390625,
+          408.875,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "select",
+        "id": "optBgmTrack",
+        "cls": "",
+        "text": "",
+        "rect": [
+          461.875,
+          178.1875,
+          651.125,
+          40
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(228, 213, 175)",
+        "background": "rgb(12, 16, 12)",
+        "border": "rgb(125, 108, 74)",
+        "align": "start",
+        "radius": "0px",
+        "value": "auto",
+        "options": [
+          [
+            "auto",
+            "자동 (스테이지별)"
+          ],
+          [
+            "allRandom",
+            "전체 랜덤"
+          ],
+          [
+            "lobby",
+            "로비"
+          ],
+          [
+            "hell1",
+            "1장 - 썩은 숲 (h0_explore)"
+          ],
+          [
+            "hell2",
+            "2장 - 벌레굴 (hell2_insect)"
+          ],
+          [
+            "hell3",
+            "3장 - 얼음굴 (hell3_fire)"
+          ],
+          [
+            "hell4",
+            "4장 - 화염지대 (hell4_abyss)"
+          ],
+          [
+            "hell5",
+            "5장 - 지옥군단 (hell5_thunder)"
+          ],
+          [
+            "hell6",
+            "6장 - 사도마굴 (hell6_bone)"
+          ],
+          [
+            "hell7",
+            "7장 - 지옥성 (hell7_chaos)"
+          ],
+          [
+            "gameplay",
+            "공통 랜덤 (50곡)"
+          ],
+          [
+            "t:bgm/공통/Just One More Hill V4.mp3",
+            "Just One More Hill V4"
+          ],
+          [
+            "t:bgm/공통/Just One More Hill V5.mp3",
+            "Just One More Hill V5"
+          ],
+          [
+            "t:bgm/공통/네메시아 강림V5.mp3",
+            "네메시아 강림 V5"
+          ],
+          [
+            "t:bgm/공통/네메시아의 강림 V3.mp3",
+            "네메시아의 강림 V3"
+          ],
+          [
+            "t:bgm/공통/네메시아의 강림.mp3",
+            "네메시아의 강림"
+          ],
+          [
+            "t:bgm/공통/Coronam Ferro.mp3",
+            "Coronam Ferro"
+          ],
+          [
+            "t:bgm/공통/Coronam Ferro V2.mp3",
+            "Coronam Ferro V2"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3",
+            "Ashes of the Fallen Gate"
+          ],
+          [
+            "t:bgm/1장_썩은숲/hell1_ice.mp3",
+            "hell1_ice"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Bloodsteel Ascension.mp3",
+            "Bloodsteel Ascension"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Bloodsteel Ascension 2.mp3",
+            "Bloodsteel Ascension 2"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Exoduser.mp3",
+            "Exoduser"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Exoduser2.mp3",
+            "Exoduser2"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Exoduser3.mp3",
+            "Exoduser3"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Exoduser2.1.mp3",
+            "Exoduser2.1"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Blood Moon Siege.mp3",
+            "Blood Moon Siege"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Blood Moon Siege2.mp3",
+            "Blood Moon Siege2"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Wrath of the Golden Age.mp3",
+            "Wrath of the Golden Age"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Iron Oath Under Ash.mp3",
+            "Iron Oath Under Ash"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Neon Hellfire Protocol.mp3",
+            "Neon Hellfire Protocol"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Neon Hellfire Protocol (1).mp3",
+            "Neon Hellfire Protocol 2"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Ashes Under the Banner.mp3",
+            "Ashes Under the Banner"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Blade Choir of the Black Citadel.mp3",
+            "Blade Choir of the Black Citadel"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Cathedral of Steel.mp3",
+            "Cathedral of Steel"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Cathedral of Steel (1).mp3",
+            "Cathedral of Steel 2"
+          ],
+          [
+            "t:bgm/2장_벌레굴/Carapace Cathedral.mp3",
+            "Carapace Cathedral"
+          ],
+          [
+            "t:bgm/3장_얼음굴/Abyssal Drift.mp3",
+            "Abyssal Drift"
+          ],
+          [
+            "t:bgm/4장_화염지대/Ignis et Sanguis.mp3",
+            "Ignis et Sanguis"
+          ],
+          [
+            "t:bgm/4장_화염지대/Inferno Liturgia.mp3",
+            "Inferno Liturgia"
+          ],
+          [
+            "t:bgm/5장_지옥군단/Abyss Below.mp3",
+            "Abyss Below"
+          ],
+          [
+            "t:bgm/6장_사도마굴/Kiln of Broken Crowns.mp3",
+            "Kiln of Broken Crowns"
+          ],
+          [
+            "t:bgm/7장_지옥성/Midnight Cathedral of Ash.mp3",
+            "Midnight Cathedral of Ash"
+          ],
+          [
+            "t:bgm/7장_지옥성/Teeth in the Choir.mp3",
+            "Teeth in the Choir"
+          ],
+          [
+            "t:bgm/공통/네메시아의 강림3(Remastered).wav",
+            "네메시아의 강림3 (Remastered)"
+          ],
+          [
+            "t:bgm/공통/네메시아의 강림2 (Remastered).wav",
+            "네메시아의 강림2 (Remastered)"
+          ],
+          [
+            "t:bgm/공통/네메시아 강림 (Remastered).wav",
+            "네메시아 강림 (Remastered)"
+          ],
+          [
+            "t:bgm/공통/Coronam Ferro2(Remastered).wav",
+            "Coronam Ferro2 (Remastered)"
+          ],
+          [
+            "t:bgm/공통/Coronam Ferro (Remastered).wav",
+            "Coronam Ferro (Remastered)"
+          ],
+          [
+            "t:bgm/공통/Just One More Hill (Remastered) 2.wav",
+            "Just One More Hill 2 (Remastered)"
+          ],
+          [
+            "t:bgm/공통/Just One More Hill (Remastered).wav",
+            "Just One More Hill (Remastered)"
+          ],
+          [
+            "t:bgm/공통/고개 하나만 (Remastered) 2.wav",
+            "고개 하나만 2 (Remastered)"
+          ],
+          [
+            "t:bgm/공통/고개 하나만 (Remastered).wav",
+            "고개 하나만 (Remastered)"
+          ],
+          [
+            "t:bgm/3장_얼음굴/흰눈의 맹세2 (Remastered).wav",
+            "흰눈의 맹세2 (Remastered)"
+          ],
+          [
+            "t:bgm/3장_얼음굴/흰눈의 맹세 (Remastered).wav",
+            "흰눈의 맹세 (Remastered)"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Ashes Under the Banner (Remastered).wav",
+            "Ashes Under the Banner (Remastered)"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Cathedral of Steel (Remastered).wav",
+            "Cathedral of Steel (Remastered)"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Neon Hellfire Protocol2(Remastered).wav",
+            "Neon Hellfire Protocol2 (Remastered)"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Neon Hellfire Protocol (Remastered).wav",
+            "Neon Hellfire Protocol (Remastered)"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Iron Oath Under Ash (Remastered).wav",
+            "Iron Oath Under Ash (Remastered)"
+          ],
+          [
+            "t:bgm/1장_썩은숲/Wrath of the Golden Age (Remastered).wav",
+            "Wrath of the Golden Age (Remastered)"
+          ],
+          [
+            "boss",
+            "보스"
+          ],
+          [
+            "finalboss",
+            "최종보스"
+          ],
+          [
+            "forge",
+            "대장간 랜덤"
+          ],
+          [
+            "t:bgm/공통/forge.mp3",
+            "forge"
+          ],
+          [
+            "t:bgm/공통/복수의 대장간.mp3",
+            "복수의 대장간"
+          ],
+          [
+            "t:bgm/공통/Anvil Ashes.mp3",
+            "Anvil Ashes"
+          ],
+          [
+            "death",
+            "사망 랜덤"
+          ],
+          [
+            "t:bgm/공통/death.mp3",
+            "death"
+          ],
+          [
+            "t:bgm/공통/지옥 추락 사망 징글.mp3",
+            "지옥 추락 사망 징글"
+          ],
+          [
+            "victory",
+            "승리 랜덤"
+          ],
+          [
+            "t:bgm/공통/victory.mp3",
+            "victory"
+          ],
+          [
+            "t:bgm/공통/탈출 성공.mp3",
+            "탈출 성공"
+          ]
+        ],
+        "src": null
+      }
+    ]
+  },
+  "controls": {
+    "rect": [
+      45,
+      325,
+      1830,
+      652
+    ],
+    "height": 1024,
+    "nodes": [
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "ui-section-heading",
+        "text": "조작",
+        "rect": [
+          25,
+          25,
+          1780,
+          45.1875
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 18,
+        "weight": "600",
+        "color": "rgb(228, 213, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(228, 213, 184)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          25,
+          88.1875,
+          1780,
+          130
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-label",
+        "text": "마우스 커서",
+        "rect": [
+          46,
+          141.1875,
+          296,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "600",
+        "color": "rgb(200, 181, 143)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(200, 181, 143)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "settings-choice settings-cursor-choice",
+        "text": "다크 레드",
+        "rect": [
+          360,
+          101.1875,
+          96,
+          104
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 13,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(204, 170, 102)",
+        "align": "center",
+        "radius": "6px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "image",
+        "id": "",
+        "cls": "",
+        "text": "",
+        "rect": [
+          384,
+          118.4375,
+          48,
+          48
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 13,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": "img/cursors/cursor_dark_2x.png"
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "settings-choice-name",
+        "text": "다크 레드",
+        "rect": [
+          381.515625,
+          168.4375,
+          52.96875,
+          19.5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13,
+        "weight": "600",
+        "color": "rgb(255, 204, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(255, 204, 0)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "settings-choice settings-cursor-choice",
+        "text": "다크 퍼플",
+        "rect": [
+          466,
+          101.1875,
+          96,
+          104
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 13,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(108, 88, 64)",
+        "align": "center",
+        "radius": "6px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "image",
+        "id": "",
+        "cls": "",
+        "text": "",
+        "rect": [
+          490,
+          118.4375,
+          48,
+          48
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 13,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": "img/cursors/cursor_purple_normal_2x.png"
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "settings-choice-name",
+        "text": "다크 퍼플",
+        "rect": [
+          487.515625,
+          168.4375,
+          52.96875,
+          19.5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13,
+        "weight": "600",
+        "color": "rgb(170, 170, 170)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(170, 170, 170)",
+        "align": "center",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-range-row",
+        "text": "",
+        "rect": [
+          1118,
+          123.1875,
+          666,
+          60
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(221, 197, 173) rgb(221, 197, 173) rgba(177, 162, 125, 0.07)",
+        "align": "start",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "settings-label-optCursorSize",
+        "cls": "set-name",
+        "text": "커서 크기",
+        "rect": [
+          1130,
+          139.890625,
+          243.953125,
+          25.59375
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(197, 190, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(197, 190, 176)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "range",
+        "id": "optCursorSize",
+        "cls": "",
+        "text": "",
+        "rect": [
+          1389.953125,
+          150.1875,
+          330.046875,
+          5
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 13.3333,
+        "weight": "400",
+        "color": "rgb(241, 216, 186)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(241, 216, 186)",
+        "align": "start",
+        "radius": "6px",
+        "min": "30",
+        "max": "200",
+        "step": "5",
+        "value": "50",
+        "checked": false,
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "cursorSizeVal",
+        "cls": "",
+        "text": "50%",
+        "rect": [
+          1736,
+          143.6875,
+          36,
+          18
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 14,
+        "weight": "400",
+        "color": "rgb(204, 170, 119)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(204, 170, 119)",
+        "align": "right",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "panel",
+        "id": "",
+        "cls": "set-section",
+        "text": "",
+        "rect": [
+          25,
+          236.1875,
+          1780,
+          765
+        ],
+        "font": "\"Nanum Myeongjo\", \"Noto Serif KR\", \"Gowun Batang\", serif",
+        "px": 16,
+        "weight": "400",
+        "color": "rgb(221, 197, 173)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(143, 124, 85, 0.17)",
+        "align": "start",
+        "radius": "14px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-label",
+        "text": "조작 키 설정 (클릭하여 변경)",
+        "rect": [
+          42,
+          249.1875,
+          1746,
+          39
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 16,
+        "weight": "600",
+        "color": "rgb(200, 181, 143)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(200, 181, 143) rgb(200, 181, 143) rgb(73, 65, 54)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "bind-mode",
+        "text": "⌨ 키보드·마우스",
+        "rect": [
+          42,
+          300.1875,
+          870,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "bind-mode",
+        "text": "🎮 게임패드",
+        "rect": [
+          918,
+          300.1875,
+          870,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "600",
+        "color": "rgb(199, 190, 173)",
+        "background": "rgb(35, 34, 37)",
+        "border": "rgb(199, 190, 173)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "위로 이동",
+        "rect": [
+          50,
+          376.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "W",
+        "rect": [
+          389.1875,
+          367.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          367.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "아래로 이동",
+        "rect": [
+          937,
+          376.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "S",
+        "rect": [
+          1276.1875,
+          367.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          367.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "왼쪽 이동",
+        "rect": [
+          50,
+          433.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "A",
+        "rect": [
+          389.1875,
+          424.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          424.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "오른쪽 이동",
+        "rect": [
+          937,
+          433.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "D",
+        "rect": [
+          1276.1875,
+          424.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          424.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "무기 공격",
+        "rect": [
+          50,
+          490.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "좌클릭",
+        "rect": [
+          389.1875,
+          481.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          481.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "칼등 처내기 (탭=처내기, 홀드=연사)",
+        "rect": [
+          937,
+          490.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "E",
+        "rect": [
+          1276.1875,
+          481.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          481.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "Space 분노 폭발",
+        "rect": [
+          50,
+          547.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "SPACE",
+        "rect": [
+          389.1875,
+          538.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          538.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "사슬 이동",
+        "rect": [
+          937,
+          547.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "L-SHIFT",
+        "rect": [
+          1276.1875,
+          538.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          538.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "데빌포스 흡수",
+        "rect": [
+          50,
+          604.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "Q",
+        "rect": [
+          389.1875,
+          595.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          595.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "마법 (탭=투사체, 홀드=빔)",
+        "rect": [
+          937,
+          604.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "우클릭",
+        "rect": [
+          1276.1875,
+          595.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          595.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "대장간",
+        "rect": [
+          50,
+          661.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "G",
+        "rect": [
+          389.1875,
+          652.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          652.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "인벤토리",
+        "rect": [
+          937,
+          661.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "TAB",
+        "rect": [
+          1276.1875,
+          652.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          652.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "설정",
+        "rect": [
+          50,
+          718.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "ESC",
+        "rect": [
+          389.1875,
+          709.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          709.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "아이템 줍기",
+        "rect": [
+          937,
+          718.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "R",
+        "rect": [
+          1276.1875,
+          709.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          709.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "보관함",
+        "rect": [
+          50,
+          775.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "N",
+        "rect": [
+          389.1875,
+          766.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          766.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "능력치 (스탯/패시브)",
+        "rect": [
+          937,
+          775.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "J",
+        "rect": [
+          1276.1875,
+          766.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          766.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "전투 스킬",
+        "rect": [
+          50,
+          832.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "K",
+        "rect": [
+          389.1875,
+          823.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          823.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "스킬 슬롯 배정",
+        "rect": [
+          937,
+          832.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "L",
+        "rect": [
+          1276.1875,
+          823.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          823.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "유령불꽃 켜기/끄기",
+        "rect": [
+          50,
+          889.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "KeyY",
+        "rect": [
+          389.1875,
+          880.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          652.40625,
+          880.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "cls": "set-name",
+        "text": "기동칼날개 자동 켜기/끄기",
+        "rect": [
+          937,
+          889.1875,
+          329.1875,
+          24
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 15,
+        "weight": "400",
+        "color": "rgb(215, 200, 166)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(215, 200, 166)",
+        "align": "left",
+        "radius": "0px",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "KeyU",
+        "rect": [
+          1276.1875,
+          880.1875,
+          253.21875,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "set-key",
+        "text": "보조",
+        "rect": [
+          1539.40625,
+          880.1875,
+          202.59375,
+          42
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "700",
+        "color": "rgb(223, 208, 180)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(118, 99, 75) rgb(118, 99, 75) rgb(64, 54, 43)",
+        "align": "center",
+        "radius": "2px",
+        "value": "",
+        "options": null,
+        "src": null
+      },
+      {
+        "kind": "button",
+        "id": "",
+        "cls": "bind-reset",
+        "text": "키 설정 초기화 (또는 F5 키)",
+        "rect": [
+          42,
+          944.1875,
+          1746,
+          44
+        ],
+        "font": "\"Noto Sans KR\", sans-serif",
+        "px": 14,
+        "weight": "600",
+        "color": "rgb(226, 173, 151)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(132, 69, 54)",
+        "align": "center",
+        "radius": "0px",
+        "value": "",
+        "options": null,
+        "src": null
+      }
+    ]
+  }
+}

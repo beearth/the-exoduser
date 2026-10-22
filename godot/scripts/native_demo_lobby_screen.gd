@@ -35,6 +35,7 @@ var confirm: Button
 var _previous_focus: Control
 var _form_slot := -1
 var _form: Control
+var _name_form: Control
 const BONE = Color("dfd6c2")
 const GOLD = Color("96714e")
 
@@ -145,46 +146,52 @@ func _build() -> void:
 		if menu.ask_delete(menu.selected):_show_modal());erase.hide()
 	status=_label("",Vector2(1388,876),504,12);status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	_button("▶ 시네마틱",Rect2(1388,897,130,30),_play_cinematic)
-	_form=_box(Rect2(0,0,1920,1080),Color("09080b"),GOLD)
+	_form=_box(Rect2(0,0,1920,1080),Color("090609"),Color.TRANSPARENT)
 	_form.hide()
-	_image("res://assets/ui/demo_lobby/abyss.png",Rect2(0,0,1020,1080),_form).modulate=Color("81717b")
-	_image("res://assets/ui/demo_lobby/charselect/warrior_cut.png",Rect2(90,112,850,940),_form).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_image("res://assets/ui/demo_lobby/crest.png",Rect2(365,32,270,90),_form).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_label("EXODUSER",Vector2(320,920),650,54,_form,true)
-	_box(Rect2(1020,90,800,910),Color("100d10"),GOLD,_form)
-	_label(tr_text("새 전사의 이름","New warrior name"),Vector2(1060,120),700,38,_form,true)
-	_box(Rect2(1060,205,720,1),GOLD,GOLD,_form)
-	_label(tr_text("엑소듀서 전사","WARRIOR"),Vector2(1060,234),710,40,_form,true)
-	_label(tr_text("거대검을 휘두르는 흑철의 전사","A black-iron warrior wielding a greatsword"),Vector2(1060,304),710,23,_form)
-	var portraits=["portrait_warrior.png","portrait_silvertail.png","portrait_hellgunner.jpg","portrait_transmuter.jpg","portrait_spearmage.jpg"]
-	var english=["WARRIOR","SILVERTAIL","HELLGUNNER","TRANSMUTER","SPEARMAGE"]
-	for index in 5:
-		var b:=_button("",Rect2(1060+index*146,408,136,190),_select_character.bind(index),_form)
-		var portrait:=_image("res://assets/ui/demo_lobby/charselect/"+portraits[index],Rect2(5,5,126,134),b)
-		portrait.modulate=Color.WHITE if index==0 else Color("51494c")
-		var caption:=_label(tr_text(Entry.CHARACTERS[index],english[index]),Vector2(4,143),128,18,b)
-		caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-		caption.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-		caption.size.y=46
-		b.tooltip_text=tr_text("출시 준비 중","Coming soon") if index!=0 else tr_text("생성 가능한 전사","Available warrior")
-		if index!=0:
-			var lock:=LockMark.new();lock.position=Vector2(54,55);lock.mouse_filter=Control.MOUSE_FILTER_IGNORE;b.add_child(lock)
+	var scene:=_image("res://assets/ui/parity_ui_05/poster_idle_warrior_cs3_4k.jpg",Rect2(0,0,1920,1080),_form);scene.modulate=Color(.82,.82,.82)
+	_box(Rect2(19,16,1882,1048),Color.TRANSPARENT,Color(.72,.56,.27,.22),_form)
+	var header:=_label(tr_text("캐릭터 선택","Character Select"),Vector2(0,42),1920,38,_form,true);header.add_theme_font_override("font",Fonts.stack("font",700));header.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;header.add_theme_color_override("font_color",Color("e8c87a"))
+	var hint:=_label(tr_text("지옥에 강림할 화신을 선택하라","Choose your incarnation"),Vector2(0,98),1920,16,_form);hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	var cls:=_label("",Vector2(72,324),320,14,_form);cls.text=UI.text("전사");cls.add_theme_color_override("font_color",Color("c89a4a"))
+	_label(tr_text("엑소듀서 전사","WARRIOR"),Vector2(72,354),340,34,_form,true)
+	_label(tr_text("거대검을 휘두르는 흑철의 전사","A black-iron warrior wielding a greatsword"),Vector2(72,430),320,15,_form)
+	_image("res://assets/ui/demo_lobby/charselect/portrait_warrior.png",Rect2(72,492,150,200),_form)
+	var traits:=_box(Rect2(1524,340,324,326),Color(.05,.03,.025,.85),GOLD,_form)
+	var heading:=_label(tr_text("플레이 방식","Playstyle"),Vector2(22,26),296,16,traits,true);heading.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	var titles=["근접 화신","흑철의 방어","파멸의 일격"]
+	var descriptions=["거대검을 휘두르는 정면 돌파형 전투가입니다.","검은 갑옷으로 적의 공세를 견디고 되받아칩니다.","느리지만 치명적인 광역 참격을 내리꽂습니다."]
+	for i in 3:
+		_label(["⚔","◈","✦"][i],Vector2(22,74+i*80),34,24,traits)
+		_label(UI.text(titles[i]),Vector2(69,72+i*80),245,15,traits,true)
+		var desc:=_label(UI.text(descriptions[i]),Vector2(69,98+i*80),232,13,traits);desc.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;desc.size.y=42
+	var portraits=["emblem_warrior.png","emblem_silvertail.png","emblem_hellgunner.png","emblem_transmuter.png","emblem_spearmage.png"]
+	for i in 5:
+		var b:=_button("",Rect2(710+i*108,864,70,70),_select_character.bind(i),_form)
+		var round_style:=StyleBoxFlat.new();round_style.bg_color=Color("17100b");round_style.border_color=Color("c59c65") if i==0 else GOLD;round_style.set_border_width_all(2);round_style.set_corner_radius_all(35);b.add_theme_stylebox_override("normal",round_style);b.add_theme_stylebox_override("focus",round_style);b.add_theme_stylebox_override("hover",round_style)
+		var icon:=_image("res://assets/ui/parity_ui_05/"+portraits[i],Rect2(6,6,58,58),b);icon.material=_portrait_circle();icon.modulate=Color.WHITE if i==0 else Color(.35,.35,.35)
+		var caption:=_label(UI.text(["전사","실버테일","헬거너","변성술사","창법사"][i]),Vector2(-19,79),108,13,b);caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		if i>0:
+			_image("res://assets/ui/parity_ui_05/coming_soon_chains_v2.png",Rect2(0,0,70,70),b)
+			var soon:=_label(UI.text("출시 준비 중"),Vector2(-19,106),108,11,b);soon.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 		character_buttons.append(b)
-	_label(tr_text("다른 전사들은 출시 준비 중입니다.","Other warriors are coming soon."),Vector2(1060,612),710,20,_form)
-	_label(tr_text("이름은 2~8자여야 합니다.","Name must be 2–8 characters."),Vector2(1060,678),710,20,_form)
-	name_input=LineEdit.new(); name_input.max_length=8; name_input.position=Vector2(1060,740); name_input.size=Vector2(710,64)
+	_button(tr_text("취소","Cancel"),Rect2(580,1006,190,44),_close_form,_form)
+	_button(tr_text("생성","Create"),Rect2(1100,1006,240,44),_open_name,_form,true)
+	_name_form=_box(Rect2(0,0,1920,1080),Color(0,0,0,.85),Color.TRANSPARENT,_form);_name_form.hide()
+	_box(Rect2(680,390,560,300),Color("100d10"),GOLD,_name_form)
+	var name_title:=_label(tr_text("새 전사의 이름","New warrior name"),Vector2(710,430),500,28,_name_form,true);name_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	name_input=LineEdit.new(); name_input.max_length=8; name_input.position=Vector2(745,516); name_input.size=Vector2(430,54)
 	var input_box:=StyleBoxFlat.new();input_box.bg_color=Color("0b090b");input_box.border_color=GOLD;input_box.set_border_width_all(1);input_box.content_margin_left=16
 	name_input.add_theme_stylebox_override("normal",input_box)
 	var focused: StyleBoxFlat=input_box.duplicate();focused.border_color=Color("c59c65");focused.set_border_width_all(2);name_input.add_theme_stylebox_override("focus",focused)
 	name_input.add_theme_color_override("font_color",BONE)
 	name_input.add_theme_color_override("selection_color",Color("602820"))
 	name_input.add_theme_color_override("caret_color",Color("c59c65"))
-	name_input.add_theme_font_override("font",Fonts.stack("hell",400)); name_input.add_theme_font_size_override("font_size",26); _form.add_child(name_input)
+	name_input.add_theme_font_override("font",Fonts.stack("hell",400)); name_input.add_theme_font_size_override("font_size",26); _name_form.add_child(name_input)
 	name_input.text_submitted.connect(func(_value: String): _create())
-	creation_error=_label("",Vector2(1060,810),710,20,_form)
+	creation_error=_label("",Vector2(745,580),430,16,_name_form)
 	creation_error.add_theme_color_override("font_color",Color("ce8972"))
-	_button(tr_text("새로하기","New game"),Rect2(1060,890,460,66),_create,_form,true)
-	_button(tr_text("취소","Cancel"),Rect2(1540,890,230,66),_close_form,_form)
+	_button(tr_text("생성","Create"),Rect2(1000,622,176,44),_create,_name_form,true)
+	_button(tr_text("취소","Cancel"),Rect2(745,622,176,44),func():_name_form.hide(),_name_form)
 	modal=Control.new(); modal.size=Vector2(1920,1080); add_child(modal)
 	var veil := ColorRect.new(); veil.color=Color(0,0,0,0.85); veil.size=modal.size; modal.add_child(veil)
 	var dialog := _box(Rect2(540,330,840,410),Color("100d10"),GOLD,modal)
@@ -224,7 +231,7 @@ func _choose(slot: int) -> void:
 		for b in cards: b.focus_mode=Control.FOCUS_NONE
 		start.focus_mode=Control.FOCUS_NONE
 		erase.focus_mode=Control.FOCUS_NONE
-		_form_slot=slot; character_index=0; creation_error.text=""; _form.show(); name_input.clear(); name_input.grab_focus()
+		_form_slot=slot; character_index=0; creation_error.text=""; _form.show(); _name_form.hide(); name_input.clear(); character_buttons[0].grab_focus()
 	else: _form.hide()
 func _select_character(index: int) -> void:
 	if index!=0:
@@ -321,3 +328,9 @@ func _begin_movie(kind: String) -> CanvasLayer:
 	_movie=preload("res://scripts/parity_video_intro.gd").new()
 	add_child(_movie);_movie.begin(kind,bridge.language)
 	return _movie
+
+func _open_name() -> void:
+	_name_form.show();name_input.grab_focus()
+func _portrait_circle() -> ShaderMaterial:
+	var shader:=Shader.new();shader.code="shader_type canvas_item;void fragment(){vec4 c=texture(TEXTURE,UV);COLOR=vec4(c.rgb,c.a*step(length(UV-vec2(.5)),.5));}"
+	var material:=ShaderMaterial.new();material.shader=shader;return material

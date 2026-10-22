@@ -17,6 +17,7 @@ func configure(main: Node) -> void:
  layer=120
  process_mode=Node.PROCESS_MODE_ALWAYS
  _view=VIEW.new()
+ _view.main=main
  _view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
  _view.visible=false
  add_child(_view)

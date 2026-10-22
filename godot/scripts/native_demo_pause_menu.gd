@@ -53,13 +53,10 @@ func sync_pause(paused: bool) -> void:
  if _root.visible:
   var language: Dictionary=main.get_native_startup_language_snapshot()
   _language=str(language.get("language","ko"))
-  _show("pause")
+  _show("settings")
 func is_menu_visible() -> bool:
  return _root.visible
 func consume_pause_back() -> bool:
- if _root.visible and _page=="settings":
-  _show("pause")
-  return true
  return false
 func _show(page: String) -> void:
  _language=str(read_settings().get("options",{}).get("lang","ko"))

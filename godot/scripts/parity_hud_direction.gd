@@ -23,6 +23,8 @@ func _process(dt: float) -> void:
  queue_redraw()
 func _target() -> void:
  active=false
+ var seq: Node=hud._world.get_parent().source_intro_sequence if is_instance_valid(hud._world) else null
+ if is_instance_valid(seq) and is_instance_valid(seq.lesson_flow) and seq.lesson_flow.active:return
  if not is_instance_valid(hud._source_state) or not is_instance_valid(hud._player):return
  var g: Variant=hud._source_state.read_current_g()
  if not g is Dictionary or not g.get("on",false) or g.get("paused",false) or g.get("_bossArena",false) or float(g.get("_bossLoadPhase",0))>0 or g.get("stageCleared",false):return

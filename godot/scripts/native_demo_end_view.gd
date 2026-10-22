@@ -15,6 +15,8 @@ const WORDS := {
  "replay": ["데모 다시 시작", "Play Demo Again"],
  "footer": ["썩은 숲 · 첫 번째 여정", "ROTTEN FOREST · THE FIRST JOURNEY"],
  "link_failed": ["Steam 페이지를 열지 못했습니다. 다시 시도하세요.", "Could not open Steam. Please try again."]}
+var main: Node
+var clear_card: Control
 var language := "ko"
 var page := ""
 var buttons: Dictionary = {}
@@ -28,6 +30,14 @@ func show_page(value: String) -> void:
   remove_child(_center)
   _center.queue_free()
  buttons.clear()
+ if is_instance_valid(clear_card):
+  remove_child(clear_card);clear_card.queue_free()
+ if page=="clear":
+  clear_card=preload("res://scripts/parity_clear_card.gd").new();add_child(clear_card)
+  clear_card.setup(main.source_state.read_current_g() if is_instance_valid(main) else {"stage":0})
+  clear_card.next_requested.connect(func():action_requested.emit("next"))
+  buttons.next=clear_card.next
+  queue_redraw();return
  _center = CenterContainer.new()
  _center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
  add_child(_center)
@@ -117,6 +127,7 @@ func _button(parent: Node, action: String, value: String, primary: bool) -> void
 func show_link_failure() -> void:
  _notice.text=text("link_failed")
 func _draw() -> void:
+ if page=="clear":return
  draw_rect(Rect2(Vector2.ZERO,size),Color("080709"))
  # Symmetric iron ribs and a restrained ember seam; no per-frame animation.
  var c := size * 0.5

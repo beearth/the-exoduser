@@ -56698,3 +56698,11 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 | E2E/보고 | E2E1회7PASS/11NOT_READY/0FAIL, overall NOT_READY | 1x격자4장·crop2장, RETOUCH. 자연 웹 첫지급은 loading overlay에 가림; 별도 UI-only notify 재연을 자연 지급으로 주장하지 않음 |
 
 기준SHA de6cccf88e345c09ac98164543c83f0c06518d34 / snapshot dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209. 상세 [PARITY_HS_01_20261022.md](engine/PARITY_HS_01_20261022.md), 외부 `_out/PARITY-HS-01/DONE.txt`. main push/배포0, R Godot/import0, PC동기화미확인.
+
+
+## 2026-10-22 PARITY-UI-05 — 웹 UI·연출 재대조
+
+- HS-01 8a6adb05 기준 별도 worktree. 가이드 뒤 필드/소환진, Esc 직접 설정, 웹 탭/항목 DOM 배치, 필드 위 clear 결과, 선택→이름 모달, 누락 detonate art. 기존 SKILL01 원판·배너·화살표 존재 확인, 레슨 중 화살표 source guard. 컷02 현행 같은 clock에서 1.8배 미재현.
+- 원문/EN 대응 및 번역목록3515–3522(CRLF 보존), lang26 결측 영어 폴백. 신규 test gd/uid 두 경로만 ignore 예외. 생성 아트 없음.
+- 관련 테스트1회 15 checks/0 failures. E2E1회 7 PASS/11 NOT_READY/0 FAIL(종주 미완). 최종 GUI capture ERROR0. 설정 owner 기능·영상·CSS 픽셀 세부는 RETOUCH.
+- 상세 원본 행/실제 적용/남은 차이: [PARITY_UI_05_20261022.md](engine/PARITY_UI_05_20261022.md). 외부 captures/DONE는 ~/exoduser-wt/_out/PARITY-UI-05/. MAP04 파일·보호PID81277·실사용저장소 변경 안 함.

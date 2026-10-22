@@ -562,7 +562,7 @@ const SKILL_ICON_DIR := "res://assets/ui/skill_icons/"
 # SKILL_ICONS(44118) 부분집합 — 첫 전투 노출 가능분. 값=파일명(원본 alias 그대로).
 const NATIVE_SKILL_ICON_FILES := {"kiSlash": "kiSlash", "maliceSwipe": "maliceSwipe",
 	"whirlwind": "whirlwind", "charge": "chargeBoost", "chargeBoost": "chargeBoost",
-	"fireball": "fireball", "parry": "peaceShield", "peaceShield": "peaceShield",
+	"detonate": "detonate", "fireball": "fireball", "parry": "peaceShield", "peaceShield": "peaceShield",
 	"ghostWalk": "ghostWalk", "iceOrb": "iceOrb", "spikeTrap": "spikeTrap",
 	"giantSlam": "giantSlam", "holyDome": "holyDome", "shieldFuse": "shieldThrow",
 	"shieldThrow": "shieldThrow"}

@@ -82,3 +82,8 @@
 ## 표시 보조 진단(기능 suite/E2E 재실행 아님)
 
 같은 GUI 프레임에 boneStorm 원본 CompressedTexture2D420×512를 inherited sampler와 explicit LINEAR/no-repeat로 나란히 그렸다. 내부64² RGB 차이bbox 없음. 따라서 필터가 원래 격자의 원인이라는 가설은 이번 환경에서 입증되지 않았다. 외부 bone_sampler_diagnostic_1x.png와 bone-sampler-diagnostic.json에 보존한다. 거절 일괄 버튼의 실제 결과 nothing_to_level_up·토스트 문구·position(0,858)·150ms alpha1, 800ms alpha0도 관측했다. 추가 GUI error0/exit0; 관련 suite와 E2E는 반복하지 않았다.
+
+
+### PARITY-UI-05 현행 재대조 — 2026-10-22
+
+현재 HS-01 parent 기준 UI·연출 재대조/변경은 [PARITY_UI_05_20261022.md](PARITY_UI_05_20261022.md)를 따른다. 기존 스킬 원판·지역 배너·화살표는 이미 존재함을 확인했다. 가이드 검정 커튼, Esc 직접 설정, 설정 원본 탭/배치, 필드 위 clear 카드, 선택→이름 모달, detonate Q art 누락을 다룬다. 컷02 1.8배 차이는 현행 같은 clock에서 미재현. 설정 전체 기능/영상/픽셀 세부는 RETOUCH이며 과거 수치·검증 이력을 완료로 승격하지 않는다.

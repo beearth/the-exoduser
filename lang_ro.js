@@ -2823,3 +2823,6 @@ Object.assign(_RO,{"유물함":"Cufăr de relicve","유물 분류":"Categorii de
 
 // PARITY-BOSS-01 No.3507–3512; source boss HUD labels.
 Object.assign(_RO,{"그로기! {s}s":"Amețit! {s}s","충전 중 {s}s":"Încărcare {s}s","포이즈 {p}%":"Postură {p}%","면역 {s}s":"Imun {s}s","그로기 {s}s":"Amețit {s}s"," [{mark} {n} 차 부활]":" [{mark} {n} Înviere]"});
+
+// PARITY-UI-05 source character-selection labels; English fallback for missing keys.
+Object.assign(_RO,{"지옥에 강림할 화신을 선택하라": "Select the incarnation to descend into Hell", "플레이 방식": "Playstyle", "근접 화신": "Melee Incarnation", "거대검을 휘두르는 정면 돌파형 전투가입니다.": "A frontline fighter wielding a greatsword.", "흑철의 방어": "Black-Iron Defense", "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.": "Withstand enemy attacks in black armor and strike back.", "파멸의 일격": "Strike of Ruin", "느리지만 치명적인 광역 참격을 내리꽂습니다.": "Deliver slow but devastating sweeping slashes."});

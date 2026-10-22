@@ -1,0 +1,906 @@
+[
+  {
+    "id": "optLang",
+    "label": "Language",
+    "key": "lang",
+    "kind": "select",
+    "tab": "system",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": [
+      [
+        "ko",
+        "한국어"
+      ],
+      [
+        "en",
+        "English"
+      ],
+      [
+        "zh",
+        "中文简体"
+      ],
+      [
+        "zht",
+        "繁體中文"
+      ],
+      [
+        "ja",
+        "日本語"
+      ],
+      [
+        "es",
+        "Español (España)"
+      ],
+      [
+        "ru",
+        "Русский"
+      ],
+      [
+        "de",
+        "Deutsch"
+      ],
+      [
+        "ptbr",
+        "Português (Brasil)"
+      ],
+      [
+        "fr",
+        "Français"
+      ],
+      [
+        "pl",
+        "Polski"
+      ],
+      [
+        "it",
+        "Italiano"
+      ],
+      [
+        "uk",
+        "Українська"
+      ],
+      [
+        "tr",
+        "Türkçe"
+      ],
+      [
+        "vi",
+        "Tiếng Việt"
+      ],
+      [
+        "th",
+        "ไทย"
+      ],
+      [
+        "id",
+        "Bahasa Indonesia"
+      ],
+      [
+        "ms",
+        "Bahasa Melayu"
+      ],
+      [
+        "ar",
+        "العربية"
+      ],
+      [
+        "sv",
+        "Svenska"
+      ],
+      [
+        "da",
+        "Dansk"
+      ],
+      [
+        "no",
+        "Norsk"
+      ],
+      [
+        "fi",
+        "Suomi"
+      ],
+      [
+        "cs",
+        "Čeština"
+      ],
+      [
+        "hu",
+        "Magyar"
+      ],
+      [
+        "ro",
+        "Română"
+      ],
+      [
+        "nl",
+        "Nederlands"
+      ],
+      [
+        "el",
+        "Ελληνικά"
+      ],
+      [
+        "bg",
+        "Български"
+      ]
+    ]
+  },
+  {
+    "id": "optShake",
+    "label": "화면 흔들림",
+    "key": "shake",
+    "kind": "range",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": 80.0,
+    "options": []
+  },
+  {
+    "id": "optTextScale",
+    "label": "안내 글자 크기",
+    "key": "textScale",
+    "kind": "range",
+    "tab": "screen",
+    "min": 80.0,
+    "max": 160.0,
+    "step": 10.0,
+    "value": 100.0,
+    "options": []
+  },
+  {
+    "id": "optPanelFit",
+    "label": "설정 창 화면에 맞추기",
+    "key": "panelFit",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optParts",
+    "label": "파티클 양",
+    "key": "parts",
+    "kind": "range",
+    "tab": "screen",
+    "min": 5.0,
+    "max": 100.0,
+    "step": 5.0,
+    "value": 80.0,
+    "options": []
+  },
+  {
+    "id": "optSfx",
+    "label": "효과음 볼륨",
+    "key": "sfxVol",
+    "kind": "range",
+    "tab": "sound",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": 60.0,
+    "options": []
+  },
+  {
+    "id": "optBgm",
+    "label": "음악 볼륨",
+    "key": "bgmVol",
+    "kind": "range",
+    "tab": "sound",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": 30.0,
+    "options": []
+  },
+  {
+    "id": "optBgmTrack",
+    "label": "BGM 선택",
+    "key": "bgmTrack",
+    "kind": "select",
+    "tab": "sound",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": [
+      [
+        "auto",
+        "자동 (스테이지별)"
+      ],
+      [
+        "allRandom",
+        "전체 랜덤"
+      ],
+      [
+        "lobby",
+        "로비"
+      ],
+      [
+        "hell1",
+        "1장 - 썩은 숲 (h0_explore)"
+      ],
+      [
+        "hell2",
+        "2장 - 벌레굴 (hell2_insect)"
+      ],
+      [
+        "hell3",
+        "3장 - 얼음굴 (hell3_fire)"
+      ],
+      [
+        "hell4",
+        "4장 - 화염지대 (hell4_abyss)"
+      ],
+      [
+        "hell5",
+        "5장 - 지옥군단 (hell5_thunder)"
+      ],
+      [
+        "hell6",
+        "6장 - 사도마굴 (hell6_bone)"
+      ],
+      [
+        "hell7",
+        "7장 - 지옥성 (hell7_chaos)"
+      ],
+      [
+        "gameplay",
+        "공통 랜덤 (50곡)"
+      ],
+      [
+        "t:bgm/공통/Just One More Hill V4.mp3",
+        "Just One More Hill V4"
+      ],
+      [
+        "t:bgm/공통/Just One More Hill V5.mp3",
+        "Just One More Hill V5"
+      ],
+      [
+        "t:bgm/공통/네메시아 강림V5.mp3",
+        "네메시아 강림 V5"
+      ],
+      [
+        "t:bgm/공통/네메시아의 강림 V3.mp3",
+        "네메시아의 강림 V3"
+      ],
+      [
+        "t:bgm/공통/네메시아의 강림.mp3",
+        "네메시아의 강림"
+      ],
+      [
+        "t:bgm/공통/Coronam Ferro.mp3",
+        "Coronam Ferro"
+      ],
+      [
+        "t:bgm/공통/Coronam Ferro V2.mp3",
+        "Coronam Ferro V2"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3",
+        "Ashes of the Fallen Gate"
+      ],
+      [
+        "t:bgm/1장_썩은숲/hell1_ice.mp3",
+        "hell1_ice"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Bloodsteel Ascension.mp3",
+        "Bloodsteel Ascension"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Bloodsteel Ascension 2.mp3",
+        "Bloodsteel Ascension 2"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Exoduser.mp3",
+        "Exoduser"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Exoduser2.mp3",
+        "Exoduser2"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Exoduser3.mp3",
+        "Exoduser3"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Exoduser2.1.mp3",
+        "Exoduser2.1"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Blood Moon Siege.mp3",
+        "Blood Moon Siege"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Blood Moon Siege2.mp3",
+        "Blood Moon Siege2"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Wrath of the Golden Age.mp3",
+        "Wrath of the Golden Age"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Iron Oath Under Ash.mp3",
+        "Iron Oath Under Ash"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Neon Hellfire Protocol.mp3",
+        "Neon Hellfire Protocol"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Neon Hellfire Protocol (1).mp3",
+        "Neon Hellfire Protocol 2"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Ashes Under the Banner.mp3",
+        "Ashes Under the Banner"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Blade Choir of the Black Citadel.mp3",
+        "Blade Choir of the Black Citadel"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Cathedral of Steel.mp3",
+        "Cathedral of Steel"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Cathedral of Steel (1).mp3",
+        "Cathedral of Steel 2"
+      ],
+      [
+        "t:bgm/2장_벌레굴/Carapace Cathedral.mp3",
+        "Carapace Cathedral"
+      ],
+      [
+        "t:bgm/3장_얼음굴/Abyssal Drift.mp3",
+        "Abyssal Drift"
+      ],
+      [
+        "t:bgm/4장_화염지대/Ignis et Sanguis.mp3",
+        "Ignis et Sanguis"
+      ],
+      [
+        "t:bgm/4장_화염지대/Inferno Liturgia.mp3",
+        "Inferno Liturgia"
+      ],
+      [
+        "t:bgm/5장_지옥군단/Abyss Below.mp3",
+        "Abyss Below"
+      ],
+      [
+        "t:bgm/6장_사도마굴/Kiln of Broken Crowns.mp3",
+        "Kiln of Broken Crowns"
+      ],
+      [
+        "t:bgm/7장_지옥성/Midnight Cathedral of Ash.mp3",
+        "Midnight Cathedral of Ash"
+      ],
+      [
+        "t:bgm/7장_지옥성/Teeth in the Choir.mp3",
+        "Teeth in the Choir"
+      ],
+      [
+        "t:bgm/공통/네메시아의 강림3(Remastered).wav",
+        "네메시아의 강림3 (Remastered)"
+      ],
+      [
+        "t:bgm/공통/네메시아의 강림2 (Remastered).wav",
+        "네메시아의 강림2 (Remastered)"
+      ],
+      [
+        "t:bgm/공통/네메시아 강림 (Remastered).wav",
+        "네메시아 강림 (Remastered)"
+      ],
+      [
+        "t:bgm/공통/Coronam Ferro2(Remastered).wav",
+        "Coronam Ferro2 (Remastered)"
+      ],
+      [
+        "t:bgm/공통/Coronam Ferro (Remastered).wav",
+        "Coronam Ferro (Remastered)"
+      ],
+      [
+        "t:bgm/공통/Just One More Hill (Remastered) 2.wav",
+        "Just One More Hill 2 (Remastered)"
+      ],
+      [
+        "t:bgm/공통/Just One More Hill (Remastered).wav",
+        "Just One More Hill (Remastered)"
+      ],
+      [
+        "t:bgm/공통/고개 하나만 (Remastered) 2.wav",
+        "고개 하나만 2 (Remastered)"
+      ],
+      [
+        "t:bgm/공통/고개 하나만 (Remastered).wav",
+        "고개 하나만 (Remastered)"
+      ],
+      [
+        "t:bgm/3장_얼음굴/흰눈의 맹세2 (Remastered).wav",
+        "흰눈의 맹세2 (Remastered)"
+      ],
+      [
+        "t:bgm/3장_얼음굴/흰눈의 맹세 (Remastered).wav",
+        "흰눈의 맹세 (Remastered)"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Ashes Under the Banner (Remastered).wav",
+        "Ashes Under the Banner (Remastered)"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Cathedral of Steel (Remastered).wav",
+        "Cathedral of Steel (Remastered)"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Neon Hellfire Protocol2(Remastered).wav",
+        "Neon Hellfire Protocol2 (Remastered)"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Neon Hellfire Protocol (Remastered).wav",
+        "Neon Hellfire Protocol (Remastered)"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Iron Oath Under Ash (Remastered).wav",
+        "Iron Oath Under Ash (Remastered)"
+      ],
+      [
+        "t:bgm/1장_썩은숲/Wrath of the Golden Age (Remastered).wav",
+        "Wrath of the Golden Age (Remastered)"
+      ],
+      [
+        "boss",
+        "보스"
+      ],
+      [
+        "finalboss",
+        "최종보스"
+      ],
+      [
+        "forge",
+        "대장간 랜덤"
+      ],
+      [
+        "t:bgm/공통/forge.mp3",
+        "forge"
+      ],
+      [
+        "t:bgm/공통/복수의 대장간.mp3",
+        "복수의 대장간"
+      ],
+      [
+        "t:bgm/공통/Anvil Ashes.mp3",
+        "Anvil Ashes"
+      ],
+      [
+        "death",
+        "사망 랜덤"
+      ],
+      [
+        "t:bgm/공통/death.mp3",
+        "death"
+      ],
+      [
+        "t:bgm/공통/지옥 추락 사망 징글.mp3",
+        "지옥 추락 사망 징글"
+      ],
+      [
+        "victory",
+        "승리 랜덤"
+      ],
+      [
+        "t:bgm/공통/victory.mp3",
+        "victory"
+      ],
+      [
+        "t:bgm/공통/탈출 성공.mp3",
+        "탈출 성공"
+      ]
+    ]
+  },
+  {
+    "id": "optDiff",
+    "label": "난이도",
+    "key": "diff",
+    "kind": "range",
+    "tab": "system",
+    "min": 0.0,
+    "max": 10.0,
+    "step": 1.0,
+    "value": 5.0,
+    "options": []
+  },
+  {
+    "id": "optAutoPot",
+    "label": "자동 물약",
+    "key": "autoPotThr",
+    "kind": "range",
+    "tab": "system",
+    "min": 30.0,
+    "max": 99.0,
+    "step": 1.0,
+    "value": 99.0,
+    "options": []
+  },
+  {
+    "id": "optMinRar",
+    "label": "최소 줍기 등급",
+    "key": "minPickRar",
+    "kind": "range",
+    "tab": "system",
+    "min": 0.0,
+    "max": 4.0,
+    "step": 1.0,
+    "value": 0.0,
+    "options": []
+  },
+  {
+    "id": "optMinLv",
+    "label": "최소 줍기 티어",
+    "key": "minPickLvTier",
+    "kind": "range",
+    "tab": "system",
+    "min": 0.0,
+    "max": 7.0,
+    "step": 1.0,
+    "value": 0.0,
+    "options": []
+  },
+  {
+    "id": "optCrAutoFuse",
+    "label": "유물 자동합성",
+    "key": "crAutoFuse",
+    "kind": "range",
+    "tab": "system",
+    "min": -1.0,
+    "max": 3.0,
+    "step": 1.0,
+    "value": -1.0,
+    "options": []
+  },
+  {
+    "id": "optCrAutoEnh",
+    "label": "유물 자동강화",
+    "key": "crAutoEnh",
+    "kind": "range",
+    "tab": "system",
+    "min": -1.0,
+    "max": 4.0,
+    "step": 1.0,
+    "value": -1.0,
+    "options": []
+  },
+  {
+    "id": "optFps",
+    "label": "FPS 제한",
+    "key": "fpsCap",
+    "kind": "range",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 5.0,
+    "step": 1.0,
+    "value": 5.0,
+    "options": []
+  },
+  {
+    "id": "optResScale",
+    "label": "해상도 스케일",
+    "key": "resScale",
+    "kind": "range",
+    "tab": "screen",
+    "min": 50.0,
+    "max": 100.0,
+    "step": 10.0,
+    "value": 100.0,
+    "options": []
+  },
+  {
+    "id": "optIrisSz",
+    "label": "유령불꽃 크기",
+    "key": "irisSz",
+    "kind": "range",
+    "tab": "screen",
+    "min": 1.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": 20.0,
+    "options": []
+  },
+  {
+    "id": "optBrightness",
+    "label": "화면 명암",
+    "key": "brightness",
+    "kind": "range",
+    "tab": "screen",
+    "min": 70.0,
+    "max": 130.0,
+    "step": 1.0,
+    "value": 100.0,
+    "options": []
+  },
+  {
+    "id": "optIrisGlow",
+    "label": "유령 글로우",
+    "key": "irisGlow",
+    "kind": "range",
+    "tab": "screen",
+    "min": 100.0,
+    "max": 400.0,
+    "step": 1.0,
+    "value": 250.0,
+    "options": []
+  },
+  {
+    "id": "optXbowAuto",
+    "label": "석궁 자동발사 (T)",
+    "key": "xbowAuto",
+    "kind": "checkbox",
+    "tab": "system",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optBlPullMode",
+    "label": "버스트루프 당기기 (H)",
+    "key": "blPullMode",
+    "kind": "checkbox",
+    "tab": "system",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": []
+  },
+  {
+    "id": "optBladeAuto",
+    "label": "기동:칼날개 AUTO",
+    "key": "bladeAuto",
+    "kind": "checkbox",
+    "tab": "system",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": []
+  },
+  {
+    "id": "optBossDbg",
+    "label": "보스 AI 디버그",
+    "key": "bossDbg",
+    "kind": "checkbox",
+    "tab": "system",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": []
+  },
+  {
+    "id": "optDispMode",
+    "label": "화면 모드",
+    "key": "dispMode",
+    "kind": "select",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": [
+      [
+        "windowed",
+        "창 모드"
+      ],
+      [
+        "borderless",
+        "보더리스"
+      ],
+      [
+        "fullscreen",
+        "전체화면"
+      ]
+    ]
+  },
+  {
+    "id": "optRes",
+    "label": "해상도",
+    "key": "res",
+    "kind": "select",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": []
+  },
+  {
+    "id": "optCursorSize",
+    "label": "커서 크기",
+    "key": "cursorSize",
+    "kind": "range",
+    "tab": "controls",
+    "min": 30.0,
+    "max": 200.0,
+    "step": 5.0,
+    "value": 0.0,
+    "options": []
+  },
+  {
+    "id": "optBloom",
+    "label": "블룸 효과",
+    "key": "bloom",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optTrail",
+    "label": "잔상 트레일",
+    "key": "trail",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optSlash",
+    "label": "슬래시 이펙트",
+    "key": "slash",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optPostfx",
+    "label": "후처리 효과",
+    "key": "postfx",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optDeathFx",
+    "label": "사망 이펙트",
+    "key": "deathFx",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optLighting",
+    "label": "동적 조명",
+    "key": "lighting",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optTorch",
+    "label": "횃불 조명 (어둠)",
+    "key": "torch",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optAtmos",
+    "label": "분위기 효과",
+    "key": "atmos",
+    "kind": "select",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": [
+      [
+        "0",
+        "끔"
+      ],
+      [
+        "1",
+        "간략"
+      ],
+      [
+        "2",
+        "전체"
+      ]
+    ]
+  },
+  {
+    "id": "optAmbPart",
+    "label": "앰비언트 파티클",
+    "key": "ambPart",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optFog",
+    "label": "안개 효과",
+    "key": "fog",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optGrain",
+    "label": "필름 그레인",
+    "key": "grain",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optOutline",
+    "label": "캐릭터 외곽선",
+    "key": "outline",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": true,
+    "options": []
+  },
+  {
+    "id": "optShowFps",
+    "label": "프레임 표시 (FPS)",
+    "key": "showFps",
+    "kind": "checkbox",
+    "tab": "screen",
+    "min": 0.0,
+    "max": 100.0,
+    "step": 1.0,
+    "value": false,
+    "options": []
+  }
+]

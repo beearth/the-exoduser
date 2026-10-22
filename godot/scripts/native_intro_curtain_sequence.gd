@@ -180,9 +180,11 @@ func begin_native_intro() -> Dictionary:
 	_apply_state_g("begin")
 	player.set("iframes", 9999.0) # 63283 P.iframes=9999
 	if is_instance_valid(curtain_view):
-		curtain_view.show_closed() # 63289~63291 커튼 보이기+닫힌 상태
+		curtain_view.show_closed() # Preserve curtain state; guide previews the field.
+		curtain_view.hide()
 	if is_instance_valid(hud) and hud.has_method("set_native_intro_hud_visible"):
 		hud.set_native_intro_hud_visible(false) # 63287 부트로딩 숨김 + HUD 미표시(63414 .on 전)
+	bonfire = {"active": true, "x": player.global_position.x, "y": player.global_position.y, "t": BONFIRE_TICKS, "r": BONFIRE_RADIUS}
 	phase = "guide"
 	native_audio_phase_changed.emit(phase)
 	guide_step = 0
@@ -253,6 +255,7 @@ func finish_native_guide() -> Dictionary:
 	bonfire = {"active": true, "x": player.global_position.x, "y": player.global_position.y,
 		"t": BONFIRE_TICKS, "r": BONFIRE_RADIUS}
 	if is_instance_valid(curtain_view):
+		curtain_view.show()
 		curtain_view.open() # 63434~63435 0.8s cubic-bezier(.4,0,.2,1) — view가 소유(126~)
 	_dispose_at_ms = Time.get_ticks_msec() + CURTAIN_DISPOSE_MS # 63436~63440
 	return {"applied": true, "spawned": spawned, "purge_candidates": purge_candidates}
@@ -373,7 +376,7 @@ func _demo47i_physics_body(delta: float) -> void:
 	var sp := delta * 60.0
 	# 34413 bonfire t 감쇠 + 34424 비보스 push-out(경계로 밀어내기 — 피해/회복 없음).
 	if bonfire["active"] and float(bonfire["t"]) > 0.0:
-		bonfire["t"] = float(bonfire["t"]) - sp
+		bonfire["t"] = BONFIRE_TICKS if phase == "guide" else float(bonfire["t"]) - sp
 		if float(bonfire["t"]) > 0.0 and is_instance_valid(world):
 			var center := Vector2(bonfire["x"], bonfire["y"])
 			for enemy in world.get_enemies():
