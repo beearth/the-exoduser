@@ -56706,3 +56706,5 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - 원문/EN 대응 및 번역목록3515–3522(CRLF 보존), lang26 결측 영어 폴백. 신규 test gd/uid 두 경로만 ignore 예외. 생성 아트 없음.
 - 관련 테스트1회 15 checks/0 failures. E2E1회 7 PASS/11 NOT_READY/0 FAIL(종주 미완). 최종 GUI capture ERROR0. 설정 owner 기능·영상·CSS 픽셀 세부는 RETOUCH.
 - 상세 원본 행/실제 적용/남은 차이: [PARITY_UI_05_20261022.md](engine/PARITY_UI_05_20261022.md). 외부 captures/DONE는 ~/exoduser-wt/_out/PARITY-UI-05/. MAP04 파일·보호PID81277·실사용저장소 변경 안 함.
+
+PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonate/initial gold DOM are distinct states; Q natural-start visual equality remains RETOUCH. See the UI05 report.
