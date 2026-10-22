@@ -56821,3 +56821,18 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 원본outer4×inner1/4의 치수 상쇄와 yoffset4배/네임offset1/4 보존.
 - 원본 브라우저 _bakeBossFogFrames 직접 파생4개,총291res provenance 동기화.
 - §13 수치/원본행/생성법,PC actor writer 변경0.
+
+
+## 2026-10-22 SWEEP-A headless shader correction
+
+- 최종 단회 test9개중1PASS/8Main시작guard중단,E2E1회2단계PASS후동일오류로중단. 원본E2E변경0/주입0/storageON.
+- Dummy compiler가 builtin TEXTURE를sampler2D함수인수로못다루는오류수정.fragment texelFetch→vec4helper로동일픽셀식유지. unit/E2E 재실행0,HOLD.
+
+
+## 2026-10-22 SWEEP-A 최종 HOLD 보고
+
+- SWEEP_A_FINAL_20261022.md에 FINAL389행(캡처381+추가8),엄격한동일장면0/381 및실측RGB계수기록. PC미등록90snapshot,잔여291도HOLD. 완전복제/Mac차이0미선언.
+- 파생291SHA/원본source SHA/필수merge조상/번역통합이후diff0/단회test원문복원/E2E원문불변확인.
+- 단회관련9개(1PASS/8시작중단),E2E1회2단계후중단。shader수정후분리compiler진단ERROR0,unit/E2E재실행0.
+- 최종정리에서이전완료run의own격리override잔여발견. OUT원본백업/receipt후제거,최종override없음·PID81277보존.
+- MAP PRODUCTION REPORT/VISUAL VERDICT RETOUCH 및PC/HOLD근거포함. 원격SHA·최종정리는OUT/DONE.txt.

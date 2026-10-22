@@ -66,15 +66,14 @@ var _stage_draws := 0
 # A Godot blend_add sprite is not the Canvas2D offscreen alpha equation.
 const SOURCE_CANVAS_DISPLAY_SHADER="""
 shader_type canvas_item;
-vec4 straight(sampler2D source_tex,ivec2 p,ivec2 size_){
- vec4 c=texelFetch(source_tex,clamp(p,ivec2(0),size_-ivec2(1)),0);
+vec4 straight(vec4 c){
  if(c.a>0.0)c.rgb=clamp(floor(c.rgb/c.a*255.0+.5)/255.0,vec3(0.0),vec3(1.0));
  return c;
 }
 void fragment(){
  ivec2 size_=textureSize(TEXTURE,0);vec2 p=UV*vec2(size_)-.5;
  ivec2 i=ivec2(floor(p));vec2 f=fract(p);
- COLOR=mix(mix(straight(TEXTURE,i,size_),straight(TEXTURE,i+ivec2(1,0),size_),f.x),mix(straight(TEXTURE,i+ivec2(0,1),size_),straight(TEXTURE,i+ivec2(1),size_),f.x),f.y);
+ COLOR=mix(mix(straight(texelFetch(TEXTURE,clamp(i,ivec2(0),size_-ivec2(1)),0)),straight(texelFetch(TEXTURE,clamp(i+ivec2(1,0),ivec2(0),size_-ivec2(1)),0)),f.x),mix(straight(texelFetch(TEXTURE,clamp(i+ivec2(0,1),ivec2(0),size_-ivec2(1)),0)),straight(texelFetch(TEXTURE,clamp(i+ivec2(1),ivec2(0),size_-ivec2(1)),0)),f.x),f.y);
 }
 """
 const COLOR_COMPOSITE_SHADER="""
