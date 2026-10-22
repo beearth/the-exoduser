@@ -1,0 +1,804 @@
+{
+  "recordedAt": "2026-10-22T03:27:35.259Z",
+  "localHead": "5659d14d38b8068518cb5866a336bf930a1abbce",
+  "remoteMain": "91e2774b769869e59f80953e148a5c95203b0fea",
+  "branch": "main",
+  "balanceObservedAtStart": 39690,
+  "balanceObservedAfterH01": 39490,
+  "jobs": [
+    {
+      "candidate": "H20",
+      "task": "7519008631404535808",
+      "generationMode": "multi-reference",
+      "reference": null,
+      "references": [
+        {
+          "index": 1,
+          "path": "assets/character-concepts/20261022/hellgunner_sheer_leotard_front_h19.png",
+          "role": "Edit target: retain identity/equipment/pose; replace excessive sheer garment with opaque bodysuit plus leather shorts",
+          "sha256": "926cdb5c2e44904cd66fb9a4a4d4080935e2464260937cf7f713b19b680d5ab6"
+        },
+        {
+          "index": 2,
+          "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+          "role": "H14 approved direction for identity and equipment, not original skirt",
+          "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9"
+        },
+        {
+          "index": 3,
+          "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+          "role": "EXODUSER material and painterly finish consistency",
+          "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd"
+        }
+      ],
+      "prompt": "Edit ref1 adult woman, clothes only: MATTE BLACK LEATHER SHORTS worn OVER an opaque fitted bodysuit. Separate low-rise shorts with waistband, zipper fly, pockets, stitched hems and room at thighs. Bodysuit tucked inside; abdomen/side waist opaque black, only a SMALL sheer collarbone panel. Preserve face/silver hair/eye visor, RIGHT robot arm, cropped ivory jacket, boots, huge slot gun and pose. Ref2 H14 identity, ref3 EXODUSER finish. Full body/whole gun, gray. No lace, latex, dots.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_leather_shorts_bodysuit_h20.png",
+      "sha256": "5138cc768ed3da827a2a61be1b4bad19472819447c591c614e28d21b57878ced",
+      "visualVerdict": "Original inspected: separate black leather shorts with waistband/button/fly/pockets/stitched hems and natural hip wrinkles over opaque fitted bodysuit; sheer reduced to narrow collarbone band. Identity, right robot arm, cropped jacket, boots, huge slot gun and carry pose retained. Small conventional belt/button remains. Natural left hand single-hand gun carry, not validated two-hand support.",
+      "finalApproval": false,
+      "runtimeAdoption": false
+    },
+    {
+      "candidate": "H19",
+      "task": "7519005806263840768",
+      "generationMode": "multi-reference",
+      "reference": null,
+      "references": [
+        {
+          "index": 1,
+          "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+          "role": "H14 preferred woman/face/equipment front anchor; edit clothing only",
+          "source": "G:/exoduser/assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+          "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9"
+        },
+        {
+          "source": "C:/Users/심도진/Pictures/Screenshots/스크린샷 2026-10-22 205553.png",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h19/user_bodysuit_mesh.png",
+          "sha256": "1ffcab99879e25ce154e5d137a187e36d352b6458069bb4ac8a70f5b8114db87",
+          "bytes": 621940,
+          "role": "GARMENT ONLY: high-cut swimsuit silhouette, black lace/mesh torso with opaque bust/pelvis lining. Do not copy people identities or screenshot text.",
+          "index": 2
+        },
+        {
+          "index": 3,
+          "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+          "role": "EXODUSER face maturity, dark-metal materials, painterly light and finish",
+          "source": "G:/exoduser/assets/charselect/silvertail_cut.png",
+          "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd"
+        },
+        {
+          "index": 4,
+          "source": "C:/Users/심도진/Desktop/images (1).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_02.jpg",
+          "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+          "bytes": 59337,
+          "role": "Asymmetric techwear and one-piece bodysuit/boots"
+        },
+        {
+          "index": 5,
+          "source": "C:/Users/심도진/Desktop/strongest-champ-jinx-could-posibly-beat-v0-icq5ny9tu9jg1.webp",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_03.webp",
+          "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+          "bytes": 110208,
+          "role": "Rebellious gesture and enormous bespoke weapon mass"
+        },
+        {
+          "index": 6,
+          "source": "C:/Users/심도진/Desktop/images (2).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_04.jpg",
+          "sha256": "9e0871215f35a90912513c5e769cc8148f3acfbba13a1491afad146e6bd4dd92",
+          "bytes": 21481,
+          "role": "Long firearm balance and layered material silhouette"
+        },
+        {
+          "index": 7,
+          "source": "C:/Users/심도진/Desktop/images (3).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_05.jpg",
+          "sha256": "dff5176e95f41ba7f6b68515b1e77f75c8300bc6c578bdbec891e4306898419c",
+          "bytes": 24219,
+          "role": "Heavy weapon support harness/grips and weight"
+        },
+        {
+          "index": 8,
+          "source": "C:/Users/심도진/Desktop/images (4).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_06.jpg",
+          "sha256": "3e1ebf9b32fee8ea3a39ddf9af63e49892baf403661052e6d353663011e47b49",
+          "bytes": 30397,
+          "role": "Machined stock/rail/receiver structure"
+        },
+        {
+          "index": 9,
+          "source": "C:/Users/심도진/Desktop/images (5).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_07.jpg",
+          "sha256": "64d5b4aad95f7cfd607f9861131ed0120cf7471cb2a9cb68ad373806a491e3bf",
+          "bytes": 22856,
+          "role": "Slim asymmetrical clothing/material contrast"
+        },
+        {
+          "index": 10,
+          "source": "C:/Users/심도진/Desktop/images (6).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_08.jpg",
+          "sha256": "c3f6eee2b4cea8461e74908790fef889c0afdd1219b87bc67ed2e499fef143cc",
+          "bytes": 46373,
+          "role": "Primary bodysuit construction: continuous black torso/pelvis with pale side panels"
+        }
+      ],
+      "prompt": "Edit adult woman ref1; ref2 GARMENT ONLY, ref3 EXODUSER finish, refs4-10 details. High-cut swimsuit LEOTARD: black lace/mesh sheer at collarbone, abdomen and side waist, opaque bust/pelvis lining; deep hip cuts, BARE upper thighs. Large graphic lace. Preserve H14 face/silver hair/visor, RIGHT robot arm, cropped jacket, armored boots and huge slot gun. Lower gun beside thigh so suit is visible. Matte black/ivory/oxblood. Full body/whole gun, gray studio. NO pants, skirt, dots, grain, text.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "omittedReference": "Low-resolution user_01.jpg archived in H16 references; tool accepts at most10 inputs. Latest garment screenshot takes priority.",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_sheer_leotard_front_h19.png",
+      "sha256": "926cdb5c2e44904cd66fb9a4a4d4080935e2464260937cf7f713b19b680d5ab6",
+      "visualVerdict": "Garment correction candidate: swimsuit high-cut silhouette, bare upper thighs, black lace/mesh at collarbone/abdomen/side waist, opaque bust/pelvis lining confirmed in original. H14 identity/equipment retained. Dense mesh/floral texture remains; no claim of zero dots. Natural left hand carries gun, robot right hand rests by thigh; not validated two-hand support.",
+      "finalApproval": false,
+      "runtimeAdoption": false,
+      "userVerdict": "FAIL garment styling: sheer is excessive; bodysuit should be layered with pants, then user specified leather shorts."
+    },
+    {
+      "candidate": "H18",
+      "task": "7519003167228743680",
+      "generationMode": "multi-reference",
+      "reference": null,
+      "references": [
+        {
+          "index": 1,
+          "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+          "role": "H14 preferred woman/face/equipment front anchor; edit clothing only",
+          "source": "G:/exoduser/assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+          "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9"
+        },
+        {
+          "index": 2,
+          "path": "assets/charselect/silvertail_cut.png",
+          "role": "EXODUSER face maturity, dark-metal materials, painterly light and finish",
+          "source": "G:/exoduser/assets/charselect/silvertail_cut.png",
+          "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd"
+        },
+        {
+          "index": 3,
+          "source": "C:/Users/심도진/Desktop/images.jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_01.jpg",
+          "sha256": "a3b8e90b5e0aa67c0f1b57fd1bcec802e8561e9a85906a3322cc41128531364f",
+          "bytes": 4793,
+          "role": "Light cropped jacket and agile proportions"
+        },
+        {
+          "index": 4,
+          "source": "C:/Users/심도진/Desktop/images (1).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_02.jpg",
+          "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+          "bytes": 59337,
+          "role": "Asymmetric techwear and one-piece bodysuit/boots"
+        },
+        {
+          "index": 5,
+          "source": "C:/Users/심도진/Desktop/strongest-champ-jinx-could-posibly-beat-v0-icq5ny9tu9jg1.webp",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_03.webp",
+          "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+          "bytes": 110208,
+          "role": "Rebellious gesture and enormous bespoke weapon mass"
+        },
+        {
+          "index": 6,
+          "source": "C:/Users/심도진/Desktop/images (2).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_04.jpg",
+          "sha256": "9e0871215f35a90912513c5e769cc8148f3acfbba13a1491afad146e6bd4dd92",
+          "bytes": 21481,
+          "role": "Long firearm balance and layered material silhouette"
+        },
+        {
+          "index": 7,
+          "source": "C:/Users/심도진/Desktop/images (3).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_05.jpg",
+          "sha256": "dff5176e95f41ba7f6b68515b1e77f75c8300bc6c578bdbec891e4306898419c",
+          "bytes": 24219,
+          "role": "Heavy weapon support harness/grips and weight"
+        },
+        {
+          "index": 8,
+          "source": "C:/Users/심도진/Desktop/images (4).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_06.jpg",
+          "sha256": "3e1ebf9b32fee8ea3a39ddf9af63e49892baf403661052e6d353663011e47b49",
+          "bytes": 30397,
+          "role": "Machined stock/rail/receiver structure"
+        },
+        {
+          "index": 9,
+          "source": "C:/Users/심도진/Desktop/images (5).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_07.jpg",
+          "sha256": "64d5b4aad95f7cfd607f9861131ed0120cf7471cb2a9cb68ad373806a491e3bf",
+          "bytes": 22856,
+          "role": "Slim asymmetrical clothing/material contrast"
+        },
+        {
+          "index": 10,
+          "source": "C:/Users/심도진/Desktop/images (6).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_08.jpg",
+          "sha256": "c3f6eee2b4cea8461e74908790fef889c0afdd1219b87bc67ed2e499fef143cc",
+          "bytes": 46373,
+          "role": "Primary bodysuit construction: continuous black torso/pelvis with pale side panels"
+        }
+      ],
+      "prompt": "Edit ref1 woman into a combat LEOTARD, swimsuit silhouette. OPAQUE black one-piece covers bust/abdomen/pelvis; high-cut hips, BARE upper thighs and side-waist cutouts like refs4/10. NOT catsuit: NO pants, leggings or skirt. Preserve H14 adult face/silver hair/visor, RIGHT robotic arm, cropped jacket, armored thigh-high boots and huge slot gun. Matte black/ivory/oxblood, refined seams; ref2 EXODUSER painterly finish. Full body/whole gun, gray studio. NO rubber shine, dots, grain, logos.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "failed",
+      "failureMessage": "The generation service is temporarily unavailable. Please try again later. Credits have been refunded.",
+      "refundObserved": true
+    },
+    {
+      "candidate": "H16",
+      "task": "7518998267568644096",
+      "generationMode": "multi-reference",
+      "reference": null,
+      "references": [
+        {
+          "index": 1,
+          "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+          "role": "H14 preferred woman/face/equipment front anchor; edit clothing only",
+          "source": "G:/exoduser/assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+          "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9"
+        },
+        {
+          "index": 2,
+          "path": "assets/charselect/silvertail_cut.png",
+          "role": "EXODUSER face maturity, dark-metal materials, painterly light and finish",
+          "source": "G:/exoduser/assets/charselect/silvertail_cut.png",
+          "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd"
+        },
+        {
+          "index": 3,
+          "source": "C:/Users/심도진/Desktop/images.jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_01.jpg",
+          "sha256": "a3b8e90b5e0aa67c0f1b57fd1bcec802e8561e9a85906a3322cc41128531364f",
+          "bytes": 4793,
+          "role": "Light cropped jacket and agile proportions"
+        },
+        {
+          "index": 4,
+          "source": "C:/Users/심도진/Desktop/images (1).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_02.jpg",
+          "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+          "bytes": 59337,
+          "role": "Asymmetric techwear and one-piece bodysuit/boots"
+        },
+        {
+          "index": 5,
+          "source": "C:/Users/심도진/Desktop/strongest-champ-jinx-could-posibly-beat-v0-icq5ny9tu9jg1.webp",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_03.webp",
+          "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+          "bytes": 110208,
+          "role": "Rebellious gesture and enormous bespoke weapon mass"
+        },
+        {
+          "index": 6,
+          "source": "C:/Users/심도진/Desktop/images (2).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_04.jpg",
+          "sha256": "9e0871215f35a90912513c5e769cc8148f3acfbba13a1491afad146e6bd4dd92",
+          "bytes": 21481,
+          "role": "Long firearm balance and layered material silhouette"
+        },
+        {
+          "index": 7,
+          "source": "C:/Users/심도진/Desktop/images (3).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_05.jpg",
+          "sha256": "dff5176e95f41ba7f6b68515b1e77f75c8300bc6c578bdbec891e4306898419c",
+          "bytes": 24219,
+          "role": "Heavy weapon support harness/grips and weight"
+        },
+        {
+          "index": 8,
+          "source": "C:/Users/심도진/Desktop/images (4).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_06.jpg",
+          "sha256": "3e1ebf9b32fee8ea3a39ddf9af63e49892baf403661052e6d353663011e47b49",
+          "bytes": 30397,
+          "role": "Machined stock/rail/receiver structure"
+        },
+        {
+          "index": 9,
+          "source": "C:/Users/심도진/Desktop/images (5).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_07.jpg",
+          "sha256": "64d5b4aad95f7cfd607f9861131ed0120cf7471cb2a9cb68ad373806a491e3bf",
+          "bytes": 22856,
+          "role": "Slim asymmetrical clothing/material contrast"
+        },
+        {
+          "index": 10,
+          "source": "C:/Users/심도진/Desktop/images (6).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_08.jpg",
+          "sha256": "c3f6eee2b4cea8461e74908790fef889c0afdd1219b87bc67ed2e499fef143cc",
+          "bytes": 46373,
+          "role": "Primary bodysuit construction: continuous black torso/pelvis with pale side panels"
+        }
+      ],
+      "prompt": "EDIT woman in ref1 ONLY. Refs3-10 guide design; ref2 controls EXODUSER finish. Preserve adult face/silver hair, visor, RIGHT robot arm, boots, open cropped jacket and huge slot gun. Replace bra/straps/skirt with fitted high-neck BLACK ONE-PIECE BODYSUIT through waist/pelvis, like refs4/10. Matte leather/tech fabric, large ivory side panels, soft folds, sparse seams, flat magnetic belt. Rear spine channel retained. Full body/whole gun, gray studio. NO rubber shine, dots, grain, logos.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "uiEvidence": "Preview reference image 1 through 10 verified before Create; no earlier failed/interrupted upload was submitted.",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_bodysuit_front_h16.png",
+      "sha256": "f993677547eba7c9e3927b04130bace71dbd2a28a6fd820ce8db03d66f7d05ae",
+      "originalInspected": true,
+      "verdict": "Bodysuit front candidate, not user approved: continuous high-neck black one-piece through abdomen/pelvis/legs with ivory side panels and leather folds/seams. Prior bra/abdomen gap/skirt removed; H14 face/hair/visor, RIGHT prosthesis, cropped jacket and huge slot gun retained. Belt remains square-buckle rather than requested flat magnetic closure.",
+      "userVerdict": "FAIL garment interpretation: user wanted swimsuit-like exposed leotard, not covered full-leg catsuit."
+    },
+    {
+      "candidate": "H15",
+      "task": "7518991749918027776",
+      "reference": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "referenceSha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9",
+      "prompt": "Same H14 woman, REAR 3/4 from her RIGHT. Preserve silver hair, visor, ivory/black cropped jacket, RIGHT robot arm, boots and huge slot-muzzle gun. Reinforced spine, nape to sacrum: segmented dark-titanium vertebrae, paired actuator rails, scapular braces into robot shoulder, pelvic anchor, dim violet channels. Rear jacket tailored around spine opening, no gore. Gun held LOW in front/side, back unobstructed. Full body/whole gun, same realistic materials/gray studio. NO dots/grain.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "scope": "Rear 3/4 counterpart to user-preferred H14, adding reinforced spine without redesigning her front.",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_reinforced_spine_rear_h15.png",
+      "sha256": "4690b62679d96f19bbe10d03ffd6ab2253f4afca9fb2c7c6427882b11e4e614c",
+      "originalInspected": true,
+      "verdict": "Rear counterpart candidate, not user approved: nape-to-pelvis segmented spine, side rails/scapular and pelvic framing visible, jacket back cut around spine. Short silver hair, ivory/black jacket, anatomical RIGHT prosthesis, dark boots and same angular purple-accent weapon retained. Back unobstructed and full body/gun visible. Weapon rendered as one-handed carry by natural LEFT arm; not validated as original two-handed support or mechanical rig."
+    },
+    {
+      "candidate": "H14",
+      "task": "7518985412890898432",
+      "generationMode": "multi-reference",
+      "reference": null,
+      "references": [
+        {
+          "index": 1,
+          "source": "C:/Users/심도진/Desktop/images.jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h14/01_user_figure.jpg",
+          "sha256": "a3b8e90b5e0aa67c0f1b57fd1bcec802e8561e9a85906a3322cc41128531364f",
+          "bytes": 4793,
+          "role": "Cropped asymmetric jacket, slender agile body proportions; reference design, not figurine render or watermark."
+        },
+        {
+          "index": 2,
+          "source": "C:/Users/심도진/Desktop/images (1).jpg",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h14/02_user_edgerunners.jpg",
+          "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+          "bytes": 59337,
+          "role": "Asymmetric techwear, fitted core/thigh-high boots, energetic angular composition; no logos or same character."
+        },
+        {
+          "index": 3,
+          "source": "C:/Users/심도진/Desktop/strongest-champ-jinx-could-posibly-beat-v0-icq5ny9tu9jg1.webp",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h14/03_user_jinx.webp",
+          "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+          "bytes": 110208,
+          "role": "Rebellious gesture and enormous bespoke weapon mass; not same multi-barrel weapon or character."
+        },
+        {
+          "index": 4,
+          "source": "G:/exoduser/assets/charselect/silvertail_cut.png",
+          "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+          "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+          "bytes": 1670201,
+          "role": "Primary game consistency anchor: mature face, dark iron, controlled material reflections, deep painterly light. Do not copy her ponytail/skirt/blades."
+        }
+      ],
+      "prompt": "NEW adult female Hellgunner. Refs1-2: sleek asymmetric techwear, cropped jacket/thigh-high boots, agile silhouette. Ref3: rebellious poise, huge bespoke weapon mass. Ref4 governs EXODUSER finish: mature face, dark iron, deep painterly light. Ash-silver choppy hair, eye-worn visor, ONE sculpted robot arm. Black/ivory/oxblood, sparse violet. Huge wedge gun, ONE horizontal SLOT muzzle, two-handed hip grip. Full body/whole gun, neutral gray. NO round bore, cape, dots, grain, logos.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "uiEvidence": "Four Preview reference image buttons verified before Create; model Sunburst and cost 200 visible before and after submission.",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9",
+      "originalInspected": true,
+      "verdict": "Four-reference candidate, not user approved: sharp mature silver-haired face, dark iron/painterly finish, asymmetric ivory cropped jacket, slim boots/body silhouette, eye-worn visor, robotic arm and huge angular weapon with narrow slot instead of round bore. No copied logos/cape. Belt buckles and finger/weapon contact need closer functional retouch; no game consistency PASS asserted.",
+      "userVerdict": "Positive user response; preserve as front appearance/reference for rear view. Final okay not received."
+    },
+    {
+      "candidate": "H13",
+      "task": "7518982805787049984",
+      "generationMode": "text-to-image",
+      "reference": null,
+      "referenceRole": "No prior image; same full-redesign prompt observed in current UI.",
+      "prompt": "FROM SCRATCH: Edgerunners-inspired 2D design. Adult female street mercenary, short rust-red undercut, eye-worn visor. Cropped cobalt bomber, black tank, baggy charcoal cargos, high-top boots. ONE bulky ivory/orange robot arm. HUGE asymmetric rectangular RAILGUN: split rails, narrow SLOT muzzle, side capacitor; two-handed hip carry. Walking 3/4 full body, entire gun. Angular anatomy, bold economical ink, hard 3-tone shading. Plain gray. NO cape, ponytail, tights, round barrel, dots or grain.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "modelEvidence": "Latest UI selection displays Sunburst alongside current task. This task appeared without another agent Create action; form model can change independently, so actual task model remains subject to output/UI evidence.",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_full_redesign_h13.png",
+      "sha256": "97f485bb4b976cf44839c44228c13e70ae02900445794724535e517d6f58a4a5",
+      "originalInspected": true,
+      "outputProviderEvidence": "Observed and downloaded original URL uses skillsrc.octask.ai/gpt-image-2/7518982805787049984/",
+      "verdict": "Complete redesign candidate, not user approved: short undercut, new face/visor, cropped blue jacket, baggy cargos, ivory/orange industrial arm, two-handed hip carry, split rectangular railgun and gray backdrop. No prior ponytail/cape/tights/round cannon silhouette. Small structural fasteners/edge marks remain; do not assert zero dots."
+    },
+    {
+      "candidate": "H13A",
+      "task": "7518982442862313472",
+      "generationMode": "text-to-image",
+      "reference": null,
+      "referenceRole": "No previous image uploaded; complete character, clothing, weapon and rendering redesign.",
+      "prompt": "FROM SCRATCH: Edgerunners-inspired 2D design. Adult female street mercenary, short rust-red undercut, eye-worn visor. Cropped cobalt bomber, black tank, baggy charcoal cargos, high-top boots. ONE bulky ivory/orange robot arm. HUGE asymmetric rectangular RAILGUN: split rails, narrow SLOT muzzle, side capacitor; two-handed hip carry. Walking 3/4 full body, entire gun. Angular anatomy, bold economical ink, hard 3-tone shading. Plain gray. NO cape, ponytail, tights, round barrel, dots or grain.",
+      "provider": "MagicLight",
+      "model": "Nano Banana 2.1",
+      "modelEvidence": "Pre-submit AX showed Sunburst; task-created AX and task Re-edit selection showed Nano Banana 2.1. Re-edit display also visually inspected. Do not infer the cause of the intervening selection change.",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "not-visible-in-latest-list-outcome-unverified",
+      "note": "Later visible UI showed different top task 7518982805787049984 and Sunburst selection. No deletion/cancellation/refund or completed result observed for the earlier task; do not infer who changed it."
+    },
+    {
+      "candidate": "H12",
+      "task": "7518980236876505088",
+      "reference": "assets/character-concepts/20261022/hellgunner_cinematic_redraw_h11.png",
+      "referenceSha256": "4451d506620a99def005f4c3cace30647f3151aa0e13391362a2e04b8e1af40b",
+      "referenceRole": "Identity and equipment reference only; user requested Edgerunners-inspired cel animation style and new composition.",
+      "prompt": "Cyberpunk: Edgerunners-inspired 2D cel-animation key art. New rendering/layout; reference identity only. Adult female, brown ponytail, red goggles OVER eyes, crimson cape, fitted black leather, flat-clasp belt, chunky robotic arm. Huge revolver-cannon: large cylinder, ONE muzzle, two hands, short stock. Dynamic low-angle diagonal, full body/whole gun. Bold angular shapes, sparse sharp ink, hard shadow blocks, acid-yellow/cyan city, magenta rims. NO 3D, grids, dots, grain, particles or text.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_edgerunner_cel_h12.png",
+      "sha256": "40a0b7f454520694e4f91eb1816f47e1f504ff7b903b7d7e7b60838eb9bc213c",
+      "originalInspected": true,
+      "verdict": "FAIL: user rejected background/style-only change and instructed complete design, drawing and muzzle redesign."
+    },
+    {
+      "candidate": "H11",
+      "task": "7518889321528745984",
+      "reference": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "referenceSha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06",
+      "referenceRole": "Identity/colors only; fresh composition and rendering, not local material edit.",
+      "prompt": "New composition, realistic 3D key art. Reference identity/colors ONLY, not style/layout. Adult female, brown ponytail, red goggles OVER eyes, crimson cloth cape, fitted black leather, modern belt, exposed robot arm. Low three-quarter camera, offset full-body stance; huge single-muzzle revolver-cannon foreshortened diagonally, two hands, short stock. Sculpted face, large clean forms, soft key light, quiet city silhouettes. NO anime outlines, grids, dots, grain, particles, rain or tiny lights.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_cinematic_redraw_h11.png",
+      "sha256": "4451d506620a99def005f4c3cace30647f3151aa0e13391362a2e04b8e1af40b",
+      "verdict": "FAIL: user still found the artwork dated and requested Edgerunners style. Keep only identity reference, not realistic rendering.",
+      "originalInspected": true
+    },
+    {
+      "candidate": "H10",
+      "task": "7518886439383408640",
+      "reference": "assets/character-concepts/20261022/hellgunner_matte_leather_h09.png",
+      "referenceSha256": "650f6786e5f0a5588c1ae6747dd713a2b7d78e671a9624daa551b50e7c45a17a",
+      "prompt": "Change ONLY black clothing to supple charcoal-black motorcycle leather: low satin sheen, soft muted reflections, tailored large panels, fine seams and natural compression folds at hips/knees. Remove repeated grid/quilt patterns and bright white streaks from torso, thighs, shins and boots. NOT latex or rubber. Keep fitted silhouette, face, eye-worn goggles, shiny METAL robot arm, both hands, gun/stock, belt, crimson CLOTH cloak and city unchanged. NO dots, grain, stippling or particles.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_satin_leather_h10.png",
+      "sha256": "51a1b398b816b53414e516ddda7487d1d6bea2b865a4586bd89c7630c5fd6561",
+      "verdict": "FAIL: user rejected overall quality, dated illustration style and dotted details. Do not use as continuing edit reference.",
+      "originalInspected": true
+    },
+    {
+      "candidate": "H09",
+      "task": "7518885199819771904",
+      "reference": "assets/character-concepts/20261022/hellgunner_tactical_gear_h08.png",
+      "referenceSha256": "06b83d8656a3994035e4cc372a7e73761b39fae24fd67abd9397ff4ddd976c10",
+      "prompt": "Edit ONLY black torso garment and trousers into fitted MATTE LEATHER. Tailored seams, stitched edges, leather folds at hips/knees, subtle rubbed edges; broad soft highlights, NOT rubber, latex or plastic shine. Remove quilted wetsuit panels. Keep silhouette, face, goggles OVER eyes, METAL robot arm, both hands, tactical belt, skeletal stock, giant cannon, crimson CLOTH cloak and city. Clean material planes; NO dotted grain, stippling, glitter, particles or dots.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_matte_leather_h09.png",
+      "sha256": "650f6786e5f0a5588c1ae6747dd713a2b7d78e671a9624daa551b50e7c45a17a",
+      "verdict": "RETOUCH: leather folds improved, but torso/thigh highlights and grid seams remain too strong. Identity, goggles, robot arm, two hands and cannon preserved."
+    },
+    {
+      "candidate": "T03",
+      "task": "7518884037603311616",
+      "reference": "output/new_heroes_female_iteration_20261021/transmuter_female_pose_face_v1.png",
+      "referenceSha256": "c667cbbfde3b423782609f8b5093cc6a68e7d98a7249b27c740f128d5feab75a",
+      "prompt": "Same adult female Transmuter: face, silver hair, hood, outfit preserved. PURE ENERGY BOW: oversized LEFT claw gauntlet IS center. One sphere embedded in palm, open claws around it; bow limbs grow above/below directly from core. No separate grip or solid bow. RIGHT hand draws one energy arrow to cheek. Exactly two arms, one core. Dark indigo, narrow cobalt glow. Full body, feet and whole bow with margin. Clean material planes; NO dots, stippling, grain, glitter or particles.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "failed-refund-message-observed",
+      "error": "The generation service is temporarily unavailable. Please try again later. Credits have been refunded.",
+      "errorObservedAt": "2026-10-22T04:06:13.021Z"
+    },
+    {
+      "candidate": "H08",
+      "task": "7518883137816039424",
+      "reference": "assets/character-concepts/20261022/hellgunner_compact_stock_h07.png",
+      "referenceSha256": "985250543b5b90eff76a7d1f69cce9b4f71699ea2f0658baa8c4d93ee9da4449",
+      "prompt": "Edit ONLY waist/hip gear and cloak surface. Modern slim black tactical belt, FLAT magnetic quick-release clasp with two side tabs, molded pouches and fitted armored techwear trousers. Remove medieval square buckle, leather garters and scale skirt. Keep crimson cloak silhouette/frayed edges but remove tiny pinholes. Preserve face, goggles OVER eyes, robot arm, two hands, skeletal stock, gigantic revolver-cannon and city. Clean material planes; NO dots, stippling, grain, glitter or particles.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_tactical_gear_h08.png",
+      "sha256": "06b83d8656a3994035e4cc372a7e73761b39fae24fd67abd9397ff4ddd976c10"
+    },
+    {
+      "candidate": "S01",
+      "task": "7518882084655677440",
+      "reference": "output/charselect_color_remaster_20261021/sources/spearmage.png",
+      "prompt": "Refine SAME adult female Spearmage: preserve face, white hair, circlet, scale dress, airborne thrust. Keep EXACT spear: large concentric rune mechanism, long CENTRAL blade, thorned shaft, both hands gripping it. Replace white-violet lightning with deep black-purple crystal and dim amethyst edge runes. Refine fingers, face planes and metal/cloth separation. Show full body, both feet, entire spear with margin. Plain white backdrop. NO dots, stippling, glitter, grain, particles or extra jewelry.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "referenceSha256": "15679fd9a67155a367c4f1d463a3dbff0e14114adab99c603b596ba38f20e704",
+      "referenceHashRecordedAt": "2026-10-22T03:55:39.075Z",
+      "savedPath": "assets/character-concepts/20261022/spearmage_inkpurple_s01.png",
+      "sha256": "0f0367e6b0985648738133ec935e08ff82824ddf18d0166790198c6e35303512"
+    },
+    {
+      "candidate": "H07",
+      "task": "7518881265495502848",
+      "reference": "assets/character-concepts/20261022/hellgunner_shoulder_support_h06.png",
+      "referenceSha256": "3624b1855198f3253cc9eeec163575a2df3ae5e81f2f2d5b84ff97f9f240c238",
+      "prompt": "Edit ONLY rear stock behind trigger hand, under her cheek. Remove thick tube crossing collarbone; replace with SHORT angular skeletal buttstock, slim cheek rest and flat rubber pad seated against RIGHT shoulder. Neck and jaw stay clear. Preserve both hands/robot arm, face, goggles OVER eyes, modern belt, huge FRONT cylinder, long barrel, ONE muzzle, full-body pose and city. Clean continuous material planes; NO dots, stippling, glitter, grain or particles. Do not shrink cannon.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_compact_stock_h07.png",
+      "sha256": "985250543b5b90eff76a7d1f69cce9b4f71699ea2f0658baa8c4d93ee9da4449"
+    },
+    {
+      "candidate": "T02",
+      "task": "7518880344455712768",
+      "reference": "assets/character-concepts/20261022/transmuter_energy_bow_t01.png",
+      "referenceSha256": "8e79260ed3846fdae4873781d9d91ca79f9daed0275f756754c5d53f56e0373d",
+      "prompt": "Refine SAME female Transmuter: preserve face, silver hair, hood and outfit. Zoom out: feet and COMPLETE bow visible with margin above its top. Enlarge LEFT claw gauntlet around ONE sphere core; one translucent energy bow grows from it. Right hand draws one arrow. Exactly two arms, one core. Dark indigo energy, narrow cobalt edges. Remove ALL dots, grain, stippling, glitter, particles and background lightning. Clean painted material planes; no new jewelry. Keep hands and core clear.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/transmuter_bow_core_t02.png",
+      "sha256": "0666df191ba3d388d41c9331d7159b180a859eee916e6379c1a8ada00c1ade93"
+    },
+    {
+      "candidate": "H06",
+      "task": "7518879830456360960",
+      "reference": "assets/character-concepts/20261022/hellgunner_goggles_clean_h05.png",
+      "referenceSha256": "0d426bf81888d8eff02d528513296c7102a02b60f1b41247f0341f48490de0a9",
+      "prompt": "Repose only upper body for believable heavy-weapon handling. RIGHT robotic hand on trigger; LEFT elbow visible below ribs, hand firmly under foregrip. A SHORT padded buttstock sits against right shoulder below cheek; neck stays free. Align wrists and shoulders naturally. Keep her identity, eye-worn red goggles, ponytail, modern black/red techwear, giant revolver cylinder, ONE muzzle, city and full-body framing. Clean smooth materials; NO dots, stippling, glitter, grain or particles.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "status": "completed-downloaded",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_shoulder_support_h06.png",
+      "sha256": "3624b1855198f3253cc9eeec163575a2df3ae5e81f2f2d5b84ff97f9f240c238"
+    },
+    {
+      "candidate": "H01",
+      "task": "7518874793114017792",
+      "reference": "output/new_heroes_female_iteration_20261021/hellgunner_female_pose_face_v1.png",
+      "prompt": "Refine the same adult female Hellgunner, not a redesign. Preserve face identity, brown ponytail, black iron/brass armor, crimson cloak, long massive revolver-rifle and full-body stance. Improve eyes, facial planes and resolve both hands anatomically; stock firmly contacts shoulder. Refine ONE front muzzle into a clear hollow bore; cylinders behind it are chambers, not extra barrels. Keep weapon length/weight, clear materials, restrained red light. No extra people, logos, added ornaments.",
+      "note": "Submitted before user cyberpunk direction; preserve as earlier iteration.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "referenceSha256": "07fc922c942e8e963b75a0404c2101ccb8d5023d45506da7c7f99ed41edb902d",
+      "status": "completed-downloaded-inspected",
+      "savedPath": "output/new_heroes_refinement_20261022/hellgunner_fantasy_structure_h01.png",
+      "sha256": "63d12f6df6b85fb2f10ed6ce5cde2785fbfcd1c58dfb736ce6d87b84cdd0cc66"
+    },
+    {
+      "candidate": "T01",
+      "task": "7518875208916361216",
+      "reference": "output/new_heroes_female_iteration_20261021/transmuter_female_pose_face_v1.png",
+      "prompt": "Refine the SAME adult female: preserve face, silver hair, black hood, claw gauntlet, outfit and painterly dark fantasy. Replace scythe with ONE pure-energy longbow growing directly from the LEFT gauntlet core; RIGHT hand draws its string with ONE energy arrow. Exactly two arms, one core, no physical staff. Improve facial planes and fingers subtly. Deep indigo/cobalt energy, bright only inside core and bow edges. Full body, feet and entire bow visible. No added jewelry, people, logo or particles.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "referenceSha256": "c667cbbfde3b423782609f8b5093cc6a68e7d98a7249b27c740f128d5feab75a",
+      "status": "completed-downloaded-inspected",
+      "savedPath": "assets/character-concepts/20261022/transmuter_energy_bow_t01.png",
+      "sha256": "8e79260ed3846fdae4873781d9d91ca79f9daed0275f756754c5d53f56e0373d"
+    },
+    {
+      "candidate": "H02",
+      "task": "7518875372884271104",
+      "reference": "output/new_heroes_female_iteration_20261021/hellgunner_female_pose_face_v1.png",
+      "prompt": "Evolve the same adult female Hellgunner into subtle cyberpunk. Preserve face, brown ponytail, crimson accents. LEFT arm is an exposed robotic prosthesis from shoulder to fingers, bracing ONE gigantic future revolver-cannon. Huge rotary cylinder, ONE thick barrel and ONE open muzzle; right hand at trigger, stock at shoulder. Refined black titanium/ceramic armor, worn crimson coat, sparse red circuitry. Full body and entire weapon visible. Rainy megacity backdrop. No logo, extra limbs or guns.",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "referenceSha256": "07fc922c942e8e963b75a0404c2101ccb8d5023d45506da7c7f99ed41edb902d",
+      "status": "completed-downloaded-inspected",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "sha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06"
+    },
+    {
+      "candidate": "H03",
+      "task": "7518876773853114368",
+      "status": "failed-refund-message-observed",
+      "prompt": "Edit this Hellgunner: keep face, robotic arm, huge cylinder, single muzzle and city. FIX shoulder stock: compact recoil pad seated in shoulder pocket, clear neck/cheek space, aligned trigger wrist. Show other hand supporting foregrip; two arms only. Replace medieval buckled belt, hanging straps and scale skirt with modern tactical belt, low-profile quick-release clasp, compact pouches and fitted black techwear combat panels. Keep crimson coat, full body and whole gun visible. No extra weapons.",
+      "error": "The current prompt or reference image couldn't be processed. Please edit it and try again. Credits have been refunded.",
+      "reference": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "referenceSha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200
+    },
+    {
+      "candidate": "H04",
+      "task": "7518877237164306432",
+      "status": "completed-downloaded",
+      "prompt": "Refine this cyberpunk character. Preserve face, robot arm, giant revolver-cannon and city. Fix shoulder fit: compact contoured stock pad rests on shoulder, leaving neck/cheek clear; both hands support weapon. Replace medieval belt/straps with a modern quick-release tactical belt and fitted black techwear panels. Add slim angular goggles raised on forehead and a small comms earpiece. Keep eyes visible, black/crimson colors, full body and whole weapon. No extra limbs, guns or jewelry.",
+      "reference": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "referenceSha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "savedPath": "assets/character-concepts/20261022/hellgunner_cyberpunk_modern_h04.png",
+      "sha256": "d29d992651559f897a62e6a0ac6e337f8fa7da99bf7bc12d802405a2b99a7ae4",
+      "verdict": "RETOUCH: user rejected forehead goggles and scattered dots. Shoulder fit/support hand still unresolved."
+    },
+    {
+      "candidate": "H05",
+      "task": "7518878747109568512",
+      "status": "completed-downloaded",
+      "reference": "assets/character-concepts/20261022/hellgunner_cyberpunk_modern_h04.png",
+      "referenceSha256": "d29d992651559f897a62e6a0ac6e337f8fa7da99bf7bc12d802405a2b99a7ae4",
+      "provider": "MagicLight",
+      "model": "GPT Image 2.5 sunburst",
+      "aspectRatio": "16:9",
+      "outputs": 1,
+      "displayedCost": 200,
+      "prompt": "Move goggles DOWN over BOTH EYES, seated on nose and temples, strap around head. NOT on forehead. Transparent lenses; preserve her recognizable face. Remove ALL random dots, stippling, glitter, grain, sparks and rain specks across character, cloak, gun, pavement and city. Use clean continuous painted surfaces, crisp edges and broad city light panels instead of tiny lights. Preserve robot arm, giant single-muzzle cannon, modern tactical gear, red/black colors, pose and full-body framing.",
+      "savedPath": "assets/character-concepts/20261022/hellgunner_goggles_clean_h05.png",
+      "sha256": "0d426bf81888d8eff02d528513296c7102a02b60f1b41247f0341f48490de0a9"
+    }
+  ],
+  "latestObservedBalance": 36090,
+  "updatedAt": "2026-10-22T12:16:01.716Z",
+  "userFeedbackH02": {
+    "positive": "이번건 좀 느낌있네",
+    "corrections": [
+      "견착부분이 이상한데",
+      "벨트같은것도 중세스러운데 현대식으로",
+      "고글같은거나 약간 신경써보고 악세사리"
+    ],
+    "finalApproval": false
+  },
+  "balanceBeforeH05": 38890,
+  "userFeedbackH04": {
+    "corrections": [
+      "고글은 양눈에 착용",
+      "점도트·반짝입자 제거"
+    ],
+    "finalApproval": false
+  },
+  "balanceBeforeH09": 37490,
+  "userFeedbackH08": {
+    "corrections": [
+      "가죽타이즞 거너 맞냐 질감",
+      "지금은 고무타이즈같은데"
+    ],
+    "finalApproval": false
+  },
+  "balanceObservedAt": "2026-10-22T11:13:49.683Z",
+  "userFeedbackH10": {
+    "quotes": [
+      "퀄리티 거지같어 맘에안드네",
+      "옜날이미지같고",
+      "선부트ㅡ로 만든거냐",
+      "왜케 구리지 점찎힌것도 그렇고 짜치게",
+      "작화퀄리티는 왜구 구풍이냐 이해가안가네 좋은구성 많읉네데"
+    ],
+    "finalApproval": false
+  },
+  "balanceBeforeH11": 37290,
+  "userFeedbackH11": {
+    "quotes": [
+      "왜케 또 촌스럽냐",
+      "엣지러너 스타일좀 넣어봐라"
+    ],
+    "finalApproval": false
+  },
+  "balanceBeforeH12": 37090,
+  "userFeedbackH12": {
+    "quote": "배경만바꾼다고 엣지러너냐 디자인을 완전바꿔 버려 저 거지같은작화며 총구며 씨발",
+    "finalApproval": false
+  },
+  "balanceBeforeH13": 36890,
+  "balanceH13Note": "Latest balance differs by 400 from pre-H13. Current task displayed 200; earlier H13A outcome remains unverified. Do not attribute entire balance change or infer refund/cancellation.",
+  "userReferenceInstruction": {
+    "sources": [
+      "C:/Users/심도진/Desktop/images.jpg",
+      "C:/Users/심도진/Desktop/images (1).jpg",
+      "C:/Users/심도진/Desktop/strongest-champ-jinx-could-posibly-beat-v0-icq5ny9tu9jg1.webp",
+      "G:/exoduser/assets/charselect/silvertail_cut.png"
+    ],
+    "silvertailRequest": "저기에 실버테일도 넣어서 우리게임의 일관성넣고",
+    "finalApproval": false
+  },
+  "balanceBeforeH14": 36490,
+  "userFeedbackH14": {
+    "quote": "이거 좀 잘나왔네 강화척추로 뒷모습도 해봐",
+    "positiveDirection": true,
+    "finalApproval": false
+  },
+  "balanceBeforeH15": 36290,
+  "userBodysuitInstruction": {
+    "userReferenceCount": 8,
+    "quote": "레퍼런스 더 넣고 아까 저런 바디수트 입는게 나을꺼같다",
+    "interpretation": "Continuous high-neck one-piece from chest/abdomen through pelvis, Lucy reference garment construction; H14 identity/equipment and H15 spine retained. Front then matching rear, one candidate each, displayed total 400.",
+    "finalApproval": false
+  },
+  "balanceBeforeH16": 36090,
+  "cancelledPlanH17": {
+    "status": "not-submitted",
+    "reason": "User clarified swimsuit-like exposure before a rear generation was accepted. The Create attempt opened an image preview and produced no new task; no H17 task ID exists."
+  },
+  "userBodysuitCorrection": {
+    "quote": "바디수트 저런거 말고 수영복같이 노출좀 있어야지",
+    "interpretation": "Opaque high-cut one-piece combat leotard, open upper thighs and side-waist cutouts; no pants/leggings/skirt.",
+    "finalApproval": false
+  },
+  "balanceBeforeH18": 35890,
+  "balanceBeforeH19": 35890,
+  "userMeshCorrection": {
+    "source": "C:/Users/심도진/Pictures/Screenshots/스크린샷 2026-10-22 205553.png",
+    "quote": "바디수트는 저런거지 시스루까지 넣어서 트렌디하게 해바",
+    "interpretation": "Black lace/mesh high-cut leotard, sheer collarbone/abdomen/side waist, opaque bust/pelvis lining. Screenshot used for clothing only.",
+    "finalApproval": false
+  },
+  "latestCostumeDirection": {
+    "userQuotes": [
+      "시스루 너무 심하고 바디수트 요즘 바지랑 입는거야 ;;",
+      "반바지 가죽같은거나"
+    ],
+    "interpretation": "Opaque fitted bodysuit layered under matte black leather shorts; tiny collarbone sheer only. Low-rise tailored shorts with separate waistband/fly/pockets/hems are production interpretation.",
+    "finalApproval": false
+  },
+  "balanceBeforeH20": 35690,
+  "balanceAfterH20Observed": 35490
+}
