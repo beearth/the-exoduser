@@ -29,6 +29,15 @@ func run() -> void:
  var web_flow=preload("res://scripts/maps/map11/web_flow.gd").new();web_flow.configure(data);web_flow.prepare(Vector2(4020,7420))
  check(web_flow.direction(Vector2(4020,7380))==Vector2.DOWN,"source flow tie order toward start")
  check(web_flow.distance.size()==40000,"40px source grid")
+ # MAP03: compare all directions against the verbatim browser Worker, including tie/diagonal rules.
+ for point in [Vector2(4020,7420),Vector2(4020,7380),Vector2(4100,3250),Vector2(4020,1020)]:
+  web_flow.prepare(point)
+  var expected:=FileAccess.get_file_as_bytes("res://tests/parity_map03/flow_%d_%d.f32"%[point.x,point.y]).to_float32_array()
+  check(expected.size()==80000,"web Worker oracle complete")
+  for cell in range(40000):
+   var actual: Vector2=web_flow.direction(Vector2((cell%200)*40+20,(cell/200)*40+20))
+   check(actual.distance_to(Vector2(expected[cell*2],expected[cell*2+1]))<.000001,"original Worker direction %d"%cell)
+
  check(p.field.can_move(Vector2(4020,7420),15),"start can move")
  check(not p.field.can_move(Vector2(4020,180),15),"source system gate circle blocks north path")
  check(p.field.can_move(Vector2(4020,300),15),"source gate approach remains open")
@@ -37,6 +46,22 @@ func run() -> void:
  check(scene.get_node_or_null("WorldClarity")==null,"concept clarity disconnected")
  check(scene.field_view._chunks.size()==64,"64 source chunks")
  check(scene.field_view._props.size()==36,"36 source hand props")
+ var pool: Node=scene.field_view._chunk_pool
+ check(pool.textures.size()==75,"fixed 25 triplet GPU slots")
+ check(pool.resident_bytes<=100000000,"chunk VRAM cap")
+ for point in [Vector2(4020,7420),Vector2(5220,3220),Vector2(5620,5220),Vector2(4020,1020),Vector2(4100,3250)]:
+  pool.advance(point,Vector2(1920,1080),true)
+  for cell in range(64):
+   check((pool.ground[cell].texture!=null)==(pool.wanted[cell]==1),"only visible + ring resident")
+   check(not ResourceLoader.has_cached(str(data.chunks[cell].texture)),"original fallback not loaded")
+ check(is_instance_valid(main.native_natural_enemies),"actual natural provider installed")
+ var holes: Node=main.world.get_node("NativeSpawnHoleSystem")
+ check(holes.holes.size()==14,"actual hole consumer count")
+ for point in [Vector2(5220,3220),Vector2(5620,5220),Vector2(4020,1020)]:
+  var found: bool=false
+  for h in holes.holes:
+   if Vector2(h.x,h.y)==point:found=true
+  check(found,"reported source hole anchor "+str(point))
  for chunk in scene.field_view._chunks:
   check(chunk.region_rect.size==Vector2(1334,1334),"1440p source-sized core")
   check((chunk.region_rect.size*chunk.scale).is_equal_approx(Vector2(1000,1000)),"unchanged chunk world extent")

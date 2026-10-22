@@ -1,0 +1,2391 @@
+{
+  "source_snapshot_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "source_rows": "CH1 production chunks; ch1-forest-sway.js10-98; ch1-boundary-edge.js; PARITY_MAP_02 source lineage",
+  "no_resize": true,
+  "formats": {
+    "Windows": "BPTC_RGBA BC7",
+    "Mac": "DXT5 S3TC (BPTC unsupported by GL4.1)"
+  },
+  "outputs": [
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_0_0.res",
+      "sha256": "53154b027a265de07186b6b99f07a5840c6e0586d1fac4382fb3fd600eae4e16",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_0.png",
+      "source_sha256": "84d46398e1a7cf6eb3d68d1f8b6e053e0022600f48d62bd546fb813dc5f24fa2"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_0_2.res",
+      "sha256": "d19ed1429fd75bbd57b0bc075c2742b7483bfa75255cdab372f6d7ccb7a97982",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_0_0.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_1_0.res",
+      "sha256": "38bca4bac78775bb36c5a83f812337589415d03435813c33b272d4db34bc1851",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_1.png",
+      "source_sha256": "53d38014f1ad1f63c47b644a9af31c70b2b6fbcfabd9dbc9d3d3f6b6dc76bf0d"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_1_1.res",
+      "sha256": "571c8787a9494bcaed7bf197737bc773cc8dd386eaeda765866dd84557cec40b",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_0_1.png",
+      "source_sha256": "0d2e9a8a121de5c3a484bcf22bdb170db611276aee0f14858aaded1ceb2262e4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_1_2.res",
+      "sha256": "9d9db7c5db633b5d2cc164c409d26a398d294c7436929aa2e02c989b852310d6",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_0_1.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_2_0.res",
+      "sha256": "4fa31fd155b099de3be2e16d47b5cfef8212a2aeb3fc740dc39d4afd9b3c4157",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_2.png",
+      "source_sha256": "730d5bfb9e1be52f560027662f77820a58a1fef44072ddbf5a8692066520ed72"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_2_1.res",
+      "sha256": "c8da1bb40365f39201c92384f31bae7be774619ed80d0388a1b2625602c4e9b3",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_0_2.png",
+      "source_sha256": "5b53c85c230b26bc291a7ea0ee0ef5f2b8956531ce33321dbd7bc8bc70e633be"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_2_2.res",
+      "sha256": "f59179791c55be0b87e85922a861cd0af604525e874f67c1dc7e5ed7da44d04c",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_0_2.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_3_0.res",
+      "sha256": "aeb7090fcaa031853874199200ca9709f751098b0f4b377a7c7faee3fc12a5fc",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_3.png",
+      "source_sha256": "9daa37f0705d581f20dbda14f14345540d99a47b80724d5d787456e0113297d9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_3_1.res",
+      "sha256": "39b169a1d483b2c7e529e9876b2fe0b7f525b7667b5c504276c3afdcaa45ac2d",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_0_3.png",
+      "source_sha256": "0670bba8dcc088d83eb92d868b57f23159cdb9c2993a8c7a8e166080da7a8fe4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_3_2.res",
+      "sha256": "392aedd3366012e467b71a65210a5bcc1c80fde336ed3b2399230d82e51f3c9b",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_0_3.png",
+      "source_sha256": "5d11b22b1e35f1c1025492e48cb3102457aa1f5c2bb1a7f15c0d1329fa7c7323"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_4_0.res",
+      "sha256": "050749193a92eb1ddb9b2b9bf742c41f089f64604d906a7769bb8f443faf77d8",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_4.png",
+      "source_sha256": "770a79f24fbab3776f42f5ed9430010d124c7ebf985ec8d9ce1f55c4b3a03cec"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_4_1.res",
+      "sha256": "6864b3fb86b714662aeb193285de59f536f82f54fb8dd7045540c5c7472dab8c",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_0_4.png",
+      "source_sha256": "4b812338ac853fe908f213285fb565bb10a218762bd4b9e0766e0e89525314d9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_4_2.res",
+      "sha256": "d6ced1793dabad763c2dca769baf073457c36249a16d3b68cd943c949ea80164",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_0_4.png",
+      "source_sha256": "2f3adf370a0d2c6265fe4338ec3930e2645d813f9c1d6c8f19f1999d838606c9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_5_0.res",
+      "sha256": "866fe40ac0ac7ac33ed16ffa3dd8adccfeaae566c7a7cb2a71c26fe49cf7df3e",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_5.png",
+      "source_sha256": "0daba408bf07d756a885dcea6f4805338c685051f5ebf56e4d59a0caee427319"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_5_1.res",
+      "sha256": "bf2897ccfda8934515e74ad6d7dac7ae46a0e182a7d18543edc6cf7806850969",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_0_5.png",
+      "source_sha256": "5a858b082105b9e2c96495335bf280b270620511b4d04a1b4adcb6e1590e73e0"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_5_2.res",
+      "sha256": "4a2f15b3e549e06ba5e5d590babb7a5b97ee3369c09d0905c4d915c008f211d6",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_0_5.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_6_0.res",
+      "sha256": "99e139fa605941610092795e7f9f3850345590727d6004995d01f74a31b1ec6e",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_6.png",
+      "source_sha256": "bad78fc7834e3a3d4af20e93d0321351509e0976ad24d739688fd7c53edc1063"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_6_1.res",
+      "sha256": "42b169b40131641aa02bc103101389067d3d04164a47dd08afd23add09e27e78",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_0_6.png",
+      "source_sha256": "ed8b95fb0a922bcbbbef341f1a5ab0adcd234494e92ed5aed88adcd1af4ee5ec"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_6_2.res",
+      "sha256": "d958716790731432a027e156d0309c3e2abea5e9aa5ca013d1d2ac4d014f9a58",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_0_6.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_7_0.res",
+      "sha256": "a37a9d94d89146fc2a27f0bad142919ac4d5d036d6fd13c4be795a983777e8ad",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_7.png",
+      "source_sha256": "41c5d14bad9affa1a30a43dbdb0acb34d6e261ba64329976a914cb824a79a043"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/0_7_2.res",
+      "sha256": "8f963d1e15b452bc8b8e6c08fe9995dda79a69683bf7af13b918adad4ad27704",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_0_7.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_0_0.res",
+      "sha256": "77fae142b626a113fe1dde447b11d211b547d37ea1619f37e2bc8cb02e700a82",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_0.png",
+      "source_sha256": "ba060f206966b05e0404b7e4254294e1859a0701ad3c854486e3af9e68a950af"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_0_2.res",
+      "sha256": "ec82748ce87a220f05faf66bdfa8dc1ba1b342d95920943cf8ed1cdd24589b56",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_1_0.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_1_0.res",
+      "sha256": "b6ae8e0f27433f768c7f52a18f40ba6363cf4d3957cb7f00a675d04224fadd66",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_1.png",
+      "source_sha256": "aca9cf2a7fc412a5b94f3939753daf73f72cb96eafbff4384c22e4019bf6c2c9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_1_1.res",
+      "sha256": "7c74aabebb55718ae9878f9b3b13aaa1be1c2371d546fe2bee7e986df23363ba",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_1_1.png",
+      "source_sha256": "2e1c3f1a8423a347f2e65d23a8bf47fff9aa307a791bec910530f5c7b330fb1e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_1_2.res",
+      "sha256": "31da8fe196e5deeb745d767bae0a88c5219ac920c2d74a22b9721be01033c0c4",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_1_1.png",
+      "source_sha256": "45a27c7d6d90292d52b24eb41b14fb8049c9451c7be9b14c116fa0924b44916b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_2_0.res",
+      "sha256": "519168bcdd9cabd20a0bd1ae597e7c0ab405e630f1b2cda5528245a71f10ffc4",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_2.png",
+      "source_sha256": "c3c11fad0d8dcb2f6360703d56c18c7970bf67ce3ac73bd6dc58d0d09e0eda43"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_2_1.res",
+      "sha256": "f4d4cfa1b6b4308e3d0398cfbf3d2103ec59256cd6dee3ac841a7d4de96dd673",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_1_2.png",
+      "source_sha256": "dc34c76ee33bb4b67dbab9b8bbd66af26c1ba31649783340a63be7d765185c27"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_2_2.res",
+      "sha256": "254c9823d26e4c32bd2a23dd7d0248d11f869432e7b2a398c5ede04fa0f16cc9",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_1_2.png",
+      "source_sha256": "03e04d5f4e08d9a2262980f6f5cfb2a8626ec5ac708475f53d0fe69e8c6f80ff"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_3_0.res",
+      "sha256": "8609518688ee98689387f12094c53bf18ab7f940c77a10c2f61a99e10fd32587",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_3.png",
+      "source_sha256": "9c4015edb1a718bbe25cbb077cb1b1873f6e2b6bf107c6c6e4de01f2fa7a6f6a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_3_1.res",
+      "sha256": "6e1e784d4f90b32bb35f66c87c2225140a55fc1e63903865f6df15e8e38f6675",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_1_3.png",
+      "source_sha256": "4e7c237601ce6dda9b22b400b9448f99021d7c2fe2bd4aa435c595047668c8e7"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_3_2.res",
+      "sha256": "af5ff82f3f1aaff97b04319ff20dc0ae8bd341efab418a895900e9368ab5dd68",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_1_3.png",
+      "source_sha256": "467df6bd6c94bd47456c90d3d5046c114059315be1699c7fc44905fcce71c40f"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_4_0.res",
+      "sha256": "c2a50099da45d610a04dd477b353e7baf340fbfd67647c5240c9cc0843c5c797",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_4.png",
+      "source_sha256": "0397bd2c747657789bf090af229991362e6bbf570319e58bb32b542f41efc281"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_4_1.res",
+      "sha256": "db5d2913b9c316c01a6980cb813b7c33cca6adffda2d9b6084fff176d9274df2",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_1_4.png",
+      "source_sha256": "fd2596f69f23cc60b36f8be8719032251dbe00c59d219fc2cb680c0a918eb581"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_4_2.res",
+      "sha256": "7d4ee7a6d94ce7a5d6a6a0a90ec578d0365201292b794877628cb4031f0358ca",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_1_4.png",
+      "source_sha256": "44c92ac8b2c324c6710e3446f654a0d19febfc17bef902d1a1b2df9922ede7fb"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_5_0.res",
+      "sha256": "71fc9d26ccf600cbdf8c26aef7da1efb05a3262a538478ef12c802e804ff2b83",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_5.png",
+      "source_sha256": "f23f273304dcb57f18b0d0c64ccbcc6298bddc6b25704322ecb76a99c8b09717"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_5_1.res",
+      "sha256": "d57a789d78fb0c4a730ee63c1d670dcd852dff1b35aaa5d23b81b399e5ba334d",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_1_5.png",
+      "source_sha256": "4a24022c0e9d8b298dcf8a5408ddd4a3e761c520059957a85af5a31996342679"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_5_2.res",
+      "sha256": "c08b0e96cbabb1927f1db2edaf89a8d5354083baf47e3f26840bc2d9a57fc18c",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_1_5.png",
+      "source_sha256": "c9f30e5e417baca6da32de6fd3870d4685ed9139d57d5459bfb210e3dec4a3cb"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_6_0.res",
+      "sha256": "bc849c245b7dee6210ae5855c3268d68c50c004a36673b42b7fae5fc0045ba7a",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_6.png",
+      "source_sha256": "492a5ff55925da0456c7627dd67e71b7ae68e5de159cdf1478bc6177c8f14e68"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_6_1.res",
+      "sha256": "a64ff01b20a724212a3705ede6f4c1ae9c24f1c712c35e003efdc22937dd2f1c",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_1_6.png",
+      "source_sha256": "616bae679c03f33bd54454f79ee6f93609601be991bb49f5ff2e500168d77581"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_6_2.res",
+      "sha256": "107c6bebb7b9c3270149cc96a9a4bf26adb02670a4c693d70ef10486e0c78bbe",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_1_6.png",
+      "source_sha256": "af32cb9f26e474d11850352ecd8e0b62885da69f3115f8a6fe7774d194c4032c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_7_0.res",
+      "sha256": "28e33a43faff67f8c25ae3c2185ca3fa5fbfedc25ac2c931f49e160ad9fc510e",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_7.png",
+      "source_sha256": "3b1a1f8bdb46414719fc8696a4c6b54656dea9f1103b5df77bc909d73293e95a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/1_7_2.res",
+      "sha256": "6247e53a984cd58ad9ef4efeec30a87f564e9c67890892426ad12eb39364850f",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_1_7.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_0_0.res",
+      "sha256": "e7dbb00f6e3f0d9458217748857565a163fd8c9dd3acb47d98c6c5ca2dc7820e",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_0.png",
+      "source_sha256": "66cf8ea4079102f7c979c633a0d52481d731ec6552d5f226fbed1e16ab902b31"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_0_1.res",
+      "sha256": "e6587cc73103350341e760606385a3bd16748cc93a3e5775b1e6ec70c0676f40",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_2_0.png",
+      "source_sha256": "807835bef3abef1abef663b1ee752e78a5d39d54ba78312fc8b3902b31a20975"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_0_2.res",
+      "sha256": "73ddf1f844d9385d52c0c4094ee95df2ad53dbc7a82ac3f3b94e939d7e5c7f77",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_2_0.png",
+      "source_sha256": "78990605f5c3f2c4d1c181a80e4d3dd4e4a7ea849f21cb68b548506577cbf72d"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_1_0.res",
+      "sha256": "21b01b58fe44213d13daf282de463089d3565f30d74bccd21554ce8746af48a7",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_1.png",
+      "source_sha256": "d86ac575606d196ae5bf451aa23b1169dfcdf4452ed0966b3ec126f5e8bb8940"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_1_1.res",
+      "sha256": "70ef279c3bf13fcf90a1baed1fcf895ea17123e2fe17474b4597fa995735254f",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_2_1.png",
+      "source_sha256": "901a4da6b41af4ad430c461557de40f5a6f6376d239c7554f5383a53f68b4089"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_1_2.res",
+      "sha256": "aa8ab75494951aa3b83affa036c23ac2f113ab8da0f7908ad8a22e9bf6a707f2",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_2_1.png",
+      "source_sha256": "1908c9ed3c0911d6b839b3e97229b27eb5a19ffb03656c699247c00572c9d1f1"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_2_0.res",
+      "sha256": "ec3981581d319c55157d59a437fcadf6af7d5bf2c4d16866755a124eeef6fc02",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_2.png",
+      "source_sha256": "05a390cbeb652448feced67a5da6c0d88233505b8a9efc227a58b0464d9a8019"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_2_2.res",
+      "sha256": "381d071534f6e01d89805795fabd81cf9c10693c746a26c1f223d1350bc4917e",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_2_2.png",
+      "source_sha256": "f3e6819977417c7937c799c240c815839ccaa836659db4e11c99d4f386f04ee0"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_3_0.res",
+      "sha256": "424cfdbd84a8c2cdeac95ed84fae86d5815ee521a02b389c4064c71ea27c0c41",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_3.png",
+      "source_sha256": "ee660ee9466569d3d0f561f507a050abb818358e5ac3161ab7697905e4e1d5b5"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_3_2.res",
+      "sha256": "6f969b750ab1d00c1acdd5d29ef4e7dfb59aacb0f25b1a00b07dced9744740f5",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_2_3.png",
+      "source_sha256": "6b43dea66952f2c7f3090157e965652f64011ba1eda1b3cd8e2ed5ad2c515a40"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_4_0.res",
+      "sha256": "96a1f6538246a7876d0196de443d5960cad6e023e944bdb5e7129948869b98ea",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_4.png",
+      "source_sha256": "622233669ec294227d99652426c8b0d70671aefc8340b7c1d4a02dc3339092a9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_4_1.res",
+      "sha256": "0e294b5607e50628d9406194f1808ebb9ea5de12d78e0fd9415691ba55ab7640",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_2_4.png",
+      "source_sha256": "ee3710d88c7f5543bd92f72b366a78687dfdd4859584e71618df36597f579e60"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_4_2.res",
+      "sha256": "e655e96eb0d15ad371dc70b569149f10337b5fb11e0e1f6e7bdb5203e5243da6",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_2_4.png",
+      "source_sha256": "adc7f47f37055e3e0333b87cac8c2bbed379512a177e22872fad847cc71480eb"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_5_0.res",
+      "sha256": "efc0ced1deb2b0c43c8ae1a6f279be62c4728722f3b1ee65d95964b296943485",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_5.png",
+      "source_sha256": "9b3b754c79124b24e34a2a481d6e4169f4150d8c7e8d97c03f6c67ebf3b25b0c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_5_1.res",
+      "sha256": "53f82266f2a824c1d0a91f3db1f90a8e9bf0bd6336a4ae12036fc512d8d5b9d1",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_2_5.png",
+      "source_sha256": "416172850163301a7279f56fe8ebb03b0c9b2d0ccc5e298b0137395b0eebad5e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_5_2.res",
+      "sha256": "0ad1807a2409f17fc6a3414d396375981713c3521b186aa053b00572f20474ae",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_2_5.png",
+      "source_sha256": "be560555c5386655a473b8c28fda632ed32c42515a9f58ba3f43fabc64ba9cb7"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_6_0.res",
+      "sha256": "ab6cb558f18f9380119c4f5ecda67afff67789382373efb58bf8a8dc3e1a6f65",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_6.png",
+      "source_sha256": "39ae708fdaa4f0fa35f000a8344010341021e8720617dcab4120d93a934a8b20"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_6_1.res",
+      "sha256": "7e8055be26b12e01d86dcd87b862a5eb6008b8607bbb021e1e8eb74c09ce22fe",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_2_6.png",
+      "source_sha256": "dce78b36a974dca82a2dd6c3a37ffc43aa8ee96bf3257931cf0f6e068d904494"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_6_2.res",
+      "sha256": "b8d3a5cdd58d22b4d36c740710244c9b7795ca52429d5b0eb004a125af305217",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_2_6.png",
+      "source_sha256": "32e643a44d56afe3ef5e2f05ac99f7504fd647bf85b8f472421cd05795313305"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_7_0.res",
+      "sha256": "b8f828a2cf29f37edc312344f6fb2631ab5f2b5484a469ae9f7e19c9dfd0bab0",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_7.png",
+      "source_sha256": "54bba78452a006f4cf4d0a64a8a632bdcdc4120131292eff2398c8877ab68298"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_7_1.res",
+      "sha256": "e65605eaeecf86214b04117e1838b2ab1651fc6bfc2aafc33ddba7fe26d78438",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_2_7.png",
+      "source_sha256": "a6b780a07890c6acecccb796fcf3d8aefcd0caad3799838208046e9805741259"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/2_7_2.res",
+      "sha256": "130045363160d37eb544d7d0ebb904c0fe0a467cf113b50a64685eb11cb0b6e7",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_2_7.png",
+      "source_sha256": "435dead428c2854c96da6ed8b66c3f147a993eb2f8c71c055781ed007778ecad"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_0_0.res",
+      "sha256": "2d19595912b58502f9f5141080edc356fbe53e3e52d93789f2c84079e8c2306b",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_0.png",
+      "source_sha256": "7e9c4cdacc7fe3f4f784c0831111ac7f8ef0637ccdd15f6b2ee3842945033fb4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_0_1.res",
+      "sha256": "3f6c90eefada3713506f81a19af93c1650e3dcbb0a41b94f8a8c8677ef8c6bea",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_3_0.png",
+      "source_sha256": "a58c262b9aedd126a489085da2847764ccba10e45e3c33c657e34b2558500cc6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_0_2.res",
+      "sha256": "31e3e5f55e1854b52cafaaed6db437f1c80ecf23b463658d806028b5ce67f7b9",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_3_0.png",
+      "source_sha256": "44d45eb53a5e9500f855fa791f27e98bb6244bc07e6e0917ff9c1fee90e8672c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_1_0.res",
+      "sha256": "701a2ceadd94d17bf4a81cce782f29bd500d1b3bae0afeea2130d5912f298fb2",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_1.png",
+      "source_sha256": "ed93cb9c8797cd5e55500d05c119c51a65c8547111c861f067ddf58da4f8abd0"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_1_2.res",
+      "sha256": "d70d8eca863ec932d525c2461542f6ac813016e31f0a64e76b807ffaa09d9bd3",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_3_1.png",
+      "source_sha256": "9bdde48efc77c2ff0ece0affec5f5e44c0afd2234d8b14d7ca8d82600a670f7d"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_2_0.res",
+      "sha256": "be61fdbbdfe0c8b9926639654f2920976d209b858b2489be382ee479befa7a5f",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_2.png",
+      "source_sha256": "f1c0565ae90291ecbbbb0f18edf3b461851e432c7491c418ce50b6540d01f774"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_2_2.res",
+      "sha256": "2ba83e30f273897b807f9788952779022112fa835938ea320e3bf3d0cdc93199",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_3_2.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_3_0.res",
+      "sha256": "4d24621fa4edee3c2cd606216700397556c70459000e90bc69026ce00ba7697f",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_3.png",
+      "source_sha256": "ccba8c92fc63bea8d7d4359be41a6327c187f91cfe95d3e0bdb974346609759a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_3_2.res",
+      "sha256": "006c1910dbf07ae774050cc9660744877dc89f53ff45835083a27f5e05e63b9c",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_3_3.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_4_0.res",
+      "sha256": "ba26dde9f8f06183532e1aa1edb975a07ecef27ffd29653f739129c8fffb42f0",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_4.png",
+      "source_sha256": "055ce8b47d4d67fa4ad2f766812f455ccfeb219af2bcc0e82a627443da568a9e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_4_2.res",
+      "sha256": "6361f05b89239cd59680c23c1c4e451ef9c0086f03455ec6641131540ba138ae",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_3_4.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_5_0.res",
+      "sha256": "72f6b55d2ab1fb70d8f7734679036097ce4ea9bd41f7b420ee783b3cdb3e15df",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_5.png",
+      "source_sha256": "60248762a3106f91ece7073f767bc3647117d5986ec451bd3dd901461afd5779"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_5_2.res",
+      "sha256": "59c3eaf8bac9c5ff32d1df2a4a9d43a59c6bc0e7b523f2318548676b17b66dbd",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_3_5.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_6_0.res",
+      "sha256": "8b754049a571206d4cda7b49d3368663697641a744beb99896250b5242b28fcf",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_6.png",
+      "source_sha256": "42f707fbf8817c30899586b1763a0d7510550c4290726edb3384e4b6dd86cbd5"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_6_2.res",
+      "sha256": "34c2ca8ff3ac96685ae17077c7103292cd60a45503481ff156c357dfc95add39",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_3_6.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_7_0.res",
+      "sha256": "86d2ff8275c50fe4f7d08c6212cbb4b2b52aef2444e48bb2cd58a110970d8da6",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_7.png",
+      "source_sha256": "da8dc0b2a1e6ff5cda5df49bf0f2f90358edc48fed5b6cf53bd5c26f6f2f9682"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_7_1.res",
+      "sha256": "a1bea86c387469f232a88af11cf2c2f84955582c776a1950cd8f888e799ed3c4",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_3_7.png",
+      "source_sha256": "1d6ee0a43b0f41126ecd7d9a92bd865d04308d1f27183dc4d8221cc13c11288a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/3_7_2.res",
+      "sha256": "ed494dbfb50982d1b1addb0c8294b315ad94f4e06893033d0591434cca5e399f",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_3_7.png",
+      "source_sha256": "5122cb34d271e3f7a9abbe25a74001084277e5cbb7187913bdfe0bf53b4cc75f"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_0_0.res",
+      "sha256": "63f06d6ced54f72124627e27443aa179be6289a94c279657e12f2bceff6b1dfa",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_0.png",
+      "source_sha256": "e160a2575161a004d1976d889be6b2d67baf43ed71e0d9000ea9e27a40937ea8"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_0_1.res",
+      "sha256": "6a0753c972ddbfcd1bf37d14fa25705adb4c892f22a396d37f42a31cdd262ce1",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_4_0.png",
+      "source_sha256": "ec638d97132066606a1ce65073fdf48e26cd17fd7f1aba5fd98fba1cb4fcbdb3"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_0_2.res",
+      "sha256": "bc930dc7ffec857b4285232e9268ea15ecf76e940c3fb34eb990a6280d991da2",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_4_0.png",
+      "source_sha256": "c2c5ace10796fb81336ef5e44936ebadd862192e31121110bdd26f10f4687c0b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_1_0.res",
+      "sha256": "e1839172aebc910d3ed49b23021751355ee8775c5d6d3703de1b438af8347d64",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_1.png",
+      "source_sha256": "a0edf0c8acd439f602ee0de98ac6553c9f946cf892f8de471d948f684c520d7a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_1_2.res",
+      "sha256": "b57e3314f617f8cbc01269263c7294ac8222cadb2cce5cae48c07bb0f3059170",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_4_1.png",
+      "source_sha256": "8663f8a2fb42f6955f2c629a241a7f15ed6150caa66079aa6a7914da8a9276e9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_2_0.res",
+      "sha256": "45a49cc847c2ddd7bbee11de5a092b9445f40d3cbd4e69502e6283bf5d287fa4",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_2.png",
+      "source_sha256": "e3bb6e3f558c0f9c6dc3fa638a3ecb2352030d44e3192a950b67f817ff440269"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_2_2.res",
+      "sha256": "28af06120866971bafec2ddc80233c76b4dd93c82461a215dd0e75d5f8fb8c50",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_4_2.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_3_0.res",
+      "sha256": "3aa04e43ea614b1889f0f817eb1cf99eac30ac32ffc0a8e93647b12f11450713",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_3.png",
+      "source_sha256": "97532852556b54b9400b34f78a699c37fc3fbffc579055625cfbbec9e1de8215"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_3_2.res",
+      "sha256": "6d650fbc123e53fdaaa464a3ed07ac727dd503db805856ff3af666a997514a0d",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_4_3.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_4_0.res",
+      "sha256": "bbeac4de2ad625cec074de8102d5c0ea928113272dc30c55bcad0018139efcd2",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_4.png",
+      "source_sha256": "0b220779a9f759433e9a3e7df5a24e0d8d6c351f76eb2c5ddad7a50e1486165a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_4_2.res",
+      "sha256": "a3dcb0232aad075c0050c434aab626fa8451d46d2088287782068d0fe357ea65",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_4_4.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_5_0.res",
+      "sha256": "8c9e48b8abb5544de732c427f52204eed431e52dba4b4b220a08481237020d41",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_5.png",
+      "source_sha256": "3de1ffd7ecda98afbd1032274e0eb99f321cfd6d96be50b9c693d9df528276bc"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_5_2.res",
+      "sha256": "1395a3fa0d1f60e3f5ff7d46158fe2081d86aed7a2e9989d2a4033847262c4df",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_4_5.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_6_0.res",
+      "sha256": "477b0b637518b80d61b0fda24170fe8c5037841d5d861b9c1569f0ab6c8399ae",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_6.png",
+      "source_sha256": "5758a1f4ac9fbdbfc204c9f3d4d7ac022cf24d64371c2148567c8dfd755009d1"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_6_2.res",
+      "sha256": "d99623b1b7e79bdad714d49a9248255911c2b3ebae0976aff7b14527094c8994",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_4_6.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_7_0.res",
+      "sha256": "bf869d6a1ef2b62d69649909b70580ec458deedd96bfc9abaed0798508d2e07e",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_7.png",
+      "source_sha256": "600375a830d56f7c829674c05b82c3639c73d610383b9ea7faaec08f54a2458b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_7_1.res",
+      "sha256": "9750cc57b67bd598ae9f86400e650ecbe0c899d8362c8c908cfe7414829b3170",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_4_7.png",
+      "source_sha256": "efd137e818895a19b525c995b58e74611dda51eac67bd3aa6674da2f5d82ae40"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/4_7_2.res",
+      "sha256": "fcaa9d7edcf485866ff26ed21667f8da7ccd10ced1c17f31b908b15bfa4212a4",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_4_7.png",
+      "source_sha256": "0e3d8fdf9d796d9d03d893b948e83cd79604be3babfaabda0cacdd36c0d4d299"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_0_0.res",
+      "sha256": "a37e1f07acd6744e083ffae7213b66226728bdcdc30230607e74edaa01b564ba",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_0.png",
+      "source_sha256": "cdfc7e4ecd270e2685a1d8e36176fac4a4ae50fada43510067af18b5f33400cb"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_0_1.res",
+      "sha256": "e56b03a7c4cbc2aa4c35dba9505d5f2ae9372cc1c2bc919a0e170767708a7509",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_5_0.png",
+      "source_sha256": "d5a119eebdebd67d56e7bf763680672752e97b3e7802413babc362f598f1fb34"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_0_2.res",
+      "sha256": "e36c8af7f38236fddab70a1c05a0339dce421f1dd227bcb51a2caab1e2d3b943",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_5_0.png",
+      "source_sha256": "95fe65fd5c2687579421f134b6b4615f9da74d77e6bcdb7a4a4477ddbddcabbd"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_1_0.res",
+      "sha256": "34bcfe0cfa6ad99f2aca5b5cc176d96baa81d441382df3abdc9f02d007055532",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_1.png",
+      "source_sha256": "b0b8e02e79f2b39d334452fc4eb0acc2537397958395edf8323d1a85c000acaa"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_1_1.res",
+      "sha256": "909226f9dc4d1b643f2d54a5b31dcc1351ca667f6258382dde16e1132e41b6a8",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_5_1.png",
+      "source_sha256": "1184b66156504eab4254b825cbfb0b416c35610f4f7923b407094225f1d772a6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_1_2.res",
+      "sha256": "b126560d8e33022d70f79fcd2d32c1868a5bff78fe5eabaeab08a1f4ab18192e",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_5_1.png",
+      "source_sha256": "9e64d96e72f3e21d8c7410159782fd8bd6a64ed1d6f485e95b5e25c3d8dcd6f4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_2_0.res",
+      "sha256": "c1d74e8c68961ba86386f5a49084dccc54b2daa2d6c3498faf5a0b2100444ded",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_2.png",
+      "source_sha256": "b66977043c15c9b1538ac1d3422089e0dd872b6980d2f465e9072198df284461"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_2_1.res",
+      "sha256": "92f0e8b7222e8371b5302f2d56c0a27cc4bb4dfdccd1f52ba9d869d04efb5c7d",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_5_2.png",
+      "source_sha256": "e15820e171effc65696de575e1e00e36bcc94a3ad87c23e83fdefe50475a7eec"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_2_2.res",
+      "sha256": "3d81e7a4e266dcb54fca45cb095bc410977527ab015d1fe5f4e8c70ba412109b",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_5_2.png",
+      "source_sha256": "9e30da31286fa4ef5d8a35f589ee1a92d72d6d6484899a6271053561677ceb7d"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_3_0.res",
+      "sha256": "e54337e5aeb5f4a275dae71e8075d7dde093a8393c6ff29c10e9014862e7b3e1",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_3.png",
+      "source_sha256": "f17ab96bdfb08ac103d9edcab255bc6781a3cbf23018738e43eee1db71401bad"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_3_2.res",
+      "sha256": "f8759b27bb4fb057b731efc02a975d0c2bfefb8edb506c8a34a1f85d648856d7",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_5_3.png",
+      "source_sha256": "7ceec7e01705a281dc455c2c8f4943a2e7153ec3077e1fabd2210b24bb4773f4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_4_0.res",
+      "sha256": "9f45902ca27fc3c60b279112ad696a9bcfc2a2c850992a722f20b4c580ab7a2f",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_4.png",
+      "source_sha256": "d1b13bdbdc389a5080c4aaf0838d036d376997ac609c801eee27803fbf7cdd7e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_4_1.res",
+      "sha256": "4f522b63096c4b9ca0b4ccfe1ecd028de6b0c49213812d2631fea7fc19a6d5a6",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_5_4.png",
+      "source_sha256": "96fad874107008a108d32466a2d59b40fa91d2b4638ad25540df18fcba2addfa"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_4_2.res",
+      "sha256": "5b5de5f4c7118f8ec779be3c6f7182245e054346ee0a98646cae2f57df66d336",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_5_4.png",
+      "source_sha256": "e97cdae77492763fd58e80a9dde28b16d7eec662e52cb3565f941c5a368a5b56"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_5_0.res",
+      "sha256": "3bdb77621c27abf1b777a9ae46b66f1cda80fa2e5ff3e84aaae6f24653076b12",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_5.png",
+      "source_sha256": "1fbbd232a91c713cc1573a3173230bac91c815a27a58a9172c6d8771590369b6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_5_2.res",
+      "sha256": "a3938655dfceacffc44867eef8f06a6db8dd2d303956342bb30235d13974d758",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_5_5.png",
+      "source_sha256": "803b057f073a452417c3b5bba7df542fc4f932416527f32e0e3e1076836486a1"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_6_0.res",
+      "sha256": "487b398a415fdf1946d831ecd0b2094dfa308237444661f9ec5f09540229b864",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_6.png",
+      "source_sha256": "7c5b774d4465d31e799bcc8b40772488128707720cb7d7af067f1e37ae510e46"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_6_1.res",
+      "sha256": "f41468448f7c9b4338a7409f6b6e44965da3f542543fa3eabba1e39f5a7f5f1a",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_5_6.png",
+      "source_sha256": "14d6a345c3cf4b1c7642645ca97cd6f0193092ad72d14eb2e016976bbeea9900"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_6_2.res",
+      "sha256": "f808495805a50d342b0f5f7b0ee441dd82d28efe01b2f7aefc21d20317d280fb",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_5_6.png",
+      "source_sha256": "94dc0a1749e5423fbf22c27959f58981a53c11de2f7cf375b32c6a27f1029441"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_7_0.res",
+      "sha256": "4be1a2d6ceaac46fe92688860d73f8000a3f9a0b6ea5143622ed4b80c71f7b8c",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_7.png",
+      "source_sha256": "4af83bb4fa98a75fc7b30a179f0978db22b0e2d6b556ec59fb609b44fc1f1e1e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_7_1.res",
+      "sha256": "b7c6a6f033ba348e6405f1287eeef33e91651671eb57825381c21271f00ba426",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_5_7.png",
+      "source_sha256": "47e2a4fd741510a1207bd659aefbbfc0a778913889001da00e1da00a15d19e34"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/5_7_2.res",
+      "sha256": "48b64b2ea4d96812b8ed7e0f429a0ebb5de100fd04a49099607af038366346e5",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_5_7.png",
+      "source_sha256": "ca37e5f69e9b2634b0157ecb738dd81f9f5952b5f3b1b3030680e1b39d924bd4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_0_0.res",
+      "sha256": "e68173204158a013dfd778383aee52818b7572321ab5a6599bfa5ece958aa6ef",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_0.png",
+      "source_sha256": "6695fe712c8d87ac0400f9d3e8205d22ae7f219b326f1222f95c19de22ff9383"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_0_1.res",
+      "sha256": "4140e7385745c493cf77d7062a2c2baa296014a857bf428a78b979c1772008ab",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_6_0.png",
+      "source_sha256": "cd58891c2e4a7c767114ab80e9d7790178c54d0daaeffe4b2ed6416793204378"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_0_2.res",
+      "sha256": "5541e8ef22c0dbb739efa6b91037dee66cf6cba6b2b67a3f34f3c817881a1970",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_6_0.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_1_0.res",
+      "sha256": "8c5401f22843a93d705a255e576f6af6849b4a17f3ad28ea6efcd092c7f672f2",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_1.png",
+      "source_sha256": "d2b52034364037d8208fa2d8a92f01181892816e3b491336732598c4e651c299"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_1_1.res",
+      "sha256": "aff8ada66957a2c51c5db3aef4fe5b053ad6d417dbcfdc1604b796e83611add5",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_6_1.png",
+      "source_sha256": "ec6c1636c190217293468fa14d3a5dea68e285d179f512bc7258a0cab1a237be"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_1_2.res",
+      "sha256": "db652c3be0fb34246ce65909dc3b7459c8d95dcfc0bf2eaf06f87610fef59d20",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_6_1.png",
+      "source_sha256": "c823eb13c1627c81bb30a47daf84f10aee9c128dee797c0b8d32451111edfc72"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_2_0.res",
+      "sha256": "df338b242215d7d403825752133dd74bc22a1e0e84c9387861bf7beac4be144e",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_2.png",
+      "source_sha256": "3e2176011fb4fc727d409ed300c4a1c4bbb6b91d1a2c2724fa07d25322fc856b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_2_1.res",
+      "sha256": "6494d6fc9fd00db2d7ae8bd3d5fd294c71f9ce8c0e6e5447f1339ffc77fc1d13",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_6_2.png",
+      "source_sha256": "ae0906a3b69a6636f1c0fcb27baf72d7de4c2e0cd686f51e1ab912e3bb4348ba"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_2_2.res",
+      "sha256": "5caea2f8214cbcca12af193165cf916f08fc13a8b9d882582f1dfd408e04493b",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_6_2.png",
+      "source_sha256": "7f6e59fa3ca895b04722a0e920634c67dfdba7ef16c5a7f0554f07b46f7e323b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_3_0.res",
+      "sha256": "bb391f7e4fde8633562ea39de5819bd8ff31f35bc275c7ae45b2eebc00a9e261",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_3.png",
+      "source_sha256": "93401357c5c98779287f12f747908c44b8c6f9534a92ee4074332107e13139b6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_3_1.res",
+      "sha256": "e5dbd7a351af5bdcbd9cca7da71ffd541b2c13670ad760286844462f60a5c168",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_6_3.png",
+      "source_sha256": "8d85db25bc93f54a0f75418f0e778f5f812d55f49e797bd8bd893ca155ef752f"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_3_2.res",
+      "sha256": "8c17dd6e6e494239d7b26479de5c509de0d2c597da44e3929abfc15cb1dea4c3",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_6_3.png",
+      "source_sha256": "89dbd8a56a9d26bceddac2f041a7460c5152339638f4d3ae054ff0ef4af6b9ad"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_4_0.res",
+      "sha256": "f42cf19b0770a6fee1c81bb130aca05dbb0c802ba1ba219164b7616def872ac0",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_4.png",
+      "source_sha256": "d130ca06b763ebeefbde78fc01e956f05823a9306849661a9f0d314b5e6f2cb3"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_4_1.res",
+      "sha256": "95fdf3b8bb65464f19cd4dee3cae1b6a7802bdc949910fea31808860f8faa5d7",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_6_4.png",
+      "source_sha256": "c3b7f1aa9267393bd19cd4392cb35c260cf6da0ce953196b8012f279a2f8fbc5"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_4_2.res",
+      "sha256": "d6e4e8944dea7d0db781438125ea6be70845f28b79d74dade096e49deb0c8a5f",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_6_4.png",
+      "source_sha256": "9343b7a51f7f591f2713c72e7de0fc403c04a0538919a7d62461d9ebcc8a3d1a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_5_0.res",
+      "sha256": "acf4944de3163e559876c1b9e9d66d25484f6ebb3fd19fd193a6209bde5c6281",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_5.png",
+      "source_sha256": "195ebbcd488173cbc34d094a05528439e402942f75e938eb6c90925f37084584"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_5_1.res",
+      "sha256": "938e1c302a5d908582b0f112d6ca341efb38cffe96e3cc7219c1d41c831c8205",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_6_5.png",
+      "source_sha256": "43c62842930eab1094b092fcdf34ce77b0c76114ebb6e3473cf85a115d0f84fc"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_5_2.res",
+      "sha256": "954904c4a4cf0a4befffbb4ca71b8268f92593231a0a67cd76dcc2ea97b04679",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_6_5.png",
+      "source_sha256": "4a71beee4f498db5c6434fea62888b71b1801ad005d196063263f030fd50843a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_6_0.res",
+      "sha256": "21f601b0ffd8826b977129c109d72cdd0ca93a5fd9c507ed516cfd6e6f73d59b",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_6.png",
+      "source_sha256": "f6a0bea0e77e39a05e449be855e2394787c63bba5747f73ebd4828bf8cc535b5"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_6_1.res",
+      "sha256": "e91b93e83709fb0608dac2f6d72ac976a445156f5e54135c9334bb423f614a96",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_6_6.png",
+      "source_sha256": "7dd639f8b3a0e4549dff53885837059524d81416faa5b57c16c1ec394be6de67"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_6_2.res",
+      "sha256": "347bd134772cbb194b59e36c211a0c0a843c9b9dc631b385b16e3b2deab1e9e3",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_6_6.png",
+      "source_sha256": "4e4619ec3b3fb04a57091ad7408c7a4b63c9e14e47f5a403e707e1c6fc2a12a6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_7_0.res",
+      "sha256": "3e69e9a4db4fa0a80cdae31db50ebc736d42600123401d96bf9c754cb3084566",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_7.png",
+      "source_sha256": "330f3ea7dec54883b7ac45c940e12483bc4ac42af87a2484bcc453d0142ca3ab"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/6_7_2.res",
+      "sha256": "4d49375ce380ef38b7bcd1540640fd8e1a1ff11197d812bec28f61b7f5d78aac",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_6_7.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_0_0.res",
+      "sha256": "ebc5c3a79ed68b9c308b1f670ea9feae93b5206461eb8a8aea9924cc1b326e96",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_0.png",
+      "source_sha256": "17840de98133f49a0140e6410b6c7883e1e74c3609d303c54952006b0ace45a8"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_0_2.res",
+      "sha256": "0c1073860db85a9c24aefb003f6839f1a270aa6e862872e862c1e1b79c651f93",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_7_0.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_1_0.res",
+      "sha256": "24c96505a78ceccd0f5507c52eff87fcc508cce386adc1811be69d8f5cd05fef",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_1.png",
+      "source_sha256": "8d709df67dd3e34fa766ad21ef20e1207f3e2e12ce99a7d5b481d501ced5a0da"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_1_1.res",
+      "sha256": "d8555e2bf01d38fe716cb3a5a8e9782c463a905ce660e692261abe2fa1529f7f",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_7_1.png",
+      "source_sha256": "e20f15e61bc6da6084cf5be687966e21dd08dd04754c60a434d90b8fddba2683"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_1_2.res",
+      "sha256": "38416ef7f5a1fdc5e4c3ccbc3c7f2abb02339ff421ac79535e14c40793339d7b",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_7_1.png",
+      "source_sha256": "fef76b6c33e5122c15d513794ff16a5d9f64da4e366447caf790a26ddadb5aed"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_2_0.res",
+      "sha256": "ae05f8c91241130bf0c573e85c3d24777722efe997861dee84f360c7cf133a39",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_2.png",
+      "source_sha256": "e5ad976e2e260b2cf4b7ba6b0094d7ae639b8612a28a5dd4c91c7e96711069e6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_2_1.res",
+      "sha256": "3c60ba5907958d2d1bf2159deb7d6c7990711912327c547a783c14624c4b21fb",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_7_2.png",
+      "source_sha256": "bc9553048b16405bc0f026f9e8e4e60f64c1273427e9365bbc83946c5b757400"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_2_2.res",
+      "sha256": "e78ea79ef8688c80036ad913a936835d126ee8ea696f59154e27eb7e38c04c37",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_7_2.png",
+      "source_sha256": "65618441d959bd1f9d09d4e3492f0df9d7dd69ad512108099e061019acf05675"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_3_0.res",
+      "sha256": "bbb8f5a6fbe9b4cfe22f90ff63ba594c3c10661b4a8d6395d6eb90583f2ca681",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_3.png",
+      "source_sha256": "a2ef4e87d4de3dcf575c8fe4c4475ff09a8997847f420e74de168dfafd0b3b5c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_3_1.res",
+      "sha256": "324071dbc94d2e69b3754f36bf3ec1587fb68799a04bd5e27758b68924ce48cb",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_7_3.png",
+      "source_sha256": "a73c8178f423f592a4dc84ebf90534275a83c30bdf833b4ddf130e2ade9fcf6c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_3_2.res",
+      "sha256": "88f3666e656d01000460e9879e1554051a74f8ee0776bf6bbb6d0224e25a1eec",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_7_3.png",
+      "source_sha256": "f20ef5b0cc985d4ddfa46b0c86e5ede98e21f6c7065e14d27c7b352f32995209"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_4_0.res",
+      "sha256": "2f036c425f6f82838e9b7d0f1e84c78943c83b9dbda2545fafdd6842f5097241",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_4.png",
+      "source_sha256": "b2f4aaaf04124cfe188d91f2e59d4ae192a0396e7d03434cce6106083a71985c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_4_1.res",
+      "sha256": "1b5e091f0c3c5132b9c8a908d98fcf08f9e14465931852f0ba69fd4082b9229f",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_7_4.png",
+      "source_sha256": "aee5044cc258884c58ab899a96346dd9c473fb01693ee304e007b3151f13d473"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_4_2.res",
+      "sha256": "0b4815a690aca8a7890fe66d93175c3d07531bc93a8877474944ce6e571f3be1",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_7_4.png",
+      "source_sha256": "5a09a76a5c359ca800b5ea15a5671195888428a00b7fe644e467267b9b20b334"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_5_0.res",
+      "sha256": "92b64a6602e61d485ec609f6a380ab2ba1115521676b4f9d629773c59bf84fd6",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_5.png",
+      "source_sha256": "a61f25ae7a845e15f4d69243f000a7acc093475d4b42e177d0dbcbe78889f51b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_5_1.res",
+      "sha256": "354038dfb143bd808ba2a951c6430f6b8d7c7bda917957904f22e0e413e46584",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_7_5.png",
+      "source_sha256": "62723fd32f5d8314f4e497135a3dc1f73ae18764ed45704f22b2d31fd6d51445"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_5_2.res",
+      "sha256": "c7d4de071bb0752addb3453b18713a9cd3cdbd37b5b842da40b4ac074f29fb95",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_7_5.png",
+      "source_sha256": "cf908ddebe15a393a78a8e809fb05203f0f358a49ba2668cbc0ffa4d992e2de3"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_6_0.res",
+      "sha256": "ebb0050cd47de3b9c888fe0e88e969db47c39eb010b359a17d992a730bfd1056",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_6.png",
+      "source_sha256": "8bd7466505b4079cb1f1a3c8e6670bc1e331d0810cd5c6b4ab3e2e5bd35ef6fc"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_6_1.res",
+      "sha256": "0b7697045af93b46d9f98846e234ad3f13ac26089091b465170da00d282656df",
+      "bytes": 1048946,
+      "source": "godot/assets/map/web_parity/sway_7_6.png",
+      "source_sha256": "e2cce0aeaabb647ed3a98bebd0b7c3879de7e75c99fb814b4660914b1e2df614"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_6_2.res",
+      "sha256": "cdb05f32cfd90dea222d21e06a4b96787e3e603c56794bc88a74c0f24f9e096a",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_7_6.png",
+      "source_sha256": "fd0452de1ea409efa674337abc7311d3e3f5c9b114b99280d5e2f3e102f8317b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_7_0.res",
+      "sha256": "bfed080ce91df9aec66f8622213fbbc862a641858ef17581b68308cc1a6d72ab",
+      "bytes": 1785266,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_7.png",
+      "source_sha256": "b1ff4fe177eb76cad647d799da64725b966bbca998b223c45a9e198a23599aa3"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/7_7_2.res",
+      "sha256": "0e61b68e46b6ab99029bea884f5c6600fbaf0387e71d020c36bd490681252b52",
+      "bytes": 1000370,
+      "source": "godot/assets/map/web_parity/edge_7_7.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu/blank_sway.res",
+      "sha256": "a476c742f307e33fa3c60ec0f4efa827ef647257739b88f185b6457906de2c68",
+      "bytes": 1048946,
+      "source": "transparent 1024² sway placeholder",
+      "source_sha256": null
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_0_0.res",
+      "sha256": "61b38dbcc5fdf704cd9b5f892741fad54e9f1c45c8fae1f50c3da7a15319b648",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_0.png",
+      "source_sha256": "84d46398e1a7cf6eb3d68d1f8b6e053e0022600f48d62bd546fb813dc5f24fa2"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_0_2.res",
+      "sha256": "56097f825ec2d6d703334758861315c7e81edb8c46de0658d2fb94291d7fff9b",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_0_0.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_1_0.res",
+      "sha256": "f6d67fe8e930903d89c3ebc12a0a859acbcdf4c5ca4b9e9ab1b43c0a7a8c5f55",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_1.png",
+      "source_sha256": "53d38014f1ad1f63c47b644a9af31c70b2b6fbcfabd9dbc9d3d3f6b6dc76bf0d"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_1_1.res",
+      "sha256": "3230085b566af2e132a7a231ff52b6214b7aea3d0d1a0cd1c5fb1b456c562920",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_0_1.png",
+      "source_sha256": "0d2e9a8a121de5c3a484bcf22bdb170db611276aee0f14858aaded1ceb2262e4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_1_2.res",
+      "sha256": "7dd014f0099a04acc6a10c4ec79476dd99b506ced6a1e55dfea0c5cd1ff462e0",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_0_1.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_2_0.res",
+      "sha256": "3e3eead5b52c5df04b98deeec33e26ce63e661b6d34944cabc0f75b874bbaaa8",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_2.png",
+      "source_sha256": "730d5bfb9e1be52f560027662f77820a58a1fef44072ddbf5a8692066520ed72"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_2_1.res",
+      "sha256": "eb6535c48d52af2a50ea9f9a1696cc2531d374801b6a7bbef13009120064c19f",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_0_2.png",
+      "source_sha256": "5b53c85c230b26bc291a7ea0ee0ef5f2b8956531ce33321dbd7bc8bc70e633be"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_2_2.res",
+      "sha256": "d3a7f4d8520bc08db35abc0f8bfbe1d5d68cfa64fcc5d4318f42efd4a5200899",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_0_2.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_3_0.res",
+      "sha256": "3c24ed160cc5b5600adb135fc74c06680a6e430bb13b96f84ef8195bc5202cb6",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_3.png",
+      "source_sha256": "9daa37f0705d581f20dbda14f14345540d99a47b80724d5d787456e0113297d9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_3_1.res",
+      "sha256": "73508914cbf75600b992a329ee9ea96e46a55ad5bbc6b3b9b638f0b8b0320df3",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_0_3.png",
+      "source_sha256": "0670bba8dcc088d83eb92d868b57f23159cdb9c2993a8c7a8e166080da7a8fe4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_3_2.res",
+      "sha256": "d91fadde1c4fc709bc292b2d1370da2b2fe1cc0f2b4d2d37ca5409316cb6d108",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_0_3.png",
+      "source_sha256": "5d11b22b1e35f1c1025492e48cb3102457aa1f5c2bb1a7f15c0d1329fa7c7323"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_4_0.res",
+      "sha256": "227741f8f05b828d94827576aaac5a10d92c501b552cb8c5da7d616a5a375df2",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_4.png",
+      "source_sha256": "770a79f24fbab3776f42f5ed9430010d124c7ebf985ec8d9ce1f55c4b3a03cec"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_4_1.res",
+      "sha256": "39d24912cb5deb98c18877cd2c9934d0cd6b807fc374c406fa33874857a6f44d",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_0_4.png",
+      "source_sha256": "4b812338ac853fe908f213285fb565bb10a218762bd4b9e0766e0e89525314d9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_4_2.res",
+      "sha256": "73959ff2af22f2e629c1a914682974cc412d64fd8d1eb345e0bd8fe057277c95",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_0_4.png",
+      "source_sha256": "2f3adf370a0d2c6265fe4338ec3930e2645d813f9c1d6c8f19f1999d838606c9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_5_0.res",
+      "sha256": "b5d3990447cb4e275388c558f0e39ccfb828f1a6ca930da09db02dc053b0c713",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_5.png",
+      "source_sha256": "0daba408bf07d756a885dcea6f4805338c685051f5ebf56e4d59a0caee427319"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_5_1.res",
+      "sha256": "21cdb7fe20d52e21b6d1c2cf9489198ae423d47d7db4daddea0e0d38fd08efb7",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_0_5.png",
+      "source_sha256": "5a858b082105b9e2c96495335bf280b270620511b4d04a1b4adcb6e1590e73e0"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_5_2.res",
+      "sha256": "565c28fbe19ef3a91dea3d9855ad27696e8406741b52ef923f8ca23fb250b727",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_0_5.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_6_0.res",
+      "sha256": "430249a6f4de767e21757bae74020a71071af884b781afaa095561138715ba45",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_6.png",
+      "source_sha256": "bad78fc7834e3a3d4af20e93d0321351509e0976ad24d739688fd7c53edc1063"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_6_1.res",
+      "sha256": "51983c2e9cea39c1dc0f0d354182f0eff696742aa3fe21be7c127f6e285d82bc",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_0_6.png",
+      "source_sha256": "ed8b95fb0a922bcbbbef341f1a5ab0adcd234494e92ed5aed88adcd1af4ee5ec"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_6_2.res",
+      "sha256": "2f67b65fa4f79650d6d4ab3ec8a8795d8128adba1c4716cb67efaccbbd8e5b11",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_0_6.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_7_0.res",
+      "sha256": "403e6cb7488beb1921b44a7af2f68de5b0d4b64f462d955cef2146e42f613296",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_0_7.png",
+      "source_sha256": "41c5d14bad9affa1a30a43dbdb0acb34d6e261ba64329976a914cb824a79a043"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/0_7_2.res",
+      "sha256": "ffe95b02dfa6e8c1cc6639c13d150f5b7fc4ad131f060e0b00b81a81650fd1c3",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_0_7.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_0_0.res",
+      "sha256": "663b00ecdd4b934f70636b705c96762751c5e7e3b495c2a7731216fdbf3b1d2f",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_0.png",
+      "source_sha256": "ba060f206966b05e0404b7e4254294e1859a0701ad3c854486e3af9e68a950af"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_0_2.res",
+      "sha256": "c3e8945e72eb36749b1ee94c5161ca937045deec8bb1934314d7e143ad062725",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_1_0.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_1_0.res",
+      "sha256": "e679b422699b1019e64cf3f48b378c21b0bbfa4aaf1db70af9b38e71bb845173",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_1.png",
+      "source_sha256": "aca9cf2a7fc412a5b94f3939753daf73f72cb96eafbff4384c22e4019bf6c2c9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_1_1.res",
+      "sha256": "273d7f195a16880b4a6408cb666b1abbda7d5e7521354f4e945acdad4c663094",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_1_1.png",
+      "source_sha256": "2e1c3f1a8423a347f2e65d23a8bf47fff9aa307a791bec910530f5c7b330fb1e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_1_2.res",
+      "sha256": "3798de5eb0fe5399beefa750f9e076338b9d741f559e78fab0d0c8bc5419c2d6",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_1_1.png",
+      "source_sha256": "45a27c7d6d90292d52b24eb41b14fb8049c9451c7be9b14c116fa0924b44916b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_2_0.res",
+      "sha256": "f38314a89a3d0913aa861b987e6892e1696d6220e302599be5941102846ff35f",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_2.png",
+      "source_sha256": "c3c11fad0d8dcb2f6360703d56c18c7970bf67ce3ac73bd6dc58d0d09e0eda43"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_2_1.res",
+      "sha256": "16219e70767dee204dbe458c256252e1cde8e78fcc4316d72f9890b8db4f769b",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_1_2.png",
+      "source_sha256": "dc34c76ee33bb4b67dbab9b8bbd66af26c1ba31649783340a63be7d765185c27"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_2_2.res",
+      "sha256": "69b34539f3f9babc5429955f25553f91368d7313354800ff81eda727f59ee7ac",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_1_2.png",
+      "source_sha256": "03e04d5f4e08d9a2262980f6f5cfb2a8626ec5ac708475f53d0fe69e8c6f80ff"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_3_0.res",
+      "sha256": "694ad2991a8d05aaec144a97f3117bbbf0d00259d7b73d8eafee2f01557fbe12",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_3.png",
+      "source_sha256": "9c4015edb1a718bbe25cbb077cb1b1873f6e2b6bf107c6c6e4de01f2fa7a6f6a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_3_1.res",
+      "sha256": "0406c7e0ce622fbdc42cafc48f2c46db5320eb1f7ad886cef3ae48beb6e0462e",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_1_3.png",
+      "source_sha256": "4e7c237601ce6dda9b22b400b9448f99021d7c2fe2bd4aa435c595047668c8e7"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_3_2.res",
+      "sha256": "3de78786569a3ada8fa665d31b25615347422b735c70eac6f3f3e352e3b69d02",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_1_3.png",
+      "source_sha256": "467df6bd6c94bd47456c90d3d5046c114059315be1699c7fc44905fcce71c40f"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_4_0.res",
+      "sha256": "09da15042663aba5649ee9da3fef8497771540267d071dbb1b8c848935e865a0",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_4.png",
+      "source_sha256": "0397bd2c747657789bf090af229991362e6bbf570319e58bb32b542f41efc281"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_4_1.res",
+      "sha256": "60df67e7f52a99da17886b1795561f804b6399aee6db8a19ae56dfab2ab929bd",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_1_4.png",
+      "source_sha256": "fd2596f69f23cc60b36f8be8719032251dbe00c59d219fc2cb680c0a918eb581"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_4_2.res",
+      "sha256": "5b9a72ad9a5e0075d95cdec23ea77762e5587298034165150270a41014dbd90f",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_1_4.png",
+      "source_sha256": "44c92ac8b2c324c6710e3446f654a0d19febfc17bef902d1a1b2df9922ede7fb"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_5_0.res",
+      "sha256": "4679efd463522356fc8b2b8d8f7b1afc3ec6843819b2fdb55bdf36a0036bac18",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_5.png",
+      "source_sha256": "f23f273304dcb57f18b0d0c64ccbcc6298bddc6b25704322ecb76a99c8b09717"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_5_1.res",
+      "sha256": "6d53dc88c19397336219ec0e0cbd7dc3abbd9b9609e5745d4af6e879fe23b6ba",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_1_5.png",
+      "source_sha256": "4a24022c0e9d8b298dcf8a5408ddd4a3e761c520059957a85af5a31996342679"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_5_2.res",
+      "sha256": "d58155ce053c02faa7bf3ca3f10a759791092abd9ce7108a2550cbde3b4806ec",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_1_5.png",
+      "source_sha256": "c9f30e5e417baca6da32de6fd3870d4685ed9139d57d5459bfb210e3dec4a3cb"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_6_0.res",
+      "sha256": "8c29e912745671874be3be114f117ce862b4acbcb64f20e99727e3d37b3d9b3c",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_6.png",
+      "source_sha256": "492a5ff55925da0456c7627dd67e71b7ae68e5de159cdf1478bc6177c8f14e68"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_6_1.res",
+      "sha256": "829abb499f50b2473867858b91b8e51c6cd8314c6091bbc31e814a901d8084bb",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_1_6.png",
+      "source_sha256": "616bae679c03f33bd54454f79ee6f93609601be991bb49f5ff2e500168d77581"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_6_2.res",
+      "sha256": "97277833176409f1bf279d80cbfee0b80e096b9c6e5703159f2b67f91ac97a99",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_1_6.png",
+      "source_sha256": "af32cb9f26e474d11850352ecd8e0b62885da69f3115f8a6fe7774d194c4032c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_7_0.res",
+      "sha256": "387a61b4bc9b0b2165e8a0a05e5fe1af520263f2403976064d25e32041c08531",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_1_7.png",
+      "source_sha256": "3b1a1f8bdb46414719fc8696a4c6b54656dea9f1103b5df77bc909d73293e95a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/1_7_2.res",
+      "sha256": "2c0259a42c91b3beeac12891f3ba39b3e14d2d02fca58dc70a4db60400067232",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_1_7.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_0_0.res",
+      "sha256": "fe49119ae821f0a1947bb3aa1a556dfc9258ab4efafaa4127d62aa60ec7e10f0",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_0.png",
+      "source_sha256": "66cf8ea4079102f7c979c633a0d52481d731ec6552d5f226fbed1e16ab902b31"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_0_1.res",
+      "sha256": "e5bcd614e051f54c3da6e8597daacb028e012e4d1c1fdb350fc7e4d24893bee5",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_2_0.png",
+      "source_sha256": "807835bef3abef1abef663b1ee752e78a5d39d54ba78312fc8b3902b31a20975"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_0_2.res",
+      "sha256": "cdb30282d00463e2d457ed4f29d2badf181c4a576822dde98105bf911f117117",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_2_0.png",
+      "source_sha256": "78990605f5c3f2c4d1c181a80e4d3dd4e4a7ea849f21cb68b548506577cbf72d"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_1_0.res",
+      "sha256": "51ec72103ca886d9f577ba31d64ae681ea1355254a2fb49c71e7c4d9f9c4449f",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_1.png",
+      "source_sha256": "d86ac575606d196ae5bf451aa23b1169dfcdf4452ed0966b3ec126f5e8bb8940"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_1_1.res",
+      "sha256": "b6ac2bb364908299404ce090d8dc83aef9b49ef0e3955928fe37ed0d4c1f6fb1",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_2_1.png",
+      "source_sha256": "901a4da6b41af4ad430c461557de40f5a6f6376d239c7554f5383a53f68b4089"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_1_2.res",
+      "sha256": "40823dadbc73256b600c77eb47f4e90f6a0a65b0bf6dc58283dee1c86b1ccede",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_2_1.png",
+      "source_sha256": "1908c9ed3c0911d6b839b3e97229b27eb5a19ffb03656c699247c00572c9d1f1"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_2_0.res",
+      "sha256": "3cc2d75df5a9a897a4363638ca1f707736739eb7416961eadbc92d64f259c643",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_2.png",
+      "source_sha256": "05a390cbeb652448feced67a5da6c0d88233505b8a9efc227a58b0464d9a8019"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_2_2.res",
+      "sha256": "7bfe9a470e4d75893059590ce4ac719d205a82bf16e2b6a987311d935407fb0d",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_2_2.png",
+      "source_sha256": "f3e6819977417c7937c799c240c815839ccaa836659db4e11c99d4f386f04ee0"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_3_0.res",
+      "sha256": "e016d4059c3e1c9a833dee091149f5b9577e463a0f93da8900986b52984bf941",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_3.png",
+      "source_sha256": "ee660ee9466569d3d0f561f507a050abb818358e5ac3161ab7697905e4e1d5b5"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_3_2.res",
+      "sha256": "236bb458ae8cc919c92ddc214bccff4030565312a74447d861a6c2ec41f97ded",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_2_3.png",
+      "source_sha256": "6b43dea66952f2c7f3090157e965652f64011ba1eda1b3cd8e2ed5ad2c515a40"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_4_0.res",
+      "sha256": "a0758ff24146eda467377520fd8e7206e3597b2a37ed630bed7bb06a5a03f1f7",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_4.png",
+      "source_sha256": "622233669ec294227d99652426c8b0d70671aefc8340b7c1d4a02dc3339092a9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_4_1.res",
+      "sha256": "2fcf5253a235417d951209c1493146bac2aa104a5f4aa7959e150f1ca25b6994",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_2_4.png",
+      "source_sha256": "ee3710d88c7f5543bd92f72b366a78687dfdd4859584e71618df36597f579e60"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_4_2.res",
+      "sha256": "f46f160699141af866755023bbf0f0cfc447ae0ffbf366af86e46b4fb0b0b588",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_2_4.png",
+      "source_sha256": "adc7f47f37055e3e0333b87cac8c2bbed379512a177e22872fad847cc71480eb"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_5_0.res",
+      "sha256": "3cfa3c76388e4b4dba71de51af749d53052861ada901002f6b8daca2ece69318",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_5.png",
+      "source_sha256": "9b3b754c79124b24e34a2a481d6e4169f4150d8c7e8d97c03f6c67ebf3b25b0c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_5_1.res",
+      "sha256": "3080ece18b1684548bdede7013b8182c15a73ae26e73a5a794327893b361cdc6",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_2_5.png",
+      "source_sha256": "416172850163301a7279f56fe8ebb03b0c9b2d0ccc5e298b0137395b0eebad5e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_5_2.res",
+      "sha256": "a4d76e80b270f7b967a71f3af0b39d93786161d044957e0761dfe1bc943aecee",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_2_5.png",
+      "source_sha256": "be560555c5386655a473b8c28fda632ed32c42515a9f58ba3f43fabc64ba9cb7"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_6_0.res",
+      "sha256": "dd6f913fdfaddc53967b85540a681e9ab1d3e9ef6ddb23c885dc77806c58b1ed",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_6.png",
+      "source_sha256": "39ae708fdaa4f0fa35f000a8344010341021e8720617dcab4120d93a934a8b20"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_6_1.res",
+      "sha256": "e6073ee6a908e0724841199b5fc550c6d626dbfea1006beb70c6fb5a878e2aec",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_2_6.png",
+      "source_sha256": "dce78b36a974dca82a2dd6c3a37ffc43aa8ee96bf3257931cf0f6e068d904494"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_6_2.res",
+      "sha256": "f1a4367887017e8d3a033fd89b359a85f1abe3ba4ac514ec04bbe3f1f342ea77",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_2_6.png",
+      "source_sha256": "32e643a44d56afe3ef5e2f05ac99f7504fd647bf85b8f472421cd05795313305"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_7_0.res",
+      "sha256": "d5bd90b75251e53185d1418545982475b103f98e534563f7b2ddea057ddb4857",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_2_7.png",
+      "source_sha256": "54bba78452a006f4cf4d0a64a8a632bdcdc4120131292eff2398c8877ab68298"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_7_1.res",
+      "sha256": "90eb7a17b97c8798ddf70fe384419fc667904762cbac6e5719efb664c997b90e",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_2_7.png",
+      "source_sha256": "a6b780a07890c6acecccb796fcf3d8aefcd0caad3799838208046e9805741259"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/2_7_2.res",
+      "sha256": "e500adb0afd4e312f15b9e506dbc6c836912e43957bc642a4495074a37690431",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_2_7.png",
+      "source_sha256": "435dead428c2854c96da6ed8b66c3f147a993eb2f8c71c055781ed007778ecad"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_0_0.res",
+      "sha256": "60cb56e5f9cf33b4567e5b961d202ae90bba8ceb6c22e80782bf1aff0fdfe256",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_0.png",
+      "source_sha256": "7e9c4cdacc7fe3f4f784c0831111ac7f8ef0637ccdd15f6b2ee3842945033fb4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_0_1.res",
+      "sha256": "cca7da7733bb867657899f4bc98d57b9a16bb31396999f037a47d3b35f128543",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_3_0.png",
+      "source_sha256": "a58c262b9aedd126a489085da2847764ccba10e45e3c33c657e34b2558500cc6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_0_2.res",
+      "sha256": "9bf5d6ed689d546551d8470eb93e8c876eeea40ea53040328731c9710f110478",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_3_0.png",
+      "source_sha256": "44d45eb53a5e9500f855fa791f27e98bb6244bc07e6e0917ff9c1fee90e8672c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_1_0.res",
+      "sha256": "372097949b85292d1234c068618b3cfa27ddef721a2542295a714444173aa63d",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_1.png",
+      "source_sha256": "ed93cb9c8797cd5e55500d05c119c51a65c8547111c861f067ddf58da4f8abd0"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_1_2.res",
+      "sha256": "7e6d3d06cbaf9f02843227f796044f88cd502e09f2fd76cf648d9f44ac4245d0",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_3_1.png",
+      "source_sha256": "9bdde48efc77c2ff0ece0affec5f5e44c0afd2234d8b14d7ca8d82600a670f7d"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_2_0.res",
+      "sha256": "9285ac2769244ca8dfc9bac131346f953d6aef53fb5efec3d70236d68e62639e",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_2.png",
+      "source_sha256": "f1c0565ae90291ecbbbb0f18edf3b461851e432c7491c418ce50b6540d01f774"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_2_2.res",
+      "sha256": "401827812a24cce6eeb23b9de3fa4c026c2f4afc0e78993393961d245c0fba2d",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_3_2.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_3_0.res",
+      "sha256": "099033c3a5cae980e7ff4c284cb502bdf7b59b4eb10f30b11bea9c7f282a38b9",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_3.png",
+      "source_sha256": "ccba8c92fc63bea8d7d4359be41a6327c187f91cfe95d3e0bdb974346609759a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_3_2.res",
+      "sha256": "dad7f6a6da25601b14163174190df65ea394170fd1289be312eb847e79679e12",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_3_3.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_4_0.res",
+      "sha256": "aa9c75ecfb1fd7a10bdc2ecee70461f9bfd308a483834a2aa4317ad3e7416af9",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_4.png",
+      "source_sha256": "055ce8b47d4d67fa4ad2f766812f455ccfeb219af2bcc0e82a627443da568a9e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_4_2.res",
+      "sha256": "31b373b680861e0fbd7b08be5abd29df7927f58d47e7f70672eebd021b836626",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_3_4.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_5_0.res",
+      "sha256": "18fe474e0b3957782223483a9ac80aafdea00c418ec08b52961dc0bdb312590a",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_5.png",
+      "source_sha256": "60248762a3106f91ece7073f767bc3647117d5986ec451bd3dd901461afd5779"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_5_2.res",
+      "sha256": "ef0aa14b8f33e5e92cadb01f610579034aee2a58b8ca4327231d6b71e5265d7c",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_3_5.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_6_0.res",
+      "sha256": "97079a963fd570c866a799f0e50830937bce00bfb8b71bd4ba50e36ad2a750df",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_6.png",
+      "source_sha256": "42f707fbf8817c30899586b1763a0d7510550c4290726edb3384e4b6dd86cbd5"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_6_2.res",
+      "sha256": "863d169b0b6fdbdecf5dcebd4da21e4241549b48df3c563d0fc56f1d1b7153d8",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_3_6.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_7_0.res",
+      "sha256": "928779c3cb40f7866038469fc6e538362eb5732fae86ca43fe14094cab8d7ac1",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_3_7.png",
+      "source_sha256": "da8dc0b2a1e6ff5cda5df49bf0f2f90358edc48fed5b6cf53bd5c26f6f2f9682"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_7_1.res",
+      "sha256": "6501bbc9a3bf21fe326f7480d785ddc373cea90dc35535683fd415834426f29b",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_3_7.png",
+      "source_sha256": "1d6ee0a43b0f41126ecd7d9a92bd865d04308d1f27183dc4d8221cc13c11288a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/3_7_2.res",
+      "sha256": "e986d82493f55ed89c8cceb701f9b47912536ccc4af0009f18277c65d1bd19c3",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_3_7.png",
+      "source_sha256": "5122cb34d271e3f7a9abbe25a74001084277e5cbb7187913bdfe0bf53b4cc75f"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_0_0.res",
+      "sha256": "cb7106019e490cd68b5d4645d519500035ee842bdbf21a8aa4e5578ea29759f4",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_0.png",
+      "source_sha256": "e160a2575161a004d1976d889be6b2d67baf43ed71e0d9000ea9e27a40937ea8"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_0_1.res",
+      "sha256": "8de5eebd6a2bc041f38ca41462dc4c6f49cdeb96b6f0b71ddfdb630a416a17b1",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_4_0.png",
+      "source_sha256": "ec638d97132066606a1ce65073fdf48e26cd17fd7f1aba5fd98fba1cb4fcbdb3"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_0_2.res",
+      "sha256": "a1cec41dbc373529261cd311726c1e65194afc594a69b82d5448a31d3de0d825",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_4_0.png",
+      "source_sha256": "c2c5ace10796fb81336ef5e44936ebadd862192e31121110bdd26f10f4687c0b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_1_0.res",
+      "sha256": "b22f111c8691478fa35368967148bf24a8d2b3f75b9d537d34c8e7c580e15321",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_1.png",
+      "source_sha256": "a0edf0c8acd439f602ee0de98ac6553c9f946cf892f8de471d948f684c520d7a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_1_2.res",
+      "sha256": "7d1506f4a322477f25589d69a692aade07af019341104af27f48d558270a29a0",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_4_1.png",
+      "source_sha256": "8663f8a2fb42f6955f2c629a241a7f15ed6150caa66079aa6a7914da8a9276e9"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_2_0.res",
+      "sha256": "28116740b543a8aad38c4d08132d1eb539be2c11f6915b2aa5002482ddff28d4",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_2.png",
+      "source_sha256": "e3bb6e3f558c0f9c6dc3fa638a3ecb2352030d44e3192a950b67f817ff440269"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_2_2.res",
+      "sha256": "cf11f2c338011573eee9bb3beebdcb4d3891b5fbc04d8c265ace27ee15648ab2",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_4_2.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_3_0.res",
+      "sha256": "46b3be1c8ffe516a92927b0cc58683219a4216cee206e40d495bb720f6e63cfc",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_3.png",
+      "source_sha256": "97532852556b54b9400b34f78a699c37fc3fbffc579055625cfbbec9e1de8215"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_3_2.res",
+      "sha256": "5de18e40eb0fe4bcb1ff46478ea6e9b42ad9231e7988eca2ae72ec0e06d820df",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_4_3.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_4_0.res",
+      "sha256": "fc9c78f6743a5f41cb30ac5fd956d5000a443d69b892d896719458f246d47a44",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_4.png",
+      "source_sha256": "0b220779a9f759433e9a3e7df5a24e0d8d6c351f76eb2c5ddad7a50e1486165a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_4_2.res",
+      "sha256": "3354bbeed76365e7513477008fcf52ee7b885debb420803229538a845e4a5199",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_4_4.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_5_0.res",
+      "sha256": "a10bc32610617f636ae5f799f0f1d58afabb13cbd9717759ddedf84c736ac765",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_5.png",
+      "source_sha256": "3de1ffd7ecda98afbd1032274e0eb99f321cfd6d96be50b9c693d9df528276bc"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_5_2.res",
+      "sha256": "11e06c745eabb0b153e3667ab6957f395cad2baca16d1e637ce96a37337a3f86",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_4_5.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_6_0.res",
+      "sha256": "66be635a6c0be106d6c32cfc3b453878fd54e454e97f77a5a2ded3cc3a214975",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_6.png",
+      "source_sha256": "5758a1f4ac9fbdbfc204c9f3d4d7ac022cf24d64371c2148567c8dfd755009d1"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_6_2.res",
+      "sha256": "dd938f93a62956fec1bea7878162d382ad1ffb722e97bd52ff18ae70cd363f64",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_4_6.png",
+      "source_sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_7_0.res",
+      "sha256": "5b0a9359a423642663bfcb62abdba546fca19207895f5b5f2c92e3f12710c4bf",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_4_7.png",
+      "source_sha256": "600375a830d56f7c829674c05b82c3639c73d610383b9ea7faaec08f54a2458b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_7_1.res",
+      "sha256": "4196dc941d81e3158d05e5be9d6ab22c7f2c184275be3e573fd4325aee4778fd",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_4_7.png",
+      "source_sha256": "efd137e818895a19b525c995b58e74611dda51eac67bd3aa6674da2f5d82ae40"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/4_7_2.res",
+      "sha256": "e36219b2d7758f002746b5cfaeb4906e42516d2ac4c68af76510a0eee59238ee",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_4_7.png",
+      "source_sha256": "0e3d8fdf9d796d9d03d893b948e83cd79604be3babfaabda0cacdd36c0d4d299"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_0_0.res",
+      "sha256": "76cd49cef8b9305fa41909c007e78185b23e11663eaebd406efe8089664da25e",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_0.png",
+      "source_sha256": "cdfc7e4ecd270e2685a1d8e36176fac4a4ae50fada43510067af18b5f33400cb"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_0_1.res",
+      "sha256": "4d935c8d17fdb8d1c0896fae9abc1bb65607736da59608f65898ca685bdc1eae",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_5_0.png",
+      "source_sha256": "d5a119eebdebd67d56e7bf763680672752e97b3e7802413babc362f598f1fb34"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_0_2.res",
+      "sha256": "d7b48de049ed9c697d34a17831e8cb791a535b15d1c5e16fa2dbe4d198b5f60d",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_5_0.png",
+      "source_sha256": "95fe65fd5c2687579421f134b6b4615f9da74d77e6bcdb7a4a4477ddbddcabbd"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_1_0.res",
+      "sha256": "60d7bb7c9a89a6a9795882c9fc3005e3732d134343462520e22839bc961610b2",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_1.png",
+      "source_sha256": "b0b8e02e79f2b39d334452fc4eb0acc2537397958395edf8323d1a85c000acaa"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_1_1.res",
+      "sha256": "7a800c09441867bd2efa08b22a4f2a0943883c560be29438545de2ac98f49ca1",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_5_1.png",
+      "source_sha256": "1184b66156504eab4254b825cbfb0b416c35610f4f7923b407094225f1d772a6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_1_2.res",
+      "sha256": "63b3ef80c543648c0c0994ec4d276ca6f3d79f09740f8b87077a813590ebbf7d",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_5_1.png",
+      "source_sha256": "9e64d96e72f3e21d8c7410159782fd8bd6a64ed1d6f485e95b5e25c3d8dcd6f4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_2_0.res",
+      "sha256": "df47a0be89f3ee2dabd0988494548f65d67fbad9bfdd41efefaaf50ddee15543",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_2.png",
+      "source_sha256": "b66977043c15c9b1538ac1d3422089e0dd872b6980d2f465e9072198df284461"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_2_1.res",
+      "sha256": "dfe71c529576098580c7f3406d774ce91844b756df103c9d57bb1f275ec605a6",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_5_2.png",
+      "source_sha256": "e15820e171effc65696de575e1e00e36bcc94a3ad87c23e83fdefe50475a7eec"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_2_2.res",
+      "sha256": "1c566b55095ae09e5e3d970a915263fc220e0a39d664dc353fb61a77b94a6966",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_5_2.png",
+      "source_sha256": "9e30da31286fa4ef5d8a35f589ee1a92d72d6d6484899a6271053561677ceb7d"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_3_0.res",
+      "sha256": "5de177ee9e8c7ea6aea8a9a74b699ef7f0080937254ba727cf5d9a919072172b",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_3.png",
+      "source_sha256": "f17ab96bdfb08ac103d9edcab255bc6781a3cbf23018738e43eee1db71401bad"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_3_2.res",
+      "sha256": "ed2fd2bbef4547f8785e6cf5024283458c52ce1ccd4663b2c25027256f9fbad9",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_5_3.png",
+      "source_sha256": "7ceec7e01705a281dc455c2c8f4943a2e7153ec3077e1fabd2210b24bb4773f4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_4_0.res",
+      "sha256": "b2b07c327df26ee96ac96c2b6be3a5a97aa1679ce5cabf867bf4d90b55664d3d",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_4.png",
+      "source_sha256": "d1b13bdbdc389a5080c4aaf0838d036d376997ac609c801eee27803fbf7cdd7e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_4_1.res",
+      "sha256": "c58daf1d14138ffa303491bb6600dc64b1a1bd0faa205f84f61324bb5c70d093",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_5_4.png",
+      "source_sha256": "96fad874107008a108d32466a2d59b40fa91d2b4638ad25540df18fcba2addfa"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_4_2.res",
+      "sha256": "0a1fa65333d40facb96961f40ba78de4916228030653525b38f873314c166ce6",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_5_4.png",
+      "source_sha256": "e97cdae77492763fd58e80a9dde28b16d7eec662e52cb3565f941c5a368a5b56"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_5_0.res",
+      "sha256": "db8ff1c5c2cad227a62dd37e1d9f7b931d1591ea4eccdd3805d634b0a0a2a25a",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_5.png",
+      "source_sha256": "1fbbd232a91c713cc1573a3173230bac91c815a27a58a9172c6d8771590369b6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_5_2.res",
+      "sha256": "075d5cb38fcc8914b29aac0bc5c5502c2cc032f036357708d58aa23477e0e0c1",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_5_5.png",
+      "source_sha256": "803b057f073a452417c3b5bba7df542fc4f932416527f32e0e3e1076836486a1"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_6_0.res",
+      "sha256": "62d37c5b5236c8859c2cc1e5e4736ad378db17638d1ba01ebfcfd8c833e7b215",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_6.png",
+      "source_sha256": "7c5b774d4465d31e799bcc8b40772488128707720cb7d7af067f1e37ae510e46"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_6_1.res",
+      "sha256": "991486bdfb03eb66a49b2ecd5e03415be0b344558f399b36dff4addb1de4d6ce",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_5_6.png",
+      "source_sha256": "14d6a345c3cf4b1c7642645ca97cd6f0193092ad72d14eb2e016976bbeea9900"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_6_2.res",
+      "sha256": "17731b9e4f6c55911ebf3610dd4eb1abdae5d99ddb8d00e829b3c00d33fd1762",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_5_6.png",
+      "source_sha256": "94dc0a1749e5423fbf22c27959f58981a53c11de2f7cf375b32c6a27f1029441"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_7_0.res",
+      "sha256": "63580d24b4b3828af17ac52dbd902bde0321a3b762071da24298a08fa630060a",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_5_7.png",
+      "source_sha256": "4af83bb4fa98a75fc7b30a179f0978db22b0e2d6b556ec59fb609b44fc1f1e1e"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_7_1.res",
+      "sha256": "791e5232244821e07b4604449136ed709e16ddf9a0493ee6a2e80fb480fea122",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_5_7.png",
+      "source_sha256": "47e2a4fd741510a1207bd659aefbbfc0a778913889001da00e1da00a15d19e34"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/5_7_2.res",
+      "sha256": "26dbee22d3d30f35760a4c1658644c624ca4be7b7fab0568f4558939d1223dc8",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_5_7.png",
+      "source_sha256": "ca37e5f69e9b2634b0157ecb738dd81f9f5952b5f3b1b3030680e1b39d924bd4"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_0_0.res",
+      "sha256": "f2f253c0cbad0d549f12746f2c7d3a3d02165544d4acb2a7a73fadc960ba60e2",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_0.png",
+      "source_sha256": "6695fe712c8d87ac0400f9d3e8205d22ae7f219b326f1222f95c19de22ff9383"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_0_1.res",
+      "sha256": "71de3da8d3c120114bb85bd89fc958cf4018e483af864077969e36fce1016509",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_6_0.png",
+      "source_sha256": "cd58891c2e4a7c767114ab80e9d7790178c54d0daaeffe4b2ed6416793204378"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_0_2.res",
+      "sha256": "b8da045f3748f1d190feeea3a23c1c47e2a820fc7130aea518ab00349e37aa09",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_6_0.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_1_0.res",
+      "sha256": "f8cd963e78c864f446aac29890c45850b79da76001a8cea2872c77ec37e01d7b",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_1.png",
+      "source_sha256": "d2b52034364037d8208fa2d8a92f01181892816e3b491336732598c4e651c299"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_1_1.res",
+      "sha256": "d57af4866bac151fc9baa43542243217b54da2050cb6f15b12a66faf7dc69c7c",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_6_1.png",
+      "source_sha256": "ec6c1636c190217293468fa14d3a5dea68e285d179f512bc7258a0cab1a237be"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_1_2.res",
+      "sha256": "10d1c465d17bda39aa3d1f1235a4bbedb799fa5ed42d887e2ce06b0be841af41",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_6_1.png",
+      "source_sha256": "c823eb13c1627c81bb30a47daf84f10aee9c128dee797c0b8d32451111edfc72"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_2_0.res",
+      "sha256": "c3fb5ba33c664b08d6b06cf1692fc0b1e87b8f7607c1719f3e1aaa1b7ac3b91b",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_2.png",
+      "source_sha256": "3e2176011fb4fc727d409ed300c4a1c4bbb6b91d1a2c2724fa07d25322fc856b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_2_1.res",
+      "sha256": "a42a630b477cee17886fa3251a5cb0b4617345221e6d7aec6a412ddc9c84eefd",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_6_2.png",
+      "source_sha256": "ae0906a3b69a6636f1c0fcb27baf72d7de4c2e0cd686f51e1ab912e3bb4348ba"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_2_2.res",
+      "sha256": "40c24754edc7626fbf83f4d66add690b41867c4ec49e111e5f2400f946feaef0",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_6_2.png",
+      "source_sha256": "7f6e59fa3ca895b04722a0e920634c67dfdba7ef16c5a7f0554f07b46f7e323b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_3_0.res",
+      "sha256": "474e41c6c883fe82d073649a55627d187860c66cd8f44141e3886e4d9ee0a360",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_3.png",
+      "source_sha256": "93401357c5c98779287f12f747908c44b8c6f9534a92ee4074332107e13139b6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_3_1.res",
+      "sha256": "7a13d98258bb66d961dd9ecc105fc579e11e57e1a1551bc6a835d64547f8cd0a",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_6_3.png",
+      "source_sha256": "8d85db25bc93f54a0f75418f0e778f5f812d55f49e797bd8bd893ca155ef752f"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_3_2.res",
+      "sha256": "52d3446a8834f5d6cd156bcbd166c20f2f2d7a97bf8d524c8cf844a4dbcc7665",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_6_3.png",
+      "source_sha256": "89dbd8a56a9d26bceddac2f041a7460c5152339638f4d3ae054ff0ef4af6b9ad"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_4_0.res",
+      "sha256": "35f98cd28932b32de67caa08878e5d0589adcaff1999750dcf77ce17cc421a07",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_4.png",
+      "source_sha256": "d130ca06b763ebeefbde78fc01e956f05823a9306849661a9f0d314b5e6f2cb3"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_4_1.res",
+      "sha256": "e9fbb92d74a05b606051ec00dac5234083d4af4dfb5e82d1d21b68db05b704c7",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_6_4.png",
+      "source_sha256": "c3b7f1aa9267393bd19cd4392cb35c260cf6da0ce953196b8012f279a2f8fbc5"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_4_2.res",
+      "sha256": "d7043268c90458a956f55e8ad204cafc12de9570bcb78b4587acfcf392f76638",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_6_4.png",
+      "source_sha256": "9343b7a51f7f591f2713c72e7de0fc403c04a0538919a7d62461d9ebcc8a3d1a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_5_0.res",
+      "sha256": "1eec2292d67deea86a97c11728e2ac2b2518cb434745a3dc0102f4b7391cb5c5",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_5.png",
+      "source_sha256": "195ebbcd488173cbc34d094a05528439e402942f75e938eb6c90925f37084584"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_5_1.res",
+      "sha256": "5edee10ee699748c440d8bdb3d52f10ffc62a544604497734afc44f83acce844",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_6_5.png",
+      "source_sha256": "43c62842930eab1094b092fcdf34ce77b0c76114ebb6e3473cf85a115d0f84fc"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_5_2.res",
+      "sha256": "22a5ca165f301b5bbc4378e6f9a66cd81d02ac87fbe988e9190c1f165a9678dc",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_6_5.png",
+      "source_sha256": "4a71beee4f498db5c6434fea62888b71b1801ad005d196063263f030fd50843a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_6_0.res",
+      "sha256": "bb2499f86e0ebfa47922e5cbaa07ac49a781c3d6d054d038ad90b0d9c2f0a5a0",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_6.png",
+      "source_sha256": "f6a0bea0e77e39a05e449be855e2394787c63bba5747f73ebd4828bf8cc535b5"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_6_1.res",
+      "sha256": "bb2a3de84cfaa5caeb0140752a6f62ca151c3b470df2d978bc57f71450018509",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_6_6.png",
+      "source_sha256": "7dd639f8b3a0e4549dff53885837059524d81416faa5b57c16c1ec394be6de67"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_6_2.res",
+      "sha256": "4d67657fcf8a838c8854cb02c83ff3758074391cf0e1ea8f0495ea58dc2db1fc",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_6_6.png",
+      "source_sha256": "4e4619ec3b3fb04a57091ad7408c7a4b63c9e14e47f5a403e707e1c6fc2a12a6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_7_0.res",
+      "sha256": "5f1ff2000f91bfbde6132fb14c96f3f29c10ef2cf9339610c55f9231f33e35c6",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_6_7.png",
+      "source_sha256": "330f3ea7dec54883b7ac45c940e12483bc4ac42af87a2484bcc453d0142ca3ab"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/6_7_2.res",
+      "sha256": "ff95865e7d12284df29ecd8ab2c624e3817588dfdc81136d80fdfdac30c6bd95",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_6_7.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_0_0.res",
+      "sha256": "b512573f8cdfe9db48178c3cf806d8dd82ef43f9d8f9ea76bc4a66e3e44fa643",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_0.png",
+      "source_sha256": "17840de98133f49a0140e6410b6c7883e1e74c3609d303c54952006b0ace45a8"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_0_2.res",
+      "sha256": "c7481175f7df6749525e4cf440067ac67c2f9dc07609699cee40fc452be92535",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_7_0.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_1_0.res",
+      "sha256": "2256e333301fab3aa176fbfb91f12fd9e06717c43ddef71120cdc90ca702eaf3",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_1.png",
+      "source_sha256": "8d709df67dd3e34fa766ad21ef20e1207f3e2e12ce99a7d5b481d501ced5a0da"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_1_1.res",
+      "sha256": "ef16d1bde2a9c467b71a6026b714f6577eb5a5da2e3efde2d7f24cdee3ee02ef",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_7_1.png",
+      "source_sha256": "e20f15e61bc6da6084cf5be687966e21dd08dd04754c60a434d90b8fddba2683"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_1_2.res",
+      "sha256": "b1d219e1c94ec0f92a46347f990fc230f4b3ed2ec736a88f46a6982db6628496",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_7_1.png",
+      "source_sha256": "fef76b6c33e5122c15d513794ff16a5d9f64da4e366447caf790a26ddadb5aed"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_2_0.res",
+      "sha256": "790d8e68d80e13a50d6f5802a86013dde0c9e4d89d9e5635974df7fb32acb34b",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_2.png",
+      "source_sha256": "e5ad976e2e260b2cf4b7ba6b0094d7ae639b8612a28a5dd4c91c7e96711069e6"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_2_1.res",
+      "sha256": "eb093b441ec66d6753ba946bca77eeb16ddb575204db4e96a928bc4f6661ac3e",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_7_2.png",
+      "source_sha256": "bc9553048b16405bc0f026f9e8e4e60f64c1273427e9365bbc83946c5b757400"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_2_2.res",
+      "sha256": "f5b10e9f1ec570c96825edb8129ff96c3d5e2fda619e386d452278bc60e62f03",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_7_2.png",
+      "source_sha256": "65618441d959bd1f9d09d4e3492f0df9d7dd69ad512108099e061019acf05675"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_3_0.res",
+      "sha256": "9fb78ffc3e263faabb9c7884d354ecb8b254f3b34980706b514540bba6f5f1d6",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_3.png",
+      "source_sha256": "a2ef4e87d4de3dcf575c8fe4c4475ff09a8997847f420e74de168dfafd0b3b5c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_3_1.res",
+      "sha256": "2e4051156b86ce9876bffae186c186b3f1436ea0c1b17bc877ad5862a91eaa3d",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_7_3.png",
+      "source_sha256": "a73c8178f423f592a4dc84ebf90534275a83c30bdf833b4ddf130e2ade9fcf6c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_3_2.res",
+      "sha256": "89d8d147591cb11a1962ca858ec5c93064b871572a22a385bc9f82981d7bb27d",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_7_3.png",
+      "source_sha256": "f20ef5b0cc985d4ddfa46b0c86e5ede98e21f6c7065e14d27c7b352f32995209"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_4_0.res",
+      "sha256": "d732911ba030ed45fa2bf4811a4c7572706b7b892eee3bbe7b15e5a89df3c619",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_4.png",
+      "source_sha256": "b2f4aaaf04124cfe188d91f2e59d4ae192a0396e7d03434cce6106083a71985c"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_4_1.res",
+      "sha256": "7a917cf79ea9382eb5c44a5c19dfff81c88942e78d95fcb10b40df6ef077d2a2",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_7_4.png",
+      "source_sha256": "aee5044cc258884c58ab899a96346dd9c473fb01693ee304e007b3151f13d473"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_4_2.res",
+      "sha256": "5b05d519d1ed306b32977da08566c903abe8afdeefc5138600e1a31d914b4c50",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_7_4.png",
+      "source_sha256": "5a09a76a5c359ca800b5ea15a5671195888428a00b7fe644e467267b9b20b334"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_5_0.res",
+      "sha256": "956e63a25bae5c26f19ddc52bcd2ed48fd403a7e0162d6045b65ce1ce152afb3",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_5.png",
+      "source_sha256": "a61f25ae7a845e15f4d69243f000a7acc093475d4b42e177d0dbcbe78889f51b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_5_1.res",
+      "sha256": "b497c49ef8d31edbba853dce2303fcd261f122807015c96e640f697df93ce68f",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_7_5.png",
+      "source_sha256": "62723fd32f5d8314f4e497135a3dc1f73ae18764ed45704f22b2d31fd6d51445"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_5_2.res",
+      "sha256": "023ad17e0d017cad7975bf27caaa17a98c928aa8b025d20ce6ac73461f3b3005",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_7_5.png",
+      "source_sha256": "cf908ddebe15a393a78a8e809fb05203f0f358a49ba2668cbc0ffa4d992e2de3"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_6_0.res",
+      "sha256": "b4489a5b538eab9634062b4fe81d4d3b73a1d533ed781f76dadc20c715456385",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_6.png",
+      "source_sha256": "8bd7466505b4079cb1f1a3c8e6670bc1e331d0810cd5c6b4ab3e2e5bd35ef6fc"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_6_1.res",
+      "sha256": "1e9916b811c64af963ce99bc1664622d7f43092f982091674beb927a0d9de06a",
+      "bytes": 1048945,
+      "source": "godot/assets/map/web_parity/sway_7_6.png",
+      "source_sha256": "e2cce0aeaabb647ed3a98bebd0b7c3879de7e75c99fb814b4660914b1e2df614"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_6_2.res",
+      "sha256": "9a067fa5d48e6865fade8e4aad09efbe4172d4fb9cf06742a5d822a990aff18c",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_7_6.png",
+      "source_sha256": "fd0452de1ea409efa674337abc7311d3e3f5c9b114b99280d5e2f3e102f8317b"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_7_0.res",
+      "sha256": "d181c9bac554fbfd57a8258262a5608a05a059e3bf81b41fdfc7d8b08e5d09e6",
+      "bytes": 1785265,
+      "source": "godot/assets/map/web_parity/chunks1440/chunk_7_7.png",
+      "source_sha256": "b1ff4fe177eb76cad647d799da64725b966bbca998b223c45a9e198a23599aa3"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/7_7_2.res",
+      "sha256": "2d18dc9f4a7a48d91572eba6fe2914c9e0ea8de8799f5d32d1b3d547365b4e5b",
+      "bytes": 1000369,
+      "source": "godot/assets/map/web_parity/edge_7_7.png",
+      "source_sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a"
+    },
+    {
+      "output": "godot/assets/map/web_parity/chunks_gpu_bc7/blank_sway.res",
+      "sha256": "17cd8961e9764daa649f0f3ca89c835b979fa76e64a42fd4e5fe93e5cd25b81d",
+      "bytes": 1048945,
+      "source": "transparent 1024² sway placeholder",
+      "source_sha256": null
+    }
+  ]
+}

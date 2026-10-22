@@ -458,3 +458,8 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 | B-01/B-02/K-02 | M13 | NOT_READY | E2E1회 13PASS/5NOT_READY/0FAIL, 죽음 관측 뒤 dead라 보스 route 미착수. overall NOT_READY |
 
 24격자·PC19대응·남은 차이·MAP PRODUCTION REPORT: [최종 보고](PARITY_BOSS_01_20261022.md). **전체 동일성 FAIL**, 테스트273/0이나 GUI fixture 관측을 사용자 완료 판정으로 대체하지 않는다.
+
+
+## PARITY-MAP-03 후속 — 2026-10-22
+
+기준 BOSS-01 760b7ea8, [원인·수정·계측](PARITY_MAP_03_20261022.md). 소환굴14/자연 적 공급은 기준본에서 이미 복구돼 확인만 했다. 시체나무의 native 전용 CSS tone 제거, 실제1336²(약1.3배) 표기 정정, 원본 fallback 미로드·가시+1링 고정25slot/75texture·사전압축 BC7(Windows)/S3TC(Mac) 적용. 맵 자원 보수적 상한0.947GB; 전체 Mac texture4.081→2.997GB(실제1x 캡처), Windows 실측 미확인. BFS는 원본8방향 Worker 동치로19.4→6.2ms. suite180629/0. 7장1x 비교는 구조/소환굴/톤 개선 확인, 전체 VISUAL RETOUCH. GUI1회는 사망 포함으로 정상 필드 성능 판정 불가, max51.776ms 귀속 미확인. 실제 W 웹903ms145.356px/native885ms0.577px는 native55/55pStun·키정상으로 보행 비교 부적합; PC 상태 owner에 기록만. HUD/UI/보스 M10 변경0. 최종 SHA/원격/정리는 `_out/PARITY-MAP-03/DONE.txt`.

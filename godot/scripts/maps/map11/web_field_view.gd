@@ -1,5 +1,6 @@
 extends Node2D
 ## Source game.html 11612-11762,18133-18169,18501-18574,35722-35741.
+var update_max_us: int=0
 var _main: Node
 var _actor: Node2D
 var _camera: Camera2D
@@ -18,30 +19,12 @@ var _features: Array[Node2D]=[]
 var _hand_trees: Dictionary={}
 var _details: Node2D
 var _living: Node2D
+var _chunk_pool: Node2D
 var _data: Dictionary
 func _ready() -> void:
  _data=JSON.parse_string(FileAccess.get_file_as_string("res://data/map.json"))
- for row in _data.chunks:
-  var sprite:=Sprite2D.new()
-  var high_path: String="res://assets/map/web_parity/chunks1440/chunk_%d_%d.png"%[row.x,row.y]
-  var core: int=1024
-  if FileAccess.file_exists(high_path):
-   sprite.texture=load(high_path)
-   if sprite.texture!=null:core=1334
-  if sprite.texture==null:sprite.texture=load(row.texture)
-  sprite.region_enabled=true
-  sprite.region_rect=Rect2(1,1,core,core);sprite.centered=false;sprite.scale=Vector2.ONE*(1000.0/core)
-  sprite.position=Vector2(row.x*1000,row.y*1000);sprite.z_index=-3000
-  sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(sprite);_chunks.append(sprite)
- # Source ch1-forest-sway.js:10-41,67-98; prebuilt original 64x64 mask.
- for y in range(8):
-  for x in range(8):
-   var path: String="res://assets/map/web_parity/sway_%d_%d.png"%[x,y]
-   if not FileAccess.file_exists(path):continue
-   var sprite:=Sprite2D.new();sprite.texture=load(path);sprite.centered=false;sprite.scale=Vector2.ONE*(1000.0/1024)
-   sprite.position=Vector2(x*1000,y*1000);sprite.z_index=-2950;sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
-   var mat:=ShaderMaterial.new();mat.shader=preload("res://scripts/maps/map11/web_sway.gdshader")
-   mat.set_shader_parameter("world_x",float(x*1000));mat.set_shader_parameter("world_y",float(y*1000));sprite.material=mat;_trees.append(mat);add_child(sprite)
+ _chunk_pool=preload("res://scripts/maps/map11/web_chunk_pool.gd").new();add_child(_chunk_pool)
+ _chunk_pool.prepare(self,_data.chunks);_chunks.assign(_chunk_pool.ground)
  # Source ch1-rot-trees.js:14-426, exported by the original browser builder.
  var trees: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/map/web_parity/trees.json"))
  for tree in trees.trees:
@@ -55,10 +38,6 @@ func _ready() -> void:
   sprite.material=mat;_trees.append(mat);add_child(sprite)
   var features:=preload("res://scripts/maps/map11/web_tree_features.gd").new();sprite.add_child(features);features.configure(tree);_features.append(features)
   if not tree.baked:_hand_trees[Vector2(tree.x+tree.w/2,tree.y+tree.h/2)]=sprite
- for y in range(8):
-  for x in range(8):
-   var sprite:=Sprite2D.new();sprite.texture=load("res://assets/map/web_parity/edge_%d_%d.png"%[x,y])
-   sprite.centered=false;sprite.position=Vector2(x*1000,y*1000);sprite.z_index=-2800;add_child(sprite)
  _living=preload("res://scripts/maps/map11/web_living.gd").new();add_child(_living)
  # game.html 18245-18262,18349-18361,52027-52045: original gate and tinted portal.
  _gate=Sprite2D.new();_gate.texture=load("res://assets/map/web_parity/gate.png");_gate.position=Vector2(4020,220)
@@ -74,8 +53,6 @@ func _ready() -> void:
   sprite.centered=false;sprite.scale=size/sprite.texture.get_size();sprite.offset=-sprite.texture.get_size()*pivot
   sprite.position=Vector2(row.position[0],row.position[1]);sprite.rotation_degrees=row.rotation_degrees
   sprite.flip_h=row.flip_h;sprite.modulate.a=row.alpha;sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
-  if row.id=="m_c1tree":
-   var tone:=ShaderMaterial.new();tone.shader=preload("res://scripts/maps/map11/web_prop_tone.gdshader");sprite.material=tone
   sprite.z_as_relative=false;sprite.z_index=-2500 if row.ground else int(sprite.position.y/4)
   if _hand_trees.has(sprite.position):
    var processed: Sprite2D=_hand_trees[sprite.position]
@@ -101,6 +78,7 @@ func configure(main: Node) -> void:
  var mat:=ShaderMaterial.new();mat.shader=preload("res://scripts/maps/map11/web_grade.gdshader");rect.material=mat;layer.add_child(rect)
 func update_product(point: Vector2,delta: float) -> void:
  if not is_instance_valid(_camera):return
+ var started: int=Time.get_ticks_usec()
  _point.global_position=point
  # Source 35722: P.vx/P.vy are displacement per source tick, not pixels/second.
  var ticks: float=delta*60
@@ -131,7 +109,10 @@ func update_product(point: Vector2,delta: float) -> void:
    var source: AnimatedSprite2D=_actor._sprite
    _ghost.texture=source.sprite_frames.get_frame_texture(source.animation,source.frame)
    _ghost.global_transform=source.global_transform;_ghost.offset=source.offset;_ghost.flip_h=source.flip_h
+ update_max_us=maxi(update_max_us,Time.get_ticks_usec()-started)
 func render_at(now: float) -> void:
+ if is_instance_valid(_camera):_chunk_pool.advance(_camera.get_screen_center_position(),get_viewport_rect().size/_camera.zoom)
+ _chunk_pool.render_at(now)
  if is_instance_valid(_details) and is_instance_valid(_camera):
   var half:=get_viewport_rect().size*.5
   _details.render_at(now,Rect2(_camera.get_screen_center_position()-half,half*2))

@@ -56562,3 +56562,8 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 ### PARITY-BOSS-01 bossroom 입력 edge 검토
 
 - 무기 입력은 12틱 press0/release4의 실제 이벤트 edge만 전달한다. HP/처치/상태 주입0. 단1회 E2E dead 선행조건 NOT_READY를 그대로 보존하며 후속 종주 PASS로 주장하지 않는다. 상세 PARITY_BOSS_01_20261022.md.
+
+
+## 2026-10-22 — PARITY-MAP-03
+
+BOSS-01 760b7ea8 기준 전용 worktree/branch. 시체나무의 native 전용 밝기필터 제거, 실제1336² 청크 표기 정정. 64세트 전역GPU 상주를 가시+1링 고정25slot/75texture로 변경하고 원본 파생 BC7(Windows)/S3TC(Mac) Image를 사전 준비(원본PNG 불변/fallback 로드0/런타임3D0/틱load·목록API·새노드0). 맵 보수적 VRAM 상한946513324bytes, Mac전체texture4.081→2.997GB. 웹 원본 Worker 이웃 순서를 사전 컴파일해 BFS19.4→6.2ms, 실제160000방향 포함 suite180629/0. 14소환굴/총168/지역[23,60,53,32]/자연 적 공급은 기준본 복구 확인만. 7카메라1x/PC기준m01·m04 crop 보존. VISUAL RETOUCH·Windows실측 미확인, GUI1회 사망 포함/peak51.776ms 미귀속. OS W0.9초 웹145.356px/native pStun55/55라 보행 비교 부적합, PC코어/HUD/UI/보스M10 변경0. 상세·범위·한계: [PARITY_MAP_03_20261022.md](engine/PARITY_MAP_03_20261022.md).

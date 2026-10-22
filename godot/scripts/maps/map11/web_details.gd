@@ -40,7 +40,7 @@ func replace_prop(original: Sprite2D,row: Dictionary) -> Sprite2D:
   size=Vector2(sz*minf(1,float(t.fullW)/t.fullH),sz*minf(1,float(t.fullH)/t.fullW));origin=-size*Vector2(.5,.72)
   piece(body,t.body,origin,size).material=original.material
   var root:=atlas(body,t.roots,origin+Vector2(t.x0/t.fullW*size.x,t.y0/t.fullH*size.y),Vector2(t.w/t.fullW*size.x,t.h/t.fullH*size.y),Vector2(4,2),8)
-  (root.material as ShaderMaterial).set_shader_parameter("tree_tone",1.0)
+  (root.material as ShaderMaterial).set_shader_parameter("tree_tone",0.0)
   rig.root=root
   for h in t.hanging:
    var pivot:=Node2D.new();pivot.position=origin+Vector2(h.ax/t.fullW*size.x,h.ay/t.fullH*size.y);body.add_child(pivot)
