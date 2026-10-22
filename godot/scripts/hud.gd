@@ -85,6 +85,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 10
 	_build_ui()
+	_native_input_mode_ready()
 	var mobility_ui := preload("res://scripts/parity_hud_mobility.gd").new()
 	mobility_ui.hud = self
 	_root.add_child(mobility_ui)
@@ -776,35 +777,133 @@ func _build_native_first_fight_hud() -> void:
 		sweep_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_slot_sweeps[slot_id] = sweep
 		_slot_sweep_labels[slot_id] = sweep_label
-	# _updateSkBarKeyLabels(28559): KBM에서는 bind가 있는 슬롯(beam l436·shield l522)만 #skKeyBar 캡을 덧그린다.
-	# top121 37×18, .55rem/700 #c8aa80, bg 180deg #29231f→#17130f, r2, inset 1px rgba(103,87,72,.58).
-	# 기본 BINDS(beam=mouse2→RMB, shield=KeyE→E) 표기. 패드 모드·재바인딩 표기 전환은 미이식(PC-SYS).
-	for cap_def in [[436, "RMB"], [522, "E"]]:
-		var cap := Panel.new()
-		cap.name = "NativeKeyCap_" + str(cap_def[1])
-		meters.add_child(cap)
-		cap.position = Vector2(float(cap_def[0]), 121.0) * NATIVE_SLOT_SCALE
-		cap.size = Vector2(37, 18) * NATIVE_SLOT_SCALE
-		cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var cap_style := StyleBoxFlat.new()
-		cap_style.bg_color = Color(32.0 / 255, 27.0 / 255, 23.0 / 255) # #29231f→#17130f 중간색
-		cap_style.border_color = Color(103.0 / 255, 87.0 / 255, 72.0 / 255, 0.58)
-		cap_style.set_border_width_all(1)
-		cap_style.set_corner_radius_all(2)
-		cap.add_theme_stylebox_override("panel", cap_style)
-		var cap_label := Label.new()
-		cap.add_child(cap_label)
-		cap_label.text = str(cap_def[1])
-		cap_label.size = cap.size
-		cap_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		cap_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		cap_label.add_theme_font_override("font", NATIVE_UI_FONTS.stack("font", 700))
-		cap_label.add_theme_font_size_override("font_size", 8) # 8.8px × .9
-		cap_label.add_theme_color_override("font_color", Color("c8aa80"))
-		cap_label.add_theme_color_override("font_shadow_color", Color.BLACK)
-		cap_label.add_theme_constant_override("shadow_offset_x", 0)
-		cap_label.add_theme_constant_override("shadow_offset_y", 1)
-		cap_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# _updateSkBarKeyLabels(G28559~28577): #skKeyBar 캡은 모드 문자열이 바뀔 때만 다시 그린다 — _native_update_key_caps().
+	_key_cap_bar = meters
+	_native_update_key_caps()
+
+
+# ═══ PC-SYS-6: #skKeyBar 키 캡 — 패드 모드·재바인딩 표기 전환 (G28540~28577) ═══
+# _SK_SLOTS G28544~28558: l=왼쪽(px, #skBar 좌표), kc=KBM 키코드, pd=패드 실제 버튼, bind=BINDS 키(있을 때만 KBM 캡).
+const SK_KEY_SLOTS := [
+	{"l": 128, "kc": "Digit1", "pd": "LT+A"}, {"l": 173, "kc": "Digit2", "pd": "LT+B"},
+	{"l": 217, "kc": "Digit3", "pd": "LT+Y"}, {"l": 261, "kc": "Digit4", "pd": "LT+X"},
+	{"l": 303, "kc": "KeyF", "pd": "LT"}, {"l": 347, "kc": "KeyZ", "pd": "RT"},
+	{"l": 392, "kc": "mouse0", "pd": "A"}, {"l": 436, "kc": "mouse2", "pd": "RS", "bind": "beam"},
+	{"l": 479, "kc": "ShiftLeft", "pd": "LB"}, {"l": 522, "kc": "KeyE", "pd": "X", "bind": "shield"},
+	{"l": 566, "kc": "KeyQ", "pd": "Y"}, {"l": 610, "kc": "ControlLeft", "pd": "RB"},
+	{"l": 654, "kc": "Space", "pd": "B"}]
+# keyName(code) KBM 표(G6300~6305) — 캡 라벨용(mouse0/mouse2는 _updateSkBarKeyLabels가 LMB/RMB로 직접 바꾼다).
+const KBM_KEY_NAMES := {"Space": "SPACE", "ShiftLeft": "L-SHIFT", "ShiftRight": "R-SHIFT", "Tab": "TAB", "Escape": "ESC",
+	"CapsLock": "CAPS", "ControlLeft": "L-CTRL", "ControlRight": "R-CTRL", "AltLeft": "L-ALT", "AltRight": "R-ALT",
+	"KeyW": "W", "KeyA": "A", "KeyS": "S", "KeyD": "D", "KeyE": "E", "KeyQ": "Q", "KeyR": "R", "KeyF": "F", "KeyG": "G",
+	"KeyZ": "Z", "KeyX": "X", "KeyC": "C", "KeyV": "V", "KeyT": "T", "KeyB": "B", "KeyH": "H", "KeyJ": "J", "KeyK": "K",
+	"KeyL": "L", "KeyN": "N", "KeyM": "M", "Digit1": "1", "Digit2": "2", "Digit3": "3", "Digit4": "4", "Digit5": "5",
+	"ArrowUp": "↑", "ArrowDown": "↓", "ArrowLeft": "←", "ArrowRight": "→"}
+var _key_cap_bar: Control
+var _key_cap_mode := ""
+var _key_caps: Array = []
+# _gpActive(G13446): 패드 모드. 켜짐 = 패드 연결(G13452~13459)·부팅 시 연결된 패드(G13461~13468)·의도적 패드 입력(G13873~13876:
+# 버튼 눌림 또는 축 |v|>0.5). 꺼짐 = 연결 끊김(G13475)·마우스 이동 |dx|+|dy|>3(G13477)·키 입력(G13478).
+# localStorage 'inputMode' 힌트 저장/복원(G13450)은 미이식 — 실행 중 전환만.
+var native_gp_active := false
+
+func _native_input_mode_ready() -> void:
+	if not Input.joy_connection_changed.is_connected(_native_joy_connection_changed):
+		Input.joy_connection_changed.connect(_native_joy_connection_changed)
+	if not Input.get_connected_joypads().is_empty():
+		native_gp_active = true
+
+func _native_joy_connection_changed(_device: int, connected: bool) -> void:
+	if connected:
+		native_gp_active = true
+	else:
+		native_gp_active = false # G13475 gamepaddisconnected → _gpActive=false
+	_native_update_key_caps()
+
+func _input(event: InputEvent) -> void:
+	var before := native_gp_active
+	if event is InputEventJoypadButton and event.pressed:
+		native_gp_active = true
+	elif event is InputEventJoypadMotion and absf(event.axis_value) > 0.5 and event.axis < 4:
+		native_gp_active = true
+	elif native_gp_active and event is InputEventKey and event.pressed:
+		native_gp_active = false
+	elif native_gp_active and event is InputEventMouseMotion and absf(event.relative.x) + absf(event.relative.y) > 3.0:
+		native_gp_active = false
+	if before != native_gp_active:
+		_native_update_key_caps()
+
+var _key_binds_cache: Dictionary = {}
+var _key_binds_read_ms := -100000
+## 현재 BINDS(Main 입력 바인딩 리더). 리더가 스냅샷 여러 개를 모으므로 1초에 한 번만 다시 읽는다.
+func _native_key_binds() -> Dictionary:
+	var now := Time.get_ticks_msec()
+	if not _key_binds_cache.is_empty() and now - _key_binds_read_ms < 1000:
+		return _key_binds_cache
+	_key_binds_read_ms = now
+	var main: Variant = _player.get_parent() if is_instance_valid(_player) else null
+	if is_instance_valid(main) and main.has_method("read_native_input_bindings"):
+		var profile: Dictionary = main.read_native_input_bindings()
+		if profile.get("primary") is Dictionary:
+			_key_binds_cache = (profile.primary as Dictionary).duplicate()
+			return _key_binds_cache
+	return {"beam": "mouse2", "shield": "KeyE"} # BINDS 기본(G6188)
+
+## _updateSkBarKeyLabels G28559~28577
+func _native_update_key_caps() -> void:
+	if not is_instance_valid(_key_cap_bar):
+		return
+	var binds: Dictionary = _native_key_binds()
+	var is_pad: bool = native_gp_active
+	var mode: String = ("pad" if is_pad else "kbm") + "|" + str(binds.get("shield", "")) + "|" + str(binds.get("beam", ""))
+	if mode == _key_cap_mode:
+		return
+	for cap in _key_caps:
+		if is_instance_valid(cap):
+			cap.queue_free()
+	_key_caps.clear()
+	for slot in SK_KEY_SLOTS:
+		if not is_pad and not slot.has("bind"):
+			continue
+		var code: String = str(binds.get(slot.get("bind", ""), "")) if slot.has("bind") else ""
+		if code.is_empty():
+			code = str(slot.kc)
+		var text: String = str(slot.pd) if is_pad else ("RMB" if code == "mouse2" else ("LMB" if code == "mouse0" else str(KBM_KEY_NAMES.get(code, code))))
+		_key_caps.append(_native_key_cap(float(slot.l), text, 0.5 if is_pad else 0.55))
+	_key_cap_mode = mode
+
+## 캡 1개: position:absolute;left:l;top 121(#skKeyBar);37×18;line-height 18;center;font .55rem(패드 .5rem)/700 #c8aa80;
+## text-shadow 0 1px 2px #000,0 0 4px #000;bg linear-gradient(180deg,#29231f,#17130f);r2;inset 1px rgba(103,87,72,.58).
+func _native_key_cap(left: float, text: String, rem: float) -> Panel:
+	var cap := Panel.new()
+	cap.name = "NativeKeyCap_" + text
+	_key_cap_bar.add_child(cap)
+	cap.position = Vector2(left, 121.0) * NATIVE_SLOT_SCALE
+	cap.size = Vector2(37, 18) * NATIVE_SLOT_SCALE
+	cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var cap_style := StyleBoxFlat.new()
+	cap_style.bg_color = Color(32.0 / 255, 27.0 / 255, 23.0 / 255) # #29231f→#17130f 중간색
+	cap_style.border_color = Color(103.0 / 255, 87.0 / 255, 72.0 / 255, 0.58)
+	cap_style.set_border_width_all(1)
+	cap_style.set_corner_radius_all(2)
+	cap.add_theme_stylebox_override("panel", cap_style)
+	var cap_label := Label.new()
+	cap.add_child(cap_label)
+	cap_label.text = text
+	cap_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cap_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	cap_label.add_theme_font_override("font", NATIVE_UI_FONTS.stack("font", 700))
+	cap_label.add_theme_font_size_override("font_size", maxi(1, roundi(16.0 * rem * NATIVE_SLOT_SCALE))) # .55rem=8.8px ×.9
+	cap_label.add_theme_color_override("font_color", Color("c8aa80"))
+	cap_label.add_theme_color_override("font_shadow_color", Color.BLACK)
+	cap_label.add_theme_constant_override("shadow_offset_x", 0)
+	cap_label.add_theme_constant_override("shadow_offset_y", 1)
+	cap_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# 글꼴 줄 높이가 캡(16.2px)보다 크면 Label이 아래로 늘어나 글자가 캡 밖으로 내려간다 — 캡 중앙에 맞춘다.
+	var natural: Vector2 = cap_label.get_minimum_size()
+	cap_label.size = Vector2(cap.size.x, maxf(cap.size.y, natural.y))
+	cap_label.position = Vector2(0, (cap.size.y - cap_label.size.y) * 0.5)
+	return cap
 
 
 func _native_slot_skill_id(slot_id: String, p: Dictionary) -> String:
@@ -869,6 +968,7 @@ func _native_pulse(key: String, value: Variant, label: Label) -> void:
 
 
 func _refresh_native_first_fight_hud() -> void:
+	_native_update_key_caps() # G28538 updateQS→_updateActionKeys→_updateSkBarKeyLabels (모드 문자열이 같으면 즉시 반환)
 	if not is_instance_valid(_source_state) or _objective_values.is_empty():
 		return
 	var p: Variant = _source_state.read_current_p()
@@ -998,6 +1098,8 @@ func get_native_first_fight_hud_snapshot() -> Dictionary:
 		"exp_fill_px": _exp_fill.size.x if is_instance_valid(_exp_fill) else -1.0,
 		"slot_icon_files": icon_files,
 		"debug_overlay_visible": _debug_overlay_visible,
+		"key_cap_mode": _key_cap_mode, "gp_active": native_gp_active,
+		"key_caps": _key_caps.filter(func(c): return is_instance_valid(c)).map(func(c): return {"text": (c.get_child(0) as Label).text, "x": c.position.x}),
 		"serif_font_loaded": ResourceLoader.exists(SERIF_FONT_PATH),
 		"unported": ["미니맵(mmWrap)", "hudCorner 화폐(✦ SP/◇ CP)", "지역(_regCur) 분모·진행바 4지역",
 			"쿨다운 sweep(쿨다운 소유자 미이식)",

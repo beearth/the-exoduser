@@ -191,7 +191,26 @@ func run_potion() -> void:
 
 func run_keycap() -> void:
 	if not await enter_play(): return
-	await shot("keycap_kb")
+	var hud: Node = main.get("hud")
+	await secs(0.5)
+	L("caps_kbm", hud.get_native_first_fight_hud_snapshot().key_caps)
+	await shot("keycap_kbm")
+	# 재바인딩 표기: 리더 캐시에 웹 관측과 같은 BINDS(shield=KeyR, beam=mouse0)를 넣는다(Godot에 재바인딩 UI owner 없음)
+	hud._key_binds_cache = {"shield": "KeyR", "beam": "mouse0"}; hud._key_binds_read_ms = Time.get_ticks_msec() + 100000
+	hud._native_update_key_caps(); await secs(0.3)
+	L("caps_rebind", hud.get_native_first_fight_hud_snapshot().key_caps)
+	await shot("keycap_rebind")
+	hud._key_binds_cache = {}; hud._key_binds_read_ms = -100000
+	# 패드 모드: 실제 패드 버튼 입력 이벤트(G13873~13876 의도적 입력)
+	var jb := InputEventJoypadButton.new(); jb.button_index = JOY_BUTTON_A; jb.pressed = true
+	Input.parse_input_event(jb); await secs(0.1)
+	var ju := InputEventJoypadButton.new(); ju.button_index = JOY_BUTTON_A; ju.pressed = false
+	Input.parse_input_event(ju); await secs(0.3)
+	L("caps_pad", hud.get_native_first_fight_hud_snapshot().key_caps)
+	await shot("keycap_pad")
+	# 키 입력 → KBM 복귀(G13478)
+	await tap(KEY_SHIFT); await secs(0.3)
+	L("caps_back", hud.get_native_first_fight_hud_snapshot().key_caps)
 
 func run_forge() -> void:
 	if not await enter_play(): return
