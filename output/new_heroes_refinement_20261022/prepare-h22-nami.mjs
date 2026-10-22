@@ -1,0 +1,14 @@
+import fs from 'node:fs';import crypto from 'node:crypto';
+const root='G:/exoduser/',folder=root+'output/new_heroes_refinement_20261022/';
+const url='https://us-east-1-bandai.graphassets.com/AXzioIclSWilEjFtsMJPwz/4UaqtOJETySIbiXx4W8C';
+const page='https://www.bandainamcoent.com/news/one-piece-odyssey-straw-hat-crew';
+const response=await fetch(url);if(!response.ok)throw Error('HTTP '+response.status);
+const b=Buffer.from(await response.arrayBuffer()),sha=crypto.createHash('sha256').update(b).digest('hex');
+const png=b.subarray(0,8).toString('hex')==='89504e470d0a1a0a';const jpg=b[0]===255&&b[1]===216;
+if(!png&&!jpg)throw Error('Unsupported image type '+response.headers.get('content-type'));
+const path='assets/character-concepts/references/20261023/hellgunner_h22/official_nami_odyssey.'+(png?'png':'jpg');
+fs.mkdirSync(root+'assets/character-concepts/references/20261023/hellgunner_h22',{recursive:true});
+if(!fs.existsSync(root+path))fs.writeFileSync(root+path,b,{flag:'wx'});
+if(crypto.createHash('sha256').update(fs.readFileSync(root+path)).digest('hex')!==sha)throw Error('Snapshot differs');
+const receipt={recordedAt:new Date().toISOString(),sourcePage:page,url,path,sha256:sha,bytes:b.length,role:'Nami game model visual reference for expressive face/proportions/stylized render only; user requests blonde short bob and Hellgunner equipment'};
+fs.writeFileSync(folder+'h22-nami-reference.json',JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt,null,2));
