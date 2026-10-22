@@ -1097,7 +1097,7 @@
 | IT-cr-enhance | 결정 강화·먼지 소비 | `game.html:15297` | 없음 | `godot/scripts/main.gd:1` | 데이터/비용 정의와 실제 UI 소비 구별 | P4 후속 |
 | IT-cr-fuse | 결정 별 합성·자동 합성 | `game.html:15319` | 없음 | `godot/scripts/main.gd:1` | 합성 UI·결과 쓰기 consumer 미발견 | P4 후속 |
 | IT-hp-potion | HP 물약 획득·사용·자동사용 | `game.html:27677` | 일부 | `godot/scripts/native_source_new_run_state.gd:1` · `godot/tests/test_p2001c_kill_rewards.gd:1` | 원본 POT은 hp 1키. 처치 보상 addPotion 일부; 사용/자동사용 전체 미완 | P2-001c |
-| IT-quickslot | 물약 퀵슬롯 배정 | `game.html:27680` | 일부 | `godot/scripts/native_source_new_run_state.gd:1` | 초기 상태만; 배정/사용/자동사용 UI 없음 | P4 후속 |
+| IT-quickslot | 물약 퀵슬롯 배정 | `game.html:27680` | 일부 | `godot/scripts/native_source_new_run_state.gd:1` | 초기 상태만; 배정/사용/자동사용 UI 없음. 2026-10-23 PC-SYS-5 확인: 원본도 퀵슬롯 물약 표시·사용은 폐지(updateQS G28271 빈 칸 고정, useQuickslot G28204 호출처 0) — 웹·Godot 모두 물약 아이콘 없음, 자동 물약(G35895~)만 유효 | 표시 이식 대상 아님 |
 | IT-ossuary | 유골함 전대 4부위 수집·도감 | `game.html:45783` | 일부 | `godot/port_modules/kill_reward/drop_item_source.gd:1` | 부위 드랍 레코드 데이터만; 도감·전대 소환 전투 consumer 미완 | P4 후속 |
 | IT-shop | 상인 악마 상점·구매 | `game.html:30959` | 없음 | `godot/scripts/enemy_factory.gd:2` | etype93 일반 runtime도 미지원; 상점 UI/구매 consumer 미발견 | P4 후속 |
 | IT-npc | NPC 상호작용·안내 | `game.html:6254` | 없음 | `godot/port_modules/npc_interaction/source_options_state.gd:1` | 폴더명과 달리 options reader뿐; 실제 NPC 상호작용 기능은 없음 | P4 후속 |
