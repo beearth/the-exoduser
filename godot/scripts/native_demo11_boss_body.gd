@@ -30,7 +30,7 @@ var alive: bool:
 var state: String:
 	get: return str(_e().get("s", ""))
 var radius: float:
-	get: return core.world_length(float(_e().get("r", 44))) if is_instance_valid(core) else 44.0
+	get: return float(_e().get("r", 44)) if is_instance_valid(core) else 44.0
 var etype: int:
 	get: return int(_e().get("etype", 0))
 var elite: int:

@@ -5,10 +5,9 @@ extends Node2D
 ## 소유: AI 틱 owner(World 위상), updateE prefix/suffix, 보스 HP·쉴드·포이즈·스턴·부활·사망 필드(정본 E),
 ## 보스→플레이어 접촉 피해, 보스 투사체 접촉, 리듬탄·ORB 구동, 최종 사망 PCI-11 발행.
 ## 비소유(호출만): Mac actor 조립(native_demo11_boss_actor.gd)·BC 모듈·보스 투사체 registry·표시·encounter.
-## 정본 E 는 "보스 공간 b" 좌표(원본 수치)다. 월드와는 native_boss_space.gd 변환으로만 만난다.
+## 정본 E 는 월드 좌표 = 원본 좌표(원본 수치 그대로). 공간 축소 S 는 2026-10-22 사용자 결정으로 폐기·삭제(계약 §7).
 
 const PREFIX = preload("res://scripts/native_demo11_boss_prefix.gd")
-const SPACE = preload("res://scripts/native_boss_space.gd")
 const BODY = preload("res://scripts/native_demo11_boss_body.gd")
 const PROJ = preload("res://scripts/native_ch1_boss_projectile_patterns.gd")
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
@@ -30,10 +29,7 @@ const G_QUEUE_NAMES := ["_chaseAoes", "_fissures", "_tideWaves", "_seekerMines",
 var main: Node
 var actor: Node2D
 var body: Node2D
-var space: RefCounted = SPACE.new()
 var E: Dictionary = {}
-var mac_space_ready := false
-var effective_scale := 1.0
 var _serial := 0
 var _sp := 0.0
 var _msfx_playing := 0
@@ -84,8 +80,6 @@ func configure(owner_main: Node) -> bool:
 	if is_instance_valid(projectiles) and projectiles.has_method("bind_protected_contact"):
 		projectiles.bind_protected_contact(Callable(self, "_projectile_contact"))
 	set_physics_process(false)
-	mac_space_ready = actor.has_method("bind_space_transform")
-	effective_scale = SPACE.BOSS_SPACE_SCALE if mac_space_ready else 1.0
 	return true
 
 func _live() -> bool:
@@ -99,10 +93,9 @@ func adopt_spawn(receipt: Dictionary) -> Dictionary:
 	var enemy: Dictionary = actor.snapshot().get("enemy", {})
 	if enemy.is_empty(): return {"adopted": false, "reason": "actor_enemy_empty"}
 	_set_E(enemy)
-	space.configure(effective_scale, Vector2(float(E.x), float(E.y)))
 	body = BODY.new()
 	body.configure_boss(self, main.world, E)
-	body.global_position = _b2w(float(E.x), float(E.y))
+	body.global_position = Vector2(float(E.x), float(E.y))
 	var reg: Dictionary = main.world.register_summoned_enemy(body)
 	if reg.get("valid") != true:
 		_error = "boss_body_registry_rejected:" + str(reg.get("errors"))
@@ -114,16 +107,13 @@ func adopt_spawn(receipt: Dictionary) -> Dictionary:
 	if not _queue_registered:
 		_queue_registered = main.world.register_native_phase_consumer(self, Callable(self, "_owner_step_noop"), Callable(self, "advance_queue"))
 	_final_published = false
-	return {"adopted": true, "registry_index": reg.get("registry_index"), "space": space.snapshot()}
+	return {"adopted": true, "registry_index": reg.get("registry_index")}
 
 func _owner_step_noop(_ticks: float, _frame: float, _enemies: Array) -> void:
 	pass
 
 func is_boss_body_current(candidate: Node) -> bool:
 	return is_instance_valid(body) and candidate == body and _live()
-
-func world_length(v: float) -> float:
-	return space.len_to_world(v)
 
 func _set_E(value: Dictionary) -> void:
 	# body.data.native_final 과 같은 참조를 유지한다(clear+merge).
@@ -243,7 +233,7 @@ func _build_frame(sp: float) -> Dictionary:
 	for key in ["shake", "_flashT", "_flashCol", "hitStop", "slowMo"]:
 		if g.has(key): globals[key] = g[key]
 	var stats: Variant = g.get("_pStats")
-	return {"ready": true, "serial": _serial, "sp": sp, "player": _player_b(), "context": context, "globals": globals,
+	return {"ready": true, "serial": _serial, "sp": sp, "player": _player(), "context": context, "globals": globals,
 		"player_stats": stats.duplicate(true) if stats is Dictionary else null}
 
 ## 32685–32701 G._pStats (60f 창, 카이팅 감지; 행동 카운터 증가처는 각 플레이어 owner 소유 — 미이식은 0 유지)
@@ -255,8 +245,8 @@ func _update_pstats(sp: float) -> void:
 			"_pH": 0, "_pA": 0, "_dC": 0, "_hC": 0, "_wT": 0, "_atkC": 0, "_kiteC": 0, "_prevDist": 200}
 	ps._wT = _n(ps.get("_wT")) + sp
 	if E.get("alive") == true:
-		var bw: Vector2 = _b2w(_n(E.x), _n(E.y))
-		var bd: float = main.player.global_position.distance_to(bw) / effective_scale if effective_scale != 1.0 else main.player.global_position.distance_to(bw)
+		var bw: Vector2 = Vector2(_n(E.x), _n(E.y))
+		var bd: float = main.player.global_position.distance_to(bw)
 		var pstate: String = str(main.player.state)
 		if (pstate == "wSwing" or pstate == "bowRecover" or pstate == "magicCast") and bd > _n(ps.get("_prevDist")) + 2:
 			ps._kiteC = _n(ps.get("_kiteC")) + 1
@@ -294,41 +284,32 @@ func _wall_stuck_rescue() -> void:
 			if not _stuck(wx, wy):
 				E.x = wx; E.y = wy; E.kb = {"x": 0, "y": 0}
 				return
-	var p: Dictionary = _player_b()
+	var p: Dictionary = _player()
 	if pf_can_move(_n(p.x), _n(p.y), r):
 		E.x = p.x; E.y = p.y; E.kb = {"x": 0, "y": 0}
 
 func _stuck(bx: float, by: float) -> bool:
-	return main.world.is_world_blocked(_b2w(bx, by)) # 32107 _eWallStuck(타일) ↔ MAP11 is_world_blocked
+	return main.world.is_world_blocked(Vector2(bx, by)) # 32107 _eWallStuck(타일) ↔ MAP11 is_world_blocked
 
 func _sync_body() -> void:
 	if is_instance_valid(body) and _numv(E.get("x")) and _numv(E.get("y")):
-		body.global_position = _b2w(float(E.x), float(E.y))
+		body.global_position = Vector2(float(E.x), float(E.y))
 
-# ═══════════════════════════════ 좌표 ═══════════════════════════════
-func _b2w(x: float, y: float) -> Vector2:
-	return space.to_world_xy(x, y)
-
-func _w2b(v: Vector2) -> Vector2:
-	return space.to_boss_xy(v.x, v.y)
-
-func _player_w() -> Dictionary:
+# ═══════════════════════════════ 플레이어 스냅샷(원본 P 필드) ═══════════════════════════════
+func _player() -> Dictionary:
 	var pl: Node2D = main.player
 	var kb: Vector2 = pl.get_native_knockback() if pl.has_method("get_native_knockback") else Vector2.ZERO
 	return {"x": pl.global_position.x, "y": pl.global_position.y, "r": float(pl.radius), "facing": (pl.facing as Vector2).angle(),
 		"s": str(pl.state), "iframes": float(pl.iframes), "kb": {"x": kb.x, "y": kb.y}}
 
-func _player_b() -> Dictionary:
-	return space.player_to_boss(_player_w())
-
 # ═══════════════════════════════ prefix env (pf_*) ═══════════════════════════════
 func pf_lesson_active() -> bool: return _lesson_active()
-func pf_tile_free(x: float, y: float, r: float) -> bool: return main.world.can_move(_b2w(x, y), space.len_to_world(r)) # MAP11: 타일/오브젝트 구분 없음
-func pf_can_move(x: float, y: float, r: float) -> bool: return main.world.can_move(_b2w(x, y), space.len_to_world(r))
-func pf_real_wall(x: float, y: float) -> bool: return main.world.is_world_blocked(_b2w(x, y))
-func pf_los(x1: float, y1: float, x2: float, y2: float) -> bool: return main.world.has_line_of_sight(_b2w(x1, y1), _b2w(x2, y2))
+func pf_tile_free(x: float, y: float, r: float) -> bool: return main.world.can_move(Vector2(x, y), r) # MAP11: 타일/오브젝트 구분 없음
+func pf_can_move(x: float, y: float, r: float) -> bool: return main.world.can_move(Vector2(x, y), r)
+func pf_real_wall(x: float, y: float) -> bool: return main.world.is_world_blocked(Vector2(x, y))
+func pf_los(x1: float, y1: float, x2: float, y2: float) -> bool: return main.world.has_line_of_sight(Vector2(x1, y1), Vector2(x2, y2))
 func pf_ff_dir(x: float, y: float) -> Variant:
-	var d: Vector2 = main.world.get_path_direction(_b2w(x, y))
+	var d: Vector2 = main.world.get_path_direction(Vector2(x, y))
 	return null if d == Vector2.ZERO else {"x": d.x, "y": d.y}
 func pf_rng(tag: String, line: int) -> float:
 	counters.rng_prefix += 1
@@ -519,17 +500,17 @@ func _hurt_player(dmg: int, opts: Dictionary, dir_b: Vector2) -> Dictionary:
 func _player_kb_add(kx: float, ky: float) -> void:
 	var pl: Node2D = main.player
 	if pl.has_method("apply_native_posthurt_knockback"):
-		pl.apply_native_posthurt_knockback(Vector2(space.len_to_world(kx), space.len_to_world(ky)))
+		pl.apply_native_posthurt_knockback(Vector2(kx, ky))
 
 func _player_kb_set(kx: float, ky: float) -> void:
 	var pl: Node2D = main.player
 	if pl.has_method("apply_native_posthurt_knockback") and pl.has_method("get_native_knockback"):
-		var target := Vector2(space.len_to_world(kx), space.len_to_world(ky))
+		var target := Vector2(kx, ky)
 		pl.apply_native_posthurt_knockback(target - pl.get_native_knockback())
 
 func _readback_player(before: Dictionary) -> Dictionary:
 	var out: Dictionary = before.duplicate(true)
-	var now: Dictionary = _player_b()
+	var now: Dictionary = _player()
 	for k in now: out[k] = now[k]
 	return out
 
@@ -583,7 +564,7 @@ func _serve_contact(request: Dictionary) -> Dictionary:
 	var row: Dictionary = CONTACT_TABLE[family]
 	_set_E(request.enemy)
 	var pl: Node2D = main.player
-	var p_b: Dictionary = _player_b()
+	var p_b: Dictionary = _player()
 	var center: Vector2 = Vector2(_n(E.x), _n(E.y))
 	if family == "erupt" and d.get("center") is Array: center = Vector2(float(d.center[0]), float(d.center[1]))
 	var parried := false
@@ -605,7 +586,7 @@ func _serve_contact(request: Dictionary) -> Dictionary:
 	elif str(pl.state) != "charge" and (family != "idle" or true):
 		if family == "idle" and false: pass
 		var dmg: int = FORMULA.js_to_int32(_n(E.atk) * float(row.m)) # elMul(EL.P, armor) = 1 (14344: a===P → 1)
-		var dir_w: Vector2 = pl.global_position - _b2w(center.x, center.y)
+		var dir_w: Vector2 = pl.global_position - Vector2(center.x, center.y)
 		_hurt_player(dmg, {}, dir_w)
 		if family == "erupt":
 			_note_unported("player_status:poison+4/webSlow90")
@@ -636,7 +617,7 @@ func _serve_player_control(request: Dictionary) -> Dictionary:
 	var d: Dictionary = request.args[0]
 	_set_E(request.enemy)
 	var pl: Node2D = main.player
-	var p_b: Dictionary = _player_b()
+	var p_b: Dictionary = _player()
 	var nx: Variant = null
 	var ny: Variant = null
 	var kx: Variant = null
@@ -649,11 +630,11 @@ func _serve_player_control(request: Dictionary) -> Dictionary:
 			"kb.y": ky = float(a.value)
 			"iframes": pl.iframes = float(a.value)
 	if nx != null or ny != null:
-		var w: Vector2 = _b2w(float(nx) if nx != null else _n(p_b.x), float(ny) if ny != null else _n(p_b.y))
+		var w: Vector2 = Vector2(float(nx) if nx != null else _n(p_b.x), float(ny) if ny != null else _n(p_b.y))
 		pl.global_position = w
 	if kx != null or ky != null:
 		var cur: Vector2 = pl.get_native_knockback()
-		_player_kb_set(float(kx) if kx != null else space.len_to_boss(cur.x), float(ky) if ky != null else space.len_to_boss(cur.y))
+		_player_kb_set(float(kx) if kx != null else cur.x, float(ky) if ky != null else cur.y)
 	return {"ack": true, "enemy_after": E.duplicate(true), "player_after": _readback_player(request.player)}
 
 ## 37116–37123 ORB 접촉(패링 불가 원칙이나 isPWin 은 호출): R90 적 AOE·피해/독/속박
@@ -673,7 +654,7 @@ func _serve_orb_contact(request: Dictionary) -> Dictionary:
 		_hurt_player(FORMULA.js_to_int32(_n(orb.get("dmg"))), {}, Vector2.ZERO)
 		_note_unported("player_status:poison+3/webSlow80")
 	return {"ack": true, "enemy_after": E.duplicate(true), "orb_after": orb.duplicate(true),
-		"player_after": _readback_player(request.get("player", _player_b()))}
+		"player_after": _readback_player(request.get("player", _player()))}
 
 # ═══════════════════════════════ 플레이어 → 보스 (hurtE) ═══════════════════════════════
 func _hurt_boss(dmg: int, ang: float, atk_el: int, opts: Dictionary, line: int) -> Dictionary:
@@ -724,11 +705,9 @@ func bd_hurt_player(dmg: int, opts: Dictionary) -> void: _hurt_player(dmg, opts,
 func bd_kb_add(kx: float, ky: float) -> void: _player_kb_add(kx, ky)
 func bd_can_move(x: float, y: float, r: float) -> bool: return pf_can_move(x, y, r)
 func bd_safe_pt(x: float, y: float, r: float) -> Variant:
-	var w: Vector2 = _b2w(x, y)
-	var v: Variant = main.world.native_safe_point(w.x, w.y, space.len_to_world(r))
+	var v: Variant = main.world.native_safe_point(x, y, r)
 	if not v is Dictionary: return null
-	var b: Vector2 = _w2b(Vector2(float(v.x), float(v.y)))
-	return {"x": b.x, "y": b.y}
+	return {"x": float(v.x), "y": float(v.y)}
 func bd_spawn_proj(props: Dictionary) -> void: _spawn_boss_projectile(props)
 func bd_g_write(fields: Dictionary) -> void: _g_write(fields)
 func bd_tr(text: String) -> String: return _tr(text)
@@ -736,7 +715,7 @@ func bd_lang_ko() -> bool:
 	var lang: Dictionary = main.get_native_startup_language_snapshot() if main.has_method("get_native_startup_language_snapshot") else {}
 	return str(lang.get("language", "ko")) == "ko"
 func bd_player_full_hp() -> bool: return float(main.player.hp) >= float(main.player.max_hp)
-func bd_player() -> Dictionary: return _player_b()
+func bd_player() -> Dictionary: return _player()
 func bd_killed_bosses() -> Array:
 	var kb: Variant = main.source_state.read_current_g().get("_killedBosses")
 	return kb if kb is Array else []
@@ -758,8 +737,7 @@ func publish_boss_death(_b: Node, ctx: Dictionary) -> Dictionary:
 		r = _publish("revival_pending", ctx)
 	else:
 		r = _publish_final("hurte_no_fallback_42733", ctx)
-	var w: Vector2 = body.global_position if is_instance_valid(body) else Vector2.ZERO
-	var b: Vector2 = _w2b(w)
+	var b: Vector2 = body.global_position if is_instance_valid(body) else Vector2.ZERO
 	if PREFIX._t(E.get("_bossRevJudged")):
 		_text(b.x, b.y - 45, _tr("💀 부활 판정 중..."), "#ff8844", 90)
 		_g_write({"_flashT": 3, "_flashCol": "#ff4400"})
@@ -806,7 +784,7 @@ func advance_queue(ticks: float, _frame: float, _enemies: Array) -> void:
 		var updated: Dictionary = QUEUES.tick(lists, ticks, self, 0)
 		if not updated.is_empty(): _g_write(updated)
 	if g.get("bossAlive") == true:
-		var p: Dictionary = _player_b()
+		var p: Dictionary = _player()
 		var e: Dictionary = E.duplicate(true)
 		for mode in ["rhythm", "orbs"]:
 			var ctx: Dictionary = _module_context()
@@ -825,7 +803,7 @@ func advance_queue(ticks: float, _frame: float, _enemies: Array) -> void:
 	if lava is Array: _g_write({"_lavaPools": lava})
 
 # ── 전역 큐 env(q_*) — native_ch1_boss_queues.gd ──
-func q_player() -> Dictionary: return _player_b()
+func q_player() -> Dictionary: return _player()
 func q_hurt(dmg: int, opts: Dictionary) -> void:
 	counters.queue_hits += 1
 	_hurt_player(dmg, opts, Vector2.ZERO)
@@ -920,7 +898,7 @@ func _projectile_contact(request: Dictionary) -> Dictionary:
 		dist = minf(dist, (before + seg * t).distance_to(pt))
 	# 34847 _pCollR = P.r + (p.sz||1)*3, 일반 판정 _normalR = _pCollR + 4 (패링 창 밖)
 	var sz: float = _n(raw.get("sz")) if PREFIX._t(raw.get("sz")) else 1.0
-	var coll_r: float = float(pl.radius) + space.len_to_world(sz * 3.0)
+	var coll_r: float = float(pl.radius) + sz * 3.0
 	if dist >= coll_r + 4.0: return {"ack": true, "action": "keep"}
 	if float(pl.hp) <= 0.0: return {"ack": true, "action": "keep"}
 	var reaction: Dictionary = pl.try_native_q_projectile_reflection(node, dist) if pl.has_method("try_native_q_projectile_reflection") else {}
@@ -937,7 +915,7 @@ func _projectile_contact(request: Dictionary) -> Dictionary:
 	if v.length() > 0.001: kb = v.normalized() * 2.0
 	elif (pt - after).length() > 0.001: kb = (pt - after).normalized() * 2.0
 	var before_hp: float = float(pl.hp)
-	pl.receive_damage(dmg, "parry" if red else "magic", kb, space.len_to_world(kb.length()))
+	pl.receive_damage(dmg, "parry" if red else "magic", kb, kb.length())
 	if before_hp > float(pl.hp): counters.player_damage += before_hp - float(pl.hp)
 	counters.projectile_hits += 1
 	if raw.get("blackBean", false) or raw.get("gbBean", false) or raw.get("bwBean", false) or raw.get("parryClass") == "physical":
@@ -958,7 +936,7 @@ func _present(cmd: String, args: Array, line: int) -> void:
 				counters.presentation_ported += 1
 		"addParts":
 			if args.size() >= 4:
-				main.world.emit_native_parts(_b2w(_n(args[0]), _n(args[1])), str(args[2]), int(_n(args[3])))
+				main.world.emit_native_parts(Vector2(_n(args[0]), _n(args[1])), str(args[2]), int(_n(args[3])))
 				counters.presentation_ported += 1
 		"poolPart":
 			if args.size() >= 7:
@@ -978,13 +956,13 @@ func _present_pool_part(x: float, y: float, vx: float, vy: float, col: String, s
 	if not Color.html_is_valid(col):
 		_unported_note("poolPart_color:" + col)
 		return
-	main.world.emit_native_source_particle({"position": _b2w(x, y), "velocity": Vector2(space.len_to_world(vx), space.len_to_world(vy)),
+	main.world.emit_native_source_particle({"position": Vector2(x, y), "velocity": Vector2(vx, vy),
 		"color": Color(col), "size": maxf(0.01, sz), "life_ticks": maxf(0.01, life), "render_owner": "pc_boss_core"})
 	counters.presentation_ported += 1
 
 func _text(x: Variant, y: Variant, text: String, col: String, life: Variant) -> void:
 	var adapter: Variant = main.world.get_node_or_null("NativeFloatingText")
-	var w: Vector2 = _b2w(_n(x), _n(y))
+	var w: Vector2 = Vector2(_n(x), _n(y))
 	if is_instance_valid(adapter) and adapter.has_method("emit_native_text"):
 		adapter.emit_native_text(w.x, w.y, text, col, life)
 
@@ -1025,8 +1003,7 @@ func _g_write(fields: Dictionary) -> void:
 func snapshot() -> Dictionary:
 	return {"schema": "exoduser.godot.pc-boss-core.v1", "live": _live(), "adopted": is_instance_valid(body),
 		"error": _error, "prefix_reason": _prefix_reason, "counters": counters.duplicate(true), "unported": _unported.duplicate(true),
-		"space": space.snapshot(), "effective_scale": effective_scale, "mac_space_ready": mac_space_ready,
-		"decided_scale": SPACE.BOSS_SPACE_SCALE, "final_published": _final_published,
+		"final_published": _final_published,
 		"boss": {"hp": E.get("hp"), "mhp": E.get("mhp"), "eShield": E.get("eShield"), "alive": E.get("alive"),
 			"s": E.get("s"), "deaths": E.get("deaths", 0), "revPts": E.get("_revPts"), "phase": E.get("_bossPhase"),
 			"reviveTimer": E.get("_reviveTimer", 0), "x": E.get("x"), "y": E.get("y"), "r": E.get("r")},

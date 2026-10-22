@@ -9,8 +9,8 @@
 
 | 결정 | 이 작업에서의 처리 |
 |---|---|
-| 카메라 줌 ×2.5 | 기본값 반영은 Mac(zoom-01) 소유. PC는 캡처 테스트에서만 2.5 배율을 적용해 구도를 본다 |
-| 보스 공간 균일 축소 S=1/2.5=0.4 | 단일 파라미터 `BOSS_SPACE_SCALE`(§7). 공간 값만 ×S, 시간·데미지·HP·확률은 그대로. S=1이면 원본과 비트 동일 |
+| ~~카메라 줌 ×2.5~~ | **폐기(2026-10-22 사용자 재결정, "웹을 그대로 옮긴다")**. 웹 카메라·원본 수치를 그대로 쓴다. PC의 ×2.5 미리보기 캡처(`capture_pc_boss_core.gd`)는 pc-boss-parity에서 삭제 |
+| ~~보스 공간 균일 축소 S=0.4~~ | **폐기(같은 결정)**. `BOSS_SPACE_SCALE`·`native_boss_space.gd`·core 경계 변환·검증 테스트 `test_pc_boss_core_space.gd`를 pc-boss-parity에서 삭제(§7) |
 | 보스 전투 owner(AI 틱·HP·포이즈·hurtE·최종 사망)는 PC | §2~§6 |
 | 보스 actor·보스 투사체·BGM·표시·입력은 Mac | Mac 파일 수정 0을 원칙으로 하고, 필요한 변경은 §8 "Mac 요청"으로 남긴다 |
 
@@ -138,48 +138,27 @@ RNG: 게임플레이 RNG(모듈 ledger 행)는 actor가 World 공용 RNG에서 �
 | ORB | 37106–37126 | BC09 `orbs` 모드 구동 |
 | `_chaseAoes`/`_fissures`/`_tideWaves`/`_seekerMines`/`_poisonPools`/`_lavaPools` | 37015–37052, 37067–37079, 37129 | §9 결과 표에 READY/NOT_READY 기록 |
 
-## 7. 공간 축소 `BOSS_SPACE_SCALE` (S)
+## 7. 공간 축소 `BOSS_SPACE_SCALE` (S) — 폐기·삭제 (2026-10-22, pc-boss-parity)
 
-### 7.1 정의
+사용자가 같은 날 "이식은 웹 게임을 그대로 옮기는 것"으로 기준을 다시 정하면서 카메라 줌 ×2.5와 보스 공간 축소 S=0.4를 모두 폐기했다. 원본과 다른 동작의 흔적을 남기지 않기 위해 다음을 삭제했다.
 
-보스 공간 b와 월드 w 사이 균일 닮음 변환: `w = O + S·(b − O)`, `b = O + (w − O)/S`. O = 보스 스폰 지점(아레나 Boss 마커). 보스 AI(Mac 모듈)는 **원본 수치 그대로** b 공간에서 계산하고, 월드와 만나는 경계에서만 변환한다. 이렇게 하면 보스의 모든 공간 상수(반경·거리·사거리·속도 px/tick·넉백 거리)가 정확히 ×S 되고, 시간(틱)·데미지·HP·확률은 변하지 않는다. 플레이어 고유 값(P.r·이동속도·공격 사거리)은 월드 값 그대로라 "보스만 축소"가 된다. 예: 근접 접촉 `d < e.r + P.r + 8` → 월드 `S·44 + P.r + S·8`.
+| 삭제 대상 | 내용 |
+|---|---|
+| `godot/scripts/native_boss_space.gd` | `BOSS_SPACE_SCALE=0.4`, 닮음 변환 `to_world_xy/to_boss_xy/len_to_world/len_to_boss/player_to_boss/player_to_world` |
+| `native_demo11_boss_core.gd` | `space`·`mac_space_ready`·`effective_scale`·`_b2w/_w2b/_player_b`·`world_length`, snapshot의 `space/effective_scale/decided_scale`. 보스 정본 E 좌표 = 월드 좌표 = 원본 좌표 |
+| `native_demo11_boss_body.gd` | `radius`가 `core.world_length(r)`를 거치던 것 → `E.r` 그대로 |
+| `godot/tests/test_pc_boss_core_space.gd` | S 경계 변환 검증 테스트(S 자체가 없어져 검증 대상이 없음) |
+| `godot/tests/capture_pc_boss_core.gd` | ×2.5 줌 미리보기 캡처(테스트 전용 canvas_transform) |
 
-S=1이면 변환 함수는 입력을 그대로 돌려준다(곱셈도 하지 않음) → 비트 동일.
-
-### 7.2 S 적용 대상 / 제외
-
-| 분류 | 값 | S |
-|---|---|---|
-| 위치 | 보스 x/y(O 기준), jumpX/Y·_diveTx/Ty·_teleOx/Oy·_homeX/Y, 전역 큐 x/y | ×S (변환) |
-| 반경·히트박스 | e.r(44), 접촉 여유(+8/+10/+80/+200/+300/+400), slam R(1000+…), shock R/Max, 큐 r/w/explR/maxLen | ×S |
-| 거리 임계 | 선택기 min/max·engDist·avgDist·`d>500/d<20`, idleMove 50/200, LOS 800, 어그로 거리, 이동 SFX 1000 | ×S (d를 b 공간에서 계산) |
-| 속도(px/tick) | speed .5, 돌진 35, 대시 9, 전진 1.5/2.5, 공전 R, 탄 vx/vy, 큐 spd, KB(보스·플레이어에 가하는 양 모두) | ×S |
-| 각도·각속도 | facing, 공전 .015 rad, spread | 그대로 |
-| 시간 | st2·쿨다운·텔레그래프·프레임 수·life·maxT·delay·interval·_reviveTimer | 그대로 |
-| 데미지·HP·포이즈·확률·RNG 순서 | atk 배수·hp·eShield·revPts·확률식 | 그대로 |
-
-### 7.3 경계 지점과 소유
-
-| 경계 | 방향 | 소유 | 상태 |
-|---|---|---|---|
-| prefix/frame의 player 스냅샷 | w→b (x,y, r/S, kb/S) | PC | §9 |
-| 접촉·전역 큐 판정의 P 위치·반경 | w→b | PC | §9 |
-| 보스→플레이어 KB, hurtE 넉백 | b→w (×S) | PC | §9 |
-| body 위치·반경(플레이어 공격 판정) | b→w | PC | §9 |
-| actor `canMv/safePt/_ffDir`(자체 바인딩) | b→w 질의 | **Mac** | Mac 요청 M1 |
-| actor `position`(표시 기준점) | b→w | **Mac** | Mac 요청 M1 |
-| 텔레그래프·보스 뷰 반경 상수(1000+phase*80 등) | ×S | **Mac** | Mac 요청 M2 |
-| 보스 투사체 탄생 x/y/vx/vy/r·속도 정규화 | b→w | **Mac** | Mac 요청 M3 |
-
-Mac 경계가 준비되기 전에는 S≠1을 제품에 켜면 표시와 판정이 어긋나므로, core는 `effective_scale = BOSS_SPACE_SCALE if mac_space_ready else 1.0`으로 동작하고 snapshot에 이유를 보고한다(§9).
+제품 동작 영향: pc-boss-core 시점에도 Mac 경계(`bind_space_transform`)가 없어서 제품 effective S는 1.0이었고 변환 함수는 입력을 그대로 돌려줬다. 그래서 삭제 전후 동작은 같다. 삭제 뒤 원본 VM oracle 재대조: prefix 400케이스·25,650 assertion 0실패, 상태·큐 500케이스·30,833 assertion 0실패, 사망 195케이스·73,251 assertion 0실패, `test_pc_boss_core` 28/0.
 
 ## 8. Mac 요청
 
 | ID | 파일 | 요청 |
 |---|---|---|
-| M1 | `native_demo11_boss_actor.gd` | `_spatial_read`와 `position=` 대입이 PC 공간 변환(`bind_space_transform(to_world, to_boss)` 등)을 경유하도록. 미바인딩이면 현행 동작 |
-| M2 | `boss11_visual_reader.gd` 등 | 텔레그래프 좌표·반경을 world 변환 후 그리기(상수 1000+phase*80, 300, 500, r+Pr+300/400/200, r+120) |
-| M3 | `native_demo11_boss_projectiles.gd` | 탄생 props와 정규화 속도를 b→w 변환 |
+| ~~M1~~ | `native_demo11_boss_actor.gd` | **철회**(S 폐기). 공간 변환 바인딩 불필요 |
+| ~~M2~~ | `boss11_visual_reader.gd` 등 | **철회**(S 폐기). 텔레그래프는 원본 상수 그대로 |
+| ~~M3~~ | `native_demo11_boss_projectiles.gd` | **철회**(S 폐기) |
 | M4 | `test_demo11_boss_actor.gd` | MAP11 기본 부팅에서 스폰 좌표(4020,7200)가 막혀 spawn REJECTED → 39행 `enemy.hp` Dictionary 접근 SCRIPT ERROR → quit 미호출 900초 timeout. 보스 owner 부재와 무관(§9) |
 
 ## 9. 구현 결과
