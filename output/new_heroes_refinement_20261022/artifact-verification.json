@@ -1,0 +1,135 @@
+{
+  "verifiedAt": "2026-10-22T03:58:16.416Z",
+  "kind": "Byte hashes, PNG headers, prompt lengths, reference preservation and review-copy checks only. Does not assert visual approval or runtime adoption.",
+  "references": [
+    {
+      "candidate": "H08",
+      "path": "assets/character-concepts/20261022/hellgunner_compact_stock_h07.png",
+      "sha256": "985250543b5b90eff76a7d1f69cce9b4f71699ea2f0658baa8c4d93ee9da4449"
+    },
+    {
+      "candidate": "S01",
+      "path": "output/charselect_color_remaster_20261021/sources/spearmage.png",
+      "sha256": "15679fd9a67155a367c4f1d463a3dbff0e14114adab99c603b596ba38f20e704"
+    },
+    {
+      "candidate": "H07",
+      "path": "assets/character-concepts/20261022/hellgunner_shoulder_support_h06.png",
+      "sha256": "3624b1855198f3253cc9eeec163575a2df3ae5e81f2f2d5b84ff97f9f240c238"
+    },
+    {
+      "candidate": "T02",
+      "path": "assets/character-concepts/20261022/transmuter_energy_bow_t01.png",
+      "sha256": "8e79260ed3846fdae4873781d9d91ca79f9daed0275f756754c5d53f56e0373d"
+    },
+    {
+      "candidate": "H06",
+      "path": "assets/character-concepts/20261022/hellgunner_goggles_clean_h05.png",
+      "sha256": "0d426bf81888d8eff02d528513296c7102a02b60f1b41247f0341f48490de0a9"
+    },
+    {
+      "candidate": "H01",
+      "path": "output/new_heroes_female_iteration_20261021/hellgunner_female_pose_face_v1.png",
+      "sha256": "07fc922c942e8e963b75a0404c2101ccb8d5023d45506da7c7f99ed41edb902d"
+    },
+    {
+      "candidate": "T01",
+      "path": "output/new_heroes_female_iteration_20261021/transmuter_female_pose_face_v1.png",
+      "sha256": "c667cbbfde3b423782609f8b5093cc6a68e7d98a7249b27c740f128d5feab75a"
+    },
+    {
+      "candidate": "H02",
+      "path": "output/new_heroes_female_iteration_20261021/hellgunner_female_pose_face_v1.png",
+      "sha256": "07fc922c942e8e963b75a0404c2101ccb8d5023d45506da7c7f99ed41edb902d"
+    },
+    {
+      "candidate": "H03",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "sha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06"
+    },
+    {
+      "candidate": "H04",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "sha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06"
+    },
+    {
+      "candidate": "H05",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_modern_h04.png",
+      "sha256": "d29d992651559f897a62e6a0ac6e337f8fa7da99bf7bc12d802405a2b99a7ae4"
+    }
+  ],
+  "outputs": [
+    {
+      "candidate": "H01",
+      "path": "output/new_heroes_refinement_20261022/hellgunner_fantasy_structure_h01.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "63d12f6df6b85fb2f10ed6ce5cde2785fbfcd1c58dfb736ce6d87b84cdd0cc66",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "T01",
+      "path": "assets/character-concepts/20261022/transmuter_energy_bow_t01.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "8e79260ed3846fdae4873781d9d91ca79f9daed0275f756754c5d53f56e0373d",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H02",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H04",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_modern_h04.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "d29d992651559f897a62e6a0ac6e337f8fa7da99bf7bc12d802405a2b99a7ae4",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H05",
+      "path": "assets/character-concepts/20261022/hellgunner_goggles_clean_h05.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "0d426bf81888d8eff02d528513296c7102a02b60f1b41247f0341f48490de0a9",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H06",
+      "path": "assets/character-concepts/20261022/hellgunner_shoulder_support_h06.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "3624b1855198f3253cc9eeec163575a2df3ae5e81f2f2d5b84ff97f9f240c238",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "T02",
+      "path": "assets/character-concepts/20261022/transmuter_bow_core_t02.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "0666df191ba3d388d41c9331d7159b180a859eee916e6379c1a8ada00c1ade93",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H07",
+      "path": "assets/character-concepts/20261022/hellgunner_compact_stock_h07.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "985250543b5b90eff76a7d1f69cce9b4f71699ea2f0658baa8c4d93ee9da4449",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "S01",
+      "path": "assets/character-concepts/20261022/spearmage_inkpurple_s01.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "0f0367e6b0985648738133ec935e08ff82824ddf18d0166790198c6e35303512",
+      "reviewCopyPresent": true
+    }
+  ]
+}
