@@ -689,5 +689,24 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 플레이어→보스 hurtE(근접·석궁·스킬, 쉴드→HP) | 완료(기존 executor 보스 분기) |
 | 보스→플레이어 접촉 9종·전역 큐 6종·지뢰·리듬탄·ORB | 완료(원본 VM 500케이스 일치). 플레이어 독·속박(P.poison/_webSlow) writer 미이식 |
 | 1차 즉시 부활·2차 폴백·완전 사망 | 완료(원본 VM 195케이스 일치), PCI-11 final 1회 → encounter 출구·상자 |
-| 소환(summon) 소환체 | 미이식 — 위치·원소·etype 추첨만, mkEn 생성 RNG 미소비(원본과 RNG 흐름 차이) |
+| 보스 몸통 충돌(플레이어 밀어내기, 34348–34349) | 완료(pc-boss-parity). 없을 때 보스가 플레이어 위로 겹쳐 d<20 이면 `_bossAI`가 패턴을 시작하지 않아(38385) idle 91% — 이식 후 41%(웹 약 40%) |
+| 보스방 진입 흐름(checkRooms 41768–41925, `_enterBossArena`) | 완료(pc-boss-parity) — 아래 표 |
+| 소환(summon) 소환체 | **NOT_READY** — 위치·원소·etype 추첨만. etype 3(요마) actor 없음, mkEn 엘리트/모드/오라 롤 미이식이라 생성하지 않음(원본과 RNG 흐름 차이). [계약 §9.5](../engine/PC_BOSS_CORE_CONTRACT_20261022.md) |
 | 페이즈/부활 연출 일부(VFX·SFX·grand VFX) | 표시 미이식(카운터 기록) |
+
+### 1-1 보스방 진입 흐름 원본 수치 (Godot 동일 적용, 2026-10-22 pc-boss-parity)
+
+| 단계 | 원본 행 | 값 |
+|---|---|---|
+| 문 판정 주기 | 41816–41818 | `G._crT` 30호출마다 1회(매 틱 + 처치 즉시 호출) |
+| 앵글러 미처치 문구 | 41900–41903 | `stage0 && !_fbDone` → 45프레임마다 "심연의 앵글러를 모두 처치하라" #66ddff 40 |
+| 지역 미개방 문구 | 41904–41911 | "지옥문이 봉인됨 — 지역 클리어 N/4" #ff5544 40 + 펫 `tut_gate_locked` |
+| 개방 → 로딩 시작 | 41913–41916 | loadPhase 1, 보라(#8833cc) 파티클 20 |
+| 1 페이드아웃 | 41787–41789 | fade = min(1, T/50) → 50틱 후 `_enterBossArena` |
+| 2 네임카드 | 41790–41792 | fade 1, 130틱. 이름 "다크드루이드" bold 40px #ddaa55 (화면 높이 53%), 부제 "썩은 숲 1구역" 15px #887766 α .5 (64%), 장식선 #886633 α .35 (46%·60%) |
+| 3 페이드인 | 41793–41795 | fade = max(0, 1−T/50), 50틱 |
+| 4 입장 연출 | 41796–41812 | 100틱. 첫 2틱: 보스 stunned 90·reviveIframes 110, shake 28, flash #ff4400 10, chroma 12, slowMo ≥ 60, 링 파티클 32(r×2.5, 속도 6) |
+| 로딩 중 무적 | 43420 | `G._bossLoadPhase>0` 이면 hurtP 무시 |
+| 아레나 진입 | 30749–30813 | 잔여 비보스 생존 수 → `_stageKills`, ens·소환굴·균열 비움, P.iframes 90·kb 0, 봉인 파티클 16+16·shake 8·"⚠ 봉인됨!" |
+| 보스 스폰 | 30782 | `mkEn((bossX+.5)*T,(bossY+.5)*T,si,0,true,STG[si].be,0)` — 난이도 OPT.diff(기본 5)·P.lv·G._stageDiffOff |
+| 아레나 출구 | 41919~ | 30호출 cadence, 출구 타일 + `!bossAlive` → 스테이지 클리어 |

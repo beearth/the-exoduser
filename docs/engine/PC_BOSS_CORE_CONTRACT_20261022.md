@@ -159,8 +159,83 @@ RNG: 게임플레이 RNG(모듈 ledger 행)는 actor가 World 공용 RNG에서 �
 | ~~M1~~ | `native_demo11_boss_actor.gd` | **철회**(S 폐기). 공간 변환 바인딩 불필요 |
 | ~~M2~~ | `boss11_visual_reader.gd` 등 | **철회**(S 폐기). 텔레그래프는 원본 상수 그대로 |
 | ~~M3~~ | `native_demo11_boss_projectiles.gd` | **철회**(S 폐기) |
-| M4 | `test_demo11_boss_actor.gd` | MAP11 기본 부팅에서 스폰 좌표(4020,7200)가 막혀 spawn REJECTED → 39행 `enemy.hp` Dictionary 접근 SCRIPT ERROR → quit 미호출 900초 timeout. 보스 owner 부재와 무관(§9) |
+| M4 | `test_demo11_boss_actor.gd` | 원인 정리(pc-boss-parity): 이 테스트는 머리 주석대로 **`--map11=off` 전제**다. MAP11 기본 부팅에서는 좌표 (4020,7200)이 원본 mkEn 31124 `canMv` 실패 → `safePt` null → REJECTED(원본과 같은 거절) → 39행 Dictionary 접근 SCRIPT ERROR → quit 미호출로 멈춘다. `--map11=off`로 돌리면 스폰은 되지만, PC 보스 코어가 owner 명령을 먼저 잡아 actor 프로토콜 fixture(테스트가 직접 owner 바인딩)와 충돌해 `unpublished_source_clock…`·`valid_source_frame_admitted` 2실패 후 같은 SCRIPT ERROR. **요청**: 25행 `main = MAIN.new()` 다음에 `main.set_meta("native_pc_boss_core", "off")`(pc-boss-core 가 이 용도로 둔 테스트 전용 스위치) 1줄. PC 임시 사본으로 확인: `--map11=off` + 이 1줄이면 **167/0** |
 
 ## 9. 구현 결과
 
-(구현 후 기록 — 아래 절)
+작업 두 단계의 결과를 합쳐 적는다. pc-boss-core(`7909a0f30`·`16e1ff825` WIP)와 그 위의 pc-boss-parity(`claude/pc-boss-parity-20261022`, INTEG-10 `9133e2782` 기준 + pc-boss-core 병합)다. 원본 대조는 고정 스냅샷 `godot/source_snapshot/game.html`(4d911cdd, 65,692행)만 썼다.
+
+### 9.1 공간 축소 S·줌 ×2.5 — 폐기·삭제
+
+§7에 적은 대로 코드·테스트·캡처 도구에서 모두 지웠다. 보스 정본 E 좌표 = 월드 좌표 = 원본 좌표다. 삭제 뒤 원본 VM oracle 재대조 결과는 모두 0실패다(§9.6).
+
+### 9.2 이식 상태 (1-1 다크드루이드)
+
+| 영역 | 원본 행 | 상태 | 비고 |
+|---|---|---|---|
+| AI 틱 owner(World 위상)·updateE prefix/suffix | 34393–34535, 38584–40443, 41405–41408 | READY | prefix 순수 함수 `native_demo11_boss_prefix.gd`, 원본 VM 400케이스 일치 |
+| 보스 몸통 충돌(플레이어 밀어내기) | 34348–34349 | READY(pc-boss-parity) | 미이식 때 보스가 플레이어 위로 겹쳐 d<20 → `_bossAI` 38385 에서 패턴 시작이 막혔다(idle 91%). 이식 후 idle 41%(웹 약 40%) |
+| 플레이어→보스 hurtE(근접·석궁·스킬, DR→쉴드→HP) | 42110–42735 | READY | 기존 `native_normal_enemy_hurte.gd` 보스 분기. 거울방어·폭발반격은 1-1 무브셋에 없음 |
+| 보스→플레이어 접촉 9종 | §5.2 표 | READY | isPWin→_pd·doParry 부분집합 / hurtP·kb |
+| 1차 즉시 부활·2차 폴백·완전 사망 | 42515–42649, 34496–34535 | READY | `native_demo11_boss_death.gd`, 원본 VM 195케이스 일치. PCI-11 final 1회 |
+| 사망 상태 actor 동기화 | (원본은 같은 e 객체) | READY(pc-boss-parity) | hurtE 최종 사망 직후 첫 사망 틱에 actor 스냅샷을 사망으로 맞춤. 미동기화 때 죽은 보스·HP 바가 계속 그려졌다 |
+| 전역 큐 6종·지뢰·리듬탄·ORB | 37015–37129, 34678–34687 | READY | `native_ch1_boss_queues.gd`, 원본 VM 500케이스(misc·queue·mine·hurt·spawn) 일치 |
+| 보스 투사체 → 플레이어 일반 피해 | 34845–34847, 35043–35090 | READY | E(물리) 패링·특수탄 전용 분기는 미이식(일반 식으로 처리, 카운터 기록) |
+| hurtP 로딩 중 무적 | 43420 | READY(pc-boss-parity) | `G._bossLoadPhase>0` 이면 보스 코어·투사체 접촉·앵글러 피해 경로가 피해를 주지 않는다 |
+| 소환 `bossSummonWind` → mkEn | 40798–40814, 31120–31185 | **NOT_READY** | §9.5 |
+| 플레이어 독·속박(`P.poison`/`P._webSlow`) | 37079, 37116–37123, 41064–41070 | NOT_READY | 플레이어 상태 writer 없음(기록만) |
+| 표시: VFX/SFX 일부·grand revive VFX·블래스트 라이트 | 각 행 | 미이식 | 카운터 `presentation_unported`. 시각 FX 내부 RNG 비소비(P1-002E 관례) |
+
+### 9.3 보스방 진입 흐름 (B-01, pc-boss-parity)
+
+`native_demo11_boss_entry.gd`(신규, PC)가 MAP11 provider 의 문 consumer 자리에서 기존 encounter(DEMO11-37)를 감싼다. encounter·MAP11 transport 파일 수정은 0이다.
+
+| 원본 | 값 | Godot |
+|---|---|---|
+| checkRooms 41768 호출 | update 35635 매 틱 + hurtE 처치 43115 즉시 | 매 물리 틱 + PCI-11 `final_death` 수신 시 1회 |
+| 무거운 로직 주기 41816–41818 | `G._crT` 30호출마다 | 같은 키 `G._crT` |
+| 문 판정 41893–41925 | 출구 타일 + bossAlive + !_bossArena | MAP11 `gate_contact(enter)` 위에서 같은 순서 |
+| 　앵글러 미처치 | `stage0 && !_fbDone` → 45프레임마다 '심연의 앵글러를 모두 처치하라' #66ddff 40 | 같음(`_gameFrame`=소환굴 시스템 카운터) |
+| 　지역 미개방 | `!_bossUnlocked` → '지옥문이 봉인됨 — 지역 클리어 N/4' #ff5544 40 + 펫 `tut_gate_locked` | 같음 |
+| 　개방 | loadPhase=1, T=0, fade=0, 보라 파티클 20(각 RNG 4) | 같음(SFX.groggy 미이식) |
+| 로딩 41784–41813 | 1 페이드아웃 fade=min(1,T/50) → 2 네임카드 130 → 3 페이드인 fade=max(0,1−T/50) → 4 입장 연출 100 | 같음. 실측 단계 길이 50/130/50/100틱 |
+| 　1→2 전환 | `_enterBossArena()` | 그 틱에 MAP11 transport 로 실제 전환 요청 → encounter.enter(원본 인자) |
+| 　4단계 첫 2틱 | findBoss: stunned=90, reviveIframes=110, shake 28·flash #ff4400 10·chroma 12·slowMo≥60, 링 파티클 32(각 RNG 2), 포효 피치 RNG 1 | 같음(블래스트 라이트·포효 재생 미이식) |
+| 보스 스폰 인자 30782 | `mkEn((bossX+.5)*T,(bossY+.5)*T,si,0,true,STG[si].be,0)` → OPT.diff·P.lv·G._stageDiffOff | MAP11 transport 가 `OPT.diff`·`G._stageDiffOff`·room 0 을, Main 이 P.lv 를 넣는다. 좌표는 MAP11 아레나 Boss 마커 |
+| _enterBossArena PC 부분 30749–30813 | 30758–30759 잔여 비보스 생존 수 → `_stageKills`, 30760 ens=[], 30761 hitStop/slowMo 0, 30771 spawnHoles/rifts=[], 30780 P.iframes 90·kb 0, 30797 _crT 0, 30798 펫 RNG 1, 30805–30810 봉인 파티클 16+16(RNG 3/4), 30811 shake 8, 30812 포효 피치 RNG 1, 30813 '⚠ 봉인됨!' | 같음(펫 재배치·투사체/아이템/파티클 목록 비우기·SFX 미이식) |
+| 로딩 오버레이 52089–52122 | 검정 alpha fade, 보라 안개 2층, 장식선 #886633, 다이아 #aa7744, 이름 bold 40px #ddaa55 @0.53, 부제 15px #887766 @0.64 | `native_demo11_boss_entry_overlay.gd` 같은 수치, layer 8(HUD 아래) |
+| 아레나 출구 41919~ | 30호출 cadence + 출구 타일 + !bossAlive → 클리어 | 같은 cadence 로 encounter.leave |
+
+원본 RNG 소비 순서(진입 1회): 문 개방 80 → 보스 스폰 6 → 봉인 연출 114 → 입장 연출 65, 합계 259(실측 `rng_draws` 259 + 스폰 6).
+
+### 9.4 필드보스 앵글러 (E-01, pc-boss-parity)
+
+| 원본 | 상태 |
+|---|---|
+| 출생 61055–61058(_FB_SITES 4, _FB_ELS [2,1,3,4], hp `~~((1800+lv*350)*7.5)`, asleep/hid) | READY(Mac family). 위치는 MAP11 마커(맵 차이는 Mac) |
+| 깨어남 61069–61073(1000 안 → tpT 54 → 등장) | READY |
+| 몸 충돌 61085, 접촉 피해 61086 | **READY(PC interaction, 신규)**. 기존엔 PC owner 미바인딩이라 근접 시 개체가 정지(blocked)했다 |
+| 착지 강타 61119–61122(hurtP·kb 18·'💥심해강타!') | READY(PC interaction, 신규) |
+| 플레이어 탄 `_hurtFieldMobs` 35279 | READY(pc-followups) |
+| 근접 hitArc 끝 `_hurtFieldMobs` 37646 | **READY(신규)** — player telemetry `melee_contact_resolved` 경유(player.gd 무수정). 순서 차이: 원본은 적 루프 뒤, 이 경로는 루프 직전 → 앵글러가 그 타격으로 죽는 프레임에만 고어 RNG 3회와 같은 타격의 일반 적 hurtE RNG 순서가 바뀔 수 있다 |
+| 스킬 경로 19844(기검참)·33971(돌진)·46566(지옥강타) `_hurtFieldMobs` | NOT_READY(해당 스킬 owner 미연결) |
+| 4마리 처치 → `_fbDone` 61041 → 지옥문 조건 41871 | READY. 실측: 근접 4처치 → `_fbDone=true`·family_defeated 1회 → 지역 4곳 cleared(fixture) → `_bossUnlocked` → 문 → 진입 |
+
+### 9.5 소환체 mkEn — NOT_READY (이유)
+
+원본 40806: `mkEn(sx,sy,G.stage,et,false,el,e.room)`, et ∈ [0,2,3,3,3], el ∈ 6원소, 이어서 hp×0.5·eShield 0. stage0 비보스는 31121에서 2→0 대체.
+
+1. etype 3(요마)이 뽑힐 확률 60%인데 Godot 에 etype 3 actor 가 없다(1-1 그룹 A = 0,1,4,5,6).
+2. 원본 mkEn 은 `rollElite`·`rollMods`·`rollAura`·속도/반경 RNG 를 소비하고, 엘리트 결과에 따라 소비 수가 달라진다. Godot 일반 적 생성기(`native_demo11_etype_a_spawn.gd`)는 소환굴 스케줄러 전용이라 엘리트 0·원소 미지정·아레나 밖만 받는다.
+3. 그래서 현재 Godot 은 위치·원소·etype 추첨(원본 RNG 위치 그대로)만 하고 생성은 하지 않는다(`summon_unported`). 소환이 한 번 일어나면 그 뒤 RNG 흐름이 원본과 달라진다.
+
+필요한 것: etype 3 actor, 엘리트/모드/오라 롤 이식, 원소·room·아레나 소환을 받는 생성 계약. 범위가 1-1 보스 단독 작업보다 커서 이번에 하지 않았다.
+
+### 9.6 검증
+
+| 항목 | 결과 |
+|---|---|
+| 원본 VM oracle(S 삭제 후) | prefix 400케이스 25,650 assertion 0실패 · 상태/큐 500케이스 30,833 0실패 · 사망 195케이스 73,251 0실패 |
+| test_pc_boss_core | 28/0 |
+| test_pc_boss_parity(신규) | 37/0 — 앵글러 출생·깨어남·몸충돌·근접 처치→_fbDone→봉인 문 cadence→로딩 50/130/50/100→원본 인자 스폰→필드 적 비움→입장 stun→자연 AI 900틱(몸통 충돌·패턴 진행)→처치→출구 30 cadence→클리어 |
+| 나란히 캡처 | `G:/exoduser-wt/_out/pc-boss-parity/compare_*.png` 19장. 판정은 보고서 §3 |

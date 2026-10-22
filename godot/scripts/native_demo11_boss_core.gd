@@ -207,7 +207,7 @@ func _tick_alive(sp: float) -> void:
 
 ## 34348–34349 update(): 보스 몸통 충돌 — 플레이어가 보스를 통과 못 하게 밀어내기(적 루프 34393 보다 먼저).
 ## P.hp>0 && P.s!=='charge' && P.s!=='bladeDash', d<e.r+P.r && d>0 → P 를 (e.r+P.r−d) 만큼 바깥으로, canMv(P.r) 일 때만.
-## (PC-BOSS-PARITY: 미이식 상태에서는 보스가 플레이어 위로 겹쳐 d<20 → _bossAI 38386 에서 패턴 시작이 막혔다.)
+## (PC-BOSS-PARITY: 미이식 상태에서는 보스가 플레이어 위로 겹쳐 d<20 → _bossAI 38385 에서 패턴 시작이 막혔다.)
 func _push_player_out_of_body() -> void:
 	var pl: Node2D = main.player
 	if float(pl.hp) <= 0.0 or str(pl.state) in ["charge", "bladeDash"]:

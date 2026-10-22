@@ -109,7 +109,7 @@ func _run() -> void:
 	var cur := ""
 	var in_state := 0
 	var t := 0
-	while t < 60 * 50 and seen.size() < 4:
+	while t < 60 * 70 and seen.size() < 7:
 		god()
 		await physics_frame
 		t += 1
