@@ -56708,3 +56708,8 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - 상세 원본 행/실제 적용/남은 차이: [PARITY_UI_05_20261022.md](engine/PARITY_UI_05_20261022.md). 외부 captures/DONE는 ~/exoduser-wt/_out/PARITY-UI-05/. MAP04 파일·보호PID81277·실사용저장소 변경 안 함.
 
 PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonate/initial gold DOM are distinct states; Q natural-start visual equality remains RETOUCH. See the UI05 report.
+## 2026-10-22 PARITY-MAP-04 — PC 맵·필드 잔여 대응
+
+- 웹 field_runtime만 원본 지역 초기화·60px 경계 유지·미니맵 지역 표식 경로 복원. 북문32/문앞53 나란히 확인. 드루이드 proxy source-over 재드로우, 첫사용 시트·ground GPU warm draw, 표시 최대µs 계측.
+- native 슬롯 메뉴 startup의 활성 저장 회수/metadata 보존, 실제 격리 IO 재시작·다음 생성 regression16/0 단회. `.gitignore`는 해당 test 진입점 한 파일만 예외 추가.
+- 원본 행·1x 비교·실제 OS W·성능1회 오염 한계·PC 이동/덩굴 요청은 [PARITY_MAP_04_20261022](engine/PARITY_MAP_04_20261022.md). 고스트 .55/.62 유지, VISUAL RETOUCH. B snapshot/HUD·유골함 파일·원본 맵/카메라·PC 전투 변경0. main/PC 인수·배포 아님.

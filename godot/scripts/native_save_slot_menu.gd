@@ -19,7 +19,29 @@ var _instance := str(get_instance_id())
 func open() -> bool:
 	var result: Dictionary = storage.open_store()
 	if not result.get("ready", false): return _fail(str(result.get("reason", "open")))
+	if not _sync_interrupted_active():return false
 	return refresh()
+
+# index.html 3492-3509: recover the active session before listing slots.
+# Compare every write against the observed bytes; never discard an unreadable save.
+func _sync_interrupted_active() -> bool:
+	var active: Dictionary=storage.get_item("hellsave_demo_active")
+	var game: Dictionary=storage.get_item("hellsave_demo")
+	if not active.get("ready",false) or not game.get("ready",false):return _fail("active_read_failed")
+	if not active.get("found",false):return true # legacy single-save migration belongs to the restore owner
+	if active.raw not in ["0","1","2","3","4"]:return _fail("active_invalid")
+	var key:=_key(int(active.raw))
+	var slot: Dictionary=storage.get_item(key)
+	if not slot.get("ready",false):return _fail("active_read_failed")
+	if slot.get("found",false):
+		var meta: Variant=JSON.parse_string(slot.raw)
+		var saved: Variant=JSON.parse_string(game.raw) if game.get("found",false) else {}
+		if not meta is Dictionary or not saved is Dictionary:return _fail("active_json_invalid")
+		var merged: Dictionary=saved.duplicate(true)
+		merged.name=meta.get("name");merged.ts=meta.get("ts");merged.charIdx=meta.get("charIdx",0)
+		if not _write(key,JSON.stringify(merged),false,slot.raw):return false
+	if game.get("found",false) and not _write("hellsave_demo","",true,game.raw):return false
+	return _write("hellsave_demo_active","",true,active.raw)
 
 func refresh() -> bool:
 	if _busy: return false

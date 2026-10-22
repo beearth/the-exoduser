@@ -204,3 +204,5 @@ assets/vfx/boss/gen/
 # PARITY-UI-05: retain the owned UI regression only.
 !godot/tests/test_parity_ui_05.gd
 !godot/tests/test_parity_ui_05.gd.uid
+# PARITY-MAP-04 regression entrypoint
+!/godot/tests/test_parity_map_04.gd

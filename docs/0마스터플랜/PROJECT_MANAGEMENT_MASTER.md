@@ -487,3 +487,8 @@ INTEG-7 + C15 + ZOOM을 merge2회로 통합. import ERROR0·회귀33종355,135/0
 ## 2026-10-22 PARITY-SKILL-01 인수 후보
 
 PC skill writer merge/버튼 활성·피드백 및 Mac pack_b fixture 회귀 수리(402/0). skill105/0·writer80/0·원본VM14행0불일치. E2E9PASS/9NOT_READY/0FAIL, 시각 RETOUCH(M3 원인 확정·제단 동적 합성 잔여). main/PC 실제 인수 완료 아님. [원본·적용 위치·비교·검수](../engine/PARITY_SKILL_01_20261022.md).
+
+
+## 2026-10-22 PARITY-MAP-04 인수 후보
+
+INTEG-13 06f3db98 기준 웹 지역 경계 유지·미니맵 색 표식·드루이드 합성 수정, 보스 리소스 첫 draw 준비, 중단된 활성 저장 회수 추가. 관련16/0, 1x 캡처·실제 W 입력 기록. GUI1회는 타 검사 동시 실행으로 참고값이며 이동/덩굴 스파이크는 PC 요청. 고스트 수치 유지·VISUAL RETOUCH. [원인·원본 행·한계·MAP REPORT](../engine/PARITY_MAP_04_20261022.md). main/PC 인수·배포 아님.
