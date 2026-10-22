@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-10-22T10:41:37.372Z",
+  "references": [
+    {
+      "index": 1,
+      "source": "C:/Users/심도진/Desktop/images.jpg",
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/01_user_figure.jpg",
+      "sha256": "a3b8e90b5e0aa67c0f1b57fd1bcec802e8561e9a85906a3322cc41128531364f",
+      "bytes": 4793,
+      "role": "Cropped asymmetric jacket, slender agile body proportions; reference design, not figurine render or watermark."
+    },
+    {
+      "index": 2,
+      "source": "C:/Users/심도진/Desktop/images (1).jpg",
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/02_user_edgerunners.jpg",
+      "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+      "bytes": 59337,
+      "role": "Asymmetric techwear, fitted core/thigh-high boots, energetic angular composition; no logos or same character."
+    },
+    {
+      "index": 3,
+      "source": "C:/Users/심도진/Desktop/strongest-champ-jinx-could-posibly-beat-v0-icq5ny9tu9jg1.webp",
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/03_user_jinx.webp",
+      "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+      "bytes": 110208,
+      "role": "Rebellious gesture and enormous bespoke weapon mass; not same multi-barrel weapon or character."
+    },
+    {
+      "index": 4,
+      "source": "G:/exoduser/assets/charselect/silvertail_cut.png",
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "bytes": 1670201,
+      "role": "Primary game consistency anchor: mature face, dark iron, controlled material reflections, deep painterly light. Do not copy her ponytail/skirt/blades."
+    }
+  ]
+}
