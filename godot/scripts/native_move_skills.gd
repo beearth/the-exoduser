@@ -145,7 +145,14 @@ func configure(main: Node, world: Node2D, player: Node2D, state: Node) -> bool:
 		_chain_tex = load("res://assets/vfx/chain_shuriken_2.webp")
 	if ResourceLoader.exists("res://assets/vfx/vfx_landing_fire.png"):
 		_land_tex = load("res://assets/vfx/vfx_landing_fire.png")
-	_font = ThemeDB.fallback_font # 원본 'bold Npx sans-serif' (G54820·G59784) — 브라우저 기본 산세리프 대응
+	# 원본 'bold 22px/36px sans-serif'(G54820·G59784): Windows Chrome의 sans-serif=Arial, 한글은 Malgun Gothic 대체.
+	var sys_font := SystemFont.new()
+	sys_font.font_names = PackedStringArray(["Arial", "Malgun Gothic", "sans-serif"])
+	sys_font.font_weight = 700
+	sys_font.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
+	_font = sys_font
+	_storm_tex = [_load_storm("res://assets/vfx/Lightning_ImpactLightning_Sheet.png"), _load_storm("res://assets/vfx/Lightning_Lightning_FBF_4x3.png"),
+		_load_storm("res://assets/vfx/Lightning_BasicImpact.png")]
 	z_as_relative = false
 	_under = Layer.new()
 	_under.host = self
@@ -160,11 +167,23 @@ func configure(main: Node, world: Node2D, player: Node2D, state: Node) -> bool:
 	add_material.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD # registerVFX 기본 blend 'lighter'
 	_under_add.material = add_material
 	add_child(_under_add)
+	# 전류장판 악의폭풍 스프라이트(G19625–19628 _tintImg: source-atop 틴트 + luminosity 원본 → G55938 'lighter')
+	_storm_layer = Layer.new()
+	_storm_layer.host = self
+	_storm_layer.kind = "storm"
+	_storm_layer.z_as_relative = false
+	var storm_material := ShaderMaterial.new()
+	var storm_shader := Shader.new()
+	storm_shader.code = STORM_SHADER
+	storm_material.shader = storm_shader
+	_storm_layer.material = storm_material
+	add_child(_storm_layer)
 	_configured = true
 	return true
 
-## 원본 그리기 순서: 장판(G55931)·VFX 시트(G54575)·머리 위 게이지(G54817)·전격 구체(G58552)·잔상(G58654)은
-## 플레이어 본체(G58700~) 앞 → under 층. 사슬 UI(G59765)·사슬 비행(G59789)은 본체 뒤 → 이 노드(over 층).
+## 그리기 층(웹 1x 캡처 실측 기준): 장판 번개 기둥(G55931)·전격 구체(G58552)·잔상(G58654) = 플레이어 본체 아래(under),
+## 악의폭풍 스프라이트(G55938 lighter) = 본체 아래 가산(storm), land_fire VFX 시트(G54575 GL 인스턴싱) = 본체 위 가산(under_add),
+## 사슬 UI(G59765)·사슬 비행(G59789)·머리 위 게이지(G54817) = 본체 위(over, 이 노드).
 class Layer extends Node2D:
 	var host: Node
 	var kind := ""
@@ -174,15 +193,61 @@ class Layer extends Node2D:
 
 var _under: Node2D
 var _under_add: Node2D
+var _storm_layer: Node2D
+var _storm_tex: Array = []
+const STORM_TINTS: Array = ["#6644ff", "#7733ff", "#5566ff"]
+## _tintImg 합성을 한 패스로: 정점색 rgb=틴트, a=globalAlpha. canvas 단계(원본 이미지→source-atop 틴트 채움→
+## luminosity로 원본 재합성)의 premultiplied 결과를 'lighter'(가산)로 더한다.
+const STORM_SHADER := """shader_type canvas_item;
+render_mode blend_premul_alpha;
+float lum(vec3 c){ return 0.3*c.r + 0.59*c.g + 0.11*c.b; }
+vec3 clip_color(vec3 c){
+	float l = lum(c); float n = min(min(c.r, c.g), c.b); float x = max(max(c.r, c.g), c.b);
+	if (n < 0.0) c = l + (c - l) * l / max(l - n, 1e-6);
+	if (x > 1.0) c = l + (c - l) * (1.0 - l) / max(x - l, 1e-6);
+	return c;
+}
+vec3 set_lum(vec3 c, float l){ return clip_color(c + (l - lum(c))); }
+void fragment(){
+	vec4 src = texture(TEXTURE, UV);
+	float a = src.a;
+	vec3 tint = COLOR.rgb;
+	vec3 b = set_lum(tint, lum(src.rgb));
+	vec3 co = a * (1.0 - a) * src.rgb + a * a * b + (1.0 - a) * a * tint;
+	COLOR = vec4(co * COLOR.a, 0.0); // premultiplied + alpha 0 = 순수 가산(lighter)
+}
+"""
+
+func _load_storm(path: String) -> Texture2D:
+	if ResourceLoader.exists(path):
+		return load(path)
+	# 미-import 원본 PNG(포트 신규 에셋): import 없이 바이트에서 직접 — 내보낸 빌드에선 없으면 층 생략
+	var bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
+	if bytes.is_empty(): return null
+	var img := Image.new()
+	if img.load_png_from_buffer(bytes) != OK: return null
+	return ImageTexture.create_from_image(img)
 
 func _process(delta: float) -> void:
 	if not _configured or not is_instance_valid(_player):
 		return
 	var z: int = _player.z_index
 	_under.z_index = z
-	_under_add.z_index = z
+	_under_add.z_index = clampi(z + 1, -4096, 4095)
+	_storm_layer.z_index = z
 	z_index = clampi(z + 1, -4096, 4095)
-	advance_render(delta * 60.0)
+	sync_render()
+
+## 렌더 시계: 원본은 draw()마다 _dtSp(=1)씩 감소(_harpLandT G58590·VFX v.t G54580·번개 th.life G55978) — 60Hz에서 틱당 1.
+## 포트는 world 원본 시계 증가분으로 진행해 같은 틱에 렌더가 여러 번 불려도 중복 감소하지 않는다(player 표시 시계와 같은 방식).
+var _render_clock := -1.0
+func sync_render() -> void:
+	var now: float = _world.get_native_frame() if is_instance_valid(_world) else 0.0
+	if _render_clock < 0.0:
+		_render_clock = now
+	var ticks: float = maxf(0.0, now - _render_clock)
+	_render_clock = now
+	advance_render(ticks)
 
 func is_configured() -> bool:
 	return _configured
@@ -465,10 +530,12 @@ func advance_pre(sp: float) -> void:
 		dash_left -= dash_step
 		if dash_left <= 0.0:
 			_land_chain()
-	# G32576 _dashIframe
+	# G32582 _dashIframe
 	if dash_iframe > 0.0:
 		_player.set("iframes", maxf(float(_player.get("iframes")), 1.0))
 		dash_iframe -= 1.0
+	if not _shock_visual.is_empty():
+		_tick_shock_particles()
 
 ## G32270–32299 경로상 적 히트 (STR 분기: activeChargeSk='charge')
 func _dash_path_hits() -> void:
@@ -766,7 +833,9 @@ func _push_shock_field(pos: Vector2) -> void:
 	var def_red: float = minf(0.50, 0.10 + (lv - 1.0) * 0.05)
 	# 착지 번개 기둥 (1회): 화면 상단 → 착지점
 	var cam: Vector2 = _camera_center()
-	var top_y: float = cam.y - get_viewport_rect().size.y / 2.0 - 50.0
+	var cam_node: Camera2D = get_viewport().get_camera_2d()
+	var zoom_y: float = cam_node.zoom.y if cam_node != null and cam_node.zoom.y > 0.0 else 1.0
+	var top_y: float = cam.y - get_viewport_rect().size.y / zoom_y / 2.0 - 50.0 # G.cam.y−VH/2−50 (VH=화면 높이의 월드 단위)
 	var segs: int = 8 + int(_visual_rng.randf() * 5.0)
 	var bw: float = 14.0 + _visual_rng.randf() * 10.0
 	var pts: Array = []
@@ -847,6 +916,9 @@ func blocks_space_slot() -> bool:
 # ═══════════════════════════ 렌더 ═══════════════════════════
 
 func advance_render(dt_ticks: float) -> void:
+	if dt_ticks <= 0.0:
+		queue_redraw(); _under.queue_redraw(); _under_add.queue_redraw(); _storm_layer.queue_redraw()
+		return
 	# land_fire: v.t+=_dtSp; t>=frameTime(2)→frame++; frame>=4 제거 (G54579–54581)
 	var write := 0
 	for v in _land_vfx:
@@ -879,6 +951,7 @@ func advance_render(dt_ticks: float) -> void:
 	queue_redraw()
 	_under.queue_redraw()
 	_under_add.queue_redraw()
+	_storm_layer.queue_redraw()
 
 func _draw() -> void:
 	if not _configured or not is_instance_valid(_player):
@@ -886,6 +959,9 @@ func _draw() -> void:
 	var origin: Vector2 = global_position
 	_draw_hold_ui(origin)
 	_draw_chain(origin)
+	_canvas = self
+	_draw_gauge(origin) # 웹 캡처 실측: 머리 위 게이지 숫자가 단계 문자 위에 그려진다(UI 오버레이 패스)
+	_canvas = null
 
 var _canvas: CanvasItem # 현재 그리는 층(under 층 그리기 함수의 대상)
 func _draw_layer(layer: CanvasItem, kind: String) -> void:
@@ -893,11 +969,14 @@ func _draw_layer(layer: CanvasItem, kind: String) -> void:
 		return
 	_canvas = layer
 	var origin: Vector2 = layer.global_position
+	if kind == "storm":
+		_draw_storm_sprites(origin)
+		_canvas = null
+		return
 	if kind == "under":
 		_draw_shock_fields(origin)
 		_draw_trail(origin)
 		_draw_blade_sphere(origin)
-		_draw_gauge(origin)
 	else:
 		_draw_land_vfx(origin)
 	_canvas = null
@@ -914,7 +993,10 @@ func _draw_gauge(origin: Vector2) -> void:
 	# font 'bold 22px sans-serif', textAlign center, textBaseline bottom, 그림자(+1,+1 #000) → 본문
 	var size := 22
 	var w: float = _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
-	var base_y: float = p.y - r - 24.0 - _font.get_descent(size)
+	# 웹 GPU 프록시 fillText(G6104–6111): 텍스트 아틀라스 셀 h=ceil(px×1.6)+8 안에 'middle'로 그리고, textBaseline
+	# 'bottom'은 셀 상단을 y−h에 둔다 → 글자 em 중앙 = y − h/2. (Canvas2D 'bottom' 의미와 다름 — 실제 화면 기준)
+	var cell_h: float = ceil(float(size) * 1.6) + 8.0
+	var base_y: float = _middle_to_baseline(p.y - r - 24.0 - cell_h / 2.0, size)
 	var shadow := Color(0, 0, 0, 0.9)
 	_draw_bold_text(_canvas, Vector2(p.x - w / 2.0 + 1.0, base_y + 1.0), text, size, shadow)
 	var c2 := col
@@ -927,10 +1009,13 @@ func _draw_gauge(origin: Vector2) -> void:
 	_canvas.draw_rect(Rect2(bx, by, bw, bh), Color(0, 0, 0, 0.6 * 0.9))
 	_canvas.draw_rect(Rect2(bx, by, bw * pct, bh), Color(col.r, col.g, col.b, 0.9))
 
+## em 상자 중앙(Canvas 'middle') → draw_string 기준선
+func _middle_to_baseline(middle_y: float, size: int) -> float:
+	return middle_y + (_font.get_ascent(size) - _font.get_descent(size)) / 2.0
+
 func _draw_bold_text(canvas: CanvasItem, pos: Vector2, text: String, size: int, color: Color) -> void:
-	# canvas 'bold' — fallback 폰트 + 0.6px 가로 겹침(외곽선 strokeText 대신 fill 오프셋, CLAUDE.md 캔버스 규칙)
+	# fillText(bold) — 굵기는 SystemFont weight 700 (외곽선 strokeText 없음)
 	canvas.draw_string(_font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
-	canvas.draw_string(_font, pos + Vector2(0.6, 0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
 
 ## G59765–59787 사슬 UI (홀드 중)
 func _draw_hold_ui(origin: Vector2) -> void:
@@ -952,13 +1037,14 @@ func _draw_hold_ui(origin: Vector2) -> void:
 	var p_dict: Dictionary = _p()
 	var dist: float = _harp_available_dist(dash_tier, harp_gauge, p_dict) if not p_dict.is_empty() else 0.0
 	var end: Vector2 = p + Vector2(cos(ang), sin(ang)) * dist
-	draw_dashed_line(p, end, Color(1, 1, 1, 0.25), 1.0, 4.0, false, true)
+	draw_dashed_line(p, end, Color(1, 1, 1, 0.25), -1.0, 4.0, false) # lineWidth 1·setLineDash([4,4]) — 1 화면 픽셀 헤어라인
 	draw_arc(end, 6.0, 0.0, TAU, 24, c8, 1.5, true)
 	# 단계 텍스트: bold 36px sans-serif, center, baseline alphabetic
 	var text: String = "%d단" % dash_tier
 	var size := 36
 	var w: float = _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
-	_draw_bold_text(self, Vector2(p.x - w / 2.0, p.y - 44.0), text, size, c8)
+	# 단계 문자는 textBaseline을 따로 지정하지 않는다(G59784) — 실측: 앞선 텍스트 패스가 남긴 'middle'로 em 중앙=P.y−44
+	_draw_bold_text(self, Vector2(p.x - w / 2.0, _middle_to_baseline(p.y - 44.0, size)), text, size, c8)
 
 ## G59789–59863 사슬 비행 렌더 (chain_shuriken_2.webp)
 func _draw_chain(origin: Vector2) -> void:
@@ -1072,6 +1158,54 @@ func _draw_blade_sphere(origin: Vector2) -> void:
 			Vector2(cos(spa) * 3.0 + (_visual_rng.randf() - 0.5) * 2.0, sin(spa) * 3.0 + (_visual_rng.randf() - 0.5) * 2.0),
 			"#44ddff", 2.0 + _visual_rng.randf() * 3.0, 8.0 + _visual_rng.randf() * 6.0)
 
+## G55931–55962 전류장판 Power Lightning 3층(가산). _spr 최초 렌더 생성, 30틱마다 회전·뒤집기 재추첨
+func _draw_storm_sprites(origin: Vector2) -> void:
+	var c: CanvasItem = _canvas
+	for item in _shock_visual:
+		var zone: Dictionary = item.zone
+		var prog: float = float(zone.t) / float(zone.maxT)
+		var fade: float = (1.0 - (prog - 0.8) / 0.2 if prog > 0.8 else 1.0) * 0.24
+		if item.spr == null:
+			item.spr = {"f0": _visual_rng.randf() * 16.0, "f1": _visual_rng.randf() * 12.0, "f2": _visual_rng.randf() * 9.0,
+				"sc": float(zone.r) / 60.0, "rot": _visual_rng.randf() * TAU, "flip": -1.0 if _visual_rng.randf() > 0.5 else 1.0}
+		var spr: Dictionary = item.spr
+		var t: float = float(zone.t)
+		if int(t) % 30 == 0 and t > 1.0:
+			spr.rot = _visual_rng.randf() * TAU
+			spr.flip = -1.0 if _visual_rng.randf() > 0.5 else 1.0
+		var center: Vector2 = Vector2(float(zone.x), float(zone.y)) - origin
+		var layers: Array = [
+			{"i": 0, "cols": 4, "rows": 4, "frames": 16, "f": "f0", "rate": 0.15, "size": 1.0, "rot": 0.0, "alpha": 1.0},
+			{"i": 1, "cols": 4, "rows": 3, "frames": 12, "f": "f1", "rate": 0.18, "size": 1.1, "rot": 0.5, "alpha": 1.0},
+			{"i": 2, "cols": 3, "rows": 3, "frames": 9, "f": "f2", "rate": 0.12, "size": 0.6, "rot": -0.3, "alpha": 0.7}]
+		for layer in layers:
+			var tex: Texture2D = _storm_tex[layer.i] if layer.i < _storm_tex.size() else null
+			if tex == null: continue
+			var fw: float = float(tex.get_width()) / float(layer.cols)
+			var fh: float = float(tex.get_height()) / float(layer.rows)
+			var fi: int = int(fmod(float(spr[layer.f]) + t * float(layer.rate), float(layer.frames)))
+			var src := Rect2(float(fi % int(layer.cols)) * fw, float(fi / int(layer.cols)) * fh, fw, fh)
+			var sz: float = fw * float(spr.sc) * float(layer.size)
+			c.draw_set_transform(center, float(spr.rot) + float(layer.rot), Vector2(float(spr.flip), 1.0))
+			var tint := Color(STORM_TINTS[layer.i])
+			tint.a = float(layer.alpha) * fade
+			c.draw_texture_rect_region(tex, Rect2(-sz / 2.0, -sz / 2.0, sz, sz), src, tint)
+		c.draw_set_transform_matrix(Transform2D.IDENTITY)
+
+## G37491–37512 장판 틱 파티클(shockField): 30% 확률 시안 스파크 + 그중 40% 흰 상승 스파크 — 표현 전용
+func _tick_shock_particles() -> void:
+	for item in _shock_visual:
+		var zone: Dictionary = item.zone
+		if _visual_rng.randf() > 0.7:
+			var a: float = _visual_rng.randf() * TAU
+			var d: float = _visual_rng.randf() * float(zone.r)
+			var zc := Vector2(float(zone.x), float(zone.y))
+			_pool_part(zc + Vector2(cos(a), sin(a)) * d, Vector2((_visual_rng.randf() - 0.5) * 3.0, -1.0 - _visual_rng.randf() * 2.0),
+				"#44ddff" if _visual_rng.randf() > 0.5 else "#88eeff", 1.0 + _visual_rng.randf() * 2.0, 6.0 + _visual_rng.randf() * 6.0)
+			if _visual_rng.randf() > 0.6:
+				_pool_part(zc + Vector2((_visual_rng.randf() - 0.5) * float(zone.r), (_visual_rng.randf() - 0.5) * float(zone.r)),
+					Vector2((_visual_rng.randf() - 0.5) * 2.0, -2.0 - _visual_rng.randf() * 3.0), "#ffffff", 1.0 + _visual_rng.randf(), 4.0 + _visual_rng.randf() * 5.0)
+
 ## G54575–54620 land_fire (200×200, 2열, 4프레임, frameTime 2, scale .35, lighter)
 func _draw_land_vfx(origin: Vector2) -> void:
 	if _land_tex == null:
@@ -1100,7 +1234,20 @@ func _draw_shock_fields(origin: Vector2) -> void:
 				for pt in th.pts: pts.append(Vector2(float(pt.x), float(pt.y)) - origin)
 				var c: Color = layer.col
 				c.a = clampf(float(layer.alp) * ta * flash * fade, 0.0, 1.0)
-				_canvas.draw_polyline(pts, c, float(th.baseW) * float(layer.w), true)
+				_round_polyline(pts, c, float(th.baseW) * float(layer.w))
+			# 분기: 코어 레이어만 (lineWidth baseW×.5, α .9×ta×.5×flash×fade, #eeeeff)
+			var bc := Color("#eeeeff")
+			bc.a = clampf(0.9 * ta * 0.5 * flash * fade, 0.0, 1.0)
+			for branch in th.br:
+				var bp := PackedVector2Array()
+				for pt in branch: bp.append(Vector2(float(pt.x), float(pt.y)) - origin)
+				_round_polyline(bp, bc, float(th.baseW) * 0.5)
+
+## X.lineCap='round' 폴리라인 — 포트는 draw_polyline(라운드 캡 없음, 끝단 반폭 차이: 경미·기록)
+func _round_polyline(pts: PackedVector2Array, color: Color, width: float) -> void:
+	if pts.size() < 2:
+		return
+	_canvas.draw_polyline(pts, color, width, true)
 
 # ═══════════════════════════ 읽기 ═══════════════════════════
 
