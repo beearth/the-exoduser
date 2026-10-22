@@ -93,7 +93,7 @@ func _ready() -> void:
 	shape.shape = circle
 	add_child(shape)
 	var blend = CanvasItemMaterial.new()
-	blend.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	blend.blend_mode = CanvasItemMaterial.BLEND_MODE_MIX
 	material = blend
 
 func _physics_process(delta: float) -> void:

@@ -94,7 +94,7 @@ func _ready() -> void:
 	shape.shape = circle
 	add_child(shape)
 	var glow_blend = CanvasItemMaterial.new()
-	glow_blend.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	glow_blend.blend_mode = CanvasItemMaterial.BLEND_MODE_MIX
 	material = glow_blend
 	_sprite = Sprite2D.new()
 	_sprite.name = ELEMENT.capitalize() + "NativeComet"

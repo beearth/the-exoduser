@@ -56768,3 +56768,5 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 ## 2026-10-22 SWEEP-A 적·펫·보스 표시
 
 - 자연 admitted 적의 source skin/radius 표시·D walking overlay·shield/type decor·WebGPU sampler·pet CSS14.72px/bottom220·angler MIX·boss capsule clip. 신규 게임 문구0, PC core writer 수정0. 정확 수치/경계: engine/SWEEP_A_20261022.md.
+
+- 2026-10-22 SWEEP-A: 원본 혜성/입/무지개 투사체 표시 이식. 18장 렌더 캡처 ERROR0. 전투·판정 변경0. 상세: engine/SWEEP_A_20261022.md.

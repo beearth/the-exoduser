@@ -64,7 +64,7 @@ func _ready() -> void:
 	_sprite.centered = true
 	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	var blend = CanvasItemMaterial.new()
-	blend.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	blend.blend_mode = CanvasItemMaterial.BLEND_MODE_MIX
 	_sprite.material = blend
 	add_child(_sprite)
 	_update_visual()
@@ -190,7 +190,7 @@ class WaterImpact extends Sprite2D:
 		z_as_relative = false
 		z_index = clampi(int(global_position.y / 4.0) + 1, -2000, 4000)
 		var blend = CanvasItemMaterial.new()
-		blend.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+		blend.blend_mode = CanvasItemMaterial.BLEND_MODE_MIX
 		material = blend
 		_update_impact()
 

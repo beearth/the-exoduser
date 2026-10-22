@@ -59,7 +59,7 @@ func _ready() -> void:
 	_sprite.texture = FLIGHT_TEXTURE # packaged physical carrier; resource resident before simulation
 	_sprite.region_enabled = true
 	_sprite.centered = true
-	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_sprite.scale = Vector2(float(data["animation"]["width"]) / 768.0, float(data["animation"]["height"]) / 384.0)
 	add_child(_sprite)
 	_update_visual()
@@ -161,7 +161,7 @@ class PhysicalBite extends Sprite2D:
 		add_to_group("physical_bites")
 		region_enabled = true
 		centered = true
-		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 		z_as_relative = false
 		_update_bite()
