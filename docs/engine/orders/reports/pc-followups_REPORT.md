@@ -1,5 +1,7 @@
 # PC-FOLLOWUPS — 석궁 필드보스 정지 해제 · PC 묶음 B/A 테스트 전제
 
+2026-10-22 후속 테스트 교정: [TEST-FIX-01](../../TEST_FIX_01_20261022.md). 아래 수치는 각 원보고 시점의 기록이다.
+
 2026-10-21~22 KST, PC Claude(전투 핵심). worktree `G:\exoduser-wt\pc-followups`, branch `claude/pc-followups-20261021`, base Mac integ6 `d5b842df7`(origin/main abc3dd442 PC 묶음 A·B + Mac PCIA/PCIB 배선 포함). 계약: [PC_COMBAT_PACK_B_CONTRACT_20261021.md §5a](../../PC_COMBAT_PACK_B_CONTRACT_20261021.md), [PC_LIFECYCLE_CONTRACT_20261021.md §7](../../PC_LIFECYCLE_CONTRACT_20261021.md).
 
 **판정: P0 석궁 필드보스 정지 해제 완료(필드보스 피격·hitCd·최종 사망까지, 표현만 미이식) · 묶음 B 테스트 bound actor 전제 수정 완료 · 묶음 A 테스트 MAP11 전제 수정 완료.** E2E는 PASS10/NR8/FAIL0으로 Mac 기준(PASS13/NR5)보다 낮고 Mac 하니스 SCRIPT ERROR가 생겼다(§4, 원인 분석 포함). 성능은 hurtE 접촉 1회 10~14ms 스파이크가 새로 드러났다(§5, HOLD).

@@ -1,5 +1,7 @@
 # INTEG-15b PC 전투·보행 통합과 Mac 요청 1~3
 
+2026-10-22 후속 테스트 교정: [TEST-FIX-01](TEST_FIX_01_20261022.md). 아래 수치는 각 원보고 시점의 기록이다.
+
 | 항목 | 계약·처리 |
 |---|---|
 | 기준 | origin/codex/demo11-integ15-20261022 `98ca5fc72fb5abdfd30872d1f3deb923e67b4f18` |

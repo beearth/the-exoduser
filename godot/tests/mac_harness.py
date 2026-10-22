@@ -136,7 +136,10 @@ def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
                     continue
                 result = {key: int(value) for key, value in fields.items()}
             meta["skipped"].extend(result.get("skipped", []))
-            if result.get("failures", 0) != 0:
+            failures = result.get("failures", 0)
+            # Both published schemas: count or explicit failure labels.
+            if not ((isinstance(failures, list) and not failures) or
+                    (type(failures) in (int, float) and failures == 0)):
                 meta["passed"] = False
         (out / (name + ".json")).write_text(json.dumps(meta, ensure_ascii=False, indent=2))
         print(name, "PASS" if meta["passed"] else "FAIL", "exit", meta.get("exit_code"), "errors", len(meta["errors"]), flush=True)

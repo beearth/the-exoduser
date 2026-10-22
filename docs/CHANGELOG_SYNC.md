@@ -1,3 +1,10 @@
+## 2026-10-22 TEST-FIX-01 — 웹 맵 전환 테스트 전제/하니스 교정
+
+- 필드보스: PC 요청 배치 fixture만 수정. 웹 1-1 전체 비행 통로 및 일반 적 비접촉 배치를 고르고 기존 원문 oracle/관통 단정 유지. 3회 168/0.
+- B02: 부팅 시 seed(20261022), 기존 RNG 소비 경로·판정 유지. 3회 37/0; 비동기 장면 히스토그램의 완전 동일성은 미주장.
+- Mac 지역 adapter: 기존 맵 fixture의 null MAP11 provider 검사 후 원래 sites/totals 분기. combat_kill 47/0, 지역 귀속/전투 공식 불변.
+- Mac 하니스: 실패 count0/list[] 모두 허용, 실제 실패·잘못된 타입 거절. 상세/단회 map04 결과: [TEST-FIX-01](engine/TEST_FIX_01_20261022.md).
+
 ## 2026-10-22 INTEG-15b — PC 전투·보행 + Mac 충돌·귀속 인수
 
 - INTEG15 98ca5fc7 + PC f8caec955 merge. CHANGELOG 양쪽 이력 보존, 요청1~3 인수/일반 적 생성·부활 mask1·보스34349 유지.

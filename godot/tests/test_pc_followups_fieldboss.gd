@@ -321,6 +321,17 @@ func _fb_auto_crossbow_natural_kill() -> void:
 	check(int(after.kills) > int(before.kills) and int(g.get("kills", 0)) > kills0, "auto_crossbow_kills_gt0:%d" % (int(after.kills) - int(before.kills)))
 	check(not str(after.reason).begins_with("field_mob_owner_unported"), "no_field_owner_refusal:" + str(after.reason))
 
+# Placement only: the rejected field contact must not later hit a normal enemy.
+# The source oracle has no walls, so require the complete flight corridor open.
+func _fb_clear_corridor(origin: Vector2, dir: Vector2) -> bool:
+	var length: float = float(spec.range) + float(spec.spd) + 40.0
+	if world.is_world_blocked(origin) or not _open_line(origin, dir, length): return false
+	for e in _ens_view():
+		var offset := Vector2(float(e.x), float(e.y)) - origin
+		var along: float = clampf(offset.dot(dir), 0.0, length)
+		if (offset - dir * along).length() <= float(e.r) + 11.0: return false
+	return true
+
 func _fb_wake_angler() -> void:
 	# 실제 AI 기상: 거리 1000 이내(본문 접촉 반경 밖) 배치 → wake(tpT=54) → 출현(hid=0).
 	var best := -1
@@ -332,7 +343,7 @@ func _fb_wake_angler() -> void:
 		for k in range(16):
 			var dir := Vector2.from_angle(TAU * k / 16.0)
 			var origin: Vector2 = at - dir * 420.0
-			if world.is_world_blocked(origin) or not _open_line(origin, dir, float(spec.range) + 40.0): continue
+			if not _fb_clear_corridor(origin, dir): continue
 			best = i
 			best_origin = origin
 			break
@@ -363,6 +374,18 @@ func _fb_fb_nonlethal_hit() -> void:
 	for i in range(20):
 		if float(fb.get("hitCd", 0)) <= 0.0: break
 		await physics_frame
+	var at := Vector2(float(fb.x), float(fb.y))
+	var placed := false
+	for k in range(128):
+		var dir := Vector2.from_angle(TAU * k / 128.0)
+		var origin: Vector2 = at - dir * 420.0
+		if _fb_clear_corridor(origin, dir):
+			player.global_position = origin
+			forced += 1
+			placed = true
+			break
+	check(placed, "hitcd_full_flight_corridor_clear")
+	if not placed: return
 	var hp0: float = float(fb.hp)
 	var flight: Dictionary = _shot_at_angler(angler_index, 50, "nonlethal")
 	check(flight.fields.size() >= 1 and flight.fields[0].applied == true and flight.fields[0].outcome == "hit_18702", "fb_contact_applied_hit")

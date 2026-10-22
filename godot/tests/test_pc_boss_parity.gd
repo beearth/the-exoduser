@@ -74,6 +74,8 @@ func _on_death(payload: Dictionary) -> void:
 	if payload.get("event") == "final_death" and payload.get("actor") == main.native_demo_boss_actor: finals.append(payload.duplicate())
 
 func _run() -> void:
+	# Fixed input stream; retain every production RNG consumer and its order.
+	seed(20261022)
 	check(OS.get_user_data_dir().ends_with(USERDIR), "isolation_userdir")
 	main = load("res://scenes/main.tscn").instantiate()
 	main.set_meta("native_intro_boot", "intro")

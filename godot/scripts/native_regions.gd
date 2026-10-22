@@ -309,7 +309,8 @@ func can_use_stage_spawn(adapter: RefCounted,spawn: Node2D) -> bool:
 func install_stage_spawn_budget(adapter: RefCounted,sites: Dictionary,totals: Array) -> Dictionary:
  if not _live() or _stage_spawn_adapter!=null or adapter==null or adapter.get_script().resource_path!="res://scripts/native_stage_spawn_adapter.gd":return {"applied":false,"reason":"provider_region_owner_rejected"}
  _stage_spawn_adapter=adapter
- _web_field=_main.read_native_map11_provider().get_script().resource_path=="res://scripts/maps/map11/field_runtime.gd"
+ var map_provider: Variant=_main.read_native_map11_provider()
+ _web_field=map_provider!=null and map_provider.get_script().resource_path=="res://scripts/maps/map11/field_runtime.gd"
  if _web_field:
   var result: Dictionary=init_regions(_g,_player.global_position,200,200,true)
   _last_frame=-1.0;_init_count+=1;_mask=-1

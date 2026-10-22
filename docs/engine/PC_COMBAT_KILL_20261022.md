@@ -1,5 +1,7 @@
 # PC-COMBAT-KILL — 웹 맵 시작 필드 처치 0 + 보행 감속 (2026-10-22, PC Claude)
 
+2026-10-22 후속 테스트 교정: [TEST-FIX-01](TEST_FIX_01_20261022.md). 아래 수치는 각 원보고 시점의 기록이다.
+
 - worktree `G:\exoduser-wt\pc-boss-parity`(재사용, 새 worktree 0), branch `claude/pc-combat-kill-20261022`
 - 기준 Mac INTEG-13 `06f3db984` (`codex/demo11-integ13-20261022`)
 - 원본 대조: 고정 스냅샷 `godot/source_snapshot/game.html` (sha256 4d911cdd…, `snapshot.cjs`로 검증해 웹 라우트에 그대로 제공)

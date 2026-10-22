@@ -1,5 +1,7 @@
 # PC-BOSS-PARITY — 1-1 필드보스·보스방 진입·보스전 웹 동일화 (2026-10-22, PC Claude)
 
+2026-10-22 후속 테스트 교정: [TEST-FIX-01](../../TEST_FIX_01_20261022.md). 아래 수치는 각 원보고 시점의 기록이다.
+
 - worktree `G:\exoduser-wt\pc-boss-parity`, branch `claude/pc-boss-parity-20261022`
 - 기준 INTEG-10 `9133e2782` + `origin/claude/pc-boss-core-20261022`(`16e1ff825`) `--no-ff` 병합 `40bd95125`(충돌 0)
 - 기준 문서 [PARITY_DIFF_LIST_20261022](../../PARITY_DIFF_LIST_20261022.md) B-01·B-02·E-01(+K-02), 계약 [PC_BOSS_CORE_CONTRACT_20261022 §7·§9](../../PC_BOSS_CORE_CONTRACT_20261022.md)
