@@ -925,7 +925,9 @@ func _physics_process(delta: float) -> void:
 	var switch_state: String = state
 	if is_instance_valid(_native_move_skills):
 		switch_state = _native_move_skills.advance_state(ticks) # G32985 이동 틱 + case bladeDash(G33943)·stagger(G34333)·pStun(G34341)
-	var speed_scale: float = 1.0 if switch_state == "idle" else (0.0 if switch_state in ["stagger", "pStun", "iceOrb", "bladeDash"] else 0.8) # P2-005d: 33040 얼음보주 전행동 차단 / PC-MOVE-SKILLS: case 'bladeDash'는 보행 없음
+	if switch_state in GIANT_SLAM_STATES:
+		_advance_native_giant_slam_state(ticks)
+	var speed_scale: float = 1.0 if switch_state == "idle" else (0.0 if switch_state in ["stagger", "pStun", "iceOrb", "bladeDash"] else (0.35 if switch_state in GIANT_SLAM_STATES else 0.8)) # P2-005d: 33040 얼음보주 전행동 차단 / PC-MOVE-SKILLS: case 'bladeDash'는 보행 없음
 	if is_instance_valid(_native_q_control) and _native_q_control.is_native_q_control_ready() and (state=="sBlock" or _native_q_control.q_movement_scale==0.0):speed_scale=_native_q_control.q_movement_scale
 	# Native _freezeSlow is consumed inside the entered idle case, before
 	# its positive-value half-speed check. Attack/stun/recovery clocks freeze it.
@@ -1046,11 +1048,34 @@ func _physics_process(delta: float) -> void:
 		var fireball_context: Dictionary=_world.get_native_projectile_fx_context()
 		native_fireball_phase_tick.emit(fireball_context.dt_sp,_world.get_native_frame(),fireball_entered_state)
 
+# PC-SKILL-STATES — 거인강타 상태(원본 46460 P.s='gSlamWindup';P.st2=10 / 33949~33960):
+# case gSlamWindup|gSlam1|gSlamRecover — 보행 (P.speed+bt().spd)×sp×.35, st2 소진 시
+# Windup→gSlam1(st2 10)→gSlamRecover(st2 12)→idle. 피해는 시전 즉시(46462 '즉시 히트')라 스킬 슬롯이 이미 처리.
+# 이 상태 동안 공격·다른 슬롯은 state!=idle 게이트로 막힌다(원본과 같음).
+const GIANT_SLAM_STATES: Array[String] = ["gSlamWindup", "gSlam1", "gSlamRecover"]
+var _gsl_st2: float = 0.0
+func enter_native_giant_slam_state() -> bool:
+	if hp <= 0.0 or state in ["fallen", "dead"]:
+		return false
+	state = "gSlamWindup"
+	_gsl_st2 = 10.0
+	stats_changed.emit()
+	return true
+
+func _advance_native_giant_slam_state(ticks: float) -> void:
+	_gsl_st2 -= ticks # 32792 P.st2-=sp
+	if state == "gSlamWindup" and _gsl_st2 <= 0.0:
+		state = "gSlam1"; _gsl_st2 = 10.0
+	elif state == "gSlam1" and _gsl_st2 <= 0.0:
+		state = "gSlamRecover"; _gsl_st2 = 12.0
+	elif state == "gSlamRecover" and _gsl_st2 <= 0.0:
+		state = "idle"
+
 # P2-005d — 얼음보주 상태 전환(46758 P.s='iceOrb' / 46819 P.s='idle'): 소유=스킬 슬롯 어댑터,
 # idle↔iceOrb 왕복만 허용. 상태 'iceOrb'는 이동 0(741)·공격 차단(state!=idle 579)·피격 무적(876).
 func set_native_ice_orb_state(active: bool) -> bool:
 	if active:
-		if state != "idle":
+		if state != "idle" and state not in GIANT_SLAM_STATES: # 46758 P.s='iceOrb'는 거인강타 상태도 덮어쓴다
 			return false
 		state = "iceOrb"
 	else:

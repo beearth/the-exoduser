@@ -262,6 +262,8 @@ func cast_giant_slam() -> void:
 		_cast_log.append({"halt":"cost_commit_rejected"})
 		return
 	gsl_cd = quote.cd
+	# 46460 P._gslDir=P.facing; P.s='gSlamWindup';P.st2=10 — 상태 진행(10→gSlam1 10→gSlamRecover 12→idle)·35% 보행은 Player owner
+	if _player.has_method("enter_native_giant_slam_state"): _player.enter_native_giant_slam_state()
 	# 피해식 (46464~46470): rage 0 → rageMul 1 (rage>0 분기 미이식 기록)
 	var sk_mul: float = GSL_SK_B + float(lv - 1) * GSL_SK_G * 0.5 # 44556·44509
 	var base_dmg: int = NORMAL_HURTE.FORMULA.js_to_int32(float(parameters["melee_ref"]) * 1.0 * sk_mul * 1.0)
@@ -531,7 +533,8 @@ func cast_ice_orb() -> void:
 		_cast_log.append({"skill":"iceOrb","rejected":true})
 		return
 	# State mutation must be admissible before any resource is spent.
-	if str(_player.get("state")) != "idle":
+	# 원본 activateIceOrb(46756)는 P.s를 보지 않는다. 거인강타 상태(시전 후 32f)는 부수효과가 없어 원본처럼 덮어쓴다.
+	if str(_player.get("state")) != "idle" and not str(_player.get("state")) in ["gSlamWindup","gSlam1","gSlamRecover"]:
 		_cast_log.append({"skill":"iceOrb","rejected":true,"reason":"player_state_not_idle"})
 		return
 	var mp_cost: int = int(quote.mp)
