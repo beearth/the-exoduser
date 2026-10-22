@@ -36,6 +36,7 @@ func _render(delta: float) -> void:
   # never make an authoritative damaging pool invisible before it expires.
   ground.refresh(main.source_state.read_current_g(),true);return
  ground.player_radius=main.player.radius
+ ground.player_position=main.player.global_position
  ground.observe_enemy(enemy)
  var state: String=enemy.get("s","")
  # Snapshot 10905–10976: the green vine silhouette is the source attack/transform

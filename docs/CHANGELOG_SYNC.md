@@ -56795,3 +56795,12 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - clear CSS 자간/기준선/버튼·crest·best 분리,원본DOM 및 실제폰트 대조.
 - boss shield 고정fan/arc 표시,로딩 overlay를52089 배경 후·actor 전으로 이동. PC state writer 변경0.
 - 계약/수치/원본행은 docs/engine/SWEEP_A_20261022.md §10,최종 캡처 검수 진행.
+
+- clear 1px hairline/점선 ColorRect로 원본 표시 복원; transparent border에 가려진 fill 교정.
+
+
+## 2026-10-22 SWEEP-A boss tell display
+
+- generic 원본 보스 경고/궤적 표시 누락 및 dash/no-op/UV ring 계약 보완,고정circle48.
+- 잠행7줄9타원·eyes·Lv·상단bar,fan 플레이어 읽기 전달. PC 코어 변경0.
+- docs/engine/SWEEP_A_20261022.md §11. frozen-patterns-extra35 ERROR0,입력 E2E 별도.

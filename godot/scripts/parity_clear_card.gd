@@ -11,6 +11,8 @@ func css_text(parent: Node,value: String,rect: Rect2,px: float=13,col: Color=Col
  var metrics: Dictionary=Fonts.css_line_metrics(stack,px)
  n.line_height=float(metrics.normal);n.baseline=float(metrics.ascent)+float(metrics.gap)*.5;n.position=rect.position;n.shadow_color=Color(0,0,0,.95);n.shadow_offset=Vector2(0,1)
  parent.add_child(n);n.shape(rect.size.x);return n
+func line(parent: Node,rect: Rect2,col: Color) -> void:
+ var ink:=ColorRect.new();ink.position=rect.position;ink.size=rect.size;ink.color=col;ink.mouse_filter=Control.MOUSE_FILTER_IGNORE;parent.add_child(ink)
 func label(value: String,rect: Rect2,px: int=13,col: Color=Color("c5b8a3"),font: String="hell") -> Label:
  return S.text(self,I.text(value),rect,px,col,font)
 func setup(g: Dictionary) -> void:
@@ -27,15 +29,15 @@ func setup(g: Dictionary) -> void:
  var shade:=StyleBoxFlat.new();shade.bg_color=Color.TRANSPARENT;shade.shadow_color=Color(0,0,0,.6);shade.shadow_size=16;shade.shadow_offset=Vector2(0,4);card_shadow.add_theme_stylebox_override("panel",shade)
  var title:=css_text(card,I.text("구역 클리어!"),Rect2(0,0,368,28),20.8,Color(230/255.0,214/255.0,185/255.0,.95),"hell_title",700,20.8*.18);title.align=HORIZONTAL_ALIGNMENT_CENTER
  title.shadow_offset=Vector2(0,2)
- S.panel(card,Rect2(80,14.5,28,1),Color(164/255.0,147/255.0,115/255.0,.54))
- S.panel(card,Rect2(260,14.5,28,1),Color(164/255.0,147/255.0,115/255.0,.54))
+ line(card,Rect2(80,14.5,28,1),Color(164/255.0,147/255.0,115/255.0,.54))
+ line(card,Rect2(260,14.5,28,1),Color(164/255.0,147/255.0,115/255.0,.54))
  var en:=css_text(card,"ZONE CLEARED",Rect2(0,32,368,15),9.6,Color(168/255.0,153/255.0,127/255.0,.72),"cinzel_hell",400,9.6*.34);en.align=HORIZONTAL_ALIGNMENT_CENTER
  var sub:=css_text(card,I.text("썩은 숲을 정복했습니다."),Rect2(0,53,368,22),14.08,Color(199/255.0,187/255.0,172/255.0,.88),"hell",400,14.08*.12);sub.align=HORIZONTAL_ALIGNMENT_CENTER
  S.panel(card,Rect2(0,81,368,246),Color(.055,.032,.024,.94),Color(.4,.369,.314,.5))
  var diamond:=S.panel(card,Rect2(32,114,50,50),Color("170f0a"),Color(164/255.0,147/255.0,115/255.0,.6));diamond.pivot_offset=Vector2(25,25);diamond.rotation=PI/4
  var inner:=S.panel(card,Rect2(37,119,40,40),Color.TRANSPARENT,Color("423426d9"));inner.pivot_offset=Vector2(20,20);inner.rotation=PI/4
  var crest_style: StyleBoxFlat=diamond.get_theme_stylebox("panel").duplicate();crest_style.shadow_color=Color(rank_color,.25);crest_style.shadow_size=0;diamond.add_theme_stylebox_override("panel",crest_style)
- S.panel(card,Rect2(33,91,302,1),Color("a4937380"))
+ line(card,Rect2(33,91,302,1),Color("a4937380"))
  var rank:=S.text(card,str(cur.r),Rect2(23,117,68,68),30,rank_color,"hell_title",700);rank.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
  css_text(card,I.text("클리어 타임"),Rect2(115,117.5,90,16),13,Color("cfc3b0"),"hell",400,13*.18)
  S.text(card,fmt(cur.t),Rect2(204.36,111.5,46,24),18,Color("e6d6b9"),"cinzel_hell")
@@ -54,9 +56,9 @@ func setup(g: Dictionary) -> void:
  for i in rows.size():
   var x: float=42+(i%2)*156;var y: float=185.5+int(i/2)*24
   css_text(card,I.text(rows[i][0]),Rect2(x,y,90,18),13,Color("c5b8a3"),"hell",400,13*.08)
-  for dot in range(43):S.panel(card,Rect2(x+dot*3,y+20,1,1),Color("a4937329"))
+  for dot in range(43):line(card,Rect2(x+dot*3,y+20,1,1),Color("a4937329"))
   var value:=S.text(card,(("−" if rows[i][0]=="사망 감점" else "")+num(rows[i][1])),Rect2(x+78,y,50,18),13,Color("a8776a") if rows[i][0]=="사망 감점" else Color("c9bda6"),"cinzel_hell");value.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
- S.panel(card,Rect2(33,299,302,1),Color("a4937338"))
+ line(card,Rect2(33,299,302,1),Color("a4937338"))
  var best_parts: Array=[[I.text("베스트"),"hell",Color("c5b8a3"),2.6],[fmt(result.record.t),"cinzel_hell",Color("c9bda6"),0.0],["·","font",Color("a4937380"),0.0],[num(result.record.s),"cinzel_hell",Color("c9bda6"),0.0],["·","font",Color("a4937380"),0.0],[str(result.record.r),"hell_title",rank_color,0.0]]
  var best_width:=60.0
  for part in best_parts:best_width+=Fonts.stack(part[1],700 if part[1]=="cinzel_hell" else 400).get_string_size(part[0],HORIZONTAL_ALIGNMENT_LEFT,-1,13).x+float(part[3])*str(part[0]).length()

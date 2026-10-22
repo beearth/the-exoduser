@@ -14,8 +14,12 @@ var _revive: Node2D
 var render_max_us:=0
 var _shield_fan:=PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
 var _visual_now:=0.0
+var _name_top: float=-100.0
+var _level_font: SystemFont
+var _under_quad:=PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
 func configure(reader: Node,_shared: ShaderMaterial=null) -> void:
  actor=reader
+ _level_font=SystemFont.new();_level_font.font_names=PackedStringArray(["monospace"]);_level_font.font_weight=700
  body=Sprite2D.new();body.name="BossSceneBody";body.region_enabled=true;body.centered=false
  add_child(body)
   # Source 6028: shared WebGPU/WebGL X proxy ignores globalCompositeOperation.
@@ -38,7 +42,8 @@ func render_at(now: float) -> void:
  if e.is_empty():hide();return
  if not e.get("alive",false):
   visible=float(e.get("_reviveTimer",0))>0;body.hide();return
- if e.get("s")=="bossDruidUnder":hide();return
+ if e.get("s")=="bossDruidUnder":
+  show();body.hide();global_position=Vector2(e.get("x",0),e.get("y",0));z_as_relative=false;z_index=clampi(int(global_position.y/4),-4096,4095);_name_top=float(e.get("_teleDropY",0))-float(e.get("r",44))*2;return
  body.show()
  show();global_position=Vector2(e.get("x",0),e.get("y",0));z_as_relative=false;z_index=clampi(int(global_position.y/4),-4096,4095)
  var s: String=e.get("s","");var rem: float=e.get("st2",0)
@@ -61,6 +66,7 @@ func render_at(now: float) -> void:
  var h: float=float(e.get("r",44))*14.1;var w: float=float(e.get("r",44))*9.3
  if sheet=="base8":w=h*region.size.x/region.size.y
  elif sheet in WIDE_SHEETS:w=h*region.size.x/region.size.y*1.12
+ _name_top=float(e.get("_teleDropY",0))-6+(sin(now*.003)*2 if sheet=="base8" else 0)-h*.86-10
  body.texture=tex;body.region_rect=region;body.scale=Vector2(w,h)/region.size;body.offset=Vector2(-region.size.x/2,-region.size.y*.86)
  body.position=Vector2(0,float(e.get("_teleDropY",0))-6+(sin(now*.003)*2 if sheet=="base8" else 0))
  var display: Rect2=preload("res://scripts/native_source_canvas_labels.gd").snap(self,Rect2(body.position+body.offset*body.scale,Vector2(w,h)))
@@ -92,7 +98,9 @@ func _warm_resources() -> void:
 func _draw() -> void:
  if not is_instance_valid(actor):return
  var e: Dictionary=actor.get("_enemy")
- if not e.get("alive",false) or float(e.get("eShieldMax",0))<=0 or e.get("s")=="bossDruidUnder":return
+ if not e.get("alive",false):return
+ _draw_source_body_decor(e)
+ if float(e.get("eShieldMax",0))<=0:return
  var r: float=float(e.get("r",44));var now: float=_visual_now
  var sh: bool=float(e.get("eShield",0))>0
  var angle: float=float(e.get("shieldAng",0));var radius_: float=r+(5 if sh else 4);var span: float=1.0 if sh else .8
@@ -105,3 +113,31 @@ func _draw() -> void:
   _shield_fan[1]=Vector2.from_angle(angle-span+2*span*i/count)*radius_
   _shield_fan[2]=Vector2.from_angle(angle-span+2*span*(i+1)/count)*radius_
   draw_colored_polygon(_shield_fan,color_)
+
+func _draw_source_body_decor(e: Dictionary) -> void:
+ var r: float=e.get("r",44);var now: float=_visual_now;var facing: float=e.get("facing",0)
+ var sa: float=maxf(0,.2+sin(now/40)*.5) if float(e.get("reviveIframes",0))>0 else (.6 if float(e.get("stunned",0))>0 else 1.0)
+ if e.get("s")=="bossDruidUnder":
+  var mr: float=r*5.5;var tick: float=now*.003
+  # Source quadraticCurveTo becomes two straight segments; ellipse rotation is ignored.
+  for k in 7:
+   var a: float=k*TAU/7+tick*.12;var rr: float=mr*(.36+(k%3)*.14);var c:=Color("9eae61" if k%2 else "728d4a");c.a=.36+(k%2)*.12
+   var middle:=Vector2(cos(a+.22)*rr*.62,sin(a+.22)*rr*.17);draw_line(Vector2(cos(a)*mr*.13,sin(a)*mr*.045),middle,c,5+(k%3)*2,false);draw_line(middle,Vector2(cos(a)*rr,sin(a)*rr*.34),c,5+(k%3)*2,false)
+  for k in 9:
+   var a: float=k*2.399+tick*.22;var rr: float=mr*(.32+(k%4)*.14)
+   draw_set_transform(Vector2(cos(a)*rr,sin(a)*rr*.34),0,Vector2(1,2.5/(5+(k%3)*2)));draw_circle(Vector2.ZERO,5+(k%3)*2,Color(155/255.0,181/255.0,104/255.0,.72))
+  draw_set_transform(Vector2.ZERO)
+ # Source eyes follow facing and remain at the actor origin, including underground.
+ var eye:=Vector2.from_angle(facing)*r*.3
+ draw_circle(eye+Vector2(-2,0),2,Color(0,0,0,sa));draw_circle(eye+Vector2(3,0),2,Color(0,0,0,sa))
+ var bw: float=r*2+6;var by: float=_name_top;var hp: float=e.get("hp",0);var mhp: float=e.get("mhp",1);var shield: float=e.get("eShield",0);var maximum: float=e.get("eShieldMax",0)
+ if hp<mhp or maximum>0 and shield<maximum:
+  draw_rect(Rect2(-bw/2,by,bw,4),Color(0,0,0,.6*sa));draw_rect(Rect2(-bw/2,by,bw*hp/maxf(1,mhp),4),Color(.8,0,0,sa))
+  if maximum>0 and shield>0:draw_rect(Rect2(-bw/2,by,bw*minf(1,shield/maximum),4),Color(68/255.0,170/255.0,1,sa))
+  by-=5
+ var stunned: float=e.get("stunned",0)
+ if stunned>0:
+  draw_rect(Rect2(-bw/2,by,bw,3),Color(0,0,0,.5*sa));draw_rect(Rect2(-bw/2,by,bw*minf(1,stunned/float(e.get("_maxStunned",180))),3),Color(1,136/255.0,0,sa))
+ if int(e.get("lv",0))>0:
+  var text: String="Lv."+str(int(e.lv));var w: float=_level_font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x
+  draw_string(_level_font,Vector2(-w/2,_name_top-14),text,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color(1,136/255.0,68/255.0,sa))
