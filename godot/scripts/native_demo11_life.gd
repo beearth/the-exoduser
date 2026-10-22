@@ -209,7 +209,11 @@ func retry() -> Dictionary:
  var reset: Dictionary=_request("respawn",{"step":"reset"})
  if reset.get("status")=="APPLIED":
   main.source_state.read_current_g().on=true
-  get_tree().set_meta("parity_ui_02_retry",ImageTexture.create_from_image(get_viewport().get_texture().get_image()))
+  # Retained screenshot is presentation only; headless has no viewport image.
+  if DisplayServer.get_name()!="headless":
+   var retry_image: Image=get_viewport().get_texture().get_image()
+   if retry_image!=null and not retry_image.is_empty():
+    get_tree().set_meta("parity_ui_02_retry",ImageTexture.create_from_image(retry_image))
   _replay_frames.clear();_dialogue_timer.stop();_pets.hide()
   _save=main.save_native_demo11_current();_navigation="retry_reload" if stage.get("reload_after_save",false) else "retry"
  return reset

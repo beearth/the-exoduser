@@ -56609,3 +56609,11 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - 이동 owner에는 기존 showPH 지점 UI 신호만 추가. 원본500ms/fade100ms·색·위치·기존번역 소비. frame PNG glow/레이어순서/액체 easing·숫자 shadow 반영. 이동/자원 수식·맵/보스/인트로 변경0.
 - 관련 HUD 회귀1회26검사/0실패/SCRIPT ERROR0. 무주입 storage-on E2E1회 캐릭터생성→필드 진입/SCRIPT ERROR0, HP0으로 자연완주 NOT_READY. 1x 비교·잔여표/최종 SHA는 _out/PARITY-HUD-02/DONE.txt. CSS Gaussian·분수폰트/AA·타이밍은 RETOUCH.
 - 상세 계약: docs/engine/PARITY_HUD_02_20261022.md, PARITY_DIFF_LIST와 PC_MOVE_SKILLS_CONTRACT 갱신. 새 제품문구0, 번역 번호/CRLF 보존.
+
+
+## INTEG-12 — 2026-10-22 통합 검수 진행
+
+| 변경 | 범위 | 계약 |
+|---|---|---|
+| Retry 표시 이미지 | native_demo11_life.gd retry | headless는 표시 캡처 생략. GUI는 Image가 null/empty가 아닐 때만 ImageTexture 생성. respawn/EXP/save/재시작·E2E 판정 변경0 |
+| 통합 | BOSS-02 1b86c02f + INTRO-01b 015d4034 | 보스·맵/UI·HUD·인트로 체인 보존. 문서4 충돌은 양쪽 이력 유지, 번역 CRLF 보존. PC HUD 미인수로 제외. VRAM DONE 최초 부재 후 도착50900cfd, 진행 중 시험 종료 경계에서 추가 통합 |
