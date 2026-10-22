@@ -56628,3 +56628,8 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - `docs/12퍼포먼스·최적화/VRAM_01_TEXTURE_BUDGET_20261022.md`에 큰 순 표·예산·전후 monitor·수명 계약·미분해 차액 기록. 관련 UI02/UI03 문서 연결. 재현용 one-shot 원격 GPU 덤프/캡처 도구 추가.
 - 관련 inventory suite 단회1281 checks 실패0; storage=on 입력 E2E 단회 PASS/주입0/SCRIPT ERROR0. 필수 정적 1x 크롭 차이0, 재열기 인벤토리 내부 전체 차이0(12px 바깥 필드 애니메이션 차이 보존). 자기 child 종료·override 복원. PID81277 보존.
 - 맵 외 ≤1.0GB 목표는 미달·미검증. MAP03은 기준 조상에 없고 보호 범위라 미통합. monitor와 목록의 약0.94GB 차이는 원인 미분해로 남김. 완료/동기화/배포 주장 없음. 근거 `~/exoduser-wt/_out/VRAM-01/`.
+
+
+## 2026-10-22 INTEG-12b — 하니스 회귀
+
+제품 화면/PC 코어/PC 테스트 수정0. 42 HUD·44 펫·47h 입력 prefix·map runtime/product 기대값 및 Mac 결과 수집/fixture storage 경계를 교정. 각 suite/E2E 1회 제한을 지켜 실패 원로그와 후속 미검증 수정을 분리한다. [원본행·수정표·검수](engine/INTEG12B_HARNESS_REGRESSION_20261022.md).

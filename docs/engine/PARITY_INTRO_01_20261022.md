@@ -35,3 +35,8 @@ PC ffmpeg/Theora 변환 승인 대기는 그대로다. 재인코딩·생성·대
 
 
 2026-10-22 PARITY-INTRO-01b: 이전 Mac PC 이동 회귀 실패는 저장 namespace와 실행 인자의 불일치였다. 인트로 분기 변경은 확인되지 않았다. Mac 공통 하니스는 PC fixture에 storage 인자가 없을 때 `--demo11-storage=off`를 명시하며 제품/E2E `on` 경로는 유지한다. [원인·계약·검증](PARITY_INTRO_01b_20261022.md).
+
+
+## 2026-10-22 INTEG-12b 하니스 후속
+
+47h 하니스는 초기 로비 ESC5150ms → 생성 직후 warrior Space1350ms → 첫 진입 INTRO Space2150ms의 실제 press/release 순서를 사용한다. finish/skip signal 폴백은 제거했다. [정확한 계약·단회 검수·제약](INTEG12B_HARNESS_REGRESSION_20261022.md).

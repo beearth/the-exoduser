@@ -68,8 +68,11 @@ func _run() -> void:
  check(main.bind_native_demo_final_death_source(pc,&"final_death") and not main.bind_native_demo_final_death_source(pc,&"final_death"),"PC final signal bound once")
  pc.final_death.emit(main.native_demo_boss_actor,0)
  check(encounter.snapshot().phase=="field" and main.source_state.read_native_drop_records().is_empty(),"premature final signal no reward")
- check(main.native_demo_anglers.bind_pc_source(pc,&"field_final"),"existing PC field final seam bound")
- for i in range(4):pc.field_final.emit(i,0.0,true,i+1)
+ # Product now installs the PC owner at boot. Keep single binding and emit its
+ # existing readback signal as an explicit final-event fixture (not combat).
+ var pc_field: Node=main.native_demo_anglers._pc_owner
+ check(is_instance_valid(pc_field) and not main.native_demo_anglers.bind_pc_source(pc,&"field_final"),"product PC field seam bound once; replacement rejected")
+ for i in range(4):pc_field.emit_signal(&"field_boss_health",i,0.0,true,1000000+i)
  check(pets.get_native_pets_snapshot().demo_owner_events.get("field_done")==true and pets.call("_demo_targets").is_empty(),"accepted field final family removes iris targets and records owner event")
  var options: Dictionary={"room":0,"difficulty_index":5,"stage_diff_offset":0}
  check(main.enter_native_demo_arena(map,options).status=="NOT_READY","locked actual gate rejects entry")
@@ -88,9 +91,11 @@ func _run() -> void:
  check(spawned.status=="READY" and encounter.snapshot().phase=="arena" and g._bossArena,"actual actor spawn and arena transition")
  var boss_samples: Array=pets.call("_demo_targets")
  check(boss_samples.size()==1 and boss_samples[0].key=="boss","actual boss owner read becomes iris candidate without normal registry mutation")
- main.player.global_position=map.get_node("Markers/Boss").global_position
- pets.call("_update_ghost_iris")
- check(pets.get_native_pets_snapshot().demo_iris_key=="boss","iris follows live boss via read-only owner sample")
+ # Boss spawn uses source position, not the former preview marker position.
+ main.player.global_position=Vector2(boss_samples[0].x,boss_samples[0].y)
+ # Source retarget cadence (41525): allow 10 actual iris samples after moving.
+ for i in range(10):pets.call("_update_ghost_iris")
+ check(pets.get_native_pets_snapshot().iris_target_alive and pets.pets.iris.tgt==main.native_demo_boss_core.body and pets.get_native_pets_snapshot().demo_iris_key=="","iris selects actual ens boss body; equal-distance sample cannot replace it")
  main.player.global_position=map.get_node("Markers/Entry").global_position
  check(main.player.global_position==map.get_node("Markers/Entry").global_position,"provider Entry marker used")
  check(main.enter_native_demo_arena(map,options).status=="NOT_READY" and not main.leave_native_demo_arena(map),"no duplicate entry or living-boss clear")

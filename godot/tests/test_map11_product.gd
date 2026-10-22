@@ -20,7 +20,7 @@ func _run() -> void:
  var start: Marker2D=p.anchors("player_start")[0].marker
  check(main.player.global_position==start.global_position,"fresh actor at actual Start Marker")
  check(main.world.get_start_position()==start.global_position,"World start authority")
- check(p.anchors("*").size()==22 and p.anchors("hole").size()==4,"contract22Markers4holes")
+ check(p.anchors("*").size()==22 and p.anchors("hole").size()==14,"source22anchors14holes")
  check(main.world.get_enemies().is_empty(),"no legacy coordinate encounters on MAP11")
  check(main.has_node("NativeRegions") and main.world.has_node("NativeSpawnHoleSystem"),"MAP11 combat owners installed")
  check(main.native_demo_encounter.snapshot().provider_bound,"actual encounter provider bound")
@@ -29,19 +29,17 @@ func _run() -> void:
  var p_before: Dictionary=main.source_state.read_current_p().duplicate(true)
  check(main.request_native_map11_transition("enter").reason=="not_at_gate","remote gate denied")
  check(main.world.can_move(start.global_position,15),"field spatial query")
- check(not main.world.can_move(Vector2(-1800,-550),15),"field solid actual World query")
- check(not main.world.has_line_of_sight(Vector2(-2700,-550),Vector2(-900,-550)),"actual World solid LOS")
- # Walk the provider's authored marker route; each step is swept by same provider.
- var route: Array=["early","main","landmark","landmark_east","late","gate"]
+ check(not main.world.can_move(Vector2(3380,7380),15),"field solid actual World query")
+ check(not main.world.has_line_of_sight(Vector2(3300,7380),Vector2(3460,7380)),"actual World solid LOS")
+ # Actual swept movement along source southern open space. Old concept route
+ # markers (early/main/late) do not exist in the web provider.
  var last: Vector2=start.global_position
- for suffix in route:
-  var marker: Marker2D
-  for row in p.anchors("*"):
-   if row.id=="map11.field."+suffix:marker=row.marker
-  check(is_instance_valid(marker),"route Marker "+suffix)
-  var target: Vector2=marker.global_position
-  check(p.sweep_fraction(last,target,15,"field")==1.0,"authored swept route "+suffix)
+ for i in range(1,17):
+  var target: Vector2=start.global_position+Vector2(0,-i*10)
+  check(p.sweep_fraction(last,target,15,"field")==1.0 and main.world.can_move(target,15),"source southern route swept step "+str(i))
   main.player.global_position=target;last=target
+ # Explicit map-only gate-contact fixture, never natural traversal/E2E evidence.
+ main.player.global_position=sites.field_gate.global_position
  var field_before: Vector2=main.player.global_position
  var camera_before: Vector2=main.camera.global_position
  var enter: Dictionary=main.request_native_map11_transition("enter")
@@ -60,7 +58,7 @@ func _run() -> void:
  check(transport.snapshot().space=="arena","authoritative product space arena")
  check(main.source_state.read_current_p().hp==p_before.hp,"transport does not refill HP")
  check(main.world.can_move(sites.boss.global_position,15),"actual arena query")
- check(not main.world.can_move(sites.boss.global_position+Vector2(1750,0),15),"actual arena boundary")
+ check(not main.world.can_move(sites.boss.global_position+Vector2(2460,0),15),"actual arena boundary")
  main.player.global_position=sites.arena_exit.global_position
  check(main.request_native_map11_transition("leave").status=="NOT_READY","PC pending prevents early boss exit")
  check(main.player.global_position==sites.arena_exit.global_position and g._bossArena,"pending exit preserves actor and State")

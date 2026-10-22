@@ -10,7 +10,13 @@ func run() -> void:
  check(OS.get_user_data_dir().get_file().begins_with("EXODUSER-demo11-PARITY-INTRO-01-"),"isolated IO")
  var main=load("res://scenes/main.tscn").instantiate();main.set_meta("native_story_boot",true);root.add_child(main)
  for i in 6:await process_frame
- var story: Node=main.native_story_intro;story.set_process(false)
+ var story: Node=main.native_story_intro
+ if not is_instance_valid(story):
+  check(false,"fresh first-entry story required; saved-run restore must not substitute it")
+  main.queue_free();await process_frame
+  print("PARITY_INTRO_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"reason":"fresh_story_owner_missing"}))
+  quit(1);return
+ story.set_process(false)
  check(story.phase=="playing" and paused,"first-entry owns pause")
  check(story.current_cue().img=="00.png" and story.cue_index==0,"first entry begins INTRO not legacy world/PRO")
  story.advance(2500);story.advance(1500)

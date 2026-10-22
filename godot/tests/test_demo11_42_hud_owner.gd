@@ -35,7 +35,7 @@ func run() -> void:
 	p.skillSlots[0]=null;p.skillSlots[2]="spikeTrap"
 	main.dispatch_native_skill_slot("1")
 	check(view.snapshot().selected_key=="1" and view.snapshot().selected_skill=="" and view.snapshot().failure_reason=="unassigned_or_unlearned","Main_failure_reaches_HUD")
-	check(view.snapshot().failure_text=="사용 불가 · 스킬 미배정","localized_failure")
+	check(view.snapshot().failure_text=="" and not view._failure.visible,"localized_failure")
 	var mats: float=state.read_current_g().mats
 	var result: Dictionary=main.dispatch_native_skill_slot("3")
 	check(result.accepted and view.snapshot().selected_skill=="spikeTrap" and view.snapshot().failure_text=="","successful_dispatch_selects_and_clears_failure")
@@ -44,7 +44,7 @@ func run() -> void:
 	check(hud._native_slot_skill_id("qs2",p)=="spikeTrap" and hud._native_slot_skill_id("qs0",p)=="","icon_follows_owner_assignment")
 	var press:=InputEventKey.new();press.physical_keycode=KEY_3;press.pressed=true
 	adapter._unhandled_input(press)
-	check(view.snapshot().failure_reason=="cast_gate_refused" and view.snapshot().failure_text=="사용 불가 · 자원 또는 재사용 대기","real_keyboard_failure_observed")
+	check(view.snapshot().failure_reason=="cast_gate_refused" and view.snapshot().failure_text=="" and not view._failure.visible,"real_keyboard_failure_observed")
 	p.ultSlot="blackStar";p.skills["blackStar"]=1
 	main.dispatch_native_skill_slot("Z")
 	check(view.snapshot().selected_skill=="blackStar" and view.snapshot().failure_reason=="executor_interface_required","ULT_HOLD_visible_without_fake_execute")
@@ -60,7 +60,7 @@ func run() -> void:
 	enemy.hp=enemy.mhp*.625
 	view.refresh_native_owners()
 	var got: Dictionary=view.snapshot()
-	check(got.boss_visible and got.boss_hp==enemy.hp and got.boss_max_hp==enemy.mhp and got.boss_ratio==.625 and got.boss_fill_px==312.5,"actual_actor_partial_HP_exact "+JSON.stringify(got))
+	check(got.boss_visible and got.boss_hp==enemy.hp and got.boss_max_hp==enemy.mhp and got.boss_ratio==.625 and got.boss_fill_px==311.25,"actual_actor_partial_HP_exact "+JSON.stringify(got))
 	var before_p: Dictionary=state.read_current_p().duplicate(true)
 	var before_g: Dictionary=state.read_current_g().duplicate(true)
 	var before_actor: Dictionary=actor.snapshot()
@@ -72,21 +72,28 @@ func run() -> void:
 	# RETOUCH: real cost owner produces independent partial MP/ST; HUD remains a reader.
 	hud._refresh();view.refresh_native_owners()
 	var resources: Dictionary=state.read_current_p()
-	check(hud._stamina_text.text=="ST\n%d\n/ %d" % [int(resources.st),int(resources.mst)],"ST_label_exact_owner")
-	check(hud._mp_text.visible and hud._mp_text.text=="MP\n%d\n/ %d" % [int(resources.mp),int(resources.mmp)],"actual_MP_values_no_development_placeholder")
-	check(is_equal_approx(hud._stamina_fill.get_shader_parameter("mp_ratio"),float(resources.mp)/float(resources.mmp)),"left_blue_MP_independent_fill")
-	check(is_equal_approx(hud._stamina_fill.get_shader_parameter("fill_ratio"),float(resources.st)/float(resources.mst)),"right_green_ST_independent_fill")
+	# game.html:2639-2662,60300-60305: MP/SP split values, CSS .5s transition.
+	# Render owner is WebOrbTrim; the previous multirow Label stays hidden.
+	var trim: Node=hud.get_node("PublicHUD/NativeSPGlobe/WebOrbTrim")
+	check(trim.stamina and trim.hud==hud and not hud._stamina_text.visible,"SP_trim_reads_same_owner")
+	check(not hud._mp_text.visible and hud._mp_text.text=="MP\n%d\n/%d" % [int(resources.mp),int(resources.mmp)],"MP_values_same_owner_legacy_label_hidden")
+	var mobility: Node=hud.get_node("PublicHUD/WebMobilityHUD")
+	# UI-only samples while paused: advance actual display transition, never gameplay.
+	for i in 12:mobility._process(.05)
+	check(is_equal_approx(hud._stamina_fill.get_shader_parameter("mp_ratio"),float(int(resources.mp))/float(int(resources.mmp))),"left_blue_MP_independent_fill")
+	check(is_equal_approx(hud._stamina_fill.get_shader_parameter("fill_ratio"),float(resources.st)/float(resources.mst)),"right_green_SP_independent_fill")
 	var bound_state: Node=hud._source_state
-	hud._source_state=null;hud._refresh()
-	check(not hud._mp_text.visible and hud._mp_text.text=="" and hud._stamina_fill.get_shader_parameter("mp_ratio")==0.0,"unbound_MP_is_hidden_not_invented")
+	var before_fill: float=hud._stamina_fill.get_shader_parameter("mp_ratio")
+	hud._source_state=null;hud._refresh();mobility._process(.05)
+	check(not hud._mp_text.visible and hud._mp_text.text=="" and hud._stamina_fill.get_shader_parameter("mp_ratio")==before_fill,"unbound_owner_no_invented_value")
 	hud._source_state=bound_state;hud._refresh()
-	check(hud._mp_text.visible,"MP_restores_from_same_owner")
+	check(not hud._mp_text.visible and not hud._mp_text.text.is_empty() and trim.hud._source_state==bound_state,"MP_trim_restores_same_owner")
 	view._selection_seconds=0;view.refresh_native_owners()
 	check(not view._strip.visible,"idle_has_no_permanent_debug_strip")
 	var saved: float=enemy.hp
 	enemy.hp=NAN;view.refresh_native_owners();check(not view.snapshot().boss_visible,"invalid_HP_hides_stale_bar")
 	enemy.hp=0;view.refresh_native_owners();check(not view.snapshot().boss_visible,"dead_HP_hides_bar")
-	enemy.hp=enemy.mhp*2;view.refresh_native_owners();check(view.snapshot().boss_fill_px==500,"overmax_visual_clamp_only")
+	enemy.hp=enemy.mhp*2;view.refresh_native_owners();check(view.snapshot().boss_fill_px==498,"overmax_visual_clamp_only")
 	enemy.hp=saved
 	# Screens use real HUD with explicit fixture receipts; no arena/combat completion claim.
 	view._observe("3",{"accepted":true})

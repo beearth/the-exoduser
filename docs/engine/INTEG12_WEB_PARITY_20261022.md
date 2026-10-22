@@ -168,3 +168,8 @@ VISUAL VERDICT: RETOUCH.
 NEXT PASS: Windows 실제 경로·올바른 warrior 영상 skip prefix의 무주입18단계, Retry 실제 경로, PC live boss pattern/visibility 경계, 동등 상태 시각 검수 및 GUI focus 확보 측정.
 
 정리 상태·최종40자 SHA·원격 대조·worktree 제거 receipt는 _out/INTEG-12/DONE.txt와 cleanup-final.json에 남긴다. 사용자 실제 저장 폴더 접근0. 자기 Godot/node/browser만 종료하며 보호 PID81277은 유지한다.
+
+
+## 2026-10-22 INTEG-12b 하니스 후속
+
+아래 INTEG-12 결과는 기준 SHA 당시 이력이다. INTEG-12b의 fixture 수정·단회 실패·최종 미검증 경계는 별도 기록을 따른다. [정확한 계약·단회 검수·제약](INTEG12B_HARNESS_REGRESSION_20261022.md).

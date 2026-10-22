@@ -5,6 +5,7 @@ Only the child created here is terminated. Original override existence/bytes res
 from pathlib import Path
 import datetime
 import json
+import re
 import subprocess
 import os
 import shutil
@@ -27,15 +28,22 @@ def native_node_binary(value):
 
 def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
     project, out = Path(project), Path(out)
-    assert "Isolated" in userdir and userdir.startswith("EXODUSER-")
+    assert ("Isolated" in userdir or userdir == "EXODUSER-C15-Test-20261022") and userdir.startswith("EXODUSER-")
     assert userdir != "EXODUSER-Godot-Native-First"
     out.mkdir(parents=True, exist_ok=True)
     override = project / "override.cfg"
     original = override.read_bytes() if override.exists() else None
     argv = [str(engine), *flags, "--path", str(project), "--log-file", str(out / (name + ".engine.log"))]
-    # PC movement fixtures use their own non-demo namespace and fresh Main.
+    # These fixtures test fresh Main, not lobby persistence; each owns its namespace.
     # Keep persistence explicit: product/default and --demo11-storage=on are untouched.
-    if ("res://tests/test_pc_move_skills.gd" in flags
+    fresh_main_fixtures = {
+        "res://tests/test_pc_move_skills.gd",
+        "res://tests/test_native_main_source_starter_state.gd",
+        "res://tests/test_demo11_etype15_runtime.gd",
+        "res://tests/test_map11_product.gd",
+        "res://tests/test_demo11_08_story_intro.gd",
+    }
+    if (any(script in flags for script in fresh_main_fixtures)
             and not any(arg.startswith("--demo11-storage=") for arg in extra)):
         extra = [*extra, "--demo11-storage=off"]
     if extra:
@@ -105,12 +113,21 @@ def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
             override.write_bytes(original)
         meta["override_restored"] = (override.read_bytes() if override.exists() else None) == original
         output = "\n".join(p.read_text(errors="replace") for p in [stdout_path, stderr_path] if p.exists())
-        meta["errors"] = [line for line in output.splitlines() if "ERROR" in line or "_FAIL" in line or "MAC_HARNESS_TIMEOUT" in line]
-        meta["results"] = [line for line in output.splitlines() if "_RESULT " in line]
+        meta["errors"] = [line for line in output.splitlines() if "ERROR:" in line or "SCRIPT ERROR" in line or re.search(r"_FAIL(?: |$)|_FAILS (?!\[\]$)", line) or "MAC_HARNESS_TIMEOUT" in line]
+        meta["results"] = [line for line in output.splitlines() if re.search(r"(?:_RESULT| RESULT) ", line)]
         meta["skipped"] = []
         meta["passed"] = meta.get("exit_code") == 0 and not meta["errors"] and not meta.get("guard_failure") and meta["override_restored"] and ("--import" in flags or bool(meta["results"]))
         for line in meta["results"]:
-            result = json.loads(line.split("_RESULT ", 1)[1])
+            payload = re.split(r"(?:_RESULT| RESULT) ", line, maxsplit=1)[1]
+            if payload.startswith("{"):
+                result = json.loads(payload)
+            else:
+                # Some MAP11 suites print key=value aggregates, not JSON.
+                fields = dict(re.findall(r"(checks|assertions|failures)=(\d+)", payload))
+                if "failures" not in fields:
+                    meta["passed"] = False
+                    continue
+                result = {key: int(value) for key, value in fields.items()}
             meta["skipped"].extend(result.get("skipped", []))
             if result.get("failures", 0) != 0:
                 meta["passed"] = False

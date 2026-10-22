@@ -1,6 +1,7 @@
 extends SceneTree
 ## Read-only product integration driver. Checkpoints never make the whole route PASS.
 const USERDIR="EXODUSER-demo11-47h-Isolated-20261021"
+const VIDEO=preload("res://scripts/parity_video_intro.gd")
 const Store=preload("res://port_modules/save_adapter/demo_local_storage.gd")
 const Shared=preload("res://port_modules/save_adapter/demo_shared_local_storage.gd")
 const Drop=preload("res://port_modules/kill_reward/drop_item_source.gd")
@@ -170,8 +171,12 @@ func place_in_natural_contact() -> Dictionary:
   if enemy.get("state")!="idle":value*=.01
   if value>score:best=enemy;score=value;best_cooldown=cooldown
  if not is_instance_valid(best):return {"placed":false}
- main.player.global_position=best.global_position+Vector2(24,0)
- return {"placed":true,"actor":best.get_instance_id(),"etype":best.etype,"distance":24.0,"state":best.state,"cooldown":best_cooldown}
+ steer_input(best.global_position+Vector2(24,0))
+ return {"placed":true,"actor":best.get_instance_id(),"etype":best.etype,"distance":main.player.global_position.distance_to(best.global_position),"state":best.state,"cooldown":best_cooldown}
+func steer_input(at: Vector2) -> void:
+ var delta: Vector2=at-main.player.global_position
+ var direction: Vector2=delta.normalized() if delta.length()>25 else Vector2.ZERO
+ boss_input("move_up",direction.y<-.25);boss_input("move_down",direction.y>.25);boss_input("move_left",direction.x<-.25);boss_input("move_right",direction.x>.25)
 func boss_input(action: String,pressed: bool) -> void:
  var event:=InputEventAction.new();event.action=action;event.pressed=pressed
  main.player.handle_native_input_event(event)
@@ -237,7 +242,8 @@ func run() -> void:
  var first:=Stamp.new();first.process_mode=Node.PROCESS_MODE_ALWAYS;first.process_physics_priority=-1000000;first.physics=before_physics;root.add_child(first);sample_nodes.append(first)
  var last:=Stamp.new();last.process_mode=Node.PROCESS_MODE_ALWAYS;last.process_physics_priority=1000000;last.physics=after_physics;last.process=process_sample;root.add_child(last);sample_nodes.append(last)
  begin("isolation")
- var isolated: bool=DisplayServer.get_name()=="headless" and ProjectSettings.get_setting("application/config/use_custom_user_dir",false)==true and OS.get_user_data_dir().get_file()==USERDIR
+ var expected_userdir: String=arg("--isolated-userdir",USERDIR)
+ var isolated: bool=expected_userdir.begins_with("EXODUSER-demo11-") and expected_userdir.contains("Isolated") and DisplayServer.get_name()=="headless" and ProjectSettings.get_setting("application/config/use_custom_user_dir",false)==true and OS.get_user_data_dir().get_file()==expected_userdir
  if not isolated:
   await done("FAIL","headless/custom-userdir guard refused; no stores opened");await fail_remaining("isolation_guard");finish();return
  store=Store.new();var shared:=Shared.new()
@@ -247,10 +253,31 @@ func run() -> void:
  begin("new_game")
  screen=load("res://scenes/demo_lobby.tscn").instantiate();screen.set_meta("native_lobby_entry_enabled",true)
  screen.set_meta("native_audio_source_root",arg("--source-root"));screen.set_meta("native_story_source_root",arg("--source-root"));root.add_child(screen);current_scene=screen
+ # The lobby also starts gate/world movie on its first deferred frame.
+ # Buttons must never be invoked beneath it: warrior would inherit paused=true.
+ await process_frame;await process_frame
+ key(KEY_ESCAPE,true);await wait_wall(5150);key(KEY_ESCAPE,false)
+ if paused:
+  await done("FAIL","lobby cinematic did not release pause after real ESC hold");await fail_remaining("lobby_cinematic");finish();return
  screen.cards[0].pressed.emit()
  await done("PASS" if screen._form.visible and screen.menu.selected==0 else "FAIL","",{"input":"actual slot0 Button.pressed"})
  begin("character_create")
- screen.character_buttons[0].pressed.emit();screen.name_input.text="자동 순례자";screen._create();action_end()
+ # Observe this startup allocation once; no per-frame child-list polling.
+ var character_movie: Dictionary={"node":null}
+ screen.child_entered_tree.connect(func(child: Node):
+  if child.get_script()==VIDEO:character_movie.node=child)
+ screen.character_buttons[0].pressed.emit();screen.name_input.text="자동 순례자";screen._create()
+ # character-story-player.js:4,51-63: real held Space, 1200ms (96.4s movie).
+ root.mode=Window.MODE_WINDOWED;root.show()
+ var movie_deadline:=Time.get_ticks_msec()+5000
+ while Time.get_ticks_msec()<movie_deadline and not is_instance_valid(character_movie.node):await process_frame
+ var movie: Node=character_movie.node
+ if not is_instance_valid(movie) or movie.phase!="playing" or movie.group!="warrior":
+  await done("FAIL","character story owner missing");await fail_remaining("character_story_missing");finish();return
+ var story_started:=Time.get_ticks_msec()
+ key(KEY_SPACE,true);await wait_wall(1350);key(KEY_SPACE,false)
+ var character_story_ms: int=Time.get_ticks_msec()-story_started
+ action_end()
  for i in 300:
   await process_frame
   if is_instance_valid(current_scene) and current_scene.has_method("request_native_lobby_entry"):main=current_scene;break
@@ -264,21 +291,15 @@ func run() -> void:
   if stage_index==0:boss_signal_count+=1)
  var created: Dictionary=store.read_json("hellsave_demo_0")
  var char_ok: bool=created.get("ready",false) and created.get("found",false) and created.value.get("charIdx")==0 and main.player.get_native_character_profile_snapshot().get("index")==0
- await done("PASS" if char_ok else "FAIL","",{"actual_Metadata_IO":created.get("found",false),"active_slot":store.get_item("hellsave_demo_active").get("raw"),"character_index":main.player.get_native_character_profile_snapshot().get("index"),"input":"char0 Button + name + actual create callback"})
+ await done("PASS" if char_ok else "FAIL","",{"character_story_hold_ms":character_story_ms,"character_story_input":"real Space press/release; no finish endpoint","actual_Metadata_IO":created.get("found",false),"active_slot":store.get_item("hellsave_demo_active").get("raw"),"character_index":main.player.get_native_character_profile_snapshot().get("index"),"input":"char0 Button + name + actual create callback"})
  begin("intro_skip")
  var story: Node=main.get("native_story_intro");var intro_ok:=true;var media_phase:="absent"
  if is_instance_valid(story) and story.phase in ["playing","error"]:
   media_phase=story.phase;key(KEY_SPACE,true);await wait_wall(2150);key(KEY_SPACE,false);await settle(2)
-  if story.phase!="done":
-   mark_checkpoint("headless held-key routing unavailable; existing story skip action endpoint")
-   story.finish("skip")
   intro_ok=story.phase=="done" and story.handoff_count==1
  var guide: Node=main.get("source_intro_sequence")
  if is_instance_valid(guide) and guide.phase=="guide":
   key(KEY_SPACE,true);await wait_wall(2150);key(KEY_SPACE,false)
-  if guide.phase=="guide":
-   mark_checkpoint("headless guide input fallback: actual skip_requested UI endpoint")
-   guide.guide_panel.skip_requested.emit()
  if is_instance_valid(guide):
   var deadline:=Time.get_ticks_msec()+7000
   while Time.get_ticks_msec()<deadline:
@@ -312,14 +333,14 @@ func run() -> void:
  # Placement at a provider hole only; scheduler owns RNG/timers/etype/admission.
  if adapter!=null and adapter.is_current():
   hole_anchors=product.provider().anchors("hole")
-  if not hole_anchors.is_empty():main.player.global_position=hole_anchors[0].marker.global_position
+  if not hole_anchors.is_empty():steer_input(hole_anchors[0].marker.global_position)
  while Time.get_ticks_msec()<spawn_deadline:
   for e in main.world.get_enemies():
    if is_instance_valid(e) and e.get("alive")==true and e.get("etype") in [1,4] and e.has_method("receive_damage") and is_instance_valid(main.native_natural_enemies) and main.native_natural_enemies.owns_actor(e):target=e;break
   if is_instance_valid(target):break
   if not hole_anchors.is_empty():
    var visit: int=int((Time.get_ticks_msec()-spawn_started)/7000)%hole_anchors.size()
-   main.player.global_position=hole_anchors[visit].marker.global_position
+   steer_input(hole_anchors[visit].marker.global_position)
   await physics_frame
  var regions: Node=main.get_node_or_null("NativeRegions")
  var region_before: int=regions.snapshot().kill_calls if is_instance_valid(regions) else 0
@@ -327,12 +348,12 @@ func run() -> void:
  var home: Vector2=main.player.global_position;var attacks:=0;var accepted:=0;var event_start:=event_rows.size()
  var crossbow_observation: Dictionary={}
  if is_instance_valid(target):
-  mark_checkpoint("placement only; observe actual automatic crossbow for 3s, then existing melee input; no injected damage")
+  mark_checkpoint("actual move/aim inputs; observe automatic crossbow for 3s, then existing melee request; no placement or damage injection")
   var bow_sample_start: int=active.physics_samples.size()
   var bow_before: Dictionary=main.native_auto_crossbow.snapshot()
   var bow_deadline:=Time.get_ticks_msec()+3000
   while target.alive and Time.get_ticks_msec()<bow_deadline and main.player.hp>main.player.max_hp*.2:
-   main.player.global_position=target.global_position+Vector2(-180,0)
+   steer_input(target.global_position+Vector2(-180,0))
    await settle(6)
    if str(main.native_auto_crossbow.reason).begins_with("field_mob_owner_unported:"):break
   crossbow_observation=main.native_auto_crossbow.snapshot().duplicate(true)
@@ -346,7 +367,7 @@ func run() -> void:
    var deadline:=Time.get_ticks_msec()+45000
    while target.alive and attacks<200 and Time.get_ticks_msec()<deadline and main.player.hp>main.player.max_hp*.2:
     if main.player.state!="idle":await physics_frame;continue
-    main.player.global_position=target.global_position+Vector2(-(47+float(target.radius)-8),0);main.player.facing=Vector2.RIGHT
+    steer_input(target.global_position+Vector2(-(47+float(target.radius)-8),0));boss_aim(target.global_position)
     attacks+=1
     if main.player.request_attack():accepted+=1
     main.player.release_attack()
@@ -358,13 +379,7 @@ func run() -> void:
  await done("PASS" if killed else "NOT_READY","" if killed else ("MAP11_or_initial_combat_target_absent" if not is_instance_valid(target) else "actual combat kill not completed; preserve PC halt/owner boundary"),{"automatic_crossbow":crossbow_observation,"kill_path":"melee" if attacks>0 else "automatic_crossbow","natural_origin_before":origin_before,"natural_origin_after":region_after,"region_before":region_before,"spawn_counts":main.native_natural_enemies.counts if is_instance_valid(main.native_natural_enemies) else {},"attacks":attacks,"accepted":accepted,"killed":killed,"events":event_rows.slice(event_start),"target_id":target.data.get("id") if is_instance_valid(target) else "absent","HP_or_damage_fabricated":false})
  begin("item_pickup")
  var inv: Dictionary=main.source_state.read_current_inventory();var before_size: int=inv.bag.size();var records: Array=main.source_state.read_native_drop_records()
- if records.is_empty():
-  mark_checkpoint("source rollDrop RNG fixture at journal boundary; kill->loot linkage remains NOT_READY")
-  var dropper=Drop.new(func(tag: String)->float:
-   if tag in ["drop_gate","drop_rarity","drop_slot","drop_element"]:return 0.0
-   return .99 if tag.ends_with("_gate") else .5)
-  var rolled: Variant=dropper.roll_drop({"ib":false,"etype":0,"elite":0,"drop_tier":0,"x":main.player.global_position.x,"y":main.player.global_position.y},{"stage":0,"drop_bonus":1.0,"min_pick_rar":0,"min_pick_lv_thr":-1,"plv":int(main.source_state.read_current_p().lv),"crystal_bag_len":0,"crystal_bag_max":9999,"stone_bag_len":0,"stone_bag_max":9999})
-  if rolled is Dictionary and rolled.get("world_items") is Array:main.source_state.append_native_drop_records(main,rolled.world_items)
+ # INTEG-12: no RNG fixture or append_native_drop_records fallback.
  records=main.source_state.read_native_drop_records()
  if not records.is_empty() and records[0].get("item") is Dictionary:item=records[0].item
  await settle(3);key(KEY_R,true);await process_frame;key(KEY_R,false);await settle(3)
@@ -378,7 +393,7 @@ func run() -> void:
  begin("auto_potion")
  # Count from stage entry, including a real natural heal during cooldown wait.
  # Stop waiting on use so its actual material/cooldown receipt remains observable.
- main.player.global_position=home
+ steer_input(home)
  var potion: RefCounted=main.get("source_potion")
  var potion_entry: Dictionary={"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"uses":potion.get_snapshot().uses if is_instance_valid(potion) else -1}
  var used_before: int=int(potion_entry.uses)
@@ -393,7 +408,7 @@ func run() -> void:
     away+=(main.player.global_position-enemy.global_position).normalized()
   if away.length_squared()>0:
    var point: Vector2=main.player.global_position+away.normalized()*12
-   if main.world.can_move(point,main.player.radius):main.player.global_position=point
+   if main.world.can_move(point,main.player.radius):steer_input(point)
   await physics_frame
  var potion_after_wait: Dictionary={"uses":potion.get_snapshot().uses if is_instance_valid(potion) else -1,"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"wait_ms":Time.get_ticks_msec()-wait_start,"timed_out":Time.get_ticks_msec()>=cooldown_deadline}
  var damage_path: Array=[]
@@ -409,10 +424,9 @@ func run() -> void:
  await done(verdict(used,pot_ok),"" if pot_ok else "real hurtP/iframe/threshold/clock did not produce auto-potion",{"entry":potion_entry,"after_wait":potion_after_wait,"damage_path":damage_path,"request_loop_exit":"used" if used else ("hp_le_1" if main.player.hp<=1 else "deadline_or_owner_unavailable"),"uses_before":used_before,"uses_after":potion.get_snapshot().uses if is_instance_valid(potion) else 0,"damage_requests_through_PC":requests,"HP_written_directly":false,"mats_before":mats_before,"mats_after":g.get("mats"),"runtime":main.source_state.read_native_potion_runtime()})
  begin("level_up")
  var p: Dictionary=main.source_state.read_current_p();var lv_before: int=int(p.lv)
- mark_checkpoint("XP reward input through actual State.addExp; no level/point setters or new formula")
- var xp: Dictionary=main.source_state.apply_native_add_exp(main,EXP_CURVE.required_exp(lv_before)*4)
- var level_ok: bool=xp.get("applied",false) and int(p.lv)>lv_before and int(p.lv)<=100
- await done(verdict(xp.get("applied",false),level_ok),"" if level_ok else str(xp.get("reason","XP_owner_not_ready")),{"before":lv_before,"after":p.lv,"SP":p.sp,"AP":p.ap,"source_curve_reused":true})
+ # INTEG-12: observe natural kill reward only; never inject XP.
+ var level_ok: bool=int(p.lv)>initial_level and int(p.lv)<=100
+ await done("PASS" if level_ok else "NOT_READY","" if level_ok else "natural combat XP did not level up",{"before":initial_level,"after":p.lv,"SP":p.sp,"AP":p.ap,"XP_injected":false})
  begin("stat_passive_invest")
  var growth_before: Dictionary=main.read_native_growth().duplicate(true)
  var growth: Dictionary={};var queue: Dictionary={};var commit: Dictionary={}

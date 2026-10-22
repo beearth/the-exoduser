@@ -53,7 +53,7 @@ func _run() -> void:
 	for id in ["entry","close","wall","clear","body","bullets"]:
 		arena.select_board(id)
 		check(arena.is_inside_arena(arena.player.position,15),"board player fits "+id)
-	check(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/main.tscn","product main path unchanged")
+	check(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/demo_lobby.tscn","web index lobby remains product entry")
 	arena.free()
 	print("MAP11_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"live_combat":false,"d05":"circular smaller"}))
 	quit(0 if failures == 0 else 1)
