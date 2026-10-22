@@ -29,6 +29,14 @@
 - native_story_intro/parity_intro_canvas: 합본 액자·p01~p17·기본 PRO 제품 참조 제거, 원본00~20 이미지·cam/fade/vfx·화자·타이핑·입력대기·Space2000ms. 금빛 소환진 screen 합성/시작위치와 지역명3.1초 표시 복원.
 - Mac 하니스 oracle Node 절대 경로 정규화/실행 검증. 23b1281/0, restore126863/0, intro12/0. 최종 입력 E2E0실패·주입0·SCRIPT ERROR0.
 - 1920×1080 1x 비교8쌍과 잔여 RETOUCH/영상 HOLD는 PARITY_INTRO_01_20261022.md 및 PARITY_DIFF_LIST_20261022.md. 보스/아레나/맵 파일·PC 수치 writer 수정0.
+## 2026-10-22 PC-SKILL-WRITERS — SkillForge '일괄 레벨업'·'추천 자동' writer
+
+- 기준 Mac PARITY-UI-04 e867f9b3, branch claude/pc-skill-writers-20261022, main 미병합. Mac 소유 파일 수정 0, 수식 복제 0(SK-S05e `batch_recommend.gd`를 DEMO11-17 실제 원장 트랜잭션에 연결).
+- API `main.request_skill_batch_level_up(id)` / `main.request_skill_recommend_auto(id)`. UI-04 Forge의 `manage("batch"/"recommend","")`가 이미 같은 명령을 보내므로, Mac은 버튼 비활성 인자만 풀면 된다(PSW-M1). 0건은 `nothing_to_level_up`/`nothing_to_auto_build` + 원본 showPH 문구 데이터.
+- 원본 G3090 → `_skillBatchUp` G47192–47233, `_skillRecAuto` G47299–47326. 원본 VM oracle 14행 0불일치(SP 부족·레벨락·악의 0·일시정지·Lv20 fixture). 실제 웹 버튼 클릭 후 원장 = Godot 원장(2장면).
+- 원본 사실: 모든 `upMat`=0, SP 0이어도 chainSlash(spCost 0)는 추천 자동이 습득한다. 2_1 문서의 pick 단계 4→6 정정.
+- 회귀: 신규 80/0, Mac skill 105/0, recalc 49/0, runtime_stat 288/0, qe 155/0, pack_b 378/0, life 101/0, final_death 61/0, revive 51/0(`--demo11-storage=off`, INTEG-11 기본 저장소가 PC 격리명에서 부팅을 막기 때문). pack_b_mac 306/29와 E2E 204행 정지는 base에서도 같다. pms 256/1은 렌더 타이밍 검사 flaky다(base 8회 중 4회, 이 브랜치 8회 중 6회 실패).
+- 화면 전체는 Mac 표시 차이가 남아 RETOUCH다. [계약](engine/PC_SKILL_WRITERS_CONTRACT_20261022.md)·[보고서](engine/orders/reports/pc-skill-writers_REPORT.md). 로그 `G:/exoduser-wt/_out/pc-skill-writers/`.
 ## 2026-10-22 PARITY-UI-02 — 인벤토리·사망/재시작 원본 부분 이식
 
 - 원본fb67658b branch 계속. 웹 snapshot4d911cdd, main 차이표d79ee3e67의 PC 원문 보존. 맵·카메라·PC 코어/테스트·main.tscn 변경 없음.
