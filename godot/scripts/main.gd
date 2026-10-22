@@ -133,6 +133,7 @@ var _native_source_object_registration: Dictionary = {}
 var _native_demo11_policy: Dictionary = {}
 var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
+var native_demo_boss_core: Node2D # PC-BOSS-CORE 2026-10-22: 1-1 보스 전투 owner
 var native_demo_encounter: Node
 var native_demo_anglers: Node2D
 var native_demo_worms: Node2D
@@ -168,7 +169,10 @@ func spawn_native_demo_boss(request: Dictionary) -> Dictionary:
 	if not current is Dictionary: return {"status":"NOT_READY","reason":"current_player_unavailable"}
 	var inputs := request.duplicate(true)
 	inputs["player_level"] = current.lv
-	return native_demo_boss_actor.spawn(inputs)
+	var receipt: Dictionary = native_demo_boss_actor.spawn(inputs)
+	if receipt.get("status") == "READY" and is_instance_valid(native_demo_boss_core):
+		receipt["pc_boss_core"] = native_demo_boss_core.adopt_spawn(receipt) # PC-BOSS-CORE: AI 틱·HP owner 인수
+	return receipt
 
 func bind_native_demo_boss_owner(command: String, handler: Callable) -> bool:
 	return is_instance_valid(native_demo_boss_actor) and native_demo_boss_actor.bind_owner(command,handler)
@@ -452,6 +456,7 @@ func _ready() -> void:
 		_install_native_waking_intro_once()
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
+	native_demo_boss_core = preload("res://scripts/native_demo11_boss_core.gd").install_native_boot(self) # PC-BOSS-CORE
 	native_pcib_death_effects=preload("res://scripts/native_demo11_pcib_death_effects.gd").new()
 	native_pcib_death_effects.configure(self)
 

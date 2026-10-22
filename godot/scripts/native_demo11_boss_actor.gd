@@ -9,6 +9,7 @@ const MELEE = preload("res://scripts/native_ch1_boss_melee_states.gd")
 const MOVEMENT = preload("res://scripts/native_ch1_boss_movement_states.gd")
 const PROJECTILES = preload("res://scripts/native_ch1_boss_projectile_patterns.gd")
 const CONTROL = preload("res://scripts/native_ch1_boss_control_states.gd")
+const MISC = preload("res://scripts/native_ch1_boss_misc_states.gd") # PC-BOSS-CORE 최소 훅: BC07~10 밖 1장 상태(shock/summon/spin/mine/poisonDash)
 signal owner_request(request: Dictionary)
 var _main: Node
 const CLAIM := "demo11_boss_actor_owner"
@@ -286,6 +287,9 @@ func _dispatch_switch() -> void:
 	elif state in CONTROL.STATES:
 		_module = "control"
 		_token_from(CONTROL.begin_tick(0,_enemy,_frame.sp,_frame.player,_context()),"done")
+	elif state in MISC.STATES: # PC-BOSS-CORE 최소 훅(40749–40758/40798–40814/40869–40903/41327–41335)
+		_module = "misc"
+		_token_from(MISC.begin_tick(0,_enemy,_frame.sp,_frame.player,_context()),"done")
 	elif state in ["recover","bossRec"]:
 		_accept_scalar(PHASE.clock_step(0,"recovery_switch",_enemy,_frame.sp,{},_rng),"done")
 	else:
@@ -305,6 +309,7 @@ func _step_module(response: Variant) -> Dictionary:
 		"projectiles": return PROJECTILES.next_pattern(_token,response,_rng)
 		"control": return CONTROL.next_tick(_token,response,_rng)
 		"start": return START.next_start(_token,response,_rng)
+		"misc": return MISC.next_tick(_token,response,_rng) # PC-BOSS-CORE 최소 훅
 	return {"status":"NOT_READY","reason":"unknown_module"}
 
 func _accept_packet(packet: Dictionary) -> void:

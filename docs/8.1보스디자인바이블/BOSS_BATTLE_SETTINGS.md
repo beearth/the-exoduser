@@ -652,3 +652,46 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | QA 경계 | VFX 대조는 기존 mirrored Y+FrontSide culling을 제거하는 QA 전용 DoubleSide fixture. production side/카메라 변경 없음; 전체 공격 가시성·장시간 전투 QA는 별도 |
 | 배포·소스 제어 | NW.js FILES 및 web 필수 목록에 새 boot/로컬 JS 포함. MIT LICENSE·provenance도 함께 추적/배포 필요. .gitignore의 전역 build/ 예외는 assets/vendor/three-r160/build/three.module.js와 상위 디렉터리로 한정. .git 쓰기 제한으로 커밋 미완료, 실제 패키징/업로드 미실행 |
 | 세부 SSOT | [파일·숫자·SHA256·수명·검증 범위](../12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md) |
+
+## 2026-10-22 Godot 이식 — 1-1 다크드루이드 전투 owner(PC) · 보스 공간 축소 S
+
+원본 game.html 수치는 바꾸지 않았다. Godot 이식에서 1-1(si0) 보스의 AI 틱·HP/쉴드/포이즈·hurtE·부활/최종 사망을 PC 보스 코어(`godot/scripts/native_demo11_boss_core.gd` 외)가 맡는다. 계약·원본 행·검증: [PC_BOSS_CORE_CONTRACT_20261022](../engine/PC_BOSS_CORE_CONTRACT_20261022.md).
+
+### 사용자 결정(2026-10-22)과 적용 상태
+
+| 항목 | 값 | 상태 |
+|---|---|---|
+| 카메라 줌 | ×2.5 (플레이어 화면 높이 48→약119px) | Mac zoom-01 기본값 반영 대기(테스트 `--zoom-preview`) |
+| 보스 공간 균일 축소 `BOSS_SPACE_SCALE` | S = 1/2.5 = **0.4** | PC 경계 변환 구현·검증 완료. **제품 effective S = 1.0** — Mac 표시/투사체/actor 공간 질의 경계(계약 §8 M1~M3) 준비 전에는 켜지 않음 |
+| 변환 | 월드 = O + S·(보스공간 − O), O = 보스 스폰 지점 | S=1 이면 변환 함수가 입력을 그대로 반환(비트 동일) |
+
+### S 적용 표(1-1 드루이드 대표 수치, 원본 → S=0.4 월드)
+
+| 분류 | 원본 값(보스 공간) | S=0.4 월드 | 원본 행 |
+|---|---:|---:|---|
+| 몸 반경 e.r | 44 | 17.6 | 31137–31140 |
+| 이동 속도 speed | 0.5 px/tick | 0.2 | 31138 |
+| 근접 접촉 d < r+P.r+8 | 44+P.r+8 | 17.6+P.r+3.2 | 40500 |
+| 돌진 속도 / 접촉 여유 | 35·sp / +80 | 14·sp / +32 | 40664–40686 |
+| 점프 착지 판정 | 300 | 120 | 40705 |
+| 강타(slam) 반경 | 1000+si·30+phase·80 | 400+… ×0.4 | 41125 |
+| 충격파 shockMax / 확장 | 1000+si·50 / 4.5·sp | 400 / 1.8·sp | 40749–40758 |
+| 회전(spin) 범위 | 500+si·15 | 200 | 40874 |
+| 잡기 포획 | r+P.r+200 | 17.6+P.r+80 | 40846 |
+| 원소구·탄 속도 | 4.4/6/6.8 px/tick | ×0.4 | BC09 |
+| 넉백(보스→플레이어) | 7/8/10/12/14/15/18 | ×0.4 | 접촉 본문 |
+| 시야 어그로 / 이동 SFX 거리 | 800 / 1000 | 320 / 400 | 38682 / 38667 |
+| 큐 반경(추적장판 R450·독늪 R175·용암 R150·균열 explR) | 원본 | ×0.4 | 37015–37129 |
+
+**제외(그대로)**: st2·쿨다운·텔레그래프·프레임 수·life·delay·interval·_reviveTimer(180)·각도/각속도(.015 rad, .35 rad)·데미지 배수·HP·쉴드·포이즈·부활 확률·부활력(200)·RNG 순서.
+
+### 이식 상태(1-1)
+
+| 항목 | 상태 |
+|---|---|
+| AI 틱(World 위상) · updateE prefix/suffix | 완료(원본 VM 400케이스 일치) |
+| 플레이어→보스 hurtE(근접·석궁·스킬, 쉴드→HP) | 완료(기존 executor 보스 분기) |
+| 보스→플레이어 접촉 9종·전역 큐 6종·지뢰·리듬탄·ORB | 완료(원본 VM 500케이스 일치). 플레이어 독·속박(P.poison/_webSlow) writer 미이식 |
+| 1차 즉시 부활·2차 폴백·완전 사망 | 완료(원본 VM 195케이스 일치), PCI-11 final 1회 → encounter 출구·상자 |
+| 소환(summon) 소환체 | 미이식 — 위치·원소·etype 추첨만, mkEn 생성 RNG 미소비(원본과 RNG 흐름 차이) |
+| 페이즈/부활 연출 일부(VFX·SFX·grand VFX) | 표시 미이식(카운터 기록) |
