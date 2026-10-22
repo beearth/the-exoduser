@@ -51,6 +51,7 @@ func _run() -> void:
 		"clear": await run_clear()
 		"forge": await run_forge()
 		"growth": await run_growth()
+		"lesson": await run_lesson()
 		_: L("unknown_mode", mode)
 	var f := FileAccess.open(out.path_join("godot_log_%s.json" % mode), FileAccess.WRITE)
 	f.store_string(JSON.stringify(logrows, "\t")); f.close()
@@ -150,7 +151,7 @@ func wipe_store() -> void:
 	L("wiped_store_files", n)
 
 ## 로비 생성→본편 진입→스토리·가이드·레슨 건너뛰기(사용자 경로와 같은 진입)
-func enter_play() -> bool:
+func enter_play(stop_at_lesson: bool = false) -> bool:
 	set_meta("parity_lobby_cinematic_seen", true)
 	var screen = load("res://scenes/demo_lobby.tscn").instantiate()
 	screen.set_meta("native_lobby_entry_enabled", true)
@@ -171,6 +172,7 @@ func enter_play() -> bool:
 		if is_instance_valid(seq.lesson_flow) and seq.lesson_flow.active: break
 		await process_frame
 	await secs(0.5)
+	if stop_at_lesson: return true
 	if is_instance_valid(seq) and is_instance_valid(seq.lesson_flow) and seq.lesson_flow.active: seq.lesson_flow.skip_all()
 	await secs(1.5)
 	return true
@@ -223,3 +225,7 @@ func run_growth() -> void:
 	if is_instance_valid(gp):
 		gp.select_node("pMagic"); await secs(0.8); await shot("081_growth_magic")
 		gp.close_panel()
+
+func run_lesson() -> void:
+	if not await enter_play(true): return
+	await secs(1.5); await shot("0600_lesson")
