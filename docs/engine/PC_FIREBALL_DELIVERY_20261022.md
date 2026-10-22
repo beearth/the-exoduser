@@ -38,7 +38,7 @@
 - 비교 격자: `_out/pc-input-parity/compare/fireball_v2.jpg`, 대표 `docs/engine/parity_refs/full_sweep/fireball_v2.jpg`.
 
 ## 4. 남은 차이·미이식(기록)
-- 중독 DOT 틱: 적 측 poison 틱 소비자가 없어 필드(poison/poisonT/poisonStk/_poisonPool)만 meta로 기록한다. 웹은 10초간 DOT 피해(관측: 웹 더미 −39 추가). **P1, PC 몫**.
+- 중독 DOT 틱: (후속 커밋에서 수정) 원본 updateE 38733~38741대로 `_tick_poison`이 소비한다. poisonT−=sp/pDotDur, 초 경계마다 pDmg=max(1,~~(pool/_pSec×pDotDmg)), pool−=max(1,~~(pool/_pSec)), hurtE(e,pDmg,undefined,true,{dot,shieldHit}), 초록 파편 1+~~(stk/3). pDotDmg=(1+pAtk×.1+_altAtk+pHuman×.05+pDot×.15)×0.7, pDotPool=1+pDot×.05, pDotDur=1+pDot×.1. 검증: 폭발 1회 뒤 10초 동안 틱 10회(웹 관측 −39와 같은 크기: pool 564/10초×0.7≈39).
 - 필드몹(`_hurtFieldMobs`) 대상은 1-1에 연결된 owner가 없어 false.
 - shQuery 순서는 `World.get_enemies()` 순서 근사, homing slot_index는 악의구끼리의 순서(웹은 pProjs 전체 순서).
 - 비행 진행은 60Hz 물리 틱에 sp=World dt_sp(=1). 웹은 렌더 프레임마다 `_dtSp`.

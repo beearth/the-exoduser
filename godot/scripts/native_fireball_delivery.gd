@@ -13,7 +13,7 @@ extends Node
 ##   × _mbSc=clamp(√(r/80),.8,2.5), 'lighter', TVFX2 진행 54781~54797 + fireball 샘플(.9, _r(.7,.1))·shake(5)·
 ##   파편 12(ELC[3]).
 ## - 그리기 59105 _drawMaliceOrbTrail(24293)·59153 vfx_magic_orb(7×3, 20f, 171px, r×5, lighter .85×fa).
-## 미이식(기록): 중독 DOT 틱 소비자(적 측 poison 틱 owner 없음 — 필드만 기록), 필드몹(_hurtFieldMobs) 대상 없음,
+## 중독 DOT: 이 owner가 건 중독을 원본 updateE 38733~38741대로 틱 소비(_tick_poison). 미이식(기록): 필드몹(_hurtFieldMobs) 대상 없음,
 ## 유니크 확장 4종(값 0이면 원본도 비활성), shQuery 순서는 World.get_enemies 순서 근사.
 const Flight = preload("res://port_modules/fireball_flight_source/producer.gd")
 const NORMAL_HURTE = preload("res://scripts/native_normal_enemy_hurte.gd")
@@ -181,7 +181,7 @@ func _hit_side_effects(e: Node, p: Dictionary, dmg: int, mult: float, ang: float
 	return true
 
 ## 24599 e.poison=1; poisonT=max(,600); poisonStk=min(10,stk+1); stk<10 → _poisonPool += pDotPool()×dmg×2
-## 적 측 중독 틱 소비자가 아직 없어 필드만 기록한다(피해 0, 기록).
+## 이 owner가 건 중독은 아래 _tick_poison(원본 updateE 38733~38741)이 소비한다.
 func _apply_poison(e: Node, dmg: float) -> bool:
 	if not is_instance_valid(e): return true
 	var stk: int = int(e.get_meta("poisonStk", 0))
@@ -189,8 +189,48 @@ func _apply_poison(e: Node, dmg: float) -> bool:
 	e.set_meta("poisonT", maxf(float(e.get_meta("poisonT", 0.0)), POISON_T))
 	e.set_meta("poisonStk", mini(10, stk + 1))
 	if stk < 10:
-		e.set_meta("_poisonPool", float(e.get_meta("_poisonPool", 0.0)) + dmg * 2.0)
+		e.set_meta("_poisonPool", float(e.get_meta("_poisonPool", 0.0)) + _passive("pDot") * 0.05 * dmg * 2.0 + dmg * 2.0) # pDotPool()=1+pDot×.05
 	return true
+
+func _passive(key: String) -> float:
+	var ps: Variant = source_state.read_current_passives() if is_instance_valid(source_state) and source_state.has_method("read_current_passives") else null
+	if ps is Dictionary and (ps.get(key) is int or ps.get(key) is float): return float(ps[key])
+	return 0.0
+
+## 28005~28015 _passDmgSum('dot') = (1 + pAtk×.10 + P._altAtk + pHuman×.05 + pDot×.15) × 0.7
+func _p_dot_dmg() -> float:
+	var p: Variant = source_state.read_current_p() if is_instance_valid(source_state) else null
+	var alt: float = float(p.get("_altAtk", 0.0)) if p is Dictionary and (p.get("_altAtk") is int or p.get("_altAtk") is float) else 0.0
+	return (1.0 + _passive("pAtk") * 0.10 + alt + _passive("pHuman") * 0.05 + _passive("pDot") * 0.15) * 0.7
+
+## 38733~38741 중독 틱(원본 updateE): poisonT-=sp/pDotDur, 초 경계마다 pDmg=max(1,~~(pool/_pSec×pDotDmg)),
+## pool-=max(1,~~(pool/_pSec)), hurtE(e,pDmg,undefined,true,{dot:true,shieldHit:true}) + 초록 파편 1+~~(stk/3).
+## poisonT<=0 → poison=0·stk=0·pool=0.
+func _tick_poison(sp: float) -> void:
+	var dur: float = 1.0 + _passive("pDot") * 0.10 # pDotDur
+	for e in get_parent().get_enemies():
+		if not is_instance_valid(e) or e.get("alive") != true or not e.has_meta("poisonT"): continue
+		var t: float = float(e.get_meta("poisonT", 0.0))
+		if t <= 0.0: continue
+		t -= sp / dur
+		e.set_meta("poisonT", t)
+		if floorf(t / 60.0) < floorf((t + sp) / 60.0):
+			var sec: float = maxf(1.0, ceilf(t / 60.0))
+			var pool: float = float(e.get_meta("_poisonPool", 0.0))
+			var pdmg: int = maxi(1, int(pool / sec * _p_dot_dmg()))
+			e.set_meta("_poisonPool", maxf(0.0, pool - maxf(1.0, float(int(pool / sec)))))
+			var stk: int = maxi(1, int(e.get_meta("poisonStk", 1)))
+			var outcome: Dictionary = NORMAL_HURTE.new().execute(main, get_parent(), e, pdmg, NAN, 0, {"dot": true, "shieldHit": true})
+			outcome["source"] = "fireball_poison_dot"
+			outcome["base_damage"] = pdmg
+			if player.has_signal("telemetry_event"): player.telemetry_event.emit("native_hurte", outcome)
+			_stats["poison_ticks"] = int(_stats.get("poison_ticks", 0)) + 1
+			if is_instance_valid(e):
+				for k in 1 + stk / 3:
+					_fx.append({"kind": "part", "x": e.global_position.x + (randf() - 0.5) * 10.0, "y": e.global_position.y + (randf() - 0.5) * 10.0,
+						"vx": (randf() - 0.5) * 2.0, "vy": (randf() - 0.5) * 2.0, "col": Color("#006600"), "sz": 3.0, "life": 12.0})
+		if is_instance_valid(e) and float(e.get_meta("poisonT", 0.0)) <= 0.0:
+			e.set_meta("poison", 0); e.set_meta("poisonStk", 0); e.set_meta("_poisonPool", 0.0)
 
 func _unique_values() -> Dictionary:
 	var out := {"_uOrbPoisonBurst": 0, "_uVortexOrbPulse": 0, "_uPoiseOrbFracture": 0, "_uParryOrbEcho": 0}
@@ -237,6 +277,10 @@ func _gc_t() -> int:
 	return Engine.get_physics_frames() % 21
 
 func _physics_process(_delta: float) -> void:
+	if not get_tree().paused:
+		var sp_ctx: Dictionary = get_parent().get_native_projectile_fx_context()
+		var sp_now: float = float(sp_ctx.get("dt_sp", 1.0))
+		_tick_poison(sp_now if is_finite(sp_now) and sp_now > 0.0 else 1.0)
 	# TVFX2(54781~54797)·파편(poolPart) 진행 — 원본은 렌더 프레임, 여기선 60Hz 물리 틱
 	var w := 0
 	for i in _fx.size():
