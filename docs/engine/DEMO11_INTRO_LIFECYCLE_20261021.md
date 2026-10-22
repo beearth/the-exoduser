@@ -20,3 +20,6 @@ Main 자동 부팅만 이야기를 시작한다. 기존 custom SceneTree 하니�
 
 
 2026-10-21 DEMO11-07 후속: 로비의 생성 성공/active readback 뒤 이 owner를 호출하고 S10의 실제 선택 언어를 전달한다. 완료/skip 때 기존 State `_cutsceneDone`을 기록하는 좁은 접점은 Main/State에 추가했으며 이 문서의 기존 “쓰기0” 설명은 DEMO11-08 단독 범위다. 이미 본 metadata의 영화는 생략하고 기존 기상 owner에 인계한다. Player 저장 복원은 별도 DEMO11-06 책임이다. [DEMO11-07 계약](DEMO11_LOBBY_ENTRY_20261021.md).
+
+
+2026-10-22 PARITY-INTRO-01b: 이전 Mac PC 이동 회귀 실패는 저장 namespace와 실행 인자의 불일치였다. 인트로 분기 변경은 확인되지 않았다. Mac 공통 하니스는 PC fixture에 storage 인자가 없을 때 `--demo11-storage=off`를 명시하며 제품/E2E `on` 경로는 유지한다. [원인·계약·검증](PARITY_INTRO_01b_20261022.md).

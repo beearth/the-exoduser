@@ -32,3 +32,6 @@ PC ffmpeg/Theora 변환 승인 대기는 그대로다. 재인코딩·생성·대
 최종 정적 검토: 첫 진입의 줄바꿈·타이핑 prefix와 skip 번역은 _ready에서 사전 계산한다. 프레임 draw/process에서 새 목록 생성 API·ResourceLoader 호출·이미지 로드는 없다. 영상 caption 배열은 준비된 참조를 순회한다. 캡처에서는 원본 양쪽 모두 레슨을 건너뛴 뒤 barrier active/t150 및 제목1.55초를 고정하며, 1500ms wall-clock으로 커튼 종료를 확인한다.
 
 남은 로비 세부 차이: gate 초기 ENTER 엠블럼/입력대기·세계관 재생/음량 mixer UI는 영화 재생과 함께 동일성 미완료다. 정지 fallback의 전체 흐름 검수와 영화 기능 완성은 구분한다. 첫 진입 SFX/voice key 메타는 보존했으나 원본 sample asset 매핑/청음은 검증하지 않았다.
+
+
+2026-10-22 PARITY-INTRO-01b: 이전 Mac PC 이동 회귀 실패는 저장 namespace와 실행 인자의 불일치였다. 인트로 분기 변경은 확인되지 않았다. Mac 공통 하니스는 PC fixture에 storage 인자가 없을 때 `--demo11-storage=off`를 명시하며 제품/E2E `on` 경로는 유지한다. [원인·계약·검증](PARITY_INTRO_01b_20261022.md).

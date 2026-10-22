@@ -33,6 +33,11 @@ def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
     override = project / "override.cfg"
     original = override.read_bytes() if override.exists() else None
     argv = [str(engine), *flags, "--path", str(project), "--log-file", str(out / (name + ".engine.log"))]
+    # PC movement fixtures use their own non-demo namespace and fresh Main.
+    # Keep persistence explicit: product/default and --demo11-storage=on are untouched.
+    if ("res://tests/test_pc_move_skills.gd" in flags
+            and not any(arg.startswith("--demo11-storage=") for arg in extra)):
+        extra = [*extra, "--demo11-storage=off"]
     if extra:
         # OS.execute needs a native executable path, never a quoted shell command
         # or a PC path transported to this Mac. Keep this in the Mac harness.

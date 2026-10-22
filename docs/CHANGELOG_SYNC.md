@@ -1,3 +1,7 @@
+## 2026-10-22 PARITY-INTRO-01b
+
+- Mac 하니스 PC 이동 fixture의 누락된 storage=off 진입을 복구. PC 테스트·제품 3구간 인트로·저장 namespace 검증은 유지. 원인 및 단회 검증: engine/PARITY_INTRO_01b_20261022.md.
+
 ## 2026-10-22 PARITY-HUD-02b
 
 - native_move_skills.gd의 toast_unported 원문 로그 3줄 복구, 각 emit 직전 순서 유지. UNPORTED_BRANCHES showPH 제외 유지.
