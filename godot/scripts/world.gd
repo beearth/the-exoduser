@@ -908,6 +908,7 @@ class NativeBootMapBuildHandle extends RefCounted:
 
 # MAP11-PROD owns only map composition. Exact World identity/PC services stay.
 var _web_parity_flow: RefCounted
+var _native_arena_flow: RefCounted # PC-BOSS-CHASE 최소 훅: 보스방 원본 _ffBuild/_ffDir(PC native_demo11_arena_flow.gd)
 var map11_provider: Node2D
 var _native_map11_scene: Node2D
 var _native_map11_selected := false
@@ -3455,10 +3456,17 @@ func _build_flow() -> void:
 			queue[tail] = ni
 			tail += 1
 
+## PC-BOSS-CHASE 최소 훅: 보스방(arena) _ffDir 원본 BFS owner 를 PC 가 묶는다. 한 번만.
+func bind_native_arena_flow(flow: RefCounted) -> bool:
+	if flow==null or _native_arena_flow!=null or not flow.has_method("direction"):return false
+	_native_arena_flow=flow
+	return true
+
 func get_path_direction(pos: Vector2) -> Vector2:
 	if _native_map11_selected:
 		if not is_instance_valid(player):return Vector2.ZERO
 		if _native_map11_scene.active_space=="field":return _web_parity_flow.direction(pos)
+		if _native_arena_flow!=null:return _native_arena_flow.direction(pos,player.global_position)
 		return (player.global_position-pos).normalized() if has_line_of_sight(pos,player.global_position) else Vector2.ZERO
 	if not is_instance_valid(player):
 		return Vector2.ZERO

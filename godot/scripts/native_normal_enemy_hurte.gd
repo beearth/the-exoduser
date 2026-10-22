@@ -838,6 +838,9 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 		return false
 	var bags: Dictionary = _state.read_native_reward_bags()
 	var dropper: RefCounted = DROP_SOURCE.new(func(tag): return _rand(43110, "drop:" + str(tag)))
+	# PC-BOSS-CHASE C-06: rollAffixes 15137 `_DEMO_MODE&&_DEMO_AFFIX_BANNED` — 데모 정책이면 금지 어픽스를 풀에서 뺀다
+	# (공방 native_workshop_transaction 94·유골함 지급과 같은 정책 입력. 빠지면 금지 7종이 처치 드랍에 섞이고 RNG 소비도 달라진다).
+	dropper.set("demo_mode", _main.has_method("read_native_demo_policy") and _main.read_native_demo_policy().get("demo", false) == true)
 	var drop_result: Variant = dropper.roll_drop(
 		{"ib": fields["ib"] == true, "etype": int(fields["etype"]), "elite": int(fields["elite"]),
 			"drop_tier": int(_js_num((_enemy.data.get("native_final", {}) as Dictionary).get("dropTier"))) if fields["ib"] == true else 0,
