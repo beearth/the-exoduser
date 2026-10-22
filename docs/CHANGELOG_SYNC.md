@@ -56542,3 +56542,11 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - 기준6b4336b6. 구슬 원본PNG/링/눈/숫자·SP표기·미니맵·타이머/목표패널·원본방향PNG·스킬바 배치를 웹행/CSS에 대응했다. 별도스킬선택/실패띠 숨김. PC계산·전투·맵·카메라·B화면 변경0.
 - 원본_buildNumAtlas canvas480×168/Pirata One를 직접공급하고40개숫자pool을시작할당했다. 이미지17개import는축소mipmap, 슬롯ResourceLoader는boot만. crossbow57행null 옵션을Variant검사로방어했다(제보의투사체Array방어는기존화살표뷰에존재).
 - docs전체검색·관련상세표/차이표 동기화. 관련HUD회귀1회17/0. 무주입E2E1회storage=on·SCRIPT ERROR0, HP0/처치0으로자연완주NOT_READY. 최종시각은RETOUCH(노란기동게이지실소유값미공급·CSS glow/세부AA등). 1x비교/표시fixture 범위를PARITY_HUD_01_20261022.md·_out/PARITY-HUD-01/DONE.txt에명시.
+
+
+### 2026-10-22 INTEG-11 — 웹 동일성 통합 후보
+
+- 기준9133e278 위 parity-map/UI/HUD·PC move/boss 최신5개 branch merge. docs 충돌은 양쪽 이력 보존. project.godot/override 계약 유지, PC 최소훅 동일byte.
+- test_demo11_boss_actor.gd Main tree 진입 전 native_pc_boss_core=off 한줄(M4), --map11=off 실제166/0(요청167과1차이). 최초 잘못된 위치 실패 원로그 보존.
+- import ERROR0; parity 3 suite PASS, 인벤토리1281/0·스킬105/0. legacy/PC namespace·provider/HUD 기대 불일치 실패는 미수정 기록.
+- E2E 무주입1회: 2PASS 뒤 line204 natural owner Nil, 나머지16미도달. M13 수정0. 나란히4캡처: field/inventory/HUD RETOUCH, bossroom black void/DORMANT FAIL. 동일성 완료 아님. 상세 docs/engine/DEMO11_STATUS_20261021.md INTEG-11, 외부 _out/INTEG-11.

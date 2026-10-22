@@ -22,6 +22,7 @@ func _initialize() -> void: call_deferred("_run")
 func _run() -> void:
 	check(OS.get_user_data_dir().ends_with(USERDIR),"isolation")
 	main = MAIN.new()
+	main.set_meta("native_pc_boss_core","off")
 	root.add_child(main)
 	if not main.is_node_ready(): await main.ready
 	actor = main.native_demo_boss_actor
