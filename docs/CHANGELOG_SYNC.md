@@ -56583,3 +56583,10 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - 이동 owner에는 기존 showPH 지점 UI 신호만 추가. 원본500ms/fade100ms·색·위치·기존번역 소비. frame PNG glow/레이어순서/액체 easing·숫자 shadow 반영. 이동/자원 수식·맵/보스/인트로 변경0.
 - 관련 HUD 회귀1회26검사/0실패/SCRIPT ERROR0. 무주입 storage-on E2E1회 캐릭터생성→필드 진입/SCRIPT ERROR0, HP0으로 자연완주 NOT_READY. 1x 비교·잔여표/최종 SHA는 _out/PARITY-HUD-02/DONE.txt. CSS Gaussian·분수폰트/AA·타이밍은 RETOUCH.
 - 상세 계약: docs/engine/PARITY_HUD_02_20261022.md, PARITY_DIFF_LIST와 PC_MOVE_SKILLS_CONTRACT 갱신. 새 제품문구0, 번역 번호/CRLF 보존.
+
+## 2026-10-22 — VRAM-01 맵 외 텍스처 수명·예산 분해 (PARTIAL)
+
+- 기준 015d40344a8abd9f0e59148b91638b113c00a140. 인벤토리 최초 열기 구성/닫기 그림 참조 해제, Surface WeakRef 캐시, 스킬 header/sigil 이벤트 로드/닫기 stage·아이콘 해제. 아트/수치/저장·전투/맵·보스 변경0.
+- `docs/12퍼포먼스·최적화/VRAM_01_TEXTURE_BUDGET_20261022.md`에 큰 순 표·예산·전후 monitor·수명 계약·미분해 차액 기록. 관련 UI02/UI03 문서 연결. 재현용 one-shot 원격 GPU 덤프/캡처 도구 추가.
+- 관련 inventory suite 단회1281 checks 실패0; storage=on 입력 E2E 단회 PASS/주입0/SCRIPT ERROR0. 필수 정적 1x 크롭 차이0, 재열기 인벤토리 내부 전체 차이0(12px 바깥 필드 애니메이션 차이 보존). 자기 child 종료·override 복원. PID81277 보존.
+- 맵 외 ≤1.0GB 목표는 미달·미검증. MAP03은 기준 조상에 없고 보호 범위라 미통합. monitor와 목록의 약0.94GB 차이는 원인 미분해로 남김. 완료/동기화/배포 주장 없음. 근거 `~/exoduser-wt/_out/VRAM-01/`.

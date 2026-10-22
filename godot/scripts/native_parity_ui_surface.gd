@@ -5,11 +5,15 @@ const Fonts=preload("res://scripts/native_ui_fonts.gd")
 const ROOT="res://assets/ui/parity_ui_02/"
 static var textures: Dictionary={}
 static func texture(path: String) -> Texture2D:
- if not textures.has(path):
-  var resolved: String=ROOT+path
-  if not ResourceLoader.exists(resolved) and path=="img/ui/inventory_knight_cutout_20260928.png":resolved=ROOT+"img/ui/inventory_paperdoll_hf_20260923.png"
-  textures[path]=load(resolved) if ResourceLoader.exists(resolved) else null
- return textures[path]
+ # Weak cache deduplicates living owners without pinning closed UI art.
+ var cached: WeakRef=textures.get(path)
+ var live: Texture2D=cached.get_ref() if cached!=null else null
+ if live!=null:return live
+ var resolved: String=ROOT+path
+ if not ResourceLoader.exists(resolved) and path=="img/ui/inventory_knight_cutout_20260928.png":resolved=ROOT+"img/ui/inventory_paperdoll_hf_20260923.png"
+ var result: Texture2D=load(resolved) if ResourceLoader.exists(resolved) else null
+ if result!=null:textures[path]=weakref(result)
+ return result
 static func art(parent: Node,path: String,rect: Rect2) -> TextureRect:
  var n:=TextureRect.new();n.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;n.texture=texture(path);n.position=rect.position;n.size=rect.size;n.stretch_mode=TextureRect.STRETCH_SCALE;n.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;n.mouse_filter=Control.MOUSE_FILTER_IGNORE;parent.add_child(n);return n
 static func panel(parent: Node,rect: Rect2,color: Color,border: Color=Color.TRANSPARENT) -> Panel:
@@ -22,6 +26,7 @@ class Rail extends Control:
  var width:=24.0
  var slice:=.04
  func _draw() -> void:
+  if image==null:return
   var ts:=image.get_size();var sx: float=ts.x*slice;var sy: float=ts.y*slice
   var xs: Array=[0.0,sx,ts.x-sx,ts.x];var ys: Array=[0.0,sy,ts.y-sy,ts.y]
   var dx: Array=[0.0,width,size.x-width,size.x];var dy: Array=[0.0,width,size.y-width,size.y]
@@ -48,3 +53,17 @@ static func iron(parent: Node,rect: Rect2,top: Color,bottom: Color) -> TextureRe
  var n:=art(parent,"img/ui/hell_gothic/iron.png",rect);n.texture_repeat=CanvasItem.TEXTURE_REPEAT_ENABLED
  var sh:=Shader.new();sh.code="shader_type canvas_item;uniform vec2 extent;uniform vec4 top:source_color;uniform vec4 bottom:source_color;void fragment(){vec4 c=texture(TEXTURE,UV*extent/480.0);vec4 g=mix(top,bottom,UV.y);COLOR=vec4(mix(c.rgb,g.rgb,g.a),1.0);}"
  var mat:=ShaderMaterial.new();mat.shader=sh;mat.set_shader_parameter("extent",rect.size);mat.set_shader_parameter("top",top);mat.set_shader_parameter("bottom",bottom);n.material=mat;return n
+
+# UI transition helpers only; never called by draw/process/physics callbacks.
+static func suspend_art(owner: Node) -> void:
+ if owner is TextureRect or owner is Rail:
+  var key: String="texture" if owner is TextureRect else "image"
+  var art: Texture2D=owner.get(key)
+  if art!=null and not art.resource_path.is_empty():
+   owner.set_meta("vram_01_art",art.resource_path);owner.set(key,null);owner.queue_redraw()
+ for child in owner.get_children():suspend_art(child)
+static func resume_art(owner: Node) -> void:
+ if owner.has_meta("vram_01_art"):
+  var key: String="texture" if owner is TextureRect else "image"
+  owner.set(key,load(str(owner.get_meta("vram_01_art"))));owner.remove_meta("vram_01_art");owner.queue_redraw()
+ for child in owner.get_children():resume_art(child)
