@@ -165,7 +165,13 @@ func _run() -> void:
 	var text := FileAccess.get_file_as_string("res://port_modules/map_object_action_proposal/producer.gd")
 	for forbidden in ["FileAccess", "DirAccess", "OS.", "SceneTree", "Node.new", "randi(", "randf(", "seed(", "Input.", "signal "]:
 		_check(not text.contains(forbidden), "no actual IO/scene/RNG/input dependency " + forbidden)
-	_check(text.count("preload(") == 1 and text.contains("world_interaction_query/producer.gd"), "only NW01 readonly query dependency")
+	# Preserve the exact NW01 dependency and admit only the fixed provenance provider.
+	var allowed_query := 'preload("res://port_modules/world_interaction_query/producer.gd")'
+	var allowed_snapshot := 'preload("res://source_snapshot/snapshot.gd")'
+	var remaining := text.replace(allowed_query, "").replace(allowed_snapshot, "")
+	var resource_load := RegEx.new()
+	resource_load.compile("\\b(?:preload|load)\\s*\\(")
+	_check(text.count(allowed_query) == 1 and text.count(allowed_snapshot) == 1 and resource_load.search(remaining) == null, "only exact NW01 readonly query and snapshot constants dependencies")
 	_finish()
 
 

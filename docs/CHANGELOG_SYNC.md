@@ -56724,3 +56724,8 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 | 검수 | HS-M7 19PASS, importERROR0, fieldboss167/0(이전154/1 미재현), E2E 단회7PASS/11NR·0kill, 나란히7장 RETOUCH. map16PASS의 []결과 하니스schema FAIL 및 GUIfocus60초미확보 미측정 유지 |
 
 [전체 기록](engine/INTEG15_WEB_PARITY_20261022.md). main/PC 인수·배포·자연종주·전체동일성 완료 선언0.
+
+## 2026-10-22 NW-FIX-01 — snapshot readonly 의존 검사
+
+- NW01/02는 정확한 res://source_snapshot/snapshot.gd 상수 preload만 허용하고 load/preload 단어 경계를 구분한다. NW03은 정확한 NW01 query 1개+snapshot 1개만 허용한다. 다른 IO/씬/RNG/입력 금지 및 producer/oracle 유지.
+- 근거·계약·단회 검증 한계: engine/orders/reports/NW-FIX-01_REPORT.md. 세 suite 각1회는 잘못 지정한 Node 경로로 각각4검사/2실패, scope 미도달·0실패 검증 미완료. 재실행0. 격리 override/테스트 namespace 복원, 보호81277 유지·자기Godot 잔여0.

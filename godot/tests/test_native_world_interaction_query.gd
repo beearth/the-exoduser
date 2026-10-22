@@ -160,8 +160,14 @@ func _run() -> void:
 	prov["connected"] = true
 	_check(_query.provenance().connected == false, "provenance returns fresh dictionary")
 	var producer_text := FileAccess.get_file_as_string("res://port_modules/world_interaction_query/producer.gd")
+	# Only this exact constant provider is exempt; all other preload calls remain forbidden.
+	producer_text = producer_text.replace('preload("res://source_snapshot/snapshot.gd")', "")
+	var runtime_load := RegEx.new()
+	runtime_load.compile("\\bload\\s*\\(")
+	var other_preload := RegEx.new()
+	other_preload.compile("\\bpreload\\s*\\(")
 	for forbidden in ["FileAccess", "DirAccess", "OS.", "SceneTree", "Node.new", "load(", "preload(", "randi(", "randf(", "seed(", "Input.", "signal "]:
-		_check(not producer_text.contains(forbidden), "no runtime IO/scene/RNG/input dependency " + forbidden)
+		_check(runtime_load.search(producer_text) == null if forbidden == "load(" else (other_preload.search(producer_text) == null if forbidden == "preload(" else not producer_text.contains(forbidden)), "no runtime IO/scene/RNG/input dependency " + forbidden)
 	_end()
 	_finish()
 

