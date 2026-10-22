@@ -56773,3 +56773,7 @@ G49041/49065/49336–49369: parity_settings_page가 DOM순서로 range 뒤의 �
 ## SWEEP-B B3 — 성장창 원본 구조
 
 원본 stat-panel-ui.js70–201/336–468, stat-panel-ui.css419–579, growth-tree-detail/information.css에 따라 native_growth_panel의 상단5탭·배너/기사crest·AP·왼쪽분류/검색·중앙1174×624 viewport·오른쪽420×674 상세·하단버튼을 원본 자리로 이동. 1000×800 좌표·원본 fit=min((w-12)/1000,(h-12)/800)×zoom, 노드44/랭크10px로 축소. 시작 상세pAtk, hover/focus에만 이름. 부족AP일 때 원래 queue API로 예약, 실제 투자 writer/포인트 공식은 유지. UI원문은 목록번호/CRLF·lang26/native i18n에 반영. 내부viewport 재검수 진행, 카드 상세 typography/원문 설명·ring/glow·트리 pan/키 탐색 등 잔여로 전체 PASS 아님.
+
+## SWEEP-B 검증 인수
+
+UI18+UI06 24+성장36=78/0 단회. test_sweep_b_ui.gd는 실행된 외부 사본과 동일 byte. 102행/73개1x비교판·전체 미완료/RETOUCH 및 남은 Mac 차이는 engine/SWEEP_B_20261022.md, 외부 DIFFS_FULL.md/json에 기록. E2E 단회 진행 중이며 전체100% 동일 완료 선언0.
