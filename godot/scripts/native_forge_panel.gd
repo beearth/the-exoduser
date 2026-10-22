@@ -494,7 +494,8 @@ func _click_upgrade(slot: String) -> void:
 
 func _ai_unported() -> void:
 	# G28141 _doAiEnhance/aiEnhance(G28125)는 PC 시스템 미이식: 원문 결과 표시 없이 알림만 남긴다(PC-SYS 기록).
-	_notify(_L("AI 자동 강화는 아직 이식되지 않았습니다.","AI auto-enhance is not ported yet."))
+	# 원본에 없는 안내 문구를 화면에 추가하지 않는다(SWEEP-B 금지 사항). 기록만 남긴다.
+	print("SWEEPB_PC_SYS aiEnhance_unported")
 
 func _notify(msg: String) -> void:
 	var main: Variant=_main.get_ref()
