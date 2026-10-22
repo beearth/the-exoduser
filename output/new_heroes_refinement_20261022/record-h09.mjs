@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+const root = 'G:/exoduser/';
+const path = root+'output/new_heroes_refinement_20261022/submission-receipt.json';
+const receipt = JSON.parse(fs.readFileSync(path,'utf8'));
+const prompt = 'Edit ONLY black torso garment and trousers into fitted MATTE LEATHER. Tailored seams, stitched edges, leather folds at hips/knees, subtle rubbed edges; broad soft highlights, NOT rubber, latex or plastic shine. Remove quilted wetsuit panels. Keep silhouette, face, goggles OVER eyes, METAL robot arm, both hands, tactical belt, skeletal stock, giant cannon, crimson CLOTH cloak and city. Clean material planes; NO dotted grain, stippling, glitter, particles or dots.';
+if(prompt.length>500) throw Error('Prompt exceeds UI limit');
+if(!receipt.jobs.some(j=>j.candidate==='H09')) receipt.jobs.unshift({candidate:'H09',task:'7518885199819771904',reference:'assets/character-concepts/20261022/hellgunner_tactical_gear_h08.png',referenceSha256:crypto.createHash('sha256').update(fs.readFileSync(root+'assets/character-concepts/20261022/hellgunner_tactical_gear_h08.png')).digest('hex'),prompt,provider:'MagicLight',model:'GPT Image 2.5 sunburst',aspectRatio:'16:9',outputs:1,displayedCost:200,status:'submitted'});
+receipt.balanceBeforeH09=37490;
+receipt.userFeedbackH08={corrections:['가죽타이즞 거너 맞냐 질감','지금은 고무타이즈같은데'],finalApproval:false};
+receipt.updatedAt=new Date().toISOString();
+fs.writeFileSync(path,JSON.stringify(receipt,null,2)+'\n');
+console.log('H09 submission receipt recorded');
