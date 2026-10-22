@@ -529,7 +529,7 @@ func _update_animation() -> void:
 	var row = int(data["animation"]["native_direction_rows"][direction])
 	var column = 2 + posmod(int(_motion_ms / 120.0), 2) if _moving else 0
 	_body.frame = row * 4 + column
-	_body.modulate = Color(1.0 + _hit_flash / 6.0, 1.0, 1.0, 1.0)
+	_body.modulate = Color(1,1,1,.6 if _stun_ticks>0 else 1.0)
 
 func _draw() -> void:
 	if not alive:
@@ -545,7 +545,7 @@ func _draw() -> void:
 	# 피해 전 숨김, HP #cc0000 + 쉴드 #44aaff 덮어그리기, 그로기 #ff8800 3px).
 	for bar in BAR_LAYOUT.build(radius, float(hp), float(mhp), eShield, eShieldMax,
 			_stun_ticks, data.get("native_final", {}).get("_maxStunned")):
-		draw_rect(bar["rect"], bar["color"])
+		draw_rect(bar["rect"], Color(bar["color"],bar["color"].a*_body.modulate.a))
 
 # ═══ PCI-10 (PC-LIFE-PACK 2026-10-21): 주술사 시체 부활 writer G38949–38950 — 같은 노드 복귀. ═══
 # generic 상태기계에는 recover가 없어(P1-002.E 추적표 42382) s='recover';st2=60을 state 표기 +

@@ -133,7 +133,7 @@ func _draw() -> void:
  if n.get("_cloaked",false):sa=.08+sin(Time.get_ticks_msec()/300.0)*.05
  elif float(n.get("reviveIframes",0))>0:sa=maxf(0,.2+sin(Time.get_ticks_msec()/40.0)*.5)
  elif _stun_ticks>0:sa=.6
- var bright: float=1+minf(1,_hit_flash/6)*.8
+ var bright: float=1.0
  var tint:=Color(bright,bright,bright,sa)
  var size_: float=maxf(radius*7.0,80.0)
  var bounds:=Rect2(Vector2.ONE*(-size_*.5),Vector2.ONE*size_)
@@ -142,8 +142,26 @@ func _draw() -> void:
   var direction: String=_directions[posmod(roundi(fposmod(art_facing,TAU)/(PI/4)),8)]
   var frame: int=int(floor(_walk_distance/128))%4
   draw_texture_rect_region(_walk_textures[direction],bounds,Rect2((_col*4+frame)*256,_row*256,256,256),tint)
- for bar in BAR_LAYOUT.build(radius,float(hp),float(mhp),eShield,eShieldMax,_stun_ticks,data.get("native_final",{}).get("_maxStunned")):draw_rect(bar.rect,bar.color)
+ for bar in BAR_LAYOUT.build(radius,float(hp),float(mhp),eShield,eShieldMax,_stun_ticks,data.get("native_final",{}).get("_maxStunned")):draw_rect(bar.rect,Color(bar.color,bar.color.a*sa))
 
 func read_native_normal_enemy_hurte_fields(caller_world: Node) -> Dictionary:
  if not_ready!="" or not is_instance_valid(d_owner) or not d_owner.current():return {"ready":false,"reason":"D_type_suspended:"+not_ready}
  return super.read_native_normal_enemy_hurte_fields(caller_world)
+
+# Source53686-53693: additive snapshot with a 5% hit pop; display only.
+func _draw_native_source_hit_flash(canvas: Node2D) -> void:
+ if not alive or _hit_flash<=0:return
+ var native: Dictionary=data.native_final
+ var alpha: float=1.0
+ if native.get("_cloaked",false):alpha=.08+sin(Time.get_ticks_msec()/300)*.05
+ elif float(native.get("reviveIframes",0))>0:alpha=maxf(0,.2+sin(Time.get_ticks_msec()/40)*.5)
+ elif _stun_ticks>0:alpha=.6
+ var value: float=minf(1,_hit_flash/6)
+ var size_: float=maxf(radius*7,80)*(1+.05*value)
+ var rect:=Rect2(Vector2.ONE*(-size_*.5),Vector2.ONE*size_)
+ if _base_tex!=null:canvas.draw_texture_rect_region(_base_tex,rect,Rect2(_col*256,_row*256,256,256),Color(1,1,1,value*.8*alpha))
+ if _moving:
+  var direction_angle: float=(player.global_position-global_position).angle() if is_instance_valid(player) and player.hp>0 and global_position.distance_squared_to(player.global_position)<640000 else facing
+  var direction: String=_directions[posmod(roundi(fposmod(direction_angle,TAU)/(PI/4)),8)]
+  var frame: int=int(floor(_walk_distance/128))%4
+  canvas.draw_texture_rect_region(_walk_textures[direction],rect,Rect2((_col*4+frame)*256,_row*256,256,256),Color(1,1,1,value*.8*alpha))

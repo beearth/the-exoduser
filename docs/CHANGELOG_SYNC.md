@@ -56776,3 +56776,5 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 2026-10-22 SWEEP-A: 원본 브라우저 마스크 드랍207장 사전 준비/manifest. 드랍 draw의 리소스조회 제거, source proxy 합성·그림자 동기화.
 
 - 2026-10-22 SWEEP-A: half-resolution 색광 누적/최종MIX 및 유령불꽃 순서, bossAlive 광원, 부활 대기/슬램·얼음보주 표시 복원. 파생269장 provenance 추가.
+
+- 2026-10-22 SWEEP-A 후속: etype1/4 전용 렌더러 스킨/크기 및 800px 표시 방향 보정, 가산 피격 스냅샷·기절별·바 sa 동기화. 추가 색상 검수 진행.

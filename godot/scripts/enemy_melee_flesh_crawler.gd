@@ -362,7 +362,10 @@ func _update_animation() -> void:
 	if not _body or not alive:
 		return
 	var animation: Dictionary = data["animation"]
-	var direction_index = posmod(roundi(fposmod(facing, TAU) / (PI / 4.0)), 8)
+	var display_angle: float=facing
+	if is_instance_valid(player) and player.hp>0 and global_position.distance_squared_to(player.global_position)<640000:
+		display_angle=(player.global_position-global_position).angle()
+	var direction_index = posmod(roundi(fposmod(display_angle, TAU) / (PI / 4.0)), 8)
 	var direction: String = animation["direction_angle_sectors"][direction_index]
 	_body.texture = _base_textures[direction]
 	_body.region_rect = _rect(animation["base_rect"])
@@ -375,7 +378,7 @@ func _update_animation() -> void:
 	if native.get("_cloaked",false):spawn_alpha*=.08+sin(Time.get_ticks_msec()/300.0)*.05
 	elif float(native.get("reviveIframes",0))>0:spawn_alpha*=maxf(0,.2+sin(Time.get_ticks_msec()/40.0)*.5)
 	elif _stun_ticks>0:spawn_alpha*=.6
-	var bright: float=1+minf(1,_hit_flash/6)*.8
+	var bright: float=1.0
 	_body.modulate = Color(bright,bright,bright,spawn_alpha)
 	_walk.modulate = _body.modulate
 
@@ -394,7 +397,7 @@ func _draw() -> void:
 	# P2-001a: 에너지 바 — 원본 drawEn(53961~53969) 규칙 그대로 (enemy.gd와 동일 공용 레이아웃).
 	for bar in BAR_LAYOUT.build(radius, float(hp), float(mhp), eShield, eShieldMax,
 			_stun_ticks, (_maxStunned if _source_max_stunned_present else null)):
-		draw_rect(bar["rect"], bar["color"])
+		draw_rect(bar["rect"], Color(bar["color"],bar["color"].a*_body.modulate.a))
 
 # Current fields of the exact factory-admitted normal actor. This is deliberately
 # a partial field authority: absent/unported status lifetimes are not JS zero.

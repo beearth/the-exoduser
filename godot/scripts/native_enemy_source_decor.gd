@@ -4,13 +4,30 @@ extends Node2D
 var actor: Node2D
 var _g: Dictionary
 var _fan:=PackedVector2Array()
+var _star:=PackedVector2Array()
 var visual_clock_ms: float=-1
 var _revive: Node2D
+var _flash: Array[Sprite2D]=[]
+var _sources: Array[Sprite2D]=[]
+const SOURCE_HIT_ONE="shader_type canvas_item; render_mode blend_add; void fragment(){ vec4 c=texture(TEXTURE,UV); COLOR=vec4(c.rgb,1.0); }"
+
 func configure(owner_actor: Node2D) -> void:
  actor=owner_actor
  var source: Node=actor.world.get_parent().get("source_state")
  if is_instance_valid(source):_g=source.read_current_g()
  _revive=preload("res://scripts/native_source_revive_view.gd").new();add_child(_revive);_revive.configure(actor.world.get_parent())
+ var shader:=Shader.new();shader.code=SOURCE_HIT_ONE
+ var add:=ShaderMaterial.new();add.shader=shader
+ if is_instance_valid(actor._body):_sources.append(actor._body)
+ var walk: Variant=actor.get("_walk")
+ if walk is Sprite2D:_sources.append(walk)
+ for source_sprite in _sources:
+  var sprite:=Sprite2D.new();sprite.material=add;sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
+  actor.add_child(sprite);actor.move_child(sprite,get_index());_flash.append(sprite)
+ if actor.has_method("_draw_native_source_hit_flash"):
+  var flash_canvas:=Node2D.new();flash_canvas.material=add;actor.add_child(flash_canvas);actor.move_child(flash_canvas,get_index())
+  flash_canvas.draw.connect(actor._draw_native_source_hit_flash.bind(flash_canvas));actor.draw.connect(flash_canvas.queue_redraw)
+ _star.resize(10)
  _fan.resize(34)
  actor.draw.connect(queue_redraw)
 func _ink(hex: String,alpha: float=1.0) -> Color:
@@ -22,7 +39,16 @@ func arc(r: float,start: float,end: float,hex: String,alpha: float,width: float)
 func _draw() -> void:
  if not is_instance_valid(actor):return
  _revive.visual_clock_ms=visual_clock_ms;_revive.observe(actor.data.native_final,maxi(0,actor.source_order))
+ _sync_flash()
  if not actor.alive:return
+ if actor._stun_ticks>0:
+  var time_: float=visual_clock_ms if visual_clock_ms>=0 else float(Time.get_ticks_msec())
+  arc(actor.radius+8,0,TAU,"ffaa00",.4+sin(time_/60)*.3,3)
+  for i in 2:
+   var angle_: float=time_/300+i*PI
+   var center_:=Vector2(cos(angle_)*(actor.radius+4),-actor.radius-6+sin(angle_)*4)
+   for j in 10:_star[j]=center_+Vector2.from_angle(angle_+j*PI/5-PI/2)*(3.5 if j%2==0 else 1.5)
+   draw_colored_polygon(_star,_ink("ffdd44",.7))
  if float(_g.get("hitStop",0))>0 or not is_instance_valid(actor.player) or actor.global_position.distance_squared_to(actor.player.global_position)>=360000:return
  var e: Dictionary=actor.data.native_final
  var r: float=actor.radius
@@ -71,3 +97,15 @@ func _draw() -> void:
  if actor.etype==29:
   arc(r+15,now/200,now/200+PI*1.6,"4455aa",.25+sin(now/150)*.12,3)
   arc(r+10,-now/250,-now/250+PI*1.2,"88ccff",.25+sin(now/150)*.12,2)
+
+func _sync_flash() -> void:
+ var value: float=clampf(float(actor._hit_flash)/6,0,1)
+ for i in _flash.size():
+  var source: Sprite2D=_sources[i];var sprite: Sprite2D=_flash[i]
+  sprite.visible=actor.alive and value>0 and source.visible
+  if not sprite.visible:continue
+  sprite.texture=source.texture;sprite.region_enabled=source.region_enabled;sprite.region_rect=source.region_rect
+  sprite.hframes=source.hframes;sprite.vframes=source.vframes;sprite.frame=source.frame
+  sprite.centered=source.centered;sprite.offset=source.offset;sprite.transform=source.transform
+  sprite.scale*=1+.05*value;sprite.flip_h=source.flip_h;sprite.flip_v=source.flip_v
+  sprite.modulate=Color(1,1,1,source.modulate.a*value*.8)
