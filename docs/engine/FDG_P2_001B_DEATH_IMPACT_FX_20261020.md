@@ -73,3 +73,8 @@ enemy.gd·native_dedicated_enemy_hurte_owner.gd(사망 본체 숨김) / 테스�
 반증되어 수정됨 — death_blood 프레임은 **렌더 프레임당 +1**(54582 _dtSp=1, 실측 ~186fps
 에서 16프레임≈0.34s), DI는 **normal 블렌드**(프록시 X의 composite setter no-op).
 상세·실측 근거: `FDG_P2_001F_DEATH_BLOOD_TIMING_20261020.md`.
+
+
+### 2026-10-22 SWEEP-A 현행 표시 보완
+
+원본 screen-edge snap/ONE flash/4-vertex stun 제출, 시체 first16 blank GPU cache 및 24 head slot, 반해상도 premultiplied→straight 합성, 원본 bitmap 부활 label의 정확한 계약·수치·소유권은 [SWEEP_A §8](SWEEP_A_20261022.md)에 동기화했다. 과거 검수 기록과 현행 표시를 구분한다. 게임플레이·shared RNG·저장 writer 변경0. 최종 캡처/테스트 결과는 SWEEP-A 번호 목록을 따른다.

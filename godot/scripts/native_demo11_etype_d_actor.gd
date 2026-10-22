@@ -136,7 +136,7 @@ func _draw() -> void:
  var bright: float=1.0
  var tint:=Color(bright,bright,bright,sa)
  var size_: float=maxf(radius*7.0,80.0)
- var bounds:=Rect2(Vector2.ONE*(-size_*.5),Vector2.ONE*size_)
+ var bounds: Rect2=preload("res://scripts/native_enemy_source_art.gd").screen_rect(self,size_)
  if _base_tex!=null:draw_texture_rect_region(_base_tex,bounds,Rect2(_col*256,_row*256,256,256),tint)
  if _moving:
   var direction: String=_directions[posmod(roundi(fposmod(art_facing,TAU)/(PI/4)),8)]
@@ -158,7 +158,7 @@ func _draw_native_source_hit_flash(canvas: Node2D) -> void:
  elif _stun_ticks>0:alpha=.6
  var value: float=minf(1,_hit_flash/6)
  var size_: float=maxf(radius*7,80)*(1+.05*value)
- var rect:=Rect2(Vector2.ONE*(-size_*.5),Vector2.ONE*size_)
+ var rect: Rect2=preload("res://scripts/native_enemy_source_art.gd").screen_rect(self,size_)
  if _base_tex!=null:canvas.draw_texture_rect_region(_base_tex,rect,Rect2(_col*256,_row*256,256,256),Color(1,1,1,value*.8*alpha))
  if _moving:
   var direction_angle: float=(player.global_position-global_position).angle() if is_instance_valid(player) and player.hp>0 and global_position.distance_squared_to(player.global_position)<640000 else facing

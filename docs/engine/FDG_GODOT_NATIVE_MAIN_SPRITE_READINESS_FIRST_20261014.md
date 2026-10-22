@@ -65,3 +65,8 @@ quality_target={unique_frames:24,fps:24,animations_total:32,animations_meeting:0
 VISUAL VERDICT: RETOUCH. 이번 산출은 실제 Main의 현재 자원 상태와 품질 격차를 드러내는 중앙 연결이다. 시각 PASS나 전체 엔진 완료가 아니다.
 
 증거: E/dependency-native-main-sprite-readiness-first/{before-edit,stage-preparation.json,metadata/first-receipt.json,tests/attempt01-preledger.json,tests/attempt01-receipt.json,docs-search,checkpoint}. normal code+docs commit은 checkpoint/checkpoint-receipt.json에서 기록한다.
+
+
+### 2026-10-22 SWEEP-A 현행 표시 보완
+
+원본 screen-edge snap/ONE flash/4-vertex stun 제출, 시체 first16 blank GPU cache 및 24 head slot, 반해상도 premultiplied→straight 합성, 원본 bitmap 부활 label의 정확한 계약·수치·소유권은 [SWEEP_A §8](SWEEP_A_20261022.md)에 동기화했다. 과거 검수 기록과 현행 표시를 구분한다. 게임플레이·shared RNG·저장 writer 변경0. 최종 캡처/테스트 결과는 SWEEP-A 번호 목록을 따른다.

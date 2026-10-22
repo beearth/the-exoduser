@@ -1615,6 +1615,114 @@
       "sha256": "b7102496ac47b15157e2d35e99f4a0d0d93be74192969a9ec0b1f9899d012346",
       "source_function": "_cometTint Canvas2D source-atop",
       "source_lines": "G24307"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_0.res",
+      "sha256": "24b77cf787e379d3c429a0209a24680ca4b286581b136bef035d45212ab01426",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_1.res",
+      "sha256": "cb1869983576559b6a5247b220f91818ec1ceb187f2e148a49a771dbcf015af8",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_10.res",
+      "sha256": "65fb97fab066510d655551a9c29591450b159eda660ee8120a9fa551907dc16e",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_11.res",
+      "sha256": "51b97b014525ac3ea50662502cb0ceda8ab9d9972e8829cd48d3588f03ab503e",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_12.res",
+      "sha256": "d4e97e22fce51ee4077b885f28d6b980ae6f14c573f425a6980f916c1552056e",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_13.res",
+      "sha256": "d89f9eed9799b01cf2d0b83d6ed1c96e0c591cabeea58019b6cf8cdeafd79ccb",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_14.res",
+      "sha256": "3cf4b9c96128f4de407f8ed46ac45073d5fb6d9a60dcd0cf7ed90d63fd13422c",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_15.res",
+      "sha256": "70a69fa4119d7526228e14e55eb0b9df4d060c8ebcaa941ef66313634f27d98c",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_2.res",
+      "sha256": "7d8d64e042fb90d31ed7b75e4dc7d122ccd83081f866fd713308a532444f1a1c",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_3.res",
+      "sha256": "913be9ed4a3e9d9b7b4be94eb9fc382c51613abbb72072471c6ae293c2731235",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_4.res",
+      "sha256": "848ed2522f9eaa035299a991639d774f620f6b1ca884a217bf43eb2350614e42",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_5.res",
+      "sha256": "5cb9db89d2a8754b6f4931f78da43c01f543daadd78322e25994bdfb91b8727a",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_6.res",
+      "sha256": "9d3a0d24c52f8e59ce4a2fc54b3e5e598de9459dbef5ce1a3187af4c1f9c864b",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_7.res",
+      "sha256": "1fcaa5a4353a30cdc590b3575f4068cee7d8dc9b2ecc2040aad9b2409d3dcf52",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_8.res",
+      "sha256": "62429e10c656844ec6c04fb46dc1a6d71d26258fc74b8faa5118c3c728581589",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/bank_9.res",
+      "sha256": "abfbef80b32a04c7c7e08fa76290cd7691f4c3fa67b5f1448097a1afb228254f",
+      "source_function": "_addCorpse + _buildCorpseGoreOverlay",
+      "source_lines": "G24966-25036"
+    },
+    {
+      "path": "godot/assets/corpse_source/heads.res",
+      "sha256": "d32b2a2850a79e2c24de96d38077f98f312b9bcf08ec08b0134bf661ff6b2cf4",
+      "source_function": "_addHeadGib",
+      "source_lines": "G25364-25397"
+    },
+    {
+      "path": "godot/assets/source_labels/revive.res",
+      "sha256": "806d20999677525778369f3be220b6e63dff2555e619cdc64db4225358509e4b",
+      "source_function": "_getAtlasTxt + fillText; existing translation No1034/1151; KO/EN 0..100 percent and 0..3 counter",
+      "source_lines": "G5494-5507,G6108-6113,G52732-52743"
     }
   ]
 }

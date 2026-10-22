@@ -56778,3 +56778,5 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 2026-10-22 SWEEP-A: half-resolution 색광 누적/최종MIX 및 유령불꽃 순서, bossAlive 광원, 부활 대기/슬램·얼음보주 표시 복원. 파생269장 provenance 추가.
 
 - 2026-10-22 SWEEP-A 후속: etype1/4 전용 렌더러 스킨/크기 및 800px 표시 방향 보정, 가산 피격 스냅샷·기절별·바 sa 동기화. 추가 색상 검수 진행.
+
+- 2026-10-22 SWEEP-A: 화면 양쪽 경계 snap, source GPU 원/별 제출·ONE flash, 원본 시체/머리 cached slot 표시, 반해상도 합성, 기존 번역 부활 bitmap210 labels. 표시 파생287개 provenance 동기화. source 고정조명 프레임으로 재검수 중.

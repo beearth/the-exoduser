@@ -41,6 +41,8 @@ var _vignette: ColorRect
 var _filter_rect: ColorRect
 var _half_view: SubViewport
 var _color_view: SubViewport
+var _color_rect: ColorRect
+var _color_lights:=PackedVector4Array()
 var _color_display: TextureRect
 var _half_display: TextureRect
 var _static_lights: Array=[]
@@ -59,6 +61,43 @@ var _configured := false
 # Snapshot9072: the Mac WebGPU reference does not start its separate THREE fog.
 var _source_fog_disabled: bool = OS.get_name() == "macOS"
 var _stage_draws := 0
+
+# Source4715-4726 Canvas2D lighter: sum premultiplied RGBA, clamp, unpremultiply.
+# A Godot blend_add sprite is not the Canvas2D offscreen alpha equation.
+const SOURCE_CANVAS_DISPLAY_SHADER="""
+shader_type canvas_item;
+vec4 straight(sampler2D source_tex,ivec2 p,ivec2 size_){
+ vec4 c=texelFetch(source_tex,clamp(p,ivec2(0),size_-ivec2(1)),0);
+ if(c.a>0.0)c.rgb=clamp(floor(c.rgb/c.a*255.0+.5)/255.0,vec3(0.0),vec3(1.0));
+ return c;
+}
+void fragment(){
+ ivec2 size_=textureSize(TEXTURE,0);vec2 p=UV*vec2(size_)-.5;
+ ivec2 i=ivec2(floor(p));vec2 f=fract(p);
+ COLOR=mix(mix(straight(TEXTURE,i,size_),straight(TEXTURE,i+ivec2(1,0),size_),f.x),mix(straight(TEXTURE,i+ivec2(0,1),size_),straight(TEXTURE,i+ivec2(1),size_),f.x),f.y);
+}
+"""
+const COLOR_COMPOSITE_SHADER="""
+shader_type canvas_item;
+render_mode blend_disabled;
+uniform sampler2D stamp0 : filter_linear, repeat_disable;
+uniform sampler2D stamp3 : filter_linear, repeat_disable;
+uniform sampler2D stamp4 : filter_linear, repeat_disable;
+uniform vec4 lights[14];
+uniform vec2 half_px=vec2(960.0,540.0);
+void fragment(){
+ vec2 p=UV*half_px;vec4 sum=vec4(0.0);
+ for(int i=0;i<14;i++){
+  vec4 l=lights[i];if(l.z<=0.0||l.w<=0.0)continue;
+  vec2 uv=(p-l.xy)/(l.z*2.0)+vec2(.5);
+  if(any(lessThan(uv,vec2(0.0)))||any(greaterThan(uv,vec2(1.0))))continue;
+  vec4 c=i==0?texture(stamp3,uv):(i>=2&&i<12?texture(stamp4,uv):texture(stamp0,uv));
+  c.a*=l.w;sum+=vec4(c.rgb*c.a,c.a);
+ }
+ sum=clamp(sum,vec4(0.0),vec4(1.0));
+ COLOR=vec4(sum.a>0.0?sum.rgb/sum.a:vec3(0.0),sum.a);
+}
+"""
 
 const LIGHTMAP_SHADER := "
 shader_type canvas_item;
@@ -197,6 +236,8 @@ func configure(world: Node, player: Node2D) -> bool:
 	_half_view.add_child(_lightmap)
 	_half_display=TextureRect.new();_half_display.name="NativeHalfLightmapDisplay";_half_display.texture=_half_view.get_texture()
 	_half_display.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
+	var display_shader:=Shader.new();display_shader.code=SOURCE_CANVAS_DISPLAY_SHADER
+	var display_material:=ShaderMaterial.new();display_material.shader=display_shader;_half_display.material=display_material
 	_half_display.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(_half_display)
 	_half_display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_color_view=SubViewport.new();_color_view.name="NativeHalfColorLightmap"
@@ -221,6 +262,15 @@ func configure(world: Node, player: Node2D) -> bool:
 	_boss_color.texture=preload("res://assets/map/web_parity/detail02/color0.png")
 	var boss_mix:=CanvasItemMaterial.new();boss_mix.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD
 	_boss_color.material=boss_mix;_boss_color.modulate.a=0;_boss_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;_color_view.add_child(_boss_color)
+	_color_rect=ColorRect.new();_color_rect.name="SourceCanvasLighterComposition"
+	var color_shader:=Shader.new();color_shader.code=COLOR_COMPOSITE_SHADER
+	var color_material:=ShaderMaterial.new();color_material.shader=color_shader
+	color_material.set_shader_parameter("stamp0",_iris_color.texture)
+	color_material.set_shader_parameter("stamp3",_static_colors[0].texture)
+	color_material.set_shader_parameter("stamp4",_static_colors[2].texture)
+	_color_rect.material=color_material;_color_view.add_child(_color_rect);_color_lights.resize(14)
+	for sprite in _static_colors:sprite.hide()
+	_iris_color.hide();_boss_color.hide()
 	_fog2d = _shader_rect("NativeFog2D", FOG2D_SHADER)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("bot_col", FOG_BOT)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("top_col", FOG_TOP)
@@ -305,6 +355,12 @@ func _process(_delta: float) -> void:
 			_boss_color.position=at*.5;_boss_color.scale=Vector2.ONE*520/_boss_color.texture.get_width();_boss_color.modulate.a=alpha*.85
 		else:_boss_color.modulate.a=0
 		mat.set_shader_parameter("boss_light",boss_light);mat.set_shader_parameter("boss_top",boss_top)
+		_color_rect.size=Vector2(half_size)
+		for i in 14:
+			var sprite: Sprite2D=_static_colors[i] if i<12 else (_iris_color if i==12 else _boss_color)
+			_color_lights[i]=Vector4(sprite.position.x,sprite.position.y,sprite.scale.x*sprite.texture.get_width()*.5,sprite.modulate.a)
+		_color_rect.material.set_shader_parameter("lights",_color_lights)
+		_color_rect.material.set_shader_parameter("half_px",Vector2(half_size))
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("clock_ms",_clock_ms)
 	(_fog_gl.material as ShaderMaterial).set_shader_parameter("fog_time",_fog_time)
 	(_vignette.material as ShaderMaterial).set_shader_parameter("screen_px", viewport_size)

@@ -54,3 +54,8 @@ SWEEP-A 11위치 engine viewport 재캡처 map-lighting/godot, ERROR0. 맵 geome
 
 
 > 2026-10-22 SWEEP-A 현행 표시 후속: [표시 계수·원본행·검수 경계](SWEEP_A_20261022.md#두-번째-표시-단위--자연-적펫hp바샘플러). 자연 적 스킨/크기·D 걷기·쉴드/etype 장식·WebGPU LINEAR·펫 CSS 소수 글꼴/하단220px·앵글러 MIX·보스 HP바 clipping을 교정한다. 과거 수치/당시 검수 이력은 보존하며 PC 판정·AI·보행·HP writer는 변경하지 않는다.
+
+
+### 2026-10-22 SWEEP-A 현행 표시 보완
+
+원본 screen-edge snap/ONE flash/4-vertex stun 제출, 시체 first16 blank GPU cache 및 24 head slot, 반해상도 premultiplied→straight 합성, 원본 bitmap 부활 label의 정확한 계약·수치·소유권은 [SWEEP_A §8](SWEEP_A_20261022.md)에 동기화했다. 과거 검수 기록과 현행 표시를 구분한다. 게임플레이·shared RNG·저장 writer 변경0. 최종 캡처/테스트 결과는 SWEEP-A 번호 목록을 따른다.

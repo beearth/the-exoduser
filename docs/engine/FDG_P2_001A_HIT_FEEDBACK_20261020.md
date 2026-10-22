@@ -78,3 +78,8 @@ godot/tests/test_p2001a_hit_feedback.gd(신규).
 3. 프리즌/빙결 바(53968) — _frozen 시스템 미이식.
 4. 숫자 아틀라스 행간 글로우 번짐(위 §원인) — 원본 동일 산물, 개선은 원본과 동시 결정 필요.
 5. 슬로모(G.slowMo) 소비자 — 미이식 유지(기록만).
+
+
+### 2026-10-22 SWEEP-A 현행 표시 보완
+
+원본 screen-edge snap/ONE flash/4-vertex stun 제출, 시체 first16 blank GPU cache 및 24 head slot, 반해상도 premultiplied→straight 합성, 원본 bitmap 부활 label의 정확한 계약·수치·소유권은 [SWEEP_A §8](SWEEP_A_20261022.md)에 동기화했다. 과거 검수 기록과 현행 표시를 구분한다. 게임플레이·shared RNG·저장 writer 변경0. 최종 캡처/테스트 결과는 SWEEP-A 번호 목록을 따른다.

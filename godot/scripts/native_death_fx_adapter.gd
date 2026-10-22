@@ -50,6 +50,14 @@ var world: Node2D
 var _configured := false
 var _gore_textures: Dictionary = {}
 var _di_textures: Dictionary = {}
+const CORPSE_SOUTH=preload("res://assets/corpse_source/bank_0.res")
+const HEADS=preload("res://assets/corpse_source/heads.res")
+var _heads: Array[Dictionary]=[]
+var _display_rng:=RandomNumberGenerator.new()
+var _display_random_draws:=0
+var _corpse_banks: Array[Texture2D]=[]
+static var _corpse_display_cache: Array[Dictionary]=[]
+static var _head_display_cache: Array[Dictionary]=[]
 var _blood_sheet: Texture2D
 var _impact_sheet: Texture2D
 var _impact_el0_sheet: Texture2D
@@ -79,6 +87,9 @@ func configure(owner_world: Node2D) -> bool:
 	if _configured or not is_instance_valid(owner_world):
 		return false
 	world = owner_world
+	_display_rng.randomize()
+	for i in 16:_corpse_banks.append(load("res://assets/corpse_source/bank_%d.res"%i))
+	texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
 	for key in GORE_TYPES:
 		var path := "res://assets/gore/%s.png" % key
 		if ResourceLoader.exists(path, "Texture2D"):
@@ -95,8 +106,13 @@ func configure(owner_world: Node2D) -> bool:
 	_impact_el0_sheet = load("res://assets/vfx/impact_el0_sheet.png") if ResourceLoader.exists("res://assets/vfx/impact_el0_sheet.png", "Texture2D") else null
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	z_as_relative = false
+	if _head_display_cache.is_empty():
+		for i in 24:_head_display_cache.append({"ready":false,"region":Rect2()})
+	for i in 24:_heads.append({"active":false,"x":0.0,"y":0.0,"vx":0.0,"vy":0.0,"rot":0.0,"rv":0.0,"sz":0.0,"life":0.0,"ml":180.0,"region":Rect2(),"display_ready":false,"display_region":Rect2()})
 	for i in range(STAIN_MAX): _stains.append({"active": false})
-	for i in range(CORPSE_MAX): _corpses.append({"active": false})
+	for i in range(CORPSE_MAX):_corpses.append({"active": false})
+	if _corpse_display_cache.is_empty():
+		for i in range(CORPSE_MAX):_corpse_display_cache.append({"ready":i<16,"texture":null,"region":Rect2()})
 	for i in range(GORE_MAX): _gore.append({"active": false, "ground": false, "persist": false, "life": 0.0})
 	for i in range(DI_MAX): _di.append({"active": false, "life": 0.0})
 	for i in range(HIT_VFX_MAX): _hit_vfx.append({"active": false})
@@ -118,6 +134,11 @@ func _make_drawer(drawer_name: String, z: int, additive: bool) -> Node2D:
 	drawer.draw_callback = Callable(self, "_draw_floor" if drawer_name == "FloorDecals" else ("_draw_air" if drawer_name == "AirDebris" else "_draw_air_add"))
 	add_child(drawer)
 	return drawer
+
+# New display-only randomness must not consume PC's shared operation stream.
+func _display_unit() -> float:
+	_display_random_draws+=1
+	return _display_rng.randf()
 
 func _unit() -> float:
 	_metrics.rng_calls += 1
@@ -279,11 +300,31 @@ func _add_corpse(enemy: Node2D, kill_ang: float, power: float, radius: float) ->
 	_corpses[oldest] = {"active": true, "x": enemy.global_position.x, "y": enemy.global_position.y,
 		"vx": cos(kill_ang) * spd, "vy": sin(kill_ang) * spd, "r": kill_ang + PI * 0.5,
 		"rv": (_unit() - 0.5) * 0.2, "sz": size, "t": 420.0, "mt": 420.0, "bounced": 0,
-		"texture": capture["texture"], "region": capture["region"]}
+		"texture": _corpse_banks[clampi(int(_display_unit()*16),0,15)] if capture.get("source_south",false) else capture["texture"], "region": capture["region"]}
 	_metrics.corpses += 1
+	if capture.get("source_south",false):_spawn_source_head(enemy,kill_ang,radius)
 
-# 시체 이미지 캡처(24982~): 현재 스프라이트 프레임을 그대로 사용 (렌더 소스 동일 원칙).
+# Source25364-25397: a prebuilt 256→48→top14→64 crop, fixed 24-slot visual pool.
+func _spawn_source_head(enemy: Node2D,angle: float,radius_: float) -> void:
+	var record: Dictionary=enemy.data.native_final
+	var slot:=0;var least:=INF
+	for i in _heads.size():
+		if not _heads[i].active:slot=i;break
+		if float(_heads[i].life)<least:least=float(_heads[i].life);slot=i
+	var head: Dictionary=_heads[slot]
+	var render_size: float=maxf(28,radius_*3.5)
+	var speed_: float=2+_display_unit()*2.5
+	head.x=enemy.global_position.x;head.y=enemy.global_position.y-render_size*.3
+	head.vx=cos(angle)*speed_+(_display_unit()-.5)*2;head.vy=-2.5-_display_unit()*2
+	head.rot=(_display_unit()-.5)*.5;head.rv=(_display_unit()-.5)*.2
+	head.sz=render_size*.5;head.life=180.0;head.ml=180.0;head.active=true
+	head.region=Rect2(int(record._mob8Col)*64,int(record._mob8Row)*64,64,64)
+
+# 시체 이미지 캡처(24982~25035): 일반 CH1은 남쪽 정지셀→128px 원본 Canvas2D 파생 + 16 고어 오버레이. 다른 미인수 supplier는 기존 경로 유지.
 func _capture_enemy_sprite(enemy: Node2D) -> Dictionary:
+	var record: Dictionary=enemy.data.get("native_final",{})
+	if record.has("_mob8Col") and record.has("_mob8Row") and int(record.get("_mobCh",1))==1 and not record.get("ib",false) and not record.has("_fmKind"):
+		return {"texture":CORPSE_SOUTH,"region":Rect2(int(record._mob8Col)*128,int(record._mob8Row)*128,128,128),"source_south":true}
 	var body: Variant = enemy.get("_body")
 	if not is_instance_valid(body) or not body is Sprite2D or body.texture == null:
 		return {}
@@ -398,6 +439,12 @@ func _physics_process(delta: float) -> void:
 		return
 	var sp: float = delta * 60.0
 	_fling_throttle = 0 # 34602 프레임 리셋
+	for head in _heads: # source34607 split visual physics
+		if not head.active:continue
+		head.life-=sp
+		if head.life<=0:head.active=false;continue
+		head.x+=head.vx*sp;head.y+=head.vy*sp;head.vy+=.12*sp
+		head.vx*=pow(.96,sp);head.rot+=head.rv*sp;head.rv*=pow(.98,sp)
 	for piece in _gore: # 34607~34614
 		if not piece["active"]:
 			continue
@@ -520,7 +567,8 @@ func _draw_floor(canvas: Node2D) -> void:
 		canvas.draw_circle(Vector2.ZERO, size * 0.62, Color(0x7a / 255.0, 0x10 / 255.0, 0x18 / 255.0, 0.30 * fade))
 	canvas.draw_set_transform_matrix(Transform2D())
 	var corpse_drawn := 0
-	for corpse in _corpses:
+	for slot in _corpses.size():
+		var corpse: Dictionary=_corpses[slot]
 		if not corpse["active"]:
 			continue
 		corpse_drawn += 1
@@ -538,8 +586,11 @@ func _draw_floor(canvas: Node2D) -> void:
 			canvas.draw_circle(Vector2.ZERO, pw, Color(0x33 / 255.0, 0, 0, 0.3 * alpha))
 		canvas.draw_set_transform(at, float(corpse["r"]), Vector2(1.0, 0.5)) # 54538 scale(1,.5)
 		var size: float = float(corpse["sz"])
-		canvas.draw_texture_rect_region(corpse["texture"], Rect2(-size / 2.0, -size / 2.0, size, size),
-			corpse["region"], Color(1, 1, 1, alpha))
+		var cached: Dictionary=_corpse_display_cache[slot]
+		if not cached.ready:
+			cached.ready=true;cached.texture=corpse.texture;cached.region=corpse.region
+		if cached.texture is Texture2D:
+			canvas.draw_texture_rect_region(cached.texture, Rect2(-size / 2.0, -size / 2.0, size, size),cached.region,Color(1,1,1,alpha))
 	canvas.draw_set_transform_matrix(Transform2D())
 	for piece in _gore: # 바닥 잔류 고어 (54565: alpha .88, scale(1,.52))
 		if not piece["active"] or not piece.get("ground", false):
@@ -551,6 +602,17 @@ func _draw_floor(canvas: Node2D) -> void:
 	canvas.draw_set_transform_matrix(Transform2D())
 
 func _draw_air(canvas: Node2D) -> void:
+	for slot in _heads.size(): # source54562, before flying gore
+		var head: Dictionary=_heads[slot]
+		if not head.active:continue
+		var alpha: float=minf(1,float(head.life)/float(head.ml)*3)
+		var scale_: float=1.0 if float(head.life)>10 else float(head.life)/10
+		var size_: float=float(head.sz)*scale_
+		var display: Dictionary=_head_display_cache[slot]
+		if not display.ready:display.ready=true;display.region=head.region
+		canvas.draw_set_transform(canvas.to_local(Vector2(head.x,head.y)),float(head.rot),Vector2.ONE)
+		canvas.draw_texture_rect_region(HEADS,Rect2(-size_*.5,-size_*.5,size_,size_),display.region,Color(1,1,1,alpha))
+	canvas.draw_set_transform_matrix(Transform2D())
 	for piece in _gore: # 비행 고어 (54566) + 카메라 플링 (54926)
 		if not piece["active"] or piece.get("ground", false):
 			continue

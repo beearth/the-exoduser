@@ -400,6 +400,8 @@ func _update_animation() -> void:
 	elif _stun_ticks>0:spawn_alpha*=.6
 	_body.modulate = Color(1,1,1,spawn_alpha)
 	_walk.modulate = _body.modulate
+	preload("res://scripts/native_enemy_source_art.gd").snap_sprite(self,_body,float(animation.draw_height))
+	preload("res://scripts/native_enemy_source_art.gd").snap_sprite(self,_walk,float(animation.draw_height))
 
 func _rect(value: Array) -> Rect2:
 	return Rect2(float(value[0]), float(value[1]), float(value[2]), float(value[3]))
