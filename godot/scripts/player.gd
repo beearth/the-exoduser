@@ -127,6 +127,65 @@ var _native_source_poise_r_initialized: bool = false
 func set_world(world: Node) -> void:
 	_world = world
 
+# ═══ PC-MOVE-SKILLS (2026-10-22) — Shift 사슬·방향+Space 전격이동 owner(native_move_skills.gd) 결합 ═══
+# 원본 S16b(G32155–32576)·switch 소비(G32985/33032/33747/33943/34333/34341)·keydown/keyup(G13225–13372)의
+# 호출 위치만 이 파일에 둔다. 수치·순서는 owner가 보유. 미결합이면 기존 동작 그대로.
+const NATIVE_MOVE_SKILLS_PATH := "res://scripts/native_move_skills.gd"
+var _native_move_skills: Node = null
+var _dash_clip := {"anim": "", "f": 0, "t": 0.0, "done": false}
+
+func bind_native_move_skills(owner: Node) -> bool:
+	if is_instance_valid(_native_move_skills) or not is_instance_valid(owner) or owner.get_script() == null \
+			or owner.get_script().resource_path != NATIVE_MOVE_SKILLS_PATH or not owner.is_configured():
+		return false
+	_native_move_skills = owner
+	return true
+
+func get_native_move_skills() -> Node:
+	return _native_move_skills if is_instance_valid(_native_move_skills) else null
+
+## _aimDir() G19790 — 플레이어 조준 각도(이 파일의 _physics_process 조준 계산과 같은 원천)
+func read_native_aim_angle() -> float:
+	var aim: Vector2 = get_global_mouse_position() - global_position
+	if _native_ground_pointer_bound:
+		var pointer: Variant = _native_ground_pointer.call() if _native_ground_pointer.is_valid() else null
+		aim = pointer.world - global_position if pointer is Dictionary and pointer.get("ready") == true and pointer.get("world") is Vector2 else Vector2.ZERO
+	if aim.length_squared() > 1.0:
+		return aim.angle()
+	return facing.angle()
+
+## owner 전용 상태 쓰기: P.s='bladeDash'(G45456) / 착지 복귀 idle·sBlock(G45408–45413)
+func apply_native_move_skill_state(next_state: String) -> bool:
+	if not is_instance_valid(_native_move_skills) or next_state not in ["bladeDash", "idle", "sBlock"]:
+		return false
+	if next_state == "bladeDash" and state in ["windup", "swing", "recover"]:
+		charge_frames = 0.0
+		_accessibility_hold = false
+	state = next_state
+	stats_changed.emit()
+	return true
+
+## 경직·기절 탈출(G34333/G34336/G34341/G34343)
+func apply_native_move_skill_escape(kind: String) -> bool:
+	if not is_instance_valid(_native_move_skills):
+		return false
+	match kind:
+		"stagger": # P.s='idle';P.st2=0
+			state = "idle"; _state_left = 0.0
+		"stagger_blade": # P.st2=0 → activateBladeDash
+			_state_left = 0.0
+		"pStun": # P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0
+			state = "idle"; iframes = 30.0; poise = 4; _native_source_poise_r = 0.0
+		"pStun_blade": # P.poise=4;P.poiseR=0 → activateBladeDash
+			poise = 4; _native_source_poise_r = 0.0
+		_:
+			return false
+	stats_changed.emit()
+	return true
+
+func _move_skills_block_idle_actions() -> bool:
+	return is_instance_valid(_native_move_skills) and state == "idle" and _native_move_skills.blocks_idle_actions()
+
 func get_combat_world() -> Node:
 	return _world
 
@@ -473,6 +532,14 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 	if not _native_attack_selection_bound or not is_inside_tree() or get_tree().paused:
 		result.reason="native_input_not_live_or_paused"
 		return result
+	if is_instance_valid(_native_move_skills):
+		if event is InputEventMouseMotion or event is InputEventMouseButton:
+			_native_move_skills.handle_mouse_modifier(event) # G13384/G13394 sticky-keys Shift 잔류 해제
+		elif event is InputEventKey:
+			# keydown G13225–13249 / keyup G13336–13371: 같은 키의 다른 바인딩(Space 슬롯)보다 먼저
+			var move: Dictionary = _native_move_skills.handle_key(event, Callable(self, "_native_lesson_blocks_action"))
+			if move.get("consumed") == true:
+				return {"handled":true,"accepted":true,"action":"move_skill","reason":str(move.get("reason",""))}
 	if event is InputEventMouseMotion and event.position.is_finite():
 		_native_pointer_screen=event.position
 		return {"handled":true,"accepted":true,"action":"aim"}
@@ -514,11 +581,23 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 				telemetry_event.emit("native_input_unavailable",{"action":action,"reason":command.reason})
 		elif action=="shield_bash":
 			var command: Dictionary = {"accepted":true}
-			if pressed:
+			if pressed and _move_skills_block_idle_actions(): # G33042 사슬기동 중 idle 행동 차단(isJust('shield') 미도달)
+				command={"accepted":false,"reason":"chain_movement_blocks_idle_actions"}
+			elif pressed:
 				command=_native_q_control.queue_e_control_press() if is_instance_valid(_native_q_control) and not was_held else {"accepted":false,"reason":"e_owner_not_ready_or_held_repeat"}
 			result.command=command
 			result.accepted=command.get("accepted")==true
 			if not result.accepted:telemetry_event.emit("native_input_unavailable",{"action":action,"reason":command.get("reason")})
+		elif action=="rage_slot" and is_instance_valid(_native_move_skills):
+			# G13284 Space 슬롯(SKILL_SLOTS[4]): 전격이동 트리거(G13246, 위 handle_key) 다음 순위.
+			# 사슬기동 중엔 차단, 그 외에는 실제 슬롯 owner(NativeSkillSlots._unhandled_input)로 넘긴다.
+			if pressed and _native_move_skills.blocks_space_slot():
+				result.reason="space_slot_blocked_during_chain_movement"
+				return result
+			result.handled=false
+			result.accepted=false
+			result.reason="space_slot_deferred_to_skill_slot_owner"
+			return result
 		elif pressed:
 			result.reason="space_rage_slot_not_connected"
 			telemetry_event.emit("native_input_unavailable",{"action":action,"reason":result.reason})
@@ -540,6 +619,8 @@ func _request_native_q_input() -> Dictionary:
 	var owner: Object = _native_combat_qe if is_instance_valid(_native_combat_qe) else _native_q_control
 	if not is_instance_valid(owner) or (not owner.is_native_qe_ready() and not owner.is_native_q_control_ready()):
 		return {"accepted":false,"reason":"native_q_owner_not_ready"}
+	if _move_skills_block_idle_actions(): # G33042 사슬기동 중 행동 차단 (isAct('parry') 미도달)
+		return {"accepted":false,"reason":"chain_movement_blocks_idle_actions"}
 	if state in ["windup","swing","recover"]:
 		var selection: Dictionary = get_native_attack_selection_snapshot()
 		var p: Variant = _native_attack_selection_reader.call() if _native_attack_selection_reader.is_valid() else null
@@ -556,6 +637,8 @@ func _request_native_q_input() -> Dictionary:
 func _notification(what: int) -> void:
 	if what==NOTIFICATION_APPLICATION_FOCUS_OUT:
 		clear_native_input_states()
+		if is_instance_valid(_native_move_skills):
+			_native_move_skills.clear_held_input() # G13373 _clearHeldInput: 쉬프트 홀드 무장 해제
 
 func bind_native_attack_selection(reader: Callable) -> bool:
 	if _native_attack_selection_bound or not reader.is_valid() or reader.get_argument_count() != 0 or reader.get_method() != "read_current_p":
@@ -652,6 +735,8 @@ func _withdraw_native_attack_tempo() -> void:
 func request_attack() -> bool:
 	_weapon_held = true
 	if hp <= 0 or state != "idle" or _blocked_until_release:
+		return false
+	if _move_skills_block_idle_actions(): # G33042 사슬기동 중 행동 차단 (isAct('weapon') 미도달)
 		return false
 	var selection: Dictionary = get_native_attack_selection_snapshot() if _native_attack_selection_bound else {}
 	if _native_attack_selection_bound and selection.get("ready") != true:
@@ -769,7 +854,11 @@ func _physics_process(delta: float) -> void:
 	var fireball_entered_state: String=state
 	var ticks: float = delta * 60.0
 	_clock_frames += ticks
+	if is_instance_valid(_native_move_skills):
+		_native_move_skills.advance_pre(ticks) # G32155–32576 S16b 사슬/전격 블록 (iframes 감소 G32775 앞)
 	iframes = maxf(0.0, iframes - ticks)
+	if is_instance_valid(_native_move_skills):
+		_native_move_skills.advance_post_iframes() # G32784–32786
 	if is_instance_valid(_native_combat_qe) and is_instance_valid(_world):
 		var context: Dictionary = _world.get_native_projectile_fx_context()
 		_native_combat_qe.advance_native(context["dt_sp"], _world.get_native_frame(), _world.get_native_world_identity())
@@ -813,11 +902,16 @@ func _physics_process(delta: float) -> void:
 		var divisor: float = 8.0 if state == "idle" else 16.0
 		stamina = minf(max_stamina, stamina + _stamina_regen_base / divisor * ticks)
 	var move_input: Vector2 = Vector2(float(_native_input_held.get("move_right",false))-float(_native_input_held.get("move_left",false)),float(_native_input_held.get("move_down",false))-float(_native_input_held.get("move_up",false))).normalized() if _native_attack_selection_bound else Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var speed_scale: float = 1.0 if state == "idle" else (0.0 if state in ["stagger", "pStun", "iceOrb"] else 0.8) # P2-005d: 33040 얼음보주 전행동 차단
+	# switch(P.s)는 case 선택 시점 상태로 한 번 갈린다: 이동 owner가 이 틱에 상태를 바꿔도(착지→idle,
+	# 경직 탈출→idle) 보행·idle 체크포인트는 다음 틱부터다(G32987 switch / G34333 break).
+	var switch_state: String = state
+	if is_instance_valid(_native_move_skills):
+		switch_state = _native_move_skills.advance_state(ticks) # G32985 이동 틱 + case bladeDash(G33943)·stagger(G34333)·pStun(G34341)
+	var speed_scale: float = 1.0 if switch_state == "idle" else (0.0 if switch_state in ["stagger", "pStun", "iceOrb", "bladeDash"] else 0.8) # P2-005d: 33040 얼음보주 전행동 차단 / PC-MOVE-SKILLS: case 'bladeDash'는 보행 없음
 	if is_instance_valid(_native_q_control) and _native_q_control.is_native_q_control_ready() and (state=="sBlock" or _native_q_control.q_movement_scale==0.0):speed_scale=_native_q_control.q_movement_scale
 	# Native _freezeSlow is consumed inside the entered idle case, before
 	# its positive-value half-speed check. Attack/stun/recovery clocks freeze it.
-	if state == "idle":
+	if state == "idle" and switch_state == "idle":
 		# Native status components observe the actual entered idle checkpoint.
 		native_idle_status_tick.emit(ticks)
 		_native_freeze_slow_ticks = maxf(0.0, _native_freeze_slow_ticks - ticks)
@@ -831,7 +925,13 @@ func _physics_process(delta: float) -> void:
 		velocity += _knockback * 0.5 * 60.0
 		_knockback *= pow(0.65, ticks)
 	var previous_position: Vector2 = global_position
+	# 사슬 끌림·전격이동 중에는 일반 적 몸체(layer 4)에 막히지 않는다 — 원본 이동은 canMvBlink(벽)만 검사(G32266/G45352),
+	# 플레이어-적 밀어내기는 보스(e.ib)만(G34349). 이동 owner가 직접 옮긴 좌표를 적 회복 충돌이 되돌리지 않게 한다.
+	var mask_saved: int = collision_mask
+	if is_instance_valid(_native_move_skills) and _native_move_skills.passes_through_enemies():
+		collision_mask = 1
 	move_and_slide()
+	collision_mask = mask_saved
 	var wall_contact: bool = false
 	for index in range(get_slide_collision_count()):
 		var contact: KinematicCollision2D = get_slide_collision(index)
@@ -842,6 +942,8 @@ func _physics_process(delta: float) -> void:
 		telemetry_event.emit("wall_contact", {"position": global_position, "velocity": velocity, "collisions": get_slide_collision_count()})
 	_was_wall_contact = wall_contact
 	if is_instance_valid(_native_q_control) and is_instance_valid(_world):_native_q_control.finish_e_control(_world.get_native_frame())
+	if is_instance_valid(_native_move_skills):
+		_native_move_skills.advance_state_after_move() # G33032–33039 idle(보행 뒤)·G33747 sBlock 트리거 소비
 	var moved: float = global_position.distance_to(previous_position)
 	_walk_distance += moved
 	_was_moving = moved > 0.001
@@ -849,7 +951,7 @@ func _physics_process(delta: float) -> void:
 	# facing remains the independent pointer/attack direction.
 	if _was_moving:
 		_walk_visual_direction = (global_position - previous_position).normalized()
-	if state == "idle":
+	if state == "idle" and switch_state == "idle":
 		# The native _rbBurn loop belongs to the entered idle case. Walking
 		# keeps this state; other cases returning to idle wait until next tick.
 		_tick_native_burns(ticks)
@@ -901,7 +1003,8 @@ func _physics_process(delta: float) -> void:
 			combo_step = 0
 	if stamina != before_stamina or state == "windup":
 		stats_changed.emit()
-	if is_instance_valid(_world) and (_native_input_held.get("native_magic",false) or fireball_entered_state in ["magicCast","magicRecover"] or state in ["magicCast","magicRecover"]):
+	var magic_blocked: bool = _move_skills_block_idle_actions() and fireball_entered_state == "idle" # G33042: 사슬기동 중 isHeld('beam') 미도달
+	if is_instance_valid(_world) and not magic_blocked and (_native_input_held.get("native_magic",false) or fireball_entered_state in ["magicCast","magicRecover"] or state in ["magicCast","magicRecover"]):
 		var fireball_context: Dictionary=_world.get_native_projectile_fx_context()
 		native_fireball_phase_tick.emit(fireball_context.dt_sp,_world.get_native_frame(),fireball_entered_state)
 
@@ -1237,6 +1340,7 @@ func apply_native_character_selection(reader: Callable) -> Dictionary:
 					var offset: int = 0 if mode=="idle" else (2 if mode=="walk" else profile.source_attack_offset)
 					atlas.region=Rect2((offset+frame)*48,0,48,48)
 				frames.add_frame(animation,atlas)
+	_add_native_dash_flight_frames(frames,"res://assets/player_silvertail/dash-flight-v1.png" if profile.index==1 else "res://assets/player/dash-flight-v1.png")
 	var fresh: Variant = reader.call()
 	if not fresh is Dictionary or fresh.get("ready")!=true or fresh.get("index")!=profile.index:
 		_sprite.visible=false
@@ -1292,8 +1396,28 @@ func _build_sprite() -> void:
 				atlas.atlas = attack if mode == "attack" else source
 				atlas.region = Rect2(index * 80, direction_index * 80, 80, 80) if mode == "attack" else Rect2((offset + index) * 48, 0, 48, 48)
 				frames.add_frame(animation, atlas)
+	_add_native_dash_flight_frames(frames, "res://assets/player/dash-flight-v1.png")
 	_sprite.sprite_frames = frames
 	add_child(_sprite)
+
+## WarriorDashFlight.apply (warrior-dash-flight.js): 384×512 시트, 행=s,se,e,ne,n,nw,w,sw(=DIRECTIONS), 64px×6프레임.
+## dash_start=0~1, dash_fly=2~3, dash_land=4~5 — 프레임 선택은 _native_dash_pose가 한다.
+func _add_native_dash_flight_frames(frames: SpriteFrames, path: String) -> void:
+	if not ResourceLoader.exists(path, "Texture2D"):
+		return
+	var sheet: Texture2D = load(path)
+	if sheet == null or sheet.get_size() != Vector2(384, 512):
+		return # 원본도 크기가 다르면 기존 아틀라스 유지
+	for direction_index in range(8):
+		var animation: StringName = StringName("dash_" + DIRECTIONS[direction_index])
+		frames.add_animation(animation)
+		frames.set_animation_loop(animation, false)
+		frames.set_animation_speed(animation, 60.0 / 4.0) # _apSpd 4 — 표시는 _apply_native_dash_pose가 프레임을 직접 고른다
+		for index in range(6):
+			var atlas := AtlasTexture.new()
+			atlas.atlas = sheet
+			atlas.region = Rect2(index * 64, direction_index * 64, 64, 64)
+			frames.add_frame(animation, atlas)
 
 func get_native_projection_metadata() -> Dictionary:
 	# Read the selected native consumer and recorded source anchor; never use
@@ -1370,6 +1494,13 @@ func _update_display() -> void:
 		return
 	_sprite.visible=true
 	var walking: bool = state == "idle" and _was_moving and hp > 0
+	var dash_pose: Dictionary = _native_dash_pose(walking)
+	if dash_pose.get("active") == true:
+		_apply_native_dash_pose(dash_pose, selected)
+		return
+	_sprite.position = Vector2.ZERO
+	_sprite.scale = Vector2.ONE * visual_scale
+	_record_native_move_trail(false)
 	var direction: Vector2 = _attack_direction if state in ["swing", "recover", "windup"] else (_walk_visual_direction if walking else facing)
 	var direction_index: int = posmod(int(round((PI / 2.0 - direction.angle()) / (PI / 4.0))), 8)
 	var mode: String = "attack" if state in ["windup", "swing", "recover","sDraw","kiGather","sBash","sRecover"] else ("walk" if walking else "idle")
@@ -1429,6 +1560,111 @@ func _update_display() -> void:
 			sprite.scale = Vector2(width * (0.96 if index == 0 else 0.82), width * (1.0 if index == 0 else 0.86)) / 418.0
 			sprite.modulate.a = (0.24 + 0.08 * tier) if index == 0 else (0.58 + 0.08 * tier)
 		_charge_marks.queue_redraw()
+
+# ── PC-MOVE-SKILLS 렌더 (drawP atlas 분기 G58589–58716) ──
+# MOTION.ez(4) elastic-out LUT (G3348–3381: N=256 Float32 LUT + 선형 보간)
+static var _motion_elastic_lut: PackedFloat32Array = PackedFloat32Array()
+
+static func _motion_elastic(t: float) -> float:
+	if _motion_elastic_lut.is_empty():
+		_motion_elastic_lut.resize(257)
+		var c4: float = TAU / 3.0
+		for i in range(257):
+			var x: float = float(i) / 256.0
+			_motion_elastic_lut[i] = 0.0 if x <= 0.0 else (1.0 if x >= 1.0 else pow(2.0, -10.0 * x) * sin((x * 10.0 - 0.75) * c4) + 1.0)
+	if t <= 0.0: return _motion_elastic_lut[0]
+	if t >= 1.0: return _motion_elastic_lut[256]
+	var f: float = t * 256.0
+	var i: int = int(f)
+	var r: float = f - float(i)
+	return _motion_elastic_lut[i] + (_motion_elastic_lut[i + 1] - _motion_elastic_lut[i]) * r
+
+## G58590–58600 애니 선택 + WarriorDashFlight.direction/landing
+func _native_dash_pose(walking: bool) -> Dictionary:
+	if not is_instance_valid(_native_move_skills) or hp <= 0:
+		return {"active": false}
+	var pose: Dictionary = _native_move_skills.read_pose()
+	var anim := ""
+	if pose.harp_active and not pose.dash_active:
+		anim = "dash_start" if int(pose.dash_phase) == 1 else "dash_fly"
+	elif pose.dash_active:
+		anim = "dash_fly"
+	elif float(pose.harp_land_t) > 0.0 and state == "idle" and not walking: # WarriorDashFlight.landing(true,P.s,_apMv)
+		anim = "dash_land"
+	elif state == "bladeDash":
+		anim = "dodge" # _P_ANIM_MAP.bladeDash='dodge' → 8방향 idle 프레임(G10571)
+	if anim.is_empty():
+		_dash_clip.anim = ""
+		return {"active": false}
+	var dir_angle: float = facing.angle()
+	if anim.begins_with("dash"):
+		var dv: Vector2 = pose.dash_v
+		var hv: Vector2 = pose.harp_v
+		if (pose.dash_active or float(pose.harp_land_t) > 0.0) and dv != Vector2.ZERO: dir_angle = dv.angle()
+		elif pose.harp_active and hv != Vector2.ZERO: dir_angle = hv.angle()
+	var lift: float = 0.0
+	if anim.begins_with("dash") and pose.dash_active:
+		lift = -12.0 * sin(PI * clampf(float(pose.dash_left) / maxf(1e-9, float(pose.pull_dur)), 0.0, 1.0))
+	return {"active": true, "anim": anim, "dir_angle": dir_angle, "lift": lift, "bd_st2": float(pose.bd_st2)}
+
+## SpriteAnimator.play/update (G10429–10432): spd 4(사슬)/8(dodge), dash_fly만 loop
+func _apply_native_dash_pose(pose: Dictionary, selected: Dictionary) -> void:
+	var anim: String = pose.anim
+	var visual_ticks: float = maxf(0.0, _clock_frames - _idle_visual_last_clock)
+	_idle_visual_last_clock = _clock_frames
+	var spd: float = 4.0 if anim.begins_with("dash") else 8.0
+	var count: int = 2
+	if _dash_clip.anim != anim: # play(): 다른 애니면 f/t 초기화 → 같은 렌더에서 update() 1회
+		_dash_clip = {"anim": anim, "f": 0, "t": 0.0, "done": false}
+	if not _dash_clip.done:
+		_dash_clip.t = float(_dash_clip.t) + visual_ticks
+		if float(_dash_clip.t) >= spd:
+			_dash_clip.t = float(_dash_clip.t) - spd
+			_dash_clip.f = int(_dash_clip.f) + 1
+			if int(_dash_clip.f) >= count:
+				if anim == "dash_fly" or anim == "dodge": _dash_clip.f = 0
+				else:
+					_dash_clip.f = count - 1
+					_dash_clip.done = true
+	if anim == "dash_start" and _dash_clip.done:
+		_native_move_skills.set_dash_phase_from_render(2) # G58621
+	var direction_index: int = posmod(int(round((PI / 2.0 - pose.dir_angle) / (PI / 4.0))), 8)
+	var base: String = "dash" if anim.begins_with("dash") else "idle"
+	var animation := StringName(base + "_" + DIRECTIONS[direction_index])
+	if not _sprite.sprite_frames.has_animation(animation):
+		animation = StringName("idle_" + DIRECTIONS[direction_index])
+		base = "idle"
+	if _sprite.animation != animation:
+		_sprite.animation = animation
+	var offset_frame: int = {"dash_start": 0, "dash_fly": 2, "dash_land": 4}.get(anim, 0) if base == "dash" else 0
+	_sprite.frame = mini(offset_frame + int(_dash_clip.f), _sprite.sprite_frames.get_frame_count(animation) - 1)
+	_sprite.offset = Vector2(-32, -32) if base == "dash" else ((selected.body_offset if selected.get("ready") == true else Vector2(-24, -24)))
+	_sprite.modulate = Color.WHITE
+	_sprite.visible = true
+	if anim == "dodge":
+		# bladeDash 스쿼시 G58677–58682: MOTION.squash((12−st2)/12, .22), 발밑 고정 translate
+		var k: float = (1.0 - _motion_elastic((12.0 - float(pose.bd_st2)) / 12.0)) * 0.22
+		var sx: float = 1.0 + k
+		var sy: float = 1.0 - k
+		_sprite.scale = Vector2(visual_scale * sx, visual_scale * sy)
+		_sprite.position = Vector2(0, visual_scale * 48.0 * (1.0 - sy) * 0.5)
+	else:
+		_sprite.scale = Vector2.ONE * visual_scale
+		_sprite.position = Vector2(0, float(pose.lift))
+	for sprite in _charge_sprites: sprite.visible = false
+	_charge_marks.visible = false
+	_record_native_move_trail(true)
+
+## [잔상] G58713–58716: 이동기술 중 렌더 프레임마다 스냅샷(최대 8), 비활성 시 비움
+func _record_native_move_trail(active: bool) -> void:
+	if not is_instance_valid(_native_move_skills):
+		return
+	if not active:
+		_native_move_skills.clear_trail()
+		return
+	var tex: Texture2D = _sprite.sprite_frames.get_frame_texture(_sprite.animation, _sprite.frame)
+	_native_move_skills.push_trail({"pos": global_position, "texture": tex, "offset": _sprite.offset,
+		"scale": Vector2.ONE * visual_scale, "bright": state == "bladeDash"})
 
 func _attack_frame() -> int:
 	var selected: Dictionary = get_native_character_profile_snapshot()

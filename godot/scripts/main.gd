@@ -378,6 +378,7 @@ func _ready() -> void:
 	if not native_skill_slots.configure(self, world, player, source_state):
 		push_error("Native skill slots configuration rejected (startup continues).")
 	hud.bind_native_skill_cooldowns(Callable(native_skill_slots, "read_native_slot_cooldowns"))
+	_install_native_move_skills()
 	# P2-006a — 바닥 드랍 표시·줍기(worldItems 52485s·R 줍기 32935s·pickupItem 16398) — 표시·입력 어댑터
 	var native_world_drops: Node2D = preload("res://scripts/native_world_drops.gd").new()
 	native_world_drops.name = "NativeWorldDrops"
@@ -1963,6 +1964,26 @@ func _notification(what: int) -> void:
 		if is_instance_valid(capture) and capture.has_method("save_report"):
 			capture.save_report()
 
+# PC-MOVE-SKILLS (2026-10-22): Shift 사슬·방향+Space 전격이동 owner. 미설치면 player 기존 동작 그대로.
+var native_move_skills: Node = null
+func _install_native_move_skills() -> void:
+	var owner: Node2D = preload("res://scripts/native_move_skills.gd").new()
+	owner.name = "NativeMoveSkills"
+	if not owner.configure(self, world, player, source_state):
+		owner.free()
+		push_error("Native move skills configuration rejected (startup continues).")
+		return
+	add_child(owner)
+	move_child(owner, player.get_index()) # 렌더 under 층이 같은 z에서 플레이어 본체보다 먼저 그려지도록
+	if not player.bind_native_move_skills(owner):
+		owner.queue_free()
+		push_error("Native move skills player binding rejected (startup continues).")
+		return
+	native_move_skills = owner
+
+func read_native_move_skills() -> Dictionary:
+	return native_move_skills.get_snapshot() if is_instance_valid(native_move_skills) else {"configured": false}
+
 func _register_inputs() -> void:
 	# Explicit native defaults from R BINDS, not restored browser BINDS/BINDS2.
 	if InputMap.has_action("cancel_charge"): InputMap.erase_action("cancel_charge")
@@ -1978,6 +1999,13 @@ func _register_inputs() -> void:
 	var mouse := InputEventMouseButton.new()
 	mouse.button_index = MOUSE_BUTTON_LEFT
 	InputMap.action_add_event("weapon", mouse)
+	# BINDS.charge='ShiftLeft' (G6191) — 물리 왼쪽 Shift. 실제 입력 판정은 native_move_skills(G13226 e.code==='ShiftLeft').
+	if not InputMap.has_action("charge"): InputMap.add_action("charge")
+	InputMap.action_erase_events("charge")
+	var shift := InputEventKey.new()
+	shift.physical_keycode = KEY_SHIFT
+	shift.location = KEY_LOCATION_LEFT
+	InputMap.action_add_event("charge", shift)
 	if not InputMap.has_action("native_magic"):InputMap.add_action("native_magic")
 	InputMap.action_erase_events("native_magic")
 	var magic_mouse:=InputEventMouseButton.new()
@@ -1985,7 +2013,7 @@ func _register_inputs() -> void:
 	InputMap.action_add_event("native_magic",magic_mouse)
 
 func read_native_input_bindings() -> Dictionary:
-	var primary := {"up":"KeyW","down":"KeyS","left":"KeyA","right":"KeyD","weapon":"mouse0","parry":"KeyQ","shield":"KeyE","bow":"Space","settings":"Escape","beam":"mouse2"}
+	var primary := {"up":"KeyW","down":"KeyS","left":"KeyA","right":"KeyD","weapon":"mouse0","parry":"KeyQ","shield":"KeyE","bow":"Space","charge":"ShiftLeft","settings":"Escape","beam":"mouse2"}
 	var secondary: Dictionary = {}
 	for action in primary: secondary[action]=null
 	var qe_ready: bool = is_instance_valid(player) and player.get_native_combat_qe_snapshot().get("ready")==true
@@ -1995,6 +2023,7 @@ func read_native_input_bindings() -> Dictionary:
 	var e_ready: bool = is_instance_valid(player) and player.get_native_e_control_snapshot().get("ready")==true
 	if e_ready:supported.append_array(["e_draw_charge_sbash_recover_partial","e_default_fused_wave_dark_reflection_partial"])
 	if q_ready:supported.append_array(["q_control_hold_release_partial","q_dark_projectile_reflection"])
+	if is_instance_valid(native_move_skills):supported.append_array(["shift_chain_movement","direction_space_blade_dash"])
 	return {"ready":is_inside_tree() and not is_queued_for_deletion(),"authority":"native_explicit_defaults_from_R","source_saved_bindings_restored":false,"primary":primary,"secondary":secondary,"supported":supported,"q_owner_ready":qe_ready or q_ready,"q_route":"existing_adapter_request_release" if qe_ready else ("Q_CONTROL_PARTIAL" if q_ready else "NOT_READY"),"unsupported":["q_black_other_natural_carriers","q_core_absorb","q_full_doparry_rewards_fx_audio","q_detonate_peace_runtime","e_nonfused_other_carriers_pose_audio_full_fx","space_rage_slot","saved_bindings","secondary_remapping","full_qe_fsm"]}
 
 # R46689/36853: default shieldFuse wave in the existing Player post-move phase.
