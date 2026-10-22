@@ -33,7 +33,7 @@ L('route_override_files', diff.length, diff.slice(0, 40));
 const MIME = { html: 'text/html; charset=utf-8', js: 'application/javascript; charset=utf-8', css: 'text/css; charset=utf-8', json: 'application/json', png: 'image/png', jpg: 'image/jpeg', webp: 'image/webp', mp3: 'audio/mpeg', mp4: 'video/mp4', svg: 'image/svg+xml' };
 
 
-const PROBE = `(sels)=>sels.map(sel=>{const els=[...document.querySelectorAll(sel)];return {sel,n:els.length,items:els.slice(0,6).map(e=>{const b=e.getBoundingClientRect();const c=getComputedStyle(e);return {r:[+b.x.toFixed(1),+b.y.toFixed(1),+b.width.toFixed(1),+b.height.toFixed(1)],ff:c.fontFamily.slice(0,60),fs:c.fontSize,fw:c.fontWeight,ls:c.letterSpacing,lh:c.lineHeight,col:c.color,bg:c.backgroundColor,bgi:c.backgroundImage.slice(0,120),bd:c.border,bdc:c.borderColor,bds:c.borderStyle,br:c.borderRadius,op:c.opacity,fi:c.filter,ts:c.textShadow.slice(0,80),bs:c.boxShadow.slice(0,100),tr:c.transform,disp:c.display,vis:c.visibility,ta:c.textAlign,pad:c.padding,txt:(e.innerText||e.value||'').slice(0,80)}})}})`;
+const PROBE = `(sels)=>sels.map(sel=>{const els=[...document.querySelectorAll(sel)];return {sel,n:els.length,items:els.slice(0,sel.endsWith('*')?260:12).map(e=>{const b=e.getBoundingClientRect();const c=getComputedStyle(e);return {r:[+b.x.toFixed(1),+b.y.toFixed(1),+b.width.toFixed(1),+b.height.toFixed(1)],ff:c.fontFamily.slice(0,60),fs:c.fontSize,fw:c.fontWeight,ls:c.letterSpacing,lh:c.lineHeight,col:c.color,bg:c.backgroundColor,bgi:c.backgroundImage.slice(0,120),bd:c.border,bdc:c.borderColor,bds:c.borderStyle,br:c.borderRadius,op:c.opacity,fi:c.filter,ts:c.textShadow.slice(0,80),bs:c.boxShadow.slice(0,100),tr:c.transform,disp:c.display,vis:c.visibility,ta:c.textAlign,pad:c.padding,txt:(e.innerText||e.value||'').slice(0,80)}})}})`;
 const probe = async (page, name, sels) => { const r = await page.evaluate(`(${PROBE})(${JSON.stringify(sels)})`).catch(e => ({ err: String(e) })); fs.writeFileSync(path.join(OUT, name + '.probe.json'), JSON.stringify(r, null, 1)); return r; };
 
 (async () => {
@@ -157,6 +157,94 @@ const probe = async (page, name, sels) => { const r = await page.evaluate(`(${PR
       await openP('KeyJ', 'statPanel', '081_growth');
       await openP('KeyG', 'forge', '082_forge');
       await openP('Escape', 'settings', '090_settings');
+    }
+    if (part === 'death' || part === 'clear') {
+      const url = fs.readFileSync(path.join(OUTROOT, 'web', 'game_url.txt'), 'utf8').trim();
+      await page.goto(url, { waitUntil: 'load' });
+      for (let i = 0; i < 80; i++) {
+        const s = await ev(`({on:typeof G!=='undefined'&&G.on===true,cut:typeof _cutsceneState!=='undefined'?_cutsceneState:null,intro:typeof G!=='undefined'?G._intro:null})`);
+        if (s && s.on && !s.intro) break;
+        if (s && s.cut === 'INTRO_CUTSCENE') await ev(`_cutsceneEnd()`); else if (s && s.intro) await page.keyboard.press('Escape');
+        await wait(500);
+      }
+      await wait(1500);
+      await ev(`(()=>{try{_parryLesson.skipAll()}catch(e){};try{_systemLesson.skipAll()}catch(e){};G.paused=false})()`);
+      await wait(1500);
+      if (part === 'death') {
+        await ev(`(()=>{P.iframes=0;P._fallenCanRevive=false;P.hp=0})()`);
+        await wait(1000); await shot('110_fallen_t1s');
+        await probe(page, '110_fallen', ['#fallen', '#fallen *', '#death', '#death *', '[id*=allen]', '[id*=allen] *']);
+        await wait(3000); await shot('110_fallen_t4s');
+        for (let k = 0; k < 10; k++) { await wait(1200); const on = await ev(`document.getElementById('death').classList.contains('on')`); if (on) { await wait(2600); break; } }
+        await shot('111_dead');
+        await probe(page, '111_dead', ['#death', '#death *']);
+      } else {
+        await ev(`(()=>{window.__parityGod=setInterval(()=>{try{P.hp=P.mhp;P.iframes=60}catch(e){}},50)})()`);
+        await ev(`(()=>{G._fbDone=true;G._bossUnlocked=true;G._bossLoadPhase=1;G._bossLoadT=0})()`);
+        await wait(7000);
+        for (let k = 0; k < 240; k++) {
+          const r = await ev(`(()=>{const b=findBoss();if(!b)return {dead:1,alive:G.bossAlive};try{b.iframes=0;b._inv=0;hurtE(b,Math.max(1,b.hp+1),0,true)}catch(e){return {err:String(e)}};return {hp:b.hp}})()`);
+          if (r && r.dead && !r.alive) break;
+          await wait(250);
+        }
+        await wait(2000);
+        L('exits', await ev(`({alive:G.bossAlive,exits:(G.exits||[]).slice(0,3)})`));
+        await ev(`(()=>{if(G.exits&&G.exits[0]){P.x=(G.exits[0].x+.5)*40;P.y=(G.exits[0].y+.5)*40}})()`);
+        for (let k = 0; k < 20; k++) { await wait(700); const o = await ev(`+getComputedStyle(document.getElementById('stageClear')).opacity`); if (o > 0.95) break; }
+        await wait(800); await shot('100_clear');
+        await probe(page, '100_clear', ['#stageClear', '#stageClear *']);
+        await ev(`document.getElementById('nextBtn').click()`); await wait(1500);
+        await shot('101_demo_end');
+        await probe(page, '101_demo_end', ['#demoEnd', '#demoEnd *']);
+        await ev(`document.getElementById('demoEndLobby').click()`);
+        await page.waitForURL(/index\.html|lobby=1/, { timeout: 20000 }).catch(() => L('no lobby nav'));
+        await wait(6000); await shot('102_lobby_return');
+      }
+    }
+    if (part === 'forge') {
+      const url = fs.readFileSync(path.join(OUTROOT, 'web', 'game_url.txt'), 'utf8').trim();
+      await page.goto(url, { waitUntil: 'load' });
+      for (let i = 0; i < 80; i++) {
+        const s = await ev(`({on:typeof G!=='undefined'&&G.on===true,cut:typeof _cutsceneState!=='undefined'?_cutsceneState:null,intro:typeof G!=='undefined'?G._intro:null})`);
+        if (s && s.on && !s.intro) break;
+        if (s && s.cut === 'INTRO_CUTSCENE') await ev(`_cutsceneEnd()`); else if (s && s.intro) await page.keyboard.press('Escape');
+        await wait(500);
+      }
+      await wait(1500);
+      await ev(`(()=>{try{_parryLesson.skipAll()}catch(e){};try{_systemLesson.skipAll()}catch(e){};G.paused=false})()`);
+      await wait(1500);
+      await page.keyboard.down('KeyG'); await wait(120); await page.keyboard.up('KeyG'); await wait(1500);
+      L('forge_on', await ev(`({on:document.getElementById('forge').classList.contains('on'),tab:G.forgeTab,mats:G.mats,bag:INV.bag.length})`));
+      for (const k of ['upgrade', 'potion', 'salvage', 'reroll', 'crystal', 'craft']) {
+        await ev(`(()=>{G.forgeTab='${k}';_forgeSel=null;try{_salSel.clear()}catch(e){};renderForge()})()`); await wait(900);
+        await shot('083_forge_' + k);
+        if (k === 'upgrade') await probe(page, '083_forge_shell', ['#forge', '#hud', '#minimap', '#mmWrap', '#hudCorner', 'canvas', 'body']);
+        await probe(page, '083_forge_' + k, ['#forge .pbox', '#forge .ptitle', '#forgeMats', '#forgeLore', '#fgTabs', '#fgTabs > *', '#fgGrid', '#fgGrid *', '#forgeConfirm', '#forgeConfirm *', '#fgClose', '#forge .panel-nav', '#forge .panel-nav *', '#forge .frame-inner-panel']);
+        await ev(`(()=>{const g=document.getElementById('fgGrid');if(g)g.scrollTop=99999})()`); await wait(400);
+        await shot('083_forge_' + k + '_bottom');
+        await ev(`(()=>{const g=document.getElementById('fgGrid');if(g)g.scrollTop=0})()`);
+      }
+      fs.writeFileSync(path.join(OUT, 'forge_html.txt'), await ev(`document.getElementById('forge').outerHTML`));
+    }
+    if (part === 'growth') {
+      const url = fs.readFileSync(path.join(OUTROOT, 'web', 'game_url.txt'), 'utf8').trim();
+      await page.goto(url, { waitUntil: 'load' });
+      for (let i = 0; i < 80; i++) {
+        const s = await ev(`({on:typeof G!=='undefined'&&G.on===true,cut:typeof _cutsceneState!=='undefined'?_cutsceneState:null,intro:typeof G!=='undefined'?G._intro:null})`);
+        if (s && s.on && !s.intro) break;
+        if (s && s.cut === 'INTRO_CUTSCENE') await ev(`_cutsceneEnd()`); else if (s && s.intro) await page.keyboard.press('Escape');
+        await wait(500);
+      }
+      await wait(1500);
+      await ev(`(()=>{try{_parryLesson.skipAll()}catch(e){};try{_systemLesson.skipAll()}catch(e){};G.paused=false})()`);
+      await wait(1500);
+      await page.keyboard.down('KeyJ'); await wait(120); await page.keyboard.up('KeyJ'); await wait(1800);
+      await shot('081_growth');
+      await probe(page, '081_growth', ['#statPanel .growth-inspector', '#statPanel .growth-inspector *', '#statLeft', '#statLeft *', '#statPanel .growth-header *', '#statPanel .growth-footer', '#statPanel .growth-footer *', '#statPanel .growth-tree-toolbar *', '#statPanel .panel-nav *']);
+      fs.writeFileSync(path.join(OUT, 'growth_inspector.html'), await ev(`(document.querySelector('#statPanel .growth-inspector')||{}).outerHTML||''`));
+      // 마법 패시브 선택 상태
+      await ev(`(()=>{const b=document.querySelector('#statPanel [data-passive="pMagic"] button, #statPanel [data-passive="pMagic"]');if(b)b.click()})()`); await wait(900);
+      await shot('081_growth_magic');
     }
   } catch (e) { L('FATAL', String(e.stack || e).slice(0, 600)); await shot('zz_fatal').catch(() => { }); }
   fs.writeFileSync(path.join(OUT, `log_${part}.txt`), log.join('\n'));

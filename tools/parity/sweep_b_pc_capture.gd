@@ -33,12 +33,23 @@ func _run() -> void:
 	L("userdir", OS.get_user_data_dir())
 	if not ALLOWED.has(ud) or out.is_empty() or DisplayServer.get_name() == "headless":
 		L("refuse", {"ud": ud, "ds": DisplayServer.get_name()}); quit(2); return
+	# 사용자 지시(2026-10-22): 창은 오른쪽 보조 모니터(5120,0)에만. 메인 모니터에 걸치면 옮긴다.
+	# Godot 화면 좌표는 가장 왼쪽 모니터가 0이다(Windows 5120 = Godot 7040). 가장 오른쪽 화면에 둔다.
+	var wp := DisplayServer.window_get_position()
+	var right := 0
+	for i in DisplayServer.get_screen_count():
+		if DisplayServer.screen_get_position(i).x > DisplayServer.screen_get_position(right).x: right = i
+	if wp.x < DisplayServer.screen_get_position(right).x: DisplayServer.window_set_position(DisplayServer.screen_get_position(right))
+	L("window_rect", {"before": str(wp), "after": str(DisplayServer.window_get_position()), "size": str(DisplayServer.window_get_size())})
 	DirAccess.make_dir_recursive_absolute(out)
 	root.size = Vector2i(1920, 1080); root.content_scale_size = Vector2i(1920, 1080)
 	wipe_store()
 	match mode:
 		"lobby": await run_lobby()
 		"game": await run_game()
+		"death": await run_death()
+		"clear": await run_clear()
+		"forge": await run_forge()
 		_: L("unknown_mode", mode)
 	var f := FileAccess.open(out.path_join("godot_log_%s.json" % mode), FileAccess.WRITE)
 	f.store_string(JSON.stringify(logrows, "\t")); f.close()
@@ -136,3 +147,70 @@ func wipe_store() -> void:
 	for f in d.get_files():
 		if d.remove(f) == OK: n += 1
 	L("wiped_store_files", n)
+
+## 로비 생성→본편 진입→스토리·가이드·레슨 건너뛰기(사용자 경로와 같은 진입)
+func enter_play() -> bool:
+	set_meta("parity_lobby_cinematic_seen", true)
+	var screen = load("res://scenes/demo_lobby.tscn").instantiate()
+	screen.set_meta("native_lobby_entry_enabled", true)
+	screen.set_meta("native_audio_source_root", src); screen.set_meta("native_story_source_root", src)
+	root.add_child(screen); current_scene = screen
+	await secs(1.0)
+	screen._choose(0); await secs(0.3); screen._open_name(); screen.name_input.text = "패리티"; screen._create()
+	main = await wait_main()
+	if not is_instance_valid(main): L("no_main", null); return false
+	await secs(1.0)
+	var story: Node = main.get("native_story_intro")
+	if is_instance_valid(story) and story.phase == "playing": story.finish("skip")
+	await secs(0.5)
+	var seq: Node = main.get("source_intro_sequence")
+	if is_instance_valid(seq): seq.finish_native_guide()
+	var deadline := Time.get_ticks_msec() + 9000
+	while is_instance_valid(seq) and Time.get_ticks_msec() < deadline:
+		if is_instance_valid(seq.lesson_flow) and seq.lesson_flow.active: break
+		await process_frame
+	await secs(0.5)
+	if is_instance_valid(seq) and is_instance_valid(seq.lesson_flow) and seq.lesson_flow.active: seq.lesson_flow.skip_all()
+	await secs(1.5)
+	return true
+
+func run_death() -> void:
+	if not await enter_play(): return
+	var pl: Node = main.player
+	for k in 12:
+		pl.iframes = 0.0
+		pl.receive_damage(999999)
+		await physics_frame
+		if pl.hp <= 0: break
+	L("death_hp", pl.hp)
+	await secs(1.0); await shot("110_fallen_t1s")
+	await secs(3.0); await shot("110_fallen_t4s")
+	await secs(5.0); await shot("111_dead")
+	await secs(4.0); await shot("111_dead_t13s")
+	L("life", main.native_demo_life.snapshot() if is_instance_valid(main.get("native_demo_life")) else "absent")
+
+func run_clear() -> void:
+	if not await enter_play(): return
+	paused = false
+	main.native_demo_boss_defeated.emit(0)
+	await secs(2.5); await shot("100_clear")
+	var flow: Node = main.get("native_demo_end_flow")
+	L("end_flow", flow.get_snapshot() if is_instance_valid(flow) else "absent")
+	if is_instance_valid(flow) and flow.get_snapshot().phase == "clear":
+		flow._view.buttons.next.pressed.emit(); await secs(1.5); await shot("101_demo_end")
+		flow._view.buttons.lobby.pressed.emit()
+		for i in 300:
+			await process_frame
+			if is_instance_valid(current_scene) and current_scene != main and current_scene.get_script() != null and str(current_scene.get_script().resource_path).ends_with("native_demo_lobby.gd"): break
+		await secs(6.0); await shot("102_lobby_return")
+
+func run_forge() -> void:
+	if not await enter_play(): return
+	await tap(KEY_G); await secs(1.5)
+	var forge: Node = main.get("source_forge")
+	L("forge_open", forge.get_snapshot() if is_instance_valid(forge) else "absent")
+	for k in ["upgrade", "potion", "salvage", "reroll", "crystal", "craft"]:
+		forge.choose_tab(k); await secs(0.9); await shot("083_forge_" + k)
+	forge.choose_tab("upgrade"); await secs(0.3)
+	await tap(KEY_G); await secs(0.5)
+	L("forge_closed", {"paused": paused, "snap": forge.get_snapshot()})
