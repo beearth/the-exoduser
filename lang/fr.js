@@ -1,5 +1,10 @@
 // 지옥의 길 — Français (fr)
 const _FR={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Unique',
+
 '썩은 숲':'Forêt Pourrie',
 '숲의 감시자':'Gardien de la Forêt',
 '독버섯 거인':'Géant Champignon Toxique',

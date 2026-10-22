@@ -439,3 +439,20 @@ setter·`make_read_only()`·필드 보충·schema 정규화·item whitelist·rea
 ### 2026-10-21 DEMO11-22r — TI-04 runtime 선행 조건 해소
 
 과거 위 runtime refresh 미인수/HOLD는 당시 main 기준의 기록이다. main `45be76e4`에서 PC `a28117c1` 및 `PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md` 인수를 확인했다. 일반17슬롯 transaction은 기존 TI-00/01 reader/grid를 재사용하고 PC `equipment_refresh` 호출로만 실제 스탯을 갱신한다. 상세 검증·남은 inventory UI/SFX/lesson/저장 접점은 [DEMO11-22r 보고서](orders/reports/demo11-22r_REPORT.md)를 따른다. 전투 핵심/초기화 guard/저장 형식은 변경하지 않는다.
+
+
+## PARITY-HS-01 — 2026-10-22 현행 스냅샷 일치
+
+기준 `de6cccf88e345c09ac98164543c83f0c06518d34`, snapshot SHA256 `dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209`. 이전 구홈 롤과 표시 미이식 기록은 당시 이력이다. 현행 계약은 아래와 같다.
+
+| 항목 | 웹 원본(새 스냅샷) | Godot 위치/동작 |
+|---|---|---|
+| HS-M3 지급 토스트 | G45887, notify G43612, CSS G596 | Main `_native_ossuary_grant_check`가 granted receipt 1회에만 `NativeWorldDrops.notify_native` 호출. `⚱️ 유니크 [전대의 유골함] 획득! 자동 장착!`, 기존 하단260px/1500ms 알림 사용 |
+| HS-M3 머리 위 이름 | G45888 addTxt(P.x,P.y-55,name,#ff4466,80) | 기존 World.emit_native_text·원본 floating_text ring 사용, receipt.name_text에 admission 결과. 일반 플레이 원본 draw G54835–54842 화이트리스트가 이 이름을 숨긴다. 표시 강제/필터 개선 없음 |
+| HS-M5 시작 장비 | G16148–16151 | starter_item_factory_source/producer.gd: socketCount0/crystals[]/socketQ[], 홈 RNG0회. 장비25개 전체에서 구 RNG25회 제거 |
+| HS-M5 Mac fixture | PC 원본 검사 변경0 | test_pc_combat_pack_b_mac: 원본 `_spawn_ring_enemy`로 기존8개→24개 초기 seed. HP·피해·expected·검사·oracle 그대로, 8열×3행 80/90px 간격. 새로운 RNG 위치에서 적 소진을 방지하는 fixture 전용 수량 변경. 결과422검사/0실패/skip0 |
+| HS-M6 상세 기본행 | G49763 eDef, G49794–49795 bonusMp/ancPow | native_inventory_panel._card_rows: 에너지DEF 60 / 추가MP +150 / 전대 위력 +25%, 웹 순서 유지. 유골함 workspace도 동일 행을 소비 |
+| HS-M6 임플리싯/어픽스 | G49807–49822 | native_ossuary_workspace.show_item: ◆ 전대 위력 +10%, 계승의: 전대 최대HP … +90% (원본 presenter 표현). name_for는 원본 it.name 그대로; 이름 뒤 [계승의] 합성 없음 |
+| 번역 | 기존 획득!/자동 장착!/원본 항목 키 재사용 | 신규 바인딩 유니크: 번역목록3513·3514(원본 카드 footer), lang26종, Godot UI catalog Unique. 번역목록 CRLF 보존 |
+
+검수·격자·남은 차이는 `docs/engine/PARITY_HS_01_20261022.md`와 외부 `_out/PARITY-HS-01/DONE.txt`를 참조한다. UI 숫자는 서로 다른 새 게임 RNG 절대값이므로 동일 상태 증명으로 사용하지 않는다.

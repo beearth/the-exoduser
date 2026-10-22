@@ -1,5 +1,10 @@
 // 지옥의 길 — Bahasa Indonesia (id)
 const _ID={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Unik',
+
 '썩은 숲':'Hutan Busuk',
 '숲의 감시자':'Penjaga Hutan',
 '독버섯 거인':'Raksasa Jamur Beracun',

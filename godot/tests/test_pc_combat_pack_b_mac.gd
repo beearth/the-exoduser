@@ -7,11 +7,11 @@ func _enemies_alive() -> Array:
   # The PC fixture expects initial etype0 owners. MAP11 deliberately boots empty.
   # Use the existing actual source constructor, not a fake HP/hurtE implementation.
   var sequence: Node=main.source_intro_sequence
-  for i in range(8):
-   var at: Vector2=world.get_start_position()+Vector2(-300+i*80,-300)
+  for i in range(24):
+   var at: Vector2=world.get_start_position()+Vector2(-300+(i%8)*80,-300-(i/8)*90)
    if world.can_move(at,38):
     sequence._spawn_ring_enemy(100+i,at.x,at.y)
-  forced+=8
+  forced+=24
  return super._enemies_alive()
 func _initialize() -> void:
  root.mode=Window.MODE_WINDOWED;root.show()

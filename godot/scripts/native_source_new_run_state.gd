@@ -1901,7 +1901,7 @@ func authorize_native_demo11_loaded_start(owner: Node) -> bool:
 # mkItem은 기존 원본 포트(drop_item_source mk_item, G15894~16166, 유골함 고정 오버라이드 16155~16165)를
 # 실제 공유 World RNG로 그대로 돌린다. 이어지는 recalcSt()·applyStats()(G45888~45889)는 호출자 Main이
 # 런타임 스탯 owner로 실행한다(현재 자원 hp/mp/st는 원본 clamp 정책 그대로 — 무료 충전 없음).
-# notify(45885)·addTxt(45886) 표시는 이 owner 범위 밖이라 receipt.unported로 남긴다.
+# notify/addTxt presentation is consumed once by Main from the grant receipt.
 const OSSUARY_ITEM_SOURCE = preload("res://port_modules/kill_reward/drop_item_source.gd")
 func apply_native_ossuary_grant_if_needed(owner: Node, random_unit: Callable, now_ms: Callable, demo_mode: bool) -> Dictionary:
 	if not _feel_owner_current(owner) or owner.get_script() == null or owner.get_script().resource_path != "res://scripts/main.gd":
@@ -1933,7 +1933,7 @@ func apply_native_ossuary_grant_if_needed(owner: Node, random_unit: Callable, no
 	(equipped as Dictionary)["ossuary"] = item # G45884
 	return {"granted": true, "item": item, "rng_draws": draws[0],
 		"source": "game.html:45880-45889 (_grantOssuaryIfNeeded) / 15894-16166 (mkItem)",
-		"unported": ["notify 유니크 획득·자동 장착 토스트(G45885)", "addTxt 머리 위 아이템 이름(G45886)"]}
+		"unported": []}
 
 # DEMO11-22r: one actual INV/wallet owner, synchronous UI event transaction.
 var _equipment_committing := false

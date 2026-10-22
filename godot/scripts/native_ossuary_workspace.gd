@@ -5,6 +5,7 @@ const ROOT="res://assets/ui/parity_ui_03/"
 var panel: Control
 var chosen: String=""
 var body: Control
+var item_card: Control
 const PARTS=["skull","torso","arms","legs"]
 const NAMES=["두개골","몸통","팔","다리"]
 const ROLES=["치명 · 위력","최대 HP","공격 위력","크기 · 이동속도"]
@@ -29,7 +30,7 @@ func render() -> void:
  var grid=panel.Grid.new();grid.panel=panel;grid.kind="bag";grid.cell=38;grid.columns=10;grid.rows=120;grid.custom_minimum_size=Vector2(380,4560);scroll.add_child(grid)
  for it in inv.bag:
   if it.get("slot") in ["ossuary","bonePart"] and it.get("_gx")!=null:panel._item_button(it,"bag",Rect2(float(it._gx)*38,float(it._gy)*38,73,73),grid)
- S.panel(body,Rect2(565,660.5,389.92,362.5),Color("10191e"),Color("756342"))
+ S.panel(body,Rect2(565,633,390,334),Color("101013"),Color("756342"))
  text("◇   유골함 정보",Rect2(585,805,350,40),18,Color("e0ceb0"),"hell")
  text("아이템 또는 유골에 마우스를 올려 정보를 확인하세요",Rect2(585,847,350,40),11)
  S.iron(body,Rect2(980.92,183,497.89,856),Color("161719eb"),Color("090b0def"));S.frame(body,Rect2(980.92,183,497.89,856),12)
@@ -42,6 +43,8 @@ func render() -> void:
  var oss: Variant=inv.equipped.get("ossuary")
  var center:=bare_button(Rect2(1169,489,121.5,135),func():
   if oss is Dictionary:panel.show_detail(oss,"eq"))
+ center.mouse_entered.connect(func():
+  if oss is Dictionary:show_item(oss))
  S.art(center,"img/ui/ossuary_socket_hf_v2.png",Rect2(-5,-8,132,151))
  var urn:=art(preload("res://assets/item_skins/ossuary_phys.png"),Rect2(1190,511,78,89));S.brighten(urn,1.2 if oss is Dictionary else .45)
  text("유골함",Rect2(1174,595,115,30),16,Color("dfcda5"),"hell").horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
@@ -79,12 +82,36 @@ func render() -> void:
  text("네 부위를 모으면 전대 소환이 해금됩니다.",Rect2(1507,834,352,22),10)
 
 func show_item(item: Dictionary) -> void:
- var card:=S.panel(body,Rect2(565,660.5,389.92,362.5),Color("10191e"),Color("756342"))
- var sc:=ScrollContainer.new();sc.position=Vector2(12,12);sc.size=Vector2(365,338);card.add_child(sc)
+ if is_instance_valid(item_card):item_card.queue_free()
+ # Current web 1x DOM: invOssInfo / invRight / .id-stats, G49525–49606.
+ item_card=S.panel(body,Rect2(565,633,390,334),Color("101013"),Color("756342"))
+ var card:=S.panel(item_card,Rect2(17,13,356,308),Color("151215"),Color("756342"))
+ S.panel(card,Rect2(4,4,348,3),panel.color_for(item))
+ S.panel(card,Rect2(15,16,50,24),Color("211e1b"),Color("423827"))
+ S.text(card,"장착 중",Rect2(23,18,80,20),10,Color("c6b48f"),"hell")
+ S.text(card,panel.name_for(item),Rect2(15,46,326,27),14,Color("f0d7ad"),"hell",700)
+ S.panel(card,Rect2(15,76,326,1),Color("382e27"))
  var rows: Array=panel._card_rows(item)
- var content:=Control.new();content.custom_minimum_size=Vector2(345,80+rows.size()*26);sc.add_child(content)
- S.text(content,panel.name_for(item),Rect2(0,0,345,44),18,panel.color_for(item),"hell")
- for i in rows.size():S.text(content,str(rows[i][0])+" "+str(rows[i][1]),Rect2(0,56+i*26,345,26),13)
+ for i in rows.size():
+  var y:float=85+i*28
+  if i%2==1:S.panel(card,Rect2(15,y-1,326,28),Color("241f1b"))
+  var ink:Color=Color("b99c80")
+  if str(rows[i][0])=="추가MP:":ink=Color("4488ff")
+  elif str(rows[i][0])=="전대 위력:":ink=Color("88aaff")
+  S.text(card,str(rows[i][0]),Rect2(21,y,290,26),11,ink,"hell")
+  var value:=S.text(card,str(rows[i][1]),Rect2(21,y,308,26),11,Color("dfc69e"),"hell",700);value.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
+ var y:float=85+rows.size()*28
+ if item.get("_implicitKo"):
+  S.text(card,"◆ "+S.I18N.text(str(item._implicitKo)).replace("X",str(item.get("_implicitVal",0))),Rect2(15,y,326,27),12,Color("aaddff"))
+  y+=26;S.panel(card,Rect2(15,y,326,1),Color("334455"));y+=10
+ for af in item.get("affixes",[]):
+  var view: Dictionary=panel.presenter.affix_view(af)
+  if view.get("ready",false):
+   S.panel(card,Rect2(15,y,326,1),Color("333333"))
+   S.text(card,str(view.name)+": "+str(view.description)+" "+str(view.value_text),Rect2(23,y+7,310,32),12,Color(view.color),"hell")
+   y+=52
+ S.panel(card,Rect2(15,256,326,1),Color("382e27"))
+ S.text(card,"좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금",Rect2(23,265,310,27),10,Color("aa9980"))
 
 func css_art(node: TextureRect,brightness: float,saturation: float,crop: Vector2,circle:=false,opacity: float=1.0) -> void:
  var shader:=Shader.new();shader.code="shader_type canvas_item;uniform float brightness=1.0;uniform float saturation=1.0;uniform vec2 crop=vec2(1.0);uniform bool circle=false;uniform float opacity=1.0;void fragment(){vec4 c=texture(TEXTURE,(UV-vec2(.5))/crop+vec2(.5));float l=dot(c.rgb,vec3(.2126,.7152,.0722));c.rgb=mix(vec3(l),c.rgb,saturation)*brightness;if(circle)c.a*=1.0-smoothstep(.44,.5,length(UV-vec2(.5)));c.a*=opacity;COLOR=c;}"

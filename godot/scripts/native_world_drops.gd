@@ -90,6 +90,7 @@ func configure(main: Node, world: Node2D, player: Node2D, state: Node) -> bool:
 	_toast_layer.layer = 22 # .notif z-index 22 (596)
 	add_child(_toast_layer)
 	_toast = Label.new()
+	_toast.add_theme_font_override("font", preload("res://scripts/native_ui_fonts.gd").stack("font", 400))
 	_toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_toast.add_theme_color_override("font_color", Color("efd0a8")) # --c-text-bright
 	_toast.add_theme_font_size_override("font_size", 18) # 1.1rem≈17.6px
@@ -249,6 +250,9 @@ func _camera_center() -> Vector2:
 
 
 ## notify(43610) — .notif(596): 하단 중앙 토스트 1.5초.
+func notify_native(message: String) -> void:
+	_notify(message)
+
 func _notify(message: String) -> void:
 	_toast.text = message
 	var view: Vector2 = get_viewport_rect().size

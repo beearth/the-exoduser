@@ -1,5 +1,10 @@
 // 지옥의 길 — Nederlands (nl)
 const _NL={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Uniek',
+
 // --- Stage / Boss ---
 '썩은 숲':'Verrot Bos','숲의 감시자':'Boswachter','독버섯 거인':'Giftzwam Reus','숲의 사냥꾼':'Bosjager','숲의 기생수':'Parasitair Beest',
 '1장 — 썩은 숲':'H1 — Verrot Bos','2장 — 벌레굴':'H2 — Wormennest','3장 — 얼음굴':'H3 — IJsgrot',

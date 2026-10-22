@@ -1,5 +1,10 @@
 // 지옥의 길 — Tiếng Việt (vi)
 const _VI={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Độc nhất',
+
 '썩은 숲':'Rừng Mục Nát',
 '숲의 감시자':'Lính Canh Rừng',
 '독버섯 거인':'Khổng Lồ Nấm Độc',

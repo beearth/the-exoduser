@@ -56685,3 +56685,16 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - 기준32d1684d + SKILL-01 0c8fd56f를 merge. 문서 충돌 양쪽 이력 보존, 제품 UI·PC writer·부팅/life 원소유 코드 유지.
 - `godot/tests/test_demo11_47h_e2e.gd`: 실제 웹 BFS 접근·실제 registry 최근접 적(커튼5마리 포함)·더 가까운 타겟 재선택·드랍 좌표 접근·자연 XP 전투 대기. HP/피해/드랍/XP 주입 없음. PC 코어/PC 테스트/hud-stats 수정 없음.
 - [INTEG-13 검수](engine/INTEG13_SKILL_COMBAT_20261022.md): suite 각1회 ERROR0, 단회 E2E7PASS/11NOT_READY. 최종 접근 보강 GUI14회 공격 승인/처치0·자연 사망. PASS13 회복/종주 완료로 주장하지 않음.
+
+
+## 2026-10-22 PARITY-HS-01 — 유골함 표시·신규 장비0홈
+
+| 대상 | 원본/변경 | 검수 |
+|---|---|---|
+| main/native_world_drops | G45887 notify·G45888 addTxt, granted receipt1회 표현 연결. 기존 .notif(260px,1500ms)·font stack, 기존 floating ring life80/y-55/#ff4466 | 최종GUI ERROR0·자연 지급/표시 재연 캡처 별도. 일반 플레이 원본 G54835–54842 whitelist에 따른 머리 이름 숨김 유지 |
+| starter_item_factory_source | G16148–16151 socketCount0/crystals[]/socketQ[], 구1~4홈 RNG25회 제거 | pack_b_mac422/0·hud199/0 각1회; Mac 초기 fixture24개만 조정, PC 원본 검사/expected 변경0 |
+| native_inventory_panel/workspace | 원본 에너지DEF60/추가MP+150/전대위력+25%/implicit+10%/ancHP+90%, raw name에 접미합성 없음. 웹 카드 행색/정렬/프레임 배치 | inventory 올바른 storage=on1281/0; 오호출 storage=off 중단1회 보존. 1x 카드 crop 직접검수 |
+| i18n/lang26 | 번역목록3513 유니크·3514 원본 footer, CRLF보존, Godot catalog·lang26전파 | 목록bareLF0, 새 한국어 문구 창작0 |
+| E2E/보고 | E2E1회7PASS/11NOT_READY/0FAIL, overall NOT_READY | 1x격자4장·crop2장, RETOUCH. 자연 웹 첫지급은 loading overlay에 가림; 별도 UI-only notify 재연을 자연 지급으로 주장하지 않음 |
+
+기준SHA de6cccf88e345c09ac98164543c83f0c06518d34 / snapshot dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209. 상세 [PARITY_HS_01_20261022.md](engine/PARITY_HS_01_20261022.md), 외부 `_out/PARITY-HS-01/DONE.txt`. main push/배포0, R Godot/import0, PC동기화미확인.

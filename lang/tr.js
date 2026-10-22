@@ -1,5 +1,10 @@
 // 지옥의 길 — Türkçe (tr)
 const _TR={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Eşsiz',
+
 '썩은 숲':'Çürük Orman',
 '숲의 감시자':'Orman Muhafızı',
 '독버섯 거인':'Zehirli Mantar Devi',

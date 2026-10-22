@@ -1,5 +1,10 @@
 // 지옥의 길 — Polski (pl)
 const _PL={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Unikatowy',
+
 // --- Stage / Boss ---
 '썩은 숲':'Zgniły Las','숲의 감시자':'Strażnik Lasu','독버섯 거인':'Olbrzym Trujących Grzybów','숲의 사냥꾼':'Leśny Łowca','숲의 기생수':'Leśny Pasożyt',
 '1장 — 썩은 숲':'ROZ1 — Zgniły Las','2장 — 벌레굴':'ROZ2 — Nora Robaków','3장 — 얼음굴':'ROZ3 — Lodowa Jaskinia',

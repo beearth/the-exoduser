@@ -1,5 +1,10 @@
 // 지옥의 길 — Português-BR (ptbr)
 const _PTBR={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Único',
+
 '썩은 숲':'Floresta Apodrecida',
 '숲의 감시자':'Guardião da Floresta',
 '독버섯 거인':'Gigante Cogumelo Tóxico',

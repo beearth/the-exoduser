@@ -1,5 +1,10 @@
 // 지옥의 길 — Deutsch (de)
 const _DE={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Einzigartig',
+
 // --- Stage / Boss ---
 '썩은 숲':'Verrotteter Wald','숲의 감시자':'Waldwächter','독버섯 거인':'Giftpilz-Riese','숲의 사냥꾼':'Waldjäger','숲의 기생수':'Parasitäre Bestie',
 '1장 — 썩은 숲':'KAP1 — Verrotteter Wald','2장 — 벌레굴':'KAP2 — Wurmnest','3장 — 얼음굴':'KAP3 — Eishöhle',

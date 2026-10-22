@@ -1,5 +1,10 @@
 // 지옥의 길 — Magyar (hu)
 const _HU={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Egyedi',
+
 '썩은 숲':'Rothadt Erdő',
 '숲의 감시자':'Erdő Őre',
 '독버섯 거인':'Mérgező Gomba Óriás',

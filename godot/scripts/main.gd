@@ -382,7 +382,7 @@ func _ready() -> void:
 	hud.bind_native_skill_cooldowns(Callable(native_skill_slots, "read_native_slot_cooldowns"))
 	_install_native_move_skills()
 	# P2-006a — 바닥 드랍 표시·줍기(worldItems 52485s·R 줍기 32935s·pickupItem 16398) — 표시·입력 어댑터
-	var native_world_drops: Node2D = preload("res://scripts/native_world_drops.gd").new()
+	native_world_drops = preload("res://scripts/native_world_drops.gd").new()
 	native_world_drops.name = "NativeWorldDrops"
 	world.add_child(native_world_drops)
 	if not native_world_drops.configure(self, world, player, source_state):
@@ -1255,6 +1255,7 @@ func _process(_delta: float) -> void:
 # (신규 시작·로드 공통). 지급되면 G45888 recalcSt() → G45889 applyStats()를 런타임 스탯 owner로 실행.
 var _native_oss_grant_checked := false
 var native_ossuary_grant_receipt: Dictionary = {}
+var native_world_drops: Node2D
 func _native_ossuary_grant_check() -> void:
 	if not is_instance_valid(source_state) or not is_instance_valid(world) or not source_state.has_method("apply_native_ossuary_grant_if_needed"):
 		return
@@ -1270,6 +1271,11 @@ func _native_ossuary_grant_check() -> void:
 	if receipt.get("granted") == true:
 		receipt["recalc_st"] = request_native_runtime_stat_refresh("recalc_st", "ossuary_grant:G45888")
 		receipt["apply_stats"] = request_native_runtime_stat_refresh("apply_stats", "ossuary_grant:G45889")
+	if receipt.get("granted") == true:
+		var item_name: String = UI.text(str(receipt.item.name))
+		native_world_drops.notify_native("⚱️ " + UI.text("유니크") + " [" + item_name + "] " + UI.text("획득!") + " " + UI.text("자동 장착!"))
+		receipt["notify"] = true
+		receipt["name_text"] = world.emit_native_text(player.global_position.x, player.global_position.y - 55, "⚱️ " + item_name, "#ff4466", 80)
 	native_ossuary_grant_receipt = receipt
 
 func _read_native_g_shake() -> float:

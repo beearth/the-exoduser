@@ -1,5 +1,10 @@
 // 지옥의 길 — Svenska (sv)
 const _SV={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Unik',
+
 // --- Stage / Boss ---
 '썩은 숲':'Ruttnande Skog','숲의 감시자':'Skogsvakt','독버섯 거인':'Giftsvamp Jätte','숲의 사냥꾼':'Skogsjägare','숲의 기생수':'Parasitiskt Odjur',
 '1장 — 썩은 숲':'KAP1 — Ruttnande Skog','2장 — 벌레굴':'KAP2 — Maskhåla','3장 — 얼음굴':'KAP3 — Isgrottan',

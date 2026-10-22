@@ -738,13 +738,10 @@ func _mk_item(slot: String, tier: int, el: int, rarity: int, wtype: Variant) -> 
 	var item_lv: int = int(minf(900.0, floorf(p_lv / 10.0) * 10.0))
 	item["itemLv"] = item_lv
 	item["reqLv"] = maxi(0, item_lv - 10)
-	# 원 @16655..16657
-	var sc_r: float = _rand()
-	var sc: int = 1 if sc_r < 0.50 else (2 if sc_r < 0.80 else (3 if sc_r < 0.95 else 4))
-	item["socketCount"] = sc
-	var crystals: Array = []
-	crystals.resize(sc)
-	item["crystals"] = crystals
+	# Current snapshot G16148–16151: closed sockets; no RNG draw.
+	item["socketCount"] = 0
+	item["crystals"] = []
+	item["socketQ"] = []
 	_check_numeric_fault(item)
 	_ledger["items_created"] += 1
 	_ledger.events.append({"kind": "mk_item", "slot": slot, "draws": _ledger.rng_draws - draws0, "accessory_redraws": redraws})

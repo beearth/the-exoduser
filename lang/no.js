@@ -1,5 +1,10 @@
 // 지옥의 길 — Norsk (no)
 const _NO={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Unik',
+
 // --- Stage / Boss ---
 '썩은 숲':'Råtten Skog','숲의 감시자':'Skogvakt','독버섯 거인':'Giftsopp Kjempe','숲의 사냥꾼':'Skogsjeger','숲의 기생수':'Parasittisk Udyr',
 '1장 — 썩은 숲':'KAP1 — Råtten Skog','2장 — 벌레굴':'KAP2 — Ormehull','3장 — 얼음굴':'KAP3 — Ishule',

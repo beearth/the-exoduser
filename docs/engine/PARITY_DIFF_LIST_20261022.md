@@ -514,3 +514,8 @@ UI-04 strict E2E1회: 주입0, storage=on, intro_phase=done, 실제 필드 진�
 | inventory transport | Mac 검사0실패 | Mac 하니스에서 native Node 절대 경로 검증. 23b1281/0, restore126863/0. PC의212/2 재실행/PC 동기화는 미확인 |
 
 전체 VISUAL VERDICT: **RETOUCH / 영상 HOLD**. 동일성 전체 PASS를 선언하지 않는다. source-only canvas/video 고정시계 비교와 실제 필드 캡처를 사용했다. 캡처 fixture의 상태·HP/시계 변경은 입력 E2E에 사용하지 않았다. 쓰러짐 수치/HP·펫·맵 밝기/경계 등은 동일 상태가 아니므로 해당 영역을 이 작업 완료 근거로 삼지 않는다.
+
+
+## PARITY-HS-01 후속 (2026-10-22)
+
+H-03의 시작 장비 구홈 보류 및 유골함 표시 미연결 상태는 PARITY-HS-01에서 수정했다. 현행 원본 G16148–16151의 0홈·추가 홈 RNG0회, G45887–45888의 notify/addTxt를 이식한다. 머리 위 이름은 양쪽 일반 플레이 draw 화이트리스트에서 숨겨지는 원본 제약을 유지한다. 상세·시각 판정·남은 차이: [PARITY_HS_01_20261022.md](PARITY_HS_01_20261022.md). 과거 캡처와 PC 보고의 당시 수치는 보존한다.

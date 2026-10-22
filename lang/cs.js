@@ -1,5 +1,10 @@
 // 지옥의 길 — Čeština (cs)
 const _CS={
+'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금':'LMB: Select | RMB: Equip | Space: Junk | F: Lock',
+
+// PARITY-HS-01 — source rarity label
+'유니크':'Unikátní',
+
 // --- Stage / Boss ---
 '썩은 숲':'Shnilý les','숲의 감시자':'Strážce lesa','독버섯 거인':'Jedovatý houbový obr','숲의 사냥꾼':'Lesní lovec','숲의 기생수':'Lesní parazit',
 '1장 — 썩은 숲':'K.1 — Shnilý les','2장 — 벌레굴':'K.2 — Červí doupě','3장 — 얼음굴':'K.3 — Ledová jeskyně',
