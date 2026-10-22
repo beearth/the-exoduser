@@ -1,3 +1,9 @@
+## 2026-10-23 PC-SYS 잔여 6건 — 시계·사망·통계·AI 강화·물약·키 캡 (PC Claude)
+
+- 기준 065068322, branch claude/pc-sys-leftovers-20261023. 웹 846889174와 나란히 대조.
+- SYS-1 update() 횟수를 원본 PHYS_STEP 누산기로(웹 00:03 = Godot 00:03). SYS-2 쓰러짐 카운트다운 틱당 2 감소(G32794+G32991, 웹 2506ms)·부활력 문구 원문·오버레이 레이어. SYS-3 G._sStats 리터럴·원본 증분 지점. SYS-4 aiEnhance·_doAiEnhance 이식(웹 값 일치). SYS-5 원본도 퀵슬롯 물약 표시 폐지 — 변경 없음. SYS-6 키 캡 패드·재바인딩 표기.
+- INTEG-17: 07 lobby_entry Main 대기 = 도착 또는 60초. 회귀 표·범위 밖 발견(플레이어 에너지쉴드 흡수 없음): [보고](engine/orders/reports/pc-sys-leftovers_REPORT.md)
+
 ## 2026-10-23 SWEEP-B PC — 웹 UI 전 화면 동일화 인수 (PC Claude)
 
 - 기준 Mac 8d9dc158, branch claude/pc-sweep-b-20261022. 로비·캐릭터 선택·이름 창·레슨·HUD·인벤·스킬·성장·대장간·설정·클리어를 웹 계산값으로 맞춤. 공통 글꼴: 한글 대체 글꼴 자간 복제·Nanum Myeongjo 굵기 보정.

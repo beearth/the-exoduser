@@ -100,6 +100,8 @@ P0 = 화면 구조·주요 요소 누락, P1 = 눈에 띄는 배치·상태 차�
 | SYS-5 | 퀵슬롯 물약 표시 미이식 | 웹은 물약이 있으면 아이콘·개수 | 해당 없음(코드 변경 없음) | 관측 전제가 원본과 다르다. updateQS G28271 `const s={type:null,count:0}; // 포션 퀵슬롯 폐지` — 물약 분기(G28340~28358)는 도달 불가, useQuickslot(G28204)은 호출처 0. 웹 실측: QSLOTS[0]={type:'hp',count:1}이어도 qs0=가시덫 스킬, qs1~3=`qs empty`, 물약 아이콘·개수 없음(악의는 자동 물약 G35895~35912만). Godot도 같은 표시(스킬바 1x 비교 동일). 물약 HUD를 새로 만들면 원본에 없는 동작 추가라 넣지 않음 |
 | SYS-6 | 키 캡 패드 모드·재바인딩 표기 전환 미이식 | RMB/E는 기본 BINDS 고정 | 고침(inputMode 저장 제외) | _updateSkBarKeyLabels G28559~28577·_SK_SLOTS G28544~28558 이식: 모드 문자열 (pad/kbm)+BINDS.shield+BINDS.beam이 바뀔 때만 다시 그림. KBM=bind 있는 슬롯만(RMB/LMB/keyName), 패드=13칸 pd 라벨(.5rem). _gpActive 전환 G13452~13478·G13873~13876(패드 연결·의도적 버튼/축>0.5 켬, 연결 끊김·키 입력·마우스 이동>3 끔). 웹 대조 1x 3모드(KBM RMB/E, BINDS shield=KeyR·beam=mouse0 → LMB/R, 패드 LT+A…B) 같음. 캡 글자가 캡 아래로 내려가던 문제(Label 최소 높이) 같이 고침. 미이식: localStorage inputMode 저장·복원(G13450), Godot 재바인딩 UI 자체(BINDS 리더는 기본값 고정) |
 
+PC-SYS 회귀·테스트 변경·범위 밖 발견은 [pc-sys-leftovers_REPORT.md](orders/reports/pc-sys-leftovers_REPORT.md).
+
 HP/MP/◇·인벤 수치 차이는 랜덤 시작 장비 때문이라 비교에서 뺐다(최종 050 짝은 HP 654로 같음).
 
 ## 5. 낡은 테스트 기대값 갱신 (판정 약화 없음, 웹 기준)
