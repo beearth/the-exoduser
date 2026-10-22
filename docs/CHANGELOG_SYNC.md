@@ -56787,3 +56787,11 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 元 PNG byte 보존, import40개 fix_alpha_border=false로 WebGPU ONE RGB 경계 보존.
 - 펫/보스/독탄/스킬/드랍 screen edge round 통일, P2003/P2004 half viewport locator 동기화.
 - 상세 계약/원본 행/40개 SHA256: docs/engine/SWEEP_A_20261022.md §9. source-alpha import 및 settled-enemies174/settled-map11 ERROR0. 최종 단회 테스트 예정.
+
+
+## 2026-10-22 SWEEP-A clear/loading/death paint
+
+- source6051 ellipse 회전 무시,54535 시체 웅덩이 표시 교정.
+- clear CSS 자간/기준선/버튼·crest·best 분리,원본DOM 및 실제폰트 대조.
+- boss shield 고정fan/arc 표시,로딩 overlay를52089 배경 후·actor 전으로 이동. PC state writer 변경0.
+- 계약/수치/원본행은 docs/engine/SWEEP_A_20261022.md §10,최종 캡처 검수 진행.

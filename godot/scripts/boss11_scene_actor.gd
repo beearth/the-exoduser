@@ -12,6 +12,8 @@ var _light1: Sprite2D
 var _light2: Sprite2D
 var _revive: Node2D
 var render_max_us:=0
+var _shield_fan:=PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
+var _visual_now:=0.0
 func configure(reader: Node,_shared: ShaderMaterial=null) -> void:
  actor=reader
  body=Sprite2D.new();body.name="BossSceneBody";body.region_enabled=true;body.centered=false
@@ -29,6 +31,7 @@ func _process(_delta: float) -> void:
  render_at(float(Time.get_ticks_msec()))
  render_max_us=maxi(render_max_us,Time.get_ticks_usec()-started)
 func render_at(now: float) -> void:
+ _visual_now=now;queue_redraw()
  if not is_instance_valid(actor):hide();return
  var e: Dictionary=actor.get("_enemy")
  _revive.visual_clock_ms=now;_revive.observe(e)
@@ -84,3 +87,21 @@ func _warm_resources() -> void:
  await RenderingServer.frame_post_draw
  await RenderingServer.frame_post_draw
  view.queue_free()
+
+# Source53765–53785 shield paint is independent of PC shield damage/state writers.
+func _draw() -> void:
+ if not is_instance_valid(actor):return
+ var e: Dictionary=actor.get("_enemy")
+ if not e.get("alive",false) or float(e.get("eShieldMax",0))<=0 or e.get("s")=="bossDruidUnder":return
+ var r: float=float(e.get("r",44));var now: float=_visual_now
+ var sh: bool=float(e.get("eShield",0))>0
+ var angle: float=float(e.get("shieldAng",0));var radius_: float=r+(5 if sh else 4);var span: float=1.0 if sh else .8
+ var alpha: float=(.4+float(e.eShield)/float(e.eShieldMax)*.4)*(.5+sin(now/150)*.15) if sh else 1.0
+ var color_: Color=Color("44ccff" if sh else "445577");color_.a=alpha
+ draw_arc(Vector2.ZERO,radius_,angle-span,angle+span,maxi(8,int(2*span*radius_/5))+1,color_,5 if sh else 3,false)
+ color_=Color("44c8ff" if sh else "3c506e");color_.a=alpha*.25
+ var count: int=maxi(6,int(2*span*maxf(1,radius_)/6))
+ for i in count:
+  _shield_fan[1]=Vector2.from_angle(angle-span+2*span*i/count)*radius_
+  _shield_fan[2]=Vector2.from_angle(angle-span+2*span*(i+1)/count)*radius_
+  draw_colored_polygon(_shield_fan,color_)

@@ -582,7 +582,7 @@ func _draw_floor(canvas: Node2D) -> void:
 		if alpha > 0.1: # 54535 그림자 웅덩이
 			var prog: float = 1.0 - float(corpse["t"]) / float(corpse["mt"])
 			var pw: float = float(corpse["sz"]) * (0.3 + prog * 0.5)
-			canvas.draw_set_transform(at + Vector2(0, 2), float(corpse["r"]) * 0.3, Vector2(1.0, 0.5))
+			canvas.draw_set_transform(at + Vector2(0, 2), 0.0, Vector2(1.0, 0.5))
 			canvas.draw_circle(Vector2.ZERO, pw, Color(0x33 / 255.0, 0, 0, 0.3 * alpha))
 		canvas.draw_set_transform(at, float(corpse["r"]), Vector2(1.0, 0.5)) # 54538 scale(1,.5)
 		var size: float = float(corpse["sz"])
