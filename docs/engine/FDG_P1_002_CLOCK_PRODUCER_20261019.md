@@ -55,4 +55,6 @@
 
 추가 관측: Godot 일시정지는 `SceneTree.paused`만 쓰고 `_g["paused"]` 동기화 소유자가 없다(범위 밖 기록). 61875 accumulator 스케줄러는 `_acc` 소유자 부재로 미배선 — update 주기는 렌더 콜백당 1회.
 
+> **2026-10-23 PC-SYS-1 갱신**: 렌더 콜백당 1회는 vsync 끔·max_fps 240에서 G.stageTime을 최대 4배 빠르게 만들었다(웹 00:03 vs Godot 00:08). `native_source_player_initialization_services.gd`가 원본 loop 누산기를 그대로 둔다 — `_prevTs`/`_acc`(G60470), frameTime=timestamp−_prevTs를 0..50 클램프(G61822·61827~61829), `_acc+=frameTime`·`_accCap=PHYS_STEP*5`(G61836~61839, `_prof.u<=8` 분기 — Godot에 update 비용 EMA 소유자가 없어 가벼운 쪽 사용), `while(_acc>=PHYS_STEP){update();_acc-=PHYS_STEP}`(G61878~61884, PHYS_STEP=1000/60 G60469). 렌더 콜백 하나에서 update prefix가 0~5회 돈다. 실측: 창 모드 건너뛴 뒤 초당 61틱(웹 60), 헤드리스(약 7fps) 초당 21틱(50ms 클램프 ×3 — 원본도 같은 규칙).
+
 **총괄 판단**: 위 5단계 중 5(gap receipt)는 원본 update() 본문 대부분을 요구하므로, playTime 하나를 위해 전부 포팅하는 것은 첫 전투(P1-002.E) 효과 도달을 지연시킨다. 다음 배정은 (a) 1·2·4 holder 3종(작음) 포팅 + (b) gap 구간을 "첫 전투 범위에서 효과 없음" receipt로 닫을 수 있는지 원본 대조 판정, 두 갈래를 Mac 실행 검증과 함께 진행한다. 코드는 Mac 검증 전까지 main이 아닌 브랜치에 둔다.

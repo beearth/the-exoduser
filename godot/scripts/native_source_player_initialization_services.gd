@@ -102,6 +102,11 @@ var _source_frame_last_callback_id := ""
 var _source_frame_last_result: Dictionary = {"status":"NOT_READY","reason":"source_native_callback_not_entered"}
 var _source_update_clock: RefCounted
 var _source_update_last_result: Dictionary = {"status":"NOT_READY","reason":"source_native_update_not_entered"}
+# PC-SYS-1: 원본 loop의 _prevTs/_acc(G60470) — update() 호출 횟수 누산기. PHYS_STEP=1000/60(G60469).
+const SOURCE_PHYS_STEP := 1000.0 / 60.0
+var _source_update_prev_ts := 0.0
+var _source_update_acc := 0.0
+var _source_update_steps_last := 0
 var _source_clock_declared_once := false
 var _source_clock_input_serial := 0
 var _source_clock_input_timestamp_ms: Variant = null
@@ -266,7 +271,24 @@ func _run_native_source_frame_callback(main: Node, actual: Dictionary) -> void:
 	if is_instance_valid(_source_frame_entry) and _source_frame_entry.read_frame_state().get("in_frame") == true:
 		_source_frame_entry.end_frame()
 	# source update() prefix follows the frame-entry prefix within the same admitted callback.
-	_source_update_last_result = _advance_native_source_update_clock(main, _source_frame_callback_id)
+	# PC-SYS-1 (2026-10-23): update() 횟수는 원본 loop의 PHYS_STEP 누산기를 따른다(렌더 프레임당 1회 아님).
+	# G61813 if(!_prevTs)_prevTs=timestamp / G61822 _rawFrameTime=timestamp-_prevTs;_prevTs=timestamp
+	# G61827~61829 frameTime 0..50 클램프 / G61836 _acc+=frameTime / G61838~61839 _accCap(_prof.u<=8 → PHYS_STEP*5)
+	# G61878~61884 while(_acc>=PHYS_STEP){update();_acc-=PHYS_STEP}
+	# vsync 꺼짐·max_fps 240에서 렌더 프레임당 1회로 돌면 G.stageTime이 최대 4배 빨랐다(웹 00:03 vs Godot 00:08).
+	var ts: float = float(actual.get("timestamp_ms", 0.0))
+	if _source_update_prev_ts <= 0.0:
+		_source_update_prev_ts = ts
+	var frame_time: float = clampf(ts - _source_update_prev_ts, 0.0, 50.0)
+	_source_update_prev_ts = ts
+	_source_update_acc = minf(_source_update_acc + frame_time, SOURCE_PHYS_STEP * 5.0)
+	_source_update_steps_last = 0
+	while _source_update_acc >= SOURCE_PHYS_STEP:
+		_source_update_acc -= SOURCE_PHYS_STEP
+		_source_update_steps_last += 1
+		_source_update_last_result = _advance_native_source_update_clock(main, _source_frame_callback_id)
+		if _source_update_last_result.get("status") == "NOT_READY":
+			break
 	# Discard active authority; the historical ID remains diagnostic only.
 	_source_frame_callback_active = false
 	_source_frame_callback_id = ""
@@ -460,6 +482,7 @@ func read_source_clock_input_snapshot(caller: Node) -> Dictionary:
 		"source_clock_ready":false,"dt_sp_declaration":_source_update_clock.read_dt_sp(),
 		"prefix_state":_source_update_clock.read_update_state(),
 		"update_clock_result":_source_update_last_result.duplicate(true),
+		"update_steps_last":_source_update_steps_last,"update_acc":_source_update_acc,
 		"last_admitted_render_serial":_source_clock_input_serial,
 		"last_admitted_timestamp_ms":_source_clock_input_timestamp_ms,
 		"source_update_returned":false}
