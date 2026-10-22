@@ -921,23 +921,43 @@ func _physics_process(delta: float) -> void:
 	if is_instance_valid(_native_q_control):
 		var e_move: Dictionary = _native_q_control.get_native_e_movement(move_input,_movement_speed)
 		if e_move.owned:velocity=e_move.velocity
-	if absf(_knockback.x) > 0.1 or absf(_knockback.y) > 0.1:
-		velocity += _knockback * 0.5 * 60.0
-		_knockback *= pow(0.65, ticks)
 	var previous_position: Vector2 = global_position
-	# 사슬 끌림·전격이동 중에는 일반 적 몸체(layer 4)에 막히지 않는다 — 원본 이동은 canMvBlink(벽)만 검사(G32266/G45352),
-	# 플레이어-적 밀어내기는 보스(e.ib)만(G34349). 이동 owner가 직접 옮긴 좌표를 적 회복 충돌이 되돌리지 않게 한다.
-	var mask_saved: int = collision_mask
-	if is_instance_valid(_native_move_skills) and _native_move_skills.passes_through_enemies():
-		collision_mask = 1
-	move_and_slide()
-	collision_mask = mask_saved
 	var wall_contact: bool = false
-	for index in range(get_slide_collision_count()):
-		var contact: KinematicCollision2D = get_slide_collision(index)
-		var collider = contact.get_collider()
-		if collider is CollisionObject2D and (collider.collision_layer & 1) != 0:
-			wall_contact = true
+	if is_instance_valid(_world) and _world.has_method("can_move"):
+		# PC-COMBAT-KILL/보행: 원본 이동은 물리 바디가 아니라 canMv(x,y,P.r)만 본다.
+		#  G32762 넉백: nx=P.x+kb.x*.5*sp, ny=… → canMv(nx,ny) 통과 시에만 두 축 함께, 그 뒤 kb*=.65**sp.
+		#  G33022~33028 보행: ms=(P.speed+bt().spd)*sp → canMv(nx,P.y)면 x, 이어 canMv(P.x,ny)면 y (축 분리).
+		# 일반 적 몸체(layer 4)·근사 물리벽(rect/원/언덕 shape)과의 move_and_slide 접촉은 원본에 없다
+		# (플레이어-적 밀어내기는 보스 e.ib 34349만 — native_demo11_boss_core._push_player_out_of_body).
+		if absf(_knockback.x) > 0.1 or absf(_knockback.y) > 0.1:
+			var kb_to: Vector2 = global_position + _knockback * 0.5 * ticks
+			if _world.can_move(kb_to, radius):
+				global_position = kb_to
+			_knockback *= pow(0.65, ticks)
+		var walk_step: Vector2 = velocity * delta
+		if walk_step.x != 0.0:
+			var to_x := Vector2(global_position.x + walk_step.x, global_position.y)
+			if _world.can_move(to_x, radius): global_position = to_x
+			else: wall_contact = true
+		if walk_step.y != 0.0:
+			var to_y := Vector2(global_position.x, global_position.y + walk_step.y)
+			if _world.can_move(to_y, radius): global_position = to_y
+			else: wall_contact = true
+	else:
+		# World/canMv owner가 없는 독립 프로토타입 경로만 종전 물리 이동을 유지한다.
+		if absf(_knockback.x) > 0.1 or absf(_knockback.y) > 0.1:
+			velocity += _knockback * 0.5 * 60.0
+			_knockback *= pow(0.65, ticks)
+		var mask_saved: int = collision_mask
+		if is_instance_valid(_native_move_skills) and _native_move_skills.passes_through_enemies():
+			collision_mask = 1
+		move_and_slide()
+		collision_mask = mask_saved
+		for index in range(get_slide_collision_count()):
+			var contact: KinematicCollision2D = get_slide_collision(index)
+			var collider = contact.get_collider()
+			if collider is CollisionObject2D and (collider.collision_layer & 1) != 0:
+				wall_contact = true
 	if wall_contact and not _was_wall_contact:
 		telemetry_event.emit("wall_contact", {"position": global_position, "velocity": velocity, "collisions": get_slide_collision_count()})
 	_was_wall_contact = wall_contact

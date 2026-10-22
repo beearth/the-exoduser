@@ -73,3 +73,14 @@
 | 수명 / 미완 | Node/World수명은검증하고새alivegate없음. `42483 offscreen_move_if_can_move`는정확NR, geometry/좌표실행0. fullhurtE/source_clock_ready=false, poise19985 tail·실전·현재실행본반영未 |
 | 새 검수 | 첫type추론compile실패/기능검사0/exit0을PASS로세지않음→Vector2선언1줄수리→새KB15/15 PASS·양로그clean. 앞field21/poise21+2/37/24/29/parse/성공수송재연0 |
 | 정본 | [일반 몬스터 KB 소유자](FDG_NATIVE_NORMAL_ENEMY_KB_OWNER_20261017.md). 앞 field/poise 및 배송/검수 이력을 보존하며 exact momentum 요청 범위만 갱신 |
+
+## 2026-10-22 PC-COMBAT-KILL — v3 exact domain 유지, domain 밖 flesh_crawler는 공용 포이즈 코어
+
+| 항목 | 내용 |
+|---|---|
+| 증상 | INTEG-13 웹 맵 실플레이에서 kiSlash(poiseHit) 적중이 42490 `source_field_call_unavailable`로 정지. 42383 HP 쓰기 뒤 정지라 `hp<=0 && alive=true` 좀비가 되고, 이후 근접(hitArc)은 hp<=0 대상을 건너뛰어 처치 0 |
+| 원인 | 실행자 `_apply_poise_hit`가 `apply_native_source_poise_hit` 보유 actor(flesh_crawler 계열 전부)를 무조건 v3 field call로 보냈고, v3 domain은 `ch1_initial_015/order14/elite0/el0/mods[]` exact factory actor만 연다. 웹 맵 시작 필드의 커튼 5링(63425~63432)·Group-A a_0/a_5/a_6·자연 소환 actor는 domain 밖 → `World.begin_native_normal_enemy_field_call()` null |
+| 원본 근거 | `_poiseHit`(19973~19983)은 비보스면 elite/mods/el/생성 경로와 무관한 같은 코어(`poise-=amt;poiseR=0;poise<=0→poise=0,stunned=max(,180),_maxStunned=max(,180)`) |
+| 수정 | v3 exact domain은 **그대로**(Mac 계약 `v3_exact_initial_domain_not_weakened`/`protected_exact_v3_domain_not_weakened` 유지). 실행자는 `_source_normal_fields_configured==true`일 때만 v3, 아니면 `apply_native_normal_enemy_poise_core`(공용 `native_dedicated_enemy_hurte_owner.apply_poise_core`, spine/ice/hive와 동일)로 보낸다. flesh_crawler에 그 owner 메서드를 추가하고, v3 domain actor는 거부(`v3_domain_actor_uses_source_field_call` — actor당 owner 하나), legacy pending poise가 있으면 거부. 그로기 시 `_maxStunned` 필드 동기(ice warrior와 같은 방식) |
+| 불변 | v3 field call·World current-call 검증·19985 꼬리·legacy pending 가드·exact actor 경로 |
+| 검수 | `tests/test_pc_combat_kill.gd` — 수정 전 코드 30실패, 수정 후 47/0. Mac `test_demo11_etype_a` 48/0(domain 단정 통과). 상세 [PC_COMBAT_KILL_20261022.md](PC_COMBAT_KILL_20261022.md) |

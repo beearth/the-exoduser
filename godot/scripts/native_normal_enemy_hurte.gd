@@ -21,7 +21,8 @@ extends RefCounted
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 const DROP_SOURCE = preload("res://port_modules/kill_reward/drop_item_source.gd") # P2-001c
 const UNDEAD_ETYPES: Array[int] = [4, 10, 12, 14, 23, 40, 47, 82, 83, 85] # game.html:24729 _UNDEAD_ET
-const SPECIAL_HIT_ETYPES: Array[int] = [99, 92, 91, 93, 40, 41, 57, 6, 63, 74, 85, 87] # 42136~42182·42508 특수 피격/사망 분기 보유 etype — 활성 시 정지
+const SPECIAL_HIT_ETYPES: Array[int] = [99, 92, 91, 93, 40, 41, 57, 63, 74, 85, 87] # 42136~42182·42508 특수 피격/사망 분기 보유 etype — 활성 시 정지
+# PC-COMBAT-KILL: etype6(방패돌격병)은 42167~42170 방패 경감 분기를 아래에서 원문 그대로 실행한다(정지 목록 제외).
 const PROVIDER_KEYS: Array[String] = ["eq_affix", "u_eq", "p_atk_mul", "melee_ref",
 	"parry_lesson_active", "player_view", "stat_str", "p_dot_pool", "l_eq", "rand",
 	"el_mul", "play_time"]
@@ -194,6 +195,19 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	if int(fields["etype"]) in SPECIAL_HIT_ETYPES:
 		return _halt(42136, "unported_branch_active:special_etype_" + str(fields["etype"]))
 	# 42162~42166: parryBlueBean/bleed/poison opts — 기본 무기 opts에 없음(단락). p_dot_pool 미호출.
+	# ── 42167~42170: 방패돌격병 Type 6 — 방패 방어 (ang!==undefined). 정면 ±60°면 dmg×0.3·'🛡' 텍스트.
+	#    SFX.block()은 원본 12592 `block(){void 0}` 무동작이라 소비 지점이 없다.
+	if int(fields["etype"]) == 6 and is_finite(ang):
+		var shield_ang: Variant = fields.get("shieldAng")
+		if not (shield_ang is int or shield_ang is float) or not is_finite(float(shield_ang)):
+			return _halt(42167, "etype6_shieldAng_owner_missing")
+		var sh_diff: float = (ang + PI) - float(shield_ang)
+		while sh_diff > PI: sh_diff -= TAU
+		while sh_diff < -PI: sh_diff += TAU
+		if absf(sh_diff) < PI / 3.0:
+			dmg = FORMULA.js_to_int32(float(dmg) * 0.3)
+			_emit_text(enemy.global_position.x, enemy.global_position.y - 15.0, "🛡", "#8888ff", 20)
+			_log(42168, "etype6_shield_block", {"dmg": dmg, "sh_diff": sh_diff})
 	# ── 42172 ──
 	var sh_blocked := false
 	# ── 42173: 원소 저항 ──
@@ -1007,8 +1021,11 @@ func _apply_poise_hit(amount: int) -> Dictionary:
 	if amount <= 0 or _enemy.get("alive") != true:
 		_log(19974, "poise_hit_no_entry", {"amt": amount})
 		return {"ok": true, "staggered": false, "route": "no_entry"}
-	# flesh_crawler: 기존 v3 field-owner 계약으로만 포이즈 코어 적용 (이중 owner 금지).
-	if _enemy.has_method("apply_native_source_poise_hit"):
+	# flesh_crawler: v3 exact domain actor는 기존 v3 field-owner 계약으로만 포이즈 코어 적용 (이중 owner 금지).
+	# PC-COMBAT-KILL: v3 domain 밖 flesh_crawler 본체 actor(커튼 5링·Group-A·자연 소환)는 v3 field call이
+	# 원천적으로 null(source_field_call_unavailable)이라 42383 HP 쓰기 뒤 정지 → hp<=0·alive 좀비였다.
+	# 이들은 공용 코어 owner(apply_native_normal_enemy_poise_core, 19973~19983)로 간다 — owner는 actor당 하나.
+	if _enemy.has_method("apply_native_source_poise_hit") and _enemy.get("_source_normal_fields_configured") == true:
 		return _poise_via_source_field_call(amount)
 	if not _enemy.has_method("apply_native_normal_enemy_poise_core"):
 		_halt(42490, "enemy_poise_owner_missing")

@@ -1,3 +1,9 @@
+## 2026-10-22 PC-COMBAT-KILL — 웹 맵 시작 필드 처치 0·보행 감속 (PC Claude)
+
+- 기준 INTEG-13 06f3db984, branch claude/pc-combat-kill-20261022. 원인: kiSlash 42490 포이즈가 flesh_crawler를 무조건 v3 field call로 보냈고 v3 domain(exact ch1_initial_015)이 닫혀 있어 커튼 5링·Group-A·자연 etype0/5가 HP 쓰기 뒤 정지 → hp<0 좀비. etype6은 42136 정지 목록. 보행은 move_and_slide가 일반 적 몸체(layer4)에 막힘.
+- 수정: domain은 유지하고 domain 밖 actor는 공용 _poiseHit 코어(19973~19983) owner로, etype6 42167~42170 방패 경감 이식, 보행·넉백 canMv(G33022~33028/G32762). Mac 어댑터에 origin 없는 처치의 _regKill(60728~60731) 귀속 최소 훅(검토 요청).
+- 웹 대비 같은 무기 공격력에서 석궁·kiSlash·weapon 피해와 처치 타수 일치, 보행 1.8초 298.4/294.3px(수정 전 276.2). 신규 test_pc_combat_kill 47/0(수정 전 30실패), 회귀 표·E2E 11/7/0(enemy_kill PASS). [상세](engine/PC_COMBAT_KILL_20261022.md), [보고](engine/orders/reports/pc-combat-kill_REPORT.md).
+
 ## 2026-10-22 PARITY-SKILL-01
 
 - PC writer b6050641c merge(CHANGELOG 충돌만 양쪽 보존). Forge 두 버튼 활성/공개 API·최종 source_feedback 연결, 미습득 표기·비활성색 및 원판 오프라인2D 추출. 런타임3D0.
