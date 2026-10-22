@@ -9,7 +9,7 @@ const _OWNER = "BC2-04/vortex/v1"
 
 static func source_receipt() -> Dictionary:
 	return {"ready":Context.resolve(Catalog)["ready"],"source_game_sha256":Catalog.source_receipt()["source_game_sha256"],
-		"source_range":[40905,40941],"states":STATES.duplicate(),"clock":"BC05 already decremented st2",
+		"source_range":[40907,40943],"states":STATES.duplicate(),"clock":"BC05 already decremented st2",
 		"live_combat_connected":false,"damage_execution_verified":false,"full_tick_complete":false}
 
 static func begin_tick(si: int, enemy: Dictionary, sp: float, player: Dictionary, options: Dictionary = {}) -> Dictionary:
@@ -46,9 +46,9 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 		if pending in ["move_xy","move_x","move_y"]:
 			if not response.get("value") is bool: return Common._fail("collision_result_missing")
 			if response["value"]:
-				if pending=="move_xy": Common._write(e,{"x":state["move_x"],"y":state["move_y"]},40913,events)
-				elif pending=="move_x": Common._write(e,{"x":e["x"]+state["dx"]},40914,events)
-				else: Common._write(e,{"y":e["y"]+state["dy"]},40914,events)
+				if pending=="move_xy": Common._write(e,{"x":state["move_x"],"y":state["move_y"]},40915,events)
+				elif pending=="move_x": Common._write(e,{"x":e["x"]+state["dx"]},40916,events)
+				else: Common._write(e,{"y":e["y"]+state["dy"]},40916,events)
 			else:
 				if pending=="move_xy": state["step"]="collision_x"
 				elif pending=="move_x": state["step"]="collision_y"
@@ -78,42 +78,42 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 					state["step"]="collision_xy"
 			"wind_rng":
 				state["step"]="wind_end"
-				var gate: Dictionary = Common._draw(rng,"vortex_wind_gate",40906,events,ledger)
+				var gate: Dictionary = Common._draw(rng,"vortex_wind_gate",40908,events,ledger)
 				if not gate["ok"]: return Common._fail(gate["reason"],ledger)
 				if gate["unit"]>0.5:
 					var units: Array = []
 					for tag: String in ["vortex_wind_x","vortex_wind_y","vortex_wind_vx","vortex_wind_vy"]:
-						var draw: Dictionary = Common._draw(rng,tag,40906,events,ledger)
+						var draw: Dictionary = Common._draw(rng,tag,40908,events,ledger)
 						if not draw["ok"]: return Common._fail(draw["reason"],ledger)
 						units.append(draw["unit"])
-					return Common._command(state,"poolPart",40906,[e["x"]+(units[0]-0.5)*30,e["y"]+(units[1]-0.5)*30,
+					return Common._command(state,"poolPart",40908,[e["x"]+(units[0]-0.5)*30,e["y"]+(units[1]-0.5)*30,
 						(e["x"]-(e["x"]+(units[2]-0.5)*30))*0.1,(e["y"]-(e["y"]+(units[3]-0.5)*30))*0.1,"#6644ff",2,10],events,ledger)
 			"wind_end":
 				state["step"]="done"
 				if e["st2"]<=0:
-					Common._write(e,{"s":"bossVortex","st2":80},40907,events)
-					return Common._command(state,"SFX.charge",40907,[],events,ledger)
+					Common._write(e,{"s":"bossVortex","st2":80},40909,events)
+					return Common._command(state,"SFX.charge",40909,[],events,ledger)
 			"collision_xy", "collision_x", "collision_y":
 				var step: String = state["step"]
 				state["step"]="post_move"
 				var x: float = state["move_x"] if step=="collision_xy" else (e["x"]+state["dx"] if step=="collision_x" else e["x"])
 				var y: float = state["move_y"] if step=="collision_xy" else (e["y"]+state["dy"] if step=="collision_y" else e["y"])
-				return Common._command(state,"canMv",40913 if step=="collision_xy" else 40914,[x,y,e["r"]],events,ledger,step.replace("collision_","move_"))
+				return Common._command(state,"canMv",40915 if step=="collision_xy" else 40916,[x,y,e["r"]],events,ledger,step.replace("collision_","move_"))
 			"post_move":
 				state["pd"]=Common._distance(e,p)
 				if state["pd"]<180+state["si"]*5 and state["pd"]>15:
 					var pull: float = 3+e["_bossPhase"]*1.5
 					var angle: float = atan2(e["y"]-p["y"],e["x"]-p["x"])
-					_kb(p,cos(angle)*pull*state["sp"]*0.1,sin(angle)*pull*state["sp"]*0.1,40921,events)
+					_kb(p,cos(angle)*pull*state["sp"]*0.1,sin(angle)*pull*state["sp"]*0.1,40923,events)
 				state["step"]="tick_gate"
 			"tick_gate":
 				state["step"]="particles_begin"
 				if state["pd"]<40 and p["iframes"]<=0 and p["s"]!="charge" and fmod(e["st2"],30)<state["sp"]:
 					state["step"]="tick_text"
-					return Common._command(state,"resolve_vortex_damage",40925,[_damage("tick",e)],events,ledger,"damage_tick")
+					return Common._command(state,"resolve_vortex_damage",40927,[_damage("tick",e)],events,ledger,"damage_tick")
 			"tick_text":
 				state["step"]="particles_begin"
-				return Common._command(state,"addTxt",40925,[p["x"],p["y"]-15,"🌀","#6644ff",15],events,ledger)
+				return Common._command(state,"addTxt",40927,[p["x"],p["y"]-15,"🌀","#6644ff",15],events,ledger)
 			"particles_begin":
 				state["particle_angle"]=state["options"]["now_msec"]/200.0+e["st2"]*0.1
 				state["index"]=0
@@ -125,29 +125,29 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				var angle: float = state["particle_angle"]+PI*2*state["index"]/3.0
 				state["index"]+=1
 				var radius: float = 20+e["st2"]*0.5
-				var draw: Dictionary = Common._draw(rng,"vortex_active_size",40930,events,ledger)
+				var draw: Dictionary = Common._draw(rng,"vortex_active_size",40932,events,ledger)
 				if not draw["ok"]: return Common._fail(draw["reason"],ledger)
-				return Common._command(state,"poolPart",40930,[e["x"]+cos(angle)*radius,e["y"]+sin(angle)*radius,-cos(angle)*2,-sin(angle)*2,"#6644ff",2+draw["unit"]*2,8],events,ledger)
+				return Common._command(state,"poolPart",40932,[e["x"]+cos(angle)*radius,e["y"]+sin(angle)*radius,-cos(angle)*2,-sin(angle)*2,"#6644ff",2+draw["unit"]*2,8],events,ledger)
 			"explosion_gate":
 				state["step"]="done"
 				if e["st2"]<=0:
 					state["step"]="explosion_parts"
 					if Common._distance(e,p)<100+state["si"]*5 and p["iframes"]<=0 and p["s"]!="charge":
 						state["step"]="explosion_kb"
-						return Common._command(state,"resolve_vortex_damage",40935,[_damage("explosion",e)],events,ledger,"damage_explosion")
+						return Common._command(state,"resolve_vortex_damage",40937,[_damage("explosion",e)],events,ledger,"damage_explosion")
 			"explosion_kb":
 				var angle: float = Common._aim(e,p)
-				_kb(p,cos(angle)*15,sin(angle)*15,40936,events)
+				_kb(p,cos(angle)*15,sin(angle)*15,40938,events)
 				state["step"]="explosion_parts"
 			"explosion_parts":
 				state["step"]="explosion_sound"
-				return Common._command(state,"addParts",40938,[e["x"],e["y"],"#6644ff",30],events,ledger)
+				return Common._command(state,"addParts",40940,[e["x"],e["y"],"#6644ff",30],events,ledger)
 			"explosion_sound":
-				Common._global("shake",12*state["options"]["shake"]/100.0,40938,events)
+				Common._global("shake",12*state["options"]["shake"]/100.0,40940,events)
 				state["step"]="explosion_end"
-				return Common._command(state,"SFX.groggy",40938,[],events,ledger)
+				return Common._command(state,"SFX.groggy",40940,[],events,ledger)
 			"explosion_end":
-				Common._write(e,{"s":"recover","st2":65},40939,events)
+				Common._write(e,{"s":"recover","st2":65},40941,events)
 				state["step"]="done"
 			_: return Common._fail("unknown_vortex_checkpoint")
 	return {"status":"READY","done":true,"enemy":e,"player":p,"events":events,"rng_ledger":ledger,"command":null,"continuation":null,"full_tick_complete":false}

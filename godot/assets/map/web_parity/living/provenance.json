@@ -211,5 +211,7 @@
       "sha256": "f4dac2a37551f60e923c357804f2d1960c08f38cda7f151de12e4417e6edc857",
       "method": "original browser canvas builder export, no generated art"
     }
-  ]
+  ],
+  "current_snapshot_sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "revalidation": "INTEG-14: original generation lineage retained; map source symbol hashes and source asset bytes unchanged; no image regeneration"
 }

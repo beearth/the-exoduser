@@ -38,5 +38,5 @@ func run() -> void:
  check(is_same(pool[0],first) and pool.size()==40,"ring overwrite retains slot identity")
  check(adapter._number_atlas_texture.get_size()==Vector2(480,168),"source canvas10x3 cells48x56")
  check(adapter._number_atlas_supply_calls==1 and adapter._number_atlas_bake_calls==0,"source atlas once; no bake during play")
- print("PARITY_HUD_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"source":"game.html:143-386,2615-2662,43929-43990","namespace":OS.get_user_data_dir().get_file()}))
+ print("PARITY_HUD_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"source":"game.html:143-386,2615-2662,43931-43992","namespace":OS.get_user_data_dir().get_file()}))
  quit(1 if failures else 0)

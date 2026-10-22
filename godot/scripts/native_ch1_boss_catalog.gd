@@ -74,7 +74,7 @@ const _RECEIPT = {
 	"global_combo_count": 68,
 	"ch1_union_count": 24,
 	"max_source_idx": 60,
-	"source_ranges": {"moves": [9820, 9880], "combos": [9881, 9950], "phases": [9951, 9957], "final_ch1_sets": [9960, 9967], "all_stage_cage_removal": [10009, 10010], "boss_names": [16688, 16695]},
+	"source_ranges": {"moves": [9820, 9880], "combos": [9881, 9950], "phases": [9951, 9957], "final_ch1_sets": [9960, 9967], "all_stage_cage_removal": [10009, 10010], "boss_names": [16690, 16697]},
 	"move_manifest": _MOVE_MANIFEST,
 }
 

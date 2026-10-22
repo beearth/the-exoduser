@@ -1,3 +1,9 @@
+## 2026-10-22 INTEG-14 — PC HUD·새 원본·HS-M7
+
+- PC HUD1a2e88b2f merge, source state 충돌0. 원본91e2774b7/dee094fd로 교체 인수.
+- 행 고정 oracle/source_line metadata +2·출처 10종 원래 도구 재추출, 19종 최종 PASS. MP/SP 최댓값 공백 정렬. PC 테스트 원본 유지.
+- PC fieldboss154/1·기존 unify14/3 잔여, E2E 단회7PASS/11NOT_READY/0FAIL·처치0. 독립 시작 HUD 숫자 불일치/동일 fixture199/0 구분, 1x 캡처 VISUAL RETOUCH. [상세](engine/INTEG14_HUD_SNAPSHOT_HS_M7_20261022.md).
+
 ## 2026-10-22 PARITY-SKILL-01
 
 - PC writer b6050641c merge(CHANGELOG 충돌만 양쪽 보존). Forge 두 버튼 활성/공개 API·최종 source_feedback 연결, 미습득 표기·비활성색 및 원판 오프라인2D 추출. 런타임3D0.

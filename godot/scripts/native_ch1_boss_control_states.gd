@@ -8,7 +8,7 @@ const STATES = ["bossGrabWind", "bossGrab", "bossDruidDive", "bossDruidUnder", "
 static func source_receipt() -> Dictionary:
 	return {"source_main":"6d987cb8a31d0aadd2b6a8cf1e9a781d1fb76d4d",
 		"game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
-		"source_ranges":[[40837,40867],[41047,41072]],
+		"source_ranges":[[40839,40869],[41049,41074]],
 		"live_combat_connected":false,"damage_or_parry_execution_verified":false,
 		"forced_player_writer_verified":false,"iframe_immunity_verified":false,"full_tick_complete":false}
 
@@ -74,144 +74,144 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 			"entry":
 				if kind=="bossGrabWind":
 					var a: float=atan2(p["y"]-e["y"],p["x"]-e["x"])
-					_write(e,{"_grabAng":a},40839,events)
+					_write(e,{"_grabAng":a},40841,events)
 					var speed: float=e["speed"]*1.5*t["sp"]
 					t["ga"]=a;t["dx"]=cos(a)*speed;t["dy"]=sin(a)*speed
 					t["step"]="move_x"
-					return _move(t,e["x"]+t["dx"],e["y"]+t["dy"],40841,"xy",events,ledger)
+					return _move(t,e["x"]+t["dx"],e["y"]+t["dy"],40843,"xy",events,ledger)
 				elif kind=="bossGrab":
 					t["step"]="grab_tick"
 					return _control(t,[{"path":"x","value":e["x"]+cos(e["_grabAng"])*25},
 						{"path":"y","value":e["y"]+sin(e["_grabAng"])*25},
-						{"path":"kb.x","value":0},{"path":"kb.y","value":0}],40854,40855,events,ledger)
+						{"path":"kb.x","value":0},{"path":"kb.y","value":0}],40856,40857,events,ledger)
 				elif kind=="bossDruidDive":
-					_write(e,{"facing":atan2(p["y"]-e["y"],p["x"]-e["x"])},41048,events)
+					_write(e,{"facing":atan2(p["y"]-e["y"],p["x"]-e["x"])},41050,events)
 					t["step"]="dive_vfx"
-					var gate: Variant=_draw(rng,"dive_gate",41049,events,ledger)
+					var gate: Variant=_draw(rng,"dive_gate",41051,events,ledger)
 					if not _unit(gate): return _fail("rng_missing_or_invalid",ledger)
 					if gate<0.5:
-						var u: Variant=_draw(rng,"dive_angle",41049,events,ledger)
-						var size: Variant=_draw(rng,"dive_size",41049,events,ledger)
+						var u: Variant=_draw(rng,"dive_angle",41051,events,ledger)
+						var size: Variant=_draw(rng,"dive_size",41051,events,ledger)
 						if not _unit(u) or not _unit(size): return _fail("rng_missing_or_invalid",ledger)
 						var a: float=u*PI*2
-						return _cmd(t,"poolPart",41049,[e["x"]+cos(a)*e["r"]*1.2,e["y"]+sin(a)*e["r"]*1.2,-cos(a)*1.5,-sin(a)*1.5,"#66dd22",2+size*2,10],events,ledger)
+						return _cmd(t,"poolPart",41051,[e["x"]+cos(a)*e["r"]*1.2,e["y"]+sin(a)*e["r"]*1.2,-cos(a)*1.5,-sin(a)*1.5,"#66dd22",2+size*2,10],events,ledger)
 				elif kind=="bossDruidUnder":
 					_write(e,{"_diveTx":e["_diveTx"]+(p["x"]-e["_diveTx"])*0.06*t["sp"],
-						"_diveTy":e["_diveTy"]+(p["y"]-e["_diveTy"])*0.06*t["sp"]},41053,events)
+						"_diveTy":e["_diveTy"]+(p["y"]-e["_diveTy"])*0.06*t["sp"]},41055,events)
 					var prog: float=1-e["st2"]/_or_num(e.get("_underMax"),45)
 					_write(e,{"x":e["_teleOx"]+(e["_diveTx"]-e["_teleOx"])*prog,
-						"y":e["_teleOy"]+(e["_diveTy"]-e["_teleOy"])*prog},41055,events)
-					_write(e,{"iframes":maxf(_or_num(e.get("iframes"),0),5)},41056,events)
+						"y":e["_teleOy"]+(e["_diveTy"]-e["_teleOy"])*prog},41057,events)
+					_write(e,{"iframes":maxf(_or_num(e.get("iframes"),0),5)},41058,events)
 					t["step"]="under_vfx" if e["st2"]<=0 else "done"
-					if e["st2"]<=0: _write(e,{"x":e["_diveTx"],"y":e["_diveTy"]},41058,events)
+					if e["st2"]<=0: _write(e,{"x":e["_diveTx"],"y":e["_diveTy"]},41060,events)
 				else:
 					t["step"]="erupt_end"
 					if not e.get("_eruptHit",false) and e["st2"]<=e["_eruptMax"]-8:
-						_write(e,{"_eruptHit":true},41061,events)
+						_write(e,{"_eruptHit":true},41063,events)
 						t["er"]=e["r"]+120;t["er_dmg"]=_i32(e["atk"]*2.2);t["ex"]=e["x"];t["ey"]=e["y"]
 						t["step"]="erupt_vfx_hit"
-						return _cmd(t,"_addBlastLight",41064,[t["ex"],t["ey"],t["er"]*1.2,14,120,220,90],events,ledger)
+						return _cmd(t,"_addBlastLight",41066,[t["ex"],t["ey"],t["er"]*1.2,14,120,220,90],events,ledger)
 			"move_x":
 				t["step"]="move_y"
-				return _move(t,e["x"]+t["dx"],e["y"],40842,"x",events,ledger)
+				return _move(t,e["x"]+t["dx"],e["y"],40844,"x",events,ledger)
 			"move_y":
 				t["step"]="wind_rng"
-				return _move(t,e["x"],e["y"]+t["dy"],40842,"y",events,ledger)
+				return _move(t,e["x"],e["y"]+t["dy"],40844,"y",events,ledger)
 			"wind_rng":
 				t["step"]="wind_end"
-				var gate: Variant=_draw(rng,"grab_gate",40843,events,ledger)
+				var gate: Variant=_draw(rng,"grab_gate",40845,events,ledger)
 				if not _unit(gate): return _fail("rng_missing_or_invalid",ledger)
 				if gate>0.6:
-					var u: Variant=_draw(rng,"grab_vx",40843,events,ledger)
+					var u: Variant=_draw(rng,"grab_vx",40845,events,ledger)
 					if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
-					return _cmd(t,"poolPart",40843,[e["x"]+cos(t["ga"])*e["r"],e["y"]+sin(t["ga"])*e["r"],(u-0.5)*2,-1.5,"#ff2266",3,10],events,ledger)
+					return _cmd(t,"poolPart",40845,[e["x"]+cos(t["ga"])*e["r"],e["y"]+sin(t["ga"])*e["r"],(u-0.5)*2,-1.5,"#ff2266",3,10],events,ledger)
 			"wind_end":
 				t["step"]="done"
 				if e["st2"]<=0:
 					if _distance(p,e["x"],e["y"])<e["r"]+p["r"]+200 and p["iframes"]<=0 and p["s"]!="charge":
-						_write(e,{"s":"bossGrab","st2":60},40848,events)
+						_write(e,{"s":"bossGrab","st2":60},40850,events)
 						t["step"]="grab_caught_label"
-						return _cmd(t,"_T",40849,["⚠ 잡혔다!"],events,ledger,"translate")
-					_write(e,{"s":"recover","st2":40},40850,events)
-					return _cmd(t,"addParts",40850,[e["x"],e["y"],"#ff2266",8],events,ledger)
+						return _cmd(t,"_T",40851,["⚠ 잡혔다!"],events,ledger,"translate")
+					_write(e,{"s":"recover","st2":40},40852,events)
+					return _cmd(t,"addParts",40852,[e["x"],e["y"],"#ff2266",8],events,ledger)
 			"grab_caught_label":
 				t["step"]="grab_caught_shake"
-				return _cmd(t,"addTxt",40849,[p["x"],p["y"]-25,t["label"],"#cc00ff",50],events,ledger)
+				return _cmd(t,"addTxt",40851,[p["x"],p["y"]-25,t["label"],"#cc00ff",50],events,ledger)
 			"grab_caught_shake":
 				if not _num(c.get("shake")): return _fail("shake_reader_missing")
-				_global("shake",10*c["shake"]/100.0,40849,events);t["step"]="done"
+				_global("shake",10*c["shake"]/100.0,40851,events);t["step"]="done"
 			"grab_tick":
 				t["step"]="grab_throw"
 				if fmod(e["st2"],10)==0 and p["iframes"]<=0:
 					t["step"]="grab_tick_parts"
-					return _damage(t,0.4,{"dtype":"grab"},40857,events,ledger)
+					return _damage(t,0.4,{"dtype":"grab"},40859,events,ledger)
 			"grab_tick_parts":
 				t["step"]="grab_throw"
-				return _cmd(t,"addParts",40858,[p["x"],p["y"],"#ff2266",3],events,ledger)
+				return _cmd(t,"addParts",40860,[p["x"],p["y"],"#ff2266",3],events,ledger)
 			"grab_throw":
 				t["step"]="done"
 				if e["st2"]<=0:
 					t["step"]="grab_release"
-					return _damage(t,1.8,null,40862,events,ledger)
+					return _damage(t,1.8,null,40864,events,ledger)
 			"grab_release":
 				t["step"]="grab_throw_translate"
 				return _control(t,[{"path":"kb.x","value":cos(e["_grabAng"])*18},
-					{"path":"kb.y","value":sin(e["_grabAng"])*18},{"path":"iframes","value":30}],40863,40864,events,ledger)
+					{"path":"kb.y","value":sin(e["_grabAng"])*18},{"path":"iframes","value":30}],40865,40866,events,ledger)
 			"grab_throw_translate":
 				t["step"]="grab_throw_label"
-				return _cmd(t,"_T",40864,["💥 내던지기!"],events,ledger,"translate")
+				return _cmd(t,"_T",40866,["💥 내던지기!"],events,ledger,"translate")
 			"grab_throw_label":
 				t["step"]="grab_throw_shake"
-				return _cmd(t,"addTxt",40864,[p["x"],p["y"]-30,t["label"],"#ff4400",50],events,ledger)
+				return _cmd(t,"addTxt",40866,[p["x"],p["y"]-30,t["label"],"#ff4400",50],events,ledger)
 			"grab_throw_shake":
 				if not _num(c.get("shake")): return _fail("shake_reader_missing")
-				_global("shake",15*c["shake"]/100.0,40865,events);t["step"]="grab_throw_parts"
-				return _cmd(t,"SFX.groggy",40865,[],events,ledger)
+				_global("shake",15*c["shake"]/100.0,40867,events);t["step"]="grab_throw_parts"
+				return _cmd(t,"SFX.groggy",40867,[],events,ledger)
 			"grab_throw_parts":
 				t["step"]="grab_recover"
-				return _cmd(t,"addParts",40865,[p["x"],p["y"],"#ff4400",15],events,ledger)
+				return _cmd(t,"addParts",40867,[p["x"],p["y"],"#ff4400",15],events,ledger)
 			"grab_recover":
-				_write(e,{"s":"recover","st2":70},40866,events);t["step"]="done"
+				_write(e,{"s":"recover","st2":70},40868,events);t["step"]="done"
 			"dive_vfx":
 				t["step"]="done"
 				if e["st2"]<=0:
 					t["step"]="dive_enter"
-					if c["vfx_available"]: return _cmd(t,"playVFXAng",41050,["druid_dust",e["x"],e["y"],e["r"]*2/256.0,7,0,false],events,ledger)
+					if c["vfx_available"]: return _cmd(t,"playVFXAng",41052,["druid_dust",e["x"],e["y"],e["r"]*2/256.0,7,0,false],events,ledger)
 			"dive_enter":
-				_write(e,{"_diveTx":p["x"],"_diveTy":p["y"],"s":"bossDruidUnder","st2":45,"_underMax":45,"iframes":maxf(_or_num(e.get("iframes"),0),50)},41050,events)
+				_write(e,{"_diveTx":p["x"],"_diveTy":p["y"],"s":"bossDruidUnder","st2":45,"_underMax":45,"iframes":maxf(_or_num(e.get("iframes"),0),50)},41052,events)
 				t["step"]="done"
-				return _cmd(t,"SFX.groggy",41050,[],events,ledger)
+				return _cmd(t,"SFX.groggy",41052,[],events,ledger)
 			"under_vfx":
 				t["step"]="under_enter"
-				if c["vfx_available"]: return _cmd(t,"playVFXAng",41058,["druid_dust",e["x"],e["y"],e["r"]*2*1.3/256.0,7,0,false],events,ledger)
+				if c["vfx_available"]: return _cmd(t,"playVFXAng",41060,["druid_dust",e["x"],e["y"],e["r"]*2*1.3/256.0,7,0,false],events,ledger)
 			"under_enter":
-				_write(e,{"s":"bossDruidErupt","st2":40,"_eruptMax":40,"_eruptHit":false},41058,events)
+				_write(e,{"s":"bossDruidErupt","st2":40,"_eruptMax":40,"_eruptHit":false},41060,events)
 				t["step"]="under_sfx"
 				# Four arguments in the original: preserve the absent colour/duration.
-				return _cmd(t,"addTxt",41058,[e["x"],e["y"]-40,"🌿💥",60],events,ledger)
+				return _cmd(t,"addTxt",41060,[e["x"],e["y"]-40,"🌿💥",60],events,ledger)
 			"under_sfx":
 				t["step"]="under_shake"
-				return _cmd(t,"SFX.detonate",41058,[],events,ledger)
+				return _cmd(t,"SFX.detonate",41060,[],events,ledger)
 			"under_shake":
 				t["step"]="done"
-				return _cmd(t,"shake",41058,[12],events,ledger)
+				return _cmd(t,"shake",41060,[12],events,ledger)
 			"erupt_vfx_hit":
 				t["step"]="erupt_vfx_roots"
-				if c["vfx_available"]: return _cmd(t,"playVFXAng",41065,["druid_hit",t["ex"],t["ey"],0.72,7,0,false],events,ledger)
+				if c["vfx_available"]: return _cmd(t,"playVFXAng",41067,["druid_hit",t["ex"],t["ey"],0.72,7,0,false],events,ledger)
 			"erupt_vfx_roots":
 				t["step"]="erupt_contact"
-				if c["vfx_available"]: return _cmd(t,"playVFXAng",41066,["druid_roots",t["ex"],t["ey"],t["er"]*2/256.0,7,0,false],events,ledger)
+				if c["vfx_available"]: return _cmd(t,"playVFXAng",41068,["druid_roots",t["ex"],t["ey"],t["er"]*2/256.0,7,0,false],events,ledger)
 			"erupt_contact":
 				t["step"]="erupt_end"
 				if _distance(p,t["ex"],t["ey"])<t["er"] and p["iframes"]<=0 and p["s"]!="charge":
-					return _cmd(t,"resolve_boss_erupt_contact",41068,[{"source_lines":[41068,41069],
+					return _cmd(t,"resolve_boss_erupt_contact",41070,[{"source_lines":[41070,41071],
 						"raw_damage":t["er_dmg"],"rounding":"ToInt32(atk*2.2), then ToInt32(raw*elMul(e.el,ar().el))",
 						"center":[t["ex"],t["ey"]],"element":e["el"],"parry_multiplier":4,"stunned":60,"poise":20,
 						"poison_add":4,"web_slow_min":90,"knockback_add":14,
 						"requires":["isPWin","hurtP","boss_hurtE","doParry","poise_owner","player_status_writer"],
 						"combat_verified":false}],events,ledger,"owner")
 			"erupt_end":
-				if e["st2"]<=0: _write(e,{"s":"recover","st2":30},41072,events)
+				if e["st2"]<=0: _write(e,{"s":"recover","st2":30},41074,events)
 				t["step"]="done"
 			_: return _fail("unknown_control_checkpoint")
 	return {"status":"READY","done":true,"enemy":e,"player":p,"events":events,"rng_ledger":ledger,

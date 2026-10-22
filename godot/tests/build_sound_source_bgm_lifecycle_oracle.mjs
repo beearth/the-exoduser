@@ -1,5 +1,5 @@
 import fs from 'node:fs';import vm from 'node:vm';import cp from 'node:child_process';import crypto from 'node:crypto';import assert from 'node:assert/strict';
-const ref='e556b617190c325ca39f5add04357f5dea5ca87e';
+const ref='91e2774b769869e59f80953e148a5c95203b0fea';
 const html=cp.execFileSync('git',['show',ref+':game.html'],{cwd:new URL('../../',import.meta.url),maxBuffer:16*1024*1024}).toString();
 const start=html.indexOf('const BGM={'),bgm=html.slice(start,html.indexOf('\nconst C=',start));assert(start>0&&bgm.includes('},50);'));
 const cases=[],op=(kind,more={})=>({kind,rng:[0.25,0.999999,0.5],...more});

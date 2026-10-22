@@ -14,9 +14,9 @@ static func source_receipt() -> Dictionary:
 	return {"source_main": "e556b617190c325ca39f5add04357f5dea5ca87e",
 		"game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency": "BC04 818e9b2027afa37fadbf13a6b79b885abdb95f6b",
-		"phase_writes": [38236, 38259], "phase_effect_continuation": [38271, 38312], "source_boss_phase_hitstop": 6,
-		"clock_ranges": [[38584, 38592], [38614, 38635], [38771, 38772],
-			[38874, 38884], [40444, 40454], [41375, 41383]],
+		"phase_writes": [38238, 38261], "phase_effect_continuation": [38273, 38314], "source_boss_phase_hitstop": 6,
+		"clock_ranges": [[38586, 38594], [38616, 38637], [38773, 38774],
+			[38876, 38886], [40446, 40456], [41377, 41385]],
 		"checkpoints": CHECKPOINTS.duplicate(), "demo_last_stage": 0,
 		"live_tick_connected": false, "damage_or_iframe_execution_verified": false}
 
@@ -60,7 +60,7 @@ static func phase_transition(si: int, enemy: Dictionary, chapter_catalog: Varian
 		if e["_moveCDs"].size() < 59: e["_moveCDs"].resize(59)
 		for i in range(59): e["_moveCDs"][i] = 0 # No idx59/60 reset.
 	var result: Dictionary = _packet(enemy, e, "phase_transition", "phase_effects_required")
-	result["commands"] = [{"command": "resume_boss_phase_effects", "source_lines": [38271, 38312],
+	result["commands"] = [{"command": "resume_boss_phase_effects", "source_lines": [38273, 38314],
 		"old_phase": enemy["_bossPhase"], "phase": phase,
 		"requires": ["player_snapshot", "collision_safe_point", "hurtP", "boss_projectiles",
 			"vfx_sfx", "global_hitstop_slowmo", "delayed_howl"], "executed": false}]
@@ -112,7 +112,7 @@ static func clock_step(si: int, checkpoint: String, enemy: Dictionary, sp: float
 			if _positive(e.get("_bluHitCD")): e["_bluHitCD"] -= sp
 			if _positive(e.get("_hitStun")): return _packet(enemy, e, "hitstun_return", "return_update")
 			if _positive(e.get("stunned")):
-				# _cancelProjCharge, game.html:20121, only these four scalar resets.
+				# _cancelProjCharge, game.html:20123, only these four scalar resets.
 				e["_projChargeT"] = 0
 				e["_projChargeCol"] = null
 				e["_projChargeBean"] = null
@@ -120,7 +120,7 @@ static func clock_step(si: int, checkpoint: String, enemy: Dictionary, sp: float
 				if e["stunned"] > 180: e["stunned"] = 180
 				if not _truthy(e.get("_maxStunned")) or e["_maxStunned"] < e["stunned"]:
 					e["_maxStunned"] = e["stunned"]
-				# The inner <=0 branch in 38625 cannot follow numeric >0 and this
+				# The inner <=0 branch in 38627 cannot follow numeric >0 and this
 				# cancel helper: no timer decrease occurs between the comparisons.
 				return _packet(enemy, e, "stunned_return", "return_update")
 			return _packet(enemy, e, "continue", "movement_freeze_status_dot_owners")
@@ -164,7 +164,7 @@ static func clock_step(si: int, checkpoint: String, enemy: Dictionary, sp: float
 					e["st2"] = 25
 					e["_feinting"] = false
 					result = _packet(enemy, e, "feint_cancelled", "state_switch")
-					result["commands"] = [{"command": "addTxt", "source_line": 40454,
+					result["commands"] = [{"command": "addTxt", "source_line": 40456,
 						"args": [e["x"], e["y"] - 30, "...", "#cccccc", 30], "executed": false}]
 					return result
 			return _packet(enemy, e, "continue", "state_switch")
@@ -175,13 +175,13 @@ static func clock_step(si: int, checkpoint: String, enemy: Dictionary, sp: float
 			if not _numbers(e, ["st2"]): return _failure("state_clock_missing")
 			var commands: Array = []
 			if e["s"] == "recover":
-				commands.append({"command": "atkTicketRelease", "source_line": 41376, "executed": false})
+				commands.append({"command": "atkTicketRelease", "source_line": 41378, "executed": false})
 				if e["st2"] > 20: e["st2"] = 20
 			var ledger: Array = []
 			if e["st2"] <= 0:
 				if not rng.is_valid(): return _failure("rng_provider_missing")
 				var unit: Variant = rng.call("recovery_idle_timer")
-				ledger.append({"field": "recovery_idle_timer", "source_line": 41382 if e["s"] == "recover" else 41375, "unit": unit})
+				ledger.append({"field": "recovery_idle_timer", "source_line": 41384 if e["s"] == "recover" else 41377, "unit": unit})
 				if not _number(unit) or unit < 0 or unit >= 1: return _failure("rng_unit_invalid", ledger)
 				e["s"] = "idle"
 				e["st2"] = 3 + unit * 5 # No truncation: fractional source timer.
@@ -246,14 +246,14 @@ static func phase_effect_step(token: Dictionary, response: Variant = null, rng: 
 					e["x"] = state["target_x"]
 					e["y"] = state["target_y"]
 					state["step"] = 5
-					state["position_commit"] = {"x": e["x"], "y": e["y"], "source_line": 38278}
+					state["position_commit"] = {"x": e["x"], "y": e["y"], "source_line": 38280}
 			"safePt":
 				if not response.has("value"): return _failure("safe_point_result_missing")
 				if response["value"] != null:
 					if not response["value"] is Dictionary or not _numbers(response["value"], ["x", "y"]): return _failure("safe_point_shape_unsupported")
 					e["x"] = response["value"]["x"]
 					e["y"] = response["value"]["y"]
-					state["position_commit"] = {"x": e["x"], "y": e["y"], "source_line": 38279}
+					state["position_commit"] = {"x": e["x"], "y": e["y"], "source_line": 38281}
 			"hurtP":
 				if not response.get("player_after") is Dictionary or not _numbers(response["player_after"], ["x", "y"]): return _failure("post_damage_player_reader_missing")
 				state["player"] = response["player_after"].duplicate(true)
@@ -294,44 +294,44 @@ static func phase_effect_step(token: Dictionary, response: Variant = null, rng: 
 				var angle: float = PI * 2 * i / 14.0
 				var speed: float = 4.0
 				if step == 0:
-					var u: Variant = _effect_draw(ctx, "departure_speed", 38273)
+					var u: Variant = _effect_draw(ctx, "departure_speed", 38275)
 					if ctx["error"] != "": return _failure(ctx["error"], ctx["ledger"])
 					speed += u * 5
-				var unit: Variant = _effect_draw(ctx, "departure_size" if step == 0 else "arrival_size", 38273 if step == 0 else 38280)
+				var unit: Variant = _effect_draw(ctx, "departure_size" if step == 0 else "arrival_size", 38275 if step == 0 else 38282)
 				if ctx["error"] != "": return _failure(ctx["error"], ctx["ledger"])
 				var x: float = ox + cos(angle) * radius * 0.6 if step == 0 else e["x"] + cos(angle) * (radius * 2.5)
 				var y: float = oy + sin(angle) * radius * 0.6 if step == 0 else e["y"] + sin(angle) * (radius * 2.5)
-				return _effect_packet(state, "poolPart", 38273 if step == 0 else 38280,
+				return _effect_packet(state, "poolPart", 38275 if step == 0 else 38282,
 					[x, y, cos(angle) * speed * (1 if step == 0 else -1), sin(angle) * speed * (1 if step == 0 else -1), color, 3 + unit * 2, 12], ctx)
-			1: return _effect_packet(state, "poolPart", 38274, [ox, oy, 0, 0, color, radius * 2, 10, 3, 0, 0], ctx)
-			2: return _effect_packet(state, "_addBlastLight", 38274, [ox, oy, radius * 3, 12, 255, 68, 0], ctx)
+			1: return _effect_packet(state, "poolPart", 38276, [ox, oy, 0, 0, color, radius * 2, 10, 3, 0, 0], ctx)
+			2: return _effect_packet(state, "_addBlastLight", 38276, [ox, oy, radius * 3, 12, 255, 68, 0], ctx)
 			3:
-				var unit: Variant = _effect_draw(ctx, "teleport_angle", 38275)
+				var unit: Variant = _effect_draw(ctx, "teleport_angle", 38277)
 				if ctx["error"] != "": return _failure(ctx["error"], ctx["ledger"])
 				state["angle"] = player["facing"] + PI + (unit - 0.5) * 0.8
 				state["target_x"] = player["x"] + cos(state["angle"]) * (80 + phase * 25)
 				state["target_y"] = player["y"] + sin(state["angle"]) * (80 + phase * 25)
-				return _effect_packet(state, "canMv", 38278, [state["target_x"], state["target_y"], e["r"]], ctx, "canMv")
-			4: return _effect_packet(state, "safePt", 38279, [player["x"] + cos(state["angle"]) * 50, player["y"] + sin(state["angle"]) * 50, e["r"]], ctx, "safePt")
-			6: return _effect_packet(state, "poolPart", 38281, [e["x"], e["y"], 0, 0, "#ffffff", radius * 1.5, 8, 3, 0, 0], ctx)
-			7: return _effect_packet(state, "_addBlastLight", 38281, [e["x"], e["y"], radius * 4, 14, 255, 68, 0], ctx)
+				return _effect_packet(state, "canMv", 38280, [state["target_x"], state["target_y"], e["r"]], ctx, "canMv")
+			4: return _effect_packet(state, "safePt", 38281, [player["x"] + cos(state["angle"]) * 50, player["y"] + sin(state["angle"]) * 50, e["r"]], ctx, "safePt")
+			6: return _effect_packet(state, "poolPart", 38283, [e["x"], e["y"], 0, 0, "#ffffff", radius * 1.5, 8, 3, 0, 0], ctx)
+			7: return _effect_packet(state, "_addBlastLight", 38283, [e["x"], e["y"], radius * 4, 14, 255, 68, 0], ctx)
 			8:
 				e["_tpFlashT"] = 8
-				return _effect_packet(state, "write_enemy_fields", 38281, [{"_tpFlashT": 8}], ctx)
-			9: return _effect_packet(state, "_addTpSmoke", 38282, [ox, oy, radius * 4, 18, 0], ctx)
-			10: return _effect_packet(state, "_addTpSmoke", 38282, [e["x"], e["y"], radius * 5, 22, 1], ctx)
-			11: return _effect_packet(state, "_addTpImpact", 38283, [e["x"], e["y"], radius * 4, 24, color], ctx)
-			12: return _effect_packet(state, "_addTpBolt", 38283, [ox, oy, e["x"], e["y"], 14, color], ctx)
+				return _effect_packet(state, "write_enemy_fields", 38283, [{"_tpFlashT": 8}], ctx)
+			9: return _effect_packet(state, "_addTpSmoke", 38284, [ox, oy, radius * 4, 18, 0], ctx)
+			10: return _effect_packet(state, "_addTpSmoke", 38284, [e["x"], e["y"], radius * 5, 22, 1], ctx)
+			11: return _effect_packet(state, "_addTpImpact", 38285, [e["x"], e["y"], radius * 4, 24, color], ctx)
+			12: return _effect_packet(state, "_addTpBolt", 38285, [ox, oy, e["x"], e["y"], 14, color], ctx)
 			13:
 				var dx: float = player["x"] - e["x"]
 				var dy: float = player["y"] - e["y"]
 				if sqrt(dx * dx + dy * dy) < 100 + phase * 30 and player["iframes"] <= 0 and player["s"] != "charge":
-					return _effect_packet(state, "hurtP", 38288, [_i32(e["atk"] * (0.4 + phase * 0.1)), {"dtype": "magic"}], ctx, "hurtP")
+					return _effect_packet(state, "hurtP", 38290, [_i32(e["atk"] * (0.4 + phase * 0.1)), {"dtype": "magic"}], ctx, "hurtP")
 				state["step"] = 16
 			14:
 				var angle: float = atan2(player["y"] - e["y"], player["x"] - e["x"])
-				return _effect_packet(state, "player_kb_add", 38289, [cos(angle) * 10, sin(angle) * 10], ctx)
-			15: return _effect_packet(state, "addTxt", 38290, [player["x"], player["y"] - 20, {"call": "_T", "args": ["🌊충격파!"]}, "#ff4400", 30], ctx)
+				return _effect_packet(state, "player_kb_add", 38291, [cos(angle) * 10, sin(angle) * 10], ctx)
+			15: return _effect_packet(state, "addTxt", 38292, [player["x"], player["y"] - 20, {"call": "_T", "args": ["🌊충격파!"]}, "#ff4400", 30], ctx)
 			16:
 				var count: int = 8 + phase * 4
 				if i >= count:
@@ -340,9 +340,9 @@ static func phase_effect_step(token: Dictionary, response: Variant = null, rng: 
 				state["step"] = 16
 				state["i"] += 1
 				var angle: float = PI * 2 * i / count
-				var ux: Variant = _effect_draw(ctx, "volley_vx", 38297)
+				var ux: Variant = _effect_draw(ctx, "volley_vx", 38299)
 				if ctx["error"] != "": return _failure(ctx["error"], ctx["ledger"])
-				var uy: Variant = _effect_draw(ctx, "volley_vy", 38297)
+				var uy: Variant = _effect_draw(ctx, "volley_vy", 38299)
 				if ctx["error"] != "": return _failure(ctx["error"], ctx["ledger"])
 				var red: bool = i % 2 == 0
 				var projectile: Dictionary = {"x": e["x"], "y": e["y"], "vx": cos(angle) * (3 + ux), "vy": sin(angle) * (3 + uy),
@@ -351,19 +351,19 @@ static func phase_effect_step(token: Dictionary, response: Variant = null, rng: 
 				if red:
 					projectile["redBean"] = true
 					projectile["homing"] = true
-				return _effect_packet(state, "_spawnBossProjectile", 38297, [projectile], ctx)
-			17: return _effect_packet(state, "_T", 38301, [data_catalog.phase_by_index(phase)["label"]], ctx, "translate")
-			18: return _effect_packet(state, "addTxt", 38301, [e["x"], e["y"] - 50, state["label"], "#ff0000" if phase >= 3 else ("#cc2200" if phase >= 2 else "#ff8800"), 70], ctx)
-			19: return _effect_packet(state, "_reviveVFX", 38302, [e["x"], e["y"], "#ffdd44", "⚡부활! HP +30%", {"partN": 16, "partSpd": 5, "shake": 10, "vfxSize": 140, "flash": 3}], ctx, "revive_vfx")
-			20: return _effect_packet(state, "write_globals", 38303, [{"hitStop": _i32((6 + phase * 3) * state["hit_stop_scale"] / 100.0), "slowMo": maxf(state["slow_mo_after"], 60 + phase * 15)}], ctx)
-			21: return _effect_packet(state, "shake", 38305, [14 + phase * 4], ctx)
-			22: return _effect_packet(state, "SFX.groggy", 38307, [], ctx)
-			23: return _effect_packet(state, "_bossSfx", 38308, [state["si"]], ctx, "boss_sfx")
+				return _effect_packet(state, "_spawnBossProjectile", 38299, [projectile], ctx)
+			17: return _effect_packet(state, "_T", 38303, [data_catalog.phase_by_index(phase)["label"]], ctx, "translate")
+			18: return _effect_packet(state, "addTxt", 38303, [e["x"], e["y"] - 50, state["label"], "#ff0000" if phase >= 3 else ("#cc2200" if phase >= 2 else "#ff8800"), 70], ctx)
+			19: return _effect_packet(state, "_reviveVFX", 38304, [e["x"], e["y"], "#ffdd44", "⚡부활! HP +30%", {"partN": 16, "partSpd": 5, "shake": 10, "vfxSize": 140, "flash": 3}], ctx, "revive_vfx")
+			20: return _effect_packet(state, "write_globals", 38305, [{"hitStop": _i32((6 + phase * 3) * state["hit_stop_scale"] / 100.0), "slowMo": maxf(state["slow_mo_after"], 60 + phase * 15)}], ctx)
+			21: return _effect_packet(state, "shake", 38307, [14 + phase * 4], ctx)
+			22: return _effect_packet(state, "SFX.groggy", 38309, [], ctx)
+			23: return _effect_packet(state, "_bossSfx", 38310, [state["si"]], ctx, "boss_sfx")
 			24:
 				var profile: Variant = state["sfx"]
 				var sample: Variant = profile["howl"] if profile is Dictionary else {"random_choice": ["boss_howl", "boss_howl1"], "threshold": 0.5}
 				var pitch: Variant = {"call": "_r", "args": [profile["howlP"] if profile is Dictionary else 0.85, 0.12]}
-				return _effect_packet(state, "setTimeout", 38309, [120, {"command": "playSample", "args": [sample, 0.8, pitch], "source_line": 38310 if profile is Dictionary else 38311}], ctx)
+				return _effect_packet(state, "setTimeout", 38311, [120, {"command": "playSample", "args": [sample, 0.8, pitch], "source_line": 38312 if profile is Dictionary else 38313}], ctx)
 			25: return {"status": "READY", "done": true, "enemy": e, "continuation": null, "command": null, "rng_ledger": ctx["ledger"], "full_tick_complete": false}
 	return _failure("effect_continuation_range_unsupported")
 

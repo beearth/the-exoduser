@@ -47,6 +47,6 @@ func run() -> void:
    for placeholder in ["{s}","{p}","{n}","{mark}"]:
     if key.contains(placeholder):check(locales[lang][key].contains(placeholder),"placeholder_"+lang+placeholder)
  var source: String=FileAccess.get_file_as_string("res://source_snapshot/game.html")
- check(FileAccess.get_sha256("res://source_snapshot/game.html")=="4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4","source_immutable")
+ check(FileAccess.get_sha256("res://source_snapshot/game.html")=="dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209","source_immutable")
  check(source.contains("if(BH.shF)_hset(BH.shF,'width','0%')"),"source_shield_zero_not_invented")
  print("PARITY_BOSS_RESULT ",JSON.stringify({"checks":checks,"failures":failures}));quit(0 if failures==0 else 1)

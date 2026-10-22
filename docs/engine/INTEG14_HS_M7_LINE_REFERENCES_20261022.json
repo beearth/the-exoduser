@@ -1,0 +1,3548 @@
+{
+  "source": "91e2774b769869e59f80953e148a5c95203b0fea",
+  "sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "contract": "old line n == new line n+2; oracle timeouts and gameplay constants preserved",
+  "references": [
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 40835,
+      "new": 40837,
+      "same_line": "    }break}"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 40836,
+      "new": 40838,
+      "same_line": "  // ── 잡기 (Grab): 다크소울 — 느린 전조 → 잡혀서 연속 데미지 ──"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 40837,
+      "new": 40839,
+      "same_line": "  case'bossGrabWind':{"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 40854,
+      "new": 40856,
+      "same_line": "    P.x=e.x+Math.cos(e._grabAng)*25;P.y=e.y+Math.sin(e._grabAng)*25;"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 40855,
+      "new": 40857,
+      "same_line": "    P.kb.x=0;P.kb.y=0;"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 40863,
+      "new": 40865,
+      "same_line": "      const _ta=e._grabAng;P.kb.x=Math.cos(_ta)*18;P.kb.y=Math.sin(_ta)*18;"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 40864,
+      "new": 40866,
+      "same_line": "      P.iframes=30;addTxt(P.x,P.y-30,_T('💥 내던지기!'),'#ff4400',50);"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 40867,
+      "new": 40869,
+      "same_line": "    }break}"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 41046,
+      "new": 41048,
+      "same_line": "  // ═══ [다크드루이드 전용] 지네돌진 — 땅속 다이빙→잠행→분출 매복공격 (burrowStrike) ═══"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 41047,
+      "new": 41049,
+      "same_line": "  case'bossDruidDive':{"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 41068,
+      "new": 41070,
+      "same_line": "        if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*4*pParryDmg());e.stunned=60;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y,false,e.el);_poiseHit(e,20);}"
+    },
+    {
+      "file": "godot/tests/test_boss_ch1_bc10_control.gd",
+      "old": 41072,
+      "new": 41074,
+      "same_line": "    if(e.st2<=0){e.s='recover';e.st2=30;}break}"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41205,
+      "new": 41207,
+      "same_line": "    }break}"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41206,
+      "new": 41208,
+      "same_line": "  // ══ 콩 비 (beanRain) — 지속 발사 ══"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41207,
+      "new": 41209,
+      "same_line": "  case'bossBeanRainWind':{"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41209,
+      "new": 41211,
+      "same_line": "    if(Math.random()>.4)poolPart(e.x+(Math.random()-.5)*20,e.y+(Math.random()-.5)*20,0,-2,'#ff2200',2,8);"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41210,
+      "new": 41212,
+      "same_line": "    if(e.st2<=0){e.s='bossBeanRain';e.st2=e._brDur;SFX.charge()}break}"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41218,
+      "new": 41220,
+      "same_line": "        const a=e.facing+(Math.random()-.5)*1.2;"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41219,
+      "new": 41221,
+      "same_line": "        const spd=2.2+Math.random()*2;"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41220,
+      "new": 41222,
+      "same_line": "        const _iR5=Math.random();const _isBK=_iR5<.5;const _isRB5=_iR5>=.5;"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41221,
+      "new": 41223,
+      "same_line": "        _spawnBossProjectile(e,{x:e.x+(Math.random()-.5)*15,y:e.y+(Math.random()-.5)*15,vx:Math.cos(a)*(_isBK?4.0:spd),vy:Math.sin(a)*(_isBK?4.0:spd),dmg:~~(e.atk*(_isBK?1.5:_isRB5?1.8:1)),el:_isBK?EL.P:e.el,friendly:false,life:_isBK?400:300,ml:_isBK?400:300,col:_isBK?'#00aa00':_isRB5?'#cc1100':e.col,sz:_isBK?2.0:_isRB5?1.5:1.2,redBean:_isRB5||undefined,blackBean:_isBK||undefined,homing:_isRB5||undefined});"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41223,
+      "new": 41225,
+      "same_line": "      if(Math.random()<.3)addParts(e.x,e.y,'#ff2200',3);"
+    },
+    {
+      "file": "godot/tests/bc2_05_source_oracle.cjs",
+      "old": 41231,
+      "new": 41233,
+      "same_line": "    if(e.st2<=0){e.s='recover';e.st2=30;G.shake=3*OPT.shake/100}break}"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 31722,
+      "new": 31724,
+      "same_line": "function _pushOutWall(e){if(_canMvTile(e.x,e.y,e.r))return;for(let d=T;d<=T*5;d+=T/2)for(let a=0;a<8;a++){const nx=e.x+Math.cos(Math.PI/4*a)*d,ny=e.y+Math.sin(Math.PI/4*a)*d;if(_canMvTile(nx,ny,e.r)){e.x=nx;e.y=ny;return}}}"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 31723,
+      "new": 31725,
+      "same_line": "function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40903,
+      "new": 40905,
+      "same_line": "    }break}"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40904,
+      "new": 40906,
+      "same_line": "  // ── 흡인 소용돌이 (Vortex): 몬헌 — 강제 흡인 → 폭발 ──"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40905,
+      "new": 40907,
+      "same_line": "  case'bossVortexWind':{"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40906,
+      "new": 40908,
+      "same_line": "    if(Math.random()>.5)poolPart(e.x+(Math.random()-.5)*30,e.y+(Math.random()-.5)*30,(e.x-(e.x+(Math.random()-.5)*30))*.1,(e.y-(e.y+(Math.random()-.5)*30))*.1,'#6644ff',2,10);"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40907,
+      "new": 40909,
+      "same_line": "    if(e.st2<=0){e.s='bossVortex';e.st2=80;SFX.charge()}break}"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40925,
+      "new": 40927,
+      "same_line": "      hurtP(~~(e.atk*.6*elMul(e.el,ar().el)),{dtype:'magic'});addTxt(P.x,P.y-15,'🌀','#6644ff',15);"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40930,
+      "new": 40932,
+      "same_line": "      poolPart(e.x+Math.cos(a)*r2,e.y+Math.sin(a)*r2,-Math.cos(a)*2,-Math.sin(a)*2,'#6644ff',2+Math.random()*2,8)}"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40935,
+      "new": 40937,
+      "same_line": "        hurtP(~~(e.atk*2*elMul(e.el,ar().el)));"
+    },
+    {
+      "file": "godot/tests/bc2_04_source_oracle.cjs",
+      "old": 40940,
+      "new": 40942,
+      "same_line": "    }break}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 16631,
+      "new": 16633,
+      "same_line": "const T=40;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 16938,
+      "new": 16940,
+      "same_line": "function _isNormalDruidBoss(e){return !!(e&&e.ib&&(G.stage===0||G.stage===3)&&!_isDruidFinale(e))}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 17053,
+      "new": 17055,
+      "same_line": "const _DRUID_FINALE_ATK=[1,1.12,1.25,1.4,1.6];"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 17056,
+      "new": 17058,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 17248,
+      "new": 17250,
+      "same_line": "function _druidPoisonPoolTargets(px,py,bx,by){"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 17252,
+      "new": 17254,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 20121,
+      "new": 20123,
+      "same_line": "function _cancelProjCharge(e){e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null;e._projChargeParryClass=null}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 23149,
+      "new": 23151,
+      "same_line": "const _BOSS_SKIN={};"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 23152,
+      "new": 23154,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 23293,
+      "new": 23295,
+      "same_line": "let _skinSeqIdx=0;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 23304,
+      "new": 23306,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 31032,
+      "new": 31034,
+      "same_line": "// ═══ 엘리트/모디파이어 시스템 ═══"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 31037,
+      "new": 31039,
+      "same_line": "  {name:'챔피언',col:'#ff4444',mods:3,hpMul:5,atkMul:2,dropBonus:3,scaleMul:1.35}];"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 31118,
+      "new": 31120,
+      "same_line": "// HP pacing: preserve Lv1; Lv10+ uses two thirds of legacy HP (5 melee / 7 orb target)."
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 31363,
+      "new": 31365,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 31723,
+      "new": 31725,
+      "same_line": "function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 37649,
+      "new": 37651,
+      "same_line": "// ─── [S16e] BOSS_AI — 보스 AI 함수 (스코어/패턴/콤보) ───"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 37650,
+      "new": 37652,
+      "same_line": "function _bossScore(mv,d,ps,phase,e){"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 37693,
+      "new": 37695,
+      "same_line": "  let sc=(distFit*1+repeatPen*.6+counterAdj*.7+comboBonus*1.2+phasePref*.5+novelty)*(.85+Math.random()*.3);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 37699,
+      "new": 37701,
+      "same_line": "const _HELL_ABERRANT_FACE=new Set(['jump','charge','slashCombo','sweep','tailSwipe','beanStorm']);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 37701,
+      "new": 37703,
+      "same_line": "const _PARRYABLE_ATK=new Set(['charge','slashCombo','slam','sweep','tailSwipe','spin','multiDash','teleStrike','swordWave','jump','judgeCut','delaySlash','perilThrust','phantomSwords','crescendoCombo','tideWave','rewindStrike','mirrorClone','shieldBash2','mirrorGuard','chainLightning','cageTrap','doppelganger']);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 37736,
+      "new": 37738,
+      "same_line": "    case'sweep':e.s='bossSweepWind';e.st2=tele||25;e._weaponAng=-.8;e._sweepDir=Math.random()>.5?1:-1;addTxt(e.x,e.y-30,_T('🌀 휘두르기!'),'#ffaa00',40);break;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 37955,
+      "new": 37957,
+      "same_line": "        const _gapAng=Math.random()*Math.PI*2; // 빈 각도"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38102,
+      "new": 38104,
+      "same_line": "        _safes.push({x:e.x+(Math.random()-.5)*400,y:e.y+(Math.random()-.5)*400});"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38105,
+      "new": 38107,
+      "same_line": "        const _lx=_aCx+(Math.random()-.5)*(_aW*.7);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38106,
+      "new": 38108,
+      "same_line": "        const _ly=_aCy+(Math.random()-.5)*(_aH*.7);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38112,
+      "new": 38114,
+      "same_line": "          t:0,warnT:90,maxT:420,r:600+Math.random()*300,dmg:~~(e.atk*1.2),el:e.el,tickT:0});"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38233,
+      "new": 38235,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38234,
+      "new": 38236,
+      "same_line": "// ── 보스 페이즈 체크: 매 프레임 호출 (idle 아니어도 전환) ──"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38235,
+      "new": 38237,
+      "same_line": "const _BOSS_PHASE_AURA=['none','#ff8800','#cc2200','#aa0022','#8800cc'];"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38271,
+      "new": 38273,
+      "same_line": "  // 5) 텔레포트: 플레이어 뒤로 + 블링크 VFX"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38312,
+      "new": 38314,
+      "same_line": "  },120);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38313,
+      "new": 38315,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38373,
+      "new": 38375,
+      "same_line": "function _bossAI(e,sp,d){"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38396,
+      "new": 38398,
+      "same_line": "      e.bossPatT=~~(6+Math.random()*6);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38399,
+      "new": 38401,
+      "same_line": "      e._feinting=nmv.canFeint&&Math.random()<ph.feintC;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38400,
+      "new": 38402,
+      "same_line": "      let ed=0;if(nmv.canDelay>0&&Math.random()<ph.delayC)ed=~~(nmv.tele*nmv.canDelay);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38410,
+      "new": 38412,
+      "same_line": "  if(!bestMv||bestS<=0){e.bossPatT=10+Math.random()*10;return}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38411,
+      "new": 38413,
+      "same_line": "  // Pick from top scored moves with weighted randomness to avoid repetitive patterns."
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38419,
+      "new": 38421,
+      "same_line": "    let r=Math.random()*totalW;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38424,
+      "new": 38426,
+      "same_line": "  }"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38430,
+      "new": 38432,
+      "same_line": "  e.bossPatT=(e.bossPatCd+Math.random()*15)*ph.cdM;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38432,
+      "new": 38434,
+      "same_line": "  if(Math.random()<ph.comboC){"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38435,
+      "new": 38437,
+      "same_line": "    if(mc.length>0){const c=mc[~~(Math.random()*mc.length)];e._comboSeq=c.seq;e._comboIdx=1}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38438,
+      "new": 38440,
+      "same_line": "  e._feinting=bestMv.canFeint&&Math.random()<ph.feintC;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38440,
+      "new": 38442,
+      "same_line": "  if(bestMv.canDelay>0&&Math.random()<ph.delayC)extraDelay=~~(bestMv.tele*bestMv.canDelay);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38442,
+      "new": 38444,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38585,
+      "new": 38587,
+      "same_line": "  if(e._lessonEnemy&&window._parryLesson?.active)return;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38587,
+      "new": 38589,
+      "same_line": "  if(e._telegraphT>0){e._telegraphT-=sp;e._telegraphR=e.r+20}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38590,
+      "new": 38592,
+      "same_line": "  if(e.reviveIframes>0){e.reviveIframes=Math.max(0,e.reviveIframes-sp);} // 부활 무적 자연 감소"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38592,
+      "new": 38594,
+      "same_line": "  if(e._shockT>0){e._shockT-=sp;if(e._shockT<=0){e._shockT=0;e._shockStk=0}} // 감전 타이머 감소"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38614,
+      "new": 38616,
+      "same_line": "  if(e._bluHitCD>0)e._bluHitCD-=sp;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38636,
+      "new": 38638,
+      "same_line": "  }"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38771,
+      "new": 38773,
+      "same_line": "  e.atk=_isDruidFinale(e)?_druidFinaleAtk(e):e.baseAtk; // 매 프레임 ATK 리셋 (피날레 배율 보존, 오라/M12용)"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38772,
+      "new": 38774,
+      "same_line": "  if(e._tpFlashT>0)e._tpFlashT-=sp; // 텔포 도착 플래시 타이머"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38875,
+      "new": 38877,
+      "same_line": "  if(e._aAtkM!==1)e.atk=~~(e.atk*e._aAtkM);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 38884,
+      "new": 38886,
+      "same_line": "  const _fd0=_ffDir(e.x,e.y);e._moveAng=_fd0?Math.atan2(_fd0.y,_fd0.x):Math.atan2(P.y-e.y,P.x-e.x);e.st2-=sp;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 40445,
+      "new": 40447,
+      "same_line": "  if(e.ib&&e._btFrozen&&e.s==='idle'){e.vx=0;e.vy=0;e.kb={x:0,y:0};return}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 40447,
+      "new": 40449,
+      "same_line": "  if(e.ib&&e.alive)_bossPhaseCheck(e,sp);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 40452,
+      "new": 40454,
+      "same_line": "  if(e.ib&&e._feinting&&e.s.endsWith('Wind')&&e.st2<=0){"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 40454,
+      "new": 40456,
+      "same_line": "    addTxt(e.x,e.y-30,'...','#cccccc',30);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 40455,
+      "new": 40457,
+      "same_line": "  }"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41072,
+      "new": 41074,
+      "same_line": "    if(e.st2<=0){e.s='recover';e.st2=30;}break}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41073,
+      "new": 41075,
+      "same_line": "  // ═══ 곤봉 연속베기 (slashCombo) ═══"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41077,
+      "new": 41079,
+      "same_line": "    if(Math.random()>.5)poolPart(e.x,e.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff8844',2,6);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41091,
+      "new": 41093,
+      "same_line": "        if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3*pParryDmg());"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41094,
+      "new": 41096,
+      "same_line": "          const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*7;P.kb.y+=Math.sin(ka)*7}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41106,
+      "new": 41108,
+      "same_line": "        e.s='bossSlash';e.st2=8+~~(Math.random()*4);e._weaponAng=-.8;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41117,
+      "new": 41119,
+      "same_line": "    if(Math.random()>.6)poolPart(e.x,e.y,(Math.random()-.5)*4,-Math.random()*4,'#ff4400',3,8);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41128,
+      "new": 41130,
+      "same_line": "        if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*4*pParryDmg());"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41131,
+      "new": 41133,
+      "same_line": "          const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*14;P.kb.y+=Math.sin(ka)*14}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41138,
+      "new": 41140,
+      "same_line": "        poolPart(e.x+Math.cos(a)*15,e.y+Math.sin(a)*15,Math.cos(a)*6,Math.sin(a)*6,'#996633',4+Math.random()*3,14)}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41139,
+      "new": 41141,
+      "same_line": "      for(let k=0;k<10;k++){poolPart(e.x+(Math.random()-.5)*40,e.y+(Math.random()-.5)*40,(Math.random()-.5)*3,-Math.random()*5-2,'#ff6600',2+Math.random()*2,10)}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41147,
+      "new": 41149,
+      "same_line": "    if(Math.random()>.7)poolPart(e.x,e.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ffaa00',2,5);"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41159,
+      "new": 41161,
+      "same_line": "        if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3*pParryDmg());"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41162,
+      "new": 41164,
+      "same_line": "          const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41183,
+      "new": 41185,
+      "same_line": "    }break}"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41375,
+      "new": 41377,
+      "same_line": "  case'bossRec':if(e.st2<=0){e.s='idle';e.st2=e.ib?3+Math.random()*5:15+Math.random()*15;}break;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41376,
+      "new": 41378,
+      "same_line": "  case'recover':atkTicketRelease(e);if(e.ib&&e.st2>20)e.st2=20;if(e.st2<=0){"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41382,
+      "new": 41384,
+      "same_line": "      e.s='idle';e.st2=e.ib?3+Math.random()*5:15+Math.random()*15;"
+    },
+    {
+      "file": "godot/tests/bc2_02_source_oracle.cjs",
+      "old": 41383,
+      "new": 41385,
+      "same_line": "    }}break"
+    },
+    {
+      "file": "godot/tests/bc2_07_source_oracle.cjs",
+      "old": 31722,
+      "new": 31724,
+      "same_line": "function _pushOutWall(e){if(_canMvTile(e.x,e.y,e.r))return;for(let d=T;d<=T*5;d+=T/2)for(let a=0;a<8;a++){const nx=e.x+Math.cos(Math.PI/4*a)*d,ny=e.y+Math.sin(Math.PI/4*a)*d;if(_canMvTile(nx,ny,e.r)){e.x=nx;e.y=ny;return}}}"
+    },
+    {
+      "file": "godot/tests/bc2_07_source_oracle.cjs",
+      "old": 31723,
+      "new": 31725,
+      "same_line": "function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}"
+    },
+    {
+      "file": "godot/tests/bc2_07_source_oracle.cjs",
+      "old": 41335,
+      "new": 41337,
+      "same_line": "    if(e.st2<=0){e.s='recover';e.st2=25}break}"
+    },
+    {
+      "file": "godot/tests/bc2_07_source_oracle.cjs",
+      "old": 41336,
+      "new": 41338,
+      "same_line": "  // ═══ 방패돌진 — 와인드업 → 돌진 ═══"
+    },
+    {
+      "file": "godot/tests/bc2_07_source_oracle.cjs",
+      "old": 41337,
+      "new": 41339,
+      "same_line": "  case'bossSBashWind':{"
+    },
+    {
+      "file": "godot/tests/bc2_07_source_oracle.cjs",
+      "old": 41349,
+      "new": 41351,
+      "same_line": "      e.s='recover';e.st2=30;break}"
+    },
+    {
+      "file": "godot/tests/bc2_07_source_oracle.cjs",
+      "old": 41351,
+      "new": 41353,
+      "same_line": "  // ═══ 거울방어 — 공격받으면 카운터 (hurtE에서 체크) ═══"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 16631,
+      "new": 16633,
+      "same_line": "const T=40;"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 16938,
+      "new": 16940,
+      "same_line": "function _isNormalDruidBoss(e){return !!(e&&e.ib&&(G.stage===0||G.stage===3)&&!_isDruidFinale(e))}"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 17248,
+      "new": 17250,
+      "same_line": "function _druidPoisonPoolTargets(px,py,bx,by){"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 17252,
+      "new": 17254,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 31723,
+      "new": 31725,
+      "same_line": "function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 37701,
+      "new": 37703,
+      "same_line": "const _PARRYABLE_ATK=new Set(['charge','slashCombo','slam','sweep','tailSwipe','spin','multiDash','teleStrike','swordWave','jump','judgeCut','delaySlash','perilThrust','phantomSwords','crescendoCombo','tideWave','rewindStrike','mirrorClone','shieldBash2','mirrorGuard','chainLightning','cageTrap','doppelganger']);"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 37837,
+      "new": 37839,
+      "same_line": "      const _spDir=Math.random()>.5?1:-1;"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 38102,
+      "new": 38104,
+      "same_line": "        _safes.push({x:e.x+(Math.random()-.5)*400,y:e.y+(Math.random()-.5)*400});"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 38126,
+      "new": 38128,
+      "same_line": "        G._fireRains.push({x:_frCx+(Math.random()-.5)*(_frW*.7),"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 38127,
+      "new": 38129,
+      "same_line": "          y:_frCy+(Math.random()-.5)*(_frH*.7),"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 38128,
+      "new": 38130,
+      "same_line": "          t:0,delay:30+fi*6,r:400+Math.random()*200,dmg:~~(e.atk*1.5),el:e.el,hit:false});"
+    },
+    {
+      "file": "godot/tests/bc2_03_source_oracle.cjs",
+      "old": 38233,
+      "new": 38235,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 31722,
+      "new": 31724,
+      "same_line": "function _pushOutWall(e){if(_canMvTile(e.x,e.y,e.r))return;for(let d=T;d<=T*5;d+=T/2)for(let a=0;a<8;a++){const nx=e.x+Math.cos(Math.PI/4*a)*d,ny=e.y+Math.sin(Math.PI/4*a)*d;if(_canMvTile(nx,ny,e.r)){e.x=nx;e.y=ny;return}}}"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 31723,
+      "new": 31725,
+      "same_line": "function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 40569,
+      "new": 40571,
+      "same_line": "      e.s='recover';e.st2=50}break;"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 40570,
+      "new": 40572,
+      "same_line": "  // ── 부채꼴 충격파 (fanWave): 안내선 1.5초 → 충격파 ──"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 40571,
+      "new": 40573,
+      "same_line": "  case'bossFanWaveAim':{"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 40573,
+      "new": 40575,
+      "same_line": "    if(Math.random()>.7)poolPart(e.x+Math.cos(e._fwAng)*30,e.y+Math.sin(e._fwAng)*30,(Math.random()-.5)*2,(Math.random()-.5)*2,'#ff6600',2,6);"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 40602,
+      "new": 40604,
+      "same_line": "      for(let k=0;k<25;k++){const a=e._fwAng-_fwW/2+_fwW*k/24;const spd2=8+Math.random()*6;"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 40603,
+      "new": 40605,
+      "same_line": "        poolPart(e.x+Math.cos(a)*30,e.y+Math.sin(a)*30,Math.cos(a)*spd2,Math.sin(a)*spd2,k%2===0?'#ff8844':'#ffcc44',3+Math.random()*4,12+Math.random()*10)}"
+    },
+    {
+      "file": "godot/tests/bc2_06_source_oracle.cjs",
+      "old": 40605,
+      "new": 40607,
+      "same_line": "    }break}"
+    },
+    {
+      "file": "godot/tests/bc3_01_source_oracle.cjs",
+      "old": 16633,
+      "new": 16635,
+      "same_line": "const CHAPTER_STAGES=["
+    },
+    {
+      "file": "godot/tests/bc3_01_source_oracle.cjs",
+      "old": 16712,
+      "new": 16714,
+      "same_line": "}"
+    },
+    {
+      "file": "godot/tests/demo11_16_source_oracle.cjs",
+      "old": 31960,
+      "new": 31962,
+      "same_line": "const _COST_BASE={"
+    },
+    {
+      "file": "godot/tests/demo11_16_source_oracle.cjs",
+      "old": 31996,
+      "new": 31998,
+      "same_line": "function useMp(key){const c=mpCost(key),b=P.mp;P.mp=Math.max(0,P.mp-c);_lastCost=b-P.mp;return _lastCost}"
+    },
+    {
+      "file": "godot/tests/demo11_16_source_oracle.cjs",
+      "old": 45512,
+      "new": 45514,
+      "same_line": "  G.mats-=_malCost(10);P._gcCd=~~(600*(1+_cdRed()));"
+    },
+    {
+      "file": "godot/tests/demo11_16_source_oracle.cjs",
+      "old": 46455,
+      "new": 46457,
+      "same_line": "  const _gslBase=(srcId==='giantSlam2'&&_isFused('pillarSlam'))?420:(srcId==='giantSlam2'&&_isFused('infernoSlam'))?420:Math.max(60,1800-(slv-1)*12);"
+    },
+    {
+      "file": "godot/tests/demo11_16_source_oracle.cjs",
+      "old": 46456,
+      "new": 46458,
+      "same_line": "  P._gslCd=~~(_gslBase*(1+_cdRed()));"
+    },
+    {
+      "file": "godot/tests/demo11_16_source_oracle.cjs",
+      "old": 46711,
+      "new": 46713,
+      "same_line": "  P._hdCd=1800; // 30초 쿨"
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38273,
+      "new": 38275
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38274,
+      "new": 38276
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38275,
+      "new": 38277
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 40454,
+      "new": 40456
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38278,
+      "new": 38280
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38279,
+      "new": 38281
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38280,
+      "new": 38282
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38281,
+      "new": 38283
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38282,
+      "new": 38284
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38283,
+      "new": 38285
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38288,
+      "new": 38290
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38289,
+      "new": 38291
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38290,
+      "new": 38292
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 20121,
+      "new": 20123
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38297,
+      "new": 38299
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38301,
+      "new": 38303
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38302,
+      "new": 38304
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 41375,
+      "new": 41377
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 41376,
+      "new": 41378
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38303,
+      "new": 38305
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38305,
+      "new": 38307
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38307,
+      "new": 38309
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38308,
+      "new": 38310
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38309,
+      "new": 38311
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 41382,
+      "new": 41384
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 41383,
+      "new": 41385
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38312,
+      "new": 38314
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38310,
+      "new": 38312
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38311,
+      "new": 38313
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38584,
+      "new": 38586
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38592,
+      "new": 38594
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38614,
+      "new": 38616
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38874,
+      "new": 38876
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38236,
+      "new": 38238
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38625,
+      "new": 38627
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38884,
+      "new": 38886
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38635,
+      "new": 38637
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38259,
+      "new": 38261
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38771,
+      "new": 38773
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38772,
+      "new": 38774
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 40444,
+      "new": 40446
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_phase.gd",
+      "old": 38271,
+      "new": 38273
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38146,
+      "new": 38148
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38147,
+      "new": 38149
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38151,
+      "new": 38153
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37756,
+      "new": 37758
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38155,
+      "new": 38157
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38158,
+      "new": 38160
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38159,
+      "new": 38161
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38160,
+      "new": 38162
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38048,
+      "new": 38050
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38178,
+      "new": 38180
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38050,
+      "new": 38052
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38051,
+      "new": 38053
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38053,
+      "new": 38055
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38052,
+      "new": 38054
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38180,
+      "new": 38182
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38184,
+      "new": 38186
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38189,
+      "new": 38191
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38190,
+      "new": 38192
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38191,
+      "new": 38193
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37703,
+      "new": 37705
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37832,
+      "new": 37834
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37834,
+      "new": 37836
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37837,
+      "new": 37839
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37838,
+      "new": 37840
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37840,
+      "new": 37842
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37843,
+      "new": 37845
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37844,
+      "new": 37846
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37845,
+      "new": 37847
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37732,
+      "new": 37734
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38118,
+      "new": 38120
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38120,
+      "new": 38122
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38126,
+      "new": 38128
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38127,
+      "new": 38129
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38128,
+      "new": 38130
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38003,
+      "new": 38005
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38131,
+      "new": 38133
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38005,
+      "new": 38007
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38132,
+      "new": 38134
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38007,
+      "new": 38009
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38136,
+      "new": 38138
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38010,
+      "new": 38012
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38011,
+      "new": 38013
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38012,
+      "new": 38014
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 37757,
+      "new": 37759
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_new_start.gd",
+      "old": 38142,
+      "new": 38144
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31168,
+      "new": 31170
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31171,
+      "new": 31173
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31300,
+      "new": 31302
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 16644,
+      "new": 16646
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 16648,
+      "new": 16650
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31145,
+      "new": 31147
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31210,
+      "new": 31212
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31119,
+      "new": 31121
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31120,
+      "new": 31122
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31185,
+      "new": 31187
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 17055,
+      "new": 17057
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31122,
+      "new": 31124
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31033,
+      "new": 31035
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31034,
+      "new": 31036
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31260,
+      "new": 31262
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31165,
+      "new": 31167
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 17054,
+      "new": 17056
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_spawn_contract.gd",
+      "old": 31359,
+      "new": 31361
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_catalog.gd",
+      "old": 16690,
+      "new": 16692
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38016,
+      "new": 38018
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38017,
+      "new": 38019
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38018,
+      "new": 38020
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37761,
+      "new": 37763
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37762,
+      "new": 37764
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37763,
+      "new": 37765
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37765,
+      "new": 37767
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37766,
+      "new": 37768
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37767,
+      "new": 37769
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38112,
+      "new": 38114
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38111,
+      "new": 38113
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37772,
+      "new": 37774
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38102,
+      "new": 38104
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37779,
+      "new": 37781
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37786,
+      "new": 37788
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37787,
+      "new": 37789
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37788,
+      "new": 37790
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37789,
+      "new": 37791
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37790,
+      "new": 37792
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37933,
+      "new": 37935
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37936,
+      "new": 37938
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37941,
+      "new": 37943
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37945,
+      "new": 37947
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37946,
+      "new": 37948
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37947,
+      "new": 37949
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37953,
+      "new": 37955
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37971,
+      "new": 37973
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37955,
+      "new": 37957
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37956,
+      "new": 37958
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37701,
+      "new": 37703
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37702,
+      "new": 37704
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37703,
+      "new": 37705
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38214,
+      "new": 38216
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37961,
+      "new": 37963
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37962,
+      "new": 37964
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38087,
+      "new": 38089
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38091,
+      "new": 38093
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38221,
+      "new": 38223
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37710,
+      "new": 37712
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38092,
+      "new": 38094
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37968,
+      "new": 37970
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37713,
+      "new": 37715
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37714,
+      "new": 37716
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37715,
+      "new": 37717
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38227,
+      "new": 38229
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37717,
+      "new": 37719
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38228,
+      "new": 38230
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37719,
+      "new": 37721
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38229,
+      "new": 38231
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38233,
+      "new": 38235
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37722,
+      "new": 37724
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37723,
+      "new": 37725
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38230,
+      "new": 38232
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37976,
+      "new": 37978
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37977,
+      "new": 37979
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37718,
+      "new": 37720
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37728,
+      "new": 37730
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37729,
+      "new": 37731
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37730,
+      "new": 37732
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37731,
+      "new": 37733
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38115,
+      "new": 38117
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37733,
+      "new": 37735
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37734,
+      "new": 37736
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37735,
+      "new": 37737
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37736,
+      "new": 37738
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37737,
+      "new": 37739
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38116,
+      "new": 38118
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38105,
+      "new": 38107
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38106,
+      "new": 38108
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37751,
+      "new": 37753
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37752,
+      "new": 37754
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37753,
+      "new": 37755
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 37755,
+      "new": 37757
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_pattern_start.gd",
+      "old": 38015,
+      "new": 38017
+    },
+    {
+      "file": "godot/scripts/native_ch3_boss_catalog.gd",
+      "old": 16691,
+      "new": 16693
+    },
+    {
+      "file": "godot/scripts/native_ch3_boss_catalog.gd",
+      "old": 31163,
+      "new": 31165
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38432,
+      "new": 38434
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38400,
+      "new": 38402
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38435,
+      "new": 38437
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38373,
+      "new": 38375
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38438,
+      "new": 38440
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38440,
+      "new": 38442
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38442,
+      "new": 38444
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38410,
+      "new": 38412
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38419,
+      "new": 38421
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38396,
+      "new": 38398
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 37693,
+      "new": 37695
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38430,
+      "new": 38432
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_selector.gd",
+      "old": 38399,
+      "new": 38401
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40579,
+      "new": 40581
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40605,
+      "new": 40607
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40586,
+      "new": 40588
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40589,
+      "new": 40591
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40593,
+      "new": 40595
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40603,
+      "new": 40605
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40597,
+      "new": 40599
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40600,
+      "new": 40602
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40602,
+      "new": 40604
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40571,
+      "new": 40573
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40604,
+      "new": 40606
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_fan_wave.gd",
+      "old": 40573,
+      "new": 40575
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41218,
+      "new": 41220
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41219,
+      "new": 41221
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41220,
+      "new": 41222
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41221,
+      "new": 41223
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41223,
+      "new": 41225
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41230,
+      "new": 41232
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41231,
+      "new": 41233
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41207,
+      "new": 41209
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41208,
+      "new": 41210
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41209,
+      "new": 41211
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41210,
+      "new": 41212
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41212,
+      "new": 41214
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_bean_rain.gd",
+      "old": 41213,
+      "new": 41215
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_catalog.gd",
+      "old": 16688,
+      "new": 16690
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_catalog.gd",
+      "old": 16695,
+      "new": 16697
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40869,
+      "new": 40871
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40870,
+      "new": 40872
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40871,
+      "new": 40873
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40872,
+      "new": 40874
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40749,
+      "new": 40751
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40750,
+      "new": 40752
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40751,
+      "new": 40753
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40752,
+      "new": 40754
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40877,
+      "new": 40879
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40754,
+      "new": 40756
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40884,
+      "new": 40886
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40758,
+      "new": 40760
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40888,
+      "new": 40890
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40889,
+      "new": 40891
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40891,
+      "new": 40893
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40892,
+      "new": 40894
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40901,
+      "new": 40903
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40903,
+      "new": 40905
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40798,
+      "new": 40800
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40799,
+      "new": 40801
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40810,
+      "new": 40812
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40812,
+      "new": 40814
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 40814,
+      "new": 40816
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 41327,
+      "new": 41329
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 41332,
+      "new": 41334
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_misc_states.gd",
+      "old": 41335,
+      "new": 41337
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 34688,
+      "new": 34690
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37032,
+      "new": 37034
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37129,
+      "new": 37131
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37033,
+      "new": 37035
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37067,
+      "new": 37069
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37069,
+      "new": 37071
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37071,
+      "new": 37073
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 34671,
+      "new": 34673
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37043,
+      "new": 37045
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37044,
+      "new": 37046
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 34678,
+      "new": 34680
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37015,
+      "new": 37017
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 34681,
+      "new": 34683
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37079,
+      "new": 37081
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 34684,
+      "new": 34686
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 37053,
+      "new": 37055
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_queues.gd",
+      "old": 34686,
+      "new": 34688
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41091,
+      "new": 41093
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41094,
+      "new": 41096
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41100,
+      "new": 41102
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41103,
+      "new": 41105
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41105,
+      "new": 41107
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41106,
+      "new": 41108
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41107,
+      "new": 41109
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41108,
+      "new": 41110
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41109,
+      "new": 41111
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41111,
+      "new": 41113
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41112,
+      "new": 41114
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41113,
+      "new": 41115
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41116,
+      "new": 41118
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41117,
+      "new": 41119
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41118,
+      "new": 41120
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41121,
+      "new": 41123
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41124,
+      "new": 41126
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41128,
+      "new": 41130
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41131,
+      "new": 41133
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41134,
+      "new": 41136
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41135,
+      "new": 41137
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41138,
+      "new": 41140
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41139,
+      "new": 41141
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41140,
+      "new": 41142
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41141,
+      "new": 41143
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41142,
+      "new": 41144
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41144,
+      "new": 41146
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41145,
+      "new": 41147
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41146,
+      "new": 41148
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41147,
+      "new": 41149
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41148,
+      "new": 41150
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41152,
+      "new": 41154
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41159,
+      "new": 41161
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41162,
+      "new": 41164
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41169,
+      "new": 41171
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41170,
+      "new": 41172
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41173,
+      "new": 41175
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41179,
+      "new": 41181
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41180,
+      "new": 41182
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41182,
+      "new": 41184
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41183,
+      "new": 41185
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41074,
+      "new": 41076
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41075,
+      "new": 41077
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41076,
+      "new": 41078
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41077,
+      "new": 41079
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41078,
+      "new": 41080
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41082,
+      "new": 41084
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_melee_states.gd",
+      "old": 41085,
+      "new": 41087
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40960,
+      "new": 40962
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40706,
+      "new": 40708
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40707,
+      "new": 40709
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40708,
+      "new": 40710
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40964,
+      "new": 40966
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40967,
+      "new": 40969
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40970,
+      "new": 40972
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40971,
+      "new": 40973
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40972,
+      "new": 40974
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40973,
+      "new": 40975
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40975,
+      "new": 40977
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40977,
+      "new": 40979
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40684,
+      "new": 40686
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40483,
+      "new": 40485
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38315,
+      "new": 38317
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40497,
+      "new": 40499
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38322,
+      "new": 38324
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40501,
+      "new": 40503
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40502,
+      "new": 40504
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38327,
+      "new": 38329
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38328,
+      "new": 38330
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38332,
+      "new": 38334
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38333,
+      "new": 38335
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38334,
+      "new": 38336
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40509,
+      "new": 40511
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40511,
+      "new": 40513
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40513,
+      "new": 40515
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40514,
+      "new": 40516
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40515,
+      "new": 40517
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38340,
+      "new": 38342
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40517,
+      "new": 40519
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38341,
+      "new": 38343
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40516,
+      "new": 40518
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38348,
+      "new": 38350
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38352,
+      "new": 38354
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38353,
+      "new": 38355
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 38355,
+      "new": 38357
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40664,
+      "new": 40666
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40665,
+      "new": 40667
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40666,
+      "new": 40668
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40667,
+      "new": 40669
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40669,
+      "new": 40671
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40672,
+      "new": 40674
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40678,
+      "new": 40680
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40679,
+      "new": 40681
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40681,
+      "new": 40683
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40956,
+      "new": 40958
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40685,
+      "new": 40687
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40942,
+      "new": 40944
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40943,
+      "new": 40945
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40944,
+      "new": 40946
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40686,
+      "new": 40688
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40690,
+      "new": 40692
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40946,
+      "new": 40948
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40692,
+      "new": 40694
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40947,
+      "new": 40949
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40950,
+      "new": 40952
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40687,
+      "new": 40689
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40952,
+      "new": 40954
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40688,
+      "new": 40690
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40698,
+      "new": 40700
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40959,
+      "new": 40961
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40700,
+      "new": 40702
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40701,
+      "new": 40703
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40702,
+      "new": 40704
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_movement_states.gd",
+      "old": 40703,
+      "new": 40705
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40930,
+      "new": 40932
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40935,
+      "new": 40937
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40936,
+      "new": 40938
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40905,
+      "new": 40907
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40906,
+      "new": 40908
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40907,
+      "new": 40909
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40938,
+      "new": 40940
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40941,
+      "new": 40943
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40939,
+      "new": 40941
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40913,
+      "new": 40915
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40914,
+      "new": 40916
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40921,
+      "new": 40923
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_vortex.gd",
+      "old": 40925,
+      "new": 40927
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41344,
+      "new": 41346
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41348,
+      "new": 41350
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41349,
+      "new": 41351
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41350,
+      "new": 41352
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41351,
+      "new": 41353
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41337,
+      "new": 41339
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41338,
+      "new": 41340
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41339,
+      "new": 41341
+    },
+    {
+      "file": "godot/scripts/native_ch2_boss_shield_bash.gd",
+      "old": 41342,
+      "new": 41344
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_utility.gd",
+      "old": 37650,
+      "new": 37652
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_utility.gd",
+      "old": 37699,
+      "new": 37701
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_utility.gd",
+      "old": 37693,
+      "new": 37695
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40837,
+      "new": 40839
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40839,
+      "new": 40841
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40841,
+      "new": 40843
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40842,
+      "new": 40844
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40843,
+      "new": 40845
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40848,
+      "new": 40850
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40849,
+      "new": 40851
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40850,
+      "new": 40852
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40854,
+      "new": 40856
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40855,
+      "new": 40857
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40857,
+      "new": 40859
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40858,
+      "new": 40860
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40862,
+      "new": 40864
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40863,
+      "new": 40865
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40864,
+      "new": 40866
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40865,
+      "new": 40867
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40866,
+      "new": 40868
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 40867,
+      "new": 40869
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41047,
+      "new": 41049
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41048,
+      "new": 41050
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41049,
+      "new": 41051
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41050,
+      "new": 41052
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41053,
+      "new": 41055
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41055,
+      "new": 41057
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41056,
+      "new": 41058
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41058,
+      "new": 41060
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41061,
+      "new": 41063
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41064,
+      "new": 41066
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41065,
+      "new": 41067
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41066,
+      "new": 41068
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41068,
+      "new": 41070
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41069,
+      "new": 41071
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_control_states.gd",
+      "old": 41072,
+      "new": 41074
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16907,
+      "new": 16909
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16908,
+      "new": 16910
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16909,
+      "new": 16911
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16911,
+      "new": 16913
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16921,
+      "new": 16923
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16934,
+      "new": 16936
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16938,
+      "new": 16940
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16947,
+      "new": 16949
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16995,
+      "new": 16997
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40562,
+      "new": 40564
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40566,
+      "new": 40568
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40567,
+      "new": 40569
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40568,
+      "new": 40570
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40569,
+      "new": 40571
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 17043,
+      "new": 17045
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 17046,
+      "new": 17048
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20121,
+      "new": 20123
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20124,
+      "new": 20126
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20129,
+      "new": 20131
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20130,
+      "new": 20132
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20132,
+      "new": 20134
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20133,
+      "new": 20135
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20135,
+      "new": 20137
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20136,
+      "new": 20138
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20138,
+      "new": 20140
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20139,
+      "new": 20141
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20141,
+      "new": 20143
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20142,
+      "new": 20144
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20144,
+      "new": 20146
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20145,
+      "new": 20147
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20147,
+      "new": 20149
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20148,
+      "new": 20150
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20154,
+      "new": 20156
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 20155,
+      "new": 20157
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40646,
+      "new": 40648
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40647,
+      "new": 40649
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40656,
+      "new": 40658
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40659,
+      "new": 40661
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40660,
+      "new": 40662
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40661,
+      "new": 40663
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 40662,
+      "new": 40664
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37080,
+      "new": 37082
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37085,
+      "new": 37087
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37087,
+      "new": 37089
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41185,
+      "new": 41187
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41186,
+      "new": 41188
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41187,
+      "new": 41189
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41188,
+      "new": 41190
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37090,
+      "new": 37092
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37095,
+      "new": 37097
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41196,
+      "new": 41198
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37101,
+      "new": 37103
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37102,
+      "new": 37104
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41197,
+      "new": 41199
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41198,
+      "new": 41200
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41199,
+      "new": 41201
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37100,
+      "new": 37102
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41201,
+      "new": 41203
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41202,
+      "new": 41204
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41205,
+      "new": 41207
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37108,
+      "new": 37110
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37111,
+      "new": 37113
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37109,
+      "new": 37111
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41203,
+      "new": 41205
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 41204,
+      "new": 41206
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37110,
+      "new": 37112
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37116,
+      "new": 37118
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37123,
+      "new": 37125
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37126,
+      "new": 37128
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37127,
+      "new": 37129
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38212,
+      "new": 38214
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38221,
+      "new": 38223
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38230,
+      "new": 38232
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37769,
+      "new": 37771
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37779,
+      "new": 37781
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 37791,
+      "new": 37793
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38357,
+      "new": 38359
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38359,
+      "new": 38361
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16858,
+      "new": 16860
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38362,
+      "new": 38364
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38366,
+      "new": 38368
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38367,
+      "new": 38369
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38368,
+      "new": 38370
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38370,
+      "new": 38372
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 38371,
+      "new": 38373
+    },
+    {
+      "file": "godot/scripts/native_ch1_boss_projectile_patterns.gd",
+      "old": 16884,
+      "new": 16886
+    },
+    {
+      "file": "godot/tests/test_boss_ch2_bc2_06_fan_wave.gd",
+      "old": 40586,
+      "new": 40588
+    },
+    {
+      "file": "godot/tests/test_boss_ch2_bc2_06_fan_wave.gd",
+      "old": 40589,
+      "new": 40591
+    },
+    {
+      "file": "godot/tests/test_boss_ch2_bc2_07_shield_bash.gd",
+      "old": 41344,
+      "new": 41346
+    },
+    {
+      "file": "godot/tests/test_boss_ch2_bc2_07_shield_bash.gd",
+      "old": 41348,
+      "new": 41350
+    }
+  ]
+}

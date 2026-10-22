@@ -4,13 +4,13 @@ const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath,'source and UTF-8 fixture path required');
 const raw=SNAPSHOT.readBytes(),lines=raw.toString().split('\n');
-const ranges=[[9820,9957],[9960,10011],[14333,14333],[14338,14338],[16631,16631],[16938,16938],[17248,17252],[31723,31723],[37701,38233]],src=Array(lines.length).fill('');for(const[a,b]of ranges)for(let n=a;n<=b;n++)src[n-1]=lines[n-1];
+const ranges=[[9820,9957],[9960,10011],[14333,14333],[14338,14338],[16633,16633],[16940,16940],[17250,17254],[31725,31725],[37703,38235]],src=Array(lines.length).fill('');for(const[a,b]of ranges)for(let n=a;n<=b;n++)src[n-1]=lines[n-1];
 let events=[],cursor=0,units=[.5],nested=0,queueSeen=new Set(),target=null,eProxy=null,collision=true,safe=null,safeCounter=0;const siteCount={};
 const ln=()=>+(new Error().stack.match(/exoduser-game.html:(\d+):/)||[])[1];
 const clone=x=>JSON.parse(JSON.stringify(x,(_,v)=>{if(v===eProxy)return {actor_ref:'boss'};assert(typeof v!=='number'||Number.isFinite(v),'non-finite oracle fixture');return v}));
 function command(name,args,line=ln()){events.push({kind:'command',value:{command:name,source_line:line,args:clone(args),executed:false}})}
 const ctx={Math:Object.create(Math),_isDruidFinale:()=>false,_FDG_DRUID_THORN_FIRST:false};
-ctx.Math.random=()=>{const line=ln();const field=({37837:'spiral_direction',38126:'fire_rain_x',38127:'fire_rain_y',38128:'fire_rain_radius'})[line];assert(field,'unowned RNG '+line);const unit=units[cursor++%units.length];events.push({kind:'rng',value:{field,source_line:line,unit}});return unit};
+ctx.Math.random=()=>{const line=ln();const field=({37839:'spiral_direction',38128:'fire_rain_x',38129:'fire_rain_y',38130:'fire_rain_radius'})[line];assert(field,'unowned RNG '+line);const unit=units[cursor++%units.length];events.push({kind:'rng',value:{field,source_line:line,unit}});return unit};
 for(const name of ['addTxt','addParts','shake'])ctx[name]=(...args)=>{command(name,args);cursor+=nested};
 ctx.SFX={};for(const name of ['charge','swing','magic','detonate','block'])ctx.SFX[name]=(...args)=>{command('SFX.'+name,args);cursor+=nested};
 ctx._T=x=>'translated:'+x;ctx._spawnBossProjectile=(_e,shot)=>{command('_spawnBossProjectile',[shot]);cursor+=nested};
@@ -22,7 +22,7 @@ function queue(name,arr){Object.defineProperty(arr,'push',{value:function(...val
 function base(phase=0){return {ib:true,etype:0,_bossPhase:phase,x:10,y:20,r:44,atk:46,el:0,col:'#abcdef',facing:.25,s:'idle',st2:10,_feinting:true,_isTail:true,_druidFanWindMax:999,poise:321,reviveIframes:7,keep:{unowned:91}}}
 const cases=[];
 function run(name,si,id,phase,enemy=base(phase),d=100,extra=0,context={thorn_first:false,player_x:100,player_y:200,map_width:128,map_height:108},seq=[0,.5,.875,.125],opts={}){
- events=[];cursor=0;units=seq;nested=opts.nested||0;collision=opts.collision??true;safe=opts.safe??null;queueSeen=new Set();siteCount[38102]=0;
+ events=[];cursor=0;units=seq;nested=opts.nested||0;collision=opts.collision??true;safe=opts.safe??null;queueSeen=new Set();siteCount[38104]=0;
  target=structuredClone(enemy);eProxy=new Proxy(target,{set(t,k,v){t[k]=v;events.push({kind:'write',field:k,value:clone(v),source_line:ln()});return true}});
  const g={stage:si,mw:context.map_width,mh:context.map_height};const initialQueues={};for(const q of queueNames)if(opts.preexisting){g[q]=queue(q,[{keep:'old'}]);initialQueues[q]=[{keep:'old'}]}
  ctx.G=new Proxy(g,{get(t,k){if(queueNames.includes(k)&&!queueSeen.has(k)){queueSeen.add(k);command('ensure_global_queue',[k])}return t[k]},set(t,k,v){t[k]=queueNames.includes(k)?queue(k,v):v;return true}});

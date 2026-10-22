@@ -1,5 +1,5 @@
 import fs from 'node:fs';import vm from 'node:vm';import cp from 'node:child_process';import crypto from 'node:crypto';
-const ref='284d7faf49295b2f5061937a47ce96038032ed3c';
+const ref='91e2774b769869e59f80953e148a5c95203b0fea';
 const html=cp.execFileSync('git',['show',ref+':game.html'],{cwd:new URL('../../',import.meta.url),maxBuffer:16*1024*1024}).toString();
 const helpers=html.slice(html.indexOf('const _SILVERTAIL_VOICE_MAP='),html.indexOf('function _sfxCat('));
 const prefix=html.slice(html.indexOf('let _sfxFrameT='),html.indexOf('const _SILVERTAIL_VOICE_MAP='));

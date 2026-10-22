@@ -9,7 +9,7 @@ const _OWNER = "BC2-05/bean-rain/v1"
 
 static func source_receipt() -> Dictionary:
 	return {"ready":Context.resolve(Catalog)["ready"],"source_game_sha256":Catalog.source_receipt()["source_game_sha256"],
-		"source_range":[41207,41231],"states":STATES.duplicate(),"clock":"BC05 already decremented st2",
+		"source_range":[41209,41233],"states":STATES.duplicate(),"clock":"BC05 already decremented st2",
 		"projectile_props":"raw; restore source_undefined_fields before owner execution",
 		"live_combat_connected":false,"projectile_or_parry_execution_verified":false,"full_tick_complete":false}
 
@@ -46,7 +46,7 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 		if not response is Dictionary or response.get("ack")!=true: return Common._fail("owner_ack_missing")
 		if pending=="move":
 			if not response.get("value") is bool: return Common._fail("collision_result_missing")
-			if response["value"]: Common._write(e,{"x":e["x"]+state["dx"],"y":e["y"]+state["dy"]},41230,events)
+			if response["value"]: Common._write(e,{"x":e["x"]+state["dx"],"y":e["y"]+state["dy"]},41232,events)
 		elif pending!="ack": return Common._fail("pending_kind_unsupported")
 		state["pending"]=""
 	if not _actor(e) or not Common._player(p): return Common._fail("state_snapshot_unsupported")
@@ -55,11 +55,11 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 		match state["step"]:
 			"entry":
 				if state["kind"]=="bossBeanRainWind":
-					Common._write(e,{"facing":Common._aim(e,p)},41208,events)
+					Common._write(e,{"facing":Common._aim(e,p)},41210,events)
 					state["step"]="wind_rng"
 				else:
-					Common._write(e,{"_brT":e["_brT"]+state["sp"]},41212,events)
-					Common._write(e,{"facing":Common._aim(e,p)},41213,events)
+					Common._write(e,{"_brT":e["_brT"]+state["sp"]},41214,events)
+					Common._write(e,{"facing":Common._aim(e,p)},41215,events)
 					state["step"]="move"
 					if fmod(float(Common._i32(e["_brT"])),5)<state["sp"]:
 						state["count"]=1+Common._i32(e["_bossPhase"]*0.3)
@@ -67,25 +67,25 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 						state["step"]="shots"
 			"wind_rng":
 				state["step"]="wind_end"
-				var gate: Dictionary = Common._draw(rng,"bean_rain_wind_gate",41209,events,ledger)
+				var gate: Dictionary = Common._draw(rng,"bean_rain_wind_gate",41211,events,ledger)
 				if not gate["ok"]: return Common._fail(gate["reason"],ledger)
 				if gate["unit"]>0.4:
-					var x: Dictionary = Common._draw(rng,"bean_rain_wind_x",41209,events,ledger)
+					var x: Dictionary = Common._draw(rng,"bean_rain_wind_x",41211,events,ledger)
 					if not x["ok"]: return Common._fail(x["reason"],ledger)
-					var y: Dictionary = Common._draw(rng,"bean_rain_wind_y",41209,events,ledger)
+					var y: Dictionary = Common._draw(rng,"bean_rain_wind_y",41211,events,ledger)
 					if not y["ok"]: return Common._fail(y["reason"],ledger)
-					return Common._command(state,"poolPart",41209,[e["x"]+(x["unit"]-0.5)*20,e["y"]+(y["unit"]-0.5)*20,0,-2,"#ff2200",2,8],events,ledger)
+					return Common._command(state,"poolPart",41211,[e["x"]+(x["unit"]-0.5)*20,e["y"]+(y["unit"]-0.5)*20,0,-2,"#ff2200",2,8],events,ledger)
 			"wind_end":
 				state["step"]="done"
 				if e["st2"]<=0:
-					Common._write(e,{"s":"bossBeanRain","st2":e["_brDur"]},41210,events)
-					return Common._command(state,"SFX.charge",41210,[],events,ledger)
+					Common._write(e,{"s":"bossBeanRain","st2":e["_brDur"]},41212,events)
+					return Common._command(state,"SFX.charge",41212,[],events,ledger)
 			"shots":
 				if state["index"]>=state["count"]:
 					state["step"]="puff"
 					continue
 				var units: Array = []
-				for site: Array in [["bean_rain_angle",41218],["bean_rain_speed",41219],["bean_rain_coin",41220],["bean_rain_x",41221],["bean_rain_y",41221]]:
+				for site: Array in [["bean_rain_angle",41220],["bean_rain_speed",41221],["bean_rain_coin",41222],["bean_rain_x",41223],["bean_rain_y",41223]]:
 					var draw: Dictionary = Common._draw(rng,site[0],site[1],events,ledger)
 					if not draw["ok"]: return Common._fail(draw["reason"],ledger)
 					units.append(draw["unit"])
@@ -100,27 +100,27 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				if black: shot["blackBean"]=true
 				else: shot.merge({"redBean":true,"homing":true})
 				state["index"]+=1
-				var packet: Dictionary = Common._command(state,"_spawnBossProjectile",41221,[shot],events,ledger)
+				var packet: Dictionary = Common._command(state,"_spawnBossProjectile",41223,[shot],events,ledger)
 				packet["command"]["actor_ref"]="boss"
 				packet["command"]["source_undefined_fields"]=["redBean","homing"] if black else ["blackBean"]
 				return packet
 			"puff":
 				state["step"]="move"
-				var draw: Dictionary = Common._draw(rng,"bean_rain_puff_gate",41223,events,ledger)
+				var draw: Dictionary = Common._draw(rng,"bean_rain_puff_gate",41225,events,ledger)
 				if not draw["ok"]: return Common._fail(draw["reason"],ledger)
-				if draw["unit"]<0.3: return Common._command(state,"addParts",41223,[e["x"],e["y"],"#ff2200",3],events,ledger)
+				if draw["unit"]<0.3: return Common._command(state,"addParts",41225,[e["x"],e["y"],"#ff2200",3],events,ledger)
 			"move":
 				var speed: float = e["speed"]*0.5*state["sp"]
 				var side: float = sin(e["_brT"]*0.03)*0.8
 				state["dx"]=cos(e["facing"]+PI/2)*speed*side
 				state["dy"]=sin(e["facing"]+PI/2)*speed*side
 				state["step"]="active_end"
-				return Common._command(state,"canMv",41230,[e["x"]+state["dx"],e["y"]+state["dy"],e["r"]],events,ledger,"move")
+				return Common._command(state,"canMv",41232,[e["x"]+state["dx"],e["y"]+state["dy"],e["r"]],events,ledger,"move")
 			"active_end":
 				state["step"]="done"
 				if e["st2"]<=0:
-					Common._write(e,{"s":"recover","st2":30},41231,events)
-					Common._global("shake",3*state["options"]["shake"]/100.0,41231,events)
+					Common._write(e,{"s":"recover","st2":30},41233,events)
+					Common._global("shake",3*state["options"]["shake"]/100.0,41233,events)
 			_: return Common._fail("unknown_bean_rain_checkpoint")
 	return {"status":"READY","done":true,"enemy":e,"player":p,"events":events,"rng_ledger":ledger,"command":null,"continuation":null,"full_tick_complete":false}
 

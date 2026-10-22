@@ -15,8 +15,8 @@ func run() -> void:
  check(is_instance_valid(p),"provider")
  if not is_instance_valid(p):quit(1);return
  check(p.runtime_ready(),"runtime ready")
- check(main.world.get_start_position()==Vector2(4020,7420),"source spawn 31564-31566")
- check(main.camera.zoom==Vector2.ONE and main.camera.offset==Vector2.ZERO,"source camera 35736-35739")
+ check(main.world.get_start_position()==Vector2(4020,7420),"source spawn 31566-31568")
+ check(main.camera.zoom==Vector2.ONE and main.camera.offset==Vector2.ZERO,"source camera 35738-35741")
  check(p.anchors("hole").size()==14,"source hole count")
  var totals: Array[int]=[0,0,0,0]
  for row in p.spawn_budget_manifest().groups:totals[row.region_id]+=row.total

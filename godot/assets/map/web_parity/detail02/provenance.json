@@ -427,5 +427,7 @@
       "source": "ch1-living-detail.js:529-1108",
       "sha256": "662f55fea672f8ed8523e89152f382cc2a01347e1b8f4b0a9e48786867ff6070"
     }
-  ]
+  ],
+  "current_snapshot_sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "revalidation": "INTEG-14: original generation lineage retained; map source symbol hashes and source asset bytes unchanged; no image regeneration"
 }

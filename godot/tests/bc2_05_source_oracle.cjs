@@ -3,15 +3,15 @@ const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath,'source and UTF-8 output required');
 const raw=SNAPSHOT.readBytes(),hash=crypto.createHash('sha256').update(raw).digest('hex');assert.equal(hash,SNAPSHOT.sha256);
-const lines=raw.toString().split('\n');assert(lines[41206].includes("case'bossBeanRainWind'"));assert(lines[41210].includes("case'bossBeanRain'"));
-const src='\n'.repeat(41205)+'function tick(e,sp){switch(e.s){\n'+lines.slice(41206,41231).join('\n')+'\n}}';
+const lines=raw.toString().split('\n');assert(lines[41208].includes("case'bossBeanRainWind'"));assert(lines[41212].includes("case'bossBeanRain'"));
+const src='\n'.repeat(41207)+'function tick(e,sp){switch(e.s){\n'+lines.slice(41208,41233).join('\n')+'\n}}';
 let events=[],cursor=0,units=[],nested=0,collision=true,siteIndex={},target=null,eProxy=null;
 const ln=()=>+(new Error().stack.match(/exoduser-game.html:(\d+):/)||[])[1];
 const clone=x=>JSON.parse(JSON.stringify(x));
 function command(name,args,line=ln(),metadata={}){events.push({kind:'command',value:{command:name,source_line:line,args:clone(args),executed:false,...metadata}})}
 const ctx={Math:Object.create(Math)};
 ctx.Math.random=()=>{const line=ln();const ordinal=siteIndex[line]||0;siteIndex[line]=ordinal+1;
- const field=line===41209?['bean_rain_wind_gate','bean_rain_wind_x','bean_rain_wind_y'][ordinal]:line===41221?['bean_rain_x','bean_rain_y'][ordinal%2]:({41218:'bean_rain_angle',41219:'bean_rain_speed',41220:'bean_rain_coin',41223:'bean_rain_puff_gate'})[line];
+ const field=line===41211?['bean_rain_wind_gate','bean_rain_wind_x','bean_rain_wind_y'][ordinal]:line===41223?['bean_rain_x','bean_rain_y'][ordinal%2]:({41220:'bean_rain_angle',41221:'bean_rain_speed',41222:'bean_rain_coin',41225:'bean_rain_puff_gate'})[line];
  assert(field,'unowned RNG '+line);const unit=units[cursor++%units.length];events.push({kind:'rng',value:{field,source_line:line,unit}});return unit;
 };
 for(const name of ['poolPart','addParts'])ctx[name]=(...args)=>{command(name,args);cursor+=nested};
@@ -48,4 +48,4 @@ for(const dur of [0,.125,80,160,299.25,-.5])for(const phase of [0,4]){const e=en
 for(const el of [0,1,4,8])for(const atk of [46,-3.75,4294967296+99]){const e=enemy('bossBeanRain',0,4,4);e.el=el;e.atk=atk;run('raw-projectile-fields',9,e,player(),1,{units:[.125,.875,.125,.25,.75,.875,.125,.875,.75,.25,0]});}
 for(const shake of [0,100,125.5])for(const speed of [0,.3,4.75])for(const xy of [[10,20],[10,-100],[-25,20]]){const e=enemy('bossBeanRain',0,4,4);e.speed=speed;run('aim-sideways-shake',7,e,player(...xy),1,{shake,collision:shake!==100});}
 const summary={cases:cases.length,events:cases.reduce((n,c)=>n+c.expected.events.length,0),rng:cases.reduce((n,c)=>n+c.expected.events.filter(e=>e.kind==='rng').length,0),projectiles:cases.reduce((n,c)=>n+c.expected.events.filter(e=>e.kind==='command'&&e.value.command==='_spawnBossProjectile').length,0),collision_reads:cases.reduce((n,c)=>n+c.expected.events.filter(e=>e.kind==='command'&&e.value.command==='canMv').length,0)};
-fs.writeFileSync(outputPath,JSON.stringify({source_only:true,game_sha256:hash,ranges:[[14333,14333],[41207,41231]],summary,cases}),'utf8');
+fs.writeFileSync(outputPath,JSON.stringify({source_only:true,game_sha256:hash,ranges:[[14333,14333],[41209,41233]],summary,cases}),'utf8');

@@ -3,7 +3,7 @@ extends SceneTree
 ## oracle의 JS throw ↔ native dispatch 실패 packet. 실제 GDScript 예외 catch 검증은 아님.
 const PHASE = preload("res://port_modules/sound_source/queue_phase.gd")
 const USERDIR := "EXODUSER-snd-03-Isolated-20261020"
-const SOURCE_MAIN := "284d7faf49295b2f5061937a47ce96038032ed3c"
+const SOURCE_MAIN := "91e2774b769869e59f80953e148a5c95203b0fea"
 const SOURCE_SHA256 := preload("res://source_snapshot/snapshot.gd").SHA256
 const FIXTURE := "res://tests/fixtures/sound_source_queue_oracle.json"
 var assertions := 0

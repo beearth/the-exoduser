@@ -11,8 +11,8 @@ const _ELEMENT_COLORS = ["#bbbbbb", "#ff5522", "#3388ff", "#9933cc", "#ffee00", 
 const _DIFF_LV_OFF = [-500, -400, -300, -200, -100, 0, 100, 200, 300, 400, 500]
 const _DIFF_MUL = [0.45, 0.55, 0.65, 0.76, 0.88, 1.0, 1.12, 1.25, 1.40, 1.58, 1.78]
 const _RNG_SITES = [
-	["st2", 31165], ["facing", 31165], ["projT", 31168],
-	["bossPatT", 31171], ["_bossOrbitAng", 31260], ["_erraticAng", 31300],
+	["st2", 31167], ["facing", 31167], ["projT", 31170],
+	["bossPatT", 31173], ["_bossOrbitAng", 31262], ["_erraticAng", 31302],
 ]
 
 
@@ -21,10 +21,10 @@ static func source_receipt() -> Dictionary:
 		"source_main": "284d7faf49295b2f5061937a47ce96038032ed3c",
 		"game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency": "BC01 e4396da5e7541562542ab65053d8ecac0bf16e52",
-		"source_lines": [9272, 9276, 31033, 31034, 31119, 31120, 31185, 31210, 31260, 31300, 31359],
+		"source_lines": [9272, 9276, 31035, 31036, 31121, 31122, 31187, 31212, 31262, 31302, 31361],
 		"scope": "81 numeric/common/boss fields; no ordinary-etype timers, actor or skin binding",
 		"rng_sites": _RNG_SITES.duplicate(true), "ordinary_boss_only": true,
-		"finale_reachable": false, # 16644-16648 / 17054-17055: stage==0 AND stage==3 impossible.
+		"finale_reachable": false, # 16646-16650 / 17056-17057: stage==0 AND stage==3 impossible.
 	}
 
 
@@ -56,7 +56,7 @@ static func build_spawn_packet(request: Dictionary, rng: Callable,
 			return _failure("NOT_READY", "numeric_input_required:" + key, ledger, reads)
 	var x: float = request["x"]
 	var y: float = request["y"]
-	# mkEn 31122 returns before collision reads and all random draws.
+	# mkEn 31124 returns before collision reads and all random draws.
 	if not is_finite(x) or not is_finite(y):
 		return _failure("REJECTED", "source_non_finite_position", ledger, reads)
 	var player_level: float = request["player_level"]
@@ -94,7 +94,7 @@ static func build_spawn_packet(request: Dictionary, rng: Callable,
 	var level_offset: float = _DIFF_LV_OFF[difficulty] if difficulty >= 0 and difficulty < 11 else 0.0
 	var dm: float = _DIFF_MUL[difficulty] if difficulty >= 0 and difficulty < 11 else 1.0
 	var level: float = maxf(1.0, player_level + level_offset + stage_offset)
-	# 31145 preserves multiplication order; do not use Int32, cube rounding or old multipliers.
+	# 31147 preserves multiplication order; do not use Int32, cube rounding or old multipliers.
 	var curve: float = (0.4 * level * level * level + 199.0 * level + 100.0 \
 		if level <= 500.0 else 50000000.0 * pow(1.0014, level - 500.0)) * 2.925
 	var pacing: float = 1.0 / (1.0 + minf(9.0, maxf(0.0, level - 1.0)) / 18.0)

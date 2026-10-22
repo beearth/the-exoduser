@@ -3,7 +3,7 @@ const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 const fs=require('node:fs'),vm=require('node:vm'),readline=require('node:readline'),crypto=require('node:crypto');
 (async()=>{
  const [source,target]=process.argv.slice(2);if(!source||!target)throw Error('source and UTF-8 output path required');
- const pins=[[31960,31996],[45512,45512],[46455,46456],[46711,46711]];let n=0;const parts=pins.map(()=>[]),h=crypto.createHash('sha256');
+ const pins=[[31962,31998],[45514,45514],[46457,46458],[46713,46713]];let n=0;const parts=pins.map(()=>[]),h=crypto.createHash('sha256');
  for await(const chunk of fs.createReadStream(SNAPSHOT.sourcePath))h.update(chunk);
  for await(const line of readline.createInterface({input:fs.createReadStream(SNAPSHOT.sourcePath),crlfDelay:Infinity})){n++;pins.forEach(([a,b],i)=>{if(n>=a&&n<=b)parts[i].push(line)})}
  const hash=h.digest('hex');if(hash!==SNAPSHOT.sha256)throw Error('source pin mismatch');

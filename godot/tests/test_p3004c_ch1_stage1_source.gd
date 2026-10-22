@@ -43,7 +43,7 @@ func run() -> void:
  check(raw.source_geometry.spine.size()==15 and raw.source_geometry.widthSamples.size()==5 and raw.source_geometry.treeBlockRadius==9,"geometry_metadata")
  check(raw.spawn_holes_final.size()==13 and raw.total_spawned==1000 and raw.region_totals==[250.0,300.0,250.0,200.0],"read_only_stage1_hole_budget")
  check(raw.generation.random_draws==14 and raw.generation.random_final_state==3323445034,"candidate_timer_draws14_not_final_holes13")
- check(raw.source.symbols._CH1S1.line==17972 and raw.source.symbols["_MAP_COMPOSE.1"].line==18172,"actual_ast_line_evidence")
+ check(raw.source.symbols._CH1S1.line==17974 and raw.source.symbols["_MAP_COMPOSE.1"].line==18174,"actual_ast_line_evidence")
  check(raw.initial_obj_meta.size()==77 and raw.ch1_deco_raw.size()==110 and raw.undefined_paths.is_empty(),"shared_raw_catalog_not_runtime_merge")
  check(is_same(C.read_area(raw).value.hand_props_raw,raw.hand_props_raw),"nested_raw_array_reference")
  for i in 2:check(C.read_area(raw).status=="READY","repeat_read_"+str(i))

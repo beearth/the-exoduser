@@ -1,5 +1,5 @@
 import fs from 'node:fs';import vm from 'node:vm';import cp from 'node:child_process';import crypto from 'node:crypto';import assert from 'node:assert/strict';
-const ref='e556b617190c325ca39f5add04357f5dea5ca87e',cwd=new URL('../../',import.meta.url);
+const ref='91e2774b769869e59f80953e148a5c95203b0fea',cwd=new URL('../../',import.meta.url);
 const html=cp.execFileSync('git',['show',ref+':game.html'],{cwd,maxBuffer:16*1024*1024}).toString();
 const mix=html.slice(html.indexOf('let _mbus=null,'),html.indexOf('// ── Helpers ──',html.indexOf('let _mbus=null,')));
 const synthesis=html.slice(html.indexOf('function _r(v,s)'),html.indexOf('let _beamOsc=null,'));

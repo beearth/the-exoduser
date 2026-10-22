@@ -10,9 +10,9 @@ const PHYSICAL_EXCLUSIONS = ["blackBean","gbBean","blueBean","waterBean","fireMa
 
 static func source_receipt() -> Dictionary:
 	return {"source_main":"26c050a99a711e793a6c2413395acda09b0c1614","game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
-		"dependency":"BC08 1b901f124bc4d1f2eaf55cb615a216abce69c634","pool_ranges":[[16858,16884]],
-		"ranges":[[16938,16995],[17043,17046],[20121,20155],[37080,37127],[38357,38371],[40562,40569],[40646,40662],[41185,41205]],
-		"start_cases_owned_by_BC06":[[37769,37791],[38212,38230]],"live_spawn_connected":false,"class_or_QE_execution_verified":false,"full_tick_complete":false}
+		"dependency":"BC08 1b901f124bc4d1f2eaf55cb615a216abce69c634","pool_ranges":[[16860,16886]],
+		"ranges":[[16940,16997],[17045,17048],[20123,20157],[37082,37129],[38359,38373],[40564,40571],[40648,40664],[41187,41207]],
+		"start_cases_owned_by_BC06":[[37771,37793],[38214,38232]],"live_spawn_connected":false,"class_or_QE_execution_verified":false,"full_tick_complete":false}
 
 ## si0..3 ordinary CH1 only. globals is the actual source slice, not a new clock.
 ## Producer spawn requests require actual global drop-counter readback in source
@@ -68,18 +68,18 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 			"entry":
 				if t["mode"]=="state":
 					if e["s"]=="bossBeanStormWind":
-						_write(e,{"facing":_aim(e,p)},41186,events)
+						_write(e,{"facing":_aim(e,p)},41188,events)
 						t["step"]="bean_wind_end"
-						var u: Variant=_draw(rng,"bean_wind_gate",41187,events,ledger)
+						var u: Variant=_draw(rng,"bean_wind_gate",41189,events,ledger)
 						if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
 						if u>0.5:
-							var ux: Variant=_draw(rng,"bean_wind_vx",41187,events,ledger)
-							var uy: Variant=_draw(rng,"bean_wind_vy",41187,events,ledger) if _unit(ux) else null
+							var ux: Variant=_draw(rng,"bean_wind_vx",41189,events,ledger)
+							var uy: Variant=_draw(rng,"bean_wind_vy",41189,events,ledger) if _unit(ux) else null
 							if not _unit(ux) or not _unit(uy): return _fail("rng_missing_or_invalid",ledger)
-							return _cmd(t,"poolPart",41187,[e["x"],e["y"],(ux-0.5)*4,(uy-0.5)*4,"#cc1100",3,6],events,ledger)
+							return _cmd(t,"poolPart",41189,[e["x"],e["y"],(ux-0.5)*4,(uy-0.5)*4,"#cc1100",3,6],events,ledger)
 					elif e["s"]=="bossFanWind":
 						if not c.get("thorn_first") is bool: return _fail("thorn_reader_missing")
-						if c["thorn_first"] and t["si"] in [0,3] and e["_bossPhase"]<=1: _write(e,{"facing":_aim(e,p)},40647,events)
+						if c["thorn_first"] and t["si"] in [0,3] and e["_bossPhase"]<=1: _write(e,{"facing":_aim(e,p)},40649,events)
 						if e["st2"]>0: t["step"]="done"
 						else:
 							t["family"]="fan"
@@ -104,10 +104,10 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 					if not _num(c.get("distance")): return _fail("cached_distance_missing")
 					var timer: Variant=_or(e.get("_idleRBT"),0)
 					if timer==null: return _fail("idle_clock_unsupported")
-					_write(e,{"_idleRBT":timer+t["sp"]},38359,events)
+					_write(e,{"_idleRBT":timer+t["sp"]},38361,events)
 					t["step"]="done"
 					if e["_idleRBT"]>=maxf(18,40-e["_bossPhase"]*5) and c["distance"]<1200:
-						_write(e,{"_idleRBT":0},38362,events)
+						_write(e,{"_idleRBT":0},38364,events)
 						t["family"]="idle"
 						t["count"]=1+_i32(e["_bossPhase"]*0.5)
 						t["aim"]=_aim(e,p)
@@ -118,13 +118,13 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 						var timer: Variant=_or(e.get("_projChargeT"),0)
 						if timer==null: return _fail("charge_clock_unsupported")
 						if timer>0:
-							_write(e,{"_projChargeT":timer-t["sp"]},20154,events)
+							_write(e,{"_projChargeT":timer-t["sp"]},20156,events)
 							if e["_projChargeT"]>0: t["step"]="done"
 						else: t["step"]="done"
 				elif t["mode"]=="start_request":
 					var request: Variant=c.get("start_command")
 					if not request is Dictionary or request.get("command")!="_spawnBossProjectile" or request.get("executed")!=false \
-						or request.get("source_line") not in [37779,38221] or not request.get("args") is Array or request["args"].size()!=1 or not request["args"][0] is Dictionary: return _fail("BC06_elem_rapid_request_required")
+						or request.get("source_line") not in [37781,38223] or not request.get("args") is Array or request["args"].size()!=1 or not request["args"][0] is Dictionary: return _fail("BC06_elem_rapid_request_required")
 					t["step"]="done"
 					return _spawn(t,request["args"][0],int(request["source_line"]),false,events,ledger)
 				elif t["mode"]=="rhythm":
@@ -134,35 +134,35 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 						var old: Variant=_or(g.get("_druidParryT"),0)
 						if old==null or not _num(g.get("frame")): return _fail("rhythm_clock_reader_missing")
 						t["interval"]=90-int(e["_bossPhase"])*6
-						_gwrite(g,{"_druidParryT":old+t["sp"]},37085,events)
+						_gwrite(g,{"_druidParryT":old+t["sp"]},37087,events)
 						t["step"]="rhythm_gate"
 						if g["_druidParryT"]>=t["interval"]-20 and g["_druidParryT"]<t["interval"] and fmod(g["frame"],4)==0:
-							var ux: Variant=_draw(rng,"rhythm_warning_vx",37087,events,ledger)
-							var uy: Variant=_draw(rng,"rhythm_warning_vy",37087,events,ledger) if _unit(ux) else null
+							var ux: Variant=_draw(rng,"rhythm_warning_vx",37089,events,ledger)
+							var uy: Variant=_draw(rng,"rhythm_warning_vy",37089,events,ledger) if _unit(ux) else null
 							if not _unit(ux) or not _unit(uy): return _fail("rng_missing_or_invalid",ledger)
-							return _cmd(t,"poolPart",37087,[e["x"],e["y"]-36,(ux-0.5)*2,(uy-0.5)*2,"#66dd22",3,10],events,ledger)
+							return _cmd(t,"poolPart",37089,[e["x"],e["y"]-36,(ux-0.5)*2,(uy-0.5)*2,"#66dd22",3,10],events,ledger)
 				else:
 					if not g.get("bossAlive") is bool: return _fail("boss_alive_reader_missing")
 					t["step"]="done"
 					if t["si"] in [0,3] and g["bossAlive"]:
-						if g.get("_druidOrbs")==null: _gwrite(g,{"_druidOrbs":[]},37108,events)
+						if g.get("_druidOrbs")==null: _gwrite(g,{"_druidOrbs":[]},37110,events)
 						if not g["_druidOrbs"] is Array: return _fail("orb_queue_unsupported")
 						for orb: Variant in g["_druidOrbs"]:
 							if not orb is Dictionary or not _orb(orb): return _fail("orb_snapshot_missing")
 						var old: Variant=_or(g.get("_druidOrbT"),0)
 						if old==null: return _fail("orb_clock_unsupported")
-						_gwrite(g,{"_druidOrbT":old+t["sp"]},37109,events)
+						_gwrite(g,{"_druidOrbT":old+t["sp"]},37111,events)
 						t["step"]="orb_spawn"
 						if not e.is_empty() and e.get("alive")==true and g["_druidOrbT"]>=90 and g["_druidOrbT"]<110:
 							t["step"]="orb_warning"
 							t["i"]=0
 			"bean_wind_end":
 				t["step"]="done"
-				if e["st2"]<=0: _write(e,{"s":"bossBeanStorm","st2":8,"_bsWave":0},41188,events)
+				if e["st2"]<=0: _write(e,{"s":"bossBeanStorm","st2":8,"_bsWave":0},41190,events)
 			"rhythm_gate":
 				t["step"]="done"
 				if g["_druidParryT"]>=t["interval"]:
-					_gwrite(g,{"_druidParryT":g["_druidParryT"]-t["interval"]},37090,events)
+					_gwrite(g,{"_druidParryT":g["_druidParryT"]-t["interval"]},37092,events)
 					t["family"]="rhythm"
 					t["count"]=5+int(e["_bossPhase"])
 					t["aim"]=_aim(e,p)
@@ -177,28 +177,28 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 				var family: String=t["family"]
 				var angle: float=PI*2*i/t["count"] if family=="burst" else (t["aim"] if family=="idle" else t["aim"]-t["spread"]/2.0+t["spread"]*i/(t["count"]-1))
 				var raw: Dictionary={"x":e["x"],"y":e["y"],"friendly":false}
-				var line: int=40567
+				var line: int=40569
 				if family=="fan" and t["normal_druid"]:
 					var physical: bool=i%3!=2 if t["thorn"] else (float(i)/(t["count"]-1)<0.28 or float(i)/(t["count"]-1)>0.72)
 					var black: bool=e["_bossPhase"]>=2 and i%4==1
 					raw.merge({"vx":cos(angle)*4.4,"vy":sin(angle)*4.4,"dmg":_i32(e["atk"]*(1.5 if black else 1.3)),"el":0 if physical and not black else e["el"],"life":400,"ml":400,"col":"#00aa00" if black else ("#8a5a2a" if physical else e["col"]),"sz":2 if black else 1.2,"blackBean":black,"parryClass":"physical" if physical and not black else "magic","homing":false,"_druidStraight":true,"_druidThornVolley":t["thorn"],"_druidThornLane":i if t["thorn"] else -1})
-					line=40656
+					line=40658
 				elif family=="rhythm":
 					raw.merge({"x":e["x"]+cos(angle)*e["r"],"y":e["y"]-36+sin(angle)*e["r"],"vx":cos(angle)*6,"vy":sin(angle)*6,"dmg":_i32(_or(e["atk"],100)*0.35),"el":1,"life":240,"ml":240,"col":"#66dd22","sz":2,"r":10,"fireMagic":true,"_typed":true,"_druidParryVolley":true},true)
-					line=37095
+					line=37097
 				else:
 					var speed: float=4.4
 					var black: bool=false
 					var mult: float=1.5
 					var life: int=400
 					if family in ["idle","bean"]:
-						line=38366 if family=="idle" else 41196
-						var ua: Variant=_draw(rng,family+"_angle",38366 if family=="idle" else 41196,events,ledger)
-						var us: Variant=_draw(rng,family+"_speed",38367 if family=="idle" else 41197,events,ledger) if _unit(ua) else null
+						line=38368 if family=="idle" else 41198
+						var ua: Variant=_draw(rng,family+"_angle",38368 if family=="idle" else 41198,events,ledger)
+						var us: Variant=_draw(rng,family+"_speed",38369 if family=="idle" else 41199,events,ledger) if _unit(ua) else null
 						if not _unit(ua) or not _unit(us): return _fail("rng_missing_or_invalid",ledger)
 						angle=t["aim"]+(ua-0.5)*0.5 if family=="idle" else angle+(ua-0.5)*0.15
 						speed=2.5+us*1.5
-					var u: Variant=_draw(rng,family+"_kind",40566 if family=="burst" else (40659 if family=="fan" else (38368 if family=="idle" else 41198)),events,ledger)
+					var u: Variant=_draw(rng,family+"_kind",40568 if family=="burst" else (40661 if family=="fan" else (38370 if family=="idle" else 41200)),events,ledger)
 					if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
 					black=u<0.5
 					if black: speed=4.4
@@ -210,63 +210,63 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 					raw.merge({"vx":cos(angle)*speed,"vy":sin(angle)*speed,"dmg":_i32(e["atk"]*mult),"el":0 if black else e["el"],"life":life,"ml":life,"col":"#00aa00" if black else "#cc1100","sz":2.0 if black else (1.5 if family=="idle" else 1.8)})
 					if black: raw["blackBean"]=true
 					else: raw.merge({"redBean":true,"homing":true})
-					line=40567 if family=="burst" else (40660 if family=="fan" else (38368 if family=="idle" else 41199))
+					line=40569 if family=="burst" else (40662 if family=="fan" else (38370 if family=="idle" else 41201))
 				return _spawn(t,raw,line,false,events,ledger)
 			"finish_volley":
 				match t["family"]:
 					"burst":
 						t["step"]="burst_fx"
-						return _cmd(t,"SFX.charge",40568,[],events,ledger)
+						return _cmd(t,"SFX.charge",40570,[],events,ledger)
 					"fan":
 						t["step"]="fan_parts"
-						return _cmd(t,"SFX.magic",40661,[_sound_el(e["el"])],events,ledger)
+						return _cmd(t,"SFX.magic",40663,[_sound_el(e["el"])],events,ledger)
 					"bean":
 						t["step"]="bean_sound"
-						return _cmd(t,"addParts",41201,[e["x"],e["y"],"#cc1100",8],events,ledger)
+						return _cmd(t,"addParts",41203,[e["x"],e["y"],"#cc1100",8],events,ledger)
 					"idle":
 						t["step"]="done"
-						return _cmd(t,"addParts",38370,[e["x"],e["y"],"#cc1100",2],events,ledger)
+						return _cmd(t,"addParts",38372,[e["x"],e["y"],"#cc1100",2],events,ledger)
 					"rhythm":
 						t["step"]="rhythm_sound"
-						return _cmd(t,"addTxt",37100,[e["x"],e["y"]-60,"Q!","#66dd22",32],events,ledger)
+						return _cmd(t,"addTxt",37102,[e["x"],e["y"]-60,"Q!","#66dd22",32],events,ledger)
 			"burst_fx":
 				t["step"]="burst_end"
-				return _cmd(t,"deathFX",40568,[e["x"],e["y"],e["r"],e["col"],false,false,e["etype"]],events,ledger)
+				return _cmd(t,"deathFX",40570,[e["x"],e["y"],e["r"],e["col"],false,false,e["etype"]],events,ledger)
 			"burst_end":
 				if not _num(c.get("shake")): return _fail("shake_reader_missing")
-				_gwrite(g,{"shake":8*c["shake"]/100.0,"_flashT":4,"_flashCol":"#ffffff"},40568,events)
-				_write(e,{"s":"recover","st2":50},40569,events)
+				_gwrite(g,{"shake":8*c["shake"]/100.0,"_flashT":4,"_flashCol":"#ffffff"},40570,events)
+				_write(e,{"s":"recover","st2":50},40571,events)
 				t["step"]="done"
 			"fan_parts":
 				t["step"]="fan_end"
-				return _cmd(t,"addParts",40661,[e["x"],e["y"],e["col"],12],events,ledger)
+				return _cmd(t,"addParts",40663,[e["x"],e["y"],e["col"],12],events,ledger)
 			"fan_end":
-				_write(e,{"s":"recover","st2":45},40662,events)
+				_write(e,{"s":"recover","st2":45},40664,events)
 				t["step"]="done"
 			"bean_sound":
 				t["step"]="bean_end"
-				return _cmd(t,"SFX.magic",41201,[0],events,ledger)
+				return _cmd(t,"SFX.magic",41203,[0],events,ledger)
 			"bean_end":
 				if not _numbers(e,["_bsWave","_bsMaxWave"]) or not _num(c.get("shake")): return _fail("bean_counter_or_option_missing")
-				_gwrite(g,{"shake":4*c["shake"]/100.0},41201,events)
-				_write(e,{"_bsWave":e["_bsWave"]+1},41202,events)
-				if e["_bsWave"]>=e["_bsMaxWave"]: _write(e,{"s":"recover","st2":25},41203,events)
+				_gwrite(g,{"shake":4*c["shake"]/100.0},41203,events)
+				_write(e,{"_bsWave":e["_bsWave"]+1},41204,events)
+				if e["_bsWave"]>=e["_bsMaxWave"]: _write(e,{"s":"recover","st2":25},41205,events)
 				else:
-					var u: Variant=_draw(rng,"bean_repeat_timer",41204,events,ledger)
+					var u: Variant=_draw(rng,"bean_repeat_timer",41206,events,ledger)
 					if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
-					_write(e,{"st2":10+_i32(u*6)},41204,events)
+					_write(e,{"st2":10+_i32(u*6)},41206,events)
 				t["step"]="done"
 			"rhythm_sound":
 				t["step"]="rhythm_end"
-				return _cmd(t,"SFX.magic",37101,[1],events,ledger)
+				return _cmd(t,"SFX.magic",37103,[1],events,ledger)
 			"rhythm_end":
 				var old: Variant=_or(g.get("_druidParryVolley"),0)
 				if old==null: return _fail("rhythm_volley_unsupported")
-				_gwrite(g,{"_druidParryVolley":old+1},37102,events)
+				_gwrite(g,{"_druidParryVolley":old+1},37104,events)
 				t["step"]="done"
 			"generic_fire":
 				if not _num(c.get("etype_range")) or not e.get("_projChargeBean") is String: return _fail("generic_reader_missing")
-				_write(e,{"facing":_aim(e,p)},20124,events)
+				_write(e,{"facing":_aim(e,p)},20126,events)
 				var bean: String=e["_projChargeBean"]
 				var life: int=_i32(_or(c["etype_range"],600)*0.3)
 				var speed: float=4.4 if bean=="black" else (2.8 if bean=="red" else (3.3 if bean=="dark" else (3.2 if bean in ["fire","water"] else 3.0)))
@@ -283,14 +283,14 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 				elif bean=="water": raw["waterBean"]=true
 				t["bean"]=bean
 				t["step"]="generic_parts"
-				return _spawn(t,raw,{"black":20129,"red":20132,"dark":20135,"fire":20138,"water":20141,"special":20144}.get(bean,20147),true,events,ledger)
+				return _spawn(t,raw,{"black":20131,"red":20134,"dark":20137,"fire":20140,"water":20143,"special":20146}.get(bean,20149),true,events,ledger)
 			"generic_parts":
 				var bean: String=t["bean"]
 				var color: String={"black":"#00aa00","red":"#cc1100","dark":"#a44cff","fire":"#ff2e22","water":"#317cec"}.get(bean,e["col"])
 				t["step"]="generic_cancel"
-				return _cmd(t,"addParts",{"black":20130,"red":20133,"dark":20136,"fire":20139,"water":20142,"special":20145}.get(bean,20148),[e["x"],e["y"],color,2 if bean not in ["black","red","dark","fire","water","special"] else 3],events,ledger)
+				return _cmd(t,"addParts",{"black":20132,"red":20135,"dark":20138,"fire":20141,"water":20144,"special":20147}.get(bean,20150),[e["x"],e["y"],color,2 if bean not in ["black","red","dark","fire","water","special"] else 3],events,ledger)
 			"generic_cancel":
-				_write(e,{"_projChargeT":0,"_projChargeCol":null,"_projChargeBean":null,"_projChargeParryClass":null},20121,events)
+				_write(e,{"_projChargeT":0,"_projChargeCol":null,"_projChargeBean":null,"_projChargeParryClass":null},20123,events)
 				t["step"]="done"
 			"orb_warning":
 				if t["i"]>=2:
@@ -299,10 +299,10 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 				var radius: float=60*(1-(g["_druidOrbT"]-90)/20.0)
 				var angle: float=g["_druidOrbT"]*0.5+t["i"]*3.14159
 				t["i"]+=1
-				return _cmd(t,"poolPart",37110,[e["x"]+cos(angle)*radius,e["y"]-40+sin(angle)*radius,-cos(angle)*1.5,-sin(angle)*1.5,"#66dd22",2,10],events,ledger)
+				return _cmd(t,"poolPart",37112,[e["x"]+cos(angle)*radius,e["y"]-40+sin(angle)*radius,-cos(angle)*1.5,-sin(angle)*1.5,"#66dd22",2,10],events,ledger)
 			"orb_spawn":
 				if not e.is_empty() and e.get("alive")==true and g["_druidOrbT"]>=110:
-					_gwrite(g,{"_druidOrbT":0},37111,events)
+					_gwrite(g,{"_druidOrbT":0},37113,events)
 					var a: float=_aim(e,p)
 					for k in range(-1,2):
 						var angle: float=a+k*0.14
@@ -312,7 +312,7 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 				t["step"]="orb_loop"
 			"orb_loop":
 				if t["i"]>=g["_druidOrbs"].size():
-					_gwrite(g,{"_druidOrbs":t["kept"]},37126,events)
+					_gwrite(g,{"_druidOrbs":t["kept"]},37128,events)
 					t["step"]="done"
 					continue
 				var orb: Dictionary=g["_druidOrbs"][t["i"]].duplicate(true)
@@ -323,7 +323,7 @@ static func next_pattern(token: Dictionary,response: Variant=null,rng: Callable=
 				t["orb_deleted"]=false
 				t["step"]="orb_cleanup"
 				if _distance(orb,p)<orb["r"]+p["r"]:
-					return _cmd(t,"resolve_druid_orb_contact",37116,[{"source_lines":[37116,37123],"orb":orb.duplicate(true),"aoe_radius":90,"aoe_damage":maxi(40,_i32(_or(orb["dmg"],60)*1.2)),"source_isPWin_called":true,"combat_verified":false}],events,ledger,"orb_contact")
+					return _cmd(t,"resolve_druid_orb_contact",37118,[{"source_lines":[37118,37125],"orb":orb.duplicate(true),"aoe_radius":90,"aoe_damage":maxi(40,_i32(_or(orb["dmg"],60)*1.2)),"source_isPWin_called":true,"combat_verified":false}],events,ledger,"orb_contact")
 			"orb_cleanup":
 				var orb: Dictionary=t["orb"]
 				if not _numbers(g,["mw","mh"]): return _fail("orb_bounds_reader_missing")
@@ -350,7 +350,7 @@ static func _spawn(t: Dictionary,raw: Dictionary,line: int,direct: bool,events: 
 		var wrapped: Dictionary=prepare_boss_props(t["si"],t["enemy"],props,t["context"].get("thorn_first"))
 		if wrapped["status"]!="READY": return _fail(wrapped["reason"],ledger)
 		props=wrapped["props"]
-	return _cmd(t,"spawnProj_owner",line,[props,{"route":"direct" if direct else "boss_wrapper","canonical_source_lines":[16947,16995],"executed":false}],events,ledger,"spawn")
+	return _cmd(t,"spawnProj_owner",line,[props,{"route":"direct" if direct else "boss_wrapper","canonical_source_lines":[16949,16997],"executed":false}],events,ledger,"spawn")
 
 ## Birth NUMERIC packet only. Caller supplies a real fresh/reset source pool
 ## snapshot, global counter and resolved external readers. Class is requested
@@ -366,7 +366,7 @@ static func begin_birth(props: Dictionary,context: Dictionary) -> Dictionary:
 	p["_druidParryClass"]=null
 	p.merge(props,true)
 	if not _numbers(p,["x","y","vx","vy","dmg","el","sz","r","life","ml"]) or not p.get("friendly") is bool: return _fail("birth_props_unsupported")
-	# Same non-QE dark-sphere scalar preparation, game.html:16934–16937.
+	# Same non-QE dark-sphere scalar preparation, game.html:16936–16937.
 	if _truth(p.get("gbBean")) and not p["friendly"]:
 		p["el"]=3
 		p["col"]="#a44cff"
@@ -446,14 +446,14 @@ static func next_birth(token: Dictionary,class_response: Variant=null,rng: Calla
 
 static func _class_request(t: Dictionary) -> Dictionary:
 	t["pending_class"]=true
-	return {"status":"READY","done":false,"continuation":t,"command":{"command":"projectile_class_authority","source_lines":[16911,16921],"args":[t["projectile"].duplicate(true)],"executed":false},"rng_ledger":[],"live_spawn_verified":false}
+	return {"status":"READY","done":false,"continuation":t,"command":{"command":"projectile_class_authority","source_lines":[16913,16923],"args":[t["projectile"].duplicate(true)],"executed":false},"rng_ledger":[],"live_spawn_verified":false}
 static func _birth_done(t: Dictionary,p: Variant,action: String,ledger: Array) -> Dictionary:
 	return {"status":"READY","done":true,"projectile":p,"drop_counter":t["drop_counter"],"pool_action":action,"rng_ledger":ledger,"continuation":null,"command":null,"live_spawn_verified":false}
 static func _normalize(p: Dictionary,kind: String,rng: Callable,ledger: Array) -> bool:
 	var speed: float=sqrt(p["vx"]*p["vx"]+p["vy"]*p["vy"])
 	if speed<=0: return true
 	if not rng.is_valid(): return false
-	var line: int=16909 if _truth(p.get("blackBean")) else (16907 if kind=="physical" else 16908)
+	var line: int=16911 if _truth(p.get("blackBean")) else (16909 if kind=="physical" else 16910)
 	var u: Variant=rng.call("source_bullet_speed")
 	ledger.append({"field":"source_bullet_speed","source_line":line,"unit":u})
 	if not _unit(u): return false

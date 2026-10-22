@@ -2387,5 +2387,7 @@
       "source": "transparent 1024² sway placeholder",
       "source_sha256": null
     }
-  ]
+  ],
+  "current_source_snapshot_sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "snapshot_revalidation": "INTEG-14: generated output lineage remains original; old/new web source differs only ossuary two lines; map asset source bytes unchanged. No GPU resources regenerated."
 }

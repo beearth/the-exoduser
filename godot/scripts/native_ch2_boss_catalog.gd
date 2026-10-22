@@ -47,7 +47,7 @@ static func source_receipt() -> Dictionary:
 		"combo_union_count":38, "common_combo_count":25, "new_combo_count":13,
 		"max_ch2_source_idx":56, "stages":[4,5,6,7,8,9],
 		"source_ranges":{"moves":[9820,9880], "combos":[9881,9950], "phases":[9951,9957],
-			"ch2_sets":[9968,9975], "cage_removal":[10009,10010], "names":[16690,16690]},
+			"ch2_sets":[9968,9975], "cage_removal":[10009,10010], "names":[16692,16692]},
 		"live_combat_connected":false, "save_io":false, "rng_draws":0}
 
 static func boss_for_stage(si: int) -> Dictionary:

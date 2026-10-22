@@ -1,7 +1,7 @@
 extends RefCounted
-## PC-BOSS-CORE (2026-10-22) — 1장 보스 전역 큐 tick 순수 실행자(원본 update() 37015–37129 의 보스 생산 큐).
-##   _chaseAoes 37015–37053 · _fissures 37067 · _tideWaves 37069 · _seekerMines 37071 · _poisonPools 37079 · _lavaPools 37129
-##   + 보스 지뢰(mine:true 정지탄) 투사체 루프 34671·34678–34688
+## PC-BOSS-CORE (2026-10-22) — 1장 보스 전역 큐 tick 순수 실행자(원본 update() 37017–37131 의 보스 생산 큐).
+##   _chaseAoes 37017–37055 · _fissures 37069 · _tideWaves 37071 · _seekerMines 37073 · _poisonPools 37081 · _lavaPools 37131
+##   + 보스 지뢰(mine:true 정지탄) 투사체 루프 34673·34680–34690
 ## 원본 실행 순서: (투사체 루프의 지뢰) → chase → fissure → tide → seeker → poison → (리듬탄·ORB: BC09) → lava.
 ## 상태 소유 0: 큐 배열 사본을 받아 갱신본을 돌려준다. P 판정·피해·패링·표시·RNG 는 env(PC core/테스트 env).
 ## env: q_player()->{x,y,r,iframes,s,kb}  q_hurt(dmg,opts)  q_kb_add(kx,ky)  q_is_p_win()->bool
@@ -14,30 +14,30 @@ static func tick_mines(mines: Array, sp: float, env: Object) -> Array:
 	var kept: Array = []
 	for m0 in mines:
 		var p: Dictionary = m0.duplicate(true)
-		p.life = _n(p.life) - sp * 0.667 # 34671
+		p.life = _n(p.life) - sp * 0.667 # 34673
 		var dead := false
 		p.vx = 0
 		p.vy = 0
 		var P: Dictionary = env.q_player()
-		if _dst(P, p) < 30 and _n(P.iframes) <= 0 and str(P.s) != "charge": # 34681
+		if _dst(P, p) < 30 and _n(P.iframes) <= 0 and str(P.s) != "charge": # 34683
 			env.q_hurt(_i32(_n(p.dmg) * env.q_el_mul(int(_n(p.el)))), {"dtype": "magic", "src": env.q_tr("지뢰"), "druidPoison": p.get("_druidPoison") == true})
 			P = env.q_player()
 			var ka: float = atan2(_n(P.y) - _n(p.y), _n(P.x) - _n(p.x))
 			env.q_kb_add(cos(ka) * 10, sin(ka) * 10)
 			P = env.q_player()
 			env.q_text(P.x, _n(P.y) - 20, env.q_tr("💥 지뢰!"), "#ffcc00", 40)
-			env.q_present("addParts", [p.x, p.y, "#ffaa00", 12], 34684)
+			env.q_present("addParts", [p.x, p.y, "#ffaa00", 12], 34686)
 			env.q_shake_set(6)
 			dead = true
 		elif _n(p.life) <= 0:
-			env.q_present("addParts", [p.x, p.y, "#ffcc00", 5], 34686)
+			env.q_present("addParts", [p.x, p.y, "#ffcc00", 5], 34688)
 			dead = true
 		if not dead: kept.append(p)
 	return kept
 
 static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictionary:
 	var out := {}
-	# ── 37015–37053 추적 장판 ──
+	# ── 37017–37055 추적 장판 ──
 	if g.get("_chaseAoes") is Array and not (g._chaseAoes as Array).is_empty():
 		var kept: Array = []
 		for c0 in g._chaseAoes:
@@ -57,9 +57,9 @@ static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictiona
 						z.hit = true
 						z.explT = 0
 						z.explMax = 15
-						env.q_present("SFX.detonate", [], 37032)
+						env.q_present("SFX.detonate", [], 37034)
 						env.q_shake(6)
-						if _t(z.get("druid")): env.q_present("playVFXAng", ["druid_hit", z.x, z.y, _n(z.r) * 1.7 / 362.0, 3, 0, false], 37033)
+						if _t(z.get("druid")): env.q_present("playVFXAng", ["druid_hit", z.x, z.y, _n(z.r) * 1.7 / 362.0, 3, 0, false], 37035)
 						var P: Dictionary = env.q_player()
 						if _dst(P, z) < _n(z.r) + _n(P.r) and _n(P.iframes) <= 0 and str(P.s) != "charge":
 							env.q_hurt(_i32(_n(z.dmg) * env.q_el_mul(int(_n(z.el)))), {})
@@ -68,11 +68,11 @@ static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictiona
 							env.q_kb_add(cos(ka) * 8, sin(ka) * 8)
 						for k in range(12):
 							var a: float = PI * 2 * k / 12.0
-							var spd2: float = 3 + env.q_rng("chase_part_speed", 37043) * 4
+							var spd2: float = 3 + env.q_rng("chase_part_speed", 37045) * 4
 							var col: String = ("#84a83d" if k % 2 == 0 else "#345334") if _t(z.get("druid")) else ("#ff4400" if k % 2 == 0 else "#ff8800")
-							var sz: float = 3 + env.q_rng("chase_part_size", 37044) * 2
-							var life: float = 8 + env.q_rng("chase_part_life", 37044) * 6
-							env.q_present("poolPart", [_n(z.x) + cos(a) * 10, _n(z.y) + sin(a) * 10, cos(a) * spd2, sin(a) * spd2, col, sz, life], 37044)
+							var sz: float = 3 + env.q_rng("chase_part_size", 37046) * 2
+							var life: float = 8 + env.q_rng("chase_part_life", 37046) * 6
+							env.q_present("poolPart", [_n(z.x) + cos(a) * 10, _n(z.y) + sin(a) * 10, cos(a) * spd2, sin(a) * spd2, col, sz, life], 37046)
 					if _t(z.get("hit")):
 						z.explT = (_n(z.get("explT")) if _t(z.get("explT")) else 0.0) + sp
 						if z.get("explMax") != null and _n(z.explT) >= _n(z.explMax): continue # JS x>=undefined → false
@@ -81,7 +81,7 @@ static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictiona
 			if _n(ca.cnt) >= _n(ca.maxCnt) and (not ca.get("zones") is Array or (ca.zones as Array).is_empty()): continue
 			kept.append(ca)
 		out["_chaseAoes"] = kept
-	# ── 37067 균열 ──
+	# ── 37069 균열 ──
 	if g.get("_fissures") is Array and not (g._fissures as Array).is_empty():
 		var kept: Array = []
 		for f0 in g._fissures:
@@ -99,9 +99,9 @@ static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictiona
 			hy = _n(fs.y) + sin(_n(fs.ang)) * _n(fs.len)
 			if not _t(fs.get("exploded")) and _n(fs.len) >= _n(fs.maxLen):
 				fs.exploded = true
-				env.q_present("SFX.detonate", [], 37067)
+				env.q_present("SFX.detonate", [], 37069)
 				env.q_shake(12)
-				if _t(fs.get("druid")): env.q_present("playVFXAng", ["druid_hit", hx, hy, _n(fs.explR) * 1.5 / 362.0, 3, 0, false], 37067)
+				if _t(fs.get("druid")): env.q_present("playVFXAng", ["druid_hit", hx, hy, _n(fs.explR) * 1.5 / 362.0, 3, 0, false], 37069)
 				P = env.q_player()
 				if sqrt((_n(P.x) - hx) * (_n(P.x) - hx) + (_n(P.y) - hy) * (_n(P.y) - hy)) < _n(fs.explR) and _n(P.iframes) <= 0 and str(P.s) != "charge":
 					env.q_hurt(_i32(_n(fs.dmg) * env.q_el_mul(int(_n(fs.el)))), {})
@@ -112,10 +112,10 @@ static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictiona
 					var a: float = PI * 2 * k / 10.0
 					var el: int = int(_n(fs.el))
 					var col: String = ELC[el] if el >= 0 and el < ELC.size() else "#ff4400"
-					env.q_present("poolPart", [hx, hy, cos(a) * 5, sin(a) * 5, col, 3, 10], 37067)
+					env.q_present("poolPart", [hx, hy, cos(a) * 5, sin(a) * 5, col, 3, 10], 37069)
 			if _n(fs.t) < _n(fs.maxT): kept.append(fs)
 		out["_fissures"] = kept
-	# ── 37069 조류파 ──
+	# ── 37071 조류파 ──
 	if g.get("_tideWaves") is Array and not (g._tideWaves as Array).is_empty():
 		var kept: Array = []
 		for w0 in g._tideWaves:
@@ -139,7 +139,7 @@ static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictiona
 							env.q_hurt(_i32(_n(tw.dmg) * env.q_el_mul(int(_n(tw.el)))), {})
 			if _n(tw.t) < _n(tw.maxT): kept.append(tw)
 		out["_tideWaves"] = kept
-	# ── 37071 추적 지뢰 ──
+	# ── 37073 추적 지뢰 ──
 	if g.get("_seekerMines") is Array and not (g._seekerMines as Array).is_empty():
 		var kept: Array = []
 		for s0 in g._seekerMines:
@@ -165,27 +165,27 @@ static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictiona
 					sm.t = 0
 					sm.armT = 999
 					sm.maxT = 120
-					env.q_present("SFX.deflect", [], 37071)
+					env.q_present("SFX.deflect", [], 37073)
 				else:
 					var el: int = 0 if _t(sm.get("_druidMine")) else int(_n(sm.el))
 					env.q_hurt(_i32(_n(sm.dmg) * env.q_el_mul(el)), {"druidPoison": _t(sm.get("_druidMine"))})
 					del = true
-					env.q_present("SFX.detonate", [], 37071)
+					env.q_present("SFX.detonate", [], 37073)
 					env.q_shake(8)
 					for k in range(8):
 						var a: float = PI * 2 * k / 8.0
-						env.q_present("poolPart", [sm.x, sm.y, cos(a) * 4, sin(a) * 4, "#5e10a8", 3, 8], 37071)
+						env.q_present("poolPart", [sm.x, sm.y, cos(a) * 4, sin(a) * 4, "#5e10a8", 3, 8], 37073)
 			if _n(sm.t) >= _n(sm.maxT): del = true
 			if del:
-				env.q_present("SFX.detonate", [], 37071)
+				env.q_present("SFX.detonate", [], 37073)
 				for k in range(6):
-					var ux: float = env.q_rng("seeker_end_vx", 37071)
-					var uy: float = env.q_rng("seeker_end_vy", 37071)
-					env.q_present("poolPart", [sm.x, sm.y, (ux - 0.5) * 4, (uy - 0.5) * 4, "#5e10a8", 2, 6], 37071)
+					var ux: float = env.q_rng("seeker_end_vx", 37073)
+					var uy: float = env.q_rng("seeker_end_vy", 37073)
+					env.q_present("poolPart", [sm.x, sm.y, (ux - 0.5) * 4, (uy - 0.5) * 4, "#5e10a8", 2, 6], 37073)
 				continue
 			kept.append(sm)
 		out["_seekerMines"] = kept
-	# ── 37079 독웅덩이 ──
+	# ── 37081 독웅덩이 ──
 	if g.get("_poisonPools") is Array and not (g._poisonPools as Array).is_empty():
 		var kept: Array = []
 		for q0 in g._poisonPools:
@@ -205,7 +205,7 @@ static func tick(g: Dictionary, sp: float, env: Object, si: int = 0) -> Dictiona
 		out["_poisonPools"] = kept
 	return out
 
-## 37129 용암 장판(리듬탄·ORB 뒤)
+## 37131 용암 장판(리듬탄·ORB 뒤)
 static func tick_lava(g: Dictionary, sp: float, env: Object) -> Variant:
 	if not g.get("_lavaPools") is Array or (g._lavaPools as Array).is_empty(): return null
 	var kept: Array = []

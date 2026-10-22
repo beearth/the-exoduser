@@ -8,7 +8,7 @@ const _OWNER = "BC2-06/fan-wave/v1"
 
 static func source_receipt() -> Dictionary:
 	return {"ready":Context.resolve(Catalog)["ready"],"source_game_sha256":Catalog.source_receipt()["source_game_sha256"],
-		"source_range":[40571,40605],"states":STATES.duplicate(),"clock":"BC05 already decremented st2",
+		"source_range":[40573,40607],"states":STATES.duplicate(),"clock":"BC05 already decremented st2",
 		"live_combat_connected":false,"full_tick_complete":false,"damage_or_parry_execution_verified":false}
 
 static func begin_tick(si: int, enemy: Dictionary, sp: float, player: Dictionary) -> Dictionary:
@@ -57,14 +57,14 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 		match state["step"]:
 			"entry":
 				state["step"]="wind_end"
-				var gate: Dictionary=Common._draw(rng,"fan_wave_wind_gate",40573,events,ledger)
+				var gate: Dictionary=Common._draw(rng,"fan_wave_wind_gate",40575,events,ledger)
 				if not gate["ok"]: return Common._fail(gate["reason"],ledger)
 				if gate["unit"]>0.7:
-					var x: Dictionary=Common._draw(rng,"fan_wave_wind_vx",40573,events,ledger)
+					var x: Dictionary=Common._draw(rng,"fan_wave_wind_vx",40575,events,ledger)
 					if not x["ok"]: return Common._fail(x["reason"],ledger)
-					var y: Dictionary=Common._draw(rng,"fan_wave_wind_vy",40573,events,ledger)
+					var y: Dictionary=Common._draw(rng,"fan_wave_wind_vy",40575,events,ledger)
 					if not y["ok"]: return Common._fail(y["reason"],ledger)
-					return Common._command(state,"poolPart",40573,[e["x"]+cos(e["_fwAng"])*30,e["y"]+sin(e["_fwAng"])*30,(x["unit"]-0.5)*2,(y["unit"]-0.5)*2,"#ff6600",2,6],events,ledger)
+					return Common._command(state,"poolPart",40575,[e["x"]+cos(e["_fwAng"])*30,e["y"]+sin(e["_fwAng"])*30,(x["unit"]-0.5)*2,(y["unit"]-0.5)*2,"#ff6600",2,6],events,ledger)
 			"wind_end":
 				if e["st2"]>0:
 					state["step"]="done"
@@ -73,23 +73,23 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				state["radius"]=Common._or_num(e.get("_fwR"),500)
 				state["damage"]=Common._i32(e["atk"]*2.5)
 				state["step"]="shake"
-				return Common._command(state,"SFX.detonate",40579,[],events,ledger)
+				return Common._command(state,"SFX.detonate",40581,[],events,ledger)
 			"shake":
 				state["step"]="player"
-				return Common._command(state,"shake",40579,[15],events,ledger)
+				return Common._command(state,"shake",40581,[15],events,ledger)
 			"player":
 				state["step"]="query"
 				if Common._distance(e,p)<state["radius"] and p["iframes"]<=0 and p["s"]!="charge" \
 					and absf(_difference(Common._aim(e,p),e["_fwAng"]))<state["width"]/2:
-					var descriptor: Dictionary={"source_lines":[40586,40589],"actor_ref":"boss",
+					var descriptor: Dictionary={"source_lines":[40588,40591],"actor_ref":"boss",
 						"hurtP_formula":{"raw_damage":state["damage"],"element":e["el"],"elemental_provider":"elMul(e.el,ar().el)","rounding":"ToInt32_before_and_after_elemental"},
 						"parry_formula":Common._contact("slash",e)["parry_formula"],"knockback":15,
 						"requires":["isPWin","hurtP","boss_hurtE","doParry","poise_owner"],"combat_verified":false}
-					return Common._command(state,"resolve_fan_wave_contact",40586,[descriptor],events,ledger,"contact")
+					return Common._command(state,"resolve_fan_wave_contact",40588,[descriptor],events,ledger,"contact")
 			"query":
 				state["step"]="push"
 				state["index"]=0
-				return Common._command(state,"shQuery",40593,[e["x"],e["y"],state["radius"]],events,ledger,"query")
+				return Common._command(state,"shQuery",40595,[e["x"],e["y"],state["radius"]],events,ledger,"query")
 			"push":
 				for id: String in state["query_ids"]:
 					var fe: Dictionary=state["query_entities"][id]
@@ -98,25 +98,25 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 					if absf(_difference(angle,e["_fwAng"]))<state["width"]/2 and Common._distance(e,fe)<state["radius"]:
 						for axis: String in ["x","y"]:
 							fe["kb"][axis]+=(cos(angle) if axis=="x" else sin(angle))*12
-							events.append({"kind":"query_write","id":id,"field":"kb."+axis,"value":fe["kb"][axis],"source_line":40597})
-				Common._write(e,{"_fwFx":{"ang":e["_fwAng"],"w":state["width"],"r":state["radius"],"t":0,"maxT":20}},40600,events)
+							events.append({"kind":"query_write","id":id,"field":"kb."+axis,"value":fe["kb"][axis],"source_line":40599})
+				Common._write(e,{"_fwFx":{"ang":e["_fwAng"],"w":state["width"],"r":state["radius"],"t":0,"maxT":20}},40602,events)
 				state["step"]="particles"
 				state["index"]=0
 			"particles":
 				var i: int=state["index"]
 				if i>=25:
-					Common._write(e,{"s":"bossRec","st2":40},40604,events)
+					Common._write(e,{"s":"bossRec","st2":40},40606,events)
 					state["step"]="done"
 					continue
 				var angle: float=e["_fwAng"]-state["width"]/2+state["width"]*i/24.0
 				var units: Array=[]
-				for site: Array in [["fan_wave_speed",40602],["fan_wave_size",40603],["fan_wave_life",40603]]:
+				for site: Array in [["fan_wave_speed",40604],["fan_wave_size",40605],["fan_wave_life",40605]]:
 					var draw: Dictionary=Common._draw(rng,site[0],site[1],events,ledger)
 					if not draw["ok"]: return Common._fail(draw["reason"],ledger)
 					units.append(draw["unit"])
 				var speed: float=8+units[0]*6
 				state["index"]+=1
-				return Common._command(state,"poolPart",40603,[e["x"]+cos(angle)*30,e["y"]+sin(angle)*30,cos(angle)*speed,sin(angle)*speed,"#ff8844" if i%2==0 else "#ffcc44",3+units[1]*4,12+units[2]*10],events,ledger)
+				return Common._command(state,"poolPart",40605,[e["x"]+cos(angle)*30,e["y"]+sin(angle)*30,cos(angle)*speed,sin(angle)*speed,"#ff8844" if i%2==0 else "#ffcc44",3+units[1]*4,12+units[2]*10],events,ledger)
 			_: return Common._fail("unknown_fan_wave_checkpoint")
 	return {"status":"READY","done":true,"enemy":e,"player":p,"query_entities":state["query_entities"],"events":events,"rng_ledger":ledger,"command":null,"continuation":null,"full_tick_complete":false}
 

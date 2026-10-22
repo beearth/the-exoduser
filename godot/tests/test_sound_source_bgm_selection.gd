@@ -3,7 +3,7 @@ extends SceneTree
 const CATALOG = preload("res://port_modules/sound_source/bgm_catalog.gd")
 const SELECT = preload("res://port_modules/sound_source/bgm_selection.gd")
 const USERDIR := "EXODUSER-snd-05-Isolated-20261020"
-const SOURCE_MAIN := "e556b617190c325ca39f5add04357f5dea5ca87e"
+const SOURCE_MAIN := "91e2774b769869e59f80953e148a5c95203b0fea"
 const SOURCE_SHA256 := preload("res://source_snapshot/snapshot.gd").SHA256
 const FIXTURE := "res://tests/fixtures/sound_source_bgm_oracle.json"
 

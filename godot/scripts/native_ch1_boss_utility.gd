@@ -1,5 +1,5 @@
 extends RefCounted
-## BC03: game.html:37650-37699 numeric utility only, no selection or actor writes.
+## BC03: game.html:37652-37701 numeric utility only, no selection or actor writes.
 ## move and enemy are snapshots supplied by their source owners (BC01/BC02).
 ## ps is a read-only Dictionary or null; Q/E/player-stat counters are never written.
 
@@ -11,7 +11,7 @@ const _FACE_MOVES = ["jump", "charge", "slashCombo", "sweep", "tailSwipe", "bean
 static func source_receipt() -> Dictionary:
 	return {"source_main": "284d7faf49295b2f5061937a47ce96038032ed3c",
 		"game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
-		"source_lines": [37650, 37699], "rng_line": 37693,
+		"source_lines": [37652, 37701], "rng_line": 37695,
 		"dependency": "BC02 3d510c2b400f26342dcf5e9899a38034fd1e7c0a",
 		"face_moves": _FACE_MOVES.duplicate(true), "live_selection_connected": false}
 
@@ -110,14 +110,14 @@ static func evaluate_move(si: int, move: Dictionary, distance: float, ps: Varian
 	var u: Variant = rng.call("boss_score")
 	if not _numeric(u) or not is_finite(float(u)) or u < 0 or u >= 1:
 		return {"status": "NOT_READY", "reason": "rng_unit_invalid", "score": null,
-			"rng_ledger": [{"field": "boss_score", "source_line": 37693, "unit": u}]}
+			"rng_ledger": [{"field": "boss_score", "source_line": 37695, "unit": u}]}
 	var score: float = (dist_fit * 1.0 + repeat_pen * 0.6 + counter * 0.7 \
 		+ combo * 1.2 + phase_pref * 0.5 + novelty) * (0.85 + u * 0.3)
 	if si == 2 and _FACE_MOVES.has(id): score += 2.0
 	if (si == 0 or si == 3) and streak >= 3 and (tags.has("ranged") or tags.has("ambush")):
 		score *= 3.0
 	return {"status": "READY", "score": score, "gate": "",
-		"rng_ledger": [{"field": "boss_score", "source_line": 37693, "unit": u}],
+		"rng_ledger": [{"field": "boss_score", "source_line": 37695, "unit": u}],
 		"terms": {"distance_fit": dist_fit, "repeat_penalty": repeat_pen,
 			"counter_adjust": counter, "combo_bonus": combo, "phase_preference": phase_pref, "novelty": novelty}}
 

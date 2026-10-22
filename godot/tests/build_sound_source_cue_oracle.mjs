@@ -1,5 +1,5 @@
 import fs from 'node:fs';import vm from 'node:vm';import cp from 'node:child_process';import crypto from 'node:crypto';import assert from 'node:assert/strict';
-const ref='e556b617190c325ca39f5add04357f5dea5ca87e';const html=cp.execFileSync('git',['show',ref+':game.html'],{cwd:new URL('../../',import.meta.url),maxBuffer:16*1024*1024}).toString();
+const ref='91e2774b769869e59f80953e148a5c95203b0fea';const html=cp.execFileSync('git',['show',ref+':game.html'],{cwd:new URL('../../',import.meta.url),maxBuffer:16*1024*1024}).toString();
 const start=html.indexOf('const SFX={'),body=html.slice(start,html.indexOf('\n};',start)+3);assert(start>0&&body.includes('crystalEquip(){'));
 const phase=Number(process.argv.find(x=>x.startsWith('--phase='))?.split('=')[1]??3),cases=[];const play=cue=>({kind:'play',cue}),fire=id=>({kind:'fire',id});
 const add=(name,ops)=>cases.push({name,ops});

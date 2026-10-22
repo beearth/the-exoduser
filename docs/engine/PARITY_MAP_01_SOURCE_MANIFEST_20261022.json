@@ -1,5 +1,5 @@
 {
-  "source_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "source_sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
   "items": [
     {
       "item": "chunk_0_0",
@@ -8,7 +8,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_0_0.png",
       "godot_asset": "res://assets/map/production_finish/chunk_0_0.png",
@@ -32,7 +32,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_1_0.png",
       "godot_asset": "res://assets/map/production_finish/chunk_1_0.png",
@@ -56,7 +56,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_2_0.png",
       "godot_asset": "res://assets/map/production_finish/chunk_2_0.png",
@@ -80,7 +80,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_3_0.png",
       "godot_asset": "res://assets/map/production_finish/chunk_3_0.png",
@@ -104,7 +104,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_4_0.png",
       "godot_asset": "res://assets/map/production_finish/chunk_4_0.png",
@@ -128,7 +128,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_5_0.png",
       "godot_asset": "res://assets/map/production_finish/chunk_5_0.png",
@@ -152,7 +152,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_6_0.png",
       "godot_asset": "res://assets/map/production_finish/chunk_6_0.png",
@@ -176,7 +176,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_7_0.png",
       "godot_asset": "res://assets/map/production_finish/chunk_7_0.png",
@@ -200,7 +200,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_0_1.png",
       "godot_asset": "res://assets/map/production_finish/chunk_0_1.png",
@@ -224,7 +224,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_1_1.png",
       "godot_asset": "res://assets/map/production_finish/chunk_1_1.png",
@@ -248,7 +248,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_2_1.png",
       "godot_asset": "res://assets/map/production_finish/chunk_2_1.png",
@@ -272,7 +272,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_3_1.png",
       "godot_asset": "res://assets/map/production_finish/chunk_3_1.png",
@@ -296,7 +296,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_4_1.png",
       "godot_asset": "res://assets/map/production_finish/chunk_4_1.png",
@@ -320,7 +320,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_5_1.png",
       "godot_asset": "res://assets/map/production_finish/chunk_5_1.png",
@@ -344,7 +344,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_6_1.png",
       "godot_asset": "res://assets/map/production_finish/chunk_6_1.png",
@@ -368,7 +368,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_7_1.png",
       "godot_asset": "res://assets/map/production_finish/chunk_7_1.png",
@@ -392,7 +392,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_0_2.png",
       "godot_asset": "res://assets/map/production_finish/chunk_0_2.png",
@@ -416,7 +416,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_1_2.png",
       "godot_asset": "res://assets/map/production_finish/chunk_1_2.png",
@@ -440,7 +440,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_2_2.png",
       "godot_asset": "res://assets/map/production_finish/chunk_2_2.png",
@@ -464,7 +464,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_3_2.png",
       "godot_asset": "res://assets/map/production_finish/chunk_3_2.png",
@@ -488,7 +488,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_4_2.png",
       "godot_asset": "res://assets/map/production_finish/chunk_4_2.png",
@@ -512,7 +512,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_5_2.png",
       "godot_asset": "res://assets/map/production_finish/chunk_5_2.png",
@@ -536,7 +536,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_6_2.png",
       "godot_asset": "res://assets/map/production_finish/chunk_6_2.png",
@@ -560,7 +560,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_7_2.png",
       "godot_asset": "res://assets/map/production_finish/chunk_7_2.png",
@@ -584,7 +584,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_0_3.png",
       "godot_asset": "res://assets/map/production_finish/chunk_0_3.png",
@@ -608,7 +608,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_1_3.png",
       "godot_asset": "res://assets/map/production_finish/chunk_1_3.png",
@@ -632,7 +632,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_2_3.png",
       "godot_asset": "res://assets/map/production_finish/chunk_2_3.png",
@@ -656,7 +656,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_3_3.png",
       "godot_asset": "res://assets/map/production_finish/chunk_3_3.png",
@@ -680,7 +680,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_4_3.png",
       "godot_asset": "res://assets/map/production_finish/chunk_4_3.png",
@@ -704,7 +704,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_5_3.png",
       "godot_asset": "res://assets/map/production_finish/chunk_5_3.png",
@@ -728,7 +728,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_6_3.png",
       "godot_asset": "res://assets/map/production_finish/chunk_6_3.png",
@@ -752,7 +752,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_7_3.png",
       "godot_asset": "res://assets/map/production_finish/chunk_7_3.png",
@@ -776,7 +776,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_0_4.png",
       "godot_asset": "res://assets/map/production_finish/chunk_0_4.png",
@@ -800,7 +800,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_1_4.png",
       "godot_asset": "res://assets/map/production_finish/chunk_1_4.png",
@@ -824,7 +824,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_2_4.png",
       "godot_asset": "res://assets/map/production_finish/chunk_2_4.png",
@@ -848,7 +848,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_3_4.png",
       "godot_asset": "res://assets/map/production_finish/chunk_3_4.png",
@@ -872,7 +872,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_4_4.png",
       "godot_asset": "res://assets/map/production_finish/chunk_4_4.png",
@@ -896,7 +896,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_5_4.png",
       "godot_asset": "res://assets/map/production_finish/chunk_5_4.png",
@@ -920,7 +920,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_6_4.png",
       "godot_asset": "res://assets/map/production_finish/chunk_6_4.png",
@@ -944,7 +944,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_7_4.png",
       "godot_asset": "res://assets/map/production_finish/chunk_7_4.png",
@@ -968,7 +968,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_0_5.png",
       "godot_asset": "res://assets/map/production_finish/chunk_0_5.png",
@@ -992,7 +992,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_1_5.png",
       "godot_asset": "res://assets/map/production_finish/chunk_1_5.png",
@@ -1016,7 +1016,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_2_5.png",
       "godot_asset": "res://assets/map/production_finish/chunk_2_5.png",
@@ -1040,7 +1040,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_3_5.png",
       "godot_asset": "res://assets/map/production_finish/chunk_3_5.png",
@@ -1064,7 +1064,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_4_5.png",
       "godot_asset": "res://assets/map/production_finish/chunk_4_5.png",
@@ -1088,7 +1088,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_5_5.png",
       "godot_asset": "res://assets/map/production_finish/chunk_5_5.png",
@@ -1112,7 +1112,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_6_5.png",
       "godot_asset": "res://assets/map/production_finish/chunk_6_5.png",
@@ -1136,7 +1136,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_7_5.png",
       "godot_asset": "res://assets/map/production_finish/chunk_7_5.png",
@@ -1160,7 +1160,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_0_6.png",
       "godot_asset": "res://assets/map/production_finish/chunk_0_6.png",
@@ -1184,7 +1184,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_1_6.png",
       "godot_asset": "res://assets/map/production_finish/chunk_1_6.png",
@@ -1208,7 +1208,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_2_6.png",
       "godot_asset": "res://assets/map/production_finish/chunk_2_6.png",
@@ -1232,7 +1232,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_3_6.png",
       "godot_asset": "res://assets/map/production_finish/chunk_3_6.png",
@@ -1256,7 +1256,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_4_6.png",
       "godot_asset": "res://assets/map/production_finish/chunk_4_6.png",
@@ -1280,7 +1280,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_5_6.png",
       "godot_asset": "res://assets/map/production_finish/chunk_5_6.png",
@@ -1304,7 +1304,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_6_6.png",
       "godot_asset": "res://assets/map/production_finish/chunk_6_6.png",
@@ -1328,7 +1328,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_7_6.png",
       "godot_asset": "res://assets/map/production_finish/chunk_7_6.png",
@@ -1352,7 +1352,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_0_7.png",
       "godot_asset": "res://assets/map/production_finish/chunk_0_7.png",
@@ -1376,7 +1376,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_1_7.png",
       "godot_asset": "res://assets/map/production_finish/chunk_1_7.png",
@@ -1400,7 +1400,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_2_7.png",
       "godot_asset": "res://assets/map/production_finish/chunk_2_7.png",
@@ -1424,7 +1424,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_3_7.png",
       "godot_asset": "res://assets/map/production_finish/chunk_3_7.png",
@@ -1448,7 +1448,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_4_7.png",
       "godot_asset": "res://assets/map/production_finish/chunk_4_7.png",
@@ -1472,7 +1472,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_5_7.png",
       "godot_asset": "res://assets/map/production_finish/chunk_5_7.png",
@@ -1496,7 +1496,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_6_7.png",
       "godot_asset": "res://assets/map/production_finish/chunk_6_7.png",
@@ -1520,7 +1520,7 @@
         11615,
         11754,
         11762,
-        51922
+        51924
       ],
       "source_asset": "assets/map/ch1/production_finish/chunk_7_7.png",
       "godot_asset": "res://assets/map/production_finish/chunk_7_7.png",
@@ -1539,15 +1539,15 @@
     },
     {
       "item": "m_ctree13",
-      "placement_source_line": 18137,
-      "metadata_source_line": 17547,
+      "placement_source_line": 18139,
+      "metadata_source_line": 17549,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/rotforest_tree_01.png",
       "godot_asset": "res://assets/map/props/rotforest_tree_01.png",
@@ -1578,15 +1578,15 @@
     },
     {
       "item": "m_ctree14",
-      "placement_source_line": 18137,
-      "metadata_source_line": 17548,
+      "placement_source_line": 18139,
+      "metadata_source_line": 17550,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/rotforest_tree_02.png",
       "godot_asset": "res://assets/map/props/rotforest_tree_02.png",
@@ -1617,15 +1617,15 @@
     },
     {
       "item": "m_ctree15",
-      "placement_source_line": 18137,
-      "metadata_source_line": 17549,
+      "placement_source_line": 18139,
+      "metadata_source_line": 17551,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/rotforest_tree_04.png",
       "godot_asset": "res://assets/map/props/rotforest_tree_04.png",
@@ -1656,15 +1656,15 @@
     },
     {
       "item": "m_ctree16",
-      "placement_source_line": 18137,
-      "metadata_source_line": 17550,
+      "placement_source_line": 18139,
+      "metadata_source_line": 17552,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/rotforest_tree_03.png",
       "godot_asset": "res://assets/map/props/rotforest_tree_03.png",
@@ -1695,15 +1695,15 @@
     },
     {
       "item": "m_ctree17",
-      "placement_source_line": 18138,
-      "metadata_source_line": 17551,
+      "placement_source_line": 18140,
+      "metadata_source_line": 17553,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/rotforest_tree_05.png",
       "godot_asset": "res://assets/map/props/rotforest_tree_05.png",
@@ -1734,15 +1734,15 @@
     },
     {
       "item": "m_ctree18",
-      "placement_source_line": 18138,
-      "metadata_source_line": 17552,
+      "placement_source_line": 18140,
+      "metadata_source_line": 17554,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/rotforest_tree_11.png",
       "godot_asset": "res://assets/map/props/rotforest_tree_11.png",
@@ -1773,15 +1773,15 @@
     },
     {
       "item": "m_ctree19",
-      "placement_source_line": 18138,
-      "metadata_source_line": 17553,
+      "placement_source_line": 18140,
+      "metadata_source_line": 17555,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/rotforest_tree_06.png",
       "godot_asset": "res://assets/map/props/rotforest_tree_06.png",
@@ -1811,15 +1811,15 @@
     },
     {
       "item": "m_ctree20",
-      "placement_source_line": 18138,
-      "metadata_source_line": 17554,
+      "placement_source_line": 18140,
+      "metadata_source_line": 17556,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/rotforest_tree_07.png",
       "godot_asset": "res://assets/map/props/rotforest_tree_07.png",
@@ -1849,15 +1849,15 @@
     },
     {
       "item": "m_fbones",
-      "placement_source_line": 18140,
-      "metadata_source_line": 17525,
+      "placement_source_line": 18142,
+      "metadata_source_line": 17527,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/frozen_bones.png",
       "godot_asset": "res://assets/map/props/frozen_bones.png",
@@ -1881,15 +1881,15 @@
     },
     {
       "item": "corpse",
-      "placement_source_line": 18140,
-      "metadata_source_line": 18402,
+      "placement_source_line": 18142,
+      "metadata_source_line": 18404,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/corpse.png",
       "godot_asset": "res://assets/map/props/corpse.png",
@@ -1911,15 +1911,15 @@
     },
     {
       "item": "m_c1sroot",
-      "placement_source_line": 18143,
-      "metadata_source_line": 17635,
+      "placement_source_line": 18145,
+      "metadata_source_line": 17637,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_root.png",
       "godot_asset": "res://assets/map/props/prop_s_root.png",
@@ -1944,15 +1944,15 @@
     },
     {
       "item": "m_c1groot",
-      "placement_source_line": 18145,
-      "metadata_source_line": 17625,
+      "placement_source_line": 18147,
+      "metadata_source_line": 17627,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_g_root.png",
       "godot_asset": "res://assets/map/props/prop_g_root.png",
@@ -1977,15 +1977,15 @@
     },
     {
       "item": "m_c1tree",
-      "placement_source_line": 18145,
-      "metadata_source_line": 17600,
+      "placement_source_line": 18147,
+      "metadata_source_line": 17602,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/prop_corpsetree.png",
       "godot_asset": "res://assets/map/props/prop_corpsetree.png",
@@ -2015,15 +2015,15 @@
     },
     {
       "item": "m_c1sroot",
-      "placement_source_line": 18143,
-      "metadata_source_line": 17635,
+      "placement_source_line": 18145,
+      "metadata_source_line": 17637,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_root.png",
       "godot_asset": "res://assets/map/props/prop_s_root.png",
@@ -2048,15 +2048,15 @@
     },
     {
       "item": "m_c1sbone",
-      "placement_source_line": 18148,
-      "metadata_source_line": 17634,
+      "placement_source_line": 18150,
+      "metadata_source_line": 17636,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_bone.png",
       "godot_asset": "res://assets/map/props/prop_s_bone.png",
@@ -2081,15 +2081,15 @@
     },
     {
       "item": "corpse",
-      "placement_source_line": 18140,
-      "metadata_source_line": 18402,
+      "placement_source_line": 18142,
+      "metadata_source_line": 18404,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/corpse.png",
       "godot_asset": "res://assets/map/props/corpse.png",
@@ -2111,15 +2111,15 @@
     },
     {
       "item": "m_fbones",
-      "placement_source_line": 18140,
-      "metadata_source_line": 17525,
+      "placement_source_line": 18142,
+      "metadata_source_line": 17527,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/frozen_bones.png",
       "godot_asset": "res://assets/map/props/frozen_bones.png",
@@ -2143,15 +2143,15 @@
     },
     {
       "item": "m_c1cocoon",
-      "placement_source_line": 18151,
-      "metadata_source_line": 17618,
+      "placement_source_line": 18153,
+      "metadata_source_line": 17620,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/prop_cocoon.png",
       "godot_asset": "res://assets/map/props/prop_cocoon.png",
@@ -2180,15 +2180,15 @@
     },
     {
       "item": "m_hang_cage",
-      "placement_source_line": 18151,
-      "metadata_source_line": 17558,
+      "placement_source_line": 18153,
+      "metadata_source_line": 17560,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/hang_cage.png",
       "godot_asset": "res://assets/map/props/hang_cage.png",
@@ -2215,15 +2215,15 @@
     },
     {
       "item": "m_c1spod",
-      "placement_source_line": 18152,
-      "metadata_source_line": 17636,
+      "placement_source_line": 18154,
+      "metadata_source_line": 17638,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_pod.png",
       "godot_asset": "res://assets/map/props/prop_s_pod.png",
@@ -2248,15 +2248,15 @@
     },
     {
       "item": "m_c1spod",
-      "placement_source_line": 18152,
-      "metadata_source_line": 17636,
+      "placement_source_line": 18154,
+      "metadata_source_line": 17638,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_pod.png",
       "godot_asset": "res://assets/map/props/prop_s_pod.png",
@@ -2281,15 +2281,15 @@
     },
     {
       "item": "m_c1camp",
-      "placement_source_line": 18154,
-      "metadata_source_line": 17615,
+      "placement_source_line": 18156,
+      "metadata_source_line": 17617,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/prop_camp.png",
       "godot_asset": "res://assets/map/props/prop_camp.png",
@@ -2319,15 +2319,15 @@
     },
     {
       "item": "m_sword_pile",
-      "placement_source_line": 18154,
-      "metadata_source_line": 17557,
+      "placement_source_line": 18156,
+      "metadata_source_line": 17559,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/sword_pile.png",
       "godot_asset": "res://assets/map/props/sword_pile.png",
@@ -2354,15 +2354,15 @@
     },
     {
       "item": "m_c1sbone",
-      "placement_source_line": 18148,
-      "metadata_source_line": 17634,
+      "placement_source_line": 18150,
+      "metadata_source_line": 17636,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_bone.png",
       "godot_asset": "res://assets/map/props/prop_s_bone.png",
@@ -2387,15 +2387,15 @@
     },
     {
       "item": "m_bone_arch",
-      "placement_source_line": 18157,
-      "metadata_source_line": 17565,
+      "placement_source_line": 18159,
+      "metadata_source_line": 17567,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/bone_arch.png",
       "godot_asset": "res://assets/map/props/bone_arch.png",
@@ -2422,15 +2422,15 @@
     },
     {
       "item": "m_c1sroot",
-      "placement_source_line": 18143,
-      "metadata_source_line": 17635,
+      "placement_source_line": 18145,
+      "metadata_source_line": 17637,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_root.png",
       "godot_asset": "res://assets/map/props/prop_s_root.png",
@@ -2455,15 +2455,15 @@
     },
     {
       "item": "m_penta_circle",
-      "placement_source_line": 18160,
-      "metadata_source_line": 17562,
+      "placement_source_line": 18162,
+      "metadata_source_line": 17564,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/penta_circle.png",
       "godot_asset": "res://assets/map/props/penta_circle.png",
@@ -2490,15 +2490,15 @@
     },
     {
       "item": "m_c1altar",
-      "placement_source_line": 18160,
-      "metadata_source_line": 17616,
+      "placement_source_line": 18162,
+      "metadata_source_line": 17618,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/prop_altar.png",
       "godot_asset": "res://assets/map/props/prop_altar.png",
@@ -2527,15 +2527,15 @@
     },
     {
       "item": "m_skull_totem",
-      "placement_source_line": 18160,
-      "metadata_source_line": 17564,
+      "placement_source_line": 18162,
+      "metadata_source_line": 17566,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/skull_totem.png",
       "godot_asset": "res://assets/map/props/skull_totem.png",
@@ -2566,15 +2566,15 @@
     },
     {
       "item": "m_fyellow",
-      "placement_source_line": 18161,
-      "metadata_source_line": 17524,
+      "placement_source_line": 18163,
+      "metadata_source_line": 17526,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/glow_flower_yellow.png",
       "godot_asset": "res://assets/map/props/glow_flower_yellow.png",
@@ -2599,15 +2599,15 @@
     },
     {
       "item": "m_c1sbone",
-      "placement_source_line": 18148,
-      "metadata_source_line": 17634,
+      "placement_source_line": 18150,
+      "metadata_source_line": 17636,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_bone.png",
       "godot_asset": "res://assets/map/props/prop_s_bone.png",
@@ -2632,15 +2632,15 @@
     },
     {
       "item": "m_c1gtoxic",
-      "placement_source_line": 18163,
-      "metadata_source_line": 17628,
+      "placement_source_line": 18165,
+      "metadata_source_line": 17630,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_g_toxic.png",
       "godot_asset": "res://assets/map/props/prop_g_toxic.png",
@@ -2665,15 +2665,15 @@
     },
     {
       "item": "m_c1pool",
-      "placement_source_line": 18163,
-      "metadata_source_line": 17617,
+      "placement_source_line": 18165,
+      "metadata_source_line": 17619,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/prop_pool.png",
       "godot_asset": "res://assets/map/props/prop_pool.png",
@@ -2702,15 +2702,15 @@
     },
     {
       "item": "m_c1gtoxicf",
-      "placement_source_line": 18166,
-      "metadata_source_line": 17629,
+      "placement_source_line": 18168,
+      "metadata_source_line": 17631,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_g_toxic.png",
       "godot_asset": "res://assets/map/props/prop_g_toxic.png",
@@ -2736,15 +2736,15 @@
     },
     {
       "item": "pit_poison",
-      "placement_source_line": 18166,
-      "metadata_source_line": 18407,
+      "placement_source_line": 18168,
+      "metadata_source_line": 18409,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/collision/pit_poison.png",
       "godot_asset": "res://assets/map/props/pit_poison.png",
@@ -2770,15 +2770,15 @@
     },
     {
       "item": "m_c1sroot",
-      "placement_source_line": 18143,
-      "metadata_source_line": 17635,
+      "placement_source_line": 18145,
+      "metadata_source_line": 17637,
       "source_line": [
-        17524,
-        17636,
-        26059,
-        26078,
-        52440,
-        52451
+        17526,
+        17638,
+        26061,
+        26080,
+        52442,
+        52453
       ],
       "source_asset": "assets/map/ch1/floor_objects/prop_s_root.png",
       "godot_asset": "res://assets/map/props/prop_s_root.png",
@@ -4416,22 +4416,22 @@
     {
       "file": "godot/assets/map/web_parity/gate.png",
       "sha256": "9efa82ee709d5cc1d26d834d9293ec84a054b956c19ec35c2c177685f86ebaa4",
-      "source": "game.html:18245-18262,18339-18361,52027-52045"
+      "source": "game.html:18247-18264,18341-18363,52029-52047"
     },
     {
       "file": "godot/assets/map/web_parity/portal.png",
       "sha256": "33aa2cf8f84f07b34d608debadf09614f3be5c054589ea1774d81455c535d9cc",
-      "source": "game.html:18245-18262,18339-18361,52027-52045"
+      "source": "game.html:18247-18264,18341-18363,52029-52047"
     },
     {
       "file": "godot/assets/map/web_parity/portal_blue.png",
       "sha256": "474a7257e9ad15e9e68554baf34a41796dc50b153aa4e5a68adcf1460da21aea",
-      "source": "game.html:18245-18262,18339-18361,52027-52045"
+      "source": "game.html:18247-18264,18341-18363,52029-52047"
     },
     {
       "file": "godot/assets/map/web_parity/portal_red.png",
       "sha256": "b62e5b8c15ac66725890de36c359446c6b0c364861a5507c248871ad189dcd60",
-      "source": "game.html:18245-18262,18339-18361,52027-52045"
+      "source": "game.html:18247-18264,18341-18363,52029-52047"
     },
     {
       "file": "godot/assets/map/web_parity/sway_0_1.png",

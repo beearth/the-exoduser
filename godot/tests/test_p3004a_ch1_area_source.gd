@@ -48,8 +48,8 @@ func run() -> void:
 		[3220.0,4220.0],[5220.0,3220.0],[2420.0,2420.0],[5620.0,1820.0],[4020.0,1020.0],
 		[3780.0,6220.0],[3060.0,3420.0],[4820.0,1900.0],[4020.0,5540.0],[4020.0,4140.0]], "source_hole_order_and_coordinates")
 	check(raw.generation.random_draws == 14 and raw.undefined_paths.is_empty(), "seeded_timer_boundary_and_no_undefined")
-	check(raw.source.symbols.genFromTemplate.line == 30218 and raw.source.symbols.genFromTemplate.end == 30694 \
-		and raw.source.symbols._regionInit.line == 60697, "actual_ast_line_evidence")
+	check(raw.source.symbols.genFromTemplate.line == 30220 and raw.source.symbols.genFromTemplate.end == 30696 \
+		and raw.source.symbols._regionInit.line == 60699, "actual_ast_line_evidence")
 	check(raw.scope.prop_colliders == "NOT_OBSERVED" and raw.scope.effective_prop_positions == "NOT_OBSERVED", "raw_is_not_final_map_objects")
 	for i in 2:
 		check(Producer.read_area(raw).status == "READY", "repeat_read_%d" % i)

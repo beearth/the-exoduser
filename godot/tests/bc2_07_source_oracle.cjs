@@ -3,8 +3,8 @@ const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath,'source and output required');
 const raw=SNAPSHOT.readBytes(),hash=crypto.createHash('sha256').update(raw).digest('hex');assert.equal(hash,SNAPSHOT.sha256);
-const lines=raw.toString().split('\n');assert(lines[41336].includes("case'bossSBashWind'"));assert(lines[41349].includes("e.st2=25"));
-const src='\n'.repeat(41335)+'function tick(e,sp){switch(e.s){\n'+lines.slice(41336,41351).join('\n')+'\n}}';
+const lines=raw.toString().split('\n');assert(lines[41338].includes("case'bossSBashWind'"));assert(lines[41351].includes("e.st2=25"));
+const src='\n'.repeat(41337)+'function tick(e,sp){switch(e.s){\n'+lines.slice(41338,41353).join('\n')+'\n}}';
 const clone=x=>JSON.parse(JSON.stringify(x));const ln=()=>+(new Error().stack.match(/exoduser-game.html:(\d+):/)||[])[1];
 let events=[],cursor=0,nested=0,protectedRegion=false,contact=null,responses=[],opts={},ep=null,et=null,pt=null;
 function command(name,args,line=ln()){events.push({kind:'command',value:{command:name,source_line:line,args:clone(args),executed:false}})}
@@ -20,7 +20,7 @@ ctx.elMul=(...args)=>trace('elMul',args,opts.elementMul??.75);ctx.ar=()=>({el:3}
 ctx.hurtP=(...args)=>{trace('hurtP',args);cursor+=nested;mutateOwner();pt.iframes=60;contact.hurtP_after={enemy:clone(et),player:clone(pt)}};
 ctx.hurtE=(e,...args)=>{assert.equal(e,ep);contact.stunned_at_hurtE=et.stunned;trace('hurtE',args);cursor+=nested;mutateOwner()};
 ctx.doParry=(...args)=>{contact.bank_at_doParry=pt.parryBank;contact.doParry_enemy=clone(et);trace('doParry',args);cursor+=nested};ctx._poiseHit=(e,...args)=>{assert.equal(e,ep);trace('_poiseHit',args);cursor+=nested};
-vm.createContext(ctx);assert(lines[31722].startsWith('function dst('));vm.runInContext(lines[31722],ctx);vm.runInContext(src,ctx,{filename:'exoduser-game.html'});
+vm.createContext(ctx);assert(lines[31724].startsWith('function dst('));vm.runInContext(lines[31724],ctx);vm.runInContext(src,ctx,{filename:'exoduser-game.html'});
 const enemy=(s='bossSBash',st2=0,angle=0)=>({s,st2,x:0,y:0,r:44,facing:1.75,atk:46,el:0,_sbAng:angle,ib:true,keep:{other:71}});
 const player=(x=50,y=0)=>({x,y,r:12,iframes:0,s:'idle',baseAtk:11.5,parryBank:5,kb:{x:2,y:3},keep:29});
 const bits=v=>{const b=Buffer.alloc(8);b.writeDoubleLE(v);return b.toString('hex')};
@@ -47,4 +47,4 @@ for(const stunRes of [-1,-.25,0,.1,.49999999999999994,.5,.5000000000000001,1,2,-
 for(const radius of [0,12,40])for(const bossR of [0,44,60])for(const delta of [-1e-12,0,1e-12]){const e=enemy();e.r=bossR;const p=player(radius+bossR+20+delta);p.r=radius;run('radius-sum-margin20',7,e,p,1,{collision:false});}
 for(const parryBank of [undefined,null,0,-5,100])for(const baseAtk of [-3.25,11.5,4294967296+91]){const p=player();if(parryBank===undefined)delete p.parryBank;else p.parryBank=parryBank;p.baseAtk=baseAtk;run('parry-bank-fallback',9,enemy(),p,1,{parry:true});}
 const summary={cases:cases.length,events:cases.reduce((n,c)=>n+c.expected.events.length,0),contacts:cases.reduce((n,c)=>n+c.responses.length,0),parries:cases.reduce((n,c)=>n+c.responses.filter(r=>r.parry).length,0),charge_contacts:cases.reduce((n,c)=>n+c.responses.filter(r=>!r.parry&&r.player_before.s==='charge').length,0),collisions:cases.reduce((n,c)=>n+c.expected.events.filter(e=>e.kind==='command'&&e.value.command==='canMv').length,0),stun_reads:cases.reduce((n,c)=>n+c.responses.reduce((m,r)=>m+r.trace.filter(t=>t.command==='_eqAffix').length,0),0)};
-fs.writeFileSync(outputPath,JSON.stringify({source_only:true,game_sha256:hash,ranges:[[31723,31723],[41337,41351]],summary,cases}),'utf8');
+fs.writeFileSync(outputPath,JSON.stringify({source_only:true,game_sha256:hash,ranges:[[31725,31725],[41339,41353]],summary,cases}),'utf8');

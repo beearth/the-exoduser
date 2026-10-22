@@ -9,7 +9,7 @@ static func source_receipt() -> Dictionary:
 	return {"source_main":"e556b617190c325ca39f5add04357f5dea5ca87e",
 		"game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency":"BC06 1110eec6c2deacd43c6c20dd52affff33d4e4d47",
-		"source_ranges":[[41074,41109],[41111,41142],[41144,41183]],"states":STATES.duplicate(),
+		"source_ranges":[[41076,41111],[41113,41144],[41146,41185]],"states":STATES.duplicate(),
 		"live_combat_connected":false,"damage_or_parry_execution_verified":false,"new_hit_latch":false}
 
 static func begin_tick(si: int, enemy: Dictionary, sp: float, player: Dictionary, options: Dictionary = {}, chapter_catalog: Variant = null) -> Dictionary:
@@ -61,24 +61,24 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 		match state["step"]:
 			"entry":
 				if kind.ends_with("Wind"):
-					var line: int = 41075 if kind=="bossSlashWind" else (41112 if kind=="bossSlamWind" else 41145)
+					var line: int = 41077 if kind=="bossSlashWind" else (41114 if kind=="bossSlamWind" else 41147)
 					_write(e,{"facing":_aim(e,p)},line,events)
-					if kind=="bossSlashWind": _write(e,{"_weaponAng":-0.8+sin(e["st2"]*0.3)*0.3},41076,events)
-					elif kind=="bossSlamWind": _write(e,{"_weaponAng":-1.2+sin(e["st2"]*0.15)*0.2},41113,events)
+					if kind=="bossSlashWind": _write(e,{"_weaponAng":-0.8+sin(e["st2"]*0.3)*0.3},41078,events)
+					elif kind=="bossSlamWind": _write(e,{"_weaponAng":-1.2+sin(e["st2"]*0.15)*0.2},41115,events)
 					else:
 						var dir: Variant = _or_num(e.get("_sweepDir"),1)
 						if dir==null: return _fail("sweep_direction_unsupported")
-						_write(e,{"_weaponAng":dir*-1.2},41146,events)
+						_write(e,{"_weaponAng":dir*-1.2},41148,events)
 					state["step"]="slam_approach" if kind=="bossSlamWind" else "wind_rng"
 				elif kind=="bossSlash":
 					state["progress"]=1-e["st2"]/10.0
-					_write(e,{"_weaponAng":-0.8+state["progress"]*2.0},41082,events)
+					_write(e,{"_weaponAng":-0.8+state["progress"]*2.0},41084,events)
 					state["step"]="slash_move"
 				elif kind=="bossSlam":
-					_write(e,{"_weaponAng":-1.2+(1-e["st2"]/8.0)*2.4},41121,events)
+					_write(e,{"_weaponAng":-1.2+(1-e["st2"]/8.0)*2.4},41123,events)
 					if e["st2"]>0: state["step"]="done"
 					else:
-						_write(e,{"_weaponAng":0},41124,events)
+						_write(e,{"_weaponAng":0},41126,events)
 						var phase: Variant = _or_num(e.get("_bossPhase"),0)
 						if phase==null: return _fail("actor_phase_unsupported")
 						state["slam_radius"]=1000+state["si"]*30+phase*80
@@ -87,7 +87,7 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 					state["progress"]=1-e["st2"]/14.0
 					var dir: Variant = _or_num(e.get("_sweepDir"),1)
 					if dir==null: return _fail("sweep_direction_unsupported")
-					_write(e,{"_weaponAng":dir*(-1.2+state["progress"]*2.8)},41152,events)
+					_write(e,{"_weaponAng":dir*(-1.2+state["progress"]*2.8)},41154,events)
 					state["step"]="sweep_contact"
 			"slam_approach", "slash_move":
 				var slash: bool = state["step"]=="slash_move"
@@ -96,11 +96,11 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 					var speed: float = 2.5 if slash else 1.5
 					state["move_x"]=e["x"]+cos(e["facing"])*speed*state["sp"]
 					state["move_y"]=e["y"]+sin(e["facing"])*speed*state["sp"]
-					state["move_line"]=41085 if slash else 41116
+					state["move_line"]=41087 if slash else 41118
 					return _command(state,"canMv",state["move_line"],[state["move_x"],state["move_y"],e["r"]],events,ledger,"move")
 			"wind_rng":
 				state["step"]="wind_end"
-				var line: int = 41077 if kind=="bossSlashWind" else (41117 if kind=="bossSlamWind" else 41147)
+				var line: int = 41079 if kind=="bossSlashWind" else (41119 if kind=="bossSlamWind" else 41149)
 				var gate: Dictionary = _draw(rng,"wind_particle_gate",line,events,ledger)
 				if not gate["ok"]: return _fail(gate["reason"],ledger)
 				var threshold: float = 0.5 if kind=="bossSlashWind" else (0.6 if kind=="bossSlamWind" else 0.7)
@@ -115,7 +115,7 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 			"wind_end":
 				state["step"]="done"
 				if e["st2"]<=0:
-					var line: int = 41078 if kind=="bossSlashWind" else (41118 if kind=="bossSlamWind" else 41148)
+					var line: int = 41080 if kind=="bossSlashWind" else (41120 if kind=="bossSlamWind" else 41150)
 					var fields: Dictionary = {"s":"bossSlash" if kind=="bossSlashWind" else ("bossSlam" if kind=="bossSlamWind" else "bossSweep"),"st2":10 if kind=="bossSlashWind" else (8 if kind=="bossSlamWind" else 14)}
 					if kind=="bossSlashWind": fields["_weaponAng"]=-0.8
 					_write(e,fields,line,events)
@@ -140,27 +140,27 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				if state["progress"]>0.2 and state["progress"]<0.8:
 					if not _num(e.get("_weaponAng")): return _fail("post_contact_weapon_angle_missing")
 					var angle: float = e["facing"]+e["_weaponAng"]
-					return _command(state,"poolPart",41100,[e["x"]+cos(angle)*25,e["y"]+sin(angle)*25,cos(angle)*5,sin(angle)*5,"#ffaa44",3,6],events,ledger)
+					return _command(state,"poolPart",41102,[e["x"]+cos(angle)*25,e["y"]+sin(angle)*25,cos(angle)*5,sin(angle)*5,"#ffaa44",3,6],events,ledger)
 			"slash_end":
 				state["step"]="done"
 				if e["st2"]<=0:
 					if not _numbers(e,["_slashIdx","_slashCnt"]) or not _options(state,["shake"]): return _fail("slash_counter_or_option_missing")
-					_write(e,{"_slashIdx":e["_slashIdx"]+1},41103,events)
+					_write(e,{"_slashIdx":e["_slashIdx"]+1},41105,events)
 					if e["_slashIdx"]<e["_slashCnt"]:
-						_write(e,{"facing":_aim(e,p)},41105,events)
-						_write(e,{"s":"bossSlash"},41106,events)
-						var draw: Dictionary = _draw(rng,"slash_repeat_timer",41106,events,ledger)
+						_write(e,{"facing":_aim(e,p)},41107,events)
+						_write(e,{"s":"bossSlash"},41108,events)
+						var draw: Dictionary = _draw(rng,"slash_repeat_timer",41108,events,ledger)
 						if not draw["ok"]: return _fail(draw["reason"],ledger)
-						_write(e,{"st2":8+_i32(draw["unit"]*4),"_weaponAng":-0.8},41106,events)
-						_global("shake",3*state["options"]["shake"]/100.0,41107,events)
-						return _command(state,"SFX.swing",41107,[],events,ledger)
-					_write(e,{"s":"recover","st2":25,"_weaponAng":0},41108,events)
-					_global("shake",5*state["options"]["shake"]/100.0,41108,events)
+						_write(e,{"st2":8+_i32(draw["unit"]*4),"_weaponAng":-0.8},41108,events)
+						_global("shake",3*state["options"]["shake"]/100.0,41109,events)
+						return _command(state,"SFX.swing",41109,[],events,ledger)
+					_write(e,{"s":"recover","st2":25,"_weaponAng":0},41110,events)
+					_global("shake",5*state["options"]["shake"]/100.0,41110,events)
 			"slam_shock":
 				if not _options(state,["shake","hit_stop"]): return _fail("slam_option_reader_missing")
-				_write(e,{"shockR":0,"shockMax":state["slam_radius"]},41134,events)
-				_global("shake",14*state["options"]["shake"]/100.0,41135,events)
-				_global("hitStop",_i32(8*state["options"]["hit_stop"]/100.0),41135,events)
+				_write(e,{"shockR":0,"shockMax":state["slam_radius"]},41136,events)
+				_global("shake",14*state["options"]["shake"]/100.0,41137,events)
+				_global("hitStop",_i32(8*state["options"]["hit_stop"]/100.0),41137,events)
 				state["index"]=0
 				state["step"]="slam_ring"
 			"slam_ring":
@@ -171,9 +171,9 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 					continue
 				state["index"]+=1
 				var angle: float = PI*2*i/16.0
-				var draw: Dictionary = _draw(rng,"slam_ring_size",41138,events,ledger)
+				var draw: Dictionary = _draw(rng,"slam_ring_size",41140,events,ledger)
 				if not draw["ok"]: return _fail(draw["reason"],ledger)
-				return _command(state,"poolPart",41138,[e["x"]+cos(angle)*15,e["y"]+sin(angle)*15,cos(angle)*6,sin(angle)*6,"#996633",4+draw["unit"]*3,14],events,ledger)
+				return _command(state,"poolPart",41140,[e["x"]+cos(angle)*15,e["y"]+sin(angle)*15,cos(angle)*6,sin(angle)*6,"#996633",4+draw["unit"]*3,14],events,ledger)
 			"slam_dust":
 				if state["index"]>=10:
 					state["step"]="slam_vfx"
@@ -181,15 +181,15 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				state["index"]+=1
 				var units: Array = []
 				for tag: String in ["slam_dust_x","slam_dust_y","slam_dust_vx","slam_dust_vy","slam_dust_size"]:
-					var draw: Dictionary = _draw(rng,tag,41139,events,ledger)
+					var draw: Dictionary = _draw(rng,tag,41141,events,ledger)
 					if not draw["ok"]: return _fail(draw["reason"],ledger)
 					units.append(draw["unit"])
-				return _command(state,"poolPart",41139,[e["x"]+(units[0]-0.5)*40,e["y"]+(units[1]-0.5)*40,(units[2]-0.5)*3,-units[3]*5-2,"#ff6600",2+units[4]*2,10],events,ledger)
+				return _command(state,"poolPart",41141,[e["x"]+(units[0]-0.5)*40,e["y"]+(units[1]-0.5)*40,(units[2]-0.5)*3,-units[3]*5-2,"#ff6600",2+units[4]*2,10],events,ledger)
 			"slam_vfx":
 				state["step"]="slam_end"
-				return _command(state,"playVFXAng",41140,["boss_meteor_hit",e["x"],e["y"],150.0/768,2,0,false],events,ledger)
+				return _command(state,"playVFXAng",41142,["boss_meteor_hit",e["x"],e["y"],150.0/768,2,0,false],events,ledger)
 			"slam_end":
-				_write(e,{"s":"recover","st2":40},41141,events)
+				_write(e,{"s":"recover","st2":40},41143,events)
 				state["step"]="done"
 			"sweep_trail1", "sweep_trail2":
 				var first: bool = state["step"]=="sweep_trail1"
@@ -199,12 +199,12 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 					var angle: float = e["facing"]+e["_weaponAng"]
 					var radius: float = e["r"]*1.8+6
 					if not first: radius*=0.7
-					return _command(state,"poolPart",41169 if first else 41170,[e["x"]+cos(angle)*radius,e["y"]+sin(angle)*radius,cos(angle)*(4 if first else 2),sin(angle)*(4 if first else 2),"#ffcc44" if first else "#ff8800",4 if first else 2,8 if first else 5],events,ledger)
+					return _command(state,"poolPart",41171 if first else 41172,[e["x"]+cos(angle)*radius,e["y"]+sin(angle)*radius,cos(angle)*(4 if first else 2),sin(angle)*(4 if first else 2),"#ffcc44" if first else "#ff8800",4 if first else 2,8 if first else 5],events,ledger)
 			"sweep_end":
 				if e["st2"]>0:
 					state["step"]="done"
 					continue
-				_write(e,{"_weaponAng":0},41173,events)
+				_write(e,{"_weaponAng":0},41175,events)
 				var phase: Variant = _or_num(e.get("_bossPhase"),0)
 				if phase==null: return _fail("actor_phase_unsupported")
 				state["step"]="sweep_shots" if phase>=2 else "sweep_recover"
@@ -212,21 +212,21 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 			"sweep_shots":
 				if state["index"]>2:
 					state["step"]="sweep_recover"
-					return _command(state,"addTxt",41180,[e["x"],e["y"]-20,"wind!","#ffcc00",20],events,ledger)
+					return _command(state,"addTxt",41182,[e["x"],e["y"]-20,"wind!","#ffcc00",20],events,ledger)
 				var angle: float = e["facing"]+state["index"]*0.25
 				state["index"]+=1
-				return _command(state,"_spawnBossProjectile",41179,[{"x":e["x"]+cos(angle)*20,"y":e["y"]+sin(angle)*20,"vx":cos(angle)*4,"vy":sin(angle)*4,
+				return _command(state,"_spawnBossProjectile",41181,[{"x":e["x"]+cos(angle)*20,"y":e["y"]+sin(angle)*20,"vx":cos(angle)*4,"vy":sin(angle)*4,
 					"dmg":_i32(e["atk"]*0.8),"el":e["el"],"friendly":false,"life":200,"ml":200,"col":"#ffaa00","sz":2}],events,ledger)
 			"sweep_recover":
 				if not _options(state,["shake"]): return _fail("sweep_option_reader_missing")
-				_write(e,{"s":"recover","st2":30},41182,events)
-				_global("shake",6*state["options"]["shake"]/100.0,41182,events)
+				_write(e,{"s":"recover","st2":30},41184,events)
+				_global("shake",6*state["options"]["shake"]/100.0,41184,events)
 				state["step"]="done"
 			_: return _fail("unknown_melee_checkpoint")
 	return {"status":"READY","done":true,"enemy":e,"player":p,"events":events,"rng_ledger":ledger,"command":null,"continuation":null,"full_tick_complete":false}
 
 static func _contact(family: String, e: Dictionary) -> Dictionary:
-	return {"family":family,"source_lines":[41091,41094] if family=="slash" else ([41128,41131] if family=="slam" else [41159,41162]),"actor_ref":"boss",
+	return {"family":family,"source_lines":[41093,41096] if family=="slash" else ([41130,41133] if family=="slam" else [41161,41164]),"actor_ref":"boss",
 		"hurtP_formula":{"atk":e["atk"],"multiplier":1.5 if family=="slash" else (2.2 if family=="slam" else 1.8),"element":e["el"],"elemental_provider":"elMul(e.el,ar().el)","rounding":"ToInt32_after_elemental"},
 		"parry_formula":{"multiplier":4 if family=="slam" else 3,"stunned":80 if family=="slam" else 60,"poise":20,"angle":e["facing"]+PI,
 			"formula":"ToInt32((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0))*multiplier*pParryDmg())"},

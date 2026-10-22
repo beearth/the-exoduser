@@ -224,3 +224,8 @@ sha 하드코딩 교체(코드 상수만):
 - p1002f 1회차 네이티브 크래시(exit 139) 원인 미조사. 재실행 1회 358/0.
 - §9-5 Mac 19종은 수정하지 않았고, Mac 브랜치에서의 결과는 미실행.
 - 실행 중인 사용자 창·다른 세션 서버는 건드리지 않았다. Git 반영만으로 열린 실행본은 바뀌지 않는다.
+
+
+### Mac INTEG-14 HS-M7 후속 (2026-10-22)
+
+권고 (가)를 적용하고 19종을 모두 최종 PASS로 회복했다. 원래 추출 도구 재실행·데이터 동일성·source_line metadata +2 및 수정 전/후 실행을 구분했다. PC 테스트 원본 byte 유지. Mac PC HUD199/0, PC followups fieldboss154/1(`arrow_passes_through_on_hitcd(n=0):recycled`)은 PC 측167/0과 구분해 인계한다. E2E1회7PASS/11NOT_READY·처치0. [INTEG-14 상세](../../INTEG14_HUD_SNAPSHOT_HS_M7_20261022.md).

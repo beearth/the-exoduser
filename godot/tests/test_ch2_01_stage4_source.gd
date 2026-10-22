@@ -61,7 +61,7 @@ func run() -> void:
  for a in raw.asset_refs:files[a.file]=true
  check(raw.asset_refs.size()==47 and files.size()==29 and raw.source.files.size()==31,"byte_references_only_no_image_load")
  check(raw.environment_refs.size()==1 and not raw.source.symbols.has("environment.baked_manifest") and not raw.has("source_geometry") and not raw.has("ch1_deco_raw"),"no_ch1_environment_claim")
- check(raw.source.symbols._CH2S4.line==17991 and raw.source.symbols["_MAP_COMPOSE.4"].line==18197,"latest_native_ast_lines")
+ check(raw.source.symbols._CH2S4.line==17993 and raw.source.symbols["_MAP_COMPOSE.4"].line==18199,"latest_native_ast_lines")
  for i in 2:check(C.read_area(raw).status=="READY","repeated_read_"+str(i))
  check(JSON.stringify(raw)==before,"positive_reads_do_not_mutate")
  for value in [null,[],true,1,"snapshot"]:reject(value,"unsupported_type_"+str(typeof(value)))

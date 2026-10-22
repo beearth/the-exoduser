@@ -100,7 +100,7 @@ func verify_contact(cmd: Dictionary,a: Dictionary) -> void:
 	var d: Dictionary=cmd["args"][0]
 	var e: Dictionary=a["enemy_before"]
 	var p: Dictionary=a["player_before"]
-	check(d.size()==10 and d["family"]=="shield_bash_2" and d["source_lines"]==[41344,41348] and d["actor_ref"]=="boss" and d["combat_verified"]==false,"protected descriptor envelope")
+	check(d.size()==10 and d["family"]=="shield_bash_2" and d["source_lines"]==[41346,41350] and d["actor_ref"]=="boss" and d["combat_verified"]==false,"protected descriptor envelope")
 	check(d["requires"]==["isPWin","hurtP","boss_hurtE","doParry","poise_owner"],"shared protected owners")
 	check(d["charge_rule"]=="isPWin first; otherwise charge skips damage/KB/stun but contact recovers30","parry before charge exclusion")
 	var f: Dictionary=d["hurtP_formula"]

@@ -12,7 +12,7 @@
 | Node 공통 API | `source_snapshot/snapshot.cjs`: manifest 기반 sha256/originalCommit/sourcePath/readBytes. readBytes는 실제 바이트 SHA를 검사 |
 | 제품 12개/port_modules 7개 | 기존 SHA 문자열을 동일 값의 공통 상수로 교체. 수치·분기·피해·타이머·런타임 입력/출력 변화 없음. 스냅샷 로딩/해싱은 런타임 tick에 추가하지 않음 |
 | 테스트/도구 | 기존 source CLI 인수 형식은 보존하되 이 SHA에 묶인 oracle는 snapshot 경로 사용. 다른 원본 SHA의 테스트는 변경하지 않음. CH1/CH2 exporter는 live game.html 및 origin/main game blob 대조를 제거하고 고정 snapshot 대조 사용 |
-| fixture 7개 | 기존 SHA/원 커밋/케이스 전부 유지. source_snapshot 출처 경로만 추가. 역사적 `file: game.html`/행 번호는 스냅샷 내부 원 파일명으로 유지 |
+| fixture 7개 | INTEG-14에서 원래 sound builder를 `91e2774b7`로 재실행. source_ref/source_sha256만 변경, 케이스·기대값 동일. 원래 source_snapshot 출처 경로 보존 |
 | 범위 경계 | PC player.gd·docs/2_3·맵 비주얼/geometry·번역 목록 CRLF 수정 없음. 필드 BGM 변경은 별도 승인 merge에 한정 |
 
 ## 갱신 절차
@@ -38,3 +38,11 @@
 - 절차 4(행 번호·fragment): 포트 영수증·oracle 라벨·고정 데이터의 G행은 **이전 좌표(e556b617)를 유지**한다. PC 행 고정 oracle 3종은 읽을 때만 `n>=16156 → n+2`. 계약 문서는 “행 +2 이동” 주석만 단다.
 - sha만 바꾸지 않은 것: 추출 출처를 기록한 데이터·fixture(CH1/CH2 맵 출처, demo11_*.json, sound fixture)는 새 바이트로 재추출·대조 없이는 바꾸지 않았다.
 - 결과: PC 필수 회귀 전부 0실패. 스냅샷을 읽는 그 밖의 Mac 테스트 57종 중 **19종이 이전 스냅샷 통과 → 새 스냅샷 실패**(행 고정 oracle 9종: bc10·bc2_02~07·bc3_01·demo11_16 / 출처 SHA 고정 10종: 맵 출처 ch2_01·p3004a·p3004c 3종 + sound fixture provenance 7종). Mac 조치 전 main 병합 금지. 상세 표·선택지: [pc-hud-stats_REPORT §9-5](orders/reports/pc-hud-stats_REPORT.md#9-5-스냅샷-갱신이-깨뜨리는-mac-소유-테스트-main-병합-전-조치-필요).
+
+### INTEG-14 / HS-M7 (2026-10-22)
+
+PC HUD merge `1a2e88b2f1c27b94fd86682c39a142cafdf427aa`로 교체된 원본을 Git `91e2774b7:game.html`과 byte 비교해 일치 확인했다. 이전 snapshot의 16156행 이후 코드는 신규 snapshot의 +2행과 동일하다. live origin/main은 조회 당시 `806be864816bc5bf2146688b72c1ebeab7d5817f`이며 이 검수 입력으로 바꾸지 않았다.
+
+HS-M7은 (가)를 적용했다. 9종 oracle·관련 포트의 source_line 메타데이터·CH2 SYMBOLS·AST 행 단정을 동일 코드 위치로 이동했다. 수치·피해·타이머·RNG 판정은 유지한다. 원래 추출 도구로 맵 si0/si1/si4와 sound 7종을 재생성했다. 맵은 source 외 top-level 데이터 동일, 모든 심볼 content hash 동일이며 위치만 +2. sound는 source_ref/source_sha256 외 동일하다. 생성 에셋의 과거 lineage SHA는 삭제하지 않고 별도 current revalidation을 기록했다.
+
+전체 참조 변경 표는 `INTEG14_HS_M7_LINE_REFERENCES_20261022.json`, 단회 최종 판정과 수정 전 실행 구분은 `INTEG14_HUD_SNAPSHOT_HS_M7_20261022.md`를 따른다. 기존 실패 7종을 PASS로 바꾸거나 source 판정을 약화하지 않았다.

@@ -101,7 +101,7 @@ func consume(row: Dictionary) -> Dictionary:
 func verify_contact(cmd: Dictionary,a: Dictionary) -> void:
 	var d: Dictionary=cmd["args"][0]
 	var e: Dictionary=a["enemy_before"]
-	check(equivalent(d.keys().size(),7) and d["source_lines"]==[40586,40589] and d["actor_ref"]=="boss" and d["combat_verified"]==false,"protected descriptor envelope")
+	check(equivalent(d.keys().size(),7) and d["source_lines"]==[40588,40591] and d["actor_ref"]=="boss" and d["combat_verified"]==false,"protected descriptor envelope")
 	check(d["requires"]==["isPWin","hurtP","boss_hurtE","doParry","poise_owner"],"shared protected owners")
 	var f: Dictionary=d["hurtP_formula"]
 	check(f["element"]==e["el"] and f["elemental_provider"]=="elMul(e.el,ar().el)" and f["rounding"]=="ToInt32_before_and_after_elemental" and f["raw_damage"]==Common._i32(e["atk"]*2.5),"raw ToInt32 before element")

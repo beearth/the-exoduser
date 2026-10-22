@@ -1,5 +1,5 @@
 extends RefCounted
-## BC3-01r: source G9976–9981/10009–10010/16691, registration only.
+## BC3-01r: source G9976–9981/10009–10010/16693, registration only.
 ## CH2 bridge supplies the 30 shared moves, 5 phases and 36 shared combos.
 ## No actor, RNG, clock, Main/State, damage, save or spawn-color connection.
 const Shared = preload("res://scripts/native_ch2_boss_catalog_bridge.gd")
@@ -7,7 +7,7 @@ const SOURCE_MAIN = "249c26fad989071a94c19128e524ce0bbcb2c8c9"
 const DEPENDENCY_SHA = "a3b5391c54bb62b9f784bf2acac12bfbd2747192"
 const GAME_SHA256 = preload("res://source_snapshot/snapshot.gd").SHA256
 const _MANIFEST_SHA256 = "3566a0b356c41a32fad3da622a541cb89784942eb7335debb0e53ede3090e47b"
-const _NAMES = ["얼음 망령", "서리의 기사", "얼어붙은 감시자", "얼음 속 봉인 괴물"] # G16691
+const _NAMES = ["얼음 망령", "서리의 기사", "얼어붙은 감시자", "얼음 속 봉인 괴물"] # G16693
 const _BASE = ["slashCombo", "slam", "sweep", "charge", "jump", "burst", "shock", "fan", "spin", "grab", "multiDash", "summon", "mine", "vortex", "chaseAoe", "elemBall", "beanStorm", "beanRain", "fanWave", "laser", "tideWave", "groundFissure", "seekerMines", "shieldBash2", "lavaPools", "fireRain", "shockGrid", "donutSlam", "crossWipe", "safeCorner", "tidalWipe", "rapidMissile"] # G9976–9977, cage removed G10010
 const _UNLOCKS = [[], ["teleStrike", "delaySlash"], ["teleStrike", "delaySlash", "perilThrust", "spiralBullet"], ["teleStrike", "delaySlash", "perilThrust", "spiralBullet", "gravityWell"]] # G9978–9980
 const _COMMON_COMBO_ORDINALS = [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 17, 18, 19, 20, 21, 23, 25, 26, 27, 28, 29, 39, 42, 43, 45, 51, 57, 58, 59, 60, 61, 62, 64, 66] # G9881–9950
@@ -41,8 +41,8 @@ static func source_receipt() -> Dictionary:
 		"new_move_count":7, "combo_union_count":44, "common_combo_count":36, "new_combo_count":8,
 		"max_ch3_source_idx":56, "stages":[10,11,12,13],
 		"source_ranges":{"moves":[9820,9880], "combos":[9881,9950], "phases":[9951,9957],
-			"ch3_sets":[9976,9981], "cage_removal":[10009,10010], "names":[16691,16691],
-			"element_color":[14338,14338], "body_color":[31163,31163]},
+			"ch3_sets":[9976,9981], "cage_removal":[10009,10010], "names":[16693,16693],
+			"element_color":[14338,14338], "body_color":[31165,31165]},
 		"live_combat_connected":false, "save_io":false, "rng_draws":0}
 	if data["ready"]: receipt["move_manifest"]=snapshot["receipt"]["move_manifest"].duplicate(true)
 	return receipt

@@ -8,7 +8,7 @@ const _OWNER = "BC2-07/shield-bash/v1"
 
 static func source_receipt() -> Dictionary:
 	return {"ready":Context.resolve(Catalog)["ready"],"source_game_sha256":Catalog.source_receipt()["source_game_sha256"],
-		"source_range":[41337,41351],"states":STATES.duplicate(),"clock":"BC05 already decremented st2",
+		"source_range":[41339,41353],"states":STATES.duplicate(),"clock":"BC05 already decremented st2",
 		"live_combat_connected":false,"full_tick_complete":false,"damage_or_parry_execution_verified":false}
 
 static func begin_tick(si: int, enemy: Dictionary, sp: float, player: Dictionary) -> Dictionary:
@@ -40,7 +40,7 @@ static func next_tick(token: Dictionary, response: Variant = null) -> Dictionary
 			"move":
 				if not response.get("value") is bool: return Common._fail("collision_result_missing")
 				if response["value"]:
-					Common._write(state["enemy"],{"x":state["enemy"]["x"]+state["dx"],"y":state["enemy"]["y"]+state["dy"]},41342,events)
+					Common._write(state["enemy"],{"x":state["enemy"]["x"]+state["dx"],"y":state["enemy"]["y"]+state["dy"]},41344,events)
 			"contact":
 				if not response.get("enemy_after") is Dictionary or not response.get("player_after") is Dictionary \
 					or not _actor(response["enemy_after"]) or not _player(response["player_after"]): return Common._fail("protected_contact_readback_missing")
@@ -56,34 +56,34 @@ static func next_tick(token: Dictionary, response: Variant = null) -> Dictionary
 		match state["step"]:
 			"entry":
 				if state["kind"]=="bossSBashWind":
-					Common._write(e,{"facing":Common._aim(e,p)},41338,events)
+					Common._write(e,{"facing":Common._aim(e,p)},41340,events)
 					state["step"]="done"
 					if e["st2"]<=0:
-						Common._write(e,{"s":"bossSBash","st2":18},41339,events)
-						return Common._command(state,"SFX.block",41339,[],events,ledger)
+						Common._write(e,{"s":"bossSBash","st2":18},41341,events)
+						return Common._command(state,"SFX.block",41341,[],events,ledger)
 				else:
 					state["dx"]=cos(e["_sbAng"])*9*state["sp"]
 					state["dy"]=sin(e["_sbAng"])*9*state["sp"]
 					state["step"]="contact_gate"
-					return Common._command(state,"canMv",41342,[e["x"]+state["dx"],e["y"]+state["dy"],e["r"]],events,ledger,"move")
+					return Common._command(state,"canMv",41344,[e["x"]+state["dx"],e["y"]+state["dy"],e["r"]],events,ledger,"move")
 			"contact_gate":
 				state["step"]="timeout"
 				if Common._distance(e,p)<p["r"]+e["r"]+20 and p["iframes"]<=0:
 					state["step"]="contact_end"
 					var d: Dictionary=Common._contact("sweep",e)
 					d["family"]="shield_bash_2"
-					d["source_lines"]=[41344,41348]
+					d["source_lines"]=[41346,41350]
 					d["parry_formula"]["angle"]=e["_sbAng"]+PI
 					d["parry_formula"]["poise"]=25
 					d["charge_rule"]="isPWin first; otherwise charge skips damage/KB/stun but contact recovers30"
 					d["stun_formula"]={"base":45,"resistance_cap":0.5,"resistance_provider":"_eqAffix('stunRes')",
 						"formula":"max(P.stunned||0,ToInt32(45*(1-min(.5,_eqAffix('stunRes')))))"}
-					return Common._command(state,"resolve_shield_bash_contact",41344,[d],events,ledger,"contact")
+					return Common._command(state,"resolve_shield_bash_contact",41346,[d],events,ledger,"contact")
 			"contact_end":
-				Common._write(e,{"s":"recover","st2":30},41349,events)
+				Common._write(e,{"s":"recover","st2":30},41351,events)
 				state["step"]="done"
 			"timeout":
-				if e["st2"]<=0: Common._write(e,{"s":"recover","st2":25},41350,events)
+				if e["st2"]<=0: Common._write(e,{"s":"recover","st2":25},41352,events)
 				state["step"]="done"
 			_: return Common._fail("unknown_shield_bash_checkpoint")
 	return {"status":"READY","done":true,"enemy":e,"player":p,"events":events,"rng_ledger":ledger,"command":null,"continuation":null,"full_tick_complete":false}

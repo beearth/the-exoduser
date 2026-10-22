@@ -10,7 +10,7 @@ static func source_receipt() -> Dictionary:
 	return {"source_main":"a00893ad9b93750d7ce70b90f5bd501b578daccb",
 		"game_sha256":preload("res://source_snapshot/snapshot.gd").SHA256,
 		"dependency":"BC07 edcbc480491a2b9c55abbb99fcda3dc47073583c",
-		"ranges":[[38315,38355],[40483,40517],[40664,40708],[40942,40977]],
+		"ranges":[[38317,38357],[40485,40519],[40666,40710],[40944,40979]],
 		"live_combat_connected":false,"damage_or_parry_execution_verified":false,"full_tick_complete":false}
 
 ## checkpoint: state / idle_move / idle_switch. context.distance is the ORIGINAL
@@ -92,7 +92,7 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 						t["speed"]=e["speed"]*data_catalog.phase_by_index(int(e["_bossPhase"]))["spdM"]*aura*t["sp"]
 						if c["distance"]>200:
 							t["step"]="approach"
-							return _cmd(t,"_ffDir",38322,[e["x"],e["y"]],events,ledger,"flow")
+							return _cmd(t,"_ffDir",38324,[e["x"],e["y"]],events,ledger,"flow")
 						t["step"]="orbit" if c["distance"]>50 else "retreat"
 				elif t["checkpoint"]=="idle_switch":
 					if not _numbers(e,["speed","projCd","projT"]): return _fail("idle_stats_missing")
@@ -100,41 +100,41 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 					if aura==null: return _fail("aura_shape_unsupported")
 					var speed: float=e["speed"]*1.6*aura
 					t["step"]="idle_sep"
-					return _move(t,e["x"]+cos(e["facing"])*speed*t["sp"],e["y"]+sin(e["facing"])*speed*t["sp"],"xy",40483,"idle_sep",events,ledger)
+					return _move(t,e["x"]+cos(e["facing"])*speed*t["sp"],e["y"]+sin(e["facing"])*speed*t["sp"],"xy",40485,"idle_sep",events,ledger)
 				elif kind=="bossChargeWind":
-					if t["si"] not in [0,3] or e["st2"]>18: _write(e,{"facing":_aim(e,p)},40665,events)
+					if t["si"] not in [0,3] or e["st2"]>18: _write(e,{"facing":_aim(e,p)},40667,events)
 					t["step"]="done"
 					if e["st2"]<=0:
-						_write(e,{"s":"bossCharge","st2":50,"echDx":cos(e["facing"]),"echDy":sin(e["facing"])},40666,events)
+						_write(e,{"s":"bossCharge","st2":50,"echDx":cos(e["facing"]),"echDy":sin(e["facing"])},40668,events)
 						t["step"]="charge_parts"
-						return _cmd(t,"SFX.charge",40667,[],events,ledger)
+						return _cmd(t,"SFX.charge",40669,[],events,ledger)
 				elif kind=="bossJumpWind":
 					t["step"]="done"
 					if e["st2"]<=0:
-						_write(e,{"s":"bossJump","st2":40},40690,events)
+						_write(e,{"s":"bossJump","st2":40},40692,events)
 						t["step"]="jump_label"
-						return _cmd(t,"_T",40690,["🦅 도약!"],events,ledger,"translate")
+						return _cmd(t,"_T",40692,["🦅 도약!"],events,ledger,"translate")
 				elif kind=="bossMultiDashWind":
-					_write(e,{"facing":_aim(e,p)},40943,events)
+					_write(e,{"facing":_aim(e,p)},40945,events)
 					t["step"]="dash_wind_end"
-					var gate: Variant=_draw(rng,"dash_wind_gate",40944,events,ledger)
+					var gate: Variant=_draw(rng,"dash_wind_gate",40946,events,ledger)
 					if not _unit(gate): return _fail("rng_missing_or_invalid",ledger)
 					if gate>0.6:
-						var ux: Variant=_draw(rng,"dash_wind_vx",40944,events,ledger)
+						var ux: Variant=_draw(rng,"dash_wind_vx",40946,events,ledger)
 						if not _unit(ux): return _fail("rng_missing_or_invalid",ledger)
-						var uy: Variant=_draw(rng,"dash_wind_vy",40944,events,ledger)
+						var uy: Variant=_draw(rng,"dash_wind_vy",40946,events,ledger)
 						if not _unit(uy): return _fail("rng_missing_or_invalid",ledger)
 						var color: String="#ff4488"
 						if t["si"] in [0,3]:
-							var uc: Variant=_draw(rng,"dash_wind_color",40944,events,ledger)
+							var uc: Variant=_draw(rng,"dash_wind_color",40946,events,ledger)
 							if not _unit(uc): return _fail("rng_missing_or_invalid",ledger)
 							color="#66dd22" if uc<0.5 else "#33aa22"
-						return _cmd(t,"poolPart",40944,[e["x"],e["y"],(ux-0.5)*3,(uy-0.5)*3,color,2,6],events,ledger)
+						return _cmd(t,"poolPart",40946,[e["x"],e["y"],(ux-0.5)*3,(uy-0.5)*3,color,2,6],events,ledger)
 				elif kind in ["bossCharge","bossJump","bossMultiDash"]:
 					if not _num(c.get("frame")) or not c.get("vfx_available") is bool: return _fail("trail_global_reader_missing")
 					t["step"]="active_move"
 					if t["si"] in [0,3] and fmod(c["frame"],6)==0 and c["vfx_available"]:
-						return _cmd(t,"playVFXAng",40669 if kind=="bossCharge" else (40692 if kind=="bossJump" else 40950),["druid_trail",e["x"],e["y"],e["r"]*2/256.0,3,e["facing"],false],events,ledger)
+						return _cmd(t,"playVFXAng",40671 if kind=="bossCharge" else (40694 if kind=="bossJump" else 40952),["druid_trail",e["x"],e["y"],e["r"]*2/256.0,3,e["facing"],false],events,ledger)
 				else: return _fail("unsupported_state")
 			"approach":
 				var speed: float=t["speed"]
@@ -143,25 +143,25 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				var a: float=_aim(e,p)
 				t["mx"]=(flow["x"] if flow!=null else cos(a))*speed*boost
 				t["my"]=(flow["y"] if flow!=null else sin(a))*speed*boost
-				t["xy_line"]=38327
-				t["fallback_line"]=38328
+				t["xy_line"]=38329
+				t["fallback_line"]=38330
 				t["step"]="fallback_xy"
 			"orbit":
 				if not _numbers(e,["_bossOrbitAng","_bossStrafeCd"]): return _fail("orbit_snapshot_missing")
 				var dir: Variant=_or(e.get("_strafeDir"),1)
 				if dir==null: return _fail("direction_shape_unsupported")
-				_write(e,{"_bossOrbitAng":e["_bossOrbitAng"]+0.015*t["sp"]*dir},38332,events)
-				if e["_bossStrafeCd"]>0: _write(e,{"_bossStrafeCd":e["_bossStrafeCd"]-t["sp"]},38333,events)
+				_write(e,{"_bossOrbitAng":e["_bossOrbitAng"]+0.015*t["sp"]*dir},38334,events)
+				if e["_bossStrafeCd"]>0: _write(e,{"_bossStrafeCd":e["_bossStrafeCd"]-t["sp"]},38335,events)
 				else:
-					var u: Variant=_draw(rng,"orbit_reverse",38334,events,ledger)
+					var u: Variant=_draw(rng,"orbit_reverse",38336,events,ledger)
 					if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
-					if u<0.005: _write(e,{"_strafeDir":dir*-1,"_bossStrafeCd":60},38334,events)
+					if u<0.005: _write(e,{"_strafeDir":dir*-1,"_bossStrafeCd":60},38336,events)
 				var radius: float=maxf(80,150-e["_bossPhase"]*18)
 				var angle: float=atan2(p["y"]+sin(e["_bossOrbitAng"])*radius-e["y"],p["x"]+cos(e["_bossOrbitAng"])*radius-e["x"])
 				t["mx"]=cos(angle)*t["speed"]*0.7
 				t["my"]=sin(angle)*t["speed"]*0.7
-				t["xy_line"]=38340
-				t["fallback_line"]=38341
+				t["xy_line"]=38342
+				t["fallback_line"]=38343
 				t["step"]="fallback_xy"
 			"retreat":
 				var dir: Variant=_or(e.get("_strafeDir"),1)
@@ -169,13 +169,13 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				t["away"]=atan2(e["y"]-p["y"],e["x"]-p["x"])
 				var angle: float=t["away"]+dir*0.4
 				t["step"]="retreat_side"
-				return _move(t,e["x"]+cos(angle)*t["speed"],e["y"]+sin(angle)*t["speed"],"xy",38348,"done",events,ledger)
+				return _move(t,e["x"]+cos(angle)*t["speed"],e["y"]+sin(angle)*t["speed"],"xy",38350,"done",events,ledger)
 			"retreat_side":
 				var angle: float=t["away"]+PI/2*_or(e.get("_strafeDir"),1)
 				t["mx"]=cos(angle)*t["speed"]
 				t["my"]=sin(angle)*t["speed"]
-				t["xy_line"]=38352
-				t["fallback_line"]=38353
+				t["xy_line"]=38354
+				t["fallback_line"]=38355
 				t["retreat"]=true
 				t["step"]="fallback_xy"
 			"fallback_xy":
@@ -189,19 +189,19 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				return _move(t,e["x"],e["y"]+t["my"],"y",t["fallback_line"]+(1 if t.get("retreat",false) or t["checkpoint"]=="state" else 0),t.get("fallback_success",t["step"]),events,ledger)
 			"charge_parts":
 				t["step"]="done"
-				return _cmd(t,"addParts",40667,[e["x"],e["y"],e["col"],8],events,ledger)
+				return _cmd(t,"addParts",40669,[e["x"],e["y"],e["col"],8],events,ledger)
 			"jump_label":
 				t["step"]="jump_sfx"
-				return _cmd(t,"addTxt",40690,[e["x"],e["y"]-30,t["label"],"#cc66ff",30],events,ledger)
+				return _cmd(t,"addTxt",40692,[e["x"],e["y"]-30,t["label"],"#cc66ff",30],events,ledger)
 			"jump_sfx":
 				t["step"]="done"
-				return _cmd(t,"SFX.slam",40690,[],events,ledger)
+				return _cmd(t,"SFX.slam",40692,[],events,ledger)
 			"dash_wind_end":
 				t["step"]="done"
 				if e["st2"]<=0:
-					_write(e,{"echDx":cos(e["facing"]),"echDy":sin(e["facing"])},40946,events)
-					_write(e,{"s":"bossMultiDash","st2":12},40947,events)
-					return _cmd(t,"SFX.charge",40947,[],events,ledger)
+					_write(e,{"echDx":cos(e["facing"]),"echDy":sin(e["facing"])},40948,events)
+					_write(e,{"s":"bossMultiDash","st2":12},40949,events)
+					return _cmd(t,"SFX.charge",40949,[],events,ledger)
 			"active_move":
 				if kind=="bossJump":
 					if not _numbers(e,["jumpOx","jumpOy","jumpX","jumpY"]): return _fail("jump_snapshot_missing")
@@ -214,12 +214,12 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 						x=e["jumpOx"]+(e["jumpX"]-e["jumpOx"])*(prog*2)*0.3
 						y=e["jumpOy"]+(e["jumpY"]-e["jumpOy"])*(prog*2)*0.3
 					t["step"]="jump_land"
-					return _move(t,x,y,"xy",40698,"jump_land",events,ledger)
+					return _move(t,x,y,"xy",40700,"jump_land",events,ledger)
 				if not _numbers(e,["echDx","echDy"]): return _fail("dash_vector_missing")
 				var speed: float=(35 if kind=="bossCharge" else 9)*t["sp"]
 				t["mx"]=e["echDx"]*speed
 				t["my"]=e["echDy"]*speed
-				t["xy_line"]=40672 if kind=="bossCharge" else 40952
+				t["xy_line"]=40674 if kind=="bossCharge" else 40954
 				t["fallback_line"]=t["xy_line"]+1
 				t["after_move"]="charge_blocked" if kind=="bossCharge" else "dash_trail"
 				t["fallback_success"]="charge_contact" if kind=="bossCharge" else "dash_trail"
@@ -227,119 +227,119 @@ static func next_tick(token: Dictionary, response: Variant = null, rng: Callable
 				return _move(t,e["x"]+t["mx"],e["y"]+t["my"],"xy",t["xy_line"],"charge_contact" if kind=="bossCharge" else "dash_trail",events,ledger)
 			"charge_blocked":
 				if not _num(c.get("shake")): return _fail("shake_reader_missing")
-				_write(e,{"shockR":0,"shockMax":800,"s":"bossShock","st2":20},40678,events)
-				_global("shake",25*c["shake"]/100.0,40679,events)
+				_write(e,{"shockR":0,"shockMax":800,"s":"bossShock","st2":20},40680,events)
+				_global("shake",25*c["shake"]/100.0,40681,events)
 				t["step"]="charge_impact"
-				return _cmd(t,"SFX.groggy",40679,[],events,ledger)
+				return _cmd(t,"SFX.groggy",40681,[],events,ledger)
 			"charge_impact":
 				t["step"]="done"
-				return _cmd(t,"playVFXAng",40679,["boss_meteor_hit",e["x"],e["y"],150.0/768,2,0,false],events,ledger)
+				return _cmd(t,"playVFXAng",40681,["boss_meteor_hit",e["x"],e["y"],150.0/768,2,0,false],events,ledger)
 			"charge_contact":
 				t["step"]="charge_rng"
 				if _distance(e,p)<p["r"]+e["r"]+80 and p["iframes"]<=0:
 					t["step"]="charge_recover"
-					return _cmd(t,"resolve_boss_movement_contact",40681,[_contact("charge",e)],events,ledger,"contact")
+					return _cmd(t,"resolve_boss_movement_contact",40683,[_contact("charge",e)],events,ledger,"contact")
 			"charge_recover":
-				_write(e,{"s":"recover","st2":40},40686,events)
+				_write(e,{"s":"recover","st2":40},40688,events)
 				t["step"]="done"
 			"charge_rng":
 				t["step"]="charge_end"
-				var u: Variant=_draw(rng,"charge_particle_gate",40687,events,ledger)
+				var u: Variant=_draw(rng,"charge_particle_gate",40689,events,ledger)
 				if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
 				if u>0.3:
 					var units: Array=[]
 					for tag: String in ["charge_particle_x","charge_particle_y","charge_particle_size"]:
-						var v: Variant=_draw(rng,tag,40687,events,ledger)
+						var v: Variant=_draw(rng,tag,40689,events,ledger)
 						if not _unit(v): return _fail("rng_missing_or_invalid",ledger)
 						units.append(v)
-					return _cmd(t,"poolPart",40687,[e["x"]+(units[0]-0.5)*10,e["y"]+(units[1]-0.5)*10,-e["echDx"]*3,-e["echDy"]*3,e["col"],4+units[2]*3,10],events,ledger)
+					return _cmd(t,"poolPart",40689,[e["x"]+(units[0]-0.5)*10,e["y"]+(units[1]-0.5)*10,-e["echDx"]*3,-e["echDy"]*3,e["col"],4+units[2]*3,10],events,ledger)
 			"charge_end":
-				if e["st2"]<=0: _write(e,{"s":"recover","st2":40},40688,events)
+				if e["st2"]<=0: _write(e,{"s":"recover","st2":40},40690,events)
 				t["step"]="done"
 			"jump_land":
 				t["step"]="done"
 				if e["st2"]<=0:
 					if not _num(c.get("shake")): return _fail("shake_reader_missing")
-					_write(e,{"shockR":0,"shockMax":800+t["si"]*50},40700,events)
-					_write(e,{"s":"bossShock","st2":25},40701,events)
-					_global("shake",25*c["shake"]/100.0,40702,events)
+					_write(e,{"shockR":0,"shockMax":800+t["si"]*50},40702,events)
+					_write(e,{"s":"bossShock","st2":25},40703,events)
+					_global("shake",25*c["shake"]/100.0,40704,events)
 					t["step"]="jump_flash"
-					return _cmd(t,"SFX.groggy",40702,[],events,ledger)
+					return _cmd(t,"SFX.groggy",40704,[],events,ledger)
 			"jump_flash":
-				_global("_flashT",5,40702,events)
-				_global("_flashCol","#ffaa00",40702,events)
+				_global("_flashT",5,40704,events)
+				_global("_flashCol","#ffaa00",40704,events)
 				t["step"]="jump_contact"
-				return _cmd(t,"deathFX",40703,[e["x"],e["y"],e["r"],e["col"],false,false,e["etype"],"boss_meteor_hit"],events,ledger)
+				return _cmd(t,"deathFX",40705,[e["x"],e["y"],e["r"],e["col"],false,false,e["etype"],"boss_meteor_hit"],events,ledger)
 			"jump_contact":
 				t["step"]="done"
 				if _distance(e,p)<300 and p["iframes"]<=0 and p["s"]!="charge":
-					return _cmd(t,"resolve_boss_movement_contact",40706,[_contact("jump",e)],events,ledger,"contact")
+					return _cmd(t,"resolve_boss_movement_contact",40708,[_contact("jump",e)],events,ledger,"contact")
 			"dash_trail":
 				t["step"]="dash_contact"
-				if t["si"]!=3: return _cmd(t,"poolPart",40956,[e["x"],e["y"],-e["echDx"]*2,-e["echDy"]*2,"#ff4488",e["r"]*0.8,8],events,ledger)
+				if t["si"]!=3: return _cmd(t,"poolPart",40958,[e["x"],e["y"],-e["echDx"]*2,-e["echDy"]*2,"#ff4488",e["r"]*0.8,8],events,ledger)
 			"dash_contact":
 				t["step"]="dash_end"
 				if _distance(e,p)<p["r"]+e["r"]+10 and p["iframes"]<=0:
-					return _cmd(t,"resolve_boss_movement_contact",40959,[_contact("dash",e)],events,ledger,"contact")
+					return _cmd(t,"resolve_boss_movement_contact",40961,[_contact("dash",e)],events,ledger,"contact")
 			"dash_end":
 				t["step"]="done"
 				if e["st2"]<=0:
 					if not _numbers(e,["_dashIdx","_dashCnt"]) or not _num(c.get("shake")): return _fail("dash_counter_or_option_missing")
-					_write(e,{"_dashIdx":e["_dashIdx"]+1},40967,events)
+					_write(e,{"_dashIdx":e["_dashIdx"]+1},40969,events)
 					if e["_dashIdx"]<e["_dashCnt"]:
-						var u: Variant=_draw(rng,"dash_repeat_angle",40970,events,ledger)
+						var u: Variant=_draw(rng,"dash_repeat_angle",40972,events,ledger)
 						if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
-						_write(e,{"facing":_aim(e,p)+(u-0.5)*0.4},40970,events)
-						_write(e,{"echDx":cos(e["facing"]),"echDy":sin(e["facing"])},40971,events)
-						u=_draw(rng,"dash_repeat_timer",40972,events,ledger)
+						_write(e,{"facing":_aim(e,p)+(u-0.5)*0.4},40972,events)
+						_write(e,{"echDx":cos(e["facing"]),"echDy":sin(e["facing"])},40973,events)
+						u=_draw(rng,"dash_repeat_timer",40974,events,ledger)
 						if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
-						_write(e,{"st2":10+_i32(u*5)},40972,events)
-						_global("shake",4*c["shake"]/100.0,40973,events)
+						_write(e,{"st2":10+_i32(u*5)},40974,events)
+						_global("shake",4*c["shake"]/100.0,40975,events)
 					else:
-						_write(e,{"s":"recover","st2":25},40975,events)
-						_global("shake",8*c["shake"]/100.0,40975,events)
+						_write(e,{"s":"recover","st2":25},40977,events)
+						_global("shake",8*c["shake"]/100.0,40977,events)
 			"idle_sep":
 				var sep: Variant=_or(e.get("_sepCd"),0)
 				if sep==null: return _fail("separation_clock_shape_unsupported")
-				if sep>0: _write(e,{"_sepCd":sep-t["sp"]},40497,events)
+				if sep>0: _write(e,{"_sepCd":sep-t["sp"]},40499,events)
 				t["step"]="idle_charge"
 				if c["distance"]<e["r"]+p["r"]+8 and p["iframes"]<=0 and e["st2"]<=0:
 					t["step"]="idle_parts"
-					return _cmd(t,"resolve_boss_movement_contact",40501,[_contact("idle",e)],events,ledger,"contact")
+					return _cmd(t,"resolve_boss_movement_contact",40503,[_contact("idle",e)],events,ledger,"contact")
 			"idle_parts":
 				t["step"]="idle_cooldown"
-				return _cmd(t,"addParts",40501,[p["x"],p["y"],e["col"],4],events,ledger)
+				return _cmd(t,"addParts",40503,[p["x"],p["y"],e["col"],4],events,ledger)
 			"idle_cooldown":
-				var u: Variant=_draw(rng,"idle_contact_cooldown",40502,events,ledger)
+				var u: Variant=_draw(rng,"idle_contact_cooldown",40504,events,ledger)
 				if not _unit(u): return _fail("rng_missing_or_invalid",ledger)
-				_write(e,{"st2":40+_i32(u*20)},40502,events)
+				_write(e,{"st2":40+_i32(u*20)},40504,events)
 				t["step"]="idle_charge"
 			"idle_charge":
 				t["step"]="done"
 				var charge: Variant=_or(e.get("_projChargeT"),0)
 				if charge==null: return _fail("projectile_charge_shape_unsupported")
 				if e["projCd"]<9000 and not charge>0:
-					_write(e,{"projT":e["projT"]-t["sp"]},40509,events)
+					_write(e,{"projT":e["projT"]-t["sp"]},40511,events)
 					if not _num(c.get("etype_range")): return _fail("range_reader_missing")
 					if e["projT"]<=0 and c["distance"]<_or(c["etype_range"],700):
-						_write(e,{"projT":e["projCd"]},40511,events)
+						_write(e,{"projT":e["projCd"]},40513,events)
 						var bean: String="dark" if e["el"]==3 else ("water" if e["el"]==2 else ("fire" if e["el"]==1 else "normal"))
-						_write(e,{"_projChargeBean":bean},40513,events)
+						_write(e,{"_projChargeBean":bean},40515,events)
 						var color: Variant="#a44cff" if bean=="dark" else ("#317cec" if bean=="water" else ("#ff2e22" if bean=="fire" else c.get("element_color")))
 						if color==null or not color is String: return _fail("element_color_reader_missing")
-						_write(e,{"_projChargeCol":e["col"] if color=="" else color},40514,events)
-						_write(e,{"_projChargeParryClass":"physical" if e["el"]==0 else "magic"},40515,events)
-						_write(e,{"_projChargeT":60},40516,events)
+						_write(e,{"_projChargeCol":e["col"] if color=="" else color},40516,events)
+						_write(e,{"_projChargeParryClass":"physical" if e["el"]==0 else "magic"},40517,events)
+						_write(e,{"_projChargeT":60},40518,events)
 			_: return _fail("unknown_movement_step")
 	return {"status":"READY","done":true,"enemy":e,"player":p,"events":events,"rng_ledger":ledger,"command":null,"continuation":null,
 		"next_boundary":("AI_then_feint_then_actual_state_switch" if t.get("idle_stun_return",false) else "idle_projectiles_then_AI_then_feint_then_actual_state_switch") if t["checkpoint"]=="idle_move" else "end_current_switch_case","full_tick_complete":false}
 
 static func _contact(family: String,e: Dictionary) -> Dictionary:
-	return {"family":family,"source_lines":{"charge":[40681,40685],"jump":[40706,40707],"dash":[40959,40964],"idle":[40501,40501]}[family],
+	return {"family":family,"source_lines":{"charge":[40683,40687],"jump":[40708,40709],"dash":[40961,40966],"idle":[40503,40503]}[family],
 		"atk":e["atk"],"element":e["el"],"hurtP_multiplier":{"charge":2,"jump":1.8,"dash":1.3,"idle":0.8}[family],
 		"elemental_provider":"none" if family=="idle" else "elMul(e.el,ar().el)","rounding":"ToInt32_after_atk_multiplier" if family=="idle" else "ToInt32_after_elemental",
 		"knockback":{"charge":12,"jump":15,"dash":8,"idle":0}[family],
-		"protected_parry_source": [40681,40684] if family=="charge" else ([40959,40960] if family=="dash" else []),
+		"protected_parry_source": [40683,40686] if family=="charge" else ([40961,40962] if family=="dash" else []),
 		"requires":["actual_hurtP_owner","actual_QE_and_boss_hurtE_owner_if_source_calls","complete_actor_player_readback"],"combat_verified":false}
 
 static func _move(t: Dictionary,x: float,y: float,axes: String,line: int,success: String,events: Array,ledger: Array) -> Dictionary:

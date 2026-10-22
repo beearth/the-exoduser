@@ -4,8 +4,8 @@ const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),
 const [sourcePath,outputPath]=process.argv.slice(2);assert(sourcePath&&outputPath,'source and UTF-8 output path required');
 const raw=SNAPSHOT.readBytes(),hash=crypto.createHash('sha256').update(raw).digest('hex');
 assert.equal(hash,SNAPSHOT.sha256);
-const lines=raw.toString().split('\n');assert(lines[40904].includes("case'bossVortexWind'"));assert(lines[40907].includes("case'bossVortex'"));
-const source='\n'.repeat(40903)+'function tick(e,sp){switch(e.s){\n'+lines.slice(40904,40940).join('\n')+'\n}}';
+const lines=raw.toString().split('\n');assert(lines[40906].includes("case'bossVortexWind'"));assert(lines[40909].includes("case'bossVortex'"));
+const source='\n'.repeat(40905)+'function tick(e,sp){switch(e.s){\n'+lines.slice(40906,40942).join('\n')+'\n}}';
 let events=[],responses=[],cursor=0,units=[],nested=0,damageNested=0,collisionIndex=0,collisions=[],active=true,windIndex=0;
 let targetE,targetP,eProxy,pProxy,mode='none',factors=[1.25,.4];
 const line=()=>+(new Error().stack.match(/exoduser-game.html:(\d+):/)||[])[1];
@@ -13,13 +13,13 @@ const clone=value=>JSON.parse(JSON.stringify(value));
 function command(name,args,ln=line()){events.push({kind:'command',value:{command:name,source_line:ln,args:clone(args),executed:false}})}
 function kbProxy(value){return new Proxy(value,{set(t,k,v){t[k]=v;if(active)events.push({kind:'player_write',field:'kb.'+k,value:clone(v),source_line:line()});return true}})}
 const ctx={Math:Object.create(Math),OPT:{shake:100}};
-ctx.Math.random=()=>{const ln=line();let field;if(ln===40906)field=['vortex_wind_gate','vortex_wind_x','vortex_wind_y','vortex_wind_vx','vortex_wind_vy'][windIndex++];else if(ln===40930)field='vortex_active_size';assert(field,'unknown RNG site '+ln);const unit=units[cursor++%units.length];events.push({kind:'rng',value:{field,source_line:ln,unit}});return unit};
+ctx.Math.random=()=>{const ln=line();let field;if(ln===40908)field=['vortex_wind_gate','vortex_wind_x','vortex_wind_y','vortex_wind_vx','vortex_wind_vy'][windIndex++];else if(ln===40932)field='vortex_active_size';assert(field,'unknown RNG site '+ln);const unit=units[cursor++%units.length];events.push({kind:'rng',value:{field,source_line:ln,unit}});return unit};
 for(const name of ['poolPart','addTxt','addParts'])ctx[name]=(...args)=>{command(name,args);cursor+=nested};
 ctx.SFX={};for(const name of ['charge','groggy'])ctx.SFX[name]=(...args)=>{command('SFX.'+name,args);cursor+=nested};
 ctx.canMv=(...args)=>{command('canMv',args);assert(collisionIndex<collisions.length);return collisions[collisionIndex++]};
 ctx.ar=()=>({el:2});ctx.elMul=(element,armor)=>{assert.equal(armor,2);return factors[responses.length%factors.length]};
 ctx.hurtP=function(damage,options){
- const ln=line(),tick=ln===40925;assert(tick||ln===40935);const family=tick?'vortex_tick':'vortex_explosion';
+ const ln=line(),tick=ln===40927;assert(tick||ln===40937);const family=tick?'vortex_tick':'vortex_explosion';
  const descriptor={family,actor_ref:'boss',hurtP_formula:{atk:targetE.atk,multiplier:tick?.6:2,element:targetE.el,elemental_provider:'elMul(e.el,ar().el)',rounding:'ToInt32_after_elemental'},options_omitted:arguments.length===1,requires:['elMul','ar','hurtP','complete_enemy_player_readback'],combat_verified:false};
  if(arguments.length===2)descriptor.options=options;
  command('resolve_vortex_damage',[descriptor],ln);active=false;
@@ -30,7 +30,7 @@ ctx.hurtP=function(damage,options){
  cursor+=damageNested;active=true;
  responses.push({enemy_after:clone(targetE),player_after:clone(targetP),cursor_after:cursor,resolved_damage:damage,element_multiplier:factors[responses.length%factors.length],command:clone(events.at(-1).value)});
 };
-vm.createContext(ctx);vm.runInContext(lines[31722],ctx);vm.runInContext(source,ctx,{filename:'exoduser-game.html'});
+vm.createContext(ctx);vm.runInContext(lines[31724],ctx);vm.runInContext(source,ctx,{filename:'exoduser-game.html'});
 function enemy(state,t=0,phase=0){return {s:state,st2:t,x:10,y:20,r:44,facing:.25,speed:1.25,atk:46,el:0,_bossPhase:phase,ib:true,keep:{value:17}}}
 function player(distance=20,angle=.3){return {x:10+Math.cos(angle)*distance,y:20+Math.sin(angle)*distance,r:12,iframes:0,s:'idle',kb:{x:1.25,y:-2.5},keep:71}}
 const cases=[];
@@ -66,4 +66,4 @@ for(const el of [0,1,4,8])for(const atk of [46,4294967296+99]){const e=enemy('bo
 for(const xy of [[10,20],[1e12,-1e12]]){const e=enemy('bossVortexWind',0);[e.x,e.y]=xy;run('particle-subtraction-order',4,e,player(),1,{units:[.875,.125,.875,.125,.875]});}
 for(const now_msec of [0,.125,199.5,200,1e6])for(const shake of [0,100,125.5])for(const t of [0,60.5]){const e=enemy('bossVortex',t,4);e.speed=0;run('time-and-shake-readers',9,e,player(20),.5,{now_msec,shake,nested:1});}
 const summary={cases:cases.length,events:cases.reduce((n,c)=>n+c.expected.events.length,0),rng:cases.reduce((n,c)=>n+c.expected.events.filter(e=>e.kind==='rng').length,0),damage_requests:cases.reduce((n,c)=>n+c.responses.length,0),collision_reads:cases.reduce((n,c)=>n+c.expected.collision_reads,0)};
-fs.writeFileSync(outputPath,JSON.stringify({source_only:true,game_sha256:hash,ranges:[[31723,31723],[40905,40940]],summary,cases}),'utf8');
+fs.writeFileSync(outputPath,JSON.stringify({source_only:true,game_sha256:hash,ranges:[[31725,31725],[40907,40942]],summary,cases}),'utf8');

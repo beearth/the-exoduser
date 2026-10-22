@@ -11,7 +11,7 @@ const Utility = preload("res://scripts/native_ch1_boss_utility.gd")
 static func source_receipt() -> Dictionary:
 	return {"source_main": "e556b617190c325ca39f5add04357f5dea5ca87e",
 		"game_sha256": preload("res://source_snapshot/snapshot.gd").SHA256,
-		"source_lines": [38373, 38442], "dependency": "BC03 349ec241c12e403499a4b063a94e692fdd396543",
+		"source_lines": [38375, 38444], "dependency": "BC03 349ec241c12e403499a4b063a94e692fdd396543",
 		"demo_last_stage": 0, "finale_requires_stage": 3, "live_selection_connected": false}
 
 
@@ -79,7 +79,7 @@ static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
 				and data_catalog.boss_for_stage(si)["move_ids"].has(next_id) and cd_ok:
 			e["_comboIdx"] = combo_idx + 1
 			_write_cd(e, move, ph)
-			var unit: Variant = _draw(ctx, "combo_timer", 38396)
+			var unit: Variant = _draw(ctx, "combo_timer", 38398)
 			if ctx["error"] != "": return _failed(ctx)
 			e["bossPatT"] = int(6 + unit * 6)
 			_record(e, move)
@@ -93,15 +93,15 @@ static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
 		if move.is_empty():
 			scores.append(-1.0)
 			continue
-		var score_rng: Callable = func(_tag: String) -> Variant: return _draw(ctx, "boss_score", 37693)
+		var score_rng: Callable = func(_tag: String) -> Variant: return _draw(ctx, "boss_score", 37695)
 		var scored: Dictionary = Utility.evaluate_move(si, move, distance, stats, phase, e, score_rng, chapter_catalog)
 		if scored["status"] != "READY": return _failed(ctx, scored["reason"])
 		scores.append(scored["score"])
-	var roulette_rng: Callable = func(_tag: String) -> Variant: return _draw(ctx, "roulette", 38419)
+	var roulette_rng: Callable = func(_tag: String) -> Variant: return _draw(ctx, "roulette", 38421)
 	var picked: Dictionary = pick_top_six(scores, roulette_rng)
 	if picked["status"] != "READY": return _failed(ctx, picked["reason"])
 	if picked["ordinal"] < 0:
-		var unit: Variant = _draw(ctx, "no_positive_timer", 38410)
+		var unit: Variant = _draw(ctx, "no_positive_timer", 38412)
 		if ctx["error"] != "": return _failed(ctx)
 		e["bossPatT"] = 10 + unit * 10
 		return _ready(ctx, e, stats, "no_positive_score")
@@ -110,17 +110,17 @@ static func select_tick(si: int, enemy: Dictionary, sp: float, distance: float,
 	_record(e, best)
 	_write_cd(e, best, ph)
 	if not _number(e.get("bossPatCd")): return _failed(ctx, "pattern_cooldown_missing")
-	var unit: Variant = _draw(ctx, "pattern_timer", 38430)
+	var unit: Variant = _draw(ctx, "pattern_timer", 38432)
 	if ctx["error"] != "": return _failed(ctx)
 	e["bossPatT"] = (e["bossPatCd"] + unit * 15) * ph["cdM"]
-	unit = _draw(ctx, "combo_gate", 38432)
+	unit = _draw(ctx, "combo_gate", 38434)
 	if ctx["error"] != "": return _failed(ctx)
 	if unit < ph["comboC"]:
 		var combos: Array = []
 		for combo: Dictionary in data_catalog.combos_for_stage(si, phase):
 			if combo["seq"][0] == best["id"]: combos.append(combo)
 		if not combos.is_empty():
-			unit = _draw(ctx, "combo_choice", 38435)
+			unit = _draw(ctx, "combo_choice", 38437)
 			if ctx["error"] != "": return _failed(ctx)
 			e["_comboSeq"] = combos[int(unit * combos.size())]["seq"].duplicate()
 			e["_comboIdx"] = 1
@@ -150,7 +150,7 @@ static func pick_top_six(scores: Array, rng: Callable = Callable()) -> Dictionar
 		for i in range(top_n):
 			candidates[i]["weight"] = maxf(0.001, candidates[i]["score"])
 			total += candidates[i]["weight"]
-		var unit: Variant = _draw(ctx, "roulette", 38419)
+		var unit: Variant = _draw(ctx, "roulette", 38421)
 		if ctx["error"] != "": return _failed(ctx)
 		var r: float = unit * total
 		for i in range(top_n):
@@ -166,12 +166,12 @@ static func _start(ctx: Dictionary, e: Dictionary, ps: Variant, outcome: String,
 		move: Dictionary, ph: Dictionary, distance: float, combo: bool) -> Dictionary:
 	e["_feinting"] = false
 	if move["canFeint"]:
-		var unit: Variant = _draw(ctx, "feint", 38399 if combo else 38438)
+		var unit: Variant = _draw(ctx, "feint", 38401 if combo else 38440)
 		if ctx["error"] != "": return _failed(ctx)
 		e["_feinting"] = unit < ph["feintC"]
 	var delay: int = 0
 	if move["canDelay"] > 0:
-		var unit: Variant = _draw(ctx, "delay", 38400 if combo else 38440)
+		var unit: Variant = _draw(ctx, "delay", 38402 if combo else 38442)
 		if ctx["error"] != "": return _failed(ctx)
 		if unit < ph["delayC"]: delay = int(move["tele"] * move["canDelay"])
 	var result: Dictionary = _ready(ctx, e, ps, outcome)

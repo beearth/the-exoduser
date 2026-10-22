@@ -1,5 +1,5 @@
 import fs from 'node:fs';import vm from 'node:vm';import cp from 'node:child_process';import crypto from 'node:crypto';import assert from 'node:assert/strict';
-const ref='e556b617190c325ca39f5add04357f5dea5ca87e',cwd=new URL('../../',import.meta.url);
+const ref='91e2774b769869e59f80953e148a5c95203b0fea',cwd=new URL('../../',import.meta.url);
 const html=cp.execFileSync('git',['show',ref+':game.html'],{cwd,maxBuffer:16*1024*1024}).toString();
 const body=html.slice(html.indexOf('let _sfxFrameT=0;'),html.indexOf('// ── 칼등치기 전용 사운드'));
 const cases=[],op=(kind,more={})=>({kind,...more}),play=(key,more={})=>op('play',{key,vol:0.5,rate:1,pan:0,start:0,duration:2,now:100,...more}),finish=id=>op('finish',{id});

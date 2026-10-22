@@ -259,13 +259,13 @@ func _refresh() -> void:
 	var stamina := float(snapshot.get("stamina", 0.0))
 	var max_stamina := float(snapshot.get("max_stamina", 200.0))
 	_hp_text.text = "%d\n/ %d" % [roundi(hp), roundi(max_hp)]
-	_stamina_text.text = "SP\n%d\n/%d" % [int(stamina), int(max_stamina)]
+	_stamina_text.text = "SP\n%d\n/ %d" % [int(stamina), int(max_stamina)]
 	# Actual MP owner, source60244/60300-60305. No invented value/development label.
 	var current: Variant=_source_state.read_current_p() if is_instance_valid(_source_state) else null
 	var mp_ready: bool=current is Dictionary and (current.get("mp") is int or current.get("mp") is float) and (current.get("mmp") is int or current.get("mmp") is float) and is_finite(float(current.mp)) and is_finite(float(current.mmp)) and current.mmp>0
 	_hp_text.hide();_stamina_text.hide()
 	_mp_text.visible=false
-	_mp_text.text="MP\n%d\n/%d" % [int(current.mp),int(current.mmp)] if mp_ready else ""
+	_mp_text.text="MP\n%d\n/ %d" % [int(current.mp),int(current.mmp)] if mp_ready else ""
 	var state := str(snapshot.get("state", "idle"))
 	var frames := float(snapshot.get("charge_frames", 0.0))
 	var combo := int(snapshot.get("combo_step", 0))

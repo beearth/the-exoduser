@@ -1,5 +1,5 @@
 import fs from 'node:fs';import vm from 'node:vm';import cp from 'node:child_process';import crypto from 'node:crypto';
-const ref='284d7faf49295b2f5061937a47ce96038032ed3c';
+const ref='91e2774b769869e59f80953e148a5c95203b0fea';
 const html=cp.execFileSync('git',['show',ref+':game.html'],{cwd:new URL('../../',import.meta.url),maxBuffer:16*1024*1024}).toString();
 const en=(key,now=100,more={})=>({op:'enqueue',key,now,vol:1,rate:1,pri:false,gx:1,rng:0.5,...more});
 const q=(key,pri=false,more={})=>({key,vol:1,rate:1,...(pri?{pri:1}:{}),...more});
