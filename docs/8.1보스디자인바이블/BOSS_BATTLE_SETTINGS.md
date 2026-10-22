@@ -710,3 +710,30 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 아레나 진입 | 30749–30813 | 잔여 비보스 생존 수 → `_stageKills`, ens·소환굴·균열 비움, P.iframes 90·kb 0, 봉인 파티클 16+16·shake 8·"⚠ 봉인됨!" |
 | 보스 스폰 | 30782 | `mkEn((bossX+.5)*T,(bossY+.5)*T,si,0,true,STG[si].be,0)` — 난이도 OPT.diff(기본 5)·P.lv·G._stageDiffOff |
 | 아레나 출구 | 41919~ | 30호출 cadence, 출구 타일 + `!bossAlive` → 스테이지 클리어 |
+
+### 1-1 보스방 추적(비어그로 idle 접근) 원본 수치 (Godot 동일 적용, 2026-10-22 pc-boss-chase)
+
+행 번호는 고정 스냅샷 dee094fd 기준. 원본 VM oracle `godot/tests/pc_boss_chase_oracle.cjs`가 아래 원문을 그대로 실행한다.
+
+| 항목 | 원본 행 | 값·식 |
+|---|---|---|
+| 보스 생성 위치 | 30699–30746, 30784 | 아레나 정중앙 칸 (64,54) 중심 = (64.5T, 54.5T), 플레이어는 입구 (64,103) 중심 → 거리 1960px. 위치 RNG 없음 |
+| 생성 RNG 순서 | 31167·31170·31173·31262·31302 | st2 → facing → projT → bossPatT → _bossOrbitAng → _erraticAng (6회, etype0 ib) |
+| 어그로(_alerted) | 38686 | d<800 + LOS + (idle 또는 recover)일 때만. 피격(42382)·부활 추적(34545)도 어그로 |
+| facing | 38689 | 어그로이고 d<800 일 때만 플레이어 쪽. 그 전에는 생성 facing(Math.random×2π) 유지 |
+| idle 접근(_bossIdleMove) | 38317–38331 | d>200: 속도 = speed 0.5 × spdM(1페이즈 1.15) × _aSpdM × sp × min(2.5, 1+d/300) → 최대 1.4375px/틱, 방향 = 플로우필드 칸 방향(없으면 플레이어 직선) |
+| idle 걷기(switch idle) | 40485 | 보스도 일반 분기: speed×1.6×_aSpdM = 0.8px/틱, **facing 방향**으로 추가 이동 |
+| 어그로 추적 | 38693–38695 | ETYPE_RANGE[0]=400 ≤400 → d>30 이면 `_ffMoveE(e,sp,2)` 1.0px/틱 추가 |
+| 패턴 시작 거리 | 38387 | `bossPatT>0 \|\| d>500 \|\| d<20` 이면 시작 안 함 → **d≤500 전에는 패턴 없음** |
+| 입장 slowMo | 41802, 32683 | 입장 연출이 slowMo≥60을 쓰지만 update()가 `G.slowMo=0`(완전 비활성)으로 지운 뒤 sp를 계산 → 보스 sp는 1 그대로 |
+| 플로우필드 | 31746–31747, 31849–31907, 32154 | 매 프레임 플레이어 칸에서 8방향 BFS(직각·대각 비용 1, 대각은 두 직각 이웃이 벽이 아닐 때만). 칸 방향 = DX/DY 순서에서 처음 나온 더 작은 거리 이웃의 단위벡터(대각 1/√2, Float32), 거리 0 칸은 (P−칸중심)/‖P−칸중심‖ |
+| 진입 첫 프레임 워커 지연 | 31749–31796, 30784 | `_ffBuild`는 워커로 보내고 결과는 비동기. `_enterBossArena` 직후 첫 보스 틱의 `_ffDir`는 아직 필드 맵 결과(`_ffW`=200)를 보스 칸 (tx,ty)=(64,54) 인덱스로 읽는다 → 1-1 은 (0,−1)(위쪽)로 1틱 접근해 y −2.875px. 실제 웹(Playwright) 실측 1틱, 둘째 틱부터 보스방 필드 |
+
+**facing에 따른 첫 패턴 시점(원본 oracle sweep, facing 72분할, B02=입장 연출 끝부터 센 틱)**: 정면(90°)일 때 421틱, 정반대(270° 부근)일 때 최대 1926틱. 72개 중 45개는 첫 패턴이 700틱 뒤라 "900틱 안에 공격 상태 3종·idle<700"이 원본에서도 성립하지 않는다. 비어그로 구간 순접근 = 1.4375 + 0.8×cos(facing−접근방향).
+
+**Godot 이식 차이 수정(2026-10-22)**: 진입 첫 프레임은 MAP11 필드 흐름(`world._web_parity_flow`, 직전 필드 BFS)을 같은 칸 인덱스로 읽는다(`arm_stale_first_frame`). Godot arena 분기의 `_ffDir`가 플레이어 직선 방향(LOS)이라 대각 칸이 아닌 연속 방향이 나왔다(1180틱 동안 최대 204px x 차이). PC `native_demo11_arena_flow.gd`가 위 원본 BFS를 보스방 지형(사용자 결정 M10 사각 124×104 = `assets/boss_parity/arena.json`)으로 수행하고, World arena 분기 최소 훅(`bind_native_arena_flow`)으로 묶는다. 수정 뒤 같은 생성 단위의 Godot/원본 궤적 차이는 최대 5.0e-4px(facing 234.7°, 2140틱)·7e-11px(다른 facing, 777틱)이고 상태 불일치 0, 첫 패턴 틱도 같다(test_pc_boss_parity B02_chase_matches_source_oracle). 실제 웹(헤드리스 Chrome, 같은 생성 단위 주입)과 Godot 의 틱별 위치 차는 869틱 동안 최대 3.2e-10px, 상태 불일치 0, 첫 패턴 틱 같음. 실패 facing(234.7°)에서도 웹과 원본 oracle(첫 틱 (0,−1) 공급)은 2147틱 동안 0.0px.
+
+| 남은 차이 | 내용 |
+|---|---|
+| 플로우필드 기준 위치 시점 | 원본은 프레임 앞(32154, 플레이어 이동 전) 위치로 BFS. Godot은 보스 틱의 `_ffDir` 조회 때 현재 플레이어 위치로 준비 → 플레이어가 그 프레임에 칸 경계를 넘으면 1프레임 앞선 칸을 쓴다(정지 장면에서는 같음) |
+

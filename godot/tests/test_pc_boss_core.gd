@@ -124,11 +124,13 @@ func _run() -> void:
 	var states: Dictionary = {}
 	var max_move := 0.0
 	var php0: float = main.player.hp
+	var min_d_a1 := 1e9
 	for t in range(ticks):
 		await physics_frame
 		var s: String = str(actor.snapshot().enemy.get("s", ""))
 		states[s] = int(states.get(s, 0)) + 1
 		max_move = maxf(max_move, _boss_world().distance_to(start))
+		min_d_a1 = minf(min_d_a1, _boss_world().distance_to(main.player.global_position))
 		if t % 300 == 0:
 			print("PCBOSS_LIVE ", t, " ", JSON.stringify({"s": s, "ticks": actor.snapshot().ticks_completed, "reason": actor.snapshot().reason, "core_err": core.snapshot().error, "php": main.player.hp}))
 	var snap: Dictionary = actor.snapshot()
@@ -136,11 +138,17 @@ func _run() -> void:
 	check(snap.ticks_completed >= ticks - 2, "boss_ticks_completed_every_frame:%d" % snap.ticks_completed)
 	check(snap.reason == "" and core.snapshot().error == "", "no_actor_or_core_error:%s/%s" % [snap.reason, core.snapshot().error])
 	check(max_move > 1.0, "boss_moved")
-	check(states.size() >= 3, "boss_pattern_states")
+	# PC-BOSS-CHASE(2026-10-22): 원본은 d≤500 전에는 패턴을 시작하지 않는다(_bossAI 38387 `d>500` return). 입구(1960px)에서
+	# 비어그로 접근은 facing 에 따라 0.64~2.24px/틱이라 진입 300틱 안에는 원본도 어떤 facing 이든 idle 만 나온다
+	# (tests/pc_boss_chase_oracle.cjs sweep). → A1 은 "사거리 밖이면 idle 만"을 단정하고, 패턴 상태 수는 실제 교전(A2)까지 합쳐 센다.
+	check(min_d_a1 <= 500.0 or states.keys() == ["idle"], "A1_no_pattern_before_range_source_38387:%s/%.1f" % [JSON.stringify(states), min_d_a1])
 	var php_after_a1: float = main.player.hp
 	if main.player.hp > 0: main.player.hp = main.player.max_hp # fixture: A2 전 체력만 복구(보스 상태 미변경)
 	# ── A2: 실제 입력 근접 전투 ──
 	var fight: Dictionary = await _fight(int(_arg("fight_ticks", "900")), 70.0, "A2", true)
+	var all_states: Dictionary = states.duplicate()
+	for k in fight.states: all_states[k] = int(all_states.get(k, 0)) + int(fight.states[k])
+	check(all_states.size() >= 3, "boss_pattern_states:%s" % JSON.stringify(all_states))
 	var cs: Dictionary = core.snapshot()
 	print("PCBOSS_CORE_A ", JSON.stringify(cs))
 	check(cs.error == "" and actor.snapshot().reason == "", "A2_no_core_or_actor_error:%s/%s" % [cs.error, actor.snapshot().reason])

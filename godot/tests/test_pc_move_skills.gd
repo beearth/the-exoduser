@@ -11,7 +11,7 @@ const GAME_SHA256 := "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1
 const SNAPSHOT := preload("res://source_snapshot/snapshot.gd")
 const POS_TOL := 2e-3
 const GROUPS := ["setup", "chain_tier1", "chain_tier2", "chain_tier3_auto_refire", "chain_wall_autofire", "chain_cancel",
-	"chain_hit_enemy", "gauge_empty_toast", "blade_dash_dir_then_space", "blade_dash_space_then_dir", "blade_dash_double_tap",
+	"chain_hit_enemy", "chain_hold_enemy_k13", "gauge_empty_toast", "blade_dash_dir_then_space", "blade_dash_space_then_dir", "blade_dash_double_tap",
 	"blade_dash_diagonal", "blade_dash_wall", "blade_dash_insufficient", "stagger_escape_shift", "pstun_blade_escape",
 	"focus_blur_clears_hold", "oracle_compare", "input_priority_space", "lesson_lock", "render_pose", "perf"]
 
@@ -399,6 +399,35 @@ func _test_chain_hit_enemy() -> void:
 	var absorbed: bool = hit.get("shield_before") != null and hit.get("shield_after") != null and float(hit.shield_after) < float(hit.shield_before)
 	check(float(target_enemy.get("hp")) < hp_before or target_enemy.get("alive") != true or absorbed, "enemy_hp_or_shield_reduced:" + str(hit))
 	observations["chain_hit"] = {"dmg": hit.get("dmg"), "hp_before": hp_before, "hp_after": target_enemy.get("hp")}
+
+## PC-BOSS-CHASE K-13(2026-10-22): 적 근처 Shift 0.6초 사슬 — 웹 측정과 같은 배치(정지 더미 +160px, 진행 방향).
+## 12f 자동 3단(700, G32176) → 비행 중 경로 적 1회 타격(_harpHits) → 착지(뗌 36f < 착지라 재발사 없음, G32529).
+## oracle_compare 가 같은 shQuery·벽 공급으로 원본 궤적과 틱마다 대조한다.
+func _test_chain_hold_enemy_k13() -> void:
+	var target_enemy: Node2D = null
+	for e in world.get_enemies():
+		if is_instance_valid(e) and e.get("alive") == true and e.has_method("read_native_normal_enemy_hurte_fields") 				and not e.has_method("accept_native_hurte_owner_binding"):
+			var f: Dictionary = e.read_native_normal_enemy_hurte_fields(world)
+			if f.get("ready") == true and f.get("ib") != true and int(f.get("el")) != 1:
+				target_enemy = e
+				break
+	check(target_enemy != null, "k13_eligible_enemy")
+	if target_enemy == null: return
+	var start: Vector2 = origin + Vector2(-350, 0)
+	var keep: Vector2 = start + Vector2(160, 0)
+	var hook := func() -> void:
+		target_enemy.global_position = keep
+		target_enemy.apply_native_normal_enemy_field_write("stunned", 999.0)
+	forced += 2
+	var c: Dictionary = await _scenario("chain_hold_enemy_k13", start, 225.0, 60,
+		[{"f": 0, "type": "down", "code": KEY_SHIFT}, {"f": 36, "type": "up", "code": KEY_SHIFT}], start + Vector2(400, 0), hook, {"enemy_contact": true})
+	var fires: Array = []
+	for r in c._godot.log: if r.k == "chain_fire": fires.append(r)
+	var land: Dictionary = _last(c._godot.log, "chain_land")
+	var moved: float = Vector2(float(land.get("x", 0)), float(land.get("y", 0))).distance_to(start) if not land.is_empty() else -1.0
+	check(fires.size() == 1 and fires[0].site == "auto3" and int(fires[0].tier) == 3, "k13_auto3_single_fire:" + str(fires.size()))
+	check(_count(c._godot.log, "chain_hit") == 1, "k13_path_enemy_hit_once")
+	observations["chain_hold_enemy_k13"] = {"moved": moved, "fires": fires.size(), "hits": _count(c._godot.log, "chain_hit"), "land_frame": land.get("f")}
 
 func _test_gauge_empty_toast() -> void:
 	var c: Dictionary = await _scenario("gauge_empty_toast", origin, 0.0, 6,

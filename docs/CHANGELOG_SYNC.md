@@ -1,3 +1,10 @@
+## 2026-10-22 PC-BOSS-CHASE — B-01 보스 추적 원인·수정, C-06·A-02·K-13 같은 조건 재측정 (PC Claude)
+
+- branch `claude/pc-boss-chase-20261022`(기준 `291b7edb2`). B-01: 보스 생성 위치·RNG 순서는 원본과 같다. B02 실패는 생성 facing(Math.random) 때문에 원본에서도 생긴다(비어그로 접근 0.64~2.24px/틱, 패턴은 d≤500에서만 시작, facing 72분할 중 45개는 900틱 창이 성립 불가) → 시험은 사거리 진입부터 창을 세고 원본 VM 궤적과 틱마다 대조하도록 교정.
+- 이식 차이 2건 수정: 보스방 `_ffDir`를 원본 8방향 BFS(31849)로(PC `native_demo11_arena_flow.gd` + World arena 분기 최소 훅), 진입 첫 프레임 워커 지연(필드 맵 흐름 1틱). 실제 웹(헤드리스, 같은 생성 단위)과 Godot 궤적이 869틱 최대 3.2e-10px로 같다.
+- C-06: 같은 RNG 주입 원본 VM rollDrop 대조 200×2모드 0불일치, 처치 드랍의 데모 금지 어픽스 필터 누락 수정. A-02: 같은 장면 공격 간격 40~59틱 평균 49.33/49.28 같음. K-13: 정지 더미 +160 배치로 700px 같음.
+- 일치율 34/36=94%(수정 전 26/36). 신규 oracle `pc_boss_chase_oracle.cjs`·`pc_drop_oracle.cjs`, 신규 시험 `test_pc_drop_rng_parity`·`test_pc_enemy_attack_cycle`. [보고](engine/orders/reports/pc-boss-chase_REPORT.md), [전수](engine/PARITY_FULL_SWEEP_1_1_20261022.md).
+
 ## 2026-10-22 TEST-FIX-01 — 웹 맵 전환 테스트 전제/하니스 교정
 
 - 필드보스: PC 요청 배치 fixture만 수정. 웹 1-1 전체 비행 통로 및 일반 적 비접촉 배치를 고르고 기존 원문 oracle/관통 단정 유지. 3회 168/0.

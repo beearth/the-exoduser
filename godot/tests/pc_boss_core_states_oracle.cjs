@@ -6,7 +6,12 @@ const arg = k => (process.argv.find(a => a.startsWith(k + '=')) || '').slice(k.l
 const casesFile = arg('--cases-file'), outFile = arg('--out-file');
 assert(casesFile && outFile);
 const lines = SNAPSHOT.readBytes().toString().split('\n');
-const L = n => lines[n - 1];
+// 고정 스냅샷 dee094fd(91e2774b7) 갱신: 원본 유골함 mkItem 에 2줄 삽입(새 16156-16157). 이 oracle 의 행 번호는 Godot 모듈
+// source_line 과 같은 이전 스냅샷(4d911cdd) 좌표로 유지하고, 바이트를 읽을 때만 새 위치로 옮긴다(16156 이상 +2) —
+// pc_move_skills_source_oracle.cjs 와 같은 방식(PC-BOSS-CHASE 2026-10-22).
+const SHIFT_AT = 16156, SHIFT_BY = 2;
+if (!(lines[SHIFT_AT - 1].includes('원시 효과 키') && lines[SHIFT_AT].startsWith('    if(item.legendarySpecial)delete item[item.legendarySpecial.stat];'))) throw Error('G16156-16157 inserted ossuary lines (91e2774b7) moved');
+const L = n => lines[(n >= SHIFT_AT ? n + SHIFT_BY : n) - 1];
 assert(L(40749).trim() === "case'bossShockWind':" && L(40758).includes("e.s='recover';e.st2=55}break}"));
 assert(L(40798).trim() === "case'bossSummonWind':{" && L(40814).trim() === '}break}');
 assert(L(40869).trim() === "case'bossSpinWind':{" && L(40891).trim() === "case'bossMineWind':{" && L(40903).trim() === '}break}');

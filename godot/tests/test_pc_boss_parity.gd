@@ -5,6 +5,7 @@ extends SceneTree
 ##   플레이어 iframes/stamina 유지(관측 구간 생존). 보스·앵글러의 상태·시계·패턴·피해 식은 주입하지 않는다.
 ## 원본 행: 앵글러 G60974–61141, checkRooms 41768–41925, _enterBossArena 30749–30839, mkEn 31120–31185.
 const USERDIR := "EXODUSER-pc-boss-parity-Isolated-20261022"
+const CHASE_MAX := 2400 # 원본 oracle sweep 최대 첫 패턴 1926틱(B02 기준) + 여유
 var assertions := 0
 var failures := 0
 var main: Node
@@ -66,6 +67,62 @@ func _melee_until(target: Callable, stop: float, ticks: int, until: Callable, pr
 		t += 1
 	_release_all()
 	return t
+
+func _chase_row(t: int) -> Array:
+	var E: Dictionary = main.native_demo_boss_core.E
+	return [t, float(E.get("x", 0.0)), float(E.get("y", 0.0)), str(E.get("s", "")), main.player.global_position.x, main.player.global_position.y]
+
+## 원본 VM oracle: 같은 생성 단위(st2·facing·projT·bossPatT·orbit·erratic, mkEn 31167–31302)로 원문 updateE 를 돌려 궤적 대조.
+func _check_chase_oracle(spawn_E: Dictionary, chase: Array, first_pat: int) -> void:
+	var node_bin := _arg("node-bin", "")
+	var art := _arg("artifacts-dir", "")
+	check(not spawn_E.is_empty() and not node_bin.is_empty() and not art.is_empty(), "B02_oracle_inputs")
+	if spawn_E.is_empty() or node_bin.is_empty() or art.is_empty(): return
+	DirAccess.make_dir_recursive_absolute(art)
+	var u := [(float(spawn_E.st2) - 30.0) / 50.0, float(spawn_E.facing) / TAU, (float(spawn_E.projT) - 70.0) / 50.0,
+		(float(spawn_E.bossPatT) - 30.0) / 20.0, float(spawn_E._bossOrbitAng) / TAU, float(spawn_E._erraticAng) / TAU]
+	var units := ",".join(u.map(func(v): return "%.17f" % v))
+	var out_path := art.path_join("chase_oracle.json")
+	var output: Array = []
+	# 진입 첫 프레임 워커 지연(31749–31796): Godot 이 그 틱에 실제로 쓴 필드 흐름 방향을 같은 값으로 공급한다.
+	var af: Dictionary = main.native_demo_boss_core.snapshot().arena_flow
+	check(int(af.get("stale_calls", 0)) >= 1, "B02_first_frame_stale_field_flow:%s" % JSON.stringify(af))
+	var sd: Variant = af.get("stale_first_dir")
+	var stale_arg := "--stale-first-dir=" + ("null" if sd == null else "%.17f,%.17f" % [float(sd[0]), float(sd[1])])
+	var code: int = OS.execute(node_bin, PackedStringArray([ProjectSettings.globalize_path("res://tests/pc_boss_chase_oracle.cjs"),
+		"--units=" + units, "--b02-ticks=" + str(CHASE_MAX), stale_arg, "--trace-file=" + out_path]), output, true)
+	check(code == 0, "B02_oracle_exit:%d" % code)
+	if code != 0:
+		print("PCPARITY_ORACLE_ERR ", "".join(output))
+		return
+	var gf := FileAccess.open(art.path_join("chase_godot.json"), FileAccess.WRITE)
+	if gf != null:
+		gf.store_string(JSON.stringify(chase))
+		gf.close()
+	var o: Variant = JSON.parse_string(FileAccess.get_file_as_string(out_path))
+	if not o is Dictionary: check(false, "B02_oracle_json"); return
+	var tr: Array = o.trace
+	var origin := Vector2(2580.0, 10180.0) # 원본 좌표 − Godot 좌표(보스 마커 (64.5,54.5)T ↔ (0,−8000))
+	var n: int = mini(chase.size(), tr.size())
+	var max_dpos := 0.0
+	var state_mismatch := 0
+	var player_move := 0.0
+	# 마지막 틱 = 첫 _bossStartPattern 틱: oracle 은 그 호출에서 멈추므로(이후 switch 새 상태 이동 미실행) 위치·상태 비교에서 뺀다.
+	for k in range(n - 1):
+		var g: Array = chase[k]
+		var oo: Dictionary = tr[k]
+		max_dpos = maxf(max_dpos, Vector2(g[1], g[2]).distance_to(Vector2(float(oo.x), float(oo.y)) - origin))
+		if str(g[3]) != str(oo.s): state_mismatch += 1
+		player_move = maxf(player_move, Vector2(g[4], g[5]).distance_to(Vector2(chase[0][4], chase[0][5])) if k > 0 else 0.0)
+	var o_first: int = int(o.b02.first_pattern_tick)
+	var o_load: int = tr.filter(func(r): return r.k == "L").size()
+	var g_first: int = (o_load + first_pat) if first_pat > 0 else -1
+	var o_first_abs: int = (o_load + o_first) if o_first > 0 else -1
+	print("PCPARITY_CHASE_ORACLE ", JSON.stringify({"units": units, "stale_first_dir": sd, "godot_ticks": chase.size(), "oracle_ticks": tr.size(), "compared": n,
+		"max_dpos": max_dpos, "state_mismatch": state_mismatch, "player_move": player_move,
+		"first_pattern_abs": {"godot": g_first, "oracle": o_first_abs}, "oracle_first_move": o.b02.first_pattern}))
+	check(n >= 200 and max_dpos < 0.05 and state_mismatch == 0, "B02_chase_matches_source_oracle:%.4f/%d" % [max_dpos, state_mismatch])
+	check(o_first_abs > 0 and g_first == o_first_abs, "B02_first_pattern_tick_matches_source:%d/%d" % [g_first, o_first_abs])
 
 func core0_body() -> Node:
 	return main.native_demo_boss_core.body
@@ -169,12 +226,18 @@ func _run() -> void:
 	var t := 0
 	var last := 0
 	var boss_stun_seen := -1.0
+	var spawn_E := {}
+	var chase: Array = []
 	var hurt_blocked_php: float = main.player.hp
 	while t < 500:
 		_keep_alive()
 		await physics_frame
 		t += 1
 		var ph: int = int(entry.snapshot().phase)
+		if spawn_E.is_empty() and ph == 2 and not main.native_demo_boss_core.E.is_empty():
+			spawn_E = main.native_demo_boss_core.E.duplicate(true) # 생성 직후·첫 보스 틱 전(PC-BOSS-CHASE)
+		elif not spawn_E.is_empty():
+			chase.append(_chase_row(t))
 		if ph != last:
 			phases[str(ph)] = t
 			if ph == 2: swap_t = t
@@ -204,28 +267,47 @@ func _run() -> void:
 	check(boss_stun_seen >= 88.0, "B01_intro_boss_stunned90:%s" % boss_stun_seen)
 	check(int(entry.snapshot().counters.intro_hits) == 1 and int(entry.snapshot().counters.arena_swaps) == 1, "B01_intro_once_swap_once")
 
-	# ── B-02: 자연 AI 900틱(플레이어 정지) — 보스 몸통 충돌 34349·패턴 진행(겹침으로 d<20 정지 회귀 방지) ──
+	# ── B-02: 자연 AI(플레이어 정지) — 보스 몸통 충돌 34349·패턴 진행(겹침으로 d<20 정지 회귀 방지) ──
+	# PC-BOSS-CHASE(2026-10-22): 원본에서도 보스는 비어그로 idle 동안 생성 facing(mkEn 31167 Math.random)으로 0.8px/틱 걷고
+	# (switch idle 40485) _bossIdleMove 접근(38321, 0.5×1.15×min(2.5,1+d/300))이 더해진다. 패턴은 d≤500 에서만 시작(_bossAI 38387).
+	# 원본 VM oracle(tests/pc_boss_chase_oracle.cjs) sweep: facing 72분할 중 45개는 진입 900틱 안에 첫 패턴이 없다(최대 1926틱).
+	# → 900틱 창은 "사거리 진입(d≤500) 시점"부터 센다. 진입 전 추적 궤적은 같은 생성 단위로 원본과 틱마다 대조한다.
 	var core0: Node = main.native_demo_boss_core
 	var hist := {}
 	var min_d := 1e9
 	var stall := 0
 	var max_stall := 0
-	for i in range(900):
+	var in_range_t := -1
+	var first_pat := -1
+	var window := 0
+	var bt := 0
+	while bt < CHASE_MAX + 900 and window < 900:
 		_keep_alive()
 		await physics_frame
+		bt += 1
 		var st: String = str(core0.E.get("s", ""))
-		hist[st] = int(hist.get(st, 0)) + 1
+		if first_pat < 0:
+			chase.append(_chase_row(bt))
+			if st != "idle": first_pat = bt
 		if core0.E.get("alive") == true:
 			var dd: float = main.player.global_position.distance_to(Vector2(core0.E.x, core0.E.y))
 			min_d = minf(min_d, dd)
 			stall = stall + 1 if st == "idle" and dd < 20.0 else 0
 			max_stall = maxi(max_stall, stall)
+			if in_range_t < 0 and dd <= 500.0: in_range_t = bt
+		if in_range_t >= 0:
+			hist[st] = int(hist.get(st, 0)) + 1
+			window += 1
 	var attack_states := 0
 	for k in hist.keys():
 		if str(k).begins_with("boss"): attack_states += 1
-	print("PCPARITY_AI ", JSON.stringify({"hist": hist, "min_d": min_d, "max_idle_overlap_stall": max_stall, "body_push": core0.counters.body_push}))
+	print("PCPARITY_AI ", JSON.stringify({"hist": hist, "min_d": min_d, "max_idle_overlap_stall": max_stall, "body_push": core0.counters.body_push,
+		"in_range_tick": in_range_t, "first_pattern_tick": first_pat, "window": window, "arena_flow": core0.snapshot().arena_flow}))
+	check(core0.snapshot().arena_flow.get("configured") == true, "B02_arena_flow_source_bfs_bound")
+	check(in_range_t >= 0 and in_range_t <= CHASE_MAX, "B02_reaches_pattern_range:%d" % in_range_t)
 	check(int(core0.counters.body_push) > 0 and max_stall < 60, "B02_body_collision_no_overlap_stall:%d" % max_stall) # 분출(erupt) 등은 원본도 순간 d≈0
-	check(attack_states >= 3 and int(hist.get("idle", 0)) < 700, "B02_patterns_progress:%s" % JSON.stringify(hist))
+	check(window == 900 and attack_states >= 3 and int(hist.get("idle", 0)) < 700, "B02_patterns_progress:%s" % JSON.stringify(hist))
+	_check_chase_oracle(spawn_E, chase, first_pat)
 	# ── 보스 처치 → 출구 → 클리어 (fixture: 정본 E 수치만) ──
 	E.hp = 30.0; E.eShield = 0.0; E._revPts = 10.0; E.reviveIframes = 0.0; E._bossPhase = 4; E.deaths = 1
 	var core: Node = main.native_demo_boss_core

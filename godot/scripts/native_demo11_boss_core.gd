@@ -13,6 +13,7 @@ const PROJ = preload("res://scripts/native_ch1_boss_projectile_patterns.gd")
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 const DEATH = preload("res://scripts/native_demo11_boss_death.gd")
 const QUEUES = preload("res://scripts/native_ch1_boss_queues.gd")
+const ARENA_FLOW = preload("res://scripts/native_demo11_arena_flow.gd")
 const T := 40.0
 const BOSS_SFX0 := {"howl": "boss_howl", "howlP": 0.7, "die": "death_boss", "dieP": 0.7, "hit": "boss_hit", "hitP": 0.7, "hurt": "monster_hurt", "hurtP": 0.7} # 24758
 const OWNED_COMMANDS := ["source_updateE_prefix", "phase_transition_commit", "source_updateE_suffix", "source_global_write",
@@ -53,6 +54,7 @@ var _death_exec: Object
 var _dead_sync_pending := false
 var _mines: Array = []
 var _q_sp := 0.0
+var arena_flow: RefCounted # PC-BOSS-CHASE: 보스방 _ffDir(원본 31849 BFS) — World arena 분기 최소 훅으로 묶음
 
 static func install_native_boot(owner_main: Node) -> Node2D:
 	var world: Node = owner_main.get("world")
@@ -108,7 +110,26 @@ func adopt_spawn(receipt: Dictionary) -> Dictionary:
 	if not _queue_registered:
 		_queue_registered = main.world.register_native_phase_consumer(self, Callable(self, "_owner_step_noop"), Callable(self, "advance_queue"))
 	_final_published = false
-	return {"adopted": true, "registry_index": reg.get("registry_index")}
+	_bind_arena_flow()
+	return {"adopted": true, "registry_index": reg.get("registry_index"), "arena_flow": arena_flow != null}
+
+## PC-BOSS-CHASE: 원본 보스방은 _ffBuild(31849)가 아레나 G.map 으로 8방향 BFS 필드를 만들고 보스 접근(_bossIdleMove 38324)·
+## 어그로 추적(_ffMoveE 31909)이 그 칸 방향을 쓴다. 이전 Godot arena 분기는 플레이어 직선 방향(LOS)이라 대각 칸이 아닌 연속 방향이 나왔다.
+## 지형 = 사용자 결정 M10 사각 124×104(웹 런타임 export arena.json map), 원점 = provider 보스 마커(원본 (bx+.5,by+.5)*T).
+func _bind_arena_flow() -> void:
+	if arena_flow != null or not main.has_method("read_native_map11_provider"): return
+	var prov: Variant = main.read_native_map11_provider()
+	if not is_instance_valid(prov) or not prov.has_method("transition_sites"): return
+	var sites: Dictionary = prov.transition_sites()
+	if sites.get("status") != "OK" or not is_instance_valid(sites.get("boss")): return
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://assets/boss_parity/arena.json"))
+	if not data is Dictionary or not data.get("map") is Array or not data.get("boss") is Array: return
+	var flow: RefCounted = ARENA_FLOW.new()
+	if not flow.configure(data.map, Vector2i(int(data.boss[0]), int(data.boss[1])), (sites.boss as Node2D).global_position): return
+	# 31749–31796: 맵 교체 직후 첫 프레임은 워커 결과가 아직 필드 맵 것(웹 실측 1틱). MAP11 필드 흐름(직전 필드 BFS)을 그 프레임에만 쓴다.
+	var field_flow: Variant = main.world.get("_web_parity_flow")
+	if field_flow is RefCounted and field_flow.has_method("direction"): flow.arm_stale_first_frame(Callable(field_flow, "direction"))
+	if main.world.has_method("bind_native_arena_flow") and main.world.bind_native_arena_flow(flow): arena_flow = flow
 
 func _owner_step_noop(_ticks: float, _frame: float, _enemies: Array) -> void:
 	pass
@@ -1047,7 +1068,8 @@ func snapshot() -> Dictionary:
 		"boss": {"hp": E.get("hp"), "mhp": E.get("mhp"), "eShield": E.get("eShield"), "alive": E.get("alive"),
 			"s": E.get("s"), "deaths": E.get("deaths", 0), "revPts": E.get("_revPts"), "phase": E.get("_bossPhase"),
 			"reviveTimer": E.get("_reviveTimer", 0), "x": E.get("x"), "y": E.get("y"), "r": E.get("r")},
-		"last_contact": _last_contact.duplicate(true)}
+		"last_contact": _last_contact.duplicate(true),
+		"arena_flow": arena_flow.snapshot() if arena_flow != null else {"configured": false}}
 
 static func _n(v: Variant) -> float:
 	return PREFIX._n(v)

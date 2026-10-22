@@ -47,7 +47,7 @@
 | 레벨 캡 | `_DEMO_LV_CAP=100` + `_BUILD_TIER==='demo'` |
 | 스테이지 제한 | `_DEMO_LAST_STAGE=0` + demoEnd 화면 |
 | 합체 제한 | `_DEMO_FUSE_ALLOWED` (현재 전부 허용) |
-| 어픽스 제한 | `_DEMO_AFFIX_BANNED` (현재 전부 허용) |
+| 어픽스 제한 | `_DEMO_AFFIX_BANNED` 7종 금지(sharpAtk·brutalAtk·ruinAtk·overkilDmg·staggerExplosion·parryExplosion·elemConvert, game.html 16652). `rollAffixes` 15137 `_DEMO_MODE&&…has(id)` 로 풀에서 제외. `_DEMO_MODE=(EXODUSER_BUILD_TARGET\|\|'demo')==='demo'`(16648, 기본 데모). Godot: 처치 드랍(`native_normal_enemy_hurte.gd` 43110)·공방·유골함 지급 모두 데모 정책(`read_native_demo_policy().demo`)을 넘긴다(2026-10-22 pc-boss-chase C-06에서 처치 드랍 누락 수정) |
 
 ## 배포 명령
 
