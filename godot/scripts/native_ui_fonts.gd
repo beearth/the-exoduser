@@ -48,6 +48,8 @@ const STACKS := {
 	"cinzel_hell": ["Cinzel", "Nanum Myeongjo", "Noto Serif KR", "Gowun Batang", "serif"], # 'Cinzel',var(--font-hell)
 	"cinzel_serif": ["Cinzel", "serif"],                                                 # 'Cinzel',serif
 	"pet": ["Malgun Gothic", "sans-serif"],                                              # #petSubtitle 2587
+	"disp_title": ["Cinzel Decorative", "Noto Serif KR", "serif"],                       # index .char-disp-title 178
+	"cinzel_serif_kr": ["Cinzel", "Noto Serif KR", "serif"],                             # index .char-disp-sub 179
 }
 # 총칭 가족 자리의 대리(엔진 시스템 폴백 앞에 명시) — 한글 글리프 보장용, 기록 대상.
 const GENERIC_PROXY := {"serif": "Noto Serif KR", "sans-serif": "Noto Sans KR"}
