@@ -9,6 +9,8 @@ var character_index := 0
 var character_buttons: Array[Button] = []
 var creation_error: Label
 var _entry_enabled := false
+var _movie: CanvasLayer
+var _launching := false
 const Menu = preload("res://scripts/native_save_slot_menu.gd")
 const Bridge = preload("res://scripts/native_settings_lobby_bridge.gd")
 const Fonts = preload("res://scripts/native_ui_fonts.gd")
@@ -253,11 +255,14 @@ func _queue_entry(slot: int,_data: Dictionary) -> void:
 	call_deferred("_launch_entry",slot)
 func _launch_entry(slot: int) -> void:
 	if not is_inside_tree() or is_queued_for_deletion():return
-	var movie:=preload("res://scripts/parity_video_intro.gd").new()
-	add_child(movie);movie.begin("warrior",bridge.language)
+	if _launching:return
+	_launching=true
+	var movie: CanvasLayer=_begin_movie("warrior")
 	await movie.finished
 	var result: Dictionary=entry.launch(self,slot)
-	if not result.ready:status.text=_entry_error(result.reason)
+	if not result.ready:
+		_launching=false
+		status.text=_entry_error(result.reason)
 func _render() -> void:
 	for i in cards.size():
 		var row: Dictionary = menu.rows[i] if menu.rows.size()==5 else {"kind":"unavailable"}
@@ -307,5 +312,12 @@ func _notification(what: int) -> void:
 		bridge.configure(TranslationServer.get_locale());call_deferred("_render")
 
 func _play_cinematic() -> void:
-	var movie:=preload("res://scripts/parity_video_intro.gd").new()
-	add_child(movie);movie.begin("lobby",bridge.language)
+	if _launching:return
+	_begin_movie("lobby")
+
+func _begin_movie(kind: String) -> CanvasLayer:
+	# index.finishCin / character-story finish remove the old overlay before handoff.
+	if is_instance_valid(_movie):_movie.finish()
+	_movie=preload("res://scripts/parity_video_intro.gd").new()
+	add_child(_movie);_movie.begin(kind,bridge.language)
+	return _movie

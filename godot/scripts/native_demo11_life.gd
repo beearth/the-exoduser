@@ -35,6 +35,7 @@ var _replay_values: Array=[]
 var _replay_bars: Control
 var _replay_world: SubViewport
 var _replay_capture_busy:=false
+var _capture_generation:=0
 var _replay_material: ShaderMaterial
 var _play_generation:=0
 var _play_cursor:=0
@@ -307,15 +308,26 @@ func _button(key: String,rect: Rect2,px: int) -> Button:
  var hover:=style.duplicate();hover.bg_color=Color(.31,.208,.133,.34);hover.border_color=Color(.718,.651,.506,.8);b.add_theme_stylebox_override("hover",hover);b.add_theme_stylebox_override("pressed",hover);_screen.add_child(b);return b
 func _capture_replay() -> void:
  # Original G43618–43644: 10Hz, 480px max axis, 50 rolling frames. Never physics-tick IO/loading.
- if not is_instance_valid(main) or not main.source_state.read_current_g().get("on",false) or get_tree().paused or DisplayServer.get_name()=="headless":return
+ if DisplayServer.get_name()=="headless" or not _capture_owner_ready():return
+ var current_g: Variant=main.source_state.read_current_g()
+ if get_tree().paused or not current_g is Dictionary or not current_g.get("on",false):return
  if _replay_capture_busy or not is_instance_valid(_replay_world):return
  _replay_capture_busy=true
- _replay_world.canvas_transform=Transform2D(Vector2(.25,0),Vector2(0,.25),Vector2.ZERO)*get_viewport().canvas_transform
- _replay_world.render_target_update_mode=SubViewport.UPDATE_ONCE
+ var generation: int=_capture_generation
+ var viewport: SubViewport=_replay_world
+ viewport.canvas_transform=Transform2D(Vector2(.25,0),Vector2(0,.25),Vector2.ZERO)*get_viewport().canvas_transform
+ viewport.render_target_update_mode=SubViewport.UPDATE_ONCE
  await RenderingServer.frame_post_draw
- var image: Image=_replay_world.get_texture().get_image()
  _replay_capture_busy=false
- var p: Dictionary=main.source_state.read_current_p()
+ # The render fence may cross Main retirement/retry. Never dereference that old world.
+ if generation!=_capture_generation or not _capture_owner_ready():return
+ if not is_instance_valid(viewport) or viewport.is_queued_for_deletion() or not viewport.is_inside_tree():return
+ var texture: ViewportTexture=viewport.get_texture()
+ if texture==null or not texture.get_rid().is_valid():return
+ var image: Image=texture.get_image()
+ if image==null or image.is_empty():return
+ var p: Variant=main.source_state.read_current_p()
+ if not p is Dictionary:return
  var values: Dictionary={}
  for key in ["hp","mhp","st","mst","mp","mmp","shield","mshield"]:values[key]=p.get(key,0)
  if _replay_values.size()<50:_replay_values.append(values)
@@ -323,6 +335,13 @@ func _capture_replay() -> void:
  if _replay_frames.size()<50:_replay_frames.append(ImageTexture.create_from_image(image))
  else:(_replay_frames[_replay_index] as ImageTexture).update(image)
  _replay_index=(_replay_index+1)%50
+func _capture_owner_ready() -> bool:
+ return is_inside_tree() and not is_queued_for_deletion() and is_instance_valid(main) and main.is_inside_tree() and not main.is_queued_for_deletion() and is_instance_valid(main.source_state) and not main.source_state.is_queued_for_deletion()
+func _exit_tree() -> void:
+ _capture_generation+=1
+ _play_generation+=1
+ if is_instance_valid(_replay_timer):_replay_timer.stop()
+ if is_instance_valid(_replay_world):_replay_world.render_target_update_mode=SubViewport.UPDATE_DISABLED
 func _play_replay() -> void:
  if _replay_frames.is_empty() or _replaying:return
  _replay_layer.show();_pets.hide();_replaying=true;_replay_can_skip=false;_replay_image.texture=null;_replay_time.text="";_replay_died.hide();_replay_fill.size.x=0

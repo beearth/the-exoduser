@@ -157,3 +157,6 @@ FILES: stage-owned tests only; concurrent/unrelated touched0; PC/core/product as
 GIT: 경로 지정 add·정상 hooks·동일 브랜치 비강제 push·원격40자SHA 대조, main/deploy0.
 VISUAL VERDICT: RETOUCH (기존 인수 유지, 이번 시각 재검수 없음).
 NEXT PASS: 허용된 다음 검수에서 최종 fixture/E2E 재검증, starter native crash와 PC clock/wall 경계 분리 확인.
+
+
+2026-10-22 INTEG-12c 후속: 영화 단일 pause 소유·해제 State/렌더 대기 경계의 리플레이 캡처 보호·intro/E2E fresh namespace 계약은 [현행 안전 수정](INTEG12C_BOOT_REPLAY_20261022.md)을 따른다. 본문의 이전 검수 결과는 당시 이력으로 보존한다.

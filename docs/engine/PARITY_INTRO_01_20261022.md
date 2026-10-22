@@ -40,3 +40,6 @@ PC ffmpeg/Theora 변환 승인 대기는 그대로다. 재인코딩·생성·대
 ## 2026-10-22 INTEG-12b 하니스 후속
 
 47h 하니스는 초기 로비 ESC5150ms → 생성 직후 warrior Space1350ms → 첫 진입 INTRO Space2150ms의 실제 press/release 순서를 사용한다. finish/skip signal 폴백은 제거했다. [정확한 계약·단회 검수·제약](INTEG12B_HARNESS_REGRESSION_20261022.md).
+
+
+2026-10-22 INTEG-12c 후속: 영화 단일 pause 소유·해제 State/렌더 대기 경계의 리플레이 캡처 보호·intro/E2E fresh namespace 계약은 [현행 안전 수정](INTEG12C_BOOT_REPLAY_20261022.md)을 따른다. 본문의 이전 검수 결과는 당시 이력으로 보존한다.

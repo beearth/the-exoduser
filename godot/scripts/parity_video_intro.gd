@@ -15,6 +15,7 @@ var _hold:=-1
 var _hold_ms:=5000
 var _sequence: Array=[]
 var _was_paused:=false
+var _owns_pause:=false
 var _index:=-1
 func begin(kind: String,language: String) -> void:
 	locale=language;process_mode=Node.PROCESS_MODE_ALWAYS;layer=100
@@ -29,7 +30,7 @@ func begin(kind: String,language: String) -> void:
 	_caption=Label.new();_caption.position=Vector2(154,839);_caption.size=Vector2(1612,110);_caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;_caption.vertical_alignment=VERTICAL_ALIGNMENT_BOTTOM;_caption.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;_caption.add_theme_font_override("font",preload("res://scripts/native_ui_fonts.gd").stack("font"));_caption.add_theme_font_size_override("font_size",54);_caption.add_theme_color_override("font_shadow_color",Color.BLACK);_caption.add_theme_constant_override("shadow_outline_size",8);panel.add_child(_caption)
 	_hint=Label.new();_hint.position=Vector2(1350,1015);_hint.size=Vector2(510,30);_hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT;_hint.add_theme_font_size_override("font_size",13);_hint.modulate=Color("c9b795");panel.add_child(_hint)
 	_hint.text=preload("res://scripts/native_demo_ui_i18n.gd").text("SPACE 길게 눌러 건너뛰기",locale)
-	_was_paused=get_tree().paused;get_tree().paused=true;phase="playing";_next_group()
+	_was_paused=get_tree().paused;_owns_pause=true;get_tree().paused=true;phase="playing";_next_group()
 func _next_group() -> void:
 	if _sequence.is_empty():finish();return
 	group=_sequence.pop_front();elapsed=0;_index=-1
@@ -64,4 +65,10 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.pressed:next();get_viewport().set_input_as_handled()
 func finish() -> void:
 	if phase!="playing":return
-	phase="done";hide();get_tree().paused=_was_paused;finished.emit();queue_free()
+	phase="done";hide();_restore_pause();finished.emit();queue_free()
+func _restore_pause() -> void:
+	if not _owns_pause:return
+	_owns_pause=false
+	if is_inside_tree():get_tree().paused=_was_paused
+func _exit_tree() -> void:
+	_restore_pause()

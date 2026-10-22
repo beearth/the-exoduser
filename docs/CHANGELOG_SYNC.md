@@ -56633,3 +56633,11 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 ## 2026-10-22 INTEG-12b — 하니스 회귀
 
 제품 화면/PC 코어/PC 테스트 수정0. 42 HUD·44 펫·47h 입력 prefix·map runtime/product 기대값 및 Mac 결과 수집/fixture storage 경계를 교정. 각 suite/E2E 1회 제한을 지켜 실패 원로그와 후속 미검증 수정을 분리한다. [원본행·수정표·검수](engine/INTEG12B_HARNESS_REGRESSION_20261022.md).
+
+## 2026-10-22 INTEG-12c — 영상 pause·리플레이 수명 안전
+
+- 로비가 영화 소유자를 하나만 유지하고 다음 영화 전에 이전 pause를 복원한다. finish/exit에서 pause 반납은 1회이며 Main initialization 계약을 우회하지 않는다.
+- 리플레이 캡처는 headless를 먼저 거부하고 Main/State·렌더 대기 후 뷰포트/Image 수명을 확인한다. starter148/0·intro12/0·p1002f358/0·44_pets75/0·product47/0. 실제 GUI 부팅·필드 이동 및 자연 사망 리플레이 표시 확인.
+- intro/E2E에 fresh UUID 격리 namespace. PC 테스트/스킬창 변경0. 42는 실행 인자 누락으로 시작 전 거부, 재실행0; 완료로 주장하지 않는다.
+- 최종 E2E18단계·남은 제약: [INTEG12C_BOOT_REPLAY_20261022.md](engine/INTEG12C_BOOT_REPLAY_20261022.md), 외부 `_out/INTEG-12c/DONE.txt` 참조.
+- 최종 E2E18단계: overall NOT_READY, PASS7/NOT_READY11/FAIL0·SCRIPT ERROR0·native crash0. 실제 Retry 후 scene reload/HP복원 확인. 마지막 State reader null guard는 최종 check-only exit0으로 구분, suite 재실행0.

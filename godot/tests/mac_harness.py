@@ -10,6 +10,7 @@ import subprocess
 import os
 import shutil
 import time
+import uuid
 
 
 def native_node_binary(value):
@@ -30,6 +31,10 @@ def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
     project, out = Path(project), Path(out)
     assert ("Isolated" in userdir or userdir == "EXODUSER-C15-Test-20261022") and userdir.startswith("EXODUSER-")
     assert userdir != "EXODUSER-Godot-Native-First"
+    # Prefix-based Mac fixtures receive a new namespace on every invocation.
+    # Equality-only PC fixtures stay byte-identical; never alter their oracle.
+    if "res://tests/test_demo11_08_story_intro.gd" in flags or "res://tests/test_demo11_47h_e2e.gd" in flags:
+        userdir += "-" + uuid.uuid4().hex
     out.mkdir(parents=True, exist_ok=True)
     override = project / "override.cfg"
     original = override.read_bytes() if override.exists() else None
@@ -46,6 +51,8 @@ def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
     if (any(script in flags for script in fresh_main_fixtures)
             and not any(arg.startswith("--demo11-storage=") for arg in extra)):
         extra = [*extra, "--demo11-storage=off"]
+    if "res://tests/test_demo11_47h_e2e.gd" in flags:
+        extra = [*extra, "--isolated-userdir=" + userdir]
     if extra:
         # OS.execute needs a native executable path, never a quoted shell command
         # or a PC path transported to this Mac. Keep this in the Mac harness.

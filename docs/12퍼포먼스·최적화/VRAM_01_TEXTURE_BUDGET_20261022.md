@@ -86,3 +86,6 @@ arena는 제품 Map11ProductScene.activate_space("arena")를 호출한 캡처 �
 ## MAP PRODUCTION REPORT
 
 STAGE: CH1-1 측정만. MASTER/OUTER MASS/LARGE/MEDIUM/GROUND/PLAYABLE/LANDMARK: 기존 소스 보존. CAMERA QA: 메모리 캡처만, 신규 맵 품질 승인 없음. TECH QA: GPU 메모리 표와 원시 덤프 참조. FILES: stage-owned 수정0 / concurrent touched0. GIT: 전용 review branch, 배포0. VISUAL VERDICT: RETOUCH (상속된 맵/웹 차이 판정 유지; 이번 변경으로 PASS 선언 없음). NEXT PASS: 익명·내부 GPU 계수 분해; 맵팀과 별도 통합 경계 검토.
+
+
+INTEG-12c 단회 후속: p1002f PC 테스트는 변경 없이358 assertions/0 failures·exit0, dummy texture t=null 미재현. WeakRef 자체의 texture 해제 원인으로 확정하지 않으며 VRAM-01 제품 파일 수정0. 원인·제약은 [INTEG-12c](../engine/INTEG12C_BOOT_REPLAY_20261022.md) 참조.

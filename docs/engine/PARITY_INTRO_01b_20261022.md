@@ -29,3 +29,6 @@ PC 단회 256 assertions / 0 failures, skipped0, exit0, SCRIPT ERROR0. forced_te
 | E2E / --demo11-storage=on | PASS, injections0, 실제 로비 Escape 홀드 → 생성 UI → 전사 Space 홀드 → 첫진입 INTRO Space 홀드 → 가이드 Space 홀드 → field_on=true, story_handoff=1 |
 
 모든 실행 SCRIPT ERROR0, 자기 child 종료·override 복원 확인. PID81277 조작0, 동시 상한3 준수. E2E 원본은 출력 JSON 경로만 이번 _out으로 옮긴 외부 사본이며 상태·저장·시계 주입 없음. 기존 화면 RETOUCH/영상 HOLD는 그대로이며 이번 실행을 새 1x 시각 동등성 승인으로 해석하지 않는다.
+
+
+2026-10-22 INTEG-12c 후속: 영화 단일 pause 소유·해제 State/렌더 대기 경계의 리플레이 캡처 보호·intro/E2E fresh namespace 계약은 [현행 안전 수정](INTEG12C_BOOT_REPLAY_20261022.md)을 따른다. 본문의 이전 검수 결과는 당시 이력으로 보존한다.
