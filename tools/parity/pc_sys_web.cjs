@@ -94,8 +94,11 @@ L('route_override_files', diff.length);
     if (part === 'stats') {
       await enter(false);
       L('sStats_start', await ev(`G._sStats`));
-      await wait(4000);
-      L('sStats_t4', await ev(`G._sStats`));
+      const x0 = await ev(`({x:P.x,y:P.y})`);
+      await page.keyboard.down('KeyD'); await wait(2000); await page.keyboard.up('KeyD'); await wait(300);
+      L('sStats_walk2s', await ev(`({ss:G._sStats,moved:Math.hypot(P.x-${x0.x},P.y-${x0.y})})`));
+      await ev(`(()=>{P.iframes=0;hurtP(40,{src:'probe'})})()`); await wait(100);
+      L('sStats_hit40', await ev(`({ss:G._sStats,hp:P.hp})`));
     }
     if (part === 'potion') {
       await enter(false);

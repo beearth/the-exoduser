@@ -377,6 +377,13 @@ func _advance_native_source_update_clock(main: Node, callback_id: String) -> Dic
 			clock.phase_gap_sp_to_stage_time(GapFlowWitness.receipt("gap_sp_to_stage_time")))
 	if result.get("status") == "CONTINUE":
 		result = _source_update_clock_write_step(main, state, g, clock.phase_stage_play_time(g))
+	if result.get("status") == "CONTINUE" and state.has_method("advance_native_session_travel"):
+		# PC-SYS-3 G32745 (32742 stageTime 바로 다음 문장): G._sStats 이동거리 — 사슬기동(_harpActive||_dashActive)이면 dashDist, 아니면 walked.
+		var move_skills: Variant = main.get("native_move_skills")
+		var chain_moving: bool = is_instance_valid(move_skills) and (move_skills.get("harp_active") == true or move_skills.get("dash_active") == true)
+		var actor: Variant = main.get("player")
+		if is_instance_valid(actor):
+			state.advance_native_session_travel(main, actor.global_position.x, actor.global_position.y, chain_moving)
 	var summary: Dictionary = {"status": result.get("status"), "last": result,
 		"update_state": clock.read_update_state()}
 	clock.end_update()

@@ -110,7 +110,7 @@ etype 0↔4 차이는 각 행에 표기. **etype4(눈알 육괴)가 Godot 구현
 
 | 행 | 문장 | 읽기 | 효과 | RNG | 판정 |
 |---|---|---|---|---|---|
-| 42355 | `G._sStats` 게이트 | State.G(_sStats 없음) | — | — | ✂ |
+| 42355 | `G._sStats` 게이트 | State.G(_sStats 없음) | — | — | ✂ → **2026-10-23 PC-SYS-3**: State가 initStage 리터럴(G62284)을 두고 `commit_native_session_stat`로 dmgDealt+=dmg·maxHit=max(42357), crits++(42318) |
 | 42357~42358 | `G._dmgPeak` 생성/갱신 ({val,t:300}) | State.G | **G._dmgPeak 쓰기** (HUD 피크 표시용) | — | ✅ State G owner 쓰기 (표시 소비자는 미이식) |
 | 42361~42368 | 흡수: lifeLeech(+injuredLeech 게이트)/manaLeech/stLeech/lifeOnHit, _uAxeLeech(u_eq) | eq_affix 4~5회 + u_eq 1회 (전부 0) | — | — | ○ |
 | 42370~42379 | onHit 상태이상 8종: fire/ice/light/dark/poisonOnHit, onHitBleed/Stun/Freeze | eq_affix 8회 (전부 0) | — | **0 → &&단락, RNG 미소비** | ○ |

@@ -177,8 +177,8 @@ func _show_dead() -> void:
    _frozen_field=TextureRect.new();_frozen_field.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;_frozen_field.size=Vector2(1920,1080);_frozen_field.mouse_filter=Control.MOUSE_FILTER_IGNORE;_view.add_child(_frozen_field);_view.move_child(_frozen_field,0)
   _frozen_field.texture=ImageTexture.create_from_image(get_viewport().get_texture().get_image());_frozen_field.show()
  var g: Dictionary=main.source_state.read_current_g()
- if not g.get("_sStats") is Dictionary:g._sStats={}
- g._sStats.deaths=int(g._sStats.get("deaths",0))+1
+ # G43872 if(G._sStats)G._sStats.deaths++ — 객체가 없으면 만들지 않는다(PC-SYS-3: initStage 리터럴 G62284는 State가 둔다).
+ main.source_state.commit_native_session_stat(main,"deaths","add",1.0)
  g._ddDeaths=int(g.get("_ddDeaths",0))+1
  if not g.get("_ddChapDeathMap") is Dictionary:g._ddChapDeathMap={}
  g._ddChapDeathMap[0]=int(g._ddChapDeathMap.get(0,0))+1

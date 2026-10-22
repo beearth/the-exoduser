@@ -161,8 +161,28 @@ func run_death() -> void:
 func run_stats() -> void:
 	if not await enter_play(): return
 	L("sStats_start", g().get("_sStats"))
-	await secs(2.0)
-	L("sStats_t2", g().get("_sStats"))
+	var x0: Vector2 = main.player.global_position
+	key(KEY_D, true); await secs(2.0); key(KEY_D, false); await secs(0.3)
+	L("sStats_walk2s", {"ss": g().get("_sStats"), "moved": main.player.global_position.distance_to(x0)})
+	main.player.iframes = 0.0
+	main.player.receive_damage(40)
+	await physics_frame
+	L("sStats_hit40", {"ss": g().get("_sStats"), "hp": main.player.hp})
+	# 가장 가까운 적에게 실제 근접 공격(좌클릭) 몇 번
+	var target: Node2D = null
+	var best := 1e9
+	for e in main.world.get_enemies():
+		if is_instance_valid(e) and e.alive and e.global_position.distance_to(main.player.global_position) < best:
+			best = e.global_position.distance_to(main.player.global_position); target = e
+	if is_instance_valid(target):
+		main.player.global_position = target.global_position + Vector2(-40, 0)
+		await secs(0.3)
+		for i in 6:
+			var m := InputEventMouseButton.new(); m.button_index = MOUSE_BUTTON_LEFT; m.pressed = true; m.position = Vector2(1000, 540)
+			Input.parse_input_event(m); await secs(0.12)
+			var u := InputEventMouseButton.new(); u.button_index = MOUSE_BUTTON_LEFT; u.pressed = false; u.position = Vector2(1000, 540)
+			Input.parse_input_event(u); await secs(0.35)
+	L("sStats_attack", {"ss": g().get("_sStats"), "target": str(target)})
 
 func run_potion() -> void:
 	if not await enter_play(): return

@@ -156,6 +156,9 @@ func initialize_new_run(player: Node2D, world: Node, source_resources: Node) -> 
 	# P2-001e — 새 게임 G 할당(63956): G.mats=_loadSharedMats()||1000. 공유 악의
 	# 저장소(_loadSharedMats 48527, localStorage)는 미이식 → 0||1000 = 기본 1000 경로.
 	_g["mats"] = 1000
+	# PC-SYS-3 — initStage 세션 통계 리터럴(G31571 / 1-1 _initRuinedForestNativeScene G62284).
+	# 새 게임·불러오기 모두 initStage를 거치고, Godot 재도전은 씬 재적재(새 State)라 같은 시점이다. 저장 대상 아님.
+	_g["_sStats"] = SESSION_STATS_LITERAL.duplicate(true)
 	_stats = packets["stats_fresh_reset"]["values"].duplicate(true)
 	_passives = packets["passives_file_init"]["values"].duplicate(true)
 	_inventory = packets["inventory_fresh_reset"]["values"].duplicate(true)
@@ -166,6 +169,50 @@ func initialize_new_run(player: Node2D, world: Node, source_resources: Node) -> 
 	_initialized = true
 	_initializing = false
 	_last_error = ""
+	return true
+
+# ═══ PC-SYS-3: G._sStats 세션 통계 (원본 증분 지점의 `if(G._sStats)` 게이트 그대로) ═══
+# G31571/G62284 리터럴. 증분: deaths G43872 · dmgDealt/maxHit G42357 · crits G42318 · dmgTaken G43574 ·
+# parries G38472(doParry) · potions G28215/G35912 · dodges G43435 · dashCount G33523/33540/33571/33692 ·
+# walked/dashDist/_prevX/_prevY G32745(update 루프, stageTime 직후). items는 원본에 증분 지점이 없다.
+const SESSION_STATS_LITERAL := {"deaths": 0, "dmgDealt": 0, "dmgTaken": 0, "parries": 0, "potions": 0, "items": 0,
+	"dodges": 0, "crits": 0, "maxHit": 0, "dashDist": 0, "dashCount": 0, "walked": 0, "_prevX": 0, "_prevY": 0}
+
+## op: "add"(+=value) · "max"(value>현재면 대입, G42357 maxHit). G._sStats가 객체가 아니면 원본처럼 아무것도 안 쓴다.
+func commit_native_session_stat(owner: Node, field: String, op: String, value: float) -> bool:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or owner != _player.get_parent() 			or owner.get("source_state") != self or not SESSION_STATS_LITERAL.has(field) or not is_finite(value):
+		return false
+	var ss: Variant = _g.get("_sStats")
+	if not ss is Dictionary:
+		return false
+	var current: float = _feel_num(ss.get(field))
+	match op:
+		"add": ss[field] = current + value
+		"max":
+			if value > current: ss[field] = value
+		_: return false
+	return true
+
+## G32745: if(G._sStats){const _ss=G._sStats;if(_ss._prevX||_ss._prevY){const _dx=P.x-_ss._prevX,_dy=P.y-_ss._prevY,
+##   _dd=Math.sqrt(_dx*_dx+_dy*_dy);if(_dd>0.5&&_dd<500){if(_harpActive||_dashActive)_ss.dashDist+=_dd;else _ss.walked+=_dd}}
+##   _ss._prevX=P.x;_ss._prevY=P.y}
+func advance_native_session_travel(owner: Node, x: float, y: float, chain_moving: bool) -> bool:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or owner != _player.get_parent() 			or owner.get("source_state") != self or not is_finite(x) or not is_finite(y):
+		return false
+	var ss: Variant = _g.get("_sStats")
+	if not ss is Dictionary:
+		return false
+	var px: float = _feel_num(ss.get("_prevX"))
+	var py: float = _feel_num(ss.get("_prevY"))
+	if px != 0.0 or py != 0.0:
+		var d: float = sqrt((x - px) * (x - px) + (y - py) * (y - py))
+		if d > 0.5 and d < 500.0:
+			if chain_moving:
+				ss["dashDist"] = _feel_num(ss.get("dashDist")) + d
+			else:
+				ss["walked"] = _feel_num(ss.get("walked")) + d
+	ss["_prevX"] = x
+	ss["_prevY"] = y
 	return true
 
 func get_native_new_run_player() -> Node2D:
