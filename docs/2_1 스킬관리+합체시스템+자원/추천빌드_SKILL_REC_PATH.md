@@ -42,6 +42,8 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 - 필살기 6단계(`pick:true`): 이미 필살기 보유 시 스킵, 미보유 시 기본 **블랙(blackStar)** 습득. 후보는 블랙/탄막블랙홀/처형 3종이며 삭제된 필살기는 코드·세이브 복원 대상에서 제외
 - 자원 부족·`reqLv` 미달(푸른비 300, 버스트루프 700)·DEMO 합체제한은 건너뜀(부분 진행)
 - 합체는 클릭 합체와 동일한 `_execFuse(key)` 공용 함수 호출 (상세는 `2_1 스킬관리+합체시스템.md`)
+- SP 0이어도 `spCost` 0인 15단계 chainSlash는 습득된다(학습 게이트가 SP≥spCost뿐). 2026-10-22 원본 VM 확인
+- Godot: `main.request_skill_recommend_auto(id)`가 같은 순서로 실제 원장에 기록([PC_SKILL_WRITERS 계약](../engine/PC_SKILL_WRITERS_CONTRACT_20261022.md))
 
 > 2026-09-10: 불꽃칼날(shieldFuse)는 모든 캐릭터1레벨부터 기본 보유한다. 위9단계의 구성 스킬/합체 목록은 강화 추천 대상으로 남으며 별도 습득·합체가 필요하지 않다. E 스킬 레벨마다 기본 범위+5%, 풀차지1.5초. [계약](E_BASE_WING_STRIKE_20260910.md).
 

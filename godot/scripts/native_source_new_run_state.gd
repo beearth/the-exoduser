@@ -633,8 +633,19 @@ func commit_native_skill_management(owner: Node, command: Dictionary) -> Diction
 			plan=preload("res://scripts/native_skill_fusion.gd").preview(command.skill_id,before) if live.status=="READY" else live
 		"minus": plan=REFUND.minus_preview(command.skill_id,before)
 		"reset": plan=REFUND.reset_preview(command.skill_id,before,command.get("confirmed",false))
+		"batch","recommend":
+			# PC-SKILL-WRITERS: G3090 skBatchUpBtn/skRecAutoBtn → _skillBatchUp G47192–47233 /
+			# _skillRecAuto G47299–47326. Same SK-S05e copied ledger; recommend's _canFuse uses
+			# the actual demo boot policy (_DEMO_MODE), the same gate as the "fuse" action.
+			plan=_native_skill_bulk_plan(owner,command,before)
 		_:
 			_skill_management_busy=false;rejected["reason"]="unsupported_skill_action";return rejected
+	if command.action in ["batch","recommend"] and plan.get("status")=="READY" and not plan.value.applied:
+		# Source zero branch: showPH only (G47231 / G47324). No ledger, save or SFX.
+		_skill_management_busy=false
+		rejected["reason"]="nothing_to_level_up" if command.action=="batch" else "nothing_to_auto_build"
+		rejected["source_feedback"]=_native_skill_bulk_feedback(command.action,plan.value.details,false)
+		rejected["policy"]=plan.duplicate(true);return rejected
 	if plan.get("status")!="READY" or not plan.value.applied:
 		_skill_management_busy=false
 		rejected["reason"]=plan.get("reason",plan.get("value",{}).get("branch","policy_not_ready"))
@@ -661,10 +672,50 @@ func commit_native_skill_management(owner: Node, command: Dictionary) -> Diction
 		result["fusion_combat_handoff"]={"status":"HOLD","damage_execution":false,"shield_execution":false,
 			"requested":command.skill_id,"fusion_key":command.skill_id if command.action=="fuse" else value.details.get("key",value.details.get("fusion_key")),
 			"source":"_execFuse / _skResetSkill ledger boundary; combat owner not called"}
+	if command.action in ["batch","recommend"]:
+		result["counts"]=value.details.duplicate(true)
+		result["source_feedback"]=_native_skill_bulk_feedback(command.action,value.details,true)
+		var fused_now: Array=[]
+		for key in value.fixture.p._fused:
+			if value.fixture.p._fused[key] and not before.p._fused.get(key,false): fused_now.append(key)
+		result["fused_keys"]=fused_now
+		if not fused_now.is_empty():
+			result["fusion_combat_handoff"]={"status":"HOLD","damage_execution":false,"shield_execution":false,
+				"requested":"recommend","fusion_keys":fused_now,"source":"_skillRecAuto→_execFuse G47235–47273 ledger boundary; combat owner not called"}
 	_skill_management_committed[id]={"command":command.duplicate(true),"result":result.duplicate(true)}
 	if _skill_management_committed.size()>32: _skill_management_committed.erase(_skill_management_committed.keys()[0])
 	_skill_management_busy=false
 	return result
+
+# PC-SKILL-WRITERS (2026-10-22): plan only. Writes go through the shared commit above.
+func _native_skill_bulk_plan(owner: Node, command: Dictionary, before: Dictionary) -> Dictionary:
+	# Loaded on the button event only (no extra preload in the State script load path).
+	var BULK: GDScript=load("res://port_modules/skill_management_source/batch_recommend.gd")
+	if command.skill_id!="": return {"status":"NOT_READY","reason":"bulk_action_takes_no_skill_id"}
+	if command.action=="batch": return BULK.batch_preview(before)
+	var boot: Dictionary=owner.read_native_demo_policy()
+	if boot.get("status")!="READY" or boot.get("demo")!=true or boot.get("build_target")!="demo":
+		return {"status":"NOT_READY","reason":"actual_demo_fusion_policy_required"}
+	return BULK.recommend_preview(before,true)
+
+# Source text/colour/life of the final feedback only (G47226–47231, G47318–47324).
+# Display is the caller's presentation owner; nothing is drawn here.
+func _native_skill_bulk_feedback(action: String, details: Dictionary, applied: bool) -> Dictionary:
+	if action=="batch":
+		if applied:
+			return {"kind":"addTxt","ko":"일괄 레벨업 ×"+str(int(details.get("upgrades",0))),
+				"en":"Batch Level Up ×"+str(int(details.get("upgrades",0))),"color":"#ffcc44","life":70,"dy":-30,
+				"sfx":"levelup","source":"game.html:47226-47229",
+				"pending":["SFX.levelup","addTxt","renderSkillPanel","updateSkSlot","updateQS","dbSaveForce"]}
+		return {"kind":"showPH","ko":"레벨업 가능한 스킬 없음","en":"No skills to level up","color":"#ff8844","source":"game.html:47231"}
+	if applied:
+		var learned: int=int(details.get("learned",0));var fused: int=int(details.get("fused",0))
+		return {"kind":"addTxt","ko":"추천 자동: 습득 %d / 합체 %d"%[learned,fused],
+			"en":"Auto Build: Learn %d / Fuse %d"%[learned,fused],"color":"#ffcc44","life":90,"dy":-30,
+			"sfx":"levelup","source":"game.html:47318-47322",
+			"pending":["_skHierTab='rec'","_fuseSelId=null","SFX.levelup","addTxt","_closeSkPop","updateQS","updateSkSlot","renderSkillPanel","dbSaveForce",
+				"_execFuse effects per fusion: SFX.levelup/voice_fuse/G.shake=8/addTxt(name+완성, slot 배정)"]}
+	return {"kind":"showPH","ko":"추천 진행할 항목 없음","en":"Nothing to auto-build","color":"#ff8844","source":"game.html:47324"}
 
 
 func apply_native_skill_cast_cost(owner: Node, mats_cost: int) -> Dictionary:
