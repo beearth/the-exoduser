@@ -21,7 +21,8 @@ func run() -> void:
  root.size=Vector2i(1920,1080);root.content_scale_size=Vector2i(1920,1080)
  var screen=load("res://scenes/demo_lobby.tscn").instantiate();screen.set_meta("native_lobby_entry_enabled",true);root.add_child(screen);current_scene=screen
  await wait_ms(500);await hold(5300,KEY_ESCAPE);evidence.route.append("lobby cinematic: actual Escape hold")
- await click(Vector2(1600,535));await click(Vector2(1200,773))
+ # SWEEP-B(2026-10-23): 웹 로비 '+ 새 캐릭터' 카드(1392,503,480,64) → 캐릭터 선택(#charVisualPop) '생성' #visualCreateBtn(1206.6,1004,133.4,46)
+ await click(Vector2(1600,535));await click(Vector2(1273,1027))
  for letter in "IntroQA":key(0,true,letter.unicode_at(0));key(0,false)
  await wait_ms(100);key(KEY_ENTER,true);key(KEY_ENTER,false);await wait_ms(400)
  await hold(1500);evidence.route.append("character story: actual Space hold")

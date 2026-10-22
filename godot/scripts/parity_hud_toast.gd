@@ -8,7 +8,7 @@ var face: Font
 func _ready() -> void:
  mouse_filter=Control.MOUSE_FILTER_IGNORE
  var spaced: FontVariation=preload("res://scripts/native_ui_fonts.gd").stack("font",900).duplicate()
- spaced.spacing_glyph=6
+ preload("res://scripts/native_ui_fonts.gd").apply_spacing(spaced,int(6))
  face=spaced
 func _draw() -> void:
  if text.is_empty() or face==null:return

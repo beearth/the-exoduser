@@ -108,12 +108,23 @@ func model() -> Dictionary:
 func text(value: String,rect: Rect2,px: int=13,color:=Color("dfd6c2"),title: bool=false) -> Label:
  return Surface.text(stage,value,rect,px,color,"hell_title" if title else "hell")
 func action(value: String,rect: Rect2,callback: Callable,enabled:=true) -> Button:
+ # skill-forge.css: .sf-btn 철판(#2a211c→#16110f, 1px #6b5843, 글자 #dfd6c2) / .sf-btn-fire(#6e2418→#3a120d, #a34d3f, #fff0df)
+ # / 리셋=.sf-btn-ghost(투명, 글자 #b9ab92). :disabled → 실측 opacity .48 + saturate(.3).
  var b:=Button.new();b.text=Surface.I18N.text(value);b.position=rect.position;b.size=rect.size;b.disabled=not enabled
  b.add_theme_font_override("font",Surface.Fonts.stack("hell"));b.add_theme_font_size_override("font_size",13)
- var box:=StyleBoxFlat.new();box.bg_color=Color("201813");box.border_color=Color("6b5843");box.set_border_width_all(1);b.add_theme_stylebox_override("normal",box);b.add_theme_stylebox_override("disabled",box);b.modulate.a=1 if enabled else .42
- if value in ["습득","강화 +"]:
-  var fire: StyleBoxFlat=box.duplicate();fire.bg_color=Color("6e2418");fire.border_color=Color("a34d3f");b.add_theme_stylebox_override("normal",fire);b.add_theme_stylebox_override("disabled",fire);b.add_theme_color_override("font_color",Color("fff0df"));b.add_theme_color_override("font_disabled_color",Color("b8ada7"))
-  if not enabled:fire.bg_color=Color("382b29");fire.border_color=Color("59463e")
+ var fire: bool=value in ["습득","강화 +"];var ghost: bool=value=="리셋"
+ var bg:=Color(32/255.0,25/255.0,21/255.0);var edge:=Color("6b5843");var ink:=Color("dfd6c2")
+ if fire:bg=Color(84/255.0,27/255.0,18/255.0);edge=Color("a34d3f");ink=Color("fff0df")
+ if ghost:bg=Color(0,0,0,0);ink=Color("b9ab92")
+ if not enabled:
+  var desat:=func(c: Color) -> Color:
+   var l:=c.r*.2126+c.g*.7152+c.b*.0722
+   return Color(l+(c.r-l)*.3,l+(c.g-l)*.3,l+(c.b-l)*.3,c.a)
+  bg=desat.call(bg);edge=desat.call(edge);ink=desat.call(ink)
+ var box:=StyleBoxFlat.new();box.bg_color=bg;box.border_color=edge;box.set_border_width_all(1);box.set_corner_radius_all(2)
+ for state in ["normal","hover","pressed","focus","disabled"]:b.add_theme_stylebox_override(state,box)
+ for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color","font_disabled_color"]:b.add_theme_color_override(key,ink)
+ b.modulate.a=1.0 if enabled else .48
  stage.add_child(b);b.pressed.connect(callback);return b
 class DropButton extends Button:
  var forge: Control
@@ -167,7 +178,9 @@ func render() -> void:
   var x: float=278+i*106;var id: String=slot_value(i)
   var b:=DropButton.new();b.forge=self;b.slot_index=i;b.position=Vector2(x,229.47);b.size=Vector2(92,105);stage.add_child(b)
   for state in ["normal","hover","pressed","focus"]:b.add_theme_stylebox_override(state,StyleBoxEmpty.new())
-  disc(id,Rect2(8.9,-4.1,74.2,74.2) if i==selected_slot else Rect2(11,0,70,70),i==selected_slot,b)
+  # skill-forge-3d.js(sf-3d): 보이는 슬롯은 3D 코인(DOM 원판은 opacity 0). 웹 1x 실측 코인 지름 44px(선택 ×1.08·z36 원근 → 49px),
+  # 중심 = 원판 중심(버튼 46,35).
+  disc(id,Rect2(21.5,10.5,49,49) if i==selected_slot else Rect2(24,13,44,44),i==selected_slot,b)
   b.pressed.connect(func():selected_slot=i;staged=[];selected_skill="";render())
   var key:=Surface.text(b,Slots.SLOTS[i].k,Rect2(0,73,92,14),11,Color("c9a663"),"hell_title");key.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
   var name_label:=Surface.text(b,display_name(id) if not id.is_empty() else "비어 있음",Rect2(0,89,92,15),11,Color("b9ab92"),"hell");name_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;name_label.clip_text=true
@@ -220,17 +233,22 @@ func render_info(m: Dictionary) -> void:
  var desc:=text(skill_desc(id),Rect2(66,439.11,300,65),13,Color("d8ccb8"));desc.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;desc.set_deferred("size",Vector2(300,65))
  if sk.get("found",false):
   var cost: int=int(sk.value.get("spCost",0) if lv==0 else Support.COST.skill_up_sp_cost(lv).value)
-  text(Surface.I18N.text("습득 " if lv==0 else "강화 ")+"SP "+str(cost),Rect2(66,513.42,298,24),12,Color("b9ab92"))
+  var cost_label:=text(Surface.I18N.text("습득 " if lv==0 else "강화 ")+"SP "+str(cost),Rect2(66,513.42,298,24),12,Color("b9ab92"))
+  # .sf-info-cost flex gap 10px: 경고문은 비용 글자 바로 뒤(실측 124.6), 색 #e08a6a
+  var warn_x: float=66.0+cost_label.get_theme_font("font").get_string_size(cost_label.text,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x+10.0
   action("습득" if lv==0 else "강화 +",Rect2(66,538.42,67,34),func():manage("learn_up",id),snapshot.p.sp>=cost and (lv==0 or lv<1+int(snapshot.p.lv/50)))
   if lv>0 and lv>=1+int(snapshot.p.lv/50) and lv<20:
-   text("Lv"+str((1+int(snapshot.p.lv/50))*50)+Surface.I18N.text(" 도달 시 해금"),Rect2(190,513.42,175,24),12,Color("e3a16f"))
+   text("Lv"+str((1+int(snapshot.p.lv/50))*50)+Surface.I18N.text(" 도달 시 해금"),Rect2(warn_x,513.42,366.0-warn_x,24),12,Color("e08a6a"))
   if lv>0:
    action("강화 −",Rect2(139,538.42,65,34),func():manage("minus",id),lv>1)
    action("리셋",Rect2(210,538.42,55,34),func():confirm_reset(id))
  var allowed: Dictionary=Slots.can_equip(Slots.SLOTS[selected_slot].k,id,snapshot.p)
  if slot_value(selected_slot)!=id and allowed.get("value",false):action(Surface.I18N.text("이 슬롯에 장착")+" ["+Slots.SLOTS[selected_slot].k+"]",Rect2(72,651,285,32),func():equip(selected_slot,id))
  if m.cands.any(func(c):return c.id==id and c.ok and c.learned and not c.demo):action("제단에 넣기",Rect2(72,692,285,32),func():place_material(id))
- text("SP %d  ·  악의 %s  ·  LV %d"%[snapshot.p.sp,str(int(snapshot.g.mats)),snapshot.p.lv],Rect2(66,584.42,298,30),12,Color("b9ab92"),true)
+ # .sf-info-head border-bottom / .sf-info-res border-top 1px var(--sf-line) rgba(164,147,115,.5), 'SP 0 · 악의 1,000 · LV 1'
+ for rule_y in [428.1,584.4]:
+  var rule:=ColorRect.new();rule.position=Vector2(66,rule_y);rule.size=Vector2(300,1);rule.color=Color(164/255.0,147/255.0,115/255.0,.5);rule.mouse_filter=Control.MOUSE_FILTER_IGNORE;stage.add_child(rule)
+ text("SP %d · %s %s · LV %d"%[snapshot.p.sp,Surface.I18N.text("악의"),preload("res://scripts/hud.gd")._native_comma(int(snapshot.g.mats)),snapshot.p.lv],Rect2(66,592.4,300,17),12,Color("b9ab92"),true)
 func confirm_reset(id: String) -> void:
  var dialog:=ConfirmationDialog.new();dialog.dialog_text=skill_name(id)+" 리셋";dialog.confirmed.connect(func():manage("reset",id,true));stage.add_child(dialog);dialog.popup_centered()
 func manage(kind: String,id: String,confirmed:=false) -> void:

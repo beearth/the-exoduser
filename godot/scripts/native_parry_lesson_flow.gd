@@ -769,6 +769,7 @@ func _start() -> void:
 		_saved_player = {"hp": p.get("hp"), "x": player.global_position.x, "y": player.global_position.y} # 397 saved
 	_move_last = player.global_position
 	_build_panel()
+	_set_objective_hidden(true)
 	_render()
 
 func _finish() -> void:
@@ -812,7 +813,17 @@ func _finish() -> void:
 	if is_instance_valid(_panel):
 		_panel.queue_free()
 		_panel = null
+	_set_objective_hidden(false)
 	_ui = {}
+
+## ui-foundation.css240: body:has(#parryLesson) #mmLvl{visibility:hidden} — 우상 목표 패널만 가린다.
+func _set_objective_hidden(hidden: bool) -> void:
+	var tree := get_tree()
+	if tree == null:
+		return
+	var objective: Node = tree.root.find_child("NativeObjectivePanel", true, false)
+	if objective is CanvasItem:
+		(objective as CanvasItem).visible = not hidden
 
 # ═══ 패널 — UI_FOUNDATION parryLesson 계약 + lesson_styles.json 실측 ═══
 var _font_bold: FontVariation
@@ -836,6 +847,12 @@ func _label(size: int, color: Color, text: String = "", weight: int = 400) -> La
 	node.add_theme_constant_override("shadow_offset_y", 1)
 	node.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	return node
+
+func _spacer(parent: Node, height: float) -> void:
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(0, height)
+	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(gap)
 
 func _build_panel() -> void:
 	_panel = CanvasLayer.new()
@@ -921,9 +938,11 @@ func _build_panel() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER # 원본 본문 스크롤바 비표시
 	outer.add_child(scroll)
 	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 6)
+	# SWEEP-B: parry-lesson.css 실측 세로 간격(84→112.5→192.5→237.2→276.4)을 스페이서로 맞춘다.
+	column.add_theme_constant_override("separation", 0)
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(column)
 	var header := HBoxContainer.new()
@@ -935,7 +954,11 @@ func _build_panel() -> void:
 	_ui["status"].size_flags_horizontal = Control.SIZE_SHRINK_END
 	header.add_child(_ui["eyebrow"])
 	header.add_child(_ui["status"])
+	for label_key in ["eyebrow", "status"]:
+		(_ui[label_key] as Label).custom_minimum_size.y = 16.5
+		(_ui[label_key] as Label).vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	column.add_child(header)
+	_spacer(column, 14.0)
 	# 키캡 — 실측 28px, 선 #e0c18b, 그라디언트(51,44,44)→(16,14,16) 중간값, radius 4 — 한 줄 고정
 	var keycap := PanelContainer.new()
 	var keycap_style := StyleBoxFlat.new()
@@ -948,8 +971,8 @@ func _build_panel() -> void:
 	keycap_style.corner_radius_bottom_right = 4
 	keycap_style.content_margin_left = 8.0
 	keycap_style.content_margin_right = 8.0
-	keycap_style.content_margin_top = 14.0
-	keycap_style.content_margin_bottom = 14.0
+	keycap_style.content_margin_top = 11.0 # 실측 높이 62 = 11 + 37.7(Cinzel 28 줄) + 11 + 테두리 2
+	keycap_style.content_margin_bottom = 11.0
 	keycap.add_theme_stylebox_override("panel", keycap_style)
 	_ui["keycap_style"] = keycap_style
 	keycap.size_flags_horizontal = Control.SIZE_SHRINK_END # 실측: 키캡 우측 정렬(right=콘텐츠 우변 1826)
@@ -957,19 +980,30 @@ func _build_panel() -> void:
 	_ui["keycap"].add_theme_font_override("font", preload("res://scripts/native_ui_fonts.gd").stack("cinzel_serif", 400)) # P2-007a .lesson-key 'Cinzel',serif(로드분 700 face)
 	_ui["keycap"].autowrap_mode = TextServer.AUTOWRAP_OFF
 	keycap.add_child(_ui["keycap"])
+	keycap.custom_minimum_size.y = 62.0 # 실측 125.6×62 (1710.4,114.5)
 	column.add_child(keycap)
+	_spacer(column, 16.0)
 	_ui["title"] = _label(29, COL_TITLE, "", 700) # 실측 font-weight 700
+	(_ui["title"] as Label).custom_minimum_size.y = 37.7
+	(_ui["title"] as Label).add_theme_constant_override("shadow_offset_y", 2)
 	column.add_child(_ui["title"])
+	_spacer(column, 7.0)
 	_ui["subtitle"] = _label(12, COL_SUBTITLE)
+	(_ui["subtitle"] as Label).custom_minimum_size.y = 19.2
 	column.add_child(_ui["subtitle"])
+	_spacer(column, 17.0)
 	# 110~111/170~174: checklist는 전 행 순서 유지, details(hint+hold)가 현재 행 뒤로 이동
 	var checklist := VBoxContainer.new()
-	checklist.add_theme_constant_override("separation", 2)
+	checklist.add_theme_constant_override("separation", 6) # 실측 행 피치 44.4 = 38.4 + 6
 	_ui["checklist"] = checklist
 	var details := VBoxContainer.new()
 	details.add_theme_constant_override("separation", 6)
-	_ui["details"] = details
+	var details_wrap := MarginContainer.new() # 실측 .lesson-hint 들여쓰기 8px (1496)
+	details_wrap.add_theme_constant_override("margin_left", 8)
+	details_wrap.add_child(details)
+	_ui["details"] = details_wrap
 	_ui["hint"] = _label(14, COL_HINT)
+	(_ui["hint"] as Label).add_theme_constant_override("line_spacing", 6) # lh 23.8
 	details.add_child(_ui["hint"])
 	_ui["hold"] = _label(12, COL_KIND_PHYSICAL)
 	_ui["hold"].visible = false
@@ -991,30 +1025,52 @@ func _build_panel() -> void:
 	for text in BASIC_LABELS + Array(LESSON_LABELS):
 		var row := PanelContainer.new()
 		var line := HBoxContainer.new()
-		line.add_theme_constant_override("separation", 8)
+		line.add_theme_constant_override("separation", 10) # 상자 1497→글자 1523
 		var box := Panel.new()
-		box.custom_minimum_size = Vector2(12, 12)
+		box.custom_minimum_size = Vector2(16, 16) # 실측 체크박스 16×16
 		box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		var box_style := StyleBoxFlat.new()
-		box_style.bg_color = Color(0, 0, 0, 0.35)
-		box_style.border_color = COL_ROW
+		box_style.bg_color = Color(13.0 / 255.0, 13.0 / 255.0, 16.0 / 255.0)
+		box_style.border_color = Color(154.0 / 255.0, 130.0 / 255.0, 113.0 / 255.0)
 		box_style.set_border_width_all(1)
+		box_style.set_corner_radius_all(2)
 		box.add_theme_stylebox_override("panel", box_style)
 		var row_label := _label(14, COL_ROW, str(text))
 		row_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row_label.custom_minimum_size.y = 22.4
+		row_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		line.add_child(box)
 		line.add_child(row_label)
 		row.add_child(line)
 		checklist.add_child(row)
 		(_ui["rows"] as Array).append({"panel": row, "label": row_label, "box": box, "box_style": box_style})
-	checklist.add_child(details)
-	column.add_child(checklist)
+	checklist.add_child(details_wrap)
+	# .lesson-checklist: 상·하단 1px 선 + padding 16px 0
+	var checklist_box := PanelContainer.new()
+	var checklist_style := StyleBoxFlat.new()
+	checklist_style.bg_color = Color(0, 0, 0, 0)
+	checklist_style.border_color = Color(0x6e / 255.0, 0x55 / 255.0, 0x46 / 255.0, 0.55)
+	checklist_style.border_width_top = 1
+	checklist_style.border_width_bottom = 1
+	checklist_style.content_margin_top = 16.0
+	checklist_style.content_margin_bottom = 16.0
+	checklist_box.add_theme_stylebox_override("panel", checklist_style)
+	checklist_box.add_child(checklist)
+	column.add_child(checklist_box)
 	_ui["safety"] = _label(11, COL_SUBTITLE, UI.text("패링 실패 시 폭발 피해를 받습니다. 재시도하면 체력이 회복됩니다."))
 	column.add_child(_ui["safety"])
 	# 하단 고정: 시작/건너뛰기/진행바 (행동 버튼 계약)
+	var footer_line := ColorRect.new() # .lesson-footer border-top + padding 12px
+	footer_line.color = Color(0x6e / 255.0, 0x55 / 255.0, 0x46 / 255.0, 0.55)
+	footer_line.custom_minimum_size = Vector2(0, 1)
+	var footer := VBoxContainer.new()
+	footer.add_theme_constant_override("separation", 0)
+	outer.add_child(footer)
+	footer.add_child(footer_line)
+	_spacer(footer, 12.0)
 	var practice_button := Button.new()
 	UI.bind(practice_button,"W / A / S / D 또는 클릭하여 시작")
-	practice_button.custom_minimum_size = Vector2(0, 44)
+	practice_button.custom_minimum_size = Vector2(0, 47)
 	if _weighted_font(700) != null:
 		practice_button.add_theme_font_override("font", _weighted_font(700)) # 실측 700
 	practice_button.add_theme_font_size_override("font_size", 15)
@@ -1036,7 +1092,8 @@ func _build_panel() -> void:
 	outer.add_child(practice_button)
 	var skip_button := Button.new()
 	UI.bind(skip_button,"연습 건너뛰기")
-	skip_button.custom_minimum_size = Vector2(0, 36)
+	skip_button.custom_minimum_size = Vector2(97.7, 36) # 실측 (1615.1,994) 가운데 정렬 소형
+	skip_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	if _font != null:
 		skip_button.add_theme_font_override("font", _weighted_font(400)) # P2-007a --font-hell 스택
 	skip_button.add_theme_font_size_override("font_size", 12)
@@ -1045,7 +1102,10 @@ func _build_panel() -> void:
 	skip_style.bg_color = Color(0x1d / 255.0, 0x14 / 255.0, 0x13 / 255.0)
 	skip_style.border_color = Color(0x66 / 255.0, 0x50 / 255.0, 0x44 / 255.0)
 	skip_style.set_border_width_all(1)
-	skip_style.set_content_margin_all(8.0)
+	skip_style.content_margin_left = 12.0
+	skip_style.content_margin_right = 12.0
+	skip_style.content_margin_top = 4.0
+	skip_style.content_margin_bottom = 4.0
 	skip_button.add_theme_stylebox_override("normal", skip_style)
 	skip_button.add_theme_stylebox_override("hover", skip_style)
 	skip_button.add_theme_stylebox_override("pressed", skip_style)
@@ -1097,17 +1157,17 @@ func _render() -> void:
 		box_style.bg_color = Color(0xb2 / 255.0, 0xd6 / 255.0, 0xac / 255.0, 0.85) if done else Color(0, 0, 0, 0.35)
 		box_style.border_color = COL_ROW_DONE if done else COL_ROW
 		var style := StyleBoxFlat.new()
-		style.content_margin_left = 8.0
-		style.content_margin_right = 8.0
-		style.content_margin_top = 7.0
-		style.content_margin_bottom = 7.0
-		if is_current: # UI_FOUNDATION 현재 목표: #551819aa, 선 #a34d3f, 왼쪽 강조 2px(#ec7958 — 색 1종 근사)
-			style.bg_color = Color(0x55 / 255.0, 0x18 / 255.0, 0x19 / 255.0, 0.55)
+		style.content_margin_left = 9.0 # padding 8 + 테두리 1 (Godot는 명시 content margin에 테두리를 더하지 않음)
+		style.content_margin_right = 9.0
+		style.content_margin_top = 8.0
+		style.content_margin_bottom = 8.0
+		style.set_border_width_all(1) # 실측 비현재 행도 1px 투명 테두리(높이 38.4 유지)
+		if is_current: # 실측 linear-gradient(90deg, rgba(85,24,25,.667), rgba(37,16,17,.4)) · 1px #a34d3f
+			style.bg_color = Color(61.0 / 255.0, 20.0 / 255.0, 21.0 / 255.0, 0.53)
 			style.border_color = Color(0xa3 / 255.0, 0x4d / 255.0, 0x3f / 255.0)
-			style.set_border_width_all(1)
-			style.border_width_left = 2
 		else:
 			style.bg_color = Color(0, 0, 0, 0)
+			style.border_color = Color(0, 0, 0, 0)
 		(entry["panel"] as PanelContainer).add_theme_stylebox_override("panel", style)
 	var details_node: Node = _ui["details"]
 	if details_node.get_parent() == _ui["checklist"]:

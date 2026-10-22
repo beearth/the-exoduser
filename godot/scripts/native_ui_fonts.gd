@@ -48,6 +48,8 @@ const STACKS := {
 	"cinzel_hell": ["Cinzel", "Nanum Myeongjo", "Noto Serif KR", "Gowun Batang", "serif"], # 'Cinzel',var(--font-hell)
 	"cinzel_serif": ["Cinzel", "serif"],                                                 # 'Cinzel',serif
 	"pet": ["Malgun Gothic", "sans-serif"],                                              # #petSubtitle 2587
+	"disp_title": ["Cinzel Decorative", "Noto Serif KR", "serif"],                       # index .char-disp-title 178
+	"cinzel_serif_kr": ["Cinzel", "Noto Serif KR", "serif"],                             # index .char-disp-sub 179
 }
 # 총칭 가족 자리의 대리(엔진 시스템 폴백 앞에 명시) — 한글 글리프 보장용, 기록 대상.
 const GENERIC_PROXY := {"serif": "Noto Serif KR", "sans-serif": "Noto Sans KR"}
@@ -107,6 +109,30 @@ static func system_family_present(family: String) -> bool:
 
 
 ## 한 가족의 한 face(정확 굵기) — fallbacks 없음. 미보유면 null.
+## SWEEP-B(2026-10-22): 같은 Nanum Myeongjo 파일이 Chrome(Windows) 1x 캡처보다 FreeType 렌더에서 획이 가늘게 나온다.
+## 나란히 3배 확대 비교(HUD #mmLvl 12.64px·캐릭터 이름 33.6px/700)로 맞춘 외곽선 굵기 보정값. 글꼴 파일·크기·굵기 요청은 그대로다.
+const CHROME_WEIGHT_EMBOLDEN := {"Nanum Myeongjo": 0.35}
+
+## CSS letter-spacing은 대체 글꼴 글리프에도 적용된다. Godot FontVariation.spacing_glyph는 자기 RID에만 붙으므로
+## (Cinzel 1순위 스택의 한글 등) fallbacks에도 같은 자간을 복제한다.
+static func apply_spacing(font: Font, px: int) -> void:
+	var variation := font as FontVariation
+	if variation == null:
+		return
+	variation.spacing_glyph = px
+	var spaced: Array[Font] = []
+	for fallback in variation.fallbacks:
+		var copy: FontVariation
+		if fallback is FontVariation:
+			copy = (fallback as FontVariation).duplicate()
+		else:
+			copy = FontVariation.new()
+			copy.base_font = fallback
+		copy.spacing_glyph = px
+		spaced.append(copy)
+	variation.fallbacks = spaced
+
+
 static func face(family: String, weight: int) -> Font:
 	var key := "%s@%d" % [family, weight]
 	if _faces.has(key):
@@ -121,6 +147,7 @@ static func face(family: String, weight: int) -> Font:
 			variation.base_font = load(path)
 			if spec.has("variable"):
 				variation.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"): w}
+			if CHROME_WEIGHT_EMBOLDEN.has(family):variation.variation_embolden=float(CHROME_WEIGHT_EMBOLDEN[family])
 			variation.set_meta("css_face", {"family": family, "requested": weight, "weight": w, "path": path})
 			made = variation
 	elif family == "Malgun Gothic" and system_family_present(family):
@@ -168,6 +195,7 @@ static func stack(stack_name: String, weight: int = 400) -> Font:
 	if head is FontVariation:
 		result.base_font = (head as FontVariation).base_font
 		result.variation_opentype = (head as FontVariation).variation_opentype
+		result.variation_embolden = (head as FontVariation).variation_embolden
 	else:
 		result.base_font = head
 	var fallbacks: Array[Font] = []

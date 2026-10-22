@@ -94,18 +94,16 @@ func _run() -> void:
 	root.add_child(screen)
 	await process_frame
 	check(screen.menu.rows.size()==5 and screen.start.disabled,"actual screen starts unselected")
-	check(screen.get_node("crest").size==Vector2(360,120),"ornament respects declared rect rather than texture minimum")
+	# SWEEP-B(2026-10-23): 웹 로비는 텍스트 brand/crest 대신 .lobby-brand-logo 이미지(실측 1507.2,195,249.5,104)를 쓴다.
+	var logo: TextureRect=screen.get_node("logo")
+	check(logo.get_rect()==Rect2(1507.2,195,249.5,104),"brand logo respects web .lobby-brand-logo rect rather than texture minimum")
 	check(screen._number_label(3.0)=="3","source integral JSON level label has no .0 suffix")
 	var fonts=load("res://scripts/native_ui_fonts.gd")
-	check(fonts.chain_families(screen.cards[0].get_theme_font("font"))[0]=="Nanum Myeongjo","slot buttons use hell body serif token")
-	check(fonts.chain_families(screen.name_input.get_theme_font("font"))[0]=="Nanum Myeongjo","name entry uses hell serif token")
-	var brand: Label
-	var subtitle: Label
-	for child in screen.get_children():
-		if child is Label and child.text=="EXODUSER": brand=child
-		if child is Label and child.text=="지옥의 길": subtitle=child
-	check(brand!=null and fonts.chain_families(brand.get_theme_font("font"))[0]=="Cinzel Decorative","brand title uses Cinzel token")
-	check(brand!=null and subtitle!=null and brand.get_rect().end.y<=screen.get_node("ancestor").position.y and subtitle.get_rect().end.y<=screen.get_node("ancestor").position.y,"both brand lines outside the art rectangle")
+	# 웹 계산값: 슬롯 이름 Noto Sans KR 600 16.8px / #charName Noto Sans KR 16px
+	check(fonts.chain_families(screen.card_names[0].get_theme_font("font"))[0]=="Noto Sans KR","slot names use web Noto Sans KR token")
+	check(fonts.chain_families(screen.name_input.get_theme_font("font"))[0]=="Noto Sans KR","name entry uses web #charName Noto Sans KR token")
+	check(logo.texture!=null and logo.texture.resource_path=="res://assets/ui/parity_ui_04/logo.png","brand uses web logo image asset")
+	check(logo.get_rect().position.x>=screen.get_node("ancestor").get_rect().end.x,"brand logo outside the art rectangle")
 	screen.cards[0].pressed.emit()
 	check(screen.menu.selected==0 and not screen.start.disabled,"actual card control selects saved slot")
 	var received: Array=[]
@@ -114,14 +112,16 @@ func _run() -> void:
 	check(received.size()==1 and same(received[0][1],payload),"actual continue control calls payload handoff")
 	screen.erase.grab_focus(); screen.erase.pressed.emit()
 	check(screen.modal.visible and root.gui_get_focus_owner()==screen.cancel,"delete opens modal with safe cancel focus")
-	check(screen.modal_slot_number.text=="01" and fonts.chain_families(screen.modal_slot_number.get_theme_font("font"))[0]=="Nanum Myeongjo","delete slot digits use hell serif, not Cinzel")
-	check(fonts.chain_families(screen.modal_record.get_theme_font("font"))[0]=="Cinzel Decorative","record name retains title font")
-	check(screen.cards.all(func(card): return fonts.chain_families(card.get_theme_font("font"))[0]=="Nanum Myeongjo"),"all five slot number labels already use hell serif")
-	for i in 5: check(screen.cards[i].text.begins_with("   %02d" % [i+1]),"slot number remains zero padded "+str(i+1))
+	# 웹 삭제 확인: '<이름> 캐릭터를 정말 삭제하시겠습니까?' Noto Sans KR 16px rgb(236,217,183) (슬롯 번호/기록명 줄 없음)
+	check(screen.modal_title.text=="재의 맹세 캐릭터를 정말 삭제하시겠습니까?" and fonts.chain_families(screen.modal_title.get_theme_font("font"))[0]=="Noto Sans KR","delete prompt uses web text and Noto Sans KR")
+	check(screen.card_names.all(func(label): return fonts.chain_families(label.get_theme_font("font"))[0]=="Noto Sans KR"),"all five slot name labels use web Noto Sans KR")
+	# 웹 카드 표기: 저장 슬롯은 이름, 빈 슬롯은 '—' (번호 표기 없음, 저장 슬롯 먼저)
+	var shown: Array=[];for i in screen.cards.size():if screen.cards[i].visible:shown.append(screen.card_names[i].text)
+	check(shown.size()>=2 and shown[0]=="재의 맹세" and shown[1]=="먼지의 순례자" and shown.slice(2).all(func(t): return t=="—"),"visible slot cards: saved names first then web empty dash, no numbering "+str(shown))
 	screen.cancel.pressed.emit()
 	check(not screen.modal.visible and root.gui_get_focus_owner()==screen.erase,"cancel restores initiating focus")
-	screen.cards[1].pressed.emit()
-	check(screen.get_snapshot().form_visible,"empty slot opens name entry")
+	screen._new_card.pressed.emit()
+	check(screen.get_snapshot().form_visible,"web + 새 캐릭터 card opens character creation")
 	var bridge=Bridge.new(); bridge.configure("fr")
 	check(bridge.text("한국어","English")=="English","untranslated locale explicit English fallback")
 	bridge.configure("ko"); check(bridge.text("한국어","English")=="한국어","explicit Korean handoff")

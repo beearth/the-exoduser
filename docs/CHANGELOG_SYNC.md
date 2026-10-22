@@ -10,6 +10,11 @@
 - 이식 차이 2건 수정: 보스방 `_ffDir`를 원본 8방향 BFS(31849)로(PC `native_demo11_arena_flow.gd` + World arena 분기 최소 훅), 진입 첫 프레임 워커 지연(필드 맵 흐름 1틱). 실제 웹(헤드리스, 같은 생성 단위)과 Godot 궤적이 869틱 최대 3.2e-10px로 같다.
 - C-06: 같은 RNG 주입 원본 VM rollDrop 대조 200×2모드 0불일치, 처치 드랍의 데모 금지 어픽스 필터 누락 수정. A-02: 같은 장면 공격 간격 40~59틱 평균 49.33/49.28 같음. K-13: 정지 더미 +160 배치로 700px 같음.
 - 일치율 34/36=94%(수정 전 26/36). 신규 oracle `pc_boss_chase_oracle.cjs`·`pc_drop_oracle.cjs`, 신규 시험 `test_pc_drop_rng_parity`·`test_pc_enemy_attack_cycle`. [보고](engine/orders/reports/pc-boss-chase_REPORT.md), [전수](engine/PARITY_FULL_SWEEP_1_1_20261022.md).
+## 2026-10-23 SWEEP-B PC — 웹 UI 전 화면 동일화 인수 (PC Claude)
+
+- 기준 Mac 8d9dc158, branch claude/pc-sweep-b-20261022. 로비·캐릭터 선택·이름 창·레슨·HUD·인벤·스킬·성장·대장간·설정·클리어를 웹 계산값으로 맞춤. 공통 글꼴: 한글 대체 글꼴 자간 복제·Nanum Myeongjo 굵기 보정.
+- 성장 트리 배경 기사 일러스트를 웹 원본 바이트(sha256 6be0fa2c…1645, 사용자 승인 후 수령)로 추가. 낡은 UI 테스트 5종(04/07/09/50/e2e intro)을 웹 기준으로 갱신(판정 약화 없음).
+- 장면 짝 39개 중 같음 24(61.5%), 남은 P0 0·P1 1(레슨 표시 시점), PC-SYS 6. 회귀 각 1회 실패 0. [상세](engine/PARITY_SWEEP_B_PC_20261022.md)
 
 ## 2026-10-22 TEST-FIX-01 — 웹 맵 전환 테스트 전제/하니스 교정
 

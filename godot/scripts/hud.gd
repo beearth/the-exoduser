@@ -660,7 +660,7 @@ func _build_native_first_fight_hud() -> void:
 	var lv_label := _native_hud_label(panel, "1", Vector2(15, 13), 16, Color("f2e6cb"), 700.0)
 	lv_label.size.x = panel_size.x - 30
 	lv_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_native_hud_label(panel, UI.text("경험치"), Vector2(15, 39), 12, label_color)             # hudExpLabel
+	_native_hud_label(panel, UI.text("경험치"), Vector2(15, 39), 13, label_color)             # hudExpLabel
 	var exp_label := _native_hud_label(panel, "0 / 0", Vector2(15, 39), 12, Color("dfcfaa"))
 	exp_label.size.x = panel_size.x - 30
 	exp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -679,12 +679,12 @@ func _build_native_first_fight_hud() -> void:
 	_exp_fill = _native_gradient_rect(exp_bg, Vector2.ZERO, Vector2(0, 2),
 		Color(122.0 / 255, 101.0 / 255, 72.0 / 255, 0.55), Color(196.0 / 255, 171.0 / 255, 124.0 / 255, 0.85))
 	(_exp_fill as TextureRect).texture.fill_to = Vector2(1, 0)  # 90deg 가로 그라디언트
-	_native_hud_label(panel, UI.text("지역 처치"), Vector2(15, 91.55), 12, label_color)          # hudKillLabel
-	var kill_label := _native_hud_label(panel, "0 / 0", Vector2(15, 91.55), 12, row_value_color)
+	_native_hud_label(panel, UI.text("지역 처치"), Vector2(15, 91.55), 13, label_color)          # hudKillLabel
+	var kill_label := _native_hud_label(panel, "0 / 0", Vector2(15, 91.55), 13, row_value_color)
 	kill_label.size.x = panel_size.x - 30
 	kill_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_native_hud_label(panel, UI.text("악의"), Vector2(15, 116.55), 12, label_color)               # hudMaliceLabel
-	var malice_label := _native_hud_label(panel, "0", Vector2(15, 116.55), 12, row_value_color)
+	_native_hud_label(panel, UI.text("악의"), Vector2(15, 116.55), 13, label_color)               # hudMaliceLabel
+	var malice_label := _native_hud_label(panel, "0", Vector2(15, 116.55), 13, row_value_color)
 	malice_label.size.x = panel_size.x - 30
 	malice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_objective_values = {"lv": lv_label, "exp": exp_label, "kill": kill_label, "malice": malice_label}
@@ -701,8 +701,18 @@ func _build_native_first_fight_hud() -> void:
 	_stage_clock.modulate = Color(1, 1, 1, 0.9)
 	_native_gradient_rect(_stage_clock,Vector2.ZERO,Vector2(170,37),Color(12.0/255,13.0/255,16.0/255,.72),Color(12.0/255,13.0/255,16.0/255,0))
 	_stage_clock.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# ui-refinement.css 2279: border-top 1px rgba(179,143,93,.38) / #stageTimerHud .75rem ls .18em rgba(240,226,197,.92)
+	# (Cinzel은 700·900만 로드 → 700 face로 렌더). 실측 글자 상자 (887,23,146,16).
+	var clock_rule := ColorRect.new()
+	_stage_clock.add_child(clock_rule)
+	clock_rule.size = Vector2(170, 1)
+	clock_rule.color = Color(179.0 / 255, 143.0 / 255, 93.0 / 255, 0.38)
+	clock_rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_stage_timer_label = _native_hud_label(_stage_clock, "00:00", Vector2(0, 6), 12,
-		Color(215.0 / 255, 207.0 / 255, 189.0 / 255, 0.78), 400.0, "cinzel_hell") # 366: weight 미지정=400
+		Color(240.0 / 255, 226.0 / 255, 197.0 / 255, 0.92), 700.0, "cinzel_hell")
+	var clock_font: FontVariation = (_stage_timer_label.get_theme_font("font") as FontVariation).duplicate()
+	NATIVE_UI_FONTS.apply_spacing(clock_font, 2) # .18em × 12px = 2.16
+	_stage_timer_label.add_theme_font_override("font", clock_font)
 	_stage_timer_label.size.x = 170
 	_stage_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var progress_bg := ColorRect.new()
@@ -741,6 +751,7 @@ func _build_native_first_fight_hud() -> void:
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_slot_icons[slot_id] = icon
 		_slot_icon_files[slot_id] = ""
+		_native_slot_empty(cell, slot_id, true)
 		# P2-005b 쿨다운 sweep(_skCdSweep 44136): conic rgba(0,0,0,.55) + 중앙 노랑 초
 		var sweep := Control.new()
 		sweep.name = "Sweep"
@@ -765,6 +776,35 @@ func _build_native_first_fight_hud() -> void:
 		sweep_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_slot_sweeps[slot_id] = sweep
 		_slot_sweep_labels[slot_id] = sweep_label
+	# _updateSkBarKeyLabels(28559): KBM에서는 bind가 있는 슬롯(beam l436·shield l522)만 #skKeyBar 캡을 덧그린다.
+	# top121 37×18, .55rem/700 #c8aa80, bg 180deg #29231f→#17130f, r2, inset 1px rgba(103,87,72,.58).
+	# 기본 BINDS(beam=mouse2→RMB, shield=KeyE→E) 표기. 패드 모드·재바인딩 표기 전환은 미이식(PC-SYS).
+	for cap_def in [[436, "RMB"], [522, "E"]]:
+		var cap := Panel.new()
+		cap.name = "NativeKeyCap_" + str(cap_def[1])
+		meters.add_child(cap)
+		cap.position = Vector2(float(cap_def[0]), 121.0) * NATIVE_SLOT_SCALE
+		cap.size = Vector2(37, 18) * NATIVE_SLOT_SCALE
+		cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var cap_style := StyleBoxFlat.new()
+		cap_style.bg_color = Color(32.0 / 255, 27.0 / 255, 23.0 / 255) # #29231f→#17130f 중간색
+		cap_style.border_color = Color(103.0 / 255, 87.0 / 255, 72.0 / 255, 0.58)
+		cap_style.set_border_width_all(1)
+		cap_style.set_corner_radius_all(2)
+		cap.add_theme_stylebox_override("panel", cap_style)
+		var cap_label := Label.new()
+		cap.add_child(cap_label)
+		cap_label.text = str(cap_def[1])
+		cap_label.size = cap.size
+		cap_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		cap_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		cap_label.add_theme_font_override("font", NATIVE_UI_FONTS.stack("font", 700))
+		cap_label.add_theme_font_size_override("font_size", 8) # 8.8px × .9
+		cap_label.add_theme_color_override("font_color", Color("c8aa80"))
+		cap_label.add_theme_color_override("font_shadow_color", Color.BLACK)
+		cap_label.add_theme_constant_override("shadow_offset_x", 0)
+		cap_label.add_theme_constant_override("shadow_offset_y", 1)
+		cap_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
 func _native_slot_skill_id(slot_id: String, p: Dictionary) -> String:
@@ -879,6 +919,7 @@ func _refresh_native_first_fight_hud() -> void:
 			continue
 		_slot_icon_files[slot_id] = file
 		var icon: TextureRect = _slot_icons[slot_id]
+		_native_slot_empty(icon.get_parent() as Panel, slot_id, file.is_empty())
 		if file.is_empty():
 			icon.texture = null
 			continue
@@ -895,6 +936,24 @@ func _refresh_native_first_fight_hud() -> void:
 					sweep.set_meta("pct", pct)
 					sweep.queue_redraw()
 				(_slot_sweep_labels[slot_id] as Label).text = str((entry as Dictionary).get("text", "")) if entry is Dictionary else ""
+
+
+## updateQS 28334: 숫자 퀵슬롯(qs0~3·qs5)에 스킬·물약이 없으면 className 'qs empty'
+## → .qs.empty(770) opacity .3 + grayscale(1). 테두리 rgba(145,64,46,.88)·배경의 휘도 회색으로 바꾼다.
+func _native_slot_empty(cell: Panel, slot_id: String, empty: bool) -> void:
+	if not is_instance_valid(cell) or not slot_id in ["qs0", "qs1", "qs2", "qs3", "qs5"]:
+		return
+	var style := cell.get_theme_stylebox("panel") as StyleBoxFlat
+	if style == null:
+		return
+	var luma := func(c: Color) -> Color:
+		var l := c.r * 0.2126 + c.g * 0.7152 + c.b * 0.0722
+		return Color(l, l, l, c.a)
+	var border := Color(145.0 / 255, 64.0 / 255, 46.0 / 255, 0.88)
+	var fill := Color(19.0 / 255, 9.0 / 255, 10.0 / 255, 0.89)
+	style.border_color = luma.call(border) if empty else border
+	style.bg_color = luma.call(fill) if empty else fill
+	cell.modulate.a = 0.3 if empty else 1.0
 
 
 static func _hud_num(value: Variant) -> float:
