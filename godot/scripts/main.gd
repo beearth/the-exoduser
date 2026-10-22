@@ -1220,6 +1220,7 @@ func get_native_source_clock_input_snapshot() -> Dictionary:
 
 func _process(_delta: float) -> void:
 	if _demo11_session!=null: _demo11_session.poll()
+	if not _native_oss_grant_checked: _native_ossuary_grant_check()
 	_capture_native_source_frame_input()
 	_advance_native_source_clock_input()
 	_advance_native_attack_audio()
@@ -1243,6 +1244,29 @@ func _process(_delta: float) -> void:
 	# P2-001b: 화면 플래시 소비자 (55113) — 전면 오버레이 alpha=min(.55, _flashT×.18),
 	# 색 _flashCol, 렌더 프레임마다 _flashT-=dt (state owner 감쇠 API).
 	_update_native_screen_flash()
+
+# PC-HUD-STATS (2026-10-22): 원본 draw() 진입부 G51733
+#   if(!window._ossGrantChk&&…){window._ossGrantChk=1;try{_grantOssuaryIfNeeded()}catch(e){}}
+# draw()는 loop G61887~61903에서 G.on일 때만 불리므로 G.on 첫 렌더 프레임에 세션당 1회 검사한다
+# (신규 시작·로드 공통). 지급되면 G45888 recalcSt() → G45889 applyStats()를 런타임 스탯 owner로 실행.
+var _native_oss_grant_checked := false
+var native_ossuary_grant_receipt: Dictionary = {}
+func _native_ossuary_grant_check() -> void:
+	if not is_instance_valid(source_state) or not is_instance_valid(world) or not source_state.has_method("apply_native_ossuary_grant_if_needed"):
+		return
+	var g: Variant = source_state.read_current_g()
+	if not g is Dictionary or g.get("on") != true:
+		return
+	var receipt: Dictionary = source_state.apply_native_ossuary_grant_if_needed(self,
+		Callable(world, "sample_native_random_unit"), Callable(self, "_source_now_ms"),
+		read_native_demo_policy().get("demo", false) == true)
+	if receipt.get("reason") == "ossuary_grant_owner_not_current":
+		return # 일시정지 등 owner 비현재 프레임은 다음 렌더 프레임에 다시 검사
+	_native_oss_grant_checked = true
+	if receipt.get("granted") == true:
+		receipt["recalc_st"] = request_native_runtime_stat_refresh("recalc_st", "ossuary_grant:G45888")
+		receipt["apply_stats"] = request_native_runtime_stat_refresh("apply_stats", "ossuary_grant:G45889")
+	native_ossuary_grant_receipt = receipt
 
 func _read_native_g_shake() -> float:
 	if not is_instance_valid(source_state):

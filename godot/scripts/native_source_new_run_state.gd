@@ -1784,6 +1784,46 @@ func authorize_native_demo11_loaded_start(owner: Node) -> bool:
 	_g.on=true
 	return true
 
+# PC-HUD-STATS (2026-10-22): 원본 _grantOssuaryIfNeeded() G45880~45889 데이터 부분.
+#   if(INV.equipped.ossuary)return; if(INV.bag.some(i=>i&&i.slot==='ossuary'))return;
+#   const oss=mkItem('ossuary',0,EL.P,5); INV.equipped.ossuary=oss;
+# mkItem은 기존 원본 포트(drop_item_source mk_item, G15894~16166, 유골함 고정 오버라이드 16155~16165)를
+# 실제 공유 World RNG로 그대로 돌린다. 이어지는 recalcSt()·applyStats()(G45888~45889)는 호출자 Main이
+# 런타임 스탯 owner로 실행한다(현재 자원 hp/mp/st는 원본 clamp 정책 그대로 — 무료 충전 없음).
+# notify(45885)·addTxt(45886) 표시는 이 owner 범위 밖이라 receipt.unported로 남긴다.
+const OSSUARY_ITEM_SOURCE = preload("res://port_modules/kill_reward/drop_item_source.gd")
+func apply_native_ossuary_grant_if_needed(owner: Node, random_unit: Callable, now_ms: Callable, demo_mode: bool) -> Dictionary:
+	if not _feel_owner_current(owner) or owner.get_script() == null or owner.get_script().resource_path != "res://scripts/main.gd":
+		return {"granted": false, "reason": "ossuary_grant_owner_not_current"}
+	var equipped: Variant = _inventory.get("equipped")
+	var bag: Variant = _inventory.get("bag")
+	if not equipped is Dictionary or not bag is Array or not (equipped as Dictionary).has("ossuary"):
+		return {"granted": false, "reason": "ossuary_grant_inventory_unbound"}
+	if (equipped as Dictionary)["ossuary"] is Dictionary:
+		return {"granted": false, "reason": "ossuary_already_equipped"} # G45881
+	for it in bag:
+		if it is Dictionary and it.get("slot") == "ossuary":
+			return {"granted": false, "reason": "ossuary_in_bag"} # G45882
+	if not random_unit.is_valid() or not now_ms.is_valid():
+		return {"granted": false, "reason": "ossuary_grant_provider_missing"}
+	var draws := [0]
+	var gen := OSSUARY_ITEM_SOURCE.new(func(_tag: String) -> Variant:
+		draws[0] += 1
+		return random_unit.call())
+	gen.demo_mode = demo_mode # rollAffixes G15141 _DEMO_MODE&&_DEMO_AFFIX_BANNED (풀 구성 → RNG 소비에 영향)
+	var lv: Variant = _p.get("lv")
+	# mkItem: _atkMax는 (P.lv||1), itemLv는 P&&P.lv?P.lv:1 — 둘 다 거짓값이면 1.
+	var plv: int = int(lv) if (lv is int or lv is float) and float(lv) != 0.0 else 1
+	var item: Variant = gen.mk_item("ossuary", 0, 0, 5, null, plv)
+	if not item is Dictionary or gen.aborted:
+		return {"granted": false, "reason": "ossuary_mk_item_not_ready", "rng_draws": draws[0]}
+	# G15962 id:Date.now()+Math.random() — 포트는 Math.random 부분을 item.id로 소비했다(같은 순서·1회).
+	item["id"] = float(now_ms.call()) + float(item["id"])
+	(equipped as Dictionary)["ossuary"] = item # G45884
+	return {"granted": true, "item": item, "rng_draws": draws[0],
+		"source": "game.html:45880-45889 (_grantOssuaryIfNeeded) / 15894-16166 (mkItem)",
+		"unported": ["notify 유니크 획득·자동 장착 토스트(G45885)", "addTxt 머리 위 아이템 이름(G45886)"]}
+
 # DEMO11-22r: one actual INV/wallet owner, synchronous UI event transaction.
 var _equipment_committing := false
 func _equipment_owner_current(owner: Node) -> bool:

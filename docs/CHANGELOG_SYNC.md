@@ -1,3 +1,13 @@
+## 2026-10-22 PC-HUD-STATS — HUD 수치(H-03) 원인 추적·유골함 자동 지급 이식
+
+- 기준 ca9c7c30e(INTEG-10+이동 스킬), branch claude/pc-hud-stats-20261022, main 미병합. Mac 소유 파일 수정 0, 세이브 형식 변경 0.
+- 같은 상태 고정: 웹(main=스냅샷 4d911cdd, 서버 3398 격리 저장, Playwright 헤드리스·음소거) 신규 데모 → 필드 3초 정지 상태 덤프를 Godot 실제 State에 주입. HP 567/567·MP 267/416·SP(=P.st) 262/263·◇1,676·쉴드 293 모두 웹과 같음 → 스탯 공식 차이 없음.
+- 원인: ① 원본 draw() G51733 → `_grantOssuaryIfNeeded()` G45880(G.on 첫 렌더 프레임에 유니크 `전대의 유골함` bonusMp 150 자동 장착 → recalcSt → applyStats) 미이식 → mmp −150·CP −45. **이식**(main 훅 + State 진입점 + mkItem 유골함 오버라이드 G16155-16165, 공유 RNG). ② 캡처마다 다른 수치는 시작 장비 15개 랜덤 롤. ③ 지역 처치 분모 8은 MAP11 provider 소환굴 차이 — 웹 1-1 map.json 소환굴 14개·사분면 23/60/53/32·시작 남동 32를 PC 함수로 재현 확인, Mac PARITY-MAP-01 소관.
+- 오른쪽 구슬: 웹 라벨 글자 "SP"(G2658)지만 값은 `P.st/P.mst` — Godot 값 출처 같음, 글자만 Mac 요청.
+- 보류: 시작 장비 닫힌 0홈(G16148-16151) — 고치면 seeded Mac `test_pc_combat_pack_b_mac` 고정 데이터가 깨져(396→269) 되돌림, Mac 요청 HS-M5.
+- 회귀(각 1회): hud 68/0·pms 256/0·recalc 49/0·rstat 290/0·packb 378/0·_mac 396/0·life 101/0·m29 101/0 등 0실패. **fieldboss 130/3(기준 167/0) — 유골함 잔여 `_uMaceExplode`(원본이 지우지 않는 키, seed 고정)가 미이식 hurtE 분기를 켜 처치 정지 → main 병합 보류 권고.** p2001c 25/1·ws29 94/2는 기준 커밋과 같은 기존 실패. E2E storage=on PASS11/NR7/FAIL0(같은 날 기준 커밋도 11/7).
+- 신규 test_pc_hud_stats(+원본 VM oracle·웹 덤프 고정 데이터). 비교 격자 `_out/pc-hud-stats/compare_fixed_state.png`·`compare_natural_start.png`. [보고서](engine/orders/reports/pc-hud-stats_REPORT.md)·PARITY H-03·14밸런스 HP/MP/ST/CP 공식표(원본 행) 갱신·2_7 유골함 잔여 특수 키 사실 기록.
+
 ## 2026-10-22 PC-MOVE-SKILLS — Shift 사슬 이동(V-02)·방향+Space 전격이동(V-01) 원본 이식
 
 - 기준 INTEG-10 9133e2782, branch claude/pc-move-skills-v2-20261022(f02ed5b0f·f7a97ad4a·a684e4434), main 미병합. 신규 owner `native_move_skills.gd` + player/main 호출 위치만, Mac 소유 파일 수정 0.
