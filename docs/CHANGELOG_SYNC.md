@@ -56777,3 +56777,7 @@ G49041/49065/49336–49369: parity_settings_page가 DOM순서로 range 뒤의 �
 ## SWEEP-B 검증 인수
 
 UI18+UI06 24+성장36=78/0 단회. sweep_b_ui_check.gd는 실행된 외부 사본과 동일 byte. 102행/73개1x비교판·전체 미완료/RETOUCH 및 남은 Mac 차이는 engine/SWEEP_B_20261022.md, 외부 DIFFS_FULL.md/json에 기록. E2E 단회 진행 중이며 전체100% 동일 완료 선언0.
+
+## 2026-10-23 INTEG-16b — merge 통합·거인강타 표시 후보
+
+integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 충돌은 이어하기 story 생략과 PC preload/검은 바탕/프레임 뒤 진입을 함께 유지. player의 거인강타는 source_attack/idle 8틱 프레임·y −18 표시만 연결, 상태·전투 로직 불변. PC 스킬 입력 표/INTEG_16B_20261022.md 동기화. import ERROR0, 지정8suite 1143checks/0fail. E2E 단회는 실행 인자 누락으로 격리 가드 FAIL1/NOT_READY17; GUI 단회는 구 드라이버 좌표로 캐릭터 진입 전 중단. 재실행0; 실플레이·캡처·V-03 같은 새 진입 런타임 비교 HOLD. SWEEP-B 정상 제거는 미추적 파일로 거부되어 보존. 전체 플레이 후보 검수 PASS 선언 안 함.

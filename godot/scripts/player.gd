@@ -1556,6 +1556,9 @@ func _update_display() -> void:
 		_idle_visual_last_clock=_clock_frames
 		return
 	_sprite.visible=true
+	if state in GIANT_SLAM_STATES:
+		_apply_giant_slam_display(selected)
+		return
 	var walking: bool = state == "idle" and _was_moving and hp > 0
 	var dash_pose: Dictionary = _native_dash_pose(walking)
 	if dash_pose.get("active") == true:
@@ -1623,6 +1626,23 @@ func _update_display() -> void:
 			sprite.scale = Vector2(width * (0.96 if index == 0 else 0.82), width * (1.0 if index == 0 else 0.86)) / 418.0
 			sprite.modulate.a = (0.24 + 0.08 * tier) if index == 0 else (0.58 + 0.08 * tier)
 		_charge_marks.queue_redraw()
+
+# Source G10570–10573 / G12024 / G58645: skill pose reads existing state only.
+func _apply_giant_slam_display(selected: Dictionary) -> void:
+	var direction_index: int = posmod(int(round((PI / 2.0 - facing.angle()) / (PI / 4.0))), 8)
+	var recovering: bool = state == "gSlamRecover"
+	var animation: StringName = StringName(("idle_" if recovering else "source_attack_") + DIRECTIONS[direction_index])
+	_sprite.animation = animation
+	var elapsed: float = (12.0 if recovering else (10.0 if state == "gSlamWindup" else 20.0)) - _gsl_st2
+	_sprite.frame = posmod(int(floor(maxf(0.0, elapsed) / 8.0)), _sprite.sprite_frames.get_frame_count(animation))
+	_sprite.position = Vector2(0, -18)
+	_sprite.scale = Vector2.ONE * visual_scale
+	_sprite.offset = selected.body_offset if selected.get("ready")==true else Vector2(-24,-24)
+	_sprite.modulate = Color.WHITE
+	_idle_visual_last_clock = _clock_frames
+	_record_native_move_trail(false)
+	for sprite in _charge_sprites:sprite.visible=false
+	_charge_marks.visible=false
 
 # ── PC-MOVE-SKILLS 렌더 (drawP atlas 분기 G58589–58716) ──
 # MOTION.ez(4) elastic-out LUT (G3348–3381: N=256 Float32 LUT + 선형 보간)

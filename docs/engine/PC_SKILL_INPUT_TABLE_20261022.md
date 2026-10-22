@@ -27,7 +27,7 @@
 - `player.gd`: `enter_native_giant_slam_state()`, `_advance_native_giant_slam_state(ticks)`, 이 상태의 보행 배율 0.35.
 - `native_skill_slots.gd cast_giant_slam`: 비용 확정·쿨 설정 직후 상태 진입(피해는 원본처럼 즉시).
 - 원본 activateIceOrb(46756)는 P.s를 보지 않으므로, 거인강타 상태 중 Ctrl은 얼음보주로 덮어쓴다(`cast_ice_orb`, `set_native_ice_orb_state`). 다른 상태의 기존 idle 제한은 그대로 둔다.
-- 그림: 원본은 이 상태에서 `gSlam1` 애니(−18 들림)를 쓴다. Godot 플레이어 그림은 이 상태를 기본 자세로 보여 준다 → **Mac 표시 요청**.
+- 그림: 원본은 이 상태에서 `gSlam1` 애니(−18 들림)를 쓴다. INTEG-16b에서 Windup/1은 원본 source_attack 프레임(8틱), Recover는 idle 프레임(8틱), y −18 표시로 연결했다. 로직 불변. 단회 GUI가 캐릭터 진입 전 중단되어 나란히 캡처·실플레이 시각 검증은 HOLD.
 
 ## 남은 차이
 - Shift 사슬 거리: 웹 700px, Godot 570px(같은 0.6초 홀드, 게이지 웹 205 / Godot 200, 둘 다 3단 비용 150 이상). 시험 배치가 달라(웹 더미 +160px, Godot 자연 적·벽) 충돌 정지 여부가 섞였다. 같은 빈 지형에서 재측정 필요 → 전수 목록 P1.
