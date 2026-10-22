@@ -395,6 +395,11 @@ func _effect(row: Dictionary,level: float) -> float:
  if _key=="pDemon" and row.unit=="s":amount=maxf(100,amount)
  return snappedf(amount,0.0001)
 
+func _fmt_effect(row: Dictionary,amount: float) -> String:
+ var unit: String=str(row.get("unit","%"))
+ if unit=="×":return "×"+("%.2f" % amount)
+ if unit=="s":return number(amount)+_t2("초","s")
+ return number(amount)+unit
 func number(amount: float) -> String:
  return str(int(amount)) if amount==floorf(amount) else ("%.4f" % amount).trim_suffix("0").trim_suffix("0").trim_suffix("0").trim_suffix(".")
 
@@ -500,9 +505,12 @@ func _render_inspector(result: Variant) -> void:
   var cur:=_effect(row,from);var nxt:=_effect(row,target)
   var h:=59.8 if i==0 else 62.2
   _ilabel(root,localized(row),Rect2(27,y+15.4,262,27.9),18,Color(201/255.0,187/255.0,165/255.0))
-  _ilabel(root,number(cur)+str(row.unit),Rect2(240,y+15.4,96.3,27.9),18,Color(170/255.0,160/255.0,143/255.0),"font",400,0,HORIZONTAL_ALIGNMENT_RIGHT)
   var capped: bool=cur==nxt
-  _ilabel(root,number(nxt)+str(row.unit),Rect2(300,y+12,93,37.2),24,Color(170/255.0,160/255.0,143/255.0) if capped else (Color(240/255.0,215/255.0,167/255.0) if i==0 else Color(239/255.0,180/255.0,123/255.0)),"hell" if i==0 else "font",400 if i==0 else 600,0,HORIZONTAL_ALIGNMENT_RIGHT)
+  # stat-panel-ui.js 284: unit '×' → '×'+toFixed(2), 's' → '초', 그 외 값+단위. 현재 값은 다음 값 칸(flex) 왼쪽 15px에서 끝난다.
+  var nxt_label:=_ilabel(root,_fmt_effect(row,nxt),Rect2(300,y+12,93,37.2),24,Color(170/255.0,160/255.0,143/255.0) if capped else (Color(240/255.0,215/255.0,167/255.0) if i==0 else Color(239/255.0,180/255.0,123/255.0)),"hell" if i==0 else "font",400 if i==0 else 600,0,HORIZONTAL_ALIGNMENT_RIGHT)
+  var nxt_left: float=393.0-nxt_label.get_theme_font("font").get_string_size(nxt_label.text,HORIZONTAL_ALIGNMENT_LEFT,-1,24).x
+  var cur_right: float=minf(336.3,nxt_left-15.0)
+  _ilabel(root,_fmt_effect(row,cur),Rect2(cur_right-120,y+15.4,120,27.9),18,Color(170/255.0,160/255.0,143/255.0),"font",400,0,HORIZONTAL_ALIGNMENT_RIGHT)
   y+=h
   var ln:=ColorRect.new();ln.color=line_col;ln.position=Vector2(27,y)-Vector2(24,20);ln.size=Vector2(366,1);root.add_child(ln)
  var note: Array=NOTES.get(_key,NOTE_DEFAULT)

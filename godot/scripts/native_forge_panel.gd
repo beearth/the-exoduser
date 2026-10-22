@@ -579,7 +579,7 @@ func _render_salvage(state: Node,g: Dictionary,inv: Dictionary) -> float:
 		_chip(_fg_content,pair[0],Rect2(x,111,w,26),12.8,Color(170/255.0,136/255.0,85/255.0),Color(68/255.0,51/255.0,34/255.0),Color(0,0,0,.2),3,pair[1])
 		x+=w+4
 	# 아이템 그리드 (2열, max-height 320 스크롤)
-	var grid_scroll:=ScrollContainer.new();grid_scroll.position=Vector2(0,153);grid_scroll.size=Vector2(650,320);grid_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;_fg_content.add_child(grid_scroll)
+	var grid_scroll:=ScrollContainer.new();grid_scroll.position=Vector2(0,153);grid_scroll.size=Vector2(650,320);grid_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;grid_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_SHOW_NEVER;_fg_content.add_child(grid_scroll)
 	var holder:=Control.new();grid_scroll.add_child(holder)
 	var n:=0
 	for it in inv.bag:
@@ -636,7 +636,7 @@ func _ask_salvage(inv: Dictionary) -> void:
 func _render_reroll(state: Node,g: Dictionary,inv: Dictionary) -> float:
 	var cost: int=Policy.malice_cost(200)
 	var hdr:=_css(_fg_content,_L("리롤 — 접두/접미 재설정 | 악의 "+str(cost),"Reroll — Reset prefix/suffix | Malice "+str(cost)),Rect2(0,0,650,21),16,Color(68/255.0,204/255.0,1),"hell",700,1.6);hdr.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	var sc:=ScrollContainer.new();sc.position=Vector2(0,37);sc.size=Vector2(650,280);sc.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;_fg_content.add_child(sc)
+	var sc:=ScrollContainer.new();sc.position=Vector2(0,37);sc.size=Vector2(650,280);sc.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;sc.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_SHOW_NEVER;_fg_content.add_child(sc)
 	var holder:=Control.new();sc.add_child(holder)
 	var y:=0.0
 	for i in Glyphs.SLOT_NAMES.size():
