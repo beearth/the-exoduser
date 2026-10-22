@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+const root='G:/exoduser/',folder=root+'output/new_heroes_refinement_20261022/';
+const f=folder+'submission-receipt.json',r=JSON.parse(fs.readFileSync(f,'utf8'));
+Object.assign(r.jobs.find(j=>j.candidate==='H21'),{visualVerdict:'Original inspected: opaque black/ivory one-piece central torso, deep open side waist and high hip arches visibly above separate leather shorts. Short silver bob/face/eye visor/right robot arm/giant angular gun retained. Boots and gun redesigned into larger angular panels; jacket front cleaner. Conventional square belt buckle, small rivets and dark painterly finish remain; modernization not declared complete. Natural left hand gun carry, not verified two-hand support.',finalApproval:false,runtimeAdoption:false});
+fs.writeFileSync(f,JSON.stringify(r,null,2)+'\n');
+const spec=root+'docs/17게임아트팀/HELLGUNNER_CYBERPUNK_DESIGN_20261022.md';let d=fs.readFileSync(spec,'utf8');
+d=d.replace('| H21 | task7519051840205783040. 사용자 실루엣 재참조, 원피스 재단·현대적 장비/작화·단발 보존 | Sunburst·4:3·1장·200pt 접수·생성 중 |','| H21 | task7519051840205783040. 2048×1536 PNG 회수·원본 검사. 검정/아이보리 원피스 중앙 패널·깊은 옆구리 노출·반바지 위로 올라온 골반선 반영. 단발/바이저/오른팔 의수/대형 병기 유지. 부츠/병기는 큰 각진 패널로 변화 | **재단 수정·현대화 비교 후보 / 최종 미승인**. 사각 허리 버클·작은 리벳·어두운 회화적 마감은 남아 현대화 완료 선언 아님. 한손 운반 포즈 유지. `assets/character-concepts/20261023/hellgunner_modern_cut_bodysuit_h21.png` |');
+if(!d.includes('H21 SHA256:'))d=d.replace('\nH20 SHA256:','\nH21 SHA256: `88096038964fa405b22a0b260f3b32d3626eea856319d05486e043aafade39e5`. 프로젝트/바탕화면 검토 사본 바이트 일치. 새 후면 미제출, H15 강화척추 기준 보존.\n\nH20 SHA256:');
+fs.writeFileSync(spec,d);
+const report=root+'docs/17게임아트팀/NEW_HEROES_CONTINUOUS_REFINEMENT_20261022.md';let p=fs.readFileSync(report,'utf8');
+p=p.replace('| H21 | 원피스 재단/가죽 반바지·현대적 장비/작화·단발 보존 | 7519051840205783040 | 4참조·Sunburst·4:3·1장·200pt 접수·생성 중 |','| H21 | 원피스 재단/가죽 반바지·현대적 장비/작화·단발 보존 | 7519051840205783040 | 2048×1536 PNG 회수·원본 검사. 깊은 옆구리/높은 골반선·큰 각진 부츠/병기 변화. 사각 버클/잔리벳/회화적 마감은 남음. 최종 미승인 |');
+fs.writeFileSync(report,p);
