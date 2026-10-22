@@ -43,10 +43,10 @@ static func build(profile: Dictionary = {}) -> Dictionary:
 				else:
 					var offset: int = int(profile.source_attack_offset) if not profile.is_empty() and mode=="source_attack" else BODY_FRAME_OFFSETS[mode]
 					region = Rect2((offset + index) * BODY_CELL_SIZE, 0, BODY_CELL_SIZE, BODY_CELL_SIZE)
-					atlas_path = profile.body_paths[direction_index] if not profile.is_empty() else BODY_PATH_PREFIX + direction + ".png"
+					atlas_path = "res://assets/player_source_relief/" + ("silvertail" if not profile.is_empty() and profile.index==1 else "warrior") + "/" + direction + ".res"
 				frames.append({"index": index, "texture": {
 					"class": "AtlasTexture",
-					"atlas": {"class": "CompressedTexture2D", "resource_path": atlas_path},
+					"atlas": {"class": "CompressedTexture2D" if mode=="attack" else "ImageTexture", "resource_path": atlas_path},
 					"region": region}})
 			animations.append({"name": mode + "_" + direction,
 				"loop": mode in ["idle", "walk"],

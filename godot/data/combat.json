@@ -22,7 +22,7 @@
     "idle_regen_divisor": 8.0,
     "attack_regen_divisor": 16.0,
     "attack_movement_multiplier": 0.8,
-    "visual_scale": 2.5,
+    "visual_scale": 2.0,
     "idle_frames": 2,
     "walk_frames": 8,
     "source_attack_frames": 8,

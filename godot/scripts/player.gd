@@ -58,7 +58,7 @@ const NATIVE_BURN_POOL_DIVISOR = 20.0
 @export var ki_slash_level: int = 1
 @export var charge_frames: float = 0.0
 @export var combo_step: int = 0
-@export var visual_scale: float = 2.5
+@export var visual_scale: float = 2.0 # Source55480; a selected Silvertail profile remains 1.3.
 @export var radius: float = 15.0
 @export var base_def: float = 2.0
 @export var energy_def: float = 0.0
@@ -69,6 +69,8 @@ var state: String = "idle"
 var facing := Vector2.RIGHT
 var combat: Dictionary = {}
 var _world: Node
+var source_visual_clock_ms: float=-1
+var _source_layers: RefCounted
 var _sprite: AnimatedSprite2D
 var _charge_sprites: Array[AnimatedSprite2D] = []
 var _charge_marks: Node2D
@@ -1356,7 +1358,7 @@ func apply_native_character_selection(reader: Callable) -> Dictionary:
 						atlas.region=Rect2((cell%3)*80,floori(float(cell)/3.0)*80,80,80)
 					else: atlas.region=Rect2(frame*80,direction_index*80,80,80)
 				else:
-					atlas.atlas=sources[direction_index]
+					atlas.atlas=preload("res://scripts/native_player_source_art.gd").texture(int(profile.index),direction_index)
 					var offset: int = 0 if mode=="idle" else (2 if mode=="walk" else profile.source_attack_offset)
 					atlas.region=Rect2((offset+frame)*48,0,48,48)
 				frames.add_frame(animation,atlas)
@@ -1367,6 +1369,7 @@ func apply_native_character_selection(reader: Callable) -> Dictionary:
 		return {"ready":false,"reason":"native_selection_changed_during_profile_load"}
 	_native_character_profile=profile
 	_sprite.sprite_frames=frames
+	if _source_layers!=null:_source_layers.prepare(frames)
 	visual_scale=float(profile.scale)
 	_sprite.scale=Vector2.ONE*visual_scale
 	_idle_visual={"mode":"idle","frame":0,"ticks":0.0,"interval":8.0}
@@ -1403,7 +1406,7 @@ func _build_sprite() -> void:
 	var attack: Texture2D = load("res://assets/player/attack-bat-v1.png")
 	for direction_index in range(8):
 		var dir: String = DIRECTIONS[direction_index]
-		var source: Texture2D = load("res://assets/player/" + dir + ".png")
+		var source: Texture2D = preload("res://scripts/native_player_source_art.gd").texture(0,direction_index)
 		for mode in ["idle", "walk", "source_attack", "attack"]:
 			var animation: StringName = StringName(mode + "_" + dir)
 			frames.add_animation(animation)
@@ -1418,6 +1421,8 @@ func _build_sprite() -> void:
 				frames.add_frame(animation, atlas)
 	_add_native_dash_flight_frames(frames, "res://assets/player/dash-flight-v1.png")
 	_sprite.sprite_frames = frames
+	_source_layers=preload("res://scripts/native_player_source_layers.gd").new()
+	_source_layers.configure(self,_sprite)
 	add_child(_sprite)
 
 ## WarriorDashFlight.apply (warrior-dash-flight.js): 384×512 시트, 행=s,se,e,ne,n,nw,w,sw(=DIRECTIONS), 64px×6프레임.
@@ -1503,6 +1508,10 @@ func _build_charge_display() -> void:
 
 func _process(_delta: float) -> void:
 	_update_display()
+	_sync_source_layers()
+
+func _sync_source_layers() -> void:
+	if _source_layers!=null and is_instance_valid(_sprite):_source_layers.sync(self,_sprite)
 
 func _update_display() -> void:
 	if _sprite == null:
@@ -1565,6 +1574,13 @@ func _update_display() -> void:
 	else:
 		# Other unported poses keep their existing presentation path.
 		_sprite.frame=int(floor(_clock_frames/48.0))%2
+	_sprite.rotation=0
+	if state=="idle" and hp>0 and not walking:
+		var now: float=source_visual_clock_ms if source_visual_clock_ms>=0 else float(Time.get_ticks_msec())
+		var breath: float=sin(now/38)*.012
+		_sprite.position.y=sin(now/45)*.6*visual_scale
+		_sprite.rotation=sin(now/60)*.008
+		_sprite.scale=Vector2(visual_scale*(1-breath*.5),visual_scale*(1+breath))
 	_sprite.modulate = Color(0.65, 0.65, 0.65, 1.0) if hp <= 0 else Color.WHITE
 	for sprite in _charge_sprites:
 		sprite.visible = is_charging()

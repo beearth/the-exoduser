@@ -1,0 +1,7 @@
+extends RefCounted
+## Source10518-10546 relief, evaluated by the original browser function at export.
+## Original input PNGs remain byte-identical; only resident display textures differ.
+const WARRIOR=[preload("res://assets/player_source_relief/warrior/south.res"),preload("res://assets/player_source_relief/warrior/south-east.res"),preload("res://assets/player_source_relief/warrior/east.res"),preload("res://assets/player_source_relief/warrior/north-east.res"),preload("res://assets/player_source_relief/warrior/north.res"),preload("res://assets/player_source_relief/warrior/north-west.res"),preload("res://assets/player_source_relief/warrior/west.res"),preload("res://assets/player_source_relief/warrior/south-west.res")]
+const SILVERTAIL=[preload("res://assets/player_source_relief/silvertail/south.res"),preload("res://assets/player_source_relief/silvertail/south-east.res"),preload("res://assets/player_source_relief/silvertail/east.res"),preload("res://assets/player_source_relief/silvertail/north-east.res"),preload("res://assets/player_source_relief/silvertail/north.res"),preload("res://assets/player_source_relief/silvertail/north-west.res"),preload("res://assets/player_source_relief/silvertail/west.res"),preload("res://assets/player_source_relief/silvertail/south-west.res")]
+static func texture(index: int,direction: int) -> Texture2D:
+ return (SILVERTAIL if index==1 else WARRIOR)[direction]
