@@ -326,6 +326,7 @@ func _key_shift_down(repeat: bool) -> void:
 		dash_hold = true; dash_hold_f = 0.0; dash_tier = 0
 		_log("hold_start", {"gauge": harp_gauge})
 	elif not dash_hold and harp_gauge <= 0.0:
+		_log("toast_unported", {"text": "충전 중..."}) # showPH — Mac HUD 소비자 부재
 		native_show_ph.emit("충전 중...", Color("ff8844"), 500) # G13229 showPH
 
 ## G13231–13249
@@ -729,8 +730,10 @@ func _consume_trigger_with_toast() -> void:
 	if _can_blade_dash():
 		activate_blade_dash(int(bd_trigger))
 	elif harp_gauge < float(HARP_GAUGE_COST[1]) * 7.0 / 10.0:
+		_log("toast_unported", {"text": "충전 중..."})
 		native_show_ph.emit("충전 중...", Color("ff8844"), 500)
 	else:
+		_log("toast_unported", {"text": "MP 부족!"})
 		native_show_ph.emit("MP 부족!", Color("4444ff"), 500)
 	bd_trigger = null
 

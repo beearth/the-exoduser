@@ -1,3 +1,8 @@
+## 2026-10-22 PARITY-HUD-02b
+
+- native_move_skills.gd의 toast_unported 원문 로그 3줄 복구, 각 emit 직전 순서 유지. UNPORTED_BRANCHES showPH 제외 유지.
+- 단회 PC 회귀8검사/3실패: intro 부팅 setup owner 미설치로 목표256/0 미달. Mac HUD 토스트26/0. 격리 override 원복·자기 Godot 종료, PID81277 보존. 상세: engine/PARITY_HUD_02_20261022.md.
+
 
 ## 2026-10-22 PARITY-INTRO-01
 

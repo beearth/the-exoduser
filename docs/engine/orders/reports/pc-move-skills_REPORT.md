@@ -81,7 +81,7 @@ Godot: 창 모드 1개 `--audio-driver Dummy --resolution 1920x1080`, SceneTree�
 | 전류장판 피해 틱·_shockDR 방어감소 | G37413·37460–37465 | 기존 hurtE 실행자가 `_shockDR` 분기(G42290)에서 정지 → 디버프를 쓰면 이후 타격 전부 정지. 장판 수명·렌더만 |
 | 사슬 합체·파생(chainSlash·magicBlink/dimBreach·dimBlast·기동파괴/불꽃/전폭), thunderGhost, kiGather 사슬 변형 | G32250–32575, G45395–45407, G33688–33699 | 1-1 신규 런 미보유 |
 | 유니크 u_d06/u_d07/u_n02/u_d09, 전설 _lBootsEvade/_lSpearStack | G16526, G32366–32373, G45383, G45426 | 값>0이면 거절(데모 0) |
-| showPH 토스트 | G13229·G33036·G45449 | 공용 소비자 부재(Mac) — owner 로그 `toast_unported` |
+| showPH 토스트 | G13229·G33036·G45449 | PARITY-HUD-02 공용 소비자 연결. 02b: owner 로그 `toast_unported` 3줄 원문 복구 후 emit 유지(충전 중... 2곳·MP 부족! 1곳) |
 | 레슨 step 4/5 연습 본문 | parry-lesson.js 326–383 | step 0~3(패링 투사체) 정지로 도달 불가. 기존 정지 사유 유지 |
 | SFX.slash/charge/magic 합성음, 진동, 통계·프로파일, 게임패드 | — | 샘플/소비자 아님 |
 | 잔상 밝은 아틀라스, 번개 lineCap round | G58654, G55990 | 경미(같은 프레임·각진 끝) |
