@@ -47,7 +47,7 @@
 - 진입 계약(prepare/launch/rollback/request_native_lobby_entry 순서·판정)은 바꾸지 않았다.
 
 ### 남은 위험
-- `add_child(main)`(_ready 약 6.8초 + 진입 0.7초)는 여전히 한 프레임이다. 이 PC에서는 Space를 계속 누른 경우 약 450개로 512 아래지만 여유가 작다. 느린 PC에서는 다시 넘칠 수 있다.
+- `add_child(main)`(_ready 약 6.8초 + 진입 0.7초)는 여전히 한 프레임이다. → **BOOT-01에서 다중 프레임화**(진입 최대 반복 217~280 ms): [BOOT01](BOOT01_MULTI_FRAME_STARTUP_20261022.md). 이 PC에서는 Space를 계속 누른 경우 약 450개로 512 아래지만 여유가 작다. 느린 PC에서는 다시 넘칠 수 있다.
 - 근본 해결은 `world` 로드·`_bind_native_startup_services`(원본 이미지 onload 대기 모사)를 여러 프레임으로 나누는 것이다. world·main 소유(Mac) 작업으로 넘긴다.
 
 ## 4. 원인 2 — 일시정지 중 뗀 이동키가 남음(계속 걷기)
@@ -66,7 +66,7 @@
 - 발동(공격·패링 시작·스킬)은 하지 않는다. 일시정지가 아닐 때는 아무것도 하지 않는다(기존 경로 그대로).
 
 ## 6. 남은 차이(이번 범위 밖, 기록)
-- Esc 일시정지는 `main._toggle_pause`가 `player.clear_native_input_states()`로 눌림을 지운다. 웹은 지우지 않는다. 그래서 D를 누른 채 Esc로 멈췄다가 누른 채 풀면 웹은 계속 걷고 Godot은 멈춘다(다시 눌러야 함). main.gd(Mac 병합 파일) 판단 대상이다.
+- Esc 일시정지는 `main._toggle_pause`가 `player.clear_native_input_states()`로 눌림을 지운다. 웹은 지우지 않는다. 그래서 D를 누른 채 Esc로 멈췄다가 누른 채 풀면 웹은 계속 걷고 Godot은 멈춘다(다시 눌러야 함). main.gd(Mac 병합 파일) 판단 대상이다. → **2026-10-22 BOOT-01에서 원본대로 수정**(지우기 제거 + 일시정지 중 뗌 기록 확장): [BOOT01 §7](BOOT01_MULTI_FRAME_STARTUP_20261022.md).
 - 마우스(LMB 차지) 홀드 중 일시정지 패널에서 뗀 경우는 이번 수정에 넣지 않았다.
 - 시험 인공물: PostMessage로 키를 넣으면 느린 프레임에서 KEYDOWN 뒤에 WM_CHAR가 밀려 가짜 누름이 생긴다. 실키보드(입력 큐)에서는 생기지 않는다. 그래서 SendNotifyMessage로 바꿔 측정했다.
 - Shift 뗌은 Godot이 WM_INPUT(raw)으로만 받아 메시지 주입으로는 시험할 수 없다.

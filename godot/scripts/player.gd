@@ -613,16 +613,28 @@ func handle_native_input_event(event: InputEvent) -> Dictionary:
 ## G.paused와 무관하게 눌림 상태를 갱신한다. Godot은 PAUSABLE Player가 일시정지 동안 입력을 못 받아,
 ## 인벤토리·성장창 등 일시정지 패널을 연 사이 뗀 이동키가 닫은 뒤에도 눌린 채 남았다(계속 걷기).
 ## 일시정지 중에만 이동 눌림(누름·반복·뗌)과 패링 뗌을 기록한다. 발동(공격·패링 시작·스킬)은 하지 않는다.
+## BOOT-01 (PC) — Esc 일시정지도 원본처럼 눌림을 지우지 않게 되면서(main._toggle_pause), 일시정지 중 뗀
+## 공격(LMB)·실드·마법 입력도 뗌만 기록한다(원본 keyup/mouseup G13330/G13412 `KH/MB=false`는 G.paused 무관).
+## 무기를 차지(windup) 중에 뗐으면 해제 직후 첫 틱에 원본처럼 놓은 것으로 처리한다(원본 16852 `!isHeld('weapon')`→발사).
+var _native_pause_weapon_release_pending := false
 func _track_held_input_while_paused(event: InputEvent) -> void:
 	if not _native_attack_selection_bound or not is_inside_tree() or not get_tree().paused:
 		return
-	if not event is InputEventKey:
+	if event is InputEventKey:
+		for action in ["move_left","move_right","move_up","move_down"]:
+			if event.is_action(action):
+				_native_input_held[action]=event.is_pressed()
+	if not (event is InputEventKey or event is InputEventMouseButton) or event.is_pressed():
 		return
-	for action in ["move_left","move_right","move_up","move_down"]:
-		if event.is_action(action):
-			_native_input_held[action]=event.is_pressed()
-	if event.is_action("parry") and not event.is_pressed():
-		_native_input_held["parry"]=false
+	for action in ["parry","weapon","shield_bash","native_magic"]:
+		if not event.is_action(action):
+			continue
+		_native_input_held[action]=false
+		if action=="weapon" and _weapon_held:
+			_weapon_held=false
+			_native_pause_weapon_release_pending=true
+		elif action=="native_magic":
+			_native_magic_input_kind=""
 
 func clear_native_input_states() -> void:
 	_native_input_held.clear()
@@ -869,6 +881,10 @@ func _begin_swing(step: int, held_frames: float) -> bool:
 	return true
 
 func _physics_process(delta: float) -> void:
+	if _native_pause_weapon_release_pending: # BOOT-01: 일시정지 중 뗀 무기 — 원본 틱처럼 차지면 놓음 처리
+		_native_pause_weapon_release_pending=false
+		if state=="windup" and not _weapon_held and not _accessibility_hold:
+			release_attack()
 	var fireball_entered_state: String=state
 	var ticks: float = delta * 60.0
 	_clock_frames += ticks

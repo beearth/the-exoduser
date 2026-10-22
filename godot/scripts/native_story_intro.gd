@@ -22,6 +22,26 @@ var _textures: Dictionary={}
 var _data: Dictionary
 var _wait:=false
 var _exit_elapsed:=0.0
+## BOOT-01 (PC) — 진입 예열 작업표: begin과 같은 규칙으로 컷 이미지 경로를 만든다(모든 언어 묶음의 합집합).
+## 예열은 Image.load_from_file → ImageTexture.create_from_image 를 미리 할 뿐이다.
+const BOOT_PREWARM_PATH:="res://scripts/native_boot_prewarm.gd"
+const BOOT_PREWARM_KEY:="story_image|"
+static func native_boot_prewarm_jobs(context: Dictionary) -> Array:
+	var root:=str(context.get("story_source_root",ProjectSettings.globalize_path("res://../")))
+	var data: Variant=JSON.parse_string(FileAccess.get_file_as_string(DATA_PATH))
+	var jobs: Array=[]
+	if not data is Dictionary or not data.get("lines") is Dictionary:return jobs
+	var seen:={}
+	for locale_lines in data.lines.values():
+		for cue in locale_lines:
+			var asset: String=str(cue.get("img","")) if cue.get("img")!=null else ""
+			if asset.is_empty() or seen.has(asset):continue
+			seen[asset]=true
+			var path:=root.path_join("assets/cutscene/images/"+asset)
+			jobs.append({"key":BOOT_PREWARM_KEY+path,"source":"file","path":path,"output":"texture"})
+	return jobs
+static func native_boot_prewarm_kernel(image: Image, _job: Dictionary) -> Variant:
+	return image
 static func should_run(main: Node) -> bool:
 	if main.has_meta("native_story_boot"):return bool(main.get_meta("native_story_boot"))
 	return str(main.get_meta("native_intro_boot","auto"))=="auto" and main.get_tree().get_script()==null
@@ -36,7 +56,11 @@ func begin(main: Node) -> void:
 	for cue in _lines:
 		var asset: String=str(cue.get("img","")) if cue.get("img")!=null else ""
 		if asset.is_empty() or _textures.has(asset):continue
-		var image:=Image.load_from_file(source_root.path_join("assets/cutscene/images/"+asset))
+		var image_path:=source_root.path_join("assets/cutscene/images/"+asset)
+		# BOOT-01: 진입 예열이 같은 파일을 미리 디코드·텍스처화해 두었으면 그것을 쓴다(없으면 기존 그대로).
+		var pre: Variant=load(BOOT_PREWARM_PATH).read_result(BOOT_PREWARM_KEY+image_path,true) if ResourceLoader.has_cached(BOOT_PREWARM_PATH) else null
+		if pre is ImageTexture:_textures[asset]=pre;continue
+		var image:=Image.load_from_file(image_path)
 		if image!=null:_textures[asset]=ImageTexture.create_from_image(image)
 	_was_paused=get_tree().paused;get_tree().paused=true
 	_view=preload("res://scripts/parity_intro_canvas.gd").new();_view.owner_story=self

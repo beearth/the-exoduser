@@ -58,22 +58,50 @@ func rollback() -> bool:
 	if ok:_active_written=false
 	return ok
 func launch(screen: Control,slot: int) -> Dictionary:
+	var started: Dictionary=_launch_begin(screen,slot,false)
+	if not started.get("ready",false):return started
+	return _launch_finish(screen,started.main)
+## BOOT-01 (PC, 2026-10-22) — launch와 같은 순서·판정. 다른 점 두 가지뿐이다.
+## Main에 native_boot_staged 메타를 줘 _ready 본문이 여러 프레임에 나뉘게 하고, 끝날 때까지 기다린 뒤
+## (그리고 한 프레임 더 넘긴 뒤) request_native_lobby_entry를 부른다. 각 프레임 사이에 OS 이벤트 펌프가 돈다.
+func launch_staged(screen: Control,slot: int,loading: Node=null) -> Dictionary:
+	if is_instance_valid(loading):loading.begin_main_boot(null) # 원본 _startDemoNew showBootLoading('DEMO 로딩...')
+	var started: Dictionary=_launch_begin(screen,slot,true)
+	if not started.get("ready",false):return started
+	var main: Node=started.main
+	if is_instance_valid(loading):loading.main=main
+	if is_instance_valid(main) and main.has_method("is_native_boot_body_done"):
+		if not main.is_native_boot_body_done():
+			await main.native_boot_stage_completed
+		if is_instance_valid(main) and main.is_inside_tree():
+			await main.hold_native_boot_frame() # _ready 마지막 단계와 진입(인트로 시작)이 한 프레임에 겹치지 않게
+		if is_instance_valid(main):
+			main.end_native_boot_staging()
+	return _launch_finish(screen,main)
+func _launch_begin(screen: Control,slot: int,staged: bool) -> Dictionary:
 	var prepared:=prepare(screen.menu,slot)
 	if not prepared.ready:return prepared
 	var scene: PackedScene=load("res://scenes/main.tscn")
 	if scene==null:rollback();return _fail("main_load_failed")
 	var main: Node=scene.instantiate();_main=weakref(main);phase="starting"
 	main.set_meta("native_lobby_entry_pending",true)
+	if staged:main.set_meta("native_boot_staged",true)
 	main.set_meta("native_story_locale",screen.bridge.language) # S10 lobby selection, before any optional explicit override.
 	for key in ["native_audio_source_root","native_story_source_root","native_story_locale"]:
 		if screen.has_meta(key):main.set_meta(key,screen.get_meta(key))
 	var tree: SceneTree=screen.get_tree()
 	tree.root.add_child(main)
+	return {"ready":true,"main":main}
+func _launch_finish(screen: Control,main: Node) -> Dictionary:
+	if not is_instance_valid(main) or not main.is_inside_tree():
+		rollback();return _fail("main_admission_failed")
+	var tree: SceneTree=main.get_tree()
 	var result: Dictionary=main.request_native_lobby_entry(self)
 	if not result.get("ready",false):
 		main.queue_free();rollback();return _fail(str(result.get("reason","main_admission_failed")))
 	phase="entered";launches+=1
-	tree.current_scene=main;screen.queue_free()
+	tree.current_scene=main
+	if is_instance_valid(screen):screen.queue_free()
 	return {"ready":true,"main":main,"packet":packet.duplicate(true)}
 func read_packet(main: Node) -> Dictionary:
 	if _main==null or _main.get_ref()!=main or phase not in ["starting","entered"]:return {"ready":false}

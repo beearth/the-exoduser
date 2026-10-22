@@ -1,3 +1,10 @@
+## 2026-10-22 PC-BOOT01 — 필드 진입 다중 프레임화·웹 로딩 화면·Esc 일시정지 키 유지 (PC Claude)
+
+- 기준 bdc8ba4a1(pc-input-parity), branch claude/pc-boot01-20261022. 진입 한 반복 7.6~8.0 s(launch 8.5 s + 첫 onload 큐 6.7 s) → 170~280 ms. Space 홀드 넘침 0×4, 영상 건너뛰기→Main 12.8~15.5 s → 3.0~5.0 s.
+- 방법(순서·계약 불변): 로비 동안 리소스 980개 백그라운드 예열(manifest)·onload/드랍/인트로 이미지 처리를 같은 정적 함수로 워커 예열, Main `_ready` 본문을 로비 진입일 때만 11곳에서 프레임 양보(단계 사이만 트리 정지+하위 콜백 끄기, 진입 권한 직전 해제). 하니스 직접 부팅은 예전처럼 동기.
+- 진입 화면 = 웹 #stageTransition 부트 로딩(랜덤 img/lording, 문구·막대·팁) 그대로. Esc 일시정지가 눌림을 지우지 않음(원본 13184), 정지 중 뗌 기록 확장.
+- 같은 시드 상태 동일, 신규 test_pc_boot01_prewarm 90/0, PC 회귀 0실패, E2E 11/7/0. Mac 07/04/09/50·intro E2E 실패는 기준판 동일. Mac 파일: main·world·lobby_entry·lobby_screen·world_drops·story_intro·parity_video_intro. [상세](engine/BOOT01_MULTI_FRAME_STARTUP_20261022.md), [보고](engine/orders/reports/pc-boot01_REPORT.md).
+
 ## 2026-10-22 TEST-FIX-01 — 웹 맵 전환 테스트 전제/하니스 교정
 
 - 필드보스: PC 요청 배치 fixture만 수정. 웹 1-1 전체 비행 통로 및 일반 적 비접촉 배치를 고르고 기존 원문 oracle/관통 단정 유지. 3회 168/0.
