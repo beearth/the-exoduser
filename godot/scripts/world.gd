@@ -3208,6 +3208,11 @@ func _build_collision() -> void:
 			var polygon = ConvexPolygonShape2D.new()
 			polygon.points = points
 			_add_shape(body, polygon, origin)
+	if _native_map11_selected:
+		# Source 18416,29543: boss_gate_col is not a hand-authored decorative prop.
+		var gate_circle = CircleShape2D.new()
+		gate_circle.radius = 100
+		_add_shape(body, gate_circle, Vector2(4020, 160))
 	_build_hill_collision(body)
 
 func _add_shape(body: StaticBody2D, shape: Shape2D, origin: Vector2) -> void:

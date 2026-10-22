@@ -56478,3 +56478,12 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - 원본 대응 100항목/파생408 PNG manifest, M-01~M-07 상태, 4좌표 1x 비교와 미이식 생체 디테일/제단/얼굴·보스 finale 경계를 docs/engine/PARITY_MAP_01_20261022.md 및 PARITY_DIFF_LIST_20261022.md §4에 기록했다. **VISUAL RETOUCH / 동일성 미완료**, main/PC 인수 완료가 아니다.
 - 제품 회귀19771/0, 레거시 전용 맵 표현16/0·소환굴298/0·조명10/0. test_map_look은 레거시 전용으로 명시했다. 새로운 제품 test/uid 두 경로만 ignore 예외를 추가했다.
 - 주입0 최종 E2E는 자연 field 진입 뒤 사망, boss→clear→lobby 미완주 NOT_READY. 단회 GUI 시작 필드 p95 5.032ms/p99 5.721ms/focus0 및 엔진 memory 값을 기록하되, 이후 표시 수정의 최종 비용·밀집 전투/PC 성능은 미측정으로 남겼다. 세이브는 임시 격리 namespace만 사용했다.
+
+## 2026-10-22 — PARITY-MAP-01 기준 정정·원본 생체 바닥/게이트 충돌 보완
+
+| 항목 | 코드·문서 동기화 |
+|---|---|
+| 판정 | 맵 구조/시스템은 웹 동일 + 비주얼 웹 이상으로 정정. 기존 PC 본문/후보 이력 보존. docs/engine/PARITY_MAP_01_20261022.md 2차 표가 원본 행·레이어·에셋 대응 SSOT |
+| 구조 | 원본 boss_gate_col (4020,160), r100을 provider와 실제 물리 원에 복귀. 실 웹40,000타일/36손배치/14소환굴/10,000canMv 대조. PC 보스·전투·스폰 코어 변경 없음 |
+| 비주얼 | 웹 공개 canvas 빌더에서 재질5곳/동맥6atlas/접지20장/언덕·해자4장을 추출. web_living.gd에 원본 좌표·크기·알파·위상·해자 기포 수식 적용. 개별35PNG provenance.json. Real-ESRGAN x2는 질감 소실로 미적용 |
+| 캡처 | fae057f7f tools/parity는 _out에만 추출/맵 검수용 수정. 제품에 merge하지 않음. 별도3399서버/격리 저장 사용 |

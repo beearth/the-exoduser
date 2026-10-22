@@ -16,6 +16,7 @@ var _chunks: Array[Sprite2D]=[]
 var _trees: Array[ShaderMaterial]=[]
 var _features: Array[Node2D]=[]
 var _hand_trees: Dictionary={}
+var _living: Node2D
 var _data: Dictionary
 func _ready() -> void:
  _data=JSON.parse_string(FileAccess.get_file_as_string("res://data/map.json"))
@@ -50,6 +51,7 @@ func _ready() -> void:
   for x in range(8):
    var sprite:=Sprite2D.new();sprite.texture=load("res://assets/map/web_parity/edge_%d_%d.png"%[x,y])
    sprite.centered=false;sprite.position=Vector2(x*1000,y*1000);sprite.z_index=-2800;add_child(sprite)
+ _living=preload("res://scripts/maps/map11/web_living.gd").new();add_child(_living)
  # game.html 18245-18262,18349-18361,52027-52045: original gate and tinted portal.
  _gate=Sprite2D.new();_gate.texture=load("res://assets/map/web_parity/gate.png");_gate.position=Vector2(4020,220)
  _gate.scale=Vector2(600.0/_gate.texture.get_width(),float(int(600.0*_gate.texture.get_height()/_gate.texture.get_width()))/_gate.texture.get_height());_gate.z_index=-2600;_gate.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_gate)
@@ -122,6 +124,7 @@ func update_product(point: Vector2,delta: float) -> void:
    _ghost.texture=source.sprite_frames.get_frame_texture(source.animation,source.frame)
    _ghost.global_transform=source.global_transform;_ghost.offset=source.offset;_ghost.flip_h=source.flip_h
 func render_at(now: float) -> void:
+ if is_instance_valid(_living):_living.render_at(now)
  if is_instance_valid(_portal):
   var unlocked: bool=is_instance_valid(_main) and _main.source_state.read_current_g().get("_bossUnlocked",false)
   var alive: bool=not is_instance_valid(_main) or _main.source_state.read_current_g().get("bossAlive",true)

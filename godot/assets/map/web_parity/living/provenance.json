@@ -1,0 +1,215 @@
+{
+  "web_source_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "assets": [
+    {
+      "asset": "godot/assets/map/web_parity/living/dry0.png",
+      "source": "ch1-living-detail.js:312-367",
+      "sha256": "c2aee6e88904fe1d09a746cbe757654c2c7948f57d5906893dad9e4f5e218b68",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/dry1.png",
+      "source": "ch1-living-detail.js:312-367",
+      "sha256": "9061dac81b7935722ba721f7f5a0c698db1fb4ea6b19a7bca7ae42cd097978e8",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/dry2.png",
+      "source": "ch1-living-detail.js:312-367",
+      "sha256": "ef7f9c62f01f6f64bdfafd253657141a4d7150cd7fe28870e65b2695386c7e86",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/hill.png",
+      "source": "game.html:26812-26823",
+      "sha256": "dda1f2a38b81a22a70a1bab5de9b7c6d7263838ec2156c4d379c10e6c3a9820f",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/moat.png",
+      "source": "ch1-altar-moat.js:8-145",
+      "sha256": "32c79712605ffb2a44fd92e5b4113b21cceacdbc055ac2b66f225bc732af4868",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/moatBubble.png",
+      "source": "ch1-altar-moat.js:8-145",
+      "sha256": "69a7b30c547c95aec90aa5331bf9f2076ea46e5e787e219db800129044ab8f85",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/moatGlow.png",
+      "source": "ch1-altar-moat.js:8-145",
+      "sha256": "bfebb68d779e03c1d64413c05a4489bab14da9df295bc66beff58c452489348b",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/region0.png",
+      "source": "ch1-living-detail.js:10-98,331-342",
+      "sha256": "783998d829259bc3ed248faa1a0d499ff4c1dddd1bdb40e0cbce6aba5d566755",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/region1.png",
+      "source": "ch1-living-detail.js:10-98,331-342",
+      "sha256": "5853deea415a66e271fa4c2a991d670f584b33aa08ee86bad48384455d2d5857",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/region2.png",
+      "source": "ch1-living-detail.js:10-98,331-342",
+      "sha256": "8dee27a35f596f0a4dac2aaab0e5c1cf4df8a3c14d8b78628041a6ae9308bd1b",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/region3.png",
+      "source": "ch1-living-detail.js:10-98,331-342",
+      "sha256": "c624fa7f8b87ba2614d3e56e3507a507ec186c8144752620a6029bdc9b7a7280",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/region4.png",
+      "source": "ch1-living-detail.js:10-98,331-342",
+      "sha256": "305034636a809598a6114cbf3e8b471af0176991672152f12d9a2e4445e3900b",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow10.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "cd9b7de8d88e92631ef792ccdf069f7053defb70085a7fe287e050071101283e",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow11.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "e27b6e6b0dcba5bb46aacc209cdc871280ddec498586627c13aa8abeb5a57ad8",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow13.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "79ec96043510b90cf7aa4120f3ee7aa8f2e17b79be4e2e076108509db85d2d9a",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow14.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "cd99a93fc093ad451a38fe8a4b388fb3d8ebf98e8421c2ef91ec0196127b20f3",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow15.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "a6c61170066b5d68de46733d5f0cdde486683b0643abdc226373fd46e7fc9faf",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow17.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "2e1b52662faeb658665c0471cded667225e7bb249c2cbc76a17d4ec980c5347b",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow18.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "3ec42058a5325a01a81907579dea2d88053db6c54cf82c267f5c518d8d824f89",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow19.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "6d98965f1897f6851909b932d9e9371e5327d0e88a637fc322213fb91e837778",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow2.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "35470c7901e0c86d9fe1d532bfd4035e74b8f6d1ffa9373690c05ad644601a00",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow21.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "bdb72cc9e08dcb4360579296eb83a47e34421c96a426e1770df522445244996c",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow24.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "462d22354310030e3264512188ab1e6e0820386280ba8c5a759bb6211f0bbb3e",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow27.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "d2c089e7749a3e3283edd62702c61bb7083529ffe30bb85988e9e89fe3158311",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow28.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "c924de35669dc9b734fb82d47c98ae1bc356eac677862a379a7afc5ea443b8c5",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow29.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "55434519f4698d1b4805ce6ff85dc2941dab976cf4cb3b9b34b85222290f0e69",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow3.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "b46b3dc0af4cf369fefc06b9b040b6e396e6b373a616f7f33e317418534a2ee2",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow33.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "fb6b0ec16e33a78c054d40cfc1f27aeb314524f7ead0f53ff98ae74d3f73e685",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow36.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "20598c2b5c7d7ee833de30f18d4778b772026fd056580cab78fd94a22174d2a5",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow7.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "6ae70c7b32856782f500ccf162e3b1db76cfafee69d9bcf21d310e90c18656ef",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow8.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "1674aa099a613a3bf589c103276d9a216299831cfac805ea05567d661ba6d5c0",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/shadow9.png",
+      "source": "ch1-living-detail.js:406-528",
+      "sha256": "d6631bb13e532090979d90a7a3280d1805e86b42eb8d140b8798066b27c2a068",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/surfaceDry.png",
+      "source": "ch1-living-detail.js:312-367",
+      "sha256": "c376a6df80c84abcf5b678334abd9a98fa8121819afd90071ef9370f682c85ce",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/surfaceWet.png",
+      "source": "ch1-living-detail.js:312-367",
+      "sha256": "c84cc1c1d78bd595642f6afb9b85991cfda5213ba054a0bbb011889c933e15f2",
+      "method": "original browser canvas builder export, no generated art"
+    },
+    {
+      "asset": "godot/assets/map/web_parity/living/wet.png",
+      "source": "ch1-living-detail.js:312-367",
+      "sha256": "f4dac2a37551f60e923c357804f2d1960c08f38cda7f151de12e4417e6edc857",
+      "method": "original browser canvas builder export, no generated art"
+    }
+  ]
+}

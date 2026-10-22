@@ -1,3 +1,5 @@
+> 2026-10-22 **PARITY-MAP-01 기준 정정:** 웹 레이아웃·충돌·좌표·동선·카메라 시스템은 동일, 맵 비주얼 업그레이드는 허용. 컨셉 판 통째 재사용/직선 패치/원근 왜곡 금지. [2차 구현·두 판정](../engine/PARITY_MAP_01_20261022.md). 아래 “원본 동일성”은 구조/시스템에 적용하며 픽셀 복제만을 목표로 삼지 않는다.
+
 > 2026-10-22 **PARITY-MAP-01 브랜치:** 사용자 원본 동일성 지시로 Godot 컨셉 판 제품 참조를 끊고 웹 청크/좌표/충돌로 복귀하는 후보. [원본 대응·검수·미이식 경계](../engine/PARITY_MAP_01_20261022.md). **VISUAL RETOUCH / 동일성 미완료**, main/PC 인수 아님. 아래 MAP11 제작 차수는 이 브랜치의 제품 기준이 아닌 보존 이력이다.
 
 > 2026-10-21 SHARP-01 품질 후보: [HiDPI·무손실·렌더 선명도](SHARP_01_RENDER_CLARITY_20261021.md). 기준c335f345. canvas_items/native resolve, 지면26import mode0, 단일 제한형clarity pass. 1080p 전후1x 선명도PASS, native2560 p95 9.793ms/p99 11.219ms/focus0, 113checks/0fail. 120fps미달/전체맵아트PASS·PC인수 아님. 아래32c의 mode2/VRAM은 당시 이력.

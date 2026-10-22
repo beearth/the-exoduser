@@ -1,0 +1,859 @@
+{
+  "objects": [
+    {
+      "type": "boss_gate_col",
+      "x": 4020,
+      "y": 160,
+      "_colW": 0,
+      "_colH": 0,
+      "_colSz": 100
+    },
+    {
+      "type": "m_c1sbone",
+      "x": 3220,
+      "y": 1180,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_ctree17",
+      "x": 4980,
+      "y": 1260,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 0.9
+    },
+    {
+      "type": "m_ctree16",
+      "x": 3220,
+      "y": 1460,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 1.15
+    },
+    {
+      "type": "corpse",
+      "x": 3140,
+      "y": 1500,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1gtoxic",
+      "x": 6740,
+      "y": 1620,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_fbones",
+      "x": 3020,
+      "y": 1740,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1pool",
+      "x": 6700,
+      "y": 1740,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 1.55
+    },
+    {
+      "type": "m_hang_cage",
+      "x": 1580,
+      "y": 1940,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1cocoon",
+      "x": 1900,
+      "y": 2020,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 1.55
+    },
+    {
+      "type": "m_c1spod",
+      "x": 1620,
+      "y": 2300,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1spod",
+      "x": 2140,
+      "y": 2380,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1groot",
+      "x": 4100,
+      "y": 3460,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1tree",
+      "x": 4100,
+      "y": 3620,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_ctree15",
+      "x": 1220,
+      "y": 3860,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 0.95
+    },
+    {
+      "type": "m_ctree18",
+      "x": 7060,
+      "y": 3860,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 1.12
+    },
+    {
+      "type": "m_penta_circle",
+      "x": 5900,
+      "y": 3860,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1altar",
+      "x": 5900,
+      "y": 3900,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 1.45
+    },
+    {
+      "type": "m_c1camp",
+      "x": 1820,
+      "y": 4020,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 1.55
+    },
+    {
+      "type": "m_skull_totem",
+      "x": 6220,
+      "y": 4060,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_fyellow",
+      "x": 5620,
+      "y": 4060,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_sword_pile",
+      "x": 1580,
+      "y": 4180,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1sroot",
+      "x": 3020,
+      "y": 4220,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1sbone",
+      "x": 6060,
+      "y": 4260,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1sbone",
+      "x": 1940,
+      "y": 4340,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1gtoxicf",
+      "x": 6500,
+      "y": 5460,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "pit_poison",
+      "x": 6500,
+      "y": 5580,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_ctree19",
+      "x": 4980,
+      "y": 5980,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 0.88
+    },
+    {
+      "type": "m_ctree14",
+      "x": 3220,
+      "y": 6020,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 1.1
+    },
+    {
+      "type": "m_bone_arch",
+      "x": 1420,
+      "y": 6020,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1sroot",
+      "x": 6860,
+      "y": 6020,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1sroot",
+      "x": 3060,
+      "y": 6180,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_c1sroot",
+      "x": 1740,
+      "y": 6340,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_ctree20",
+      "x": 4980,
+      "y": 7180,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 1.08
+    },
+    {
+      "type": "corpse",
+      "x": 4980,
+      "y": 7180,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_fbones",
+      "x": 3300,
+      "y": 7220,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1
+    },
+    {
+      "type": "m_ctree13",
+      "x": 3380,
+      "y": 7380,
+      "hell": 0,
+      "_hand": 1,
+      "noGrid": 1,
+      "scale": 0.85,
+      "_dsA": 1
+    }
+  ],
+  "meta": {
+    "boss_gate_col": {
+      "sz": 250,
+      "col": 1
+    },
+    "m_c1sbone": {
+      "sz": 150,
+      "light": 0,
+      "large": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 0,
+      "collision": false,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_ctree17": {
+      "sz": 400,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 60,
+      "keepAR": 0,
+      "squareDraw": 0,
+      "rotTree": [
+        5,
+        0
+      ],
+      "occ": 1,
+      "footYF": 0.45
+    },
+    "m_ctree16": {
+      "sz": 400,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 60,
+      "keepAR": 0,
+      "squareDraw": 0,
+      "rotTree": [
+        3,
+        0
+      ],
+      "occ": 1,
+      "footYF": 0.45
+    },
+    "corpse": {
+      "sz": 40
+    },
+    "m_c1gtoxic": {
+      "sz": 550,
+      "light": 0,
+      "large": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 0,
+      "collision": false,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_fbones": {
+      "sz": 48,
+      "light": 0,
+      "large": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 0,
+      "collision": false,
+      "keepAR": 0,
+      "squareDraw": 0
+    },
+    "m_c1pool": {
+      "sz": 300,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 85,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_hang_cage": {
+      "sz": 280,
+      "col": 1,
+      "large": 1,
+      "light": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "collision": false,
+      "keepAR": 0,
+      "squareDraw": 0
+    },
+    "m_c1cocoon": {
+      "sz": 280,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 80,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_c1spod": {
+      "sz": 150,
+      "light": 0,
+      "large": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 0,
+      "collision": false,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_c1groot": {
+      "sz": 760,
+      "light": 0,
+      "large": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 0,
+      "collision": false,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_c1tree": {
+      "sz": 1450,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colW": 380,
+      "colH": 230,
+      "keepAR": 1,
+      "squareDraw": 0,
+      "occ": 1,
+      "footYF": -0.058
+    },
+    "m_ctree15": {
+      "sz": 400,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 60,
+      "keepAR": 0,
+      "squareDraw": 0,
+      "rotTree": [
+        4,
+        0
+      ],
+      "occ": 1,
+      "footYF": 0.45,
+      "ring": 1
+    },
+    "m_ctree18": {
+      "sz": 400,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 60,
+      "keepAR": 0,
+      "squareDraw": 0,
+      "rotTree": [
+        11,
+        0
+      ],
+      "occ": 1,
+      "footYF": 0.45,
+      "ring": 1
+    },
+    "m_penta_circle": {
+      "sz": 350,
+      "col": 1,
+      "large": 1,
+      "light": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "collision": false,
+      "keepAR": 0,
+      "squareDraw": 0
+    },
+    "m_c1altar": {
+      "sz": 330,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 95,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_c1camp": {
+      "sz": 380,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colW": 130,
+      "colH": 80,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_skull_totem": {
+      "sz": 240,
+      "col": 1,
+      "large": 1,
+      "keepAR": 1,
+      "colW": 30,
+      "colH": 20,
+      "colOy": 88,
+      "light": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "collision": false,
+      "squareDraw": 0
+    },
+    "m_fyellow": {
+      "sz": 40,
+      "light": 1,
+      "large": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 0,
+      "collision": false,
+      "keepAR": 0,
+      "squareDraw": 0
+    },
+    "m_sword_pile": {
+      "sz": 200,
+      "col": 1,
+      "large": 1,
+      "light": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "collision": false,
+      "keepAR": 0,
+      "squareDraw": 0
+    },
+    "m_c1sroot": {
+      "sz": 150,
+      "light": 0,
+      "large": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 0,
+      "collision": false,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "m_c1gtoxicf": {
+      "sz": 450,
+      "light": 0,
+      "large": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 1,
+      "col": 0,
+      "collision": false,
+      "keepAR": 1,
+      "squareDraw": 0
+    },
+    "pit_poison": {
+      "sz": 200,
+      "collision": true,
+      "colW": 80,
+      "colH": 58,
+      "colOy": 7
+    },
+    "m_ctree19": {
+      "sz": 400,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "keepAR": 0,
+      "squareDraw": 0,
+      "rotTree": [
+        6,
+        0
+      ],
+      "occ": 1,
+      "footYF": 0.45
+    },
+    "m_ctree14": {
+      "sz": 400,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 60,
+      "keepAR": 0,
+      "squareDraw": 0,
+      "rotTree": [
+        2,
+        0
+      ],
+      "occ": 1,
+      "footYF": 0.45
+    },
+    "m_bone_arch": {
+      "sz": 300,
+      "col": 1,
+      "large": 1,
+      "light": 0,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "collision": false,
+      "keepAR": 0,
+      "squareDraw": 0
+    },
+    "m_ctree20": {
+      "sz": 400,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "keepAR": 0,
+      "squareDraw": 0,
+      "rotTree": [
+        7,
+        0
+      ],
+      "occ": 1,
+      "footYF": 0.45
+    },
+    "m_ctree13": {
+      "sz": 400,
+      "light": 0,
+      "large": 1,
+      "mega": 0,
+      "rot": 0,
+      "flip": 0,
+      "col": 1,
+      "collision": false,
+      "colSz": 60,
+      "keepAR": 0,
+      "squareDraw": 0,
+      "rotTree": [
+        1,
+        0
+      ],
+      "occ": 1,
+      "footYF": 0.45
+    }
+  },
+  "regions": [
+    {
+      "tx": 49,
+      "ty": 151,
+      "w": 1440,
+      "h": 880,
+      "variant": 0,
+      "x": 1260,
+      "y": 5620
+    },
+    {
+      "tx": 151,
+      "ty": 136,
+      "w": 1440,
+      "h": 800,
+      "variant": 1,
+      "x": 5340,
+      "y": 5060
+    },
+    {
+      "tx": 100,
+      "ty": 120,
+      "w": 1360,
+      "h": 820,
+      "variant": 2,
+      "x": 3340,
+      "y": 4410
+    },
+    {
+      "tx": 46,
+      "ty": 107,
+      "w": 960,
+      "h": 640,
+      "variant": 3,
+      "x": 1380,
+      "y": 3980
+    },
+    {
+      "tx": 167,
+      "ty": 47,
+      "w": 900,
+      "h": 680,
+      "variant": 4,
+      "x": 6250,
+      "y": 1560
+    }
+  ],
+  "shadows": [
+    {
+      "name": "shadow2.png",
+      "x": 4896,
+      "y": 1415
+    },
+    {
+      "name": "shadow3.png",
+      "x": 3073,
+      "y": 1659
+    },
+    {
+      "name": "shadow7.png",
+      "x": 6446,
+      "y": 1536
+    },
+    {
+      "name": "shadow8.png",
+      "x": 1419,
+      "y": 2003
+    },
+    {
+      "name": "shadow9.png",
+      "x": 1721,
+      "y": 2134
+    },
+    {
+      "name": "shadow10.png",
+      "x": 1558,
+      "y": 2326
+    },
+    {
+      "name": "shadow11.png",
+      "x": 2076,
+      "y": 2406
+    },
+    {
+      "name": "shadow13.png",
+      "x": 3681,
+      "y": 3754
+    },
+    {
+      "name": "shadow14.png",
+      "x": 1099,
+      "y": 4024
+    },
+    {
+      "name": "shadow15.png",
+      "x": 6912,
+      "y": 4053
+    },
+    {
+      "name": "shadow17.png",
+      "x": 5681,
+      "y": 4015
+    },
+    {
+      "name": "shadow18.png",
+      "x": 1536,
+      "y": 4088
+    },
+    {
+      "name": "shadow19.png",
+      "x": 6171,
+      "y": 4143
+    },
+    {
+      "name": "shadow21.png",
+      "x": 1473,
+      "y": 4183
+    },
+    {
+      "name": "shadow24.png",
+      "x": 1867,
+      "y": 4342
+    },
+    {
+      "name": "shadow27.png",
+      "x": 4890,
+      "y": 6131
+    },
+    {
+      "name": "shadow28.png",
+      "x": 3075,
+      "y": 6212
+    },
+    {
+      "name": "shadow29.png",
+      "x": 1256,
+      "y": 6025
+    },
+    {
+      "name": "shadow33.png",
+      "x": 4867,
+      "y": 7366
+    },
+    {
+      "name": "shadow36.png",
+      "x": 3292,
+      "y": 7527
+    }
+  ],
+  "source": "ch1-living-detail.js:4-15,312-367,406-528; game.html:51930-51931,52480"
+}

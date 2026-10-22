@@ -14,6 +14,8 @@ func _hill_ramp_at(tile: Vector2) -> float:
  return t if absf(tile.y-h.rampY)<=lerpf(h.rampHalf0,h.rampHalf1,t) else -1
 func blocked(pos: Vector2) -> bool:
  if not pos.is_finite() or pos.x<0 or pos.y<0 or pos.x>=8000 or pos.y>=8000:return true
+ # Source 18416,29543: system gate object, radius (250*.4)=100 at (4020,160).
+ if pos.distance_squared_to(Vector2(4020,160))<10000:return true
  var cell:=Vector2i(floori(pos.x/40),floori(pos.y/40))
  if int(data.tiles[cell.y*200+cell.x])==1:return true
  var h: Dictionary=data.hill

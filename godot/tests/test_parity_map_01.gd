@@ -30,6 +30,8 @@ func run() -> void:
  check(web_flow.direction(Vector2(4020,7380))==Vector2.DOWN,"source flow tie order toward start")
  check(web_flow.distance.size()==40000,"40px source grid")
  check(p.field.can_move(Vector2(4020,7420),15),"start can move")
+ check(not p.field.can_move(Vector2(4020,180),15),"source system gate circle blocks north path")
+ check(p.field.can_move(Vector2(4020,300),15),"source gate approach remains open")
  check(not p.field.can_move(Vector2(-1,7420),0),"world bound")
  var scene: Node=main.world.get_node("Map11ProductScene")
  check(scene.get_node_or_null("WorldClarity")==null,"concept clarity disconnected")
