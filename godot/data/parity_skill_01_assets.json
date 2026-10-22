@@ -1,0 +1,20 @@
+{
+  "source_game_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "three_version": "0.186.0",
+  "three_integrity_verified": true,
+  "source_js_sha256": "eb59edc04587feac51752f826cfac28bcf127d4687854b702c5debe4440c96bd",
+  "bake_script_sha256": "0a55704f5f671c46eb4cdf6139a04f95855c53a351445336524b78c86570021f",
+  "runtime_3d": false,
+  "assets": [
+    {
+      "path": "godot/assets/ui/parity_skill_01/levelup.wav",
+      "bytes": 96044,
+      "sha256": "0a8f76d89c709043814cb74f331a4578d17ff61256303bd0019a263d053f86e8"
+    },
+    {
+      "path": "godot/assets/ui/parity_skill_01/altar.png",
+      "bytes": 1043708,
+      "sha256": "80669b111abc67eb252d772b6ff1b9e4629afaf6bc558eafc19ae7140b8d4785"
+    }
+  ]
+}

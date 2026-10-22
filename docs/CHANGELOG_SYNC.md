@@ -1,3 +1,9 @@
+## 2026-10-22 PARITY-SKILL-01
+
+- PC writer b6050641c merge(CHANGELOG 충돌만 양쪽 보존). Forge 두 버튼 활성/공개 API·최종 source_feedback 연결, 미습득 표기·비활성색 및 원판 오프라인2D 추출. 런타임3D0.
+- pack_b_mac 옛 polygon wall 입력을 실제 웹 tile/hill/prop/gate 모델로 복구. PC 코어·원본 테스트/oracle 보존, 단회402/0. skill105/0·writer80/0·VM14행0불일치.
+- E2E 단회9PASS/9NOT_READY/0FAIL(overall NOT_READY). 해골번개 격자 원인 확정 미완·3D 재질/동적 합성/글꼴 잔여로 VISUAL RETOUCH. [전체 근거](engine/PARITY_SKILL_01_20261022.md).
+
 ## 2026-10-22 INTEG-12 통합 검수 마감
 - BOSS-02 1b86c02f / INTRO-01b 015d4034 / DONE 수신 뒤 VRAM-01 50900cfd merge. PC HUD stats 제외, PC core/테스트 원본 보존. 문서 충돌은 양쪽 이력 및 번역 CRLF 유지.
 - life retry의 표시 캡처만 headless 생략·GUI null/empty guard. 판정/EXP/save/reload 변경0.

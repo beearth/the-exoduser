@@ -20,6 +20,10 @@ var serial:=0
 var last: Dictionary={}
 var disc_shader: Shader
 var rune_shader: Shader
+var levelup_voice: AudioStreamPlayer
+var feedback_seen: Dictionary={}
+var feedback_toast: Control
+var feedback_tween: Tween
 func configure(owner: Node,inv: Control) -> void:
  main=owner;inventory=inv;process_mode=Node.PROCESS_MODE_ALWAYS
  size=Vector2(1920,1080);mouse_filter=Control.MOUSE_FILTER_STOP
@@ -27,6 +31,8 @@ func configure(owner: Node,inv: Control) -> void:
  rune_shader=Shader.new();rune_shader.code=FileAccess.get_file_as_string("res://shaders/skill_forge_sigil.gdshader")
  # File manifest is fixed at build time. Textures load on UI events only.
  icon_paths=JSON.parse_string(FileAccess.get_file_as_string("res://data/parity_ui_03_assets.json")).paths
+ levelup_voice=AudioStreamPlayer.new();levelup_voice.stream=preload("res://assets/ui/parity_skill_01/levelup.wav");add_child(levelup_voice)
+ feedback_toast=preload("res://scripts/parity_hud_toast.gd").new();feedback_toast.position=Vector2(0,858);feedback_toast.size=Vector2(1920,42);feedback_toast.mouse_filter=Control.MOUSE_FILTER_IGNORE;feedback_toast.z_index=100;add_child(feedback_toast)
  hide()
 func _input(event: InputEvent) -> void:
  if not event is InputEventKey or not event.pressed or event.echo:return
@@ -106,7 +112,8 @@ func action(value: String,rect: Rect2,callback: Callable,enabled:=true) -> Butto
  b.add_theme_font_override("font",Surface.Fonts.stack("hell"));b.add_theme_font_size_override("font_size",13)
  var box:=StyleBoxFlat.new();box.bg_color=Color("201813");box.border_color=Color("6b5843");box.set_border_width_all(1);b.add_theme_stylebox_override("normal",box);b.add_theme_stylebox_override("disabled",box);b.modulate.a=1 if enabled else .42
  if value in ["습득","강화 +"]:
-  var fire: StyleBoxFlat=box.duplicate();fire.bg_color=Color("6e2418");fire.border_color=Color("a34d3f");b.add_theme_stylebox_override("normal",fire);b.add_theme_stylebox_override("disabled",fire);b.add_theme_color_override("font_color",Color("fff0df"))
+  var fire: StyleBoxFlat=box.duplicate();fire.bg_color=Color("6e2418");fire.border_color=Color("a34d3f");b.add_theme_stylebox_override("normal",fire);b.add_theme_stylebox_override("disabled",fire);b.add_theme_color_override("font_color",Color("fff0df"));b.add_theme_color_override("font_disabled_color",Color("b8ada7"))
+  if not enabled:fire.bg_color=Color("382b29");fire.border_color=Color("59463e")
  stage.add_child(b);b.pressed.connect(callback);return b
 class DropButton extends Button:
  var forge: Control
@@ -134,7 +141,7 @@ func disc(id: String,rect: Rect2,selected: bool=false,parent: Node=null) -> Text
  var icon: Texture2D=icon_for(id)
  if selected:
   var halo:=Halo.new();halo.position=rect.position-Vector2.ONE*18;halo.size=rect.size+Vector2.ONE*36;halo.radius=rect.size.x*.5;halo.mouse_filter=Control.MOUSE_FILTER_IGNORE;(stage if parent==null else parent).add_child(halo)
- var n:=TextureRect.new();n.position=rect.position;n.size=rect.size;n.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;n.texture=icon if icon!=null else load("res://assets/ui/parity_ui_03/sigil.png");n.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var n:=TextureRect.new();n.position=rect.position;n.size=rect.size;n.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;n.texture=icon if icon!=null else load("res://assets/ui/parity_ui_03/sigil.png");n.mouse_filter=Control.MOUSE_FILTER_IGNORE;n.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;n.texture_repeat=CanvasItem.TEXTURE_REPEAT_DISABLED
  var mat:=ShaderMaterial.new();mat.shader=disc_shader;mat.set_shader_parameter("selected",1.0 if selected else 0.0);mat.set_shader_parameter("has_icon",icon!=null);n.material=mat
  (stage if parent==null else parent).add_child(n);return n
 func render() -> void:
@@ -165,8 +172,8 @@ func render() -> void:
  var m: Dictionary=model()
  Surface.panel(stage,Rect2(51,339.11,330,564.89),Color("140f0edb"),Color("a4937380"));Surface.panel(stage,Rect2(1539,339.11,330,564.89),Color("140f0edb"),Color("a4937380"))
  render_altar(m);render_info(m);render_road(m);render_tray(m)
- Surface.button(stage,"일괄 레벨업",Rect2(927,1022,106,32),func():manage("batch",""),false)
- Surface.button(stage,"추천 자동",Rect2(1041,1022,94,32),func():manage("recommend",""),false)
+ Surface.button(stage,"일괄 레벨업",Rect2(927,1022,106,32),func():manage("batch",""))
+ Surface.button(stage,"추천 자동",Rect2(1041,1022,94,32),func():manage("recommend",""))
  Surface.button(stage,"닫기 [ESC]",Rect2(813,1022,106,32),close_panel)
 func navigate(i: int) -> void:
  close_panel()
@@ -176,8 +183,8 @@ func render_altar(m: Dictionary) -> void:
  # JS renderAltar geometry; CSS mid width1122, H554, TOP10 BOT78.
  var W:=1134.0;var H:=564.89;var cy:=10+(H-88)/2;var R:=minf(W*.3,(H-88)*.4);var node_size:=minf(92,R*.56);R=minf(R,(H-88)/2-node_size/2-16)
  var cx:=960.0;cy+=339.11
- var plate:=TextureRect.new();plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.texture=load("res://assets/ui/parity_ui_03/sigil.png");var radius: float=maxf(R*1.32,R+node_size*.65);plate.position=Vector2(cx-radius,cy-radius);plate.size=Vector2.ONE*radius*2;plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.mouse_filter=Control.MOUSE_FILTER_IGNORE
- var mat:=ShaderMaterial.new();mat.shader=rune_shader;plate.material=mat;stage.add_child(plate);plate.hide()
+ var plate:=TextureRect.new();plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.texture=preload("res://assets/ui/parity_skill_01/altar.png");var radius: float=maxf(R*1.32,R+node_size*.65);radius*=1024.0/792.0;plate.position=Vector2(cx-radius,cy-radius);plate.size=Vector2.ONE*radius*2;plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var mat:=ShaderMaterial.new();mat.shader=rune_shader;plate.material=mat;stage.add_child(plate);plate.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;plate.texture_repeat=CanvasItem.TEXTURE_REPEAT_DISABLED
  var core_size: float=maxf(48,minf(150,minf(R*1.02,(R-node_size/2)*1.3)))
  if not m.host.is_empty():disc(m.host,Rect2(cx-core_size/2,cy-core_size/2,core_size,core_size),true)
  text(display_name(m.host) if not m.host.is_empty() else "슬롯이 비어 있습니다",Rect2(407,349.11,460,42),22,Color("dfd6c2"),true)
@@ -222,7 +229,12 @@ func render_info(m: Dictionary) -> void:
 func confirm_reset(id: String) -> void:
  var dialog:=ConfirmationDialog.new();dialog.dialog_text=skill_name(id)+" 리셋";dialog.confirmed.connect(func():manage("reset",id,true));stage.add_child(dialog);dialog.popup_centered()
 func manage(kind: String,id: String,confirmed:=false) -> void:
- serial+=1;last=main.request_native_skill_management({"request_id":"forge-"+str(get_instance_id())+"-"+str(serial),"action":kind,"skill_id":id,"confirmed":confirmed})
+ serial+=1
+ var request_id: String="forge-"+str(get_instance_id())+"-"+str(serial)
+ if kind=="batch":last=main.request_skill_batch_level_up(request_id)
+ elif kind=="recommend":last=main.request_skill_recommend_auto(request_id)
+ else:last=main.request_native_skill_management({"request_id":request_id,"action":kind,"skill_id":id,"confirmed":confirmed})
+ present_feedback(request_id,last.get("source_feedback",{}))
  if last.get("committed",false):last["persistence"]=main.save_native_demo11_current();last.saved=last.persistence.get("committed",false)
  render()
 func equip(i: int,id: String) -> void:
@@ -272,7 +284,7 @@ func chip(parent: Node,id: String) -> void:
  var style:=StyleBoxFlat.new();style.bg_color=Color("241c18");style.border_color=Color("4d4136");style.set_border_width_all(1);style.set_corner_radius_all(28);style.border_color=Color("ff9b4a") if id==slot_value(selected_slot) or id==selected_skill else style.border_color;b.add_theme_stylebox_override("normal",style)
  disc(id,Rect2(5,7,36,36),false,b)
  Surface.text(b,skill_name(id),Rect2(49,7,114,22),13,Color("dfd6c2"),"hell").clip_text=true
- Surface.text(b,"Lv "+str(level(id)),Rect2(49,29,114,18),11,Color("b9ab92"),"hell")
+ Surface.text(b,("Lv "+str(level(id))) if level(id)>0 else ("미습득" if Catalog.read_skill(id).get("found",false) else ""),Rect2(49,29,114,18),11,Color("b9ab92"),"hell")
  b.pressed.connect(func():selected_skill=id;render())
 
 func icon_for(id: String) -> Texture2D:
@@ -295,3 +307,19 @@ class TitlePlate extends Control:
   var dx: Array=[0.0,20.0,size.x-20,size.x];var dy: Array=[0.0,8.0,size.y-8,size.y]
   for y in 3:
    for x in 3:draw_texture_rect_region(image,Rect2(dx[x],dy[y],dx[x+1]-dx[x],dy[y+1]-dy[y]),Rect2(sx[x],sy[y],sx[x+1]-sx[x],sy[y+1]-sy[y]))
+
+# G47228/G47320 emit into the existing world text pool, behind the paused Forge,
+# just like the web canvas. No UI-local timer consumes source text life while paused.
+func present_feedback(request_id: String,feedback: Dictionary) -> void:
+ if feedback.is_empty() or feedback_seen.has(request_id):return
+ feedback_seen[request_id]=true
+ var message: String=str(feedback.get("ko","") if TranslationServer.get_locale().begins_with("ko") else feedback.get("en",""))
+ if feedback.kind=="showPH":
+  feedback_toast.text=message;feedback_toast.ink=Color(feedback.color);feedback_toast.modulate.a=1
+  if feedback_tween!=null:feedback_tween.kill()
+  feedback_tween=create_tween();feedback_tween.tween_interval(.5);feedback_tween.tween_property(feedback_toast,"modulate:a",0.,.1)
+ else:
+  var adapter: Node=main.world.get_node_or_null("NativeFloatingText")
+  if is_instance_valid(adapter):adapter.emit_native_text(main.player.global_position.x,main.player.global_position.y+float(feedback.dy),message,feedback.color,feedback.life)
+  var settings: Dictionary=main.read_native_attack_audio_settings()
+  levelup_voice.volume_linear=float(settings.get("sfx_gain",1.));levelup_voice.play()

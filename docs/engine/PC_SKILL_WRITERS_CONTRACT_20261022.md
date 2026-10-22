@@ -74,3 +74,7 @@ main.request_skill_recommend_auto(request_id: String) -> Dictionary
 - shieldFuse: 원본 추천 9단계는 `_canFuse('shieldFuse')`면 합체한다. PC는 새 게임에서 shieldFuse가 이미 합체돼 있고(`apply_native_new_game_starting_skills`) shieldFuse 리셋은 HOLD라 이 분기는 현재 도달 불가다. 사본 원장은 원본대로 둔다.
 - 최대치 20은 P.lv≥950이 필요해 데모(Lv100 캡, 락 3)에서 실제 도달 불가. 사본 원장 fixture 행(Lv1000)으로만 원본 대조했다.
 - 세이브 형식 변경 없음.
+
+## Mac PARITY-SKILL-01 인수
+
+`b6050641c584407e413c04665a6ec6c77b59f0b5`를 merge(코어 충돌0). Forge 두 버튼은 활성화되어 공개 API를 부른다. source_feedback의 최종 addTxt/showPH/SFX 소비는 Mac Forge 표시 owner에 추가했으며 PC writer/테스트는 보존했다. 같은 request_id 재차감0 및 VM14행 불일치0. PC 문서의 pending 필드는 PC 영수증 원문이며, Mac 표시 연결 완료/잔여 범위는 [후속](PARITY_SKILL_01_20261022.md)를 따른다.
