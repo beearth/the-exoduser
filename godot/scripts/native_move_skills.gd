@@ -392,6 +392,9 @@ func _fire_chain(site: String, tier: int, dir: float) -> bool:
 	if p.is_empty():
 		return _refuse("fire_p_not_ready:" + site)
 	var st_cost: float = float(p.get("mst", 0)) * 0.01 * float(tier)
+	var unported: String = _unported_chain_branch(p)
+	if not unported.is_empty():
+		return _refuse("unported_branch_active:" + unported) # 첫 쓰기(게이지·ST) 전 거절 — 단순화 경로 폴백 없음
 	if not (g_cost > 0.0 and float(_player.get("stamina")) >= st_cost):
 		_log("fire_gate_refused", {"site": site, "tier": tier, "gauge": harp_gauge, "st": _player.get("stamina"), "st_cost": st_cost})
 		return false
@@ -426,6 +429,18 @@ func _fire_chain(site: String, tier: int, dir: float) -> bool:
 	_log("chain_fire", {"site": site, "tier": tier, "g_cost": g_cost, "st_cost": st_cost, "dir": dir, "max_dist": harp_max_dist,
 		"x": harp_pos.x, "y": harp_pos.y, "gauge_after": harp_gauge})
 	return true
+
+## 사슬 발사 이후 원본이 실행할 미이식 분기(1-1 신규 런에는 없음): 기동칼날개 G32250, 화염 사슬 G32276(magicBlink/dimBreach),
+## 기동불꽃/기동파괴 입력 G32549–32568, 기동전폭 G32570(dimBlast 합체)
+func _unported_chain_branch(p: Dictionary) -> String:
+	var skills: Dictionary = p.get("skills", {}) if p.get("skills") is Dictionary else {}
+	for sk in ["chainSlash", "chainAssault", "chainSlam"]:
+		if _num(skills.get(sk)) >= 1.0: return sk
+	if str(p.get("activeChargeSk")) == "magicBlink": return "magicBlink"
+	var fused: Dictionary = p.get("_fused", {}) if p.get("_fused") is Dictionary else {}
+	for f in ["dimBreach", "dimBlast"]:
+		if _js_truthy(fused.get(f)): return f
+	return ""
 
 ## G12854–12866
 func _harp_dist_tier(tier: int, p: Dictionary) -> int:
@@ -641,8 +656,14 @@ func advance_post_iframes() -> void:
 		return
 	var extra: Dictionary = _eq_affix("extraST")
 	var extra_v: float = float(extra.value) if str(extra.get("status")).begins_with("READY") else 0.0
-	# _isFused(dimRush/dimThunder)/isDimBreach/_hasChargeSk — 신규 런 모두 false → 기본 5칸
+	# G32780–32784: _hasChargeSk=chargeBoost≥1‖magicBlink≥1, 칸 = dimRush 10 / dimThunder 9 / dimBreach 7 / chargeSk 6 / 기본 5
 	var cells: int = HARP_GAUGE_BASE_CELLS
+	var p: Dictionary = _p()
+	if not p.is_empty():
+		var skills: Dictionary = p.get("skills", {}) if p.get("skills") is Dictionary else {}
+		var fused: Dictionary = p.get("_fused", {}) if p.get("_fused") is Dictionary else {}
+		var has_charge_sk: bool = _num(skills.get("chargeBoost")) >= 1.0 or _num(skills.get("magicBlink")) >= 1.0
+		cells = 10 if _js_truthy(fused.get("dimRush")) else (9 if _js_truthy(fused.get("dimThunder")) else (7 if _js_truthy(fused.get("dimBreach")) else (6 if has_charge_sk else HARP_GAUGE_BASE_CELLS)))
 	harp_gauge_max = float(cells * HARP_GAUGE_COST[1]) + float(int(extra_v))
 	harp_gauge = minf(harp_gauge, harp_gauge_max)
 
@@ -745,6 +766,10 @@ func activate_blade_dash(dir: int) -> void:
 	var bd_cost: float = (10.0 + (lv - 1.0) * 5.0) * 7.0 / 10.0
 	var gauge_cost: float = float(HARP_GAUGE_COST[1]) * 7.0 / 10.0
 	if _num(p.get("mp")) < bd_cost or harp_gauge < gauge_cost:
+		return
+	var bd_fused: Dictionary = p.get("_fused", {}) if p.get("_fused") is Dictionary else {}
+	if _js_truthy(bd_fused.get("thunderGhost")) and _num(skills.get("thunderStake")) >= 1.0:
+		_refuse("unported_branch_active:thunderGhost_45395") # 전격의창 합체 착지 뇌전창 — 첫 쓰기 전 거절
 		return
 	if _unique_value("_uBlinkWeak") > 0.0:
 		_refuse("unported_branch_active:u_n02_blink_weak") # e._blinkWeak 쓰기 → hurtE G42291 분기 미이식
@@ -1315,27 +1340,28 @@ func _spend(st: float, mp: float) -> Dictionary:
 		return {"accepted": false, "reason": "source_resources_missing"}
 	return resources.commit_native_skill_dispatch_spend(_main, st, mp)
 
-func _eq_affix(id: String) -> Dictionary:
+## 프레임 경로(게이지 최대치 G32785 extraST)는 bundle 사본을 만들지 않고 실제 provider 객체를 직접 읽는다.
+func _provider(name: String) -> Object:
 	var providers: Variant = _main.get("source_providers")
-	if not is_instance_valid(providers): return {"status": "NOT_READY"}
-	var b: Dictionary = providers.get_provider_bundle()
-	if b.is_empty(): return {"status": "NOT_READY"}
-	return b.affix.eq_affix(id)
+	if not is_instance_valid(providers): return null
+	var obj: Object = providers.get_provider(name)
+	return obj if is_instance_valid(obj) else null
+
+func _eq_affix(id: String) -> Dictionary:
+	var affix: Object = _provider("affix")
+	if affix == null: return {"status": "NOT_READY"}
+	return affix.eq_affix(id)
 
 func _unique_value(stat: String) -> float:
-	var providers: Variant = _main.get("source_providers")
-	if not is_instance_valid(providers): return 0.0
-	var b: Dictionary = providers.get_provider_bundle()
-	if b.is_empty(): return 0.0
-	var r: Dictionary = b.formula.u_eq(stat)
+	var formula: Object = _provider("formula")
+	if formula == null: return 0.0
+	var r: Dictionary = formula.u_eq(stat)
 	return float(r.value) if r.get("status") == "READY" and (r.get("value") is int or r.get("value") is float) else 0.0
 
 func _legendary_value(stat: String) -> float:
-	var providers: Variant = _main.get("source_providers")
-	if not is_instance_valid(providers): return 0.0
-	var b: Dictionary = providers.get_provider_bundle()
-	if b.is_empty() or not b.formula.has_method("l_eq"): return 0.0
-	var r: Dictionary = b.formula.l_eq(stat)
+	var formula: Object = _provider("formula")
+	if formula == null or not formula.has_method("l_eq"): return 0.0
+	var r: Dictionary = formula.l_eq(stat)
 	return float(r.value) if r.get("status") == "READY" and (r.get("value") is int or r.get("value") is float) else 0.0
 
 func _p_charge_range() -> float:

@@ -733,14 +733,35 @@ func _test_render_pose() -> void:
 	observations["render"] = {"anims": anims, "lifts": lifts, "trail_max": trail_max}
 
 func _test_perf() -> void:
-	# 이동 스킬 owner 틱 비용(대기 상태·사슬 중) — 회귀 벤치는 별도 600틱 하네스
-	_prepare(origin, 200.0)
-	var t0 := Time.get_ticks_usec()
-	for i in range(200):
-		ms.advance_pre(1.0)
-		ms.advance_post_iframes()
-		ms.advance_state(1.0)
-		ms.advance_state_after_move()
-	var idle_us: float = float(Time.get_ticks_usec() - t0) / 200.0
-	observations["perf_owner_idle_regen_us_per_tick"] = idle_us
-	check(idle_us < 400.0, "owner_tick_cost_bounded:%.1fus" % idle_us)
+	# 이동 스킬 owner 틱 비용(대기·게이지 가득 / 회복 중) — 회귀 벤치는 별도 600틱 하네스
+	var costs := {}
+	for label in ["full", "regen"]:
+		_prepare(origin, 225.0 if label == "full" else 100.0)
+		var t0 := Time.get_ticks_usec()
+		for i in range(300):
+			if label == "regen": ms.harp_gauge = 100.0
+			ms.advance_pre(1.0)
+			ms.advance_post_iframes()
+			ms.advance_state(1.0)
+			ms.advance_state_after_move()
+		costs[label] = float(Time.get_ticks_usec() - t0) / 300.0
+	var t1 := Time.get_ticks_usec()
+	for i in range(300): state.read_current_p()
+	costs["read_current_p"] = float(Time.get_ticks_usec() - t1) / 300.0
+	t1 = Time.get_ticks_usec()
+	for i in range(300): ms._eq_affix("extraST")
+	costs["eq_affix"] = float(Time.get_ticks_usec() - t1) / 300.0
+	t1 = Time.get_ticks_usec()
+	for i in range(300): ms.advance_post_iframes()
+	costs["post_iframes"] = float(Time.get_ticks_usec() - t1) / 300.0
+	t1 = Time.get_ticks_usec()
+	for i in range(300): ms.advance_state(1.0)
+	costs["state"] = float(Time.get_ticks_usec() - t1) / 300.0
+	t1 = Time.get_ticks_usec()
+	for i in range(300): ms.advance_pre(1.0)
+	costs["pre_full"] = float(Time.get_ticks_usec() - t1) / 300.0
+	t1 = Time.get_ticks_usec()
+	for i in range(300): ms._lesson_chapter2()
+	costs["lesson_ch2"] = float(Time.get_ticks_usec() - t1) / 300.0
+	observations["perf_owner_us_per_tick"] = costs
+	check(float(costs.full) < 400.0 and float(costs.regen) < 600.0, "owner_tick_cost_sanity(실제 판정은 필드 600틱 벤치 전후):" + str(costs))
