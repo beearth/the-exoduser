@@ -1,3 +1,10 @@
+## 2026-10-22 PARITY-UI-02 — 인벤토리·사망/재시작 원본 부분 이식
+
+- 원본fb67658b branch 계속. 웹 snapshot4d911cdd, main 차이표d79ee3e67의 PC 원문 보존. 맵·카메라·PC 코어/테스트·main.tscn 변경 없음.
+- 인벤토리 기사 컷아웃·EQ_POS16칸(ossuary 별도)·전면 프레임/가방/필터·상세2열 비교, 사망 전체 원화·펫·세 버튼·리플레이·재시작 원본 결계/장면 fade 부분 이식. 모든 신규 bitmap은 원본과 byte 동일이며 manifest에 원본 경로/SHA256 기록.
+- 실제 관련 테스트1회1277/0. E2E1회는 상세 보고서 후속 결과 참조. 1920×1080 및1x 비교 직접 검수. 별도 유골함 제단·도감·비교 delta/소켓·피해로그/replay bars·폰트/미세 외형 미완료이므로 **PARTIAL / VISUAL FAIL**.
+- [원본 행·적용 위치·수치·검수·남은 차이](engine/PARITY_UI_02_20261022.md). main push/force/reset/rebase/hook bypass 없음.
+
 ## 2026-10-22 INTEG-9 전제 갱신 — PC 소유 테스트(묶음 B·M29·P1-002 E/F/G)
 
 - base Mac INTEG-9 1c3f67a1, branch claude/pc-tests-integ9-20261022. 제품 코드·Mac 소유 파일 수정 0, 판정 약화·삭제 0.

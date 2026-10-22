@@ -119,7 +119,7 @@ func run() -> void:
 	check(not r.get("applied",false),"negative/occupied drag destination rejected")
 	var drag_data: Dictionary={"panel":ui,"item":inv.bag[0],"source":"bag"}
 	check(ui.bag_grid._can_drop_data(Vector2.ZERO,drag_data) and not ui.bag_grid._can_drop_data(Vector2.ZERO,{"panel":null,"item":value,"source":"bag"}),"drag identity stays within the actual panel")
-	ui.bag_grid._drop_data(Vector2(417,417),drag_data)
+	ui.bag_grid._drop_data(Vector2(449,449),drag_data)
 	check(drag_data.item._gx==8 and drag_data.item._gy==8,"actual drag drop uses original grid collision writer and save")
 	var prior_bag: Array=inv.bag.duplicate(); var prior_store: Array=stock.duplicate()
 	stock.append(item("boots"))

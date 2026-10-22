@@ -1,0 +1,161 @@
+{
+  "source_snapshot_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "assets": [
+    {
+      "web": "img/cin_remember_wide.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/cin_remember_wide.png",
+      "sha256": "46c279e0a5de953ee751564e39c5548f3988a033b630ec9827721b2d149d2494",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/blackiron/frame.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/blackiron_frame.png",
+      "sha256": "eebeac67d7c48e15f3bd988f317ec80350ff059c64d84266ff5461979708a9f6",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/inventory_paperdoll_hf_20260923.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/inventory_paperdoll_hf_20260923.png",
+      "sha256": "b7fff3cf7002d0f2933fa02124303973b5d740164699f32d58947c78cff9d457",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/inventory_knight_cutout_20260928.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/inventory_knight_cutout_20260928.png",
+      "sha256": "130c16379be0475a85121ff55341e799a5fce17fd5e7e87389c63c7fba2e67fe",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/ossuary_socket_hf_v2.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/ossuary_socket_hf_v2.png",
+      "sha256": "e8dacf6c56f4fa7c439cf7880bcaaa88659364e70561cbf034c09b5ff72117bd",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/hell_gothic/iron.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/hell_gothic/iron.png",
+      "sha256": "002b14f29ad42ea031d7fdc159cbed19e8a066377a2f1605b90be3450d91437d",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/cape_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/cape_phys_cutout.png",
+      "sha256": "31c33a4bf4dfd10714a3736c9e2ccdf8b2188696241e4f2278ba7e3e1d58dd49",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/crossbow_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/crossbow_phys_cutout.png",
+      "sha256": "3e6ad5f652795ff7631845d330585db716b5effe0c28fa0c361350a24629521b",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/boots_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/boots_phys_cutout.png",
+      "sha256": "2b6b61cca12c7f9d3c434bd5718a087021a74b53a3d4aba43c2b9ca774cb23d2",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/necklace_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/necklace_phys_cutout.png",
+      "sha256": "89eff5552c2f4c16d5b3d977d5ebda5138ab255a2d29b76b0444678d3068a052",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/pants_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/pants_phys_cutout.png",
+      "sha256": "747e44c08f0a73b5e827dc24d962d65068599bfff19b7cf404e6b49a3dbd9e40",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/shield_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/shield_phys_cutout.png",
+      "sha256": "3476338c20f76fe21279836443afe3bcdd091e71a0616f3caa438bf3c59588f8",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/axe_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/axe_phys_cutout.png",
+      "sha256": "195447c1f178c3013c49f804d45d488f0f7d413c382512f9a2e674e47690a5ae",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/earring_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/earring_phys_cutout.png",
+      "sha256": "c20aaf6023e0456fbb8c84da0e8ffe7b106598942ad69bffc85ed2bb3dce2254",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/bracelet_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/bracelet_phys_cutout.png",
+      "sha256": "546f68c50655cb3c408cc2bbe4d94c3f1513101b3247bb99e45be79b44de7258",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/sword_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/sword_phys_cutout.png",
+      "sha256": "e475be3fd33629a955dfef8ca67cf9e2fc6c23e09c3f70d4b01ec7d8ce66a4f6",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/belt_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/belt_phys_cutout.png",
+      "sha256": "9190da7b320aa1b619369ff36f80263b26e2a2ac484222b7c113edd13ae03555",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/armor_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/armor_phys_cutout.png",
+      "sha256": "2054750ecd716abb3128af683d2816a03f1d021fe2c05d332aa10ffad7a806dd",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/gloves_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/gloves_phys_cutout.png",
+      "sha256": "f405545bc6e1fb98fa2a6dcdcaa27122a73e9cc1966035094cd31866b8ff7e71",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/item-cutouts/helmet_phys_cutout.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/item-cutouts/helmet_phys_cutout.png",
+      "sha256": "822c558fe4690f085969da3b01eaea635ab28373270568f6ef1e7fc6dbc5f5cd",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/iron_covenant_20260924/frame.webp",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/iron_covenant_20260924/frame.webp",
+      "sha256": "499e09915625a8a1908b155b647aa2f7fb27f9e78ac1b6018a3957a570529d3f",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui/iron_covenant_20260924/button.webp",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui/iron_covenant_20260924/button.webp",
+      "sha256": "52348812edf117cf7200456fe279d807914c425d857a6cd853c1184ead79d1a8",
+      "same_bytes": true
+    },
+    {
+      "web": "img/crow/portrait.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/crow/portrait.png",
+      "sha256": "8126b8a90e44f95dcf3ec1c52c7a7ba24294807639ab81e030a1f572b5dd374c",
+      "same_bytes": true
+    },
+    {
+      "web": "img/cat_pet/portrait.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/cat_pet/portrait.png",
+      "sha256": "63d844c4bc807829aca1a1858ae4fcdc0377ee07c4bc0d148b64f78a86003bcc",
+      "same_bytes": true
+    },
+    {
+      "web": "img/ui_refs/window_frames/panel-inventory-chains-v2.png",
+      "godot": "godot/assets/ui/parity_ui_02/img/ui_refs/window_frames/panel-inventory-chains-v2.png",
+      "sha256": "7e14e2095b6a9f8339c7b9cad40691460e004666d5b602f13a8258178a0c8a21",
+      "same_bytes": true
+    }
+  ],
+  "css": [
+    "inventory-space.css:15–122,395–489",
+    "ui-refinement.css:270–342",
+    "inventory-oss-balance.css"
+  ],
+  "fonts": "native_ui_fonts.gd existing bundled OFL fonts; Pirata One referenced only in excluded fallen canvas G43954; death uses Cinzel Decorative/Nanum Myeongjo/Noto Serif KR."
+}

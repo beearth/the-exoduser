@@ -43,3 +43,7 @@
 | 6초 후 burnT | 583 (화상 지속) | 0 |
 
 6초 후 poison 1.1은 리트라이 뒤 보스가 다시 건 새 중독이며 정상이다.
+
+## 2026-10-22 PARITY-UI-02 Native 표시 범위
+
+웹 자원·보스 계약은 변경하지 않았다. Native 일반 필드의 기존 respawn·저장/reload 경로 위에 사망 전면 원화·펫·세 버튼과2.5초 장면 fade, 원본 bonfire_barrier.png의radius280/t300/alpha.9/끝120프레임 fade/3% pulse 표시를 추가했다. 보스방은 EXP 차감 전 NOT_READY(boss_restore_owner_unavailable) 유지다. 보호장·HP/ST/MP/쉴드의 전체 원본 재현이나 visual PASS를 주장하지 않는다. [원본 대응·검수·남은 차이](../engine/PARITY_UI_02_20261022.md).

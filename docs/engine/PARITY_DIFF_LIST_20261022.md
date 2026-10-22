@@ -327,3 +327,16 @@ Godot는 이것을 "세계의 기록 I/II/III" 정지 이미지 액자 슬라이
 | D-03 | 일반 필드 연결·완료 미판정 | 기존 PC respawn API 사용, 저장 후 scene reload. 보스방 복원 미인수. 실제 결과는 DONE 참조 |
 
 상세: [PARITY_UI_01_20261022.md](PARITY_UI_01_20261022.md). **전체 작업 완료/시각 PASS 아님.**
+
+
+## Mac 후속 상태 — PARITY-UI-02 (2026-10-22)
+
+PC 원문 및 PARITY-UI-01 이력은 보존한다. **전체 완료/visual PASS 아님.**
+
+| No. | 상태 | 원본 대응·미완료 |
+|---|---|---|
+| U-01 | 부분 이식 / VISUAL FAIL | 전면 프레임·기사 컷아웃·EQ_POS16칸·필터·상세/2열 비교 표시. 별도 유골함 제단/도감·유물/소켓·CP delta·원본 숫자/미세 외형 미완료 |
+| D-02 | 부분 이식 / VISUAL FAIL | 전체 illustration·펫 초상/원본 대사 pool·세 버튼·rolling replay. 피해 로그/상황선택·replay bars/game-only frame·폰트/자간 차이 남음 |
+| D-03 | 일반 필드 재시작 연결 / VISUAL FAIL | 사망 장면2.5초 fade·원본 황금 결계 표시. 보스방 복원은 기존 PC 보스 코어 의존으로 NOT_READY 유지 |
+
+상세 원본 행·에셋·Godot 위치·1x 비교: [PARITY_UI_02_20261022.md](PARITY_UI_02_20261022.md). 테스트 통과를 화면 동일성으로 대체하지 않는다.
