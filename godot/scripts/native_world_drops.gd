@@ -8,9 +8,9 @@ extends Node2D
 ## - 렌더(52485~52600, type 'item'만 — mat/potion/debris/chest/hp/o2bubble은 생성 경로 미이식):
 ##   화면 내만(±VW/2+40)·바운스 b=sin(now/300+x)×3·빔=world_item_drop_beams_v3 아틀라스
 ##   (27817~27858: 2열 정사각 타일, beamTier=layerLv||[0,2,3,4,5,6][rarity](27824~27829),
-##   프레임 ~~((now/180+x)%2)·60×160·'lighter'·α .46+sin(now/400+x)×.05·검정→알파 마스크
+##   프레임 ~~((now/180+x)%2)·60×160·proxy MIX·α .46+sin(now/400+x)×.05·검정→알파 마스크
 ##   27831~27844)·스킨 34px(_worldItemSkin 27864~: 컷아웃 14종 우선(27792)
-##   → item_skins base_el(27795, fire 변형 부재 시 phys 폴백 27793~27794)·검정 마스크·그림자).
+##   → item_skins base_el(27795, fire 변형 부재 시 phys 폴백 27793~27794)·원본 브라우저 검정 마스크 파생. WebGPU shadow setter no-op).
 ## - 줍기(32935~32987, R=BINDS.interact 'KeyR' 6195): 프레스=화면 내 최고 등급 1개
 ##   (동급이면 가까운 것) pickupItem → picked·파티클 RARITY_C 6개; 홀드=9틱(150ms)마다 반복
 ##   (32952~32966). mat/potion 일괄 수거·chest/debris/hp/o2 경로는 해당 타입 생성 미이식 — 기록.
@@ -38,6 +38,12 @@ var _player: Node2D
 var _state: Node
 var _configured := false
 var _beam_frames: Array = [null, null] # 마스크 적용 아틀라스 2프레임
+var _base_skins: Dictionary={}
+var _unique_skins: Dictionary={}
+var _raw_fallbacks: Dictionary={}
+var visual_clock_ms: float=-1
+const BASE_ALIASES={"ring1":"ring","ring2":"ring","headband":"earring","headband2":"earring"}
+const BONE_BASES={"skull":"bone_skull","torso":"bone_torso","arms":"bone_arms","legs":"bone_legs"}
 var _skin_cache: Dictionary = {} # 경로 → 마스크 적용 Texture2D (27816 _worldItemSkinCache)
 var _seen_serials: Dictionary = {}
 var _last_drop_sfx_ms := 0 # 16267 _lastDropSndT (45ms 게이트)
@@ -65,24 +71,27 @@ func configure(main: Node, world: Node2D, player: Node2D, state: Node) -> bool:
 	_world = world
 	_player = player
 	_state = state
-	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	if not InputMap.has_action("interact_pickup"): # BINDS.interact 'KeyR' (6195)
 		InputMap.add_action("interact_pickup")
 		var key_event := InputEventKey.new()
 		key_event.physical_keycode = KEY_R
 		InputMap.action_add_event("interact_pickup", key_event)
-	for frame in range(2): # 27817 아틀라스 2프레임 — 검정→알파 마스크(27831~27844) 선적용
-		var path := "res://assets/fx/world_item_drop_beams_v3_0%d.png" % (frame + 1)
-		if ResourceLoader.exists(path):
-			var img: Image = (load(path) as Texture2D).get_image()
-			img.convert(Image.FORMAT_RGBA8)
-			_mask_black(img)
-			_beam_frames[frame] = ImageTexture.create_from_image(img)
+	# Prepared by the exact source Canvas2D decoder/mask outside gameplay.
+	# Resource paths and textures are resolved here once; _skin_for never loads.
+	var prepared: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/world_drop_skin_manifest.json"))
+	for base in prepared.bases:
+		var variants: Dictionary={}
+		for element in prepared.bases[base]:variants[element]=_prepared_texture(prepared.bases[base][element])
+		_base_skins[base]=variants
+	for id in prepared.uniques:_unique_skins[id]=_prepared_texture(prepared.uniques[id])
+	for base in prepared.raw_fallbacks:_raw_fallbacks[base]=_prepared_texture(prepared.raw_fallbacks[base])
+	for frame in 2:_beam_frames[frame]=_prepared_texture(prepared.beams[frame])
 	_beam_layer = Node2D.new()
 	_beam_layer.name = "NativeDropBeams"
 	_beam_layer.z_index = -1
 	var beam_material := CanvasItemMaterial.new()
-	beam_material.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	beam_material.blend_mode = CanvasItemMaterial.BLEND_MODE_MIX
 	_beam_layer.material = beam_material
 	_beam_layer.draw.connect(_draw_beams)
 	add_child(_beam_layer)
@@ -339,41 +348,22 @@ func _exit_tree() -> void:
 
 
 ## _worldItemSkin(27864~): 컷아웃 14종 우선 → item_skins base_el(결손 변형 phys) → emoji 폴백.
+func _prepared_texture(path: String) -> Texture2D:
+	if path.is_empty():return null
+	if not _skin_cache.has(path):_skin_cache[path]=load(path)
+	return _skin_cache[path]
+
 func _skin_for(item: Dictionary) -> Texture2D:
-	var base: String = str(item.get("wtype", "")) if item.get("wtype") else \
-		(str(item.get("btype", "")) if item.get("btype") else str(item.get("slot", "")))
-	if str(item.get("slot", "")) == "bonePart":
-		base = "bone_" + str(item.get("part", "skull"))
-	base = {"ring1": "ring", "ring2": "ring", "headband": "earring", "headband2": "earring"}.get(base, base)
-	var el: String = EL_KEY[clampi(int(item.get("el", 0)), 0, 6)]
-	var path: String
-	var needs_mask := true
-	if not str(item.get("uniqueArt", "")).is_empty():
-		path = "res://assets/unique_items/%s_cut.png" % str(item["uniqueArt"])
-		if not ResourceLoader.exists(path):
-			path = "res://assets/item_skins/%s_phys.png" % base
-		needs_mask = false
-	elif base.begins_with("bone_"):
-		path = "res://assets/item_skins/%s.png" % base
-	elif base in CUTOUT_BASES and ResourceLoader.exists("res://assets/item_cutouts/%s_phys_cutout.png" % base):
-		path = "res://assets/item_cutouts/%s_phys_cutout.png" % base
-		needs_mask = false # 27875 컷아웃은 마스크 우회
-	else:
-		var variant: String = "phys" if (el in SKIN_MISSING_ELEMENTS or (base + "_" + el) in SKIN_MISSING_VARIANTS) else el
-		path = "res://assets/item_skins/%s_%s.png" % [base, variant]
-		if not ResourceLoader.exists(path):
-			path = "res://assets/item_skins/%s_phys.png" % base # onerror phys 폴백(27871)
-	if path.is_empty() or not ResourceLoader.exists(path):
-		return null
-	if _skin_cache.has(path):
-		return _skin_cache[path]
-	var img: Image = (load(path) as Texture2D).get_image()
-	if needs_mask: # 27877~27881 비컷아웃은 검정 마스크
-		img.convert(Image.FORMAT_RGBA8)
-		_mask_black(img)
-	var texture := ImageTexture.create_from_image(img)
-	_skin_cache[path] = texture
-	return texture
+	var base: String=str(item.get("wtype")) if item.get("wtype") else ""
+	if base.is_empty():base=str(item.get("btype")) if item.get("btype") else ""
+	if base.is_empty():base=item.get("slot","")
+	if item.get("slot","")=="bonePart":base=BONE_BASES.get(item.get("part","skull"),"")
+	base=BASE_ALIASES.get(base,base)
+	var unique: String=str(item.get("uniqueArt")) if item.get("uniqueArt") else ""
+	if not unique.is_empty():return _unique_skins.get(unique,_raw_fallbacks.get(base))
+	if not _base_skins.has(base):return null
+	var element: String=EL_KEY[clampi(int(item.get("el",0)),0,6)]
+	return _base_skins[base].get(element)
 
 
 ## 27824~27829 — layerLv(1~10) 우선, 없으면 rarity 폴백 [0,2,3,4,5,6].
@@ -388,7 +378,7 @@ func _beam_tier(item: Dictionary) -> int:
 func _draw_beams() -> void:
 	if not _owners_live():
 		return
-	var now_ms: float = float(Time.get_ticks_msec())
+	var now_ms: float = visual_clock_ms if visual_clock_ms>=0 else float(Time.get_ticks_msec())
 	var cam_center: Vector2 = _camera_center()
 	var view: Vector2 = get_viewport_rect().size
 	for record in _state.read_native_drop_records():
@@ -419,7 +409,7 @@ func _draw_beams() -> void:
 func _draw() -> void:
 	if not _owners_live():
 		return
-	var now_ms: float = float(Time.get_ticks_msec())
+	var now_ms: float = visual_clock_ms if visual_clock_ms>=0 else float(Time.get_ticks_msec())
 	var cam_center: Vector2 = _camera_center()
 	var view: Vector2 = get_viewport_rect().size
 	for record in _state.read_native_drop_records():
@@ -435,9 +425,7 @@ func _draw() -> void:
 		var skin: Texture2D = _skin_for(item)
 		var drop_pos := local + Vector2(-34 * 0.58, b - 34 * 0.82) # 52592
 		if skin != null:
-			# 52593 그림자(shadowBlur 6) — 흑색 실루엣 오프셋 근사(블러 미지원 기록)
-			draw_texture_rect(skin, Rect2(drop_pos - Vector2(17, 17) + Vector2(0, 2), Vector2(34, 34)),
-				false, Color(0, 0, 0, 0.55))
+			# Source6029: the WebGPU proxy ignores shadowColor/Blur/Offset.
 			draw_texture_rect(skin, Rect2(drop_pos - Vector2(17, 17), Vector2(34, 34)), false)
 		else:
 			draw_circle(drop_pos, 6.0, Color(RARITY_C[clampi(int(item.get("rarity", 0)), 0, 5)])) # emoji 폴백 상당(폰트 이모지 미이식 기록)

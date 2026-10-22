@@ -1,0 +1,312 @@
+{
+  "schema": "exoduser.display.prepared-world-drop-skins.v1",
+  "source_snapshot_sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "source_function": "G27831-27844 _maskWorldDropBlack; original browser Canvas2D decode",
+  "bases": {
+    "arcane": {
+      "dark": "res://assets/world_drop_prepared/item_skins__arcane_dark.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__arcane_earth.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__arcane_holy.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__arcane_ice.res",
+      "light": "res://assets/world_drop_prepared/item_skins__arcane_light.res",
+      "phys": "res://assets/world_drop_prepared/item_skins__arcane_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__arcane_phys.res"
+    },
+    "armor": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__armor_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__armor_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__armor_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__armor_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__armor_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__armor_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__armor_phys_cutout.res"
+    },
+    "axe": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__axe_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__axe_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__axe_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__axe_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__axe_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__axe_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__axe_phys_cutout.res"
+    },
+    "belt": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__belt_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__belt_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__belt_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__belt_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__belt_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__belt_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__belt_phys_cutout.res"
+    },
+    "bone_arms": {
+      "phys": "res://assets/world_drop_prepared/item_skins__bone_arms.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__bone_arms.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__bone_arms.res",
+      "dark": "res://assets/world_drop_prepared/item_skins__bone_arms.res",
+      "light": "res://assets/world_drop_prepared/item_skins__bone_arms.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__bone_arms.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__bone_arms.res"
+    },
+    "bone_legs": {
+      "phys": "res://assets/world_drop_prepared/item_skins__bone_legs.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__bone_legs.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__bone_legs.res",
+      "dark": "res://assets/world_drop_prepared/item_skins__bone_legs.res",
+      "light": "res://assets/world_drop_prepared/item_skins__bone_legs.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__bone_legs.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__bone_legs.res"
+    },
+    "bone_skull": {
+      "phys": "res://assets/world_drop_prepared/item_skins__bone_skull.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__bone_skull.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__bone_skull.res",
+      "dark": "res://assets/world_drop_prepared/item_skins__bone_skull.res",
+      "light": "res://assets/world_drop_prepared/item_skins__bone_skull.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__bone_skull.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__bone_skull.res"
+    },
+    "bone_torso": {
+      "phys": "res://assets/world_drop_prepared/item_skins__bone_torso.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__bone_torso.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__bone_torso.res",
+      "dark": "res://assets/world_drop_prepared/item_skins__bone_torso.res",
+      "light": "res://assets/world_drop_prepared/item_skins__bone_torso.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__bone_torso.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__bone_torso.res"
+    },
+    "boots": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__boots_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__boots_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__boots_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__boots_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__boots_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__boots_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__boots_phys_cutout.res"
+    },
+    "bracelet": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__bracelet_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__bracelet_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__bracelet_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__bracelet_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__bracelet_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__bracelet_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__bracelet_phys_cutout.res"
+    },
+    "cape": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__cape_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__cape_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__cape_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__cape_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__cape_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__cape_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__cape_phys_cutout.res"
+    },
+    "club": {
+      "dark": "res://assets/world_drop_prepared/item_skins__club_dark.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__club_earth.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__club_holy.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__club_ice.res",
+      "light": "res://assets/world_drop_prepared/item_skins__club_light.res",
+      "phys": "res://assets/world_drop_prepared/item_skins__club_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__club_phys.res"
+    },
+    "crossbow": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__crossbow_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__crossbow_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__crossbow_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__crossbow_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__crossbow_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__crossbow_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__crossbow_phys_cutout.res"
+    },
+    "dagger": {
+      "dark": "res://assets/world_drop_prepared/item_skins__dagger_dark.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__dagger_earth.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__dagger_holy.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__dagger_ice.res",
+      "light": "res://assets/world_drop_prepared/item_skins__dagger_light.res",
+      "phys": "res://assets/world_drop_prepared/item_skins__dagger_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__dagger_phys.res"
+    },
+    "earring": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__earring_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__earring_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__earring_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__earring_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__earring_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__earring_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__earring_phys_cutout.res"
+    },
+    "gloves": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__gloves_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__gloves_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__gloves_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__gloves_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__gloves_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__gloves_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__gloves_phys_cutout.res"
+    },
+    "hammer": {
+      "dark": "res://assets/world_drop_prepared/item_skins__hammer_dark.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__hammer_earth.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__hammer_holy.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__hammer_ice.res",
+      "light": "res://assets/world_drop_prepared/item_skins__hammer_light.res",
+      "phys": "res://assets/world_drop_prepared/item_skins__hammer_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__hammer_phys.res"
+    },
+    "helmet": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__helmet_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__helmet_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__helmet_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__helmet_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__helmet_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__helmet_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__helmet_phys_cutout.res"
+    },
+    "mace": {
+      "dark": "res://assets/world_drop_prepared/item_skins__mace_dark.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__mace_earth.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__mace_holy.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__mace_ice.res",
+      "light": "res://assets/world_drop_prepared/item_skins__mace_light.res",
+      "phys": "res://assets/world_drop_prepared/item_skins__mace_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__mace_phys.res"
+    },
+    "necklace": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__necklace_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__necklace_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__necklace_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__necklace_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__necklace_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__necklace_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__necklace_phys_cutout.res"
+    },
+    "ossuary": {
+      "phys": "res://assets/world_drop_prepared/item_skins__ossuary_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__ossuary_phys.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__ossuary_phys.res",
+      "dark": "res://assets/world_drop_prepared/item_skins__ossuary_phys.res",
+      "light": "res://assets/world_drop_prepared/item_skins__ossuary_phys.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__ossuary_phys.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__ossuary_phys.res"
+    },
+    "pants": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__pants_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__pants_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__pants_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__pants_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__pants_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__pants_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__pants_phys_cutout.res"
+    },
+    "repeater": {
+      "dark": "res://assets/world_drop_prepared/item_skins__repeater_dark.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__repeater_earth.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__repeater_holy.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__repeater_ice.res",
+      "light": "res://assets/world_drop_prepared/item_skins__repeater_light.res",
+      "phys": "res://assets/world_drop_prepared/item_skins__repeater_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__repeater_phys.res"
+    },
+    "ring": {
+      "dark": "res://assets/world_drop_prepared/item_skins__ring_dark.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__ring_earth.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__ring_holy.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__ring_ice.res",
+      "light": "res://assets/world_drop_prepared/item_skins__ring_light.res",
+      "phys": "res://assets/world_drop_prepared/item_skins__ring_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__ring_phys.res"
+    },
+    "shield": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__shield_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__shield_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__shield_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__shield_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__shield_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__shield_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__shield_phys_cutout.res"
+    },
+    "spear": {
+      "dark": "res://assets/world_drop_prepared/item_skins__spear_dark.res",
+      "earth": "res://assets/world_drop_prepared/item_skins__spear_earth.res",
+      "holy": "res://assets/world_drop_prepared/item_skins__spear_holy.res",
+      "ice": "res://assets/world_drop_prepared/item_skins__spear_ice.res",
+      "light": "res://assets/world_drop_prepared/item_skins__spear_light.res",
+      "phys": "res://assets/world_drop_prepared/item_skins__spear_phys.res",
+      "fire": "res://assets/world_drop_prepared/item_skins__spear_phys.res"
+    },
+    "sword": {
+      "phys": "res://assets/world_drop_prepared/item_cutouts__sword_phys_cutout.res",
+      "fire": "res://assets/world_drop_prepared/item_cutouts__sword_phys_cutout.res",
+      "ice": "res://assets/world_drop_prepared/item_cutouts__sword_phys_cutout.res",
+      "dark": "res://assets/world_drop_prepared/item_cutouts__sword_phys_cutout.res",
+      "light": "res://assets/world_drop_prepared/item_cutouts__sword_phys_cutout.res",
+      "holy": "res://assets/world_drop_prepared/item_cutouts__sword_phys_cutout.res",
+      "earth": "res://assets/world_drop_prepared/item_cutouts__sword_phys_cutout.res"
+    }
+  },
+  "uniques": {
+    "ui-01": "res://assets/world_drop_prepared/unique_items__ui-01_cut.res",
+    "ui-02": "res://assets/world_drop_prepared/unique_items__ui-02_cut.res",
+    "ui-03": "res://assets/world_drop_prepared/unique_items__ui-03_cut.res",
+    "ui-04": "res://assets/world_drop_prepared/unique_items__ui-04_cut.res",
+    "ui-05": "res://assets/world_drop_prepared/unique_items__ui-05_cut.res",
+    "ui-06": "res://assets/world_drop_prepared/unique_items__ui-06_cut.res",
+    "ui-07": "res://assets/world_drop_prepared/unique_items__ui-07_cut.res",
+    "ui-08": "res://assets/world_drop_prepared/unique_items__ui-08_cut.res",
+    "ui-09": "res://assets/world_drop_prepared/unique_items__ui-09_cut.res",
+    "ui-10": "res://assets/world_drop_prepared/unique_items__ui-10_cut.res",
+    "ui-11": "res://assets/world_drop_prepared/unique_items__ui-11_cut.res",
+    "ui-12": "res://assets/world_drop_prepared/unique_items__ui-12_cut.res",
+    "ui-13": "res://assets/world_drop_prepared/unique_items__ui-13_cut.res",
+    "ui-14": "res://assets/world_drop_prepared/unique_items__ui-14_cut.res",
+    "ui-15": "res://assets/world_drop_prepared/unique_items__ui-15_cut.res",
+    "ui-16": "res://assets/world_drop_prepared/unique_items__ui-16_cut.res",
+    "ui-17": "res://assets/world_drop_prepared/unique_items__ui-17_cut.res",
+    "ui-18": "res://assets/world_drop_prepared/unique_items__ui-18_cut.res",
+    "ui-19": "res://assets/world_drop_prepared/unique_items__ui-19_cut.res",
+    "ui-20": "res://assets/world_drop_prepared/unique_items__ui-20_cut.res",
+    "ui-21": "res://assets/world_drop_prepared/unique_items__ui-21_cut.res",
+    "ui-22": "res://assets/world_drop_prepared/unique_items__ui-22_cut.res",
+    "ui-23": "res://assets/world_drop_prepared/unique_items__ui-23_cut.res",
+    "ui-24": "res://assets/world_drop_prepared/unique_items__ui-24_cut.res",
+    "ui-25": "res://assets/world_drop_prepared/unique_items__ui-25_cut.res",
+    "ui-26": "res://assets/world_drop_prepared/unique_items__ui-26_cut.res",
+    "ui-27": "res://assets/world_drop_prepared/unique_items__ui-27_cut.res"
+  },
+  "raw_fallbacks": {
+    "arcane": "res://assets/world_drop_prepared/item_skins__arcane_phys__raw.res",
+    "armor": "res://assets/world_drop_prepared/item_skins__armor_phys__raw.res",
+    "axe": "res://assets/world_drop_prepared/item_skins__axe_phys__raw.res",
+    "belt": "res://assets/world_drop_prepared/item_skins__belt_phys__raw.res",
+    "bone_arms": "res://assets/world_drop_prepared/item_skins__bone_arms__raw.res",
+    "bone_legs": "res://assets/world_drop_prepared/item_skins__bone_legs__raw.res",
+    "bone_skull": "res://assets/world_drop_prepared/item_skins__bone_skull__raw.res",
+    "bone_torso": "res://assets/world_drop_prepared/item_skins__bone_torso__raw.res",
+    "boots": "res://assets/world_drop_prepared/item_skins__boots_phys__raw.res",
+    "bracelet": "res://assets/world_drop_prepared/item_skins__bracelet_phys__raw.res",
+    "cape": "res://assets/world_drop_prepared/item_skins__cape_phys__raw.res",
+    "club": "res://assets/world_drop_prepared/item_skins__club_phys__raw.res",
+    "crossbow": "res://assets/world_drop_prepared/item_skins__crossbow_phys__raw.res",
+    "dagger": "res://assets/world_drop_prepared/item_skins__dagger_phys__raw.res",
+    "earring": "res://assets/world_drop_prepared/item_skins__earring_phys__raw.res",
+    "gloves": "res://assets/world_drop_prepared/item_skins__gloves_phys__raw.res",
+    "hammer": "res://assets/world_drop_prepared/item_skins__hammer_phys__raw.res",
+    "helmet": "res://assets/world_drop_prepared/item_skins__helmet_phys__raw.res",
+    "mace": "res://assets/world_drop_prepared/item_skins__mace_phys__raw.res",
+    "necklace": "res://assets/world_drop_prepared/item_skins__necklace_phys__raw.res",
+    "ossuary": "res://assets/world_drop_prepared/item_skins__ossuary_phys__raw.res",
+    "pants": "res://assets/world_drop_prepared/item_skins__pants_phys__raw.res",
+    "repeater": "res://assets/world_drop_prepared/item_skins__repeater_phys__raw.res",
+    "ring": "res://assets/world_drop_prepared/item_skins__ring_phys__raw.res",
+    "shield": "res://assets/world_drop_prepared/item_skins__shield_phys__raw.res",
+    "spear": "res://assets/world_drop_prepared/item_skins__spear_phys__raw.res",
+    "sword": "res://assets/world_drop_prepared/item_skins__sword_phys__raw.res"
+  },
+  "beams": [
+    "res://assets/world_drop_prepared/beam_1.res",
+    "res://assets/world_drop_prepared/beam_2.res"
+  ]
+}

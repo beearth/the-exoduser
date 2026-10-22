@@ -56772,3 +56772,5 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 2026-10-22 SWEEP-A: 원본 혜성/입/무지개 투사체 표시 이식. 18장 렌더 캡처 ERROR0. 전투·판정 변경0. 상세: engine/SWEEP_A_20261022.md.
 
 - 2026-10-22 SWEEP-A: 플레이어 원본 relief/outline/bright 파생56장 및 idle 호흡, 기본 표시배율2.0. 엄격 자원 기대값 동기화. 이동·충돌 변경0.
+
+- 2026-10-22 SWEEP-A: 원본 브라우저 마스크 드랍207장 사전 준비/manifest. 드랍 draw의 리소스조회 제거, source proxy 합성·그림자 동기화.
