@@ -50,7 +50,9 @@ static func read_fields(enemy: Node, caller_world: Node) -> Dictionary:
 		"_shockStk": float(native.get("_shockStk", 0.0)), "_cursed": float(native.get("_cursed", 0.0)),
 		"_frozen": float(native.get("_frozen", 0.0)), "bleed": float(native.get("bleed", 0.0)),
 		"bleedT": float(native.get("bleedT", 0.0)), "_weakPhys": float(native.get("_weakPhys", 0.0)),
-		"_shockDR": float(native.get("_shockDR", 0.0)), "_blinkWeak": float(native.get("_blinkWeak", 0.0))}
+		"_shockDR": float(native.get("_shockDR", 0.0)), "_blinkWeak": float(native.get("_blinkWeak", 0.0)),
+		# 42167 etype6 방패각 — Group-A 생성자(native_final.shieldAng, 31183)·AI(38911) owner 값. 없으면 null.
+		"shieldAng": native.get("shieldAng")}
 
 # ── hurtE 본문의 개별 적 필드 쓰기. contact_field는 적별 st2 대응 필드명:
 #    flesh_crawler="st2", spine/ice="_contact_ticks", hive_bloater="_state_ticks". ──
@@ -200,7 +202,7 @@ static func apply_corpse_revive(enemy: Node, caller_world: Node, recover_field: 
 	enemy.set("poise", enemy.get("max_poise"))
 	native["reviveIframes"] = 0.0
 	enemy.set("collision_layer", 4)
-	enemy.set("collision_mask", 1 | 2)
+	enemy.set("collision_mask", 1) # Restore terrain/props only, never normal enemy/player body blocking.
 	enemy.set("_moving", false)
 	var body: Variant = enemy.get("_body")
 	if is_instance_valid(body):

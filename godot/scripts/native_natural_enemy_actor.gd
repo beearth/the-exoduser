@@ -1,5 +1,6 @@
 extends "res://scripts/enemy_melee_flesh_crawler.gd"
-## Reuses the actual etype0 actor/HP owner. Exact initial v3 domain stays false.
+## 실제 etype0 actor/HP owner 재사용. 포이즈는 공용 코어가 처리한다.
+## Exact initial v3 domain stays false.
 var _natural_owner: WeakRef
 var _source_frame := -1.0
 func bind_natural_owner(owner: Node) -> void:

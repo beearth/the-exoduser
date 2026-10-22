@@ -125,7 +125,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_to_group("enemies")
 	collision_layer = 4
-	collision_mask = 1 | 2
+	collision_mask = 1 # Terrain/props only; source normal enemies do not block player bodies.
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	z_as_relative = false
 	z_index = clampi(int(global_position.y / 4.0), -2000, 4000)
@@ -526,6 +526,22 @@ func apply_native_normal_enemy_field_write(field: String, value: Variant) -> Dic
 
 func apply_native_normal_enemy_bookkeeping(fields: Dictionary) -> Dictionary:
 	return HURTE_OWNER.apply_bookkeeping(self, fields)
+
+# PC-COMBAT-KILL(2026-10-22): 42490 포이즈 — 원본 _poiseHit(19973~19983) 비보스 코어.
+# v3 exact domain actor(ch1_initial_015)는 기존 v3 field call만 쓴다(이중 owner 금지 — 여기서 거부).
+# 그 밖의 flesh_crawler 본체 actor(커튼 5링·Group-A a_0/a_5/a_6·자연 소환)는 v3 domain이 의도적으로
+# 닫혀 있어(Mac 계약 v3_exact_initial_domain_not_weakened) 그동안 42490에서 정지했다 — 같은 공용 코어
+# (native_dedicated_enemy_hurte_owner.apply_poise_core, spine/ice/hive와 동일)로 적용한다.
+func apply_native_normal_enemy_poise_core(amount: int) -> Dictionary:
+	if _source_normal_fields_configured:
+		return {"applied": false, "reason": "v3_domain_actor_uses_source_field_call"}
+	if _pending_poise_amount != 0.0:
+		return {"applied": false, "reason": "legacy_deferred_poise_pending"}
+	var result: Dictionary = HURTE_OWNER.apply_poise_core(self, amount)
+	if result.get("staggered") == true:
+		_maxStunned = data["native_final"]["_maxStunned"]
+		_source_max_stunned_present = true
+	return result
 
 func apply_native_normal_enemy_hp_write(write: Dictionary) -> Dictionary:
 	return HURTE_OWNER.apply_hp_write(self, write)

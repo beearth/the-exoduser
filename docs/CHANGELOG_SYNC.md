@@ -1,8 +1,19 @@
+## 2026-10-22 INTEG-15b — PC 전투·보행 + Mac 충돌·귀속 인수
+
+- INTEG15 98ca5fc7 + PC f8caec955 merge. CHANGELOG 양쪽 이력 보존, 요청1~3 인수/일반 적 생성·부활 mask1·보스34349 유지.
+- importERROR0·HS-M7 19/19·nw7215/0; combat_kill 지역fixture33/1·map04원문16PASS/schemaFAIL 보존. E2E13PASS/5NR/0FAIL. GUI 근접·줍기 확인/석궁lastkill 미확인, 비교3장 RETOUCH. 성능·무효호출·재촬영 이력 포함 [상세](engine/INTEG15B_PC_COMBAT_MAC_20261022.md).
+
 ## 2026-10-22 INTEG-14 — PC HUD·새 원본·HS-M7
 
 - PC HUD1a2e88b2f merge, source state 충돌0. 원본91e2774b7/dee094fd로 교체 인수.
 - 행 고정 oracle/source_line metadata +2·출처 10종 원래 도구 재추출, 19종 최종 PASS. MP/SP 최댓값 공백 정렬. PC 테스트 원본 유지.
 - PC fieldboss154/1·기존 unify14/3 잔여, E2E 단회7PASS/11NOT_READY/0FAIL·처치0. 독립 시작 HUD 숫자 불일치/동일 fixture199/0 구분, 1x 캡처 VISUAL RETOUCH. [상세](engine/INTEG14_HUD_SNAPSHOT_HS_M7_20261022.md).
+
+## 2026-10-22 PC-COMBAT-KILL — 웹 맵 시작 필드 처치 0·보행 감속 (PC Claude)
+
+- 기준 INTEG-13 06f3db984, branch claude/pc-combat-kill-20261022. 원인: kiSlash 42490 포이즈가 flesh_crawler를 무조건 v3 field call로 보냈고 v3 domain(exact ch1_initial_015)이 닫혀 있어 커튼 5링·Group-A·자연 etype0/5가 HP 쓰기 뒤 정지 → hp<0 좀비. etype6은 42136 정지 목록. 보행은 move_and_slide가 일반 적 몸체(layer4)에 막힘.
+- 수정: domain은 유지하고 domain 밖 actor는 공용 _poiseHit 코어(19973~19983) owner로, etype6 42167~42170 방패 경감 이식, 보행·넉백 canMv(G33022~33028/G32762). Mac 어댑터에 origin 없는 처치의 _regKill(60728~60731) 귀속 최소 훅(검토 요청).
+- 웹 대비 같은 무기 공격력에서 석궁·kiSlash·weapon 피해와 처치 타수 일치, 보행 1.8초 298.4/294.3px(수정 전 276.2). 신규 test_pc_combat_kill 47/0(수정 전 30실패), 회귀 표·E2E 11/7/0(enemy_kill PASS). [상세](engine/PC_COMBAT_KILL_20261022.md), [보고](engine/orders/reports/pc-combat-kill_REPORT.md).
 
 ## 2026-10-22 PARITY-SKILL-01
 

@@ -122,7 +122,7 @@ func _ready() -> void:
 	_resources_ready = true
 	add_to_group("enemies")
 	collision_layer = 4
-	collision_mask = 1 | 2
+	collision_mask = 1 # Terrain/props only; source normal enemies do not block player bodies.
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	z_as_relative = false
 	z_index = clampi(int(global_position.y / 4.0), -2000, 4000)

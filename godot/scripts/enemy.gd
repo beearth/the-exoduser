@@ -112,7 +112,7 @@ func _ready() -> void:
 	name = str(data["id"])
 	add_to_group("enemies")
 	collision_layer = 4
-	collision_mask = 1 | 2
+	collision_mask = 1 # Terrain/props only; source normal enemies do not block player bodies.
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	z_as_relative = false
 	var shape = CollisionShape2D.new()
@@ -567,7 +567,7 @@ func apply_native_enemy_corpse_revive(caller_world: Node) -> Dictionary:
 	poise = max_poise
 	native["reviveIframes"] = 0.0
 	collision_layer = 4
-	collision_mask = 1 | 2
+	collision_mask = 1 # Terrain/props only; source normal enemies do not block player bodies.
 	if is_instance_valid(_body):
 		_body.visible = true
 		_body.modulate = Color.WHITE

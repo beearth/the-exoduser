@@ -53,7 +53,7 @@ etype 0↔4 차이는 각 행에 표기. **etype4(눈알 육괴)가 Godot 구현
 | 42136~42158 | 레어몹 99/92/91/93, 40/41/57 특수 | e.etype | — | — | ✂ (etype 0/4) |
 | 42162 | parryBlueBean 최소뎀 | opts | — | — | ✂ (opts에 없음) |
 | 42164~42166 | opts.bleed / opts.poison DOT 축적 | — | — | — | ✂ (opts에 없음 → **p_dot_pool provider 이 경로에서 미호출**) |
-| 42168~42171 | etype6 방패돌격병 방어 | e.etype | — | — | ✂ |
+| 42167~42170 | etype6 방패돌격병 방어 `(ang+π)-shieldAng` ±π 정규화, `|shDiff|<π/3`면 `dmg=~~(dmg*0.3)`·`addTxt(e.x,e.y-15,'🛡','#8888ff',20)`·`SFX.block()`(12592 `void 0` 무동작) | e.etype, native_final.shieldAng(Group-A a_6) | dmg×0.3·텍스트 | — | ✅ PC-COMBAT-KILL(2026-10-22) 이식. `SPECIAL_HIT_ETYPES`에서 6 제거, shieldAng 미보유 actor는 42167 정지(쓰기 전) |
 | 42172 | `_shBlocked=false` | — | 로컬 | — | ✅ |
 | 42173 | `e.eRes&&e.eRes[atkEl]>0 → 감산` | enemy.eRes(=[0×7]), atkEl=0 | — | — | ○ (eRes[0]=0 → 감산 없음, 읽기는 실행) |
 | 42175~42178 | etype 63/74 방어 | e.etype | — | — | ✂ |

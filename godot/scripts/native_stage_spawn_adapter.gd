@@ -113,7 +113,7 @@ func register_actor_origin(actor: Node2D, group_id: String) -> Dictionary:
 func record_actor_kill(actor: Node2D) -> Dictionary:
  if not is_current() or not is_instance_valid(actor):return {"applied":false,"reason":"stage_context_not_current"}
  var key: int=actor.get_instance_id()
- if not _origins.has(key):return {"applied":false,"reason":"unbound_actor_origin"}
+ if not _origins.has(key):return _record_unoriginated_kill(actor)
  var row: Dictionary=_origins[key]
  if row.actor.get_ref()!=actor or row.counted or actor.get_parent()!=_world or not _world.get_enemies().has(actor) or actor.get("alive")!=false or not _number(actor.get("hp")) or actor.get("hp")>0:return {"applied":false,"reason":"not_first_registered_death"}
  var data: Variant=actor.get("data")
@@ -123,6 +123,25 @@ func record_actor_kill(actor: Node2D) -> Dictionary:
  # G60725–60732 home attribution: origin region ID survives movement, no x/T40.
  var result: Dictionary=_regions.record_stage_origin_kill(self,int(row.region_id))
  if result.get("applied")==true:row.counted=true
+ return result
+# INTEG-15b Mac 인수: 소환굴 origin이 없는 비보스 actor
+# (커튼 5링 63425~63432 mkEn 등)도 원본 _regKill(60730~60733; dee094fd snapshot)은 스폰 위치(_homeX/_homeY=mkEn 인자
+# x,y 31210, 없으면 현재 x,y)로 지역 kills++ 한다. 위치→지역은 provider.region_at만 쓴다. 1회만 센다.
+var _unoriginated_counted: Dictionary = {}
+func _record_unoriginated_kill(actor: Node2D) -> Dictionary:
+ var key: int=actor.get_instance_id()
+ if _unoriginated_counted.has(key) or actor.get_parent()!=_world or not _world.get_enemies().has(actor) or actor.get("alive")!=false or not _number(actor.get("hp")) or actor.get("hp")>0:return {"applied":false,"reason":"not_first_unoriginated_death"}
+ var data: Variant=actor.get("data")
+ if not data is Dictionary or not data.get("native_final",{}) is Dictionary or data.native_final.get("ib",false):return {"applied":false,"reason":"boss_or_invalid_actor"}
+ var home: Vector2=actor.global_position
+ var native: Dictionary=data.native_final
+ var requested: Variant=data.get("requested_spawn_position")
+ if _number(native.get("_homeX")) and _number(native.get("_homeY")):home=Vector2(float(native._homeX),float(native._homeY))
+ elif requested is Array and requested.size()==2 and _number(requested[0]) and _number(requested[1]):home=Vector2(float(requested[0]),float(requested[1]))
+ var region_id: Variant=_provider.region_at(home)
+ if not region_id is int or region_id not in range(4):return {"applied":false,"reason":"unoriginated_home_outside_regions"}
+ var result: Dictionary=_regions.record_stage_origin_kill(self,region_id)
+ if result.get("applied")==true:_unoriginated_counted[key]=true
  return result
 func snapshot() -> Dictionary:
  return {"bound":_bound,"context":_context.duplicate(),"groups":_groups.size(),"origins":_origins.size(),"site_requests":_requests,"actual_etype_registration":false,"dynamic_budget_changes":"HOLD_owner_receipts"}
