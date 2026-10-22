@@ -457,3 +457,16 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 | 로비 전환 SCRIPT ERROR | potion/feel deferred null-tree guard | 최종 GUI·E2E 로그 분리. 전체 PC 제품 안정성 완료 아님 |
 
 UI-04 strict E2E1회: 주입0, storage=on, intro_phase=done, 실제 필드 진입/이동 확인, SCRIPT ERROR0. 보스부터 로비까지 전체는 NOT_READY. 스킬105/0; 인벤토리212/2는 잘못 전달한 Node 경로로 oracle transport 실패2건이며 재실행하지 않았다. 상세한 한계는 UI-04 보고와 외부 DONE을 따른다.
+
+## PARITY-HUD-02 표시 소비자 (2026-10-22)
+
+이전 표는 당시 검수 이력이다. 아래는 UI-04 `e867f9b370778fa1f621bcf94a1e5f840d4541a8` 위 후속 결과이며 수치 공식 변경은 없다.
+
+| ID | 현재 상태 | 변경과 잔여 |
+|---|---|---|
+| H-01 | RETOUCH | 원본 PNG 파란 shield frame glow·그림자(테두리 stroke 제거)·HP CSS ellipse/0.6초 easing·눈을 숫자 위로 복구. Gaussian kernel과 Chromium/FreeType AA 세부는 1x 차이 유지 |
+| H-02 / PMS-M1 | owner 연결 / RETOUCH | `read_native_move_gauge()`의 pct·cell_deg 소비. max225이면72°이며54° 고정/chargeStocks 대용 계산 없음. 노란색은 기동 링, SP 액체는 원본 초록색. MP/SP 수치는 PC 계산 |
+| H-08 / PMS-M2 | 표시 연결 / RETOUCH | skSlot0 바 bottom0/height3×.9px, pct와 원본3색 소비. 폭.1초 ease/하단 radius4px×.9 표시; CSS raster 세부 차이 남음 |
+| PMS-M3 | 표시 연결 / RETOUCH | 원본 이동 거부/전격이동 지점 신호만 추가, 판정 변경0. bottom180px, 28.8px 반올림29, letter spacing .2em 근사6, 기본500ms·fade100ms. Gaussian/폰트 subpixel 세부 차이 남음 |
+
+1x 좌웹/우Godot 격자 및 로그: `~/exoduser-wt/_out/PARITY-HUD-02/`. 상세 원본 행·검수 범위는 `PARITY_HUD_02_20261022.md`.

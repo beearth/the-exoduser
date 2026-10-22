@@ -108,7 +108,7 @@
 - 전류장판 **피해 틱·_shockDR 방어감소**(G37413·37460–37465): 기존 hurtE 실행자가 `_shockDR` 분기(G42290)를 정지시키므로 디버프를 쓰면 이후 모든 타격이 막힌다 → 장판은 G._fireZones에 들어가 수명·렌더만, 피해 0.
 - 합체·파생: chainSlash·magicBlink/dimBreach·dimBlast·기동파괴/기동불꽃/기동전폭(G32250·32276–32350·32382–32506·32549–32575), thunderGhost(G45395–45407), kiGather 사슬 변형(G33688–33699) — 1-1 신규 런 미보유.
 - 유니크/전설: u_d06 `_uqMoveRefund`(warpT 0 고정), u_d07·u_n02·u_d09, `_lBootsEvade`/`_lSpearStack` — 값>0이면 거절.
-- showPH 토스트('충전 중...'·'MP 부족!'·'⚡ n/m'): Godot 공용 showPH 소비자 부재 → owner 로그만(Mac HUD).
+- showPH 토스트: PARITY-HUD-02에서 UI 전용 native_show_ph 신호와 공용 HUD 소비자를 연결했다. 이동 판정·비용 수식은 그대로다.
 - SFX.slash/charge/magic 합성음(WebAudio): 샘플 아님. 샘플 14개는 재생.
 - 레슨 step 4/5 연습(parry-lesson.js 326–383 tickChainPractice/tickDashPractice, 게이지·MP 리필·카운트): 레슨이 step 0~3(패링 투사체 미이식)에서 정지라 도달 불가 → 기존 STEP_HALTS 유지. 행동 자체(allows 'charge'/'bow')는 레슨 잠금과 맞물려 동작.
 - 패링 성공 게이지 충전(G38491 `_harpAdd`): Q 패링 owner 쪽 잔여(`harp_rage_mats_rewards`).
@@ -121,7 +121,7 @@
 |---|---|---|---|
 | PMS-M1 | MP 구슬 **기동 게이지 링**(conic #ffcc33 α.95, 45칸 눈금 `--shift-cell-deg`) | G2633–2635, G60295–60299 (차이 목록 H-02) | `main.native_move_skills.read_native_move_gauge()` → {gauge, max, pct, cell_deg} |
 | PMS-M2 | 스킬바 skSlot0 하단 게이지 바(≥100% #44ffaa, ≥50% #88ccff, 그 외 #ff8844) | G60314 | 같은 API |
-| PMS-M3 | showPH 토스트('충전 중...' #ff8844, 'MP 부족!' #4444ff, '⚡ n/m' #44ddff) | G13229·G33036·G45449 | owner `log_rows`의 `toast_unported` 행(또는 신호 추가 협의) |
+| PMS-M3 | showPH 토스트('충전 중...' #ff8844, 'MP 부족!' #4444ff, '⚡ n/m' #44ddff) | G13229·G33036·G45449 | `native_show_ph(text,color,duration_ms)` 표시 신호 → `parity_hud_mobility.gd`; 판정/비용 로직 변경0 (PARITY-HUD-02) |
 | PMS-M4 | 카메라 zoom 0.7·offset(0,−180)(M-03)과 맵 조명(M-01/M-05) — 이동 스킬 화면 크기·명암 차이의 공통 원인 | — | — |
 
 ## 9. 검증

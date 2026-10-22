@@ -56558,3 +56558,10 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - 상세 원본 행·제한·검수 결과: `engine/PARITY_UI_04_20261022.md`, 외부 `_out/PARITY-UI-04/DONE.txt`. 영상은 원본 t0 정지 HOLD, batch/recommend writer 기능 HOLD, visual RETOUCH를 유지한다. 번역목록3507–3513·lang26 EN fallback 및 에셋 해시 동기화.
 
 - PARITY-UI-04 후속 틱 감사: fallen 표시의 초/부활력 문자열과 색상 테마를 초 변경 이벤트로 캐시했다. 원본300tick 판정·52px 카운트 값 불변. 정적 검토만 추가하고 관련 suite/E2E는 사용자 지정1회로 유지한다.
+
+## 2026-10-22 PARITY-HUD-02 — PC 기동 게이지 표시 소비
+
+- UI-04 원격 e867f9b3 기반 별도 브랜치. read_native_move_gauge()만 소비해 MP 구슬 노란 링/가변칸·slot0 바 표시. SP 액체는 원본 초록, 수치=PC 계산.
+- 이동 owner에는 기존 showPH 지점 UI 신호만 추가. 원본500ms/fade100ms·색·위치·기존번역 소비. frame PNG glow/레이어순서/액체 easing·숫자 shadow 반영. 이동/자원 수식·맵/보스/인트로 변경0.
+- 관련 HUD 회귀1회26검사/0실패/SCRIPT ERROR0. 무주입 storage-on E2E1회 캐릭터생성→필드 진입/SCRIPT ERROR0, HP0으로 자연완주 NOT_READY. 1x 비교·잔여표/최종 SHA는 _out/PARITY-HUD-02/DONE.txt. CSS Gaussian·분수폰트/AA·타이밍은 RETOUCH.
+- 상세 계약: docs/engine/PARITY_HUD_02_20261022.md, PARITY_DIFF_LIST와 PC_MOVE_SKILLS_CONTRACT 갱신. 새 제품문구0, 번역 번호/CRLF 보존.

@@ -85,6 +85,9 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 10
 	_build_ui()
+	var mobility_ui := preload("res://scripts/parity_hud_mobility.gd").new()
+	mobility_ui.hud = self
+	_root.add_child(mobility_ui)
 	_refresh()
 
 
@@ -256,16 +259,13 @@ func _refresh() -> void:
 	var stamina := float(snapshot.get("stamina", 0.0))
 	var max_stamina := float(snapshot.get("max_stamina", 200.0))
 	_hp_text.text = "%d\n/ %d" % [roundi(hp), roundi(max_hp)]
-	_hp_fill.set_shader_parameter("fill_ratio", 0.9 - 0.87 * (1.0 - clampf(hp / max_hp,0,1)) if max_hp > 0.0 else 0.0)
 	_stamina_text.text = "SP\n%d\n/%d" % [int(stamina), int(max_stamina)]
-	_stamina_fill.set_shader_parameter("fill_ratio", stamina / max_stamina if max_stamina > 0.0 else 0.0)
 	# Actual MP owner, source60244/60300-60305. No invented value/development label.
 	var current: Variant=_source_state.read_current_p() if is_instance_valid(_source_state) else null
 	var mp_ready: bool=current is Dictionary and (current.get("mp") is int or current.get("mp") is float) and (current.get("mmp") is int or current.get("mmp") is float) and is_finite(float(current.mp)) and is_finite(float(current.mmp)) and current.mmp>0
 	_hp_text.hide();_stamina_text.hide()
 	_mp_text.visible=false
 	_mp_text.text="MP\n%d\n/%d" % [int(current.mp),int(current.mmp)] if mp_ready else ""
-	_stamina_fill.set_shader_parameter("mp_ratio",clampf(float(current.mp)/float(current.mmp),0,1) if mp_ready else 0.0)
 	var state := str(snapshot.get("state", "idle"))
 	var frames := float(snapshot.get("charge_frames", 0.0))
 	var combo := int(snapshot.get("combo_step", 0))
@@ -433,7 +433,8 @@ void fragment() {
         float filled = step(1.0-ratio,UV.y);
         COLOR=vec4(mix(vec3(6.,6.,8.)/255.,liquid_color,filled*alpha),circle);
     } else {
-        float d = clamp(length((UV - vec2(0.5, 0.4)) * vec2(1.0, 1.3)) * 2.0, 0.0, 1.0);
+        float offset_y = 1.0 - fill_ratio;
+        float d = clamp(length(vec2((UV.x-.5)/1.41421356, (UV.y-offset_y-.4)/.84852814)), 0., 1.);
         liquid_color = d < 0.5 ? mix(vec3(0.420, 0.063, 0.125), vec3(0.239, 0.039, 0.071), d * 2.0) : mix(vec3(0.239, 0.039, 0.071), vec3(0.118, 0.020, 0.039), (d - 0.5) * 2.0);
         float filled = step(1.0 - fill_ratio, UV.y);
         COLOR = vec4(mix(vec3(0.024), liquid_color, filled), circle);
@@ -462,6 +463,10 @@ func _texture(parent: Node, path: String, position_value: Vector2, size_value: V
 	image.name = path.get_file().get_basename()
 	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	image.texture = load(path)
+	if path.ends_with("ui_globe_hp.png") or path.ends_with("ui_globe_mp.png"):
+		var glow := ShaderMaterial.new()
+		glow.shader = preload("res://shaders/parity_orb_frame.gdshader")
+		image.material = glow
 	image.position = position_value
 	image.size = size_value
 	image.stretch_mode = TextureRect.STRETCH_SCALE
