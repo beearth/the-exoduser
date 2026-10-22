@@ -215,6 +215,13 @@ func _build() -> void:
  _path_hint=surface.text(_screen,surface.I18N.text("6개의 길 · 서로 조합 가능한 26개 패시브"),Rect2(35,896.2,220,44.8),14,Color(196/255.0,183/255.0,166/255.0),"font");_path_hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
  _changes=VBoxContainer.new();_changes.hide();_screen.add_child(_changes)
  _source_viewport=surface.panel(_screen,Rect2(271,317,1174,624),Color("0b100e"),Color("57422f"));_source_viewport.clip_contents=true
+ # growth-tree-fixed-background.css(@min-width 781): .growth-tree-viewport::before inset 0 —
+ # linear-gradient(rgba(7,12,10,.17)) 덮개 + 기사 일러스트 center/100% 100%, mask radial-gradient(66% 74%, #000 55%, transparent 100%).
+ # 이미지 원본: https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260927_102905_7c7fc782-eb73-4bf0-9f4b-4de19dfa79ae.png (바이트 동일 사본)
+ var art:=TextureRect.new();art.name="GrowthTreeBackground";art.texture=load("res://assets/ui/parity_sweep_b/growth_tree_bg_hf_20260927_102905.png")
+ art.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;art.stretch_mode=TextureRect.STRETCH_SCALE;art.position=Vector2(1,1);art.size=Vector2(1172,622);art.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var art_shader:=Shader.new();art_shader.code="shader_type canvas_item;varying vec4 vmod;void vertex(){vmod=COLOR;}void fragment(){vec4 c=texture(TEXTURE,UV);vec3 rgb=mix(c.rgb,vec3(7.0,12.0,10.0)/255.0,0.17);float d=length((UV-vec2(.5))/vec2(.66,.74));float m=1.0-clamp((d-.55)/.45,0.0,1.0);COLOR=vec4(rgb,c.a*m)*vmod;}"
+ var art_mat:=ShaderMaterial.new();art_mat.shader=art_shader;art.material=art_mat;_source_viewport.add_child(art)
  _extent=Control.new();_extent.size=Vector2(1174,624);_source_viewport.add_child(_extent)
  _tree=Control.new();_tree.size=Vector2(1000,800);_extent.add_child(_tree);_tree.draw.connect(_draw_tree)
  for node in _data.centers:_make_node(node,node.key,0)
