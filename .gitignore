@@ -200,3 +200,6 @@ assets/vfx/boss/gen/
 # PARITY-BOSS-01: retain the owned source-parity regression only.
 !godot/tests/test_parity_boss_01.gd
 !godot/tests/test_parity_boss_01.gd.uid
+
+# PARITY-MAP-04 regression entrypoint
+!/godot/tests/test_parity_map_04.gd

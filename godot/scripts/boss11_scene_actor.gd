@@ -10,16 +10,22 @@ var actor: Node
 var body: Sprite2D
 var _light1: Sprite2D
 var _light2: Sprite2D
+var render_max_us:=0
 func configure(reader: Node,_shared: ShaderMaterial=null) -> void:
  actor=reader
  body=Sprite2D.new();body.name="BossSceneBody";body.region_enabled=true;body.centered=false
  add_child(body)
- var add:=CanvasItemMaterial.new();add.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD
+  # Source 6028: shared WebGPU/WebGL X proxy ignores globalCompositeOperation.
+ # The two .42 redraws in 10970-10971 therefore use source-over, not ADD.
+ var add:=CanvasItemMaterial.new();add.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX
  _light1=Sprite2D.new();_light1.material=add;_light1.region_enabled=true;_light1.centered=false;body.add_child(_light1)
  _light2=Sprite2D.new();_light2.material=add;_light2.region_enabled=true;_light2.centered=false;body.add_child(_light2)
  texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;hide()
+ _warm_resources()
 func _process(_delta: float) -> void:
+ var started:=Time.get_ticks_usec()
  render_at(float(Time.get_ticks_msec()))
+ render_max_us=maxi(render_max_us,Time.get_ticks_usec()-started)
 func render_at(now: float) -> void:
  if not is_instance_valid(actor):hide();return
  var e: Dictionary=actor.get("_enemy")
@@ -52,3 +58,20 @@ func render_at(now: float) -> void:
  _sync_light(_light1,tex,region,sheet!="base8");_sync_light(_light2,tex,region,sheet!="base8")
 func _sync_light(light: Sprite2D,tex: Texture2D,region: Rect2,on: bool) -> void:
  light.texture=tex;light.region_rect=region;light.offset=body.offset;light.modulate.a=.42;light.visible=on
+
+# Upload every pattern sheet/material before the arena's first live pattern.
+# A real offscreen draw is required: transparent/hidden sprites are culled.
+func _warm_resources() -> void:
+ var view:=SubViewport.new();view.name="BossResourceWarmup";view.size=Vector2i(32,32)
+ view.disable_3d=true;view.transparent_bg=true;view.render_target_update_mode=SubViewport.UPDATE_ONCE
+ add_child(view)
+ var x:=0.0
+ for tex in SHEETS.values():
+  var sprite:=Sprite2D.new();sprite.texture=tex;sprite.centered=false
+  sprite.scale=Vector2(4,4)/tex.get_size();sprite.position=Vector2(x,0);view.add_child(sprite);x+=4
+ for tex in [preload("res://assets/boss_parity/corruption_ring.svg"),preload("res://assets/boss_parity/orb.png"),preload("res://assets/boss_parity/pool.png")]:
+  var sprite:=Sprite2D.new();sprite.texture=tex;sprite.centered=false
+  sprite.scale=Vector2(4,4)/tex.get_size();sprite.position=Vector2(x-28,8);view.add_child(sprite);x+=4
+ await RenderingServer.frame_post_draw
+ await RenderingServer.frame_post_draw
+ view.queue_free()

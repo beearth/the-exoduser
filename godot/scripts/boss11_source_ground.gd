@@ -15,7 +15,12 @@ func ring(at: Vector2,r: float,alpha: float,angle: float) -> void:
  if r<=0 or alpha<=0:return
  draw_set_transform(at,angle)
  draw_texture_rect(RING,Rect2(-r,-r,r*2,r*2),false,Color(1,1,1,clampf(alpha,0,1)))
+var draw_max_us:=0
 func _draw() -> void:
+ var started:=Time.get_ticks_usec()
+ _draw_source()
+ draw_max_us=maxi(draw_max_us,Time.get_ticks_usec()-started)
+func _draw_source() -> void:
  if not live:return
  var now: float=Time.get_ticks_msec()
  source_tells()

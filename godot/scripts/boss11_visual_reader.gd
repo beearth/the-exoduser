@@ -19,7 +19,12 @@ func configure(owner_main: Node) -> void:
  main=owner_main
  actor=main.native_demo_boss_actor
  marks.bind_player(main.player)
+var process_max_us:=0
 func _process(delta: float) -> void:
+ var started:=Time.get_ticks_usec()
+ _render(delta)
+ process_max_us=maxi(process_max_us,Time.get_ticks_usec()-started)
+func _render(delta: float) -> void:
  if not is_visible_in_tree() or not is_instance_valid(actor) or not is_instance_valid(main):
   marks.begin();marks.finish();ground.observe_enemy(EMPTY);ground.refresh(EMPTY,false);return
  var enemy: Dictionary=actor.get("_enemy")

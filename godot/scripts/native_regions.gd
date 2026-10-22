@@ -12,6 +12,7 @@ const CH1_KO=["북서 · 어둠","북동 · 번개","남서 · 물","남동 · �
 const CH1_EN=["Northwest · Dark","Northeast · Lightning","Southwest · Water","Southeast · Fire"]
 signal region_banner(index: int,purge: bool)
 signal gate_opened
+var _web_field:=false
 var _stage_spawn_adapter: RefCounted
 var _main: Node
 var _world: Node
@@ -150,7 +151,7 @@ func _physics_process(_delta: float) -> void:
  var frame: float=_world.get_native_projectile_fx_context()["frame_reset_epoch"]
  if frame==_last_frame:return
  _last_frame=frame
- var provider_index: int=_stage_spawn_adapter.region_at(_player.global_position) if _stage_spawn_adapter!=null else -2
+ var provider_index: int=_stage_spawn_adapter.region_at(_player.global_position) if _stage_spawn_adapter!=null and not _web_field else -2
  for event in tick_regions(_g,_player.global_position,int(frame),provider_index):
   region_banner.emit(event.index,event.purge)
   if event.purge:_pending_effects.append({"effect":"SFX.magic(1)/pet region_clear","bound":false})
@@ -188,7 +189,7 @@ static func minimap_layers(image: Image,g: Dictionary,sc: float) -> Dictionary:
    if mask&(1<<idx):tint.set_pixel(x,y,Color(30.0/255,60.0/255,30.0/255,0.45*alpha))
  return {"boundary":boundary,"tint":tint}
 func draw_minimap(canvas: Control,base: Texture2D,origin: Vector2,sc: float) -> void:
- if _stage_spawn_adapter!=null:return # New MAP11 geometry overlay belongs to its provider, never legacy quadrants/sites.
+ if _stage_spawn_adapter!=null and not _web_field:return
  if not _live() or not _g.get("_regions") is Array:return
  _canvas=canvas
  var mask:=0
@@ -308,6 +309,11 @@ func can_use_stage_spawn(adapter: RefCounted,spawn: Node2D) -> bool:
 func install_stage_spawn_budget(adapter: RefCounted,sites: Dictionary,totals: Array) -> Dictionary:
  if not _live() or _stage_spawn_adapter!=null or adapter==null or adapter.get_script().resource_path!="res://scripts/native_stage_spawn_adapter.gd":return {"applied":false,"reason":"provider_region_owner_rejected"}
  _stage_spawn_adapter=adapter
+ _web_field=_main.read_native_map11_provider().get_script().resource_path=="res://scripts/maps/map11/field_runtime.gd"
+ if _web_field:
+  var result: Dictionary=init_regions(_g,_player.global_position,200,200,true)
+  _last_frame=-1.0;_init_count+=1;_mask=-1
+  return {"applied":result.ready}
  var regions: Array=[null,null,null,null]
  for site in sites.regions:
   regions[site.id]={"id":site.id,"nameKo":site.name_ko,"nameEn":site.name_en,"total":totals[site.id],"kills":0,"cleared":false,"fbIdx":site.fb_index}

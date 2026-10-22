@@ -56661,3 +56661,10 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - 기준32d1684d + SKILL-01 0c8fd56f를 merge. 문서 충돌 양쪽 이력 보존, 제품 UI·PC writer·부팅/life 원소유 코드 유지.
 - `godot/tests/test_demo11_47h_e2e.gd`: 실제 웹 BFS 접근·실제 registry 최근접 적(커튼5마리 포함)·더 가까운 타겟 재선택·드랍 좌표 접근·자연 XP 전투 대기. HP/피해/드랍/XP 주입 없음. PC 코어/PC 테스트/hud-stats 수정 없음.
 - [INTEG-13 검수](engine/INTEG13_SKILL_COMBAT_20261022.md): suite 각1회 ERROR0, 단회 E2E7PASS/11NOT_READY. 최종 접근 보강 GUI14회 공격 승인/처치0·자연 사망. PASS13 회복/종주 완료로 주장하지 않음.
+
+
+## 2026-10-22 PARITY-MAP-04 — PC 맵·필드 잔여 대응
+
+- 웹 field_runtime만 원본 지역 초기화·60px 경계 유지·미니맵 지역 표식 경로 복원. 북문32/문앞53 나란히 확인. 드루이드 proxy source-over 재드로우, 첫사용 시트·ground GPU warm draw, 표시 최대µs 계측.
+- native 슬롯 메뉴 startup의 활성 저장 회수/metadata 보존, 실제 격리 IO 재시작·다음 생성 regression16/0 단회. `.gitignore`는 해당 test 진입점 한 파일만 예외 추가.
+- 원본 행·1x 비교·실제 OS W·성능1회 오염 한계·PC 이동/덩굴 요청은 [PARITY_MAP_04_20261022](engine/PARITY_MAP_04_20261022.md). 고스트 .55/.62 유지, VISUAL RETOUCH. B snapshot/HUD·유골함 파일·원본 맵/카메라·PC 전투 변경0. main/PC 인수·배포 아님.
