@@ -34,6 +34,8 @@ const parts = [fn('rollAffixes'), fn('mkItem'), fn('_grantOssuaryIfNeeded'), fn(
 const drawGuard = lineOf('if(!window._ossGrantChk&&typeof _grantOssuaryIfNeeded===');
 const mk = parts.find(p => p.name === 'mkItem').text;
 if (!/item\.eDef=60;item\.bonusMp=150;item\.ancPow=0\.25;/.test(mk)) throw Error('ossuary override marker drifted');
+// 91e2774b7: 유골함 분기 첫머리에서 전설/유니크 롤이 남긴 원시 효과 키를 지운다(특수효과 없음 설계). 같은 자리 순서 확인.
+if (!/if\(slot==='ossuary'\)\{\s*\/\/[^\n]*\n\s*if\(item\.legendarySpecial\)delete item\[item\.legendarySpecial\.stat\];if\(item\.uniqueSpecial\)delete item\[item\.uniqueSpecial\.stat\];\s*item\.rarity=5;/.test(mk)) throw Error('ossuary raw special key delete marker drifted');
 if (!/item\.socketCount=0;\s*item\.crystals=\[\];\s*item\.socketQ=\[\];/.test(mk)) throw Error('closed-socket marker drifted');
 const grant = parts.find(p => p.name === '_grantOssuaryIfNeeded').text;
 if (!/try\{recalcSt\(\)\}catch\(e\)\{\}\s*applyStats\(\);/.test(grant)) throw Error('grant recalc/apply order drifted');

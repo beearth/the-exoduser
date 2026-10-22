@@ -16,14 +16,14 @@ extends SceneTree
 ## Mac 생성 시 자동 bind(world._bind_pcib_actor): register_summoned_enemy 직후 type3는 이미 bound일 수 있다(제품 동작).
 ##   pci02는 bound actor를 그대로 다루고, unbound 검사는 새 actor를 만든 뒤 자동 bind를 명시 해제해 쓴다.
 ## INTEG-9 전제(2026-10-22):
-##   원본 = 고정 스냅샷 res://source_snapshot/game.html(SHA 4d911cdd…, snapshot.gd/.cjs). 루트 game.html은 읽지 않는다.
+##   원본 = 고정 스냅샷 res://source_snapshot/game.html(SHA dee094fd… = main 91e2774b7, 이전 4d911cdd…; snapshot.gd/.cjs). 루트 game.html은 읽지 않는다.
 ##   Mac 테스트 관례(bc09 등)대로 --source-game= 값은 받아도 스냅샷 경로로 고정한다. oracle도 snapshot.cjs로 읽는다.
 ##   PCI-09: Main 부팅 때 Mac consumer 3종(native_demo11_pcib_death_effects: etype8/29 + C15 etype15_death_split)이
 ##   이미 등록돼 있는 것이 정상 전제. 통합 Main에서는 그 등록·단일 owner·PC 중복 추가 거절을 판정하고,
 ##   consumer가 없어야 하는 검사(NOT_READY·recorder 등록·순서)는 테스트가 만든 격리 서비스 인스턴스 위에서 한다.
 
 const USERDIR := "EXODUSER-pc-combat-b-Isolated-20261021"
-const GAME_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 := "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209"
 const FORMULA := preload("res://port_modules/combat_stat_formula/producer.gd")
 const SPEC := preload("res://port_modules/auto_bow_spec/producer.gd")
 const CATALOG := preload("res://port_modules/item_armor_element/source_item_catalog.gd")

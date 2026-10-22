@@ -7,7 +7,7 @@ extends SceneTree
 ## 테스트 개입(forced 집계): 위치 배치·자원 충전(stage_entry_refill)·게이지 값·적 배치/기절·경직/기절 상태 강제·시계 주입.
 ## 격리 사용자 폴더(USERDIR) 필수 — 아니면 SKIP. 인자: --node-bin=<node.exe> --artifacts-dir=<dir>
 const USERDIR := "EXODUSER-pc-move-skills-Isolated-20261022"
-const GAME_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 := "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209"
 const SNAPSHOT := preload("res://source_snapshot/snapshot.gd")
 const POS_TOL := 2e-3
 const GROUPS := ["setup", "chain_tier1", "chain_tier2", "chain_tier3_auto_refire", "chain_wall_autofire", "chain_cancel",

@@ -1,7 +1,7 @@
 'use strict';
 // Execute unchanged source functions/reset prefixes against isolated memory fixtures.
 const fs=require('node:fs'), vm=require('node:vm'), crypto=require('node:crypto');
-const SHA='4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4';
+const SHA='dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209';
 const HASHES={portal:'4eae4f08342dd95a93c73982f266bec0cf7eb4a54237d4574190aa9d9a1ddfef',zone:'f40e474853944e22a8b061012e87de7f5e6f8203648049c5bfcb2bef50f5e709',stage:'93b474eb82a9f95adf990e43797693ad53291847f6e3e598b460e5d5ad165353',distance:'424ecda76b94d6843cbf78ff261ed8431fb7e3c5c08d15d1b7d30cf457adf062',tile:'51b0c122d4b59b86d79dd16f19b5dfd139a78b8739bfd0e4bb84015c286a6eeb'};
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 function main(){

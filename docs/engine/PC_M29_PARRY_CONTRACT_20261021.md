@@ -3,6 +3,7 @@
 DEMO11-30(Mac) 보고서 「재개에 필요한 접점」 1번에 대한 PC 제공물이다. Mac 팀은 이 문서만 보고 `type3_native_binding.gd`(또는 `native_type7_runtime.gd`)의 `type3_interfaces`에 연결한다.
 
 - 원본(읽기 전용, `game.html` SHA256 `4d911cdd…85e5d4`): eCharge 접촉 **G40531–40535**, isPWin **G38469**, `_lParryWinTicks` **G16622**(`_PARRY_WIN=16` G8670), doParry **G38470–38575**, `_poiseHit` **G19972–19998**, eModHitP **G31098–31116**.
+> **2026-10-22 스냅샷 갱신(행 +2 이동)**: 고정 스냅샷이 main `91e2774b7`(SHA256 `dee094fd…1f05209`)로 바뀌었다(유골함 mkItem 원시 효과 키 삭제 2줄 삽입, 새 G16156–16157). 이 문서의 G행은 이전 스냅샷 `e556b617`(`4d911cdd…85e5d4`) 좌표이고, 포트 영수증·oracle 라벨도 같은 좌표를 쓴다. 새 스냅샷에서 실제 행은 **G16156 이상 +2**(G16155 이하 그대로). PC oracle(.cjs)은 읽을 때만 옮긴다 — [INTEG5 스냅샷 계약 갱신 이력](INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
 - 제품 소유: `godot/scripts/native_m29_contact_services.gd`(신규, PC), Main 준비 구역 설치 1줄, type3 actor의 `_poiseHit` 코어 메서드 1개.
 
 ## 1. 얻는 방법

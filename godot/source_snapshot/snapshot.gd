@@ -1,4 +1,4 @@
 extends RefCounted
 ## Source provenance only. No gameplay owner or tick work.
-const SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const SHA256 := "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209"
 const PATH := "res://source_snapshot/game.html"

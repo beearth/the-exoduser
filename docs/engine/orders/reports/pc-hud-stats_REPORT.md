@@ -6,6 +6,8 @@
 
 **판정: 스탯 공식은 웹과 같다. 단 회귀 1건(fieldboss 130/3, §6-1)이 이 변경으로 생겨 main 병합은 보류를 권고한다.**
 
+> **2026-10-22 2차(§9): 결함 1(§6-1) 해소.** 사용자 결정("유골함은 특수효과 없는 게 설계")으로 웹 main 91e2774b7이 유골함 원시 효과 키를 지우고, 포트도 같은 위치·순서로 따랐다. 고정 스냅샷을 91e2774b7로 갱신. fieldboss 130/3 → **167/0**. 단 스냅샷 갱신으로 **Mac 소유 테스트 19종이 새로 실패**(행 고정 oracle·출처 sha 고정 fixture) — main 병합 전 Mac 조치 필요(§9-5).
+
 **세부: 스탯 공식은 웹과 같다. 같은 상태(웹 덤프 주입)에서 HP·MP·오른쪽 구슬(SP=ST)·전투력·쉴드 수치가 웹과 모두 같다. 차이의 원인은 ① 유골함 자동 지급 미이식(이식 완료), ② 시작 장비 랜덤 롤(양쪽 모두 무작위라 캡처마다 다름), ③ 지역 처치 분모는 MAP11 맵 provider(Mac PARITY-MAP-01 소관)였다. 구슬 표시 모양(“생명력” 3줄, “ST” 글자, 링)은 Mac 표시 행 H-01/H-02로 남는다.**
 
 ## 1. 같은 상태로 고정한 방법
@@ -119,3 +121,106 @@ RNG 시드 공유는 쓰지 않았다. 웹 `Math.random`은 시드가 없고 웹
 - 데모 저장 로드 경로(유골함 없는 구세이브)에서의 지급은 같은 훅을 타지만 로드 시나리오로 직접 실행해 보지는 않았다(E2E storage=on에 포함되는 범위만 확인).
 - 웹 “MP 391” 캡처와 같은 경과 시간 비교는 하지 않았다(회복 속도 비교는 범위 밖).
 - 실행 중인 사용자 창(integ10-play)은 건드리지 않았고, Git 반영만으로 열린 실행본이 바뀌지 않는다.
+
+## 9. 2차 (2026-10-22) — 결함 1 해소: 유골함 원시 효과 키 삭제를 웹과 같이 따름
+
+### 9-1. 결정과 웹 수정
+
+- 사용자 결정: “유골함은 특수효과 없는 게 설계. 웹 mkItem에서 남는 유니크 키 지우고 Godot도 따라간다.” → §6-1 선택지 (가).
+- 웹 main `91e2774b7`(fix(item): 유골함 mkItem — 전설/유니크 롤이 남긴 원시 효과 키 제거): `if(slot==='ossuary'){` 첫머리에 주석 1줄 + `if(item.legendarySpecial)delete item[item.legendarySpecial.stat];if(item.uniqueSpecial)delete item[item.uniqueSpecial.stat];` 1줄(새 G16156–16157). 웹 헤드리스 300회: 수정 전 잔존 300/300 → 수정 후 0/300. 2_7 문서 행은 main 내용 그대로 이 브랜치에 반영했다.
+
+### 9-2. 포트
+
+| 파일 | 내용 |
+|---|---|
+| `godot/port_modules/kill_reward/drop_item_source.gd` | `if slot == "ossuary":` 첫머리, 원본과 같은 위치·순서로 `legendarySpecial`이 Dictionary면 `item.erase(str(stat))`, 그다음 `uniqueSpecial`도 같은 방식. 이어서 기존 고정값(rarity·eDef 60·bonusMp 150·ancPow 0.25 …)과 `legendarySpecial/uniqueSpecial = null`. RNG 소비 변화 0(삭제는 롤 뒤). 새 수치·분기 없음 |
+
+구세이브에 이미 들어 있는 유골함의 잔존 키는 웹도 지우지 않는다(로드 마이그레이션 없음). 포트도 따로 지우지 않는다(원본에 없는 동작 추가 금지).
+
+### 9-3. 고정 스냅샷 갱신 (e556b617 → 91e2774b7)
+
+- `godot/source_snapshot/game.html` = `git show origin/main:game.html` 바이트 그대로(blob `27897d40…`, 65,694행). SHA256 **`dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209`**. 이전 스냅샷과의 차이는 위 2줄 삽입뿐(diff 확인).
+- `SNAPSHOT.json`: sha256·original_commit `91e2774b769869e59f80953e148a5c95203b0fea`·original_commit_date `2026-10-22T12:21:55+09:00`·snapshot_date `2026-10-22`. `snapshot.gd` SHA256 상수 같은 값. `snapshot.cjs`(manifest를 읽음)는 변경 없음, `readBytes()` 통과.
+- **행 좌표**: G16155 이하 그대로, G16156 이상 +2. 포트 제품 코드·Mac 테스트 고정 데이터·영수증이 쓰는 G행 라벨은 전부 이전 좌표라 바꾸지 않았다. PC 행 고정 oracle 3종(`pc_combat_pack_b_source_oracle.cjs`·`pc_m29_parry_source_oracle.cjs`·`pc_move_skills_source_oracle.cjs`)은 `L()`/`span()`이 바이트를 읽을 때만 `n>=16156 → n+2`로 옮긴다(라벨·스택 행·RNG 행 분류는 이전 좌표 유지, 삽입 줄을 가로지르는 구간은 assert로 거절, 삽입 2줄 존재 assert). 문자열 탐색형 PC oracle(hud_stats·recalc_st·runtime_stat_refresh·player_life·enemy_revive)은 행 고정이 아니라 수정 없음 — 출력 행만 새 좌표(예: revive `block_line` 38944 → 38946, 테스트는 관찰값으로만 기록).
+- `pc_hud_stats_oracle.mjs`: 유골함 분기 첫머리 삭제 줄의 위치·순서 drift 검사 추가.
+- 문서 행 표기: PC 계약 4종(PC_COMBAT_PACK_B·PC_LIFECYCLE·PC_M29_PARRY·PC_MOVE_SKILLS)에 “행 +2 이동” 주석, INTEG5 스냅샷 계약에 갱신 이력. 그 밖의 문서 G행은 이전 좌표 그대로(미수정).
+
+sha 하드코딩 교체(코드 상수만):
+
+| 파일 | 소유 | 비고 |
+|---|---|---|
+| `godot/source_snapshot/snapshot.gd`, `SNAPSHOT.json` | Mac(INTEG-5) | 계약상 갱신 대상 |
+| `godot/tests/test_pc_combat_pack_b.gd`·`test_pc_m29_parry.gd`·`test_pc_move_skills.gd` `GAME_SHA256` | PC | 머리 주석 SHA도 갱신 |
+| `tools/nw01_world_interaction_oracle.cjs`·`nw02_player_portal_oracle.cjs`·`nw03_map_action_oracle.cjs` `SOURCE_SHA`/`SHA` | **Mac** | sha 상수만. 이후 행 발췌 검사에서 실패(§9-5) |
+
+교체하지 않은 4d911cdd 표기: 추출 출처 기록 데이터(`data/ch1_map_source/*`·`ch2_map_source/*`·`map.json`·`demo11_*.json`, `tests/fixtures/sound_source_*.json`, `pc_hud_stats_web_fixture_20261022.json`)와 Mac 스크립트 주석·과거 보고서. 이 값들은 “어느 바이트에서 추출했나”의 기록이라, 새 바이트로 다시 추출·대조하지 않고 sha만 바꾸면 거짓 출처가 된다.
+
+### 9-4. 테스트 (각 1회, `G:/exoduser-wt/_out/pc-hud-stats/logs2/`)
+
+`test_pc_hud_stats` 단정 추가: A 실제 지급 유골함에 전설 19종·유니크 39종 효과 키 0개, B 시드 8개(20261022·1·7·42·9001·31337·20261021·123456789)×3세트 = 24건 각각 포트·원본 VM 모두 원시 키 0개 + 전체 24/24 단정. **음성 대조**: 포트 삭제 2줄을 잠시 끈 같은 테스트 = 199/50 실패(A·B 전부 잔존 키 검출, 예 `_lBowCrit`·`_uChainCrowdRefund`) → 원복 후 199/0.
+
+| 테스트 | 결과 | ERROR | 비고 |
+|---|---|---|---|
+| **test_pc_followups_fieldboss** | **167/0** (이전 130/3) | 0 | 회복 |
+| test_pc_hud_stats | 199/0 (이전 68/0 + 새 단정) | 0 | grant_raw_key_clean 24/24 |
+| test_pc_move_skills | 256/0 | 0 | 행 좌표 변환 oracle |
+| test_pc_recalc_st / runtime_stat_refresh / pet_portrait_cache / player_life | 49/0 · 294/0 · 23/0 · 101/0 | 0 | rstat 단언 수는 시작 장비 홈 수(랜덤)로 변동 |
+| test_pc_combat_pack_b / _mac | 378/0 · 396/0 | 0 | |
+| test_pc_m29_parry / final_death / enemy_revive | 101/0 · 61/0 · 51/0 | 0 | |
+| test_native_qe_binding | 155/0 | 0 | |
+| p1002e / f / g | 94/0 · 358/0 · 221/0 | 0 | **p1002f 1회차 exit 139(네이티브 크래시, setup 32/0 직후, 백트레이스 없음)** → 같은 코드 재실행 358/0. 원인 미조사 |
+| test_pcib_mac_calls | 31/0 | 0 | |
+| test_boss_ch1_bc09_projectiles | 56664/0 | 0 | |
+| demo11_boss_projectiles / projectile_auto / coordinates / draw | 29/0 · 14/0 · 4/0 · 6/0 | 0 | |
+| etype15 / etype_b / etype_f | 151/0 · 42/0 · 33/0 | 0 | |
+| test_demo11_22r_equipment / test_native_main_source_starter_state | 442/0 · 148/0 | 0 | |
+| E2E `--demo11-storage=on` | PASS 11 / NR 7 / FAIL 0 | 0 | §6과 같음 |
+
+실행 사고 1건: 첫 묶음을 다른 세션(pc-skill-writers)이 같은 격리 userdir를 쓰는 동안 기다리게 하려고 중단할 때 runtime_stat_refresh 1회가 고아로 돌았다(287/0, 별도 기록). 그 실행의 override.cfg 이동이 다음 fieldboss 실행의 cfg를 옮겼으나 fieldboss는 이미 시작한 뒤라 격리 userdir로 실행됐다(결과에 SKIP 없음, 실사용 EXODUSER-Godot-Native-First 수정 시각 변화 없음 확인).
+
+### 9-5. 스냅샷 갱신이 깨뜨리는 Mac 소유 테스트 (main 병합 전 조치 필요)
+
+스냅샷을 읽는 그 밖의 테스트 57종을 새 스냅샷(이 브랜치)과 이전 스냅샷(0cbf9994c 임시 worktree, 측정 후 제거)에서 각 1회 실행했다(`_out/pc-hud-stats/logs3/`·`logs3base/`, 표 `mac_new_table.txt`·`mac_base_table.txt`). 31종은 양쪽 모두 통과, 아래 19종은 **이전 스냅샷에서 통과 → 새 스냅샷에서 실패**. 모두 Mac 소유라 수정하지 않았다(sha 상수 외 금지).
+
+| 테스트 | 이전 → 새 | 원인 | 필요한 조치(Mac) |
+|---|---|---|---|
+| test_boss_ch1_bc10_control | 165774/0 → 7/2 | 내장 ORACLE_JS가 행 번호로 원본을 자름 → SyntaxError | 16156 이상 행 +2(또는 읽을 때 변환) |
+| test_boss_ch2_bc2_02~07 (6종) | 44891/0·25749/0·41373/0·35164/0·46009/0·30191/0 → 각 5/2 | `bc2_02_source_oracle.cjs` 등 행 고정 발췌 | 같음 |
+| test_boss_ch3_bc3_01_catalog | 43491/0 → 5/2 | `bc3_01_source_oracle.cjs` 행 고정 | 같음 |
+| test_demo11_16_dispatch | 393/0 → 3/1 | `demo11_16_source_oracle.cjs` 행 고정(SyntaxError) | 같음 |
+| test_ch2_01_stage4_source | 362/0 → 1/1 | `native_snapshot_ready:source_provenance_missing` — CH2 맵 출처 데이터가 이전 SHA에 고정 | 새 바이트로 재추출·출처 갱신 |
+| test_p3004a_ch1_area_source / test_p3004c_ch1_stage1_source | 63/0 · 75/0 → `same_snapshot_reference` 실패 후 무응답(900초 타임아웃) | CH1 맵 출처 데이터가 이전 SHA에 고정 | 같음(무응답도 함께 확인) |
+| test_sound_source_backend / bgm_lifecycle / bgm_selection / cue_recipes / mix / queue / voice_selector (7종) | 각 n/0 → n/1 (`oracle provenance`) | fixture `source_ref`+`source_sha256`이 이전 커밋·SHA(빌더가 `git show e556b617:game.html`) | 새 커밋으로 fixture 재생성·SOURCE_MAIN 갱신(사운드 범위 원본은 이번 변경과 무관) |
+
+이전 스냅샷에서도 이미 실패하던 7종(새 원인 아님): test_boss_bc_integ_01(5/2, 기준 바이트 격리)·test_demo11_29_workshop(96/2, acorn ESM)·test_demo11_38_end_flow(42/1)·test_demo11_gate_guard(isolation)·nw01/02/03(이전 2304/2·1851/2·3060/1 → 새 스냅샷에서는 sha 상수 교체 뒤 행 발췌 검사 `distance/gate excerpt differs`에서 더 일찍 실패, 4/2).
+
+선택지(사용자/Mac 결정): (가) Mac이 행 고정 oracle을 +2 갱신하고 출처 고정 데이터·fixture를 91e2774b7로 재생성, (나) 이전 스냅샷을 별도 경로(예: `source_snapshot/e556b617/`)로 함께 두고 해당 oracle만 그쪽에 고정. 어느 쪽이든 이 브랜치 main 병합 전에 정해야 한다.
+
+### 9-6. 웹과 나란히 (유골함 장착 상세, 1x)
+
+- 웹: main 최신 작업 사본(game.html sha256 = 새 스냅샷과 같음) `PORT=3398 EXODUSER_SAVE_DIR=_out/pc-hud-stats/web_saves2 node server.cjs`, Playwright 헤드리스·음소거 1920×1080 → 신규 데모 → 유골함 자동 지급 → `openPanel('invPanel')` → `_invRenderDetail('ossuary','eq')`. 도구 `_out/pc-hud-stats/tools/web_oss_tip.cjs`.
+- Godot: `tests/capture_pc_hud_stats.gd --ossuary-tip`(창 모드 1회, 격리 `EXODUSER-demo11-pc-hud-stats-Isolated-20261022` — demo11 저장소는 `EXODUSER-demo11-*`만 연다) → demo11 저장 경로 부팅 → 원본 훅으로 자동 지급(receipt granted, RNG 43) → Mac 인벤토리 패널 `open_panel` → 유골함 장착 상세.
+- 격자 `G:/exoduser-wt/_out/pc-hud-stats/compare_ossuary_tip.png`(웹 왼쪽·Godot 오른쪽, 축소 없음). 원본 캡처 `web2/web_oss1_full.png`·`godot2/godot_oss6_oss_tip.png`.
+
+| 항목 | 웹 | Godot | 판정 |
+|---|---|---|---|
+| 전설 특수 / 유니크 특수 블록 | 없음 | 없음 | **같음** |
+| 아이템 원시 효과 키(전설 19+유니크 39) | 0개, 전 장비 `_lEq/_uEq>0` 0개 | 0개 | **같음** |
+| 고정값 | eDef 60·bonusMp 150·ancPow 0.25·ancHP +90% | 같은 값(덤프) | 같음 |
+| 상세 표시 줄 | 에너지DEF 60 / 추가MP +150 / 전대 위력 +25% / ◆ 전대 위력 +10% / 계승의: 전대 최대HP+ +90% | 아이템 레벨·요구 레벨·아이템 파워 380·속성 방어 60·전대 최대HP+ +90%, 이름 뒤 “[계승의]” | **다름(표시)** — 추가MP·전대 위력·임플리싯 줄 없음, 라벨 “속성 방어”≠“에너지DEF”. Mac 인벤토리 패널 소관(이번 변경과 무관) → Mac 요청 HS-M6 |
+
+참고: 웹 상세는 `legendarySpecial`/`uniqueSpecial` 객체로만 특수 블록을 그리므로, 수정 전에도 툴팁에는 특수효과가 보이지 않았다(원시 키는 화면에 안 보이고 효과만 동작). 그래서 판정 근거는 상태 덤프(원시 키 0, `_uEq/_lEq` 활성 0)다.
+
+### 9-7. Mac 요청 추가
+
+| ID | 내용 |
+|---|---|
+| HS-M6 | 인벤토리 상세 카드에 웹 `_invRenderDetail` 줄(추가MP·전대 위력·임플리싯 ◆ 줄, 라벨 “에너지DEF”) 표시, 이름 접미사 “[계승의]” 여부 웹과 맞춤 |
+| HS-M7 | §9-5 19종: 행 고정 oracle +2 갱신·출처 고정 데이터/fixture 재생성, 또는 이전 스냅샷 병행 보관 결정 |
+
+### 9-8. 미확인
+
+- 구세이브(잔존 키가 이미 저장된 유골함) 로드 경로는 실행하지 않았다(웹도 마이그레이션 없음 — 원본 동작 그대로).
+- p1002f 1회차 네이티브 크래시(exit 139) 원인 미조사. 재실행 1회 358/0.
+- §9-5 Mac 19종은 수정하지 않았고, Mac 브랜치에서의 결과는 미실행.
+- 실행 중인 사용자 창·다른 세션 서버는 건드리지 않았다. Git 반영만으로 열린 실행본은 바뀌지 않는다.

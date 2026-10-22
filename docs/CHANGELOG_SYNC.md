@@ -1,3 +1,11 @@
+## 2026-10-22 PC-HUD-STATS 2차 — 유골함 원시 효과 키 삭제(웹 91e2774b7 따름)·고정 스냅샷 갱신
+
+- 사용자 결정 “유골함은 특수효과 없는 게 설계”. 웹 main 91e2774b7이 mkItem 유골함 분기 첫머리에서 전설/유니크 롤이 남긴 `item[stat]`를 지운다(새 G16156–16157). 포트 `drop_item_source.gd`도 같은 위치·순서로 삭제. RNG 소비·고정값 변화 0. 2_7 문서 행은 main 그대로 반영.
+- 고정 스냅샷 `godot/source_snapshot/game.html` → 91e2774b7 바이트(SHA256 dee094fd…1f05209), SNAPSHOT.json·snapshot.gd 갱신. G16156 이상 +2: 포트·oracle 라벨은 이전 좌표 유지, PC 행 고정 oracle 3종은 읽을 때만 +2. sha 상수 교체: PC 테스트 3종 + Mac `tools/nw01~03`(상수만). 출처 기록 데이터·fixture의 이전 SHA는 재추출 없이 바꾸지 않음.
+- 결과(각 1회): **fieldboss 130/3 → 167/0**, hud 199/0(원시 키 0 단정 + 시드 8×3, 음성 대조 199/50), pms 256/0·packb 378/0·_mac 396/0·m29 101/0·bc09 56664/0·etype15/b/f·보스 투사체 4종·22r·starter 전부 0실패, E2E storage=on PASS11/NR7/FAIL0. p1002f 1회차 네이티브 크래시(exit 139) → 재실행 358/0.
+- **주의: 스냅샷 갱신으로 Mac 소유 테스트 19종이 새로 실패**(이전 스냅샷 통과): 행 고정 oracle 9종(bc10·bc2_02~07·bc3_01·demo11_16), 출처 SHA 고정 10종(ch2_01·p3004a·p3004c, sound 7종). Mac 조치(HS-M7) 전 main 병합 금지.
+- 웹↔Godot 유골함 장착 상세 1x 나란히: 특수효과 블록 양쪽 없음·원시 키 양쪽 0. 표시 줄 차이(추가MP·전대 위력 줄 없음 등)는 Mac 패널 소관 HS-M6. [보고서 §9](engine/orders/reports/pc-hud-stats_REPORT.md)·[스냅샷 갱신 이력](engine/INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
+
 ## 2026-10-22 PC-HUD-STATS — HUD 수치(H-03) 원인 추적·유골함 자동 지급 이식
 
 - 기준 ca9c7c30e(INTEG-10+이동 스킬), branch claude/pc-hud-stats-20261022, main 미병합. Mac 소유 파일 수정 0, 세이브 형식 변경 0.

@@ -4,7 +4,7 @@
 const fs = require('node:fs');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
-const SOURCE_SHA = '4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4';
+const SOURCE_SHA = 'dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209';
 const FRAGMENT_SHA = '9eea8397b33211a9a7b4ba18372d4fb60a5ab6cffa497687254d47b66d6c265f';
 const sha = data => crypto.createHash('sha256').update(data).digest('hex');
 function main() {

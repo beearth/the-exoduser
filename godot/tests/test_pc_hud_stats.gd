@@ -3,6 +3,7 @@ extends SceneTree
 ##  A. 원본 draw() G51733 → _grantOssuaryIfNeeded() G45880~45889: G.on 첫 렌더 프레임에 세션당 1회
 ##     유니크 '전대의 유골함' 자동 장착 → recalcSt → applyStats (mmp +150, 현재 자원 무료 충전 없음)
 ##  B. 같은 State 진입점을 스크립트 RNG로 돌린 결과 = 원본 mkItem/_grantOssuaryIfNeeded (node VM 오라클)
+##     (시드 8개×3세트. 91e2774b7 원본 새 16156-16157: 유골함에 전설/유니크 원시 효과 키가 남지 않음 — 포트·원본 모두 단정)
 ##  C. 지급 후 applyStats 결과 = 원본 applyStats (pc_runtime_stat_refresh_oracle.mjs), calcCP = 원본 calcCP
 ##  D. 웹 상태 덤프(tests/pc_hud_stats_web_fixture_20261022.json) 주입 → HUD 수치 = 실제 웹 화면 수치
 ##  E. 시작 장비 25개 홈 상태 관찰(현 원본 G16148~16151은 닫힌 0홈 — 포트 보류, 판정 제외)
@@ -12,6 +13,9 @@ const FIXTURE := "res://tests/pc_hud_stats_web_fixture_20261022.json"
 const HOLES := preload("res://scripts/native_spawn_hole_system.gd")
 const REGIONS := preload("res://scripts/native_regions.gd")
 const STAT_FIELDS := ["mhp", "mmp", "mst", "mshield", "hpR", "stR", "mpR", "speed", "_oocSpeed", "baseDef", "baseAtk", "_effStats", "_crystalStats"]
+const B_SEEDS := [20261022, 1, 7, 42, 9001, 31337, 20261021, 123456789]
+const TABLES := "res://data/item_generation_tables.json"
+var _special_stats: Array = []
 var checks := 0
 var failures := 0
 var main: Node
@@ -48,6 +52,18 @@ func same_value(a: Variant, b: Variant) -> bool:
 	if (a is int or a is float) and (b is int or b is float):
 		return absf(float(a) - float(b)) <= 1e-9 * maxf(1.0, absf(float(b)))
 	return a == b
+
+## 전설 19종·유니크 39종의 효과 키(item[stat]) 중 아이템에 남아 있는 것.
+func special_keys_left(item: Variant) -> Array:
+	if _special_stats.is_empty():
+		var t: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(TABLES))
+		for table in ["LEGENDARY_SPECIAL", "UNIQUE_SPECIAL"]:
+			for v in (t[table] as Dictionary).values(): _special_stats.append(str(v["stat"]))
+	var left: Array = []
+	if item is Dictionary:
+		for key in _special_stats:
+			if (item as Dictionary).has(key): left.append(key)
+	return left
 
 func p() -> Dictionary: return state.read_current_p()
 func equipped() -> Dictionary: return state.read_current_inventory()["equipped"]
@@ -112,6 +128,9 @@ func _run() -> void:
 	check(float(after.mp) < float(after.mmp) and float(after.mp) <= float(pre.P.mmp) + 5.0, "A: current MP not refilled (source clamp policy; regen only)")
 	check(float(after.hp) == float(after.mhp), "A: HP stays full (no clamp change)")
 	check(int(receipt.get("rng_draws", -1)) > 0, "A: grant consumed shared World RNG")
+	# 91e2774b7(원본 새 16156-16157): 유골함 = 특수효과 없음. 전설/유니크 롤이 남긴 원시 키(item[stat])가 없어야 한다.
+	var left_a: Array = special_keys_left(oss)
+	check(oss is Dictionary and left_a.is_empty() and oss.get("legendarySpecial") == null and oss.get("uniqueSpecial") == null, "A: granted ossuary has no legendary/unique raw effect keys %s" % str(left_a))
 	var cp_after := hud_cp()
 	# ── C: applyStats/calcCP 원본 오라클 ──
 	var inv_case: Dictionary = (pre.equipped as Dictionary).duplicate(true)
@@ -130,12 +149,14 @@ func _run() -> void:
 		{"name": "cp_pre", "kind": "calc_cp", "P": pre.P, "STATS": state.read_current_stats(), "PASSIVES": state.read_current_passives(), "equipped": pre.equipped},
 		{"name": "cp_after", "kind": "calc_cp", "P": after, "STATS": state.read_current_stats(), "PASSIVES": state.read_current_passives(), "equipped": equipped()}]
 	# ── B: 같은 State 진입점 + 스크립트 RNG = 원본 _grantOssuaryIfNeeded/mkItem ──
-	var rng := RandomNumberGenerator.new(); rng.seed = 20261022
+	# 시드 여러 개(B_SEEDS) × 3세트(데모 2·비데모 1). 시드마다 전설 19종·유니크 39종 중 다른 키가 뽑힌다.
 	var b_cases: Array = []
-	for k in 3:
-		var seq_values: Array = []
-		for i in 160: seq_values.append(snappedf(rng.randf(), 1e-12))
-		b_cases.append({"name": "grant_%d" % k, "kind": "grant", "lv": 1, "demo": k != 1, "rng": seq_values, "equipped": {"ossuary": null}, "bag": []})
+	for seed_value in B_SEEDS:
+		var rng := RandomNumberGenerator.new(); rng.seed = int(seed_value)
+		for k in 3:
+			var seq_values: Array = []
+			for i in 160: seq_values.append(snappedf(rng.randf(), 1e-12))
+			b_cases.append({"name": "grant_s%d_%d" % [seed_value, k], "kind": "grant", "lv": 1, "demo": k != 1, "rng": seq_values, "equipped": {"ossuary": null}, "bag": []})
 	var b_port: Array = []
 	var keep_oss: Variant = equipped()["ossuary"]
 	for c in b_cases:
@@ -144,6 +165,7 @@ func _run() -> void:
 		var r: Dictionary = state.apply_native_ossuary_grant_if_needed(main, Callable(seq, "next"), Callable(seq, "zero"), c.demo)
 		b_port.append({"r": r, "used": seq.i})
 	equipped()["ossuary"] = keep_oss
+	var b_clean := 0
 	var oracle: Variant = run_node("res://tests/pc_hud_stats_oracle.mjs", b_cases + cp_cases, "grant")
 	if oracle is Dictionary and oracle.get("rows", []).size() == b_cases.size() + 2:
 		for i in b_cases.size():
@@ -153,10 +175,16 @@ func _run() -> void:
 			check(same_value(b_port[i].r.get("item"), row.item), "B %s item == original mkItem('ossuary',0,EL.P,5)\n port=%s\n orig=%s" % [row.name, JSON.stringify(b_port[i].r.get("item")), JSON.stringify(row.item)])
 			check(int(b_port[i].used) == int(row.draws) and int(b_port[i].r.get("rng_draws")) == int(row.draws), "B %s RNG draws port=%d original=%d" % [row.name, b_port[i].used, row.draws])
 			check(row.calls == ["notify", "addTxt", "recalcSt", "applyStats"], "B %s original call order (display notify/addTxt are Mac-owned)" % row.name)
+			var left_port: Array = special_keys_left(b_port[i].r.get("item"))
+			var left_orig: Array = special_keys_left(row.item)
+			check(left_port.is_empty() and left_orig.is_empty(), "B %s no legendary/unique raw keys port=%s original=%s" % [row.name, str(left_port), str(left_orig)])
+			if left_port.is_empty() and b_port[i].r.get("item") is Dictionary: b_clean += 1
 		var cp_pre_o: int = int(oracle.rows[b_cases.size()].cp.total)
 		var cp_after_o: int = int(oracle.rows[b_cases.size() + 1].cp.total)
 		check(cp_pre_o == int(pre.cp) and cp_after_o == cp_after, "C: calcCP original pre=%d/%d after=%d/%d" % [cp_pre_o, int(pre.cp), cp_after_o, cp_after])
 		summary["oracle_functions"] = oracle.get("source_functions")
+		check(b_clean == b_cases.size(), "B: all %d seeded grants clean of raw special keys (%d)" % [b_cases.size(), b_clean])
+		summary["ossuary_raw_key_clean"] = {"seeds": B_SEEDS, "cases": b_cases.size(), "clean": b_clean, "source": "91e2774b7 mkItem new 16156-16157"}
 	else: check(false, "B: oracle rows complete")
 	# 재진입·가방·외부 owner 거절 (원본 45881/45882 가드)
 	var draws0: int = main.world.get_native_runtime_snapshot()["random_draw_count"]
@@ -238,7 +266,7 @@ func _run() -> void:
 	summary["live_map11_region_totals"] = {"totals": live_totals, "cur": live_g.get("_regCurIdx"), "note": "MAP11 provider(Mac PARITY-MAP-01) — 정보 기록, 판정 제외"}
 	var artifacts := argument("--artifacts-dir")
 	var out := {"assertions": checks, "failures": failures, "applyStats_fields_compared": compared, "grant_rng_draws": receipt.get("rng_draws"),
-		"pre_mmp": pre.P.mmp, "after_mmp": after.mmp, "pre_cp": pre.cp, "after_cp": cp_after}
+		"pre_mmp": pre.P.mmp, "after_mmp": after.mmp, "pre_cp": pre.cp, "after_cp": cp_after, "grant_seed_cases": b_cases.size(), "grant_raw_key_clean": b_clean}
 	summary["result"] = out
 	if not artifacts.is_empty():
 		var f := FileAccess.open(artifacts.path_join("pc_hud_stats_summary.json"), FileAccess.WRITE)

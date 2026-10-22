@@ -5,10 +5,15 @@ extends SceneTree
 ##   2) --inject=<web dump.json>: 웹 상태 덤프의 equipped/STATS/PASSIVES 를 실제 State에 주입
 ##      → 원본 _grantOssuaryIfNeeded 와 같은 recalcSt→applyStats 재계산 → 웹 현재값(hp/mp/st) 주입
 ##      → 덤프 + HUD 1x 캡처. 웹 쪽 덤프 방법은 docs/engine/orders/reports/pc-hud-stats_REPORT.md.
+##   3) --ossuary-tip: 자동 지급된 유골함을 인벤토리 패널(Mac native_inventory_panel) 장착 상세 카드로 열어 1x 캡처 +
+##      아이템 키 덤프(전설/유니크 원시 효과 키 잔존 여부, 91e2774b7 원본 새 16156-16157).
 ## 실행: 창 모드(렌더 필요), --audio-driver Dummy, override.cfg 격리 user dir.
 const USERDIR := "EXODUSER-pc-hud-stats-Isolated-20261022"
+## --ossuary-tip 전용: demo11 저장소는 EXODUSER-demo11-* 격리 namespace만 연다(demo_local_storage.accepts_namespace).
+const OSS_TIP_USERDIR := "EXODUSER-demo11-pc-hud-stats-Isolated-20261022"
 var out := ""
 var inject := ""
+var oss_tip := false
 var tag := "godot"
 var main: Node
 var rows: Dictionary = {}
@@ -92,6 +97,34 @@ func apply_inject(path: String) -> Dictionary:
 	set_currents(web)
 	return {"ok": r1.get("committed") == true and r2.get("committed") == true, "r1": r1.get("reason"), "r2": r2.get("reason")}
 
+func special_keys_left(item: Variant) -> Array:
+	var t: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/item_generation_tables.json"))
+	var left: Array = []
+	for table in ["LEGENDARY_SPECIAL", "UNIQUE_SPECIAL"]:
+		for v in (t[table] as Dictionary).values():
+			if item is Dictionary and (item as Dictionary).has(str(v["stat"])): left.append(str(v["stat"]))
+	return left
+
+func _labels(n: Node, acc: Array) -> Array:
+	if n is Label and (n as Label).visible: acc.append((n as Label).text)
+	for c in n.get_children(): _labels(c, acc)
+	return acc
+
+func ossuary_tip(windowed: bool) -> void:
+	var oss: Variant = main.source_state.read_current_inventory()["equipped"].get("ossuary")
+	var ui: Variant = main.get("source_inventory_ui")
+	var row := {"item": (oss as Dictionary).duplicate(true) if oss is Dictionary else null, "raw_special_keys": special_keys_left(oss), "panel": is_instance_valid(ui)}
+	if is_instance_valid(ui) and oss is Dictionary:
+		row["opened"] = ui.open_panel()
+		ui.selected = oss; ui.selected_source = "eq"; ui.refresh_view()
+		for i in 20: await process_frame
+		row["detail_labels"] = _labels(ui.detail, [])
+		row["detail_rect"] = _rect(ui.detail)
+		if windowed: await shot(tag + "_oss_tip")
+		ui.close_panel()
+	rows["ossuary_tip"] = row
+	print("PCHUD ossuary_tip ", JSON.stringify({"raw_special_keys": row.raw_special_keys, "opened": row.get("opened"), "labels": row.get("detail_labels")}))
+
 func set_currents(web: Dictionary) -> void:
 	main.player.hp = float(web.hp)
 	main.player.stamina = float(web.st)
@@ -108,14 +141,17 @@ func _run() -> void:
 		if a.begins_with("--out="): out = a.trim_prefix("--out=")
 		elif a.begins_with("--inject="): inject = a.trim_prefix("--inject=")
 		elif a.begins_with("--tag="): tag = a.trim_prefix("--tag=")
-	if OS.get_user_data_dir().get_file() != USERDIR or out.is_empty():
+		elif a == "--ossuary-tip": oss_tip = true
+	if OS.get_user_data_dir().get_file() != (OSS_TIP_USERDIR if oss_tip else USERDIR) or out.is_empty():
 		print("PCHUD_REFUSE ", OS.get_user_data_dir()); quit(2); return
 	DirAccess.make_dir_recursive_absolute(out)
 	var windowed := DisplayServer.get_name() != "headless"
 	if windowed:
 		root.size = Vector2i(1920, 1080); root.content_scale_size = Vector2i(1920, 1080)
 	main = load("res://scenes/main.tscn").instantiate()
-	main.set_meta("native_intro_boot", "intro")
+	# --ossuary-tip: 인벤토리 패널 owner가 있는 demo11 저장 경로(test_demo11_23b_inventory와 같은 부팅, 인트로 없음)
+	if oss_tip: main.set_meta("demo11_storage", true)
+	else: main.set_meta("native_intro_boot", "intro")
 	root.add_child(main); current_scene = main
 	for i in 10: await process_frame
 	var seq: Node = main.get("source_intro_sequence")
@@ -131,8 +167,21 @@ func _run() -> void:
 		await secs(1.0)
 		if is_instance_valid(seq.lesson_flow) and seq.lesson_flow.active: seq.lesson_flow.skip_all()
 	await secs(1.5)
+	if oss_tip and main.get("source_state") == null:
+		print("PCHUD_BOOT_STOP ", JSON.stringify(main.get("_demo11_load_result"))); quit(3); return
+	if oss_tip:
+		var until := Time.get_ticks_msec() + 9000
+		while Time.get_ticks_msec() < until and (main.get("native_ossuary_grant_receipt") as Dictionary).is_empty(): await process_frame
+	if oss_tip and (main.get("native_ossuary_grant_receipt") as Dictionary).is_empty():
+		# 저장 경로 부팅은 인트로 커튼이 없어 G.on 첫 프레임 훅이 돌지 않는다 → 같은 State 진입점을 하니스가 직접 호출(데모 RNG·시계는 실제 World/Main).
+		var g: Dictionary = main.source_state.apply_native_ossuary_grant_if_needed(main, Callable(main.world, "sample_native_random_unit"), Callable(main, "_source_now_ms"), true)
+		var r1: Dictionary = main.request_native_runtime_stat_refresh("recalc_st", "pchud:oss_tip")
+		var r2: Dictionary = main.request_native_runtime_stat_refresh("apply_stats", "pchud:oss_tip")
+		rows["oss_tip_direct_grant"] = {"granted": g.get("granted"), "reason": g.get("reason"), "recalc": r1.get("committed"), "apply": r2.get("committed")}
+		print("PCHUD oss_tip_direct_grant ", JSON.stringify(rows["oss_tip_direct_grant"]))
 	dump("natural")
 	if windowed: await shot(tag + "_natural")
+	if oss_tip: await ossuary_tip(windowed)
 	if not inject.is_empty():
 		var r := apply_inject(inject)
 		print("PCHUD inject ", JSON.stringify(r))
