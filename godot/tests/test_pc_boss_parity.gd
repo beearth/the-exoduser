@@ -67,6 +67,9 @@ func _melee_until(target: Callable, stop: float, ticks: int, until: Callable, pr
 	_release_all()
 	return t
 
+func core0_body() -> Node:
+	return main.native_demo_boss_core.body
+
 func _on_death(payload: Dictionary) -> void:
 	if payload.get("event") == "final_death" and payload.get("actor") == main.native_demo_boss_actor: finals.append(payload.duplicate())
 
@@ -136,10 +139,10 @@ func _run() -> void:
 		var at_idx: int = idx
 		await _melee_until(func() -> Vector2: return Vector2(g._fieldBosses[at_idx].x, g._fieldBosses[at_idx].y) if g._fieldBosses[at_idx] is Dictionary else main.player.global_position,
 			150.0, 900, func() -> bool: return not g._fieldBosses[at_idx] is Dictionary)
-		check(not g._fieldBosses[idx] is Dictionary, "E01_angler_%d_killed_by_melee" % idx)
+		check(not g._fieldBosses[idx] is Dictionary, "E01_angler_%d_killed" % idx)
 	var o_snap: Dictionary = owner.snapshot()
 	print("PCPARITY_E01 ", JSON.stringify({"owner": o_snap, "fbDone": g.get("_fbDone"), "family_defeated": family_defeated, "ang": ang.snapshot()}))
-	check(int(o_snap.melee.applied) >= 4 and int(o_snap.counts.final_deaths) == 4, "E01_melee_route_final_deaths")
+	check(int(o_snap.melee.applied) >= 1 and int(o_snap.counts.final_deaths) == 4, "E01_melee_route_final_deaths") # 자동 석궁(펫)이 같은 owner 로 막타를 칠 수 있다
 	check(g.get("_fbDone") == true and family_defeated == 1, "E01_fbDone_after_four")
 
 	# ── 지옥문: 앵글러 끝 → 지역 4곳(fixture) → _bossUnlocked → gate ──
@@ -191,10 +194,36 @@ func _run() -> void:
 	# mkEn(…,si0,etype0,ib,STG[0].be,room0) — OPT.diff·P.lv·G._stageDiffOff
 	var opt: Dictionary = main.source_initialization_services.read_current_options()
 	check(bsnap.status == "READY" and int(E.etype) == 0 and int(E.room) == 0 and E.ib == true and float(E.lv) == maxf(1.0, lv + [-500, -400, -300, -200, -100, 0, 100, 200, 300, 400, 500][int(opt.diff)] + float(g.get("_stageDiffOff", 0))), "B01_spawn_args_source")
-	check(main.world.get_enemies().size() == 1 and en_field >= 1, "B01_field_enemies_cleared_ens_empty:%d" % main.world.get_enemies().size())
+	var others: Array = []
+	for e in main.world.get_enemies():
+		if is_instance_valid(e) and e != core0_body(): others.append({"etype": e.get("etype"), "pos": str(e.global_position), "script": str(e.get_script().resource_path) if e.get_script() else ""})
+	print("PCPARITY_ARENA_ENEMIES ", JSON.stringify(others))
+	check(en_field >= 1 and others.is_empty() and g.get("spawnHoles") is Array and g.spawnHoles.is_empty(), "B01_field_enemies_cleared_ens_empty:%d" % main.world.get_enemies().size())
 	check(boss_stun_seen >= 88.0, "B01_intro_boss_stunned90:%s" % boss_stun_seen)
 	check(int(entry.snapshot().counters.intro_hits) == 1 and int(entry.snapshot().counters.arena_swaps) == 1, "B01_intro_once_swap_once")
 
+	# ── B-02: 자연 AI 900틱(플레이어 정지) — 보스 몸통 충돌 34349·패턴 진행(겹침으로 d<20 정지 회귀 방지) ──
+	var core0: Node = main.native_demo_boss_core
+	var hist := {}
+	var min_d := 1e9
+	var stall := 0
+	var max_stall := 0
+	for i in range(900):
+		_keep_alive()
+		await physics_frame
+		var st: String = str(core0.E.get("s", ""))
+		hist[st] = int(hist.get(st, 0)) + 1
+		if core0.E.get("alive") == true:
+			var dd: float = main.player.global_position.distance_to(Vector2(core0.E.x, core0.E.y))
+			min_d = minf(min_d, dd)
+			stall = stall + 1 if st == "idle" and dd < 20.0 else 0
+			max_stall = maxi(max_stall, stall)
+	var attack_states := 0
+	for k in hist.keys():
+		if str(k).begins_with("boss"): attack_states += 1
+	print("PCPARITY_AI ", JSON.stringify({"hist": hist, "min_d": min_d, "max_idle_overlap_stall": max_stall, "body_push": core0.counters.body_push}))
+	check(int(core0.counters.body_push) > 0 and max_stall < 60, "B02_body_collision_no_overlap_stall:%d" % max_stall) # 분출(erupt) 등은 원본도 순간 d≈0
+	check(attack_states >= 3 and int(hist.get("idle", 0)) < 700, "B02_patterns_progress:%s" % JSON.stringify(hist))
 	# ── 보스 처치 → 출구 → 클리어 (fixture: 정본 E 수치만) ──
 	E.hp = 30.0; E.eShield = 0.0; E._revPts = 10.0; E.reviveIframes = 0.0; E._bossPhase = 4; E.deaths = 1
 	var core: Node = main.native_demo_boss_core

@@ -8,7 +8,7 @@ extends Node
 ##                 3 페이드인 50 → 4 입장 연출 100(첫 2틱: 보스 stunned90·reviveIframes110·shake28·flash·chroma·slowMo60·링 파티클·포효)
 ##     41816–41818 G._crT 30 호출마다 1회 무거운 로직
 ##     41893–41925 출구 타일 = 보스방 문: (stage0 && !_fbDone) 앵글러 문구 / (!_bossUnlocked) 봉인 문구+펫 / 아니면 loadPhase=1
-##   _enterBossArena 30749–30839 중 PC 부분: 잔여 적 → _stageKills, ens=[], hitStop/slowMo 0, P.iframes90·kb0,
+##   _enterBossArena 30749–30839 중 PC 부분: 잔여 적 → _stageKills, ens=[], spawnHoles/rifts=[], hitStop/slowMo 0, P.iframes90·kb0,
 ##                 G._crT=0, 봉인 연출(파티클 32·shake 8·'⚠ 봉인됨!')
 ##   hurtP 43420 G._bossLoadPhase>0 이면 무적 — PC 피해 경로(보스 코어·앵글러 owner)가 이 값을 읽는다.
 ##   렌더 52089–52127 로딩 오버레이(검정 페이드 + 보라 안개 + 장식선 + 보스 이름 + 부제) — 같은 수치로 그린다.
@@ -189,6 +189,9 @@ func _enter_arena(p: Node, spawn_options: Dictionary) -> Dictionary:
 			survivors += 1
 	_g_write({"_stageKills": _n(g.get("_stageKills")) + survivors}) # G._stageKills=(G._stageKills||0)+_survCnt
 	main.world.clear_native_enemies_for_intro()
+	# 30785 G.spawnHoles=[];G.rifts=[] — 소환굴 시스템이 G 와 같은 배열을 들고 있으므로 제자리에서 비운다(발동 중인 굴의 지연 소환 차단).
+	for key in ["spawnHoles", "rifts"]:
+		if g.get(key) is Array: (g[key] as Array).clear()
 	var receipt: Dictionary = encounter.enter(p, spawn_options if not spawn_options.is_empty() else _enter_options)
 	if receipt.get("status") != "READY":
 		return receipt

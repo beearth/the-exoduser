@@ -46,10 +46,11 @@ var counters := {"ticks": 0, "alive_ticks": 0, "dead_ticks": 0, "prefix": 0, "pr
 	"presentation_ported": 0, "presentation_unported": 0, "boss_hits": 0, "boss_damage": 0, "deaths": 0,
 	"immediate_revives": 0, "fallback_revives": 0, "final_deaths": 0, "projectile_contacts": 0,
 	"projectile_hits": 0, "rhythm_volleys": 0, "orb_volleys": 0, "rng_prefix": 0, "not_ready": 0,
-	"queue_hits": 0, "mines_spawned": 0, "summon_unported": 0, "projectile_reflected": 0}
+	"queue_hits": 0, "mines_spawned": 0, "summon_unported": 0, "projectile_reflected": 0, "body_push": 0}
 var _unported: Dictionary = {}
 var _last_contact: Dictionary = {}
 var _death_exec: Object
+var _dead_sync_pending := false
 var _mines: Array = []
 var _q_sp := 0.0
 
@@ -151,6 +152,7 @@ func advance_boss_tick(caller: Node, ticks: float) -> void:
 
 func _tick_alive(sp: float) -> void:
 	counters.alive_ticks += 1
+	_push_player_out_of_body()
 	# 34395–34398 오라·둔화·다리부상·가시덫 (오라 원천 적은 아레나에 없음)
 	E._aAtkM = 1
 	E._aSpdM = 1
@@ -203,9 +205,32 @@ func _tick_alive(sp: float) -> void:
 			_error = "actor_not_ready:" + str(snap.reason)
 	_last_frame = frame
 
+## 34348–34349 update(): 보스 몸통 충돌 — 플레이어가 보스를 통과 못 하게 밀어내기(적 루프 34393 보다 먼저).
+## P.hp>0 && P.s!=='charge' && P.s!=='bladeDash', d<e.r+P.r && d>0 → P 를 (e.r+P.r−d) 만큼 바깥으로, canMv(P.r) 일 때만.
+## (PC-BOSS-PARITY: 미이식 상태에서는 보스가 플레이어 위로 겹쳐 d<20 → _bossAI 38386 에서 패턴 시작이 막혔다.)
+func _push_player_out_of_body() -> void:
+	var pl: Node2D = main.player
+	if float(pl.hp) <= 0.0 or str(pl.state) in ["charge", "bladeDash"]:
+		return
+	var bx: float = _n(E.x)
+	var by: float = _n(E.y)
+	var d: float = pl.global_position.distance_to(Vector2(bx, by))
+	var coll: float = _n(E.r) + float(pl.radius)
+	if d < coll and d > 0.0:
+		var a: float = atan2(pl.global_position.y - by, pl.global_position.x - bx)
+		var to := Vector2(pl.global_position.x + cos(a) * (coll - d), pl.global_position.y + sin(a) * (coll - d))
+		if main.world.can_move(to, float(pl.radius)):
+			pl.global_position = to
+			counters.body_push += 1
+
 ## 사망 후 34493–34535: _reviveTimer 소진 → 2차 판정(순수 모듈 native_demo11_boss_death.gd)
 func _tick_dead(sp: float) -> void:
 	counters.dead_ticks += 1
+	# PC-BOSS-PARITY: hurtE 사망 직후 첫 사망 틱에 actor 스냅샷도 사망 상태로 맞춘다(원본은 같은 e 객체라 즉시 반영 —
+	# 보스 뷰·HP 바가 actor._enemy 를 읽으므로, 미동기화 시 죽은 보스가 계속 그려졌다).
+	if _dead_sync_pending:
+		_dead_sync_pending = false
+		_push_actor_sync()
 	if _n(E.get("_reviveTimer")) <= 0: return
 	_death_exec = null
 	var r: Dictionary = DEATH.fallback_tick(E, sp, self)
@@ -700,6 +725,7 @@ func resolve_boss_death(_b: Node, executor: Object, _ctx: Dictionary) -> Diction
 		return {"ok": true, "revived": true, "pending": false}
 	var r2: Dictionary = DEATH.fallback_reserve(E, self)
 	_death_exec = null
+	_dead_sync_pending = true
 	if r2.get("ok") != true: return {"ok": false, "reason": r2.get("reason")}
 	return {"ok": true, "revived": false, "pending": r2.get("pending") == true}
 
