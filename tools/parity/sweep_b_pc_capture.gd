@@ -80,8 +80,7 @@ func run_lobby() -> void:
 	screen._open_name(); await secs(0.8); await shot("020_name")
 	screen._create(); await secs(0.6); await shot("021_name_empty")
 	screen.name_input.text = "<>"; screen._create(); await secs(0.6); await shot("022_name_special")
-	screen.name_input.text = "패리티"; screen._create.call_deferred() if false else null
-	screen.creation_error.text = ""; screen._layout_name_error(); await secs(0.4); await shot("023_name_filled")
+	screen.name_input.text = "패리티"; await secs(0.3); await shot("023_name_filled") # 웹 page.fill: 오류문은 다음 제출까지 유지
 	screen._create(); await secs(0.5)
 	# 웹과 같은 상태: 생성 후 다시 연 로비(선택 없음)
 	screen.queue_free(); await secs(0.3)

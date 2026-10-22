@@ -227,33 +227,53 @@ func _build() -> void:
 	var vignette:=ColorRect.new();vignette.size=Vector2(1920,1080);vignette.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var vig:=ShaderMaterial.new();vig.shader=preload("res://shaders/parity_ui_06_vignette.gdshader");vignette.material=vig;_form.add_child(vignette)
 	_box(Rect2(19,16,1882,1048),Color.TRANSPARENT,Color(.72,.56,.27,.22),_form)
-	var header:=_label(tr_text("캐릭터 선택","Character Select"),Vector2(0,42),1920,38,_form,true);header.add_theme_font_override("font",Fonts.stack("font",700));header.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;header.add_theme_color_override("font_color",Color("e8c87a"))
-	var hint:=_label(tr_text("지옥에 강림할 화신을 선택하라","Choose your incarnation"),Vector2(0,98),1920,16,_form);hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	var cls:=_label("",Vector2(72,324),320,14,_form);cls.text=UI.text("전사");detail_labels.append(cls);cls.add_theme_color_override("font_color",Color("c89a4a"))
-	detail_labels.append(_label(tr_text("엑소듀서 전사","WARRIOR"),Vector2(72,354),340,34,_form,true))
-	detail_labels.append(_label(tr_text("거대검을 휘두르는 흑철의 전사","A black-iron warrior wielding a greatsword"),Vector2(72,430),320,15,_form))
+	# index884–1000 #charVisualPop 실측(1920×1080): h2 Cinzel Decorative 38.4/700 ls .14em #e8c87a, 부제 Noto 16 ls .06em rgb(154,132,104).
+	var header:=_css_label("",Rect2(0,42,1920,51),38.4,Color(232/255.0,200/255.0,122/255.0),"disp_title",700,5.376,_form);UI.bind(header,"캐릭터 선택");header.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;header.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
+	header.add_theme_color_override("font_shadow_color",Color(0,0,0,.9));header.add_theme_constant_override("shadow_offset_y",2)
+	var hint:=_css_label("",Rect2(0,99,1920,22.4),16,Color(154/255.0,132/255.0,104/255.0),"font",400,.96,_form);UI.bind(hint,"지옥에 강림할 화신을 선택하라");hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	# 좌: #csClsName 13.6 ls .34em rgb(200,154,74) / #csCharName Nanum 33.6/700 rgb(242,230,204) / #csCharDesc Noto 15.2 rgb(183,164,136)
+	var cls:=_css_label("",Rect2(72,326.5,320,18),13.6,Color(200/255.0,154/255.0,74/255.0),"disp_title",400,4.624,_form);cls.text=UI.text("전사");detail_labels.append(cls)
+	var char_name:=_css_label("",Rect2(72,358.5,340,52.6),33.6,Color(242/255.0,230/255.0,204/255.0),"hell",700,.672,_form);UI.bind(char_name,"엑소듀서 전사")
+	char_name.add_theme_color_override("font_shadow_color",Color.BLACK);char_name.add_theme_constant_override("shadow_offset_y",2);detail_labels.append(char_name)
+	var char_desc:=_css_label("",Rect2(72,431.1,320,24.3),15.2,Color(183/255.0,164/255.0,136/255.0),"font",400,0.0,_form);UI.bind(char_desc,"거대검을 휘두르는 흑철의 전사");detail_labels.append(char_desc)
 	detail_thumb=_image("res://assets/ui/demo_lobby/charselect/portrait_warrior.png",Rect2(72,492,150,200),_form)
-	var traits:=_box(Rect2(1524,340,324,326),Color(.05,.03,.025,.85),GOLD,_form)
-	var heading:=_label(tr_text("플레이 방식","Playstyle"),Vector2(22,26),296,16,traits,true);heading.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	# 우: .cs-frame-box (1524,339.9,324,326.2) 배경 rgba(23,20,23,.92)→rgba(11,11,13,.96), 테두리 rgba(140,105,60,.42)
+	# .cs-frame-box: linear-gradient(180deg,rgba(32,23,16,.62),rgba(12,8,6,.72)) 반투명 — 배경 장미창이 비쳐야 한다. inset 0 0 0 3px rgba(0,0,0,.42)
+	var traits:=_box(Rect2(1524,339.9,324,326.2),Color(22/255.0,15.5/255.0,11/255.0,.67),Color(140/255.0,105/255.0,60/255.0,.42),_form)
+	var traits_style: StyleBoxFlat=traits.get_theme_stylebox("panel");traits_style.set_corner_radius_all(3);traits_style.shadow_color=Color(0,0,0,.5);traits_style.shadow_size=13;traits_style.shadow_offset=Vector2(0,8)
+	var traits_inset:=Panel.new();traits_inset.position=Vector2(1,1);traits_inset.size=Vector2(322,324.2);traits_inset.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	var inset_style:=StyleBoxFlat.new();inset_style.draw_center=false;inset_style.border_color=Color(0,0,0,.42);inset_style.set_border_width_all(3);traits_inset.add_theme_stylebox_override("panel",inset_style);traits.add_child(traits_inset)
+	var heading:=_css_label("",Rect2(23,27,278,23),16,Color(228/255.0,213/255.0,184/255.0),"disp_title",400,.96,traits);UI.bind(heading,"플레이 방식");heading.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	var titles=["근접 화신","흑철의 방어","파멸의 일격"]
 	var descriptions=["거대검을 휘두르는 정면 돌파형 전투가입니다.","검은 갑옷으로 적의 공세를 견디고 되받아칩니다.","느리지만 치명적인 광역 참격을 내리꽂습니다."]
 	for i in 3:
-		_box(Rect2(22,77+i*80,34,34),Color("302014"),Color("a0784680"),traits)
-		_label(["⚔","◈","✦"][i],Vector2(22,74+i*80),34,18,traits).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-		detail_traits.append(_label(UI.text(titles[i]),Vector2(69,72+i*80),245,15,traits,true));detail_traits[-1].add_theme_font_override("font",Fonts.stack("font",700))
-		var desc:=_label(UI.text(descriptions[i]),Vector2(69,98+i*80),232,13,traits);desc.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;desc.set_deferred("size",Vector2(232,42));desc.add_theme_font_override("font",Fonts.stack("font",400));detail_traits.append(desc)
+		var y0:=77.0+i*79.1
+		var ti:=Panel.new();ti.position=Vector2(23,y0);ti.size=Vector2(34,34);ti.mouse_filter=Control.MOUSE_FILTER_IGNORE
+		var ts:=StyleBoxFlat.new();ts.bg_color=Color(78/255.0,52/255.0,27/255.0,.57);ts.border_color=Color(160/255.0,120/255.0,70/255.0,.5);ts.set_border_width_all(1);ts.set_corner_radius_all(6);ti.add_theme_stylebox_override("panel",ts);traits.add_child(ti)
+		# .ti-g: 원문 이모지 + grayscale(.85) sepia(.85) 근사(청동 단색 변조)
+		var glyph:=_css_label(str(character_source[0].traits[i][0]),Rect2(0,5,34,24),16.8,Color.WHITE,"font",400,0.0,ti);glyph.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;glyph.name="TraitGlyph";glyph.material=_sepia_material()
+		detail_traits.append(_css_label(UI.text(titles[i]),Rect2(70,y0,231,21),14.72,Color(226/255.0,207/255.0,166/255.0),"font",700,.2944,traits))
+		var desc:=_css_label(UI.text(descriptions[i]),Rect2(70,y0+23,231,38.1),13.12,Color(143/255.0,128/255.0,104/255.0),"font",400,0.0,traits);desc.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;desc.custom_minimum_size=Vector2(231,0);desc.size=Vector2(231,38.1);desc.add_theme_constant_override("line_spacing",2);detail_traits.append(desc)
 	var portraits=["emblem_warrior.png","emblem_silvertail.png","emblem_hellgunner.png","emblem_transmuter.png","emblem_spearmage.png"]
 	for i in 5:
-		var b:=_button("",Rect2(710+i*108,864,70,70),_select_character.bind(i),_form)
-		var round_style:=StyleBoxFlat.new();round_style.bg_color=Color("17100b");round_style.border_color=Color("c59c65") if i==0 else GOLD;round_style.set_border_width_all(2);round_style.set_corner_radius_all(35);b.add_theme_stylebox_override("normal",round_style);b.add_theme_stylebox_override("focus",round_style);b.add_theme_stylebox_override("hover",round_style)
-		var icon:=_image("res://assets/ui/parity_ui_05/"+portraits[i],Rect2(6,6,58,58),b);icon.material=_portrait_circle();icon.modulate=Color.WHITE if i==0 else Color(.35,.35,.35)
-		var caption:=_label(UI.text(["전사","실버테일","헬거너","변성술사","창법사"][i]),Vector2(-19,79),108,13,b);caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		# .cs-ico (713+106i,863) 70px 링 + .lbl 13.12/700 + .cs-soon 11.52
+		var b:=CharIcon.new();b.position=Vector2(713+i*106,863);b.size=Vector2(70,70);b.focus_mode=Control.FOCUS_ALL;b.locked=i>0
+		for state in ["normal","hover","pressed","focus","disabled"]:b.add_theme_stylebox_override(state,StyleBoxEmpty.new())
+		b.pressed.connect(_select_character.bind(i));_form.add_child(b)
+		var icon:=_image("res://assets/ui/parity_ui_05/"+portraits[i],Rect2(0,0,70,70),b);icon.material=_portrait_circle();icon.name="Emblem"
+		icon.texture=_downscaled(icon.texture,70) # 원본 대형 PNG를 밉맵 없이 축소하면 점 무늬가 생겨 브라우저처럼 고품질 축소본을 쓴다
 		if i>0:
-			_image("res://assets/ui/parity_ui_05/coming_soon_chains_v2.png",Rect2(0,0,70,70),b)
-			var soon:=_label(UI.text("출시 준비 중"),Vector2(-19,106),108,11,b);soon.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+			var chains:=_image("res://assets/ui/parity_ui_05/coming_soon_chains_v2.png",Rect2(0,0,70,70),b);chains.texture=_downscaled(chains.texture,70);chains.material=_portrait_circle() # .cs-ico-ring overflow:hidden 원형 클립
+		var caption:=_css_label(UI.text(["전사","실버테일","헬거너","변성술사","창법사"][i]),Rect2(-19,79,108,19),13.12,Color(127/255.0,113/255.0,89/255.0),"font",700,.5248,b);caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;caption.name="Caption"
+		caption.add_theme_color_override("font_shadow_color",Color.BLACK);caption.add_theme_constant_override("shadow_offset_y",1)
+		if i>0:
+			var soon:=_css_label(UI.text("출시 준비 중"),Rect2(-19,107,108,16),11.52,Color(181/255.0,158/255.0,125/255.0),"font",400,.4608,b);soon.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 		character_buttons.append(b)
-	_button(tr_text("취소","Cancel"),Rect2(580,1006,190,44),_close_form,_form)
-	detail_create=_button(tr_text("생성","Create"),Rect2(1100,1006,240,44),_open_name,_form,true)
+	# #visualCancelBtn (580,1005,98.6,44) 투명·1px rgba(150,100,60,.5) r4 / #visualCreateBtn (1206.6,1004,133.4,46) 적색 그라디언트·1px rgb(168,106,44)
+	var cancel_button:=_button(tr_text("취소","Cancel"),Rect2(580,1005,98.6,44),_close_form,_form)
+	_restyle_button(cancel_button,Color(0,0,0,0),Color(0,0,0,0),Color(150/255.0,100/255.0,60/255.0,.5),Color(168/255.0,138/255.0,100/255.0),"font",400,14.72,.736)
+	detail_create=_button(tr_text("생성","Create"),Rect2(1206.6,1004,133.4,46),_open_name,_form,true)
+	_restyle_button(detail_create,Color(150/255.0,40/255.0,30/255.0,.92),Color(90/255.0,20/255.0,16/255.0,.95),Color(168/255.0,106/255.0,44/255.0),Color(244/255.0,228/255.0,184/255.0),"disp_title",400,16.8,2.688)
 	detail_lock=_image("res://assets/ui/parity_ui_05/coming_soon_chains_v2.png",Rect2(740,248,440,440),_form);detail_lock.hide()
 	_box(Rect2(114,448,212,62),Color("0c0a0af0"),Color("80705a"),detail_lock)
 	_label(UI.text("출시 준비 중"),Vector2(114,448),212,24,detail_lock).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
@@ -325,20 +345,64 @@ class WebEdge extends Control:
 			var ring:=StyleBoxFlat.new();ring.draw_center=false;ring.border_color=Color("c9a961");ring.set_border_width_all(2);ring.set_corner_radius_all(radius);ring.expand_margin_left=2;ring.expand_margin_right=2;ring.expand_margin_top=2;ring.expand_margin_bottom=2
 			draw_style_box(ring,Rect2(Vector2.ZERO,size))
 
+static func _downscaled(tex: Texture2D,px: int) -> Texture2D:
+	if tex==null:return null
+	var img: Image=tex.get_image()
+	if img==null:return tex
+	img=img.duplicate();img.resize(px,px,Image.INTERPOLATE_LANCZOS)
+	return ImageTexture.create_from_image(img)
+## .ti-g: grayscale(.85) sepia(.85) saturate(1.12) brightness(.96) hue-rotate(-6deg) 근사
+static func _sepia_material() -> ShaderMaterial:
+	var sh:=Shader.new();sh.code="shader_type canvas_item;varying vec4 vmod;void vertex(){vmod=COLOR;}void fragment(){vec4 c=texture(TEXTURE,UV)*vmod;float l=dot(c.rgb,vec3(.2126,.7152,.0722));vec3 g=mix(c.rgb,vec3(l),.85);vec3 sp=vec3(dot(g,vec3(.393,.769,.189)),dot(g,vec3(.349,.686,.168)),dot(g,vec3(.272,.534,.131)));COLOR=vec4(mix(g,sp,.85)*.96,c.a);}"
+	var m:=ShaderMaterial.new();m.shader=sh;return m
+func _restyle_button(b: Button,top: Color,bottom: Color,border: Color,ink: Color,stack: String,weight: int,px: float,spacing: float) -> void:
+	var font: FontVariation=Fonts.stack(stack,weight).duplicate();font.spacing_glyph=roundi(spacing)
+	b.add_theme_font_override("font",font);b.add_theme_font_size_override("font_size",roundi(px))
+	for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color","font_disabled_color"]:b.add_theme_color_override(key,ink)
+	for state in ["normal","hover","pressed","focus","disabled"]:
+		var st:=StyleBoxFlat.new();st.bg_color=top.lerp(bottom,.5);st.border_color=border;st.set_border_width_all(1);st.set_corner_radius_all(4);st.anti_aliasing=true
+		if state=="hover":st.bg_color=st.bg_color.lightened(.08)
+		b.add_theme_stylebox_override(state,st)
+
+class CharIcon extends Button:
+	var selected:=false
+	var locked:=false
+	func _ready() -> void:
+		focus_entered.connect(queue_redraw);focus_exited.connect(queue_redraw)
+	func _draw() -> void:
+		# .cs-ico-ring box-shadow: 0 0 0 2px #0a0806, 0 0 0 4px #3d3024(선택 #7a2420), 0 0 0 5px #17110d(선택 #2c0e0c) + 선택 붉은 광
+		var c:=size*.5;var r:=size.x*.5
+		if selected:
+			for k in 6:draw_circle(c,r+5+k*3,Color(205/255.0,45/255.0,32/255.0,.10-k*.015))
+		draw_circle(c,r+5,Color("2c0e0c") if selected else Color("17110d"))
+		draw_circle(c,r+4,Color("7a2420") if selected else Color("3d3024"))
+		draw_circle(c,r+2,Color("0a0806"))
+		draw_circle(c,r,Color("1a1513"))
+		if has_focus() and selected:
+			# :focus-visible outline 2px #ead6a5, offset 6, radius 4 (아이콘+라벨 98px 높이)
+			var sb:=StyleBoxFlat.new();sb.draw_center=false;sb.border_color=Color("ead6a5");sb.set_border_width_all(2);sb.set_corner_radius_all(4)
+			draw_style_box(sb,Rect2(-8,-8,size.x+16,98+16))
+
 class SourceOrnaments extends Control:
 	func _draw() -> void:
 		var gold:=Color(.784,.588,.275,.55)
 		for pair in [[Vector2(18,60),Vector2(18,14),Vector2(64,14)],[Vector2(1856,1066),Vector2(1902,1066),Vector2(1902,1020)]]:
 			draw_polyline(PackedVector2Array(pair),gold,2,true)
 		for x in [688,1112]:draw_line(Vector2(x,70),Vector2(x+120,70),Color(.784,.588,.275,.5),1,true)
-		for rect in [Rect2(70,490,154,204),Rect2(1522,338,328,330)]:
+		# .cnr 2px rgba(205,155,75,.7) top/left -2px: 썸네일 16px, .cs-frame-box 20px
+		var cnr:=Color(205/255.0,155/255.0,75/255.0,.7)
+		for pair in [[Rect2(70,490,154,204),16.0],[Rect2(1522,337.9,328,330.2),20.0]]:
+			var rect: Rect2=pair[0];var arm: float=pair[1]
 			for corner in [rect.position,Vector2(rect.end.x,rect.position.y),rect.end,Vector2(rect.position.x,rect.end.y)]:
 				var dx:=1 if corner.x==rect.position.x else -1
 				var dy:=1 if corner.y==rect.position.y else -1
-				draw_line(corner,corner+Vector2(16*dx,0),gold,2,true);draw_line(corner,corner+Vector2(0,16*dy),gold,2,true)
+				var c2: Vector2=corner+Vector2(dx,dy) # 2px 선 중심
+				draw_line(c2-Vector2(dx,0),c2+Vector2((arm-1)*dx,0),cnr,2);draw_line(c2-Vector2(0,dy),c2+Vector2(0,(arm-1)*dy),cnr,2)
 		draw_line(Vector2(72,408),Vector2(128,408),gold,2,true)
 		draw_line(Vector2(1546,401),Vector2(1826,401),Color(.588,.431,.235,.35),1,true)
 		draw_circle(Vector2(1686,340),14,Color("21160d"));draw_arc(Vector2(1686,340),14,0,TAU,48,gold,1,true)
+		var star_font: Font=preload("res://scripts/native_ui_fonts.gd").stack("font",400)
+		draw_string(star_font,Vector2(1686-7,340+5.5),"✦",HORIZONTAL_ALIGNMENT_CENTER,14,14,Color(224/255.0,176/255.0,85/255.0)) # .cs-crest ✦ 14.4px #e0b055
 
 class LockMark extends Control:
 	func _draw() -> void:
@@ -348,7 +412,7 @@ class LockMark extends Control:
 		draw_line(Vector2(14,16),Vector2(14,23),Color("dfd6c2"),2,true)
 
 func _close_form() -> void:
-	_form.hide()
+	_form.hide();_set_char_select_content(true)
 	for b in cards: b.focus_mode=Control.FOCUS_ALL
 	start.focus_mode=Control.FOCUS_ALL
 	erase.focus_mode=Control.FOCUS_ALL
@@ -360,7 +424,7 @@ func _choose(slot: int) -> void:
 		for b in cards: b.focus_mode=Control.FOCUS_NONE
 		start.focus_mode=Control.FOCUS_NONE
 		erase.focus_mode=Control.FOCUS_NONE
-		_form_slot=slot; _select_character(0); creation_error.text=""; _form.show(); _name_form.hide(); name_input.clear(); character_buttons[0].grab_focus()
+		_form_slot=slot; _set_char_select_content(true); _select_character(0); creation_error.text=""; _form.show(); _name_form.hide(); name_input.clear(); character_buttons[0].grab_focus()
 	else: _form.hide()
 func _select_character(index: int) -> void:
 	character_index=index
@@ -370,9 +434,13 @@ func _select_character(index: int) -> void:
 	for i in 3:
 		detail_traits[i*2].text=UI.text(ch.traits[i][1]);detail_traits[i*2+1].text=UI.text(ch.traits[i][2])
 	for i in character_buttons.size():
-		var button:=character_buttons[i];button.pivot_offset=Vector2(35,35);button.scale=Vector2.ONE*(1.1 if i==index else 1.0)
-		var edge: StyleBoxFlat=button.get_theme_stylebox("normal").duplicate();edge.border_color=Color("b64b36") if i==index else GOLD
-		for state in ["normal","focus","hover"]:button.add_theme_stylebox_override(state,edge)
+		var button: CharIcon=character_buttons[i];button.selected=i==index;button.queue_redraw()
+		var emblem: TextureRect=button.get_node("Emblem")
+		# .cs-ico-ring img: 선택 none / 미선택 grayscale(.5) brightness(.62) / 잠김 grayscale(1) brightness(.35)
+		var emblem_mat: ShaderMaterial=emblem.material
+		emblem_mat.set_shader_parameter("gray",1.0 if button.locked else (0.0 if i==index else .5))
+		emblem_mat.set_shader_parameter("bright",.35 if button.locked else (1.0 if i==index else .62))
+		(button.get_node("Caption") as Label).add_theme_color_override("font_color",Color(232/255.0,200/255.0,122/255.0) if i==index else Color(127/255.0,113/255.0,89/255.0))
 	detail_create.disabled=index!=0;detail_create.text=UI.text("출시 준비 중" if index!=0 else "생성");detail_lock.visible=index!=0
 	creation_error.text=""
 func _create() -> void:
@@ -685,9 +753,20 @@ func _begin_movie(kind: String) -> CanvasLayer:
 	return _movie
 
 func _open_name() -> void:
+	# index _visualConfirm: _closeVisualSelect() 후 #createModal — 이름 창은 캐릭터 선택 무대가 아니라 로비 위에 뜬다.
+	_set_char_select_content(false)
 	creation_error.text="";_layout_name_error();_name_form.show();name_input.grab_focus()
+func _set_char_select_content(shown: bool) -> void:
+	(_form.get_theme_stylebox("panel") as StyleBoxFlat).draw_center=shown # #charVisualPop 배경판도 닫힌다
+	for child in _form.get_children():
+		if child==_name_form or not child is CanvasItem:continue
+		if not shown:
+			child.set_meta("name_prev_visible",child.visible);child.visible=false
+		elif child.has_meta("name_prev_visible"):
+			child.visible=bool(child.get_meta("name_prev_visible"));child.remove_meta("name_prev_visible")
 func _portrait_circle() -> ShaderMaterial:
-	var shader:=Shader.new();shader.code="shader_type canvas_item;void fragment(){vec4 c=texture(TEXTURE,UV);COLOR=vec4(c.rgb,c.a*step(length(UV-vec2(.5)),.5))*COLOR;}"
+	# fragment COLOR 입력에 이미 텍스처가 곱해져 있으므로 modulate는 vertex에서 따로 받는다. gray/bright = CSS grayscale()/brightness()
+	var shader:=Shader.new();shader.code="shader_type canvas_item;uniform float gray=0.0;uniform float bright=1.0;varying vec4 vmod;void vertex(){vmod=COLOR;}void fragment(){vec4 c=texture(TEXTURE,UV);float l=dot(c.rgb,vec3(.2126,.7152,.0722));vec3 rgb=mix(c.rgb,vec3(l),gray)*bright;COLOR=vec4(rgb,c.a*step(length(UV-vec2(.5)),.5))*vmod;}"
 	var material:=ShaderMaterial.new();material.shader=shader;return material
 
 func _layout_name_error() -> void:
