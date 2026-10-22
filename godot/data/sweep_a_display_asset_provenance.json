@@ -1,0 +1,1620 @@
+{
+  "source_snapshot_sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "method": "Exact original browser Canvas2D function execution; resource packing outside gameplay",
+  "assets": [
+    {
+      "path": "godot/assets/player_source_relief/silvertail/east.res",
+      "sha256": "2bdbd22e13095556089b305423466f760ca10e1cb283879f195dfe67bb95ba1b",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/silvertail/north-east.res",
+      "sha256": "19648b331467a667be07d24a9e9f8bfbf21fb2da8ae4a84d3e60e626199ebbf3",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/silvertail/north-west.res",
+      "sha256": "09b80498057975a1812576d951e076ef96a5d6b4b62a14bf245a18814a69451f",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/silvertail/north.res",
+      "sha256": "25f4fc80916ad1f75c41fa80e3cafdade6fd9e3ddcbe6aa7b7bb9296d7ee439f",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/silvertail/south-east.res",
+      "sha256": "6f8f8bfb441424f608a4675e0941addda010bf1a5285e4d30c56fd703463fc2c",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/silvertail/south-west.res",
+      "sha256": "ee375213a1e718a7e56c7395b7952cdabb784137a8f761ea048ef8051f030738",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/silvertail/south.res",
+      "sha256": "d190e372d86a54dae439cc5d4b51fe0b280b693b5188baf3afbf1cb1a6a4ff69",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/silvertail/west.res",
+      "sha256": "17bead3dbc5e901f04dbbcfc0262a419e46691a51fd54350aa3f5f6016ff513a",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/warrior/east.res",
+      "sha256": "18720fa72418b39ff1b1ea327785d1cf69129bd0201b7993c4a86fd55b863126",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/warrior/north-east.res",
+      "sha256": "cc1f6c4a02c8dfd519af9c08265c7da6599c7b9561a8b21196cf8bd1f10026ca",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/warrior/north-west.res",
+      "sha256": "01f990a5eac19232fad6e74c67600f9ff343d646022605bd6b3a9b1a727e4850",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/warrior/north.res",
+      "sha256": "329cb71a0e43b9bdd3da2330dfa06ea2336a33511887cb4fe7d403233611bdbd",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/warrior/south-east.res",
+      "sha256": "0698fb3507d8c0d23cce2adfa986cc46fe8022aa22654ecb936f7bd7d9ba32c8",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/warrior/south-west.res",
+      "sha256": "0a0ae0250537a7ac39c30a40ff643e4aef546d207d9dd525e5659d4050367258",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/warrior/south.res",
+      "sha256": "9e19b1bd1febed9e30d6ea603127393c1f313657c49c48a9eae2762c19dd8a56",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_relief/warrior/west.res",
+      "sha256": "e44a7a0ace37aa5aac001a7372aa135fbf53cb54c2364ea033fbe6936ef6a303",
+      "source_function": "_shadePlayerPixels",
+      "source_lines": "G10518-10546"
+    },
+    {
+      "path": "godot/assets/player_source_ink/player_attack-bat-v1_bright.res",
+      "sha256": "32a0d9265d14b5775d20f01b7f7dae4f4bdf558584d3b2d97e5fc3ec3948cf76",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/player_attack-bat-v1_outline.res",
+      "sha256": "272509920f871f60c15f035b20eee398292c5d3692c40ec6d36e1abc27cd5b01",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/player_dash-flight-v1_bright.res",
+      "sha256": "e7fd66732f4e547234b2dc8553a233cb7f84ffc6b250eabad5beb6ccc46a6fa7",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/player_dash-flight-v1_outline.res",
+      "sha256": "33a33c54c6b06ae9b80f6a867efdf5fbf90d79531c9ef5e152f5383eb8809d9b",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/player_silvertail_attack-spin-v2_bright.res",
+      "sha256": "5e3647079c78faefd86cc80ef3fa4021df3ce6d71252958d673aaa12397d0221",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/player_silvertail_attack-spin-v2_outline.res",
+      "sha256": "0dd0e6daa79bfa3fd51157493a18cb9d2deb330381f61a34092434a8a5ac1611",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/player_silvertail_dash-flight-v1_bright.res",
+      "sha256": "3215a4c4067e5997dcb847f3e6ec8a0b4efe98081c3864c4aae146a452272fde",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/player_silvertail_dash-flight-v1_outline.res",
+      "sha256": "78fcba5fab560074a337a78daa2164c17a03a5236da0b69aabcefdd04a986939",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_east_bright.res",
+      "sha256": "d912ad3e0d0f32a286d136573bffdf3cc204d170b9a435976c4501d75676a3cb",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_east_outline.res",
+      "sha256": "07491611df30df91d777610fee92f20b7637f46fcca51833785848912b34b32f",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_north-east_bright.res",
+      "sha256": "4a93556323d64d7e81316f4f5144671c9910ef28b4bab76744205d5901f0b8e2",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_north-east_outline.res",
+      "sha256": "0d089a1150cf9242b747b8bc757f0eb7aebe24b770bd28f37b3ebb3f5db44ccb",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_north-west_bright.res",
+      "sha256": "73f431297a5c3446fbfde71ca4e997edcc6a1bbf8ea011802a65f0cf646b7900",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_north-west_outline.res",
+      "sha256": "169cbf49db3620a2c5bc30efca0757d8709bfaa5fd2fdc68c872778b279a78e9",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_north_bright.res",
+      "sha256": "11badb4a384d9d5a093f49d9af52e3c12d190ad8717848403cbfbe01b6b67c77",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_north_outline.res",
+      "sha256": "d81618c08fdc50c0edd1833aaf17b5f814075e090988aee22014f51be79cc3f8",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_south-east_bright.res",
+      "sha256": "c109903a6af7e8af28a2411ee7f42d6516d545d29f807c77710e6156ad4b1a66",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_south-east_outline.res",
+      "sha256": "c44298e05ea419030d2aba4fce1c8fa5ff84f682c7ba62f911abb0ca558ed6b7",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_south-west_bright.res",
+      "sha256": "fb97b4cf144cc67a1b4d8dfb053a802e5c7e7c848ab677571049fd51c9fb96f7",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_south-west_outline.res",
+      "sha256": "580ff469d077301dcd99f2aa7d57d9e63e337871f885b60504e7bbc9ee1f8d1a",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_south_bright.res",
+      "sha256": "d582a0dde2dd3a8dfc21715a88ccdbd5f953280c2c9b44f941683fcc89212321",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_south_outline.res",
+      "sha256": "00b20954a331ad1055fe9bbbfc3bac60066d1396d014fc06cb3347e965bc7139",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_west_bright.res",
+      "sha256": "4d2fbadf2e9b9fcad043907675eba1f261687c378256e9fe9bdabbebbd4be010",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/silvertail_west_outline.res",
+      "sha256": "0f45cd5e365b9af339abfd9b72bef8416eb2a41ef74b18d3a379792a05eee0bb",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_east_bright.res",
+      "sha256": "6a12cea6e5c6e8e737d18c84956e55f61c2c6ae2eed36bbf9fd6a181a962545c",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_east_outline.res",
+      "sha256": "1de3672815fad148c948da4ea36a24fc7fb8d7fa15eb49ae851bace6da092d28",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_north-east_bright.res",
+      "sha256": "183ab393030878eefc4b390716beda91ee2210a6ab9b7f4bb4005f74ee413b04",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_north-east_outline.res",
+      "sha256": "b80f761baa83ca5cfcab29cbeb81ae11557dd96e85e4a15d2c8fd60da3921e1f",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_north-west_bright.res",
+      "sha256": "a4cacf82394504659977db37752245ff475b720f322600a5f0fca75b78c038d4",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_north-west_outline.res",
+      "sha256": "14e2864e4521c28d63dbe976993d8f90142d5eca54d79782e4b4b7b6e4b59d0d",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_north_bright.res",
+      "sha256": "ee07857217a04813fde65a598f2589c1dc12d6123ddf5356abca7695a8cb25a4",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_north_outline.res",
+      "sha256": "18e166a6c0221b717a0c5c15be9bf1959d427c70a0bf89dfe27a43412e46a559",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_south-east_bright.res",
+      "sha256": "db54770e1fa3467158d381c84bbe2dee66c566d7e8b9b1bbda83f9069c032fcd",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_south-east_outline.res",
+      "sha256": "3c01b7d38698d6604e21e975c0b4c4f9760470ec218d0bb902bf4888b9b36414",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_south-west_bright.res",
+      "sha256": "7c363903d35987a42cc65740da13ed52caa64789950327be5468f876b5ce9e15",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_south-west_outline.res",
+      "sha256": "3d3d3ae92213715f8d304fc3d0fffd16922597d5e6895b343003c49cb874990e",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_south_bright.res",
+      "sha256": "7937863cd8638a17266002bf9399d21fa8ee35419233ada4e1ac8488d7e6e72e",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_south_outline.res",
+      "sha256": "9c5654e7fc20b705bb60ced43b8858b01f3b52964ca73f8a33e3501e2adaeb47",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_west_bright.res",
+      "sha256": "f25fe25a9eeebad987fdbf06bd0aab2e06ae75a75d72d03c935940ffe88758f6",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/player_source_ink/warrior_west_outline.res",
+      "sha256": "0fbf4733087482bc6c89f026ad7482fca14895860f87b90bed76237968cebc09",
+      "source_function": "_buildOutlineAtlas",
+      "source_lines": "G10613/G58720-58737"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/beam_1.res",
+      "sha256": "63c80329f6152f140adb829f0f8ab94fc2b7beb536e66c95c9c0e38b4179a9cf",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/beam_2.res",
+      "sha256": "4b2945940d1066e9e1bba64ee5fb1e7eb29bb9383eb8954ba7734b20dc6a19e2",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__armor_phys_cutout.res",
+      "sha256": "9880bbd119fc3e6aa7b06bfd42548275f7466fac99536182ad4899c6c8f49b89",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__axe_phys_cutout.res",
+      "sha256": "48dfccc049cd15465b926cd985c2ab0d17ddda0d5b6151ced9dc011da324ac1d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__belt_phys_cutout.res",
+      "sha256": "f1d44d5e2e8963e724b27900754d910abde8e5095166ada053b386c0c4408efe",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__boots_phys_cutout.res",
+      "sha256": "9f966039ed4b28df8f102d9c4f3591ab8ff4fa2cbee7031653724a20a40b2d66",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__bracelet_phys_cutout.res",
+      "sha256": "b0ed9666b27c7f8986b7942fc09438b54553dc0448f3930cfc945b4e1a7a4625",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__cape_phys_cutout.res",
+      "sha256": "aa23842993640c802ad630d53f9f390fc5e8c25abf1ce575238dfbd066460afe",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__crossbow_phys_cutout.res",
+      "sha256": "b85a5f594c435954a67cdcec2a5c24f5457127bad467588e12a21c77373fe58c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__earring_phys_cutout.res",
+      "sha256": "6b3601ac0816b2c677006440e3e11074d599eb336b3cf9ec4a952e2677227e22",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__gloves_phys_cutout.res",
+      "sha256": "c14350f8e79a25e1a133901edbe53edd5868966fdf6e9c33f8b55ecac23bf80d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__helmet_phys_cutout.res",
+      "sha256": "d5afb5013d50783fdec046082a37be4d4de700cd0bdf34a13501a0058edb4101",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__necklace_phys_cutout.res",
+      "sha256": "4b49d27b4ea0e616c07c8b90a7c1fda70fc198d58fea7bab671b6c8751fc2439",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__pants_phys_cutout.res",
+      "sha256": "01eb80ec0df7f19022558395eb4098af6879a5f58010a3f831c725539ba7eeec",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__shield_phys_cutout.res",
+      "sha256": "4290fde2f451be3eb0e45176c30ede6f0deab53eb0d0a8287157571cff9409f1",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_cutouts__sword_phys_cutout.res",
+      "sha256": "f18870a5e7b08633f8811af6042694bcaaa50822598806acf4eea1b7c9b5a5e1",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__arcane_dark.res",
+      "sha256": "b9de8e7dff73dd46519836ed34d03c3cdef202a15c24e2786463fe69c480c3ab",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__arcane_earth.res",
+      "sha256": "14408d184ee35c55f540277d04b7f217d3d5df9792b05da77271c2e87194b2ce",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__arcane_holy.res",
+      "sha256": "d51f7453b337abeacf8d0db518117fe20d2758e9667c23de1b8c5984f189084c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__arcane_ice.res",
+      "sha256": "0baa48ad2ce65d21c7283773fcba04b18db9cfcef6ad33b66ba6ddf3bbb00c4c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__arcane_light.res",
+      "sha256": "12ad9f36cf2a78db564a265fc4a5002d87ae9b691637e6c4498c7240c5785109",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__arcane_phys.res",
+      "sha256": "e29df2caa3e50542a93ba27148513d4a8de948d7758168142367ba003f15ba78",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__arcane_phys__raw.res",
+      "sha256": "d22325b192d22b0707c578ce1ca7596c97bc435a944956aa621fee91e92d89ea",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__armor_dark.res",
+      "sha256": "cfb073d29acfcd2a6f92d889953a38f12a226ceb8f1c2fc5be8ed765c960d1a8",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__armor_earth.res",
+      "sha256": "8e107fb6d50a7deb42bea9b9a42501c4bb4ee6a1897683c85086cd7665340bab",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__armor_holy.res",
+      "sha256": "721231d30cd9d0f2bdcc909a6575784334c434ee6da0fa32b9f973a63f53d7db",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__armor_ice.res",
+      "sha256": "3d4f61e778bd3254f46f11c703c47a3e02a86e4c96c94f114a00aa5da98bda08",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__armor_light.res",
+      "sha256": "c3af18eccba8715c75f5261ffc68d08f8eb36a10f3e824f2cf5465e8e97abf98",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__armor_phys.res",
+      "sha256": "c2c17d36a87ac4b4b1a8bb9d99782928086300438e3c0ca0fa426e697547072e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__armor_phys__raw.res",
+      "sha256": "eebfb4d9eccfe013b7bff407412b1fc40edfc41b411b018b70dfd0c2c9706b55",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__axe_dark.res",
+      "sha256": "e444eb360354596700f3f5da7476ba5f9fb86f1bcf536d6fc2e0cd1a04c1f382",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__axe_earth.res",
+      "sha256": "d8158c116ddcfbb7bab3ada76dcdc30d9e2f6e18eb67960afd6001750f6be43f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__axe_holy.res",
+      "sha256": "d25b7ac0e4d1c5e723d8cea2bd968da86dc1da0b659d074dedd1cabf0a6428ab",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__axe_ice.res",
+      "sha256": "090b9d8951145b2bae2bfc7579828019c14cd79e37d1e34d1a1296af8089bb27",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__axe_light.res",
+      "sha256": "127028a4ab8e6ebab29d4a3f4f0751f8e93f5c2ab7b9667c857c96aeb9ec0b51",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__axe_phys.res",
+      "sha256": "cdcf8cd4f73a21cceccd2ce1673b4df15428b99933f63ab04bfd1c38d1e8ef46",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__axe_phys__raw.res",
+      "sha256": "62bd0f67fe83479abe4c6de27ac0a56b7c096fb0dd0294e95330b50c409a07f6",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__belt_dark.res",
+      "sha256": "1147adc1d4761ecaff21b48ad5f4490ead068bab1daa2e28040b4a6055081552",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__belt_earth.res",
+      "sha256": "b5ce7d6a436aff152a78a5ec3afa2b4a49a5ad6c78d78328fa3d9d7206d303e9",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__belt_holy.res",
+      "sha256": "4adbb529e13b6d5d43427a84a0f6e5e9f50dbf3c64a0b43b2f8c2d8f08fbdd2e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__belt_ice.res",
+      "sha256": "0d7ed5cdfbb7dcebfc20fd21701b8af7be715b730d1f28497990d68b010e25f3",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__belt_light.res",
+      "sha256": "e91dd87ad6246495f70752998624b2cb15aa8a7119ab2986a7ca1bf7997c8049",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__belt_phys.res",
+      "sha256": "a5eb8457eded1651606426ad4cd63ec4304b28fc208f5ddd71b9c3507f7446a6",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__belt_phys__raw.res",
+      "sha256": "764a3782d41c0c433724ed1a3839118aac6c5b9062bd54b0cd895bbf64cb1953",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bone_arms.res",
+      "sha256": "e5e4a570b1701d7e8af7cf553801371804d18cc0f90fe182b69ab06b5d157b16",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bone_arms__raw.res",
+      "sha256": "1f2c61c351154bcd6fea3ade9b297279ec501232dba4081ef2ceeb78c9bb50b6",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bone_legs.res",
+      "sha256": "eae81610c27fd13916462c51232cabb4488c88dc1f94bd58b1443fc5068a529b",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bone_legs__raw.res",
+      "sha256": "108c19f6d8770a7831798458edfed71ac3551a511f3e4bd5c848188bff184631",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bone_skull.res",
+      "sha256": "092fd3da5f1707d4514d060d697c5743611efcc3ab4702028daabbd4ac4e54af",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bone_skull__raw.res",
+      "sha256": "0cc8ba67bdcb7702a346c286921437ae22a494cf7a9e744ffe632682e1bac1fc",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bone_torso.res",
+      "sha256": "260b03ba7d17bee14c1160e7fc003426679ecbe9cd50cbba13da907142909519",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bone_torso__raw.res",
+      "sha256": "1d3a1f701028fc9503e8aa828c0c07265511bbaf0baeada02b0d7933d6a33ca1",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__boots_dark.res",
+      "sha256": "ce328eab81b440d53a7d62227060357f52f8efab004d02c71fde49862825005c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__boots_earth.res",
+      "sha256": "ddb7e63c32015c1adcecb30ed6b55c4189d9290aa8d270d1f1017819a2fd0487",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__boots_holy.res",
+      "sha256": "2a18ea2cce1033e7fa826a5ff932758e819aea1899fad58751cc3acde7bba1a4",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__boots_ice.res",
+      "sha256": "b8d46924f5e5778849d16d4be0a559d6f6be98bb77a3a9470e382100bf236d36",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__boots_light.res",
+      "sha256": "76fc892a4766f73217d6ae3ff54a63cb91afb5767e49ed64c73e29bdc63deed3",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__boots_phys.res",
+      "sha256": "3db144d69f20ade77603bb1c369368f4d2bd61ea55f26fe3dff3ad29236e3fb5",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__boots_phys__raw.res",
+      "sha256": "1c4afb843b2e1667375fd90a3a0f7e2689918dd8274467c59df10d88f92b9d97",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bracelet_dark.res",
+      "sha256": "f7ee5eb917baeb0fac64df281460ddbe63ec05d2d88e21a5ad7d2ac69bd6518f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bracelet_earth.res",
+      "sha256": "1e53778a1e2f04d31ba98e0d7cb5a7937c929487147158b60ea26f5dcbb15e7f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bracelet_holy.res",
+      "sha256": "6525c4fbf09581f12fe189d44427d12ced7a125937fd5c59260457e03edf8029",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bracelet_ice.res",
+      "sha256": "4facad66e4b751617ea3b54746d116deca7fce14c8bca966ec1fa4f15d1dec66",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bracelet_light.res",
+      "sha256": "bdc4a156338c47b3caee5341113cbb77caaacea6c0b31e913582e55edeea925d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bracelet_phys.res",
+      "sha256": "e4476b4c34288b57c628ea42d8031e0173eff41e2dfdcee31f1481b20b96cf1a",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__bracelet_phys__raw.res",
+      "sha256": "4d9653dd97d24ff1f590315be36455a107922dbd15c23f5ea781985281bbd337",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__cape_dark.res",
+      "sha256": "22b45367f45564028157a93d1f11bd9b6e10c029a2768c22a890e00094a6300c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__cape_earth.res",
+      "sha256": "229c40b6df4a044f7affb0f579596c6f5b3478d64bcf961ba70666c43d963830",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__cape_holy.res",
+      "sha256": "5dadb8f057cb585688e0f4293ba9e48025c2680a8eab037912765276788103dd",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__cape_ice.res",
+      "sha256": "bf8aad07e46544f456a60406970fd6aa2f5f667d44289b1b9ea8be38c59c88ec",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__cape_light.res",
+      "sha256": "348ec5bfdd40e5226a18e6d0118e5057c2cc19dded83ad66efb8af9ac1a5cba8",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__cape_phys.res",
+      "sha256": "ae2c53eb3d44f0eb3a099722767e038a169803c79c2bab84ae1276f1279b601a",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__cape_phys__raw.res",
+      "sha256": "1920408cf9f6ba83f2e8c36022a480823d295e3d9ad664b3cdc443e3500afdcb",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__club_dark.res",
+      "sha256": "cf7a2a9b0f9ea5ad56caca4145817f15d7e096d402d9faa76a8730bee632eb51",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__club_earth.res",
+      "sha256": "9fa5d018228ba8e5170b50911a9fb21c826f1be771115d963df4d1e605f47274",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__club_holy.res",
+      "sha256": "285851c787877040502ba771e21da0f8b2483fd14080d570d87d42832fda464f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__club_ice.res",
+      "sha256": "aa5c3894da1d5c56dc30a63d7ec2cea00f0a2d9491bc90eeccc078f2812bb8d1",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__club_light.res",
+      "sha256": "8db8047d512fec682eac1ca5d4d45394371a39c6c7435d4889feb76bec903943",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__club_phys.res",
+      "sha256": "b66621620e001dba5116e878ac65883846b8abd440a5d06db28042f1b1edd94e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__club_phys__raw.res",
+      "sha256": "8021e6cbae0b53bdb7945aa7cdad5507a22e5ee8cda28e0a10569bdefcf0d8b7",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__crossbow_dark.res",
+      "sha256": "1a1bc02bd47c9625532d698f11e3992822d107e9a4a2cd23ea903f927d82c38a",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__crossbow_earth.res",
+      "sha256": "d4dafea932de7c11f11ed514c8f3ee7844b035d976d53e85614ea0901e5c4763",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__crossbow_holy.res",
+      "sha256": "a38ab50c32af7d1319e9e4199dfb26467252ace4fc935cf46594791e8cab8e91",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__crossbow_ice.res",
+      "sha256": "3acc7b29a05c3583cdcd34ad5d52f02b29b8ee53c95081e44a3915be1be7c5d4",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__crossbow_light.res",
+      "sha256": "23ef840b1aa5fd9553993efef5d2dc9bc456352b8561f06a142afb7ea6a5a32e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__crossbow_phys.res",
+      "sha256": "6f01945b583ee65e9879dddc8c04f0932ce23620f380e9f141207780977f679d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__crossbow_phys__raw.res",
+      "sha256": "a9ce3d10226f1c2dd2bf6faff379534c2e4a561deb474aede2c72d39e398a976",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__dagger_dark.res",
+      "sha256": "7cc298968ea821f500b3070d49b70fa69d214bd97c22246d6247be1e5f195d7a",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__dagger_earth.res",
+      "sha256": "a1c2ffb064dc677ca3627a1ff7d48a7543fe21da0ae3678c10a2d3201018c0e5",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__dagger_holy.res",
+      "sha256": "57d42bd09089f843fd84e471d3dee4daaf8aee1ffc0785e3558218c9483c712c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__dagger_ice.res",
+      "sha256": "e17093a620a2389fb568f0cd39ae3c41bb692ef42b79e7c71c1307ec8d6a8a94",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__dagger_light.res",
+      "sha256": "2c40d2c02be0ac5e041edc50f0173a57c6e87991403adf8e6eee68223f9788c7",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__dagger_phys.res",
+      "sha256": "858c7f0423d1b98649f9d9c756b44e034797adeb768e220f063ba6802802b2be",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__dagger_phys__raw.res",
+      "sha256": "fb347d82df8b3b8554740303c32cba0012f90016880673f140aad838c797026a",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__earring_dark.res",
+      "sha256": "7ca47bfbf0cd100c23d6d64a5e321251e75fbeb084214e5c91e38fcd3a6461c1",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__earring_earth.res",
+      "sha256": "383d1e9a9719a31aa8217bff0312c8466e97c73f80fe46aead2a7bea59816011",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__earring_holy.res",
+      "sha256": "b8b734abac087ad5b6707219f55bd4a334d10b6c4fcc44bfca98235787c1a64f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__earring_ice.res",
+      "sha256": "4e63b40a465e213d53e96d4ff6cf1f2f04c4dfda119f50ccfe9355ac12938b8b",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__earring_light.res",
+      "sha256": "72940c63cf02370260f5f6c4352a866ccad0712c77ee87818a426128d9f9007e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__earring_phys.res",
+      "sha256": "11272d0011edc9a0bd3fb94f5b8bfb5344acaa15cddf78fdf71d1b09aae5d3f2",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__earring_phys__raw.res",
+      "sha256": "8e06e3ad297cf63c3c4b210251339979180ab402076a7a5fdb5a59a828ce11a6",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__gloves_dark.res",
+      "sha256": "b98ee06bd8b544f7ecb34e9513aeba26f4758d2039bdeff59ae4f6c0934bb330",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__gloves_earth.res",
+      "sha256": "982f729b2e2464efbc585881abf9f1e59009c20290fee8a62f8680fa7f42b6df",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__gloves_holy.res",
+      "sha256": "144a2303b42d41296fefc4b66ea89bd4de651965d09f2776b1f2b885ce3662e7",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__gloves_ice.res",
+      "sha256": "44d04335f12af6e898c029c88fc49e36390480250b81fe8f973b905df11842d1",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__gloves_light.res",
+      "sha256": "2de7a7936ab6f392269cff407afe109a425b0171a0c3a99c368059bf6fd61e51",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__gloves_phys.res",
+      "sha256": "4e637615128d5a78745967f4d0cacdd2408aed15bca33c0cecbcd1e99bf20d3d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__gloves_phys__raw.res",
+      "sha256": "90298993283c20db6c6f0881164caeac74944c578a820a42a29ec28bbf365cc3",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__hammer_dark.res",
+      "sha256": "bd20006741e39043fab540bfd6062b1bef15e3d6e89aea01f372c7b8850eafca",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__hammer_earth.res",
+      "sha256": "f4ffeda321afe7ba7e3f4f3079d5d3c9ad83e7dae616d02b6bf5846ee98e997e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__hammer_holy.res",
+      "sha256": "30504010bee324ceca2fc0b04b1ead7585dd684f1facf28f08a2875227ba59c0",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__hammer_ice.res",
+      "sha256": "4bad9797200650b7e70e96cf1001e088a1bedea6f80f438cd9fd2d2558987a61",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__hammer_light.res",
+      "sha256": "4b8d8f683ce9d6e9bb76c5d4e2966e63cf239096e0a1693c02bd58a3ad023f21",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__hammer_phys.res",
+      "sha256": "b5a4c64a9b481b1e8201cd737956ce3baef0184c759bf2dc79d582a9e2985c14",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__hammer_phys__raw.res",
+      "sha256": "c99056bfdfa0766e7b1affc7fd049df95b0cdd0c64cb5d92b8ea8d96d854a71e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__helmet_dark.res",
+      "sha256": "bfd6adba5c4ceed1a9f36637889681af027475e41f31259189a16628f61a4f7a",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__helmet_earth.res",
+      "sha256": "67be7742528eb03d1ff8cdb959eb2953dbb249d4b5f962ccf70f6ab1fc1a562b",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__helmet_holy.res",
+      "sha256": "d1ea4079d02e7c6b24ecaa47508a5ec955bc904aaaaf6517e6285d3066be397d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__helmet_ice.res",
+      "sha256": "5a913d3ec3d120faaa5e7de48250690f7e24c9167e55adada484efddfa2ae10c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__helmet_light.res",
+      "sha256": "41bb9ac609338c042812ee5f4b3c1a1697286fe75c6a7b0c5714b3616828dbc9",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__helmet_phys.res",
+      "sha256": "a177c277a297af323f0d4acc241a27ae2225ca6b70c280920a7f4ac135914ead",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__helmet_phys__raw.res",
+      "sha256": "a4fc4525a5c7455d85ee9f05379a1c2023dd8d1f422fb1b0cebfc73837681dfe",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__mace_dark.res",
+      "sha256": "312ebd8a6dcb4c8fafc2300ba9bba6e276c25e2d3a27b9b36b20044172c56cfe",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__mace_earth.res",
+      "sha256": "9614a740e4f17c225aac27296abdc9eae89bcab4b23b97dd0aaad9fa643fe2d9",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__mace_holy.res",
+      "sha256": "351a1363419b37833ded2b9d8f1140e6be2ec9a9ebcdf44c6b5cc93b0cc06c62",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__mace_ice.res",
+      "sha256": "c94bd669d89c71fe132ed1fb41fa99568fb678f5d05774941ed9df3ac0578e63",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__mace_light.res",
+      "sha256": "a0be69ee86cdc0291006c50e1261812ff158837feed963119f6ad114f9f0adda",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__mace_phys.res",
+      "sha256": "0890f3dff49b3ba368bf9a43a49895641b9c8c7c56c9882394118ae74fe8f65a",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__mace_phys__raw.res",
+      "sha256": "e8e73ba87ad520badc7c823e7d7ae2e138f605c2bc43d2a3d8b4a268f5bd371b",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__necklace_dark.res",
+      "sha256": "33e9770ab3c1d3413ff5208c63eac2d0aed27a88f5ac8425ccc0810ce2c50ba3",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__necklace_earth.res",
+      "sha256": "2df0276902c1ab08f2980c8157436f25d0b7cfdc0d3f2ae70ef57d54007eda04",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__necklace_holy.res",
+      "sha256": "61b1554239772e422fdc75f2c9b222b3c6fb342a33697c5927729043a2daf032",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__necklace_ice.res",
+      "sha256": "8cfb89d1d7b7d054ebda3e3caf05b55a3f645cb13e11d267e11881311c3ef83d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__necklace_light.res",
+      "sha256": "9eb4059944261cf42c4421b1a516dafdc8077ff16d1152c997b9a3e61d0020d7",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__necklace_phys.res",
+      "sha256": "50bfc86a5eb20132cd1ef915e9af4ea1fafb1218cc50cb7727516846d9e0b992",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__necklace_phys__raw.res",
+      "sha256": "72b1e7f2e271ccdeebdf61a097baf72674f89f49230d5a9651e935ddbc878815",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ossuary_phys.res",
+      "sha256": "69a8a30d8f55b0c0cb4783cbdeeaea2be363f953d364c5f0bf3ac560ae221996",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ossuary_phys__raw.res",
+      "sha256": "4022f44c52689c679ad122b45f6be545ea994a448e229aac54b706b279a638de",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__pants_dark.res",
+      "sha256": "b44aba89a9ddf84444b5ccb6a48dd8a0df350b367b209565d5084fba71296b63",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__pants_earth.res",
+      "sha256": "32872238a25b6cccbe2d433971da10e0a69053e05e3111b4f5be87417a8ade2b",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__pants_holy.res",
+      "sha256": "b480fc0999bfb6d8c5ab22f7234a5ee925e7cc61741b6ca17824b49db891dc1f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__pants_ice.res",
+      "sha256": "d4672f23bcdcd2a6d403b200d7391bb05a8b290a1df2c779b3b6bef5a014e01f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__pants_light.res",
+      "sha256": "4efc63fef17c858bcc979e3c37b1089efb8c3188e1828541e2cc2f01243ed9f2",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__pants_phys.res",
+      "sha256": "14f2412b9bda3489a54aa281caf9228cfa5bc2c7ba487b4f78fd760142147332",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__pants_phys__raw.res",
+      "sha256": "5b934e2622f5d527242f8d29848cfddb8e6702334d7046cb83aa89389c5549ac",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__repeater_dark.res",
+      "sha256": "920ff1d64b114ec964227a5519efe92d69d23fe38b0a97a074b676e0d5c776a8",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__repeater_earth.res",
+      "sha256": "9d676f64ff06275a8dc87eab0a8e2ed848e9b156402b380f6064e4cd9fe1e5b7",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__repeater_holy.res",
+      "sha256": "02b18cebf25b054734ef02611b8c2f8b079b9521c44c3d801188f1b80a78fa65",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__repeater_ice.res",
+      "sha256": "e8f294841f168f1a497f7265513fd189767fef562abde6adac43d4a378dd0eb2",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__repeater_light.res",
+      "sha256": "a10b378499f7304e321d3c1026afeda41f528687bb2c6cc8dfba92819090fba8",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__repeater_phys.res",
+      "sha256": "dc773a4991bd933de8a712bdee10d9ae825a5d074d72c4e3adeb809098c9426b",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__repeater_phys__raw.res",
+      "sha256": "954c472e40fee5eea34ee0d26d4267b4e41968ac8b3e3ff7e5a08f369cb981ea",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ring_dark.res",
+      "sha256": "4aa320ebe4a27442fe7065b5fa1b5ce4ad2694e6e342b95a7252806565dc32f2",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ring_earth.res",
+      "sha256": "5fd6f750d827ef7f375771fa661005a6899bfa5763a4f97d08b9c90bc292549e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ring_holy.res",
+      "sha256": "c64ff21cc07e67c72719e536994d43eee4f70c0428f2ae8a3132cd7d91a36f7e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ring_ice.res",
+      "sha256": "39946bc8675d5bf1743db809a199480e4c559dba240c46eff8dd9a36b5ce7bd6",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ring_light.res",
+      "sha256": "caf759257bc98d784fe57dbda90a8cd2355495bd8cfe69547945908f651d28e7",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ring_phys.res",
+      "sha256": "12c6f39a4dabf1107f4e6f0140d98c058143ef233f9fb4de4c25cdb9c9dd8f4f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__ring_phys__raw.res",
+      "sha256": "c5abc521b0662a0e56870204404015c5d2c8834bccb0aa0ea96aaf399fcd88a5",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__shield_dark.res",
+      "sha256": "c791c8585878e2ebc6c3a0eee01024b752de46ee8d9bb8307120611d8d36371b",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__shield_earth.res",
+      "sha256": "247e1da7ccf6000a61594d08a6ac77c0e7a697a41a68a327545cc156c90e0dba",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__shield_holy.res",
+      "sha256": "ea6a331aa327384eae08d705f8f20f88d83959778cda308795d0a5755f6a4e48",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__shield_ice.res",
+      "sha256": "834d66d98c13c275274fc18c5a3b736032bd09b82316e27378cc5849d5453cd3",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__shield_light.res",
+      "sha256": "b964453d64e0d3cf2094fc17da5ea60ed31bbabe023dbb999e8e44e05d2fa2ca",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__shield_phys.res",
+      "sha256": "97a84e9edfa1adaa2afb603f9ed2645b46ade5e8268183081633cc2b8c21b01e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__shield_phys__raw.res",
+      "sha256": "f06ef5ab47c7d2358a9f4fbd8153d3f9281ea604f1437a4346d3bc3842dab6fb",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__spear_dark.res",
+      "sha256": "a1a51ff220adb0d014fa7185b6b6900ba2336139e46c33c95974184195f90bb8",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__spear_earth.res",
+      "sha256": "9df1e77fe5ab1ba094b36bb2a7cb62430f3bdd7f1cca11d1230efd0fe64f5a47",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__spear_holy.res",
+      "sha256": "a46b3dc8fe9c6d08dff7a4f378dac69bda8e511ebd6ad1ed0c042ac33b8aef87",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__spear_ice.res",
+      "sha256": "019d31ee73e6bdb0559018afbbd31487bd70f146e24bbc5179ea8050d86e190d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__spear_light.res",
+      "sha256": "a621de0c97d21cbfb44000cbf9fcb68f9107c658b471ddf0824a79163827877f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__spear_phys.res",
+      "sha256": "2df3f3649d5f608a82a45696f147b3148ce5bdc5ffe290028be3dec106b6a1dd",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__spear_phys__raw.res",
+      "sha256": "70ccff22468537cc74a1187dd57881fe565e07423cdca8992d453259395b5334",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__sword_dark.res",
+      "sha256": "d8c11aeb2d36dddff6f5fd5fc18e2250d6911feb6f4b19b5cd6ae25903f8f28f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__sword_earth.res",
+      "sha256": "00326f5b566029be3bd04707d615d61963b4dd76df529bb4b7bbd5a22f16cd7a",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__sword_holy.res",
+      "sha256": "2642dcc9f172348eb0d566b5cf4720694f1dc21c68892b2d5af34a318c1d336c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__sword_ice.res",
+      "sha256": "b10e56043e050c13d9422db20034066f26b7ca0cf47baf6fdfb2bbd0426a9ca1",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__sword_light.res",
+      "sha256": "517c1bc8200140263ab249e9b317f81a5e9f2be6acf31ee39d7824ad4a9801e0",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__sword_phys.res",
+      "sha256": "da6dd32eed0e1383e94ceb7267d0ebe4d3f3875bde4edffd44be0adb7f6a058c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/item_skins__sword_phys__raw.res",
+      "sha256": "c31794a0dbd64d27e9a1fe88137ed05630d07a63648d191b4980e5399d465663",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-01_cut.res",
+      "sha256": "1957be489e37016043fa4660d68283766e9a3dc8bf14527425fec00510169391",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-02_cut.res",
+      "sha256": "8fa0605e770879f12db89534cc6fca745dd7aee3f37856af0fb3ea82c9f0508c",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-03_cut.res",
+      "sha256": "3890556da1a71652839328c78ca2c3235d8a7edf5440ddf21b77ab9be879f133",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-04_cut.res",
+      "sha256": "58100d61c02a869aee5b68b7c8aeae0431d2b1b48734b55c25cc5cb55debf9b6",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-05_cut.res",
+      "sha256": "da9ec228790a1fba824ce6474eaa8bf2f7646aa227c633b392dedb1b8d29ed65",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-06_cut.res",
+      "sha256": "2c6b8f5cc1ec0041d6524b730f4ad30cb0d727d9cf900d285b76dd3dac0a7353",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-07_cut.res",
+      "sha256": "9296ac4232c9c8fe481896cc1c3804d91cc8418ac4e6ca4481409fffe743c575",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-08_cut.res",
+      "sha256": "37bb11ee0f6190180f2cb90816cc1fb0278f8e1f40120cc08a6d8700054c4ab7",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-09_cut.res",
+      "sha256": "c8d384449099e8afef2bf7ecf3ef1d142bd1aea8b799d3a414e24738d3afe1bc",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-10_cut.res",
+      "sha256": "1c7308c70972e7caadd76c75ee1462ba085cc0922c2cbf8339d79e9cb5065cab",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-11_cut.res",
+      "sha256": "a47dc8b9c92cc0150ef7ff9ab6076e68e8fab6d99a6c7ee72a43144f4e8823b8",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-12_cut.res",
+      "sha256": "9d1a62446a8226719b759eaa98a726a8030dd46b8c98f9ff4444ac8caac2ac76",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-13_cut.res",
+      "sha256": "0bb4111c03058f5e34b11673a2ccee42338a8a46f40b53a21685a1d67c9660e2",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-14_cut.res",
+      "sha256": "0264a45c8a54ec8d0a3f67919d7879080c27d414f78349d68965344ddf42ab4f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-15_cut.res",
+      "sha256": "bb18337ff85b7589edb56b1a43f934646592d78da6ea40643a2f6edbf62cea0f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-16_cut.res",
+      "sha256": "46d58a7a8785c3ce1957660dcbd280e68173b7effd596e4edc4fb1bc93a5ce77",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-17_cut.res",
+      "sha256": "2b1167aa9fc382ac558c132ad90ee71c5c5ae736a833f2a5cda56d3b2e146017",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-18_cut.res",
+      "sha256": "065e917d04b8a8818eef4a13cd8db5d77d8f3ea8e1b71f0bd0fe2deaad4fcc1f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-19_cut.res",
+      "sha256": "dfc91ec0c45a26595053c9c976223c235513e9f73a3c87a11b1607bdb21a5c5d",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-20_cut.res",
+      "sha256": "ce5f85e30a9383b4231190ccf4eb9ec29f072704508b8ffa9c5be6597ef46d63",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-21_cut.res",
+      "sha256": "139d9018fe3a3548ce0f0472f933eb3026cc781989ed61e335799887a816d8fe",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-22_cut.res",
+      "sha256": "340994fefbb7e13c657f621315c3f14448e4bae729286acfaba9d4064a62064e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-23_cut.res",
+      "sha256": "80b2c86419253ac510dac4dc7b615fae8c79c201d5e2514d8e003300a7c458cd",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-24_cut.res",
+      "sha256": "5d9871e8eab7d1f4eff9877dfbe5ce84ce56692e5105f812e9cd548ba436ddb4",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-25_cut.res",
+      "sha256": "ce8f88852b081e1c3e3ef578d7690c36ed7a7840d7f7a921a0b83f78a4024c1e",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-26_cut.res",
+      "sha256": "843dd7fa4c3a9c5c3a655c5e222cfbfd1bab7635d417149a1c6cf371c3367f5f",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/world_drop_prepared/unique_items__ui-27_cut.res",
+      "sha256": "8d89396c1cb2579a5c1f2ba62c7b30442077dc2e0ca1580f7525fc51b29a6e04",
+      "source_function": "_maskWorldDropBlack",
+      "source_lines": "G27831-27844"
+    },
+    {
+      "path": "godot/assets/boss_parity/comet_tints/1.res",
+      "sha256": "05b24061f23f4592024b9c60e1bc11ab22595a635c08431b3ed6d98d0acb82b1",
+      "source_function": "_cometTint Canvas2D source-atop",
+      "source_lines": "G24307"
+    },
+    {
+      "path": "godot/assets/boss_parity/comet_tints/2.res",
+      "sha256": "a4e9c0f265d80e727778bad47e9025aee1deb7680477ddeba0f37c9a75cb6eb8",
+      "source_function": "_cometTint Canvas2D source-atop",
+      "source_lines": "G24307"
+    },
+    {
+      "path": "godot/assets/boss_parity/comet_tints/3.res",
+      "sha256": "bfd4d9f48b2ba10c861ce25df3d74e603fe92a548daa7bfb69d452510980576b",
+      "source_function": "_cometTint Canvas2D source-atop",
+      "source_lines": "G24307"
+    },
+    {
+      "path": "godot/assets/boss_parity/comet_tints/4.res",
+      "sha256": "defd3db8a390d904fed0a727e8237ec5b00805a24403db9f8af591e4644628bf",
+      "source_function": "_cometTint Canvas2D source-atop",
+      "source_lines": "G24307"
+    },
+    {
+      "path": "godot/assets/boss_parity/comet_tints/5.res",
+      "sha256": "ac337f139e06e8deaf634b0f71701bc65db095dcea525f879086bb168fddf935",
+      "source_function": "_cometTint Canvas2D source-atop",
+      "source_lines": "G24307"
+    },
+    {
+      "path": "godot/assets/boss_parity/comet_tints/6.res",
+      "sha256": "b7102496ac47b15157e2d35e99f4a0d0d93be74192969a9ec0b1f9899d012346",
+      "source_function": "_cometTint Canvas2D source-atop",
+      "source_lines": "G24307"
+    }
+  ]
+}

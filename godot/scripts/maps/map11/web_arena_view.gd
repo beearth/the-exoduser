@@ -29,7 +29,7 @@ func _process(_delta: float) -> void:
  if is_instance_valid(_screen):
   var e: Dictionary=_main.native_demo_boss_actor.get("_enemy")
   _screen.set_arena_source_fog_disabled(is_visible_in_tree())
-  _screen.observe_arena_boss_light(e if is_visible_in_tree() and e.get("alive",false) else EMPTY)
+  _screen.observe_arena_boss_light(e if is_visible_in_tree() and _main.source_state.read_current_g().get("bossAlive",false) and not e.is_empty() else EMPTY)
  if is_instance_valid(_grade_layer):_grade_layer.visible=is_visible_in_tree()
  if not is_visible_in_tree() or not is_instance_valid(_main):return
  var g: Dictionary=_main.source_state.read_current_g()

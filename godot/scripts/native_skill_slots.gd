@@ -88,6 +88,11 @@ var _blades: Array = [] # 원본 pProjs의 iceBlade 패킷 — 포트 보관처=
 var _blade_rng := RandomNumberGenerator.new() # 원본 Math.random(비추적) 상당 — 각도 지터·관통 롤
 var _shatter_anims: Array = []
 var _ice_sheet: Texture2D
+var _finish_layer: Node2D
+var _ice_layer: Node2D
+var _ring_sprites: Array[Sprite2D]=[]
+var _ring_index:=0
+var _crack_points:=PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
 var _add_layer: Node2D
 var _waves: Array = []
 var _zone_parts: Array = [] # 존 시각 파티클(37491s poolPart 상당 — 시각 전용·로컬 난수)
@@ -129,18 +134,30 @@ func configure(main: Node, world: Node, player: Node2D, state: Node) -> bool:
 	_add_layer = AdditiveLayer.new()
 	_add_layer.host = self
 	var sheet_material := CanvasItemMaterial.new()
-	sheet_material.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	sheet_material.blend_mode = CanvasItemMaterial.BLEND_MODE_MIX
 	_add_layer.material = sheet_material
 	add_child(_add_layer)
+	_finish_layer=AdditiveLayer.new();_finish_layer.host=self;_finish_layer.mode=1;add_child(_finish_layer)
+	var shader_:=Shader.new();shader_.code=preload("res://scripts/boss11_source_ground.gd").FX_SHADER
+	var gradient_:=Gradient.new();gradient_.colors=PackedColorArray([Color.WHITE,Color.WHITE])
+	var white:=GradientTexture2D.new();white.gradient=gradient_;white.width=2;white.height=2
+	for i in 6:
+		var ring:=Sprite2D.new();ring.texture=white;ring.physics_interpolation_mode=Node.PHYSICS_INTERPOLATION_MODE_OFF
+		var material_:=ShaderMaterial.new();material_.shader=shader_;ring.material=material_
+		_finish_layer.add_child(ring);ring.hide();_ring_sprites.append(ring)
+	_ice_layer=AdditiveLayer.new();_ice_layer.host=self;_ice_layer.mode=2;_finish_layer.add_child(_ice_layer)
 	_configured = true
 	return true
 
 
 class AdditiveLayer extends Node2D:
 	var host: Node2D
+	var mode:=0
 	func _draw() -> void:
 		if is_instance_valid(host):
-			host._draw_additive_content(self)
+			if mode==1:host._draw_source_slam_finish(self)
+			elif mode==2:host._draw_source_ice_finish(self)
+			else:host._draw_additive_content(self)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -226,6 +243,7 @@ func _demo47i_physics_body(_delta: float) -> void:
 		queue_redraw()
 		if is_instance_valid(_add_layer):
 			_add_layer.queue_redraw()
+		_finish_layer.queue_redraw();_ice_layer.queue_redraw()
 
 
 ## Space — 지옥강타 1 (게이트 13010 → activateGiantSlam 46448)
@@ -753,17 +771,16 @@ func _draw() -> void:
 		draw_colored_polygon(PackedVector2Array([Vector2(br + 7, 0), Vector2(1, -2), Vector2(-br + 2, 0.3), Vector2(1, 2)]), Color(0.867, 0.957, 1.0, 1.0))
 		draw_line(Vector2(br + 10, 0), Vector2(-br - 2, 0.5), Color(1, 1, 1, 0.6), 0.8)
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-	# 보주 layer0 (58302s source-over 층)
-	if _io_active and _ice_sheet != null:
-		var orb_p: float = minf(1.0, _io_t / 180.0)
-		_draw_ice_orb_layer(self, 0.85 + 0.1 * sin(orb_p * 6.0))
-	# 56830s 중앙 폭발 플래시 (source-over)
+	# Snapshot56785-56800: earth decal precedes the hero sheet.
 	for wave in _waves:
-		var p: float = float(wave["t"]) / float(wave["maxT"])
-		var flash_p: float = maxf(0.0, 1.0 - p * 4.0)
-		if flash_p > 0.0:
-			var center := Vector2(wave["x"], wave["y"]) - global_position
-			draw_circle(center, float(wave["maxR"]) * 0.4 * flash_p, Color(1.0, 0.9, 0.6, 0.5 * flash_p))
+		if str(wave.get("kind","giant"))!="giant" or wave.has("col"):continue
+		var p: float=float(wave.t)/float(wave.maxT);var fade: float=maxf(0,1-p)
+		var impact: float=minf(1,p*5);var r: float=float(wave.maxR)*(.12+.24*impact)
+		draw_set_transform(Vector2(wave.x,wave.y)-global_position,0,Vector2(1,.34))
+		draw_circle(Vector2.ZERO,r,Color(Color("160f0a"),(.52-.22*p)*fade),true,-1,true)
+		draw_set_transform(Vector2(wave.x,wave.y)-global_position,0,Vector2(1,.37))
+		draw_arc(Vector2.ZERO,r*1.08,0,TAU,96,Color(Color("7d5632"),(.5-.18*p)*fade),4+8*(1-impact),true)
+		draw_set_transform(Vector2.ZERO)
 
 
 ## ADD 자식 레이어 콘텐츠 — 인페르노 시트('screen' 56811)·보주 lighter 층·파쇄 VFX(lighter)
@@ -773,14 +790,52 @@ func _draw_additive_content(canvas: Node2D) -> void:
 			var p: float = float(wave["t"]) / float(wave["maxT"])
 			var frame: int = mini(3, int(p * 4.0))
 			var grow: float = 0.72 + 0.28 * minf(1.0, p * 3.5)
-			var size: float = float(wave["maxR"]) * 0.9 * grow
+			var size: float = float(wave["maxR"]) * (0.98 if wave.get("kind", "giant")=="inferno" else 0.9) * grow
 			var alpha: float = 1.0 if p < 0.62 else maxf(0.0, (1.0 - p) / 0.38)
 			var src := Rect2((frame % 2) * 512, (frame / 2) * 512, 512, 512)
 			var center := Vector2(wave["x"], wave["y"]) - canvas.global_position
 			canvas.draw_texture_rect_region(_sheet, Rect2(center - Vector2(size, size) / 2.0, Vector2(size, size)),
 				src, Color(1, 1, 1, alpha))
-	if _io_active and _ice_sheet != null: # 보주 lighter 층
+
+
+func _source_ring(at: Vector2,r: float,color_: Color,width_: float) -> void:
+	if _ring_index>=_ring_sprites.size():return
+	var ring: Sprite2D=_ring_sprites[_ring_index];_ring_index+=1
+	ring.position=at;ring.scale=Vector2.ONE*(r+width_);ring.show()
+	ring.material.set_shader_parameter("tint",color_)
+	ring.material.set_shader_parameter("inner",.5-width_/(r*2+width_))
+
+func _draw_source_slam_finish(canvas: Node2D) -> void:
+	_ring_index=0
+	for wave in _waves:
+		var p: float=float(wave.t)/float(wave.maxT);var fade: float=maxf(0,1-p)
+		var at:=Vector2(wave.x,wave.y)-canvas.global_position
+		var hero: bool=not wave.has("col");var kind: String=wave.get("kind","giant")
+		var flash: float=maxf(0,1-p*4)
+		if hero and flash>0:canvas.draw_circle(at,float(wave.maxR)*.4*flash,Color(Color("fff2a0" if kind=="inferno" else "fff0c8"),.82*flash*fade),true,-1,true)
+		if hero and kind=="giant":
+			var r: float=float(wave.maxR)*(.16+.34*minf(1,p*5))
+			for crack in 12:
+				var angle: float=TAU*crack/12+sin(crack*17.31)*.15
+				var inner: float=r*(.2+(crack%3)*.025);var outer: float=r*(.72+(crack%4)*.075)
+				var bend: float=angle+sin(crack*5.7)*.16
+				_crack_points[0]=at+Vector2(cos(angle)*inner,sin(angle)*inner*.55)
+				_crack_points[1]=at+Vector2(cos(bend)*outer*.58,sin(bend)*outer*.58*.55)
+				_crack_points[2]=at+Vector2(cos(angle)*outer,sin(angle)*outer*.55)
+				canvas.draw_polyline(_crack_points,Color(Color("f6d08a"),(.86-.4*p)*fade),3.5*(1-p)+1.5,true)
+		var color_: Color=Color(wave.col) if wave.has("col") else Color("ff4a12" if kind=="inferno" else "e8c08a")
+		var hi: Color=Color(wave.col) if wave.has("col") else Color("ffd06a" if kind=="inferno" else "fff0c8")
+		var width_: float=12*(1-p*.55)+5
+		_source_ring(at,float(wave.r),Color(color_,minf(1,1.1*fade)),width_)
+		_source_ring(at,float(wave.r)*1.075,Color(hi,.7*fade),maxf(2,width_*.28))
+		if hero:_source_ring(at,float(wave.r)*.72,Color(color_,.48*fade),3+4*fade) # X proxy setLineDash no-op.
+	for i in range(_ring_index,_ring_sprites.size()):_ring_sprites[i].hide()
+
+
+func _draw_source_ice_finish(canvas: Node2D) -> void:
+	if _io_active and _ice_sheet != null: # Source58302: both proxy layers use source-over
 		var orb_p: float = minf(1.0, _io_t / 180.0)
+		_draw_ice_orb_layer(canvas, 0.85 + 0.1 * sin(orb_p * 6.0))
 		_draw_ice_orb_layer(canvas, 0.2 + 0.12 * sin(orb_p * 8.0))
 	for anim in _shatter_anims: # 46811 파쇄 정순 0→8 (blend lighter 46752)
 		if _ice_sheet == null:

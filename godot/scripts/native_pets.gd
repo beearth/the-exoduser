@@ -171,6 +171,12 @@ var _portrait_prepare: Dictionary = {} # who → {ready, cached, usec, reason}
 var _iris_glow_tex: GradientTexture2D
 
 
+var _iris_canvas: Node2D
+class IrisCanvas extends Node2D:
+	var host: Node
+	func _draw() -> void:
+		if is_instance_valid(host) and host._configured:host._draw_iris(self)
+
 func configure(world: Node, player: Node2D, state: Node, lighting: CanvasLayer) -> bool:
 	if _configured or not is_instance_valid(world) or not is_instance_valid(player) \
 			or not is_instance_valid(state) or not state.has_method("read_current_inventory"):
@@ -179,6 +185,12 @@ func configure(world: Node, player: Node2D, state: Node, lighting: CanvasLayer) 
 	_player = player
 	_state = state
 	_lighting = lighting if is_instance_valid(lighting) and lighting.has_method("set_native_iris_light") else null
+	if is_instance_valid(_lighting):
+		_iris_canvas=IrisCanvas.new();_iris_canvas.host=self;_iris_canvas.name="NativeSourceIrisOverlay"
+		_iris_canvas.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;_lighting.add_child(_iris_canvas)
+		_lighting.move_child(_iris_canvas,_lighting._fog2d.get_index())
+		draw.connect(_iris_canvas.queue_redraw)
+
 	z_index = 500 # S7 패스 — 엔티티 뒤(y정렬) 이후 렌더(59905)
 	for dir in PET_DIRS:
 		_crow_tex[dir] = load("res://assets/pets/crow/" + dir + ".png")
@@ -859,7 +871,7 @@ func _draw() -> void:
 	for key in ["cat", "crow"]:
 		_draw_sprite_pet(key)
 	_draw_xbow()
-	_draw_iris()
+	if not is_instance_valid(_iris_canvas):_draw_iris(self)
 
 
 func _dir8(dx: float, dy: float) -> String:
@@ -936,24 +948,28 @@ func _draw_xbow() -> void:
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
-func _draw_iris() -> void:
+func _draw_iris(canvas: Node2D) -> void:
 	var pet: Dictionary = pets["iris"]
 	var bob: float = sin(pet["t"] * 0.07) * 5.0
 	var pos := Vector2(pet["x"], pet["y"] + bob) - global_position
+	if canvas!=self:
+		var camera: Camera2D=get_viewport().get_camera_2d()
+		var center: Vector2=camera.get_screen_center_position() if is_instance_valid(camera) else _player.global_position
+		pos=get_viewport_rect().size*.5+Vector2(pet["x"],pet["y"]+bob)-center
 	var flk: float = 0.85 + sin(pet["t"] * 0.09) * 0.1 + sin(pet["t"] * 0.17) * 0.05
-	# 번짐 글로우 (lighter — Canvas2D 실측 경로 가산)
+	# 번짐 글로우 (source proxy MIX — lightmap 뒤·fog 앞)
 	var glow_size: float = IRIS_GLOW_R * 0.6
-	draw_texture_rect(_iris_glow_tex, Rect2(pos - Vector2(glow_size, glow_size), Vector2(glow_size * 2, glow_size * 2)),
+	canvas.draw_texture_rect(_iris_glow_tex, Rect2(pos - Vector2(glow_size, glow_size), Vector2(glow_size * 2, glow_size * 2)),
 		false, Color(1, 1, 1, flk * 0.7))
 	# flame01~04 (55303~55310): sz=20+(sz‖20)*.8, y offset -.7sz
 	if _flame_tex.size() >= 4:
 		var frame: Texture2D = _flame_tex[int(floor(pet["t"] * 0.08)) % 4]
 		var fsz: float = 20.0 + float(pet["sz"]) * 0.8
-		draw_texture_rect(frame, Rect2(pos + Vector2(-fsz / 2, -fsz * 0.7), Vector2(fsz, fsz)), false,
+		canvas.draw_texture_rect(frame, Rect2(pos + Vector2(-fsz / 2, -fsz * 0.7), Vector2(fsz, fsz)), false,
 			Color(1, 1, 1, flk))
 	else:
-		draw_circle(pos, 14.0, Color(0.267, 0.8, 1.0, 0.9 * flk))
-		draw_circle(pos, 7.0, Color(0.933, 1.0, 1.0))
+		canvas.draw_circle(pos, 14.0, Color(0.267, 0.8, 1.0, 0.9 * flk))
+		canvas.draw_circle(pos, 7.0, Color(0.933, 1.0, 1.0))
 
 
 func get_native_pets_snapshot() -> Dictionary:

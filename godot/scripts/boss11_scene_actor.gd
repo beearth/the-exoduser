@@ -10,6 +10,7 @@ var actor: Node
 var body: Sprite2D
 var _light1: Sprite2D
 var _light2: Sprite2D
+var _revive: Node2D
 var render_max_us:=0
 func configure(reader: Node,_shared: ShaderMaterial=null) -> void:
  actor=reader
@@ -20,6 +21,7 @@ func configure(reader: Node,_shared: ShaderMaterial=null) -> void:
  var add:=CanvasItemMaterial.new();add.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX
  _light1=Sprite2D.new();_light1.material=add;_light1.region_enabled=true;_light1.centered=false;body.add_child(_light1)
  _light2=Sprite2D.new();_light2.material=add;_light2.region_enabled=true;_light2.centered=false;body.add_child(_light2)
+ _revive=preload("res://scripts/native_source_revive_view.gd").new();add_child(_revive);_revive.configure(reader.get_parent().get_parent())
  texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;hide()
  _warm_resources()
 func _process(_delta: float) -> void:
@@ -29,7 +31,12 @@ func _process(_delta: float) -> void:
 func render_at(now: float) -> void:
  if not is_instance_valid(actor):hide();return
  var e: Dictionary=actor.get("_enemy")
- if e.is_empty() or not e.get("alive",false) or e.get("s")=="bossDruidUnder":hide();return
+ _revive.visual_clock_ms=now;_revive.observe(e)
+ if e.is_empty():hide();return
+ if not e.get("alive",false):
+  visible=float(e.get("_reviveTimer",0))>0;body.hide();return
+ if e.get("s")=="bossDruidUnder":hide();return
+ body.show()
  show();global_position=Vector2(e.get("x",0),e.get("y",0));z_as_relative=false;z_index=clampi(int(global_position.y/4),-4096,4095)
  var s: String=e.get("s","");var rem: float=e.get("st2",0)
  var dir: int=posmod(roundi(float(e.get("facing",0))/(PI/4))+6,8)

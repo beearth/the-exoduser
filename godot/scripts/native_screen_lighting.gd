@@ -40,6 +40,8 @@ var _fog_gl: ColorRect
 var _vignette: ColorRect
 var _filter_rect: ColorRect
 var _half_view: SubViewport
+var _color_view: SubViewport
+var _color_display: TextureRect
 var _half_display: TextureRect
 var _static_lights: Array=[]
 var _static_colors: Array[Sprite2D]=[]
@@ -197,21 +199,28 @@ func configure(world: Node, player: Node2D) -> bool:
 	_half_display.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
 	_half_display.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(_half_display)
 	_half_display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_color_view=SubViewport.new();_color_view.name="NativeHalfColorLightmap"
+	_color_view.transparent_bg=true;_color_view.disable_3d=true
+	_color_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS;add_child(_color_view)
+	_color_display=TextureRect.new();_color_display.texture=_color_view.get_texture()
+	_color_display.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;_color_display.modulate.a=.62
+	_color_display.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(_color_display)
+	_color_display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_static_lights=JSON.parse_string(FileAccess.get_file_as_string("res://assets/map/web_parity/detail02/lights.json")).statics
 	_light_values.resize(12)
 	for i in _static_lights.size():
 		var color_sprite:=Sprite2D.new();color_sprite.texture=load("res://assets/map/web_parity/detail02/color%d.png"%([3,0,4][mini(i,2)]))
-		var add_material:=CanvasItemMaterial.new();add_material.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX;color_sprite.material=add_material
+		var add_material:=CanvasItemMaterial.new();add_material.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD;color_sprite.material=add_material
 		color_sprite.name="NativeStaticColor%d"%i
-		color_sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(color_sprite);_static_colors.append(color_sprite)
+		color_sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;_color_view.add_child(color_sprite);_static_colors.append(color_sprite)
 	_iris_color=Sprite2D.new();_iris_color.name="NativeIrisColor"
 	_iris_color.texture=load("res://assets/map/web_parity/detail02/color0.png")
-	var iris_add:=CanvasItemMaterial.new();iris_add.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX;_iris_color.material=iris_add
-	_iris_color.modulate.a=0;_iris_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_iris_color)
+	var iris_add:=CanvasItemMaterial.new();iris_add.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD;_iris_color.material=iris_add
+	_iris_color.modulate.a=0;_iris_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;_color_view.add_child(_iris_color)
 	_boss_color=Sprite2D.new();_boss_color.name="NativeBossColor"
 	_boss_color.texture=preload("res://assets/map/web_parity/detail02/color0.png")
-	var boss_mix:=CanvasItemMaterial.new();boss_mix.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX
-	_boss_color.material=boss_mix;_boss_color.modulate.a=0;_boss_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_boss_color)
+	var boss_mix:=CanvasItemMaterial.new();boss_mix.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD
+	_boss_color.material=boss_mix;_boss_color.modulate.a=0;_boss_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;_color_view.add_child(_boss_color)
 	_fog2d = _shader_rect("NativeFog2D", FOG2D_SHADER)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("bot_col", FOG_BOT)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("top_col", FOG_TOP)
@@ -268,6 +277,7 @@ func _process(_delta: float) -> void:
 		_last_light_center=center;_last_light_size=viewport_size
 		_half_view.render_target_update_mode=SubViewport.UPDATE_ONCE
 		var half_size:=Vector2i(int(viewport_size.x/2),int(viewport_size.y/2))
+		_color_view.size=half_size;_color_display.size=viewport_size
 		if _half_view.size!=half_size:_half_view.size=half_size;_lightmap.size=Vector2(half_size)
 		for i in _static_lights.size():
 			var l: Dictionary=_static_lights[i]
@@ -276,8 +286,8 @@ func _process(_delta: float) -> void:
 			var culled: bool=pos.x< -300 or pos.y< -300 or pos.x>viewport_size.x+300 or pos.y>viewport_size.y+300
 			if culled:a=0.0
 			_light_values[i]=Vector4(pos.x,pos.y,float(int(l.r*.5))*2,a)
-			var sprite: Sprite2D=_static_colors[i];sprite.position=pos;sprite.scale=Vector2.ONE*l.r*2/sprite.texture.get_width()
-			sprite.modulate.a=a*.85*.62
+			var sprite: Sprite2D=_static_colors[i];sprite.position=pos*.5;sprite.scale=Vector2.ONE*float(int(l.r*.5))*2/sprite.texture.get_width()
+			sprite.modulate.a=a*.85
 		var mat: ShaderMaterial = _lightmap.material
 		mat.set_shader_parameter("extra_lights",_light_values)
 		mat.set_shader_parameter("ambient", AMBIENT)
@@ -292,7 +302,7 @@ func _process(_delta: float) -> void:
 			var alpha: float=.62+sin(frame*.05)*.08
 			boss_light=Vector4(at.x,at.y,520,alpha)
 			boss_top=Vector4(at.x,at.y-float(e.get("r",44))*14.1*.62,560,.58)
-			_boss_color.position=at;_boss_color.scale=Vector2.ONE*1040/_boss_color.texture.get_width();_boss_color.modulate.a=alpha*.85*.62
+			_boss_color.position=at*.5;_boss_color.scale=Vector2.ONE*520/_boss_color.texture.get_width();_boss_color.modulate.a=alpha*.85
 		else:_boss_color.modulate.a=0
 		mat.set_shader_parameter("boss_light",boss_light);mat.set_shader_parameter("boss_top",boss_top)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("clock_ms",_clock_ms)
@@ -312,8 +322,8 @@ func set_native_iris_light(screen_pos: Vector2, radius: float, alpha: float) -> 
 	mat.set_shader_parameter("light2_px", screen_pos)
 	mat.set_shader_parameter("light2_r", radius)
 	mat.set_shader_parameter("light2_a", clampf(alpha, 0.0, 1.0))
-	_iris_color.position=screen_pos;_iris_color.scale=Vector2.ONE*radius*2/_iris_color.texture.get_width()
-	_iris_color.modulate.a=clampf(alpha,0.0,1.0)*.85*.62
+	_iris_color.position=screen_pos*.5;_iris_color.scale=Vector2.ONE*float(int(radius*.5))*2/_iris_color.texture.get_width()
+	_iris_color.modulate.a=clampf(alpha,0.0,1.0)*.85
 
 
 ## MAP-LOOK(2026-10-20): 맵 표현 강화 레이어가 실제 2D 광원 기반 어둠(CanvasModulate)을

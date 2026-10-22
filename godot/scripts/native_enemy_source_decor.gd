@@ -5,10 +5,12 @@ var actor: Node2D
 var _g: Dictionary
 var _fan:=PackedVector2Array()
 var visual_clock_ms: float=-1
+var _revive: Node2D
 func configure(owner_actor: Node2D) -> void:
  actor=owner_actor
  var source: Node=actor.world.get_parent().get("source_state")
  if is_instance_valid(source):_g=source.read_current_g()
+ _revive=preload("res://scripts/native_source_revive_view.gd").new();add_child(_revive);_revive.configure(actor.world.get_parent())
  _fan.resize(34)
  actor.draw.connect(queue_redraw)
 func _ink(hex: String,alpha: float=1.0) -> Color:
@@ -18,7 +20,9 @@ func disk(r: float,hex: String,alpha: float) -> void:
 func arc(r: float,start: float,end: float,hex: String,alpha: float,width: float) -> void:
  draw_arc(Vector2.ZERO,r,start,end,48,_ink(hex,alpha),width,true)
 func _draw() -> void:
- if not is_instance_valid(actor) or not actor.alive:return
+ if not is_instance_valid(actor):return
+ _revive.visual_clock_ms=visual_clock_ms;_revive.observe(actor.data.native_final,maxi(0,actor.source_order))
+ if not actor.alive:return
  if float(_g.get("hitStop",0))>0 or not is_instance_valid(actor.player) or actor.global_position.distance_squared_to(actor.player.global_position)>=360000:return
  var e: Dictionary=actor.data.native_final
  var r: float=actor.radius

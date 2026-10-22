@@ -56774,3 +56774,5 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 2026-10-22 SWEEP-A: 플레이어 원본 relief/outline/bright 파생56장 및 idle 호흡, 기본 표시배율2.0. 엄격 자원 기대값 동기화. 이동·충돌 변경0.
 
 - 2026-10-22 SWEEP-A: 원본 브라우저 마스크 드랍207장 사전 준비/manifest. 드랍 draw의 리소스조회 제거, source proxy 합성·그림자 동기화.
+
+- 2026-10-22 SWEEP-A: half-resolution 색광 누적/최종MIX 및 유령불꽃 순서, bossAlive 광원, 부활 대기/슬램·얼음보주 표시 복원. 파생269장 provenance 추가.
