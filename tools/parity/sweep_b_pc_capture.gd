@@ -52,6 +52,7 @@ func _run() -> void:
 		"forge": await run_forge()
 		"growth": await run_growth()
 		"lesson": await run_lesson()
+		"settings": await run_settings()
 		_: L("unknown_mode", mode)
 	var f := FileAccess.open(out.path_join("godot_log_%s.json" % mode), FileAccess.WRITE)
 	f.store_string(JSON.stringify(logrows, "\t")); f.close()
@@ -229,3 +230,12 @@ func run_growth() -> void:
 func run_lesson() -> void:
 	if not await enter_play(true): return
 	await secs(1.5); await shot("0600_lesson")
+
+func run_settings() -> void:
+	if not await enter_play(): return
+	await tap(KEY_ESCAPE); await secs(1.5); await shot("090_settings")
+	var settings: Node = main.native_demo_pause_menu._center
+	for tab in ["screen", "sound", "controls"]:
+		settings._rebuild(tab); await secs(0.8); await shot("090_settings_" + tab)
+	settings._rebuild("system"); await secs(0.3)
+	await tap(KEY_ESCAPE); await secs(0.5)

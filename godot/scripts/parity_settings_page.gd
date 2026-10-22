@@ -22,8 +22,15 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
   match n.kind:
    "panel":
     var bg:=color(n.background);var border:=color(n.border)
-    if cls.contains("set-range-row"):border=Color(.43,.37,.27,.12)
-    S.panel(self,r,bg,border)
+    var radius:=int(str(n.get("radius","0px")).trim_suffix("px").to_float())
+    if cls.contains("set-range-row"):
+     # SWEEP-B: computed border = 하단만 rgba(177,162,125,.07) (상·좌우 0)
+     var row_line:=ColorRect.new();row_line.color=Color(177/255.0,162/255.0,125/255.0,.07);row_line.position=Vector2(r.position.x,r.end.y-1);row_line.size=Vector2(r.size.x,1);row_line.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(row_line)
+    elif radius>0:
+     var box:=Panel.new();box.position=r.position;box.size=r.size;box.mouse_filter=Control.MOUSE_FILTER_IGNORE
+     var st:=StyleBoxFlat.new();st.bg_color=bg;st.border_color=border;st.set_border_width_all(1);st.set_corner_radius_all(radius);st.anti_aliasing=true
+     box.add_theme_stylebox_override("panel",st);add_child(box)
+    else:S.panel(self,r,bg,border)
    "text":
     var px:=roundi(float(n.px));var weight:=700 if int(n.weight)>=600 else 400
     var font: String="font" if n.font.contains("Noto Sans") else ("cinzel_hell" if n.font.contains("Cinzel") else "hell")
@@ -36,6 +43,12 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
    "button":
     var caption: String="" if cls.contains("settings-choice") else n.text
     var b:=S.button(self,caption,r,func():action(id,n.text),cls.contains("selected"),roundi(float(n.px)))
+    # SWEEP-B: 원문 computed font-weight·글자색, 위험 버튼(리셋/종료) 적동 그라디언트(75,33,28)→(33,14,11)
+    b.add_theme_font_override("font",Fonts.stack("font",int(str(n.get("weight","500")))))
+    for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:b.add_theme_color_override(key,color(str(n.color)))
+    if str(n.get("border","")).begins_with("rgb(137, 83, 70)"):
+     for child in b.get_children():
+      if child is TextureRect and child.material is ShaderMaterial:child.material.set_shader_parameter("tint",Color(54/255.0,23/255.0,19/255.0,.82))
     if cls.contains("settings-choice"):
      var style:=StyleBoxFlat.new();style.bg_color=Color("211c17");style.border_color=Color("ccaa66") if n.text.contains("선택됨") else Color("6c5840");style.set_border_width_all(2);style.set_corner_radius_all(6);b.add_theme_stylebox_override("normal",style)
     panel.controls[id if not id.is_empty() else n.text]=b
@@ -58,6 +71,11 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
    "select":
     var row: Dictionary=fields.get(id,{})
     var select:=OptionButton.new();select.position=r.position;select.size=r.size;add_child(select);panel._theme(select)
+    # SWEEP-B: select computed — bg rgb(12,16,12), 1px rgb(125,108,74), Noto Sans KR 15 rgb(228,213,175)
+    var sel_style:=StyleBoxFlat.new();sel_style.bg_color=color(str(n.background));sel_style.border_color=color(str(n.border));sel_style.set_border_width_all(1);sel_style.content_margin_left=8;sel_style.content_margin_right=8
+    for st in ["normal","hover","pressed","focus"]:select.add_theme_stylebox_override(st,sel_style)
+    select.add_theme_font_override("font",Fonts.stack("font",400));select.add_theme_font_size_override("font_size",roundi(float(n.px)))
+    for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:select.add_theme_color_override(key,color(str(n.color)))
     var val: Variant=opt.get(row.get("key",""),n.value)
     for option in n.options:
      select.add_item(UI.text(option[1]));select.set_item_metadata(select.item_count-1,option[0])
