@@ -1292,7 +1292,7 @@ func _demo47i_physics_body(_delta: float) -> void:
 	source_potion.advance_native.call_deferred(self, _delta * 60.0, Engine.get_physics_frames()) # DEMO11-25: late 60Hz phase, after child regen
 	if not get_tree().paused and is_instance_valid(player) and is_instance_valid(camera):
 		player.z_index = clampi(int(player.position.y / 4.0), -4096, 4095)
-		camera.position = player.position
+		if not _native_map11_enabled():camera.position = player.position
 		# P2-001a: frame() 61848~61868 피해 숫자 펌프 (이 tick 전투 전·이전 tick 기록 소비 —
 		# 원본도 frame 선두 펌프 → update 순서). 감쇠(32584~/35751)는 전투 후로 미룬다.
 		_pump_native_damage_peak_text()

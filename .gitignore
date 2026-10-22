@@ -192,3 +192,7 @@ assets/vfx/boss/gen/
 
 # Local harness overrides must never set deployed user storage.
 /godot/override.cfg
+
+# PARITY-MAP-01 source-map regression (tracked product test).
+!/godot/tests/test_parity_map_01.gd
+!/godot/tests/test_parity_map_01.gd.uid

@@ -904,6 +904,7 @@ class NativeBootMapBuildHandle extends RefCounted:
 		return _result.duplicate()
 
 # MAP11-PROD owns only map composition. Exact World identity/PC services stay.
+var _web_parity_flow: RefCounted
 var map11_provider: Node2D
 var _native_map11_scene: Node2D
 var _native_map11_selected := false
@@ -972,6 +973,9 @@ func _ready() -> void:
 		return
 	map_data = JSON.parse_string(FileAccess.get_file_as_string(MAP_FILE))
 	_tile_size = float(map_data["tile_size"])
+	if _native_map11_selected:
+		_web_parity_flow=preload("res://scripts/maps/map11/web_flow.gd").new()
+		_web_parity_flow.configure(map_data)
 	_native_ground_surface = NATIVE_GROUND_SURFACE.new()
 	_native_ground_surface.name = "NativeGroundSurface"
 	add_child(_native_ground_surface)
@@ -3122,6 +3126,7 @@ func _process(delta: float) -> void:
 	elif actual_fps < 55.0:
 		_native_fx_hi_fps = false
 	_update_visible_chunks(player.global_position, false)
+	if _native_map11_selected and _native_map11_scene.active_space=="field":_web_parity_flow.prepare(player.global_position)
 	_flow_clock += delta
 	if _flow_clock >= 0.25:
 		_flow_clock = fmod(_flow_clock, 0.25)
@@ -3170,7 +3175,7 @@ func _update_visible_chunks(center: Vector2, synchronous: bool) -> void:
 		_chunks[key] = sprite
 
 func _build_collision() -> void:
-	if _native_map11_selected: return
+	# PARITY-MAP-01: source web tile/prop physics also owns MAP11 field coordinates.
 	var body = StaticBody2D.new()
 	body.name = "NativeMapCollision"
 	body.collision_layer = 1
@@ -3373,7 +3378,9 @@ func _build_flow() -> void:
 
 func get_path_direction(pos: Vector2) -> Vector2:
 	if _native_map11_selected:
-		return (player.global_position-pos).normalized() if is_instance_valid(player) and has_line_of_sight(pos,player.global_position) else Vector2.ZERO
+		if not is_instance_valid(player):return Vector2.ZERO
+		if _native_map11_scene.active_space=="field":return _web_parity_flow.direction(pos)
+		return (player.global_position-pos).normalized() if has_line_of_sight(pos,player.global_position) else Vector2.ZERO
 	if not is_instance_valid(player):
 		return Vector2.ZERO
 	if _flow.is_empty():

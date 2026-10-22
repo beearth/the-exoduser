@@ -1,0 +1,4847 @@
+{
+  "source_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "items": [
+    {
+      "item": "chunk_0_0",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_0_0.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_0_0.png",
+      "world_rect": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_1_0",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_1_0.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_1_0.png",
+      "world_rect": [
+        1000,
+        0,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_2_0",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_2_0.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_2_0.png",
+      "world_rect": [
+        2000,
+        0,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_3_0",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_3_0.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_3_0.png",
+      "world_rect": [
+        3000,
+        0,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_4_0",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_4_0.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_4_0.png",
+      "world_rect": [
+        4000,
+        0,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_5_0",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_5_0.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_5_0.png",
+      "world_rect": [
+        5000,
+        0,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_6_0",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_6_0.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_6_0.png",
+      "world_rect": [
+        6000,
+        0,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_7_0",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_7_0.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_7_0.png",
+      "world_rect": [
+        7000,
+        0,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_0_1",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_0_1.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_0_1.png",
+      "world_rect": [
+        0,
+        1000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_1_1",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_1_1.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_1_1.png",
+      "world_rect": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_2_1",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_2_1.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_2_1.png",
+      "world_rect": [
+        2000,
+        1000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_3_1",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_3_1.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_3_1.png",
+      "world_rect": [
+        3000,
+        1000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_4_1",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_4_1.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_4_1.png",
+      "world_rect": [
+        4000,
+        1000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_5_1",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_5_1.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_5_1.png",
+      "world_rect": [
+        5000,
+        1000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_6_1",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_6_1.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_6_1.png",
+      "world_rect": [
+        6000,
+        1000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_7_1",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_7_1.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_7_1.png",
+      "world_rect": [
+        7000,
+        1000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_0_2",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_0_2.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_0_2.png",
+      "world_rect": [
+        0,
+        2000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_1_2",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_1_2.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_1_2.png",
+      "world_rect": [
+        1000,
+        2000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_2_2",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_2_2.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_2_2.png",
+      "world_rect": [
+        2000,
+        2000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_3_2",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_3_2.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_3_2.png",
+      "world_rect": [
+        3000,
+        2000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_4_2",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_4_2.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_4_2.png",
+      "world_rect": [
+        4000,
+        2000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_5_2",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_5_2.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_5_2.png",
+      "world_rect": [
+        5000,
+        2000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_6_2",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_6_2.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_6_2.png",
+      "world_rect": [
+        6000,
+        2000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_7_2",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_7_2.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_7_2.png",
+      "world_rect": [
+        7000,
+        2000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_0_3",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_0_3.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_0_3.png",
+      "world_rect": [
+        0,
+        3000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_1_3",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_1_3.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_1_3.png",
+      "world_rect": [
+        1000,
+        3000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_2_3",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_2_3.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_2_3.png",
+      "world_rect": [
+        2000,
+        3000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_3_3",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_3_3.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_3_3.png",
+      "world_rect": [
+        3000,
+        3000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_4_3",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_4_3.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_4_3.png",
+      "world_rect": [
+        4000,
+        3000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_5_3",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_5_3.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_5_3.png",
+      "world_rect": [
+        5000,
+        3000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_6_3",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_6_3.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_6_3.png",
+      "world_rect": [
+        6000,
+        3000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_7_3",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_7_3.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_7_3.png",
+      "world_rect": [
+        7000,
+        3000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_0_4",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_0_4.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_0_4.png",
+      "world_rect": [
+        0,
+        4000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_1_4",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_1_4.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_1_4.png",
+      "world_rect": [
+        1000,
+        4000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_2_4",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_2_4.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_2_4.png",
+      "world_rect": [
+        2000,
+        4000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_3_4",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_3_4.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_3_4.png",
+      "world_rect": [
+        3000,
+        4000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_4_4",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_4_4.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_4_4.png",
+      "world_rect": [
+        4000,
+        4000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_5_4",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_5_4.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_5_4.png",
+      "world_rect": [
+        5000,
+        4000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_6_4",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_6_4.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_6_4.png",
+      "world_rect": [
+        6000,
+        4000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_7_4",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_7_4.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_7_4.png",
+      "world_rect": [
+        7000,
+        4000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_0_5",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_0_5.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_0_5.png",
+      "world_rect": [
+        0,
+        5000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_1_5",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_1_5.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_1_5.png",
+      "world_rect": [
+        1000,
+        5000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_2_5",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_2_5.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_2_5.png",
+      "world_rect": [
+        2000,
+        5000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_3_5",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_3_5.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_3_5.png",
+      "world_rect": [
+        3000,
+        5000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_4_5",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_4_5.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_4_5.png",
+      "world_rect": [
+        4000,
+        5000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_5_5",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_5_5.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_5_5.png",
+      "world_rect": [
+        5000,
+        5000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_6_5",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_6_5.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_6_5.png",
+      "world_rect": [
+        6000,
+        5000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_7_5",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_7_5.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_7_5.png",
+      "world_rect": [
+        7000,
+        5000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_0_6",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_0_6.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_0_6.png",
+      "world_rect": [
+        0,
+        6000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_1_6",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_1_6.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_1_6.png",
+      "world_rect": [
+        1000,
+        6000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_2_6",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_2_6.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_2_6.png",
+      "world_rect": [
+        2000,
+        6000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_3_6",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_3_6.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_3_6.png",
+      "world_rect": [
+        3000,
+        6000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_4_6",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_4_6.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_4_6.png",
+      "world_rect": [
+        4000,
+        6000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_5_6",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_5_6.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_5_6.png",
+      "world_rect": [
+        5000,
+        6000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_6_6",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_6_6.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_6_6.png",
+      "world_rect": [
+        6000,
+        6000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_7_6",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_7_6.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_7_6.png",
+      "world_rect": [
+        7000,
+        6000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_0_7",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_0_7.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_0_7.png",
+      "world_rect": [
+        0,
+        7000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_1_7",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_1_7.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_1_7.png",
+      "world_rect": [
+        1000,
+        7000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_2_7",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_2_7.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_2_7.png",
+      "world_rect": [
+        2000,
+        7000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_3_7",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_3_7.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_3_7.png",
+      "world_rect": [
+        3000,
+        7000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_4_7",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_4_7.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_4_7.png",
+      "world_rect": [
+        4000,
+        7000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_5_7",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_5_7.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_5_7.png",
+      "world_rect": [
+        5000,
+        7000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_6_7",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_6_7.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_6_7.png",
+      "world_rect": [
+        6000,
+        7000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "chunk_7_7",
+      "source_line": [
+        11612,
+        11615,
+        11754,
+        11762,
+        51922
+      ],
+      "source_asset": "assets/map/ch1/production_finish/chunk_7_7.png",
+      "godot_asset": "res://assets/map/production_finish/chunk_7_7.png",
+      "world_rect": [
+        7000,
+        7000,
+        1000,
+        1000
+      ],
+      "source_rect": [
+        1,
+        1,
+        1024,
+        1024
+      ]
+    },
+    {
+      "item": "m_ctree13",
+      "placement_source_line": 18137,
+      "metadata_source_line": 17547,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/rotforest_tree_01.png",
+      "godot_asset": "res://assets/map/props/rotforest_tree_01.png",
+      "position": [
+        3380,
+        7380
+      ],
+      "draw_size": [
+        340,
+        340
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_ctree13",
+        "file": "rotforest_tree_01.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "item": "m_ctree14",
+      "placement_source_line": 18137,
+      "metadata_source_line": 17548,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/rotforest_tree_02.png",
+      "godot_asset": "res://assets/map/props/rotforest_tree_02.png",
+      "position": [
+        3220,
+        6020
+      ],
+      "draw_size": [
+        440.00000000000006,
+        440.00000000000006
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_ctree14",
+        "file": "rotforest_tree_02.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "item": "m_ctree15",
+      "placement_source_line": 18137,
+      "metadata_source_line": 17549,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/rotforest_tree_04.png",
+      "godot_asset": "res://assets/map/props/rotforest_tree_04.png",
+      "position": [
+        1220,
+        3860
+      ],
+      "draw_size": [
+        380,
+        380
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_ctree15",
+        "file": "rotforest_tree_04.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "item": "m_ctree16",
+      "placement_source_line": 18137,
+      "metadata_source_line": 17550,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/rotforest_tree_03.png",
+      "godot_asset": "res://assets/map/props/rotforest_tree_03.png",
+      "position": [
+        3220,
+        1460
+      ],
+      "draw_size": [
+        459.99999999999994,
+        459.99999999999994
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_ctree16",
+        "file": "rotforest_tree_03.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "item": "m_ctree17",
+      "placement_source_line": 18138,
+      "metadata_source_line": 17551,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/rotforest_tree_05.png",
+      "godot_asset": "res://assets/map/props/rotforest_tree_05.png",
+      "position": [
+        4980,
+        1260
+      ],
+      "draw_size": [
+        360,
+        360
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_ctree17",
+        "file": "rotforest_tree_05.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "item": "m_ctree18",
+      "placement_source_line": 18138,
+      "metadata_source_line": 17552,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/rotforest_tree_11.png",
+      "godot_asset": "res://assets/map/props/rotforest_tree_11.png",
+      "position": [
+        7060,
+        3860
+      ],
+      "draw_size": [
+        448.00000000000006,
+        448.00000000000006
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_ctree18",
+        "file": "rotforest_tree_11.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "item": "m_ctree19",
+      "placement_source_line": 18138,
+      "metadata_source_line": 17553,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/rotforest_tree_06.png",
+      "godot_asset": "res://assets/map/props/rotforest_tree_06.png",
+      "position": [
+        4980,
+        5980
+      ],
+      "draw_size": [
+        352,
+        352
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_ctree19",
+        "file": "rotforest_tree_06.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "item": "m_ctree20",
+      "placement_source_line": 18138,
+      "metadata_source_line": 17554,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/rotforest_tree_07.png",
+      "godot_asset": "res://assets/map/props/rotforest_tree_07.png",
+      "position": [
+        4980,
+        7180
+      ],
+      "draw_size": [
+        432,
+        432
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_ctree20",
+        "file": "rotforest_tree_07.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "item": "m_fbones",
+      "placement_source_line": 18140,
+      "metadata_source_line": 17525,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/frozen_bones.png",
+      "godot_asset": "res://assets/map/props/frozen_bones.png",
+      "position": [
+        3300,
+        7220
+      ],
+      "draw_size": [
+        48,
+        48
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_fbones",
+        "file": "frozen_bones.png",
+        "sz": 48
+      }
+    },
+    {
+      "item": "corpse",
+      "placement_source_line": 18140,
+      "metadata_source_line": 18402,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/corpse.png",
+      "godot_asset": "res://assets/map/props/corpse.png",
+      "position": [
+        4980,
+        7180
+      ],
+      "draw_size": [
+        40,
+        40
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "sz": 40
+      }
+    },
+    {
+      "item": "m_c1sroot",
+      "placement_source_line": 18143,
+      "metadata_source_line": 17635,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_root.png",
+      "godot_asset": "res://assets/map/props/prop_s_root.png",
+      "position": [
+        3060,
+        6180
+      ],
+      "draw_size": [
+        150,
+        140.11363636363637
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1sroot",
+        "file": "prop_s_root.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1groot",
+      "placement_source_line": 18145,
+      "metadata_source_line": 17625,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_g_root.png",
+      "godot_asset": "res://assets/map/props/prop_g_root.png",
+      "position": [
+        4100,
+        3460
+      ],
+      "draw_size": [
+        760,
+        758.4800000000001
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1groot",
+        "file": "prop_g_root.png",
+        "sz": 760,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1tree",
+      "placement_source_line": 18145,
+      "metadata_source_line": 17600,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/prop_corpsetree.png",
+      "godot_asset": "res://assets/map/props/prop_corpsetree.png",
+      "position": [
+        4100,
+        3620
+      ],
+      "draw_size": [
+        852.3514285714284,
+        1044
+      ],
+      "pivot": [
+        0.5,
+        0.72
+      ],
+      "metadata": {
+        "id": "m_c1tree",
+        "file": "prop_corpsetree.png",
+        "sz": 1450,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colW": 380,
+        "colH": 230,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1sroot",
+      "placement_source_line": 18143,
+      "metadata_source_line": 17635,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_root.png",
+      "godot_asset": "res://assets/map/props/prop_s_root.png",
+      "position": [
+        3020,
+        4220
+      ],
+      "draw_size": [
+        150,
+        140.11363636363637
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1sroot",
+        "file": "prop_s_root.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1sbone",
+      "placement_source_line": 18148,
+      "metadata_source_line": 17634,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_bone.png",
+      "godot_asset": "res://assets/map/props/prop_s_bone.png",
+      "position": [
+        3220,
+        1180
+      ],
+      "draw_size": [
+        132.27272727272728,
+        150
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1sbone",
+        "file": "prop_s_bone.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "corpse",
+      "placement_source_line": 18140,
+      "metadata_source_line": 18402,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/corpse.png",
+      "godot_asset": "res://assets/map/props/corpse.png",
+      "position": [
+        3140,
+        1500
+      ],
+      "draw_size": [
+        40,
+        40
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "sz": 40
+      }
+    },
+    {
+      "item": "m_fbones",
+      "placement_source_line": 18140,
+      "metadata_source_line": 17525,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/frozen_bones.png",
+      "godot_asset": "res://assets/map/props/frozen_bones.png",
+      "position": [
+        3020,
+        1740
+      ],
+      "draw_size": [
+        48,
+        48
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_fbones",
+        "file": "frozen_bones.png",
+        "sz": 48
+      }
+    },
+    {
+      "item": "m_c1cocoon",
+      "placement_source_line": 18151,
+      "metadata_source_line": 17618,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/prop_cocoon.png",
+      "godot_asset": "res://assets/map/props/prop_cocoon.png",
+      "position": [
+        1900,
+        2020
+      ],
+      "draw_size": [
+        434,
+        380.26666666666665
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1cocoon",
+        "file": "prop_cocoon.png",
+        "sz": 280,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colSz": 80,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_hang_cage",
+      "placement_source_line": 18151,
+      "metadata_source_line": 17558,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/hang_cage.png",
+      "godot_asset": "res://assets/map/props/hang_cage.png",
+      "position": [
+        1580,
+        1940
+      ],
+      "draw_size": [
+        280,
+        280
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "sz": 280,
+        "col": 1,
+        "large": 1,
+        "id": "m_hang_cage",
+        "file": "hang_cage.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "item": "m_c1spod",
+      "placement_source_line": 18152,
+      "metadata_source_line": 17636,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_pod.png",
+      "godot_asset": "res://assets/map/props/prop_s_pod.png",
+      "position": [
+        1620,
+        2300
+      ],
+      "draw_size": [
+        150,
+        132.5
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1spod",
+        "file": "prop_s_pod.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1spod",
+      "placement_source_line": 18152,
+      "metadata_source_line": 17636,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_pod.png",
+      "godot_asset": "res://assets/map/props/prop_s_pod.png",
+      "position": [
+        2140,
+        2380
+      ],
+      "draw_size": [
+        150,
+        132.5
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1spod",
+        "file": "prop_s_pod.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1camp",
+      "placement_source_line": 18154,
+      "metadata_source_line": 17615,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/prop_camp.png",
+      "godot_asset": "res://assets/map/props/prop_camp.png",
+      "position": [
+        1820,
+        4020
+      ],
+      "draw_size": [
+        589,
+        443.75795454545454
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1camp",
+        "file": "prop_camp.png",
+        "sz": 380,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colW": 130,
+        "colH": 80,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_sword_pile",
+      "placement_source_line": 18154,
+      "metadata_source_line": 17557,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/sword_pile.png",
+      "godot_asset": "res://assets/map/props/sword_pile.png",
+      "position": [
+        1580,
+        4180
+      ],
+      "draw_size": [
+        200,
+        200
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "sz": 200,
+        "col": 1,
+        "large": 1,
+        "id": "m_sword_pile",
+        "file": "sword_pile.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "item": "m_c1sbone",
+      "placement_source_line": 18148,
+      "metadata_source_line": 17634,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_bone.png",
+      "godot_asset": "res://assets/map/props/prop_s_bone.png",
+      "position": [
+        1940,
+        4340
+      ],
+      "draw_size": [
+        132.27272727272728,
+        150
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1sbone",
+        "file": "prop_s_bone.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_bone_arch",
+      "placement_source_line": 18157,
+      "metadata_source_line": 17565,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/bone_arch.png",
+      "godot_asset": "res://assets/map/props/bone_arch.png",
+      "position": [
+        1420,
+        6020
+      ],
+      "draw_size": [
+        300,
+        300
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "sz": 300,
+        "col": 1,
+        "large": 1,
+        "id": "m_bone_arch",
+        "file": "bone_arch.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "item": "m_c1sroot",
+      "placement_source_line": 18143,
+      "metadata_source_line": 17635,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_root.png",
+      "godot_asset": "res://assets/map/props/prop_s_root.png",
+      "position": [
+        1740,
+        6340
+      ],
+      "draw_size": [
+        150,
+        140.11363636363637
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1sroot",
+        "file": "prop_s_root.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_penta_circle",
+      "placement_source_line": 18160,
+      "metadata_source_line": 17562,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/penta_circle.png",
+      "godot_asset": "res://assets/map/props/penta_circle.png",
+      "position": [
+        5900,
+        3860
+      ],
+      "draw_size": [
+        350,
+        350
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "sz": 350,
+        "col": 1,
+        "large": 1,
+        "id": "m_penta_circle",
+        "file": "penta_circle.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "item": "m_c1altar",
+      "placement_source_line": 18160,
+      "metadata_source_line": 17616,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/prop_altar.png",
+      "godot_asset": "res://assets/map/props/prop_altar.png",
+      "position": [
+        5900,
+        3900
+      ],
+      "draw_size": [
+        478.5,
+        439.40304878048784
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1altar",
+        "file": "prop_altar.png",
+        "sz": 330,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colSz": 95,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_skull_totem",
+      "placement_source_line": 18160,
+      "metadata_source_line": 17564,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/skull_totem.png",
+      "godot_asset": "res://assets/map/props/skull_totem.png",
+      "position": [
+        6220,
+        4060
+      ],
+      "draw_size": [
+        106.28571428571428,
+        240
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "sz": 240,
+        "col": 1,
+        "large": 1,
+        "keepAR": 1,
+        "colW": 30,
+        "colH": 20,
+        "colOy": 88,
+        "id": "m_skull_totem",
+        "file": "skull_totem.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "item": "m_fyellow",
+      "placement_source_line": 18161,
+      "metadata_source_line": 17524,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/glow_flower_yellow.png",
+      "godot_asset": "res://assets/map/props/glow_flower_yellow.png",
+      "position": [
+        5620,
+        4060
+      ],
+      "draw_size": [
+        40,
+        40
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_fyellow",
+        "file": "glow_flower_yellow.png",
+        "sz": 40,
+        "light": 1
+      }
+    },
+    {
+      "item": "m_c1sbone",
+      "placement_source_line": 18148,
+      "metadata_source_line": 17634,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_bone.png",
+      "godot_asset": "res://assets/map/props/prop_s_bone.png",
+      "position": [
+        6060,
+        4260
+      ],
+      "draw_size": [
+        132.27272727272728,
+        150
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1sbone",
+        "file": "prop_s_bone.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1gtoxic",
+      "placement_source_line": 18163,
+      "metadata_source_line": 17628,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_g_toxic.png",
+      "godot_asset": "res://assets/map/props/prop_g_toxic.png",
+      "position": [
+        6740,
+        1620
+      ],
+      "draw_size": [
+        538.3888888888889,
+        550
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1gtoxic",
+        "file": "prop_g_toxic.png",
+        "sz": 550,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1pool",
+      "placement_source_line": 18163,
+      "metadata_source_line": 17617,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/prop_pool.png",
+      "godot_asset": "res://assets/map/props/prop_pool.png",
+      "position": [
+        6700,
+        1740
+      ],
+      "draw_size": [
+        465,
+        377.94767441860466
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1pool",
+        "file": "prop_pool.png",
+        "sz": 300,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colSz": 85,
+        "keepAR": 1
+      }
+    },
+    {
+      "item": "m_c1gtoxicf",
+      "placement_source_line": 18166,
+      "metadata_source_line": 17629,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_g_toxic.png",
+      "godot_asset": "res://assets/map/props/prop_g_toxic.png",
+      "position": [
+        6500,
+        5460
+      ],
+      "draw_size": [
+        440.5,
+        450
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1gtoxicf",
+        "file": "prop_g_toxic.png",
+        "sz": 450,
+        "keepAR": 1,
+        "flip": 1
+      }
+    },
+    {
+      "item": "pit_poison",
+      "placement_source_line": 18166,
+      "metadata_source_line": 18407,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/collision/pit_poison.png",
+      "godot_asset": "res://assets/map/props/pit_poison.png",
+      "position": [
+        6500,
+        5580
+      ],
+      "draw_size": [
+        200,
+        200
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "sz": 200,
+        "collision": true,
+        "colW": 80,
+        "colH": 58,
+        "colOy": 7
+      }
+    },
+    {
+      "item": "m_c1sroot",
+      "placement_source_line": 18143,
+      "metadata_source_line": 17635,
+      "source_line": [
+        17524,
+        17636,
+        26059,
+        26078,
+        52440,
+        52451
+      ],
+      "source_asset": "assets/map/ch1/floor_objects/prop_s_root.png",
+      "godot_asset": "res://assets/map/props/prop_s_root.png",
+      "position": [
+        6860,
+        6020
+      ],
+      "draw_size": [
+        150,
+        140.11363636363637
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "metadata": {
+        "id": "m_c1sroot",
+        "file": "prop_s_root.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    }
+  ],
+  "derived_layers": [
+    {
+      "file": "godot/assets/map/web_parity/edge_0_0.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_0_1.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_0_2.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_0_3.png",
+      "sha256": "5d11b22b1e35f1c1025492e48cb3102457aa1f5c2bb1a7f15c0d1329fa7c7323",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_0_4.png",
+      "sha256": "2f3adf370a0d2c6265fe4338ec3930e2645d813f9c1d6c8f19f1999d838606c9",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_0_5.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_0_6.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_0_7.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_1_0.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_1_1.png",
+      "sha256": "45a27c7d6d90292d52b24eb41b14fb8049c9451c7be9b14c116fa0924b44916b",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_1_2.png",
+      "sha256": "03e04d5f4e08d9a2262980f6f5cfb2a8626ec5ac708475f53d0fe69e8c6f80ff",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_1_3.png",
+      "sha256": "467df6bd6c94bd47456c90d3d5046c114059315be1699c7fc44905fcce71c40f",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_1_4.png",
+      "sha256": "44c92ac8b2c324c6710e3446f654a0d19febfc17bef902d1a1b2df9922ede7fb",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_1_5.png",
+      "sha256": "c9f30e5e417baca6da32de6fd3870d4685ed9139d57d5459bfb210e3dec4a3cb",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_1_6.png",
+      "sha256": "af32cb9f26e474d11850352ecd8e0b62885da69f3115f8a6fe7774d194c4032c",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_1_7.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_2_0.png",
+      "sha256": "78990605f5c3f2c4d1c181a80e4d3dd4e4a7ea849f21cb68b548506577cbf72d",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_2_1.png",
+      "sha256": "1908c9ed3c0911d6b839b3e97229b27eb5a19ffb03656c699247c00572c9d1f1",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_2_2.png",
+      "sha256": "f3e6819977417c7937c799c240c815839ccaa836659db4e11c99d4f386f04ee0",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_2_3.png",
+      "sha256": "6b43dea66952f2c7f3090157e965652f64011ba1eda1b3cd8e2ed5ad2c515a40",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_2_4.png",
+      "sha256": "adc7f47f37055e3e0333b87cac8c2bbed379512a177e22872fad847cc71480eb",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_2_5.png",
+      "sha256": "be560555c5386655a473b8c28fda632ed32c42515a9f58ba3f43fabc64ba9cb7",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_2_6.png",
+      "sha256": "32e643a44d56afe3ef5e2f05ac99f7504fd647bf85b8f472421cd05795313305",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_2_7.png",
+      "sha256": "435dead428c2854c96da6ed8b66c3f147a993eb2f8c71c055781ed007778ecad",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_3_0.png",
+      "sha256": "44d45eb53a5e9500f855fa791f27e98bb6244bc07e6e0917ff9c1fee90e8672c",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_3_1.png",
+      "sha256": "9bdde48efc77c2ff0ece0affec5f5e44c0afd2234d8b14d7ca8d82600a670f7d",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_3_2.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_3_3.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_3_4.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_3_5.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_3_6.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_3_7.png",
+      "sha256": "5122cb34d271e3f7a9abbe25a74001084277e5cbb7187913bdfe0bf53b4cc75f",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_4_0.png",
+      "sha256": "c2c5ace10796fb81336ef5e44936ebadd862192e31121110bdd26f10f4687c0b",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_4_1.png",
+      "sha256": "8663f8a2fb42f6955f2c629a241a7f15ed6150caa66079aa6a7914da8a9276e9",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_4_2.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_4_3.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_4_4.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_4_5.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_4_6.png",
+      "sha256": "9f8c7f7f13f66956c39eb9cd83850f0d1eac1cdb5efbca71a4212aff9a482703",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_4_7.png",
+      "sha256": "0e3d8fdf9d796d9d03d893b948e83cd79604be3babfaabda0cacdd36c0d4d299",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_5_0.png",
+      "sha256": "95fe65fd5c2687579421f134b6b4615f9da74d77e6bcdb7a4a4477ddbddcabbd",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_5_1.png",
+      "sha256": "9e64d96e72f3e21d8c7410159782fd8bd6a64ed1d6f485e95b5e25c3d8dcd6f4",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_5_2.png",
+      "sha256": "9e30da31286fa4ef5d8a35f589ee1a92d72d6d6484899a6271053561677ceb7d",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_5_3.png",
+      "sha256": "7ceec7e01705a281dc455c2c8f4943a2e7153ec3077e1fabd2210b24bb4773f4",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_5_4.png",
+      "sha256": "e97cdae77492763fd58e80a9dde28b16d7eec662e52cb3565f941c5a368a5b56",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_5_5.png",
+      "sha256": "803b057f073a452417c3b5bba7df542fc4f932416527f32e0e3e1076836486a1",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_5_6.png",
+      "sha256": "94dc0a1749e5423fbf22c27959f58981a53c11de2f7cf375b32c6a27f1029441",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_5_7.png",
+      "sha256": "ca37e5f69e9b2634b0157ecb738dd81f9f5952b5f3b1b3030680e1b39d924bd4",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_6_0.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_6_1.png",
+      "sha256": "c823eb13c1627c81bb30a47daf84f10aee9c128dee797c0b8d32451111edfc72",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_6_2.png",
+      "sha256": "7f6e59fa3ca895b04722a0e920634c67dfdba7ef16c5a7f0554f07b46f7e323b",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_6_3.png",
+      "sha256": "89dbd8a56a9d26bceddac2f041a7460c5152339638f4d3ae054ff0ef4af6b9ad",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_6_4.png",
+      "sha256": "9343b7a51f7f591f2713c72e7de0fc403c04a0538919a7d62461d9ebcc8a3d1a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_6_5.png",
+      "sha256": "4a71beee4f498db5c6434fea62888b71b1801ad005d196063263f030fd50843a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_6_6.png",
+      "sha256": "4e4619ec3b3fb04a57091ad7408c7a4b63c9e14e47f5a403e707e1c6fc2a12a6",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_6_7.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_7_0.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_7_1.png",
+      "sha256": "fef76b6c33e5122c15d513794ff16a5d9f64da4e366447caf790a26ddadb5aed",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_7_2.png",
+      "sha256": "65618441d959bd1f9d09d4e3492f0df9d7dd69ad512108099e061019acf05675",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_7_3.png",
+      "sha256": "f20ef5b0cc985d4ddfa46b0c86e5ede98e21f6c7065e14d27c7b352f32995209",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_7_4.png",
+      "sha256": "5a09a76a5c359ca800b5ea15a5671195888428a00b7fe644e467267b9b20b334",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_7_5.png",
+      "sha256": "cf908ddebe15a393a78a8e809fb05203f0f358a49ba2668cbc0ffa4d992e2de3",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_7_6.png",
+      "sha256": "fd0452de1ea409efa674337abc7311d3e3f5c9b114b99280d5e2f3e102f8317b",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/edge_7_7.png",
+      "sha256": "c14a65607b31f205caa55de2e2b49b822b006af350e5f61aed0f5e7e7cafa12a",
+      "source": "ch1-boundary-edge.js:1-95"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_0_0.png",
+      "sha256": "68c79f62fc2cb38d85d6f7edef25fddd4bb02001039467a5e66ce3b9c6c66112",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_0_1.png",
+      "sha256": "fa4d25a12119c1f1d2791ece1f9077d99fb426f675807659dbd1b029c4c16e40",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_0_2.png",
+      "sha256": "bee8bcdccd651ea85d05edf55b331afe573aff6ab7d9cca83213c24dd0740ae3",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_0_3.png",
+      "sha256": "1cd4dafb7441924efb274539ca2c1573d6b7153a99d1e0ddb7a8f4db6bd4f910",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_0_4.png",
+      "sha256": "5a3f06bb99587b17cd62e76af4eb0fdf787370e02e5cfb342d4d629e06091e82",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_0_5.png",
+      "sha256": "058c94a7124fd78b4d969e2c9e4a664a2d416828bbb4f38e2a31c77987dc0391",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_0_6.png",
+      "sha256": "c64d3c68b7360aad02cc03a3950b26f012eb031d220c1e2025ce684613916552",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_0_7.png",
+      "sha256": "b84146a0a5fde137b8866eb0e559c3f5585e4edb364d40b41700193482672d70",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_0.png",
+      "sha256": "60b5231084ff07077253ff800ecb1e8400a6ae1730275b5eb520b527ceeff70b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_1.png",
+      "sha256": "a5d02080c631fa7f3c3ee4df179a7d2c7f5179a81341afc275bb15f351bc0adc",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_2.png",
+      "sha256": "03ec4ce6ca95b847a9200a3bb7465bf6b3c5c055b87f0e6660ca47ac66b10555",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_3.png",
+      "sha256": "5105c99db18499af11d85ecec763df446b308291f8a6a1907c2622b31753fe72",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_4.png",
+      "sha256": "56a099a42d237f1c9e3fbd9e8460f48ae15298c6caa0840ccd28237cde062676",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_5.png",
+      "sha256": "11af57602441eb3510858766254ca358fc7f5723c654ae14000f818eb00f6b89",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_6.png",
+      "sha256": "315d2d3476a6fca2be5f5c9078e549fd7ce9829266a3ba38c43caf93b432da90",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_7.png",
+      "sha256": "e8cca3208f8b3d95aff826f83c5bd33655885ae037f861d1dd8e9d66e318f718",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1000_8.png",
+      "sha256": "7e272d60282a610693c43803270d35125c5fbcc84f58a7cf297863f7acbfe25b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1001_0.png",
+      "sha256": "a771477f4ff2202ea5982babeb84ea13f0d3d8b5763eb6f191f156d57ec43c65",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1001_1.png",
+      "sha256": "e427d4e04ea52f440485b96ef74612102a172b907cee4d6949a9d7cc5e1370f5",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1001_2.png",
+      "sha256": "a8362ef21fa21682c6a314d5d6749c3826b7a778af9e42c4bced38709281c061",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1001_3.png",
+      "sha256": "df3d82b433980802221c8705f8b8449f2bd084094e057776b5f39952b7fca5a6",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1002_0.png",
+      "sha256": "cc6e75cabc09dbdbefd61f856f949d7cb3332eb25734bd00effbbd3d7c725353",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1002_1.png",
+      "sha256": "6b3d3a6f6bf35b461606db19cd69e22dbd53d342f747ac1a112504649f685425",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1002_2.png",
+      "sha256": "08df6b637ec10a7e1a92af7230c30c81810613a0329cdb774a4723c7e2e38f19",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1002_3.png",
+      "sha256": "3c24475aeab759ea8407008ce378bd0ecfdc703d5bea95e3c4fe9f8153853a66",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1002_4.png",
+      "sha256": "ef37120eaa0ef90076277e93780fc09c1cd51c849c7d7a5e5584c564c10addfa",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1002_5.png",
+      "sha256": "692d9b81fb7ae7c8dd4f0ec083bf93171fd3a04cdedddcaa03836c0adcce6c94",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1002_6.png",
+      "sha256": "35a7016acb0b22c9719ee9373e2913be3b863381db60325cc57282d9fb3acd18",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1003_0.png",
+      "sha256": "06bbcaf772ca3a637409dda830eb26576ca906301477da8b6e4cd667e16e9e79",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1003_1.png",
+      "sha256": "726bfa7fa53a97007ac71eed759c02e6c34881830882d30724354829a52ffa2e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1003_2.png",
+      "sha256": "012b281cf12b93f284b411d601b27bb8d0ebfa2a626ac77be70e903df9a8d708",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1003_3.png",
+      "sha256": "db682830df7e88320b53f02e0a8d43f2b8d561f11becd24871c5a0abc875b794",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1003_4.png",
+      "sha256": "4ec343d728e0ba08c215d6c350b73f7c0f68586ac31f56a94a6f1b29a633d91f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1004_0.png",
+      "sha256": "13d9ddc42f45ba1337e6d8031a63cd486135b31ede16af4431fe6a29dd946d5e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1004_1.png",
+      "sha256": "a119e6c2d49f2df110aab4d3e01fa312452d1f81810204cee5adb2b8ef79a533",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1004_2.png",
+      "sha256": "74dd3cb6d3d2314446015f28f2f892b37dfdabbdfd3597cc053dbafe7aa12c60",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1004_3.png",
+      "sha256": "6cf471c48eaac6c017a2de023e426885be3864003a9d259b8140c901aa238512",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1004_4.png",
+      "sha256": "cef5f40963d854b34a9564beb264c05679c0676c052820d75584a150324caa15",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1005_0.png",
+      "sha256": "7fcee6f1e1a796afa61010f9c26d854d2236a346be9c0fda0d557d00a50ce07a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1005_1.png",
+      "sha256": "01d31c5b722905f08138812bca6cdf4a1eb9b2d2500c4227e2f5c0ce0786373e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1005_2.png",
+      "sha256": "25a1ac60b439578d4257cffea0c77122cbc376c33e4ee99d35114c1d7a38b5ec",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1005_3.png",
+      "sha256": "df3b73c06ecb8e2b06adb09b2d5e8371f0adf2cabaf54364aa63c96bc0f46327",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1005_4.png",
+      "sha256": "82703946bb7b5ba66710715f3219f46d7402383ce00159038d47d7f2b3be5989",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1005_5.png",
+      "sha256": "f77909425dfeebfd38d5916c3c4b9bb5a1f4e5560cea5728508cfd3f20ab2550",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1005_6.png",
+      "sha256": "52f9b5d9db5b01b4fc7351fd61bea4d6eae51616ca1679ca349859d81969ee64",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1005_7.png",
+      "sha256": "8133f272c89685f767eef6a9e2cffd9724a2732fd1c298771bb7b0c766bf1c29",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_0.png",
+      "sha256": "9cd066aadb411b6dda6bab84964029a93a61e3b5f81c6fe5cbc16e088606195f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_1.png",
+      "sha256": "dc65dbe22086972dcc4a28697d1bdcbb4f7cc118aab1a47e144c1759660d4948",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_2.png",
+      "sha256": "c119ac53241fdb40dcc15ce6a4576092a9ec7817e477bfd890bf34ab32788a29",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_3.png",
+      "sha256": "17647cbf08c4d5032eb146561b8eb1d25ea02890287834d2162bfef689b6b4dc",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_4.png",
+      "sha256": "cbbeadf5e6b8e91ce9fce07a20990491f05efc260a4eaf25f6afc24e1a58ab95",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_5.png",
+      "sha256": "7414ad512b083fe055533b7e3c87642219fb256d1a50a8dbc5ba4ac3305d7385",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_6.png",
+      "sha256": "bab8e5ed5fa53ab060c3ef52e43b20375e5efbd3e541b8fbe8a4f78099857837",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_7.png",
+      "sha256": "6f595ccb167512ec3596ed8de719e204fa2b1b80ea4ba88d89951a5b7a823a74",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_8.png",
+      "sha256": "dff98c9f48c03bfb45de306454fd9af478ec1c15eb676ce65b9576797ebe5d74",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1006_9.png",
+      "sha256": "f80c28ba35ea781e2d47572985885b7da370a78fbc7906b55e9c721d7457175f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1007_0.png",
+      "sha256": "c1894ad3e7b2eda11d404f8fbba1f0622195a37246ea5d07aa715570e7ffacc6",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1007_1.png",
+      "sha256": "e62ffc5f35ce2ad9a6d8ccbda66f38ce8d760fc13a706c9ec1776b30b494cc5d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1007_2.png",
+      "sha256": "2e3377238bd0b6909d7624c851b4668febcec0255fd86ff281736d6e185a16f6",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1007_3.png",
+      "sha256": "4f491f7aa28345ceb3a1939a3276239e81f6c5248c45fa2c5292a6e93b2615fd",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1007_4.png",
+      "sha256": "987314303b5104fc4694f2932729f2bc9601de62f21098f09f7288f7f258e5ac",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_1007_5.png",
+      "sha256": "80984d4e654e07d2c9dc13bdcf476adb152f09e44891ffc226f2f1a14e7fd7c8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_0.png",
+      "sha256": "da395e2bca58ceba9fa6487863daaca091ebdae4af407abd1acfa3075a42b397",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_1.png",
+      "sha256": "8557b0181798b5297ba2cbedd7a4eb1f4d81a3cfb166e70ff6973602d893a720",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_10.png",
+      "sha256": "fe0ebbe0059a5b268a7f5083353d1487c990be974f3e30ae8c6bd57bfa57e1b8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_11.png",
+      "sha256": "ee06abdcc75b1f1a1bbd584630e76040a5fe96ff5d35c073f77f15a3df8af737",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_2.png",
+      "sha256": "e168941d1daf3ae3ae2d91cc9d4e9e96cb35c50c4652d800b12aac91c6649665",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_3.png",
+      "sha256": "cc8b0e050f1381bf90855215d95fc57d99104c19472f2f58e25f610f31483b75",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_4.png",
+      "sha256": "9a076f00939052f0d2e4f05afbfb5602c1d263c9f55c6bcdf65e326d679e5dcf",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_5.png",
+      "sha256": "1b2cf712079f1d3f64fe9475ce21281dbf7d792361fa80d2a3f27360964a3f05",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_6.png",
+      "sha256": "5b50ad2c163b8888f34c8653358481c491ddaa6f6d057745d5946c8354db77b9",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_7.png",
+      "sha256": "d50110534a7643643d7e3be3941b5ef1e3fb2b22c8549e88f28b56f273af6478",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_8.png",
+      "sha256": "c432d5869644d99b0c09f106b067ab6ebcb3dc09c0643111bfbd502e739eafd5",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_11_9.png",
+      "sha256": "c74edec15050187d5189ac1ef110437dcb510ec07b5fa6010b6fcff27950196b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_12_0.png",
+      "sha256": "62e86930d7e60c8ca2d04bc38dddf6c7e323223432704b5142469ea034abddb4",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_12_1.png",
+      "sha256": "5757d84d468233156ba9f938fd69c295a7702636631fd53e1706348b4a9fdb0e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_12_2.png",
+      "sha256": "887eae1548b9156b24aeaeb92f34c9ed6410287c8c1ac47fb0f6bf45fefa8b99",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_12_3.png",
+      "sha256": "f77ac8e4995a75d80a6ec4303ba7bf3001bde8c9abd35120f566109ffb99af38",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_14_0.png",
+      "sha256": "a33d6ce6ca7156e0ca0b8e9b609dd6f502883afeb9f33569fbfcb532371550fe",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_14_1.png",
+      "sha256": "eb91fa231c2a78e8cc7aa35dc682098eb217a54ed176ccc262cf8ff9b2b8588c",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_14_2.png",
+      "sha256": "636873dc17f3a781d03fecb5877773999fc39e335ee8e5f8a73decd423bf5fc9",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_14_3.png",
+      "sha256": "8f2c601aaaafabf3b9df695abea7dd7c37497cc744e61cdeab48fbd682015244",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_14_4.png",
+      "sha256": "d10a2a399ec9ca94a176873202c718bc546fc83782b65c87c5f064b0e11e0e7d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_14_5.png",
+      "sha256": "db2cbd8f0594516b7d38c6239add09f8060bc680f0cf34c289675be418de95a9",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_14_6.png",
+      "sha256": "27a8c89878d363a62e0d5d2cfb38ce4d3b9a576cd54d55914d981c68d33c99a8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_14_7.png",
+      "sha256": "4c4ceaedaea4d5d622fcf95206f9bcc3ee8fe7acb68b74bd65810eba2a575476",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_15_0.png",
+      "sha256": "1a11ae8126e97d7545eb64840361bcf05ae8f1b703b28054f9a24ea769763875",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_15_1.png",
+      "sha256": "cabf0f4e166c753c144767a687ad28fad52ca933a9922bd1e38768ecdf049f50",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_15_2.png",
+      "sha256": "f98edb6b4527c0a2e9e9f0e70257374eb3d4d6cb52df8dc50a3300e377ffd1e3",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_15_3.png",
+      "sha256": "fea02ac1b73474041b1e7e53b0c7416b8c1fa376dc5dbc933a606853588e8bff",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_15_4.png",
+      "sha256": "ad44b7fc417f0764494a666017d0d67f52513a991a2eee2b27d90e77bff8bde1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_15_5.png",
+      "sha256": "65559f6cfab5d7978ef7055b2b910bac1dd401bd5f49f5373f90b22fcbf5f3d5",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_15_6.png",
+      "sha256": "ae85aabf2733b39b5902e0d641d48c80b57e8ed3cefffaf2e9f473ecce964379",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_16_0.png",
+      "sha256": "ca9737f3a0adce9c7c4436c4d78bb33c46c3236e1cf596abbf1052b0179fc8e0",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_16_1.png",
+      "sha256": "305ae06051b0882cee98a95e6c7e0974f865eb0053d2efddc4e4b9083dcd5ebb",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_16_2.png",
+      "sha256": "20adb85244cc1d8f37ebeabde4b603b29fadd8e6cdb6bb58b8d928248d3fc970",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_16_3.png",
+      "sha256": "f5237bb5358fc3b1e375aaae5dd3863bc3406b9e416769717384cb02377719b0",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_16_4.png",
+      "sha256": "08809718cbfe7e8c9d40d39562b1fc703c28986485bfa8d7899d665211daf2c2",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_16_5.png",
+      "sha256": "11abd5ed2323b62fd2bba46cfed13390d860190f12ef7ae4790ae25be3465400",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_16_6.png",
+      "sha256": "5a1a7c2be3721ac6099eed9ad35bff9eb6010758aec1009ab030a0071f8cc6d1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_16_7.png",
+      "sha256": "845c62c82dea1fe1acf6d9e5d1925cd97da50755dd3564a39f0fa8d7dcd11911",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_17_0.png",
+      "sha256": "9773abfae873b502005803d0dc681bb0cd63b461512ceff7fa50bdb21213d1de",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_17_1.png",
+      "sha256": "fecd40cb612f04b6eafeff6c16d10def7cf0aa213d06b27fa3d1c2bad86b5c40",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_17_2.png",
+      "sha256": "7e89ec599a86ac20ece8321221978f7177105b45904df12fab234246f18e636f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_17_3.png",
+      "sha256": "d1516d86284f963ef3fba6b6e78ef7cdb8c7fb753b79e2e25f96e32f8b3ce062",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_17_4.png",
+      "sha256": "7a1ce5f88d1c1e993821e2f12c6ae30a756ce7213a95d06000c3934686a1b84a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_18_0.png",
+      "sha256": "2a54b39143ab680d880b349d8156743208e63cc7a3f76638867cea5abd463bb1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_18_1.png",
+      "sha256": "786f38da6aff04915de3592ec698bd52f302960ecade727039a26525b7a38842",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_18_2.png",
+      "sha256": "a2315bed06d51e28963363e8486fbfb4ffb6c696b5a4adaecc9f671166fe379d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_18_3.png",
+      "sha256": "adea6140a77d685535f93342c1fcc4cbd3566dc9d1077fdb6214604be3a16af0",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_18_4.png",
+      "sha256": "feca4f2ac2486249b525a020dc310caec183223d15318c9ca3d86c705eb9c37f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_18_5.png",
+      "sha256": "329885495040ccb05af8b8574e8e73b60b158152d345d12ec81553e38d6d7c89",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_18_6.png",
+      "sha256": "a6067c96233154fa5d6e4e0157a2b2edc01154db883dc5f0c6d57e656981b081",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_19_0.png",
+      "sha256": "671efce0560ffe54b03bc72e0887b78fb03627187196a3845509d094683b215f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_19_1.png",
+      "sha256": "7a1f39374945c2eb84af7de8fbf841db23b32a2885e8805448b39dbace95726d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_19_2.png",
+      "sha256": "312f9d859aa15f45d5718093f46cfaf46d2709d8b4e1f85c98aa3e05db85c0f8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_19_3.png",
+      "sha256": "eff89fe705e50ac2c1e1fc29a80e2c5c03ef18b04df90154163828ff1f8feda4",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_19_4.png",
+      "sha256": "f597bf2a7df7b643fe0d8f6cb9d16ac2f48ce940792892d62bb43924edb04967",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_19_5.png",
+      "sha256": "299b8d0161bd835e6b42670c5d026d21ba571c0c4e61d0617656c5d7d7ee89f9",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_19_6.png",
+      "sha256": "e6c045e0bdc272408268c52d007f990c1e68d09d028db148acedbc1927567631",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_19_7.png",
+      "sha256": "f68496c5cf994d7606a70e76e36db40f50bf11d75030ed1e141dbb5e87988c76",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_20_0.png",
+      "sha256": "5bee9bd7c109ac3831b17a58bd551d5aa1bf8b4d394d154c1aae3b7457b1f14a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_20_1.png",
+      "sha256": "3cfd45324dd3debcca3747e76253a6af8632b2b0bf003820ca9aff7d0af6c6c9",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_20_2.png",
+      "sha256": "cb71f05aa5f3b6ad2f1b003480eb88fd6c5e5dfed191a0f06bef4e64918f78ed",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_20_3.png",
+      "sha256": "e0fe9da994316c3723df9db957b394360eb849440c20cbeedd7ebdb4f52b8aa5",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_20_4.png",
+      "sha256": "58c7d7c6a4dd3796fcb2ec4cd039d472eab9e142a45c87d8660b3129a33b5571",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_0.png",
+      "sha256": "a46bed514145a9919dc52204dc0d035d15fb93121b098b5c381a564933a5b730",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_1.png",
+      "sha256": "1c4e56e4ac801672020c470d65f8d89adb04738526e7d1aefd87fe9ecbe2f118",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_2.png",
+      "sha256": "0df56698b37774046e9909f0217881b83e0ea262a34c589df567f00f1e29cca0",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_3.png",
+      "sha256": "56b63979229bb5c9cc843eeee5449b0a86d236953689b6ec88dd958d4bc327ea",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_4.png",
+      "sha256": "8a0b665ac9c9515d51bdb5f037504c92d4651552370f9f8266304418e70c12f9",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_5.png",
+      "sha256": "41aab2ff25459d9b3ceba68a961ef4f8b4050983c2a36507a4f29dbbb014059e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_6.png",
+      "sha256": "d8310ba11fd58dcbdc02adc269035eea4d43e9550a3d8cf0e303d09b1a10a4b2",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_7.png",
+      "sha256": "a15f33bbc690b68912fbaf6772f8a25de66cad7db94247adeba4e858c9fa6d16",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_21_8.png",
+      "sha256": "c9eb0dc566aabc582f2f0bdff58bc06752965dc7af97bbaae94f1bb841ccd814",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_0.png",
+      "sha256": "d2750e50057f3ab5d04b97c8dd0420a7d516ab764db95382f82c892893e6cd8a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_1.png",
+      "sha256": "42a46ec51fd0e9c44a1688952d77efd8be39c21afa6eb4008401b4a17fffc9af",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_10.png",
+      "sha256": "e0320d0249a6852062994712e84b054704cb4e388592c89d5bd0cc2cc7f1da79",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_11.png",
+      "sha256": "f15c19c93fb2e59d6c60a131f634e579f62f9d15fd45143b4edf596425310e9b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_2.png",
+      "sha256": "da8b4a977ccaf2f1be6a44c57fba3faed482ff5d186bffb5d000da62a565e687",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_3.png",
+      "sha256": "4917d2d25f1deac17b8edd808828f740e726a551a2053940a3dc77ae2d0ad06a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_4.png",
+      "sha256": "a8aaf02f96d5c701bd1ddebef3d66a9329c4acb9e187d7603c4cca95ab8c9728",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_5.png",
+      "sha256": "232f4a3cda7037da1ef494f962dd1174aba092c184f140413e0d6634fad863a8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_6.png",
+      "sha256": "42e5451b6999cf93ac7e11bb136c529b16b15fbe58926a12622e12019d0a5c88",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_7.png",
+      "sha256": "d79a940285ef58754f9a441f90c65f0c34d824597cdc69335c3a0937299dda04",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_8.png",
+      "sha256": "6b45cc5a4ea9750704d66eb1722f683796e616c863443da7e22ad204e4d93434",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_22_9.png",
+      "sha256": "af3a3b2b95073da2dc512fc4e9c1743be755f8816a51d0e4d9dcbc01cf7cf876",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_0.png",
+      "sha256": "56feac9075d4f7bc27f275599708fb5cd1678baa50906f64839bec276a2a3019",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_1.png",
+      "sha256": "42c9f6e97089eb5643ed9ea6adc415e8377e98be8794140539bb02cd7157a68c",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_2.png",
+      "sha256": "ddc0c5fce95d377fc982faa4a923f586c9f8fa832047222a15854cd6849ee179",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_3.png",
+      "sha256": "1631082be5b980b9122de601c7d92deabdf09d94a3c90e611fe6227d13ed2d1e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_4.png",
+      "sha256": "bfdc48f72f24e3edce0b63d52c79f85c45e2747511646feb57fa06d06962df31",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_5.png",
+      "sha256": "9bf4bee28e98c72364656deba229fd7c8435e93fea3a9f246227286c80abce02",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_6.png",
+      "sha256": "7753a02ef9d45c33837a05a9e0b6e0216729a4a39fed39a48a35571b2c391405",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_7.png",
+      "sha256": "5c54df022e5bcef7e19bc1531a770b8da392a8dfb607c4db89a95bbae1b4adb1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_23_8.png",
+      "sha256": "318652648520c44c775cd8cc33a03ffe46e3125e2570cfae6f67fb88448d52c8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_0.png",
+      "sha256": "d61e9e3782efeccbe2176f0be86ca30660eb4c59cfc787c0edb76643656356fa",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_1.png",
+      "sha256": "1ea9b09f2886ba520027af463f8b3318c3f828c087438afe6067615be2b6b2be",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_2.png",
+      "sha256": "8b7d0ce7b0acc1ed7c6edcb5c6d61a5b6dff60c76d251ffd31cab5382b3fee7d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_3.png",
+      "sha256": "1362374164d0159a37002b659f28e99b9caabd20935cfb406441dd213e7246e5",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_4.png",
+      "sha256": "0e75aa989521e35042663df89b048f516f64f8e978c7c38335622f967861bedd",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_5.png",
+      "sha256": "e62c13e3b2d2af797b7238b2faf2f44d0c630b16599aa3829b91acb0ff8803c6",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_6.png",
+      "sha256": "a0980b960287c9ad385744421de9206374f08d5e804d3281d77ec16e7a3595f1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_7.png",
+      "sha256": "8c29c57673ead06541cb82d3401a8f657ff66f776c350b9388faa65b81160efe",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_24_8.png",
+      "sha256": "7baba23fa08ba2cbb81adfee4732a48f3a99c7c3317ac1a2fca6db753cb6f20c",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_25_0.png",
+      "sha256": "30329c38c2b80df6e0938a12668a12dd7f02f00f3b743375211c909938c49674",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_25_1.png",
+      "sha256": "aa9a4d0ead0a05784bfd9520264f319da082f40c00f5d77e6882282d9dd6b5f1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_25_2.png",
+      "sha256": "0991f7a21a439d789961794278a2d09a1132afd316e16c256295835f87f8da48",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_25_3.png",
+      "sha256": "acf951fb3389a96043772c3795e6a4041f674fc4ced11dde769cd4293bd24866",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_25_4.png",
+      "sha256": "91597d703dc905b96fbc71022f56ae4b912050d544f6f6a3b1d4cd65f2c8356f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_25_5.png",
+      "sha256": "446ecf7540b53793b1e762562ddb3b01ad6dd7f476f379a8b2e662bbfcc1d651",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_0.png",
+      "sha256": "f3bd6fe10668c2ddafc360b052fd38353818b7df11880c3a2cb6002107b1541a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_1.png",
+      "sha256": "10e7d25726f8d1b57547289d0f8bc03d8217775431019bc69fdc97a28079bbc1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_2.png",
+      "sha256": "516a1a19c631b8362712a1f75ef81b761b49e7e12b2a7fcc3badebf0546da32a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_3.png",
+      "sha256": "87e2c7b45006a57787ef91f0fa7b4d6dc08be8569c843075d11d1d9d4208419b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_4.png",
+      "sha256": "1a43e8fd6be2b6efbc4562aee346f166f991f30d97e9795d063305b57408c624",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_5.png",
+      "sha256": "47e0d738ab1245cd4d2d28b1b0fbef632d43a1cf3cdaeab060cba48ecb1a48a6",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_6.png",
+      "sha256": "dc8e60fef1dd81caca7aac8d2a15bb5694c8e1214a4dce1e456811406bf82479",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_7.png",
+      "sha256": "26394af675e7b3aabca15484e29c2c56d50806ed1d680a9ae092200d6c0fcb0c",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_8.png",
+      "sha256": "0e12ff019abcadd796e2a2df4f98f327c6be96ffc5339ea406950a231e5b9617",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_26_9.png",
+      "sha256": "cfc368aca79bc58a6d995c140e530b91edac1715dbf6e1abd40fb19f326b4afc",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_0.png",
+      "sha256": "10a221bc0eb07dc4ccf1a53711213aff820b2819fd14462ed62f4bb41219937e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_1.png",
+      "sha256": "2fb62646cce3d6831e35dc3b0c5886f12468db73bb04f21d6f9e277084e5f65f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_2.png",
+      "sha256": "e64b02c1892a535133fed1dd5cca30118248e0928f9ecc57cbb3018aa7a90428",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_3.png",
+      "sha256": "bfc707295960a2dfd76bbe2a656f42cb67ea0249ff397d9173a38fc761dcc6df",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_4.png",
+      "sha256": "8c076e3b37ee654f0a276fc1ce45254c15fdc0d4a838dcbefb2fff7fb7e35395",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_5.png",
+      "sha256": "00b7b706568bff5efddb8a94884734d73bb116b243da1499b9f5aa28567a849f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_6.png",
+      "sha256": "9072f9dbc55f1aefc3543d30c257bbecebcfc8ec04d1bcffe612b677ee6e3923",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_7.png",
+      "sha256": "596b1fd5e7e54ba261e36cacd26064df84c8325ca147e320ae5b9a4de70e2136",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_27_8.png",
+      "sha256": "5aabdcec799f865a9f06708cd8f05694a524f54539366da396d4f5a342133bda",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_28_0.png",
+      "sha256": "9a2a876fbae7a62653656c3f18abbb681a12b057b53c7d6e8a1c279d4898eec6",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_28_1.png",
+      "sha256": "c0511bac72dc062ac979fc3adf0291ce9a6c88bc2747adf365e337b7e0174b21",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_28_2.png",
+      "sha256": "402526b1af1cc02837a3b4be7b7ced1c9fadea26ec3009986c7a053aee0c1cb0",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_28_3.png",
+      "sha256": "4b729bfe46d99b2e438ce2b83f16468d5efe7d167d20178a1505fbbe1036a3ec",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_28_4.png",
+      "sha256": "dd635d0bbec742c6f995a3e62fbedb56c7e0105b08aacbf1a3bb8ee22e0fcd7b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_29_0.png",
+      "sha256": "8411335ff77c7e420a8de1c91f2f9187f0aa9fbb6db1f3ee2d8ddc126b2aafdb",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_29_1.png",
+      "sha256": "036631557de32fe1be59a335b783801d7d7957d518ded8084417350a0c0c25cc",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_29_2.png",
+      "sha256": "3c1c1d183aee0c0c3dee54fa5e87ee6a9399ba954ebc2b1aef495a1f0586fdce",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_29_3.png",
+      "sha256": "db710b3a162dabcf550232498aa53cd52ef18870719abf884310437e44ecc164",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_29_4.png",
+      "sha256": "e9c21f1e40e7f7a0805bdfd974e39b42c702c152b59d9fd09f0cccbafa79c0ff",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_29_5.png",
+      "sha256": "23456683b038656d82f6c3f6329d16fc0fc6e41aa2ccc3f3ef8c0c3adbedf6be",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_29_6.png",
+      "sha256": "7a00f59076b27c63d437c3d7fc77855c0fbe5045fe1a116ac5a0f4d397f533ae",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_29_7.png",
+      "sha256": "e971e1d989100d642d9815814fa8574688cced93d82a76f3b4fccec7c50eac52",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_0.png",
+      "sha256": "e31058574533084cd6874feafda9d8ab0c8431e9545f61be6c3a6805416cdf34",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_1.png",
+      "sha256": "db73592a937460f1c4497b24f507b40424f2e2d51b2a1c5f09c5a27b34dc754d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_2.png",
+      "sha256": "8a7f512832e67833630b4ec376428eb359924d87044e8c0f762a882cfc9f2dc5",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_3.png",
+      "sha256": "435c673b3d52410ad4d5a2a4da075ff5c77675f385d6a4fcb19eae94087ae732",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_4.png",
+      "sha256": "80d096550eff2d73ad2d24f29dbfbe60f2e9aa11ed20104e63c4610264fccf53",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_5.png",
+      "sha256": "fecbb000214ec7012080ab061fb38e5990d78957c956d346bf4ceee44bee489b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_6.png",
+      "sha256": "27c46f8172f4e88165b5c767267a346521640108a014e3daa6e63208919e471c",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_7.png",
+      "sha256": "938beeb4d421bb477cb08de5e0eff534803b63c7e174a1c5da69c493cb15ae81",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_2_8.png",
+      "sha256": "485ba79ac5243601e3b38d54a229aa90e34c293095db507620aa03f45e51eff0",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_30_0.png",
+      "sha256": "70b0fe6b1d946e371c804c33c4a1b35a1068c43f4176a9615360b47f5692f74d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_30_1.png",
+      "sha256": "732e3cff447d20f852f4dce10cbc9770b4c707b00d89b74a0060f5874d6512cf",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_30_2.png",
+      "sha256": "e7a21e7c9383ea73dac7d2c5e3b678416d4617596a5182ada282f40bc0b187fc",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_30_3.png",
+      "sha256": "9af70ae8a0ac7c41797a40b437ba87243c1d89b04149f52f846b056174ae795e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_33_0.png",
+      "sha256": "46c45dc20ed46d3cbc335b3643e30f19653f5edbfc8d55c563826f7a94f1fd96",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_33_1.png",
+      "sha256": "6e434b90c2e836bb98826bb0ef6add13afc6470b68c6aa5c1ec017c418c921bd",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_33_2.png",
+      "sha256": "b9564d2f4033df72d6931d60ff3a136bba3ba2e4ba19b9fbe345b0bdad4cc610",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_33_3.png",
+      "sha256": "0828f738c20d0732f0bae675637a901238fd75bfe7367142453944907f880b5f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_33_4.png",
+      "sha256": "149a0176723205a8d1c7c0af513ed2f8abaecfeeb4338594c185ce429bbcaa50",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_3_0.png",
+      "sha256": "f8ea3404a6b1f6d99e11d71ad966cb0f40b3170b9ac9f24b8107e49f01fe477e",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_3_1.png",
+      "sha256": "757eb9178e7eb4a483865c07b1c1033212f71da93de58f5a007de3adc683eda7",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_3_2.png",
+      "sha256": "0b40db6135176562cb040feb52cee71e6fa40033d3f2db4eecb43baddb1bd44c",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_5_6.png",
+      "sha256": "51d7164d28ba402d27e90d7501b804801eb04b08935ff9b330510c34ee805955",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_5_7.png",
+      "sha256": "7ad1def01084835cfb01e0a822ec5f5611f708348ef2cfd0d7e0a62ae0d6add4",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_5_8.png",
+      "sha256": "900d72da64b1aec84be41946ebb98035851c77f71bee35ca276bf95f2aaa03ba",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_6_0.png",
+      "sha256": "b6fe2901327e1471aa0b148fee08ed7d2bc222c51e734c0807248324ac372e9c",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_6_1.png",
+      "sha256": "1c669fea26ae60501a7265b59f2b2e243aaa069a259ce55d77e1e386ffaf6ccf",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_6_2.png",
+      "sha256": "ae105c9f486d1d916417a81ddc9750fe45feb5eba1c9d38009143905630767da",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_6_3.png",
+      "sha256": "1b9cec60411c518d89f289c05b23ca9aea7d9bdd98cd5d68b85ec24503314829",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_6_4.png",
+      "sha256": "91b23519c8b76b4964f73618645de4c8e10da1ce949f6fb2d1ce6fd76c7c0317",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_6_5.png",
+      "sha256": "fe39d062b8c5853de1e8a87ceac7c98d258a458b6f590d8a725090cc8f6ea562",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_6_6.png",
+      "sha256": "91a9ac23fb336349605825a4aad67a7bd93b206f99d2c12d4c097afac56ec744",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_6_7.png",
+      "sha256": "a4725a8f2e3dfa9f666e71e2e0381f047e14fb8503ca0af8b0e2bd2d1053f427",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_7_0.png",
+      "sha256": "541eb415b6dc5d5d121d9fe00d064aeea67799293465539bb0d2133f3d621785",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_7_1.png",
+      "sha256": "57a498a634e21f2f809b1e1a938290c3a8093eafd5ec9e9f0ee291833540d9cd",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_7_2.png",
+      "sha256": "4be2315bddf7ca8a9b817670cd0762d3e5aea2607b56c844af31760df03e9d05",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_7_3.png",
+      "sha256": "e9904ed76df80884c84c262857d2e77d101ae219c00face775d8403af106735a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_7_4.png",
+      "sha256": "80d9cf967da508fa7c629c29b0d56e71441fb4c40f9979e96a9c5d8b8808b947",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_7_5.png",
+      "sha256": "3116494b4ce98957e63744f6eeefd35f1d6225582c2ea4252da5e90f995aea46",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_8_0.png",
+      "sha256": "42df43d064ff377f63787a07e4bba9c643987c0dd969965afde6822728c16bf7",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_8_1.png",
+      "sha256": "7599c61195a5e82081ef8a8a455046826fa2455613c3467aa8e2bde9c665f8e3",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_8_2.png",
+      "sha256": "3d717471b8f553d3171e4f46c69ee5d3e0d4c2849dd6652b25cb93369f49e6c8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_8_3.png",
+      "sha256": "2c2743da2014318a9a6629261c11129502e84e07f6c32a996ad4d5bface5a11a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_8_4.png",
+      "sha256": "0ce9b9ccb5d075662a6660718eac5ec16e9acea8df1b1327f94fe752f5885348",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_8_5.png",
+      "sha256": "d1b15a0748aa80673e13422cb4882e00627c6ae1552f82a0a479c6df3b334dcd",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_8_6.png",
+      "sha256": "416d83cbd574a850efb861a0b84a4532ea1848b95091255d7ee8d59dcc221a7a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_8_7.png",
+      "sha256": "d0fd0c0004d1c398c85bcd9059e782f822a922808bf93fa0ea844d96038a1ea1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_0.png",
+      "sha256": "223429f8ddc41ac093d82be5b2c1a244d79486d759937e3c50484e0a45849904",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_1.png",
+      "sha256": "9784a3a56fba52d2caab4dff6963b56785dcfe00faf358a38f9e652a843caf25",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_2.png",
+      "sha256": "787b16b78d40120a0652609eea05cc9a664081ba823e81560d7303c1dea029cf",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_3.png",
+      "sha256": "1d9e90c2ecc6b1cd1db9eaea91f6ef85950e2e0555a9fbe2d86ca9eb1b15052a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_4.png",
+      "sha256": "921f51414e9b72e7e322c4afd8b701851d1980d0a69b63234df522ff3ed8739b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_5.png",
+      "sha256": "fe04a185770914f27a4fb99f930f5880977dc8028326f126436e24067463c82d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_6.png",
+      "sha256": "60d3fa8832e64bcd01afa4407b59b25f9acfd8eaeea23a846ecce417153f2c03",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_7.png",
+      "sha256": "d5f1cce92981bb2051e39c7bd372abd4049494c6d0cd3a6de46c2fb9b64e44a1",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/feature_9_8.png",
+      "sha256": "4393d21f60087b1a8ef5f264028619e0bbc7127ac1debcfd530873b0ee0588a5",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/gate.png",
+      "sha256": "9efa82ee709d5cc1d26d834d9293ec84a054b956c19ec35c2c177685f86ebaa4",
+      "source": "game.html:18245-18262,18339-18361,52027-52045"
+    },
+    {
+      "file": "godot/assets/map/web_parity/portal.png",
+      "sha256": "33aa2cf8f84f07b34d608debadf09614f3be5c054589ea1774d81455c535d9cc",
+      "source": "game.html:18245-18262,18339-18361,52027-52045"
+    },
+    {
+      "file": "godot/assets/map/web_parity/portal_blue.png",
+      "sha256": "474a7257e9ad15e9e68554baf34a41796dc50b153aa4e5a68adcf1460da21aea",
+      "source": "game.html:18245-18262,18339-18361,52027-52045"
+    },
+    {
+      "file": "godot/assets/map/web_parity/portal_red.png",
+      "sha256": "b62e5b8c15ac66725890de36c359446c6b0c364861a5507c248871ad189dcd60",
+      "source": "game.html:18245-18262,18339-18361,52027-52045"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_0_1.png",
+      "sha256": "0d2e9a8a121de5c3a484bcf22bdb170db611276aee0f14858aaded1ceb2262e4",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_0_2.png",
+      "sha256": "5b53c85c230b26bc291a7ea0ee0ef5f2b8956531ce33321dbd7bc8bc70e633be",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_0_3.png",
+      "sha256": "0670bba8dcc088d83eb92d868b57f23159cdb9c2993a8c7a8e166080da7a8fe4",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_0_4.png",
+      "sha256": "4b812338ac853fe908f213285fb565bb10a218762bd4b9e0766e0e89525314d9",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_0_5.png",
+      "sha256": "5a858b082105b9e2c96495335bf280b270620511b4d04a1b4adcb6e1590e73e0",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_0_6.png",
+      "sha256": "ed8b95fb0a922bcbbbef341f1a5ab0adcd234494e92ed5aed88adcd1af4ee5ec",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_1_1.png",
+      "sha256": "2e1c3f1a8423a347f2e65d23a8bf47fff9aa307a791bec910530f5c7b330fb1e",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_1_2.png",
+      "sha256": "dc34c76ee33bb4b67dbab9b8bbd66af26c1ba31649783340a63be7d765185c27",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_1_3.png",
+      "sha256": "4e7c237601ce6dda9b22b400b9448f99021d7c2fe2bd4aa435c595047668c8e7",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_1_4.png",
+      "sha256": "fd2596f69f23cc60b36f8be8719032251dbe00c59d219fc2cb680c0a918eb581",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_1_5.png",
+      "sha256": "4a24022c0e9d8b298dcf8a5408ddd4a3e761c520059957a85af5a31996342679",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_1_6.png",
+      "sha256": "616bae679c03f33bd54454f79ee6f93609601be991bb49f5ff2e500168d77581",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_2_0.png",
+      "sha256": "807835bef3abef1abef663b1ee752e78a5d39d54ba78312fc8b3902b31a20975",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_2_1.png",
+      "sha256": "901a4da6b41af4ad430c461557de40f5a6f6376d239c7554f5383a53f68b4089",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_2_4.png",
+      "sha256": "ee3710d88c7f5543bd92f72b366a78687dfdd4859584e71618df36597f579e60",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_2_5.png",
+      "sha256": "416172850163301a7279f56fe8ebb03b0c9b2d0ccc5e298b0137395b0eebad5e",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_2_6.png",
+      "sha256": "dce78b36a974dca82a2dd6c3a37ffc43aa8ee96bf3257931cf0f6e068d904494",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_2_7.png",
+      "sha256": "a6b780a07890c6acecccb796fcf3d8aefcd0caad3799838208046e9805741259",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_3_0.png",
+      "sha256": "a58c262b9aedd126a489085da2847764ccba10e45e3c33c657e34b2558500cc6",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_3_7.png",
+      "sha256": "1d6ee0a43b0f41126ecd7d9a92bd865d04308d1f27183dc4d8221cc13c11288a",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_4_0.png",
+      "sha256": "ec638d97132066606a1ce65073fdf48e26cd17fd7f1aba5fd98fba1cb4fcbdb3",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_4_7.png",
+      "sha256": "efd137e818895a19b525c995b58e74611dda51eac67bd3aa6674da2f5d82ae40",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_5_0.png",
+      "sha256": "d5a119eebdebd67d56e7bf763680672752e97b3e7802413babc362f598f1fb34",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_5_1.png",
+      "sha256": "1184b66156504eab4254b825cbfb0b416c35610f4f7923b407094225f1d772a6",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_5_2.png",
+      "sha256": "e15820e171effc65696de575e1e00e36bcc94a3ad87c23e83fdefe50475a7eec",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_5_4.png",
+      "sha256": "96fad874107008a108d32466a2d59b40fa91d2b4638ad25540df18fcba2addfa",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_5_6.png",
+      "sha256": "14d6a345c3cf4b1c7642645ca97cd6f0193092ad72d14eb2e016976bbeea9900",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_5_7.png",
+      "sha256": "47e2a4fd741510a1207bd659aefbbfc0a778913889001da00e1da00a15d19e34",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_6_0.png",
+      "sha256": "cd58891c2e4a7c767114ab80e9d7790178c54d0daaeffe4b2ed6416793204378",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_6_1.png",
+      "sha256": "ec6c1636c190217293468fa14d3a5dea68e285d179f512bc7258a0cab1a237be",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_6_2.png",
+      "sha256": "ae0906a3b69a6636f1c0fcb27baf72d7de4c2e0cd686f51e1ab912e3bb4348ba",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_6_3.png",
+      "sha256": "8d85db25bc93f54a0f75418f0e778f5f812d55f49e797bd8bd893ca155ef752f",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_6_4.png",
+      "sha256": "c3b7f1aa9267393bd19cd4392cb35c260cf6da0ce953196b8012f279a2f8fbc5",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_6_5.png",
+      "sha256": "43c62842930eab1094b092fcdf34ce77b0c76114ebb6e3473cf85a115d0f84fc",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_6_6.png",
+      "sha256": "7dd639f8b3a0e4549dff53885837059524d81416faa5b57c16c1ec394be6de67",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_7_1.png",
+      "sha256": "e20f15e61bc6da6084cf5be687966e21dd08dd04754c60a434d90b8fddba2683",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_7_2.png",
+      "sha256": "bc9553048b16405bc0f026f9e8e4e60f64c1273427e9365bbc83946c5b757400",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_7_3.png",
+      "sha256": "a73c8178f423f592a4dc84ebf90534275a83c30bdf833b4ddf130e2ade9fcf6c",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_7_4.png",
+      "sha256": "aee5044cc258884c58ab899a96346dd9c473fb01693ee304e007b3151f13d473",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_7_5.png",
+      "sha256": "62723fd32f5d8314f4e497135a3dc1f73ae18764ed45704f22b2d31fd6d51445",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/sway_7_6.png",
+      "sha256": "e2cce0aeaabb647ed3a98bebd0b7c3879de7e75c99fb814b4660914b1e2df614",
+      "source": "ch1-forest-sway.js:10-98"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_0.png",
+      "sha256": "049356373e6c0a09325be3d1c72b4115a90dc2d339bf16654a7d58c56d365758",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1.png",
+      "sha256": "21b7e1549ffd07ed83a6cd399f55fa334aa7551c481e284a9bce1b30b69f7d63",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_10.png",
+      "sha256": "fa5e1faf5316be3a3e16b2ce55d2161b650ac1d2bbaa1892544181840baa9b5f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1000.png",
+      "sha256": "9ffb1f3f66509e65c1692a6499632749914ec1987699f95036ad60c4b72c3bf0",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1001.png",
+      "sha256": "8952885bfd97ad8ce43b46239ea460a0743f7d7c92c4a182a0960b1278229668",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1002.png",
+      "sha256": "2213099c9bf81ee88df0e991e85df09e3f282d1c8a9dabb527f8d1cd9835e083",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1003.png",
+      "sha256": "275aea608aee13b11664253b6d8ad8b29be1f4793f88254ee9b3d3fad335f181",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1004.png",
+      "sha256": "597c57e4f53d1a9c6b769a83b0ecd6e0947701290da2bfe7777b7a7c5c4ca8df",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1005.png",
+      "sha256": "944ace6185f4158ce50a342ecafcb2725bdefbde59747f929ff22c29a91ddda2",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1006.png",
+      "sha256": "a00dd9f76d702334d8ec463bd55c771ffcd391b8da757ed662de6005a954e8b7",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_1007.png",
+      "sha256": "2d0e8642ed614f4a9d0cad36fafee466fbb0661f611068e290b8c8c8d25213fb",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_11.png",
+      "sha256": "4cf428600d2a20a5a22fc850cf4957e81a09f9c082f0478e8c202711c71f500f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_12.png",
+      "sha256": "2836a5a7d408b00b704f7df0848a80032f2c7fec8acce703542efb703aa5ee3b",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_14.png",
+      "sha256": "9b75e65bdce3d83c1025f23f49de4d78b94eff27ddaa358826dcd1cbe3ae229f",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_15.png",
+      "sha256": "80c54ef32fb272e68916111313c5d7f6982b02ec12fdd28f21708c719d355859",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_16.png",
+      "sha256": "f11dceb298b7b775d3ce6178ca9c9afcaefa292ef49eec6f51b5e491b3435b8a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_17.png",
+      "sha256": "cf356b0dcfe9670465ca7efdacede907ebf076db7a49416c6d24a20fe59f4263",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_18.png",
+      "sha256": "7d98051bbad9630a66f858558e616fc0f19dbc667ead389b4bb893fb85edb641",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_19.png",
+      "sha256": "35b9f7dd98dbfd32d8ad655d39e190dbc6f3facc0e3f98926387c4be731a62fa",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_2.png",
+      "sha256": "d88ff9e7cb49c8ddd9d88493f57805bf7bc0699e9ed4a84080b508ab2bc92294",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_20.png",
+      "sha256": "a4d88ead6901b9248b96cbc04e64a50628d71fcd72ed0875832a92d85aebe31a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_21.png",
+      "sha256": "ce1f5595fb9cdb90d6d4b4c62397ec3e211c454278dcc89bcb0c4e43152c7846",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_22.png",
+      "sha256": "e4850bcb32aa38f34b6606650fff83e5a72bd3d5dccf5bb5e523abb6572b732d",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_23.png",
+      "sha256": "70721860139974bdc8cd20a3fbec432808aad9b0c85f3c2fc16dff904c40e0ea",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_24.png",
+      "sha256": "b1693bc895c122f0e4d444273e41b7c9a3ec3d1d400960bce4977180a5bbc2a2",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_25.png",
+      "sha256": "9838900b88cd3c15cecf1757f57c6c72151ccb133d8a07117ece84ba4f9690f8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_26.png",
+      "sha256": "19165f897380610373c4b3fb86dec02879fd1561948a420db65616090e09e3fd",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_27.png",
+      "sha256": "60cac2ea2a859433b72b3121595a1e1e6e65699f33a675d817fe3c761243f008",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_28.png",
+      "sha256": "64347a3a70e0de2f5cb7f2e97e27d2997f0665262bc22875795dd67c2e26d8f8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_29.png",
+      "sha256": "8868047f34243cba8bfb2b3adf26ca8e65e84a6ca62ae25e9a1359ce011c481a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_3.png",
+      "sha256": "d0294ea612220a04aa2ef1a66c5db4dd2436eeaa57fc8ab0162ed91577d64593",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_30.png",
+      "sha256": "0d8af80c51355f1cddc0fa6e8643df1a94151a8d195964f661f05ace59e11e93",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_32.png",
+      "sha256": "426591e3b60e06e955543846b1c8ae937b9af53055b3b08fc09011fa1b334f18",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_33.png",
+      "sha256": "8b370b8c2527a7639c0607ccb145a3423c227da887e267a8ab8c47abbdfe5d98",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_35.png",
+      "sha256": "1895bc7056b80e057386301e03f3cc453bf6842e77cafff2e4f1ee61643e933a",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_4.png",
+      "sha256": "f0d81cf5f848c5b17153980bf3fd652af5ed6538df5b1a4020538990fec90006",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_5.png",
+      "sha256": "f0810903fe977c46ca234e4626298f9d09ef50c2473caa936b629cab8c7c2572",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_6.png",
+      "sha256": "72d21e98cf69c98d56c97b19ef81be39478d4a775788a9b7c7ac296a173d651c",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_7.png",
+      "sha256": "92f3405766d2b4b0ef5c11e8d6be536060caa75d12baf5a123ee72bc13670ad8",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_8.png",
+      "sha256": "179154bd1f75defd0b19edbec8d3ca82a97764719ff3d6f0244c085fe0d28fbb",
+      "source": "ch1-rot-trees.js:14-426"
+    },
+    {
+      "file": "godot/assets/map/web_parity/tree_9.png",
+      "sha256": "c5b784c9b3b5731be6a57222aa4c952128710e43e282862753b17b7ccc5a5a26",
+      "source": "ch1-rot-trees.js:14-426"
+    }
+  ]
+}

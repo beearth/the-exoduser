@@ -1,3 +1,5 @@
+> 2026-10-22 **PARITY-MAP-01 브랜치:** 사용자 원본 동일성 지시로 Godot 컨셉 판 제품 참조를 끊고 웹 청크/좌표/충돌로 복귀하는 후보. [원본 대응·검수·미이식 경계](../engine/PARITY_MAP_01_20261022.md). **VISUAL RETOUCH / 동일성 미완료**, main/PC 인수 아님. 아래 MAP11 제작 차수는 이 브랜치의 제품 기준이 아닌 보존 이력이다.
+
 > 2026-10-21 SHARP-01 품질 후보: [HiDPI·무손실·렌더 선명도](SHARP_01_RENDER_CLARITY_20261021.md). 기준c335f345. canvas_items/native resolve, 지면26import mode0, 단일 제한형clarity pass. 1080p 전후1x 선명도PASS, native2560 p95 9.793ms/p99 11.219ms/focus0, 113checks/0fail. 120fps미달/전체맵아트PASS·PC인수 아님. 아래32c의 mode2/VRAM은 당시 이력.
 
 > 2026-10-21 MAP11-32c 최신 후보: [계측·북쪽 디테일·VRAM 압축](MAP11_32C_MEASURED_FIELD_20261021.md). 기준/현재 p95 9.485/9.520ms, 최종9.122ms/p99 10.247ms/focus0. 전체 VRAM p95 3257505721→2825851708bytes. 237checks/0fail. source clock/input CPU 원인은 PC 인계, core수정0. **VISUAL RETOUCH / PERFORMANCE FAIL**, main 인수/PC 동기화 완료 아님. 아래32b는 이전 후보 이력.

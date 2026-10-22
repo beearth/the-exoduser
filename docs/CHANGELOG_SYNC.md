@@ -56469,3 +56469,12 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - boss_actor는 옛 맵 고정 좌표 assembler fixture로 분류, INTEG-6c suite에 --map11=off 명시. 과거 원로그 spawn 실패→빈 enemy.hp SCRIPT ERROR→quit 미도달 확인. 공용 외부 감시 타이머 유지.
 - Mac starter exact G에 원본 G31569의 `_fbDone` 한 키를 추가(boot40+region7+spawnHole1+fieldBoss1). Array/null arrow 조회 및 HUD 해제된 source_state를 유효성 검사 전에 typed 대입하던 오류 수정. 판정 완화·전투 코어/맵/카메라 변경0.
 - 단회 회귀·E2E·GUI 측정 및 최초 HUD 오류/실패 suite 재검수 근거는 [DEMO11_STATUS INTEG-10](engine/DEMO11_STATUS_20261021.md)와 외부 INTEG-10 DONE.txt 참조. PC Windows 최종 검증은 별도.
+
+
+## 2026-10-22 — PARITY-MAP-01 원본 1-1 복귀 후보 (동일성 미완료)
+
+- 제품 MAP11 컨셉 바닥/조명/카메라/TOUR 연결을 끊고 원본 64청크·36손배치·타일/제단/소품 충돌·14소환굴(total168, 지역23/60/53/32)·40px 경로·zoom1/offset0으로 복귀했다. 기존 파일·PC 코어/스폰/테스트는 보존했다. Windows/Mac 실행의 강제 원근 인자를 제거했다.
+- 원본 JS 빌더에서 파생한 경계 나무/feature·AO/뿌리·숲 흔들림·gate/portal 텍스처와 원본 수치의 2D 표시만 추가했다. PP .18/.10/.55는 원본 기본 스위치0을 유지한다. 시체나무 tone은 원본 brightness1.24/contrast1.1/saturate1.06이다.
+- 원본 대응 100항목/파생408 PNG manifest, M-01~M-07 상태, 4좌표 1x 비교와 미이식 생체 디테일/제단/얼굴·보스 finale 경계를 docs/engine/PARITY_MAP_01_20261022.md 및 PARITY_DIFF_LIST_20261022.md §4에 기록했다. **VISUAL RETOUCH / 동일성 미완료**, main/PC 인수 완료가 아니다.
+- 제품 회귀19771/0, 레거시 전용 맵 표현16/0·소환굴298/0·조명10/0. test_map_look은 레거시 전용으로 명시했다. 새로운 제품 test/uid 두 경로만 ignore 예외를 추가했다.
+- 주입0 최종 E2E는 자연 field 진입 뒤 사망, boss→clear→lobby 미완주 NOT_READY. 단회 GUI 시작 필드 p95 5.032ms/p99 5.721ms/focus0 및 엔진 memory 값을 기록하되, 이후 표시 수정의 최종 비용·밀집 전투/PC 성능은 미측정으로 남겼다. 세이브는 임시 격리 namespace만 사용했다.

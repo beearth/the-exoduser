@@ -1,4 +1,5 @@
 extends SceneTree
+## PARITY-MAP-01 재분류: 레거시 비제품 표현 강화 전용 회귀. 제품 웹 동일성은 test_parity_map_01.gd.
 ## MAP-LOOK 계약 회귀: ① 하니스 기본 부팅은 꺼짐(기존 테스트 기준선 불변)
 ## ② 메타 "on"이면 설치 — 어둠 단계 이관·광원·그림자·전경·입자·재질 적용
 ## ③ 표시 전용 — 게임플레이 데이터(map.json 충돌·소품 위치)와 G 키 집합 불변.
@@ -17,6 +18,7 @@ func _check(ok: bool, label: String) -> void:
 
 func _boot(mode: String) -> Node:
 	var main: Node = (load("res://scenes/main.tscn") as PackedScene).instantiate()
+	main.set_meta("native_map11", "off") # Explicit legacy fixture; never current product certification.
 	if mode != "":
 		main.set_meta("native_map_look", mode)
 	root.add_child(main)

@@ -19,5 +19,5 @@ if not exist "%FDG_PROJECT_DIR%.godot\imported" (
   echo Godot resources must be imported for this checkout. Automatic full import is disabled.
   exit /b 1
 )
-"%FDG_RUNTIME%" --path "%FDG_PROJECT_DIR%." %* -- --fdg-native-perspective-first
+"%FDG_RUNTIME%" --path "%FDG_PROJECT_DIR%." %*
 exit /b %errorlevel%
