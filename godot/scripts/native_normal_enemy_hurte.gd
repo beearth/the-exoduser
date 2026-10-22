@@ -398,7 +398,8 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		var crit_dmg: Variant = _stat_crit_dmg(view, passives, equipped)
 		if crit_dmg == null: return _result_now()
 		dmg = FORMULA.js_to_int32(float(dmg) * (float(crit_dmg) + ks_fc))
-		# G._sStats — 부트 G에 부재 → 게이트 false.
+		# 42318 if(G._sStats)G._sStats.crits++ (PC-SYS-3: initStage 리터럴 G62284를 State가 둔다)
+		_state.commit_native_session_stat(_main, "crits", "add", 1.0)
 		var axe: Variant = _l_eq("_lAxeBleed", 42318)
 		if axe == null: return _result_now()
 		if float(axe) > 0.0 and (_js_num(fields.get("bleedT")) > 0.0):
@@ -438,10 +439,12 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	# ── 42354~42460: dmg>0 블록 ──
 	var hp_before: float = float(fields["hp"])
 	if dmg > 0:
-		# 42355 G._sStats 게이트(부트 G 부재 → 스킵), 42357~42358 G._dmgPeak.
+		# 42357 if(G._sStats){G._sStats.dmgDealt+=dmg;if(dmg>G._sStats.maxHit)G._sStats.maxHit=dmg}, 42359~42360 G._dmgPeak.
 		var g: Variant = _state.read_current_g()
 		if not g is Dictionary:
 			return _halt(42357, "current_g_not_ready")
+		_state.commit_native_session_stat(_main, "dmgDealt", "add", float(dmg))
+		_state.commit_native_session_stat(_main, "maxHit", "max", float(dmg))
 		var peak: Dictionary = g.get("_dmgPeak") if g.get("_dmgPeak") is Dictionary else {"val": 0, "t": 0}
 		if float(dmg) > _js_num(peak.get("val")):
 			peak = {"val": dmg, "t": 300}

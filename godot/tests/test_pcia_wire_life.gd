@@ -51,7 +51,11 @@ func run() -> void:
   for i in 3:await process_frame
   var final: Dictionary=main.read_native_player_life_phase()
   check(final.phase=="dead" and life.remaining==0,"actual native clock resolves 300 countdown to final death")
-  check(int(main.world.get_native_projectile_fx_context().frame_reset_epoch)-epoch_before>=int(ceil(before)),"no early countdown resolution")
+  # PC-SYS-2(2026-10-23): 원본 update()는 fallen 중 P.st2를 틱당 2 줄인다(G32794 공통 + G32991 case 'fallen').
+  # 웹 실측 300 카운트다운 = 2506ms. 남은 값의 절반 틱보다 이르면 안 되고, 해소 뒤 대기(물리 1틱+process 3프레임) 이상 늦어도 안 된다.
+  var spent: int=int(main.world.get_native_projectile_fx_context().frame_reset_epoch)-epoch_before
+  check(spent>=int(ceil(before/2.0)),"no early countdown resolution")
+  check(spent<=int(ceil(before/2.0))+5,"no late countdown resolution (two source decrements per tick)")
   check(g.get("on")==false and g.get("_sStats",{}).get("deaths")==1,"final death Mac followups once")
   if DisplayServer.get_name()!="headless":root.get_texture().get_image().save_png("/Users/fordeargamers/exoduser-wt/_out/PCIA-WIRE/dead.png")
   var expiry: int=life.receipts.size()

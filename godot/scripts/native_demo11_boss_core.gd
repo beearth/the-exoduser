@@ -601,6 +601,7 @@ func _do_parry(bank_add: float) -> bool:
 	var reward: int = main.native_source_parry_reward(float(src.stats.parry_bonus), float(src.regen_lv), 1.0)
 	var res: Dictionary = main.source_resources.commit_native_q_parry_reward(main, float(reward))
 	counters.parries += 1
+	if res.get("accepted") == true: main.record_native_parry_session_stat() # PC-SYS-3 G38472 doParry parries++
 	return res.get("accepted") == true
 
 const CONTACT_TABLE := {

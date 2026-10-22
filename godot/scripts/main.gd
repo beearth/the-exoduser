@@ -1691,6 +1691,7 @@ func reflect_native_q_source_projectile(projectile: Node, distance: float) -> Di
 		if result.get("reflected")!=true:return result
 	var resources: Dictionary = source_resources.commit_native_q_parry_reward(self,float(reward))
 	if resources.get("accepted")!=true:return {"reflected":false,"reason":"actual_parry_reward_commit_failed"}
+	record_native_parry_session_stat() # G33826 doParry → G38472 parries++
 	source_state.read_current_p()
 	_q_reflection_count+=1
 	_q_last_reflection={"kind":"blackBean" if is_black else "gbBean","carrier_id":projectile.get_instance_id(),"source_dmg":result.get("incoming_dmg_before"),"base":base,"projectile_dmg":result.projectile_dmg,"reward":reward,"resources":resources,"frame":frame,"distance":distance,"radius":radius,"bank_add":result.get("bank_add",0),"same_carrier":true,"same_tick_blue_steps":0,"full_doparry":false}
@@ -1699,6 +1700,11 @@ func reflect_native_q_source_projectile(projectile: Node, distance: float) -> Di
 
 func current_source_parry_int(value: float) -> int:
 	return source_providers.get_provider_bundle().formula.js_to_int32(value)
+
+# PC-SYS-3: doParry(G38472)의 `if(G._sStats)G._sStats.parries++`. Godot의 doParry 대응 지점(Q 반사·E 파동 반사·
+# M29 접촉 패링·1-1 보스 접촉 패링)에서 보상이 실제로 커밋된 뒤 1회씩 부른다.
+func record_native_parry_session_stat() -> void:
+	if is_instance_valid(source_state):source_state.commit_native_session_stat(self,"parries","add",1.0)
 
 # PC-M29-PARRY: doParry 보상식(G38483~38484 _prBase, 빨콩/무지개 외 기본 50) 단일 소유.
 # Q 반사(×1/×1.5)·E 파동 반사·M29 접촉 패링이 같은 식을 공유한다(식·평가 순서 기존과 동일).
@@ -2061,6 +2067,9 @@ func _restart() -> void:
 	get_tree().reload_current_scene()
 
 func _record_event(kind: String, data: Dictionary) -> void:
+	# PC-SYS-3 G43574 if(G._sStats)G._sStats.dmgTaken+=a — a=실드 처리 뒤 HP 피해(Player가 실제 깎은 양, DOT 포함).
+	if kind=="player_damage" and is_instance_valid(source_state) and (data.get("amount") is int or data.get("amount") is float):
+		source_state.commit_native_session_stat(self,"dmgTaken","add",float(data.amount))
 	if kind in ["native_attack_audio_queued","native_skill_sample_requested"]:
 		native_sound_event.emit(kind,data.duplicate(true))
 	if kind=="native_input_unavailable" and is_instance_valid(hud):
@@ -2301,6 +2310,7 @@ func _reflect_native_e_wave(projectile: Node, raw: Dictionary) -> Dictionary:
 	if result.get("reflected")!=true:return result
 	var reward: int=native_source_parry_reward(float(st.parry_bonus),current.regen_lv,1.0)
 	var resources: Dictionary=source_resources.commit_native_q_parry_reward(self,float(reward))
+	if resources.get("accepted")==true:record_native_parry_session_stat() # G17384 doParry → G38472 parries++
 	_e_wave_reflections+=1
 	player.telemetry_event.emit("e_wave_projectile_reflected",{"frame":world.get_native_frame(),"base":base,"result":result,"resources":resources,"full_doparry":false})
 	return result

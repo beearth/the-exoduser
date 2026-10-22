@@ -32,6 +32,33 @@ static func attempt(item: Dictionary, wallet: Dictionary, rng: Callable) -> Dict
 		"before":q.enh,"after":item.get("enh",0),"remaining":wallet.mats,"rng_calls":1,
 		"unported":["forge/hurt SFX, particles, pet callbacks, dbSaveNow"]}
 
+# PC-SYS-4 — G28125~28139 aiEnhance(item,targetEnh,budget). 원문 순서 그대로:
+#   startEnh=item.enh||0; 목표 이상이면 {ok:false,msg:'이미 목표 달성'}; budget<=0||G.mats<budget → {ok:false,msg:'악의 부족'}
+#   while(n<targetEnh&&used<budget){ {rate,cost}=enhCost(n,item.rarity||0); if(used+cost>budget)break;
+#     used+=cost;tries++; if(Math.random()<rate)n++ }  →  G.mats-=used; item.enh=n
+static func ai_enhance(item: Dictionary, target: float, budget: float, wallet: Dictionary, rng: Callable) -> Dictionary:
+	var raw: Variant = item.get("enh")
+	var start: float = float(raw) if Affix.js_truthy(raw) and (raw is int or raw is float) else 0.0
+	if start >= target: return {"status":"READY","ok":false,"msg":"이미 목표 달성"}
+	if not (wallet.get("mats") is int or wallet.get("mats") is float) or not is_finite(float(wallet.mats)) or not rng.is_valid():
+		return {"status":"NOT_READY","reason":"wallet_or_rng_unavailable"}
+	if budget <= 0.0 or float(wallet.mats) < budget: return {"status":"READY","ok":false,"msg":"악의 부족"}
+	var rarity: Variant = item.get("rarity") if Affix.js_truthy(item.get("rarity")) else 0
+	var used := 0
+	var tries := 0
+	var n := start
+	while n < target and float(used) < budget:
+		var q: Dictionary = Policy.enh_cost(n, rarity)
+		if float(used + int(q.cost)) > budget: break
+		used += int(q.cost); tries += 1
+		var roll: Variant = rng.call()
+		if not (roll is int or roll is float) or not is_finite(float(roll)):
+			return {"status":"NOT_READY","reason":"invalid_rng_mid_loop","used":used,"tries":tries}
+		if float(roll) < float(q.rate): n += 1.0
+	wallet.mats = wallet.mats - used # 비용은 정수(_malCost) — G.mats 정수 타입 유지
+	item.enh = int(n) if n == floor(n) and absf(n) < 9007199254740991.0 else n
+	return {"status":"READY","ok":n >= target,"from":start,"to":n,"target":target,"used":used,"tries":tries,"rng_calls":tries}
+
 static func transfer_prefix(old: Dictionary, item: Dictionary, wallet: Dictionary) -> Dictionary:
 	# Original equip prefix G16302-16318. Caller must continue the equip transaction.
 	var q = quote(old)

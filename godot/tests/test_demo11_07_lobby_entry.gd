@@ -35,8 +35,11 @@ func lobby(enabled: bool=true,language: String="ko") -> Control:
 	screen.set_meta("native_audio_source_root",source_root);screen.set_meta("native_story_source_root",source_root)
 	root.add_child(screen);return screen
 ## SWEEP-B(2026-10-23): 새 기록 진입은 웹처럼 전사 스토리 영상이 먼저 뜬다 — 사용자 건너뛰기와 같은 finish()로 넘긴다.
+## INTEG-17(2026-10-23): BOOT-01 예열 뒤 첫 진입은 834프레임째 도착(100프레임 고정 대기로 21/1 실패).
+## 대기 조건 = Main 도착(request_native_lobby_entry 보유 씬) 또는 최대 60초(실시간). 판정은 그대로(시간 안에 못 오면 null → 실패).
 func wait_main(screen: Node=null) -> Node:
-	for i in range(100):
+	var deadline: int=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
 		await process_frame
 		if is_instance_valid(screen) and is_instance_valid(screen.get("_movie")) and screen._movie.is_inside_tree():screen._movie.finish()
 		if is_instance_valid(current_scene) and current_scene.has_method("request_native_lobby_entry"):return current_scene

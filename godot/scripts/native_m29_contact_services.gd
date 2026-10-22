@@ -37,7 +37,7 @@ const SOURCE_PARRY_WIN_CAP = 20 # G16622 Math.min(20, ...)
 const SBASH_TICKS = 20 # G38469 P.st2>(20-_lParryWinTicks())
 ## doParry 중 기존 writer 가 아직 적용하지 않는 부분(Q 반사 경로 remaining 과 같은 묶음 + 접촉 전용 항목).
 ## _parryLesson.physicalParry(x,y) 는 레슨 탄 좌표 일치 때만 작동 → 적 접촉 좌표에서는 원본도 무효과(별도 기록).
-const DOPARRY_REMAINING = ["pet_on_parry", "parry_stats_counters",
+const DOPARRY_REMAINING = ["pet_on_parry", "parry_stats_counters_pStats_pH",
 	"parry_sound_voice_math_random", "hitstop_slowmo_shake_vibrate", "harp_gauge", "rage_and_rage_text",
 	"rage_skill_cd_cut", "unique_parry_triggers", "u_d20_shield_bank", "rage_pet_lines", "mats_reward",
 	"parry_explosion_affix", "parry_impact_vfx_flash_particles", "parry_text"]
@@ -234,6 +234,7 @@ func resolve_m29_contact_parry(actor: Node2D, target: Node2D, event: Dictionary)
 		out.partial_writes = ["parryBank"]
 		return _reject_parry(out, "doparry_reward_commit_rejected:" + str(resources.get("reason")))
 	out.order.append("doParry")
+	_main.record_native_parry_session_stat() # PC-SYS-3 G38472 doParry parries++
 	out.doparry = {"reward": reward, "in_dmg": event.do_parry.atk, "force_q": false, "el": event.do_parry.el,
 		"is_q": is_q, "remaining": DOPARRY_REMAINING.duplicate(), "source_noop": ["parry_lesson_physicalParry"]}
 	# 4) _poiseHit(e,20) — type3 actor 의 원본 코어.

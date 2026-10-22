@@ -396,6 +396,22 @@ func _refresh() -> void:
 	_fg_content.custom_minimum_size=Vector2(650,y)
 	_render_confirm(g)
 
+## JS Number#toLocaleString()(en-US, 소수 최대 3자리) — G50672·G50683 AI 자동 강화 비용·보유·부족분.
+static func _locale_num(v: float) -> String:
+	if not is_finite(v): return "∞" if v > 0 else ("-∞" if v < 0 else "NaN")
+	var neg: bool = v < 0.0
+	var a: float = absf(v)
+	var whole: float = floor(a)
+	var frac: float = snappedf(a - whole, 0.001)
+	if frac >= 1.0: whole += 1.0; frac = 0.0
+	var digits: String = String.num(whole, 0)
+	var out := ""
+	for i in digits.length():
+		if i > 0 and (digits.length() - i) % 3 == 0: out += ","
+		out += digits[i]
+	if frac > 0.0:
+		out += String.num(frac, 3).substr(1).rstrip("0")
+	return ("-" if neg and (whole > 0.0 or frac > 0.0) else "") + out
 func _num(v: Variant) -> String:
 	var f:=float(v);return str(int(f)) if f==floor(f) else str(f)
 
@@ -436,11 +452,12 @@ func _render_upgrade(state: Node,g: Dictionary,inv: Dictionary) -> float:
 			box.add_theme_color_override("font_color",Color("ffcc88"));var bs:=StyleBoxFlat.new();bs.bg_color=Color("0a0806");bs.border_color=Color("443322");bs.set_border_width_all(1);bs.set_corner_radius_all(3);bs.content_margin_left=8;box.add_theme_stylebox_override("normal",bs);box.add_theme_stylebox_override("focus",bs)
 			box.text_submitted.connect(func(v):_ai_target=maxi(int(cur)+1,int(v) if v.is_valid_int() else int(cur)+1);_refresh());_fg_content.add_child(box)
 			var cost_box:=WebBox.new();cost_box.position=Vector2(320,y+17);cost_box.size=Vector2(220,30);cost_box.border=Color("443322");cost_box.solid=Color("0a0806");_fg_content.add_child(cost_box)
-			_rich(cost_box,"[color=#ffaa44]%s[/color] [font_size=12][color=#666666]/ %s %s[/color][/font_size]"%[_num(ceil(exp_cost)),_T("보유"),_num(g.mats)],Rect2(8,6,210,20),14.4,Color("ffaa44"))
-			var start:=_chip(_fg_content,_T("강화 시작"),Rect2(552,y+17,98,30),12,Color(244/255.0,230/255.0,203/255.0),Color(181/255.0,123/255.0,89/255.0),Color(.26,.06,.035,.65),2,func():_ai_unported())
+			# G50683 Math.ceil(_autoExpCost).toLocaleString() / (G.mats||0).toLocaleString() — 천 단위 쉼표(en-US)
+			_rich(cost_box,"[color=#ffaa44]%s[/color] [font_size=12][color=#666666]/ %s %s[/color][/font_size]"%[_locale_num(ceil(exp_cost)),_T("보유"),_locale_num(float(g.mats))],Rect2(8,6,210,20),14.4,Color("ffaa44"))
+			var start:=_chip(_fg_content,_T("강화 시작"),Rect2(552,y+17,98,30),12,Color(244/255.0,230/255.0,203/255.0),Color(181/255.0,123/255.0,89/255.0),Color(.26,.06,.035,.65),2,func():_do_ai_enhance())
 			start.tooltip_text=""
 			var enough: bool=float(g.mats)>=ceil(exp_cost)
-			_rich(_fg_content,"+%s → +%s | %s %s"%[_num(cur),str(_ai_target),_T("보유 악의"),("[color=#44ff88]✔ "+_T("충분")+"[/color]") if enough else ("[color=#ff4444]✖ "+_T("부족")+" ("+_num(ceil(exp_cost-float(g.mats)))+" "+_T("더 필요")+")[/color]")],Rect2(0,y+53,650,18),12.8,Color("886644"))
+			_rich(_fg_content,"+%s → +%s | %s %s"%[_num(cur),str(_ai_target),_T("보유 악의"),("[color=#44ff88]✔ "+_T("충분")+"[/color]") if enough else ("[color=#ff4444]✖ "+_T("부족")+" ("+_locale_num(ceil(exp_cost-float(g.mats)))+" "+_T("더 필요")+")[/color]")],Rect2(0,y+53,650,18),12.8,Color("886644"))
 			y+=76
 		else:
 			_css(_fg_content,_T("위에서 장비를 선택하세요"),Rect2(0,y,650,17),13.6,Color(85/255.0,68/255.0,51/255.0),"hell",400,0)
@@ -492,10 +509,47 @@ func _click_upgrade(slot: String) -> void:
 	if result.get("status")=="READY" and not result.get("paid",false):_notify(_T("악의가 부족합니다!"))
 	_refresh()
 
-func _ai_unported() -> void:
-	# G28141 _doAiEnhance/aiEnhance(G28125)는 PC 시스템 미이식: 원문 결과 표시 없이 알림만 남긴다(PC-SYS 기록).
-	# 원본에 없는 안내 문구를 화면에 추가하지 않는다(SWEEP-B 금지 사항). 기록만 남긴다.
-	print("SWEEPB_PC_SYS aiEnhance_unported")
+## PC-SYS-4 — G28141~28186 _doAiEnhance(강화 시작 onclick, G50685). 원문 순서 그대로.
+## #aiEnhResult(G28151~28181)는 원본도 곧바로 renderForge()(G28184)가 grid를 다시 그려 빈 div로 바뀐다 —
+## 웹 실측: 클릭 직후 innerHTML ""(renderForge 직전에만 결과 HTML 존재). 그래서 화면에 그리지 않고 _ai_last에만 남긴다.
+## 미이식: SFX.forge/SFX.hurt(WebAudio 합성음), poolPart 20개(시각·RNG 비소비 — 보스 코어 관례와 같음).
+var _ai_last: Dictionary = {}
+func _do_ai_enhance() -> Dictionary:
+	var main: Variant=_main.get_ref();var state: Variant=_state.get_ref()
+	if not is_instance_valid(main) or not is_instance_valid(state):return {"status":"NOT_READY"}
+	var g: Variant=state.read_current_g();var inv: Variant=state.read_current_inventory()
+	if not g is Dictionary or not inv is Dictionary or not inv.get("equipped") is Dictionary:return {"status":"NOT_READY"}
+	var pp: Vector2=main.player.global_position
+	var item: Variant=inv.equipped.get(_ai_slot) if not _ai_slot.is_empty() else null
+	if not item is Dictionary:
+		main.world.emit_native_text(pp.x,pp.y-20,_T("아이템 선택 필요"),"#cc4444",50) # G28144
+		_ai_last={"status":"READY","ok":false,"reason":"no_item"};return _ai_last
+	var cur: float=float(item.get("enh",0)) if (item.get("enh") is int or item.get("enh") is float) else 0.0
+	var target: float=float(_ai_target) if _ai_target>0 else cur+100.0 # G28145 G._aiTarget||((enh||0)+100)
+	var exp_budget:=0.0 # G28146
+	for i in range(int(cur),int(target)):
+		var ec: Dictionary=Policy.enh_cost(float(i),item.get("rarity",0) if item.get("rarity") else 0);exp_budget+=float(ec.cost)/float(ec.rate)
+	var ceil_exp: float=ceil(exp_budget)
+	var mats: float=float(g.mats) if (g.get("mats") is int or g.get("mats") is float) and float(g.mats)!=0.0 else 0.0
+	var budget: float=minf(ceil_exp if ceil_exp!=0.0 else 1000.0,mats) # G28147 Math.min(Math.ceil(_expBudget)||1000,G.mats||0)
+	if budget<=0.0:
+		main.world.emit_native_text(pp.x,pp.y-20,_T("악의 부족"),"#cc4444",50) # G28148
+		_ai_last={"status":"READY","ok":false,"reason":"budget_zero"};return _ai_last
+	var opt: Dictionary=main.read_native_feel_opt_shake()
+	var res: Dictionary=state.apply_native_forge_ai_enhance(main,_ai_slot,target,budget,float(opt.get("value",100.0)) if opt.get("ready")==true else 100.0)
+	if res.get("status")!="READY":
+		_ai_last=res.duplicate(true);return _ai_last
+	res["apply_stats"]=main.request_native_runtime_stat_refresh("apply_stats","forge_ai_enhance:G28150")
+	if res.get("ok")==true:
+		# G28165~28168 SFX.forge(미이식)·shake(8)(State)·poolPart×20(미이식)·addTxt('+N 달성!',enhColor,100)
+		main.world.emit_native_text(pp.x,pp.y-30,"+"+_num(res.to)+_L(" 달성!"," Achieved!"),_enh_color(float(res.to)),100)
+	else:
+		# G28179~28180 SFX.hurt(미이식)·addTxt('악의 소진...','#cc4444',70) — msg 조기 반환({ok:false,msg})도 원본은 이 분기
+		main.world.emit_native_text(pp.x,pp.y-25,_T("악의 소진..."),"#cc4444",70)
+	_refresh() # G28184 renderForge()
+	if float(res.get("used",0))>0.0:res["saved"]=main.save_native_demo11_current() # G28185 dbSaveNow()
+	_ai_last=res.duplicate(true)
+	return _ai_last
 
 func _notify(msg: String) -> void:
 	var main: Variant=_main.get_ref()
