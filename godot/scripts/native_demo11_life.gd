@@ -23,6 +23,15 @@ var _replay_layer: Control
 var _replay_image: TextureRect
 var _replay_frames: Array=[]
 var _replay_index:=0
+var _replay_values: Array=[]
+var _replay_bars: Control
+var _replay_world: SubViewport
+var _replay_capture_busy:=false
+var _replay_material: ShaderMaterial
+var _play_generation:=0
+var _play_cursor:=0
+var _play_count:=0
+var _play_first:=0
 var _replay_time: Label
 var _replay_fill: ColorRect
 var _replay_tint: ColorRect
@@ -133,6 +142,9 @@ func _show_dead() -> void:
  var g: Dictionary=main.source_state.read_current_g()
  if not g.get("_sStats") is Dictionary:g._sStats={}
  g._sStats.deaths=int(g._sStats.get("deaths",0))+1
+ g._ddDeaths=int(g.get("_ddDeaths",0))+1
+ if not g.get("_ddChapDeathMap") is Dictionary:g._ddChapDeathMap={}
+ g._ddChapDeathMap[0]=int(g._ddChapDeathMap.get(0,0))+1
  g.on=false
  for key in ["_ebBomb","_mmBomb","_gwLightning","_voidScarecrow"]:g[key]=null
  for key in ["_gsBombs","_bsBombs","_boneWalls","_fireZones","_stProjs","_ancestorReturns","_ancestors"]:g[key]=[]
@@ -206,20 +218,30 @@ func _build_view() -> void:
  Surface.art(_pets,"img/cat_pet/portrait.png",Rect2(492,0,480,320))
  _crow_text=Surface.text(_pets,"…죽었군. 하지만 여신은 아직 널 안 놓았어.",Rect2(92,237,306,51),15,Color.WHITE,"pet",700);_crow_text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;_crow_text.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
  _cat_text=Surface.text(_pets,"괜찮아?! 다시 일어설 수 있어, 포기하지 마!",Rect2(614,250,190,42),15,Color.WHITE,"pet",700);_cat_text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;_cat_text.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
+ var pet_font: FontVariation=FONTS.stack("pet",700).duplicate();pet_font.spacing_top=-2;pet_font.spacing_bottom=-2
+ for bubble in [_crow_text,_cat_text]:
+  bubble.add_theme_font_override("font",pet_font);bubble.add_theme_constant_override("line_spacing",0)
+  var target:=Vector2(306,51) if bubble==_crow_text else Vector2(190,42);bubble.scale=Vector2.ONE*(14.72/15.0);bubble.set_deferred("size",target/(14.72/15.0))
  _replay_layer=Surface.panel(_view,Rect2(0,0,1920,1080),Color.BLACK);_replay_layer.hide()
- _replay_image=TextureRect.new();_replay_image.size=Vector2(1920,1080);_replay_image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;_replay_image.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;_replay_layer.add_child(_replay_image)
+ var replay_shader:=Shader.new();replay_shader.code="shader_type canvas_item;uniform float intensity=.05;void fragment(){vec4 c=texture(TEXTURE,UV);c.rgb=mix(c.rgb,vec3(.313725,0,0),intensity);float box=max(clamp(1.0-UV.y/.08,0.0,1.0),clamp((UV.y-.92)/.08,0.0,1.0))*.7;c.rgb*=1.0-box;COLOR=c;}"
+ _replay_material=ShaderMaterial.new();_replay_material.shader=replay_shader
+ _replay_image=TextureRect.new();_replay_image.material=_replay_material;_replay_image.size=Vector2(1920,1080);_replay_image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;_replay_image.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;_replay_layer.add_child(_replay_image)
  Surface.text(_replay_layer,"☠ 사망 리플레이",Rect2(500,18,920,40),26,Color("cc4444"),"font",700).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
  _replay_time=Surface.text(_replay_layer,"",Rect2(500,1008,920,32),18,Color(.784,.627,.471,.8),"font");_replay_time.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
  _replay_fill=ColorRect.new();_replay_fill.position=Vector2(192,1056);_replay_fill.size=Vector2(0,4);_replay_fill.color=Color("cc4444");_replay_fill.mouse_filter=Control.MOUSE_FILTER_IGNORE;_replay_layer.add_child(_replay_fill)
+ _replay_bars=Control.new();_replay_bars.mouse_filter=Control.MOUSE_FILTER_IGNORE;_replay_layer.add_child(_replay_bars)
  _replay_died=Surface.text(_replay_layer,"YOU DIED",Rect2(400,430,1120,220),100,Color(.706,.157,.157,.95),"hell",700);_replay_died.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;_replay_died.hide()
  _replay_layer.gui_input.connect(func(e):
   if e is InputEventMouseButton and e.pressed and _replaying and _replay_can_skip:_finish_replay())
- _replay_timer=Timer.new();_replay_timer.wait_time=.1;_replay_timer.timeout.connect(_capture_replay);add_child(_replay_timer);_replay_timer.start()
+ if DisplayServer.get_name()!="headless":
+  # World2D canvas only. Independent480×270 render target has no HUD/panel CanvasLayers.
+  _replay_world=SubViewport.new();_replay_world.size=Vector2i(480,270);_replay_world.world_2d=get_viewport().world_2d;_replay_world.render_target_update_mode=SubViewport.UPDATE_DISABLED;add_child(_replay_world)
+ _replay_timer=Timer.new();_replay_timer.ignore_time_scale=true;_replay_timer.wait_time=.1;_replay_timer.timeout.connect(_capture_replay);add_child(_replay_timer);_replay_timer.start()
  _dialogue=JSON.parse_string(FileAccess.get_file_as_string("res://data/parity_ui_02_death_dialogue.json"))
- _dialogue_timer=Timer.new();_dialogue_timer.wait_time=10;_dialogue_timer.timeout.connect(_next_dialogue);add_child(_dialogue_timer)
+ _dialogue_timer=Timer.new();_dialogue_timer.ignore_time_scale=true;_dialogue_timer.wait_time=10;_dialogue_timer.timeout.connect(_next_dialogue);add_child(_dialogue_timer)
  _view.hide()
 func _start_dialogue() -> void:
- _dialogue_order=_dialogue.pool.duplicate();_dialogue_order.shuffle();_dialogue_order.push_front("dd_first");_dialogue_at=0;_render_dialogue();_dialogue_timer.start()
+ _dialogue_order=_dialogue.pool.duplicate();_dialogue_order.shuffle();_dialogue_order.push_front(_dialogue_event());_dialogue_at=0;_render_dialogue();_dialogue_timer.start()
 func _render_dialogue() -> void:
  var line: Array=_dialogue.lines[_dialogue_order[_dialogue_at]]
  _crow_text.text=Surface.I18N.text(str(line[0]));_cat_text.text=Surface.I18N.text(str(line[1]))
@@ -227,7 +249,10 @@ func _next_dialogue() -> void:
  if not _screen.visible or not _retry.visible:_dialogue_timer.stop();return
  _dialogue_at+=1
  if _dialogue_at>=_dialogue_order.size():_dialogue_order=_dialogue.pool.duplicate();_dialogue_order.shuffle();_dialogue_at=0
+ _pets.modulate.a=0
+ await get_tree().create_timer(.2,true,false,true).timeout
  _render_dialogue()
+ create_tween().tween_property(_pets,"modulate:a",1.0,.25)
 func _button(key: String,rect: Rect2,px: int) -> Button:
  var b:=Button.new();b.text=word(key) if not key.is_empty() else "";b.position=rect.position;b.size=rect.size;var font:=FONTS.stack("hell_title",700).duplicate();font.spacing_glyph=2;b.add_theme_font_override("font",font);b.add_theme_font_size_override("font_size",px);b.add_theme_color_override("font_color",Color(.855,.824,.757,.9))
  var style:=StyleBoxFlat.new();style.bg_color=Color(.031,.024,.02,.42);style.border_color=Color(.553,.486,.376,.58);style.set_border_width_all(1);b.add_theme_stylebox_override("normal",style)
@@ -235,29 +260,52 @@ func _button(key: String,rect: Rect2,px: int) -> Button:
 func _capture_replay() -> void:
  # Original G43618–43644: 10Hz, 480px max axis, 50 rolling frames. Never physics-tick IO/loading.
  if not is_instance_valid(main) or not main.source_state.read_current_g().get("on",false) or get_tree().paused or DisplayServer.get_name()=="headless":return
- var image: Image=get_viewport().get_texture().get_image()
- image.resize(480,270,Image.INTERPOLATE_BILINEAR)
+ if _replay_capture_busy or not is_instance_valid(_replay_world):return
+ _replay_capture_busy=true
+ _replay_world.canvas_transform=Transform2D(Vector2(.25,0),Vector2(0,.25),Vector2.ZERO)*get_viewport().canvas_transform
+ _replay_world.render_target_update_mode=SubViewport.UPDATE_ONCE
+ await RenderingServer.frame_post_draw
+ var image: Image=_replay_world.get_texture().get_image()
+ _replay_capture_busy=false
+ var p: Dictionary=main.source_state.read_current_p()
+ var values: Dictionary={}
+ for key in ["hp","mhp","st","mst","mp","mmp","shield","mshield"]:values[key]=p.get(key,0)
+ if _replay_values.size()<50:_replay_values.append(values)
+ else:_replay_values[_replay_index]=values
  if _replay_frames.size()<50:_replay_frames.append(ImageTexture.create_from_image(image))
  else:(_replay_frames[_replay_index] as ImageTexture).update(image)
  _replay_index=(_replay_index+1)%50
 func _play_replay() -> void:
  if _replay_frames.is_empty() or _replaying:return
  _replay_layer.show();_pets.hide();_replaying=true;_replay_can_skip=false;_replay_image.texture=null;_replay_time.text="";_replay_died.hide();_replay_fill.size.x=0
- await get_tree().create_timer(1.5).timeout
- _replay_can_skip=true
- var count: int=_replay_frames.size();var first: int=_replay_index if count==50 else 0
- for i in count:
-  if not _replaying:return
-  _replay_image.texture=_replay_frames[(first+i)%count]
-  _replay_time.text="-%.1fs  " % (float(count-i)/10)+Surface.I18N.text("(클릭: 건너뛰기)")
-  _replay_fill.size.x=1536*float(i)/count
-  _replay_image.modulate=Color(1,1-(.05+.25*float(i)/count),1-(.05+.25*float(i)/count))
-  await get_tree().create_timer(.4 if i>=count-15 else .2).timeout
- _replay_died.show()
- await get_tree().create_timer(1.5).timeout
- _finish_replay()
+ _play_generation+=1;var generation: int=_play_generation
+ _play_cursor=0;_play_count=_replay_frames.size();_play_first=_replay_index if _play_count==50 else 0
+ # G43717 calls tick immediately AND G43663 calls it again after1500ms.
+ # Preserve that actual shared-cursor schedule, rather than correcting its comment.
+ _replay_tick(generation)
+ await get_tree().create_timer(1.5,true,false,true).timeout
+ if not _replaying or generation!=_play_generation:return
+ _replay_can_skip=true;_replay_tick(generation)
+func _replay_tick(generation: int) -> void:
+ if not _replaying or generation!=_play_generation:return
+ if _play_cursor>=_play_count:
+  _replay_died.show()
+  await get_tree().create_timer(1.5,true,false,true).timeout
+  if _replaying and generation==_play_generation:_finish_replay()
+  return
+ var i: int=_play_cursor
+ _replay_image.texture=_replay_frames[(_play_first+i)%_play_count]
+ _replay_time.text="-%.1fs  "%(float(_play_count-i)/10)+Surface.I18N.text("(클릭: 건너뛰기)")
+ _replay_fill.size.x=1536*float(i)/_play_count
+ _replay_material.set_shader_parameter("intensity",.05+.25*float(i)/_play_count)
+ _render_replay_bars(_replay_values[(_play_first+i)%_play_count])
+ _play_cursor+=1
+ await get_tree().create_timer(.4 if _play_cursor>=_play_count-15 else .2,true,false,true).timeout
+ _replay_tick(generation)
+func _unhandled_input(event: InputEvent) -> void:
+ if _replaying and _replay_can_skip and event is InputEventJoypadButton and event.pressed and event.button_index in [0,1,2,3]:_finish_replay();get_viewport().set_input_as_handled()
 func _finish_replay() -> void:
- _replaying=false;_replay_layer.hide();_pets.show()
+ _replaying=false;_play_generation+=1;_replay_layer.hide();_pets.show()
 func _start_bonfire() -> void:
  # G63523,55323–55333: radius280 /300frames, .9 alpha, final120frames fade, 3% pulse.
  _bonfire_layer=CanvasLayer.new();_bonfire_layer.layer=0;add_child(_bonfire_layer)
@@ -272,3 +320,35 @@ func _process(delta: float) -> void:
  _bonfire.position=main.player.get_global_transform_with_canvas().origin-_bonfire.size*.5
  _bonfire.modulate.a=minf(1,_bonfire_left/2)*.9
  if _bonfire_left==0:_bonfire_layer.queue_free()
+
+func _dialogue_event() -> String:
+ # Source _ddPickEvent G43794–43816. Only observe native-owned fields.
+ var g: Dictionary=main.source_state.read_current_g()
+ var deaths: int=int(g.get("_ddDeaths",1))
+ if deaths<=1:return "dd_first"
+ var boss: Variant=g.get("_bossRef")
+ if boss is Dictionary and boss.get("alive",false):
+  if float(boss.get("mhp",0))>0 and float(boss.get("hp",0))/float(boss.mhp)<=.15:return "dd_boss_lowhp"
+  return "dd_boss"
+ var logs: Array=g.get("_dmgLog",[])
+ var source: String=str(logs[-1].get("src","")) if not logs.is_empty() else ""
+ for row in [["레어|Rare","dd_rare"],["그랩|잡히|Grab|grab","dd_grab"],["도트|장판|DoT|Zone|dot","dd_dot"],["투사체|탄|Projectile|Bullet|bullet","dd_proj"]]:
+  var regex:=RegEx.new();regex.compile(row[0])
+  if regex.search(source)!=null:return row[1]
+ if deaths>=10:return "dd_repeat10"
+ if int(g.get("_ddChapDeathMap",{}).get(0,0))>=3:return "dd_chapter_repeat"
+ if deaths>=5:return "dd_repeat5"
+ if int(g.get("combo",0))>=50:return "dd_highcombo"
+ return "dd_ch0"
+func _render_replay_bars(values: Dictionary) -> void:
+ for child in _replay_bars.get_children():_replay_bars.remove_child(child);child.queue_free()
+ # Overlay drawn at original 480×270 resolution and scaled with the replay.
+ _replay_bars.scale=Vector2.ONE*4
+ var rows: Array=[["hp","mhp","cc2222","331111","HP %d/%d"%[values.hp,values.mhp]]]
+ if float(values.mshield)>0:rows.append(["shield","mshield","6688cc","112244","SH"])
+ rows.append_array([["st","mst","22aa44","112211","ST"],["mp","mmp","4466cc","111133","MP"]])
+ for i in rows.size():
+  var row: Array=rows[i];var y: int=248+i*5
+  Surface.panel(_replay_bars,Rect2(14,y,120,4),Color(str(row[3]),.85),Color(1,1,1,.2))
+  Surface.panel(_replay_bars,Rect2(14,y,int(120*clampf(float(values[row[0]])/maxf(1,float(values[row[1]])),0,1)),4),Color(str(row[2]),.85))
+  Surface.text(_replay_bars,str(row[4]),Rect2(17,y-3,120,10),9,Color.WHITE,"font",700)

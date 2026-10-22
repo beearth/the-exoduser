@@ -25,6 +25,9 @@ var language: String="ko"
 var _main: WeakRef
 var _state: WeakRef
 var _was_paused:=false
+var skill_forge: Control
+var ossuary_workspace: Control
+var compare_expanded:=false
 var page: String="equipment"
 var category: String="equipment"
 var filter: Dictionary={"slot":null,"rarity":null,"el":null}
@@ -93,7 +96,9 @@ func configure(main: Node,state: Node) -> bool:
  presenter=Present.new(Drop.load_tables().AFFIX_POOL,func(v): return str(v),func(ko,en): return str(ko if language.begins_with("ko") else en))
  specials=Special.new(Drop.load_tables().LEGENDARY_SPECIAL,Drop.load_tables().UNIQUE_SPECIAL,func(value): return str(value))
  set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); mouse_filter=Control.MOUSE_FILTER_STOP
- _build(); hide(); return true
+ _build(); hide()
+ skill_forge=preload("res://scripts/native_skill_forge.gd").new();get_parent().add_child(skill_forge);skill_forge.configure(main,self)
+ return true
 func _input(event: InputEvent) -> void:
  if event is InputEventKey and event.pressed and not event.echo:
   var owner: Variant=_main.get_ref() if _main!=null else null
@@ -104,6 +109,7 @@ func _input(event: InputEvent) -> void:
    else: open_panel()
    get_viewport().set_input_as_handled()
 func open_panel() -> bool:
+ if is_instance_valid(skill_forge) and skill_forge.visible:skill_forge.close_panel()
  if not model().get("ready",false): return false
  _was_paused=get_tree().paused; get_tree().paused=true; show()
  var prepared: Dictionary=_main.get_ref().request_native_inventory_ui("layout") # G44049-44050
@@ -269,6 +275,18 @@ func _item_button(item: Dictionary,source: String,rect: Rect2,parent: Node) -> B
    else: perform("deposit" if page=="storage" else "equip",item))
  return b
 func refresh_view() -> void:
+ if page=="ossuary":
+  for child in get_children():
+   if child is CanvasItem:child.hide()
+  if not is_instance_valid(ossuary_workspace):
+   ossuary_workspace=preload("res://scripts/native_ossuary_workspace.gd").new();add_child(ossuary_workspace);ossuary_workspace.configure(self)
+  else:ossuary_workspace.render()
+  ossuary_workspace.show();return
+ if is_instance_valid(ossuary_workspace):
+  remove_child(ossuary_workspace);ossuary_workspace.queue_free();ossuary_workspace=null
+  for child in get_children():
+   if child is CanvasItem:child.show()
+  filter_bar.visible=_filter_open
  var m: Dictionary=model()
  if not m.ready: close_panel(); return
  combat_power.text="전투력  %d  ⚔ %d  ◇ %d  ✦ %d" % [_cp(m).total,_cp(m).atk,_cp(m).def,_cp(m).extra]
@@ -298,6 +316,7 @@ func refresh_view() -> void:
  else:_clear(detail);_empty_detail(m)
 
 func show_detail(item: Dictionary,source: String) -> void:
+ if page=="ossuary" and is_instance_valid(ossuary_workspace):ossuary_workspace.show_item(item);return
  var m: Dictionary=model()
  if not m.ready:return
  _clear(detail)
@@ -307,7 +326,8 @@ func show_detail(item: Dictionary,source: String) -> void:
   Surface.text(detail,"장착 아이템 비교",Rect2(18,12,440,35),14,Color("e1c99b"),"font",700)
   _detail_card(worn,"현재 장착",Rect2(18,60,218,684),true)
   _detail_card(item,"가방 아이템",Rect2(244,60,218,684),true)
-  Surface.text(detail,"▸ 수치 차이 전체 보기",Rect2(18,754,440,28),11,Color("cba875"),"font",700)
+  var toggle:=Surface.button(detail,"▾ 수치 차이 전체 보기" if compare_expanded else "▸ 수치 차이 전체 보기",Rect2(18,754,440,28),func():compare_expanded=not compare_expanded;show_detail(item,source),false,11)
+  if compare_expanded:_compare_differences(item,worn)
  else:
   Surface.text(detail,"휠: 상세 스크롤",Rect2(18,12,440,30),11,Color("a99c85"))
   _detail_card(item,"장착 중" if source=="eq" else "보관 아이템",Rect2(18,51,444,700),false)
@@ -371,6 +391,21 @@ func execute(action: String,item: Dictionary,data: Dictionary,inv: Dictionary,st
   if is_same(bag[i],item): index=i; break
  for i in store.size():
   if is_same(store[i],item): stock_index=i; break
+ if action=="withdraw_bone":
+  # G45857–45878: same r/t, itemLv0; append, find-space, remove collection, save.
+  var part: String=str(data.get("part",""));var key: String="iron_warlord_"+part
+  if part not in ["skull","torso","arms","legs"] or not inv.ossCollect.has(key):return {"applied":false,"reason":"bone_absent"}
+  if bag.size()>=capacity:return {"applied":false,"reason":"bag_full"}
+  var record: Dictionary=inv.ossCollect[key]
+  var bone: Dictionary={"id":Time.get_unix_time_from_system()*1000+main.world.sample_native_random_unit(),"slot":"bonePart","anc":"iron_warlord","part":part,"el":0,"rarity":clampi(int(record.get("r",0)),0,5),"tier":clampi(int(record.get("t",0)),0,4),"name":"철갑 전대의 "+str({"skull":"두개골","torso":"몸통","arms":"팔","legs":"다리"}[part]),"emoji":"🦴","itemLv":0,"reqLv":0,"affixes":[]}
+  var prior: Variant=inv.selected
+  bag.append(bone)
+  var position: Variant=Layout.find_space(bag,1,1,bag.size()-1,bone,capacity)
+  if position==null:bag.pop_back();return {"applied":false,"reason":"bag_full"}
+  bone._gx=position.x;bone._gy=position.y;inv.ossCollect.erase(key);inv.selected=null
+  var saved: Dictionary=main.save_native_demo11_current()
+  if not saved.get("committed",false):bag.pop_back();inv.ossCollect[key]=record;inv.selected=prior;return {"applied":false,"io_failed":true}
+  return {"applied":true,"saved":true}
  if action=="select":
   if (data.get("source")=="bag" and index<0) or (data.get("source")=="store" and stock_index<0): return {"applied":false,"reason":"lost_item"}
   inv.selected=index if data.get("source")=="bag" else ("st:"+str(stock_index) if data.get("source")=="store" else "eq:"+str(item.get("slot","")))
@@ -408,3 +443,18 @@ func execute(action: String,item: Dictionary,data: Dictionary,inv: Dictionary,st
  return {"applied":true,"saved":true,"receipt":receipt}
 func get_snapshot() -> Dictionary:
  return {"visible":visible,"page":page,"filter":filter.duplicate(),"indices":_rendered.map(func(row): return row.index),"last":_last.duplicate(true),"shared_owner":"State._demo11_storage / 06c","tick_polling":false}
+
+func _compare_differences(item: Dictionary,worn: Dictionary) -> void:
+ # Original _invCompareStats G49875–49944; raw base values, lower cost is better.
+ var overlay:=Surface.panel(detail,Rect2(18,100,444,650),Color("101315"),Color("756342"))
+ var scroll:=ScrollContainer.new();scroll.position=Vector2(12,12);scroll.size=Vector2(420,626);overlay.add_child(scroll)
+ var content:=Control.new();content.custom_minimum_size=Vector2(400,100);scroll.add_child(content)
+ Surface.text(content,"베이스 스탯 비교 (강화 수치 제외)",Rect2(0,0,400,30),12,Color("a99c85"))
+ var fields: Array=[["atk","ATK"],["def","DEF"],["spd","SPD"],["wStCost","ST소모"],["wRange","무기사거리"],["wArcW","공격범위"],["wStagger","무기경직"],["bowSpd","발사속도"],["bowRange","활사거리"],["bowPierce","관통확률"],["bonusSt","ST총량"],["charge","돌진력"],["chargeDist","돌진거리"],["bonusChargeDist","돌진거리+"],["chargeW","돌진폭"],["chargeAoE","광역범위"],["chargeCharge","돌진충전"],["stagger","경직력"],["blockRate","블록율"],["shieldWt","무게"],["splashR","스플래시범위"],["splashMul","스플래시배율"],["magicPen","마법관통"],["bonusRange","사거리+"],["stRegen","ST회복"],["mpRegen","MP회복"],["bStr","STR"],["bDex","DEX"],["bInt","INT"],["atkSpd","공격속도"],["potCd","물약쿨감"],["bonusHp","추가HP"],["expBonus","경험치보너스"],["critRate","치명률"],["critDmg","치명뎀"],["beamDmg","마법DP"],["bonusChargeStock","돌진충전+"],["eDef","에너지방어"],["ancPow","전대위력"]]
+ var y:=40.0
+ for field in fields:
+  var k: String=field[0];var delta: float=Query.number(item.get(k,0))-Query.number(worn.get(k,0))
+  if absf(delta)<=.0001:continue
+  var good: bool=delta<0 if k in ["wStCost","shieldWt","potCd"] else delta>0
+  Surface.text(content,str(field[1])+": "+("+" if delta>0 else "")+(str(int(delta)) if delta==int(delta) else "%.3f"%delta),Rect2(0,y,400,25),13,Color("44cc44" if good else "cc4444"));y+=26
+ content.custom_minimum_size.y=y+20

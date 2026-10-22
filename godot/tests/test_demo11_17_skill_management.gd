@@ -95,6 +95,20 @@ func run() -> void:
 	check(paused_learn.accepted,"paused K/L transaction allowed")
 	if paused_learn.get("committed",false):request("paused-reset","reset","darkPillar",true)
 	paused=false
+
+	# PARITY-UI-03: web Forge slot writer must preserve the live ledger/resources.
+	var forge_before: Dictionary=snapshot()
+	var live_p: Dictionary=state.read_current_p()
+	var hp_before: float=main.player.hp
+	var fixed_id: String=str(live_p.activeLMBSk)
+	var forge_receipt: Dictionary=state.commit_native_skill_forge_slot(main,"LMB",fixed_id)
+	check(forge_receipt.get("committed",false) and snapshot()==forge_before,"Forge fixed selection exact no-op")
+	check(main.player.hp==hp_before,"Forge selection no HP writer")
+	check(not state.commit_native_skill_forge_slot(main,"1","unknown_skill").get("committed",false) and snapshot()==forge_before,"Forge invalid skill no prefix")
+	check(not state.commit_native_skill_forge_slot(main,"invalid",fixed_id).get("committed",false) and snapshot()==forge_before,"Forge invalid slot no prefix")
+	var foreign_forge:=Node.new();root.add_child(foreign_forge)
+	check(not state.commit_native_skill_forge_slot(foreign_forge,"LMB",fixed_id).get("committed",false) and snapshot()==forge_before,"Forge foreign owner no prefix")
+	foreign_forge.free()
 	request("free-base","reset","spikeTrap",true)
 	request("base-hold","reset","maliceSwipe",true)
 	request("unknown","learn_up","unknown_skill")
