@@ -56747,3 +56747,8 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 
 - NW01/02는 정확한 res://source_snapshot/snapshot.gd 상수 preload만 허용하고 load/preload 단어 경계를 구분한다. NW03은 정확한 NW01 query 1개+snapshot 1개만 허용한다. 다른 IO/씬/RNG/입력 금지 및 producer/oracle 유지.
 - 근거·계약·단회 검증 한계: engine/orders/reports/NW-FIX-01_REPORT.md. 세 suite 각1회는 잘못 지정한 Node 경로로 각각4검사/2실패, scope 미도달·0실패 검증 미완료. 재실행0. 격리 override/테스트 namespace 복원, 보호81277 유지·자기Godot 잔여0.
+
+
+## PARITY-UI-06 후속 — 2026-10-22
+
+스킬 제단 배경 광/2D emissive·결과 카드 배지/장식·잠금 캐릭터 상세 전환 후속은 `docs/engine/PARITY_UI_06_20261022.md`를 따른다. 이전 수치는 이력이며 전체 동일성은 RETOUCH, 영상 HOLD 유지. 보스/아레나 owner 변경0.

@@ -6,6 +6,13 @@ signal continue_requested(slot: int, data: Dictionary)
 const Entry = preload("res://scripts/native_demo_lobby_entry.gd")
 var entry = Entry.new()
 var character_index := 0
+var detail_labels: Array[Label]=[]
+var detail_traits: Array[Label]=[]
+var detail_scene: TextureRect
+var detail_thumb: TextureRect
+var detail_create: Button
+var detail_lock: Control
+var character_source: Array=JSON.parse_string(FileAccess.get_file_as_string("res://data/parity_ui_06_characters.json"))
 var character_buttons: Array[Button] = []
 var creation_error: Label
 var _entry_enabled := false
@@ -149,21 +156,26 @@ func _build() -> void:
 	_form=_box(Rect2(0,0,1920,1080),Color("090609"),Color.TRANSPARENT)
 	_form.hide()
 	var scene:=_image("res://assets/ui/parity_ui_05/poster_idle_warrior_cs3_4k.jpg",Rect2(0,0,1920,1080),_form);scene.modulate=Color(.82,.82,.82)
+	detail_scene=scene
+	var poster_grade:=ShaderMaterial.new();poster_grade.shader=preload("res://shaders/parity_ui_06_poster.gdshader");detail_scene.material=poster_grade;detail_scene.modulate=Color.WHITE
+	var vignette:=ColorRect.new();vignette.size=Vector2(1920,1080);vignette.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	var vig:=ShaderMaterial.new();vig.shader=preload("res://shaders/parity_ui_06_vignette.gdshader");vignette.material=vig;_form.add_child(vignette)
 	_box(Rect2(19,16,1882,1048),Color.TRANSPARENT,Color(.72,.56,.27,.22),_form)
 	var header:=_label(tr_text("캐릭터 선택","Character Select"),Vector2(0,42),1920,38,_form,true);header.add_theme_font_override("font",Fonts.stack("font",700));header.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;header.add_theme_color_override("font_color",Color("e8c87a"))
 	var hint:=_label(tr_text("지옥에 강림할 화신을 선택하라","Choose your incarnation"),Vector2(0,98),1920,16,_form);hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	var cls:=_label("",Vector2(72,324),320,14,_form);cls.text=UI.text("전사");cls.add_theme_color_override("font_color",Color("c89a4a"))
-	_label(tr_text("엑소듀서 전사","WARRIOR"),Vector2(72,354),340,34,_form,true)
-	_label(tr_text("거대검을 휘두르는 흑철의 전사","A black-iron warrior wielding a greatsword"),Vector2(72,430),320,15,_form)
-	_image("res://assets/ui/demo_lobby/charselect/portrait_warrior.png",Rect2(72,492,150,200),_form)
+	var cls:=_label("",Vector2(72,324),320,14,_form);cls.text=UI.text("전사");detail_labels.append(cls);cls.add_theme_color_override("font_color",Color("c89a4a"))
+	detail_labels.append(_label(tr_text("엑소듀서 전사","WARRIOR"),Vector2(72,354),340,34,_form,true))
+	detail_labels.append(_label(tr_text("거대검을 휘두르는 흑철의 전사","A black-iron warrior wielding a greatsword"),Vector2(72,430),320,15,_form))
+	detail_thumb=_image("res://assets/ui/demo_lobby/charselect/portrait_warrior.png",Rect2(72,492,150,200),_form)
 	var traits:=_box(Rect2(1524,340,324,326),Color(.05,.03,.025,.85),GOLD,_form)
 	var heading:=_label(tr_text("플레이 방식","Playstyle"),Vector2(22,26),296,16,traits,true);heading.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	var titles=["근접 화신","흑철의 방어","파멸의 일격"]
 	var descriptions=["거대검을 휘두르는 정면 돌파형 전투가입니다.","검은 갑옷으로 적의 공세를 견디고 되받아칩니다.","느리지만 치명적인 광역 참격을 내리꽂습니다."]
 	for i in 3:
-		_label(["⚔","◈","✦"][i],Vector2(22,74+i*80),34,24,traits)
-		_label(UI.text(titles[i]),Vector2(69,72+i*80),245,15,traits,true)
-		var desc:=_label(UI.text(descriptions[i]),Vector2(69,98+i*80),232,13,traits);desc.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;desc.size.y=42
+		_box(Rect2(22,77+i*80,34,34),Color("302014"),Color("a0784680"),traits)
+		_label(["⚔","◈","✦"][i],Vector2(22,74+i*80),34,18,traits).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		detail_traits.append(_label(UI.text(titles[i]),Vector2(69,72+i*80),245,15,traits,true));detail_traits[-1].add_theme_font_override("font",Fonts.stack("font",700))
+		var desc:=_label(UI.text(descriptions[i]),Vector2(69,98+i*80),232,13,traits);desc.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;desc.set_deferred("size",Vector2(232,42));desc.add_theme_font_override("font",Fonts.stack("font",400));detail_traits.append(desc)
 	var portraits=["emblem_warrior.png","emblem_silvertail.png","emblem_hellgunner.png","emblem_transmuter.png","emblem_spearmage.png"]
 	for i in 5:
 		var b:=_button("",Rect2(710+i*108,864,70,70),_select_character.bind(i),_form)
@@ -175,7 +187,11 @@ func _build() -> void:
 			var soon:=_label(UI.text("출시 준비 중"),Vector2(-19,106),108,11,b);soon.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 		character_buttons.append(b)
 	_button(tr_text("취소","Cancel"),Rect2(580,1006,190,44),_close_form,_form)
-	_button(tr_text("생성","Create"),Rect2(1100,1006,240,44),_open_name,_form,true)
+	detail_create=_button(tr_text("생성","Create"),Rect2(1100,1006,240,44),_open_name,_form,true)
+	detail_lock=_image("res://assets/ui/parity_ui_05/coming_soon_chains_v2.png",Rect2(740,248,440,440),_form);detail_lock.hide()
+	_box(Rect2(114,448,212,62),Color("0c0a0af0"),Color("80705a"),detail_lock)
+	_label(UI.text("출시 준비 중"),Vector2(114,448),212,24,detail_lock).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	var ornaments:=SourceOrnaments.new();ornaments.size=Vector2(1920,1080);ornaments.mouse_filter=Control.MOUSE_FILTER_IGNORE;_form.add_child(ornaments)
 	_name_form=_box(Rect2(0,0,1920,1080),Color(0,0,0,.85),Color.TRANSPARENT,_form);_name_form.hide()
 	_box(Rect2(680,390,560,300),Color("100d10"),GOLD,_name_form)
 	var name_title:=_label(tr_text("새 전사의 이름","New warrior name"),Vector2(710,430),500,28,_name_form,true);name_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
@@ -211,6 +227,21 @@ func _build() -> void:
 	confirm.focus_previous=confirm.get_path_to(cancel); confirm.focus_next=confirm.get_path_to(cancel)
 	modal.hide()
 
+class SourceOrnaments extends Control:
+	func _draw() -> void:
+		var gold:=Color(.784,.588,.275,.55)
+		for pair in [[Vector2(18,60),Vector2(18,14),Vector2(64,14)],[Vector2(1856,1066),Vector2(1902,1066),Vector2(1902,1020)]]:
+			draw_polyline(PackedVector2Array(pair),gold,2,true)
+		for x in [688,1112]:draw_line(Vector2(x,70),Vector2(x+120,70),Color(.784,.588,.275,.5),1,true)
+		for rect in [Rect2(70,490,154,204),Rect2(1522,338,328,330)]:
+			for corner in [rect.position,Vector2(rect.end.x,rect.position.y),rect.end,Vector2(rect.position.x,rect.end.y)]:
+				var dx:=1 if corner.x==rect.position.x else -1
+				var dy:=1 if corner.y==rect.position.y else -1
+				draw_line(corner,corner+Vector2(16*dx,0),gold,2,true);draw_line(corner,corner+Vector2(0,16*dy),gold,2,true)
+		draw_line(Vector2(72,408),Vector2(128,408),gold,2,true)
+		draw_line(Vector2(1546,401),Vector2(1826,401),Color(.588,.431,.235,.35),1,true)
+		draw_circle(Vector2(1686,340),14,Color("21160d"));draw_arc(Vector2(1686,340),14,0,TAU,48,gold,1,true)
+
 class LockMark extends Control:
 	func _draw() -> void:
 		draw_arc(Vector2(14,8),10,PI,TAU,20,Color("dfd6c2"),2,true)
@@ -231,13 +262,20 @@ func _choose(slot: int) -> void:
 		for b in cards: b.focus_mode=Control.FOCUS_NONE
 		start.focus_mode=Control.FOCUS_NONE
 		erase.focus_mode=Control.FOCUS_NONE
-		_form_slot=slot; character_index=0; creation_error.text=""; _form.show(); _name_form.hide(); name_input.clear(); character_buttons[0].grab_focus()
+		_form_slot=slot; _select_character(0); creation_error.text=""; _form.show(); _name_form.hide(); name_input.clear(); character_buttons[0].grab_focus()
 	else: _form.hide()
 func _select_character(index: int) -> void:
-	if index!=0:
-		creation_error.text=tr_text("출시 준비 중","Coming soon")
-		return
-	character_index=0
+	character_index=index
+	var ch: Dictionary=character_source[index]
+	detail_labels[0].text=UI.text(ch.job);detail_labels[1].text=UI.text(ch.name);detail_labels[2].text=UI.text(ch.desc)
+	detail_scene.material.set_shader_parameter("locked",index!=0);detail_scene.texture=load(ch.poster);detail_thumb.texture=load(ch.bust)
+	for i in 3:
+		detail_traits[i*2].text=UI.text(ch.traits[i][1]);detail_traits[i*2+1].text=UI.text(ch.traits[i][2])
+	for i in character_buttons.size():
+		var button:=character_buttons[i];button.pivot_offset=Vector2(35,35);button.scale=Vector2.ONE*(1.1 if i==index else 1.0)
+		var edge: StyleBoxFlat=button.get_theme_stylebox("normal").duplicate();edge.border_color=Color("b64b36") if i==index else GOLD
+		for state in ["normal","focus","hover"]:button.add_theme_stylebox_override(state,edge)
+	detail_create.disabled=index!=0;detail_create.text=UI.text("출시 준비 중" if index!=0 else "생성");detail_lock.visible=index!=0
 	creation_error.text=""
 func _create() -> void:
 	var admission: Dictionary=Entry.validate_name(name_input.text,character_index)
@@ -332,5 +370,5 @@ func _begin_movie(kind: String) -> CanvasLayer:
 func _open_name() -> void:
 	_name_form.show();name_input.grab_focus()
 func _portrait_circle() -> ShaderMaterial:
-	var shader:=Shader.new();shader.code="shader_type canvas_item;void fragment(){vec4 c=texture(TEXTURE,UV);COLOR=vec4(c.rgb,c.a*step(length(UV-vec2(.5)),.5));}"
+	var shader:=Shader.new();shader.code="shader_type canvas_item;void fragment(){vec4 c=texture(TEXTURE,UV);COLOR=vec4(c.rgb,c.a*step(length(UV-vec2(.5)),.5))*COLOR;}"
 	var material:=ShaderMaterial.new();material.shader=shader;return material
