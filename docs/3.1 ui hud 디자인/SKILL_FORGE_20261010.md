@@ -1,3 +1,5 @@
+> **2026-10-23 사용자 승인·PC 적용**: 이전 main 보류를 해제하고 `76938f887`·`25bc492af`의 좌우 스킬 구슬/합성 전류를 인수했다. 3333은 `20261021-orbs2`를 제공하며, 현재 실제 검수와 전달 경계는 **§11**을 따른다. §10-12의 보류는 당시 이력이다.
+
 # 스킬 합성 창 (Skill Forge) — K 스킬 창 전면 교체 (2026-10-10)
 
 > 상태: **구현·검수 완료 (기본 ON)**. 끄기 `?skillForge=0`(구 카드형 창), 3D만 끄기 `?skillForge3d=0`(같은 DOM 2D 폴백).
@@ -327,3 +329,23 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | DOM 범위 | 기존 gameConfirm 본문은 그대로. 신규 DOM parent 내용 교체·UI 디자인·초점 권위 변경 없음. 실제 HTML 렌더링/전체 Startup 검수 아님 |
 | 새 검수 | 격리 public gameConfirm 및 실제 스킬 확인 gate+목적stub의5묶음 PASS. 동시요청 거부·첫 resolver/메시지/버튼 보존·확인/취소·재개·기존 HTML 모드·전체파일 inverse 확인. 변경 function 구문/실행 확인 |
 | 한계 | 실user GUI/state/save/API 접근·자동입력0. 실제 스킬 비용집행/화면품질/PC 검수 없음. game-easy-test·Godot/HOLD·기인수기능·docs/2_3 변경0. 잔여R statement 의도·승인 분류와 전체 이식 미완료 |
+
+
+## 11. 좌우 스킬창 인수와 3333 반영 (2026-10-23)
+
+| 항목 | 실제 확인·범위 |
+|---|---|
+| 사용자 승인 | 이번 대화의 "스킬창 변경만 main과 3333에 반영" 제안에 "그래"로 이전 보류 해제 |
+| 원작성자·원본 | Claude `claude/skill-ui-20261021`, `76938f887` + `25bc492af` 보존. 새 인수 브랜치 `codex/skill-orbs-integrate-20261023`, 원격 base `8468891744569f8091f6170dbaf5c58f48a07067` 위 정상 cherry-pick |
+| 적용 | 하단 `.sf-tray` 삭제, 제단 주위 좌우 `.sf-orb`와 관계 전류. CSS/JS `v=20261021-orbs2`. 전투·비용·슬롯/합성 공식 변경 없음 |
+| 재배포 누락 방지 | 기존 로컬 Three.js r186 `three.module.js`·`three.core.js`를 동일 byte로 인수·정확 두 경로만 Git 추적. §10-11 당시 누락의 해소이며 라이브러리 업그레이드가 아님 |
+| 검사 | 기존 실행본에서 신규 구슬 검사 6개 FAIL → 통합 후 기존 13/13 PASS. 필수 vendor 누락 검사 RED(13 PASS/1 FAIL) 후 두 모듈 보존·추적; 최종 스킬창·슬롯·추천·확인창 검사 31개로 확인 |
+| 3333 실제 화면 | 저장 없는 `?forgelab=1&tutorial=0&resourceTutorial=0`. LMB 8개/숫자1 22개 구슬·합성 전류·3D 원판 확인. 숫자1 `clientWidth=scrollWidth=2403`, 가로 트레이0. 일반 세이브를 불러오거나 덮어쓰는 검수는 하지 않음 |
+| 로컬 보존 | shared HEAD `5659d14d38b8068518cb5866a336bf930a1abbce` 및 공용 INDEX byte 보존. 8경로만 패치하고 기존 `game.html` 유골함 WIP 2줄 유지. 관리 문서는 본 절 링크만 append, 다른 staged/WIP는 미인수 |
+| 원격 전달 | 검수한 인수 브랜치의 정상 비강제 main 반영. 최종 원격 조회·해시는 아래 별도 receipt에서 확인하며 로컬 적용과 원격 반영을 구분 |
+| 검수 산출물 | `G:/exoduser-wt/_out/skill-orbs-integration-20261023/` — `manifest.before.json`, `shared-index.before`, `docs-search-after.txt`, `skill-window-3333.jpg`, `tests-final.txt`, `push-receipt.json` |
+| 별도 경계 | PC 전체 main HEAD 동기화·Mac 실행·NW.js/Steam 패키징/업로드·외부 웹 배포는 이번 인수 완료 범위 밖 |
+
+### 변경 정리 운영의 구분
+
+`ExoduserAutoCleanup50`은 2026-09-27 팝업 문제로 삭제됐으며 AGENTS.md의 재등록 금지를 유지한다. 승인 없이 전체 변경을 add/commit/ignore/삭제하는 자동 정리는 하지 않는다. 완료·진행·보류 작업의 검토와 인수는 이와 별개다. 이번에는 스킬창 1건의 보류 해제·검수·docs·원격 전달을 묶어 정리한다. 새 예약 작업을 등록했다고 보고하지 않는다.

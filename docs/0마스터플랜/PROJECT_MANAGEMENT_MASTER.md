@@ -450,3 +450,8 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+
+## 2026-10-23 좌우 스킬창 보류 해제·PC 3333 인수
+
+사용자 승인으로 `claude/skill-ui-20261021`의 구슬·합성 전류를 인수했다. 관련 docs와 3D 필수 vendor 두 파일을 포함하고 별도 깨끗한 브랜치에서 검수·정상 원격 반영한다. 실제 3333 LMB8/숫자1 22개 구슬과 가로트레이0을 확인했다. [인수·검수·전달 경계](../3.1%20ui%20hud%20디자인/SKILL_FORGE_20261010.md#11-좌우-스킬창-인수와-3333-반영-2026-10-23). shared HEAD/INDEX와 타 팀 WIP는 보존한다. 자동정리 예약 재등록·전체 변경 일괄 커밋·Steam 배포는 수행하지 않는다.

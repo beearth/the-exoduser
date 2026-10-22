@@ -30,6 +30,13 @@ function load(state){
 const J=v=>JSON.parse(JSON.stringify(v));
 const learn=ids=>Object.fromEntries(ids.map(id=>[id,3]));
 
+test('skill forge: clean checkout includes both required three r186 runtime modules',()=>{
+  const dir='assets/vendor/three-r186/build/';
+  for(const name of ['three.module.js','three.core.js'])assert.ok(fs.existsSync(path.join(ROOT,dir,name)),'Missing 3D runtime dependency: '+dir+name);
+  assert.match(read(dir+'three.module.js'),/from ['"]\.\/three\.core\.js['"]/);
+  assert.match(read(dir+'three.core.js'),/const REVISION = '186';/);
+});
+
 test('skill forge: sockets spread evenly from the top — 2 up/down, 3 three ways, 4 four ways, up to 10',()=>{
   const {api}=load();const R=100,r=v=>Math.round(v);
   assert.deepEqual(J(api._layout(2,R).map(p=>[r(p.x),r(p.y)])),[[0,-100],[0,100]]);
