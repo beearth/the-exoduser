@@ -44,15 +44,19 @@ func _run() -> void:
  var frame: float=main.world.get_native_frame()
  for i in 4:await physics_frame
  check(main.world.get_native_frame()==frame,"world clock frozen during menu")
- menu.buttons.settings.pressed.emit()
- check(paused and menu.get_snapshot().page=="settings","settings view opens without resuming")
+ # SWEEP-B(2026-10-23): 웹 Escape=togglePanel('settings')(G13187/44051) — 별도 일시정지 페이지 없이 설정 패널이 바로 열린다.
+ check(paused and menu.get_snapshot().page=="settings" and not menu.buttons.has("settings"),"Escape opens web #settings directly without resuming")
  check(menu.get_snapshot().settings_apply_status=="READY","actual settings owner ready")
  check(not menu.request_settings({"diffV2":1,"lang":"en","binds":{}}).applied,"protected/unknown writes not accepted")
+ # 웹 togglePanel: 열린 설정에서 Escape 재입력 = closeAllPanels → 재개. 닫기 [ESC] 버튼도 같은 경로.
  main.call("_toggle_pause")
- check(paused and menu.get_snapshot().page=="pause","Escape semantic returns from settings before resume")
- menu.buttons.settings.pressed.emit()
+ check(not paused and not menu.is_menu_visible(),"second Escape closes web settings panel and resumes")
+ main.call("_toggle_pause")
+ check(paused and menu.get_snapshot().page=="settings","Escape reopens settings panel paused")
  menu.buttons.back.pressed.emit()
- check(paused and menu.get_snapshot().page=="pause","actual Back button preserves pause")
+ check(not paused and not menu.is_menu_visible(),"actual close [ESC] button resumes like web closeAllPanels")
+ main.call("_toggle_pause")
+ check(paused and menu.is_menu_visible() and menu.get_snapshot().page=="settings","settings panel open again for capture/resume path")
  var dir:=argument("--captures")
  if not dir.is_empty():
   check(DisplayServer.get_name()!="headless","real display capture")
@@ -64,8 +68,8 @@ func _run() -> void:
   DirAccess.make_dir_recursive_absolute(dir)
   check(image.save_png(dir+"/pause-1920x1080.png")==OK,"full PNG")
   check(image.get_region(Rect2i(500,100,920,880)).save_png(dir+"/pause-crop-1x.png")==OK,"unscaled1x crop")
- menu.buttons.resume.pressed.emit()
- check(not paused and not menu.is_menu_visible(),"Resume button uses existing pause exit")
+ menu.buttons.back.pressed.emit()
+ check(not paused and not menu.is_menu_visible(),"close [ESC] button uses existing pause exit")
  check(main.world.can_process() and main.player.can_process(),"actual processing resumed")
  for i in 3:await physics_frame
  check(main.world.get_native_frame()>frame,"actual world clock advances again")

@@ -154,7 +154,7 @@ func _build() -> void:
 	_box(Rect2(1360,0,560,1080),Color("09090a"),Color.TRANSPARENT) # ui-refinement656: .lobby-right border:0
 	var sigil:=_image("res://assets/ui/parity_ui_03/sigil.png",Rect2(1330,-68,620,620));sigil.modulate.a=.14
 	var rail:=preload("res://scripts/native_parity_ui_surface.gd").Rail.new();rail.image=load("res://assets/ui/parity_ui_04/lobby_frame.png");rail.slice=.22;rail.width=48;rail.position=Vector2(1360,0);rail.size=Vector2(560,1080);rail.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(rail)
-	_image("res://assets/ui/parity_ui_04/logo.png",Rect2(1388,195,498,104)).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_image("res://assets/ui/parity_ui_04/logo.png",Rect2(1507.2,195,249.5,104)).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED # .lobby-brand-logo 실측 (1507.2,195,249.5,104)
 	language_select=OptionButton.new();language_select.position=Vector2(1388,151.46875);language_select.size=Vector2(140,27);language_select.add_item("한국어");language_select.add_item("English");language_select.add_theme_font_override("font",Fonts.stack("font"));language_select.add_theme_font_size_override("font_size",12);language_select.add_theme_color_override("font_color",Color("ccaa88"));add_child(language_select)
 	var language_style:=StyleBoxFlat.new();language_style.bg_color=Color(10.0/255,6.0/255,2.0/255,.8);language_style.border_color=Color(120.0/255,80.0/255,40.0/255,.4);language_style.set_border_width_all(1);language_select.add_theme_stylebox_override("normal",language_style)
 	language_select.item_selected.connect(_select_language)

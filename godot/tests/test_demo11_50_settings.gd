@@ -38,10 +38,14 @@ func run() -> void:
 	check(not main.source_initialization_services.get_source_options_state().commit_settings_fields({"sfxVol":999}).applied,"owner_rejects_bypass")
 	main._toggle_pause()
 	check(paused and menu.is_menu_visible(),"pause_owner")
-	menu.buttons.settings.pressed.emit()
-	check(menu.get_snapshot().page=="settings" and paused,"actual_settings_button")
+	# SWEEP-B(2026-10-23): 웹 Escape=togglePanel('settings') — 설정 패널이 바로 열린다(별도 일시정지 페이지 없음).
+	check(menu.get_snapshot().page=="settings" and paused and not menu.buttons.has("settings"),"escape_opens_web_settings_panel")
 	var panel: Node=menu._center
-	check(panel.controls.has("lang") and panel.controls.has("textScale") and panel.controls.has("panelFit") and panel.controls.has("shake"),"system_controls")
+	# SWEEP-B(2026-10-23): 웹 리마스터 설정 탭 배치(parity_ui_05_settings_layout.json = 웹 DOM 실측):
+	#   게임 탭 = Language(optLang)·'전체화면 (F11)' 버튼 / 화면 탭 = 화면 흔들림·안내 글자 크기·'설정 창 화면에 맞추기'(optPanelFit)·FPS 제한(optFps range, CAPS 인덱스)
+	check(panel.controls.has("lang") and panel.controls.has("전체화면 (F11)"),"system_controls")
+	panel.controls.tab_screen.pressed.emit();panel=menu._center
+	check(panel.controls.has("textScale") and panel.controls.has("panelFit") and panel.controls.has("shake") and panel.controls.has("fpsCap"),"screen_controls")
 	panel.controls.shake.value=0;panel.controls.shake.drag_ended.emit(true)
 	check(opt.shake==0,"shake_actual_control_OPT")
 	panel.controls.textScale.value=110;panel.controls.textScale.drag_ended.emit(true)
@@ -50,21 +54,27 @@ func run() -> void:
 	panel.controls.panelFit.button_pressed=false
 	for i in 2:await process_frame
 	check(opt.panelFit==false,"panel_fit_actual_control")
+	panel.controls.tab_system.pressed.emit();panel=menu._center
 	panel.controls.lang.select(1);panel.controls.lang.item_selected.emit(1)
 	for i in 2:await process_frame
 	check(opt.lang=="en" and TranslationServer.get_locale().begins_with("en"),"language_actual_control")
-	panel.controls.tab_sound.pressed.emit()
+	panel.controls.tab_sound.pressed.emit();panel=menu._center
 	panel.controls.sfxVol.value=37;panel.controls.sfxVol.drag_ended.emit(true)
 	panel.controls.bgmVol.value=12;panel.controls.bgmVol.drag_ended.emit(true)
 	check(opt.sfxVol==37 and opt.bgmVol==12 and main.read_native_attack_audio_settings().sfx_percent==37,"volume_controls_existing_OPT_consumer")
-	panel.controls.tab_screen.pressed.emit()
-	var cap: OptionButton=panel.controls.fpsCap
-	for i in cap.item_count:
-		if cap.get_item_metadata(i)==120:cap.select(i);cap.item_selected.emit(i)
+	panel.controls.tab_screen.pressed.emit();panel=menu._center
+	# 웹 optFps = range(0..CAPS-1) → OPT.fpsCap=CAPS[value] (G49041)
+	var cap: HSlider=panel.controls.fpsCap
+	cap.value=float(menu.settings_bridge.CAPS.find(120));cap.drag_ended.emit(true)
+	for i in 2:await process_frame
 	check(opt.fpsCap==120 and Engine.max_fps==120 and Engine.physics_ticks_per_second==hz,"120_render_cap_physics_unchanged")
-	panel.controls.fullscreen.button_pressed=true
+	# 웹 '전체화면 (F11)'은 체크박스가 아닌 토글 버튼(게임 탭)
+	panel.controls.tab_system.pressed.emit();panel=menu._center
+	panel.controls["전체화면 (F11)"].pressed.emit()
+	for i in 2:await process_frame
 	if DisplayServer.get_name()!="headless":check(root.mode==Window.MODE_FULLSCREEN,"actual_OS_fullscreen")
-	panel.controls.fullscreen.button_pressed=false
+	panel.controls["전체화면 (F11)"].pressed.emit()
+	for i in 2:await process_frame
 	if DisplayServer.get_name()!="headless":check(root.mode==Window.MODE_WINDOWED,"actual_OS_windowed")
 	check(is_same(opt,main.source_initialization_services.read_current_options()) and opt.diff==5 and opt.diffV2==1,"same_OPT_identity_protected_diff")
 	var store:=Store.new();check(store.open_store().ready,"existing_adapter_namespace")
@@ -104,7 +114,7 @@ func run() -> void:
 	check(bridge.snapshot().restore.status=="READY" and bridge.snapshot().restore.settings_found and same_source(opt,expected),"fresh_Main_restores_disk_settings_and_newer_language "+JSON.stringify({"restore":bridge.snapshot().restore,"actual":opt,"expected":expected}))
 	check(Engine.max_fps==120 and TranslationServer.get_locale().begins_with("ko"),"restore_applies_actual_consumers")
 	check(main.read_native_input_bindings()==input,"saved_BINDS_not_applied")
-	main._toggle_pause();menu.buttons.settings.pressed.emit();panel=menu._center
+	main._toggle_pause();check(menu.get_snapshot().page=="settings" and paused,"escape_opens_settings_after_restore");panel=menu._center
 	if not captures.is_empty():
 		DirAccess.make_dir_recursive_absolute(captures)
 		root.size=Vector2i(1920,1080)
@@ -113,8 +123,10 @@ func run() -> void:
 		check(panel.controls.textScale.has_focus(),"focus_retained_on_display_rebuild")
 		await capture("01-system")
 		panel.controls.tab_sound.pressed.emit();await capture("02-sound")
-	main._toggle_pause();check(paused and menu.get_snapshot().page=="pause","Esc_back_before_resume")
-	menu.buttons.resume.pressed.emit();check(not paused,"resume_existing_owner")
+	# 웹 togglePanel: 열린 설정에서 Escape = closeAllPanels → 재개 / 닫기 [ESC] 버튼도 같은 경로
+	main._toggle_pause();check(not paused and not menu.is_menu_visible(),"Esc_closes_settings_and_resumes")
+	main._toggle_pause();check(paused and menu.get_snapshot().page=="settings","Esc_reopens_settings")
+	menu.buttons.back.pressed.emit();check(not paused and not menu.is_menu_visible(),"close_button_resumes_existing_owner")
 	await dispose()
 	print("DEMO11_50_RESULT ",JSON.stringify({"assertions":checks,"failures":failures,"skip":0,"saved_bindings_applied":false}))
 	quit(1 if failures else 0)
@@ -145,7 +157,7 @@ func capture_only() -> void:
 	if captures.is_empty():failures+=1;quit(1);return
 	root.size=Vector2i(1920,1080)
 	await boot()
-	main._toggle_pause();main.native_demo_pause_menu.buttons.settings.pressed.emit()
+	main._toggle_pause();check(main.native_demo_pause_menu.get_snapshot().page=="settings","escape_opens_settings_capture")
 	var panel: Node=main.native_demo_pause_menu._center
 	check(panel.find_child("HellGothicCrest",true,false)!=null,"existing_crest_reused")
 	check(panel.controls.tab_system.get_theme_color("font_disabled_color")==Color("dfd6c2"),"selected_tab_bone_ink")
