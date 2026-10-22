@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+const root='G:/exoduser',folder=path.join(root,'output/new_heroes_refinement_20261022');
+const previous=JSON.parse(fs.readFileSync(path.join(folder,'h16-reference-receipt.json'),'utf8')).references;
+const source='C:/Users/심도진/Pictures/Screenshots/스크린샷 2026-10-22 205553.png';
+const destination='assets/character-concepts/references/20261022/hellgunner_h19/user_bodysuit_mesh.png';
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const bytes=fs.readFileSync(source),absolute=path.join(root,destination);
+fs.mkdirSync(path.dirname(absolute),{recursive:true});
+if(!fs.existsSync(absolute))fs.writeFileSync(absolute,bytes,{flag:'wx'});
+if(sha(fs.readFileSync(absolute))!==sha(bytes))throw Error('Screenshot snapshot mismatch');
+const screenshot={source,path:destination,sha256:sha(bytes),bytes:bytes.length,role:'GARMENT ONLY: high-cut swimsuit silhouette, black lace/mesh torso with opaque bust/pelvis lining. Do not copy people identities or screenshot text.'};
+const game={...previous[1],path:'assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png'};
+if(sha(fs.readFileSync(path.join(root,game.path)))!==game.sha256)throw Error('Silvertail snapshot mismatch');
+const references=[previous[0],screenshot,game,...previous.slice(3)].map((r,i)=>({...r,index:i+1}));
+fs.writeFileSync(path.join(folder,'h19-reference-receipt.json'),JSON.stringify({recordedAt:new Date().toISOString(),references},null,2)+'\n');
+console.log(JSON.stringify(references.map(({index,path})=>({index,path})),null,2));

@@ -1,0 +1,617 @@
+{
+  "verifiedAt": "2026-10-22T17:17:58.165Z",
+  "kind": "Byte hashes, PNG headers, prompt lengths, reference preservation and review-copy checks only. Does not assert visual approval or runtime adoption.",
+  "references": [
+    {
+      "candidate": "H24",
+      "index": 1,
+      "path": "assets/character-concepts/20261023/hellgunner_darkfantasy_warrior_h23.png",
+      "sha256": "2db99f10079f79731f95847302f83d3b0e35cc24ac01392f2f42cc94fae1fc94",
+      "role": "H23 material wear edit only. Preserve user-positive H22 face/golden bob, warrior armor additions and full silhouette/equipment."
+    },
+    {
+      "candidate": "H23",
+      "index": 1,
+      "path": "assets/character-concepts/20261023/hellgunner_blonde_bob_nami_model_h22.png",
+      "sha256": "c12012a65aff3753f8941af7b18940f59956f17970ba417a6026282f2a3bde01",
+      "role": "User-positive H22 edit target. Preserve golden bob/face/proportions and core outfit/equipment"
+    },
+    {
+      "candidate": "H23",
+      "index": 2,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "role": "Silvertail reference for dark fantasy warrior metal/leather/armor silhouette; do not copy face/hair/skirt/blades"
+    },
+    {
+      "candidate": "H22",
+      "index": 1,
+      "path": "assets/character-concepts/20261023/hellgunner_modern_cut_bodysuit_h21.png",
+      "sha256": "88096038964fa405b22a0b260f3b32d3626eea856319d05486e043aafade39e5",
+      "role": "Hellgunner edit target: preserve suit/shorts/jacket/right robot arm/huge angular gun; change face/appeal/hair/render"
+    },
+    {
+      "candidate": "H22",
+      "index": 2,
+      "path": "assets/character-concepts/references/20261023/hellgunner_h22/official_nami_odyssey.jpg",
+      "sha256": "5c02f73d075161d4f85de35a4509dbd84d8ec2615c6192caa443abc06506f524",
+      "role": "Official Nami Odyssey game model reference for lively face/proportions/render; golden short bob per user, no mesh import or copied bikini/tattoo/text"
+    },
+    {
+      "candidate": "H21",
+      "index": 1,
+      "path": "assets/character-concepts/20261022/hellgunner_leather_shorts_bodysuit_h20.png",
+      "sha256": "5138cc768ed3da827a2a61be1b4bad19472819447c591c614e28d21b57878ced",
+      "role": "Edit target. Preserve short bob/face/visor/right robot arm/huge angular gun; redesign garment cut and old design/render language"
+    },
+    {
+      "candidate": "H21",
+      "index": 2,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_02.jpg",
+      "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+      "role": "User images (1).jpg. Swimsuit bodysuit silhouette and high hip/side waist cut only; original adaptation, not exact copy"
+    },
+    {
+      "candidate": "H21",
+      "index": 3,
+      "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9",
+      "role": "Preferred character identity and equipment anchor"
+    },
+    {
+      "candidate": "H21",
+      "index": 4,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "role": "EXODUSER palette/identity consistency; modern render redesign takes priority over old ornate finish"
+    },
+    {
+      "candidate": "H20",
+      "index": 1,
+      "path": "assets/character-concepts/20261022/hellgunner_sheer_leotard_front_h19.png",
+      "sha256": "926cdb5c2e44904cd66fb9a4a4d4080935e2464260937cf7f713b19b680d5ab6",
+      "role": "Edit target: retain identity/equipment/pose; replace excessive sheer garment with opaque bodysuit plus leather shorts"
+    },
+    {
+      "candidate": "H20",
+      "index": 2,
+      "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9",
+      "role": "H14 approved direction for identity and equipment, not original skirt"
+    },
+    {
+      "candidate": "H20",
+      "index": 3,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "role": "EXODUSER material and painterly finish consistency"
+    },
+    {
+      "candidate": "H19",
+      "index": 1,
+      "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9",
+      "role": "H14 preferred woman/face/equipment front anchor; edit clothing only"
+    },
+    {
+      "candidate": "H19",
+      "index": 2,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h19/user_bodysuit_mesh.png",
+      "sha256": "1ffcab99879e25ce154e5d137a187e36d352b6458069bb4ac8a70f5b8114db87",
+      "role": "GARMENT ONLY: high-cut swimsuit silhouette, black lace/mesh torso with opaque bust/pelvis lining. Do not copy people identities or screenshot text."
+    },
+    {
+      "candidate": "H19",
+      "index": 3,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "role": "EXODUSER face maturity, dark-metal materials, painterly light and finish"
+    },
+    {
+      "candidate": "H19",
+      "index": 4,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_02.jpg",
+      "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+      "role": "Asymmetric techwear and one-piece bodysuit/boots"
+    },
+    {
+      "candidate": "H19",
+      "index": 5,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_03.webp",
+      "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+      "role": "Rebellious gesture and enormous bespoke weapon mass"
+    },
+    {
+      "candidate": "H19",
+      "index": 6,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_04.jpg",
+      "sha256": "9e0871215f35a90912513c5e769cc8148f3acfbba13a1491afad146e6bd4dd92",
+      "role": "Long firearm balance and layered material silhouette"
+    },
+    {
+      "candidate": "H19",
+      "index": 7,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_05.jpg",
+      "sha256": "dff5176e95f41ba7f6b68515b1e77f75c8300bc6c578bdbec891e4306898419c",
+      "role": "Heavy weapon support harness/grips and weight"
+    },
+    {
+      "candidate": "H19",
+      "index": 8,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_06.jpg",
+      "sha256": "3e1ebf9b32fee8ea3a39ddf9af63e49892baf403661052e6d353663011e47b49",
+      "role": "Machined stock/rail/receiver structure"
+    },
+    {
+      "candidate": "H19",
+      "index": 9,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_07.jpg",
+      "sha256": "64d5b4aad95f7cfd607f9861131ed0120cf7471cb2a9cb68ad373806a491e3bf",
+      "role": "Slim asymmetrical clothing/material contrast"
+    },
+    {
+      "candidate": "H19",
+      "index": 10,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_08.jpg",
+      "sha256": "c3f6eee2b4cea8461e74908790fef889c0afdd1219b87bc67ed2e499fef143cc",
+      "role": "Primary bodysuit construction: continuous black torso/pelvis with pale side panels"
+    },
+    {
+      "candidate": "H18",
+      "index": 1,
+      "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9",
+      "role": "H14 preferred woman/face/equipment front anchor; edit clothing only"
+    },
+    {
+      "candidate": "H18",
+      "index": 2,
+      "path": "assets/charselect/silvertail_cut.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "role": "EXODUSER face maturity, dark-metal materials, painterly light and finish"
+    },
+    {
+      "candidate": "H18",
+      "index": 3,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_01.jpg",
+      "sha256": "a3b8e90b5e0aa67c0f1b57fd1bcec802e8561e9a85906a3322cc41128531364f",
+      "role": "Light cropped jacket and agile proportions"
+    },
+    {
+      "candidate": "H18",
+      "index": 4,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_02.jpg",
+      "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+      "role": "Asymmetric techwear and one-piece bodysuit/boots"
+    },
+    {
+      "candidate": "H18",
+      "index": 5,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_03.webp",
+      "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+      "role": "Rebellious gesture and enormous bespoke weapon mass"
+    },
+    {
+      "candidate": "H18",
+      "index": 6,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_04.jpg",
+      "sha256": "9e0871215f35a90912513c5e769cc8148f3acfbba13a1491afad146e6bd4dd92",
+      "role": "Long firearm balance and layered material silhouette"
+    },
+    {
+      "candidate": "H18",
+      "index": 7,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_05.jpg",
+      "sha256": "dff5176e95f41ba7f6b68515b1e77f75c8300bc6c578bdbec891e4306898419c",
+      "role": "Heavy weapon support harness/grips and weight"
+    },
+    {
+      "candidate": "H18",
+      "index": 8,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_06.jpg",
+      "sha256": "3e1ebf9b32fee8ea3a39ddf9af63e49892baf403661052e6d353663011e47b49",
+      "role": "Machined stock/rail/receiver structure"
+    },
+    {
+      "candidate": "H18",
+      "index": 9,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_07.jpg",
+      "sha256": "64d5b4aad95f7cfd607f9861131ed0120cf7471cb2a9cb68ad373806a491e3bf",
+      "role": "Slim asymmetrical clothing/material contrast"
+    },
+    {
+      "candidate": "H18",
+      "index": 10,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_08.jpg",
+      "sha256": "c3f6eee2b4cea8461e74908790fef889c0afdd1219b87bc67ed2e499fef143cc",
+      "role": "Primary bodysuit construction: continuous black torso/pelvis with pale side panels"
+    },
+    {
+      "candidate": "H16",
+      "index": 1,
+      "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9",
+      "role": "H14 preferred woman/face/equipment front anchor; edit clothing only"
+    },
+    {
+      "candidate": "H16",
+      "index": 2,
+      "path": "assets/charselect/silvertail_cut.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "role": "EXODUSER face maturity, dark-metal materials, painterly light and finish"
+    },
+    {
+      "candidate": "H16",
+      "index": 3,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_01.jpg",
+      "sha256": "a3b8e90b5e0aa67c0f1b57fd1bcec802e8561e9a85906a3322cc41128531364f",
+      "role": "Light cropped jacket and agile proportions"
+    },
+    {
+      "candidate": "H16",
+      "index": 4,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_02.jpg",
+      "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+      "role": "Asymmetric techwear and one-piece bodysuit/boots"
+    },
+    {
+      "candidate": "H16",
+      "index": 5,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_03.webp",
+      "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+      "role": "Rebellious gesture and enormous bespoke weapon mass"
+    },
+    {
+      "candidate": "H16",
+      "index": 6,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_04.jpg",
+      "sha256": "9e0871215f35a90912513c5e769cc8148f3acfbba13a1491afad146e6bd4dd92",
+      "role": "Long firearm balance and layered material silhouette"
+    },
+    {
+      "candidate": "H16",
+      "index": 7,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_05.jpg",
+      "sha256": "dff5176e95f41ba7f6b68515b1e77f75c8300bc6c578bdbec891e4306898419c",
+      "role": "Heavy weapon support harness/grips and weight"
+    },
+    {
+      "candidate": "H16",
+      "index": 8,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_06.jpg",
+      "sha256": "3e1ebf9b32fee8ea3a39ddf9af63e49892baf403661052e6d353663011e47b49",
+      "role": "Machined stock/rail/receiver structure"
+    },
+    {
+      "candidate": "H16",
+      "index": 9,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_07.jpg",
+      "sha256": "64d5b4aad95f7cfd607f9861131ed0120cf7471cb2a9cb68ad373806a491e3bf",
+      "role": "Slim asymmetrical clothing/material contrast"
+    },
+    {
+      "candidate": "H16",
+      "index": 10,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h16/user_08.jpg",
+      "sha256": "c3f6eee2b4cea8461e74908790fef889c0afdd1219b87bc67ed2e499fef143cc",
+      "role": "Primary bodysuit construction: continuous black torso/pelvis with pale side panels"
+    },
+    {
+      "candidate": "H15",
+      "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9"
+    },
+    {
+      "candidate": "H14",
+      "index": 1,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/01_user_figure.jpg",
+      "sha256": "a3b8e90b5e0aa67c0f1b57fd1bcec802e8561e9a85906a3322cc41128531364f",
+      "role": "Cropped asymmetric jacket, slender agile body proportions; reference design, not figurine render or watermark."
+    },
+    {
+      "candidate": "H14",
+      "index": 2,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/02_user_edgerunners.jpg",
+      "sha256": "738af5c663e96af48b47ecfbeb8619ae52bbdc0c0ceb47d8adc8f359454dadb0",
+      "role": "Asymmetric techwear, fitted core/thigh-high boots, energetic angular composition; no logos or same character."
+    },
+    {
+      "candidate": "H14",
+      "index": 3,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/03_user_jinx.webp",
+      "sha256": "62f7c049dada24c0d14714801d63e85cdb37b93d53b325c831bfc54cfb923879",
+      "role": "Rebellious gesture and enormous bespoke weapon mass; not same multi-barrel weapon or character."
+    },
+    {
+      "candidate": "H14",
+      "index": 4,
+      "path": "assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "role": "Primary game consistency anchor: mature face, dark iron, controlled material reflections, deep painterly light. Do not copy her ponytail/skirt/blades."
+    },
+    {
+      "candidate": "H12",
+      "path": "assets/character-concepts/20261022/hellgunner_cinematic_redraw_h11.png",
+      "sha256": "4451d506620a99def005f4c3cace30647f3151aa0e13391362a2e04b8e1af40b"
+    },
+    {
+      "candidate": "H11",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "sha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06"
+    },
+    {
+      "candidate": "H10",
+      "path": "assets/character-concepts/20261022/hellgunner_matte_leather_h09.png",
+      "sha256": "650f6786e5f0a5588c1ae6747dd713a2b7d78e671a9624daa551b50e7c45a17a"
+    },
+    {
+      "candidate": "H09",
+      "path": "assets/character-concepts/20261022/hellgunner_tactical_gear_h08.png",
+      "sha256": "06b83d8656a3994035e4cc372a7e73761b39fae24fd67abd9397ff4ddd976c10"
+    },
+    {
+      "candidate": "T03",
+      "path": "output/new_heroes_female_iteration_20261021/transmuter_female_pose_face_v1.png",
+      "sha256": "c667cbbfde3b423782609f8b5093cc6a68e7d98a7249b27c740f128d5feab75a"
+    },
+    {
+      "candidate": "H08",
+      "path": "assets/character-concepts/20261022/hellgunner_compact_stock_h07.png",
+      "sha256": "985250543b5b90eff76a7d1f69cce9b4f71699ea2f0658baa8c4d93ee9da4449"
+    },
+    {
+      "candidate": "S01",
+      "path": "output/charselect_color_remaster_20261021/sources/spearmage.png",
+      "sha256": "15679fd9a67155a367c4f1d463a3dbff0e14114adab99c603b596ba38f20e704"
+    },
+    {
+      "candidate": "H07",
+      "path": "assets/character-concepts/20261022/hellgunner_shoulder_support_h06.png",
+      "sha256": "3624b1855198f3253cc9eeec163575a2df3ae5e81f2f2d5b84ff97f9f240c238"
+    },
+    {
+      "candidate": "T02",
+      "path": "assets/character-concepts/20261022/transmuter_energy_bow_t01.png",
+      "sha256": "8e79260ed3846fdae4873781d9d91ca79f9daed0275f756754c5d53f56e0373d"
+    },
+    {
+      "candidate": "H06",
+      "path": "assets/character-concepts/20261022/hellgunner_goggles_clean_h05.png",
+      "sha256": "0d426bf81888d8eff02d528513296c7102a02b60f1b41247f0341f48490de0a9"
+    },
+    {
+      "candidate": "H01",
+      "path": "output/new_heroes_female_iteration_20261021/hellgunner_female_pose_face_v1.png",
+      "sha256": "07fc922c942e8e963b75a0404c2101ccb8d5023d45506da7c7f99ed41edb902d"
+    },
+    {
+      "candidate": "T01",
+      "path": "output/new_heroes_female_iteration_20261021/transmuter_female_pose_face_v1.png",
+      "sha256": "c667cbbfde3b423782609f8b5093cc6a68e7d98a7249b27c740f128d5feab75a"
+    },
+    {
+      "candidate": "H02",
+      "path": "output/new_heroes_female_iteration_20261021/hellgunner_female_pose_face_v1.png",
+      "sha256": "07fc922c942e8e963b75a0404c2101ccb8d5023d45506da7c7f99ed41edb902d"
+    },
+    {
+      "candidate": "H03",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "sha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06"
+    },
+    {
+      "candidate": "H04",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "sha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06"
+    },
+    {
+      "candidate": "H05",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_modern_h04.png",
+      "sha256": "d29d992651559f897a62e6a0ac6e337f8fa7da99bf7bc12d802405a2b99a7ae4"
+    }
+  ],
+  "textOnlyRequests": [
+    {
+      "candidate": "H13",
+      "reference": null
+    },
+    {
+      "candidate": "H13A",
+      "reference": null
+    }
+  ],
+  "outputs": [
+    {
+      "candidate": "H01",
+      "path": "output/new_heroes_refinement_20261022/hellgunner_fantasy_structure_h01.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "63d12f6df6b85fb2f10ed6ce5cde2785fbfcd1c58dfb736ce6d87b84cdd0cc66",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "T01",
+      "path": "assets/character-concepts/20261022/transmuter_energy_bow_t01.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "8e79260ed3846fdae4873781d9d91ca79f9daed0275f756754c5d53f56e0373d",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H02",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_robotarm_h02.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "f980f44174e93a504bf0b7fa39a8bae01168c083e2404153c8d146b43689ef06",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H04",
+      "path": "assets/character-concepts/20261022/hellgunner_cyberpunk_modern_h04.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "d29d992651559f897a62e6a0ac6e337f8fa7da99bf7bc12d802405a2b99a7ae4",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H05",
+      "path": "assets/character-concepts/20261022/hellgunner_goggles_clean_h05.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "0d426bf81888d8eff02d528513296c7102a02b60f1b41247f0341f48490de0a9",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H06",
+      "path": "assets/character-concepts/20261022/hellgunner_shoulder_support_h06.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "3624b1855198f3253cc9eeec163575a2df3ae5e81f2f2d5b84ff97f9f240c238",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "T02",
+      "path": "assets/character-concepts/20261022/transmuter_bow_core_t02.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "0666df191ba3d388d41c9331d7159b180a859eee916e6379c1a8ada00c1ade93",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H07",
+      "path": "assets/character-concepts/20261022/hellgunner_compact_stock_h07.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "985250543b5b90eff76a7d1f69cce9b4f71699ea2f0658baa8c4d93ee9da4449",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "S01",
+      "path": "assets/character-concepts/20261022/spearmage_inkpurple_s01.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "0f0367e6b0985648738133ec935e08ff82824ddf18d0166790198c6e35303512",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H08",
+      "path": "assets/character-concepts/20261022/hellgunner_tactical_gear_h08.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "06b83d8656a3994035e4cc372a7e73761b39fae24fd67abd9397ff4ddd976c10",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H09",
+      "path": "assets/character-concepts/20261022/hellgunner_matte_leather_h09.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "650f6786e5f0a5588c1ae6747dd713a2b7d78e671a9624daa551b50e7c45a17a",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H10",
+      "path": "assets/character-concepts/20261022/hellgunner_satin_leather_h10.png",
+      "width": 2048,
+      "height": 1152,
+      "sha256": "51a1b398b816b53414e516ddda7487d1d6bea2b865a4586bd89c7630c5fd6561",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H11",
+      "path": "assets/character-concepts/20261022/hellgunner_cinematic_redraw_h11.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "4451d506620a99def005f4c3cace30647f3151aa0e13391362a2e04b8e1af40b",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H12",
+      "path": "assets/character-concepts/20261022/hellgunner_edgerunner_cel_h12.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "40a0b7f454520694e4f91eb1816f47e1f504ff7b903b7d7e7b60838eb9bc213c",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H13",
+      "path": "assets/character-concepts/20261022/hellgunner_full_redesign_h13.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "97f485bb4b976cf44839c44228c13e70ae02900445794724535e517d6f58a4a5",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H14",
+      "path": "assets/character-concepts/20261022/hellgunner_userrefs_silvertail_h14.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "604f6728fd2a3e9522818d6dced68a8031ec9250111a2f5742a281febcb0a3a9",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H15",
+      "path": "assets/character-concepts/20261022/hellgunner_reinforced_spine_rear_h15.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "4690b62679d96f19bbe10d03ffd6ab2253f4afca9fb2c7c6427882b11e4e614c",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H16",
+      "path": "assets/character-concepts/20261022/hellgunner_bodysuit_front_h16.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "f993677547eba7c9e3927b04130bace71dbd2a28a6fd820ce8db03d66f7d05ae",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H19",
+      "path": "assets/character-concepts/20261022/hellgunner_sheer_leotard_front_h19.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "926cdb5c2e44904cd66fb9a4a4d4080935e2464260937cf7f713b19b680d5ab6",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H20",
+      "path": "assets/character-concepts/20261022/hellgunner_leather_shorts_bodysuit_h20.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "5138cc768ed3da827a2a61be1b4bad19472819447c591c614e28d21b57878ced",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H21",
+      "path": "assets/character-concepts/20261023/hellgunner_modern_cut_bodysuit_h21.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "88096038964fa405b22a0b260f3b32d3626eea856319d05486e043aafade39e5",
+      "reviewCopyPresent": false
+    },
+    {
+      "candidate": "H22",
+      "path": "assets/character-concepts/20261023/hellgunner_blonde_bob_nami_model_h22.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "c12012a65aff3753f8941af7b18940f59956f17970ba417a6026282f2a3bde01",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H23",
+      "path": "assets/character-concepts/20261023/hellgunner_darkfantasy_warrior_h23.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "2db99f10079f79731f95847302f83d3b0e35cc24ac01392f2f42cc94fae1fc94",
+      "reviewCopyPresent": true
+    },
+    {
+      "candidate": "H24",
+      "path": "assets/character-concepts/20261023/hellgunner_worn_warrior_materials_h24.png",
+      "width": 2048,
+      "height": 1536,
+      "sha256": "9f78553e67ba4671b8a478a84444cf50b6f2557d37f70f773407fe34c901158f",
+      "reviewCopyPresent": true
+    }
+  ]
+}

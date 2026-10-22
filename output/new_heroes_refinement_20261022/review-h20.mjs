@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+const root='G:/exoduser/',folder=root+'output/new_heroes_refinement_20261022/';
+const f=folder+'submission-receipt.json',r=JSON.parse(fs.readFileSync(f,'utf8'));
+Object.assign(r.jobs.find(j=>j.candidate==='H20'),{visualVerdict:'Original inspected: separate black leather shorts with waistband/button/fly/pockets/stitched hems and natural hip wrinkles over opaque fitted bodysuit; sheer reduced to narrow collarbone band. Identity, right robot arm, cropped jacket, boots, huge slot gun and carry pose retained. Small conventional belt/button remains. Natural left hand single-hand gun carry, not validated two-hand support.',finalApproval:false,runtimeAdoption:false});
+r.balanceAfterH20Observed=35490;
+fs.writeFileSync(f,JSON.stringify(r,null,2)+'\n');
+const spec=root+'docs/17게임아트팀/HELLGUNNER_CYBERPUNK_DESIGN_20261022.md';let d=fs.readFileSync(spec,'utf8');
+d=d.replace('| H20 | task7519008631404535808. 불투명 바디수트+가죽 반바지, 쇄골 작은 시스루 패널 | Sunburst·4:3·1장·표시200pt 접수·생성 중 |','| H20 | task7519008631404535808. 2048×1536 PNG 회수·원본 검사. 별도 가죽 쇼츠의 허리단/지퍼/주머니/봉제 밑단·골반 주름, 불투명 몸통 바디수트와 쇄골의 좁은 시스루 반영 | **최신 착장 수정 후보 / 사용자 최종 미승인**. 작은 일반 벨트/단추는 남음. 한손 운반 포즈 유지. `assets/character-concepts/20261022/hellgunner_leather_shorts_bodysuit_h20.png` |');
+if(!d.includes('H20 SHA256:'))d=d.replace('\nH19 SHA256:','\nH20 SHA256: `5138cc768ed3da827a2a61be1b4bad19472819447c591c614e28d21b57878ced`. 프로젝트/바탕화면 검토 사본 바이트 일치. 새 후면은 미제출, H15 강화척추 기준 보존.\n\nH19 SHA256:');
+fs.writeFileSync(spec,d);
+const report=root+'docs/17게임아트팀/NEW_HEROES_CONTINUOUS_REFINEMENT_20261022.md';let p=fs.readFileSync(report,'utf8');
+p=p.replace('| H20 | 불투명 바디수트+가죽 반바지, 작은 쇄골 시스루 | 7519008631404535808 | 3참조·Sunburst·4:3·1장·200pt 접수·생성 중 |','| H20 | 불투명 바디수트+가죽 반바지, 작은 쇄골 시스루 | 7519008631404535808 | 2048×1536 PNG 회수·원본 검사. 별도 가죽 쇼츠/불투명 몸통/좁은 쇄골 메시 확인. 최종 미승인 |');
+fs.writeFileSync(report,p);
