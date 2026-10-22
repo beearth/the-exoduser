@@ -55,6 +55,9 @@
 | 날짜 | 버전 | BuildID | 공개 | 패치노트 |
 |---|---|---|---|---|
 | 2026-10-10 | 0.7.0 | 25842101 | 대기 (Set Live 사용자 확인) | v0.7.0.md (final), Steam 게시 대기 |
+| 2026-10-21 | 0.7.6 | 미기록 (G:\exoduser-steam\state\daily_release_20261021.md 확인 필요) | 대기 | v0.7.6.md (draft) — §9 머지 되돌림 후 복구 |
+
+> 0.7.1~0.7.5 행은 이 표에 기록되지 않았다. 각 BuildID는 G:\exoduser-steam\state\daily_release_<날짜>.md에 있으며 클라우드 세션에서는 접근 불가 — PC 세션에서 채울 것. v0.7.4.md는 저장소에 없다.
 
 ## 7. 구현 도구 (2026-10-09 구축)
 
@@ -110,3 +113,14 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 | smoke 포트 | 3333 고정 → 정식판 3350 미대응, 타 세션 dev 서버와 충돌 | steam_smoke.mjs: package.nw/release-config.json 포트 사용, 빈 세이브 `/api/load` 404만 정상 처리 |
 | 생성 VDF 경로 | output\daily의 VDF가 depot VDF 상대경로를 못 찾아 preview 실패 | daily_release.ps1: depot VDF를 scripts 절대경로로 치환 |
 | 실행 로그 | 예약 실행 출력이 남지 않음 | daily_release.ps1: Start-Transcript → G:\exoduser-steam\logs\daily_release_*.log |
+
+## 9. v0.7.6 릴리스 커밋 머지 되돌림 (2026-10-22 발견·복구)
+
+| 항목 | 내용 |
+|---|---|
+| 원 커밋 | `07bdb8d8` release: v0.7.6 daily update (2026-10-21 09:00, daily_release.ps1) — release-version.json/.js·package.json `version`·patch-notes.js·`patch_notes/v0.7.6.md` |
+| 되돌린 커밋 | `d79ee3e6` merge: PARITY_DIFF_LIST_20261022 문서 커밋을 원격 main에 통합 (2026-10-22 04:32). 1부모(`abc3dd44`, 0.7.5) 기준으로 해결하면서 2부모 쪽 `07bdb8d8`의 변경 5파일을 전부 버리고 PARITY 문서만 남김 |
+| 영향 | main이 0.7.5로 되돌아가고 v0.7.6.md 삭제. 방치 시 다음 09:00 실행이 다시 0.7.6으로 올려 이미 업로드된 0.7.6 빌드와 버전 중복 + 다른 내용의 v0.7.6.md 생성 |
+| 복구 | 사용자 승인(2026-10-22) 후 `07bdb8d8`의 release-version.json·release-version.js·patch-notes.js·v0.7.6.md를 그대로 되살리고 package.json은 `version`만 0.7.6으로 치환(이후 추가된 `sfx:forge`·`@elevenlabs/elevenlabs-js` 보존). `tools/release-version.mjs check` OK, `test/releaseVersion.test.js` 8/8 |
+| history | 규칙대로 rewrite 없음 — 이 기록이 provenance note |
+| 재발 방지 (TODO, PC 세션) | daily_release.ps1 bump 전에 "현재 버전 < 마지막 `release:` 커밋의 버전"이면 중단하는 가드 추가. 머지 해결 시 `release-version.*`·`patch_notes/` 충돌은 높은 버전 쪽을 택할 것 |
