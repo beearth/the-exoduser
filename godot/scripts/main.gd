@@ -1320,7 +1320,7 @@ func _pump_native_damage_peak_text() -> void:
 # P2-001a: update 32584~32586(히트스톱 소비 — 원문 32585가 완전 비활성) + 35751 셰이크
 # 감쇠. deferred로 돌려 같은 tick의 전투 쓰기(원본: P 업데이트) 뒤에 1회 적용한다.
 func _decay_native_hit_feel() -> void:
-	if not is_instance_valid(source_state) or not is_instance_valid(world) or get_tree().paused:
+	if not is_instance_valid(source_state) or not is_instance_valid(world) or not is_inside_tree() or get_tree() == null or get_tree().paused:
 		return
 	var context: Dictionary = world.get_native_projectile_fx_context()
 	source_state.apply_native_update_feel_decay(self, float(context.get("dt_sp", 0.0)))
@@ -3293,7 +3293,7 @@ func _return_native_demo_lobby() -> void:
 	var snapshot: Dictionary=native_demo_end_flow.get_snapshot()
 	if snapshot.phase!="leaving": return
 	get_tree().set_meta("native_demo_return_language",snapshot.language)
-	get_tree().call_deferred("change_scene_to_file","res://scenes/demo11_lobby.tscn")
+	get_tree().call_deferred("change_scene_to_file","res://scenes/demo_lobby.tscn")
 
 # DEMO11-40: existing skill sound callsites supply already resolved pitch/gain.
 func request_native_skill_sample(path: String, gain: float, rate: float) -> void:

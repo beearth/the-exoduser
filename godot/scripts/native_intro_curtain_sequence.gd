@@ -193,6 +193,7 @@ func _show_guide_panel() -> void:
 	if not is_instance_valid(guide_panel) and is_instance_valid(curtain_view) and curtain_view.get_parent() != null:
 		var panel: Control = GUIDE_PANEL_SCRIPT.new()
 		if panel.bind(curtain_view.get_parent(), world.get_parent() if is_instance_valid(world) else null):
+			panel.guide_key.connect(_input)
 			panel.advance_requested.connect(advance_native_guide)
 			panel.skip_requested.connect(finish_native_guide)
 			guide_panel = panel
@@ -423,17 +424,18 @@ func _input(event: InputEvent) -> void:
 	# 63377 keyUp(Space)=홀드 취소. 반복(echo)은 무시(63361 e.repeat).
 	if phase != "guide" or not event is InputEventKey:
 		return
+	var code: int = event.physical_keycode if event.physical_keycode != 0 else event.keycode
 	if not event.pressed:
-		if event.keycode == KEY_SPACE: # 63377: keyup은 Space만 가로챔
+		if code == KEY_SPACE: # 63377: keyup은 Space만 가로챔
 			get_viewport().set_input_as_handled()
 			_cancel_guide_hold()
 		return
 	get_viewport().set_input_as_handled() # 63360: keydown은 전부(반복 포함) 가로챔
 	if event.is_echo():
 		return
-	if event.keycode == KEY_SPACE and _space_held_at_ms < 0:
+	if code == KEY_SPACE and _space_held_at_ms < 0:
 		_space_held_at_ms = Time.get_ticks_msec()
-	match event.keycode:
+	match code:
 		KEY_TAB:
 			if is_instance_valid(guide_panel):
 				guide_panel.toggle_focus()

@@ -442,3 +442,18 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 | 방향·시계 | 부분 이식 / RETOUCH | 원본 region_arrow PNG96·거리64px/m·라벨14/12. 원본HUD 회피·목표세부조건 미완료 |
 
 증거: `~/exoduser-wt/_out/PARITY-HUD-01/captures/{1,2,3}_compare_1x.png` 및 `_hud_crop_1x.png`·`_minimap_crop_1x.png`·`_top_crop_1x.png`. 1920×1080 원본과1x크롭, 숫자는명시적표시fixture. 관련회귀17/0. 최신 E2E 결과·오류수·commit SHA는 같은 `_out/DONE.txt`에서확인한다. 테스트PASS를시각PASS로바꾸지않는다.
+
+## Mac 후속 상태 — PARITY-UI-04 (2026-10-22)
+
+기준6c389948, 상세는 `PARITY_UI_04_20261022.md`. PC 원문과 과거 판정은 보존한다.
+
+| 항목 | 후속 상태 | 완료 판정의 제한 |
+|---|---|---|
+| 쓰러짐·HUD | 원본 G58907 표시 이식 / 300tick PC 판정 유지 | 초기 소환진은 기존 intro 수명 내 같은 프레임으로 비교. 전투/부활 수치 수정 없음 |
+| L-04·L-08 | 묘왕 배경 t0 및 우측 기록 목록 / 사망 후 같은 캐릭터 로비 | 영상·영체 애니메이션 HOLD, 세부 CSS/저장 카드 정보·버튼 배선 잔여. 완전 PASS 아님 |
+| intro guide | HUD 입력 선전달·physical key fallback | 원본2초 홀드. 최종 strict E2E 결과는 외부 DONE에 기록 |
+| inventory 잔여 | power reader 숫자 / CP 헤더 / 원본✕ | glyph·서체·필터 픽셀 동일성 잔여 |
+| SkillForge 잔여 | 선택 링·core glow·레벨 해금·버튼색·장착/재료·선택칩·하단 버튼 표시 | batch/recommend PC writer 미제공으로 기능 HOLD. 기존3D·합성잔여 PASS로 바꾸지 않음 |
+| 로비 전환 SCRIPT ERROR | potion/feel deferred null-tree guard | 최종 GUI·E2E 로그 분리. 전체 PC 제품 안정성 완료 아님 |
+
+UI-04 strict E2E1회: 주입0, storage=on, intro_phase=done, 실제 필드 진입/이동 확인, SCRIPT ERROR0. 보스부터 로비까지 전체는 NOT_READY. 스킬105/0; 인벤토리212/2는 잘못 전달한 Node 경로로 oracle transport 실패2건이며 재실행하지 않았다. 상세한 한계는 UI-04 보고와 외부 DONE을 따른다.

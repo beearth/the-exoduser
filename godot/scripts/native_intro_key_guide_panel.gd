@@ -13,6 +13,7 @@ const UI = preload("res://scripts/native_demo_ui_i18n.gd")
 ##   키 이름: BINDS 기본값(6188~6196 — 포트 main._register_inputs도 동일 기본값 명시) + keyName(code,true) 6279~6306.
 ## 이미지: 원본 #introKeys에는 이미지 요소가 없다(텍스트·버튼·그라디언트만) — 가짜 이미지 추가 금지.
 
+signal guide_key(event: InputEvent)
 signal advance_requested
 signal skip_requested
 
@@ -661,3 +662,7 @@ func _notification(what: int) -> void:
 	if what==NOTIFICATION_TRANSLATION_CHANGED and not _nodes.is_empty() and step>=0:
 		language=TranslationServer.get_locale()
 		call_deferred("_layout_step",compose_step(step))
+
+# Web window capture key listener: HUD guide precedes the lesson/game input funnel.
+func _input(event: InputEvent) -> void:
+	if visible and event is InputEventKey:guide_key.emit(event)

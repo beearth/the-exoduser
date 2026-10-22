@@ -40,6 +40,8 @@ var left: Control
 var status: Label
 var resources: Label
 var combat_power: Label
+var cp_value: Label
+var cp_break: Label
 var junk_button: Button
 var counter: Label
 var stock_counter: Label
@@ -140,10 +142,14 @@ func _build() -> void:
  var navs: Array=["설정 [ESC]","인벤토리 [TAB]","대장간 [G]","스킬 [K]","능력치 [J]"]
  for i in 5:
   Surface.button(self,navs[i],Rect2(42+i*367.6,48,365.6,39),func(): _navigate([KEY_ESCAPE,KEY_TAB,KEY_G,KEY_K,KEY_J][i]),i==1)
- combat_power=Surface.text(self,"",Rect2(50,100,600,28),14,Color("dfc69e"),"font",700)
+ combat_power=Surface.text(self,"전투력",Rect2(50,102,36,24),12,Color("886644"),"font")
+ cp_value=Surface.text(self,"",Rect2(92,101,50,26),21,Color("e1c28b"),"font",600)
+ cp_break=Surface.text(self,"",Rect2(148,102,115,24),12,Color("b8b0a1"),"font")
  counter=Surface.text(self,"",Rect2(788,204,340,28),14);counter.z_index=2
  resources=Surface.text(self,"",Rect2(1024,100,450,28),12)
- Surface.button(self,"✕",Rect2(1842,100,28,28),close_panel,false,19)
+ var close:=Surface.button(self,"✕",Rect2(1842,100,28,28),close_panel,false,19)
+ close.add_theme_font_override("font",Fonts.stack("font",900));close.add_theme_color_override("font_color",Color("aa8866"))
+ var close_box:=style(Color("271310"),Color("865e43"));close.add_theme_stylebox_override("normal",close_box)
  for i in 4:
   var tab: String=["equipment","ossuary","crystals","storage"][i]
   Surface.button(self,["장비","유골함","유물","보관함"][i],Rect2(42+i*459.75,136,456.75,36),func(): change_page(tab),i==0,13)
@@ -152,7 +158,9 @@ func _build() -> void:
  Surface.frame(bag_box,Rect2(0,0,623.5625,800),6)
  Surface.button(bag_box,"↕ 정렬",Rect2(485,18,70,40),func(): perform("sort"))
  var maximum:=Surface.button(bag_box,"최대",Rect2(557,18,48,40),func(): pass);maximum.disabled=true
- Surface.button(bag_box,"〉 아이템 필터",Rect2(18,67,587.56,32),func(): _filter_open=not _filter_open;filter_bar.visible=_filter_open)
+ var filter_toggle:=Surface.button(bag_box,"〉 아이템 필터",Rect2(18,67,587.56,32),func(): _filter_open=not _filter_open;filter_bar.visible=_filter_open)
+ filter_toggle.alignment=HORIZONTAL_ALIGNMENT_LEFT;filter_toggle.add_theme_font_override("font",Fonts.stack("font",400));filter_toggle.add_theme_color_override("font_color",Color("c3b59b"));filter_toggle.add_theme_font_size_override("font_size",11)
+ var filter_style:=style(Color("2a211b88"),Color("514638"));filter_style.content_margin_left=10;filter_toggle.add_theme_stylebox_override("normal",filter_style)
  var scroll:=ScrollContainer.new();scroll.position=Vector2(18,111);scroll.size=Vector2(587.56,671);scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;bag_box.add_child(scroll)
  bag_grid=Grid.new();bag_grid.panel=self;bag_grid.kind="bag";bag_grid.cell=56;scroll.add_child(bag_grid)
  filter_bar=Surface.panel(bag_box,Rect2(18,100,587.56,60),Color("151316"),GOLD);filter_bar.z_index=10;filter_bar.hide()
@@ -264,7 +272,10 @@ func _item_button(item: Dictionary,source: String,rect: Rect2,parent: Node) -> B
  b.tooltip_text=""; parent.add_child(b)
  var art:=TextureRect.new(); art.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; art.texture=icon_for(item); art.position=Vector2(17,12) if source=="eq" else Vector2(5,5); art.size=Vector2(62,62) if source=="eq" else rect.size-Vector2(10,20); art.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; art.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED; art.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR; art.mouse_filter=Control.MOUSE_FILTER_IGNORE; b.add_child(art)
  if source!="eq":
-  label(name_for(item),Rect2(4,rect.size.y-18,rect.size.x-8,16),b,10,color).clip_text=true
+  var shape: Array=Layout.source_item_size(item)
+  if shape[0]*shape[1]>=4:
+   var name_label:=label(name_for(item),Rect2(4,rect.size.y-14,rect.size.x-8,13),b,10,color);name_label.clip_text=true;name_label.modulate.a=.53
+  var power_label:=label(str(Query.power(item)),Rect2(2,rect.size.y-14,rect.size.x-4,13),b,9,Color("aa9977"));power_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
  if int(item.get("enh",0))>0: label("+"+str(int(item.enh)),Rect2(rect.size.x-44,3,42,20),b,15,color)
  b.pressed.connect(func(): selected=item; selected_source=source; perform("select",item,{"source":source}); refresh_view())
  b.mouse_entered.connect(func(): show_detail(item,source))
@@ -289,7 +300,8 @@ func refresh_view() -> void:
   filter_bar.visible=_filter_open
  var m: Dictionary=model()
  if not m.ready: close_panel(); return
- combat_power.text="전투력  %d  ⚔ %d  ◇ %d  ✦ %d" % [_cp(m).total,_cp(m).atk,_cp(m).def,_cp(m).extra]
+ cp_value.text=str(_cp(m).total)
+ cp_break.text="⚔%d ⛨%d ✧%d" % [_cp(m).atk,_cp(m).def,_cp(m).extra]
  junk_button.text=Surface.I18N.text("전체 쓰레기 지정 ({p0}개)").replace("{p0}",str(m.inventory.bag.filter(func(it):return not it.get("junk",false) and not it.get("fav",false)).size()))
  resources.text=t("malice")+": "+str(int(_state.get_ref().read_current_g().get("mats",0)))
  counter.text=t("bag")+" (%d/%d)" % [m.inventory.bag.size(),m.capacity]
