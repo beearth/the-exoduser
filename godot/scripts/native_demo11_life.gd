@@ -17,6 +17,7 @@ var _lobby: Button
 var _save: Dictionary={}
 var _fallen_layer: CanvasLayer
 var _fallen: Control
+var _fallen_second := -1
 var _fallen_count: Label
 var _fallen_power: Label
 var _fallen_fill: ColorRect
@@ -93,7 +94,7 @@ func _consume_phase(s: Dictionary) -> void:
   p._fallenRevChance=roll.chance;p._fallenRevCdFrames=roll.cd_frames;p._fallenCanRevive=roll.can_revive;p._fallenRevRoll=roll.roll
   var fallen: Dictionary=_request("fallen_enter")
   if fallen.get("status")=="APPLIED":
-   remaining=300;_resolving=false
+   remaining=300;_fallen_second=-1;_resolving=false
    var g: Dictionary=main.source_state.read_current_g()
    g.slowMo=maxf(float(g.get("slowMo",0)),30);g.shake=20
    _view.show();_screen.hide();_fallen.show();_update_count()
@@ -146,9 +147,12 @@ func _physics_process(_delta: float) -> void:
   _request("revive_resolve" if roll.can_revive and roll.roll<roll.chance else "final_death",{"roll_receipt":roll})
 func _update_count() -> void:
  var sec:=int(ceil(remaining/60))
- _fallen_count.text=str(sec)+"s"
- _fallen_count.add_theme_color_override("font_color",Color("ff3333" if sec<=1 else "ff7744" if sec<=2 else "ffcc44"))
- _fallen_power.text=Surface.I18N.text("부활력 ")+str(roll.get("chance",0))+"%" if roll.get("can_revive",false) else Surface.I18N.text("부활 불가")
+ # Presentation strings/theme updates are events, not per-source-tick allocations.
+ if sec!=_fallen_second:
+  _fallen_second=sec
+  _fallen_count.text=str(sec)+"s"
+  _fallen_count.add_theme_color_override("font_color",Color("ff3333" if sec<=1 else "ff7744" if sec<=2 else "ffcc44"))
+  _fallen_power.text=Surface.I18N.text("부활력 ")+str(roll.get("chance",0))+"%" if roll.get("can_revive",false) else Surface.I18N.text("부활 불가")
  _fallen_fill.size.x=300*remaining/300.0
  _fallen_material.set_shader_parameter("progress",remaining/300.0)
 func _show_dead() -> void:

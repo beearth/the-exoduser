@@ -56556,3 +56556,5 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - 기준6c389948, 웹 G58907 쓰러짐 표시·HUD 유지, 원본 로비 첫 프레임/기록 목록 및 사망 후 같은 로비, guide 입력 선전달, 인벤토리 power/CP/X/filter·스킬 표시 잔여를 반영했다.
 - potion/feel deferred callback이 로비 전환 뒤 detached Main의 null SceneTree.paused를 읽지 않도록 보호했다. PC 부활 판정·코어·보스·아레나·맵은 변경하지 않았다.
 - 상세 원본 행·제한·검수 결과: `engine/PARITY_UI_04_20261022.md`, 외부 `_out/PARITY-UI-04/DONE.txt`. 영상은 원본 t0 정지 HOLD, batch/recommend writer 기능 HOLD, visual RETOUCH를 유지한다. 번역목록3507–3513·lang26 EN fallback 및 에셋 해시 동기화.
+
+- PARITY-UI-04 후속 틱 감사: fallen 표시의 초/부활력 문자열과 색상 테마를 초 변경 이벤트로 캐시했다. 원본300tick 판정·52px 카운트 값 불변. 정적 검토만 추가하고 관련 suite/E2E는 사용자 지정1회로 유지한다.
