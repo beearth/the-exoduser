@@ -463,3 +463,8 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 ## PARITY-MAP-03 후속 — 2026-10-22
 
 기준 BOSS-01 760b7ea8, [원인·수정·계측](PARITY_MAP_03_20261022.md). 소환굴14/자연 적 공급은 기준본에서 이미 복구돼 확인만 했다. 시체나무의 native 전용 CSS tone 제거, 실제1336²(약1.3배) 표기 정정, 원본 fallback 미로드·가시+1링 고정25slot/75texture·사전압축 BC7(Windows)/S3TC(Mac) 적용. 맵 자원 보수적 상한0.947GB; 전체 Mac texture4.081→2.997GB(실제1x 캡처), Windows 실측 미확인. BFS는 원본8방향 Worker 동치로19.4→6.2ms. suite180629/0. 7장1x 비교는 구조/소환굴/톤 개선 확인, 전체 VISUAL RETOUCH. GUI1회는 사망 포함으로 정상 필드 성능 판정 불가, max51.776ms 귀속 미확인. 실제 W 웹903ms145.356px/native885ms0.577px는 native55/55pStun·키정상으로 보행 비교 부적합; PC 상태 owner에 기록만. HUD/UI/보스 M10 변경0. 최종 SHA/원격/정리는 `_out/PARITY-MAP-03/DONE.txt`.
+
+
+## PARITY-BOSS-02 후속 — 2026-10-22
+
+[원본행·수치·실패 근거·잔여 표](PARITY_BOSS_02_20261022.md). 기준MAP-03 f6272399. BOSS-01 참조24장(full20/crop4)을 quality88 JPG로 boss_mac/에 보존(push2개). 아레나 PP 상수와 실제 _ATMDBG gate0을 구분하여 강제 grade/lift/vig 제거, source r520/560 보스광원 추가. 강타/회전/충격 source 원형예고·_druidOrbs24frame·poison30slot trail·teleDropY 표시 연결. PC 보스코어/수치/mkEn 변경0. HS-M4 실제 시작id3/32와 지역23/60/53/32·14굴 확인, 공급수정0. 관련suite1회276/0. E2E는 기동parse 실패를 별도 보존한 뒤 실제 단계1회12PASS까지, Retry Button 뒤 headless null-image 오류로 guard 종료. **전체 동일성 RETOUCH / E2E FAIL**, bossroom·clear 인수 아님. 이전M5–M13 잔여를 위 보고서 표에 전부 유지.

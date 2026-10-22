@@ -51,6 +51,8 @@ var _clock_ms:=0.0
 var _fog_time:=0.0
 var _iris_color: Sprite2D
 var _env: ColorRect
+var _boss_light_source: Dictionary={}
+var _boss_color: Sprite2D
 var _configured := false
 var _stage_draws := 0
 
@@ -66,6 +68,8 @@ uniform float light2_r = 250.0;
 uniform float light2_a = 0.0;
 uniform vec2 screen_px = vec2(1920.0, 1080.0);
 uniform vec4 extra_lights[12];
+uniform vec4 boss_light=vec4(0.0);
+uniform vec4 boss_top=vec4(0.0);
 // _initLightStamps(4562) 방사 스탬프: [0,1][.25,.92][.5,.50][.75,.15][1,0] 선형 보간
 float stamp(float t) {
 	if (t >= 1.0) { return 0.0; }
@@ -81,6 +85,8 @@ void fragment() {
 	// destination-out 누적: 어둠 알파 *= Π(1 - 광원 알파)
 	float a=ambient.a*(1.0-hole)*(1.0-hole2);
  for(int i=0;i<12;i++){vec4 l=extra_lights[i];if(l.z>0.0)a*=1.0-clamp(l.w*stamp(distance(px,l.xy)/l.z),0.0,1.0);}
+ if(boss_light.z>0.0)a*=1.0-clamp(boss_light.w*stamp(distance(px,boss_light.xy)/boss_light.z),0.0,1.0);
+ if(boss_top.z>0.0)a*=1.0-clamp(boss_top.w*stamp(distance(px,boss_top.xy)/boss_top.z),0.0,1.0);
  COLOR=vec4(ambient.rgb,a);
 }
 "
@@ -200,6 +206,9 @@ func configure(world: Node, player: Node2D) -> bool:
 	_iris_color.texture=load("res://assets/map/web_parity/detail02/color0.png")
 	var iris_add:=CanvasItemMaterial.new();iris_add.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD;_iris_color.material=iris_add
 	_iris_color.modulate.a=0;_iris_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_iris_color)
+	_boss_color=Sprite2D.new();_boss_color.name="NativeBossColor"
+	_boss_color.texture=preload("res://assets/map/web_parity/detail02/color0.png")
+	_boss_color.material=iris_add;_boss_color.modulate.a=0;_boss_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_boss_color)
 	_fog2d = _shader_rect("NativeFog2D", FOG2D_SHADER)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("bot_col", FOG_BOT)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("top_col", FOG_TOP)
@@ -272,6 +281,16 @@ func _process(_delta: float) -> void:
 		mat.set_shader_parameter("light_r", PLAYER_LIGHT_R)
 		mat.set_shader_parameter("light_a", PLAYER_LIGHT_A + sin(frame * 0.07) * 0.03)
 		mat.set_shader_parameter("screen_px", viewport_size)
+		var boss_light:=Vector4.ZERO;var boss_top:=Vector4.ZERO
+		if not _boss_light_source.is_empty():
+			var e: Dictionary=_boss_light_source
+			var at:=viewport_size*.5+Vector2(e.get("x",0),e.get("y",0))-center
+			var alpha: float=.62+sin(frame*.05)*.08
+			boss_light=Vector4(at.x,at.y,520,alpha)
+			boss_top=Vector4(at.x,at.y-float(e.get("r",44))*14.1*.62,560,.58)
+			_boss_color.position=at;_boss_color.scale=Vector2.ONE*1040/_boss_color.texture.get_width();_boss_color.modulate.a=alpha*.85*.62
+		else:_boss_color.modulate.a=0
+		mat.set_shader_parameter("boss_light",boss_light);mat.set_shader_parameter("boss_top",boss_top)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("clock_ms",_clock_ms)
 	(_fog_gl.material as ShaderMaterial).set_shader_parameter("fog_time",_fog_time)
 	(_vignette.material as ShaderMaterial).set_shader_parameter("screen_px", viewport_size)
@@ -323,3 +342,7 @@ func set_parity_visual_clock(now_ms: float, fog_frames: int, light_frame: int=-1
 	_clock_ms=now_ms;_fog_time=float(fog_frames)*.016
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("clock_ms",_clock_ms)
 	(_fog_gl.material as ShaderMaterial).set_shader_parameter("fog_time",_fog_time)
+
+func observe_arena_boss_light(e: Dictionary) -> void:
+	# game.html4659–4666; called by arena view, never writes the authoritative boss.
+	_boss_light_source=e

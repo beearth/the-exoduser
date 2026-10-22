@@ -46,7 +46,7 @@ func render_at(now: float) -> void:
  if sheet=="base8":w=h*region.size.x/region.size.y
  elif sheet in WIDE_SHEETS:w=h*region.size.x/region.size.y*1.12
  body.texture=tex;body.region_rect=region;body.scale=Vector2(w,h)/region.size;body.offset=Vector2(-region.size.x/2,-region.size.y*.86)
- body.position.y=-6+(sin(now*.003)*2 if sheet=="base8" else 0)
+ body.position.y=float(e.get("_teleDropY",0))-6+(sin(now*.003)*2 if sheet=="base8" else 0)
  var alpha: float=(.2+sin(now/40)*.5) if e.get("reviveIframes",0)>0 else (.6 if e.get("stunned",0)>0 else 1.0)
  body.modulate.a=maxf(0,alpha)
  _sync_light(_light1,tex,region,sheet!="base8");_sync_light(_light2,tex,region,sheet!="base8")

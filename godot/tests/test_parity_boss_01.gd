@@ -1,5 +1,5 @@
 extends SceneTree
-const USERDIR="EXODUSER-demo11-parity-boss01-Isolated-20261022"
+const USERDIR="EXODUSER-demo11-parity-boss02-Isolated-20261022"
 var checks:=0
 var failures:=0
 class Feed extends Node2D:
@@ -23,6 +23,12 @@ func run() -> void:
  check(provider.can_move(provider.ARENA_OFFSET+Vector2(2000,1700),44,"arena"),"square_corner_walkable")
  check(not provider.can_move(provider.ARENA_OFFSET+Vector2(2500,0),44,"arena"),"square_wall_blocks")
  check(provider.arena.sweep_fraction(Vector2.ZERO,Vector2(3000,0),44)<1,"wall_swept_collision")
+ var totals: Array=[0,0,0,0]
+ var holes: Array=provider.anchors("hole")
+ for h in holes:totals[h.region_id]+=provider.Holes.spawn_hole_count(h.size,0)
+ check(holes.size()==14,"HS_M4_holes14")
+ check(totals==[23,60,53,32],"HS_M4_region_totals")
+ check(provider.region_at(Vector2(4020,7420))==3,"HS_M4_start_southeast32")
  var feed:=Feed.new();root.add_child(feed)
  var view=preload("res://scripts/boss11_scene_actor.gd").new();root.add_child(view);view.configure(feed)
  for state in ["bossSlamWind","bossSpinWind","bossShockWind","bossGrabWind","bossChargeWind","bossCharge","bossDruidDive","bossTelePrep","bossRec","idle"]:

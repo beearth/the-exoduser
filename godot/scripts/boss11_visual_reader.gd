@@ -21,15 +21,16 @@ func configure(owner_main: Node) -> void:
  marks.bind_player(main.player)
 func _process(delta: float) -> void:
  if not is_visible_in_tree() or not is_instance_valid(actor) or not is_instance_valid(main):
-  marks.begin();marks.finish();ground.refresh(EMPTY,false);return
+  marks.begin();marks.finish();ground.observe_enemy(EMPTY);ground.refresh(EMPTY,false);return
  var enemy: Dictionary=actor.get("_enemy")
  if enemy.is_empty():
-  _flash_left=0;marks.begin();marks.finish();ground.refresh(EMPTY,false);return
+  _flash_left=0;marks.begin();marks.finish();ground.observe_enemy(EMPTY);ground.refresh(EMPTY,false);return
  if not enemy.get("alive",false):
-  _flash_left=0;marks.begin();marks.finish()
+  _flash_left=0;marks.begin();marks.finish();ground.observe_enemy(EMPTY)
   # Windup dies with its boss. Source G hazard queues retain their own maxT;
   # never make an authoritative damaging pool invisible before it expires.
   ground.refresh(main.source_state.read_current_g(),true);return
+ ground.observe_enemy(enemy)
  var state: String=enemy.get("s","")
  # Snapshot 10905–10976: the green vine silhouette is the source attack/transform
  # frame. The former orange pooled UI warning is not source artwork.

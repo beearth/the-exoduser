@@ -4,6 +4,8 @@ var _main: Node
 var _chunks: Array[Sprite2D]=[]
 var _portal: Sprite2D
 var _grade_layer: CanvasLayer
+var _screen: Node
+const EMPTY: Dictionary={}
 func _ready() -> void:
  var data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/boss_parity/arena.json"))
  var step: int=data.chunk*40
@@ -13,11 +15,15 @@ func _ready() -> void:
  _portal=Sprite2D.new();_portal.texture=preload("res://assets/map/web_parity/portal_blue.png");_portal.position=Vector2(0,-2100);_portal.z_index=-2599;_portal.scale=Vector2.ONE*.6;add_child(_portal)
 func configure(main: Node) -> void:
  _main=main
+ _screen=main.get_node("NativeScreenLighting")
  _grade_layer=CanvasLayer.new();_grade_layer.layer=4;add_child(_grade_layer)
  var rect:=ColorRect.new();rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);rect.mouse_filter=Control.MOUSE_FILTER_IGNORE
- var mat:=ShaderMaterial.new();mat.shader=preload("res://scripts/maps/map11/web_grade.gdshader");mat.set_shader_parameter("grade_enabled",1.0);mat.set_shader_parameter("lift_enabled",1.0);mat.set_shader_parameter("vignette_enabled",1.0)
+ var mat:=ShaderMaterial.new();mat.shader=preload("res://scripts/maps/map11/web_grade.gdshader");mat.set_shader_parameter("grade_enabled",0.0);mat.set_shader_parameter("lift_enabled",0.0);mat.set_shader_parameter("vignette_enabled",0.0) # Source live _ATMDBG grade/lift/vig are all 0; constants do not enable gates.
  rect.material=mat;_grade_layer.add_child(rect)
 func _process(_delta: float) -> void:
+ if is_instance_valid(_screen):
+  var e: Dictionary=_main.native_demo_boss_actor.get("_enemy")
+  _screen.observe_arena_boss_light(e if is_visible_in_tree() and e.get("alive",false) else EMPTY)
  if is_instance_valid(_grade_layer):_grade_layer.visible=is_visible_in_tree()
  if not is_visible_in_tree() or not is_instance_valid(_main):return
  var g: Dictionary=_main.source_state.read_current_g()

@@ -6,10 +6,13 @@ var registry_id := 0
 var raw: Dictionary = {}
 var motion_calls := 0
 var draw_calls := 0
+var _trail_view: Node2D
 func configure_source(id: int, source: Dictionary, profile: Dictionary, target: Node2D, owner_world: Node2D) -> void:
 	registry_id = id
 	raw = source
 	configure(owner_world.to_local(Vector2(raw.x,raw.y)),Vector2(raw.vx,raw.vy),profile,target,owner_world)
+	_trail_view=preload("res://scripts/boss11_projectile_trail.gd").new()
+	add_child(_trail_view);_trail_view.configure(raw,global_position)
 	native_homing_enabled = (raw.get("homing",false) or raw.get("blackBean",false)) and not raw.get("_druidStraight",false)
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -30,6 +33,7 @@ func advance_source_motion(sp: float) -> bool:
 	raw.vy = heading.y*speed/60.0
 	raw.life = life_ticks
 	raw.dist = distance_travelled
+	if is_instance_valid(_trail_view):_trail_view.sample(global_position)
 	return alive
 func _end(reason: String) -> void:
 	if _ended: return

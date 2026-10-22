@@ -439,7 +439,7 @@ func run() -> void:
  while life_api and Time.get_ticks_msec()<deadline:
   life=main.native_demo_life.snapshot()
   var phase: String=str(life.get("phase",{}).get("phase",""))
-  if prior_fallen or phase in ["hp0","fallen","dead"]:break
+  if phase in ["hp0","fallen","dead"] or (prior_fallen and main.player.hp>0):break
   var placement: Dictionary=place_in_natural_contact()
   if placement.get("placed",false):contact_frames+=1
   await physics_frame
@@ -451,7 +451,7 @@ func run() -> void:
  while life_api and Time.get_ticks_msec()<resolve_deadline:
   life=main.native_demo_life.snapshot()
   var phase: String=str(life.get("phase",{}).get("phase",""))
-  if phase=="dead" or (phase=="alive" and not life.receipts.is_empty()):break
+  if phase=="dead" or (phase=="alive" and main.player.hp>0):break
   if phase not in ["hp0","fallen"]:break
   if countdown.is_empty() or float(countdown[-1].remaining)-float(life.remaining)>=30:
    countdown.append({"phase":phase,"remaining":life.remaining,"ms":Time.get_ticks_msec()-started})
@@ -462,11 +462,30 @@ func run() -> void:
  var observed: bool=entered and (prior_fallen or min_hp<=0)
  await done("PASS" if observed else "NOT_READY","" if observed else ("natural HP0 not observed within 120s of natural AI contact" if min_hp>0 else "natural HP0 observed; fallen/countdown/resolve incomplete"),{"interface_present":life_api,"consumer_snapshot":life,"lethal_damage_forced":false,"transition_injected":false,"transferred_prior_fallen_receipt":prior_fallen,"observation_scope":"actual natural fallen receipt; resolution reported separately","hp_before":hp_before,"min_hp":min_hp,"contact_frames":contact_frames,"max_observation_ms":120000,"auto_potion_unchanged":true,"damage_requests_from_harness":0,"natural_damage_trace":natural_trace,"countdown_trace":countdown,"fallen_applied":entered,"resolve_applied":resolved,"elapsed_ms":Time.get_ticks_msec()-started})
  begin("bossroom_gate")
+ var retry_trace: Dictionary={"needed":main.player.hp<=0,"input":"actual Retry Button.pressed","HP_written":false}
+ if main.player.hp<=0 and main.native_demo_life.snapshot().get("retry_stage_ready",false):
+  var old_main: Node=main
+  var life_view: Node=main.native_demo_life
+  life_view._retry.pressed.emit()
+  retry_trace["receipt"]=life_view.snapshot().last.duplicate(true)
+  var retry_deadline:=Time.get_ticks_msec()+20000
+  while Time.get_ticks_msec()<retry_deadline:
+   await process_frame
+   if is_instance_valid(current_scene) and current_scene!=old_main and current_scene.get("player")!=null:
+    main=current_scene
+    main.native_demo_boss_defeated.connect(func(stage_index: int):
+     if stage_index==0:boss_signal_count+=1)
+    break
+  retry_trace["scene_reloaded"]=is_instance_valid(main) and main!=old_main
+  if is_instance_valid(main):
+   g=main.source_state.read_current_g()
+   retry_trace["hp_after"]=main.player.hp
  var encounter: Node=main.get("native_demo_encounter");var encounter_snapshot: Dictionary=encounter.snapshot() if is_instance_valid(encounter) else {}
  var gate_receipt: Dictionary={}
  var provider: Node=main.read_native_map11_provider()
  var route: Dictionary=await play_bossroom_route(provider,180000)
  if is_instance_valid(encounter):encounter_snapshot=encounter.snapshot()
+ route["retry"]=retry_trace
  gate_receipt=route
  var gate_ok: bool=encounter_snapshot.get("provider_bound",false) and encounter_snapshot.get("phase") in ["arena","exit","clear"]
  await done("PASS" if gate_ok else "NOT_READY","" if gate_ok else "actual MAP11 gate/arena prerequisites not satisfied",{"encounter":encounter_snapshot,"gate_flags_written":false,"HP_damage_or_state_injected":false,"entry_receipt":gate_receipt,"fieldboss":main.native_demo_anglers.snapshot(),"regions":main.get_node("NativeRegions").snapshot(),"boss":main.read_native_demo_boss()})
