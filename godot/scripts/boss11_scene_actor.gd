@@ -16,7 +16,9 @@ var _shield_fan:=PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
 var _visual_now:=0.0
 var _name_top: float=-100.0
 var _level_font: SystemFont
-var _under_quad:=PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
+var _level_value: int=-1
+var _level_text: String=""
+var _level_width:=0.0
 func configure(reader: Node,_shared: ShaderMaterial=null) -> void:
  actor=reader
  _level_font=SystemFont.new();_level_font.font_names=PackedStringArray(["monospace"]);_level_font.font_weight=700
@@ -38,6 +40,9 @@ func render_at(now: float) -> void:
  _visual_now=now;queue_redraw()
  if not is_instance_valid(actor):hide();return
  var e: Dictionary=actor.get("_enemy")
+ var level_: int=int(e.get("lv",0))
+ if level_!=_level_value:
+  _level_value=level_;_level_text="Lv."+str(level_) if level_>0 else "";_level_width=_level_font.get_string_size(_level_text,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x
  _revive.visual_clock_ms=now;_revive.observe(e)
  if e.is_empty():hide();return
  if not e.get("alive",false):
@@ -138,6 +143,5 @@ func _draw_source_body_decor(e: Dictionary) -> void:
  var stunned: float=e.get("stunned",0)
  if stunned>0:
   draw_rect(Rect2(-bw/2,by,bw,3),Color(0,0,0,.5*sa));draw_rect(Rect2(-bw/2,by,bw*minf(1,stunned/float(e.get("_maxStunned",180))),3),Color(1,136/255.0,0,sa))
- if int(e.get("lv",0))>0:
-  var text: String="Lv."+str(int(e.lv));var w: float=_level_font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x
-  draw_string(_level_font,Vector2(-w/2,_name_top-14),text,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color(1,136/255.0,68/255.0,sa))
+ if not _level_text.is_empty():
+  draw_string(_level_font,Vector2(-_level_width/2,_name_top-14),_level_text,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color(1,136/255.0,68/255.0,sa))

@@ -56804,3 +56804,7 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - generic 원본 보스 경고/궤적 표시 누락 및 dash/no-op/UV ring 계약 보완,고정circle48.
 - 잠행7줄9타원·eyes·Lv·상단bar,fan 플레이어 읽기 전달. PC 코어 변경0.
 - docs/engine/SWEEP_A_20261022.md §11. frozen-patterns-extra35 ERROR0,입력 E2E 별도.
+
+- boss Lv 텍스트·폭을 level 변경 시 캐시하여 draw 문자열 할당 제거.
+
+- SWEEP-A 신규 표시 helper5개 .gd.uid 원격 보존.
