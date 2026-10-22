@@ -1,3 +1,10 @@
+## 2026-10-22 PARITY-UI-02 — 인벤토리·사망/재시작 원본 부분 이식
+
+- 원본fb67658b branch 계속. 웹 snapshot4d911cdd, main 차이표d79ee3e67의 PC 원문 보존. 맵·카메라·PC 코어/테스트·main.tscn 변경 없음.
+- 인벤토리 기사 컷아웃·EQ_POS16칸(ossuary 별도)·전면 프레임/가방/필터·상세2열 비교, 사망 전체 원화·펫·세 버튼·리플레이·재시작 원본 결계/장면 fade 부분 이식. 모든 신규 bitmap은 원본과 byte 동일이며 manifest에 원본 경로/SHA256 기록.
+- 실제 관련 테스트1회1277/0. E2E1회는 상세 보고서 후속 결과 참조. 1920×1080 및1x 비교 직접 검수. 별도 유골함 제단·도감·비교 delta/소켓·피해로그/replay bars·폰트/미세 외형 미완료이므로 **PARTIAL / VISUAL FAIL**.
+- [원본 행·적용 위치·수치·검수·남은 차이](engine/PARITY_UI_02_20261022.md). main push/force/reset/rebase/hook bypass 없음.
+
 ## 2026-10-22 INTEG-9 전제 갱신 — PC 소유 테스트(묶음 B·M29·P1-002 E/F/G)
 
 - base Mac INTEG-9 1c3f67a1, branch claude/pc-tests-integ9-20261022. 제품 코드·Mac 소유 파일 수정 0, 판정 약화·삭제 0.
@@ -56493,3 +56500,24 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 웹 1-1 구조/충돌/36손배치·14소환굴·게이트·카메라1.0을 보존하고, 원본61군락 얼굴·소품국소변형/시체나무매듭5/야영지손3·늪/독구덩이/pool 버블, 실제half960×540·정적12광원/iris색층·원본clock/DOM안개 합성을 연결했다. 원본64청크의 이웃64px 문맥을 x4plus로 처리해 색/알파 보존 core1334/1000world·공통1px bleed로 사용한다. 원본64장은 보존/폴백이다. UI/인트로/PC/저장 변경0.
 
 회귀19,978/0, alpha64/64·bleed224/224, 새 웹40000타일/36앵커집합 불일치0. 지정4지점 1x 구조·VISUAL PASS. E2E주입0 단회는HP0/처치0으로NOT_READY; GUI단회는60초포커스실패로성능/VRAM미측정. 원본행·수치·147PNG 출처·비교경로·남은차이·MAP PRODUCTION REPORT는 `docs/engine/PARITY_MAP_02_20261022.md`, No.별현황은 PARITY_DIFF_LIST 최신절을 따른다. main/PC/Steam 반영 없음.
+## 2026-10-22 PARITY-UI-01 — 접근/일반 필드 재시작 부분 수정, 동일성 FAIL
+
+| 범위 | 변경·검수 |
+|---|---|
+| 기준·공유 | 9133e27823549ad11fcf0380fe9d38060e15099f; SRCMAP 복사만 첫 커밋 5e2ec9f8b8344c8315e28a16af302f8c119c7562를 먼저 원격 보존 |
+| L-03/U-01 | 제품 기본 user namespace admission, 기본 영속화 활성, inventory Control 조건 분기 해제. 실제 제품 저장 폴더 IO 0 |
+| D-03 | 기존 PC respawn API + 일반 필드 저장 후 scene reload. 실제 dead→APPLIED→새 scene alive. 보스방은 EXP 차감 전 NOT_READY |
+| 보존 | 맵·카메라·run.cmd·main.tscn·PC core/계약/PC 테스트·번역 bytes 변경0. 새 화면 문구0 |
+| 검수 | 최종 관련 테스트7/0(앞선 제거 K 초안 탐색8/0과 구분). 종료 시 기존 auto-crossbow Nil 1건. E2E1회 PASS13/NOT_READY5/FAIL0, continuous=false. 전체 무오류/완주 주장0 |
+| 시각 | 1920×1080 원본5쌍, 왼쪽웹/오른쪽Godot 1x 격자+640px 1x크롭 직접 검수 FAIL. 인벤토리 외형/비교/툴팁, K 전체, 사망 화면·재시작 소환진 남음 |
+| 기록 | engine/PARITY_UI_01_20261022.md, PC 원문 보존 PARITY_DIFF_LIST 상태표. 외부 ~/exoduser-wt/_out/PARITY-UI-01/DONE.txt·captures/ |
+
+
+## 2026-10-22 PARITY-UI-03 — E2E 관측 복구·원본 UI 부분 이식
+
+- 부모 c723ba81 / codex/parity-ui-01-20261022. 맵·카메라·PC 전투/계약/테스트·main.tscn·run.cmd 미변경.
+- E2E의45초 정지 석궁 관측을3초 후 실제 근접 입력으로 연결하고, 실제 쿨다운 대기 중 접촉을 벗어나는 하니스 이동을 보완. 판정식·HP/피해/킬/RNG writer 변경 없음.1회 PASS13/NOT_READY5/FAIL0; 후속 UI 전 측정임을 분리 기록.
+- 기존 State UI 경계의 Forge 실제 선택/저장 writer, K·13슬롯·원본 CSS2D 제단/트레이/로드맵/설명·기존 관리 caller, 원본 이미지61개 byte 복사와 해시 manifest. 원본3D의 r186/build 모듈 부재로 웹 CSS 폴백만 비교,3D 인수 아님.
+- 유골함 제단·선대 portrait·4부위와 r/t/itemLv0 회수/기존 저장,39 base field 비교 펼침. 사망 대사 원본 폭/폰트·페이드, game-only480×270 replay/자원 바·wall-clock 타이머·게임패드 skip.
+- 테스트 각1회: inventory1281/0, skill105/0.1920×1080+1x 비교는 _out/PARITY-UI-03에 보존. 전체 visual PASS 아님.
+- 문자열 원본60쌍·누락 No.3496–3506·lang26개 원본 EN 폴백 전파. 전체목록 기존 prefix/CRLF 보존. 상세/잔여: docs/engine/PARITY_UI_03_20261022.md 및 PARITY_DIFF_LIST 후속 상태.

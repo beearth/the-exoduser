@@ -364,3 +364,42 @@ No.는 위 **원문 1-3의 M-01…M-07 뜻**으로 대응한다. MAP-01 2차 표
 | M-07 | 손배치36/가림 유지. 시체나무 root8pose/매듭5·손3관절·늪/독구덩이/pool bubbles·변형 추가 | 브라우저 실제 drawImage 행렬/원점/크기 대조 PASS; 지정4장면 VISUAL PASS |
 
 최종 증거: `~/exoduser-wt/_out/PARITY-MAP-02/captures/{1..4}_compare_1x.png`·`_crop_1x.png`·`_structure_1x.png`. 회귀19,978/0, alpha64/64·bleed224/224. E2E1회는주입0/HP0/처치0으로NOT_READY. GUI1회는60초포커스실패로성능/VRAM미측정. UI/인트로/PC범위는닫지않음.
+## 4. PARITY-UI-01 Mac 상태 열 (2026-10-22)
+
+위 §0–§3은 `d79ee3e67`의 PC 원문을 보존했다. 아래는 별도 Mac 인수 상태이며 PC 원문의 과거 관측을 덮어쓰지 않는다.
+
+| No. | PARITY-UI-01 상태 | 근거 / 남은 차이 |
+|---|---|---|
+| L-03 | 접근 조건 수정·외형 미완료 | 제품 namespace 순수 검사, 격리 슬롯 테스트. L-04 로비 외형과 구분 |
+| U-01 | 진입 수정·동일성 FAIL | storage 플래그 없이 Control 생성, 기본 영속화 활성. 레이아웃/필터/비교/툴팁 전면 이식은 남음 |
+| U-02 / K | 미구현 | 현행 SkillForge 실제 웹 캡처·DOM 확보. 새 레이아웃 초안을 제품에 남기지 않음 |
+| D-03 | 일반 필드 연결·완료 미판정 | 기존 PC respawn API 사용, 저장 후 scene reload. 보스방 복원 미인수. 실제 결과는 DONE 참조 |
+
+상세: [PARITY_UI_01_20261022.md](PARITY_UI_01_20261022.md). **전체 작업 완료/시각 PASS 아님.**
+
+
+## Mac 후속 상태 — PARITY-UI-02 (2026-10-22)
+
+PC 원문 및 PARITY-UI-01 이력은 보존한다. **전체 완료/visual PASS 아님.**
+
+| No. | 상태 | 원본 대응·미완료 |
+|---|---|---|
+| U-01 | 부분 이식 / VISUAL FAIL | 전면 프레임·기사 컷아웃·EQ_POS16칸·필터·상세/2열 비교 표시. 별도 유골함 제단/도감·유물/소켓·CP delta·원본 숫자/미세 외형 미완료 |
+| D-02 | 부분 이식 / VISUAL FAIL | 전체 illustration·펫 초상/원본 대사 pool·세 버튼·rolling replay. 피해 로그/상황선택·replay bars/game-only frame·폰트/자간 차이 남음 |
+| D-03 | 일반 필드 재시작 연결 / VISUAL FAIL | 사망 장면2.5초 fade·원본 황금 결계 표시. 보스방 복원은 기존 PC 보스 코어 의존으로 NOT_READY 유지 |
+
+상세 원본 행·에셋·Godot 위치·1x 비교: [PARITY_UI_02_20261022.md](PARITY_UI_02_20261022.md). 테스트 통과를 화면 동일성으로 대체하지 않는다.
+
+## Mac 후속 상태 — PARITY-UI-03 (2026-10-22)
+
+PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아님.**
+
+| No. | 상태 | 근거·잔여 |
+|---|---|---|
+| U-01 | 유골함/회수·비교 펼침 추가 / RETOUCH | 원본 제단·선대 초상·r/t/itemLv0 회수/저장. 기본39필드 비교. CP/DPS/어픽스·소켓·필터·재질·글자 잔여 |
+| U-02 | K·13슬롯·CSS2D·장착 writer 부분 이식 / RETOUCH | 기존 관리 API·원본 카탈로그·fused 아이콘·설명·제단/트레이/로드맵 caller. 웹 r186 모듈 부재로 원본 CSS 폴백만 캡처. 3D 재질·애니메이션/합성 전체/일괄·추천 버튼 완료 아님 |
+| D-02 | 줄바꿈 폭·상황/페이드·game-only replay bars 추가 / RETOUCH | 원본306/190폭·14.72px, 기존 대사. 480×270 World2D 전용 캡처·HP/ST/MP/SH. glyph/로그/마지막 합성 차이 남음 |
+| D-03 | 기존 일반 필드 retry 유지 | 보스방·보호장/로드 후 iframes 전체 동일성은 종전 미인수 유지 |
+| E2E 관측 | PASS13 / NOT_READY5 / FAIL0 | UI-02 전투/물약 코드 차이 없음. 무작위 장비/접촉과 하니스 장시간 정지 대기 문제. 실제 근접 입력·쿨다운 대기 이동 보완; 판정/주입/PC 경계 그대로. UI 후속 표시 구현 전1회 측정 |
+
+원본 행·Godot 위치·테스트·1x 비교·제약: [PARITY_UI_03_20261022.md](PARITY_UI_03_20261022.md). 최종 인수는 사용자 동일 장면 눈검수를 따른다.

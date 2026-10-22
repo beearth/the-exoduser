@@ -1,0 +1,368 @@
+{
+  "paths": {
+    "ghostWalk": "res://assets/ui/parity_ui_03/skills/ghostWalk.png",
+    "maliceHunt": "res://assets/ui/parity_ui_03/skills/maliceHunt.png",
+    "venomBlade": "res://assets/ui/parity_ui_03/skills/venomBlade.png",
+    "maliceMortar": "res://assets/ui/parity_ui_03/skills/maliceMortar.png",
+    "boneWall": "res://assets/ui/parity_ui_03/skills/boneWall.png",
+    "plagueBurst": "res://assets/ui/parity_ui_03/skills/plagueBurst.png",
+    "maliceStorm": "res://assets/ui/parity_ui_03/skills/maliceStorm.png",
+    "darkPillar": "res://assets/ui/parity_ui_03/skills/darkPillar.png",
+    "holyDome": "res://assets/ui/parity_ui_03/skills/holyDome.png",
+    "holyPrison": "res://assets/ui/parity_ui_03/skills/holyPrison.png",
+    "iceStorm": "res://assets/ui/parity_ui_03/skills/iceStorm.png",
+    "giantSlam": "res://assets/ui/parity_ui_03/skills/giantSlam.png",
+    "giantSlam2": "res://assets/ui/parity_ui_03/skills/giantSlam2.png",
+    "skyCrusher": "res://assets/ui/parity_ui_03/skills/skyCrusher.png",
+    "blackStar": "res://assets/ui/parity_ui_03/skills/blackStar.png",
+    "lavaSummon": "res://assets/ui/parity_ui_03/skills/lavaSummon.png",
+    "kiSlash": "res://assets/ui/parity_ui_03/skills/kiSlash.png",
+    "maliceSwipe": "res://assets/ui/parity_ui_03/skills/maliceSwipe.png",
+    "whirlwind": "res://assets/ui/parity_ui_03/skills/whirlwind.png",
+    "bladeShot": "res://assets/ui/parity_ui_03/skills/bladeShot.png",
+    "fireball": "res://assets/ui/parity_ui_03/skills/fireball.png",
+    "iceOrb": "res://assets/ui/parity_ui_03/skills/iceOrb.png",
+    "detonate": "res://assets/ui/parity_ui_03/skills/detonate.png",
+    "chargeBoost": "res://assets/ui/parity_ui_03/skills/chargeBoost.png",
+    "bladeDash": "res://assets/ui/parity_ui_03/skills/bladeDash.png",
+    "fanShot": "res://assets/ui/parity_ui_03/skills/fanShot.png",
+    "omniBeam": "res://assets/ui/parity_ui_03/skills/omniBeam.png",
+    "elemMissile": "res://assets/ui/parity_ui_03/skills/elemMissile.png",
+    "shieldThrow": "res://assets/ui/parity_ui_03/skills/shieldThrow.png",
+    "execution": "res://assets/ui/parity_ui_03/skills/execution.png",
+    "spikeTrap": "res://assets/ui/parity_ui_03/skills/spikeTrap.png",
+    "chainSlash": "res://assets/ui/parity_ui_03/skills/chainSlash.png",
+    "magicBlink": "res://assets/ui/parity_ui_03/skills/magicBlink.png",
+    "fireAura": "res://assets/ui/parity_ui_03/skills/fireAura.png",
+    "fireBeam": "res://assets/ui/parity_ui_03/skills/fireBeam.png",
+    "needleShot": "res://assets/ui/parity_ui_03/skills/needleShot.png",
+    "burstLoop": "res://assets/ui/parity_ui_03/skills/burstLoop.png",
+    "peaceShield": "res://assets/ui/parity_ui_03/skills/peaceShield.png",
+    "ghostXbowTurret": "res://assets/ui/parity_ui_03/skills/ghostXbowTurret.png",
+    "voidScarecrow": "res://assets/ui/parity_ui_03/skills/voidScarecrow.png",
+    "blueShot": "res://assets/ui/parity_ui_03/skills/blueShot.png",
+    "hellRay": "res://assets/ui/parity_ui_03/skills/hellRay.png",
+    "energyShot": "res://assets/ui/parity_ui_03/skills/energyShot.png",
+    "guardian": "res://assets/ui/parity_ui_03/skills/guardian.png",
+    "weakMag": "res://assets/ui/parity_ui_03/skills/weakMag.png",
+    "weakPhys": "res://assets/ui/parity_ui_03/skills/weakPhys.png",
+    "weakPj": "res://assets/ui/parity_ui_03/skills/weakPj.png",
+    "weakRev": "res://assets/ui/parity_ui_03/skills/weakRev.png",
+    "thunderStake": "res://assets/ui/parity_ui_03/skills/thunderStake.png",
+    "timeWarp": "res://assets/ui/parity_ui_03/skills/timeWarp.png",
+    "explodeScarecrow": "res://assets/ui/parity_ui_03/skills/explodeScarecrow.png",
+    "arcLaser": "res://assets/ui/parity_ui_03/skills/arcLaser.png",
+    "maliceDome": "res://assets/ui/parity_ui_03/skills/maliceDome.png",
+    "ltnChaser": "res://assets/ui/parity_ui_03/skills/ltnChaser.png",
+    "boneStorm": "res://assets/ui/parity_ui_03/skills/boneStorm.png",
+    "elecRepent": "res://assets/ui/parity_ui_03/skills/elecRepent.png",
+    "ancestorSummon": "res://assets/ui/parity_ui_03/skills/ancestorSummon.png"
+  },
+  "assets": [
+    {
+      "source": "img/skillskin_upscaled/ghostWalk.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/ghostWalk.png",
+      "sha256": "18509374a6fb17e4cdf4678cb7980d80c01be4960062724236715c331f7eef35"
+    },
+    {
+      "source": "img/skillskin_upscaled/maliceHunt.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/maliceHunt.png",
+      "sha256": "f4a37df01705ebe25a47c3eff9c371ba8052945961f756f71c2821ac467edbe3"
+    },
+    {
+      "source": "img/skillskin_upscaled/venomBlade.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/venomBlade.png",
+      "sha256": "f9e595aa436b53cd2d76313c0ed10a3a953bb381c6c107997d53f04554ee484f"
+    },
+    {
+      "source": "img/skillskin_upscaled/maliceMortar.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/maliceMortar.png",
+      "sha256": "0009a5ead24f446fdc4ea7189993657136bcb178aa1e918c0ed4b0b16eb786ce"
+    },
+    {
+      "source": "img/skillskin_upscaled/boneWall.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/boneWall.png",
+      "sha256": "e8bfe679727810b41599e93fe9373814f80dafd672f56875eb4a42d9189e2f2e"
+    },
+    {
+      "source": "img/skillskin_upscaled/plagueBurst.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/plagueBurst.png",
+      "sha256": "4e07d4869fc12e43bc6b937406b1e9417552ff2ea1d6be306b31514c57da2b89"
+    },
+    {
+      "source": "img/skillskin_upscaled/maliceStorm.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/maliceStorm.png",
+      "sha256": "6a8695ecfa12f775f4c55c244579e6d7c60c131085b9a4fd25a9ed56390e9457"
+    },
+    {
+      "source": "img/skillskin_upscaled/darkPillar.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/darkPillar.png",
+      "sha256": "b04a5e5fceb76e9a48d8c9f3a1113fdbc0597fe2804c832a21a9445e1a009d95"
+    },
+    {
+      "source": "img/skillskin_upscaled/holyDome.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/holyDome.png",
+      "sha256": "74a39d43bb604e6a4801a5df4de06b1e66e3c203a31b1be61b45f5cd617d8841"
+    },
+    {
+      "source": "img/skillskin_upscaled/holyPrison.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/holyPrison.png",
+      "sha256": "5a25fddd13a986f31fe55aed1482677f48d9767cbd7bbd3f7d419c0ce1973462"
+    },
+    {
+      "source": "img/skillskin_upscaled/iceStorm.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/iceStorm.png",
+      "sha256": "b16390901a26b9bce8f2c2a54a61810845f06989accfbd18170960080aa7a6fc"
+    },
+    {
+      "source": "img/skillskin_upscaled/giantSlam.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/giantSlam.png",
+      "sha256": "55085b24ce5771baf36a467c5d79cac0227c0b575f4f2c83b556a57dde208c77"
+    },
+    {
+      "source": "img/skillskin_upscaled/giantSlam2.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/giantSlam2.png",
+      "sha256": "55085b24ce5771baf36a467c5d79cac0227c0b575f4f2c83b556a57dde208c77"
+    },
+    {
+      "source": "img/skillskin_upscaled/skyCrusher.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/skyCrusher.png",
+      "sha256": "4c8f04c4a5f388d9525328e227d5c8ee1a352e08c08ad3c08b29c58aefb94c8f"
+    },
+    {
+      "source": "img/skillskin_upscaled/blackStar.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/blackStar.png",
+      "sha256": "13c3add6de311555a58a10bfef15c5101686ac1993081ab6d1bbe97f714cd6f2"
+    },
+    {
+      "source": "img/skillskin_upscaled/lavaSummon.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/lavaSummon.png",
+      "sha256": "186371e14e91f48383c476f301fcde7a55ba0ab451d8773714b3c9e00dd9be59"
+    },
+    {
+      "source": "img/skillskin_upscaled/kiSlash.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/kiSlash.png",
+      "sha256": "55a5fbcfe9a30a5dbbc26009e6533db0e96aad6a14727732a18c1fc9fadb9e9f"
+    },
+    {
+      "source": "img/skillskin_upscaled/maliceSwipe.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/maliceSwipe.png",
+      "sha256": "0a89eda6a18925ed38744e2d452737714fad0861ed3935d3cb16444792de7203"
+    },
+    {
+      "source": "img/skillskin_upscaled/whirlwind.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/whirlwind.png",
+      "sha256": "a5c91edd872d1a6f843ada8621df3e259c8b81e7407be650f36f3034ee090aad"
+    },
+    {
+      "source": "img/skillskin_upscaled/bladeShot.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/bladeShot.png",
+      "sha256": "d202c964273ba0bc714e0e15a017f87c4c4c6075cc9240b2e3022e4014128b68"
+    },
+    {
+      "source": "img/skillskin_upscaled/fireball.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/fireball.png",
+      "sha256": "bd59d2159caf9c4c8a95fc81396a0950bbe368ff11abc3c243648cc9cfdf0805"
+    },
+    {
+      "source": "img/skillskin_upscaled/iceOrb.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/iceOrb.png",
+      "sha256": "b546a3145fe794733a69171479df4515a47afe057a49cc7d1cef82d9809b74ef"
+    },
+    {
+      "source": "img/skillskin_upscaled/detonate.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/detonate.png",
+      "sha256": "9d3ad378e243e45c97615db6b5f5d7fd3bda7d68f91e9ad75bf28675a7842112"
+    },
+    {
+      "source": "img/skillskin_upscaled/chargeBoost.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/chargeBoost.png",
+      "sha256": "3727bcfea60f2e02072cf942d08a920a981409091627d96865437e11cdccd741"
+    },
+    {
+      "source": "img/skillskin_upscaled/bladeDash.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/bladeDash.png",
+      "sha256": "4987515237e81fd75194e4cd1ece3dc9c47a958f9525a7fb3ba4c138a4aeff57"
+    },
+    {
+      "source": "img/skillskin_upscaled/fanShot.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/fanShot.png",
+      "sha256": "9b73fe132c66fb2eaabd686190a5a1985678f6240c76a4af9462c00c3c47eed2"
+    },
+    {
+      "source": "img/skillskin_upscaled/omniBeam.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/omniBeam.png",
+      "sha256": "f22b064c4a5146ac24d0c43a8be55b632024f84a36b8dc06e6f2c6d485ef1353"
+    },
+    {
+      "source": "img/skillskin_upscaled/elemMissile.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/elemMissile.png",
+      "sha256": "e8441a8dcbe9526c167a6b5ea90d85cead7219ac2a5c1665085aa02f135199d6"
+    },
+    {
+      "source": "img/skillskin_upscaled/shieldThrow.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/shieldThrow.png",
+      "sha256": "45b81779fdea018616fdee5fc59390a3d7be26479248d6df340a3a40456541b8"
+    },
+    {
+      "source": "img/skillskin_upscaled/execution.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/execution.png",
+      "sha256": "4e71daa14db020369b96f63c8fd4990eb4c2b0590499fbc0e0ae1afe67dbb71f"
+    },
+    {
+      "source": "img/skillskin_upscaled/spikeTrap.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/spikeTrap.png",
+      "sha256": "f929f0f71f7e986da07d19265e413c6ac84e512f999ad7da4bc24cee787c4cf8"
+    },
+    {
+      "source": "img/skillskin_upscaled/chainSlash.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/chainSlash.png",
+      "sha256": "5d8ba076c7c3a799ef4d1bef8ff059ad5e872228c3de6b6da5d9d400700a7734"
+    },
+    {
+      "source": "img/skillskin_upscaled/magicBlink.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/magicBlink.png",
+      "sha256": "15ab9fc2ab25121c4d04122b38776ee7398b099b772533dc94027e9ddd0b291a"
+    },
+    {
+      "source": "img/skillskin_upscaled/fireAura.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/fireAura.png",
+      "sha256": "a4fba9bcef56160b7038c02d0ccbab1a9b15a5b61d5bb70b99d012358f7c4c93"
+    },
+    {
+      "source": "img/skillskin_upscaled/fireBeam.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/fireBeam.png",
+      "sha256": "252900e3d2b1ff763bd475aaa7ee7c80201e39b9b6de957acf183e1d2be7d735"
+    },
+    {
+      "source": "img/skillskin_upscaled/needleShot.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/needleShot.png",
+      "sha256": "bf8fd8874941d5153cf4e34ca2bb313f7132947b637062f9b26c16cf4e98e00a"
+    },
+    {
+      "source": "img/skillskin_upscaled/burstLoop.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/burstLoop.png",
+      "sha256": "e6781f4756ff375eb05d7f62f505b8bbf0356e0f454daf32f01120ae67a9b351"
+    },
+    {
+      "source": "img/skillskin_upscaled/peaceShield.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/peaceShield.png",
+      "sha256": "3c533a365bb3a2a69cbf3eecce0e0936451edb274fb11605d0994aece890ec2f"
+    },
+    {
+      "source": "img/skillskin_upscaled/ghostXbowTurret.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/ghostXbowTurret.png",
+      "sha256": "8ecc979d82412216f11ba18d8defeb3e4eefba76b300c20fc62ba021ada7b48c"
+    },
+    {
+      "source": "img/skillskin_upscaled/voidScarecrow.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/voidScarecrow.png",
+      "sha256": "dc6b6d25b07e85e455c950c4cfbd317fdcb08da558b986482af66180a39d1f47"
+    },
+    {
+      "source": "img/skillskin_upscaled/blueShot.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/blueShot.png",
+      "sha256": "afaa9d4d666d30741750d55d5cfac4b95d3c64f168109fecf65601ac319deac3"
+    },
+    {
+      "source": "img/skillskin_upscaled/hellRay.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/hellRay.png",
+      "sha256": "814524b59ffaed691d63c86ea58a7dfa810055c3531465599bd042d2c5bb5f78"
+    },
+    {
+      "source": "img/skillskin_upscaled/energyShot.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/energyShot.png",
+      "sha256": "ab4a7e482c7ecda56ee1dc2de8c20e1e1425b452a59e68f23183f0f532be6e87"
+    },
+    {
+      "source": "img/skillskin_upscaled/guardian.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/guardian.png",
+      "sha256": "66d88ac4a53b69f5b3ff9eda464b06b60c1b578b40a924f0a6bead07db373f50"
+    },
+    {
+      "source": "img/skillskin_upscaled/weakMag.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/weakMag.png",
+      "sha256": "322565e2b2a5b2fe34672029f411e6f557fb0286bb2ef4e0beceb92f05f42698"
+    },
+    {
+      "source": "img/skillskin_upscaled/weakPhys.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/weakPhys.png",
+      "sha256": "36b8f931bf15171c2000f9d1db607ed796c3b0d663b5e1f37e9bd62e5eba5e28"
+    },
+    {
+      "source": "img/skillskin_upscaled/weakPj.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/weakPj.png",
+      "sha256": "041bc20b90af605cc88d1d562d1cc2f6d7fc3519bd604967e021119e807f130b"
+    },
+    {
+      "source": "img/skillskin_upscaled/weakRev.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/weakRev.png",
+      "sha256": "553d5b4b282aa6ab2b94ac1a6f6c281349eafe24eec220fd6a168b22d696de41"
+    },
+    {
+      "source": "img/skillskin_upscaled/thunderStake.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/thunderStake.png",
+      "sha256": "10b25620ce4725fb9822e3805859555ce837cd65e6402a6ad0312bd4d3f9e39d"
+    },
+    {
+      "source": "img/skillskin_upscaled/timeWarp.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/timeWarp.png",
+      "sha256": "98a1fe52f3d90a9b9edfd35d8712be11bb9bb51ccb28e194d1596d72898e9b87"
+    },
+    {
+      "source": "img/skillskin_upscaled/explodeScarecrow.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/explodeScarecrow.png",
+      "sha256": "018eeef3b2aa9cdc39537e9ce9fd97a3c8c5603773ff98a7f2ee6cb941bad846"
+    },
+    {
+      "source": "img/skillskin_upscaled/arcLaser.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/arcLaser.png",
+      "sha256": "6941e1187785181a4f5c353815844dd6fa543a296f7e656343325588b5a2ba1c"
+    },
+    {
+      "source": "img/skillskin_upscaled/maliceDome.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/maliceDome.png",
+      "sha256": "36b4c81293a6deef2ef10b80f5fea2c7409829ac37cebedb0f113a57507b2cbf"
+    },
+    {
+      "source": "img/skillskin_upscaled/ltnChaser.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/ltnChaser.png",
+      "sha256": "0a6ada4d87ed0dba12a945bb6a19d02e905ad1e6bb6c52d744982a5182455ff4"
+    },
+    {
+      "source": "img/skillskin_upscaled/boneStorm.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/boneStorm.png",
+      "sha256": "6a8695ecfa12f775f4c55c244579e6d7c60c131085b9a4fd25a9ed56390e9457"
+    },
+    {
+      "source": "img/skillskin_upscaled/elecRepent.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/elecRepent.png",
+      "sha256": "6a8695ecfa12f775f4c55c244579e6d7c60c131085b9a4fd25a9ed56390e9457"
+    },
+    {
+      "source": "img/skillskin_upscaled/ancestorSummon.png",
+      "godot": "godot/assets/ui/parity_ui_03/skills/ancestorSummon.png",
+      "sha256": "e9a331ce64552bbed487de92785ff702c16e6eb0939531a01df30fc636eddc39"
+    },
+    {
+      "source": "img/ui/blackiron/sigil.png",
+      "godot": "godot/assets/ui/parity_ui_03/sigil.png",
+      "sha256": "e6b317e675a9a18e50220c657e99b5e985adcadbb56d369c786fd48c62860cda"
+    },
+    {
+      "source": "img/ui/blackiron/header.png",
+      "godot": "godot/assets/ui/parity_ui_03/header.png",
+      "sha256": "544989e3f7d891c28bc06ed9420abb0a40e04b3ad763199932495b08e5967938"
+    },
+    {
+      "source": "img/ui/ossuary_altar_hf_v2.png",
+      "godot": "godot/assets/ui/parity_ui_03/ossuary_altar_hf_v2.png",
+      "sha256": "035c8a80e8c155a099bee898a0b1b89eb599b47dd77f5387b5d5ce4a85f3e498"
+    },
+    {
+      "source": "img/vfx_ancestor/iron_warlord_portrait.png",
+      "godot": "godot/assets/ui/parity_ui_03/iron_warlord_portrait.png",
+      "sha256": "4d251cbf3b707831114dc856e7950cd991989241971ee0397d3a6d4d3dc87b62"
+    }
+  ]
+}

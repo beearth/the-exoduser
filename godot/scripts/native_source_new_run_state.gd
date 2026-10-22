@@ -1979,3 +1979,24 @@ func commit_native_player_life_p(owner: Node, life: Object, fields: Dictionary, 
 		_p[field] = int(fields[field]) if field == "exp" and float(fields[field]) == floorf(float(fields[field])) else fields[field]
 	_player_life_commits += 1
 	return {"accepted": true, "fields": fields.keys(), "commits": _player_life_commits}
+
+# SkillForge equip writer, exact web skill-forge.js:75–84 selection order.
+# No damage, cooldown, Q/E execution or combat contract changes.
+func commit_native_skill_forge_slot(owner: Node,slot_key: String,skill_id: String) -> Dictionary:
+	if _skill_management_busy or not _current_error().is_empty() or not is_instance_valid(owner) or owner!=_player.get_parent() or owner.get("source_state")!=self:
+		return {"committed":false,"reason":"actual_skill_owner_required"}
+	const RULE=preload("res://port_modules/skill_management_source/slot_rules.gd")
+	var allowed: Dictionary=RULE.can_equip(slot_key,skill_id,_p)
+	if allowed.get("status")!="READY" or not allowed.get("value",false):return {"committed":false,"reason":"source_canEquip_refused"}
+	var definition: Dictionary={}
+	for slot in RULE.SLOTS:
+		if slot.k==slot_key:definition=slot;break
+	if definition.is_empty():return {"committed":false,"reason":"unknown_slot"}
+	var before: Dictionary=read_native_skill_management_snapshot()
+	if definition.kind=="num":
+		for j in _p.skillSlots.size():
+			if _p.skillSlots[j]==skill_id:_p.skillSlots[j]=null
+		_p.skillSlots[definition.idx]=skill_id
+	elif definition.kind=="ult":_p.ultSlot=skill_id
+	else:_p[definition.v]=skill_id
+	return {"committed":true,"before":before,"after":read_native_skill_management_snapshot(),"source":"skill-forge.js:75–84","saved":false}

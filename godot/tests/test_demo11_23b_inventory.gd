@@ -119,7 +119,7 @@ func run() -> void:
 	check(not r.get("applied",false),"negative/occupied drag destination rejected")
 	var drag_data: Dictionary={"panel":ui,"item":inv.bag[0],"source":"bag"}
 	check(ui.bag_grid._can_drop_data(Vector2.ZERO,drag_data) and not ui.bag_grid._can_drop_data(Vector2.ZERO,{"panel":null,"item":value,"source":"bag"}),"drag identity stays within the actual panel")
-	ui.bag_grid._drop_data(Vector2(417,417),drag_data)
+	ui.bag_grid._drop_data(Vector2(449,449),drag_data)
 	check(drag_data.item._gx==8 and drag_data.item._gy==8,"actual drag drop uses original grid collision writer and save")
 	var prior_bag: Array=inv.bag.duplicate(); var prior_store: Array=stock.duplicate()
 	stock.append(item("boots"))
@@ -147,6 +147,21 @@ func run() -> void:
 	r=ui.perform("equip",candidate)
 	check(r.get("applied",false) and r.get("refresh",{}).get("committed",false) and is_same(inv.equipped.armor,candidate),"UI equip consumes 22r / PC refresh and actual actor readback")
 	check(ui.get_snapshot().shared_owner=="State._demo11_storage / 06c" and not ui.get_snapshot().tick_polling,"single inherited owner, no tick polling")
+
+	# Source G45857: owned collection r/t -> new bag bone itemLv0, durable save.
+	var collection_before: Dictionary=inv.ossCollect.duplicate(true)
+	inv.ossCollect["iron_warlord_skull"]={"r":2,"t":1}
+	var bone_size: int=inv.bag.size()
+	var removed_bone: Dictionary=ui.perform("withdraw_bone",{},{"part":"skull"})
+	check(removed_bone.get("applied",false) and removed_bone.get("saved",false),"withdraw bone saved")
+	check(not inv.ossCollect.has("iron_warlord_skull") and inv.bag.size()==bone_size+1,"withdraw moves collection exactly once")
+	if inv.bag.size()>bone_size:
+		var bone: Dictionary=inv.bag.back()
+		check(bone.slot=="bonePart" and bone.part=="skull" and bone.itemLv==0 and bone.rarity==2 and bone.tier==1,"source bone carrier no current-level uplift")
+		inv.bag.pop_back()
+	inv.ossCollect.assign(collection_before)
+	var absent_bone: Dictionary=ui.perform("withdraw_bone",{},{"part":"not-a-part"})
+	check(not absent_bone.get("applied",false) and inv.bag.size()==bone_size,"invalid bone no prefix")
 	if not capture_out.is_empty() and DisplayServer.get_name()!="headless": await captures(ui,inv)
 	await destroy()
 	print("DEMO11_23B_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"actual_Main":true,"actual_IO":true,"loaded_restore":true,"capture":not capture_out.is_empty(),"fixture_items":true,"combat_execution":false}))

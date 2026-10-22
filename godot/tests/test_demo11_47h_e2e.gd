@@ -269,10 +269,10 @@ func run() -> void:
  var home: Vector2=main.player.global_position;var attacks:=0;var accepted:=0;var event_start:=event_rows.size()
  var crossbow_observation: Dictionary={}
  if is_instance_valid(target):
-  mark_checkpoint("placement only; actual automatic crossbow timer/flight/hurtE, then existing melee input if bow times out or PC field owner blocks bow; no injected damage")
+  mark_checkpoint("placement only; observe actual automatic crossbow for 3s, then existing melee input; no injected damage")
   var bow_sample_start: int=active.physics_samples.size()
   var bow_before: Dictionary=main.native_auto_crossbow.snapshot()
-  var bow_deadline:=Time.get_ticks_msec()+45000
+  var bow_deadline:=Time.get_ticks_msec()+3000
   while target.alive and Time.get_ticks_msec()<bow_deadline and main.player.hp>main.player.max_hp*.2:
    main.player.global_position=target.global_position+Vector2(-180,0)
    await settle(6)
@@ -328,6 +328,14 @@ func run() -> void:
  var wait_start:=Time.get_ticks_msec()
  var cooldown_deadline:=wait_start+20000
  while (main.player.iframes>0 or main.source_state.read_native_potion_runtime().cd>0) and Time.get_ticks_msec()<cooldown_deadline and (not is_instance_valid(potion) or potion.get_snapshot().uses==used_before):
+  # Placement only: step out of contact while the real potion cooldown advances.
+  var away:=Vector2.ZERO
+  for enemy in main.world.get_enemies():
+   if is_instance_valid(enemy) and enemy.get("alive")==true and main.player.global_position.distance_to(enemy.global_position)<400:
+    away+=(main.player.global_position-enemy.global_position).normalized()
+  if away.length_squared()>0:
+   var point: Vector2=main.player.global_position+away.normalized()*12
+   if main.world.can_move(point,main.player.radius):main.player.global_position=point
   await physics_frame
  var potion_after_wait: Dictionary={"uses":potion.get_snapshot().uses if is_instance_valid(potion) else -1,"hp":main.player.hp,"iframes":main.player.iframes,"runtime":main.source_state.read_native_potion_runtime().duplicate(true),"wait_ms":Time.get_ticks_msec()-wait_start,"timed_out":Time.get_ticks_msec()>=cooldown_deadline}
  var damage_path: Array=[]

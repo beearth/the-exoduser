@@ -21,12 +21,12 @@ var _clock := Callable()
 
 static func accepts_namespace(user_path: String) -> bool:
 	var name := user_path.simplify_path().get_file()
-	return name != "EXODUSER-Godot-Native-First" and name.begins_with("EXODUSER-demo11-")
+	return name == "EXODUSER-Godot-Native-First" or name.begins_with("EXODUSER-demo11-")
 
 func readiness() -> Dictionary:
 	var user := OS.get_user_data_dir().simplify_path()
-	# Do not even stat the real native user's save directory. DEMO11-01 owns
-	# selecting the demo namespace; tests override it with their own namespace.
+	# I3486–3520: product and isolated demo origins both expose five slots.
+	# Test runners must override user_dir; product admission is checked purely.
 	if not accepts_namespace(user):
 		return _error("demo_namespace_required")
 	if not _no_links(user): return _error("linked_user_directory")
