@@ -56765,3 +56765,11 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 데모 종료는 원문 중앙5행과 .92 검정 배경, 복귀는 실제 demo_lobby.tscn. 저장 full restore·27언어 gate·main/PCcore는 보호.
 - 번역 기존1629/1630/2825 재사용,3530–3531 신규 원문·CRLF 보존·lang26/i18n 전파. 내부viewport 생성 재캡처 exit0/ERROR0. 전체 동일성 미완료.
 - 근거/초기 번호표·잔여: engine/SWEEP_B_20261022.md 및 외부 _out/SWEEP-B. 관련 테스트·무주입E2E는 마지막 단회 예정.
+
+## SWEEP-B B2 — 설정 현재값 표시
+
+G49041/49065/49336–49369: parity_settings_page가 DOM순서로 range 뒤의 라벨을 만든 후 현재값으로 초기화한다. AutoPotThr .99→99% 표시, fps index→실제CAPS/제한없음, sound/화면 %·커서라벨·유령불꽃 무단위·최소줍기 등급/티어를 원문 단위로 표시한다. OPT writer·전투 수치·키변경·보호계약 확대0. 동일값 재진입 시 원본 캡처 기본값이 덮이던 표시 차이를 수정. UI 재캡처 진행; 관련suite는 마지막 단회.
+
+## SWEEP-B B3 — 성장창 원본 구조
+
+원본 stat-panel-ui.js70–201/336–468, stat-panel-ui.css419–579, growth-tree-detail/information.css에 따라 native_growth_panel의 상단5탭·배너/기사crest·AP·왼쪽분류/검색·중앙1174×624 viewport·오른쪽420×674 상세·하단버튼을 원본 자리로 이동. 1000×800 좌표·원본 fit=min((w-12)/1000,(h-12)/800)×zoom, 노드44/랭크10px로 축소. 시작 상세pAtk, hover/focus에만 이름. 부족AP일 때 원래 queue API로 예약, 실제 투자 writer/포인트 공식은 유지. UI원문은 목록번호/CRLF·lang26/native i18n에 반영. 내부viewport 재검수 진행, 카드 상세 typography/원문 설명·ring/glow·트리 pan/키 탐색 등 잔여로 전체 PASS 아님.

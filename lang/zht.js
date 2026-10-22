@@ -838,3 +838,9 @@ Object.assign(_ZHT,{"신기록!":"New Record!"});
 Object.assign(_ZHT,{"새 캐릭터 생성": "Create New Character", "캐릭터 이름 (2~8자)": "Character Name (2-8 chars)", "지옥에 보낼 캐릭터의 이름을 지어주세요": "Name the character you will send to hell."});
 
 Object.assign(_ZHT,{"게임을 종료하시겠습니까?": "Quit the game?", " 캐릭터를 정말 삭제하시겠습니까?": " — Really delete this character?"});
+
+Object.assign(_ZHT,{"제한없음": "Unlimited", "% 이하": "% or below", "일반 이상": "Normal or above", "마법 이상": "Magic or above", "희귀 이상": "Rare or above", "전설 이상": "Legendary or above", "유니크 이상": "Unique or above"});
+
+Object.assign(_ZHT,{"EXODUSER · 캐릭터 성장": "EXODUSER / CHARACTER", "힘을 벼리고, 당신의 길을 새기세요.": "Temper your strength. Inscribe your path.", "계획 후 AP": "AP AFTER PLAN", "전투의 길": "COMBAT PATHS", "이름 · 효과 · 영문명 검색": "Search name · effect · English name", "6개의 길 · 서로 조합 가능한 26개 패시브": "6 paths · 26 freely combinable passives", "현재 전투 능력치 ↗": "Current combat stats ↗", "패시브 분석": "PASSIVE INSIGHT", "투자 레벨": "INVESTMENT RANK", "패시브 기여": "PASSIVE CONTRIBUTION", "자동 투자 예약 · {p0} AP": "Reserve auto-invest · {p0} AP"});
+
+Object.assign(_ZHT,{"AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Reserve without enough AP · even levels grant AP and affordable ranks auto-invest in order."});

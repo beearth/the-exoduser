@@ -6,6 +6,7 @@ const Fonts=preload("res://scripts/native_ui_fonts.gd")
 var panel: Control
 var fields: Dictionary={}
 var values: Dictionary={}
+var sliders: Dictionary={}
 static func color(css: String) -> Color:
  var t:=css.trim_prefix("rgba(").trim_prefix("rgb(").trim_suffix(")").split(",")
  if t.size()<3:return Color.TRANSPARENT
@@ -41,15 +42,15 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
    "range":
     var row: Dictionary=fields.get(id,{})
     var slider:=HSlider.new();slider.min_value=float(n.min);slider.max_value=float(n.max);slider.step=maxf(1,float(n.step)) if str(n.step)!="any" else .01
-    slider.value=panel._menu.settings_bridge.CAPS.find(int(opt.get("fpsCap",0))) if id=="optFps" else float(opt.get(row.get("key",""),n.value));slider.position=r.position-Vector2(0,10);slider.size=Vector2(r.size.x,25);add_child(slider);theme_slider(slider)
+    slider.value=panel._menu.settings_bridge.CAPS.find(int(opt.get("fpsCap",0))) if id=="optFps" else (float(opt.get("autoPotThr",.99))*100 if id=="optAutoPot" else float(opt.get(row.get("key",""),n.value)));slider.position=r.position-Vector2(0,10);slider.size=Vector2(r.size.x,25);add_child(slider);theme_slider(slider)
     slider.value_changed.connect(func(v:float):
-     if values.has(id+"Val"):values[id+"Val"].text=str(int(v))+"%")
+     _update_value(id,v))
     slider.drag_ended.connect(func(changed:bool):
      if changed:commit(row,panel._menu.settings_bridge.CAPS[int(slider.value)] if id=="optFps" else slider.value))
     slider.gui_input.connect(func(event:InputEvent):
      if event is InputEventKey and event.pressed and event.keycode in [KEY_LEFT,KEY_RIGHT,KEY_HOME,KEY_END]:
       call_deferred("keyboard_slider",row,id,slider))
-    panel.controls[row.get("key",id)]=slider
+    panel.controls[row.get("key",id)]=slider;sliders[id]=slider
    "check":
     var row: Dictionary=fields.get(id,{})
     var check:=CheckBox.new();check.position=r.position;check.size=r.size;check.button_pressed=bool(opt.get(row.get("key",""),n.checked));add_child(check);theme_check(check)
@@ -71,6 +72,25 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
     var image:=TextureRect.new();image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;var atlas:=AtlasTexture.new();atlas.atlas=load("res://assets/player_silvertail/6.png" if r.position.x>1100 else "res://assets/player/south.png");atlas.region=Rect2(0,0,48,48);image.texture=atlas;image.position=r.position;image.size=r.size;image.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;add_child(image)
    "image":
     var image:=TextureRect.new();image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;image.texture=load("res://assets/ui/parity_ui_05/"+str(n.src).get_file());image.position=r.position;image.size=r.size;add_child(image)
+ # Nodes are in DOM order; labels can follow their corresponding input.
+ for id in sliders:_update_value(id,sliders[id].value)
+func _update_value(id:String,value:float) -> void:
+ var label_id:String="cursorSizeVal" if id=="optCursorSize" else id+"Val"
+ if not values.has(label_id):return
+ var result:=str(int(value))+"%"
+ match id:
+  "optFps":
+   var caps:Array=panel._menu.settings_bridge.CAPS
+   var cap:int=caps[clampi(int(value),0,caps.size()-1)]
+   result=str(cap) if cap>0 else UI.text("제한없음")
+  "optAutoPot":result="HP "+str(int(value))+UI.text("% 이하")
+  "optIrisSz","optIrisGlow":result=str(int(value))
+  "optDiff":return # Source _diffName and difficulty writer remain the PC owner.
+  "optMinRar":result=UI.text(["일반 이상","마법 이상","희귀 이상","전설 이상","유니크 이상"][clampi(int(value),0,4)])
+  "optMinLv":
+   var tier:int=int(value);result=UI.text("사용 안 함") if tier==0 else str(tier)+("단 (" if TranslationServer.get_locale().begins_with("ko") else "T (")+str(1000 if tier==7 else tier*100)+"Lv+)"
+  "optCrAutoFuse","optCrAutoEnh":return # Original star/enhancement label owner is not replaced with a guessed unit.
+ values[label_id].text=result
 func commit(row: Dictionary,value: Variant) -> void:
  if not row.is_empty():panel._change({str(row.key):value},row.key in ["lang","panelFit","textScale"])
 func action(id: String,caption: String) -> void:
