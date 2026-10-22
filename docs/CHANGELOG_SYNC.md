@@ -1,3 +1,8 @@
+## 2026-10-22 INTEG-12 통합 검수 마감
+- BOSS-02 1b86c02f / INTRO-01b 015d4034 / DONE 수신 뒤 VRAM-01 50900cfd merge. PC HUD stats 제외, PC core/테스트 원본 보존. 문서 충돌은 양쪽 이력 및 번역 CRLF 유지.
+- life retry의 표시 캡처만 headless 생략·GUI null/empty guard. 판정/EXP/save/reload 변경0.
+- suites58각1회49PASS/9non-PASS, import ERROR0. E2E1회2PASS/1FAIL/15NR, 실제 bossroom 이후 미도달. 비교8장 VISUAL RETOUCH. GUI60초focus 미확보로 성능/VRAM 미측정. [전체 근거](engine/INTEG12_WEB_PARITY_20261022.md).
+
 ## 2026-10-22 PARITY-BOSS-01 — Mac 보스 표시·웹 기반 아레나 후보
 
 - 기준 INTEG-11 6c389948edcfecc6b2b5eeb37ac82db280dc6769, branch codex/parity-boss-01-20261022. PC 코어86bb421fa·모듈·수치·소환체 불변, 원본snapshot4d911cdd 불변. R 소스 수정/실행/import0.
