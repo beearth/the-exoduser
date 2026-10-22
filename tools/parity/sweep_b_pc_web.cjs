@@ -142,7 +142,7 @@ const probe = async (page, name, sels) => { const r = await page.evaluate(`(${PR
       L('lesson', await ev(`({step:_parryLesson.step,chapter:_parryLesson.chapter,phase:_parryLesson.phase})`));
       await ev(`(()=>{try{_parryLesson.skipAll()}catch(e){};try{if(window._systemLesson&&_systemLesson.skipAll)_systemLesson.skipAll()}catch(e){};G.paused=false})()`);
       await wait(3000); await shot('050_hud');
-      await probe(page, '050_hud', ['#hud', '#hud > *', '.orb', '[id$=Orb]', '#qsBar', '#qsBar > *', '#ultSlot', '#minimap', '#mmWrap', '#regionTxt', '#cpTxt', '#expBar', '#lvTxt', '#potSlots > *']);
+      await probe(page, '050_hud', ['#hud', '#hud > *', '.orb', '[id$=Orb]', '#qsBar', '#qsBar > *', '#ultSlot', '#minimap', '#mmWrap', '#regionTxt', '#cpTxt', '#expBar', '#lvTxt', '#potSlots > *', '#qsRow > .qs', '#qsRow > .qs > *', '#skKeyBar > *', '#mmLvl', '#mmLvl *', '#hudCorner', '#hudCorner *', '#stageClock', '#stageClock *']);
       const hold = async (k) => { await page.keyboard.down(k); await wait(120); await page.keyboard.up(k); };
       const openP = async (k, id, name, extra) => {
         await hold(k); await wait(1500);
@@ -152,8 +152,8 @@ const probe = async (page, name, sels) => { const r = await page.evaluate(`(${PR
         if (extra) await extra();
         await ev(`closeAllPanels()`); await wait(700);
       };
-      await openP('Tab', 'invPanel', '070_inventory');
-      await openP('KeyK', 'skillPanel', '080_skill');
+      await openP('Tab', 'invPanel', '070_inventory', async () => { await probe(page, '070_inventory_detail', ['#invPanel [class*=detail]', '#invPanel [class*=detail] *']); });
+      await openP('KeyK', 'skillPanel', '080_skill', async () => { await probe(page, '080_skill_info', ['.sf-info', '.sf-info *', '.sf-slots', '.sf-slots *']); });
       await openP('KeyJ', 'statPanel', '081_growth');
       await openP('KeyG', 'forge', '082_forge');
       await openP('Escape', 'settings', '090_settings');

@@ -254,9 +254,9 @@ func _build_view() -> void:
  for label_node in [_fallen_power,_fallen_count,fallen_label]:label_node.add_theme_font_override("font",mono)
  _screen=Control.new();_screen.size=Vector2(1920,1080);_view.add_child(_screen)
  var art:=Surface.art(_screen,"img/cin_remember_wide.png",Rect2(0,0,1920,1080));art.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED
- _title=Surface.text(_screen,word("dead"),Rect2(600,382,720,60),45,Color(.855,.824,.757,.94),"hell_title",700);_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var title_font:=FONTS.stack("hell_title",700).duplicate();title_font.spacing_glyph=6;_title.add_theme_font_override("font",title_font)
- _subtitle=Surface.text(_screen,"누군가는 너를 기다리고 있다",Rect2(560,452,800,32),20,Color(.776,.722,.620,.82),"hell");_subtitle.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var sub_font:=FONTS.stack("hell",400).duplicate();sub_font.spacing_glyph=2;_subtitle.add_theme_font_override("font",sub_font)
- _body=Surface.text(_screen,"",Rect2(400,498,1120,33),18,Color(.682,.592,.435,.82),"cinzel_hell");_body.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var info_font:=FONTS.stack("cinzel_hell",400).duplicate();info_font.spacing_glyph=2;_body.add_theme_font_override("font",info_font)
+ _title=Surface.text(_screen,word("dead"),Rect2(600,382,720,60),45,Color(.855,.824,.757,.94),"hell_title",700);_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var title_font:=FONTS.stack("hell_title",700).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(title_font,int(6));_title.add_theme_font_override("font",title_font)
+ _subtitle=Surface.text(_screen,"누군가는 너를 기다리고 있다",Rect2(560,452,800,32),20,Color(.776,.722,.620,.82),"hell");_subtitle.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var sub_font:=FONTS.stack("hell",400).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(sub_font,int(2));_subtitle.add_theme_font_override("font",sub_font)
+ _body=Surface.text(_screen,"",Rect2(400,498,1120,33),18,Color(.682,.592,.435,.82),"cinzel_hell");_body.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var info_font:=FONTS.stack("cinzel_hell",400).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(info_font,int(2));_body.add_theme_font_override("font",info_font)
  _retry=_button("retry",Rect2(865,555,190,45),17);_retry.pressed.connect(func():
   var r: Dictionary=retry()
   if r.get("status")!="APPLIED":_body.text=word("failed"))
@@ -303,7 +303,7 @@ func _next_dialogue() -> void:
  _render_dialogue()
  create_tween().tween_property(_pets,"modulate:a",1.0,.25)
 func _button(key: String,rect: Rect2,px: int) -> Button:
- var b:=Button.new();b.text=word(key) if not key.is_empty() else "";b.position=rect.position;b.size=rect.size;var font:=FONTS.stack("hell_title",700).duplicate();font.spacing_glyph=2;b.add_theme_font_override("font",font);b.add_theme_font_size_override("font_size",px);b.add_theme_color_override("font_color",Color(.855,.824,.757,.9))
+ var b:=Button.new();b.text=word(key) if not key.is_empty() else "";b.position=rect.position;b.size=rect.size;var font:=FONTS.stack("hell_title",700).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(font,int(2));b.add_theme_font_override("font",font);b.add_theme_font_size_override("font_size",px);b.add_theme_color_override("font_color",Color(.855,.824,.757,.9))
  var style:=StyleBoxFlat.new();style.bg_color=Color(.031,.024,.02,.42);style.border_color=Color(.553,.486,.376,.58);style.set_border_width_all(1);b.add_theme_stylebox_override("normal",style)
  var hover:=style.duplicate();hover.bg_color=Color(.31,.208,.133,.34);hover.border_color=Color(.718,.651,.506,.8);b.add_theme_stylebox_override("hover",hover);b.add_theme_stylebox_override("pressed",hover);_screen.add_child(b);return b
 func _capture_replay() -> void:

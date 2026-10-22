@@ -23,7 +23,15 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
    "panel":
     var bg:=color(n.background);var border:=color(n.border)
     var radius:=int(str(n.get("radius","0px")).trim_suffix("px").to_float())
-    if cls.contains("set-range-row"):
+    if cls.contains("ui-section-heading"):
+     # SWEEP-B: computed 테두리 0, bg linear-gradient(90deg, rgba(28,23,20,.97), rgba(13,13,16,.97)) + 그림자 0 5px 14px rgba(0,0,0,.55)
+     var head:=Panel.new();head.position=r.position;head.size=r.size;head.mouse_filter=Control.MOUSE_FILTER_IGNORE
+     var hs:=StyleBoxFlat.new();hs.bg_color=Color(20/255.0,18/255.0,18/255.0,.97);hs.shadow_color=Color(0,0,0,.55);hs.shadow_size=7;hs.shadow_offset=Vector2(0,5)
+     head.add_theme_stylebox_override("panel",hs);add_child(head)
+     var grad:=Gradient.new();grad.set_color(0,Color(28/255.0,23/255.0,20/255.0,.97));grad.set_color(1,Color(13/255.0,13/255.0,16/255.0,.97))
+     var gt:=GradientTexture2D.new();gt.gradient=grad;gt.width=64;gt.height=4;gt.fill_from=Vector2(0,0);gt.fill_to=Vector2(1,0)
+     var fill:=TextureRect.new();fill.texture=gt;fill.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;fill.stretch_mode=TextureRect.STRETCH_SCALE;fill.size=r.size;fill.mouse_filter=Control.MOUSE_FILTER_IGNORE;head.add_child(fill)
+    elif cls.contains("set-range-row"):
      # SWEEP-B: computed border = 하단만 rgba(177,162,125,.07) (상·좌우 0)
      var row_line:=ColorRect.new();row_line.color=Color(177/255.0,162/255.0,125/255.0,.07);row_line.position=Vector2(r.position.x,r.end.y-1);row_line.size=Vector2(r.size.x,1);row_line.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(row_line)
     elif radius>0:

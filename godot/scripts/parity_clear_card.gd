@@ -21,7 +21,7 @@ func setup(g: Dictionary) -> void:
  var shade:=StyleBoxFlat.new();shade.bg_color=Color.TRANSPARENT;shade.shadow_color=Color(0,0,0,.6);shade.shadow_size=16;shade.shadow_offset=Vector2(0,4);card_shadow.add_theme_stylebox_override("panel",shade)
  var title:=S.text(card,I.text("구역 클리어!"),Rect2(0,0,368,29),21,Color("e6d6b9"),"hell_title",700);title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
  title.add_theme_color_override("font_shadow_color",Color("d8b77838"));title.add_theme_constant_override("shadow_outline_size",8)
- var title_font: FontVariation=preload("res://scripts/native_ui_fonts.gd").stack("hell_title",700).duplicate();title_font.spacing_glyph=4;title.add_theme_font_override("font",title_font) # G356 letter-spacing .18em
+ var title_font: FontVariation=preload("res://scripts/native_ui_fonts.gd").stack("hell_title",700).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(title_font,int(4));title.add_theme_font_override("font",title_font) # G356 letter-spacing .18em
  for side in [0,1]: # G357–358 ::before/::after 28×1 gradient(transparent→rgba(164,147,115,.54)) top 52%
   var line:=TitleRule.new();line.mirror=side==1;line.position=Vector2(80.1 if side==0 else 259.9,14.6);line.size=Vector2(28,1);line.mouse_filter=Control.MOUSE_FILTER_IGNORE;card.add_child(line)
  var en:=S.text(card,"ZONE CLEARED",Rect2(0,31,368,15),10,Color("a8997f"),"cinzel_hell");en.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER

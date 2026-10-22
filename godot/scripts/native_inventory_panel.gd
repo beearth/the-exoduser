@@ -222,22 +222,27 @@ func _cp(m: Dictionary) -> Dictionary:
  return {"total":int(atk+defense+extra),"atk":int(atk),"def":int(defense),"extra":int(extra)}
 func _power_total(m: Dictionary) -> int:return _cp(m).total
 func _empty_detail(m: Dictionary) -> void:
- Surface.text(detail,"장비 기록",Rect2(18,12,440,24),10,Color("ae8c5d"),"font",700)
- Surface.text(detail,"현재 전투 구성",Rect2(18,36,440,36),20,Color("e1c99b"),"font",700)
- var hint:=Surface.text(detail,"장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.",Rect2(18,76,440,48),12,Color("a99c85"));hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+ # game.html 49680 .inv-detail-empty + inventory-space.css 실측(상세 원점 1395.16,183 기준 상대좌표)
+ var kicker:=Surface.text(detail,"장비 기록",Rect2(19,17,433.8,13),10,Color("ae8c5d"),"hell",700)
+ var kf: FontVariation=kicker.get_theme_font("font").duplicate();Surface.Fonts.apply_spacing(kf,2);kicker.add_theme_font_override("font",kf)
+ var title:=Surface.text(detail,"현재 전투 구성",Rect2(19,40,433.8,26),20,Color("e1c99b"),"font",700);var tf: FontVariation=title.get_theme_font("font").duplicate();Surface.Fonts.apply_spacing(tf,1);title.add_theme_font_override("font",tf)
+ var hint:=Surface.text(detail,"장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.",Rect2(19,76,360,40.8),12,Color(169/255.0,156/255.0,133/255.0));hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;hint.add_theme_constant_override("line_spacing",3)
  var p: Dictionary=_state.get_ref().read_current_p()
  for i in 4:
-  var metric:=Surface.panel(detail,Rect2(18+(i%2)*225,133+(i/2)*49,219,42),Color("0a1014"),Color("66583d"))
-  Surface.text(metric,["공격","방어","추가 효과","유물 장착"][i],Rect2(12,6,110,28),11,Color("a99b81"))
-  var val:=Surface.text(metric,str([_cp(m).atk,_cp(m).def,_cp(m).extra,"0 / 0"][i]),Rect2(120,2,86,36),16,Color("ead2a1"),"font",700);val.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
- Surface.text(detail,"장착 목록",Rect2(18,247,440,35),11,Color("cba875"),"font",700)
+  # .inv-detail-metrics>div 213.4×42.3, 열 간격 7, 행 간격 7, bg rgba(10,16,20,.72) 1px #66583d, pad 10 12
+  var metric:=Surface.panel(detail,Rect2(19+(i%2)*220.4,132.8+(i/2)*49.3,213.4,42.3),Color(10/255.0,16/255.0,20/255.0,.72),Color("66583d"))
+  Surface.text(metric,["공격","방어","추가 효과","유물 장착"][i],Rect2(13,14,110,15),11,Color(169/255.0,155/255.0,129/255.0),"hell",500)
+  var val:=Surface.text(metric,str([_cp(m).atk,_cp(m).def,_cp(m).extra,"0 / 0"][i]),Rect2(90,11,110.4,20),16,Color("ead2a1"),"font",700);val.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
+ # .inv-loadout-title: margin 24 0 10, pad-bottom 8, border-bottom 1px #69563a, 700 11px ls .16em #cba875
+ var loadout:=Surface.text(detail,"장착 목록",Rect2(19,258.4,433.8,15.4),11,Color("cba875"),"hell",700);var lf: FontVariation=loadout.get_theme_font("font").duplicate();Surface.Fonts.apply_spacing(lf,2);loadout.add_theme_font_override("font",lf)
+ var rule:=ColorRect.new();rule.position=Vector2(19,281.8);rule.size=Vector2(433.8,1);rule.color=Color("69563a");rule.mouse_filter=Control.MOUSE_FILTER_IGNORE;detail.add_child(rule)
  var j:=0
  for i in 17:
   if i==15:continue
   var slot: String=slot_reader.source_slot_names()[i];var it: Variant=m.inventory.equipped.get(slot)
-  var entry:=Surface.panel(detail,Rect2(18+(j%2)*225,303+(j/2)*55,219,48),Color("0c1215"),Color("514434"))
-  Surface.text(entry,slot_name(slot),Rect2(9,3,199,16),10,Color("a99b81"))
-  Surface.text(entry,name_for(it) if it is Dictionary else "빈 칸",Rect2(9,20,199,22),12,Color("e1c99b"),"font",700);j+=1
+  var entry:=Surface.panel(detail,Rect2(19+(j%2)*220.4,302.8+(j/2)*55,213.4,48),Color(16/255.0,21/255.0,24/255.0),Color(81/255.0,68/255.0,52/255.0))
+  Surface.text(entry,slot_name(slot),Rect2(10,8,193,13),10,Color(159/255.0,144/255.0,121/255.0),"hell",500)
+  Surface.text(entry,name_for(it) if it is Dictionary else "빈 칸",Rect2(10,24,193,15.6),12,Color("e1c99b"),"font",600);j+=1
 func _navigate(key: int) -> void:
  close_panel()
  if key==KEY_TAB:return

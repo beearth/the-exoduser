@@ -285,7 +285,7 @@ func _build() -> void:
 	# #fgGrid (732,382.4,688,581.6) border 6px rgb(80,75,65) + iron 그라디언트, padding 8
 	var grid_box:=WebBox.new();grid_box.position=Vector2(732,382.4);grid_box.size=Vector2(688,581.6);grid_box.grad_a=Color(17/255.0,16/255.0,18/255.0,.875);grid_box.grad_b=Color(9/255.0,9/255.0,10/255.0,.93);_screen.add_child(grid_box)
 	S.frame(_screen,Rect2(732,382.4,688,581.6),6) # #forge #fgGrid border 6px + border-image rail
-	_scroll=ScrollContainer.new();_scroll.position=Vector2(746,396.4);_scroll.size=Vector2(664,553.6);_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;_screen.add_child(_scroll)
+	_scroll=ScrollContainer.new();_scroll.position=Vector2(746,396.4);_scroll.size=Vector2(664,553.6);_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_SHOW_NEVER;_screen.add_child(_scroll)
 	_fg_content=Control.new();_fg_content.custom_minimum_size=Vector2(650,10);_scroll.add_child(_fg_content)
 	# #forgeConfirm(선택 확인 바) — 그리드 아래
 	_confirm_bar=Control.new();_confirm_bar.position=Vector2(732,972);_confirm_bar.size=Vector2(688,26);_screen.add_child(_confirm_bar);_confirm_bar.hide()
@@ -326,7 +326,7 @@ func _navigate(index: int) -> void:
 func _css(parent: Node,value: String,rect: Rect2,px: float,color: Color,stack: String,weight: int,spacing: float) -> Label:
 	var l:=Label.new();l.text=value;l.position=rect.position;l.size=rect.size;l.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var font: FontVariation=(Fonts.stack(stack,weight) if Fonts.STACKS.has(stack) else Fonts.stack("hell",weight)).duplicate()
-	if spacing!=0.0:font.spacing_glyph=roundi(spacing)
+	if spacing!=0.0:preload("res://scripts/native_ui_fonts.gd").apply_spacing(font,int(roundi(spacing)))
 	l.add_theme_font_override("font",font);l.add_theme_font_size_override("font_size",maxi(1,roundi(px)));l.add_theme_color_override("font_color",color)
 	parent.add_child(l);return l
 func _rich(parent: Node,bbcode: String,rect: Rect2,px: float,color: Color,stack: String="hell",weight: int=400,center: bool=false) -> RichTextLabel:

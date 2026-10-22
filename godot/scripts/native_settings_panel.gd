@@ -35,8 +35,11 @@ func _build() -> void:
   var key: String=["system","screen","sound","controls"][i]
   controls["tab_"+key]=S.button(_panel,["게임","화면","사운드","조작"][i],Rect2(40+i*462,257,454,48),func():_rebuild(key),_tab==key,16)
  var data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/parity_ui_05_settings_layout.json"))[_tab]
- var scroll:=ScrollContainer.new();scroll.position=Vector2(45,325);scroll.size=Vector2(1830,652);_panel.add_child(scroll)
- S.panel(_panel,Rect2(45,325,1830,652),Color(0,0,0,.2),Color("5c503d")).show_behind_parent=true
+ # SWEEP-B 실측 .settings-section(45,325,1830,652): 1px rgb(83,75,62), bg rgba(5,7,7,.733)→rgba(8,9,9,.85), inset 0 0 0 2px #080909. 스크롤바는 보이지 않는다.
+ var section:=S.panel(_panel,Rect2(45,325,1830,652),Color(6.5/255.0,8/255.0,8/255.0,.79),Color(83/255.0,75/255.0,62/255.0))
+ var inset:=Panel.new();inset.position=Vector2(1,1);inset.size=Vector2(1828,650);inset.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var inset_style:=StyleBoxFlat.new();inset_style.draw_center=false;inset_style.border_color=Color("080909");inset_style.set_border_width_all(2);inset.add_theme_stylebox_override("panel",inset_style);section.add_child(inset)
+ var scroll:=ScrollContainer.new();scroll.position=Vector2(45,325);scroll.size=Vector2(1830,652);scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_SHOW_NEVER;_panel.add_child(scroll)
  var content:=preload("res://scripts/parity_settings_page.gd").new();scroll.add_child(content);content.setup(self,data,_rows)
  _footer()
 func _footer() -> void:

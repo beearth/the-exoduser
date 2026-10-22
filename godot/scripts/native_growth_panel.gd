@@ -289,9 +289,9 @@ func _refresh() -> void:
  var result: Variant=evaluated()
  _points.text=number(result.ap if result!=null else _live.ap)
  _apply.disabled=result==null or result.changes==0
- _apply.modulate=Color(.78,.74,.72,.48) if _apply.disabled else Color.WHITE # opacity .48 + saturate(.3)
+ _foot_disabled(_apply)
  _discard.disabled=result==null or result.changes==0
- _discard.modulate=Color(.78,.74,.72,.48) if _discard.disabled else Color.WHITE
+ _foot_disabled(_discard)
  _refresh_path_counts()
  _clear(_detail)
  var ui:=preload("res://scripts/native_demo_ui_i18n.gd")
@@ -354,14 +354,33 @@ func _foot_button(caption: String,rect: Rect2,callback: Callable,kind: String) -
   var plate:=FootPlate.new();plate.ember=kind=="ember";plate.size=rect.size;plate.show_behind_parent=true;plate.mouse_filter=Control.MOUSE_FILTER_IGNORE;b.add_child(plate)
  b.pressed.connect(callback);_screen.add_child(b);return b
 
+## #statPanel button:disabled — 실측 opacity .48 + filter saturate(.3)
+static func _saturate(c: Color,amount: float) -> Color:
+ var l:=c.r*.2126+c.g*.7152+c.b*.0722
+ return Color(l+(c.r-l)*amount,l+(c.g-l)*amount,l+(c.b-l)*amount,c.a)
+func _foot_disabled(b: Button) -> void:
+ var plate: FootPlate=null
+ for child in b.get_children():
+  if child is FootPlate:plate=child
+ var ink: Color=b.get_meta("foot_ink",b.get_theme_color("font_color"))
+ if not b.has_meta("foot_ink"):b.set_meta("foot_ink",ink)
+ var shown: Color=_saturate(ink,.3) if b.disabled else ink
+ for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color","font_disabled_color"]:b.add_theme_color_override(key,shown)
+ b.modulate=Color(1,1,1,.48) if b.disabled else Color.WHITE
+ if plate!=null:plate.desat=b.disabled;plate.queue_redraw()
 class FootPlate extends Control:
  var ember:=false
+ var desat:=false
+ func _c(c: Color) -> Color:
+  if not desat:return c
+  var l:=c.r*.2126+c.g*.7152+c.b*.0722
+  return Color(l+(c.r-l)*.3,l+(c.g-l)*.3,l+(c.b-l)*.3,c.a)
  func _draw() -> void:
-  var top:=Color(155/255.0,70/255.0,53/255.0) if ember else Color(45/255.0,40/255.0,33/255.0)
-  var bottom:=Color(99/255.0,38/255.0,31/255.0) if ember else Color(19/255.0,23/255.0,25/255.0)
+  var top:=_c(Color(155/255.0,70/255.0,53/255.0) if ember else Color(45/255.0,40/255.0,33/255.0))
+  var bottom:=_c(Color(99/255.0,38/255.0,31/255.0) if ember else Color(19/255.0,23/255.0,25/255.0))
   draw_polygon(PackedVector2Array([Vector2.ZERO,Vector2(size.x,0),size,Vector2(0,size.y)]),PackedColorArray([top,top,bottom,bottom]))
-  draw_rect(Rect2(1,1,size.x-2,size.y-2),Color(72/255.0,30/255.0,24/255.0) if ember else Color(17/255.0,21/255.0,22/255.0),false,2.0)
-  draw_rect(Rect2(.5,.5,size.x-1,size.y-1),Color(207/255.0,150/255.0,113/255.0) if ember else Color(104/255.0,81/255.0,58/255.0),false,1.0)
+  draw_rect(Rect2(1,1,size.x-2,size.y-2),_c(Color(72/255.0,30/255.0,24/255.0) if ember else Color(17/255.0,21/255.0,22/255.0)),false,2.0)
+  draw_rect(Rect2(.5,.5,size.x-1,size.y-1),_c(Color(207/255.0,150/255.0,113/255.0) if ember else Color(104/255.0,81/255.0,58/255.0)),false,1.0)
 
 func _effect(row: Dictionary,level: float) -> float:
  var amount: float=float(row.base)+float(row.per)*level
@@ -427,7 +446,7 @@ func _t2(ko: String,en: String) -> String:return ko if TranslationServer.get_loc
 func _ilabel(parent: Node,value: String,rect: Rect2,px: float,color: Color,stack: String="font",weight: int=400,spacing: float=0.0,align:=HORIZONTAL_ALIGNMENT_LEFT) -> Label:
  var l:=Label.new();l.text=value;l.position=rect.position-Vector2(24,20);l.size=rect.size;l.horizontal_alignment=align;l.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var f: FontVariation=FONTS.stack(stack,weight).duplicate()
- if spacing!=0.0:f.spacing_glyph=roundi(spacing)
+ if spacing!=0.0:preload("res://scripts/native_ui_fonts.gd").apply_spacing(f,int(roundi(spacing)))
  l.add_theme_font_override("font",f);l.add_theme_font_size_override("font_size",roundi(px));l.add_theme_color_override("font_color",color);parent.add_child(l);return l
 func _render_inspector(result: Variant) -> void:
  # 좌표는 웹 절대값에서 인스펙터(1465,317)를 뺀 값.

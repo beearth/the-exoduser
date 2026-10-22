@@ -41,6 +41,8 @@ func _run() -> void:
 		if DisplayServer.screen_get_position(i).x > DisplayServer.screen_get_position(right).x: right = i
 	if wp.x < DisplayServer.screen_get_position(right).x: DisplayServer.window_set_position(DisplayServer.screen_get_position(right))
 	L("window_rect", {"before": str(wp), "after": str(DisplayServer.window_get_position()), "size": str(DisplayServer.window_get_size())})
+	# 실제 마우스 커서가 캡처 창 위에 있으면 hover가 화면을 바꾼다(인벤 상세 등). 창을 마우스 통과로 둔다(1px 영역만 받음).
+	DisplayServer.window_set_mouse_passthrough(PackedVector2Array([Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)]))
 	DirAccess.make_dir_recursive_absolute(out)
 	root.size = Vector2i(1920, 1080); root.content_scale_size = Vector2i(1920, 1080)
 	wipe_store()

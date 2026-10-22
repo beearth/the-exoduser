@@ -286,14 +286,14 @@ func _build() -> void:
 	_box(Rect2(0,0,440,335),Color.TRANSPARENT,Color("756247"),_name_box)
 	_box(Rect2(3,3,434,329),Color.TRANSPARENT,Color("a68a5433"),_name_box)
 	_box(Rect2(6,6,428,323),Color.TRANSPARENT,Color("a68a542b"),_name_box)
-	var name_title:=_label("새 캐릭터 생성",Vector2(41,49),358,24,_name_box,true);name_title.size.y=32;name_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var title_font: FontVariation=Fonts.stack("disp_title",700).duplicate();title_font.spacing_glyph=2;name_title.add_theme_font_override("font",title_font);name_title.add_theme_color_override("font_color",Color("ecd9b7"));name_title.add_theme_color_override("font_shadow_color",Color.BLACK);name_title.add_theme_constant_override("shadow_offset_x",0);name_title.add_theme_constant_override("shadow_offset_y",2)
-	var description:=_label("지옥에 보낼 캐릭터의 이름을 지어주세요",Vector2(41,89),358,13,_name_box);description.size.y=19;description.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var desc_font: FontVariation=Fonts.stack("font").duplicate();desc_font.spacing_glyph=1;description.add_theme_font_override("font",desc_font);description.add_theme_color_override("font_color",Color("c4b69e"))
-	var name_caption:=_label("캐릭터 이름 (2~8자)",Vector2(41,136),358,14,_name_box);name_caption.size.y=21;var caption_font: FontVariation=Fonts.stack("font").duplicate();caption_font.spacing_glyph=1;name_caption.add_theme_font_override("font",caption_font);name_caption.add_theme_color_override("font_color",Color("d3c1a2"))
+	var name_title:=_label("새 캐릭터 생성",Vector2(41,49),358,24,_name_box,true);name_title.size.y=32;name_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var title_font: FontVariation=Fonts.stack("disp_title",700).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(title_font,int(2));name_title.add_theme_font_override("font",title_font);name_title.add_theme_color_override("font_color",Color("ecd9b7"));name_title.add_theme_color_override("font_shadow_color",Color.BLACK);name_title.add_theme_constant_override("shadow_offset_x",0);name_title.add_theme_constant_override("shadow_offset_y",2)
+	var description:=_label("지옥에 보낼 캐릭터의 이름을 지어주세요",Vector2(41,89),358,13,_name_box);description.size.y=19;description.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var desc_font: FontVariation=Fonts.stack("font").duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(desc_font,int(1));description.add_theme_font_override("font",desc_font);description.add_theme_color_override("font_color",Color("c4b69e"))
+	var name_caption:=_label("캐릭터 이름 (2~8자)",Vector2(41,136),358,14,_name_box);name_caption.size.y=21;var caption_font: FontVariation=Fonts.stack("font").duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(caption_font,int(1));name_caption.add_theme_font_override("font",caption_font);name_caption.add_theme_color_override("font_color",Color("d3c1a2"))
 	name_input=LineEdit.new();name_input.max_length=8;name_input.position=Vector2(41,165);name_input.size=Vector2(358,54)
 	var input_box:=StyleBoxFlat.new();input_box.bg_color=Color("090a0d");input_box.border_color=Color("79654a");input_box.set_border_width_all(1);input_box.set_corner_radius_all(2);input_box.content_margin_left=18;input_box.content_margin_right=18
 	name_input.add_theme_stylebox_override("normal",input_box)
 	var focused:StyleBoxFlat=input_box.duplicate();focused.border_color=Color("d7b985");focused.shadow_color=Color(215/255.0,185/255.0,133/255.0,.2);focused.shadow_size=2;name_input.add_theme_stylebox_override("normal",focused);name_input.add_theme_stylebox_override("focus",StyleBoxEmpty.new())
-	name_input.add_theme_color_override("font_color",Color("f1e4c9"));name_input.add_theme_color_override("caret_color",Color("d7b985"));var input_font: FontVariation=Fonts.stack("font").duplicate();input_font.spacing_glyph=1;name_input.add_theme_font_override("font",input_font);name_input.add_theme_font_size_override("font_size",16);_name_box.add_child(name_input)
+	name_input.add_theme_color_override("font_color",Color("f1e4c9"));name_input.add_theme_color_override("caret_color",Color("d7b985"));var input_font: FontVariation=Fonts.stack("font").duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(input_font,int(1));name_input.add_theme_font_override("font",input_font);name_input.add_theme_font_size_override("font_size",16);_name_box.add_child(name_input)
 	name_input.text_submitted.connect(func(_value:String):_create())
 	creation_error=_label("",Vector2(41,239),358,12,_name_box);creation_error.size.y=34;creation_error.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;creation_error.add_theme_font_override("font",Fonts.stack("font"));creation_error.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;creation_error.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;creation_error.add_theme_color_override("font_color",Color(204/255.0,68/255.0,51/255.0));creation_error.hide()
 	for i in 2:
@@ -321,7 +321,7 @@ func _build() -> void:
 
 ## ui-refinement: plate button edge — 1px border, inset top light, inset bottom bar, focus outline 2px #C9A961.
 func _web_button(b: Button,active: bool,radius: int,px: float,weight: int,spacing: float) -> void:
-	var font: FontVariation=Fonts.stack("font",weight).duplicate();font.spacing_glyph=roundi(spacing)
+	var font: FontVariation=Fonts.stack("font",weight).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(font,int(roundi(spacing)))
 	b.add_theme_font_override("font",font);b.add_theme_font_size_override("font_size",roundi(px))
 	b.add_theme_color_override("font_color",Color(1,240/255.0,209/255.0) if active else Color(223/255.0,206/255.0,176/255.0))
 	b.add_theme_color_override("font_focus_color",b.get_theme_color("font_color"));b.add_theme_color_override("font_hover_color",b.get_theme_color("font_color"))
@@ -356,7 +356,7 @@ static func _sepia_material() -> ShaderMaterial:
 	var sh:=Shader.new();sh.code="shader_type canvas_item;varying vec4 vmod;void vertex(){vmod=COLOR;}void fragment(){vec4 c=texture(TEXTURE,UV)*vmod;float l=dot(c.rgb,vec3(.2126,.7152,.0722));vec3 g=mix(c.rgb,vec3(l),.85);vec3 sp=vec3(dot(g,vec3(.393,.769,.189)),dot(g,vec3(.349,.686,.168)),dot(g,vec3(.272,.534,.131)));COLOR=vec4(mix(g,sp,.85)*.96,c.a);}"
 	var m:=ShaderMaterial.new();m.shader=sh;return m
 func _restyle_button(b: Button,top: Color,bottom: Color,border: Color,ink: Color,stack: String,weight: int,px: float,spacing: float) -> void:
-	var font: FontVariation=Fonts.stack(stack,weight).duplicate();font.spacing_glyph=roundi(spacing)
+	var font: FontVariation=Fonts.stack(stack,weight).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(font,int(roundi(spacing)))
 	b.add_theme_font_override("font",font);b.add_theme_font_size_override("font_size",roundi(px))
 	for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color","font_disabled_color"]:b.add_theme_color_override(key,ink)
 	for state in ["normal","hover","pressed","focus","disabled"]:
@@ -541,7 +541,7 @@ func _layout_char_display(selected: bool) -> void:
 	# idle KO title 44.8px h69 (Hangul line), EN 2 lines h122 (61/line); selected 36px h54; gap 4; sub 18.2; detail 16.8.
 	var title_px: float=36.0 if selected else 44.8
 	var spacing: int=roundi(title_px*(.16 if selected else .25))
-	var title_font: FontVariation=Fonts.stack("disp_title",400).duplicate();title_font.spacing_glyph=spacing
+	var title_font: FontVariation=Fonts.stack("disp_title",400).duplicate();preload("res://scripts/native_ui_fonts.gd").apply_spacing(title_font,int(spacing))
 	_disp_title.add_theme_font_override("font",title_font);_disp_title.add_theme_font_size_override("font_size",roundi(title_px))
 	_disp_title.add_theme_color_override("font_color",Color(223/255.0,214/255.0,194/255.0,.94) if selected else Color(220/255.0,110/255.0,80/255.0,.78))
 	_disp_title.text=_balance_lines(_disp_title.text.replace("\n"," "),title_font,roundi(title_px),500.0)
@@ -627,7 +627,7 @@ static func _release_version_text() -> String:
 func _css_label(value: String,rect: Rect2,px: float,color: Color,stack: String,weight: int,spacing: float,parent: Node) -> Label:
 	var l:=Label.new();l.text=value;l.position=rect.position;l.size=rect.size;l.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var font: FontVariation=Fonts.stack(stack,weight).duplicate()
-	if spacing!=0.0:font.spacing_glyph=roundi(spacing)
+	if spacing!=0.0:preload("res://scripts/native_ui_fonts.gd").apply_spacing(font,int(roundi(spacing)))
 	l.set_meta("css_spacing",float(roundi(spacing)))
 	l.add_theme_font_override("font",font);l.add_theme_font_size_override("font_size",roundi(px));l.add_theme_color_override("font_color",color)
 	l.clip_text=false;parent.add_child(l);return l

@@ -264,7 +264,7 @@ func _show_area_title() -> void:
  var titles:=area_title(int(_g.stage))
  for entry in [[titles.ko,25],[titles.en,10]]:
   var label:=Label.new();label.text=entry[0];label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-  var font:=FontVariation.new();font.base_font=preload("res://scripts/native_ui_fonts.gd").stack("hell_title" if entry[1]==25 else "cinzel_hell");font.spacing_glyph=roundi(24.8*.16 if entry[1]==25 else 11.2*.32)
+  var font:=FontVariation.new();font.base_font=preload("res://scripts/native_ui_fonts.gd").stack("hell_title" if entry[1]==25 else "cinzel_hell");preload("res://scripts/native_ui_fonts.gd").apply_spacing(font,int(roundi(24.8*.16 if entry[1]==25 else 11.2*.32)))
   label.add_theme_font_override("font",font);label.add_theme_font_size_override("font_size",25 if entry[1]==25 else 11);label.add_theme_color_override("font_color",Color(.875,.839,.761,.9) if entry[1]==25 else Color(.659,.6,.498,.72));label.add_theme_color_override("font_shadow_color",Color.BLACK);label.add_theme_constant_override("shadow_offset_y",2);label.add_theme_constant_override("shadow_outline_size",0);column.add_child(label)
  column.add_theme_constant_override("separation",5)
  for flip in [false,true]:
