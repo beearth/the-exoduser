@@ -135,6 +135,7 @@ var native_demo_boss_actor: Node2D
 var native_demo_boss_projectiles: Node
 var native_demo_boss_core: Node2D # PC-BOSS-CORE 2026-10-22: 1-1 보스 전투 owner
 var native_demo_encounter: Node
+var native_demo_boss_entry: Node # PC-BOSS-PARITY 2026-10-22: 보스방 진입 흐름(로딩 상태 머신·문 cadence)
 var native_demo_anglers: Node2D
 var native_demo_worms: Node2D
 
@@ -3570,8 +3571,11 @@ func _install_native_map11_combat_owners() -> void:
 	var bound: Dictionary=bind_native_spawn_stage_provider(world.map11_provider)
 	if not bound.get("ready",false):return
 	if not bind_native_demo_anglers(world.map11_provider,world.map11_provider.fieldboss_markers()):return
+	preload("res://scripts/native_field_mob_hit_owner.gd").install_native_boot(self) # PC-BOSS-PARITY: 앵글러 몸충돌·강타·근접 타격 PC owner
 	native_demo_encounter.configure(self,regions)
-	if not native_map11.bind_gate_owner(native_demo_encounter):return
+	# PC-BOSS-PARITY: MAP11 문 consumer 는 진입 흐름 노드(내부에서 encounter 위임). 설치 실패 시 기존 encounter 직결.
+	native_demo_boss_entry=preload("res://scripts/native_demo11_boss_entry.gd").install_native_boot(self)
+	if not native_map11.bind_gate_owner(native_demo_boss_entry if is_instance_valid(native_demo_boss_entry) else native_demo_encounter):return
 	# Prepare group-A constructor resources before the first live scheduler tick.
 	_native_etype_a_spawn=preload("res://scripts/native_demo11_etype_a_spawn.gd").new()
 	_native_etype_a_spawn.configure(self)

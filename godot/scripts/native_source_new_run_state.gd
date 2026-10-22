@@ -226,6 +226,33 @@ const BOSS_CORE_G_BOOL: Array[String] = ["bossAlive"]
 const BOSS_CORE_G_ARRAY: Array[String] = ["_druidOrbs", "_chaseAoes", "_fissures", "_tideWaves", "_seekerMines", "_poisonPools", "_lavaPools"]
 const BOSS_CORE_G_DICT: Array[String] = ["_pStats"]
 
+# PC-BOSS-PARITY (2026-10-22): 보스방 진입 흐름(native_demo11_boss_entry.gd) 전용 G 쓰기.
+# 원본 checkRooms 41784–41925·_enterBossArena 30749–30839 가 쓰는 키만 허용.
+const BOSS_ENTRY_G_NUMERIC: Array[String] = ["_bossLoadPhase", "_bossLoadT", "_bossLoadFade", "_crT", "_stageKills",
+	"shake", "_flashT", "_chromaT", "hitStop", "slowMo"]
+const BOSS_ENTRY_G_STRING: Array[String] = ["_flashCol"]
+const BOSS_ENTRY_G_BOOL: Array[String] = ["_bossGateNear"]
+
+func apply_native_boss_entry_g_writes(owner: Node, fields: Dictionary) -> Dictionary:
+	if not _current_error().is_empty() or not is_instance_valid(owner) or not owner.is_inside_tree() \
+			or not is_instance_valid(_player.get_parent()) or owner.get_parent() != _player.get_parent() \
+			or _player.get_parent().get("native_demo_boss_entry") != owner or get_tree().paused:
+		return {"applied": false, "reason": "actual_boss_entry_g_owner_not_current"}
+	for field in fields:
+		var value: Variant = fields[field]
+		if field in BOSS_ENTRY_G_NUMERIC:
+			if not (value is int or value is float) or not is_finite(float(value)):
+				return {"applied": false, "reason": "boss_entry_g_value_unsupported:" + str(field)}
+		elif field in BOSS_ENTRY_G_STRING:
+			if not value is String: return {"applied": false, "reason": "boss_entry_g_value_unsupported:" + str(field)}
+		elif field in BOSS_ENTRY_G_BOOL:
+			if not value is bool: return {"applied": false, "reason": "boss_entry_g_value_unsupported:" + str(field)}
+		else:
+			return {"applied": false, "reason": "boss_entry_g_field_unsupported:" + str(field)}
+	for field in fields:
+		_g[field] = fields[field]
+	return {"applied": true, "count": fields.size()}
+
 func apply_native_boss_core_g_writes(owner: Node, fields: Dictionary) -> Dictionary:
 	if not _current_error().is_empty() or not is_instance_valid(owner) or not owner.is_inside_tree() \
 			or owner.get_parent() != _world or not is_instance_valid(_player.get_parent()) \

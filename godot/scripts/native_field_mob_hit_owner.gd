@@ -246,4 +246,130 @@ func snapshot() -> Dictionary:
 	var family: Variant = _bound_family.get_ref() if _bound_family != null else null
 	var c: Dictionary = counts.duplicate()
 	c["scans"] = _scans
-	return {"bound": family != null and family.get("_pc_owner") == self, "serial": _serial, "counts": c}
+	return {"bound": family != null and family.get("_pc_owner") == self, "serial": _serial, "counts": c,
+		"interaction_bound": _interaction_bound, "angler": angler_counts.duplicate(), "melee": melee_counts.duplicate()}
+
+# ══════════════ PC-BOSS-PARITY (2026-10-22) — 앵글러 몸 충돌·착지 강타 PC interaction + hitArc 37646 ══════════════
+## 앵글러 family(native_demo11_anglers.gd, Mac)의 모델은 플레이어가 몸(r+P.r+8) 안에 들어오거나 착지 강타 범위에
+## 있으면 PC interaction 없이는 그 개체를 정지(blocked "PC_body_or_slam_owner_required")한다. 그 PC 측이 여기다.
+##   G61081 충돌체: 통과 불가 — d<fb.r+P.r 이면 P를 원 밖(fb.r+P.r)으로 밀고 d=fb.r+P.r
+##   G61082 d<fb.r+P.r+8 && P.iframes<=0 && P.s!=='charge' → hurtP(fb.atk)
+##   G61121 착지 강타(모델이 거리·iframes·charge 판정 후 요청) → hurtP(~~fb.atk), P.kb+=dir*18, addTxt '심해강타'
+## hurtP 는 기존 PC 경로(player.receive_damage, 보스 코어와 같은 adapter)를 쓴다. 43420 보스 로딩 중 무적은 여기서도 지킨다.
+## G37646 hitArc 끝 _hurtFieldMobs(P.x,P.y,range,baseDmg): 근접 무기 타격도 필드보스를 친다. player.gd(PC 이동 담당 소유)를
+## 고치지 않고, 같은 타격이 내보내는 telemetry "melee_contact_resolved"{damage=baseDmg(패시브 배율 후), range}로 받는다.
+## 순서 차이(기록): 원본은 적 루프 뒤 호출, 이 경로는 적 루프 직전 telemetry 시점 — 앵글러가 그 타격으로 죽는 프레임에만
+## 고어 RNG 3회(18692–18694)와 같은 타격의 일반 적 hurtE RNG 의 소비 순서가 바뀔 수 있다.
+var _interaction_bound := false
+var angler_counts := {"body": 0, "body_push": 0, "body_hurt": 0, "slam": 0, "load_phase_blocked": 0}
+var melee_counts := {"calls": 0, "contacts": 0, "applied": 0, "refused": 0}
+
+static func install_native_boot(main: Node) -> Node:
+	var owner: Node = main.get_node_or_null("PCFieldMobHitOwner")
+	if owner == null:
+		owner = (load("res://scripts/native_field_mob_hit_owner.gd") as GDScript).new()
+		owner.name = "PCFieldMobHitOwner"
+		if not owner.configure(main):
+			owner.free()
+			return null
+		main.add_child(owner)
+	owner.bind_angler_family()
+	var pl: Node = main.get("player")
+	if is_instance_valid(pl) and pl.has_signal("telemetry_event") and not pl.telemetry_event.is_connected(owner._on_player_telemetry):
+		pl.telemetry_event.connect(owner._on_player_telemetry)
+	return owner
+
+## 설치 시 1회: PC readback 신호 + interaction 을 함께 묶는다(이후 apply 의 _ensure_bound 는 같은 owner 확인만).
+func bind_angler_family() -> bool:
+	var family: Variant = _main.get("native_demo_anglers")
+	if not family is Node or not is_instance_valid(family):
+		return false
+	if family.get("_pc_owner") == self:
+		if not _interaction_bound:
+			_interaction_bound = family.bind_pc_interaction(self, Callable(self, "serve_angler_interaction"))
+		return _interaction_bound
+	if not family.bind_pc_source(self, EVENT, Callable(self, "serve_angler_interaction")):
+		return false
+	_bound_family = weakref(family)
+	_interaction_bound = true
+	return true
+
+func _player_frame() -> Dictionary:
+	var pl: Node2D = _main.player
+	return {"x": pl.global_position.x, "y": pl.global_position.y, "r": pl.radius, "iframes": pl.iframes, "s": pl.state}
+
+## hurtP(dmg) — 43420 보스 로딩 중 무적, 나머지 게이트는 기존 receive_damage(hp<=0·iframes) 경로.
+func _hurt_p(dmg: int) -> void:
+	var g: Variant = _main.source_state.read_current_g()
+	if g is Dictionary and _num(g.get("_bossLoadPhase"), 0.0) > 0.0:
+		angler_counts.load_phase_blocked += 1
+		return
+	_main.player.receive_damage(dmg, "phys", Vector2.ZERO)
+
+func serve_angler_interaction(request: Dictionary) -> Variant:
+	if not is_instance_valid(_main) or not is_instance_valid(_main.get("player")):
+		return null
+	var pl: Node2D = _main.player
+	var f: Variant = request.get("enemy")
+	if not f is Dictionary:
+		return null
+	var at := Vector2(_num(f.get("x"), 0.0), _num(f.get("y"), 0.0))
+	var fr: float = _r_or(f, 120.0)
+	var pr: float = float(pl.radius)
+	match str(request.get("kind")):
+		"body":
+			angler_counts.body += 1
+			var d: float = pl.global_position.distance_to(at)
+			if d < fr + pr: # G61081
+				var pa: float = atan2(pl.global_position.y - at.y, pl.global_position.x - at.x)
+				pl.global_position = Vector2(at.x + cos(pa) * (fr + pr), at.y + sin(pa) * (fr + pr))
+				d = fr + pr
+				angler_counts.body_push += 1
+			if d < fr + pr + 8.0 and float(pl.iframes) <= 0.0 and str(pl.state) != "charge": # G61082
+				angler_counts.body_hurt += 1
+				_hurt_p(int(_num(f.get("atk"), 0.0)))
+			return {"ack": true, "player": _player_frame()}
+		"slam":
+			angler_counts.slam += 1
+			_hurt_p(_js_int(_num(f.get("atk"), 0.0))) # G61121
+			var ka: float = atan2(pl.global_position.y - at.y, pl.global_position.x - at.x)
+			if pl.has_method("apply_native_posthurt_knockback"):
+				pl.apply_native_posthurt_knockback(Vector2(cos(ka) * 18.0, sin(ka) * 18.0)) # G61122
+			_text(pl.global_position.x, pl.global_position.y - 30.0, "\U01f4a5심해강타!", "#ff4444", 40) # G61123
+			return {"ack": true, "player": _player_frame()}
+	return null
+
+func _text(x: float, y: float, text: String, col: String, life: int) -> void:
+	var t: String = text
+	if _main.has_method("translate_native_boot_label"):
+		var v: Variant = _main.translate_native_boot_label(text)
+		if v is String: t = v
+	if _main.world.has_method("emit_native_text"):
+		_main.world.emit_native_text(x, y, t, col, life)
+
+## G37646 hitArc(…) 끝: _hurtFieldMobs(P.x,P.y,range,baseDmg) — hitSet 없음
+func _on_player_telemetry(kind: String, payload: Dictionary) -> void:
+	if kind != "melee_contact_resolved" or not is_instance_valid(_main):
+		return
+	var g: Variant = _main.source_state.read_current_g()
+	if not g is Dictionary or not has_field_mobs(g):
+		return
+	melee_counts.calls += 1
+	var fenv: Dictionary = read_env(g)
+	var at: Vector2 = _main.player.global_position
+	var sc: Dictionary = scan(fenv, at.x, at.y, _num(payload.get("range"), 0.0), {})
+	if sc.get("ok") != true:
+		melee_counts.refused += 1
+		return
+	if (sc.contacts as Array).is_empty():
+		return
+	melee_counts.contacts += (sc.contacts as Array).size()
+	var providers: Dictionary = _main.get_native_normal_enemy_damage_provider_callbacks()
+	var rand: Callable = func(_line: int, _purpose: String) -> Variant:
+		var cb: Variant = providers.get("rand")
+		if not cb is Callable or not (cb as Callable).is_valid(): return null
+		var r: Variant = cb.call()
+		if not r is Dictionary or str(r.get("status")) != "READY": return null
+		return float(r.value)
+	var fm: Dictionary = apply(sc.contacts, _num(payload.get("damage"), 0.0), {}, rand)
+	melee_counts.applied += int(fm.get("n", 0))

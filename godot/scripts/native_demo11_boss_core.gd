@@ -112,6 +112,18 @@ func adopt_spawn(receipt: Dictionary) -> Dictionary:
 func _owner_step_noop(_ticks: float, _frame: float, _enemies: Array) -> void:
 	pass
 
+## 41797–41799 입장 연출 첫 2틱: findBoss()(19967 살아있는 ib) → stunned=90, reviveIframes=110 (PC-BOSS-PARITY)
+func apply_entry_intro() -> Dictionary:
+	if not _live() or not is_instance_valid(body) or E.get("alive") != true: return {}
+	E.stunned = 90
+	E.reviveIframes = 110
+	return {"x": E.get("x"), "y": E.get("y"), "r": E.get("r"), "col": E.get("col")}
+
+## 43420 hurtP: G._bossLoadPhase>0 이면 무적(보스 로딩·스테이지 전환 중)
+func _load_phase_blocks_hurt() -> bool:
+	var lp: Variant = main.source_state.read_current_g().get("_bossLoadPhase")
+	return (lp is int or lp is float) and float(lp) > 0.0
+
 func is_boss_body_current(candidate: Node) -> bool:
 	return is_instance_valid(body) and candidate == body and _live()
 
@@ -487,6 +499,7 @@ func _rng(_tag: String, _line: int) -> float:
 # ═══════════════════════════════ 보스 → 플레이어 ═══════════════════════════════
 func _hurt_player(dmg: int, opts: Dictionary, dir_b: Vector2) -> Dictionary:
 	counters.hurtP += 1
+	if _load_phase_blocks_hurt(): return {"applied": 0.0, "blocked": "boss_load_phase_43420"}
 	var pl: Node2D = main.player
 	if pl.has_method("is_native_lesson_target") and false: pass
 	var dtype: String = str(opts.get("dtype", "phys"))
@@ -915,6 +928,7 @@ func _projectile_contact(request: Dictionary) -> Dictionary:
 	if v.length() > 0.001: kb = v.normalized() * 2.0
 	elif (pt - after).length() > 0.001: kb = (pt - after).normalized() * 2.0
 	var before_hp: float = float(pl.hp)
+	if _load_phase_blocks_hurt(): return {"ack": true, "action": "retire"} # 35089 hurtP 43420(탄은 원본처럼 소멸)
 	pl.receive_damage(dmg, "parry" if red else "magic", kb, kb.length())
 	if before_hp > float(pl.hp): counters.player_damage += before_hp - float(pl.hp)
 	counters.projectile_hits += 1
