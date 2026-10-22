@@ -1,0 +1,53 @@
+{
+  "at": "2026-10-22T17:17:57.454Z",
+  "koreana": {
+    "warrior_cathedral_20261020": "검과 붉은 망토를 두른 전사가 어두운 고딕 성당의 계단 앞에 서 있는 시네마틱 장면.",
+    "warrior_story_20261020": "불타는 전장에서 갑옷과 붉은 망토를 입은 전사가 커다란 검을 짚고 일어서는 시네마틱 장면.",
+    "world_tower_20261020": "깊은 원형 심연을 둘러싼 거대한 탑과 아래로 이어지는 지옥의 구조물을 내려다본 시네마틱 장면.",
+    "world_crimson_river_20261020": "해골과 뼈로 된 손이 솟아오르는 검붉은 강과 양옆의 어두운 절벽을 보여 주는 시네마틱 장면.",
+    "world_maw_20261020": "살점 같은 벽과 동심원으로 늘어선 이빨이 검은 구멍을 둘러싼 거대한 아가리의 시네마틱 장면.",
+    "world_descent_20261020": "번개가 치는 어두운 하늘 아래, 거대한 바위 위에 세워진 성채와 벼랑을 보여 주는 시네마틱 장면.",
+    "world_seal_20261020": "고대 문양이 새겨진 둥근 석제 봉인의 안쪽 고리가 희미한 빛을 내는 시네마틱 장면."
+  },
+  "english": {
+    "warrior_cathedral_20261020": "Cinematic scene of a warrior with a sword and red cloak standing before the steps of a dark Gothic cathedral.",
+    "warrior_story_20261020": "Cinematic scene of an armored warrior with a red cloak rising with a large sword amid a burning battlefield.",
+    "world_tower_20261020": "Cinematic view down into a vast circular abyss surrounded by towering structures and descending layers of hell.",
+    "world_crimson_river_20261020": "Cinematic scene of a dark crimson river with skulls and skeletal hands rising from the water between shadowed cliffs.",
+    "world_maw_20261020": "Cinematic close-up of a vast fleshy maw with concentric rings of teeth surrounding a dark opening.",
+    "world_descent_20261020": "Cinematic view of a fortress built on immense cliffs beneath a dark sky lit by lightning.",
+    "world_seal_20261020": "Cinematic close-up of an ancient carved stone seal with a faintly glowing inner ring."
+  },
+  "reloadedEnglish": [
+    {
+      "key": "warrior_cathedral_20261020",
+      "value": "Cinematic scene of a warrior with a sword and red cloak standing before the steps of a dark Gothic cathedral."
+    },
+    {
+      "key": "warrior_story_20261020",
+      "value": "Cinematic scene of an armored warrior with a red cloak rising with a large sword amid a burning battlefield."
+    },
+    {
+      "key": "world_tower_20261020",
+      "value": "Cinematic view down into a vast circular abyss surrounded by towering structures and descending layers of hell."
+    },
+    {
+      "key": "world_crimson_river_20261020",
+      "value": "Cinematic scene of a dark crimson river with skulls and skeletal hands rising from the water between shadowed cliffs."
+    },
+    {
+      "key": "world_maw_20261020",
+      "value": "Cinematic close-up of a vast fleshy maw with concentric rings of teeth surrounding a dark opening."
+    },
+    {
+      "key": "world_descent_20261020",
+      "value": "Cinematic view of a fortress built on immense cliffs beneath a dark sky lit by lightning."
+    },
+    {
+      "key": "world_seal_20261020",
+      "value": "Cinematic close-up of an ancient carved stone seal with a faintly glowing inner ring."
+    }
+  ],
+  "saved": true,
+  "published": false
+}

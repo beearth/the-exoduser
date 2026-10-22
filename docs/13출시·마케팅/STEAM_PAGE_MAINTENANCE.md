@@ -75,3 +75,15 @@ G:\exoduser의 AGENTS.md, 이 문서, STEAM_UPDATE_RULES.md §9, 총괄 마스�
 | GIT | 공용 INDEX 보존, 자기 docs/결과만 별도복구. 배포0 |
 | VISUAL VERDICT | **RETOUCH — 스토어용 새 사진 세트 미채택. 전체 맵 최종 판정 아님** |
 | NEXT PASS | 초반 안내 이후 전투·다른 화면 구도, 워터마크/테스트문구 없는 후보 확보 |
+
+
+## 2026-10-23 후속 — 소개 이미지 접근성 설명 실제 저장
+
+| 항목 | 실제 결과 | 검수·남은 범위 |
+|---|---|---|
+| 한·영 대체 텍스트 | warrior_cathedral / warrior_story / world_tower / world_crimson_river / world_maw / world_descent / world_seal의 20261020 자산 7종에 각각 한국어·영어 설명 총14개 추가 | 원본 접촉시트를 보고 장면을 서술. 시네마틱 장면임을 명시, 실제 게임 화면으로 소개하지 않음 |
+| 저장 검수 | Steam 이미지 접근성 편집창 저장 후 페이지 새로고침, 한국어7개 표시와 영어7개 값 일치 확인 | steam-alt-ko-saved.jpg / steam-alt-en-saved.jpg / alt-text-verification.json |
+| 범위 | 기존 이미지·본문 내용·짧은 소개·상단 영상·실제 플레이 갤러리 교체0. 공개 게시0 | 영상3개와 식별이 불충분한 정지화면에는 설명을 추측하여 넣지 않음 |
+| Git 경계 | main HEAD 5659d14d38b8068518cb5866a336bf930a1abbce, fetch origin/main c0c75855b3c06f2e0c6514b5c60b8c691718e729, 공유 INDEX480경로 보존 | 원격 갱신을 공용 작업 폴더에 자동 병합하지 않음 |
+
+접근성 보완은 상단 예고편 전송·최신 전투 스크린샷 교체·주간 자동 예약 완료가 아니다. 기존 우선 후속 작업은 계속 미완료로 유지한다.
