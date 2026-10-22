@@ -2,7 +2,7 @@
 
 BOSS-01 SHA: `760b7ea838d33c6317991b5076de203dcb407a0d`
 
-요청/이전 보고는 24장이지만 실제 `*_compare_1x.png`는 20장이다. 존재하는 20장 전부를 리사이즈 없이 JPEG quality 88로 보존했다. 누락 4장을 임의로 재구성하지 않았다. 원본 PNG는 외부 BOSS-01/captures에 보존.
+comparison-receipt.json 기준 24장 = 전체 화면 `*_compare_1x.png` 20장 + `*_crop_1x.png` 4장이다. 24장 전부 리사이즈 없이 JPEG quality 88로 보존했다. 첫 push의 전체20장에 crop4장을 추가 보완했다. 원본 PNG는 외부 BOSS-01/captures에 보존.
 
 상태 맞춤: 자연 발생 Wind 5종 경과20 source ticks·방향0, attack frame1/charge transform frame6. 표시 시간150ms 고정; 패턴/타이머/RNG 주입0. 위치·HP·무적·게이트·쉴드·부활력 fixture는 시각 검수 전용이며 E2E와 분리. 펫·동시 탄·카메라 전체 상태 일치 미검증. 좌우 비교는 원래1x 크기이며 JPEG는 손실 압축이다.
 
@@ -28,3 +28,7 @@ BOSS-01 SHA: `760b7ea838d33c6317991b5076de203dcb407a0d`
 |11c_exit_view_compare_1x|[11c_exit_view_compare_1x.jpg](11c_exit_view_compare_1x.jpg)|
 |11c_killed_compare_1x|[11c_killed_compare_1x.jpg](11c_killed_compare_1x.jpg)|
 |11d_clear_compare_1x|[11d_clear_compare_1x.jpg](11d_clear_compare_1x.jpg)|
+|10a_entry_namecard crop [570, 400, 1350, 780]|[10a_entry_namecard_namecard_crop_1x.jpg](10a_entry_namecard_namecard_crop_1x.jpg)|
+|10d_immune02 crop [670, 10, 1300, 145]|[10d_immune02_bossbar_crop_1x.jpg](10d_immune02_bossbar_crop_1x.jpg)|
+|10g_revive_0 crop [670, 10, 1300, 145]|[10g_revive_0_bossbar_crop_1x.jpg](10g_revive_0_bossbar_crop_1x.jpg)|
+|09a_fieldboss crop [220, 300, 800, 750]|[09a_fieldboss_angler_crop_1x.jpg](09a_fieldboss_angler_crop_1x.jpg)|
