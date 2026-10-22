@@ -143,7 +143,9 @@ func _physics_process(_delta: float) -> void:
  var p: Dictionary=main.source_state.read_current_p()
  if float(p.get("_demonRevCd",0))>0:p._demonRevCd=maxf(0,float(p._demonRevCd)-ticks)
  if remaining<=0 or _resolving:return
- remaining=maxf(0,remaining-ticks);_update_count()
+ # PC-SYS-2: 원본 update()는 fallen 중 P.st2를 두 번 줄인다 — G32794 공통 `P.st2-=sp`(상태 무관)와
+ # G32991 case 'fallen' `P.st2-=sp`. 300 카운트다운은 실제 약 2.5초(웹 실측 2506ms)이고 표시 초는 0.5초마다 바뀐다.
+ remaining=maxf(0,remaining-ticks-ticks);_update_count()
  if remaining==0:
   _resolving=true
   _request("revive_resolve" if roll.can_revive and roll.roll<roll.chance else "final_death",{"roll_receipt":roll})
@@ -154,9 +156,20 @@ func _update_count() -> void:
   _fallen_second=sec
   _fallen_count.text=str(sec)+"s"
   _fallen_count.add_theme_color_override("font_color",Color("ff3333" if sec<=1 else "ff7744" if sec<=2 else "ffcc44"))
-  _fallen_power.text=Surface.I18N.text("부활력 ")+str(roll.get("chance",0))+"%" if roll.get("can_revive",false) else Surface.I18N.text("부활 불가")
+  # G58932: 캔버스 문구는 _T 없이 한국어 원문 그대로, 확률은 JS 문자열 연결(Number#toString).
+  _fallen_power.text="부활력 "+js_number_string(float(roll.get("chance",0)))+"%" if roll.get("can_revive",false) else "부활 불가"
  _fallen_fill.size.x=300*remaining/300.0
  _fallen_material.set_shader_parameter("progress",remaining/300.0)
+## JS Number#toString(유한값·|x|<1e21 고정 소수점 범위): 정수는 소수점 없이, 그 외는 왕복이 같은 가장 짧은 표기.
+## 예: 0.0514*100 → "5.140000000000001"(웹과 같음). Godot str()은 "5.14"로 줄여 다르다.
+static func js_number_string(x: float) -> String:
+ if is_nan(x):return "NaN"
+ if is_inf(x):return "Infinity" if x>0 else "-Infinity"
+ if x==floor(x) and absf(x)<1e21:return str(int(x))
+ for d in range(1,18):
+  var s: String=String.num(x,d)
+  if s.to_float()==x:return s
+ return String.num(x,17)
 func _show_dead() -> void:
  # G43869 stops frame updates: keep the last fallen canvas beneath CSS death fade.
  if DisplayServer.get_name()!="headless":
@@ -240,7 +253,9 @@ func snapshot() -> Dictionary:
 func _build_view() -> void:
  # game.html:646–663,3101: full cover image and centered flex column.
  _view=CanvasLayer.new();_view.layer=95;add_child(_view)
- _fallen_layer=CanvasLayer.new();_fallen_layer.layer=9;add_child(_fallen_layer)
+ # PC-SYS-2: 쓰러짐 오버레이(G58909~58950)는 drawP 안 캔버스 그리기라, 뒤이은 후처리 패스(G55323 화톳불 배리어,
+ # 섬광·조명 — 화면 조명 레이어 5, 배리어 레이어 6)와 DOM HUD(10)·펫 대사(9) 아래에 깔린다(웹 1x: 마법진이 패널 위).
+ _fallen_layer=CanvasLayer.new();_fallen_layer.layer=4;add_child(_fallen_layer)
  _fallen=Control.new();_fallen.size=Vector2(1920,1080);_fallen.mouse_filter=Control.MOUSE_FILTER_IGNORE;_fallen_layer.add_child(_fallen)
  var tint:=ColorRect.new();tint.size=_fallen.size;tint.mouse_filter=Control.MOUSE_FILTER_IGNORE;_fallen.add_child(tint)
  _fallen_material=ShaderMaterial.new();_fallen_material.shader=preload("res://shaders/parity_fallen.gdshader");tint.material=_fallen_material
