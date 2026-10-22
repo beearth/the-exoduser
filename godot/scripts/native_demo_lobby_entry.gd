@@ -15,7 +15,7 @@ static func validate_name(raw: String, index: int=0) -> Dictionary:
 	var name:=raw.strip_edges()
 	var units:=name.to_utf16_buffer().size()/2 # Source JS name.length, not codepoint count.
 	if units<2 or units>8:return {"ready":false,"reason":"name_length"}
-	for c in ['<','>','"',"'",'&','/','\\']:
+	for c in ['<','>','"',"'",'&']:
 		if name.contains(c):return {"ready":false,"reason":"name_special"}
 	return {"ready":true,"name":name}
 func _fail(reason: String) -> Dictionary:

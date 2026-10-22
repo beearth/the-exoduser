@@ -43,6 +43,11 @@ var _previous_focus: Control
 var _form_slot := -1
 var _form: Control
 var _name_form: Control
+var _name_box: Control
+var language_select: OptionButton
+var _quit_modal: Control
+var _modal_quit:=false
+var slot_delete_buttons:Array[Button]=[]
 const BONE = Color("dfd6c2")
 const GOLD = Color("96714e")
 
@@ -62,7 +67,11 @@ func _ready() -> void:
 	if _entry_enabled:
 		new_game_requested.connect(_queue_entry)
 		_request_main_preload() # PC-INPUT-PARITY: 로비 동안 Main 리소스를 백그라운드로 읽어 진입 정지를 줄인다
+		continue_requested.connect(func(slot:int,data:Dictionary):_queue_entry(slot,data,false))
 	menu.open()
+	var saved_language:Dictionary=menu.storage.get_item("hellLang")
+	if saved_language.get("found",false) and saved_language.raw in ["ko","en"]:TranslationServer.set_locale(saved_language.raw)
+	language_select.select(0 if TranslationServer.get_locale().begins_with("ko") else 1)
 	var first_empty := 0
 	for i in menu.rows.size():
 		if menu.rows[i].kind=="empty":
@@ -77,9 +86,10 @@ func tr_text(ko: String, en: String) -> String: return UI.text(ko)
 func _input(event: InputEvent) -> void:
 	bridge.observe(event)
 	# Let the native LineEdit own IME composition/cancel keys.
-	if _form.visible and name_input.has_focus(): return
+	if _name_form.visible and name_input.has_focus() and (event is not InputEventKey or event.keycode!=KEY_ESCAPE or name_input.has_ime_text()): return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
 		if modal.visible: _close_modal()
+		elif _name_form.visible: _close_form()
 		elif _form.visible: _close_form()
 		get_viewport().set_input_as_handled()
 
@@ -134,12 +144,17 @@ func _build() -> void:
 	var sigil:=_image("res://assets/ui/parity_ui_03/sigil.png",Rect2(1330,-68,620,620));sigil.modulate.a=.14
 	var rail:=preload("res://scripts/native_parity_ui_surface.gd").Rail.new();rail.image=load("res://assets/ui/parity_ui_04/lobby_frame.png");rail.slice=.22;rail.width=48;rail.position=Vector2(1360,0);rail.size=Vector2(560,1080);rail.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(rail)
 	_image("res://assets/ui/parity_ui_04/logo.png",Rect2(1388,195,498,104)).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_label("한국어",Vector2(1388,147),160,12)
+	language_select=OptionButton.new();language_select.position=Vector2(1388,151.46875);language_select.size=Vector2(140,27);language_select.add_item("한국어");language_select.add_item("English");language_select.add_theme_font_override("font",Fonts.stack("font"));language_select.add_theme_font_size_override("font_size",12);language_select.add_theme_color_override("font_color",Color("ccaa88"));add_child(language_select)
+	var language_style:=StyleBoxFlat.new();language_style.bg_color=Color(10.0/255,6.0/255,2.0/255,.8);language_style.border_color=Color(120.0/255,80.0/255,40.0/255,.4);language_style.set_border_width_all(1);language_select.add_theme_stylebox_override("normal",language_style)
+	language_select.item_selected.connect(_select_language)
+	var offline:=_label("OFFLINE",Vector2(1536,151),350,12);offline.size.y=27;offline.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT;offline.add_theme_font_override("font",Fonts.stack("font",700));offline.add_theme_color_override("font_color",Color(180.0/255,140.0/255,110.0/255,.55))
 	var records:=ScrollContainer.new();records.position=Vector2(1392,315);records.size=Vector2(490,178);records.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(records)
 	var rows:=VBoxContainer.new();rows.add_theme_constant_override("separation",10);rows.size_flags_horizontal=Control.SIZE_EXPAND_FILL;records.add_child(rows)
 	for i in 5:
 		var b:=_button("",Rect2(0,0,480,84),_choose.bind(i),rows)
 		b.custom_minimum_size=Vector2(480,84);b.alignment=HORIZONTAL_ALIGNMENT_LEFT;b.add_theme_font_size_override("font_size",16);cards.append(b)
+		var delete_button:=_button("✕",Rect2(438,28,28,28),func():
+			if menu.ask_delete(i):_show_modal(),b);delete_button.add_theme_font_size_override("font_size",14);slot_delete_buttons.append(delete_button)
 		card_thumbs.append(_image("res://assets/ui/demo_lobby/charselect/portrait_warrior.png",Rect2(24,14,56,56),b))
 		var name_label:=_label("",Vector2(94,12),350,16,b);name_label.size.y=26;name_label.add_theme_font_override("font",Fonts.stack("font",700));card_names.append(name_label)
 		var info_label:=_label("",Vector2(94,45),350,12,b);info_label.size.y=22;info_label.add_theme_font_override("font",Fonts.stack("font",400));card_infos.append(info_label)
@@ -148,13 +163,16 @@ func _build() -> void:
 			if menu.rows[i].kind=="empty":_choose(i);return)
 	var wishlist_caption:=_label("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다",Vector2(1392,591),490,14);wishlist_caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;wishlist_caption.add_theme_font_override("font",Fonts.stack("font",700));wishlist_caption.add_theme_constant_override("line_spacing",-3)
 	var wishlist_sub:=_label("공식 출시 소식을 가장 먼저 받아보세요",Vector2(1392,652),490,11);wishlist_sub.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	_image("res://assets/ui/parity_ui_04/wishlist.png",Rect2(1537,674,200,44)).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var wishlist:=_button("",Rect2(1537,674,200,44),func():OS.shell_open("https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/"))
+	wishlist.name="WishlistButton";wishlist.add_theme_stylebox_override("normal",StyleBoxEmpty.new())
+	_image("res://assets/ui/parity_ui_04/wishlist.png",Rect2(0,0,200,44),wishlist).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	start=_button("",Rect2(1388,751,504,132),func():menu.request_continue())
 	_image("res://assets/ui/parity_ui_04/enter.png",Rect2(0,0,504,132),start).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	erase=_button("삭제",Rect2(1820,560,64,30),func():
 		if menu.ask_delete(menu.selected):_show_modal());erase.hide()
 	status=_label("",Vector2(1388,876),504,12);status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	_button("▶ 시네마틱",Rect2(1388,897,130,30),_play_cinematic)
+	var replay:=_button("▶ 시네마틱",Rect2(1388,897,80,32),_play_cinematic);replay.add_theme_font_override("font",Fonts.stack("font"));replay.add_theme_font_size_override("font_size",11);replay.add_theme_stylebox_override("normal",StyleBoxEmpty.new())
+	var quit_button:=_button("⏻",Rect2(1856,895,36,36),_show_quit);quit_button.name="QuitButton";quit_button.add_theme_font_size_override("font_size",20)
 	_form=_box(Rect2(0,0,1920,1080),Color("090609"),Color.TRANSPARENT)
 	_form.hide()
 	var scene:=_image("res://assets/ui/parity_ui_05/poster_idle_warrior_cs3_4k.jpg",Rect2(0,0,1920,1080),_form);scene.modulate=Color(.82,.82,.82)
@@ -194,35 +212,39 @@ func _build() -> void:
 	_box(Rect2(114,448,212,62),Color("0c0a0af0"),Color("80705a"),detail_lock)
 	_label(UI.text("출시 준비 중"),Vector2(114,448),212,24,detail_lock).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	var ornaments:=SourceOrnaments.new();ornaments.size=Vector2(1920,1080);ornaments.mouse_filter=Control.MOUSE_FILTER_IGNORE;_form.add_child(ornaments)
-	_name_form=_box(Rect2(0,0,1920,1080),Color(0,0,0,.85),Color.TRANSPARENT,_form);_name_form.hide()
-	_box(Rect2(680,390,560,300),Color("100d10"),GOLD,_name_form)
-	var name_title:=_label(tr_text("새 전사의 이름","New warrior name"),Vector2(710,430),500,28,_name_form,true);name_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	name_input=LineEdit.new(); name_input.max_length=8; name_input.position=Vector2(745,516); name_input.size=Vector2(430,54)
-	var input_box:=StyleBoxFlat.new();input_box.bg_color=Color("0b090b");input_box.border_color=GOLD;input_box.set_border_width_all(1);input_box.content_margin_left=16
+	_name_form=Control.new();_name_form.size=Vector2(1920,1080);_form.add_child(_name_form);_name_form.hide()
+	var blur:=ColorRect.new();blur.size=Vector2(1920,1080);var blur_material:=ShaderMaterial.new();blur_material.shader=preload("res://shaders/sweep_b_dialog_blur.gdshader");blur.material=blur_material;_name_form.add_child(blur)
+	_name_box=Control.new();_name_box.position=Vector2(740,372.5);_name_box.size=Vector2(440,335);_name_form.add_child(_name_box)
+	var surface:=preload("res://scripts/native_parity_ui_surface.gd")
+	surface.iron(_name_box,Rect2(0,0,440,335),Color("131215ee"),Color("0b0b0eef"))
+	_box(Rect2(0,0,440,335),Color.TRANSPARENT,Color("756247"),_name_box)
+	_box(Rect2(3,3,434,329),Color.TRANSPARENT,Color("a68a5433"),_name_box)
+	_box(Rect2(6,6,428,323),Color.TRANSPARENT,Color("a68a542b"),_name_box)
+	var name_title:=_label("새 캐릭터 생성",Vector2(41,49),358,24,_name_box,true);name_title.size.y=32;name_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;name_title.add_theme_font_override("font",Fonts.stack("font",700));name_title.add_theme_color_override("font_color",Color("ecd9b7"))
+	var description:=_label("지옥에 보낼 캐릭터의 이름을 지어주세요",Vector2(41,89),358,13,_name_box);description.size.y=19;description.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;description.add_theme_font_override("font",Fonts.stack("font"));description.add_theme_color_override("font_color",Color("c4b69e"))
+	var name_caption:=_label("캐릭터 이름 (2~8자)",Vector2(41,136),358,14,_name_box);name_caption.size.y=21;name_caption.add_theme_font_override("font",Fonts.stack("font"));name_caption.add_theme_color_override("font_color",Color("d3c1a2"))
+	name_input=LineEdit.new();name_input.max_length=8;name_input.position=Vector2(41,165);name_input.size=Vector2(358,54)
+	var input_box:=StyleBoxFlat.new();input_box.bg_color=Color("090a0d");input_box.border_color=Color("79654a");input_box.set_border_width_all(1);input_box.content_margin_left=18;input_box.content_margin_right=18
 	name_input.add_theme_stylebox_override("normal",input_box)
-	var focused: StyleBoxFlat=input_box.duplicate();focused.border_color=Color("c59c65");focused.set_border_width_all(2);name_input.add_theme_stylebox_override("focus",focused)
-	name_input.add_theme_color_override("font_color",BONE)
-	name_input.add_theme_color_override("selection_color",Color("602820"))
-	name_input.add_theme_color_override("caret_color",Color("c59c65"))
-	name_input.add_theme_font_override("font",Fonts.stack("hell",400)); name_input.add_theme_font_size_override("font_size",26); _name_form.add_child(name_input)
-	name_input.text_submitted.connect(func(_value: String): _create())
-	creation_error=_label("",Vector2(745,580),430,16,_name_form)
-	creation_error.add_theme_color_override("font_color",Color("ce8972"))
-	_button(tr_text("생성","Create"),Rect2(1000,622,176,44),_create,_name_form,true)
-	_button(tr_text("취소","Cancel"),Rect2(745,622,176,44),func():_name_form.hide(),_name_form)
+	var focused:StyleBoxFlat=input_box.duplicate();focused.border_color=Color("d7b985");name_input.add_theme_stylebox_override("focus",focused)
+	name_input.add_theme_color_override("font_color",Color("f1e4c9"));name_input.add_theme_color_override("caret_color",Color("d7b985"));name_input.add_theme_font_override("font",Fonts.stack("font"));name_input.add_theme_font_size_override("font_size",16);_name_box.add_child(name_input)
+	name_input.text_submitted.connect(func(_value:String):_create())
+	creation_error=_label("",Vector2(41,225),358,12,_name_box);creation_error.size.y=30;creation_error.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;creation_error.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;creation_error.add_theme_color_override("font_color",Color("ff6644"));creation_error.hide()
+	for i in 2:
+		var b:Button=surface.button(_name_box,["취소","생성"][i],Rect2(41+i*185,239,173,47),_close_form if i==0 else _create,i==1,14)
+		b.name="NameCancel" if i==0 else "NameCreate"
+		b.add_theme_font_override("font",Fonts.stack("font",400 if i==0 else 700))
 	modal=Control.new(); modal.size=Vector2(1920,1080); add_child(modal)
 	var veil := ColorRect.new(); veil.color=Color(0,0,0,0.85); veil.size=modal.size; modal.add_child(veil)
-	var dialog := _box(Rect2(540,330,840,410),Color("100d10"),GOLD,modal)
-	modal_title=_label(tr_text("기록을 삭제하시겠습니까?","Delete this record?"),Vector2(44,32),750,36,dialog,true)
-	modal_slot_number=_label("",Vector2(44,94),40,25,dialog)
-	modal_slot_number.add_theme_font_override("font",Fonts.stack("hell",700))
-	modal_record=_label("",Vector2(84,94),710,25,dialog,true)
-	_label(tr_text("선택한 슬롯의 로컬 기록이 삭제됩니다.","The selected local slot record will be deleted."),Vector2(44,146),750,22,dialog)
-	_label(tr_text("삭제한 기록은 되돌릴 수 없습니다.","This cannot be undone."),Vector2(44,192),750,21,dialog)
-	modal_error=_label("",Vector2(44,230),750,16,dialog)
-	cancel=_button(tr_text("취소","Cancel"),Rect2(44,280,350,66),_close_modal,dialog)
-	confirm=_button(tr_text("기록 삭제","Delete record"),Rect2(440,280,350,66),func():
-		if menu.confirm_delete(): _close_modal(),dialog,true)
+	var dialog:=Control.new();dialog.position=Vector2(760,470);dialog.size=Vector2(400,140);modal.add_child(dialog)
+	surface.iron(dialog,Rect2(0,0,400,140),Color("131215ee"),Color("0b0b0eef"))
+	for inset in [0,4,7]:_box(Rect2(inset,inset,400-inset*2,140-inset*2),Color.TRANSPARENT,Color("756247") if inset==0 else Color("a68a5444"),dialog)
+	modal_title=_label("",Vector2(34,24),332,16,dialog);modal_title.size.y=24;modal_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;modal_title.add_theme_font_override("font",Fonts.stack("font"));modal_title.add_theme_color_override("font_color",Color("ecd9b7"))
+	modal_error=_label("",Vector2(34,113),332,12,dialog);modal_error.size.y=20
+	confirm=surface.button(dialog,"확인",Rect2(34,70,160,44),func():
+		if _modal_quit:get_tree().quit()
+		elif menu.confirm_delete():_close_modal(),true,16)
+	cancel=surface.button(dialog,"취소",Rect2(206,70,160,44),_close_modal,false,16)
 	cancel.focus_neighbor_left=cancel.get_path_to(confirm); cancel.focus_neighbor_right=cancel.get_path_to(confirm)
 	confirm.focus_neighbor_left=confirm.get_path_to(cancel); confirm.focus_neighbor_right=confirm.get_path_to(cancel)
 	cancel.focus_previous=cancel.get_path_to(confirm); cancel.focus_next=cancel.get_path_to(confirm)
@@ -282,13 +304,13 @@ func _select_character(index: int) -> void:
 func _create() -> void:
 	var admission: Dictionary=Entry.validate_name(name_input.text,character_index)
 	if not admission.ready:
-		creation_error.text=_entry_error(admission.reason)
+		creation_error.text=_entry_error(admission.reason);_layout_name_error()
 		return
 	if menu.request_new(_form_slot,admission.name):
 		_form.hide()
 	else:
 		creation_error.text=_entry_error(menu.last_error)
-		status.text=creation_error.text
+		status.text=creation_error.text;_layout_name_error()
 func _entry_error(reason: String) -> String:
 	match reason:
 		"name_length":return tr_text("이름은 2~8자여야 합니다.","Name must be 2–8 characters.")
@@ -298,14 +320,15 @@ func _entry_error(reason: String) -> String:
 		"active_save_sync_required":return tr_text("이전 전사의 저장 동기화가 필요합니다.","The previous warrior's save must be synchronized.")
 		"saved_player_restore_required":return tr_text("입장하지 못했습니다. 기록은 보존됩니다.","Unable to enter. Your record is preserved.")
 		_:return tr_text("입장하지 못했습니다. 기록은 보존됩니다.","Unable to enter. Your record is preserved.")
-func _queue_entry(slot: int,_data: Dictionary) -> void:
-	call_deferred("_launch_entry",slot)
-func _launch_entry(slot: int) -> void:
+func _queue_entry(slot:int,_data:Dictionary,play_story:bool=true) -> void:
+	call_deferred("_launch_entry",slot,play_story)
+func _launch_entry(slot:int,play_story:bool=true) -> void:
 	if not is_inside_tree() or is_queued_for_deletion():return
 	if _launching:return
 	_launching=true
-	var movie: CanvasLayer=_begin_movie("warrior")
-	await movie.finished
+	if play_story:
+		var movie: CanvasLayer=_begin_movie("warrior")
+		await movie.finished
 	# PC-INPUT-PARITY: 진입(Main 로드·_ready·첫 프레임)을 입력 콜백 안에서 한 프레임에 몰아 하면
 	# 20초 정지 동안 쌓인 OS 키 메시지가 Godot Windows 키 버퍼(512)를 넘어 뒤쪽(뗌 포함)이 버려진다.
 	# 웹 index→game.html 이동처럼 검은 화면에서 로드를 기다리되, 프레임마다 이벤트 펌프가 돌게 나눈다.
@@ -362,6 +385,7 @@ func _render() -> void:
 		card_names[i].text=str(row.summary.get("name","")) if row.kind in ["saved","new"] else "—"
 		card_infos[i].text="Lv."+_number_label(row.summary.get("lv",1))+" · "+tr_text("1장 썩은 숲 1층","Chapter 1 · Rotten Forest 1F") if row.kind in ["saved","new"] else ""
 		card_thumbs[i].visible=row.kind in ["saved","new"]
+		slot_delete_buttons[i].visible=row.kind in ["saved","new","corrupt"]
 		cards[i].visible=row.kind!="empty" or i<2
 		if row.kind=="empty":cards[i].modulate.a=.18
 		cards[i].add_theme_font_size_override("font_size",16)
@@ -377,9 +401,9 @@ func _render() -> void:
 	erase.focus_mode=Control.FOCUS_NONE if modal.visible or _form.visible else Control.FOCUS_ALL
 func _show_modal() -> void:
 	_form.hide()
-	var row: Dictionary=menu.rows[menu.pending_delete.slot]
-	modal_slot_number.text="%02d" % [int(row.slot)+1]
-	modal_record.text="/  %s" % [str(row.data.get("name",row.summary.get("name","")))]
+	_modal_quit=false
+	var row:Dictionary=menu.rows[menu.pending_delete.slot]
+	modal_title.text=str(row.data.get("name",row.summary.get("name","")))+UI.text(" 캐릭터를 정말 삭제하시겠습니까?")
 	_previous_focus=get_viewport().gui_get_focus_owner(); modal.show(); _render(); cancel.grab_focus()
 func _close_modal() -> void:
 	menu.cancel_delete(); modal.hide(); _render()
@@ -410,7 +434,28 @@ func _begin_movie(kind: String) -> CanvasLayer:
 	return _movie
 
 func _open_name() -> void:
-	_name_form.show();name_input.grab_focus()
+	creation_error.text="";_layout_name_error();_name_form.show();name_input.grab_focus()
 func _portrait_circle() -> ShaderMaterial:
 	var shader:=Shader.new();shader.code="shader_type canvas_item;void fragment(){vec4 c=texture(TEXTURE,UV);COLOR=vec4(c.rgb,c.a*step(length(UV-vec2(.5)),.5))*COLOR;}"
 	var material:=ShaderMaterial.new();material.shader=shader;return material
+
+func _layout_name_error() -> void:
+	var extra:=36.0 if not creation_error.text.is_empty() else 0.0
+	creation_error.visible=extra>0
+	_name_box.position.y=372.5-extra*.5;_name_box.size.y=335+extra
+	for child in _name_box.get_children():
+		if child is Panel:child.size.y=335+extra-child.position.y*2
+		elif child is TextureRect:child.size.y=335+extra
+	for id in ["NameCancel","NameCreate"]:_name_box.get_node(id).position.y=239+extra
+
+func _select_language(index:int) -> void:
+	var code:String=["ko","en"][index]
+	var old:Dictionary=menu.storage.get_item("hellLang")
+	if not old.get("ready",false):return
+	if not menu._write("hellLang",code,false,old.get("raw")):return
+	TranslationServer.set_locale(code)
+	bridge.configure(code)
+	_render()
+func _show_quit() -> void:
+	_modal_quit=true;modal_title.text=UI.text("게임을 종료하시겠습니까?")
+	_previous_focus=get_viewport().gui_get_focus_owner();modal.show();cancel.grab_focus()
