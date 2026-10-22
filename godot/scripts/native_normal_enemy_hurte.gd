@@ -13,6 +13,10 @@ extends RefCounted
 ##    rand provider로 같은 순서·같은 횟수 소비한다 (시각 FX 내부 RNG는 미이식과
 ##    함께 비소비 — docs/engine/FDG_P1_002E_MELEE_HURTE_TRACE_20261019.md 고정).
 ## 실행 문장·단락 근거의 전체 표: docs/engine/FDG_P1_002E_MELEE_HURTE_TRACE_20261019.md
+## PC-BOSS-CORE(2026-10-22): 1-1 보스(ib) 분기 — 42124 거울/폭발반격 상태만 정지, 42382 즉시반격·42414 경직 제외,
+## 42463 보스 넉백 0.05, 42486 보스 포이즈 면역/저항, 42515–42649 부활 판정(owner=보스 body→PC core),
+## 42715 콤보 1800, 42734 사망 문구, 43078–43114 보스 보상. ang=NaN 은 원본 `ang===undefined`.
+## 계약: docs/engine/PC_BOSS_CORE_CONTRACT_20261022.md §5.1
 
 const FORMULA = preload("res://port_modules/combat_stat_formula/producer.gd")
 const DROP_SOURCE = preload("res://port_modules/kill_reward/drop_item_source.gd") # P2-001c
@@ -181,7 +185,12 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		return _finish(true, {"applied": false, "returned_at": 42121})
 	# ── 42124~42182·이후 특수 사망 분기: 미이식 etype 활성 가드 ──
 	if fields["ib"] == true:
-		return _halt(42124, "unported_branch_active:boss_hurtE")
+		# 42124/42130: 거울방어·폭발반격 상태(1장 무브셋에 없음)일 때만 미이식 정지. 그 외 보스는 계속.
+		if (fields.get("_mgActive") == true and str(fields.get("state")) == "bossMirrorGuard") \
+				or (fields.get("_bcActive") == true and str(fields.get("state")) == "bossBurstCounter"):
+			return _halt(42124, "unported_branch_active:boss_counter_state")
+		if not _enemy.has_method("resolve_native_boss_death"):
+			return _halt(42124, "unported_branch_active:boss_hurtE_owner_missing")
 	if int(fields["etype"]) in SPECIAL_HIT_ETYPES:
 		return _halt(42136, "unported_branch_active:special_etype_" + str(fields["etype"]))
 	# 42162~42166: parryBlueBean/bleed/poison opts — 기본 무기 opts에 없음(단락). p_dot_pool 미호출.
@@ -442,7 +451,7 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		# 42380 적 인식.
 		if not _apply_enemy_field(42380, "alerted", true): return _result_now()
 		# 42382 즉시반격 — !isDot&&!e.ib. enemy.gd st2 대응 필드는 _contact_ticks.
-		if not is_dot:
+		if not is_dot and fields["ib"] != true: # 42382 !isDot&&!e.ib
 			if not _apply_enemy_field(42382, "contact_clamp", 5.0): return _result_now()
 		# 42383 HP 쓰기 — 기존 owner.
 		var hp_write: Dictionary = enemy.apply_native_normal_enemy_hp_write({"field": "hp", "value": float(fields["hp"]) - float(dmg)})
@@ -477,14 +486,14 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 			var blood: Dictionary = _main.emit_native_hurte_hit_blood(_enemy.global_position.x,
 				_enemy.global_position.y,
 				str((_enemy.data.get("native_final", {}) as Dictionary).get("col", "#cc4444")),
-				dmg, true, ang)
+				dmg, is_finite(ang), ang if is_finite(ang) else 0.0) # ang=NaN: 원본 ang===undefined
 			if blood.get("applied") != true:
 				return _halt(42399, "hit_blood_owner_refused:" + str(blood.get("reason")))
 			_log(42399, "hit_blood", {"dmg": dmg})
 			# 42417~42419: _isMagicDmg(opts.magic) — 마법·kiSlash(noImpact)는 임팩트 생략(원문).
 			if opts.get("noImpact") != true and not is_magic:
 				var impact: Dictionary = _main.emit_native_hurte_impact(_enemy.global_position.x,
-					_enemy.global_position.y, ang)
+					_enemy.global_position.y, ang if is_finite(ang) else 0.0)
 				if impact.get("applied") != true:
 					return _halt(42417, "hit_impact_owner_refused:" + str(impact.get("reason")))
 				_log(42417, "hit_impact", {"imp_per_frame": impact.get("imp_per_frame")})
@@ -512,21 +521,27 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 	# ── 42462~42476: 넉백 (dmg>0 블록 밖 — 쉴드 전량 흡수 타에도 실행, 양 0) ──
 	# _isRanged/_isMH/_isBB/_noKB/_isMagicProj 전부 false (opts 고정, atkEl≠EL.L은 위에서 정지).
 	var kb_amount: float = minf(float(dmg) * 0.25 * kb_mult, 15.0 * kb_mult)
+	if fields["ib"] == true: # 42463–42471 finalKbM=0.05(보스, kbM 대체) · _kbScale(magic .2)
+		var kb_scale: float = 0.2 if is_magic else 1.0
+		kb_amount = minf(float(dmg) * 0.25 * 0.05 * kb_scale, 15.0 * 0.05 * kb_scale)
 	# 42466 _isRanged(maxDist&&!magic / normalBow) → 넉백 분기 전체 미진입(_lEq 미읽기)
 	var club: Variant = 0.0 if _packet_mode else _l_eq("_lClubKB", 42472)
 	if club == null: return _result_now()
 	if float(club) > 0.0:
 		return _halt(42472, "unported_branch_active:_lClubKB")
 	# 근접 교전=시야 내 고정: e.kb += cos/sin×amt (뷰포트-밖 좌표이동 분기는 미도달·미이식).
-	if not is_dot and not _packet_mode: # 42472 조건 &&!isDot (패킷 = _isRanged 넉백 없음)
+	if not is_dot and not _packet_mode and is_finite(ang): # 42472 ang!==undefined&&!isDot (패킷 = _isRanged 넉백 없음)
 		enemy.add_native_knockback(Vector2(cos(ang), sin(ang)) * kb_amount)
 		_log(42476, "knockback", {"amount": kb_amount})
 	# ── 42486~42498: 포이즈 — poiseHit 전용(kiSlash). amt는 쉴드 흡수 후 잔여 dmg ──
 	# (쉴드 전량 흡수 타는 amt=0 → 원문 _poiseHit amt<=0 가드로 포이즈 무변경.)
 	# isDot=false 고정, ib는 42124에서 정지 → 보스 _pImmune/저항 분기 비활성.
 	var staggered := false
-	if poise_hit and not is_dot: # 42486 !isDot && opts.poiseHit
+	var boss_poise_immune: bool = fields["ib"] == true and float(fields.get("_pImmune", 0.0)) > 0.0
+	if poise_hit and not is_dot and not boss_poise_immune: # 42486 !isDot && opts.poiseHit && !(isBoss&&_pImmune>0)
 		var poise_amount: int = FORMULA.js_to_int32(float(dmg) * poise_mult)
+		if fields["ib"] == true: # 42488 보스 저항
+			poise_amount = FORMULA.js_to_int32(float(poise_amount) * (0.2 if atk_el > 0 else 0.5))
 		var stagger_bns: Variant = _affix("staggerBns", 42489)
 		if stagger_bns == null: return _result_now()
 		if float(stagger_bns) > 0.0:
@@ -556,7 +571,15 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		"eShield": maxf(0.0, shield - absorbed), "hp": hp_after, "source": source_label, "crit": is_crit})
 	# ── 42500~43117: 처치 파이프라인 ──
 	var killed := false
-	if dmg > 0 and hp_after <= 0.0:
+	var boss_revived := false
+	if dmg > 0 and hp_after <= 0.0 and fields["ib"] == true:
+		# 42515–42625 1차 즉시 부활 / 42641–42649 2차 폴백 예약 — owner=보스 body(PC core)
+		var boss_death: Dictionary = _enemy.resolve_native_boss_death(self, {"dmg": dmg, "ang": ang, "atk_el": atk_el})
+		if boss_death.get("ok") != true:
+			return _halt(42515, "boss_death_owner_refused:" + str(boss_death.get("reason")))
+		_log(42515, "boss_death_branch", boss_death)
+		boss_revived = boss_death.get("revived") == true
+	if dmg > 0 and hp_after <= 0.0 and not boss_revived:
 		killed = true
 		if not _kill_pipeline(fields, view, passives, dmg, ang, atk_el):
 			_flush_deferred_final_death() # 42733~42824 사이 정지(M26 등)에도 PCI-11 단회 발행
@@ -565,14 +588,14 @@ func execute(main: Node, world: Node2D, enemy: Node, base_damage: int, ang: floa
 		"hp_before": hp_before, "hp_after": hp_after, "shield_before": shield,
 		"shield_after": maxf(0.0, shield - absorbed), "is_crit": is_crit,
 		"stat_crit": stat_crit, "crit_roll": crit_roll, "killed": killed,
-		"shield_blocked": sh_blocked, "staggered": staggered, "source": source_label})
+		"shield_blocked": sh_blocked, "staggered": staggered, "source": source_label, "boss_revived": boss_revived})
 
 # ── 42500~43117 처치 파이프라인 (실행 분기만) ──
 func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, dmg: int, ang: float, atk_el: int) -> bool:
 	# 42502~42511 디코이/도플갱어: etype 가드로 비활성. 42516~42625 보스: ib 가드.
 	# ── 42627~42636: 일반몹 부활 판정 ──
 	var revival_pending := false
-	if fields.get("_revived") != true and fields.get("_isGhoul") != true:
+	if fields["ib"] != true and fields.get("_revived") != true and fields.get("_isGhoul") != true: # 42627 !e.ib
 		var rev_pow: float = 0.5 + float(int(maxf(1.0, float(fields.get("lv", 1))) / 100.0)) * 0.10
 		var suppress: Variant = _affix("antiRevive", 42629)
 		if suppress == null: return false
@@ -635,7 +658,8 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	# 42704~42711 deathFX + 42720 대형 버스트 + 42722 시체 + 핏자국: P2-001b 이식
 	# (사망 사운드는 sfx/death 에셋 미복사 — 어댑터가 목록/카운터 기록). 42712 처치
 	# 히트스톱: 소비자 32585 비활성(원본).
-	var front: Dictionary = _main.spawn_native_death_fx_front(_enemy, ang, dmg,
+	var kill_ang: float = ang if is_finite(ang) else atan2(_enemy.global_position.y - float(view.get("y", 0)), _enemy.global_position.x - float(view.get("x", 0))) # 42719 _killAng
+	var front: Dictionary = _main.spawn_native_death_fx_front(_enemy, kill_ang, dmg,
 		float(fields["radius"]), float(fields["mhp"]),
 		str((_enemy.data.get("native_final", {}) as Dictionary).get("col", "#cc4444")))
 	if front.get("applied") != true:
@@ -644,7 +668,7 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	_log(42704, "death_fx_front", {"radius": fields["radius"]})
 	# ── 42714~42718: 콤보 ──
 	var combo: int = int(_js_num(g.get("combo"))) + 1
-	var combo_timer: int = mini(1200, int(_js_num(g.get("comboTimer"))) + 60)
+	var combo_timer: int = mini(1800, int(_js_num(g.get("comboTimer"))) + 1800) if fields["ib"] == true else mini(1200, int(_js_num(g.get("comboTimer"))) + 60) # 42715/42716
 	var combo_max: int = maxi(int(_js_num(g.get("comboMax"))), combo)
 	if not _g_writes(42714, [{"field": "combo", "value": combo}, {"field": "comboTimer", "value": combo_timer}, {"field": "comboMax", "value": combo_max}]):
 		return false
@@ -675,7 +699,12 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 			"kill_receipt": {"line": 42702, "kills": kills, "stage_kills": stage_kills,
 				"reg_kill_applied": reg_kill.get("applied") == true, "dmg": dmg, "ang": ang, "atk_el": atk_el,
 				"executor": "native_normal_enemy_hurte"}}
-	if _main.has_method("publish_native_enemy_death") and _death_prefix_gate(int(fields["etype"]), fields).get("required") == true:
+	if fields["ib"] == true:
+		# 42733–42735 보스: PCI-11 발행(2차 판정 대기=revival_pending, 아니면 final)과 사망 문구·
+		# 플래시(_flashT/_flashCol/_chromaT)는 보스 owner(PC core)가 actor 기준으로 수행한다.
+		var boss_pub: Dictionary = _enemy.publish_native_boss_death_event(final_ctx)
+		_log(42733, "boss_death_published", boss_pub)
+	elif _main.has_method("publish_native_enemy_death") and _death_prefix_gate(int(fields["etype"]), fields).get("required") == true:
 		_deferred_final_death = final_ctx
 		_log(42733, "final_death_deferred_after_pci09", {"etype": int(fields["etype"])})
 	elif _main.has_method("publish_native_enemy_death"):
@@ -717,7 +746,20 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 			_log(42946, "death_zone_rolled", {"roll": zone_roll, "el": int(fields["el"]), "zone_spawn": "UNPORTED"})
 		else:
 			_log(42946, "death_zone_rolled", {"roll": zone_roll, "el": int(fields["el"]), "zone_spawn": false})
-	# 42965~43089: 레어/엘리트/슬라임/악의 — 전부 단락 (elite0·일반).
+	# 42965~43075: 레어/슬라임/악의 — 단락 (elite0).
+	if fields["ib"] == true: # 43078–43088 보스 악의 즉시 수급(_db=0)
+		var mat_cnt: int = FORMULA.js_to_int32((12.0 + _js_num(g.get("stage")) * 3.0) * 12.0)
+		var gold: Variant = _affix("goldBonus", 43081)
+		if gold == null: return false
+		if not passives.has("pMalice"):
+			_halt(43081, "passives_shape:pMalice")
+			return false
+		var mat_amt: int = FORMULA.js_to_int32(float(mat_cnt) * (1.0 + float(gold)) * (1.0 + _js_num(passives["pMalice"]) * 0.08))
+		if not _g_writes(43082, [{"field": "mats", "value": int(_js_num(g.get("mats"))) + mat_amt}]): return false
+		_emit_text(_enemy.global_position.x, _enemy.global_position.y - 15.0, "악의 +" + str(mat_amt), "#cc66ff", 30)
+		for mi in range(4): # 43085–43087 트레일 poolPart 크기 RNG(시각) — 원본 순서로 소비
+			if _rand(43087, "boss_mat_trail_size") == null: return false
+		_log(43078, "boss_mats", {"mat_cnt": mat_cnt, "amount": mat_amt, "unported": ["trail_particles_render", "SFX.pickup"]})
 	# ── 43092~43096: 물약 롤 ──
 	var potion_gate: Variant = _rand(43092, "potion_gate")
 	if potion_gate == null: return false
@@ -726,7 +768,7 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	var potion_names: Array = ["hp", "st", "mp"]
 	var potion_kind: String = potion_names[clampi(int(float(potion_type) * 3.0), 0, 2)]
 	# P2-001c — addPotion(28250): hp → 악의 즉시 전환(G.mats)+텍스트, st/mp → 버림(POT 27677).
-	var potion: Dictionary = _state.apply_native_add_potion(_main, potion_kind, 1)
+	var potion: Dictionary = _state.apply_native_add_potion(_main, potion_kind, 2 if fields["ib"] == true else 1) # 43094 cnt=e.ib?2:1
 	if potion.get("applied") != true:
 		_halt(43095, "add_potion_owner_refused:" + str(potion.get("reason")))
 		return false
@@ -737,6 +779,14 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 		# 호출부 텍스트(43095): POT.hp name '악의 추출' col '#33cc66' (적 위치 기준).
 		_emit_text(_enemy.global_position.x, _enemy.global_position.y - 8.0, "악의 추출 +1", "#33cc66", 30)
 	_log(43092, "potion_applied", {"gate": potion_gate, "type": potion_kind, "accepted": potion.get("accepted")})
+	if fields["ib"] == true: # 43097 e.ib&&Math.random()<.5 → addPotion('hp',1)
+		var hp_roll: Variant = _rand(43097, "boss_hp_potion")
+		if hp_roll == null: return false
+		if float(hp_roll) < 0.5:
+			var hp_potion: Dictionary = _state.apply_native_add_potion(_main, "hp", 1)
+			if hp_potion.get("applied") != true:
+				_halt(43097, "add_potion_owner_refused:" + str(hp_potion.get("reason")))
+				return false
 	# ── 43099~43101: 콤보 보상 계수 — _comboPct=⌊combo/100⌋×.05, _diffPct=max(0,_diffSigned())×.10 ──
 	var diff_signed: Variant = _main.read_native_signed_difficulty() if _main.has_method("read_native_signed_difficulty") else null
 	if not diff_signed is Dictionary or str(diff_signed.get("status")) != "READY":
@@ -748,6 +798,12 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	var mats: int = int(_js_num(g.get("mats"))) + 4
 	if not _g_writes(43103, [{"field": "mats", "value": mats}]):
 		return false
+	if fields["ib"] == true: # 43105–43108 보스 추가 악의
+		var m_roll: Variant = _rand(43106, "boss_extra_mats")
+		if m_roll == null: return false
+		var m_cnt: int = FORMULA.js_to_int32(float(2 + FORMULA.js_to_int32(float(m_roll) * 2.0)) * 10.0 * combo_bonus * 2.0)
+		mats += m_cnt
+		if not _g_writes(43107, [{"field": "mats", "value": mats}]): return false
 	_log(43103, "mats", {"mats": mats})
 	# ── 43110 rollDrop — P2-001c: 원본 롤 순서·RNG 소비 그대로(provider rand), 레코드만 생성 ──
 	# dropBonus=statDropBonus(27999), _curseMul=1(P._greedCurse 부재). 바닥 표시·줍기는 미이식.
@@ -769,8 +825,9 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	var bags: Dictionary = _state.read_native_reward_bags()
 	var dropper: RefCounted = DROP_SOURCE.new(func(tag): return _rand(43110, "drop:" + str(tag)))
 	var drop_result: Variant = dropper.roll_drop(
-		{"ib": false, "etype": int(fields["etype"]), "elite": int(fields["elite"]),
-			"drop_tier": 0, "x": _enemy.global_position.x, "y": _enemy.global_position.y},
+		{"ib": fields["ib"] == true, "etype": int(fields["etype"]), "elite": int(fields["elite"]),
+			"drop_tier": int(_js_num((_enemy.data.get("native_final", {}) as Dictionary).get("dropTier"))) if fields["ib"] == true else 0,
+			"x": _enemy.global_position.x, "y": _enemy.global_position.y},
 		{"stage": int(_js_num(g.get("stage"))), "drop_bonus": drop_bonus,
 			"min_pick_rar": drop_filters["min_pick_rar"], "min_pick_lv_thr": drop_filters["min_pick_lv_thr"],
 			"plv": int(_js_num(view.get("lv"))), "crystal_bag_len": (bags.get("crystal", []) as Array).size(),
@@ -796,6 +853,8 @@ func _kill_pipeline(fields: Dictionary, view: Dictionary, passives: Dictionary, 
 	# ── 43112~43114 addExp: ~~(max(5,~~(eLv×.4))×_expMul), _expMul=1×_comboBonus ──
 	var enemy_lv: float = maxf(1.0, _js_num(fields.get("lv")) if fields.get("lv") != null else 10.0)
 	var exp_raw: int = FORMULA.js_to_int32(maxf(5.0, float(FORMULA.js_to_int32(enemy_lv * 0.4))) * combo_bonus)
+	if fields["ib"] == true: # 43114 보스 max(30,~~(eLv*2))
+		exp_raw = FORMULA.js_to_int32(maxf(30.0, float(FORMULA.js_to_int32(enemy_lv * 2.0))) * combo_bonus)
 	# addExp 전처리(43140~43144): v=~~(v/3) → nc().expBonus → eq_affix('expBonus').
 	var exp_value: int = FORMULA.js_to_int32(float(exp_raw) / 3.0)
 	var necklace: Variant = (_state.read_current_inventory().get("equipped", {}) as Dictionary).get("necklace")
@@ -873,6 +932,21 @@ func _conditional_affix_sum(fields: Dictionary, view: Dictionary, passives: Dict
 			total += float(club_stun) - 1.0
 	# frozen/burn/poison/curse/slow 상태: 필드 부재(0) → 단락.
 	# 대상 타입: ib=false, mods.length=0 → mobSlayer만.
+	if fields.get("ib") == true:
+		# PC-BOSS-CORE: 보스 몸체는 _frozen/_cursed 를 실제로 가진다(42253/42256).
+		if float(fields.get("_frozen", 0.0)) > 0.0:
+			var fz: Variant = _affix("frozenDmgUp", 42253)
+			if fz == null: return null
+			total += float(fz)
+		if float(fields.get("_cursed", 0.0)) > 0.0:
+			var cu: Variant = _affix("curseDmgUp", 42256)
+			if cu == null: return null
+			total += float(cu)
+		for boss_affix in ["bossSlayer", "vsBossDmg"]: # 42258
+			var bv: Variant = _affix(boss_affix, 42258)
+			if bv == null: return null
+			total += float(bv)
+		return total
 	var mob_slayer: Variant = _affix("mobSlayer", 42260)
 	if mob_slayer == null: return null
 	total += float(mob_slayer)

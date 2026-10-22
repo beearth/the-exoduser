@@ -78,6 +78,11 @@ func build_env() -> Dictionary:
 func _ensure_field_owner() -> Node:
 	if is_instance_valid(_field_owner) and _field_owner.get_parent() == _main:
 		return _field_owner
+	# PC-BOSS-PARITY: 부팅 때 설치된 공용 owner(앵글러 interaction 바인딩 포함)가 있으면 그것을 쓴다(owner 1개).
+	var installed: Node = _main.get_node_or_null("PCFieldMobHitOwner")
+	if is_instance_valid(installed) and installed.get_script() == FIELD_OWNER:
+		_field_owner = installed
+		return installed
 	var owner: Node = FIELD_OWNER.new()
 	owner.name = "PCFieldMobHitOwner"
 	if not owner.configure(_main):

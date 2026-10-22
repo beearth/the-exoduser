@@ -92,7 +92,9 @@ func _birth_request(request: Dictionary) -> Variant:
 		if wrapped.get("status")!="READY": _error=wrapped.get("reason",""); return null
 		props = wrapped.props
 	for flag in SPECIAL:
-		if props.get(flag,false) and not (flag=="elemBall" and request.get("field_source",false) and props.get("fbEnergy",false) and props.get("el")==2): _error="specialized_tick_owner_required:"+flag; return null
+		# PC-BOSS-CORE 최소 훅: 보스 원소구(37769–37791, 일반 드루이드 homing=false 직선탄)는 일반 carrier 로 받는다.
+		var boss_elem_ball: bool = flag=="elemBall" and request.command=="_spawnBossProjectile" and not request.get("field_source",false)
+		if props.get(flag,false) and not boss_elem_ball and not (flag=="elemBall" and request.get("field_source",false) and props.get("fbEnergy",false) and props.get("el")==2): _error="specialized_tick_owner_required:"+flag; return null
 	if props.get("friendly",false): _error="hostile_carrier_required"; return null
 	_in_birth = true
 	var pool: Dictionary = _free.pop_back() if not _free.is_empty() else {}

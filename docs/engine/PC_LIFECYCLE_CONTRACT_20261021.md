@@ -14,7 +14,7 @@ Mac 담당(DEMO11-39 사망/부활 화면, DEMO11-37 clear/gate, B9 주술사, D
 | 요청 | 실제 API (main.gd) | 구현 파일 | 상태 |
 |---|---|---|---|
 | PCI-01 | `request_native_player_life_transition(request) -> Dictionary`, `read_native_player_life_phase() -> Dictionary`, signal `native_player_life_phase_changed(snapshot)` | `scripts/native_source_player_life.gd` + sink(player/state/authority 끝에 추가) | 완료(6 op). u_d21 재점화 분노 쓰기만 NOT_READY |
-| PCI-11 | `subscribe_native_final_enemy_death(consumer, ctx)`, `unsubscribe_native_final_enemy_death(id)`, signal `native_enemy_final_death(actor, stage_index)`, `read_native_final_enemy_death_snapshot()` | `scripts/native_final_enemy_death.gd` + hurtE `_kill_pipeline` G42733 발행 1곳 | 일반 적 hurtE 처치 완료. **보스(ib) NOT_READY** — 아래 §2.4 |
+| PCI-11 | `subscribe_native_final_enemy_death(consumer, ctx)`, `unsubscribe_native_final_enemy_death(id)`, signal `native_enemy_final_death(actor, stage_index)`, `read_native_final_enemy_death_snapshot()` | `scripts/native_final_enemy_death.gd` + hurtE `_kill_pipeline` G42733 발행 1곳 | 일반 적 hurtE 처치 완료. 보스(ib): **2026-10-22 PC-BOSS-CORE 연결**(`publish_boss`, 아래 §2.4·[PC_BOSS_CORE_CONTRACT](PC_BOSS_CORE_CONTRACT_20261022.md)) |
 | PCI-10 | `request_native_enemy_revive(caster, ctx) -> Dictionary` | `scripts/native_enemy_corpse_revive.gd` + actor writer `apply_native_enemy_corpse_revive(world)` | 완료(generic·전용 4종+type7). 그 밖 actor는 NOT_READY |
 | PCI-12 | `request_native_recalc_st(owner, ctx) -> Dictionary` (= 기존 refresh owner의 `"recalc_st"` 모드) | `scripts/native_source_player_runtime_stat_refresh.gd` 모드 추가 | 완료 |
 | PCI-13 | 외부 호출 불필요. `NativePets.prepare_native_pet_portrait(who)`, `get_native_pet_portrait_cache_snapshot()` | `scripts/native_pets.gd` | 완료 |
@@ -141,6 +141,7 @@ Main37 clear sink 복제 0, `_gateGuardKilled`·`bossGateOpen`·`_bossUnlocked`�
 |---|---|
 | 일반 적 hurtE 처치(generic·전용 4종·type7) | READY |
 | 보스(ib) | **NOT_READY** — PC hurtE가 G42124 `unported_branch_active:boss_hurtE`에서 정지. 보스 HP/부활 판정(G42516–42625 1차, G34497–34530 `_reviveTimer` 2차 판정)과 demo boss actor(`native_demo11_boss_actor.gd`: "No damage/parry/HP/poise writer") HP writer가 origin/main에 없다. DEMO11-36/49 브랜치는 원격에서 확인되지 않았다. 이 경로가 들어오면 "부활 실패 → 완전 사망"(G34528) 확정 지점에서 같은 `publish`를 호출하면 된다 |
+| 보스(ib) 2026-10-22 갱신 | **READY(1-1 si0)** — PC-BOSS-CORE `native_final_enemy_death.publish_boss(actor, body, ctx)`. payload.actor=Mac 보스 actor(encounter 비교 대상), 레지스트리 검증=PC 보스 body. 발행 지점: hurtE 42733 앵커(2차 폴백 예약이면 `revival_pending`, 이미 판정됐으면 `final`), 2차 판정 실패 34525–34532(`final`), 2차 폴백 부활 성공 34502–34525는 열린 토큰 `cancel`. final 은 actor 당 1회(중복 거절). coverage.boss_ib=READY |
 | `enemy.receive_damage` 레거시 사망 | NOT_READY(원본 hurtE 파이프라인 아님) |
 | 일반몹 부활 대기 재스폰 | NOT_READY(G34497~ 미이식) |
 

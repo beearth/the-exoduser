@@ -140,6 +140,11 @@
 | E-03 | 적 외형 (07a) | 커튼 링 etype0 "눈알 육괴" 5마리 | 같은 5마리 링(배치 일치). 스프라이트 크기는 zoom 탓에 작다 | 다른 구현 | P2 | M-03과 같은 원인 | Mac 표시 |
 | B-01 | 보스방 진입 (10a) | 페이드 → "다크드루이드" 이름 카드 + 보스 HP바 → 아레나, 씨앗 폭탄이 즉시 쏟아진다 | 자연 진입 `encounter.enter`가 NOT_READY(`integer_input_required:difficulty_index`). `difficulty_index:0`을 넣어도 `integer_input_required:room`. 정적 아레나로만 전환하면 화면이 거의 완전히 검다 | 누락 | P0 | native_demo11_encounter.gd:49-72 → main.spawn_native_demo_boss가 스폰 계약 정수 입력(difficulty_index, room …)을 받지 못한다. `bind_native_demo_arena_provider` 호출처 없음 | PC 로직 |
 | B-02 | 보스 외형·패턴 (10b) | 사슴뿔 드루이드 스프라이트, 녹색 덩굴 원형 장판, 씨앗 투사체 폭우(bossBeanStorm), 2페이즈(부활) | 보스가 스폰되지 않아 비교 불가. 기존 보스 시각은 BOSS11 하니스의 정지 구성(1600×900, 패턴 미실행)뿐이다 | 누락 | P0 | native_demo11_boss_actor.gd:127-160 `source_updateE_prefix` 오너가 바인딩되지 않아 WAITING_OWNER | PC 로직 |
+| E-01 | 필드보스 앵글러 (09a) | 마커 (58,158) 근처에서 "심연의 앵글러"(파란 발광 아귀, 이름+HP바)가 깨어나 있다 | 마커 0 근처에서 6초 대기해도 출현하지 않는다(births 0, provider_bound true, pc_bound false). 해골 더미만 보인다 | 누락 | P0 | native_demo11_anglers.gd `_advance_phase`(레슨 가드·serial 조건). 필드보스를 잡을 수 없으므로 보스문 조건 `_fbDone`도 성립하지 않는다 **→ 상태(2026-10-22 pc-boss-parity): PC 로직 해결. 원인은 레슨 가드가 아니라 앵글러 몸 충돌·착지 강타의 PC interaction 미바인딩(근접하면 개체 정지)과 근접 무기→앵글러 경로(37646) 부재. 출생·깨어남은 INTEG-10 에서도 동작했다(parity 09a Godot 화면 왼쪽 중간에 작게 보임 — 줌 0.7 탓. births 는 에너지탄 수라 깨어난 뒤 약 300틱 전에는 0). 4마리 처치→`_fbDone` 실측. 앵글러 이름·HP 바 표시는 Mac 뷰 미구현** | PC 로직 |
+| E-02 | 일반 적 종류 (09b) | 1-1 중앙: etype 16,4,28,7,1,21,26,23,3,0,10,8,25,14,6 등 15종 관측("화마귀" 등) | 관측 etype은 0,1,4 세 종류뿐 | 누락 | P1 | MAP11 natural scheduler/etype 그룹 이식 범위 | PC 로직 |
+| E-03 | 적 외형 (07a) | 커튼 링 etype0 "눈알 육괴" 5마리 | 같은 5마리 링(배치 일치). 스프라이트 크기는 zoom 탓에 작다 | 다른 구현 | P2 | M-03과 같은 원인 | Mac 표시 |
+| B-01 | 보스방 진입 (10a) | 페이드 → "다크드루이드" 이름 카드 + 보스 HP바 → 아레나, 씨앗 폭탄이 즉시 쏟아진다 | 자연 진입 `encounter.enter`가 NOT_READY(`integer_input_required:difficulty_index`). `difficulty_index:0`을 넣어도 `integer_input_required:room`. 정적 아레나로만 전환하면 화면이 거의 완전히 검다 | 누락 | P0 | native_demo11_encounter.gd:49-72 → main.spawn_native_demo_boss가 스폰 계약 정수 입력(difficulty_index, room …)을 받지 못한다. `bind_native_demo_arena_provider` 호출처 없음 **→ 상태(2026-10-22 pc-boss-parity): PC 로직 해결. 자연 경로(MAP11 문 transport)는 원래 OPT.diff·_stageDiffOff·room 0을 넣고 있었고, NOT_READY 는 하니스가 encounter.enter 를 빈 인자로 직접 부른 결과. 빠져 있던 것은 원본 로딩 상태 머신(페이드 50→네임카드 130→페이드인 50→입장 100)·문 30호출 cadence·진입 부수효과 — 이식, 네임카드 오버레이 원본 수치. 아레나 화면(맵·조명)은 Mac** | PC 로직 |
+| B-02 | 보스 외형·패턴 (10b) | 사슴뿔 드루이드 스프라이트, 녹색 덩굴 원형 장판, 씨앗 투사체 폭우(bossBeanStorm), 2페이즈(부활) | 보스가 스폰되지 않아 비교 불가. 기존 보스 시각은 BOSS11 하니스의 정지 구성(1600×900, 패턴 미실행)뿐이다 | 누락 | P0 | native_demo11_boss_actor.gd:127-160 `source_updateE_prefix` 오너가 바인딩되지 않아 WAITING_OWNER **→ 상태(2026-10-22 pc-boss-parity): 보스 스폰·이동·패턴·피해·부활·사망 동작. 패턴이 거의 안 나오던 원인(보스 몸통 충돌 34349 미이식 → 겹침 d<20) 해결. 외형(8방향 정지 시트 vs 웹 애니)·텔레그래프 색(주황 vs 녹색 덩굴)·씨앗 투사체 크기·부활 이름 표기·HP 바 양식 차이는 Mac 표시. 소환 mkEn NOT_READY** | PC 로직 |
 
 ### 1-9. 사망·클리어 (장면 11)
 
@@ -150,6 +155,7 @@
 | D-03 | 재시작 버튼 | 다시 일어서라 = 즉시 재시작 | 재시작 버튼이 항상 비활성(`bind_stage_restore` 호출처 없음). 사망하면 로비로 나가는 것 말고 할 수 있는 게 없다 | 버그 | P0 | native_demo11_life.gd:108-118 | PC 로직 |
 | K-01 | 스테이지 클리어 (11c) | 보스 처치 → 출구 → 게임 화면 위 "구역 클리어!" + S 랭크 결과 카드(클리어 타임 0:29, 점수 6,835, 처치·보너스 표) + 데모 종료 버튼. 디로이 축하 대사 | 검은 화면 위 "ZONE CLEARED 구역 클리어! 썩은 숲을 정복했습니다 / 데모 종료" 단독 패널. 랭크·점수는 계산만 되고 표시되지 않는다 | 다른 구현 | P1 | native_demo_end_flow.gd, native_demo11_clear_result.gd(소비자는 펫뿐) | Mac 표시 + PC 로직 |
 | K-02 | 클리어 진입 | 보스 처치 → 출구 타일 밟기로 자연 진입 | 자연 경로 없음(B-01). 계약 신호 `native_demo_boss_defeated.emit(0)`로만 진입 | 누락 | P0 | B-01과 같은 원인 | PC 로직 |
+| K-02 | 클리어 진입 | 보스 처치 → 출구 타일 밟기로 자연 진입 | 자연 경로 없음(B-01). 계약 신호 `native_demo_boss_defeated.emit(0)`로만 진입 | 누락 | P0 | B-01과 같은 원인 **→ 상태(2026-10-22 pc-boss-parity): 자연 경로 동작: 보스 처치→출구 문 30호출 cadence→encounter.leave→클리어 신호(계약 신호 직접 발행 불필요). 결과 카드 양식(K-01)은 Mac** | PC 로직 |
 
 ### 1-10. 집계
 
@@ -303,6 +309,17 @@ Godot는 이것을 "세계의 기록 I/II/III" 정지 이미지 액자 슬라이
 6. HUD 수치 불일치(H-03)는 표시 문제가 아니라 스탯 공식 문제이므로 PC 로직에서 먼저 원인을 확인해야 한다.
 
 ---
+
+## 3-0. 항목 상태 갱신 (2026-10-22 pc-boss-parity, PC Claude)
+
+| No. | 상태 | 근거 |
+|---|---|---|
+| E-01 | PC 로직 완료 · 표시 차이 남음(Mac) | test_pc_boss_parity 37/0, 비교 격자 `G:/exoduser-wt/_out/pc-boss-parity/compare_09a_fieldboss.png` |
+| B-01 | PC 로직 완료 · 표시 차이 남음(Mac) | 로딩 단계 실측 50/130/50/100틱, `compare_10a_entry_namecard.png`·`compare_10a_namecard_1x.png` |
+| B-02 | 동작 완료(소환 NOT_READY) · 외형/텔레그래프 차이(Mac) | `compare_10d_boss_close.png`, `compare_10e_*.png`, `compare_10g_revive_*.png` |
+| K-02 | 자연 경로 완료 | `compare_11d_clear.png` |
+
+상세·원본 행: [PC_BOSS_CORE_CONTRACT_20261022 §9](PC_BOSS_CORE_CONTRACT_20261022.md), [pc-boss-parity 보고서](orders/reports/pc-boss-parity_REPORT.md).
 
 ## 3. 미확인 항목
 

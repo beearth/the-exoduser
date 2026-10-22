@@ -12,6 +12,13 @@
 - 원본 VM oracle 16시나리오·259프레임·벽 질의 798건·hurtE 인자 일치, 원본 RNG는 표현 전용. test_pc_move_skills 256/0. 필드 600틱 벤치 전후 차이 없음(노이즈 범위).
 - NOT_READY: 전류장판 피해·_shockDR(hurtE G42290), 합체·유니크 분기(사전 거절), showPH·HUD 기동 링(Mac 요청 PMS-M1~M3), 레슨 step 4/5 연습.
 - [계약](engine/PC_MOVE_SKILLS_CONTRACT_20261022.md)·[보고서](engine/orders/reports/pc-move-skills_REPORT.md)·DEMO11-10/11 부분·PARITY V-01/V-02 브랜치 해결. 로그 `G:/exoduser-wt/_out/pc-move-skills-v2/`.
+## 2026-10-22 PC-BOSS-PARITY — 1-1 필드보스·보스방 진입·보스전 웹 동일화
+
+- base INTEG-10 9133e2782 + pc-boss-core 16e1ff825 병합, branch claude/pc-boss-parity-20261022. 사용자 결정대로 카메라 줌 ×2.5·보스 공간 축소 S=0.4 폐기: `native_boss_space.gd`·core 경계 변환·`test_pc_boss_core_space`·×2.5 캡처 도구 삭제(제품 effective S 는 원래 1 → 동작 동일). 원본 VM oracle 재대조 0실패.
+- E-01: 앵글러 몸 충돌·착지 강타 PC interaction(61085–61086, 61119–61122)을 부팅 때 바인딩(없으면 근접 시 개체 정지), 근접 무기→앵글러 37646 을 player telemetry 로 연결. 근접 4처치 → `_fbDone`.
+- B-01: 자연 문 경로는 원래 OPT.diff·_stageDiffOff·room 0 을 넣었다(parity NOT_READY 는 하니스 빈 인자). 빠져 있던 checkRooms 41768–41925(30호출 cadence·봉인 문구·로딩 50/130/50/100·입장 stun 90/110)과 `_enterBossArena` PC 부분·로딩 오버레이(52089–52122)를 신규 `native_demo11_boss_entry(.._overlay).gd` 로 이식. encounter·MAP11 파일 수정 0.
+- B-02: 보스 몸통 충돌 34348–34349 미이식으로 보스가 플레이어 위에 겹쳐 패턴이 막히던 것(idle 91%) 해결(41%, 웹 31~40%). 사망 직후 actor 동기화(죽은 보스가 계속 그려지던 문제). 소환 mkEn 은 NOT_READY(etype3 actor·엘리트 롤 없음).
+- 나란히 캡처 19장 `G:/exoduser-wt/_out/pc-boss-parity/compare_*.png`: 동작은 같은 순서·같은 수치, 화면은 맵·보스 스프라이트·텔레그래프·HUD·후처리 차이(Mac 요청 M5~M13). test_pc_boss_parity 37/0, 회귀 26종 0실패·SCRIPT ERROR 0, E2E PASS11/NR7/FAIL0(변경 전과 같음). [보고서](engine/orders/reports/pc-boss-parity_REPORT.md) · [계약 §9](engine/PC_BOSS_CORE_CONTRACT_20261022.md).
 
 ## 2026-10-22 INTEG-9 전제 갱신 — PC 소유 테스트(묶음 B·M29·P1-002 E/F/G)
 

@@ -65,7 +65,7 @@ func _run() -> void:
 	world = main.world
 	state = main.source_state
 	var snap0: Dictionary = main.read_native_final_enemy_death_snapshot()
-	check(snap0.subscriptions.size() == 1 and snap0.coverage.boss_ib.status == "NOT_READY", "S0 Mac encounter subscriber installed, boss coverage NOT_READY")
+	check(snap0.subscriptions.size() == 1 and snap0.coverage.boss_ib.status == "READY", "S0 Mac encounter subscriber installed, boss coverage READY (PC-BOSS-CORE publish_boss 2026-10-22)")
 
 	# S1 무변이 구독 실패
 	var r: Dictionary = main.subscribe_native_final_enemy_death(Callable(), {"subscriber": main})
@@ -80,7 +80,7 @@ func _run() -> void:
 	# S2 구독
 	var ra: Dictionary = main.subscribe_native_final_enemy_death(consumer_a, {"subscriber": main})
 	check(ra.status == "READY" and ra.accepted == true and str(ra.subscription_id).begins_with("fdsub:"), "S2 subscribe A (all events)")
-	check(ra.coverage.normal_enemy_hurte.status == "READY" and ra.coverage.boss_ib.status == "NOT_READY", "S2 receipt coverage normal READY / boss NOT_READY")
+	check(ra.coverage.normal_enemy_hurte.status == "READY" and ra.coverage.boss_ib.status == "READY", "S2 receipt coverage normal READY / boss READY (PC-BOSS-CORE)")
 	r = main.subscribe_native_final_enemy_death(consumer_a, {"subscriber": main})
 	check(r.status == "REJECTED" and r.reason == "final_death_consumer_already_subscribed", "S2 duplicate consumer rejected")
 	var rb: Dictionary = main.subscribe_native_final_enemy_death(consumer_b, {"subscriber": world, "events": ["final_death"]})

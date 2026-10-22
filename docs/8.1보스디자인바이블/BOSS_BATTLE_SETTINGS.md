@@ -652,3 +652,61 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | QA 경계 | VFX 대조는 기존 mirrored Y+FrontSide culling을 제거하는 QA 전용 DoubleSide fixture. production side/카메라 변경 없음; 전체 공격 가시성·장시간 전투 QA는 별도 |
 | 배포·소스 제어 | NW.js FILES 및 web 필수 목록에 새 boot/로컬 JS 포함. MIT LICENSE·provenance도 함께 추적/배포 필요. .gitignore의 전역 build/ 예외는 assets/vendor/three-r160/build/three.module.js와 상위 디렉터리로 한정. .git 쓰기 제한으로 커밋 미완료, 실제 패키징/업로드 미실행 |
 | 세부 SSOT | [파일·숫자·SHA256·수명·검증 범위](../12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md) |
+
+## 2026-10-22 Godot 이식 — 1-1 다크드루이드 전투 owner(PC)
+
+원본 game.html 수치는 바꾸지 않았다. Godot 이식에서 1-1(si0) 보스의 AI 틱·HP/쉴드/포이즈·hurtE·부활/최종 사망을 PC 보스 코어(`godot/scripts/native_demo11_boss_core.gd` 외)가 맡는다. 계약·원본 행·검증: [PC_BOSS_CORE_CONTRACT_20261022](../engine/PC_BOSS_CORE_CONTRACT_20261022.md).
+
+### 사용자 결정(2026-10-22)
+
+| 항목 | 상태 |
+|---|---|
+| 카메라 줌 ×2.5 | **폐기**. 웹 카메라 그대로 |
+| 보스 공간 균일 축소 S=0.4(`BOSS_SPACE_SCALE`) | **폐기·코드 삭제**(pc-boss-parity). 보스 반경·속도·사거리·넉백은 아래 원본 값 그대로 |
+
+### 1-1 드루이드 공간 수치(원본 그대로 사용)
+
+| 분류 | 원본 값 | 원본 행 |
+|---|---:|---|
+| 몸 반경 e.r | 44 | 31137–31140 |
+| 이동 속도 speed | 0.5 px/tick | 31138 |
+| 근접 접촉 판정 | d < e.r + P.r + 8 | 40500 |
+| 돌진 속도 / 접촉 여유 | 35·sp / +80 | 40664–40686 |
+| 점프 착지 판정 | 300 | 40705 |
+| 강타(slam) 반경 | 1000+si·30+phase·80 | 41125 |
+| 충격파 shockMax / 확장 | 1000+si·50 / 4.5·sp | 40749–40758 |
+| 회전(spin) 범위 | 500+si·15 | 40874 |
+| 잡기 포획 | e.r + P.r + 200 | 40846 |
+| 원소구·탄 속도 | 4.4 / 6 / 6.8 px/tick | BC09 |
+| 넉백(보스→플레이어) | 7/8/10/12/14/15/18 | 접촉 본문 |
+| 시야 어그로 / 이동 SFX 거리 | 800 / 1000 | 38682 / 38667 |
+
+### 이식 상태(1-1)
+
+| 항목 | 상태 |
+|---|---|
+| AI 틱(World 위상) · updateE prefix/suffix | 완료(원본 VM 400케이스 일치) |
+| 플레이어→보스 hurtE(근접·석궁·스킬, 쉴드→HP) | 완료(기존 executor 보스 분기) |
+| 보스→플레이어 접촉 9종·전역 큐 6종·지뢰·리듬탄·ORB | 완료(원본 VM 500케이스 일치). 플레이어 독·속박(P.poison/_webSlow) writer 미이식 |
+| 1차 즉시 부활·2차 폴백·완전 사망 | 완료(원본 VM 195케이스 일치), PCI-11 final 1회 → encounter 출구·상자 |
+| 보스 몸통 충돌(플레이어 밀어내기, 34348–34349) | 완료(pc-boss-parity). 없을 때 보스가 플레이어 위로 겹쳐 d<20 이면 `_bossAI`가 패턴을 시작하지 않아(38385) idle 91% — 이식 후 41%(웹 약 40%) |
+| 보스방 진입 흐름(checkRooms 41768–41925, `_enterBossArena`) | 완료(pc-boss-parity) — 아래 표 |
+| 소환(summon) 소환체 | **NOT_READY** — 위치·원소·etype 추첨만. etype 3(요마) actor 없음, mkEn 엘리트/모드/오라 롤 미이식이라 생성하지 않음(원본과 RNG 흐름 차이). [계약 §9.5](../engine/PC_BOSS_CORE_CONTRACT_20261022.md) |
+| 페이즈/부활 연출 일부(VFX·SFX·grand VFX) | 표시 미이식(카운터 기록) |
+
+### 1-1 보스방 진입 흐름 원본 수치 (Godot 동일 적용, 2026-10-22 pc-boss-parity)
+
+| 단계 | 원본 행 | 값 |
+|---|---|---|
+| 문 판정 주기 | 41816–41818 | `G._crT` 30호출마다 1회(매 틱 + 처치 즉시 호출) |
+| 앵글러 미처치 문구 | 41900–41903 | `stage0 && !_fbDone` → 45프레임마다 "심연의 앵글러를 모두 처치하라" #66ddff 40 |
+| 지역 미개방 문구 | 41904–41911 | "지옥문이 봉인됨 — 지역 클리어 N/4" #ff5544 40 + 펫 `tut_gate_locked` |
+| 개방 → 로딩 시작 | 41913–41916 | loadPhase 1, 보라(#8833cc) 파티클 20 |
+| 1 페이드아웃 | 41787–41789 | fade = min(1, T/50) → 50틱 후 `_enterBossArena` |
+| 2 네임카드 | 41790–41792 | fade 1, 130틱. 이름 "다크드루이드" bold 40px #ddaa55 (화면 높이 53%), 부제 "썩은 숲 1구역" 15px #887766 α .5 (64%), 장식선 #886633 α .35 (46%·60%) |
+| 3 페이드인 | 41793–41795 | fade = max(0, 1−T/50), 50틱 |
+| 4 입장 연출 | 41796–41812 | 100틱. 첫 2틱: 보스 stunned 90·reviveIframes 110, shake 28, flash #ff4400 10, chroma 12, slowMo ≥ 60, 링 파티클 32(r×2.5, 속도 6) |
+| 로딩 중 무적 | 43420 | `G._bossLoadPhase>0` 이면 hurtP 무시 |
+| 아레나 진입 | 30749–30813 | 잔여 비보스 생존 수 → `_stageKills`, ens·소환굴·균열 비움, P.iframes 90·kb 0, 봉인 파티클 16+16·shake 8·"⚠ 봉인됨!" |
+| 보스 스폰 | 30782 | `mkEn((bossX+.5)*T,(bossY+.5)*T,si,0,true,STG[si].be,0)` — 난이도 OPT.diff(기본 5)·P.lv·G._stageDiffOff |
+| 아레나 출구 | 41919~ | 30호출 cadence, 출구 타일 + `!bossAlive` → 스테이지 클리어 |
