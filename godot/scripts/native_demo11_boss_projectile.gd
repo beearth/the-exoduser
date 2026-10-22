@@ -58,6 +58,6 @@ func _draw() -> void:
 		# Source _physicalProjectileMultiplier(p,2): ordinary physical projectile scale.
 		size_*=2.0 if raw.get("parryClass","")=="physical" else 1.0
 		var h: float=size_*cell.y/cell.x
-		draw_texture_rect_region(POISON,Rect2(-size_/2,-h/2,size_,h),Rect2(Vector2(frame%4,frame/4)*cell,cell))
+		draw_texture_rect_region(POISON,preload("res://scripts/native_source_canvas_labels.gd").snap(self,Rect2(-size_/2,-h/2,size_,h)),Rect2(Vector2(frame%4,frame/4)*cell,cell))
 		return
 	SOURCE_VIEW.render(self,raw,now,frame_index,Vector2(float(raw.get("x",0)),float(raw.get("y",0)))+_visual_phase_offset)

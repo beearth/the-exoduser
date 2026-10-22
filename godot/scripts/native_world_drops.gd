@@ -402,7 +402,7 @@ func _draw_beams() -> void:
 				if int(tile / 2.0) < rows_max:
 					var src := Rect2((tile % 2) * cell, int(tile / 2.0) * cell, cell, cell)
 					var alpha: float = 0.46 + sin(now_ms / 400.0 + wx) * 0.05
-					_beam_layer.draw_texture_rect_region(atlas, Rect2(local + Vector2(-30.0, b - 160.0), Vector2(60, 160)),
+					_beam_layer.draw_texture_rect_region(atlas, preload("res://scripts/native_source_canvas_labels.gd").snap(_beam_layer,Rect2(local+Vector2(-30,b-160),Vector2(60,160))),
 						src, Color(1, 1, 1, alpha))
 
 
@@ -426,7 +426,7 @@ func _draw() -> void:
 		var drop_pos := local + Vector2(-34 * 0.58, b - 34 * 0.82) # 52592
 		if skin != null:
 			# Source6029: the WebGPU proxy ignores shadowColor/Blur/Offset.
-			draw_texture_rect(skin, Rect2(drop_pos - Vector2(17, 17), Vector2(34, 34)), false)
+			draw_texture_rect(skin,preload("res://scripts/native_source_canvas_labels.gd").snap(self,Rect2(drop_pos-Vector2(17,17),Vector2(34,34))),false)
 		else:
 			draw_circle(drop_pos, 6.0, Color(RARITY_C[clampi(int(item.get("rarity", 0)), 0, 5)])) # emoji 폴백 상당(폰트 이모지 미이식 기록)
 	for part in _parts:

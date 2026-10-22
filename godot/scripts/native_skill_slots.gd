@@ -794,7 +794,7 @@ func _draw_additive_content(canvas: Node2D) -> void:
 			var alpha: float = 1.0 if p < 0.62 else maxf(0.0, (1.0 - p) / 0.38)
 			var src := Rect2((frame % 2) * 512, (frame / 2) * 512, 512, 512)
 			var center := Vector2(wave["x"], wave["y"]) - canvas.global_position
-			canvas.draw_texture_rect_region(_sheet, Rect2(center - Vector2(size, size) / 2.0, Vector2(size, size)),
+			canvas.draw_texture_rect_region(_sheet,preload("res://scripts/native_source_canvas_labels.gd").snap(canvas,Rect2(center-Vector2(size,size)/2,Vector2(size,size))),
 				src, Color(1, 1, 1, alpha))
 
 

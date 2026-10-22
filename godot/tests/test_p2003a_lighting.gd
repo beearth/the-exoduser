@@ -81,12 +81,12 @@ func _test_overlay_structure_and_params() -> void:
 		"레이어 순서: 조명(5) < HUD(10) — 원본 HUD DOM 비대상")
 	_check((snap.get("stages") as Array) == ["lightmap_55199", "fog2d_55352", "fog_gl_8976",
 		"env_light_55377", "vignette_55389", "color_filter_55414"], "6단계 원본 순서")
-	var children: Array = snap.get("children", [])
-	_check(children == ["NativeLightmap", "NativeFog2D", "NativeFogGL", "NativeEnvLight",
-		"NativeVignette", "NativeFilterCopy", "NativeColorFilter"], "자식 합성 순서 " + str(children))
+	_check(overlay._lightmap.get_parent()==overlay._half_view and overlay._half_display.texture==overlay._half_view.get_texture(), "원본 반해상도 어둠 surface 연결")
+	_check(overlay._color_rect.get_parent()==overlay._color_view and overlay._color_display.texture==overlay._color_view.get_texture(), "원본 offscreen 색광 surface 연결")
+	_check(overlay._half_display.get_index()<overlay._color_display.get_index() and overlay._color_display.get_index()<overlay._fog2d.get_index(), "어둠 → 색광 → 2D안개 합성 순서")
 	for i in range(6):
 		await process_frame
-	var mat: ShaderMaterial = overlay.get_node("NativeLightmap").material
+	var mat: ShaderMaterial = overlay._lightmap.material
 	var ambient: Color = mat.get_shader_parameter("ambient")
 	_check(ambient.is_equal_approx(Color(6.0 / 255, 16.0 / 255, 9.0 / 255, 0.38)),
 		"지옥0 어둠 rgba(6,16,9,.38) (4505)")

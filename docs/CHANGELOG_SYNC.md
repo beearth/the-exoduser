@@ -56780,3 +56780,10 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 2026-10-22 SWEEP-A 후속: etype1/4 전용 렌더러 스킨/크기 및 800px 표시 방향 보정, 가산 피격 스냅샷·기절별·바 sa 동기화. 추가 색상 검수 진행.
 
 - 2026-10-22 SWEEP-A: 화면 양쪽 경계 snap, source GPU 원/별 제출·ONE flash, 원본 시체/머리 cached slot 표시, 반해상도 합성, 기존 번역 부활 bitmap210 labels. 표시 파생287개 provenance 동기화. source 고정조명 프레임으로 재검수 중.
+
+
+## 2026-10-22 SWEEP-A alpha/snap
+
+- 元 PNG byte 보존, import40개 fix_alpha_border=false로 WebGPU ONE RGB 경계 보존.
+- 펫/보스/독탄/스킬/드랍 screen edge round 통일, P2003/P2004 half viewport locator 동기화.
+- 상세 계약/원본 행/40개 SHA256: docs/engine/SWEEP_A_20261022.md §9. source-alpha import 및 settled-enemies174/settled-map11 ERROR0. 최종 단회 테스트 예정.

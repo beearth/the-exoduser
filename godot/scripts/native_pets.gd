@@ -181,6 +181,7 @@ func configure(world: Node, player: Node2D, state: Node, lighting: CanvasLayer) 
 	if _configured or not is_instance_valid(world) or not is_instance_valid(player) \
 			or not is_instance_valid(state) or not state.has_method("read_current_inventory"):
 		return false
+	texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
 	_world = world
 	_player = player
 	_state = state
@@ -897,7 +898,7 @@ func _draw_sprite_pet(key: String) -> void:
 	if is_crow:
 		var tex: Texture2D = _crow_tex.get(dir)
 		if tex:
-			draw_texture_rect(tex, Rect2(pos - Vector2(size / 2, size / 2), Vector2(size, size)), false)
+			draw_texture_rect(tex, preload("res://scripts/native_source_canvas_labels.gd").snap(self,Rect2(pos-Vector2(size/2,size/2),Vector2(size,size))), false)
 		var eg: float = 0.4 + 0.3 * sin(pet["t"] * 0.08)
 		draw_circle(pos + Vector2(-3, -3), 5.0, Color(1.0, 0.133, 0.0, eg * 0.3))
 		draw_circle(pos + Vector2(-3, -3), 2.0, Color(1.0, 0.267, 0.133, eg))
@@ -923,7 +924,7 @@ func _draw_sprite_pet(key: String) -> void:
 			var rect := Rect2(pos - Vector2(size / 2, size / 2), Vector2(size, size))
 			if flip:
 				rect = Rect2(pos + Vector2(size / 2, -size / 2), Vector2(-size, size))
-			draw_texture_rect(tex2, rect, false)
+			draw_texture_rect(tex2, preload("res://scripts/native_source_canvas_labels.gd").snap(self,rect), false)
 		var eg2: float = 0.4 + 0.3 * sin(pet["t"] * 0.06)
 		for ex in [-3.0, 3.0]:
 			draw_circle(pos + Vector2(ex, -4), 4.0, Color(0.667, 0.267, 1.0, eg2 * 0.3))
@@ -959,13 +960,13 @@ func _draw_iris(canvas: Node2D) -> void:
 	var flk: float = 0.85 + sin(pet["t"] * 0.09) * 0.1 + sin(pet["t"] * 0.17) * 0.05
 	# 번짐 글로우 (source proxy MIX — lightmap 뒤·fog 앞)
 	var glow_size: float = IRIS_GLOW_R * 0.6
-	canvas.draw_texture_rect(_iris_glow_tex, Rect2(pos - Vector2(glow_size, glow_size), Vector2(glow_size * 2, glow_size * 2)),
+	canvas.draw_texture_rect(_iris_glow_tex, preload("res://scripts/native_source_canvas_labels.gd").snap(canvas,Rect2(pos-Vector2(glow_size,glow_size),Vector2(glow_size*2,glow_size*2))),
 		false, Color(1, 1, 1, flk * 0.7))
 	# flame01~04 (55303~55310): sz=20+(sz‖20)*.8, y offset -.7sz
 	if _flame_tex.size() >= 4:
 		var frame: Texture2D = _flame_tex[int(floor(pet["t"] * 0.08)) % 4]
 		var fsz: float = 20.0 + float(pet["sz"]) * 0.8
-		canvas.draw_texture_rect(frame, Rect2(pos + Vector2(-fsz / 2, -fsz * 0.7), Vector2(fsz, fsz)), false,
+		canvas.draw_texture_rect(frame, preload("res://scripts/native_source_canvas_labels.gd").snap(canvas,Rect2(pos+Vector2(-fsz/2,-fsz*.7),Vector2(fsz,fsz))), false,
 			Color(1, 1, 1, flk))
 	else:
 		canvas.draw_circle(pos, 14.0, Color(0.267, 0.8, 1.0, 0.9 * flk))

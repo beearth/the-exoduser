@@ -172,7 +172,7 @@ func _test_combat_counters_and_iris() -> void:
 		"_petOnAtk = hurtE 진입 카운트(42117) atk=" + str(counters.get("atk")))
 	_check(int(counters.get("kill", 0)) >= 1, "_petOnKill 처치 카운트(42702)")
 	# 이리스 광원이 라이트맵 셰이더에 공급됨 (P2-003a light2)
-	var lightmap: ColorRect = active_main.get_node("NativeScreenLighting").get_node("NativeLightmap")
+	var lightmap: ColorRect = active_main.get_node("NativeScreenLighting").get_node("NativeHalfLightmap/NativeLightmap")
 	var light2_a: float = float((lightmap.material as ShaderMaterial).get_shader_parameter("light2_a"))
 	_check(light2_a > 0.2 and light2_a < 0.36, "이리스 광 a=(.45±.13)×.6 범위(4688) a=" + str(light2_a))
 	_check(float((lightmap.material as ShaderMaterial).get_shader_parameter("light2_r")) == 250.0,

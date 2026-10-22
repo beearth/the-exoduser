@@ -13,7 +13,7 @@ var visual_clock_ms: float=-1
 var _revive: Node2D
 var _flash: Array[Sprite2D]=[]
 var _sources: Array[Sprite2D]=[]
-const SOURCE_HIT_ONE="shader_type canvas_item; render_mode blend_add; void fragment(){ vec4 c=texture(TEXTURE,UV); COLOR=vec4(c.rgb*c.a,1.0); }"
+const SOURCE_HIT_ONE="shader_type canvas_item; render_mode blend_add; void fragment(){ vec4 c=texture(TEXTURE,UV); COLOR=vec4(c.rgb,1.0); }"
 
 func configure(owner_actor: Node2D) -> void:
  actor=owner_actor
