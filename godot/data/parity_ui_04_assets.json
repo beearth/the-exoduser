@@ -1,0 +1,42 @@
+{
+  "base": "6c389948edcfecc6b2b5eeb37ac82db280dc6769",
+  "assets": [
+    {
+      "native": "godot/assets/ui/parity_ui_04/ancestor.png",
+      "source": "assets/lobby/varkan_idle_first_v3.png",
+      "sha256": "85cadaa9b872c9b5c7f01d799e6f05be5471aada786c6ae823d7a1df72318108",
+      "same_bytes": true
+    },
+    {
+      "native": "godot/assets/ui/parity_ui_04/enter.png",
+      "source": "assets/lobby/lobby_enter_btn.png",
+      "sha256": "160b91140127f838f71228d04561ff431a281156ed8aae20da5b5228d74c6d79",
+      "same_bytes": true
+    },
+    {
+      "native": "godot/assets/ui/parity_ui_04/lobby_first_frame.png",
+      "source": "assets/lobby/lobby_varkan_crypt_loop_v2.mp4 @ decoded first frame t0, Chromium video/canvas",
+      "sha256": "e948a497199f05a774f3f6f518a091763537f9b0116f4df231e6efde558d3c04",
+      "same_bytes": null
+    },
+    {
+      "native": "godot/assets/ui/parity_ui_04/logo.png",
+      "source": "img/logo_exoduser.png",
+      "sha256": "dffad452cffa7aaf074ff80d2fbb9258858fdef1cbde750e8b07f3f3b264efbd",
+      "same_bytes": true
+    },
+    {
+      "native": "godot/assets/ui/parity_ui_04/wishlist.png",
+      "source": "assets/lobby/lobby_banner_btn.png",
+      "sha256": "b86813d27dd0b06c0dc6aabb71289bdd61bb05d32f9bffd3d7f3eeeb36eb137f",
+      "same_bytes": true
+    },
+    {
+      "native": "godot/assets/ui/parity_ui_04/lobby_frame.png",
+      "source": "img/ui/hell_gothic/frame.png",
+      "sha256": "d6b58ee5d1dfe3d45b927baf46d76dfc662fee1bc8de12fa4caf49bdb9ed44a6",
+      "same_bytes": true
+    }
+  ],
+  "video": "HOLD: static first decoded frame; no replacement movie or generated art"
+}

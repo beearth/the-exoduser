@@ -1,4 +1,7 @@
 extends Node2D
+
+# UI-only showPH seam (G43609); no movement/state calculation.
+signal native_show_ph(text: String, color: Color, duration_ms: int)
 ## PC-MOVE-SKILLS (2026-10-22) — Shift 사슬 이동(charge/harp/dash) + 방향+Space 전격이동(bladeDash)
 ## 원본(고정 스냅샷 godot/source_snapshot/game.html, SHA 4d911cdd…)을 원본 순서 그대로 옮긴 단일 owner.
 ## 계약: docs/engine/PC_MOVE_SKILLS_CONTRACT_20261022.md
@@ -68,7 +71,6 @@ const UNPORTED_BRANCHES: Array = [
 	"전류장판 피해 틱·_shockDR 방어감소(G37413·37460–37465) — hurtE G42290 _shockDR 분기 미이식이라 NOT_READY(장판 수명·렌더만)",
 	"전격의창 thunderGhost(G45395–45407) — 미합체",
 	"SFX.slash/SFX.charge/SFX.magic 합성음(WebAudio 프로시저럴) — 샘플 아님, 미이식",
-	"showPH '충전 중...'/'MP 부족!'/'⚡ n/m' HUD 토스트 — Godot 공용 showPH 소비자 부재(Mac HUD)",
 	"_gpVibrate 진동·G._pStats._dC 통계·_addSkProf 프로파일 — 표현/통계 소비자 부재",
 	"게임패드(_gpActive) 조준·입력 주입 — 포트 키보드/마우스만"]
 
@@ -325,6 +327,7 @@ func _key_shift_down(repeat: bool) -> void:
 		_log("hold_start", {"gauge": harp_gauge})
 	elif not dash_hold and harp_gauge <= 0.0:
 		_log("toast_unported", {"text": "충전 중..."}) # showPH — Mac HUD 소비자 부재
+		native_show_ph.emit("충전 중...", Color("ff8844"), 500) # G13229 showPH
 
 ## G13231–13249
 func _key_blade_dash(code: String, repeat: bool) -> bool:
@@ -728,8 +731,10 @@ func _consume_trigger_with_toast() -> void:
 		activate_blade_dash(int(bd_trigger))
 	elif harp_gauge < float(HARP_GAUGE_COST[1]) * 7.0 / 10.0:
 		_log("toast_unported", {"text": "충전 중..."})
+		native_show_ph.emit("충전 중...", Color("ff8844"), 500)
 	else:
 		_log("toast_unported", {"text": "MP 부족!"})
+		native_show_ph.emit("MP 부족!", Color("4444ff"), 500)
 	bd_trigger = null
 
 ## G45343
@@ -783,7 +788,7 @@ func activate_blade_dash(dir: int) -> void:
 	var cells: int = int(floor(harp_gauge / gauge_cost))
 	var max_cells: int = int(floor(harp_gauge_max / gauge_cost))
 	_text(_player.global_position + Vector2(0, -45), "⚡ %d/%d" % [cells, max_cells], "#44ddff", 30)
-	# showPH('⚡ n/m') — HUD 토스트 미이식(Mac)
+	native_show_ph.emit("⚡ %d/%d" % [cells, max_cells], Color("44ddff"), 500) # G45449
 	bd_ang = ang
 	var state: String = _p_state()
 	pre_bd_state = state if state in ["whirlwind", "sBlock", "beam"] else null

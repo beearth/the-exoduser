@@ -16,6 +16,9 @@ const Fonts = preload("res://scripts/native_ui_fonts.gd")
 var menu = Menu.new()
 var bridge = Bridge.new()
 var cards: Array[Button] = []
+var card_names: Array[Label] = []
+var card_infos: Array[Label] = []
+var card_thumbs: Array[TextureRect] = []
 var status: Label
 var start: Button
 var erase: Button
@@ -54,6 +57,9 @@ func _ready() -> void:
 			first_empty=i
 			break
 	cards[first_empty].grab_focus()
+	if _entry_enabled and not get_tree().has_meta("parity_lobby_cinematic_seen"):
+		get_tree().set_meta("parity_lobby_cinematic_seen",true)
+		call_deferred("_play_cinematic")
 
 func tr_text(ko: String, en: String) -> String: return UI.text(ko)
 func _input(event: InputEvent) -> void:
@@ -106,30 +112,37 @@ func _image(path: String, rect: Rect2, parent: Node = self) -> TextureRect:
 	t.mouse_filter=Control.MOUSE_FILTER_IGNORE; parent.add_child(t)
 	return t
 func _build() -> void:
-	_image("res://assets/ui/demo_lobby/abyss.png",Rect2(0,0,1920,1080))
-	var shade := ColorRect.new(); shade.color=Color(0.02,0.015,0.025,0.64); shade.size=Vector2(1920,1080); shade.mouse_filter=Control.MOUSE_FILTER_IGNORE; add_child(shade)
-	_image("res://assets/ui/demo_lobby/ancestor.webp",Rect2(175,290,600,560))
-	_image("res://assets/ui/demo_lobby/crest.png",Rect2(285,28,360,120)).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_label("EXODUSER",Vector2(230,132),600,66,self,true)
-	_label(tr_text("지옥의 길","THE ROAD THROUGH HELL"),Vector2(350,215),520,28,self,true)
-	_box(Rect2(170,856,620,1),GOLD,GOLD)
-	_label(tr_text("선대의 기억","MEMORY OF THE ANCESTOR"),Vector2(185,878),600,32,self,true)
-	_label(tr_text("끝나지 않은 여정은 이곳에 남는다.","An unfinished journey waits here."),Vector2(185,936),650,22)
-	_box(Rect2(968,76,842,906),Color(0.035,0.027,0.033,0.95),GOLD)
-	_label(tr_text("전사의 기록","WARRIOR RECORDS"),Vector2(1010,105),720,40,self,true)
-	_label(tr_text("새로운 여정을 시작하세요","Begin a new journey"),Vector2(1010,168),700,18)
+	# index.html736–850, final lobby-layout CSS504–528 (1920×1080).
+	_image("res://assets/ui/parity_ui_04/lobby_first_frame.png",Rect2(0,0,1920,1080))
+	_image("res://assets/ui/parity_ui_04/ancestor.png",Rect2(381.8,76.8,531.7,864))
+	_label("선대 소환체",Vector2(540,932),250,13).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	var ancestor_name:=_label("묘왕 바르칸",Vector2(380,963),520,45,self,true);ancestor_name.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;ancestor_name.add_theme_color_override("font_color",Color("b85c43"))
+	_label("플레이어가 소환하는 선대의 영체",Vector2(410,1030),460,12).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	_box(Rect2(1360,0,560,1080),Color("09090a"),Color("3a1a55"))
+	var sigil:=_image("res://assets/ui/parity_ui_03/sigil.png",Rect2(1330,-68,620,620));sigil.modulate.a=.14
+	var rail:=preload("res://scripts/native_parity_ui_surface.gd").Rail.new();rail.image=load("res://assets/ui/parity_ui_04/lobby_frame.png");rail.slice=.22;rail.width=48;rail.position=Vector2(1360,0);rail.size=Vector2(560,1080);rail.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(rail)
+	_image("res://assets/ui/parity_ui_04/logo.png",Rect2(1388,195,498,104)).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_label("한국어",Vector2(1388,147),160,12)
+	var records:=ScrollContainer.new();records.position=Vector2(1392,315);records.size=Vector2(490,178);records.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(records)
+	var rows:=VBoxContainer.new();rows.add_theme_constant_override("separation",10);rows.size_flags_horizontal=Control.SIZE_EXPAND_FILL;records.add_child(rows)
 	for i in 5:
-		var b := _button("",Rect2(1010,235+i*108,758,94),_choose.bind(i))
-		b.alignment=HORIZONTAL_ALIGNMENT_LEFT
-		b.add_theme_constant_override("outline_size",0)
-		cards.append(b)
-	start=_button(tr_text("이어하기","Continue"),Rect2(1010,810,508,62),func(): menu.request_continue(),self,true)
-	erase=_button(tr_text("삭제","Delete"),Rect2(1540,810,228,62),func():
-		if menu.ask_delete(menu.selected): _show_modal())
-	status=_label("",Vector2(1010,888),755,17)
-	status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	status.size.y=75
-	_label(tr_text("로컬 기록은 이 기기에 보관됩니다.","Local records are stored on this device."),Vector2(1010,998),800,17)
+		var b:=_button("",Rect2(0,0,480,84),_choose.bind(i),rows)
+		b.custom_minimum_size=Vector2(480,84);b.alignment=HORIZONTAL_ALIGNMENT_LEFT;b.add_theme_font_size_override("font_size",16);cards.append(b)
+		card_thumbs.append(_image("res://assets/ui/demo_lobby/charselect/portrait_warrior.png",Rect2(24,14,56,56),b))
+		var name_label:=_label("",Vector2(94,12),350,16,b);name_label.size.y=26;name_label.add_theme_font_override("font",Fonts.stack("font",700));card_names.append(name_label)
+		var info_label:=_label("",Vector2(94,45),350,12,b);info_label.size.y=22;info_label.add_theme_font_override("font",Fonts.stack("font",400));card_infos.append(info_label)
+	_button("+  "+tr_text("새 캐릭터","New Character"),Rect2(1392,503,490,64),func():
+		for i in menu.rows.size():
+			if menu.rows[i].kind=="empty":_choose(i);return)
+	var wishlist_caption:=_label("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다",Vector2(1392,591),490,14);wishlist_caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;wishlist_caption.add_theme_font_override("font",Fonts.stack("font",700));wishlist_caption.add_theme_constant_override("line_spacing",-3)
+	var wishlist_sub:=_label("공식 출시 소식을 가장 먼저 받아보세요",Vector2(1392,652),490,11);wishlist_sub.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	_image("res://assets/ui/parity_ui_04/wishlist.png",Rect2(1537,674,200,44)).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	start=_button("",Rect2(1388,751,504,132),func():menu.request_continue())
+	_image("res://assets/ui/parity_ui_04/enter.png",Rect2(0,0,504,132),start).stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	erase=_button("삭제",Rect2(1820,560,64,30),func():
+		if menu.ask_delete(menu.selected):_show_modal());erase.hide()
+	status=_label("",Vector2(1388,876),504,12);status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	_button("▶ 시네마틱",Rect2(1388,897,130,30),_play_cinematic)
 	_form=_box(Rect2(0,0,1920,1080),Color("09080b"),GOLD)
 	_form.hide()
 	_image("res://assets/ui/demo_lobby/abyss.png",Rect2(0,0,1020,1080),_form).modulate=Color("81717b")
@@ -240,6 +253,9 @@ func _queue_entry(slot: int,_data: Dictionary) -> void:
 	call_deferred("_launch_entry",slot)
 func _launch_entry(slot: int) -> void:
 	if not is_inside_tree() or is_queued_for_deletion():return
+	var movie:=preload("res://scripts/parity_video_intro.gd").new()
+	add_child(movie);movie.begin("warrior",bridge.language)
+	await movie.finished
 	var result: Dictionary=entry.launch(self,slot)
 	if not result.ready:status.text=_entry_error(result.reason)
 func _render() -> void:
@@ -247,17 +263,22 @@ func _render() -> void:
 		var row: Dictionary = menu.rows[i] if menu.rows.size()==5 else {"kind":"unavailable"}
 		var text := tr_text("빈 슬롯 — 새로하기","Empty slot — New game")
 		if row.kind in ["saved","new"]:
-			text = str(row.summary.get("name","")) + "    /    " + ("Lv. " + _number_label(row.summary.get("lv")) if row.kind=="saved" else tr_text("새 전사","New warrior"))
+			text = str(row.summary.get("name",""))+"  ·  "+tr_text("엑소듀서 전사","WARRIOR")+"\nLv."+_number_label(row.summary.get("lv",1))+" · "+tr_text("1장 썩은 숲 1층","Chapter 1 · Rotten Forest 1F")
 		elif row.kind=="corrupt": text=tr_text("읽을 수 없는 기록 — 삭제 후 다시 생성","Unreadable record — delete to create again")
 		elif row.kind=="unavailable": text=tr_text("저장소를 열 수 없습니다.","Cannot open the save store.")
-		cards[i].text = "   %02d     %s" % [i+1,text]
-		cards[i].add_theme_font_size_override("font_size",28 if row.kind=="empty" else 22)
-		cards[i].disabled=not menu.ready
-		cards[i].modulate=Color("ffdfaa") if menu.selected==i else Color.WHITE
+		cards[i].text = ""
+		card_names[i].text=str(row.summary.get("name","")) if row.kind in ["saved","new"] else "—"
+		card_infos[i].text="Lv."+_number_label(row.summary.get("lv",1))+" · "+tr_text("1장 썩은 숲 1층","Chapter 1 · Rotten Forest 1F") if row.kind in ["saved","new"] else ""
+		card_thumbs[i].visible=row.kind in ["saved","new"]
+		cards[i].visible=row.kind!="empty" or i<2
+		if row.kind=="empty":cards[i].modulate.a=.18
+		cards[i].add_theme_font_size_override("font_size",16)
+		cards[i].disabled=not menu.ready or row.kind=="empty"
+		cards[i].modulate=Color("ffdfaa") if menu.selected==i else Color(1,1,1,.18 if row.kind=="empty" else 1)
 	start.disabled=menu.selected<0 or not menu.ready or menu.rows[menu.selected].kind not in ["saved","new"]
-	start.text=tr_text("새로하기","New game") if menu.selected>=0 and menu.rows[menu.selected].kind=="new" else tr_text("이어하기","Continue")
+	start.text=""
 	erase.disabled=menu.selected<0 or not menu.ready or menu.rows[menu.selected].kind=="empty"
-	status.text=tr_text("로컬 기록을 선택하거나 빈 슬롯에서 새 전사를 만드세요.","Select a local record or create a warrior in an empty slot.") if menu.last_error.is_empty() else tr_text("요청 실패 · ","Request failed · ")+menu.last_error
+	status.text="" if menu.last_error.is_empty() else _entry_error(menu.last_error)
 	modal_error.text=tr_text("요청 실패 · ","Request failed · ")+menu.last_error if not menu.last_error.is_empty() else ""
 	for b in cards: b.focus_mode=Control.FOCUS_NONE if modal.visible or _form.visible else Control.FOCUS_ALL
 	start.focus_mode=Control.FOCUS_NONE if modal.visible or _form.visible else Control.FOCUS_ALL
@@ -284,3 +305,7 @@ func _number_label(value: Variant) -> String:
 func _notification(what: int) -> void:
 	if what==NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(status):
 		bridge.configure(TranslationServer.get_locale());call_deferred("_render")
+
+func _play_cinematic() -> void:
+	var movie:=preload("res://scripts/parity_video_intro.gd").new()
+	add_child(movie);movie.begin("lobby",bridge.language)

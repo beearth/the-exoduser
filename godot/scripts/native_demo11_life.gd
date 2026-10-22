@@ -15,6 +15,14 @@ var _body: Label
 var _retry: Button
 var _lobby: Button
 var _save: Dictionary={}
+var _fallen_layer: CanvasLayer
+var _fallen: Control
+var _fallen_second := -1
+var _fallen_count: Label
+var _fallen_power: Label
+var _fallen_fill: ColorRect
+var _fallen_material: ShaderMaterial
+var _frozen_field: TextureRect
 var _screen: Control
 var _subtitle: Label
 var _pets: Control
@@ -42,6 +50,7 @@ var _replay_timer: Timer
 var _bonfire: TextureRect
 var _bonfire_layer: CanvasLayer
 var _bonfire_left:=0.0
+var _bonfire_origin:=Vector2.ZERO
 var _clock:=0.0
 var _death_elapsed:=0.0
 var _crow_text: Label
@@ -86,12 +95,12 @@ func _consume_phase(s: Dictionary) -> void:
   p._fallenRevChance=roll.chance;p._fallenRevCdFrames=roll.cd_frames;p._fallenCanRevive=roll.can_revive;p._fallenRevRoll=roll.roll
   var fallen: Dictionary=_request("fallen_enter")
   if fallen.get("status")=="APPLIED":
-   remaining=300;_resolving=false
+   remaining=300;_fallen_second=-1;_resolving=false
    var g: Dictionary=main.source_state.read_current_g()
    g.slowMo=maxf(float(g.get("slowMo",0)),30);g.shake=20
-   _view.show();_screen.show();_title.text=word("fallen");_retry.hide();_lobby.hide();_replay_button.hide();_pets.hide();_subtitle.hide();_update_count()
+   _view.show();_screen.hide();_fallen.show();_update_count()
  elif s.phase=="alive":
-  remaining=0;_view.hide();token="";_resolving=false
+  remaining=0;_fallen.hide();_view.hide();token="";_resolving=false
  elif s.phase=="dead":
   _show_dead()
 func _request(op: String,extra: Dictionary={}) -> Dictionary:
@@ -137,8 +146,22 @@ func _physics_process(_delta: float) -> void:
  if remaining==0:
   _resolving=true
   _request("revive_resolve" if roll.can_revive and roll.roll<roll.chance else "final_death",{"roll_receipt":roll})
-func _update_count() -> void:_body.text=word("count")%int(ceil(remaining/60))
+func _update_count() -> void:
+ var sec:=int(ceil(remaining/60))
+ # Presentation strings/theme updates are events, not per-source-tick allocations.
+ if sec!=_fallen_second:
+  _fallen_second=sec
+  _fallen_count.text=str(sec)+"s"
+  _fallen_count.add_theme_color_override("font_color",Color("ff3333" if sec<=1 else "ff7744" if sec<=2 else "ffcc44"))
+  _fallen_power.text=Surface.I18N.text("부활력 ")+str(roll.get("chance",0))+"%" if roll.get("can_revive",false) else Surface.I18N.text("부활 불가")
+ _fallen_fill.size.x=300*remaining/300.0
+ _fallen_material.set_shader_parameter("progress",remaining/300.0)
 func _show_dead() -> void:
+ # G43869 stops frame updates: keep the last fallen canvas beneath CSS death fade.
+ if DisplayServer.get_name()!="headless":
+  if not is_instance_valid(_frozen_field):
+   _frozen_field=TextureRect.new();_frozen_field.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;_frozen_field.size=Vector2(1920,1080);_frozen_field.mouse_filter=Control.MOUSE_FILTER_IGNORE;_view.add_child(_frozen_field);_view.move_child(_frozen_field,0)
+  _frozen_field.texture=ImageTexture.create_from_image(get_viewport().get_texture().get_image());_frozen_field.show()
  var g: Dictionary=main.source_state.read_current_g()
  if not g.get("_sStats") is Dictionary:g._sStats={}
  g._sStats.deaths=int(g._sStats.get("deaths",0))+1
@@ -150,14 +173,23 @@ func _show_dead() -> void:
  for key in ["_gsBombs","_bsBombs","_boneWalls","_fireZones","_stProjs","_ancestorReturns","_ancestors"]:g[key]=[]
  main.request_native_music_scene("death")
  _death_elapsed=0
+ _fallen.hide()
  _view.show();_screen.show();_title.text=word("dead");_subtitle.show();_pets.show()
  _body.text="💀 %d 처치 | 1장 — 썩은 숲 | EXP -%d | 🔥 최대콤보 %d" % [int(g.get("kills",0)),int(float(main.source_state.read_current_p().get("exp",0))*.3),int(g.get("comboMax",0))]
  _screen.modulate.a=0
- create_tween().tween_property(_screen,"modulate:a",1.0,2.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+ var fade:=create_tween();fade.tween_method(_death_fade,0.0,1.0,2.5);fade.tween_callback(func():if is_instance_valid(_frozen_field):_frozen_field.hide())
  _replay_button.disabled=_replay_frames.is_empty();_replay_button.show()
  _start_dialogue()
  _retry.disabled=not _stage_restore.is_valid()
  _retry.show();_lobby.show()
+func _death_fade(x: float) -> void:
+ # CSS ease-out = cubic-bezier(0,0,.58,1), invert its x component.
+ var lo:=0.0;var hi:=1.0
+ for i in 16:
+  var t: float=(lo+hi)*.5;var bx: float=3*(1-t)*t*t*.58+t*t*t
+  if bx<x:lo=t
+  else:hi=t
+ var t: float=(lo+hi)*.5;_screen.modulate.a=3*(1-t)*t*t+t*t*t
 func bind_stage_restore(owner: Node,callback: Callable) -> bool:
  if owner!=main or not callback.is_valid() or _stage_restore.is_valid():return false
  _stage_restore=callback
@@ -196,13 +228,25 @@ func _poll_save() -> void:
   get_tree().call_deferred("reload_current_scene")
  if _navigation=="lobby":
   get_tree().set_meta("native_demo_return_language",main.get_native_startup_language_snapshot().get("language","ko"))
-  get_tree().call_deferred("change_scene_to_file","res://scenes/demo11_lobby.tscn")
+  get_tree().call_deferred("change_scene_to_file","res://scenes/demo_lobby.tscn")
  _navigation=""
 func snapshot() -> Dictionary:
  return {"phase":main.read_native_player_life_phase(),"remaining":remaining,"roll_receipt":roll.duplicate(),"receipts":receipts.duplicate(true),"last":last.duplicate(true),"save":_save.duplicate(),"retry_stage_ready":_stage_restore.is_valid()}
 func _build_view() -> void:
  # game.html:646–663,3101: full cover image and centered flex column.
  _view=CanvasLayer.new();_view.layer=95;add_child(_view)
+ _fallen_layer=CanvasLayer.new();_fallen_layer.layer=9;add_child(_fallen_layer)
+ _fallen=Control.new();_fallen.size=Vector2(1920,1080);_fallen.mouse_filter=Control.MOUSE_FILTER_IGNORE;_fallen_layer.add_child(_fallen)
+ var tint:=ColorRect.new();tint.size=_fallen.size;tint.mouse_filter=Control.MOUSE_FILTER_IGNORE;_fallen.add_child(tint)
+ _fallen_material=ShaderMaterial.new();_fallen_material.shader=preload("res://shaders/parity_fallen.gdshader");tint.material=_fallen_material
+ Surface.panel(_fallen,Rect2(820,401.6,280,88),Color(0,0,0,.4875),Color(.706,.118,.118,.4875))
+ _fallen_power=Surface.text(_fallen,"",Rect2(820,411.6,280,30),14,Color("ffccaa"),"font",700);_fallen_power.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+ _fallen_count=Surface.text(_fallen,"",Rect2(820,421.6,280,66),52,Color("ffcc44"),"font",700);_fallen_count.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+ var fallen_label:=Surface.text(_fallen,"쓰러짐...",Rect2(820,476.6,280,22),12,Color("cc886699"),"font");fallen_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+ Surface.panel(_fallen,Rect2(810,918,300,8),Color("220000b3"),Color("ff643266"))
+ _fallen_fill=ColorRect.new();_fallen_fill.position=Vector2(810,918);_fallen_fill.size=Vector2(300,8);_fallen_fill.color=Color("ff6644b3");_fallen.add_child(_fallen_fill);_fallen.hide()
+ var mono:=SystemFont.new();mono.font_names=PackedStringArray(["monospace"])
+ for label_node in [_fallen_power,_fallen_count,fallen_label]:label_node.add_theme_font_override("font",mono)
  _screen=Control.new();_screen.size=Vector2(1920,1080);_view.add_child(_screen)
  var art:=Surface.art(_screen,"img/cin_remember_wide.png",Rect2(0,0,1920,1080));art.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED
  _title=Surface.text(_screen,word("dead"),Rect2(600,382,720,60),45,Color(.855,.824,.757,.94),"hell_title",700);_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;var title_font:=FONTS.stack("hell_title",700).duplicate();title_font.spacing_glyph=6;_title.add_theme_font_override("font",title_font)
@@ -218,7 +262,7 @@ func _build_view() -> void:
  Surface.art(_pets,"img/cat_pet/portrait.png",Rect2(492,0,480,320))
  _crow_text=Surface.text(_pets,"…죽었군. 하지만 여신은 아직 널 안 놓았어.",Rect2(92,237,306,51),15,Color.WHITE,"pet",700);_crow_text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;_crow_text.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
  _cat_text=Surface.text(_pets,"괜찮아?! 다시 일어설 수 있어, 포기하지 마!",Rect2(614,250,190,42),15,Color.WHITE,"pet",700);_cat_text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;_cat_text.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
- var pet_font: FontVariation=FONTS.stack("pet",700).duplicate();pet_font.spacing_top=-2;pet_font.spacing_bottom=-2
+ var pet_font:=SystemFont.new();pet_font.font_names=PackedStringArray(["Malgun Gothic","Arial","Apple SD Gothic Neo","sans-serif"]);pet_font.font_weight=700
  for bubble in [_crow_text,_cat_text]:
   bubble.add_theme_font_override("font",pet_font);bubble.add_theme_constant_override("line_spacing",0)
   var target:=Vector2(306,51) if bubble==_crow_text else Vector2(190,42);bubble.scale=Vector2.ONE*(14.72/15.0);bubble.set_deferred("size",target/(14.72/15.0))
@@ -307,8 +351,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _finish_replay() -> void:
  _replaying=false;_play_generation+=1;_replay_layer.hide();_pets.show()
 func _start_bonfire() -> void:
+ _bonfire_origin=main.player.global_position
  # G63523,55323–55333: radius280 /300frames, .9 alpha, final120frames fade, 3% pulse.
- _bonfire_layer=CanvasLayer.new();_bonfire_layer.layer=0;add_child(_bonfire_layer)
+ _bonfire_layer=CanvasLayer.new();_bonfire_layer.layer=6;add_child(_bonfire_layer)
  _bonfire=TextureRect.new();_bonfire.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;_bonfire.texture=preload("res://assets/sprites/bonfire_barrier.png");_bonfire.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;_bonfire.mouse_filter=Control.MOUSE_FILTER_IGNORE;_bonfire_layer.add_child(_bonfire);_bonfire_left=5.0
 func _process(delta: float) -> void:
  if is_instance_valid(_screen) and _screen.visible and _retry.visible:
@@ -317,7 +362,7 @@ func _process(delta: float) -> void:
  if _bonfire_left<=0 or not is_instance_valid(_bonfire):return
  _clock+=delta;_bonfire_left=maxf(0,_bonfire_left-delta)
  _bonfire.size=Vector2.ONE*560*(1+sin(_clock/.3)*.03)
- _bonfire.position=main.player.get_global_transform_with_canvas().origin-_bonfire.size*.5
+ _bonfire.position=main.player.get_viewport_transform()*_bonfire_origin-_bonfire.size*.5
  _bonfire.modulate.a=minf(1,_bonfire_left/2)*.9
  if _bonfire_left==0:_bonfire_layer.queue_free()
 

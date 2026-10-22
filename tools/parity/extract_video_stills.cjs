@@ -1,0 +1,17 @@
+// Decode approved source movies into stills, never transcode or synthesize art.
+const {chromium}=require('playwright'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),{spawn}=require('node:child_process');
+const out=process.env.PARITY_OUT,root=process.cwd();if(!out)throw Error('PARITY_OUT required');
+const sandbox={};sandbox.globalThis=sandbox;vm.runInNewContext(fs.readFileSync('world-intro-subtitles-data.js','utf8'),sandbox);
+const world=sandbox.WorldIntroSubtitleData;
+const cuts=JSON.parse(fs.readFileSync('world-intro-player.js','utf8').match(/Object.freeze\((\[[^\]]+\])/)[1]);
+const warrior=JSON.parse(fs.readFileSync('character-story-player.js','utf8').match(/Object.freeze\((\[[^\]]+\])/)[1]);
+const groups={gate:{movie:'video/intro.mp4',cuts:[0,4],duration:8,subtitles:{}},world:{movie:'video/world_intro_v15_clean_en.mp4',cuts,duration:113,subtitles:Object.fromEntries(Object.entries(world.languages).map(([k,v])=>[k,world.timings.map(([start,end],i)=>({start,end,text:v[i]}))]))},warrior:{movie:'video/warrior_story_v23_clean.mp4',cuts:[0,...warrior],duration:96,subtitles:{}}};
+for(const f of fs.readdirSync('video/subtitles').filter(x=>/^warrior_story_v23_.*\.vtt$/.test(x))){const lang=f.slice(18,-4),s=fs.readFileSync('video/subtitles/'+f,'utf8');const ts=t=>t.split(':').reduce((a,x)=>a*60+Number(x),0);groups.warrior.subtitles[lang]=[...s.matchAll(/([\d:.]+) --> ([\d:.]+)[^\n]*\n([\s\S]*?)(?=\n\n|$)/g)].map(m=>({start:ts(m[1]),end:ts(m[2]),text:m[3].trim()}));}
+const server=spawn(process.execPath,['server.cjs'],{cwd:root,env:{...process.env,PORT:'3497',HOST:'127.0.0.1',EXODUSER_SAVE_DIR:out+'/websave'},stdio:'ignore'});
+(async()=>{let browser;try{for(let i=0;i<50;i++){try{if((await fetch('http://127.0.0.1:3497/index.html')).ok)break}catch{}await new Promise(r=>setTimeout(r,100));}
+ browser=await chromium.launch({channel:'chrome',headless:true,args:['--mute-audio','--autoplay-policy=no-user-gesture-required']});const page=await browser.newPage({viewport:{width:1920,height:1080},deviceScaleFactor:1});await page.goto('http://127.0.0.1:3497/index.html?test=1');await page.setContent('<body style="margin:0;background:black"><video id="v" style="width:1920px;height:1080px;object-fit:contain"></video>');
+ fs.mkdirSync('godot/assets/intro_video_stills',{recursive:true});
+ for(const [key,g] of Object.entries(groups)){g.frames=[];for(let i=0;i<g.cuts.length;i++){const t=g.cuts[i]+.05;const png=await page.evaluate(async({movie,t})=>{const v=document.getElementById('v');if(!v.src.endsWith(movie)){v.src='http://127.0.0.1:3497/'+movie;await new Promise((ok,bad)=>{v.onloadedmetadata=ok;v.onerror=bad;});}v.currentTime=t;await new Promise(ok=>v.onseeked=ok);const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);return c.toDataURL('image/png').split(',')[1];},{movie:g.movie,t});const file='godot/assets/intro_video_stills/'+key+'_'+String(i).padStart(2,'0')+'.png';fs.writeFileSync(file,Buffer.from(png,'base64'));g.frames.push({t:g.cuts[i],asset:'res://assets/intro_video_stills/'+path.basename(file)});}
+ g.duration=await page.evaluate(()=>document.getElementById('v').duration);console.log(key,g.frames.length,'stills',g.duration);}
+ fs.writeFileSync('godot/data/parity_video_source.json',JSON.stringify(groups,null,2)+'\n');
+ }finally{if(browser)await browser.close();server.kill();await new Promise(r=>server.on('exit',r));}})().catch(e=>{console.error(e);process.exitCode=1;});

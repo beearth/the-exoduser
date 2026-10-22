@@ -6,7 +6,23 @@ from pathlib import Path
 import datetime
 import json
 import subprocess
+import os
+import shutil
 import time
+
+
+def native_node_binary(value):
+    """Resolve OS.execute's native binary; shell quotes/PC paths are transport data."""
+    supplied = value.strip('"\'')
+    candidate = Path(supplied).expanduser()
+    if not candidate.is_file() or not os.access(candidate, os.X_OK):
+        native = os.environ.get("EXODUSER_NODE_BIN") or shutil.which("node")
+        if not native:
+            raise RuntimeError("native Node executable unavailable")
+        candidate = Path(native.strip('"\'')).expanduser()
+    candidate = candidate.resolve(strict=True)
+    subprocess.run([str(candidate), "--version"], check=True, capture_output=True)
+    return str(candidate)
 
 
 def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
@@ -17,8 +33,20 @@ def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
     override = project / "override.cfg"
     original = override.read_bytes() if override.exists() else None
     argv = [str(engine), *flags, "--path", str(project), "--log-file", str(out / (name + ".engine.log"))]
+    # PC movement fixtures use their own non-demo namespace and fresh Main.
+    # Keep persistence explicit: product/default and --demo11-storage=on are untouched.
+    if ("res://tests/test_pc_move_skills.gd" in flags
+            and not any(arg.startswith("--demo11-storage=") for arg in extra)):
+        extra = [*extra, "--demo11-storage=off"]
     if extra:
-        argv += ["--", *extra]
+        # OS.execute needs a native executable path, never a quoted shell command
+        # or a PC path transported to this Mac. Keep this in the Mac harness.
+        normalized = []
+        for arg in extra:
+            if arg.startswith("--node-bin="):
+                arg = "--node-bin=" + native_node_binary(arg.split("=", 1)[1])
+            normalized.append(arg)
+        argv += ["--", *normalized]
     meta = {"argv": argv, "userdir": userdir, "gate": []}
     stdout_path, stderr_path = out / (name + ".out"), out / (name + ".err")
     assert not (out / (name + ".json")).exists(), "preserve prior results"

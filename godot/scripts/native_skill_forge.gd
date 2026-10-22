@@ -103,6 +103,8 @@ func action(value: String,rect: Rect2,callback: Callable,enabled:=true) -> Butto
  var b:=Button.new();b.text=Surface.I18N.text(value);b.position=rect.position;b.size=rect.size;b.disabled=not enabled
  b.add_theme_font_override("font",Surface.Fonts.stack("hell"));b.add_theme_font_size_override("font_size",13)
  var box:=StyleBoxFlat.new();box.bg_color=Color("201813");box.border_color=Color("6b5843");box.set_border_width_all(1);b.add_theme_stylebox_override("normal",box);b.add_theme_stylebox_override("disabled",box);b.modulate.a=1 if enabled else .42
+ if value in ["습득","강화 +"]:
+  var fire: StyleBoxFlat=box.duplicate();fire.bg_color=Color("6e2418");fire.border_color=Color("a34d3f");b.add_theme_stylebox_override("normal",fire);b.add_theme_stylebox_override("disabled",fire);b.add_theme_color_override("font_color",Color("fff0df"))
  stage.add_child(b);b.pressed.connect(callback);return b
 class DropButton extends Button:
  var forge: Control
@@ -120,8 +122,16 @@ class DropButton extends Button:
  func _drop_data(_at: Vector2,data: Variant) -> void:
   if altar:forge.place_material(data.skill)
   else:forge.equip(slot_index,data.skill)
+class Halo extends Control:
+ var radius:=35.0
+ func _draw() -> void:
+  for i in range(18,0,-1):
+   draw_arc(size/2,radius+i,0,TAU,96,Color(.925,.475,.345,.025*(1.0-i/19.0)),2,true)
+  draw_arc(size/2,radius+1,0,TAU,96,Color("ec795855"),2,true)
 func disc(id: String,rect: Rect2,selected: bool=false,parent: Node=null) -> TextureRect:
  var icon: Texture2D=icon_for(id)
+ if selected:
+  var halo:=Halo.new();halo.position=rect.position-Vector2.ONE*18;halo.size=rect.size+Vector2.ONE*36;halo.radius=rect.size.x*.5;halo.mouse_filter=Control.MOUSE_FILTER_IGNORE;(stage if parent==null else parent).add_child(halo)
  var n:=TextureRect.new();n.position=rect.position;n.size=rect.size;n.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;n.texture=icon if icon!=null else preload("res://assets/ui/parity_ui_03/sigil.png");n.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var mat:=ShaderMaterial.new();mat.shader=disc_shader;mat.set_shader_parameter("selected",1.0 if selected else 0.0);mat.set_shader_parameter("has_icon",icon!=null);n.material=mat
  (stage if parent==null else parent).add_child(n);return n
@@ -146,14 +156,16 @@ func render() -> void:
   var x: float=278+i*106;var id: String=slot_value(i)
   var b:=DropButton.new();b.forge=self;b.slot_index=i;b.position=Vector2(x,229.47);b.size=Vector2(92,105);stage.add_child(b)
   for state in ["normal","hover","pressed","focus"]:b.add_theme_stylebox_override(state,StyleBoxEmpty.new())
-  disc(id,Rect2(11,0,70,70),i==selected_slot,b)
+  disc(id,Rect2(8.9,-4.1,74.2,74.2) if i==selected_slot else Rect2(11,0,70,70),i==selected_slot,b)
   b.pressed.connect(func():selected_slot=i;staged=[];selected_skill="";render())
   var key:=Surface.text(b,Slots.SLOTS[i].k,Rect2(0,73,92,14),11,Color("c9a663"),"hell_title");key.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
   var name_label:=Surface.text(b,display_name(id) if not id.is_empty() else "비어 있음",Rect2(0,89,92,15),11,Color("b9ab92"),"hell");name_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;name_label.clip_text=true
  var m: Dictionary=model()
  Surface.panel(stage,Rect2(51,339.11,330,564.89),Color("140f0edb"),Color("a4937380"));Surface.panel(stage,Rect2(1539,339.11,330,564.89),Color("140f0edb"),Color("a4937380"))
  render_altar(m);render_info(m);render_road(m);render_tray(m)
- Surface.button(stage,"닫기 [ESC]",Rect2(813,1022,94,32),close_panel)
+ Surface.button(stage,"일괄 레벨업",Rect2(927,1022,106,32),func():manage("batch",""),false)
+ Surface.button(stage,"추천 자동",Rect2(1041,1022,94,32),func():manage("recommend",""),false)
+ Surface.button(stage,"닫기 [ESC]",Rect2(813,1022,106,32),close_panel)
 func navigate(i: int) -> void:
  close_panel()
  if i==1:inventory.open_panel()
@@ -165,7 +177,7 @@ func render_altar(m: Dictionary) -> void:
  var plate:=TextureRect.new();plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.texture=preload("res://assets/ui/parity_ui_03/sigil.png");var radius: float=maxf(R*1.32,R+node_size*.65);plate.position=Vector2(cx-radius,cy-radius);plate.size=Vector2.ONE*radius*2;plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var mat:=ShaderMaterial.new();mat.shader=rune_shader;plate.material=mat;stage.add_child(plate);plate.hide()
  var core_size: float=maxf(48,minf(150,minf(R*1.02,(R-node_size/2)*1.3)))
- if not m.host.is_empty():disc(m.host,Rect2(cx-core_size/2,cy-core_size/2,core_size,core_size),not m.ready.is_empty())
+ if not m.host.is_empty():disc(m.host,Rect2(cx-core_size/2,cy-core_size/2,core_size,core_size),true)
  text(display_name(m.host) if not m.host.is_empty() else "슬롯이 비어 있습니다",Rect2(407,349.11,460,42),22,Color("dfd6c2"),true)
  var ring: Array=m.set if m.set.size()>1 else []
  var ghost: bool=m.cands.any(func(c):return c.ok and c.learned and not c.demo) and m.set.size()<10
@@ -196,6 +208,8 @@ func render_info(m: Dictionary) -> void:
   var cost: int=int(sk.value.get("spCost",0) if lv==0 else Support.COST.skill_up_sp_cost(lv).value)
   text(Surface.I18N.text("습득 " if lv==0 else "강화 ")+"SP "+str(cost),Rect2(66,513.42,298,24),12,Color("b9ab92"))
   action("습득" if lv==0 else "강화 +",Rect2(66,538.42,67,34),func():manage("learn_up",id),snapshot.p.sp>=cost and (lv==0 or lv<1+int(snapshot.p.lv/50)))
+  if lv>0 and lv>=1+int(snapshot.p.lv/50) and lv<20:
+   text("Lv"+str((1+int(snapshot.p.lv/50))*50)+Surface.I18N.text(" 도달 시 해금"),Rect2(190,513.42,175,24),12,Color("e3a16f"))
   if lv>0:
    action("강화 −",Rect2(139,538.42,65,34),func():manage("minus",id),lv>1)
    action("리셋",Rect2(210,538.42,55,34),func():confirm_reset(id))
@@ -243,14 +257,17 @@ func render_tray(m: Dictionary) -> void:
  var ids: Array=eligible.get("value",[])
  var scroll:=ScrollContainer.new();scroll.position=Vector2(310,929);scroll.size=Vector2(1000,78);scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;stage.add_child(scroll)
  var row:=HBoxContainer.new();row.add_theme_constant_override("separation",8);scroll.add_child(row)
+ text("장착",Rect2(292,943,40,30),12,Color("c9a663"))
  for id in ids:chip(row,id)
  text("합성 재료",Rect2(1590,943,120,30),12,Color("c9a663"))
  var materials:=ScrollContainer.new();materials.position=Vector2(1670,927.5);materials.size=Vector2(180,58);materials.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;stage.add_child(materials)
  var mr:=HBoxContainer.new();mr.add_theme_constant_override("separation",8);materials.add_child(mr)
+ if m.cands.is_empty():
+  text("이 모체로 합성할 재료가 없습니다" if not m.host.is_empty() else "모체 스킬을 먼저 장착하세요",Rect2(1670,943,180,30),11,Color("7d7264"))
  for c in m.cands:chip(mr,c.id)
 func chip(parent: Node,id: String) -> void:
  var b:=DropButton.new();b.forge=self;b.skill_id=id;b.custom_minimum_size=Vector2(170,55);parent.add_child(b)
- var style:=StyleBoxFlat.new();style.bg_color=Color("241c18");style.border_color=Color("4d4136");style.set_border_width_all(1);style.set_corner_radius_all(28);b.add_theme_stylebox_override("normal",style)
+ var style:=StyleBoxFlat.new();style.bg_color=Color("241c18");style.border_color=Color("4d4136");style.set_border_width_all(1);style.set_corner_radius_all(28);style.border_color=Color("ff9b4a") if id==slot_value(selected_slot) or id==selected_skill else style.border_color;b.add_theme_stylebox_override("normal",style)
  disc(id,Rect2(5,7,36,36),false,b)
  Surface.text(b,skill_name(id),Rect2(49,7,114,22),13,Color("dfd6c2"),"hell").clip_text=true
  Surface.text(b,"Lv "+str(level(id)),Rect2(49,29,114,18),11,Color("b9ab92"),"hell")

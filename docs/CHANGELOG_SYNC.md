@@ -6,6 +6,24 @@
 - 관련 테스트 단1회273검사/0실패. E2E 단1회13PASS/5NOT_READY/0FAIL, overall NOT_READY(부활 관측 뒤 dead). 프로세스 exit0을 종주 PASS로 대체하지 않는다. 나란히1920×1080·1x/crop을 직접 검수하며 남은 표시/같은 상태 정렬 차이는 기록한다. 동일성 완료/main 인수 아님.
 - [원본행·수치·소유·검수·남은 차이](engine/PARITY_BOSS_01_20261022.md), 산출물 ~/exoduser-wt/_out/PARITY-BOSS-01/. 정상hook·비강제 branch push, 원격SHA 재조회 후 clean WT 제거. main/Steam 배포0.
 
+## 2026-10-22 PARITY-INTRO-01b
+
+- Mac 하니스 PC 이동 fixture의 누락된 storage=off 진입을 복구. PC 테스트·제품 3구간 인트로·저장 namespace 검증은 유지. 원인 및 단회 검증: engine/PARITY_INTRO_01b_20261022.md.
+
+## 2026-10-22 PARITY-HUD-02b
+
+- native_move_skills.gd의 toast_unported 원문 로그 3줄 복구, 각 emit 직전 순서 유지. UNPORTED_BRANCHES showPH 제외 유지.
+- 단회 PC 회귀8검사/3실패: intro 부팅 setup owner 미설치로 목표256/0 미달. Mac HUD 토스트26/0. 격리 override 원복·자기 Godot 종료, PID81277 보존. 상세: engine/PARITY_HUD_02_20261022.md.
+
+
+## 2026-10-22 PARITY-INTRO-01
+
+- 후속 검수: 타이핑 prefix/줄배치 사전 계산으로 프레임 목록 할당 제거, 고정 캡처에서 양쪽 레슨 상태/커튼 wall-clock 일치 확인. 로비 gate ENTER·mixer와 영화 오디오는 미완료 명시.
+
+- 기준 hud-02 bf538259: 로비 gate/world·생성 직후 warrior·첫 진입 INTRO를 웹 위치로 분리. 원본 영상 still42장과29언어 자막/CUTS/CUES를 채택하며 영상 모션/VO는 HOLD.
+- native_story_intro/parity_intro_canvas: 합본 액자·p01~p17·기본 PRO 제품 참조 제거, 원본00~20 이미지·cam/fade/vfx·화자·타이핑·입력대기·Space2000ms. 금빛 소환진 screen 합성/시작위치와 지역명3.1초 표시 복원.
+- Mac 하니스 oracle Node 절대 경로 정규화/실행 검증. 23b1281/0, restore126863/0, intro12/0. 최종 입력 E2E0실패·주입0·SCRIPT ERROR0.
+- 1920×1080 1x 비교8쌍과 잔여 RETOUCH/영상 HOLD는 PARITY_INTRO_01_20261022.md 및 PARITY_DIFF_LIST_20261022.md. 보스/아레나/맵 파일·PC 수치 writer 수정0.
 ## 2026-10-22 PARITY-UI-02 — 인벤토리·사망/재시작 원본 부분 이식
 
 - 원본fb67658b branch 계속. 웹 snapshot4d911cdd, main 차이표d79ee3e67의 PC 원문 보존. 맵·카메라·PC 코어/테스트·main.tscn 변경 없음.
@@ -56577,3 +56595,17 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - 원본행·상수·에셋 출처·펫 조건·M5–M13 잔여는 engine/PARITY_BOSS_02_20261022.md 및 PARITY_DIFF_LIST에 동기화. HS-M4 시작 id3/32·14굴·지역23/60/53/32 실측, 공급변경0.
 - suite 단1회276/0. 최종GUI/errors0·main parser/errors0. 실제 E2E 단계1회12PASS 뒤 Retry headless null-image 오류로 중단, 별도 기동parse 실패도 보존. 전체 PARITY RETOUCH/E2E FAIL, PC 인수·main 반영 아님.
 - BOSS-01 참조24장(full20/crop4) quality88 JPG 보존. 외부 _out/PARITY-BOSS-02/captures에 pc19 대응19개·1x crop·상태audit 보존. 같은셀3종과 전체상태 불일치를 구분.
+## 2026-10-22 PARITY-UI-04
+
+- 기준6c389948, 웹 G58907 쓰러짐 표시·HUD 유지, 원본 로비 첫 프레임/기록 목록 및 사망 후 같은 로비, guide 입력 선전달, 인벤토리 power/CP/X/filter·스킬 표시 잔여를 반영했다.
+- potion/feel deferred callback이 로비 전환 뒤 detached Main의 null SceneTree.paused를 읽지 않도록 보호했다. PC 부활 판정·코어·보스·아레나·맵은 변경하지 않았다.
+- 상세 원본 행·제한·검수 결과: `engine/PARITY_UI_04_20261022.md`, 외부 `_out/PARITY-UI-04/DONE.txt`. 영상은 원본 t0 정지 HOLD, batch/recommend writer 기능 HOLD, visual RETOUCH를 유지한다. 번역목록3507–3513·lang26 EN fallback 및 에셋 해시 동기화.
+
+- PARITY-UI-04 후속 틱 감사: fallen 표시의 초/부활력 문자열과 색상 테마를 초 변경 이벤트로 캐시했다. 원본300tick 판정·52px 카운트 값 불변. 정적 검토만 추가하고 관련 suite/E2E는 사용자 지정1회로 유지한다.
+
+## 2026-10-22 PARITY-HUD-02 — PC 기동 게이지 표시 소비
+
+- UI-04 원격 e867f9b3 기반 별도 브랜치. read_native_move_gauge()만 소비해 MP 구슬 노란 링/가변칸·slot0 바 표시. SP 액체는 원본 초록, 수치=PC 계산.
+- 이동 owner에는 기존 showPH 지점 UI 신호만 추가. 원본500ms/fade100ms·색·위치·기존번역 소비. frame PNG glow/레이어순서/액체 easing·숫자 shadow 반영. 이동/자원 수식·맵/보스/인트로 변경0.
+- 관련 HUD 회귀1회26검사/0실패/SCRIPT ERROR0. 무주입 storage-on E2E1회 캐릭터생성→필드 진입/SCRIPT ERROR0, HP0으로 자연완주 NOT_READY. 1x 비교·잔여표/최종 SHA는 _out/PARITY-HUD-02/DONE.txt. CSS Gaussian·분수폰트/AA·타이밍은 RETOUCH.
+- 상세 계약: docs/engine/PARITY_HUD_02_20261022.md, PARITY_DIFF_LIST와 PC_MOVE_SKILLS_CONTRACT 갱신. 새 제품문구0, 번역 번호/CRLF 보존.

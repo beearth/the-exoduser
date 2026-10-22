@@ -1,3 +1,5 @@
+> 2026-10-22 인트로 현행 갱신: [PARITY-INTRO-01](PARITY_INTRO_01_20261022.md). 생성 직후 warrior → Main 첫 진입 INTRO를 분리하고 합본 제품 참조를 끊었다. 영상 HOLD/캡처 제한은 해당 문서를 따른다.
+
 # DEMO11-07 — 로비 char0 생성·active·INTRO 경계
 
 진입점은 기존 DEMO11-04 `res://scenes/demo_lobby.tscn`이다. 프로젝트 기본 main_scene/DEMO11-01 실행 권위는 바꾸지 않는다. 보통 실행에서는 생성 성공 신호를 구독하고, 기존 custom SceneTree 회귀는 이전 요청 UI 동작을 유지한다. 새 하니스만 `native_lobby_entry_enabled=true`를 명시한다.

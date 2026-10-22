@@ -19,6 +19,7 @@ func advance_native(main: Node, sp: float = 1.0, tick_serial: int = -1) -> Dicti
 		return {"status":"NOT_READY","reason":"main_owner_mismatch"}
 	if _main != null and _main.get_ref() != main: return {"status":"NOT_READY","reason":"main_owner_changed"}
 	_main = weakref(main)
+	if not main.is_inside_tree() or main.get_tree() == null: return {"status":"SKIP","reason":"main_tree_exited"}
 	if main.get_tree().paused: return {"status":"SKIP","reason":"tree_paused"}
 	var clock: Dictionary = main.get_native_source_clock_input_snapshot()
 	var serial: int = Engine.get_physics_frames() if tick_serial < 0 else tick_serial

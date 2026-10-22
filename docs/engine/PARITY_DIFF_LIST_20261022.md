@@ -468,3 +468,49 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 ## PARITY-BOSS-02 후속 — 2026-10-22
 
 [원본행·수치·실패 근거·잔여 표](PARITY_BOSS_02_20261022.md). 기준MAP-03 f6272399. BOSS-01 참조24장(full20/crop4)을 quality88 JPG로 boss_mac/에 보존(push2개). 아레나 PP 상수와 실제 _ATMDBG gate0을 구분하여 강제 grade/lift/vig 제거, source r520/560 보스광원 추가. 강타/회전/충격 source 원형예고·_druidOrbs24frame·poison30slot trail·teleDropY 표시 연결. PC 보스코어/수치/mkEn 변경0. HS-M4 실제 시작id3/32와 지역23/60/53/32·14굴 확인, 공급수정0. 관련suite1회276/0. E2E는 기동parse 실패를 별도 보존한 뒤 실제 단계1회12PASS까지, Retry Button 뒤 headless null-image 오류로 guard 종료. **전체 동일성 RETOUCH / E2E FAIL**, bossroom·clear 인수 아님. 이전M5–M13 잔여를 위 보고서 표에 전부 유지.
+## Mac 후속 상태 — PARITY-UI-04 (2026-10-22)
+
+기준6c389948, 상세는 `PARITY_UI_04_20261022.md`. PC 원문과 과거 판정은 보존한다.
+
+| 항목 | 후속 상태 | 완료 판정의 제한 |
+|---|---|---|
+| 쓰러짐·HUD | 원본 G58907 표시 이식 / 300tick PC 판정 유지 | 초기 소환진은 기존 intro 수명 내 같은 프레임으로 비교. 전투/부활 수치 수정 없음 |
+| L-04·L-08 | 묘왕 배경 t0 및 우측 기록 목록 / 사망 후 같은 캐릭터 로비 | 영상·영체 애니메이션 HOLD, 세부 CSS/저장 카드 정보·버튼 배선 잔여. 완전 PASS 아님 |
+| intro guide | HUD 입력 선전달·physical key fallback | 원본2초 홀드. 최종 strict E2E 결과는 외부 DONE에 기록 |
+| inventory 잔여 | power reader 숫자 / CP 헤더 / 원본✕ | glyph·서체·필터 픽셀 동일성 잔여 |
+| SkillForge 잔여 | 선택 링·core glow·레벨 해금·버튼색·장착/재료·선택칩·하단 버튼 표시 | batch/recommend PC writer 미제공으로 기능 HOLD. 기존3D·합성잔여 PASS로 바꾸지 않음 |
+| 로비 전환 SCRIPT ERROR | potion/feel deferred null-tree guard | 최종 GUI·E2E 로그 분리. 전체 PC 제품 안정성 완료 아님 |
+
+UI-04 strict E2E1회: 주입0, storage=on, intro_phase=done, 실제 필드 진입/이동 확인, SCRIPT ERROR0. 보스부터 로비까지 전체는 NOT_READY. 스킬105/0; 인벤토리212/2는 잘못 전달한 Node 경로로 oracle transport 실패2건이며 재실행하지 않았다. 상세한 한계는 UI-04 보고와 외부 DONE을 따른다.
+
+## PARITY-HUD-02 표시 소비자 (2026-10-22)
+
+이전 표는 당시 검수 이력이다. 아래는 UI-04 `e867f9b370778fa1f621bcf94a1e5f840d4541a8` 위 후속 결과이며 수치 공식 변경은 없다.
+
+| ID | 현재 상태 | 변경과 잔여 |
+|---|---|---|
+| H-01 | RETOUCH | 원본 PNG 파란 shield frame glow·그림자(테두리 stroke 제거)·HP CSS ellipse/0.6초 easing·눈을 숫자 위로 복구. Gaussian kernel과 Chromium/FreeType AA 세부는 1x 차이 유지 |
+| H-02 / PMS-M1 | owner 연결 / RETOUCH | `read_native_move_gauge()`의 pct·cell_deg 소비. max225이면72°이며54° 고정/chargeStocks 대용 계산 없음. 노란색은 기동 링, SP 액체는 원본 초록색. MP/SP 수치는 PC 계산 |
+| H-08 / PMS-M2 | 표시 연결 / RETOUCH | skSlot0 바 bottom0/height3×.9px, pct와 원본3색 소비. 폭.1초 ease/하단 radius4px×.9 표시; CSS raster 세부 차이 남음 |
+| PMS-M3 | 표시 연결 / RETOUCH | 원본 이동 거부/전격이동 지점 신호만 추가, 판정 변경0. bottom180px, 28.8px 반올림29, letter spacing .2em 근사6, 기본500ms·fade100ms. Gaussian/폰트 subpixel 세부 차이 남음 |
+
+1x 좌웹/우Godot 격자 및 로그: `~/exoduser-wt/_out/PARITY-HUD-02/`. 상세 원본 행·검수 범위는 `PARITY_HUD_02_20261022.md`.
+
+## PARITY-INTRO-01 반영·검수 상태 (2026-10-22)
+
+기준 hud-02 `bf5382592a903c5bfd7ffe08d44dfed77bc29489`. 원조사 표는 이력으로 보존한다. [현재 원본 대응/구현 계약](PARITY_INTRO_01_20261022.md). 캡처 루트 `~/exoduser-wt/_out/PARITY-INTRO-01/captures/`, 모든 `*_compare_1x.png`는 WEB 왼쪽/Godot 오른쪽이며 축소하지 않았다.
+
+| 항목 | 현행 상태 | 같은 시점 비교/남은 차이 |
+|---|---|---|
+| I-01 구성 | 구현, 영상 HOLD | 로비 gate/world → 생성 직후 warrior → 첫 진입 INTRO. legacy 합본은 제품에서 읽지 않음. lobby_start/middle,character,entry_* |
+| I-02 화면 틀 | 구현, RETOUCH | 첫 진입 액자/금선/세계의 기록 띠 제거. entry_start/goddess/diroy 전체화면. 16:9 1920×1080에서 비교; 다른 종횡비 미검수 |
+| I-03 컷 전환 | 구현, RETOUCH | 원본 zs/ze/px/py quadratic ease·fadeAlpha. 입력 대사 정지. 정밀 프레임 전환/exit 누적 alpha는 미확정 |
+| I-04 색/VFX | 부분, RETOUCH | 원본 grade multiply·width 기반 radial vignette·shake. 메타 chrom/glowEye/particle 등은 웹 renderer에도 추가 draw 분기 없음; 원본 렌더 함수 범위만 이식 |
+| I-05 대사 | 구현, RETOUCH | 원본 화자명/색·이름 밑줄·19px 본문·타이핑·▼·입력대기·29언어. 캔버스/Godot 폰트 래스터·shadow blur·긴 문장 wrap 차이 잔여 |
+| I-06 로고 | 기본 경로 제거로 비해당 | 기본 INTRO에는 PRO title logo 컷이 없음. 레거시 파일 보존. 영상 world 로고 모션은 HOLD |
+| I-07 금빛 소환진 | 구현, RETOUCH | 동일 bonfire_barrier.png,560px·300frames·.9alpha·3%pulse. screen 합성 layer6으로 조명 중복 감쇠 방지. summon_area/fallen_summon. guide 중에는 원본 _startIntro가 t=0으로 끄며 커튼 열림에서 재생성 |
+| I-08 커튼/제목 | 부분, RETOUCH | 원본 제목·18%·3.1초·글꼴/자간·장식선·이동/opacity easing 반영. blur5→0→2px 미이식. 기상 panel/펫/HUD/맵의 기존 별도 차이는 유지 |
+| L-05/L-07 | 영상 HOLD | 원본 movie frame42장+29언어 자막/CUTS·CUES 재배치. 영상 모션/VO/BGM 미완료. WebVTT와 Godot caption black backing/폰트 렌더 차이 |
+| inventory transport | Mac 검사0실패 | Mac 하니스에서 native Node 절대 경로 검증. 23b1281/0, restore126863/0. PC의212/2 재실행/PC 동기화는 미확인 |
+
+전체 VISUAL VERDICT: **RETOUCH / 영상 HOLD**. 동일성 전체 PASS를 선언하지 않는다. source-only canvas/video 고정시계 비교와 실제 필드 캡처를 사용했다. 캡처 fixture의 상태·HP/시계 변경은 입력 E2E에 사용하지 않았다. 쓰러짐 수치/HP·펫·맵 밝기/경계 등은 동일 상태가 아니므로 해당 영역을 이 작업 완료 근거로 삼지 않는다.
