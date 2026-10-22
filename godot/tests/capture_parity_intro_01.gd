@@ -24,8 +24,10 @@ func run() -> void:
  var curtain_until: int=Time.get_ticks_msec()+1500
  while Time.get_ticks_msec()<curtain_until:await process_frame
  print("PARITY_CURTAIN ",main.source_intro_curtain.phase," visible=",main.source_intro_curtain.visible," elapsed=",main.source_intro_curtain.elapsed_ms())
+ if is_instance_valid(seq.lesson_flow):seq.lesson_flow.skip_all()
  # Pause to capture t=150 source ring and p=.5 banner without gameplay drift.
- paused=true;seq.bonfire.t=150.0;seq._barrier.queue_redraw()
+ paused=true;seq.bonfire.active=true;seq.bonfire.t=150.0;seq._barrier.show();seq._barrier.queue_redraw()
+ print("PARITY_BARRIER ",JSON.stringify(seq.bonfire)," canvas=",main.world.get_viewport_transform()," ready=",seq._barrier_texture!=null)
  main.get_node("NativeRegions")._show_area_title();main.get_node("NativeRegions")._area_left=1.55;main.get_node("NativeRegions")._process(0)
  await shot("summon_area")
  # Render source fallen presentation via the existing life owner, capture-only.

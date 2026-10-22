@@ -28,3 +28,7 @@ PC ffmpeg/Theora 변환 승인 대기는 그대로다. 재인코딩·생성·대
 산출물: `~/exoduser-wt/_out/PARITY-INTRO-01/`. 각 캡처는1920×1080, compare_1x는3840×1110(30px 라벨 포함), crop_1x는원본 픽셀 보존 좌우 결합이다. 캡처 하니스의 고정 cue/시계/죽음 표시 fixture는 **비교만**을 위한 것이며 입력 E2E와 구분한다. 웹 INTRO reference는 source_snapshot의 실제 renderer 함수를 독립 canvas에 올렸고, 영상 reference는 실제 video/WebVTT다. 필드는 실제 game.html이다. 게임 전체 상태가 같은 E2E 양방향 캡처를 주장하지 않는다.
 
 테스트/E2E와 최종 시각 판정은 외부 DONE.txt 및 아래 차이 목록에 기록한다. 테스트 통과로 영상 HOLD나 맵/HUD 차이를 PASS로 바꾸지 않는다. 과거 합본 설명은 DEMO11-08 이력이며 현행 계약은 본 문서가 우선한다.
+
+최종 정적 검토: 첫 진입의 줄바꿈·타이핑 prefix와 skip 번역은 _ready에서 사전 계산한다. 프레임 draw/process에서 새 목록 생성 API·ResourceLoader 호출·이미지 로드는 없다. 영상 caption 배열은 준비된 참조를 순회한다. 캡처에서는 원본 양쪽 모두 레슨을 건너뛴 뒤 barrier active/t150 및 제목1.55초를 고정하며, 1500ms wall-clock으로 커튼 종료를 확인한다.
+
+남은 로비 세부 차이: gate 초기 ENTER 엠블럼/입력대기·세계관 재생/음량 mixer UI는 영화 재생과 함께 동일성 미완료다. 정지 fallback의 전체 흐름 검수와 영화 기능 완성은 구분한다. 첫 진입 SFX/voice key 메타는 보존했으나 원본 sample asset 매핑/청음은 검증하지 않았다.

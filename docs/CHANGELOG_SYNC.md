@@ -1,6 +1,8 @@
 
 ## 2026-10-22 PARITY-INTRO-01
 
+- 후속 검수: 타이핑 prefix/줄배치 사전 계산으로 프레임 목록 할당 제거, 고정 캡처에서 양쪽 레슨 상태/커튼 wall-clock 일치 확인. 로비 gate ENTER·mixer와 영화 오디오는 미완료 명시.
+
 - 기준 hud-02 bf538259: 로비 gate/world·생성 직후 warrior·첫 진입 INTRO를 웹 위치로 분리. 원본 영상 still42장과29언어 자막/CUTS/CUES를 채택하며 영상 모션/VO는 HOLD.
 - native_story_intro/parity_intro_canvas: 합본 액자·p01~p17·기본 PRO 제품 참조 제거, 원본00~20 이미지·cam/fade/vfx·화자·타이핑·입력대기·Space2000ms. 금빛 소환진 screen 합성/시작위치와 지역명3.1초 표시 복원.
 - Mac 하니스 oracle Node 절대 경로 정규화/실행 검증. 23b1281/0, restore126863/0, intro12/0. 최종 입력 E2E0실패·주입0·SCRIPT ERROR0.

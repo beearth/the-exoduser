@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## Source movie still fallback. Motion remains HOLD pending approved Theora conversion.
 signal finished
+const EMPTY_CAPTIONS: Array=[]
 var locale:="ko"
 var phase:="idle"
 var elapsed:=0.0
@@ -27,6 +28,7 @@ func begin(kind: String,language: String) -> void:
 	_image=TextureRect.new();_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);_image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;_image.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;panel.add_child(_image)
 	_caption=Label.new();_caption.position=Vector2(154,839);_caption.size=Vector2(1612,110);_caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;_caption.vertical_alignment=VERTICAL_ALIGNMENT_BOTTOM;_caption.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;_caption.add_theme_font_override("font",preload("res://scripts/native_ui_fonts.gd").stack("font"));_caption.add_theme_font_size_override("font_size",54);_caption.add_theme_color_override("font_shadow_color",Color.BLACK);_caption.add_theme_constant_override("shadow_outline_size",8);panel.add_child(_caption)
 	_hint=Label.new();_hint.position=Vector2(1350,1015);_hint.size=Vector2(510,30);_hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT;_hint.add_theme_font_size_override("font_size",13);_hint.modulate=Color("c9b795");panel.add_child(_hint)
+	_hint.text=preload("res://scripts/native_demo_ui_i18n.gd").text("SPACE 길게 눌러 건너뛰기",locale)
 	_was_paused=get_tree().paused;get_tree().paused=true;phase="playing";_next_group()
 func _next_group() -> void:
 	if _sequence.is_empty():finish();return
@@ -43,10 +45,9 @@ func _process(delta: float) -> void:
 	if selected!=_index:_image.texture=_textures[frames[selected].asset];_index=selected
 	_caption.position.y=971 if group=="warrior" else 839
 	_caption.text=""
-	for cue in _data[group].subtitles.get(locale,_data[group].subtitles.get("en",[])):
+	for cue in _data[group].subtitles.get(locale,_data[group].subtitles.get("en",EMPTY_CAPTIONS)):
 		if elapsed>=float(cue.start) and elapsed<float(cue.end):_caption.text=cue.text
 	_hint.visible=group=="warrior" and elapsed<3
-	_hint.text=preload("res://scripts/native_demo_ui_i18n.gd").text("SPACE 길게 눌러 건너뛰기",locale)
 func next() -> void:
 	for at in _data[group].cuts:
 		if float(at)>elapsed+.05:elapsed=float(at);return

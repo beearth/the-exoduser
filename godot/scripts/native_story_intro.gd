@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## PARITY-INTRO-01. Only the first-entry INTRO; lobby/story have separate owners.
 signal handed_off(reason: String)
+const EMPTY: Dictionary={}
 const HOLD_MS=2000
 const DATA_PATH="res://data/parity_intro_source.json"
 var phase:="idle"
@@ -43,18 +44,18 @@ func begin(main: Node) -> void:
 	get_tree().create_timer(.4,true,false,true).timeout.connect(func():
 		if phase=="playing":_main.request_native_music_scene("intro","cutscene_nemesis"))
 func current_cue() -> Dictionary:
-	return _lines[cue_index] if cue_index<_lines.size() else {}
+	return _lines[cue_index] if cue_index<_lines.size() else EMPTY
 func advance(ms: float) -> void:
 	if phase!="playing" or ms<0:return
 	elapsed_ms+=ms
 	var cue:=current_cue()
 	if cue.is_empty():finish("ended");return
 	if cue.get("exit",false):
-		if elapsed_ms>=float(cue.get("fade",{}).get("out",1500)):finish("ended")
+		if elapsed_ms>=float(cue.get("fade",EMPTY).get("out",1500)):finish("ended")
 	elif str(cue.get("text","")).is_empty() or cue.get("speaker")==null:
 		if elapsed_ms>=float(cue.dur):_next()
 	else:
-		if elapsed_ms>=str(cue.text).replace("\n","").length()*float(cue.get("text_cfg",{}).get("speed",50)):_wait=true
+		if elapsed_ms>=str(cue.text).replace("\n","").length()*float(cue.get("text_cfg",EMPTY).get("speed",50)):_wait=true
 func _next() -> void:
 	_exit_elapsed=elapsed_ms
 	cue_index+=1;elapsed_ms=0;_wait=false

@@ -11,6 +11,20 @@ import shutil
 import time
 
 
+def native_node_binary(value):
+    """Resolve OS.execute's native binary; shell quotes/PC paths are transport data."""
+    supplied = value.strip('"\'')
+    candidate = Path(supplied).expanduser()
+    if not candidate.is_file() or not os.access(candidate, os.X_OK):
+        native = os.environ.get("EXODUSER_NODE_BIN") or shutil.which("node")
+        if not native:
+            raise RuntimeError("native Node executable unavailable")
+        candidate = Path(native.strip('"\'')).expanduser()
+    candidate = candidate.resolve(strict=True)
+    subprocess.run([str(candidate), "--version"], check=True, capture_output=True)
+    return str(candidate)
+
+
 def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
     project, out = Path(project), Path(out)
     assert "Isolated" in userdir and userdir.startswith("EXODUSER-")
@@ -25,16 +39,7 @@ def run(project, out, engine, name, userdir, flags, extra=(), timeout=240):
         normalized = []
         for arg in extra:
             if arg.startswith("--node-bin="):
-                supplied = arg.split("=", 1)[1].strip('"\'')
-                candidate = Path(supplied).expanduser()
-                if not candidate.is_file() or not os.access(candidate, os.X_OK):
-                    native = os.environ.get("EXODUSER_NODE_BIN") or shutil.which("node")
-                    if not native:
-                        raise RuntimeError("native Node executable unavailable")
-                    candidate = Path(native).expanduser()
-                candidate = candidate.resolve(strict=True)
-                subprocess.run([str(candidate), "--version"], check=True, capture_output=True)
-                arg = "--node-bin=" + str(candidate)
+                arg = "--node-bin=" + native_node_binary(arg.split("=", 1)[1])
             normalized.append(arg)
         argv += ["--", *normalized]
     meta = {"argv": argv, "userdir": userdir, "gate": []}
