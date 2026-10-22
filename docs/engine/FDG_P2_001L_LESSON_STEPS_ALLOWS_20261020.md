@@ -50,8 +50,8 @@ step 1~7은 해당 탄/행동이 Godot에 미이식이라 **정직 정지**(패�
 | 1 | physical_projectile_reflect_unported | E/Q 반사 캐리어가 dark gbBean 한정 (enemy_projectile.gd 134 `_raw.gbBean!=true` 거부, E wave도 main.gd 1760~1779 gbBean만) |
 | 2 | volley_mixed_magic_projectiles_unported | 화염·물·번개·무지개(blackBean 외) 혼합 마법탄 발리 미이식 |
 | 3 | volley_physical_projectiles_unported | 이빨입탄·혈안탄·관통탄·검기파·환영검 미이식 |
-| 4 | chain_movement_unported | Shift 사슬 이동 미이식 (port 입력 액션에도 'charge' 없음) |
-| 5 | lightning_dash_unported | 전격이동 미이식 |
+| 4 | chain_movement_unported | Shift 사슬 이동 미이식 (port 입력 액션에도 'charge' 없음) → 2026-10-22 PC-MOVE-SKILLS: 행동·`charge` 액션 이식(allows 'charge' 잠금과 연동). 레슨 연습 본문(parry-lesson.js tickChainPractice 단계별 목표·리필)은 미이식이라 정지 사유 유지 — step 0~3(패링 투사체) 정지로 아직 도달 불가 |
+| 5 | lightning_dash_unported | 전격이동 미이식 → 2026-10-22 PC-MOVE-SKILLS: 전격이동 행동 이식. 레슨 연습 본문(tickDashPractice 5회 카운트·MP/게이지 리필)은 미이식 — 정지 사유 유지 |
 | 6 | rage_gauge_unported | 분노 게이지 미이식 |
 | 7 | rage_burst_unported | 분노 발동(rageCast 689) 미이식 |
 | 8 | 정지 해제 | e64db2cee 병합 후 실제 가시덫 시전·DOT 10처치·방향키 120px 탈출 연결. 원본 261~311·655~683 |

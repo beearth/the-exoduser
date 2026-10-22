@@ -1,3 +1,12 @@
+## 2026-10-22 PC-MOVE-SKILLS — Shift 사슬 이동(V-02)·방향+Space 전격이동(V-01) 원본 이식
+
+- 기준 INTEG-10 9133e2782, branch claude/pc-move-skills-v2-20261022(f02ed5b0f·f7a97ad4a·a684e4434), main 미병합. 신규 owner `native_move_skills.gd` + player/main 호출 위치만, Mac 소유 파일 수정 0.
+- 웹 1틱 스텝(테스트베드 프레임 정지+수동 rAF)과 Godot 1틱 스텝 나란히 캡처: 1단 300px·2단 500px·전격이동 250px, 68프레임 위치(<0.001px)·무적·게이지 일치. 포즈·사슬·홀드 UI·게이지 숫자(웹 GPU 프록시 텍스트 규칙)·land_fire·전기 구체·번개 기둥·폭풍 스프라이트 같은 층·모양.
+- 차이 목록의 웹 "+34~37px/−126~−130px"는 하네스 `_harpGauge=5` 탓(정정). Space: 방향+Space는 전격이동 우선, 단독은 슬롯 owner 전달, 사슬기동 중 차단.
+- 원본 VM oracle 16시나리오·259프레임·벽 질의 798건·hurtE 인자 일치, 원본 RNG는 표현 전용. test_pc_move_skills 256/0. 필드 600틱 벤치 전후 차이 없음(노이즈 범위).
+- NOT_READY: 전류장판 피해·_shockDR(hurtE G42290), 합체·유니크 분기(사전 거절), showPH·HUD 기동 링(Mac 요청 PMS-M1~M3), 레슨 step 4/5 연습.
+- [계약](engine/PC_MOVE_SKILLS_CONTRACT_20261022.md)·[보고서](engine/orders/reports/pc-move-skills_REPORT.md)·DEMO11-10/11 부분·PARITY V-01/V-02 브랜치 해결. 로그 `G:/exoduser-wt/_out/pc-move-skills-v2/`.
+
 ## 2026-10-22 INTEG-9 전제 갱신 — PC 소유 테스트(묶음 B·M29·P1-002 E/F/G)
 
 - base Mac INTEG-9 1c3f67a1, branch claude/pc-tests-integ9-20261022. 제품 코드·Mac 소유 파일 수정 0, 판정 약화·삭제 0.

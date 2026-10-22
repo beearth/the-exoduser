@@ -17,7 +17,7 @@
 
 ## Godot origin/main 대응
 
-`player.gd:479–523`은 `rage_slot` action을 알고 있으나 `space_rage_slot_not_connected`로 거절한다. `main.gd:1689`도 자연 input consumer가 없다. gap D11은 미착수, 스킬 관리 D15는 Main/HUD 호출 0의 통합 대기다.
+`player.gd:479–523`은 `rage_slot` action을 알고 있으나 `space_rage_slot_not_connected`로 거절한다. (2026-10-22 PC-MOVE-SKILLS 브랜치: 이동 owner가 결합되면 방향+Space는 전격이동이 먼저 소비하고, Space 단독은 거절 대신 슬롯 owner `NativeSkillSlots`로 넘긴다 — 원본 G13284 순서. 분노 발동 자체는 여전히 미이식.) `main.gd:1689`도 자연 input consumer가 없다. gap D11은 미착수, 스킬 관리 D15는 Main/HUD 호출 0의 통합 대기다.
 
 ## 관련 docs
 
