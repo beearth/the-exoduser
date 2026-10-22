@@ -29,7 +29,7 @@ static func tick(f: Dictionary,p: Dictionary,can_shoot: bool,rng: Callable,inter
  if f.shotCd>0:f.shotCd-=1
  f.frame=face(f,p)
  if not f.hid and d<f.r+p.r+8:
-  var receipt: Variant=interaction.call({"kind":"body","enemy":f.duplicate(true),"player":p.duplicate(true),"source_line":61082})
+  var receipt: Variant=interaction.call({"kind":"body","enemy":f.duplicate(true),"player":p.duplicate(true),"source_line":61085})
   if not receipt is Dictionary or receipt.get("ack")!=true or not receipt.get("player") is Dictionary:return {"ready":false,"reason":"PC_body_readback_required","events":events}
   p=receipt.player;d=Vector2(f.x,f.y).distance_to(Vector2(p.x,p.y))
  if not can_shoot:f.enChg=0;f.burst=0;f.burstGap=0
@@ -58,7 +58,7 @@ static func tick(f: Dictionary,p: Dictionary,can_shoot: bool,rng: Callable,inter
    var spawn: bool=bool(f.spawnIn)
    f.x=f.tpX;f.y=f.tpY;f.hid=0;f.spawnIn=0
    if not spawn and Vector2(f.x,f.y).distance_to(Vector2(p.x,p.y))<f.r+110 and p.iframes<=0 and p.s!="charge":
-    var receipt: Variant=interaction.call({"kind":"slam","enemy":f.duplicate(true),"player":p.duplicate(true),"source_line":61121})
+    var receipt: Variant=interaction.call({"kind":"slam","enemy":f.duplicate(true),"player":p.duplicate(true),"source_line":61119})
     if not receipt is Dictionary or receipt.get("ack")!=true:return {"ready":false,"reason":"PC_slam_readback_required","events":events}
    events.append({"kind":"appear","spawn":spawn})
  elif f.tpCd>0:

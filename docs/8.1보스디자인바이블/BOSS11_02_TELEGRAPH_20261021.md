@@ -96,3 +96,7 @@ BC01~10 각1회 통과(354,093 assertions/실패0). 새 visual contract18검사 
 | GIT | 경로지정 stage·정상 hook·비강제 자기 branch push. SHA/원격 검증/정리는 외부 DONE.txt |
 | VISUAL VERDICT | RETOUCH — 제품 전23패턴 자연 검수·끝점 가림·작은 플레이어·유효 성능 표본 미해결 |
 | NEXT PASS | PC owner의 실제 state/queue 출판과 연결 검수, 전23패턴 시간 연속 촬영, fissure/큰 파동 안전 공간·카메라 보완 및 별도 승인된 유효 성능 측정 |
+
+## 2026-10-22 PARITY-BOSS-01 제품 분기
+
+아래 기존 실행·프리뷰 수치는 이력으로 보존한다. 새 분기의 보스는 원본 walk/attack 프레임·녹색 장판·500×14 HP border-box/360×6 포이즈 border-box·면역/부활 표기, 사용자 사각124×104 아레나를 사용한다. 기존 컨셉판/R1700 프리뷰·주황 예고는 제품 경로에서 제외했다(파일 보존). 원본과의 경계·실측/미검증 및 시각 최종 판정은 [원본 대응표](../engine/PARITY_BOSS_01_20261022.md)를 따른다. 전투 수치/PC 코어 변경0.

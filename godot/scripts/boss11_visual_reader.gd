@@ -1,10 +1,12 @@
 extends Node2D
 ## Read-only view of cached source objects. No owner requests, RNG, combat writes,
 ## list/path APIs or ResourceLoader in either process path.
+const EMPTY: Dictionary={}
 const Marks=preload("res://scripts/boss11_telegraph.gd")
 var marks: Node2D
 var main: Node
 var actor: Node
+var ground: Node2D
 var _last_state: String=""
 var _duration:=1.0
 var _slam_wind_duration:=0.0
@@ -12,15 +14,28 @@ var _last_remaining:=0.0
 var _flash_left:=0.0
 func _ready() -> void:
  marks=Marks.new();add_child(marks)
+ ground=preload("res://scripts/boss11_source_ground.gd").new();add_child(ground)
 func configure(owner_main: Node) -> void:
  main=owner_main
  actor=main.native_demo_boss_actor
  marks.bind_player(main.player)
 func _process(delta: float) -> void:
- if not visible or not is_instance_valid(actor) or not is_instance_valid(main):return
+ if not is_visible_in_tree() or not is_instance_valid(actor) or not is_instance_valid(main):
+  marks.begin();marks.finish();ground.refresh(EMPTY,false);return
  var enemy: Dictionary=actor.get("_enemy")
- if enemy.is_empty():marks.begin();marks.finish();return
+ if enemy.is_empty():
+  _flash_left=0;marks.begin();marks.finish();ground.refresh(EMPTY,false);return
+ if not enemy.get("alive",false):
+  _flash_left=0;marks.begin();marks.finish()
+  # Windup dies with its boss. Source G hazard queues retain their own maxT;
+  # never make an authoritative damaging pool invisible before it expires.
+  ground.refresh(main.source_state.read_current_g(),true);return
  var state: String=enemy.get("s","")
+ # Snapshot 10905–10976: the green vine silhouette is the source attack/transform
+ # frame. The former orange pooled UI warning is not source artwork.
+ if main.source_state.read_current_g().get("stage")==0:
+  ground.refresh(main.source_state.read_current_g(),true)
+  marks.begin();marks.finish();return
  # A short purely visual flash when an observed windup/strike ends.
  if state=="recover" and _last_state in ["bossSlam","bossSlash","bossSweep"]:
   _flash_left=0.10

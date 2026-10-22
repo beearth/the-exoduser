@@ -239,3 +239,7 @@ RNG: 게임플레이 RNG(모듈 ledger 행)는 actor가 World 공용 RNG에서 �
 | test_pc_boss_core | 28/0 |
 | test_pc_boss_parity(신규) | 37/0 — 앵글러 출생·깨어남·몸충돌·근접 처치→_fbDone→봉인 문 cadence→로딩 50/130/50/100→원본 인자 스폰→필드 적 비움→입장 stun→자연 AI 900틱(몸통 충돌·패턴 진행)→처치→출구 30 cadence→클리어 |
 | 나란히 캡처 | `G:/exoduser-wt/_out/pc-boss-parity/compare_*.png` 19장. 판정은 보고서 §3 |
+
+## 10. PARITY-BOSS-01 Mac 표시 후보
+
+M5–M13 표시·사각 아레나 공급 계약·하니스 변경은 [대응표](PARITY_BOSS_01_20261022.md)를 따른다. PC 코어/무브셋/수치/소환 mkEn 변경0. 원본 shieldF0%와 포이즈/면역 줄을 구분한다. 원본 metadata124×104와 at0 원형 내부의 차이 및 사용자 사각 지시 우선 적용을 명시했다. 기존 §9.6 PC 측정 결과를 이번 Mac 실행 결과로 재사용하지 않는다.

@@ -56,3 +56,7 @@ NEXT PASS: DEMO11-37 identity/Marker/local↔world·NOT_READY/lifecycle 인수,
            DEMO11-43 별도 arena region namespace 인수; MAP11-03 카메라 PC 소유.
            필드 StageRecipe·네 지역·일반 nav는 별도 범위.
 ```
+
+## 2026-10-22 PARITY-BOSS-01 분기
+
+기존 R1700 stage_recipe/stage_provider는 레거시 프리뷰·독립 테스트용으로 보존한다. 제품 field_runtime은 web_arena 하위 공급자로 사각124×104·40px·entry1960을 사용한다. Markers/Entry·Boss·Exit·Return은 PC encounter가 읽는 동일 node 경로다. 상세 경계·수치·원본차이·검수는 [대응표](../engine/PARITY_BOSS_01_20261022.md)를 따른다.

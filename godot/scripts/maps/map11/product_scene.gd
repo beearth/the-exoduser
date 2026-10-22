@@ -14,7 +14,7 @@ func _ready() -> void:
  sites=provider.transition_sites()
  for row in provider.anchors("player_start"):start_marker=row.marker
  field_view=preload("res://scripts/maps/map11/web_field_view.gd").new();add_child(field_view)
- arena_view=Node2D.new();arena_view.position=Runtime.ARENA_OFFSET;add_child(arena_view);arena_view.hide()
+ arena_view=preload("res://scripts/maps/map11/web_arena_view.gd").new();arena_view.position=Runtime.ARENA_OFFSET;add_child(arena_view);arena_view.hide()
 func current() -> bool:
  return is_instance_valid(provider) and provider.runtime_ready() and is_instance_valid(start_marker)
 func activate_space(space: String) -> bool:
@@ -50,6 +50,8 @@ func _physics_process(delta: float) -> void:
   _actor=get_parent().get_parent().get("player")
   if is_instance_valid(_actor):
    field_view.configure(get_parent().get_parent())
+   arena_view.configure(get_parent().get_parent())
+   var body_view:=preload("res://scripts/boss11_scene_actor.gd").new();body_view.name="WebBossSceneActor";add_child(body_view);body_view.configure(get_parent().get_parent().native_demo_boss_actor)
    # Preserve the existing PC boss-state visual reader; it owns no concept-map resources.
    boss_visual=preload("res://scripts/boss11_visual_reader.gd").new();boss_visual.z_index=349;add_child(boss_visual);boss_visual.configure(get_parent().get_parent())
  if not is_instance_valid(_actor):return

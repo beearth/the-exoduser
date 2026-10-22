@@ -41,6 +41,9 @@ func _draw_overlay() -> void:
 	var bl_f: float = _n(g.get("_bossLoadFade"))
 	# 52094 검은 배경
 	_canvas.draw_rect(Rect2(0, 0, cw, ch), Color(0, 0, 0, bl_f))
+	# Source _ENV_LIGHT[0] (11985,55377): navy environment over the loading background.
+	# Keep the source namecard ink bright; lighting masks remain below this canvas.
+	_canvas.draw_rect(Rect2(0,0,cw,ch),Color(100.0/255,160.0/255,255.0/255,.06*bl_f))
 	if phase < 2 or bl_f <= 0.5:
 		return
 	var nt: float = minf(1.0, _n(g.get("_bossLoadT")) / 35.0) if phase == 2 else 1.0

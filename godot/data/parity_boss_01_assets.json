@@ -1,0 +1,177 @@
+{
+  "snapshot_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "new_generation": false,
+  "runtime_3d": false,
+  "assets": [
+    {
+      "asset": "godot/assets/boss_parity/BlackHanSans-OFL.txt",
+      "sha256": "c324192c8b3a988bae45a9a7e4ac1258b684739003bda114e0523423440457c9",
+      "source": {
+        "source": "game.html:103,116,954",
+        "css": "https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap",
+        "asset": "https://fonts.gstatic.com/s/blackhansans/v24/ea8Aad44WunzF9a-dL6toA8r8nqV.ttf",
+        "sha256": "4f74b64509a3916eafd273f1fc37ea2bde6de89068b8d2d064d13c5e72507eb9"
+      }
+    },
+    {
+      "asset": "godot/assets/boss_parity/BlackHanSans-Regular.ttf",
+      "sha256": "4f74b64509a3916eafd273f1fc37ea2bde6de89068b8d2d064d13c5e72507eb9",
+      "source": {
+        "source": "game.html:103,116,954",
+        "css": "https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap",
+        "asset": "https://fonts.gstatic.com/s/blackhansans/v24/ea8Aad44WunzF9a-dL6toA8r8nqV.ttf",
+        "sha256": "4f74b64509a3916eafd273f1fc37ea2bde6de89068b8d2d064d13c5e72507eb9"
+      }
+    },
+    {
+      "asset": "godot/assets/boss_parity/angler_charge.png",
+      "sha256": "4c000c7eb575b14a3f1d8215d7f73f06aa4b3618b033d85c226dc36c6883a46c",
+      "source": "img/fieldboss_angler_charge.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/angler_vanish.png",
+      "sha256": "5fe7887e2366842ce26cc87fda2ff85294351881b7bd8ae1e6b2a8753281629c",
+      "source": "img/vfx/kraken_vanish.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena.json",
+      "sha256": "e9fcc615f8f3cb9c4afb7e0a5a42297ccc081fa974309e1345d4e10dd85c44aa",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_0_0.png",
+      "sha256": "1e9ed0387f40427db10713a1dd487a5a1c8140f4175b513af5501ad72f4726eb",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_0_1.png",
+      "sha256": "efc65491bd3c138de380f39562112fd2648fdddbe6872e9f10e45536bda2259a",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_0_2.png",
+      "sha256": "52df6cfdc5f15e269547f1dbd3fa566204ec8125e790fda36e2777c46c118928",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_0_3.png",
+      "sha256": "2d997ecfceff32aab8b9ffd1ce6095a9099b4a2b33a909a2672c322b294658ec",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_1_0.png",
+      "sha256": "4e4584f78372b057a35dfc79b952bd97440f397a0f8b34914bd038821b15b263",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_1_1.png",
+      "sha256": "ec049936106f5559922139331d0bd62e80cf342527c413f05368e3dc128d151c",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_1_2.png",
+      "sha256": "69e7b578aa66a671ddaaded6fe03400634987e072b26bd9124a08dd273e7c737",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_1_3.png",
+      "sha256": "3992785287fb48186d7ee0ad05d7bb4891ed755e02019214dc77f8b4090e332e",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_2_0.png",
+      "sha256": "7a35e0fdfe07d2381d3e11d542e7afa4c4bafa2527fbb1dec1c611a6ea410ecb",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_2_1.png",
+      "sha256": "c14be49ab877a5fcfd1da6ac210bc29b95839ba6222cad23ee18c9c1a1c145a6",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_2_2.png",
+      "sha256": "e59eda610dcc5378c8acc94ef034165634d284e6378530d5f2426a163842a9ab",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_2_3.png",
+      "sha256": "1790935c59e407bf88438fcea43b5fd8507b5c27191b75a8c1db39719a0003fc",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_3_0.png",
+      "sha256": "7d89f70527f275eb9a2fd8a27ede54299e43aa84f81a87edad031d615aad64b3",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_3_1.png",
+      "sha256": "fd7e518890681597e75d08a3d58723aa100a11937e729ac18e24e9462e9874d1",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_3_2.png",
+      "sha256": "ada6d2f9064e0f472b503bc0274653b756f837723cd1f3169997a6edd12325d0",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/arena_3_3.png",
+      "sha256": "f33b9d74e9c53f72fc18cabc8ad012669d2d346b32e91cbc771beb2b84781a09",
+      "source": "game.html:30697–30746 (user square124x104), _buildStreamChunk source renderer; export_assets.cjs"
+    },
+    {
+      "asset": "godot/assets/boss_parity/attack.png",
+      "sha256": "79e0f8e6d86326f4ab7600d49110fef6be30bc47ac9f2b1d6fffbd1e95c1bf6a",
+      "source": "assets/sprites/boss/boss_dark_druid_attack.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/beast.png",
+      "sha256": "41cf09b5b90208bf343f13032664bcccbc9d22607a1aa913ab953e257860b8fd",
+      "source": "assets/sprites/boss/boss_dark_druid_beast.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/corruption_ring.svg",
+      "sha256": "2b2b3620acb0f7e0f0d395feb422e08dc75938b0a63a2ebe983606892470a50f",
+      "source": "assets/vfx/boss/druid_corruption_ring.svg"
+    },
+    {
+      "asset": "godot/assets/boss_parity/dive.png",
+      "sha256": "4d154deda10592a655b2504ddcfa186f2e9af443da1146166683c8ad50c506ce",
+      "source": "assets/sprites/boss/boss_dark_druid_dive.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/emerge.png",
+      "sha256": "4d154deda10592a655b2504ddcfa186f2e9af443da1146166683c8ad50c506ce",
+      "source": "assets/sprites/boss/boss_dark_druid_emerge.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/poison.png",
+      "sha256": "2a6aa6820a5974fa77e16cffb49542bc8166ca6a0b9acdd873a41ea05d372ff3",
+      "source": "img/proj_firedevil_orb.png; game.html:61608–61612 grayscale/multiply/destination-in"
+    },
+    {
+      "asset": "godot/assets/boss_parity/poison_source.png",
+      "sha256": "80fa5f5edc876f9d3cb2228ebc800b2479480f3b90ae4d86ef6e5e8d653d1e10",
+      "source": "img/proj_firedevil_orb.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/pool.png",
+      "sha256": "471326317969316dd34a45de4bf9736f6525634f110022c9d5b41a505819d304",
+      "source": "assets/vfx/boss/druid_poison_pool_24_20261009.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/transform.png",
+      "sha256": "7b329ce2d70b9572144391579405029cc74ac07c479b67d73783bea021dc365d",
+      "source": "assets/sprites/boss/boss_dark_druid_transform.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/walk.png",
+      "sha256": "6da45fefe6f2e064e314ac90b674468db495590be0bf5501322fad5b2362e473",
+      "source": "assets/sprites/boss/boss_dark_druid_walk.png"
+    },
+    {
+      "asset": "godot/assets/boss_parity/shield_status.svg",
+      "sha256": "3fac883487a10d68424b45a8e64d7f3f3303fa67f16090b882395d8a15c09e59",
+      "source": "game.html:27741,27885 _glyph(shield,#8888ff,13)"
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "ko": {
+    "그로기! {s}s": "그로기! {s}s",
+    "충전 중 {s}s": "충전 중 {s}s",
+    "포이즈 {p}%": "포이즈 {p}%",
+    "면역 {s}s": "면역 {s}s",
+    "그로기 {s}s": "그로기 {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} 차 부활]"
+  },
+  "en": {
+    "그로기! {s}s": "Groggy! {s}s",
+    "충전 중 {s}s": "Charging {s}s",
+    "포이즈 {p}%": "Poise {p}%",
+    "면역 {s}s": "Immune {s}s",
+    "그로기 {s}s": "Groggy {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Revive]"
+  },
+  "es": {
+    "그로기! {s}s": "Aturdido! {s}s",
+    "충전 중 {s}s": "Cargando {s}s",
+    "포이즈 {p}%": "Postura {p}%",
+    "면역 {s}s": "Inmune {s}s",
+    "그로기 {s}s": "Aturdido {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Resurrección]"
+  },
+  "fr": {
+    "그로기! {s}s": "Étourdi! {s}s",
+    "충전 중 {s}s": "Recharge {s}s",
+    "포이즈 {p}%": "Posture {p}%",
+    "면역 {s}s": "Immunité {s}s",
+    "그로기 {s}s": "Étourdi {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Résurrection]"
+  },
+  "de": {
+    "그로기! {s}s": "Benommen! {s}s",
+    "충전 중 {s}s": "Aufladen {s}s",
+    "포이즈 {p}%": "Haltung {p}%",
+    "면역 {s}s": "Immun {s}s",
+    "그로기 {s}s": "Benommen {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Wiederbelebung]"
+  },
+  "it": {
+    "그로기! {s}s": "Stordito! {s}s",
+    "충전 중 {s}s": "Ricarica {s}s",
+    "포이즈 {p}%": "Postura {p}%",
+    "면역 {s}s": "Immune {s}s",
+    "그로기 {s}s": "Stordito {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Resurrezione]"
+  },
+  "ptbr": {
+    "그로기! {s}s": "Atordoado! {s}s",
+    "충전 중 {s}s": "Carregando {s}s",
+    "포이즈 {p}%": "Postura {p}%",
+    "면역 {s}s": "Imune {s}s",
+    "그로기 {s}s": "Atordoado {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Ressurreição]"
+  },
+  "ru": {
+    "그로기! {s}s": "Оглушение! {s}s",
+    "충전 중 {s}s": "Зарядка {s}s",
+    "포이즈 {p}%": "Стойкость {p}%",
+    "면역 {s}s": "Иммунитет {s}s",
+    "그로기 {s}s": "Оглушение {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Возрождение]"
+  },
+  "uk": {
+    "그로기! {s}s": "Оглушення! {s}s",
+    "충전 중 {s}s": "Заряджання {s}s",
+    "포이즈 {p}%": "Стійкість {p}%",
+    "면역 {s}s": "Імунітет {s}s",
+    "그로기 {s}s": "Оглушення {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Відродження]"
+  },
+  "pl": {
+    "그로기! {s}s": "Oszołomienie! {s}s",
+    "충전 중 {s}s": "Ładowanie {s}s",
+    "포이즈 {p}%": "Postawa {p}%",
+    "면역 {s}s": "Odporność {s}s",
+    "그로기 {s}s": "Oszołomienie {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Odrodzenie]"
+  },
+  "cs": {
+    "그로기! {s}s": "Omráčení! {s}s",
+    "충전 중 {s}s": "Nabíjení {s}s",
+    "포이즈 {p}%": "Postoj {p}%",
+    "면역 {s}s": "Imunita {s}s",
+    "그로기 {s}s": "Omráčení {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Oživení]"
+  },
+  "hu": {
+    "그로기! {s}s": "Kábult! {s}s",
+    "충전 중 {s}s": "Töltés {s}s",
+    "포이즈 {p}%": "Tartás {p}%",
+    "면역 {s}s": "Immunis {s}s",
+    "그로기 {s}s": "Kábult {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Feltámadás]"
+  },
+  "ro": {
+    "그로기! {s}s": "Amețit! {s}s",
+    "충전 중 {s}s": "Încărcare {s}s",
+    "포이즈 {p}%": "Postură {p}%",
+    "면역 {s}s": "Imun {s}s",
+    "그로기 {s}s": "Amețit {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Înviere]"
+  },
+  "tr": {
+    "그로기! {s}s": "Sersem! {s}s",
+    "충전 중 {s}s": "Şarj oluyor {s}s",
+    "포이즈 {p}%": "Duruş {p}%",
+    "면역 {s}s": "Bağışık {s}s",
+    "그로기 {s}s": "Sersem {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Diriliş]"
+  },
+  "nl": {
+    "그로기! {s}s": "Verdoofd! {s}s",
+    "충전 중 {s}s": "Opladen {s}s",
+    "포이즈 {p}%": "Houding {p}%",
+    "면역 {s}s": "Immuun {s}s",
+    "그로기 {s}s": "Verdoofd {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Herleving]"
+  },
+  "da": {
+    "그로기! {s}s": "Fortumlet! {s}s",
+    "충전 중 {s}s": "Opladning {s}s",
+    "포이즈 {p}%": "Balance {p}%",
+    "면역 {s}s": "Immun {s}s",
+    "그로기 {s}s": "Fortumlet {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Genoplivning]"
+  },
+  "sv": {
+    "그로기! {s}s": "Omtöcknad! {s}s",
+    "충전 중 {s}s": "Laddar {s}s",
+    "포이즈 {p}%": "Balans {p}%",
+    "면역 {s}s": "Immun {s}s",
+    "그로기 {s}s": "Omtöcknad {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Återupplivning]"
+  },
+  "no": {
+    "그로기! {s}s": "Fortumlet! {s}s",
+    "충전 중 {s}s": "Lader {s}s",
+    "포이즈 {p}%": "Balanse {p}%",
+    "면역 {s}s": "Immun {s}s",
+    "그로기 {s}s": "Fortumlet {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Gjenoppliving]"
+  },
+  "fi": {
+    "그로기! {s}s": "Pökertynyt! {s}s",
+    "충전 중 {s}s": "Latautuu {s}s",
+    "포이즈 {p}%": "Tasapaino {p}%",
+    "면역 {s}s": "Immuuni {s}s",
+    "그로기 {s}s": "Pökertynyt {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Elpyminen]"
+  },
+  "el": {
+    "그로기! {s}s": "Ζαλισμένος! {s}s",
+    "충전 중 {s}s": "Φόρτιση {s}s",
+    "포이즈 {p}%": "Στάση {p}%",
+    "면역 {s}s": "Ανοσία {s}s",
+    "그로기 {s}s": "Ζαλισμένος {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Ανάσταση]"
+  },
+  "bg": {
+    "그로기! {s}s": "Зашеметен! {s}s",
+    "충전 중 {s}s": "Зареждане {s}s",
+    "포이즈 {p}%": "Устойчивост {p}%",
+    "면역 {s}s": "Имунитет {s}s",
+    "그로기 {s}s": "Зашеметен {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Възраждане]"
+  },
+  "ja": {
+    "그로기! {s}s": "グロッキー! {s}s",
+    "충전 중 {s}s": "充電中 {s}s",
+    "포이즈 {p}%": "体幹 {p}%",
+    "면역 {s}s": "免疫 {s}s",
+    "그로기 {s}s": "グロッキー {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} 復活]"
+  },
+  "zh": {
+    "그로기! {s}s": "踉跄! {s}s",
+    "충전 중 {s}s": "充能中 {s}s",
+    "포이즈 {p}%": "架势 {p}%",
+    "면역 {s}s": "免疫 {s}s",
+    "그로기 {s}s": "踉跄 {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} 复活]"
+  },
+  "zht": {
+    "그로기! {s}s": "踉蹌! {s}s",
+    "충전 중 {s}s": "充能中 {s}s",
+    "포이즈 {p}%": "架勢 {p}%",
+    "면역 {s}s": "免疫 {s}s",
+    "그로기 {s}s": "踉蹌 {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} 復活]"
+  },
+  "vi": {
+    "그로기! {s}s": "Choáng! {s}s",
+    "충전 중 {s}s": "Đang nạp {s}s",
+    "포이즈 {p}%": "Thế đứng {p}%",
+    "면역 {s}s": "Miễn nhiễm {s}s",
+    "그로기 {s}s": "Choáng {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Hồi sinh]"
+  },
+  "th": {
+    "그로기! {s}s": "มึนงง! {s}s",
+    "충전 중 {s}s": "กำลังชาร์จ {s}s",
+    "포이즈 {p}%": "การทรงตัว {p}%",
+    "면역 {s}s": "ภูมิคุ้มกัน {s}s",
+    "그로기 {s}s": "มึนงง {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} ฟื้นคืนชีพ]"
+  },
+  "id": {
+    "그로기! {s}s": "Terhuyung! {s}s",
+    "충전 중 {s}s": "Mengisi {s}s",
+    "포이즈 {p}%": "Keseimbangan {p}%",
+    "면역 {s}s": "Kebal {s}s",
+    "그로기 {s}s": "Terhuyung {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Bangkit]"
+  },
+  "ms": {
+    "그로기! {s}s": "Terhuyung! {s}s",
+    "충전 중 {s}s": "Mengecas {s}s",
+    "포이즈 {p}%": "Keseimbangan {p}%",
+    "면역 {s}s": "Kebal {s}s",
+    "그로기 {s}s": "Terhuyung {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} Hidup semula]"
+  },
+  "ar": {
+    "그로기! {s}s": "مترنح! {s}s",
+    "충전 중 {s}s": "جارٍ الشحن {s}s",
+    "포이즈 {p}%": "التوازن {p}%",
+    "면역 {s}s": "مناعة {s}s",
+    "그로기 {s}s": "مترنح {s}s",
+    " [{mark} {n} 차 부활]": " [{mark} {n} إحياء]"
+  }
+}

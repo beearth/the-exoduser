@@ -1,3 +1,11 @@
+## 2026-10-22 PARITY-BOSS-01 — Mac 보스 표시·웹 기반 아레나 후보
+
+- 기준 INTEG-11 6c389948edcfecc6b2b5eeb37ac82db280dc6769, branch codex/parity-boss-01-20261022. PC 코어86bb421fa·모듈·수치·소환체 불변, 원본snapshot4d911cdd 불변. R 소스 수정/실행/import0.
+- M5 이름/220×10HP·TP54역재생/additive/charge180, M6 source_line61085/61119 정정, M7 주황 UI 예고 제거·원본 corruption/pool수명, M8 8방향 motion 프레임, M9 BlackHan/HP·포이즈/면역·부활/29locale, M10 사각124×104·흙청크·collision/Markers 계약, M11 원본 녹색16프레임 탄, M12 원본 남색 합성/로딩층, M13 실제 입력/flow·로딩완료 대기 하니스.
+- 신규 생성/런타임3D/전투 수치 변경0. 원본 genBossArena at0 원형 내부와124×104 metadata를 구분하며 사용자 사각 요청을 우선한 차이는 명시. 컨셉판은 삭제 없이 제품참조만 중단.
+- 관련 테스트 단1회273검사/0실패. E2E 단1회13PASS/5NOT_READY/0FAIL, overall NOT_READY(부활 관측 뒤 dead). 프로세스 exit0을 종주 PASS로 대체하지 않는다. 나란히1920×1080·1x/crop을 직접 검수하며 남은 표시/같은 상태 정렬 차이는 기록한다. 동일성 완료/main 인수 아님.
+- [원본행·수치·소유·검수·남은 차이](engine/PARITY_BOSS_01_20261022.md), 산출물 ~/exoduser-wt/_out/PARITY-BOSS-01/. 정상hook·비강제 branch push, 원격SHA 재조회 후 clean WT 제거. main/Steam 배포0.
+
 ## 2026-10-22 PARITY-UI-02 — 인벤토리·사망/재시작 원본 부분 이식
 
 - 원본fb67658b branch 계속. 웹 snapshot4d911cdd, main 차이표d79ee3e67의 PC 원문 보존. 맵·카메라·PC 코어/테스트·main.tscn 변경 없음.

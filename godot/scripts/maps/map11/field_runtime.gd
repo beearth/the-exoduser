@@ -1,6 +1,6 @@
 extends Node2D
 ## MAP11-11 independent provider. No Main/State installation or gameplay writer.
-const ArenaProvider=preload("res://scripts/maps/map11/stage_provider.gd")
+const ArenaProvider=preload("res://scripts/maps/map11/web_arena.gd")
 const Holes=preload("res://scripts/native_spawn_hole_system.gd")
 const Flow=preload("res://scripts/maps/map11/web_route.gd")
 const ARENA_OFFSET := Vector2(0,-8000)
@@ -25,12 +25,14 @@ func _ready() -> void:
  _bound_transform=global_transform
  if global_transform.x!=Vector2.RIGHT or global_transform.y!=Vector2.DOWN:return
  field=preload("res://scripts/maps/map11/web_field.gd").new();arena=ArenaProvider.new()
- if not field.compile(null) or not arena.compile(load("res://scripts/maps/map11/arena_recipe.tres")):return
+ var recipe=load("res://scripts/maps/map11/arena_recipe.tres").duplicate(true)
+ recipe.anchors[0].position=Vector2(0,1960);recipe.anchors[1].position=Vector2.ZERO
+ recipe.anchors[2].position=Vector2(0,-2040);recipe.anchors[3].position=Vector2(0,1960)
+ if not field.compile(null) or not arena.compile(recipe):return
  _collision_owner=Node2D.new();_collision_owner.name="StaticGeometry";add_child(_collision_owner)
  # Preserve the existing arena provider's physical wall; field physics is source-owned by World.
  var arena_body:=StaticBody2D.new();arena_body.position=ARENA_OFFSET;_collision_owner.add_child(arena_body)
- var rim:=PackedVector2Array()
- for i in range(128):rim.append(Vector2.from_angle(TAU*(i+.5)/128)*1700.0/cos(PI/128))
+ var rim:=PackedVector2Array([Vector2(-2500,-2100),Vector2(2460,-2100),Vector2(2460,2060),Vector2(-2500,2060)])
  var wall:=CollisionPolygon2D.new();wall.build_mode=CollisionPolygon2D.BUILD_SEGMENTS;wall.polygon=rim;arena_body.add_child(wall)
  var group:=Node2D.new();group.name="WebMarkers";add_child(group)
  var m: Dictionary=field.data
@@ -38,8 +40,9 @@ func _ready() -> void:
   var point:=Vector2(row[3][0],row[3][1])
   var marker:=_make_marker(group,row[1],point,"map11.field."+row[0])
   _anchor_rows.append({"id":"map11.field."+row[0],"marker":marker,"role":row[2],"region_id":field.region_at(point),"space":"field"})
- for a in load("res://scripts/maps/map11/arena_recipe.tres").anchors:
-  var marker:=_make_marker(group,a.marker,a.position+ARENA_OFFSET,a.id)
+ var arena_markers:=Node2D.new();arena_markers.name="Markers";add_child(arena_markers)
+ for a in recipe.anchors:
+  var marker:=_make_marker(arena_markers,a.marker,a.position+ARENA_OFFSET,a.id)
   _anchor_rows.append({"id":a.id,"marker":marker,"role":a.role,"region_id":0,"space":"arena"})
  var placement: Dictionary=Holes.build_native_placement(m)
  if not placement.valid:return

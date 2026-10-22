@@ -196,3 +196,7 @@ assets/vfx/boss/gen/
 # PARITY-MAP-01 source-map regression (tracked product test).
 !/godot/tests/test_parity_map_01.gd
 !/godot/tests/test_parity_map_01.gd.uid
+
+# PARITY-BOSS-01: retain the owned source-parity regression only.
+!godot/tests/test_parity_boss_01.gd
+!godot/tests/test_parity_boss_01.gd.uid

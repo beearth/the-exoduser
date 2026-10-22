@@ -28,12 +28,15 @@ var profile_enabled:=false
 var profile_calls:=0
 var profile_max_us:=0
 var profile_total_us:=0
+var _presentation_layer: CanvasLayer
 var _reason: String="provider_required"
 static func install_native_boot(main: Node) -> Node2D:
  var family:=new()
  family.name="Demo11Anglers"
  main.world.add_child(family)
  family._main=main;family._world=main.world;family._state=main.source_state
+ # Source55203: fieldboss draws after lightmap55199 (no dark mask on name/HP).
+ family._presentation_layer=CanvasLayer.new();family._presentation_layer.layer=6;family._presentation_layer.follow_viewport_enabled=true;family.add_child(family._presentation_layer)
  var registry: Node=main.get("native_demo_boss_projectiles")
  if not is_instance_valid(registry):family.free();return null
  var g: Variant=main.source_state.read_current_g()
@@ -104,7 +107,7 @@ func _advance_phase(sp: float,_native_frame: float,_enemies: Array) -> void:
   for i in 4:
    var fb: Dictionary=MODEL.make(_markers[i].global_position,level,MODEL.ELEMENTS[i])
    _g._fieldBosses.append(fb)
-   var view: Node2D=VIEW.new();view.name="Angler%d"%i;view.record=fb;view.set_meta("field_index",i);add_child(view);view.global_position=Vector2(fb.x,fb.y);_views.append(view)
+   var view: Node2D=VIEW.new();view.name="Angler%d"%i;view.record=fb;view.set_meta("field_index",i);_presentation_layer.add_child(view);view.global_position=Vector2(fb.x,fb.y);_views.append(view)
   _g._fbSpawned=true
  var p: Dictionary=_player_frame
  p.x=_main.player.global_position.x;p.y=_main.player.global_position.y;p.r=_main.player.radius;p.iframes=_main.player.iframes;p.s=_main.player.state

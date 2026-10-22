@@ -442,3 +442,19 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 | 방향·시계 | 부분 이식 / RETOUCH | 원본 region_arrow PNG96·거리64px/m·라벨14/12. 원본HUD 회피·목표세부조건 미완료 |
 
 증거: `~/exoduser-wt/_out/PARITY-HUD-01/captures/{1,2,3}_compare_1x.png` 및 `_hud_crop_1x.png`·`_minimap_crop_1x.png`·`_top_crop_1x.png`. 1920×1080 원본과1x크롭, 숫자는명시적표시fixture. 관련회귀17/0. 최신 E2E 결과·오류수·commit SHA는 같은 `_out/DONE.txt`에서확인한다. 테스트PASS를시각PASS로바꾸지않는다.
+
+## PARITY-BOSS-01 Mac 표시 후보 (2026-10-22)
+
+원문 No.와 PC 요청 M번호를 혼동하지 않는다. 원문 E-01→PC M5/M6, B-01→M9/M12/M13, B-02→M7/M8/M9/M11, M-01/M-05→M10/M12, K-02→M13이다. [원본행·구현 경계·최종 검수](PARITY_BOSS_01_20261022.md). 완료 판정은 나란히1x 격자이며 테스트 PASS로 대체하지 않는다.
+
+### PARITY-BOSS-01 최종 상태 — 완료 판정 유보
+
+| 원문 No. | PC 요청 | 상태 | 근거 |
+|---|---|---|---|
+| E-01 | M5/M6 | 앵글러 표시 구현·M6행 정정 PASS, 시각 RETOUCH | 이름/HP220×10·TP54 원본셀·layer6. body/TP1x, 연무/합성/동시펫 차이 남음 |
+| B-01 | M9/M12 | 로딩/네임카드·HP/면역/부활 구현, 시각 RETOUCH | 원본 shieldF0%·포이즈 줄 구분, 1x 카드/배지 |
+| B-02 | M7/M8/M11 | 원본 motion/green queue/탄 이식, 전체 RETOUCH | Wind5종 자연 경과20틱·방향0·attack frame1/transform6 일치. 레인/fill·offset/추가VFX·동시 queue 차이 남음 |
+| M-01/M-05 | M10/M12 | 사각 아레나/흙/남색 후보, RETOUCH | 원본 at0 원형과 사용자 사각124×104 차이·exit/minimap 미완료 명시 |
+| B-01/B-02/K-02 | M13 | NOT_READY | E2E1회 13PASS/5NOT_READY/0FAIL, 죽음 관측 뒤 dead라 보스 route 미착수. overall NOT_READY |
+
+24격자·PC19대응·남은 차이·MAP PRODUCTION REPORT: [최종 보고](PARITY_BOSS_01_20261022.md). **전체 동일성 FAIL**, 테스트273/0이나 GUI fixture 관측을 사용자 완료 판정으로 대체하지 않는다.

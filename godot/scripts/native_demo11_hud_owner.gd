@@ -10,6 +10,15 @@ var _boss: Control
 var _boss_fill: TextureRect
 var _boss_name: Label
 var _boss_value: Label
+var _poise_fill: ColorRect
+var _poise_label: Label
+var _status_label: Label
+var _status_chip: Panel
+var _status_icon: TextureRect
+var _intro_fill:=0.0
+var _had_boss:=false
+var _locale: Dictionary={}
+var _language: String="ko"
 var _strip: Panel
 var _selection: Label
 var _failure: Label
@@ -37,16 +46,21 @@ static func install_native_boot(main: Node) -> Control:
 	return view
 
 func _ready() -> void:
+	_locale=JSON.parse_string(FileAccess.get_file_as_string("res://data/parity_boss_01_locale.json"))
+	var language: Dictionary=_main.get_native_startup_language_snapshot()
+	_language=str(language.get("language","ko"))
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	# Same viewport scale policy as existing HUD; no independent layout owner.
 	_boss = Control.new()
 	add_child(_boss)
 	_boss.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_boss_name = _label(_boss,"",Vector2(-250,0),Vector2(500,34),24,"hell_title",Color("ffd3a2"))
+	_boss_name = _label(_boss,"",Vector2(-400,0),Vector2(800,34),26,"hell_title",Color("ffd3a2"))
+	var display_font:=FontVariation.new();display_font.base_font=preload("res://assets/boss_parity/BlackHanSans-Regular.ttf");display_font.variation_embolden=.5;display_font.spacing_glyph=2
+	_boss_name.add_theme_font_override("font",display_font)
 	var rail := Panel.new()
 	_boss.add_child(rail)
-	rail.position=Vector2(-251,38);rail.size=Vector2(502,16)
+	rail.position=Vector2(-250,37);rail.size=Vector2(500,14)
 	rail.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
 	style.bg_color=Color("140707");style.border_color=Color("7d2c20")
@@ -55,7 +69,7 @@ func _ready() -> void:
 	rail.add_theme_stylebox_override("panel",style)
 	_boss_fill = TextureRect.new()
 	rail.add_child(_boss_fill)
-	_boss_fill.position=Vector2(1,1);_boss_fill.size=Vector2(500,14)
+	_boss_fill.position=Vector2(1,1);_boss_fill.size=Vector2(498,12)
 	_boss_fill.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
 	_boss_fill.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var gradient := Gradient.new()
@@ -64,6 +78,17 @@ func _ready() -> void:
 	var texture := GradientTexture2D.new();texture.gradient=gradient;texture.fill_to=Vector2(1,0)
 	_boss_fill.texture=texture
 	_boss_value=_label(_boss,"",Vector2(-250,58),Vector2(500,22),14,"cinzel_hell",INK)
+	_boss_value.hide()
+	var poise_rail:=ColorRect.new();_boss.add_child(poise_rail);poise_rail.position=Vector2(-180,55);poise_rail.size=Vector2(360,6);poise_rail.color=Color("666666")
+	var back:=ColorRect.new();poise_rail.add_child(back);back.position=Vector2.ONE;back.size=Vector2(358,4);back.color=Color(0,0,0,.6)
+	_poise_fill=ColorRect.new();back.add_child(_poise_fill);_poise_fill.size=Vector2(358,4)
+	_poise_label=_label(_boss,"",Vector2(182,56),Vector2(85,14),10,"font",Color("dddddd"))
+	_poise_label.hide() # Source .bpow overflow:hidden clips the right:-52px label.
+	_status_chip=Panel.new();_boss.add_child(_status_chip)
+	var chip:=StyleBoxFlat.new();chip.bg_color=Color(0,0,0,.6);chip.border_color=Color("8888ff55");chip.set_border_width_all(1);chip.set_corner_radius_all(3);_status_chip.add_theme_stylebox_override("panel",chip)
+	_status_icon=TextureRect.new();_status_chip.add_child(_status_icon);_status_icon.position=Vector2(6,4);_status_icon.size=Vector2(13,13)
+	var shield:=Image.new();shield.load_svg_from_string(FileAccess.get_file_as_string("res://assets/boss_parity/shield_status.svg"));_status_icon.texture=ImageTexture.create_from_image(shield)
+	_status_label=_label(_status_chip,"",Vector2(22,1),Vector2(70,20),14,"font",Color("8888ff"))
 	_strip=Panel.new();add_child(_strip)
 	_strip.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	_strip.size=Vector2(320,40)
@@ -105,7 +130,7 @@ func _observe(key: String, result: Dictionary) -> void:
 func refresh_native_owners() -> void:
 	if not is_node_ready(): return
 	var extent:=get_viewport_rect().size
-	_boss.position=Vector2(extent.x*.5,18)
+	_boss.position=Vector2(extent.x*.5,28) # source ui-inset-top10 + boss top18
 	var hovered:=false
 	var hud: Variant=_main.get("hud") if is_instance_valid(_main) else null
 	if is_instance_valid(hud):
@@ -150,10 +175,26 @@ func refresh_native_owners() -> void:
 	var enemy: Dictionary=boss.get("enemy",{})
 	if boss.get("status") not in ["READY","WAITING_OWNER"] or not _finite(enemy.get("hp")) or not _finite(enemy.get("mhp")) or enemy.mhp<=0 or enemy.hp<=0: return
 	_boss.visible=true
-	_boss_name.text="다크드루이드" # game.html:16689,16706,35837; demo stage0 only
+	var deaths: int=int(enemy.get("deaths",0))
+	_boss_name.text="다크드루이드"+(_tr(" [{mark} {n} 차 부활]").replace("{mark}","⚠" if deaths<=3 else "🔥").replace("{n}",str(deaths)) if deaths>0 else "")
+	var stun: float=enemy.get("stunned",0);var immune: float=enemy.get("_pImmune",0)
+	var poise: float=clampf(float(enemy.get("poise",1))/maxf(1,enemy.get("maxPoise",1)),0,1)
+	if stun>0:
+		poise=clampf(stun/maxf(1,enemy.get("_maxStunned",stun)),0,1);_poise_fill.color=Color("ffaa00");_poise_label.text=_tr("그로기! {s}s").replace("{s}","%.1f"%[stun/60])
+	elif immune>0:
+		poise=clampf(1-immune/300,0,1);_poise_fill.color=Color("8899ff");_poise_label.text=_tr("충전 중 {s}s").replace("{s}","%.1f"%[immune/60])
+	else:
+		_poise_fill.color=Color("ff6644") if poise<.3 else (Color("ffcc44") if poise<.6 else Color("dddddd"));_poise_label.text=_tr("포이즈 {p}%").replace("{p}",str(int(poise*100)))
+	_poise_fill.size.x=358*poise
+	_status_label.text=(_tr("면역 {s}s").replace("{s}","%.1f"%[immune/60])) if immune>0 else ((_tr("그로기 {s}s").replace("{s}","%.1f"%[stun/60])) if stun>0 else "")
+	_status_chip.visible=not _status_label.text.is_empty()
+	_status_icon.visible=immune>0
+	var text_width: float=_status_label.get_theme_font("font").get_string_size(_status_label.text,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x
+	var chip_width: float=text_width+30
+	_status_chip.position=Vector2(-chip_width/2,66);_status_chip.size=Vector2(chip_width,22);_status_label.size=Vector2(text_width,20)
 	_boss_value.text="%d / %d" % [enemy.hp,enemy.mhp]
 	var ratio:=clampf(float(enemy.hp)/float(enemy.mhp),0,1)
-	_boss_fill.size.x=500*ratio
+	_boss_fill.size.x=498*ratio
 	_snapshot.merge({"boss_visible":true,"boss_hp":enemy.hp,"boss_max_hp":enemy.mhp,"boss_ratio":ratio,"boss_fill_px":_boss_fill.size.x,"boss_owner_status":boss.status},true)
 
 static func _finite(value: Variant) -> bool:
@@ -172,3 +213,6 @@ static func _failure_text(reason: String) -> String:
 
 func snapshot() -> Dictionary:
 	return _snapshot.duplicate(true)
+
+func _tr(key: String) -> String:
+	return str(_locale.get(_language,_locale.get("en",{})).get(key,key))

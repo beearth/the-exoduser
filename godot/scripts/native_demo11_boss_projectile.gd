@@ -1,5 +1,6 @@
 extends "res://scripts/enemy_projectile_physical.gd"
 ## Ordinary motion/expiry kernel; protected legacy _physics_process is never called.
+const POISON=preload("res://assets/boss_parity/poison.png")
 signal retired(id: int, reason: String)
 var registry_id := 0
 var raw: Dictionary = {}
@@ -39,4 +40,12 @@ func _draw() -> void:
 	# Existing-asset rendering/semantic silhouettes belong to the render unit.
 	# This bounded fallback never changes raw element/class/bean identity.
 	draw_calls += 1
+	if raw.get("_druidPoison",false) and not raw.get("friendly",false):
+		var cell: Vector2=POISON.get_size()/Vector2(4,4);var frame: int=int(Time.get_ticks_msec()/70)%16
+		var size_: float=240.0 if raw.get("_druidMine",false) or raw.get("elemBall",false) else clampf(float(raw.get("sz",4))*24,96,180)
+		# Source _physicalProjectileMultiplier(p,2): ordinary physical projectile scale.
+		size_*=2.0 if raw.get("parryClass","")=="physical" else 1.0
+		var h: float=size_*cell.y/cell.x
+		draw_texture_rect_region(POISON,Rect2(-size_/2,-h/2,size_,h),Rect2(Vector2(frame%4,frame/4)*cell,cell))
+		return
 	draw_circle(Vector2.ZERO,maxf(1.0,float(raw.get("sz",1))),Color.from_string(str(raw.get("col","")),Color.WHITE))

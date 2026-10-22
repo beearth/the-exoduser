@@ -156,7 +156,7 @@ func place_in_natural_contact() -> Dictionary:
  var score: float=-INF
  var best_cooldown: float=0.0
  for enemy in main.world.get_enemies():
-  if not is_instance_valid(enemy) or enemy.get("alive")!=true or not main.native_natural_enemies.owns_actor(enemy):continue
+  if not is_instance_valid(enemy) or enemy.get("alive")!=true or not is_instance_valid(main.native_natural_enemies) or not main.native_natural_enemies.owns_actor(enemy):continue
   # Hive bloater (etype1) has ranged stages only, no natural melee contact.
   if enemy.get("etype") not in [0,4,6,18,19]:continue
   var point: Vector2=enemy.global_position+Vector2(24,0)
@@ -172,6 +172,63 @@ func place_in_natural_contact() -> Dictionary:
  if not is_instance_valid(best):return {"placed":false}
  main.player.global_position=best.global_position+Vector2(24,0)
  return {"placed":true,"actor":best.get_instance_id(),"etype":best.etype,"distance":24.0,"state":best.state,"cooldown":best_cooldown}
+func boss_input(action: String,pressed: bool) -> void:
+ var event:=InputEventAction.new();event.action=action;event.pressed=pressed
+ main.player.handle_native_input_event(event)
+func boss_release() -> void:
+ boss_input("move_up",false);boss_input("move_down",false);boss_input("move_left",false);boss_input("move_right",false);boss_input("weapon",false)
+func boss_aim(at: Vector2) -> void:
+ var event:=InputEventMouseMotion.new();event.position=root.get_visible_rect().size*.5+(at-main.camera.get_screen_center_position())*main.camera.zoom
+ main.player.handle_native_input_event(event)
+func play_bossroom_route(provider: Node,max_ms: int) -> Dictionary:
+ var trace: Array=[];var deadline: int=Time.get_ticks_msec()+max_ms;var attacks:=0;var moves:=0
+ if not is_instance_valid(provider):return {"reason":"provider_absent","input_only":true}
+ if main.player.hp<=0:return {"reason":"player_not_alive_after_revival_stage","input_only":true,"hp":main.player.hp}
+ var g: Dictionary=main.source_state.read_current_g();var targets: Array=[]
+ # Actual provider waypoints, no replacement map/provider and no teleports.
+ for i in range(4):targets.append("map11.field.angler."+str(i))
+ for hole in provider.anchors("hole"):targets.append(hole.id)
+ targets.append("map11.field.gate")
+ var leg:=0;var frame:=0;var query: Dictionary={};var last_progress:=Time.get_ticks_msec();var last_pos: Vector2=main.player.global_position
+ var flow: String=""
+ while Time.get_ticks_msec()<deadline and main.player.hp>0:
+  if g.get("_bossLoadPhase",0)>0:
+   boss_release()
+   # Full 50+130+50+100 loading sequence, not a single frame.
+   while g.get("_bossLoadPhase",0)>0 and Time.get_ticks_msec()<deadline:await physics_frame
+   return {"reason":"load_complete" if g.get("_bossLoadPhase",0)==0 else "load_deadline","input_only":true,"attacks":attacks,"moves":moves,"trace":trace,"phase":g.get("_bossLoadPhase",0),"fbDone":g.get("_fbDone",false),"unlocked":g.get("_bossUnlocked",false)}
+  if leg>=targets.size():leg=0
+  var target_id: String=targets[leg]
+  if flow.is_empty():flow=provider.prepare_flow(target_id,main.player.radius)
+  var nearest: Node;var distance:=280.0
+  for enemy in main.world.get_enemies():
+   if is_instance_valid(enemy) and enemy.get("alive")==true:
+    var d: float=enemy.global_position.distance_to(main.player.global_position)
+    if d<distance:distance=d;nearest=enemy
+  var aim: Vector2=main.player.global_position;var close:=false
+  if is_instance_valid(nearest):aim=nearest.global_position;close=distance<100
+  var fb_index: int=leg if leg<4 else -1
+  if fb_index>=0 and g.get("_fieldBosses") is Array and fb_index<g._fieldBosses.size() and g._fieldBosses[fb_index] is Dictionary:
+   var fb: Dictionary=g._fieldBosses[fb_index];var at:=Vector2(fb.x,fb.y)
+   if at.distance_to(main.player.global_position)<360:aim=at;close=at.distance_to(main.player.global_position)<155
+  var direction:=Vector2.ZERO
+  if close:
+   boss_aim(aim);boss_input("weapon",frame%12<4)
+   if frame%12==0:attacks+=1
+  else:
+   boss_input("weapon",false)
+   if not flow.is_empty() and provider.flow_query(flow,main.player.global_position,query):direction=query.get("direction",Vector2.ZERO)
+   if aim!=main.player.global_position and aim.distance_to(main.player.global_position)<280:direction=(aim-main.player.global_position).normalized()
+  boss_input("move_up",direction.y<-.25);boss_input("move_down",direction.y>.25);boss_input("move_left",direction.x<-.25);boss_input("move_right",direction.x>.25)
+  if direction!=Vector2.ZERO:moves+=1
+  if main.player.global_position.distance_to(last_pos)>30:last_progress=Time.get_ticks_msec();last_pos=main.player.global_position
+  if (query.get("arrived",false) and not close) or Time.get_ticks_msec()-last_progress>8000 or (fb_index>=0 and g.get("_fieldBosses") is Array and not g._fieldBosses[fb_index] is Dictionary):
+   if trace.size()<64:trace.append({"target":target_id,"hp":main.player.hp,"fbDone":g.get("_fbDone",false),"unlocked":g.get("_bossUnlocked",false),"flow":flow,"position":str(main.player.global_position)})
+   if not flow.is_empty():provider._flows.erase(flow) # harness releases its completed navigation cache only
+   leg+=1;flow="";last_progress=Time.get_ticks_msec();query.clear()
+  frame+=1;await physics_frame
+ boss_release()
+ return {"reason":"player_died" if main.player.hp<=0 else "route_deadline","input_only":true,"attacks":attacks,"moves":moves,"trace":trace,"fbDone":g.get("_fbDone",false),"unlocked":g.get("_bossUnlocked",false)}
 func run() -> void:
  Engine.physics_ticks_per_second=120;Engine.max_fps=240
  node_added.connect(profile_added)
@@ -201,7 +258,7 @@ func run() -> void:
  root.mode=Window.MODE_WINDOWED;root.show() # Main video setup can minimize the logical headless root.
  main.player.telemetry_event.connect(on_event)
  main.native_demo_anglers.profile_enabled=true
- main.native_natural_enemies.profile_enabled=true
+ if is_instance_valid(main.native_natural_enemies):main.native_natural_enemies.profile_enabled=true
  main.native_demo_boss_defeated.connect(func(stage_index: int):
   if stage_index==0:boss_signal_count+=1)
  var created: Dictionary=store.read_json("hellsave_demo_0")
@@ -407,15 +464,11 @@ func run() -> void:
  var encounter: Node=main.get("native_demo_encounter");var encounter_snapshot: Dictionary=encounter.snapshot() if is_instance_valid(encounter) else {}
  var gate_receipt: Dictionary={}
  var provider: Node=main.read_native_map11_provider()
- if is_instance_valid(provider):
-  var sites: Dictionary=provider.transition_sites()
-  if sites.get("field_gate") is Marker2D:
-   main.player.global_position=sites.field_gate.global_position
-   gate_receipt=main.request_native_map11_transition("enter")
-   await physics_frame
-   encounter_snapshot=encounter.snapshot()
+ var route: Dictionary=await play_bossroom_route(provider,180000)
+ if is_instance_valid(encounter):encounter_snapshot=encounter.snapshot()
+ gate_receipt=route
  var gate_ok: bool=encounter_snapshot.get("provider_bound",false) and encounter_snapshot.get("phase") in ["arena","exit","clear"]
- await done("PASS" if gate_ok else "NOT_READY","" if gate_ok else "actual MAP11 gate/arena prerequisites not satisfied",{"encounter":encounter_snapshot,"gate_flags_written":false,"entry_receipt":gate_receipt,"fieldboss":main.native_demo_anglers.snapshot(),"regions":main.get_node("NativeRegions").snapshot(),"boss":main.read_native_demo_boss()})
+ await done("PASS" if gate_ok else "NOT_READY","" if gate_ok else "actual MAP11 gate/arena prerequisites not satisfied",{"encounter":encounter_snapshot,"gate_flags_written":false,"HP_damage_or_state_injected":false,"entry_receipt":gate_receipt,"fieldboss":main.native_demo_anglers.snapshot(),"regions":main.get_node("NativeRegions").snapshot(),"boss":main.read_native_demo_boss()})
  begin("boss_defeat_signal")
  var flow: Node=main.get("native_demo_end_flow")
  var boss: Node=main.native_demo_boss_actor
@@ -449,7 +502,7 @@ func finish() -> void:
  var counts: Dictionary={"PASS":0,"NOT_READY":0,"FAIL":0}
  for row in rows:counts[row.status]+=1
  var overall: String="FAIL" if counts.FAIL>0 else ("NOT_READY" if counts.NOT_READY>0 or checkpoint else "PASS")
- var result: Dictionary={"overall":overall,"counts":counts,"failures":counts.FAIL,"stages":rows,"stage_order_complete":rows.size()==ORDER.size(),"continuous_E2E":overall=="PASS" and not checkpoint,"headless":DisplayServer.get_name()=="headless","userdir":OS.get_user_data_dir(),"scheduler_max_us":main.native_natural_enemies.scheduler_max_us if is_instance_valid(main) else 0,"angler_profile":main.native_demo_anglers.snapshot() if is_instance_valid(main) else {},"worst_tick":worst_tick,"callback_costs":callback_costs,"profile_calls":root.get_meta("demo47i_perf",{}),"physics_hz":Engine.physics_ticks_per_second,"budget_ms":1000.0/120,"performance_scope":"headless callback CPU span and process_frame wall intervals; GPU excluded; command_span_ms includes asynchronous waits; not a CPU timer","visual_audio_QA":false}
+ var result: Dictionary={"overall":overall,"counts":counts,"failures":counts.FAIL,"stages":rows,"stage_order_complete":rows.size()==ORDER.size(),"continuous_E2E":overall=="PASS" and not checkpoint,"headless":DisplayServer.get_name()=="headless","userdir":OS.get_user_data_dir(),"scheduler_max_us":main.native_natural_enemies.scheduler_max_us if is_instance_valid(main) and is_instance_valid(main.native_natural_enemies) else 0,"angler_profile":main.native_demo_anglers.snapshot() if is_instance_valid(main) else {},"worst_tick":worst_tick,"callback_costs":callback_costs,"profile_calls":root.get_meta("demo47i_perf",{}),"physics_hz":Engine.physics_ticks_per_second,"budget_ms":1000.0/120,"performance_scope":"headless callback CPU span and process_frame wall intervals; GPU excluded; command_span_ms includes asynchronous waits; not a CPU timer","visual_audio_QA":false}
  if not arg("--results-path").is_empty():
   var file:=FileAccess.open(arg("--results-path"),FileAccess.WRITE)
   if file!=null:file.store_string(JSON.stringify(result,"\t"));file.close()
