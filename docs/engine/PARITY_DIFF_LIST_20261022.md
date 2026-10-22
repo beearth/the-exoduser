@@ -128,6 +128,8 @@
 |---|---|---|---|---|---|---|---|
 | V-01 | 방향+Space 전격이동 (08b) | A를 누른 채 Space: 110ms 안에 x −126~−130px 이동(실측 2회). "충전 중..." 게이지 표시 | 실제 키 이벤트(A+Space)를 넣어도 이동 0px(−0.12px). Space는 Player가 `space_rage_slot_not_connected`로 먼저 소비한다 | 누락 | P0 | 액션·핸들러 없음. player.gd:522-525, main.gd:1969·1998, native_parry_lesson_flow.gd:39-47(`lightning_dash_unported`) | PC 로직 |
 | V-02 | Shift 사슬 이동 (08a) | 입력하면 게이지·ST가 줄고 발동한다(헤드리스 실측 이동 +34~37px. 원래 사거리 동작인지는 육안 미확인) | Shift 홀드 0.7초 → 릴리즈해도 0px. InputMap에 Shift/charge 액션이 없다 | 누락 | P0 | main.gd:1966-1985 `_register_inputs`, 레슨 정지 사유 `chain_movement_unported` | PC 로직 |
+| V-01 | 방향+Space 전격이동 (08b) | A를 누른 채 Space: **6틱 동안 41.67px씩 250px**(웹 1틱 스텝 실측 C_f0~f5), MP 7·기동 게이지 31.5 소비, 무적 15→착지 15, 착지 전류장판·번개 기둥. ※ 이전 기록 "−126~−130px"는 하네스가 `_harpGauge=5`로 둬 발동이 안 된 채 A 보행만 잰 값이었다 | **[PC-MOVE-SKILLS 브랜치 f02ed5b0f·f7a97ad4a·a684e4434, main 미병합]** 같은 입력으로 6틱 250px, 무적 14…10→15, 게이지 193.59(+회복)까지 프레임마다 웹과 같다. Space는 방향+Space면 전격이동이 먼저 소비, 단독이면 슬롯 owner로 전달 | 이식(브랜치) | ~~P0~~ 브랜치 해결 | 남은 차이: 전류장판 피해 틱·방어감소 NOT_READY(hurtE `_shockDR` 분기 미이식), showPH 토스트·HUD 기동 링(H-02)은 Mac. 비교 `_out/pc-move-skills-v2/compare_C0*.png` | PC 로직(완료) · Mac 표시 |
+| V-02 | Shift 사슬 이동 (08a) | 탭: 사슬 63px/틱 비행 4틱 → 5틱째 꽂힘과 같은 틱에 끌림 시작, 끌림 7틱 → 릴리즈 후 11틱째 **300px** 착지. 2단(6틱 이상 홀드) 비행 7틱+끌림 11틱 → 18틱째 500px, 3단 12틱 홀드 자동 700px. 게이지 45/98/150·ST mst×1%×단계. ※ 이전 "+34~37px"는 하네스가 `_harpGauge=5`로 둔 결과(700×7.25/150=33.8)였다 | **[PC-MOVE-SKILLS 브랜치 f02ed5b0f·f7a97ad4a·a684e4434, main 미병합]** InputMap `charge`=왼쪽 Shift. 1단 300px·2단 500px, 프레임별 위치·무적(끌림 1, 착지 47)·게이지가 웹과 같다. 홀드 링·예측선·단계, 사슬 수리검, 머리 위 게이지, dash_start/fly/land 포즈, land_fire | 이식(브랜치) | ~~P0~~ 브랜치 해결 | 남은 차이: 합체·유니크 분기 미보유(NOT_READY), 레슨 step 4/5 연습은 step 0~3 정지로 도달 불가. 비교 `_out/pc-move-skills-v2/compare_A0*.png`·`compare_B0*.png` | PC 로직(완료) · Mac 표시 |
 
 ### 1-8. 적·필드보스·보스 (장면 9·10)
 
@@ -306,6 +308,7 @@ Godot는 이것을 "세계의 기록 I/II/III" 정지 이미지 액자 슬라이
 
 - 사용자가 Godot를 `run.cmd`(원근 인자)로 실행했는지, main.tscn을 직접 실행했는지.
 - 웹 Shift 사슬 이동의 실제 사거리. 헤드리스 키 입력 기준으로 +34~37px만 관측했고, 정상 동작인지 육안으로 확인하지 못했다.
+- ~~웹 Shift 사슬 이동의 실제 사거리.~~ → 2026-10-22 PC-MOVE-SKILLS에서 확인: 하네스가 `_harpGauge=5`로 둔 탓이었다. 정상 게이지(225)에서 1단 300px·2단 500px·전격이동 250px(웹 1틱 스텝, [계약](PC_MOVE_SKILLS_CONTRACT_20261022.md)).
 - 웹 기본 공격 장면(07b·07c): 웹 플레이어가 fallen 상태여서 비교하지 못했다.
 - 웹 J 성장창(열리지 않음, 원인 미조사).
 - Godot 맵의 깊이 정렬·가림 처리, 적 피격 플래시와 고어의 동일 여부.

@@ -12,7 +12,7 @@
 | 64010~64014 | 새 게임: activeCtSk='iceOrb', SKILL_SLOTS 정리 후 _fs(0,'spikeTrap')/_fs(4,'giantSlam')/_fs(5,'holyDome') | `_p["skillSlots"]=[spikeTrap,·,·,·,giantSlam,holyDome]` |
 | 27681~27682 | SKILL_SLOTS 전역 6칸·ULT_SLOT null | 포트 보관처 = P dict "skillSlots"/"ultSlot" (전역→P 소유 기록) |
 - 호출: main.gd 부팅 시퀀스(스테이지 충전 직후) +5줄. **발동 로직은 범위 밖 — 지급·표시
-  전용.** 미구현 스킬 키는 기존대로 무반응(1/F/Ctrl 미바인딩·Space=space_rage_slot_not_connected
+  전용.** 미구현 스킬 키는 기존대로 무반응(1/F/Ctrl 미바인딩·Space=space_rage_slot_not_connected ※ 2026-10-22 PC-MOVE-SKILLS 브랜치: Space 단독은 슬롯 owner로 전달, 방향+Space는 전격이동(DEMO11-11).
   기존 상태 그대로 — 원본과 다른 동작 생성 없음).
 - HUD: P2-002a 슬롯 매핑이 자동 반영 — 1=spikeTrap·F=holyDome·Space=giantSlam·Ctrl=iceOrb.
   p2002a 테스트의 종전 '미이식' 기대값을 지급 후 상태로 정정(39/0 유지).

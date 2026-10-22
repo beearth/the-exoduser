@@ -416,6 +416,13 @@ func apply_native_skill_shake(owner: Node, n: float) -> Dictionary:
 	return {"applied": true, "shake": _g.get("shake", 0)}
 
 
+# PC-MOVE-SKILLS — 사슬 끌림 경로 타격 G32298: `G.shake=4*OPT.shake/100` (shake()의 max가 아닌 대입). OPT.shake 기본 100.
+func apply_native_shake_assign(owner: Node, n: float) -> Dictionary:
+	if not _feel_owner_current(owner) or not is_finite(n):
+		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}
+	_g["shake"] = n * 100.0 / 100.0
+	return {"applied": true, "shake": _g.get("shake", 0)}
+
 func apply_native_crescent_hit_feel(owner: Node, step: int, opt_shake: float) -> Dictionary:
 	if not _feel_owner_current(owner) or not is_finite(opt_shake):
 		return {"applied": false, "reason": "actual_feel_g_owner_not_current"}

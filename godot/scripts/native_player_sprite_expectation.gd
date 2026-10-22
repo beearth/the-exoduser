@@ -14,6 +14,11 @@ const IDLE_FRAME_TICKS := 48.0
 const OTHER_FRAME_TICKS := 8.0
 const BODY_PATH_PREFIX := "res://assets/player/"
 const ATTACK_PATH := "res://assets/player/attack-bat-v1.png"
+const DASH_WARRIOR_PATH := "res://assets/player/dash-flight-v1.png"
+const DASH_SILVERTAIL_PATH := "res://assets/player_silvertail/dash-flight-v1.png"
+const DASH_FRAMES := 6
+const DASH_CELL_SIZE := 64
+const DASH_FRAME_TICKS := 4.0 # drawP _apSpd=4 (사슬기동 _isHarp)
 const QUALITY_UNIQUE_FRAMES := 24
 const QUALITY_FPS := 24.0
 
@@ -47,6 +52,15 @@ static func build(profile: Dictionary = {}) -> Dictionary:
 				"loop": mode in ["idle", "walk"],
 				"speed": ANIMATION_TICKS_PER_SECOND / (IDLE_FRAME_TICKS if mode == "idle" else OTHER_FRAME_TICKS),
 				"exact_frame_count": true, "frames": frames})
+		# PC-MOVE-SKILLS: WarriorDashFlight 시트(warrior-dash-flight.js) 64px×6, 행=방향. player._add_native_dash_flight_frames
+		var dash_frames: Array = []
+		var dash_path: String = DASH_SILVERTAIL_PATH if not profile.is_empty() and profile.index==1 else DASH_WARRIOR_PATH
+		for index in range(DASH_FRAMES):
+			dash_frames.append({"index": index, "texture": {"class": "AtlasTexture",
+				"atlas": {"class": "CompressedTexture2D", "resource_path": dash_path},
+				"region": Rect2(index * DASH_CELL_SIZE, direction_index * DASH_CELL_SIZE, DASH_CELL_SIZE, DASH_CELL_SIZE)}})
+		animations.append({"name": "dash_" + direction, "loop": false, "speed": ANIMATION_TICKS_PER_SECOND / DASH_FRAME_TICKS,
+			"exact_frame_count": true, "frames": dash_frames})
 	return {"schema": EXPECTATION_SCHEMA,
 		"source": {
 			"directions": "godot/scripts/player.gd:12 DIRECTIONS",
