@@ -338,6 +338,7 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 사용자 승인 | 이번 대화의 "스킬창 변경만 main과 3333에 반영" 제안에 "그래"로 이전 보류 해제 |
 | 원작성자·원본 | Claude `claude/skill-ui-20261021`, `76938f887` + `25bc492af` 보존. 새 인수 브랜치 `codex/skill-orbs-integrate-20261023`, 원격 base `8468891744569f8091f6170dbaf5c58f48a07067` 위 정상 cherry-pick |
 | 적용 | 하단 `.sf-tray` 삭제, 제단 주위 좌우 `.sf-orb`와 관계 전류. CSS/JS `v=20261021-orbs2`. 전투·비용·슬롯/합성 공식 변경 없음 |
+| 가드 기준선 | 인수 체크아웃의 자동 갱신 `tools/guard.baseline.json`에서 `lines` 64266 → 실제 `game.html` 65695만 반영. 보호 상수 해시·bossIdx 불변. 공유 체크아웃의 기존 staged 기준선은 보존 |
 | 재배포 누락 방지 | 기존 로컬 Three.js r186 `three.module.js`·`three.core.js`를 동일 byte로 인수·정확 두 경로만 Git 추적. §10-11 당시 누락의 해소이며 라이브러리 업그레이드가 아님 |
 | 검사 | 기존 실행본에서 신규 구슬 검사 6개 FAIL → 통합 후 기존 13/13 PASS. 필수 vendor 누락 검사 RED(13 PASS/1 FAIL) 후 두 모듈 보존·추적; 최종 스킬창·슬롯·추천·확인창 검사 31개로 확인 |
 | 3333 실제 화면 | 저장 없는 `?forgelab=1&tutorial=0&resourceTutorial=0`. LMB 8개/숫자1 22개 구슬·합성 전류·3D 원판 확인. 숫자1 `clientWidth=scrollWidth=2403`, 가로 트레이0. 일반 세이브를 불러오거나 덮어쓰는 검수는 하지 않음 |
