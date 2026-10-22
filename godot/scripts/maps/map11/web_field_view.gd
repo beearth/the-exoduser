@@ -16,13 +16,21 @@ var _chunks: Array[Sprite2D]=[]
 var _trees: Array[ShaderMaterial]=[]
 var _features: Array[Node2D]=[]
 var _hand_trees: Dictionary={}
+var _details: Node2D
 var _living: Node2D
 var _data: Dictionary
 func _ready() -> void:
  _data=JSON.parse_string(FileAccess.get_file_as_string("res://data/map.json"))
  for row in _data.chunks:
-  var sprite:=Sprite2D.new();sprite.texture=load(row.texture);sprite.region_enabled=true
-  sprite.region_rect=Rect2(1,1,1024,1024);sprite.centered=false;sprite.scale=Vector2.ONE*(1000.0/1024)
+  var sprite:=Sprite2D.new()
+  var high_path: String="res://assets/map/web_parity/chunks1440/chunk_%d_%d.png"%[row.x,row.y]
+  var core: int=1024
+  if FileAccess.file_exists(high_path):
+   sprite.texture=load(high_path)
+   if sprite.texture!=null:core=1334
+  if sprite.texture==null:sprite.texture=load(row.texture)
+  sprite.region_enabled=true
+  sprite.region_rect=Rect2(1,1,core,core);sprite.centered=false;sprite.scale=Vector2.ONE*(1000.0/core)
   sprite.position=Vector2(row.x*1000,row.y*1000);sprite.z_index=-3000
   sprite.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(sprite);_chunks.append(sprite)
  # Source ch1-forest-sway.js:10-41,67-98; prebuilt original 64x64 mask.
@@ -58,6 +66,7 @@ func _ready() -> void:
  _red=load("res://assets/map/web_parity/portal_red.png");_blue=load("res://assets/map/web_parity/portal_blue.png")
  _portal=Sprite2D.new();_portal.texture=_red;_portal.position=Vector2(4020,300);_portal.z_index=-2599;_portal.modulate.a=.9;_portal.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_portal)
  _portal_core=Sprite2D.new();_portal_core.texture=_red;_portal_core.position=_portal.position;_portal_core.z_index=-2598;_portal_core.modulate.a=.45;_portal_core.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_portal_core)
+ _details=preload("res://scripts/maps/map11/web_details.gd").new();add_child(_details)
  for row in _data.props:
   var sprite:=Sprite2D.new();sprite.texture=load(row.texture)
   if sprite.texture==null:continue
@@ -72,17 +81,16 @@ func _ready() -> void:
    var processed: Sprite2D=_hand_trees[sprite.position]
    processed.position=sprite.position;processed.offset=-processed.texture.get_size()*.5
    processed.get_child(0).position=processed.offset
-   sprite.free();sprite=processed
-  else:add_child(sprite)
+   sprite.free();sprite=_details.wrap_boundary_tree(processed,row);add_child(sprite)
+  else:
+   sprite=_details.replace_prop(sprite,row);add_child(sprite)
   var occ: bool=str(row.id).begins_with("m_ctree") or row.id=="m_c1tree"
   _props.append({"sprite":sprite,"row":row,"occ":occ,"s":float(row.metadata.sz)*float(size.x/float(row.metadata.sz)) if not row.metadata.get("keepAR",false) else float(row.metadata.sz),"alpha":1.0})
 func configure(main: Node) -> void:
  _main=main;_actor=main.player;_camera=main.camera
  # Source 25500: createRadialGradient(320,320,0,320,320,320), additive.
  _point=Sprite2D.new()
- var gradient:=Gradient.new();gradient.offsets=PackedFloat32Array([0,.4,1]);gradient.colors=PackedColorArray([Color(1,190.0/255,90.0/255,.28),Color(220.0/255,120.0/255,40.0/255,.13),Color(0,0,0,0)])
- var stamp:=GradientTexture2D.new();stamp.width=640;stamp.height=640;stamp.gradient=gradient;stamp.fill=GradientTexture2D.FILL_RADIAL;stamp.fill_from=Vector2(.5,.5);stamp.fill_to=Vector2(1,.5)
- _point.texture=stamp
+ _point.texture=load("res://assets/map/web_parity/detail02/point.png")
  var light_mat:=CanvasItemMaterial.new();light_mat.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD;_point.material=light_mat;_point.z_index=-2700;add_child(_point)
  _camera.zoom=Vector2.ONE;_camera.offset=Vector2.ZERO;_camera.position_smoothing_enabled=false
  _camera.limit_left=-20000;_camera.limit_top=-20000;_camera.limit_right=20000;_camera.limit_bottom=20000
@@ -124,6 +132,9 @@ func update_product(point: Vector2,delta: float) -> void:
    _ghost.texture=source.sprite_frames.get_frame_texture(source.animation,source.frame)
    _ghost.global_transform=source.global_transform;_ghost.offset=source.offset;_ghost.flip_h=source.flip_h
 func render_at(now: float) -> void:
+ if is_instance_valid(_details) and is_instance_valid(_camera):
+  var half:=get_viewport_rect().size*.5
+  _details.render_at(now,Rect2(_camera.get_screen_center_position()-half,half*2))
  if is_instance_valid(_living):_living.render_at(now)
  if is_instance_valid(_portal):
   var unlocked: bool=is_instance_valid(_main) and _main.source_state.read_current_g().get("_bossUnlocked",false)

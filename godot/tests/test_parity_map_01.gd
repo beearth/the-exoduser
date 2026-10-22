@@ -6,7 +6,7 @@ func check(ok: bool,label: String) -> void:
  checks+=1
  if not ok:failures+=1;print("PARITY_FAIL ",label)
 func run() -> void:
- check(OS.get_user_data_dir().get_file().begins_with("EXODUSER-demo11-PARITY-MAP-01-"),"isolated storage")
+ check(OS.get_user_data_dir().get_file().begins_with("EXODUSER-demo11-parity-capture-Isolated-"),"isolated storage")
  if failures:quit(2);return
  var main: Node=load("res://scenes/main.tscn").instantiate();root.add_child(main)
  for i in range(8):await physics_frame
@@ -37,12 +37,49 @@ func run() -> void:
  check(scene.get_node_or_null("WorldClarity")==null,"concept clarity disconnected")
  check(scene.field_view._chunks.size()==64,"64 source chunks")
  check(scene.field_view._props.size()==36,"36 source hand props")
+ for chunk in scene.field_view._chunks:
+  check(chunk.region_rect.size==Vector2(1334,1334),"1440p source-sized core")
+  check((chunk.region_rect.size*chunk.scale).is_equal_approx(Vector2(1000,1000)),"unchanged chunk world extent")
  var candidate_paths: Array=JSON.parse_string(FileAccess.get_file_as_string("res://tests/map11_33_candidates.json"))
  var loaded_concept: Array=[]
  for path in candidate_paths:
   if not ("target_frames" in path or "target30" in path or "target32" in path or "upscale01" in path or "finish33" in path or "tour_25d" in path):continue
   if ResourceLoader.has_cached("res://"+str(path)):loaded_concept.append(path)
  check(loaded_concept.is_empty(),"no concept texture cached "+str(loaded_concept))
+ var details: Node=scene.field_view._details
+ check(details.faces.size()==61,"source mass-face count")
+ var oracle: Array=details.data.transformOracle
+ for sample in oracle:
+  var matched: bool=false
+  for rig in details.rigs:
+   if rig.id!=sample.type:continue
+   matched=true
+   details.render_at(float(sample.now),Rect2(0,0,8000,8000))
+   var indices: Array=[]
+   if sample.type=="m_c1tree":indices=[[0,0],[1,1],[2,2],[3,3],[4,4],[5,5],[6,6]]
+   elif sample.type=="m_c1camp":indices=[[0,0],[1,1],[2,2],[3,3],[4,4]]
+   elif sample.type=="m_c1gtoxicf":indices=[[0,0],[1,1],[2,2]]
+   else:indices=[[0,0]]
+   for pair in indices:
+    var op: Dictionary=sample.ops[pair[0]]
+    var node: Node=rig.body.get_child(pair[1])
+    if not (node is Sprite2D):node=node.get_child(0)
+    var sprite: Sprite2D=node
+    var a: Array=op.args
+    var offset: int=4 if a.size()==8 else 0
+    var destination:=Vector2(a[offset],a[offset+1])
+    var extent:=Vector2(a[offset+2],a[offset+3])
+    var m: Array=op.matrix
+    var transform:=Transform2D(Vector2(m[0],m[1]),Vector2(m[2],m[3]),Vector2(m[4],m[5]))
+    check((sprite.global_transform*Vector2.ZERO).distance_to(transform*destination)<.25,"browser draw origin "+sample.type+str(sample.now)+str(pair))
+    check((sprite.global_transform*sprite.texture.get_size()).distance_to(transform*(destination+extent))<.25,"browser draw extent "+sample.type+str(sample.now)+str(pair))
+  check(matched,"source effect rig "+sample.type)
+ var lighting: Node=main.get_node("NativeScreenLighting")
+ lighting._process(0.0)
+ check(lighting._half_view.size==Vector2i(960,540),"source C/2 actual render target")
+ check(lighting._static_lights.size()==12,"original two prop and ten moat lights")
+ check(is_instance_valid(lighting._iris_color),"original iris color stamp consumer")
+ check(lighting._fog_gl.get_index()>lighting._filter_rect.get_index(),"DOM fog after canvas CSS")
  main.queue_free()
  for i in range(4):await process_frame
  print("PARITY_MAP_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"totals":totals}))

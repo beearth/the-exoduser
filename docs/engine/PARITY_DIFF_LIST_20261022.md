@@ -348,3 +348,19 @@ PC 원문/위 후보 기록을 보존한다. 사용자 최신 원문은 “맵 �
 | M-07 | 원본 조명 계수·PP debug0 유지 | 엔진 색/안개/반해상도 합성 차이 RETOUCH. 비교 격자 revision2/captures 참조 |
 
 2차 상세 원본 대응·검수 범위는 [PARITY_MAP_01_20261022.md](PARITY_MAP_01_20261022.md)의 마지막 절을 따른다. 구조 PASS를 “똑같이 플레이됨” 전체 완료로 확대하지 않는다.
+
+### PARITY-MAP-02 — 최신 맵 상태(2026-10-22)
+
+No.는 위 **원문 1-3의 M-01…M-07 뜻**으로 대응한다. MAP-01 2차 표의 재분류는 당시 이력으로 보존한다. 최신 근거는 [PARITY_MAP_02_20261022.md](PARITY_MAP_02_20261022.md)다. 아래는 최종 단회 검수 결과다. 기본 필드/지정4카메라의 구조·비주얼 PASS와 전체게임/자연완주/성능을 구분한다.
+
+| No. | 이번 변경·보존 | 판정 범위 |
+|---|---|---|
+| M-01 | 원본64청크/1000px world 배치 유지. 원본 생체/접지/제단 레이어에61군락얼굴·유기소품 동작 추가; x4plus64장 core1334/1000world·색/알파보존·bleed224/224 | 정적 구조 PASS / 지정4카메라 VISUAL PASS |
+| M-02 | 제품 기본2D·강제원근 인자 제거 유지 | 원근 판 추가0 |
+| M-03 | zoom1/offset0·기존 웹 추적 수식 변경0 | 네 좌표 zoom1/offset0 실제 캡처 PASS; 보스finale는별도 |
+| M-04 | 기존 플레이어 크기·시스템 변경0 | 배우 외형/장비/HP는 범위 밖 |
+| M-05 | 실제 half viewport·원본정적12광원·원본point·2D clock/FBM render clock·DOM fog 합성 교정. S preset/PP기본0 | 원본 수치·half960×540·render clock·DOM 순서 회귀 PASS; 시각 PASS, 미세픽셀 차이/웹proxy tone 차이는 기록 |
+| M-06 | 시작(4020,7420)·스폰/게이트/지역 분모 변경0 | 소환진/지역명은 인트로·HUD 담당, 비교에 노출 |
+| M-07 | 손배치36/가림 유지. 시체나무 root8pose/매듭5·손3관절·늪/독구덩이/pool bubbles·변형 추가 | 브라우저 실제 drawImage 행렬/원점/크기 대조 PASS; 지정4장면 VISUAL PASS |
+
+최종 증거: `~/exoduser-wt/_out/PARITY-MAP-02/captures/{1..4}_compare_1x.png`·`_crop_1x.png`·`_structure_1x.png`. 회귀19,978/0, alpha64/64·bleed224/224. E2E1회는주입0/HP0/처치0으로NOT_READY. GUI1회는60초포커스실패로성능/VRAM미측정. UI/인트로/PC범위는닫지않음.

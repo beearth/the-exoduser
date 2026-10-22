@@ -1,0 +1,431 @@
+{
+  "snapshot_sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "source_js": {
+    "ch1-face-life.js": "30e36e0f0340fd37b39390d43f693340979b278cb540689b3515bd323577244b",
+    "ch1-living-detail.js": "d2620517a983783a54ce3522c2a54abb47bde5165342fa92379a8f9c6578c52f",
+    "ch1-altar-moat.js": "f5e1089d2f4a3ae2298472a30c02d6d7d6126265bb072e6ce50e9e6dce6dd1f0"
+  },
+  "generator": "tools/parity-map-02/export_details.cjs + export_lights.cjs",
+  "transform_oracle": "source.json transformOracle: direct public Canvas drawImage matrices at1000/2375ms",
+  "data_files": {
+    "source.json": "d310e6d43f7fd248a634e92dcea98536f7f273792b52908cae962e74e77de211",
+    "lights.json": "337e14273d291eab0a958bd97ee0cc066e18423a0f2ab55cd5d3edd57dca4410"
+  },
+  "files": [
+    {
+      "file": "bubble.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "17a62de696a3f5e61b781dad0fa59b35079edc9c24cdd07d7b2db04e87c8b469"
+    },
+    {
+      "file": "campBody.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "75d2309ef0436b260b6a011f3d14b32f53e07c3e2e03f49ae73a7156bc94f5d8"
+    },
+    {
+      "file": "campGround.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "f86d192e02b69a5f73ce6be1fd8821afbdfc334c86deb01ebafdcddd90c8c774"
+    },
+    {
+      "file": "campHand0.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "900881cb06a0a28452a7083d49bf05a9e742bf057c26ca6248f5d70be4a2deeb"
+    },
+    {
+      "file": "campHand1.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "494dad3ab9ce958f6bcc3c00ecb4568d55c9f2a49bb9ef29b88d711503b3f5aa"
+    },
+    {
+      "file": "campHand2.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "d31bf185562cd76fa61e038525daccfc795ca674629e876b6402c94ee683eb3a"
+    },
+    {
+      "file": "color0.png",
+      "source": "godot/source_snapshot/game.html:4505-4551,25500",
+      "sha256": "934d929efed67bbfe81aa578483dbfbbabab06f0e3435f940c9a8d5d352e17db"
+    },
+    {
+      "file": "color3.png",
+      "source": "godot/source_snapshot/game.html:4505-4551,25500",
+      "sha256": "a9e26f65583be26b054bed6d9d9f8668667d95b6e253cfd3f92652f27a420cc0"
+    },
+    {
+      "file": "color4.png",
+      "source": "godot/source_snapshot/game.html:4505-4551,25500",
+      "sha256": "ab928ac5d3dd9602269b6c1f1e7caa7319bfed8f183e8573a54b86406efcdd8e"
+    },
+    {
+      "file": "face0.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "dd8bbefb65b9f7bbb97ebd840b9f61b15f4f0e72a17907708549dd361fbe1088"
+    },
+    {
+      "file": "face1.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "7c2e9d05f8bfdc9254b4df034e53cc6dfc5df4dcb0cf5e4f03a289e7222fde2f"
+    },
+    {
+      "file": "face10.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "b721078701dc486ac4f47c7740775341f50740fbc2cfc17976be6aa0bf9bf138"
+    },
+    {
+      "file": "face11.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "f4f3386301306260e81406b2be55bf47880f5b3af97ddefaf4a585b9fd78ce54"
+    },
+    {
+      "file": "face12.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "bc83adc146d4cdfac4cab14f14c09fd0aad718fbdaf839a539af290ec02c75c3"
+    },
+    {
+      "file": "face13.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "a740bf2e24f5811149b06d125ae5424379159f8a2727253982104d339c5c4ab3"
+    },
+    {
+      "file": "face14.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "ba35b01a56389d3ae6998e2a504b52dfa5cc94512d5ac19246fea00425efb08b"
+    },
+    {
+      "file": "face15.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "fcdde5d1ff46659f224654612f4443357e8d96f5bc567f44da7c6f796ac07d3c"
+    },
+    {
+      "file": "face16.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "61dda932ec0841b0ace9dd5fed0b6817c1cf686105fe0f496a5825ba4f469355"
+    },
+    {
+      "file": "face17.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "5110405a568e1691eeb52bf7e252f8b11ea0bcfd6764ab9bc86dd75166232474"
+    },
+    {
+      "file": "face18.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "76237743c66f21a3aadb413c5d59068cbb1e2a9c05c7717066111ba60da49c13"
+    },
+    {
+      "file": "face19.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "f53048a500048d93d051e836cac6e858a93138b7d39baaa9925ecebdecd48be2"
+    },
+    {
+      "file": "face2.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "73ff7fce930ce96c7e8a2eab668c2a272403b51fd4bef725b31a6b94274c3a04"
+    },
+    {
+      "file": "face20.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "87a9f9f5e5621af6df33fdfc966920471048abc71caaf9b743773453e2f66226"
+    },
+    {
+      "file": "face21.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "6845c31adb53bda949d08cb88513670f277a14b7c7d58c70f774adf8c9a5f8e0"
+    },
+    {
+      "file": "face22.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "853b1e9e5fbd6328af6761b8ee019c5bc95f1ef37e8da6b37d82ef22ed60a639"
+    },
+    {
+      "file": "face23.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "8fb76d476f32e1f3dfe4a1e9fca8d37fdcd35921b4389cab46ade529a37dbeeb"
+    },
+    {
+      "file": "face24.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "1a6cd6ac162061958d3dfe3e74cfff7a899af278ddfec8365e6305f4b27c8df5"
+    },
+    {
+      "file": "face25.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "f2c07f6fdeaad44e99bf004829ce8b24b428abf55a7d4b193f5706e1c3b0487c"
+    },
+    {
+      "file": "face26.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "b2f8a5b0e911f544ddbea025414cc58dc4a6d81a7f5f3af3b334ce072db73a0a"
+    },
+    {
+      "file": "face27.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "95470c32efa757ea89c44be486fbbf2380464c865f4f8cbd26310ae0fe10ffcb"
+    },
+    {
+      "file": "face28.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "f6d830bec0026e3fd46396c8764bfc7890d221479a9f9630f46a5792cf3fb057"
+    },
+    {
+      "file": "face29.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "fd4daa6f58f72641861cd16672d3e6ae0c0504172c7dff6ea41977bb3eaca47b"
+    },
+    {
+      "file": "face3.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "dc5509ef87d815afe83598b81e143418c59c7493a8ed4eba5914cc70314e4b9b"
+    },
+    {
+      "file": "face30.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "4a6ebab9af6d1a9bd16f1ed3d24f2becf6ccfa436b2fed558207f06528a3c564"
+    },
+    {
+      "file": "face31.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "357170f0017d7afaf04db040e72975e9c708bba5683a7021a469f4552ef03923"
+    },
+    {
+      "file": "face32.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "886e5fec847359959223ece26ca79cbd542a3b2478f4882ff873494a92c399d3"
+    },
+    {
+      "file": "face33.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "f4c95cfb7ca032945dcd71e60d4fc7cd51d71f126a1998be441637cc34d6fa3a"
+    },
+    {
+      "file": "face34.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "903aa84c9c717b33e539e21250657a09184da8c3c04e5ec1913adb34fa964f4e"
+    },
+    {
+      "file": "face35.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "3349a6574ee7a8acde141376ce5dc0dc9f16905f1ff8ac7c6e6c9f778dfdecdb"
+    },
+    {
+      "file": "face36.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "db7aeb7601d96e8cbd16c1de4051d28a5a38c72f5807e7e0fcf5a813f2b72ca1"
+    },
+    {
+      "file": "face37.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "d961791380806cd9d1d28742dc9a19823e34cc82a2ebc34f092af31403c373a2"
+    },
+    {
+      "file": "face38.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "e51129be4495c14ace0a3c745a20626a1e3ae4f2550521999228a47fe502670b"
+    },
+    {
+      "file": "face39.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "0ed2956d305786f9ed9d2977f921d098e518611f32a12fe3272af9bc099ede07"
+    },
+    {
+      "file": "face4.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "609e0d015c60f2d5880989cf6dd4f75ba69041ec5a19247848f669f51bc1329f"
+    },
+    {
+      "file": "face40.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "7ac1a5db842c5ba692c140ed5f0ff3a62d354e80b1bee2b5fb045657456ddaf0"
+    },
+    {
+      "file": "face41.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "cb1e7ecca9105caf397e7579842e87e63dc8de8ea01bd98c6fe08578e4f1233c"
+    },
+    {
+      "file": "face42.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "5e018736b6dcc9aaecb53b735c9b801e89d15a4b7f9ce4fc834735de58aed913"
+    },
+    {
+      "file": "face43.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "79296dcb060524141b668f71804447b2ef14719ff5d7039b22a4550e45ad063f"
+    },
+    {
+      "file": "face44.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "0f8e95e29c065c23abbbb632fd75fa79adb94b56e827d5e8cfcfda0e352102d7"
+    },
+    {
+      "file": "face45.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "d8aeb43449d847030c69b71962e1e7996cf48a4bdd6a14e6f9954eeadb37942d"
+    },
+    {
+      "file": "face46.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "9bf542ae24348dcb4b22f73669a3c1ceac45f04be5b2a4dab7b661e02016a3db"
+    },
+    {
+      "file": "face47.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "c889ed3c12c530abbca40eb6804a61ab4af9aa61672bc089127b50a02f239cab"
+    },
+    {
+      "file": "face48.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "6d2df0d696db1aa9ce5d25305472f89db307d6fbb940dc55bcf1fbacb329f18d"
+    },
+    {
+      "file": "face49.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "9c62937c311b4b6269853f4481d397479bf5acce9c20ad9e44e00eb48c7356e1"
+    },
+    {
+      "file": "face5.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "d22ff35da82aac5d8f935b9ae4770e8748c8d0b510a338107890efdbea7b7788"
+    },
+    {
+      "file": "face50.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "957562c669b89bee22ff87c8340c019d201c7abe6007b95ced7cebf0fafb56d4"
+    },
+    {
+      "file": "face51.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "e22615f34f317d5a7436ef810b67676c858da03677d8bdb4a6dca2ff221d99f3"
+    },
+    {
+      "file": "face52.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "ced966e196a6e98fe2d8868d0041bbb2714eeff888039ade4df5f987681b1d1d"
+    },
+    {
+      "file": "face53.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "9a89716e72ac81fe0bdb868242a8d21c81ff88a69016ac8d8023b25be9d9d010"
+    },
+    {
+      "file": "face54.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "b6cb2c825b4ddd75eee70e60ad75e4128e923e5334f8a4fcd6d0f8a8a988f97e"
+    },
+    {
+      "file": "face55.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "44b997cc480147fd40150efa60440093d28367411d0b575ac1150944dd427b04"
+    },
+    {
+      "file": "face56.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "7b81cc2e1427c423ffca6c98ebc58c2e9a1a5ac2d790946d583a9a685b123891"
+    },
+    {
+      "file": "face57.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "40c085b9e57c2f1046b0e584b1a321992deefe35b6f9bf48bcdf1a1c09fc7bfe"
+    },
+    {
+      "file": "face58.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "0d9ab7b0bde213aa0bd41dcb0c0a73eccff5ca00bce493c371382fa153f2b77c"
+    },
+    {
+      "file": "face59.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "cb5fdff6436e56783d86bfca5cb1be3a4bdabb35228df5d04d0b82ca2c12dbe5"
+    },
+    {
+      "file": "face6.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "7fb49a551f3262f29b71f5eeb225b502bc5fe419f35289656223ffaddb63e3ab"
+    },
+    {
+      "file": "face60.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "dd48f224a491604a60150f0ee84ddd143238a028e7ea1d5c25b98649c8a60de7"
+    },
+    {
+      "file": "face7.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "32dcc1b77ec93cf5f5ba5969ed58a179fb757671f16f74564e0e65fd72efb868"
+    },
+    {
+      "file": "face8.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "db4112c11c969b2afea4a20cfaa9580a449bcd17ab15f604e6c0a82e96dc9e75"
+    },
+    {
+      "file": "face9.png",
+      "source": "ch1-face-life.js:8-193",
+      "sha256": "bbf27f677f58219e55bb7cc363981a2c13d86e0b3cb00962e0203b0b963d47f5"
+    },
+    {
+      "file": "pit.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "598c0c5d7cafcf72e159eee5187663f4942504283559edbcfc391baf7ac83a91"
+    },
+    {
+      "file": "point.png",
+      "source": "godot/source_snapshot/game.html:4505-4551,25500",
+      "sha256": "b7232a32e58bf8ed75d727f6013bebe83f6023bcab43fc91ef88af52bcddfef5"
+    },
+    {
+      "file": "poolGas.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "2c8e4c40fc3b8059bca504f7eaf1f25d8d88b105850faac7803d17f921de6180"
+    },
+    {
+      "file": "swampApron.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "68d049ad08abdcf6d56dd316497202e42d3bf542d99888f9a7e5231654b38397"
+    },
+    {
+      "file": "swampBase.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "1566f6e9344d5847b2c05fbacde29c876e277f3692a32cf8d48626acf5256a75"
+    },
+    {
+      "file": "swampWater.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "79b4b99b6e3328e68d0d39c89a35c792c7f6b9da1e3c87ab39eecd2c8121ef38"
+    },
+    {
+      "file": "treeBody.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "15a56acc5d59a880db1b95621f99c0065809dcca903bbc0fcb9b24a5c49120c5"
+    },
+    {
+      "file": "treeHanger0.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "d8ac75df7296fa696633d0e313624bbf6a6be402b8ad79e624efc77d598d459a"
+    },
+    {
+      "file": "treeHanger1.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "428e20d9db407fe4c9553b4be2e07b5128aed0285bd4d8a615a8fa636082497e"
+    },
+    {
+      "file": "treeHanger2.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "bb63bbc0df13f503159eabf279a9e76bd5171b4c44fbcea6bd8751626858daa1"
+    },
+    {
+      "file": "treeHanger3.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "d2613d937a61718d632d3ce1654922419ea38015d618494140ddf1c4239055c8"
+    },
+    {
+      "file": "treeHanger4.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "99398abf14426c0decc5a235e99fb637fcd1baf04eca691d518c9a1725595a47"
+    },
+    {
+      "file": "treeRoots.png",
+      "source": "ch1-living-detail.js:529-1108",
+      "sha256": "662f55fea672f8ed8523e89152f382cc2a01347e1b8f4b0a9e48786867ff6070"
+    }
+  ]
+}

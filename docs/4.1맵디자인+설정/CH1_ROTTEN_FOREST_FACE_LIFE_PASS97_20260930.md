@@ -1,3 +1,5 @@
+> 2026-10-22 **PARITY-MAP-02 native 분기:** 원본61군락 얼굴·소품 국소변형/손3/매듭5·늪/독구덩이·원본 하프조명/DOM 안개 합성 이식. 원본 웹 수치·배치/충돌/카메라 변경0. 1440p청크·최종 판정은 [마감 기록](../engine/PARITY_MAP_02_20261022.md)을 따른다. 아래 웹 제작 이력은 보존한다. main/PC 인수 아님.
+
 # CH1-1 생체나무 얼굴 개별 애니메이션 — 97차 (2026-10-01)
 
 > **98차(2026-10-08)로 변경:** 나무 36그루의 얼굴 애니메이션은 `ch1-rot-trees.js`로 이관됐고, 이 문서의 `ch1-face-life.js`는 군락(mass) 앵커 61개(eye 28·mouth 15·tumor 18)만 그린다. 버전 `20261008-rotforest-98`. 현행: [CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md](CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md). 아래 163앵커·키 97은 당시 이력.
