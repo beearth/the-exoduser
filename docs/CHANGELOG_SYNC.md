@@ -56776,4 +56776,4 @@ G49041/49065/49336–49369: parity_settings_page가 DOM순서로 range 뒤의 �
 
 ## SWEEP-B 검증 인수
 
-UI18+UI06 24+성장36=78/0 단회. test_sweep_b_ui.gd는 실행된 외부 사본과 동일 byte. 102행/73개1x비교판·전체 미완료/RETOUCH 및 남은 Mac 차이는 engine/SWEEP_B_20261022.md, 외부 DIFFS_FULL.md/json에 기록. E2E 단회 진행 중이며 전체100% 동일 완료 선언0.
+UI18+UI06 24+성장36=78/0 단회. sweep_b_ui_check.gd는 실행된 외부 사본과 동일 byte. 102행/73개1x비교판·전체 미완료/RETOUCH 및 남은 Mac 차이는 engine/SWEEP_B_20261022.md, 외부 DIFFS_FULL.md/json에 기록. E2E 단회 진행 중이며 전체100% 동일 완료 선언0.
