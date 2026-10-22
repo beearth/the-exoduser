@@ -431,6 +431,7 @@ func _ready() -> void:
 	native_auto_crossbow.configure(self)
 	for actor in world.get_native_world_identity():world._bind_pcib_actor(actor)
 	_install_native_attack_audio()
+	native_fireball_delivery=preload("res://scripts/native_fireball_delivery.gd").install_native_boot(self) # PC-FIREBALL: 33644 악의구 투사체 배달 owner
 	_install_native_music_lifecycle()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
@@ -2281,6 +2282,7 @@ const ATTACK_SAMPLE_PATHS := {
 	"monster_hit_flesh1":"res://assets/sfx/attack_source/monster_hit_flesh1.mp3",
 	"monster_hit_flesh2":"res://assets/sfx/attack_source/monster_hit_flesh2.mp3",
 	"flat_hit":"res://assets/sfx/attack_source/flat_hit.mp3",
+	"fireball":"res://assets/sfx/attack_source/fireball.mp3", # PC-FIREBALL: 33645 playSample('fireball') 원본 바이트(sfx/magic/fireball.mp3)
 	# P2-001c: 첫 스테이지 6마리(etype 0/1/4)가 쓰는 사망 사운드만 복사 (원본 바이트
 	# 그대로, death_skull/death_grunt는 레지스트리 키(10254/10298)와 같은 이름으로 복사).
 	"death_monster1":"res://assets/sfx/death/death_monster1.mp3",
