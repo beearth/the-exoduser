@@ -208,7 +208,8 @@ func configure(world: Node, player: Node2D) -> bool:
 	_iris_color.modulate.a=0;_iris_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_iris_color)
 	_boss_color=Sprite2D.new();_boss_color.name="NativeBossColor"
 	_boss_color.texture=preload("res://assets/map/web_parity/detail02/color0.png")
-	_boss_color.material=iris_add;_boss_color.modulate.a=0;_boss_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_boss_color)
+	var boss_mix:=CanvasItemMaterial.new();boss_mix.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX
+	_boss_color.material=boss_mix;_boss_color.modulate.a=0;_boss_color.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_boss_color)
 	_fog2d = _shader_rect("NativeFog2D", FOG2D_SHADER)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("bot_col", FOG_BOT)
 	(_fog2d.material as ShaderMaterial).set_shader_parameter("top_col", FOG_TOP)
@@ -346,3 +347,8 @@ func set_parity_visual_clock(now_ms: float, fog_frames: int, light_frame: int=-1
 func observe_arena_boss_light(e: Dictionary) -> void:
 	# game.html4659–4666; called by arena view, never writes the authoritative boss.
 	_boss_light_source=e
+
+# Snapshot9072: Mac WebGPU explicitly skips the THREE fog start. Arena parity
+# follows this observed source gate; the field's established presentation is retained.
+func set_arena_source_fog_disabled(disabled: bool) -> void:
+	if is_instance_valid(_fog_gl):_fog_gl.visible=not disabled

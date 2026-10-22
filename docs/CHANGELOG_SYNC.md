@@ -56747,3 +56747,10 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 
 - NW01/02는 정확한 res://source_snapshot/snapshot.gd 상수 preload만 허용하고 load/preload 단어 경계를 구분한다. NW03은 정확한 NW01 query 1개+snapshot 1개만 허용한다. 다른 IO/씬/RNG/입력 금지 및 producer/oracle 유지.
 - 근거·계약·단회 검증 한계: engine/orders/reports/NW-FIX-01_REPORT.md. 세 suite 각1회는 잘못 지정한 Node 경로로 각각4검사/2실패, scope 미도달·0실패 검증 미완료. 재실행0. 격리 override/테스트 namespace 복원, 보호81277 유지·자기Godot 잔여0.
+
+## 2026-10-22 — PARITY-BOSS-03
+
+- INTEG15B bea4597064 / snapshot dee094fd… . 잡기 예고·실행, 돌진 레인·차징·3잔상 표시 이식. 원본 WebGPU 큰 링의 UV falloff·실선 proxy 출력도 보존.
+- 아레나 포털을 원본120px·회전/역회전2층·12%맥동으로 수정. 큰 파란250px 필드 보스문은 별도 원본 경로. 실제 웹 exit-center 캐시 잔여와 renderer fixture를 구분한다.
+- 보스색광 ADD→MIX, 누락된 플레이어 바닥광, Mac WebGPU THREE fog 비활성 게이트 적용. 필드·전투코어·저장·정본 변경0. 신규 번역문장0.
+- 원본행·모든 표시 계수·초기화 풀8/할당 경계·1x 비교·남은 차이는 docs/engine/PARITY_BOSS_03_20261022.md. 관련suite1회285/0; 입력E2E1회13PASS/5NOT_READY/0FAIL, 실제종주 미완료.

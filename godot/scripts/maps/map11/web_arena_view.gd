@@ -3,6 +3,9 @@ extends Node2D
 var _main: Node
 var _chunks: Array[Sprite2D]=[]
 var _portal: Sprite2D
+var _portal_core: Sprite2D
+var visual_clock_ms: float=-1
+var _point: Sprite2D
 var _grade_layer: CanvasLayer
 var _screen: Node
 const EMPTY: Dictionary={}
@@ -12,7 +15,9 @@ func _ready() -> void:
  for y in range(int(ceil(108.0/data.chunk))):
   for x in range(int(ceil(128.0/data.chunk))):
    var tile:=Sprite2D.new();tile.texture=load("res://assets/boss_parity/arena_%d_%d.png"%[x,y]);tile.centered=false;tile.position=Vector2(x*step,y*step)-Vector2(2580,2180);tile.z_index=-3000;tile.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(tile);_chunks.append(tile)
- _portal=Sprite2D.new();_portal.texture=preload("res://assets/map/web_parity/portal_blue.png");_portal.position=Vector2(0,-2100);_portal.z_index=-2599;_portal.scale=Vector2.ONE*.6;add_child(_portal)
+ _portal=Sprite2D.new();_portal.texture=preload("res://assets/map/web_parity/portal.png");_portal.position=Vector2(0,-2120);_portal.z_index=-2599;_portal.modulate.a=.9;_portal.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_portal)
+ _portal_core=Sprite2D.new();_portal_core.texture=_portal.texture;_portal_core.position=_portal.position;_portal_core.z_index=-2598;_portal_core.modulate.a=.45;_portal_core.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_portal_core)
+ _point=Sprite2D.new();_point.physics_interpolation_mode=Node.PHYSICS_INTERPOLATION_MODE_OFF;_point.texture=preload("res://assets/map/web_parity/detail02/point.png");_point.z_index=-2700;add_child(_point)
 func configure(main: Node) -> void:
  _main=main
  _screen=main.get_node("NativeScreenLighting")
@@ -23,10 +28,22 @@ func configure(main: Node) -> void:
 func _process(_delta: float) -> void:
  if is_instance_valid(_screen):
   var e: Dictionary=_main.native_demo_boss_actor.get("_enemy")
+  _screen.set_arena_source_fog_disabled(is_visible_in_tree())
   _screen.observe_arena_boss_light(e if is_visible_in_tree() and e.get("alive",false) else EMPTY)
  if is_instance_valid(_grade_layer):_grade_layer.visible=is_visible_in_tree()
  if not is_visible_in_tree() or not is_instance_valid(_main):return
  var g: Dictionary=_main.source_state.read_current_g()
- _portal.visible=not g.get("bossAlive",true)
+ _portal.visible=not g.get("bossAlive",true);_portal_core.visible=_portal.visible
+ render_at(visual_clock_ms if visual_clock_ms>=0 else float(Time.get_ticks_msec()))
+ _point.global_position=_main.player.global_position
  var center: Vector2=_main.camera.global_position-global_position
  for chunk in _chunks:chunk.visible=Rect2(chunk.position,chunk.texture.get_size()).grow(1400).has_point(center)
+
+# Snapshot 18299–18313 / 52019–52023: cleared exit uses the ORIGINAL portal,
+# not the blue-tinted field gate (18351–18364 / 52042). T=40, exit sz=T*3.
+func render_at(now: float) -> void:
+ var pulse:=120+sin(now/400)*120*.12
+ _portal.scale=Vector2.ONE*pulse/_portal.texture.get_width()
+ _portal_core.scale=_portal.scale*.55
+ _portal.rotation=now/2000
+ _portal_core.rotation=now/2000-now/800
