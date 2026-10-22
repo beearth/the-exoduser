@@ -18,6 +18,9 @@ const NATIVE_WORLD_PHASE = preload("res://scripts/native_world_phase.gd")
 const NATIVE_BIRTH_PHASE = preload("res://scripts/native_projectile_birth_phase.gd")
 const NATIVE_HIT_FX = preload("res://scripts/native_projectile_hit_fx.gd")
 const NATIVE_DEATH_FX = preload("res://scripts/native_death_fx_adapter.gd")
+const NATIVE_BOOT_PREWARM_PATH := "res://scripts/native_boot_prewarm.gd" # BOOT-01 (PC): 예열 결과 조회만, 순환 preload 회피
+var _native_boot_prewarm_hits := 0
+var _native_boot_prewarm_misses := 0
 const NATIVE_FLOATING_TEXT = preload("res://scripts/native_floating_text_adapter.gd")
 const NATIVE_GROUND_SURFACE = preload("res://scripts/native_ground_surface_adapter.gd")
 const MAP_FILE = "res://data/map.json"
@@ -1441,23 +1444,19 @@ func _native_source_remove_white_bg(raw: RawSourceImageEntry) -> RawSourceImageE
 	if OS.get_name() not in ["macOS", "Windows", "Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD"]:
 		raw._processing_gap = "NATIVE_DESKTOP_COMPATIBILITY_BRANCH_UNAVAILABLE"
 		return null
-	var source_image: Image = raw._texture.get_image()
-	if source_image == null or source_image.is_empty():
-		raw._processing_gap = "SOURCE_GATE_CPU_IMAGE_UNAVAILABLE"
-		return null
-	var canvas_image = source_image.duplicate() as Image
-	canvas_image.convert(Image.FORMAT_RGBA8)
-	var rgba: PackedByteArray = canvas_image.get_data()
-	for index in range(0, rgba.size(), 4):
-		var r = int(rgba[index])
-		var g = int(rgba[index + 1])
-		var b = int(rgba[index + 2])
-		var avg = float(r + g + b) / 3.0
-		if avg > 220.0 and absi(r - g) < 20 and absi(g - b) < 20:
-			rgba[index + 3] = 0
-		elif avg > 180.0 and absi(r - g) < 25 and absi(g - b) < 25:
-			rgba[index + 3] = int(float(rgba[index + 3]) * maxf(0.0, (avg - 180.0) / 40.0 * -1.0 + 1.0))
-	canvas_image = Image.create_from_data(canvas_image.get_width(), canvas_image.get_height(), false, Image.FORMAT_RGBA8, rgba)
+	var canvas_image: Image
+	var prewarmed: Dictionary = _native_source_onload_prewarmed(raw._native_path, "white_bg", 0.0)
+	if prewarmed.is_empty():
+		var source_image: Image = raw._texture.get_image()
+		if source_image == null or source_image.is_empty():
+			raw._processing_gap = "SOURCE_GATE_CPU_IMAGE_UNAVAILABLE"
+			return null
+		canvas_image = source_image.duplicate() as Image
+		canvas_image.convert(Image.FORMAT_RGBA8)
+		var rgba: PackedByteArray = native_source_onload_rgba("white_bg", canvas_image.get_data(), canvas_image.get_width(), canvas_image.get_height(), 0.0)
+		canvas_image = Image.create_from_data(canvas_image.get_width(), canvas_image.get_height(), false, Image.FORMAT_RGBA8, rgba)
+	else:
+		canvas_image = Image.create_from_data(prewarmed.w, prewarmed.h, false, Image.FORMAT_RGBA8, prewarmed.rgba)
 	var canvas = RawSourceImageEntry.new()
 	canvas._owner_ref = weakref(self)
 	canvas._epoch = _source_extra_epoch
@@ -1980,41 +1979,37 @@ func _native_source_object_process_canvas(raw: RawSourceImageEntry) -> RawSource
 	if kind in ["hard_alpha", "key_magenta", "luma_key"] \
 			and (not raw._complete or raw._natural_width < 4 or raw._special_flags.has(marker)):
 		return raw
-	var source_image: Image = raw._texture.get_image()
-	if source_image == null or source_image.is_empty():
-		raw._processing_gap = "SOURCE_OBJ_CPU_IMAGE_UNAVAILABLE:" + raw._source_key
-		return null
-	var pixels = source_image.duplicate() as Image
-	pixels.convert(Image.FORMAT_RGBA8)
-	var rgba: PackedByteArray = pixels.get_data()
+	var amount: float = SOURCE_OBJECT_EDGE_AMOUNTS[raw._source_key] if kind == "edge_erase" else 0.0
+	var prewarmed: Dictionary = _native_source_onload_prewarmed(raw._native_path, kind, amount) if kind in ["hard_alpha", "key_magenta", "luma_key", "edge_erase"] else {}
+	var pixels: Image = null
+	var rgba := PackedByteArray()
+	if prewarmed.is_empty():
+		var source_image: Image = raw._texture.get_image()
+		if source_image == null or source_image.is_empty():
+			raw._processing_gap = "SOURCE_OBJ_CPU_IMAGE_UNAVAILABLE:" + raw._source_key
+			return null
+		pixels = source_image.duplicate() as Image
+		pixels.convert(Image.FORMAT_RGBA8)
+		rgba = pixels.get_data()
 	var flags: Dictionary = {}
 	match kind:
 		"hard_alpha":
-			for i in range(3, rgba.size(), 4):
-				if rgba[i] < 255:
-					rgba[i] = 0
 			flags["_hardAlpha"] = 1
 		"key_magenta":
-			for i in range(0, rgba.size(), 4):
-				if rgba[i] > 200 and rgba[i + 2] > 200 and rgba[i + 1] < 90:
-					rgba[i + 3] = 0
-				elif rgba[i] > 150 and rgba[i + 2] > 150 and rgba[i + 1] < 120 and int(rgba[i]) - int(rgba[i + 1]) > 50:
-					rgba[i + 3] = int(float(rgba[i + 3]) * 0.12)
 			flags["_keyed"] = 1
 		"luma_key":
-			for i in range(0, rgba.size(), 4):
-				var mx = maxi(rgba[i], maxi(rgba[i + 1], rgba[i + 2]))
-				rgba[i + 3] = int(float(rgba[i + 3]) * clampf(float(mx - 16) / 64.0, 0.0, 1.0))
 			flags["_lumaKeyed"] = 1
 		"edge_erase":
-			var amount: float = SOURCE_OBJECT_EDGE_AMOUNTS[raw._source_key]
-			rgba = _native_source_object_edge_alpha(rgba, pixels.get_width(), pixels.get_height(), amount)
 			flags["_edgeErased"] = amount
 			flags["_glVer"] = 1
 		_:
 			raw._processing_gap = "SOURCE_OBJ_REPLACEMENT_KIND_UNSUPPORTED:" + kind
 			return null
-	pixels = Image.create_from_data(pixels.get_width(), pixels.get_height(), false, Image.FORMAT_RGBA8, rgba)
+	if prewarmed.is_empty():
+		rgba = native_source_onload_rgba(kind, rgba, pixels.get_width(), pixels.get_height(), amount)
+		pixels = Image.create_from_data(pixels.get_width(), pixels.get_height(), false, Image.FORMAT_RGBA8, rgba)
+	else:
+		pixels = Image.create_from_data(prewarmed.w, prewarmed.h, false, Image.FORMAT_RGBA8, prewarmed.rgba)
 	var canvas = RawSourceImageEntry.new()
 	canvas._scope = "object"
 	canvas._canvas_field_policy = "obj_declared_image_fields"
@@ -2037,7 +2032,86 @@ func _native_source_object_process_canvas(raw: RawSourceImageEntry) -> RawSource
 	_source_object_images.append(canvas)
 	return canvas
 
-func _native_source_object_edge_alpha(rgba: PackedByteArray, w: int, h: int, amount: float) -> PackedByteArray:
+## BOOT-01 — onload 픽셀 처리 본체(원본 그대로의 순수 함수: 멤버 접근 없음, 입력 RGBA8 바이트 → 출력 바이트).
+## 진입 예열(native_boot_prewarm.gd)이 로비·영상 동안 같은 함수를 워커 스레드에서 미리 돌린다.
+## 아래 루프는 기존 _native_source_object_process_canvas / _native_source_remove_white_bg의 루프를 옮긴 것이다.
+static func native_source_onload_rgba(kind: String, rgba: PackedByteArray, w: int, h: int, amount: float) -> PackedByteArray:
+	match kind:
+		"hard_alpha":
+			for i in range(3, rgba.size(), 4):
+				if rgba[i] < 255:
+					rgba[i] = 0
+		"key_magenta":
+			for i in range(0, rgba.size(), 4):
+				if rgba[i] > 200 and rgba[i + 2] > 200 and rgba[i + 1] < 90:
+					rgba[i + 3] = 0
+				elif rgba[i] > 150 and rgba[i + 2] > 150 and rgba[i + 1] < 120 and int(rgba[i]) - int(rgba[i + 1]) > 50:
+					rgba[i + 3] = int(float(rgba[i + 3]) * 0.12)
+		"luma_key":
+			for i in range(0, rgba.size(), 4):
+				var mx = maxi(rgba[i], maxi(rgba[i + 1], rgba[i + 2]))
+				rgba[i + 3] = int(float(rgba[i + 3]) * clampf(float(mx - 16) / 64.0, 0.0, 1.0))
+		"edge_erase":
+			rgba = _native_source_object_edge_alpha(rgba, w, h, amount)
+		"white_bg":
+			for index in range(0, rgba.size(), 4):
+				var r = int(rgba[index])
+				var g = int(rgba[index + 1])
+				var b = int(rgba[index + 2])
+				var avg = float(r + g + b) / 3.0
+				if avg > 220.0 and absi(r - g) < 20 and absi(g - b) < 20:
+					rgba[index + 3] = 0
+				elif avg > 180.0 and absi(r - g) < 25 and absi(g - b) < 25:
+					rgba[index + 3] = int(float(rgba[index + 3]) * maxf(0.0, (avg - 180.0) / 40.0 * -1.0 + 1.0))
+	return rgba
+
+## BOOT-01 — 진입 예열(native_boot_prewarm.gd)이 미리 계산해 둔 onload 결과. 없으면 {}.
+## 같은 경로 텍스처의 RGBA8 바이트에 같은 순수 함수(native_source_onload_rgba)를 돌린 결과라 동일하다.
+func _native_source_onload_prewarmed(path: String, kind: String, amount: float) -> Dictionary:
+	if ResourceLoader.has_cached(NATIVE_BOOT_PREWARM_PATH):
+		var pre: Variant = load(NATIVE_BOOT_PREWARM_PATH).read_result(native_boot_onload_key(path, kind, amount))
+		if pre is Dictionary and pre.get("rgba") is PackedByteArray:
+			_native_boot_prewarm_hits += 1
+			return pre
+	_native_boot_prewarm_misses += 1
+	return {}
+
+static func native_boot_onload_key(path: String, kind: String, amount: float) -> String:
+	return "world_onload|%s|%.6f|%s" % [kind, amount, path]
+
+## BOOT-01 — 예열 작업표. 등록 함수(register_native_source_object_images / _extra_images)와 같은 상수에서
+## onload 처리가 일어나는 이미지만 뽑는다(공유 아틀라스는 첫 선언 1회).
+static func native_boot_prewarm_jobs(_context: Dictionary) -> Array:
+	var jobs: Array = []
+	var shared := {}
+	for key in CANONICAL_SOURCE_OBJECT_DECLARATIONS:
+		var declaration: Dictionary = CANONICAL_SOURCE_OBJECT_DECLARATIONS[key]
+		var src: String = declaration["src"]
+		if declaration["shared_atlas"]:
+			if shared.has(src):
+				continue
+			shared[src] = true
+		var kind: String = declaration["replacement"]
+		if kind in ["hard_alpha", "key_magenta", "luma_key", "edge_erase"]:
+			var path := "res://" + src.split("?", false, 1)[0]
+			var amount: float = float(SOURCE_OBJECT_EDGE_AMOUNTS[key]) if kind == "edge_erase" else 0.0
+			jobs.append({"key": native_boot_onload_key(path, kind, amount), "source": "texture", "path": path, "kind": kind, "amount": amount})
+	for src in CANONICAL_SOURCE_EXTRA_GLOBALS["_bossGateImgs"]["paths"]:
+		var path := "res://" + str(src).split("?", false, 1)[0]
+		jobs.append({"key": native_boot_onload_key(path, "white_bg", 0.0), "source": "texture", "path": path, "kind": "white_bg", "amount": 0.0})
+	return jobs
+
+## 워커 스레드에서 돈다(멤버 접근 없음). 입력 = 같은 텍스처의 get_image() 복사본. World onload와 같은 순서:
+## RGBA8 변환 → get_data → native_source_onload_rgba.
+static func native_boot_prewarm_kernel(image: Image, job: Dictionary) -> Variant:
+	image.convert(Image.FORMAT_RGBA8)
+	return {"w": image.get_width(), "h": image.get_height(),
+		"rgba": native_source_onload_rgba(job.kind, image.get_data(), image.get_width(), image.get_height(), job.amount)}
+
+func get_native_boot_prewarm_onload_snapshot() -> Dictionary:
+	return {"hits": _native_boot_prewarm_hits, "misses": _native_boot_prewarm_misses}
+
+static func _native_source_object_edge_alpha(rgba: PackedByteArray, w: int, h: int, amount: float) -> PackedByteArray:
 	var left = w
 	var top = h
 	var right = -1

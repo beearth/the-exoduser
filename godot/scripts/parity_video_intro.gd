@@ -17,6 +17,15 @@ var _sequence: Array=[]
 var _was_paused:=false
 var _owns_pause:=false
 var _index:=-1
+## BOOT-01 (PC) — begin과 같은 규칙의 프레임 리소스 경로(로비 예열이 백그라운드로 먼저 읽어 둔다).
+static func frame_assets(kind: String) -> PackedStringArray:
+	var out:=PackedStringArray()
+	var data: Variant=JSON.parse_string(FileAccess.get_file_as_string("res://data/parity_video_source.json"))
+	if not data is Dictionary:return out
+	for key in (["gate","world"] if kind=="lobby" else ["warrior"]):
+		for frame in data.get(key,{}).get("frames",[]):
+			if not out.has(str(frame.asset)):out.append(str(frame.asset))
+	return out
 func begin(kind: String,language: String) -> void:
 	locale=language;process_mode=Node.PROCESS_MODE_ALWAYS;layer=100
 	_data=JSON.parse_string(FileAccess.get_file_as_string("res://data/parity_video_source.json"))

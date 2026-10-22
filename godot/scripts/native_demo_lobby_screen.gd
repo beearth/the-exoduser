@@ -283,12 +283,20 @@ func _launch_entry(slot: int) -> void:
 	_launch_entry_now(slot)
 func _launch_entry_now(slot: int) -> void:
 	if not is_inside_tree() or is_queued_for_deletion():return
-	var result: Dictionary=entry.launch(self,slot)
+	var loading: CanvasLayer=_entry_black if is_instance_valid(_entry_black) and _entry_black.has_method("begin_main_boot") else null
+	var result: Dictionary=await entry.launch_staged(self,slot,loading) # BOOT-01: Main _ready를 프레임 사이로 나눈 진입(순서·판정은 launch와 같음)
+	BootPrewarm.release_after_entry()
+	if result.get("ready",false) and is_instance_valid(loading):loading.finish_entry() # 원본 setBootLoading(100,'완료') → 숨김
+	if not is_instance_valid(self):return
 	if not result.ready:
 		_launching=false
 		if is_instance_valid(_entry_black):_entry_black.queue_free()
 		status.text=_entry_error(result.reason)
 const MAIN_SCENE_PATH:="res://scenes/main.tscn"
+const BootPrewarm=preload("res://scripts/native_boot_prewarm.gd") # BOOT-01 (PC)
+const BootLoadingScreen=preload("res://scripts/native_boot_loading_screen.gd") # BOOT-01 (PC)
+const BOOT_LOADING_IMAGE_KEY:="boot_loading_image|"
+const BOOT_PREWARM_WAIT_MS:=60000
 var _main_preload_requested:=false
 var _main_preload_ref: Resource
 var _entry_black: CanvasLayer
@@ -296,6 +304,13 @@ func _request_main_preload() -> void:
 	# 같은 리소스를 백그라운드 스레드로 미리 읽는다(entry.launch의 load()는 캐시를 받음). 진입 계약·순서 불변.
 	if _main_preload_requested:return
 	_main_preload_requested=true
+	# BOOT-01: 진입 중 동기 읽기·이미지 처리를 미리(같은 load 캐시·같은 순수 함수). 인트로 원본 경로는 entry.launch가
+	# Main에 넘기는 것과 같은 메타를 쓴다(없으면 Main과 같은 기본값).
+	var loading_image:=BootLoadingScreen.image_path(_boot_source_root())
+	var prewarm_context:={"priority_resources":preload("res://scripts/parity_video_intro.gd").frame_assets("warrior"),
+		"early_jobs":[{"key":BOOT_LOADING_IMAGE_KEY+loading_image,"source":"file","path":loading_image,"output":"texture"}]}
+	if has_meta("native_story_source_root"):prewarm_context["story_source_root"]=get_meta("native_story_source_root")
+	BootPrewarm.begin(get_tree(),prewarm_context)
 	if ResourceLoader.has_cached(MAIN_SCENE_PATH):return
 	if ResourceLoader.load_threaded_request(MAIN_SCENE_PATH)!=OK:_main_preload_requested=false
 func _await_main_preload() -> void:
@@ -305,13 +320,27 @@ func _await_main_preload() -> void:
 		await get_tree().process_frame
 	if ResourceLoader.load_threaded_get_status(MAIN_SCENE_PATH)==ResourceLoader.THREAD_LOAD_LOADED:
 		_main_preload_ref=ResourceLoader.load_threaded_get(MAIN_SCENE_PATH)
+	# BOOT-01: 예열이 끝날 때까지 검은 화면에서 프레임마다 기다린다(이벤트 펌프가 돈다). 상한을 넘기면 그대로 진입한다
+	# — 남은 항목은 예전처럼 진입 중 동기로 읽혀 결과는 같다.
+	var limit:=Time.get_ticks_msec()+BOOT_PREWARM_WAIT_MS
+	while BootPrewarm.is_started() and not BootPrewarm.is_complete() and Time.get_ticks_msec()<limit:
+		await get_tree().process_frame
 	await get_tree().process_frame # 입력 콜백(영상 건너뛰기) 밖으로 나온다
 func _show_entry_black() -> void:
-	# 영상 패널과 같은 검은 바탕(parity_video_intro layer 100)을 진입까지 유지 — 로비가 한 프레임도 비치지 않게.
+	# 영상 패널과 같은 층(layer 100)에 진입 로딩 화면을 덮는다 — 로비가 한 프레임도 비치지 않게.
+	# BOOT-01: 원본 game.html 부트 로딩(#stageTransition: 랜덤 로딩 이미지·문구·막대·팁)을 그대로 보인다.
+	# 로비가 진입 끝에 해제돼도 남도록 루트에 붙이고, 진입이 끝나면 원본처럼 .3초 사라진 뒤 스스로 지운다.
 	if is_instance_valid(_entry_black):return
-	_entry_black=CanvasLayer.new();_entry_black.layer=100;_entry_black.process_mode=Node.PROCESS_MODE_ALWAYS
-	var black:=ColorRect.new();black.color=Color.BLACK;black.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);black.mouse_filter=Control.MOUSE_FILTER_STOP
-	_entry_black.add_child(black);add_child(_entry_black)
+	var loading: CanvasLayer=BootLoadingScreen.new()
+	loading.name="NativeBootLoading"
+	loading.locale=bridge.language if bridge.language!="" else TranslationServer.get_locale()
+	loading.set_image_key(BOOT_LOADING_IMAGE_KEY+BootLoadingScreen.image_path(_boot_source_root()))
+	get_tree().root.add_child(loading)
+	loading.show_boot_loading("에셋 로딩 중...",true)
+	_entry_black=loading
+func _boot_source_root() -> String:
+	# entry.launch가 Main에 넘기는 인트로 원본 경로와 같은 규칙(없으면 Main 기본값 res://../).
+	return str(get_meta("native_story_source_root")) if has_meta("native_story_source_root") else ProjectSettings.globalize_path("res://../")
 func _render() -> void:
 	for i in cards.size():
 		var row: Dictionary = menu.rows[i] if menu.rows.size()==5 else {"kind":"unavailable"}

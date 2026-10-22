@@ -39,6 +39,7 @@ const NativeFireballPhaseScript = preload("res://scripts/native_fireball_phase.g
 const QBurstDrawScript = preload("res://port_modules/character_clip/shield_burst_draw_caller.gd")
 const M29ContactServicesScript = preload("res://scripts/native_m29_contact_services.gd") # PC-M29-PARRY
 const CombatPackBScript = preload("res://scripts/native_combat_pack_b.gd") # PC-COMBAT-PACK-B
+const NativeBootFrame = preload("res://scripts/native_boot_frame.gd") # BOOT-01 (PC)
 const SOURCE_BOOT_EN_LABELS := {"맵 에셋 로딩...": "Loading map assets...",
 	"맵 캐시 생성 중...": "Building map cache...", "완료": "Complete"}
 # Recorded pins only. The baseline is not the compiled HEAD, and a source pin
@@ -178,7 +179,87 @@ func spawn_native_demo_boss(request: Dictionary) -> Dictionary:
 func bind_native_demo_boss_owner(command: String, handler: Callable) -> bool:
 	return is_instance_valid(native_demo_boss_actor) and native_demo_boss_actor.bind_owner(command,handler)
 
+# BOOT-01 (PC, 2026-10-22) — 로비 진입(entry.launch_staged가 native_boot_staged 메타를 줌)일 때만 _ready 본문을
+# 원래 순서 그대로 여러 프레임에 나눈다. 단계 사이에는 프레임만 들어간다(초기화 순서·계약 불변).
+# 게이트: 단계 사이 프레임에서만 트리를 일시정지하고 Main 하위 노드의 틱·입력 콜백을 잠시 끈다(값을 기록했다가
+# 다음 단계 시작 때 그대로 복원). 각 단계 본문은 원래와 같은 일시정지 상태에서 돈다(초기화 계약: world 비정지 요구).
+# 메타가 없으면(하니스·테스트 부팅) 예전처럼 한 번에 끝난다.
+signal native_boot_stage_completed
+var _native_boot_staged := false
+var _native_boot_staging := false
+var _native_boot_body_done := false
+var _native_boot_stage_log: Array = []
+func is_native_boot_staging() -> bool: return _native_boot_staging
+func is_native_boot_body_done() -> bool: return _native_boot_body_done
+func read_native_boot_stage_log() -> Array: return _native_boot_stage_log.duplicate(true)
+
 func _ready() -> void:
+	_native_boot_staged = get_meta("native_boot_staged", false) == true
+	if _native_boot_staged:
+		_native_boot_staging = true
+	await _native_ready_body()
+	_native_boot_body_done = true
+	if _native_boot_staged:
+		# 게이트는 아직 유지한다. 진입 권한(request_native_lobby_entry) 직전에 end_native_boot_staging()이 푼다
+		# — 동기 부팅에서 _ready와 진입 사이에 틱이 없던 것과 같게.
+		_native_boot_stage_log.append({"stage": "body_done", "usec": Time.get_ticks_usec()})
+		native_boot_stage_completed.emit()
+
+## entry.launch_staged가 진입 직전 한 프레임 더 양보할 때(게이트 유지).
+func hold_native_boot_frame() -> void:
+	await _native_boot_stage("pre_entry")
+
+## entry.launch_staged가 request_native_lobby_entry 바로 앞에서 부른다.
+func end_native_boot_staging() -> void:
+	if not _native_boot_staging:
+		return
+	_native_boot_staging = false
+	_native_boot_stage_log.append({"stage": "complete", "usec": Time.get_ticks_usec()})
+
+## 다음 엔진 프레임까지 양보(단계 사이). 비단계 부팅은 즉시 돌아와 동기 그대로다.
+func _native_boot_stage(label: String) -> void:
+	if not _native_boot_staging or not is_inside_tree():
+		return
+	_native_boot_stage_log.append({"stage": label, "usec": Time.get_ticks_usec()})
+	var tree: SceneTree = get_tree()
+	var was_paused: bool = tree.paused
+	tree.paused = true # 단계 사이: PAUSABLE(world·player·적) 정지 + 일시정지 중 이동키 눌림 기록(player.gd PC-INPUT-PARITY)
+	var frozen: Array = _native_boot_freeze_subtree()
+	# 두 프레임: 첫 프레임은 앞 단계에서 새로 붙은 노드의 첫 그리기(셰이더 컴파일·글리프·업로드)만,
+	# 다음 프레임 끝에서 이 단계 일을 한다 — 첫 그리기 비용과 단계 일이 한 펌프 구간에 겹치지 않게.
+	await NativeBootFrame.next(tree)
+	await NativeBootFrame.next(tree)
+	_native_boot_thaw_subtree(frozen)
+	if is_inside_tree():
+		tree.paused = was_paused
+
+func _native_boot_freeze_subtree() -> Array:
+	var saved: Array = []
+	var stack: Array[Node] = [self]
+	while not stack.is_empty():
+		var n: Node = stack.pop_back()
+		var row: Array = [n, n.is_processing(), n.is_physics_processing(), n.is_processing_internal(),
+			n.is_physics_processing_internal(), n.is_processing_input(), n.is_processing_unhandled_input(),
+			n.is_processing_unhandled_key_input(), n.is_processing_shortcut_input()]
+		if row[1] or row[2] or row[3] or row[4] or row[5] or row[6] or row[7] or row[8]:
+			saved.append(row)
+			n.set_process(false); n.set_physics_process(false); n.set_process_internal(false)
+			n.set_physics_process_internal(false); n.set_process_input(false); n.set_process_unhandled_input(false)
+			n.set_process_unhandled_key_input(false); n.set_process_shortcut_input(false)
+		for c in n.get_children(true):
+			stack.append(c)
+	return saved
+
+func _native_boot_thaw_subtree(saved: Array) -> void:
+	for row in saved:
+		var n: Node = row[0] as Node if is_instance_valid(row[0]) else null
+		if n == null:
+			continue
+		n.set_process(row[1]); n.set_physics_process(row[2]); n.set_process_internal(row[3])
+		n.set_physics_process_internal(row[4]); n.set_process_input(row[5]); n.set_process_unhandled_input(row[6])
+		n.set_process_unhandled_key_input(row[7]); n.set_process_shortcut_input(row[8])
+
+func _native_ready_body() -> void:
 	_native_demo11_policy = Demo11Authority.boot_manifest("demo")
 	_publish_native_source_lesson_file_init()
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -196,6 +277,7 @@ func _ready() -> void:
 		demo11_loaded=_demo11_load_result.status=="LOADED"
 		set_meta("demo11_load_gate",demo11_loaded)
 
+	await _native_boot_stage("world")
 	world = WorldScript.new()
 	world.set_meta("native_map11_product", _native_map11_enabled())
 	world.name = "CH1CanonicalWorld"
@@ -213,6 +295,7 @@ func _ready() -> void:
 		set_physics_process(false)
 		set_process_unhandled_input(false)
 		return
+	await _native_boot_stage("player")
 	player = PlayerScript.new()
 	player.name = "Player"
 	player.process_mode = Node.PROCESS_MODE_DISABLED if demo11_loaded else Node.PROCESS_MODE_PAUSABLE
@@ -272,6 +355,7 @@ func _ready() -> void:
 			return
 
 
+	await _native_boot_stage("player_bindings")
 	source_system_affixes.rebuild(self) # equipment values only; no tick rebuild
 	var demo_g: Variant = source_state.read_current_g()
 	if not demo_g is Dictionary or demo_g.get("stage") != _native_demo11_policy["stage"]:
@@ -335,6 +419,7 @@ func _ready() -> void:
 	player.native_fireball_phase_tick.connect(_advance_native_fireball_phase)
 	if world.has_signal("telemetry_event"):
 		world.telemetry_event.connect(_record_event)
+	await _native_boot_stage("camera_hud")
 	camera = Camera2D.new()
 	camera.name = "GameplayCamera"
 	camera.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -359,6 +444,7 @@ func _ready() -> void:
 	hud.name = "HUD"
 	add_child(hud)
 	hud.bind(player, world)
+	await _native_boot_stage("screen_look")
 	# P2-003a — 원본 조명·안개·비네트·색보정 오버레이 (월드 위·HUD 아래, 표시 전용)
 	var screen_lighting: CanvasLayer = preload("res://scripts/native_screen_lighting.gd").new()
 	screen_lighting.name = "NativeScreenLighting"
@@ -367,6 +453,7 @@ func _ready() -> void:
 		push_error("Native screen lighting configuration rejected (display-only; startup continues).")
 	# MAP-LOOK — 맵 표현 강화(광원·요철·흔들림·입자). 표시 전용, 하니스 부팅은 꺼짐
 	preload("res://scripts/native_map_look.gd").install_native_boot(self, screen_lighting)
+	await _native_boot_stage("pets_skills")
 	# P2-004a — 펫 4종 + 대사 자막 (표시 전용 어댑터, world 자식)
 	var native_pets: Node2D = preload("res://scripts/native_pets.gd").new()
 	native_pets.name = "NativePets"
@@ -387,6 +474,7 @@ func _ready() -> void:
 	world.add_child(native_world_drops)
 	if not native_world_drops.configure(self, world, player, source_state):
 		push_error("Native world drops configuration rejected (display/input-only; startup continues).")
+	await _native_boot_stage("regeneration")
 	# P2-005d — 원본 자연 회복 단계 부팅 배선 (32705~32721: 돔 판정→플랫(10+2lv)/60→
 	# 자연률(_mpr/_str 32711~32712 ×_hdMul)→HP(32715)→ST/MP 대입(32717~32720, 레슨 ch2 게이트)).
 	# 소유권 이전: Player는 바인딩되면 같은 틱에 레거시 ST 0.28 경로를 비활성(player.gd 731
@@ -418,6 +506,7 @@ func _ready() -> void:
 		add_child(regions)
 		if not regions.configure(self):
 			push_warning("Native regions not initialized; see P3-003 dependency report.")
+	await _native_boot_stage("ui_owners")
 	hud.pause_requested.connect(_toggle_pause)
 	hud.restart_requested.connect(_restart)
 	_build_native_character_selection_ui()
@@ -433,6 +522,7 @@ func _ready() -> void:
 	_install_native_attack_audio()
 	native_fireball_delivery=preload("res://scripts/native_fireball_delivery.gd").install_native_boot(self) # PC-FIREBALL: 33644 악의구 투사체 배달 owner
 	_install_native_music_lifecycle()
+	await _native_boot_stage("startup_services")
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
 	native_demo_end_flow=NativeDemoEndFlow.new()
@@ -454,6 +544,7 @@ func _ready() -> void:
 		_install_native_story_intro_once()
 	else:
 		_install_native_waking_intro_once()
+	await _native_boot_stage("demo_actors")
 	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
 	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
 	native_demo_boss_core = preload("res://scripts/native_demo11_boss_core.gd").install_native_boot(self) # PC-BOSS-CORE
@@ -1946,8 +2037,9 @@ func _toggle_pause() -> void:
 	if get_tree().paused and get_meta("native_review_requires_character",false) and player.get_native_character_profile_snapshot().get("ready")!=true:
 		hud.set_status("캐릭터를 먼저 선택한 뒤 플레이를 재개하세요")
 		return
-	if not get_tree().paused and is_instance_valid(player):
-		player.clear_native_input_states()
+	# BOOT-01 (PC): 원본 Esc(13184 togglePanel('settings'))는 G.paused만 바꾸고 KH/K(이동 등 눌림)는 지우지 않는다
+	# (K['Escape']만 false). 일시정지 중 뗀 입력은 player._track_held_input_while_paused가 기록한다.
+	# 그래서 키를 누른 채 멈췄다가 누른 채 풀면 원본처럼 계속 걷는다. 포커스 상실(blur) 해제는 player가 그대로 한다.
 	get_tree().paused = not get_tree().paused
 	hud.set_pause_state(get_tree().paused)
 	if is_instance_valid(_character_panel):

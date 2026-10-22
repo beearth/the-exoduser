@@ -74,9 +74,12 @@ func configure(main: Node, world: Node2D, player: Node2D, state: Node) -> bool:
 	for frame in range(2): # 27817 아틀라스 2프레임 — 검정→알파 마스크(27831~27844) 선적용
 		var path := "res://assets/fx/world_item_drop_beams_v3_0%d.png" % (frame + 1)
 		if ResourceLoader.exists(path):
-			var img: Image = (load(path) as Texture2D).get_image()
-			img.convert(Image.FORMAT_RGBA8)
-			_mask_black(img)
+			# BOOT-01: 진입 예열이 같은 함수(native_boot_prewarm_kernel)로 미리 만든 결과가 있으면 그것을 쓴다.
+			var pre: Variant = load(BOOT_PREWARM_PATH).read_result(BOOT_PREWARM_KEY + path, true) if ResourceLoader.has_cached(BOOT_PREWARM_PATH) else null
+			var img: Image = pre if pre is Image else (load(path) as Texture2D).get_image()
+			if not pre is Image:
+				img.convert(Image.FORMAT_RGBA8)
+				_mask_black(img)
 			_beam_frames[frame] = ImageTexture.create_from_image(img)
 	_beam_layer = Node2D.new()
 	_beam_layer.name = "NativeDropBeams"
@@ -114,7 +117,21 @@ func configure(main: Node, world: Node2D, player: Node2D, state: Node) -> bool:
 
 
 ## 27831~27844 _maskWorldDropBlack: 암부(≤24)=투명, 24~72 선형 알파.
-func _mask_black(img: Image) -> void:
+## BOOT-01 (PC) — 진입 예열 작업표·처리(워커 스레드, 멤버 접근 없음). 처리 = configure의 RGBA8 변환 + _mask_black 그대로.
+const BOOT_PREWARM_PATH := "res://scripts/native_boot_prewarm.gd"
+const BOOT_PREWARM_KEY := "drops_beam|"
+static func native_boot_prewarm_jobs(_context: Dictionary) -> Array:
+	var jobs: Array = []
+	for frame in range(2):
+		var path := "res://assets/fx/world_item_drop_beams_v3_0%d.png" % (frame + 1)
+		jobs.append({"key": BOOT_PREWARM_KEY + path, "source": "texture", "path": path})
+	return jobs
+static func native_boot_prewarm_kernel(image: Image, _job: Dictionary) -> Variant:
+	image.convert(Image.FORMAT_RGBA8)
+	_mask_black(image)
+	return image
+
+static func _mask_black(img: Image) -> void:
 	for y in range(img.get_height()):
 		for x in range(img.get_width()):
 			var c := img.get_pixel(x, y)
