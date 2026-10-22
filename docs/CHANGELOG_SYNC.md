@@ -1,3 +1,10 @@
+
+## 2026-10-22 PARITY-INTRO-01
+
+- 기준 hud-02 bf538259: 로비 gate/world·생성 직후 warrior·첫 진입 INTRO를 웹 위치로 분리. 원본 영상 still42장과29언어 자막/CUTS/CUES를 채택하며 영상 모션/VO는 HOLD.
+- native_story_intro/parity_intro_canvas: 합본 액자·p01~p17·기본 PRO 제품 참조 제거, 원본00~20 이미지·cam/fade/vfx·화자·타이핑·입력대기·Space2000ms. 금빛 소환진 screen 합성/시작위치와 지역명3.1초 표시 복원.
+- Mac 하니스 oracle Node 절대 경로 정규화/실행 검증. 23b1281/0, restore126863/0, intro12/0. 최종 입력 E2E0실패·주입0·SCRIPT ERROR0.
+- 1920×1080 1x 비교8쌍과 잔여 RETOUCH/영상 HOLD는 PARITY_INTRO_01_20261022.md 및 PARITY_DIFF_LIST_20261022.md. 보스/아레나/맵 파일·PC 수치 writer 수정0.
 ## 2026-10-22 PARITY-UI-02 — 인벤토리·사망/재시작 원본 부분 이식
 
 - 원본fb67658b branch 계속. 웹 snapshot4d911cdd, main 차이표d79ee3e67의 PC 원문 보존. 맵·카메라·PC 코어/테스트·main.tscn 변경 없음.

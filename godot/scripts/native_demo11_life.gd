@@ -50,6 +50,7 @@ var _replay_timer: Timer
 var _bonfire: TextureRect
 var _bonfire_layer: CanvasLayer
 var _bonfire_left:=0.0
+var _bonfire_origin:=Vector2.ZERO
 var _clock:=0.0
 var _death_elapsed:=0.0
 var _crow_text: Label
@@ -350,8 +351,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _finish_replay() -> void:
  _replaying=false;_play_generation+=1;_replay_layer.hide();_pets.show()
 func _start_bonfire() -> void:
+ _bonfire_origin=main.player.global_position
  # G63523,55323–55333: radius280 /300frames, .9 alpha, final120frames fade, 3% pulse.
- _bonfire_layer=CanvasLayer.new();_bonfire_layer.layer=0;add_child(_bonfire_layer)
+ _bonfire_layer=CanvasLayer.new();_bonfire_layer.layer=6;add_child(_bonfire_layer)
  _bonfire=TextureRect.new();_bonfire.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;_bonfire.texture=preload("res://assets/sprites/bonfire_barrier.png");_bonfire.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;_bonfire.mouse_filter=Control.MOUSE_FILTER_IGNORE;_bonfire_layer.add_child(_bonfire);_bonfire_left=5.0
 func _process(delta: float) -> void:
  if is_instance_valid(_screen) and _screen.visible and _retry.visible:
@@ -360,7 +362,7 @@ func _process(delta: float) -> void:
  if _bonfire_left<=0 or not is_instance_valid(_bonfire):return
  _clock+=delta;_bonfire_left=maxf(0,_bonfire_left-delta)
  _bonfire.size=Vector2.ONE*560*(1+sin(_clock/.3)*.03)
- _bonfire.position=main.player.get_global_transform_with_canvas().origin-_bonfire.size*.5
+ _bonfire.position=main.player.get_viewport_transform()*_bonfire_origin-_bonfire.size*.5
  _bonfire.modulate.a=minf(1,_bonfire_left/2)*.9
  if _bonfire_left==0:_bonfire_layer.queue_free()
 

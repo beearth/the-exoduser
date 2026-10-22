@@ -29,7 +29,7 @@ var _gems: Array[ColorRect]=[]
 var _flare: TextureRect
 var _flare_left:=0.0
 var _banner_left:=0.0
-var _area: VBoxContainer
+var _area: Control
 var _area_stage:=-1
 var _area_left:=0.0
 var _boundary: ImageTexture
@@ -258,10 +258,17 @@ static func area_title(stage: int) -> Dictionary:
  return {"ko":"제%d구역 · %s %d구역"%[stage+1,CHAPTER_KO[chapter],floor_number],"en":"THE "+CHAPTER_EN[chapter]}
 func _show_area_title() -> void:
  if _area!=null:_area.queue_free()
- _area=VBoxContainer.new();_area.mouse_filter=Control.MOUSE_FILTER_IGNORE;_layer.add_child(_area)
+ _area=Control.new();_area.mouse_filter=Control.MOUSE_FILTER_IGNORE;_layer.add_child(_area)
+ var column:=VBoxContainer.new();column.size=Vector2(760,60);column.mouse_filter=Control.MOUSE_FILTER_IGNORE;_area.add_child(column)
  var titles:=area_title(int(_g.stage))
  for entry in [[titles.ko,25],[titles.en,10]]:
-  var label:=Label.new();label.text=entry[0];label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;label.add_theme_font_override("font",load("res://assets/fonts/NotoSerifKR-VF.ttf"));label.add_theme_font_size_override("font_size",entry[1]);_area.add_child(label)
+  var label:=Label.new();label.text=entry[0];label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+  var font:=FontVariation.new();font.base_font=preload("res://scripts/native_ui_fonts.gd").stack("hell_title" if entry[1]==25 else "cinzel_hell");font.spacing_glyph=roundi(24.8*.16 if entry[1]==25 else 11.2*.32)
+  label.add_theme_font_override("font",font);label.add_theme_font_size_override("font_size",25 if entry[1]==25 else 11);label.add_theme_color_override("font_color",Color(.875,.839,.761,.9) if entry[1]==25 else Color(.659,.6,.498,.72));label.add_theme_color_override("font_shadow_color",Color.BLACK);label.add_theme_constant_override("shadow_offset_y",2);label.add_theme_constant_override("shadow_outline_size",0);column.add_child(label)
+ column.add_theme_constant_override("separation",5)
+ for flip in [false,true]:
+  var line:=TextureRect.new();line.position=Vector2(600.4 if flip else 0,25);line.size=Vector2(159.6,1);line.mouse_filter=Control.MOUSE_FILTER_IGNORE
+  var tex:=GradientTexture1D.new();var grad:=Gradient.new();grad.colors=PackedColorArray([Color(.643,.576,.451,0),Color(.643,.576,.451,.432)]);tex.gradient=grad;line.texture=tex;line.flip_h=flip;_area.add_child(line)
  _area_stage=int(_g.stage);_area_left=3.1
 func _process(delta: float) -> void:
  if not _live():return
@@ -270,8 +277,10 @@ func _process(delta: float) -> void:
   _area_left=maxf(0,_area_left-delta)
   var size: Vector2=get_viewport().get_visible_rect().size
   var p: float=1-_area_left/3.1
-  _area.position=Vector2((size.x-minf(size.x*0.74,760))/2,size.y*0.18);_area.size.x=minf(size.x*0.74,760)
-  _area.modulate.a=minf(p/0.13,(1-p)/0.31) if p<0.13 or p>0.69 else 1.0
+  var eased: float=_area_ease(p/.13) if p<.13 else (_area_ease((p-.69)/.31) if p>.69 else 0.0)
+  var shift: float=lerpf(-15,0,eased) if p<.13 else (lerpf(0,7,eased) if p>.69 else 0.0)
+  _area.position=Vector2((size.x-minf(size.x*0.74,760))/2,size.y*0.18+shift);_area.size.x=minf(size.x*0.74,760)
+  _area.modulate.a=eased if p<.13 else (1-eased if p>.69 else 1.0)
   if _area_left<=0:_area.visible=false
  if _flare_left>0:
   _flare_left=maxf(0,_flare_left-delta)
@@ -312,3 +321,14 @@ func record_stage_origin_kill(adapter: RefCounted,region_id: int) -> Dictionary:
  if not _live() or _stage_spawn_adapter!=adapter or region_id not in range(4):return {"applied":false,"reason":"region_origin_owner_not_current"}
  _g._regions[region_id].kills+=1;_kill_count+=1
  return {"applied":true,"region_id":region_id}
+
+static func _area_ease(x: float) -> float:
+ # CSS ease-in-out cubic-bezier(.42,0,.58,1), inversion at the presentation edge.
+ var lo:=0.0;var hi:=1.0
+ for i in 12:
+  var t: float=(lo+hi)/2
+  var bx: float=3*(1-t)*(1-t)*t*.42+3*(1-t)*t*t*.58+t*t*t
+  if bx<x:lo=t
+  else:hi=t
+ var t: float=(lo+hi)/2
+ return 3*(1-t)*t*t+t*t*t

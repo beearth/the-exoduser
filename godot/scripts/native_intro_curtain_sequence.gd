@@ -116,7 +116,9 @@ class _BarrierDrawer extends Node2D:
 		var alpha: float = minf(1.0, t / 120.0) * 0.9
 		var pulse: float = 1.0 + sin(Time.get_ticks_msec() / 300.0) * 0.03
 		var size: float = float(seq.bonfire["r"]) * pulse * 2.0
-		var at: Vector2 = to_local(Vector2(seq.bonfire["x"], seq.bonfire["y"]))
+		# Web draws this post-world in screen pixels, outside camera scaling.
+		draw_set_transform_matrix(Transform2D.IDENTITY)
+		var at: Vector2 = seq.world.get_viewport_transform()*Vector2(seq.bonfire["x"], seq.bonfire["y"])
 		draw_texture_rect(seq._barrier_texture, Rect2(at - Vector2.ONE * size * 0.5, Vector2.ONE * size),
 			false, Color(1, 1, 1, alpha))
 
@@ -141,7 +143,8 @@ func configure(owner_world: Node2D, owner_player: Node2D, view: Control, state_n
 	_barrier.seq = self
 	_barrier.z_as_relative = false
 	_barrier.z_index = 4003 # 55323 렌더 순서(월드 후반부, 스모그 직전) 근사 — 적/사망FX 위
-	add_child(_barrier)
+	var barrier_layer:=CanvasLayer.new();barrier_layer.layer=6;add_child(barrier_layer)
+	barrier_layer.add_child(_barrier)
 	_configured = true
 	return true
 

@@ -57,6 +57,9 @@ func _ready() -> void:
 			first_empty=i
 			break
 	cards[first_empty].grab_focus()
+	if _entry_enabled and not get_tree().has_meta("parity_lobby_cinematic_seen"):
+		get_tree().set_meta("parity_lobby_cinematic_seen",true)
+		call_deferred("_play_cinematic")
 
 func tr_text(ko: String, en: String) -> String: return UI.text(ko)
 func _input(event: InputEvent) -> void:
@@ -139,7 +142,7 @@ func _build() -> void:
 	erase=_button("삭제",Rect2(1820,560,64,30),func():
 		if menu.ask_delete(menu.selected):_show_modal());erase.hide()
 	status=_label("",Vector2(1388,876),504,12);status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	_button("▶ 시네마틱",Rect2(1388,897,130,30),func():pass)
+	_button("▶ 시네마틱",Rect2(1388,897,130,30),_play_cinematic)
 	_form=_box(Rect2(0,0,1920,1080),Color("09080b"),GOLD)
 	_form.hide()
 	_image("res://assets/ui/demo_lobby/abyss.png",Rect2(0,0,1020,1080),_form).modulate=Color("81717b")
@@ -250,6 +253,9 @@ func _queue_entry(slot: int,_data: Dictionary) -> void:
 	call_deferred("_launch_entry",slot)
 func _launch_entry(slot: int) -> void:
 	if not is_inside_tree() or is_queued_for_deletion():return
+	var movie:=preload("res://scripts/parity_video_intro.gd").new()
+	add_child(movie);movie.begin("warrior",bridge.language)
+	await movie.finished
 	var result: Dictionary=entry.launch(self,slot)
 	if not result.ready:status.text=_entry_error(result.reason)
 func _render() -> void:
@@ -299,3 +305,7 @@ func _number_label(value: Variant) -> String:
 func _notification(what: int) -> void:
 	if what==NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(status):
 		bridge.configure(TranslationServer.get_locale());call_deferred("_render")
+
+func _play_cinematic() -> void:
+	var movie:=preload("res://scripts/parity_video_intro.gd").new()
+	add_child(movie);movie.begin("lobby",bridge.language)

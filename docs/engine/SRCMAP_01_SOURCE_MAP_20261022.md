@@ -241,3 +241,7 @@ Godot cue에는 아래 여섯 필드만 있으며 웹 연출 필드는 없다. �
 웹 바닥은 `git show origin/main:assets/map/ch1/production_finish/chunk_x_y.png`로 64개 모두 읽었으며 PNG IHDR 크기 집계는 {(1026, 1026): 64}다. T=40(game.html:16631), mw=200(30046)이므로 청크 월드폭은200×40÷8=1000px다. 충돌 layout.js:3–11의 boundary는53점이며 buildRLE가 보행마스크를 만든다.
 
 최종 보존 확인: HEAD·branch는 시작과 같고 tracked INDEX/WORK diff는 계속 비어 있다. 커밋·push·코드 수정·Godot 실행·import·실제 저장 폴더 접근 없음.
+
+## PARITY-INTRO-01 현행 대응 갱신 (2026-10-22)
+
+I02/I04는 parity_video_intro.gd의 gate/world 및 warrior로 재배치했다. I03 레거시 p01~p17과 PRO는 제품 경로에서 참조하지 않는다(파일 보존). I05~I08은 parity_intro_source.json/native_story_intro/parity_intro_canvas의 원본 메타·전체화면·화자·타이핑·입력대기로 교체했다. I09는 로비 ESC5000/전사1200/INTRO2000ms와29언어를 구분한다. 영상 움직임·mux VO/BGM 동등성 및 I10 오디오 최종 검수는 HOLD다. 세부 원본 행·차이는 [현행 계약](PARITY_INTRO_01_20261022.md)을 따른다. 위 원조사 행/집계는 조사 당시 기록으로 보존한다.
