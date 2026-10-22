@@ -206,3 +206,7 @@ assets/vfx/boss/gen/
 !godot/tests/test_parity_ui_05.gd.uid
 # PARITY-MAP-04 regression entrypoint
 !/godot/tests/test_parity_map_04.gd
+
+# PARITY-UI-06 focused source UI regression.
+!godot/tests/test_parity_ui_06.gd
+!godot/tests/test_parity_ui_06.gd.uid

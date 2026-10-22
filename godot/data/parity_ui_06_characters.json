@@ -1,0 +1,127 @@
+[
+  {
+    "name": "엑소듀서 전사",
+    "cls": "WARRIOR",
+    "desc": "거대검을 휘두르는 흑철의 전사",
+    "bust": "res://assets/ui/parity_ui_06/portrait_warrior.png",
+    "poster": "res://assets/ui/parity_ui_06/poster_idle_warrior_cs3_4k.jpg",
+    "traits": [
+      [
+        "⚔",
+        "근접 화신",
+        "거대검을 휘두르는 정면 돌파형 전투가입니다."
+      ],
+      [
+        "🛡",
+        "흑철의 방어",
+        "검은 갑옷으로 적의 공세를 견디고 되받아칩니다."
+      ],
+      [
+        "💥",
+        "파멸의 일격",
+        "느리지만 치명적인 광역 참격을 내리꽂습니다."
+      ]
+    ],
+    "job": "전사"
+  },
+  {
+    "name": "실버테일",
+    "cls": "BLADE DANCER",
+    "desc": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+    "bust": "res://assets/ui/parity_ui_06/portrait_silvertail.png",
+    "poster": "res://assets/ui/parity_ui_06/poster_idle_silvertail_4k.jpg",
+    "traits": [
+      [
+        "🌀",
+        "검무의 화신",
+        "회전대검으로 사방의 적을 동시에 베어냅니다."
+      ],
+      [
+        "🗡",
+        "쌍단검 기동",
+        "빠르고 민첩한 연속 공격으로 파고듭니다."
+      ],
+      [
+        "✨",
+        "무희의 춤",
+        "화려한 회피와 폭발적인 딜을 오가는 곡예입니다."
+      ]
+    ],
+    "job": "블레이드 댄서"
+  },
+  {
+    "name": "헬거너",
+    "cls": "HELLGUNNER",
+    "desc": "자신의 피를 탄환 삼는 혈월의 창포수",
+    "bust": "res://assets/ui/parity_ui_06/portrait_hellgunner.jpg",
+    "poster": "res://assets/ui/parity_ui_06/poster_idle_hellgunner.jpg",
+    "traits": [
+      [
+        "🩸",
+        "혈탄 장전",
+        "체력을 소모해 충전한 관통탄을 발사합니다."
+      ],
+      [
+        "🎯",
+        "관통 창격",
+        "창포로 일직선상의 적을 모두 꿰뚫습니다."
+      ],
+      [
+        "💨",
+        "역추진 도약",
+        "사격 반동을 이용해 뒤로 도약합니다."
+      ]
+    ],
+    "job": "창포수"
+  },
+  {
+    "name": "변성술사",
+    "cls": "TRANSMUTER",
+    "desc": "베어낸 영혼을 먹고 자라는 청염의 낫",
+    "bust": "res://assets/ui/parity_ui_06/portrait_transmuter.jpg",
+    "poster": "res://assets/ui/parity_ui_06/poster_idle_transmuter.jpg",
+    "traits": [
+      [
+        "🌙",
+        "반월참",
+        "낫을 크게 휘둘러 전방 반원을 베어냅니다."
+      ],
+      [
+        "👻",
+        "영혼 수확",
+        "처치한 적의 영혼을 거둬 낫을 강화합니다."
+      ],
+      [
+        "🌀",
+        "망령 걸음",
+        "청염으로 흩어졌다 원하는 곳에 다시 나타납니다."
+      ]
+    ],
+    "job": "사신"
+  },
+  {
+    "name": "창법사",
+    "cls": "SPEARMAGE",
+    "desc": "룬으로 공간을 봉인하는 공허의 전령",
+    "bust": "res://assets/ui/parity_ui_06/portrait_spearmage.jpg",
+    "poster": "res://assets/ui/parity_ui_06/poster_idle_spearmage.jpg",
+    "traits": [
+      [
+        "🔮",
+        "공허 투창",
+        "공허창을 던져 관통시킨 뒤 다시 회수합니다."
+      ],
+      [
+        "✴",
+        "룬 각인",
+        "지면에 봉인 룬을 새겨 적을 묶습니다."
+      ],
+      [
+        "🌌",
+        "균열 이동",
+        "공간을 찢고 룬이 있는 곳으로 이동합니다."
+      ]
+    ],
+    "job": "공허 창술사"
+  }
+]

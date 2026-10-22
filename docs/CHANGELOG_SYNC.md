@@ -56754,3 +56754,7 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 아레나 포털을 원본120px·회전/역회전2층·12%맥동으로 수정. 큰 파란250px 필드 보스문은 별도 원본 경로. 실제 웹 exit-center 캐시 잔여와 renderer fixture를 구분한다.
 - 보스색광 ADD→MIX, 누락된 플레이어 바닥광, Mac WebGPU THREE fog 비활성 게이트 적용. 필드·전투코어·저장·정본 변경0. 신규 번역문장0.
 - 원본행·모든 표시 계수·초기화 풀8/할당 경계·1x 비교·남은 차이는 docs/engine/PARITY_BOSS_03_20261022.md. 관련suite1회285/0; 입력E2E1회13PASS/5NOT_READY/0FAIL, 실제종주 미완료.
+
+## PARITY-UI-06 후속 — 2026-10-22
+
+스킬 제단 배경 광/2D emissive·결과 카드 배지/장식·잠금 캐릭터 상세 전환 후속은 `docs/engine/PARITY_UI_06_20261022.md`를 따른다. 이전 수치는 이력이며 전체 동일성은 RETOUCH, 영상 HOLD 유지. 보스/아레나 owner 변경0.

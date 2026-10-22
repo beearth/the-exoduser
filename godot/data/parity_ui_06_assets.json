@@ -1,0 +1,52 @@
+[
+  {
+    "source": "assets/charselect/poster_idle_warrior_cs3_4k.jpg",
+    "destination": "godot/assets/ui/parity_ui_06/poster_idle_warrior_cs3_4k.jpg",
+    "sha256": "56269fec6f59bfd1a42fcb28f6eaad44921582e777c045a34c865671dabc6654"
+  },
+  {
+    "source": "assets/charselect/portrait_warrior.png",
+    "destination": "godot/assets/ui/parity_ui_06/portrait_warrior.png",
+    "sha256": "3c68de92523252d8c34e27a39b5db5af6adc250e48261fd3e047e9198ff29fcc"
+  },
+  {
+    "source": "assets/charselect/poster_idle_silvertail_4k.jpg",
+    "destination": "godot/assets/ui/parity_ui_06/poster_idle_silvertail_4k.jpg",
+    "sha256": "bbf45686195c79d752b5a3173ad16bd0e19ea12e35157ec6c382cdd63a88fc45"
+  },
+  {
+    "source": "assets/charselect/portrait_silvertail.png",
+    "destination": "godot/assets/ui/parity_ui_06/portrait_silvertail.png",
+    "sha256": "4ca763dd6dd0aec0b914df027a2973f6aa6bdabb7e5971cca8f9ce72b8d3f4be"
+  },
+  {
+    "source": "assets/charselect/poster_idle_hellgunner.jpg",
+    "destination": "godot/assets/ui/parity_ui_06/poster_idle_hellgunner.jpg",
+    "sha256": "656c6220a4864bad3f2db44c238f4ec203f5a118787724ad1615dd9e22c46429"
+  },
+  {
+    "source": "assets/charselect/portrait_hellgunner.jpg",
+    "destination": "godot/assets/ui/parity_ui_06/portrait_hellgunner.jpg",
+    "sha256": "8551ac0003e6783f9c685f1e9385dd4b156fdde326af4090569a70239ca3f529"
+  },
+  {
+    "source": "assets/charselect/poster_idle_transmuter.jpg",
+    "destination": "godot/assets/ui/parity_ui_06/poster_idle_transmuter.jpg",
+    "sha256": "9826156cf8ce8b746605eee34f85a6cb33146fc6261bfcf924a9acd2cb206bd6"
+  },
+  {
+    "source": "assets/charselect/portrait_transmuter.jpg",
+    "destination": "godot/assets/ui/parity_ui_06/portrait_transmuter.jpg",
+    "sha256": "bb368100b763809332990bb32a45710c970bfe2fc0f36801be4cc2969251693c"
+  },
+  {
+    "source": "assets/charselect/poster_idle_spearmage.jpg",
+    "destination": "godot/assets/ui/parity_ui_06/poster_idle_spearmage.jpg",
+    "sha256": "a97d989ac5af65adfe667063961434072bba3a957d5177fce37dd35de1edf7ff"
+  },
+  {
+    "source": "assets/charselect/portrait_spearmage.jpg",
+    "destination": "godot/assets/ui/parity_ui_06/portrait_spearmage.jpg",
+    "sha256": "514ca2f16c7d088240d59c455f542d8071bd0cac9ea67e22be661ffadfc97d5f"
+  }
+]

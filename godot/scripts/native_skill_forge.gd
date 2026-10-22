@@ -142,7 +142,7 @@ func disc(id: String,rect: Rect2,selected: bool=false,parent: Node=null) -> Text
  if selected:
   var halo:=Halo.new();halo.position=rect.position-Vector2.ONE*18;halo.size=rect.size+Vector2.ONE*36;halo.radius=rect.size.x*.5;halo.mouse_filter=Control.MOUSE_FILTER_IGNORE;(stage if parent==null else parent).add_child(halo)
  var n:=TextureRect.new();n.position=rect.position;n.size=rect.size;n.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;n.texture=icon if icon!=null else load("res://assets/ui/parity_ui_03/sigil.png");n.mouse_filter=Control.MOUSE_FILTER_IGNORE;n.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;n.texture_repeat=CanvasItem.TEXTURE_REPEAT_DISABLED
- var mat:=ShaderMaterial.new();mat.shader=disc_shader;mat.set_shader_parameter("selected",1.0 if selected else 0.0);mat.set_shader_parameter("has_icon",icon!=null);n.material=mat
+ var mat:=ShaderMaterial.new();mat.shader=disc_shader;mat.set_shader_parameter("selected",1.0 if selected else 0.0);mat.set_shader_parameter("has_icon",icon!=null);mat.set_shader_parameter("glass_veil",.32 if parent!=null or selected else 0.0);n.material=mat
  (stage if parent==null else parent).add_child(n);return n
 func render() -> void:
  snapshot=main.read_native_skill_management()
@@ -160,6 +160,8 @@ func render() -> void:
  var title_plate:=TitlePlate.new();title_plate.image=Surface.texture("img/ui/iron_covenant_20260924/button.webp");title_plate.position=Vector2(819.6,150.76);title_plate.size=Vector2(280.8,49.92);title_plate.mouse_filter=Control.MOUSE_FILTER_IGNORE;stage.add_child(title_plate)
  text("전투 스킬",Rect2(819.6,155,280.8,34),19,Color("f7e7bb"),true).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
  Surface.panel(stage,Rect2(36,212.47,1848,792.53),Color("0b0809"),Color("3b332c"))
+ var fire_back:=ColorRect.new();fire_back.position=Vector2(37,213.47);fire_back.size=Vector2(1846,790.53);fire_back.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var back_material:=ShaderMaterial.new();back_material.shader=preload("res://shaders/parity_ui_06_forge_back.gdshader");fire_back.material=back_material;stage.add_child(fire_back)
  # 13 slots: CSS width92 / gap14, centered at1920.
  for i in 13:
   var x: float=278+i*106;var id: String=slot_value(i)
@@ -187,6 +189,9 @@ func render_altar(m: Dictionary) -> void:
  var mat:=ShaderMaterial.new();mat.shader=rune_shader;plate.material=mat;stage.add_child(plate);plate.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;plate.texture_repeat=CanvasItem.TEXTURE_REPEAT_DISABLED
  var core_size: float=maxf(48,minf(150,minf(R*1.02,(R-node_size/2)*1.3)))
  if not m.host.is_empty():disc(m.host,Rect2(cx-core_size/2,cy-core_size/2,core_size,core_size),true)
+ if not m.host.is_empty():
+  var glow:=ColorRect.new();glow.position=Vector2(cx,cy)-Vector2.ONE*core_size;glow.size=Vector2.ONE*core_size*2;glow.mouse_filter=Control.MOUSE_FILTER_IGNORE
+  var gm:=ShaderMaterial.new();gm.shader=preload("res://shaders/parity_ui_06_core_glow.gdshader");glow.material=gm;stage.add_child(glow)
  text(display_name(m.host) if not m.host.is_empty() else "슬롯이 비어 있습니다",Rect2(407,349.11,460,42),22,Color("dfd6c2"),true)
  var ring: Array=m.set if m.set.size()>1 else []
  var ghost: bool=m.cands.any(func(c):return c.ok and c.learned and not c.demo) and m.set.size()<10
