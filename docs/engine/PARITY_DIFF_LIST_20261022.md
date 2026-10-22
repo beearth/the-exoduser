@@ -403,3 +403,22 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 | E2E 관측 | PASS13 / NOT_READY5 / FAIL0 | UI-02 전투/물약 코드 차이 없음. 무작위 장비/접촉과 하니스 장시간 정지 대기 문제. 실제 근접 입력·쿨다운 대기 이동 보완; 판정/주입/PC 경계 그대로. UI 후속 표시 구현 전1회 측정 |
 
 원본 행·Godot 위치·테스트·1x 비교·제약: [PARITY_UI_03_20261022.md](PARITY_UI_03_20261022.md). 최종 인수는 사용자 동일 장면 눈검수를 따른다.
+
+### PARITY-HUD-01 — 표시 이식 검수(2026-10-22)
+
+원문 H-xx 뜻과 PC 계산 담당을 보존한다. 상세 원본 대응은 [PARITY_HUD_01_20261022.md](PARITY_HUD_01_20261022.md). **전체 VISUAL VERDICT: RETOUCH — 동일성 인수 미완료.**
+
+| No. | 이번 표시 상태 | 비교·남은 차이 |
+|---|---|---|
+| H-01 | 부분 이식 / RETOUCH | 원본PNG·구슬位置·HP 현재/max·파란shield링·포이즈 눈. CSS frame glow/액체·AA 세부 남음 |
+| H-02 | 부분 이식 / PC 값 의존 | ST→SP·MP/SP 분할 숫자·눈/54°노란눈금. `_harpGauge` 소유 값 미공급, 노란 수위 임의 생성0. chargeStocks 대용 계산0 |
+| H-03 | PC 계산 유지 | HP/MP/SP·전투력·지역분모 계산 변경0. source 초기 스킬배치 차이도 별도PC 상태 |
+| H-04 | 표시 복귀 / RETOUCH | MAP11 미니맵 hide 제거·원본166/130/.85·frame1.05. 경계/marker 픽셀 세부 남음 |
+| H-05 | 후행CSS 치수 이식 / RETOUCH | 원본216×153.4·timer170×37/.9·자원108×58/.94. 패널/타이포 세부 비교 필요 |
+| H-06 | 원본값 보존 | 원문 불투명판 요구보다 실제 웹9348 `_PET_OP_MAX=.6`이 근거. Godot도.6, 임의1.0 변경0. 대사/시점차이 유지 |
+| H-07 | 비원본 띠 숨김 | 선택/실패 toast 표시 제거. 기존 boss/관측 보존 |
+| H-08 | 원본 배치 복귀 / RETOUCH | (591,931.2),738×163.8·13칸·실제쿨다운. 아이콘배치/할당 상태차이는PC; 셀 세부 남음 |
+| 데미지 숫자 | 원본canvas atlas·pool 이식 | 원본 `_buildNumAtlas`480×168/Pirata One/3색을 직접공급.40pool시작할당·바운스·궤적 원본유지. 비교는 표시fixture, 자연전투 PASS 아님 |
+| 방향·시계 | 부분 이식 / RETOUCH | 원본 region_arrow PNG96·거리64px/m·라벨14/12. 원본HUD 회피·목표세부조건 미완료 |
+
+증거: `~/exoduser-wt/_out/PARITY-HUD-01/captures/{1,2,3}_compare_1x.png` 및 `_hud_crop_1x.png`·`_minimap_crop_1x.png`·`_top_crop_1x.png`. 1920×1080 원본과1x크롭, 숫자는명시적표시fixture. 관련회귀17/0. 최신 E2E 결과·오류수·commit SHA는 같은 `_out/DONE.txt`에서확인한다. 테스트PASS를시각PASS로바꾸지않는다.

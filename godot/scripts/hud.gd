@@ -50,6 +50,7 @@ var _stage_timer_label: Label
 var _stage_progress_fill: Control
 var _slot_icons: Dictionary = {}
 var _slot_icon_files: Dictionary = {}
+var _skill_icon_textures: Dictionary = {}
 var _slot_sweeps: Dictionary = {}
 var _slot_sweep_labels: Dictionary = {}
 var _skill_cooldowns: Callable = Callable()
@@ -254,15 +255,16 @@ func _refresh() -> void:
 	var max_hp := float(snapshot.get("max_hp", 350.0))
 	var stamina := float(snapshot.get("stamina", 0.0))
 	var max_stamina := float(snapshot.get("max_stamina", 200.0))
-	_hp_text.text = UI.text("생명력\n%d\n/ %d") % [roundi(hp), roundi(max_hp)]
-	_hp_fill.set_shader_parameter("fill_ratio", hp / max_hp if max_hp > 0.0 else 0.0)
-	_stamina_text.text = "ST\n%d\n/ %d" % [int(stamina), int(max_stamina)]
+	_hp_text.text = "%d\n/ %d" % [roundi(hp), roundi(max_hp)]
+	_hp_fill.set_shader_parameter("fill_ratio", 0.9 - 0.87 * (1.0 - clampf(hp / max_hp,0,1)) if max_hp > 0.0 else 0.0)
+	_stamina_text.text = "SP\n%d\n/%d" % [int(stamina), int(max_stamina)]
 	_stamina_fill.set_shader_parameter("fill_ratio", stamina / max_stamina if max_stamina > 0.0 else 0.0)
 	# Actual MP owner, source60244/60300-60305. No invented value/development label.
 	var current: Variant=_source_state.read_current_p() if is_instance_valid(_source_state) else null
 	var mp_ready: bool=current is Dictionary and (current.get("mp") is int or current.get("mp") is float) and (current.get("mmp") is int or current.get("mmp") is float) and is_finite(float(current.mp)) and is_finite(float(current.mmp)) and current.mmp>0
-	_mp_text.visible=mp_ready
-	_mp_text.text="MP\n%d\n/ %d" % [int(current.mp),int(current.mmp)] if mp_ready else ""
+	_hp_text.hide();_stamina_text.hide()
+	_mp_text.visible=false
+	_mp_text.text="MP\n%d\n/%d" % [int(current.mp),int(current.mmp)] if mp_ready else ""
 	_stamina_fill.set_shader_parameter("mp_ratio",clampf(float(current.mp)/float(current.mmp),0,1) if mp_ready else 0.0)
 	var state := str(snapshot.get("state", "idle"))
 	var frames := float(snapshot.get("charge_frames", 0.0))
@@ -287,7 +289,7 @@ func _refresh() -> void:
 		_charge_text.text = UI.text("3타 홀드 · 40F / 80F / 120F")
 	var alive := 0
 	if is_instance_valid(_world) and _world.has_method("get_enemies"):
-		for enemy in _world.call("get_enemies"):
+		for enemy in _world._enemies:
 			if is_instance_valid(enemy) and not enemy.is_queued_for_deletion() and float(enemy.get("hp")) > 0.0:
 				alive += 1
 	_objective_text.text = UI.text("남쪽 입구 → 북쪽 출구  ·  남은 적 %d") % alive
@@ -306,6 +308,7 @@ func _build_ui() -> void:
 		theme.default_font = load(FONT_PATH)
 	theme.default_font_size = 18
 	_root.theme = theme
+	_root.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	var title_panel := _panel(Vector2(24, 20), Vector2(710, 84))
 	_debug_overlay_nodes.append(title_panel)
 	_label(title_panel, UI.text("지옥의 길"), Vector2(16, 9), 26, INK)
@@ -327,16 +330,17 @@ func _build_ui() -> void:
 	action_box.add_child(restart)
 	_debug_overlay_nodes.append(action_box)
 	var hp_orb := _resource_orb(false)
-	_hp_text = _label(hp_orb, UI.text("생명력\n350\n/ 350"), Vector2(0, 43), 20, Color.WHITE)
+	_hp_text = _label(hp_orb, "350\n/ 350", Vector2(0, 59.85), 20, Color.WHITE)
 	_hp_text.size.x = ORB_SIZE
 	_hp_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_hp_text.add_theme_font_override("font",NATIVE_UI_FONTS.stack("hell_title",900))
 	var stamina_orb := _resource_orb(true)
-	_stamina_text = _label(stamina_orb, "ST\n0\n/ 0", Vector2(ORB_SIZE / 2, 44), 17, Color("88dd88"))
+	_stamina_text = _label(stamina_orb, "SP\n0\n/0", Vector2(ORB_SIZE / 2, 56), 14, Color("88dd88"))
 	_stamina_text.size.x = ORB_SIZE / 2
 	_stamina_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_stamina_text.add_theme_font_override("font",NATIVE_UI_FONTS.stack("cinzel_hell",400))
-	_mp_text = _label(stamina_orb, "", Vector2(0,44),17,Color("88bbff"))
-	_mp_text.add_theme_font_override("font",NATIVE_UI_FONTS.stack("cinzel_hell",400))
+	_stamina_text.add_theme_font_override("font",NATIVE_UI_FONTS.stack("hell_title",900))
+	_mp_text = _label(stamina_orb, "", Vector2(0,56),14,Color("88bbff"))
+	_mp_text.add_theme_font_override("font",NATIVE_UI_FONTS.stack("hell_title",900))
 	_mp_text.size.x=ORB_SIZE/2
 	_mp_text.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	_mp_text.visible=false
@@ -344,7 +348,7 @@ func _build_ui() -> void:
 	meters.name = "NativeSkillBar"
 	_root.add_child(meters)
 	meters.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	_set_anchor_offsets(meters, Vector2(-369, -182), Vector2(738, 164))
+	_set_anchor_offsets(meters, Vector2(-369, -148.8), Vector2(738, 163.8))
 	meters.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_texture(meters, "res://assets/ui/ui_bar_only.png", Vector2.ZERO, meters.size, Color(0.8, 0.8, 0.8))
 	_combo_text = _label(meters, UI.text("연속 공격  0 / 3"), Vector2(190, 53), 19, Color("c9965a"))
@@ -372,6 +376,8 @@ func _build_ui() -> void:
 	_debug_overlay_nodes.append(_charge_bar)
 	_build_native_first_fight_hud()
 	_build_native_minimap()
+	var direction:=preload("res://scripts/parity_hud_direction.gd").new()
+	direction.hud=self;direction.name="WebRegionDirection";_root.add_child(direction)
 	_build_native_hud_corner()
 	set_native_debug_overlay_visible(false)
 	_build_native_boot_loading_ui()
@@ -401,9 +407,8 @@ func _resource_orb(stamina: bool) -> Control:
 	orb.name = "NativeSPGlobe" if stamina else "NativeHPGlobe"
 	_root.add_child(orb)
 	orb.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	# Source ornament extends39.6px below the175×.9px liquid circle.
-	# Reserve54px below the circle so the complete original frame stays visible.
-	_set_anchor_offsets(orb, Vector2((ORB_CENTER_OFFSET if stamina else -ORB_CENTER_OFFSET) - ORB_SIZE / 2.0, -ORB_SIZE - 54.0), Vector2(ORB_SIZE, ORB_SIZE))
+	# Source fixed bottom inset10px, ornament extends39.6px beyond circle (viewport clips it).
+	_set_anchor_offsets(orb, Vector2((ORB_CENTER_OFFSET if stamina else -ORB_CENTER_OFFSET) - ORB_SIZE / 2.0, -ORB_SIZE - 10.0), Vector2(ORB_SIZE, ORB_SIZE))
 	orb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var liquid := ColorRect.new()
 	liquid.size = orb.size
@@ -417,17 +422,22 @@ void fragment() {
     float circle = 1.0 - smoothstep(0.49, 0.5, length(UV - vec2(0.5)));
     vec3 liquid_color;
     if (stamina) {
-        liquid_color = mix(vec3(0.047, 0.2, 0.133), vec3(0.165, 0.533, 0.267), clamp((1.0 - UV.y) / 0.7, 0.0, 1.0));
+        bool mp = UV.x < 0.5;
+        float ratio = mp ? mp_ratio : fill_ratio;
+        float q = clamp(2.0 - ratio - UV.y,0.0,1.0);
+        vec3 bottom = mp ? vec3(12.,34.,68.)/255. : vec3(12.,51.,34.)/255.;
+        vec3 mid = mp ? vec3(26.,68.,136.)/255. : vec3(26.,85.,51.)/255.;
+        vec3 top = mp ? vec3(51.,136.,204.)/255. : vec3(42.,136.,68.)/255.;
+        liquid_color = q < .3 ? mix(bottom,mid,q/.3) : mix(mid,top,clamp((q-.3)/.4,0.,1.));
+        float alpha = q < .7 ? 1. : (q < .9 ? mix(1.,.3,(q-.7)/.2) : mix(.3,0.,(q-.9)/.1));
+        float filled = step(1.0-ratio,UV.y);
+        COLOR=vec4(mix(vec3(6.,6.,8.)/255.,liquid_color,filled*alpha),circle);
     } else {
         float d = clamp(length((UV - vec2(0.5, 0.4)) * vec2(1.0, 1.3)) * 2.0, 0.0, 1.0);
         liquid_color = d < 0.5 ? mix(vec3(0.420, 0.063, 0.125), vec3(0.239, 0.039, 0.071), d * 2.0) : mix(vec3(0.239, 0.039, 0.071), vec3(0.118, 0.020, 0.039), (d - 0.5) * 2.0);
+        float filled = step(1.0 - fill_ratio, UV.y);
+        COLOR = vec4(mix(vec3(0.024), liquid_color, filled), circle);
     }
-    float filled = step(1.0 - fill_ratio, UV.y);
-    if (stamina && UV.x < 0.5) {
-        liquid_color = mix(vec3(0.047, 0.133, 0.267), vec3(0.2, 0.533, 0.8), clamp((1.0 - UV.y) / 0.7, 0.0, 1.0));
-        filled = step(1.0 - mp_ratio, UV.y);
-    }
-    COLOR = vec4(mix(vec3(0.024), liquid_color, filled), circle);
 }"""
 	var material := ShaderMaterial.new()
 	material.shader = shader
@@ -438,7 +448,10 @@ void fragment() {
 		_stamina_fill = material
 	else:
 		_hp_fill = material
-	_texture(orb, "res://assets/ui/ui_globe_mp.png" if stamina else "res://assets/ui/ui_globe_hp.png", Vector2(-43.2, -39.6), Vector2(236.7, 236.7), Color(0.6, 0.6, 0.6))
+	_texture(orb, "res://assets/ui/ui_globe_mp.png" if stamina else "res://assets/ui/ui_globe_hp.png", Vector2(-43.2, -39.6), Vector2(236.7, 236.7), Color.WHITE)
+	var trim := preload("res://scripts/parity_hud_orb_trim.gd").new()
+	trim.name="WebOrbTrim";trim.stamina=stamina;trim.hud=self
+	orb.add_child(trim)
 	return orb
 
 
@@ -608,61 +621,66 @@ static func _native_comma(value: int) -> String:
 
 
 func _build_native_first_fight_hud() -> void:
+	# Boot-only texture loading. Slot refresh only reads the retained table.
+	for file in NATIVE_SKILL_ICON_FILES.values():
+		if _skill_icon_textures.has(file):continue
+		var path: String=SKILL_ICON_DIR+str(file)+".png"
+		_skill_icon_textures[file]=load(path) if ResourceLoader.exists(path) else null
 	# ── #mmLvl (우상 목표 패널) — CSS 372: top6/right10, min-width200, pad 10 12,
 	#    border rgba(145,119,76,.45), bg 180deg rgba(12,13,15,.88)→rgba(9,10,12,.76) ──
 	var panel := Control.new()
 	panel.name = "NativeObjectivePanel"
 	_root.add_child(panel)
-	var panel_size := Vector2(224, 118)
+	var panel_size := Vector2(216, 153.4)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	panel.offset_left = -panel_size.x - 10
-	panel.offset_right = -10
-	panel.offset_top = 6
-	panel.offset_bottom = 6 + panel_size.y
+	panel.offset_left = -panel_size.x - 20
+	panel.offset_right = -20
+	panel.offset_top = 16
+	panel.offset_bottom = 16 + panel_size.y
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_native_gradient_rect(panel, Vector2.ZERO, panel_size,
-		Color(12.0 / 255, 13.0 / 255, 15.0 / 255, 0.88), Color(9.0 / 255, 10.0 / 255, 12.0 / 255, 0.76))
+		Color(38.0 / 255,31.0 / 255,27.0 / 255,.96),Color(9.0 / 255,10.0 / 255,13.0 / 255,.93))
 	var border := Panel.new()
 	panel.add_child(border)
 	border.size = panel_size
 	border.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var border_style := StyleBoxFlat.new()
 	border_style.draw_center = false
-	border_style.border_color = Color(145.0 / 255, 119.0 / 255, 76.0 / 255, 0.45)
+	border_style.border_color = Color(156.0/255,122.0/255,75.0/255,.68)
 	border_style.set_border_width_all(1)
 	border.add_theme_stylebox_override("panel", border_style)
 	var label_color := Color("cbbd9f")
 	var row_value_color := Color("eee4d4")
-	_native_hud_label(panel, UI.text("레벨"), Vector2(12, 11), 12, label_color)               # hudLevelLabel
-	var lv_label := _native_hud_label(panel, "1", Vector2(12, 8), 15, Color("f2e6cb"), 700.0)
-	lv_label.size.x = panel_size.x - 24
+	_native_hud_label(panel, UI.text("레벨"), Vector2(15, 15.8), 12, label_color)               # hudLevelLabel
+	var lv_label := _native_hud_label(panel, "1", Vector2(15, 13), 16, Color("f2e6cb"), 700.0)
+	lv_label.size.x = panel_size.x - 30
 	lv_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_native_hud_label(panel, UI.text("경험치"), Vector2(12, 32), 12, label_color)             # hudExpLabel
-	var exp_label := _native_hud_label(panel, "0 / 0", Vector2(12, 32), 12, Color("dfcfaa"))
-	exp_label.size.x = panel_size.x - 24
+	_native_hud_label(panel, UI.text("경험치"), Vector2(15, 39), 12, label_color)             # hudExpLabel
+	var exp_label := _native_hud_label(panel, "0 / 0", Vector2(15, 39), 12, Color("dfcfaa"))
+	exp_label.size.x = panel_size.x - 30
 	exp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	# .objective-frame: border-top rgba(145,119,76,.3) + exp바(2px, bg rgba(0,0,0,.5))
 	var divider := ColorRect.new()
 	panel.add_child(divider)
-	divider.position = Vector2(12, 55)
-	divider.size = Vector2(panel_size.x - 24, 1)
+	divider.position = Vector2(15, 68)
+	divider.size = Vector2(panel_size.x - 30, 1)
 	divider.color = Color(145.0 / 255, 119.0 / 255, 76.0 / 255, 0.3)
 	var exp_bg := ColorRect.new()
 	panel.add_child(exp_bg)
-	exp_bg.position = Vector2(12, 62)
-	exp_bg.size = Vector2(panel_size.x - 24, 2)
+	exp_bg.position = Vector2(15, 78.4)
+	exp_bg.size = Vector2(panel_size.x - 30, 2)
 	exp_bg.color = Color(0, 0, 0, 0.5)
-	_exp_fill_full_width = panel_size.x - 24
+	_exp_fill_full_width = panel_size.x - 30
 	_exp_fill = _native_gradient_rect(exp_bg, Vector2.ZERO, Vector2(0, 2),
 		Color(122.0 / 255, 101.0 / 255, 72.0 / 255, 0.55), Color(196.0 / 255, 171.0 / 255, 124.0 / 255, 0.85))
 	(_exp_fill as TextureRect).texture.fill_to = Vector2(1, 0)  # 90deg 가로 그라디언트
-	_native_hud_label(panel, UI.text("지역 처치"), Vector2(12, 70), 12, label_color)          # hudKillLabel
-	var kill_label := _native_hud_label(panel, "0 / 0", Vector2(12, 70), 12, row_value_color)
-	kill_label.size.x = panel_size.x - 24
+	_native_hud_label(panel, UI.text("지역 처치"), Vector2(15, 91.55), 12, label_color)          # hudKillLabel
+	var kill_label := _native_hud_label(panel, "0 / 0", Vector2(15, 91.55), 12, row_value_color)
+	kill_label.size.x = panel_size.x - 30
 	kill_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_native_hud_label(panel, UI.text("악의"), Vector2(12, 91), 12, label_color)               # hudMaliceLabel
-	var malice_label := _native_hud_label(panel, "0", Vector2(12, 91), 12, row_value_color)
-	malice_label.size.x = panel_size.x - 24
+	_native_hud_label(panel, UI.text("악의"), Vector2(15, 116.55), 12, label_color)               # hudMaliceLabel
+	var malice_label := _native_hud_label(panel, "0", Vector2(15, 116.55), 12, row_value_color)
+	malice_label.size.x = panel_size.x - 30
 	malice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_objective_values = {"lv": lv_label, "exp": exp_label, "kill": kill_label, "malice": malice_label}
 	# ── #stageClock (상단 중앙 타이머) — CSS 364: top7, width170, 'Cinzel' 폴백
@@ -673,18 +691,19 @@ func _build_native_first_fight_hud() -> void:
 	_stage_clock.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	_stage_clock.offset_left = -85
 	_stage_clock.offset_right = 85
-	_stage_clock.offset_top = 7
-	_stage_clock.offset_bottom = 7 + 26
-	_stage_clock.modulate = Color(1, 1, 1, 0.57)
+	_stage_clock.offset_top = 17
+	_stage_clock.offset_bottom = 54
+	_stage_clock.modulate = Color(1, 1, 1, 0.9)
+	_native_gradient_rect(_stage_clock,Vector2.ZERO,Vector2(170,37),Color(12.0/255,13.0/255,16.0/255,.72),Color(12.0/255,13.0/255,16.0/255,0))
 	_stage_clock.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_stage_timer_label = _native_hud_label(_stage_clock, "00:00", Vector2(0, 0), 11,
+	_stage_timer_label = _native_hud_label(_stage_clock, "00:00", Vector2(0, 6), 12,
 		Color(215.0 / 255, 207.0 / 255, 189.0 / 255, 0.78), 400.0, "cinzel_hell") # 366: weight 미지정=400
 	_stage_timer_label.size.x = 170
 	_stage_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var progress_bg := ColorRect.new()
 	_stage_clock.add_child(progress_bg)
-	progress_bg.position = Vector2(0, 21)
-	progress_bg.size = Vector2(170, 2)
+	progress_bg.position = Vector2(12, 27)
+	progress_bg.size = Vector2(146, 2)
 	progress_bg.color = Color(0, 0, 0, 0.45)
 	_stage_progress_fill = _native_gradient_rect(progress_bg, Vector2.ZERO, Vector2(0, 2),
 		Color(183.0 / 255, 166.0 / 255, 129.0 / 255, 0.8), Color(183.0 / 255, 166.0 / 255, 129.0 / 255, 0.8))
@@ -710,8 +729,8 @@ func _build_native_first_fight_hud() -> void:
 		icon.name = "Icon"
 		cell.add_child(icon)
 		# .qs-icon(740): inset 3px, object-fit contain
-		icon.position = Vector2(3, 3) * NATIVE_SLOT_SCALE
-		icon.size = cell.size - Vector2(6, 6) * NATIVE_SLOT_SCALE
+		icon.position = Vector2(4, 4) * NATIVE_SLOT_SCALE
+		icon.size = cell.size - Vector2(8, 8) * NATIVE_SLOT_SCALE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -846,7 +865,7 @@ func _refresh_native_first_fight_hud() -> void:
 				for region in regions:
 					if region.cleared:count+=1
 				ratio=float(count)/4.0
-			_stage_progress_fill.size.x = 170.0 * ratio
+			_stage_progress_fill.size.x = 146.0 * ratio
 	# 슬롯 아이콘 — 변경분만 텍스처 로드
 	for slot_id in _slot_icons:
 		var skill_id := _native_slot_skill_id(slot_id, p)
@@ -858,8 +877,7 @@ func _refresh_native_first_fight_hud() -> void:
 		if file.is_empty():
 			icon.texture = null
 			continue
-		var icon_path := SKILL_ICON_DIR + file + ".png"
-		icon.texture = load(icon_path) if ResourceLoader.exists(icon_path) else null
+		icon.texture = _skill_icon_textures.get(file)
 	# P2-005b — 쿨다운 sweep 갱신 (소유자: 스킬 슬롯 어댑터)
 	if _skill_cooldowns.is_valid():
 		var cds: Variant = _skill_cooldowns.call()
@@ -961,6 +979,7 @@ func _build_native_minimap() -> void:
 	frame.name = "MinimapFrame"
 	wrap.add_child(frame)
 	frame.size = Vector2(166, 166)
+	frame.self_modulate=Color(1.05,1.05,1.05)
 	if ResourceLoader.exists("res://assets/ui/mm_frame.png"):
 		frame.texture = load("res://assets/ui/mm_frame.png")
 	frame.stretch_mode = TextureRect.STRETCH_SCALE
@@ -1161,7 +1180,7 @@ func _refresh_native_minimap_and_corner() -> void:
 		_minimap_enemy_frame = frame
 		_minimap_enemy_points = []
 		if _world.has_method("get_enemies"):
-			for enemy in _world.get_enemies():
+			for enemy in _world._enemies:
 				if _minimap_enemy_points.size() >= 60:
 					break
 				if not is_instance_valid(enemy) or enemy.get("alive") != true:

@@ -56521,3 +56521,9 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - 유골함 제단·선대 portrait·4부위와 r/t/itemLv0 회수/기존 저장,39 base field 비교 펼침. 사망 대사 원본 폭/폰트·페이드, game-only480×270 replay/자원 바·wall-clock 타이머·게임패드 skip.
 - 테스트 각1회: inventory1281/0, skill105/0.1920×1080+1x 비교는 _out/PARITY-UI-03에 보존. 전체 visual PASS 아님.
 - 문자열 원본60쌍·누락 No.3496–3506·lang26개 원본 EN 폴백 전파. 전체목록 기존 prefix/CRLF 보존. 상세/잔여: docs/engine/PARITY_UI_03_20261022.md 및 PARITY_DIFF_LIST 후속 상태.
+
+## 2026-10-22 PARITY-HUD-01 표시 이식
+
+- 기준6b4336b6. 구슬 원본PNG/링/눈/숫자·SP표기·미니맵·타이머/목표패널·원본방향PNG·스킬바 배치를 웹행/CSS에 대응했다. 별도스킬선택/실패띠 숨김. PC계산·전투·맵·카메라·B화면 변경0.
+- 원본_buildNumAtlas canvas480×168/Pirata One를 직접공급하고40개숫자pool을시작할당했다. 이미지17개import는축소mipmap, 슬롯ResourceLoader는boot만. crossbow57행null 옵션을Variant검사로방어했다(제보의투사체Array방어는기존화살표뷰에존재).
+- docs전체검색·관련상세표/차이표 동기화. 관련HUD회귀1회17/0. 무주입E2E1회storage=on·SCRIPT ERROR0, HP0/처치0으로자연완주NOT_READY. 최종시각은RETOUCH(노란기동게이지실소유값미공급·CSS glow/세부AA등). 1x비교/표시fixture 범위를PARITY_HUD_01_20261022.md·_out/PARITY-HUD-01/DONE.txt에명시.

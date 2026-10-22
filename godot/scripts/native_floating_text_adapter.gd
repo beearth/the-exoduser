@@ -50,6 +50,9 @@ func configure(owner_world: Node2D) -> bool:
 	_world = owner_world
 	_producer = PRODUCER.new(Callable(_world, "localize_native_text"),
 		Callable(self, "_render_context"), PRODUCER.SRC_TXTS_MAX)
+	# Startup allocation only; source ring semantics/life/size stay unchanged.
+	for index in range(PRODUCER.SRC_TXTS_MAX):
+		_producer.txts.append({"x":0.0,"y":0.0,"t":"","c":"#fff","life":0.0,"ml":0.0,"sz":0.0,"_numStr":null})
 	_producer.name = "OriginalFloatingTextRing"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	z_as_relative = false
@@ -86,27 +89,11 @@ func _start_number_atlas_once() -> void:
 	if not _binding_ready() or not _number_atlas_baker_live():
 		_number_atlas_startup_status = "unavailable_startup_lifecycle"
 		return
-	_number_atlas_startup_status = "baking"
-	_number_atlas_bake_calls += 1
-	var baker: Node = _number_atlas_baker
-	var texture: Texture2D = await baker.bake_native()
-	# A bake may yield across two real render frames. Reject late completion if
-	# the actual consumer or supplier has been detached, reparented or queued.
-	if not _binding_ready() or not is_same(baker, _number_atlas_baker) \
-			or not _number_atlas_baker_live():
-		_number_atlas_startup_status = "unavailable_completion_lifecycle"
-		return
-	if texture == null:
-		_number_atlas_startup_status = str(baker.get_build_report().get("status", "unavailable_native_atlas"))
-		return
-	if Vector2i(texture.get_width(), texture.get_height()) != NUMBER_ATLAS.SRC_ATLAS_SIZE:
-		_number_atlas_startup_status = "failed_runtime_atlas_dimensions"
-		return
-	# Both the supplier and this adapter retain the actual runtime texture. The
-	# immutable consumer also holds it after this single public API supply.
-	_number_atlas_texture = texture
+	# Exact source _buildNumAtlas canvas export (game.html:43945-43985).
+	# Preloaded once; no glyph mask bake, font fallback or allocation in native tick.
+	_number_atlas_texture = preload("res://assets/ui/web_number_atlas.png")
 	_number_atlas_supply_calls += 1
-	_number_atlas_startup_status = "supplied" if baker.supply_to(_producer) else "failed_consumer_supply"
+	_number_atlas_startup_status = "supplied_source_canvas" if _producer.set_number_atlas(_number_atlas_texture) else "failed_consumer_supply"
 
 func emit_native_text(x: float, y: float, text: Variant, color: Variant,
 		life: Variant = null, size: Variant = null, num_str: Variant = null) -> bool:

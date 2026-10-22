@@ -54,7 +54,8 @@ func _fire_phase(dt_sp: float) -> void:
    var value: Variant=g.get(key)
    if (value is Array and not value.is_empty()) or value is Dictionary:return
   _admit_blocked=false
- var options: Dictionary=main.source_initialization_services.read_current_options()
+ var options: Variant=main.source_initialization_services.read_current_options()
+ if not options is Dictionary:return
  if options.get("xbowAuto",true)==false:return
  var inv: Dictionary=main.source_state.read_current_inventory()
  var bow: Variant=inv.equipped.get("bow")
