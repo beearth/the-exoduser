@@ -13,16 +13,23 @@ var _last_serial: int=-1
 var _base_tex: Texture2D
 var _directions: Array=[]
 var _textures: Dictionary={}
+var _walk_textures: Dictionary={}
+var _walk_distance:=0.0
 var _col:=0
 var _row:=0
 func _ready() -> void:
  name=data.id;add_to_group("enemies");collision_layer=4;collision_mask=0
  set_physics_process(false)
+ texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
  var seed_value: int=(etype*7+RECIPE._js_int32(global_position.x*31))&0x7fffffff
  _col=(seed_value%40)%8;_row=int((seed_value%40)/8)
  _directions=preload("res://scripts/type3_summoned_actor.gd").DIRECTIONS
- for direction in _directions:_textures[direction]=load("res://assets/enemy/atlas_ch1_8dir_"+direction+".png")
- _base_tex=_textures.east
+ for direction in _directions:
+  _textures[direction]=load("res://assets/enemy/atlas_ch1_8dir_"+direction+".png")
+  _walk_textures[direction]=load("res://assets/enemy/atlas_ch1_8dir_walk_"+direction+".png")
+ _base_tex=_textures[_directions[posmod(roundi(fposmod(facing,TAU)/(PI/4)),8)]]
+ var decor:=preload("res://scripts/native_enemy_source_decor.gd").new()
+ decor.name="SourceEnemyDecor";add_child(decor);decor.configure(self)
  queue_redraw()
 func is_native_registry_ready() -> bool:return is_instance_valid(d_owner) and not_ready.is_empty()
 func set_player(value: Node2D) -> void:
@@ -33,6 +40,8 @@ func advance_native_phase(sp: float,_frame: float,_enemies: Array) -> void:
  var serial: int=world.get_native_projectile_fx_context().frame_reset_epoch
  if serial<=_last_serial:return
  _last_serial=serial;native_ticks+=1
+ var visual_before: Vector2=global_position
+ _moving=false
  var n: Dictionary=data.native_final
  if n.reviveIframes>0:n.reviveIframes=maxf(0,n.reviveIframes-sp)
  _hit_flash=maxf(0,_hit_flash-sp)
@@ -99,7 +108,8 @@ func advance_native_phase(sp: float,_frame: float,_enemies: Array) -> void:
  if etype!=24 and charge_ticks<=0:
   _projectile_ticks-=sp
   if _projectile_ticks<=0 and distance<reach:_projectile_ticks=240;charge_ticks=60
- _base_tex=_textures[_directions[posmod(roundi(fposmod(facing,TAU)/(PI/4)),8)]]
+ _moving=global_position.distance_squared_to(visual_before)>0
+ _walk_distance+=global_position.distance_to(visual_before)
  queue_redraw()
 func receive_damage(amount: int,direction: Vector2,source: String,options: Dictionary={}) -> void:
  if not is_instance_valid(d_owner) or not d_owner.current() or not_ready!="" or not alive:return
@@ -114,7 +124,24 @@ func apply_native_normal_enemy_death_write() -> Dictionary:
 func _update_animation() -> void:queue_redraw()
 func _draw() -> void:
  if not alive:return
- if _base_tex!=null:draw_texture_rect_region(_base_tex,Rect2(-radius*1.75,-radius*1.75,radius*3.5,radius*3.5),Rect2(_col*256,_row*256,256,256),Color.WHITE if alive else Color(1,1,1,0.4))
+ var art_facing: float=facing
+ if is_instance_valid(player) and player.hp>0 and global_position.distance_squared_to(player.global_position)<640000:
+  art_facing=(player.global_position-global_position).angle()
+ _base_tex=_textures[_directions[posmod(roundi(fposmod(art_facing,TAU)/(PI/4)),8)]]
+ var n: Dictionary=data.native_final
+ var sa: float=1.0
+ if n.get("_cloaked",false):sa=.08+sin(Time.get_ticks_msec()/300.0)*.05
+ elif float(n.get("reviveIframes",0))>0:sa=maxf(0,.2+sin(Time.get_ticks_msec()/40.0)*.5)
+ elif _stun_ticks>0:sa=.6
+ var bright: float=1+minf(1,_hit_flash/6)*.8
+ var tint:=Color(bright,bright,bright,sa)
+ var size_: float=maxf(radius*7.0,80.0)
+ var bounds:=Rect2(Vector2.ONE*(-size_*.5),Vector2.ONE*size_)
+ if _base_tex!=null:draw_texture_rect_region(_base_tex,bounds,Rect2(_col*256,_row*256,256,256),tint)
+ if _moving:
+  var direction: String=_directions[posmod(roundi(fposmod(art_facing,TAU)/(PI/4)),8)]
+  var frame: int=int(floor(_walk_distance/128))%4
+  draw_texture_rect_region(_walk_textures[direction],bounds,Rect2((_col*4+frame)*256,_row*256,256,256),tint)
  for bar in BAR_LAYOUT.build(radius,float(hp),float(mhp),eShield,eShieldMax,_stun_ticks,data.get("native_final",{}).get("_maxStunned")):draw_rect(bar.rect,bar.color)
 
 func read_native_normal_enemy_hurte_fields(caller_world: Node) -> Dictionary:

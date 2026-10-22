@@ -1397,7 +1397,7 @@ func _build_sprite() -> void:
 	_sprite.name = "Warrior"
 	_sprite.centered = false
 	_sprite.scale = Vector2.ONE * visual_scale
-	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR # Source5606 WebGPU sampler ignores X.imageSmoothingEnabled.
 	var frames := SpriteFrames.new()
 	frames.remove_animation("default")
 	var attack: Texture2D = load("res://assets/player/attack-bat-v1.png")

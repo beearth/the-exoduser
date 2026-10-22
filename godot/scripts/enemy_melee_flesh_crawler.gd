@@ -135,11 +135,16 @@ func _ready() -> void:
 	shape.shape = circle
 	add_child(shape)
 	var animation: Dictionary = data["animation"]
+	# Natural registrations reuse the source skin/radius, never the initial fixture cell.
+	if data.has("a_constructor") or str(data.get("ai_profile","")).begins_with("demo11_"):
+		preload("res://scripts/native_enemy_source_art.gd").prepare(animation,data.native_final,radius)
 	for direction in animation["base_textures"]:
 		_base_textures[direction] = load(animation["base_textures"][direction])
 		_walk_textures[direction] = load(animation["walk_textures"][direction])
 	_body = _make_sprite("Body", float(animation["draw_height"]) / 256.0)
 	_walk = _make_sprite("WalkOverlay", float(animation["draw_height"]) / 256.0)
+	var decor:=preload("res://scripts/native_enemy_source_decor.gd").new()
+	decor.name="SourceEnemyDecor";add_child(decor);decor.configure(self)
 	_update_animation()
 	telemetry_event.emit("enemy_spawn", {"id": data["id"], "order": source_order, "etype": etype, "element": element, "position": [position.x, position.y], "hp": hp, "radius": radius, "native_speed": data["speed_pixels_per_tick"], "facing": facing, "consumer_profile": data["ai_profile"]})
 
@@ -148,7 +153,7 @@ func _make_sprite(sprite_name: String, draw_scale: float) -> Sprite2D:
 	sprite.name = sprite_name
 	sprite.region_enabled = true
 	sprite.centered = true
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR # Source5606 WebGPU linear sampler.
 	sprite.scale = Vector2.ONE * draw_scale
 	add_child(sprite)
 	return sprite
@@ -366,7 +371,12 @@ func _update_animation() -> void:
 	_walk.region_rect = _rect(animation["walk_frame_rects"][frame])
 	_walk.visible = _moving
 	var spawn_alpha = maxf(0.0, 1.0 - _spawn_ticks / 20.0) if _spawn_ticks > 0.0 else 1.0
-	_body.modulate = Color(1.0 + _hit_flash / 6.0, 1.0, 1.0, spawn_alpha)
+	var native: Dictionary=data.native_final
+	if native.get("_cloaked",false):spawn_alpha*=.08+sin(Time.get_ticks_msec()/300.0)*.05
+	elif float(native.get("reviveIframes",0))>0:spawn_alpha*=maxf(0,.2+sin(Time.get_ticks_msec()/40.0)*.5)
+	elif _stun_ticks>0:spawn_alpha*=.6
+	var bright: float=1+minf(1,_hit_flash/6)*.8
+	_body.modulate = Color(bright,bright,bright,spawn_alpha)
 	_walk.modulate = _body.modulate
 
 func _rect(value: Array) -> Rect2:

@@ -791,6 +791,12 @@ func _build_subtitle_panel() -> void:
 	# P2-007a — #petSubtitle(2587) font-family:'Malgun Gothic',sans-serif + #petBubbleTxt 700.
 	# 시스템에 Malgun Gothic이 있으면 그것, 없으면 총칭 sans-serif 대리 Noto Sans KR(번들).
 	_bubble_label.add_theme_font_override("font", preload("res://scripts/native_ui_fonts.gd").stack("pet", 700))
+	# Mac CSS sans-serif uses the system Latin/CJK fallback, not bundled Noto.
+	if OS.get_name()=="macOS":
+		var css_font:=SystemFont.new();css_font.font_names=PackedStringArray(["Arial","Apple SD Gothic Neo"]);css_font.font_weight=700
+		_bubble_label.add_theme_font_override("font",css_font)
+	# CSS .92rem = 14.72px. Keep fractional metrics despite Label integer font_size.
+	_bubble_label.scale=Vector2.ONE*(14.72/15.0)
 
 
 const CROW_PORTRAIT: Texture2D = preload("res://assets/pets/crow_portrait.png")
@@ -807,17 +813,17 @@ func _show_bubble(who: String, txt: String) -> void:
 	var cached: Variant = _portrait_cache.get(portrait_key)
 	if cached is Texture2D:
 		_portrait.texture = cached
-	# bottom 230px(1920×1080·ui-scale1), crow=left 20 / cat=right 20, origin bottom
+	# Source2587 bottom220px(1920×1080·ui-scale1), crow=left 20 / cat=right 20, origin bottom
 	var panel_height := 320.0 * 1.5
 	_subtitle_root.position = Vector2(20.0 if is_crow else viewport_size.x - 20.0 - 480.0 * 1.5,
-		viewport_size.y - 230.0 - panel_height)
+		viewport_size.y - 220.0 - panel_height)
 	# 텍스트 박스 (9372~9375): crow(92,237,306,51) / cat(122,250,190,42)
 	if is_crow:
 		_bubble_label.position = Vector2(92, 237)
-		_bubble_label.size = Vector2(306, 51)
+		_bubble_label.size = Vector2(306, 51)/(14.72/15.0)
 	else:
 		_bubble_label.position = Vector2(122, 250)
-		_bubble_label.size = Vector2(190, 42)
+		_bubble_label.size = Vector2(190, 42)/(14.72/15.0)
 	_bubble_label.text = txt
 	_subtitle_root.modulate = Color(1, 1, 1, PET_OP_MAX)
 

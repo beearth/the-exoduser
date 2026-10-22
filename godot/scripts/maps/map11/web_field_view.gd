@@ -72,7 +72,7 @@ func configure(main: Node) -> void:
  _camera.zoom=Vector2.ONE;_camera.offset=Vector2.ZERO;_camera.position_smoothing_enabled=false
  _camera.limit_left=-20000;_camera.limit_top=-20000;_camera.limit_right=20000;_camera.limit_bottom=20000
  _camera.global_position=_actor.global_position
- _ghost=Sprite2D.new();_ghost.centered=false;_ghost.z_as_relative=false;_ghost.z_index=4090;_ghost.modulate.a=.55;_ghost.texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;add_child(_ghost);_ghost.hide()
+ _ghost=Sprite2D.new();_ghost.centered=false;_ghost.z_as_relative=false;_ghost.z_index=4090;_ghost.modulate.a=.55;_ghost.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;add_child(_ghost);_ghost.hide()
  var layer:=CanvasLayer.new();layer.layer=4;add_child(layer)
  var rect:=ColorRect.new();rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);rect.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var mat:=ShaderMaterial.new();mat.shader=preload("res://scripts/maps/map11/web_grade.gdshader");rect.material=mat;layer.add_child(rect)

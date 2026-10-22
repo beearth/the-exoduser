@@ -51,3 +51,6 @@ p2002a/b·contracts PASS·초기화 117/2·시작 145/2·재생 88/0·레슨 30/
 |플레이어 point.png|필드도 아레나와 같은 MIX. 640² stamp·좌표 불변.|G25500,G51943-51948|
 
 SWEEP-A 11위치 engine viewport 재캡처 map-lighting/godot, ERROR0. 맵 geometry/전투/저장/새 문자열 변경0. 전체 동일성은 [SWEEP-A 차이 목록](SWEEP_A_20261022.md)을 따른다. 과거 검수·계수는 당시 이력이다.
+
+
+> 2026-10-22 SWEEP-A 현행 표시 후속: [표시 계수·원본행·검수 경계](SWEEP_A_20261022.md#두-번째-표시-단위--자연-적펫hp바샘플러). 자연 적 스킨/크기·D 걷기·쉴드/etype 장식·WebGPU LINEAR·펫 CSS 소수 글꼴/하단220px·앵글러 MIX·보스 HP바 clipping을 교정한다. 과거 수치/당시 검수 이력은 보존하며 PC 판정·AI·보행·HP writer는 변경하지 않는다.

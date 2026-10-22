@@ -123,6 +123,7 @@ var _stage_marker_bound := false # DEMO11-43: blocks legacy coordinate/RNG sched
 var _configured := false
 var _g_receipts: Array = []
 var _void_black: Texture2D
+var visual_clock_ms: float=-1 # Optional display replay clock; default never writes simulation time.
 var _label_font: Font
 var _drawer: Node2D
 var _metrics := {"advance_calls": 0, "rng_calls": 0, "triggered": 0, "spawn_attempts": 0,
@@ -135,7 +136,7 @@ class _HoleDrawer extends Node2D:
 	func _draw() -> void:
 		if system == null or system._game_frame <= GAME_FRAME_GATE: # 52617 if(_gameFrame>120)
 			return
-		var now := float(Time.get_ticks_msec())
+		var now: float=system.visual_clock_ms if system.visual_clock_ms>=0 else float(Time.get_ticks_msec())
 		var holes_now: Array = system.holes
 		for hi in range(holes_now.size()):
 			var h: Dictionary = holes_now[hi]

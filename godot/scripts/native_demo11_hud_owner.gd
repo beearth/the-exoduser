@@ -77,6 +77,19 @@ func _ready() -> void:
 	gradient.colors=PackedColorArray([Color("2d0405"),Color("7f1212"),Color("cf361f"),Color("ffb16a")])
 	var texture := GradientTexture2D.new();texture.gradient=gradient;texture.fill_to=Vector2(1,0)
 	_boss_fill.texture=texture
+	# Source955 overflow:hidden clips the gradient to the capsule rail.
+	var fill_shader:=Shader.new();fill_shader.code="""
+shader_type canvas_item;
+uniform float visible_width=498.0;
+void fragment(){
+ vec4 c=texture(TEXTURE,UV)*COLOR;
+ vec2 p=vec2(UV.x*visible_width,UV.y*12.0);
+ vec2 q=abs(p-vec2(249.0,6.0))-vec2(243.0,0.0);
+ float d=length(max(q,vec2(0.0)))+min(max(q.x,q.y),0.0)-6.0;
+ c.a*=1.0-smoothstep(-.5,.5,d);COLOR=c;
+}
+"""
+	var fill_material:=ShaderMaterial.new();fill_material.shader=fill_shader;_boss_fill.material=fill_material
 	_boss_value=_label(_boss,"",Vector2(-250,58),Vector2(500,22),14,"cinzel_hell",INK)
 	_boss_value.hide()
 	var poise_rail:=ColorRect.new();_boss.add_child(poise_rail);poise_rail.position=Vector2(-180,55);poise_rail.size=Vector2(360,6);poise_rail.color=Color("666666")
@@ -195,6 +208,7 @@ func refresh_native_owners() -> void:
 	_boss_value.text="%d / %d" % [enemy.hp,enemy.mhp]
 	var ratio:=clampf(float(enemy.hp)/float(enemy.mhp),0,1)
 	_boss_fill.size.x=498*ratio
+	(_boss_fill.material as ShaderMaterial).set_shader_parameter("visible_width",_boss_fill.size.x)
 	_snapshot.merge({"boss_visible":true,"boss_hp":enemy.hp,"boss_max_hp":enemy.mhp,"boss_ratio":ratio,"boss_fill_px":_boss_fill.size.x,"boss_owner_status":boss.status},true)
 
 static func _finite(value: Variant) -> bool:

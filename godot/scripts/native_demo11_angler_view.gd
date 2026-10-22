@@ -10,8 +10,10 @@ var _add: CanvasItemMaterial
 var _tp: Node2D
 var _font: Font
 func _ready() -> void:
- _add=CanvasItemMaterial.new();_add.blend_mode=CanvasItemMaterial.BLEND_MODE_ADD
+ _add=CanvasItemMaterial.new();_add.blend_mode=CanvasItemMaterial.BLEND_MODE_MIX
  _font=FONTS.stack("font",700)
+ if OS.get_name()=="macOS":
+  var css_font:=SystemFont.new();css_font.font_names=PackedStringArray(["Arial","Apple SD Gothic Neo"]);css_font.font_weight=700;_font=css_font
  _tp=Node2D.new();_tp.material=_add;add_child(_tp);_tp.draw.connect(_draw_additive)
  texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
 func _vanish(frame: int,at: Vector2,k: float,wob: float) -> void:

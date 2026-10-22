@@ -56763,3 +56763,8 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 ## 2026-10-22 SWEEP-A 첫 표시 단위
 
 - 지정 boss03/ui06 merge 통합. Mac field THREE fog gate와 static/iris/point 합성을 정본 proxy에 맞춤. 원본행·표시수치는 engine/SWEEP_A_20261022.md. 11위치 내부 viewport 재캡처 ERROR0; 전체 동일성/자연종주 미완료.
+
+
+## 2026-10-22 SWEEP-A 적·펫·보스 표시
+
+- 자연 admitted 적의 source skin/radius 표시·D walking overlay·shield/type decor·WebGPU sampler·pet CSS14.72px/bottom220·angler MIX·boss capsule clip. 신규 게임 문구0, PC core writer 수정0. 정확 수치/경계: engine/SWEEP_A_20261022.md.

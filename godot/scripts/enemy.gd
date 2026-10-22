@@ -127,6 +127,8 @@ func _ready() -> void:
 	_body.scale = Vector2.ONE * (float(data["animation"]["draw_height"]) / 256.0)
 	_body.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	add_child(_body)
+	var decor:=preload("res://scripts/native_enemy_source_decor.gd").new()
+	decor.name="SourceEnemyDecor";add_child(decor);decor.configure(self)
 	_update_animation()
 	telemetry_event.emit("enemy_spawn", {"id": data["id"], "order": source_order, "etype": etype, "element": element, "position": [position.x, position.y], "hp": hp, "radius": radius, "native_speed": data["speed_pixels_per_tick"], "facing": facing})
 
