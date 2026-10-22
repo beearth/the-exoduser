@@ -1723,6 +1723,54 @@
       "sha256": "806d20999677525778369f3be220b6e63dff2555e619cdc64db4225358509e4b",
       "source_function": "_getAtlasTxt + fillText; existing translation No1034/1151; KO/EN 0..100 percent and 0..3 counter",
       "source_lines": "G5494-5507,G6108-6113,G52732-52743"
+    },
+    {
+      "path": "godot/assets/boss_parity/source_fog_0.res",
+      "sha256": "db95b127d29aafd4e3808e5f5258944a7ce24689621b75bb8c5f6b26d70b11f5",
+      "source_function": "_bakeBossFogFrames(0)",
+      "source_lines": "9075-9113",
+      "original_png_bytes_changed": false,
+      "size": [
+        256,
+        128
+      ],
+      "frame": 0
+    },
+    {
+      "path": "godot/assets/boss_parity/source_fog_1.res",
+      "sha256": "d6b366f87785f48d7bf364e79d07ac2b103deca5f99ce96ed7009af1414e3890",
+      "source_function": "_bakeBossFogFrames(0)",
+      "source_lines": "9075-9113",
+      "original_png_bytes_changed": false,
+      "size": [
+        256,
+        128
+      ],
+      "frame": 1
+    },
+    {
+      "path": "godot/assets/boss_parity/source_fog_2.res",
+      "sha256": "93ee4405353adc04216401e0aae72218e735c80b3b93011f5b0cac0bf1bb751d",
+      "source_function": "_bakeBossFogFrames(0)",
+      "source_lines": "9075-9113",
+      "original_png_bytes_changed": false,
+      "size": [
+        256,
+        128
+      ],
+      "frame": 2
+    },
+    {
+      "path": "godot/assets/boss_parity/source_fog_3.res",
+      "sha256": "f8073f174b8a173872c8913a693aef34041e25bdc47f553bea0eccbc09b82dff",
+      "source_function": "_bakeBossFogFrames(0)",
+      "source_lines": "9075-9113",
+      "original_png_bytes_changed": false,
+      "size": [
+        256,
+        128
+      ],
+      "frame": 3
     }
   ]
 }

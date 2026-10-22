@@ -56814,3 +56814,10 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 
 - 아레나 음수좌표에서 source 경고→body→쉴드/eyes/bar 순서 복원(ground z−2500,body behind parent).
 - source53141 jump visual60px만 적용,PC physics 위치/AI 변경0. 상세 §12.
+
+
+## 2026-10-22 SWEEP-A source boss outer scale/fog
+
+- 원본outer4×inner1/4의 치수 상쇄와 yoffset4배/네임offset1/4 보존.
+- 원본 브라우저 _bakeBossFogFrames 직접 파생4개,총291res provenance 동기화.
+- §13 수치/원본행/생성법,PC actor writer 변경0.

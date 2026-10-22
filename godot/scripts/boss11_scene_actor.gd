@@ -1,6 +1,7 @@
 extends Node2D
 ## Read-only source renderer: game.html 10763–10774,10905–10976.
 const SHEETS={"base8":preload("res://assets/maps/map11/boss_dark_druid_8dir_v3.png"),"attack":preload("res://assets/boss_parity/attack.png"),"walk":preload("res://assets/boss_parity/walk.png"),"beast":preload("res://assets/boss_parity/beast.png"),"transform":preload("res://assets/boss_parity/transform.png"),"dive":preload("res://assets/boss_parity/dive.png"),"emerge":preload("res://assets/boss_parity/emerge.png")}
+const SOURCE_FOG=[preload("res://assets/boss_parity/source_fog_0.res"),preload("res://assets/boss_parity/source_fog_1.res"),preload("res://assets/boss_parity/source_fog_2.res"),preload("res://assets/boss_parity/source_fog_3.res")]
 const DIVE_STATES=["bossDruidDive","bossDruidErupt"]
 const BURROW_STATES=["bossTelePrep","bossTeleWarn"]
 const EXTRA_ATTACK=["eWindup","bossDruidVolley"]
@@ -74,9 +75,9 @@ func render_at(now: float) -> void:
  var h: float=float(e.get("r",44))*14.1;var w: float=float(e.get("r",44))*9.3
  if sheet=="base8":w=h*region.size.x/region.size.y
  elif sheet in WIDE_SHEETS:w=h*region.size.x/region.size.y*1.12
- _name_top=float(e.get("_teleDropY",0))-6+(sin(now*.003)*2 if sheet=="base8" else 0)-h*.86-10
+ _name_top=float(e.get("_teleDropY",0))-6+(sin(now*.003)*2 if sheet=="base8" else 0)-h*.86/4.0-10
  body.texture=tex;body.region_rect=region;body.scale=Vector2(w,h)/region.size;body.offset=Vector2(-region.size.x/2,-region.size.y*.86)
- body.position=Vector2(0,float(e.get("_teleDropY",0))-6+(sin(now*.003)*2 if sheet=="base8" else 0))
+ body.position=Vector2(0,(float(e.get("_teleDropY",0))-6+(sin(now*.003)*2 if sheet=="base8" else 0))*4.0)
  var display: Rect2=preload("res://scripts/native_source_canvas_labels.gd").snap(self,Rect2(body.position+body.offset*body.scale,Vector2(w,h)))
  body.scale=display.size/region.size;body.position=display.position-body.offset*body.scale
  var alpha: float=(.2+sin(now/40)*.5) if e.get("reviveIframes",0)>0 else (.6 if e.get("stunned",0)>0 else 1.0)
@@ -135,6 +136,11 @@ func _draw_source_body_decor(e: Dictionary) -> void:
    var a: float=k*2.399+tick*.22;var rr: float=mr*(.32+(k%4)*.14)
    draw_set_transform(Vector2(cos(a)*rr,sin(a)*rr*.34),0,Vector2(1,2.5/(5+(k%3)*2)));draw_circle(Vector2.ZERO,5+(k%3)*2,Color(155/255.0,181/255.0,104/255.0,.72))
   draw_set_transform(Vector2.ZERO)
+ var fog_at:=Vector2(0,r*.6+float(e.get("_teleDropY",0)))
+ var fog_rect: Rect2=preload("res://scripts/native_source_canvas_labels.gd").snap(self,Rect2(fog_at-Vector2(r*3.5,r*1.75),Vector2(r*7,r*3.5)))
+ var fog_frame: int=int(now/500)%4;var fog_t: float=fmod(now/500,1)
+ draw_texture_rect(SOURCE_FOG[fog_frame],fog_rect,false,Color(1,1,1,.55*(1-fog_t)))
+ draw_texture_rect(SOURCE_FOG[(fog_frame+1)%4],fog_rect,false,Color(1,1,1,.55*fog_t))
  # Source eyes follow facing and remain at the actor origin, including underground.
  var eye:=Vector2.from_angle(facing)*r*.3
  draw_circle(eye+Vector2(-2,0),2,Color(0,0,0,sa));draw_circle(eye+Vector2(3,0),2,Color(0,0,0,sa))
