@@ -180,7 +180,7 @@ func _ready() -> void:
 	Engine.max_fps = 240
 	_register_inputs()
 	combat = JSON.parse_string(FileAccess.get_file_as_string("res://data/combat.json"))
-	var demo11_enabled: bool=OS.get_cmdline_user_args().has("--demo11-storage=on") or get_meta("demo11_storage",false)==true
+	var demo11_enabled: bool=not OS.get_cmdline_user_args().has("--demo11-storage=off") # I3486–3520: persistence is available by default.
 	var demo11_loaded := false
 	if demo11_enabled:
 		_demo11_session=preload("res://port_modules/save_adapter/demo_load_session.gd").new()
@@ -467,6 +467,7 @@ func _ready() -> void:
 	native_demo_life=preload("res://scripts/native_demo11_life.gd").new()
 	add_child(native_demo_life)
 	native_demo_life.configure(self)
+	native_demo_life.bind_stage_restore(self,Callable(self,"_parity_ui_restore_stage"))
 	native_demo_encounter.bind_pcia(self)
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
@@ -506,12 +507,12 @@ func _ready() -> void:
 			player.process_mode=Node.PROCESS_MODE_PAUSABLE
 			world.process_mode=Node.PROCESS_MODE_PAUSABLE
 		_demo11_session.start_lifecycle(self)
-		source_inventory_ui=preload("res://scripts/native_inventory_panel.gd").new()
-		var inventory_layer:=CanvasLayer.new()
-		inventory_layer.layer=40
-		add_child(inventory_layer)
-		inventory_layer.add_child(source_inventory_ui)
-		source_inventory_ui.configure(self,source_state)
+	source_inventory_ui=preload("res://scripts/native_inventory_panel.gd").new()
+	var inventory_layer:=CanvasLayer.new()
+	inventory_layer.layer=40
+	add_child(inventory_layer)
+	inventory_layer.add_child(source_inventory_ui)
+	source_inventory_ui.configure(self,source_state)
 
 	_native_salvage_panel=preload("res://scripts/native_salvage_panel.gd").new()
 	_native_salvage_panel.configure(self)
@@ -3721,3 +3722,15 @@ func request_native_etype15_spawn(owner: Node,group_id: String,source: Dictionar
 		_native_etype15_spawn=preload("res://scripts/native_demo11_etype15_spawn.gd").new()
 		_native_etype15_spawn.configure(self)
 	return _native_etype15_spawn.spawn_selected(owner,group_id,source)
+
+# PARITY-UI-01 G63518–63520: normal death rebuilds this stage, retaining P/INV.
+# Reconstruction runs after the existing PC respawn reset and native save settle.
+func _parity_ui_restore_stage(owner: Node) -> Dictionary:
+	if owner!=self or not is_instance_valid(world) or _demo11_session==null:
+		return {"status":"NOT_READY","reason":"stage_owner_unavailable"}
+	var g: Dictionary=source_state.read_current_g()
+	if g.get("_bossArena",false):
+		return {"status":"NOT_READY","reason":"boss_restore_owner_unavailable"}
+	g._zoneState={}
+	player.global_position=world.get_start_position()
+	return {"status":"READY","reload_after_save":true}

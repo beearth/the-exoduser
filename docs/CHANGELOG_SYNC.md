@@ -56469,3 +56469,15 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - boss_actor는 옛 맵 고정 좌표 assembler fixture로 분류, INTEG-6c suite에 --map11=off 명시. 과거 원로그 spawn 실패→빈 enemy.hp SCRIPT ERROR→quit 미도달 확인. 공용 외부 감시 타이머 유지.
 - Mac starter exact G에 원본 G31569의 `_fbDone` 한 키를 추가(boot40+region7+spawnHole1+fieldBoss1). Array/null arrow 조회 및 HUD 해제된 source_state를 유효성 검사 전에 typed 대입하던 오류 수정. 판정 완화·전투 코어/맵/카메라 변경0.
 - 단회 회귀·E2E·GUI 측정 및 최초 HUD 오류/실패 suite 재검수 근거는 [DEMO11_STATUS INTEG-10](engine/DEMO11_STATUS_20261021.md)와 외부 INTEG-10 DONE.txt 참조. PC Windows 최종 검증은 별도.
+
+## 2026-10-22 PARITY-UI-01 — 접근/일반 필드 재시작 부분 수정, 동일성 FAIL
+
+| 범위 | 변경·검수 |
+|---|---|
+| 기준·공유 | 9133e27823549ad11fcf0380fe9d38060e15099f; SRCMAP 복사만 첫 커밋 5e2ec9f8b8344c8315e28a16af302f8c119c7562를 먼저 원격 보존 |
+| L-03/U-01 | 제품 기본 user namespace admission, 기본 영속화 활성, inventory Control 조건 분기 해제. 실제 제품 저장 폴더 IO 0 |
+| D-03 | 기존 PC respawn API + 일반 필드 저장 후 scene reload. 실제 dead→APPLIED→새 scene alive. 보스방은 EXP 차감 전 NOT_READY |
+| 보존 | 맵·카메라·run.cmd·main.tscn·PC core/계약/PC 테스트·번역 bytes 변경0. 새 화면 문구0 |
+| 검수 | 최종 관련 테스트7/0(앞선 제거 K 초안 탐색8/0과 구분). 종료 시 기존 auto-crossbow Nil 1건. E2E1회 PASS13/NOT_READY5/FAIL0, continuous=false. 전체 무오류/완주 주장0 |
+| 시각 | 1920×1080 원본5쌍, 왼쪽웹/오른쪽Godot 1x 격자+640px 1x크롭 직접 검수 FAIL. 인벤토리 외형/비교/툴팁, K 전체, 사망 화면·재시작 소환진 남음 |
+| 기록 | engine/PARITY_UI_01_20261022.md, PC 원문 보존 PARITY_DIFF_LIST 상태표. 외부 ~/exoduser-wt/_out/PARITY-UI-01/DONE.txt·captures/ |

@@ -116,6 +116,8 @@ func retry() -> Dictionary:
  # Stage construction is a distinct owner. Do not debit EXP or claim restart
  # until it can perform G63478–63520 on this actual run.
  if not _stage_restore.is_valid():return {"status":"NOT_READY","reason":"native_stage_reconstruction_owner_absent"}
+ if main.read_native_player_life_phase().phase not in ["dead","respawning"]:return {"status":"NOT_READY","reason":"retry_requires_final_death"}
+ if main.source_state.read_current_g().get("_bossArena",false):return {"status":"NOT_READY","reason":"boss_restore_owner_unavailable"}
  if main.read_native_player_life_phase().phase=="dead":
   var loss: Dictionary=_request("respawn",{"step":"exp_loss"})
   if loss.get("status")!="APPLIED":return loss
@@ -124,7 +126,7 @@ func retry() -> Dictionary:
  var reset: Dictionary=_request("respawn",{"step":"reset"})
  if reset.get("status")=="APPLIED":
   main.source_state.read_current_g().on=true
-  _save=main.save_native_demo11_current();_navigation="retry"
+  _save=main.save_native_demo11_current();_navigation="retry_reload" if stage.get("reload_after_save",false) else "retry"
  return reset
 func lobby() -> Dictionary:
  if main.read_native_player_life_phase().phase!="lobby":
@@ -137,6 +139,8 @@ func _poll_save() -> void:
  if not _save.get("settled",true):return
  if not _save.get("committed",false):
   _body.text=word("failed");_navigation="";return
+ if _navigation=="retry_reload":
+  get_tree().call_deferred("reload_current_scene")
  if _navigation=="lobby":
   get_tree().set_meta("native_demo_return_language",main.get_native_startup_language_snapshot().get("language","ko"))
   get_tree().call_deferred("change_scene_to_file","res://scenes/demo11_lobby.tscn")
