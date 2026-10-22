@@ -16153,6 +16153,8 @@ function mkItem(slot,tier,el,rarity,wtype){
   // 랜덤 등급/티어/어픽스 롤 전부 무효 — 인자와 무관하게 '전대의 유골함' 1종 고정.
   // 소환 위력은 유골 도감(INV.ossCollect)의 부위 포인트에서 나온다. 획득: 첫 유골 부위 드랍 시 자동 지급.
   if(slot==='ossuary'){
+    // 위 전설/유니크 롤이 남긴 원시 효과 키(item[stat])부터 제거 — _lEq/_uEq가 키를 직접 읽으므로 null 표기만으로는 효과가 남는다 (2026-10-22 유골함=특수효과 없음 설계)
+    if(item.legendarySpecial)delete item[item.legendarySpecial.stat];if(item.uniqueSpecial)delete item[item.uniqueSpecial.stat];
     item.rarity=5;item.tier=0;item.el=EL.P;item.unique=true;
      item.name='전대의 유골함';item.emoji='⚱️';item.anc='iron_warlord';
     item.eDef=60;item.bonusMp=150;item.ancPow=0.25;
