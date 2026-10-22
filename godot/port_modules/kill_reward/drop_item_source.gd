@@ -420,6 +420,26 @@ func mk_item(slot: String, tier: int, el: int, rarity: int, wtype: Variant, plv:
 	item["crystals"] = []
 	item["socketQ"] = []
 	# 16155~16165 유골함 고정 오버라이드 — DROP_SLOT_POOL 밖이라 드랍 경로 미도달.
+	# (행 표기는 이전 스냅샷 e556b617 좌표. 91e2774b7 스냅샷에서는 16156 이후 +2: 이 분기 = 16155~16167)
+	# PC-HUD-STATS: _grantOssuaryIfNeeded(45880 mkItem('ossuary',0,EL.P,5))가 이 분기에 도달한다.
+	# 원문 그대로: 앞의 롤(RNG 소비)은 유지하고 필드만 덮어쓴다.
+	if slot == "ossuary":
+		# 91e2774b7 새 16156~16157(원본 같은 위치·순서): 앞의 전설/유니크 롤이 남긴 원시 효과 키
+		# item[stat](16133·16145)부터 지운다 — _lEq/_uEq가 키를 직접 읽으므로 null 표기만으로는 효과가 남는다.
+		if item.get("legendarySpecial") is Dictionary: item.erase(str(item["legendarySpecial"]["stat"]))
+		if item.get("uniqueSpecial") is Dictionary: item.erase(str(item["uniqueSpecial"]["stat"]))
+		item["rarity"] = 5; item["tier"] = 0; item["el"] = EL_P; item["unique"] = true
+		item["name"] = "전대의 유골함"; item["emoji"] = "⚱️"; item["anc"] = "iron_warlord"
+		item["eDef"] = 60; item["bonusMp"] = 150; item["ancPow"] = 0.25
+		for key in ["bStr", "bDex", "bInt", "bLck", "bGrit"]:
+			item.erase(key)
+		item["affixes"] = [{"id": "ancHP", "tier": 3, "value": 0.9}]
+		item["legendarySpecial"] = null; item["uniqueSpecial"] = null
+		var oss_impl: Variant = (t["IMPLICIT_TABLE"] as Dictionary).get("ossuary")
+		item["_implicitStat"] = "_iAncPow"; item["_implicitVal"] = 10
+		item["_implicitKo"] = (oss_impl as Dictionary).get("ko") if oss_impl is Dictionary and (oss_impl as Dictionary).get("ko") else "전대 위력 +X%"
+		item["reqLv"] = 0
+		item["socketCount"] = 0; item["crystals"] = []; item["socketQ"] = []
 	if aborted:
 		return null
 	return item

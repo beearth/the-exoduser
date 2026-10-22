@@ -1,8 +1,8 @@
 {
-  "sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
-  "original_commit": "e556b617190c325ca39f5add04357f5dea5ca87e",
-  "original_commit_date": "2026-10-20T20:25:04+09:00",
-  "snapshot_date": "2026-10-21",
+  "sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "original_commit": "91e2774b769869e59f80953e148a5c95203b0fea",
+  "original_commit_date": "2026-10-22T12:21:55+09:00",
+  "snapshot_date": "2026-10-22",
   "path": "godot/source_snapshot/game.html",
   "purpose": "Immutable web source oracle; never loaded as native gameplay"
 }

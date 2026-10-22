@@ -3,6 +3,7 @@
 [PC_INTERFACE_REQUESTS_DEMO11_20261021.md](PC_INTERFACE_REQUESTS_DEMO11_20261021.md)(origin/codex/pc-iface-pack-20261021) §3의 PCI-03·02·05·06·09에 대한 PC 제공물이다. Mac 단위(DEMO11-48 기본 자동 석궁, etype-b/c/e/f 신규 actor, DEMO11-15 레슨)는 이 문서만 보고 연결한다. 요청 문서의 시그니처는 **제안**이었고, 아래가 실제 확정 이름이다.
 
 - 원본(읽기 전용, `game.html` SHA256 `4d911cdd…85e5d4`): `_fireXbow` G28703–28712, `_mkPProj/_resetPProj/_recyclePProj/_getPProj` G17309–17362, pProjs 갱신 블록 G35176–35630, `hurtE` G42110–43119(그중 42266–42283 분류·타입%, 42309–42312 크리 어픽스, 42466 `_isRanged`, 42784/42792/42817 사망 효과), `_hurtFieldMobs` G18733–18756.
+> **2026-10-22 스냅샷 갱신(행 +2 이동)**: 고정 스냅샷이 main `91e2774b7`(SHA256 `dee094fd…1f05209`)로 바뀌었다(유골함 mkItem 원시 효과 키 삭제 2줄 삽입, 새 G16156–16157). 이 문서의 G행은 이전 스냅샷 `e556b617`(`4d911cdd…85e5d4`) 좌표이고, 포트 영수증·oracle 라벨도 같은 좌표를 쓴다. 새 스냅샷에서 실제 행은 **G16156 이상 +2**(G16155 이하 그대로). PC oracle(.cjs)은 읽을 때만 옮긴다 — [INTEG5 스냅샷 계약 갱신 이력](INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
 - 제품 소유(PC): `godot/scripts/native_combat_pack_b.gd`(서비스, 신규), `native_player_arrow_carrier.gd`(normalBow carrier, 신규), `native_bound_enemy_hurte_owner.gd`(bind 프로토콜 owner 구현, 신규). 공용 파일은 순수 추가 위주: `main.gd`(설치 1줄+공개 API 7개), `type3_native_binding.gd`(owner 메서드 10개·`data`), `native_normal_enemy_hurte.gd`(아래 §7 대응표).
 
 ## 1. 얻는 방법

@@ -7,10 +7,10 @@ extends SceneTree
 ##  - warning/impact/detonate 소비자와 emit_charged_projectile 는 테스트 기록기(실제 VFX/SFX 아님).
 ##  - 접촉 대기 540틱 동안 Player 위치를 actor 기준 ±300px 로 재배치(fixture_player_repositions 집계).
 ##  - poise 코어 oracle 대조는 미등록 fixture actor 의 raw poise/ib/_pImmune/stunned 를 강제 설정(forced_raw_fields 집계).
-## INTEG-9 전제(2026-10-22): 원본 = 고정 스냅샷 res://source_snapshot/game.html(SHA 4d911cdd…, snapshot.gd/.cjs).
+## INTEG-9 전제(2026-10-22): 원본 = 고정 스냅샷 res://source_snapshot/game.html(SHA dee094fd… = main 91e2774b7, 이전 4d911cdd…; snapshot.gd/.cjs).
 ##  루트 game.html은 읽지 않는다. Mac 테스트 관례(bc09 등)대로 --source-game= 값은 받아도 스냅샷 경로로 고정. oracle도 snapshot.cjs.
 const USERDIR := "EXODUSER-pc-m29-parry-Isolated-20261021"
-const GAME_SHA256 := "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+const GAME_SHA256 := "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209"
 const MAIN := preload("res://scripts/main.gd")
 const SNAPSHOT := preload("res://source_snapshot/snapshot.gd")
 const Binding := preload("res://scripts/type3_native_binding.gd")

@@ -2,6 +2,7 @@
 
 2026-10-22 KST, PC Claude. 기준 INTEG-10 동결 `9133e2782`, 브랜치 `claude/pc-move-skills-v2-20261022`, worktree `G:\exoduser-wt\pc-move-skills-v2`.
 원본 = 고정 스냅샷 `godot/source_snapshot/game.html`(SHA256 `4d911cdd…85e5d4`, main game.html과 같음).
+> **2026-10-22 스냅샷 갱신(행 +2 이동)**: 고정 스냅샷이 main `91e2774b7`(SHA256 `dee094fd…1f05209`)로 바뀌었다(유골함 mkItem 원시 효과 키 삭제 2줄 삽입, 새 G16156–16157). 이 문서의 G행은 이전 스냅샷 `e556b617`(`4d911cdd…85e5d4`) 좌표이고, 포트 영수증·oracle 라벨도 같은 좌표를 쓴다. 새 스냅샷에서 실제 행은 **G16156 이상 +2**(G16155 이하 그대로). PC oracle(.cjs)은 읽을 때만 옮긴다 — [INTEG5 스냅샷 계약 갱신 이력](INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
 차이 목록 기준: [PARITY_DIFF_LIST_20261022.md](PARITY_DIFF_LIST_20261022.md) V-01·V-02. 보고서: [orders/reports/pc-move-skills_REPORT.md](orders/reports/pc-move-skills_REPORT.md).
 
 **판정 기준**은 웹과 같은 장면을 나란히 찍어 같아 보이고 같은 거리·같은 프레임으로 움직이는가다. 테스트 PASS는 필요조건이다.

@@ -1,7 +1,7 @@
 'use strict';
 // NW-03: unchanged source loop, explicit dependency fixtures, ordered event trace.
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
-const SHA='4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4';
+const SHA='dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209';
 const LOOP_SHA='9eea8397b33211a9a7b4ba18372d4fb60a5ab6cffa497687254d47b66d6c265f';
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 function main(){

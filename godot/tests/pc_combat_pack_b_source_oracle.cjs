@@ -8,7 +8,7 @@
 // gameplay lines consume the scenario-supplied values in order; presentation lines get 0.5.
 // usage: node oracle.cjs <game.html> <scenario.json> <out.json>   (UTF-8 files)
 // INTEG-9 (2026-10-22): source bytes = immutable snapshot godot/source_snapshot/game.html (snapshot.cjs, SHA-pinned
-// 4d911cdd…85e5d4), same as the Mac bc2_*/demo11_16 oracles. Root game.html moves (189899b4… title line) and is never read.
+// dee094fd…1f05209 = main 91e2774b7; 이전 4d911cdd…85e5d4 = e556b617), same as the Mac bc2_*/demo11_16 oracles. Root game.html moves (189899b4… title line) and is never read.
 // The first positional arg is kept for caller compatibility (PC test / Mac adapter pass it) but not used for bytes.
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm'), assert = require('node:assert/strict'), crypto = require('node:crypto');
@@ -18,8 +18,14 @@ const SNAPSHOT = require('../source_snapshot/snapshot.cjs');
 const raw = SNAPSHOT.readBytes(); // throws on snapshot SHA mismatch
 const sha256 = crypto.createHash('sha256').update(raw).digest('hex');
 const lines = raw.toString('utf8').split('\n');
-const L = (n) => lines[n - 1];
-const span = (a, b) => lines.slice(a - 1, b).join('\n');
+// 91e2774b7 스냅샷 갱신(2026-10-22): 원본 유골함 mkItem에 2줄 삽입(새 16156-16157). 이 oracle의 행 번호(G…)는 포트 영수증·
+// 고정 데이터와 같은 이전 스냅샷 e556b617 좌표로 유지하고, 바이트를 읽을 때만 새 위치로 옮긴다(16156 이상 +2).
+// 삽입 줄을 가로지르는 구간은 거절한다(해당 구간은 새 좌표로 따로 다뤄야 함).
+const SHIFT_AT = 16156, SHIFT_BY = 2;
+assert(lines[SHIFT_AT - 1].includes('원시 효과 키') && lines[SHIFT_AT].startsWith('    if(item.legendarySpecial)delete item[item.legendarySpecial.stat];'), 'G16156-16157 inserted ossuary lines (91e2774b7)');
+const snapLine = (n) => (n >= SHIFT_AT ? n + SHIFT_BY : n);
+const L = (n) => lines[snapLine(n) - 1];
+const span = (a, b) => { assert(a >= SHIFT_AT || b < SHIFT_AT, 'span straddles 91e2774b7 insertion: ' + a + '-' + b); return lines.slice(snapLine(a) - 1, snapLine(b)).join('\n'); };
 // ── exact anchors (fail loudly if the source moved) ──
 assert(L(14344).startsWith('function elMul(a,d){'), 'G14344 elMul');
 assert(L(17309).startsWith('function _mkPProj(){') && L(17330).startsWith('function _resetPProj(p){'), 'G17309/17330');
