@@ -1,0 +1,17 @@
+{
+  "languages": 30,
+  "changes": [
+    {
+      "lang": "english",
+      "key": "app[content][sysreqs][windows][min][notes]",
+      "before": "nline activation required via Steam.",
+      "after": "Online activation required via Steam."
+    },
+    {
+      "lang": "english",
+      "key": "app[content][sysreqs][windows][rec][notes]",
+      "before": "nline activation required via Steam.",
+      "after": "Online activation required via Steam."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-22T03:38:39.040Z",
+  "source": "G:/exoduser",
+  "port": 3341,
+  "url": "game.html?test=1&slot=steam_maintenance_20261022",
+  "viewport": [
+    1920,
+    1080
+  ],
+  "inputOnly": true,
+  "stateMutation": false,
+  "kills": 25,
+  "level": 2,
+  "outcome": "normal death",
+  "pageerrors": [],
+  "acceptedForUpload": [],
+  "reason": "Pet dialogue overlays, limited early combat composition, one debug hover tooltip. Candidates kept for review; no new gallery claimed."
+}

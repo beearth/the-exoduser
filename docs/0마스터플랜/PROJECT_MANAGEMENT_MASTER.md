@@ -450,3 +450,10 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+
+## 2026-10-22 Steam 페이지 지속 관리 담당 확정
+
+Codex는 본편 App4749590/item1189321 상점을 최신 승인 게임 상태로 유지한다. 사용자 직접 지시로 최소 주1회 영상·캐릭터·배경·이미지·실제 게임화면·문구를 점검·갱신한다. [상시 관리 대장](../13출시·마케팅/STEAM_PAGE_MAINTENANCE.md)과 [업데이트 규칙 §9](../13출시·마케팅/STEAM_UPDATE_RULES.md#9-상점-페이지-주간-최신화-2026-10-22-사용자-확정)가 정본이다. 한 단계가 막혀도 충돌 없는 다른 승인 작업을 이어간다. 자동 예약은 현재 생성 도구 미제공으로 미등록이며, MD 작성만으로 정기 실행 완료를 보고하지 않는다. 공개 게시·출시·SteamPipe·세이브·타 팀 변경은 별도 경계를 유지한다.
+
+상점 관리 첫 실행: 요구사항 영어오타2필드·Remote Play Together 해제·기존 게임사진5장의분류를 실제 Steamworks 초안 저장 후 재조회했다. 기존4번 워터마크/5번 비율·새미디어교체·공개·자동예약 미완료. 웹1-1 정상입력 Lv2/25처치 촬영후 후보 미채택·자체서버/브라우저종료, 공유 WIP/사용자세이브 보존. 상세는 위 상시 관리 대장.

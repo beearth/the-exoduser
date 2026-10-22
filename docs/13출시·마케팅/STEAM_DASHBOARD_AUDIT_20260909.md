@@ -76,3 +76,8 @@
 - 검수 문서: G:/exoduser/docs/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md
 
 게시 여부: **게시하지 않음**.
+
+
+### 2026-10-22 실제 저장 후속
+
+영어 최소·권장 요구사항 notes의 nline→Online 2필드와 Remote Play Together 해제, 기존 실제 게임 스크린샷5장의 category=gameplay를 Steamworks 미게시 초안에 저장·새 페이지로 재조회했다. 스크린샷 체크리스트 ✔ 확인. 기존 이미지 교체·4번 OS워터마크/5번 비율 해소·새 트레일러·공개는 아직 완료 아님. 최신 웹1-1 정상 입력으로 Lv2/25처치까지 촬영했으나 펫 가림·구도·개발용 호버문구가 있는 후보는 미채택. [상시 관리 대장](STEAM_PAGE_MAINTENANCE.md)에 검수·미완료를 갱신했다.
