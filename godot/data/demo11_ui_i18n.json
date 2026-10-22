@@ -244,7 +244,13 @@
     "창포수": "Gunlancer",
     "사신": "Reaper",
     "공허 창술사": "Void Spearmage",
-    "신기록!": "New Record!"
+    "신기록!": "New Record!",
+    "새 캐릭터 생성": "Create New Character",
+    "캐릭터 이름 (2~8자)": "Character Name (2-8 chars)",
+    "지옥에 보낼 캐릭터의 이름을 지어주세요": "Name the character you will send to hell.",
+    "여기까지 데모입니다. 정식 출시를 기대해주세요!": "This is the end of the demo. Looking forward to the full release!",
+    "게임을 종료하시겠습니까?": "Quit the game?",
+    " 캐릭터를 정말 삭제하시겠습니까?": " — Really delete this character?"
   },
   "source_en": {
     "썩은 숲": "Rotten Forest",

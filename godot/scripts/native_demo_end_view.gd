@@ -32,6 +32,8 @@ func show_page(value: String) -> void:
  buttons.clear()
  if is_instance_valid(clear_card):
   remove_child(clear_card);clear_card.queue_free()
+ if page=="end":
+  _source_end();queue_redraw();return
  if page=="clear":
   clear_card=preload("res://scripts/parity_clear_card.gd").new();add_child(clear_card)
   clear_card.setup(main.source_state.read_current_g() if is_instance_valid(main) else {"stage":0})
@@ -128,6 +130,8 @@ func show_link_failure() -> void:
  _notice.text=text("link_failed")
 func _draw() -> void:
  if page=="clear":return
+ if page=="end":
+  draw_rect(Rect2(Vector2.ZERO,size),Color(0,0,0,.92));return
  draw_rect(Rect2(Vector2.ZERO,size),Color("080709"))
  # Symmetric iron ribs and a restrained ember seam; no per-frame animation.
  var c := size * 0.5
@@ -136,3 +140,21 @@ func _draw() -> void:
    var pts := PackedVector2Array([Vector2(c.x+side*(600+inset),size.y),Vector2(c.x+side*(600+inset),330),Vector2(c.x+side*320,105),Vector2(c.x,60+inset)])
    draw_polyline(pts,Color(0.26,0.19,0.16,0.35),1.0,true)
  draw_line(Vector2(c.x-480,178),Vector2(c.x+480,178),Color("6b3026"),2.0,true)
+
+func _source_end() -> void:
+ # Original #demoEnd, G3212–3218, 1920×1080 DOM readback; no replacement crest/card.
+ _center=CenterContainer.new();_center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);add_child(_center)
+ var canvas:=Control.new();canvas.custom_minimum_size=Vector2(1920,1080);_center.add_child(canvas)
+ var surface:=preload("res://scripts/native_parity_ui_surface.gd")
+ var title:=surface.text(canvas,"✦ "+text("end_title")+" ✦",Rect2(0,402.17,1920,46),32,Color("ffcc44"),"font",900);title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+ var message:=surface.text(canvas,surface.I18N.text("여기까지 데모입니다. 정식 출시를 기대해주세요!"),Rect2(700,468.17,520,31.66),18,Color("eebb88"),"font");message.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;message.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+ var support:=surface.text(canvas,text("support"),Rect2(0,519.83,1920,22),15,Color("ccaa77"),"font");support.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+ for i in 2:
+  var key:String=["wishlist","lobby"][i]
+  var b:=Button.new();b.text=text(key);b.position=Vector2(851.5156 if i==0 else 862.625,561.828 if i==0 else 629.828);b.size=Vector2(216.96875 if i==0 else 194.7344,48)
+  b.add_theme_font_override("font",FONTS.stack("font",700));b.add_theme_font_size_override("font_size",16)
+  b.add_theme_color_override("font_color",Color("66c0f4") if i==0 else Color("ffcc44"))
+  var box:=StyleBoxFlat.new();box.bg_color=Color(23.0/255,26.0/255,33.0/255,.85) if i==0 else Color(1,150.0/255,0,.15);box.border_color=Color("4c6b8a") if i==0 else Color("ff8800");box.set_border_width_all(2)
+  for state in ["normal","hover","pressed","focus"]:b.add_theme_stylebox_override(state,box)
+  canvas.add_child(b);b.pressed.connect(func():action_requested.emit(key));buttons[key]=b
+ _notice=surface.text(canvas,"",Rect2(600,705,720,28),16,Color("c68b76"),"font");_notice.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER

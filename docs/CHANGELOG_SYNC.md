@@ -56758,3 +56758,10 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 ## PARITY-UI-06 후속 — 2026-10-22
 
 스킬 제단 배경 광/2D emissive·결과 카드 배지/장식·잠금 캐릭터 상세 전환 후속은 `docs/engine/PARITY_UI_06_20261022.md`를 따른다. 이전 수치는 이력이며 전체 동일성은 RETOUCH, 영상 HOLD 유지. 보스/아레나 owner 변경0.
+
+## 2026-10-22 SWEEP-B B1 — 로비·생성·데모 종료 원문 대응
+
+- index360–394/801–868/3471–3476/3839–3865/4725 및 G3212–3218에 따라 이름 모달440×335·문구/폰트/입력·blur/취소·슬롯별 삭제·KO/EN 저장·위시리스트/종료 확인을 연결.
+- 데모 종료는 원문 중앙5행과 .92 검정 배경, 복귀는 실제 demo_lobby.tscn. 저장 full restore·27언어 gate·main/PCcore는 보호.
+- 번역 기존1629/1630/2825 재사용,3530–3531 신규 원문·CRLF 보존·lang26/i18n 전파. 내부viewport 생성 재캡처 exit0/ERROR0. 전체 동일성 미완료.
+- 근거/초기 번호표·잔여: engine/SWEEP_B_20261022.md 및 외부 _out/SWEEP-B. 관련 테스트·무주입E2E는 마지막 단회 예정.
