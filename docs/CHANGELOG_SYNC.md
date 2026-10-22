@@ -56713,3 +56713,14 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 - 웹 field_runtime만 원본 지역 초기화·60px 경계 유지·미니맵 지역 표식 경로 복원. 북문32/문앞53 나란히 확인. 드루이드 proxy source-over 재드로우, 첫사용 시트·ground GPU warm draw, 표시 최대µs 계측.
 - native 슬롯 메뉴 startup의 활성 저장 회수/metadata 보존, 실제 격리 IO 재시작·다음 생성 regression16/0 단회. `.gitignore`는 해당 test 진입점 한 파일만 예외 추가.
 - 원본 행·1x 비교·실제 OS W·성능1회 오염 한계·PC 이동/덩굴 요청은 [PARITY_MAP_04_20261022](engine/PARITY_MAP_04_20261022.md). 고스트 .55/.62 유지, VISUAL RETOUCH. B snapshot/HUD·유골함 파일·원본 맵/카메라·PC 전투 변경0. main/PC 인수·배포 아님.
+
+
+## 2026-10-22 INTEG-15 — UI05/MAP04 merge·nw 새 스냅샷 발췌
+
+| 범위 | 변경/검수 |
+|---|---|
+| merge | UI05 bc2ca2b7 기준 MAP04 58155b0b merge만. ignore/CHANGELOG 양쪽 이력 보존. PC 원본·snapshot byte 유지 |
+| tools/nw01~03 | 16156행 이후 원문 +2 인덱스5줄만 갱신. 14개 경계행 byte 대조·모든 fragment hash 유지. nw2304/2·1851/2·3060/1 기존 dependency scope 실패는 고치지 않음 |
+| 검수 | HS-M7 19PASS, importERROR0, fieldboss167/0(이전154/1 미재현), E2E 단회7PASS/11NR·0kill, 나란히7장 RETOUCH. map16PASS의 []결과 하니스schema FAIL 및 GUIfocus60초미확보 미측정 유지 |
+
+[전체 기록](engine/INTEG15_WEB_PARITY_20261022.md). main/PC 인수·배포·자연종주·전체동일성 완료 선언0.

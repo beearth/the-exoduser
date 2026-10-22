@@ -19,8 +19,8 @@ function main() {
   const start = unique('    // MAP_OBJS 상호작용 (우선)'), end = unique('    // 보물상자 체크 (우선)');
   const loop = html.slice(start, end);
   if (end <= start || sha(loop) !== FRAGMENT_SHA) throw Error('MAP loop hash differs');
-  const dst = html.split('\n')[31722];
-  const gate = html.split('\n')[32826];
+  const dst = html.split('\n')[31724];
+  const gate = html.split('\n')[32828];
   if (dst !== 'function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}' || gate !== '  if(_interactPressed&&!_usePlayerPortal()){') throw Error('distance/gate excerpt differs');
   const cases = [];
   const add = (name, objects, player = {x: 0, y: 0}, pressed = true, portal = false) => cases.push({name, player, objects, pressed, portal});

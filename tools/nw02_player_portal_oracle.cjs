@@ -11,7 +11,7 @@ function main(){
  for(const marker of ['function _placePlayerPortal(){','function _usePlayerPortal(){','function _loadZone(zid,sx,sy){','function initStage(si){']){
   const at=text.indexOf(marker);if(at<0||text.indexOf(marker,at+marker.length)>=0)throw Error('missing/duplicate marker '+marker);
  }
- const fragments={portal:lines.slice(18308,18322).join('\n')+'\n',zone:lines.slice(30159,30161).join('\n')+'\n',stage:lines.slice(31533,31535).join('\n')+'\n',distance:lines[31722],tile:lines[16630]};
+ const fragments={portal:lines.slice(18310,18324).join('\n')+'\n',zone:lines.slice(30161,30163).join('\n')+'\n',stage:lines.slice(31535,31537).join('\n')+'\n',distance:lines[31724],tile:lines[16632]};
  for(const key of Object.keys(HASHES))if(sha(fragments[key])!==HASHES[key])throw Error('source fragment differs '+key);
  const p=(x=0,y=0)=>({x,y,vx:7,vy:-9,s:'idle',extra:{keep:1}}),a=(x,y)=>({x,y});
  const base=()=>({on:true,map_present:true,player:p(),pair:null,cam:{x:9,y:8,extra:'keep'}});

@@ -11,7 +11,7 @@ function main(){
  const unique=m=>{const at=html.indexOf(m);if(at<0||html.indexOf(m,at+m.length)>=0)throw Error('missing/duplicate marker '+m);return at;};
  const loop=html.slice(unique('    // MAP_OBJS 상호작용 (우선)'),unique('    // 보물상자 체크 (우선)'));
  if(hash(loop)!==LOOP_SHA)throw Error('loop hash differs');
- const distance=lines[31722],gate=lines[32826];
+ const distance=lines[31724],gate=lines[32828];
  if(distance!=='function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}'||gate!=='  if(_interactPressed&&!_usePlayerPortal()){')throw Error('distance/gate differs');
  const p=()=>({x:10.25,y:20.5,hp:1,mhp:100,st:2,mst:60,mp:3,mmp:40,shield:0,mshield:12,keep:{v:1}});
  const mo=type=>({type,x:11.5,y:21.25,read:false,used:false,alive:true,hp:3,loot:'none',keep:{v:2}});
@@ -58,7 +58,7 @@ function main(){
   return {...c,expected:{ready:true,matched:selected!==null,source_index:selected,type:selected===null?null:c.objects[selected].type,reason:null,commands,rng_consumed:rng,source:'game.html:32829–32853',break_scope:selected===null?null:'map_objs'},after:{player,objects,mats:G.mats??null}};
  });
  // Separate source evidence: current HP addPotion does NOT create a potion inventory item.
- const hpBody=lines.slice(28250,28258).join('\n');
+ const hpBody=lines.slice(28252,28260).join('\n');
  if(!hpBody.includes("if(type==='hp')")||!hpBody.includes('G.mats+=count'))throw Error('HP dependency excerpt differs');
  const hpCtx=vm.createContext({G:{mats:10},P:{x:0,y:0},SFX:{pickup(){}},addTxt(){}});
  const hpReturn=vm.runInContext('(function(type,count){\n'+hpBody+'\n})("hp",1)',hpCtx);
