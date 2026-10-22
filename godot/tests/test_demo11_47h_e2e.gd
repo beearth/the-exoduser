@@ -213,8 +213,9 @@ func play_bossroom_route(provider: Node,max_ms: int) -> Dictionary:
    if at.distance_to(main.player.global_position)<360:aim=at;close=at.distance_to(main.player.global_position)<155
   var direction:=Vector2.ZERO
   if close:
-   boss_aim(aim);boss_input("weapon",frame%12<4)
-   if frame%12==0:attacks+=1
+   boss_aim(aim)
+   if frame%12==0:boss_input("weapon",true);attacks+=1
+   elif frame%12==4:boss_input("weapon",false)
   else:
    boss_input("weapon",false)
    if not flow.is_empty() and provider.flow_query(flow,main.player.global_position,query):direction=query.get("direction",Vector2.ZERO)

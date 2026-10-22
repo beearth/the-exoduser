@@ -56558,3 +56558,7 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - test_demo11_boss_actor.gd Main tree 진입 전 native_pc_boss_core=off 한줄(M4), --map11=off 실제166/0(요청167과1차이). 최초 잘못된 위치 실패 원로그 보존.
 - import ERROR0; parity 3 suite PASS, 인벤토리1281/0·스킬105/0. legacy/PC namespace·provider/HUD 기대 불일치 실패는 미수정 기록.
 - E2E 무주입1회: 2PASS 뒤 line204 natural owner Nil, 나머지16미도달. M13 수정0. 나란히4캡처: field/inventory/HUD RETOUCH, bossroom black void/DORMANT FAIL. 동일성 완료 아님. 상세 docs/engine/DEMO11_STATUS_20261021.md INTEG-11, 외부 _out/INTEG-11.
+
+### PARITY-BOSS-01 bossroom 입력 edge 검토
+
+- 무기 입력은 12틱 press0/release4의 실제 이벤트 edge만 전달한다. HP/처치/상태 주입0. 단1회 E2E dead 선행조건 NOT_READY를 그대로 보존하며 후속 종주 PASS로 주장하지 않는다. 상세 PARITY_BOSS_01_20261022.md.
