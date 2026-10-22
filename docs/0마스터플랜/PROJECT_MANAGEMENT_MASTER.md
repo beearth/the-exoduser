@@ -483,3 +483,7 @@ MAP11-32c c335f345를 기존 ZOOM-01에 merge. 새 필드 START와 HUD 안전 �
 ## 2026-10-22 — INTEG-8 통합
 
 INTEG-7 + C15 + ZOOM을 merge2회로 통합. import ERROR0·회귀33종355,135/0·E2E13/5/0(저장ON/주입0), 성능60초 포커스 미확보 — 미측정. 제품 카메라/스케일·맵 비주얼·PC 코어/계약/PC 테스트 보존. 자연 gate 이후5단계 NR 유지. [현황 행](../engine/DEMO11_STATUS_20261021.md#integ-8--etype15-분열-actor--테스트-전용-zoom-통합-2026-10-22), 최종 SHA·원격·정리 근거 `~/exoduser-wt/_out/INTEG-8/DONE.txt`.
+
+## 2026-10-22 PARITY-SKILL-01 인수 후보
+
+PC skill writer merge/버튼 활성·피드백 및 Mac pack_b fixture 회귀 수리(402/0). skill105/0·writer80/0·원본VM14행0불일치. E2E9PASS/9NOT_READY/0FAIL, 시각 RETOUCH(M3 원인 확정·제단 동적 합성 잔여). main/PC 실제 인수 완료 아님. [원본·적용 위치·비교·검수](../engine/PARITY_SKILL_01_20261022.md).

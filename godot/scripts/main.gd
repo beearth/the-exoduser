@@ -2614,6 +2614,15 @@ func bind_native_skill_management_handoff(receiver: Callable) -> bool:
 func read_native_skill_management() -> Dictionary:
 	return source_state.read_native_skill_management_snapshot() if is_instance_valid(source_state) else {}
 
+# PC-SKILL-WRITERS (2026-10-22): SkillForge footer writers for Mac UI.
+# G3090 onclick=_skillBatchUp() / _skillRecAuto(). Same transaction/replay/handoff as manage().
+# Contract: docs/engine/PC_SKILL_WRITERS_CONTRACT_20261022.md
+func request_skill_batch_level_up(request_id: String) -> Dictionary:
+	return request_native_skill_management({"request_id":request_id,"action":"batch","skill_id":"","confirmed":false})
+
+func request_skill_recommend_auto(request_id: String) -> Dictionary:
+	return request_native_skill_management({"request_id":request_id,"action":"recommend","skill_id":"","confirmed":false})
+
 
 # DEMO11-18: callable seams only; K/L layout stays with PC.
 func read_native_skill_fusion(key: String) -> Dictionary:

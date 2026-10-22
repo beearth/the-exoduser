@@ -13,30 +13,16 @@ func _enemies_alive() -> Array:
     sequence._spawn_ring_enemy(100+i,at.x,at.y)
   forced+=8
  return super._enemies_alive()
+func _initialize() -> void:
+ root.mode=Window.MODE_WINDOWED;root.show()
+ super._initialize()
 func _wall_model(_center: Vector2,_radius: float) -> Dictionary:
- var provider: Node2D=world.map11_provider
- var field: RefCounted=provider.field
- var outer: Array=[]
- for p in field._outer:
-  var at: Vector2=provider.to_global(p)
-  outer.append([at.x,at.y])
- var solids: Array=[]
- for row in field._solids:
-  if row.blocks_move:
-   var at: Vector2=provider.to_global(row.center)
-   solids.append([at.x,at.y,row.radius])
- return {"map11_outer":outer,"map11_solids":solids}
+ return {"mac_web_field":world.map11_provider.field.data.duplicate(true)}
 func _wall_model_matches(model: Dictionary,points: Array) -> bool:
- var polygon:=PackedVector2Array()
- for p in model.map11_outer:polygon.append(Vector2(p[0],p[1]))
+ var field=preload("res://scripts/maps/map11/web_field.gd").new()
+ field.data=model.mac_web_field
  for pt in points:
-  var inside: bool=Geometry2D.is_point_in_polygon(pt,polygon)
-  for i in range(polygon.size()):
-   if Geometry2D.get_closest_point_to_segment(pt,polygon[i],polygon[(i+1)%polygon.size()]).distance_squared_to(pt)<.001:inside=true
-  var blocked: bool=not inside
-  for row in model.map11_solids:
-   if pt.distance_squared_to(Vector2(row[0],row[1]))<=row[2]*row[2]:blocked=true
-  if blocked!=world.is_world_blocked(pt):return false
+  if field.blocked(pt)!=world.is_world_blocked(pt):return false
  return true
 func _run_oracle(cases: Array, name: String) -> Dictionary:
  check(not node_bin.is_empty() and FileAccess.file_exists(node_bin), "explicit_node_bin")
