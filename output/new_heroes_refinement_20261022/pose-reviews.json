@@ -1,0 +1,50 @@
+{
+  "H25": {
+    "visualVerdict": "Original inspected: clear vertical rest pose and hand-on-hip stance, hip ornaments removed, simple leather shorts. User's subsequent firearm correction requires replacing the old glowing slab. Current gun orientation reads muzzle down, not intended stock down. Intermediate pose study only; H28 will replace firearm.",
+    "finalApproval": false,
+    "runtimeAdoption": false
+  },
+  "H27": {
+    "visualVerdict": "Original inspected: distinct walking three-quarter pose, oxblood cropped jacket and plain cuffed shorts, old hip ornaments removed. Physical anti-materiel rifle has long steel barrel, muzzle brake, box magazine, bolt handle and scope; no energy rails. Forehand rests over scope rather than supporting underside, requiring H30 correction. Tall boots changed to shorter laced boots; record as outfit variation, not identical retained boots.",
+    "finalApproval": false,
+    "runtimeAdoption": false
+  },
+  "H32": {
+    "status": "failed",
+    "failureMessage": "The current prompt or reference image couldn't be processed. Please edit it and try again. Credits have been refunded.",
+    "refundObserved": true,
+    "outputExists": false,
+    "followup": "Stop this correction after two failed jobs (H30/H32). C H27 remains a comparison candidate with unresolved scope-top support hand; do not claim completed correction."
+  },
+  "H30": {
+    "status": "failed",
+    "failureMessage": "The generation service is temporarily unavailable. Please try again later. Credits have been refunded.",
+    "refundObserved": true,
+    "outputExists": false,
+    "followup": "H32 is one retry of the same narrow hand-support correction through Re-edit."
+  },
+  "H31": {
+    "visualVerdict": "Original inspected: standing rest pose differs from H24; physical large rifle stands stock on floor, muzzle up, robot right hand stabilizes barrel/fore-end, natural hand on hip. Steel barrel, vented fore-end, large box magazine, receiver/bolt and scope are visible with no energy glow. Hip plates/hanging cloth removed; plain leather shorts and aged ivory jacket, positive blonde face retained. Robot grip is above receiver, acceptable for resting support but not a firing grip.",
+    "finalApproval": false,
+    "runtimeAdoption": false
+  },
+  "H29": {
+    "visualVerdict": "Original inspected: distinctly wide bent-knee braced pose, charcoal cropped jacket, simple leather shorts/belt, no hip plates or red hanging cloth. Large physical single-barrel machinegun with ventilated handguard, muzzle device, brass ammunition belt and attached ammo box. Natural left hand supports top carry handle; robot right hand rests/cradles rear receiver, so this is braced heavy-weapon carry, not verified trigger/foregrip firing posture. Positive H22 face/golden bob retained. No energy rails.",
+    "finalApproval": false,
+    "runtimeAdoption": false
+  },
+  "H28": {
+    "status": "failed",
+    "failureMessage": "The current prompt or reference image couldn't be processed. Please edit it and try again. Credits have been refunded.",
+    "refundObserved": true,
+    "outputExists": false,
+    "followup": "H31 uses existing completed H27 physical rifle visual reference; one revised attempt for A gun target. Failure cause unspecified."
+  },
+  "H26": {
+    "status": "failed",
+    "failureMessage": "The current prompt or reference image couldn't be processed. Please edit it and try again. Credits have been refunded.",
+    "refundObserved": true,
+    "outputExists": false,
+    "followup": "H29 revised input uses base character plus fictional pose reference, omits firearm photo; one retry only."
+  }
+}

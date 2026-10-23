@@ -1,0 +1,21 @@
+import fs from 'node:fs';import crypto from 'node:crypto';
+const root='G:/exoduser/',dir=root+'output/new_heroes_refinement_20261022/',sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const downloads=JSON.parse(fs.readFileSync(dir+'download-receipt.json','utf8')),rf=dir+'submission-receipt.json',r=JSON.parse(fs.readFileSync(rf,'utf8'));
+const row=downloads.rows.find(j=>j.candidate==='H53');if(!row||sha(fs.readFileSync(root+row.destination))!==row.sha256)throw Error('Missing/changed H53');
+const review={candidate:'H53',reviewedAt:new Date().toISOString(),path:row.destination,sha256:row.sha256,verdict:'가는 크롬 라인 + 가죽 바디수트 복원 / 검토 시안',checks:[
+{item:'의상 복원',note:'불투명 검은 가죽 가슴 패널과 몸통 중앙 연결부, 깊은 목선/옆구리 트임이 있는 원피스형 바디수트 확인. 핫팬츠 아래로 연결되는 구조이며 쫄티/전면 시스루로 바꾸지 않음'},
+{item:'크롬 라인',note:'쇄골 아래의 가는 은색 인레이와 옆구리/골반의 곡선 띠가 남음. 복원된 바디수트에 가슴 중앙 장식 일부는 가려짐'},
+{item:'인물/무기',note:'금발 단발/얼굴/보라 단안/기계 오른팔/가죽 핫팬츠/대형 회전 약실과 네 식별색을 유지'},
+{item:'비견착 자세',note:'총이 허리 쪽으로 내려가 몸통과 장식이 드러나는 비조준 휴대 구도. 개머리판 삭제를 요청하지 않았으며 실제 3D 무게중심/손 접점/사격 안정성 검증은 아님'}
+],remaining:['사용자 최종 선택 전 검토 시안','총/하체가 잘린 기존 근접 구도 유지','실제 사격 자세와 3D 손/무게중심은 별도 검증'],runtimeImplemented:false,finalApproval:false};
+const nf=dir+'shared-notes.json',notes=JSON.parse(fs.readFileSync(nf,'utf8'));
+const addition=' **2026-10-23 크롬 비교 H53/H52:** H50에 대한 “나쁘지 않네 다른버전도 해바”에 따라 가는 크롬+검은 가죽 바디수트/낮춘 총(H53), 각진 크롬 장갑판(H52)을 실제 생성·수신·검수. H51은 상의가 빠진 중간본으로 보존. 비견착 질문은 원화의 휴대 자세로 해석했으며 개머리판 삭제/견착 사격 폐기는 아님. 최종 채택/게임 연결 전, 상세는 최신 거대총기 대장.';
+const plans=notes.map(n=>{const text=fs.readFileSync(root+n.path,'utf8');if(!text.includes(n.note))throw Error('Shared own note changed: '+n.path);const newNote=n.note.includes('크롬 비교 H53/H52')?n.note:n.note+addition;return {n,text,newNote};});
+const vf=dir+'chrome-variants-visual-review.json',v=JSON.parse(fs.readFileSync(vf,'utf8'));v.reviews=v.reviews.filter(j=>j.candidate!=='H53');v.reviews.push(review);v.comparisonCandidates=['H53','H52'];v.notPresentedIntermediate=['H51'];v.reviewedAt=review.reviewedAt;fs.writeFileSync(vf,JSON.stringify(v,null,2)+'\n');
+const j=r.jobs.find(j=>j.candidate==='H53');j.status='completed-downloaded-visually-inspected';j.visualReview=review;Object.assign(r.latestChromeDirection,{variants:['H53','H52'],status:'completed-downloaded-visually-inspected',variantReviews:'output/new_heroes_refinement_20261022/chrome-variants-visual-review.json'});r.updatedAt=review.reviewedAt;fs.writeFileSync(rf,JSON.stringify(r,null,2)+'\n');
+const df=root+'docs/17게임아트팀/HELLGUNNER_SINGLE_SHOT_GIANT_GUN_20261023.md';let d=fs.readFileSync(df,'utf8');
+if(!d.includes('## 현재 크롬 비교 — H53/H52'))d+='\n## 현재 크롬 비교 — H53/H52\n\nH53은 H51의 상의가 빠진 문제를 복원한 가는 크롬 라인 최종 비교 후보이며, H52는 각진 크롬 장갑판 비교 후보다. 사용자 최종 채택은 아니다. 원본 H50/H51은 덮어쓰지 않았다.\n\n| 후보 | 파일 | 규격 / SHA256 | 실제 관측 |\n|---|---|---|---|\n'+['H53','H52'].map(c=>{const q=downloads.rows.find(q=>q.candidate===c);return '| '+c+' | `'+q.destination+'` | '+q.width+'×'+q.height+' PNG / `'+q.sha256+'` | '+(c==='H53'?'불투명 검은 가죽 바디수트 복원, 옆구리 트임/가는 크롬/낮춘 총으로 몸통 장식 노출':'쇄골부터 복부로 이어지는 각진 크롬 판·어두운 분할 틈. 복부 판 면적이 요청보다 넓고 총 자세는 H50와 거의 동일')+' |';}).join('\n')+'\n\nH53 세부 검수:\n\n| 항목 | 실제 관측 |\n|---|---|\n'+review.checks.map(c=>'| '+c.item+' | '+c.note+' |').join('\n')+'\n\n두 결과와 기존 H50의 재질/얼굴/단안/핫팬츠/탄약 식별색을 비교했다. 손·총 무게중심/반동의 실물 또는 3D 검증을 대신하지 않는다. H51은 의상 RETOUCH 중간본이며 H53으로 복원돼 최종 비교에서 제외한다. 게임/음원/탄종 선택 로직은 변경하지 않았다. 프롬프트는 chrome-variants-receipt.json, H53 보정 프롬프트는 h53-reference-receipt.json에 보존한다.\n';
+if(!d.includes('**크롬 최신 비교:**'))d=d.replace('\n\n2026-10-23 사용자 재정정.','\n\n**크롬 최신 비교:** H53(가는 크롬+복원 바디수트·낮춘 총), H52(각진 크롬 장갑판). H50 긍정 방향에서의 추가 시안이며 최종 채택 전.\n\n2026-10-23 사용자 재정정.');fs.writeFileSync(df,d);
+for(const p of plans){fs.writeFileSync(root+p.n.path,p.text.replace(p.n.note,p.newNote));p.n.note=p.newNote;p.n.afterSha256=sha(fs.readFileSync(root+p.n.path));}fs.writeFileSync(nf,JSON.stringify(notes,null,2)+'\n');
+let c=fs.readFileSync(dir+'checkpoint.mjs','utf8');const p='output/new_heroes_refinement_20261022/finish-chrome-variants.mjs';if(!c.includes(p))c=c.replace('const fixed=[','const fixed=[\n '+JSON.stringify(p)+',');fs.writeFileSync(dir+'checkpoint.mjs',c);
+console.log(JSON.stringify({comparison:['H53','H52'],intermediate:'H51',finalApproval:false,runtimeImplemented:false}));
