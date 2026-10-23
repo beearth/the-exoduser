@@ -565,8 +565,10 @@ func run() -> void:
  begin("save_handoff")
  var save: Dictionary=main.save_native_demo11_current() if main.has_method("save_native_demo11_current") else {"status":"OFF"}
  var disk: Dictionary=store.read_json("hellsave_demo")
- var save_ok: bool=save.get("committed",false) and disk.get("ready",false) and disk.get("found",false) and disk.value.get("player") is Dictionary and int(disk.value.player.lv)==int(p.lv)
- await done(verdict(save.get("committed",false),save_ok),"" if save_ok else str(save.get("reason","save_session_not_admitted")),{"receipt":save,"live_level":p.lv,"disk_payload_found":disk.get("found",false),"slot0_metadata_preserved":store.read_json("hellsave_demo_0").get("found",false)})
+ # Retry replaces Main/State; read the current P, as source G62135 does.
+ var saved_player: Dictionary=main.source_state.read_current_p()
+ var save_ok: bool=save.get("committed",false) and disk.get("ready",false) and disk.get("found",false) and disk.value.get("player") is Dictionary and int(disk.value.player.lv)==int(saved_player.lv)
+ await done(verdict(save.get("committed",false),save_ok),"" if save_ok else str(save.get("reason","save_session_not_admitted")),{"receipt":save,"live_level":saved_player.lv,"disk_payload_found":disk.get("found",false),"slot0_metadata_preserved":store.read_json("hellsave_demo_0").get("found",false)})
  begin("lobby_return")
  var main_ref: WeakRef=weakref(main)
  if end_ok:flow._view.buttons.lobby.pressed.emit()

@@ -141,6 +141,8 @@ func _test_public_actor_sync() -> Dictionary:
 	var main = make_main()
 	var bundle: Dictionary = main.source_providers.get_provider_bundle()
 	var p: Dictionary = main.source_state.read_current_p()
+	# HP readthrough test: source boot fills shield; empty only the test setup pool.
+	p["shield"] = 0
 	check(main.player.request_attack(), "actual public attack")
 	main.player.release_attack()
 	main.player.receive_damage(100, "magic")
