@@ -234,8 +234,26 @@ func boss_input(action: String,pressed: bool) -> Dictionary:
 func boss_release() -> void:
  boss_input("move_up",false);boss_input("move_down",false);boss_input("move_left",false);boss_input("move_right",false);boss_input("weapon",false)
 func boss_aim(at: Vector2) -> void:
- var event:=InputEventMouseMotion.new();event.position=root.get_visible_rect().size*.5+(at-main.camera.get_screen_center_position())*main.camera.zoom
- main.player.handle_native_input_event(event)
+ # Canvas -> viewport -> window/screen. Input stores global_position, not
+ # position; push_input alone updates GUI but not the root mouse query.
+ var viewport: Viewport=main.player.get_viewport()
+ var point: Vector2=main.player.get_canvas_transform()*at
+ var event:=InputEventMouseMotion.new()
+ event.position=viewport.get_final_transform()*point
+ event.global_position=viewport.get_screen_transform()*point
+ Input.parse_input_event(event)
+ Input.flush_buffered_events()
+func check_aim() -> Dictionary:
+ var samples: Array=[];var valid:=true
+ for direction in [Vector2.RIGHT,Vector2.DOWN,Vector2.LEFT,Vector2.UP]:
+  var target: Vector2=main.player.global_position+direction*100
+  boss_aim(target);await physics_frame;await physics_frame
+  var pointer: Vector2=main.player.get_global_mouse_position()
+  var facing: Vector2=main.player.facing
+  var ok: bool=pointer.distance_to(target)<1.0 and facing.dot(direction)>.999
+  valid=valid and ok
+  samples.append({"target":str(target),"pointer":str(pointer),"facing":str(facing),"ok":ok})
+ return {"verified":valid,"samples":samples,"final_transform":str(root.get_final_transform()),"screen_transform":str(root.get_screen_transform())}
 func play_bossroom_route(provider: Node,max_ms: int) -> Dictionary:
  var trace: Array=[];var deadline: int=Time.get_ticks_msec()+max_ms;var attacks:=0;var moves:=0
  if not is_instance_valid(provider):return {"reason":"provider_absent","input_only":true}
@@ -376,6 +394,11 @@ func run() -> void:
  var field_ready: bool=is_instance_valid(product) and product.current() and product.snapshot().space=="field" and main.world.ready_for_player
  if not field_ready:mark_checkpoint("MAP11 production provider absent; remaining actual subsystems run as conditional checkpoints")
  await done("PASS" if field_ready else "NOT_READY","" if field_ready else "MAP11_provider_absent",{"stage":g.get("stage"),"World_ready":main.world.ready_for_player,"actual_provider":field_ready,"spawn_adapter_bound":adapter!=null,"fixture_provider_created":false})
+ if arg("--check-aim")=="on":
+  begin("aim_input")
+  var aim_result: Dictionary=await check_aim()
+  await done("PASS" if aim_result.verified else "FAIL","" if aim_result.verified else "actual root pointer/facing mismatch",aim_result)
+  if not aim_result.verified or arg("--stop-after")=="aim_input":finish();return
  begin("enemy_kill")
  var target: Node=nearest_natural_enemy()
  var spawn_started:=Time.get_ticks_msec()

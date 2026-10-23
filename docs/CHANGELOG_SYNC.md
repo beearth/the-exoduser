@@ -56844,3 +56844,7 @@ integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 
 - UI 테스트 각1회 300검사/0실패, 최종 import ERROR0. 자연 E2E 마지막1회 결과 및 항목별 남음 판정은 [SWEEP_B3_20261023.md](engine/SWEEP_B3_20261023.md), 외부 DONE/캡처를 따른다. 전체 UI 동일 완료를 선언하지 않는다. 새 화면문구0·번역목록 원byte/CRLF 보존·기대값 완화0.
 
 - SWEEP-B3 final E2E: exit0 / PASS11 / NOT_READY7 / FAIL0 / ERROR0, no injection, one run. Full continuous E2E not complete; details in engine/SWEEP_B3_20261023.md.
+
+## 2026-10-23 E2E-TAIL-02 조준
+
+기존 47h 조준을 실제 MouseMotion global_position·position 변환과 Input 전달로 수정하고 두 물리 경계 뒤 실제 pointer/facing을 검사한다. 좁은 4방향 확인 1회 PASS. 자연 성장·보스 접근/순회/출구 하니스는 보류. [조준 기록](engine/E2E_TAIL_02_AIM_20261023.md).
