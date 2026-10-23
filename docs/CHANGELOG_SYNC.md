@@ -56848,3 +56848,7 @@ integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 
 ## 2026-10-23 E2E-TAIL-02 조준
 
 기존 47h 조준을 실제 MouseMotion global_position·position 변환과 Input 전달로 수정하고 두 물리 경계 뒤 실제 pointer/facing을 검사한다. 좁은 4방향 확인 1회 PASS. 자연 성장·보스 접근/순회/출구 하니스는 보류. [조준 기록](engine/E2E_TAIL_02_AIM_20261023.md).
+
+## 2026-10-23 E2E-TAIL-02 종료 복귀
+
+clear leave는 원본 G41920–42003처럼 아레나를 유지한다. lobby_return은 G63676–63685처럼 현재 저장을 먼저 수행하고 기존 demo11_lobby 해제·언어 브리지를 거쳐 슬롯 로비로 복귀한다. 기존38 소스 오라클에 경로 계약 검사 추가, 지정 PC/Mac 회귀 통과. 자연 성장·전체 E2E는 보류/미검증. [원인·검수 표](engine/E2E_TAIL_02_20261023.md).

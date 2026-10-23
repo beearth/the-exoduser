@@ -46,7 +46,12 @@ func request_transition(route: String) -> Dictionary:
    if not options.get("diff") is int:return {"status":"NOT_READY","reason":"actual_difficulty_required"}
    var receipt: Dictionary=provider().request_gate_enter(main.player.global_position,{"difficulty_index":options.diff,"stage_diff_offset":g.get("_stageDiffOff",0),"room":0})
    if receipt.get("status")!="READY":return receipt
-  elif not provider().request_gate_leave(main.player.global_position):return {"status":"NOT_READY","reason":"gate_owner_leave"}
+  else:
+   if not provider().request_gate_leave(main.player.global_position):return {"status":"NOT_READY","reason":"gate_owner_leave"}
+   # G41920–42003: exit contact shows the clear panel over this arena.
+   # There is no field transport in this branch; nextStage owns the next route.
+   _transitions+=1;_last={"status":"READY","route":"leave","anchor":_sites.arena_exit.get_meta("anchor_id","Exit"),"space":_space,"clear":true}
+   return _last.duplicate(true)
  var destination: Marker2D=_sites.arena_entry if route=="enter" else _sites.field_return
  var next: String="arena" if route=="enter" else "field"
  if not provider().can_move(destination.global_position,main.player.radius,next):return {"status":"NOT_READY","reason":"destination_blocked"}

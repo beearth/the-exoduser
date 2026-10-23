@@ -3436,7 +3436,11 @@ func _return_native_demo_lobby() -> void:
 	var snapshot: Dictionary=native_demo_end_flow.get_snapshot()
 	if snapshot.phase!="leaving": return
 	get_tree().set_meta("native_demo_return_language",snapshot.language)
-	get_tree().call_deferred("change_scene_to_file","res://scenes/demo_lobby.tscn")
+	# G63676–63685: save the current run before releasing Main, then enter
+	# the return bridge which unpauses and preserves the selected language.
+	if has_method("save_native_demo11_current"):
+		save_native_demo11_current()
+	get_tree().call_deferred("change_scene_to_file","res://scenes/demo11_lobby.tscn")
 
 # DEMO11-40: existing skill sound callsites supply already resolved pitch/gain.
 func request_native_skill_sample(path: String, gain: float, rate: float) -> void:
