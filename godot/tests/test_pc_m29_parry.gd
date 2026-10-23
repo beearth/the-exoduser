@@ -436,6 +436,10 @@ func _damage_contact() -> void:
 	order.clear()
 	kb_delta_at_impact = Vector2.INF
 	var parry_count: int = services.get_snapshot().counts.parry_accepted
+	# 웹도 부팅 시 P.shield=P.mshield(100+)라 첫 피해는 쉴드가 받는다(hurtP G43544~) — 여기는 HP 피해·패링 보상 검사라 쉴드를 비운다.
+	var _p_live: Dictionary = main.source_state.read_current_p()
+	_p_live["shield"] = 0
+	_p_live["shieldRegenT"] = 99999
 	var hp_before: float = player.hp
 	var raw: Dictionary = actor.get_native_modifier_state()
 	var flags := {"_iceOnHit": raw.get("_iceOnHit"), "_lavaBurn": raw.get("_lavaBurn"), "mods": raw.mods}

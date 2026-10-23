@@ -2220,3 +2220,75 @@ func commit_native_skill_forge_slot(owner: Node,slot_key: String,skill_id: Strin
 	elif definition.kind=="ult":_p.ultSlot=skill_id
 	else:_p[definition.v]=skill_id
 	return {"committed":true,"before":before,"after":read_native_skill_management_snapshot(),"source":"skill-forge.js:75–84","saved":false}
+
+# ═══ PC-PLAYER-SHIELD (2026-10-23) — 플레이어 에너지쉴드 P.shield/mshield/shieldRegenT 쓰기 ═══
+# 원본(game.html sha dee094fd) 두 곳만:
+#   hurtP G43544~43566 — 모든 DR(G43516~43526)·barrier(G43528)·조건부 DR(G43531~43539)·최소뎀(G43541~43542) 뒤, _uArmorRage(G43568) 앞.
+#     let _shFullBlock=false;
+#     if(P.mshield>0&&P.shield>0){ P.shieldRegenT=180;
+#       if(a>=P.shield){ const overflow=a-P.shield;P.shield=0; …u_d20·addTxt·poolPart…; a=overflow }
+#       else{ P.shield-=a; addTxt('❄-'+a,…); a=0;_shFullBlock=true } }
+#     DOT 게이트 없음 — hurtE G42347의 `(!isDot||opts.shieldHit)`는 몬스터 쪽 문장이다.
+#   update G32758~32762 — 자동 리젠(G32745 이동거리 → 32747 statusClean → 32749 5장 규칙 뒤).
+#     if(P.mshield>0){ if(P.shieldRegenT>0)P.shieldRegenT-=sp*((1/pShieldCdMul())||1);
+#       else if(P.shield<P.mshield){P.shield=Math.min(P.mshield,P.shield+(0.3+(STATS.int+_lvB())*0.003)*pMRegenMul()*sp)} }
+#     pShieldCdMul G28061 = 1-Math.min(.3,PASSIVES.pMRegen*.03) · pMRegenMul G28058 = 1+PASSIVES.pMRegen*.03 · _lvB G28770 = ~~(P.lv*.5)
+# 표시(addTxt/poolPart)와 u_d20 판독은 호출자(native_player_energy_shield.gd) 몫 — 여기는 P 쓰기만.
+const PLAYER_SHIELD_REGEN_DELAY := 180 # G43548
+var _player_shield_hits := 0
+var _player_shield_regen_ticks := 0
+
+func _player_shield_owner_ok(owner: Node) -> bool:
+	return _current_error().is_empty() and is_instance_valid(owner) and owner == _player.get_parent() \
+		and owner.get("source_state") == self
+
+## a = hurtP의 그 시점 지역 변수 a(모든 감산 뒤 HP 피해 후보). 반환 a = 쉴드 처리 뒤 값(오버플로우 또는 0).
+func apply_native_player_shield_hit(owner: Node, a: float) -> Dictionary:
+	if not _player_shield_owner_ok(owner) or not is_finite(a):
+		return {"ready": false, "reason": "actual_player_shield_owner_required"}
+	var mshield: Variant = _p.get("mshield")
+	var shield: Variant = _p.get("shield")
+	if not _number(mshield) or not _number(shield):
+		return {"ready": false, "reason": "player_shield_not_numeric"}
+	if not (float(mshield) > 0.0 and float(shield) > 0.0):
+		return {"ready": true, "applied": false, "a": a, "shield": shield, "mshield": mshield}
+	_p["shieldRegenT"] = PLAYER_SHIELD_REGEN_DELAY
+	_player_shield_hits += 1
+	if a >= float(shield):
+		var overflow: float = a - float(shield)
+		_p["shield"] = 0
+		return {"ready": true, "applied": true, "broke": true, "full_block": false, "a": overflow,
+			"shield_before": shield, "shield": 0, "mshield": mshield, "regen_t": PLAYER_SHIELD_REGEN_DELAY,
+			"source": "G43549-43560"}
+	_p["shield"] = float(shield) - a
+	return {"ready": true, "applied": true, "broke": false, "full_block": true, "a": 0.0,
+		"shield_before": shield, "shield": _p["shield"], "mshield": mshield, "regen_t": PLAYER_SHIELD_REGEN_DELAY,
+		"source": "G43561-43565"}
+
+## sp = 같은 update()의 sp(clock.read_sp). 원본처럼 P.s/fallen과 무관하게 돈다.
+func advance_native_player_shield_regen(owner: Node, sp: float) -> Dictionary:
+	if not _player_shield_owner_ok(owner) or not is_finite(sp):
+		return {"ready": false, "reason": "actual_player_shield_owner_required"}
+	var mshield: Variant = _p.get("mshield")
+	if not _number(mshield) or not float(mshield) > 0.0:
+		return {"ready": true, "applied": false}
+	var p_mregen: float = _feel_num(_passives.get("pMRegen"))
+	var regen_t: float = _feel_num(_p.get("shieldRegenT"))
+	if regen_t > 0.0:
+		var k: float = 1.0 / (1.0 - minf(0.3, p_mregen * 0.03))
+		if is_nan(k) or k == 0.0: k = 1.0 # `||1`
+		_p["shieldRegenT"] = regen_t - sp * k
+		_player_shield_regen_ticks += 1
+		return {"ready": true, "applied": true, "phase": "delay", "shieldRegenT": _p["shieldRegenT"]}
+	var shield: float = _feel_num(_p.get("shield"))
+	if shield < float(mshield):
+		var lv_b: int = int(_feel_num(_p.get("lv")) * 0.5) # ~~(P.lv*.5), lv ≥ 1
+		var gain: float = (0.3 + (_feel_num(_stats.get("int")) + lv_b) * 0.003) * (1.0 + p_mregen * 0.03) * sp
+		_p["shield"] = minf(float(mshield), shield + gain)
+		_player_shield_regen_ticks += 1
+		return {"ready": true, "applied": true, "phase": "regen", "shield": _p["shield"]}
+	return {"ready": true, "applied": false, "phase": "full"}
+
+func get_native_player_shield_snapshot() -> Dictionary:
+	return {"shield": _p.get("shield"), "mshield": _p.get("mshield"), "shieldRegenT": _p.get("shieldRegenT"),
+		"hits": _player_shield_hits, "regen_ticks": _player_shield_regen_ticks}
