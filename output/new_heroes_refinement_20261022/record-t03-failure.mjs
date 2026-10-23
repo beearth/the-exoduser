@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const path='G:/exoduser/output/new_heroes_refinement_20261022/submission-receipt.json';
+const receipt=JSON.parse(fs.readFileSync(path,'utf8'));
+const job=receipt.jobs.find(j=>j.candidate==='T03');
+job.status='failed-refund-message-observed';
+job.error='The generation service is temporarily unavailable. Please try again later. Credits have been refunded.';
+job.errorObservedAt=new Date().toISOString();
+receipt.updatedAt=job.errorObservedAt;
+fs.writeFileSync(path,JSON.stringify(receipt,null,2)+'\n');
+console.log('T03 service failure and displayed refund recorded; no resubmission');

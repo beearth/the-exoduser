@@ -1,0 +1,44 @@
+{
+  "recordedAt": "2026-10-23T09:24:20.910Z",
+  "positive": [
+    {
+      "candidate": "H44",
+      "source": "C:/Users/심도진/Desktop/엑소듀서_검토/신규캐릭터_지속개선_20261022/hellgunner_monocular_hotpants_pose_h44.png",
+      "path": "assets/character-concepts/20261023/hellgunner_monocular_hotpants_pose_h44.png",
+      "sha256": "d9f28b7b045cd453564a16ef47b7f0259e444cc0efb5060a809f34ad15229590",
+      "userQuote": "이번에 만든것들이 게임 케릭터같네",
+      "verdict": "Positive rendering/design direction; not final game adoption"
+    },
+    {
+      "candidate": "H46",
+      "source": "C:/Users/심도진/Desktop/엑소듀서_검토/신규캐릭터_지속개선_20261022/hellgunner_shouldered_forward_support_h46.png",
+      "path": "assets/character-concepts/20261023/hellgunner_shouldered_forward_support_h46.png",
+      "sha256": "5626524227e5a2cce1eaa5c4f36c967191e98e7cc54aee128125e12fd04b7357",
+      "userQuote": "이번에 만든것들이 게임 케릭터같네",
+      "verdict": "Positive rendering/design direction; not final game adoption"
+    },
+    {
+      "candidate": "H45",
+      "source": "C:/Users/심도진/Desktop/엑소듀서_검토/신규캐릭터_지속개선_20261022/hellgunner_single_goggle_hotpants_h45.png",
+      "path": "assets/character-concepts/20261023/hellgunner_single_goggle_hotpants_h45.png",
+      "sha256": "390b8983f10d9e0bf147c5bc9380df2684eefd443fe96506e136a4ea6aa6369b",
+      "userQuote": "이번에 만든것들이 게임 케릭터같네",
+      "verdict": "Positive rendering/design direction; not final game adoption"
+    }
+  ],
+  "references": [
+    {
+      "index": 1,
+      "path": "assets/character-concepts/20261023/hellgunner_single_goggle_hotpants_h45.png",
+      "sha256": "390b8983f10d9e0bf147c5bc9380df2684eefd443fe96506e136a4ea6aa6369b",
+      "role": "Full image edit target: user-positive H45 with monocular goggle and hotpants; preserve character/gun/pose/rendering"
+    },
+    {
+      "index": 2,
+      "path": "assets/character-concepts/references/20261023/hellgunner_h49/user_ammo_target.png",
+      "sha256": "2c2e547064cec20d2c0a6a1c01ebfcf86cdf15542202db5b0caf24314fe07e20",
+      "source": "C:/Users/심도진/Pictures/Screenshots/스크린샷 2026-10-23 181916.png",
+      "role": "Location-only crop: color only the exposed cartridge ends on cylinder face. Do not replace full composition with crop."
+    }
+  ]
+}

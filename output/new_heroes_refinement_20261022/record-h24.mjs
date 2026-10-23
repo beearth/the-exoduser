@@ -1,0 +1,11 @@
+import fs from 'node:fs';import crypto from 'node:crypto';const root='G:/exoduser/',folder=root+'output/new_heroes_refinement_20261022/';
+const task=process.argv[2];if(!/^\d{19}$/.test(task||''))throw Error('Actual observed task required');
+const r=JSON.parse(fs.readFileSync(folder+'submission-receipt.json','utf8'));
+const path='assets/character-concepts/20261023/hellgunner_darkfantasy_warrior_h23.png';
+const references=[{index:1,path,role:'H23 material wear edit only. Preserve user-positive H22 face/golden bob, warrior armor additions and full silhouette/equipment.',sha256:crypto.createHash('sha256').update(fs.readFileSync(root+path)).digest('hex')}];
+const prompt='Edit ref1 MATERIAL WEAR ONLY. Preserve face/golden bob, body, outfit shapes, armor, RIGHT robot arm, visor, giant gun and pose. Clothes lived-in: ivory jacket aged bone/off-white, rubbed collar/cuffs, frayed hem and repaired seams; black bodysuit/shorts show leather grain, hip compression folds and edge abrasion. Burgundy cloth faded/torn at ends. Armor/gun: edge paint chips, seam soot, contact scratches, muted highlights. Clear localized wear, no random dots/speckles. Full body gray.';
+if(prompt.length>500)throw Error('Prompt too long');
+if(!r.jobs.some(j=>j.candidate==='H24'))r.jobs.unshift({candidate:'H24',task,generationMode:'multi-reference',reference:null,references,prompt,provider:'MagicLight',model:'GPT Image 2.5 sunburst',aspectRatio:'4:3',outputs:1,displayedCost:200,status:'submitted'});
+Object.assign(r.jobs.find(j=>j.candidate==='H23'),{visualVerdict:'Original inspected: H22 face/golden bob/proportions retained. Blackened left shoulder armor and articulated hip tassets with oxblood hanging cloth added. Robot arm, bodysuit/shorts, giant gun remain. Clothing still too clean for latest wear request, so material-only H24 retouch follows.',finalApproval:false,runtimeAdoption:false});
+r.userWearDirection.implementationStatus='H23 inspected: warrior accents present, jacket/leather still clean. H24 material-only retouch submitted.';
+r.balanceBeforeH24=34890;r.updatedAt=new Date().toISOString();fs.writeFileSync(folder+'submission-receipt.json',JSON.stringify(r,null,2)+'\n');console.log(JSON.stringify({candidate:'H24',task,promptLength:prompt.length,references:references.length}));
