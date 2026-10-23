@@ -77,7 +77,7 @@ P0 = 화면 구조·주요 요소 누락, P1 = 눈에 띄는 배치·상태 차�
 | G-01 | 성장 | 인스펙터·경로 목록·필터·하단 버튼·실시간 능력치 링크 | P0 | 고침 | 28973a1e3 |
 | G-02 | 성장 | 트리 배경 기사 일러스트 없음 → 웹 원본 바이트 사본 + `growth-tree-fixed-background.css` 방식 | P0 | 고침 | 4d7bf27ed |
 | G-03 | 성장 | 하단 disabled saturate(.3), 배율 표기 `×2.00`(stat-panel-ui.js 284)·현재값 위치 | P1 | 고침 | 71af08d35, aaefeaf0b |
-| G-04 | 성장 | 노드 링 모양·학습 경로 금선 굵기·원점 ✦ 노드 | P2 | 남음 | SWEEP-B3 `dce5e270d717e4d3a6cfe0440b3b0f1c4537380c`: 44/54px 노드·기본/학습/선택 그라디언트,3/4·3/5·3/6 다중 링·주요 노드 끊긴 외곽·원점27px 그림자 이식. CSS blur/위치/링 두께 1x 차이 남음. [상세](SWEEP_B3_20261023.md). |
+| G-04 | 성장 | 노드 링 모양·학습 경로 금선 굵기·원점 ✦ 노드 | P2 | 남음 | G04-02(기준688aa4be): 44/54px·좌표·SVG24%/52% currentColor·Georgia14px·1.5px 테·3/4·3/5·3/6 링·선택 parent 경로·route opacity.72/.95·Gaussian·11/14px rank·값 badge 반영. 1x에서 글꼴/링 edge/blur 및 badge 래스터 잔차 남음. [상세](G04_02_20261023.md), 외부 `_out/G04-02/captures/G-04_compare_1x.png`·`G-04_detail_1x.png`. |
 | F-01 | 대장간 | #forge 전체(470,12,980,1056)·탭 6종·재료판·격자·확인 대화 | P0 | 고침 | 9f30198ad |
 | F-02 | 대장간 | 스크롤 막대 비표시(기본·분해·리롤) | P2 | 고침 | 71af08d35, aaefeaf0b |
 | T-01 | 설정 | 버튼 굵기·위험 버튼 적동·섹션 모서리·Language 선택 상자 | P1 | 고침 | 8b2bb94f6 |

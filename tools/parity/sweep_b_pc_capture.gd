@@ -1,7 +1,7 @@
 extends SceneTree
 ## SWEEP-B PC 나란히 캡처(2026-10-22). 엔진 내부 viewport 캡처만 쓴다. 제품 코드 수정 없음.
 ## 실행: godot --path godot --script res://../tools/parity/sweep_b_pc_capture.gd -- --out=<dir> --mode=<lobby|game|...>
-const ALLOWED := ["EXODUSER-demo11-pc-sweep-b-Isolated-20261022"]
+const ALLOWED := ["EXODUSER-demo11-G04-02-Capture-20261023", "EXODUSER-demo11-pc-sweep-b-Isolated-20261022"]
 var out := ""
 var src := ""
 var mode := "lobby"
@@ -234,6 +234,13 @@ func run_forge() -> void:
 func run_growth() -> void:
 	if not await enter_play(): return
 	await tap(KEY_J); await secs(1.5); await shot("081_growth")
+	var panel: Node = main.get_node("NativeGrowthPanel")
+	var geometry: Dictionary = {}
+	for id in panel._nodes:
+		if "@" in id: continue
+		var b: Control = panel._nodes[id]
+		geometry[id] = {"rect":str(b.get_global_rect()),"size":str(b.size),"icon":str(b.get_node("SourceIcon").get_global_rect())}
+	L("growth_node_geometry",geometry)
 	var gp: Node = main.get_node_or_null("NativeGrowthPanel")
 	if is_instance_valid(gp):
 		gp.select_node("pMagic"); await secs(0.8); await shot("081_growth_magic")

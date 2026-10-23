@@ -26,6 +26,11 @@ var _main: WeakRef
 var _data: Dictionary
 var _defs: Dictionary = {}
 var _atlas: Texture2D
+var _tree_atlas: Texture2D
+var _paint_position: Shader
+var _glyph_mask: Shader
+var _stat_font: SystemFont
+var _badge_font: SystemFont
 var _plan: Dictionary = {}
 var _live: Dictionary = {}
 var _key := "pAtk"
@@ -69,6 +74,12 @@ func configure(main: Node) -> void:
  _main=weakref(main);process_mode=Node.PROCESS_MODE_ALWAYS;layer=96
  _data=JSON.parse_string(FileAccess.get_file_as_string(DATA_PATH))
  _atlas=load("res://assets/ui/demo_growth_glyphs.svg")
+ # Atlas RGB is baked for the inspector; tree SVGs use CSS currentColor, alpha only.
+ var vector_image:=Image.new();vector_image.load_svg_from_string(FileAccess.get_file_as_string("res://assets/ui/demo_growth_glyphs.svg"),4.0);_tree_atlas=ImageTexture.create_from_image(vector_image)
+ _paint_position=Shader.new();_paint_position.code="shader_type canvas_item;uniform vec2 source_origin;void vertex(){VERTEX+=inverse(mat2(MODEL_MATRIX[0].xy,MODEL_MATRIX[1].xy))*(source_origin-MODEL_MATRIX[3].xy);}"
+ _glyph_mask=Shader.new();_glyph_mask.code="shader_type canvas_item;uniform vec2 source_origin;varying vec4 ink;void vertex(){ink=COLOR;VERTEX+=(source_origin-MODEL_MATRIX[3].xy)/length(MODEL_MATRIX[0].xy);}void fragment(){vec2 dx=dFdx(UV),dy=dFdy(UV);float a=0.;for(int y=0;y<6;y++){for(int x=0;x<6;x++){a+=textureLod(TEXTURE,UV+dx*((float(x)+.5)/6.-.5)+dy*((float(y)+.5)/6.-.5),0.).a;}}COLOR=vec4(ink.rgb,a/36.*ink.a);}"
+ _stat_font=SystemFont.new();_stat_font.font_names=PackedStringArray(["Georgia"]);_stat_font.font_weight=700 # CSS Georgia 600 resolves to the installed Bold face.
+ _badge_font=SystemFont.new();_badge_font.font_names=PackedStringArray(["Georgia"]);_badge_font.font_weight=400
  for row in _data.defs:_defs[row.key]=row
 func get_snapshot() -> Dictionary:
  return {"opened":_opened,"selected":_key,"rank":_rank,"plan":_plan.duplicate(true),"live":_live.duplicate(true),
@@ -226,11 +237,11 @@ func _build() -> void:
  var art_shader:=Shader.new();art_shader.code="shader_type canvas_item;varying vec4 vmod;void vertex(){vmod=COLOR;}void fragment(){vec4 c=texture(TEXTURE,UV);vec3 rgb=mix(c.rgb,vec3(7.0,12.0,10.0)/255.0,0.17);float d=length((UV-vec2(.5))/vec2(.66,.74));float m=1.0-clamp((d-.55)/.45,0.0,1.0);COLOR=vec4(rgb,c.a*m)*vmod;}"
  var art_mat:=ShaderMaterial.new();art_mat.shader=art_shader;art.material=art_mat;_source_viewport.add_child(art)
  _extent=Control.new();_extent.size=Vector2(1174,624);_source_viewport.add_child(_extent)
- _tree=Control.new();_tree.size=Vector2(1000,800);_extent.add_child(_tree);_tree.draw.connect(_draw_tree)
+ _tree=Control.new();_tree.size=Vector2(1000,800);_extent.add_child(_tree);var tree_paint:=ShaderMaterial.new();tree_paint.shader=_paint_position;_tree.material=tree_paint;_tree.draw.connect(_draw_tree)
  for node in _data.centers:_make_node(node,node.key,0)
  for node in _data.layout.nodes:_make_node(node,node.key,int(node.rank))
- var origin:=Label.new();origin.name="GrowthOrigin";origin.text="✦";origin.position=Vector2(486.5,386.5);origin.size=Vector2(27,27);origin.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;origin.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;origin.add_theme_font_override("font",FONTS.stack("font"));origin.add_theme_font_size_override("font_size",17);origin.add_theme_color_override("font_color",Color("ffe1ac"));origin.mouse_filter=Control.MOUSE_FILTER_IGNORE;_tree.add_child(origin)
- var origin_surface:=ColorRect.new();origin_surface.position=Vector2(500,400)-Vector2.ONE*45.5;origin_surface.size=Vector2.ONE*91;origin_surface.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var origin:=Label.new();origin.name="GrowthOrigin";var origin_paint:=ShaderMaterial.new();origin_paint.shader=_paint_position;origin.material=origin_paint;origin.text="✦";origin.position=Vector2(486.5,386.5);origin.size=Vector2(27,27);origin.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;origin.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;origin.add_theme_font_override("font",FONTS.stack("font"));origin.add_theme_font_size_override("font_size",17);origin.add_theme_color_override("font_color",Color("ffe1ac"));origin.mouse_filter=Control.MOUSE_FILTER_IGNORE;_tree.add_child(origin)
+ var origin_surface:=ColorRect.new();origin_surface.name="GrowthOriginSurface";origin_surface.position=Vector2(500,400)-Vector2.ONE*77.5;origin_surface.size=Vector2.ONE*155;origin_surface.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var origin_mat:=ShaderMaterial.new();origin_mat.shader=preload("res://shaders/growth_node_surface.gdshader");origin_mat.set_shader_parameter("extent",Vector2.ONE*27);origin_mat.set_shader_parameter("corner",13.5);origin_mat.set_shader_parameter("origin",true);origin_surface.material=origin_mat;_tree.add_child(origin_surface);_tree.move_child(origin_surface,origin.get_index())
  _set_zoom(1)
  var live_link:=Button.new();live_link.text=surface.I18N.text("현재 전투 능력치 ↗");live_link.position=Vector2(271,956.8);live_link.size=Vector2(132.2,30.5);live_link.add_theme_font_override("font",FONTS.stack("font",400));live_link.add_theme_font_size_override("font_size",15)
@@ -268,44 +279,87 @@ func _build() -> void:
  _confirm.hide()
 func _make_node(row: Dictionary,key: String,rank: int) -> void:
  var b:=Button.new();var id: String=key if rank==0 else key+"@"+str(rank)
- b.name=id;b.position=Vector2(row.x,row.y)-Vector2.ONE*(27.0 if bool(row.get("major",false)) else 22.0) if rank==0 else Vector2(row.x,row.y)-Vector2(5,5)
- b.size=Vector2.ONE*(54.0 if bool(row.get("major",false)) else 44.0) if rank==0 else Vector2(10,10);b.text=key.to_upper() if rank==0 and not key.begins_with("p") else ""
- if rank==0 and key.begins_with("p"):
+ var diameter: float=(54.0 if bool(row.get("major",false)) else 44.0) if rank==0 else (14.0 if rank%10==0 else 11.0)
+ b.name=id;b.position=Vector2(row.x,row.y)-Vector2.ONE*diameter*.5
+ b.size=Vector2.ONE*diameter;b.text=""
+ b.add_theme_font_size_override("font_size",1);b.tooltip_text=label_for(key)+( " · "+str(rank) if rank else "")
+ # Explicit CSS glyph layout avoids Button's leading icon slot, minimum size and atlas padding.
+ if rank==0:
   var index:=0
   for i in _data.defs.size():
    if _data.defs[i].key==key:index=i;break
-  var icon:=AtlasTexture.new();icon.atlas=_atlas;icon.region=Rect2(index*32,0,32,32);b.icon=icon;b.expand_icon=true
-  b.add_theme_constant_override("icon_max_width",26)
- b.add_theme_font_size_override("font_size",12);b.tooltip_text=label_for(key)+( " · "+str(rank) if rank else "")
+  var atlas:=AtlasTexture.new();atlas.atlas=_tree_atlas;atlas.region=Rect2((index*32+4)*4,16,96,96)
+  var icon:=TextureRect.new();icon.name="SourceIcon";icon.texture=atlas;icon.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
+  icon.position=Vector2.ONE*(1.5+(diameter-3.0)*.24);icon.size=Vector2.ONE*(diameter-3.0)*.52;icon.mouse_filter=Control.MOUSE_FILTER_IGNORE
+  var mask:=ShaderMaterial.new();mask.shader=_glyph_mask;icon.material=mask;b.add_child(icon)
+  if not key.begins_with("p"):
+   var label:=Label.new();label.name="SourceStatLabel";label.text=key.to_upper();label.size=Vector2.ONE*diameter
+   label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;label.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+   label.add_theme_font_override("font",_stat_font);label.add_theme_font_size_override("font_size",14);label.add_theme_color_override("font_color",Color("ead4ad"))
+   var label_material:=ShaderMaterial.new();label_material.shader=_paint_position;label.material=label_material
+   label.add_theme_color_override("font_shadow_color",Color.BLACK);label.add_theme_constant_override("shadow_offset_x",0);label.add_theme_constant_override("shadow_offset_y",1);label.add_theme_constant_override("shadow_outline_size",2);b.add_child(label)
+ var paint:=ShaderMaterial.new();paint.shader=_paint_position;b.material=paint
+ if rank==0:
+  var badge:=RankBadge.new();badge.name="SourceRankBadge";badge.font=_badge_font;badge.mouse_filter=Control.MOUSE_FILTER_IGNORE
+  var badge_paint:=ShaderMaterial.new();badge_paint.shader=_paint_position;badge.material=badge_paint;b.add_child(badge)
  b.pressed.connect(select_node.bind(key,rank));_tree.add_child(b);_nodes[id]=b
  if rank==0:
-  var surface:=ColorRect.new();surface.name="SourceGlyphSurface";surface.position=-Vector2.ONE*32;surface.size=b.size+Vector2.ONE*64;surface.mouse_filter=Control.MOUSE_FILTER_IGNORE;surface.show_behind_parent=true
+  var surface:=ColorRect.new();surface.name="SourceGlyphSurface";surface.position=-Vector2.ONE*64;surface.size=b.size+Vector2.ONE*128;surface.mouse_filter=Control.MOUSE_FILTER_IGNORE;surface.show_behind_parent=true
   var material:=ShaderMaterial.new();material.shader=preload("res://shaders/growth_node_surface.gdshader");material.set_shader_parameter("extent",b.size);material.set_shader_parameter("major",bool(row.get("major",false)));material.set_shader_parameter("corner",b.size.x*.5 if key.begins_with("p") else 9.0);surface.material=material;b.add_child(surface)
  if rank==0:
-  b.mouse_entered.connect(func():_captions[key].show())
-  b.mouse_exited.connect(func():_refresh_captions())
-  b.focus_entered.connect(func():_captions[key].show())
-  b.focus_exited.connect(func():_refresh_captions())
+  b.mouse_entered.connect(func():_captions[key].show();_node_badge_hover(key,true))
+  b.mouse_exited.connect(func():_refresh_captions();_node_badge_hover(key,false))
+  b.focus_entered.connect(func():_captions[key].show();_node_badge_hover(key,true))
+  b.focus_exited.connect(func():_refresh_captions();_node_badge_hover(key,false))
   var caption:=_label(_tree,label_for(key),16);caption.position=Vector2(row.x-75,row.y-72);caption.size.x=150;caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;caption.mouse_filter=Control.MOUSE_FILTER_IGNORE;caption.z_index=1
   _captions[key]=caption
 func _set_zoom(amount: float) -> void:
  _zoom=clampf(amount,1,2.5)
  var scale_factor:float=minf((1174.0-12)/1000,(624.0-12)/800)*_zoom
  _tree.scale=Vector2.ONE*scale_factor;_tree.position=Vector2(587,312)-Vector2(500,400)*scale_factor
+ _sync_tree_paint()
  if is_instance_valid(_zoom_caption):_zoom_caption.text=str(roundi(_zoom*100))+"%"
+func _sync_tree_paint() -> void:
+ # Compensate the project's pixel-snapped model origins in this tree only; preserve CSS fractions.
+ _tree.material.set_shader_parameter("source_origin",_tree.get_global_transform_with_canvas().origin)
+ for b in _nodes.values():
+  b.material.set_shader_parameter("source_origin",b.get_global_transform_with_canvas().origin)
+  for child in b.get_children():
+   if child is CanvasItem and child.material is ShaderMaterial:child.material.set_shader_parameter("source_origin",child.get_global_transform_with_canvas().origin)
+ for name in ["GrowthOrigin","GrowthOriginSurface"]:
+  var child: Control=_tree.get_node(name);child.material.set_shader_parameter("source_origin",child.get_global_transform_with_canvas().origin)
 func _draw_tree() -> void:
  var points: Dictionary={"origin":Vector2(500,400),"spine":Vector2(500,320),"neck":Vector2(500,160),"leftShoulder":Vector2(385,245),"rightShoulder":Vector2(615,245)}
  for row in _data.centers:points[row.key]=Vector2(row.x,row.y)
  for row in _data.layout.nodes:points[row.id]=Vector2(row.x,row.y)
- for pair in [["spine","origin"],["neck","spine"],["leftShoulder","spine"],["rightShoulder","spine"]]:_tree.draw_line(points[pair[0]],points[pair[1]],Color(0.55,0.5,0.39,0.6),1,true)
+ for pair in [["spine","origin"],["neck","spine"],["leftShoulder","spine"],["rightShoulder","spine"]]:_draw_link(points[pair[0]],points[pair[1]],pair[0])
  for row in _data.centers:_draw_link(points[row.parent],points[row.key],row.key)
- for row in _data.layout.links:_draw_link(points[row.from],points[row.to],str(row.to).split("@")[0])
-func _draw_link(a: Vector2,b: Vector2,key: String) -> void:
- var allocated: bool=value(_plan,key)>0
- var route:=false
+ for row in _data.layout.links:_draw_link(points[row.from],points[row.to],str(row.to).split("@")[0],int(str(row.to).split("@")[1]))
+func _school_color(key: String) -> Color:
  for path in _data.paths:
-  if path.id==_path and key in path.keys:route=true
- _tree.draw_line(a,b,Color("f0cc89") if route else (Color(217/255.0,184/255.0,119/255.0,.95) if allocated else Color(166/255.0,152/255.0,118/255.0,.72)),2.5 if route else (2.0 if allocated else 1.35),true)
+  if key in path.keys:return Color(str(path.color))
+ return Color("e5be87")
+func _draw_link(a: Vector2,b: Vector2,key: String,rank: int=0) -> void:
+ var allocated: bool=value(_plan,key)>=(rank if rank>0 else 1)
+ var route:=false
+ if rank>0:route=key==_key and rank<=(_rank if _rank>0 else maxi(1,int(value(_plan,key))))
+ else:
+  var parents: Dictionary={"origin":"","spine":"origin","neck":"spine","leftShoulder":"spine","rightShoulder":"spine"}
+  for row in _data.centers:parents[row.key]=row.parent
+  var point: String=_key
+  while parents.has(point):
+   if point==key:route=true;break
+   point=parents[point]
+ var width: float=2.5 if route else (2.0 if allocated else 1.35)
+ if route:
+  # CSS drop-shadow(0 0 5px rgba(239,184,97,.65)): Gaussian fringe, no width inflation.
+  var previous:=0.0
+  for i in range(15,0,-1):
+   var radius: float=float(i)
+   var alpha: float=(.95 if allocated else .72)*.65*width/(sqrt(TAU)*5.0)*exp(-radius*radius/50.0)
+   _tree.draw_line(a,b,Color(239/255.0,184/255.0,97/255.0,(alpha-previous)/(1.0-previous)),radius*2.0,true)
+   previous=alpha
+ _tree.draw_line(a,b,Color(240/255.0,204/255.0,137/255.0,.95 if allocated else .72) if route else (Color(217/255.0,184/255.0,119/255.0,.95) if allocated else Color(166/255.0,152/255.0,118/255.0,.72)),width,true)
 func _refresh() -> void:
  if not _opened:return
  var result: Variant=evaluated()
@@ -343,6 +397,7 @@ func _refresh() -> void:
   if shown and (rank>0 or not key.begins_with("p")):count+=1
   var changed: bool=(value(_live,key)>=rank)!=(value(_plan,key)>=rank) if rank>0 else value(_live,key)!=value(_plan,key)
   var selected: bool=key==_key and rank==_rank
+  _nodes[id].z_index=(5 if selected else 2) if rank==0 else (7 if selected else 3)
   var skin:=_style(Color("614a30") if rank>0 and value(_plan,key)>=rank else Color("33251e") if selected else Color("171519"),Color("f1cc88") if selected else Color("8b8064"))
   skin.set_content_margin_all(0)
   if rank>0:skin.set_corner_radius_all(5)
@@ -355,10 +410,22 @@ func _refresh() -> void:
    skin.set_corner_radius_all((27 if _center_major(key) else 22) if key.begins_with("p") else 9);skin.shadow_size=0
    skin.bg_color=Color.TRANSPARENT;skin.set_border_width_all(0)
    var glyph: ColorRect=_nodes[id].get_node("SourceGlyphSurface")
-   glyph.material.set_shader_parameter("selected",selected);glyph.material.set_shader_parameter("learned",value(_plan,key)>0)
+   glyph.material.set_shader_parameter("selected",selected);glyph.material.set_shader_parameter("learned",value(_plan,key)>0);glyph.material.set_shader_parameter("school",_school_color(key))
+   var ink: Color=Color("ffdfa4") if selected else (_school_color(key) if value(_plan,key)>0 else Color("d0c6a8"))
+   ink.a=1.0 if key.begins_with("p") else .13;_nodes[id].get_node("SourceIcon").modulate=ink
+   var badge: RankBadge=_nodes[id].get_node("SourceRankBadge");badge.amount=number(value(_plan,key));badge.size=Vector2(maxf(14,_badge_font.get_string_size(badge.amount,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x+8),18);badge.position=_nodes[id].size+Vector2(5,6)-badge.size
+   badge.visible=selected or value(_plan,key)>0 or _nodes[id].has_focus();badge.queue_redraw()
    for state in ["hover","pressed","focus"]:_nodes[id].add_theme_stylebox_override(state,skin)
-  elif rank==10:
-   skin.set_corner_radius_all(1);_nodes[id].pivot_offset=Vector2(5,5);_nodes[id].rotation=PI/4
+  else:
+   skin.bg_color=Color("18201b");skin.border_color=Color("b2a078");skin.shadow_color=Color("090e0cd9");skin.shadow_size=2
+   if rank%10==0:
+    skin.set_corner_radius_all(2);skin.border_color=Color("c6af78");_nodes[id].pivot_offset=Vector2.ONE*7;_nodes[id].rotation=PI/4
+   if value(_plan,key)>=rank:
+    skin.bg_color=_school_color(key);skin.border_color=Color("f2dfad");skin.shadow_color=_school_color(key);skin.shadow_size=12
+   if selected:
+    skin.bg_color=Color("f9dea3");skin.border_color=Color("fff1cf");skin.shadow_color=Color("e5b869");skin.shadow_size=18
+   _nodes[id].size=Vector2.ONE*(14.0 if rank%10==0 else 11.0)
+   for state in ["hover","pressed","focus"]:_nodes[id].add_theme_stylebox_override(state,skin)
  for id in _path_buttons:
   var box:=StyleBoxFlat.new();box.bg_color=Color(0.65,.5,.29,.13) if id==_path else Color.TRANSPARENT;box.border_color=Color("d99172");box.border_width_left=2 if id==_path else 0;box.content_margin_left=42
   _path_buttons[id].add_theme_stylebox_override("normal",box)
@@ -369,6 +436,7 @@ func _refresh() -> void:
  _counter.text="%d / 265" % count
  var p: Dictionary=_main.get_ref().source_state.read_current_p()
  _summary.text="HP %s / %s    ST %s / %s    MP %s / %s" % [p.hp,p.mhp,p.st,p.mst,p.mp,p.mmp]
+ _sync_tree_paint()
  _tree.queue_redraw()
 func _foot_button(caption: String,rect: Rect2,callback: Callable,kind: String) -> Button:
  var b:=Button.new();b.text=caption;b.position=rect.position;b.size=rect.size
@@ -597,3 +665,15 @@ class GoldPlate extends Control:
   draw_rect(Rect2(1,1,size.x-2,size.y-2),Color(27/255.0,26/255.0,22/255.0),false,2.0)
   draw_rect(Rect2(.5,.5,size.x-1,size.y-1),Color(182/255.0,145/255.0,89/255.0),false,1.0)
   if get_parent() is Button and (get_parent() as Button).disabled:modulate.a=.48
+
+func _node_badge_hover(key: String,hovered: bool) -> void:
+ var b: Button=_nodes[key]
+ b.get_node("SourceRankBadge").visible=hovered or b.has_focus() or key==_key or value(_plan,key)>0
+ b.z_index=5 if hovered or b.has_focus() or key==_key else 2
+class RankBadge extends Control:
+ var font: Font
+ var amount: String="0"
+ func _draw() -> void:
+  var box:=StyleBoxFlat.new();box.bg_color=Color("12191b");box.border_color=Color("665138");box.set_border_width_all(1);box.set_corner_radius_all(3);draw_style_box(box,Rect2(Vector2.ZERO,size))
+  var baseline:=2+(14-font.get_ascent(14)-font.get_descent(14))*.5+font.get_ascent(14)
+  draw_string(font,Vector2(4,baseline),amount,HORIZONTAL_ALIGNMENT_LEFT,-1,14,Color("d0b383"))

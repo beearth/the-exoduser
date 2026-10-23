@@ -56852,3 +56852,10 @@ integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 
 ## 2026-10-23 E2E-TAIL-02 종료 복귀
 
 clear leave는 원본 G41920–42003처럼 아레나를 유지한다. lobby_return은 G63676–63685처럼 현재 저장을 먼저 수행하고 기존 demo11_lobby 해제·언어 브리지를 거쳐 슬롯 로비로 복귀한다. 기존38 소스 오라클에 경로 계약 검사 추가, 지정 PC/Mac 회귀 통과. 자연 성장·전체 E2E는 보류/미검증. [원인·검수 표](engine/E2E_TAIL_02_20261023.md).
+
+## 2026-10-23 G04-02 — 성장 트리 노드 표시 원본 수치 대조
+
+- 기준 688aa4bebf28b06ae34bd86ec4b9d950273ad478. native_growth_panel/growth_node_surface: 44/54px·좌표 유지, SVG24%/52% currentColor·Georgia14px·1.5px 테·다중 링·Gaussian·선택 parent 경로·route 실제 opacity.72/.95·11/14px rank·값 badge 이식.
+- 기존 capture harness에 node/CSS geometry 기록과 G04-02 격리 namespace만 추가; 기존 test_demo11_growth_ui assertions 보존, namespace만 변경. 새 진단 테스트/전체 E2E0.
+- test_demo11_growth_ui 단1회 36/0, 최종 import ERROR0. 창 GPU Chrome ↔ Godot 내부 viewport 1920×1080씩 1x 대조. 글꼴/edge/blur/badge 래스터 잔차 남아 정본 G-04 남음 유지.
+- 상세 수치·판정: engine/G04_02_20261023.md. 외부 _out/G04-02/DONE.txt 및 captures/G-04_compare_1x.png·G-04_detail_1x.png. 원본 보호·R 읽기전용·PID81277 보존·override 복원.

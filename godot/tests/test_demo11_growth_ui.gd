@@ -1,5 +1,5 @@
 extends SceneTree
-const USERDIR := "EXODUSER-demo11-19ui-Isolated-20261021-SWEEP-B3-20261023-01"
+const USERDIR := "EXODUSER-demo11-G04-02-Test-20261023"
 var checks:=0
 var failures:=0
 var main: Node
