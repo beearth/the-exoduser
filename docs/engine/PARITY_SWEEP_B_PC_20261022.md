@@ -53,13 +53,13 @@ P0 = 화면 구조·주요 요소 누락, P1 = 눈에 띄는 배치·상태 차�
 | B-06 | 로비 | 슬롯 스크롤 화살표 대신 ScrollContainer, 삭제 모달 radius 8 | P2 | 고침 | SWEEP-B2 `db7c044f7f57e7f3f028d014583488ecb2bddf16`: 3슬롯 위/아래 화살표·범위·disabled·21px 재배치, 삭제 외곽 radius8. 3장 1x 비교. |
 | B-07 | 공통 글꼴 | CSS letter-spacing이 한글 대체 글꼴에 안 붙음 → `native_ui_fonts.apply_spacing`이 fallbacks에도 같은 자간 복제 | P1 | 고침 | 71af08d35 |
 | B-08 | 공통 글꼴 | 같은 Nanum Myeongjo 파일이 FreeType에서 Chrome 1x보다 가늘게 나옴 → embolden 0.35(3배 확대 대조) | P1 | 고침 | 71af08d35 |
-| B-09 | 공통 글꼴 | Cinzel Decorative Regular face 없음(Bold로 대체), 웹 `serif` 한글 대체=Windows 바탕 vs Godot Noto Serif KR('캐릭터 선택' 제목) | P2 | 남음 | SWEEP-B2 조사: I40은 Decorative400 요청. 저장소에 Regular/Batang 없음. 외부 다운로드 금지에 따라 기존 글꼴 보존. |
+| B-09 | 공통 글꼴 | Cinzel Decorative Regular face 없음(Bold로 대체), 웹 `serif` 한글 대체=Windows 바탕 vs Godot Noto Serif KR('캐릭터 선택' 제목) | P2 | 남음 | SWEEP-B2 `db7c044f7f57e7f3f028d014583488ecb2bddf16` 조사: I40은 Decorative400 요청. 저장소에 Regular/Batang 없음. 외부 다운로드 금지에 따라 기존 글꼴 보존. |
 | C-01 | 캐릭터 선택 | 헤더 Cinzel Decorative 38.4/700·부제·좌측 직업/이름/설명·특성 상자·아이콘 위치(713+106i)·취소/생성 버튼 | P0 | 고침 | 7408841f0 |
 | C-02 | 캐릭터 선택 | 엠블럼 셰이더가 텍스처를 두 번 곱해 어두움 → vertex modulate 분리, CSS grayscale/brightness(선택 none·미선택 .5/.62·잠김 1/.35) | P1 | 고침 | 7408841f0 |
 | C-03 | 캐릭터 선택 | 특성 상자 반투명 그라디언트·inset 3px·코너 20px·크레스트 ✦, 이모지 세피아(.ti-g), 설명 231px 줄바꿈 | P1 | 고침 | 7408841f0 |
 | C-04 | 캐릭터 선택 | 대형 PNG 밉맵 없는 축소의 점 무늬 → 고품질 축소, 사슬 원형 클립(overflow:hidden) | P2 | 고침 | 7408841f0 |
 | C-05 | 캐릭터 선택 | 배경 아이들 영상(장미창) 대신 정지 포스터 | P2 | 남음 | Mac VIDEO-01 |
-| C-06 | 캐릭터 선택 | 잠김 사슬 두께(브라우저 축소 품질 차이) | P2 | 남음 | SWEEP-B2 조사: 웹/네이티브 사슬 PNG 동일 SHA256 1f29f35b…; 기존70px Lanczos·원형clip 보존. 축소 두께 시각차 남음. |
+| C-06 | 캐릭터 선택 | 잠김 사슬 두께(브라우저 축소 품질 차이) | P2 | 남음 | SWEEP-B2 `db7c044f7f57e7f3f028d014583488ecb2bddf16` 조사: 웹/네이티브 사슬 PNG 동일 SHA256 1f29f35b…; 기존70px Lanczos·원형clip 보존. 축소 두께 시각차 남음. |
 | N-01 | 이름 창 | 웹 `_visualConfirm`은 캐릭터 선택을 닫고 로비 위에 이름 창 → 같은 구조로 | P1 | 고침 | 7408841f0 |
 | N-02 | 이름 창 | 모달 제목 disp_title·오류 시 +46px·버튼 테두리/하단 막대/포커스선 | P1 | 고침 | 14fc5b921 |
 | S-01 | 레슨 | 패널 세로 간격·체크리스트 행(16px 상자, 38.4 피치)·하단 버튼 47/97.7×36 | P1 | 고침 | bace4e6c4 |
@@ -68,7 +68,7 @@ P0 = 화면 구조·주요 요소 누락, P1 = 눈에 띄는 배치·상태 차�
 | H-01 | HUD | 빈 숫자 퀵슬롯 `.qs.empty`(opacity .3·grayscale) | P1 | 고침 | 71af08d35 |
 | H-02 | HUD | `#skKeyBar` RMB/E 키 캡 | P1 | 고침 | 71af08d35 |
 | H-03 | HUD | 목표 패널 글자 12.64px(→13), 스테이지 시계 상단선·글자색·자간·Cinzel 700 | P2 | 고침 | 71af08d35 |
-| H-04 | HUD | 레슨 적 이름표("깨어난 망자 · 1/6 처치") 미표시 | P2 | 남음 | SWEEP-B2 조사: 지정 G/I·parry-lesson.js·system-lesson.js·캡처 도구에 해당 문구/6처치 원문 없음. 현재 웹050 재캡처에도 미관측. 문구/단계 발명 없이 보류. |
+| H-04 | HUD | 레슨 적 이름표("깨어난 망자 · 1/6 처치") 미표시 | P2 | 남음 | SWEEP-B2 `db7c044f7f57e7f3f028d014583488ecb2bddf16` 조사: 지정 G/I·parry-lesson.js·system-lesson.js·캡처 도구에 해당 문구/6처치 원문 없음. 현재 웹050 재캡처에도 미관측. 문구/단계 발명 없이 보류. |
 | V-01 | 인벤 | 요약 상세(현재 전투 구성) 좌표·글꼴·구분선 실측값 | P1 | 고침 | 71af08d35 |
 | V-02 | 인벤 | 요약 힌트가 Godot은 한 줄(웹 두 줄) | P2 | 고침 | SWEEP-B2 `db7c044f7f57e7f3f028d014583488ecb2bddf16`: G49684/inventory-space.css148–152 WORD wrap·deferred360×40.8. 두 줄1x 확인. |
 | K-01 | 스킬 | 슬롯 행은 웹에서 3D 코인(sf-3d) — 실측 지름 44px(선택 49px) | P1 | 고침 | 71af08d35 |

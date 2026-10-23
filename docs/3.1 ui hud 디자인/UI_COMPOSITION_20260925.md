@@ -2983,7 +2983,7 @@ Godot 시연판 생성 화면은 웹 CHAR_VISUALS의 원본 5인 초상·전사 
 | 슬롯/삭제 | 저장2개 단위 화살표·범위·disabled, 모달외곽radius8 | I3558–3574/859–865 |
 | 인벤 힌트 | 360×40.8,12px/1.7,WORD wrapping·deferred size | inventory-space.css148–152 |
 | 스킬 정보 아이콘 | 64px원형·2px #5a4b3c·scale1.18,3D코인과 분리 | skill-forge.css49 |
-| 성장 | 중심44/54px 원형·원점27px/별17px, 경로1.35/학습2/선택2.5px. 시각 잔차 미완료 | growth-tree-detail.css |
+| 성장 | 중심44/54px (패시브 원형·스탯radius9)·원점27px/별17px, 경로1.35/학습2/선택2.5px. 시각 잔차 미완료 | growth-tree-detail.css |
 | 설정 설명 | 원본245.28125px카드·184×44.78125px설명, deferred size. 일부 한글 줄 경계 잔여 | ui-refinement.css1182–1185 |
 
 전체 시각 동일 완료가 아니다. 항목별 판정과 테스트는 [SWEEP-B2](../engine/SWEEP_B2_20261023.md), 정본 상태는 [PC 인수표](../engine/PARITY_SWEEP_B_PC_20261022.md).
