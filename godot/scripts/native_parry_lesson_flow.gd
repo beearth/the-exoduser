@@ -766,7 +766,8 @@ func _start() -> void:
 	if p is Dictionary:
 		_saved_lmb = {"had": p.has("activeLMBSk"), "value": p.get("activeLMBSk")}
 		p["activeLMBSk"] = "kiSlash" # 396
-		_saved_player = {"hp": p.get("hp"), "x": player.global_position.x, "y": player.global_position.y} # 397 saved
+		_saved_player = {"hp": p.get("hp"), "x": player.global_position.x, "y": player.global_position.y,
+			"st": player.get("stamina"), "iframes": player.get("iframes")} # 397 saved (st·iframes 포함)
 	_move_last = player.global_position
 	_build_panel()
 	_set_objective_hidden(true)
@@ -800,6 +801,11 @@ func _finish() -> void:
 			p["hp"] = _saved_player["hp"] # 695 P.hp=saved.hp
 	if _saved_player.has("hp") and _saved_player["hp"] != null:
 		player.set("hp", float(_saved_player["hp"]))
+	# 691~692 P.st=saved.st / P.iframes=saved.iframes — 레슨 연습 중 P.iframes=0(508)·st 리필 뒤 원래 값 복원.
+	if _saved_player.get("st") != null:
+		player.set("stamina", float(_saved_player["st"]))
+	if _saved_player.get("iframes") != null:
+		player.set("iframes", float(_saved_player["iframes"]))
 	if _saved_player.has("x"): # 696 P.x/P.y 복원
 		player.global_position = Vector2(float(_saved_player["x"]), float(_saved_player["y"]))
 	_saved_lmb = {}
@@ -858,9 +864,24 @@ func _build_panel() -> void:
 	_panel = CanvasLayer.new()
 	_panel.name = "NativeParryLessonPanel"
 	_panel.layer = PANEL_LAYER
-	# 뒤 배경 — #parryLessonBackdrop opacity .5 (UI_FOUNDATION)
-	var backdrop := ColorRect.new()
-	backdrop.color = Color(0, 0, 0, 0.5)
+	# 뒤 배경 — parry-lesson.css 1행 #parryLessonBackdrop:
+	# background:linear-gradient(90deg,transparent 45%,#08070ba6); opacity:.5 (왼쪽 45%는 투명, 오른쪽 끝 α .65×.5).
+	# (이전 전체 화면 검정 α.5는 화면·구역 제목을 웹보다 어둡게 덮었다 — PC-SPAWN-PARITY S-02)
+	var backdrop := TextureRect.new()
+	var grad := Gradient.new()
+	grad.offsets = PackedFloat32Array([0.0, 0.45, 1.0])
+	grad.colors = PackedColorArray([Color(8.0 / 255.0, 7.0 / 255.0, 11.0 / 255.0, 0.0),
+		Color(8.0 / 255.0, 7.0 / 255.0, 11.0 / 255.0, 0.0), Color(8.0 / 255.0, 7.0 / 255.0, 11.0 / 255.0, 166.0 / 255.0)])
+	var grad_tex := GradientTexture2D.new()
+	grad_tex.gradient = grad
+	grad_tex.fill_from = Vector2(0, 0.5)
+	grad_tex.fill_to = Vector2(1, 0.5)
+	grad_tex.width = 256
+	grad_tex.height = 4
+	backdrop.texture = grad_tex
+	backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	backdrop.stretch_mode = TextureRect.STRETCH_SCALE
+	backdrop.modulate = Color(1, 1, 1, 0.5)
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_panel.add_child(backdrop)

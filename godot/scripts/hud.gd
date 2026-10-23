@@ -32,6 +32,9 @@ var _telemetry_text: Label
 var _pause_button: Button
 var _paused := false
 var _refresh_elapsed := 0.0
+# PC-SPAWN-PARITY 저프레임: stats_changed는 물리 틱마다(저fps에서 프레임당 최대 8회) 올 수 있다.
+# 표시는 그리기 직전 값 하나면 되므로 표시만 다음 _process로 합친다(값·게임 상태 변경 없음).
+var _refresh_dirty := false
 var _boot_loading_panel: Panel
 var _boot_loading_message: Label
 var _boot_loading_progress: ProgressBar
@@ -95,8 +98,8 @@ func _ready() -> void:
 func bind(player: Node, world: Node) -> void:
 	_player = player
 	_world = world
-	if player.has_signal("stats_changed") and not player.is_connected("stats_changed", _refresh):
-		player.connect("stats_changed", _refresh)
+	if player.has_signal("stats_changed") and not player.is_connected("stats_changed", _mark_refresh_dirty):
+		player.connect("stats_changed", _mark_refresh_dirty)
 	if is_node_ready():
 		_refresh()
 
@@ -238,10 +241,15 @@ func set_telemetry(metrics: Dictionary) -> void:
 	]
 
 
+func _mark_refresh_dirty() -> void:
+	_refresh_dirty = true
+
+
 func _process(delta: float) -> void:
 	_refresh_elapsed += delta
-	if _refresh_elapsed >= 1.0 / 30.0:
+	if _refresh_dirty or _refresh_elapsed >= 1.0 / 30.0:
 		_refresh_elapsed = 0.0
+		_refresh_dirty = false
 		_refresh()
 
 

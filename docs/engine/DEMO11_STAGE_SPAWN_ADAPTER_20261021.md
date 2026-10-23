@@ -52,3 +52,8 @@ G60709–60710의 분모는 **예정 소환 수**이며 actor 등록/요청/처�
 ## 2026-10-21 INTEG-6c 후속 계약
 
 test_demo11_43_stage_spawn_adapter는 자체 provider·기존 World actor를 검증하는 legacy 계약이므로 --map11=off 필수(누락시exit2). 제품 MAP11 provider 경로는37/44 및 E2E에서 별도로 검사한다. adapter 수치·구현은 변경하지 않았다. 최종40/0. 상세·실패이력·한계: [INTEG-6c](INTEG6C_REGRESSION_20261021.md) (engine 기준 상대경로).
+
+## 2026-10-23 PC-SPAWN-PARITY — 원본 소환 좌표 1회 전달
+
+- `set_source_spawn_position(group_id, position)` / `clear_source_spawn_position(group_id)` 추가. 공통 스케줄러가 G35660~35673(+G31124 canMv(…,10)/safePt) 좌표를 계산해 넣으면, 같은 그룹의 다음 `request_spawn` 1회가 provider 수락(마커·지역·revision 검증) 뒤 그 좌표를 `position`으로 돌려주고 비운다. 없으면 기존처럼 provider 좌표.
+- 좌표 적법성은 스케줄러가 `world.can_move`(=provider 판정)로 원본 mkEn 규칙(반경 10)대로 확인한 값이다. B/문지기 생성자는 이후 자체 전체 반경 검사를 유지(원본보다 드물게 거절할 수 있음 — 기록).

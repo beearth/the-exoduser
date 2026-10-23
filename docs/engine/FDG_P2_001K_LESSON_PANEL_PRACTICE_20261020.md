@@ -10,7 +10,7 @@
 | 패널 | x1464·w400·top16(우여백 56), 패딩 68/24/20, 폰트 'Nanum Myeongjo' serif 15px | 동일 지오메트리·패딩, NotoSerifKR 대체(나눔명조/Cinzel 에셋 미보유 — 잔여) |
 | ::before | rgba(16,13,14,.96) + 상단 radial rgba(71,23,18,.53)→48% + border-image frame.png(18px) | ColorRect+GradientTexture2D radial+NinePatch(frame.png 원본 복사, 22%≈276px 슬라이스를 18px 보더로 쓰기 위해 런타임 82px 축소 — 에셋 파일 불변) |
 | 문장 | crest.png 174×58 top6 중앙 | 동일(EXPAND_IGNORE_SIZE) |
-| 배경막 | #parryLessonBackdrop opacity .5 | ColorRect 흑 0.5 |
+| 배경막 | #parryLessonBackdrop `linear-gradient(90deg,transparent 45%,#08070ba6)` opacity .5 (parry-lesson.css 1) | TextureRect+GradientTexture2D(0/0.45 투명 → 1.0 #08070b α166/255), modulate α.5 — 2026-10-23 PC-SPAWN-PARITY 정정(이전 전체 검정 α.5) |
 | 키캡 | Cinzel 28px #fff0df, 선 #e0c18b, grad(51,44,44)→(16,14,16), r4, 0 8px 패딩 h62 | 동일 수치(그라디언트는 중간값 단색 — 근사 기록) |
 | 제목/부제/본문 | 29px 700 #f4e6d2 ls.87 / 12px #c2b6a9 / 14px #e8d9c6 lh1.7 | 동일 |
 | 목표 행 | 14px, 현재 #fff0df·bg #551819aa·선 #a34d3f·왼쪽 2px #ec7958, 완료 #b2d6ac, 체크박스 | 동일(왼쪽 강조색은 StyleBoxFlat 1색 제약으로 #a34d3f 통일 — 근사 기록), 완료 박스 녹색 채움 |
@@ -91,3 +91,8 @@ charge/120 채움=253 holdMeter.value).
 | 현재 행 왼쪽 강조색 | 남음(근사) | #ec7958 왼쪽 2px — StyleBoxFlat 단색 제약으로 #a34d3f 통일 |
 | 행 간격 | 남음(소폭) | 웹 행높이 38px 대비 수 px 차 — 폰트 메트릭 차이 |
 | 홀드 미터 트랙 색 | 남음(근사) | <progress> 기본 트랙(의사요소 — 실측 불가) → 패널 진행바 바닥색 #39312a 채택 |
+
+## 2026-10-23 PC-SPAWN-PARITY 정정
+
+- 배경막을 원본 그라디언트로(위 표). 테스트 `test_p2001k_lesson_practice` 배경막 검사도 그라디언트 정지점·색·불투명도로 같이 정정.
+- `finish()` 691~692 `P.st=saved.st; P.iframes=saved.iframes` 복원 추가(시작 때 stamina·iframes 저장). 이전에는 hp·위치만 복원해 연습 중 0으로 고정된 iframes로 끝났다(웹은 커튼 iframes 600 중 남은 약 569).

@@ -56813,3 +56813,9 @@ integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 
 - starter_state HP 검사 시작 시 shield=0 사전조건만 추가; HP/ST/MP 단정 보존.
 - import ERROR0; 지정9테스트 각 첫1회 PASS. 최종 E2E 단1회 13 PASS / 5 NOT_READY / FAIL0, save_handoff PASS.
 - 상세: engine/INTEG17C_PLAYER_SHIELD_SAVE_HANDOFF_20261023.md. 보스방 이후 미도달 및 07 ObjectDB warning 보존.
+
+## 2026-10-23 INTEG-17d
+
+- INTEG-17c + PC spawn parity 정상 merge(충돌0), Mac 스폰 두 파일 리뷰·최종 B/F/D/29 HOLD와 PC 보고서 중간결과 차이 정정.
+- import ERROR0, 요청 단위 첫1회씩(8 PASS/기존 실패5), 마지막 E2E 13 PASS/5 NOT_READY/0 FAIL. 새 namespace GUI 한 세션·링5처치/레슨/라벨·163FPS 단1회·viewport2장, VISUAL RETOUCH 및 미검수 한계 기록.
+- 원본/판정/기준 HUD·로딩 보존, main 배포·PC 실행 동기화 없음. 상세 `docs/engine/INTEG17D_PC_SPAWN_MERGE_20261023.md`.

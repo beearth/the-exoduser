@@ -30,6 +30,26 @@ func step() -> void:
 	main.world.advance_native_owner_phase()
 	main.world.advance_native_birth_phase()
 	main.native_natural_enemies.advance_scheduler(main.world.get_native_frame())
+func _seed_for_type0_after_source_position(world: Node,holes: Node) -> int:
+	var h: Dictionary={}
+	for k in range(holes.holes.size()-1,-1,-1):
+		var c: Dictionary=holes.holes[k]
+		if c.get("_triggered")==true and c.get("_spawnDelay")!=null and float(c._spawnDelay)<=0.0:h=c;break
+	if h.is_empty():h=holes.holes[0]
+	for value in 10000:
+		seed(value)
+		var tries:=0
+		var at:=Vector2.ZERO
+		while true:
+			var ua: float=float(randi())/4294967296.0;var ur: float=float(randi())/4294967296.0
+			var rad: float=120.0+ur*300.0+float(h.size)*150.0
+			at=Vector2(float(h.x)+cos(TAU*ua)*rad,float(h.y)+sin(TAU*ua)*rad);tries+=1
+			if not (tries<H.POS_TRIES and world.is_world_blocked(at)):break
+		if world.is_world_blocked(at) or not world.can_move(at,10.0):continue
+		var ranged: float=float(randi())/4294967296.0;var roll: float=float(randi())/4294967296.0
+		var elite: float=float(randi())/4294967296.0
+		if H.roll_etype_from(ranged,roll)==0 and elite>=0.25:return value
+	return -1
 func run() -> void:
 	check(OS.get_user_data_dir().get_file()==USERDIR,"isolated_namespace")
 	main=load("res://scenes/main.tscn").instantiate();root.add_child(main)
@@ -69,10 +89,18 @@ func run() -> void:
 	for i in 211:
 		# Supply deterministic global stream immediately before the actual first
 		# constructor boundary. All trigger/delay/tick logic still runs unchanged.
-		if holes.holes[0].get("_spawnDelay")==0:seed(chosen)
+		if holes.holes[0].get("_spawnDelay")==0:
+			# PC-SPAWN-PARITY: G35660~35673 위치 표본은 isW 실패 시 2개씩 더 뽑는다(do-while).
+			# 이번 틱 첫 소환(역순 순회의 가장 높은 트리거 소환굴) 좌표를 같은 판정으로 모사해
+			# rollEtype 두 표본이 0을 고르는 시드를 다시 고른다(원본 소비 순서 그대로, 판정 완화 없음).
+			chosen=_seed_for_type0_after_source_position(world,holes)
+			seed(chosen)
 		step()
 		if base.counts.registered>0:break
-	check(base.counts.registered==1,"natural_trigger_delay_scheduler_created_type0")
+	# PC-SPAWN-PARITY: B/D/F/29가 스케줄러에 연결돼 같은 틱 다른 소환굴도 actor를 낼 수 있다.
+	# 계약 = 시드로 고른 첫 소환(트리거→90틱 지연→스케줄러)이 type0 actor로 등록됨.
+	var first: Dictionary=holes.spawn_journal[0] if not holes.spawn_journal.is_empty() else {}
+	check(base.counts.registered>=1 and first.get("etype")==0 and first.get("registered")==true,"natural_trigger_delay_scheduler_created_type0")
 	check(holes._game_frame>=210 and holes.holes[0]._triggered and holes.holes[0]._spawned==1,"source_scheduler_bookkeeping")
 	var actor: Node=base.last_receipt.get("actor")
 	if not is_instance_valid(actor):observations.last=base.last_receipt;finish();return
