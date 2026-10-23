@@ -48,6 +48,7 @@ const NATIVE_BURN_MAX_STACKS = 10
 const NATIVE_BURN_DURATION_TICKS = 600.0
 const NATIVE_BURN_INTERVAL_TICKS = 30.0
 const NATIVE_BURN_POOL_DIVISOR = 20.0
+const NATIVE_ENERGY_SHIELD = preload("res://scripts/native_player_energy_shield.gd") # PC-PLAYER-SHIELD
 @export var hp: float = 350.0
 @export var max_hp: float = 350.0
 @export var stamina: float = 200.0
@@ -1158,7 +1159,10 @@ func _apply_native_damage(amount: int, raw_amount: int, damage_type: String, sou
 	var reduction: float = minf(0.75, defence / (defence + 2500.0))
 	var capped: int = mini(amount, int(floor(max_hp * 0.33)))
 	var final_damage: int = maxi(maxi(1, int(floor(max_hp * 0.005))), int(floor(capped * (1.0 - reduction))))
-	hp = maxf(0.0, hp - final_damage)
+	# PC-PLAYER-SHIELD G43544~43566: 모든 감산·최소뎀 뒤 에너지쉴드 먼저 → 오버플로우만 HP(a).
+	var shield_hit: Dictionary = NATIVE_ENERGY_SHIELD.absorb(self, final_damage)
+	var a: Variant = shield_hit.a if shield_hit.get("applied") == true else final_damage
+	hp = maxf(0.0, hp - a)
 	# Literal native non-DOT hurtP resets iframe to zero AFTER its cap calculation.
 	# Do not invent ordinary-hit/cap invulnerability from the earlier stale doc note.
 	iframes = 0.0
@@ -1171,10 +1175,11 @@ func _apply_native_damage(amount: int, raw_amount: int, damage_type: String, sou
 			_state_left = 6.0
 	# Native projectile opts.knockback replaces the generic impulse calculation;
 	# both paths add their impulse only after the existing hurtP acceptance gates.
-	var strength: float = native_knockback_strength if native_knockback_strength >= 0.0 else clampf(float(final_damage) / max_hp * 30.0, 1.0, 12.0)
+	# G43593 _kbStr=Math.min(12,Math.max(1,a/P.mhp*30)) — a는 쉴드 처리 뒤 값.
+	var strength: float = native_knockback_strength if native_knockback_strength >= 0.0 else clampf(float(a) / max_hp * 30.0, 1.0, 12.0)
 	var push: Vector2 = source_direction.normalized() if source_direction.length_squared() > 0.0 else Vector2.from_angle(randf() * TAU)
 	_knockback += push * strength
-	telemetry_event.emit("player_damage", {"raw_amount": raw_amount, "amount": final_damage, "damage_type": damage_type, "hp": hp, "poise": poise, "iframes": iframes, "charging_preserved": is_charging(), "defence": defence})
+	telemetry_event.emit("player_damage", {"raw_amount": raw_amount, "amount": a, "damage_type": damage_type, "hp": hp, "poise": poise, "iframes": iframes, "charging_preserved": is_charging(), "defence": defence, "pre_shield_amount": final_damage, "shield": shield_hit})
 	if hp == 0:
 		state = "dead"
 		charge_frames = 0.0
@@ -1260,23 +1265,27 @@ func _tick_native_burns(ticks: float) -> void:
 			# overshoot or synthesizing a while-loop of scheduled pulses.
 			burn["tick"] = 0.0
 			var raw_damage: int = maxi(1, int(float(burn["total"]) / NATIVE_BURN_POOL_DIVISOR))
-			var hp_damage: int = _receive_native_burn_damage(raw_damage)
-			telemetry_event.emit("native_burn_pulse", {"index": index, "total": burn["total"], "t": burn["t"], "tick": burn["tick"], "raw_amount": raw_damage, "amount": hp_damage, "accepted": hp_damage > 0, "dot": true, "burn": true, "src": "화상"})
+			var hp_damage: float = _receive_native_burn_damage(raw_damage)
+			# accepted = hurtP 게이트 통과(쉴드 전부 흡수여도 true) — 쉴드 이전엔 hp_damage>0과 같은 뜻.
+			telemetry_event.emit("native_burn_pulse", {"index": index, "total": burn["total"], "t": burn["t"], "tick": burn["tick"], "raw_amount": raw_damage, "amount": maxf(0.0, hp_damage), "accepted": hp_damage >= 0.0, "dot": true, "burn": true, "src": "화상"})
 		surviving.append(burn)
 	_native_burns = surviving
 
-func _receive_native_burn_damage(amount: int) -> int:
+func _receive_native_burn_damage(amount: int) -> float:
 	if hp <= 0 or state in ["fallen", "dead"] or iframes > 0.0:
-		return 0
+		return -1.0 # 게이트 거부(원본 hurtP 조기 return)
 	# Raw/no-equipment native hurtP opts={dot:true,burn:true,src:'화상'}.
 	# Keep direct-hit receive_damage and all of its consumers unchanged.
 	var reduction: float = minf(0.75, base_def / (base_def + 2500.0))
 	var capped: int = mini(amount, int(floor(max_hp * 0.33)))
 	var final_damage: int = maxi(maxi(1, int(floor(max_hp * 0.005))), int(floor(capped * (1.0 - reduction))))
-	hp = maxf(0.0, hp - final_damage)
+	# PC-PLAYER-SHIELD G43544~43566: 원본 hurtP의 쉴드 블록엔 DOT 게이트가 없다 → 화상 DOT도 쉴드 먼저.
+	var shield_hit: Dictionary = NATIVE_ENERGY_SHIELD.absorb(self, final_damage)
+	var a: Variant = shield_hit.a if shield_hit.get("applied") == true else final_damage
+	hp = maxf(0.0, hp - a)
 	iframes = 0.0
 	# DOT skips poise, stagger/stun, knockback, bite and attack cancellation.
-	telemetry_event.emit("player_damage", {"raw_amount": amount, "amount": final_damage, "damage_type": "phys", "hp": hp, "poise": poise, "iframes": iframes, "charging_preserved": is_charging(), "defence": base_def, "dot": true, "burn": true, "src": "화상"})
+	telemetry_event.emit("player_damage", {"raw_amount": amount, "amount": a, "damage_type": "phys", "hp": hp, "poise": poise, "iframes": iframes, "charging_preserved": is_charging(), "defence": base_def, "dot": true, "burn": true, "src": "화상", "pre_shield_amount": final_damage, "shield": shield_hit})
 	if hp == 0:
 		# Existing terminal-death consumer; full fallen/revival remains absent.
 		# Retain the burn array, as native die does, and stop future idle ticks.
@@ -1286,7 +1295,7 @@ func _receive_native_burn_damage(amount: int) -> int:
 		velocity = Vector2.ZERO
 		telemetry_event.emit("player_died", {"emitted_crescents_preserved": true, "dot": true, "burn": true, "burn_stacks_retained": true})
 	stats_changed.emit()
-	return final_damage
+	return float(a)
 
 func _melee_contact() -> void:
 	if not is_instance_valid(_world) or not _world.has_method("get_enemies"):

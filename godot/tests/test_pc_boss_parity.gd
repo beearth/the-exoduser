@@ -175,6 +175,10 @@ func _run() -> void:
 		await physics_frame
 	check(g._fieldBosses[0].hid == 0 and g._fieldBosses[0].tpT == 0, "E01_appears_after_tp54")
 	# 몸 충돌 61081–61082: 플레이어를 몸 안으로 → 밀려남 + iframes 0 이면 접촉 피해
+	# 웹도 부팅 시 P.shield=P.mshield(100+)라 첫 피해는 쉴드가 받는다(hurtP G43544~) — 여기는 HP 접촉 피해 검사라 쉴드를 비운다.
+	var _p_live: Dictionary = main.source_state.read_current_p()
+	_p_live["shield"] = 0
+	_p_live["shieldRegenT"] = 99999
 	main.player.iframes = 0.0
 	var php: float = main.player.hp
 	main.player.global_position = m0 + Vector2(30, 0)

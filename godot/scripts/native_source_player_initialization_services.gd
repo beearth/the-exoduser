@@ -384,6 +384,12 @@ func _advance_native_source_update_clock(main: Node, callback_id: String) -> Dic
 		var actor: Variant = main.get("player")
 		if is_instance_valid(actor):
 			state.advance_native_session_travel(main, actor.global_position.x, actor.global_position.y, chain_moving)
+	if result.get("status") == "CONTINUE" and state.has_method("advance_native_player_shield_regen"):
+		# PC-PLAYER-SHIELD G32758~32762 에너지쉴드 자동 리젠 — G32745 다음 문장들 중 32747 statusClean(어픽스)·
+		# 32749 5장 규칙(SI_TO_HELL[G.stage]===4)은 미이식(데모 1장 거짓). 같은 update()의 sp.
+		var sp_read: Dictionary = clock.read_sp()
+		if sp_read.get("status") == "OK":
+			state.advance_native_player_shield_regen(main, float(sp_read.sp))
 	var summary: Dictionary = {"status": result.get("status"), "last": result,
 		"update_state": clock.read_update_state()}
 	clock.end_update()
