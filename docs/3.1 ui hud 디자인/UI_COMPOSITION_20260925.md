@@ -2972,3 +2972,18 @@ G/Esc·확인/취소·잠금/장착 보호 및 실제 wallet/INV readback은 검
 ## 2026-10-21 LOBBY-01 native 생성 화면
 
 Godot 시연판 생성 화면은 웹 CHAR_VISUALS의 원본 5인 초상·전사 원화를 동일 byte로 재사용한다. 기존 Hell Gothic hell/hell_title·뼈색·흑철·금선·붉은 행동 버튼 계약을 유지하며, 웹 UI의 CSS·동작은 바꾸지 않는다. 대형 초상/소개/잠긴4인 벡터 자물쇠/이름/생성·취소의 실제 native 규격과 검수는 [LOBBY-01](../engine/LOBBY_01_20261021.md)에 기록한다.
+
+
+## 2026-10-23 SWEEP-B2 네이티브 웹 동일화
+
+| 대상 | 현행 계약 | 근거 |
+|---|---|---|
+| 초기 구역 제목 | 초기 HUD 갱신 때 시작하며 가이드 동안3.1초 애니메이션 종료; 레슨 시작 때 재시작하지 않음 | G60243/60319/62300 · native_regions.gd |
+| 로비 패치노트 | 원본 KO/EN 데이터,560×660·원점680,210·버전 클릭/키·Escape·닫기·포커스 복귀 | I745–787/3736–3771 · native_patch_notes_panel.gd |
+| 슬롯/삭제 | 저장2개 단위 화살표·범위·disabled, 모달외곽radius8 | I3558–3574/859–865 |
+| 인벤 힌트 | 360×40.8,12px/1.7,WORD wrapping·deferred size | inventory-space.css148–152 |
+| 스킬 정보 아이콘 | 64px원형·2px #5a4b3c·scale1.18,3D코인과 분리 | skill-forge.css49 |
+| 성장 | 중심44/54px 원형·원점27px/별17px, 경로1.35/학습2/선택2.5px. 시각 잔차 미완료 | growth-tree-detail.css |
+| 설정 설명 | 원본245.28125px카드·184×44.78125px설명, deferred size. 일부 한글 줄 경계 잔여 | ui-refinement.css1182–1185 |
+
+전체 시각 동일 완료가 아니다. 항목별 판정과 테스트는 [SWEEP-B2](../engine/SWEEP_B2_20261023.md), 정본 상태는 [PC 인수표](../engine/PARITY_SWEEP_B_PC_20261022.md).

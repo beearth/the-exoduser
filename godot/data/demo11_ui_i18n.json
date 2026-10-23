@@ -271,7 +271,9 @@
     "패시브 기여": "PASSIVE CONTRIBUTION",
     "자동 투자 예약 · {p0} AP": "Reserve auto-invest · {p0} AP",
     "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Reserve without enough AP · even levels grant AP and affordable ranks auto-invest in order.",
-    "물리탄 차징 · E로 패링": "PHYSICAL SHOT CHARGING · PARRY WITH E"
+    "물리탄 차징 · E로 패링": "PHYSICAL SHOT CHARGING · PARRY WITH E",
+    "패치 노트": "Patch Notes",
+    "패치 노트가 없습니다": "No patch notes available"
   },
   "source_en": {
     "썩은 숲": "Rotten Forest",

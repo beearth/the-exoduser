@@ -35,6 +35,8 @@ func _accept_clear(stage_index: int) -> void:
  _view.language=language.language
  _view.visible=true
  _view.show_page("clear")
+ var pets: Node=_main.world.get_node_or_null("NativePets")
+ if is_instance_valid(pets):pets.present_native_demo_end_subtitle(self)
  # World/Player are explicitly PAUSABLE; parent disable alone cannot stop them.
  # Freeze their tree and parent input; only this UI remains ALWAYS.
  _main.process_mode=Node.PROCESS_MODE_DISABLED

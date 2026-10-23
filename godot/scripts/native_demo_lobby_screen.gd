@@ -16,6 +16,14 @@ var character_source: Array=JSON.parse_string(FileAccess.get_file_as_string("res
 var character_buttons: Array[Button] = []
 var creation_error: Label
 var _entry_enabled := false
+var _slot_shift_nodes: Array[Control]=[]
+var _slot_records: ScrollContainer
+var _slot_scroll_index:=0
+var _slot_nav: HBoxContainer
+var _slot_up: Button
+var _slot_down: Button
+var _slot_range: Label
+var _patch_notes: Control
 var _movie: CanvasLayer
 var _launching := false
 const Menu = preload("res://scripts/native_save_slot_menu.gd")
@@ -66,6 +74,10 @@ func _ready() -> void:
 	if not language.is_empty():TranslationServer.set_locale(language)
 	bridge.configure(TranslationServer.get_locale())
 	_build()
+	# I3558–3574 adds a 32px navigation row + 10px gap to centered lobby content.
+	for child in get_children():
+		if child is Control and child.position.x>=1388 and ((child.position.y>=130 and child.position.y<273) or (child.position.y>=503 and child.position.y<900)):
+			child.set_meta("slot_base_position",child.position);_slot_shift_nodes.append(child)
 	menu.changed.connect(_render)
 	menu.new_game_requested.connect(func(slot: int, data: Dictionary):
 		status.text = tr_text("새 전사 기록을 만들었습니다.","New warrior record created.")
@@ -98,7 +110,8 @@ func _input(event: InputEvent) -> void:
 	# Let the native LineEdit own IME composition/cancel keys.
 	if _name_form.visible and name_input.has_focus() and (event is not InputEventKey or event.keycode!=KEY_ESCAPE or name_input.has_ime_text()): return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
-		if modal.visible: _close_modal()
+		if is_instance_valid(_patch_notes): _patch_notes.close()
+		elif modal.visible: _close_modal()
 		elif _name_form.visible: _close_form()
 		elif _form.visible: _close_form()
 		get_viewport().set_input_as_handled()
@@ -161,7 +174,17 @@ func _build() -> void:
 	language_select.item_selected.connect(_select_language)
 	var offline:=_label("OFFLINE",Vector2(1536,151),350,12);offline.size.y=27;offline.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT;offline.add_theme_font_override("font",Fonts.stack("font",700));offline.add_theme_color_override("font_color",Color(180.0/255,140.0/255,110.0/255,.55))
 	# index809–838 / lobby-layout-20261016 504–528 / ui-refinement656–657,1005,1014 / index3576–3625.
-	var records:=ScrollContainer.new();records.position=Vector2(1392,315);records.size=Vector2(480,178);records.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(records)
+	_slot_nav=HBoxContainer.new();_slot_nav.position=Vector2(1569.9,294);_slot_nav.size=Vector2(134.2,32);_slot_nav.add_theme_constant_override("separation",12);add_child(_slot_nav)
+	_slot_up=_button("▲",Rect2(0,0,36,32),func():_slot_scroll_index=maxi(0,_slot_scroll_index-1);_render(),_slot_nav);_slot_up.custom_minimum_size=Vector2(36,32)
+	_slot_range=_label("",Vector2.ZERO,38.2,10,_slot_nav);_slot_range.custom_minimum_size=Vector2(38.2,32);_slot_range.add_theme_font_override("font",Fonts.stack("font"));_slot_range.add_theme_color_override("font_color",Color(180/255.0,120/255.0,80/255.0,.5));_slot_range.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;_slot_range.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	_slot_down=_button("▼",Rect2(0,0,36,32),func():_slot_scroll_index+=1;_render(),_slot_nav);_slot_down.custom_minimum_size=Vector2(36,32)
+	for b in [_slot_up,_slot_down]:
+		b.add_theme_font_size_override("font_size",15)
+		var nav_style:=StyleBoxFlat.new();nav_style.bg_color=Color("171214");nav_style.border_color=Color("75604766");nav_style.set_border_width_all(1)
+		for state in ["normal","hover","pressed","focus"]:b.add_theme_stylebox_override(state,nav_style)
+		var disabled_nav: StyleBoxFlat=nav_style.duplicate();disabled_nav.bg_color.a=.2;disabled_nav.border_color.a*=.2;b.add_theme_stylebox_override("disabled",disabled_nav)
+		b.add_theme_font_override("font",Fonts.stack("font"));b.add_theme_color_override("font_color",Color(196/255.0,68/255.0,68/255.0,.6));b.add_theme_color_override("font_disabled_color",Color(196/255.0,68/255.0,68/255.0,.12));b.add_theme_color_override("font_hover_color",Color(1,120/255.0,90/255.0))
+	var records:=ScrollContainer.new();_slot_records=records;records.position=Vector2(1392,315);records.size=Vector2(480,178);records.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(records)
 	var rows:=VBoxContainer.new();rows.add_theme_constant_override("separation",10);rows.size_flags_horizontal=Control.SIZE_EXPAND_FILL;records.add_child(rows)
 	for i in 5:
 		var b:=SlotCard.new();b.focus_mode=Control.FOCUS_ALL;b.custom_minimum_size=Vector2(470,84);b.size=Vector2(470,84)
@@ -304,8 +327,11 @@ func _build() -> void:
 	modal=Control.new(); modal.size=Vector2(1920,1080); add_child(modal)
 	var veil := ColorRect.new(); veil.color=Color(0,0,0,0.85); veil.size=modal.size; modal.add_child(veil)
 	var dialog:=Control.new();dialog.position=Vector2(760,470);dialog.size=Vector2(400,140);modal.add_child(dialog)
-	surface.iron(dialog,Rect2(0,0,400,140),Color("131215ee"),Color("0b0b0eef"))
-	for inset in [0,4,7]:_box(Rect2(inset,inset,400-inset*2,140-inset*2),Color.TRANSPARENT,Color("756247") if inset==0 else Color("a68a5444"),dialog)
+	var metal:=surface.iron(dialog,Rect2(0,0,400,140),Color("131215ee"),Color("0b0b0eef"))
+	var metal_shader: Shader=metal.material.shader.duplicate();metal_shader.code=metal_shader.code.replace("COLOR=", "vec2 q=abs((UV-.5)*extent)-(extent*.5-vec2(8.0));float rounded=1.0-smoothstep(7.5,8.5,length(max(q,vec2(0.0))));COLOR=").replace("1.0);}","rounded);}");metal.material.shader=metal_shader
+	for inset in [0,4,7]:
+		var edge:=_box(Rect2(inset,inset,400-inset*2,140-inset*2),Color.TRANSPARENT,Color("756247") if inset==0 else Color("a68a5444"),dialog)
+		(edge.get_theme_stylebox("panel") as StyleBoxFlat).set_corner_radius_all(maxi(0,8-inset))
 	modal_title=_label("",Vector2(34,26),332,16,dialog);modal_title.size.y=24;modal_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;modal_title.add_theme_font_override("font",Fonts.stack("font"));modal_title.add_theme_color_override("font_color",Color("ecd9b7"))
 	modal_error=_label("",Vector2(34,113),332,12,dialog);modal_error.size.y=20
 	confirm=surface.button(dialog,"확인",Rect2(34,70,160,44),func():
@@ -556,11 +582,17 @@ func _render() -> void:
 	if ready_rows:
 		for row in menu.rows:
 			if row.kind=="empty" and _card_order.size()<maxi(2,used):_card_order.append(int(row.slot))
+	_slot_scroll_index=clampi(_slot_scroll_index,0,maxi(0,used-2))
+	for child in _slot_shift_nodes:
+		var base: Vector2=child.get_meta("slot_base_position");child.position=base+Vector2(0,(-21 if base.y<273 else 21) if used>2 else 0)
+	_slot_records.position.y=336 if used>2 else 315
+	_slot_nav.visible=used>2;_slot_up.disabled=_slot_scroll_index==0;_slot_down.disabled=_slot_scroll_index>=used-2
+	_slot_range.text="%d-%d / %d"%[_slot_scroll_index+1,mini(_slot_scroll_index+2,used),used]
 	for i in cards.size():
 		var card: SlotCard=cards[i]
 		var slot: int=_card_order[i] if i<_card_order.size() else -1
 		var row: Dictionary=menu.rows[slot] if slot>=0 else {"kind":"unavailable","summary":{}}
-		card.visible=slot>=0
+		card.visible=slot>=0 and i>=_slot_scroll_index and i<_slot_scroll_index+2
 		var filled: bool=row.kind in ["saved","new"]
 		card.kind=row.kind;card.selected=filled and menu.selected==slot
 		card_names[i].text=str(row.summary.get("name","")) if filled else ("—" if row.kind=="empty" else tr_text("읽을 수 없는 기록 — 삭제 후 다시 생성","Unreadable record — delete to create again"))
@@ -684,6 +716,15 @@ func _build_version_overlay() -> void:
 	for i in lines.size():
 		var color:=Color(200/255.0,120/255.0,80/255.0,.5) if i==3 else Color(160/255.0,130/255.0,90/255.0,.5)
 		var line:=_css_label(lines[i],Rect2(14,12+i*19.2,600,19.2),12,color,"font",400,1.8,self);line.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;line.name="VersionOverlay%d" % i
+	var trigger:=Button.new();trigger.name="PatchNotesTrigger";trigger.position=Vector2(14,12);trigger.size=Vector2(600,76.8);trigger.mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
+	for state in ["normal","hover","pressed","focus"]:trigger.add_theme_stylebox_override(state,StyleBoxEmpty.new())
+	add_child(trigger);trigger.pressed.connect(_show_patch_notes)
+
+func _show_patch_notes() -> void:
+	if is_instance_valid(_patch_notes):return
+	_patch_notes=preload("res://scripts/native_patch_notes_panel.gd").new()
+	add_child(_patch_notes)
+	_patch_notes.build(bridge.language)
 
 static func _release_version_text() -> String:
 	# release-version.json is the single version source (index1266–1267); fallback is the source's own literal.

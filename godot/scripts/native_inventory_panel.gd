@@ -226,7 +226,7 @@ func _empty_detail(m: Dictionary) -> void:
  var kicker:=Surface.text(detail,"장비 기록",Rect2(19,17,433.8,13),10,Color("ae8c5d"),"hell",700)
  var kf: FontVariation=kicker.get_theme_font("font").duplicate();Surface.Fonts.apply_spacing(kf,2);kicker.add_theme_font_override("font",kf)
  var title:=Surface.text(detail,"현재 전투 구성",Rect2(19,40,433.8,26),20,Color("e1c99b"),"font",700);var tf: FontVariation=title.get_theme_font("font").duplicate();Surface.Fonts.apply_spacing(tf,1);title.add_theme_font_override("font",tf)
- var hint:=Surface.text(detail,"장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.",Rect2(19,76,360,40.8),12,Color(169/255.0,156/255.0,133/255.0));hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;hint.add_theme_constant_override("line_spacing",3)
+ var hint:=Surface.text(detail,"장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.",Rect2(19,76,360,40.8),12,Color(169/255.0,156/255.0,133/255.0));hint.autowrap_mode=TextServer.AUTOWRAP_WORD;hint.add_theme_constant_override("line_spacing",3);hint.set_deferred("size",Vector2(360,40.8))
  var p: Dictionary=_state.get_ref().read_current_p()
  for i in 4:
   # .inv-detail-metrics>div 213.4×42.3, 열 간격 7, 행 간격 7, bg rgba(10,16,20,.72) 1px #66583d, pad 10 12

@@ -44,7 +44,7 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
     var font: String="font" if n.font.contains("Noto Sans") else ("cinzel_hell" if n.font.contains("Cinzel") else "hell")
     var label:=S.text(self,UI.text(n.text),r,px,color(n.color),font,weight)
     label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-    label.size=r.size
+    label.set_deferred("size",r.size)
     if r.size.y<float(n.px)*1.7:label.autowrap_mode=TextServer.AUTOWRAP_OFF
     label.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT if n.align=="right" else (HORIZONTAL_ALIGNMENT_CENTER if n.align=="center" else HORIZONTAL_ALIGNMENT_LEFT)
     values[id]=label

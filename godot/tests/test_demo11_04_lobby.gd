@@ -1,5 +1,5 @@
 extends SceneTree
-const USERDIR := "EXODUSER-demo11-04-Isolated-20261021"
+const USERDIR := "EXODUSER-demo11-04-Isolated-20261021-SWEEP-B2-20261023-01"
 const Store = preload("res://port_modules/save_adapter/demo_local_storage.gd")
 const Menu = preload("res://scripts/native_save_slot_menu.gd")
 const Bridge = preload("res://scripts/native_settings_lobby_bridge.gd")

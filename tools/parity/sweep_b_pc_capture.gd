@@ -31,7 +31,7 @@ func _run() -> void:
 		elif a.begins_with("--mode="): mode = a.trim_prefix("--mode=")
 	var ud := OS.get_user_data_dir().get_file()
 	L("userdir", OS.get_user_data_dir())
-	if not ALLOWED.has(ud) or out.is_empty() or DisplayServer.get_name() == "headless":
+	if not (ALLOWED.has(ud) or ud.begins_with("EXODUSER-demo11-SWEEP-B2-")) or out.is_empty() or DisplayServer.get_name() == "headless":
 		L("refuse", {"ud": ud, "ds": DisplayServer.get_name()}); quit(2); return
 	# 사용자 지시(2026-10-22): 창은 오른쪽 보조 모니터(5120,0)에만. 메인 모니터에 걸치면 옮긴다.
 	# Godot 화면 좌표는 가장 왼쪽 모니터가 0이다(Windows 5120 = Godot 7040). 가장 오른쪽 화면에 둔다.
@@ -48,6 +48,9 @@ func _run() -> void:
 	wipe_store()
 	match mode:
 		"lobby": await run_lobby()
+		"slots": await run_slots()
+		"patch":
+			var screen:=_lobby();await secs(2);screen._show_patch_notes();await secs(.4);await shot("001_patch_notes")
 		"game": await run_game()
 		"death": await run_death()
 		"clear": await run_clear()
@@ -73,6 +76,7 @@ func _lobby() -> Node:
 func run_lobby() -> void:
 	var screen := _lobby()
 	await secs(2.0); await shot("001_lobby")
+	screen._show_patch_notes();await secs(.4);await shot("001_patch_notes");screen._patch_notes.close();await secs(.3)
 	screen.language_select.select(1); screen.language_select.item_selected.emit(1); await secs(0.8); await shot("002_lobby_en")
 	screen.language_select.select(0); screen.language_select.item_selected.emit(0); await secs(0.5)
 	screen._show_quit(); await secs(0.6); await shot("003_quit")
@@ -95,7 +99,8 @@ func run_lobby() -> void:
 	L("lobby_snapshot", screen.get_snapshot())
 
 func wait_main() -> Node:
-	for i in 900:
+	var deadline := Time.get_ticks_msec() + 180000
+	while Time.get_ticks_msec() < deadline:
 		await process_frame
 		if is_instance_valid(current_scene) and current_scene.has_method("request_native_lobby_entry"): return current_scene
 		var lob = current_scene
@@ -168,7 +173,12 @@ func enter_play(stop_at_lesson: bool = false) -> bool:
 	if is_instance_valid(story) and story.phase == "playing": story.finish("skip")
 	await secs(0.5)
 	var seq: Node = main.get("source_intro_sequence")
-	if is_instance_valid(seq): seq.finish_native_guide()
+	if is_instance_valid(seq):
+		# Match the web capture: 1.5 seconds on each of the four guide pages.
+		for page in 4:
+			await secs(1.5)
+			if page < 3: seq.advance_native_guide()
+		seq.finish_native_guide()
 	var deadline := Time.get_ticks_msec() + 9000
 	while is_instance_valid(seq) and Time.get_ticks_msec() < deadline:
 		if is_instance_valid(seq.lesson_flow) and seq.lesson_flow.active: break
@@ -240,3 +250,10 @@ func run_settings() -> void:
 		settings._rebuild(tab); await secs(0.8); await shot("090_settings_" + tab)
 	settings._rebuild("system"); await secs(0.3)
 	await tap(KEY_ESCAPE); await secs(0.5)
+
+func run_slots() -> void:
+	var screen:=_lobby()
+	for i in 3: screen.menu.request_new(i,"패리티"+str(i+1))
+	screen.menu.selected=-1;screen.status.text="";screen._render()
+	await secs(1);await shot("007_slots3")
+	screen._slot_down.pressed.emit();await secs(.4);await shot("008_slots3_down")

@@ -227,7 +227,11 @@ func render_altar(m: Dictionary) -> void:
 func render_info(m: Dictionary) -> void:
  var id: String=selected_skill if not selected_skill.is_empty() else m.host
  if id.is_empty():text("스킬을 고르면 정보가 표시됩니다",Rect2(66,360,298,25),12,Color("7d7264"));return
- disc(id,Rect2(66,354.11,64,64));text(display_name(id),Rect2(142,366.31,215,26),18,Color("dfd6c2"),true)
+ # .sf-info-ico remains DOM in sf-3d: 64px circle, 2px #5a4b3c, image scale(1.18).
+ var info:=TextureRect.new();info.position=Vector2(66,354.11);info.size=Vector2(64,64);info.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;info.texture=icon_for(id);info.mouse_filter=Control.MOUSE_FILTER_IGNORE;stage.add_child(info)
+ var info_shader:=Shader.new();info_shader.code="shader_type canvas_item;void fragment(){vec2 p=UV-.5;float d=length(p)*64.0;vec4 c=texture(TEXTURE,.5+p/1.18);if(d>30.0)c=vec4(vec3(90.,75.,60.)/255.,1.);c.a*=1.-smoothstep(31.5,32.,d);COLOR=c;}"
+ var info_mat:=ShaderMaterial.new();info_mat.shader=info_shader;info.material=info_mat
+ text(display_name(id),Rect2(142,366.31,215,26),18,Color("dfd6c2"),true)
  var sk: Dictionary=Catalog.read_skill(id);var lv: int=level(id)
  if sk.get("found",false):text("Lv %d / 20"%lv,Rect2(142,390.91,215,20),12,Color("c9a663"))
  var desc:=text(skill_desc(id),Rect2(66,439.11,300,65),13,Color("d8ccb8"));desc.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;desc.set_deferred("size",Vector2(300,65))

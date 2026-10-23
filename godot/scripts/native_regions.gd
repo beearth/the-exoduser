@@ -49,6 +49,8 @@ func configure(main: Node) -> bool:
  if not g is Dictionary:return false
  _g=g;process_physics_priority=2;process_mode=Node.PROCESS_MODE_ALWAYS
  _build_banner()
+ # G62300 updateHUD(true) starts the title before the intro guide.
+ _show_area_title()
  region_banner.connect(_show_region_banner)
  return initialize_stage().get("ready")==true
 func _live() -> bool:

@@ -226,6 +226,7 @@ func _build() -> void:
  _tree=Control.new();_tree.size=Vector2(1000,800);_extent.add_child(_tree);_tree.draw.connect(_draw_tree)
  for node in _data.centers:_make_node(node,node.key,0)
  for node in _data.layout.nodes:_make_node(node,node.key,int(node.rank))
+ var origin:=Label.new();origin.name="GrowthOrigin";origin.text="✦";origin.position=Vector2(486.5,386.5);origin.size=Vector2(27,27);origin.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;origin.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;origin.add_theme_font_override("font",FONTS.stack("font"));origin.add_theme_font_size_override("font_size",17);origin.add_theme_color_override("font_color",Color("ffe1ac"));origin.mouse_filter=Control.MOUSE_FILTER_IGNORE;_tree.add_child(origin)
  _set_zoom(1)
  var live_link:=Button.new();live_link.text=surface.I18N.text("현재 전투 능력치 ↗");live_link.position=Vector2(271,956.8);live_link.size=Vector2(132.2,30.5);live_link.add_theme_font_override("font",FONTS.stack("font",400));live_link.add_theme_font_size_override("font_size",15)
  for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:live_link.add_theme_color_override(key,Color(207/255.0,175/255.0,135/255.0))
@@ -262,8 +263,8 @@ func _build() -> void:
  _confirm.hide()
 func _make_node(row: Dictionary,key: String,rank: int) -> void:
  var b:=Button.new();var id: String=key if rank==0 else key+"@"+str(rank)
- b.name=id;b.position=Vector2(row.x,row.y)-Vector2(18,18) if rank==0 else Vector2(row.x,row.y)-Vector2(10,10)
- b.size=Vector2(44,44) if rank==0 else Vector2(10,10);b.text=key.to_upper() if rank==0 and not key.begins_with("p") else ""
+ b.name=id;b.position=Vector2(row.x,row.y)-Vector2.ONE*(27.0 if bool(row.get("major",false)) else 22.0) if rank==0 else Vector2(row.x,row.y)-Vector2(5,5)
+ b.size=Vector2.ONE*(54.0 if bool(row.get("major",false)) else 44.0) if rank==0 else Vector2(10,10);b.text=key.to_upper() if rank==0 and not key.begins_with("p") else ""
  if rank==0 and key.begins_with("p"):
   var index:=0
   for i in _data.defs.size():
@@ -289,8 +290,24 @@ func _draw_tree() -> void:
  for row in _data.centers:points[row.key]=Vector2(row.x,row.y)
  for row in _data.layout.nodes:points[row.id]=Vector2(row.x,row.y)
  for pair in [["spine","origin"],["neck","spine"],["leftShoulder","spine"],["rightShoulder","spine"]]:_tree.draw_line(points[pair[0]],points[pair[1]],Color(0.55,0.5,0.39,0.6),1,true)
- for row in _data.centers:_tree.draw_line(points[row.parent],points[row.key],Color(0.55,0.5,0.39,0.6),1,true)
- for row in _data.layout.links:_tree.draw_line(points[row.from],points[row.to],Color(0.55,0.5,0.39,0.6),1,true)
+ for row in _data.centers:_draw_link(points[row.parent],points[row.key],row.key)
+ for row in _data.layout.links:_draw_link(points[row.from],points[row.to],str(row.to).split("@")[0])
+ for row in _data.centers:
+  if not str(row.key).begins_with("p"):continue # .growth-stat uses the distinct 9px rounded-square glyph.
+  var at:=Vector2(row.x,row.y);var radius: float=27.0 if bool(row.major) else 22.0
+  var selected: bool=row.key==_key and _rank==0
+  _tree.draw_circle(at,radius+(6 if selected else 4),Color("ddab66") if selected else Color(187/255.0,157/255.0,104/255.0,.62))
+  _tree.draw_circle(at,radius+3,Color("171c15") if selected else Color("101713"))
+  if bool(row.major):_tree.draw_arc(at,radius+5,PI*.25,PI*.75,24,Color(221/255.0,185/255.0,121/255.0,.7),1,true)
+ _tree.draw_circle(Vector2(500,400),17.5,Color(179/255.0,144/255.0,80/255.0,.18))
+ _tree.draw_circle(Vector2(500,400),13.5,Color("302b1e"))
+ _tree.draw_arc(Vector2(500,400),13,0,TAU,64,Color("f2d294"),1,true)
+func _draw_link(a: Vector2,b: Vector2,key: String) -> void:
+ var allocated: bool=value(_plan,key)>0
+ var route:=false
+ for path in _data.paths:
+  if path.id==_path and key in path.keys:route=true
+ _tree.draw_line(a,b,Color("f0cc89") if route else (Color(217/255.0,184/255.0,119/255.0,.95) if allocated else Color(166/255.0,152/255.0,118/255.0,.72)),2.5 if route else (2.0 if allocated else 1.35),true)
 func _refresh() -> void:
  if not _opened:return
  var result: Variant=evaluated()
@@ -337,7 +354,7 @@ func _refresh() -> void:
   skin.bg_color=Color("685032") if selected else Color("17201b")
   skin.border_color=Color("ffe0a3") if selected else Color("a49878")
   if rank==0:
-   skin.set_corner_radius_all(22 if key.begins_with("p") else 6);skin.shadow_color=Color("bb9d689e");skin.shadow_size=3
+   skin.set_corner_radius_all((27 if _center_major(key) else 22) if key.begins_with("p") else 9);skin.shadow_size=0
   elif rank==10:
    skin.set_corner_radius_all(1);_nodes[id].pivot_offset=Vector2(5,5);_nodes[id].rotation=PI/4
  for id in _path_buttons:

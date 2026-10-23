@@ -153,6 +153,8 @@ var _in_frame := false
 var _say_log: Array = []
 
 # 자막 패널
+var _end_subtitle_flow: Node
+var _end_subtitle_ticks:=0.0
 var _subtitle_layer: CanvasLayer
 var _subtitle_root: Control
 var _portrait: TextureRect
@@ -239,6 +241,15 @@ static func _load_frames(pattern: String, count: int) -> Array:
 
 
 func _demo47i_physics_body(_delta: float) -> void:
+	# G9509 continues while stageClear is shown; nextStage G43898 then G.on=false.
+	# Native clear freezes combat, so advance only this presentation clock here.
+	if is_instance_valid(_end_subtitle_flow):
+		if _end_subtitle_flow._phase == "clear":
+			_end_subtitle_ticks+=_delta*60.0
+			while _end_subtitle_ticks>=1.0:
+				_end_subtitle_ticks-=1.0
+				_update_pet_bubble()
+		return
 	if not _configured or not is_instance_valid(_player):
 		return
 	_tick += 1.0
@@ -526,6 +537,13 @@ func _update_pet_bubble() -> void:
 
 # 원본 9507~9737. 상태는 owner에서 읽고 지역 복사만 수정한다.
 func _check_pet_dialogue() -> void:
+	# G32113/parry-lesson.js484 returns before G9509 during the intro panel.
+	var main: Node = _world.get_parent()
+	var sequence: Variant = main.get("source_intro_sequence")
+	if is_instance_valid(sequence) and is_instance_valid(sequence.lesson_flow):
+		var lesson: Node = sequence.lesson_flow
+		if lesson.active and lesson.phase == "intro":
+			return
 	var raw_p: Variant = _state.read_current_p()
 	var raw_g: Variant = _state.read_current_g()
 	if not raw_p is Dictionary or not raw_g is Dictionary:
@@ -760,10 +778,17 @@ func _on_pet_kill(p: Dictionary) -> void:
 
 
 # ── 자막 패널 (petSubtitle — 2587 DOM + 2026-09-29/09-16 계약) ──
+func present_native_demo_end_subtitle(flow: Node) -> void:
+	_end_subtitle_flow=flow
+	process_mode=Node.PROCESS_MODE_ALWAYS
+	# G3212 demoEnd z99 < G2587 petSubtitle z999. Only this event needs
+	# native layer121; normal panels use layers80/96 above the default9.
+	if is_instance_valid(_subtitle_layer):_subtitle_layer.layer=121
+
 func _build_subtitle_panel() -> void:
 	_subtitle_layer = CanvasLayer.new()
 	_subtitle_layer.name = "NativePetSubtitle"
-	_subtitle_layer.layer = 9 # DOM z999 — 캔버스 HUD 요소들과 함께, 게임 월드 위
+	_subtitle_layer.layer = 9 # G2587 z999, below inventory/settings/growth panels.
 	add_child(_subtitle_layer)
 	_subtitle_root = Control.new()
 	_subtitle_root.name = "PetSubtitleRoot"

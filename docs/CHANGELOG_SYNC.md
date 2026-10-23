@@ -56825,3 +56825,11 @@ integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 
 - INTEG-17c + PC spawn parity 정상 merge(충돌0), Mac 스폰 두 파일 리뷰·최종 B/F/D/29 HOLD와 PC 보고서 중간결과 차이 정정.
 - import ERROR0, 요청 단위 첫1회씩(8 PASS/기존 실패5), 마지막 E2E 13 PASS/5 NOT_READY/0 FAIL. 새 namespace GUI 한 세션·링5처치/레슨/라벨·163FPS 단1회·viewport2장, VISUAL RETOUCH 및 미검수 한계 기록.
 - 원본/판정/기준 HUD·로딩 보존, main 배포·PC 실행 동기화 없음. 상세 `docs/engine/INTEG17D_PC_SPAWN_MERGE_20261023.md`.
+
+
+## 2026-10-23 SWEEP-B2 웹 UI 동일화
+
+- 기준5b6dcce2,별도SWEEP-B2 worktree만수정. 초기구역제목·레슨대사정지·로비패치노트/슬롯화살표/삭제radius·인벤/설정줄바꿈·성장링/경로/원점·스킬정보아이콘·종료자막z순서.
+- 원본출처·수치·잔여시각차이: docs/engine/SWEEP_B2_20261023.md. 상태정본PARITY_SWEEP_B_PC_20261022.md.
+- 번역대상3550–3661추가,CRLF보존. 패치노트KO외EN전파는웹원본규칙. 테스트고정USERDIR만새namespace로변경,단정완화없음.
+- 테스트/최종E2E/캡처판정은최종검증기록참조. PC동기화·사용자열린실행본·전체이식완료주장없음.
