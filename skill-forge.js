@@ -84,6 +84,16 @@
     if(typeof SFX!=='undefined'&&SFX.pickup)SFX.pickup();
     return true;
   }
+  // 숫자·Space·Z 슬롯만 비울 수 있다 — 고정 슬롯(LMB/RMB/Shift/E/Q/Ctrl)은 늘 하나가 장착돼 있어야 해서 교체만
+  function canUnequip(s){return!!s&&(s.kind==='num'||s.kind==='ult')&&!!slotValue(s)}
+  function unequip(s){
+    if(!canUnequip(s))return false;
+    if(s.kind==='num'){SKILL_SLOTS[s.idx]=null;if(typeof updateQS==='function')updateQS();}
+    else{ULT_SLOT=null;if(typeof _updateUltSlot==='function')_updateUltSlot();}
+    if(typeof dbSaveForce==='function')dbSaveForce();
+    if(typeof SFX!=='undefined'&&SFX.pickup)SFX.pickup();
+    return true;
+  }
   // ── 합성 제단 상태 ──
   const st={slot:6,staged:[],sel:null,trayTab:'all',dirty:true};
   function forgeHost(){const s=SLOTS[st.slot];const v=slotValue(s);if(!v)return null;
@@ -207,7 +217,7 @@
     const ring=m.set.length>1?m.set:[];
     const showGhost=m.cands.some(c=>c.ok&&c.learned&&!c.demo)&&m.set.length<MAX_SOCKETS;
     const n=ring.length+(showGhost?1:0);
-    parts.core.className='sf-core'+(m.ready?' ready':k?' fused':'');
+    parts.core.className='sf-core'+(m.ready?' ready':k?' fused':'')+(canUnequip(SLOTS[st.slot])?' sf-unequip':'');
     parts.core.replaceChildren();icon(parts.core,ring.length?(k?hostOf(k):m.host):m.host,'sf-core-ico');
     parts.coreName.textContent=m.ready?_fuseName(m.ready):k&&ring.length?_fuseName(k):displayName(m.host);
     parts.coreStar.textContent=ring.length?('★'.repeat(starOf(m.ready||k))):'';
@@ -531,6 +541,10 @@
   // ── 드래그 (포인터 이벤트, HTML5 DnD 없음) ──
   function onDown(e){
     if(e.button!==0)return;
+    // 중앙 코어 = 선택 슬롯에 장착된 스킬. 원판 밖으로 끌어내면 탈착, 위 슬롯에 놓으면 그 슬롯으로 옮긴다
+    const core=e.target.closest('.sf-core');
+    if(core&&el.contains(core)){const s=SLOTS[st.slot];if(!canUnequip(s))return;
+      drag={id:slotValue(s),role:'unequip',slot:st.slot,x0:e.clientX,y0:e.clientY,on:false,src:core};return}
     const c=e.target.closest('.sf-orb,.sf-node.sf-staged');if(!c||!el.contains(c))return;
     const id=c.dataset.skId;if(!id)return;
     const role=c.classList.contains('sf-node')?'unstage':c.dataset.role;
@@ -550,13 +564,13 @@
     const drag=dd;
     const hit=document.elementFromPoint(x,y);if(!hit)return null;
     const slotB=hit.closest('.sf-slot');
-    if(slotB&&el.contains(slotB)){const s=SLOTS[+slotB.dataset.slot];return{kind:'slot',el:slotB,s,ok:drag.role==='equip'||drag.role==='mat'?canEquip(s,drag.id):false}}
+    if(slotB&&el.contains(slotB)){const s=SLOTS[+slotB.dataset.slot];return{kind:'slot',el:slotB,s,ok:drag.role==='equip'||drag.role==='mat'||drag.role==='unequip'?canEquip(s,drag.id):false}}
     const alt=hit.closest('.sf-altar');
     if(alt&&el.contains(alt)){
       // 제단 = 원판 위만. 원 밖(구슬 들판)에 놓으면 대기 재료를 빼는 자리
       const g=st.geo,ar=alt.getBoundingClientRect();
       if(!g||Math.hypot(x-ar.left-g.cx,y-ar.top-g.cy)<=g.discR+10){const m=forgeModel();const c=m.cands.find(c=>c.id===drag.id);return{kind:'altar',el:alt,ok:drag.role==='mat'&&!!(c&&c.ok&&c.learned&&!c.demo)}}
-      return{kind:'field',el:null,ok:drag.role==='unstage'};
+      return{kind:'field',el:null,ok:drag.role==='unstage'||drag.role==='unequip'};
     }
     return null;
   }
@@ -568,6 +582,13 @@
     if(three)three.hover(0);
     const t=dropTarget(e.clientX,e.clientY,d);
     if(d.role==='unstage'){if(!t||t.kind!=='altar'){st.staged=st.staged.filter(x=>!group(d.id).includes(x));render()}return}
+    if(d.role==='unequip'){
+      if(t&&t.kind==='altar')return; // 원판 위에 다시 놓음 = 취소
+      if(t&&t.kind==='slot'){
+        if(!t.ok){if(typeof notify==='function')notify(L('이 슬롯에는 넣을 수 없습니다','Cannot go in this slot'));return}
+        if(equip(t.s,d.id)){st.slot=+t.el.dataset.slot;st.staged=[];render()}return}
+      if(unequip(SLOTS[d.slot])){st.staged=[];render()}
+      return}
     if(!t||!t.ok){if(t&&t.kind==='slot'&&typeof notify==='function')notify(L('이 슬롯에는 넣을 수 없습니다','Cannot go in this slot'));return}
     if(t.kind==='slot'){if(equip(t.s,d.id)){st.slot=+t.el.dataset.slot;st.staged=[];render()}return}
     if(t.kind==='altar'){

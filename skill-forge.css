@@ -70,6 +70,7 @@
   display:grid;place-items:center;background:radial-gradient(circle,#4a1a10 0,#1a0c0a 62%,#0b0808 100%);border:3px solid #6b5843;box-shadow:0 0 30px #ec795866,inset 0 0 20px #000;}
 #skillForge .sf-core-ico{width:90%;height:90%;border-radius:50%;overflow:hidden;}
 #skillForge .sf-core.empty{opacity:.4;}
+#skillForge .sf-core.sf-unequip{cursor:grab;}
 #skillForge .sf-core.ready{border-color:var(--sf-fire);animation:sfPulse 1.6s ease-in-out infinite;}
 #skillForge .sf-core.fused{border-color:var(--sf-gold);}
 /* 합성 이름 명패: 제단 왼쪽 위 (아래 소켓을 가리지 않게) */
