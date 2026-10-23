@@ -1,0 +1,13 @@
+{
+  "candidate": "H53",
+  "task": "7519372667992379392",
+  "reference": "assets/character-concepts/20261023/hellgunner_fine_chrome_h51.png",
+  "referenceSha256": "563821fab3509aa9acc049dc0aa18ab6447aeebda8bdefb34e66cad64ea58da7",
+  "prompt": "EDIT only torso clothing: restore a black leather one-piece bodysuit under jacket and shorts. Solid opaque sculpted bust panels fully cover breasts, plunging neckline, narrow center panel, open side-waist cutouts; unmistakably a swimsuit-cut bodysuit, not a shirt. Fine chrome inlays remain on bare collarbones/flanks. Keep EXACT face, bob, monocular, robot arm, leather hotpants, low-carried giant revolver rifle, stock, colored ammo, hands and framing. Worn leather texture, no mesh or glow.",
+  "promptLength": 493,
+  "model": "Seedream 5.0 Pro",
+  "provider": "MagicLight Toolbox Image",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCost": 100
+}

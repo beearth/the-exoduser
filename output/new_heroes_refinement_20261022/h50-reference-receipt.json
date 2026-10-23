@@ -1,0 +1,18 @@
+{
+  "candidate": "H50",
+  "task": "7519339040462045184",
+  "reference": {
+    "path": "assets/character-concepts/20261023/hellgunner_selectable_ammo_h49.png",
+    "role": "Edit target: preserve H49 face/pose/weapon/ammo colors; add small chrome body inlays only",
+    "sha256": "93b12729acb419342cc29be80bedd8d43464c06bdd6f7697f45a921992e1d281"
+  },
+  "prompt": "EDIT reference: add visible chrome body jewelry/implants: asymmetric thin silver inlays below collarbones, 2 curved segmented chrome strips on exposed waist/flank, a small neck connector. Skin stays predominant; jewelry follows anatomy and echoes robot arm. Crisp reflective silver with fine scratches, dark seams, no glow, no dots/chains. Keep face, blonde bob, monocular, hotpants, pose, giant gun geometry and colored ammunition EXACTLY. Same framing, quality and worn dark-fantasy techwear.",
+  "promptLength": 494,
+  "observedAt": "2026-10-23T10:09:19.414Z",
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCost": 100,
+  "displayedBalanceBeforeSubmission": 32590
+}

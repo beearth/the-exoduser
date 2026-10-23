@@ -1,0 +1,13 @@
+{
+  "candidate": "H56",
+  "task": "7519383820105646080",
+  "reference": "assets/character-concepts/20261023/hellgunner_fine_chrome_fullbody_h54.png",
+  "referenceSha256": "6b7f37401d00f0d6bf5e6f16e5ad495bdf633986a092174bff001615fc75bb8f",
+  "prompt": "EDIT ONLY muzzle face: the UPPER main barrel is the ONLY hollow firing bore. Replace BOTH lower black round holes with FLAT SOLID metal recoil-piston end caps, no dark cavities. Clear single-barrel heavy gun, not 3 barrels. Keep whole gun length/geometry, cylinder, colored ammo and every other detail. Preserve full-body woman, opaque black bodysuit, chrome, face, bob, monocular, robot arm, hotpants, boots, pose and framing EXACTLY. Head/feet/whole gun stay visible. No cropping or glow.",
+  "promptLength": 490,
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCost": 100
+}
