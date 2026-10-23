@@ -1,0 +1,30 @@
+{
+  "base": "H50",
+  "reference": "assets/character-concepts/20261023/hellgunner_chrome_body_inlays_h50.png",
+  "referenceSha256": "eebf4c74e521c07e558bad576f2564f632799c2534abc0ca8177ac92d5ed8ac3",
+  "userPositiveQuote": "나쁘지 않네 다른버전도 해바",
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "jobs": [
+    {
+      "candidate": "H51",
+      "task": "7519371272878792704",
+      "prompt": "EDIT reference. Fine chrome variant: replace broad body strips with delicate tapered silver inlays flowing along collarbones and exposed flanks, 3 short asymmetric branches, tiny recessed joints. Elegant tech jewelry, skin predominant, crisp reflections, wear. Keep SAME face, blonde bob, monocular, jacket, bodysuit coverage, hotpants and colored-ammo giant revolver rifle. Keep relaxed two-hand low carry, NOT aiming; stock retained, no forced shoulder contact. Same framing. No glow/dots/chains.",
+      "promptLength": 498,
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 100,
+      "submittedAt": "2026-10-23T12:17:15.507Z"
+    },
+    {
+      "candidate": "H52",
+      "task": "7519371354831290368",
+      "prompt": "EDIT reference. Warrior chrome variant: replace curved body jewelry with compact angular segmented silver plates at collarbones, side ribs and hip crests. Asymmetric overlapping facets, dark gasket seams, worn edges; echo robot arm. Bare abdomen stays mostly visible. Keep SAME face, blonde bob, monocular, jacket, hotpants and giant revolver rifle with colored ammo. Relaxed two-hand low carry, not aiming; retain stock, no forced shoulder contact. Same framing/quality. No spikes/chains/glow/dots.",
+      "promptLength": 499,
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 100,
+      "submittedAt": "2026-10-23T12:17:36.347Z"
+    }
+  ]
+}

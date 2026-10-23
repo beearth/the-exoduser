@@ -1,0 +1,13 @@
+{
+  "candidate": "H61",
+  "task": "7519431344648609792",
+  "reference": "assets/character-concepts/20261023/hellgunner_silver_suit_black_hotpants_h60.png",
+  "referenceSha256": "caeb1bdeb30a6b613b2d1db63fcf7d0f9432437963f72bc78f679bc3bf7e322e",
+  "prompt": "FRONT full-body redesign; same face/bob/monocular/robot arm. Move ONE giant revolver rifle to diagonal BACK sling, muzzle above shoulder, stock by opposite hip, wholly BEHIND body; nothing across torso. Arms down, hands visible. Streamline outfit: SILVER coated-leather swimsuit-cut bodysuit, opaque deep-V bust/side cutouts; separate BLACK hotpants, cropped black tech jacket. Deep RED seam accents, silver ankle inserts on sleek black boots. No bulky armor/chains/extra straps. Head/feet visible.",
+  "promptLength": 498,
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCost": 100
+}

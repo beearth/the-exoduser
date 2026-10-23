@@ -1,0 +1,13 @@
+{
+  "candidate": "H59",
+  "task": "7519426988561907712",
+  "reference": "assets/character-concepts/20261023/hellgunner_future_gear_grip_h58.png",
+  "referenceSha256": "8401fd2afe22f3cac5776022eb7d68a537529bb84b04a3dfe206a6019446f74c",
+  "prompt": "EDIT palette only: opaque SILVER cutout coated-leather bodysuit, not torso armor; BLACK hotpants/boots. Repeat silver waist/ankle connectors and deep RED piping on suit, shorts seam, boot ankle inserts. Jacket BLACK/SILVER with deep-red shoulders; no ivory. Gun BLACK/SILVER/deep red; retain tiny colored ammo identifiers. Worn satin silver, matte black, no neon. Preserve face/bob/monocular, robot arm, visible right grip/left support, clean shorts, future boots, fullbody.",
+  "promptLength": 474,
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCost": 100
+}

@@ -1,0 +1,66 @@
+{
+  "recordedAt": "2026-10-23T06:22:47.007Z",
+  "references": [
+    {
+      "source": "C:/Users/심도진/Desktop/images (6).jpg",
+      "path": "assets/character-concepts/references/20261023/hellgunner_h39/user_edgerunners.jpg",
+      "sha256": "c3f6eee2b4cea8461e74908790fef889c0afdd1219b87bc67ed2e499fef143cc",
+      "role": "Style continuity only; retain existing H38 character/clothes"
+    },
+    {
+      "source": "C:/Users/심도진/Desktop/images (7).jpg",
+      "path": "assets/character-concepts/references/20261023/hellgunner_h39/user_modular_pistol.jpg",
+      "sha256": "f181b1e85e44a91049f4252719839c441b21d5a0195203e5de1f3a5fb647454b",
+      "role": "Modular weapon shells, worn paint, panel seams, fasteners; NOT pistol scale, exact brand marks or yellow color wholesale"
+    },
+    {
+      "source": "C:/Users/심도진/Desktop/imgres.htm",
+      "sourceHtmlSha256": "33e74185adbb06be6e469db344842bc7440bec15032625e7043b60b847e0d716",
+      "originalImageUrl": "https://i.namu.wiki/i/JDwGe_Crsm1RWXHxUWjZ0lPIBaLlhQGQsAE9smxUkhwwddxS1_vnM7T9g4-yir4jiNdQlZIuOePrf92PpeZjGw.webp",
+      "imageUrl": "https://i.namu.wiki/i/JDwGe_Crsm1RWXHxUWjZ0lPIBaLlhQGQsAE9smxUkhwwddxS1_vnM7T9g4-yir4jiNdQlZIuOePrf92PpeZjGw.webp",
+      "path": "assets/character-concepts/references/20261023/hellgunner_h39/user_handgun.webp",
+      "sha256": "5c595420562d21c03b8bad7ddbb891e12f8c45a8c3c4949627b14bde37217013",
+      "role": "User-selected futuristic firearm detail language only. Preserve H38 giant revolver-rifle silhouette; no brand copying or pistol/SMG substitution."
+    },
+    {
+      "source": "C:/Users/심도진/Desktop/imgres (1).htm",
+      "sourceHtmlSha256": "da65762ae4eb2380b89e21381fd0fd4e2660ea1e4a55d779756e7033d51a6f35",
+      "originalImageUrl": "https://game.savetip.co.kr/wp-content/uploads/2025/05/%EC%9E%89%EB%A1%B1.webp",
+      "imageUrl": "https://game.savetip.co.kr/wp-content/uploads/2025/05/%EC%9E%89%EB%A1%B1.webp",
+      "path": "assets/character-concepts/references/20261023/hellgunner_h39/user_smg.webp",
+      "sha256": "ea4be14ab48653e4298d9d9324f4ee28b49a87de68a10702419c7c98e6007b61",
+      "role": "User-selected futuristic firearm detail language only. Preserve H38 giant revolver-rifle silhouette; no brand copying or pistol/SMG substitution."
+    },
+    {
+      "source": "C:/Users/심도진/Desktop/imgres (2).htm",
+      "sourceHtmlSha256": "dc5d5b7c8cfeb6c5f65d0ff395cb2f6738735320318baa580ecb5e17af5797c8",
+      "originalImageUrl": "https://makerworld.bblmw.com/makerworld/model/US2032db133846e9/design/a60becef0e9a22da.png?x-oss-process=image/resize,w_400/format,webp",
+      "imageUrl": "https://makerworld.bblmw.com/makerworld/model/US2032db133846e9/design/a60becef0e9a22da.png?x-oss-process=image/resize,w_400/format,webp",
+      "path": "assets/character-concepts/references/20261023/hellgunner_h39/user_modular_receiver.webp",
+      "sha256": "6e829d4743cb672142490639c20ace22939a6a846cc506752fcbb504f3ae0ad9",
+      "role": "User-selected futuristic firearm detail language only. Preserve H38 giant revolver-rifle silhouette; no brand copying or pistol/SMG substitution."
+    },
+    {
+      "source": "C:/Users/심도진/Desktop/imgres (3).htm",
+      "sourceHtmlSha256": "f346b6867583feae31ecedf927e13bbdc77b535e4c95f40c5ca6803674df001a",
+      "originalImageUrl": "https://i.namu.wiki/i/Ifu1B1RWaYIpbwDlPinbgfEkC8ipIGZdn2Ckd4aXPaMN4SQ6NM0bI32HnPfvPY-55I9VAMVGsvFqSSbZsjpgZg.webp",
+      "imageUrl": "https://i.namu.wiki/i/Ifu1B1RWaYIpbwDlPinbgfEkC8ipIGZdn2Ckd4aXPaMN4SQ6NM0bI32HnPfvPY-55I9VAMVGsvFqSSbZsjpgZg.webp",
+      "path": "assets/character-concepts/references/20261023/hellgunner_h39/user_rifle.webp",
+      "sha256": "0d268c9519106d84aa3b86df8f4b82a1ff2e012f958f4ed9c7f598ac7deaf079",
+      "role": "User-selected futuristic firearm detail language only. Preserve H38 giant revolver-rifle silhouette; no brand copying or pistol/SMG substitution."
+    },
+    {
+      "source": "C:/Users/심도진/Desktop/images (8).jpg",
+      "path": "assets/character-concepts/references/20261023/hellgunner_h39/user_future_detail_08.jpg",
+      "sha256": "9f5dcd33da82b4114d2c205661fa44c69258b3d32a7d49b93cc6cdbfac165d72",
+      "role": "Additional user futuristic gun surface/mechanical detail reference; keep giant revolver-rifle exterior"
+    },
+    {
+      "source": "C:/Users/심도진/Desktop/img.jpg",
+      "path": "assets/character-concepts/references/20261023/hellgunner_h39/user_carnage.jpg",
+      "sha256": "d08b6cbaad157140515f9f0920f3406d87e247243e0fea348666588ae6e8f3da",
+      "role": "Primary detail language: thick layered barrel shells, exposed piston/heat-sleeve forms, skeletal stock with distinct buttplate, industrial panels, worn paint and small decals. No direct brand/text copying or shotgun silhouette replacement"
+    }
+  ],
+  "htmlUploaded": false
+}

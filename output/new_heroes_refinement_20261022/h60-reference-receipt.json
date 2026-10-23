@@ -1,0 +1,13 @@
+{
+  "candidate": "H60",
+  "task": "7519429024036655104",
+  "reference": "assets/character-concepts/20261023/hellgunner_black_silver_red_bodysuit_h59.png",
+  "referenceSha256": "20c3dc4a1e48ca747e1fc516f38ce4ba2b18b1a0abf95f7377783fcb626c9e21",
+  "prompt": "EDIT ONLY shorts below waist. Replace silver shorts with SEPARATE BLACK leather high-cut hotpants, short inseam, narrow flat black waistband, subtle deep-red stitching. Silver swimsuit-cut bodysuit continues UNDER shorts; no silver romper/biker shorts. Keep upper SILVER coated-leather bodysuit, black/silver/red jacket, future boots with red ankle inserts, face, bob, monocular, robot arm/right grip/left support, entire giant single-barrel gun and colored ammo, fullbody EXACTLY. No added straps.",
+  "promptLength": 498,
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCost": 100
+}

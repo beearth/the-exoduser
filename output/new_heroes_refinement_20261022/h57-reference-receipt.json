@@ -1,0 +1,13 @@
+{
+  "candidate": "H57",
+  "task": "7519410975464194048",
+  "reference": "assets/character-concepts/20261023/hellgunner_warrior_chrome_fullbody_h55.png",
+  "referenceSha256": "2613921c4639c7e5d3f78cf82d1b1daf591c0cd579b1de25eade5d807585a0e6",
+  "prompt": "EDIT 3 fixes. Shorts: clean high-cut black leather hotpants, ONE slim flush belt; no layered straps/holster. Boots: sleek FUTURE composite mid-calf combat boots, sealed ankle joints, recessed panels, tread soles; NO medieval shin/knee plates or buckled leather shafts. Hands: remove hanging black block; robot RIGHT hand wraps exposed pistol grip, LEFT palm supports forward barrel; fingers visible, nothing covering hands. Keep face/bob/monocular/chrome torso/giant single-barrel gun/ammo/fullbody.",
+  "promptLength": 499,
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCost": 100
+}
