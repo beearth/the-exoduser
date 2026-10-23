@@ -10,7 +10,8 @@
 | 사용자 플레이용 사본 | G:\exoduser-wt\integ10-play | SSD 유지 |
 | 개발 도구·진행 중 작업의 임시 실행 입력 | 기존 SSD 위치 | 완료된 자료만 I:로 보관 |
 | 기존 H: 보관/복구 영역 | 기존 위치 | 과거 손실 복구 관련 영역. 이번 이전에서 변경하지 않음 |
-| 사용자 실사용 세이브 | 현재 경로를 우선 보존 | I:에 별도 검증 백업. 저장 서버의 경로/사용 중 여부를 확인하기 전에는 실사용 원본을 제거하지 않음 |
+| 웹 본편 세이브 15 files | I:\EXODUSER-Storage\archive\G\exoduser\saves | G:\exoduser\saves는 Junction. 본문 SHA-256 및 기존 경로의 생성/읽기 검증 |
+| C: 별도 런타임 저장 폴더 4곳 | 기존 AppData 위치 + I: 검증 백업 | Junction에서 exclusive-create가 실패해 SSD 기본 경로로 복원. steam_autocloud.vdf와 _sharedMats.json 총 4 files, 150 bytes |
 
 ## 디스크와 검증
 
@@ -36,3 +37,13 @@
 | E:\exoduser-wt\_out | I:\EXODUSER-Storage\archive\E\exoduser-wt\_out | 185 files, 71,621,191 bytes, 전 파일 SHA-256 일치 후 Junction 전환 |
 
 대용량 이전의 최종 완료 값은 대장의 `completed`, `failed`, `bytesFreed`를 사용한다. 이 문서의 분류/초기 검증은 전체 이전 완료 선언이 아니다.
+
+## 저장 경로 전환 검수
+
+- 웹 세이브 본문 15 files/627,468 bytes는 복사 영수증의 SHA-256과 다시 대조해 일치했다. 사용자 슬롯을 생성·변경하지 않고 별도 고유 이름의 임시 파일로 기존 경로의 생성/읽기/이름 변경을 확인한다.
+- C: 런타임 저장 경로 4곳은 동일 Junction 방식에서 `wx` 파일 생성이 `EEXIST`로 실패하고 일반 SSD 디렉터리에서는 성공했다. 저장 호환성을 위해 이 4곳은 SSD 원본 경로를 유지하고 I: 검증 백업과 이전 연결 사본을 보존한다.
+- 기존 서버 3387/3391의 `/api/slots`는 HTTP 200이다. 3387 응답은 exFAT 디렉터리 열거 순서가 달라졌으나 슬롯을 이름순으로 정렬한 응답 SHA-256이 이전 원문 SHA-256과 일치해 데이터 필드가 보존됐음을 확인했다. 게임 내 실제 로드/재저장 QA 완료를 뜻하지 않는다.
+- 첫 Git 작업 사본 `codex-skill-orbs-20261023`은 전체 byte 검증 후 이전했으며 HEAD/INDEX 변경 목록/WORK 변경 목록이 이전과 같다. exFAT 소유권 정보가 없어 정확한 검증 완료 보관본 경로만 Git `safe.directory`에 등록했다. 와일드카드 신뢰는 사용하지 않는다.
+- 공용 main HEAD와 INDEX 변경 목록, game.html/index.html/server.cjs/node-main.js/package.json SHA-256을 보존했다. 공용 staging을 커밋하지 않았다.
+- 작업 중 중복 이전 실행에 따른 대상 파일 잠금 오류 1건은 원본 보존 상태에서 중단·재복사·전 파일 대조로 해결했다. 단일 프로세스 잠금으로 중복 실행 거부를 확인했다. 대장에서는 해결 이력을 유지한다.
+- 대용량 이전은 한 번에 한 프로세스로 계속한다. 링크/진행 중 변경/해시 불일치/경로 검수 실패는 원본 보존 상태에서 멈춘다. 남은 폴더와 최종 완료 여부는 `state.json`의 `pending`/`allJobsComplete`를 본다.
