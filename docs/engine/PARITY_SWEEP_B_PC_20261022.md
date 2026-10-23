@@ -49,7 +49,7 @@ P0 = 화면 구조·주요 요소 누락, P1 = 눈에 띄는 배치·상태 차�
 | B-02 | 로비 | ENTER 비활성(grayscale·brightness .45)·푸터선·DEMO 표기·종료 전원 아이콘·버전 오버레이 | P1 | 고침 | 14fc5b921 |
 | B-03 | 로비 | 선택 슬롯 키아트·캐릭터 이름 표시(아래 정렬·text-wrap balance·글로) | P1 | 고침 | 14fc5b921 |
 | B-04 | 로비 | 로고 rect 중심 5px 어긋남 → `.lobby-brand-logo` 실측(1507.2,195,249.5,104) | P2 | 고침 | 7a610f48e |
-| B-05 | 로비 | 버전 클릭 시 패치노트 패널 미이식 | P2 | 남음 | SWEEP-B3: 원문 내용·490px 본문·22.015625px 줄높이·블록 margin collapse·Cinzel500·thin overlay 스크롤바 반영. 세로 간격은 대조, 제목/본문 글꼴 래스터 잔차 남음. B-09 외부 글꼴 제외 유지. [상세](SWEEP_B3_20261023.md). |
+| B-05 | 로비 | 버전 클릭 시 패치노트 패널 미이식 | P2 | 남음 | SWEEP-B3 `dce5e270d717e4d3a6cfe0440b3b0f1c4537380c`: 원문 내용·490px 본문·22.015625px 줄높이·블록 margin collapse·Cinzel500·thin overlay 스크롤바 반영. 세로 간격은 대조, 제목/본문 글꼴 래스터 잔차 남음. B-09 외부 글꼴 제외 유지. [상세](SWEEP_B3_20261023.md). |
 | B-06 | 로비 | 슬롯 스크롤 화살표 대신 ScrollContainer, 삭제 모달 radius 8 | P2 | 고침 | SWEEP-B2 `db7c044f7f57e7f3f028d014583488ecb2bddf16`: 3슬롯 위/아래 화살표·범위·disabled·21px 재배치, 삭제 외곽 radius8. 3장 1x 비교. |
 | B-07 | 공통 글꼴 | CSS letter-spacing이 한글 대체 글꼴에 안 붙음 → `native_ui_fonts.apply_spacing`이 fallbacks에도 같은 자간 복제 | P1 | 고침 | 71af08d35 |
 | B-08 | 공통 글꼴 | 같은 Nanum Myeongjo 파일이 FreeType에서 Chrome 1x보다 가늘게 나옴 → embolden 0.35(3배 확대 대조) | P1 | 고침 | 71af08d35 |
@@ -71,20 +71,20 @@ P0 = 화면 구조·주요 요소 누락, P1 = 눈에 띄는 배치·상태 차�
 | H-04 | HUD | 레슨 적 이름표("깨어난 망자 · 1/6 처치") 미표시 | P2 | 남음 | SWEEP-B2 `db7c044f7f57e7f3f028d014583488ecb2bddf16` 조사: 지정 G/I·parry-lesson.js·system-lesson.js·캡처 도구에 해당 문구/6처치 원문 없음. 현재 웹050 재캡처에도 미관측. 문구/단계 발명 없이 보류. |
 | V-01 | 인벤 | 요약 상세(현재 전투 구성) 좌표·글꼴·구분선 실측값 | P1 | 고침 | 71af08d35 |
 | V-02 | 인벤 | 요약 힌트가 Godot은 한 줄(웹 두 줄) | P2 | 고침 | SWEEP-B2 `db7c044f7f57e7f3f028d014583488ecb2bddf16`: G49684/inventory-space.css148–152 WORD wrap·deferred360×40.8. 두 줄1x 확인. |
-| K-01 | 스킬 | 슬롯 행은 웹에서 3D 코인(sf-3d) — 실측 지름 44px(선택 49px) | P1 | 고침 | 71af08d35 |
+| K-01 | 스킬 | 슬롯 행은 웹에서 3D 코인(sf-3d) — DOM70px×torus1.11×원근, 선택1.08 | P1 | 고침 | SWEEP-B3 `dce5e270d717e4d3a6cfe0440b3b0f1c4537380c`: B2의44/49px는 유효3D 판정이 아니었음. 정상WebGL2·원본camera/torus/선택배율로 수정. K-03의 재질 잔차는 별도. |
 | K-02 | 스킬 | 정보 패널 버튼(.sf-btn/fire/ghost, disabled .48+saturate .3), 경고문 위치, 구분선, SP 줄 천 단위 | P1 | 고침 | 71af08d35 |
-| K-03 | 스킬 | 빈 코인 유리 질감, 선택 2중 회전 링, 정보 아이콘 테 색 | P2 | 남음 | SWEEP-B3: 정상 GPU/WebGL2·dee094fd snapshot 재캡처. r186 build 누락404를 기존 로컬 원본 dependency로만 보충. DOM70px/torus1.11/원근/선택1.08·배경ACES1.05 반영. 유리·PBR·룬 원판 밝기/회전광 잔여. [상세](SWEEP_B3_20261023.md). |
+| K-03 | 스킬 | 빈 코인 유리 질감, 선택 2중 회전 링, 정보 아이콘 테 색 | P2 | 남음 | SWEEP-B3 `dce5e270d717e4d3a6cfe0440b3b0f1c4537380c`: 정상 GPU/WebGL2·dee094fd snapshot 재캡처. r186 build 누락404를 기존 로컬 원본 dependency로만 보충. DOM70px/torus1.11/원근/선택1.08·배경ACES1.05 반영. 유리·PBR·룬 원판 밝기/회전광 잔여. [상세](SWEEP_B3_20261023.md). |
 | G-01 | 성장 | 인스펙터·경로 목록·필터·하단 버튼·실시간 능력치 링크 | P0 | 고침 | 28973a1e3 |
 | G-02 | 성장 | 트리 배경 기사 일러스트 없음 → 웹 원본 바이트 사본 + `growth-tree-fixed-background.css` 방식 | P0 | 고침 | 4d7bf27ed |
 | G-03 | 성장 | 하단 disabled saturate(.3), 배율 표기 `×2.00`(stat-panel-ui.js 284)·현재값 위치 | P1 | 고침 | 71af08d35, aaefeaf0b |
-| G-04 | 성장 | 노드 링 모양·학습 경로 금선 굵기·원점 ✦ 노드 | P2 | 남음 | SWEEP-B3: 44/54px 노드·기본/학습/선택 그라디언트,3/4·3/5·3/6 다중 링·주요 노드 끊긴 외곽·원점27px 그림자 이식. CSS blur/위치/링 두께 1x 차이 남음. [상세](SWEEP_B3_20261023.md). |
+| G-04 | 성장 | 노드 링 모양·학습 경로 금선 굵기·원점 ✦ 노드 | P2 | 남음 | SWEEP-B3 `dce5e270d717e4d3a6cfe0440b3b0f1c4537380c`: 44/54px 노드·기본/학습/선택 그라디언트,3/4·3/5·3/6 다중 링·주요 노드 끊긴 외곽·원점27px 그림자 이식. CSS blur/위치/링 두께 1x 차이 남음. [상세](SWEEP_B3_20261023.md). |
 | F-01 | 대장간 | #forge 전체(470,12,980,1056)·탭 6종·재료판·격자·확인 대화 | P0 | 고침 | 9f30198ad |
 | F-02 | 대장간 | 스크롤 막대 비표시(기본·분해·리롤) | P2 | 고침 | 71af08d35, aaefeaf0b |
 | T-01 | 설정 | 버튼 굵기·위험 버튼 적동·섹션 모서리·Language 선택 상자 | P1 | 고침 | 8b2bb94f6 |
 | T-02 | 설정 | 섹션 헤더 잘못된 테두리 제거·그라디언트, 섹션 테두리 복원, 스크롤 막대 비표시 | P1 | 고침 | 71af08d35 |
-| T-03 | 설정 | 캐릭터 선택 상자 높이(약 56px 큼)·카드 설명 줄바꿈 | P2 | 남음 | SWEEP-B3: G48615 alpha>0/100 본체72/발선80 원본 식·nearest·카드 그라디언트 이식. 설명14px 원본 face(embolden0)로 줄 경계 같음(전사 갑옷/실버테일 하나). 카드/문자 1px 부근 배치·래스터 잔차 남음. [상세](SWEEP_B3_20261023.md). |
+| T-03 | 설정 | 캐릭터 선택 상자 높이(약 56px 큼)·카드 설명 줄바꿈 | P2 | 남음 | SWEEP-B3 `dce5e270d717e4d3a6cfe0440b3b0f1c4537380c`: G48615 alpha>0/100 본체72/발선80 원본 식·nearest·카드 그라디언트 이식. 설명14px 원본 face(embolden0)로 줄 경계 같음(전사 갑옷/실버테일 하나). 카드/문자 1px 부근 배치·래스터 잔차 남음. [상세](SWEEP_B3_20261023.md). |
 | R-01 | 클리어 | 카드 위치(#stageClear 실측)·#clearStats 6줄·제목 양옆 선 | P1 | 고침 | 9790a12a3 |
-| R-02 | 클리어 | 데모 종료 화면에 펫 대사 오버레이 없음 | P2 | 남음 | SWEEP-B3: 제품 대사 변경0. native 캡처 encounter=field·actual_boss_damage=false, 웹 hurtE 보스 처치의 bossAlive 전이와 진입 조건 다름. fixture 차이 기록만; 같은 자연 보스 종료의 화자/문구/시점 미확인. [상세](SWEEP_B3_20261023.md). |
+| R-02 | 클리어 | 데모 종료 화면에 펫 대사 오버레이 없음 | P2 | 남음 | SWEEP-B3 `dce5e270d717e4d3a6cfe0440b3b0f1c4537380c`: 제품 대사 변경0. native 캡처 encounter=field·actual_boss_damage=false, 웹 hurtE 보스 처치의 bossAlive 전이와 진입 조건 다름. fixture 차이 기록만; 같은 자연 보스 종료의 화자/문구/시점 미확인. [상세](SWEEP_B3_20261023.md). |
 | R-03 | 클리어 | 클리어 캡처 배경 장면(웹 fixture는 보스방, Godot은 시작 지점) | — | 남음 | 캡처 fixture 차이, 표시 차이 아님 |
 
 ## 4. PC-SYS (수치·시스템 원인 — SWEEP-B에서는 표기만, 2026-10-23 PC-SYS 작업에서 처리)
