@@ -7,6 +7,7 @@ const PHYSICAL_PROJECTILE = preload("res://scripts/enemy_projectile_physical.gd"
 # P1-002.F: hurtE owner API 공용 구현 + 이 적의 원본 st2 대응 필드명.
 const HURTE_OWNER = preload("res://scripts/native_dedicated_enemy_hurte_owner.gd")
 const BAR_LAYOUT = preload("res://scripts/native_enemy_bar_layout.gd")
+const UI = preload("res://scripts/native_demo_ui_i18n.gd")
 const HURTE_CONTACT_FIELD := "st2"
 
 var data: Dictionary = {}
@@ -166,6 +167,11 @@ func _physics_process(delta: float) -> void:
 	_hit_stun = maxf(0.0, _hit_stun - ticks)
 	_stun_ticks = maxf(0.0, _stun_ticks - ticks)
 	var before = global_position
+	# PC-SPAWN-PARITY V-03: 원본 적 루프 벽 끼임 구조(G34427~34431)와 updateE 첫머리
+	# _pushOutWall(G38591)을 타일 기준 그대로. 커튼 링 4번(3679,7829)은 r>10이면 아래 타일벽에
+	# 걸려(스폰은 canMv(…,10)) 원본에서 +80px 밀려난 뒤 추적한다 — 이 경로가 없으면 제자리에 멈췄다.
+	_src_wall_stuck_rescue()
+	_src_push_out_wall()
 	if _knockback.length_squared() > 0.02:
 		_move_native(_knockback, ticks)
 		_knockback *= pow(0.85, ticks)
@@ -195,7 +201,7 @@ func _physics_process(delta: float) -> void:
 	if alerted and distance < float(data["aggro_range"]):
 		facing = (player.global_position - global_position).angle()
 	if alerted and state in ["idle", "recover"] and distance > float(data["pursuit_stop_distance"]):
-		_move_native(world.get_path_direction(global_position) * float(data["speed_pixels_per_tick"]), ticks)
+		_src_ff_move(ticks, 1.0) # G38689 ETYPE_RANGE<=400 → _ffMoveE(e,sp,1)
 		distance = global_position.distance_to(player.global_position)
 	# Committed charge advances before the non-alerted far-return gate.
 	if charge_ticks > 0.0:
@@ -240,6 +246,173 @@ func _move_native(per_tick: Vector2, ticks: float) -> void:
 		move_and_slide()
 	else:
 		velocity = Vector2.ZERO
+
+# ── 원본 탄 차징 경고(PC-SPAWN-PARITY V-03 항목 4) ──
+# G20101~20105: e._projChargeT>0 → _drawShootCharge(x,y,r,1-T/60,col,1,physical) + 물리면
+# _drawProjectileChargeLabel('물리탄 차징 · E로 패링'). 링 R=r+10, 바탕 #080808 α.28 w5,
+# 물리 = 흰색 α1 w6 둥근 끝 / 그 외 = col α(.8+prog*.2) w3.5. 라벨 cy=y-r-25, 상자 (글자폭+14)×20,
+# 채움 rgba(5,8,13,.92)·테두리 #f4f4f4 1.5, 글자 흰색 bold 13px "Noto Sans KR"(G24098~24110).
+var _src_shot_warning: Node2D
+class _SrcShotWarning extends Node2D:
+	static var _shot_label_font: SystemFont
+	var actor: Node2D
+	func _draw() -> void:
+		if not is_instance_valid(actor) or actor.get("alive") != true:
+			return
+		var ticks: float = float(actor.get("charge_ticks"))
+		if ticks <= 0.0:
+			return
+		var r: float = float(actor.get("radius"))
+		var prog: float = clampf(1.0 - ticks / 60.0, 0.0, 1.0)
+		var physical: bool = int(actor.get("el")) == 0
+		var ring_r := r + 10.0
+		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 64, Color(8.0 / 255.0, 8.0 / 255.0, 8.0 / 255.0, 0.28), 5.0, true)
+		if prog > 0.0:
+			var start := -PI / 2.0
+			var end := start + TAU * prog
+			if physical:
+				draw_arc(Vector2.ZERO, ring_r, start, end, 64, Color.WHITE, 6.0, true)
+				draw_circle(Vector2.from_angle(start) * ring_r, 3.0, Color.WHITE)
+				draw_circle(Vector2.from_angle(end) * ring_r, 3.0, Color.WHITE)
+			else:
+				var data: Dictionary = actor.get("data")
+				var col := Color(str(data.get("native_final", {}).get("col", "#ff6644")))
+				col.a = 0.8 + prog * 0.2
+				draw_arc(Vector2.ZERO, ring_r, start, end, 64, col, 3.5, true)
+		if not physical:
+			return
+		if _shot_label_font == null:
+			_shot_label_font = SystemFont.new()
+			_shot_label_font.font_names = PackedStringArray(["Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "sans-serif"])
+			_shot_label_font.font_weight = 700
+		var label: String = UI.text("물리탄 차징 · E로 패링")
+		var width: float = _shot_label_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x
+		var cy := -r - 25.0
+		var rect := Rect2(Vector2(-(width + 14.0) * 0.5, cy - 10.0), Vector2(width + 14.0, 20.0))
+		draw_rect(rect, Color(5.0 / 255.0, 8.0 / 255.0, 13.0 / 255.0, 0.92))
+		draw_rect(rect, Color("#f4f4f4"), false, 1.5)
+		var baseline := cy + (_shot_label_font.get_ascent(13) - _shot_label_font.get_descent(13)) * 0.5
+		draw_string(_shot_label_font, Vector2(-width * 0.5, baseline), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color.WHITE)
+
+# ── 원본 이동 보조(PC-SPAWN-PARITY V-03) ──
+var _src_last_fd := Vector2.ZERO      # e._lastFdx/_lastFdy
+var _src_has_last_fd := false         # e._lastFdx!==undefined
+var _src_stuck_ticks := 0.0           # e._stuckT
+
+func _src_tile_grid_active() -> bool:
+	# 원본 G.map은 현재 공간의 격자다. MAP11 아레나(오프셋 공간)에서는 필드 타일을 쓰지 않는다.
+	if not is_instance_valid(world) or not world.get("map_data") is Dictionary:
+		return false
+	if world.get("_native_map11_selected") == true:
+		var scene: Variant = world.get("_native_map11_scene")
+		return is_instance_valid(scene) and scene.get("active_space") == "field"
+	return true
+
+func _src_tile_wall(point: Vector2) -> bool:
+	# G32109 _eWallStuck / G31721 _isWallTile: 타일(=1)과 맵 밖만 벽(맵 오브젝트 제외).
+	var map_data: Variant = world.get("map_data") if is_instance_valid(world) else null
+	if not map_data is Dictionary:
+		return false
+	var size: float = float(map_data.get("tile_size", 40.0))
+	var tx := int(floor(point.x / size))
+	var ty := int(floor(point.y / size))
+	if tx < 0 or ty < 0 or tx >= 200 or ty >= 200:
+		return true
+	return int(map_data["tiles"][ty * 200 + tx]) == 1
+
+func _src_tile_free(point: Vector2, r: float) -> bool:
+	# G31722 _canMvTile
+	return not _src_tile_wall(point + Vector2(-r, -r)) and not _src_tile_wall(point + Vector2(r, -r)) 		and not _src_tile_wall(point + Vector2(-r, r)) and not _src_tile_wall(point + Vector2(r, r))
+
+func _src_wall_stuck_rescue() -> void:
+	# G34427~34431: 중심+4코너 중 하나라도 타일벽이면 T×1..5, 8방향 순서로 중심 타일이 벽이 아닌 곳으로.
+	if not _src_tile_grid_active():
+		return
+	var p := global_position
+	if not (_src_tile_wall(p) or _src_tile_wall(p + Vector2(-radius, -radius)) or _src_tile_wall(p + Vector2(radius, -radius)) 			or _src_tile_wall(p + Vector2(-radius, radius)) or _src_tile_wall(p + Vector2(radius, radius))):
+		return
+	var size: float = float(world.get("map_data").get("tile_size", 40.0))
+	for ring in range(1, 6):
+		for d in range(8):
+			var to := p + Vector2.from_angle(d * PI / 4.0) * size * ring
+			if not _src_tile_wall(to):
+				global_position = to
+				_knockback = Vector2.ZERO
+				return
+	# 원본은 비보스면 여기서 즉사 처리(G34435) — 이 액터 사망 경로 미연결이라 제자리 유지(관측 기록용).
+	telemetry_event.emit("enemy_wall_stuck_unrescued", {"id": data.get("id"), "position": [p.x, p.y]})
+
+func _src_push_out_wall() -> void:
+	# G31724 _pushOutWall: d=T..T*5 (T/2 간격) × 8방향, _canMvTile 통과 첫 지점.
+	if not _src_tile_grid_active() or _src_tile_free(global_position, radius):
+		return
+	var size: float = float(world.get("map_data").get("tile_size", 40.0))
+	var d := size
+	while d <= size * 5.0:
+		for a in range(8):
+			var to := global_position + Vector2(cos(PI / 4.0 * a), sin(PI / 4.0 * a)) * d
+			if _src_tile_free(to, radius):
+				global_position = to
+				return
+		d += size / 2.0
+
+func _src_try_move(to: Vector2, r: float) -> bool:
+	if world.can_move(to, r):
+		global_position = to
+		return true
+	return false
+
+func _src_ff_move(ticks: float, multiplier: float) -> void:
+	# G31909~31952 _ffMoveE(e,sp,spdMul): 흐름장 → (없으면) 마지막 방향 → 플레이어 직선. 두 축 → x축 → y축,
+	# 막히면 ±45°×4 우회(0.8배), 30틱 넘게 막히면 r−2·±22.5°×8, 90틱 넘으면 플레이어 쪽 s×2..6 이동.
+	var fd: Vector2 = world.get_path_direction(global_position)
+	var dir: Vector2
+	if not fd.is_zero_approx():
+		dir = fd
+		_src_last_fd = fd
+		_src_has_last_fd = true
+	elif _src_has_last_fd:
+		dir = _src_last_fd
+	else:
+		dir = Vector2.from_angle((player.global_position - global_position).angle())
+	var step: float = float(data["speed_pixels_per_tick"]) * ticks * multiplier
+	var at := global_position
+	var to := at + dir * step
+	if _src_try_move(to, radius):
+		_src_stuck_ticks = 0.0
+	elif _src_try_move(Vector2(to.x, at.y), radius):
+		_src_last_fd = Vector2(dir.x, 0.0); _src_has_last_fd = true; _src_stuck_ticks = 0.0
+	elif _src_try_move(Vector2(at.x, to.y), radius):
+		_src_last_fd = Vector2(0.0, dir.y); _src_has_last_fd = true; _src_stuck_ticks = 0.0
+	else:
+		_src_stuck_ticks += ticks
+		var esc_ang := atan2(dir.y, dir.x)
+		var esc := step * 0.8
+		var escaped := false
+		for i in range(1, 5):
+			if escaped: break
+			for a in [esc_ang + i * PI / 4.0, esc_ang - i * PI / 4.0]:
+				if _src_try_move(at + Vector2(cos(a), sin(a)) * esc, radius):
+					_src_last_fd = Vector2(cos(a), sin(a)); _src_has_last_fd = true; escaped = true
+					break
+		if not escaped and _src_stuck_ticks > 30.0:
+			var small_r := maxf(2.0, radius - 2.0)
+			for i in range(1, 9):
+				if escaped: break
+				for a in [esc_ang + i * PI / 8.0, esc_ang - i * PI / 8.0]:
+					if _src_try_move(at + Vector2(cos(a), sin(a)) * esc, small_r):
+						_src_last_fd = Vector2(cos(a), sin(a)); _src_has_last_fd = true; escaped = true
+						break
+		if not escaped and _src_stuck_ticks > 90.0 and step > 0.0:
+			var tp_ang := (player.global_position - at).angle()
+			var tp_d := step * 2.0
+			while tp_d <= step * 6.0:
+				if _src_try_move(at + Vector2(cos(tp_ang), sin(tp_ang)) * tp_d, radius):
+					_src_stuck_ticks = 0.0
+					break
+				tp_d += step
+		if escaped:
+			_src_stuck_ticks = 0.0
 
 func _apply_separation(ticks: float) -> void:
 	if _separation_ticks > 0.0:
@@ -378,9 +551,15 @@ func get_snapshot() -> Dictionary:
 func _draw() -> void:
 	if not alive:
 		return
-	if charge_ticks > 0.0:
-		var progress = 1.0 - charge_ticks / float(data["projectile_charge_ticks"])
-		draw_arc(Vector2.ZERO, radius + 13.0, -PI * 0.5, -PI * 0.5 + TAU * progress, 48, Color(0.9, 0.25, 0.2, 0.85), 3.0, true)
+	# 차징 경고(링·라벨)는 원본처럼 적 몸 위 별도 패스(_drawEnemyShotWarnings G20097~)로 그린다.
+	if not is_instance_valid(_src_shot_warning):
+		_src_shot_warning = _SrcShotWarning.new()
+		_src_shot_warning.name = "SourceShotWarning"
+		_src_shot_warning.actor = self
+		_src_shot_warning.z_as_relative = false
+		_src_shot_warning.z_index = 4001
+		add_child(_src_shot_warning)
+	_src_shot_warning.queue_redraw()
 	# P2-001a: 에너지 바 — 원본 drawEn(53961~53969) 규칙 그대로 (enemy.gd와 동일 공용 레이아웃).
 	for bar in BAR_LAYOUT.build(radius, float(hp), float(mhp), eShield, eShieldMax,
 			_stun_ticks, (_maxStunned if _source_max_stunned_present else null)):

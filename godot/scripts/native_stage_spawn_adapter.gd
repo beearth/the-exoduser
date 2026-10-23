@@ -100,7 +100,22 @@ func request_spawn(group_id: String, request: Dictionary) -> Dictionary:
  if result.get("revision")!=_context.revision or result.get("site_id")!=group.hole_id or result.get("region_id")!=group.region_id or not result.get("position") is Vector2 or not result.position.is_finite():return _no("invalid_spawn_site_receipt")
  # Positions come only from the provider. The provider owns geometry/radius legality;
  # etype selection/RNG/constructor/ens registration remain with the future owner.
- return {"ready":true,"position":result.position,"site_id":group.hole_id,"spawn_group_id":group_id,"region_id":group.region_id,"revision":_context.revision}
+ var position: Vector2=result.position
+ # PC-SPAWN-PARITY V-03: 원본 소환 1회(G35660~35674)는 소환굴 중심이 아니라 중심에서
+ # 각·반경(120+u*300+size*150) 표본(+isW 재시도·나선·중심 강제) 뒤 mkEn canMv(…,10)/safePt를 거친
+ # 좌표에 낳는다. 그 좌표는 같은 틱의 공통 스케줄러가 계산해 이 그룹의 다음 요청 1회에만 건넨다.
+ if _source_positions.has(group_id):
+  var source_position: Variant=_source_positions[group_id]
+  _source_positions.erase(group_id)
+  if source_position is Vector2 and source_position.is_finite():position=source_position
+ return {"ready":true,"position":position,"site_id":group.hole_id,"spawn_group_id":group_id,"region_id":group.region_id,"revision":_context.revision}
+var _source_positions: Dictionary={}
+func set_source_spawn_position(group_id: String, position: Vector2) -> bool:
+ if not is_current() or not _groups.has(group_id) or not position.is_finite():return false
+ _source_positions[group_id]=position
+ return true
+func clear_source_spawn_position(group_id: String) -> void:
+ _source_positions.erase(group_id)
 func register_actor_origin(actor: Node2D, group_id: String) -> Dictionary:
  if not is_current() or not _groups.has(group_id):return _no("stale_or_unknown_origin")
  if not is_instance_valid(actor) or actor.get_parent()!=_world or not _world.get_enemies().has(actor) or actor.get("alive")!=true:return _no("actor_not_live_registered")

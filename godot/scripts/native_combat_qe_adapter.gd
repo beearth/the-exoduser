@@ -600,9 +600,11 @@ var _e_clock_calls := 0
 var _e_last_error := ""
 var _e_last_hit: Dictionary = {}
 
+var _e_ready_source: Dictionary = {}
 func is_native_e_control_ready() -> bool:
 	if not _q_control_configured or not _live(_player) or not _live(_world) or not _live(_q_control_owner) or _player.get_parent()!=_q_control_owner or _world.player!=_player:return false
 	var source: Dictionary = _q_control_owner.read_native_e_control_source()
+	_e_ready_source=source
 	if source.get("ready")!=true:
 		_e_last_error=str(source.get("reason"))
 		return false
@@ -655,7 +657,9 @@ func advance_e_control(ticks: float, frame: float, ens: Array) -> bool:
 	_e_fixed_move_speed=-1.0
 	_e_lunge_velocity=Vector2.ZERO
 	_e_hit_pending=false
-	var source: Dictionary = _q_control_owner.read_native_e_control_source()
+	# PC-SPAWN-PARITY 저프레임: 바로 위 is_native_e_control_ready()가 같은 틱·같은 상태에서 읽은
+	# 원천을 그대로 쓴다(사이에 쓰기 없음 — 같은 값을 두 번 계산하던 것만 줄임).
+	var source: Dictionary = _e_ready_source
 	var f: Dictionary = source.fields
 	if _e_owned and state not in ["sDraw","kiGather","sBash","sRecover"]:_e_owned=false
 	if state=="idle" and frame-_e_press_frame<=3.0 and not source.q_held:

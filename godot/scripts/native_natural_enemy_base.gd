@@ -147,11 +147,45 @@ func _actor_event(kind: String,payload: Dictionary,reference: WeakRef) -> void:
 func spawn_hole(h: Dictionary) -> bool:
 	counts.attempts+=1
 	var draws: Array=[]
-	# Preserve two position uniforms; MAP11 provider alone interprets geometry.
-	var position_uniforms: Array=[holes._unit("pos_angle",draws),holes._unit("pos_radius",draws)]
+	# PC-SPAWN-PARITY V-03 — G35660~35673: do{각 2πu, 반경 120+u*300+size*150}while(_hTry<30&&isW(x,y,true)),
+	# 실패하면 G.map 0 타일 나선(1..19) → 그래도 없으면 소환굴 중심. 위치 난수는 시도마다 2개씩.
+	var size: float=float(h.size)
+	var hx: float=float(h.x);var hy: float=float(h.y)
+	var position_uniforms: Array=[]
+	var sx:=hx;var sy:=hy;var tries:=0
+	while true:
+		var ua: float=holes._unit("pos_angle",draws);var ur: float=holes._unit("pos_radius",draws)
+		position_uniforms.append_array([ua,ur])
+		var rad: float=120.0+ur*300.0+size*150.0
+		sx=hx+cos(TAU*ua)*rad;sy=hy+sin(TAU*ua)*rad;tries+=1
+		if not (tries<Holes.POS_TRIES and main.world.is_world_blocked(Vector2(sx,sy))):break
+	if main.world.is_world_blocked(Vector2(sx,sy)):
+		var found:=false
+		var tiles: Array=main.world.get("map_data")["tiles"]
+		var ctx:=int(hx/Holes.T);var cty:=int(hy/Holes.T)
+		for sr in range(1,Holes.SPIRAL_MAX):
+			if found:break
+			for sdy in range(-sr,sr+1):
+				if found:break
+				for sdx in range(-sr,sr+1):
+					if absi(sdx)!=sr and absi(sdy)!=sr:continue
+					var nx:=ctx+sdx;var ny:=cty+sdy
+					if nx>0 and ny>0 and nx<Holes.MAP_W-1 and ny<Holes.MAP_H-1 and int(tiles[ny*Holes.MAP_W+nx])==0:
+						sx=(nx+0.5)*Holes.T;sy=(ny+0.5)*Holes.T;found=true;break
+		if not found:sx=hx;sy=hy
 	var ranged: float=holes._unit("rollEtype_ranged",draws)
 	var roll: float=holes._unit("rollEtype_roll",draws)
 	var etype: int=Holes.roll_etype_from(ranged,roll)
+	# G31124 mkEn: canMv(x,y,10) 실패 → safePt(x,y,10), 그것도 없으면 null(난수 더 안 씀, 간격 커브 없음).
+	var spawn_at:=Vector2(sx,sy)
+	if not main.world.can_move(spawn_at,10.0):
+		var safe: Variant=main.world.native_safe_point(sx,sy,10.0)
+		if not safe is Dictionary:
+			counts.rejected+=1
+			holes._metrics.mken_null+=1
+			holes.spawn_journal.append({"frame":holes._game_frame,"etype":etype,"draws":draws,"registered":false,"reason":"mken_null","position":[sx,sy]})
+			return false
+		spawn_at=Vector2(float(safe.x),float(safe.y))
 	var elite_roll: float=holes._unit("rollElite",draws)
 	var elite:=0
 	if elite_roll<Holes.ELITE_PROB_HELL0[2]:elite=3
@@ -165,22 +199,29 @@ func spawn_hole(h: Dictionary) -> bool:
 		"speed_u":holes._unit("spd",draws),"radius_u":holes._unit("r",draws),"literal":{},"position_uniforms":position_uniforms}
 	for row in Holes.MKEN_LITERAL_DRAWS:
 		if row[1].is_empty() or row[1].has(etype):source.literal[row[0]]=float(row[2])+holes._unit(row[0],draws)*float(row[3])
+	# PC-SPAWN-PARITY: 위 원본 좌표를 이 그룹의 다음 MAP11 요청 1회에 건넨다(실제 생성 여부와 무관하게 회수).
+	adapter.set_source_spawn_position(h.spawn_group_id,spawn_at)
 	# DEMO11-47j: dispatch the already-selected A profile; preserve all source draws.
 	if etype in [1,4,5,6]:
 		last_receipt=main.request_native_etype_a_spawn(holes,h.spawn_group_id,source)
 	elif etype==15:
 		last_receipt=main.request_native_etype15_spawn(holes,h.spawn_group_id,source)
+	# B(8~12)/F(26~28)/D(18,19,23~25)/문지기29는 actor가 있으나 사망 접두·상태이상 정지 경계가 남아
+	# 스케줄러 HOLD를 유지한다(PC-SPAWN-PARITY: 연결 시 정지된 적이 남아 E2E 성장 단계가 막힘 — 보고서).
 	else:
 		last_receipt=spawn_selected(holes,h.spawn_group_id,source)
+	adapter.clear_source_spawn_position(h.spawn_group_id)
 	if last_receipt.get("registered",false):
 		holes._metrics.actors_registered+=1
 		holes._metrics.spawned+=1
 	else:
 		counts.rejected+=1
 		if str(last_receipt.get("reason","")).begins_with("natural_etype_not_registered:"):holes._metrics.unported_spawns+=1
-	holes.spawn_journal.append({"frame":holes._game_frame,"etype":etype,"draws":draws,"registered":last_receipt.get("registered",false),"reason":last_receipt.get("reason","")})
+	holes.spawn_journal.append({"frame":holes._game_frame,"etype":etype,"draws":draws,"registered":last_receipt.get("registered",false),"reason":last_receipt.get("reason",""),"position":[spawn_at.x,spawn_at.y]})
 	# Unsupported type consumes its source attempt, never rerolls/substitutes.
-	return last_receipt.get("ready",false) or str(last_receipt.get("reason","")).begins_with("natural_etype_not_registered:") or str(last_receipt.get("reason","")).begins_with("natural_profile_scheduler_HOLD:") or last_receipt.get("reason")=="elite_modifier_owner_not_ready"
+	# PC-SPAWN-PARITY: 원본 mkEn은 위 null 검사 뒤에는 항상 적을 만든다 → 간격 커브(G35681)를 탄다.
+	# 이 포트에서 actor가 아직 없거나 거절돼도 원본 시계(간격·총량)는 같게 진행한다.
+	return true
 
 func _unit_valid(v: Variant) -> bool:return (v is int or v is float) and is_finite(float(v)) and v>=0 and v<1
 

@@ -19,3 +19,15 @@ factory는 기존 초기 source16 검증·등록/소비 로직을 수정하지 �
 탄은 `base.emit_projectile(actor,raw)`→DEMO11-35.admit_natural_projectile→기존 BC09 begin/next birth·FULL parry_class reader→동일 pool/실제 Carrier/registry다. raw의 element는 실제 actor와 같아야 한다. web/trap/iceZone 등 specialized tick 거부는 그대로다. 35를 별도 복제하지 않고 natural source가 바인딩되면 기존 boss 자동 driver와 이중 tick되지 않게 공통 World source frame으로 넘긴다. PC protected contact는 기존 bind_protected_contact만 사용한다. 미바인딩은 motion/expiry만이며 피해·패링 성공이 아니다. boss 전용 source prefix와의 완전한 live 통합은 별도 인수사항이다.
 
 기존 `request_native_etype_a_spawn`은 공통 기반이 연결된 World에서 이 owner로 인계하고, 연결 전에는 기존 A 좁은 접점을 보존한다. B preflight는 진짜 prepare/spawn_selected 인수로 대체할 자리이며 C의 PC 접점과 D 고유 행동은 별개 후속이다. 전체 타입/5종 자연 전투 완료로 승격하지 않는다. [검증·대체 위치·공용 범위 보고서](../engine/orders/reports/demo11-enemy-base_REPORT.md), [clock 계약](../9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md).
+
+## 2026-10-23 PC-SPAWN-PARITY — 스케줄러 공급 원본화 (PC가 스폰 담당)
+
+| 항목 | 원본 행 | 변경 전 | 변경 후 |
+|---|---|---|---|
+| 소환 좌표 | G35660~35673: `do{a=2πu, r=120+u×300+size×150}while(_hTry<30&&isW(x,y,true))` → G.map 0 타일 나선(1..19) → 소환굴 중심 | 위치 난수 2개만 소비, MAP11 마커(소환굴 중심) 좌표에 생성 | 원본 루프·나선·중심 강제 그대로 계산(시도마다 난수 2개). 결과 좌표는 `native_stage_spawn_adapter.set_source_spawn_position`으로 이 그룹 다음 `request_spawn` 1회에만 전달 |
+| mkEn 좌표 검사 | G31124 `canMv(x,y,10)` 실패 → `safePt(x,y,10)` → 실패면 null | 없음 | `world.can_move(…,10)`/`native_safe_point(…,10)`. null이면 `mken_null`로 기록, 원본처럼 간격 커브 없이 다음(35675) |
+| 간격 커브 | G35681~35685: mkEn 성공 시 항상 | 일부 거절 사유에서 커브를 건너뜀 | mkEn null 뒤가 아니면 actor 등록 여부와 관계없이 커브 적용(원본 시계·총량 보존) |
+| etype 연결 | — | 0(자연)·1/4/5/6(A)·15만 | 변경 없음. B/F/D/29를 연결해 보았으나(10초 등록 14) 정지된 적이 남아 E2E level_up이 막혀 HOLD 유지 — etype별 표는 PC_SPAWN_PARITY 문서 |
+| 미연결 | — | — | 3·7(E 경계 거절 유지 — 기존 not_registered 경로), 13·14·16·17·20·21·47 actor 없음, 정예(3%) 거절 |
+
+측정(새 캐릭터 첫 진입, 레슨 건너뛴 뒤): 시도 4초 5·10초 19(웹 6회 모두 5·19), 등록은 공급 etype만(10초 2~3). 근거 [PC_SPAWN_PARITY_20261023](../engine/PC_SPAWN_PARITY_20261023.md).

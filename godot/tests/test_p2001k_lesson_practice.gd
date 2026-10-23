@@ -112,10 +112,12 @@ func _test_panel_design_contract() -> void:
 	_check(has_crest, "crest 174x58 top6 (UI_FOUNDATION)")
 	_check(has_bg, "inner bg rgba(16,13,14,.96) (실측 ::before)")
 	var backdrop_found := false
+	# PC-SPAWN-PARITY S-02: parry-lesson.css 1행 linear-gradient(90deg,transparent 45%,#08070ba6) + opacity .5
 	for child in flow.get_node("NativeParryLessonPanel").get_children():
-		if child is ColorRect and is_equal_approx((child as ColorRect).color.a, 0.5):
-			backdrop_found = true
-	_check(backdrop_found, "backdrop opacity .5 (UI_FOUNDATION)")
+		if child is TextureRect and (child as TextureRect).texture is GradientTexture2D 				and is_equal_approx((child as TextureRect).modulate.a, 0.5):
+			var g: Gradient = ((child as TextureRect).texture as GradientTexture2D).gradient
+			backdrop_found = g.offsets.size() == 3 and is_equal_approx(g.offsets[1], 0.45) 				and is_equal_approx(g.colors[1].a, 0.0) and is_equal_approx(g.colors[2].a, 166.0 / 255.0) 				and g.colors[2].is_equal_approx(Color(8.0 / 255.0, 7.0 / 255.0, 11.0 / 255.0, 166.0 / 255.0))
+	_check(backdrop_found, "backdrop gradient transparent 45%→#08070ba6, opacity .5 (parry-lesson.css 1)")
 	var ui: Dictionary = flow.get("_ui")
 	_check((ui["title"] as Label).get_theme_font_size("font_size") == 29
 		and (ui["title"] as Label).get_theme_color("font_color").is_equal_approx(Color(0xf4 / 255.0, 0xe6 / 255.0, 0xd2 / 255.0)),

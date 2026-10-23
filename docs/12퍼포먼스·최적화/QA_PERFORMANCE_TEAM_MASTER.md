@@ -387,3 +387,10 @@ ENEMY 하니스에 대한 의견(ENEMY 소유, QA는 수정하지 않음): ① �
 | 업로드 | 기존 LINEAR/CLAMP 필터·픽셀·크기 유지. _texAdoptBitmap의 JavaScript 예외는 만든 texture delete 후 throw, finally에서 기존 _curTex 바인딩 복원. GL.getError 검사 추가 없음; ready는 Map 등록 상태이며 실제 GPU 성공 검증이 아님 |
 | 분리된 R 부분 | _texPreContextLost flag와 _warmAsyncTarget/_warmAsyncJob 기반 general-Image handoff·_wqGpuImages 재예약은 이번 단위 미채택. 현재 main에 두 helper가 없으므로 해당 의존성을 임의로 연결하지 않음. 별도 잔여 판정 대상 |
 | 보존·검수 | 원 시드22/학습96/최소250000px·64MP·기존 호출/동기 Image 경로/에셋 불변. 합성 fetch/Bitmap/GL/컨텍스트 Map과 실제 함수·초기화/loss core statement만 검수. 실제 GPU·context 이벤트 전체·프레임 성능·픽셀/readPixels·사용자 창·localStorage/API 검수 아님 |
+
+## 2026-10-23 Godot 1-1 레슨 뒤 7~9fps (PC-SPAWN-PARITY)
+
+- 판정: 창 겹침만이 아님 — 헤드리스에서도 재현(CPU 과부하). 물리 한 틱 > 16.6ms가 되면 프레임마다 물리 최대 8틱을 몰아 돌려 그리기 7/s로 무너지는 구조.
+- 상위 원인(구간 표식 실측): 플레이어 물리 10.4ms/틱 중 HUD `_refresh`(stats_changed 틱마다) 4.5ms, E 제어 원천 중복 계산 ~1.6ms.
+- 수정: HUD 갱신을 다음 `_process` 1회로 합침(표시만), E 원천 같은 틱 재사용, 레슨 뒤 iframes 원본 복원. P코어 고정 헤드리스 같은 시나리오 8~12초 12~27fps → 96~144fps.
+- 남음/미확인: 창 모드 순간 8~19fps 구간(사용자 플레이 창 동시 실행·코어 배치 분리 안 됨). 개선율은 이 PC·이 시나리오 한정. 근거 `docs/engine/PC_SPAWN_PARITY_20261023.md`.
