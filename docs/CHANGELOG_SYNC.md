@@ -56859,3 +56859,8 @@ clear leave는 원본 G41920–42003처럼 아레나를 유지한다. lobby_retu
 - 기존 capture harness에 node/CSS geometry 기록과 G04-02 격리 namespace만 추가; 기존 test_demo11_growth_ui assertions 보존, namespace만 변경. 새 진단 테스트/전체 E2E0.
 - test_demo11_growth_ui 단1회 36/0, 최종 import ERROR0. 창 GPU Chrome ↔ Godot 내부 viewport 1920×1080씩 1x 대조. 글꼴/edge/blur/badge 래스터 잔차 남아 정본 G-04 남음 유지.
 - 상세 수치·판정: engine/G04_02_20261023.md. 외부 _out/G04-02/DONE.txt 및 captures/G-04_compare_1x.png·G-04_detail_1x.png. 원본 보호·R 읽기전용·PID81277 보존·override 복원.
+
+
+## 2026-10-23 SWEEP-B4 중단·기준선 복원
+
+SWEEP-B4 지정 K-03·B-05·T-03 후보는 캡처 하니스2회 실패로 중단했다. 실패 작업안은 외부 SHA256 검증 tar/patch로 보존한 뒤 이번 코드/도구만 부모9734e2e7 byte로 복원했다. 최종 변경은 보고 문서만이며 지정4테스트 미실행, 전체 E2E0, 세 항목 남음 유지. 상세 원본·실패 로그·검수 경계는 [SWEEP_B4_20261023.md](engine/SWEEP_B4_20261023.md)를 따른다. 최종 SHA·정리 영수증은 외부 `_out/SWEEP-B4/DONE.txt`.
