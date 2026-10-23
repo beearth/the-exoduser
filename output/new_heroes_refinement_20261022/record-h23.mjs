@@ -1,0 +1,12 @@
+import fs from 'node:fs';import crypto from 'node:crypto';
+const root='G:/exoduser/',folder=root+'output/new_heroes_refinement_20261022/';
+const task=process.argv[2];if(!/^\d{19}$/.test(task||''))throw Error('Actual observed task required');
+const r=JSON.parse(fs.readFileSync(folder+'submission-receipt.json','utf8'));
+const specs=[['assets/character-concepts/20261023/hellgunner_blonde_bob_nami_model_h22.png','User-positive H22 edit target. Preserve golden bob/face/proportions and core outfit/equipment'],['assets/character-concepts/references/20261022/hellgunner_h14/04_exoduser_silvertail.png','Silvertail reference for dark fantasy warrior metal/leather/armor silhouette; do not copy face/hair/skirt/blades']];
+const references=specs.map(([path,role],i)=>({index:i+1,path,role,sha256:crypto.createHash('sha256').update(fs.readFileSync(root+path)).digest('hex')}));
+const prompt='Add subtle DARK FANTASY WARRIOR accents to ref1 using ref2 Silvertail materials: blackened-steel left pauldron, short hip tassets, small oxblood waist cloth, forged iron gun/boot trim. Keep ref1 face, golden bob, proportions, clear eye visor, high-cut bodysuit/leather shorts, cropped jacket, RIGHT robot arm, huge angular slot gun. Modern clean stylized 3D; confident battle stance. Large armor planes, worn black leather/iron. Full body/whole gun, gray. No full armor/skirt, clutter, dots.';
+if(prompt.length>500)throw Error('Prompt too long');
+if(!r.jobs.some(j=>j.candidate==='H23'))r.jobs.unshift({candidate:'H23',task,generationMode:'multi-reference',reference:null,references,prompt,provider:'MagicLight',model:'GPT Image 2.5 sunburst',aspectRatio:'4:3',outputs:1,displayedCost:200,status:'submitted'});
+r.jobs.find(j=>j.candidate==='H22').userVerdict='Positive: 많이 좋아졌네. Preserve as appearance anchor while adding slight dark-fantasy warrior feeling using Silvertail reference. No final okay received.';
+r.latestCharacterDirection={userQuotes:['많이 좋아졌네','조금 전사느낌 나게 해볼까 다크판타지에 맞게 이제','실버테일은 그런 느낌도 났는데'],interpretation:'Retain user-positive H22 face/golden bob/appeal; add restrained Silvertail-like dark forged metal/leather/armor accents. Left shoulder armor, small hip plates/oxblood cloth and gun/boot forged trim are production interpretation.',finalApproval:false};
+r.balanceBeforeH23=35090;r.updatedAt=new Date().toISOString();fs.writeFileSync(folder+'submission-receipt.json',JSON.stringify(r,null,2)+'\n');console.log(JSON.stringify({candidate:'H23',task,promptLength:prompt.length,references:references.length}));

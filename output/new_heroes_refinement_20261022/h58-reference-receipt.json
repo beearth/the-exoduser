@@ -1,0 +1,25 @@
+{
+  "candidate": "H58",
+  "task": "7519412896849702912",
+  "references": [
+    {
+      "index": 1,
+      "path": "assets/character-concepts/20261023/hellgunner_modern_gear_visible_hands_h57.png",
+      "role": "Edit target, preserve new simple shorts and future boots, full body/face/gun; change robotic right grip only",
+      "sha256": "fd67e8dfe967c9ed1e42378db429535e1626ec1b33a5a5d15bab8a52e0771425"
+    },
+    {
+      "index": 2,
+      "path": "assets/character-concepts/references/20261023/hellgunner_h46/shouldered_forward_support_pose.jpg",
+      "role": "Hand gripping a pistol grip only. Do not copy person, pose, clothes, rifle or direction.",
+      "sha256": "127ffa19f6de841a937d5e7cca6db7e780e79c0273dd1f143b9767b50808148a"
+    }
+  ],
+  "prompt": "Ref1 is EDIT target; Ref2 is hand grip ONLY, ignore its man/gun/pose. Move screen-left ROBOT RIGHT wrist DOWN onto vertical pistol grip BELOW receiver behind cylinder. REPOSE forearm; palm vertical, fingers CURLED around grip, thumb opposite, index at trigger guard. Remove hand from receiver TOP. Show hand/grip contact unobstructed; no shield/block. Keep LEFT support hand, face, bob, monocular, chrome torso, simple hotpants, futuristic boots, giant gun/muzzle/ammo, fullbody EXACTLY as Ref1.",
+  "promptLength": 495,
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCost": 100
+}

@@ -1,0 +1,35 @@
+{
+  "userQuote": "전신샷도 만들고",
+  "jobs": [
+    {
+      "candidate": "H54",
+      "task": "7519382220712677376",
+      "base": "H53",
+      "reference": "assets/character-concepts/20261023/hellgunner_fine_chrome_bodysuit_h53.png",
+      "referenceSha256": "3deadc7a539f888b5c53b04eb6dd49d7e4bd11ccd80560f0649a3f170cb35122",
+      "prompt": "Zoom OUT to FULL BODY head to both boot soles AND entire giant rifle, all inside frame with margin; no cropping. Preserve this adult woman face, blonde bob, single purple goggle, robot right arm, opaque black cutout bodysuit, chrome flank inlays, leather hotpants, gun geometry and colored rounds. Add worn black knee-high leather boots with metal shin shells/solid soles. Balanced stance, feet shoulder-width, one slightly forward. Gun low-carried, stock retained. Same game-render quality, no glow.",
+      "promptLength": 500,
+      "provider": "MagicLight Toolbox Image",
+      "model": "Seedream 5.0 Pro",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 100,
+      "submittedAt": "2026-10-23T13:00:34.793Z"
+    },
+    {
+      "candidate": "H55",
+      "task": "7519383002195394560",
+      "base": "H52",
+      "reference": "assets/character-concepts/20261023/hellgunner_warrior_chrome_h52.png",
+      "referenceSha256": "f8822af6b9b5a7114b92898840b36c9ef801b1b1a704ced347ad641302ee4407",
+      "prompt": "Zoom OUT to FULL BODY head to both boot soles AND entire giant rifle, all inside frame with margin; no cropping. Preserve this adult woman face, blonde bob, single purple goggle, robot right arm, angular chrome torso plates, leather hotpants, gun geometry and colored rounds. Add worn black knee-high leather boots with metal shin shells/solid soles. Balanced stance, feet shoulder-width, one slightly forward. Gun carried across waist, stock retained. Same game-render quality; no chains/glow.",
+      "promptLength": 494,
+      "provider": "MagicLight Toolbox Image",
+      "model": "Seedream 5.0 Pro",
+      "aspectRatio": "4:3",
+      "outputs": 1,
+      "displayedCost": 100,
+      "submittedAt": "2026-10-23T13:03:40.789Z"
+    }
+  ]
+}

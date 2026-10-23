@@ -1,0 +1,13 @@
+import fs from 'node:fs';import crypto from 'node:crypto';
+const root='G:/exoduser/',folder=root+'output/new_heroes_refinement_20261022/';
+const task=process.argv[2];if(!/^\d{19}$/.test(task||''))throw Error('Actual observed task required');
+const r=JSON.parse(fs.readFileSync(folder+'submission-receipt.json','utf8'));
+const source=JSON.parse(fs.readFileSync(folder+'h22-nami-reference.json','utf8'));
+const specs=[['assets/character-concepts/20261023/hellgunner_modern_cut_bodysuit_h21.png','Hellgunner edit target: preserve suit/shorts/jacket/right robot arm/huge angular gun; change face/appeal/hair/render'],[source.path,'Official Nami Odyssey game model reference for lively face/proportions/render; golden short bob per user, no mesh import or copied bikini/tattoo/text']];
+const references=specs.map(([path,role],i)=>({index:i+1,path,role,sha256:crypto.createHash('sha256').update(fs.readFileSync(root+path)).digest('hex')}));
+const prompt='Redesign adult Hellgunner ref1 with ref2 Nami game-model appeal: expressive large eyes, lively face, confident half-smile, long legs/slim waist, polished modern anime 3D game render. GOLDEN BLONDE chin-length bob, asymmetrical fringe. Keep high-cut black/ivory bodysuit, deep side-waist cutouts, leather SHORTS, cropped tech jacket, RIGHT robot arm, boots, huge angular gun. Small eye-worn clear violet visor lets eyes show. Dynamic contrapposto, full body/whole gun, gray. No text/dots.';
+if(prompt.length>500)throw Error('Prompt too long');
+if(!r.jobs.some(j=>j.candidate==='H22'))r.jobs.unshift({candidate:'H22',task,generationMode:'multi-reference',reference:null,references,prompt,provider:'MagicLight',model:'GPT Image 2.5 sunburst',aspectRatio:'4:3',outputs:1,displayedCost:200,status:'submitted',referenceSourcePage:source.sourcePage});
+r.jobs.find(j=>j.candidate==='H21').userVerdict='Character lacks appeal. User requests yellow/blonde short bob and One Piece Nami game-model reference.';
+r.latestCharacterDirection={userQuotes:['노란단발 원피스 나미모델링좀 써봐','케릭터가 매력이 없내'],interpretation:'Golden chin-length bob and Nami game-model face/proportion/stylized rendering appeal. More expressive eyes and confident half smile, clear eye-worn visor. Retain Hellgunner suit/shorts/robot arm/giant gun. Concept image only, not actual 3D mesh/model import.',finalApproval:false};
+r.balanceBeforeH22=35290;r.updatedAt=new Date().toISOString();fs.writeFileSync(folder+'submission-receipt.json',JSON.stringify(r,null,2)+'\n');console.log(JSON.stringify({candidate:'H22',task,promptLength:prompt.length,references:references.length}));
