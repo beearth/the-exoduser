@@ -1,5 +1,11 @@
 # Godot 이식 현황 — 현재 단계와 다음 작업
 
+## 2026-10-23 PC Codex 인수 후보
+
+사용자 지시로 중단 PC 이식을 인수했다. 최신 Mac 코드 G04-02 `9734e2e79` 위에 PC-ENEMY-ACTORS의 일반9종+일반29 WIP를 별도 `codex/port-takeover-20261023`에서 3way 결합했다. [검수·남은 범위](orders/reports/PORT-TAKEOVER-01_REPORT.md). Windows 실제 Main/World의 GUI fixture 검사148/0, ERROR0이며 자연 전투·웹 1x 시각 동일성·사운드 완료가 아니다. 서비스의 미이식 SFX/광원/hitStop은 유지하고 별도 표시한다. 공용 main·Mac 실행판·기존 사용자 게임·Steam에는 반영하지 않았다.
+
+아래 2026-10-19 현황과 callback 수는 당시 이력이다. 최신 코드 후보·원격 main·실행 중인 게임의 상태를 이 수치 하나로 판정하지 않는다.
+
 기준일: 2026-10-19 KST · [총 목표와 단계별 실행 기준](FDG_GAME_DEVELOPMENT_PLAN.md)이 유일한 단계·작업 배정 기준이다. **현재 P1-002 진행 중(하위 C/D/E), P0-001 계획 기준 인수 완료(전체 P0 완료 아님)**. 2026-10-19부터 총괄은 PC Claude 세션(사용자 지시 "너가 총괄작업 할수있겠네").
 
 목표는 원본 EXODUSER의 확정 기능·조작·전투 체감을 Godot로 이식해 지정 PC·Mac 실행판에서 직접 인수하는 것이다. 전체 기능 분모가 아직 없어 전체 진행률·ETA를 표시하지 않는다.

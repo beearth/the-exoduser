@@ -1,6 +1,8 @@
 # DEMO11 Context Pack
 
-1-1 데모 이식자가 원본 `game.html` 전체를 다시 훑지 않도록 만든 시스템별 원본 계약 요약이다. 먼저 대상 pack과 연결한 SOURCE TRACE를 읽고, 원본 행은 **R의 `game.html` 65,692행/sha256 `4d911cdd…e5d4` 기준**으로만 대조한다.
+1-1 데모 이식자가 원본 `game.html` 전체를 다시 훑지 않도록 만든 시스템별 원본 계약 요약이다. 먼저 대상 pack과 연결한 SOURCE TRACE를 읽는다. 아래 pack의 원본 행·구현 현황은 작성 당시 R `game.html` 65,692행/sha256 `4d911cdd…e5d4` snapshot이며 현행 완료 현황이 아니다.
+
+2026-10-23 인수 기준 코드는 G04-02 `9734e2e79`, 고정 원본은 `godot/source_snapshot/SNAPSHOT.json`의 SHA256 `dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209`이다. 구현 시 현재 snapshot에서 함수/식 위치를 재확인한다. PC 인수 후보·남은 범위는 [PORT-TAKEOVER-01](../orders/reports/PORT-TAKEOVER-01_REPORT.md)을 따른다. 원격 main에만 있는 후속 웹 UI를 native가 모두 포함한다고 해석하지 않는다.
 
 | pack | 예상 토큰 | 초점 |
 |---|---:|---|

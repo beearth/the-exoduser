@@ -84,7 +84,8 @@ fallen 300 countdown(`P.st2`, G43729·G32989–32992, source-sp, 정지 중 0) �
 |---|---|
 | u_d21 `_uDemonRekindle` 재점화(G43860–43861, P.rage) | 값>0이면 `revive_resolve`가 쓰기 전 `NOT_READY:unported_branch_active:_uDemonRekindle_rage_writer`. 분노 writer PC 미연결 |
 | die() 첫 3줄 ultUnmute/_esAutoFire/_alActive(G43722–43724) | Godot 미이식 상태라 쓰기 0 |
-| chargeStocks/chargeCd(G63522)·maxChargeStocks/_HARP_GAUGE(G63456–63462)·poison/bleed/_webSlow/_trapSlowT(G63455) | Godot Player에 대응 필드 없음 — 쓰기 0, `mac_followups` 표기 |
+| chargeStocks/chargeCd(G63522)·maxChargeStocks/_HARP_GAUGE(G63456–63462)·poison/bleed(G63455) | Godot Player에 대응 필드 없음 — 쓰기 0, `mac_followups` 표기 |
+| _webSlow/_trapSlowT(G63458), PC-ENEMY-ACTORS 후보(2026-10-23) | `player.gd` `_native_web_slow_ticks`·`_native_trap_slow_ticks` 대응. 기존 생명주기 commit의 reset에서 0으로 초기화. main 미반영 후보이며 [인수 범위·검수](orders/reports/PORT-TAKEOVER-01_REPORT.md) 참조 |
 | 기존 HP0 블록의 `charge_frames=0`/입력 해제 | 원본 die() reviveOnce 경로에는 없지만 기존 Godot terminal 코드가 토큰 발급 전에 이미 수행(수정 금지 범위) |
 
 ### 1.8 연결 예 (DEMO11-39)

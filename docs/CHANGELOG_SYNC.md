@@ -1,3 +1,10 @@
+## 2026-10-23 PORT-TAKEOVER-01 — PC 중단 이식 인수 후보
+
+- G04-02 `9734e2e79` 위에 PC 보존 WIP의 일반 etype3/7/13/14/16/17/20/21/47 및 문지기와 분리된 일반29 owner를 3way 결합. 원 폴더·공용 INDEX/WORK 무수정, 별도 후보 브랜치만 사용한다.
+- 거미줄/덫의 기존 Player 감속·retry 초기화, 원본 child 생성/World 등록/기존 피해 owner·29 사망탄 인계. 수치 변경·Q/E 재설계·저장 필드 추가0.
+- 원본 VM 대조2,775,483/0, headless runtime 첫141/1→거리 fixture 수정141/0, GUI 첫1실패·후속6실패를 보존. AI 관찰용 생존 fixture와 소환 직후 상태 검사 시점을 고쳐 최종 GUI148/0·ERROR0. 테스트 PASS를 자연 플레이/시각 PASS로 해석하지 않는다.
+- 이동 SFX/charge·groggy·magic 소리·blast light/hitStop 및 웹1x 대조 미완. [인수 보고서](engine/orders/reports/PORT-TAKEOVER-01_REPORT.md).
+
 ## 2026-10-23 ENEMY-VIS-01 — 사망 적 차징 경고 잔상 제거
 
 - crawler 사망 `_draw`에서도 별도 `SourceShotWarning` redraw를 요청한다. 원본 G20100 alive 제외를 반영하며 본체·링·라벨 수치/판정은 유지한다.

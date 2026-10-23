@@ -1,5 +1,7 @@
 # DEMO11 — 적 생성·AI tick·처치 context pack
 
+> 2026-10-23 PC 인수 후보: G04-02 `9734e2e79` 위에 보존 PC-ENEMY-ACTORS WIP를 결합했다. G 일반 non-boss elite0 `3/7/13/14/16/17/20/21/47` 및 문지기와 분리된 일반29 생성·AI·기존 피해 owner 연결을 격리 검수 중이다. `--demo11-storage=off`는 이 PC 단위검사의 저장 격리 계약이며 제품 저장 거절을 해제하지 않는다. 아래 'Godot origin/main 대응'은 작성 당시 이력이다. [현재 검수·시각/청감 미완료](../orders/reports/PORT-TAKEOVER-01_REPORT.md).
+
 ## 원본 계약
 
 | R 행 | 핵심 |

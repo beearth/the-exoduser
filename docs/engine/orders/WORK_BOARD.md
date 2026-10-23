@@ -1,5 +1,15 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-23 PC Codex 인수 — PORT-TAKEOVER-01
+
+사용자 직접 지시: "이식작업 니가 이어받아서 계속해 토큰세이브 MD나 다 보고". PC Codex가 이전 PC Claude의 중단 작업을 인수한다. 기존 PC/Mac 작업자를 자동 재가동하지 않고, 공용 main의 INDEX/WORK와 원 작업자의 WIP는 보존한다.
+
+| 작업ID | 담당 / 브랜치 | 소유 범위 | 상태 |
+|---|---|---|---|
+| PORT-TAKEOVER-01 / PC-ENEMY-ACTORS | PC Codex / `codex/port-takeover-20261023` / `E:/exoduser-wt/codex-port-takeover-20261023` | G actor/kernel/spawn/decor 신규 4파일, 원 PC WIP의 factory/Main/E spawn/death FX/natural base/stage adapter/Player의 명시 7구역, G 전용 테스트·오라클, 자기 보고서와 현재 인계 문맥 | **격리 기술 검수·백업 후보 / VISUAL RETOUCH**. 최신 Mac 코드 `9734e2e79` 위에 보존 WIP를 3way 적용, 충돌0. 최종 GUI148/0·직접 회귀4종0실패·ERROR0. 원 폴더 무수정. 자연 플레이·웹1x·사운드 미완료 및 최종 제출 SHA는 [보고서](reports/PORT-TAKEOVER-01_REPORT.md)/외부 DONE.json 참조 |
+
+기존 context pack 15종을 모두 읽었으며, 그 안의 10월20~21일 구현 현황은 당시 snapshot이다. 최신 계보는 17d → ENEMY-VIS → SWEEP-B2/B3 → E2E-TAIL-02 → G04-02이다. SWEEP-B4 문서-only 보류를 구현 완료로 올리지 않는다. 코드 main 병합·기존 사용자 실행판 교체·Steam 배포는 이번 후보 검수와 별개다.
+
 > 이 문서가 **지금 누가 무엇을 하는지의 유일한 기준**이다. 새 작업을 시작하거나 끝낼 때 양쪽 총괄 모두 이 표를 먼저 읽고 갱신한다(경로 지정 커밋, 문서만 main 직접 push 허용).
 > 상위 계획: [FDG_GAME_DEVELOPMENT_PLAN.md](../FDG_GAME_DEVELOPMENT_PLAN.md) · 사용자용 현황: [FDG_GODOT_PORT_STATUS.md](../FDG_GODOT_PORT_STATUS.md) · Mac 지시서: [MAC_ORDERS_20261020.md](MAC_ORDERS_20261020.md)
 
