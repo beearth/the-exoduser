@@ -6,9 +6,9 @@
 |---|---|---|
 | 보관용 백업·완료 검수·이전 빌드·렌더 후보·종료한 작업 사본 | I:\EXODUSER-Storage | 새 보관 파일의 기본 저장 위치 |
 | 현재 웹 소스·런타임 에셋 | G:\exoduser | SSD 유지. 공용 INDEX/WIP 보존 |
-| 현재 네이티브 이식 작업 | E:\exoduser-wt\codex-port-takeover-20261023 | SSD 유지 |
-| 사용자 플레이용 사본 | G:\exoduser-wt\integ10-play | SSD 유지 |
-| 개발 도구·진행 중 작업의 임시 실행 입력 | 기존 SSD 위치 | 완료된 자료만 I:로 보관 |
+| 현재 네이티브 이식 실행 부분 | E:\exoduser-wt\codex-port-takeover-20261023\godot 및 source-root 참조 미디어 | 실행 부분만 SSD 유지, 문서·도구·테스트·다른 비실행 디렉터리 I: 분리 |
+| 과거 사용자 플레이 사본 | I: 보관 대기열의 integ10-play | 중복본 SSD 유지 예외를 철회. 전체 byte 검증 후 I: 이전 |
+| 개발·검수 보관 자료, 과거 DEMO/EA 패키지, 이전 Steam 작업본 | I:\EXODUSER-Storage | 현재 게임 실행 대상이 아니므로 이전 대기열에 추가 |
 | 기존 H: 보관/복구 영역 | 기존 위치 | 과거 손실 복구 관련 영역. 이번 이전에서 변경하지 않음 |
 | 웹 본편 세이브 15 files | I:\EXODUSER-Storage\archive\G\exoduser\saves | G:\exoduser\saves는 Junction. 본문 SHA-256 및 기존 경로의 생성/읽기 검증 |
 | C: 별도 런타임 저장 폴더 4곳 | 기존 AppData 위치 + I: 검증 백업 | Junction에서 exclusive-create가 실패해 SSD 기본 경로로 복원. steam_autocloud.vdf와 _sharedMats.json 총 4 files, 150 bytes |
@@ -47,3 +47,18 @@
 - 공용 main HEAD와 INDEX 변경 목록, game.html/index.html/server.cjs/node-main.js/package.json SHA-256을 보존했다. 공용 staging을 커밋하지 않았다.
 - 작업 중 중복 이전 실행에 따른 대상 파일 잠금 오류 1건은 원본 보존 상태에서 중단·재복사·전 파일 대조로 해결했다. 단일 프로세스 잠금으로 중복 실행 거부를 확인했다. 대장에서는 해결 이력을 유지한다.
 - 대용량 이전은 한 번에 한 프로세스로 계속한다. 링크/진행 중 변경/해시 불일치/경로 검수 실패는 원본 보존 상태에서 멈춘다. 남은 폴더와 최종 완료 여부는 `state.json`의 `pending`/`allJobsComplete`를 본다.
+
+## 추가 확정: SSD는 실제 실행 부분만 유지
+
+사용자 후속 지시 “SSD폴더는 진짜 엑소듀서 실행파일들만 넣어두고 남겨놔”에 따라 이전에 남기기로 했던 중복 플레이 사본과 개발 보관 부분도 이전 대상으로 확장했다. 신규 기준은 게임 실행 코드/실제 참조 에셋/실행 런타임만 SSD에 유지하는 것이다. 진행 중인 이식본은 Godot 실행 프로젝트와 외부 source-root에서 읽는 assets/img/bgm/sfx/video를 보호하며 비실행 디렉터리를 I:로 분리한다.
+
+| 항목 | 처리 | 근거 |
+|---|---|---|
+| output/imagegen | SSD 보호 | index.html 로고·입장 버튼, game.html 대장간·아이템 스킨이 실제 참조 |
+| output/fdg_reference_1280x720.png | SSD 보호 | index.html 로비 배경 실제 참조 |
+| build/three.module.js 및 실행 라이브러리 | SSD 보호 | three-runtime.js와 skill-forge-3d.js의 실제 모듈 경로 |
+| integ10-play, 구 DEMO/EA, 이전 Steam 작업본의 일반 하위 디렉터리 | I: 이전 대기열 추가 | 현재 실행 대상과 별도인 중복/이전 사본. 기존 중첩 링크는 따라가지 않음 |
+| 문서·테스트·원화/효과음 후보·출품 자료·미니 검수 프로젝트 | I: 이전 대기열 추가 | 게임 실행 경로와 분리된 보관 자료 |
+| 공유 Git 제어 메타데이터 및 실행 중 외부 도구/앱 | 현 상태 보존 | 공용 INDEX/WIP와 실행 중인 프로세스 보호. 이를 게임 실행 자산 정리 완료로 세지 않음 |
+
+이전 작업은 원본이 그대로 남는 복사 단계에서 사용자 변경 범위를 반영해 재개한다. 최신 분류는 `runtime-only-scope-extension.json`, 단일 실행 대장은 `state.json`이다. 대용량 정리가 전부 끝난 상태는 아니다.
