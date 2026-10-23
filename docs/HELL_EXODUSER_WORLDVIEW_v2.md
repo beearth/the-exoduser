@@ -1,5 +1,7 @@
 # HELL: EXODUSER 세계관 통합 문서 (WORLDVIEW MASTER) v2.0
 
+> **2026-10-23 세계 기초 변경:** 지옥 = 천상계의 서바이벌 쇼, 네메시아 = 전 우승자 진행자로 확정됐다. 충돌 시 [IP_FOUNDATION_SURVIVAL_SHOW_20261023.md](11내러티브·로어디자인/IP_FOUNDATION_SURVIVAL_SHOW_20261023.md)를 따른다.
+
 작성: 2026-07-12 / FDG
 v2.0: 4대 법칙 + 종족 편입 전체 (마족/천족/용족/신화권/성간) + 아트 디렉션 연계 통합
 위치: 세계관 단일 기준 문서. STORY_BIBLE.md와 충돌 시 본 문서가 기준.

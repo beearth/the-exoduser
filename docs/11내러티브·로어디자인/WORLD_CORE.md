@@ -1,5 +1,7 @@
 # HELL: EXODUSER - WORLD CORE
 
+> **2026-10-23 세계 기초 변경:** 지옥 = 천상계의 서바이벌 쇼, 네메시아 = 전 우승자 진행자로 확정됐다. 이 문서의 "네메시아 = 무의 의인화" 설정은 폐기됐다. 충돌 시 [IP_FOUNDATION_SURVIVAL_SHOW_20261023.md](IP_FOUNDATION_SURVIVAL_SHOW_20261023.md)를 따른다.
+
 프로젝트: HELL: EXODUSER (지옥:탈주자)
 스튜디오: VOISUN
 작성일: 2026-05-07
