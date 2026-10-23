@@ -44,6 +44,10 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
     var font: String="font" if n.font.contains("Noto Sans") else ("cinzel_hell" if n.font.contains("Cinzel") else "hell")
     var label:=S.text(self,UI.text(n.text),r,px,color(n.color),font,weight)
     label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+    if cls=="settings-choice-description":
+     label.autowrap_mode=TextServer.AUTOWRAP_ARBITRARY;label.add_theme_constant_override("line_spacing",5)
+     # Original 14px face: prior Windows embolden also expands each advance in FreeType.
+     var source_font:FontVariation=Fonts.stack("hell",400).duplicate();source_font.variation_embolden=0.0;label.add_theme_font_override("font",source_font)
     label.set_deferred("size",r.size)
     if r.size.y<float(n.px)*1.7:label.autowrap_mode=TextServer.AUTOWRAP_OFF
     label.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT if n.align=="right" else (HORIZONTAL_ALIGNMENT_CENTER if n.align=="center" else HORIZONTAL_ALIGNMENT_LEFT)
@@ -58,7 +62,14 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
      for child in b.get_children():
       if child is TextureRect and child.material is ShaderMaterial:child.material.set_shader_parameter("tint",Color(54/255.0,23/255.0,19/255.0,.82))
     if cls.contains("settings-choice"):
-     var style:=StyleBoxFlat.new();style.bg_color=Color("211c17");style.border_color=Color("ccaa66") if n.text.contains("선택됨") else Color("6c5840");style.set_border_width_all(2);style.set_corner_radius_all(6);b.add_theme_stylebox_override("normal",style)
+     for child in b.get_children():
+      if child is TextureRect:child.hide()
+     var selected:bool=n.text.contains("선택됨")
+     var style:=StyleBoxFlat.new();style.bg_color=Color.TRANSPARENT;style.border_color=Color("ccaa66") if selected else Color("6c5840");style.set_border_width_all(2);style.set_corner_radius_all(6)
+     for state in ["normal","hover","pressed","focus"]:b.add_theme_stylebox_override(state,style)
+     var background:=ColorRect.new();background.position=Vector2(2,2);background.size=r.size-Vector2(4,4);background.mouse_filter=Control.MOUSE_FILTER_IGNORE;background.show_behind_parent=true
+     var shader:=Shader.new();shader.code="shader_type canvas_item;uniform bool selected=false;void fragment(){vec3 top=(selected?vec3(60.,48.,33.):vec3(32.,30.,33.))/255.;vec3 bottom=(selected?vec3(33.,28.,23.):vec3(16.,18.,23.))/255.;float t=clamp(dot(UV-.5,vec2(.573576,.819152))+.5,0.,1.);vec3 c=mix(top,bottom,t);float a=(selected?.2:.219608)*(1.-clamp(length((UV-vec2(.5,.05))/vec2(.7071,1.0735))/(selected?.8:.72),0.,1.));c=mix(c,(selected?vec3(181.,140.,60.):vec3(71.,58.,41.))/255.,a);COLOR=vec4(c,1.);}"
+     var material:=ShaderMaterial.new();material.shader=shader;material.set_shader_parameter("selected",selected);background.material=material;b.add_child(background)
     panel.controls[id if not id.is_empty() else n.text]=b
    "range":
     var row: Dictionary=fields.get(id,{})
@@ -95,7 +106,21 @@ func setup(owner_panel: Control,data: Dictionary,rows: Array) -> void:
      commit(row,v))
     panel.controls[row.get("key",id)]=select
    "canvas":
-    var image:=TextureRect.new();image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;var atlas:=AtlasTexture.new();atlas.atlas=load("res://assets/player_silvertail/6.png" if r.position.x>1100 else "res://assets/player/south.png");atlas.region=Rect2(0,0,48,48);image.texture=atlas;image.position=r.position;image.size=r.size;image.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;add_child(image)
+    # G48615–48635: same first cell alpha bounds, body72px/foot80px.
+    var texture: Texture2D=load("res://assets/player_silvertail/6.png" if r.position.x>1100 else "res://assets/player/south.png")
+    var source:=texture.get_image();var body:=Rect2i(48,48,0,0);var all:=Rect2i(48,48,0,0)
+    var left:=48;var top:=48;var right:=0;var bottom:=0;var al:=48;var at:=48;var ar:=0;var ab:=0
+    for y in 48:
+     for x in 48:
+      var alpha:=source.get_pixel(x,y).a
+      if alpha>0:al=mini(al,x);at=mini(at,y);ar=maxi(ar,x+1);ab=maxi(ab,y+1)
+      if alpha>100.0/255.0:left=mini(left,x);top=mini(top,y);right=maxi(right,x+1);bottom=maxi(bottom,y+1)
+    body=Rect2i(left,top,right-left,bottom-top);all=Rect2i(al,at,ar-al,ab-at)
+    if body.size.y<=0:body=all
+    var below:=all.end.y-body.end.y;var center:float=(body.position.x+body.end.x)*.5
+    var scale_factor:=minf(72.0/body.size.y,minf(40.0/maxf(center-all.position.x,all.end.x-center),minf(78.0/(body.end.y-all.position.y),8.0/below if below>0 else INF)))
+    var clip:=Control.new();clip.position=r.position;clip.size=r.size;clip.clip_contents=true;clip.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(clip)
+    var image:=TextureRect.new();image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;var atlas:=AtlasTexture.new();atlas.atlas=texture;atlas.region=Rect2(0,0,48,48);image.texture=atlas;image.position=Vector2(44-center*scale_factor,80-body.end.y*scale_factor);image.size=Vector2.ONE*48*scale_factor;image.texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;clip.add_child(image)
    "image":
     var image:=TextureRect.new();image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;image.texture=load("res://assets/ui/parity_ui_05/"+str(n.src).get_file());image.position=r.position;image.size=r.size;add_child(image)
  # Nodes are in DOM order; labels can follow their corresponding input.

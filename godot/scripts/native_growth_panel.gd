@@ -218,6 +218,9 @@ func _build() -> void:
  # growth-tree-fixed-background.css(@min-width 781): .growth-tree-viewport::before inset 0 —
  # linear-gradient(rgba(7,12,10,.17)) 덮개 + 기사 일러스트 center/100% 100%, mask radial-gradient(66% 74%, #000 55%, transparent 100%).
  # 이미지 원본: https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20260927_102905_7c7fc782-eb73-4bf0-9f4b-4de19dfa79ae.png (바이트 동일 사본)
+ var ground:=ColorRect.new();ground.size=Vector2(1174,624);ground.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var ground_shader:=Shader.new();ground_shader.code="shader_type canvas_item;void fragment(){vec3 c=vec3(11.,16.,14.)/255.;float a=.11*(1.-clamp(length((UV-vec2(.5,.9))/vec2(.71,.90))/.65,0.,1.));c=mix(c,vec3(69.,76.,58.)/255.,a);a=.17*(1.-clamp(length((UV-vec2(.5,.43))/vec2(.71,.75))/.62,0.,1.));c=mix(c,vec3(95.,94.,68.)/255.,a);COLOR=vec4(c,1.);}"
+ var ground_mat:=ShaderMaterial.new();ground_mat.shader=ground_shader;ground.material=ground_mat;_source_viewport.add_child(ground)
  var art:=TextureRect.new();art.name="GrowthTreeBackground";art.texture=load("res://assets/ui/parity_sweep_b/growth_tree_bg_hf_20260927_102905.png")
  art.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;art.stretch_mode=TextureRect.STRETCH_SCALE;art.position=Vector2(1,1);art.size=Vector2(1172,622);art.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var art_shader:=Shader.new();art_shader.code="shader_type canvas_item;varying vec4 vmod;void vertex(){vmod=COLOR;}void fragment(){vec4 c=texture(TEXTURE,UV);vec3 rgb=mix(c.rgb,vec3(7.0,12.0,10.0)/255.0,0.17);float d=length((UV-vec2(.5))/vec2(.66,.74));float m=1.0-clamp((d-.55)/.45,0.0,1.0);COLOR=vec4(rgb,c.a*m)*vmod;}"
@@ -227,6 +230,8 @@ func _build() -> void:
  for node in _data.centers:_make_node(node,node.key,0)
  for node in _data.layout.nodes:_make_node(node,node.key,int(node.rank))
  var origin:=Label.new();origin.name="GrowthOrigin";origin.text="✦";origin.position=Vector2(486.5,386.5);origin.size=Vector2(27,27);origin.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;origin.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;origin.add_theme_font_override("font",FONTS.stack("font"));origin.add_theme_font_size_override("font_size",17);origin.add_theme_color_override("font_color",Color("ffe1ac"));origin.mouse_filter=Control.MOUSE_FILTER_IGNORE;_tree.add_child(origin)
+ var origin_surface:=ColorRect.new();origin_surface.position=Vector2(500,400)-Vector2.ONE*45.5;origin_surface.size=Vector2.ONE*91;origin_surface.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var origin_mat:=ShaderMaterial.new();origin_mat.shader=preload("res://shaders/growth_node_surface.gdshader");origin_mat.set_shader_parameter("extent",Vector2.ONE*27);origin_mat.set_shader_parameter("corner",13.5);origin_mat.set_shader_parameter("origin",true);origin_surface.material=origin_mat;_tree.add_child(origin_surface);_tree.move_child(origin_surface,origin.get_index())
  _set_zoom(1)
  var live_link:=Button.new();live_link.text=surface.I18N.text("현재 전투 능력치 ↗");live_link.position=Vector2(271,956.8);live_link.size=Vector2(132.2,30.5);live_link.add_theme_font_override("font",FONTS.stack("font",400));live_link.add_theme_font_size_override("font_size",15)
  for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:live_link.add_theme_color_override(key,Color(207/255.0,175/255.0,135/255.0))
@@ -274,6 +279,9 @@ func _make_node(row: Dictionary,key: String,rank: int) -> void:
  b.add_theme_font_size_override("font_size",12);b.tooltip_text=label_for(key)+( " · "+str(rank) if rank else "")
  b.pressed.connect(select_node.bind(key,rank));_tree.add_child(b);_nodes[id]=b
  if rank==0:
+  var surface:=ColorRect.new();surface.name="SourceGlyphSurface";surface.position=-Vector2.ONE*32;surface.size=b.size+Vector2.ONE*64;surface.mouse_filter=Control.MOUSE_FILTER_IGNORE;surface.show_behind_parent=true
+  var material:=ShaderMaterial.new();material.shader=preload("res://shaders/growth_node_surface.gdshader");material.set_shader_parameter("extent",b.size);material.set_shader_parameter("major",bool(row.get("major",false)));material.set_shader_parameter("corner",b.size.x*.5 if key.begins_with("p") else 9.0);surface.material=material;b.add_child(surface)
+ if rank==0:
   b.mouse_entered.connect(func():_captions[key].show())
   b.mouse_exited.connect(func():_refresh_captions())
   b.focus_entered.connect(func():_captions[key].show())
@@ -292,16 +300,6 @@ func _draw_tree() -> void:
  for pair in [["spine","origin"],["neck","spine"],["leftShoulder","spine"],["rightShoulder","spine"]]:_tree.draw_line(points[pair[0]],points[pair[1]],Color(0.55,0.5,0.39,0.6),1,true)
  for row in _data.centers:_draw_link(points[row.parent],points[row.key],row.key)
  for row in _data.layout.links:_draw_link(points[row.from],points[row.to],str(row.to).split("@")[0])
- for row in _data.centers:
-  if not str(row.key).begins_with("p"):continue # .growth-stat uses the distinct 9px rounded-square glyph.
-  var at:=Vector2(row.x,row.y);var radius: float=27.0 if bool(row.major) else 22.0
-  var selected: bool=row.key==_key and _rank==0
-  _tree.draw_circle(at,radius+(6 if selected else 4),Color("ddab66") if selected else Color(187/255.0,157/255.0,104/255.0,.62))
-  _tree.draw_circle(at,radius+3,Color("171c15") if selected else Color("101713"))
-  if bool(row.major):_tree.draw_arc(at,radius+5,PI*.25,PI*.75,24,Color(221/255.0,185/255.0,121/255.0,.7),1,true)
- _tree.draw_circle(Vector2(500,400),17.5,Color(179/255.0,144/255.0,80/255.0,.18))
- _tree.draw_circle(Vector2(500,400),13.5,Color("302b1e"))
- _tree.draw_arc(Vector2(500,400),13,0,TAU,64,Color("f2d294"),1,true)
 func _draw_link(a: Vector2,b: Vector2,key: String) -> void:
  var allocated: bool=value(_plan,key)>0
  var route:=false
@@ -355,6 +353,10 @@ func _refresh() -> void:
   skin.border_color=Color("ffe0a3") if selected else Color("a49878")
   if rank==0:
    skin.set_corner_radius_all((27 if _center_major(key) else 22) if key.begins_with("p") else 9);skin.shadow_size=0
+   skin.bg_color=Color.TRANSPARENT;skin.set_border_width_all(0)
+   var glyph: ColorRect=_nodes[id].get_node("SourceGlyphSurface")
+   glyph.material.set_shader_parameter("selected",selected);glyph.material.set_shader_parameter("learned",value(_plan,key)>0)
+   for state in ["hover","pressed","focus"]:_nodes[id].add_theme_stylebox_override(state,skin)
   elif rank==10:
    skin.set_corner_radius_all(1);_nodes[id].pivot_offset=Vector2(5,5);_nodes[id].rotation=PI/4
  for id in _path_buttons:

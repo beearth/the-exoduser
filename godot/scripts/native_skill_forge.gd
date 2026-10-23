@@ -147,7 +147,7 @@ class Halo extends Control:
  func _draw() -> void:
   for i in range(18,0,-1):
    draw_arc(size/2,radius+i,0,TAU,96,Color(.925,.475,.345,.025*(1.0-i/19.0)),2,true)
-  draw_arc(size/2,radius+1,0,TAU,96,Color("ec795855"),2,true)
+  draw_arc(size/2,radius*(1.22/1.11),0,TAU,96,Color(.925,.475,.345,.9),radius*(.06/1.11),true)
 func disc(id: String,rect: Rect2,selected: bool=false,parent: Node=null) -> TextureRect:
  var icon: Texture2D=icon_for(id)
  if selected:
@@ -171,16 +171,18 @@ func render() -> void:
  var title_plate:=TitlePlate.new();title_plate.image=Surface.texture("img/ui/iron_covenant_20260924/button.webp");title_plate.position=Vector2(819.6,150.76);title_plate.size=Vector2(280.8,49.92);title_plate.mouse_filter=Control.MOUSE_FILTER_IGNORE;stage.add_child(title_plate)
  text("전투 스킬",Rect2(819.6,155,280.8,34),19,Color("f7e7bb"),true).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
  Surface.panel(stage,Rect2(36,212.47,1848,792.53),Color("0b0809"),Color("3b332c"))
- var fire_back:=ColorRect.new();fire_back.position=Vector2(37,213.47);fire_back.size=Vector2(1846,790.53);fire_back.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ var fire_back:=ColorRect.new();fire_back.position=Vector2(39,215.47);fire_back.size=Vector2(1842,786.53);fire_back.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var back_material:=ShaderMaterial.new();back_material.shader=preload("res://shaders/parity_ui_06_forge_back.gdshader");fire_back.material=back_material;stage.add_child(fire_back)
  # 13 slots: CSS width92 / gap14, centered at1920.
  for i in 13:
   var x: float=278+i*106;var id: String=slot_value(i)
   var b:=DropButton.new();b.forge=self;b.slot_index=i;b.position=Vector2(x,229.47);b.size=Vector2(92,105);stage.add_child(b)
   for state in ["normal","hover","pressed","focus"]:b.add_theme_stylebox_override(state,StyleBoxEmpty.new())
-  # skill-forge-3d.js(sf-3d): 보이는 슬롯은 3D 코인(DOM 원판은 opacity 0). 웹 1x 실측 코인 지름 44px(선택 ×1.08·z36 원근 → 49px),
-  # 중심 = 원판 중심(버튼 46,35).
-  disc(id,Rect2(21.5,10.5,49,49) if i==selected_slot else Rect2(24,13,44,44),i==selected_slot,b)
+  # skill-forge.js layout3d: DOM70px; three sphere/torus extent1.11,
+  # selected1.08, camera D=(786.53/2)/tan(15deg), z36/20.
+  var camera_distance:=786.53*.5/tan(deg_to_rad(15.0))
+  var diameter:=70.0*1.11*camera_distance/(camera_distance-(36.0 if i==selected_slot else 20.0))*(1.08 if i==selected_slot else 1.0)
+  disc(id,Rect2(Vector2(46,35)-Vector2.ONE*diameter*.5,Vector2.ONE*diameter),i==selected_slot,b)
   b.pressed.connect(func():selected_slot=i;staged=[];selected_skill="";render())
   var key:=Surface.text(b,Slots.SLOTS[i].k,Rect2(0,73,92,14),11,Color("c9a663"),"hell_title");key.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
   var name_label:=Surface.text(b,display_name(id) if not id.is_empty() else "비어 있음",Rect2(0,89,92,15),11,Color("b9ab92"),"hell");name_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;name_label.clip_text=true
@@ -201,7 +203,10 @@ func render_altar(m: Dictionary) -> void:
  var plate:=TextureRect.new();plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.texture=preload("res://assets/ui/parity_skill_01/altar.png");var radius: float=maxf(R*1.32,R+node_size*.65);radius*=1024.0/792.0;plate.position=Vector2(cx-radius,cy-radius);plate.size=Vector2.ONE*radius*2;plate.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;plate.mouse_filter=Control.MOUSE_FILTER_IGNORE
  var mat:=ShaderMaterial.new();mat.shader=rune_shader;plate.material=mat;stage.add_child(plate);plate.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;plate.texture_repeat=CanvasItem.TEXTURE_REPEAT_DISABLED
  var core_size: float=maxf(48,minf(150,minf(R*1.02,(R-node_size/2)*1.3)))
- if not m.host.is_empty():disc(m.host,Rect2(cx-core_size/2,cy-core_size/2,core_size,core_size),true)
+ if not m.host.is_empty():
+  var camera_distance:=786.53*.5/tan(deg_to_rad(15.0))
+  var diameter:=core_size*.95*1.15*camera_distance/(camera_distance-40.0)
+  disc(m.host,Rect2(cx-diameter/2,cy-diameter/2,diameter,diameter),false)
  if not m.host.is_empty():
   var glow:=ColorRect.new();glow.position=Vector2(cx,cy)-Vector2.ONE*core_size;glow.size=Vector2.ONE*core_size*2;glow.mouse_filter=Control.MOUSE_FILTER_IGNORE
   var gm:=ShaderMaterial.new();gm.shader=preload("res://shaders/parity_ui_06_core_glow.gdshader");glow.material=gm;stage.add_child(glow)

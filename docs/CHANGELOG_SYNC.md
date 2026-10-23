@@ -56835,3 +56835,10 @@ integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 
 - 테스트/최종E2E/캡처판정은최종검증기록참조. PC동기화·사용자열린실행본·전체이식완료주장없음.
 
 - 최종 검증 확정: UI7종1598확인/실패0·importERROR0. E2E1회13PASS/5NOT_READY/0FAIL·overallNOT_READY. 자연 보스방·최종처치 경계 미충족을 우회하지 않음. 구현SHA db7c044f7f57e7f3f028d014583488ecb2bddf16 원격 대조.
+
+
+## 2026-10-23 SWEEP-B3 — 로비/UI 잔여 재대조
+
+- 기준 b9f7deff, 독립 codex/sweep-b3-20261023. 정상 GPU/WebGL2와 지정 dee094fd snapshot으로 1x 비교 재촬영. 누락 r186 build는 기존 로컬 공식 사본을 캡처 route에만 제공.
+- K-03 원본 DOM70/원근/선택배율·배경ACES, G-04 상태별 그라디언트·다중 링·그림자, B-05 원문 줄높이/블록간격/overlay 스크롤바, T-03 원본 alpha bounds/72px 본체/80px 발선/14px 설명face 이식. R-02는 fixture 진입조건 차이만 기록.
+- UI 테스트 각1회 300검사/0실패, 최종 import ERROR0. 자연 E2E 마지막1회 결과 및 항목별 남음 판정은 [SWEEP_B3_20261023.md](engine/SWEEP_B3_20261023.md), 외부 DONE/캡처를 따른다. 전체 UI 동일 완료를 선언하지 않는다. 새 화면문구0·번역목록 원byte/CRLF 보존·기대값 완화0.

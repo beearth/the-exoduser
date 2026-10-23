@@ -164,3 +164,8 @@
 ## 2026-10-21 DEMO11-09 Godot 데모 일시정지 접점
 
 이 단위는 기존 Main pause/입력 profile 권위를 소비하는 최소 pause 메뉴·설정 진입/뒤로만 제공한다. 원본4탭·설정값·키변경·저장 복원 포팅 완료가 아니다. S01은 current OPT35의 missing3를 NOT_READY로 보존하고, S10 언어/inputMode bridge·허용 option writer는 main에 없어 설정 적용은 BLOCKED다. 실제 숫자/키를 바꿀 수 있는 UI를 꾸미지 않고 준비 중 안내를 표시한다. [소유 경계·필요 인터페이스·실행 근거](../engine/orders/reports/demo11-09_REPORT.md), `_out/demo11-09/captures/` 화면은 맥북총괄 검수 대기.
+
+
+## 2026-10-23 SWEEP-B3 재대조
+
+Godot T-03은 원본 첫 idle 셀 alpha>0/100 경계에서 본체72px·발선80px 정렬, CSS88px nearest 표시와 설명14px/line-height1.6을 사용한다. 원본 웹 수치는 변경하지 않았다. 상세 원본/수치/판정은 [SWEEP_B3_20261023.md](../engine/SWEEP_B3_20261023.md)를 따른다. 과거 검수 수치를 소급해서 성공으로 바꾸지 않는다.

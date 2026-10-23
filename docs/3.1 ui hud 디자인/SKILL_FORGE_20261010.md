@@ -168,3 +168,8 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | DOM 범위 | 기존 gameConfirm 본문은 그대로. 신규 DOM parent 내용 교체·UI 디자인·초점 권위 변경 없음. 실제 HTML 렌더링/전체 Startup 검수 아님 |
 | 새 검수 | 격리 public gameConfirm 및 실제 스킬 확인 gate+목적stub의5묶음 PASS. 동시요청 거부·첫 resolver/메시지/버튼 보존·확인/취소·재개·기존 HTML 모드·전체파일 inverse 확인. 변경 function 구문/실행 확인 |
 | 한계 | 실user GUI/state/save/API 접근·자동입력0. 실제 스킬 비용집행/화면품질/PC 검수 없음. game-easy-test·Godot/HOLD·기인수기능·docs/2_3 변경0. 잔여R statement 의도·승인 분류와 전체 이식 미완료 |
+
+
+## 2026-10-23 SWEEP-B3 재대조
+
+Godot K-03은 정상WebGL2 원본의 DOM70px·원근 D/(D−z)·선택1.08을 적용했다. 44/49px를 3D 기준으로 사용하지 않는다. 원본 웹 설계는 변경하지 않았다. 상세 원본/수치/판정은 [SWEEP_B3_20261023.md](../engine/SWEEP_B3_20261023.md)를 따른다. 과거 검수 수치를 소급해서 성공으로 바꾸지 않는다.

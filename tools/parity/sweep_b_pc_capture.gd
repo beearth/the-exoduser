@@ -31,7 +31,7 @@ func _run() -> void:
 		elif a.begins_with("--mode="): mode = a.trim_prefix("--mode=")
 	var ud := OS.get_user_data_dir().get_file()
 	L("userdir", OS.get_user_data_dir())
-	if not (ALLOWED.has(ud) or ud.begins_with("EXODUSER-demo11-SWEEP-B2-")) or out.is_empty() or DisplayServer.get_name() == "headless":
+	if not (ALLOWED.has(ud) or ud.begins_with("EXODUSER-demo11-SWEEP-B2-") or ud.begins_with("EXODUSER-demo11-SWEEP-B3-")) or out.is_empty() or DisplayServer.get_name() == "headless":
 		L("refuse", {"ud": ud, "ds": DisplayServer.get_name()}); quit(2); return
 	# 사용자 지시(2026-10-22): 창은 오른쪽 보조 모니터(5120,0)에만. 메인 모니터에 걸치면 옮긴다.
 	# Godot 화면 좌표는 가장 왼쪽 모니터가 0이다(Windows 5120 = Godot 7040). 가장 오른쪽 화면에 둔다.
@@ -207,6 +207,7 @@ func run_death() -> void:
 func run_clear() -> void:
 	if not await enter_play(): return
 	paused = false
+	L("clear_fixture_before", {"encounter":main.native_demo_encounter.snapshot(),"event":"native_demo_boss_defeated(0)","actual_boss_damage":false})
 	main.native_demo_boss_defeated.emit(0)
 	await secs(2.5); await shot("100_clear")
 	var flow: Node = main.get("native_demo_end_flow")

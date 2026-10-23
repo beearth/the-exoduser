@@ -1,5 +1,5 @@
-// SWEEP-B PC 웹 캡처 (2026-10-22). 헤드리스 Chrome·음소거·1920x1080·격리 프로필.
-// 웹 기준 = origin/main 커밋본. 작업 사본에서 origin/main과 다른 웹 파일은 route로 origin/main blob을 돌려준다.
+// SWEEP-B PC 웹 캡처 (2026-10-22). 창 모드 GPU Chrome·음소거·1920x1080·격리 프로필.
+// 게임 HTML은 지정 source_snapshot byte; 나머지 웹 파일은 REF 기준. 누락 r186 build는 기존 로컬 원본만 캡처 route로 제공.
 // 실행: NODE_PATH=G:/exoduser/node_modules node sweep_b_pc_web.cjs <part> [--base=http://127.0.0.1:3394]
 const { chromium } = require('playwright');
 const fs = require('fs');
@@ -38,7 +38,7 @@ const probe = async (page, name, sels) => { const r = await page.evaluate(`(${PR
 
 (async () => {
   const ctx = await chromium.launchPersistentContext(PROFILE, {
-    channel: 'chrome', headless: true,
+    channel: 'chrome', headless: false,
     viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1,
     args: ['--mute-audio', '--autoplay-policy=no-user-gesture-required', '--window-size=1920,1080'],
   });
@@ -46,6 +46,19 @@ const probe = async (page, name, sels) => { const r = await page.evaluate(`(${PR
     const u = new URL(route.request().url());
     if (!u.href.startsWith(BASE)) return route.continue();
     let p = decodeURIComponent(u.pathname.replace(/^\//, '')) || 'index.html';
+    if (p === 'game.html') {
+      const source=fs.readFileSync(path.join(REPO,'godot/source_snapshot/game.html'));
+      L('source_snapshot',require('crypto').createHash('sha256').update(source).digest('hex'));
+      return route.fulfill({status:200,body:source,contentType:'text/html; charset=utf-8'});
+    }
+    // Restored original dependency only; no source/UI/state replacement.
+    if (p.startsWith('assets/vendor/three-r186/build/')) {
+      const dependency = path.join(process.env.SWEEPB_THREE_BUILD || '', path.basename(p));
+      if (process.env.SWEEPB_THREE_BUILD && fs.existsSync(dependency)) {
+        const data=fs.readFileSync(dependency);L('original_vendor',p,require('crypto').createHash('sha256').update(data).digest('hex'));
+        return route.fulfill({status:200,body:data,contentType:'application/javascript'});
+      }
+    }
     if (diffSet.has(p)) {
       const b = blob(p);
       if (b === null) return route.fulfill({ status: 404, body: 'not in ' + REF });
@@ -57,8 +70,11 @@ const probe = async (page, name, sels) => { const r = await page.evaluate(`(${PR
   // window.open(위시리스트)·외부 이동 차단
   await ctx.addInitScript(() => { window.open = (u) => { window.__opened = (window.__opened || []).concat([String(u)]); return null; }; });
   const page = ctx.pages()[0] || await ctx.newPage();
+  page.on('console',m=>{if(m.type()==='error'||/SkillForge|WebGL/i.test(m.text()))L('[console '+m.type()+']',m.text())});
+  page.on('response',r=>{if(r.status()>=400)L('[http]',r.status(),r.url())});
   page.on('pageerror', e => L('[pageerror]', e.message.slice(0, 200)));
-  const shot = async (name) => { const f = path.join(OUT, name + '.png'); await page.screenshot({ path: f }); L('shot', name); return f; };
+  const gpu=await ctx.browser().newBrowserCDPSession(); L('GPU',await gpu.send('SystemInfo.getInfo').then(r=>({devices:r.gpu.devices,features:r.gpu.featureStatus}))); await gpu.detach();
+  const shot = async (name) => { await page.evaluate(() => document.fonts.ready); L('render_health_'+name, await page.evaluate(() => ({fonts:document.fonts.status,brokenImages:[...document.images].filter(i=>i.offsetWidth&&(!i.complete||!i.naturalWidth)).map(i=>i.src),videos:[...document.querySelectorAll('video')].map(v=>({src:v.currentSrc,ready:v.readyState,error:v.error&&v.error.code})),forge:document.querySelector('#skillPanel .sf-root')?.className,gl:[...document.querySelectorAll('canvas.sf-gl')].map(c=>{const g=c.getContext('webgl2');const e=g&&g.getExtension('WEBGL_debug_renderer_info');return {w:c.width,h:c.height,webgl2:!!g,lost:g&&g.isContextLost(),renderer:g&&g.getParameter(e?e.UNMASKED_RENDERER_WEBGL:g.RENDERER)}})}))); const f = path.join(OUT, name + '.png'); await page.screenshot({ path: f }); L('shot', name); return f; };
   const ev = (s) => page.evaluate(s).catch(e => ({ err: String(e).slice(0, 200) }));
   const toLobby = async () => {
     await page.goto(BASE + '/index.html?test=1', { waitUntil: 'load' });
