@@ -56,7 +56,7 @@
 |---|---|---|
 | output/imagegen | SSD 보호 | index.html 로고·입장 버튼, game.html 대장간·아이템 스킨이 실제 참조 |
 | output/fdg_reference_1280x720.png | SSD 보호 | index.html 로비 배경 실제 참조 |
-| build/three.module.js 및 실행 라이브러리 | SSD 보호 | three-runtime.js와 skill-forge-3d.js의 실제 모듈 경로 |
+| assets/vendor/three-r160 및 three-r186 | SSD 보호 | three-runtime.js 등에서 실제 사용하는 vendor 경로. 별도 구형 build 폴더는 보관 대상 |
 | integ10-play, 구 DEMO/EA, 이전 Steam 작업본의 일반 하위 디렉터리 | I: 이전 대기열 추가 | 현재 실행 대상과 별도인 중복/이전 사본. 기존 중첩 링크는 따라가지 않음 |
 | 문서·테스트·원화/효과음 후보·출품 자료·미니 검수 프로젝트 | I: 이전 대기열 추가 | 게임 실행 경로와 분리된 보관 자료 |
 | 공유 Git 제어 메타데이터 및 실행 중 외부 도구/앱 | 현 상태 보존 | 공용 INDEX/WIP와 실행 중인 프로세스 보호. 이를 게임 실행 자산 정리 완료로 세지 않음 |
