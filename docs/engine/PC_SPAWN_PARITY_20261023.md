@@ -73,3 +73,7 @@
 - 정예(3%) 자연 스폰: 모디파이어 owner 미이식으로 거절(`elite_modifier_owner_not_ready`).
 - 지역 처치 귀속은 원본이 스폰 좌표 사분면(`_homeX/_homeY`), Godot는 소환굴 그룹 지역 — 경계 근처 소환굴에서 갈릴 수 있다.
 - 벽 끼임 구조 실패 시 원본은 비보스 즉사(G34435). crawler는 사망 경로 미연결이라 제자리 유지 + `enemy_wall_stuck_unrescued` 기록.
+
+## ENEMY-VIS-01 후속 원인 확정 (2026-10-23)
+
+본체 없는 차징 링·라벨은 사망한 적의 자식 CanvasItem redraw 누락에 따른 잔상으로 확인했다. 살아 있는 본체 hidden 회귀가 아니다. 사망 부모 `_draw`에서도 자식 경고 redraw를 요청하여 원본 G20100의 alive 제외를 반영한다. 모양·판정 수치 변경 없음. 실제 자연 차징·처치 검수와 잔여 시각 차이는 [ENEMY-VIS-01](ENEMY_VIS_01_20261023.md)을 참조한다.

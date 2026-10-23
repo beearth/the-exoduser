@@ -550,6 +550,10 @@ func get_snapshot() -> Dictionary:
 
 func _draw() -> void:
 	if not alive:
+		# The warning is a separately retained CanvasItem. Clear its last live
+		# draw commands too (source G20100 excludes dead enemies every frame).
+		if is_instance_valid(_src_shot_warning):
+			_src_shot_warning.queue_redraw()
 		return
 	# 차징 경고(링·라벨)는 원본처럼 적 몸 위 별도 패스(_drawEnemyShotWarnings G20097~)로 그린다.
 	if not is_instance_valid(_src_shot_warning):

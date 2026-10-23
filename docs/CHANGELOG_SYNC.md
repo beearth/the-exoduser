@@ -1,3 +1,9 @@
+## 2026-10-23 ENEMY-VIS-01 — 사망 적 차징 경고 잔상 제거
+
+- crawler 사망 `_draw`에서도 별도 `SourceShotWarning` redraw를 요청한다. 원본 G20100 alive 제외를 반영하며 본체·링·라벨 수치/판정은 유지한다.
+- GUI 자연 차징 본체 공존·5마리 실제 처치 후 경고 제거, 웹 원본 1x 비교 캡처. PC combat_kill 47/0, m29_parry 101/0, move_skills 271/0 각 1회. E2E 최종 1회 11 PASS / 7 NOT_READY / 0 FAIL.
+- [원인·수정·검수·미완료 범위](engine/ENEMY_VIS_01_20261023.md).
+
 ## 2026-10-22 PC-BOOT01 — 필드 진입 다중 프레임화·웹 로딩 화면·Esc 일시정지 키 유지 (PC Claude)
 
 - 기준 bdc8ba4a1(pc-input-parity), branch claude/pc-boot01-20261022. 진입 한 반복 7.6~8.0 s(launch 8.5 s + 첫 onload 큐 6.7 s) → 170~280 ms. Space 홀드 넘침 0×4, 영상 건너뛰기→Main 12.8~15.5 s → 3.0~5.0 s.
