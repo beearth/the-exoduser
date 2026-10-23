@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+const root='G:/exoduser/',file=root+'output/new_heroes_refinement_20261022/submission-receipt.json';
+const receipt=JSON.parse(fs.readFileSync(file,'utf8'));
+const reference='assets/character-concepts/20261022/hellgunner_matte_leather_h09.png';
+const prompt='Change ONLY black clothing to supple charcoal-black motorcycle leather: low satin sheen, soft muted reflections, tailored large panels, fine seams and natural compression folds at hips/knees. Remove repeated grid/quilt patterns and bright white streaks from torso, thighs, shins and boots. NOT latex or rubber. Keep fitted silhouette, face, eye-worn goggles, shiny METAL robot arm, both hands, gun/stock, belt, crimson CLOTH cloak and city unchanged. NO dots, grain, stippling or particles.';
+if(prompt.length>500)throw Error('Prompt too long');
+if(!receipt.jobs.some(j=>j.candidate==='H10'))receipt.jobs.unshift({candidate:'H10',task:'7518886439383408640',reference,referenceSha256:crypto.createHash('sha256').update(fs.readFileSync(root+reference)).digest('hex'),prompt,provider:'MagicLight',model:'GPT Image 2.5 sunburst',aspectRatio:'16:9',outputs:1,displayedCost:200,status:'submitted'});
+receipt.jobs.find(j=>j.candidate==='H09').verdict='RETOUCH: leather folds improved, but torso/thigh highlights and grid seams remain too strong. Identity, goggles, robot arm, two hands and cannon preserved.';
+Object.assign(receipt.jobs.find(j=>j.candidate==='H10'),{verdict:'Partial material improvement: torso/leg reflections reduced, compression folds retained, metal arm/cannon remain brighter. Repeated grid seams remain partly visible. Not user approved or adopted.',originalInspected:true});
+receipt.latestObservedBalance=37290;
+receipt.balanceObservedAt=new Date().toISOString();
+receipt.updatedAt=new Date().toISOString();
+fs.writeFileSync(file,JSON.stringify(receipt,null,2)+'\n');
+console.log('H10 submission and H09 visual verdict recorded');

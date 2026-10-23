@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+const folder='G:/exoduser/output/new_heroes_refinement_20261022/';
+const receipt=JSON.parse(fs.readFileSync(folder+'submission-receipt.json','utf8'));
+const references=JSON.parse(fs.readFileSync(folder+'h16-reference-receipt.json','utf8')).references;
+const prompt='Edit ref1 woman into a combat LEOTARD, swimsuit silhouette. OPAQUE black one-piece covers bust/abdomen/pelvis; high-cut hips, BARE upper thighs and side-waist cutouts like refs4/10. NOT catsuit: NO pants, leggings or skirt. Preserve H14 adult face/silver hair/visor, RIGHT robotic arm, cropped jacket, armored thigh-high boots and huge slot gun. Matte black/ivory/oxblood, refined seams; ref2 EXODUSER painterly finish. Full body/whole gun, gray studio. NO rubber shine, dots, grain, logos.';
+if(prompt.length>500)throw Error('Prompt too long');
+if(!receipt.jobs.some(j=>j.candidate==='H18'))receipt.jobs.unshift({candidate:'H18',task:'7519003167228743680',generationMode:'multi-reference',reference:null,references,prompt,provider:'MagicLight',model:'GPT Image 2.5 sunburst',aspectRatio:'4:3',outputs:1,displayedCost:200,status:'submitted'});
+receipt.jobs.find(j=>j.candidate==='H16').userVerdict='FAIL garment interpretation: user wanted swimsuit-like exposed leotard, not covered full-leg catsuit.';
+receipt.cancelledPlanH17={status:'not-submitted',reason:'User clarified swimsuit-like exposure before a rear generation was accepted. The Create attempt opened an image preview and produced no new task; no H17 task ID exists.'};
+receipt.userBodysuitCorrection={quote:'바디수트 저런거 말고 수영복같이 노출좀 있어야지',interpretation:'Opaque high-cut one-piece combat leotard, open upper thighs and side-waist cutouts; no pants/leggings/skirt.',finalApproval:false};
+receipt.balanceBeforeH18=35890;
+receipt.updatedAt=new Date().toISOString();
+fs.writeFileSync(folder+'submission-receipt.json',JSON.stringify(receipt,null,2)+'\n');
+console.log('H18 swimsuit-style leotard submitted; H17 not submitted');

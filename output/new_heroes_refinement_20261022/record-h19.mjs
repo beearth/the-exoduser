@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+const folder='G:/exoduser/output/new_heroes_refinement_20261022/';
+const task=process.argv[2];
+if(!/^\d{19}$/.test(task||''))throw Error('Actual observed task ID required');
+const receipt=JSON.parse(fs.readFileSync(folder+'submission-receipt.json','utf8'));
+const references=JSON.parse(fs.readFileSync(folder+'h19-reference-receipt.json','utf8')).references;
+const prompt='Edit adult woman ref1; ref2 GARMENT ONLY, ref3 EXODUSER finish, refs4-10 details. High-cut swimsuit LEOTARD: black lace/mesh sheer at collarbone, abdomen and side waist, opaque bust/pelvis lining; deep hip cuts, BARE upper thighs. Large graphic lace. Preserve H14 face/silver hair/visor, RIGHT robot arm, cropped jacket, armored boots and huge slot gun. Lower gun beside thigh so suit is visible. Matte black/ivory/oxblood. Full body/whole gun, gray studio. NO pants, skirt, dots, grain, text.';
+if(prompt.length>500||references.length!==10)throw Error('Invalid inputs');
+if(!receipt.jobs.some(j=>j.candidate==='H19'))receipt.jobs.unshift({candidate:'H19',task,generationMode:'multi-reference',reference:null,references,prompt,provider:'MagicLight',model:'GPT Image 2.5 sunburst',aspectRatio:'4:3',outputs:1,displayedCost:200,status:'submitted',omittedReference:'Low-resolution user_01.jpg archived in H16 references; tool accepts at most10 inputs. Latest garment screenshot takes priority.'});
+const failed=receipt.jobs.find(j=>j.candidate==='H18');
+failed.status='failed';failed.failureMessage='The generation service is temporarily unavailable. Please try again later. Credits have been refunded.';
+failed.refundObserved=true;
+receipt.balanceBeforeH19=35890;
+receipt.userMeshCorrection={source:'C:/Users/심도진/Pictures/Screenshots/스크린샷 2026-10-22 205553.png',quote:'바디수트는 저런거지 시스루까지 넣어서 트렌디하게 해바',interpretation:'Black lace/mesh high-cut leotard, sheer collarbone/abdomen/side waist, opaque bust/pelvis lining. Screenshot used for clothing only.',finalApproval:false};
+receipt.updatedAt=new Date().toISOString();
+fs.writeFileSync(folder+'submission-receipt.json',JSON.stringify(receipt,null,2)+'\n');
+console.log(JSON.stringify({candidate:'H19',task,promptLength:prompt.length,references:references.length}));
