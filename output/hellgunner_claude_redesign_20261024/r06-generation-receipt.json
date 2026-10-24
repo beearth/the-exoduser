@@ -1,0 +1,72 @@
+{
+  "stage": "R06",
+  "createdAt": "2026-10-24T15:56:08.724Z",
+  "provider": "Higgsfield",
+  "model": "gpt_image_2_5",
+  "params": {
+    "model": "gpt_image_2_5",
+    "variant": "sunburst",
+    "quality": "low",
+    "resolution": "1k",
+    "aspect_ratio": "9:16",
+    "count": 1,
+    "medias": [
+      {
+        "role": "image",
+        "value": "https://skillsrc.octask.ai/gpt-image-2/7519727630287364096/ca54404f-9879-e557-17b5-5d05db74c079_0.png"
+      }
+    ],
+    "prompt": "Edit this adult female sci-fi hunter reference. Preserve her exact face, silver ponytail and undercut, stance, right robotic arm, left hand and the ENTIRE favored giant upright black-silver-red gun. Character costume and cybernetic panel design study on black background, full body including feet. Redesign her costume as engineered polished CHROME hard-surface body armor. Use compact angular geometric panels: flat planar facets, trapezoid and pentagon plates, crisp chamfered edges, straight diagonal panel breaks, recessed dark technical seams. Integrated skin-flush chrome implants at collarbones, side ribs and hips with short angular boundaries; no organic leaf/vine shapes or decorative filigree. A fully opaque sculpted chrome cuirass covers her chest; a fully opaque structured chrome pelvic armor unit covers hips and seat. The chrome modules themselves form the complete outfit. Athletic natural skin at shoulders, midriff and upper legs between modules. Slim black mechanical joint gaskets, believable right-shoulder socket and angular articulated knee/ankle modules; sleek closed-toe metal boots. Keep the body light and feminine with controlled panel density. Silver chrome is the main material, black only inside joints, dark red tiny accents echoing the gun. No textiles, cloth folds, skirts, capes, ornamental silver ribbons, jewelry, giant shoulder pads, new weapons or background changes. Practical high-end space bounty hunter game concept, neutral presentation, coherent machined construction."
+  },
+  "costPreflight": {
+    "cost": {
+      "credits": 0.25,
+      "credits_exact": 0.25
+    },
+    "adjustments": {
+      "medias[0].role": {
+        "requested": "image",
+        "used": "image_references",
+        "reason": "GPT Image 2.5 backend expects schema-key media roles"
+      }
+    }
+  },
+  "submission": {
+    "results": [
+      {
+        "id": "0fc633fd-df57-4d89-8c35-cd598e98da1b",
+        "type": "image",
+        "status": "pending",
+        "model": "gpt_image_2_5",
+        "params": {
+          "prompt": "Edit this adult female sci-fi hunter reference. Preserve her exact face, silver ponytail and undercut, stance, right robotic arm, left hand and the ENTIRE favored giant upright black-silver-red gun. Character costume and cybernetic panel design study on black background, full body including feet. Redesign her costume as engineered polished CHROME hard-surface body armor. Use compact angular geometric panels: flat planar facets, trapezoid and pentagon plates, crisp chamfered edges, straight diagonal panel breaks, recessed dark technical seams. Integrated skin-flush chrome implants at collarbones, side ribs and hips with short angular boundaries; no organic leaf/vine shapes or decorative filigree. A fully opaque sculpted chrome cuirass covers her chest; a fully opaque structured chrome pelvic armor unit covers hips and seat. The chrome modules themselves form the complete outfit. Athletic natural skin at shoulders, midriff and upper legs between modules. Slim black mechanical joint gaskets, believable right-shoulder socket and angular articulated knee/ankle modules; sleek closed-toe metal boots. Keep the body light and feminine with controlled panel density. Silver chrome is the main material, black only inside joints, dark red tiny accents echoing the gun. No textiles, cloth folds, skirts, capes, ornamental silver ribbons, jewelry, giant shoulder pads, new weapons or background changes. Practical high-end space bounty hunter game concept, neutral presentation, coherent machined construction.",
+          "aspect_ratio": "9:16",
+          "reference_images": [
+            "abf9aaef-2024-4d00-9398-5785a4ae34c3"
+          ],
+          "variant": "sunburst",
+          "quality": "low",
+          "resolution": "1k"
+        }
+      }
+    ],
+    "adjustments": {
+      "medias[0].role": {
+        "requested": "image",
+        "used": "image_references",
+        "reason": "GPT Image 2.5 backend expects schema-key media roles"
+      }
+    }
+  },
+  "status": "nsfw",
+  "previousAttempt": {
+    "stage": "R05",
+    "job": "2336e4f3-f47d-4bd8-a49f-d37d2a9733d5",
+    "status": "nsfw",
+    "outputReceived": false,
+    "balanceAfter": 0.38,
+    "note": "No result; subsequent user direction emphasized angular panels. R06 uses fully clothed R02 as edit target."
+  },
+  "outputReceived": false,
+  "visualReviewPerformed": false
+}

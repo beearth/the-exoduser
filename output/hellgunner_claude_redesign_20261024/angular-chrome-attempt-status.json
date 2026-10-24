@@ -1,0 +1,96 @@
+{
+  "checkedAt": "2026-10-24T15:57:22.477Z",
+  "r05": {
+    "jobs": [
+      {
+        "index": 0,
+        "job_id": "2336e4f3-f47d-4bd8-a49f-d37d2a9733d5",
+        "status": "nsfw",
+        "type": "image",
+        "model": "gpt_image_2_5"
+      }
+    ],
+    "summary": {
+      "total": 1,
+      "completed": 0,
+      "failed": 1,
+      "active": 0,
+      "errors": 0
+    },
+    "all_terminal": true
+  },
+  "r06": {
+    "jobs": [
+      {
+        "index": 0,
+        "job_id": "0fc633fd-df57-4d89-8c35-cd598e98da1b",
+        "status": "nsfw",
+        "type": "image",
+        "model": "gpt_image_2_5"
+      }
+    ],
+    "summary": {
+      "total": 1,
+      "completed": 0,
+      "failed": 1,
+      "active": 0,
+      "errors": 0
+    },
+    "all_terminal": true
+  },
+  "balanceAfter": {
+    "credits": 0.38,
+    "subscription_plan_type": "ultra",
+    "free_trial": {
+      "status": "converted",
+      "eligible": false,
+      "offered_kind": null,
+      "kind": "mcp",
+      "trial_credits": 100,
+      "ends_at": "2026-07-07T08:45:56Z",
+      "unlim_available": false,
+      "unlim_remaining": null,
+      "unlim_expires_at": null
+    },
+    "free_gens": [
+      {
+        "job_set_types": [
+          "ai_influencer_motion_control",
+          "ai_influencer_replace_object",
+          "hf_mult_motion_control",
+          "hf_mult_replace_object"
+        ],
+        "remaining": 4,
+        "parameters": {
+          "resolution": [
+            "480p",
+            "720p"
+          ]
+        },
+        "max_duration": 30
+      },
+      {
+        "job_set_types": [
+          "viral_hub_video"
+        ],
+        "remaining": 0,
+        "parameters": {
+          "resolution": [
+            "480p",
+            "720p"
+          ]
+        },
+        "max_duration": null
+      },
+      {
+        "job_set_types": [
+          "ai_influencer_sheet"
+        ],
+        "remaining": 35,
+        "parameters": {},
+        "max_duration": null
+      }
+    ]
+  },
+  "alternateProviderConsent": "Requested; awaiting user choice. No built-in image generation submitted."
+}

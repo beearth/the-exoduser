@@ -1,0 +1,42 @@
+{
+  "before": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "after": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "files": [
+    {
+      "path": "docs/11내러티브·로어디자인/NEW_HEROES_DESIGN_LOCK.md",
+      "beforeSha256": "dac90d1ff6632df4958c031eeb2bd92c9709ba6eee43c4b2d9fb7b9f7fb7dcdd",
+      "afterSha256": "d4e500bd0897498bf908bf429cd615aa7a3a2a4c269c8c3e2ca0e8191620a12e",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/NEW_HEROES_USER_PREFERRED_20261021.md",
+      "beforeSha256": "f699c77f166e750c138915cbd02831ef2a9b3c48d4e68637092fb1beb997427c",
+      "afterSha256": "4ff87d08d895f109653e108765cfc5f74af4519e3751f31348fd6fd7d52b4d21",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/ART_TEAM_MASTER.md",
+      "beforeSha256": "17af4a2ca38f10420f8e51d42f9f2c8f01b4bd6672724831fa064c1c7d64aa46",
+      "afterSha256": "ba579d6cb3ae3fcfe49e8cc34f2dac71a392edbf291cd7bf019c736d3c3bf67d",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "beforeSha256": "606726cd2996b82617321908131735f2e4c3480c390dbfc40a375b6ed4173077",
+      "afterSha256": "2df30170f443bf19a7a0ddfb8ae47d65e4bf8f7bf30ce9f2f49bf95580b78949",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/GALAXY_HUNTER_CONCEPT_20261025.md",
+      "beforeSha256": "e90e0cb413695f1c6acc06fe7433bc05c42fea0324639218a3a4c5a6093a6a8d",
+      "afterSha256": "c3ae9fba4623da71a8089934921f1e0d005a6d8f4dfe9fc398db080b6ad2ca35",
+      "previousBytesPreserved": true
+    }
+  ]
+}

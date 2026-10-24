@@ -1,0 +1,124 @@
+{
+  "stage": "R05",
+  "createdAt": "2026-10-24T15:54:32.252Z",
+  "provider": "Higgsfield GPT Image 2.5",
+  "params": {
+    "model": "gpt_image_2_5",
+    "variant": "sunburst",
+    "quality": "low",
+    "resolution": "1k",
+    "aspect_ratio": "9:16",
+    "count": 1,
+    "prompt": "EDIT the supplied reference image, preserving the same adult woman's face, silver high ponytail with side undercut, complete giant black/silver/red gun design and proportions, right robotic arm (viewer left), left natural hand holding the upright gun, full-body stance and black studio background. Redesign ONLY her body construction and outfit. Remove the black fabric halter top and ALL draped wrap-skirt fabric. Remove all decorative flowing silver vines, swirls, strips and jewelry-like outlines from the skin. She is a convincing cybernetically reconstructed GALAXY HUNTER: broad integrated polished chrome chest casing and pelvic chassis permanently replace parts of her body, not removable bikini clothing. Opaque manufactured breastplate with smooth tasteful contours, sternum seam and restrained bevels; solid opaque pelvic body casing with overlapping hip segments. Skin ends flush at crisp implant boundaries. Readable black mechanical joints, interlocking seams, recessed fasteners, subtle hip actuators and articulated kneecaps. Preserve bare shoulders, exposed natural midriff and substantial upper-thigh skin between engineered implants. Keep feminine appealing proportions and a confident expression. Integrate the right robotic shoulder structurally into the torso chassis. Asymmetric high-tech chrome leg modules and closed-toe cybernetic ankle boots. Brushed recesses against mirror chrome faces, black flexible joint gaskets, very restrained dark-red accents matching the preserved gun. This is her actual modified anatomy, not silver paint, ornamental silver ribbons or a swimsuit. No fabric, wraps, capes, skirts, vines, chains or extra weapons. Keep the entire figure, feet and entire original gun inside frame. High-end sci-fi character concept illustration, coherent mechanical construction.",
+    "medias": [
+      {
+        "role": "image",
+        "value": "https://skillsrc.octask.ai/gpt-image-2/7519732282793906176/7b7cea3d-5c1e-01c0-3258-f5e0c8cf0bbf_0.jpg"
+      }
+    ]
+  },
+  "costPreflight": {
+    "cost": {
+      "credits": 0.25,
+      "credits_exact": 0.25
+    },
+    "adjustments": {
+      "medias[0].role": {
+        "requested": "image",
+        "used": "image_references",
+        "reason": "GPT Image 2.5 backend expects schema-key media roles"
+      }
+    }
+  },
+  "submission": {
+    "results": [
+      {
+        "id": "2336e4f3-f47d-4bd8-a49f-d37d2a9733d5",
+        "type": "image",
+        "status": "pending",
+        "model": "gpt_image_2_5",
+        "params": {
+          "prompt": "EDIT the supplied reference image, preserving the same adult woman's face, silver high ponytail with side undercut, complete giant black/silver/red gun design and proportions, right robotic arm (viewer left), left natural hand holding the upright gun, full-body stance and black studio background. Redesign ONLY her body construction and outfit. Remove the black fabric halter top and ALL draped wrap-skirt fabric. Remove all decorative flowing silver vines, swirls, strips and jewelry-like outlines from the skin. She is a convincing cybernetically reconstructed GALAXY HUNTER: broad integrated polished chrome chest casing and pelvic chassis permanently replace parts of her body, not removable bikini clothing. Opaque manufactured breastplate with smooth tasteful contours, sternum seam and restrained bevels; solid opaque pelvic body casing with overlapping hip segments. Skin ends flush at crisp implant boundaries. Readable black mechanical joints, interlocking seams, recessed fasteners, subtle hip actuators and articulated kneecaps. Preserve bare shoulders, exposed natural midriff and substantial upper-thigh skin between engineered implants. Keep feminine appealing proportions and a confident expression. Integrate the right robotic shoulder structurally into the torso chassis. Asymmetric high-tech chrome leg modules and closed-toe cybernetic ankle boots. Brushed recesses against mirror chrome faces, black flexible joint gaskets, very restrained dark-red accents matching the preserved gun. This is her actual modified anatomy, not silver paint, ornamental silver ribbons or a swimsuit. No fabric, wraps, capes, skirts, vines, chains or extra weapons. Keep the entire figure, feet and entire original gun inside frame. High-end sci-fi character concept illustration, coherent mechanical construction.",
+          "aspect_ratio": "9:16",
+          "reference_images": [
+            "4762e96e-2fb6-4016-a39b-f18657f55083"
+          ],
+          "variant": "sunburst",
+          "quality": "low",
+          "resolution": "1k"
+        }
+      }
+    ],
+    "adjustments": {
+      "medias[0].role": {
+        "requested": "image",
+        "used": "image_references",
+        "reason": "GPT Image 2.5 backend expects schema-key media roles"
+      }
+    }
+  },
+  "magiclightAttempt": {
+    "submitted": false,
+    "displayedCredits": 30390,
+    "displayedCost": 200,
+    "blockedBy": "Standard Plan VIP expired 2026/10/24; Create opened subscription purchase screen",
+    "newPurchase": false
+  },
+  "startingBalance": {
+    "credits": 0.38,
+    "subscription_plan_type": "ultra",
+    "free_trial": {
+      "status": "converted",
+      "eligible": false,
+      "offered_kind": null,
+      "kind": "mcp",
+      "trial_credits": 100,
+      "ends_at": "2026-07-07T08:45:56Z",
+      "unlim_available": false,
+      "unlim_remaining": null,
+      "unlim_expires_at": null
+    },
+    "free_gens": [
+      {
+        "job_set_types": [
+          "ai_influencer_motion_control",
+          "ai_influencer_replace_object",
+          "hf_mult_motion_control",
+          "hf_mult_replace_object"
+        ],
+        "remaining": 4,
+        "parameters": {
+          "resolution": [
+            "480p",
+            "720p"
+          ]
+        },
+        "max_duration": 30
+      },
+      {
+        "job_set_types": [
+          "viral_hub_video"
+        ],
+        "remaining": 0,
+        "parameters": {
+          "resolution": [
+            "480p",
+            "720p"
+          ]
+        },
+        "max_duration": null
+      },
+      {
+        "job_set_types": [
+          "ai_influencer_sheet"
+        ],
+        "remaining": 35,
+        "parameters": {},
+        "max_duration": null
+      }
+    ]
+  },
+  "status": "nsfw",
+  "outputReceived": false,
+  "visualReviewPerformed": false
+}
