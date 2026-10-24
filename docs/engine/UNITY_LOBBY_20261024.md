@@ -4,8 +4,8 @@
 
 | 항목 | 원본과 구현 |
 |---|---|
-| SSOT | 현재 G:/exoduser/index.html SHA256 `8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621`. E:의 이전 index SHA95c7d29.../v15 영상과 다르므로 최신 G: 참조. source7파일 SHA256·원문을 I: source-snapshot에 보존 |
-| 실행 경로 | FDG 로고 영상→여캐 타이틀 영상/브랜드→지옥문 첫 프레임/ENTER→문 열림→세계관 v17→로비. 원본 phase0 경고문은 제거 상태여서 다시 추가하지 않음 |
+| SSOT | 현재 G:/exoduser/index.html SHA256 `8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621`. E:의 이전 index SHA95c7d29.../v15 영상과 다르므로 최신 G: 참조. source13파일 SHA256·원문을 I: source-snapshot에 보존 |
+| 실행 경로 | FDG 로고 영상→여캐 타이틀 영상/브랜드→지옥문 첫 프레임/ENTER→문 열림→세계관 v22b→로비. 원본 phase0 경고문은 제거 상태여서 다시 추가하지 않음 |
 | FDG | 원본3.2초, 재생 시각 진행이12초 없으면 엠블럼 폴백3.2초 후 전환. 준비된 영상의 정지도 감지. 클릭/키 같은 프레임이 다음 화면까지 관통하지 않음 |
 | 타이틀 | title_motion_hd_20260929.mp4 무음 loop, 실패 시 SD, 실패 시 원본 plate. 원본 splashTitleBrand SVG를1983×793으로 raster·clean plate 임베드/Georgia font, 원본 crop 수식 사용. 폰트 raster 완전 동등성 미검증 |
 | 지옥문 | intro.mp4 첫 프레임 pause/무음, ENTER로 실제 재생·음량.6. BGM4곡 중1곡.6 시작, 문 끝/3초 진입 정지/15초 hard timeout/오류 시 세계관으로 전환 |
@@ -14,7 +14,7 @@
 | 로비 | 원본 crypt 영상 loop/포스터, 바르칸 v3 atlas3072×7488/8×12/96frames/24fps·384×624cell·원본 baseline/foot배치, 원본 로고/입장 artwork. lobby.mp3 .65 loop |
 | 수명 | Native VideoPlayer URL+RenderTexture+AudioSource, frame0/끝/오류 콜백. generation으로 오래된 prepare 무효화. 포커스 허용과 재생 의도 분리해 준비 중 창 전환에도 백그라운드 재생 차단, 음악 복귀 상태도 독립. 영상 오류 시 음악 pause/실제 playing 후 resume |
 | 렌더 | 1920×1080 uniform fit/letterbox로 영상 왜곡 방지. 원본 title/ENTER 아트 matte alpha를 source cin-logo-art.js의 round(255×clamp((maxRGB−8)/24))로 변환. 원본은 G:와 I: source-art에 보존 |
-| 미디어 | 실행 미디어26개189,918,912bytes. 원본 video6/audio5/이미지와 derived matte2·WebP→PNG·SVG→PNG·문 frame0 PNG, 각각 source/목적지 SHA256 명세 Tools/Fixtures/lobby-assets.json. splash_brand는 Chromium SVG canvas로 원본 textLength/lengthAdjust/letter-spacing을 보존한다. librsvg의 잘못된 글자 간격을 교정했다. 새 이미지 생성0. 원본 MP4는 StreamingAssets에서 byte exact |
+| 미디어 | 실행 미디어26개187,678,234bytes. 원본 video6/audio5/이미지와 derived matte2·WebP→PNG·SVG→PNG·문 frame0 PNG, 각각 source/목적지 SHA256 명세 Tools/Fixtures/lobby-assets.json. splash_brand는 Chromium SVG canvas로 원본 textLength/lengthAdjust/letter-spacing을 보존한다. librsvg의 잘못된 글자 간격을 교정했다. 새 이미지 생성0. 세계관·FDG·문·타이틀 MP4는 byte exact. 로비 영상만 Windows 지원 프로파일의 실행 파생본 |
 | 기준 타깃 | Unity의 full/offline 프런트엔드 표본. 웹 reference는 원본 지원 flag EXODUSER_BUILD_TARGET=full, test=1, 독립 browser context/빈 슬롯, POST 등 전송 차단. 웹 기본 demo welcome/auth 페이지를 full/offline 로비로 가장하지 않음 |
 | 저장 경계 | 로비는 빈 캐릭터 목록으로 시작, 생성/기존 저장 불러오기는 미구현 표시/비활성화. 기존 사용자의 슬롯/계정에 접속하거나 임의 저장하지 않음. ‘Unity 전투 검수(임시 캐릭터)’만 격리 시작장비 전투로 연결 |
 | 게임 차단 | 프런트엔드 표시 중 NativeGame Tick/입력/기존 HUD/메뉴 차단·world cullingMask0. 임시 전투 선택 후 실행. 전투 메뉴의 로비 복귀 연결. 기존 combat/HUD/inventory CLI QA는 명시 플래그에서 프런트엔드를 건너뜀 |
@@ -23,7 +23,7 @@
 
 | 단계 | 실제 근거 |
 |---|---|
-| 모델 | Core65검사 및 실제 NativeLobbyVideo adapter의 좁은 Unity boundary doubles13검사. FDG 준비 후 stall/async blur autoplay 수정 전 행동RED·수정 후GREEN. [소스/테스트 경계](UNITY_LOBBY_CORE_20261024.md) |
+| 모델 | Core65검사 및 실제 NativeLobbyVideo adapter의 좁은 Unity boundary doubles15검사. FDG 준비 후 stall/async blur autoplay 수정 전 행동RED·수정 후GREEN. [소스/테스트 경계](UNITY_LOBBY_CORE_20261024.md) |
 | Player gate RED | 기존 inventory combat Player에 새 frontend gate를 실행: 프런트엔드 receipt/영상decode/화면/자막/자연끝/전환16검사 FAIL, 기존 무예외 검사1개만PASS. 단순 파일 존재/컴파일 성공을 실제 재생으로 세지 않음 |
 | 정적 컴파일 | 설치된 Unity assemblies 대상으로0오류. 실제 Editor/decoder/출력과 별도 |
 | 실제 Editor | I:/EXODUSER-Storage/qa/unity-lobby-20261024/lobby-verify-2026-10-24T11-07-21-792Z PASS/process0. source24미디어·29×32자막·17컷·atlas원본규격·기존HUD GPU/core까지 확인. 수정 후 최신 focus/완주flag 코드의 Player 검수는 진행 중 |
@@ -49,3 +49,13 @@
 | 방화벽 | 사용자 확인: Codex 승인이 아니라 Windows 방화벽 창. BuildOptions.Development를 None으로 변경해 검수에 불필요한 PlayerConnection 개발 연결 제거. 고정 실제 실행 경로 E:/EXODUSER-Unity-Play. 방화벽 전역 설정/규칙은 변경하지 않음. 새 실행에서 네트워크 listening 여부 확인 필요 |
 | 로비 시각 | 원본 DOM 좌표/폰트/색·hell_gothic frame48px 22% slice·inset22 문양/철판·원본 Steam 배너·grayscale1 brightness.45 비활성 ENTER. panel560×1080 PNG는 원본CSS Chromium 렌더이며 새 아트 생성 아님. 시각 판정 RETOUCH 유지 |
 | 복구 | 큰 v22b 원본은 GitHub 도구 IPC64MiB 한도 때문에 4개 작은 Git blob으로 보관. runtime MP4는 무손실 조립으로 완전히 동일 bytes. [복구 절차](UNITY_LOBBY_MEDIA_RECOVERY_20261024.md). 기존 v17 Unity 사본만 I: superseded-runtime으로 SHA대조 보존 후 제거, G: 원본/Godot 불변 |
+
+## 끊김 원인 A/B 및 정식 재생 정책
+
+| 동일 실제 실행본 / 960×540 / 동일 미디어 | 결과 |
+|---|---|
+| 기존 skipOnDrop=true | video-probe-baseline-2026-10-24T11-35-04-930Z: AudioSampleProvider 폐기757건. FDG3.1초 동안 frameChanges2, splash7.1667초 동안1, world 영상시각0에서9.968초 정체 |
+| skipOnDrop=false만 변경 | video-probe-nodrop-2026-10-24T11-34-18-744Z: 폐기0, FDG21frame/.7s, splash36frame/1.5s, world288frame/12.0202wall초/영상12초. 최대 frame gap.0460603초·정체.0418148초. world voice.53659/BGM.19625/listener.54956 |
+| 정식 기본값 | skipOnDrop=false. --unity-video-allow-drop은 기존 문제 재현 전용, --unity-video-no-drop은 끄기 우선. adapter15검사, 기본/옵션4조합60PASS. 이12초 진단만으로113초 자연완주를 주장하지 않음 |
+| 로비 호환 | 원본profile High4:4:4 Predictive를 Windows decoder가 거부. 원본 실제pix_fmt는yuv420p로 chroma444라고 오인하지 않음. 새 runtime lobby_varkan_crypt_loop_v2_unity.mp4: High/yuv420p/B0/BT7093태그·1920×1088·24fps·290frames·12.083333s, 2,336,515B, SHA26252471c7ef248cd7b04b8f0e6d7709858d5d9de8aaffe1285a11027b482616. 원본/runtime전체decode오류0, 전체SSIM.996279. 원본G/I보존 |
+| 방화벽 실측 | 새 BuildOptions.None 실행본은 PlayerConnection 로그 없음, 정확한Player PID의 UDP/TCP목록 모두빈값. 규칙/전역방화벽은 변경하지 않음 |

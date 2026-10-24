@@ -38,17 +38,31 @@
 
 ### 실제 재생 비교용 명령행 옵션
 
-정상 실행의 clock 설정·AudioSource 경로·`skipOnDrop=true`는 유지한다. 아래 옵션은 실행 프로세스의 명령행에서만 읽으며 한 번에 하나씩 비교한다. 실제 Player 성능/소리 결과는 아직 미확정이다.
+정상 실행의 clock 설정·AudioSource 경로는 유지하고, 아래 실제 A/B 근거에 따라 `skipOnDrop=false`를 기본값으로 확정했다. 아래 옵션은 실행 프로세스의 명령행에서만 읽으며 한 번에 하나씩 비교한다. 전체 영상 자연 종료·최종 청각 검수는 별도다.
 
 | 옵션 | 변경되는 경계 | 검수 시 주의 |
 |---|---|---|
 | `--unity-video-clock-game` | `VideoPlayer.timeUpdateMode=VideoTimeUpdateMode.GameTime` | 준비 후 실제 `timeUpdateMode`와 `canSetTimeUpdateMode`를 확인. 벽시계 대비 영상시각을 측정 |
-| `--unity-video-no-drop` | `VideoPlayer.skipOnDrop=false` | 프레임 생략 정책만 바꾸며 실제 재생률/정지 길이를 비교 |
+| `--unity-video-no-drop` | `VideoPlayer.skipOnDrop=false` 강제 | 기본값과 같으며 allow-drop도 함께 있으면 no-drop이 우선 |
+| `--unity-video-allow-drop` | `VideoPlayer.skipOnDrop=true` 재현 | 기존 오류 경로를 비교할 때만 명시. 정상 실행에는 사용하지 않음 |
 | `--unity-video-direct` | `VideoAudioOutputMode.Direct`, AudioSource 연결 생략 | 준비 전 mute/gain 요청을 저장해 prepare callback에서 적용. 이후 Volume/Mute도 Direct API로 전달. 플랫폼 `canSetDirectAudioVolume`이 false이면 gain 적용은 미지원 |
 
 Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회할 수 있다. 따라서 기존 `Voice` 샘플 peak=0은 Direct 오디오 무음의 증거가 아니다. OS 루프백 녹음/청취 등 실제 출력 검수가 필요하며 BGM의 기존 AudioSource 경로는 유지한다. Direct 첫 영상의 gain은 1로 초기화하고 각 페이지의 실제 Volume 요청(.6/1 등)을 준비 이후에도 보존한다. 새 영상은 `Open`의 muted 값으로 초기화한다.
 
 설치된 Unity `6000.4.8f1` managed API reflection으로 enum `DSPTime/GameTime/UnscaledGameTime`과 Direct volume/mute 함수를 확인했다. 실제 Unity DLL을 참조한 어댑터 정적 compile은 경고0/오류0. 기본값·각 옵션·세 옵션 조합의 boundary-double 검사는 총 32개 PASS, 기존 intent 회귀 13개 PASS다. no-drop 구현 전 동일 실행은 `no-drop flag/default` assertion에서 행동 RED였다. 자료는 `I:/EXODUSER-Storage/qa/unity-lobby-20261024/video-diagnostics`에 보존하며 코덱/GPU/청각 검증을 대체하지 않는다.
+
+### 실제 단일 변수 A/B와 기본값 확정
+
+같은 Release 고정 실행 파일·960×540에서 명령행 no-drop 유무만 바꿨다. 실제 clock은 두 실행 모두 `UnscaledGameTime`, 오디오는 `AudioSource`였다. 이 환경의 끊김/overflow를 유발한 프레임 생략 경로를 재현·격리했으며 Unity 전체 코덱/드라이버의 일반 결함으로 확대하지 않는다.
+
+| 실행 자료 (`I:/EXODUSER-Storage/qa/unity-lobby-20261024/`) | frame dropping | 관측 |
+|---|---|---|
+| `video-probe-baseline-2026-10-24T11-35-04-930Z` | true | player.log의 AudioSampleProvider overflow 757회. FDG 관측 벽시계 3.6339148초/영상시각 3.1초에 frame change 2회, splash 7.2859303초/영상시각 7.1666667초에 1회. 세계관 9.9680167초 stall·관측 frame change 0회 |
+| `video-probe-nodrop-2026-10-24T11-34-18-744Z` | false | player.log overflow 0회. FDG 관측 벽시계 1.2310099초/영상시각 .7초에 21회, splash 1.6176341초/영상시각 1.5초에 36회. 세계관 12.0202034초에 288회, 영상시각 12초. 최대 frame gap .0460603초/무진행 .0418148초. VO·BGM·AudioListener peak 모두 0 초과 |
+
+정식 어댑터는 `diagnosticAllowDrop && !diagnosticNoDrop`으로 drop을 설정한다. 실제 production 어댑터를 실행하는 버전 관리 `VideoIntentProgram`에 첫 영상/다음 영상의 기본 false와 명령행 정책을 검사하는 두 assertion을 추가했다. 수정 전 compile 성공 후 정책 assertion에서 RED, 수정 후 기본 실행 15개 PASS다. allow-drop 단독/no-drop 단독/둘 동시도 각 15개 PASS(총60개)다. 기록은 `video-drop-default-{red,green}.log`, `video-drop-variants.json`이다.
+
+이 결과는 12초 probe다. 세계관 duration 113.291667초 전체 자연 종료, 재시청·5초 홀드·최종 실제 청취/화면 검수는 아직 남아 있다. probe receipt의 `worldCompletedNaturally=false`를 완료로 바꾸거나 전체 플레이 PASS로 해석하지 않는다.
 
 ## 2026-10-24 사용자 최신 지시 — v22b와 원본 로비 장식 보강
 
@@ -66,3 +80,22 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 | 임시 전투 | 원본 패널을 덮지 않도록 왼쪽 x14/y112 개발 검수 영역으로 이동. 새 캐릭터/ENTER는 비활성, 기존 저장이나 실제 캐릭터가 생성됐다고 표시하지 않음 |
 
 이 보강의 exporter 구문 검사와 통합 C# 정적 compile 오류0을 확인했다. 실제 export/새 meta/Editor/Windows Player 시각 검수는 부모 작업으로 분리한다. 미디어/폰트/합성의 최종 화면이 검수되기 전 `VISUAL VERDICT: RETOUCH`를 유지한다.
+
+## 2026-10-24 로비 영상 Windows 코덱 호환 사본
+
+실제 Windows Release Player에서 원본 로비 영상에 `Ignoring unsupported High 4:4:4` 및 `Could not find supported video track`가 기록돼 기계적 호환 변환을 추가했다. 원본 ffprobe는 H.264 **High 4:4:4 Predictive 프로파일**이지만 실제 픽셀 형식은 yuv420p다. 프로파일 명과 실제 크로마 형식을 혼동하지 않는다.
+
+| 항목 | 검증 값 |
+|---|---|
+| 원본 | `assets/lobby/lobby_varkan_crypt_loop_v2.mp4`, 4,577,193bytes, SHA256 `53dae74bda02d0b1abe10f1da467868515ff470a910adb02c6aece55b9340a5c` |
+| 보존 | I: QA `lobby-compatibility/53dae74.../source.mp4` 전 파일 SHA 일치. G: 원본 변경 없음 |
+| 런타임 | `StreamingAssets/Lobby/lobby_varkan_crypt_loop_v2_unity.mp4`, H.264 High/yuv420p/Bframes0, 2,336,515bytes |
+| 런타임 SHA256 | `26252471c7ef248cd7b04b8f0e6d7709858d5d9de8aaffe1285a11027b482616` |
+| 크기·시각 | 양쪽 1920×1088, 평균·명목24/1fps, 290프레임, 비디오 duration12.083333초 동일. 리사이즈·프레임레이트 변경 없음 |
+| 변환 | ffmpeg libx264 CRF14/presetmedium/yuv420p/bf0/faststart/noaudio. BT709 primaries/trc/matrix CLI 및 frame setparams/x264 VUI 태그를 모두 명시해 ffprobe 3개 BT709 확인 |
+| 전체 디코드 | 원본·런타임 양쪽 ffmpeg 전체 프레임 decode 종료0, 오류 로그0 |
+| 수치 비교 | 원본을 yuv420p 기준으로 둔 전체 SSIM All=0.996279. 이는 실제 Unity 시각 검수/전체 화질 동등 선언을 대체하지 않음 |
+| 전체 exporter | 26개 asset, 합187,678,234bytes. `Tools/Fixtures/lobby-assets.json`에 원본·런타임 SHA/metadata/SSIM/transform 포함 |
+| 영수증 | I: QA `lobby-compatibility/53dae74.../receipt.json`, encode/probe/full-decode/SSIM 로그. 최초 색 태그 미완비 후보도 같은 I: 경로에 별도 보존 |
+
+`NativeLobby`는 `_unity.mp4`를 참조한다. 이전 런타임 원본 사본 정리/meta/Git복구/새 Player 검수는 부모 작업이며, 본 작업은 기존 원본/아카이브/Godot/세이브를 삭제하거나 수정하지 않는다. 현재 판정은 새 Windows Player에서 실제 영상 재생을 확인할 때까지 `RETOUCH`다.

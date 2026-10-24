@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
  public sealed class NativeLobbyVideo:IDisposable
  {
   readonly GameObject owner;
-  readonly bool diagnosticGameClock=HasArgument("--unity-video-clock-game"),diagnosticNoDrop=HasArgument("--unity-video-no-drop"),diagnosticDirect=HasArgument("--unity-video-direct");
+  readonly bool diagnosticGameClock=HasArgument("--unity-video-clock-game"),diagnosticNoDrop=HasArgument("--unity-video-no-drop"),diagnosticAllowDrop=HasArgument("--unity-video-allow-drop"),diagnosticDirect=HasArgument("--unity-video-direct");
   VideoPlayer player;AudioSource voice;RenderTexture texture;bool freezeFirst,playbackAllowed=true,wantsPlayback,directMuted;float directGain=1;int generation;
   static bool HasArgument(string flag){return Array.IndexOf(Environment.GetCommandLineArgs(),flag)>=0;}
   public RenderTexture Texture{get{return texture;}}
@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort
   {
    Close();Error="";Ended=false;freezeFirst=freeze;wantsPlayback=true;int token=generation;
    player=owner.AddComponent<VideoPlayer>();voice=owner.AddComponent<AudioSource>();voice.playOnAwake=false;voice.spatialBlend=0;
-   player.playOnAwake=false;player.source=VideoSource.Url;player.url=Path.Combine(Application.streamingAssetsPath,"Lobby",filename);player.isLooping=loop;player.waitForFirstFrame=true;player.skipOnDrop=!diagnosticNoDrop;player.renderMode=VideoRenderMode.RenderTexture;
+   player.playOnAwake=false;player.source=VideoSource.Url;player.url=Path.Combine(Application.streamingAssetsPath,"Lobby",filename);player.isLooping=loop;player.waitForFirstFrame=true;player.skipOnDrop=diagnosticAllowDrop&&!diagnosticNoDrop;player.renderMode=VideoRenderMode.RenderTexture;
    // Opt-in A/B probes only: the normal clock and AudioSource route stay unchanged.
    if(diagnosticGameClock)player.timeUpdateMode=VideoTimeUpdateMode.GameTime;
    player.audioOutputMode=diagnosticDirect?VideoAudioOutputMode.Direct:VideoAudioOutputMode.AudioSource;player.controlledAudioTrackCount=1;player.EnableAudioTrack(0,true);

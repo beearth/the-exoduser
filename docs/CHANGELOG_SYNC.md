@@ -1,3 +1,7 @@
+## 2026-10-24 UNITY-LOBBY-01 끊김 원인 수정
+
+- 동일Release960×540 A/B에서 skipOnDrop true는폐기757/영상정체, false는폐기0/세계관12초288프레임/최대gap.0461초를확인해정식기본false로변경했다. adapter15/4조합60PASS. 원본로비High4:4:4 profile은Windows미지원이어서 원본보존+호환High/yuv420p/B0/BT709파생본으로연결,24fps/290frames/12.083333s·SSIM.996279·양쪽decode0오류. 최종미디어26개187,678,234B. 일반실행본PID UDP/TCP0,개발PlayerConnection0. 다음전체113초자연완주/로비실제화면검수예정. [근거](engine/UNITY_LOBBY_20261024.md).
+
 ## 2026-10-24 UNITY-LOBBY-01 사용자 실제 검수 재작업
 
 - 구버전 지적에 따라 원본 v22b98,177,870B/113.291667초로 교체, 음성MD5동일·전체decode0오류. 실행 미디어26개189,918,912B. 원본 로비 장식/버튼·문양 복원, 이전 Player audio buffer236건은 FAIL. Development 연결 제거/고정실행경로로 Windows 방화벽 반복 원인을 줄이고 실제 영상 A/B·완주 검수는 진행 중이다. v22b4part Git 복구와 SHA256 명세, stage-safe/분리음성/overflow0 gate를 기록한다. 원본/Godot/사용자저장/공유INDEX보존. [현황](engine/UNITY_LOBBY_20261024.md).

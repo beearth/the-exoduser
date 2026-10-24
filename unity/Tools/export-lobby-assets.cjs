@@ -10,10 +10,28 @@ function write(dest,b){fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writ
 function read(src){const file=live+'/'+src,b=fs.readFileSync(file);if(hash(fs.readFileSync(file))!==hash(b))throw Error('Source drift '+src);return b;}
 function copy(src,dest){const b=read(src);write(project+'/Assets/'+dest,b);rows.push({source:src,destination:dest,bytes:b.length,sourceSha256:hash(b),sha256:hash(b),transform:'byte_exact'});}
 function derived(src,dest,b,transform){const original=read(src);write(project+'/Assets/'+dest,b);write(qa+'/source-art/'+path.basename(src),original);rows.push({source:src,destination:dest,bytes:b.length,sourceSha256:hash(original),sha256:hash(b),transform});}
+function exportCompatibleLobby(){
+ const src='assets/lobby/lobby_varkan_crypt_loop_v2.mp4',original=read(src),sourceSha256=hash(original),dir=qa+'/lobby-compatibility/'+sourceSha256,source=dir+'/source.mp4',encoded=dir+'/lobby_varkan_crypt_loop_v2_unity.mp4',receiptPath=dir+'/receipt.json';
+ fs.mkdirSync(dir,{recursive:true});write(source,original);
+ const ffmpeg=process.env.LOCALAPPDATA+'/Microsoft/WinGet/Links/ffmpeg.exe',ffprobe=process.env.LOCALAPPDATA+'/Microsoft/WinGet/Links/ffprobe.exe';
+ const run=(exe,args,label)=>{const r=cp.spawnSync(exe,args,{windowsHide:true,encoding:'utf8',timeout:600000,maxBuffer:8*1024*1024});write(dir+'/'+label+'.log',Buffer.from((r.stdout||'')+'\n'+(r.stderr||'')));if(r.status!==0)throw Error(label+': '+r.status+' '+r.stderr);return r;};
+ const probe=file=>JSON.parse(run(ffprobe,['-v','error','-count_frames','-show_streams','-show_format','-of','json',file],file===source?'source-probe':'runtime-probe').stdout);
+ const encodeArgs=['-hide_banner','-loglevel','error','-y','-i',source,'-map','0:v:0','-vf','setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709','-c:v','libx264','-crf','14','-preset','medium','-pix_fmt','yuv420p','-bf','0','-x264-params','colorprim=bt709:transfer=bt709:colormatrix=bt709','-color_primaries','bt709','-color_trc','bt709','-colorspace','bt709','-movflags','+faststart','-an',encoded];
+ let cached=null;if(fs.existsSync(receiptPath)&&fs.existsSync(encoded)){const old=JSON.parse(fs.readFileSync(receiptPath));if(old.sourceSha256===sourceSha256&&old.sha256===hash(fs.readFileSync(encoded))&&JSON.stringify(old.encodeArgs)===JSON.stringify(encodeArgs))cached=old;}
+ if(!cached)run(ffmpeg,encodeArgs,'encode');
+ const sourceInfo=probe(source),runtimeInfo=probe(encoded),a=sourceInfo.streams.find(x=>x.codec_type==='video'),b=runtimeInfo.streams.find(x=>x.codec_type==='video');
+ if(!a||!b||b.codec_name!=='h264'||b.pix_fmt!=='yuv420p'||b.color_primaries!=='bt709'||b.color_transfer!=='bt709'||b.color_space!=='bt709'||b.has_b_frames!==0||a.width!==b.width||a.height!==b.height||a.avg_frame_rate!==b.avg_frame_rate||a.r_frame_rate!==b.r_frame_rate||a.nb_read_frames!==b.nb_read_frames||Math.abs(Number(a.duration)-Number(b.duration))>.000001)throw Error('Lobby compatibility metadata changed source timing/size');
+ run(ffmpeg,['-hide_banner','-v','error','-i',source,'-map','0:v:0','-f','null','-'],'source-full-decode');
+ run(ffmpeg,['-hide_banner','-v','error','-i',encoded,'-map','0:v:0','-f','null','-'],'runtime-full-decode');
+ const compare=run(ffmpeg,['-hide_banner','-i',source,'-i',encoded,'-filter_complex','[0:v]format=yuv420p[ref];[ref][1:v]ssim','-an','-f','null','-'],'ssim-source420-reference'),ssim=/All:([0-9.]+)/.exec(compare.stderr)?.[1];if(!ssim)throw Error('SSIM summary missing');
+ const data=fs.readFileSync(encoded),sha256=hash(data);if(hash(read(src))!==sourceSha256)throw Error('Source drift after lobby conversion');
+ const row={source:src,destination:'StreamingAssets/Lobby/lobby_varkan_crypt_loop_v2_unity.mp4',bytes:data.length,sourceSha256,sha256,transform:'mechanical libx264 CRF14 presetmedium yuv420p Bframes0 bt709 faststart noaudio; original width/height/fps/duration/framecount retained; unsupported sourceHigh444 preserved on I',sourceVideo:a,runtimeVideo:b,ssimVsSourceConverted420:Number(ssim)};
+ write(project+'/Assets/'+row.destination,data);rows.push(row);write(receiptPath,Buffer.from(JSON.stringify({...row,encodeArgs,sourceInfo,runtimeInfo,sourcePreserved:source,fullDecodeSource:true,fullDecodeRuntime:true},null,2)));console.log(JSON.stringify({lobbyCompatibility:{bytes:row.bytes,sourceSha256,sha256,ssim:Number(ssim),receipt:receiptPath}}));
+}
 async function main(){
  for(const f of ['fdg_intro.mp4','intro.mp4','title_motion_hd_20260929.mp4','title_motion_20260929.mp4'])copy('video/'+f,'StreamingAssets/Lobby/'+f);
  copy('output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4','StreamingAssets/Lobby/world_intro_v22b_paint_en.mp4');
- copy('assets/lobby/lobby_varkan_crypt_loop_v2.mp4','StreamingAssets/Lobby/lobby_varkan_crypt_loop_v2.mp4');
+ exportCompatibleLobby();
  const images={'img/logo_exoduser.png':'brand_logo','assets/lobby/lobby_enter_btn.png':'lobby_enter','assets/lobby/lobby_banner_btn.png':'lobby_banner','img/fdg_intro/fdg_reference.png':'fdg_poster','img/fdg_wolf/fdg_wolf_emblem.png':'fdg_emblem','img/title_clean_plate_20260929.png':'splash_title','assets/lobby/varkan_idle_v3.png':'varkan_idle','assets/lobby/varkan_idle_first_v3.png':'varkan_first'};
  for(const [src,name]of Object.entries(images))copy(src,'Exoduser/Resources/Art/lobby/'+name+'.png');
  for(const [src,name]of [['output/imagegen/exoduser-hell-lord-logo-api-v1.png','title_logo'],['output/imagegen/enter-gothic-api-v1.png','enter_art']]){
