@@ -31,6 +31,7 @@ public static class PortVerification {
     var shader=Resources.Load<Shader>(name);if(shader==null||ShaderUtil.ShaderHasError(shader))throw new Exception("KiSlash shader import error "+name);
    }
    VerifyFeedbackFrames(hit);
+   VerifyHudPixels();
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="Unity_source_runtime_compile_asset_and_model",passed=true,engine=Application.unityVersion},true));
    Debug.Log("UNITY_VERIFY_PASS");EditorApplication.Exit(0);
   }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(2);}
@@ -51,6 +52,19 @@ public static class PortVerification {
    }
    Debug.Log("UNITY_FEEDBACK_FRAME_SEQUENCE_PASS");
   } finally {renderer.Dispose();UnityEngine.Object.DestroyImmediate(host);foreach(var f in frames)UnityEngine.Object.DestroyImmediate(f);}
+ }
+ static void VerifyHudPixels(){
+  var shader=Resources.Load<Shader>("Shaders/HudOrb");if(shader==null||ShaderUtil.ShaderHasError(shader))throw new Exception("HUD shader import error");
+  var hud=new NativeHud();try{
+   var p=new PlayerState{MaxHp=526,MaxMana=330,MaxStamina=240,MaxShield=285};
+   for(int i=0;i<3;i++){
+    p.Hp=i==0?526:i==1?263.9f:0;p.Mana=i==0?330:i==1?82.9f:0;p.Stamina=i==0?240:i==1?180:0;p.Shield=i==0?285:i==1?142.5f:0;
+    hud.Refresh(p,0,true);var v=hud.Probe(i.ToString());
+    bool ok=v.cornerTransparent&&(i==0?v.hpRed&&v.manaBlue&&v.staminaGreen:i==1?v.hpUpperEmpty&&v.hpLowerRed&&v.manaUpperEmpty&&v.staminaGreen:v.hpEmpty&&v.manaEmpty&&v.staminaEmpty);
+    if(!ok)throw new Exception("Native HUD GPU pixel mismatch "+JsonUtility.ToJson(v));
+   }
+   Debug.Log("UNITY_HUD_GPU_RESOURCE_MASK_PASS");
+  }finally{hud.Dispose();}
  }
  static string MakeScene(){
   var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);

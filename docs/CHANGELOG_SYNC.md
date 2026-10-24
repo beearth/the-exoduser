@@ -1,3 +1,7 @@
+## 2026-10-24 UNITY-HUD-01 — 원본 구슬·기검참 아이콘
+
+- 기존 수치 검정상자/빈구슬을 실제HP·독립MP/ST·쉴드 링·포이즈4눈으로 연결하고 원본 CSS 구슬/스킬바 배치와 kiSlash 아이콘 내부3px여백을 복원했다. 폰트/원본아이콘 바이트·OFL을 보존한다. 원본 모델130/130·기존93/7/26 및정적0오류,실제 Editor/build/Player/GPU 결과는 [보고서](engine/UNITY_HUD_20261024.md)로 구분한다. Godot 보존·전체 이식/시각인수 미완료.
+
 ## 2026-10-24 UNITY-FEEDBACK-01 — 원본 피드백 연결
 
 - C# cast/40·80·120f charge/hit queue와 original5samples·hit2x2sheet 연결. 원본26검사 및 기존93/7/36 통과, 정적 compile0오류. additive 생성tick 선누적 검토 보정, 원본-disabled hitstop 확인. 실제 Editor/frame sequence·Windows build0오류·Player4처치/원음8회재생/출력peak.30688885/명중광캡처6검사PASS,tracked19파일복원26/26까지 확인했다. EQ/compressor·highFPS clock·full parity는 [보고서](engine/UNITY_FEEDBACK_20261024.md)로 구분한다. Godot 보존·최종 엔진 미확정.

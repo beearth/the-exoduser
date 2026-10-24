@@ -15,3 +15,5 @@
 !/Tools/ki-slash-oracle/PoiseTests.csproj
 !/Tools/feedback-oracle/FeedbackTests.csproj
 /Tools/feedback-oracle/runs/
+!/Tools/hud-oracle/HudTests.csproj
+/Tools/hud-oracle/runs/

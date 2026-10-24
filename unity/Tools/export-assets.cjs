@@ -14,6 +14,11 @@ for(const f of fs.readdirSync(root+'/godot/assets/player').filter(f=>f.endsWith(
 for(const f of fs.readdirSync(root+'/godot/assets/enemy').filter(f=>f.startsWith('atlas_ch1_8dir')&&f.endsWith('.png')))copy('godot/assets/enemy/'+f,'Art/enemy/'+f);
 for(const f of ['ui_bar_only.png','ui_globe_hp.png','ui_globe_mp.png','mm_frame.png'])copy('godot/assets/ui/'+f,'Art/ui/'+f);
 copy('godot/assets/fonts/NotoSansKR.ttf','Art/fonts/NotoSansKR.ttf');
+copy('godot/assets/fonts/ofl/nanummyeongjo/NanumMyeongjo-Regular.ttf','Art/fonts/NanumMyeongjo-Regular.ttf');
+copy('godot/assets/fonts/ofl/nanummyeongjo/OFL.txt','Art/fonts/NanumMyeongjo-OFL.txt');
+copy('godot/assets/fonts/ofl/cinzeldecorative/CinzelDecorative-Bold.ttf','Art/fonts/CinzelDecorative-Bold.ttf');
+copy('godot/assets/fonts/ofl/cinzeldecorative/OFL.txt','Art/fonts/CinzelDecorative-OFL.txt');
+copy('godot/assets/ui/skill_icons/kiSlash.png','Art/ui/skill_icons/kiSlash.png');
 texture('res://assets/vfx/ki_slash_silver_sheet.png');
 texture('res://assets/vfx/ki_slash_hit_silver_sheet.png');
 for(const key of ['sword_swing1','sword_swing2','sword_swing3'])copy('sfx/swing/'+key+'.mp3','Audio/'+key+'.mp3');

@@ -17,6 +17,7 @@ namespace Exoduser.UnityPort
         public int RenderedEnemyCount {get {return enemies.Count;}}
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
+        NativeHud hud;bool hudSmoke;
         bool basicWeaponMode;
         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
@@ -25,7 +26,7 @@ namespace Exoduser.UnityPort
         readonly List<DamageText> damage=new List<DamageText>();
         readonly string[] directions={"south","south-east","east","north-east","north","north-west","west","south-west"};
         readonly string[] enemyDirections={"east","south_east","south","south_west","west","north_west","north","north_east"};
-        Texture2D bar,hpGlobe,mpGlobe; float walkDistance,lastX,lastY;int renderedTick=-1;bool playerMoving;
+        float walkDistance,lastX,lastY;int renderedTick=-1;bool playerMoving;
         bool menu=true; string notice=""; float noticeUntil; int lastKillCount;
         GUIStyle label,small,title,center,button; bool guiReady;
         public static NativeGame Instance {get;private set;}
@@ -43,7 +44,7 @@ namespace Exoduser.UnityPort
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
-            bar=Resources.Load<Texture2D>("Art/ui/ui_bar_only");hpGlobe=Resources.Load<Texture2D>("Art/ui/ui_globe_hp");mpGlobe=Resources.Load<Texture2D>("Art/ui/ui_globe_mp");
+            hud=new NativeHud();
             BuildProps();
             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
             if(kiSheet==null||kiSheet.width%3!=0||kiSheet.height%3!=0)throw new InvalidOperationException("Invalid original kiSlash 3x3 sheet");
@@ -53,7 +54,8 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             sound=new NativeFeedbackAudio(transform,view);
             ResetRun();
-            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-smoke")>=0){menu=false;Running=true;StartCoroutine(Smoke());}
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-hud-smoke")>=0){hudSmoke=true;menu=false;StartCoroutine(HudSmoke());}
+            else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-smoke")>=0){menu=false;Running=true;StartCoroutine(Smoke());}
         }
         public void ResetRun()
         {
@@ -66,6 +68,7 @@ namespace Exoduser.UnityPort
             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
             if(playerView==null)playerView=CreateRenderer("Player");
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
+            hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             // Source63425-63432: original five ordinary0 enemies on580px ring.
             for(int i=0;i<5;i++)
             {
@@ -161,6 +164,7 @@ namespace Exoduser.UnityPort
             }
             kiView?.Update(Simulation);
             impacts?.Update(Simulation.TickCount);
+            hud?.Refresh(p,Simulation.TickCount);
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         SpriteRenderer CreateRenderer(string name){var go=new GameObject(name);go.transform.SetParent(transform);return go.AddComponent<SpriteRenderer>();}
@@ -195,18 +199,15 @@ namespace Exoduser.UnityPort
             Panel(new Rect(1590,35,290,120));GUI.Label(new Rect(1610,45,260,32),"1장 · 썩은 숲",label);
             GUI.Label(new Rect(1610,80,260,30),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,small);
             GUI.Label(new Rect(1610,110,260,30),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,small);
-            if(hpGlobe!=null)GUI.DrawTexture(new Rect(55,815,225,225),hpGlobe,ScaleMode.ScaleToFit,true);
-            if(mpGlobe!=null)GUI.DrawTexture(new Rect(1640,815,225,225),mpGlobe,ScaleMode.ScaleToFit,true);
-            Panel(new Rect(84,916,170,66));GUI.Label(new Rect(84,919,170,28),Mathf.CeilToInt(p.Hp)+" / "+p.MaxHp,center);GUI.Label(new Rect(84,947,170,25),"보호막 "+Mathf.CeilToInt(p.Shield),small);
-            Panel(new Rect(1660,914,170,70));GUI.Label(new Rect(1660,918,170,28),"MP "+Mathf.CeilToInt(p.Mana),center);GUI.Label(new Rect(1660,948,170,28),"SP "+Mathf.CeilToInt(p.Stamina),center);
-            if(bar!=null)GUI.DrawTexture(new Rect(370,868,1180,262),bar,ScaleMode.ScaleToFit,true);
-            GUI.Label(new Rect(815,950,290,40),basicWeaponMode?SourceStarterFixture.WeaponName:"기검참 · 3타 홀드 차지",center);
+            var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
+            GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);
+            hud.Draw(Screen.width/hudScale,Screen.height/hudScale,basicWeaponMode?"weapon":"kiSlash");GUI.matrix=baseMatrix;
             GUI.Label(new Rect(630,818,660,35),"WASD 이동     마우스 조준 · 좌클릭 기본 공격     ESC 메뉴",small);
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.HurtTicks<=0)continue;var pt=ToGUI(e.X,e.Y);Fill(new Rect(pt.x-42,pt.y-85,84,6),new Color(.12f,.08f,.07f));Fill(new Rect(pt.x-42,pt.y-85,84*Mathf.Clamp01((float)e.Hp/e.MaxHp),6),new Color(.66f,.12f,.08f));if(e.Shield>0)Fill(new Rect(pt.x-42,pt.y-93,84*e.Shield/e.MaxShield,4),new Color(.2f,.55f,.8f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
-            if(menu||p.Hp<=0){Panel(new Rect(590,280,740,470));GUI.Label(new Rect(650,322,620,55),p.Hp<=0?"쓰러진 전사":"썩은 숲",title);
+            if((menu||p.Hp<=0)&&!hudSmoke){Panel(new Rect(590,280,740,470));GUI.Label(new Rect(650,322,620,55),p.Hp<=0?"쓰러진 전사":"썩은 숲",title);
                 GUI.Label(new Rect(650,395,620,85),"기검참 1·2타 후 세 번째 클릭을 유지해 차지합니다.\n버튼을 놓으면 발사합니다. 패링·인벤토리·저장·보스는 이식 중입니다.",small);
                 bool selected=GUI.Toggle(new Rect(650,490,620,35),basicWeaponMode,"기본 무기 검증 모드",button);
                 if(selected!=basicWeaponMode){basicWeaponMode=selected;ResetRun();}
@@ -247,8 +248,24 @@ namespace Exoduser.UnityPort
             yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-after-combat.png"));yield return null;
             smokeActive=false;ResetRun();menu=true;Running=false;
         }
+        IEnumerator HudSmoke()
+        {
+            Running=false;string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;Directory.CreateDirectory(output);
+            var cases=new List<HudPixelProbe>();var p=Simulation.Player;
+            for(int i=0;i<3;i++){
+                p.Hp=i==0?p.MaxHp:i==1?263.9f:0;p.Mana=i==0?p.MaxMana:i==1?82.9f:0;p.Stamina=i==0?p.MaxStamina:i==1?180:0;
+                p.Shield=i==0?p.MaxShield:i==1?p.MaxShield/2:0;p.Poise=i==0?4:i==1?2:0;
+                p.Experience=i==1?4:0;hud.Refresh(p,Simulation.TickCount,true);
+                yield return new WaitForSecondsRealtime(.7f);yield return new WaitForEndOfFrame();
+                string name=i==0?"full":i==1?"partial":"empty";
+                ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-hud-"+name+".png"));cases.Add(hud.Probe(name));yield return null;
+            }
+            File.WriteAllText(Path.Combine(output,"hud-smoke.json"),JsonUtility.ToJson(new HudSmokeReceipt{scope="actual_native_player_controlled_HUD_fixture",activeSkill=hud.ActiveSkill,iconResource="Art/ui/skill_icons/kiSlash",iconDrawn=hud.IconDrawn,cases=cases.ToArray()},true));
+            hudSmoke=false;ResetRun();menu=true;Running=false;
+        }
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
-        void OnDestroy(){kiView?.Dispose();impacts?.Dispose();sound?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
+        [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
+        void OnDestroy(){kiView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
     }
 }

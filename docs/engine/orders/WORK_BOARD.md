@@ -1,5 +1,9 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-24 UNITY-HUD-01 — 원본 자원 표시
+
+PC Codex / codex/unity-port-20261024 / NativeHud·HudValues·shader·원본 아이콘/폰트 복사·자기 Tools/docs 소유. Model130/130·기존93/7/26,정적컴파일0오류. source 구슬/slot배치·자원수위·실제kiSlash아이콘을 연결하고 I: 독립 Editor/GPU/Player 검수를 진행한다. CSS 전체 filter/전체 HUD·미구현 스킬을 추가한 것으로 확대하지 않는다. Godot/웹/공용main/INDEX480·기존창 보존. [상태·검수](../UNITY_HUD_20261024.md).
+
 ## 2026-10-24 UNITY-FEEDBACK-01 — 기검참 명중광·원음
 
 PC Codex / codex/unity-port-20261024 / unity Runtime·Editor·Tools·원본 미디어 복사·관련 docs만 소유. Core26/26·기존93/7/36·정적 컴파일0오류 및 실제 Editor/import/frame sequence·Windows build(errors0)를 통과했다. I: 독립 복사본의 실제 Player에서4처치·음향8회재생/출력peak.30688885·명중광4/완충광1·PNG5종을 확인했다. 전체 시각은 RETOUCH, 수동 플레이·EQ/compressor·고FPS clock·전체 이식은 남아 있다. Godot와 열린 Editor·공용 main INDEX480경로는 보존한다. [상태·미완료·검수](../UNITY_FEEDBACK_20261024.md).

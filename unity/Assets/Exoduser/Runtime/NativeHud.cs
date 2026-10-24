@@ -1,0 +1,139 @@
+using System;
+using UnityEngine;
+using Exoduser.UnityPort.Core;
+
+namespace Exoduser.UnityPort
+{
+    [Serializable] public sealed class HudPixelProbe
+    {
+        public string name,hpText,manaText,staminaText;
+        public bool cornerTransparent,hpRed,hpUpperEmpty,hpLowerRed,manaBlue,manaUpperEmpty,staminaGreen,hpEmpty,manaEmpty,staminaEmpty;
+    }
+    // Source CSS geometry at ui-scale=1. Draw uses uniform Match Shortest Side.
+    public sealed class NativeHud : IDisposable
+    {
+        readonly Material material;
+        readonly RenderTexture hp,mana,shield,eye;
+        readonly Texture2D hpFrame,mpFrame,bar,icon;
+        readonly Font textFont,numberFont;
+        GUIStyle hpNumber,maximum,resourceNumber,resourceLabel,tooltip;
+        HudValues values;int tick=-1,slowTick=-1;bool[] eyes=new bool[4];
+        readonly Transition hpLevel=new Transition(.6f),manaLevel=new Transition(.5f),staminaLevel=new Transition(.5f);
+        sealed class Transition
+        {
+            readonly float duration;float from,target,start;
+            public Transition(float duration){this.duration=duration;}
+            public bool Active {get{return from!=target&&Time.unscaledTime<start+duration;}}
+            static float Bezier(float t,float p,float q){float u=1-t;return 3*u*u*t*p+3*u*t*t*q+t*t*t;}
+            public float Value {
+                get {float x=Mathf.Clamp01((Time.unscaledTime-start)/duration);if(x>=1)return target;float low=0,high=1;
+                    for(int i=0;i<15;i++){float t=(low+high)*.5f;if(Bezier(t,.2f,.3f)<x)low=t;else high=t;}
+                    return Mathf.Lerp(from,target,Bezier((low+high)*.5f,.8f,1));}
+            }
+            public void Set(float value,bool immediate){if(immediate){from=target=value;return;}if(value==target)return;from=Value;target=value;start=Time.unscaledTime;}
+        }
+        public bool IconDrawn {get;private set;}
+        public string ActiveSkill {get;private set;}
+        public NativeHud()
+        {
+            hpFrame=Required<Texture2D>("Art/ui/ui_globe_hp");mpFrame=Required<Texture2D>("Art/ui/ui_globe_mp");bar=Required<Texture2D>("Art/ui/ui_bar_only");
+            icon=Required<Texture2D>("Art/ui/skill_icons/kiSlash");textFont=Required<Font>("Art/fonts/NanumMyeongjo-Regular");numberFont=Required<Font>("Art/fonts/CinzelDecorative-Bold");
+            material=new Material(Required<Shader>("Shaders/HudOrb"));
+            hp=Target("HP liquid");mana=Target("MP ST liquid");shield=Target("Shield ring");eye=Target("Poise eye");
+            Blit(eye,3);
+        }
+        static T Required<T>(string path) where T:UnityEngine.Object {var result=Resources.Load<T>(path);if(result==null)throw new InvalidOperationException("Missing original HUD resource "+path);return result;}
+        static RenderTexture Target(string name){var rt=new RenderTexture(256,256,0,RenderTextureFormat.ARGB32){name=name,filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};rt.Create();return rt;}
+        void Blit(RenderTexture rt,int mode)
+        {
+            material.SetFloat("_Mode",mode);var old=RenderTexture.active;
+            try{Graphics.Blit(Texture2D.whiteTexture,rt,material,0);}finally{RenderTexture.active=old;}
+        }
+        public void Refresh(PlayerState player,int currentTick,bool force=false)
+        {
+            // Source fast HUD runs every three simulation frames (~20Hz).
+            bool due=force||values==null||currentTick-tick>=3;
+            if(due){
+                tick=currentTick;values=HudValues.From(player);
+                hpLevel.Set((float)values.HpTranslatePercent/100,force);manaLevel.Set((float)values.ManaRatio,force);staminaLevel.Set((float)values.StaminaRatio,force);
+                material.SetFloat("_Shield",(float)values.ShieldRatio);material.SetFloat("_ShieldAlpha",(float)values.ShieldAlpha);Blit(shield,2);
+                if(force||currentTick-slowTick>=30){slowTick=currentTick;eyes=values.PoiseEyes;}
+            }
+            if(due||hpLevel.Active||manaLevel.Active||staminaLevel.Active){
+                material.SetFloat("_HpTranslate",hpLevel.Value);material.SetFloat("_Mana",manaLevel.Value);material.SetFloat("_Stamina",staminaLevel.Value);
+                Blit(hp,0);Blit(mana,1);
+            }
+        }
+        static void Text(Rect rect,string text,GUIStyle style,Color color)
+        {
+            var old=GUI.color;GUI.color=Color.black;GUI.Label(new Rect(rect.x+1,rect.y+2,rect.width,rect.height),text,style);GUI.color=color;GUI.Label(rect,text,style);GUI.color=old;
+        }
+        void Styles()
+        {
+            if(hpNumber!=null)return;
+            hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=20,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
+            maximum=new GUIStyle(hpNumber){fontSize=11};resourceNumber=new GUIStyle(hpNumber){fontSize=14};resourceLabel=new GUIStyle(hpNumber){fontSize=8};
+            tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=14,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(.92f,.84f,.68f);
+        }
+        public void Draw(float width,float height,string activeAttack)
+        {
+            if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
+            const float scale=.9f;
+            Rect slotBar=new Rect(mid-410*scale,height+15-182*scale,820*scale,182*scale);
+            // updateHUD's inline normal-state filter overrides the .94 CSS rule.
+            var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);GUI.DrawTexture(slotBar,bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
+            Globe(mid-441,height, false);Globe(mid+441,height,true);
+            Rect lmb=new Rect(slotBar.x+392*scale,slotBar.y+70*scale,37*scale,45*scale);
+            if(activeAttack=="kiSlash"){
+                var insetIcon=new Rect(lmb.x+3*scale,lmb.y+3*scale,lmb.width-6*scale,lmb.height-6*scale);
+                GUI.DrawTexture(insetIcon,icon,ScaleMode.ScaleToFit,true);if(Event.current.type==EventType.Repaint)IconDrawn=true;
+                if(lmb.Contains(Event.current.mousePosition))GUI.Box(new Rect(mid-150,slotBar.y-34,300,30),"기검참 · 좌클릭 3타 홀드 차지",tooltip);
+            }
+            // Existing input executors own the other slots. No invented skill icons.
+        }
+        void Globe(float x,float height,bool right)
+        {
+            const float s=.9f;float y=height-10-175*s;
+            Rect wrap=new Rect(x-87.5f*s,y,175*s,175*s);
+            GUI.DrawTexture(wrap,right?mana:hp,ScaleMode.StretchToFill,true);
+            Rect frame=new Rect(wrap.x-48*s,wrap.y-44*s,263*s,263*s);
+            GUI.DrawTexture(frame,right?mpFrame:hpFrame,ScaleMode.StretchToFill,true);
+            if(!right)GUI.DrawTexture(new Rect(wrap.x+11*s,wrap.y+18.65f*s,153*s,153*s),shield,ScaleMode.StretchToFill,true);
+            int index=right?2:0;
+            for(int i=0;i<2;i++)if(eyes[index+i]){
+                float ex=wrap.x+(i==0?76.5f:93.5f)*s;
+                GUI.DrawTexture(new Rect(ex-4*s,wrap.y-13*s,15*s,15*s),eye,ScaleMode.StretchToFill,true);
+            }
+            if(!right){if(values.HpValid){Text(new Rect(wrap.x,wrap.y+62*s,wrap.width,30*s),values.HpCurrentText,hpNumber,Color.white);Text(new Rect(wrap.x,wrap.y+90*s,wrap.width,20*s),values.HpMaximumText,maximum,new Color(1,1,1,.6f));}}
+            else {
+                if(values.ManaValid)ResourceText(wrap,0,"MP",values.ManaCurrentText,values.ManaMaximumText,new Color(.533f,.733f,1));
+                if(values.StaminaValid)ResourceText(wrap,1,"ST",values.StaminaCurrentText,values.StaminaMaximumText,new Color(.533f,.867f,.533f));
+            }
+        }
+        void ResourceText(Rect wrap,int side,string name,string current,string max,Color color)
+        {
+            float x=wrap.x+side*wrap.width/2,w=wrap.width/2;
+            Text(new Rect(x,wrap.y+53,w,16),name,resourceLabel,color);Text(new Rect(x,wrap.y+68,w,24),current,resourceNumber,Color.white);Text(new Rect(x,wrap.y+91,w,16),max,resourceLabel,new Color(1,1,1,.5f));
+        }
+        static Texture2D Pixels(RenderTexture rt)
+        {
+            var old=RenderTexture.active;var copy=new Texture2D(256,256,TextureFormat.RGBA32,false);
+            try{RenderTexture.active=rt;copy.ReadPixels(new Rect(0,0,256,256),0,0);copy.Apply();}finally{RenderTexture.active=old;}return copy;
+        }
+        public HudPixelProbe Probe(string name)
+        {
+            var h=Pixels(hp);var m=Pixels(mana);
+            try{
+                Func<Color,bool> red=c=>c.r>c.g*2&&c.r>.08f;Func<Color,bool> blue=c=>c.b>c.g*1.15f&&c.b>.08f;Func<Color,bool> green=c=>c.g>c.b*1.15f&&c.g>.08f;
+                Func<Color,bool> dark=c=>Mathf.Max(c.r,c.g,c.b)<.05f;
+                return new HudPixelProbe{name=name,hpText=values.HpCurrentText,manaText=values.ManaCurrentText,staminaText=values.StaminaCurrentText,
+                    cornerTransparent=h.GetPixel(2,2).a<.01f&&m.GetPixel(253,253).a<.01f,
+                    hpRed=red(h.GetPixel(128,128)),hpLowerRed=red(h.GetPixel(128,80)),hpUpperEmpty=dark(h.GetPixel(128,180)),
+                    manaBlue=blue(m.GetPixel(80,128)),manaUpperEmpty=dark(m.GetPixel(80,180)),staminaGreen=green(m.GetPixel(180,128)),
+                    hpEmpty=dark(h.GetPixel(128,128)),manaEmpty=dark(m.GetPixel(80,128)),staminaEmpty=dark(m.GetPixel(180,128))};
+            }finally{Release(h);Release(m);}
+        }
+        static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
+        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}Release(material);}
+    }
+}

@@ -1,0 +1,13 @@
+const fs=require('fs'),path=require('path');
+const arg=k=>{const i=process.argv.indexOf(k);if(i<0)throw Error('Missing '+k);return path.resolve(process.argv[i+1]);};
+const dir=arg('--player'),receipt=arg('--receipt'),file=dir+'/hud-smoke.json',data=fs.existsSync(file)?JSON.parse(fs.readFileSync(file)):null,checks=[];
+const check=(name,passed)=>checks.push({name,passed:!!passed});
+check('actual native HUD resource fixture completed',data&&data.scope==='actual_native_player_controlled_HUD_fixture');
+check('actual full partial empty states and truncated texts',data&&data.cases.length===3&&data.cases[1].hpText==='263'&&data.cases[1].manaText==='82'&&data.cases[1].staminaText==='180');
+check('GPU circle clipping and independent MP blue ST green fills',data&&data.cases.every(c=>c.cornerTransparent)&&data.cases[0].hpRed&&data.cases[0].manaBlue&&data.cases[0].staminaGreen&&data.cases[1].hpUpperEmpty&&data.cases[1].hpLowerRed&&data.cases[1].manaUpperEmpty&&data.cases[1].staminaGreen&&data.cases[2].hpEmpty&&data.cases[2].manaEmpty&&data.cases[2].staminaEmpty);
+check('original active kiSlash icon reached native HUD',data&&data.activeSkill==='kiSlash'&&data.iconResource==='Art/ui/skill_icons/kiSlash'&&data.iconDrawn);
+check('full partial empty screenshots exist',['full','partial','empty'].every(s=>fs.existsSync(dir+'/unity-hud-'+s+'.png')));
+const log=fs.existsSync(dir+'/player.log')?fs.readFileSync(dir+'/player.log','utf8'):'';
+check('no runtime exception or shader error',!/Exception:|error CS\d|Shader error|MissingMethodException/.test(log));
+const result={scope:'native_HUD_fixture_and_GPU_readback_not_natural_play_or_full_pixel_parity',dir,passed:checks.every(c=>c.passed),checks};
+fs.mkdirSync(path.dirname(receipt),{recursive:true});fs.writeFileSync(receipt,JSON.stringify(result,null,2));console.log(JSON.stringify(result));process.exitCode=result.passed?0:2;

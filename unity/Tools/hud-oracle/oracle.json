@@ -1,0 +1,643 @@
+{
+  "source": {
+    "sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+    "anchors": [
+      {
+        "name": "updateHUD",
+        "line": 60248,
+        "sha256": "eb86b38483bd8215c250b994019ea1620e10e24a4da9751471d8fb02830d795c",
+        "liveEqualsSnapshot": true
+      },
+      {
+        "name": "_hset",
+        "line": 60247,
+        "sha256": "6533e953b8219b51e03850141eefb3c96b6879a221dea90a4cbec83f7d71c5e7",
+        "liveEqualsSnapshot": true
+      },
+      {
+        "name": "_hudReadableNumber",
+        "line": 60241,
+        "sha256": "28f1ab7412b8904830c05bcef81478e3ebee56a3890aceaf794b8a8f5c1863ca",
+        "liveEqualsSnapshot": true
+      }
+    ]
+  },
+  "scope": "offline original updateHUD(true) with leaf DOM and unrelated dependencies stubbed; no visual or Unity proof",
+  "rows": [
+    {
+      "name": "full",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "half",
+      "input": {
+        "hp": 263,
+        "mhp": 526,
+        "mp": 165,
+        "mmp": 330,
+        "st": 120,
+        "mst": 240,
+        "shield": 142.5,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(53.50%)",
+        "mpTransform": "translateY(50%)",
+        "stTransform": "translateY(50%)",
+        "hpCurrent": "263",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "165",
+        "mpMaximum": "/330",
+        "stCurrent": "120",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.45) 50%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 8px rgba(50,150,255,0.25))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "empty",
+      "input": {
+        "hp": 0,
+        "mhp": 526,
+        "mp": 0,
+        "mmp": 330,
+        "st": 0,
+        "mst": 240,
+        "shield": 0,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(97.00%)",
+        "mpTransform": "translateY(100%)",
+        "stTransform": "translateY(100%)",
+        "hpCurrent": "0",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "0",
+        "mpMaximum": "/330",
+        "stCurrent": "0",
+        "stMaximum": "/240",
+        "shieldBackground": "none",
+        "shieldFilter": "none",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "fractional",
+      "input": {
+        "hp": 263.8999938964844,
+        "mhp": 526.9000244140625,
+        "mp": 165.89999389648438,
+        "mmp": 330.8999938964844,
+        "st": 120.9000015258789,
+        "mst": 240.89999389648438,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(53.50%)",
+        "mpTransform": "translateY(50%)",
+        "stTransform": "translateY(49.81319859317635%)",
+        "hpCurrent": "263",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "165",
+        "mpMaximum": "/330",
+        "stCurrent": "120",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "independent-mp",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 33,
+        "mmp": 330,
+        "st": 216,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(90%)",
+        "stTransform": "translateY(9.999999999999998%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "33",
+        "mpMaximum": "/330",
+        "stCurrent": "216",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "independent-st",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 297,
+        "mmp": 330,
+        "st": 24,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(9.999999999999998%)",
+        "stTransform": "translateY(90%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "297",
+        "mpMaximum": "/330",
+        "stCurrent": "24",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "overfill",
+      "input": {
+        "hp": 800,
+        "mhp": 526,
+        "mp": 800,
+        "mmp": 330,
+        "st": 800,
+        "mst": 240,
+        "shield": 570,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "800",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "800",
+        "mpMaximum": "/330",
+        "stCurrent": "800",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,1.80) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 20px rgba(50,150,255,1.00))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "low-shield",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 1,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.09) 0.3508771929824561%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 4.8px rgba(50,150,255,0.05))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "zero-shield-max",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 0,
+        "mshield": 0,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "none",
+        "shieldFilter": "none",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "poise-three",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 3,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          false,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "poise-fractional",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 2.9000000953674316,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          false,
+          false,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "poise-half",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 0.5,
+        "s": "idle",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "name": "poise-stunned",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 4,
+        "s": "pStun",
+        "lv": 1,
+        "exp": 4,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "26.666666666666668%",
+        "experienceText": "4 / 15",
+        "poiseEyes": [
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "name": "xp-grouping",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 1234,
+        "maxExp": 15000,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "8.226666666666667%",
+        "experienceText": "1,234 / 15,000",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "xp-overfill",
+      "input": {
+        "hp": 526,
+        "mhp": 526,
+        "mp": 330,
+        "mmp": 330,
+        "st": 240,
+        "mst": 240,
+        "shield": 285,
+        "mshield": 285,
+        "poise": 4,
+        "s": "idle",
+        "lv": 1,
+        "exp": 20,
+        "maxExp": 15,
+        "sp": 0,
+        "ap": 0
+      },
+      "expected": {
+        "hpTransform": "translateY(10.00%)",
+        "mpTransform": "translateY(0%)",
+        "stTransform": "translateY(0%)",
+        "hpCurrent": "526",
+        "hpMaximum": "/ 526",
+        "mpCurrent": "330",
+        "mpMaximum": "/330",
+        "stCurrent": "240",
+        "stMaximum": "/240",
+        "shieldBackground": "conic-gradient(rgba(50,150,255,0.90) 100%, transparent 0%)",
+        "shieldFilter": "drop-shadow(0 0 12px rgba(50,150,255,0.50))",
+        "experienceWidth": "133.33333333333331%",
+        "experienceText": "20 / 15",
+        "poiseEyes": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    }
+  ]
+}
