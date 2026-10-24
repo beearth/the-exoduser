@@ -34,9 +34,9 @@
 | 기본 전투 | 일반 etype0 HP875+쉴드875(레벨1), 기본 무기 비용5·5프레임 swing/남은3 경계 타격, 원본 회복시간; 스폰 링5/580px·safePt |
 | 기검참 판정 | 원본ST10,1·2타 즉시발사/3타 홀드 후 해제,40/80/120f에2/4/8배·최대120f, 검기 speed14·수명선감소·벽/LOS·actor identity별1회 관통. 시작장비 Lv1검기1940. 독립 원본 대조93/93; `Tools/ki-slash-oracle/runs/green-03-poise.json` |
 | 일반 적 포이즈 | 신규 검토에서 stun종료 즉시완전회복 오류를 발견해 제거. 원본 실제loop처럼 marker만clear, hitstun/stun 조기반환 뒤 eligible200f마다최대15% 회복·새타격시타이머0. 실제 원문 prefix oracle RED7실패→GREEN7/7; `runs/green-poise.json` |
-| 드랍 | 원본45% 장비 생성 요청까지. 실제 mkItem/inventory 없으면 R 획득을 거절함. 가짜 아이템 획득 없음 |
+| 드랍 | 원본45% 장비 생성 요청까지. 실제 world mkItem factory가 없어 R 획득을 거절함. 시작 가방/장착 UI는 후속 UNITY-INVENTORY-01에서 별도 연결하며 가짜 드랍 획득 없음 |
 | 모델 회귀 | .NET8 독립36검사/0실패. 원본 isW/canMv 직접 실행2523좌표 결과 일치. `portable-final/core-receipt.json` |
-| 시작 장비 | 오프라인 원본505난수/15장비, 설정23필드 대조23/23. raw JSON은 `Tools/Fixtures`(I:)에 보존, 실행은 C# 설정 사용 |
+| 시작 장비 | 원본505난수/15장비와 추가887난수까지의 마법가방10/20어픽스. 후속 [UNITY-INVENTORY-01](UNITY_INVENTORY_20261024.md)에서 typed seed·C# stat 재계산·Tab화면·장착/해제·정리/이동 연결. 조건부 전투 어픽스/저장/드랍생성은 미완료 |
 | 넉백 | 정적 검토 발견 +kb/.05 helper를 원본32764의 합성 충돌 kb×.5/감쇠.65로 수정. RED4실패→GREEN5/5 |
 | 컴파일 | 설치 Unity assemblies에 대한 별도 .NET 정적 컴파일0오류/0경고. **Editor compile/import PASS 아님** |
 | 검토 | core spec 제한범위 PASS; 코드 품질 검토에서 렌더120FPS/시뮬60Hz 걷기 깜빡임을 TickCount 캐시로 수정, 재검토 미해결P1/P2 없음. 실제 화면 인수 아님 |
@@ -56,7 +56,7 @@
 1. 초기 라이선스 차단 이후 최종 재시도에서 실제 import가 시작됐다. 계정/인증 파일을 변경하거나 복사하지 않았다.
 2. 첫 실제 import는 이미지가 `textureShape:2` Cubemap으로 들어가 `Resources.Load<Texture2D>`가 null인 실패였다. D3D11 재현에서도 동일했다. Importer에 Texture2D 명시와 GetVersion1을 추가하고 재import해 Editor 검사를 통과했다. [공식 shape enum](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/AssetPipeline/TextureImporterEnums.cs).
 3. 실제 Windows 빌드와 Player 자동 입력을 완료했다. 자연 종주·사람의 입력/손맛·프레임 성능·원본1x 비교는 후속이며 아래 영수증 범위와 구분한다.
-4. 후속 [UNITY-FEEDBACK-01](UNITY_FEEDBACK_20261024.md)에서 기검참 명중광·차지 섬광·원음5개를 연결한다. 원본은 hitstop을 소비 직전0으로 비활성화하므로 임의 화면 정지는 추가하지 않는다. 화면 흔들림·slowMo, 장비 생성/인벤토리·전체 적/투사체·Q/E 보호 계약·저장·지역/보스/클리어는 남아 있다. 현재 후보로 전체 이식 완료나 Unity 우위 확정을 주장하지 않는다.
+4. 후속 [UNITY-FEEDBACK-01](UNITY_FEEDBACK_20261024.md)에서 기검참 명중광·차지 섬광·원음5개를 연결한다. 원본은 hitstop을 소비 직전0으로 비활성화하므로 임의 화면 정지는 추가하지 않는다. 시작장비/가방 UI는 [UNITY-INVENTORY-01](UNITY_INVENTORY_20261024.md)로 연결하며 실제 검수 단계는 해당 보고서를 따른다. 화면 흔들림·slowMo, world 장비 생성·전체 인벤토리/어픽스·전체 적/투사체·Q/E 보호 계약·저장·지역/보스/클리어는 남아 있다. 현재 후보로 전체 이식 완료나 Unity 우위 확정을 주장하지 않는다.
 
 Q/E 판정, 사용자 세이브, 웹/Godot 게임 코드, `2_3` 문서는 변경하지 않았다. 자동 서버 재시작·옛 팀 재가동·Steam 배포도 없다.
 

@@ -32,6 +32,7 @@ public static class PortVerification {
    }
    VerifyFeedbackFrames(hit);
    VerifyHudPixels();
+   VerifyInventory();
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="Unity_source_runtime_compile_asset_and_model",passed=true,engine=Application.unityVersion},true));
    Debug.Log("UNITY_VERIFY_PASS");EditorApplication.Exit(0);
   }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(2);}
@@ -52,6 +53,25 @@ public static class PortVerification {
    }
    Debug.Log("UNITY_FEEDBACK_FRAME_SEQUENCE_PASS");
   } finally {renderer.Dispose();UnityEngine.Object.DestroyImmediate(host);foreach(var f in frames)UnityEngine.Object.DestroyImmediate(f);}
+ }
+ static void VerifyInventory(){
+  var data=Resources.Load<TextAsset>("Data/inventory_seed");if(data==null)throw new Exception("Missing original inventory seed");
+  var inv=new InventoryState(NativeInventorySeed.Load());int worn=0,affixes=0;
+  foreach(var i in inv.Equipped)if(i!=null)worn++;foreach(var i in inv.Bag){if(i.rarity!=1)throw new Exception("Original magic bag rarity");affixes+=i.affixes.Length;}
+  if(worn!=15||inv.Bag.Count!=10||affixes!=20)throw new Exception("Original inventory seed counts");
+  var s=new Simulation(SourceStarterFixture.CreateKiSlash());s.ApplyEquipment(inv);if(s.Player.MaxHp!=526||s.Config.WeaponAttack!=18)throw new Exception("Inventory starter adapter mismatch");
+  if(s.Config.DamageMultiplier!=.7)throw new Exception("Equipment lost double damage precision");
+  s.Player.Level=2;s.ApplyEquipment(inv);if(s.CalculateKiSlashDamage(1)!=1999||s.Config.StrengthFlat!=0)throw new Exception("Equipment double-counted level strength");
+  s.Player.Level=1;s.ApplyEquipment(inv);
+  s.Player.Hp=113.75f;s.Player.Mana=47.5f;s.Player.Stamina=61.25f;s.Player.Shield=19.5f;
+  if(!inv.TryUnequip("weapon",out var why))throw new Exception(why);s.ApplyEquipment(inv);
+  if(s.Player.Hp!=113.75f||s.Player.Mana!=47.5f||s.Player.Stamina!=61.25f||s.Player.Shield!=19.5f)throw new Exception("Equipment healed resources");
+  if(s.Config.WeaponAttack!=0||s.Config.WeaponSpeed!=0)throw new Exception("Unarmed raw stats");
+  if(s.CalculateKiSlashDamage(1)!=882)throw new Exception("Unarmed double damage boundary mismatch");
+  for(int i=0;i<200;i++)s.Tick(0,0,5000,7420,true,false);
+  if(float.IsNaN(s.Player.StateTicks)||float.IsInfinity(s.Player.StateTicks)||s.Player.StateTicks<0)throw new Exception("Unarmed invalid attack recovery");
+  foreach(var name in new[]{"knight","socket","iron"})if(Resources.Load<Texture2D>("Art/ui/inventory/"+name)==null)throw new Exception("Inventory source art "+name);
+  Debug.Log("UNITY_INVENTORY_SEED_STATS_UNARMED_PASS");
  }
  static void VerifyHudPixels(){
   var shader=Resources.Load<Shader>("Shaders/HudOrb");if(shader==null||ShaderUtil.ShaderHasError(shader))throw new Exception("HUD shader import error");

@@ -1,0 +1,4385 @@
+{
+  "schema": "exoduser.unity.inventory-source-oracle.v1",
+  "source": {
+    "sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+    "seed": 539365412,
+    "starterDrawCount": 505,
+    "drawCountAfterBag": 887,
+    "anchors": [
+      {
+        "name": "EL",
+        "line": 14333,
+        "equals_live": true
+      },
+      {
+        "name": "RARITY_MUL",
+        "line": 14351,
+        "equals_live": true
+      },
+      {
+        "name": "SLOT_NAMES",
+        "line": 15176,
+        "equals_live": true
+      },
+      {
+        "name": "SLOT_EMOJI",
+        "line": 15838,
+        "equals_live": true
+      },
+      {
+        "name": "WTYPES",
+        "line": 15863,
+        "equals_live": true
+      },
+      {
+        "name": "WTYPE_KEYS",
+        "line": 15872,
+        "equals_live": true
+      },
+      {
+        "name": "_WP_MOD",
+        "line": 15876,
+        "equals_live": true
+      },
+      {
+        "name": "BOWTYPES",
+        "line": 15886,
+        "equals_live": true
+      },
+      {
+        "name": "BTYPE_KEYS",
+        "line": 15891,
+        "equals_live": true
+      },
+      {
+        "name": "IMPLICIT_TABLE",
+        "line": 15016,
+        "equals_live": true
+      },
+      {
+        "name": "_AFSLOT",
+        "line": 14364,
+        "equals_live": true
+      },
+      {
+        "name": "AFFIX_POOL",
+        "line": 14370,
+        "equals_live": true
+      },
+      {
+        "name": "_diffSigned",
+        "line": 9278,
+        "equals_live": true
+      },
+      {
+        "name": "mkP",
+        "line": 29018,
+        "equals_live": true
+      },
+      {
+        "name": "_weaponName",
+        "line": 15883,
+        "equals_live": true
+      },
+      {
+        "name": "rollAffixes",
+        "line": 15131,
+        "equals_live": true
+      },
+      {
+        "name": "mkItem",
+        "line": 15894,
+        "equals_live": true
+      },
+      {
+        "name": "defaultItems",
+        "line": 16171,
+        "equals_live": true
+      },
+      {
+        "name": "wp",
+        "line": 16500,
+        "equals_live": true
+      },
+      {
+        "name": "sh",
+        "line": 16501,
+        "equals_live": true
+      },
+      {
+        "name": "bt",
+        "line": 16502,
+        "equals_live": true
+      },
+      {
+        "name": "ar",
+        "line": 16503,
+        "equals_live": true
+      },
+      {
+        "name": "hm",
+        "line": 16504,
+        "equals_live": true
+      },
+      {
+        "name": "bw",
+        "line": 16505,
+        "equals_live": true
+      },
+      {
+        "name": "gl",
+        "line": 16506,
+        "equals_live": true
+      },
+      {
+        "name": "pt",
+        "line": 16507,
+        "equals_live": true
+      },
+      {
+        "name": "blt",
+        "line": 16508,
+        "equals_live": true
+      },
+      {
+        "name": "nc",
+        "line": 16509,
+        "equals_live": true
+      },
+      {
+        "name": "rg1",
+        "line": 16510,
+        "equals_live": true
+      },
+      {
+        "name": "rg2",
+        "line": 16511,
+        "equals_live": true
+      },
+      {
+        "name": "cp",
+        "line": 16512,
+        "equals_live": true
+      },
+      {
+        "name": "_uEq",
+        "line": 16514,
+        "equals_live": true
+      },
+      {
+        "name": "_lEqRebuild",
+        "line": 16612,
+        "equals_live": true
+      },
+      {
+        "name": "_lEq",
+        "line": 16622,
+        "equals_live": true
+      },
+      {
+        "name": "_lvB",
+        "line": 28770,
+        "equals_live": true
+      },
+      {
+        "name": "_eqAffixRebuild",
+        "line": 27972,
+        "equals_live": true
+      },
+      {
+        "name": "_eqAffix",
+        "line": 27973,
+        "equals_live": true
+      },
+      {
+        "name": "_eqStatRebuild",
+        "line": 27968,
+        "equals_live": true
+      },
+      {
+        "name": "_eqStat",
+        "line": 27969,
+        "equals_live": true
+      },
+      {
+        "name": "_eqImplicit",
+        "line": 27994,
+        "equals_live": true
+      },
+      {
+        "name": "_gritTotal",
+        "line": 27899,
+        "equals_live": true
+      },
+      {
+        "name": "_gritHpFlat",
+        "line": 27900,
+        "equals_live": true
+      },
+      {
+        "name": "_gritStFlat",
+        "line": 27902,
+        "equals_live": true
+      },
+      {
+        "name": "_gritMpFlat",
+        "line": 27901,
+        "equals_live": true
+      },
+      {
+        "name": "pPredSpd",
+        "line": 28066,
+        "equals_live": true
+      },
+      {
+        "name": "recalcSt",
+        "line": 16427,
+        "equals_live": true
+      },
+      {
+        "name": "applyStats",
+        "line": 27904,
+        "equals_live": true
+      },
+      {
+        "name": "statDex",
+        "line": 27996,
+        "equals_live": true
+      },
+      {
+        "name": "statCrit",
+        "line": 27999,
+        "equals_live": true
+      },
+      {
+        "name": "statCritDmg",
+        "line": 28000,
+        "equals_live": true
+      },
+      {
+        "name": "_eqLckTotal",
+        "line": 27998,
+        "equals_live": true
+      },
+      {
+        "name": "_passDmgSum",
+        "line": 28005,
+        "equals_live": true
+      },
+      {
+        "name": "pAtkMul",
+        "line": 28019,
+        "equals_live": true
+      },
+      {
+        "name": "statDropBonus",
+        "line": 28001,
+        "equals_live": true
+      },
+      {
+        "name": "ITEM_SIZE",
+        "line": 15830,
+        "equals_live": true
+      },
+      {
+        "name": "WTYPE_SIZE",
+        "line": 15832,
+        "equals_live": true
+      },
+      {
+        "name": "BTYPE_SIZE",
+        "line": 15833,
+        "equals_live": true
+      },
+      {
+        "name": "INV_COLS",
+        "line": 15834,
+        "equals_live": true
+      },
+      {
+        "name": "_invRows",
+        "line": 16183,
+        "equals_live": true
+      },
+      {
+        "name": "_itemSz",
+        "line": 16185,
+        "equals_live": true
+      },
+      {
+        "name": "_invCategoryKey",
+        "line": 16190,
+        "equals_live": true
+      },
+      {
+        "name": "_invGrid",
+        "line": 16191,
+        "equals_live": true
+      },
+      {
+        "name": "_invFindSpace",
+        "line": 16202,
+        "equals_live": true
+      },
+      {
+        "name": "itemPower",
+        "line": 16436,
+        "equals_live": true
+      },
+      {
+        "name": "_invSortBag",
+        "line": 16215,
+        "equals_live": true
+      },
+      {
+        "name": "_invAutoPlace",
+        "line": 16231,
+        "equals_live": true
+      },
+      {
+        "name": "_invCanPlace",
+        "line": 16249,
+        "equals_live": true
+      },
+      {
+        "name": "_earringSlot",
+        "line": 16274,
+        "equals_live": true
+      },
+      {
+        "name": "_equipSlot",
+        "line": 16275,
+        "equals_live": true
+      },
+      {
+        "name": "_refreshEquipmentStats",
+        "line": 16289,
+        "equals_live": true
+      },
+      {
+        "name": "equipItem",
+        "line": 16295,
+        "equals_live": true
+      },
+      {
+        "name": "unequipItem",
+        "line": 16369,
+        "equals_live": true
+      }
+    ]
+  },
+  "starting": {
+    "equipped": [
+      {
+        "id": 1792796400000.5383,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "녹슨 검",
+        "emoji": "⚔️",
+        "wtype": "sword",
+        "atk": 18,
+        "spd": 0.45,
+        "wStCost": 8,
+        "wArcW": 0.95,
+        "wRange": 50,
+        "wStagger": 8,
+        "bonusRange": 1,
+        "affixes": [],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 13.28,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.5073,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "나무 견갑",
+        "emoji": "🛡️",
+        "bonusRange": 0,
+        "shieldWt": 17,
+        "def": 20,
+        "bonusSt": 12,
+        "stagger": 15,
+        "bonusHp": 19,
+        "affixes": [],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 5.17,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.4236,
+        "slot": "boots",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 전투화",
+        "emoji": "👢",
+        "def": 18,
+        "spd": 0,
+        "bonusSt": 30,
+        "chargeDist": 14,
+        "bonusHp": 45,
+        "affixes": [],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 4.6,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.4863,
+        "slot": "armor",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "천 갑옷",
+        "emoji": "🦺",
+        "def": 20,
+        "bonusSt": 39,
+        "charge": 7,
+        "chargeDist": 22,
+        "chargeW": 11,
+        "bonusRange": 0,
+        "bonusChargeDist": 1,
+        "bonusHp": 28,
+        "affixes": [],
+        "_implicitStat": "_iPhysDR",
+        "_implicitVal": 5.99,
+        "_implicitKo": "물리 피해감소 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.0403,
+        "slot": "helmet",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 머리띠",
+        "emoji": "⛑️",
+        "atk": 1,
+        "def": 20,
+        "beamDmg": 1.5,
+        "elements": [
+          {
+            "el": 0,
+            "dmg": 12
+          }
+        ],
+        "bonusRange": 0,
+        "affixes": [],
+        "_implicitStat": "_iMaxHP",
+        "_implicitVal": 19.4,
+        "_implicitKo": "최대 HP +X",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.0652,
+        "slot": "bow",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 석궁",
+        "emoji": "⚙️",
+        "btype": "crossbow",
+        "atk": 38,
+        "bowSpd": 1,
+        "bowStCost": 8,
+        "bowRange": 774,
+        "bowProjSpd": 22,
+        "bonusRange": 0,
+        "bowPierce": 0.02,
+        "affixes": [],
+        "_implicitStat": "_iPierce",
+        "_implicitVal": 14.02,
+        "_implicitKo": "관통 확률 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.5237,
+        "slot": "gloves",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "천 장갑",
+        "emoji": "🧤",
+        "def": 19,
+        "spd": 0,
+        "bonusSt": 35,
+        "bonusHp": 19,
+        "potCd": 0.047,
+        "affixes": [],
+        "_implicitStat": "_iAtkSpd",
+        "_implicitVal": 3.36,
+        "_implicitKo": "공격속도 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.9846,
+        "slot": "pants",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "천 바지",
+        "emoji": "👖",
+        "def": 21,
+        "bonusSt": 14,
+        "bonusHp": 24,
+        "affixes": [],
+        "_implicitStat": "_iStsRes",
+        "_implicitVal": 11.72,
+        "_implicitKo": "상태이상 저항 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      null,
+      {
+        "id": 1792796400000.1335,
+        "slot": "necklace",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 부적",
+        "emoji": "📿",
+        "eDef": 19,
+        "bonusShield": 37,
+        "bonusMp": 48,
+        "affixes": [],
+        "_implicitStat": "_iMaxHPPct",
+        "_implicitVal": 9.4,
+        "_implicitKo": "최대 HP +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.0942,
+        "slot": "ring1",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "녹슨 반지",
+        "emoji": "💍",
+        "eDef": 18,
+        "bonusShield": 39,
+        "bonusMp": 42,
+        "affixes": [],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 12.43,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.3936,
+        "slot": "ring2",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "녹슨 반지",
+        "emoji": "💍",
+        "eDef": 18,
+        "bonusShield": 17,
+        "bonusMp": 21,
+        "affixes": [],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 14.49,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.761,
+        "slot": "cape",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 망토",
+        "emoji": "🧣",
+        "def": 20,
+        "spd": 0,
+        "bonusSt": 10,
+        "bonusHp": 27,
+        "affixes": [],
+        "_implicitStat": "_iDashCd",
+        "_implicitVal": 6.61,
+        "_implicitKo": "회피 쿨다운 -X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.9473,
+        "slot": "bracelet",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 악마의 팔찌",
+        "emoji": "⭕",
+        "eDef": 19,
+        "bonusShield": 44,
+        "bonusMp": 45,
+        "brType": "demon",
+        "affixes": [],
+        "_implicitStat": "_iRevPow",
+        "_implicitVal": 11.2,
+        "_implicitKo": "부활력 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      {
+        "id": 1792796400000.748,
+        "slot": "headband",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 귀걸이",
+        "emoji": "🎀",
+        "eDef": 21,
+        "bonusShield": 21,
+        "bonusMp": 41,
+        "affixes": [],
+        "_implicitStat": "_iMagDmg",
+        "_implicitVal": 9.07,
+        "_implicitKo": "마법 데미지 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      },
+      null,
+      {
+        "id": 1792796400000.0999,
+        "slot": "headband2",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 귀걸이",
+        "emoji": "🎀",
+        "eDef": 21,
+        "bonusShield": 27,
+        "bonusMp": 33,
+        "affixes": [],
+        "_implicitStat": "_iMagDmg",
+        "_implicitVal": 9.11,
+        "_implicitKo": "마법 데미지 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": []
+      }
+    ],
+    "bag": [
+      {
+        "id": 1792796400000.9827,
+        "slot": "bow",
+        "el": 1,
+        "rarity": 1,
+        "tier": 0,
+        "name": "불꽃 석궁",
+        "emoji": "⚙️",
+        "btype": "crossbow",
+        "atk": 22,
+        "bowSpd": 1.2,
+        "bowStCost": 8,
+        "bowRange": 760,
+        "bowProjSpd": 22,
+        "bonusRange": 1,
+        "bowPierce": 0.07,
+        "affixes": [
+          {
+            "id": "projDmgPct",
+            "tier": 0,
+            "value": 0.08
+          },
+          {
+            "id": "pierceDmgKeep",
+            "tier": 0,
+            "value": 0.1
+          }
+        ],
+        "_implicitStat": "_iPierce",
+        "_implicitVal": 12.07,
+        "_implicitKo": "관통 확률 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 0,
+        "_gy": 0
+      },
+      {
+        "id": 1792796400000.1453,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 1,
+        "tier": 0,
+        "name": "나무 견갑",
+        "emoji": "🛡️",
+        "bonusRange": 1,
+        "shieldWt": 16,
+        "def": 25,
+        "bonusSt": 50,
+        "stagger": 18,
+        "bonusHp": 26,
+        "affixes": [
+          {
+            "id": "shieldFlat",
+            "tier": 0,
+            "value": 120
+          },
+          {
+            "id": "reflect",
+            "tier": 0,
+            "value": 0.03
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 4.66,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 2,
+        "_gy": 0
+      },
+      {
+        "id": 1792796400000.0876,
+        "slot": "cape",
+        "el": 1,
+        "rarity": 1,
+        "tier": 0,
+        "name": "불꽃 망토",
+        "emoji": "🧣",
+        "def": 22,
+        "spd": 0,
+        "bonusSt": 47,
+        "bonusHp": 12,
+        "affixes": [
+          {
+            "id": "shieldFlat",
+            "tier": 0,
+            "value": 120
+          },
+          {
+            "id": "dropRate",
+            "tier": 0,
+            "value": 0.08
+          }
+        ],
+        "_implicitStat": "_iDashCd",
+        "_implicitVal": 11.62,
+        "_implicitKo": "회피 쿨다운 -X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 4,
+        "_gy": 0
+      },
+      {
+        "id": 1792796400000.4397,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 1,
+        "tier": 0,
+        "name": "녹슨 도끼",
+        "emoji": "🪓",
+        "wtype": "axe",
+        "atk": 31,
+        "spd": 0.54,
+        "wStCost": 8,
+        "wArcW": 0.95,
+        "wRange": 50,
+        "wStagger": 9,
+        "bonusRange": 1,
+        "affixes": [
+          {
+            "id": "cooldownRed",
+            "tier": 0,
+            "value": -0.02
+          },
+          {
+            "id": "darkPen",
+            "tier": 0,
+            "value": 0.05
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 9.45,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 6,
+        "_gy": 0
+      },
+      {
+        "id": 1792796400000.7188,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 1,
+        "tier": 0,
+        "name": "녹슨 창",
+        "emoji": "⚔️",
+        "wtype": "spear",
+        "atk": 22,
+        "spd": 0.54,
+        "wStCost": 8,
+        "wArcW": 0.95,
+        "wRange": 50,
+        "wStagger": 9,
+        "bonusRange": 1,
+        "affixes": [
+          {
+            "id": "counterAtkDmg",
+            "tier": 0,
+            "value": 0.1
+          },
+          {
+            "id": "onHitBleed",
+            "tier": 0,
+            "value": 0.05
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 13.75,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 8,
+        "_gy": 0
+      },
+      {
+        "id": 1792796400000.0156,
+        "slot": "armor",
+        "el": 1,
+        "rarity": 1,
+        "tier": 0,
+        "name": "불꽃 갑옷",
+        "emoji": "🦺",
+        "def": 22,
+        "bonusSt": 41,
+        "charge": 8,
+        "chargeDist": 26,
+        "chargeW": 13,
+        "bonusRange": 1,
+        "bonusChargeDist": 1,
+        "bonusHp": 30,
+        "affixes": [
+          {
+            "id": "maxHPPct",
+            "tier": 0,
+            "value": 0.05
+          },
+          {
+            "id": "darkDR",
+            "tier": 0,
+            "value": 0.04
+          }
+        ],
+        "_implicitStat": "_iPhysDR",
+        "_implicitVal": 6.01,
+        "_implicitKo": "물리 피해감소 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 0,
+        "_gy": 2
+      },
+      {
+        "id": 1792796400000.0464,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 1,
+        "tier": 0,
+        "name": "녹슨 해머",
+        "emoji": "🔨",
+        "wtype": "hammer",
+        "atk": 23,
+        "spd": 0.54,
+        "wStCost": 8,
+        "wArcW": 0.95,
+        "wRange": 51,
+        "wStagger": 9,
+        "bonusRange": 1,
+        "affixes": [
+          {
+            "id": "poisonDot",
+            "tier": 0,
+            "value": 5
+          },
+          {
+            "id": "slowDmgUp",
+            "tier": 0,
+            "value": 0.1
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 9.42,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 2,
+        "_gy": 2
+      },
+      {
+        "id": 1792796400000.8833,
+        "slot": "boots",
+        "el": 4,
+        "rarity": 1,
+        "tier": 0,
+        "name": "전기 전투화",
+        "emoji": "👢",
+        "def": 25,
+        "spd": 0,
+        "bonusSt": 27,
+        "chargeDist": 16,
+        "bonusHp": 36,
+        "affixes": [
+          {
+            "id": "defFlat",
+            "tier": 0,
+            "value": 10
+          },
+          {
+            "id": "pickupRadius",
+            "tier": 0,
+            "value": 10
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 6.46,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 4,
+        "_gy": 2
+      },
+      {
+        "id": 1792796400000.4824,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 1,
+        "tier": 0,
+        "name": "녹슨 단검",
+        "emoji": "🗡️",
+        "wtype": "dagger",
+        "atk": 10,
+        "spd": 0.54,
+        "wStCost": 8,
+        "wArcW": 0.95,
+        "wRange": 47,
+        "wStagger": 9,
+        "bonusRange": 1,
+        "affixes": [
+          {
+            "id": "flatLightDmg",
+            "tier": 0,
+            "value": 7
+          },
+          {
+            "id": "onHitPoison",
+            "tier": 0,
+            "value": 0.06
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 12.65,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 6,
+        "_gy": 2
+      },
+      {
+        "id": 1792796400000.8105,
+        "slot": "helmet",
+        "el": 3,
+        "rarity": 1,
+        "tier": 0,
+        "name": "그림자 머리띠",
+        "emoji": "⛑️",
+        "atk": 2,
+        "def": 22,
+        "beamDmg": 1.8,
+        "elements": [
+          {
+            "el": 3,
+            "dmg": 14
+          }
+        ],
+        "splashR": 10,
+        "bonusRange": 1,
+        "affixes": [
+          {
+            "id": "poisonDmgPct",
+            "tier": 0,
+            "value": 0.08
+          },
+          {
+            "id": "skDarkPillarDmg",
+            "tier": 0,
+            "value": 0.08
+          }
+        ],
+        "_implicitStat": "_iMaxHP",
+        "_implicitVal": 18.11,
+        "_implicitKo": "최대 HP +X",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "_gx": 8,
+        "_gy": 2
+      }
+    ]
+  },
+  "initialStats": {
+    "PlayerMaxHp": 526,
+    "PlayerBaseAttack": 15,
+    "PlayerSpeed": 2.7196000000000002,
+    "PlayerMaxStamina": 240,
+    "PlayerMaxMana": 330,
+    "PlayerMaxShield": 285,
+    "PlayerHpRegen": 0.05,
+    "PlayerStaminaRegen": 0.05,
+    "PlayerManaRegen": 0.05,
+    "PlayerPhysicalDefense": 100,
+    "PlayerCriticalChance": 0,
+    "PlayerCriticalMultiplier": 1.5,
+    "AttackSpeedMultiplier": 1.0336,
+    "DamageMultiplier": 0.7,
+    "AccessoryDamageBonus": 0,
+    "DropBonus": 1,
+    "StrengthFlat": 0,
+    "WeaponAttack": 18,
+    "WeaponSpeed": 0.45,
+    "WeaponRange": 54,
+    "WeaponArc": 0.95,
+    "hp": 526,
+    "st": 240,
+    "mp": 330,
+    "shield": 285
+  },
+  "power": [
+    1748,
+    489,
+    419,
+    322,
+    313,
+    313,
+    311,
+    296,
+    260,
+    255
+  ],
+  "cases": [
+    {
+      "name": "equip-불꽃 석궁",
+      "index": 0,
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "불꽃 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 석궁",
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "name": "equip-나무 견갑",
+      "index": 1,
+      "stats": {
+        "PlayerMaxHp": 534,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 278,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 405,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 105,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "name": "equip-불꽃 망토",
+      "index": 2,
+      "stats": {
+        "PlayerMaxHp": 510,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 277,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 405,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1.08,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 510,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "불꽃 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 망토",
+          "x": 4,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "name": "equip-녹슨 도끼",
+      "index": 3,
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 31,
+        "WeaponSpeed": 0.54,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 도끼",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "녹슨 검",
+          "x": 6,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "name": "equip-녹슨 창",
+      "index": 4,
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 22,
+        "WeaponSpeed": 0.54,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 창",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "녹슨 검",
+          "x": 8,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "name": "equip-불꽃 갑옷",
+      "index": 5,
+      "stats": {
+        "PlayerMaxHp": 553,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 242,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 102,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "불꽃 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "천 갑옷",
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "name": "equip-녹슨 해머",
+      "index": 6,
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 23,
+        "WeaponSpeed": 0.54,
+        "WeaponRange": 55,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 해머",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "녹슨 검",
+          "x": 2,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "name": "equip-전기 전투화",
+      "index": 7,
+      "stats": {
+        "PlayerMaxHp": 516,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.76796,
+        "PlayerMaxStamina": 237,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 117,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 516,
+        "st": 237,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "전기 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 전투화",
+          "x": 4,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "name": "equip-녹슨 단검",
+      "index": 8,
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 10,
+        "WeaponSpeed": 0.54,
+        "WeaponRange": 51,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 단검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "녹슨 검",
+          "x": 6,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "name": "equip-그림자 머리띠",
+      "index": 9,
+      "stats": {
+        "PlayerMaxHp": 525,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 525,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "그림자 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "낡은 머리띠",
+          "x": 8,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "name": "unequip-weapon",
+      "slot": "weapon",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 0,
+        "WeaponSpeed": 0,
+        "WeaponRange": 0,
+        "WeaponArc": 0,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        null,
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "녹슨 검",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-shield",
+      "slot": "shield",
+      "stats": {
+        "PlayerMaxHp": 505,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 228,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 80,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 505,
+        "st": 228,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        null,
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "나무 견갑",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-boots",
+      "slot": "boots",
+      "stats": {
+        "PlayerMaxHp": 477,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.6,
+        "PlayerMaxStamina": 210,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 82,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 477,
+        "st": 210,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        null,
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 전투화",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-armor",
+      "slot": "armor",
+      "stats": {
+        "PlayerMaxHp": 496,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 201,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 80,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 496,
+        "st": 201,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        null,
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "천 갑옷",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-helmet",
+      "slot": "helmet",
+      "stats": {
+        "PlayerMaxHp": 505,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 505,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        null,
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 머리띠",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-bow",
+      "slot": "bow",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        null,
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 석궁",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-gloves",
+      "slot": "gloves",
+      "stats": {
+        "PlayerMaxHp": 505,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 205,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 81,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 505,
+        "st": 205,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        null,
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "천 장갑",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-pants",
+      "slot": "pants",
+      "stats": {
+        "PlayerMaxHp": 500,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 226,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 79,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 500,
+        "st": 226,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        null,
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "천 바지",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-belt",
+      "slot": "belt",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "name": "unequip-necklace",
+      "slot": "necklace",
+      "stats": {
+        "PlayerMaxHp": 481,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 282,
+        "PlayerMaxShield": 248,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 481,
+        "st": 240,
+        "mp": 282,
+        "shield": 248
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        null,
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 부적",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-ring1",
+      "slot": "ring1",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 288,
+        "PlayerMaxShield": 246,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 288,
+        "shield": 246
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        null,
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "녹슨 반지",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-ring2",
+      "slot": "ring2",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 309,
+        "PlayerMaxShield": 268,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 309,
+        "shield": 268
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        null,
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "녹슨 반지",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-cape",
+      "slot": "cape",
+      "stats": {
+        "PlayerMaxHp": 497,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 230,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 497,
+        "st": 230,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        null,
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 망토",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-bracelet",
+      "slot": "bracelet",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 285,
+        "PlayerMaxShield": 241,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 285,
+        "shield": 241
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        null,
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 악마의 팔찌",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-headband",
+      "slot": "headband",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 289,
+        "PlayerMaxShield": 264,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 289,
+        "shield": 264
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        null,
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 귀걸이",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    },
+    {
+      "name": "unequip-ossuary",
+      "slot": "ossuary",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        "낡은 귀걸이"
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "name": "unequip-headband2",
+      "slot": "headband2",
+      "stats": {
+        "PlayerMaxHp": 526,
+        "PlayerBaseAttack": 15,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 297,
+        "PlayerMaxShield": 258,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 297,
+        "shield": 258
+      },
+      "equipped": [
+        "녹슨 검",
+        "나무 견갑",
+        "낡은 전투화",
+        "천 갑옷",
+        "낡은 머리띠",
+        "낡은 석궁",
+        "천 장갑",
+        "천 바지",
+        null,
+        "낡은 부적",
+        "녹슨 반지",
+        "녹슨 반지",
+        "낡은 망토",
+        "낡은 악마의 팔찌",
+        "낡은 귀걸이",
+        null,
+        null
+      ],
+      "bag": [
+        {
+          "name": "불꽃 석궁",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "나무 견갑",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "name": "불꽃 망토",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "name": "녹슨 도끼",
+          "x": 6,
+          "y": 0
+        },
+        {
+          "name": "녹슨 창",
+          "x": 8,
+          "y": 0
+        },
+        {
+          "name": "불꽃 갑옷",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "name": "녹슨 해머",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "name": "전기 전투화",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "name": "녹슨 단검",
+          "x": 6,
+          "y": 2
+        },
+        {
+          "name": "그림자 머리띠",
+          "x": 8,
+          "y": 2
+        },
+        {
+          "name": "낡은 귀걸이",
+          "x": 0,
+          "y": 4
+        }
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "level": 1,
+      "stage": 5,
+      "difficulty": 0,
+      "stats": {
+        "PlayerMaxHp": 552,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    },
+    {
+      "level": 1,
+      "stage": 5,
+      "difficulty": 5,
+      "stats": {
+        "PlayerMaxHp": 443,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 443,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    },
+    {
+      "level": 1,
+      "stage": 5,
+      "difficulty": -5,
+      "stats": {
+        "PlayerMaxHp": 662,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.7196000000000002,
+        "PlayerMaxStamina": 240,
+        "PlayerMaxMana": 330,
+        "PlayerMaxShield": 285,
+        "PlayerHpRegen": 0.05,
+        "PlayerStaminaRegen": 0.05,
+        "PlayerManaRegen": 0.05,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0,
+        "PlayerCriticalMultiplier": 1.5,
+        "AttackSpeedMultiplier": 1.0336,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1,
+        "StrengthFlat": 0,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 417,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    },
+    {
+      "level": 2,
+      "stage": 5,
+      "difficulty": 0,
+      "stats": {
+        "PlayerMaxHp": 559,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.7248300000000003,
+        "PlayerMaxStamina": 241,
+        "PlayerMaxMana": 333,
+        "PlayerMaxShield": 290,
+        "PlayerHpRegen": 0.052000000000000005,
+        "PlayerStaminaRegen": 0.055,
+        "PlayerManaRegen": 0.055,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0.025,
+        "PlayerCriticalMultiplier": 1.502,
+        "AttackSpeedMultiplier": 1.0341,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1.0015,
+        "StrengthFlat": 1,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 559,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    },
+    {
+      "level": 2,
+      "stage": 5,
+      "difficulty": 5,
+      "stats": {
+        "PlayerMaxHp": 449,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.7248300000000003,
+        "PlayerMaxStamina": 241,
+        "PlayerMaxMana": 333,
+        "PlayerMaxShield": 290,
+        "PlayerHpRegen": 0.052000000000000005,
+        "PlayerStaminaRegen": 0.055,
+        "PlayerManaRegen": 0.055,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0.025,
+        "PlayerCriticalMultiplier": 1.502,
+        "AttackSpeedMultiplier": 1.0341,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1.0015,
+        "StrengthFlat": 1,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 449,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    },
+    {
+      "level": 2,
+      "stage": 5,
+      "difficulty": -5,
+      "stats": {
+        "PlayerMaxHp": 668,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.7248300000000003,
+        "PlayerMaxStamina": 241,
+        "PlayerMaxMana": 333,
+        "PlayerMaxShield": 290,
+        "PlayerHpRegen": 0.052000000000000005,
+        "PlayerStaminaRegen": 0.055,
+        "PlayerManaRegen": 0.055,
+        "PlayerPhysicalDefense": 100,
+        "PlayerCriticalChance": 0.025,
+        "PlayerCriticalMultiplier": 1.502,
+        "AttackSpeedMultiplier": 1.0341,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1.0015,
+        "StrengthFlat": 1,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 417,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    },
+    {
+      "level": 100,
+      "stage": 5,
+      "difficulty": 0,
+      "stats": {
+        "PlayerMaxHp": 876,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.9811,
+        "PlayerMaxStamina": 290,
+        "PlayerMaxMana": 480,
+        "PlayerMaxShield": 535,
+        "PlayerHpRegen": 0.15000000000000002,
+        "PlayerStaminaRegen": 0.3,
+        "PlayerManaRegen": 0.3,
+        "PlayerPhysicalDefense": 125,
+        "PlayerCriticalChance": 1.25,
+        "PlayerCriticalMultiplier": 1.6,
+        "AttackSpeedMultiplier": 1.0586,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1.075,
+        "StrengthFlat": 50,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 636,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    },
+    {
+      "level": 100,
+      "stage": 5,
+      "difficulty": 5,
+      "stats": {
+        "PlayerMaxHp": 767,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.9811,
+        "PlayerMaxStamina": 290,
+        "PlayerMaxMana": 480,
+        "PlayerMaxShield": 535,
+        "PlayerHpRegen": 0.15000000000000002,
+        "PlayerStaminaRegen": 0.3,
+        "PlayerManaRegen": 0.3,
+        "PlayerPhysicalDefense": 125,
+        "PlayerCriticalChance": 1.25,
+        "PlayerCriticalMultiplier": 1.6,
+        "AttackSpeedMultiplier": 1.0586,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1.075,
+        "StrengthFlat": 50,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 526,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    },
+    {
+      "level": 100,
+      "stage": 5,
+      "difficulty": -5,
+      "stats": {
+        "PlayerMaxHp": 985,
+        "PlayerBaseAttack": 23,
+        "PlayerSpeed": 2.9811,
+        "PlayerMaxStamina": 290,
+        "PlayerMaxMana": 480,
+        "PlayerMaxShield": 535,
+        "PlayerHpRegen": 0.15000000000000002,
+        "PlayerStaminaRegen": 0.3,
+        "PlayerManaRegen": 0.3,
+        "PlayerPhysicalDefense": 125,
+        "PlayerCriticalChance": 1.25,
+        "PlayerCriticalMultiplier": 1.6,
+        "AttackSpeedMultiplier": 1.0586,
+        "DamageMultiplier": 0.7,
+        "AccessoryDamageBonus": 0,
+        "DropBonus": 1.075,
+        "StrengthFlat": 50,
+        "WeaponAttack": 18,
+        "WeaponSpeed": 0.45,
+        "WeaponRange": 54,
+        "WeaponArc": 0.95,
+        "hp": 417,
+        "st": 240,
+        "mp": 330,
+        "shield": 285
+      }
+    }
+  ],
+  "grid": [
+    {
+      "x": -1,
+      "y": 0,
+      "allowed": false
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "allowed": false
+    },
+    {
+      "x": 0,
+      "y": 119,
+      "allowed": false
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "allowed": false
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "allowed": true
+    },
+    {
+      "x": 8,
+      "y": 118,
+      "allowed": true
+    }
+  ],
+  "noHeal": {
+    "PlayerMaxHp": 553,
+    "PlayerBaseAttack": 15,
+    "PlayerSpeed": 2.7196000000000002,
+    "PlayerMaxStamina": 242,
+    "PlayerMaxMana": 330,
+    "PlayerMaxShield": 285,
+    "PlayerHpRegen": 0.05,
+    "PlayerStaminaRegen": 0.05,
+    "PlayerManaRegen": 0.05,
+    "PlayerPhysicalDefense": 102,
+    "PlayerCriticalChance": 0,
+    "PlayerCriticalMultiplier": 1.5,
+    "AttackSpeedMultiplier": 1.0336,
+    "DamageMultiplier": 0.7,
+    "AccessoryDamageBonus": 0,
+    "DropBonus": 1,
+    "StrengthFlat": 0,
+    "WeaponAttack": 18,
+    "WeaponSpeed": 0.45,
+    "WeaponRange": 54,
+    "WeaponArc": 0.95,
+    "hp": 50,
+    "st": 25,
+    "mp": 30,
+    "shield": 20
+  },
+  "scope": {
+    "native_runtime_javascript": false,
+    "full_browser_rng_replay": false,
+    "starter_common_equipped_magic_bag": true,
+    "conditional_affix_combat": false,
+    "persistence": false
+  }
+}

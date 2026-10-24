@@ -1,0 +1,126 @@
+{
+  "schema": "exoduser.unity.inventory-assets.v1",
+  "seedSha256": "cde2c972fe01307fb1989d4ba7fb5c3e6c5ddc79138672936fb64be3bb03b831",
+  "assets": [
+    {
+      "source": "img/ui/inventory_knight_cutout_20260928.png",
+      "destination": "Art/ui/inventory/knight.png",
+      "sha256": "130c16379be0475a85121ff55341e799a5fce17fd5e7e87389c63c7fba2e67fe",
+      "bytes": 1265160
+    },
+    {
+      "source": "img/ui/ossuary_socket_hf_v2.png",
+      "destination": "Art/ui/inventory/socket.png",
+      "sha256": "e8dacf6c56f4fa7c439cf7880bcaaa88659364e70561cbf034c09b5ff72117bd",
+      "bytes": 1566065
+    },
+    {
+      "source": "img/ui/hell_gothic/iron.png",
+      "destination": "Art/ui/inventory/iron.png",
+      "sha256": "002b14f29ad42ea031d7fdc159cbed19e8a066377a2f1605b90be3450d91437d",
+      "bytes": 2763927
+    },
+    {
+      "source": "img/ui/item-cutouts/sword_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/sword_cutout.png",
+      "sha256": "e475be3fd33629a955dfef8ca67cf9e2fc6c23e09c3f70d4b01ec7d8ce66a4f6",
+      "bytes": 229808
+    },
+    {
+      "source": "img/ui/item-cutouts/shield_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/shield_cutout.png",
+      "sha256": "3476338c20f76fe21279836443afe3bcdd091e71a0616f3caa438bf3c59588f8",
+      "bytes": 1356176
+    },
+    {
+      "source": "img/ui/item-cutouts/boots_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/boots_cutout.png",
+      "sha256": "2b6b61cca12c7f9d3c434bd5718a087021a74b53a3d4aba43c2b9ca774cb23d2",
+      "bytes": 1833558
+    },
+    {
+      "source": "img/ui/item-cutouts/armor_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/armor_cutout.png",
+      "sha256": "2054750ecd716abb3128af683d2816a03f1d021fe2c05d332aa10ffad7a806dd",
+      "bytes": 1528989
+    },
+    {
+      "source": "img/ui/item-cutouts/helmet_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/helmet_cutout.png",
+      "sha256": "822c558fe4690f085969da3b01eaea635ab28373270568f6ef1e7fc6dbc5f5cd",
+      "bytes": 1579909
+    },
+    {
+      "source": "img/ui/item-cutouts/crossbow_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/crossbow_cutout.png",
+      "sha256": "3e6ad5f652795ff7631845d330585db716b5effe0c28fa0c361350a24629521b",
+      "bytes": 634756
+    },
+    {
+      "source": "img/ui/item-cutouts/gloves_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/gloves_cutout.png",
+      "sha256": "f405545bc6e1fb98fa2a6dcdcaa27122a73e9cc1966035094cd31866b8ff7e71",
+      "bytes": 1632469
+    },
+    {
+      "source": "img/ui/item-cutouts/pants_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/pants_cutout.png",
+      "sha256": "747e44c08f0a73b5e827dc24d962d65068599bfff19b7cf404e6b49a3dbd9e40",
+      "bytes": 1317880
+    },
+    {
+      "source": "img/ui/item-cutouts/necklace_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/necklace_cutout.png",
+      "sha256": "89eff5552c2f4c16d5b3d977d5ebda5138ab255a2d29b76b0444678d3068a052",
+      "bytes": 1354924
+    },
+    {
+      "source": "output/imagegen/item-skins/ring_phys.png",
+      "destination": "Art/ui/inventory/items/ring_phys.png",
+      "sha256": "2f3a05692db24dbd36562681921ac72613fd97e44c3210083a4324805355137e",
+      "bytes": 52346
+    },
+    {
+      "source": "img/ui/item-cutouts/cape_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/cape_cutout.png",
+      "sha256": "31c33a4bf4dfd10714a3736c9e2ccdf8b2188696241e4f2278ba7e3e1d58dd49",
+      "bytes": 1053441
+    },
+    {
+      "source": "img/ui/item-cutouts/bracelet_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/bracelet_cutout.png",
+      "sha256": "546f68c50655cb3c408cc2bbe4d94c3f1513101b3247bb99e45be79b44de7258",
+      "bytes": 1153618
+    },
+    {
+      "source": "img/ui/item-cutouts/earring_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/earring_cutout.png",
+      "sha256": "c20aaf6023e0456fbb8c84da0e8ffe7b106598942ad69bffc85ed2bb3dce2254",
+      "bytes": 886170
+    },
+    {
+      "source": "img/ui/item-cutouts/axe_phys_cutout.png",
+      "destination": "Art/ui/inventory/items/axe_cutout.png",
+      "sha256": "195447c1f178c3013c49f804d45d488f0f7d413c382512f9a2e674e47690a5ae",
+      "bytes": 649389
+    },
+    {
+      "source": "output/imagegen/item-skins/spear_phys.png",
+      "destination": "Art/ui/inventory/items/spear_phys.png",
+      "sha256": "d17db298c8e6977a708e5d0a543a6548210c2ec557c11fbcc58c64ac1ee7c9b6",
+      "bytes": 40231
+    },
+    {
+      "source": "output/imagegen/item-skins/hammer_phys.png",
+      "destination": "Art/ui/inventory/items/hammer_phys.png",
+      "sha256": "0c22468a027473c1fffe41aece2cafbed97c9dd5495c70facc1202e6d72f7a10",
+      "bytes": 56964
+    },
+    {
+      "source": "output/imagegen/item-skins/dagger_phys.png",
+      "destination": "Art/ui/inventory/items/dagger_phys.png",
+      "sha256": "2114d954cadbce7cb13f84f99d56ac8d4271a42b0a395103e087b5cfb9687d83",
+      "bytes": 42254
+    }
+  ]
+}

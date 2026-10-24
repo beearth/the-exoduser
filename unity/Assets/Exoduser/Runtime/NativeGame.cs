@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
         public int RenderedEnemyCount {get {return enemies.Count;}}
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
-        NativeHud hud;bool hudSmoke;
+        NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
         bool basicWeaponMode;
         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
@@ -45,6 +45,7 @@ namespace Exoduser.UnityPort
             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
             hud=new NativeHud();
+            inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
             BuildProps();
             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
             if(kiSheet==null||kiSheet.width%3!=0||kiSheet.height%3!=0)throw new InvalidOperationException("Invalid original kiSlash 3x3 sheet");
@@ -54,7 +55,8 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             sound=new NativeFeedbackAudio(transform,view);
             ResetRun();
-            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-hud-smoke")>=0){hudSmoke=true;menu=false;StartCoroutine(HudSmoke());}
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-inventory-smoke")>=0){inventorySmoke=true;menu=false;Running=true;StartCoroutine(InventorySmoke());}
+            else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-hud-smoke")>=0){hudSmoke=true;menu=false;StartCoroutine(HudSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-smoke")>=0){menu=false;Running=true;StartCoroutine(Smoke());}
         }
         public void ResetRun()
@@ -63,8 +65,9 @@ namespace Exoduser.UnityPort
             kiView?.Reset();impacts?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
             Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
+            inventory.Reset();Simulation.ApplyEquipment(inventory.State);
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
-            // Equipment factory and persistent inventory are not implemented yet.
+            // World drop item factory and persistent saves remain unimplemented.
             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
             if(playerView==null)playerView=CreateRenderer("Player");
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
@@ -88,9 +91,10 @@ namespace Exoduser.UnityPort
         }
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Escape)){menu=!menu;Running=!menu&&Simulation.Player.Hp>0;}
-            if(!menu&&Input.GetKeyDown(KeyCode.R))Toast("아이템 생성·인벤토리 이식 대기");
-            if(!menu&&(Input.GetKeyDown(KeyCode.Q)||Input.GetKeyDown(KeyCode.E)))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
+            if(Input.GetKeyDown(KeyCode.Escape)){if(inventory.Open)SetInventory(false);else{menu=!menu;Running=!menu&&Simulation.Player.Hp>0;}}
+            if(!menu&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.Tab))SetInventory(!inventory.Open);
+            if(!menu&&!inventory.Open&&Input.GetKeyDown(KeyCode.R))Toast("드랍 아이템 생성 이식 대기");
+            if(!menu&&!inventory.Open&&(Input.GetKeyDown(KeyCode.Q)||Input.GetKeyDown(KeyCode.E)))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
             UpdateViews();
             if(smokeActive)sound?.Probe();
         }
@@ -192,7 +196,9 @@ namespace Exoduser.UnityPort
         }
         void OnGUI()
         {
-            if(Simulation==null)return;InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
+            if(Simulation==null)return;
+            if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
+            InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
             var p=Simulation.Player;
             GUI.Label(new Rect(40,28,600,40),"EXODUSER  /  UNITY",title);
             GUI.Label(new Rect(42,70,700,32),basicWeaponMode?"이식 검증판 · 기본 무기":"이식 검증판 · 기검참",small);
@@ -202,13 +208,13 @@ namespace Exoduser.UnityPort
             var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);
             hud.Draw(Screen.width/hudScale,Screen.height/hudScale,basicWeaponMode?"weapon":"kiSlash");GUI.matrix=baseMatrix;
-            GUI.Label(new Rect(630,818,660,35),"WASD 이동     마우스 조준 · 좌클릭 기본 공격     ESC 메뉴",small);
+            GUI.Label(new Rect(630,818,790,35),"WASD 이동    좌클릭 공격    TAB 소지품    ESC 메뉴",small);
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.HurtTicks<=0)continue;var pt=ToGUI(e.X,e.Y);Fill(new Rect(pt.x-42,pt.y-85,84,6),new Color(.12f,.08f,.07f));Fill(new Rect(pt.x-42,pt.y-85,84*Mathf.Clamp01((float)e.Hp/e.MaxHp),6),new Color(.66f,.12f,.08f));if(e.Shield>0)Fill(new Rect(pt.x-42,pt.y-93,84*e.Shield/e.MaxShield,4),new Color(.2f,.55f,.8f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
-            if((menu||p.Hp<=0)&&!hudSmoke){Panel(new Rect(590,280,740,470));GUI.Label(new Rect(650,322,620,55),p.Hp<=0?"쓰러진 전사":"썩은 숲",title);
-                GUI.Label(new Rect(650,395,620,85),"기검참 1·2타 후 세 번째 클릭을 유지해 차지합니다.\n버튼을 놓으면 발사합니다. 패링·인벤토리·저장·보스는 이식 중입니다.",small);
+            if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){Panel(new Rect(590,280,740,470));GUI.Label(new Rect(650,322,620,55),p.Hp<=0?"쓰러진 전사":"썩은 숲",title);
+                GUI.Label(new Rect(650,395,620,85),"기검참 1·2타 후 세 번째 클릭을 유지해 차지합니다.\nTAB 소지품 · 시작 장비 교체. 패링·저장·보스는 이식 중입니다.",small);
                 bool selected=GUI.Toggle(new Rect(650,490,620,35),basicWeaponMode,"기본 무기 검증 모드",button);
                 if(selected!=basicWeaponMode){basicWeaponMode=selected;ResetRun();}
                 if(GUI.Button(new Rect(650,540,620,60),p.Hp<=0?"새 검증 시작":"전투 시작",button)){if(p.Hp<=0)ResetRun();menu=false;Running=true;}
@@ -263,6 +269,35 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output,"hud-smoke.json"),JsonUtility.ToJson(new HudSmokeReceipt{scope="actual_native_player_controlled_HUD_fixture",activeSkill=hud.ActiveSkill,iconResource="Art/ui/skill_icons/kiSlash",iconDrawn=hud.IconDrawn,cases=cases.ToArray()},true));
             hudSmoke=false;ResetRun();menu=true;Running=false;
         }
+        void SetInventory(bool open){
+            if(open){inventoryWasRunning=Running;Running=false;}
+            inventory.SetOpen(open);if(!open)Running=inventoryWasRunning&&!menu&&Simulation.Player.Hp>0;
+        }
+        IEnumerator InventorySmoke(){
+            string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;Directory.CreateDirectory(output);
+            SetInventory(true);int tick=Simulation.TickCount;
+            int count=0;foreach(var it in inventory.State.Equipped)if(it!=null)count++;
+            var receipt=new InventorySmokeReceipt{scope="actual_native_player_inventory_fixture",initialEquipped=count,initialBag=inventory.State.Bag.Count};
+            inventory.State.Select(inventory.State.GetEquipped("weapon"));
+            yield return new WaitForSecondsRealtime(.4f);receipt.paused=!Running&&tick==Simulation.TickCount;
+            yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-inventory-equipment.png"));yield return null;
+            var p=Simulation.Player;p.Hp=113.75f;p.Mana=47.5f;p.Stamina=61.25f;p.Shield=19.5f;
+            var item=inventory.State.Bag.Find(i=>i.slot=="weapon");receipt.equipped=inventory.Equip(item,p.Level);inventory.State.Select(item);
+            receipt.resourcesClamped=p.Hp==Mathf.Min(113.75f,p.MaxHp)&&p.Mana==Mathf.Min(47.5f,p.MaxMana)&&p.Stamina==Mathf.Min(61.25f,p.MaxStamina)&&p.Shield==Mathf.Min(19.5f,p.MaxShield);
+            receipt.weaponAfterEquip=inventory.State.GetEquipped("weapon").name;receipt.maxHp=p.MaxHp;receipt.weaponAttack=Simulation.Config.WeaponAttack;
+            yield return new WaitForSecondsRealtime(.2f);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-inventory-swap.png"));yield return null;
+            receipt.unequipped=inventory.Unequip("weapon");
+            receipt.unarmedSpeed=Simulation.Config.WeaponSpeed;receipt.unarmedAttack=Simulation.Config.WeaponAttack;
+            receipt.moved=inventory.DropAt(item,5,5)&&item._gx==4&&item._gy==4;
+            receipt.edgeDrop=inventory.DropAt(item,9.9f,119.9f)&&item._gx==8&&item._gy==118;
+            inventory.Sort();receipt.sorted=item._gx>=0&&item._gy>=0;
+            inventory.State.Select(item);yield return new WaitForSecondsRealtime(.2f);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-inventory-bag.png"));yield return null;
+            SetInventory(false);receipt.resumed=Running;
+            // Controlled fixture mutates its own run only; restore the starter and leave the menu open.
+            inventorySmoke=false;ResetRun();menu=true;Running=false;
+            File.WriteAllText(Path.Combine(output,"inventory-smoke.json"),JsonUtility.ToJson(receipt,true));
+        }
+        [Serializable] sealed class InventorySmokeReceipt{public string scope,weaponAfterEquip;public int initialEquipped,initialBag;public bool equipped,unequipped,moved,edgeDrop,sorted,resourcesClamped,paused,resumed;public float maxHp,weaponAttack,unarmedSpeed,unarmedAttack;}
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}

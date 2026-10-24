@@ -1,0 +1,23 @@
+using System;
+namespace Exoduser.UnityPort.Core {
+ [Serializable] public sealed class InventoryElement { public int el; public double dmg; }
+ [Serializable] public sealed class InventoryAffix { public string id; public double value; public int tier; }
+ [Serializable] public sealed class InventoryCrystal { public string id; public int star,enh; public double q; }
+ // Original source names and double IDs are retained; ownership uses reference identity.
+ [Serializable] public sealed class InventoryItem {
+  public double id; public string slot,name,emoji,wtype,btype,brType,_implicitStat,_implicitKo,legendarySpecial,uniqueSpecial;
+  public int el,rarity,tier,itemLv,reqLv,enh,socketCount;
+  public int _gx=-1,_gy=-1; public bool fav,junk;
+  public double atk,spd,wStCost,wArcW,wRange,wStagger,bonusRange,shieldWt,def,bonusSt,stagger,bonusHp,chargeDist,charge,chargeW,bonusChargeDist,beamDmg,bowSpd,bowStCost,bowRange,bowProjSpd,bowPierce,potCd,eDef,bonusShield,bonusMp,splashR;
+  public double bStr,bDex,bInt,bLck,critRate,critDmg,atkSpd,dmgBonus,chargeAoE,chargeCharge,splashMul,magicPen,stRegen,mpRegen,_implicitVal;
+  public InventoryAffix[] affixes; public InventoryCrystal[] crystals; public double[] socketQ; public InventoryElement[] elements;
+ }
+ [Serializable] public sealed class InventorySeedData { public InventoryItem[] equipped,bag; }
+ [Serializable] public sealed class InventoryStats {
+  public int PlayerMaxHp,PlayerBaseAttack;
+  public double PlayerMaxStamina,PlayerMaxMana,PlayerMaxShield,PlayerSpeed,PlayerHpRegen,PlayerStaminaRegen,PlayerManaRegen,PlayerPhysicalDefense,PlayerCriticalChance,PlayerCriticalMultiplier,AttackSpeedMultiplier,DamageMultiplier,AccessoryDamageBonus,DropBonus,StrengthFlat,WeaponAttack,WeaponSpeed,WeaponRange,WeaponArc;
+  // Kept separate from DEF, as in the source; parent combat adapter may admit these separately.
+  public double PhysicalDamageReduction,ElementResistance,StatusResistance;
+  public void ClampResources(PlayerState p) { if(p==null)throw new ArgumentNullException(nameof(p));p.Hp=Math.Min(p.Hp,(float)PlayerMaxHp);p.Stamina=Math.Min(p.Stamina,(float)PlayerMaxStamina);p.Mana=Math.Min(p.Mana,(float)PlayerMaxMana);p.Shield=Math.Min(p.Shield,(float)PlayerMaxShield); }
+ }
+}

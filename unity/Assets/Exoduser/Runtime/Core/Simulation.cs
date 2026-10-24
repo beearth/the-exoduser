@@ -132,7 +132,7 @@ namespace Exoduser.UnityPort.Core
                     if (Player.StateTicks <= 3 && Player.StateTicks + 1 > 3) HitArc();
                     if (Player.StateTicks <= 0) {
                         Player.State = "wRecover";
-                        Player.StateTicks = (int)(16 / (Config.WeaponSpeed * Config.AttackSpeedMultiplier));
+                        Player.StateTicks = (int)(16 / ((Config.WeaponSpeed!=0?Config.WeaponSpeed:.3f) * Config.AttackSpeedMultiplier));
                     }
                 }
                 else if (Player.State == "wRecover" && Player.StateTicks <= 0) Player.State = "idle";
@@ -181,10 +181,10 @@ namespace Exoduser.UnityPort.Core
             int damage = (int)(raw * Config.DamageMultiplier) + attackBonus;
             attackBonus = 0;
             foreach (var enemy in Enemies) {
-                if (!enemy.Alive || Distance(Player.X, Player.Y, enemy.X, enemy.Y) > Config.WeaponRange + enemy.Radius) continue;
+                if (!enemy.Alive || Distance(Player.X, Player.Y, enemy.X, enemy.Y) > (Config.WeaponRange!=0?Config.WeaponRange:50) + enemy.Radius) continue;
                 double angle = Math.Atan2(enemy.Y - Player.Y, enemy.X - Player.X);
                 double difference = ((angle-attackAngle) % (Math.PI*2) + Math.PI*3) % (Math.PI*2) - Math.PI;
-                if (Math.Abs(difference) >= Config.WeaponArc) continue;
+                if (Math.Abs(difference) >= (Config.WeaponArc!=0?Config.WeaponArc:.95f)) continue;
                 HurtEnemy(enemy, damage, (float)angle);
             }
         }

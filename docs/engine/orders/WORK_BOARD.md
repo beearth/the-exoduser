@@ -1,5 +1,9 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-24 UNITY-INVENTORY-01 — 시작 장비·가방 화면
+
+PC Codex / codex/unity-port-20261024 / 새 Inventory core·NativeInventory·Simulation adapter·원본 이미지 복사·자기 Tools/docs 소유. 원본 장착15/마법가방10/20어픽스 보존,909검사 및 기존93/7/26/130/36회귀 통과. 화면/Tab/장착·해제·정리/drag/no-heal 연결. 실제 Editor 첫 JSON null 오류 수정 후 엔진 검수 진행 중이며 아직 build/Player PASS로 보고하지 않는다. Godot/웹/공유main INDEX480·사용자 세이브 보존. [상태와 한계](../UNITY_INVENTORY_20261024.md).
+
 ## 2026-10-24 UNITY-HUD-01 — 원본 자원 표시
 
 PC Codex / codex/unity-port-20261024 / NativeHud·HudValues·shader·원본 아이콘/폰트 복사·자기 Tools/docs 소유. Model130/130·기존93/7/26·기본맵36/36·정적0오류. I: 독립 실제Editor/GPU3상태·Windows build0오류·HUD Player6/6·전투회귀6/6(4처치/소리8회),PNG3상태+release 픽셀검토까지 확인했다. Git tracked20파일만 복원한HUD130/130도통과했다. VISUAL RETOUCH 유지. CSS 전체 filter/전체 HUD·미구현 스킬을 추가한 것으로 확대하지 않는다. Godot/웹/공용main/INDEX480·기존창 보존. [상태·검수](../UNITY_HUD_20261024.md).

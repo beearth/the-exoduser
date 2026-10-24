@@ -17,3 +17,7 @@
 /Tools/feedback-oracle/runs/
 !/Tools/hud-oracle/HudTests.csproj
 /Tools/hud-oracle/runs/
+!/Tools/inventory-oracle/InventoryTests.csproj
+/Tools/inventory-oracle/bin/
+/Tools/inventory-oracle/obj/
+/Tools/inventory-oracle/runs/
