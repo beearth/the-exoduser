@@ -1,0 +1,137 @@
+{
+  "finishedAt": "2026-10-24T11:57:48.383Z",
+  "claude": [
+    {
+      "file": "review-response.json",
+      "subtype": "success",
+      "isError": false,
+      "numTurns": 7,
+      "listCostUsd": 0.41291479999999997,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "file": "hellgunner_c01-claude-response.json",
+      "subtype": "success",
+      "isError": false,
+      "numTurns": 5,
+      "listCostUsd": 0.13405660000000003,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "file": "hellgunner_c02-claude-response.json",
+      "subtype": "success",
+      "isError": false,
+      "numTurns": 7,
+      "listCostUsd": 0.1569976,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "file": "redesign-response.json",
+      "subtype": "success",
+      "isError": false,
+      "numTurns": 4,
+      "listCostUsd": 0.504621,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "file": "r01-claude-response.json",
+      "subtype": "success",
+      "isError": false,
+      "numTurns": 5,
+      "listCostUsd": 0.18797300000000006,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "file": "r02-claude-response.json",
+      "subtype": "success",
+      "isError": false,
+      "numTurns": 5,
+      "listCostUsd": 0.17063099999999998,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    }
+  ],
+  "claudeListCostUsd": 1.567194,
+  "claudeActualBillingOrExpiryVerified": false,
+  "generations": [
+    {
+      "candidate": "C01",
+      "taskId": "7519721803287613440",
+      "status": "completed-reviewed-user-rejected-design",
+      "model": "Seedream 5.0 Pro",
+      "displayedCostPoints": 100,
+      "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_c01.png",
+      "sha256": "5e9222df3b706ae194558b5868cc49cd100b99fa9c451e54c62796eae8df9ca4",
+      "userAccepted": false
+    },
+    {
+      "candidate": "C02",
+      "taskId": "7519723121628643328",
+      "status": "completed-reviewed-user-rejected-design",
+      "model": "Seedream 5.0 Pro",
+      "displayedCostPoints": 100,
+      "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_c02.png",
+      "sha256": "dbd66b42a499427dc41c01a84c273da249eea2ed2597883c9ee3588548b29b25",
+      "userAccepted": false
+    },
+    {
+      "candidate": "C03",
+      "taskId": "7519724280812650496",
+      "status": "failed-input-processing-no-result",
+      "model": "Seedream 5.0 Pro",
+      "displayedCostPoints": 100,
+      "output": null,
+      "userAccepted": false
+    },
+    {
+      "candidate": "C04",
+      "taskId": null,
+      "status": "cancelled-before-submission-user-rejected-design",
+      "model": "GPT Image 2.5 sunburst",
+      "displayedCostPoints": 200,
+      "output": null,
+      "userAccepted": false
+    },
+    {
+      "candidate": "R01",
+      "taskId": "7519725592946114560",
+      "status": "completed-reviewed-candidate-not-adopted",
+      "model": "GPT Image 2.5 sunburst",
+      "displayedCostPoints": 200,
+      "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r01.png",
+      "sha256": "69003c36a63aa51ff161013dcc66a1e8f7234b78e309bfdf80e438b93864874e",
+      "userAccepted": false
+    },
+    {
+      "candidate": "R02",
+      "taskId": "7519727630287364096",
+      "status": "completed-reviewed-candidate-not-adopted",
+      "model": "GPT Image 2.5 sunburst",
+      "displayedCostPoints": 200,
+      "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r02.png",
+      "sha256": "ffa5aafe7f750e34cf40dd507079163effdf2348ba0f153b8aeb00fdf2f0d515",
+      "userAccepted": false
+    }
+  ],
+  "successfulImages": 4,
+  "displayedPointsForSuccessfulImages": 600,
+  "failedRefunded": [
+    "C03"
+  ],
+  "cancelledBeforeSubmission": [
+    "C04"
+  ],
+  "runtimeChanged": false,
+  "finalDesignUserAccepted": false
+}

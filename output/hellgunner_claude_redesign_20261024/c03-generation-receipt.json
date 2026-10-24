@@ -1,0 +1,29 @@
+{
+  "candidate": "C03",
+  "references": [
+    {
+      "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_c01.png",
+      "role": "edit target; preserve everything above calves including rifle and hands",
+      "sha256": "5e9222df3b706ae194558b5868cc49cd100b99fa9c451e54c62796eae8df9ca4"
+    },
+    {
+      "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_c02.png",
+      "role": "boot materials/panel/color reference ONLY; do not copy rifle/pose",
+      "sha256": "dbd66b42a499427dc41c01a84c273da249eea2ed2597883c9ee3588548b29b25"
+    }
+  ],
+  "prompt": "Image1 is the EDIT TARGET: preserve its face, pose, outfit, BOTH hands, background and entire rifle placement EXACTLY. Image2 is BOOT DESIGN ONLY; do not copy its gun. Replace ONLY image1 boots with sleek black molded synthetic shells, silver inset side panels, dark-red seams, sealed ankles, flat tread soles. Boot tops end HALFWAY between ankle and knee; upper calves/knees bare. No shin guards, knee plates, heels, buckles, leather wrinkles or dots. No changes above calves.",
+  "promptLength": 477,
+  "provider": "MagicLight Toolbox Image",
+  "model": "Seedream 5.0 Pro",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCostPoints": 100,
+  "status": "failed-input-processing-no-result",
+  "rationale": "Keep C01 face, arms and rifle placement; transfer only C02 boot design while shortening boot shaft. Hidden rear cylinder requires rear reference, not renewed hand overlap.",
+  "taskId": "7519724280812650496",
+  "failureObservedAt": "2026-10-24T11:40:12.416Z",
+  "failureMessage": "The current prompt or reference image couldn't be processed. Please edit it and try again. Credits have been refunded.",
+  "refundMessageObserved": true,
+  "output": null
+}

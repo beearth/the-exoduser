@@ -1,0 +1,17 @@
+{
+  "candidate": "C04",
+  "reference": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_c01.png",
+  "referenceSha256": "5e9222df3b706ae194558b5868cc49cd100b99fa9c451e54c62796eae8df9ca4",
+  "prompt": "LOCAL FOOTWEAR EDIT only. Preserve everything above the calves exactly: face, hair, purple monocular lens, robotic right arm, silver bodysuit, black shorts/jacket, hands, pose and BACK rifle. Replace both boots with modern black molded-synthetic tactical boots. Tops end halfway from ankles to knees; show upper calves. Thin silver side insets, dark-red seams, sealed ankle joints, low flat rubber tread soles. No tall shin guards, knee plates, heels, buckles or loose leather. Keep framing.",
+  "promptLength": 491,
+  "provider": "MagicLight Toolbox Image",
+  "model": "GPT Image 2.5 sunburst",
+  "aspectRatio": "4:3",
+  "outputs": 1,
+  "displayedCostPoints": 200,
+  "status": "cancelled-before-submission-user-rejected-design",
+  "rationale": "C03 two-reference Seedream request was rejected/refunded with no result. Change to a single edit target and MagicLight character image model; preserve C01 rifle/hands and change footwear only.",
+  "taskId": null,
+  "output": null,
+  "cancelledAt": "2026-10-24T11:41:25.148Z"
+}

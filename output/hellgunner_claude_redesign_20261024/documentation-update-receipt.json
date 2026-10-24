@@ -1,0 +1,68 @@
+{
+  "updatedAt": "2026-10-24T11:53:25.764Z",
+  "files": [
+    {
+      "path": "docs/11내러티브·로어디자인/NEW_HEROES_DESIGN_LOCK.md",
+      "beforeSha256": "6c4d4582dc9f9c8059f40830b7ceaccf548e9f706b633931af17522777acbc10",
+      "afterSha256": "75a65f52fd41d3c648e38546e9b5acf65bba736740d6f2962619880e5aebd2c4",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1126
+    },
+    {
+      "path": "docs/17게임아트팀/NEW_HEROES_USER_PREFERRED_20261021.md",
+      "beforeSha256": "9542837e6c69b61226962a4ea4c27fea9a57e21a832900e33fd64b514f297f6c",
+      "afterSha256": "05b7d0826a145012df99be4fbed4a5ae578dc905599209fdda1ba03647bd928e",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1124
+    },
+    {
+      "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "beforeSha256": "20df86d003deb145395f05a7acc6921e34d36298160ac12f8c32a7c7d6e8e8cb",
+      "afterSha256": "aa88a788b90c1c5ba0d4b9d89ad6b7948cbe50823d7b827ce54e856068cebcb8",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1124
+    },
+    {
+      "path": "docs/17게임아트팀/NEW_HEROES_FEMALE_ITERATION_20261021.md",
+      "beforeSha256": "b02eb0da9277cb0fe8c5624ce1f664ddafaef9a503ceac0e394971eaeffa34c5",
+      "afterSha256": "3297b022309b708447658b5fcc24a35a03b6af0bcc05a06e05e235452e2181a9",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1124
+    },
+    {
+      "path": "docs/17게임아트팀/HELLGUNNER_SINGLE_SHOT_GIANT_GUN_20261023.md",
+      "beforeSha256": "bb9760091480b32212cf3f1fd522f6711687efa50c549aa1dd8221b11ddff276",
+      "afterSha256": "8af9e6ac14a6f26515a639675ee02e4924d64a54cd753f55fe527509566e08ec",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1124
+    },
+    {
+      "path": "docs/17게임아트팀/HELLGUNNER_REVOLVER_RIFLE_20261021.md",
+      "beforeSha256": "018411d8e45efc1eb42ec716e529bf6e66c27e996146ec831d26d222b3066127",
+      "afterSha256": "8144ee19995f0c48950bc9b10379f4432668b673e1f318059e4c02a49f35f3a1",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1124
+    },
+    {
+      "path": "docs/17게임아트팀/ART_TEAM_MASTER.md",
+      "beforeSha256": "44851c394386904915f017c2b401035253f6ade166fe8a3f4be7e3ae86279a8d",
+      "afterSha256": "74e81c634796c63263c6b9b278f09afe38fc50ae74be76a6c928573db43ed078",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1124
+    },
+    {
+      "path": "docs/17게임아트팀/NEW_HEROES_CONTINUOUS_REFINEMENT_20261022.md",
+      "beforeSha256": "3bc635d7063025c1e4cd77a9e42b321bcea49179ceab3709f17eb73d46d10a66",
+      "afterSha256": "c56348dcee690d1bfe4694b30fb1074449246278a64b792d0b0abc5f3a603ae1",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1124
+    },
+    {
+      "path": "docs/17게임아트팀/HELLGUNNER_CYBERPUNK_DESIGN_20261022.md",
+      "beforeSha256": "81fd885dab6863a6e2d6083c4852bbadb0468da66db3ef5d5c5950529076dfc5",
+      "afterSha256": "d90e055978fb458707e604c047dc702a28f194199c2484d6ebef9bc144d56380",
+      "preexistingBytesPreserved": true,
+      "prependedBytes": 1124
+    }
+  ]
+}

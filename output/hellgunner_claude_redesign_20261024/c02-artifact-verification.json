@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-24T11:37:17.241Z",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_c02.png",
+  "sha256": "dbd66b42a499427dc41c01a84c273da249eea2ed2597883c9ee3588548b29b25",
+  "bytes": 7315408,
+  "width": 2224,
+  "height": 1664,
+  "bitDepth": 8,
+  "colorType": 2,
+  "interlace": 0,
+  "crcAllChunksPassed": true,
+  "chunks": 230,
+  "zlibInflatePassed": true,
+  "inflatedBytes": 11103872,
+  "copyHashMatch": true,
+  "referenceSha256": "972a95ff782e609da20f25b85403b05d0aed42e1aa613faf7e37ac56b434849f",
+  "referenceUnchanged": true
+}
