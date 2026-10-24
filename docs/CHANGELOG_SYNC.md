@@ -56866,3 +56866,7 @@ clear leave는 원본 G41920–42003처럼 아레나를 유지한다. lobby_retu
 - 기존 capture harness에 node/CSS geometry 기록과 G04-02 격리 namespace만 추가; 기존 test_demo11_growth_ui assertions 보존, namespace만 변경. 새 진단 테스트/전체 E2E0.
 - test_demo11_growth_ui 단1회 36/0, 최종 import ERROR0. 창 GPU Chrome ↔ Godot 내부 viewport 1920×1080씩 1x 대조. 글꼴/edge/blur/badge 래스터 잔차 남아 정본 G-04 남음 유지.
 - 상세 수치·판정: engine/G04_02_20261023.md. 외부 _out/G04-02/DONE.txt 및 captures/G-04_compare_1x.png·G-04_detail_1x.png. 원본 보호·R 읽기전용·PID81277 보존·override 복원.
+
+## 2026-10-24 PORT-TAKEOVER-02 — Godot G 이동음
+
+G 원본 MP3 7종(231,434 bytes)을 실제 Main/SND03/SND07 큐에 연결했다. 기존 30ms 억제·공유 jitter·프레임6/저우선순위 노드5·OPT/캐릭터/source guard 유지. 이동 조건은 원본 d<1000, max(.03,.35*(1-d/1000)), CD60~119로 관련 사운드 문서 정정. [검수·원실패·미완료](engine/orders/reports/PORT-TAKEOVER-02_REPORT.md). 전체 보스/클리어·청감 인수 아님.

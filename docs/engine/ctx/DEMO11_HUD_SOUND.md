@@ -1,5 +1,7 @@
 # DEMO11 — HUD·사운드 이벤트 context pack
 
+2026-10-24 후보 후속: [PORT-TAKEOVER-02](../orders/reports/PORT-TAKEOVER-02_REPORT.md)는 G 이동음 7원본 MP3와 `play_sample`을 기존 Main/SND03/SND07 큐에 연결한다. 실제 G owner·캐릭터·옵션 guard, m_* 비우선순위/30ms gate/공유 RNG jitter·노드 cap을 유지한다. 아래 origin/main 대응은 작성 당시 snapshot이다. 절차음·전체 청감/웹 동일성은 미검수다.
+
 ## 원본 계약
 
 | R 행 | 핵심 |

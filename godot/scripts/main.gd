@@ -2373,9 +2373,17 @@ func read_native_attack_tempo() -> Dictionary:
 	var e_recovery: int=b.formula.js_to_int32(_native_source_tempo_ratio(28.0,1.0+e_level*0.1))
 	return {"ready":true,"authority":"current_source_tempo","swing_ticks":5.0,"recovery_ticks":recovery,"render_recovery_ticks":recovery if recovery!=0 else 1,"render_windup_ticks":windup if windup!=0 else 1,"e_swing_ticks":20.0,"e_recovery_ticks":e_recovery,"e_render_recovery_ticks":e_recovery if e_recovery!=0 else 1,"stat_dex":stat_dex if is_finite(stat_dex) else null,"stat_dex_nonfinite":not is_finite(stat_dex),"dex_present":stats.has("dex"),"weapon_spd_present":weapon.has("spd"),"weapon_spd":speed if is_finite(speed) else null,"weapon_spd_fallback":not b.affix.js_truthy(raw_speed),"melee_atk_speed":melee.value,"gloves_atk_speed":glove.value,"warrior_render_speed":0.85,"silver_render_speed":1.5,"e_passive_present":passives.has("pParry"),"e_passive":e_level if is_finite(e_level) else null}
 
-# Narrow original sample playback in this Main owner. No generated replacement
+# Original attack/death and G movement samples in this Main owner. No generated replacement
 # sound, no voice/other skill adoption, and no original master EQ parity claim.
 const ATTACK_SAMPLE_PATHS := {
+	# PORT-TAKEOVER-02: G10227-10236 original monster movement samples.
+	"m_melee":"res://assets/sfx/monster_move/melee_walk.mp3",
+	"m_archer":"res://assets/sfx/monster_move/archer_walk.mp3",
+	"m_swarm":"res://assets/sfx/monster_move/swarm_move.mp3",
+	"m_tank":"res://assets/sfx/monster_move/tank_step.mp3",
+	"m_caster":"res://assets/sfx/monster_move/caster_move.mp3",
+	"m_splitter":"res://assets/sfx/monster_move/splitter_walk.mp3",
+	"m_mother":"res://assets/sfx/monster_move/mother_walk.mp3",
 	"sword_swing1":"res://assets/sfx/attack_source/sword_swing1.mp3",
 	"sword_swing2":"res://assets/sfx/attack_source/sword_swing2.mp3",
 	"sword_swing3":"res://assets/sfx/attack_source/sword_swing3.mp3",
@@ -2949,7 +2957,7 @@ func read_native_fireball_proficiency_guard() -> Dictionary:
 	return {"ready":true,"active":SourceLessonScript.AFFIX.js_truthy(active),"known_absent":false,"authority":authority}
 
 func _native_attack_audio_original_samples_ready() -> bool:
-	# All original eight remain mandatory; a new loaded fireball key is allowed.
+	# Every registered original sample remains mandatory; extra loaded skill keys are allowed.
 	for key in ATTACK_SAMPLE_PATHS:
 		if not _attack_audio_streams.get(key) is AudioStream:
 			return false
@@ -3441,6 +3449,22 @@ func _return_native_demo_lobby() -> void:
 	if has_method("save_native_demo11_current"):
 		save_native_demo11_current()
 	get_tree().call_deferred("change_scene_to_file","res://scenes/demo11_lobby.tscn")
+
+# PORT-TAKEOVER-02: current G owner supplies the original movement key/pitch/gain.
+func request_native_enemy_move_sample(caller: Node, key: String, gain: float, rate: float) -> Dictionary:
+	if not is_instance_valid(world) or not is_instance_valid(caller) or caller != world.get_node_or_null("Demo11EtypeG") or not caller.current():
+		return {"accepted":false,"reason":"actual_G_movement_sound_owner_required"}
+	if key not in ["m_melee","m_archer","m_swarm","m_tank","m_caster","m_splitter","m_mother"] or not is_finite(gain) or gain < 0.0 or gain > 1.0 or not is_finite(rate) or rate <= 0.0:
+		return {"accepted":false,"reason":"outside_G_movement_sample_domain"}
+	var settings: Dictionary = read_native_attack_audio_settings()
+	if settings.get("ready") != true or not is_instance_valid(_combat_sound_consumer):
+		return {"accepted":false,"reason":"movement_audio_source_not_ready"}
+	if player.get_native_character_profile_snapshot().get("ready") != true:
+		return {"accepted":false,"reason":"movement_audio_character_not_ready"}
+	_attack_audio_random_trace.clear()
+	# m_* is neither a skill nor a priority footstep: reuse source 30ms gate,
+	# one shared RNG jitter and the sole SND03/SND07 frame queue/backend.
+	return _queue_native_attack_sample(key,gain,rate,false,{"phase":"enemy_move","owner":caller.get_instance_id()})
 
 # DEMO11-40: existing skill sound callsites supply already resolved pitch/gain.
 func request_native_skill_sample(path: String, gain: float, rate: float) -> void:

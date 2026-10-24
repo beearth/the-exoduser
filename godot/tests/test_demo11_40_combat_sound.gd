@@ -44,8 +44,9 @@ func _run() -> void:
 	for id in nodes:
 		var n: Dictionary=nodes[id]
 		var index: int=AudioServer.get_bus_index(n.bus)
-		var target: String="Master" if n.to==0 else nodes[n.to].bus
+		var target: String="SFX" if n.to==0 else nodes[n.to].bus # AUDIO-01 documented destination
 		check(index>AudioServer.get_bus_index(target) and AudioServer.get_bus_send(index)==target,"bus %s index%d target%s index%d actual%s" % [n.bus,index,target,AudioServer.get_bus_index(target),AudioServer.get_bus_send(index)])
+	check(AudioServer.get_bus_send(AudioServer.get_bus_index("SFX"))=="Master","AUDIO-01 SFX reaches final Master")
 	check(snap.graph.DSP=="BYPASS_UNVERIFIED","no false DSP equivalence")
 	c.flush({"ready":true,"sfx_gain":0.0},0,false)
 	check(AudioServer.is_bus_mute(AudioServer.get_bus_index(mix_name)),"OPT zero mutes already active voices")

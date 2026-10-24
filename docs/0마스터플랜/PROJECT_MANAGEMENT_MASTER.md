@@ -496,3 +496,7 @@ PC skill writer merge/버튼 활성·피드백 및 Mac pack_b fixture 회귀 수
 ## 2026-10-22 PARITY-MAP-04 인수 후보
 
 INTEG-13 06f3db98 기준 웹 지역 경계 유지·미니맵 색 표식·드루이드 합성 수정, 보스 리소스 첫 draw 준비, 중단된 활성 저장 회수 추가. 관련16/0, 1x 캡처·실제 W 입력 기록. GUI1회는 타 검사 동시 실행으로 참고값이며 이동/덩굴 스파이크는 PC 요청. 고스트 수치 유지·VISUAL RETOUCH. [원인·원본 행·한계·MAP REPORT](../engine/PARITY_MAP_04_20261022.md). main/PC 인수·배포 아님.
+
+## 2026-10-24 PORT-TAKEOVER-02 — PC 이식 수동 재개
+
+사용자 지시로 기존 E:/exoduser-wt/codex-port-takeover-20261023에서 G 몬스터 이동음 7원본→기존 Main/SND03/SND07 큐 연결을 진행한다. 공용 main/INDEX/WIP·옛 팀 프로세스·사용자 세이브/실행창 보존. 집중107/0·G runtime190/0은 기술 검수이며 전체 이식·청감·보스부터 로비까지 자연 종주 완료가 아니다. 실패·회귀·남은 범위·최종 원격 SHA는 [PORT-TAKEOVER-02](../engine/orders/reports/PORT-TAKEOVER-02_REPORT.md), 외부 I:/EXODUSER-Storage/qa/port-resume-20261024/ 근거를 따른다.

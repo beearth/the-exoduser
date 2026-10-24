@@ -24,21 +24,80 @@ func step(n: int = 1) -> void:
 		var svc: Node = g_main.world.get_node_or_null("Demo11EtypeG")
 		if is_instance_valid(svc): svc._physics_process(1.0 / 60.0)
 		g_main.world.advance_native_birth_phase()
-		# G40793 is a construction contract. Observe it at birth, before the
-		# deliberate first-cohort death fixture can change the child's HP.
-		for actor in g_main.world.get_enemies():
-			if not is_instance_valid(actor) or not actor.get("data") is Dictionary: continue
-			if not str(actor.data.get("id", "")).begins_with("demo11_G_child_"): continue
-			var id: int = actor.get_instance_id()
-			if g_child_births.has(id): continue
-			g_child_births[id] = {"id": str(actor.data.id), "etype": actor.etype, "hp": actor.hp,
-				"mhp": actor.data.native_final.mhp, "shield": actor.eShield, "shield_max": actor.eShieldMax, "alive": actor.alive}
-			if actor.etype == 3:
-				check(actor.alive and actor.el >= 0 and actor.eShield == 0 and actor.eShieldMax == 0 and actor.hp == int(actor.data.native_final.mhp),
-					"7 summon birth: random element, shield0, halved hp " + JSON.stringify(g_child_births[id]))
+
+func observe_child_birth(actor: Node) -> void:
+	# World adds a fully configured actor before the remainder of the same
+	# owner phase can damage it. Post-step polling was already too late.
+	if not actor.get("data") is Dictionary: return
+	if not str(actor.data.get("id", "")).begins_with("demo11_G_child_"): return
+	var id: int = actor.get_instance_id()
+	if g_child_births.has(id): return
+	g_child_births[id] = {"id": str(actor.data.id), "etype": actor.etype, "hp": actor.hp,
+		"mhp": actor.data.native_final.mhp, "shield": actor.eShield, "shield_max": actor.eShieldMax, "alive": actor.alive}
+	if actor.etype == 3:
+		check(actor.alive and actor.el >= 0 and actor.eShield == 0 and actor.eShieldMax == 0 and actor.hp == int(actor.data.native_final.mhp),
+			"7 summon birth: random element, shield0, halved hp " + JSON.stringify(g_child_births[id]))
 
 func final_death(event: Dictionary) -> void:
 	if event.event == "final_death": g_deaths.append(event.actor)
+
+func check_move_audio(svc: Node) -> void:
+	check(g_main.has_method("request_native_enemy_move_sample"), "G movement sample bridge exists")
+	if not g_main.has_method("request_native_enemy_move_sample"): return
+	if g_main.player.get_native_character_profile_snapshot().get("ready") != true:
+		var unselected: Dictionary = g_main.request_native_enemy_move_sample(svc, "m_swarm", 0.25, 1.0)
+		check(not unselected.get("accepted", false) and unselected.get("reason") == "movement_audio_character_not_ready", "unselected character cannot enqueue")
+		# This combat fixture boots Main directly. Select through its existing
+		# picker/callback, as test_demo11_40_combat_sound does; keep the guard.
+		paused = true
+		g_main._character_picker.select(1) # item0 is the unselected placeholder
+		g_main._on_native_character_selected(1)
+		paused = false
+	check(svc.current(), "actual G movement owner current")
+	check(g_main.read_native_attack_audio_settings().get("ready") == true, "movement audio settings " + JSON.stringify(g_main.read_native_attack_audio_settings()))
+	check(g_main.player.get_native_character_profile_snapshot().get("ready") == true, "movement audio character " + JSON.stringify(g_main.player.get_native_character_profile_snapshot()))
+	var events: Array = []
+	var observe := func(kind: String, data: Dictionary):
+		if kind == "native_attack_audio_queued": events.append(data.duplicate(true))
+	g_main.native_sound_event.connect(observe)
+	g_main._combat_sound_consumer.backend.stop_all("movement_audio_fixture")
+	g_main._attack_audio_queue.clear()
+	g_main._combat_sound_consumer._state.queue.clear()
+	g_main._attack_audio_last_ms.clear()
+	var before: int = g_main.get_native_attack_audio_snapshot().starts
+	var keys := ["m_melee", "m_archer", "m_swarm", "m_tank", "m_caster", "m_splitter", "m_mother"]
+	for key in keys:
+		var at: int = events.size()
+		svc.play_sample(key, 0.25, 1.0, g_main.player.global_position)
+		check(events.size() == at + 1, "G original sample queued once " + key + " " + JSON.stringify(svc.unported))
+		if events.size() == at + 1:
+			var packet: Dictionary = events[-1]
+			check(packet.key == key and packet.gain == 0.25 and not packet.priority, "source key/gain/non-priority " + key)
+			check(packet.source_random_values.size() == 1 and is_equal_approx(packet.rate, 0.92 + float(packet.source_random_values[0]) * 0.16), "playSample shared jitter once " + key)
+			var stream: AudioStream = g_main._attack_audio_streams.get(key)
+			check(stream != null and stream.get_length() > 0, "original movement MP3 decodes " + key)
+	var count: int = events.size()
+	g_main._attack_audio_last_ms.m_swarm = Time.get_ticks_msec()
+	svc.play_sample("m_swarm", 0.25, 1.0, Vector2.ZERO)
+	check(events.size() == count, "same-key 30ms gate retained")
+	svc.play_sample("unknown_monster_move", 0.25, 1.0, Vector2.ZERO)
+	check(events.size() == count, "unknown movement sample never substituted")
+	paused = true
+	svc.play_sample("m_tank", 0.25, 1.0, Vector2.ZERO)
+	paused = false
+	check(events.size() == count, "paused G sound cannot enqueue")
+	var foreign := Node.new()
+	var refused: Dictionary = g_main.request_native_enemy_move_sample(foreign, "m_tank", 0.25, 1.0)
+	foreign.free()
+	check(not refused.get("accepted", false) and events.size() == count, "foreign sound caller refused")
+	g_main._advance_native_attack_audio()
+	var snap: Dictionary = g_main.get_native_attack_audio_snapshot()
+	check(snap.last_flush.processed == 6 and snap.queued == 0 and g_main._attack_audio_queue.is_empty(), "shared desktop six-sample frame queue, no second backend")
+	check(snap.starts - before == 5 and snap.active.size() == 5, "source PROJ priority node cap five includes monster movement")
+	for voice in snap.active:
+		check(keys.has(voice.key) and voice.playing, "actual movement AudioStreamPlayer playing " + str(voice.key))
+	observations.move_audio = {"queued": count, "starts": snap.starts - before, "driver": AudioServer.get_driver_name(), "subjective_sound_equivalence_verified": false}
+	g_main.native_sound_event.disconnect(observe)
 
 func capture_cohort(label: String) -> void:
 	var folder := ""
@@ -60,6 +119,7 @@ func run() -> void:
 		if g_main.is_native_boot_body_done(): break
 		await process_frame
 	check(g_main.is_native_boot_body_done(), "main boot body done")
+	g_main.world.child_entered_tree.connect(observe_child_birth)
 	preload("res://tests/mac_pcib_fixture_main.gd").install(g_main)
 	# This AI/registration fixture manually advances 2700+ World ticks. Keep the
 	# target alive, as the existing boss-parity fixture does; rendering yields must
@@ -136,6 +196,13 @@ func run() -> void:
 		check(a.hp == 875 and a.attack == 31 and a.el == -1 and n.get("el") == null and n.reviveIframes == 15, "lv1 source stats, undefined el, reviveIframes15 %d" % et)
 		check(is_equal_approx(a.radius, (float(K.RADIUS[et]) + 1.0) * 2.0) and is_equal_approx(float(a.data.speed_pixels_per_tick), (maxf(0.2, float(K.SPD_RAW[et]) * 1.3) + 0.04) * 1.5), "radius/speed %d" % et)
 		check(a.data.native_final.col == K.COL[et] and int(a.data.native_final.projCd) == (9999 if et == 20 else 240), "col/projCd %d" % et)
+	if "--move-audio-only" in OS.get_cmdline_user_args():
+		check_move_audio(g_main.world.get_node("Demo11EtypeG"))
+		print("PC_ENEMY_MOVE_AUDIO_RESULT ", JSON.stringify({"checks": checks, "failures": failures, "observations": observations}))
+		g_main.free()
+		await process_frame
+		quit(0 if failures == 0 else 1)
+		return
 	# 2) AI: 20초 실제 World 틱
 	var seen: Dictionary = {}
 	var first_children: int = 0
@@ -238,6 +305,7 @@ func run() -> void:
 		for k in iso[et].g_counts: pass
 		check(iso[et].g_fault.is_empty(), "isolated no stop %d: %s" % [et, iso[et].g_fault])
 	step(5)
+	check_move_audio(svc)
 	observations.seen = seen
 	print("PC_ENEMY_RUNTIME_RESULT ", JSON.stringify({"checks": checks, "failures": failures, "observations": observations}))
 	g_main.free()

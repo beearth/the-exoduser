@@ -419,7 +419,11 @@ func _advance_fx(sp: float) -> void:
 	bursts = nb
 
 func present(cmd: String, _args: Array) -> void: note_unported("present:" + cmd)
-func play_sample(_key: String, _vol: float, _pitch: float, _at: Vector2) -> void: note_unported("playSample_monster_move_asset_missing")
+func play_sample(key: String, vol: float, pitch: float, _at: Vector2) -> void:
+	if not current(): return
+	var receipt: Dictionary = main.request_native_enemy_move_sample(self, key, vol, pitch)
+	if not receipt.get("accepted", false) and receipt.get("reason") != "source_30ms_key_gate":
+		note_unported("playSample_monster_move:" + str(receipt.get("reason")))
 func sfx(name: String, _args: Array, _at: Vector2) -> void: note_unported("SFX." + name)
 func shake(n: float) -> void:
 	if main.source_state.has_method("apply_native_skill_shake"): main.source_state.apply_native_skill_shake(main, n)

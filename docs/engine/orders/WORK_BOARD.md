@@ -2,6 +2,8 @@
 
 ## 2026-10-23 PC Codex 인수 — PORT-TAKEOVER-01
 
+2026-10-24 사용자 지시 "이식작업 여기서 계속하자"로 같은 인수 브랜치에서 재개했다. `PORT-TAKEOVER-02`는 G 이동음 7원본 MP3, Main의 공용 sample queue 진입 함수, G `play_sample`, 기존 G runtime 검사 및 sound40의 AUDIO-01 기대 경로 정정과 관련 docs만 소유한다. **격리 구현·기술 검수 후보**: G190/0·sound45/0·shield166/0·kill47/0, WASAPI 이동음107/0·실제 노드5·ERROR0. 연속47h는11PASS/7NOT_READY이며 전체 이식/자연 보스 완료가 아니다. 기존 actor/전투/맵/저장 owner와 타 팀 WIP는 보존한다. [검수·실패·미완료](reports/PORT-TAKEOVER-02_REPORT.md), 최종 원격 SHA 등 외부 근거 `I:/EXODUSER-Storage/qa/port-resume-20261024/DONE.json`.
+
 사용자 직접 지시: "이식작업 니가 이어받아서 계속해 토큰세이브 MD나 다 보고". PC Codex가 이전 PC Claude의 중단 작업을 인수한다. 기존 PC/Mac 작업자를 자동 재가동하지 않고, 공용 main의 INDEX/WORK와 원 작업자의 WIP는 보존한다.
 
 | 작업ID | 담당 / 브랜치 | 소유 범위 | 상태 |

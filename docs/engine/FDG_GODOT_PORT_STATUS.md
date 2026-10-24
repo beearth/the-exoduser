@@ -1,5 +1,9 @@
 # Godot 이식 현황 — 현재 단계와 다음 작업
 
+## 2026-10-24 PC 인수 재개 — G 이동음 후보
+
+같은 `codex/port-takeover-20261023`에서 기존 G 이동음 stub을 원본 7음원→Main 공용 큐→SND07로 연결했다. [PORT-TAKEOVER-02 검수·실패·미완료](orders/reports/PORT-TAKEOVER-02_REPORT.md). 집중107/0·직접 회귀4종0실패/ERROR0. 변경 후 47h는 exit0이지만 PASS11/NOT_READY7·continuous_E2E=false다. 레벨업 전 자연 사망 및 보스→클리어→로비가 미완료다. 변경 전13/5와 동일한 플레이 결과라는 뜻이 아니며 실제 청감/전체 이식 완료가 아니다.
+
 ## 2026-10-23 PC Codex 인수 후보
 
 사용자 지시로 중단 PC 이식을 인수했다. 최신 Mac 코드 G04-02 `9734e2e79` 위에 PC-ENEMY-ACTORS의 일반9종+일반29 WIP를 별도 `codex/port-takeover-20261023`에서 3way 결합했다. [검수·남은 범위](orders/reports/PORT-TAKEOVER-01_REPORT.md). Windows 실제 Main/World의 GUI fixture 검사148/0, ERROR0이며 자연 전투·웹 1x 시각 동일성·사운드 완료가 아니다. 서비스의 미이식 SFX/광원/hitStop은 유지하고 별도 표시한다. 공용 main·Mac 실행판·기존 사용자 게임·Steam에는 반영하지 않았다.
