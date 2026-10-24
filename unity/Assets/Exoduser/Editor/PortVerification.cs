@@ -111,11 +111,24 @@ public static class PortVerification {
  }
  public static void Build(){
   try {
+   var target=EditorUserBuildSettings.activeBuildTarget;
+   if(target!=BuildTarget.StandaloneWindows64&&target!=BuildTarget.StandaloneOSX)
+    throw new NotSupportedException("Verification build requires -buildTarget Win64 or OSXUniversal");
+   string architecture="x64";
+#if UNITY_EDITOR_OSX
+   if(target==BuildTarget.StandaloneOSX){
+    UnityEditor.OSXStandalone.UserBuildSettings.architecture=UnityEditor.Build.OSArchitecture.ARM64;
+    architecture="ARM64";
+   }
+#else
+   if(target==BuildTarget.StandaloneOSX)throw new NotSupportedException("Build the Mac verification app with the Mac Editor");
+#endif
    VerifyLobby();var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
+   var output=Path.Combine(directory,target==BuildTarget.StandaloneOSX?"EXODUSER-Unity.app":"EXODUSER-Unity.exe");
    // Local frontend verification needs no development PlayerConnection listener.
-   var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{scene},locationPathName=Path.Combine(directory,"EXODUSER-Unity.exe"),target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
+   var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{scene},locationPathName=output,target=target,options=BuildOptions.None});
    bool ok=report.summary.result==BuildResult.Succeeded;
-   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion},true));
+   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion,target=target.ToString(),architecture=architecture,output=output},true));
    Debug.Log("UNITY_BUILD "+report.summary.result);EditorApplication.Exit(ok?0:2);
   }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(2);}
  }
@@ -133,5 +146,5 @@ public static class PortVerification {
   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="native_Unity_camera_world_capture_only",passed=game.LoadedChunks>0,engine=Application.unityVersion},true));
   EditorApplication.Exit(0);
  }
- [Serializable]class BuildReceipt{public bool passed;public string result,engine;public int errors;public ulong bytes;}
+ [Serializable]class BuildReceipt{public bool passed;public string result,engine,target,architecture,output;public int errors;public ulong bytes;}
 }

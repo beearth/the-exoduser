@@ -1,5 +1,9 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-24 Mac Unity 인수 — 최신
+
+사용자 “이제 맥에서 다 해라”의 PC 인계를 받아 Mac Codex가 `codex/unity-mac-20261024` / `/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024`에서 인수했다. 원격 `ffa85d62`/tree6068a62 대조, v22b byte-exact 복구 완료. 현재 소유 변경은 Editor 빌드 타깃·출력과 관련 docs뿐이며 기존 런타임은 그대로다. Hub 약관 확인·로그인/라이선스가 선행조건이고 Mac Editor/Player 인수는 미완료다. PC 개발·과거 팀 재가동0. 아래 ACTIVE 표기는 과거 PC 이력이며 최신 인계의 PC heartbeat PAUSED가 우선한다. [실제 인수·다음 행동](../UNITY_MAC_TAKEOVER_20261024.md).
+
 ## 2026-10-24 UNITY-LOBBY-01 — 로비·인트로 최우선
 
 사용자 최신 “일단 게임 로비부터 인트로 시네마틱같은것들만 잘 옴겨”. PC Codex가 기존 소유 Unity 브랜치에서 NativeLobby/Video/CoreLobbyFlow·NativeGame 진입/차단·원본 미디어·자기 Tools/docs 소유. G:index 흐름 + 사용자 최신 v22b override 기준 FDG→타이틀→ENTER문→세계관→로비 연결, Core65/영상adapter13·정적0오류/실제Editor 미디어29×32검사PASS. Windows/Player 영상·음향·화면 검수는 진행 중. 계정/캐릭터 생성/기존 저장은 미이식 표시, Godot/원본/공유main INDEX480·세이브·기존창 보존. 자동 heartbeat도 로비/인트로 우선으로 갱신했다. [현황·근거·미완료](../UNITY_LOBBY_20261024.md).

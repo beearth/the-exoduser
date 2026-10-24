@@ -1,5 +1,7 @@
 # EXODUSER Unity 이식
 
+2026-10-24 최신 Mac 인수는 `docs/engine/UNITY_MAC_TAKEOVER_20261024.md`를 따른다. `PortVerification.Build`는 활성 `win64` 또는 `osxuniversal` 타깃을 받아 각각 `.exe`/`.app`을 만들도록 준비했으며, Mac Editor에서는 ARM64를 선택한다. **Mac 변경은 약관·라이선스 확인 대기로 실제 컴파일/빌드 미검증**이다. Mac에 아래 PC의 I:/E: 경로나 Junction을 만들지 않는다. Windows 기록은 Mac 실행 성공을 뜻하지 않는다.
+
 Godot는 유지하고 Unity도 시험해 이식 난이도를 비교한다. 최종 엔진 선택은 아직 하지 않았다. 아래는 Unity 부분 시험본의 실행법이다.
 
 사용자 지시(2026-10-24)로 Unity 이식을 시작했다. Unity **6000.4.8f1**, C# 게임 로직·SpriteRenderer 기반이며 실행 중 브라우저/WebView/JavaScript를 사용하지 않는다.

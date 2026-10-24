@@ -56947,3 +56947,7 @@ G 원본 MP3 7종(231,434 bytes)을 실제 Main/SND03/SND07 큐에 연결했다.
 ## 2026-10-24 PORT-TAKEOVER-03 — G17 산란 마법 샘플
 
 G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 공용 큐에 연결. volume .35, .6±6%와 sample jitter의 공유 난수2회·skill priority·기존 owner guard 유지. noise/sub/FM/dist·돌진/그로기 native PCM 출력과 전체 RNG/청감 동일성은 미완료. [구현·검수·한계](engine/orders/reports/PORT-TAKEOVER-03_REPORT.md).
+
+### 2026-10-24 Unity Mac 인수 준비
+
+원격 ffa85d62/tree6068a62를 별도 Mac Unity worktree로 인수하고 v22b 4부분 복구 SHA 일치를 확인했다. PortVerification.Build에 활성 Windows64/Mac 타깃별 exe/app 출력 및 Mac ARM64, target/architecture/output 영수증을 추가했다. 런타임/로비/도킹 코드는 변경0. Hub 약관 확인·로그인/라이선스 대기이므로 Editor 컴파일·실제 Mac 빌드/재생은 미검증 후보다. 자세한 선행조건과 다음 행동은 docs/engine/UNITY_MAC_TAKEOVER_20261024.md. 기존 ROOT의 tracked INDEX/WORK0·미추적94항목은 보존한다.
