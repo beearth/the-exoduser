@@ -49,6 +49,8 @@
 
 ## 실제 Windows Player 실행과 다음 작업
 
+최신 후속 **UNITY-FEEDBACK-01**은 [별도 보고서](UNITY_FEEDBACK_20261024.md)의 실제 새 Editor/build/Player까지 통과했다. 명중광·완충 섬광·5원음 연결,실제 요청8회/재생8회/출력peak.30688885·4처치·PNG5종을 확보했다. 아래 UNITY-PORT-04의 ‘명중광 미이식’ 판정은 이전 빌드 이력이며 현행 전체 시각 판정은 HUD fill/아이콘·원본1x·동적 환경 등이 남아 **RETOUCH**를 유지한다. 원본 hitstop은 소비 직전 비활성화하므로 미완료 기능으로 임의 freeze를 구현하지 않는다.
+
 1. 초기 라이선스 차단 이후 최종 재시도에서 실제 import가 시작됐다. 계정/인증 파일을 변경하거나 복사하지 않았다.
 2. 첫 실제 import는 이미지가 `textureShape:2` Cubemap으로 들어가 `Resources.Load<Texture2D>`가 null인 실패였다. D3D11 재현에서도 동일했다. Importer에 Texture2D 명시와 GetVersion1을 추가하고 재import해 Editor 검사를 통과했다. [공식 shape enum](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/AssetPipeline/TextureImporterEnums.cs).
 3. 실제 Windows 빌드와 Player 자동 입력을 완료했다. 자연 종주·사람의 입력/손맛·프레임 성능·원본1x 비교는 후속이며 아래 영수증 범위와 구분한다.

@@ -72,7 +72,7 @@ Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.Crea
 - etype0의 LOS 알림·추적 및 직접 이동 fallback·접촉 타격 부분을 이식했다. 원본 flow field, stuck 우회/텔레포트, 분리력, 벽충돌 추가 피해, 멀리 있는 적의 tier별 scheduler는 남아 있다. 임의 공격 티켓은 추가하지 않는다.
 - 원본 일반 원거리 타이머(180–300 초기, 240 cooldown, 60 charge, etype0 range400)는 상태값만 유지한다. 발사체/패링 클래스는 미구현이며 임의 탄으로 치환하지 않는다.
 - 장비 드롭은 `equipment-roll-pending` 요청이다. `mkItem`, affix/implicit 전체 생성, 실제 인벤토리/장착, 위치용 RNG, 유골/결정/돌/그 외 드롭은 남아 있다. 요청을 만들어 놓고 “정상 아이템 획득”이라고 보고하지 않는다.
-- C# 시뮬레이션은 전체 웹 RNG stream replay가 아니다. 원본 presentation RNG, elite factory RNG, 미이식 loot factory RNG를 생략하므로 같은 seed로 모든 프레임/드롭 동일하다고 주장하지 않는다.
+- C# 시뮬레이션은 전체 웹 RNG stream replay가 아니다. UNITY-FEEDBACK-01에서 기검참 cast/charge 샘플 RNG를 원본 순서대로 추가했으나, 그 외 presentation RNG·elite factory RNG·미이식 loot factory RNG가 남으므로 같은 seed로 모든 프레임/드롭 동일하다고 주장하지 않는다.
 - 플레이어 피격은 기본 물리 DEF/쉴드/HP/4칸 포이즈의 좁은 범위다. 회피/리소스 전체 회복·완전한 stagger/stun/죽음 부활·저장·패시브 자동투자·고레벨 해금·초월 일일제한 등은 별도다.
 - 보스·클리어·다음 지역·모든 등장 몬스터·전 UI·오디오/VFX·원본 시각 동등성 미완료다.
 

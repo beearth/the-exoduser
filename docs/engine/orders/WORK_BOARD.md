@@ -2,7 +2,7 @@
 
 ## 2026-10-24 UNITY-FEEDBACK-01 — 기검참 명중광·원음
 
-PC Codex / codex/unity-port-20261024 / unity Runtime·Editor·Tools·원본 미디어 복사·관련 docs만 소유. Core26/26와 기존93/7/36, 정적 컴파일0오류를 확인했다. 명중광/charge flash·5원음 native adapter를 구현했으며 실제 Editor/Player 검수는 I: 독립 복사본에서 진행한다. Godot와 열린 Editor·공용 main INDEX480경로는 보존한다. [상태·미완료·검수](../UNITY_FEEDBACK_20261024.md).
+PC Codex / codex/unity-port-20261024 / unity Runtime·Editor·Tools·원본 미디어 복사·관련 docs만 소유. Core26/26·기존93/7/36·정적 컴파일0오류 및 실제 Editor/import/frame sequence·Windows build(errors0)를 통과했다. I: 독립 복사본의 실제 Player에서4처치·음향8회재생/출력peak.30688885·명중광4/완충광1·PNG5종을 확인했다. 전체 시각은 RETOUCH, 수동 플레이·EQ/compressor·고FPS clock·전체 이식은 남아 있다. Godot와 열린 Editor·공용 main INDEX480경로는 보존한다. [상태·미완료·검수](../UNITY_FEEDBACK_20261024.md).
 
 ## 2026-10-24 사용자 지시 — UNITY-PORT-01
 

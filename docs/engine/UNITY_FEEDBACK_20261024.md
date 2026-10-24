@@ -22,6 +22,15 @@ Godot 보존·Unity 비교 시험의 독립 단위 UNITY-FEEDBACK-01이다. 최�
 | 코어 RED→GREEN | API 없는 상태의 의미 RED→26/26; 기존93/93·7/7·36/36 유지. 원본10함수 실행·현재 G: 원문10/10 동일 |
 | 통합 RED | 기존 실제 Player 영수증에 새 gate 적용:6검사중4실패(피드백/오디오 출력/명중 캡처 없음). I:/EXODUSER-Storage/qa/unity-port-20261024/feedback-player-red.json |
 | 정적 컴파일 | 초기 AudioImporter.preloadAudioData 제거 API 오류1개→settings.preloadAudioData로 수정, 설치 Unity assemblies 대상0오류/0경고 |
-| 실제 Editor/build/Player | 진행 중. 이 표와 외부 영수증을 후속 실제 결과로 갱신한다. 모델 PASS를 GPU·오디오 PASS로 읽지 않는다 |
+| 실제 Editor | `feedback-verify-2026-10-24T07-49-44-984Z/receipt.json`:6000.4.8f1/process0/PASS. 원음5개와1254시트·shader import 및 실제 SpriteRenderer frame sequence(동일tick2회 렌더 포함) 통과 |
+| 실제 Windows build | `feedback-build-2026-10-24T07-50-23-682Z/EXODUSER-Unity.exe`,Succeeded/errors0/869342703bytes/process0 |
+| 실제 Player | `feedback-player-2026-10-24T07-51-06-243Z/player-smoke.json`: X4020→4101.58496,120f charge/release,4kills,totalDamage48509,청크10. 실제 native process43432/HWND266366 창 확인 |
+| 실제 오디오 | requested8/played8/dropped0,loaded5keys,voicesPeak4,listenerPeak0.30688885. 실제 엔진 전체 출력 신호 확인이며 음원별 wave/물리청음/전체 믹스 동등성은 미검증 |
+| 실제 VFX | hit4/charge1/drawnFrames163,peakInk3/peakAdditive4. impact/charge/release PNG3종 픽셀 검토: 적 위치 원본 명중광과 플레이어 중심 완충광·3타 검기를 확인. 전체 시각 동등성은 RETOUCH |
+| 통합 GREEN | `feedback-player-green.json`:6/6. runtime exception/shader error 없음. D3D12 debug info queue 조회 failed 경고1건은 남아 있으므로 완전 무경고/성능 PASS 아님 |
+| 최소 Git 복원 | `fresh-feedback-2026-10-24T07-51-21-063Z/RECEIPT.json`: HEAD의 tracked19파일만 새I폴더에 복원→SDK8 build0오류/0경고 및26/26. SDK workload 확인 안내는 있으나 build/test 성공. 전체 게임 clone 검증과 구분 |
+| 독립 검토 | source spec: additive1tick P2 발견→additive만age+1/ink유지로 보정→재검토PASS. 코드품질 현재 범위 미해결P1/P2없음. 실제 검사 결과는 위 별도 근거 |
+
+위 상대 영수증 경로의 기준은 `I:/EXODUSER-Storage/qa/unity-port-20261024/`다. actual build input은 `feedback-project-2026-10-24T07-48-57-399Z/SOURCE-COPY.json`의334파일/183916879bytes를 source-before/after/destination SHA256으로 확인한 독립 복사본이다(중복 source receipt 항목 합계와 고유 파일 합계는 다름). 사용자 Editor PID34780을 유지했다. 코드 checkpoint와 원격 expected-SHA fast-forward 및 동일 tree 대조 뒤 build를 실행했다. 최종 로컬/원격 SHA·아티팩트 전체 hash는 외부 `UNITY-FEEDBACK-01_DONE.json`에 기록한다. 사용자 runtime 검사창은 새 시작 메뉴로 돌아온 상태로 유지한다.
 
 시각 판정은 기존 **RETOUCH** 유지. HUD fill/아이콘·원본1x·카메라/자연 플레이·전체 기능은 남아 있다. 문서·검수·백업은 I: Junction 또는 I: QA 폴더, 실제 런타임은 E:에 둔다.
