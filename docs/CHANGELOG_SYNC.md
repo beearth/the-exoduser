@@ -56957,3 +56957,5 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 - v22b 최신 승인 주장을 철회하고 ROOT/main/Unity selector·파일 SHA 감사표를 추가. 영상 원본 교체 없음.
 - 전체폭 도킹 이력을 보존하고 중앙 HUD/양측 인벤토리로 재설계. 장비/가방/상세 위계, 상세 독립 스크롤,720p 보조18px, 상시 개발문 제거. 전투/저장/Core 변경 없음.
 - 설계 HTML과 현행 설계·검수 문서를 추가. 실제 Mac compile/render/input 결과는 설계 문서에서 별도 기록.
+
+- Mac6000.6.7f1격리verify/build성공,HUD3해상도6검사씩·인벤3해상도10검사씩PASS. 실제PNG2장과검수JSON보존. 키문자18px/nowrap보정. CUA직접클릭좌표불일치로수동입력PASS는미선언.

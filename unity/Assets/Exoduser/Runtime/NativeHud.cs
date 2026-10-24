@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         readonly RenderTexture hp,mana,shield,eye;
         readonly Texture2D hpFrame,mpFrame,bar,icon;
         readonly Font textFont,numberFont;
-        GUIStyle hpNumber,maximum,resourceNumber,resourceLabel,tooltip;
+        GUIStyle hpNumber,maximum,resourceNumber,resourceLabel,tooltip,keyLabel;
         HudValues values;int tick=-1,slowTick=-1;bool[] eyes=new bool[4];
         readonly Transition hpLevel=new Transition(.6f),manaLevel=new Transition(.5f),staminaLevel=new Transition(.5f);
         sealed class Transition
@@ -73,6 +73,7 @@ namespace Exoduser.UnityPort
             if(hpNumber!=null)return;
             hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=24,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
             maximum=new GUIStyle(hpNumber){fontSize=18};resourceNumber=new GUIStyle(hpNumber){fontSize=20};resourceLabel=new GUIStyle(hpNumber){fontSize=18};
+            keyLabel=new GUIStyle(GUI.skin.label){font=Required<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=18,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(.85f,.80f,.69f);
             tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(.92f,.84f,.68f);
         }
         public void Draw(float width,float height,string activeAttack)
@@ -90,7 +91,23 @@ namespace Exoduser.UnityPort
                 GUI.DrawTexture(insetIcon,icon,ScaleMode.ScaleToFit,true);if(Event.current.type==EventType.Repaint)IconDrawn=true;
                 if(lmb.Contains(Event.current.mousePosition))GUI.Box(new Rect(mid-150,slotBar.y-34,300,30),"기검참 · 좌클릭 3타 홀드 차지",tooltip);
             }
+            DrawKeyLabels(slotBar,height);
             // Existing input executors own the other slots. No invented skill icons.
+        }
+        void DrawKeyLabels(Rect barRect,float height)
+        {
+            string[] keys={"1","2","3","4","F","Z","LMB","RMB","Shift","E","Q","Ctrl","Space"};
+            const float step=44*NativeHudDockLayout.ArtScale;
+            for(int i=0;i<keys.Length;i++){
+                float center=barRect.x+(146.5f+i*44)*NativeHudDockLayout.ArtScale;
+                var rect=new Rect(center-step*.5f+1,height-44,step-2,31);
+                var tint=GUI.color;GUI.color=new Color(.025f,.026f,.024f);GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=tint;
+                // Preserve key names; narrow only long labels, with a 12px physical height at720p.
+                float natural=keyLabel.CalcSize(new GUIContent(keys[i])).x;
+                float squeeze=Mathf.Min(1,rect.width/Mathf.Max(1,natural));var matrix=GUI.matrix;
+                GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(rect.x,rect.y,0),Quaternion.identity,new Vector3(squeeze,1,1));
+                GUI.Label(new Rect(0,0,rect.width/squeeze,rect.height),keys[i],keyLabel);GUI.matrix=matrix;
+            }
         }
         void Globe(Rect wrap,Rect frame,bool right)
         {

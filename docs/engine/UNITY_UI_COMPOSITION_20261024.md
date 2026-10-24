@@ -29,3 +29,27 @@
 ## 구현과 검수 경계
 
 NativeHud/Layout와 NativeInventory/Dock의 표현만 변경한다. InventoryState/시뮬레이션/세이브/영상 원본은 수정하지 않는다. 소켓 표시와 클릭 영역, 가방 좌표와 드롭 변환을 함께 검수한다. 선택·장착·해제·정리·드래그·닫기·pause/resume, 두 독립 스크롤 및 1280×720/1920×1080/2560×1080 실화면을 확인하기 전에는 디자인 완료·Mac PASS를 선언하지 않는다.
+
+## 첫 Mac 렌더에서 발견한 보정
+
+1280×720 실화면에서 원본 슬롯 PNG에 구워진 키 문자가 지나치게 작았다. 원본 슬롯/키 기능을 유지하고 같은 키 이름을18px 글자로 해당 키판 위에 렌더하도록 보정했다. 긴 Shift/Space만 가로폭에 맞추며 글자 높이는 유지한다. 기존 원본 PNG는 수정하지 않았다.
+
+## 실제 Mac 검수 결과
+
+| 항목 | 결과·경계 |
+|---|---|
+| Editor | Hub에서 사용자가 설치한6000.6.7f1 Silicon / Personal라이선스 확인. 원래6000.4.8f1 프로젝트는 보존하고567파일513,558,108B를 SHA대조한 별도 복사본에서 검수 |
+| 컴파일·기초 검증 | PortVerification.Verify 종료0. 중앙 HUD 경계/GPU resource mask/인벤 seed·교체·no-heal/로비미디어·자막 등PASS. 원본 소스의6.4 Editor 검수는 아님 |
+| 최종 일반 빌드 | StandaloneOSX / ARM64 /6000.6.7f1 /Succeeded /errors0 /1,406,117,783B. build-readable/EXODUSER-Unity.app. Development옵션 없음 |
+| 실제 해상도 | 1280×720,1920×1080,2560×1080 PNG헤더 모두 요청값과 일치 |
+| HUD | 마지막 readable후보 3해상도 각6검사PASS. full/partial/empty9PNG. 720p 실제 화면에서 키 문자 겹침을 발견해 nowrap/위치 보정 후 재검수 |
+| 인벤토리 | 3해상도 각10검사PASS. equipment/swap/bag9PNG. 최종 HUD키만 후속 변경,NativeInventory/Dock 파일은 동일SHA. 기본선택·장착·해제·정리·center/edge드롭·자원clamp·pause/resume은 자동fixture 결과 |
+| 직접 시각 | 원본3아트와 MacHUD/인벤1920,720,초광폭 표본을 확인. 구슬 하단·기사·슬롯 잘림 없음, 중앙시야 유지, 상세/버튼 겹침 없음. 얇은 무기 아이콘과13키 밀도는 추가 디자인 검토 대상. 전체 사용자 디자인 인수 아님 |
+| 직접 키보드 | 실제 일반 앱의FDG/ENTER화면에서Return,Space유지로로비 진입 관측. 별도 진단앱에서여성타이틀도 확인. 자연113초완주·전음향 청취를 했다는 뜻이 아님 |
+| 직접 마우스 | 미완료. CUA클릭(400,200)이 진단Unity GUI(984,790),Input(984,-70)로 전달됨(Screen1280×720). 관측한 클릭 좌표 불일치로 버튼/드래그/스크롤 직접 검수를 PASS로 올리지 않음. 제품에 좌표 우회/개발 라벨 추가0 |
+| 진단본 | UiInputTrace.cs는 외부QA복사본에만 존재. build-input-trace는 진단 전용이며최종 앱은trace없는build-readable. 자기 진단Player만 종료 |
+| 미완료 | 원본 최신 승인 기준,로비/인트로 공통 타이포·UX 재작업,직접mouse/scroll/drag·상세긴옵션 시각검수,사용자 디자인 채택. 전체 이식/디자인완료 선언 안 함 |
+
+[Mac HUD 실제 화면](previews/ui-composition-20261024/mac-hud.png) · [Mac 인벤토리 실제 화면](previews/ui-composition-20261024/mac-inventory.png) · [검수 영수증](UNITY_MAC_UI_VERIFICATION_20261024.json)
+
+QA 원본: `/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1`. HTML미리보기는 브라우저file URL보안정책으로 열리지 않았고 우회하지 않았다. 이후 실제Unity Player출력으로 검수했다. 과거 코드/도킹후보와 실패한키표시 후보는 보존했다.

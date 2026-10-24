@@ -1,0 +1,292 @@
+{
+  "engine": "6000.6.7f1",
+  "originalProjectVersion": "6000.4.8f1 preserved",
+  "verify": {
+    "check": "Unity_source_runtime_compile_asset_and_model",
+    "passed": true,
+    "engine": "6000.6.7f1"
+  },
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/build-readable/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406117783
+  },
+  "hud": [
+    {
+      "resolution": "1280x720",
+      "checks": {
+        "scope": "native_HUD_fixture_and_GPU_readback_not_natural_play_or_full_pixel_parity",
+        "dir": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/hud-readable-1280x720",
+        "passed": true,
+        "checks": [
+          {
+            "name": "actual native HUD resource fixture completed",
+            "passed": true
+          },
+          {
+            "name": "actual full partial empty states and truncated texts",
+            "passed": true
+          },
+          {
+            "name": "GPU circle clipping and independent MP blue ST green fills",
+            "passed": true
+          },
+          {
+            "name": "original active kiSlash icon reached native HUD",
+            "passed": true
+          },
+          {
+            "name": "full partial empty screenshots exist",
+            "passed": true
+          },
+          {
+            "name": "no runtime exception or shader error",
+            "passed": true
+          }
+        ]
+      },
+      "artifactDirectory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/hud-readable-1280x720"
+    },
+    {
+      "resolution": "1920x1080",
+      "checks": {
+        "scope": "native_HUD_fixture_and_GPU_readback_not_natural_play_or_full_pixel_parity",
+        "dir": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/hud-readable-1920x1080",
+        "passed": true,
+        "checks": [
+          {
+            "name": "actual native HUD resource fixture completed",
+            "passed": true
+          },
+          {
+            "name": "actual full partial empty states and truncated texts",
+            "passed": true
+          },
+          {
+            "name": "GPU circle clipping and independent MP blue ST green fills",
+            "passed": true
+          },
+          {
+            "name": "original active kiSlash icon reached native HUD",
+            "passed": true
+          },
+          {
+            "name": "full partial empty screenshots exist",
+            "passed": true
+          },
+          {
+            "name": "no runtime exception or shader error",
+            "passed": true
+          }
+        ]
+      },
+      "artifactDirectory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/hud-readable-1920x1080"
+    },
+    {
+      "resolution": "2560x1080",
+      "checks": {
+        "scope": "native_HUD_fixture_and_GPU_readback_not_natural_play_or_full_pixel_parity",
+        "dir": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/hud-readable-2560x1080",
+        "passed": true,
+        "checks": [
+          {
+            "name": "actual native HUD resource fixture completed",
+            "passed": true
+          },
+          {
+            "name": "actual full partial empty states and truncated texts",
+            "passed": true
+          },
+          {
+            "name": "GPU circle clipping and independent MP blue ST green fills",
+            "passed": true
+          },
+          {
+            "name": "original active kiSlash icon reached native HUD",
+            "passed": true
+          },
+          {
+            "name": "full partial empty screenshots exist",
+            "passed": true
+          },
+          {
+            "name": "no runtime exception or shader error",
+            "passed": true
+          }
+        ]
+      },
+      "artifactDirectory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/hud-readable-2560x1080"
+    }
+  ],
+  "inventory": [
+    {
+      "resolution": "1280x720",
+      "checks": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "actual_native_inventory_receipt",
+            "ok": true
+          },
+          {
+            "name": "original_seed_15_equipped_10_bag",
+            "ok": true
+          },
+          {
+            "name": "shared_ui_handlers_equip_unequip_move_sort",
+            "ok": true
+          },
+          {
+            "name": "source_drag_center_and_edge_clamp",
+            "ok": true
+          },
+          {
+            "name": "source_resource_clamp_no_heal",
+            "ok": true
+          },
+          {
+            "name": "inventory_pauses_and_resumes",
+            "ok": true
+          },
+          {
+            "name": "rendered_equipment",
+            "ok": true
+          },
+          {
+            "name": "rendered_swap",
+            "ok": true
+          },
+          {
+            "name": "rendered_bag",
+            "ok": true
+          },
+          {
+            "name": "no_runtime_exception_or_shader_error",
+            "ok": true
+          }
+        ]
+      },
+      "artifactDirectory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/inventory-1280x720"
+    },
+    {
+      "resolution": "1920x1080",
+      "checks": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "actual_native_inventory_receipt",
+            "ok": true
+          },
+          {
+            "name": "original_seed_15_equipped_10_bag",
+            "ok": true
+          },
+          {
+            "name": "shared_ui_handlers_equip_unequip_move_sort",
+            "ok": true
+          },
+          {
+            "name": "source_drag_center_and_edge_clamp",
+            "ok": true
+          },
+          {
+            "name": "source_resource_clamp_no_heal",
+            "ok": true
+          },
+          {
+            "name": "inventory_pauses_and_resumes",
+            "ok": true
+          },
+          {
+            "name": "rendered_equipment",
+            "ok": true
+          },
+          {
+            "name": "rendered_swap",
+            "ok": true
+          },
+          {
+            "name": "rendered_bag",
+            "ok": true
+          },
+          {
+            "name": "no_runtime_exception_or_shader_error",
+            "ok": true
+          }
+        ]
+      },
+      "artifactDirectory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/inventory-1920x1080"
+    },
+    {
+      "resolution": "2560x1080",
+      "checks": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "actual_native_inventory_receipt",
+            "ok": true
+          },
+          {
+            "name": "original_seed_15_equipped_10_bag",
+            "ok": true
+          },
+          {
+            "name": "shared_ui_handlers_equip_unequip_move_sort",
+            "ok": true
+          },
+          {
+            "name": "source_drag_center_and_edge_clamp",
+            "ok": true
+          },
+          {
+            "name": "source_resource_clamp_no_heal",
+            "ok": true
+          },
+          {
+            "name": "inventory_pauses_and_resumes",
+            "ok": true
+          },
+          {
+            "name": "rendered_equipment",
+            "ok": true
+          },
+          {
+            "name": "rendered_swap",
+            "ok": true
+          },
+          {
+            "name": "rendered_bag",
+            "ok": true
+          },
+          {
+            "name": "no_runtime_exception_or_shader_error",
+            "ok": true
+          }
+        ]
+      },
+      "artifactDirectory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/inventory-2560x1080"
+    }
+  ],
+  "input": {
+    "keyboard": "Return and held Space reached lobby; female title and lobby observed in native app",
+    "mouse": "NOT VERIFIED: CUA click(400,200) delivered GUI mouse(984,790) at Screen1280x720; no coordinate workaround in product",
+    "trace": [
+      "UI_INPUT_TRACE screen=1280x720 dpi=228",
+      "UI_INPUT_TRACE gui=mouseDown pos=(984.00, 790.00) screen=1280x720 enabled=True",
+      "UI_INPUT_TRACE update down=True up=False pos=(984.00, -70.00, 0.00) focus=True",
+      "UI_INPUT_TRACE gui=mouseUp pos=(984.00, 790.00) screen=1280x720 enabled=True",
+      "UI_INPUT_TRACE update down=False up=True pos=(984.00, -70.00, 0.00) focus=True"
+    ]
+  },
+  "runtimeHashes": {
+    "NativeHud.cs": "b729f6601fae7690ec0a964b806288ee5e88830989c0d394bafb6da42e5b0937",
+    "NativeHudDockLayout.cs": "ad4b665305e1a6733df94932d4d9c4d9ffcee12072f802fc6581d397fe3ef889",
+    "NativeInventory.cs": "9e746816233b1adfba2fdfac6653a6aa96ae9f16cee921d063423131e4f4c2c5",
+    "NativeInventoryDock.cs": "73f5fc3731f7771bedcc50be388510a9de00e233ac75d9944cc7e0b2e6cbb7f9"
+  }
+}

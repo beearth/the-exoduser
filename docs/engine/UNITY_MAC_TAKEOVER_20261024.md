@@ -35,3 +35,5 @@ Mac에 Windows G:/E:/I: 절대 경로나 Junction을 만들지 않는다. 현재
 ## 후속 상태 정정
 
 Hub 로그인과 사용자가 시작한6000.6.7f1 Silicon 다운로드를 CUA로 확인했다. 기존6000.4.8f1 패키지/프로젝트는 유지한다. v22b는 최신 승인 기준이 아니라 복사된 후보다. 후속 UI 구조·검수 상태는 [현행 설계](UNITY_UI_COMPOSITION_20261024.md)를 따른다.
+
+Mac 후속:6000.6.7f1 별도복사본 compile/verify 및ARM64일반앱 build오류0,HUD·인벤3해상도 자동검수 완료. 원본6.4와 기존게임은미교체. 직접마우스는CUA좌표불일치로미검수. [실제결과](UNITY_UI_COMPOSITION_20261024.md#실제-mac-검수-결과).
