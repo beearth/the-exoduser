@@ -48,8 +48,24 @@ TAB/ESC/시뮬레이션 pause/resume·저장·아이템 수치·어픽스 허용
 | 변경 전 보존 | `I:/EXODUSER-Storage/qa/unity-ui-dock-20261024/NativeInventory-before.cs`, `UNITY_INVENTORY-before.md` |
 | 이전 실제 PNG/원본 아트 | 직접 열어 검토. 위의 분리감·기사 투명 패딩·Thin 문제를 확인 |
 | 소스 확인 | docs 전체에서 인벤토리/장비판/소지품/_invGrid/NativeInventory/UI dock 관련 문서를 검색. 웹 기획값은 바꾸지 않고 Native 시각 규격만 별도 기록 |
-| 새 실제 검수 | 부모의 SPEC→QUALITY→통합 복구점→Editor/Windows Player·1920/1280/2560 PNG 검수 대기 |
+| 새 실제 검수 | SPEC/QUALITY PASS 뒤 실제3해상도PNG·기존동작 fixture PASS. 아래 통합검수완료 기록 참조 |
 | 입력 위험 | 새 viewport/동적 cellSize에서 좌표 변환·scroll 끝행·드래그 해제·우클릭·닫기 pause/resume을 부모가 다시 확인해야 함. 버튼 위/가방 viewport 밖 release의 기존 동작을 임의 변경하지 않음 |
 | 시각 한계 | 새 코드만으로 새 visual PASS를 선언하지 않음. 실제 화면에서 글자 잘림/기사 겹침/아이템 가독성·공유 rail/가장자리 밀착 확인 필요 |
 
-**VISUAL VERDICT: RETOUCH / 새 Player 검수 대기.** 직접 빌드·Player 실행·스테이징·커밋은 하지 않았다.
+구현자 인계 당시 VISUAL RETOUCH는 아래 부모 실제시각검수의 이번도킹 PASS로 갱신한다. 직접 빌드·Player 실행·스테이징·커밋은 하지 않았다.
+
+## 실제 통합 검수 완료 — 화면 도킹 범위
+
+| 항목 | 실제 근거 / 경계 |
+|---|---|
+| 빌드 입력 | local270d4da469d2f90b3daad3811b2d7e7ab38ec10b / remote5bba72053f0fdcf567913486f1d9b69b1a0fffdf, 동일tree d0ca74ced914feae2e807d8d1296615704bbb196. I:격리 캐시 프로젝트로489파일414,868,255B를 복사 전후/대상SHA256 대조 |
+| 실제 빌드 | build-2026-10-24T12-17-56-439Z, Unity6000.4.8f1 Succeeded/오류0/1,427,063,521B. Development 연결 없는 일반 빌드 |
+| 실제 화면 | 1920×1080·1280×720·2560×1080 각각 HUD full/partial/empty 및 인벤 equipment/swap/bag. 실제 PNG18장 헤더에서 요청 해상도 일치 확인. suite.json:6런PASS, HUD각6검사/인벤각10검사. OS직접입력 검수가 아님 |
+| 기능 보존 | GPU 원형clip·HP/MP/ST·숫자·기검참 아이콘, 동일 장착/해제/이동/정리 핸들러·중앙/끝 drag clamp·자원min·pause/resume 확인. 테스트용 API 호출과 실제 mouse/key 입력은 구분 |
+| 독립 검토 | review/spec-implementation.md, quality-implementation.md 각PASS. 최종 실제PNG7장 직접 시각검토: review/visual-implementation.md. 이번도킹 VISUAL VERDICT: PASS, 추가차단P1/P2없음 |
+| 실패 기록 | 최초 hud-1920x1080-2026-10-24T12-19-08-746Z는 QA런처 windowsHide=true→HWND0/검정PNG/아이콘FAIL. 생산코드는변경하지않고 QA런처 windowsHide=false만수정, 새12:19:54런부터 정상. 실패본은 I:에보존 |
+| 실행 반영 | E:/EXODUSER-Unity-Play/EXODUSER-Unity.exe. 기존 자기 검수Player26072만정상종료, 이전152파일이 I:이전빌드와동일함을확인후 새152파일복사·전SHA대조. LIVE.json기록. 기존사용자Editor34780/세이브/Godot/웹/공유INDEX보존 |
+| 재생 경계 | 이번변경은NativeGame.OnGUI의 HUD배치와NativeHud/NativeInventory. Awake/Update/FixedUpdate/SetInventory/ResetRun 및인벤9메서드총14개는이전과동일, NativeLobby/NativeLobbyVideo/Core는무변경. 기존INTRO-PASS.json은당시5526→33cb완주기록이며새NativeGame전체SHA동일주장으로확대하지않음 |
+| 남은 범위 | 실제OS hover/클릭/스크롤/드래그·게임패드·전체해상도/현지화·HUD작은MP/ST/max글자·전체UI/전체게임인수는별도. 이번도킹PASS가전체UI/인트로재완주PASS는아님 |
+
+모든 상대 검수 경로는 I:/EXODUSER-Storage/qa/unity-ui-dock-20261024 기준이다. 최종 로컬/원격tree·복구bundle·기존공유상태는 SAVED.json에 기록한다.
