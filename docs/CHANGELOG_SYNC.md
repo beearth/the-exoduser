@@ -1,6 +1,10 @@
+## 2026-10-24 UNITY-LOBBY-01 재생·원본 브랜드 교정
+
+- Chromium SVG로 원본 타이틀 글자 간격을 복원했다. 미디어24개167,540,687bytes. adapter 중복Play 회귀RED/GREEN13검사, Player 음성 probe는 clip isPlaying 대신 실제 출력 버퍼를 확인한다. 현재 실제 Player 자연 종료/오디오 검수는 진행 중이다. 사용자 저장/기존 앱/공유INDEX를 보존한다.
+
 ## 2026-10-24 UNITY-LOBBY-01 — 로비·인트로 우선 이식
 
-- 사용자 지시에 따라 FDG→타이틀→지옥문ENTER→세계관v17→로비를 native C#/VideoPlayer로 연결했다. 최신G:index·원본24미디어/167,537,430bytes·29×32자막/17컷·BGM·바르칸96frames와skip/replay/focus/error수명을 이식한다. Core65/실제adapter11·정적0오류·실제Editor29×32미디어검사PASS. Windows/Player 영상·음향·화면 검수는 진행 중이며 생성/기존 저장·계정·전체 입력/반응형·전체 로비 완료는 미확인이다. [현재 증거와 한계](engine/UNITY_LOBBY_20261024.md). Godot·웹·공유main/INDEX480·세이브/기존창 보존.
+- 사용자 지시에 따라 FDG→타이틀→지옥문ENTER→세계관v17→로비를 native C#/VideoPlayer로 연결했다. 최신G:index·원본24미디어/167,540,687bytes·29×32자막/17컷·BGM·바르칸96frames와skip/replay/focus/error수명을 이식한다. Core65/실제adapter13·정적0오류·실제Editor29×32미디어검사PASS. Windows/Player 영상·음향·화면 검수는 진행 중이며 생성/기존 저장·계정·전체 입력/반응형·전체 로비 완료는 미확인이다. [현재 증거와 한계](engine/UNITY_LOBBY_20261024.md). Godot·웹·공유main/INDEX480·세이브/기존창 보존.
 
 ## 2026-10-24 UNITY-INVENTORY-01 — 시작 장비·가방 C# 이식
 

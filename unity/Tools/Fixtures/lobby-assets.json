@@ -39,7 +39,7 @@
     }
   ],
   "assetCount": 24,
-  "bytes": 167537430,
+  "bytes": 167540687,
   "assets": [
     {
       "source": "video/fdg_intro.mp4",
@@ -180,10 +180,10 @@
     {
       "source": "index.html",
       "destination": "Exoduser/Resources/Art/lobby/splash_brand.png",
-      "bytes": 353787,
+      "bytes": 357044,
       "sourceSha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621",
-      "sha256": "cc5366f0ea51785dadb79672c841023d69f9e2c0cb65cc996853d5913fc5fe76",
-      "transform": "original splashTitleBrand SVG with embedded clean plate; raster1983x793; Georgia system font"
+      "sha256": "6f50962f0c925be875320903db11545f12cbd15b98ba7de637900a7810fd702a",
+      "transform": "original splashTitleBrand SVG; Chromium canvas preserves textLength/lengthAdjust/letter spacing; embedded clean plate; raster1983x793; Georgia system font"
     },
     {
       "source": "video/intro.mp4",

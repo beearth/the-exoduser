@@ -27,3 +27,11 @@
 `unity/Tools/lobby-oracle` 버전 관리 oracle은 현재 원본 4파일 해시와 CUTS/자막을 보존한다. 올바른 project 경로에서 미구현 RED(CS2001)를 확인한 뒤 Core 상태 및 FDG watchdog 65개 assertion GREEN. 설치된 Unity managed assemblies 정적 compile 오류0을 확인했다. 추가 FDG 회귀는 수정 전 NativeLobby의 실제 FDG 제어 블록을 추출해 준비 완료·시각 .1초 고정 상태 16초를 실행했고 진행하지 못하는 행동 RED를 확인했다(`fdg-stall-red.json`). 수정 후 no-progress/새 progress에 의한 watchdog 갱신/에러/ended의 13개 검사가 GREEN이다. 초기 CS2001 확인은 소스 존재 확인이며 행동 검증으로 간주하지 않는다. 추가 비동기 준비/focus 회귀는 실제 `NativeLobbyVideo.cs`를 Unity 경계 double과 함께 컴파일해 준비 중 blur 이후 prepare callback의 자동재생 행동 RED를 재현했다. 수정 후 11개 intent/permission/수동정지/타이틀 정지/에러 검사가 GREEN(`video-intent-green.json`)이다. 이는 실제 코덱 검증이 아니다. 자연 종료는 `WorldEndedNaturally`가 Update의 실제 movie.Ended 분기에서만 true가 되며 Begin/Replay/새 세계관 재생에서 false로 초기화한다. 강제 Finish/스킵은 이 값을 true로 만들지 않는다. 실제 Editor import/Windows Player 영상·자막·오디오·화면 검수는 부모 QA 결과에 따르며 이 문서의 정적 검증만으로 완료를 선언하지 않는다.
 
 원본 로그인/OAuth, 기존 저장 목록·생성·삭제, 캐릭터 선택/캐릭터별 이야기, 패드 조작·진동, 접근성·전체 해상도, 모든 언어 글꼴/RTL, CSS 블러·발광·정확한 fade timing은 미완료다. 맵·모션·이펙트 신규 제작이나 Godot 변경을 포함하지 않는다. `VISUAL VERDICT: RETOUCH` — 원본 구성·매체 연결과 전체 픽셀/상호작용 패리티는 별도다.
+
+## 2026-10-24 Windows Player 오디오 overflow 조사와 재생 호출 방어
+
+- 관측: 첫 Windows Player 로그에 `AudioSampleProvider buffer overflow`가 FDG와 세계관 영상에서 발생했고 최종 receipt가 없었다. 프로세스는 정상 shutdown 로그를 남겼으며 종료 주체는 미확인이다. 이를 게임 검수 PASS로 처리하지 않는다.
+- 확인: `NativeLobby.SetPlaybackFocus`는 동일 focus 상태 early return을 이미 갖고 있었다. 따라서 매 프레임 검수 fixture 호출이 실제 반복 `VideoPlayer.Play`의 원인이라는 근거는 없다.
+- 방어 수정: 실제 `NativeLobbyVideo` 어댑터를 실행하는 boundary-double 테스트에 동일 true permission 100회 반복과 이미 재생 중인 명시적 Play를 추가했다. 수정 전 compile 성공 후 첫 반복 호출 assertion이 행동 RED였다. 재생 중 `TryStartPlayback`은 `!player.isPlaying` 조건으로 native Play를 다시 호출하지 않는다. 수정 후 기존 focus 11개 + 반복 2개 = 13개 PASS (`video-repeated-play-green.json`). 준비 callback도 같은 start 경로를 사용한다.
+- 오디오 API: Unity 공식 [Video Player component manual](https://docs.unity3d.com/6000.4/Documentation/Manual/class-VideoPlayer.html)은 AudioSource의 `Play On Awake`/`Play()`가 영상 오디오 트랙의 재생 제어에 적용되지 않는다고 명시한다. 따라서 음성 AudioSource.Play를 추측으로 추가하지 않았다. VideoPlayer의 AudioSource routing·샘플 출력과 aggregate AudioListener 출력은 실제 새 Player에서 따로 확인해야 한다.
+- 한계: 이 방어 수정/13개 회귀 PASS만으로 실제 overflow 원인이나 해결을 확정하지 않는다. 새 Player에서 로그·voice 샘플·BGM 샘플·실제 영상 자연 종료를 재검수한다.

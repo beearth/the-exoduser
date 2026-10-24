@@ -24,16 +24,18 @@ namespace Exoduser.UnityPort
    player=owner.AddComponent<VideoPlayer>();voice=owner.AddComponent<AudioSource>();voice.playOnAwake=false;voice.spatialBlend=0;
    player.playOnAwake=false;player.source=VideoSource.Url;player.url=Path.Combine(Application.streamingAssetsPath,"Lobby",filename);player.isLooping=loop;player.waitForFirstFrame=true;player.skipOnDrop=true;player.renderMode=VideoRenderMode.RenderTexture;player.audioOutputMode=VideoAudioOutputMode.AudioSource;player.controlledAudioTrackCount=1;player.EnableAudioTrack(0,true);player.SetTargetAudioSource(0,voice);voice.mute=muted;
    player.sendFrameReadyEvents=true;
-   player.prepareCompleted+=p=>{if(token!=generation)return;int w=(int)p.width,h=(int)p.height;if(w<=0||h<=0){Error="Invalid video dimensions";return;}float scale=Mathf.Min(1,4096f/Mathf.Max(w,h));texture=new RenderTexture(Mathf.Max(1,(int)(w*scale)),Mathf.Max(1,(int)(h*scale)),0,RenderTextureFormat.ARGB32);texture.Create();p.targetTexture=texture;if(playbackAllowed&&wantsPlayback)p.Play();};
+   player.prepareCompleted+=p=>{if(token!=generation)return;int w=(int)p.width,h=(int)p.height;if(w<=0||h<=0){Error="Invalid video dimensions";return;}float scale=Mathf.Min(1,4096f/Mathf.Max(w,h));texture=new RenderTexture(Mathf.Max(1,(int)(w*scale)),Mathf.Max(1,(int)(h*scale)),0,RenderTextureFormat.ARGB32);texture.Create();p.targetTexture=texture;TryStartPlayback();};
    player.frameReady+=OnFrame;player.loopPointReached+=OnEnd;player.errorReceived+=OnError;
    try{player.Prepare();}catch(Exception e){Error=e.Message;}
   }
   void OnFrame(VideoPlayer p,long frame){if(p!=player)return;if(freezeFirst){freezeFirst=false;wantsPlayback=false;p.Pause();}}
   void OnEnd(VideoPlayer p){if(p==player&&!p.isLooping){Ended=true;wantsPlayback=false;}}
   void OnError(VideoPlayer p,string message){if(p==player){Error=message;wantsPlayback=false;p.Pause();}}
-  public void Play(){if(Error.Length>0)return;freezeFirst=false;wantsPlayback=true;if(Prepared&&playbackAllowed)player.Play();}
+  // Permission polling and explicit Play cannot repeatedly restart an active decoder.
+  void TryStartPlayback(){if(playbackAllowed&&wantsPlayback&&Prepared&&Error.Length==0&&!player.isPlaying)player.Play();}
+  public void Play(){if(Error.Length>0)return;freezeFirst=false;wantsPlayback=true;TryStartPlayback();}
   public void Pause(){wantsPlayback=false;if(player!=null)player.Pause();}
-  public void SetPlaybackAllowed(bool allowed){playbackAllowed=allowed;if(player==null)return;if(!allowed)player.Pause();else if(wantsPlayback&&Prepared&&Error.Length==0)player.Play();}
+  public void SetPlaybackAllowed(bool allowed){playbackAllowed=allowed;if(player==null)return;if(!allowed){if(player.isPlaying)player.Pause();}else TryStartPlayback();}
   public void Toggle(){if(!Prepared)return;if(player.isPlaying)Pause();else Play();}
   public void Seek(double time){if(Prepared){freezeFirst=false;player.time=Math.Max(0,Math.Min(Duration,time));}}
   public void Volume(float value){if(voice!=null)voice.volume=Mathf.Clamp01(value);}

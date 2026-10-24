@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort {
    lobbyReceipt=new LobbySmokeReceipt{scope="actual_native_player_frontend_fixture"};int tick=Simulation.TickCount;
    yield return CaptureLobbyMovie("fdg",.7,output);
    float limit=Time.realtimeSinceStartup+20;while(lobby.StageName=="FDG"&&Time.realtimeSinceStartup<limit)yield return null;
-   yield return CaptureLobbyMovie("splash",.5,output);lobbyReceipt.originalArtDrawn=lobby.OriginalArtDrawn;
+   yield return CaptureLobbyMovie("splash",1.5,output);lobbyReceipt.originalArtDrawn=lobby.OriginalArtDrawn;
    lobby.AdvanceSplash();yield return null;
    limit=Time.realtimeSinceStartup+15;while((!lobby.CurrentVideo.Prepared||lobby.CurrentVideo.Frame<0)&&Time.realtimeSinceStartup<limit)yield return null;
    yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-lobby-enter.png"));yield return null;
@@ -43,14 +43,16 @@ namespace Exoduser.UnityPort {
    float end=Time.realtimeSinceStartup+.25f;while(Time.realtimeSinceStartup<end){ProbeLobbyAudio();yield return null;}
    var sample=new LobbyMovieSample{stage=stage,prepared=movie.Prepared,firstFrame=first,lastFrame=movie.Frame,frameAdvanced=movie.Frame>first,time=movie.Time,error=movie.Error};
    if(movie.Texture!=null){sample.width=movie.Texture.width;sample.height=movie.Texture.height;sample.nonBlack=MovieHasPixels(movie.Texture);}
-   lobbySamples.Add(sample);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-lobby-"+stage+".png"));yield return null;
+   lobbySamples.Add(sample);Debug.Log("LOBBY_VIDEO_SAMPLE "+JsonUtility.ToJson(sample));yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-lobby-"+stage+".png"));yield return null;
   }
   void ProbeLobbyAudio(){
    if(lobbyReceipt==null)return;var voice=lobby.CurrentVideo?.Voice;if(voice!=null)lobbyReceipt.voicePeak=Mathf.Max(lobbyReceipt.voicePeak,AudioPeak(voice));
    var music=lobby.GetComponent<AudioSource>();if(music!=null)lobbyReceipt.musicPeak=Mathf.Max(lobbyReceipt.musicPeak,AudioPeak(music));
   }
   static readonly float[] lobbyAudioBuffer=new float[256];
-  static float AudioPeak(AudioSource source){if(!source.isPlaying)return 0;source.GetOutputData(lobbyAudioBuffer,0);float peak=0;foreach(float x in lobbyAudioBuffer)peak=Mathf.Max(peak,Mathf.Abs(x));return peak;}
+  // VideoPlayer owns audio transport; AudioSource's clip/isPlaying state is not
+  // a valid predicate for its movie stream. Inspect the real output buffer.
+  static float AudioPeak(AudioSource source){source.GetOutputData(lobbyAudioBuffer,0);float peak=0;foreach(float x in lobbyAudioBuffer)peak=Mathf.Max(peak,Mathf.Abs(x));return peak;}
   static bool MovieHasPixels(Texture texture){
    var previous=RenderTexture.active;var small=RenderTexture.GetTemporary(32,18,0,RenderTextureFormat.ARGB32);var pixels=new Texture2D(32,18,TextureFormat.RGB24,false);
    try{Graphics.Blit(texture,small);RenderTexture.active=small;pixels.ReadPixels(new Rect(0,0,32,18),0,0);pixels.Apply();int visible=0;foreach(var c in pixels.GetPixels())if(Mathf.Max(c.r,c.g,c.b)>.035f)visible++;return visible>4;}

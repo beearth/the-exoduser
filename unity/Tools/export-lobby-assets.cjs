@@ -22,7 +22,16 @@ async function main(){
  const poster='assets/lobby/lobby_varkan_crypt_poster_v2.webp';derived(poster,'Exoduser/Resources/Art/lobby/lobby_poster.png',await sharp(read(poster)).png().toBuffer(),'lossless WebP decode to PNG; original dimensions/pixels');
  const index=read('index.html').toString('utf8');let svg=/<svg id="splashTitleBrand"[\s\S]*?<\/svg>/.exec(index)?.[0];if(!svg)throw Error('Missing original splash SVG');
  svg=svg.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="1983" height="793" ').replace('href="img/title_clean_plate_20260929.png"','href="data:image/png;base64,'+read('img/title_clean_plate_20260929.png').toString('base64')+'"');
- derived('index.html','Exoduser/Resources/Art/lobby/splash_brand.png',await sharp(Buffer.from(svg)).png().toBuffer(),'original splashTitleBrand SVG with embedded clean plate; raster1983x793; Georgia system font');
+ // Chromium preserves the source SVG textLength/lengthAdjust and letter spacing.
+ // librsvg rasterization compresses the title around the central cross.
+ write(qa+'/source-art/splash-brand.svg',Buffer.from(svg));
+ const {chromium}=require(require.resolve('playwright',{paths:[live]}));
+ const browser=await chromium.launch({headless:true});let brand;
+ try{const page=await browser.newPage();const png=await page.evaluate(async markup=>{
+  const img=new Image(),url=URL.createObjectURL(new Blob([markup],{type:'image/svg+xml'}));
+  try{img.src=url;await img.decode();const c=document.createElement('canvas');c.width=1983;c.height=793;c.getContext('2d').drawImage(img,0,0);return c.toDataURL('image/png').split(',')[1];}finally{URL.revokeObjectURL(url);}
+ },svg);brand=Buffer.from(png,'base64');}finally{await browser.close();}
+ derived('index.html','Exoduser/Resources/Art/lobby/splash_brand.png',brand,'original splashTitleBrand SVG; Chromium canvas preserves textLength/lengthAdjust/letter spacing; embedded clean plate; raster1983x793; Georgia system font');
  const ffmpeg=process.env.LOCALAPPDATA+'/Microsoft/WinGet/Links/ffmpeg.exe',gate=qa+'/gate-first-frame.png';
  const f=cp.spawnSync(ffmpeg,['-hide_banner','-loglevel','error','-y','-i',live+'/video/intro.mp4','-frames:v','1',gate],{windowsHide:true,encoding:'utf8',timeout:60000});if(f.status!==0)throw Error(f.stderr);
  derived('video/intro.mp4','Exoduser/Resources/Art/lobby/gate_poster.png',fs.readFileSync(gate),'ffmpeg decode frame0 to PNG; no crop or resize');
