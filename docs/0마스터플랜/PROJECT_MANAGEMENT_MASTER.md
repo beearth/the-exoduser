@@ -450,3 +450,8 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+
+## 2026-10-24 Steam 공개 구버전 원인 확인
+
+공개 게시 이력이 revision4(화면 2026-09-26 03:36)에 머물러 있어 최신 About 저장본이 공개되지 않았음을 실조회했다. 영어 베타 소개 스틸6/영상3 로드·재생을 재확인했다. 게시 차이에는 기존 소개 개선 외에 비소유 출시일 변경(2026-12-01→2027-12-01)이 묶여 있어 날짜 승인 여부를 사용자에게 확인 중이다. 임의 날짜복원·일괄게시·영상전송·SteamPipe는 수행하지 않았다. 상단 예고편·기존사진·태그는 여전히 최신화 미완료. [상시 관리 대장](../13출시·마케팅/STEAM_PAGE_MAINTENANCE.md)의10-24 절과 I:/EXODUSER-Storage/steam/maintenance_20261024/audit.json 참조. 공유INDEX480경로와게임코드/세이브/기존실행창 보존.
