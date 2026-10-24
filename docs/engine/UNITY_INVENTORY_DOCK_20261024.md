@@ -1,5 +1,8 @@
 # UNITY-UI-DOCK-01 — 인벤토리 연속 외곽과 화면 고정
 
+> 2026-10-24 정정: 아래는 이전 후보의 제작·검수 이력이다. 전체폭 도킹은 최신 사용자 중앙 HUD·양측 인벤토리 방향으로 교체 중이며 전체 디자인 인수는 미완료다. [현행 설계](UNITY_UI_COMPOSITION_20261024.md).
+
+
 2026-10-24 PC Codex. 사용자 요구는 기존 UI가 화면에서 떠 있는 인상을 줄이고 화면 가장자리에 닿는 일체감을 만드는 것이다. 기존 `iron/socket/knight` 원본과 로비용 정적 한글 폰트를 재사용한다. 타 게임 고유 아트·신규 이미지 생성은 없다.
 
 소유는 `NativeInventory.cs`, 신규 `NativeInventoryDock.cs/.meta`, 본 문서 및 `UNITY_INVENTORY_20261024.md`의 추가 절이다. NativeHud/NativeLobby/NativeGame/Editor/core 계산/세이브는 이 작업자가 수정하지 않는다.

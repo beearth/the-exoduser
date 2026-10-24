@@ -1,5 +1,8 @@
 # Unity v22b 미디어 복구
 
+> 2026-10-24 원본 기준 정정: 이 문서의 “최신 v22b / 사용자 최신 override”는 승인 근거 미확인으로 철회한다. v22b 복사/재생 검사는 해당 후보의 결과만 뜻한다. [원본 대조](UNITY_SOURCE_BASELINE_20261024.md).
+
+
 실행 원본은 `world_intro_v22b_paint_en.mp4`, 98,177,870B다. SHA256은 `cd9fa7486fd1cf18952605408f5b1bae416a97b2307806476bc329498413199e`다. GitHub 도구의64MiB IPC한도 때문에 130,903,828문자 base64 단일 전송은 실패했다. 원본의 byte를 변경하거나 품질을 낮추지 않고 네 부분으로 Git에 보관한다. 보관 부분·도구·문서는 I:의 Tools/docs 실체에 두고 실제 조립된 runtime만 SSD에 둔다.
 
 | Git 경로 `unity/Tools/MediaRecovery/world-intro-v22b/` | Bytes | Git blob |

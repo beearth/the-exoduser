@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
     public sealed class NativeHudDockLayout
     {
         public const float ArtScale=.9f;
-        public Rect Foundation,SlotBar,LeftLiquid,RightLiquid,LeftFrame,RightFrame;
+        public Rect SlotBar,LeftLiquid,RightLiquid,LeftFrame,RightFrame;
         public Rect ActiveSlot;
 
         public static NativeHudDockLayout Create(float width,float height)
@@ -16,14 +16,15 @@ namespace Exoduser.UnityPort
             const float s=ArtScale;
             float frameSize=263*s;
             var result=new NativeHudDockLayout();
-            result.Foundation=new Rect(0,height-44,width,44);
-            result.LeftFrame=new Rect(-frameSize*9/465,height-frameSize,frameSize,frameSize);
-            result.RightFrame=new Rect(width-frameSize*461/465,height-frameSize,frameSize,frameSize);
+            float mid=width*.5f;
+            // A fixed central group keeps the resource/slot relationship at every aspect ratio.
+            result.LeftFrame=new Rect(mid-520,height-8-frameSize,frameSize,frameSize);
+            result.RightFrame=new Rect(mid+520-frameSize,height-8-frameSize,frameSize,frameSize);
             result.LeftLiquid=Liquid(result.LeftFrame);
             result.RightLiquid=Liquid(result.RightFrame);
             float barWidth=820*s,barHeight=182*s;
             // The authored PNG has empty rows below its actual y=462 silhouette.
-            result.SlotBar=new Rect((width-barWidth)/2,height-3-barHeight*462/546,barWidth,barHeight);
+            result.SlotBar=new Rect((width-barWidth)/2,height-8-barHeight*462/546,barWidth,barHeight);
             result.ActiveSlot=new Rect(result.SlotBar.x+392*s,result.SlotBar.y+70*s,37*s,45*s);
             return result;
         }

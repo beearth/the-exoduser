@@ -1,5 +1,11 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-24 Mac 원본 재감사·중앙 HUD 재설계 — 현행
+
+v22b 최신 승인 주장을 철회하고 원본 비교를 마쳤다. ROOT v15/main v17/Unity v22b selector 차이,30개 복사본 SHA 일치,27개 source ROOT/main blob 일치를 확인했으나 최신 승인본은 미확인이다. 영상 교체0. 사용자 최신 디아블로식 방향에 따라 중앙 약1040px HUD,640px 장비/600px 가방·상세와 중앙시야를 설계·구현 중이다. 이전 도킹 PASS는 당시 좁은 범위의 이력이다. [원본 감사](../UNITY_SOURCE_BASELINE_20261024.md), [현행 설계·검수](../UNITY_UI_COMPOSITION_20261024.md). PC 개발/세이브/맵/전투 확장0.
+
+Hub는 사용자가 로그인하고6000.6.7f1 설치를 시작한 화면을 확인했다. 기존6000.4.8f1 프로젝트 버전은 보존하며 Editor 설치 완료 후 별도 검수본에서 확인한다. 이전 약관 대기 기록을 현재 미해결 상태로 반복하지 않는다.
+
 ## 2026-10-24 Mac Unity 인수 — 최신
 
 사용자 “이제 맥에서 다 해라”의 PC 인계를 받아 Mac Codex가 `codex/unity-mac-20261024` / `/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024`에서 인수했다. 원격 `ffa85d62`/tree6068a62 대조, v22b byte-exact 복구 완료. 현재 소유 변경은 Editor 빌드 타깃·출력과 관련 docs뿐이며 기존 런타임은 그대로다. Hub 약관 확인·로그인/라이선스가 선행조건이고 Mac Editor/Player 인수는 미완료다. PC 개발·과거 팀 재가동0. 아래 ACTIVE 표기는 과거 PC 이력이며 최신 인계의 PC heartbeat PAUSED가 우선한다. [실제 인수·다음 행동](../UNITY_MAC_TAKEOVER_20261024.md).

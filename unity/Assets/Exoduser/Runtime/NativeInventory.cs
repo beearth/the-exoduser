@@ -10,10 +10,9 @@ namespace Exoduser.UnityPort {
         public bool Open {get;private set;}
         readonly Action changed; readonly Dictionary<string,Texture2D> textures=new Dictionary<string,Texture2D>();
         readonly Icon[] icons; readonly AffixLabel[] labels;readonly Texture2D knight,socket,iron; readonly Font font;
-        GUIStyle text,small,heading,itemName,button; Vector2 scroll; InventoryItem drag; bool dragging;
+        GUIStyle text,small,heading,itemName,button; Vector2 scroll,detailScroll; InventoryItem detailItem; InventoryItem drag; bool dragging;
         string message=""; bool ready;
         readonly string[] names={"무기","견갑","신발","갑옷","투구","활","장갑","바지","허리띠","목걸이","반지 I","반지 II","망토","팔찌","귀걸이 I","봉안함","귀걸이 II"};
-        readonly Vector2[] positions={new Vector2(0,294),new Vector2(450,294),new Vector2(450,426),new Vector2(108,162),new Vector2(108,30),new Vector2(558,294),new Vector2(108,294),new Vector2(108,426),new Vector2(450,162),new Vector2(450,30),new Vector2(0,162),new Vector2(558,162),new Vector2(558,426),new Vector2(0,426),new Vector2(0,30),new Vector2(120,220),new Vector2(558,30)};
         static readonly Color gold=new Color(.76f,.62f,.39f),ink=new Color(.045f,.043f,.04f),line=new Color(.30f,.26f,.19f);
         [Serializable] sealed class Icon {public string slot,wtype,btype,resource;public int el;}
         [Serializable] sealed class IconData {public Icon[] icons;}
@@ -58,18 +57,36 @@ namespace Exoduser.UnityPort {
             return Move(item,x,y);
         }
         void DrawDetails(int level,Rect pane,float footerTop){
-            float x=pane.x+32,w=pane.width-64;
-            var it=State.Selected;if(it==null){GUI.Label(new Rect(x,232,w,42),"장비를 선택하세요",heading);GUI.Label(new Rect(x,294,w,120),"장비의 원본 수치와 추가 옵션을 확인하고 오른쪽 클릭으로 교체할 수 있습니다.",text);return;}
-            var image=IconFor(it);GUI.DrawTexture(new Rect(pane.center.x-120,242,240,210),image,ScaleMode.ScaleToFit,true);
-            itemName.normal.textColor=it.rarity==1?new Color(.59f,.76f,.96f):gold;GUI.Label(new Rect(x,201,w,42),it.name,itemName);
-            int idx=Array.IndexOf(InventoryState.Slots,it.slot);float y=466;GUI.Label(new Rect(x,y,w,35),(it.rarity==1?"마법":"일반")+"  ·  "+names[idx]+"  ·  요구 레벨 "+it.reqLv,text);y+=60;
-            string body="";if(it.atk!=0)body+="공격력  "+it.atk.ToString("0.##")+"\n";if(it.def!=0)body+="방어력  "+it.def.ToString("0.##")+"\n";if(it.eDef!=0)body+="마법 방어  "+it.eDef.ToString("0.##")+"\n";
-            if(it.spd!=0)body+="무기 속도  "+it.spd.ToString("0.##")+"\n";if(it.bonusHp!=0)body+="생명력  +"+it.bonusHp.ToString("0.##")+"\n";if(it.bonusSt!=0)body+="체력  +"+it.bonusSt.ToString("0.##")+"\n";if(it.bonusMp!=0)body+="마력  +"+it.bonusMp.ToString("0.##")+"\n";if(it.bonusShield!=0)body+="보호막  +"+it.bonusShield.ToString("0.##")+"\n";
-            var bodyContent=new GUIContent(body.TrimEnd('\n'));float bodyHeight=text.CalcHeight(bodyContent,w);
-            GUI.Label(new Rect(x,y,w,bodyHeight),bodyContent,text);y+=bodyHeight+18;
-            if(!string.IsNullOrEmpty(it._implicitKo)){var content=new GUIContent(it._implicitKo.Replace("X",it._implicitVal.ToString("0.##")));float h=text.CalcHeight(content,w);GUI.Label(new Rect(x,y,w,h),content,text);y+=h+18;}
-            if(it.affixes!=null)foreach(var a in it.affixes){bool connected=a.id=="shieldFlat"||a.id=="maxHPPct"||a.id=="defFlat"||a.id=="dropRate";var content=new GUIContent(AffixText(a)+(connected?"  [능력치 적용]":"  [전투 효과 미이식]"));float h=Mathf.Max(32,small.CalcHeight(content,w));GUI.Label(new Rect(x,y,w,h),content,small);y+=h+10;}
-            bool bag=State.Bag.Contains(it);if(DockButton(new Rect(x,footerTop-66,w,44),bag?"장착":"장착 해제",true)){if(bag)Equip(it,level);else Unequip(it.slot);}
+            float x=pane.x+28,w=pane.width-56;
+            var it=State.Selected;
+            if(!ReferenceEquals(detailItem,it)){detailItem=it;detailScroll=Vector2.zero;}
+            if(it==null){GUI.Label(new Rect(x,pane.y,w,42),"장비를 선택하세요",heading);return;}
+            var body=new System.Text.StringBuilder();
+            int idx=Array.IndexOf(InventoryState.Slots,it.slot);
+            body.AppendLine((it.rarity==1?"마법":"일반")+" · "+(idx>=0?names[idx]:it.slot)+" · 요구 레벨 "+it.reqLv);
+            if(it.atk!=0)body.AppendLine("공격력  "+it.atk.ToString("0.##"));
+            if(it.def!=0)body.AppendLine("방어력  "+it.def.ToString("0.##"));
+            if(it.eDef!=0)body.AppendLine("마법 방어  "+it.eDef.ToString("0.##"));
+            if(it.spd!=0)body.AppendLine("무기 속도  "+it.spd.ToString("0.##"));
+            if(it.bonusHp!=0)body.AppendLine("생명력  +"+it.bonusHp.ToString("0.##"));
+            if(it.bonusSt!=0)body.AppendLine("체력  +"+it.bonusSt.ToString("0.##"));
+            if(it.bonusMp!=0)body.AppendLine("마력  +"+it.bonusMp.ToString("0.##"));
+            if(it.bonusShield!=0)body.AppendLine("보호막  +"+it.bonusShield.ToString("0.##"));
+            if(!string.IsNullOrEmpty(it._implicitKo))body.AppendLine(it._implicitKo.Replace("X",it._implicitVal.ToString("0.##")));
+            if(it.affixes!=null)foreach(var a in it.affixes)body.AppendLine(AffixText(a));
+            var content=new GUIContent(body.ToString().TrimEnd('\n','\r'));
+            var viewport=new Rect(x,pane.y,w,footerTop-pane.y-64);
+            float textWidth=w-24,bodyHeight=text.CalcHeight(content,textWidth);
+            float nameHeight=Mathf.Max(40,itemName.CalcHeight(new GUIContent(it.name),textWidth-92));
+            float headerHeight=Mathf.Max(90,nameHeight+12);
+            detailScroll=GUI.BeginScrollView(viewport,detailScroll,new Rect(0,0,textWidth,headerHeight+bodyHeight+12));
+            GUI.DrawTexture(new Rect(0,0,80,80),IconFor(it),ScaleMode.ScaleToFit,true);
+            itemName.normal.textColor=it.rarity==1?new Color(.59f,.76f,.96f):gold;
+            GUI.Label(new Rect(92,12,textWidth-92,nameHeight),it.name,itemName);
+            GUI.Label(new Rect(0,headerHeight,textWidth,bodyHeight),content,text);
+            GUI.EndScrollView();
+            bool bag=State.Bag.Contains(it);
+            if(DockButton(new Rect(x,footerTop-52,w,44),bag?"장착":"장착 해제",true)){if(bag)Equip(it,level);else Unequip(it.slot);}
         }
         string AffixText(InventoryAffix a){foreach(var l in labels)if(l.id==a.id){bool pct=l.unit=="pct"||l.unit=="prob";return l.name+"  "+(pct?a.value*100:a.value).ToString("0.##")+(pct?"%":l.unit=="dps"?"/s":"");}throw new InvalidOperationException("Unknown source affix label "+a.id);}
     }

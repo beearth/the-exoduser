@@ -56951,3 +56951,9 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 ### 2026-10-24 Unity Mac 인수 준비
 
 원격 ffa85d62/tree6068a62를 별도 Mac Unity worktree로 인수하고 v22b 4부분 복구 SHA 일치를 확인했다. PortVerification.Build에 활성 Windows64/Mac 타깃별 exe/app 출력 및 Mac ARM64, target/architecture/output 영수증을 추가했다. 런타임/로비/도킹 코드는 변경0. Hub 약관 확인·로그인/라이선스 대기이므로 Editor 컴파일·실제 Mac 빌드/재생은 미검증 후보다. 자세한 선행조건과 다음 행동은 docs/engine/UNITY_MAC_TAKEOVER_20261024.md. 기존 ROOT의 tracked INDEX/WORK0·미추적94항목은 보존한다.
+
+## 2026-10-24 Mac UI 구조 재설계 후보 / 원본 최신성 정정
+
+- v22b 최신 승인 주장을 철회하고 ROOT/main/Unity selector·파일 SHA 감사표를 추가. 영상 원본 교체 없음.
+- 전체폭 도킹 이력을 보존하고 중앙 HUD/양측 인벤토리로 재설계. 장비/가방/상세 위계, 상세 독립 스크롤,720p 보조18px, 상시 개발문 제거. 전투/저장/Core 변경 없음.
+- 설계 HTML과 현행 설계·검수 문서를 추가. 실제 Mac compile/render/input 결과는 설계 문서에서 별도 기록.

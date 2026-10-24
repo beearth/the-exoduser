@@ -31,6 +31,7 @@ public static class PortVerification {
     var shader=Resources.Load<Shader>(name);if(shader==null||ShaderUtil.ShaderHasError(shader))throw new Exception("KiSlash shader import error "+name);
    }
    VerifyFeedbackFrames(hit);
+   VerifyUiComposition();
    VerifyHudPixels();
    VerifyInventory();
    VerifyLobby();
@@ -85,6 +86,19 @@ public static class PortVerification {
   if(float.IsNaN(s.Player.StateTicks)||float.IsInfinity(s.Player.StateTicks)||s.Player.StateTicks<0)throw new Exception("Unarmed invalid attack recovery");
   foreach(var name in new[]{"knight","socket","iron"})if(Resources.Load<Texture2D>("Art/ui/inventory/"+name)==null)throw new Exception("Inventory source art "+name);
   Debug.Log("UNITY_INVENTORY_SEED_STATS_UNARMED_PASS");
+ }
+ static void VerifyUiComposition(){
+  foreach(var size in new[]{new Vector2(1280,720),new Vector2(1920,1080),new Vector2(2560,1080)}){
+   float scale=Mathf.Min(size.x/1920f,size.y/1080f),width=size.x/scale,height=size.y/scale;
+   var layout=NativeHudDockLayout.Create(width,height);
+   var left=NativeHudDockLayout.VisibleFrame(layout.LeftFrame);var right=NativeHudDockLayout.VisibleFrame(layout.RightFrame);
+   if(left.xMin<0||right.xMax>width||left.yMax>height-4||right.yMax>height-4)throw new Exception("HUD frame clipped "+size);
+   if(Math.Abs((layout.LeftFrame.xMin+layout.RightFrame.xMax)*.5f-width*.5f)>.01f)throw new Exception("HUD group lost center "+size);
+   if(layout.RightFrame.xMax-layout.LeftFrame.xMin>1100||left.yMin<height-260)throw new Exception("HUD occupies excessive combat view "+size);
+   if(!layout.VisibleBar.Contains(layout.ActiveSlot.min)||!layout.VisibleBar.Contains(layout.ActiveSlot.max))throw new Exception("Active skill outside visible slot bar "+size);
+   if(width-640-600<640)throw new Exception("Inventory central view too narrow "+size);
+  }
+  Debug.Log("UNITY_UI_COMPOSITION_BOUNDS_PASS");
  }
  static void VerifyHudPixels(){
   var shader=Resources.Load<Shader>("Shaders/HudOrb");if(shader==null||ShaderUtil.ShaderHasError(shader))throw new Exception("HUD shader import error");

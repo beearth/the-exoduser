@@ -4,18 +4,17 @@ using UnityEngine;
 
 namespace Exoduser.UnityPort {
     public sealed partial class NativeInventory {
-        GUIStyle dockTitle,slotLabel,bagLabel,status;
+        GUIStyle slotLabel,bagLabel,status;
         static readonly Color parchment=new Color(.91f,.87f,.78f);
 
         void InitDockStyles(){
             var strong=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??font;
             text=new GUIStyle(GUI.skin.label){font=font,fontSize=20,wordWrap=true,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero,clipping=TextClipping.Overflow};
             text.normal.textColor=parchment;
-            small=new GUIStyle(text){fontSize=17};
-            heading=new GUIStyle(text){font=strong,fontSize=26,wordWrap=false};
+            small=new GUIStyle(text){fontSize=18};
+            heading=new GUIStyle(text){font=strong,fontSize=28,wordWrap=false};
             heading.normal.textColor=new Color(.83f,.72f,.52f);
-            itemName=new GUIStyle(heading){fontSize=25};
-            dockTitle=new GUIStyle(heading){fontSize=32};
+            itemName=new GUIStyle(heading){fontSize=24,wordWrap=true};
             slotLabel=new GUIStyle(small){font=strong,fontSize=18,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
             bagLabel=new GUIStyle(slotLabel){fontSize=18};
             status=new GUIStyle(small){alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Clip};
@@ -28,14 +27,6 @@ namespace Exoduser.UnityPort {
             GUI.DrawTexture(rect,iron,ScaleMode.ScaleAndCrop);GUI.color=color;
         }
 
-        void Rail(float x,float top,float height){
-            Iron(new Rect(x-5,top,10,height),.72f);
-            Fill(new Rect(x-5,top,1,height),new Color(.015f,.014f,.012f));
-            Fill(new Rect(x-3,top,1,height),new Color(.40f,.34f,.23f));
-            Fill(new Rect(x+3,top,1,height),new Color(.11f,.09f,.06f));
-            Fill(new Rect(x+5,top,1,height),new Color(0,0,0,.85f));
-        }
-
         bool DockButton(Rect rect,string label,bool primary=false){
             bool hover=rect.Contains(Event.current.mousePosition);
             Iron(rect,hover ? .82f : .58f);Fill(rect,new Color(0,0,0,primary ? .24f : .40f));
@@ -44,80 +35,67 @@ namespace Exoduser.UnityPort {
             return GUI.Button(rect,label,button);
         }
 
+        void Surface(Rect pane){
+            Iron(pane,.48f);Fill(pane,new Color(0,0,0,.66f));
+            Fill(new Rect(pane.x,pane.y,pane.width,2),gold);
+            Fill(new Rect(pane.x,pane.yMax-2,pane.width,2),line);
+            Fill(new Rect(pane.x,pane.y+76,pane.width,1),line);
+        }
+
         void DrawDock(int level,Core.PlayerState player,Action close){
             var old=GUI.matrix;
             float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
-            float width=Screen.width/scale,height=Screen.height/scale,footerTop=height-60;
-            float extra=width-1920,eqWidth=720+extra*.38f,bagWidth=600+extra*.32f;
-            var equipment=new Rect(0,194,eqWidth,footerTop-194);
-            var bag=new Rect(eqWidth,194,bagWidth,footerTop-194);
-            var detail=new Rect(bag.xMax,194,width-bag.xMax,footerTop-194);
+            float width=Screen.width/scale,height=Screen.height/scale;
+            var equipment=new Rect(0,24,640,height-48);
+            var bag=new Rect(width-600,24,600,height-48);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(scale,scale,1));
-
-            // One surface reaches all four screen edges. Columns share seams, never card gutters.
-            Iron(new Rect(0,0,width,height),.48f);Fill(new Rect(0,0,width,height),new Color(0,0,0,.60f));
-            Iron(new Rect(0,0,width,112),.72f);Fill(new Rect(0,0,width,112),new Color(0,0,0,.28f));
-            Fill(new Rect(0,112,width,2),new Color(.43f,.35f,.23f));
-            Fill(new Rect(0,114,width,5),new Color(0,0,0,.65f));
-            Fill(new Rect(0,119,width,75),new Color(0,0,0,.34f));
-            Fill(new Rect(0,193,width,1),line);
-            Rail(5,0,height);Rail(width-5,0,height);
-            Rail(equipment.xMax,119,footerTop-119);Rail(bag.xMax,119,footerTop-119);
-            Iron(new Rect(0,footerTop,width,60),.76f);Fill(new Rect(0,footerTop,width,60),new Color(0,0,0,.30f));
-            Fill(new Rect(0,footerTop,width,2),new Color(.43f,.35f,.23f));
-            Fill(new Rect(0,height-3,width,3),new Color(.12f,.10f,.07f));
-
-            GUI.Label(new Rect(34,16,420,52),"소지품",dockTitle);
-            GUI.Label(new Rect(35,72,width-210,29),"왼쪽 클릭  선택     오른쪽 클릭  장착 / 해제     끌어서 가방 위치 이동     TAB · ESC  닫기",small);
-            if(DockButton(new Rect(width-148,25,112,42),"닫기  ×"))close();
-            GUI.Label(new Rect(34,137,equipment.width-68,38),"장착 장비",heading);
-            GUI.Label(new Rect(bag.x+26,137,bag.width-180,38),"가방  "+State.Bag.Count+" / 300",heading);
-            GUI.Label(new Rect(detail.x+32,137,detail.width-64,38),"상세 정보",heading);
-            if(DockButton(new Rect(bag.xMax-122,138,96,36),"정리"))Sort();
-
-            DrawDockEquipment(equipment,footerTop,level,player);
-            DrawDockBag(bag,footerTop,level);
-            DrawDetails(level,detail,footerTop);
-            GUI.Label(new Rect(34,footerTop+14,width-68,34),string.IsNullOrEmpty(message)?"장비 교체는 현재 자원을 회복시키지 않습니다. 저장·강화·분해·드랍 아이템 생성은 아직 연결되지 않았습니다.":message,status);
+            // Two bounded surfaces leave the paused world visible through the middle.
+            Surface(equipment);Surface(bag);
+            GUI.Label(new Rect(32,44,500,42),"장착 장비",heading);
+            GUI.Label(new Rect(bag.x+28,44,350,42),"소지품  "+State.Bag.Count+" / 300",heading);
+            if(DockButton(new Rect(bag.xMax-126,44,100,38),"닫기  ×"))close();
+            DrawDockEquipment(equipment,equipment.yMax,level,player);
+            float bagBottom=550;
+            DrawDockBag(new Rect(bag.x,112,bag.width,bagBottom-112),bagBottom,level);
+            Fill(new Rect(bag.x+28,bagBottom+8,bag.width-56,1),line);
+            if(DockButton(new Rect(bag.xMax-122,bagBottom-40,94,34),"정리"))Sort();
+            DrawDetails(level,new Rect(bag.x,bagBottom+24,bag.width,bag.yMax-bagBottom-76),bag.yMax-36);
+            if(!string.IsNullOrEmpty(message))GUI.Label(new Rect(bag.x+28,bag.yMax-32,bag.width-56,28),message,status);
             GUI.matrix=old;
         }
 
         void DrawDockEquipment(Rect pane,float footerTop,int level,Core.PlayerState player){
-            var matrix=GUI.matrix;float paperScale=Mathf.Min(1.02f,(pane.width-48)/654f);
-            GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(pane.center.x-327*paperScale,232,0),Quaternion.identity,new Vector3(paperScale,paperScale,1));
-            // Measured original alpha silhouette: x187..495/y74..919 in 688x1024.
-            // Crop only transparent padding; retain the knight's own aspect and source pixels.
-            var color=GUI.color;GUI.color=new Color(1.45f,1.45f,1.45f);
-            const float knightHeight=600,knightWidth=600*309f/846f;
-            GUI.DrawTextureWithTexCoords(new Rect(327-knightWidth/2,-18,knightWidth,knightHeight),knight,new Rect(187f/688,1-920f/1024,309f/688,846f/1024),true);
+            // Crop the measured transparent source padding, preserving its aspect ratio.
+            var color=GUI.color;GUI.color=new Color(1.3f,1.3f,1.3f);
+            const float knightHeight=560,knightWidth=560*309f/846f;
+            GUI.DrawTextureWithTexCoords(new Rect(pane.center.x-knightWidth/2,148,knightWidth,knightHeight),knight,new Rect(187f/688,1-920f/1024,309f/688,846f/1024),true);
             GUI.color=color;
-            for(int i=0;i<Core.InventoryState.Slots.Length;i++){
-                if(i==15)continue;
-                var p=positions[i];var it=State.Equipped[i];var rect=new Rect(p.x,p.y,96,96);
-                GUI.DrawTexture(new Rect(p.x-16,p.y,128,128),socket,ScaleMode.ScaleToFit);
+            int[] order={14,4,9,16,10,3,8,11,0,6,1,5,13,7,2,12};
+            float[] columns={18,112,438,532};
+            for(int cell=0;cell<order.Length;cell++){
+                int i=order[cell];float x=columns[cell%4],y=156+(cell/4)*124;
+                var it=State.Equipped[i];var rect=new Rect(x,y,90,104);
+                GUI.DrawTexture(new Rect(x-9,y-8,108,108),socket,ScaleMode.ScaleToFit);
                 if(it!=null){
-                    GUI.DrawTexture(new Rect(p.x+17,p.y+6,62,62),IconFor(it),ScaleMode.ScaleToFit,true);
-                    if(ReferenceEquals(State.Selected,it))Border(rect,gold);
+                    GUI.DrawTexture(new Rect(x+12,y+4,66,66),IconFor(it),ScaleMode.ScaleToFit,true);
+                    if(ReferenceEquals(State.Selected,it))Border(new Rect(x,y,90,78),gold);
                 }
-                Fill(new Rect(p.x+4,p.y+68,88,28),new Color(0,0,0,.70f));
-                GUI.Label(new Rect(p.x+4,p.y+68,88,28),names[i],slotLabel);
+                Fill(new Rect(x,y+78,90,26),new Color(0,0,0,.70f));
+                GUI.Label(new Rect(x,y+78,90,26),names[i],slotLabel);
                 HandleItem(rect,it,Core.InventoryState.Slots[i],level);
             }
-            GUI.matrix=matrix;
-            float y=footerTop-178,x=pane.x+34,half=(pane.width-68)/2;
-            Fill(new Rect(pane.x+7,y-16,pane.width-14,178),new Color(0,0,0,.33f));
-            Fill(new Rect(pane.x+7,y-16,pane.width-14,1),line);
+            float sy=footerTop-220,x0=pane.x+32,half=(pane.width-64)/2;
+            Fill(new Rect(x0,sy-22,pane.width-64,1),line);
             var stats=State.CalculateStats(level);
-            GUI.Label(new Rect(x,y,half,30),"생명력  "+player.Hp.ToString("0")+" / "+stats.PlayerMaxHp,text);
-            GUI.Label(new Rect(x+half,y,half,30),"방어  "+stats.PlayerPhysicalDefense.ToString("0.##"),text);
-            GUI.Label(new Rect(x,y+34,half,30),"마력  "+player.Mana.ToString("0")+" / "+stats.PlayerMaxMana,text);
-            GUI.Label(new Rect(x+half,y+34,half,30),"체력  "+player.Stamina.ToString("0")+" / "+stats.PlayerMaxStamina,text);
-            GUI.Label(new Rect(x,y+68,pane.width-68,30),"보호막  "+player.Shield.ToString("0")+" / "+stats.PlayerMaxShield,text);
-            GUI.Label(new Rect(x,y+112,pane.width-68,52),"시작 장비의 기본 능력치·정적 옵션 적용\n상태이상·반사·속성 등 조건부 전투 효과는 이식 중입니다.",small);
+            GUI.Label(new Rect(x0,sy,half,32),"생명력  "+player.Hp.ToString("0")+" / "+stats.PlayerMaxHp,text);
+            GUI.Label(new Rect(x0+half,sy,half,32),"마력  "+player.Mana.ToString("0")+" / "+stats.PlayerMaxMana,text);
+            GUI.Label(new Rect(x0,sy+48,half,32),"체력  "+player.Stamina.ToString("0")+" / "+stats.PlayerMaxStamina,text);
+            GUI.Label(new Rect(x0+half,sy+48,half,32),"방어  "+stats.PlayerPhysicalDefense.ToString("0.##"),text);
+            GUI.Label(new Rect(x0,sy+96,pane.width-64,32),"보호막  "+player.Shield.ToString("0")+" / "+stats.PlayerMaxShield,text);
         }
 
         void DrawDockBag(Rect pane,float footerTop,int level){
-            var viewport=new Rect(pane.x+24,210,pane.width-48,footerTop-232);
+            var viewport=new Rect(pane.x+28,pane.y,pane.width-56,pane.height-52);
             float cellSize=(viewport.width-22)/10;
             bool bagPointerInside=viewport.Contains(Event.current.mousePosition);
             scroll=GUI.BeginScrollView(viewport,scroll,new Rect(0,0,cellSize*10,Core.InventoryState.Rows*cellSize));

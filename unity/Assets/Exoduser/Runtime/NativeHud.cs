@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort
         public string name,hpText,manaText,staminaText;
         public bool cornerTransparent,hpRed,hpUpperEmpty,hpLowerRed,manaBlue,manaUpperEmpty,staminaGreen,hpEmpty,manaEmpty,staminaEmpty;
     }
-    // Source artwork and resource projection, with a shared bottom dock.
+    // Source artwork and resource projection, in a compact central group.
     public sealed class NativeHud : IDisposable
     {
         readonly Material material;
@@ -71,16 +71,15 @@ namespace Exoduser.UnityPort
         void Styles()
         {
             if(hpNumber!=null)return;
-            hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=20,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
-            maximum=new GUIStyle(hpNumber){fontSize=11};resourceNumber=new GUIStyle(hpNumber){fontSize=14};resourceLabel=new GUIStyle(hpNumber){fontSize=8};
-            tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=14,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(.92f,.84f,.68f);
+            hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=24,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
+            maximum=new GUIStyle(hpNumber){fontSize=18};resourceNumber=new GUIStyle(hpNumber){fontSize=20};resourceLabel=new GUIStyle(hpNumber){fontSize=18};
+            tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(.92f,.84f,.68f);
         }
         public void Draw(float width,float height,string activeAttack)
         {
             if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
             const float scale=NativeHudDockLayout.ArtScale;
             var dock=NativeHudDockLayout.Create(width,height);
-            DrawFoundation(dock.Foundation);
             Rect slotBar=dock.SlotBar;
             // updateHUD's inline normal-state filter overrides the .94 CSS rule.
             var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);GUI.DrawTexture(slotBar,bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
@@ -92,28 +91,6 @@ namespace Exoduser.UnityPort
                 if(lmb.Contains(Event.current.mousePosition))GUI.Box(new Rect(mid-150,slotBar.y-34,300,30),"기검참 · 좌클릭 3타 홀드 차지",tooltip);
             }
             // Existing input executors own the other slots. No invented skill icons.
-        }
-        void DrawFoundation(Rect rect)
-        {
-            // Reuse the EXODUSER bar's uninterrupted dark metal and cast edges.
-            // Repeat short sections rather than stretching skulls, labels or slots.
-            var old=GUI.color;
-            try{
-                GUI.color=new Color(.7f,.7f,.7f);
-                TileBand(rect,new Rect(520,350,640,17),210);
-                GUI.color=new Color(.8f,.8f,.8f);
-                TileBand(new Rect(rect.x,rect.y,rect.width,7),new Rect(520,155,640,17),210);
-                GUI.color=new Color(.48f,.48f,.48f);
-                TileBand(new Rect(rect.x,rect.yMax-5,rect.width,5),new Rect(520,420,640,15),210);
-            }finally{GUI.color=old;}
-        }
-        void TileBand(Rect target,Rect pixels,float tileWidth)
-        {
-            for(float x=target.x;x<target.xMax;x+=tileWidth){
-                float width=Mathf.Min(tileWidth,target.xMax-x);
-                var uv=new Rect(pixels.x/bar.width,1-pixels.yMax/bar.height,pixels.width/bar.width*width/tileWidth,pixels.height/bar.height);
-                GUI.DrawTextureWithTexCoords(new Rect(x,target.y,width,target.height),bar,uv,true);
-            }
         }
         void Globe(Rect wrap,Rect frame,bool right)
         {
@@ -135,7 +112,7 @@ namespace Exoduser.UnityPort
         void ResourceText(Rect wrap,int side,string name,string current,string max,Color color)
         {
             float x=wrap.x+side*wrap.width/2,w=wrap.width/2;
-            Text(new Rect(x,wrap.y+53,w,16),name,resourceLabel,color);Text(new Rect(x,wrap.y+68,w,24),current,resourceNumber,Color.white);Text(new Rect(x,wrap.y+91,w,16),max,resourceLabel,new Color(1,1,1,.5f));
+            Text(new Rect(x,wrap.y+35,w,24),name,resourceLabel,color);Text(new Rect(x,wrap.y+60,w,28),current,resourceNumber,Color.white);Text(new Rect(x,wrap.y+89,w,24),max,resourceLabel,new Color(1,1,1,.5f));
         }
         static Texture2D Pixels(RenderTexture rt)
         {
