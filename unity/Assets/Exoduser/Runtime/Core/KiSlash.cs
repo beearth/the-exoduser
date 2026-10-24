@@ -44,6 +44,8 @@ namespace Exoduser.UnityPort.Core
         {
             if (step < 1 || step > 3 || !Finite(chargeFrames)) throw new ArgumentOutOfRangeException(nameof(step));
             KiComboStep = step; KiComboTicks = 120; KiCooldownTicks = step == 3 ? 20 : 12;
+            // Source _fireKiSlashCrescent emits even when the 16-slot pool is full.
+            QueueKiCast(step, chargeFrames);
             ProjectileState projectile = null;
             foreach (var candidate in Projectiles) if (!candidate.Active) { projectile = candidate; break; }
             if (projectile == null) {
@@ -86,6 +88,8 @@ namespace Exoduser.UnityPort.Core
                     // Admitted ordinary physical profile has no impact/element
                     // reaction owner. Never invent noElReact (absent in source).
                     ApplyEnemyDamage(enemy, projectile.Damage, angle, true, .5f);
+                    // Source updateCrescents calls _playKiSlashHit after hurtE, including lethal hits.
+                    QueueKiHit(projectile, enemy);
                 }
             }
         }

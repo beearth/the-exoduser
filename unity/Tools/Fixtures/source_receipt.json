@@ -2,8 +2,8 @@
   "schema": "exoduser.unity.source-assets.v1",
   "sourceSha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
   "mapSourceSha256": "c76238beda26087b6faa5cf65dfc3140dccfa9519d6ef30bd458cf11f949e5bb",
-  "assetCount": 132,
-  "bytes": 184855995,
+  "assetCount": 138,
+  "bytes": 186207576,
   "assets": [
     {
       "source": "godot/assets/map/production_finish/chunk_0_0.png",
@@ -796,6 +796,42 @@
       "destination": "Art/vfx/ki_slash_silver_sheet.png",
       "bytes": 734957,
       "sha256": "23d6c17c7244dd523340cb95dd2fe0c7354990afe2702f6dfeb30b1f1fa61a65"
+    },
+    {
+      "source": "godot/assets/vfx/ki_slash_hit_silver_sheet.png",
+      "destination": "Art/vfx/ki_slash_hit_silver_sheet.png",
+      "bytes": 755439,
+      "sha256": "6587a950174ca79a3874ac1b955ebbe7aa1d6af570d3f16820da0c63af0be28a"
+    },
+    {
+      "source": "sfx/swing/sword_swing1.mp3",
+      "destination": "Audio/sword_swing1.mp3",
+      "bytes": 43821,
+      "sha256": "43393696dee07a0cc54c20011e26824a7adae6fababfd71154c699061ac812e2"
+    },
+    {
+      "source": "sfx/swing/sword_swing2.mp3",
+      "destination": "Audio/sword_swing2.mp3",
+      "bytes": 257280,
+      "sha256": "70d57916c24f188dce6209d4ad11953b08f8a2cb10b457319baa86a75e57a536"
+    },
+    {
+      "source": "sfx/swing/sword_swing3.mp3",
+      "destination": "Audio/sword_swing3.mp3",
+      "bytes": 257280,
+      "sha256": "70d57916c24f188dce6209d4ad11953b08f8a2cb10b457319baa86a75e57a536"
+    },
+    {
+      "source": "sfx/scarecrow_charge.mp3",
+      "destination": "Audio/scarecrow_charge.mp3",
+      "bytes": 12372,
+      "sha256": "fd0ecc2da4bc9589303500b169a62811b821e816a65237a4471bd400623cc361"
+    },
+    {
+      "source": "sfx/sword_parry/sfxsword_parry.mp3",
+      "destination": "Audio/sword_parry.mp3",
+      "bytes": 25389,
+      "sha256": "acadd944eaa45bf08412c6b10354ed08883124a88c49b5536b629b0caf2e68ec"
     }
   ]
 }

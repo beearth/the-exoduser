@@ -68,7 +68,7 @@ Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.Crea
 ## 명시된 미완료 범위
 
 - 원본 기본 `kiSlash` 발사·수명·일반 etype0 접촉/피해·3타 홀드 기본 경로를 옮겼다. 유니크 예열/충전 추가피해/풀차지 회심/검기 패링·전설 콤보 분노·숙련도·field mob 별도 소비자는 남아 있다. 나머지 스킬, 보호 Q/E 설계는 이번 코드에서 재작성하지 않는다.
-- 검기 명중의 원본 hitstop3/6·화면 shake·slowMo를 전체 시뮬레이션 clock에 소비하는 scheduler, 명중광·히트 임팩트·소리의 실제 native 실행은 별도다. 수치 검기 이식을 이 전체 타이밍/시각/사운드 완료로 확대하지 않는다.
+- 원본은 hitstop3/6 요청을 기록하나32586에서 소비 직전0으로 비활성화한다. 임의 freeze는 추가하지 않는다. 화면 shake·slowMo 및 전체 clock은 별도다. 명중광·차지 섬광·5샘플 연결은 [UNITY-FEEDBACK-01](UNITY_FEEDBACK_20261024.md)로 후속하며 실제 Editor/Player 근거를 모델 검사와 구분한다.
 - etype0의 LOS 알림·추적 및 직접 이동 fallback·접촉 타격 부분을 이식했다. 원본 flow field, stuck 우회/텔레포트, 분리력, 벽충돌 추가 피해, 멀리 있는 적의 tier별 scheduler는 남아 있다. 임의 공격 티켓은 추가하지 않는다.
 - 원본 일반 원거리 타이머(180–300 초기, 240 cooldown, 60 charge, etype0 range400)는 상태값만 유지한다. 발사체/패링 클래스는 미구현이며 임의 탄으로 치환하지 않는다.
 - 장비 드롭은 `equipment-roll-pending` 요청이다. `mkItem`, affix/implicit 전체 생성, 실제 인벤토리/장착, 위치용 RNG, 유골/결정/돌/그 외 드롭은 남아 있다. 요청을 만들어 놓고 “정상 아이템 획득”이라고 보고하지 않는다.

@@ -13,3 +13,5 @@
 /Tools/ki-slash-oracle/runs/
 !/Tools/ki-slash-oracle/KiSlashTests.csproj
 !/Tools/ki-slash-oracle/PoiseTests.csproj
+!/Tools/feedback-oracle/FeedbackTests.csproj
+/Tools/feedback-oracle/runs/

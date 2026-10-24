@@ -52,7 +52,7 @@
 1. 초기 라이선스 차단 이후 최종 재시도에서 실제 import가 시작됐다. 계정/인증 파일을 변경하거나 복사하지 않았다.
 2. 첫 실제 import는 이미지가 `textureShape:2` Cubemap으로 들어가 `Resources.Load<Texture2D>`가 null인 실패였다. D3D11 재현에서도 동일했다. Importer에 Texture2D 명시와 GetVersion1을 추가하고 재import해 Editor 검사를 통과했다. [공식 shape enum](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/AssetPipeline/TextureImporterEnums.cs).
 3. 실제 Windows 빌드와 Player 자동 입력을 완료했다. 자연 종주·사람의 입력/손맛·프레임 성능·원본1x 비교는 후속이며 아래 영수증 범위와 구분한다.
-4. 기검참의 원본 명중광·화면 정지/흔들림·사운드, 장비 생성/인벤토리·전체 적/투사체·Q/E 보호 계약·저장·지역/보스/클리어를 원본 순서에 따라 확대한다. 현재 후보로 전체 이식 완료나 Unity 우위 확정을 주장하지 않는다.
+4. 후속 [UNITY-FEEDBACK-01](UNITY_FEEDBACK_20261024.md)에서 기검참 명중광·차지 섬광·원음5개를 연결한다. 원본은 hitstop을 소비 직전0으로 비활성화하므로 임의 화면 정지는 추가하지 않는다. 화면 흔들림·slowMo, 장비 생성/인벤토리·전체 적/투사체·Q/E 보호 계약·저장·지역/보스/클리어는 남아 있다. 현재 후보로 전체 이식 완료나 Unity 우위 확정을 주장하지 않는다.
 
 Q/E 판정, 사용자 세이브, 웹/Godot 게임 코드, `2_3` 문서는 변경하지 않았다. 자동 서버 재시작·옛 팀 재가동·Steam 배포도 없다.
 

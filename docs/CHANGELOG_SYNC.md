@@ -1,3 +1,7 @@
+## 2026-10-24 UNITY-FEEDBACK-01 — 원본 피드백 연결
+
+- C# cast/40·80·120f charge/hit queue와 original5samples·hit2x2sheet 연결. 원본26검사 및 기존93/7/36 통과, 정적 compile0오류. additive 생성tick 선누적 검토 보정, 원본-disabled hitstop 확인. actual Editor/Windows Player 결과와 EQ/compressor·highFPS clock·full parity는 [보고서](engine/UNITY_FEEDBACK_20261024.md)로 구분한다. Godot 보존·최종 엔진 미확정.
+
 ## 2026-10-24 사용자 정정 — Godot 유지 / Unity 비교 시험
 
 - “고도는 남겨두고 유니티도 해보는거야 뭐가 더 쉽나”에 따라 최종 엔진 미확정·Godot 보존·Unity 비교 시험으로 운영 방향을 정정했다. 이전 ‘Unity 전환 확정’ 해석을 현재 현황/작업판/총괄/전략/코어/실행 안내에서 바로잡았다.

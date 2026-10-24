@@ -1,12 +1,16 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-24 UNITY-FEEDBACK-01 — 기검참 명중광·원음
+
+PC Codex / codex/unity-port-20261024 / unity Runtime·Editor·Tools·원본 미디어 복사·관련 docs만 소유. Core26/26와 기존93/7/36, 정적 컴파일0오류를 확인했다. 명중광/charge flash·5원음 native adapter를 구현했으며 실제 Editor/Player 검수는 I: 독립 복사본에서 진행한다. Godot와 열린 Editor·공용 main INDEX480경로는 보존한다. [상태·미완료·검수](../UNITY_FEEDBACK_20261024.md).
+
 ## 2026-10-24 사용자 지시 — UNITY-PORT-01
 
 최우선 방향 정정: “고도는 남겨두고 유니티도 해보는거야 뭐가 더 쉽나”. Godot를 유지하고 Unity도 시험해 같은 범위의 구현·수정/회귀·원본 재현·실행 안정성을 비교한다. 최종 엔진은 미확정이다. 이 아래 초기 ‘Unity 전환’ 표현은 확정 결정으로 읽지 않는다.
 
 최신 실행 경계: 초기 license 종료198은 해소됐다. 실제 Editor 검사와 Windows build(Succeeded/errors0)를 통과했고 실제 Player 자동이동 X4020→4101.58496·120f차지/해제·4처치·PNG4종을 확인했다. VISUAL RETOUCH(시작구간). 현재 새 시작 메뉴 창을 열어두었다. 첫 Cubemap오인 import는 Texture2D 명시/GetVersion1로 수정했다. 아래 초기 “license 차단” 문장은 이전 기록이다. 전체 게임/수동 플레이 인수는 별도다.
 
-추가 지시 “고도본도 저장해두고 유니티도 한번 해봐”: Godot4,979파일/2,071,696,605bytes를 I: 별도 보존본으로 복사하고 전 파일 SHA256 및 증분 Git 번들을 검증했다. Unity 기본 스킬을 기검참으로 연결하고1·2타/3타 홀드·40/80/120f 차지·검기 관통/벽/LOS·적 포이즈 및 원본 실버 시트/잉크/잔상 표현을 추가했다. 실제 Editor 실행은 여전히 라이선스 차단 상태이며, 아래 초기 기본 무기 검증과 새 기검참 대조 기록은 [현재 보고서](../UNITY_PORT_20261024.md)에서 구분한다. 히트스톱·명중광·오디오는 미완료다.
+추가 지시 “고도본도 저장해두고 유니티도 한번 해봐”: Godot4,979파일/2,071,696,605bytes를 I: 별도 보존본으로 복사하고 전 파일 SHA256 및 증분 Git 번들을 검증했다. Unity 기본 스킬을 기검참으로 연결하고1·2타/3타 홀드·40/80/120f 차지·검기 관통/벽/LOS·적 포이즈 및 원본 실버 시트/잉크/잔상 표현을 추가했다. 초기 라이선스 차단 뒤 실제 Editor/build/Player를 확인했으며, 초기 기본 무기 검증과 기검참 대조 기록은 [현재 보고서](../UNITY_PORT_20261024.md)에서 구분한다. 후속 명중광·차지 섬광·원음5개는 UNITY-FEEDBACK-01로 연결한다. 원본 hitstop은 소비 직전0으로 비활성화한다.
 
 Unity 비교 시험 담당은 PC Codex / `codex/unity-port-20261024` / 기존 소유 worktree의 `unity/`와 관련 docs다. Godot 원격 `7d67c4182`·공용 main/INDEX/WIP·사용자 세이브를 보존한다. 초기 독립 모델 검사와 license 종료198 뒤 실제 Editor/Windows Player 검사까지 진행한 경계는 [현재 상태·범위·다음 검수](../UNITY_PORT_20261024.md)를 따른다. 이전 Godot 통계는 Unity 진척률이나 난이도 비교 결과가 아니다.
 

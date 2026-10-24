@@ -1,0 +1,27 @@
+// Executes pinned original functions offline. Never shipped as native runtime JS.
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto');
+const flag=(name,fallback)=>{const i=process.argv.indexOf(name);return i<0?fallback:process.argv[i+1]};
+const root=path.resolve(flag('--source-root',path.resolve(__dirname,'../../..'))),source=fs.readFileSync(path.join(root,'godot/source_snapshot/game.html'),'utf8');
+const acorn=require(require.resolve('acorn',{paths:[flag('--dependency-root',root)]})),hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+if(hash(source)!=='dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209')throw Error('snapshot pin');
+const anchors=[];function body(text,name){const m=new RegExp('function\\s+'+name+'\\s*\\(').exec(text);if(!m)throw Error(name);const n=acorn.parseExpressionAt(text,m.index,{ecmaVersion:'latest'});return {code:text.slice(n.start,n.end),line:text.slice(0,m.index).split('\n').length};}
+const math=Object.create(Math),ctx=vm.createContext({Math:math,console});const run=s=>vm.runInContext(s,ctx,{timeout:1000});
+math.random=()=>run('randomCalls++;randomValues[(randomCalls-1)%randomValues.length]');
+run(`var randomCalls=0,randomValues=[.25,.75],events=[],caller=[],_sfxQueue=[],_sfxLastT={},_gxVolMul=1,performance={now:()=>1000+_gameFrame*1000/60},P={x:10,y:20,facing:.3,skills:{kiSlash:1}},_CRES_MAX=16,_crescents=[],_charIdx=0,_cresStep=0,_cresCd=0,_cresComboT=0,_KI_HOLD_STEP=40,_KI_HOLD_MAX=120,_KI_PARRY_WIN=20,_VFX_SHEETS={ki_slash_hit_0:{fw:256},ki_slash_hit_2:{fw:256}},_kiHitShadowImg={},_kiHitShadows=[],_gameFrame=0,G={hitStop:0},ens=[],wall=false,los=true,held=true;
+function _silvertailVoiceKey(k){return k}function _isSkillSfx(k){return k.startsWith('sword_')}function _isFootstepSfx(){return false}function _addSkProf(){}function meleeRef(){return 33}function statStr(){return 1}function pAtkMul(){return .7}function _skMul(){return 12}function _uEq(){return 0}function _lEq(){return 0}function _eqAffix(){return 0}function addTxt(){}function _L(a){return a}function _T(a){return a}function isHeld(){return held}function _startSilvertailAttackMotion(){}function _kiSlashPalette(){return 0}function playVFXAng(...a){events.push({type:'vfx',args:a})}function shake(n){events.push({type:'shake',n})}function shQuery(){return ens}function isW(){return wall}function hasLOS(){return los}function dst(x,y,a,b){return Math.hypot(x-a,y-b)}function _hurtFieldMobs(){return false}function hurtE(e){e.alive=false;events.push({type:'hurt',alive:e.alive})}
+function reset(){events=[];caller=[];_sfxQueue=[];_sfxLastT={};_kiHitShadows=[];randomCalls=0;for(var c of _crescents)c.active=false;ens=[];wall=false;los=true;G.hitStop=0;P._kiChargeT=0;P._kiChargeActive=true;_gameFrame=0;}
+for(var i=0;i<16;i++)_crescents.push({active:false,trail:Array.from({length:5},()=>({x:0,y:0}))});`);
+const names=['_r','playSample','_playKiSlashComboSfx','spawnCrescent','_kiSlashHoldTier','_kiSlashHoldMultiplier','_fireKiSlashCrescent','_updateKiSlashThirdCharge','_playKiSlashHit','updateCrescents'];
+for(const name of names){const b=body(source,name);run(b.code);anchors.push({name,line:b.line});}
+run(`var originalPlaySample=playSample;playSample=function(k,v,r,p){caller.push({key:k,vol:v,rate:r});originalPlaySample(k,v,r,p)}`);
+const casts=[];for(const step of [1,2,3]){run(`reset();_fireKiSlashCrescent(${step},120)`);casts.push(run(`({step:${step},caller:caller[0],queued:_sfxQueue[0],randomCalls})`));}
+run(`reset();for(var c of _crescents)c.active=true;_fireKiSlashCrescent(1)`);const fullPool=run('({caller,queue:_sfxQueue,randomCalls,active:_crescents.filter(c=>c.active).length})');
+run(`reset();held=true;var charges=[];for(var i=1;i<=150;i++){_gameFrame=i;_updateKiSlashThirdCharge(1);if(i===40||i===80||i===120||i===150)charges.push({tick:i,caller:JSON.parse(JSON.stringify(caller)),queue:JSON.parse(JSON.stringify(_sfxQueue)),events:JSON.parse(JSON.stringify(events)),randomCalls})}`);const charges=run('charges');
+run(`reset();held=false;P._kiChargeT=119;_gameFrame=7;_updateKiSlashThirdCharge(1)`);const release=run('({caller,queue:_sfxQueue,events,randomCalls,active:_crescents.filter(c=>c.active).length})');
+const hits=[];for(const step of [1,3]){run(`reset();_gameFrame=3;var c={step:${step},chargeScale:2.2,ang:.7};_playKiSlashHit(c,80,90)`);hits.push(run(`({step:${step},events,shadows:_kiHitShadows,randomCalls})`));}
+run(`reset();_fireKiSlashCrescent(1);events=[];ens=[{x:40,y:20,r:22,alive:true}];updateCrescents(1);updateCrescents(1)`);const killed=run('({events,shadows:_kiHitShadows})');
+run(`reset();_fireKiSlashCrescent(1);events=[];ens=[{x:40,y:20,r:22,alive:true}];wall=true;updateCrescents(1)`);const blockedWall=run('events');
+run(`reset();_fireKiSlashCrescent(1);events=[];ens=[{x:40,y:20,r:22,alive:true}];los=false;updateCrescents(1)`);const blockedLos=run('events');
+const live=fs.readFileSync('G:/exoduser/game.html','utf8');const comparison=names.map(name=>({name,equals_snapshot:body(source,name).code===body(live,name).code}));
+const result={source:{sha256:hash(source),anchors},casts,fullPool,charges,release,hits,killed,blockedWall,blockedLos,live_comparison:comparison,scope:'isolated original function execution; admitted ordinary profile; not full game RNG/audio/backend'};
+fs.writeFileSync(path.join(__dirname,'oracle.json'),JSON.stringify(result,null,2));console.log(JSON.stringify({casts:casts.length,charges:charges.length,liveEqual:comparison.every(x=>x.equals_snapshot),anchors}));

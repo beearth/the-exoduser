@@ -23,12 +23,34 @@ public static class PortVerification {
    foreach(var c in map.Data.chunks){var t=Resources.Load<Texture2D>(c.texture);if(t==null||t.width!=1026||t.height!=1026)throw new Exception("Original chunk dimensions "+c.texture+" actual="+(t==null?"missing":t.width+"x"+t.height)+" graphics="+SystemInfo.graphicsDeviceType);Resources.UnloadAsset(t);}
    var atlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_walk_south");if(atlas==null||atlas.width!=8192)throw new Exception("Walk atlas imported at wrong scale");
    var ki=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");if(ki==null||ki.width!=1254||ki.height!=1254)throw new Exception("Original kiSlash sheet imported at wrong scale");
+   var hit=Resources.Load<Texture2D>("Art/vfx/ki_slash_hit_silver_sheet");if(hit==null||hit.width!=1254||hit.height!=1254)throw new Exception("Original hit sheet imported at wrong scale");
+   foreach(var key in new[]{"sword_swing1","sword_swing2","sword_swing3","scarecrow_charge","sword_parry"}){
+    var clip=Resources.Load<AudioClip>("Audio/"+key);if(clip==null||clip.samples<=0)throw new Exception("Original audio import failed "+key);
+   }
    foreach(var name in new[]{"Shaders/KiSlashAdditive","Shaders/KiSlashInk"}){
     var shader=Resources.Load<Shader>(name);if(shader==null||ShaderUtil.ShaderHasError(shader))throw new Exception("KiSlash shader import error "+name);
    }
+   VerifyFeedbackFrames(hit);
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="Unity_source_runtime_compile_asset_and_model",passed=true,engine=Application.unityVersion},true));
    Debug.Log("UNITY_VERIFY_PASS");EditorApplication.Exit(0);
   }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(2);}
+ }
+ static void VerifyFeedbackFrames(Texture2D hit){
+  var host=new GameObject("Feedback frame verification");
+  var frames=new Sprite[4];for(int i=0;i<4;i++)frames[i]=Sprite.Create(hit,new Rect(i%2*627,hit.height-(i/2+1)*627,627,627),new Vector2(.5f,.5f),100);
+  var renderer=new KiImpactView(host.transform,i=>frames[i]);
+  try {
+   renderer.Handle(new FeedbackEvent{Kind=FeedbackKind.KiSlashHit,Tick=100,FrameCount=4,FrameTicks=3,Size=140,Ink=true,InkCapacity=8});
+   int[] additive={0,0,1,1,1,2},ink={0,0,0,1,1,1};
+   for(int i=0;i<6;i++){
+    renderer.Update(100+i);renderer.Update(100+i); // Rendering twice must not advance the fixed-tick clock.
+    foreach(var r in host.GetComponentsInChildren<SpriteRenderer>()){
+     int expected=r.gameObject.name=="Ki hit ink"?ink[i]:additive[i];
+     if(r.sprite!=frames[expected])throw new Exception("Feedback native frame mismatch "+r.gameObject.name+" age"+i);
+    }
+   }
+   Debug.Log("UNITY_FEEDBACK_FRAME_SEQUENCE_PASS");
+  } finally {renderer.Dispose();UnityEngine.Object.DestroyImmediate(host);foreach(var f in frames)UnityEngine.Object.DestroyImmediate(f);}
  }
  static string MakeScene(){
   var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);

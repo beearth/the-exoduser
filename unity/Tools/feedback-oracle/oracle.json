@@ -1,0 +1,443 @@
+{
+  "source": {
+    "sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+    "anchors": [
+      {
+        "name": "_r",
+        "line": 12463
+      },
+      {
+        "name": "playSample",
+        "line": 12358
+      },
+      {
+        "name": "_playKiSlashComboSfx",
+        "line": 16789
+      },
+      {
+        "name": "spawnCrescent",
+        "line": 16790
+      },
+      {
+        "name": "_kiSlashHoldTier",
+        "line": 16814
+      },
+      {
+        "name": "_kiSlashHoldMultiplier",
+        "line": 16817
+      },
+      {
+        "name": "_fireKiSlashCrescent",
+        "line": 16818
+      },
+      {
+        "name": "_updateKiSlashThirdCharge",
+        "line": 16840
+      },
+      {
+        "name": "_playKiSlashHit",
+        "line": 19380
+      },
+      {
+        "name": "updateCrescents",
+        "line": 19823
+      }
+    ]
+  },
+  "casts": [
+    {
+      "step": 1,
+      "caller": {
+        "key": "sword_swing1",
+        "vol": 0.85,
+        "rate": 0.97
+      },
+      "queued": {
+        "key": "sword_swing1",
+        "vol": 0.85,
+        "rate": 1.0088,
+        "pri": 1
+      },
+      "randomCalls": 2
+    },
+    {
+      "step": 2,
+      "caller": {
+        "key": "sword_swing2",
+        "vol": 0.85,
+        "rate": 0.97
+      },
+      "queued": {
+        "key": "sword_swing2",
+        "vol": 0.85,
+        "rate": 1.0088,
+        "pri": 1
+      },
+      "randomCalls": 2
+    },
+    {
+      "step": 3,
+      "caller": {
+        "key": "sword_swing3",
+        "vol": 0.85,
+        "rate": 0.97
+      },
+      "queued": {
+        "key": "sword_swing3",
+        "vol": 0.85,
+        "rate": 1.0088,
+        "pri": 1
+      },
+      "randomCalls": 2
+    }
+  ],
+  "fullPool": {
+    "caller": [
+      {
+        "key": "sword_swing1",
+        "vol": 0.85,
+        "rate": 0.97
+      }
+    ],
+    "queue": [
+      {
+        "key": "sword_swing1",
+        "vol": 0.85,
+        "rate": 1.0088,
+        "pri": 1
+      }
+    ],
+    "randomCalls": 2,
+    "active": 16
+  },
+  "charges": [
+    {
+      "tick": 40,
+      "caller": [
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1
+        }
+      ],
+      "queue": [
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 0.9600000000000001
+        }
+      ],
+      "events": [],
+      "randomCalls": 1
+    },
+    {
+      "tick": 80,
+      "caller": [
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1
+        },
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1
+        }
+      ],
+      "queue": [
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 0.9600000000000001
+        },
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1.04
+        }
+      ],
+      "events": [],
+      "randomCalls": 2
+    },
+    {
+      "tick": 120,
+      "caller": [
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1
+        },
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1
+        },
+        {
+          "key": "sword_parry",
+          "vol": 0.72,
+          "rate": 1.08
+        }
+      ],
+      "queue": [
+        {
+          "key": "sword_parry",
+          "vol": 0.72,
+          "rate": 1.0368000000000002,
+          "pri": 1
+        },
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 0.9600000000000001
+        },
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1.04
+        }
+      ],
+      "events": [
+        {
+          "type": "vfx",
+          "args": [
+            "ki_slash_hit_2",
+            10,
+            20,
+            0.26,
+            2,
+            0.3,
+            true
+          ]
+        }
+      ],
+      "randomCalls": 3
+    },
+    {
+      "tick": 150,
+      "caller": [
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1
+        },
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1
+        },
+        {
+          "key": "sword_parry",
+          "vol": 0.72,
+          "rate": 1.08
+        }
+      ],
+      "queue": [
+        {
+          "key": "sword_parry",
+          "vol": 0.72,
+          "rate": 1.0368000000000002,
+          "pri": 1
+        },
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 0.9600000000000001
+        },
+        {
+          "key": "scarecrow_charge",
+          "vol": 0.35,
+          "rate": 1.04
+        }
+      ],
+      "events": [
+        {
+          "type": "vfx",
+          "args": [
+            "ki_slash_hit_2",
+            10,
+            20,
+            0.26,
+            2,
+            0.3,
+            true
+          ]
+        }
+      ],
+      "randomCalls": 3
+    }
+  ],
+  "release": {
+    "caller": [
+      {
+        "key": "sword_parry",
+        "vol": 0.72,
+        "rate": 1.08
+      },
+      {
+        "key": "sword_swing3",
+        "vol": 0.85,
+        "rate": 1.03
+      }
+    ],
+    "queue": [
+      {
+        "key": "sword_swing3",
+        "vol": 0.85,
+        "rate": 0.9888000000000001,
+        "pri": 1
+      },
+      {
+        "key": "sword_parry",
+        "vol": 0.72,
+        "rate": 1.0368000000000002,
+        "pri": 1
+      }
+    ],
+    "events": [
+      {
+        "type": "vfx",
+        "args": [
+          "ki_slash_hit_2",
+          10,
+          20,
+          0.26,
+          2,
+          0.3,
+          true
+        ]
+      }
+    ],
+    "randomCalls": 3,
+    "active": 1
+  },
+  "hits": [
+    {
+      "step": 1,
+      "events": [
+        {
+          "type": "vfx",
+          "args": [
+            "ki_slash_hit_0",
+            80,
+            90,
+            0.546875,
+            3,
+            0.7,
+            true
+          ]
+        }
+      ],
+      "shadows": [
+        {
+          "x": 80,
+          "y": 90,
+          "ang": 0.7,
+          "size": 140,
+          "f0": 3
+        }
+      ],
+      "randomCalls": 0
+    },
+    {
+      "step": 3,
+      "events": [
+        {
+          "type": "vfx",
+          "args": [
+            "ki_slash_hit_0",
+            80,
+            90,
+            1.58125,
+            3,
+            0.7,
+            true
+          ]
+        }
+      ],
+      "shadows": [
+        {
+          "x": 80,
+          "y": 90,
+          "ang": 0.7,
+          "size": 404.8,
+          "f0": 3
+        }
+      ],
+      "randomCalls": 0
+    }
+  ],
+  "killed": {
+    "events": [
+      {
+        "type": "hurt",
+        "alive": false
+      },
+      {
+        "type": "vfx",
+        "args": [
+          "ki_slash_hit_0",
+          40,
+          20,
+          0.546875,
+          3,
+          0.3,
+          true
+        ]
+      }
+    ],
+    "shadows": [
+      {
+        "x": 40,
+        "y": 20,
+        "ang": 0.3,
+        "size": 140,
+        "f0": 0
+      }
+    ]
+  },
+  "blockedWall": [],
+  "blockedLos": [],
+  "live_comparison": [
+    {
+      "name": "_r",
+      "equals_snapshot": true
+    },
+    {
+      "name": "playSample",
+      "equals_snapshot": true
+    },
+    {
+      "name": "_playKiSlashComboSfx",
+      "equals_snapshot": true
+    },
+    {
+      "name": "spawnCrescent",
+      "equals_snapshot": true
+    },
+    {
+      "name": "_kiSlashHoldTier",
+      "equals_snapshot": true
+    },
+    {
+      "name": "_kiSlashHoldMultiplier",
+      "equals_snapshot": true
+    },
+    {
+      "name": "_fireKiSlashCrescent",
+      "equals_snapshot": true
+    },
+    {
+      "name": "_updateKiSlashThirdCharge",
+      "equals_snapshot": true
+    },
+    {
+      "name": "_playKiSlashHit",
+      "equals_snapshot": true
+    },
+    {
+      "name": "updateCrescents",
+      "equals_snapshot": true
+    }
+  ],
+  "scope": "isolated original function execution; admitted ordinary profile; not full game RNG/audio/backend"
+}

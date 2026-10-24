@@ -15,6 +15,10 @@ for(const f of fs.readdirSync(root+'/godot/assets/enemy').filter(f=>f.startsWith
 for(const f of ['ui_bar_only.png','ui_globe_hp.png','ui_globe_mp.png','mm_frame.png'])copy('godot/assets/ui/'+f,'Art/ui/'+f);
 copy('godot/assets/fonts/NotoSansKR.ttf','Art/fonts/NotoSansKR.ttf');
 texture('res://assets/vfx/ki_slash_silver_sheet.png');
+texture('res://assets/vfx/ki_slash_hit_silver_sheet.png');
+for(const key of ['sword_swing1','sword_swing2','sword_swing3'])copy('sfx/swing/'+key+'.mp3','Audio/'+key+'.mp3');
+copy('sfx/scarecrow_charge.mp3','Audio/scarecrow_charge.mp3');
+copy('sfx/sword_parry/sfxsword_parry.mp3','Audio/sword_parry.mp3');
 const source=fs.readFileSync(root+'/godot/source_snapshot/game.html');
 fs.mkdirSync(res+'/Data',{recursive:true});fs.writeFileSync(res+'/Data/ch1_map.json',JSON.stringify(map));
 fs.mkdirSync(project+'/Tools/Fixtures',{recursive:true});fs.writeFileSync(project+'/Tools/Fixtures/source_receipt.json',JSON.stringify({schema:'exoduser.unity.source-assets.v1',sourceSha256:digest(source),mapSourceSha256:digest(fs.readFileSync(root+'/godot/data/map.json')),assetCount:rows.length,bytes:rows.reduce((s,r)=>s+r.bytes,0),assets:rows},null,2));

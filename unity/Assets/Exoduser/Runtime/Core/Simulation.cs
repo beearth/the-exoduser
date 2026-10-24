@@ -116,8 +116,10 @@ namespace Exoduser.UnityPort.Core
                 }
                 else if (Player.State == "wWindup" && Player.KiChargeActive) {
                     attackAngle = Player.Facing;
+                    float beforeCharge = Player.KiChargeTicks;
                     Player.KiChargeTicks = Math.Min(120, Player.KiChargeTicks + 1);
                     Player.StateTicks = 999;
+                    QueueKiChargeTier(beforeCharge, Player.KiChargeTicks);
                     if (!attack) {
                         float charged = Player.KiChargeTicks;
                         Player.KiChargeActive = false; Player.KiChargeTicks = 0;
