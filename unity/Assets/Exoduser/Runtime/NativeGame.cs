@@ -15,7 +15,8 @@ namespace Exoduser.UnityPort
         public bool Running {get; private set;}
         public int LoadedChunks {get {return chunks.Count;}}
         public int RenderedEnemyCount {get {return enemies.Count;}}
-        Camera view; SpriteRenderer playerView; Font font;
+        Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
+        bool basicWeaponMode;
         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
         readonly Dictionary<int,EnemyView> enemies=new Dictionary<int,EnemyView>();
@@ -42,14 +43,19 @@ namespace Exoduser.UnityPort
             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
             bar=Resources.Load<Texture2D>("Art/ui/ui_bar_only");hpGlobe=Resources.Load<Texture2D>("Art/ui/ui_globe_hp");mpGlobe=Resources.Load<Texture2D>("Art/ui/ui_globe_mp");
-            BuildProps();ResetRun();
+            BuildProps();
+            var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
+            if(kiSheet==null||kiSheet.width%3!=0||kiSheet.height%3!=0)throw new InvalidOperationException("Invalid original kiSlash 3x3 sheet");
+            kiView=new KiSlashView(transform,f=>SpriteFor("Art/vfx/ki_slash_silver_sheet",f%3*(kiSheet.width/3),f/3*(kiSheet.height/3),kiSheet.width/3,kiSheet.height/3,new Vector2(.5f,.5f)));
+            ResetRun();
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-smoke")>=0){menu=false;Running=true;StartCoroutine(Smoke());}
         }
         public void ResetRun()
         {
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();
-            var config=SourceStarterFixture.CreateBasicWeapon();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
-            Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;
+            kiView?.Reset();
+            var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
+            Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
             // Equipment factory and persistent inventory are not implemented yet.
             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
@@ -120,8 +126,8 @@ namespace Exoduser.UnityPort
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;
-            bool attack=p.State=="wSwing";bool moving=playerMoving;
-            int frame=attack?Mathf.Clamp((int)(p.SwingProgress*9),0,8):moving?2+(int)(walkDistance/32)%8:(Simulation.TickCount/48)%2;
+            bool attack=p.State=="wSwing"||p.KiChargeActive;bool moving=playerMoving;
+            int frame=p.KiChargeActive?0:attack?Mathf.Clamp((int)(p.SwingProgress*9),0,8):moving?2+(int)(walkDistance/32)%8:(Simulation.TickCount/48)%2;
             playerView.sprite=attack?SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80)):
                 SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f));
             playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2;playerView.sortingOrder=(int)p.Y;
@@ -141,6 +147,7 @@ namespace Exoduser.UnityPort
                 ev.body.sortingOrder=(int)e.Y;ev.walk.sortingOrder=(int)e.Y+1;ev.walk.enabled=e.Alive&&ev.moving;
                 ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f):Color.white;
             }
+            kiView?.Update(Simulation);
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         SpriteRenderer CreateRenderer(string name){var go=new GameObject(name);go.transform.SetParent(transform);return go.AddComponent<SpriteRenderer>();}
@@ -171,7 +178,7 @@ namespace Exoduser.UnityPort
             if(Simulation==null)return;InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
             var p=Simulation.Player;
             GUI.Label(new Rect(40,28,600,40),"EXODUSER  /  UNITY",title);
-            GUI.Label(new Rect(42,70,700,32),"이식 검증판 · 기본 무기",small);
+            GUI.Label(new Rect(42,70,700,32),basicWeaponMode?"이식 검증판 · 기본 무기":"이식 검증판 · 기검참",small);
             Panel(new Rect(1590,35,290,120));GUI.Label(new Rect(1610,45,260,32),"1장 · 썩은 숲",label);
             GUI.Label(new Rect(1610,80,260,30),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,small);
             GUI.Label(new Rect(1610,110,260,30),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,small);
@@ -180,14 +187,16 @@ namespace Exoduser.UnityPort
             Panel(new Rect(84,916,170,66));GUI.Label(new Rect(84,919,170,28),Mathf.CeilToInt(p.Hp)+" / "+p.MaxHp,center);GUI.Label(new Rect(84,947,170,25),"보호막 "+Mathf.CeilToInt(p.Shield),small);
             Panel(new Rect(1660,914,170,70));GUI.Label(new Rect(1660,918,170,28),"MP "+Mathf.CeilToInt(p.Mana),center);GUI.Label(new Rect(1660,948,170,28),"SP "+Mathf.CeilToInt(p.Stamina),center);
             if(bar!=null)GUI.DrawTexture(new Rect(370,868,1180,262),bar,ScaleMode.ScaleToFit,true);
-            GUI.Label(new Rect(815,950,290,40),SourceStarterFixture.WeaponName,center);
+            GUI.Label(new Rect(815,950,290,40),basicWeaponMode?SourceStarterFixture.WeaponName:"기검참 · 3타 홀드 차지",center);
             GUI.Label(new Rect(630,818,660,35),"WASD 이동     마우스 조준 · 좌클릭 기본 공격     ESC 메뉴",small);
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.HurtTicks<=0)continue;var pt=ToGUI(e.X,e.Y);Fill(new Rect(pt.x-42,pt.y-85,84,6),new Color(.12f,.08f,.07f));Fill(new Rect(pt.x-42,pt.y-85,84*Mathf.Clamp01((float)e.Hp/e.MaxHp),6),new Color(.66f,.12f,.08f));if(e.Shield>0)Fill(new Rect(pt.x-42,pt.y-93,84*e.Shield/e.MaxShield,4),new Color(.2f,.55f,.8f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
             if(menu||p.Hp<=0){Panel(new Rect(590,280,740,470));GUI.Label(new Rect(650,322,620,55),p.Hp<=0?"쓰러진 전사":"썩은 숲",title);
-                GUI.Label(new Rect(650,395,620,105),"원본 시작 장비로 기본 무기 전투를 확인합니다.\n기검참·패링·인벤토리·저장·보스 진행은 이식 중입니다.",label);
+                GUI.Label(new Rect(650,395,620,85),"기검참 1·2타 후 세 번째 클릭을 유지해 차지합니다.\n버튼을 놓으면 발사합니다. 패링·인벤토리·저장·보스는 이식 중입니다.",small);
+                bool selected=GUI.Toggle(new Rect(650,490,620,35),basicWeaponMode,"기본 무기 검증 모드",button);
+                if(selected!=basicWeaponMode){basicWeaponMode=selected;ResetRun();}
                 if(GUI.Button(new Rect(650,540,620,60),p.Hp<=0?"새 검증 시작":"전투 시작",button)){if(p.Hp<=0)ResetRun();menu=false;Running=true;}
                 GUI.Label(new Rect(650,643,620,48),"기존 웹 / Godot 세이브는 사용하지 않습니다.",small);
             }
@@ -206,6 +215,6 @@ namespace Exoduser.UnityPort
         }
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed;public float initialX,finalX;public int originalMapChunks,loadedChunks,enemyActors;}
-        void OnDestroy(){foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
+        void OnDestroy(){kiView?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
     }
 }

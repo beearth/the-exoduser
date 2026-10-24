@@ -9,6 +9,9 @@ namespace Exoduser.UnityPort.Core
         // This is an explicitly selected basic-weapon, unequipped source fixture.
         // It is not the game's randomly equipped default kiSlash character.
         public string Profile = "source-seed-basic-weapon";
+        public string ActiveAttack = "weapon";
+        public int KiSlashLevel = 1;
+        public double StrengthFlat = 0;
         public float StartX, StartY;
         public int StageIndex = 0, DifficultyIndex = 5;
         public float WeaponAttack = 0, WeaponEnhanceAttack = 0;
@@ -31,6 +34,8 @@ namespace Exoduser.UnityPort.Core
         public float X, Y, Radius = 15, Hp, MaxHp, Stamina, MaxStamina, Mana, MaxMana;
         public float Shield, MaxShield, Speed, Facing, StateTicks, SwingProgress;
         public float KnockbackX, KnockbackY, Iframes, Poise = 4;
+        public bool KiChargeActive;
+        public float KiChargeTicks;
         public int Level = 1, Experience, MaxExperience = 15, StatPoints, PassivePoints;
         public int BaseAttack, BaseDefense = 2;
         public string State = "idle";
@@ -42,6 +47,7 @@ namespace Exoduser.UnityPort.Core
         public int Id, Etype, Hp, MaxHp, Attack, Level;
         public float X, Y, Radius, Speed, Facing, StateTicks, KnockbackX, KnockbackY;
         public float Shield, MaxShield, HitStun, HurtTicks, LastMoveX, LastMoveY, StuckTicks;
+        public float Poise, MaxPoise, Stunned, MaxStunned, PoiseRegenTicks;
         public float ProjectileTicks, ProjectileChargeTicks;
         public bool Alive = true, Alerted, HasLastMove;
         public string State = "idle";

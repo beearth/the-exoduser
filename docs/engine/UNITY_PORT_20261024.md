@@ -19,12 +19,15 @@
 |---|---|
 | 실행 구조 | C# Simulation → Unity NativeGame → SpriteRenderer·Camera·IMGUI. WebView·JS runtime 없음 |
 | 시간·좌표 | 고정60Hz, 웹 픽셀/+Y 아래 → Unity100px/unit·Y 반전. 카메라1920×1080 기준 zoom1, 플레이어 중심 |
-| 시작 | `FirstPlayable.unity`·EditorBuildSettings·고정 GUID. 메뉴에서 기본 무기 모드를 명시 선택 |
+| 시작 | `FirstPlayable.unity`·EditorBuildSettings·고정 GUID. 원본 기본 기검참, 메뉴의 기본 무기 검증 모드도 유지 |
 | 원본 상태 | 원본 mkP/defaultItems/applyStats의 실제15장비 표본. HP526, ST240, MP330, 쉴드285, 녹슨 검ATK18. [수치·함수/미완료](UNITY_SOURCE_CORE_20261024.md) |
 | 시작 악의 | 사용자 공유 저장소를 열지 않는 격리 새 실행 기본1000(`game.html:63958`), 처치당+4 |
 | 원본 맵 |200×200/40px, 시작4020,7420; 청크64·props36·타일/언덕 경사로/19prop ellipse. 새 지형 제작 아님 |
-| 미디어 |131복사 영수증/184,121,038bytes, 각 파일 원본↔목적지 SHA256 대조. `Tools/Fixtures/source_receipt.json`(I:); 신규 이미지 생성0 |
+| 미디어 |132복사 영수증/184,855,995bytes, 각 파일 원본↔목적지 SHA256 대조. 기검참 원본 실버 시트 추가. `Tools/Fixtures/source_receipt.json`(I:); 신규 이미지 생성0 |
+| 기검참 표현 | 원본3×3 시트/9프레임,192/252px×chargeScale, 잉크1.14배·잔상2개0.9배·glow1.08배·본체. 원본5슬롯 trail 사용. 차지40/80/120f 단계와2겹 시트/3개 표시선. Additive ONE/ONE 및 opacity RGB premultiply, 잉크 RGB5/4/6·밝기×2.4. Canvas blur5px는11×11 Gaussian shader 근사이며 GPU compile·화면 동등성·성능 미검증 |
 | 기본 전투 | 일반 etype0 HP875+쉴드875(레벨1), 기본 무기 비용5·5프레임 swing/남은3 경계 타격, 원본 회복시간; 스폰 링5/580px·safePt |
+| 기검참 판정 | 원본ST10,1·2타 즉시발사/3타 홀드 후 해제,40/80/120f에2/4/8배·최대120f, 검기 speed14·수명선감소·벽/LOS·actor identity별1회 관통. 시작장비 Lv1검기1940. 독립 원본 대조93/93; `Tools/ki-slash-oracle/runs/green-03-poise.json` |
+| 일반 적 포이즈 | 신규 검토에서 stun종료 즉시완전회복 오류를 발견해 제거. 원본 실제loop처럼 marker만clear, hitstun/stun 조기반환 뒤 eligible200f마다최대15% 회복·새타격시타이머0. 실제 원문 prefix oracle RED7실패→GREEN7/7; `runs/green-poise.json` |
 | 드랍 | 원본45% 장비 생성 요청까지. 실제 mkItem/inventory 없으면 R 획득을 거절함. 가짜 아이템 획득 없음 |
 | 모델 회귀 | .NET8 독립36검사/0실패. 원본 isW/canMv 직접 실행2523좌표 결과 일치. `portable-final/core-receipt.json` |
 | 시작 장비 | 오프라인 원본505난수/15장비, 설정23필드 대조23/23. raw JSON은 `Tools/Fixtures`(I:)에 보존, 실행은 C# 설정 사용 |
@@ -34,16 +37,22 @@
 
 원본 스냅샷 SHA256 `dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209`. 현재 G: 웹 핵심13함수는 동일하고 파일 전체 hash는 다르므로 최신 웹 전체 이식이라 부르지 않는다. 영수증과 첫 실패는 `I:/EXODUSER-Storage/qa/unity-port-20261024/`에 보존한다.
 
+추가 기검참/포이즈8함수도 현재 G:와 snapshot의 원문이 일치한다(`ki-slash-oracle/oracle.json`의 `live_comparison`). 포이즈 수정 후 기본/맵36/36 회귀를 다시 통과했고 기검참 spec 재검토는 제한범위 PASS다. 렌더러는 `_Opacity`를 MaterialPropertyBlock으로 명시 전달해 SpriteRenderer 파이프라인별 색상 전달에 의존하지 않는다. Editor 검증 진입점에는1254×1254 시트와 ShaderHasError 검사를 준비했으나 라이선스 차단으로 실행되지 않았다.
+
+코드 품질 검토의 `PoiseTests.csproj` Git누락 P2는 ignore예외와 정확 경로 stage로 해결했다. index의 Core/검사 입력만 I: 새 폴더에 복원한 검사도 수행했다. SDK10에서는93/93·7/7 통과했으나, 명시 SDK8 구성에서 `dotnet run`이 custom OutputPath와 다른 기본 apphost를 찾아 실행 실패했다. 원인은 빌드가 아니라 runner의 실행 경로였으며 공통 `runner.cjs`가 build→생성 DLL 직접 실행하도록 수정했다. `global.json`은8.0.301/latestFeature, NuGet소스는 외부 package가 없어 clear한다. 최종 새 입력22파일 복원본 `I:/EXODUSER-Storage/qa/unity-port-20261024/fresh-ki-2026-10-24T04-03-59-821Z/RECEIPT.json`: SDK8 build0경고/0오류, 기검참93/93·포이즈7/7. 이 최소 복원 검사는 전체 game clone/Unity Player 실행이 아니다. 수정된 runner를 포함한 최종 코드 품질 재검토의 미해결 P1/P2는 없다.
+
 ## 실행 차단과 다음 작업
 
 1. Unity Hub 로그인·보유 라이선스 활성화. Personal 활성화의 공식 경로도 Hub다: [Unity 라이선스 관리](https://docs.unity.com/en-us/hub/manage-license).
 2. Editor 실제 import/compile → 원본 texture 크기/씬 검증 → Windows 고유 출력 빌드.
 3. 원본처럼 입력해 이동·공격·피해·처치·성장을 실제 Player에서 검수하고 화면/프레임/오류를 기록한다.
-4. 기검참·장비 생성/인벤토리·전체 적/투사체·Q/E 보호 계약·사운드·저장·지역/보스/클리어를 원본 순서에 따라 확대한다. 현재 후보로 전체 이식 완료나 Unity 우위 확정을 주장하지 않는다.
+4. 기검참의 원본 명중광·화면 정지/흔들림·사운드, 장비 생성/인벤토리·전체 적/투사체·Q/E 보호 계약·저장·지역/보스/클리어를 원본 순서에 따라 확대한다. 현재 후보로 전체 이식 완료나 Unity 우위 확정을 주장하지 않는다.
 
 Q/E 판정, 사용자 세이브, 웹/Godot 게임 코드, `2_3` 문서는 변경하지 않았다. 자동 서버 재시작·옛 팀 재가동·Steam 배포도 없다.
 
 ## 저장 정책
+
+사용자 추가 지시 “고도본도 저장해두고 유니티도 한번 해봐”에 따라 Godot 물리 파일4,979개/2,071,696,605bytes를 `I:/EXODUSER-Storage/archive/E/exoduser-wt/godot-preserved-2026-10-24T03-53-13-702Z`에 복사했다. 전 파일 source-before/source-after/destination SHA256·원본 크기/mtime 대조를 통과했다. `PRESERVATION.json`에 파일별 hash와 두 Junction 목적지를 기록했다. `.godot` 재생성 cache는 제외했고 기존 tests/tools의 I: 실체는 보존했다. `godot-source.bundle`은 기반 `9734e2e79`를 prerequisite로 요구하는 증분 Git 번들이며 `git bundle verify`를 통과했다. 웹 source-root 미디어·Junction 대상·사용자 AppData 세이브까지 포함한 독립 실행 패키지라고 주장하지 않는다. Godot 원격 브랜치 `7d67c418205f4ae513a320df854bcad3cf7c7770`도 보존했다.
 
 실제 Unity runtime C#·참조 미디어·실행 설정만 E:에 둔다. Library/Temp/Logs/UserSettings/Editor/Tools와 QA는 I:의 명시 단위로 분리했다. Junction 원본은 삭제하지 않는다. 라이선스/인증 파일은 Git이나 QA에 복사하지 않았다. Hub를 처음 띄울 때 `ALLUSERSPROFILE` 누락으로 경로 오류가 나서 해당 자식 프로세스에 실제 `ProgramData` 경로를 전달했으며 사용자 전역 환경은 바꾸지 않았다.
 

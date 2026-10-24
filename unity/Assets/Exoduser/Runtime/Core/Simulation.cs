@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort.Core
     /// positive Y down. Renderer, collision, input and saves have separate owners.
     /// Snapshot SHA: dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209.
     /// </summary>
-    public sealed class Simulation
+    public sealed partial class Simulation
     {
         public readonly PlayerState Player;
         public readonly List<EnemyState> Enemies = new List<EnemyState>();
@@ -68,7 +68,7 @@ namespace Exoduser.UnityPort.Core
             int hp = (int)Math.Floor(Math.Floor(curve * pacing * Difficulty[Config.DifficultyIndex]) * (1 + Config.StageIndex * .02));
             var enemy = new EnemyState {
                 Id = nextEnemyId++, Etype = 0, X = x, Y = y, Hp = hp, MaxHp = hp,
-                Shield = hp, MaxShield = hp, Level = level,
+                Shield = hp, MaxShield = hp, Poise = hp, MaxPoise = hp, Level = level,
                 Attack = (int)Math.Floor((50 + level * 1.95) * .6 * Difficulty[Config.DifficultyIndex]),
                 Speed = (float)((.3 * 1.3 + NextRandom() * .08) * 1.5),
                 Radius = (float)((10 + NextRandom() * 2) * 2),
@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort.Core
             TickCount++;
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
-            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") return;
+            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { UpdateKiProjectiles(); TickKiTimers(); return; }
             Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen / regenDivisor);
@@ -100,10 +100,29 @@ namespace Exoduser.UnityPort.Core
             else {
                 MovePlayer(moveX, moveY, Player.State == "idle" ? 1 : .8f);
                 if (Player.State == "idle") {
-                    if (attack && Player.Stamina >= 5) {
-                        Player.Stamina -= 5; attackBonus = 7;
-                        Player.State = "wSwing"; Player.StateTicks = 5; Player.SwingProgress = 0;
+                    float cost = Config.ActiveAttack == "kiSlash" ? 10 + (Math.Max(1, Config.KiSlashLevel) - 1) * 2 : 5;
+                    if (attack && Player.Stamina >= cost) {
+                        Player.Stamina -= cost; attackBonus = (int)(cost * 1.5);
                         attackAngle = Player.Facing;
+                        if (Config.ActiveAttack == "kiSlash" && KiComboStep == 2 && KiComboTicks > 0) {
+                            Player.State = "wWindup"; Player.StateTicks = 999;
+                            Player.KiChargeActive = true; Player.KiChargeTicks = 0;
+                        }
+                        else {
+                            Player.State = "wSwing"; Player.StateTicks = 5; Player.SwingProgress = 0;
+                            if (Config.ActiveAttack == "kiSlash") SpawnKiSlash((KiComboStep % 3) + 1);
+                        }
+                    }
+                }
+                else if (Player.State == "wWindup" && Player.KiChargeActive) {
+                    attackAngle = Player.Facing;
+                    Player.KiChargeTicks = Math.Min(120, Player.KiChargeTicks + 1);
+                    Player.StateTicks = 999;
+                    if (!attack) {
+                        float charged = Player.KiChargeTicks;
+                        Player.KiChargeActive = false; Player.KiChargeTicks = 0;
+                        Player.State = "wSwing"; Player.StateTicks = 5; Player.SwingProgress = 0;
+                        SpawnKiSlash(3, charged);
                     }
                 }
                 else if (Player.State == "wSwing") {
@@ -120,8 +139,16 @@ namespace Exoduser.UnityPort.Core
                 if (!enemy.Alive) continue;
                 enemy.HurtTicks = Math.Max(0, enemy.HurtTicks - 1);
                 enemy.HitStun = Math.Max(0, enemy.HitStun - 1);
+                if (enemy.Stunned > 0) {
+                    enemy.Stunned = Math.Max(0, enemy.Stunned - 1);
+                }
+                // Source34456 resets poise here only for bosses. This admitted
+                // ordinary profile only clears the stun presentation marker.
+                if (enemy.Stunned <= 0 && enemy.MaxStunned > 0) enemy.MaxStunned = 0;
                 if (Config.EnemyAiEnabled) TickEnemy(enemy);
             }
+            UpdateKiProjectiles();
+            TickKiTimers();
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
         }
@@ -163,11 +190,17 @@ namespace Exoduser.UnityPort.Core
         // Ordinary physical, no-status/affix branch of hurtE. Source shield first.
         public void HurtEnemy(EnemyState enemy, int damage, float angle = 0)
         {
+            ApplyEnemyDamage(enemy, damage, angle, false, 1);
+        }
+
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier)
+        {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             if (enemy.Etype != 0) throw new NotSupportedException("Only admitted normal etype0 profile is implemented.");
             damage = Math.Max(1, damage);
             if (Config.AccessoryDamageBonus > 0) damage = (int)(damage * (1 + Config.AccessoryDamageBonus));
             if (NextRandom() * 100 < Config.PlayerCriticalChance) damage = (int)(damage * Config.PlayerCriticalMultiplier);
+            if (enemy.Stunned > 0) damage = (int)(damage * 1.5);
             int total = damage;
             int shieldAbsorbed = (int)Math.Min(enemy.Shield, damage);
             enemy.Shield = Math.Max(0, enemy.Shield - damage);
@@ -180,9 +213,14 @@ namespace Exoduser.UnityPort.Core
                 enemy.Hp -= damage;
                 if (enemy.State == "idle") enemy.HitStun = 8;
             }
-            float knockback = Math.Min(damage * .25f, 15);
+            float knockback = Math.Min(damage * .25f * knockbackMultiplier, 15 * knockbackMultiplier);
             enemy.KnockbackX += (float)Math.Cos(angle) * knockback;
             enemy.KnockbackY += (float)Math.Sin(angle) * knockback;
+            if (poiseHit && damage > 0) {
+                enemy.Poise = Math.Max(0, enemy.Poise - damage);
+                enemy.PoiseRegenTicks = 0;
+                if (enemy.Poise <= 0) { enemy.Stunned = Math.Max(enemy.Stunned, 180); enemy.MaxStunned = Math.Max(enemy.MaxStunned, 180); }
+            }
             if (enemy.Hp <= 0) KillEnemy(enemy);
         }
 
@@ -261,6 +299,21 @@ namespace Exoduser.UnityPort.Core
                 enemy.KnockbackX *= .85f; enemy.KnockbackY *= .85f;
             }
             if (enemy.HitStun > 0) return;
+            if (enemy.Stunned > 0) {
+                enemy.ProjectileChargeTicks = 0;
+                enemy.Stunned = Math.Min(enemy.Stunned, 180);
+                enemy.MaxStunned = Math.Max(enemy.MaxStunned, enemy.Stunned);
+                return;
+            }
+            // Source38663-38665: ordinary regen runs only after both early-return
+            // gates. Expiring stun does not replenish all ordinary poise.
+            if (enemy.Poise < enemy.MaxPoise) {
+                enemy.PoiseRegenTicks++;
+                if (enemy.PoiseRegenTicks >= 200) {
+                    enemy.Poise = Math.Min(enemy.MaxPoise, enemy.Poise + (int)(enemy.MaxPoise * .15));
+                    enemy.PoiseRegenTicks = 0;
+                }
+            }
             float d = Distance(Player.X, Player.Y, enemy.X, enemy.Y);
             if (!enemy.Alerted && d < 800 && (HasLineOfSight == null || HasLineOfSight(enemy.X, enemy.Y, Player.X, Player.Y))) enemy.Alerted = true;
             if (d < 800 && enemy.Alerted) enemy.Facing = (float)Math.Atan2(Player.Y - enemy.Y, Player.X - enemy.X);
@@ -303,8 +356,9 @@ namespace Exoduser.UnityPort.Core
             float absorbed = Math.Min(Player.Shield, amount); Player.Shield -= absorbed;
             Player.Hp -= amount-absorbed;
             Player.Poise = Math.Max(0, Player.Poise-1);
-            Player.State = Player.Poise <= 0 ? "pStun" : "stagger"; Player.StateTicks = Player.Poise <= 0 ? 240 : 6;
-            if (Player.Hp <= 0) { Player.Hp=0; Player.State="fallen"; Player.StateTicks=300; Player.Iframes=9999; }
+            if (Player.Poise <= 0) { Player.State = "pStun"; Player.StateTicks = 240; CancelKiCharge(); }
+            else if (!Player.KiChargeActive) { Player.State = "stagger"; Player.StateTicks = 6; }
+            if (Player.Hp <= 0) { Player.Hp=0; Player.State="fallen"; Player.StateTicks=300; Player.Iframes=9999; CancelKiCharge(); }
         }
     }
 }

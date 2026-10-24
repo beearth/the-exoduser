@@ -2,8 +2,8 @@
   "schema": "exoduser.unity.source-assets.v1",
   "sourceSha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
   "mapSourceSha256": "c76238beda26087b6faa5cf65dfc3140dccfa9519d6ef30bd458cf11f949e5bb",
-  "assetCount": 131,
-  "bytes": 184121038,
+  "assetCount": 132,
+  "bytes": 184855995,
   "assets": [
     {
       "source": "godot/assets/map/production_finish/chunk_0_0.png",
@@ -790,6 +790,12 @@
       "destination": "Art/fonts/NotoSansKR.ttf",
       "bytes": 10414588,
       "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252"
+    },
+    {
+      "source": "godot/assets/vfx/ki_slash_silver_sheet.png",
+      "destination": "Art/vfx/ki_slash_silver_sheet.png",
+      "bytes": 734957,
+      "sha256": "23d6c17c7244dd523340cb95dd2fe0c7354990afe2702f6dfeb30b1f1fa61a65"
     }
   ]
 }

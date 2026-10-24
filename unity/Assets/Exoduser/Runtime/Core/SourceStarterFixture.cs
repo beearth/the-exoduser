@@ -3,7 +3,8 @@ namespace Exoduser.UnityPort.Core
     /// <summary>
     /// Fixed, offline original mkP/defaultItems/applyStats capture. The native
     /// runtime never invokes JavaScript. This is one genuine seeded starting
-    /// loadout, with basic weapon selected explicitly; not a full new-run factory.
+    /// loadout, with source-default kiSlash or basic weapon selected explicitly;
+    /// not a full new-run factory.
     /// Full raw equipment and extraction provenance are in starter-fixture.json.
     /// </summary>
     public static class SourceStarterFixture
@@ -12,7 +13,15 @@ namespace Exoduser.UnityPort.Core
         public const uint Seed = 0x20261024;
         public const int SourceRandomDrawCount = 505;
         public const string WeaponName = "녹슨 검";
-        public const string DefaultSkillPending = "kiSlash";
+        public const string DefaultSkill = "kiSlash";
+
+        public static SimulationConfig CreateKiSlash()
+        {
+            var config = CreateBasicWeapon();
+            config.Profile = "source-starter-seed-20261024-kiSlash";
+            config.ActiveAttack = "kiSlash";
+            return config;
+        }
 
         public static SimulationConfig CreateBasicWeapon()
         {

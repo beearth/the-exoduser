@@ -1,3 +1,9 @@
+## 2026-10-24 UNITY-PORT-02 — Godot 별도 보존과 기검참 연결
+
+- Godot4,979파일/2,071,696,605bytes의 I: 별도 보존본을 만들고 전 파일 source-before/source-after/destination SHA256·원본 mtime/size를 확인했다. 기반9734e2e79가 필요한 증분 Git 번들도 verify 통과. 사용자 세이브·기존 Godot·공용 INDEX/WIP 보존.
+- Unity 기본 스킬을 원본 기검참으로 연결했다.1·2타/3타 홀드·40/80/120f 차지, speed14·수명/반경·관통/중복hit/벽/LOS·일반 적 포이즈를 원문 표본과 대조한다. 원본 실버3×3시트와 잉크/2잔상/glow/차지 표시를 native renderer에 연결했다. 기본 무기 검증 모드도 유지한다.
+- 원본 미디어132복사/184,855,995bytes 해시 대조. Shader의5px Gaussian blur는11×11 근사이며 실제 GPU·시각·성능 미검증. 명중광/히트스톱·시간 scheduler/오디오·Q/E·인벤토리·전체 게임 진행 미완료. Editor는 여전히 license 종료198이며 정적/.NET 검사를 실제 플레이 성공으로 올리지 않는다. [검증·보존 경로](engine/UNITY_PORT_20261024.md), [원본 수치](engine/UNITY_SOURCE_CORE_20261024.md).
+
 ## 2026-10-24 UNITY-PORT-01 — 사용자 지시에 따른 Unity 전환 후보
 
 - 새 `codex/unity-port-20261024`의 `unity/`에 원본 기반 순수 C# 60Hz 이동/기본 무기/일반 etype0·원본 시작 장비 표본·맵64청크/36props·씬/렌더러/HUD를 연결했다. 기존 Godot·공용 main·사용자 세이브는 보존했다.

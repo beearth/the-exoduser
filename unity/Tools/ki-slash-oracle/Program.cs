@@ -1,0 +1,26 @@
+using System;using System.IO;using System.Text.Json;using System.Collections;using System.Collections.Generic;using Exoduser.UnityPort.Core;
+class Program {
+ static readonly List<object> Rows=new List<object>();static int failed;
+ static void Check(bool ok,string name){Rows.Add(new{name,passed=ok});if(!ok)failed++;}
+ static bool Near(double a,double b)=>Math.Abs(a-b)<.0001;
+ static int Finish(string p){string result=JsonSerializer.Serialize(new{scope="standalone_dotnet_source_oracle_not_Unity_runtime",passed=failed==0,failed,checks=Rows},new JsonSerializerOptions{WriteIndented=true});File.WriteAllText(p,result);Console.WriteLine("KI_RESULT "+Rows.Count+" checks / "+failed+" failures");return failed==0?0:2;}
+ static dynamic NewConfig(bool starter=true){dynamic c=starter?SourceStarterFixture.CreateBasicWeapon():new SimulationConfig{PlayerBaseAttack=8};c.ActiveAttack="kiSlash";c.EnemyAiEnabled=false;return c;}
+ static int Main(string[] args){
+  bool exists=typeof(SimulationConfig).GetField("ActiveAttack")!=null&&typeof(Simulation).GetMethod("SpawnKiSlash")!=null&&typeof(SourceStarterFixture).GetMethod("CreateKiSlash")!=null&&typeof(Simulation).Assembly.GetType("Exoduser.UnityPort.Core.ProjectileState")?.GetField("TrailX")!=null;
+  Check(exists,"native source-default kiSlash admission and projectile API exists");if(!exists)return Finish(args[0]);
+  using(var oracle=JsonDocument.Parse(File.ReadAllText(args[1]))){foreach(var row in oracle.RootElement.GetProperty("scenarios").EnumerateArray()){
+   bool starter=row.GetProperty("profile").GetString()=="starter";dynamic cfg=NewConfig(starter);cfg.KiSlashLevel=row.GetProperty("level").GetInt32();dynamic s=new Simulation((SimulationConfig)cfg);s.Random01=(Func<double>)(()=>.5);
+   int step=row.GetProperty("step").GetInt32();float charge=row.GetProperty("charge").GetSingle();dynamic p=s.SpawnKiSlash(step,charge);var e=row.GetProperty("spawn");
+   Check((int)p.Damage==e.GetProperty("dmg").GetInt32()&&Near((float)p.Radius,e.GetProperty("r").GetDouble())&&Near((float)p.Life,e.GetProperty("life").GetDouble())&&Near((float)p.ChargeScale,e.GetProperty("chargeScale").GetDouble()),"source spawn "+row.GetProperty("profile").GetString()+" L"+cfg.KiSlashLevel+" step"+step+" charge"+charge);
+   int updates=0;while((bool)p.Active&&updates<100){s.Tick(0,0,100,0,false,false);updates++;}
+   Check(updates==row.GetProperty("updates").GetInt32()&&Near((float)p.X,row.GetProperty("last").GetProperty("x").GetDouble()),"source decrement-expire-before-move lifetime "+step+"/"+charge);
+  }}
+  dynamic c=NewConfig();dynamic sim=new Simulation((SimulationConfig)c);sim.Random01=(Func<double>)(()=>.5);var enemy=sim.SpawnNormalEnemy(91,0);dynamic projectile=sim.SpawnKiSlash(1,0f);sim.Tick(0,0,100,0,false,false);Check(enemy.Alive,"strict radius excludes exact77px boundary at first tick");Check(projectile.TrailHead==1&&Near(projectile.TrailX[1],14)&&Near(projectile.TrailX[0],0),"source5slot trail head advances before write");sim.Tick(0,0,100,0,false,false);Check(!enemy.Alive&&sim.Kills==1&&sim.Materials==4,"true starter projectile1940 passes875shield and875hp source kill");
+  c=NewConfig();sim=new Simulation((SimulationConfig)c);sim.Random01=(Func<double>)(()=>.5);enemy=sim.SpawnNormalEnemy(40,0);enemy.Hp=10000;enemy.MaxHp=10000;enemy.Shield=0;enemy.MaxShield=0;enemy.Poise=10000;enemy.MaxPoise=10000;projectile=sim.SpawnKiSlash(1,0f);sim.Tick(0,0,100,0,false,false);int hp=enemy.Hp;Check(hp==8060&&Near(enemy.Poise,8060)&&Near(enemy.KnockbackX,7.5),"source ki packet damage poiseHit and half knockback");sim.Tick(0,0,100,0,false,false);Check(enemy.Hp==hp&&Near(enemy.Poise,8060),"source once per enemy instance on penetrating projectile");
+  c=NewConfig();sim=new Simulation((SimulationConfig)c);sim.Random01=(Func<double>)(()=>.5);sim.IsProjectileWall=(Func<float,float,bool>)((x,y)=>true);projectile=sim.SpawnKiSlash(1,0f);sim.Tick(0,0,100,0,false,false);Check(!(bool)projectile.Active&&Near((float)projectile.X,14),"source center wall expires after move");
+  c=NewConfig();sim=new Simulation((SimulationConfig)c);sim.Random01=(Func<double>)(()=>.5);sim.HasLineOfSight=(Func<float,float,float,float,bool>)((a,b,d,e)=>false);enemy=sim.SpawnNormalEnemy(40,0);sim.SpawnKiSlash(1,0f);sim.Tick(0,0,100,0,false,false);Check(enemy.Hp==875&&Near(enemy.Shield,875),"source LOS prevents projectile target hit");
+  c=NewConfig();sim=new Simulation((SimulationConfig)c);sim.Random01=(Func<double>)(()=>.5);sim.Tick(0,0,100,0,true,false);Check(sim.KiComboStep==1&&Near(sim.Player.Stamina,230),"default ki attack costs10 and emits first projectile immediately");
+  while(sim.Player.State!="idle")sim.Tick(0,0,100,0,false,false);sim.Tick(0,0,100,0,true,false);Check(sim.KiComboStep==2,"second admission emits combo step2");while(sim.Player.State!="idle")sim.Tick(0,0,100,0,false,false);sim.Tick(0,0,100,0,true,false);Check(sim.Player.KiChargeActive&&sim.Player.State=="wWindup","third admission starts hold without immediate emission");for(int i=0;i<150;i++)sim.Tick(0,0,100,0,true,false);Check(sim.Player.KiChargeActive&&Near(sim.Player.KiChargeTicks,120),"full charge caps120 and does not auto release");sim.Tick(0,0,100,0,false,false);Check(!sim.Player.KiChargeActive&&sim.KiComboStep==3&&sim.Player.State=="wSwing","release emits charged step3");
+  return Finish(args[0]);
+ }
+}

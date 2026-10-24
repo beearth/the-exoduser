@@ -1,0 +1,68 @@
+{
+  "schema": "exoduser.unity.ordinary-poise-runtime-prefix.v1",
+  "source": {
+    "sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+    "anchors": [
+      "34451-34452",
+      "34456",
+      "38618-38638",
+      "38663-38666"
+    ],
+    "executed_prefix": "      if(e.stunned>0)e.stunned-=sp;\n      if(e._hitStun>0)e._hitStun-=sp;\n      if(e.stunned<=0&&e._maxStunned){e._maxStunned=0;if(e.ib){_poiseReset(e);e._pImmune=Math.max(e._pImmune||0,300);e.s='idle';e.st2=30;e._teleDropY=0;}}\n  if(e._hitStun>0)return; // 피격 경직: AI 스킵\n  if(e.stunned>0){\n    _cancelProjCharge(e);\n    // 스턴 캡: 보스 3초(180f), 일반 3초(180f)\n    if(e.stunned>180) e.stunned=180;\n    // _maxStunned = 최초 스턴 시간 (게이지 비율 계산용)\n    if(!e._maxStunned || e._maxStunned < e.stunned) e._maxStunned = e.stunned;\n    // stunned 감소는 루프 초반(22509)에서 이미 처리됨\n    // 스턴 종료 체크\n    if(e.stunned <= 0){\n      e.stunned = 0;\n      e._maxStunned = 0;\n      _poiseReset(e); // 포이즈 풀 회복\n      if(e.ib){\n        e._pImmune = Math.max(e._pImmune||0, 300); // 보스: 5초 면역\n        e.s = 'idle'; e.st2 = 30; // 그로기 해제 → idle 강제 (패턴 중단)\n        e._teleDropY = 0; // 텔레포트 낙하 리셋\n      }\n    }\n    return;\n  }\n  if(!e.ib && e.poise < e.maxPoise){\n    e.poiseR += sp;\n    if(e.poiseR >= 200){ e.poise = Math.min(e.maxPoise, e.poise + ~~(e.maxPoise * 0.15)); e.poiseR = 0; }\n  }"
+  },
+  "expiry": {
+    "ib": false,
+    "stunned": 0,
+    "_maxStunned": 0,
+    "_hitStun": 0,
+    "poise": 0,
+    "maxPoise": 100,
+    "poiseR": 1
+  },
+  "before": {
+    "ib": false,
+    "stunned": 0,
+    "_maxStunned": 0,
+    "_hitStun": 0,
+    "poise": 0,
+    "maxPoise": 100,
+    "poiseR": 199
+  },
+  "at200": {
+    "ib": false,
+    "stunned": 0,
+    "_maxStunned": 0,
+    "_hitStun": 0,
+    "poise": 15,
+    "maxPoise": 100,
+    "poiseR": 0
+  },
+  "at400": {
+    "ib": false,
+    "stunned": 0,
+    "_maxStunned": 0,
+    "_hitStun": 0,
+    "poise": 30,
+    "maxPoise": 100,
+    "poiseR": 0
+  },
+  "stunned": {
+    "ib": false,
+    "stunned": 1,
+    "_maxStunned": 180,
+    "_hitStun": 0,
+    "poise": 0,
+    "maxPoise": 100,
+    "poiseR": 0
+  },
+  "hitstun": {
+    "ib": false,
+    "stunned": 0,
+    "_maxStunned": 0,
+    "_hitStun": 1,
+    "poise": 25,
+    "maxPoise": 100,
+    "poiseR": 199
+  },
+  "scope": "exact source timer/early-return/ordinary-regen prefix; not whole updateE or Unity runtime"
+}

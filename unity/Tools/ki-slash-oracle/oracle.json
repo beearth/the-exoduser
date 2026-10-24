@@ -1,0 +1,2270 @@
+{
+  "schema": "exoduser.unity.ki-slash-source-oracle.v1",
+  "source": {
+    "sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+    "anchors": [
+      {
+        "name": "SLOT_NAMES",
+        "line": 15176
+      },
+      {
+        "name": "_SK_MUL",
+        "line": 44509
+      },
+      {
+        "name": "wp",
+        "line": 16500
+      },
+      {
+        "name": "_uEq",
+        "line": 16514
+      },
+      {
+        "name": "_lEqRebuild",
+        "line": 16612
+      },
+      {
+        "name": "_lEq",
+        "line": 16622
+      },
+      {
+        "name": "_eqStatRebuild",
+        "line": 27968
+      },
+      {
+        "name": "_eqStat",
+        "line": 27969
+      },
+      {
+        "name": "_eqAffixRebuild",
+        "line": 27972
+      },
+      {
+        "name": "_eqAffix",
+        "line": 27973
+      },
+      {
+        "name": "_lvB",
+        "line": 28770
+      },
+      {
+        "name": "_slotFlatAtk",
+        "line": 28768
+      },
+      {
+        "name": "enhMulAtk",
+        "line": 28099
+      },
+      {
+        "name": "statStr",
+        "line": 27995
+      },
+      {
+        "name": "_passDmgSum",
+        "line": 28005
+      },
+      {
+        "name": "pAtkMul",
+        "line": 28019
+      },
+      {
+        "name": "meleeRef",
+        "line": 28772
+      },
+      {
+        "name": "_skMul",
+        "line": 44558
+      },
+      {
+        "name": "_kiSlashHoldTier",
+        "line": 16814
+      },
+      {
+        "name": "_kiSlashHoldMultiplier",
+        "line": 16817
+      },
+      {
+        "name": "spawnCrescent",
+        "line": 16790
+      },
+      {
+        "name": "_fireKiSlashCrescent",
+        "line": 16818
+      },
+      {
+        "name": "updateCrescents",
+        "line": 19823
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 1,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 17,
+        "ml": 17,
+        "_hitSet": {},
+        "dmg": 1940,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 55,
+        "step": 1,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 224,
+        "life": 0,
+        "active": false
+      },
+      "updates": 17
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 2,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 21,
+        "ml": 21,
+        "_hitSet": {},
+        "dmg": 1940,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 55,
+        "step": 2,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 280,
+        "life": 0,
+        "active": false
+      },
+      "updates": 21
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 3,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 1940,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 120,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 3,
+      "charge": 39,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 1940,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 120,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 3,
+      "charge": 40,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 3880,
+        "el": 0,
+        "chargeScale": 1.4,
+        "r": 168,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 3,
+      "charge": 79,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 3880,
+        "el": 0,
+        "chargeScale": 1.4,
+        "r": 168,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 3,
+      "charge": 80,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 7761,
+        "el": 0,
+        "chargeScale": 1.8,
+        "r": 216,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 3,
+      "charge": 119,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 7761,
+        "el": 0,
+        "chargeScale": 1.8,
+        "r": 216,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 3,
+      "charge": 120,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 15523,
+        "el": 0,
+        "chargeScale": 2.2,
+        "r": 264,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "starter",
+      "level": 1,
+      "step": 3,
+      "charge": 999,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 15523,
+        "el": 0,
+        "chargeScale": 2.2,
+        "r": 264,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 1,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 20,
+        "ml": 20,
+        "_hitSet": {},
+        "dmg": 3570,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 55,
+        "step": 1,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 266,
+        "life": 0,
+        "active": false
+      },
+      "updates": 20
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 2,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 23,
+        "ml": 23,
+        "_hitSet": {},
+        "dmg": 3570,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 55,
+        "step": 2,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 308,
+        "life": 0,
+        "active": false
+      },
+      "updates": 23
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 3,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 3570,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 120,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 3,
+      "charge": 39,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 3570,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 120,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 3,
+      "charge": 40,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 7140,
+        "el": 0,
+        "chargeScale": 1.4,
+        "r": 168,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 3,
+      "charge": 79,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 7140,
+        "el": 0,
+        "chargeScale": 1.4,
+        "r": 168,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 3,
+      "charge": 80,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 14281,
+        "el": 0,
+        "chargeScale": 1.8,
+        "r": 216,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 3,
+      "charge": 119,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 14281,
+        "el": 0,
+        "chargeScale": 1.8,
+        "r": 216,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 3,
+      "charge": 120,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 28562,
+        "el": 0,
+        "chargeScale": 2.2,
+        "r": 264,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "starter",
+      "level": 3,
+      "step": 3,
+      "charge": 999,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 28562,
+        "el": 0,
+        "chargeScale": 2.2,
+        "r": 264,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 1,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 17,
+        "ml": 17,
+        "_hitSet": {},
+        "dmg": 470,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 55,
+        "step": 1,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 224,
+        "life": 0,
+        "active": false
+      },
+      "updates": 17
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 2,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 21,
+        "ml": 21,
+        "_hitSet": {},
+        "dmg": 470,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 55,
+        "step": 2,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 280,
+        "life": 0,
+        "active": false
+      },
+      "updates": 21
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 3,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 470,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 120,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 3,
+      "charge": 39,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 470,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 120,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 3,
+      "charge": 40,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 940,
+        "el": 0,
+        "chargeScale": 1.4,
+        "r": 168,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 3,
+      "charge": 79,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 940,
+        "el": 0,
+        "chargeScale": 1.4,
+        "r": 168,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 3,
+      "charge": 80,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 1881,
+        "el": 0,
+        "chargeScale": 1.8,
+        "r": 216,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 3,
+      "charge": 119,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 1881,
+        "el": 0,
+        "chargeScale": 1.8,
+        "r": 216,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 3,
+      "charge": 120,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 3763,
+        "el": 0,
+        "chargeScale": 2.2,
+        "r": 264,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "raw",
+      "level": 1,
+      "step": 3,
+      "charge": 999,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 25,
+        "ml": 25,
+        "_hitSet": {},
+        "dmg": 3763,
+        "el": 0,
+        "chargeScale": 2.2,
+        "r": 264,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 336,
+        "life": 0,
+        "active": false
+      },
+      "updates": 25
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 1,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 20,
+        "ml": 20,
+        "_hitSet": {},
+        "dmg": 865,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 55,
+        "step": 1,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 266,
+        "life": 0,
+        "active": false
+      },
+      "updates": 20
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 2,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 23,
+        "ml": 23,
+        "_hitSet": {},
+        "dmg": 865,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 55,
+        "step": 2,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 308,
+        "life": 0,
+        "active": false
+      },
+      "updates": 23
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 3,
+      "charge": 0,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 865,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 120,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 3,
+      "charge": 39,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 865,
+        "el": 0,
+        "chargeScale": 1,
+        "r": 120,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 3,
+      "charge": 40,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 1731,
+        "el": 0,
+        "chargeScale": 1.4,
+        "r": 168,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 3,
+      "charge": 79,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 1731,
+        "el": 0,
+        "chargeScale": 1.4,
+        "r": 168,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 3,
+      "charge": 80,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 3462,
+        "el": 0,
+        "chargeScale": 1.8,
+        "r": 216,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 3,
+      "charge": 119,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 3462,
+        "el": 0,
+        "chargeScale": 1.8,
+        "r": 216,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 3,
+      "charge": 120,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 6924,
+        "el": 0,
+        "chargeScale": 2.2,
+        "r": 264,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    },
+    {
+      "profile": "raw",
+      "level": 3,
+      "step": 3,
+      "charge": 999,
+      "spawn": {
+        "active": true,
+        "trail": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "x": 0,
+        "y": 0,
+        "ang": 0,
+        "vx": 14,
+        "vy": 0,
+        "life": 27,
+        "ml": 27,
+        "_hitSet": {},
+        "dmg": 6924,
+        "el": 0,
+        "chargeScale": 2.2,
+        "r": 264,
+        "step": 3,
+        "silvArc": false,
+        "_th": 0
+      },
+      "last": {
+        "x": 364,
+        "life": 0,
+        "active": false
+      },
+      "updates": 27
+    }
+  ],
+  "hits": [
+    {
+      "id": 1,
+      "dmg": 1940,
+      "angle": 0,
+      "noSound": true,
+      "opts": {
+        "poiseHit": true,
+        "kbMult": 0.5,
+        "noImpact": true,
+        "_lessonAttack": "kiSlash",
+        "_lessonFullCharge": false,
+        "_kiFull": false
+      },
+      "el": 0
+    },
+    {
+      "id": 2,
+      "dmg": 1940,
+      "angle": 0,
+      "noSound": true,
+      "opts": {
+        "poiseHit": true,
+        "kbMult": 0.5,
+        "noImpact": true,
+        "_lessonAttack": "kiSlash",
+        "_lessonFullCharge": false,
+        "_kiFull": false
+      },
+      "el": 0
+    }
+  ],
+  "boundary": {
+    "x": 91,
+    "r": 22,
+    "first": 0,
+    "second": 1
+  },
+  "wall": {
+    "active": false,
+    "packets": 0,
+    "x": 14,
+    "life": 16
+  },
+  "blocked_los_hit_count": 0,
+  "live_comparison": {
+    "path": "G:/exoduser/game.html",
+    "sha256": "d73d691989c1cb847cb500ce02ae81430c575fb90d732a5af131742c96d2c8c5",
+    "functions": [
+      {
+        "name": "spawnCrescent",
+        "equals_snapshot": true
+      },
+      {
+        "name": "_fireKiSlashCrescent",
+        "equals_snapshot": true
+      },
+      {
+        "name": "_kiSlashHoldTier",
+        "equals_snapshot": true
+      },
+      {
+        "name": "_kiSlashHoldMultiplier",
+        "equals_snapshot": true
+      },
+      {
+        "name": "_beginKiSlashThirdCharge",
+        "equals_snapshot": true
+      },
+      {
+        "name": "_updateKiSlashThirdCharge",
+        "equals_snapshot": true
+      },
+      {
+        "name": "updateCrescents",
+        "equals_snapshot": true
+      },
+      {
+        "name": "_poiseHit",
+        "equals_snapshot": true
+      }
+    ]
+  },
+  "scope": {
+    "source_numeric_functions": true,
+    "hurtE_executed": false,
+    "full_game_rng": false
+  }
+}

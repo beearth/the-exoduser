@@ -10,3 +10,6 @@
 /Tools/Tests/bin/
 /Tools/Tests/obj/
 !/Tools/Tests/CoreTests.csproj
+/Tools/ki-slash-oracle/runs/
+!/Tools/ki-slash-oracle/KiSlashTests.csproj
+!/Tools/ki-slash-oracle/PoiseTests.csproj

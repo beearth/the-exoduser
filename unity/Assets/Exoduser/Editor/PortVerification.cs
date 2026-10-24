@@ -22,6 +22,10 @@ public static class PortVerification {
    if(Math.Abs(s.Player.X-x-163.176f)>.01)throw new Exception("Source movement mismatch");
    foreach(var c in map.Data.chunks){var t=Resources.Load<Texture2D>(c.texture);if(t==null||t.width!=1026||t.height!=1026)throw new Exception("Original chunk dimensions "+c.texture);Resources.UnloadAsset(t);}
    var atlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_walk_south");if(atlas==null||atlas.width!=8192)throw new Exception("Walk atlas imported at wrong scale");
+   var ki=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");if(ki==null||ki.width!=1254||ki.height!=1254)throw new Exception("Original kiSlash sheet imported at wrong scale");
+   foreach(var name in new[]{"Shaders/KiSlashAdditive","Shaders/KiSlashInk"}){
+    var shader=Resources.Load<Shader>(name);if(shader==null||ShaderUtil.ShaderHasError(shader))throw new Exception("KiSlash shader import error "+name);
+   }
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="Unity_source_runtime_compile_asset_and_model",passed=true,engine=Application.unityVersion},true));
    Debug.Log("UNITY_VERIFY_PASS");EditorApplication.Exit(0);
   }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(2);}
