@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-24T12:16:52.964Z",
+  "format": "JPEG",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r04.jpg",
+  "sha256": "131abac048df89156f4c1bc383185d21ed7ad6a5a36d20f0b0138dfada8947a6",
+  "bytes": 322342,
+  "width": 1536,
+  "height": 2688,
+  "bitDepth": 8,
+  "components": 3,
+  "sofMarker": 192,
+  "jpegSignatureAndSofPassed": true,
+  "endOfImageMarkerFound": true,
+  "fullImageDecodedAndVisuallyInspectedBy": "view_image original on source before archiving",
+  "copyHashMatch": true,
+  "generationInputReferences": [
+    {
+      "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r03.png",
+      "sha256": "365054e292a384ef04ee8d90a09e68545e4d756ce286f672e254c93c9e189663",
+      "role": "edit target; retain R03 skin/outfit and R02-derived entire gun, face/hair/robot arm; enlarge body chrome and restore cybernetic boots"
+    }
+  ],
+  "userPreferredWeaponSource": {
+    "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r02.png",
+    "sha256": "ffa5aafe7f750e34cf40dd507079163effdf2348ba0f153b8aeb00fdf2f0d515"
+  }
+}

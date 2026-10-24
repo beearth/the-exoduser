@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-10-24T12:07:18.055Z",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r03.png",
+  "sha256": "365054e292a384ef04ee8d90a09e68545e4d756ce286f672e254c93c9e189663",
+  "bytes": 2871317,
+  "width": 1152,
+  "height": 2048,
+  "bitDepth": 8,
+  "colorType": 2,
+  "interlace": 0,
+  "crcAllChunksPassed": true,
+  "chunks": 4,
+  "zlibInflatePassed": true,
+  "inflatedBytes": 7079936,
+  "copyHashMatch": true,
+  "baselineH61Sha256": "972a95ff782e609da20f25b85403b05d0aed42e1aa613faf7e37ac56b434849f",
+  "baselineH61Unchanged": true,
+  "generationInputReferences": [
+    {
+      "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r02.png",
+      "role": "edit target; preserve whole rifle, face, silver hair, right robotic arm and stance",
+      "sha256": "ffa5aafe7f750e34cf40dd507079163effdf2348ba0f153b8aeb00fdf2f0d515"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "candidate": "R03",
+  "userDirection": [
+    "바디크롬이로 디자인좀해봐 노출좀 주고",
+    "총은 멋있네 은발버전"
+  ],
+  "references": [
+    {
+      "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r02.png",
+      "role": "edit target; preserve whole rifle, face, silver hair, right robotic arm and stance",
+      "sha256": "ffa5aafe7f750e34cf40dd507079163effdf2348ba0f153b8aeb00fdf2f0d515"
+    }
+  ],
+  "textOnly": false,
+  "prompt": "Edit this image: keep the rifle (shape, scale, barrel, cylinder, stock, colors, position, grip), face, silver ponytail undercut, right robot arm, pose. Redesign torso/legs only: remove plate armor, tabard, full suit. Add liquid-silver body chrome inlays flowing from bare skin across exposed collarbones, shoulders, sides, midriff, upper thighs. Opaque black techwear top covering chest, black wrap skirt over hips, small oxblood accents. No armor, corset, lingerie, belts, chains, dots.",
+  "promptLength": 487,
+  "provider": "MagicLight Toolbox Image",
+  "model": "GPT Image 2.5 sunburst",
+  "aspectRatio": "9:16",
+  "outputs": 1,
+  "displayedCostPoints": 200,
+  "balanceBefore": 30790,
+  "status": "completed-reviewed-candidate-not-adopted",
+  "userAccepted": false,
+  "weaponDesignUserPreferred": "R02 silver-haired gun; preserve by latest user direction",
+  "taskId": "7519730553293594624",
+  "submissionObservedAt": "2026-10-24T12:05:23.899Z",
+  "receivedAt": "2026-10-24T12:07:18.075Z",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r03.png",
+  "outputSha256": "365054e292a384ef04ee8d90a09e68545e4d756ce286f672e254c93c9e189663",
+  "width": 1152,
+  "height": 2048,
+  "bytes": 2871317,
+  "codexVisualVerdict": "RETOUCH",
+  "claudeVisualVerdict": "RETOUCH",
+  "claudeUnitListCostUsd": 0.2006116
+}
