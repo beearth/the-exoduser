@@ -1,0 +1,40 @@
+{
+  "before": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "after": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "files": [
+    {
+      "path": "docs/11내러티브·로어디자인/NEW_HEROES_DESIGN_LOCK.md",
+      "real": "I:\\EXODUSER-Storage\\archive\\G\\exoduser\\docs\\11내러티브·로어디자인\\NEW_HEROES_DESIGN_LOCK.md",
+      "beforeSha256": "ccaf590c07ee311d698e53a4037f10bf5c7eb5f261c1722b75167123fc5ac535",
+      "afterSha256": "dac90d1ff6632df4958c031eeb2bd92c9709ba6eee43c4b2d9fb7b9f7fb7dcdd",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/NEW_HEROES_USER_PREFERRED_20261021.md",
+      "real": "I:\\EXODUSER-Storage\\archive\\G\\exoduser\\docs\\17게임아트팀\\NEW_HEROES_USER_PREFERRED_20261021.md",
+      "beforeSha256": "4c5f2127c5e85d0ea5ac669dc426d6558682e613193b7d0afc73def6f5ba6d7b",
+      "afterSha256": "f699c77f166e750c138915cbd02831ef2a9b3c48d4e68637092fb1beb997427c",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/ART_TEAM_MASTER.md",
+      "real": "I:\\EXODUSER-Storage\\archive\\G\\exoduser\\docs\\17게임아트팀\\ART_TEAM_MASTER.md",
+      "beforeSha256": "411f93392331b290ffff1140da9b1d64ed80776e2dcb4b2246c3b7d1f8661a57",
+      "afterSha256": "17af4a2ca38f10420f8e51d42f9f2c8f01b4bd6672724831fa064c1c7d64aa46",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "real": "I:\\EXODUSER-Storage\\archive\\G\\exoduser\\docs\\0마스터플랜\\PROJECT_MANAGEMENT_MASTER.md",
+      "beforeSha256": "1454b0e73f34f2e3e668f16af405f1d773c294f6cc2e5c6398bd88132baf8d34",
+      "afterSha256": "606726cd2996b82617321908131735f2e4c3480c390dbfc40a375b6ed4173077",
+      "previousBytesPreserved": true
+    }
+  ]
+}
