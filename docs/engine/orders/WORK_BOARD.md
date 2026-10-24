@@ -1,5 +1,9 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-24 사용자 지시 — UNITY-PORT-01
+
+현재 이식 대상은 **Unity**로 전환한다. PC Codex / `codex/unity-port-20261024` / 기존 소유 worktree의 `unity/` 신규 경로와 Unity 관련 docs만 소유한다. Godot 원격 `7d67c4182`·공용 main/INDEX/WIP·사용자 세이브 보존. C# 이동·기본 무기·etype0·원본 맵/미디어·HUD/시작 씬 후보를 구현하고 독립 모델36/0·원본 충돌2523표본·시작 장비23필드 검증을 진행했다. **실제 Unity import/실행/빌드는 미완료: Editor license 종료198**. Hub 창을 열었고 사용자 로그인·활성화 대기다. [현재 상태·범위·다음 검수](../UNITY_PORT_20261024.md). 이전 Godot 통계는 Unity 진척률이 아니다.
+
 ## 2026-10-23 PC Codex 인수 — PORT-TAKEOVER-01
 
 2026-10-24 후속 `PORT-TAKEOVER-03`: 같은 PC Codex가 G17 모체 산란의 `SFX.magic(3)` 중 원본 `fire_magic1` 샘플 레이어를 연결했다. Main의 G 전용 sample 진입·G sfx 분기·기존 runtime 검사·원본 MP3 1개·관련 docs 범위. **격리 기술 검수 후보**: WASAPI 집중122/0·G204/0(실제 모체 caller2회)·sound45/0·ERROR0. 돌진/그로기·마법 합성 DSP는 실제 출력 adapter 부재로 미이식 유지하며 다른 소리로 대체하지 않는다. 원본 모체 AI/자식 생성·피해·Q/E·저장·맵 및 공용 main 무수정. [보고서](reports/PORT-TAKEOVER-03_REPORT.md), 최종 SHA/근거 `I:/EXODUSER-Storage/qa/port-magic-20261024/DONE.json`.

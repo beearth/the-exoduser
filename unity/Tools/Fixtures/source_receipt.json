@@ -1,0 +1,795 @@
+{
+  "schema": "exoduser.unity.source-assets.v1",
+  "sourceSha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "mapSourceSha256": "c76238beda26087b6faa5cf65dfc3140dccfa9519d6ef30bd458cf11f949e5bb",
+  "assetCount": 131,
+  "bytes": 184121038,
+  "assets": [
+    {
+      "source": "godot/assets/map/production_finish/chunk_0_0.png",
+      "destination": "Art/map/production_finish/chunk_0_0.png",
+      "bytes": 1968680,
+      "sha256": "c09ef8fecc2f753e539183abf3cc52068e3e27e4004ae36f7624f2a7d98e4390"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_1_0.png",
+      "destination": "Art/map/production_finish/chunk_1_0.png",
+      "bytes": 2018002,
+      "sha256": "bba6d1b96b1e8432576e9c0cb153432173dee64267212a649285a726c461a9f8"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_2_0.png",
+      "destination": "Art/map/production_finish/chunk_2_0.png",
+      "bytes": 2039914,
+      "sha256": "af1f9c5b27b3aa106b4a9868531c4a72e03f35b14c921fc75d388b228f90b4cd"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_3_0.png",
+      "destination": "Art/map/production_finish/chunk_3_0.png",
+      "bytes": 2039493,
+      "sha256": "b87799dd12420021ebeafbf1aa94e4520d1c118e26569b63daecdeaf978bf59b"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_4_0.png",
+      "destination": "Art/map/production_finish/chunk_4_0.png",
+      "bytes": 2163315,
+      "sha256": "d4c8ecb0cef897f8024b71be1b5f304641d8ef195352bed729411e0187fa0b0a"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_5_0.png",
+      "destination": "Art/map/production_finish/chunk_5_0.png",
+      "bytes": 2022235,
+      "sha256": "675a23bb1ec84cec30283874a10807f68ad0df3b61df07122bf8f2096d80d2d0"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_6_0.png",
+      "destination": "Art/map/production_finish/chunk_6_0.png",
+      "bytes": 1960987,
+      "sha256": "c45ff110343a80fe945b22a886e90e311b0adacc7742650b7814be4ccdd13204"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_7_0.png",
+      "destination": "Art/map/production_finish/chunk_7_0.png",
+      "bytes": 1890789,
+      "sha256": "332dc58292a8df4885f82da25b02c31d25e67c7b1c9dc256cd35655a079572b3"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_0_1.png",
+      "destination": "Art/map/production_finish/chunk_0_1.png",
+      "bytes": 1975228,
+      "sha256": "76c38f9f02118eb31cd0b61a5dc21adf2305de4938b3f3853c766eed1e8df508"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_1_1.png",
+      "destination": "Art/map/production_finish/chunk_1_1.png",
+      "bytes": 1999070,
+      "sha256": "ad3c3e0676948ca4121a9056aa5f0d8f8543cf772cba85a40d16de8d1d7b2729"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_2_1.png",
+      "destination": "Art/map/production_finish/chunk_2_1.png",
+      "bytes": 1881288,
+      "sha256": "211528559387a13992fd7a1ba1a3494bcad20949f359d489de45254c6e3908f6"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_3_1.png",
+      "destination": "Art/map/production_finish/chunk_3_1.png",
+      "bytes": 1917742,
+      "sha256": "72eab243dc761596fbe7de985a118b3211e261bdeaa5aa9243586dc4de18f985"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_4_1.png",
+      "destination": "Art/map/production_finish/chunk_4_1.png",
+      "bytes": 1806877,
+      "sha256": "e0d153eb1275a7ef613bab38e759ff13ed429091d41ffe5cb678d367b5ae2056"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_5_1.png",
+      "destination": "Art/map/production_finish/chunk_5_1.png",
+      "bytes": 1954754,
+      "sha256": "324bb7ff361766562f7adc5ab5f25e5a53343f6eabbfe9765a2be5231b25aaaf"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_6_1.png",
+      "destination": "Art/map/production_finish/chunk_6_1.png",
+      "bytes": 1890074,
+      "sha256": "51c7f65361d7037e7e02659b08143ce38ddc4d95242f75abf157c01f0cd9b6bb"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_7_1.png",
+      "destination": "Art/map/production_finish/chunk_7_1.png",
+      "bytes": 2206743,
+      "sha256": "b1d95f7df3307b5bb0d86b1acccd693b79c8afef09ef3c93f28f2d7993df31a5"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_0_2.png",
+      "destination": "Art/map/production_finish/chunk_0_2.png",
+      "bytes": 2002100,
+      "sha256": "f715f6f00747d5c8b441f2aeaee4efd48e89f6d860cf25c95944778ab0882546"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_1_2.png",
+      "destination": "Art/map/production_finish/chunk_1_2.png",
+      "bytes": 2095352,
+      "sha256": "81edb57e6d11925540d8232789e74dc7c3d55fba6bd8372b248037e9c21bf0c6"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_2_2.png",
+      "destination": "Art/map/production_finish/chunk_2_2.png",
+      "bytes": 1826720,
+      "sha256": "c6b449b3bdb6644fe65015893af1d9625320f0b5ead2f3f67b013e040506c962"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_3_2.png",
+      "destination": "Art/map/production_finish/chunk_3_2.png",
+      "bytes": 1762366,
+      "sha256": "5f5d22151cb3496bacca65b583c72bbb96437854dccec24465b529fbc16e166c"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_4_2.png",
+      "destination": "Art/map/production_finish/chunk_4_2.png",
+      "bytes": 1802626,
+      "sha256": "e56929cf0c1923a8ee851a29adeb5571cdc99d2816a3a8de8b3d80a6620cc45d"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_5_2.png",
+      "destination": "Art/map/production_finish/chunk_5_2.png",
+      "bytes": 1806537,
+      "sha256": "323a200edec15b719e8ad5c67bb870dd56a82fb17d1e46b86592063e7d9bb517"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_6_2.png",
+      "destination": "Art/map/production_finish/chunk_6_2.png",
+      "bytes": 2013789,
+      "sha256": "f704d0324c9df886719a0ac84d88fae09e19ff38c1e7fdfb52b9178ef1e6af4f"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_7_2.png",
+      "destination": "Art/map/production_finish/chunk_7_2.png",
+      "bytes": 2073240,
+      "sha256": "bb156e06c4ddb17d375dc0595138aaf49ba60bc1340df75a83dbdd3fb6e51bd2"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_0_3.png",
+      "destination": "Art/map/production_finish/chunk_0_3.png",
+      "bytes": 1944524,
+      "sha256": "88299b834ef09019aedadcd4bf2d749de6007511a18cad9a35cb01c67c1b3aa4"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_1_3.png",
+      "destination": "Art/map/production_finish/chunk_1_3.png",
+      "bytes": 1995186,
+      "sha256": "0c3826ce8e33af08971959939df0b2b44ff26e3d98f2a0fcc66db796c01ab819"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_2_3.png",
+      "destination": "Art/map/production_finish/chunk_2_3.png",
+      "bytes": 1777485,
+      "sha256": "fd9520b6061b930699955d45509b395d3798d25bbb2bcd15436d0456148bcea5"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_3_3.png",
+      "destination": "Art/map/production_finish/chunk_3_3.png",
+      "bytes": 1870619,
+      "sha256": "12c05a382f66f324b0dd1edd19699091e5c79b08f8696eb6576ab784d17f007a"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_4_3.png",
+      "destination": "Art/map/production_finish/chunk_4_3.png",
+      "bytes": 2007121,
+      "sha256": "db9ec72289972319882ccf584ac3bc4e0622fe6b5c06fb884fe9625918c4080f"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_5_3.png",
+      "destination": "Art/map/production_finish/chunk_5_3.png",
+      "bytes": 1763958,
+      "sha256": "b412ff98ba5a174487f91c69470d0f935c0f3688ca610c823a5277258f802a50"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_6_3.png",
+      "destination": "Art/map/production_finish/chunk_6_3.png",
+      "bytes": 1937863,
+      "sha256": "c9728d39d936e615057ac213db2536f6e08edbf337d051bc0e58832c94853146"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_7_3.png",
+      "destination": "Art/map/production_finish/chunk_7_3.png",
+      "bytes": 1992994,
+      "sha256": "e6ac5de1019313810af61931dc1890b965497423b9b394a1154295b68bee5b7f"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_0_4.png",
+      "destination": "Art/map/production_finish/chunk_0_4.png",
+      "bytes": 2070515,
+      "sha256": "3decb719c07979aa53d1914d64f5c041800964488091f7efb873aa44f247d6f7"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_1_4.png",
+      "destination": "Art/map/production_finish/chunk_1_4.png",
+      "bytes": 1962791,
+      "sha256": "bc977b746cbd807ac1bad97d8349b8d6cf15a483a3e258e59a646585650cca5a"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_2_4.png",
+      "destination": "Art/map/production_finish/chunk_2_4.png",
+      "bytes": 1852744,
+      "sha256": "85b1df886258f3c4eaeced3ac1e507cece24b9c9451cd344c8349c542e189982"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_3_4.png",
+      "destination": "Art/map/production_finish/chunk_3_4.png",
+      "bytes": 1742237,
+      "sha256": "865cd4a6cac744b98db78d5c0bed5d4a0dfed4a3c62273c1cecf98762d01182d"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_4_4.png",
+      "destination": "Art/map/production_finish/chunk_4_4.png",
+      "bytes": 1835248,
+      "sha256": "efd8251d0eea7853d1c714238a52ad868b9f4a1f91c6b2c00aa3a354abf326a9"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_5_4.png",
+      "destination": "Art/map/production_finish/chunk_5_4.png",
+      "bytes": 2031339,
+      "sha256": "c4bcae9ad1612af0fd0987b6e78770840229a336ba8c0e0c066e607629e5b98b"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_6_4.png",
+      "destination": "Art/map/production_finish/chunk_6_4.png",
+      "bytes": 2091371,
+      "sha256": "55ffff71c5a7cfed2761be27efdb0558a39f67bd8285ed7e57247697822bd0f5"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_7_4.png",
+      "destination": "Art/map/production_finish/chunk_7_4.png",
+      "bytes": 2149442,
+      "sha256": "d6d2bfcc35741159a7d82917f37c19f3f7ab030f7e4f7f72fa53116a9e3cbf9c"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_0_5.png",
+      "destination": "Art/map/production_finish/chunk_0_5.png",
+      "bytes": 2074227,
+      "sha256": "173932f9c2a2e7b45f987e07692602ca5e7d2784d341d5b4eded8d381bed12d6"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_1_5.png",
+      "destination": "Art/map/production_finish/chunk_1_5.png",
+      "bytes": 2076786,
+      "sha256": "2ba14504badc47f1a38e4af0f985e2a9c67679db85511ead10c104cc5f7d365e"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_2_5.png",
+      "destination": "Art/map/production_finish/chunk_2_5.png",
+      "bytes": 1944486,
+      "sha256": "4cd229eba8e673d335c8a45776baf67e2732bf4977865b79f1636c50304b4218"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_3_5.png",
+      "destination": "Art/map/production_finish/chunk_3_5.png",
+      "bytes": 1711171,
+      "sha256": "df2cb18b357923326a5be761b0390ad625689247e3066ae9acd35c2e5a9701ab"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_4_5.png",
+      "destination": "Art/map/production_finish/chunk_4_5.png",
+      "bytes": 1756185,
+      "sha256": "b5cb5e015768bc05b6d1acbc598b1a686b4197af026a30af9b08e6cda6d664d5"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_5_5.png",
+      "destination": "Art/map/production_finish/chunk_5_5.png",
+      "bytes": 1801743,
+      "sha256": "f19dec4ab01a114c0e618082ec814900a3d8a62eede8abe4f16287dc3bcbdcaa"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_6_5.png",
+      "destination": "Art/map/production_finish/chunk_6_5.png",
+      "bytes": 1879628,
+      "sha256": "d3aa49f571f26932aaab80d5107021a9493463c58ee802bb7f830e7c0c6f30a4"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_7_5.png",
+      "destination": "Art/map/production_finish/chunk_7_5.png",
+      "bytes": 2264710,
+      "sha256": "1483f31a87789911dbe419a3f8fefc5e735641079d1f66e89fbc6fdb512e2309"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_0_6.png",
+      "destination": "Art/map/production_finish/chunk_0_6.png",
+      "bytes": 2227354,
+      "sha256": "409786f0443bfba9f39808ab19b9fbb654fcdfef67b0c98943feca1de98c3557"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_1_6.png",
+      "destination": "Art/map/production_finish/chunk_1_6.png",
+      "bytes": 2124831,
+      "sha256": "1e084d7b948441d0fe0e5af908d34ece3259a6a70a212299853a4126ac67158c"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_2_6.png",
+      "destination": "Art/map/production_finish/chunk_2_6.png",
+      "bytes": 1947636,
+      "sha256": "612de9d5a72259d603e53134c2cd709c72db74ca9ec789b818388cec3d7e7ebf"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_3_6.png",
+      "destination": "Art/map/production_finish/chunk_3_6.png",
+      "bytes": 1817351,
+      "sha256": "8c74f1a860b289008b895709a7deb679f30dc87601cda779b529b3e850606817"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_4_6.png",
+      "destination": "Art/map/production_finish/chunk_4_6.png",
+      "bytes": 1817900,
+      "sha256": "39958400755ea462b05b5fa97b969bf195ed764c3ed49224cd57825cc82d8752"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_5_6.png",
+      "destination": "Art/map/production_finish/chunk_5_6.png",
+      "bytes": 1953972,
+      "sha256": "52bf20643dbad176f44438980d4bf2d6241271fece791c423a5946d8c8d7cece"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_6_6.png",
+      "destination": "Art/map/production_finish/chunk_6_6.png",
+      "bytes": 2062525,
+      "sha256": "b7eea73390e6676f14189526ab80a6a0d25c1eabf4971a383303ddd2d3794eb6"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_7_6.png",
+      "destination": "Art/map/production_finish/chunk_7_6.png",
+      "bytes": 2085673,
+      "sha256": "da36f1c0d54944dc87a0fd06e15901e9433227f90ccc10ef6694d9f439fd9f60"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_0_7.png",
+      "destination": "Art/map/production_finish/chunk_0_7.png",
+      "bytes": 1941675,
+      "sha256": "32343cf79521b2815a3a5ca2fab37894b0d62c5323780042bc1ecfe92fe49205"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_1_7.png",
+      "destination": "Art/map/production_finish/chunk_1_7.png",
+      "bytes": 2031233,
+      "sha256": "394a32554994a5481d9b4e8e443fc65e267ab03b02f90c69bef47cfccb931821"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_2_7.png",
+      "destination": "Art/map/production_finish/chunk_2_7.png",
+      "bytes": 2165649,
+      "sha256": "845063f257ca92f4ed99ddf0c111ab2b398deba7443e5f036954dde39d31443a"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_3_7.png",
+      "destination": "Art/map/production_finish/chunk_3_7.png",
+      "bytes": 2025542,
+      "sha256": "d412d1f88dc1be68345aeb22f37c317dc716636a2af326332761794571f48d05"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_4_7.png",
+      "destination": "Art/map/production_finish/chunk_4_7.png",
+      "bytes": 1890105,
+      "sha256": "767908afbfa19a12bf8e3ae14774df767bfb99548950cb9303fdedb89e7fa9b4"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_5_7.png",
+      "destination": "Art/map/production_finish/chunk_5_7.png",
+      "bytes": 2141606,
+      "sha256": "42bfbbe760037989c58d8f65dc208b70bdce126103772b026ec968c65cf38538"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_6_7.png",
+      "destination": "Art/map/production_finish/chunk_6_7.png",
+      "bytes": 1998798,
+      "sha256": "42fbdd694e8c4ef17f9c9cccaba4c2510ff152f2c0e269270f60092c8cd5bcd9"
+    },
+    {
+      "source": "godot/assets/map/production_finish/chunk_7_7.png",
+      "destination": "Art/map/production_finish/chunk_7_7.png",
+      "bytes": 1913508,
+      "sha256": "8e4b4e6f31c7297fb0d231c6368b1dd89da91fea5211347d30cb7dc120cc8a11"
+    },
+    {
+      "source": "godot/assets/map/props/rotforest_tree_01.png",
+      "destination": "Art/map/props/rotforest_tree_01.png",
+      "bytes": 1249558,
+      "sha256": "ae69e33cda3191fe22bf1d0b692f27cb7b222f3f48cae6df28e44e5f78a3c789"
+    },
+    {
+      "source": "godot/assets/map/props/rotforest_tree_02.png",
+      "destination": "Art/map/props/rotforest_tree_02.png",
+      "bytes": 1426429,
+      "sha256": "6dbb59de20274628c7a4e989ed6977fc4af93c6da70443ec153d763b723c3c2e"
+    },
+    {
+      "source": "godot/assets/map/props/rotforest_tree_04.png",
+      "destination": "Art/map/props/rotforest_tree_04.png",
+      "bytes": 1622752,
+      "sha256": "79f7da5a5f67319bada820f18a0aa116c4e42273063c52b6861a4256e632a81b"
+    },
+    {
+      "source": "godot/assets/map/props/rotforest_tree_03.png",
+      "destination": "Art/map/props/rotforest_tree_03.png",
+      "bytes": 1229370,
+      "sha256": "97f22daaca0ffc1048988f718db00816d6943517ea67bec5be7b199fbc353a53"
+    },
+    {
+      "source": "godot/assets/map/props/rotforest_tree_05.png",
+      "destination": "Art/map/props/rotforest_tree_05.png",
+      "bytes": 1061285,
+      "sha256": "f587df81986c07aba85955290813dd120174116e5bc2c5a1ac8b2d0faf55822f"
+    },
+    {
+      "source": "godot/assets/map/props/rotforest_tree_11.png",
+      "destination": "Art/map/props/rotforest_tree_11.png",
+      "bytes": 1211686,
+      "sha256": "8ec4d8e9ae381e87a408055974ad104a0a738486e30d9e7eadab4582b9af8b3b"
+    },
+    {
+      "source": "godot/assets/map/props/rotforest_tree_06.png",
+      "destination": "Art/map/props/rotforest_tree_06.png",
+      "bytes": 1052134,
+      "sha256": "0193fe51ac74453286b859a299d28f636c8aefad284ffee497f3799a86e468f6"
+    },
+    {
+      "source": "godot/assets/map/props/rotforest_tree_07.png",
+      "destination": "Art/map/props/rotforest_tree_07.png",
+      "bytes": 1296483,
+      "sha256": "f7d8bc3ebd0bcb1bfe1ad39f80784d8c04f1ee6771669c1e2a37db10a9fb2507"
+    },
+    {
+      "source": "godot/assets/map/props/frozen_bones.png",
+      "destination": "Art/map/props/frozen_bones.png",
+      "bytes": 726,
+      "sha256": "8e0e200d8b750f7b1a84ef73831f2cca60cff028964258b7824691743aa46c7f"
+    },
+    {
+      "source": "godot/assets/map/props/corpse.png",
+      "destination": "Art/map/props/corpse.png",
+      "bytes": 1701,
+      "sha256": "a36ee12436c99166caec2dbc642a74c2ce07c24a306b3d574ba44aea2df692f1"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_root.png",
+      "destination": "Art/map/props/prop_s_root.png",
+      "bytes": 255349,
+      "sha256": "af2d2c2fa1869cacd468c1368863d63a911fe395cda7f017218e36ca6bef0ff2"
+    },
+    {
+      "source": "godot/assets/map/props/prop_g_root.png",
+      "destination": "Art/map/props/prop_g_root.png",
+      "bytes": 1525796,
+      "sha256": "3aa9a299c9042750d67cd992035b3d4381154ce1f90dca7043534d4821c2d3dc"
+    },
+    {
+      "source": "godot/assets/map/props/prop_corpsetree.png",
+      "destination": "Art/map/props/prop_corpsetree.png",
+      "bytes": 2072135,
+      "sha256": "fcc9a3bf420f6f0806bd4b8daa875196543c2a8c92268b5b358a52b48a8a9de8"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_root.png",
+      "destination": "Art/map/props/prop_s_root.png",
+      "bytes": 255349,
+      "sha256": "af2d2c2fa1869cacd468c1368863d63a911fe395cda7f017218e36ca6bef0ff2"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_bone.png",
+      "destination": "Art/map/props/prop_s_bone.png",
+      "bytes": 223981,
+      "sha256": "182f559766a79600ed7396e9d5d15f9905aa9e2d80ac8c467f0d9d219212772f"
+    },
+    {
+      "source": "godot/assets/map/props/corpse.png",
+      "destination": "Art/map/props/corpse.png",
+      "bytes": 1701,
+      "sha256": "a36ee12436c99166caec2dbc642a74c2ce07c24a306b3d574ba44aea2df692f1"
+    },
+    {
+      "source": "godot/assets/map/props/frozen_bones.png",
+      "destination": "Art/map/props/frozen_bones.png",
+      "bytes": 726,
+      "sha256": "8e0e200d8b750f7b1a84ef73831f2cca60cff028964258b7824691743aa46c7f"
+    },
+    {
+      "source": "godot/assets/map/props/prop_cocoon.png",
+      "destination": "Art/map/props/prop_cocoon.png",
+      "bytes": 828379,
+      "sha256": "a13dd0375a4cf8cca2fa09f89184b69bc8cd5ea305744bbef19848a6e7f81403"
+    },
+    {
+      "source": "godot/assets/map/props/hang_cage.png",
+      "destination": "Art/map/props/hang_cage.png",
+      "bytes": 93930,
+      "sha256": "750727d9a7b1e1af2770ee3a6e5cb5915c9c17984e3e40f08bb62d6e0ff30ecc"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_pod.png",
+      "destination": "Art/map/props/prop_s_pod.png",
+      "bytes": 250733,
+      "sha256": "781fc9fd93415a60c49b80e718ca48a8f890db683d0cb3310b8d256388caf624"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_pod.png",
+      "destination": "Art/map/props/prop_s_pod.png",
+      "bytes": 250733,
+      "sha256": "781fc9fd93415a60c49b80e718ca48a8f890db683d0cb3310b8d256388caf624"
+    },
+    {
+      "source": "godot/assets/map/props/prop_camp.png",
+      "destination": "Art/map/props/prop_camp.png",
+      "bytes": 878193,
+      "sha256": "d9ecd4d4b1bf8f79b37f21813f109f2360b56c5b57e9319ad3525cfebda21ebf"
+    },
+    {
+      "source": "godot/assets/map/props/sword_pile.png",
+      "destination": "Art/map/props/sword_pile.png",
+      "bytes": 124536,
+      "sha256": "3cd5cbf4dd31b5ccbff5354133c4ea15a82c2a0a12755431f389cdc74f577379"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_bone.png",
+      "destination": "Art/map/props/prop_s_bone.png",
+      "bytes": 223981,
+      "sha256": "182f559766a79600ed7396e9d5d15f9905aa9e2d80ac8c467f0d9d219212772f"
+    },
+    {
+      "source": "godot/assets/map/props/bone_arch.png",
+      "destination": "Art/map/props/bone_arch.png",
+      "bytes": 153345,
+      "sha256": "df27ca9bbbb319d2aab2a7ae9034377d8a806b1a9a129ada6d10dbb4a8c57db7"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_root.png",
+      "destination": "Art/map/props/prop_s_root.png",
+      "bytes": 255349,
+      "sha256": "af2d2c2fa1869cacd468c1368863d63a911fe395cda7f017218e36ca6bef0ff2"
+    },
+    {
+      "source": "godot/assets/map/props/penta_circle.png",
+      "destination": "Art/map/props/penta_circle.png",
+      "bytes": 140551,
+      "sha256": "0fc81baaf9987fdeb227bed51c1dae9abdcac234f88ce5e5bd1e60bb0e43143b"
+    },
+    {
+      "source": "godot/assets/map/props/prop_altar.png",
+      "destination": "Art/map/props/prop_altar.png",
+      "bytes": 875276,
+      "sha256": "027517c91210701dafb90dda9104be691e5050ca293ebc7c1fe68b72656900c9"
+    },
+    {
+      "source": "godot/assets/map/props/skull_totem.png",
+      "destination": "Art/map/props/skull_totem.png",
+      "bytes": 33032,
+      "sha256": "4c5255905708bd025b07e0d377488467e98a91db6bd39c206264d8b164ed3f64"
+    },
+    {
+      "source": "godot/assets/map/props/glow_flower_yellow.png",
+      "destination": "Art/map/props/glow_flower_yellow.png",
+      "bytes": 431,
+      "sha256": "2fe8a923b8b1e70fe5d8d9a0d27fce4b7ef413b79c9bcdb804560fb099db7dee"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_bone.png",
+      "destination": "Art/map/props/prop_s_bone.png",
+      "bytes": 223981,
+      "sha256": "182f559766a79600ed7396e9d5d15f9905aa9e2d80ac8c467f0d9d219212772f"
+    },
+    {
+      "source": "godot/assets/map/props/prop_g_toxic.png",
+      "destination": "Art/map/props/prop_g_toxic.png",
+      "bytes": 1440562,
+      "sha256": "9d1486cb138c19f64f038bda9504565f8a389d86c0beaa35e75b8bc9d547b84a"
+    },
+    {
+      "source": "godot/assets/map/props/prop_pool.png",
+      "destination": "Art/map/props/prop_pool.png",
+      "bytes": 788954,
+      "sha256": "9596d6656170dd7775a2800165a76e11a04445293d7a691b00dbbe25db353f57"
+    },
+    {
+      "source": "godot/assets/map/props/prop_g_toxic.png",
+      "destination": "Art/map/props/prop_g_toxic.png",
+      "bytes": 1440562,
+      "sha256": "9d1486cb138c19f64f038bda9504565f8a389d86c0beaa35e75b8bc9d547b84a"
+    },
+    {
+      "source": "godot/assets/map/props/pit_poison.png",
+      "destination": "Art/map/props/pit_poison.png",
+      "bytes": 18758,
+      "sha256": "3bc7234d9abb7be4205450157df55abefc5bbf5e230c1aa139e77799a6a70041"
+    },
+    {
+      "source": "godot/assets/map/props/prop_s_root.png",
+      "destination": "Art/map/props/prop_s_root.png",
+      "bytes": 255349,
+      "sha256": "af2d2c2fa1869cacd468c1368863d63a911fe395cda7f017218e36ca6bef0ff2"
+    },
+    {
+      "source": "godot/assets/player/attack-bat-v1.png",
+      "destination": "Art/player/attack-bat-v1.png",
+      "bytes": 131631,
+      "sha256": "f198e5639a9da1e8e71ac103d44ffa2c7b396cd9a76c17d529eb3a4da3a393b6"
+    },
+    {
+      "source": "godot/assets/player/dash-flight-v1.png",
+      "destination": "Art/player/dash-flight-v1.png",
+      "bytes": 98277,
+      "sha256": "30ff0703ccd0ae3fb41f846cb57a1e0c1d12bcb4a43f9e48255c38bf5e86f931"
+    },
+    {
+      "source": "godot/assets/player/east.png",
+      "destination": "Art/player/east.png",
+      "bytes": 27539,
+      "sha256": "3e26c01d8d032440572b5fbe72a91adc4946c5e340b70921044f1a533e99588b"
+    },
+    {
+      "source": "godot/assets/player/north-east.png",
+      "destination": "Art/player/north-east.png",
+      "bytes": 23941,
+      "sha256": "a2875563ac73f7a5d500aa2cac252c06ba6be2cab06c7f31f9f595adbba27aaa"
+    },
+    {
+      "source": "godot/assets/player/north-west.png",
+      "destination": "Art/player/north-west.png",
+      "bytes": 27573,
+      "sha256": "e44b06d474bb7a5a414aa01cf455088d4fbe9847be2a8455e5dc0ff479fc4ead"
+    },
+    {
+      "source": "godot/assets/player/north.png",
+      "destination": "Art/player/north.png",
+      "bytes": 24495,
+      "sha256": "d573be371b59d3aa4b1b2c7414b56460f85c12d7459c8d5ad2db65d5721bc65d"
+    },
+    {
+      "source": "godot/assets/player/south-east.png",
+      "destination": "Art/player/south-east.png",
+      "bytes": 29283,
+      "sha256": "7d316415b0994330bc758af9c5f901db74b5a78d03478d57d129a57f0ea01efe"
+    },
+    {
+      "source": "godot/assets/player/south-west.png",
+      "destination": "Art/player/south-west.png",
+      "bytes": 25858,
+      "sha256": "df74da2698138c42c6906d6d7531da9befe21a292cc45313c174f0d79826236f"
+    },
+    {
+      "source": "godot/assets/player/south.png",
+      "destination": "Art/player/south.png",
+      "bytes": 32485,
+      "sha256": "d04c5a3e7831b4a349908a5f31361c39f9993e5fdccc5f792585bce8e601d467"
+    },
+    {
+      "source": "godot/assets/player/west.png",
+      "destination": "Art/player/west.png",
+      "bytes": 27385,
+      "sha256": "2dec33ee14852f08ee2b2e0266dbd4b8cdf6176659ab71285d53df18c6f2b067"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_east.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_east.png",
+      "bytes": 693012,
+      "sha256": "2b4cbc2cb2f8b33f1ce10cdce6e17b4e6b7c75fff13e0fd60787ddb3e803a81a"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_north.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_north.png",
+      "bytes": 761588,
+      "sha256": "7c4e569e3c7e35c50e72e0b9ecb7c8fffe3ee73e3b98be976ced6d7a34a8d252"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_north_east.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_north_east.png",
+      "bytes": 729568,
+      "sha256": "b63ed215d947a6eb6b4709dc03fe169bb9482fe34814ef2a78f1a7efd3b2fff3"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_north_west.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_north_west.png",
+      "bytes": 722767,
+      "sha256": "e48798ba3d89e7a80ee8942be10439126d57b876bcb5228888df9a289b586d69"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_south.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_south.png",
+      "bytes": 798229,
+      "sha256": "156e76481bc26682afe7d85c01c94477e66e1718bbe88f9d67baddbcc561da23"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_south_east.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_south_east.png",
+      "bytes": 808193,
+      "sha256": "ed7693ea4052cf27c4318864f6e54edc846e941a8c8e12afecf3e03c904075ba"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_south_west.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_south_west.png",
+      "bytes": 804413,
+      "sha256": "4801bd016a0804fedbfaa5d7b97eda7924cb093565d2a7864402570df6add64e"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_east.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_walk_east.png",
+      "bytes": 1972388,
+      "sha256": "95acdda361d2d74add386083fc51dd44c8ea20d7883b299d1a00be618343c854"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_north.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_walk_north.png",
+      "bytes": 2119638,
+      "sha256": "04471ea9d4b695cc79dd8285ce78316c4bb01749d24c4319936befa066d96538"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_north_east.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_walk_north_east.png",
+      "bytes": 2060929,
+      "sha256": "ebc2ba5f5f995e0c104c81829d97162d39b888ed92ffca35f016715a9396e41f"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_north_west.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_walk_north_west.png",
+      "bytes": 2102807,
+      "sha256": "6a89356bb56928a991f5e7f8dd0f0234ff0597d064af271fbe6673f3f4000e6c"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_south.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_walk_south.png",
+      "bytes": 2232971,
+      "sha256": "5de3eb47f666d60c72da13b9cee90a1544b1f325db62e9ce2624551205f58429"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_south_east.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_walk_south_east.png",
+      "bytes": 2174353,
+      "sha256": "b5c16fd3b82d402e33d42cb087bdaf85aa1459b423aab9f8f654f74ea0142070"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_south_west.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_walk_south_west.png",
+      "bytes": 2090379,
+      "sha256": "2bcf554056a6cc4fa8bd250b69644d251d85366b645fb726399ec3b1b7fa50e3"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_west.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_walk_west.png",
+      "bytes": 2008571,
+      "sha256": "564b5f56042aaeb73e585ff1b68ab44faaac08f2f07abc3b1431710c2f30ac58"
+    },
+    {
+      "source": "godot/assets/enemy/atlas_ch1_8dir_west.png",
+      "destination": "Art/enemy/atlas_ch1_8dir_west.png",
+      "bytes": 655038,
+      "sha256": "d14e94607e70a14c068402a6d1047e78ab0cd710d07c61c42ec090f592acc27f"
+    },
+    {
+      "source": "godot/assets/ui/ui_bar_only.png",
+      "destination": "Art/ui/ui_bar_only.png",
+      "bytes": 445043,
+      "sha256": "4ab30a74f58668edd9bbd52a87aa42bb6a9d3c3e91aa67967259345f73b7f6d1"
+    },
+    {
+      "source": "godot/assets/ui/ui_globe_hp.png",
+      "destination": "Art/ui/ui_globe_hp.png",
+      "bytes": 228985,
+      "sha256": "9af17976009b5ae1574d7244a0e053fa73e9a9f107e7da1b0e4f75c723784bcb"
+    },
+    {
+      "source": "godot/assets/ui/ui_globe_mp.png",
+      "destination": "Art/ui/ui_globe_mp.png",
+      "bytes": 228985,
+      "sha256": "9af17976009b5ae1574d7244a0e053fa73e9a9f107e7da1b0e4f75c723784bcb"
+    },
+    {
+      "source": "godot/assets/ui/mm_frame.png",
+      "destination": "Art/ui/mm_frame.png",
+      "bytes": 1058678,
+      "sha256": "6d679dc37998268061665ef0b714a775c1e12f7fb4bd15c158ecd56b70412e13"
+    },
+    {
+      "source": "godot/assets/fonts/NotoSansKR.ttf",
+      "destination": "Art/fonts/NotoSansKR.ttf",
+      "bytes": 10414588,
+      "sha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252"
+    }
+  ]
+}

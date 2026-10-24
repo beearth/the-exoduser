@@ -1,5 +1,9 @@
 # EXODUSER 총괄 프로젝트 관리
 
+## 2026-10-24 사용자 지시 — Unity 이식 전환
+
+사용자가 Unity 이식을 직접 지시했다. PC Codex의 새 구현 대상은 `codex/unity-port-20261024`, 같은 소유 worktree의 `unity/`다. 원본 기반 C# 코어·시작 장비 표본·맵/미디어·시작 씬/렌더러/HUD 후보를 만들었고 .NET 모델/정적 검사를 완료했다. **Unity 실제 import·실행·빌드는 license 미활성화(exit198)로 검증 전**이다. 사용자의 후속 요청으로 Hub 창을 실제 열었으며 로그인·활성화는 사용자 계정 단계로 남아 있다. [현황·범위·검증·차단](../engine/UNITY_PORT_20261024.md). 기존 Godot 원격 `7d67c4182`와 G: 공용480 staged/WIP·사용자 세이브는 보존한다. 전체 이식/Unity 플레이 품질/Steam 인수 완료로 올리지 않는다.
+
 ## 2026-10-23 PC Codex 이식 인수 후보
 
 사용자 직접 지시로 PC Claude의 사용량 한도 중단 작업을 Codex가 인수했다. 토큰 절약 context15종과 최신 Mac 계보/PC 미완료 로그를 대조하고, G04-02 `9734e2e79`에서 별도 E: 작업 폴더·`codex/port-takeover-20261023`를 만들었다. 원 PC 적9종+일반29 WIP는 byte backup/manifest 뒤 3way 결합했다. 현재 담당·소유는 [공동 작업판 PORT-TAKEOVER-01](../engine/orders/WORK_BOARD.md#2026-10-23-pc-codex-인수--port-takeover-01), 기술 검수·시각/청감 미완료·복구 경계는 [인수 보고서](../engine/orders/reports/PORT-TAKEOVER-01_REPORT.md)를 따른다. 공용 main·타 팀 WIP·기존 게임창·세이브·자동화·Steam 변경0. 후보 원격 백업과 main/PC/Mac 제품 인수는 별개다.

@@ -1,0 +1,743 @@
+{
+  "schema": "exoduser.unity.source-starter-fixture.v1",
+  "source": {
+    "sha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+    "seed": 539365412,
+    "clock_ms": 1792796400000,
+    "draw_count": 505,
+    "anchors": [
+      {
+        "name": "EL",
+        "line": 14333
+      },
+      {
+        "name": "RARITY_MUL",
+        "line": 14351
+      },
+      {
+        "name": "SLOT_NAMES",
+        "line": 15176
+      },
+      {
+        "name": "SLOT_EMOJI",
+        "line": 15838
+      },
+      {
+        "name": "WTYPES",
+        "line": 15863
+      },
+      {
+        "name": "WTYPE_KEYS",
+        "line": 15872
+      },
+      {
+        "name": "_WP_MOD",
+        "line": 15876
+      },
+      {
+        "name": "BOWTYPES",
+        "line": 15886
+      },
+      {
+        "name": "BTYPE_KEYS",
+        "line": 15891
+      },
+      {
+        "name": "IMPLICIT_TABLE",
+        "line": 15016
+      },
+      {
+        "name": "_AFSLOT",
+        "line": 14364
+      },
+      {
+        "name": "AFFIX_POOL",
+        "line": 14370
+      },
+      {
+        "name": "_diffSigned",
+        "line": 9278
+      },
+      {
+        "name": "mkP",
+        "line": 29018
+      },
+      {
+        "name": "_weaponName",
+        "line": 15883
+      },
+      {
+        "name": "rollAffixes",
+        "line": 15131
+      },
+      {
+        "name": "mkItem",
+        "line": 15894
+      },
+      {
+        "name": "defaultItems",
+        "line": 16171
+      },
+      {
+        "name": "wp",
+        "line": 16500
+      },
+      {
+        "name": "sh",
+        "line": 16501
+      },
+      {
+        "name": "bt",
+        "line": 16502
+      },
+      {
+        "name": "ar",
+        "line": 16503
+      },
+      {
+        "name": "hm",
+        "line": 16504
+      },
+      {
+        "name": "bw",
+        "line": 16505
+      },
+      {
+        "name": "gl",
+        "line": 16506
+      },
+      {
+        "name": "pt",
+        "line": 16507
+      },
+      {
+        "name": "blt",
+        "line": 16508
+      },
+      {
+        "name": "nc",
+        "line": 16509
+      },
+      {
+        "name": "rg1",
+        "line": 16510
+      },
+      {
+        "name": "rg2",
+        "line": 16511
+      },
+      {
+        "name": "cp",
+        "line": 16512
+      },
+      {
+        "name": "_uEq",
+        "line": 16514
+      },
+      {
+        "name": "_lEqRebuild",
+        "line": 16612
+      },
+      {
+        "name": "_lEq",
+        "line": 16622
+      },
+      {
+        "name": "_lvB",
+        "line": 28770
+      },
+      {
+        "name": "_eqAffixRebuild",
+        "line": 27972
+      },
+      {
+        "name": "_eqAffix",
+        "line": 27973
+      },
+      {
+        "name": "_eqStatRebuild",
+        "line": 27968
+      },
+      {
+        "name": "_eqStat",
+        "line": 27969
+      },
+      {
+        "name": "_eqImplicit",
+        "line": 27994
+      },
+      {
+        "name": "_gritTotal",
+        "line": 27899
+      },
+      {
+        "name": "_gritHpFlat",
+        "line": 27900
+      },
+      {
+        "name": "_gritStFlat",
+        "line": 27902
+      },
+      {
+        "name": "_gritMpFlat",
+        "line": 27901
+      },
+      {
+        "name": "pPredSpd",
+        "line": 28066
+      },
+      {
+        "name": "recalcSt",
+        "line": 16427
+      },
+      {
+        "name": "applyStats",
+        "line": 27904
+      },
+      {
+        "name": "statDex",
+        "line": 27996
+      },
+      {
+        "name": "statCrit",
+        "line": 27999
+      },
+      {
+        "name": "statCritDmg",
+        "line": 28000
+      },
+      {
+        "name": "_eqLckTotal",
+        "line": 27998
+      },
+      {
+        "name": "_passDmgSum",
+        "line": 28005
+      },
+      {
+        "name": "pAtkMul",
+        "line": 28019
+      },
+      {
+        "name": "statDropBonus",
+        "line": 28001
+      },
+      {
+        "name": "_openIntroCurtain initial iframes",
+        "line": 63414
+      }
+    ]
+  },
+  "scope": {
+    "native_runtime_javascript": false,
+    "real_source_factory": true,
+    "source_seeded_fixture": true,
+    "whole_browser_rng_replay": false,
+    "default_skill": "kiSlash",
+    "native_selected_skill": "weapon",
+    "full_save_restore": false,
+    "generated_extra_start_bag": false
+  },
+  "config": {
+    "Profile": "source-starter-seed-20261024-basic-weapon",
+    "PlayerMaxHp": 526,
+    "PlayerBaseAttack": 15,
+    "PlayerSpeed": 2.7196000000000002,
+    "PlayerMaxStamina": 240,
+    "PlayerMaxMana": 330,
+    "PlayerMaxShield": 285,
+    "PlayerStartingShield": 285,
+    "PlayerHpRegen": 0.05,
+    "PlayerStaminaRegen": 0.05,
+    "PlayerManaRegen": 0.05,
+    "PlayerPhysicalDefense": 100,
+    "PlayerCriticalChance": 0,
+    "PlayerCriticalMultiplier": 1.5,
+    "AttackSpeedMultiplier": 1.0336,
+    "DamageMultiplier": 0.7,
+    "AccessoryDamageBonus": 0,
+    "DropBonus": 1,
+    "WeaponAttack": 18,
+    "WeaponSpeed": 0.45,
+    "WeaponRange": 54,
+    "WeaponArc": 0.95,
+    "InitialIframes": 600
+  },
+  "player": {
+    "x": 0,
+    "y": 0,
+    "r": 15,
+    "hp": 526,
+    "mhp": 526,
+    "st": 240,
+    "mst": 240,
+    "stR": 0.05,
+    "mp": 330,
+    "mmp": 330,
+    "mpR": 0.05,
+    "lv": 1,
+    "exp": 0,
+    "maxExp": 15,
+    "sp": 0,
+    "ap": 0,
+    "baseAtk": 15,
+    "baseDef": 2,
+    "speed": 2.7196000000000002,
+    "facing": 0,
+    "s": "idle",
+    "st2": 0,
+    "atkArc": 0,
+    "swProg": 0,
+    "iframes": 0,
+    "combo": 0,
+    "comboT": 0,
+    "blockFlash": 0,
+    "blockPushT": 0,
+    "chargeDx": 0,
+    "chargeDy": 0,
+    "chargeSpd": 0,
+    "chargeHits": null,
+    "chargeKills": 0,
+    "chargeCd": 0,
+    "chargeStocks": 1,
+    "maxChargeStocks": 1,
+    "kb": {
+      "x": 0,
+      "y": 0
+    },
+    "shield": 285,
+    "mshield": 285,
+    "shieldRegenT": 0,
+    "wwAng": 0,
+    "rage": 0,
+    "activeChargeSk": "charge",
+    "activeBowSk": "normal",
+    "activeTechSk": "giantSlam",
+    "activeMagicSk": "fireball",
+    "activeLMBSk": "kiSlash",
+    "activeRMBSk": "maliceSwipe",
+    "activeQSk": "parry",
+    "activeCtSk": "ghostWalk",
+    "skills": {
+      "kiSlash": 1,
+      "fireball": 1,
+      "bladeDash": 1,
+      "maliceSwipe": 1,
+      "shieldThrow": 1
+    },
+    "_fused": {
+      "shieldFuse": true
+    },
+    "maskOn": true,
+    "_effStats": {
+      "str": 0,
+      "dex": 0,
+      "int": 0,
+      "vit": 0,
+      "lck": 0
+    },
+    "maxPoise": 4,
+    "poise": 4,
+    "poiseR": 0,
+    "_oocSpeed": 0,
+    "hpR": 0.05,
+    "_crystalStats": {
+      "hp": 0,
+      "st": 0,
+      "mp": 0,
+      "atk": 0,
+      "def": 0,
+      "eDef": 0,
+      "spd": 0,
+      "crit": 0,
+      "cdmg": 0,
+      "fire": 0,
+      "ice": 0,
+      "dark": 0,
+      "light": 0,
+      "holy": 0,
+      "hpR": 0,
+      "stR": 0,
+      "mpR": 0,
+      "drop": 0
+    }
+  },
+  "equipment": {
+    "weapon": {
+      "id": 1792796400000.5383,
+      "slot": "weapon",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "녹슨 검",
+      "emoji": "⚔️",
+      "wtype": "sword",
+      "atk": 18,
+      "spd": 0.45,
+      "wStCost": 8,
+      "wArcW": 0.95,
+      "wRange": 50,
+      "wStagger": 8,
+      "bonusRange": 1,
+      "affixes": [],
+      "_implicitStat": "_iAtkPct",
+      "_implicitVal": 13.28,
+      "_implicitKo": "공격력 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "shield": {
+      "id": 1792796400000.5073,
+      "slot": "shield",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "나무 견갑",
+      "emoji": "🛡️",
+      "bonusRange": 0,
+      "shieldWt": 17,
+      "def": 20,
+      "bonusSt": 12,
+      "stagger": 15,
+      "bonusHp": 19,
+      "affixes": [],
+      "_implicitStat": "_iBlockPct",
+      "_implicitVal": 5.17,
+      "_implicitKo": "방어율 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "boots": {
+      "id": 1792796400000.4236,
+      "slot": "boots",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 전투화",
+      "emoji": "👢",
+      "def": 18,
+      "spd": 0,
+      "bonusSt": 30,
+      "chargeDist": 14,
+      "bonusHp": 45,
+      "affixes": [],
+      "_implicitStat": "_iMovSpd",
+      "_implicitVal": 4.6,
+      "_implicitKo": "이동속도 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "armor": {
+      "id": 1792796400000.4863,
+      "slot": "armor",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "천 갑옷",
+      "emoji": "🦺",
+      "def": 20,
+      "bonusSt": 39,
+      "charge": 7,
+      "chargeDist": 22,
+      "chargeW": 11,
+      "bonusRange": 0,
+      "bonusChargeDist": 1,
+      "bonusHp": 28,
+      "affixes": [],
+      "_implicitStat": "_iPhysDR",
+      "_implicitVal": 5.99,
+      "_implicitKo": "물리 피해감소 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "helmet": {
+      "id": 1792796400000.0403,
+      "slot": "helmet",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 머리띠",
+      "emoji": "⛑️",
+      "atk": 1,
+      "def": 20,
+      "beamDmg": 1.5,
+      "elements": [
+        {
+          "el": 0,
+          "dmg": 12
+        }
+      ],
+      "bonusRange": 0,
+      "affixes": [],
+      "_implicitStat": "_iMaxHP",
+      "_implicitVal": 19.4,
+      "_implicitKo": "최대 HP +X",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "bow": {
+      "id": 1792796400000.0652,
+      "slot": "bow",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 석궁",
+      "emoji": "⚙️",
+      "btype": "crossbow",
+      "atk": 38,
+      "bowSpd": 1,
+      "bowStCost": 8,
+      "bowRange": 774,
+      "bowProjSpd": 22,
+      "bonusRange": 0,
+      "bowPierce": 0.02,
+      "affixes": [],
+      "_implicitStat": "_iPierce",
+      "_implicitVal": 14.02,
+      "_implicitKo": "관통 확률 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "gloves": {
+      "id": 1792796400000.5237,
+      "slot": "gloves",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "천 장갑",
+      "emoji": "🧤",
+      "def": 19,
+      "spd": 0,
+      "bonusSt": 35,
+      "bonusHp": 19,
+      "potCd": 0.047,
+      "affixes": [],
+      "_implicitStat": "_iAtkSpd",
+      "_implicitVal": 3.36,
+      "_implicitKo": "공격속도 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "pants": {
+      "id": 1792796400000.9846,
+      "slot": "pants",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "천 바지",
+      "emoji": "👖",
+      "def": 21,
+      "bonusSt": 14,
+      "bonusHp": 24,
+      "affixes": [],
+      "_implicitStat": "_iStsRes",
+      "_implicitVal": 11.72,
+      "_implicitKo": "상태이상 저항 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "necklace": {
+      "id": 1792796400000.1335,
+      "slot": "necklace",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 부적",
+      "emoji": "📿",
+      "eDef": 19,
+      "bonusShield": 37,
+      "bonusMp": 48,
+      "affixes": [],
+      "_implicitStat": "_iMaxHPPct",
+      "_implicitVal": 9.4,
+      "_implicitKo": "최대 HP +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "ring1": {
+      "id": 1792796400000.0942,
+      "slot": "ring1",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "녹슨 반지",
+      "emoji": "💍",
+      "eDef": 18,
+      "bonusShield": 39,
+      "bonusMp": 42,
+      "affixes": [],
+      "_implicitStat": "_iElemRes",
+      "_implicitVal": 12.43,
+      "_implicitKo": "원소 저항 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "ring2": {
+      "id": 1792796400000.3936,
+      "slot": "ring2",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "녹슨 반지",
+      "emoji": "💍",
+      "eDef": 18,
+      "bonusShield": 17,
+      "bonusMp": 21,
+      "affixes": [],
+      "_implicitStat": "_iElemRes",
+      "_implicitVal": 14.49,
+      "_implicitKo": "원소 저항 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "cape": {
+      "id": 1792796400000.761,
+      "slot": "cape",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 망토",
+      "emoji": "🧣",
+      "def": 20,
+      "spd": 0,
+      "bonusSt": 10,
+      "bonusHp": 27,
+      "affixes": [],
+      "_implicitStat": "_iDashCd",
+      "_implicitVal": 6.61,
+      "_implicitKo": "회피 쿨다운 -X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "bracelet": {
+      "id": 1792796400000.9473,
+      "slot": "bracelet",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 악마의 팔찌",
+      "emoji": "⭕",
+      "eDef": 19,
+      "bonusShield": 44,
+      "bonusMp": 45,
+      "brType": "demon",
+      "affixes": [],
+      "_implicitStat": "_iRevPow",
+      "_implicitVal": 11.2,
+      "_implicitKo": "부활력 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "headband": {
+      "id": 1792796400000.748,
+      "slot": "headband",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 귀걸이",
+      "emoji": "🎀",
+      "eDef": 21,
+      "bonusShield": 21,
+      "bonusMp": 41,
+      "affixes": [],
+      "_implicitStat": "_iMagDmg",
+      "_implicitVal": 9.07,
+      "_implicitKo": "마법 데미지 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    },
+    "headband2": {
+      "id": 1792796400000.0999,
+      "slot": "headband2",
+      "el": 0,
+      "rarity": 0,
+      "tier": 0,
+      "name": "낡은 귀걸이",
+      "emoji": "🎀",
+      "eDef": 21,
+      "bonusShield": 27,
+      "bonusMp": 33,
+      "affixes": [],
+      "_implicitStat": "_iMagDmg",
+      "_implicitVal": 9.11,
+      "_implicitKo": "마법 데미지 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": []
+    }
+  }
+}

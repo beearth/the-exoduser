@@ -15,6 +15,8 @@
 
 ## 디스크와 검증
 
+2026-10-24 사용자 Unity 전환: 같은 소유 체크아웃의 `unity/Assets` 실행 C#·참조 미디어·씬/프로젝트 설정은 E:에 둔다. `unity/Library`, `Temp`, `Logs`, `UserSettings`, `Assets/Exoduser/Editor`, `Tools`는 신규 I: 단위에 연결했다. 기존 Godot 원본/보존 브랜치·인증·사용자 세이브는 이동/삭제하지 않았다. 전체 저장 이전 완료 여부는 기존 state.json과 별개로 확인한다.
+
 - I:는 Seagate Expansion USB HDD, exFAT, 용량 16,000,420,413,440 bytes. 포맷 변경 없음.
 - G:는 KIOXIA EXCERIA G2 NVMe SSD, E:와 C:는 Samsung SSD 990 PRO NVMe의 파티션이다.
 - 이전 실행 대장: `I:\EXODUSER-Storage\_migration\20261023\plan.json`.

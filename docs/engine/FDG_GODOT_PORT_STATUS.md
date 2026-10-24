@@ -1,5 +1,7 @@
 # Godot 이식 현황 — 현재 단계와 다음 작업
 
+> 2026-10-24 사용자 최신 지시로 **Unity 이식으로 전환**했다. 기존 Godot 후보/복구 지점은 보존하며 아래는 Godot 작업 이력이다. 현재 담당·코드·실행 차단·검수는 [Unity 이식 현황](UNITY_PORT_20261024.md)을 따른다. Unity 실행 완료나 엔진 우위가 입증된 상태는 아니다.
+
 2026-10-24 후속 [PORT-TAKEOVER-03](orders/reports/PORT-TAKEOVER-03_REPORT.md): G17 모체 산란 마법의 원본 fire_magic1 sample(.35/`.6±6%`/skill priority)만 추가 연결. WASAPI 집중122/0은 이동음 포함한 기술 검사이며, noise/sub/FM/dist·돌진·그로기·전체 청감과 자연 보스 종주는 미완료다.
 
 ## 2026-10-24 PC 인수 재개 — G 이동음 후보

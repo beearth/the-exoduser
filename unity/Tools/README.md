@@ -1,0 +1,37 @@
+# EXODUSER Unity 이식
+
+사용자 지시(2026-10-24)로 Unity 이식을 시작했다. Unity **6000.4.8f1**, C# 게임 로직·SpriteRenderer 기반이며 실행 중 브라우저/WebView/JavaScript를 사용하지 않는다.
+
+현재 코드는 **미실행 이식 후보**다. Editor 라이선스가 없어 실제 import·Play·Windows 빌드·화면 검수는 아직 수행하지 못했다. 정적 컴파일이나 .NET 모델 검사 통과를 실행 완료로 해석하지 않는다.
+
+## 실행
+
+1. Unity Hub에서 로그인하고 보유 라이선스를 활성화한다.
+2. 이 폴더를 프로젝트로 추가하거나 `open-unity.cmd`를 실행한다.
+3. `Assets/Scenes/FirstPlayable.unity`를 열고 Play를 누른다.
+4. 화면의 **전투 시작**을 누른다. WASD 이동, 마우스 조준, 좌클릭 기본 무기, ESC 메뉴.
+
+실행 씬은 원본의 유효한 시작 장비 표본(seed `0x20261024`)과 1-1 원본 맵·충돌·5마리 시작 링을 사용한다. 원본 기본 스킬인 기검참은 아직 이식되지 않아 **기본 무기 모드를 명시 선택**한다. 사용자 저장소를 읽거나 쓰지 않는다.
+
+## 구현 경계
+
+| 범위 | 현재 상태 |
+|---|---|
+| C# 60Hz 이동·충돌·기본 무기·일반 etype0 쉴드/HP·처치/성장 | 구현 및 독립 모델 검사. 실제 Unity 플레이 미검증 |
+| 원본 바닥 64청크·props36·플레이어/적 스프라이트·HUD | 연결 및 정적 검토. 실제 import/렌더링 미검증 |
+| 원본 장비 생성·인벤토리 | 미구현. 드랍 요청을 정상 획득으로 처리하지 않음 |
+| 기검참·Q/E·다른 적·투사체·사운드·저장·보스·클리어 | 미완료 |
+
+## 모델 검사
+
+Node와 .NET SDK8을 사용한다. 산출물은 I:의 고유 경로로 지정한다.
+
+```powershell
+& 'C:\nvm4w\nodejs\node.exe' .\Tools\verify-core.cjs --source-root 'E:\exoduser-wt\codex-port-takeover-20261023' --project 'E:\exoduser-wt\codex-port-takeover-20261023\unity' --out 'I:\EXODUSER-Storage\qa\unity-port-recheck'
+```
+
+이는 Unity 실행 검사가 아니다. Editor의 `PortVerification.Verify`, `PortVerification.Build`, `PortVerification.Capture`는 라이선스 활성화 후 배치 실행용이다. `-receipt`와 `-output`을 별도 절대 경로로 전달한다. Capture는 카메라의 월드만 저장하며 IMGUI HUD 검수는 실제 Player의 `--unity-smoke -output <고유 폴더>` 캡처로 구분한다.
+
+Library·Temp·Logs·UserSettings·Editor 도구·Tests는 이 체크아웃에서 I:로 연결했다. Git 복원본에는 소스 파일만 존재하므로 새 PC에서는 같은 저장 정책을 적용한 뒤 import한다. 기존 Godot와 웹 원본은 그대로 보존했다.
+
+자세한 상태·원본 행·미완료는 `docs/engine/UNITY_PORT_20261024.md`와 `UNITY_SOURCE_CORE_20261024.md`를 따른다.
