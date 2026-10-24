@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort
         public string name,hpText,manaText,staminaText;
         public bool cornerTransparent,hpRed,hpUpperEmpty,hpLowerRed,manaBlue,manaUpperEmpty,staminaGreen,hpEmpty,manaEmpty,staminaEmpty;
     }
-    // Source CSS geometry at ui-scale=1. Draw uses uniform Match Shortest Side.
+    // Source artwork and resource projection, with a shared bottom dock.
     public sealed class NativeHud : IDisposable
     {
         readonly Material material;
@@ -78,12 +78,14 @@ namespace Exoduser.UnityPort
         public void Draw(float width,float height,string activeAttack)
         {
             if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
-            const float scale=.9f;
-            Rect slotBar=new Rect(mid-410*scale,height+15-182*scale,820*scale,182*scale);
+            const float scale=NativeHudDockLayout.ArtScale;
+            var dock=NativeHudDockLayout.Create(width,height);
+            DrawFoundation(dock.Foundation);
+            Rect slotBar=dock.SlotBar;
             // updateHUD's inline normal-state filter overrides the .94 CSS rule.
             var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);GUI.DrawTexture(slotBar,bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
-            Globe(mid-441,height, false);Globe(mid+441,height,true);
-            Rect lmb=new Rect(slotBar.x+392*scale,slotBar.y+70*scale,37*scale,45*scale);
+            Globe(dock.LeftLiquid,dock.LeftFrame,false);Globe(dock.RightLiquid,dock.RightFrame,true);
+            Rect lmb=dock.ActiveSlot;
             if(activeAttack=="kiSlash"){
                 var insetIcon=new Rect(lmb.x+3*scale,lmb.y+3*scale,lmb.width-6*scale,lmb.height-6*scale);
                 GUI.DrawTexture(insetIcon,icon,ScaleMode.ScaleToFit,true);if(Event.current.type==EventType.Repaint)IconDrawn=true;
@@ -91,12 +93,32 @@ namespace Exoduser.UnityPort
             }
             // Existing input executors own the other slots. No invented skill icons.
         }
-        void Globe(float x,float height,bool right)
+        void DrawFoundation(Rect rect)
         {
-            const float s=.9f;float y=height-10-175*s;
-            Rect wrap=new Rect(x-87.5f*s,y,175*s,175*s);
+            // Reuse the EXODUSER bar's uninterrupted dark metal and cast edges.
+            // Repeat short sections rather than stretching skulls, labels or slots.
+            var old=GUI.color;
+            try{
+                GUI.color=new Color(.7f,.7f,.7f);
+                TileBand(rect,new Rect(520,350,640,17),210);
+                GUI.color=new Color(.8f,.8f,.8f);
+                TileBand(new Rect(rect.x,rect.y,rect.width,7),new Rect(520,155,640,17),210);
+                GUI.color=new Color(.48f,.48f,.48f);
+                TileBand(new Rect(rect.x,rect.yMax-5,rect.width,5),new Rect(520,420,640,15),210);
+            }finally{GUI.color=old;}
+        }
+        void TileBand(Rect target,Rect pixels,float tileWidth)
+        {
+            for(float x=target.x;x<target.xMax;x+=tileWidth){
+                float width=Mathf.Min(tileWidth,target.xMax-x);
+                var uv=new Rect(pixels.x/bar.width,1-pixels.yMax/bar.height,pixels.width/bar.width*width/tileWidth,pixels.height/bar.height);
+                GUI.DrawTextureWithTexCoords(new Rect(x,target.y,width,target.height),bar,uv,true);
+            }
+        }
+        void Globe(Rect wrap,Rect frame,bool right)
+        {
+            const float s=NativeHudDockLayout.ArtScale;
             GUI.DrawTexture(wrap,right?mana:hp,ScaleMode.StretchToFill,true);
-            Rect frame=new Rect(wrap.x-48*s,wrap.y-44*s,263*s,263*s);
             GUI.DrawTexture(frame,right?mpFrame:hpFrame,ScaleMode.StretchToFill,true);
             if(!right)GUI.DrawTexture(new Rect(wrap.x+11*s,wrap.y+18.65f*s,153*s,153*s),shield,ScaleMode.StretchToFill,true);
             int index=right?2:0;

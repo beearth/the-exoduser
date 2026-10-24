@@ -211,15 +211,13 @@ namespace Exoduser.UnityPort
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
             var p=Simulation.Player;
-            GUI.Label(new Rect(40,28,600,40),"EXODUSER  /  UNITY",title);
-            GUI.Label(new Rect(42,70,700,32),basicWeaponMode?"이식 검증판 · 기본 무기":"이식 검증판 · 기검참",small);
-            Panel(new Rect(1590,35,290,120));GUI.Label(new Rect(1610,45,260,32),"1장 · 썩은 숲",label);
-            GUI.Label(new Rect(1610,80,260,30),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,small);
-            GUI.Label(new Rect(1610,110,260,30),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,small);
             var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);
-            hud.Draw(Screen.width/hudScale,Screen.height/hudScale,basicWeaponMode?"weapon":"kiSlash");GUI.matrix=baseMatrix;
-            GUI.Label(new Rect(630,818,790,35),"WASD 이동    좌클릭 공격    TAB 소지품    ESC 메뉴",small);
+            float hudWidth=Screen.width/hudScale,statusX=hudWidth-316;
+            Panel(new Rect(statusX,0,316,124));GUI.Label(new Rect(statusX+20,12,276,32),"1장 · 썩은 숲",label);
+            GUI.Label(new Rect(statusX+20,47,276,30),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,small);
+            GUI.Label(new Rect(statusX+20,77,276,30),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,small);
+            hud.Draw(hudWidth,Screen.height/hudScale,basicWeaponMode?"weapon":"kiSlash");GUI.matrix=baseMatrix;
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.HurtTicks<=0)continue;var pt=ToGUI(e.X,e.Y);Fill(new Rect(pt.x-42,pt.y-85,84,6),new Color(.12f,.08f,.07f));Fill(new Rect(pt.x-42,pt.y-85,84*Mathf.Clamp01((float)e.Hp/e.MaxHp),6),new Color(.66f,.12f,.08f));if(e.Shield>0)Fill(new Rect(pt.x-42,pt.y-93,84*e.Shield/e.MaxShield,4),new Color(.2f,.55f,.8f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
