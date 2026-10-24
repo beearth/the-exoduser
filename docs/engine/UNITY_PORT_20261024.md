@@ -49,7 +49,7 @@
 
 ## 실제 Windows Player 실행과 다음 작업
 
-최신 진행 단위는 [UNITY-HUD-01](UNITY_HUD_20261024.md)이다. 빈 구슬의 실제 HP/MP-ST 수위·쉴드/포이즈와 실행 중 기검참 아이콘을 연결하며 GPU·화면 검수 결과를 별도로 기록한다.
+최신 진행 단위는 [UNITY-HUD-01](UNITY_HUD_20261024.md)이다. 빈 구슬의 실제 HP/MP-ST 수위·쉴드/포이즈와 실행 중 기검참 아이콘을 연결했다. 실제 Editor GPU3상태·Windows build0오류·HUD Player6검사·전투4처치/소리8회 회귀 및PNG검토를 확인했다. 전체 원본1x/자연 플레이/모든기능 인수는 별도이며 전체시각 RETOUCH를 유지한다.
 
 최신 후속 **UNITY-FEEDBACK-01**은 [별도 보고서](UNITY_FEEDBACK_20261024.md)의 실제 새 Editor/build/Player까지 통과했다. 명중광·완충 섬광·5원음 연결,실제 요청8회/재생8회/출력peak.30688885·4처치·PNG5종을 확보했다. 아래 UNITY-PORT-04의 ‘명중광 미이식’ 판정은 이전 빌드 이력이며 현행 전체 시각 판정은 HUD fill/아이콘·원본1x·동적 환경 등이 남아 **RETOUCH**를 유지한다. 원본 hitstop은 소비 직전 비활성화하므로 미완료 기능으로 임의 freeze를 구현하지 않는다.
 

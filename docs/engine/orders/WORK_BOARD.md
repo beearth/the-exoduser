@@ -2,7 +2,7 @@
 
 ## 2026-10-24 UNITY-HUD-01 — 원본 자원 표시
 
-PC Codex / codex/unity-port-20261024 / NativeHud·HudValues·shader·원본 아이콘/폰트 복사·자기 Tools/docs 소유. Model130/130·기존93/7/26,정적컴파일0오류. source 구슬/slot배치·자원수위·실제kiSlash아이콘을 연결하고 I: 독립 Editor/GPU/Player 검수를 진행한다. CSS 전체 filter/전체 HUD·미구현 스킬을 추가한 것으로 확대하지 않는다. Godot/웹/공용main/INDEX480·기존창 보존. [상태·검수](../UNITY_HUD_20261024.md).
+PC Codex / codex/unity-port-20261024 / NativeHud·HudValues·shader·원본 아이콘/폰트 복사·자기 Tools/docs 소유. Model130/130·기존93/7/26·기본맵36/36·정적0오류. I: 독립 실제Editor/GPU3상태·Windows build0오류·HUD Player6/6·전투회귀6/6(4처치/소리8회),PNG3상태+release 픽셀검토까지 확인했다. Git tracked20파일만 복원한HUD130/130도통과했다. VISUAL RETOUCH 유지. CSS 전체 filter/전체 HUD·미구현 스킬을 추가한 것으로 확대하지 않는다. Godot/웹/공용main/INDEX480·기존창 보존. [상태·검수](../UNITY_HUD_20261024.md).
 
 ## 2026-10-24 UNITY-FEEDBACK-01 — 기검참 명중광·원음
 
