@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
   // clients and the lobby left open after verification retain all controls.
   public bool AutomatedInput{get;set;}
   public bool OriginalArtDrawn{get;private set;}
-  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,button;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyTitle,lobbyMode,lobbyPlus;bool lobbyQuitPrompt;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
+  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,button;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
   public void Initialize(Action enterNativeTest){enter=enterNativeTest;if(ready)return;ready=true;movie=new NativeLobbyVideo(transform);movie.SetPlaybackAllowed(focused);music=gameObject.AddComponent<AudioSource>();music.playOnAwake=false;music.loop=true;music.spatialBlend=0;var data=Resources.Load<TextAsset>("Data/lobby_frontend");if(data!=null)subtitles=JsonUtility.FromJson<LobbySubtitleData>(data.text);logo=Art("title_logo");enterArt=Art("enter_art");brand=Art("brand_logo");lobbyPoster=Art("lobby_poster");gatePoster=Art("gate_poster");splashTitle=Art("splash_title");splashBrand=Art("splash_brand");fdgEmblem=Art("fdg_emblem");ancestor=Art("varkan_idle");ancestorFirst=Art("varkan_first");enterButton=Art("lobby_enter");lobbyPanel=Art("lobby_panel");lobbyBanner=Art("lobby_banner");disabledEnter=Art("lobby_enter_disabled");}
   Texture2D Art(string path){return Resources.Load<Texture2D>("Art/lobby/"+path);}
   public void Begin(){if(!ready)Initialize(null);active=true;WorldEndedNaturally=false;Flow=new LobbyFlow();splash=1;since=0;fdgWatchdog.Reset();StopMusic();movie.Open("fdg_intro.mp4",false,false,false);movie.Volume(1);}
@@ -82,11 +82,18 @@ namespace Exoduser.UnityPort
   void LobbyStyles()
   {
    if(lobbyText!=null)return;
-   lobbyText=new GUIStyle(normal){fontSize=15,fontStyle=FontStyle.Bold};lobbyText.normal.textColor=new Color(.933f,.894f,.831f);
-   lobbyMicro=new GUIStyle(normal){fontSize=12};lobbyMicro.normal.textColor=new Color(.722f,.639f,.525f);
-   lobbyPromo=new GUIStyle(lobbyText){fontSize=14};lobbyPromo.normal.textColor=new Color(.867f,.776f,.596f);
-   lobbyMode=new GUIStyle(lobbyMicro){fontSize=11,fontStyle=FontStyle.Bold};lobbyMode.normal.textColor=new Color(.706f,.549f,.431f,.55f);
-   lobbyTitle=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=45,fontStyle=FontStyle.Normal};lobbyTitle.normal.textColor=new Color(.863f,.431f,.314f,.78f);
+   // Keep lobby font weights local: the shared variable font defaults to Thin.
+   var regular=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??normal.font;
+   var semiBold=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold");
+   var bold=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Bold");
+   lobbyText=new GUIStyle(normal){font=semiBold??bold??regular,fontSize=15,fontStyle=semiBold==null&&bold==null?FontStyle.Bold:FontStyle.Normal,wordWrap=false,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero,clipping=TextClipping.Overflow};lobbyText.normal.textColor=new Color(.933f,.894f,.831f);
+   lobbyMicro=new GUIStyle(lobbyText){font=regular,fontSize=12,fontStyle=FontStyle.Normal};lobbyMicro.normal.textColor=new Color(.722f,.639f,.525f);
+   lobbyPromo=new GUIStyle(lobbyText){font=bold??regular,fontSize=14,fontStyle=bold==null?FontStyle.Bold:FontStyle.Normal};lobbyPromo.normal.textColor=new Color(.867f,.776f,.596f);
+   lobbyPromoDetail=new GUIStyle(lobbyMicro){fontSize=11};lobbyPromoDetail.normal.textColor=new Color(.722f,.686f,.624f);
+   lobbyMode=new GUIStyle(lobbyPromo){fontSize=11};lobbyMode.normal.textColor=new Color(.706f,.549f,.431f,.55f);
+   lobbyFooter=new GUIStyle(lobbyMicro){fontSize=10};lobbyFooter.normal.textColor=new Color(.49f,.392f,.275f,.32f);
+   lobbyTitle=new GUIStyle(lobbyMicro){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=45,fontStyle=FontStyle.Normal};lobbyTitle.normal.textColor=new Color(.863f,.431f,.314f,.78f);
+   lobbySub=new GUIStyle(lobbyTitle){fontSize=13};lobbySub.normal.textColor=new Color(.82f,.745f,.627f);
    lobbyPlus=new GUIStyle(lobbyMicro){fontSize=25};lobbyPlus.normal.textColor=new Color(.706f,.549f,.431f,.4f);
   }
   void DrawLobby()
@@ -96,7 +103,7 @@ namespace Exoduser.UnityPort
    else Fill(new Rect(1360,0,560,1080),new Color(.063f,.051f,.055f));
    // Source full/offline layout at1920x1080; user slots are deliberately never read.
    Fill(new Rect(1388,151.5f,140,27),new Color(.039f,.024f,.008f,.8f));Border(new Rect(1388,151.5f,140,27),new Color(.471f,.314f,.157f,.4f),1);
-   Label(new Rect(1399,151.5f,115,27),Language=="ko"?"한국어":"English",lobbyMicro,TextAnchor.MiddleLeft);Label(new Rect(1501,151.5f,17,27),"⌄",lobbyMicro,TextAnchor.MiddleCenter);
+   Label(new Rect(1399,151.5f,115,27),Language=="ko"?"한국어":"English",lobbyMicro,TextAnchor.MiddleLeft);var chevron=new Color(.722f,.639f,.525f);Line(new Vector2(1504,162),new Vector2(1508,166),chevron,1.5f);Line(new Vector2(1508,166),new Vector2(1512,162),chevron,1.5f);
    if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))SetLanguage(Language=="ko"?"en":"ko");
    Label(new Rect(1536,157,340,16),"OFFLINE",lobbyMode,TextAnchor.MiddleRight);
    Image(new Rect(1388,195,488,104),brand);
@@ -110,13 +117,13 @@ namespace Exoduser.UnityPort
    Border(new Rect(1409,515,40,40),new Color(.47f,.38f,.26f),1);Label(new Rect(1409,515,40,40),"+",lobbyPlus,TextAnchor.MiddleCenter);Label(new Rect(1461,515,395,40),K("새 캐릭터","New character"),lobbyText,TextAnchor.MiddleLeft);
    GUI.enabled=false;GUI.Button(create,"",GUIStyle.none);GUI.enabled=previousEnabled;
    Label(new Rect(1392,591,480,57),K("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다","Every Steam wishlist helps\nEXODUSER: HELL LORD\nbegin its next journey"),lobbyPromo,TextAnchor.MiddleCenter);
-   var microColor=lobbyMicro.normal.textColor;lobbyMicro.normal.textColor=new Color(.722f,.686f,.624f);Label(new Rect(1392,653,480,16),K("공식 출시 소식을 가장 먼저 받아보세요","Be the first to hear about the official release"),lobbyMicro,TextAnchor.MiddleCenter);lobbyMicro.normal.textColor=microColor;
+   Label(new Rect(1392,653,480,16),K("공식 출시 소식을 가장 먼저 받아보세요","Be the first to hear about the official release"),lobbyPromoDetail,TextAnchor.MiddleCenter);
    Image(new Rect(1532,674,200,44),lobbyBanner);if(GUI.Button(new Rect(1532,674,200,44),"",GUIStyle.none))Application.OpenURL("https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/");
    Fill(new Rect(1388,740,504,1),new Color(.588f,.443f,.306f,.333f));
    var tint=GUI.color;if(disabledEnter!=null)Image(new Rect(1392,751,496,132),disabledEnter);else{GUI.color=new Color(.45f,.45f,.45f);Image(new Rect(1392,751,496,132),enterButton);GUI.color=tint;}
    GUI.enabled=false;GUI.Button(new Rect(1392,751,496,132),"",GUIStyle.none);GUI.enabled=previousEnabled;
    Label(new Rect(1388,897,180,32),K("▶ 시네마틱","▶ Cinematic"),lobbyMicro,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1388,897,180,32),"",GUIStyle.none))ReplayIntro();
-   var versionColor=lobbyMode.normal.textColor;lobbyMode.normal.textColor=new Color(.49f,.392f,.275f,.32f);TrackedLabel(new Rect(1760,905,84,16),"UNITY",lobbyMode,2.8f);lobbyMode.normal.textColor=versionColor;
+   TrackedLabel(new Rect(1760,905,84,16),"UNITY",lobbyFooter,2.8f);
    DrawPower(new Rect(1856,895,36,36));if(GUI.Button(new Rect(1856,895,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
    // Keep developer-only entry outside the source panel and outside the hero silhouette.
    Fill(new Rect(14,112,324,80),new Color(0,0,0,.64f));Label(new Rect(24,119,304,23),K("개발 검수 · 저장/캐릭터 생성 이식 중","DEVELOPER TEST · Save/creation pending"),lobbyMicro,TextAnchor.MiddleLeft);
@@ -134,8 +141,16 @@ namespace Exoduser.UnityPort
   static void DashedBorder(Rect r,Color color){for(float x=r.x;x<r.xMax;x+=5){float w=Mathf.Min(3,r.xMax-x);Fill(new Rect(x,r.y,w,1),color);Fill(new Rect(x,r.yMax-1,w,1),color);}for(float y=r.y;y<r.yMax;y+=5){float h=Mathf.Min(3,r.yMax-y);Fill(new Rect(r.x,y,1,h),color);Fill(new Rect(r.xMax-1,y,1,h),color);}}
   static void Line(Vector2 from,Vector2 to,Color color,float width){var matrix=GUI.matrix;GUIUtility.RotateAroundPivot(Mathf.Atan2(to.y-from.y,to.x-from.x)*Mathf.Rad2Deg,from);Fill(new Rect(from.x,from.y,(to-from).magnitude,width),color);GUI.matrix=matrix;}
   void DrawPower(Rect rect){var center=rect.center;var color=new Color(.722f,.639f,.525f);for(int i=0;i<48;i++){float a=Mathf.PI*2*i/48,b=Mathf.PI*2*(i+1)/48;Line(center+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*17.5f,center+new Vector2(Mathf.Cos(b),Mathf.Sin(b))*17.5f,new Color(.467f,.376f,.278f,.4f),1);}for(int i=0;i<24;i++){float a=(40+280f*i/24)*Mathf.Deg2Rad,b=(40+280f*(i+1)/24)*Mathf.Deg2Rad;Line(center+new Vector2(Mathf.Sin(a),-Mathf.Cos(a))*8,center+new Vector2(Mathf.Sin(b),-Mathf.Cos(b))*8,color,1.8f);}Line(center+new Vector2(0,-10),center+new Vector2(0,1),color,1.8f);}
-  static void TrackedLabel(Rect rect,string text,GUIStyle style,float spacing){float width=0;foreach(char ch in text)width+=style.CalcSize(new GUIContent(ch.ToString())).x+spacing;float x=rect.center.x-(width-spacing)/2;foreach(char ch in text){float w=style.CalcSize(new GUIContent(ch.ToString())).x;Label(new Rect(x,rect.y,w,rect.height),ch.ToString(),style,TextAnchor.MiddleCenter);x+=w+spacing;}}
+  static void TrackedLabel(Rect rect,string text,GUIStyle style,float spacing)
+  {
+   if(string.IsNullOrEmpty(text))return;
+   float width=0,height=Mathf.Max(rect.height,style.lineHeight);
+   foreach(char ch in text){var size=style.CalcSize(new GUIContent(ch.ToString()));width+=size.x+spacing;height=Mathf.Max(height,size.y);}
+   float x=rect.center.x-(width-spacing)/2,y=rect.center.y-height*.5f;
+   // CSS line boxes anchor the layout; Unity's glyph metrics determine the draw box.
+   foreach(char ch in text){float w=style.CalcSize(new GUIContent(ch.ToString())).x;Label(new Rect(x,y,w,height),ch.ToString(),style,TextAnchor.MiddleCenter);x+=w+spacing;}
+  }
 
-  void DrawAncestor(){float scale=Mathf.Max(1920f/1920,1080f/1088),footY=Mathf.Min(1080*.89f,Mathf.Max(1080*.76f,1088*scale*.84f+(1080-1088*scale)*.75f));float h=Mathf.Min(1080*.8f,footY-28),w=h*384/624,footX=Mathf.Max(w*.52f+12,Mathf.Min(1920*.65f-w*.48f-12,1920*scale*.33f+(1920-1920*scale)*.5f));Rect r=new Rect(footX-182.43863f/384*w,footY-603.68209f/624*h,w,h);if(ancestor!=null){int frame=(int)(Time.unscaledTime*24)%96;GUI.DrawTextureWithTexCoords(r,ancestor,new Rect(frame%8/8f,1-(frame/8+1)/12f,1/8f,1/12f),true);OriginalArtDrawn=true;}else Image(r,ancestorFirst);var oldColor=lobbyMicro.normal.textColor;lobbyMicro.normal.textColor=new Color(.82f,.745f,.627f);TrackedLabel(new Rect(footX-350,935.6f,700,18.2f),K("선대 소환체","ANCESTRAL SUMMON"),lobbyMicro,2);TrackedLabel(new Rect(footX-350,957.8f,700,69),K("묘왕 바르칸","Varkan, the Tomb King"),lobbyTitle,Language=="ko"?11.2f:3);lobbyMicro.normal.textColor=new Color(.706f,.671f,.612f);TrackedLabel(new Rect(footX-350,1030.8f,700,16.8f),K("플레이어가 소환하는 선대의 영체","A spirit summoned by the player."),lobbyMicro,.4f);lobbyMicro.normal.textColor=oldColor;}
+  void DrawAncestor(){float scale=Mathf.Max(1920f/1920,1080f/1088),footY=Mathf.Min(1080*.89f,Mathf.Max(1080*.76f,1088*scale*.84f+(1080-1088*scale)*.75f));float h=Mathf.Min(1080*.8f,footY-28),w=h*384/624,footX=Mathf.Max(w*.52f+12,Mathf.Min(1920*.65f-w*.48f-12,1920*scale*.33f+(1920-1920*scale)*.5f));Rect r=new Rect(footX-182.43863f/384*w,footY-603.68209f/624*h,w,h);if(ancestor!=null){int frame=(int)(Time.unscaledTime*24)%96;GUI.DrawTextureWithTexCoords(r,ancestor,new Rect(frame%8/8f,1-(frame/8+1)/12f,1/8f,1/12f),true);OriginalArtDrawn=true;}else Image(r,ancestorFirst);var oldColor=lobbyMicro.normal.textColor;TrackedLabel(new Rect(footX-350,935.6f,700,18.2f),K("선대 소환체","ANCESTRAL SUMMON"),lobbySub,2);TrackedLabel(new Rect(footX-350,957.8f,700,69),K("묘왕 바르칸","Varkan, the Tomb King"),lobbyTitle,Language=="ko"?11.2f:3);lobbyMicro.normal.textColor=new Color(.706f,.671f,.612f);TrackedLabel(new Rect(footX-350,1030.8f,700,16.8f),K("플레이어가 소환하는 선대의 영체","A spirit summoned by the player."),lobbyMicro,.4f);lobbyMicro.normal.textColor=oldColor;}
  }
 }

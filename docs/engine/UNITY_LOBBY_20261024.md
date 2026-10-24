@@ -14,7 +14,7 @@
 | 로비 | 원본 crypt 영상 loop/포스터, 바르칸 v3 atlas3072×7488/8×12/96frames/24fps·384×624cell·원본 baseline/foot배치, 원본 로고/입장 artwork. lobby.mp3 .65 loop |
 | 수명 | Native VideoPlayer URL+RenderTexture+AudioSource, frame0/끝/오류 콜백. generation으로 오래된 prepare 무효화. 포커스 허용과 재생 의도 분리해 준비 중 창 전환에도 백그라운드 재생 차단, 음악 복귀 상태도 독립. 영상 오류 시 음악 pause/실제 playing 후 resume |
 | 렌더 | 1920×1080 uniform fit/letterbox로 영상 왜곡 방지. 원본 title/ENTER 아트 matte alpha를 source cin-logo-art.js의 round(255×clamp((maxRGB−8)/24))로 변환. 원본은 G:와 I: source-art에 보존 |
-| 미디어 | 실행 미디어26개187,678,234bytes. 원본 video6/audio5/이미지와 derived matte2·WebP→PNG·SVG→PNG·문 frame0 PNG, 각각 source/목적지 SHA256 명세 Tools/Fixtures/lobby-assets.json. splash_brand는 Chromium SVG canvas로 원본 textLength/lengthAdjust/letter-spacing을 보존한다. librsvg의 잘못된 글자 간격을 교정했다. 새 이미지 생성0. 세계관·FDG·문·타이틀 MP4는 byte exact. 로비 영상만 Windows 지원 프로파일의 실행 파생본 |
+| 미디어 | 실행 미디어30개206,351,741bytes. 원본 video6/audio5/이미지와 derived matte2·WebP→PNG·SVG→PNG·문 frame0 PNG, 각각 source/목적지 SHA256 명세 Tools/Fixtures/lobby-assets.json. splash_brand는 Chromium SVG canvas로 원본 textLength/lengthAdjust/letter-spacing을 보존한다. librsvg의 잘못된 글자 간격을 교정했다. 새 이미지 생성0. 세계관·FDG·문·타이틀 MP4는 byte exact. 로비 영상만 Windows 지원 프로파일의 실행 파생본 |
 | 기준 타깃 | Unity의 full/offline 프런트엔드 표본. 웹 reference는 원본 지원 flag EXODUSER_BUILD_TARGET=full, test=1, 독립 browser context/빈 슬롯, POST 등 전송 차단. 웹 기본 demo welcome/auth 페이지를 full/offline 로비로 가장하지 않음 |
 | 저장 경계 | 로비는 빈 캐릭터 목록으로 시작, 생성/기존 저장 불러오기는 미구현 표시/비활성화. 기존 사용자의 슬롯/계정에 접속하거나 임의 저장하지 않음. ‘Unity 전투 검수(임시 캐릭터)’만 격리 시작장비 전투로 연결 |
 | 게임 차단 | 프런트엔드 표시 중 NativeGame Tick/입력/기존 HUD/메뉴 차단·world cullingMask0. 임시 전투 선택 후 실행. 전투 메뉴의 로비 복귀 연결. 기존 combat/HUD/inventory CLI QA는 명시 플래그에서 프런트엔드를 건너뜀 |
@@ -63,3 +63,16 @@
 ## 자동 완주 검수의 입력 분리
 
 최초 수정 실행 live-player-2026-10-24T11-40-47-179Z는20검사 중18PASS,5종영상decode/음성/자막/로비/skip/replay/게임차단/무예외/폐기0은통과했다. 그러나 world 시각110초가wall72.1845초에끝나고 실제endedEvent=false여서 자연완주2검사는FAIL이다. 일반키/마우스의cut/hold-skip이fixture에섞일수있던경로를분리했다. 명시--unity-lobby-smoke가실행중일때만NativeLobby.AutomatedInput=true로키·마우스이벤트와normalInput읽기를차단하고fixtureAPI는유지한다. 종료뒤false로원복하므로일반실행과검수후로비의조작은유지한다. 기존실패receipt는수정하지않고새실행에서전체자연끝을검수한다.
+
+## 실제113초 완주와 로비 글자 보정
+
+| 단계 | 실제 결과 |
+|---|---|
+| 자연 완주 | live-player-2026-10-24T11-47-24-787Z, production5526d220 / remote12dde22a7. 실제world ended event true,113.2507256wall초/영상마지막113.25초·2718frame변화·speed1. 최대frame gap.0536982초/정체.0419167초, audioProbe27094회, voice.53659/music.19340/listener.51078 |
+| 전체 Player gate |20/20PASS, FDG·타이틀·문·v22b·호환로비 실제decoder/GPU/PNG·분리음성/음악·자막·원본아트·replay/holdskip·게임차단/명시진입·무예외·폐기0. INTRO-PASS.json에 코드/방법 SHA와 원문receipt 보존. 일반OS 입력 인수와 구분 |
+| 글자 RED | 이전 실제UnityPNG의 선대caption/detail ROI에서 유효행 각각1, 원본브라우저 같은ROI11. source폰트fvar wght/default 및OS2 모두100/Thin. 12px 폰트hhea높이17.376px보다16.8px drawRect가작고wordWrap/padding상속으로잘림 |
+| 로비 폰트 | 기존Noto source SHA194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252 불변. fontTools4.67.0으로400/600/700고정, 각각24964glyph·fvar없음·OS2weight대조, 고유EXODUSER Lobby Sans KR이름과원본OFL동봉. 공용HUD/인벤폰트는교체하지않음 |
+| 자간 라벨 | 로비전용padding/margin0·nowrap·Overflow, glyph CalcSize.y/lineHeight이상높이를기존CSSlinebox중심에배치. caption13px serif, detail12px. missingdropdown glyph는두선chevron으로대체 |
+| 폰트 bytes | Regular6225052 / SemiBold6221184 / Bold6222884 / OFL4387. 실행미디어 총30개206,351,741B. font source/목적SHA는lobby-assets.json 및I:lobby-fonts.json |
+| 재검수 경계 | 영상20/20은5526빌드에서확정했다. 이후변경은로비타이포와probe의로비캡처만. NativeLobbyVideo/CoreLobbyFlow/NativeGame전체 및NativeLobby Update/OpenForPage/FinishIntro/ReplayIntro는실제완주코드와SHA동일. 새빌드의30초probe/로비pixel ROI와직접화면검수를별도로진행한다. 이probe를113초자연완주로위장하지않음 |
+| 제작 재현 | Tools/export-lobby-fonts.py 및assetexporter, Python312 + fontTools4.67.0은 I:runtime에설치. 재export에는EXODUSER_FONTTOOLS_PATH 사용, 실제게임에는Python/fontTools불필요 |

@@ -1,3 +1,7 @@
+## 2026-10-24 UNITY-LOBBY-01 실제 완주 PASS·로비 글자 보정
+
+- 최신v22b113.2507초자연끝/2718frame/분리음성·음악·로비전환·replay/skip등실제20/20PASS,폐기0. 이후로비만기존NotoThin100→정적400/600/700·24964glyph/OFL보존, glyph높이/padding/nowrap/누락chevron보정. 기존caption/detailROI1행RED·원본11행control; 새30초UIprobe검수진행. 실행미디어30개206,351,741B, 영상재생코드SHA동일증거INTRO-PASS.json. [검수/한계](engine/UNITY_LOBBY_20261024.md).
+
 ## 2026-10-24 UNITY-LOBBY-01 자동 검수 입력 분리
 
 - 실제113초완주gate가72초wall/endedfalse를검출해FAIL처리했다. 영상5종decode/분리음성·로비·폐기0등18/20은통과. 자동fixture중에만normalkey/mousecut/skip경로를차단하고끝난후입력을복귀시켜재검수한다. 일반게임입력·사용자저장·원본/Godot보존. [검수기록](engine/UNITY_LOBBY_20261024.md).

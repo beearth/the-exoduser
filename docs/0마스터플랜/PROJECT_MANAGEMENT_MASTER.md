@@ -527,3 +527,5 @@ INTEG-13 06f3db98 기준 웹 지역 경계 유지·미니맵 색 표식·드루�
 2026-10-24 후속 [PORT-TAKEOVER-03](../engine/orders/reports/PORT-TAKEOVER-03_REPORT.md): 모체17 산란의 원본 fire_magic1 샘플층만 추가 연결. WASAPI 집중122/0·실제 G AI→Main queue 포함204/0. 전체 마법 DSP/돌진/그로기·자연 보스 종주는 미완료. 공용 main/사용자 데이터/타 팀 작업 보존, 최종 SHA는 외부 I:/EXODUSER-Storage/qa/port-magic-20261024/DONE.json.
 
 2026-10-24 사용자 실제 검수: 세계관 구버전/끊김 FAIL. v22b 최신 연결·로비 원본 장식 보강·개발 PlayerConnection 제거·고정 실행경로·1변수 영상 A/B 진단으로 재검수한다. 자동으로 다음 전투/맵에 넘어가지 않는다.
+
+2026-10-24 재작업: 최신v22b113.2507초자연완주/2718frame·20/20PASS·오디오폐기0·일반빌드UDP/TCP0확인. 원본로비장식복원/High444프로파일호환파생본/폰트400·600·700과작은글자잘림보정후UI-probe검수중. 캐릭터생성/저장/계정/전체UI인수는별도미완료로유지한다.

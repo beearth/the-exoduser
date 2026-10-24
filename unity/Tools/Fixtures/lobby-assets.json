@@ -63,8 +63,8 @@
       "bytes": 821639
     }
   ],
-  "assetCount": 26,
-  "bytes": 187678234,
+  "assetCount": 30,
+  "bytes": 206351741,
   "assets": [
     {
       "source": "video/fdg_intro.mp4",
@@ -400,6 +400,39 @@
       "sourceSha256": "7f2d38d88a2d5862313fee9088036e3a361b79b38591cafcda197b48204af3fd",
       "sha256": "7f2d38d88a2d5862313fee9088036e3a361b79b38591cafcda197b48204af3fd",
       "transform": "byte_exact"
+    },
+    {
+      "source": "godot/assets/fonts/NotoSansKR.ttf",
+      "destination": "Exoduser/Resources/Art/fonts/NativeLobbyNotoSansKR-Regular.ttf",
+      "bytes": 6225052,
+      "sourceSha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252",
+      "sha256": "b60b3e83eb885c6d819d7bb3e9681dc120d9a6d616f34b8da5abac2646f50975",
+      "transform": "fontTools4.67.0 static wght=400; all glyphs preserved; distinct EXODUSER Lobby Sans KR names; original source unchanged"
+    },
+    {
+      "source": "godot/assets/fonts/NotoSansKR.ttf",
+      "destination": "Exoduser/Resources/Art/fonts/NativeLobbyNotoSansKR-SemiBold.ttf",
+      "bytes": 6221184,
+      "sourceSha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252",
+      "sha256": "f421550040faa5c301be87229a91d9aff22f64c8ea4fec488966310069668721",
+      "transform": "fontTools4.67.0 static wght=600; all glyphs preserved; distinct EXODUSER Lobby Sans KR names; original source unchanged"
+    },
+    {
+      "source": "godot/assets/fonts/NotoSansKR.ttf",
+      "destination": "Exoduser/Resources/Art/fonts/NativeLobbyNotoSansKR-Bold.ttf",
+      "bytes": 6222884,
+      "sourceSha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252",
+      "sha256": "f6db12b6e5d4f1f7907afbc37a330f9483596a34db4ca5fdeb5d6041a240c16b",
+      "transform": "fontTools4.67.0 static wght=700; all glyphs preserved; distinct EXODUSER Lobby Sans KR names; original source unchanged"
+    },
+    {
+      "source": "godot/assets/fonts/ofl/notosanskr/OFL.txt",
+      "sourceRoot": "E:\\exoduser-wt\\codex-port-takeover-20261023",
+      "destination": "Exoduser/Resources/Art/fonts/NativeLobbyNotoSansKR-OFL.txt",
+      "bytes": 4387,
+      "sha256": "babcfe66c8a098b2fa279bc724a3a342f8124f77ce18941fbcc1bbb39823cded",
+      "sourceSha256": "babcfe66c8a098b2fa279bc724a3a342f8124f77ce18941fbcc1bbb39823cded",
+      "transform": "byte_exact_license"
     }
   ]
 }

@@ -65,6 +65,13 @@ async function main(){
  derived('video/intro.mp4','Exoduser/Resources/Art/lobby/gate_poster.png',fs.readFileSync(gate),'ffmpeg decode frame0 to PNG; no crop or resize');
  for(const name of ['prologue_theme','prologue_theme_abyssal_fracture','prologue_theme_rebirth_gate_1','prologue_theme_rebirth_gate_2'])copy('bgm/cutscene/'+name+'.mp3','Exoduser/Resources/Audio/Lobby/'+name+'.mp3');
  copy('bgm/공통/lobby.mp3','Exoduser/Resources/Audio/Lobby/lobby.mp3');
+ const fontSource='godot/assets/fonts/NotoSansKR.ttf',fontReport=qa+'/lobby-fonts.json';
+ const python=process.env.EXODUSER_PYTHON||process.env.LOCALAPPDATA+'/Programs/Python/Python312/python.exe';
+ const fontRun=cp.spawnSync(python,[project+'/Tools/export-lobby-fonts.py',live+'/'+fontSource,res+'/Art/fonts',fontReport],{windowsHide:true,encoding:'utf8',timeout:180000,env:{...process.env,PYTHONPATH:process.env.EXODUSER_FONTTOOLS_PATH||'I:/EXODUSER-Storage/runtime/fonttools-lobby-20261024'}});
+ if(fontRun.status!==0)throw Error('Install fontTools4.67.0 on I: and set EXODUSER_FONTTOOLS_PATH. '+fontRun.stderr);
+ for(const font of JSON.parse(fs.readFileSync(fontReport,'utf8')).fonts){const b=fs.readFileSync(res+'/Art/fonts/'+font.file);derived(fontSource,'Exoduser/Resources/Art/fonts/'+font.file,b,'fontTools4.67.0 static wght='+font.weight+'; all glyphs preserved; distinct EXODUSER Lobby Sans KR names; original source unchanged');}
+ const licenseSource=path.resolve(project,'../godot/assets/fonts/ofl/notosanskr/OFL.txt'),license=fs.readFileSync(licenseSource),licenseDest='Exoduser/Resources/Art/fonts/NativeLobbyNotoSansKR-OFL.txt';
+ write(project+'/Assets/'+licenseDest,license);rows.push({source:'godot/assets/fonts/ofl/notosanskr/OFL.txt',sourceRoot:path.resolve(project,'..'),destination:licenseDest,bytes:license.length,sha256:hash(license),sourceSha256:hash(license),transform:'byte_exact_license'});
  const sourceFiles=['index.html','cin-logo-art.js','world-intro-player.js','world-intro-subtitles.js','world-intro-subtitles-data.js','lobby-ancestor-sprite.js','lobby-ancestor-art.css','ui-foundation.css','ui-refinement.css','img/ui/blackiron/sigil.png','img/ui/hell_gothic/iron.png','img/ui/hell_gothic/frame.png'];
  const sources=sourceFiles.map(src=>{const b=read(src);write(qa+'/source-snapshot/'+src,b);return{path:src,sha256:hash(b),bytes:b.length};});
  const report={schema:'exoduser.unity.lobby-assets.v1',sourceRoot:live,sources,assetCount:rows.length,bytes:rows.reduce((s,r)=>s+r.bytes,0),assets:rows};

@@ -45,7 +45,7 @@ namespace Exoduser.UnityPort {
     while(lobby.Flow.Page==LobbyPage.WorldIntro&&LobbyNow<limit){ProbeLobbyAudio();lobbyReceipt.captionVisible|=lobby.CaptionVisible;yield return null;}
     ProbeLobbyAudio();lobbyReceipt.worldCompletedNaturally=lobby.Flow.Page==LobbyPage.Lobby&&lobby.WorldEndedNaturally&&lobbyReceipt.worldPlayback!=null&&lobbyReceipt.worldPlayback.endedEvent;
     StopLobbyWorldObservation();
-    if(probe){WriteLobbyProgress();File.WriteAllText(Path.Combine(output,"lobby-probe.json"),JsonUtility.ToJson(lobbyReceipt,true));lobby.ShowLobby();lobbySmoke=false;yield break;}
+    if(probe){lobby.ShowLobby();yield return CaptureLobbyMovie("lobby",.6,output);lobbyReceipt.originalArtDrawn&=lobby.OriginalArtDrawn;WriteLobbyProgress();File.WriteAllText(Path.Combine(output,"lobby-probe.json"),JsonUtility.ToJson(lobbyReceipt,true));lobbySmoke=false;yield break;}
     yield return CaptureLobbyMovie("lobby",.6,output);lobbyReceipt.originalArtDrawn&=lobby.OriginalArtDrawn;
     lobbyReceipt.simulationPaused=Simulation.TickCount==tick;
     lobby.ReplayIntro();yield return null;lobbyReceipt.replayWorked=lobby.StageName=="Title";

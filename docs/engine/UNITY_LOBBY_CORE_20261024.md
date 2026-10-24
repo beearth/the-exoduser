@@ -99,3 +99,16 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 | 영수증 | I: QA `lobby-compatibility/53dae74.../receipt.json`, encode/probe/full-decode/SSIM 로그. 최초 색 태그 미완비 후보도 같은 I: 경로에 별도 보존 |
 
 `NativeLobby`는 `_unity.mp4`를 참조한다. 이전 런타임 원본 사본 정리/meta/Git복구/새 Player 검수는 부모 작업이며, 본 작업은 기존 원본/아카이브/Godot/세이브를 삭제하거나 수정하지 않는다. 현재 판정은 새 Windows Player에서 실제 영상 재생을 확인할 때까지 `RETOUCH`다.
+
+## 실제113초 완주와 로비 글자 보정
+
+| 단계 | 실제 결과 |
+|---|---|
+| 자연 완주 | live-player-2026-10-24T11-47-24-787Z, production5526d220 / remote12dde22a7. 실제world ended event true,113.2507256wall초/영상마지막113.25초·2718frame변화·speed1. 최대frame gap.0536982초/정체.0419167초, audioProbe27094회, voice.53659/music.19340/listener.51078 |
+| 전체 Player gate |20/20PASS, FDG·타이틀·문·v22b·호환로비 실제decoder/GPU/PNG·분리음성/음악·자막·원본아트·replay/holdskip·게임차단/명시진입·무예외·폐기0. INTRO-PASS.json에 코드/방법 SHA와 원문receipt 보존. 일반OS 입력 인수와 구분 |
+| 글자 RED | 이전 실제UnityPNG의 선대caption/detail ROI에서 유효행 각각1, 원본브라우저 같은ROI11. source폰트fvar wght/default 및OS2 모두100/Thin. 12px 폰트hhea높이17.376px보다16.8px drawRect가작고wordWrap/padding상속으로잘림 |
+| 로비 폰트 | 기존Noto source SHA194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252 불변. fontTools4.67.0으로400/600/700고정, 각각24964glyph·fvar없음·OS2weight대조, 고유EXODUSER Lobby Sans KR이름과원본OFL동봉. 공용HUD/인벤폰트는교체하지않음 |
+| 자간 라벨 | 로비전용padding/margin0·nowrap·Overflow, glyph CalcSize.y/lineHeight이상높이를기존CSSlinebox중심에배치. caption13px serif, detail12px. missingdropdown glyph는두선chevron으로대체 |
+| 폰트 bytes | Regular6225052 / SemiBold6221184 / Bold6222884 / OFL4387. 실행미디어 총30개206,351,741B. font source/목적SHA는lobby-assets.json 및I:lobby-fonts.json |
+| 재검수 경계 | 영상20/20은5526빌드에서확정했다. 이후변경은로비타이포와probe의로비캡처만. NativeLobbyVideo/CoreLobbyFlow/NativeGame전체 및NativeLobby Update/OpenForPage/FinishIntro/ReplayIntro는실제완주코드와SHA동일. 새빌드의30초probe/로비pixel ROI와직접화면검수를별도로진행한다. 이probe를113초자연완주로위장하지않음 |
+| 제작 재현 | Tools/export-lobby-fonts.py 및assetexporter, Python312 + fontTools4.67.0은 I:runtime에설치. 재export에는EXODUSER_FONTTOOLS_PATH 사용, 실제게임에는Python/fontTools불필요 |
