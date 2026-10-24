@@ -1,3 +1,7 @@
+## 2026-10-24 UNITY-LOBBY-01 사용자 실제 검수 재작업
+
+- 구버전 지적에 따라 원본 v22b98,177,870B/113.291667초로 교체, 음성MD5동일·전체decode0오류. 실행 미디어26개189,918,912B. 원본 로비 장식/버튼·문양 복원, 이전 Player audio buffer236건은 FAIL. Development 연결 제거/고정실행경로로 Windows 방화벽 반복 원인을 줄이고 실제 영상 A/B·완주 검수는 진행 중이다. v22b4part Git 복구와 SHA256 명세, stage-safe/분리음성/overflow0 gate를 기록한다. 원본/Godot/사용자저장/공유INDEX보존. [현황](engine/UNITY_LOBBY_20261024.md).
+
 ## 2026-10-24 UNITY-LOBBY-01 재생·원본 브랜드 교정
 
 - Chromium SVG로 원본 타이틀 글자 간격을 복원했다. 미디어24개167,540,687bytes. adapter 중복Play 회귀RED/GREEN13검사, Player 음성 probe는 clip isPlaying 대신 실제 출력 버퍼를 확인한다. 현재 실제 Player 자연 종료/오디오 검수는 진행 중이다. 사용자 저장/기존 앱/공유INDEX를 보존한다.

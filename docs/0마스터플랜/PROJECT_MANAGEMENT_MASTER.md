@@ -2,7 +2,7 @@
 
 ## 2026-10-24 최신 착수 — 게임 로비·인트로/시네마틱
 
-사용자 세부 우선순위로 로비·인트로부터 이식한다. 원본 최신 G:index/v17 영상을 기준으로 Unity의 FDG/타이틀/문/세계관/로비와 재생·전환·skip/replay를 연결하고 있으며 모델/adapter·Editor 검사 뒤 실제Player 영상·음향·화면 검수를 진행한다. full/offline 표본이며 계정·기존 저장·생성 기능은 아직 연결하지 않는다. Godot본·공유main/INDEX480·사용자 세이브·기존창 보존. [UNITY-LOBBY-01 상태/검수](../engine/UNITY_LOBBY_20261024.md). 이 작업이 다른 UI·드랍·전투 확장보다 우선한다.
+사용자 세부 우선순위로 로비·인트로부터 이식한다. G:index 흐름과 사용자 최신 v22b 영상을 기준으로 Unity의 FDG/타이틀/문/세계관/로비와 재생·전환·skip/replay를 연결하고 있으며 모델/adapter·Editor 검사 뒤 실제Player 영상·음향·화면 검수를 진행한다. full/offline 표본이며 계정·기존 저장·생성 기능은 아직 연결하지 않는다. Godot본·공유main/INDEX480·사용자 세이브·기존창 보존. [UNITY-LOBBY-01 상태/검수](../engine/UNITY_LOBBY_20261024.md). 이 작업이 다른 UI·드랍·전투 확장보다 우선한다.
 
 ## 2026-10-24 최신 사용자 확정 — UI/UX 우선 · Unity 후속 재제작
 
@@ -525,3 +525,5 @@ INTEG-13 06f3db98 기준 웹 지역 경계 유지·미니맵 색 표식·드루�
 
 
 2026-10-24 후속 [PORT-TAKEOVER-03](../engine/orders/reports/PORT-TAKEOVER-03_REPORT.md): 모체17 산란의 원본 fire_magic1 샘플층만 추가 연결. WASAPI 집중122/0·실제 G AI→Main queue 포함204/0. 전체 마법 DSP/돌진/그로기·자연 보스 종주는 미완료. 공용 main/사용자 데이터/타 팀 작업 보존, 최종 SHA는 외부 I:/EXODUSER-Storage/qa/port-magic-20261024/DONE.json.
+
+2026-10-24 사용자 실제 검수: 세계관 구버전/끊김 FAIL. v22b 최신 연결·로비 원본 장식 보강·개발 PlayerConnection 제거·고정 실행경로·1변수 영상 A/B 진단으로 재검수한다. 자동으로 다음 전투/맵에 넘어가지 않는다.

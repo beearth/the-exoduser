@@ -1,6 +1,6 @@
 # 세계관 인트로 v13 — 인게임 적용 / BGM 확인
 
-> **2026-10-24 Unity 로비 이식:** Unity의 원본 기준은 현재 G:index가 실제 참조하는 world_intro_v17_blood_en.mp4와29언어×32큐다. 아래 E: 문서의 v15/v13 표기는 해당 웹/제작 단계의 이력으로 보존하며 이번에 웹 영상이나 원본을 교체한 것은 아니다. Native VideoPlayer·연속BGM/자막·스킵/replay 및 실제 검수 경계는 [UNITY-LOBBY-01](../engine/UNITY_LOBBY_20261024.md)을 따른다.
+> **2026-10-24 Unity 로비 이식 정정:** 사용자가 구버전을 지적해 Unity는 최신 제작 원본 world_intro_v22b_paint_en.mp4(98,177,870B)로 교체한다. 웹 G:index는 여전히 v17이며 source provenance와 구분한다. v22b/v17 decoded 음성 MD5·113.291667초 길이 동일로29언어×32자막/17컷 시각을 유지한다. 끊김·오디오·실제 완주는 재검수 중이며 [UNITY-LOBBY-01](../engine/UNITY_LOBBY_20261024.md)에 실패/진행/한계를 기록한다. 아래 v15/v13 기록은 이력이다.
 
 > **2026-10-12:** 영상 파일 `video/world_intro_v15_clean_en.mp4`(2026-10-14 C13·C14 블록 제거, 이전 v14)(v13 음성 그대로, A01·A02 새 영상, 1080p). [v14 기록](WORLD_INTRO_REMASTER_MODEL_TEST_20261012.md).
 

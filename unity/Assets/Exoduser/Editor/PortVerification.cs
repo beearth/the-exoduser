@@ -60,9 +60,9 @@ public static class PortVerification {
   var data=JsonUtility.FromJson<LobbySubtitleData>(resource.text);if(data.captions==null||data.captions.Length!=29||data.cuts.Length!=17)throw new Exception("Original lobby data count mismatch");
   foreach(var language in data.captions)if(language.cues==null||language.cues.Length!=32)throw new Exception("Original caption cue count "+language.code);
   for(int i=0;i<data.cuts.Length;i++)if(data.cuts[i]!=LobbyFlow.WorldCuts[i])throw new Exception("Original next-cut timing mismatch");
-  foreach(var name in new[]{"title_logo","enter_art","brand_logo","lobby_enter","lobby_poster","gate_poster","splash_title","splash_brand","fdg_emblem","varkan_idle","varkan_first"})if(Resources.Load<Texture2D>("Art/lobby/"+name)==null)throw new Exception("Missing native lobby art "+name);
+  foreach(var name in new[]{"title_logo","enter_art","brand_logo","lobby_enter","lobby_enter_disabled","lobby_panel","lobby_banner","lobby_poster","gate_poster","splash_title","splash_brand","fdg_emblem","varkan_idle","varkan_first"})if(Resources.Load<Texture2D>("Art/lobby/"+name)==null)throw new Exception("Missing native lobby art "+name);
   var sheet=Resources.Load<Texture2D>("Art/lobby/varkan_idle");if(sheet.width!=3072||sheet.height!=7488)throw new Exception("Ancestor 96-frame atlas import dimensions");
-  foreach(var name in new[]{"fdg_intro.mp4","intro.mp4","world_intro_v17_blood_en.mp4","title_motion_hd_20260929.mp4","title_motion_20260929.mp4","lobby_varkan_crypt_loop_v2.mp4"})if(!File.Exists(Path.Combine(Application.streamingAssetsPath,"Lobby",name)))throw new Exception("Missing original movie "+name);
+  foreach(var name in new[]{"fdg_intro.mp4","intro.mp4","world_intro_v22b_paint_en.mp4","title_motion_hd_20260929.mp4","title_motion_20260929.mp4","lobby_varkan_crypt_loop_v2.mp4"})if(!File.Exists(Path.Combine(Application.streamingAssetsPath,"Lobby",name)))throw new Exception("Missing original movie "+name+"; run Tools/restore-lobby-media.cjs");
   foreach(var name in new[]{"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2","lobby"}){var clip=Resources.Load<AudioClip>("Audio/Lobby/"+name);if(clip==null||clip.samples<=0)throw new Exception("Lobby audio import "+name);}
   Debug.Log("UNITY_LOBBY_MEDIA_CAPTIONS_29X32_PASS");
  }
@@ -110,8 +110,9 @@ public static class PortVerification {
  }
  public static void Build(){
   try {
-   var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
-   var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{scene},locationPathName=Path.Combine(directory,"EXODUSER-Unity.exe"),target=BuildTarget.StandaloneWindows64,options=BuildOptions.Development});
+   VerifyLobby();var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
+   // Local frontend verification needs no development PlayerConnection listener.
+   var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{scene},locationPathName=Path.Combine(directory,"EXODUSER-Unity.exe"),target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
    bool ok=report.summary.result==BuildResult.Succeeded;
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion},true));
    Debug.Log("UNITY_BUILD "+report.summary.result);EditorApplication.Exit(ok?0:2);

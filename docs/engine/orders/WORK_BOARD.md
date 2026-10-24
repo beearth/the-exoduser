@@ -2,7 +2,7 @@
 
 ## 2026-10-24 UNITY-LOBBY-01 — 로비·인트로 최우선
 
-사용자 최신 “일단 게임 로비부터 인트로 시네마틱같은것들만 잘 옴겨”. PC Codex가 기존 소유 Unity 브랜치에서 NativeLobby/Video/CoreLobbyFlow·NativeGame 진입/차단·원본 미디어·자기 Tools/docs 소유. 최신 G:index/v17 기준 FDG→타이틀→ENTER문→세계관→로비 연결, Core65/영상adapter11·정적0오류/실제Editor 미디어29×32검사PASS. Windows/Player 영상·음향·화면 검수는 진행 중. 계정/캐릭터 생성/기존 저장은 미이식 표시, Godot/원본/공유main INDEX480·세이브·기존창 보존. 자동 heartbeat도 로비/인트로 우선으로 갱신했다. [현황·근거·미완료](../UNITY_LOBBY_20261024.md).
+사용자 최신 “일단 게임 로비부터 인트로 시네마틱같은것들만 잘 옴겨”. PC Codex가 기존 소유 Unity 브랜치에서 NativeLobby/Video/CoreLobbyFlow·NativeGame 진입/차단·원본 미디어·자기 Tools/docs 소유. G:index 흐름 + 사용자 최신 v22b override 기준 FDG→타이틀→ENTER문→세계관→로비 연결, Core65/영상adapter13·정적0오류/실제Editor 미디어29×32검사PASS. Windows/Player 영상·음향·화면 검수는 진행 중. 계정/캐릭터 생성/기존 저장은 미이식 표시, Godot/원본/공유main INDEX480·세이브·기존창 보존. 자동 heartbeat도 로비/인트로 우선으로 갱신했다. [현황·근거·미완료](../UNITY_LOBBY_20261024.md).
 
 ## 2026-10-24 최신 우선순위 — UI/UX 이식 후 Unity 재제작
 
@@ -313,3 +313,5 @@ P1-002.C~H, P2-001a~k, P2-002a/b, P2-003a, P2-004a, P2-005a~d — main ad7f15777
 - 브랜치 `codex/p3-003-20261020`, 원격 검수 SHA [`919f6a28ab4e64e8a07cd403551777d8dbc77e6a`](https://github.com/beearth/the-exoduser/commit/919f6a28ab4e64e8a07cd403551777d8dbc77e6a), [제출 보고서](https://github.com/beearth/the-exoduser/blob/919f6a28ab4e64e8a07cd403551777d8dbc77e6a/docs/engine/orders/reports/P3-003_REPORT.md).
 - CLI push 최초 인증 실패는 원로그에 보존했습니다. ROOT가 공식 GitHub 연결로 등록된 8경로만 게시했으며 원격 branch ref·parent(base `efdbf76b`)·변경8경로를 확인했습니다. 로컬 최종 `8d7e67a66d5acb10e223191bec681692df080ab8`과 원격 전체 tree는 `ffb3443402e57613f238fbc36cbb25ede84eb223`로 동일합니다. 원격 API 커밋 SHA는 별도이며 로컬3커밋·INDEX/WORK는 변경하지 않았습니다. 강제 push·reset·main 코드 병합 없음.
 - core27/0, 실제 Main 최초9/0 및 배선 정정9/0은 별개 검수입니다. 표시 최초6통과1실패·단일 기대값 수리1/0, import 종료 설정 저장 실패도 그대로 보존합니다. C 실제 처치·P3-002 확정 분모·필드보스 전투/효과·실창1x는 미완이므로 전체 지역 진행 완료가 아닙니다. 위 요청 연결점과 보고서를 PC 총괄이 검수·조정한 뒤 코드 main 병합을 결정합니다.
+
+2026-10-24 사용자 실제 검수: 세계관 구버전/끊김 FAIL. v22b 최신 연결·로비 원본 장식 보강·개발 PlayerConnection 제거·고정 실행경로·1변수 영상 A/B 진단으로 재검수한다. 자동으로 다음 전투/맵에 넘어가지 않는다.

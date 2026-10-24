@@ -210,3 +210,7 @@ assets/vfx/boss/gen/
 # PARITY-UI-06 focused source UI regression.
 !godot/tests/test_parity_ui_06.gd
 !godot/tests/test_parity_ui_06.gd.uid
+
+# v22b restored byte-exact from Git-backed MediaRecovery parts.
+/unity/Assets/StreamingAssets/Lobby/world_intro_v22b_paint_en.mp4
+!/unity/Tools/MediaRecovery/world-intro-v22b/*.bin

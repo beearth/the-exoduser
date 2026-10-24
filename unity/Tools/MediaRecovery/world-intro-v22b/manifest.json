@@ -1,0 +1,33 @@
+{
+  "schema": "exoduser.lobby.media-recovery.v1",
+  "source": "G:/exoduser/output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4",
+  "destination": "Assets/StreamingAssets/Lobby/world_intro_v22b_paint_en.mp4",
+  "bytes": 98177870,
+  "sha256": "cd9fa7486fd1cf18952605408f5b1bae416a97b2307806476bc329498413199e",
+  "parts": [
+    {
+      "path": "part-01.bin",
+      "bytes": 31457280,
+      "sha256": "eaba1746d4d5672f2396d3dc9969e0b4f7fecc4e765912c356ff00479b991a70",
+      "blob": "a08d8bc629d7b954cf585a77ce276adbef142f32"
+    },
+    {
+      "path": "part-02.bin",
+      "bytes": 31457280,
+      "sha256": "dacaad20307bad1c95830fa541bf53ea45d75c1b20ef28e941c5f36c833ca111",
+      "blob": "303a213498d31fc66a1a49120624d22dc4b517fb"
+    },
+    {
+      "path": "part-03.bin",
+      "bytes": 31457280,
+      "sha256": "bb8da8b67365a89b8b6dde3c972aff0af82244372618362e1ac96f451e05707a",
+      "blob": "bc92f5a7ef4a843e21546de7b6a88966a7f8260e"
+    },
+    {
+      "path": "part-04.bin",
+      "bytes": 3806030,
+      "sha256": "56ccbb6440e69cbebdfdac1b5891622c4738a250117068155bc24691149a6a1d",
+      "blob": "617b10e259ed3907c19938b0d8e80bd6decd5ecc"
+    }
+  ]
+}

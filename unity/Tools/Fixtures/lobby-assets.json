@@ -36,10 +36,35 @@
       "path": "lobby-ancestor-art.css",
       "sha256": "7cb88610b801e894e3332442d4b490d7d687cb9048352bb3a0cbaf8afba063cf",
       "bytes": 2687
+    },
+    {
+      "path": "ui-foundation.css",
+      "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9",
+      "bytes": 21174
+    },
+    {
+      "path": "ui-refinement.css",
+      "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0",
+      "bytes": 153271
+    },
+    {
+      "path": "img/ui/blackiron/sigil.png",
+      "sha256": "e6b317e675a9a18e50220c657e99b5e985adcadbb56d369c786fd48c62860cda",
+      "bytes": 6506382
+    },
+    {
+      "path": "img/ui/hell_gothic/iron.png",
+      "sha256": "002b14f29ad42ea031d7fdc159cbed19e8a066377a2f1605b90be3450d91437d",
+      "bytes": 2763927
+    },
+    {
+      "path": "img/ui/hell_gothic/frame.png",
+      "sha256": "d6b58ee5d1dfe3d45b927baf46d76dfc662fee1bc8de12fa4caf49bdb9ed44a6",
+      "bytes": 821639
     }
   ],
-  "assetCount": 24,
-  "bytes": 167540687,
+  "assetCount": 26,
+  "bytes": 189918912,
   "assets": [
     {
       "source": "video/fdg_intro.mp4",
@@ -58,14 +83,6 @@
       "transform": "byte_exact"
     },
     {
-      "source": "video/world_intro_v17_blood_en.mp4",
-      "destination": "StreamingAssets/Lobby/world_intro_v17_blood_en.mp4",
-      "bytes": 77065370,
-      "sourceSha256": "e424d076266933efd8c2386d5901e29072cd8e0d572495441d22f81a2e640dcb",
-      "sha256": "e424d076266933efd8c2386d5901e29072cd8e0d572495441d22f81a2e640dcb",
-      "transform": "byte_exact"
-    },
-    {
       "source": "video/title_motion_hd_20260929.mp4",
       "destination": "StreamingAssets/Lobby/title_motion_hd_20260929.mp4",
       "bytes": 14006613,
@@ -79,6 +96,14 @@
       "bytes": 4159894,
       "sourceSha256": "ac24111767033a28b81cab298d5d92a424b9a10abcbd3389ad66b037975c7e5b",
       "sha256": "ac24111767033a28b81cab298d5d92a424b9a10abcbd3389ad66b037975c7e5b",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4",
+      "destination": "StreamingAssets/Lobby/world_intro_v22b_paint_en.mp4",
+      "bytes": 98177870,
+      "sourceSha256": "cd9fa7486fd1cf18952605408f5b1bae416a97b2307806476bc329498413199e",
+      "sha256": "cd9fa7486fd1cf18952605408f5b1bae416a97b2307806476bc329498413199e",
       "transform": "byte_exact"
     },
     {
@@ -176,6 +201,22 @@
       "sourceSha256": "c79e0e0d40954b1ea924c8a48c06eacd38f9c7884bcba792803986c6429d961f",
       "sha256": "e2f4a8c153dde16fe3e63cfd8f5951a4b3bd4d2d71ed6cb586ebc0cf725ab64a",
       "transform": "lossless WebP decode to PNG; original dimensions/pixels"
+    },
+    {
+      "source": "assets/lobby/lobby_enter_btn.png",
+      "destination": "Exoduser/Resources/Art/lobby/lobby_enter_disabled.png",
+      "bytes": 718399,
+      "sourceSha256": "160b91140127f838f71228d04561ff431a281156ed8aae20da5b5228d74c6d79",
+      "sha256": "beef2619ca5cc8442d1db1de83b575490cc4feeacafa3c16a9ee86467601453f",
+      "transform": "source ui-refinement.css grayscale(1) brightness(.45); Chromium canvas exact CSS filter; original dimensions"
+    },
+    {
+      "source": "ui-refinement.css",
+      "destination": "Exoduser/Resources/Art/lobby/lobby_panel.png",
+      "bytes": 547326,
+      "sourceSha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0",
+      "sha256": "b15bee6378bc536903d79c05d316a4be5a4864ea05b973bff69a2faf0714b92f",
+      "transform": "source ui-foundation.css inherited hell_gothic frame 22% slice/48px; ui-refinement.css inset22 gradient/sigil/iron; Chromium560x1080 no content raster"
     },
     {
       "source": "index.html",

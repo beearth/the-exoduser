@@ -11,7 +11,8 @@ function read(src){const file=live+'/'+src,b=fs.readFileSync(file);if(hash(fs.re
 function copy(src,dest){const b=read(src);write(project+'/Assets/'+dest,b);rows.push({source:src,destination:dest,bytes:b.length,sourceSha256:hash(b),sha256:hash(b),transform:'byte_exact'});}
 function derived(src,dest,b,transform){const original=read(src);write(project+'/Assets/'+dest,b);write(qa+'/source-art/'+path.basename(src),original);rows.push({source:src,destination:dest,bytes:b.length,sourceSha256:hash(original),sha256:hash(b),transform});}
 async function main(){
- for(const f of ['fdg_intro.mp4','intro.mp4','world_intro_v17_blood_en.mp4','title_motion_hd_20260929.mp4','title_motion_20260929.mp4'])copy('video/'+f,'StreamingAssets/Lobby/'+f);
+ for(const f of ['fdg_intro.mp4','intro.mp4','title_motion_hd_20260929.mp4','title_motion_20260929.mp4'])copy('video/'+f,'StreamingAssets/Lobby/'+f);
+ copy('output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4','StreamingAssets/Lobby/world_intro_v22b_paint_en.mp4');
  copy('assets/lobby/lobby_varkan_crypt_loop_v2.mp4','StreamingAssets/Lobby/lobby_varkan_crypt_loop_v2.mp4');
  const images={'img/logo_exoduser.png':'brand_logo','assets/lobby/lobby_enter_btn.png':'lobby_enter','assets/lobby/lobby_banner_btn.png':'lobby_banner','img/fdg_intro/fdg_reference.png':'fdg_poster','img/fdg_wolf/fdg_wolf_emblem.png':'fdg_emblem','img/title_clean_plate_20260929.png':'splash_title','assets/lobby/varkan_idle_v3.png':'varkan_idle','assets/lobby/varkan_idle_first_v3.png':'varkan_first'};
  for(const [src,name]of Object.entries(images))copy(src,'Exoduser/Resources/Art/lobby/'+name+'.png');
@@ -26,18 +27,27 @@ async function main(){
  // librsvg rasterization compresses the title around the central cross.
  write(qa+'/source-art/splash-brand.svg',Buffer.from(svg));
  const {chromium}=require(require.resolve('playwright',{paths:[live]}));
- const browser=await chromium.launch({headless:true});let brand;
+ const browser=await chromium.launch({headless:true});let brand,panel,disabledEntry;
  try{const page=await browser.newPage();const png=await page.evaluate(async markup=>{
   const img=new Image(),url=URL.createObjectURL(new Blob([markup],{type:'image/svg+xml'}));
   try{img.src=url;await img.decode();const c=document.createElement('canvas');c.width=1983;c.height=793;c.getContext('2d').drawImage(img,0,0);return c.toDataURL('image/png').split(',')[1];}finally{URL.revokeObjectURL(url);}
- },svg);brand=Buffer.from(png,'base64');}finally{await browser.close();}
+ },svg);brand=Buffer.from(png,'base64');
+ const disabledPng=await page.evaluate(async base64=>{const image=new Image();image.src='data:image/png;base64,'+base64;await image.decode();const canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;const context=canvas.getContext('2d');context.filter='grayscale(1) brightness(.45)';context.drawImage(image,0,0);return canvas.toDataURL('image/png').split(',')[1];},read('assets/lobby/lobby_enter_btn.png').toString('base64'));disabledEntry=Buffer.from(disabledPng,'base64');
+ const embedded=p=>'url("data:image/png;base64,'+read(p).toString('base64')+'")';
+ const panelCss='html,body{margin:0;width:560px;height:1080px;background:transparent}.lobby-right{position:relative;width:560px;height:1080px;isolation:isolate;background:#100d0e}.lobby-right::before{content:"";position:absolute;inset:22px;background:linear-gradient(#141315de,#09090af2),'+embedded('img/ui/blackiron/sigil.png')+' center -90px/620px 620px no-repeat,'+embedded('img/ui/hell_gothic/iron.png')+' center/320px;clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px);pointer-events:none;z-index:-1}.lobby-right::after{content:"";position:absolute;inset:0;border:48px solid transparent;border-image:'+embedded('img/ui/hell_gothic/frame.png')+' 22% / 48px / 0 stretch;pointer-events:none;z-index:2}';
+ await page.setViewportSize({width:560,height:1080});await page.setContent('<style>'+panelCss+'</style><div class="lobby-right"></div>');
+ panel=await page.screenshot({omitBackground:true});write(qa+'/source-art/lobby-panel-source.css',Buffer.from(panelCss));
+ for(const p of ['img/ui/blackiron/sigil.png','img/ui/hell_gothic/iron.png','img/ui/hell_gothic/frame.png'])write(qa+'/source-art/'+p.replaceAll('/','_'),read(p));
+ }finally{await browser.close();}
+ derived('assets/lobby/lobby_enter_btn.png','Exoduser/Resources/Art/lobby/lobby_enter_disabled.png',disabledEntry,'source ui-refinement.css grayscale(1) brightness(.45); Chromium canvas exact CSS filter; original dimensions');
+ derived('ui-refinement.css','Exoduser/Resources/Art/lobby/lobby_panel.png',panel,'source ui-foundation.css inherited hell_gothic frame 22% slice/48px; ui-refinement.css inset22 gradient/sigil/iron; Chromium560x1080 no content raster');
  derived('index.html','Exoduser/Resources/Art/lobby/splash_brand.png',brand,'original splashTitleBrand SVG; Chromium canvas preserves textLength/lengthAdjust/letter spacing; embedded clean plate; raster1983x793; Georgia system font');
  const ffmpeg=process.env.LOCALAPPDATA+'/Microsoft/WinGet/Links/ffmpeg.exe',gate=qa+'/gate-first-frame.png';
  const f=cp.spawnSync(ffmpeg,['-hide_banner','-loglevel','error','-y','-i',live+'/video/intro.mp4','-frames:v','1',gate],{windowsHide:true,encoding:'utf8',timeout:60000});if(f.status!==0)throw Error(f.stderr);
  derived('video/intro.mp4','Exoduser/Resources/Art/lobby/gate_poster.png',fs.readFileSync(gate),'ffmpeg decode frame0 to PNG; no crop or resize');
  for(const name of ['prologue_theme','prologue_theme_abyssal_fracture','prologue_theme_rebirth_gate_1','prologue_theme_rebirth_gate_2'])copy('bgm/cutscene/'+name+'.mp3','Exoduser/Resources/Audio/Lobby/'+name+'.mp3');
  copy('bgm/공통/lobby.mp3','Exoduser/Resources/Audio/Lobby/lobby.mp3');
- const sourceFiles=['index.html','cin-logo-art.js','world-intro-player.js','world-intro-subtitles.js','world-intro-subtitles-data.js','lobby-ancestor-sprite.js','lobby-ancestor-art.css'];
+ const sourceFiles=['index.html','cin-logo-art.js','world-intro-player.js','world-intro-subtitles.js','world-intro-subtitles-data.js','lobby-ancestor-sprite.js','lobby-ancestor-art.css','ui-foundation.css','ui-refinement.css','img/ui/blackiron/sigil.png','img/ui/hell_gothic/iron.png','img/ui/hell_gothic/frame.png'];
  const sources=sourceFiles.map(src=>{const b=read(src);write(qa+'/source-snapshot/'+src,b);return{path:src,sha256:hash(b),bytes:b.length};});
  const report={schema:'exoduser.unity.lobby-assets.v1',sourceRoot:live,sources,assetCount:rows.length,bytes:rows.reduce((s,r)=>s+r.bytes,0),assets:rows};
  const frontend=fs.readFileSync(project+'/Tools/lobby-oracle/oracle.json');write(res+'/Data/lobby_frontend.json',frontend);
