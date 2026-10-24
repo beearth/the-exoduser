@@ -15,7 +15,7 @@
 
 ## 디스크와 검증
 
-2026-10-24 사용자 Unity 전환: 같은 소유 체크아웃의 `unity/Assets` 실행 C#·참조 미디어·씬/프로젝트 설정은 E:에 둔다. `unity/Library`, `Temp`, `Logs`, `UserSettings`, `Assets/Exoduser/Editor`, `Tools`는 신규 I: 단위에 연결했다. 기존 Godot 원본/보존 브랜치·인증·사용자 세이브는 이동/삭제하지 않았다. 전체 저장 이전 완료 여부는 기존 state.json과 별개로 확인한다.
+2026-10-24 사용자 Unity 비교 시험 추가: Godot를 유지하며 최종 엔진은 미확정이다. 같은 소유 체크아웃의 `unity/Assets` 실행 C#·참조 미디어·씬/프로젝트 설정은 E:에 둔다. `unity/Library`, `Temp`, `Logs`, `UserSettings`, `Assets/Exoduser/Editor`, `Tools`는 신규 I: 단위에 연결했다. 기존 Godot 원본/보존 브랜치·인증·사용자 세이브는 이동/삭제하지 않았다. 전체 저장 이전 완료 여부는 기존 state.json과 별개로 확인한다.
 
 추가 “고도본도 저장해두고 유니티도 한번 해봐” 지시에 따라 `I:/EXODUSER-Storage/archive/E/exoduser-wt/godot-preserved-2026-10-24T03-53-13-702Z`에 Godot물리4,979파일/2,071,696,605bytes와 Git증분번들을 별도 보존했다. 전 파일 원본 전후/목적지 SHA256·mtime/size 대조 및 bundle verify 통과. `.godot` 재생성cache와 Junction 대상의 중복 복사는 제외하고 두 링크 실체를 유지했다. `PRESERVATION.json`이 이번 보존 영수증이며 기존 전체 이전 `state.json` 완료 상태를 대신하지 않는다.
 

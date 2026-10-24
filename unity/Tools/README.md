@@ -1,5 +1,7 @@
 # EXODUSER Unity 이식
 
+Godot는 유지하고 Unity도 시험해 이식 난이도를 비교한다. 최종 엔진 선택은 아직 하지 않았다. 아래는 Unity 부분 시험본의 실행법이다.
+
 사용자 지시(2026-10-24)로 Unity 이식을 시작했다. Unity **6000.4.8f1**, C# 게임 로직·SpriteRenderer 기반이며 실행 중 브라우저/WebView/JavaScript를 사용하지 않는다.
 
 현재 코드는 **부분 이식 시험본**이다. 실제 Editor import/compile·Windows 빌드·Player 자동 이동/120f차지/해제/4처치·PNG4종 저장을 확인했다. 시작구간 시각 판정은 RETOUCH다. HUD fill/아이콘·Q/E·인벤토리·사운드·전체 진행은 미완료이며 전체 게임/수동 플레이 인수 완료가 아니다.
