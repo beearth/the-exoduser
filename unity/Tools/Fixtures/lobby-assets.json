@@ -1,0 +1,237 @@
+{
+  "schema": "exoduser.unity.lobby-assets.v1",
+  "sourceRoot": "G:\\exoduser",
+  "sources": [
+    {
+      "path": "index.html",
+      "sha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621",
+      "bytes": 354563
+    },
+    {
+      "path": "cin-logo-art.js",
+      "sha256": "102752b72f885f43606ee70ec5525adc5ae416e1756390ba63fe41dd9a76727f",
+      "bytes": 1104
+    },
+    {
+      "path": "world-intro-player.js",
+      "sha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50",
+      "bytes": 3502
+    },
+    {
+      "path": "world-intro-subtitles.js",
+      "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b",
+      "bytes": 1818
+    },
+    {
+      "path": "world-intro-subtitles-data.js",
+      "sha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768",
+      "bytes": 51862
+    },
+    {
+      "path": "lobby-ancestor-sprite.js",
+      "sha256": "38f8de6d4efaa8eebd01d48301e0641bc5cebe558199f96885ba4a1289f8e9ab",
+      "bytes": 4441
+    },
+    {
+      "path": "lobby-ancestor-art.css",
+      "sha256": "7cb88610b801e894e3332442d4b490d7d687cb9048352bb3a0cbaf8afba063cf",
+      "bytes": 2687
+    }
+  ],
+  "assetCount": 24,
+  "bytes": 167537430,
+  "assets": [
+    {
+      "source": "video/fdg_intro.mp4",
+      "destination": "StreamingAssets/Lobby/fdg_intro.mp4",
+      "bytes": 2979695,
+      "sourceSha256": "cf5e27b0d4ddf86146971661052a4512aa008b997cd370c605615fdb2b26b806",
+      "sha256": "cf5e27b0d4ddf86146971661052a4512aa008b997cd370c605615fdb2b26b806",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "video/intro.mp4",
+      "destination": "StreamingAssets/Lobby/intro.mp4",
+      "bytes": 2901738,
+      "sourceSha256": "0891964d17e19c9080fe07da97e7ee00e26918b5e51da8909b3d11e149f99620",
+      "sha256": "0891964d17e19c9080fe07da97e7ee00e26918b5e51da8909b3d11e149f99620",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "video/world_intro_v17_blood_en.mp4",
+      "destination": "StreamingAssets/Lobby/world_intro_v17_blood_en.mp4",
+      "bytes": 77065370,
+      "sourceSha256": "e424d076266933efd8c2386d5901e29072cd8e0d572495441d22f81a2e640dcb",
+      "sha256": "e424d076266933efd8c2386d5901e29072cd8e0d572495441d22f81a2e640dcb",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "video/title_motion_hd_20260929.mp4",
+      "destination": "StreamingAssets/Lobby/title_motion_hd_20260929.mp4",
+      "bytes": 14006613,
+      "sourceSha256": "0bd68c5ba2790a2cc45f89421412028946e346df58ad8ac080a72631190b7b2b",
+      "sha256": "0bd68c5ba2790a2cc45f89421412028946e346df58ad8ac080a72631190b7b2b",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "video/title_motion_20260929.mp4",
+      "destination": "StreamingAssets/Lobby/title_motion_20260929.mp4",
+      "bytes": 4159894,
+      "sourceSha256": "ac24111767033a28b81cab298d5d92a424b9a10abcbd3389ad66b037975c7e5b",
+      "sha256": "ac24111767033a28b81cab298d5d92a424b9a10abcbd3389ad66b037975c7e5b",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "assets/lobby/lobby_varkan_crypt_loop_v2.mp4",
+      "destination": "StreamingAssets/Lobby/lobby_varkan_crypt_loop_v2.mp4",
+      "bytes": 4577193,
+      "sourceSha256": "53dae74bda02d0b1abe10f1da467868515ff470a910adb02c6aece55b9340a5c",
+      "sha256": "53dae74bda02d0b1abe10f1da467868515ff470a910adb02c6aece55b9340a5c",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "img/logo_exoduser.png",
+      "destination": "Exoduser/Resources/Art/lobby/brand_logo.png",
+      "bytes": 241583,
+      "sourceSha256": "dffad452cffa7aaf074ff80d2fbb9258858fdef1cbde750e8b07f3f3b264efbd",
+      "sha256": "dffad452cffa7aaf074ff80d2fbb9258858fdef1cbde750e8b07f3f3b264efbd",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "assets/lobby/lobby_enter_btn.png",
+      "destination": "Exoduser/Resources/Art/lobby/lobby_enter.png",
+      "bytes": 1014194,
+      "sourceSha256": "160b91140127f838f71228d04561ff431a281156ed8aae20da5b5228d74c6d79",
+      "sha256": "160b91140127f838f71228d04561ff431a281156ed8aae20da5b5228d74c6d79",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "assets/lobby/lobby_banner_btn.png",
+      "destination": "Exoduser/Resources/Art/lobby/lobby_banner.png",
+      "bytes": 851945,
+      "sourceSha256": "b86813d27dd0b06c0dc6aabb71289bdd61bb05d32f9bffd3d7f3eeeb36eb137f",
+      "sha256": "b86813d27dd0b06c0dc6aabb71289bdd61bb05d32f9bffd3d7f3eeeb36eb137f",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "img/fdg_intro/fdg_reference.png",
+      "destination": "Exoduser/Resources/Art/lobby/fdg_poster.png",
+      "bytes": 2576842,
+      "sourceSha256": "bfd3e392984e2523fab72c3f23dd96207b1e526ceb430857b635f220164f60ef",
+      "sha256": "bfd3e392984e2523fab72c3f23dd96207b1e526ceb430857b635f220164f60ef",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "img/fdg_wolf/fdg_wolf_emblem.png",
+      "destination": "Exoduser/Resources/Art/lobby/fdg_emblem.png",
+      "bytes": 1902219,
+      "sourceSha256": "cb9083e6a5f81ba6276ad9519293908b663699892b824c080849f1b2cd93325d",
+      "sha256": "cb9083e6a5f81ba6276ad9519293908b663699892b824c080849f1b2cd93325d",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "img/title_clean_plate_20260929.png",
+      "destination": "Exoduser/Resources/Art/lobby/splash_title.png",
+      "bytes": 1992130,
+      "sourceSha256": "7df3b5aed3826373e083937181fe9faac529bf3aa8a5f8a900f2f094a5d7b09c",
+      "sha256": "7df3b5aed3826373e083937181fe9faac529bf3aa8a5f8a900f2f094a5d7b09c",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "assets/lobby/varkan_idle_v3.png",
+      "destination": "Exoduser/Resources/Art/lobby/varkan_idle.png",
+      "bytes": 18349778,
+      "sourceSha256": "12a5dec2194c21715f5c57ecd73c5621759e4d3e7a11b99d8543ebbca6776df4",
+      "sha256": "12a5dec2194c21715f5c57ecd73c5621759e4d3e7a11b99d8543ebbca6776df4",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "assets/lobby/varkan_idle_first_v3.png",
+      "destination": "Exoduser/Resources/Art/lobby/varkan_first.png",
+      "bytes": 233044,
+      "sourceSha256": "85cadaa9b872c9b5c7f01d799e6f05be5471aada786c6ae823d7a1df72318108",
+      "sha256": "85cadaa9b872c9b5c7f01d799e6f05be5471aada786c6ae823d7a1df72318108",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "output/imagegen/exoduser-hell-lord-logo-api-v1.png",
+      "destination": "Exoduser/Resources/Art/lobby/title_logo.png",
+      "bytes": 1572848,
+      "sourceSha256": "185abb93942ea45a21dcc2d80564e44e1895afa14127d4eac110faeb979a85ba",
+      "sha256": "92ca6eea0c1840bf6e0eb8e30bd7e9eb96052796101f2e121488fed587d81541",
+      "transform": "cin-logo-art.js exact alpha=round(255*clamp((maxRGB-8)/24)); RGB unchanged"
+    },
+    {
+      "source": "output/imagegen/enter-gothic-api-v1.png",
+      "destination": "Exoduser/Resources/Art/lobby/enter_art.png",
+      "bytes": 1615560,
+      "sourceSha256": "be2c63ada445a92bd99e16ef412c496c4c8f6747097417b545d4f4f91876c0e7",
+      "sha256": "2eb185da4d4987381f313d969239af380cbf9e245645aea3d7701a35c7b99f37",
+      "transform": "cin-logo-art.js exact alpha=round(255*clamp((maxRGB-8)/24)); RGB unchanged"
+    },
+    {
+      "source": "assets/lobby/lobby_varkan_crypt_poster_v2.webp",
+      "destination": "Exoduser/Resources/Art/lobby/lobby_poster.png",
+      "bytes": 3086272,
+      "sourceSha256": "c79e0e0d40954b1ea924c8a48c06eacd38f9c7884bcba792803986c6429d961f",
+      "sha256": "e2f4a8c153dde16fe3e63cfd8f5951a4b3bd4d2d71ed6cb586ebc0cf725ab64a",
+      "transform": "lossless WebP decode to PNG; original dimensions/pixels"
+    },
+    {
+      "source": "index.html",
+      "destination": "Exoduser/Resources/Art/lobby/splash_brand.png",
+      "bytes": 353787,
+      "sourceSha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621",
+      "sha256": "cc5366f0ea51785dadb79672c841023d69f9e2c0cb65cc996853d5913fc5fe76",
+      "transform": "original splashTitleBrand SVG with embedded clean plate; raster1983x793; Georgia system font"
+    },
+    {
+      "source": "video/intro.mp4",
+      "destination": "Exoduser/Resources/Art/lobby/gate_poster.png",
+      "bytes": 1396955,
+      "sourceSha256": "0891964d17e19c9080fe07da97e7ee00e26918b5e51da8909b3d11e149f99620",
+      "sha256": "4a60e21e8c3df6036b2920236eff37af0e503bd286cb7462cf3ec44b67f25786",
+      "transform": "ffmpeg decode frame0 to PNG; no crop or resize"
+    },
+    {
+      "source": "bgm/cutscene/prologue_theme.mp3",
+      "destination": "Exoduser/Resources/Audio/Lobby/prologue_theme.mp3",
+      "bytes": 5356373,
+      "sourceSha256": "9ab69e88008f6ebc625c4c694d7d8aa066dd1c6f465185cfc9e5d10be49e9865",
+      "sha256": "9ab69e88008f6ebc625c4c694d7d8aa066dd1c6f465185cfc9e5d10be49e9865",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "bgm/cutscene/prologue_theme_abyssal_fracture.mp3",
+      "destination": "Exoduser/Resources/Audio/Lobby/prologue_theme_abyssal_fracture.mp3",
+      "bytes": 5874197,
+      "sourceSha256": "6b6b0861e9f36a139c677e1822cc6c2054dd9fef72b4b6762e07b0e08b660688",
+      "sha256": "6b6b0861e9f36a139c677e1822cc6c2054dd9fef72b4b6762e07b0e08b660688",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "bgm/cutscene/prologue_theme_rebirth_gate_1.mp3",
+      "destination": "Exoduser/Resources/Audio/Lobby/prologue_theme_rebirth_gate_1.mp3",
+      "bytes": 5035541,
+      "sourceSha256": "b222b49944c539e0eddab2388f325de6548619275ab7880a96fece91e33a671a",
+      "sha256": "b222b49944c539e0eddab2388f325de6548619275ab7880a96fece91e33a671a",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "bgm/cutscene/prologue_theme_rebirth_gate_2.mp3",
+      "destination": "Exoduser/Resources/Audio/Lobby/prologue_theme_rebirth_gate_2.mp3",
+      "bytes": 5158805,
+      "sourceSha256": "c565154410aa133f7221b4f7389ca8e47e9736e9106b29250e7bf0298482277e",
+      "sha256": "c565154410aa133f7221b4f7389ca8e47e9736e9106b29250e7bf0298482277e",
+      "transform": "byte_exact"
+    },
+    {
+      "source": "bgm/공통/lobby.mp3",
+      "destination": "Exoduser/Resources/Audio/Lobby/lobby.mp3",
+      "bytes": 5234854,
+      "sourceSha256": "7f2d38d88a2d5862313fee9088036e3a361b79b38591cafcda197b48204af3fd",
+      "sha256": "7f2d38d88a2d5862313fee9088036e3a361b79b38591cafcda197b48204af3fd",
+      "transform": "byte_exact"
+    }
+  ]
+}

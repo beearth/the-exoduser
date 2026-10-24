@@ -33,6 +33,7 @@ public static class PortVerification {
    VerifyFeedbackFrames(hit);
    VerifyHudPixels();
    VerifyInventory();
+   VerifyLobby();
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="Unity_source_runtime_compile_asset_and_model",passed=true,engine=Application.unityVersion},true));
    Debug.Log("UNITY_VERIFY_PASS");EditorApplication.Exit(0);
   }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(2);}
@@ -53,6 +54,17 @@ public static class PortVerification {
    }
    Debug.Log("UNITY_FEEDBACK_FRAME_SEQUENCE_PASS");
   } finally {renderer.Dispose();UnityEngine.Object.DestroyImmediate(host);foreach(var f in frames)UnityEngine.Object.DestroyImmediate(f);}
+ }
+ static void VerifyLobby(){
+  var resource=Resources.Load<TextAsset>("Data/lobby_frontend");if(resource==null)throw new Exception("Missing runtime lobby captions");
+  var data=JsonUtility.FromJson<LobbySubtitleData>(resource.text);if(data.captions==null||data.captions.Length!=29||data.cuts.Length!=17)throw new Exception("Original lobby data count mismatch");
+  foreach(var language in data.captions)if(language.cues==null||language.cues.Length!=32)throw new Exception("Original caption cue count "+language.code);
+  for(int i=0;i<data.cuts.Length;i++)if(data.cuts[i]!=LobbyFlow.WorldCuts[i])throw new Exception("Original next-cut timing mismatch");
+  foreach(var name in new[]{"title_logo","enter_art","brand_logo","lobby_enter","lobby_poster","gate_poster","splash_title","splash_brand","fdg_emblem","varkan_idle","varkan_first"})if(Resources.Load<Texture2D>("Art/lobby/"+name)==null)throw new Exception("Missing native lobby art "+name);
+  var sheet=Resources.Load<Texture2D>("Art/lobby/varkan_idle");if(sheet.width!=3072||sheet.height!=7488)throw new Exception("Ancestor 96-frame atlas import dimensions");
+  foreach(var name in new[]{"fdg_intro.mp4","intro.mp4","world_intro_v17_blood_en.mp4","title_motion_hd_20260929.mp4","title_motion_20260929.mp4","lobby_varkan_crypt_loop_v2.mp4"})if(!File.Exists(Path.Combine(Application.streamingAssetsPath,"Lobby",name)))throw new Exception("Missing original movie "+name);
+  foreach(var name in new[]{"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2","lobby"}){var clip=Resources.Load<AudioClip>("Audio/Lobby/"+name);if(clip==null||clip.samples<=0)throw new Exception("Lobby audio import "+name);}
+  Debug.Log("UNITY_LOBBY_MEDIA_CAPTIONS_29X32_PASS");
  }
  static void VerifyInventory(){
   var data=Resources.Load<TextAsset>("Data/inventory_seed");if(data==null)throw new Exception("Missing original inventory seed");

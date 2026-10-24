@@ -1,5 +1,9 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-24 UNITY-LOBBY-01 — 로비·인트로 최우선
+
+사용자 최신 “일단 게임 로비부터 인트로 시네마틱같은것들만 잘 옴겨”. PC Codex가 기존 소유 Unity 브랜치에서 NativeLobby/Video/CoreLobbyFlow·NativeGame 진입/차단·원본 미디어·자기 Tools/docs 소유. 최신 G:index/v17 기준 FDG→타이틀→ENTER문→세계관→로비 연결, Core65/영상adapter11·정적0오류/실제Editor 미디어29×32검사PASS. Windows/Player 영상·음향·화면 검수는 진행 중. 계정/캐릭터 생성/기존 저장은 미이식 표시, Godot/원본/공유main INDEX480·세이브·기존창 보존. 자동 heartbeat도 로비/인트로 우선으로 갱신했다. [현황·근거·미완료](../UNITY_LOBBY_20261024.md).
+
 ## 2026-10-24 최신 우선순위 — UI/UX 이식 후 Unity 재제작
 
 사용자가 UI/UX와 재사용할 기존 아트·데이터를 먼저 제대로 이식하고, 이후 Unity에서 맵·모션·이펙트 등을 대부분 새로 제작할 방향을 확정했다. 직전 자동 진행의 드랍 생성/획득 최우선은 교체한다. 다음 단위는 원본↔Unity UI/UX 미완료 현황표와 가장 중요한 미이식 화면/상호작용이며, UI 실제 동작에 필요한 최소 기반만 함께 연결한다. 기존 전투·표현·Godot본은 보존한다. 기존 heartbeat exoduser-unity도 새 방향으로 갱신했으며 ACTIVE/10분 간격을 유지한다. [현재 작업 범위](../UNITY_UI_FIRST_REBUILD_20261024.md)가 아래 과거 전체 이식/비교 기록에 우선한다.

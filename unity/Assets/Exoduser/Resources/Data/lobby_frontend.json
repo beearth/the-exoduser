@@ -1,0 +1,4829 @@
+{
+  "schema": "exoduser.unity.lobby.v1",
+  "sourceFiles": [
+    {
+      "path": "index.html",
+      "sha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621"
+    },
+    {
+      "path": "world-intro-player.js",
+      "sha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50"
+    },
+    {
+      "path": "world-intro-subtitles-data.js",
+      "sha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768"
+    },
+    {
+      "path": "world-intro-subtitles.js",
+      "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b"
+    }
+  ],
+  "worldVideo": "world_intro_v17_blood_en.mp4",
+  "holdSeconds": 5,
+  "cuts": [
+    0,
+    4.041667,
+    12.75,
+    17.291667,
+    27.791667,
+    46.291667,
+    56.291667,
+    69.291667,
+    76.291667,
+    78.041667,
+    80.291667,
+    84.791667,
+    87.791667,
+    90.791667,
+    95.791667,
+    102.791667,
+    109.291667
+  ],
+  "captions": [
+    {
+      "code": "ko",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "우주에는 셀 수 없는 세계가 있다."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "어딘가에선 우주가 태어나고,"
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "어딘가에선 또 하나의 우주가 스러진다."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "탄생과 소멸에는 끝이 없건만…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "잔혹하게도, 지옥은 단 하나뿐이다."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "누가 정한 섭리인지,"
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "죄를 지은 모든 생명은 제 안의 악의와 함께…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "단 하나의 지옥으로 흘러든다."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "누구나 마음 깊은 곳에선 그 존재를 알고 있다."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "강물이 낮은 곳으로 흐르듯,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "끝없이 아래로만 향하는 힘."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "오직 파괴만을 갈망하는 그 힘이"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "흐르고, 쌓이고, 끝내 고이는 곳…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "지옥이라 불리는 곳이다."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "그 깊은 곳에 가라앉은 영혼은 돌아갈 길을 잃고…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "다시 태어날 기회마저 빼앗긴다."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "시간은 의미를 잃고,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "고통만이 육체에 스며들고,"
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "그들은 제 안의 파괴적 에너지 그대로…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "고통의 형상으로 잉태된다."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "지옥의 모든 괴물은… 한때, 어딘가의 누군가였다."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "지옥은 시대를 묻지 않는다."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "검을 쥔 자도,"
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "강철의 몸을 가진 자도."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "초능력을 지닌 자도,"
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "마법의 극에 닿은 자도."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "모두가 뒤엉킨 단 하나의 구덩이."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "서로를 겨누는 그들이 원하는 것은… 단 하나."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "탈출."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "추락에 맞서는 자들."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "우리는 그들을…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "엑소듀서라 부른다."
+        }
+      ]
+    },
+    {
+      "code": "en",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "There are countless worlds in the universe."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Somewhere, a universe is born."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Elsewhere, another fades away."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Birth and death know no end..."
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Yet, cruelly, there is but one Hell."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Who ordained this law, none can say."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "All who have sinned, with the malice they bear..."
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "are drawn into a single Hell."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Deep within us all, we know it exists."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "As rivers flow to lower ground,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "a force descends without end."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Craving only destruction,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "it flows, gathers, and finally pools..."
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "in the place called Hell."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "The souls that sink into those depths lose their way back..."
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "and are robbed of even the chance to be reborn."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Time loses all meaning,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "and suffering alone seeps into the flesh."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "The very destructive energy within them..."
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "gives them form as incarnations of agony."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Every monster in Hell... was once someone, somewhere."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Hell does not ask what age you came from."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Those who held a blade."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Those born of steel."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Those with psychic powers."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Those at the pinnacle of magic."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "All intertwined within a single pit."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Those who turn their weapons on one another desire only one thing."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Exodus."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Those who defy the fall."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "We call them…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "Exoduser."
+        }
+      ]
+    },
+    {
+      "code": "zh",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "宇宙中有无数世界。"
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "某处，一个宇宙诞生。"
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "别处，另一个宇宙消逝。"
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "生与灭永无止境……"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "然而残酷的是，地狱只有一个。"
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "无人知晓，是谁定下了这道法则。"
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "所有犯下罪孽的生命，带着心中的恶意……"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "流入同一个地狱。"
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "每个人心底，都知道它的存在。"
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "如河水流向低处，"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "一股力量永无止境地向下沉落。"
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "它只渴望毁灭，"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "流淌、积聚，最终汇成深潭……"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "那便是名为地狱的地方。"
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "沉入深处的灵魂，迷失了归途……"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "连重生的机会也被剥夺。"
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "时间失去意义，"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "唯有痛苦渗入血肉。"
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "它们体内那股毁灭的能量……"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "孕育出痛苦的形体。"
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "地狱中的每个怪物……都曾是某处的某个人。"
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "地狱不问你来自哪个时代。"
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "无论是执剑之人，"
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "还是钢铁之躯。"
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "无论身怀异能，"
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "还是登临魔法之巅。"
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "所有存在，纠缠于唯一的深坑。"
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "彼此刀兵相向的他们，渴求的只有一件事。"
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "逃离。"
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "那些抗拒坠落之人。"
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "我们称他们为……"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER。"
+        }
+      ]
+    },
+    {
+      "code": "zht",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "宇宙中有無數世界。"
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "某處，一個宇宙誕生。"
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "別處，另一個宇宙消逝。"
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "生與滅永無止境……"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "然而殘酷的是，地獄只有一個。"
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "無人知曉，是誰定下了這道法則。"
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "所有犯下罪孽的生命，帶著心中的惡意……"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "流入同一個地獄。"
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "每個人心底，都知道它的存在。"
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "如河水流向低處，"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "一股力量永無止境地向下沉落。"
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "它只渴望毀滅，"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "流淌、積聚，最終匯成深潭……"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "那便是名為地獄的地方。"
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "沉入深處的靈魂，迷失了歸途……"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "連重生的機會也被剝奪。"
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "時間失去意義，"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "唯有痛苦滲入血肉。"
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "它們體內那股毀滅的能量……"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "孕育出痛苦的形體。"
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "地獄中的每個怪物……都曾是某處的某個人。"
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "地獄不問你來自哪個時代。"
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "無論是執劍之人，"
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "還是鋼鐵之軀。"
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "無論身懷異能，"
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "還是登臨魔法之巔。"
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "所有存在，糾纏於唯一的深坑。"
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "彼此刀兵相向的他們，渴求的只有一件事。"
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "逃離。"
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "那些抗拒墜落之人。"
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "我們稱他們為……"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER。"
+        }
+      ]
+    },
+    {
+      "code": "ja",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "宇宙には、数えきれぬ世界がある。"
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "どこかで、ひとつの宇宙が生まれ、"
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "またどこかで、別の宇宙が消えゆく。"
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "生と滅びに、終わりはない。されど……"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "残酷にも、地獄はただひとつ。"
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "誰が定めた理か、知る者はいない。"
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "罪を犯したすべての命は、内なる悪意とともに……"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "ただひとつの地獄へと流れ着く。"
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "誰もが心の奥底で、その存在を知っている。"
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "川が低きへと流れるように、"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "果てなく下へと向かう力。"
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "ただ破壊だけを渇望し、"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "流れ、積もり、ついには淀む……"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "そこは、地獄と呼ばれる。"
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "その深みに沈んだ魂は、帰る道を失い……"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "生まれ変わる機会さえも奪われる。"
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "時は意味を失い、"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "苦痛だけが肉体に染み込んでゆく。"
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "その内にある破壊の力が、そのまま……"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "苦痛の形を成して生まれる。"
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "地獄の怪物はみな……かつて、どこかの誰かだった。"
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "地獄は、時代を問わない。"
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "剣を握る者も、"
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "鋼の身体を持つ者も。"
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "異能を宿す者も、"
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "魔法の極みに至る者も。"
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "すべてが絡み合う、ただひとつの穴。"
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "互いに刃を向ける彼らが望むのは、ただひとつ。"
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "脱出。"
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "墜落に抗う者たち。"
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "我々は彼らを……"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "エクソデューサーと呼ぶ。"
+        }
+      ]
+    },
+    {
+      "code": "es",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "En el universo hay incontables mundos."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "En algún lugar nace un universo."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "En otro, uno más se desvanece."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "El nacimiento y la muerte no tienen fin…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Pero, cruelmente, solo hay un Infierno."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Nadie sabe quién dictó esta ley."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Todos los seres que han pecado, con su malicia a cuestas…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "confluyen en un único Infierno."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "En lo más hondo, todos sabemos que existe."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Como los ríos fluyen hacia tierras bajas,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "una fuerza desciende sin fin."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Solo ansía destrucción,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "fluye, se acumula y al fin se estanca…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "en ese lugar llamado Infierno."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Las almas que se hunden allí pierden el camino de regreso…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "y hasta la posibilidad de renacer les es arrebatada."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "El tiempo pierde su sentido,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "y solo el sufrimiento cala en la carne."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "La propia energía destructiva que llevan dentro…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "les da forma como encarnaciones del dolor."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Todo monstruo del Infierno… fue alguien, en algún lugar."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "El Infierno no pregunta de qué era vienes."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Quienes empuñaron una espada."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Quienes tienen cuerpos de acero."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Quienes poseen poderes psíquicos."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Quienes alcanzaron la cima de la magia."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Todos entrelazados en una única fosa."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Quienes se apuntan con sus armas solo desean una cosa."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Escapar."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Quienes desafían la caída."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Los llamamos…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "fr",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "L'univers renferme d'innombrables mondes."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Quelque part, un univers naît."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Ailleurs, un autre s'éteint."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Naissance et mort ne connaissent nulle fin…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Pourtant, cruellement, il n'existe qu'un seul Enfer."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Nul ne sait qui édicta cette loi."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Tous les êtres qui ont péché, avec leur malveillance…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "convergent vers un unique Enfer."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Au plus profond de nous, nous savons qu'il existe."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Comme les fleuves coulent vers les terres basses,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "une force descend sans fin."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Avide de destruction seule,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "elle s'écoule, s'accumule, puis stagne…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "en ce lieu nommé l'Enfer."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Les âmes englouties dans ces profondeurs perdent le chemin du retour…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "et se voient ravir jusqu'à la chance de renaître."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Le temps perd tout sens,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "et seule la souffrance imprègne la chair."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "L'énergie destructrice qui les habite…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "leur donne forme, incarnations de la douleur."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Chaque monstre de l'Enfer… fut jadis quelqu'un, quelque part."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "L'Enfer ne demande pas de quelle époque tu viens."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Ceux qui portaient une lame."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Ceux dont le corps est d'acier."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Ceux qui possèdent des pouvoirs psychiques."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Ceux qui ont atteint le sommet de la magie."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Tous enchevêtrés dans une seule fosse."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Ceux qui se menacent de leurs armes ne désirent qu'une chose."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "S'échapper."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Ceux qui défient la chute."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Nous les appelons…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "de",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Im Universum gibt es unzählige Welten."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Irgendwo wird ein Universum geboren."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Andernorts erlischt ein anderes."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Geburt und Tod kennen kein Ende…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Doch grausamerweise gibt es nur eine Hölle."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Niemand weiß, wer dieses Gesetz erließ."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Alle Wesen, die gesündigt haben, samt ihrer Bosheit…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "strömen in eine einzige Hölle."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Tief in uns wissen wir alle, dass sie existiert."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Wie Flüsse dem tieferen Land zufließen,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "sinkt eine Kraft endlos hinab."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Sie dürstet nur nach Zerstörung,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "fließt, sammelt sich und staut sich schließlich…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "an jenem Ort, den man Hölle nennt."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Die Seelen, die dort versinken, verlieren den Rückweg…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "und selbst die Chance auf Wiedergeburt wird ihnen geraubt."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Die Zeit verliert jeden Sinn,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "und einzig Leid dringt ins Fleisch."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Die zerstörerische Energie in ihnen selbst…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "gebiert sie als Gestalten der Qual."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Jedes Monster der Hölle… war einst irgendwo jemand."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Die Hölle fragt nicht nach deiner Epoche."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Jene, die eine Klinge führten."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Jene mit Leibern aus Stahl."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Jene mit übersinnlichen Kräften."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Jene auf dem Gipfel der Magie."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Alle verstrickt in einer einzigen Grube."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Jene, die ihre Waffen aufeinander richten, begehren nur eines."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Flucht."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Jene, die sich dem Fall widersetzen."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Wir nennen sie…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "ptbr",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Há incontáveis mundos no universo."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Em algum lugar, um universo nasce."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Em outro, mais um se apaga."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Nascimento e morte não conhecem fim…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Mas, cruelmente, só existe um Inferno."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Ninguém sabe quem decretou essa lei."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Todos os seres que pecaram, com a malícia que carregam…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "convergem para um único Inferno."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "No fundo de nós, todos sabemos que ele existe."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Assim como os rios correm para terras mais baixas,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "uma força desce sem fim."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Ansiando apenas por destruição,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "ela flui, se acumula e por fim se estagna…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "no lugar chamado Inferno."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "As almas que afundam nessas profundezas perdem o caminho de volta…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "e até a chance de renascer lhes é roubada."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "O tempo perde todo o sentido,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "e só o sofrimento se infiltra na carne."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "A própria energia destrutiva que carregam…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "lhes dá forma como encarnações da agonia."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Todo monstro do Inferno… já foi alguém, em algum lugar."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "O Inferno não pergunta de que era você veio."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Aqueles que empunharam uma lâmina."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Aqueles com corpos de aço."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Aqueles que têm poderes psíquicos."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Aqueles que alcançaram o auge da magia."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Todos entrelaçados em um único abismo."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Os que apontam suas armas uns aos outros desejam uma só coisa."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Escapar."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Aqueles que desafiam a queda."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Nós os chamamos de…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "it",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Nell'universo esistono innumerevoli mondi."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Da qualche parte nasce un universo."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Altrove, un altro si spegne."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Nascita e morte non conoscono fine…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Eppure, crudelmente, l'Inferno è uno solo."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Nessuno sa chi abbia sancito questa legge."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Tutti gli esseri che hanno peccato, con la malvagità che portano…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "confluiscono in un unico Inferno."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Nel profondo, tutti sappiamo che esiste."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Come i fiumi scorrono verso il basso,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "una forza discende senza fine."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Bramosa soltanto di distruzione,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "scorre, si accumula e infine ristagna…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "nel luogo chiamato Inferno."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Le anime sprofondate laggiù smarriscono la via del ritorno…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "e vengono private persino della possibilità di rinascere."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Il tempo perde ogni significato,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "e solo la sofferenza penetra nella carne."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "La stessa energia distruttiva che hanno dentro…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "le plasma in incarnazioni del dolore."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Ogni mostro dell'Inferno… un tempo era qualcuno, da qualche parte."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "L'Inferno non chiede da quale epoca provieni."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Coloro che impugnavano una lama."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Coloro dal corpo d'acciaio."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Coloro che possiedono poteri psichici."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Coloro che hanno raggiunto l'apice della magia."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Tutti intrecciati in un'unica voragine."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Quelli che si puntano contro le armi desiderano una sola cosa."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Fuggire."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Coloro che sfidano la caduta."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Noi li chiamiamo…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "ru",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Во вселенной бесчисленное множество миров."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Где-то рождается вселенная."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Где-то угасает другая."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Рождению и смерти нет конца…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Но, как ни жестоко, Ад лишь один."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Никто не знает, кто установил этот закон."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Все живые существа, запятнанные грехом, со своей злобой…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "стекаются в единый Ад."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "В глубине души каждый знает о его существовании."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Как реки текут в низины,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "некая сила бесконечно устремляется вниз."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Жаждущая лишь разрушения,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "она течёт, накапливается и наконец застаивается…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "в месте, что зовётся Адом."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Души, погрузившиеся в эти глубины, теряют путь назад…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "и лишаются даже шанса на перерождение."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Время теряет всякий смысл,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "и лишь страдание проникает в плоть."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Разрушительная энергия в них самих…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "рождает их в облике воплощённой боли."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Каждое чудовище Ада… когда-то было кем-то, где-то."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Ад не спрашивает, из какой ты эпохи."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Те, кто держал клинок."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Те, чьё тело из стали."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Те, кто владеет псионическими силами."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Те, кто достиг вершин магии."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Все сплетены в одной-единственной яме."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Те, кто направляет оружие друг на друга, желают лишь одного."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Выбраться."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Те, кто противится падению."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Мы называем их…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "uk",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "У всесвіті є незліченна кількість світів."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Десь народжується всесвіт."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Деінде згасає інший."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Народженню й смерті немає кінця…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Та, як це не жорстоко, Пекло лише одне."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Ніхто не знає, хто встановив цей закон."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Усі живі істоти, що згрішили, разом зі своєю злобою…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "стікаються в єдине Пекло."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "У глибині душі кожен знає про його існування."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Як річки течуть у низини,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "певна сила нескінченно прямує вниз."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Прагнучи лише руйнування,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "вона тече, накопичується і зрештою застоюється…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "у місці, що зветься Пеклом."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Душі, що занурилися в ці глибини, втрачають шлях назад…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "і позбавляються навіть шансу на переродження."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Час втрачає будь-який сенс,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "і лише страждання проникає в плоть."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Руйнівна енергія в них самих…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "народжує їх у подобі втіленого болю."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Кожне чудовисько Пекла… колись було кимось, десь."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Пекло не питає, з якої ти епохи."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Ті, хто тримав клинок."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Ті, чиє тіло зі сталі."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Ті, хто має надприродні здібності."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Ті, хто сягнув вершин магії."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Усі сплетені в одній-єдиній ямі."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Ті, хто націлює зброю одне на одного, прагнуть лише одного."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Вибратися."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Ті, хто протистоїть падінню."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Ми називаємо їх…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "pl",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "We wszechświecie istnieją niezliczone światy."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Gdzieś rodzi się wszechświat."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Gdzie indziej kolejny gaśnie."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Narodziny i śmierć nie znają końca…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Okrutna prawda brzmi: Piekło jest tylko jedno."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Nikt nie wie, kto ustanowił to prawo."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Wszystkie istoty, które zgrzeszyły, wraz ze swą złością…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "spływają do jednego Piekła."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "W głębi duszy każdy wie, że ono istnieje."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Jak rzeki płyną ku nizinom,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "pewna siła bez końca zmierza w dół."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Łaknąc jedynie zniszczenia,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "płynie, gromadzi się i w końcu zalega…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "w miejscu zwanym Piekłem."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Dusze pogrążone w tych głębinach tracą drogę powrotną…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "i odbiera się im nawet szansę odrodzenia."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Czas traci wszelkie znaczenie,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "a jedynie cierpienie przenika ciało."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Niszczycielska energia w nich samych…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "rodzi je jako ucieleśnienia bólu."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Każdy potwór Piekła… był kiedyś kimś, gdzieś."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Piekło nie pyta, z jakiej epoki pochodzisz."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Ci, którzy dzierżyli ostrze."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Ci o stalowych ciałach."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Ci obdarzeni mocami psychicznymi."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Ci, którzy sięgnęli szczytów magii."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Wszyscy spleceni w jednym jedynym dole."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Ci, którzy mierzą do siebie z broni, pragną tylko jednego."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Ucieczki."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Ci, którzy przeciwstawiają się upadkowi."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Nazywamy ich…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "cs",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Ve vesmíru jsou nesčetné světy."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Kdesi se rodí vesmír."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Jinde další pohasíná."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Zrození a smrt neznají konce…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Krutá pravda však zní: Peklo je jen jedno."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Nikdo neví, kdo tento zákon ustanovil."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Všechny bytosti, které zhřešily, se svou záští…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "proudí do jediného Pekla."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Hluboko v nitru každý ví, že existuje."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Jako řeky plynou do nížin,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "jakási síla bez ustání klesá dolů."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Toužíc jen po zkáze,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "plyne, hromadí se a nakonec ustrne…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "v místě zvaném Peklo."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Duše ponořené do těch hlubin ztrácejí cestu zpět…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "a je jim odňata i naděje na znovuzrození."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Čas pozbývá smyslu,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "a jen utrpení proniká do masa."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Ničivá energie v jejich nitru…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "je zrodí jako ztělesnění bolesti."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Každá nestvůra Pekla… kdysi někde bývala někým."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Peklo se neptá, z jaké jsi doby."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Ti, kdo třímali čepel."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Ti s těly z oceli."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Ti s nadpřirozenými schopnostmi."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Ti, kdo dosáhli vrcholu magie."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Všichni propleteni v jediné jámě."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Ti, kdo na sebe míří zbraněmi, touží jen po jednom."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Uniknout."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Ti, kdo vzdorují pádu."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Říkáme jim…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "hu",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "A világegyetemben számtalan világ létezik."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Valahol egy univerzum születik."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Máshol egy másik kihuny."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "A születés és a halál nem ér véget…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Ám kegyetlen módon Pokol csak egy van."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Senki sem tudja, ki rendelte el e törvényt."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Minden vétkező lény, a benne lakozó rosszindulattal…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "egyetlen Pokolba áramlik."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Lelkünk mélyén mind tudjuk, hogy létezik."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Ahogy a folyók az alacsonyabb földek felé folynak,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "egy erő vég nélkül lefelé tart."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Csak pusztításra vágyva"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "áramlik, gyűlik, s végül megreked…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "a helyen, melyet Pokolnak neveznek."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "A mélybe süllyedt lelkek elvesztik a visszautat…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "és még az újjászületés esélyétől is megfosztatnak."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Az idő értelmét veszti,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "és csak szenvedés szivárog a húsba."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "A bennük rejlő pusztító energia…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "a kín megtestesüléseiként szüli őket újjá."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "A Pokol minden szörnye… valaha valaki volt, valahol."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "A Pokol nem kérdi, mely korból jöttél."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Akik pengét forgattak."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Akiknek acélból van a testük."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Akik pszichikus erővel bírnak."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Akik a mágia csúcsára jutottak."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Mind egyetlen veremben gabalyodnak össze."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Akik egymásra szegezik fegyverüket, csak egyre vágynak."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Kijutni."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Akik dacolnak a zuhanással."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Mi így nevezzük őket…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "ro",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "În univers există nenumărate lumi."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Undeva se naște un univers."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "În altă parte, un altul se stinge."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Nașterea și moartea nu cunosc sfârșit…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Dar, cu cruzime, există un singur Iad."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Nimeni nu știe cine a statornicit această lege."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Toate ființele care au păcătuit, cu răutatea din ele…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "se scurg într-un singur Iad."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "În adâncul nostru, cu toții știm că există."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Așa cum râurile curg spre locurile joase,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "o forță coboară fără sfârșit."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Tânjind doar după distrugere,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "curge, se adună și în cele din urmă băltește…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "în locul numit Iad."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Sufletele scufundate în acele adâncuri pierd calea înapoi…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "și le este răpită până și șansa de a renaște."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Timpul își pierde orice înțeles,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "iar numai suferința pătrunde în carne."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Însăși energia distrugătoare din ele…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "le dă formă ca întruchipări ale durerii."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Fiecare monstru din Iad… a fost cândva cineva, undeva."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Iadul nu întreabă din ce epocă vii."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Cei care au mânuit o lamă."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Cei cu trupuri de oțel."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Cei cu puteri psihice."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Cei care au atins culmile magiei."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Toți încolăciți într-o singură groapă."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Cei care își îndreaptă armele unii spre alții vor un singur lucru."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Să scape."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Cei care se împotrivesc căderii."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Noi îi numim…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "bg",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Във вселената има безброй светове."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Някъде се ражда вселена."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Другаде угасва друга."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Раждането и смъртта нямат край…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Но жестоката истина е: Адът е само един."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Никой не знае кой е установил този закон."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Всички същества, които са съгрешили, със злобата в себе си…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "се стичат в един-единствен Ад."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Дълбоко в себе си всеки знае, че той съществува."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Както реките текат към низините,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "една сила безкрайно се спуска надолу."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Жадуваща само за разрушение,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "тя тече, натрупва се и накрая застоява…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "в мястото, наречено Ад."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Душите, потънали в тези дълбини, губят пътя обратно…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "и им е отнет дори шансът да се преродят."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Времето губи всякакъв смисъл,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "и само страданието попива в плътта."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Самата разрушителна енергия в тях…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "ги ражда като въплъщения на болката."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Всяко чудовище в Ада… някога е било някой, някъде."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Адът не пита от коя епоха идваш."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Онези, които са държали острие."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Онези с тела от стомана."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Онези с психични сили."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Онези, достигнали върха на магията."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Всички вплетени в една-единствена яма."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Онези, които насочват оръжия един към друг, искат само едно."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Да избягат."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Онези, които се опълчват на падението."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Ние ги наричаме…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "el",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Στο σύμπαν υπάρχουν αμέτρητοι κόσμοι."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Κάπου γεννιέται ένα σύμπαν."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Αλλού, ένα άλλο σβήνει."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Γέννηση και θάνατος δεν έχουν τέλος…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Μα η αλήθεια είναι σκληρή: η Κόλαση είναι μία."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Κανείς δεν ξέρει ποιος όρισε αυτόν τον νόμο."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Όλα τα πλάσματα που αμάρτησαν, μαζί με την κακία τους…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "συρρέουν σε μία και μοναδική Κόλαση."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Βαθιά μέσα μας, όλοι ξέρουμε πως υπάρχει."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Όπως τα ποτάμια κυλούν προς τα χαμηλά,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "μια δύναμη κατεβαίνει αδιάκοπα."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Διψώντας μόνο για καταστροφή,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "ρέει, συσσωρεύεται και τελικά λιμνάζει…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "στον τόπο που ονομάζεται Κόλαση."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Οι ψυχές που βυθίζονται εκεί χάνουν τον δρόμο της επιστροφής…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "και στερούνται ακόμη και την ευκαιρία να ξαναγεννηθούν."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Ο χρόνος χάνει κάθε νόημα,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "και μόνο ο πόνος ποτίζει τη σάρκα."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Η ίδια η καταστροφική ενέργεια μέσα τους…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "τις γεννά ως ενσαρκώσεις οδύνης."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Κάθε τέρας της Κόλασης… ήταν κάποτε κάποιος, κάπου."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Η Κόλαση δεν ρωτά από ποια εποχή έρχεσαι."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Όσοι κρατούσαν λεπίδα."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Όσοι έχουν σώματα από ατσάλι."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Όσοι διαθέτουν ψυχικές δυνάμεις."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Όσοι έφτασαν στην κορυφή της μαγείας."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Όλοι μπλεγμένοι σε έναν και μοναδικό λάκκο."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Όσοι στρέφουν τα όπλα τους ο ένας στον άλλο θέλουν μόνο ένα πράγμα."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Να ξεφύγουν."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Όσοι αψηφούν την πτώση."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Εμείς τους αποκαλούμε…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "tr",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Evrende sayısız dünya vardır."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Bir yerde bir evren doğar."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Başka bir yerde bir diğeri söner."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Doğum ve ölüm son bilmez…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Ama zalimce, yalnızca tek bir Cehennem vardır."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Bu yasayı kimin koyduğunu kimse bilmez."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Günah işlemiş tüm canlılar, içlerindeki kötülükle birlikte…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "tek bir Cehenneme akar."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Hepimiz, içten içe onun varlığını biliriz."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Nehirlerin alçaklara akması gibi,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "bir güç durmaksızın aşağı iner."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Yalnızca yıkımı arzulayarak"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "akar, birikir ve sonunda durgunlaşır…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "Cehennem denilen yerde."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "O derinliklere gömülen ruhlar dönüş yolunu yitirir…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "ve yeniden doğma şansları bile ellerinden alınır."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Zaman tüm anlamını yitirir,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "ve bedene yalnızca ıstırap işler."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "İçlerindeki yıkıcı enerjinin ta kendisi…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "onları acının vücut bulmuş hâlleri olarak doğurur."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Cehennemdeki her canavar… bir zamanlar bir yerde biriydi."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Cehennem hangi çağdan geldiğini sormaz."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Kılıç tutanlar."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Çelik bedenliler."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Psişik güçlere sahip olanlar."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Büyünün zirvesine ulaşanlar."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Hepsi tek bir çukurda birbirine dolanır."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Silahlarını birbirine doğrultanların tek bir arzusu vardır."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Kaçmak."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Düşüşe meydan okuyanlar."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Biz onlara…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER deriz."
+        }
+      ]
+    },
+    {
+      "code": "vi",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Trong vũ trụ có vô vàn thế giới."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Đâu đó, một vũ trụ ra đời."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Nơi khác, một vũ trụ nữa lụi tàn."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Sinh và diệt chẳng hề kết thúc…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Nhưng nghiệt ngã thay, Địa Ngục chỉ có một."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Chẳng ai biết ai đã định ra quy luật ấy."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Mọi sinh linh mang tội, cùng ác ý trong mình…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "đều đổ về một Địa Ngục duy nhất."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Sâu trong tâm khảm, ai cũng biết nơi ấy tồn tại."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Như dòng sông chảy về chốn thấp,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "một sức mạnh mãi hướng xuống dưới."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Chỉ khao khát hủy diệt,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "nó chảy, tích tụ rồi cuối cùng đọng lại…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "tại nơi được gọi là Địa Ngục."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Những linh hồn chìm xuống đáy sâu ấy mất lối trở về…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "và bị tước cả cơ hội tái sinh."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Thời gian mất đi ý nghĩa,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "chỉ còn đau đớn thấm vào da thịt."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Chính năng lượng hủy diệt bên trong chúng…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "thai nghén chúng thành hiện thân của khổ đau."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Mỗi quái vật trong Địa Ngục… từng là một ai đó, ở đâu đó."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Địa Ngục không hỏi ngươi đến từ thời đại nào."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Kẻ từng cầm kiếm."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Kẻ mang thân thể thép."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Kẻ sở hữu siêu năng lực."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Kẻ chạm đến đỉnh cao ma thuật."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Tất cả đan xen trong một vực sâu duy nhất."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Những kẻ chĩa vũ khí vào nhau chỉ mong một điều."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Thoát ra."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Những kẻ chống lại sự sa xuống."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Chúng ta gọi họ là…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "th",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "ในจักรวาลมีโลกอยู่นับไม่ถ้วน"
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "ที่ใดสักแห่ง จักรวาลหนึ่งถือกำเนิด"
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "อีกแห่งหนึ่ง อีกจักรวาลดับสูญ"
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "การเกิดและดับไม่มีวันสิ้นสุด…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "แต่ช่างโหดร้าย นรกกลับมีเพียงหนึ่งเดียว"
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "ไม่มีใครรู้ว่าผู้ใดบัญญัติกฎนี้"
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "ทุกชีวิตที่ทำบาป พร้อมความชั่วร้ายในตน…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "ล้วนไหลมาสู่นรกแห่งเดียว"
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "ลึกลงไปในใจ ทุกคนรู้ว่ามันมีอยู่"
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "ดั่งแม่น้ำที่ไหลลงสู่ที่ต่ำ"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "พลังหนึ่งมุ่งลงเบื้องล่างไม่รู้จบ"
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "โหยหาเพียงการทำลาย"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "มันไหลมารวมกัน สะสม และสุดท้ายขังนิ่ง…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "ณ สถานที่ที่เรียกว่านรก"
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "วิญญาณที่จมลงสู่ห้วงลึกนั้นสูญสิ้นหนทางกลับ…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "แม้โอกาสเกิดใหม่ก็ยังถูกพรากไป"
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "กาลเวลาสิ้นความหมาย"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "เหลือเพียงความทุกข์ที่ซึมเข้าสู่เนื้อหนัง"
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "พลังทำลายล้างภายในพวกมันเอง…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "ก่อกำเนิดพวกมันเป็นรูปลักษณ์แห่งความทรมาน"
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "อสูรทุกตนในนรก… ครั้งหนึ่งเคยเป็นใครสักคน ณ ที่ใดสักแห่ง"
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "นรกไม่ถามว่าเจ้ามาจากยุคใด"
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "ผู้ที่เคยถือดาบ"
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "ผู้มีกายเป็นเหล็กกล้า"
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "ผู้ครอบครองพลังจิต"
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "ผู้บรรลุจุดสูงสุดแห่งเวทมนตร์"
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "ทั้งหมดพัวพันอยู่ในหลุมเดียวกัน"
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "เหล่าผู้หันอาวุธเข้าหากันปรารถนาเพียงสิ่งเดียว"
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "หลบหนี"
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "เหล่าผู้ต่อต้านการร่วงหล่น"
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "เราเรียกพวกเขาว่า…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER"
+        }
+      ]
+    },
+    {
+      "code": "id",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Di alam semesta terdapat dunia yang tak terhitung."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Di suatu tempat, sebuah semesta lahir."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Di tempat lain, semesta lain meredup."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Kelahiran dan kematian tiada berakhir…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Namun kejamnya, Neraka hanya ada satu."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Tiada yang tahu siapa menetapkan hukum ini."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Semua makhluk yang berdosa, bersama kedengkian mereka…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "mengalir menuju satu Neraka."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Jauh di lubuk hati, kita semua tahu tempat itu ada."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Seperti sungai mengalir ke dataran rendah,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "suatu kekuatan terus turun tanpa akhir."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Hanya mendambakan kehancuran,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "ia mengalir, menumpuk, lalu menggenang…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "di tempat yang disebut Neraka."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Jiwa yang tenggelam di kedalaman itu kehilangan jalan pulang…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "bahkan kesempatan untuk terlahir kembali pun dirampas."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Waktu kehilangan segala makna,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "dan hanya derita yang meresap ke dalam daging."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Energi penghancur di dalam diri mereka sendiri…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "melahirkan mereka sebagai perwujudan kesakitan."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Setiap monster di Neraka… dahulu adalah seseorang, di suatu tempat."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Neraka tak bertanya dari zaman mana kau berasal."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Mereka yang menggenggam pedang."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Mereka yang bertubuh baja."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Mereka yang memiliki kekuatan psikis."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Mereka yang mencapai puncak sihir."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Semuanya terjalin dalam satu lubang."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Mereka yang saling mengarahkan senjata hanya mendambakan satu hal."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Lolos."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Mereka yang melawan kejatuhan."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Kami menyebut mereka…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "ar",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "في الكون عوالم لا تُحصى."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "في مكان ما، يولد كون."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "وفي مكان آخر، يخبو كون آخر."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "لا نهاية للميلاد والموت…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "لكن، بقسوة، ليس ثمة إلا جحيم واحد."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "لا أحد يعرف من سنّ هذا القانون."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "كل الكائنات التي أثمت، بما تحمله من خبث…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "تنساب إلى جحيم واحد."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "في أعماقنا جميعًا، نعلم أنه موجود."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "كما تجري الأنهار نحو المنخفضات،"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "تهبط قوة بلا نهاية."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "لا تتوق إلا إلى الدمار،"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "فتجري وتتراكم، ثم تركد أخيرًا…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "في المكان المسمّى بالجحيم."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "الأرواح التي تغوص في تلك الأعماق تفقد طريق العودة…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "وتُسلب حتى فرصة أن تولد من جديد."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "يفقد الزمن كل معنى،"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "ولا تتسرّب إلى اللحم إلا المعاناة."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "طاقة الدمار الكامنة فيهم ذاتها…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "تلدهم تجسيدًا للألم."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "كل وحش في الجحيم… كان يومًا شخصًا ما، في مكان ما."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "الجحيم لا يسأل من أي عصر جئت."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "من حملوا النصال."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "من كانت أجسادهم من فولاذ."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "من امتلكوا قوى نفسية خارقة."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "من بلغوا ذروة السحر."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "الجميع متشابكون في حفرة واحدة."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "من يصوّبون أسلحتهم بعضهم نحو بعض لا يريدون إلا شيئًا واحدًا."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "الهروب."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "أولئك الذين يتحدّون السقوط."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "نحن نسمّيهم…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "sv",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "I universum finns otaliga världar."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Någonstans föds ett universum."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "På annat håll slocknar ett annat."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Födelse och död har inget slut…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Men grymt nog finns bara ett Helvete."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Ingen vet vem som stiftade denna lag."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Alla varelser som har syndat, med sin illvilja…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "strömmar till ett enda Helvete."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Djupt inom oss vet vi alla att det finns."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Som floder rinner mot lägre mark,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "sjunker en kraft utan slut."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Den hungrar endast efter förstörelse,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "flyter, samlas och blir till sist stående…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "på den plats som kallas Helvetet."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Själar som sjunker dit förlorar vägen tillbaka…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "och berövas till och med chansen att återfödas."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Tiden förlorar all mening,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "och endast lidandet tränger in i köttet."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Den destruktiva energin inom dem…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "föder dem som gestaltad plåga."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Varje monster i Helvetet… var en gång någon, någonstans."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Helvetet frågar inte vilken tidsålder du kommer från."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "De som bar en klinga."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "De med kroppar av stål."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "De med psykiska krafter."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "De som nått magins höjdpunkt."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Alla sammanflätade i en enda grop."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "De som riktar sina vapen mot varandra önskar bara en sak."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Att fly."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "De som trotsar fallet."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Vi kallar dem…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "da",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "I universet findes utallige verdener."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Et sted fødes et univers."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Et andet sted slukkes et andet."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Fødsel og død kender ingen ende…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Men grusomt nok findes kun ét Helvede."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Ingen ved, hvem der fastsatte denne lov."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Alle væsner, der har syndet, med deres ondskab…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "strømmer ind i ét eneste Helvede."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Dybt i os selv ved vi alle, at det findes."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Som floder løber mod lavere land,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "synker en kraft uden ende."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Den hungrer kun efter ødelæggelse,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "flyder, samles og står til sidst stille…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "på det sted, der kaldes Helvede."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Sjæle, der synker derned, mister vejen tilbage…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "og berøves selv muligheden for at blive genfødt."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Tiden mister al mening,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "og kun lidelsen trænger ind i kødet."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Den ødelæggende energi i dem selv…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "føder dem som legemliggjort smerte."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Hvert monster i Helvede… var engang nogen, et sted."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Helvede spørger ikke, hvilken tidsalder du kommer fra."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Dem, der bar en klinge."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Dem med kroppe af stål."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Dem med psykiske kræfter."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Dem, der nåede magiens tinde."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Alle sammenflettet i én eneste grube."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "De, der retter våben mod hinanden, ønsker kun én ting."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "At flygte."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Dem, der trodser faldet."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Vi kalder dem…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "no",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "I universet finnes utallige verdener."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Et sted blir et univers født."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Et annet sted slukner et annet."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Fødsel og død kjenner ingen ende…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Men grusomt nok finnes bare ett Helvete."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Ingen vet hvem som fastsatte denne loven."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Alle vesener som har syndet, med sin ondskap…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "strømmer inn i ett eneste Helvete."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Dypt i oss selv vet vi alle at det finnes."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Som elver renner mot lavere land,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "synker en kraft uten ende."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Den hungrer bare etter ødeleggelse,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "flyter, samler seg og blir til slutt stående…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "på stedet som kalles Helvete."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Sjeler som synker dit, mister veien tilbake…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "og frarøves selv muligheten til å bli gjenfødt."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Tiden mister all mening,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "og bare lidelsen trenger inn i kjøttet."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Den ødeleggende energien i dem selv…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "føder dem som legemliggjort smerte."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Hvert monster i Helvete… var en gang noen, et sted."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Helvete spør ikke hvilken tidsalder du kommer fra."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "De som bar en klinge."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "De med kropper av stål."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "De med psykiske krefter."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "De som nådde magiens høydepunkt."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Alle sammenflettet i én eneste grop."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "De som retter våpen mot hverandre, ønsker bare én ting."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Å flykte."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "De som trosser fallet."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Vi kaller dem…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "fi",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Maailmankaikkeudessa on lukemattomia maailmoja."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Jossakin syntyy maailmankaikkeus."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Toisaalla toinen hiipuu pois."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Syntymä ja kuolema eivät tunne loppua…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Julma totuus on: Helvettejä on vain yksi."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Kukaan ei tiedä, kuka tämän lain sääti."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Kaikki syntiä tehneet olennot, pahuus mukanaan…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "virtaavat yhteen ainoaan Helvettiin."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Syvällä sisimmässämme kaikki tietävät sen olevan olemassa."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Kuten joet virtaavat alaville maille,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "eräs voima vajoaa loputtomasti alaspäin."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Se janoaa vain tuhoa,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "virtaa, kerääntyy ja lopulta jää seisomaan…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "paikkaan, jota kutsutaan Helvetiksi."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Syvyyksiin vajonneet sielut kadottavat paluutien…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "ja niiltä riistetään jopa mahdollisuus syntyä uudelleen."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Aika menettää merkityksensä,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "ja vain kärsimys imeytyy lihaan."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Niiden sisäinen tuhoava energia…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "synnyttää ne tuskan ruumiillistumiksi."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Jokainen Helvetin hirviö… oli joskus joku, jossakin."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Helvetti ei kysy, miltä aikakaudelta tulet."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Ne, jotka pitelivät terää."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Ne, joiden keho on terästä."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Ne, joilla on psyykkisiä voimia."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Ne, jotka saavuttivat magian huipun."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Kaikki kietoutuneina yhteen ainoaan kuiluun."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Ne, jotka suuntaavat aseensa toisiinsa, haluavat vain yhtä."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Paeta."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Ne, jotka uhmaavat putoamista."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Me kutsumme heitä nimellä…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "nl",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "In het heelal bestaan ontelbare werelden."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Ergens wordt een universum geboren."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Elders dooft een ander uit."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Geboorte en dood kennen geen einde…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Maar wreed genoeg bestaat er slechts één Hel."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Niemand weet wie deze wet heeft ingesteld."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Alle wezens die zondigden, met hun kwaadaardigheid…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "stromen naar één enkele Hel."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Diep vanbinnen weten we allemaal dat die bestaat."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Zoals rivieren naar lager land stromen,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "daalt een kracht zonder einde af."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Ze hunkert slechts naar vernietiging,"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "stroomt, hoopt zich op en komt ten slotte tot stilstand…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "op de plaats die Hel wordt genoemd."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Zielen die in die diepten zinken, verliezen de weg terug…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "en zelfs de kans op wedergeboorte wordt hun ontnomen."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "De tijd verliest elke betekenis,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "en alleen het lijden dringt door in het vlees."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "De vernietigende energie in henzelf…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "baart hen als belichamingen van pijn."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Elk monster in de Hel… was ooit iemand, ergens."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "De Hel vraagt niet uit welk tijdperk je komt."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Zij die een zwaard droegen."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Zij met lichamen van staal."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Zij met paranormale krachten."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Zij die de top van de magie bereikten."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Allen verstrengeld in één enkele kuil."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Zij die hun wapens op elkaar richten, verlangen maar één ding."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Ontsnappen."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Zij die de val trotseren."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Wij noemen hen…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "EXODUSER."
+        }
+      ]
+    },
+    {
+      "code": "ms",
+      "cues": [
+        {
+          "start": 0.08,
+          "end": 2.94,
+          "text": "Alam semesta mengandungi dunia yang tidak terkira banyaknya."
+        },
+        {
+          "start": 4.122,
+          "end": 7.042,
+          "text": "Di suatu tempat, sebuah alam semesta dilahirkan."
+        },
+        {
+          "start": 7.042,
+          "end": 9.922,
+          "text": "Di tempat lain, sebuah lagi lenyap."
+        },
+        {
+          "start": 9.922,
+          "end": 12.762,
+          "text": "Kelahiran dan kemusnahan tiada penghujungnya…"
+        },
+        {
+          "start": 12.762,
+          "end": 16.402,
+          "text": "Namun kejamnya, Neraka hanya satu."
+        },
+        {
+          "start": 17.402,
+          "end": 20.622,
+          "text": "Tiada siapa tahu siapa yang menetapkan hukum ini."
+        },
+        {
+          "start": 21.262,
+          "end": 24.182,
+          "text": "Segala makhluk yang berdosa, bersama niat jahat di dalam diri…"
+        },
+        {
+          "start": 24.182,
+          "end": 26.962,
+          "text": "mengalir menuju satu Neraka."
+        },
+        {
+          "start": 27.932,
+          "end": 30.832,
+          "text": "Jauh di lubuk hati, semua tahu akan kewujudannya."
+        },
+        {
+          "start": 30.832,
+          "end": 33.632,
+          "text": "Seperti sungai yang mengalir ke tanah rendah,"
+        },
+        {
+          "start": 33.632,
+          "end": 36.072,
+          "text": "suatu kuasa terus menjunam tanpa henti."
+        },
+        {
+          "start": 36.452,
+          "end": 38.132,
+          "text": "Kuasa yang hanya mendambakan kemusnahan itu"
+        },
+        {
+          "start": 38.132,
+          "end": 42.352,
+          "text": "mengalir, bertimbun, lalu bertakung…"
+        },
+        {
+          "start": 42.352,
+          "end": 45.452,
+          "text": "di tempat yang dipanggil Neraka."
+        },
+        {
+          "start": 46.472,
+          "end": 50.632,
+          "text": "Roh yang tenggelam ke dasarnya kehilangan jalan pulang…"
+        },
+        {
+          "start": 50.632,
+          "end": 54.252,
+          "text": "malah dirampas peluang untuk dilahirkan semula."
+        },
+        {
+          "start": 56.632,
+          "end": 58.632,
+          "text": "Masa kehilangan segala makna,"
+        },
+        {
+          "start": 58.832,
+          "end": 61.512,
+          "text": "dan hanya penderitaan meresap ke dalam jasad."
+        },
+        {
+          "start": 62.112,
+          "end": 64.512,
+          "text": "Tenaga pemusnah di dalam diri mereka…"
+        },
+        {
+          "start": 64.512,
+          "end": 68.452,
+          "text": "melahirkan mereka sebagai jelmaan kesengsaraan."
+        },
+        {
+          "start": 69.502,
+          "end": 74.142,
+          "text": "Setiap raksasa di Neraka… dahulunya seseorang, di suatu tempat."
+        },
+        {
+          "start": 76.532,
+          "end": 79.432,
+          "text": "Neraka tidak bertanya dari zaman mana asalmu."
+        },
+        {
+          "start": 80.472,
+          "end": 82.472,
+          "text": "Mereka yang menggenggam pedang."
+        },
+        {
+          "start": 82.652,
+          "end": 83.972,
+          "text": "Mereka yang berjasadkan keluli."
+        },
+        {
+          "start": 84.972,
+          "end": 87.252,
+          "text": "Mereka yang memiliki kuasa psikik."
+        },
+        {
+          "start": 87.889,
+          "end": 89.729,
+          "text": "Mereka yang mencapai kemuncak sihir."
+        },
+        {
+          "start": 90.902,
+          "end": 93.622,
+          "text": "Semuanya terjalin dalam satu lubang."
+        },
+        {
+          "start": 95.902,
+          "end": 100.322,
+          "text": "Mereka yang saling mengacukan senjata hanya menginginkan satu perkara."
+        },
+        {
+          "start": 100.322,
+          "end": 101.682,
+          "text": "Meloloskan diri."
+        },
+        {
+          "start": 102.972,
+          "end": 105.232,
+          "text": "Mereka yang menentang kejatuhan."
+        },
+        {
+          "start": 106.02,
+          "end": 109.292,
+          "text": "Kami memanggil mereka…"
+        },
+        {
+          "start": 109.6,
+          "end": 111.1,
+          "text": "Exoduser."
+        }
+      ]
+    }
+  ]
+}

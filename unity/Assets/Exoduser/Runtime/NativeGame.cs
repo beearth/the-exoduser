@@ -8,7 +8,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
     // Unity-native C# input/simulation/sprite view. No web view or JS runtime.
-    public sealed class NativeGame : MonoBehaviour
+    public sealed partial class NativeGame : MonoBehaviour
     {
         public Simulation Simulation {get; private set;}
         public SourceMap Map {get; private set;}
@@ -18,6 +18,7 @@ namespace Exoduser.UnityPort
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
+        NativeLobby lobby;bool lobbySmoke;int worldMask;
         bool basicWeaponMode;
         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
@@ -55,7 +56,13 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             sound=new NativeFeedbackAudio(transform,view);
             ResetRun();
-            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-inventory-smoke")>=0){inventorySmoke=true;menu=false;Running=true;StartCoroutine(InventorySmoke());}
+            worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
+            lobby.Initialize(()=>{ResetRun();menu=false;Running=true;});
+            var args=Environment.GetCommandLineArgs();
+            bool legacyFixture=Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            if(!legacyFixture){Running=false;lobby.Begin();}
+            if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;StartCoroutine(LobbySmoke());}
+            else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-inventory-smoke")>=0){inventorySmoke=true;menu=false;Running=true;StartCoroutine(InventorySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-hud-smoke")>=0){hudSmoke=true;menu=false;StartCoroutine(HudSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-smoke")>=0){menu=false;Running=true;StartCoroutine(Smoke());}
         }
@@ -91,6 +98,9 @@ namespace Exoduser.UnityPort
         }
         void Update()
         {
+            if(lobbySmoke)lobby.SetPlaybackFocus(true); // Explicit fixture only; normal client obeys focus pause.
+            if(lobby!=null&&lobby.IsBlocking){Running=false;view.cullingMask=0;return;}
+            view.cullingMask=worldMask;
             if(Input.GetKeyDown(KeyCode.Escape)){if(inventory.Open)SetInventory(false);else{menu=!menu;Running=!menu&&Simulation.Player.Hp>0;}}
             if(!menu&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.Tab))SetInventory(!inventory.Open);
             if(!menu&&!inventory.Open&&Input.GetKeyDown(KeyCode.R))Toast("드랍 아이템 생성 이식 대기");
@@ -100,7 +110,7 @@ namespace Exoduser.UnityPort
         }
         void FixedUpdate()
         {
-            if(!Running||Simulation==null)return;
+            if(!Running||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             var p=Simulation.Player;var aim=view.ScreenToWorldPoint(Input.mousePosition);
             float x=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
             float y=(Input.GetKey(KeyCode.S)?1:0)-(Input.GetKey(KeyCode.W)?1:0);
@@ -196,7 +206,7 @@ namespace Exoduser.UnityPort
         }
         void OnGUI()
         {
-            if(Simulation==null)return;
+            if(Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
             var p=Simulation.Player;
@@ -218,6 +228,7 @@ namespace Exoduser.UnityPort
                 bool selected=GUI.Toggle(new Rect(650,490,620,35),basicWeaponMode,"기본 무기 검증 모드",button);
                 if(selected!=basicWeaponMode){basicWeaponMode=selected;ResetRun();}
                 if(GUI.Button(new Rect(650,540,620,60),p.Hp<=0?"새 검증 시작":"전투 시작",button)){if(p.Hp<=0)ResetRun();menu=false;Running=true;}
+                if(GUI.Button(new Rect(650,610,620,44),"로비로 돌아가기",button)){Running=false;sound?.Reset();lobby.ShowLobby();}
                 GUI.Label(new Rect(650,643,620,48),"기존 웹 / Godot 세이브는 사용하지 않습니다.",small);
             }
             GUI.matrix=old;

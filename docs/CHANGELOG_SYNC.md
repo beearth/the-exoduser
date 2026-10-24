@@ -1,3 +1,7 @@
+## 2026-10-24 UNITY-LOBBY-01 — 로비·인트로 우선 이식
+
+- 사용자 지시에 따라 FDG→타이틀→지옥문ENTER→세계관v17→로비를 native C#/VideoPlayer로 연결했다. 최신G:index·원본24미디어/167,537,430bytes·29×32자막/17컷·BGM·바르칸96frames와skip/replay/focus/error수명을 이식한다. Core65/실제adapter11·정적0오류·실제Editor29×32미디어검사PASS. Windows/Player 영상·음향·화면 검수는 진행 중이며 생성/기존 저장·계정·전체 입력/반응형·전체 로비 완료는 미확인이다. [현재 증거와 한계](engine/UNITY_LOBBY_20261024.md). Godot·웹·공유main/INDEX480·세이브/기존창 보존.
+
 ## 2026-10-24 UNITY-INVENTORY-01 — 시작 장비·가방 C# 이식
 
 - 원본 장착15·마법가방10·20어픽스를 보존하고17슬롯/10×120격자·선택/정리/장착/해제/중심drag·자원min clamp·Tab 화면을 연결했다. 추가 전투 옵션/저장/드랍생성은 미완료로 표시한다. 원본 모델909/909와 기존93/7/26/130/36회귀0실패. 실제Editor JSON null배열 실패 수정 후PASS, Windows build0오류·실제Player inventory10검사/PNG3장·전투4처치/원음8회/6검사·tracked18파일복구909/909를확인했다. [실제 검수와 미완료](engine/UNITY_INVENTORY_20261024.md). VISUAL RETOUCH/수동입력·전체이식 미완료, Godot·main·세이브 보존.

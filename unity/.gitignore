@@ -21,3 +21,8 @@
 /Tools/inventory-oracle/bin/
 /Tools/inventory-oracle/obj/
 /Tools/inventory-oracle/runs/
+!/Tools/lobby-oracle/LobbyTests.csproj
+!/Tools/lobby-oracle/VideoIntentTests.csproj
+/Tools/lobby-oracle/bin/
+/Tools/lobby-oracle/obj/
+/Tools/lobby-oracle/runs/
