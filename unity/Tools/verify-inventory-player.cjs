@@ -9,4 +9,6 @@ check('source_drag_center_and_edge_clamp',r?.edgeDrop);
 check('source_resource_clamp_no_heal',r?.resourcesClamped);
 check('inventory_pauses_and_resumes',r?.paused&&r?.resumed);
 for(const n of ['equipment','swap','bag'])check('rendered_'+n,fs.existsSync(path.join(dir,'unity-inventory-'+n+'.png')));
+const log=fs.existsSync(path.join(dir,'player.log'))?fs.readFileSync(path.join(dir,'player.log'),'utf8'):'';
+check('no_runtime_exception_or_shader_error',log.length>0&&!/Exception:|error CS\d|Shader error|MissingMethodException/.test(log));
 console.log(JSON.stringify({status:checks.every(c=>c.ok)?'PASS':'FAIL',checks},null,2));process.exitCode=checks.every(c=>c.ok)?0:1;

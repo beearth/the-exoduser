@@ -24,13 +24,16 @@ Godot를 보존하고 Unity를 비교 시험한다. 최종 엔진 미확정. Uni
 |---|---|
 | RED | 인벤토리 미구현 C# test1실패 후 원본 magic admission 오류와 level grit21실패를 실제로 검출. 기존 HUD Player에 새 inventory gate를 실행하면 인벤토리 receipt/화면/동작 검사 FAIL |
 | 독립 모델 | 인벤909/909, 원본27장착/해제·9성장프로필·6grid경계·no-heal. 이전 Ki93/poise7/feedback26/HUD130/basic-map36 및 map2523표본 회귀0실패. `I:/EXODUSER-Storage/qa/unity-inventory-20261024/regression-2026-10-24T10-45/` |
-| 복구 | C#·테스트10파일 SHA256 source-before/after/copy 후909/909. manifest 복구이며 아직 이 자체를 Git tracked-tree 복구라 부르지 않음 |
+| 복구 | 최초 C#·테스트10파일 SHA256 manifest복구909/909. 이후 commit `0eb5018f230ab1d358d405af3b5f2c8342dd29ad`의 Git tracked18파일만 새 I: 경로에 복원해909/909 및 모든 C# core/adapter compile0을 확인. `fresh-tracked-2026-10-24T10-48-14-581Z/RECEIPT.json`. full Unity project 복구라는 뜻은 아님 |
 | 검토 | source spec의 STR중복·double precision·드롭 중심 지적 수정, quality의 viewport 밖 클릭 수정. 실제 Editor/Player는 별도 |
-| 실제 엔진 | 첫 Editor 검수 실패와 수정 기록 보존. 수정 후 Editor/Windows build/Player 검수는 진행 중. PASS 전 완료로 표시하지 않음 |
+| 실제 엔진 | 첫 `inventory-verify-2026-10-24T10-41-29-561Z`의 JsonUtility null 오류 실패 보존. 수정 후 `inventory-verify-2026-10-24T10-44-07-370Z/receipt.json` PASS/process0: 원본15/10/20개·stats·no-heal·.7 double·Lv2검기1999/Lv1무기해제882·무기해제 실제Tick·미디어·기존HUD GPU검사. Windows `inventory-build-2026-10-24T10-47-24-190Z` Succeeded/errors0/967,495,298bytes |
+| 실제 인벤토리 | `inventory-player-2026-10-24T10-48-28-959Z` PID50732에서 같은UI핸들러의 교체/해제/정리/이동·중앙4/4·끝8/118·pause/resume·자원min을 확인. 무기ATK18→31→0. PNG3장 원본픽셀 직접 검토, gate10/10. 종료 후 자기가 실행한 QA Player만 정상 CloseMainWindow, 기존 Editor 보존. OS마우스/키보드 수동 입력 시험이라는 뜻은 아님 |
+| 실제 전투 | `inventory-combat-2026-10-24T10-49-20-121Z` PID28712에서 X4020→4101.58496·120차지/해제·4처치/48509피해·원음8/8/0drop·listenerPeak.30821764·명중광4/완충광1·gate6/6, release PNG 직접 검토. 실제 엔진 출력이며 물리 스피커 청취/자연 플레이 인수는 별도 |
+| 원격 복구점 | 빌드 전 local `0eb5018f230ab1d358d405af3b5f2c8342dd29ad`, remote `dc686c6fd4f6047cb87124cca51a3661146ead42`. 두 commit은 서로 다르며 같은 tree `54237ccdf5efb753b08d4661e8dfa8df0592f0cf`를 확인. 공식 connector로 원격 정상 부모/expectedSHA를 보존해 반영, fetch·ls-remote·전체 tree diff0. 후속 검수 docs/gate seal은 I: DONE 영수증에서 별도 기록 |
 | 저장 | 검수 복사본·cache·로그·이미지·빌드·번들은 I:/EXODUSER-Storage/qa/unity-inventory-20261024. 기존 열린 Editor PID34780 보존 |
 
 ## 미완료
 
-world drop의 장비 생성/획득은 여전히 `equipment-roll-pending`이다. 이 시작 표본 밖 아이템·강화·소켓·크리스탈·유니크/전설·봉안함·전체 조건부 어픽스·저장/불러오기·분해·전체 UI/해상도/현지화·사람의 직접 입력 QA는 미완료다. UI 정리/선택/교체는 메모리의 격리 새 실행에만 반영하며 앱 종료 시 보존되지 않는다. 사용자 세이브를 열거나 덮어쓰지 않는다.
+world drop의 장비 생성/획득은 여전히 `equipment-roll-pending`이다. 이 시작 표본 밖 아이템·강화·소켓·크리스탈·유니크/전설·봉안함·전체 조건부 어픽스/implicit 전투소비·장착별 플레이어 외형/전 무기 전용 동작·저장/불러오기·분해·전체 UI/해상도/현지화·사람의 직접 입력 QA는 미완료다. UI 정리/선택/교체는 메모리의 격리 새 실행에만 반영하며 앱 종료 시 보존되지 않는다. 사용자 세이브를 열거나 덮어쓰지 않는다.
 
-**VISUAL VERDICT: RETOUCH** — 실제 PNG 검수 전부터 full parity를 주장하지 않는다. 전체 이식 완료·Godot보다 수월하다는 결론은 보류한다.
+**VISUAL VERDICT: RETOUCH** — 실제 인벤토리3상태와 전투 release PNG를 검토했다. 원본 CSS 전체 필터/프레임/텍스트·비교 패널·반응형·전체 화면 동등성은 미완료다. 실제UI를 표시한 것과 사람의 직접 입력/전체 gameplay인수는 구분한다. 전체 이식 완료·Godot보다 수월하다는 결론은 보류한다.

@@ -2,7 +2,7 @@
 
 ## 2026-10-24 UNITY-INVENTORY-01 — 원본 시작 장비·가방
 
-PC Codex가 Godot 보존·Unity 비교 시험의 승인된 다음 단위로 시작15장비·마법가방10/20어픽스·격자·장착/해제·no-heal·Tab 화면을 연결했다. 모델909검사와 기존전투/HUD회귀 통과, 실제Editor JSON null 오류 수정 후PASS. 조건부 전투효과/드랍생성/저장·전체 이식은 미완료이며 build/Player 검수는 진행 중이다. [단위 상태·증거](../engine/UNITY_INVENTORY_20261024.md). 공유 G: main/INDEX480·Godot·사용자 세이브·열린 Editor 보존, 최종 엔진 미확정.
+PC Codex가 Godot 보존·Unity 비교 시험의 승인된 다음 단위로 시작15장비·마법가방10/20어픽스·격자·장착/해제·no-heal·Tab 화면을 연결했다. 모델909검사와 기존전투/HUD회귀 통과, 실제Editor JSON null 오류 수정 후PASS, Windows build0오류·Player inventory10/10 및전투6/6·PNG검토·tracked18파일복구909/909까지확인했다. 조건부 전투효과/드랍생성/저장·수동입력·전체 이식은 미완료, VISUAL RETOUCH. [단위 상태·증거](../engine/UNITY_INVENTORY_20261024.md). 공유 G: main/INDEX480·Godot·사용자 세이브·열린 Editor 보존, 최종 엔진 미확정.
 
 ## 2026-10-24 사용자 지시 — Godot 유지와 Unity 비교 시험
 

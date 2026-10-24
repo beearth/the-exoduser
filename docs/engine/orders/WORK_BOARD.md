@@ -2,7 +2,7 @@
 
 ## 2026-10-24 UNITY-INVENTORY-01 — 시작 장비·가방 화면
 
-PC Codex / codex/unity-port-20261024 / 새 Inventory core·NativeInventory·Simulation adapter·원본 이미지 복사·자기 Tools/docs 소유. 원본 장착15/마법가방10/20어픽스 보존,909검사 및 기존93/7/26/130/36회귀 통과. 화면/Tab/장착·해제·정리/drag/no-heal 연결. 실제 Editor 첫 JSON null 오류 수정 후 엔진 검수 진행 중이며 아직 build/Player PASS로 보고하지 않는다. Godot/웹/공유main INDEX480·사용자 세이브 보존. [상태와 한계](../UNITY_INVENTORY_20261024.md).
+PC Codex / codex/unity-port-20261024 / 새 Inventory core·NativeInventory·Simulation adapter·원본 이미지 복사·자기 Tools/docs 소유. 원본 장착15/마법가방10/20어픽스 보존,909검사 및 기존93/7/26/130/36회귀 통과. 화면/Tab/장착·해제·정리/drag/no-heal 연결. 실제Editor JSON null 오류 수정 후PASS, Windows build0오류·Player inventory10/10·전투6/6(4처치/8소리) 및 PNG3장/release확인. tracked18파일복구909/909와core compile0도확인. VISUAL RETOUCH/수동입력·조건부 전투효과·저장·드랍생성/전체이식 미완료. Godot/웹/공유main INDEX480·사용자 세이브 보존. [상태와 한계](../UNITY_INVENTORY_20261024.md).
 
 ## 2026-10-24 UNITY-HUD-01 — 원본 자원 표시
 

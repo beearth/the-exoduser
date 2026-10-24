@@ -1,6 +1,6 @@
 ## 2026-10-24 UNITY-INVENTORY-01 — 시작 장비·가방 C# 이식
 
-- 원본 장착15·마법가방10·20어픽스를 보존하고17슬롯/10×120격자·선택/정리/장착/해제/중심drag·자원min clamp·Tab 화면을 연결했다. 추가 전투 옵션/저장/드랍생성은 미완료로 표시한다. 원본 모델909/909와 기존93/7/26/130/36회귀0실패. 실제Editor의 JSON null배열 실패를 수정한 재검수PASS, Windows build·Player는 진행 중이다. [실제 검수와 미완료](engine/UNITY_INVENTORY_20261024.md). Godot·main·세이브 보존.
+- 원본 장착15·마법가방10·20어픽스를 보존하고17슬롯/10×120격자·선택/정리/장착/해제/중심drag·자원min clamp·Tab 화면을 연결했다. 추가 전투 옵션/저장/드랍생성은 미완료로 표시한다. 원본 모델909/909와 기존93/7/26/130/36회귀0실패. 실제Editor JSON null배열 실패 수정 후PASS, Windows build0오류·실제Player inventory10검사/PNG3장·전투4처치/원음8회/6검사·tracked18파일복구909/909를확인했다. [실제 검수와 미완료](engine/UNITY_INVENTORY_20261024.md). VISUAL RETOUCH/수동입력·전체이식 미완료, Godot·main·세이브 보존.
 
 ## 2026-10-24 UNITY-HUD-01 — 원본 구슬·기검참 아이콘
 
