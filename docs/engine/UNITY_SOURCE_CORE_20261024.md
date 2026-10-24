@@ -90,5 +90,6 @@ Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.Crea
 | 일반 포이즈 검토 보정 RED → GREEN | 실제 원문 timer/updateE prefix를 순서대로 실행한 Node oracle: ordinary stun 만료 poise0 유지/R1, eligible199회0/R199,200회15/R0,400회30/R0. 초기 C# 7/7실패 → 즉시 최대회복 삭제·200회15% 회복 구현 후7/7. hitStun/stunned 동안 regen 정지도 확인 | 같은 Tools의 `poise-oracle.json`, `runs/red-poise.json`, `runs/green-poise.json` |
 | 기본 무기/맵 회귀 | 최종 포이즈 수정 후 기존36/36 유지 | `I:\EXODUSER-Storage\qa\unity-port-20261024\ki-poise-regression\core-receipt.json` |
 | 실제 Unity Editor / Windows Player / 화면 | 별도. .NET 결과만으로 성공 주장 금지 | 부모 결과 참조 |
+| 실제 엔진 후속 | 부모가 Editor 검사·Windows build 및 Player 자동이동/120f차지/해제·4처치·PNG4종을 확인. 수동 플레이/전체 게임 검증과 구분 | `UNITY_PORT_20261024.md`의 실제 산출물 표 |
 
 변경 소유권은 Core C# 4파일, `Tools/ki-slash-oracle/`, 이 문서다. 다른 작업자의 SourceMap·에디터·렌더러·Resources·공용 Git index는 수정하지 않는다. 이 Tools의 실체는 I: Junction이다.

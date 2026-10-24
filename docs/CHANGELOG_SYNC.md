@@ -1,3 +1,8 @@
+## 2026-10-24 UNITY-PORT-04 — 실제 Windows Player 시험본
+
+- Windows Development build Succeeded/errors0/860,830,571bytes. 실제 Player에서 자동 입력으로 X4020→4101.58496 이동·120f차지 후 해제·4처치/totalDamage48509, 원본 맵64개 중10청크 로드를 확인했다. PNG4종과 JSON/log는 I:에 보존했다. 시작구간 실버 검기/맵/캐릭터를 실제 픽셀로 검토해 VISUAL RETOUCH 판정했다.
+- Player는 새 시작 메뉴로 복귀시켜 직접 눌러볼 수 있게 열어두었다. Q/E·인벤토리·사운드/명중광·HUD fill/아이콘·보스/전체 진행·원본1x 동등성 및 사람의 입력 QA는 미완료다. 실제 생성된 시작 씬과 build product/window 설정을 정확한 후보 입력으로 보존한다. [실행 경로·영수증·시각/미완료](engine/UNITY_PORT_20261024.md).
+
 ## 2026-10-24 UNITY-PORT-03 — 실제 Editor 검증과 첫 import 수정
 
 - 초기 license 차단 뒤 실제 Unity import/compile을 진행했다. 첫 실제 검사에서 이미지가 Cubemap(shape2)으로 들어가 Texture2D로 로드되지 않는 실패를 재현했다. SourceTextureImporter에 Texture2D 명시와 GetVersion1을 추가해 재import 후 실제 Editor texture/atlas/shader/model 검사 PASS. 실제 생성된 metadata와 프로젝트 기본 설정을 후보의 정확한 입력으로 보존한다.

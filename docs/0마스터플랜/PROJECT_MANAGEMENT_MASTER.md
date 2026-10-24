@@ -2,7 +2,7 @@
 
 ## 2026-10-24 사용자 지시 — Unity 이식 전환
 
-최신 Editor 게이트: license 차단 해소 후 실제 import/compile·원본 texture/atlas 크기·shader/model 검증 PASS. 첫 이미지 Cubemap 오인 import는 Texture2D 명시/GetVersion1 재import로 수정했다. Windows 빌드·자동 입력/화면 검수는 별도 진행하며 아래 초기 license 차단 기록을 현재 상태로 읽지 않는다.
+최신 실행 게이트: license 차단 해소 후 실제 Editor 검증과 Windows build(Succeeded/errors0), 실제 Player 자동이동·120f차지/해제·4처치/PNG4종 확인까지 진행했다. 시작구간 VISUAL RETOUCH이며 HUD fill·전체 진행·수동 플레이 인수는 미완료다. 첫 Cubemap오인 import는 Texture2D 명시/GetVersion1 재import로 수정했다. 아래 초기 license 차단 기록을 현재 상태로 읽지 않는다.
 
 후속 “고도본도 저장해두고 유니티도 한번 해봐”에 따라 I: Godot별도보존4,979파일/2.07GB의 SHA256 및 Git증분번들을 검증했다. Unity에는 원본 기본 기검참1·2·3타/홀드차지·검기/관통/포이즈·실버시트/잉크/잔상을 추가 연결한다. 실제 Unity 실행 차단은 유지하며 .NET 대조와 실제 플레이를 구분한다. 보존 경로와 검토 결과는 아래 보고서에 기록한다.
 

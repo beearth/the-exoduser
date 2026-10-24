@@ -2,7 +2,7 @@
 
 ## 2026-10-24 사용자 지시 — UNITY-PORT-01
 
-최신 실행 경계: 초기 license 종료198은 해소됐다. 실제 Editor import/compile/원본 texture·atlas·shader/model 검증을 통과했다(`verify-2026-10-24T04-07-35-255Z`). 첫 실제 import의 Cubemap형식 문제는 Texture2D 명시/GetVersion1 재import로 수정했다. Windows Player 빌드·자동 입력/화면 확인 진행 중이며 아래 초기 “license 차단” 문장은 이전 기록이다.
+최신 실행 경계: 초기 license 종료198은 해소됐다. 실제 Editor 검사와 Windows build(Succeeded/errors0)를 통과했고 실제 Player 자동이동 X4020→4101.58496·120f차지/해제·4처치·PNG4종을 확인했다. VISUAL RETOUCH(시작구간). 현재 새 시작 메뉴 창을 열어두었다. 첫 Cubemap오인 import는 Texture2D 명시/GetVersion1로 수정했다. 아래 초기 “license 차단” 문장은 이전 기록이다. 전체 게임/수동 플레이 인수는 별도다.
 
 추가 지시 “고도본도 저장해두고 유니티도 한번 해봐”: Godot4,979파일/2,071,696,605bytes를 I: 별도 보존본으로 복사하고 전 파일 SHA256 및 증분 Git 번들을 검증했다. Unity 기본 스킬을 기검참으로 연결하고1·2타/3타 홀드·40/80/120f 차지·검기 관통/벽/LOS·적 포이즈 및 원본 실버 시트/잉크/잔상 표현을 추가했다. 실제 Editor 실행은 여전히 라이선스 차단 상태이며, 아래 초기 기본 무기 검증과 새 기검참 대조 기록은 [현재 보고서](../UNITY_PORT_20261024.md)에서 구분한다. 히트스톱·명중광·오디오는 미완료다.
 

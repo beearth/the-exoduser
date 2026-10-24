@@ -10,7 +10,7 @@
 | 원격 main 참고 | `fab7a167c30c6421bda8cf6d4c2ee2e7753e87f3`; 이 후보를 main 병합으로 보고하지 않음 |
 | 공유 G: | HEAD `5659d14d38b8068518cb5866a336bf930a1abbce`, 기존 staged480파일 및 WORK 보존 |
 | Unity | 설치된 `6000.4.8f1 (f8b72d3d7343)`, Windows standalone 모듈 존재 |
-| 실제 실행 검증 | 초기 license 종료198 이후 활성화 확인. 실제 Editor import/C# compile·64청크 크기/원본atlas·shader error·모델 검사 **PASS**, `verify-2026-10-24T04-07-35-255Z/receipt.json`. Windows Player 빌드/플레이는 다음 게이트 |
+| 실제 실행 검증 | 초기 license 종료198 이후 활성화 확인. 실제 Editor 검사 PASS → Windows Development 빌드 PASS(오류0,860,830,571bytes) → 실제 Player 자동 이동·차지/해제·4처치와 PNG확인. 수동 플레이/전체 이식은 별도 |
 | Hub | `G:/unity/Unity Hub/Unity Hub.exe`, 버전3.18.0 창/handle 확인. 최종 Editor에서 entitlement/license 초기화와 실제 import를 확인 |
 
 ## 이번 구현과 검증
@@ -24,7 +24,7 @@
 | 시작 악의 | 사용자 공유 저장소를 열지 않는 격리 새 실행 기본1000(`game.html:63958`), 처치당+4 |
 | 원본 맵 |200×200/40px, 시작4020,7420; 청크64·props36·타일/언덕 경사로/19prop ellipse. 새 지형 제작 아님 |
 | 미디어 |132복사 영수증/184,855,995bytes, 각 파일 원본↔목적지 SHA256 대조. 기검참 원본 실버 시트 추가. `Tools/Fixtures/source_receipt.json`(I:); 신규 이미지 생성0 |
-| 기검참 표현 | 원본3×3 시트/9프레임,192/252px×chargeScale, 잉크1.14배·잔상2개0.9배·glow1.08배·본체. 원본5슬롯 trail 사용. 차지40/80/120f 단계와2겹 시트/3개 표시선. Additive ONE/ONE 및 opacity RGB premultiply, 잉크 RGB5/4/6·밝기×2.4. Canvas blur5px는11×11 Gaussian shader 근사이며 GPU compile·화면 동등성·성능 미검증 |
+| 기검참 표현 | 원본3×3 시트/9프레임,192/252px×chargeScale, 잉크1.14배·잔상2개0.9배·glow1.08배·본체. 원본5슬롯 trail 사용. 차지40/80/120f 단계와2겹 시트/3개 표시선. Additive ONE/ONE 및 opacity RGB premultiply, 잉크 RGB5/4/6·밝기×2.4. Canvas blur5px는11×11 Gaussian shader 근사. 실제 build/GPU D3D12 렌더·차지/발사 화면 확인; 원본 pixel동등성·성능 미검증 |
 | 기본 전투 | 일반 etype0 HP875+쉴드875(레벨1), 기본 무기 비용5·5프레임 swing/남은3 경계 타격, 원본 회복시간; 스폰 링5/580px·safePt |
 | 기검참 판정 | 원본ST10,1·2타 즉시발사/3타 홀드 후 해제,40/80/120f에2/4/8배·최대120f, 검기 speed14·수명선감소·벽/LOS·actor identity별1회 관통. 시작장비 Lv1검기1940. 독립 원본 대조93/93; `Tools/ki-slash-oracle/runs/green-03-poise.json` |
 | 일반 적 포이즈 | 신규 검토에서 stun종료 즉시완전회복 오류를 발견해 제거. 원본 실제loop처럼 marker만clear, hitstun/stun 조기반환 뒤 eligible200f마다최대15% 회복·새타격시타이머0. 실제 원문 prefix oracle RED7실패→GREEN7/7; `runs/green-poise.json` |
@@ -37,20 +37,29 @@
 
 원본 스냅샷 SHA256 `dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209`. 현재 G: 웹 핵심13함수는 동일하고 파일 전체 hash는 다르므로 최신 웹 전체 이식이라 부르지 않는다. 영수증과 첫 실패는 `I:/EXODUSER-Storage/qa/unity-port-20261024/`에 보존한다.
 
-추가 기검참/포이즈8함수도 현재 G:와 snapshot의 원문이 일치한다(`ki-slash-oracle/oracle.json`의 `live_comparison`). 포이즈 수정 후 기본/맵36/36 회귀를 다시 통과했고 기검참 spec 재검토는 제한범위 PASS다. 렌더러는 `_Opacity`를 MaterialPropertyBlock으로 명시 전달해 SpriteRenderer 파이프라인별 색상 전달에 의존하지 않는다. Editor 검증 진입점에는1254×1254 시트와 ShaderHasError 검사를 준비했으나 라이선스 차단으로 실행되지 않았다.
+추가 기검참/포이즈8함수도 현재 G:와 snapshot의 원문이 일치한다(`ki-slash-oracle/oracle.json`의 `live_comparison`). 포이즈 수정 후 기본/맵36/36 회귀를 다시 통과했고 기검참 spec 재검토는 제한범위 PASS다. 렌더러는 `_Opacity`를 MaterialPropertyBlock으로 명시 전달해 SpriteRenderer 파이프라인별 색상 전달에 의존하지 않는다. Editor 검증 진입점의1254×1254 시트와 ShaderHasError 검사는 초기 license 차단 후 실제 실행까지 통과했다.
 
 코드 품질 검토의 `PoiseTests.csproj` Git누락 P2는 ignore예외와 정확 경로 stage로 해결했다. index의 Core/검사 입력만 I: 새 폴더에 복원한 검사도 수행했다. SDK10에서는93/93·7/7 통과했으나, 명시 SDK8 구성에서 `dotnet run`이 custom OutputPath와 다른 기본 apphost를 찾아 실행 실패했다. 원인은 빌드가 아니라 runner의 실행 경로였으며 공통 `runner.cjs`가 build→생성 DLL 직접 실행하도록 수정했다. `global.json`은8.0.301/latestFeature, NuGet소스는 외부 package가 없어 clear한다. 최종 새 입력22파일 복원본 `I:/EXODUSER-Storage/qa/unity-port-20261024/fresh-ki-2026-10-24T04-03-59-821Z/RECEIPT.json`: SDK8 build0경고/0오류, 기검참93/93·포이즈7/7. 이 최소 복원 검사는 전체 game clone/Unity Player 실행이 아니다. 수정된 runner를 포함한 최종 코드 품질 재검토의 미해결 P1/P2는 없다.
 
-## 실제 Editor 통과와 다음 작업
+## 실제 Windows Player 실행과 다음 작업
 
 1. 초기 라이선스 차단 이후 최종 재시도에서 실제 import가 시작됐다. 계정/인증 파일을 변경하거나 복사하지 않았다.
-2. 첫 실제 import는 이미지가 `textureShape:2` Cubemap으로 들어가 `Resources.Load<Texture2D>`가 null인 실패였다. D3D11 재현에서도 동일했다. Importer에 Texture2D 명시와 GetVersion1을 추가하고 재import해 Editor 검사를 통과했다. [공식 shape enum](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/AssetPipeline/TextureImporterEnums.cs). Windows 고유 출력 빌드가 다음 게이트다.
-3. 원본처럼 입력해 이동·공격·피해·처치·성장을 실제 Player에서 검수하고 화면/프레임/오류를 기록한다.
+2. 첫 실제 import는 이미지가 `textureShape:2` Cubemap으로 들어가 `Resources.Load<Texture2D>`가 null인 실패였다. D3D11 재현에서도 동일했다. Importer에 Texture2D 명시와 GetVersion1을 추가하고 재import해 Editor 검사를 통과했다. [공식 shape enum](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/AssetPipeline/TextureImporterEnums.cs).
+3. 실제 Windows 빌드와 Player 자동 입력을 완료했다. 자연 종주·사람의 입력/손맛·프레임 성능·원본1x 비교는 후속이며 아래 영수증 범위와 구분한다.
 4. 기검참의 원본 명중광·화면 정지/흔들림·사운드, 장비 생성/인벤토리·전체 적/투사체·Q/E 보호 계약·저장·지역/보스/클리어를 원본 순서에 따라 확대한다. 현재 후보로 전체 이식 완료나 Unity 우위 확정을 주장하지 않는다.
 
 Q/E 판정, 사용자 세이브, 웹/Godot 게임 코드, `2_3` 문서는 변경하지 않았다. 자동 서버 재시작·옛 팀 재가동·Steam 배포도 없다.
 
-`--unity-smoke`는 실제 Player에서 같은 StepInput→Tick 경로로 이동30회·공격300회,120f 차지 후 해제를 실행하고 이동/충전/활성 검기/피해/처치를 JSON으로 기록하는 자동 검수 fixture다. 전체 HUD 포함 시작/차지/해제/전투후 PNG를 저장하고 새 시작 메뉴로 돌아간다. 사람의 직접 입력 QA와 구분하며 아직 Player 결과를 통과로 기록하지 않는다.
+`--unity-smoke`는 실제 Player에서 같은 StepInput→Tick 경로로 이동30회·공격300회,120f 차지 후 해제를 실행하는 자동 fixture다. 플레이어 X4020→4101.58496, maximumCharge120, charged/released=true, 활성 검기 최대1, 시작 적5중4처치, totalDamage48509, 로드청크10을 기록했다. 전체 HUD 포함 시작/차지/해제/전투후 PNG4종을 저장하고 새 시작 메뉴로 돌아왔다. .NET 모델 결과와 별개인 실제 Player 실행이며 사람의 직접 입력 QA와 구분한다.
+
+| 실제 산출물 | 위치 / 결과 |
+|---|---|
+| Editor PASS | `I:/EXODUSER-Storage/qa/unity-port-20261024/verify-2026-10-24T04-07-35-255Z/receipt.json` |
+| Windows build | `I:/EXODUSER-Storage/qa/unity-port-20261024/build-2026-10-24T04-10-39-891Z/EXODUSER-Unity.exe`; `receipt.json` Succeeded/errors0 |
+| Player | `I:/EXODUSER-Storage/qa/unity-port-20261024/player-2026-10-24T04-11-41-989Z/player-smoke.json`; D3D12, HWND 실제 창 확인 |
+| 화면 | 같은 Player폴더의 `unity-first-playable.png`, `unity-ki-charge.png`, `unity-ki-release.png`, `unity-after-combat.png`; 첫3종 실제 픽셀 검토 |
+| 오류 경계 | Player log에 Exception/ERROR/Shader error/InvalidOperation/Missing 매칭0. D3D12 debug info queue 조회 실패와 swapchain frame statistics fallback 경고가 있으므로 완전 무경고/성능 검증이라고 부르지 않음 |
+| 시각 판정 | **RETOUCH**. 원본 바닥/props·플레이어/적·실버 검기·차지 표시를 실제로 확인. 빈 HUD orb/슬롯의 실제 fill/아이콘·가림/그림자·안개/생체 움직임·명중광 등 미이식. 전체 원본과 시각 동등성 인수는 아님 |
 
 ## 저장 정책
 
@@ -65,12 +74,12 @@ Q/E 판정, 사용자 세이브, 웹/Godot 게임 코드, `2_3` 문서는 변경
 | STAGE / MASTER | CH1-1 원본 데이터·전체 silhouette/regions/routes/side spaces 보존. 신규 master 제작 없음 |
 | OUTER MASS / LARGE / MEDIUM | 원본64청크·36props 재사용. 배치·overlap·접합 변경 없음; 기존 웹 표현을 Unity에서 재검수해야 함 |
 | GROUND | 원본 source_rect1,1/1024px → world1000px로 정렬. 그림자·안개·동적 생체 표현 미이식 |
-| PLAYABLE | 원본 canMv2523표본 일치. 실제 Unity combat readability·경로종주 미검증 |
+| PLAYABLE | 원본 canMv2523표본 일치. 실제 Player 자동이동30회·공격300회/4처치 확인. 수동 combat readability·경로종주 미검증 |
 | LANDMARK | 원본 좌표 보존, 상호작용/보스 진행 미이식 |
-| CAMERA QA | START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 모두 라이선스 차단으로 미검증 |
-| TECH QA | 모델 충돌/코어·정적 compile만 통과. Unity loading/seam/GPU/performance/실행오류 검증 전 |
+| CAMERA QA | START의 실제 Player PNG4종 확보/첫3종 검토. EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 및 원본1x 비교 미검증 |
+| TECH QA | 모델/충돌·실제 Editor import/compile/shader·Windows build·Player 이동/공격·캡처 통과. loading비용/seam전체/GPU성능/장기실행 미검증 |
 | FILES / GIT | unity 소스/에셋·자기 docs만. 타 팀/공용 staging/Godot 원본 무수정. 커밋·원격 SHA는 외부 DONE 영수증 |
-| VISUAL VERDICT | **미검증 — PASS/RETOUCH/FAIL 판정 보류**. 실행할 수 없는데 시각 판정을 만들지 않음 |
-| NEXT PASS | 라이선스 활성화 후 실제 import·실행·캡처 및 원본1x 비교 |
+| VISUAL VERDICT | **RETOUCH** — 시작구간 원본 미디어/실버 검기는 실제 확인했지만 HUD fill/아이콘·동적 환경·명중광/시각 동등성 미완료 |
+| NEXT PASS | 원본1x 대조·HUD/효과/오디오·자연 플레이/경로종주·전체 기능 확대 |
 
-지정된 PASS/RETOUCH/FAIL 셋 중 현재 후보를 ‘완성 인수 가능’으로 판단하면 **FAIL(시각 미검증·기술 실행 차단)**이다. 이는 실제 렌더 화면을 본 시각 품질 평가와 구분한다.
+이 판정은 실제 시작구간의 부분 시각 검토다. 전체 게임 완성 인수나 다른 카메라 구간의 visual PASS로 확대하지 않는다.
