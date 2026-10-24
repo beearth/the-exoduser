@@ -2,6 +2,8 @@
 
 ## 2026-10-24 사용자 지시 — Unity 이식 전환
 
+최신 Editor 게이트: license 차단 해소 후 실제 import/compile·원본 texture/atlas 크기·shader/model 검증 PASS. 첫 이미지 Cubemap 오인 import는 Texture2D 명시/GetVersion1 재import로 수정했다. Windows 빌드·자동 입력/화면 검수는 별도 진행하며 아래 초기 license 차단 기록을 현재 상태로 읽지 않는다.
+
 후속 “고도본도 저장해두고 유니티도 한번 해봐”에 따라 I: Godot별도보존4,979파일/2.07GB의 SHA256 및 Git증분번들을 검증했다. Unity에는 원본 기본 기검참1·2·3타/홀드차지·검기/관통/포이즈·실버시트/잉크/잔상을 추가 연결한다. 실제 Unity 실행 차단은 유지하며 .NET 대조와 실제 플레이를 구분한다. 보존 경로와 검토 결과는 아래 보고서에 기록한다.
 
 사용자가 Unity 이식을 직접 지시했다. PC Codex의 새 구현 대상은 `codex/unity-port-20261024`, 같은 소유 worktree의 `unity/`다. 원본 기반 C# 코어·시작 장비 표본·맵/미디어·시작 씬/렌더러/HUD 후보를 만들었고 .NET 모델/정적 검사를 완료했다. **Unity 실제 import·실행·빌드는 license 미활성화(exit198)로 검증 전**이다. 사용자의 후속 요청으로 Hub 창을 실제 열었으며 로그인·활성화는 사용자 계정 단계로 남아 있다. [현황·범위·검증·차단](../engine/UNITY_PORT_20261024.md). 기존 Godot 원격 `7d67c4182`와 G: 공용480 staged/WIP·사용자 세이브는 보존한다. 전체 이식/Unity 플레이 품질/Steam 인수 완료로 올리지 않는다.

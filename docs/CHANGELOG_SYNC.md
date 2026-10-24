@@ -1,3 +1,8 @@
+## 2026-10-24 UNITY-PORT-03 — 실제 Editor 검증과 첫 import 수정
+
+- 초기 license 차단 뒤 실제 Unity import/compile을 진행했다. 첫 실제 검사에서 이미지가 Cubemap(shape2)으로 들어가 Texture2D로 로드되지 않는 실패를 재현했다. SourceTextureImporter에 Texture2D 명시와 GetVersion1을 추가해 재import 후 실제 Editor texture/atlas/shader/model 검사 PASS. 실제 생성된 metadata와 프로젝트 기본 설정을 후보의 정확한 입력으로 보존한다.
+- Player 자동 검수는 동일 StepInput→Tick으로 이동30회/공격300회·120f 홀드 후 해제와 화면4종/피해·처치 영수증을 준비했다. 아직 Windows Player 결과나 수동 플레이 완료를 주장하지 않는다. [현재 경계](engine/UNITY_PORT_20261024.md).
+
 ## 2026-10-24 UNITY-PORT-02 — Godot 별도 보존과 기검참 연결
 
 - Godot4,979파일/2,071,696,605bytes의 I: 별도 보존본을 만들고 전 파일 source-before/source-after/destination SHA256·원본 mtime/size를 확인했다. 기반9734e2e79가 필요한 증분 Git 번들도 verify 통과. 사용자 세이브·기존 Godot·공용 INDEX/WIP 보존.

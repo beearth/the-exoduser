@@ -20,7 +20,7 @@ public static class PortVerification {
    if(s.Player.MaxHp!=526||s.Player.Shield!=285)throw new Exception("Source starter mismatch");
    float x=s.Player.X;for(int i=0;i<60;i++)s.Tick(1,0,1000,0,false,false);
    if(Math.Abs(s.Player.X-x-163.176f)>.01)throw new Exception("Source movement mismatch");
-   foreach(var c in map.Data.chunks){var t=Resources.Load<Texture2D>(c.texture);if(t==null||t.width!=1026||t.height!=1026)throw new Exception("Original chunk dimensions "+c.texture);Resources.UnloadAsset(t);}
+   foreach(var c in map.Data.chunks){var t=Resources.Load<Texture2D>(c.texture);if(t==null||t.width!=1026||t.height!=1026)throw new Exception("Original chunk dimensions "+c.texture+" actual="+(t==null?"missing":t.width+"x"+t.height)+" graphics="+SystemInfo.graphicsDeviceType);Resources.UnloadAsset(t);}
    var atlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_walk_south");if(atlas==null||atlas.width!=8192)throw new Exception("Walk atlas imported at wrong scale");
    var ki=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");if(ki==null||ki.width!=1254||ki.height!=1254)throw new Exception("Original kiSlash sheet imported at wrong scale");
    foreach(var name in new[]{"Shaders/KiSlashAdditive","Shaders/KiSlashInk"}){

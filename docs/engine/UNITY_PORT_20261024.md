@@ -10,8 +10,8 @@
 | 원격 main 참고 | `fab7a167c30c6421bda8cf6d4c2ee2e7753e87f3`; 이 후보를 main 병합으로 보고하지 않음 |
 | 공유 G: | HEAD `5659d14d38b8068518cb5866a336bf930a1abbce`, 기존 staged480파일 및 WORK 보존 |
 | Unity | 설치된 `6000.4.8f1 (f8b72d3d7343)`, Windows standalone 모듈 존재 |
-| 실제 실행 검증 | **BLOCKED_LICENSE**. Editor 종료198, `No valid Unity Editor license found` |
-| Hub | `G:/unity/Unity Hub/Unity Hub.exe`, 버전3.18.0 창/handle 확인. 로그인·활성화는 사용자 계정 단계 |
+| 실제 실행 검증 | 초기 license 종료198 이후 활성화 확인. 실제 Editor import/C# compile·64청크 크기/원본atlas·shader error·모델 검사 **PASS**, `verify-2026-10-24T04-07-35-255Z/receipt.json`. Windows Player 빌드/플레이는 다음 게이트 |
+| Hub | `G:/unity/Unity Hub/Unity Hub.exe`, 버전3.18.0 창/handle 확인. 최종 Editor에서 entitlement/license 초기화와 실제 import를 확인 |
 
 ## 이번 구현과 검증
 
@@ -41,14 +41,16 @@
 
 코드 품질 검토의 `PoiseTests.csproj` Git누락 P2는 ignore예외와 정확 경로 stage로 해결했다. index의 Core/검사 입력만 I: 새 폴더에 복원한 검사도 수행했다. SDK10에서는93/93·7/7 통과했으나, 명시 SDK8 구성에서 `dotnet run`이 custom OutputPath와 다른 기본 apphost를 찾아 실행 실패했다. 원인은 빌드가 아니라 runner의 실행 경로였으며 공통 `runner.cjs`가 build→생성 DLL 직접 실행하도록 수정했다. `global.json`은8.0.301/latestFeature, NuGet소스는 외부 package가 없어 clear한다. 최종 새 입력22파일 복원본 `I:/EXODUSER-Storage/qa/unity-port-20261024/fresh-ki-2026-10-24T04-03-59-821Z/RECEIPT.json`: SDK8 build0경고/0오류, 기검참93/93·포이즈7/7. 이 최소 복원 검사는 전체 game clone/Unity Player 실행이 아니다. 수정된 runner를 포함한 최종 코드 품질 재검토의 미해결 P1/P2는 없다.
 
-## 실행 차단과 다음 작업
+## 실제 Editor 통과와 다음 작업
 
-1. Unity Hub 로그인·보유 라이선스 활성화. Personal 활성화의 공식 경로도 Hub다: [Unity 라이선스 관리](https://docs.unity.com/en-us/hub/manage-license).
-2. Editor 실제 import/compile → 원본 texture 크기/씬 검증 → Windows 고유 출력 빌드.
+1. 초기 라이선스 차단 이후 최종 재시도에서 실제 import가 시작됐다. 계정/인증 파일을 변경하거나 복사하지 않았다.
+2. 첫 실제 import는 이미지가 `textureShape:2` Cubemap으로 들어가 `Resources.Load<Texture2D>`가 null인 실패였다. D3D11 재현에서도 동일했다. Importer에 Texture2D 명시와 GetVersion1을 추가하고 재import해 Editor 검사를 통과했다. [공식 shape enum](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/AssetPipeline/TextureImporterEnums.cs). Windows 고유 출력 빌드가 다음 게이트다.
 3. 원본처럼 입력해 이동·공격·피해·처치·성장을 실제 Player에서 검수하고 화면/프레임/오류를 기록한다.
 4. 기검참의 원본 명중광·화면 정지/흔들림·사운드, 장비 생성/인벤토리·전체 적/투사체·Q/E 보호 계약·저장·지역/보스/클리어를 원본 순서에 따라 확대한다. 현재 후보로 전체 이식 완료나 Unity 우위 확정을 주장하지 않는다.
 
 Q/E 판정, 사용자 세이브, 웹/Godot 게임 코드, `2_3` 문서는 변경하지 않았다. 자동 서버 재시작·옛 팀 재가동·Steam 배포도 없다.
+
+`--unity-smoke`는 실제 Player에서 같은 StepInput→Tick 경로로 이동30회·공격300회,120f 차지 후 해제를 실행하고 이동/충전/활성 검기/피해/처치를 JSON으로 기록하는 자동 검수 fixture다. 전체 HUD 포함 시작/차지/해제/전투후 PNG를 저장하고 새 시작 메뉴로 돌아간다. 사람의 직접 입력 QA와 구분하며 아직 Player 결과를 통과로 기록하지 않는다.
 
 ## 저장 정책
 

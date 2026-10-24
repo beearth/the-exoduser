@@ -1,6 +1,6 @@
 # Unity 원본 기반 기본 무기·기검참 코어 — 2026-10-24
 
-사용자 지시에 따라 Unity 이식으로 전환한다. 이 문서는 Unity용 순수 C# 코어의 실제 구현 범위와 검증을 기록한다. Godot 파일, 웹 게임 코드, 세이브는 수정하지 않았다. Unity Editor 라이선스 및 렌더러/에디터 실행 검증은 상위 작업자의 별도 게이트다. 아래 .NET 검사는 Unity 실행·게임 시각 검수·전체 이식 완료를 뜻하지 않는다.
+사용자 지시에 따라 Unity 이식으로 전환한다. 이 문서는 Unity용 순수 C# 코어의 실제 구현 범위와 검증을 기록한다. Godot 파일, 웹 게임 코드, 세이브는 수정하지 않았다. 초기 license 차단 뒤 부모가 실제 Editor import/compile/asset 검사를 통과했다. Windows Player/시각/수동 플레이는 별도 게이트다. 아래 .NET 검사와 전체 이식 완료를 혼동하지 않는다.
 
 ## 소스와 프로필
 
@@ -18,7 +18,7 @@
 | JS 실행 위치 | I:의 오프라인 검증/export 전용. Unity 실행 중 JS/WebView/브라우저 없음 |
 | 추가 가방 / 세이브 | 신규 시작 가방 10장비, 슬롯 복원, 공용 악의 연동 미구현 |
 
-Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.CreateKiSlash()`를 사용하고, `CreateBasicWeapon()`은 기본 무기 비교용이다. `new SimulationConfig()`의 `source-seed-basic-weapon`은 장비 없는 수식 검사용 fixture이며 실제 시작 장비라고 표시하면 안 된다. Editor import/실행은 아직 라이선스 차단으로 검증하지 못했다.
+Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.CreateKiSlash()`를 사용하고, `CreateBasicWeapon()`은 기본 무기 비교용이다. `new SimulationConfig()`의 `source-seed-basic-weapon`은 장비 없는 수식 검사용 fixture이며 실제 시작 장비라고 표시하면 안 된다. 초기 라이선스 차단 뒤 Editor import/compile/asset 검사 통과까지 진행했으며 Player/시각은 상위 보고서에서 구분한다.
 
 ## 원본 15장비 표본에서 추출한 native 설정
 

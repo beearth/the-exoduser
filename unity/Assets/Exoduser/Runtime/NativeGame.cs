@@ -210,11 +210,30 @@ namespace Exoduser.UnityPort
             Running=false;float before=Simulation.Player.X;
             for(int i=0;i<30;i++){StepInput(1,0,Simulation.Player.X+100,Simulation.Player.Y,false,false);yield return null;}
             string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;
-            Directory.CreateDirectory(output);File.WriteAllText(Path.Combine(output,"player-smoke.json"),JsonUtility.ToJson(new SmokeReceipt{moved=Simulation.Player.X>before,initialX=before,finalX=Simulation.Player.X,originalMapChunks=Map.Data.chunks.Length,loadedChunks=LoadedChunks,enemyActors=Simulation.Enemies.Count,webViewUsed=false},true));
+            Directory.CreateDirectory(output);bool moved=Simulation.Player.X>before;float finalX=Simulation.Player.X;
             yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-first-playable.png"));yield return null;
+            bool charged=false,released=false;float maximumCharge=0;int maximumProjectiles=0;
+            // Controlled native-player input through the same Tick adapter as
+            // FixedUpdate. This is an automated fixture, not manual play QA.
+            for(int i=0;i<300;i++){
+                var p=Simulation.Player;EnemyState target=null;float nearest=float.MaxValue;
+                foreach(var e in Simulation.Enemies)if(e.Alive){float dx=e.X-p.X,dy=e.Y-p.Y,d=dx*dx+dy*dy;if(d<nearest){nearest=d;target=e;}}
+                bool hold=!(p.KiChargeActive&&p.KiChargeTicks>=120);
+                if(!hold)released=true;
+                StepInput(0,0,target==null?p.X+100:target.X,target==null?p.Y:target.Y,hold,false);
+                charged|=p.KiChargeActive;maximumCharge=Mathf.Max(maximumCharge,p.KiChargeTicks);
+                int active=0;foreach(var projectile in Simulation.Projectiles)if(projectile.Active)active++;
+                maximumProjectiles=Mathf.Max(maximumProjectiles,active);
+                if(p.KiChargeActive&&p.KiChargeTicks==120){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-ki-charge.png"));}
+                if(!hold){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-ki-release.png"));}
+                yield return null;
+            }
+            File.WriteAllText(Path.Combine(output,"player-smoke.json"),JsonUtility.ToJson(new SmokeReceipt{moved=moved,initialX=before,finalX=finalX,originalMapChunks=Map.Data.chunks.Length,loadedChunks=LoadedChunks,enemyActors=Simulation.Enemies.Count,webViewUsed=false,charged=charged,released=released,maximumCharge=maximumCharge,maximumProjectiles=maximumProjectiles,kills=Simulation.Kills,totalDamage=Simulation.TotalDamage},true));
+            yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-after-combat.png"));yield return null;
+            ResetRun();menu=true;Running=false;
         }
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
-        [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed;public float initialX,finalX;public int originalMapChunks,loadedChunks,enemyActors;}
+        [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;}
         void OnDestroy(){kiView?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
     }
 }

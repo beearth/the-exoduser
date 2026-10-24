@@ -2,11 +2,11 @@
 
 사용자 지시(2026-10-24)로 Unity 이식을 시작했다. Unity **6000.4.8f1**, C# 게임 로직·SpriteRenderer 기반이며 실행 중 브라우저/WebView/JavaScript를 사용하지 않는다.
 
-현재 코드는 **미실행 이식 후보**다. Editor 라이선스가 없어 실제 import·Play·Windows 빌드·화면 검수는 아직 수행하지 못했다. 정적 컴파일이나 .NET 모델 검사 통과를 실행 완료로 해석하지 않는다.
+현재 코드는 **부분 이식 후보**다. 초기 license 차단 뒤 실제 Editor import·C# compile·원본 texture/atlas 크기·shader error·모델 검증을 통과했다. Windows 빌드·Player 실행·화면 검수는 별도로 기록한다. 전체 게임 이식/수동 플레이 인수 완료는 아니다.
 
 ## 실행
 
-1. Unity Hub에서 로그인하고 보유 라이선스를 활성화한다.
+1. Unity Hub의 유효한 라이선스가 필요하다. 현재 PC는 Editor 실제 검사를 통과했다.
 2. 이 폴더를 프로젝트로 추가하거나 `open-unity.cmd`를 실행한다.
 3. `Assets/Scenes/FirstPlayable.unity`를 열고 Play를 누른다.
 4. 화면의 **전투 시작**을 누른다. WASD 이동, 마우스 조준, 좌클릭 기검참, 세 번째 공격은 버튼을 유지해 차지한 뒤 놓아 발사, ESC 메뉴. 기본 무기 검증은 메뉴에서 선택한다.
