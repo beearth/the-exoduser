@@ -1,3 +1,7 @@
+## 2026-10-24 UNITY-LOBBY-01 자동 검수 입력 분리
+
+- 실제113초완주gate가72초wall/endedfalse를검출해FAIL처리했다. 영상5종decode/분리음성·로비·폐기0등18/20은통과. 자동fixture중에만normalkey/mousecut/skip경로를차단하고끝난후입력을복귀시켜재검수한다. 일반게임입력·사용자저장·원본/Godot보존. [검수기록](engine/UNITY_LOBBY_20261024.md).
+
 ## 2026-10-24 UNITY-LOBBY-01 끊김 원인 수정
 
 - 동일Release960×540 A/B에서 skipOnDrop true는폐기757/영상정체, false는폐기0/세계관12초288프레임/최대gap.0461초를확인해정식기본false로변경했다. adapter15/4조합60PASS. 원본로비High4:4:4 profile은Windows미지원이어서 원본보존+호환High/yuv420p/B0/BT709파생본으로연결,24fps/290frames/12.083333s·SSIM.996279·양쪽decode0오류. 최종미디어26개187,678,234B. 일반실행본PID UDP/TCP0,개발PlayerConnection0. 다음전체113초자연완주/로비실제화면검수예정. [근거](engine/UNITY_LOBBY_20261024.md).

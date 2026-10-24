@@ -4,7 +4,7 @@
 
 | 항목 | 원본과 구현 |
 |---|---|
-| SSOT | 현재 G:/exoduser/index.html SHA256 `8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621`. E:의 이전 index SHA95c7d29.../v15 영상과 다르므로 최신 G: 참조. source13파일 SHA256·원문을 I: source-snapshot에 보존 |
+| SSOT | 현재 G:/exoduser/index.html SHA256 `8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621`. E:의 이전 index SHA95c7d29.../v15 영상과 다르므로 최신 G: 참조. source12파일 SHA256·원문을 I: source-snapshot에 보존 |
 | 실행 경로 | FDG 로고 영상→여캐 타이틀 영상/브랜드→지옥문 첫 프레임/ENTER→문 열림→세계관 v22b→로비. 원본 phase0 경고문은 제거 상태여서 다시 추가하지 않음 |
 | FDG | 원본3.2초, 재생 시각 진행이12초 없으면 엠블럼 폴백3.2초 후 전환. 준비된 영상의 정지도 감지. 클릭/키 같은 프레임이 다음 화면까지 관통하지 않음 |
 | 타이틀 | title_motion_hd_20260929.mp4 무음 loop, 실패 시 SD, 실패 시 원본 plate. 원본 splashTitleBrand SVG를1983×793으로 raster·clean plate 임베드/Georgia font, 원본 crop 수식 사용. 폰트 raster 완전 동등성 미검증 |
@@ -59,3 +59,7 @@
 | 정식 기본값 | skipOnDrop=false. --unity-video-allow-drop은 기존 문제 재현 전용, --unity-video-no-drop은 끄기 우선. adapter15검사, 기본/옵션4조합60PASS. 이12초 진단만으로113초 자연완주를 주장하지 않음 |
 | 로비 호환 | 원본profile High4:4:4 Predictive를 Windows decoder가 거부. 원본 실제pix_fmt는yuv420p로 chroma444라고 오인하지 않음. 새 runtime lobby_varkan_crypt_loop_v2_unity.mp4: High/yuv420p/B0/BT7093태그·1920×1088·24fps·290frames·12.083333s, 2,336,515B, SHA26252471c7ef248cd7b04b8f0e6d7709858d5d9de8aaffe1285a11027b482616. 원본/runtime전체decode오류0, 전체SSIM.996279. 원본G/I보존 |
 | 방화벽 실측 | 새 BuildOptions.None 실행본은 PlayerConnection 로그 없음, 정확한Player PID의 UDP/TCP목록 모두빈값. 규칙/전역방화벽은 변경하지 않음 |
+
+## 자동 완주 검수의 입력 분리
+
+최초 수정 실행 live-player-2026-10-24T11-40-47-179Z는20검사 중18PASS,5종영상decode/음성/자막/로비/skip/replay/게임차단/무예외/폐기0은통과했다. 그러나 world 시각110초가wall72.1845초에끝나고 실제endedEvent=false여서 자연완주2검사는FAIL이다. 일반키/마우스의cut/hold-skip이fixture에섞일수있던경로를분리했다. 명시--unity-lobby-smoke가실행중일때만NativeLobby.AutomatedInput=true로키·마우스이벤트와normalInput읽기를차단하고fixtureAPI는유지한다. 종료뒤false로원복하므로일반실행과검수후로비의조작은유지한다. 기존실패receipt는수정하지않고새실행에서전체자연끝을검수한다.
