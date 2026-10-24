@@ -1,5 +1,7 @@
 # Godot 이식 현황 — 현재 단계와 다음 작업
 
+2026-10-24 후속 [PORT-TAKEOVER-03](orders/reports/PORT-TAKEOVER-03_REPORT.md): G17 모체 산란 마법의 원본 fire_magic1 sample(.35/`.6±6%`/skill priority)만 추가 연결. WASAPI 집중122/0은 이동음 포함한 기술 검사이며, noise/sub/FM/dist·돌진·그로기·전체 청감과 자연 보스 종주는 미완료다.
+
 ## 2026-10-24 PC 인수 재개 — G 이동음 후보
 
 같은 `codex/port-takeover-20261023`에서 기존 G 이동음 stub을 원본 7음원→Main 공용 큐→SND07로 연결했다. [PORT-TAKEOVER-02 검수·실패·미완료](orders/reports/PORT-TAKEOVER-02_REPORT.md). 집중107/0·직접 회귀4종0실패/ERROR0. 변경 후 47h는 exit0이지만 PASS11/NOT_READY7·continuous_E2E=false다. 레벨업 전 자연 사망 및 보스→클리어→로비가 미완료다. 변경 전13/5와 동일한 플레이 결과라는 뜻이 아니며 실제 청감/전체 이식 완료가 아니다.

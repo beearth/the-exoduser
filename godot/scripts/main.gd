@@ -2373,7 +2373,7 @@ func read_native_attack_tempo() -> Dictionary:
 	var e_recovery: int=b.formula.js_to_int32(_native_source_tempo_ratio(28.0,1.0+e_level*0.1))
 	return {"ready":true,"authority":"current_source_tempo","swing_ticks":5.0,"recovery_ticks":recovery,"render_recovery_ticks":recovery if recovery!=0 else 1,"render_windup_ticks":windup if windup!=0 else 1,"e_swing_ticks":20.0,"e_recovery_ticks":e_recovery,"e_render_recovery_ticks":e_recovery if e_recovery!=0 else 1,"stat_dex":stat_dex if is_finite(stat_dex) else null,"stat_dex_nonfinite":not is_finite(stat_dex),"dex_present":stats.has("dex"),"weapon_spd_present":weapon.has("spd"),"weapon_spd":speed if is_finite(speed) else null,"weapon_spd_fallback":not b.affix.js_truthy(raw_speed),"melee_atk_speed":melee.value,"gloves_atk_speed":glove.value,"warrior_render_speed":0.85,"silver_render_speed":1.5,"e_passive_present":passives.has("pParry"),"e_passive":e_level if is_finite(e_level) else null}
 
-# Original attack/death and G movement samples in this Main owner. No generated replacement
+# Original attack/death and G enemy samples in this Main owner. No generated replacement
 # sound, no voice/other skill adoption, and no original master EQ parity claim.
 const ATTACK_SAMPLE_PATHS := {
 	# PORT-TAKEOVER-02: G10227-10236 original monster movement samples.
@@ -2384,6 +2384,7 @@ const ATTACK_SAMPLE_PATHS := {
 	"m_caster":"res://assets/sfx/monster_move/caster_move.mp3",
 	"m_splitter":"res://assets/sfx/monster_move/splitter_walk.mp3",
 	"m_mother":"res://assets/sfx/monster_move/mother_walk.mp3",
+	"fire_magic1":"res://assets/sfx/enemy_magic_source/fire_magic1.mp3", # G12626 dark magic sample layer
 	"sword_swing1":"res://assets/sfx/attack_source/sword_swing1.mp3",
 	"sword_swing2":"res://assets/sfx/attack_source/sword_swing2.mp3",
 	"sword_swing3":"res://assets/sfx/attack_source/sword_swing3.mp3",
@@ -3465,6 +3466,18 @@ func request_native_enemy_move_sample(caller: Node, key: String, gain: float, ra
 	# m_* is neither a skill nor a priority footstep: reuse source 30ms gate,
 	# one shared RNG jitter and the sole SND03/SND07 frame queue/backend.
 	return _queue_native_attack_sample(key,gain,rate,false,{"phase":"enemy_move","owner":caller.get_instance_id()})
+
+# PORT-TAKEOVER-03: G17 source magic(3) original sample layer only.
+func request_native_enemy_magic_sample(caller: Node) -> Dictionary:
+	if not is_instance_valid(world) or not is_instance_valid(caller) or caller != world.get_node_or_null("Demo11EtypeG") or not caller.current():
+		return {"accepted":false,"reason":"actual_G_magic_sound_owner_required"}
+	if read_native_attack_audio_settings().get("ready") != true or not is_instance_valid(_combat_sound_consumer) or player.get_native_character_profile_snapshot().get("ready") != true:
+		return {"accepted":false,"reason":"magic_audio_source_not_ready"}
+	# G12626 playSample('fire_magic1',.35,_r(.6,.06)). The noise,
+	# sub/FM/dist procedural layers remain explicitly unported in the caller.
+	_attack_audio_random_trace.clear()
+	var pitch: float = 0.6 * (1.0 + (_native_attack_audio_random_unit() - 0.5) * 2.0 * 0.06)
+	return _queue_native_attack_sample("fire_magic1",0.35,pitch,true,{"phase":"enemy_dark_magic_sample_partial","owner":caller.get_instance_id()})
 
 # DEMO11-40: existing skill sound callsites supply already resolved pitch/gain.
 func request_native_skill_sample(path: String, gain: float, rate: float) -> void:

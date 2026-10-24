@@ -56870,3 +56870,8 @@ clear leave는 원본 G41920–42003처럼 아레나를 유지한다. lobby_retu
 ## 2026-10-24 PORT-TAKEOVER-02 — Godot G 이동음
 
 G 원본 MP3 7종(231,434 bytes)을 실제 Main/SND03/SND07 큐에 연결했다. 기존 30ms 억제·공유 jitter·프레임6/저우선순위 노드5·OPT/캐릭터/source guard 유지. 이동 조건은 원본 d<1000, max(.03,.35*(1-d/1000)), CD60~119로 관련 사운드 문서 정정. [검수·원실패·미완료](engine/orders/reports/PORT-TAKEOVER-02_REPORT.md). 전체 보스/클리어·청감 인수 아님.
+
+
+## 2026-10-24 PORT-TAKEOVER-03 — G17 산란 마법 샘플
+
+G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 공용 큐에 연결. volume .35, .6±6%와 sample jitter의 공유 난수2회·skill priority·기존 owner guard 유지. noise/sub/FM/dist·돌진/그로기 native PCM 출력과 전체 RNG/청감 동일성은 미완료. [구현·검수·한계](engine/orders/reports/PORT-TAKEOVER-03_REPORT.md).

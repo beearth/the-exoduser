@@ -424,7 +424,16 @@ func play_sample(key: String, vol: float, pitch: float, _at: Vector2) -> void:
 	var receipt: Dictionary = main.request_native_enemy_move_sample(self, key, vol, pitch)
 	if not receipt.get("accepted", false) and receipt.get("reason") != "source_30ms_key_gate":
 		note_unported("playSample_monster_move:" + str(receipt.get("reason")))
-func sfx(name: String, _args: Array, _at: Vector2) -> void: note_unported("SFX." + name)
+func sfx(name: String, args: Array, _at: Vector2) -> void:
+	if not current(): return
+	if name == "magic" and args == [3]:
+		var receipt: Dictionary = main.request_native_enemy_magic_sample(self)
+		if not receipt.get("accepted", false): note_unported("SFX.magic.sample:" + str(receipt.get("reason")))
+		# Keep the missing base noise/sub and dark FM/dist layers visible.
+		# Sample playback is not a complete SFX.magic(3) or RNG parity claim.
+		note_unported("SFX.magic.procedural_layers")
+		return
+	note_unported("SFX." + name)
 func shake(n: float) -> void:
 	if main.source_state.has_method("apply_native_skill_shake"): main.source_state.apply_native_skill_shake(main, n)
 func shake_set(n: float) -> void:

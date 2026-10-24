@@ -110,6 +110,46 @@ func capture_cohort(label: String) -> void:
 	check(image.get_size() == Vector2i(1920, 1080), "engine viewport 1920x1080 " + label)
 	check(image.save_png(folder.path_join(label + ".png")) == OK, "engine capture written " + label)
 
+func check_magic_audio(svc: Node) -> void:
+	check(g_main.has_method("request_native_enemy_magic_sample"), "G dark magic source sample bridge exists")
+	if not g_main.has_method("request_native_enemy_magic_sample"): return
+	var events: Array = []
+	var observe := func(kind: String, data: Dictionary):
+		if kind == "native_attack_audio_queued": events.append(data.duplicate(true))
+	g_main.native_sound_event.connect(observe)
+	g_main._combat_sound_consumer.backend.stop_all("magic_audio_fixture")
+	g_main._attack_audio_queue.clear()
+	g_main._combat_sound_consumer._state.queue.clear()
+	var before: int = g_main.get_native_attack_audio_snapshot().starts
+	for i in 2: svc.sfx("magic", [3], g_main.player.global_position)
+	check(events.size() == 2, "original fire magic priority bypasses 30ms duplicate gate")
+	for packet in events:
+		check(packet.key == "fire_magic1" and packet.gain == 0.35 and packet.priority, "dark magic source key/gain/skill priority")
+		check(packet.source_random_values.size() == 2, "dark cast pitch and playSample jitter each draw once")
+		if packet.source_random_values.size() == 2:
+			var pitch: float = 0.6 * (1.0 + (float(packet.source_random_values[0]) - 0.5) * 2.0 * 0.06)
+			check(is_equal_approx(packet.rate, pitch * (0.92 + float(packet.source_random_values[1]) * 0.16)), "original dark pitch arithmetic")
+	var count: int = events.size()
+	svc.sfx("magic", [2], Vector2.ZERO)
+	svc.sfx("charge", [], Vector2.ZERO)
+	svc.sfx("groggy", [], Vector2.ZERO)
+	check(events.size() == count, "unported procedural and other elements never substituted")
+	check(svc.unported.has("SFX.magic.procedural_layers") and svc.unported.has("SFX.charge") and svc.unported.has("SFX.groggy"), "remaining layers explicitly unported")
+	paused = true
+	svc.sfx("magic", [3], Vector2.ZERO)
+	paused = false
+	check(events.size() == count, "paused dark magic cannot enqueue")
+	var foreign := Node.new()
+	var refused: Dictionary = g_main.request_native_enemy_magic_sample(foreign)
+	foreign.free()
+	check(not refused.get("accepted", false), "foreign dark magic caller refused")
+	g_main._advance_native_attack_audio()
+	var snap: Dictionary = g_main.get_native_attack_audio_snapshot()
+	check(snap.starts - before == 2 and snap.active.size() == 2, "two real dark magic AudioStreamPlayers on existing backend")
+	for voice in snap.active: check(voice.key == "fire_magic1" and voice.playing, "dark magic actual player playing")
+	observations.magic_audio = {"driver": AudioServer.get_driver_name(), "starts": snap.starts - before, "complete_cue": false, "procedural_layers": "NOT_READY"}
+	g_main.native_sound_event.disconnect(observe)
+
 func run() -> void:
 	check(OS.get_user_data_dir().ends_with(G_DIR), "isolated userdir")
 	g_main = load("res://scenes/main.tscn").instantiate()
@@ -198,11 +238,21 @@ func run() -> void:
 		check(a.data.native_final.col == K.COL[et] and int(a.data.native_final.projCd) == (9999 if et == 20 else 240), "col/projCd %d" % et)
 	if "--move-audio-only" in OS.get_cmdline_user_args():
 		check_move_audio(g_main.world.get_node("Demo11EtypeG"))
+		check_magic_audio(g_main.world.get_node("Demo11EtypeG"))
 		print("PC_ENEMY_MOVE_AUDIO_RESULT ", JSON.stringify({"checks": checks, "failures": failures, "observations": observations}))
 		g_main.free()
 		await process_frame
 		quit(0 if failures == 0 else 1)
 		return
+	# Select through the existing UI so real G kernel SFX calls reach Main.
+	paused = true
+	g_main._character_picker.select(1)
+	g_main._on_native_character_selected(1)
+	paused = false
+	var kernel_magic: Array = []
+	var observe_kernel := func(kind: String, packet: Dictionary):
+		if kind == "native_attack_audio_queued" and packet.get("context", {}).get("phase") == "enemy_dark_magic_sample_partial": kernel_magic.append(packet.duplicate(true))
+	g_main.native_sound_event.connect(observe_kernel)
 	# 2) AI: 20초 실제 World 틱
 	var seen: Dictionary = {}
 	var first_children: int = 0
@@ -305,7 +355,13 @@ func run() -> void:
 		for k in iso[et].g_counts: pass
 		check(iso[et].g_fault.is_empty(), "isolated no stop %d: %s" % [et, iso[et].g_fault])
 	step(5)
+	check(not kernel_magic.is_empty(), "actual G17 mother kernel reaches original dark magic sample queue")
+	for packet in kernel_magic:
+		check(packet.key == "fire_magic1" and packet.priority and packet.gain == 0.35, "actual mother source event key/gain/priority")
+	observations.mother_magic_calls = kernel_magic.size()
+	g_main.native_sound_event.disconnect(observe_kernel)
 	check_move_audio(svc)
+	check_magic_audio(svc)
 	observations.seen = seen
 	print("PC_ENEMY_RUNTIME_RESULT ", JSON.stringify({"checks": checks, "failures": failures, "observations": observations}))
 	g_main.free()

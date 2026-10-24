@@ -500,3 +500,6 @@ INTEG-13 06f3db98 기준 웹 지역 경계 유지·미니맵 색 표식·드루�
 ## 2026-10-24 PORT-TAKEOVER-02 — PC 이식 수동 재개
 
 사용자 지시로 기존 E:/exoduser-wt/codex-port-takeover-20261023에서 G 몬스터 이동음 7원본→기존 Main/SND03/SND07 큐 연결을 진행한다. 공용 main/INDEX/WIP·옛 팀 프로세스·사용자 세이브/실행창 보존. 집중107/0·G runtime190/0은 기술 검수이며 전체 이식·청감·보스부터 로비까지 자연 종주 완료가 아니다. 실패·회귀·남은 범위·최종 원격 SHA는 [PORT-TAKEOVER-02](../engine/orders/reports/PORT-TAKEOVER-02_REPORT.md), 외부 I:/EXODUSER-Storage/qa/port-resume-20261024/ 근거를 따른다.
+
+
+2026-10-24 후속 [PORT-TAKEOVER-03](../engine/orders/reports/PORT-TAKEOVER-03_REPORT.md): 모체17 산란의 원본 fire_magic1 샘플층만 추가 연결. WASAPI 집중122/0·실제 G AI→Main queue 포함204/0. 전체 마법 DSP/돌진/그로기·자연 보스 종주는 미완료. 공용 main/사용자 데이터/타 팀 작업 보존, 최종 SHA는 외부 I:/EXODUSER-Storage/qa/port-magic-20261024/DONE.json.
