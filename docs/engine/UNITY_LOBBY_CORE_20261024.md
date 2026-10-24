@@ -110,5 +110,15 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 | 로비 폰트 | 기존Noto source SHA194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252 불변. fontTools4.67.0으로400/600/700고정, 각각24964glyph·fvar없음·OS2weight대조, 고유EXODUSER Lobby Sans KR이름과원본OFL동봉. 공용HUD/인벤폰트는교체하지않음 |
 | 자간 라벨 | 로비전용padding/margin0·nowrap·Overflow, glyph CalcSize.y/lineHeight이상높이를기존CSSlinebox중심에배치. caption13px serif, detail12px. missingdropdown glyph는두선chevron으로대체 |
 | 폰트 bytes | Regular6225052 / SemiBold6221184 / Bold6222884 / OFL4387. 실행미디어 총30개206,351,741B. font source/목적SHA는lobby-assets.json 및I:lobby-fonts.json |
-| 재검수 경계 | 영상20/20은5526빌드에서확정했다. 이후변경은로비타이포와probe의로비캡처만. NativeLobbyVideo/CoreLobbyFlow/NativeGame전체 및NativeLobby Update/OpenForPage/FinishIntro/ReplayIntro는실제완주코드와SHA동일. 새빌드의30초probe/로비pixel ROI와직접화면검수를별도로진행한다. 이probe를113초자연완주로위장하지않음 |
+| 재검수 경계 | 영상20/20은5526빌드에서확정했다. 이후변경은로비타이포와probe의로비캡처만. NativeLobbyVideo/CoreLobbyFlow/NativeGame전체 및NativeLobby Update/OpenForPage/FinishIntro/ReplayIntro는실제완주코드와SHA동일. 새33cbaddec빌드의30초probe는12/12PASS, caption/detail유효행11/10으로잘림교정, 직접PNG·독립검토에서이결함의수정PASS를확인했다. 이probe를113초자연완주로위장하지않음 |
 | 제작 재현 | Tools/export-lobby-fonts.py 및assetexporter, Python312 + fontTools4.67.0은 I:runtime에설치. 재export에는EXODUSER_FONTTOOLS_PATH 사용, 실제게임에는Python/fontTools불필요 |
+
+## 최종 실행·검수 보존 — 2026-10-24
+
+| 항목 | 확정 근거 / 한계 |
+|---|---|
+| 실행 | E:/EXODUSER-Unity-Play/EXODUSER-Unity.exe. 고정 경로·일반 빌드, 최신 UI 실행본152파일을 I: 보관 빌드와 전 파일SHA256 대조. 기존 사용자 Editor/Player 보존 |
+| UI 실제 검수 | live-ui-2026-10-24T12-00-46-301Z/ui-gate.json:12/12PASS. 5영상실제decode/GPU/PNG, 음성·음악 분리, 폐기0, 예외/decoder오류0, 개발연결0, 완주코드SHA동일. 30초 진단으로113초 완주를 대신하지 않음 |
+| 글자 | text-gate.json caption11행/detail10행(이전각1행), 원본대조·실제PNG·independent-typography-review.md에서 이번잘림수정PASS. 모든문자/전체시각품질PASS는아님 |
+| 증거 위치 | I:/EXODUSER-Storage/qa/unity-lobby-20261024. INTRO-PASS.json은5526실제완주, ui-gate.json은33cb UI수정, SAVED.json은최종로컬/원격tree·실행해시·I:증분bundle을기록 |
+| 남은 범위 | 일반OS입력/포커스, 모든해상도·29언어/RTL·전체CSS전환, 캐릭터생성/저장/계정/완전게임진입. 전체 VISUAL VERDICT: RETOUCH. Godot/웹원본/사용자저장/공용INDEX보존 |

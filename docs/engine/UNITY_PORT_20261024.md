@@ -101,3 +101,5 @@ Q/E 판정, 사용자 세이브, 웹/Godot 게임 코드, `2_3` 문서는 변경
 | NEXT PASS | 원본1x 대조·HUD/효과/오디오·자연 플레이/경로종주·전체 기능 확대 |
 
 이 판정은 실제 시작구간의 부분 시각 검토다. 전체 게임 완성 인수나 다른 카메라 구간의 visual PASS로 확대하지 않는다.
+
+2026-10-24 로비/인트로 재작업 검수: v22b 실제113.2507초 자연끝·2718frame·20/20PASS·오디오폐기0. 로비타이포 후속33cb빌드0오류·별도UI12/12PASS·잘림수정확인, 완주재생코드SHA동일. 고정 E:/EXODUSER-Unity-Play/EXODUSER-Unity.exe, UDP/TCP0/개발연결없음. Godot·웹·사용자저장보존. 생성/저장/계정·일반OS입력/29언어/전체해상도·CSS인수는미완료, 전체VISUAL RETOUCH. 세부SSOT: [UNITY_LOBBY_20261024](UNITY_LOBBY_20261024.md).

@@ -26,10 +26,10 @@
 | 모델 | Core65검사 및 실제 NativeLobbyVideo adapter의 좁은 Unity boundary doubles15검사. FDG 준비 후 stall/async blur autoplay 수정 전 행동RED·수정 후GREEN. [소스/테스트 경계](UNITY_LOBBY_CORE_20261024.md) |
 | Player gate RED | 기존 inventory combat Player에 새 frontend gate를 실행: 프런트엔드 receipt/영상decode/화면/자막/자연끝/전환16검사 FAIL, 기존 무예외 검사1개만PASS. 단순 파일 존재/컴파일 성공을 실제 재생으로 세지 않음 |
 | 정적 컴파일 | 설치된 Unity assemblies 대상으로0오류. 실제 Editor/decoder/출력과 별도 |
-| 실제 Editor | I:/EXODUSER-Storage/qa/unity-lobby-20261024/lobby-verify-2026-10-24T11-07-21-792Z PASS/process0. source24미디어·29×32자막·17컷·atlas원본규격·기존HUD GPU/core까지 확인. 수정 후 최신 focus/완주flag 코드의 Player 검수는 진행 중 |
-| 실제 Windows/Player | source checkpoint 원격 보존 뒤 독립 I: 프로젝트에서 build/실제 프런트엔드 검수 예정. 아직 자연 영상 끝/음성·BGM 분리 출력·GUI PNG PASS로 표시하지 않음 |
+| 실제 Editor | 최종 lobby-build-2026-10-24T11-57-19-733Z: source33cbaddec, Build Succeeded/오류0, 1,427,059,089B. 30미디어·29×32자막·17컷·atlas·정적400/600/700폰트 검증 |
+| 실제 Windows/Player | 5526d220의 실제113초 자연끝 전체20/20PASS. 이후 로비타이포만 수정한33cbaddec의 별도짧은UI probe12/12PASS. 상세증거와재생코드동일성은 아래 표 및 INTRO-PASS.json |
 
-후속 Player fixture는 실제 decoder의 프레임 진행·GPU nonblack·음성/음악 출력·세계관 자연 종료 원인·원본 그림/자막·replay/5초 skip·게임 차단/명시 임시 진입을 검사하고 화면을 저장한다. 이 플래그에서만 포커스를 유지하므로 OS 포커스 직접 입력 인수와 구분한다. 사람의 직접 클릭·모든 해상도·모든 글꼴·전체 CSS/hover/fade·게임패드·캐릭터 생성/저장/계정·캐릭터별 서사/완전 게임 로비는 남아 있다.
+실행한 Player fixture는 실제 decoder의 프레임 진행·GPU nonblack·음성/음악 출력·세계관 자연 종료 원인·원본 그림/자막·replay/5초 skip·게임 차단/명시 임시 진입을 검사하고 화면을 저장한다. 이 플래그에서만 포커스를 유지하므로 OS 포커스 직접 입력 인수와 구분한다. 사람의 직접 클릭·모든 해상도·모든 글꼴·전체 CSS/hover/fade·게임패드·캐릭터 생성/저장/계정·캐릭터별 서사/완전 게임 로비는 남아 있다.
 
 **VISUAL VERDICT: RETOUCH.** 원본 브라우저와 실제 Unity 화면을 비교해 계속 보정하며, 모델 통과로 전체 로비/시네마틱 이식 완료를 주장하지 않는다.
 
@@ -46,7 +46,7 @@
 | 이전 실행 실패 | lobby-player-2026-10-24T11-20-43-200Z: AudioSampleProvider buffer 경고236건, 정상 완주 receipt 없음. 사용자도 끊김 보고. 정상 완료로 취급하지 않는다 |
 | 진단 | --unity-video-clock-game / --unity-video-no-drop / --unity-video-direct, 기본값 보존. 한 번에 한 변수만 비교. Direct는 AudioSource 출력 계측을 우회하므로 해당 voicePeak로 완주PASS를 만들지 않음 |
 | 실행 검수 | 동일 stage/player의 frameReady로 프레임 변화·loopwrap을 기록. FDG 끝 뒤 다른 영상을 캡처하지 않음. 5초마다 lobby-progress.json. world ended event·duration113.291667·wall 오차5%+2초·최대 정체.75초·speed1·분리voice/music/listener 신호·overflow0 필수. probe는 10초 진단만이며 완주PASS와 별도 |
-| 방화벽 | 사용자 확인: Codex 승인이 아니라 Windows 방화벽 창. BuildOptions.Development를 None으로 변경해 검수에 불필요한 PlayerConnection 개발 연결 제거. 고정 실제 실행 경로 E:/EXODUSER-Unity-Play. 방화벽 전역 설정/규칙은 변경하지 않음. 새 실행에서 네트워크 listening 여부 확인 필요 |
+| 방화벽 | 사용자 확인: Codex 승인이 아니라 Windows 방화벽 창. BuildOptions.Development를 None으로 변경해 검수에 불필요한 PlayerConnection 개발 연결 제거. 고정 실제 실행 경로 E:/EXODUSER-Unity-Play. 방화벽 전역 설정/규칙은 변경하지 않음. 현재 Player30496 실측 UDP/TCP 모두0, PlayerConnection로그0 |
 | 로비 시각 | 원본 DOM 좌표/폰트/색·hell_gothic frame48px 22% slice·inset22 문양/철판·원본 Steam 배너·grayscale1 brightness.45 비활성 ENTER. panel560×1080 PNG는 원본CSS Chromium 렌더이며 새 아트 생성 아님. 시각 판정 RETOUCH 유지 |
 | 복구 | 큰 v22b 원본은 GitHub 도구 IPC64MiB 한도 때문에 4개 작은 Git blob으로 보관. runtime MP4는 무손실 조립으로 완전히 동일 bytes. [복구 절차](UNITY_LOBBY_MEDIA_RECOVERY_20261024.md). 기존 v17 Unity 사본만 I: superseded-runtime으로 SHA대조 보존 후 제거, G: 원본/Godot 불변 |
 
@@ -74,5 +74,15 @@
 | 로비 폰트 | 기존Noto source SHA194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252 불변. fontTools4.67.0으로400/600/700고정, 각각24964glyph·fvar없음·OS2weight대조, 고유EXODUSER Lobby Sans KR이름과원본OFL동봉. 공용HUD/인벤폰트는교체하지않음 |
 | 자간 라벨 | 로비전용padding/margin0·nowrap·Overflow, glyph CalcSize.y/lineHeight이상높이를기존CSSlinebox중심에배치. caption13px serif, detail12px. missingdropdown glyph는두선chevron으로대체 |
 | 폰트 bytes | Regular6225052 / SemiBold6221184 / Bold6222884 / OFL4387. 실행미디어 총30개206,351,741B. font source/목적SHA는lobby-assets.json 및I:lobby-fonts.json |
-| 재검수 경계 | 영상20/20은5526빌드에서확정했다. 이후변경은로비타이포와probe의로비캡처만. NativeLobbyVideo/CoreLobbyFlow/NativeGame전체 및NativeLobby Update/OpenForPage/FinishIntro/ReplayIntro는실제완주코드와SHA동일. 새빌드의30초probe/로비pixel ROI와직접화면검수를별도로진행한다. 이probe를113초자연완주로위장하지않음 |
+| 재검수 경계 | 영상20/20은5526빌드에서확정했다. 이후변경은로비타이포와probe의로비캡처만. NativeLobbyVideo/CoreLobbyFlow/NativeGame전체 및NativeLobby Update/OpenForPage/FinishIntro/ReplayIntro는실제완주코드와SHA동일. 새33cbaddec빌드의30초probe는12/12PASS, caption/detail유효행11/10으로잘림교정, 직접PNG·독립검토에서이결함의수정PASS를확인했다. 이probe를113초자연완주로위장하지않음 |
 | 제작 재현 | Tools/export-lobby-fonts.py 및assetexporter, Python312 + fontTools4.67.0은 I:runtime에설치. 재export에는EXODUSER_FONTTOOLS_PATH 사용, 실제게임에는Python/fontTools불필요 |
+
+## 최종 실행·검수 보존 — 2026-10-24
+
+| 항목 | 확정 근거 / 한계 |
+|---|---|
+| 실행 | E:/EXODUSER-Unity-Play/EXODUSER-Unity.exe. 고정 경로·일반 빌드, 최신 UI 실행본152파일을 I: 보관 빌드와 전 파일SHA256 대조. 기존 사용자 Editor/Player 보존 |
+| UI 실제 검수 | live-ui-2026-10-24T12-00-46-301Z/ui-gate.json:12/12PASS. 5영상실제decode/GPU/PNG, 음성·음악 분리, 폐기0, 예외/decoder오류0, 개발연결0, 완주코드SHA동일. 30초 진단으로113초 완주를 대신하지 않음 |
+| 글자 | text-gate.json caption11행/detail10행(이전각1행), 원본대조·실제PNG·independent-typography-review.md에서 이번잘림수정PASS. 모든문자/전체시각품질PASS는아님 |
+| 증거 위치 | I:/EXODUSER-Storage/qa/unity-lobby-20261024. INTRO-PASS.json은5526실제완주, ui-gate.json은33cb UI수정, SAVED.json은최종로컬/원격tree·실행해시·I:증분bundle을기록 |
+| 남은 범위 | 일반OS입력/포커스, 모든해상도·29언어/RTL·전체CSS전환, 캐릭터생성/저장/계정/완전게임진입. 전체 VISUAL VERDICT: RETOUCH. Godot/웹원본/사용자저장/공용INDEX보존 |

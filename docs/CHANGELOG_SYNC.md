@@ -1,3 +1,7 @@
+## 2026-10-24 UNITY-LOBBY-01 최종 실제 검수 기록
+
+- v22b113초 자연완주20/20과 후속UI12/12를 구분 기록. caption/detail11/10행·독립수정검토PASS, 현재빌드0오류·고정E:152파일SHA대조·네트워크0. Godot/사용자저장/공유WIP보존, 전체시각RETOUCH·생성/저장/계정/일반OS입력등미완료. [증거와한계](engine/UNITY_LOBBY_20261024.md).
+
 ## 2026-10-24 UNITY-LOBBY-01 실제 완주 PASS·로비 글자 보정
 
 - 최신v22b113.2507초자연끝/2718frame/분리음성·음악·로비전환·replay/skip등실제20/20PASS,폐기0. 이후로비만기존NotoThin100→정적400/600/700·24964glyph/OFL보존, glyph높이/padding/nowrap/누락chevron보정. 기존caption/detailROI1행RED·원본11행control; 새30초UIprobe검수진행. 실행미디어30개206,351,741B, 영상재생코드SHA동일증거INTRO-PASS.json. [검수/한계](engine/UNITY_LOBBY_20261024.md).
