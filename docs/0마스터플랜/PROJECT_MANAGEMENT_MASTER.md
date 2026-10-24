@@ -1,5 +1,9 @@
 # EXODUSER 총괄 프로젝트 관리
 
+## 2026-10-24 최신 사용자 확정 — UI/UX 우선 · Unity 후속 재제작
+
+먼저 UI/UX와 재사용할 기존 아트·데이터를 제대로 이식한다. 맵·모션·이펙트 등은 UI/UX 이후 Unity에서 대부분 새로 제작하는 전제로 관리하며 기존 표현은 임시 실행/비교용으로 보존한다. 직전 드랍 생성/획득 우선 순서를 UI/UX 우선으로 교체하고 현재 채팅 자동 진행도 갱신했다. Godot본·사용자 세이브·공유 G: main/타인WIP/INDEX480·기존 사용자창 보존. [현행 범위·검수 기준](../engine/UNITY_UI_FIRST_REBUILD_20261024.md)이 이전 비교/전체 원본복제 방향보다 우선한다. 이번 변경은 작업 방향 기록이며 UI/UX 전체나 새 콘텐츠 제작 완료가 아니다.
+
 ## 2026-10-24 UNITY-INVENTORY-01 — 원본 시작 장비·가방
 
 PC Codex가 Godot 보존·Unity 비교 시험의 승인된 다음 단위로 시작15장비·마법가방10/20어픽스·격자·장착/해제·no-heal·Tab 화면을 연결했다. 모델909검사와 기존전투/HUD회귀 통과, 실제Editor JSON null 오류 수정 후PASS, Windows build0오류·Player inventory10/10 및전투6/6·PNG검토·tracked18파일복구909/909까지확인했다. 조건부 전투효과/드랍생성/저장·수동입력·전체 이식은 미완료, VISUAL RETOUCH. [단위 상태·증거](../engine/UNITY_INVENTORY_20261024.md). 공유 G: main/INDEX480·Godot·사용자 세이브·열린 Editor 보존, 최종 엔진 미확정.

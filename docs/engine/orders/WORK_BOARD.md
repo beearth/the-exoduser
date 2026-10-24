@@ -1,5 +1,9 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-24 최신 우선순위 — UI/UX 이식 후 Unity 재제작
+
+사용자가 UI/UX와 재사용할 기존 아트·데이터를 먼저 제대로 이식하고, 이후 Unity에서 맵·모션·이펙트 등을 대부분 새로 제작할 방향을 확정했다. 직전 자동 진행의 드랍 생성/획득 최우선은 교체한다. 다음 단위는 원본↔Unity UI/UX 미완료 현황표와 가장 중요한 미이식 화면/상호작용이며, UI 실제 동작에 필요한 최소 기반만 함께 연결한다. 기존 전투·표현·Godot본은 보존한다. 기존 heartbeat exoduser-unity도 새 방향으로 갱신했으며 ACTIVE/10분 간격을 유지한다. [현재 작업 범위](../UNITY_UI_FIRST_REBUILD_20261024.md)가 아래 과거 전체 이식/비교 기록에 우선한다.
+
 ## 2026-10-24 UNITY-INVENTORY-01 — 시작 장비·가방 화면
 
 PC Codex / codex/unity-port-20261024 / 새 Inventory core·NativeInventory·Simulation adapter·원본 이미지 복사·자기 Tools/docs 소유. 원본 장착15/마법가방10/20어픽스 보존,909검사 및 기존93/7/26/130/36회귀 통과. 화면/Tab/장착·해제·정리/drag/no-heal 연결. 실제Editor JSON null 오류 수정 후PASS, Windows build0오류·Player inventory10/10·전투6/6(4처치/8소리) 및 PNG3장/release확인. tracked18파일복구909/909와core compile0도확인. VISUAL RETOUCH/수동입력·조건부 전투효과·저장·드랍생성/전체이식 미완료. Godot/웹/공유main INDEX480·사용자 세이브 보존. [상태와 한계](../UNITY_INVENTORY_20261024.md).
