@@ -1,0 +1,85 @@
+{
+  "sourceRoot": "G:/exoduser",
+  "remoteMain": "fab7a167c30c6421bda8cf6d4c2ee2e7753e87f3",
+  "files": [
+    {
+      "path": "assets/charselect/hellgunner_color_cut_20261021.png",
+      "bytes": 2605316,
+      "sha256": "709cfe1a4e7ab0ae56c8ef061544caf2b44db66de440cf7ed51f742635ec47de",
+      "matchesRemoteMain": false,
+      "remoteBytes": null,
+      "remoteSha256": null,
+      "immutableReference": null,
+      "remoteMainPathExists": false,
+      "snapshotPath": "handoff/pc-character-art-20261025/files/assets/charselect/hellgunner_color_cut_20261021.png",
+      "status": "A  assets/charselect/hellgunner_color_cut_20261021.png"
+    },
+    {
+      "path": "assets/charselect/portrait_hellgunner_color_20261021.png",
+      "bytes": 1365630,
+      "sha256": "94924552183f5e5253622ca324471db93314555deb29a8988a125c5eea2d73e8",
+      "matchesRemoteMain": false,
+      "remoteBytes": null,
+      "remoteSha256": null,
+      "immutableReference": null,
+      "remoteMainPathExists": false,
+      "snapshotPath": "handoff/pc-character-art-20261025/files/assets/charselect/portrait_hellgunner_color_20261021.png",
+      "status": "A  assets/charselect/portrait_hellgunner_color_20261021.png"
+    },
+    {
+      "path": "assets/charselect/transmuter_color_cut_20261021.png",
+      "bytes": 3373782,
+      "sha256": "76f2ccc31a9c23eb33181da3b1977ff6d76240246785ccaffb2daa416d0c1db5",
+      "matchesRemoteMain": false,
+      "remoteBytes": null,
+      "remoteSha256": null,
+      "immutableReference": null,
+      "remoteMainPathExists": false,
+      "snapshotPath": "handoff/pc-character-art-20261025/files/assets/charselect/transmuter_color_cut_20261021.png",
+      "status": "A  assets/charselect/transmuter_color_cut_20261021.png"
+    },
+    {
+      "path": "assets/charselect/portrait_transmuter_color_20261021.png",
+      "bytes": 1320569,
+      "sha256": "f477c98137133bd6d464aa3492e07d5b437027b301c63335e090336506da304b",
+      "matchesRemoteMain": false,
+      "remoteBytes": null,
+      "remoteSha256": null,
+      "immutableReference": null,
+      "remoteMainPathExists": false,
+      "snapshotPath": "handoff/pc-character-art-20261025/files/assets/charselect/portrait_transmuter_color_20261021.png",
+      "status": "A  assets/charselect/portrait_transmuter_color_20261021.png"
+    },
+    {
+      "path": "assets/charselect/spearmage_color_cut_20261021.png",
+      "bytes": 2892567,
+      "sha256": "375e5fbc5e1871ccae147b40aca85e49f79492ea0264f20cb2d1a46dc385a50e",
+      "matchesRemoteMain": false,
+      "remoteBytes": null,
+      "remoteSha256": null,
+      "immutableReference": null,
+      "remoteMainPathExists": false,
+      "snapshotPath": "handoff/pc-character-art-20261025/files/assets/charselect/spearmage_color_cut_20261021.png",
+      "status": "A  assets/charselect/spearmage_color_cut_20261021.png"
+    },
+    {
+      "path": "assets/charselect/portrait_spearmage_color_20261021.png",
+      "bytes": 1358579,
+      "sha256": "617135bb2d0a577ef45abd45b35b1de19876681c33a54faca26aec0e85539d77",
+      "matchesRemoteMain": false,
+      "remoteBytes": null,
+      "remoteSha256": null,
+      "immutableReference": null,
+      "remoteMainPathExists": false,
+      "snapshotPath": "handoff/pc-character-art-20261025/files/assets/charselect/portrait_spearmage_color_20261021.png",
+      "status": "A  assets/charselect/portrait_spearmage_color_20261021.png"
+    }
+  ],
+  "scope": "Exact six required image identities only; no code/index/HEAD/server/process/save mutation",
+  "pcHead": "5659d14d38b8068518cb5866a336bf930a1abbce",
+  "notes": [
+    "Exactly six requested current PC character art files. Remote main has no matching paths.",
+    "Byte-exact handoff only; existing PC INDEX/WORK and HEAD are preserved.",
+    "Runtime/UI integration and final source-parity review remain the Mac product owner responsibility."
+  ]
+}
