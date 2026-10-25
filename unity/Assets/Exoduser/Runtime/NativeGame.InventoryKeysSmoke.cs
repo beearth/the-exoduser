@@ -6,10 +6,15 @@ using UnityEngine;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
-  bool inventoryKeysSmoke;
+  bool inventoryKeysSmoke,traceInventoryKeys;string inventoryTraceState="";
+  void TraceInventoryKeys(){
+   string state="app="+Application.isFocused+" host="+gameFocused+" menu="+menu+" open="+inventory.Open+" nav="+inventory.Navigation.Focused+" fence="+inventory.Navigation.WaitingForRelease+" mouse="+Input.GetMouseButton(0)+","+Input.GetMouseButton(1)+" test="+inventoryKeysSmoke+" hp="+Simulation.Player.Hp;
+   if(state!=inventoryTraceState||Input.anyKeyDown){string held="";foreach(KeyCode key in new[]{KeyCode.Return,KeyCode.Tab,KeyCode.Escape,KeyCode.C,KeyCode.G,KeyCode.LeftArrow,KeyCode.RightArrow})if(Input.GetKey(key))held+=key+",";Debug.Log("INVENTORY_KEYS "+state+" held="+held);inventoryTraceState=state;}
+  }
   void InventoryTestKey(InventoryKey key){inventory.Navigation.ObserveReleased(false);if(inventory.HandleKey(key,Simulation.Player.Level))SetInventory(false);}
   IEnumerator InventoryKeysSmoke(){
    string output=Argument("-output");if(string.IsNullOrEmpty(output))throw new InvalidOperationException("inventory keys fixture needs -output");Directory.CreateDirectory(output);
+   if(Argument("-inventory-keys-phase")=="visual"){yield return InventoryKeysVisual(output);yield break;}
    var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
    SetGameFocus(true);SetInventory(true);Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);int tick=Simulation.TickCount;
    var item=inventory.State.Selected;check(item!=null&&inventory.State.Bag.Contains(item),"opening selects first visible bag item");
@@ -36,6 +41,12 @@ namespace Exoduser.UnityPort {
    ResetRun();menu=false;Running=true;SetInventory(true);SetGameFocus(true);inventoryKeysSmoke=false;pauseSmoke=false;
    File.WriteAllText(Path.Combine(output,"inventory-keys.json"),JsonUtility.ToJson(new InventoryKeysReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
    if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-inventory-keys-smoke")>=0)Application.Quit(failures==0?0:2);
+  }
+  IEnumerator InventoryKeysVisual(string output){
+   SetGameFocus(true);SetInventory(true);InventoryTestKey(InventoryKey.Accept);
+   foreach(int width in new[]{1280,1920}){Screen.SetResolution(width,width==1280?720:1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);inventory.Navigation.ObserveReleased(false);yield return UiCapture(output,"inventory-equipped-"+width);}
+   ResetRun();menu=false;Running=true;SetInventory(true);SetGameFocus(true);inventoryKeysSmoke=false;pauseSmoke=false;
+   File.WriteAllText(Path.Combine(output,"inventory-visual.json"),"{\"scope\":\"equipped text 2 sizes; OS focus diagnosis follows\"}");
   }
   [Serializable]sealed class InventoryKeysReceipt{public string scope="new inventory keyboard handlers in memory-only Player; OS input separately recorded";public bool passed;public int failures;public string[] checks;}
  }
