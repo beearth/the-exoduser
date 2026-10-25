@@ -57012,3 +57012,5 @@ K panel, source 13 slot selection, Ki Slash description/state, HUD charge displa
 스킬 UI 첫 Player6/6 및 CUA K/숫자/End/ESC 흐름 확인. 1080p 슬롯 제목 하단 잘림을 발견해 제목 높이를64로 확장하고 해당 화면을 다시 검수한다. 자동 마우스 제약은 별도 유지한다.
 
 HUD 입력 차단이 진행 중인 차지를 해제하지 않도록 신규 공격에만 제한을 적용했다. 실제 버튼 해제는 기존 Tick에 전달하며 관련 경계3검사를 추가했다.
+
+스킬 UI 최종 fabce904e: 모델34/34·Player6/6·ARM64 빌드 오류0, 네 화면 및 CUA End의 Space 제목 잘림 수정 확인. 상세와 JSON 영수증은 `engine/UNITY_MAC_SKILL_UI_20261025.md`에 연결한다. 다음 캐릭터 생성·선택의 원본 이름/5슬롯 규칙과 저장 미연결 경계를 기록했다.

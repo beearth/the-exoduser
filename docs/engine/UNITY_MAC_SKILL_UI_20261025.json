@@ -1,0 +1,56 @@
+{
+  "sourceCommit": "fabce904ee3707a32e048064280e9d668ac33099",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-skill-ui-release/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406161479
+  },
+  "model": {
+    "passed": 34,
+    "failed": 0,
+    "scope": "slot admission, immutable selection, source costs and actual-state projection"
+  },
+  "player": {
+    "scope": "Actual Unity Player skill UI and existing Tick executor; no OS input claim",
+    "passed": true,
+    "failures": 0,
+    "checks": [
+      "PASS skill screen owns pause",
+      "PASS number slot cannot receive fixed LMB skill",
+      "PASS equip leaves player/resources/world intact",
+      "PASS close restores play with click release fence",
+      "PASS actual third-hit charge state reaches tier 2",
+      "PASS same Tick executor releases third strike"
+    ]
+  },
+  "screenshots": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/skill-smoke-final/hud-actual-charge.png",
+      "sha256": "0b1d784a4ba5b0852e4fd4de66b212eab882bc2cd15bb0244015cd6f070898da"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/skill-smoke-final/skill-empty-slot-720p.png",
+      "sha256": "5a634b891532587a19f395584913b512a511b1023b3c8232e3ad0dfce55ddbd6"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/skill-smoke-final/skill-lmb-1080p.png",
+      "sha256": "d18d7c2040c4d2b64e33e903536000281fe40eb0283977578bdfa16016d3f475"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/skill-smoke-final/skill-lmb-720p.png",
+      "sha256": "9bf21d5a38869e3c49da1194c0e870176a9a287d7eebc5cced3d623b192ced7e"
+    }
+  ],
+  "visualReview": "Final 720p and 1080p LMB, empty slot and actual charge HUD inspected. Final CUA End selects Space; both enlarged headings display without clipping.",
+  "nativeInput": "Initial build: 1, K close/reopen, End, Escape close then Escape pause verified through CUA. Final build: End selection and heading fix verified.",
+  "limitations": [
+    "Other skill executors, forge, progression and persistence not implemented",
+    "Automated mouse coordinates remain unresolved; no mouse acceptance claim",
+    "Full-screen settings toggle not verified"
+  ]
+}

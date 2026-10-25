@@ -1,8 +1,8 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
-## 2026-10-25 Mac skill UI ACTIVE
+## 2026-10-25 Mac 스킬 상세·슬롯 UI 검수 완료
 
-K panel / source 13 slots / Ki Slash state and charge HUD implemented. New 31 checks passed; new Player verification pending. [Scope](../UNITY_MAC_SKILL_UI_20261025.md). Next: character creation and slot session boundaries.
+K 창·원본13슬롯 선택·기검참 상태/충전 HUD 연결. 모델34/34, 최종 Player6/6, ARM64 빌드 오류0, 720p/1080p 화면 확인. CUA K/숫자/End/ESC 조작과 최종 제목 잘림 수정을 검수했다. 전체 스킬 실행기·포지·저장은 미이식. [범위와 근거](../UNITY_MAC_SKILL_UI_20261025.md). **NEXT:** 캐릭터 생성·선택과 슬롯 세션/저장 경계. 원본 이름2~8자·금지문자·중복·최대5슬롯을 확인했으며 캐릭터 코드는 아직 변경하지 않았다.
 
 ## 2026-10-25 Mac 장비 비교·일시정지 설정 통합
 
