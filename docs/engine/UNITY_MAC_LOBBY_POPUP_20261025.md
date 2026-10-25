@@ -23,3 +23,6 @@
 
 
 후속 이름 표시·현행 크기와2열 방향키 검수: [언어 이름 가독성](UNITY_MAC_LANGUAGE_NAMES_20261025.md).
+
+
+2026-10-25 시네마틱 후속: 로비와29개 이름/2열 키보드 목록을 공유. 실제 EN 자막 선택, 목록 Esc6초의 skip 차단, 키 해제 후 정상 skip·KO 로비복귀 확인. 일반 build errors0. 전체29자막 글꼴/RTL·정밀 마우스와 구분. [검수](UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).

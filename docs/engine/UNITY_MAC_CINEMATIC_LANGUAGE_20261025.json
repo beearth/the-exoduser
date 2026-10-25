@@ -1,0 +1,52 @@
+{
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-cinematic-language/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406126663
+  },
+  "sourceSha256": "98ad2163baea3f599857b24bd1f4c45f88d374130432a832ce3b11219bfde6f0",
+  "checks": [
+    {
+      "action": "L during WorldIntro",
+      "observed": "29 native/fallback names in right-side panel; video/subtitle still visible"
+    },
+    {
+      "action": "Right then Enter from KO",
+      "observed": "EN selected, popup closed, actual English subtitle visible"
+    },
+    {
+      "action": "L then Escape held 6000ms",
+      "observed": "Popup closed; WorldIntro still playing after hold; not skipped to lobby"
+    },
+    {
+      "action": "Release, then Escape held 6000ms again",
+      "observed": "Normal hold-skip reaches lobby, EN persists"
+    },
+    {
+      "action": "Lobby L Home Enter",
+      "observed": "KO restored; normal product app left running in Korean lobby"
+    }
+  ],
+  "verification": "Normal product app through CUA keyboard; no extra fixture or video completion regression",
+  "inputRules": "While picker open, NextCut/HoldSkip and underlying pause are blocked; after close held navigation/cancel keys remain fenced until released",
+  "runtimeErrorPatternLines": [],
+  "playerLog": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/cinematic-language-player.log",
+  "screenshots": "Native CUA conversation images; no local PNG export claimed",
+  "limitations": [
+    "Exact per-cut timestamps were not instrumented in this UI pass",
+    "Small selector mouse targets still unverified",
+    "Full29 caption glyph coverage/shaping/RTL not completed"
+  ],
+  "preserved": [
+    "Movie/subtitle text/audio files",
+    "Caption times/Steam offset",
+    "Normal pause/play implementation",
+    "Combat/maps/save/account",
+    "Other worktrees"
+  ]
+}

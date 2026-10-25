@@ -134,3 +134,6 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 
 
 2026-10-25 언어 이름 후속: 29개 목록을2열 이름+코드로 변경. 기존폰트23원문 이름 지원, 나머지6개 ko/en 대체 이름. 실제 한/영 목록과2열 키보드 이동 확인, build0오류. 전체자막/RTL과 구분. [근거](UNITY_MAC_LANGUAGE_NAMES_20261025.md).
+
+
+2026-10-25 시네마틱 후속: 로비와29개 이름/2열 키보드 목록을 공유. 실제 EN 자막 선택, 목록 Esc6초의 skip 차단, 키 해제 후 정상 skip·KO 로비복귀 확인. 일반 build errors0. 전체29자막 글꼴/RTL·정밀 마우스와 구분. [검수](UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).

@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
   // clients and the lobby left open after verification retain all controls.
   public bool AutomatedInput{get;set;}
   public bool OriginalArtDrawn{get;private set;}
-  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,button;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt;int languageCursor;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
+  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,button;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt,languageInputFence;int languageCursor;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
   public void Initialize(Action enterNativeTest){enter=enterNativeTest;if(ready)return;ready=true;movie=new NativeLobbyVideo(transform);movie.SetPlaybackAllowed(focused);music=gameObject.AddComponent<AudioSource>();music.playOnAwake=false;music.loop=true;music.spatialBlend=0;var data=Resources.Load<TextAsset>("Data/lobby_frontend");if(data!=null)subtitles=JsonUtility.FromJson<LobbySubtitleData>(data.text);logo=Art("title_logo");enterArt=Art("enter_art");brand=Art("brand_logo");lobbyPoster=Art("lobby_poster");gatePoster=Art("gate_poster");splashTitle=Art("splash_title");splashBrand=Art("splash_brand");fdgEmblem=Art("fdg_emblem");ancestor=Art("varkan_idle");ancestorFirst=Art("varkan_first");enterButton=Art("lobby_enter");lobbyPanel=Art("lobby_panel");lobbyBanner=Art("lobby_banner");disabledEnter=Art("lobby_enter_disabled");}
   Texture2D Art(string path){return Resources.Load<Texture2D>("Art/lobby/"+path);}
   public void Begin(){if(!ready)Initialize(null);active=true;WorldEndedNaturally=false;Flow=new LobbyFlow();splash=1;since=0;fdgWatchdog.Reset();StopMusic();movie.Open("fdg_intro.mp4",false,false,false);movie.Volume(1);}
@@ -36,8 +36,8 @@ namespace Exoduser.UnityPort
   public void TogglePlayback(){if(Flow.Page!=LobbyPage.WorldIntro)return;if(VideoError.Length>0){OpenForPage();return;}movie.Toggle();if(movie.Player!=null&&movie.Player.isPlaying)music.UnPause();else music.Pause();}
   void StartMusic(string key,float gain){StopMusic();music.clip=Resources.Load<AudioClip>("Audio/Lobby/"+key);music.volume=gain;if(music.clip!=null)music.Play();}
   void StopMusic(){if(music!=null)music.Stop();}
-  void OpenForPage(){since=0;displayed=Flow.Page;SubtitleText="";showLanguages=false;switch(Flow.Page){case LobbyPage.Title:StopMusic();movie.Open("intro.mp4",false,true,true);break;case LobbyPage.Gate:movie.Mute(false);movie.Play();movie.Volume(.6f);StartMusic(tracks[UnityEngine.Random.Range(0,tracks.Length)],.6f);break;case LobbyPage.WorldIntro:WorldEndedNaturally=false;movie.Open("world_intro_v22b_paint_en.mp4",false,false,false);movie.Volume((float)Flow.VoiceGain);musicFade=0;musicDucked=false;break;case LobbyPage.Lobby:movie.Open("lobby_varkan_crypt_loop_v2_unity.mp4",true,true,false);StartMusic("lobby",.65f);break;}}
-  void Update(){if(!IsBlocking||!ready)return;float dt=Time.unscaledDeltaTime;if(!focused)return;since+=dt;if(splash>0){if(splash==2&&movie.Error.Length>0&&!titleSdFallback){titleSdFallback=true;movie.Open("title_motion_20260929.mp4",true,true,false);}if(splash==1){bool complete=fdgWatchdog.Tick(since,movie.Time,movie.Error.Length>0,movie.Ended);if(fdgWatchdog.FallingBack)movie.Pause();if(complete)AdvanceSplash();}if(!AutomatedInput&&Input.anyKeyDown&&Time.frameCount!=inputFence)AdvanceSplash();return;}if(Flow.Page!=displayed){OpenForPage();return;}if(!AutomatedInput&&Flow.Page==LobbyPage.Title&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.Space)))StartGate();if(Flow.Page==LobbyPage.Gate){Flow.TickGate(since,movie.Time,movie.Error.Length>0,movie.Duration);if(movie.Ended)Flow.TickGate(since,100,false,8);if(Flow.Page!=displayed){OpenForPage();return;}}if(Flow.Page==LobbyPage.WorldIntro){if(movie.Ended){WorldEndedNaturally=true;FinishIntro();return;}if(movie.Error.Length>0){music.Pause();musicPausedForVideo=true;}else if(movie.Prepared&&movie.Player.isPlaying&&musicPausedForVideo){music.UnPause();musicPausedForVideo=false;}if(movie.Error.Length==0&&movie.Prepared&&movie.Player.isPlaying&&!musicDucked){musicFade+=dt;music.volume=Mathf.Lerp(.6f,(float)Flow.MusicGain,Mathf.Min(1,musicFade));if(musicFade>=1)musicDucked=true;}if(!AutomatedInput&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.Space)))NextCut();UpdateCaption();}Flow.HoldSkip(!AutomatedInput&&(Input.GetKey(KeyCode.Escape)||Input.GetKey(KeyCode.Space)),dt);holdDelta=(float)Flow.SkipProgress;if(Flow.Page!=displayed)OpenForPage();}
+  void OpenForPage(){since=0;displayed=Flow.Page;SubtitleText="";showLanguages=false;languageInputFence=false;switch(Flow.Page){case LobbyPage.Title:StopMusic();movie.Open("intro.mp4",false,true,true);break;case LobbyPage.Gate:movie.Mute(false);movie.Play();movie.Volume(.6f);StartMusic(tracks[UnityEngine.Random.Range(0,tracks.Length)],.6f);break;case LobbyPage.WorldIntro:WorldEndedNaturally=false;movie.Open("world_intro_v22b_paint_en.mp4",false,false,false);movie.Volume((float)Flow.VoiceGain);musicFade=0;musicDucked=false;break;case LobbyPage.Lobby:movie.Open("lobby_varkan_crypt_loop_v2_unity.mp4",true,true,false);StartMusic("lobby",.65f);break;}}
+  void Update(){if(!IsBlocking||!ready)return;float dt=Time.unscaledDeltaTime;if(!focused)return;if(languageInputFence&&!Input.GetKey(KeyCode.Escape)&&!Input.GetKey(KeyCode.Space)&&!Input.GetKey(KeyCode.Return)&&!Input.GetKey(KeyCode.KeypadEnter)&&!Input.GetKey(KeyCode.RightArrow))languageInputFence=false;since+=dt;if(splash>0){if(splash==2&&movie.Error.Length>0&&!titleSdFallback){titleSdFallback=true;movie.Open("title_motion_20260929.mp4",true,true,false);}if(splash==1){bool complete=fdgWatchdog.Tick(since,movie.Time,movie.Error.Length>0,movie.Ended);if(fdgWatchdog.FallingBack)movie.Pause();if(complete)AdvanceSplash();}if(!AutomatedInput&&Input.anyKeyDown&&Time.frameCount!=inputFence)AdvanceSplash();return;}if(Flow.Page!=displayed){OpenForPage();return;}if(!AutomatedInput&&Flow.Page==LobbyPage.Title&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.Space)))StartGate();if(Flow.Page==LobbyPage.Gate){Flow.TickGate(since,movie.Time,movie.Error.Length>0,movie.Duration);if(movie.Ended)Flow.TickGate(since,100,false,8);if(Flow.Page!=displayed){OpenForPage();return;}}if(Flow.Page==LobbyPage.WorldIntro){if(movie.Ended){WorldEndedNaturally=true;FinishIntro();return;}if(movie.Error.Length>0){music.Pause();musicPausedForVideo=true;}else if(movie.Prepared&&movie.Player.isPlaying&&musicPausedForVideo){music.UnPause();musicPausedForVideo=false;}if(movie.Error.Length==0&&movie.Prepared&&movie.Player.isPlaying&&!musicDucked){musicFade+=dt;music.volume=Mathf.Lerp(.6f,(float)Flow.MusicGain,Mathf.Min(1,musicFade));if(musicFade>=1)musicDucked=true;}if(!AutomatedInput&&!showLanguages&&!languageInputFence&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.Space)))NextCut();UpdateCaption();}Flow.HoldSkip(!AutomatedInput&&!showLanguages&&!languageInputFence&&(Input.GetKey(KeyCode.Escape)||Input.GetKey(KeyCode.Space)),dt);holdDelta=(float)Flow.SkipProgress;if(Flow.Page!=displayed)OpenForPage();}
   void UpdateCaption(){SubtitleText="";if(subtitles==null||subtitles.captions==null)return;foreach(var language in subtitles.captions)if(language.code==Language){foreach(var cue in language.cues)if(movie.Time>=cue.start&&movie.Time<cue.end){SubtitleText=cue.text;return;}return;}}
   void OnApplicationFocus(bool focus){SetPlaybackFocus(focus);}
   public void SetPlaybackFocus(bool focus)
@@ -67,16 +67,22 @@ namespace Exoduser.UnityPort
   void DrawSplash(){Texture tex=movie.Error.Length==0&&movie.Prepared&&movie.Frame>=0?movie.Texture:splashTitle;if(tex==null)return;bool video=tex==movie.Texture;float sy=video?78f/768:80f/793,sh=video?616f/768:636f/793;float dw=1080f*tex.width/(tex.height*sh),dx=Mathf.Max((1920-dw)/2,-dw*.1f);GUI.DrawTextureWithTexCoords(new Rect(dx,0,dw,1080),tex,new Rect(0,1-sy-sh,1,sh),true);OriginalArtDrawn=true;if(splashBrand!=null)Image(new Rect(dx,-80f/636*1080,dw,dw*793/1983),splashBrand);}
   void DrawWorldIntro()
   {
+   LobbyStyles();bool popupWasOpen=showLanguages;HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;
    float h=caption.CalcHeight(new GUIContent(SubtitleText),1612);Rect r=new Rect(154,940-h,1612,h);
    if(SubtitleText.Length>0){var color=caption.normal.textColor;caption.normal.textColor=Color.black;for(int dx=-2;dx<=2;dx+=2)for(int dy=-2;dy<=2;dy+=2)GUI.Label(new Rect(r.x+dx,r.y+dy,r.width,r.height),SubtitleText,caption);caption.normal.textColor=color;GUI.Label(r,SubtitleText,caption);CaptionVisible=true;}
-   if(GUI.Button(new Rect(1730,24,160,48),Language.ToUpperInvariant(),button))showLanguages=!showLanguages;
-   if(showLanguages&&subtitles!=null){for(int i=0;i<subtitles.captions.Length;i++){int row=i/8,col=i%8;if(GUI.Button(new Rect(1030+col*105,82+row*48,100,44),subtitles.captions[i].code.ToUpperInvariant(),button)){SetLanguage(subtitles.captions[i].code);showLanguages=false;}}}
+   if(GUI.Button(new Rect(1730,24,160,48),Language.ToUpperInvariant()+" [L]",button))ToggleLanguages();
+   GUI.enabled=previousEnabled&&!showLanguages;
    // Keep the cinematic clear, but leave a reachable pause control while playing.
    // Mix sliders remain outside the normal cinematic UI.
    bool playing=movie.Prepared&&movie.Player!=null&&movie.Player.isPlaying;
    if((movie.Prepared||VideoError.Length>0)&&GUI.Button(new Rect(28,26,240,48),VideoError.Length>0?K("재생 / 재시도","Play / retry"):playing?K("일시정지","Pause"):K("재생","Play"),button))TogglePlayback();
    if(VideoError.Length>0)Label(new Rect(28,86,1300,100),K("영상 재생 실패 — 재시도하거나 ESC를 길게 눌러 나가세요.","Video playback failed — retry or hold ESC to continue."),normal,TextAnchor.UpperLeft);
-   if(Event.current.type==EventType.MouseDown&&Event.current.button==0&&Event.current.mousePosition.y>270&&Event.current.mousePosition.y<970){NextCut();Event.current.Use();}
+   GUI.enabled=previousEnabled;
+   if(showLanguages){
+    if(DismissOutside(new Rect(1388,24,502,610))||GUI.Button(new Rect(1388,24,342,58),"",GUIStyle.none)){showLanguages=false;languageInputFence=true;}
+    if(showLanguages)DrawLanguages(82);
+   }
+   if(!popupWasOpen&&!showLanguages&&!languageInputFence&&Event.current.type==EventType.MouseDown&&Event.current.button==0&&Event.current.mousePosition.y>270&&Event.current.mousePosition.y<970){NextCut();Event.current.Use();}
   }
 
   void LobbyStyles()
@@ -98,13 +104,13 @@ namespace Exoduser.UnityPort
   }
   void DrawLobby()
   {
-   LobbyStyles();HandleLobbyPopupKeys();bool previousEnabled=GUI.enabled;GUI.enabled=previousEnabled&&!lobbyQuitPrompt;DrawLobbyBackground();DrawAncestor();
+   LobbyStyles();HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;GUI.enabled=previousEnabled&&!lobbyQuitPrompt;DrawLobbyBackground();DrawAncestor();
    if(lobbyPanel!=null)Image(new Rect(1360,0,560,1080),lobbyPanel,ScaleMode.StretchToFill);
    else Fill(new Rect(1360,0,560,1080),new Color(.063f,.051f,.055f));
    // Source full/offline layout at1920x1080; user slots are deliberately never read.
    Fill(new Rect(1388,151.5f,140,27),new Color(.039f,.024f,.008f,.8f));Border(new Rect(1388,151.5f,140,27),new Color(.471f,.314f,.157f,.4f),1);
    Label(new Rect(1399,151.5f,115,27),K("자막: 한국어","Subtitles: "+Language.ToUpperInvariant()),lobbyMicro,TextAnchor.MiddleLeft);var chevron=new Color(.722f,.639f,.525f);Line(new Vector2(1504,162),new Vector2(1508,166),chevron,1.5f);Line(new Vector2(1508,166),new Vector2(1512,162),chevron,1.5f);
-   if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))ToggleLobbyLanguages();
+   if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))ToggleLanguages();
    Label(new Rect(1544,151.5f,230,27),K("메뉴: 한국어 · L: 자막","Menu: English · L: subtitles"),lobbyMicro,TextAnchor.MiddleLeft);
    GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt;
    Label(new Rect(1536,157,340,16),"OFFLINE",lobbyMode,TextAnchor.MiddleRight);
@@ -135,25 +141,25 @@ namespace Exoduser.UnityPort
    if(showLanguages){
     // Use IMGUI hit testing so dismissal follows the same scaled coordinates as buttons.
     if(DismissOutside(new Rect(1388,151.5f,488,587.5f))||GUI.Button(new Rect(1528,151.5f,348,35.5f),"",GUIStyle.none))showLanguages=false;
-    if(showLanguages)DrawLobbyLanguages();
+    if(showLanguages)DrawLanguages(187);
    }
    GUI.enabled=previousEnabled;
    if(lobbyQuitPrompt&&DismissOutside(new Rect(710,427,500,226)))lobbyQuitPrompt=false;
    if(lobbyQuitPrompt){Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.75f));Fill(new Rect(710,427,500,226),new Color(.063f,.051f,.055f));Border(new Rect(710,427,500,226),new Color(.4f,.32f,.24f),1);Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),normal,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(755,552,180,48),K("취소","Cancel"),button))lobbyQuitPrompt=false;if(GUI.Button(new Rect(985,552,180,48),K("종료","Quit"),button))Application.Quit();}
   }
-  void DrawLobbyLanguages()
+  void DrawLanguages(float top)
   {
-   var panel=new Rect(1388,187,488,552);Fill(panel,new Color(.063f,.051f,.055f,.99f));Border(panel,new Color(.588f,.443f,.306f),1);
-   Label(new Rect(1400,193,464,28),K("자막 언어","Subtitle language"),lobbyText,TextAnchor.MiddleLeft);
+   var panel=new Rect(1388,top,488,552);Fill(panel,new Color(.063f,.051f,.055f,.99f));Border(panel,new Color(.588f,.443f,.306f),1);
+   Label(new Rect(1400,top+6,464,28),K("자막 언어","Subtitle language"),lobbyText,TextAnchor.MiddleLeft);
    if(subtitles==null||subtitles.captions==null)return;
    for(int i=0;i<LobbyLanguage.Count;i++){
-    string code=LobbyLanguage.GetCode(i);var option=new Rect(1400+(i%2)*236,227+(i/2)*32,228,28);
+    string code=LobbyLanguage.GetCode(i);var option=new Rect(1400+(i%2)*236,top+40+(i/2)*32,228,28);
     Fill(option,new Color(.105f,.09f,.095f));Border(option,i==languageCursor?new Color(1,.86f,.61f):code==Language?new Color(.85f,.67f,.4f):new Color(.4f,.32f,.24f,.55f),i==languageCursor?2:1);
     Label(new Rect(option.x+8,option.y,170,option.height),LobbyLanguageLabel(code),lobbyText,TextAnchor.MiddleLeft);
     Label(new Rect(option.x+178,option.y,42,option.height),code.ToUpperInvariant(),lobbyMicro,TextAnchor.MiddleRight);
-    if(GUI.Button(option,"",GUIStyle.none)){SetLanguage(code);showLanguages=false;}
+    if(GUI.Button(option,"",GUIStyle.none)){SetLanguage(code);showLanguages=false;languageInputFence=true;}
    }
-   Label(new Rect(1400,708,464,25),K("방향키 이동 · Enter 선택 · Esc 닫기","Arrow keys: move · Enter: select · Esc: close"),lobbyMicro,TextAnchor.MiddleLeft);
+   Label(new Rect(1400,top+521,464,25),K("방향키 이동 · Enter 선택 · Esc 닫기","Arrow keys: move · Enter: select · Esc: close"),lobbyMicro,TextAnchor.MiddleLeft);
   }
   string LobbyLanguageLabel(string code)
   {
@@ -169,20 +175,20 @@ namespace Exoduser.UnityPort
     default:return LobbyLanguage.GetDisplayName(code);
    }
   }
-  void ToggleLobbyLanguages()
+  void ToggleLanguages()
   {
-   showLanguages=!showLanguages;
+   showLanguages=!showLanguages;languageInputFence=true;
    if(showLanguages){languageCursor=0;for(int i=0;i<LobbyLanguage.Count;i++)if(LobbyLanguage.GetCode(i)==Language){languageCursor=i;break;}}
   }
-  void HandleLobbyPopupKeys()
+  void HandleLanguagePopupKeys()
   {
    var e=Event.current;if(AutomatedInput||e.type!=EventType.KeyDown)return;
    if(lobbyQuitPrompt){if(e.keyCode==KeyCode.Escape)lobbyQuitPrompt=false;e.Use();return;}
-   if(e.keyCode==KeyCode.L){ToggleLobbyLanguages();e.Use();return;}
+   if(e.keyCode==KeyCode.L){ToggleLanguages();e.Use();return;}
    if(!showLanguages)return;
    switch(e.keyCode){
-    case KeyCode.Escape:showLanguages=false;break;
-    case KeyCode.Return:case KeyCode.KeypadEnter:SetLanguage(LobbyLanguage.GetCode(languageCursor));showLanguages=false;break;
+    case KeyCode.Escape:showLanguages=false;languageInputFence=true;break;
+    case KeyCode.Return:case KeyCode.KeypadEnter:SetLanguage(LobbyLanguage.GetCode(languageCursor));showLanguages=false;languageInputFence=true;break;
     case KeyCode.LeftArrow:languageCursor=Mathf.Max(0,languageCursor-1);break;
     case KeyCode.RightArrow:languageCursor=Mathf.Min(LobbyLanguage.Count-1,languageCursor+1);break;
     case KeyCode.UpArrow:languageCursor=Mathf.Max(0,languageCursor-2);break;

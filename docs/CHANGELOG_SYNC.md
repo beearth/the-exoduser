@@ -56992,3 +56992,8 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 ## 2026-10-25 Mac 로비 언어 이름
 
 - 코드 목록을2열 이름+코드로 개선. 기존폰트23원문 이름과6개 ko/en 대체 이름,35표시후보 cmap/폭 검사 및 실제 한/영 화면·2열 키 이동 확인. build 오류0. [근거](engine/UNITY_MAC_LANGUAGE_NAMES_20261025.md).
+
+
+## 2026-10-25 Mac 시네마틱 언어 조작
+
+- 로비와 이름/키보드 메뉴 공유, 목록 입력의 cut/holdskip 전파 차단 및 키 해제 후 복귀. 일반build 오류0, 실제 EN자막·Esc6초취소·다시긴누름skip·KO로비 복귀 검수. [근거](engine/UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
