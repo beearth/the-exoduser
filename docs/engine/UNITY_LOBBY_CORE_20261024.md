@@ -77,7 +77,7 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 | Steam 배너 | 원본 3행14px 문구 y591/h57, 부문구12px y653, 기존 원본 banner x1532/y674/w200/h44. 버튼 클릭은 원본 공식 Steam URL을 연다 |
 | 입장·하단 | 구분선 y740, 원본 ENTER x1392/y751/w496/h132. 미구현 상태는 원본 CSS grayscale(1)brightness(.45)를 Chromium에서 정확히 변환한 `lobby_enter_disabled.png`로 표시. 재시청 x1388/y897, 종료 확인 x1856/y895/36px |
 | 바르칸 문자 | 원본 13px/44.8px/12px 계층과 y935.6/957.8/1030.8을 반영. 제목은 기존 한글 명조 글꼴 45px+자간11.2px 근사. 모든 글꼴·CSS glow의 완전 픽셀 패리티는 미검수 |
-| 임시 전투 | 원본 패널을 덮지 않도록 왼쪽 x14/y112 개발 검수 영역으로 이동. 새 캐릭터/ENTER는 비활성, 기존 저장이나 실제 캐릭터가 생성됐다고 표시하지 않음 |
+| 미리보기 진입 | 2026-10-25 우측 x1392/y962/w480/h48 ‘플레이 미리보기’로 이동. 아래 y1018 저장 불가 안내. 새 캐릭터/정식 ENTER 비활성 유지. 이전 x14/y112 개발 오버레이는 제거. [실제 Mac 검수](UNITY_MAC_LOBBY_COPY_20261025.md) |
 
 이 보강의 exporter 구문 검사와 통합 C# 정적 compile 오류0을 확인했다. 실제 export/새 meta/Editor/Windows Player 시각 검수는 부모 작업으로 분리한다. 미디어/폰트/합성의 최종 화면이 검수되기 전 `VISUAL VERDICT: RETOUCH`를 유지한다.
 

@@ -1,0 +1,84 @@
+{
+  "scope": "Lobby copy/layout only; no full playback or focus regression rerun",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406121879
+  },
+  "sourceCopy": {
+    "source": "/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024/unity",
+    "project": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/project",
+    "files": 487,
+    "bytes": 414866277,
+    "sha256Verified": true,
+    "excluded": "No Library, diagnostics or previous build caches copied"
+  },
+  "runtimeFileSha256": "d5519931061819eaf47bb6710d4f409aa497422c4d483ca9e3aa5774ee624f98",
+  "earlierBuilds": {
+    "compilerFailureLog": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/build-lobby-copy.log",
+    "duplicateScripts": [
+      {
+        "duplicate": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/project/Assets/Exoduser/Runtime/NativeGame 2.cs",
+        "original": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/project/Assets/Exoduser/Runtime/NativeGame.cs",
+        "sameBytes": false,
+        "duplicateSha": "1b7d6f5b42f574e4e6612ca26db6a76eb3ae90344d68c2595a5d8f2e788a9b31",
+        "originalSha": "505f0411a4e41f4bdc675d4f956594d8701cf4e8d5299b29642c1c5caf704e82",
+        "mtime": 1792902455.0
+      },
+      {
+        "duplicate": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/project/Assets/Exoduser/Runtime/NativeGame.LobbySmoke 2.cs",
+        "original": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/project/Assets/Exoduser/Runtime/NativeGame.LobbySmoke.cs",
+        "sameBytes": false,
+        "duplicateSha": "23ac5748aec3dd2f60003e5f78e573b54daf257b18cf281d6094c74f2b2691ab",
+        "originalSha": "4448f96ef55108c318940c1f0f114a7b7d5122819640b998d2763e71a9724a93",
+        "mtime": 1792902455.0
+      }
+    ],
+    "cacheDuplicateBuild": {
+      "passed": true,
+      "result": "Succeeded",
+      "engine": "6000.6.7f1",
+      "target": "StandaloneOSX",
+      "architecture": "ARM64",
+      "output": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/build-lobby-copy-final/EXODUSER-Unity.app",
+      "errors": 106,
+      "bytes": 1406121879
+    },
+    "typeDbDiagnosis": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/build-report-inspection.log"
+  },
+  "visualObservation": {
+    "method": "CUA normal native app launch, Return, Escape held6000ms, screenshot",
+    "gameContentResolution": "1920x1080",
+    "screenshotStored": "Native conversation tool image; no local PNG export claimed",
+    "removed": [
+      "upper-left developer overlay",
+      "UNITY footer"
+    ],
+    "visible": [
+      "disabled new character",
+      "character creation/save not yet available notice",
+      "disabled main ENTER",
+      "Play preview button in right panel",
+      "Preview progress is not saved notice"
+    ],
+    "noObservedOverlap": true,
+    "mouseClickVerified": false
+  },
+  "preserved": [
+    "same SelectPreview/EnterNativeTest handlers",
+    "HUD/inventory",
+    "video/subtitles/audio/offset",
+    "save/account/Core",
+    "other worktrees"
+  ],
+  "next": {
+    "owner": "same Mac Unity implementation thread",
+    "unit": "Lobby language display and subtitle/menu-language distinction",
+    "status": "read-only defect confirmed; support resolver module underway"
+  }
+}

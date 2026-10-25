@@ -97,3 +97,6 @@ Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션�
 
 
 2026-10-25 후속: 세계관재생중일시정지버튼노출을보완했다. 실제Player 제어API pause/resume·focus9/9PASS, OS입력과구분. 기존영상/음향/자막자산무교체. [조작검수](UNITY_MAC_LOBBY_CONTROLS_20261025.md).
+
+
+2026-10-25 로비 표시 후속: 좌상단 개발 문구/UNITY footer를 제거하고 기존 미리보기를 우측 하단으로 옮겼다. 생성·저장 미지원과 preview 저장 불가 안내를 명시했다. 새 소스 전용 QA 빌드0오류 및 CUA 실제로비 화면 확인. [범위·검수](UNITY_MAC_LOBBY_COPY_20261025.md).

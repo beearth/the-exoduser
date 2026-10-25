@@ -1,5 +1,10 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-25 Mac 로비 표시 완료 → 언어 선택 연결 진행
+
+로비 개발 오버레이 제거/우측 preview·저장 불가 안내 구현, 소스 전용 새 Mac QA에서 build errors0 및 CUA 실제 로비 화면 확인. 기존20/9 suite 재검0. 중복 소스/TypeDB 캐시 실패도 보존. [이번 결과](../UNITY_MAC_LOBBY_COPY_20261025.md). **NEXT/ACTIVE:** 같은 Mac 담당이 NativeLobby 언어 표시/29자막·ko/en메뉴 구분을 연결한다. 지원 담당은 별도 산출물 경로의 순수 locale alias resolver만 소유하며 공유 INDEX/GPU/빌드는 수정하지 않는다. 영상/offset/전투/저장/자동화 변경0.
+
+
 ## 2026-10-25 Mac 시네마틱 조작 — 최신
 
 재생중일시정지버튼을연결하고 별도controls fixture에서 pause/resume·focus복귀9/9PASS. 최초8/9실패는기존fixture강제focus복구간섭으로분리수정했으며기본클라이언트재생코드는보존. Mac일반build0오류/실제라벨2PNG확인. OS직접입력/최신영상승인/전체디자인미인수. 다음은로비개발문구·조작안내정리. unity자동화현재상태는TOML부재로재확인불가,중복생성0. [변경·실측·경계](../UNITY_MAC_LOBBY_CONTROLS_20261025.md).

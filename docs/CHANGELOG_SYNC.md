@@ -56972,3 +56972,8 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 
 
 - 2026-10-25 PC/Mac원본공조: 현재PC디스크v17 selector·capturedSHA동일/928cue·17컷대조인수. Steam별도v22b자막+0.400초와인게임경계분리. 영상교체0/전체언어시각PASS미선언. [감사후속](engine/UNITY_SOURCE_BASELINE_20261024.md).
+
+
+## 2026-10-25 로비 문구·미리보기 정리
+
+- NativeLobby.DrawLobby만 수정. 개발 오버레이 제거, 우측 preview 진입/저장 불가 안내, 생성·정식 ENTER 비활성 유지. 중복 QA 소스/캐시 실패 보존 후 source-only 새 프로젝트 빌드0오류, CUA 실제1920 로비 확인. 기존20/9 suite 재실행0. [기록](engine/UNITY_MAC_LOBBY_COPY_20261025.md).
