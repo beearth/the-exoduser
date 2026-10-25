@@ -1,5 +1,7 @@
 ## 2026-10-26 Unity 지원 설정 저장·복원
 
+- 최초 설정 로드 오류 이후 저장 거부가 구체 오류를 덮지 않도록 보존하고 invalid fixture에 변경 후 오류 안내·원본 bytes·live SFX 검증을 추가.
+
 - QA 설정 PNG가 로비에 가려진 fixture를 오디오 측정 후 기존 preview 입장·설정 열기·렌더 assertion으로 보정. production 변경 없이 ROOT defaults/invalid 화면 재인수 대기.
 
 - 현재 SFX/BGM/FPS/fullscreen을 native 전용 atomic 파일로 저장·복원하고 오류/백업 안내, fullscreen generation guard, 일반 prefs와 분리한 QA identity 및 별도 프로세스 fixture를 추가. 순수 검사 61+3+2 PASS, C# 정적 오류 0; 실제 Player 인수는 ROOT 대기. [범위와 검수](engine/UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md).

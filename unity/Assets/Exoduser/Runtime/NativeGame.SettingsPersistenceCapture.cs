@@ -25,6 +25,11 @@ namespace Exoduser.UnityPort
     check(nativeSettingsStatus==NativeSettingsStoreStatus.Loaded,"second process loads native settings");check(settings.SfxPercent==35&&settings.BgmPercent==45&&settings.FrameCap==144&&Screen.fullScreen,"second process restores values and actual fullscreen");
    }else if(phase=="invalid"){
     check(nativeSettingsStatus==NativeSettingsStoreStatus.InvalidData||nativeSettingsStatus==NativeSettingsStoreStatus.WrongSchema||nativeSettingsStatus==NativeSettingsStoreStatus.UnsupportedVersion||nativeSettingsStatus==NativeSettingsStoreStatus.TooLarge,"invalid input is rejected without overwriting");check(settings.SfxPercent==60&&settings.BgmPercent==60&&settings.FrameCap==120,"invalid input preserves existing native launch defaults");
+    var rejectedStatus=nativeSettingsStatus;string rejectedFile=Path.Combine(nativeSettingsDirectory,NativeSettingsStore.DataFileName);byte[] rejectedBytes=File.ReadAllBytes(rejectedFile);
+    SetSfxPercent(25);FlushNativeSettings();
+    check(nativeSettingsStatus==rejectedStatus&&pauseMenu.SettingsPersistenceProblem,"editing after rejected load preserves concrete error and problem notice");
+    check(Convert.ToBase64String(rejectedBytes)==Convert.ToBase64String(File.ReadAllBytes(rejectedFile)),"editing after rejected load never overwrites original bytes");
+    check(settings.SfxPercent==25,"editing rejected-file session retains valid live SFX value");
    }else if(phase=="defaults"){
     pauseMenu.Navigation.ObserveReleased(false);pauseMenu.HandleKey(PauseKey.End,false,Screen.fullScreen);pauseMenu.Navigation.ObserveReleased(false);pauseMenu.HandleKey(PauseKey.Up,false,Screen.fullScreen);pauseMenu.Navigation.ObserveReleased(false);pauseMenu.HandleKey(PauseKey.Accept,false,Screen.fullScreen);FlushNativeSettings();
     check(settings.SfxPercent==60&&settings.BgmPercent==60&&settings.FrameCap==0&&Application.targetFrameRate==-1,"existing Restore defaults reaches host and stored values");

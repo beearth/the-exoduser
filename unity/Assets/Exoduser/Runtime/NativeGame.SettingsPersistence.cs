@@ -28,7 +28,10 @@ namespace Exoduser.UnityPort
   void FlushNativeSettings()
   {
    if(nativeSettingsStore==null||!settingsSavePending)return;settingsSavePending=false;
-   nativeSettingsStore.TrySave(settings,Screen.fullScreen,out nativeSettingsStatus);UpdateSettingsPersistenceNotice();
+   NativeSettingsStoreStatus saveStatus;nativeSettingsStore.TrySave(settings,Screen.fullScreen,out saveStatus);
+   // A rejected initial load leaves the store closed. Preserve its concrete diagnostic.
+   if(saveStatus!=NativeSettingsStoreStatus.NotLoaded)nativeSettingsStatus=saveStatus;
+   UpdateSettingsPersistenceNotice();
   }
   void UpdateSettingsPersistence()
   {
