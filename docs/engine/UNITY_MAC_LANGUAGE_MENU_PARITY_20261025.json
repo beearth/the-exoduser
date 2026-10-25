@@ -1,0 +1,58 @@
+{
+  "source": "e8217784f411eb390fbb6cdae4009660e06eea50",
+  "productSource": "35519bdce8650f251405a16944725f89c9372a53",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-language-menu-clean-exit/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1537266939
+  },
+  "controller": {
+    "scope": "Native menu controller and rendering; no OS input claim",
+    "passed": true,
+    "checks": [
+      "PASS held L opens once",
+      "PASS Down selects next source option, not two rows",
+      "PASS Space accepts and closes",
+      "PASS Tab cancels without selecting",
+      "PASS End reaches final language",
+      "PASS Escape cancels without changing language",
+      "PASS Home and Enter select Korean",
+      "PASS fixture never opens user character storage"
+    ]
+  },
+  "exit": {
+    "launchServicesWaitExit": 0,
+    "cleanupCompleted": true,
+    "nativeCrash": false,
+    "warning": "Mono thread may have been prematurely finalized remains; not claimed eliminated"
+  },
+  "visuals": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/language-menu-35519bdce/language-bottom-1080p.png",
+      "sha256": "7eb0cae11548f8d52ba8b1145d174b5510d1e4719a55491a3d5431e1deb0b48d",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/language-menu-35519bdce/language-bottom-720p.png",
+      "sha256": "63427b9d8d86be9db096ed9d5a6f86bdc492b65e39b7a1c6a295edeced6cdf44",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/language-menu-35519bdce/language-top-1080p.png",
+      "sha256": "6d7638c89c78e36c8669f1941c3b1f325a544f4c9d58fa355162c4d1a0eb108e",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/language-menu-35519bdce/language-top-720p.png",
+      "sha256": "d8ca89ba8ca7579387f795bbf14e57cd10f908bad74b9c63e4e7f213031df8de",
+      "visuallyReviewed": true
+    }
+  ],
+  "osInputVerified": false,
+  "userGameRestarted": false
+}

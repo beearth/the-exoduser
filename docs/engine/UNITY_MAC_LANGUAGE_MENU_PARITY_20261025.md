@@ -17,3 +17,7 @@
 남은 범위: hover로 커서이동, 브라우저Tab focus 순환, 29언어 shaping/RTL은 완전 동등 미확정. 기존23원문/6대체이름 보존. 이식→비교/누락수정→신규업데이트 순서다.
 
 첫 source35519bdce: ARM64 오류0, controller8/8 및720/1080 상단/하단4PNG 정상. 작은 화면에서도14px 상당 글자와 마지막 항목이 잘리지 않는 것을 직접 확인했다. 단, 결과/PNG 저장 직후 빠른 Application.Quit에서 Mono/native segv가 발생했다. 정상 종료 PASS로 계산하지 않는다. 검수 fixture만 영상 Close→native callback 정리1초→Quit으로 보정해 해당 짧은 검사만 재확인한다. 제품 저장·메뉴 동작을 이 종료 문제의 원인으로 단정하지 않는다.
+
+최종 source `e8217784f411eb390fbb6cdae4009660e06eea50`: ARM64 빌드 오류0. 동일한 메뉴 controller8/8 통과, 영상 Close 이후 정상 정리 로그와 LaunchServices wait 종료0 확인, native crash 없음. Mono의 thread-finalization 경고는 남아 있으며 경고까지 없앴다고 주장하지 않는다. UI 코드는35519bdce와 같아 직접 검토한4PNG를 재사용한다. 사용자 사용 중인 이전 실행 앱과 저장은 그대로 보존했다. [결과 JSON](UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.json).
+
+다음 미완료 단위는 원본 마우스 hover 선택 강조와 클릭 경로다. 원본 row.onmousemove는 실제 포인터 이동 때만 선택 커서를 바꾸므로 키보드 선택을 정지한 포인터가 덮지 않게 유지해야 한다. 이전 CUA 좌표 전달 오류 때문에 OS마우스 PASS는 아직 미확정이다. 저장은 기존 인수 동작을 유지하며 전체 게임 진행 저장을 이 작은 메뉴 작업에 끼워 넣지 않는다.

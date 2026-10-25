@@ -1,8 +1,10 @@
 # Mac 현재 조작 가능한 누적 실행본 — 2026-10-25
 
-정상 실행 경로: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-canonical-web-ui/EXODUSER-Unity.app`.
+최신 검수본은 단일열 웹 언어 메뉴를 포함한다. controller8/8·720/1080 목록 시각 확인과 짧은 검수 앱 정상 정리를 완료했다. 아래 기존 실행 이력과 구별하며, 사용자가 조작 중이던 이전 앱을 자동 재시작하지 않았다. [메뉴 인수](UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
 
-source `d789dd1ae2bec83d71085dc8038be92e0a92118f`, ARM64/오류0. 해당 source는 캐릭터/스토리 `b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856`의 후손임을 git merge-base로 확인했다. 빌드 입력 QA 프로젝트는 매 단위 변경 Assets를 동일 SHA256으로 이송했다. 따라서 pause만 담긴 데모가 아니라 캐릭터 생성/5슬롯/삭제/재실행 복원·전사 이야기·같은 이름 입장·하단HUD·소지품·스킬·설정을 포함한 누적본이다.
+정상 실행 경로: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-language-menu-clean-exit/EXODUSER-Unity.app`.
+
+source `e8217784f411eb390fbb6cdae4009660e06eea50`, ARM64/오류0. 해당 source는 캐릭터/스토리 `b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856`의 후손임을 git merge-base로 확인했다. 빌드 입력 QA 프로젝트는 매 단위 변경 Assets를 동일 SHA256으로 이송했다. 따라서 pause만 담긴 데모가 아니라 캐릭터 생성/5슬롯/삭제/재실행 복원·전사 이야기·같은 이름 입장·하단HUD·소지품·스킬·설정을 포함한 누적본이다.
 
 다음 문단은 이전 inventory build 검수 이력이다. 최신 앱 표시/입력 검수는 정본 기록에 구분한다.
 

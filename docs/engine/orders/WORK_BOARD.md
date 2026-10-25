@@ -1,4 +1,4 @@
-## 2026-10-25 Unity web language-menu parity ACTIVE
+## 2026-10-25 Unity web language-menu parity COMPLETE
 
 Bounded menu/input unit; existing storage preserved. [Contract](../UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
 

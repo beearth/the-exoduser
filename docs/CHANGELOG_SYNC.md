@@ -1,3 +1,7 @@
+## 2026-10-25 웹 언어 메뉴 단위 인수
+
+- 단일열·스크롤·원본 선택/취소 규칙과 반복키 방어 완료. controller8/8,720/1080의4PNG 확인, 보정된 짧은 검수 정상 정리 및 native crash 없음. ARM64 오류0, 사용자 실행창/저장 보존. [결과](engine/UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
+
 ## 2026-10-25 언어 메뉴 짧은 검수 종료 보정
 
 - 메뉴8/8와4PNG 정상 후 즉시 종료에서 native segv 관측. fixture만 영상 Close 후1초 정리하고 종료하도록 수정. 제품 메뉴/저장 변경 없음. [기록](engine/UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
