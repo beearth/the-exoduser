@@ -4,7 +4,8 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeLobby
  {
   NativeCharacterPresentationPlayback characterPresentationPlayback;
-  Texture2D[] presentationEmblems,presentationCutouts,presentationBusts;
+  Texture2D[] presentationCutouts,presentationBusts;
+  Texture2D presentationRingAtlas,presentationRingChains,presentationTraitGlyphs,presentationSigil;
   Texture2D presentationChains,presentationSceneWarrior,presentationSceneSilvertail,presentationWarriorPoster,presentationSilvertailPoster,presentationIron,presentationButton;
   int presentationVideoVisual=-1;
   float presentationVideoStartedAt;
@@ -21,9 +22,11 @@ namespace Exoduser.UnityPort
   };
   void InitializeCharacterPresentation()
   {
-   presentationEmblems=new Texture2D[5];presentationCutouts=new Texture2D[5];presentationBusts=new Texture2D[5];
-   string[] ids={"warrior","silvertail","hellgunner","transmuter","spearmage"};
-   for(int i=0;i<ids.Length;i++)presentationEmblems[i]=Resources.Load<Texture2D>("Art/CharacterSelect/emblem_"+ids[i]);
+   presentationCutouts=new Texture2D[5];presentationBusts=new Texture2D[5];
+   presentationRingAtlas=Resources.Load<Texture2D>("Art/CharacterSelect/generated/presentation_ring_atlas");
+   presentationRingChains=Resources.Load<Texture2D>("Art/CharacterSelect/generated/presentation_ring_chains");
+   presentationTraitGlyphs=Resources.Load<Texture2D>("Art/CharacterSelect/generated/trait_glyphs");
+   presentationSigil=Resources.Load<Texture2D>("Art/CharacterSelect/generated/blackiron_sigil");
    string[] cuts={"warrior_cut","silvertail_cut","hellgunner_color_cut_20261021","transmuter_color_cut_20261021","spearmage_color_cut_20261021"};
    string[] busts={"portrait_warrior","portrait_silvertail","portrait_hellgunner_color_20261021","portrait_transmuter_color_20261021","portrait_spearmage_color_20261021"};
    for(int i=0;i<5;i++){presentationCutouts[i]=Resources.Load<Texture2D>("Art/CharacterSelect/"+cuts[i]);presentationBusts[i]=Resources.Load<Texture2D>("Art/CharacterSelect/"+busts[i]);}
@@ -112,15 +115,19 @@ namespace Exoduser.UnityPort
   void DrawTraitFrame(Rect r,int visual)
   {
    float viewT=(Screen.height-720f)/360f,height=Mathf.LerpUnclamped(312.75f,325.594f,viewT),yOffset=Mathf.LerpUnclamped(36.998f,195.953f,viewT);
-   Rect box=new Rect(r.x+8,r.y+yOffset,r.width-16,height);Fill(box,new Color(.13f,.095f,.066f,.77f));Border(box,new Color(.43f,.32f,.20f,.58f),1);
+   Rect box=new Rect(r.x+8,r.y+yOffset,r.width-16,height);Fill(box,new Color(.08f,.058f,.043f,.88f));if(presentationSigil!=null){Color old=GUI.color;GUI.color=new Color(.68f,.56f,.39f,.16f);GUI.DrawTexture(box,presentationSigil,ScaleMode.ScaleAndCrop,true);GUI.color=old;}Border(box,new Color(.43f,.32f,.20f,.58f),1);DrawFrameCorners(box,20,2,new Color(.72f,.53f,.32f,.88f));
    Label(new Rect(box.x+22,box.y+26,box.width-44,34.5f),K("플레이 방식","PLAYSTYLE"),presentationTraitTitle,TextAnchor.MiddleCenter);Fill(new Rect(box.x+22,box.y+60,box.width-44,1),new Color(.48f,.34f,.20f,.55f));
-   float rowStep=Mathf.LerpUnclamped(74.75f,79.031f,viewT),firstRow=Mathf.LerpUnclamped(67.5f,67.5f,viewT);for(int i=0;i<3;i++){string[] bits=presentationTraits[visual,i].Split('|');float y=box.y+firstRow+i*rowStep;Fill(new Rect(box.x+22,y,34,34),new Color(.17f,.13f,.095f,.95f));Border(new Rect(box.x+22,y,34,34),new Color(.48f,.36f,.22f,.66f),1);Label(new Rect(box.x+22,y,34,34),bits[0],presentationRail,TextAnchor.MiddleCenter);Label(new Rect(box.x+69,y,box.width-91,21),K(bits[1],TraitEnglish(visual,i)),presentationTraitTitle,TextAnchor.MiddleLeft);Label(new Rect(box.x+69,y+22,box.width-91,rowStep-22),K(bits[2],TraitEnglishBody(visual,i)),presentationTraitBody,TextAnchor.UpperLeft);}
+   float rowStep=Mathf.LerpUnclamped(74.75f,79.031f,viewT),firstRow=Mathf.LerpUnclamped(67.5f,67.5f,viewT);DrawCircleFill(new Vector2(box.center.x,box.y-14),14,new Color(.12f,.085f,.058f,.98f));DrawCircleOutline(new Vector2(box.center.x,box.y-14),14,1,new Color(.61f,.43f,.24f,.9f));DrawGlyph(new Rect(box.center.x-14,box.y-28,28,28),15,new Color(.82f,.67f,.43f,1));
+   for(int i=0;i<3;i++){string[] bits=presentationTraits[visual,i].Split('|');float y=box.y+firstRow+i*rowStep;Rect icon=new Rect(box.x+22,y,34,34);Fill(icon,new Color(.10f,.075f,.05f,.85f));DrawTraitFrameCorners(icon,6,1,new Color(.48f,.36f,.22f,.66f));DrawGlyph(icon,visual*3+i,new Color(.79f,.66f,.46f,1));Label(new Rect(box.x+69,y,box.width-91,21),K(bits[1],TraitEnglish(visual,i)),presentationTraitTitle,TextAnchor.MiddleLeft);Label(new Rect(box.x+69,y+22,box.width-91,rowStep-22),K(bits[2],TraitEnglishBody(visual,i)),presentationTraitBody,TextAnchor.UpperLeft);}
   }
   void DrawCharacterRail(float w,float px,float y)
   {
    float size=Mathf.Min(70,Mathf.Max(44,w*.056f)),gap=Mathf.Min(w*.026f,36),total=5*size+4*gap,start=(w-total)/2;float labelY=y+size+9;string[] labels={"전사","실버테일","헬거너","변성술사","창법사"};
-   for(int i=0;i<5;i++){Rect ring=new Rect(start+i*(size+gap),y,size,size);DrawCircleFill(new Vector2(ring.center.x,ring.center.y),size*.5f,new Color(.12f,.10f,.09f,.95f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+2,2,new Color(.04f,.03f,.025f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+4,2,i==characterVisual?new Color(.48f,.17f,.14f):new Color(.24f,.18f,.13f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+5,1,new Color(.17f,.08f,.07f));if(presentationEmblems[i]!=null){Color old=GUI.color;GUI.color=i==characterVisual?Color.white:new Color(.55f,.52f,.48f,.72f);GUI.DrawTexture(ring,presentationEmblems[i],ScaleMode.ScaleToFit,true);GUI.color=old;}if(i>0&&presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.56f);GUI.DrawTexture(ring,presentationChains,ScaleMode.ScaleAndCrop,true);GUI.color=old;}Label(new Rect(ring.x-14,labelY,ring.width+28,18),K(labels[i],new[]{"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"}[i]),presentationRail,TextAnchor.MiddleCenter);if(i>0)Label(new Rect(ring.x-14,labelY+18,ring.width+28,14),K("출시 준비 중","Coming soon"),presentationRail,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(ring.x-14,ring.y-4,ring.width+28,size+45),"",GUIStyle.none))ChooseCharacterVisual(i);}
+   for(int i=0;i<5;i++){Rect ring=new Rect(start+i*(size+gap),y,size,size);DrawCircleFill(new Vector2(ring.center.x,ring.center.y),size*.5f,new Color(.12f,.10f,.09f,.95f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+2,2,new Color(.04f,.03f,.025f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+4,2,i==characterVisual?new Color(.48f,.17f,.14f):new Color(.24f,.18f,.13f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+5,1,new Color(.17f,.08f,.07f));if(presentationRingAtlas!=null){int cell=i==0?0:i+5;Rect uv=new Rect((cell%5)/5f,1f-((cell/5)+1)/2f,.2f,.5f);GUI.DrawTextureWithTexCoords(ring,presentationRingAtlas,uv,true);}if(i>0&&presentationRingChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.68f);GUI.DrawTexture(ring,presentationRingChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(ring.x-14,labelY,ring.width+28,18),K(labels[i],new[]{"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"}[i]),presentationRail,TextAnchor.MiddleCenter);if(i>0)Label(new Rect(ring.x-14,labelY+18,ring.width+28,14),K("출시 준비 중","Coming soon"),presentationRail,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(ring.x-14,ring.y-4,ring.width+28,size+45),"",GUIStyle.none))ChooseCharacterVisual(i);}
   }
+  void DrawGlyph(Rect rect,int index,Color color){if(presentationTraitGlyphs==null)return;int col=index%5,row=index/5;Rect uv=new Rect(col/5f,1f-(row+1)/4f,.2f,.25f);Color old=GUI.color;GUI.color=color;GUI.DrawTextureWithTexCoords(rect,presentationTraitGlyphs,uv,true);GUI.color=old;}
+  void DrawFrameCorners(Rect r,float length,float thickness,Color color){float x=r.x,y=r.y,w=r.width,h=r.height;Fill(new Rect(x,y,length,thickness),color);Fill(new Rect(x,y,thickness,length),color);Fill(new Rect(x+w-length,y,length,thickness),color);Fill(new Rect(x+w-thickness,y,thickness,length),color);Fill(new Rect(x,y+h-thickness,length,thickness),color);Fill(new Rect(x,y+h-length,thickness,length),color);Fill(new Rect(x+w-length,y+h-thickness,length,thickness),color);Fill(new Rect(x+w-thickness,y+h-length,thickness,length),color);}
+  void DrawTraitFrameCorners(Rect r,float length,float thickness,Color color)=>DrawFrameCorners(r,length,thickness,color);
   void DrawCircleFill(Vector2 center,float radius,Color color){for(int y=-28;y<=28;y++){float dy=y*radius/28,width=2*Mathf.Sqrt(Mathf.Max(0,radius*radius-dy*dy));Fill(new Rect(center.x-width*.5f,center.y+dy,width,1.25f),color);}}
   void DrawCircleOutline(Vector2 center,float radius,float thickness,Color color){int segments=Mathf.Max(24,Mathf.CeilToInt(Mathf.PI*2*radius/3f));float step=Mathf.PI*2/segments;for(int i=0;i<segments;i++){float a=(i+.5f)*step,halfChord=radius*Mathf.Sin(step*.5f),length=halfChord*2+thickness*.8f;Vector2 midpoint=center+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*radius;var matrix=GUI.matrix;GUIUtility.RotateAroundPivot((a+Mathf.PI*.5f)*Mathf.Rad2Deg,midpoint);Fill(new Rect(midpoint.x-length*.5f,midpoint.y-thickness*.5f,length,thickness),color);GUI.matrix=matrix;}}
   void DrawTextureTopAlignedCrop(Rect rect,Texture2D texture){float source=(float)texture.width/texture.height,target=rect.width/rect.height;Rect uv=source>target?new Rect((1-target/source)*.5f,0,target/source,1):new Rect(0,1-source/target,1,source/target);GUI.DrawTextureWithTexCoords(rect,texture,uv,true);}

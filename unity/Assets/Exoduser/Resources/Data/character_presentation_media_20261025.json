@@ -10,8 +10,8 @@
     "files": 6,
     "bytes": 12916443
   },
-  "usedAssetCount": 24,
-  "usedAssetBytes": 62365998,
+  "usedAssetCount": 28,
+  "usedAssetBytes": 69864449,
   "unusedCurrentSourceBranch": "bg_scene1_loop.mp4/bg_scene2_loop.mp4 are referenced as sceneVid but selection source stops them whenever current warrior/silvertail idleVid is set; staticKeyart classes have no sceneVid, so they are not imported.",
   "files": [
     {
@@ -189,6 +189,34 @@
       "bytes": 502579,
       "sha256": "86ea8369e98a104e5f2ca590174dd27f3486f56af3623e6f89959161fcf22710",
       "transform": "sips WebP decode to PNG; 1200x256 RGB pixels preserved; no resizing or generated pixels"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/emblem_{warrior,silvertail,hellgunner,transmuter,spearmage}.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/generated/presentation_ring_atlas.png",
+      "bytes": 802139,
+      "sha256": "274a3a45e67237f5665777370fbc6c44dd8fdaa70eca19ad2dd47d2d8f6709bc",
+      "transform": "256px per emblem; CoreGraphics antialiased circular alpha mask; atlas top row selected, bottom row grayscale × 0.35 locked; five source emblem PNGs"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/coming_soon_chains_v2.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/generated/presentation_ring_chains.png",
+      "bytes": 36386,
+      "sha256": "d4cdfaafb19bff369b38ef697f2d3b6420e18d4fcd1120235f18f1585f0c0427",
+      "transform": "256×256; CoreGraphics circular alpha mask from source chains PNG"
+    },
+    {
+      "source": "PC source index 8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621 CHAR_VISUALS Unicode glyphs",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/generated/trait_glyphs.png",
+      "bytes": 153544,
+      "sha256": "349cc0bdca90c0cb311c0e204176560dc482de4d32fe1d76c4cdde9c662dd588",
+      "transform": "640×512, 5×4 atlas; original 15 source glyph strings plus crest ✦ rasterized with macOS CoreText AppleColorEmoji at 92pt; CSS .ti-g filter order applied per pixel: grayscale(.85), sepia(.85), saturate(1.12), brightness(.96), hue-rotate(-6deg); no AI/generated artwork"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/ui/blackiron/sigil.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/generated/blackiron_sigil.png",
+      "bytes": 6506382,
+      "sha256": "e6b317e675a9a18e50220c657e99b5e985adcadbb56d369c786fd48c62860cda",
+      "transform": "byte-identical copy; source SHA-256 e6b317e675a9a18e50220c657e99b5e985adcadbb56d369c786fd48c62860cda; PC handoff did not include this file"
     }
   ]
 }

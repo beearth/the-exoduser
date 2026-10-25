@@ -57108,3 +57108,4 @@ world_intro_v22b_steam.mp4/102204634B/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb
 2026-10-25 Unity 최초입장 후보: ENTER음향·1200ms로딩→원본Nemesis→physical CSS 4컷안내→커튼→기존run 연결, 명시review/capture roster격리 및 좁은runtime PNG fixture 추가; 정적검사만 인수, 실제화면/OS입력과 후속27실습은 미완료. 상세: [UNITY_MAC_STARTUP_FLOW_20261025](engine/UNITY_MAC_STARTUP_FLOW_20261025.md).
 2026-10-25 최초입장 배선 인수: source언어별Nemesis데이터·26정본자산·physical guide/curtain·release fence와 `--unity-startup-capture`를 정상 native입장에 연결; 실제 Player/OS입력 판정 및27실습은 총괄 후속 검수로 유지.
 2026-10-25 HUD 공통 곡면받침·철재 ridge/키판 연결(6114fc1cb) 후 ROOT 1afffb9 실화면720/1080 확인; 긴 키라벨 좌우3logicalpx inset으로 간격 확보, 13슬롯/hitrect·문자높이·자원/전투/입력 불변. 라벨 최종 PNG 인수 대기. 상세: [UNITY_HUD_INTEGRATED_20261025](engine/UNITY_HUD_INTEGRATED_20261025.md).
+2026-10-25 캐릭터 생성창 표시 수정: 원본 trait 문자 래스터화, 원형 emblem/chain clip과 잠금 명도, blackiron sigil 및 패널 crest/corners 추가. 통합 GUI 검수는 총괄 후속.
