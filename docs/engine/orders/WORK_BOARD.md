@@ -1,8 +1,8 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
-## 2026-10-25 Mac 일시정지·설정 키보드 ACTIVE
+## 2026-10-25 Mac 일시정지·설정 키보드 완료
 
-원본 UI 우선 후속: 선택·값 조절·뒤로/재개와 창 포커스 복귀 차단을 구현. 새 모델33/33 PASS, 실제 Player/OS 검수 준비. [범위와 결과](../UNITY_MAC_PAUSE_KEYS_20261025.md). 기존 담당만 NativeGame/NativePauseMenu·빌드·공유 docs 소유.
+원본 UI 우선 후속: 선택·값 조절·뒤로/재개·종료와 창 포커스 복귀 차단 완료. 모델33/33·Player21/21·실제 키보드/창 최소화복귀 PASS, 표시 잘림 수정 후8PNG·최종 ARM64 errors0. NEXT: 소지품 키보드 선택·비교/상세·장착/해제. 이번 코드·빌드·검수 마감. [범위와 결과](../UNITY_MAC_PAUSE_KEYS_20261025.md). 기존 담당만 NativeGame/NativePauseMenu·빌드·공유 docs 소유.
 
 ## 2026-10-25 Mac 신규 전사 이야기·생성 진입 완료
 

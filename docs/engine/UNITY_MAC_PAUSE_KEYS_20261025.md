@@ -16,3 +16,13 @@ CUA 단일 PID33621에서 실제 키보드 설정 진입·Enter1.4~1.5초 누출
 현재 설정은 실행 세션에만 적용된다. 일반 저장 파일/PC/Godot/기존 영상/전체29개언어·RTL 인수와 무관하다. 새 팀·자동화·PC 재시작은 없다.
 
 최종 표시 source `ac555c319e03b20444fdc03660d924232c092079`: ARM64 errors0. 한글720p/1080p에서 하단 잘림 해결과 K 안내를 확인했다. CUA PID33845에서 FPS120→60 실제키 조절 확인·CmdQ exit0. 영어 캡처는 host가 언어를 다시 설정하므로 처음 2장이 한글로 나왔으며 영어 PASS가 아니다. fixture만 실제 lobby.SetLanguage를 사용하도록 고치고 `visual-en` 2장만 별도 실행한다.
+
+## 최종 결과
+
+- 빌드 source `d6003b28b81b60de489cc5a13a14bf91d0d1253f`: ARM64 / errors0 / 1,533,215,765 bytes. 정상 commit/push 후 원격 ref를 매번 대조했다.
+- 모델33/33·실제 Player21/21·CUA 키보드/창 복귀 검수 완료. 두 번째 build 이후 제품 변경은 없고 마지막 변경은 영어 검수 fixture뿐이다.
+- 수정한 한글3탭×720p/1080p6장과 영어1080p2장을 직접 확인했다. 하단 안내 두 줄·K행·버튼의 겹침/잘림 없음. 영어2장은 키 해제 fence가 활성인 회색 제어 상태이며 실제 영어 문구를 확인했다. 전체 아트 인수와 구분한다.
+- PID33621/33845/33998 모두 exit0. 영어 검수 자동 종료 뒤 CUA 연결이 새 정상 앱 PID34009를 열었고 이를 CmdQ로 닫았다. 사용자 저장 쓰기0, Player/Editor 동시 실행0.
+- [영수증](UNITY_MAC_PAUSE_KEYS_20261025.json): 실제 로그·8PNG 경로/SHA와 실패 이력을 보존한다. 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-pause-keys-verified/EXODUSER-Unity.app`.
+
+남은 UI 우선 후보는 소지품의 키보드 선택·비교/상세·장착/해제다. 현재 NativeInventory는 마우스 선택/장착·드래그만 처리하며 Tab/ESC 열기닫기는 host가 처리한다. 다음 단위는 기존 상태/장착 핸들러를 재사용하고 저장·새 아이템·전투 공식을 추가하지 않는 범위로 잡는다. 이번 단위의 완료를 전체 UI 이식 완료로 확대하지 않는다.

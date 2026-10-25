@@ -1,0 +1,118 @@
+{
+  "scope": "Pause settings keyboard and focus return only",
+  "behaviorSource": "7cdf52e9e68f1ac7fdddc3aa0746bbbf975ddf74",
+  "layoutSource": "ac555c319e03b20444fdc03660d924232c092079",
+  "finalBuildSource": "d6003b28b81b60de489cc5a13a14bf91d0d1253f",
+  "model": {
+    "passed": 33,
+    "failed": 0
+  },
+  "player": {
+    "scope": "actual Player handlers/focus model; OS input separately recorded",
+    "passed": true,
+    "failures": 0,
+    "checks": [
+      "PASS menu freezes actual simulation",
+      "PASS keyboard settings opens without resume",
+      "PASS keyboard FPS reaches host",
+      "PASS held direction cannot repeat",
+      "PASS FPS returns without changing simulation clock",
+      "PASS keyboard fullscreen applied by Player",
+      "PASS keyboard returns to windowed mode",
+      "PASS blur blocks resume and keeps settings",
+      "PASS focus return fences stale Escape",
+      "PASS keyboard SFX change",
+      "PASS keyboard BGM change",
+      "PASS defaults invoke all existing callbacks",
+      "PASS Escape returns to parent selection",
+      "PASS quit opens on cancel",
+      "PASS focus return cancels dangerous selection without leaving dialog",
+      "PASS held confirmation cannot quit after focus return",
+      "PASS fresh Enter cancels quit",
+      "PASS deliberate resume gates combat input",
+      "PASS combat blur auto-pauses actual ticks",
+      "PASS combat focus return stays paused",
+      "PASS all settings and quit captures remain paused"
+    ]
+  },
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-pause-keys-verified/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1533215765
+  },
+  "visuals": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/pause-visual-ac555c319/settings-0-1280.png",
+      "sha256": "007aa229baca1c21426d10890467b48398f0f151ef05d2a22a9945a28ad59cfc"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/pause-visual-ac555c319/settings-1-1280.png",
+      "sha256": "673897702d64ba93dd9247f9d02b16ff997d1740e18c34de2c61e2f29e941566"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/pause-visual-ac555c319/settings-2-1280.png",
+      "sha256": "9d84510c65678198b3808b0082038f1ea22b29c6cf1122c504a093f10448c98d"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/pause-visual-ac555c319/settings-0-1920.png",
+      "sha256": "abbd5267816b7543c6e2803461fb79b43d643a32482dbb02f6cb8ba01f3d02aa"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/pause-visual-ac555c319/settings-1-1920.png",
+      "sha256": "2b6535bf831d201301533c00485c92320d784ff1905299931cfa9bff4bf54235"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/pause-visual-ac555c319/settings-2-1920.png",
+      "sha256": "e0476928266258a393407e0cbfb348301586652032f7b88aabff2918ad0a78f1"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/pause-visual-en-d6003b28b/settings-en-1920.png",
+      "sha256": "bf020079e701c0ae027b6ba294bbf24f077bd910dfd7d701775fd2785eeff8ce"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/pause-visual-en-d6003b28b/controls-en-1920.png",
+      "sha256": "625651540087f86fc9ae78d58760d2fd97a335a6901e0d091b6402825a243501"
+    }
+  ],
+  "osInput": [
+    "settings Enter held 1.5 seconds",
+    "SFX60 to55 with Left held1.4 seconds",
+    "BGM60 to65",
+    "settings Escape returns to paused parent",
+    "quit Enter held1.4 seconds stays cancel",
+    "quit selected then minimize and Raise resets cancel",
+    "combat minimize and Raise remains paused",
+    "deliberate keyboard quit exit0",
+    "FPS120 to60 via OS keys on layout build"
+  ],
+  "exits": [
+    {
+      "pid": 33621,
+      "exit": 0
+    },
+    {
+      "exit": 0
+    },
+    {
+      "pid": 33998,
+      "exit": 0
+    }
+  ],
+  "limitations": [
+    "settings session only",
+    "precise mouse coordinates not validated",
+    "29-language font/RTL not validated",
+    "English images captured with release fence active; dimmed controls intentional"
+  ],
+  "preservedFailures": [
+    "Initial short-lived Popen did not leave a Player receipt",
+    "Initial hint second line clipped, corrected",
+    "Initial English fixture yielded Korean images, corrected via host locale"
+  ],
+  "normalUserSaveWrites": 0
+}
