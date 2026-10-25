@@ -1,0 +1,426 @@
+{
+  "sourceRoot": "G:/exoduser",
+  "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+  "branch": "main",
+  "remoteMain": "fab7a167c30c6421bda8cf6d4c2ee2e7753e87f3",
+  "localOnlyRemoteOnly": "1\t93",
+  "runtime": {
+    "url": "http://localhost:3333/index.html",
+    "httpStatus": 200,
+    "bytes": 354563,
+    "sha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621",
+    "matchesWorkingIndex": true,
+    "actualSourceConfirmed": true
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "working": {
+        "bytes": 354563,
+        "sha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621"
+      },
+      "head": {
+        "bytes": 353568,
+        "sha256": "36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12"
+      },
+      "index": {
+        "bytes": 354563,
+        "sha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621"
+      },
+      "remoteMain": {
+        "bytes": 353568,
+        "sha256": "c90b894714140d1c9e6c45d3bd778e44503d82bd8bdb70e32f15ff9e5e182e50"
+      },
+      "matchesRemoteMain": false,
+      "status": "M  index.html"
+    },
+    {
+      "path": "build-target.js",
+      "working": {
+        "bytes": 185,
+        "sha256": "0b5680d18292dcdd67bd9efcab896e65c55e43d3f8112a5c64cce9d7559327e6"
+      },
+      "head": {
+        "bytes": 185,
+        "sha256": "0b5680d18292dcdd67bd9efcab896e65c55e43d3f8112a5c64cce9d7559327e6"
+      },
+      "index": {
+        "bytes": 185,
+        "sha256": "0b5680d18292dcdd67bd9efcab896e65c55e43d3f8112a5c64cce9d7559327e6"
+      },
+      "remoteMain": {
+        "bytes": 185,
+        "sha256": "0b5680d18292dcdd67bd9efcab896e65c55e43d3f8112a5c64cce9d7559327e6"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "release-version.js",
+      "working": {
+        "bytes": 61,
+        "sha256": "d4a29dab400112e1f0695f7b36861b6a162f023de05eee9abee255720fa44d85"
+      },
+      "head": {
+        "bytes": 61,
+        "sha256": "d4a29dab400112e1f0695f7b36861b6a162f023de05eee9abee255720fa44d85"
+      },
+      "index": {
+        "bytes": 61,
+        "sha256": "d4a29dab400112e1f0695f7b36861b6a162f023de05eee9abee255720fa44d85"
+      },
+      "remoteMain": {
+        "bytes": 61,
+        "sha256": "3b896839ea902230c00a06cf9bee97dd958c7183f9bd0a00320d1cde614ef1ab"
+      },
+      "matchesRemoteMain": false,
+      "status": ""
+    },
+    {
+      "path": "patch-notes.js",
+      "working": {
+        "bytes": 3931,
+        "sha256": "c9f114f394bf5cbf4ffdb2621c687c87a411c1854e10b7c636cacbcef467d674"
+      },
+      "head": {
+        "bytes": 3931,
+        "sha256": "c9f114f394bf5cbf4ffdb2621c687c87a411c1854e10b7c636cacbcef467d674"
+      },
+      "index": {
+        "bytes": 3931,
+        "sha256": "c9f114f394bf5cbf4ffdb2621c687c87a411c1854e10b7c636cacbcef467d674"
+      },
+      "remoteMain": {
+        "bytes": 14879,
+        "sha256": "4bfa8f83dbf7d80980e0e89a96278a0064d65a25ac89985236560b2f7197c5fd"
+      },
+      "matchesRemoteMain": false,
+      "status": ""
+    },
+    {
+      "path": "localization-runtime.js",
+      "working": {
+        "bytes": 3404,
+        "sha256": "00cdae7b9ea4742d7a905394e62809f8b67869c00f91189781f96988f2074205"
+      },
+      "head": {
+        "bytes": 3404,
+        "sha256": "00cdae7b9ea4742d7a905394e62809f8b67869c00f91189781f96988f2074205"
+      },
+      "index": {
+        "bytes": 3404,
+        "sha256": "00cdae7b9ea4742d7a905394e62809f8b67869c00f91189781f96988f2074205"
+      },
+      "remoteMain": {
+        "bytes": 3404,
+        "sha256": "00cdae7b9ea4742d7a905394e62809f8b67869c00f91189781f96988f2074205"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "localization-data.js",
+      "working": {
+        "bytes": 3478572,
+        "sha256": "d3494f4d01767326f97c177b6f0c01f09a9919a134cbd3d7aae46f6c5ef81f05"
+      },
+      "head": {
+        "bytes": 3478572,
+        "sha256": "d3494f4d01767326f97c177b6f0c01f09a9919a134cbd3d7aae46f6c5ef81f05"
+      },
+      "index": {
+        "bytes": 3478572,
+        "sha256": "d3494f4d01767326f97c177b6f0c01f09a9919a134cbd3d7aae46f6c5ef81f05"
+      },
+      "remoteMain": {
+        "bytes": 3478572,
+        "sha256": "d3494f4d01767326f97c177b6f0c01f09a9919a134cbd3d7aae46f6c5ef81f05"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "lobby-ancestor-sprite.js",
+      "working": {
+        "bytes": 4441,
+        "sha256": "38f8de6d4efaa8eebd01d48301e0641bc5cebe558199f96885ba4a1289f8e9ab"
+      },
+      "head": {
+        "bytes": 4441,
+        "sha256": "38f8de6d4efaa8eebd01d48301e0641bc5cebe558199f96885ba4a1289f8e9ab"
+      },
+      "index": {
+        "bytes": 4441,
+        "sha256": "38f8de6d4efaa8eebd01d48301e0641bc5cebe558199f96885ba4a1289f8e9ab"
+      },
+      "remoteMain": {
+        "bytes": 4441,
+        "sha256": "38f8de6d4efaa8eebd01d48301e0641bc5cebe558199f96885ba4a1289f8e9ab"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "lobby_i18n.js",
+      "working": {
+        "bytes": 124309,
+        "sha256": "b275e833dea5fe1c9cafae3845cd5b84db6189554cdcbabb65afeaf0ec997594"
+      },
+      "head": {
+        "bytes": 124309,
+        "sha256": "b275e833dea5fe1c9cafae3845cd5b84db6189554cdcbabb65afeaf0ec997594"
+      },
+      "index": {
+        "bytes": 124309,
+        "sha256": "b275e833dea5fe1c9cafae3845cd5b84db6189554cdcbabb65afeaf0ec997594"
+      },
+      "remoteMain": {
+        "bytes": 124309,
+        "sha256": "b275e833dea5fe1c9cafae3845cd5b84db6189554cdcbabb65afeaf0ec997594"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "lobby-stage-info.js",
+      "working": {
+        "bytes": 1547,
+        "sha256": "690fd042b28ac88d42fb197ac3cf4ce164b9a0a37bfc55ba11afa7e389d36dc5"
+      },
+      "head": {
+        "bytes": 1547,
+        "sha256": "690fd042b28ac88d42fb197ac3cf4ce164b9a0a37bfc55ba11afa7e389d36dc5"
+      },
+      "index": {
+        "bytes": 1547,
+        "sha256": "690fd042b28ac88d42fb197ac3cf4ce164b9a0a37bfc55ba11afa7e389d36dc5"
+      },
+      "remoteMain": {
+        "bytes": 1547,
+        "sha256": "690fd042b28ac88d42fb197ac3cf4ce164b9a0a37bfc55ba11afa7e389d36dc5"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "character-story-player.js",
+      "working": {
+        "bytes": 7663,
+        "sha256": "e44a78225e4ecd234609836529d51b350e82d219070a75db810349770f9c9983"
+      },
+      "head": {
+        "bytes": 7663,
+        "sha256": "e44a78225e4ecd234609836529d51b350e82d219070a75db810349770f9c9983"
+      },
+      "index": {
+        "bytes": 7663,
+        "sha256": "e44a78225e4ecd234609836529d51b350e82d219070a75db810349770f9c9983"
+      },
+      "remoteMain": {
+        "bytes": 7663,
+        "sha256": "e44a78225e4ecd234609836529d51b350e82d219070a75db810349770f9c9983"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "world-intro-player.js",
+      "working": {
+        "bytes": 3502,
+        "sha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50"
+      },
+      "head": {
+        "bytes": 3502,
+        "sha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50"
+      },
+      "index": {
+        "bytes": 3502,
+        "sha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50"
+      },
+      "remoteMain": {
+        "bytes": 3502,
+        "sha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "world-intro-subtitles-data.js",
+      "working": {
+        "bytes": 51862,
+        "sha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768"
+      },
+      "head": {
+        "bytes": 51862,
+        "sha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768"
+      },
+      "index": {
+        "bytes": 51862,
+        "sha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768"
+      },
+      "remoteMain": {
+        "bytes": 51862,
+        "sha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "world-intro-subtitles.js",
+      "working": {
+        "bytes": 1818,
+        "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b"
+      },
+      "head": {
+        "bytes": 1818,
+        "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b"
+      },
+      "index": {
+        "bytes": 1818,
+        "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b"
+      },
+      "remoteMain": {
+        "bytes": 1818,
+        "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "cin-logo-art.js",
+      "working": {
+        "bytes": 1104,
+        "sha256": "102752b72f885f43606ee70ec5525adc5ae416e1756390ba63fe41dd9a76727f"
+      },
+      "head": {
+        "bytes": 1104,
+        "sha256": "102752b72f885f43606ee70ec5525adc5ae416e1756390ba63fe41dd9a76727f"
+      },
+      "index": {
+        "bytes": 1104,
+        "sha256": "102752b72f885f43606ee70ec5525adc5ae416e1756390ba63fe41dd9a76727f"
+      },
+      "remoteMain": {
+        "bytes": 1104,
+        "sha256": "102752b72f885f43606ee70ec5525adc5ae416e1756390ba63fe41dd9a76727f"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "localization.css",
+      "working": {
+        "bytes": 1242,
+        "sha256": "f5efc438aad1efa24674f6c8f8ec9cbb0f1f98ab5055880f0f36ac9b65ef1150"
+      },
+      "head": {
+        "bytes": 1242,
+        "sha256": "f5efc438aad1efa24674f6c8f8ec9cbb0f1f98ab5055880f0f36ac9b65ef1150"
+      },
+      "index": {
+        "bytes": 1242,
+        "sha256": "f5efc438aad1efa24674f6c8f8ec9cbb0f1f98ab5055880f0f36ac9b65ef1150"
+      },
+      "remoteMain": {
+        "bytes": 1242,
+        "sha256": "f5efc438aad1efa24674f6c8f8ec9cbb0f1f98ab5055880f0f36ac9b65ef1150"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "ui-foundation.css",
+      "working": {
+        "bytes": 21174,
+        "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9"
+      },
+      "head": {
+        "bytes": 21174,
+        "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9"
+      },
+      "index": {
+        "bytes": 21174,
+        "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9"
+      },
+      "remoteMain": {
+        "bytes": 21174,
+        "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "ui-refinement.css",
+      "working": {
+        "bytes": 153271,
+        "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0"
+      },
+      "head": {
+        "bytes": 153271,
+        "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0"
+      },
+      "index": {
+        "bytes": 153271,
+        "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0"
+      },
+      "remoteMain": {
+        "bytes": 153271,
+        "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "lobby-ancestor-art.css",
+      "working": {
+        "bytes": 2687,
+        "sha256": "7cb88610b801e894e3332442d4b490d7d687cb9048352bb3a0cbaf8afba063cf"
+      },
+      "head": {
+        "bytes": 2687,
+        "sha256": "7cb88610b801e894e3332442d4b490d7d687cb9048352bb3a0cbaf8afba063cf"
+      },
+      "index": {
+        "bytes": 2687,
+        "sha256": "7cb88610b801e894e3332442d4b490d7d687cb9048352bb3a0cbaf8afba063cf"
+      },
+      "remoteMain": {
+        "bytes": 2687,
+        "sha256": "7cb88610b801e894e3332442d4b490d7d687cb9048352bb3a0cbaf8afba063cf"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "cin-enter-engraved.css",
+      "working": {
+        "bytes": 3826,
+        "sha256": "97274db5db6d3f01d8905b3d7f985694d96338836c8c4f756958c5a83041a5d0"
+      },
+      "head": {
+        "bytes": 3826,
+        "sha256": "97274db5db6d3f01d8905b3d7f985694d96338836c8c4f756958c5a83041a5d0"
+      },
+      "index": {
+        "bytes": 3826,
+        "sha256": "97274db5db6d3f01d8905b3d7f985694d96338836c8c4f756958c5a83041a5d0"
+      },
+      "remoteMain": {
+        "bytes": 3826,
+        "sha256": "97274db5db6d3f01d8905b3d7f985694d96338836c8c4f756958c5a83041a5d0"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    }
+  ],
+  "externalDependencies": [
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js",
+    "https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&display=swap"
+  ],
+  "notes": [
+    "Read-only source capture; no server/process restart, user save access, game code modification or test execution.",
+    "PC checkout differs from remote main. This snapshot preserves actual local files; it does not declare them the latest user-approved runtime.",
+    "Use immutable remote-main commit:path for matching files; snapshot differing files as WIP comparison input, not automatic replacement.",
+    "Only index.html and linked local script/stylesheet files captured; no user data."
+  ]
+}
