@@ -86,8 +86,7 @@ namespace Exoduser.UnityPort
    if(VideoError.Length>0)Label(new Rect(28,86,1300,100),K("영상 재생 실패 — 재시도하거나 ESC를 길게 눌러 나가세요.","Video playback failed — retry or hold ESC to continue."),normal,TextAnchor.UpperLeft);
    GUI.enabled=previousEnabled;
    if(showLanguages){
-    if(DismissOutside(new Rect(1388,24,502,610))||GUI.Button(new Rect(1388,24,342,58),"",GUIStyle.none)){showLanguages=false;languageInputFence=true;}
-    if(showLanguages)DrawLanguages(82);
+    DrawLanguages(new Rect(1683.2f,32.4f,160,29));
    }
    if(!popupWasOpen&&!showLanguages&&!languageInputFence&&Event.current.type==EventType.MouseDown&&Event.current.button==0&&Event.current.mousePosition.y>270&&Event.current.mousePosition.y<970){NextCut();Event.current.Use();}
   }
@@ -142,27 +141,12 @@ namespace Exoduser.UnityPort
    GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;
    if(showLanguages){
     // Use IMGUI hit testing so dismissal follows the same scaled coordinates as buttons.
-    if(DismissOutside(new Rect(1388,151.5f,488,587.5f))||GUI.Button(new Rect(1528,151.5f,348,35.5f),"",GUIStyle.none))showLanguages=false;
-    if(showLanguages)DrawLanguages(187);
+    DrawLanguages(new Rect(1388,151.5f,140,27));
    }
    GUI.enabled=previousEnabled;
    DrawCharacterModal();
    if(lobbyQuitPrompt&&DismissOutside(new Rect(710,427,500,226)))lobbyQuitPrompt=false;
    if(lobbyQuitPrompt){Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.75f));Fill(new Rect(710,427,500,226),new Color(.063f,.051f,.055f));Border(new Rect(710,427,500,226),new Color(.4f,.32f,.24f),1);Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),normal,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(755,552,180,48),K("취소","Cancel"),button))lobbyQuitPrompt=false;if(GUI.Button(new Rect(985,552,180,48),K("종료","Quit"),button))Application.Quit();}
-  }
-  void DrawLanguages(float top)
-  {
-   var panel=new Rect(1388,top,488,552);Fill(panel,new Color(.063f,.051f,.055f,.99f));Border(panel,new Color(.588f,.443f,.306f),1);
-   Label(new Rect(1400,top+6,464,28),K("자막 언어","Subtitle language"),lobbyText,TextAnchor.MiddleLeft);
-   if(subtitles==null||subtitles.captions==null)return;
-   for(int i=0;i<LobbyLanguage.Count;i++){
-    string code=LobbyLanguage.GetCode(i);var option=new Rect(1400+(i%2)*236,top+40+(i/2)*32,228,28);
-    Fill(option,new Color(.105f,.09f,.095f));Border(option,i==languageCursor?new Color(1,.86f,.61f):code==Language?new Color(.85f,.67f,.4f):new Color(.4f,.32f,.24f,.55f),i==languageCursor?2:1);
-    Label(new Rect(option.x+8,option.y,170,option.height),LobbyLanguageLabel(code),lobbyText,TextAnchor.MiddleLeft);
-    Label(new Rect(option.x+178,option.y,42,option.height),code.ToUpperInvariant(),lobbyMicro,TextAnchor.MiddleRight);
-    if(GUI.Button(option,"",GUIStyle.none)){SetLanguage(code);showLanguages=false;languageInputFence=true;}
-   }
-   Label(new Rect(1400,top+521,464,25),K("방향키 이동 · Enter 선택 · Esc 닫기","Arrow keys: move · Enter: select · Esc: close"),lobbyMicro,TextAnchor.MiddleLeft);
   }
   string LobbyLanguageLabel(string code)
   {
@@ -177,30 +161,6 @@ namespace Exoduser.UnityPort
     case "ar":return K("아랍어","Arabic");
     default:return LobbyLanguage.GetDisplayName(code);
    }
-  }
-  void ToggleLanguages()
-  {
-   showLanguages=!showLanguages;languageInputFence=true;
-   if(showLanguages){languageCursor=0;for(int i=0;i<LobbyLanguage.Count;i++)if(LobbyLanguage.GetCode(i)==Language){languageCursor=i;break;}}
-  }
-  void HandleLanguagePopupKeys()
-  {
-   var e=Event.current;if(CharacterModalOpen||AutomatedInput||e.type!=EventType.KeyDown)return;
-   if(lobbyQuitPrompt){if(e.keyCode==KeyCode.Escape)lobbyQuitPrompt=false;e.Use();return;}
-   if(e.keyCode==KeyCode.L){ToggleLanguages();e.Use();return;}
-   if(!showLanguages)return;
-   switch(e.keyCode){
-    case KeyCode.Escape:showLanguages=false;languageInputFence=true;break;
-    case KeyCode.Return:case KeyCode.KeypadEnter:SetLanguage(LobbyLanguage.GetCode(languageCursor));showLanguages=false;languageInputFence=true;break;
-    case KeyCode.LeftArrow:languageCursor=Mathf.Max(0,languageCursor-1);break;
-    case KeyCode.RightArrow:languageCursor=Mathf.Min(LobbyLanguage.Count-1,languageCursor+1);break;
-    case KeyCode.UpArrow:languageCursor=Mathf.Max(0,languageCursor-2);break;
-    case KeyCode.DownArrow:languageCursor=Mathf.Min(LobbyLanguage.Count-1,languageCursor+2);break;
-    case KeyCode.Home:languageCursor=0;break;
-    case KeyCode.End:languageCursor=LobbyLanguage.Count-1;break;
-    case KeyCode.Tab:languageCursor=(languageCursor+(e.shift?LobbyLanguage.Count-1:1))%LobbyLanguage.Count;break;
-   }
-   e.Use();
   }
   static bool DismissOutside(Rect popup)
   {

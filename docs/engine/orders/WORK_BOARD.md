@@ -1,3 +1,7 @@
+## 2026-10-25 Unity web language-menu parity ACTIVE
+
+Bounded menu/input unit; existing storage preserved. [Contract](../UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
+
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
 ## 2026-10-25 사용자 지정 세계관 정본 적용·웹 표시 수정 완료

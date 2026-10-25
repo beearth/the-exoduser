@@ -1,3 +1,7 @@
+## 2026-10-25 Unity web language-menu parity
+
+- Single-column scroll, Up/Down one option, Space confirm, Tab cancel, repeat guard. Storage and cinematic behavior preserved. [Contract and verification](engine/UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
+
 ## 2026-10-25 세계관 정본·웹 표시 실제 인수
 
 - 사용자 지정 steam 영상 정확102,204,634B/SHA3b99… 적용, 자막/컷+0.4초 음성실측 보정, 문 전환·음영·compact 언어·원형hold 표시. ARM64 errors0, 최종 자연완주12/12·7PNG 시각확인. 정상앱 열고 사용자의 전사 이야기 진행 상태 보존. main/PC동기화·전체웹동등은 미확정. [검수 기록](engine/UNITY_WORLD_INTRO_CANONICAL_20261025.md).

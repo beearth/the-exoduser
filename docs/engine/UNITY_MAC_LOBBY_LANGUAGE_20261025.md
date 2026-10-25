@@ -1,5 +1,7 @@
 # Mac 로비 자막 언어 선택 — 2026-10-25
 
+> Current menu contract: [single-column web parity](UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md). Two-column/Tab cycling/CODE[L] below are historical results.
+
 범위: 로비의 ko/en 토글을 29개 자막 선택 목록으로 연결하고, 선택 자막과 실제 메뉴 언어(ko/en)를 구분한다. native 자국어 이름/폰트/RTL 전체 인수를 주장하지 않는다.
 
 | 항목 | 현재 동작 |

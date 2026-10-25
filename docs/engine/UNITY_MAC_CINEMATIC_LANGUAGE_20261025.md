@@ -1,5 +1,7 @@
 # Mac 시네마틱 언어 선택 연결 — 2026-10-25
 
+> Current menu contract: [single-column web parity](UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md). Two-column/Tab cycling/CODE[L] below are historical results.
+
 로비와 시네마틱이 같은29개 이름+코드·선택 표시·2열 키보드 이동을 사용한다. 시네마틱 상단은 CODE [L], 목록은 (1388,82,488,552)이다. 로비 위치는 (1388,187,488,552)로 유지한다. DrawLanguages(top)를 공유하고 원본 언어 목록 순서/23원문 이름·6개 ko/en 대체 이름을 보존한다.
 
 목록이 열려 있으면 장면 넘김 키/마우스와 긴 누름 건너뛰기, 하위 일시정지 버튼으로 입력이 전파되지 않는다. Enter/Esc로 닫은 뒤에도 해당 키를 놓을 때까지 건너뛰기 입력을 차단한다. 페이지 전환 시 차단 상태를 초기화한다. 영상 자체는 언어 목록을 여는 것만으로 멈추지 않는다.

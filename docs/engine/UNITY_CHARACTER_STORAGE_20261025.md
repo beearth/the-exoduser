@@ -1,5 +1,7 @@
 # Unity 캐릭터 슬롯 목록 영속 저장 — 2026-10-25
 
+> Integration completed after this module handoff. Current accepted scope and restart/restore evidence: [final slots](UNITY_MAC_CHARACTER_SLOTS_20261025.md), source67d1904c6. The integration-pending gates below are historical. Full game-progress storage remains outside this module.
+
 상태: 지원 담당의 새 저장 모듈과 격리 파일 I/O53검사 완료. 기존 Mac 담당이 정상 Unity JsonUtility/캐릭터 UI에 통합해야 실제 기능 완료다. 캐릭터 이름·전사 슬롯·선택만 저장하며 전체 전투 진행·P/G/INV·온라인 계정을 이식한 것이 아니다.
 
 ## 경로·파일·수명
