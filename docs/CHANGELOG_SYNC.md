@@ -4,6 +4,7 @@
 - Corrected the new fixture's rectangle-bound checks to test min/max points supported by Unity `Rect.Contains`; expanded the recorded geometry-check scope. No Player run was performed.
 - Final capture review fixes: suppress original baked key glyphs in a runtime-only bar copy, fit compact charge text, move the orb group inward, and wait for screenshot writes; optional keep-open flag supports root pointer QA.
 - Added keep-open-fixture-only pointer/event and actual slot callback diagnostics to separate GUI coordinates from hitbox/callback failures; no input behavior changed.
+- Recorded pointer review: scripted 13-slot geometry remains 55/55; CUA click/drag events carried off-window Unity coordinates and matched no slot, so no product hitbox change was made. Physical mouse remains unverified.
 
 ## 2026-10-25 Unity 캐릭터 생성 표시·미디어 경로
 

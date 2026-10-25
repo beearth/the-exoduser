@@ -22,7 +22,7 @@ Run the integrated Unity build with `--unity-hud-blend-smoke -output <isolated-o
 
 ## Verification status
 
-The reference images were visually inspected. Code and fixture changes have not yet been built or captured in Unity, so the new HUD's actual frame weight, orb text fit, and visual fit at 720p/1080p remain for the root integrator to inspect. No previous test suite or exercise was rerun by this unit.
+The integrated build at `7d5200ca64b7bfc6982239102b4c3fcee0f78151` compiled without errors; the root integrator inspected all four 720p/1080p HUD captures and recorded 55/55 fixture checks passing. A separate keep-open build at `5a933f6b95b575cbf23efd3e09eb34c062c30ffa` traced the failed CUA pointer clicks to off-window coordinates. Physical mouse input remains unverified. This unit did not run Unity or repeat any previous test suite.
 
 
 ## ROOT 실행 인수 — 2026-10-26 01:30 KST 마감
@@ -36,3 +36,9 @@ The reference images were visually inspected. Code and fixture changes have not 
 CUA 실제 K 입력으로 기존 스킬창 열림을 확인했다. 좌표 클릭에서는 슬롯 callback을 확인하지 못했으므로 OS 마우스 PASS는 주장하지 않으며, 이는 남은 좁은 수동 확인 항목이다. scripted13개 hitrect/그리기 중심 일치는 통과했다. QA Cmd-Q 시 도구가 사용자 앱 변경을 알렸으므로 추가 UI 조작을 멈췄다. 실제 잔여 프로세스는 [최종 영수증](UNITY_MAC_HUD_BLEND_ACCEPTANCE_20261026.json)에 기록했다. 기존 사용자 앱/정상 저장은 보존했다.
 
 첫2실습 기능 인수와 이번 HUD 표현 인수는 별개다. 나머지 실습·전체 본편 동등성은 기존 미이식 목록에 유지하며, 새 맵/모션/VFX/전체27실습을 추가로 시작하지 않았다.
+
+## Pointer-coordinate review — 2026-10-26
+
+The 7d5200ca build's focused HUD receipt records 55/55 checks passing, including all 13 shared slot rectangles, positive gaps, center alignment, and bounds. Static review confirms `NativeGame` passes bottom-origin `Input.mousePosition` to `NativeHud.PointerOverSlots`, which converts it with the same uniform scale and `NativeHudDockLayout`/`SkillSlotRect` geometry used by drawing; this contract and the recorded geometry were left unchanged.
+
+In the keep-open CUA review, clicks aimed at visible screen positions `[754,1086]` and `[960,1086]` (plus a drag between them) produced MouseDown/MouseUp events, but Unity reported the same `Input.mousePosition=(1100,-264)` and GUI `eventPos=(1100,1344)` at 1920×1080. Both computed slot candidates were `-1`, with GUI enabled and depth 1; no `SlotSelected` callback followed. The coordinates are outside the Unity display, so this run demonstrates a CUA-to-window coordinate mismatch rather than a hitbox failure. K input still opened the skill screen. It does not verify physical mouse input, which remains untested. Raw trace: `pointer-review-5a933f6.log`.
