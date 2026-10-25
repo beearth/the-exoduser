@@ -1,0 +1,43 @@
+{
+  "stage": "R13",
+  "provider": "Built-in image_gen",
+  "exactUnderlyingModel": "Not exposed by tool",
+  "userAuthorization": "더럽게 케릭터 못뽑네 스텔라블레이드 사이버펑크 좀 넣어봐라",
+  "direction": "Major redesign to attractive humanlike adult male cyborg hunter with streamlined tailored techwear and integrated body chrome; creature morphology superseded as a design exploration, male direction retained",
+  "prompt": "A RADICAL CHARACTER REDESIGN for an original premium action-RPG GALAXY HUNTER. Create a compelling, charismatic ADULT MALE cyborg protagonist with the sleek attractive character appeal and precise tailored futuristic clothing associated with Stellar Blade, combined with the stylish body augmentation and street-tech attitude of Cyberpunk 2077. Do not use the previous bulky monster/orc/Predator face or medieval patchwork armor. This is a new handsome HUMANLIKE MALE design, mature late twenties/early thirties, masculine but elegant, long athletic proportions, strong shoulders and narrow waist, graceful powerful posture rather than a swollen bodybuilder. A memorable beautifully designed face: sharp adult jaw, straight nose, alert warm amber eyes, defined dark brows, an understated confident expression, one fine angular cheek implant and small asymmetrical neck interfaces. Short silver-white hair with dark roots, disconnected undercut on one side and a long sculpted side-swept fringe, wind moving the fringe. Human skin and attractive living facial expression, not grey scales, mandibles, reptile brow ridges or dreadlocks.\n\nThe supplied image is ONLY the preferred GIANT SCI-FI RIFLE visual reference: keep its imposing elongated black/gunmetal/silver/dark-red silhouette and distinctive large cylindrical central section. Ignore the woman, her face, body, clothing and upright stance. Design an entirely new MALE character and pose. No tactical assembly instructions are requested, just consistent fictional visual design.\n\nOUTFIT: purposeful sophisticated future fashion rather than an armor costume. A closely tailored matte graphite technical bodysuit defines a clean male torso and long legs. One short structured asymmetric ivory-and-graphite sleeveless flight-jacket layer, ending at the high hip with crisp engineered cut lines and a small oxblood inner edge; no cape or draped cloth. An exposed natural left shoulder, clavicle and a controlled side-waist opening show where sharp-edged skin-flush chrome interfaces meet biological skin. Chrome is actual structural cyberware: angular flush plates at the side neck, collarbone and side ribs, a subtle implant seam beside the eye, and one elegant complete RIGHT cybernetic arm. The arm has THREE broad sculpted ivory/silver hard-shell planes over dark fine tendon-like joint mechanics, a clean shoulder socket and an articulate hand. Sleek satin metal, small polished edge highlights, a few recessed technical seams; not dozens of overlapping scales, decorative silver vines or rows of rivets. Slim tapered black technical trousers, integrated low-profile knee structures and elegant functional ankle boots with flat soles. A single compact belt-mounted bounty tracker and one small cartridge module identify his work. Restrained oxblood accents tie outfit and arm to the gun. Absolutely no huge pauldrons, giant groin plate, chain trophies, monster skin, bulky pouches or random glowing ornaments.\n\nNEW POSE AND COMPOSITION: wide 16:9 full-body cinematic character key art. He is walking down a starship docking ramp on an extraterrestrial frontier port, one leg stepping forward onto the wet deck, weight naturally balanced, shoulders turned slightly toward the viewer, face alert and clear. His mechanical right hand and natural left hand carry the large familiar rifle diagonally at a relaxed low-ready height across the waist, muzzle extending into open screen-right space and clear of the face. The gun is not fired; this is a quiet character introduction. Both hands visibly connect naturally. Maintain the gun's grand scale and show the entire figure, both boots and the full weapon with generous margins. Character is large enough that his expression, tailoring and body chrome can be appreciated, occupying roughly 80 percent of image height on the left/central third.\n\nDEDICATED BACKGROUND: a weathered sophisticated frontier spaceport on a lush alien planet, blending post-apocalyptic urban machinery with clear cyberpunk design. Wet gunmetal landing deck, controlled teal service-light strips, one soft magenta docking beacon, industrial hangar shapes and a compact parked hunting spacecraft. Beyond the railing, atmospheric alien jungle and distant stone ridges drop away under a misty blue-hour sky with one subtle giant planet near the horizon. A believable lived-in personal hunting base, not a generic neon-city wallpaper or fantasy mountain postcard. Background has fewer larger shapes and subdued contrast so the character remains the focus. No signs with readable text, no franchise logos, no extra characters. Soft warm hangar key light sculpts his appealing face and human skin, restrained cool exterior rim on chrome and hair, correct contact shadows and damp-deck reflections. Ensure coherent lighting across figure, gun and environment.\n\nVISUAL QUALITY: deliberately authored high-end console-game character key art. Stellar Blade-like streamlined technical tailoring and sophisticated body silhouette; Cyberpunk-like human personality and integrated mechanical body details. Controlled semi-realistic stylization, clean major forms, excellent facial design, tasteful material contrast, crisp selective edges and believable joints. The result should feel like an appealing playable protagonist with a clear identity, not generic AI concept clutter. Avoid uniformly glossy plastic CGI, an airbrushed fashion-model stock photo, hyper-dense procedural texture, excessive neon everywhere, ornamental pseudo-mechanics, monster/brute anatomy and copied character faces. One finished cohesive MALE protagonist illustration in a new dedicated environment. No text, labels, layout panels or comparison collage.",
+  "referenceImages": [
+    "I:/EXODUSER-Storage/qa/new-heroes-claude-20261024/hellgunner_r02.png"
+  ],
+  "officialResearchSources": [
+    "https://www.playstation.com/en-us/games/stellar-blade/",
+    "https://blog.playstation.com/2024/04/08/stellar-blade-interview-creating-stylish-sci-fi-action-in-a-post-apocalyptic-world/",
+    "https://www.cyberpunk.net/en/news/49129/whats-coming-in-2-0-cyberware"
+  ],
+  "referenceUse": "Official Stellar Blade Tachy/Adam renders visually studied; Cyberpunk cyberware article read. Official images not supplied to image_gen or used as runtime assets. R02 weapon visual reference only.",
+  "generatedSource": "C:/Users/심도진/.codex/generated_images/01a16d9d-bc6d-7b23-9500-07b0af49f19b/exec-089d26a6-cd99-48a0-a932-781df4d819d3.png",
+  "candidateBasename": "galaxy_hunter_male_r13_stellar_cyberpunk.png",
+  "reviewBasename": "갤럭시헌터_남성_R13_스텔라_사이버펑크.png",
+  "transparentBackground": false,
+  "cost": "Not exposed by tool",
+  "status": "completed-reviewed-candidate-not-adopted",
+  "scope": "Character illustration and dedicated spaceport backdrop only; no game code/runtime/canonical chapter map changes",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\galaxy_hunter_male_r13_stellar_cyberpunk.png",
+  "reviewCopy": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_남성_R13_스텔라_사이버펑크.png",
+  "sha256": "351da448ba0331715d940a6b110acb7beb9aed349e8a62e1ee2225306adcb67f",
+  "bytes": 2681740,
+  "width": 1672,
+  "height": 941,
+  "format": "PNG",
+  "archiveHashVerified": true,
+  "reviewCopyHashVerified": true,
+  "sharedGit": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "userAccepted": false,
+  "codexVisualVerdict": "RETOUCH",
+  "sharedGitAfter": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  }
+}

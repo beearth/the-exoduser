@@ -1,0 +1,26 @@
+[
+  {
+    "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\references\\stellar_cyberpunk\\stellar_tachy.jpg",
+    "url": "https://gmedia.playstation.com/is/image/SIEPDC/stellar-blade-hub-character-desktop-tachy-en-12jan24?%24100px%24=",
+    "sourcePage": "https://www.playstation.com/en-us/games/stellar-blade/",
+    "bytes": 18566,
+    "sha256": "a20353d66a5ea0f74f45649c2315a3580f01f80b9a2387517bb0b2a75151c899",
+    "use": "Visual study only, no runtime integration or public Git original-image upload"
+  },
+  {
+    "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\references\\stellar_cyberpunk\\stellar_adam.jpg",
+    "url": "https://gmedia.playstation.com/is/image/SIEPDC/stellar-blade-hub-character-adam-desktop-en-12jan24?%24100px%24=",
+    "sourcePage": "https://www.playstation.com/en-us/games/stellar-blade/",
+    "bytes": 18437,
+    "sha256": "4f8a6b44c9efe8098056aa7d186ab64e3651a08f810c09c65aeca2c256c04af3",
+    "use": "Visual study only, no runtime integration or public Git original-image upload"
+  },
+  {
+    "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\references\\stellar_cyberpunk\\cyberware_official.jpg",
+    "url": "https://static.cdprojektred.com/cms.cdprojektred.com/16x9_big/396bd0725a9877b41c83b45d87923d369a729cf3-1280x720.jpg",
+    "sourcePage": "https://www.cyberpunk.net/en/news/49129/whats-coming-in-2-0-cyberware",
+    "bytes": 1631599,
+    "sha256": "3f098cb87299492e70e6536fb1d904e5a7375ad5ac88ac97651c878e59957a11",
+    "use": "Visual study only, no runtime integration or public Git original-image upload"
+  }
+]
