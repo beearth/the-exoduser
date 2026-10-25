@@ -1,0 +1,117 @@
+{
+  "scope": "native_player_control_api_not_os_input",
+  "before": {
+    "directory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/controls-20261025-132758",
+    "receipt": {
+      "scope": "native_player_control_api_not_os_input",
+      "checks": [
+        {
+          "name": "gate_prepared",
+          "passed": true
+        },
+        {
+          "name": "world_playing",
+          "passed": true
+        },
+        {
+          "name": "pause_freezes_video_and_music",
+          "passed": true
+        },
+        {
+          "name": "manual_pause_survives_focus_return",
+          "passed": true
+        },
+        {
+          "name": "resume_advances_video_and_music",
+          "passed": true
+        },
+        {
+          "name": "focus_loss_freezes_video_and_music",
+          "passed": false
+        },
+        {
+          "name": "focus_return_resumes_previous_playback",
+          "passed": true
+        },
+        {
+          "name": "controls_do_not_advance_gameplay",
+          "passed": true
+        },
+        {
+          "name": "decoder_has_no_error",
+          "passed": true
+        }
+      ],
+      "pausedDelta": 0.0,
+      "blurredDelta": 0.7916666666666665,
+      "passed": false
+    },
+    "failureCause": "Natural-playback fixture restored focus every Update, defeating simulated focus loss"
+  },
+  "after": {
+    "directory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/controls-focus-20261025-132846",
+    "receipt": {
+      "scope": "native_player_control_api_not_os_input",
+      "checks": [
+        {
+          "name": "gate_prepared",
+          "passed": true
+        },
+        {
+          "name": "world_playing",
+          "passed": true
+        },
+        {
+          "name": "pause_freezes_video_and_music",
+          "passed": true
+        },
+        {
+          "name": "manual_pause_survives_focus_return",
+          "passed": true
+        },
+        {
+          "name": "resume_advances_video_and_music",
+          "passed": true
+        },
+        {
+          "name": "focus_loss_freezes_video_and_music",
+          "passed": true
+        },
+        {
+          "name": "focus_return_resumes_previous_playback",
+          "passed": true
+        },
+        {
+          "name": "controls_do_not_advance_gameplay",
+          "passed": true
+        },
+        {
+          "name": "decoder_has_no_error",
+          "passed": true
+        }
+      ],
+      "pausedDelta": 0.0,
+      "blurredDelta": 0.0,
+      "passed": true
+    },
+    "logSha256": "fd62764758ba6d6c3baef66a452da37ad9dfa7c42446b8e3dfdf73b1b0c1e8a5"
+  },
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/build-controls-focus/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406122391
+  },
+  "sourceHashes": {
+    "NativeLobby.cs": "d86390e28077211969c9fc9d865333badd343d9d75a8a1149a7131d01daf957d",
+    "NativeGame.cs": "505f0411a4e41f4bdc675d4f956594d8701cf4e8d5299b29642c1c5caf704e82",
+    "NativeGame.LobbySmoke.cs": "4448f96ef55108c318940c1f0f114a7b7d5122819640b998d2763e71a9724a93"
+  },
+  "osInputVerified": false,
+  "latestMediaApproved": false,
+  "automationCurrentStatus": "Unconfirmed after interrupted turn: prior local unity/automation.toml absent; tool view only rendered a card; no duplicate created"
+}

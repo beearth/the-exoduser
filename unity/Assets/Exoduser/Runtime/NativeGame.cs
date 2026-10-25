@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
-        NativeLobby lobby;bool lobbySmoke;int worldMask;
+        NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
         bool basicWeaponMode;
         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
@@ -61,7 +61,8 @@ namespace Exoduser.UnityPort
             var args=Environment.GetCommandLineArgs();
             bool legacyFixture=Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             if(!legacyFixture){Running=false;lobby.Begin();}
-            if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbySmoke());}
+            if(Array.IndexOf(args,"--unity-lobby-controls-smoke")>=0){lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbyControlsSmoke());}
+            else if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-inventory-smoke")>=0){inventorySmoke=true;menu=false;Running=true;StartCoroutine(InventorySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-hud-smoke")>=0){hudSmoke=true;menu=false;StartCoroutine(HudSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-smoke")>=0){menu=false;Running=true;StartCoroutine(Smoke());}
@@ -99,7 +100,7 @@ namespace Exoduser.UnityPort
         void Update()
         {
             lobby.AutomatedInput=lobbySmoke;
-            if(lobbySmoke)lobby.SetPlaybackFocus(true); // Explicit fixture only; normal client obeys focus pause.
+            if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){Running=false;view.cullingMask=0;return;}
             view.cullingMask=worldMask;
             if(Input.GetKeyDown(KeyCode.Escape)){if(inventory.Open)SetInventory(false);else{menu=!menu;Running=!menu&&Simulation.Player.Hp>0;}}

@@ -26,6 +26,51 @@ namespace Exoduser.UnityPort {
   double lobbyWorldStarted=-1,lobbyWorldChanged=-1,lobbyWorldLastFrameWall=-1,lobbyWorldVideoTime=-1,lobbyProgressAt;
   string lobbyFixtureOutput;bool lobbyLogSubscribed;
   static double LobbyNow{get{return Time.realtimeSinceStartupAsDouble;}}
+  [Serializable] sealed class LobbyControlCheck {public string name;public bool passed;}
+  [Serializable] sealed class LobbyControlsReceipt {
+   public string scope="native_player_control_api_not_os_input";
+   public List<LobbyControlCheck> checks=new List<LobbyControlCheck>();
+   public double pausedDelta,blurredDelta;public bool passed;
+  }
+  IEnumerator LobbyControlsSmoke(){
+   string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;
+   Directory.CreateDirectory(output);var result=new LobbyControlsReceipt();
+   Action<string,bool> check=(name,passed)=>result.checks.Add(new LobbyControlCheck{name=name,passed=passed});
+   int tick=Simulation.TickCount;
+   try{
+    lobby.SetPlaybackFocus(true);yield return null;lobby.AdvanceSplash();yield return null;lobby.AdvanceSplash();yield return null;
+    double limit=LobbyNow+15;
+    while((!lobby.CurrentVideo.Prepared||lobby.CurrentVideo.Frame<0)&&LobbyNow<limit)yield return null;
+    check("gate_prepared",lobby.CurrentVideo.Prepared&&lobby.CurrentVideo.Frame>=0);
+    if(!result.checks[0].passed)yield break;
+    lobby.StartGate();limit=LobbyNow+25;
+    while((lobby.Flow.Page!=LobbyPage.WorldIntro||!lobby.CurrentVideo.Prepared||lobby.CurrentVideo.Time<2)&&LobbyNow<limit)yield return null;
+    var movie=lobby.CurrentVideo;var music=lobby.GetComponent<AudioSource>();
+    bool ready=lobby.Flow.Page==LobbyPage.WorldIntro&&movie.Prepared&&movie.Player.isPlaying;
+    check("world_playing",ready);if(!ready)yield break;
+    yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"controls-playing.png"));yield return null;
+    lobby.TogglePlayback();yield return new WaitForSecondsRealtime(.2f);double paused=movie.Time;
+    yield return new WaitForSecondsRealtime(.8f);result.pausedDelta=Math.Abs(movie.Time-paused);
+    check("pause_freezes_video_and_music",!movie.Player.isPlaying&&!music.isPlaying&&result.pausedDelta<.1);
+    yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"controls-paused.png"));yield return null;
+    lobby.SetPlaybackFocus(false);yield return new WaitForSecondsRealtime(.3f);
+    lobby.SetPlaybackFocus(true);yield return new WaitForSecondsRealtime(.5f);
+    check("manual_pause_survives_focus_return",!movie.Player.isPlaying&&!music.isPlaying&&Math.Abs(movie.Time-paused)<.1);
+    lobby.TogglePlayback();yield return new WaitForSecondsRealtime(.8f);
+    check("resume_advances_video_and_music",movie.Player.isPlaying&&music.isPlaying&&movie.Time>paused+.3);
+    lobby.SetPlaybackFocus(false);yield return new WaitForSecondsRealtime(.2f);double blurred=movie.Time;
+    yield return new WaitForSecondsRealtime(.8f);result.blurredDelta=Math.Abs(movie.Time-blurred);
+    check("focus_loss_freezes_video_and_music",!movie.Player.isPlaying&&!music.isPlaying&&result.blurredDelta<.1);
+    lobby.SetPlaybackFocus(true);yield return new WaitForSecondsRealtime(.8f);
+    check("focus_return_resumes_previous_playback",movie.Player.isPlaying&&music.isPlaying&&movie.Time>blurred+.3);
+    check("controls_do_not_advance_gameplay",Simulation.TickCount==tick);
+    check("decoder_has_no_error",movie.Error.Length==0);
+   }finally{
+    result.passed=result.checks.Count==9&&result.checks.TrueForAll(x=>x.passed);
+    File.WriteAllText(Path.Combine(output,"lobby-controls.json"),JsonUtility.ToJson(result,true));
+    lobby.SetPlaybackFocus(true);lobby.ShowLobby();Running=false;lobbySmoke=false;lobbyControlsSmoke=false;
+   }
+  }
   IEnumerator LobbySmoke(){
    string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;Directory.CreateDirectory(output);
    bool probe=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-lobby-probe")>=0;

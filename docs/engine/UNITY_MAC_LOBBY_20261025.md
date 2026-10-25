@@ -23,3 +23,6 @@
 ## 다음 한 단위
 
 로비/세계관의 pause/resume·focus 복귀와 표시되는 조작 UI를 원본 경로와 대조하고, 별도 짧은 실제Player 검사로 확인한다. 현재 DrawWorldIntro의 재생 버튼은 paused/error 상태에만 노출되므로 재생 중 일시정지 진입 경로부터 확인한다. 기본 실행이 다시 첫화면에서 멈추면 동일PID의 bounded sample과 실패영수증을 보존하고 무한 재실행하지 않는다. UI검수는 CUA만 사용하며, 기존좌표불일치에 제품보정값을 넣지 않는다. PC·Godot·저장·계정·타인WIP는 보존한다.
+
+
+후속: 위pause/focus 미검수중제어API범위는별도Player9/9검사로완료했다. OS직접입력은여전히미완료. [후속구현과검수](UNITY_MAC_LOBBY_CONTROLS_20261025.md).

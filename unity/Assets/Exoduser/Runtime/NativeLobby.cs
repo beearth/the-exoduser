@@ -71,10 +71,10 @@ namespace Exoduser.UnityPort
    if(SubtitleText.Length>0){var color=caption.normal.textColor;caption.normal.textColor=Color.black;for(int dx=-2;dx<=2;dx+=2)for(int dy=-2;dy<=2;dy+=2)GUI.Label(new Rect(r.x+dx,r.y+dy,r.width,r.height),SubtitleText,caption);caption.normal.textColor=color;GUI.Label(r,SubtitleText,caption);CaptionVisible=true;}
    if(GUI.Button(new Rect(1730,24,160,48),Language.ToUpperInvariant(),button))showLanguages=!showLanguages;
    if(showLanguages&&subtitles!=null){for(int i=0;i<subtitles.captions.Length;i++){int row=i/8,col=i%8;if(GUI.Button(new Rect(1030+col*105,82+row*48,100,44),subtitles.captions[i].code.ToUpperInvariant(),button)){SetLanguage(subtitles.captions[i].code);showLanguages=false;}}}
-   // Production source hides its mix controls until paused/error. Preview-only sliders
-   // remain an explicit API for the isolated verifier, rather than persistent player UI.
-   bool attention=VideoError.Length>0||(movie.Prepared&&movie.Player!=null&&!movie.Player.isPlaying);
-   if(attention&&GUI.Button(new Rect(28,26,240,48),VideoError.Length>0?K("재생 / 재시도","Play / retry"):K("재생","Play"),button))TogglePlayback();
+   // Keep the cinematic clear, but leave a reachable pause control while playing.
+   // Mix sliders remain outside the normal cinematic UI.
+   bool playing=movie.Prepared&&movie.Player!=null&&movie.Player.isPlaying;
+   if((movie.Prepared||VideoError.Length>0)&&GUI.Button(new Rect(28,26,240,48),VideoError.Length>0?K("재생 / 재시도","Play / retry"):playing?K("일시정지","Pause"):K("재생","Play"),button))TogglePlayback();
    if(VideoError.Length>0)Label(new Rect(28,86,1300,100),K("영상 재생 실패 — 재시도하거나 ESC를 길게 눌러 나가세요.","Video playback failed — retry or hold ESC to continue."),normal,TextAnchor.UpperLeft);
    if(Event.current.type==EventType.MouseDown&&Event.current.button==0&&Event.current.mousePosition.y>270&&Event.current.mousePosition.y<970){NextCut();Event.current.Use();}
   }

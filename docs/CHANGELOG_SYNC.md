@@ -56964,3 +56964,8 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 ## 2026-10-25 Mac 로비 실제 재생
 
 - 기본 실행 첫멈춤과비교실행20/20·기본옵션재검수20/20을분리보존했다. 113초자연끝/로비전환/자막/분리음성·음악·replay/holdskip모델경로 확인. 설정영구변경/영상교체0, 최초멈춤원인·pause/focus·OS입력미확정. 최초설치대기문서를현행설치완료와구분했다. [보고서](engine/UNITY_MAC_LOBBY_20261025.md).
+
+
+## 2026-10-25 Mac 일시정지 제어
+
+- 세계관재생중일시정지버튼연결,paused/error의재생/재시도유지. controls전용fixture에서기존강제focus복구를분리해실제Player8/9→9/9,일반build0오류·실제화면2장. Core/Video/미디어/저장무변경,OS입력/전체디자인미인수. [보고서](engine/UNITY_MAC_LOBBY_CONTROLS_20261025.md).

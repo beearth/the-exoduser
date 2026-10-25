@@ -122,3 +122,6 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 | 글자 | text-gate.json caption11행/detail10행(이전각1행), 원본대조·실제PNG·independent-typography-review.md에서 이번잘림수정PASS. 모든문자/전체시각품질PASS는아님 |
 | 증거 위치 | I:/EXODUSER-Storage/qa/unity-lobby-20261024. INTRO-PASS.json은5526실제완주, ui-gate.json은33cb UI수정, SAVED.json은최종로컬/원격tree·실행해시·I:증분bundle을기록 |
 | 남은 범위 | 일반OS입력/포커스, 모든해상도·29언어/RTL·전체CSS전환, 캐릭터생성/저장/계정/완전게임진입. 전체 VISUAL VERDICT: RETOUCH. Godot/웹원본/사용자저장/공용INDEX보존 |
+
+
+2026-10-25 Mac: Core/Video변경없이세계관일시정지버튼진입을보완. 별도controls 실제Player9검사로pause/resume·focus상태를확인했고기존자연완주fixture강제focus복구와분리했다. OS직접입력인수는아니다. [증거](UNITY_MAC_LOBBY_CONTROLS_20261025.md).
