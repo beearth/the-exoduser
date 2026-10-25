@@ -450,3 +450,8 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+
+## 2026-10-25 Steam 세계관 신버전 29언어 자막판 준비
+
+v22b 기반29언어 MP4(기존영어음성·928큐),자막원본87개를 I:에 제작·검수했다.29편 전체디코딩/프레임·길이·FPS/음성패킷동일/첫12RGB완전검정 통과. 원어민감수·Steam전송/변환/언어연결/공개와 인게임영상교체는 이 로컬완료 범위 밖이다. [자막판 정본](../13출시·마케팅/STEAM_WORLD_INTRO_SUBTITLES_20261025.md), I:/EXODUSER-Storage/steam/world_intro_localized_20261025/artifact-manifest.json 참조. 게임코드·세이브·공유INDEX 보존.

@@ -1,0 +1,587 @@
+{
+  "at": "2026-10-25T04:12:59.925Z",
+  "status": "local-complete",
+  "masterSha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+  "subtitleOffsetSeconds": 0.4,
+  "languageCount": 29,
+  "cuesPerLanguage": 32,
+  "totalCues": 928,
+  "totalFrames": 98890,
+  "totalBytes": 3000450013,
+  "blackStart": {
+    "files": 29,
+    "framesPerFile": 12,
+    "rgbMax": 0
+  },
+  "fullDecodeFiles": 29,
+  "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+  "steamUploaded": false,
+  "steamPublished": false,
+  "files": [
+    {
+      "code": "ko",
+      "steam": "koreana",
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_koreana.mp4",
+      "sha256": "065fd0dd624cea9b62c6005f605e970fe132cdc9e250fefb5d889e457a9182ff",
+      "bytes": 94787845,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "encoder": "libx264 medium CRF18",
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "en",
+      "steam": "english",
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_english.mp4",
+      "sha256": "572cbfdecd252b8e7b7b720e15c61eb3482a8fd82d8f64da3ab849a7ff17077c",
+      "bytes": 95004979,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "encoder": "libx264 medium CRF18",
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "zh",
+      "steam": "schinese",
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_schinese.mp4",
+      "sha256": "6a196e322039f238a0f4953a1c160e6779eac56ae5f6a76a670992b9db1216fc",
+      "bytes": 94740737,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "encoder": "libx264 medium CRF18",
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "zht",
+      "steam": "tchinese",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_tchinese.mp4",
+      "sha256": "492bef79400c4992c6b8ff1de137a05d70643fc95b3df97b4e01ac42d7e653bb",
+      "bytes": 104159265,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "ja",
+      "steam": "japanese",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_japanese.mp4",
+      "sha256": "fc7be2ea3ff80252c4eecee93fb249da20e1cd6deb205451d36decdbcf438585",
+      "bytes": 104489782,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "es",
+      "steam": "spanish",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_spanish.mp4",
+      "sha256": "511889f5610a97df2587deabebe6dbc5999b047a9aca834cf02e52f75829cc39",
+      "bytes": 104502079,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "fr",
+      "steam": "french",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_french.mp4",
+      "sha256": "2056661125d6f1a6e5fb0f4e943cb512a288ab06e99fd2a7c00499f835df5e34",
+      "bytes": 104549152,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "de",
+      "steam": "german",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_german.mp4",
+      "sha256": "37c5d20c6fa939015afaeb9a3328986a08a770ca8b9350ee0c3fbbd76f5c7a10",
+      "bytes": 104503434,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "ptbr",
+      "steam": "brazilian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_brazilian.mp4",
+      "sha256": "6d97a763625bed939300b9fc3a62e2d663fb8897099b81a57c13c00bd4ac1adc",
+      "bytes": 104542603,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "it",
+      "steam": "italian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_italian.mp4",
+      "sha256": "e8f322ac2f37f1cfd5ea6cc0dc848c50489db85c3a20325daf0c90d0c7c7cd5f",
+      "bytes": 104554617,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "ru",
+      "steam": "russian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_russian.mp4",
+      "sha256": "e2be4c77ba4f9af84acf523921e05d72aa1ab9def3c12b430d2a3a4cc87fdac1",
+      "bytes": 104451194,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "uk",
+      "steam": "ukrainian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_ukrainian.mp4",
+      "sha256": "6312b4f1fe4cd0b78ca069094c1c693cb591dfb12d5416487366fefd64c88495",
+      "bytes": 104420655,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "pl",
+      "steam": "polish",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_polish.mp4",
+      "sha256": "ee498e71e30888a51f0db037c865d011ae0a5398bf79c2570e9777736b85ea7f",
+      "bytes": 104495375,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "cs",
+      "steam": "czech",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_czech.mp4",
+      "sha256": "e07414b280e1b83388d44d214fd3ae6c20684a7247849b1db21a514c7ddbe488",
+      "bytes": 104377243,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "hu",
+      "steam": "hungarian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_hungarian.mp4",
+      "sha256": "612727ed93c58c4e15b3d99423e88b5e2586ba83e8e533d25425043a83395302",
+      "bytes": 104479770,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "ro",
+      "steam": "romanian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_romanian.mp4",
+      "sha256": "98c56fe4447319a1e0844807ca4799030ac5f8eb5ef44eeb85509f628b44443d",
+      "bytes": 104450976,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "bg",
+      "steam": "bulgarian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_bulgarian.mp4",
+      "sha256": "96e0089c6cdd4823e5a36201c9f8f529dae76d3ab5ec9bd322a55260ce16eb9f",
+      "bytes": 104435345,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "el",
+      "steam": "greek",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_greek.mp4",
+      "sha256": "be264759825556d672792b401e03236967cf704233c77cc7bdd0fb595548916b",
+      "bytes": 104611449,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "tr",
+      "steam": "turkish",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_turkish.mp4",
+      "sha256": "fd5e1c5376ff0277c95a892592bb2e9e2a854ed5a331c1c1ae1d20bffeafb4c8",
+      "bytes": 104460179,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "vi",
+      "steam": "vietnamese",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_vietnamese.mp4",
+      "sha256": "bfe708b7136005cb1a7242be33608555c5e963977c1f20ea3b2ef9c40b218f81",
+      "bytes": 104507056,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "th",
+      "steam": "thai",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_thai.mp4",
+      "sha256": "48f55fc7520249ade09f350de40789df265208f18c244fd826554086b70f48ae",
+      "bytes": 104203850,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "id",
+      "steam": "indonesian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_indonesian.mp4",
+      "sha256": "29fe9c277acce3d7663913c1e43bcb6a7585d5b70ac5eeaa10d3f0ced91b1ee4",
+      "bytes": 104633359,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "ar",
+      "steam": "arabic",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_arabic.mp4",
+      "sha256": "c6ad6cffd39ccfc845e3cf722d15ac22e449ce37ed51705cba40ab630efba814",
+      "bytes": 104093265,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "sv",
+      "steam": "swedish",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_swedish.mp4",
+      "sha256": "35fd2acbd869dd28a44b24fd5ac8fc8ef45d842efa44b9f6dcb02eb57b191301",
+      "bytes": 104444425,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "da",
+      "steam": "danish",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_danish.mp4",
+      "sha256": "fb645430e9a6e3a8b80cade1502549a8301fceed9fd19a3206dcbe2bfeb40332",
+      "bytes": 104438044,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "no",
+      "steam": "norwegian",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_norwegian.mp4",
+      "sha256": "7fc8d7569e1d657f9480719018eb6e593e8d3b5be6587d43af5687e508ae734e",
+      "bytes": 104427388,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "fi",
+      "steam": "finnish",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_finnish.mp4",
+      "sha256": "975a511afb3ff24c2c7e2eefebde186b11f05d2b2fe3fa07585c21f9291ee1c5",
+      "bytes": 104496696,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "nl",
+      "steam": "dutch",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_dutch.mp4",
+      "sha256": "565652ab6429f270bb19eecb6fe275d73b9b373c78dc237691392b01953eab1b",
+      "bytes": 104503042,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    },
+    {
+      "code": "ms",
+      "steam": "malay",
+      "encoder": "h264_amf",
+      "qp": {
+        "i": 16,
+        "p": 18,
+        "b": 20
+      },
+      "file": "I:\\EXODUSER-Storage\\steam\\world_intro_localized_20261025\\videos\\world_intro_v22b_malay.mp4",
+      "sha256": "7849d95793163515e421972379187f985b357616a60458b031ac6527043f9852",
+      "bytes": 104686209,
+      "duration": 113.701,
+      "frames": 3410,
+      "cues": 32,
+      "glyphsAndBounds": "32/32",
+      "audioHash": "SHA256=d2501255fb891361093abd40f57aca07bae46500adb1caa57d2c95a93746304d",
+      "fullDecode": true,
+      "blackFirst12RgbMax": 0
+    }
+  ]
+}
