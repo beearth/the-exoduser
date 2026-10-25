@@ -39,6 +39,13 @@ namespace Exoduser.UnityPort
     check(lobby.CharacterStoreState==CharacterStoreStatus.Loaded&&lobby.Characters.Count==0&&lobby.Characters.SelectedIndex==-1&&!lobby.EnterSelectedCharacter(),"empty roster restores with entry disabled");
     check(lobby.OpenCharacterCreation(),"restored empty roster permits new creation");
     Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);yield return SkillCapture(output,"store-ready-1080p");
+   }else if(phase=="visual"){
+    check(lobby.CharacterStoreState==CharacterStoreStatus.Loaded,"visual pass reads existing isolated roster");
+    yield return SkillCapture(output,"store-footer-ko-720p");
+    lobby.SetLanguage("en");yield return SkillCapture(output,"store-footer-en-720p");
+    Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+    yield return SkillCapture(output,"store-footer-en-1080p");
+    lobby.SetLanguage("ko");yield return SkillCapture(output,"store-footer-ko-1080p");
    }else check(false,"known fixture phase required");
    File.WriteAllText(Path.Combine(output,"store-"+phase+".json"),JsonUtility.ToJson(new CharacterSmokeReceipt{scope="Isolated character roster persistence across fresh Player processes; no battle saves or native OS input claim",passed=failures==0,failures=failures,checks=checks.ToArray()},true));
    lobbySmoke=false;lobby.AutomatedInput=false;

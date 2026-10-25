@@ -110,7 +110,7 @@ namespace Exoduser.UnityPort
    LobbyStyles();CharacterStyles();HandleCharacterKeys();HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;DrawLobbyBackground();DrawSelectedCharacter();
    if(lobbyPanel!=null)Image(new Rect(1360,0,560,1080),lobbyPanel,ScaleMode.StretchToFill);
    else Fill(new Rect(1360,0,560,1080),new Color(.063f,.051f,.055f));
-   // Source full/offline layout at1920x1080; user slots are deliberately never read.
+   // Source full/offline layout at1920x1080; only the dedicated Unity roster is read.
    Fill(new Rect(1388,151.5f,140,27),new Color(.039f,.024f,.008f,.8f));Border(new Rect(1388,151.5f,140,27),new Color(.471f,.314f,.157f,.4f),1);
    Label(new Rect(1399,151.5f,115,27),K("자막: 한국어","Subtitles: "+Language.ToUpperInvariant()),lobbyMicro,TextAnchor.MiddleLeft);var chevron=new Color(.722f,.639f,.525f);Line(new Vector2(1504,162),new Vector2(1508,166),chevron,1.5f);Line(new Vector2(1508,166),new Vector2(1512,162),chevron,1.5f);
    if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))ToggleLanguages();
@@ -132,9 +132,9 @@ namespace Exoduser.UnityPort
    Label(new Rect(1388,897,180,32),K("▶ 시네마틱","▶ Cinematic"),lobbyMicro,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1388,897,180,32),"",GUIStyle.none))ReplayIntro();
    DrawPower(new Rect(1856,895,36,36));if(GUI.Button(new Rect(1856,895,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
    // Keep the existing disposable preview explicit without covering the cinematic.
-   Rect preview=new Rect(1392,962,480,48);Fill(preview,new Color(.105f,.09f,.095f,.94f));Border(preview,new Color(.4f,.32f,.24f,.7f),1);
+   Rect preview=new Rect(1392,946,480,48);Fill(preview,new Color(.105f,.09f,.095f,.94f));Border(preview,new Color(.4f,.32f,.24f,.7f),1);
    Label(preview,K("이름 없이 미리보기","Preview without a name"),lobbyText,TextAnchor.MiddleCenter);if(GUI.Button(preview,"",GUIStyle.none)){SelectPreview();EnterNativeTest();}
-   Label(new Rect(1392,1018,480,50),CharacterPersistenceNote(),characterStorageText,TextAnchor.MiddleCenter);
+   Label(new Rect(1392,1000,480,48),CharacterPersistenceNote(),characterStorageText,TextAnchor.MiddleCenter);
    GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;
    if(showLanguages){
     // Use IMGUI hit testing so dismissal follows the same scaled coordinates as buttons.
