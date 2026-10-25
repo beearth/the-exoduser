@@ -1,0 +1,68 @@
+{
+  "sourceGameSha256": "d73d691989c1cb847cb500ce02ae81430c575fb90d732a5af131742c96d2c8c5",
+  "sourceLessonSha256": "95fff33fdaef534cf9cf89e72c2cdf0fa165988b188c9a57ffa22d9b5b079464",
+  "sourceFile": "parry-lesson.js",
+  "movementPixels": 120,
+  "leftKills": 10,
+  "fullChargeFrames": 120,
+  "transitionFrames": 90,
+  "entries": [
+    {
+      "id": "moveLabel",
+      "ko": "WASD / 방향키 · 이동",
+      "en": "WASD / Arrow keys · Move"
+    },
+    {
+      "id": "moveTitle",
+      "ko": "먼저 움직여보세요",
+      "en": "Try moving first"
+    },
+    {
+      "id": "moveHint",
+      "ko": "W 위 · A 왼쪽 · S 아래 · D 오른쪽. WASD 또는 방향키로 조금 걸어보세요. 이후 모든 실습에서도 이동할 수 있습니다.",
+      "en": "W up · A left · S down · D right. Walk a short distance using WASD or the arrow keys. You can also move during all later exercises."
+    },
+    {
+      "id": "attackLabel",
+      "ko": "좌클릭 · 10마리 처치 + 3단 차징",
+      "en": "Left click · 10 defeats + Tier 3 charge"
+    },
+    {
+      "id": "attackTitle",
+      "ko": "기검참으로 적 10마리를 처치하세요",
+      "en": "Defeat 10 enemies with Ki Slash"
+    },
+    {
+      "id": "attackHint",
+      "ko": "1·2타 뒤 3타에서 좌클릭을 2초 누르고 떼어 검기로 적을 처치하세요.\n처치 {p0}/10 · 3단 차징 검기 처치 {p1}/1",
+      "en": "After hits 1 and 2, hold the third left click for 2 seconds, then release it to defeat an enemy with the sword wave.\nDefeated {p0}/10 · Tier 3 sword-wave defeat {p1}/1"
+    },
+    {
+      "id": "start",
+      "ko": "W / A / S / D 또는 클릭하여 시작",
+      "en": "Press W / A / S / D or click to start"
+    },
+    {
+      "id": "skip",
+      "ko": "연습 건너뛰기",
+      "en": "Skip practice"
+    },
+    {
+      "id": "chargeDone",
+      "ko": "3단 차징 검기 처치 완료",
+      "en": "Tier 3 sword-wave defeat complete"
+    },
+    {
+      "id": "chargeHold",
+      "ko": "3타 차징 {p0}/3단 · 2초까지 유지",
+      "en": "Third-hit charge Tier {p0}/3 · Hold for 2 seconds"
+    },
+    {
+      "id": "chargePrompt",
+      "ko": "1·2타 뒤 3타를 2초 누르세요",
+      "en": "After hits 1 and 2, hold the third hit for 2 seconds"
+    }
+  ],
+  "plaqueSource": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/ui/tutorial/parry-plaque-v1.png",
+  "plaqueSha256": "302bb96f5f43004133afe9d8e3658d78bfa166e75994b58f65a0589110c0772d"
+}

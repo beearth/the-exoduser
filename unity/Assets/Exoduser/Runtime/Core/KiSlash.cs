@@ -14,6 +14,8 @@ namespace Exoduser.UnityPort.Core
         public int TrailHead;
         // The original Set stores actor identity, not an ID that could be reused.
         internal readonly HashSet<EnemyState> HitEnemies = new HashSet<EnemyState>();
+        internal bool FirstPracticeBornInTick;
+        internal int FirstPracticeChargeTier;
     }
 
     public sealed partial class Simulation
@@ -61,6 +63,8 @@ namespace Exoduser.UnityPort.Core
             projectile.ChargeScale = step == 3 ? (float)(1 + KiChargeTier(chargeFrames) * .4) : 1;
             projectile.Radius = (step == 3 ? 120 : 55) * projectile.ChargeScale;
             projectile.Step = step; projectile.Damage = CalculateKiSlashDamage(step, chargeFrames);
+            projectile.FirstPracticeBornInTick=executingFirstPracticeTick;
+            projectile.FirstPracticeChargeTier=step==3?KiChargeTier(chargeFrames):0;
             for (int i = 0; i < 5; i++) { projectile.TrailX[i] = Player.X; projectile.TrailY[i] = Player.Y; }
             projectile.TrailHead = 0;
             projectile.HitEnemies.Clear();
@@ -87,7 +91,9 @@ namespace Exoduser.UnityPort.Core
                     float angle = (float)Math.Atan2(enemy.Y - projectile.Y, enemy.X - projectile.X);
                     // Admitted ordinary physical profile has no impact/element
                     // reaction owner. Never invent noElReact (absent in source).
+                    bool wasAlive=enemy.Alive;
                     ApplyEnemyDamage(enemy, projectile.Damage, angle, true, .5f);
+                    EmitFirstPracticeHit(enemy,"kiSlash",projectile.Step,projectile.FirstPracticeChargeTier,wasAlive,projectile.FirstPracticeBornInTick);
                     // Source updateCrescents calls _playKiSlashHit after hurtE, including lethal hits.
                     QueueKiHit(projectile, enemy);
                 }

@@ -22,6 +22,7 @@ namespace Exoduser.UnityPort
    // Existing scripted fixtures keep their direct entry contract.
    bool fixture=false;foreach(var arg in Environment.GetCommandLineArgs())if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&arg.EndsWith("-smoke",StringComparison.Ordinal))fixture=true;
    frontendEntryInputFence=!fixture;if(frontendEntryInputFence)frontendFenceSetFrame=Time.frameCount;Running=fixture;
+   if(!fixture&&lobby.StartupGameplayPrepared)BeginFirstPractice();
   }
   bool WaitForFrontendEntryInput()
   {

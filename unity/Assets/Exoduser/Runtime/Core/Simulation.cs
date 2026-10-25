@@ -81,6 +81,12 @@ namespace Exoduser.UnityPort.Core
 
         public void Tick(float moveX, float moveY, float aimX, float aimY, bool attack, bool pickup)
         {
+            executingFirstPracticeTick=true;
+            try { TickFirstPracticeObserved(moveX,moveY,aimX,aimY,attack,pickup); }
+            finally { executingFirstPracticeTick=false; }
+        }
+        private void TickFirstPracticeObserved(float moveX,float moveY,float aimX,float aimY,bool attack,bool pickup)
+        {
             if (!Finite(moveX) || !Finite(moveY) || !Finite(aimX) || !Finite(aimY)) throw new ArgumentException("Non-finite input");
             TickCount++;
             LastHitDamage = 0;
@@ -185,7 +191,9 @@ namespace Exoduser.UnityPort.Core
                 double angle = Math.Atan2(enemy.Y - Player.Y, enemy.X - Player.X);
                 double difference = ((angle-attackAngle) % (Math.PI*2) + Math.PI*3) % (Math.PI*2) - Math.PI;
                 if (Math.Abs(difference) >= (Config.WeaponArc!=0?Config.WeaponArc:.95f)) continue;
+                bool wasAlive=enemy.Alive;
                 HurtEnemy(enemy, damage, (float)angle);
+                EmitFirstPracticeHit(enemy,"weapon",0,0,wasAlive,true);
             }
         }
 
@@ -199,6 +207,9 @@ namespace Exoduser.UnityPort.Core
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             if (enemy.Etype != 0) throw new NotSupportedException("Only admitted normal etype0 profile is implemented.");
+            // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
+            // directly; its inherited shield is untouched and no rewards roll.
+            if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
             damage = Math.Max(1, damage);
             if (Config.AccessoryDamageBonus > 0) damage = (int)(damage * (1 + Config.AccessoryDamageBonus));
             if (NextRandom() * 100 < Config.PlayerCriticalChance) damage = (int)(damage * Config.PlayerCriticalMultiplier);
@@ -229,6 +240,7 @@ namespace Exoduser.UnityPort.Core
         private void KillEnemy(EnemyState enemy)
         {
             if (!enemy.Alive) return;
+            if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
             enemy.Alive = false; Kills++; Combo++; ComboTicks = Math.Min(1200, ComboTicks + 60);
             Materials += 4;
             // Exact normal kill potion destination is quickslot, not fake world loot.
