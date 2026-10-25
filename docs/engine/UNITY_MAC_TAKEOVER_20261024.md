@@ -2,6 +2,15 @@
 
 > 2026-10-24 원본 기준 정정: 이 문서의 “최신 v22b / 사용자 최신 override”는 승인 근거 미확인으로 철회한다. v22b 복사/재생 검사는 해당 후보의 결과만 뜻한다. [원본 대조](UNITY_SOURCE_BASELINE_20261024.md).
 
+## 2026-10-25 현행 상태
+
+사용자가 Hub 로그인·라이선스 활성화와 Apple Silicon Editor 6000.6.7f1 설치를 완료했다. `/Applications/Unity/Hub/Editor/6000.6.7f1/Unity.app`에서 격리 프로젝트 compile/verify와 ARM64 일반 빌드가 성공했다. 원본 프로젝트의 6000.4.8f1 버전은 보존한다. 아래 최초 설치·약관 대기 내용은 당시 이력이며 현재 사용자 조치 요청이 아니다.
+
+중앙 HUD·좌우 인벤토리의 3해상도 자동 검수는 [실제 Mac 검수](UNITY_UI_COMPOSITION_20261024.md)에 기록했다. 후속 단위는 Mac 로비/인트로 자연 재생과 조작 검수다. 미디어 최신 승인본은 여전히 미확인이므로 실제 재생 성공과 최신 승인 여부를 구분한다. PC 개발·자동화는 재개하지 않는다.
+
+Mac 로컬 heartbeat `unity`는 이 Mac 채팅 `01a0f32f-a350-7430-85a4-fb71f336d5c7` 대상으로 ACTIVE/10분 간격 설정을 확인했다. 이는 설정 확인이며 예약 실행이 실제 수행됐다는 증거는 아니다.
+
+## 최초 인수 기록
 
 PC에서 전달된 최신 사용자 지시 “이제 맥에서 다 해라”에 따라 Mac이 로비·v22b 인트로와 UI 도킹 작업을 인수한다. 과거 웹 11팀 작업·전투/드랍 확장을 재개하지 않는다.
 
@@ -24,7 +33,7 @@ Unity 라이선스 선행조건 때문에 **이 변경은 아직 Editor compile/
 
 활성화 후 실제 설치된 Editor 경로에서 `-batchmode -buildTarget osxuniversal -projectPath <checkout>/unity -executeMethod PortVerification.Verify -receipt <QA>/verify.json -logFile <QA>/verify.log`를 먼저 실행한다. GPU 검사가 있으므로 `-nographics`를 추가하지 않는다. 성공 후 `PortVerification.Build -output <새 빌드 폴더> -receipt <QA>/build.json`으로 일반 `.app`을 만든다. Windows 재검수는 `-buildTarget win64`를 명시한다. [공식 CLI](https://docs.unity.com/en-us/engine/6000.0/manual/unity-editor/command-line-arguments/editor), [Mac architecture API](https://docs.unity.com/en-us/engine/6000.3/script-reference/unityeditor/osxstandalone/userbuildsettings/architecture).
 
-## 다음 행동
+## 최초 인수 시 다음 행동 (현재 상태는 위 현행 기록 우선)
 
 1. 사용자 약관 확인·로그인·유효 라이선스 뒤 Editor 설치 및 실제 import/verify/build.
 2. Mac AVFoundation의 v22b 일반 재생·113초 자연끝·소리/자막/전환, replay·pause·ENTER·5초 holdskip·focus 직접 입력을 확인한다. 자동 fixture와 OS 입력·청각 검수를 분리한다.

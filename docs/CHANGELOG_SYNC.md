@@ -56959,3 +56959,8 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 - 설계 HTML과 현행 설계·검수 문서를 추가. 실제 Mac compile/render/input 결과는 설계 문서에서 별도 기록.
 
 - Mac6000.6.7f1격리verify/build성공,HUD3해상도6검사씩·인벤3해상도10검사씩PASS. 실제PNG2장과검수JSON보존. 키문자18px/nowrap보정. CUA직접클릭좌표불일치로수동입력PASS는미선언.
+
+
+## 2026-10-25 Mac 로비 실제 재생
+
+- 기본 실행 첫멈춤과비교실행20/20·기본옵션재검수20/20을분리보존했다. 113초자연끝/로비전환/자막/분리음성·음악·replay/holdskip모델경로 확인. 설정영구변경/영상교체0, 최초멈춤원인·pause/focus·OS입력미확정. 최초설치대기문서를현행설치완료와구분했다. [보고서](engine/UNITY_MAC_LOBBY_20261025.md).

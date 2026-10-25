@@ -89,3 +89,8 @@
 | 글자 | text-gate.json caption11행/detail10행(이전각1행), 원본대조·실제PNG·independent-typography-review.md에서 이번잘림수정PASS. 모든문자/전체시각품질PASS는아님 |
 | 증거 위치 | I:/EXODUSER-Storage/qa/unity-lobby-20261024. INTRO-PASS.json은5526실제완주, ui-gate.json은33cb UI수정, SAVED.json은최종로컬/원격tree·실행해시·I:증분bundle을기록 |
 | 남은 범위 | 일반OS입력/포커스, 모든해상도·29언어/RTL·전체CSS전환, 캐릭터생성/저장/계정/완전게임진입. 전체 VISUAL VERDICT: RETOUCH. Godot/웹원본/사용자저장/공용INDEX보존 |
+
+
+## 2026-10-25 Mac 후속
+
+Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션비교와 기본옵션재검수 모두 실제20/20PASS·113초자연끝을 확인했다. 최신영상승인/OS입력/pause·focus/전체디자인은별도미확인. 런타임·미디어변경0. [Mac별도영수증과다음단위](UNITY_MAC_LOBBY_20261025.md).

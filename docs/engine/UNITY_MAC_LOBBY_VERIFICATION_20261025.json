@@ -1,0 +1,606 @@
+{
+  "scope": "Mac controlled native Player fixture; no OS-input or latest-source approval claim",
+  "sourceCommit": "cd02093f4d7d501dd6106d71a0431c049f1f813f",
+  "engine": "6000.6.7f1",
+  "resolution": "1920x1080",
+  "baselineFailure": {
+    "directory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/lobby-mac-20261025-125853",
+    "result": {
+      "receipt": false,
+      "progress": false,
+      "elapsed": 101,
+      "exitCode": -15,
+      "termination": "Owned test SIGTERM after main thread sample; no gameplay receipt or screenshot produced",
+      "observedMainThread": "GfxDeviceMetal::WaitForLastPresentationAndGetTimestamp -> semaphore_wait_trap"
+    },
+    "sampleSha256": "3a0a5b12c82f324d7edbe8ea51e09ee1e4f7045a8fd7499fadbe681bde965fdb",
+    "mainThreadEvidence": [
+      "+                                           1219 GfxDeviceMetal::WaitForLastPresentationAndGetTimestamp()  (in UnityPlayer.dylib) + 256  [0x104fd3ca0]  GfxDeviceMetal.mm:5639",
+      "+                                                   1219 semaphore_wait_trap  (in libsystem_kernel.dylib) + 8  [0x18aab3bb0]"
+    ]
+  },
+  "singleThreadComparison": {
+    "directory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/lobby-direct-20261025-130045",
+    "extraArgument": "-force-gfx-direct",
+    "receipt": {
+      "scope": "actual_native_player_frontend_fixture",
+      "samples": [
+        {
+          "stage": "fdg",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": false,
+          "voiceSourcePlaying": true,
+          "firstFrame": 0,
+          "lastFrame": 22,
+          "firstTime": 0.0,
+          "time": 0.7333333333333333,
+          "timeAdvanced": 0.7333333333333333,
+          "wallElapsed": 0.7935205420000004,
+          "duration": 3.200000047683716,
+          "frameRate": 30.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 3.029333333333333,
+          "width": 1920,
+          "height": 1080,
+          "frameChanges": 22,
+          "audioTracks": 1,
+          "voicePeak": 1.703620195388794,
+          "musicPeak": 0.0,
+          "listenerPeak": 1.703620195388794,
+          "voiceVolume": 1.0
+        },
+        {
+          "stage": "splash",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": true,
+          "voiceSourcePlaying": false,
+          "firstFrame": 0,
+          "lastFrame": 36,
+          "firstTime": 0.0,
+          "time": 1.5,
+          "timeAdvanced": 1.5,
+          "wallElapsed": 1.5749350409999998,
+          "duration": 7.291999816894531,
+          "frameRate": 24.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 7.082666666666666,
+          "width": 3840,
+          "height": 1536,
+          "frameChanges": 36,
+          "audioTracks": 0,
+          "voicePeak": 0.0,
+          "musicPeak": 0.0,
+          "listenerPeak": 0.13360515236854553,
+          "voiceVolume": 1.0
+        },
+        {
+          "stage": "gate",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": false,
+          "voiceSourcePlaying": false,
+          "firstFrame": 0,
+          "lastFrame": 20,
+          "firstTime": 0.0,
+          "time": 0.8333333333333334,
+          "timeAdvanced": 0.8333333333333334,
+          "wallElapsed": 0.8240005000000004,
+          "duration": 8.0,
+          "frameRate": 24.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 8.021333333333333,
+          "width": 1200,
+          "height": 700,
+          "frameChanges": 20,
+          "audioTracks": 0,
+          "voicePeak": 0.0,
+          "musicPeak": 0.01715698279440403,
+          "listenerPeak": 0.01715698279440403,
+          "voiceVolume": 0.6000000238418579
+        },
+        {
+          "stage": "world",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": false,
+          "voiceSourcePlaying": true,
+          "firstFrame": 0,
+          "lastFrame": 144,
+          "firstTime": 0.0,
+          "time": 6.0,
+          "timeAdvanced": 6.0,
+          "wallElapsed": 6.058346540999999,
+          "duration": 113.29199981689453,
+          "frameRate": 24.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 21.205333333333332,
+          "width": 1920,
+          "height": 1080,
+          "frameChanges": 144,
+          "audioTracks": 1,
+          "voicePeak": 0.5365905165672302,
+          "musicPeak": 0.19687408208847046,
+          "listenerPeak": 0.5471567511558533,
+          "voiceVolume": 1.0
+        },
+        {
+          "stage": "lobby",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": true,
+          "voiceSourcePlaying": false,
+          "firstFrame": 0,
+          "lastFrame": 15,
+          "firstTime": 0.0,
+          "time": 0.625,
+          "timeAdvanced": 0.625,
+          "wallElapsed": 0.7337676669999951,
+          "duration": 12.083999633789062,
+          "frameRate": 24.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 129.19466666666668,
+          "width": 1920,
+          "height": 1088,
+          "frameChanges": 15,
+          "audioTracks": 0,
+          "voicePeak": 0.0,
+          "musicPeak": 0.007656860165297985,
+          "listenerPeak": 0.007656860165297985,
+          "voiceVolume": 1.0
+        }
+      ],
+      "worldPlayback": {
+        "endedEvent": true,
+        "duration": 113.29199981689453,
+        "firstVideoTime": 0.0,
+        "lastVideoTime": 113.25,
+        "wallElapsed": 113.24407074999999,
+        "maxFrameGapSeconds": 0.0504783749999973,
+        "maxProgressStallSeconds": 0.041993583,
+        "minimumSpeed": 1.0,
+        "maximumSpeed": 1.0,
+        "frameChanges": 2718,
+        "audioProbeCount": 13584,
+        "voicePeak": 0.5365905165672302,
+        "musicPeak": 0.19687408208847046,
+        "listenerPeak": 0.5471567511558533
+      },
+      "worldCompletedNaturally": true,
+      "captionVisible": true,
+      "originalArtDrawn": true,
+      "replayWorked": true,
+      "holdSkipWorked": true,
+      "simulationPaused": true,
+      "explicitTestEntry": true,
+      "voicePeak": 1.703620195388794,
+      "musicPeak": 0.3168274164199829,
+      "audioBufferWarnings": 0
+    },
+    "checks": {
+      "scope": "native_controlled_frontend_fixture_not_manual_input_or_full_lobby_save_support",
+      "passed": true,
+      "audioBufferWarnings": 0,
+      "checks": [
+        {
+          "name": "native_frontend_receipt",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_fdg",
+          "passed": true
+        },
+        {
+          "name": "rendered_fdg",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_splash",
+          "passed": true
+        },
+        {
+          "name": "rendered_splash",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_gate",
+          "passed": true
+        },
+        {
+          "name": "rendered_gate",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_world",
+          "passed": true
+        },
+        {
+          "name": "rendered_world",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_lobby",
+          "passed": true
+        },
+        {
+          "name": "rendered_lobby",
+          "passed": true
+        },
+        {
+          "name": "natural_movie_end_reaches_lobby",
+          "passed": true
+        },
+        {
+          "name": "world_movie_113_seconds_at_normal_speed",
+          "passed": true
+        },
+        {
+          "name": "world_frame_progress_has_no_long_stall",
+          "passed": true
+        },
+        {
+          "name": "original_world_voice_and_music_have_engine_signal",
+          "passed": true
+        },
+        {
+          "name": "source_captions_and_original_art_drawn",
+          "passed": true
+        },
+        {
+          "name": "replay_and_hold_skip",
+          "passed": true
+        },
+        {
+          "name": "frontend_blocks_gameplay_and_test_entry_is_explicit",
+          "passed": true
+        },
+        {
+          "name": "no_runtime_exception_or_shader_error",
+          "passed": true
+        },
+        {
+          "name": "no_audio_buffer_overflow_or_discard",
+          "passed": true
+        }
+      ]
+    }
+  },
+  "defaultRepeat": {
+    "directory": "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/lobby-default-repeat-20261025-130306",
+    "extraArguments": [],
+    "receipt": {
+      "scope": "actual_native_player_frontend_fixture",
+      "samples": [
+        {
+          "stage": "fdg",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": false,
+          "voiceSourcePlaying": true,
+          "firstFrame": 0,
+          "lastFrame": 21,
+          "firstTime": 0.0,
+          "time": 0.7,
+          "timeAdvanced": 0.7,
+          "wallElapsed": 0.7998997920000002,
+          "duration": 3.200000047683716,
+          "frameRate": 30.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 3.029333333333333,
+          "width": 1920,
+          "height": 1080,
+          "frameChanges": 21,
+          "audioTracks": 1,
+          "voicePeak": 1.703620195388794,
+          "musicPeak": 0.0,
+          "listenerPeak": 1.703620195388794,
+          "voiceVolume": 1.0
+        },
+        {
+          "stage": "splash",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": true,
+          "voiceSourcePlaying": false,
+          "firstFrame": 0,
+          "lastFrame": 36,
+          "firstTime": 0.0,
+          "time": 1.5,
+          "timeAdvanced": 1.5,
+          "wallElapsed": 1.595485375,
+          "duration": 7.291999816894531,
+          "frameRate": 24.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 7.082666666666666,
+          "width": 3840,
+          "height": 1536,
+          "frameChanges": 36,
+          "audioTracks": 0,
+          "voicePeak": 0.0,
+          "musicPeak": 0.0,
+          "listenerPeak": 0.14605769515037537,
+          "voiceVolume": 1.0
+        },
+        {
+          "stage": "gate",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": false,
+          "voiceSourcePlaying": false,
+          "firstFrame": 0,
+          "lastFrame": 20,
+          "firstTime": 0.0,
+          "time": 0.8333333333333334,
+          "timeAdvanced": 0.8333333333333334,
+          "wallElapsed": 0.8201710409999992,
+          "duration": 8.0,
+          "frameRate": 24.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 8.021333333333333,
+          "width": 1200,
+          "height": 700,
+          "frameChanges": 20,
+          "audioTracks": 0,
+          "voicePeak": 0.0,
+          "musicPeak": 0.00421142578125,
+          "listenerPeak": 0.00421142578125,
+          "voiceVolume": 0.6000000238418579
+        },
+        {
+          "stage": "world",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": false,
+          "voiceSourcePlaying": true,
+          "firstFrame": 0,
+          "lastFrame": 144,
+          "firstTime": 0.0,
+          "time": 6.0,
+          "timeAdvanced": 6.0,
+          "wallElapsed": 6.057962834000001,
+          "duration": 113.29199981689453,
+          "frameRate": 24.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 21.205333333333332,
+          "width": 1920,
+          "height": 1080,
+          "frameChanges": 144,
+          "audioTracks": 1,
+          "voicePeak": 0.5365905165672302,
+          "musicPeak": 0.2740955948829651,
+          "listenerPeak": 0.4989851415157318,
+          "voiceVolume": 1.0
+        },
+        {
+          "stage": "lobby",
+          "error": "",
+          "audioOutputMode": "AudioSource",
+          "timeUpdateMode": "UnscaledGameTime",
+          "canSetTimeUpdateMode": true,
+          "canSetDirectAudioVolume": true,
+          "prepared": true,
+          "frameAdvanced": true,
+          "nonBlack": true,
+          "stageMatched": true,
+          "voiceMuted": true,
+          "voiceSourcePlaying": false,
+          "firstFrame": 0,
+          "lastFrame": 15,
+          "firstTime": 0.0,
+          "time": 0.625,
+          "timeAdvanced": 0.625,
+          "wallElapsed": 0.731914125000003,
+          "duration": 12.083999633789062,
+          "frameRate": 24.0,
+          "playbackSpeed": 1.0,
+          "dspTime": 129.216,
+          "width": 1920,
+          "height": 1088,
+          "frameChanges": 15,
+          "audioTracks": 0,
+          "voicePeak": 0.0,
+          "musicPeak": 0.014579772017896175,
+          "listenerPeak": 0.014579772017896175,
+          "voiceVolume": 1.0
+        }
+      ],
+      "worldPlayback": {
+        "endedEvent": true,
+        "duration": 113.29199981689453,
+        "firstVideoTime": 0.0,
+        "lastVideoTime": 113.25,
+        "wallElapsed": 113.25852624999997,
+        "maxFrameGapSeconds": 0.050515292000000045,
+        "maxProgressStallSeconds": 0.041971250000003124,
+        "minimumSpeed": 1.0,
+        "maximumSpeed": 1.0,
+        "frameChanges": 2718,
+        "audioProbeCount": 13587,
+        "voicePeak": 0.5365905165672302,
+        "musicPeak": 0.2740955948829651,
+        "listenerPeak": 0.4989851415157318
+      },
+      "worldCompletedNaturally": true,
+      "captionVisible": true,
+      "originalArtDrawn": true,
+      "replayWorked": true,
+      "holdSkipWorked": true,
+      "simulationPaused": true,
+      "explicitTestEntry": true,
+      "voicePeak": 1.703620195388794,
+      "musicPeak": 0.33949586749076843,
+      "audioBufferWarnings": 0
+    },
+    "checks": {
+      "scope": "native_controlled_frontend_fixture_not_manual_input_or_full_lobby_save_support",
+      "passed": true,
+      "audioBufferWarnings": 0,
+      "checks": [
+        {
+          "name": "native_frontend_receipt",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_fdg",
+          "passed": true
+        },
+        {
+          "name": "rendered_fdg",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_splash",
+          "passed": true
+        },
+        {
+          "name": "rendered_splash",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_gate",
+          "passed": true
+        },
+        {
+          "name": "rendered_gate",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_world",
+          "passed": true
+        },
+        {
+          "name": "rendered_world",
+          "passed": true
+        },
+        {
+          "name": "native_video_decode_lobby",
+          "passed": true
+        },
+        {
+          "name": "rendered_lobby",
+          "passed": true
+        },
+        {
+          "name": "natural_movie_end_reaches_lobby",
+          "passed": true
+        },
+        {
+          "name": "world_movie_113_seconds_at_normal_speed",
+          "passed": true
+        },
+        {
+          "name": "world_frame_progress_has_no_long_stall",
+          "passed": true
+        },
+        {
+          "name": "original_world_voice_and_music_have_engine_signal",
+          "passed": true
+        },
+        {
+          "name": "source_captions_and_original_art_drawn",
+          "passed": true
+        },
+        {
+          "name": "replay_and_hold_skip",
+          "passed": true
+        },
+        {
+          "name": "frontend_blocks_gameplay_and_test_entry_is_explicit",
+          "passed": true
+        },
+        {
+          "name": "no_runtime_exception_or_shader_error",
+          "passed": true
+        },
+        {
+          "name": "no_audio_buffer_overflow_or_discard",
+          "passed": true
+        }
+      ]
+    }
+  },
+  "runtimeChanges": false,
+  "mediaLatestApproved": false,
+  "manualInputVerified": false,
+  "hashes": {
+    "/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024/unity/Assets/Exoduser/Runtime/NativeLobby.cs": "ecb8fef3f414105b819a5db22146f55ad836a119738898c1a6173e4119025f02",
+    "/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024/unity/Assets/Exoduser/Runtime/NativeLobbyVideo.cs": "e1ed84b807c76e94d5c9e840faa11c15a78b71b01718582f5898db17bf2a1f78",
+    "/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024/unity/Assets/Exoduser/Runtime/NativeGame.LobbySmoke.cs": "2cda45eec338159e027d466f4cf4e43d501137b6c0308eff659687a5ad4e1e3c",
+    "/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024/unity/Tools/verify-lobby-player.cjs": "b8baa76570d7ceaadbd42b1590c495dc6210ca1587179dfe2cecd516695f629f",
+    "/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1/build-readable/EXODUSER-Unity.app/Contents/Resources/Data/Managed/Assembly-CSharp.dll": "a3ea277cb8887d63f91bc05806fee785c88e7a61dc4bbf392adaae6fcffeebe7"
+  },
+  "conclusion": "20/20 PASS in both single-thread comparison and default repeat. Initial Metal presentation wait is unresolved/intermittent; rendering configuration not changed.",
+  "automationObservation": {
+    "id": "unity",
+    "configuredStatus": "ACTIVE",
+    "intervalMinutes": 10,
+    "host": "local",
+    "threadStatus": "active",
+    "turnId": "01a17132-bf11-76d0-b0ba-22fe54b8d332",
+    "confirmedScheduledWake": false
+  }
+}
