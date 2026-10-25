@@ -1,0 +1,129 @@
+{
+  "implementationSource": "d04230fd457534d42d0889e1863128a587c04c1e",
+  "finalBuildSource": "67d1904c62af99fc35603bc151417f18c66b29fe",
+  "finalBuild": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-character-slots-final/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1435295751
+  },
+  "restartPhases": {
+    "create": {
+      "scope": "Isolated character roster persistence across fresh Player processes; no battle saves or native OS input claim",
+      "passed": true,
+      "failures": 0,
+      "checks": [
+        "PASS explicit fixture uses isolated output directory",
+        "PASS new store starts empty without reading existing saves",
+        "PASS persist new identity 아린",
+        "PASS persist new identity 루나",
+        "PASS persist selection independently of creation",
+        "PASS failed persistent write does not change live roster",
+        "PASS future-version file is not overwritten"
+      ]
+    },
+    "reload-delete": {
+      "scope": "Isolated character roster persistence across fresh Player processes; no battle saves or native OS input claim",
+      "passed": true,
+      "failures": 0,
+      "checks": [
+        "PASS explicit fixture uses isolated output directory",
+        "PASS fresh process restores names and selected index",
+        "PASS confirmed deletion persists updated selection"
+      ]
+    },
+    "verify-delete": {
+      "scope": "Isolated character roster persistence across fresh Player processes; no battle saves or native OS input claim",
+      "passed": true,
+      "failures": 0,
+      "checks": [
+        "PASS explicit fixture uses isolated output directory",
+        "PASS another fresh process retains deletion",
+        "PASS persist empty roster after last deletion"
+      ]
+    },
+    "verify-empty": {
+      "scope": "Isolated character roster persistence across fresh Player processes; no battle saves or native OS input claim",
+      "passed": true,
+      "failures": 0,
+      "checks": [
+        "PASS explicit fixture uses isolated output directory",
+        "PASS empty roster restores with entry disabled",
+        "PASS restored empty roster permits new creation"
+      ]
+    }
+  },
+  "visual": {
+    "scope": "Isolated character roster persistence across fresh Player processes; no battle saves or native OS input claim",
+    "passed": true,
+    "failures": 0,
+    "checks": [
+      "PASS explicit fixture uses isolated output directory",
+      "PASS visual pass reads existing isolated roster"
+    ]
+  },
+  "deletion": {
+    "scope": "Actual Player callbacks and rendering; no native OS input claim; session-only identities",
+    "passed": true,
+    "failures": 0,
+    "checks": [
+      "PASS empty roster and absent confirmation reject deletion",
+      "PASS request preserves roster and selection",
+      "PASS confirmation owns lobby inputs",
+      "PASS cancel preserves list",
+      "PASS delete other row preserves selected identity",
+      "PASS delete last selected row selects previous identity",
+      "PASS delete only row clears selection and entry",
+      "PASS removed name can be recreated",
+      "PASS stale confirmation cannot remove shifted identity"
+    ]
+  },
+  "nativeInput": [
+    "Backspace opens named confirmation",
+    "Enter default cancels; held 1500ms does not enter battle",
+    "Tab selects delete; held Enter1500ms removes test-only memory slot and stays in empty lobby",
+    "Final normal app reaches Korean lobby with correct storage notice; no test identities created in normal storage"
+  ],
+  "limitations": [
+    "Battle progress and old save import are not implemented",
+    "Native IME composition, precise automated mouse delivery, fullscreen unverified"
+  ],
+  "images": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-created-720p.png",
+      "sha256": "0fe76a186c75c80273e471b2110e587c4628079b2298b814f09ded0edcdbd166"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-footer-en-1080p.png",
+      "sha256": "a7a89c5159a5eae21ffbf3f405f732c9fc50d302a2fb9f80c5138e397e990d0f"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-footer-en-720p.png",
+      "sha256": "4927d31983366d3b0edf932d52cdc53559554ea8ae44bca35a53fcf9b0d70a6c"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-footer-ko-1080p.png",
+      "sha256": "49ec6601094870d8f2699c3802b2f39a9f77dc798d54e73a3f74681f6eb68409"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-footer-ko-720p.png",
+      "sha256": "20ee32b251c37ffe8a6a09a8119d9c01425c2c33bdfc5b4f6ec175d35fbcf0a8"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-ready-1080p.png",
+      "sha256": "9ee2a590e70138da4304f39ac109bd2aff60463c5576d8641483d0d5b1251824"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-restored-720p.png",
+      "sha256": "7012b50625d4be8a012bb68cf88bcf303d96d1f4f4c60d6b116188b1fcc9a62f"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-write-blocked-720p.png",
+      "sha256": "ae92c00e966322e9adee701ca604f5792216567cb9fb26425416ce6fdffaa65a"
+    }
+  ]
+}

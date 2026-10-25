@@ -42,3 +42,9 @@ NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기�
 소스 d04230fd457534d42d0889e1863128a587c04c1e, ARM64 빌드 오류0/1,435,295,239bytes. 격리 root character-store-smoke-d04230fd4에서4개 새 Player 프로세스가 모두 exit0·16/16 통과했다. 생성/선택 복원, 삭제와 마지막 빈 목록 복원, 미래버전 파일 보존 및 쓰기실패 시 live 불변을 Unity JsonUtility로 확인했다. 로그 예외0.720p/1080p 저장 문구도 확인했고 하단 두줄 안내와 패널 장식이 겹쳐 preview/안내 위치를16~18px 위로 조정했다. 이 배치 변경은 별도 한/영2해상도 시각 검수로 마감한다.
 
 다음 승인 단위: 생성 저장 성공 뒤 원본 신규 전사 story(22cue/1200ms 스킵) 재생과 현재 이름의 미리보기 진입. 기존 지원 담당은 원본 자료·독립 계약만, 기존 Mac 담당은 NativeLobby/Flow 통합·GPU·공용 docs를 유지한다. 전체 전투 진행·기존 save 변환·계정은 계속 별도다.
+
+## 최종 인수
+
+최종 소스67d1904c62af99fc35603bc151417f18c66b29fe, ARM64 빌드 오류0/1,435,295,751bytes. 한/영720p·1080p4장의 하단 안내를 시각 확인해 장식 겹침을 해소했다. 시각 전용 프로세스는 기존 격리 목록을 읽고 종료0, 이미 통과한4회 저장검사는 반복하지 않았다. 정상 앱도 CUA로 직접 부팅·로비 진입해 저장 안내/빈 목록을 확인하고 종료했다. 정상 저장 폴더에 검사 이름을 만들지 않았다.
+
+[기계 영수증](UNITY_MAC_CHARACTER_SLOTS_20261025.json). 최종 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-character-slots-final/EXODUSER-Unity.app`. 생성·선택·확인삭제·재실행 목록 복원 단위 완료. 전투 진행 저장과 캐릭터별 P/G/INV 복원은 미이식이며, IME 직접 조합/정밀 자동 마우스/전체화면은 별도 미검수다. 다음 전사 이야기의 원본 JS/93MiB 영상 경로·22cue·생성 성공 뒤 showCharGate 흐름을 확인했고 기존 지원 담당의 독립 자료 추출이 진행 중이다.
