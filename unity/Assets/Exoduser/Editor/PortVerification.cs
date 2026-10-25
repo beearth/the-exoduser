@@ -133,7 +133,10 @@ public static class PortVerification {
   PlayerSettings.runInBackground=true;PlayerSettings.colorSpace=ColorSpace.Gamma;
   return name;
  }
+ static bool SettingsIdentifierOverride(){var so=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);var value=so.FindProperty("overrideDefaultApplicationIdentifier");if(value==null)throw new Exception("Cannot preserve application identifier override state");return value.boolValue;}
+ static void SetSettingsIdentifierOverride(bool enabled){var so=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);var value=so.FindProperty("overrideDefaultApplicationIdentifier");if(value==null)throw new Exception("Cannot restore application identifier override state");value.boolValue=enabled;so.ApplyModifiedPropertiesWithoutUndo();}
  public static void Build(){
+  bool settingsQa=Argument("-settingsQa")=="true";string restoreProduct=null,restoreIdentifier=null;bool restoreOverride=false;int exitCode=2;
   try {
    var target=EditorUserBuildSettings.activeBuildTarget;
    if(target!=BuildTarget.StandaloneWindows64&&target!=BuildTarget.StandaloneOSX)
@@ -147,14 +150,18 @@ public static class PortVerification {
 #else
    if(target==BuildTarget.StandaloneOSX)throw new NotSupportedException("Build the Mac verification app with the Mac Editor");
 #endif
+   if(settingsQa){restoreOverride=SettingsIdentifierOverride();restoreProduct=PlayerSettings.productName;restoreIdentifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone);}
    VerifyLobby();var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
+   if(settingsQa){PlayerSettings.productName="EXODUSER Settings QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.settingsqa");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("Settings QA must have a distinct application identifier");}
    var output=Path.Combine(directory,target==BuildTarget.StandaloneOSX?"EXODUSER-Unity.app":"EXODUSER-Unity.exe");
    // Local frontend verification needs no development PlayerConnection listener.
    var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{scene},locationPathName=output,target=target,options=BuildOptions.None});
    bool ok=report.summary.result==BuildResult.Succeeded;
-   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion,target=target.ToString(),architecture=architecture,output=output},true));
-   Debug.Log("UNITY_BUILD "+report.summary.result);EditorApplication.Exit(ok?0:2);
-  }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(2);}
+   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion,target=target.ToString(),architecture=architecture,output=output,settingsQa=settingsQa,product=PlayerSettings.productName,identifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)},true));
+   Debug.Log("UNITY_BUILD "+report.summary.result);exitCode=ok?0:2;
+  }catch(Exception e){Debug.LogException(e);}
+  finally{if(restoreProduct!=null){PlayerSettings.productName=restoreProduct;PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,restoreIdentifier);SetSettingsIdentifierOverride(restoreOverride);}}
+  EditorApplication.Exit(exitCode);
  }
  public static void Capture(){MakeScene();EditorApplication.playModeStateChanged+=CaptureState;EditorApplication.isPlaying=true;}
  static void CaptureState(PlayModeStateChange state){if(state==PlayModeStateChange.EnteredPlayMode){EditorApplication.update+=TickCapture;}}
@@ -170,5 +177,5 @@ public static class PortVerification {
   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="native_Unity_camera_world_capture_only",passed=game.LoadedChunks>0,engine=Application.unityVersion},true));
   EditorApplication.Exit(0);
  }
- [Serializable]class BuildReceipt{public bool passed;public string result,engine,target,architecture,output;public int errors;public ulong bytes;}
+ [Serializable]class BuildReceipt{public bool passed,settingsQa;public string result,engine,target,architecture,output,product,identifier;public int errors;public ulong bytes;}
 }

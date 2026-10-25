@@ -1,3 +1,7 @@
+## 2026-10-26 Unity 지원 설정 저장·복원
+
+- 현재 SFX/BGM/FPS/fullscreen을 native 전용 atomic 파일로 저장·복원하고 오류/백업 안내, fullscreen generation guard, 일반 prefs와 분리한 QA identity 및 별도 프로세스 fixture를 추가. 순수 검사 61+3+2 PASS, C# 정적 오류 0; 실제 Player 인수는 ROOT 대기. [범위와 검수](engine/UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md).
+
 ## 2026-10-26 Unity HUD world blend
 
 - Replaced the filled footing and persistent status banner with a compact, transparent curved contour; key labels and hitboxes use shared 13-slot layout geometry. Added a focused four-capture HUD fixture. Unity build and visual acceptance are pending integration review. [Scope and limits](engine/UNITY_MAC_HUD_BLEND_20261026.md).

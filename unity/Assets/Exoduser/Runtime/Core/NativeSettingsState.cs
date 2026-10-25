@@ -2,7 +2,7 @@ using System;
 
 namespace Exoduser.UnityPort.Core
 {
- // Current-session settings only; never reads or writes original game saves.
+ // Supported native settings only; never reads or writes original game saves.
  public sealed class NativeSettingsState
  {
   public const int DefaultSfxPercent=60;
@@ -33,6 +33,12 @@ namespace Exoduser.UnityPort.Core
   public float SampleOutputGain(float sampleVolume) { return Math.Min(1,sampleVolume*SfxGain)*SfxGain; }
   // Preserve the admitted track's phase gain at the source default of sixty percent.
   public float BgmRelativeGain { get { return BgmPercent/(float)DefaultBgmPercent; } }
+  public bool TryRestore(int sfx,int bgm,int frameCap)
+  {
+   if(sfx<0||sfx>100||bgm<0||bgm>100||!IsFrameCapSupported(frameCap))return false;
+   SfxPercent=sfx;BgmPercent=bgm;FrameCap=frameCap;return true;
+  }
+  public static bool IsFrameCapSupported(int value){foreach(int cap in frameCaps)if(value==cap)return true;return false;}
   public void RestoreDefaults()
   {
    SfxPercent=DefaultSfxPercent;BgmPercent=DefaultBgmPercent;FrameCap=DefaultFrameCap;

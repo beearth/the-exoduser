@@ -59,14 +59,16 @@ namespace Exoduser.UnityPort
             ResetRun();
             worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
             lobby.Initialize(EnterFromLobby);lobby.StartupGameplayPrepare=PrepareStartupGameplay;
-            settings=new NativeSettingsState(120);
+            InitializeNativeSettings();
             pauseMenu=new NativePauseMenu(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font,settings,
                 SetSfxPercent,SetBgmPercent,SetFrameCap,
-                value=>Screen.fullScreenMode=value?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed);
+                SetFullscreenPreference);
+            UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             if(!legacyFixture){Running=false;lobby.Begin();}
-            if(Array.IndexOf(args,"--unity-first-practice-review")>=0||Array.IndexOf(args,"--unity-first-practice-capture")>=0){Running=false;StartCoroutine(FirstPracticeFixture(Array.IndexOf(args,"--unity-first-practice-capture")>=0));}
+            if(Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0){Running=false;StartCoroutine(SettingsPersistenceFixture());}
+            else if(Array.IndexOf(args,"--unity-first-practice-review")>=0||Array.IndexOf(args,"--unity-first-practice-capture")>=0){Running=false;StartCoroutine(FirstPracticeFixture(Array.IndexOf(args,"--unity-first-practice-capture")>=0));}
             else if(Array.IndexOf(args,"--unity-startup-capture")>=0){Running=false;StartCoroutine(StartupCapture());}
             else if(Array.IndexOf(args,"--unity-hud-blend-smoke")>=0){menu=true;Running=false;StartCoroutine(HudBlendCapture());}
             else if(Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0){inventoryKeysSmoke=true;traceInventoryKeys=true;pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();StartCoroutine(InventoryKeysSmoke());}
@@ -118,6 +120,7 @@ namespace Exoduser.UnityPort
         }
         void Update()
         {
+            UpdateSettingsPersistence();
             lobby.AutomatedInput=lobbySmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;return;}
@@ -277,9 +280,9 @@ namespace Exoduser.UnityPort
             if(!open){skillInputFence=true;Running=skillsWasRunning&&!menu&&Simulation.Player.Hp>0;}
         }
         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
-        void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);}
-        void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);}
-        void SetFrameCap(int cap){if(settings.TrySetFrameCap(cap))ApplyFrameCap(cap);}
+        void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
+        void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);QueueSettingsSave();}
+        void SetFrameCap(int cap){if(settings.TrySetFrameCap(cap)){ApplyFrameCap(cap);QueueSettingsSave();}}
         void ApplyFrameCap(int cap){QualitySettings.vSyncCount=0;Application.targetFrameRate=cap==0?-1:cap;}
         void ApplyPauseCommand(PauseMenuCommand command){
             switch(command){

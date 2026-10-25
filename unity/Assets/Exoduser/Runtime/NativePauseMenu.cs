@@ -16,6 +16,11 @@ namespace Exoduser.UnityPort
   GUIStyle title,body,muted,button,tabButton,activeTab,fpsButton,activeFpsButton;
   bool ready;
   public bool English { get; set; }
+  public bool SettingsPersistenceEnabled {get;set;}
+  public bool SettingsPersistenceProblem {get;set;}
+  public bool SettingsPersistenceRecovered {get;set;}
+  public bool SettingsHostApplyPending {get;set;}
+  public bool SettingsHostApplyFailed {get;set;}
   public bool SettingsOpen { get { return page==PausePage.Settings; } }
   public NativeSettingsState Settings { get { return settings; } }
   public NativePauseMenu(Font font,NativeSettingsState settings,Action<int> sfxChanged,
@@ -87,9 +92,18 @@ namespace Exoduser.UnityPort
    string[] tabs={T("화면","Display"),T("소리","Audio"),T("조작 안내","Controls")};
    for(int i=0;i<tabs.Length;i++)if(MenuButton(new Rect(340+i*202,174,194,44),tabs[i],i,tab==i?activeTab:tabButton))tab=i;
    if(tab==0)DrawDisplay(fullscreen);else if(tab==1)DrawAudio();else DrawControls();
-   GUI.Label(new Rect(348,528,584,56),T("↑↓ / Tab 선택 · ←→ 값 조절 · Enter 확인\n설정은 현재 실행에 적용됩니다.","↑↓ / Tab Select · ←→ Adjust · Enter Confirm\nSettings apply to the current session."),muted);
+   GUI.Label(new Rect(348,528,584,56),T("↑↓ / Tab 선택 · ←→ 값 조절 · Enter 확인\n","↑↓ / Tab Select · ←→ Adjust · Enter Confirm\n")+SettingsPersistenceNotice(),muted);
    if(MenuButton(new Rect(340,588,288,44),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
    if(MenuButton(new Rect(652,588,288,44),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
+  }
+  string SettingsPersistenceNotice()
+  {
+   if(SettingsHostApplyPending)return T("화면 설정을 적용하는 중입니다.","Applying display settings.");
+   if(SettingsHostApplyFailed)return T("화면 변경을 적용하지 못했습니다. 현재 화면을 유지합니다.","Display change failed. The current display is retained.");
+   if(SettingsPersistenceProblem)return T("설정 저장에 문제가 있습니다. 이번 실행의 값은 유지됩니다.","Settings could not be saved. Current session values are retained.");
+   if(!SettingsPersistenceEnabled)return T("검수 실행의 설정은 저장하지 않습니다.","Settings are not saved during this QA run.");
+   if(SettingsPersistenceRecovered)return T("설정 백업을 복원했습니다. 변경은 이 Mac에 저장됩니다.","Settings backup restored. Changes are saved on this Mac.");
+   return T("설정은 이 Mac에 저장되어 다음 실행에도 적용됩니다.","Settings are saved on this Mac for the next launch.");
   }
   void DrawDisplay(bool fullscreen)
   {

@@ -1,0 +1,42 @@
+using System;
+using System.IO;
+using System.Text.Json;
+using Exoduser.UnityPort.Core;
+static class Program
+{
+ static int count;static readonly JsonSerializerOptions json=new JsonSerializerOptions{IncludeFields=true,WriteIndented=true};
+ static void Check(bool ok,string label){if(!ok)throw new Exception(label);count++;}
+ static string Encode(NativeSettingsSnapshot s){return JsonSerializer.Serialize(s,json);}static NativeSettingsSnapshot Decode(string s){return JsonSerializer.Deserialize<NativeSettingsSnapshot>(s,json);}
+ static NativeSettingsStore Store(string root){return new NativeSettingsStore(root,Encode,Decode,new NativeSettingsState(120),false);}
+ static string Primary(string root){return Path.Combine(root,NativeSettingsStore.DataFileName);}static NativeSettingsSnapshot Valid(){var s=NativeSettingsStore.Capture(new NativeSettingsState(120),false);s.revision=1;return s;}
+ static void WriteCase(string root,string text){Directory.CreateDirectory(root);File.WriteAllText(Primary(root),text);}
+ static void Main(string[] args)
+ {
+  string mode=args[0],root=Path.GetFullPath(args[1]);Directory.CreateDirectory(root);NativeSettingsSnapshot snapshot;NativeSettingsStoreStatus status;
+  if(mode=="write"||mode=="read"){
+   string data=Path.Combine(root,"two-process");var store=Store(data);Check(store.TryLoad(out snapshot,out status),"separate process load");
+   if(mode=="write"){Check(status==NativeSettingsStoreStatus.Missing,"roundtrip uses fresh output");var state=new NativeSettingsState(120);state.TryRestore(35,45,144);Check(store.TrySave(state,true,out status),"process one publishes");}
+   else{Check(status==NativeSettingsStoreStatus.Loaded&&snapshot.sfxPercent==35&&snapshot.bgmPercent==45&&snapshot.frameCap==144&&snapshot.fullscreen,"process two restores exact values");}
+  }else{
+   string cases=Path.Combine(root,"cases-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(cases);string data=Path.Combine(cases,"atomic");var store=Store(data);var state=new NativeSettingsState(120);
+   Check(store.TryLoad(out snapshot,out status)&&status==NativeSettingsStoreStatus.Missing,"missing file uses existing boot defaults");Check(snapshot.sfxPercent==60&&snapshot.bgmPercent==60&&snapshot.frameCap==120&&!snapshot.fullscreen,"missing defaults are60/60/120/current host");
+   Check(!Directory.Exists(data),"load missing does not create settings files");Check(store.TrySave(state,false,out status)&&status==NativeSettingsStoreStatus.Saved,"first atomic publish");string first=File.ReadAllText(Primary(data));
+   state.TryRestore(35,45,144);Check(store.TrySave(state,true,out status),"second atomic publish");Check(File.ReadAllText(Path.Combine(data,NativeSettingsStore.BackupFileName))==first,"replace keeps last valid backup");var reader=Store(data);Check(reader.TryLoad(out snapshot,out status)&&snapshot.sfxPercent==35&&snapshot.bgmPercent==45&&snapshot.frameCap==144&&snapshot.fullscreen,"independent store restores four supported fields");
+   string before=File.ReadAllText(Primary(data));using(var lease=new FileStream(Path.Combine(data,NativeSettingsStore.LockFileName),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None)){state.SetSfxPercent(25);Check(!reader.TrySave(state,true,out status)&&status==NativeSettingsStoreStatus.Busy,"exclusive lease blocks another writer");Check(File.ReadAllText(Primary(data))==before,"failed write leaves primary bytes");Check(state.SfxPercent==25,"failed disk write does not mutate runtime state");}
+   Check(reader.TrySave(state,true,out status),"same valid session may retry after lock release");Check(!store.TrySave(state,false,out status)&&status==NativeSettingsStoreStatus.Conflict,"older loaded revision cannot overwrite newer data");
+   File.WriteAllText(Primary(data),"{damaged");var recovered=Store(data);Check(recovered.TryLoad(out snapshot,out status)&&status==NativeSettingsStoreStatus.RecoveredFromBackup,"corrupt primary recovers valid backup");Check(snapshot.sfxPercent==35,"backup restores previous valid values");Check(recovered.TrySave(state,true,out status),"explicit change publishes after backup recovery");Check(Directory.GetFiles(data,"settings.corrupt-*.json").Length==1,"damaged primary preserved when repaired");
+   foreach(var entry in new[]{"schema","version","sfx","bgm","fps","missing","duplicate","syntax","oversized"}){
+    string folder=Path.Combine(cases,entry);var invalid=Valid();string text;
+    switch(entry){case "schema":invalid.schema="other.product";break;case "version":invalid.version=99;break;case "sfx":invalid.sfxPercent=101;break;case "bgm":invalid.bgmPercent=-1;break;case "fps":invalid.frameCap=75;break;}
+    text=Encode(invalid);if(entry=="missing")text=text.Replace("\"sfxPercent\": 60,","");if(entry=="duplicate")text=text.Replace("\"sfxPercent\": 60,","\"sfxPercent\": 60,\"sfxPercent\": 60,");if(entry=="syntax")text="broken";if(entry=="oversized")text=new string('x',NativeSettingsStore.MaximumBytes+1);WriteCase(folder,text);var bad=Store(folder);Check(!bad.TryLoad(out snapshot,out status),entry+" file rejected");Check(!bad.TrySave(state,false,out status),entry+" file never automatically overwritten");Check(File.ReadAllText(Primary(folder))==text,entry+" original bytes preserved");
+   }
+   string unknown=Path.Combine(cases,"unknown-with-backup");WriteCase(unknown,Encode(Valid()).Replace(NativeSettingsStore.Schema,"future.product"));File.WriteAllText(Path.Combine(unknown,NativeSettingsStore.BackupFileName),Encode(Valid()));Check(!Store(unknown).TryLoad(out snapshot,out status)&&status==NativeSettingsStoreStatus.WrongSchema,"unknown primary is not silently downgraded through older backup");
+   string blocked=Path.Combine(cases,"path-becomes-file");var blockedStore=Store(blocked);Check(blockedStore.TryLoad(out snapshot,out status),"missing root is initially loadable");File.WriteAllText(blocked,"keep");Check(!blockedStore.TrySave(state,false,out status)&&status==NativeSettingsStoreStatus.IoError,"directory write failure reported");Check(File.ReadAllText(blocked)=="keep","IO failure preserves blocking file");
+   string codec=Path.Combine(cases,"codec");var badCodec=new NativeSettingsStore(codec,s=>"{}",Decode,state,false);badCodec.TryLoad(out snapshot,out status);Check(!badCodec.TrySave(state,false,out status)&&status==NativeSettingsStoreStatus.CodecError&&!File.Exists(Primary(codec)),"codec roundtrip failure publishes nothing");
+   int oldSfx=state.SfxPercent,oldBgm=state.BgmPercent,oldCap=state.FrameCap;Check(!state.TryRestore(77,88,75)&&state.SfxPercent==oldSfx&&state.BgmPercent==oldBgm&&state.FrameCap==oldCap,"invalid restore is atomic and preserves live values");state.RestoreDefaults();Check(state.SfxPercent==60&&state.BgmPercent==60&&state.FrameCap==0,"existing RestoreDefaults remains60/60/unlimited");
+   foreach(string flag in new[]{"--unity-smoke","--unity-pause-smoke","--unity-hud-blend-smoke","--unity-startup-capture","--unity-frontend-review","--unity-first-practice-capture","--unity-first-practice-review"}){string dir;Check(!NativeSettingsStorageScope.TryResolve(new[]{flag,"-output",root},root,out dir,out status)&&dir=="","legacy QA settings IO disabled: "+flag);}
+   string resolved;Check(!NativeSettingsStorageScope.TryResolve(new[]{NativeSettingsStorageScope.FixtureArgument},root,out resolved,out status)&&resolved=="","new fixture without explicit output fails closed");Check(!NativeSettingsStorageScope.TryResolve(new[]{NativeSettingsStorageScope.FixtureArgument,"-output","relative"},root,out resolved,out status),"relative QA output rejected");Check(NativeSettingsStorageScope.TryResolve(new[]{NativeSettingsStorageScope.FixtureArgument,"-output",root},"/never-read-normal",out resolved,out status)&&resolved==Path.Combine(root,"native-settings-v1"),"explicit QA output cannot use normal root");Check(NativeSettingsStorageScope.TryResolve(new string[0],root,out resolved,out status)&&resolved==Path.Combine(root,"native-settings-v1"),"normal launch resolves only dedicated native directory");
+  }
+  string receipt=Path.Combine(root,"model-"+mode+".json");File.WriteAllText(receipt,JsonSerializer.Serialize(new{scope="Native settings-only IO/state; explicit QA paths. No Unity/GUI or web/Godot/roster/combat saves.",mode,passed=count,failed=0},json));Console.WriteLine("SETTINGS "+mode+" PASS "+count);
+ }
+}
