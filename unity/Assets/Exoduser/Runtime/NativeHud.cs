@@ -82,6 +82,7 @@ namespace Exoduser.UnityPort
             const float scale=NativeHudDockLayout.ArtScale;
             var dock=NativeHudDockLayout.Create(width,height);
             Rect slotBar=dock.SlotBar;
+            DrawDockFoundation(dock,width,height);
             // updateHUD's inline normal-state filter overrides the .94 CSS rule.
             var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);GUI.DrawTexture(slotBar,bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
             Globe(dock.LeftLiquid,dock.LeftFrame,false);Globe(dock.RightLiquid,dock.RightFrame,true);
@@ -102,7 +103,7 @@ namespace Exoduser.UnityPort
             for(int i=0;i<keys.Length;i++){
                 float center=barRect.x+(146.5f+i*44)*NativeHudDockLayout.ArtScale;
                 var rect=new Rect(center-step*.5f+1,height-44,step-2,31);
-                var tint=GUI.color;GUI.color=new Color(.025f,.026f,.024f);GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=tint;
+                var tint=GUI.color;GUI.color=new Color(.37f,.37f,.35f);GUI.DrawTextureWithTexCoords(rect,dockIron,new Rect(i/13f,.5f,1/13f,.12f));GUI.color=tint;
                 // Preserve key names; narrow only long labels, with a 12px physical height at720p.
                 float natural=keyLabel.CalcSize(new GUIContent(keys[i])).x;
                 float squeeze=Mathf.Min(1,rect.width/Mathf.Max(1,natural));var matrix=GUI.matrix;
@@ -151,6 +152,6 @@ namespace Exoduser.UnityPort
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}Release(material);}
+        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}ReleaseDockSurface();Release(material);}
     }
 }

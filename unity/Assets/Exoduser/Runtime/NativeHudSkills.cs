@@ -17,8 +17,8 @@ namespace Exoduser.UnityPort {
    if(simulation==null)return;
    if(skillStatus==null){skillStatus=new GUIStyle(keyLabel){fontSize=18,alignment=TextAnchor.MiddleCenter};}
    string name=simulation.Config.ActiveAttack=="kiSlash"?"기검참":"기본 무기";
-   var statusRect=new Rect(width/2-270,dock.SlotBar.y-18,540,30);
-   var oldColor=GUI.color;GUI.color=new Color(.025f,.026f,.024f,.92f);GUI.DrawTexture(statusRect,Texture2D.whiteTexture);GUI.color=oldColor;
+   var statusRect=DockStatusRect(dock,width);
+   var oldColor=GUI.color;
    GUI.Label(statusRect,name+" · ST "+SkillUiState.StaminaCost(simulation)+" · "+SkillUiState.Status(simulation)+"    [K]",skillStatus);
    if(simulation.Player.KiChargeActive){var barRect=new Rect(statusRect.x,statusRect.yMax,540,5);GUI.color=new Color(.12f,.16f,.2f);GUI.DrawTexture(barRect,Texture2D.whiteTexture);GUI.color=new Color(.55f,.80f,1);GUI.DrawTexture(new Rect(barRect.x,barRect.y,barRect.width*Mathf.Clamp01(simulation.Player.KiChargeTicks/120),barRect.height),Texture2D.whiteTexture);GUI.color=oldColor;}
   }
