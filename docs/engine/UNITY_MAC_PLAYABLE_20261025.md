@@ -1,6 +1,6 @@
 # Mac 현재 조작 가능한 누적 실행본 — 2026-10-25
 
-최신 준비된 일반 실행본: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-SETTINGS-PERSISTENCE-20261026/build-settings-release/EXODUSER-Unity.app` · source `9d587ca157478c2a131eddb3c64346a08396a9a1` · ARM64/오류0. 기존 지원 BGM·SFX·FPS·전체 화면을 재실행 때 복원한다. 실제 격리 Player6회63검사와 성공/오류 화면을 인수했다. [설정 저장·복원](UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md).
+최신 준비된 일반 실행본: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INVENTORY-HINT-20261026/build-hint-release/EXODUSER-Unity.app` · source `837636a267fba0c78ae50bb9f1620bd6678bb59f` · ARM64/오류0. 기존 지원 BGM·SFX·FPS·전체 화면을 재실행 때 복원하고,720p 소지품 착용 안내의 마침표 단독 줄을 정리했다. 설정은 실제 격리 Player6회63검사·성공/오류 화면, 안내는 Player8검사·720/1080 두 장을 인수했다. [설정 저장·복원](UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md) / [안내 표시](UNITY_MAC_INVENTORY_HINT_20261026.md).
 
 현재 열려 있던 사용자 제품은 world-blend source7d5200ca6 PID52157이며 기존38141/48476도 보존했다. 새 일반본으로 자동 교체/재시작하지 않았다. 아래10/25~10/26 실행·인수 기록은 당시 이력이다. [최종 HUD 상태](UNITY_MAC_HUD_BLEND_20261026.md).
 

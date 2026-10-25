@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-26",
+  "source": "837636a267fba0c78ae50bb9f1620bd6678bb59f",
+  "scope": "Current equipped item guide copy only; unchanged font, content width, scrollbar reservation, stats and ownership.",
+  "normalBuild": {
+    "passed": true,
+    "settingsQa": false,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INVENTORY-HINT-20261026/build-hint-release/EXODUSER-Unity.app",
+    "product": "EXODUSER · Unity 이식 검증판",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "errors": 0,
+    "bytes": 1971685902
+  },
+  "qaBuild": {
+    "passed": true,
+    "settingsQa": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INVENTORY-HINT-20261026/build-hint-qa/EXODUSER-Unity.app",
+    "product": "EXODUSER Settings QA",
+    "identifier": "com.fordeargamers.exoduser.settingsqa",
+    "errors": 0,
+    "bytes": 1971685814
+  },
+  "input": {
+    "source": "837636a267fba0c78ae50bb9f1620bd6678bb59f",
+    "baseline": "4b0b6d0d8f9892017ed512e735d9f9bd635976b4",
+    "qaProject": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/project",
+    "copied": [
+      "unity/Assets/Exoduser/Runtime/NativeGame.UiSmoke.cs",
+      "unity/Assets/Exoduser/Runtime/NativeInventoryComparison.cs"
+    ],
+    "verifiedNonMetaNonGeneratedSceneFiles": 338,
+    "verifiedBytes": 682175719,
+    "mismatches": [],
+    "extraRuntimeCSharp": [],
+    "passed": true
+  },
+  "runtime": {
+    "scope": "Focused equipped-item hint at 1080p/720p; existing UI only; no settings/save or roster IO",
+    "passed": true,
+    "failures": 0,
+    "selectedItem": "녹슨 검",
+    "checks": [
+      "PASS existing UI-smoke entry path resumes gameplay",
+      "PASS starter weapon is currently equipped",
+      "PASS UI-smoke QA keeps native settings IO disabled",
+      "PASS UI-smoke QA keeps normal roster storage unopened",
+      "PASS selected guide item remains equipped and outside the bag",
+      "PASS inventory opens through the existing pause path",
+      "PASS 1080p equipped-guide capture written",
+      "PASS 720p equipped-guide capture written"
+    ],
+    "captures": [
+      "equipped-guide-1080p.png",
+      "equipped-guide-720p.png"
+    ]
+  },
+  "visual": {
+    "verdict": "PASS",
+    "reviewed": [
+      {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INVENTORY-HINT-20261026/capture/equipped-guide-720p.png",
+        "sha256": "d97b56ce98927ca0e448af3aa109f8f1ec1c9556c0a26fa8ded435841834ea51"
+      },
+      {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INVENTORY-HINT-20261026/capture/equipped-guide-1080p.png",
+        "sha256": "3eeec8769037fc24a857d1837772dfd2ebdaa0abfe67c498021da6fdd311d627"
+      }
+    ],
+    "observed": "Two guide lines at both actual resolutions; no orphan final period, overlap or clipping.",
+    "osInputClaim": false
+  },
+  "normalStorage": {
+    "passed": true,
+    "checks": [
+      {
+        "path": "/Users/fordeargamers/Library/Preferences/com.ForDearGamers.EXODUSER----Unity-----------------.plist",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/fordeargamers/Library/Application Support/com.ForDearGamers.EXODUSER----Unity-----------------/character-roster-v1/characters.v1.json",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/fordeargamers/Library/Application Support/com.ForDearGamers.EXODUSER----Unity-----------------/character-roster-v1/characters.lock",
+        "unchanged": true
+      }
+    ]
+  },
+  "previousAcceptanceRetained": "Native settings persistence Player63 and existing inventory behavior not rerun.",
+  "normalReleaseLaunched": false,
+  "existingNormalPidsPreserved": [
+    38141,
+    48476,
+    52157
+  ]
+}
