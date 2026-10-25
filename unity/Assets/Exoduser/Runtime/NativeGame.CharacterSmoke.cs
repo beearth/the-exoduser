@@ -10,6 +10,7 @@ namespace Exoduser.UnityPort
  {
   IEnumerator CharacterSmoke()
   {
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--character-delete-only")>=0){yield return CharacterDeleteSmoke();yield break;}
    if(Array.IndexOf(Environment.GetCommandLineArgs(),"--character-visual-only")>=0){yield return CharacterVisualSmoke();yield break;}
    string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;
    Directory.CreateDirectory(output);var checks=new List<string>();int failures=0;

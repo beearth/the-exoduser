@@ -4,14 +4,18 @@ namespace Exoduser.UnityPort
 {
  public sealed partial class NativeLobby
  {
-  public CharacterRoster Characters {get;}=new CharacterRoster();
+  public CharacterRoster Characters {get;private set;}=new CharacterRoster();
+  System.Func<CharacterRoster,bool> writeCharacters;
+  bool characterWritesAllowed=true;
+  CharacterRoster CopyCharacters(){var copy=new CharacterRoster();var names=new string[Characters.Count];for(int i=0;i<names.Length;i++)names[i]=Characters.NameAt(i);copy.TryRestore(names,Characters.SelectedIndex);return copy;}
+  bool CommitCharacters(CharacterRoster candidate){if(!characterWritesAllowed||writeCharacters!=null&&!writeCharacters(candidate))return false;Characters=candidate;return true;}
   public string ActiveCharacterName {get;private set;}="";
   public bool CharacterModalOpen {get{return characterStep!=0;}}
   int characterStep,characterVisual,characterScroll;
   bool characterFocus,characterInputFence;
   string characterName="",characterError="";
   CharacterCatalog characterCatalog;Texture2D warriorArt,warriorPortrait;Texture2D[] classArt;
-  GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton;
+  GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton,characterDeleteButton;
   readonly string[] classEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
   void CharacterStyles()
   {
@@ -24,10 +28,11 @@ namespace Exoduser.UnityPort
    characterTitle=new GUIStyle(characterText){fontSize=38};
    characterField=new GUIStyle(GUI.skin.textField){font=characterText.font,fontSize=30,padding=new RectOffset(16,16,10,10)};
    characterButton=new GUIStyle(GUI.skin.button){font=characterText.font,fontSize=24,padding=new RectOffset(12,12,8,8)};
+   characterDeleteButton=new GUIStyle(characterButton){padding=new RectOffset(0,0,0,0)};
   }
   public bool OpenCharacterCreation()
   {
-   if(Flow.Page!=LobbyPage.Lobby||Characters.Count>=CharacterRoster.Capacity||showLanguages||lobbyQuitPrompt)return false;
+   if(!characterWritesAllowed||Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||Characters.Count>=CharacterRoster.Capacity||showLanguages||lobbyQuitPrompt)return false;
    characterStep=1;characterVisual=0;characterName="";characterError="";return true;
   }
   public bool ChooseCharacterVisual(int index)
@@ -43,7 +48,9 @@ namespace Exoduser.UnityPort
   public bool CreateCharacter(string name)
   {
    if(Flow.Page!=LobbyPage.Lobby||characterStep!=2)return false;
-   if(!Characters.TryCreate(name,characterVisual,out var error)){characterError=CharacterError(error);return false;}
+   var candidate=CopyCharacters();
+   if(!candidate.TryCreate(name,characterVisual,out var error)){characterError=CharacterError(error);return false;}
+   if(!CommitCharacters(candidate))return false;
    RevealSelectedCharacter();CloseCharacterCreation();return true;
   }
   string CharacterError(CharacterCreateError error)
@@ -56,20 +63,21 @@ namespace Exoduser.UnityPort
     default:return K("출시 준비 중입니다.","Coming soon.");
    }
   }
-  public void CloseCharacterCreation(){characterStep=0;characterError="";characterFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}
-  public bool SelectCharacter(int index){if(Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||!Characters.Select(index))return false;RevealSelectedCharacter();return true;}
-  void RevealSelectedCharacter(){if(Characters.SelectedIndex<characterScroll)characterScroll=Characters.SelectedIndex;if(Characters.SelectedIndex>=characterScroll+2)characterScroll=Characters.SelectedIndex-1;characterScroll=Mathf.Max(0,characterScroll);}
+  public void CloseCharacterCreation(){characterStep=0;characterError="";characterFocus=false;deletingCharacter=-1;deletingName="";deleteFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}
+  public bool SelectCharacter(int index){if(Flow.Page!=LobbyPage.Lobby||CharacterModalOpen)return false;if(index==Characters.SelectedIndex&&index>=0)return true;var candidate=CopyCharacters();if(!candidate.Select(index)||!CommitCharacters(candidate))return false;RevealSelectedCharacter();return true;}
+  void RevealSelectedCharacter(){if(Characters.SelectedIndex<characterScroll)characterScroll=Characters.SelectedIndex;if(Characters.SelectedIndex>=characterScroll+2)characterScroll=Characters.SelectedIndex-1;characterScroll=Mathf.Clamp(characterScroll,0,Mathf.Max(0,Characters.Count-2));}
   public bool EnterSelectedCharacter()
   {
    if(Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||Characters.SelectedIndex<0)return false;
    ActiveCharacterName=Characters.SelectedName;Flow.SelectPreview();characterInputFence=true;return EnterNativeTest();
   }
-  void UpdateCharacterFence(){if(characterInputFence&&!Input.GetKey(KeyCode.Return)&&!Input.GetKey(KeyCode.KeypadEnter)&&!Input.GetKey(KeyCode.Escape)&&!Input.GetKey(KeyCode.N))characterInputFence=false;}
+  void UpdateCharacterFence(){if(characterInputFence&&!Input.GetKey(KeyCode.Return)&&!Input.GetKey(KeyCode.KeypadEnter)&&!Input.GetKey(KeyCode.Escape)&&!Input.GetKey(KeyCode.N)&&!Input.GetKey(KeyCode.Delete)&&!Input.GetKey(KeyCode.Backspace)&&!Input.GetKey(KeyCode.Space))characterInputFence=false;}
   void HandleCharacterKeys()
   {
    var e=Event.current;if(AutomatedInput||e.type!=EventType.KeyDown||showLanguages||lobbyQuitPrompt)return;
    if(characterInputFence){e.Use();return;}
    if(CharacterModalOpen){
+    if(CharacterDeleteOpen){HandleCharacterDeleteKeys(e);return;}
     // Enter must commit the current IME composition before it can submit a name.
     if(Input.compositionString.Length>0)return;
     if(e.keyCode==KeyCode.Escape){CloseCharacterCreation();e.Use();return;}
@@ -87,6 +95,7 @@ namespace Exoduser.UnityPort
     return;
    }
    if(e.keyCode==KeyCode.N){OpenCharacterCreation();e.Use();}
+   else if(e.keyCode==KeyCode.Delete||e.keyCode==KeyCode.Backspace){RequestCharacterDelete(Characters.SelectedIndex);e.Use();}
    else if(e.keyCode==KeyCode.UpArrow){SelectCharacter(Mathf.Max(0,Characters.SelectedIndex-1));e.Use();}
    else if(e.keyCode==KeyCode.DownArrow){SelectCharacter(Mathf.Min(Characters.Count-1,Characters.SelectedIndex+1));e.Use();}
    else if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter){EnterSelectedCharacter();e.Use();}
@@ -100,7 +109,7 @@ namespace Exoduser.UnityPort
     int index=characterScroll+i;string name=Characters.NameAt(index);bool filled=name.Length>0,selected=index==Characters.SelectedIndex;
     Rect card=new Rect(1392,315+i*94,470,84);Fill(card,new Color(.12f,.105f,.11f,filled?.92f:.1f));
     if(selected)Border(card,new Color(.75f,.57f,.34f),2);else DashedBorder(card,new Color(.43f,.33f,.25f,filled?.7f:.15f));
-    if(filled){Image(new Rect(1404,327+i*94,60,60),warriorPortrait,ScaleMode.ScaleAndCrop);Label(new Rect(1483,325+i*94,365,34),name,characterSmall,TextAnchor.MiddleLeft);Label(new Rect(1483,361+i*94,365,24),K("전사 · 이번 실행에서만 유지","Warrior · This session only"),lobbyText,TextAnchor.MiddleLeft);if(GUI.Button(card,"",GUIStyle.none))SelectCharacter(index);}
+    if(filled){Image(new Rect(1404,327+i*94,60,60),warriorPortrait,ScaleMode.ScaleAndCrop);Label(new Rect(1483,325+i*94,320,34),name,characterSmall,TextAnchor.MiddleLeft);Label(new Rect(1483,361+i*94,320,24),K("전사 · 이번 실행에서만 유지","Warrior · This session only"),lobbyText,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1814,337+i*94,36,36),new GUIContent("×",K("캐릭터 삭제","Delete character")),characterDeleteButton))RequestCharacterDelete(index);if(GUI.Button(new Rect(card.x,card.y,410,card.height),"",GUIStyle.none))SelectCharacter(index);}
     else Label(card,"—",lobbyMode,TextAnchor.MiddleCenter);
    }
   }
@@ -114,6 +123,7 @@ namespace Exoduser.UnityPort
   void DrawCharacterModal()
   {
    if(!CharacterModalOpen)return;
+   if(CharacterDeleteOpen){DrawCharacterDelete();return;}
    Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.83f));Rect panel=new Rect(350,100,1220,880);Fill(panel,new Color(.055f,.047f,.045f,.99f));Border(panel,new Color(.55f,.40f,.25f),2);
    Label(new Rect(400,125,1120,65),K("새 캐릭터","New character"),characterTitle,TextAnchor.MiddleLeft);
    for(int i=0;i<5;i++){

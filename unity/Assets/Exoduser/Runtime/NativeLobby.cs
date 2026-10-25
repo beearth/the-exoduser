@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort
    DrawCharacterSlots();
    Rect create=new Rect(1392,503,480,64);Fill(create,new Color(.105f,.09f,.095f,.94f));DashedBorder(create,new Color(.588f,.443f,.306f));
    Border(new Rect(1409,515,40,40),new Color(.47f,.38f,.26f),1);Label(new Rect(1409,515,40,40),"+",lobbyPlus,TextAnchor.MiddleCenter);Label(new Rect(1461,515,395,40),(Characters.Count<5?K("새 캐릭터 · N","New character · N"):K("슬롯 가득참 · 5 / 5","All slots occupied · 5 / 5")),lobbyText,TextAnchor.MiddleLeft);
-   GUI.enabled=GUI.enabled&&Characters.Count<CharacterRoster.Capacity;if(GUI.Button(create,"",GUIStyle.none))OpenCharacterCreation();GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
+   GUI.enabled=GUI.enabled&&characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity;if(GUI.Button(create,"",GUIStyle.none))OpenCharacterCreation();GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
    Label(new Rect(1392,570,480,18),K("이번 실행에서만 유지 · 입장할 때 새 전투 시작","This session only · Each entry starts a new battle"),lobbyMicro,TextAnchor.MiddleCenter);
    Label(new Rect(1392,591,480,57),K("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다","Every Steam wishlist helps\nEXODUSER: HELL LORD\nbegin its next journey"),lobbyPromo,TextAnchor.MiddleCenter);
    Label(new Rect(1392,653,480,16),K("공식 출시 소식을 가장 먼저 받아보세요","Be the first to hear about the official release"),lobbyPromoDetail,TextAnchor.MiddleCenter);
