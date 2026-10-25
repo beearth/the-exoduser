@@ -92,7 +92,7 @@ namespace Exoduser.UnityPort
    bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;if(GUI.Button(cancel,K("취소","CANCEL"),presentationAction))CloseCharacterCreation();
    GUI.enabled=priorEnabled&&!locked;if(GUI.Button(create,locked?K("출시 준비 중","COMING SOON"):K("생성","CREATE"),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
    if(i==1){if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.58f);GUI.DrawTexture(new Rect(stageX,bodyY+bodyHeight*.18f,stageWidth,bodyHeight*.72f),presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(stageX,railY-31,stageWidth,26),K("출시 준비 중","COMING SOON"),presentationSubtitle,TextAnchor.MiddleCenter);}
-   else if(i>=2){float chainSize=Mathf.Min(72,h*.20f);Rect chainRect=new Rect((w-chainSize)*.5f,h-4-28-chainSize,chainSize,chainSize);if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.78f);GUI.DrawTexture(chainRect,presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(w*.5f-150,h-32,300,28),K("출시 준비 중","COMING SOON"),presentationReleaseLabel,TextAnchor.MiddleCenter);}
+   else if(i>=2){float releaseBottom=bodyY+bodyHeight-4,chainSize=Mathf.Min(72,bodyHeight*.20f);Rect chainRect=new Rect((w-chainSize)*.5f,releaseBottom-28-8-chainSize,chainSize,chainSize);if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.78f);GUI.DrawTexture(chainRect,presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(w*.5f-150,releaseBottom-28,300,28),K("출시 준비 중","COMING SOON"),presentationReleaseLabel,TextAnchor.MiddleCenter);}
   }
   void DrawCharacterNamePresentation()
   {
