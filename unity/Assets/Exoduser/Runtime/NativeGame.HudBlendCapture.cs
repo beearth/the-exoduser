@@ -21,6 +21,7 @@ namespace Exoduser.UnityPort
   {
    string output=Argument("-output");var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,label)=>{checks.Add((ok?"PASS ":"FAIL ")+label);if(!ok)failures++;};
    if(string.IsNullOrWhiteSpace(output)||output.StartsWith("-",StringComparison.Ordinal)){Debug.LogError("HUD blend capture requires explicit -output QA path");Application.Quit(2);yield break;}
+   bool tracePointer=Array.IndexOf(Environment.GetCommandLineArgs(),"--keep-open-after-hud-blend")>=0;hud.TracePointerEvents=tracePointer;
    Directory.CreateDirectory(output);lobby.ShowLobby();lobby.SelectPreview();
    check(string.IsNullOrEmpty(lobby.CharacterStoreDirectory),"generic smoke fixture never initializes or writes the user roster");
    check(!lobby.AutomatedInput,"capture invokes entry callback directly without claiming OS input");

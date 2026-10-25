@@ -4,6 +4,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeHud {
   public Action<int> SlotSelected;
+  public bool TracePointerEvents;
   GUIStyle skillStatus;
   float statusSelectionUntil;
   public static bool StatusShouldDisplay(bool hovering,bool charging,bool selectionActive){return hovering||charging||selectionActive;}
@@ -11,6 +12,11 @@ namespace Exoduser.UnityPort {
   // Normal bottom-origin screen input -> the same scaled HUD space used for drawing.
   public static bool PointerOverSlots(Vector3 screenPoint){float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);var point=new Vector2(screenPoint.x/s,(Screen.height-screenPoint.y)/s);var dock=NativeHudDockLayout.Create(Screen.width/s,Screen.height/s);for(int i=0;i<13;i++)if(SkillSlotRect(dock,i).Contains(point))return true;return false;}
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
+   if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
+    int eventHit=-1,screenHit=-1;Vector2 guiPoint=Event.current.mousePosition;float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);Vector2 screenPoint=new Vector2(Input.mousePosition.x/scale,(Screen.height-Input.mousePosition.y)/scale);
+    for(int i=0;i<13;i++){var r=SkillSlotRect(dock,i);if(eventHit<0&&r.Contains(guiPoint))eventHit=i;if(screenHit<0&&r.Contains(screenPoint))screenHit=i;}
+    Debug.Log("[HUD POINTER TRACE] type="+Event.current.type+" button="+Event.current.button+" eventPos="+guiPoint+" inputScreen="+Input.mousePosition+" screenAsGui="+screenPoint+" eventSlot="+eventHit+" screenSlot="+screenHit+" screen="+Screen.width+"x"+Screen.height+" matrix="+GUI.matrix+" enabled="+GUI.enabled+" depth="+GUI.depth);
+   }
    for(int i=0;i<13;i++){
     var rect=SkillSlotRect(dock,i);
     if(i!=6){var old=GUI.color;GUI.color=new Color(.5f,.47f,.40f,.7f);GUI.Label(new Rect(rect.x,rect.y+4,rect.width,25),"—",keyLabel);GUI.color=old;}
