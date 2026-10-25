@@ -9,12 +9,14 @@
 | 선택 | Up/Down1칸, Home/End, Enter/Space확정, Esc/Tab취소 |
 | 재입력 | L과 확정/닫기 키는 KeyUp까지 반복 소비; L 길게누름의 반복토글 방지 |
 | 영상 | 목록 열림 및 닫기 이후 키해제 전 컷/hold 입력차단 유지. 영상·음향·자막시점 무변경 |
-| 마우스 | IMGUI 동일변환 hit testing, 클릭선택/바깥닫기. CUA 좌표오류는 제품 보정으로 숨기지 않음 |
+| 마우스 | IMGUI 행 hit testing에서 MouseMove/MouseDrag만 포인터 이동으로 반영. 실제 screen 좌표가 이전 행 이동과 달라진 경우에만 hover 선택·강조를 갱신해 정지 포인터가 키보드 커서를 덮지 않음. 기존 클릭선택/바깥닫기 유지. CUA 좌표오류는 제품 보정으로 숨기지 않음 |
 | 저장 | 캐릭터 목록·선택 복원과 전체전투저장 범위 무변경 |
 
 전용 `--unity-language-menu-smoke`는 사용자 저장을 열지 않고 무음으로 controller 계약8개와720/1080 상단/하단4PNG만 검수한다. OS마우스/키보드 전수검사라고 확대하지 않는다. 기존영상완주·저장53/Player16/언어536 검사는 반복하지 않는다. 새 빌드와 fixture 결과 대기.
 
-남은 범위: hover로 커서이동, 브라우저Tab focus 순환, 29언어 shaping/RTL은 완전 동등 미확정. 기존23원문/6대체이름 보존. 이식→비교/누락수정→신규업데이트 순서다.
+남은 범위: OS 포인터를 통한 hover/클릭 직접 GUI 검수, 브라우저Tab focus 순환, 29언어 shaping/RTL은 완전 동등 미확정. 기존23원문/6대체이름 보존. 이식→비교/누락수정→신규업데이트 순서다.
+
+2026-10-25 후속: 원본 `_openLangPop`의 `row.onmousemove`/`_langPopPointer`/`_hlLangPop(false)` 의미를 Unity IMGUI MouseMove/MouseDrag 행 hit test에 연결했다. GUI→screen 포인터 좌표가 달라졌을 때만 커서 행을 바꾸며, 키보드 탐색 뒤 같은 위치의 정지 포인터 이벤트는 선택을 덮지 않는다. controller smoke에 첫 hover·키보드 후 정지포인터 유지·이동 hover 세 동작을 추가했으나 런타임 실행/실제 OS 마우스 검수는 아직 하지 않았다.
 
 첫 source35519bdce: ARM64 오류0, controller8/8 및720/1080 상단/하단4PNG 정상. 작은 화면에서도14px 상당 글자와 마지막 항목이 잘리지 않는 것을 직접 확인했다. 단, 결과/PNG 저장 직후 빠른 Application.Quit에서 Mono/native segv가 발생했다. 정상 종료 PASS로 계산하지 않는다. 검수 fixture만 영상 Close→native callback 정리1초→Quit으로 보정해 해당 짧은 검사만 재확인한다. 제품 저장·메뉴 동작을 이 종료 문제의 원인으로 단정하지 않는다.
 

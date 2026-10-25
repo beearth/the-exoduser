@@ -2,14 +2,19 @@ using UnityEngine;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeLobby {
-  Vector2 languageScroll;bool revealLanguage;KeyCode languageHeld=KeyCode.None;GUIStyle languageRow;
+  Vector2 languageScroll,languagePointer;bool revealLanguage,languagePointerKnown;KeyCode languageHeld=KeyCode.None;GUIStyle languageRow;
   internal bool LanguageMenuOpen=>showLanguages;
   internal int LanguageMenuCursor=>languageCursor;
   void ToggleLanguages(){
    showLanguages=!showLanguages;languageInputFence=true;
-   if(showLanguages){languageCursor=0;for(int i=0;i<LobbyLanguage.Count;i++)if(LobbyLanguage.GetCode(i)==Language){languageCursor=i;break;}revealLanguage=true;}
+   if(showLanguages){languageCursor=0;languagePointerKnown=false;for(int i=0;i<LobbyLanguage.Count;i++)if(LobbyLanguage.GetCode(i)==Language){languageCursor=i;break;}revealLanguage=true;}
   }
   void CloseLanguageMenu(){showLanguages=false;languageInputFence=true;}
+  internal bool ProcessLanguageMenuPointer(Vector2 position,int row){
+   if(!showLanguages||row<0||row>=LobbyLanguage.Count)return false;
+   if(languagePointerKnown&&languagePointer==position)return false;
+   languagePointer=position;languagePointerKnown=true;languageCursor=row;return true;
+  }
   internal bool ProcessLanguageMenuKey(KeyCode key,bool released){
    if(released){if(languageHeld==key)languageHeld=KeyCode.None;return false;}
    if(key==languageHeld)return true;
@@ -48,6 +53,11 @@ namespace Exoduser.UnityPort {
    languageScroll=GUI.BeginScrollView(viewport,languageScroll,new Rect(0,0,width-18*unit,LobbyLanguage.Count*row),false,true);
    for(int i=0;i<LobbyLanguage.Count;i++){
     var rect=new Rect(0,i*row,width-18*unit,row);string code=LobbyLanguage.GetCode(i);
+    var e=Event.current;
+    if(e.type==EventType.MouseMove||e.type==EventType.MouseDrag){
+     var pointer=GUIUtility.GUIToScreenPoint(e.mousePosition);
+     if(rect.Contains(e.mousePosition))ProcessLanguageMenuPointer(pointer,i);
+    }
     if(i==languageCursor){Fill(rect,new Color(1,150/255f,80/255f,.2f));Border(rect,new Color(201/255f,169/255f,97/255f),1);}
     languageRow.normal.textColor=code==Language?new Color(1,.8f,.267f):new Color(.8f,.667f,.533f);
     Label(new Rect(16*unit,rect.y,rect.width-20*unit,rect.height),LobbyLanguageLabel(code),languageRow,TextAnchor.MiddleLeft);

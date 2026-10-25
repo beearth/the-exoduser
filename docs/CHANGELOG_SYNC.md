@@ -1,3 +1,7 @@
+## 2026-10-25 Unity 언어 메뉴 hover 선택
+
+- 원본 웹의 포인터 좌표 변화에 따른 행 hover 강조를 IMGUI MouseMove/MouseDrag에 연결. 같은 위치의 정지 포인터는 키보드 탐색 선택을 덮지 않음. smoke controller 상호작용 세 확인 추가. OS 포인터 GUI 검수 및 런타임 실행은 미검증. [계약 및 범위](engine/UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
+
 ## 2026-10-25 웹 언어 메뉴 단위 인수
 
 - 단일열·스크롤·원본 선택/취소 규칙과 반복키 방어 완료. controller8/8,720/1080의4PNG 확인, 보정된 짧은 검수 정상 정리 및 native crash 없음. ARM64 오류0, 사용자 실행창/저장 보존. [결과](engine/UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).

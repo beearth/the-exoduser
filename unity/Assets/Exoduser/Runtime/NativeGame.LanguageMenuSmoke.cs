@@ -9,6 +9,11 @@ namespace Exoduser.UnityPort {
    lobby.ShowLobby();lobby.SetLanguage("ko");Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return null;yield return null;
    lobby.ProcessLanguageMenuKey(KeyCode.L,false);for(int i=0;i<20;i++)lobby.ProcessLanguageMenuKey(KeyCode.L,false);
    check(lobby.LanguageMenuOpen&&lobby.LanguageMenuCursor==0,"held L opens once");lobby.ProcessLanguageMenuKey(KeyCode.L,true);
+   check(lobby.ProcessLanguageMenuPointer(new Vector2(10,10),2)&&lobby.LanguageMenuCursor==2,"first pointer move selects hovered row");
+   tap(KeyCode.DownArrow);check(lobby.LanguageMenuCursor==3,"keyboard moves selection after hover");
+   check(!lobby.ProcessLanguageMenuPointer(new Vector2(10,10),2)&&lobby.LanguageMenuCursor==3,"stationary pointer does not override keyboard selection");
+   check(lobby.ProcessLanguageMenuPointer(new Vector2(11,10),4)&&lobby.LanguageMenuCursor==4,"pointer movement selects newly hovered row");
+   tap(KeyCode.Home);
    yield return UiCapture(output,"language-top-720p");
    tap(KeyCode.DownArrow);check(lobby.LanguageMenuCursor==1,"Down selects next source option, not two rows");tap(KeyCode.Space);
    check(!lobby.LanguageMenuOpen&&lobby.Language=="en","Space accepts and closes");tap(KeyCode.L);tap(KeyCode.UpArrow);tap(KeyCode.Tab);
