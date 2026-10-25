@@ -1,0 +1,24 @@
+{
+  "path": "I:\\EXODUSER-Storage\\qa\\new-heroes-resume-20261025\\galaxy_hunter_r15_r08_cleanup.png",
+  "sha256": "85c8c1eca8ab3584ab56e7bbdf6c3dd03e16b0de58e16f48d5ee774f6c86b95f",
+  "width": 941,
+  "height": 1672,
+  "bytes": 2220227,
+  "base": "I:/EXODUSER-Storage/qa/new-heroes-claude-20261024/galaxy_hunter_male_r08.png",
+  "prompt": "Edit this exact original adult MALE ALIEN HUNTER illustration conservatively into a polished next-review candidate. This reference is the user's preferred character. Preserve his exact recognizable species and identity: angular grey bone-ridged face with stern amber eyes, swept-back short bony head plates, powerful broad chest and shoulders, rough ash-grey living skin, exposed muscular torso, integrated angular side-rib plates, large RIGHT mechanical arm on image-left, asymmetrical weathered silver/black/oxblood shoulder armor, diagonal cartridge bandolier and small tooth trophy, dark protective trousers with oxblood thigh plate and armored boots. Preserve his current proud standing three-quarter stance and the natural LEFT hand holding the huge upright weapon at image-right. Preserve the FULL existing preferred weapon's exact visual design, silhouette, relative size, color layout and position: one extremely long main barrel, dark red inset strip, the massive central cylinder with its distinct surrounding squared supporting bracket, the angular lower stock. Do not redesign the gun, do not add barrels, do not change its cylinder or convert it into a normal rifle. No human handsome face, white hair, tailored short flight jacket, female character or change of species.\n\nOnly make a restrained production cleanup: reduce a small amount of tiny repetitive decorative screws and fragmented micro-plates on the shoulder and shin areas while preserving the original major armor silhouettes and real joints; make broad satin worn-metal planes and dark joints more legible, keep clear material difference between dry scarred skin, dark fabric, worn leather, satin metal and polished edge wear. A few intentional asymmetries and repaired areas are enough, avoid increasing ornament or texture noise. Preserve the excellent original face and expression rather than beautifying it. Keep all five digits anatomically credible and separate on both hands; the left hand must visibly wrap around the same weapon handguard. Keep the original weight distribution and calm presentation. Do not add pouches, cape or extra equipment.\n\nKeep the same dark neutral charcoal studio backdrop and warm soft edge light, subtle ground contact shadow. Full-body vertical key art, no environment redesign. Expand framing slightly so the barrel top has clearly visible air above it and both entire boots and entire stock have generous ground margin; around 5 percent empty top and bottom. The figure and weapon retain the same relative proportion and arrangement, occupy around 88 percent of canvas height. This is a subtle refinement of the supplied design, not a new concept. Excellent clean premium action-RPG character illustration with intentional controlled edges. Preserve existing overall aesthetic. No text, logos, layout panels, comparison collage or extra characters.",
+  "provider": "Built-in image_gen",
+  "exactModel": "not exposed",
+  "cost": "not exposed",
+  "userPreferredBase": "R08",
+  "candidateAccepted": false,
+  "visualVerdict": "RETOUCH",
+  "source": "C:/Users/심도진/.codex/generated_images/01a17263-ed2c-79a1-8785-deffec8ea099/exec-a78f4f33-54f8-414e-b384-e87cd9c80b3b.png",
+  "preservedSourceHashVerified": true,
+  "docs": [
+    "docs/11내러티브·로어디자인/NEW_HEROES_DESIGN_LOCK.md",
+    "docs/17게임아트팀/ART_TEAM_MASTER.md",
+    "docs/17게임아트팀/GALAXY_HUNTER_MALE_EXPLORATION_20261025.md",
+    "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+    "docs/17게임아트팀/NEW_HEROES_RESUME_R08_20261025.md"
+  ]
+}
