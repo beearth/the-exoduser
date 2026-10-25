@@ -2,6 +2,7 @@
 
 - Replaced the filled footing and persistent status banner with a compact, transparent curved contour; key labels and hitboxes use shared 13-slot layout geometry. Added a focused four-capture HUD fixture. Unity build and visual acceptance are pending integration review. [Scope and limits](engine/UNITY_MAC_HUD_BLEND_20261026.md).
 - Corrected the new fixture's rectangle-bound checks to test min/max points supported by Unity `Rect.Contains`; expanded the recorded geometry-check scope. No Player run was performed.
+- Final capture review fixes: suppress original baked key glyphs in a runtime-only bar copy, fit compact charge text, move the orb group inward, and wait for screenshot writes; optional keep-open flag supports root pointer QA.
 
 ## 2026-10-25 Unity 캐릭터 생성 표시·미디어 경로
 

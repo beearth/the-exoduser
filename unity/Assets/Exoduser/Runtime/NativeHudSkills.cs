@@ -23,7 +23,9 @@ namespace Exoduser.UnityPort {
    var oldColor=GUI.color;
    bool showStatus=StatusShouldDisplay(SkillSlotRect(dock,6).Contains(Event.current.mousePosition),simulation.Player.KiChargeActive,Time.unscaledTime<statusSelectionUntil);
    if(showStatus){
-    GUI.Label(statusRect,name+" · ST "+SkillUiState.StaminaCost(simulation)+" · "+SkillUiState.Status(simulation)+" [K]",skillStatus);
+    string statusText=name+" · ST "+SkillUiState.StaminaCost(simulation)+" · "+SkillUiState.Status(simulation)+" [K]";
+    float fitWidth=Mathf.Max(360,skillStatus.CalcSize(new GUIContent(statusText)).x+12);statusRect.x=width*.5f-fitWidth*.5f;statusRect.width=fitWidth;
+    GUI.Label(statusRect,statusText,skillStatus);
     if(simulation.Player.KiChargeActive){var chargeRect=new Rect(width*.5f-80,statusRect.y-4,160,2);GUI.color=new Color(.18f,.20f,.21f,.8f);GUI.DrawTexture(chargeRect,Texture2D.whiteTexture);GUI.color=new Color(.55f,.72f,.78f,.9f);GUI.DrawTexture(new Rect(chargeRect.x,chargeRect.y,chargeRect.width*Mathf.Clamp01(simulation.Player.KiChargeTicks/120),chargeRect.height),Texture2D.whiteTexture);}
    }
    GUI.color=oldColor;

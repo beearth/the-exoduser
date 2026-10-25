@@ -19,8 +19,8 @@ namespace Exoduser.UnityPort
             var result=new NativeHudDockLayout();
             float mid=width*.5f;
             // A fixed central group keeps the resource/slot relationship at every aspect ratio.
-            result.LeftFrame=new Rect(mid-520,height-8-frameSize,frameSize,frameSize);
-            result.RightFrame=new Rect(mid+520-frameSize,height-8-frameSize,frameSize,frameSize);
+            result.LeftFrame=new Rect(mid-460,height-8-frameSize,frameSize,frameSize);
+            result.RightFrame=new Rect(mid+460-frameSize,height-8-frameSize,frameSize,frameSize);
             result.LeftLiquid=Liquid(result.LeftFrame);
             result.RightLiquid=Liquid(result.RightFrame);
             float barWidth=820*s,barHeight=182*s;

@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort
             dockShadow.SetPixels32(shadow);dockShadow.Apply(false,true);
         }
         Rect DockStatusRect(NativeHudDockLayout dock,float width)
-        {return new Rect(width*.5f-130,dock.VisibleBar.y-25,260,20);}
+        {return new Rect(width*.5f-180,dock.VisibleBar.y-25,360,20);}
         void DrawDockFoundation(NativeHudDockLayout dock,float width,float height)
         {
             EnsureDockSurface();var old=GUI.color;

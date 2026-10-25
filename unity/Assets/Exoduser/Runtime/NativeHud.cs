@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort
         readonly Material material;
         readonly RenderTexture hp,mana,shield,eye;
         readonly Texture2D hpFrame,mpFrame,bar,icon;
+        Texture2D labelCleanBar;
         readonly Font textFont,numberFont;
         GUIStyle hpNumber,maximum,resourceNumber,resourceLabel,tooltip,keyLabel;
         HudValues values;int tick=-1,slowTick=-1;bool[] eyes=new bool[4];
@@ -83,8 +84,10 @@ namespace Exoduser.UnityPort
             var dock=NativeHudDockLayout.Create(width,height);
             Rect slotBar=dock.SlotBar;
             DrawDockFoundation(dock,width,height);
-            // updateHUD's inline normal-state filter overrides the .94 CSS rule.
-            var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);GUI.DrawTexture(slotBar,bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
+            // Source bar includes Cinzel key labels; erase only those glyph pixels in a runtime copy.
+            // The original imported PNG stays byte-identical and the common labels are drawn below.
+            if(labelCleanBar==null)labelCleanBar=BuildLabelCleanBar();
+            var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);GUI.DrawTexture(slotBar,labelCleanBar??bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
             Globe(dock.LeftLiquid,dock.LeftFrame,false);Globe(dock.RightLiquid,dock.RightFrame,true);
             Rect lmb=dock.ActiveSlot;
             if(activeAttack=="kiSlash"){
@@ -108,6 +111,23 @@ namespace Exoduser.UnityPort
                 GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(content.x,content.y,0),Quaternion.identity,new Vector3(squeeze,1,1));
                 GUI.Label(new Rect(0,0,content.width/squeeze,content.height),keys[i],keyLabel);GUI.matrix=matrix;
             }
+        }
+        Texture2D BuildLabelCleanBar()
+        {
+            var old=RenderTexture.active;var rt=RenderTexture.GetTemporary(bar.width,bar.height,0,RenderTextureFormat.ARGB32);
+            var copy=new Texture2D(bar.width,bar.height,TextureFormat.RGBA32,false){name="HUD bar with source key glyphs removed",filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
+            try{
+                Graphics.Blit(bar,rt);RenderTexture.active=rt;copy.ReadPixels(new Rect(0,0,bar.width,bar.height),0,0);copy.Apply(false,false);
+                var pixels=copy.GetPixels32();var glyph=new bool[pixels.Length];int h=bar.height,w=bar.width;
+                int y0=Mathf.RoundToInt(h*.222f),y1=Mathf.RoundToInt(h*.332f);
+                for(int i=0;i<NativeHudDockLayout.KeyNames.Length;i++){
+                    float center=(146.5f+44*i)/820f;int x0=Mathf.Max(0,Mathf.FloorToInt((center-.018f)*w)),x1=Mathf.Min(w-1,Mathf.CeilToInt((center+.018f)*w));
+                    for(int y=y0;y<y1;y++)for(int x=x0;x<=x1;x++){int p=y*w+x;Color32 c=pixels[p];glyph[p]=c.a>0&&c.r>c.b*1.08f&&c.g>c.b*1.04f&&c.r>90&&c.g>68;}
+                }
+                for(int y=y0;y<y1;y++)for(int x=0;x<w;x++)if(glyph[y*w+x])for(int dy=-2;dy<=2;dy++)for(int dx=-2;dx<=2;dx++){int xx=x+dx,yy=y+dy;if(xx>=0&&xx<w&&yy>=y0&&yy<y1){int p=yy*w+xx;Color32 c=pixels[p];pixels[p]=new Color32(c.r,c.g,c.b,0);}}
+                copy.SetPixels32(pixels);copy.Apply(false,true);return copy;
+            }catch(Exception e){Debug.LogWarning("HUD source key-label cleanup unavailable: "+e.Message);Release(copy);return null;}
+            finally{RenderTexture.active=old;RenderTexture.ReleaseTemporary(rt);}
         }
         void Globe(Rect wrap,Rect frame,bool right)
         {
@@ -150,6 +170,6 @@ namespace Exoduser.UnityPort
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}ReleaseDockSurface();Release(material);}
+        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}ReleaseDockSurface();Release(labelCleanBar);Release(material);}
     }
 }

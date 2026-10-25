@@ -53,8 +53,10 @@ namespace Exoduser.UnityPort
    check(NativeHud.StatusShouldDisplay(false,false,true),"status label shown briefly after active-slot selection");
    check(NativeHud.StatusShouldDisplay(false,true,false),"status label shown during charge");
    string[] captures={"hud-blend-idle-720p.png","hud-blend-idle-1080p.png","hud-blend-charge-tier2-720p.png","hud-blend-charge-tier3-1080p.png"};
+   float waitForCaptures=0;while(waitForCaptures<3f){bool all=true;foreach(string capture in captures)all&=File.Exists(Path.Combine(output,capture));if(all)break;waitForCaptures+=Time.unscaledDeltaTime;yield return null;}
    foreach(string capture in captures)check(File.Exists(Path.Combine(output,capture)),"capture exists: "+capture);
-   File.WriteAllText(Path.Combine(output,"hud-blend-capture.json"),JsonUtility.ToJson(new HudBlendReceipt{passed=failures==0,failures=failures,rosterNamespace="none; generic smoke fixture does not initialize user roster storage",captures=captures,checks=checks.ToArray(),keyNames=NativeHudDockLayout.KeyNames,artScale=NativeHudDockLayout.ArtScale,minSlotGap=minSlotGap,minLabelGap=minLabelGap,minLabelGapAt720=minLabelGap*(720f/1080f),slotBar=dock.SlotBar,leftOrb=dock.LeftFrame,rightOrb=dock.RightFrame,visibleBar=dock.VisibleBar,activeSlot=dock.ActiveSlot,statusLabel=new Rect(1920*.5f-130,dock.VisibleBar.y-25,260,20),skillHitRects=slots,keyLabelRects=labels},true));
+   File.WriteAllText(Path.Combine(output,"hud-blend-capture.json"),JsonUtility.ToJson(new HudBlendReceipt{passed=failures==0,failures=failures,rosterNamespace="none; generic smoke fixture does not initialize user roster storage",captures=captures,checks=checks.ToArray(),keyNames=NativeHudDockLayout.KeyNames,artScale=NativeHudDockLayout.ArtScale,minSlotGap=minSlotGap,minLabelGap=minLabelGap,minLabelGapAt720=minLabelGap*(720f/1080f),slotBar=dock.SlotBar,leftOrb=dock.LeftFrame,rightOrb=dock.RightFrame,visibleBar=dock.VisibleBar,activeSlot=dock.ActiveSlot,statusLabel=new Rect(1920*.5f-180,dock.VisibleBar.y-25,360,20),skillHitRects=slots,keyLabelRects=labels},true));
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--keep-open-after-hud-blend")>=0)yield break;
    yield return new WaitForSecondsRealtime(1);Application.Quit(failures==0?0:2);
   }
  }
