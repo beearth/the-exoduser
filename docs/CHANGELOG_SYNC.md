@@ -1,3 +1,7 @@
+## 2026-10-25 세계관 정본·웹 표시 실제 인수
+
+- 사용자 지정 steam 영상 정확102,204,634B/SHA3b99… 적용, 자막/컷+0.4초 음성실측 보정, 문 전환·음영·compact 언어·원형hold 표시. ARM64 errors0, 최종 자연완주12/12·7PNG 시각확인. 정상앱 열고 사용자의 전사 이야기 진행 상태 보존. main/PC동기화·전체웹동등은 미확정. [검수 기록](engine/UNITY_WORLD_INTRO_CANONICAL_20261025.md).
+
 ## 2026-10-25 웹 시네마틱 표시 재현
 
 - 원본과 다른 상시 pause 표시를 paused/error 조건으로, 언어 표시를 compact 위치로, hold 막대를 원형 게이지로 수정. 원본 CSS 문/제목 음영 연결. 신규 시스템 없이 기존 이식 차이 수정. [근거와 제한](engine/UNITY_WORLD_INTRO_CANONICAL_20261025.md).

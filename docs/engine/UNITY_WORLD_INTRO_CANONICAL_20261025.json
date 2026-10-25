@@ -1,0 +1,143 @@
+{
+  "sourceCommit": "d789dd1ae2bec83d71085dc8038be92e0a92118f",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-canonical-web-ui/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1537263355
+  },
+  "media": {
+    "sourceFile": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-canonical-web-ui/EXODUSER-Unity.app/Contents/Resources/Data/StreamingAssets/Lobby/world_intro_v22b_steam.mp4",
+    "sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+    "bytes": 102204634,
+    "passed": true,
+    "checks": [
+      "PASS door prepared",
+      "PASS invitation fades instead of disappearing on Enter",
+      "PASS door fades using remaining video time",
+      "PASS world preparation never draws closed door poster",
+      "PASS exact user-designated bytes in running app",
+      "PASS new movie ends naturally into lobby",
+      "PASS natural wall clock matches media duration",
+      "PASS no long frame or playback stalls",
+      "PASS normal playback speed",
+      "PASS movie audio and final output have signal",
+      "PASS no audio buffer warnings",
+      "PASS frontend keeps gameplay stopped"
+    ],
+    "captions": [
+      "6.000s: 어딘가에선 우주가 태어나고,",
+      "35.000s: 끝없이 아래로만 향하는 힘.",
+      "93.000s: 모두가 뒤엉킨 단 하나의 구덩이."
+    ],
+    "cueOffset": 0.4,
+    "invitationOpacity": 0.7406514286994934,
+    "doorOpacity": 0.5416238307952881
+  },
+  "naturalPlayback": {
+    "endedEvent": true,
+    "duration": 113.66699981689453,
+    "firstVideoTime": 0.0,
+    "lastVideoTime": 113.63333333333334,
+    "wallElapsed": 113.63432891699999,
+    "maxFrameGapSeconds": 0.04276095800000235,
+    "maxProgressStallSeconds": 0.03480499999999864,
+    "minimumSpeed": 1.0,
+    "maximumSpeed": 1.0,
+    "frameChanges": 3409,
+    "audioProbeCount": 13559,
+    "voicePeak": 0.4260861277580261,
+    "musicPeak": 0.1561344563961029,
+    "listenerPeak": 0.4307522773742676
+  },
+  "audioBufferWarnings": 0,
+  "referenceFiles": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/reference-main/index.html",
+      "resolved": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/reference-main/index.html",
+      "sha256": "c90b894714140d1c9e6c45d3bd778e44503d82bd8bdb70e32f15ff9e5e182e50"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/reference-main/cin-enter-engraved.css",
+      "resolved": "/Users/fordeargamers/Projects/exoduser-migration-20261001/cin-enter-engraved.css",
+      "sha256": "97274db5db6d3f01d8905b3d7f985694d96338836c8c4f756958c5a83041a5d0"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/reference-main/world-intro-player.js",
+      "resolved": "/Users/fordeargamers/Projects/exoduser-migration-20261001/world-intro-player.js",
+      "sha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/reference-main/world-intro-subtitles.js",
+      "resolved": "/Users/fordeargamers/Projects/exoduser-migration-20261001/world-intro-subtitles.js",
+      "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b"
+    }
+  ],
+  "audioAlignment": {
+    "sampleRate": 8000,
+    "firstSeconds": 35,
+    "lagSeconds": 0.4,
+    "correlationAfterLag": 0.9999959555448461,
+    "oldRms": 0.09491822123527527,
+    "newRms": 0.09487787634134293
+  },
+  "images": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/canonical-world-d789dd1ae/canonical-lobby-after-natural-end.png",
+      "sha256": "5503e502feb73ba33267696e5b1c04a97d7d2cdb3df908768ec853fcbfb86735",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/canonical-world-d789dd1ae/canonical-world-35.png",
+      "sha256": "4c60c63252c1e18697a77730b9f05e7633981beef4ddd5b7673a14fc6914175e",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/canonical-world-d789dd1ae/canonical-world-6.png",
+      "sha256": "78a0ac879b69b6bc6f9c6203aefab4d0d987fadc8ce10ab2e4f80abc3a8320ca",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/canonical-world-d789dd1ae/canonical-world-93.png",
+      "sha256": "d84778c9a88e00a5ca81c7d2279734faa66eec98ce7187f7a67485686fd1f444",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/canonical-world-d789dd1ae/door-before-enter.png",
+      "sha256": "ed892f64ec1659b95560ae672518283b1523d807514bf784beb964355ac902e3",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/canonical-world-d789dd1ae/door-end-fading.png",
+      "sha256": "855c5c98d14cb3e6eb45c8d5cb3a17ac95ead5a8aa26e6c118ec59df98d711b4",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/canonical-world-d789dd1ae/door-enter-fading.png",
+      "sha256": "a7feaa2aaf4c03163a8b4694a84ee82e3aa995519434b2aa28bb49273ba89696",
+      "visuallyReviewed": true
+    }
+  ],
+  "normalInput": {
+    "pid": 38141,
+    "fixtureFlags": false,
+    "observations": [
+      "normal door and canonical world visible",
+      "Right followed by later scene and matching Korean caption",
+      "Escape held 5500ms followed by lobby",
+      "language click and L menu opening not confirmed; user concurrently interacting",
+      "latest visible state: user playing warrior story; no further agent input"
+    ],
+    "controlledTest": false
+  },
+  "limits": [
+    "PC live WIP equality not established",
+    "main integration and PC runtime synchronization not claimed",
+    "full multilingual and gamepad parity not verified",
+    "AVFoundation falls back for untagged source color primaries"
+  ]
+}
