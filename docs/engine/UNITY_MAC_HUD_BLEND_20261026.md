@@ -18,7 +18,7 @@ The always-visible `기검참 · ST · 준비 [K]` banner and wide charge meter 
 
 Run the integrated Unity build with `--unity-hud-blend-smoke -output <isolated-output>`. The fixture follows `ShowLobby → SelectPreview → EnterNativeTest`, verifies that generic smoke mode has no user-roster store open, disables enemy AI and clears enemies for these QA captures, then records four images: idle at 720p/1080p and actual `StepInput` charge tier 2 at 720p and tier 3 at 1080p. It exits after one second. This is a scripted Player capture, not OS keyboard or mouse input verification.
 
-`hud-blend-capture.json` includes all 13 key strings, the shared logical rectangles for the bar, both orbs, active icon, status label, every slot hit area and each key label. It also records minimum inter-slot and inset-label gaps, the common scale, and capture checks. The key-label rectangles and skill hit areas share slot centers from `NativeHudDockLayout`; the fixture checks center alignment and positive gaps.
+`hud-blend-capture.json` includes all 13 key strings, the shared logical rectangles for the bar, both orbs, active icon, status label, every slot hit area and each key label. It also records minimum inter-slot and inset-label gaps, the common scale, and capture checks. The key-label rectangles and skill hit areas share slot centers from `NativeHudDockLayout`; the fixture checks center alignment, positive gaps, and both rectangle corners against the parent bounds.
 
 ## Verification status
 

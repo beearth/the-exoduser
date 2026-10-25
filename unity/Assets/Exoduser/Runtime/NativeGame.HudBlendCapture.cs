@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
    for(int i=0;i<13;i++){slots[i]=NativeHud.SkillSlotRect(dock,i);labels[i]=NativeHudDockLayout.KeyLabelRect(dock.SlotBar,1080,i);if(i>0){minSlotGap=Mathf.Min(minSlotGap,slots[i].x-slots[i-1].xMax);minLabelGap=Mathf.Min(minLabelGap,(labels[i].x+3)-(labels[i-1].xMax-3));}}
    check(NativeHudDockLayout.KeyNames.Length==13,"all 13 original key names are retained");
    check(minSlotGap>0,"13 hit rectangles share one layout with positive inter-slot gap");check(minLabelGap>0,"13 inset key-label rectangles share one layout with positive inter-label gap");
-   for(int i=0;i<13;i++){check(Mathf.Abs(slots[i].center.x-labels[i].center.x)<.01f,"key label centered over shared slot "+NativeHudDockLayout.KeyNames[i]);check(dock.SlotBar.Contains(slots[i]),"slot hitbox remains within bar "+NativeHudDockLayout.KeyNames[i]);check(dock.VisibleBar.Contains(labels[i]),"key label remains within visible rail "+NativeHudDockLayout.KeyNames[i]);}
+   for(int i=0;i<13;i++){check(Mathf.Abs(slots[i].center.x-labels[i].center.x)<.01f,"key label centered over shared slot "+NativeHudDockLayout.KeyNames[i]);check(dock.SlotBar.Contains(slots[i].min)&&dock.SlotBar.Contains(slots[i].max),"slot hitbox remains within bar "+NativeHudDockLayout.KeyNames[i]);check(dock.VisibleBar.Contains(labels[i].min)&&dock.VisibleBar.Contains(labels[i].max),"key label remains within visible rail "+NativeHudDockLayout.KeyNames[i]);}
    check(!NativeHud.StatusShouldDisplay(false,false,false),"status label hidden with no hover, selection, or charge");
    check(NativeHud.StatusShouldDisplay(true,false,false),"status label shown on active-slot hover");
    check(NativeHud.StatusShouldDisplay(false,false,true),"status label shown briefly after active-slot selection");
