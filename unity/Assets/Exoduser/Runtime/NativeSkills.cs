@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort {
      if(GUI.Button(rect,"",GUIStyle.none))Select(i);
     }
     Surface(new Rect(68,236,316,368));Surface(new Rect(408,236,804,368));
-    GUI.Label(new Rect(88,254,276,40),data.slots[SelectedSlot].key+" 슬롯",title);
+    GUI.Label(new Rect(88,254,276,64),data.slots[SelectedSlot].key+" 슬롯",title);
     if(SelectedSlot==6){
      GUI.DrawTexture(new Rect(116,322,220,180),icon,ScaleMode.ScaleToFit,true);
      GUI.Label(new Rect(88,526,276,32),"기검참 · Lv "+Math.Max(1,sim.Config.KiSlashLevel),body);
@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort {
      if(Button(new Rect(432,540,752,44),sim.Config.ActiveAttack=="kiSlash"?"좌클릭에 장착 중":"좌클릭에 장착",true))equip();GUI.enabled=enabled;
     }else{
      GUI.Label(new Rect(88,326,276,100),"현재 사용할 수 있는\n스킬이 없습니다.",body);
-     GUI.Label(new Rect(432,266,752,46),"이 슬롯의 스킬은 아직 준비 중입니다.",title);
+     GUI.Label(new Rect(432,266,752,64),"이 슬롯의 스킬은 아직 준비 중입니다.",title);
      GUI.Label(new Rect(432,336,752,148),"이번 미리보기에서는 좌클릭 기검참을 사용할 수 있습니다.\n숫자 1~4는 스킬 슬롯이며 물약 단축키가 아닙니다.\n추가 스킬의 습득·강화·합체는 아직 지원되지 않습니다.",body);
      if(Button(new Rect(432,540,752,44),"사용 가능한 기검참 보기",true))Select(6);
     }
