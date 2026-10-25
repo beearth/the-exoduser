@@ -15,3 +15,5 @@
 전용 `--unity-language-menu-smoke`는 사용자 저장을 열지 않고 무음으로 controller 계약8개와720/1080 상단/하단4PNG만 검수한다. OS마우스/키보드 전수검사라고 확대하지 않는다. 기존영상완주·저장53/Player16/언어536 검사는 반복하지 않는다. 새 빌드와 fixture 결과 대기.
 
 남은 범위: hover로 커서이동, 브라우저Tab focus 순환, 29언어 shaping/RTL은 완전 동등 미확정. 기존23원문/6대체이름 보존. 이식→비교/누락수정→신규업데이트 순서다.
+
+첫 source35519bdce: ARM64 오류0, controller8/8 및720/1080 상단/하단4PNG 정상. 작은 화면에서도14px 상당 글자와 마지막 항목이 잘리지 않는 것을 직접 확인했다. 단, 결과/PNG 저장 직후 빠른 Application.Quit에서 Mono/native segv가 발생했다. 정상 종료 PASS로 계산하지 않는다. 검수 fixture만 영상 Close→native callback 정리1초→Quit으로 보정해 해당 짧은 검사만 재확인한다. 제품 저장·메뉴 동작을 이 종료 문제의 원인으로 단정하지 않는다.

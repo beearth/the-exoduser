@@ -17,7 +17,9 @@ namespace Exoduser.UnityPort {
    check(!lobby.LanguageMenuOpen&&lobby.Language=="en","Escape cancels without changing language");tap(KeyCode.L);tap(KeyCode.Home);tap(KeyCode.Return);
    check(!lobby.LanguageMenuOpen&&lobby.Language=="ko","Home and Enter select Korean");
    Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return null;tap(KeyCode.L);yield return UiCapture(output,"language-top-1080p");tap(KeyCode.End);yield return UiCapture(output,"language-bottom-1080p");tap(KeyCode.Escape);
-   check(lobby.CharacterStoreDirectory.Length==0,"fixture never opens user character storage");result.passed=failures==0;File.WriteAllText(Path.Combine(output,"language-menu.json"),JsonUtility.ToJson(result,true));Application.Quit(result.passed?0:2);
+   check(lobby.CharacterStoreDirectory.Length==0,"fixture never opens user character storage");result.passed=failures==0;File.WriteAllText(Path.Combine(output,"language-menu.json"),JsonUtility.ToJson(result,true));
+   // Drain native video/render callbacks before the very short probe exits.
+   lobby.CurrentVideo.Close();yield return new WaitForSecondsRealtime(1);Application.Quit(result.passed?0:2);
   }
  }
 }

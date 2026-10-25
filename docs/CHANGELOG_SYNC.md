@@ -1,3 +1,7 @@
+## 2026-10-25 언어 메뉴 짧은 검수 종료 보정
+
+- 메뉴8/8와4PNG 정상 후 즉시 종료에서 native segv 관측. fixture만 영상 Close 후1초 정리하고 종료하도록 수정. 제품 메뉴/저장 변경 없음. [기록](engine/UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
+
 ## 2026-10-25 Unity web language-menu parity
 
 - Single-column scroll, Up/Down one option, Space confirm, Tab cancel, repeat guard. Storage and cinematic behavior preserved. [Contract and verification](engine/UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
