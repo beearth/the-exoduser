@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
   int characterStep,characterVisual,characterScroll;
   bool characterFocus,characterInputFence;
   string characterName="",characterError="";
-  CharacterCatalog characterCatalog;Texture2D warriorArt,warriorPortrait;
+  CharacterCatalog characterCatalog;Texture2D warriorArt,warriorPortrait;Texture2D[] classArt;
   GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton;
   readonly string[] classEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
   void CharacterStyles()
@@ -18,6 +18,7 @@ namespace Exoduser.UnityPort
    if(characterText!=null)return;
    characterCatalog=JsonUtility.FromJson<CharacterCatalog>(Resources.Load<TextAsset>("Data/character_ui").text);
    warriorArt=Art("warrior_cut");warriorPortrait=Art("warrior_portrait");
+   classArt=new[]{warriorArt,Art("character_1"),Art("character_2"),Art("character_3"),Art("character_4")};
    characterText=new GUIStyle(lobbyText){fontSize=25,wordWrap=true,clipping=TextClipping.Clip};
    characterSmall=new GUIStyle(characterText){fontSize=20};
    characterTitle=new GUIStyle(characterText){fontSize=38};
@@ -106,7 +107,7 @@ namespace Exoduser.UnityPort
   void DrawSelectedCharacter()
   {
    if(Characters.SelectedIndex<0){DrawAncestor();return;}
-   Image(new Rect(290,150,700,760),warriorArt);
+   Image(new Rect(290,220,700,760),warriorArt);
    Label(new Rect(250,910,790,68),Characters.SelectedName,characterTitle,TextAnchor.MiddleCenter);
    Label(new Rect(250,982,790,40),K("전사 · 플레이 미리보기","Warrior · Play preview"),characterSmall,TextAnchor.MiddleCenter);
   }
@@ -121,8 +122,9 @@ namespace Exoduser.UnityPort
     Label(new Rect(tab.x+8,tab.y+43,196,24),i==0?K("생성 가능","Available"):K("출시 준비 중","Coming soon"),lobbyText,TextAnchor.MiddleCenter);
     if(characterStep==1&&GUI.Button(tab,"",GUIStyle.none))ChooseCharacterVisual(i);
    }
-   Image(new Rect(395,310,470,570),warriorArt);
-   if(characterVisual!=0){Fill(new Rect(395,310,470,570),new Color(.03f,.025f,.025f,.96f));Label(new Rect(420,495,420,90),K("출시 준비 중","Coming soon"),characterTitle,TextAnchor.MiddleCenter);}
+   var artTint=GUI.color;if(characterVisual!=0)GUI.color=new Color(.45f,.45f,.45f,1);
+   Image(new Rect(395,310,470,570),classArt[characterVisual]);GUI.color=artTint;
+   if(characterVisual!=0){Fill(new Rect(395,785,470,80),new Color(.03f,.025f,.025f,.90f));Label(new Rect(420,795,420,60),K("출시 준비 중","Coming soon"),characterTitle,TextAnchor.MiddleCenter);}
    Label(new Rect(900,330,600,70),K(characterCatalog.visuals[characterVisual].name,classEnglish[characterVisual]),characterTitle,TextAnchor.MiddleLeft);
    Label(new Rect(900,417,600,90),K(characterCatalog.visuals[characterVisual].description,characterVisual==0?"A black-iron warrior wielding a greatsword.":"This class is not available yet."),characterText,TextAnchor.UpperLeft);
    Label(new Rect(900,530,600,105),K("이번 실행에서만 유지되는 캐릭터입니다.\n입장할 때 새 전투가 시작되며 진행은 저장되지 않습니다.","Characters last for this app session.\nEach entry starts a new battle; progress is not saved."),characterSmall,TextAnchor.UpperLeft);

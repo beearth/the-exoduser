@@ -10,6 +10,7 @@ namespace Exoduser.UnityPort
  {
   IEnumerator CharacterSmoke()
   {
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--character-visual-only")>=0){yield return CharacterVisualSmoke();yield break;}
    string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;
    Directory.CreateDirectory(output);var checks=new List<string>();int failures=0;
    Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
@@ -43,5 +44,20 @@ namespace Exoduser.UnityPort
    if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit(failures==0?0:2);
   }
   [Serializable] sealed class CharacterSmokeReceipt{public string scope="Actual Player callbacks and rendering; no native OS input claim; session-only identities";public bool passed;public int failures;public string[] checks;}
+  IEnumerator CharacterVisualSmoke()
+  {
+   string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;Directory.CreateDirectory(output);
+   Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+   lobby.OpenCharacterCreation();for(int i=0;i<5;i++){lobby.ChooseCharacterVisual(i);yield return SkillCapture(output,"class-"+i+"-720p");}
+   lobby.ChooseCharacterVisual(0);lobby.ConfirmCharacterVisual();lobby.CreateCharacter("가나다라마바사아");
+   yield return SkillCapture(output,"selected-name-720p");
+   lobby.EnterSelectedCharacter();Running=false;yield return SkillCapture(output,"name-badge-720p");
+   ApplyPauseCommand(PauseMenuCommand.ReturnLobby);Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+   yield return SkillCapture(output,"selected-name-1080p");
+   lobby.SetLanguage("en");lobby.OpenCharacterCreation();lobby.ConfirmCharacterVisual();yield return SkillCapture(output,"name-english-1080p");
+   lobby.CloseCharacterCreation();lobby.SetLanguage("ko");lobbySmoke=false;lobby.AutomatedInput=false;
+   File.WriteAllText(Path.Combine(output,"visual-capture.json"),"{\"scope\":\"Final display-only changes; class art, positioning, maximum name length and English form\",\"captures\":9}");
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit();
+  }
  }
 }

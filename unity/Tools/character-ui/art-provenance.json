@@ -1,0 +1,22 @@
+[
+  {
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/silvertail_cut.png",
+    "destination": "unity/Assets/Exoduser/Resources/Art/lobby/character_1.png",
+    "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd"
+  },
+  {
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_hellgunner.jpg",
+    "destination": "unity/Assets/Exoduser/Resources/Art/lobby/character_2.jpg",
+    "sha256": "8551ac0003e6783f9c685f1e9385dd4b156fdde326af4090569a70239ca3f529"
+  },
+  {
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_transmuter.jpg",
+    "destination": "unity/Assets/Exoduser/Resources/Art/lobby/character_3.jpg",
+    "sha256": "bb368100b763809332990bb32a45710c970bfe2fc0f36801be4cc2969251693c"
+  },
+  {
+    "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_spearmage.jpg",
+    "destination": "unity/Assets/Exoduser/Resources/Art/lobby/character_4.jpg",
+    "sha256": "514ca2f16c7d088240d59c455f542d8071bd0cac9ea67e22be661ffadfc97d5f"
+  }
+]
