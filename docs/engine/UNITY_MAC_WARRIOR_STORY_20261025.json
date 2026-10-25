@@ -1,0 +1,123 @@
+{
+  "source": "b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-warrior-story/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1533203669
+  },
+  "model": {
+    "passed": 41,
+    "failed": 0,
+    "scope": "Source cue boundaries, hold-source lifetime, focus and delayed-entry cancellation"
+  },
+  "runtime": {
+    "skip": {
+      "scope": "Original native warrior video, session-only roster, callbacks and rendering; no OS input claim",
+      "passed": true,
+      "failures": 0,
+      "checks": [
+        "PASS story fixture never uses normal user roster storage",
+        "PASS successful creation starts story once with selected identity",
+        "PASS story owns creation deletion and entry input",
+        "PASS original warrior video decodes in native Player",
+        "PASS original first caption follows native video time",
+        "PASS next follows original cue and epsilon",
+        "PASS short hold does not skip",
+        "PASS release cancels skip progress",
+        "PASS focus loss clears held sources",
+        "PASS completed hold enters loading gate before gameplay",
+        "PASS story completion enters gameplay with created name",
+        "PASS natural or skip marks session seen; playback failure does not",
+        "PASS story completion does not create another slot",
+        "PASS subsequent creation starts its own story",
+        "PASS lobby return cancels stale story entry without losing identities"
+      ]
+    },
+    "failure": {
+      "scope": "Original native warrior video, session-only roster, callbacks and rendering; no OS input claim",
+      "passed": true,
+      "failures": 0,
+      "checks": [
+        "PASS story fixture never uses normal user roster storage",
+        "PASS successful creation starts story once with selected identity",
+        "PASS story owns creation deletion and entry input",
+        "PASS original warrior video decodes in native Player",
+        "PASS story completion enters gameplay with created name",
+        "PASS natural or skip marks session seen; playback failure does not",
+        "PASS story completion does not create another slot"
+      ]
+    },
+    "natural": {
+      "scope": "Original native warrior video, session-only roster, callbacks and rendering; no OS input claim",
+      "passed": true,
+      "failures": 0,
+      "checks": [
+        "PASS story fixture never uses normal user roster storage",
+        "PASS successful creation starts story once with selected identity",
+        "PASS story owns creation deletion and entry input",
+        "PASS original warrior video decodes in native Player",
+        "PASS original first caption follows native video time",
+        "PASS story completion enters gameplay with created name",
+        "PASS natural or skip marks session seen; playback failure does not",
+        "PASS story completion does not create another slot"
+      ]
+    }
+  },
+  "nativeInput": {
+    "isolatedRoster": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/character-roster-v1/characters.v1.json",
+    "beforeRevision": 5,
+    "afterRevision": 6,
+    "names": [
+      "이야기검수"
+    ],
+    "selectedIndex": 0,
+    "creationEnterHeldMilliseconds": 1600,
+    "shortEscapeMilliseconds": 500,
+    "skipEscapeMilliseconds": 3000,
+    "gameplayNameVerified": true,
+    "pauseDidNotOpenFromSkipHold": true,
+    "normalUserRosterWritten": false,
+    "processExit": 0,
+    "binding": "CLI NFD executable path and CUA full app path attached to same PID32788; no duplicate app"
+  },
+  "limitations": [
+    "No full battle progression save or old-save import",
+    "Gamepad, all-language font/RTL and full screen are unverified",
+    "AVFoundation source color primaries fallback; no transcoding or color parity claim"
+  ],
+  "images": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/warrior-story-smoke-b45d7af0f/story-entry-720p.png",
+      "sha256": "fb7e12225d2a4ee5f7d063fad80367e64d31de6afdf3634a76b28fa7fd72806a"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/warrior-story-smoke-b45d7af0f/story-first-natural-720p.png",
+      "sha256": "6c90b9b9587523c7d12623048489827cf77d7147b45848778545cef19b8891ff"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/warrior-story-smoke-b45d7af0f/story-first-skip-720p.png",
+      "sha256": "6c90b9b9587523c7d12623048489827cf77d7147b45848778545cef19b8891ff"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/warrior-story-smoke-b45d7af0f/story-gameplay-failure-720p.png",
+      "sha256": "55cc40d202b12e887719862a9a156294de0a1e71cadbba9db57231e81c3f0cda"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/warrior-story-smoke-b45d7af0f/story-gameplay-natural-720p.png",
+      "sha256": "fda8bac3540e5e8894264d50584f29528b49ef756bd753ce9220db92d19659da"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/warrior-story-smoke-b45d7af0f/story-gameplay-skip-720p.png",
+      "sha256": "fda8bac3540e5e8894264d50584f29528b49ef756bd753ce9220db92d19659da"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/warrior-story-smoke-b45d7af0f/story-natural-middle-720p.png",
+      "sha256": "16d95bfb0c4c4616ccad5c2b5540c6b27bc2da1a962b57238bbb62c034768ac2"
+    }
+  ]
+}

@@ -57036,3 +57036,5 @@ HUD 입력 차단이 진행 중인 차지를 해제하지 않도록 신규 공�
 ## 2026-10-25 Mac 신규 전사 이야기 연결 착수
 
 - 생성 저장 성공→원본97,796,468B 영상·29×22자막→동일이름 미리보기 진입 연결. 원본22cut/1.2초hold/1.2초gate/0.4초hint fade, 취소·focus·중복생성차단. 영상바이트변경0, Git복구parts추가. 새model검수와Player검수진행. [계약](engine/UNITY_MAC_WARRIOR_STORY_20261025.md). 전체진행save·기존story flag수정0.
+
+- 전사 이야기 최종: b45d7af0f ARM64 오류0, 모델41/실제Player30 통과. CUA 격리목록 생성→영상스킵→동일이름게임진입 확인, 생성Enter1.6초/짧은Esc/긴Esc 입력 누출0. 저장revision5→6한번. 정상저장쓰기0·검수앱종료. [영수증](engine/UNITY_MAC_WARRIOR_STORY_20261025.json).

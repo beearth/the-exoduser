@@ -99,19 +99,23 @@
     },
     {
       "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-footer-en-1080p.png",
-      "sha256": "a7a89c5159a5eae21ffbf3f405f732c9fc50d302a2fb9f80c5138e397e990d0f"
+      "sha256": "ed8abacde4af4f6866d7a2b4efa2ca64f9c9c353911c930a754a1f0729a1b525",
+      "recapturedBySource": "b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856"
     },
     {
       "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-footer-en-720p.png",
-      "sha256": "4927d31983366d3b0edf932d52cdc53559554ea8ae44bca35a53fcf9b0d70a6c"
+      "sha256": "c9dca46b86797b0b2a0ecc74b5801fabf57ade3befcbd7d4ce15bb2a9720cc2b",
+      "recapturedBySource": "b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856"
     },
     {
       "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-footer-ko-1080p.png",
-      "sha256": "49ec6601094870d8f2699c3802b2f39a9f77dc798d54e73a3f74681f6eb68409"
+      "sha256": "f6c69ccf2821fe96bdaabb7b2333bbc6532561c38ca2f4bbbd3581abd4c9f658",
+      "recapturedBySource": "b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856"
     },
     {
       "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-footer-ko-720p.png",
-      "sha256": "20ee32b251c37ffe8a6a09a8119d9c01425c2c33bdfc5b4f6ec175d35fbcf0a8"
+      "sha256": "20d0f90a2a149416704adf31dbb2bc5509e76b7f8d0845bb60596d69abadf719",
+      "recapturedBySource": "b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856"
     },
     {
       "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-ready-1080p.png",
@@ -125,5 +129,15 @@
       "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-store-smoke-d04230fd4/store-write-blocked-720p.png",
       "sha256": "ae92c00e966322e9adee701ca604f5792216567cb9fb26425416ce6fdffaa65a"
     }
-  ]
+  ],
+  "visualFollowup": {
+    "source": "b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856",
+    "reason": "Same isolated output reused for read-only visual setup before native story input; four footer images refreshed",
+    "refreshed": [
+      "store-footer-en-1080p.png",
+      "store-footer-en-720p.png",
+      "store-footer-ko-1080p.png",
+      "store-footer-ko-720p.png"
+    ]
+  }
 }
