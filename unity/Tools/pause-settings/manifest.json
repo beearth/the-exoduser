@@ -1,0 +1,60 @@
+{
+  "owner": "01a1714e-dd3c-7202-911d-fd1cbf1eec1b",
+  "integrationOwner": "01a0f32f-a350-7430-85a4-fb71f336d5c7",
+  "scope": "Pause menu + source-aligned display/audio settings UI; host integration pending",
+  "modelAssertions": 66,
+  "finalUiCompileErrors": 0,
+  "finalUiCompileWarnings": 0,
+  "nativeRuntimeVerified": false,
+  "destinations": {
+    "NativePauseMenu.cs": "unity/Assets/Exoduser/Runtime/NativePauseMenu.cs",
+    "NativeSettingsState.cs": "unity/Assets/Exoduser/Runtime/Core/NativeSettingsState.cs"
+  },
+  "files": [
+    {
+      "path": "NativePauseMenu.cs",
+      "bytes": 8662,
+      "sha256": "cabffa20b7cdfb1587d5613cb760c5615b9ce32ffe445899f57aac9a213520d0"
+    },
+    {
+      "path": "NativeSettingsState.cs",
+      "bytes": 1849,
+      "sha256": "e5cfd38ba2de02d1545c58a0ac07ae5799442aa26b48b2e89caf8e7658263105"
+    },
+    {
+      "path": "PauseSettingsTests.csproj",
+      "bytes": 839,
+      "sha256": "cbe484f2e64a4636c15a55dd00b53e35dbd11051d49eb8e0c05ba0a679331d62"
+    },
+    {
+      "path": "Program.cs",
+      "bytes": 3345,
+      "sha256": "69c9624b5bee9a20dfff48eea5d4dde8f73184556df80a4037bda79079e1f483"
+    },
+    {
+      "path": "NuGet.Config",
+      "bytes": 74,
+      "sha256": "9508cae5f76364f56e80eb97cb16493977243cf38e5cca6284e3d74f83b20a2c"
+    },
+    {
+      "path": "source-settings-oracle.json",
+      "bytes": 2460,
+      "sha256": "f4840bf39031a8101abf4bbe01a2365376b037c09df270c0923a77d9c53d8419"
+    },
+    {
+      "path": "result.json",
+      "bytes": 170,
+      "sha256": "c40cfc631f76af058d1ba817b9a6f503ccc315c909689ae1f165e7973ccdba38"
+    },
+    {
+      "path": "UNITY_PAUSE_SETTINGS_20261025.md",
+      "bytes": 6054,
+      "sha256": "d0393205249ef96fb82d1fdee29fc070fbd5847ef8466aeed1570f020bdaa358"
+    },
+    {
+      "path": "docs-matches.txt",
+      "bytes": 3903,
+      "sha256": "8401152b8b0360d48a6ad7092968d53b7d7459a45c660322f1392d99f1f28815"
+    }
+  ]
+}

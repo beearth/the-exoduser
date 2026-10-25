@@ -1,0 +1,86 @@
+{
+  "scope": "Suggested first actual-render cue for each high-risk language; no rendering run",
+  "primaryFont": "NanumMyeongjo-Regular.ttf",
+  "probes": [
+    {
+      "language": "fr",
+      "cueIndex": 1,
+      "start": 4.122,
+      "end": 7.042,
+      "sampleTime": 5.582,
+      "text": "Quelque part, un univers naît.",
+      "missingInPrimaryFont": "î",
+      "missingInEveryBundledFont": ""
+    },
+    {
+      "language": "uk",
+      "cueIndex": 0,
+      "start": 0.08,
+      "end": 2.94,
+      "sampleTime": 1.51,
+      "text": "У всесвіті є незліченна кількість світів.",
+      "missingInPrimaryFont": "Уавезклнстчьєі",
+      "missingInEveryBundledFont": "єі"
+    },
+    {
+      "language": "ja",
+      "cueIndex": 0,
+      "start": 0.08,
+      "end": 2.94,
+      "sampleTime": 1.51,
+      "text": "宇宙には、数えきれぬ世界がある。",
+      "missingInPrimaryFont": "あえがきにぬはるれ世宇宙数界",
+      "missingInEveryBundledFont": "数"
+    },
+    {
+      "language": "th",
+      "cueIndex": 0,
+      "start": 0.08,
+      "end": 2.94,
+      "sampleTime": 1.51,
+      "text": "ในจักรวาลมีโลกอยู่นับไม่ถ้วน",
+      "missingInPrimaryFont": "กจถนบมยรลวอัาีูโใไ่้",
+      "missingInEveryBundledFont": "กจถนบมยรลวอัาีูโใไ่้"
+    },
+    {
+      "language": "ar",
+      "cueIndex": 0,
+      "start": 0.08,
+      "end": 2.94,
+      "sampleTime": 1.51,
+      "text": "في الكون عوالم لا تُحصى.",
+      "missingInPrimaryFont": "اتحصعفكلمنوىيُ",
+      "missingInEveryBundledFont": "اتحصعفكلمنوىيُ"
+    },
+    {
+      "language": "zh",
+      "cueIndex": 0,
+      "start": 0.08,
+      "end": 2.94,
+      "sampleTime": 1.51,
+      "text": "宇宙中有无数世界。",
+      "missingInPrimaryFont": "世中宇宙数无有界",
+      "missingInEveryBundledFont": "数"
+    },
+    {
+      "language": "zht",
+      "cueIndex": 0,
+      "start": 0.08,
+      "end": 2.94,
+      "sampleTime": 1.51,
+      "text": "宇宙中有無數世界。",
+      "missingInPrimaryFont": "世中宇宙數有無界",
+      "missingInEveryBundledFont": ""
+    },
+    {
+      "language": "el",
+      "cueIndex": 0,
+      "start": 0.08,
+      "end": 2.94,
+      "sampleTime": 1.51,
+      "text": "Στο σύμπαν υπάρχουν αμέτρητοι κόσμοι.",
+      "missingInPrimaryFont": "Σάέαηικμνοπρστυχόύ",
+      "missingInEveryBundledFont": "άέόύ"
+    }
+  ]
+}

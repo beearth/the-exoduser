@@ -15,8 +15,9 @@ namespace Exoduser.UnityPort
     // game's audio graph are deliberately outside this adapter's scope.
     public sealed class NativeFeedbackAudio : IDisposable
     {
-        sealed class Voice {public AudioSource source;public int priority;public double started,ends;}
-        readonly Transform parent;
+        sealed class Voice {public AudioSource source;public int priority;public double started,ends;public float rawVolume;}
+        readonly Transform parent;float volumeGain=.6f;
+        public void SetVolumePercent(int percent){volumeGain=Mathf.Clamp(percent,0,100)/100f;foreach(var v in voices)v.source.volume=Mathf.Min(1,v.rawVolume*volumeGain)*volumeGain;}
         readonly Dictionary<string,AudioClip> clips=new Dictionary<string,AudioClip>();
         readonly Dictionary<string,double> lastAt=new Dictionary<string,double>();
         readonly List<FeedbackEvent> pending=new List<FeedbackEvent>();
@@ -81,7 +82,7 @@ namespace Exoduser.UnityPort
             var clip=clips[key];if(clip.loadState!=AudioDataLoadState.Loaded){Receipt.dropped++;return;}
             var s=available.source;s.clip=clip;s.pitch=pitch;
             // OPT.sfxVol60: sample gain min(1,vol*.6), then master bus gain .6.
-            s.volume=Mathf.Min(1,volume*.6f)*.6f;s.panStereo=0;s.Play();
+            available.rawVolume=volume;s.volume=Mathf.Min(1,volume*volumeGain)*volumeGain;s.panStereo=0;s.Play();
             available.priority=priority;available.started=now;available.ends=now+clip.length/pitch;
             Receipt.played++;if(!Receipt.keys.Contains(key))Receipt.keys.Add(key);Receipt.voicesPeak=Math.Max(Receipt.voicesPeak,active+1);
         }

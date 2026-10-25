@@ -72,3 +72,6 @@ TAB/ESC/시뮬레이션 pause/resume·저장·아이템 수치·어픽스 허용
 | 남은 범위 | 실제OS hover/클릭/스크롤/드래그·게임패드·전체해상도/현지화·HUD작은MP/ST/max글자·전체UI/전체게임인수는별도. 이번도킹PASS가전체UI/인트로재완주PASS는아님 |
 
 모든 상대 검수 경로는 I:/EXODUSER-Storage/qa/unity-ui-dock-20261024 기준이다. 최종 로컬/원격tree·복구bundle·기존공유상태는 SAVED.json에 기록한다.
+
+
+2026-10-25 후속: 양측 도킹에 선택/착용 장비 비교와 상세 탭, 별도 일시정지·설정 화면 연결. 현재 구현과 실제 통합 검수는 [장비 비교·설정](UNITY_MAC_INVENTORY_SETTINGS_20261025.md)을 따른다. 전체 비교·전체 설정 이식 완료라는 뜻은 아니다.

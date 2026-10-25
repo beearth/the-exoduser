@@ -56,38 +56,6 @@ namespace Exoduser.UnityPort {
             int y=Mathf.Clamp(Mathf.FloorToInt(mouseRow-InventoryState.Height(item)/2f+.5f),0,InventoryState.Rows-InventoryState.Height(item));
             return Move(item,x,y);
         }
-        void DrawDetails(int level,Rect pane,float footerTop){
-            float x=pane.x+28,w=pane.width-56;
-            var it=State.Selected;
-            if(!ReferenceEquals(detailItem,it)){detailItem=it;detailScroll=Vector2.zero;}
-            if(it==null){GUI.Label(new Rect(x,pane.y,w,42),"장비를 선택하세요",heading);return;}
-            var body=new System.Text.StringBuilder();
-            int idx=Array.IndexOf(InventoryState.Slots,it.slot);
-            body.AppendLine((it.rarity==1?"마법":"일반")+" · "+(idx>=0?names[idx]:it.slot)+" · 요구 레벨 "+it.reqLv);
-            if(it.atk!=0)body.AppendLine("공격력  "+it.atk.ToString("0.##"));
-            if(it.def!=0)body.AppendLine("방어력  "+it.def.ToString("0.##"));
-            if(it.eDef!=0)body.AppendLine("마법 방어  "+it.eDef.ToString("0.##"));
-            if(it.spd!=0)body.AppendLine("무기 속도  "+it.spd.ToString("0.##"));
-            if(it.bonusHp!=0)body.AppendLine("생명력  +"+it.bonusHp.ToString("0.##"));
-            if(it.bonusSt!=0)body.AppendLine("체력  +"+it.bonusSt.ToString("0.##"));
-            if(it.bonusMp!=0)body.AppendLine("마력  +"+it.bonusMp.ToString("0.##"));
-            if(it.bonusShield!=0)body.AppendLine("보호막  +"+it.bonusShield.ToString("0.##"));
-            if(!string.IsNullOrEmpty(it._implicitKo))body.AppendLine(it._implicitKo.Replace("X",it._implicitVal.ToString("0.##")));
-            if(it.affixes!=null)foreach(var a in it.affixes)body.AppendLine(AffixText(a));
-            var content=new GUIContent(body.ToString().TrimEnd('\n','\r'));
-            var viewport=new Rect(x,pane.y,w,footerTop-pane.y-64);
-            float textWidth=w-24,bodyHeight=text.CalcHeight(content,textWidth);
-            float nameHeight=Mathf.Max(40,itemName.CalcHeight(new GUIContent(it.name),textWidth-92));
-            float headerHeight=Mathf.Max(90,nameHeight+12);
-            detailScroll=GUI.BeginScrollView(viewport,detailScroll,new Rect(0,0,textWidth,headerHeight+bodyHeight+12));
-            GUI.DrawTexture(new Rect(0,0,80,80),IconFor(it),ScaleMode.ScaleToFit,true);
-            itemName.normal.textColor=it.rarity==1?new Color(.59f,.76f,.96f):gold;
-            GUI.Label(new Rect(92,12,textWidth-92,nameHeight),it.name,itemName);
-            GUI.Label(new Rect(0,headerHeight,textWidth,bodyHeight),content,text);
-            GUI.EndScrollView();
-            bool bag=State.Bag.Contains(it);
-            if(DockButton(new Rect(x,footerTop-52,w,44),bag?"장착":"장착 해제",true)){if(bag)Equip(it,level);else Unequip(it.slot);}
-        }
         string AffixText(InventoryAffix a){foreach(var l in labels)if(l.id==a.id){bool pct=l.unit=="pct"||l.unit=="prob";return l.name+"  "+(pct?a.value*100:a.value).ToString("0.##")+(pct?"%":l.unit=="dps"?"/s":"");}throw new InvalidOperationException("Unknown source affix label "+a.id);}
     }
 }

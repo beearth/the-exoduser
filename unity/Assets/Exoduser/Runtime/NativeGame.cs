@@ -18,6 +18,7 @@ namespace Exoduser.UnityPort
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
+        NativePauseMenu pauseMenu;NativeSettingsState settings;
         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
         bool basicWeaponMode;
         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
@@ -37,7 +38,7 @@ namespace Exoduser.UnityPort
 
         void Awake()
         {
-            Instance=this;Application.targetFrameRate=120;Time.fixedDeltaTime=1f/60f;
+            Instance=this;basicWeaponMode=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-basic-weapon")>=0;Application.targetFrameRate=120;Time.fixedDeltaTime=1f/60f;
             view=Camera.main;
             if(view==null){view=new GameObject("World Camera").AddComponent<Camera>();view.tag="MainCamera";}
             view.orthographic=true;view.orthographicSize=5.4f;view.backgroundColor=new Color(.015f,.02f,.018f);view.clearFlags=CameraClearFlags.SolidColor;
@@ -57,11 +58,16 @@ namespace Exoduser.UnityPort
             sound=new NativeFeedbackAudio(transform,view);
             ResetRun();
             worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
-            lobby.Initialize(()=>{ResetRun();menu=false;Running=true;});
+            lobby.Initialize(()=>{ResetRun();pauseMenu.Reset();menu=false;Running=true;});
+            settings=new NativeSettingsState(120);
+            pauseMenu=new NativePauseMenu(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font,settings,
+                SetSfxPercent,SetBgmPercent,SetFrameCap,
+                value=>Screen.fullScreenMode=value?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed);
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             if(!legacyFixture){Running=false;lobby.Begin();}
-            if(Array.IndexOf(args,"--unity-lobby-controls-smoke")>=0){lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbyControlsSmoke());}
+            if(Array.IndexOf(args,"--unity-ui-smoke")>=0){menu=true;Running=false;StartCoroutine(UiSmoke());}
+            else if(Array.IndexOf(args,"--unity-lobby-controls-smoke")>=0){lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbyControlsSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-inventory-smoke")>=0){inventorySmoke=true;menu=false;Running=true;StartCoroutine(InventorySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-hud-smoke")>=0){hudSmoke=true;menu=false;StartCoroutine(HudSmoke());}
@@ -103,7 +109,11 @@ namespace Exoduser.UnityPort
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){Running=false;view.cullingMask=0;return;}
             view.cullingMask=worldMask;
-            if(Input.GetKeyDown(KeyCode.Escape)){if(inventory.Open)SetInventory(false);else{menu=!menu;Running=!menu&&Simulation.Player.Hp>0;}}
+            if(Input.GetKeyDown(KeyCode.Escape)){
+                if(inventory.Open)SetInventory(false);
+                else if((menu||Simulation.Player.Hp<=0)&&pauseMenu.HandleEscape()){}
+                else {menu=!menu;pauseMenu.Reset();Running=!menu&&Simulation.Player.Hp>0;}
+            }
             if(!menu&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.Tab))SetInventory(!inventory.Open);
             if(!menu&&!inventory.Open&&Input.GetKeyDown(KeyCode.R))Toast("드랍 아이템 생성 이식 대기");
             if(!menu&&!inventory.Open&&(Input.GetKeyDown(KeyCode.Q)||Input.GetKeyDown(KeyCode.E)))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
@@ -223,15 +233,23 @@ namespace Exoduser.UnityPort
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
-            if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){Panel(new Rect(590,280,740,470));GUI.Label(new Rect(650,322,620,55),p.Hp<=0?"쓰러진 전사":"썩은 숲",title);
-                GUI.Label(new Rect(650,395,620,85),"기검참 1·2타 후 세 번째 클릭을 유지해 차지합니다.\nTAB 소지품 · 시작 장비 교체. 패링·저장·보스는 이식 중입니다.",small);
-                bool selected=GUI.Toggle(new Rect(650,490,620,35),basicWeaponMode,"기본 무기 검증 모드",button);
-                if(selected!=basicWeaponMode){basicWeaponMode=selected;ResetRun();}
-                if(GUI.Button(new Rect(650,540,620,60),p.Hp<=0?"새 검증 시작":"전투 시작",button)){if(p.Hp<=0)ResetRun();menu=false;Running=true;}
-                if(GUI.Button(new Rect(650,610,620,44),"로비로 돌아가기",button)){Running=false;sound?.Reset();lobby.ShowLobby();}
-                GUI.Label(new Rect(650,643,620,48),"기존 웹 / Godot 세이브는 사용하지 않습니다.",small);
+            if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){
+                pauseMenu.English=lobby.Language!="ko";
+                ApplyPauseCommand(pauseMenu.Draw(p.Hp<=0,Screen.fullScreen));
             }
             GUI.matrix=old;
+        }
+        void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);}
+        void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);}
+        void SetFrameCap(int cap){if(settings.TrySetFrameCap(cap))ApplyFrameCap(cap);}
+        void ApplyFrameCap(int cap){QualitySettings.vSyncCount=0;Application.targetFrameRate=cap==0?-1:cap;}
+        void ApplyPauseCommand(PauseMenuCommand command){
+            switch(command){
+                case PauseMenuCommand.Resume: if(Simulation.Player.Hp>0){menu=false;Running=true;} break;
+                case PauseMenuCommand.Restart:ResetRun();menu=false;Running=true;break;
+                case PauseMenuCommand.ReturnLobby:Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
+                case PauseMenuCommand.Quit:Application.Quit();break;
+            }
         }
         Vector2 ToGUI(float x,float y){var v=view.WorldToViewportPoint(Point(x,y));return new Vector2(v.x*1920,(1-v.y)*1080);}
         static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}

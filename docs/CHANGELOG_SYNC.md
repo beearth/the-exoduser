@@ -56997,3 +56997,7 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 ## 2026-10-25 Mac 시네마틱 언어 조작
 
 - 로비와 이름/키보드 메뉴 공유, 목록 입력의 cut/holdskip 전파 차단 및 키 해제 후 복귀. 일반build 오류0, 실제 EN자막·Esc6초취소·다시긴누름skip·KO로비 복귀 검수. [근거](engine/UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
+
+
+## 2026-10-25 Mac 장비 비교·일시정지 설정
+선택/착용 비교·수치 차이·실제 장착 대상, 재개/로비/종료확인·FPS·전체화면·SFX/BGM 연결. 비교156/설정66 검사 통과, Player 통합 검수 진행. 언어720p/초광폭 진단과 자막 글꼴 정적 근거도 보존. 상세: engine/UNITY_MAC_INVENTORY_SETTINGS_20261025.md.

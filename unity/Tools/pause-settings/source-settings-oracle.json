@@ -1,0 +1,143 @@
+{
+  "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/game.html",
+  "sha256": "ba930ad54520047fc260307c77c0dd14843fcf37dea2e117631f7a26e7aadeb8",
+  "sfxVol": 60,
+  "bgmVol": 60,
+  "fpsCap": 0,
+  "fpsSteps": [
+    30,
+    60,
+    120,
+    144,
+    244,
+    0
+  ],
+  "gainCases": [
+    {
+      "percent": 0,
+      "sampleVolume": 0,
+      "expected": 0
+    },
+    {
+      "percent": 0,
+      "sampleVolume": 0.5,
+      "expected": 0
+    },
+    {
+      "percent": 0,
+      "sampleVolume": 1,
+      "expected": 0
+    },
+    {
+      "percent": 0,
+      "sampleVolume": 2,
+      "expected": 0
+    },
+    {
+      "percent": 0,
+      "sampleVolume": 5,
+      "expected": 0
+    },
+    {
+      "percent": 1,
+      "sampleVolume": 0,
+      "expected": 0
+    },
+    {
+      "percent": 1,
+      "sampleVolume": 0.5,
+      "expected": 0.00005
+    },
+    {
+      "percent": 1,
+      "sampleVolume": 1,
+      "expected": 0.0001
+    },
+    {
+      "percent": 1,
+      "sampleVolume": 2,
+      "expected": 0.0002
+    },
+    {
+      "percent": 1,
+      "sampleVolume": 5,
+      "expected": 0.0005
+    },
+    {
+      "percent": 30,
+      "sampleVolume": 0,
+      "expected": 0
+    },
+    {
+      "percent": 30,
+      "sampleVolume": 0.5,
+      "expected": 0.045
+    },
+    {
+      "percent": 30,
+      "sampleVolume": 1,
+      "expected": 0.09
+    },
+    {
+      "percent": 30,
+      "sampleVolume": 2,
+      "expected": 0.18
+    },
+    {
+      "percent": 30,
+      "sampleVolume": 5,
+      "expected": 0.3
+    },
+    {
+      "percent": 60,
+      "sampleVolume": 0,
+      "expected": 0
+    },
+    {
+      "percent": 60,
+      "sampleVolume": 0.5,
+      "expected": 0.18
+    },
+    {
+      "percent": 60,
+      "sampleVolume": 1,
+      "expected": 0.36
+    },
+    {
+      "percent": 60,
+      "sampleVolume": 2,
+      "expected": 0.6
+    },
+    {
+      "percent": 60,
+      "sampleVolume": 5,
+      "expected": 0.6
+    },
+    {
+      "percent": 100,
+      "sampleVolume": 0,
+      "expected": 0
+    },
+    {
+      "percent": 100,
+      "sampleVolume": 0.5,
+      "expected": 0.5
+    },
+    {
+      "percent": 100,
+      "sampleVolume": 1,
+      "expected": 1
+    },
+    {
+      "percent": 100,
+      "sampleVolume": 2,
+      "expected": 1
+    },
+    {
+      "percent": 100,
+      "sampleVolume": 5,
+      "expected": 1
+    }
+  ],
+  "gainAuthority": "NativeFeedbackAudio.cs admitted min(1,volume*.6)*.6 at source default; replace both stages by OPT.sfxVol/100"
+}

@@ -1,0 +1,1395 @@
+{
+  "scope": "Current 29-language subtitle body versus existing font Unicode cmap only",
+  "primaryCaptionFont": "NanumMyeongjo-Regular.ttf",
+  "source": "/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024/unity/Assets/Exoduser/Resources/Data/lobby_frontend.json",
+  "languageCount": 29,
+  "cueCount": 928,
+  "fonts": [
+    "CinzelDecorative-Bold.ttf",
+    "NanumMyeongjo-Regular.ttf",
+    "NativeLobbyNotoSansKR-Bold.ttf",
+    "NativeLobbyNotoSansKR-Regular.ttf",
+    "NativeLobbyNotoSansKR-SemiBold.ttf",
+    "NotoSansKR.ttf"
+  ],
+  "summary": {
+    "CinzelDecorative-Bold.ttf": {
+      "completeLanguages": [
+        "en",
+        "es",
+        "fr",
+        "de",
+        "ptbr",
+        "it",
+        "pl",
+        "cs",
+        "hu",
+        "ro",
+        "tr",
+        "id",
+        "sv",
+        "da",
+        "no",
+        "fi",
+        "nl",
+        "ms"
+      ],
+      "incompleteLanguages": [
+        "ko",
+        "zh",
+        "zht",
+        "ja",
+        "ru",
+        "uk",
+        "bg",
+        "el",
+        "vi",
+        "th",
+        "ar"
+      ]
+    },
+    "NanumMyeongjo-Regular.ttf": {
+      "completeLanguages": [
+        "ko",
+        "en",
+        "id",
+        "ms"
+      ],
+      "incompleteLanguages": [
+        "zh",
+        "zht",
+        "ja",
+        "es",
+        "fr",
+        "de",
+        "ptbr",
+        "it",
+        "ru",
+        "uk",
+        "pl",
+        "cs",
+        "hu",
+        "ro",
+        "bg",
+        "el",
+        "tr",
+        "vi",
+        "th",
+        "ar",
+        "sv",
+        "da",
+        "no",
+        "fi",
+        "nl"
+      ]
+    },
+    "NativeLobbyNotoSansKR-Bold.ttf": {
+      "completeLanguages": [
+        "ko",
+        "en",
+        "es",
+        "fr",
+        "de",
+        "ptbr",
+        "it",
+        "ru",
+        "bg",
+        "vi",
+        "id",
+        "sv",
+        "da",
+        "no",
+        "fi",
+        "nl",
+        "ms"
+      ],
+      "incompleteLanguages": [
+        "zh",
+        "zht",
+        "ja",
+        "uk",
+        "pl",
+        "cs",
+        "hu",
+        "ro",
+        "el",
+        "tr",
+        "th",
+        "ar"
+      ]
+    },
+    "NativeLobbyNotoSansKR-Regular.ttf": {
+      "completeLanguages": [
+        "ko",
+        "en",
+        "es",
+        "fr",
+        "de",
+        "ptbr",
+        "it",
+        "ru",
+        "bg",
+        "vi",
+        "id",
+        "sv",
+        "da",
+        "no",
+        "fi",
+        "nl",
+        "ms"
+      ],
+      "incompleteLanguages": [
+        "zh",
+        "zht",
+        "ja",
+        "uk",
+        "pl",
+        "cs",
+        "hu",
+        "ro",
+        "el",
+        "tr",
+        "th",
+        "ar"
+      ]
+    },
+    "NativeLobbyNotoSansKR-SemiBold.ttf": {
+      "completeLanguages": [
+        "ko",
+        "en",
+        "es",
+        "fr",
+        "de",
+        "ptbr",
+        "it",
+        "ru",
+        "bg",
+        "vi",
+        "id",
+        "sv",
+        "da",
+        "no",
+        "fi",
+        "nl",
+        "ms"
+      ],
+      "incompleteLanguages": [
+        "zh",
+        "zht",
+        "ja",
+        "uk",
+        "pl",
+        "cs",
+        "hu",
+        "ro",
+        "el",
+        "tr",
+        "th",
+        "ar"
+      ]
+    },
+    "NotoSansKR.ttf": {
+      "completeLanguages": [
+        "ko",
+        "en",
+        "es",
+        "fr",
+        "de",
+        "ptbr",
+        "it",
+        "ru",
+        "bg",
+        "vi",
+        "id",
+        "sv",
+        "da",
+        "no",
+        "fi",
+        "nl",
+        "ms"
+      ],
+      "incompleteLanguages": [
+        "zh",
+        "zht",
+        "ja",
+        "uk",
+        "pl",
+        "cs",
+        "hu",
+        "ro",
+        "el",
+        "tr",
+        "th",
+        "ar"
+      ]
+    }
+  },
+  "languages": [
+    {
+      "code": "ko",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 158,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 155,
+          "missingChars": "가간갈강건검것게겨계고곳과괴구군그극기긴길깊께끝나날낮내너누는능닌다단닿대덩도돌된두뒤듀든들듯딘때또라락래러력로르른를리마만망맞며멸명모몸묻물미법부불빼뿐상생서선섭세셀소수스시쌓아악안앉않알앗어없엉에엑였영오옥와우원육으은을음의이인잃있잉자잔재저적정제존죄주쥔지직진철체초추출킨탄탈태통파하한함향형혹혼회흐흘힘",
+          "affectedCues": 32
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "NanumMyeongjo-Regular.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "en",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 36,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "zh",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 178,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 170,
+          "missingChars": "、。一下不与世个中临为义之也了事于些人他代们件会低体你便入兵内出刀则别剑剥力去另只同名向命哪唯在地坑坠境处失夺如孕存孽它宇宙定巅带底异归形彼心怀怪恶意成我所执抗拒数方无时是晓曾最有望机来某止此残毁每水永求汇沉河法流消淌深渗渴潭灭灵然物犯狱生界痛登的相着知离积称纠终缠罪而聚肉股育能自苦落血被论诞谁身躯还这连迷逃途逝道那都酷重量钢铁问间魂魔，",
+          "affectedCues": 32
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 167,
+          "missingChars": "一下不与世个中临为义之也了事于些人他代们件会低体你便入兵内出刀则别剑剥力去另只同名向命哪唯在地坑坠境处失夺如孕存孽它宇宙定巅带底异归形彼心怀怪恶意成我所执抗拒数方无时是晓曾最有望机来某止此残毁每水永求汇沉河法流消淌深渗渴潭灭灵然物犯狱生界痛登的相着知离积称纠终缠罪而聚肉股育能自苦落血被论诞谁身躯还这连迷逃途逝道那都酷重量钢铁问间魂魔",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 48,
+          "missingChars": "个临为义们你内则别剑剥哪坠处夺孽它巅带异归怀恶执数时晓残汇灭灵狱积称纠终缠论诞谁躯还这连钢铁问间",
+          "affectedCues": 27
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 48,
+          "missingChars": "个临为义们你内则别剑剥哪坠处夺孽它巅带异归怀恶执数时晓残汇灭灵狱积称纠终缠论诞谁躯还这连钢铁问间",
+          "affectedCues": 27
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 48,
+          "missingChars": "个临为义们你内则别剑剥哪坠处夺孽它巅带异归怀恶执数时晓残汇灭灵狱积称纠终缠论诞谁躯还这连钢铁问间",
+          "affectedCues": 27
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 48,
+          "missingChars": "个临为义们你内则别剑剥哪坠处夺孽它巅带异归怀恶执数时晓残汇灭灵狱积称纠终缠论诞谁躯还这连钢铁问间",
+          "affectedCues": 27
+        }
+      },
+      "bestExistingFont": "NativeLobbyNotoSansKR-Bold.ttf",
+      "missingFromAllBundledFonts": "个临为义们你内则别剑剥哪坠处夺孽它巅带异归怀恶执数时晓残汇灭灵狱积称纠终缠论诞谁躯还这连钢铁问间",
+      "missingFromAllBundledFontCount": 48
+    },
+    {
+      "code": "zht",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 178,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 170,
+          "missingChars": "、。一下不世中之也了事些人他代件低你來便個們入內兵出刀別則剝劍力匯去另只同名向命哪唯問在地坑執境墜失奪如孕存孽它宇宙定巔帶底形彼心怪惡意懷成我所抗拒數方於是時曉曾最會有望某機止此歸殘毀每水永求沉河法流消淌深渴滅滲潭為無然物犯獄生界異痛登的相知稱積糾終纏罪義而聚肉股育能臨自與苦落著處血被誕誰論身軀迷逃途這逝連道還那都酷重量鋼鐵間離靈體魂魔，",
+          "affectedCues": 32
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 167,
+          "missingChars": "一下不世中之也了事些人他代件低你來便個們入內兵出刀別則剝劍力匯去另只同名向命哪唯問在地坑執境墜失奪如孕存孽它宇宙定巔帶底形彼心怪惡意懷成我所抗拒數方於是時曉曾最會有望某機止此歸殘毀每水永求沉河法流消淌深渴滅滲潭為無然物犯獄生界異痛登的相知稱積糾終纏罪義而聚肉股育能臨自與苦落著處血被誕誰論身軀迷逃途這逝連道還那都酷重量鋼鐵間離靈體魂魔",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 5,
+          "missingChars": "你哪孽它巔",
+          "affectedCues": 6
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 5,
+          "missingChars": "你哪孽它巔",
+          "affectedCues": 6
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 5,
+          "missingChars": "你哪孽它巔",
+          "affectedCues": 6
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 5,
+          "missingChars": "你哪孽它巔",
+          "affectedCues": 6
+        }
+      },
+      "bestExistingFont": "NativeLobbyNotoSansKR-Bold.ttf",
+      "missingFromAllBundledFonts": "你哪孽它巔",
+      "missingFromAllBundledFontCount": 5
+    },
+    {
+      "code": "ja",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 152,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 151,
+          "missingChars": "、。々あいうえかがきくけこさしすそただちっつてでとどなにぬのはばひびぶへべまみむめもゆよらりるれわをんエクサソデュー下世互代会低体内出刃別剣力合向味呼命問在地墜壊変失奥奪存宇宙定宿川帰底形彼心怪悪意成我抗持握数時望果染極機残沈法流消淀深渇滅物犯獄理生界異痛着知破積穴終絡罪者肉能脱至苦落誰身込道酷鋼魂魔",
+          "affectedCues": 32
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 149,
+          "missingChars": "々あいうえかがきくけこさしすそただちっつてでとどなにぬのはばひびぶへべまみむめもゆよらりるれわをんエクサソデュー下世互代会低体内出刃別剣力合向味呼命問在地墜壊変失奥奪存宇宙定宿川帰底形彼心怪悪意成我抗持握数時望果染極機残沈法流消淀深渇滅物犯獄理生界異痛着知破積穴終絡罪者肉能脱至苦落誰身込道酷鋼魂魔",
+          "affectedCues": 32
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 11,
+          "missingChars": "内剣壊変奥帰数残渇脱込",
+          "affectedCues": 11
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 11,
+          "missingChars": "内剣壊変奥帰数残渇脱込",
+          "affectedCues": 11
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 11,
+          "missingChars": "内剣壊変奥帰数残渇脱込",
+          "affectedCues": 11
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 11,
+          "missingChars": "内剣壊変奥帰数残渇脱込",
+          "affectedCues": 11
+        }
+      },
+      "bestExistingFont": "NativeLobbyNotoSansKR-Bold.ttf",
+      "missingFromAllBundledFonts": "内剣壊変奥帰数残渇脱込",
+      "missingFromAllBundledFontCount": 11
+    },
+    {
+      "code": "es",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 47,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 6,
+          "missingChars": "áéíñóú",
+          "affectedCues": 15
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "fr",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 47,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 6,
+          "missingChars": "àâèéêî",
+          "affectedCues": 16
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "de",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 54,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 3,
+          "missingChars": "äöü",
+          "affectedCues": 13
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "ptbr",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 49,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 10,
+          "missingChars": "áâãçéêíóõú",
+          "affectedCues": 22
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "it",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 44,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 3,
+          "missingChars": "àèù",
+          "affectedCues": 4
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "ru",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 52,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 41,
+          "missingChars": "АВГДЖКМНРТабвгдежзийклмнопрстухцчшщыьэюяё",
+          "affectedCues": 31
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 41,
+          "missingChars": "АВГДЖКМНРТабвгдежзийклмнопрстухцчшщыьэюяё",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "NativeLobbyNotoSansKR-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "uk",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 53,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 42,
+          "missingChars": "ВДКМНПРТУЧЯабвгдежзийклмнопрстухцчшщьюяєії",
+          "affectedCues": 31
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 42,
+          "missingChars": "ВДКМНПРТУЧЯабвгдежзийклмнопрстухцчшщьюяєії",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 3,
+          "missingChars": "єії",
+          "affectedCues": 27
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 3,
+          "missingChars": "єії",
+          "affectedCues": 27
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 3,
+          "missingChars": "єії",
+          "affectedCues": 27
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 3,
+          "missingChars": "єії",
+          "affectedCues": 27
+        }
+      },
+      "bestExistingFont": "NativeLobbyNotoSansKR-Bold.ttf",
+      "missingFromAllBundledFonts": "єії",
+      "missingFromAllBundledFontCount": 3
+    },
+    {
+      "code": "pl",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 49,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 7,
+          "missingChars": "óąćęńśż",
+          "affectedCues": 19
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 7,
+          "missingChars": "ąćęŁłśż",
+          "affectedCues": 25
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 7,
+          "missingChars": "ąćęŁłśż",
+          "affectedCues": 25
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 7,
+          "missingChars": "ąćęŁłśż",
+          "affectedCues": 25
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 7,
+          "missingChars": "ąćęŁłśż",
+          "affectedCues": 25
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "cs",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 55,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 13,
+          "missingChars": "áéíýČčěňŘřšůž",
+          "affectedCues": 30
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 7,
+          "missingChars": "ČčŘřšůž",
+          "affectedCues": 17
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 7,
+          "missingChars": "ČčŘřšůž",
+          "affectedCues": 17
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 7,
+          "missingChars": "ČčŘřšůž",
+          "affectedCues": 17
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 7,
+          "missingChars": "ČčŘřšůž",
+          "affectedCues": 17
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "hu",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 50,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 10,
+          "missingChars": "Ááéíóöúüőű",
+          "affectedCues": 29
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 2,
+          "missingChars": "őű",
+          "affectedCues": 9
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 2,
+          "missingChars": "őű",
+          "affectedCues": 9
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 2,
+          "missingChars": "őű",
+          "affectedCues": 9
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 2,
+          "missingChars": "őű",
+          "affectedCues": 9
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "ro",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 45,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 6,
+          "missingChars": "Îâîășț",
+          "affectedCues": 29
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 2,
+          "missingChars": "șț",
+          "affectedCues": 15
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 2,
+          "missingChars": "șț",
+          "affectedCues": 15
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 2,
+          "missingChars": "șț",
+          "affectedCues": 15
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 2,
+          "missingChars": "șț",
+          "affectedCues": 15
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "bg",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 47,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 35,
+          "missingChars": "АВДЖКНОРСабвгдежзийклмнопрстухчшщъя",
+          "affectedCues": 31
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 35,
+          "missingChars": "АВДЖКНОРСабвгдежзийклмнопрстухчшщъя",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "NativeLobbyNotoSansKR-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "el",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 55,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 41,
+          "missingChars": "ΌΑΒΓΕΗΚΜΝΟΣάέήίαβγδεζηθικλνξορςστυφχψωόύώ",
+          "affectedCues": 31
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 44,
+          "missingChars": "ΌΑΒΓΔΕΗΚΜΝΟΣάέήίαβγδεζηθικλμνξοπρςστυφχψωόύώ",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 8,
+          "missingChars": "Όάέήίόύώ",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 8,
+          "missingChars": "Όάέήίόύώ",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 8,
+          "missingChars": "Όάέήίόύώ",
+          "affectedCues": 31
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 8,
+          "missingChars": "Όάέήίόύώ",
+          "affectedCues": 31
+        }
+      },
+      "bestExistingFont": "NativeLobbyNotoSansKR-Bold.ttf",
+      "missingFromAllBundledFonts": "Όάέήίόύώ",
+      "missingFromAllBundledFontCount": 8
+    },
+    {
+      "code": "tr",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 51,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 9,
+          "missingChars": "Çâçöüğİış",
+          "affectedCues": 27
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 4,
+          "missingChars": "ğİış",
+          "affectedCues": 25
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 4,
+          "missingChars": "ğİış",
+          "affectedCues": 25
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 4,
+          "missingChars": "ğİış",
+          "affectedCues": 25
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 4,
+          "missingChars": "ğİış",
+          "affectedCues": 25
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "vi",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 88,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 34,
+          "missingChars": "ĩũơưạảấầậẳẻếềểệỉịọỏốồổỗộớờởợụủứừữự",
+          "affectedCues": 30
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 50,
+          "missingChars": "àáâãéêìíòóôùúýăĐĩũơưạảấầậẳẻếềểệỉịọỏốồổỗộớờởợụủứừữự",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "NativeLobbyNotoSansKR-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "th",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 57,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 49,
+          "missingChars": "กขคงจชซญฎณดตถทธนบปผพภมยรลวษสหอะัาำิีึืุูเแโใไ็่้์",
+          "affectedCues": 31
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 49,
+          "missingChars": "กขคงจชซญฎณดตถทธนบปผพภมยรลวษสหอะัาำิีึืุูเแโใไ็่้์",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 49,
+          "missingChars": "กขคงจชซญฎณดตถทธนบปผพภมยรลวษสหอะัาำิีึืุูเแโใไ็่้์",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 49,
+          "missingChars": "กขคงจชซญฎณดตถทธนบปผพภมยรลวษสหอะัาำิีึืุูเแโใไ็่้์",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 49,
+          "missingChars": "กขคงจชซญฎณดตถทธนบปผพภมยรลวษสหอะัาำิีึืุูเแโใไ็่้์",
+          "affectedCues": 31
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 49,
+          "missingChars": "กขคงจชซญฎณดตถทธนบปผพภมยรลวษสหอะัาำิีึืุูเแโใไ็่้์",
+          "affectedCues": 31
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "กขคงจชซญฎณดตถทธนบปผพภมยรลวษสหอะัาำิีึืุูเแโใไ็่้์",
+      "missingFromAllBundledFontCount": 49
+    },
+    {
+      "code": "id",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 40,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "ar",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 46,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 37,
+          "missingChars": "،آأإئابةتثجحخدذرزسشصضطعغفقكلمنهوىيًُّ",
+          "affectedCues": 31
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 37,
+          "missingChars": "،آأإئابةتثجحخدذرزسشصضطعغفقكلمنهوىيًُّ",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 37,
+          "missingChars": "،آأإئابةتثجحخدذرزسشصضطعغفقكلمنهوىيًُّ",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 37,
+          "missingChars": "،آأإئابةتثجحخدذرزسشصضطعغفقكلمنهوىيًُّ",
+          "affectedCues": 31
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 37,
+          "missingChars": "،آأإئابةتثجحخدذرزسشصضطعغفقكلمنهوىيًُّ",
+          "affectedCues": 31
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 37,
+          "missingChars": "،آأإئابةتثجحخدذرزسشصضطعغفقكلمنهوىيًُّ",
+          "affectedCues": 31
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "،آأإئابةتثجحخدذرزسشصضطعغفقكلمنهوىيًُّ",
+      "missingFromAllBundledFontCount": 37
+    },
+    {
+      "code": "sv",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 44,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 3,
+          "missingChars": "äåö",
+          "affectedCues": 20
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "da",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 42,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 2,
+          "missingChars": "åé",
+          "affectedCues": 8
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "no",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 42,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 3,
+          "missingChars": "Ååé",
+          "affectedCues": 8
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "fi",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 40,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 2,
+          "missingChars": "äö",
+          "affectedCues": 19
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "nl",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 42,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 1,
+          "missingChars": "é",
+          "affectedCues": 4
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    },
+    {
+      "code": "ms",
+      "cueCount": 32,
+      "uniqueVisibleCharacters": 36,
+      "coverage": {
+        "CinzelDecorative-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NanumMyeongjo-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Bold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-Regular.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NativeLobbyNotoSansKR-SemiBold.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        },
+        "NotoSansKR.ttf": {
+          "missingCount": 0,
+          "missingChars": "",
+          "affectedCues": 0
+        }
+      },
+      "bestExistingFont": "CinzelDecorative-Bold.ttf",
+      "missingFromAllBundledFonts": "",
+      "missingFromAllBundledFontCount": 0
+    }
+  ],
+  "limits": [
+    "No Unity import, Player, GUI, shaping, bidi/RTL, or font fallback execution",
+    "Glyph cmap coverage does not prove correct rendering",
+    "Whitespace and Cc/Cf controls excluded from visible glyph requirements",
+    "No source subtitle, timing, font asset or shared checkout changes"
+  ]
+}
