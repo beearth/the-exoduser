@@ -1,6 +1,6 @@
 # Unity 첫 이동·좌클릭 실습 — 2026-10-26
 
-상태: 새 범위 모델34검사 PASS, ROOT 실제 Player/화면/직접입력 인수 대기. 전체 전투12·자원8·시스템7 실습 또는 배지 완료가 아니다.
+상태: ROOT 실제 Player·직접입력·새 패널 인수 완료. 새 범위 모델34검사와 scripted runtime5검사 PASS. 전체 전투12·자원8·시스템7 실습 또는 배지 완료가 아니다.
 
 ## 원본과 범위
 
@@ -51,4 +51,23 @@ Config는 primitive/string 필드뿐이며 JSON deep copy와 Session의 동일�
 
 `--unity-first-practice-capture -output <freshdir>`는 같은 직접준비 후 실제 FixedUpdate와 공유하는 HandleFirstPracticeTick에 scripted 방향/공격 입력을 보낸다. 실제 충돌·피해·차징·처치 경로는 그대로이고 OS입력이 아니다. intro/move/attack-progress/charge-full/tier3-complete/continue-restored720p6장과 progress KO1080p/EN720p2장을 기록한 뒤 KO로 복귀한다. receipt는 원래 Simulation/Player/Config/적참조·clock·HP·악의·RNG state 복원과 보상0, 실제10kill+fullcharge를 기록한다. 기존 startup 전체 재생/suite는 수행하지 않는다. 정상 product 진입은 `EnterFromLobby`의 prepared+비legacy 조건으로 별도 배선되어 있다.
 
-기존 suite·HUD/생성/네메시아/4컷안내 재검사·GPU·GUI·Unity 빌드·서버 실행0. ROOT가 새 입장→이동→실제조준/차징처치→skip/종료 복원 및 KO/EN 패널의 실제 화면을 인수한다. source 명중 FX/공격 감각·수동 조작·실제 Player 컴파일은 아직 이 모델검사로 증명하지 않았다. 현재 VISUAL VERDICT: 미검수.
+담당 제출은 순수모델 검사까지였으며, 아래 ROOT 인수에서 실제 Player·직접입력·표현 검수를 추가했다. 기존 suite·HUD/생성/네메시아/4컷안내 전체 재검사와 서버 실행은 하지 않았다.
+
+
+## ROOT 인수 및 이번 단위 마감 — 2026-10-26
+
+사용 가능한 새 누적 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/build-d0ea9d1/EXODUSER-Unity.app`다. 제품 source `d0ea9d1b656603952571ee63270e434571d9a1d5`를 정상 원격 ref에서 확인한 뒤 기존 격리 QA 프로젝트에 변경 Assets를 복사했다. non-meta/non-generated-scene334파일682135609B의 SHA256 불일치0, 추가 runtime C#0. Unity6000.6.7f1/ARM64/빌드 오류0/1971655502B다.
+
+새 capture fixture5/5 PASS: 실제 충돌 이동120px, 90tick 전환, 실제11처치 중3단 차징 검기 처치로 두 조건 완료, 일반 보상0, 원래 Simulation 전체 참조/Player/Config/적/HP526/악의1000/clock/RNG1085968971 복원. 모델34개를 다시 돌리거나 이전 프런트 검사군을 반복하지 않았다. capture는 직접 준비 후 scripted input이며 정상 startup 자연통과나 OS입력 증거가 아니다.
+
+ROOT는 별도 `manual-d0ea9d1` namespace에서 CUA 실제 D1100ms와 좌클릭/3800ms 유지·해제로 두 체크 완료를 확인했다. 이어 ‘1-1 전투로 계속’ 실제 클릭으로 실습 패널이 닫히고 ESC 일시정지로 돌아오는 것을 확인했다. 이 직접입력 증거는 대화 CUA 화면이며 로컬 PNG로 저장했다고 주장하지 않는다. fixture 초기 review JSON의 passed 기본값은 최종 결과가 아니고, 최종 관측은 [인수 영수증](UNITY_MAC_FIRST_PRACTICE_ACCEPTANCE_20261026.json)에 구별했다.
+
+새8PNG에서 plaque·KO720/1080 및 EN720 문구·체크·충전3/3 게이지·완료 안내를 인수했다. VISUAL VERDICT: PASS (이번 실습 패널 범위). 기존 HUD의 LMB/RMB/Shift/Ctrl/Space는 폭이 빽빽하지만 각 clip content 사이8logical px(720p5.33px) 간격이 유지되어 확정된 겹침은 없었다. 슬롯수·입력·기존 표시를 변경하지 않았다. 기존 AVFoundation 색상 fallback 및 Mono 종료 경고는 남으며 무경고/전체 아트 완성은 주장하지 않는다.
+
+검수 앱은 모두 종료했다. 원래 사용자 앱 PID38141과 저장은 보존했고, 사용자 결과 제시용 기존 완성본9dd 정상 앱 PID48476을 열어 정상 로비를 앞에 띄웠다. 일반 목록의 기존1/5 캐릭터를 읽었으며 생성·삭제·덮어쓰기0. 새 실습이 기존 실행창에 자동 반영되었다고 주장하지 않는다.
+
+## 다음 이식 목록과 게임 업데이트 인계
+
+이번 마감 기준은 누적 실행본/오류0, 첫 두 조건의 실제 입력 완료, 원래 상태 복원, GitHub 복구점, 미완료 목록 구분이다. 모두 충족했다. 이 프런트+첫 실습 단위를 확정하고 사용자 우선순위의 게임 업데이트로 넘긴다. 이 인수 때문에 다음 모든 이식을 먼저 끝내야 한다고 범위를 늘리지 않는다.
+
+미이식은 별도 유지한다: 나머지 전투 실습(우클릭·덫·Q/E·사슬/돌진·Space·분노·회복영역 실제 메커닉 포함), 자원8·시스템7, 전체 배지·영속 skip, 전투 저장과 전체 본편 내용·보이스/VFX의 native 동등성. 원본 본편·PC 게임 업데이트와 이 부분 이식의 완성도를 구분한다. 이번 마감 뒤 새 모션·맵·VFX·전체27실습 확장은 시작하지 않았다.

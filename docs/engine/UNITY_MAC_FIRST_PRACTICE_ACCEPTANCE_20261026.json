@@ -1,0 +1,148 @@
+{
+  "date": "2026-10-26",
+  "source": "d0ea9d1b656603952571ee63270e434571d9a1d5",
+  "scope": "Accepted first movement and left-click practice only; partial native port, not complete game/tutorial.",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/build-d0ea9d1/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1971655502
+  },
+  "buildInput": {
+    "source": "d0ea9d1b656603952571ee63270e434571d9a1d5",
+    "baseline": "d995ba896058fd6a5d4c690f3eb101c80ed93d91",
+    "qaProject": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/project",
+    "copied": [
+      "unity/Assets/Exoduser/Resources/Art/ui/tutorial.meta",
+      "unity/Assets/Exoduser/Resources/Art/ui/tutorial/parry-plaque-v1.png",
+      "unity/Assets/Exoduser/Resources/Art/ui/tutorial/parry-plaque-v1.png.meta",
+      "unity/Assets/Exoduser/Resources/Data/first_practice.json",
+      "unity/Assets/Exoduser/Resources/Data/first_practice.json.meta",
+      "unity/Assets/Exoduser/Runtime/Core/FirstPracticeCombat.cs",
+      "unity/Assets/Exoduser/Runtime/Core/FirstPracticeCombat.cs.meta",
+      "unity/Assets/Exoduser/Runtime/Core/FirstPracticeFlow.cs",
+      "unity/Assets/Exoduser/Runtime/Core/FirstPracticeFlow.cs.meta",
+      "unity/Assets/Exoduser/Runtime/Core/FirstPracticeSession.cs",
+      "unity/Assets/Exoduser/Runtime/Core/FirstPracticeSession.cs.meta",
+      "unity/Assets/Exoduser/Runtime/Core/KiSlash.cs",
+      "unity/Assets/Exoduser/Runtime/Core/Simulation.cs",
+      "unity/Assets/Exoduser/Runtime/NativeGame.StartupFlow.cs",
+      "unity/Assets/Exoduser/Runtime/NativeGame.cs",
+      "unity/Assets/Exoduser/Runtime/NativeLobby.CharacterStore.cs",
+      "unity/Assets/Exoduser/Runtime/NativePracticeCapture.cs",
+      "unity/Assets/Exoduser/Runtime/NativePracticeCapture.cs.meta",
+      "unity/Assets/Exoduser/Runtime/NativePracticeFlow.cs",
+      "unity/Assets/Exoduser/Runtime/NativePracticeFlow.cs.meta",
+      "unity/Assets/Exoduser/Runtime/NativePracticePresentation.cs",
+      "unity/Assets/Exoduser/Runtime/NativePracticePresentation.cs.meta"
+    ],
+    "verifiedNonMetaNonGeneratedSceneFiles": 334,
+    "verifiedBytes": 682135609,
+    "mismatches": [],
+    "extraRuntimeCSharp": [],
+    "passed": true
+  },
+  "model": {
+    "passed": 34,
+    "failed": 0,
+    "scope": "new first practice model/real Simulation.Tick evidence only; no Unity rendering or OS input"
+  },
+  "scriptedRuntime": {
+    "scope": "Explicit QA namespace and direct preparation; scripted HandleFirstPracticeTick collision and attack inputs, not OS keyboard/mouse or normal startup traversal. First2 conditions only, no badge.",
+    "rosterDirectory": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/character-roster-v1",
+    "passed": true,
+    "scripted": true,
+    "originalReferenceRestored": true,
+    "playerRestored": true,
+    "configRestored": true,
+    "resourcesRestored": true,
+    "rngRestored": true,
+    "clockRestored": true,
+    "actorsRestored": true,
+    "failures": 0,
+    "kills": 11,
+    "originalMaterials": 1000,
+    "restoredMaterials": 1000,
+    "originalRng": 1085968971,
+    "restoredRng": 1085968971,
+    "originalHp": 526.0,
+    "restoredHp": 526.0,
+    "checks": [
+      "PASS actual collision-admitted movement reaches120 pixels",
+      "PASS movement transition reaches attack",
+      "PASS actual lesson10 kills and tier3 projectile defeat",
+      "PASS lesson receives no ordinary rewards",
+      "PASS entire original run restored including RNG and resources"
+    ]
+  },
+  "playerImages": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/practice-attack-progress-720p.png",
+      "sha256": "bcb0da252641d76eec40a7fb5650240b9cbaf877cdd3060905d1b29f386bc8b4"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/practice-attack-progress-en-720p.png",
+      "sha256": "932effb5ffab833b88c463c8010faef2e30f3d0222809acd924122ac0a2b3df0"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/practice-attack-progress-ko-1080p.png",
+      "sha256": "aa5e2cc39b3d28e7aad72cf950fb5f873a0c8cb2663f1d56505088f121f5d532"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/practice-charge-full-720p.png",
+      "sha256": "522042797f9ab1846003da17595979caf2c69f561b5cab2b5c84b43e5b8e6d92"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/practice-continue-restored-720p.png",
+      "sha256": "13437e491143da5a2dd6faba2a5b60ef36c4efb9439b32ff60a523ef963c3ca0"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/practice-intro-720p.png",
+      "sha256": "0f0c7441055e79bf9a52860579ae9308784a9d7a5b728b38510b594a266617f7"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/practice-move-720p.png",
+      "sha256": "c38b59ed7357fdedfea733679043e8394d8dfe23e45b670d999a91c5a11c0b82"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/capture-d0ea9d1/practice-tier3-complete-720p.png",
+      "sha256": "604828e4d1726acf8e9da2057014490a95884f658f33e03e143a1fe011e060d3"
+    }
+  ],
+  "visualVerdict": "PASS for new practice plaque/copy/charge progress at KO720/1080 and EN720; full map/art/HUD suites not repeated.",
+  "manualOsInput": {
+    "passed": true,
+    "namespace": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/manual-d0ea9d1",
+    "evidence": "CUA conversation screenshots, not saved local screenshots. Direct QA preparation, not a normal startup traversal.",
+    "observations": [
+      "Initial practice introduction has both checks empty.",
+      "Real D held1100ms advances through collision movement120px to attack, with three practice actors.",
+      "Real left-click then3800ms hold/release produces movement and attack checks, including tier3 defeat.",
+      "Continue button removes practice panel, then Escape opens ordinary pause menu."
+    ],
+    "rawInitialReceipt": "first-practice-review.json records direct preparation only; its default passed=false is not a final QA result."
+  },
+  "cleanup": {
+    "practiceQaPlayersExited": true,
+    "preservedOriginalUserPlayerPid": 38141,
+    "normalLobbyPresentedPid": 48476,
+    "normalLobbyPresentedApp": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-frontend-release-9dd5991/EXODUSER-Unity.app",
+    "newCharactersCreatedInNormalStore": false
+  },
+  "hudKeyLabelFollowup": {
+    "code": "NativeHud.DrawKeyLabels",
+    "minimumLogicalSeparation": 8,
+    "physicalSeparationAt720p": 5.333333,
+    "result": "Clipped per-label content bounds remain separated; compact glyph widths visible, no confirmed ink overlap. No new layout/input/slot change."
+  },
+  "remaining": [
+    "Remaining combat tutorial stages, including right-click, traps, Q/E, chain/dash, rage and recovery domain mechanics.",
+    "Eight resource exercises and seven system guides; full tutorial badge and persistent opt-out.",
+    "Full native game parity, combat saves, voice/VFX and other unported content."
+  ],
+  "nextHandoff": "Current frontend + first two practice objectives accepted. Retain remaining port list separately; move to user-prioritized game updates without expanding this acceptance unit."
+}

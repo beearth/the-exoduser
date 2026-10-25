@@ -57119,3 +57119,5 @@ world_intro_v22b_steam.mp4/102204634B/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb
 
 source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hover controller12/12 및 CUA 격리 이름 생성→이야기→안내→입장·재시작·pause 확인. QA 누락 hover2코드 복구 후679459731B 소스/자산 SHA 대조0, 사용자 앱/저장 보존. UNITY_MAC_PLAYABLE과 각 단위 문서/통합 JSON 갱신. 실제 전투 실습27개·전체 보이스/VFX·OS마우스는 남은 범위.
 2026-10-26 첫 실습 후보: source 이동120px→실제 lesson10처치+3단차징kill을 native Tick event로 연결, transient arena/원래run 전체보존·보상0·자원refill·원본plaque/holdmeter·RMB미지원명시·웹save/badge0. 새범위모델34 PASS, review/capture fixture의 실제Player/시각은ROOT인수대기. [계약](engine/UNITY_MAC_FIRST_PRACTICE_20261026.md).
+
+2026-10-26 ROOT 첫 실습 인수 마감: d0ea9d1 ARM64 오류0, 334파일682135609B 입력 SHA 불일치0, 모델34/신규실행5 PASS·KO720/1080/EN720 새8PNG, CUA 실제 이동·좌클릭 유지/해제 두 체크→계속→pause 확인. HP/악의/clock/RNG/전체원래run 복원. QA종료·사용자38141/저장보존,9dd정상로비48476제시. 첫2조건만 인수하고 나머지이식목록은 게임업데이트와 구분 보존. [영수증](engine/UNITY_MAC_FIRST_PRACTICE_ACCEPTANCE_20261026.json).

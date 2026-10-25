@@ -43,7 +43,7 @@ ROOT 통합 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제 시�
 
 - 순수 flow fixture `unity/Tools/startup-flow`:29검사 통과. source hash·언어 레코드·1200ms gate·타이핑 완료/다음·focus hold 취소·250ms debounce·2000ms hold·1500ms exit·900ms curtain·한 번 완료·story gate 중복 방지를 검사한다. Unity 실행·실제 OS입력·시각/청각 검수와 구별한다.
 - 전체 managed C# type 검사는 부모 통합의 현재 WIP와 함께 실행한다. Unity Editor/Player/GPU/build/CUA는 부모 담당이다.
-- **전투 실습12단계 + 자원 실습8단계 + 시스템 안내7항목은 미완료**다. Q/E·우클릭·덫·사슬·Space·분노·회복영역의 실제 Simulation 메커닉/이벤트 접점도 별도 이식 대상이다. 클릭이나 키 입력으로 실습 성공을 위조하는 UI 모드를 만들지 않는다. 현행 native의 Q/E 미지원 안내를 보존한다.
+- 10/26에는 실제 이동120px·좌클릭10처치+3단 충전 처치의 첫2조건을 별도 [실습 인수](UNITY_MAC_FIRST_PRACTICE_20261026.md)로 완료했다. **전투 실습12단계 전체 + 자원 실습8단계 + 시스템 안내7항목은 여전히 미완료**다. Q/E·우클릭·덫·사슬·Space·분노·회복영역의 실제 Simulation 메커닉/이벤트 접점도 별도 이식 대상이다. 클릭이나 키 입력으로 실습 성공을 위조하는 UI 모드를 만들지 않는다. 현행 native의 Q/E 미지원 안내를 보존한다.
 - 모든 슬롯 입장은 현재 native가 전투 진행을 저장하지 않는 격리 새 run이므로 해당 입장 연출을 재생한다. 웹 cutsceneDone 저장 플래그를 새로 읽거나 쓰지 않는다.
 - 네메시스 본문은 원문4언어·그 외 en fallback, 안내/버튼은 현행 native K(ko/en) 범위다. 전체29언어/RTL 인수는 별도 미완료다.
 - 정적 원본 자산 동일성·flow 검사만으로 source screen 시각/청각 일치를 주장하지 않는다. GUI 폰트 metrics·패드 OS 매핑·캔버스 fade/후처리는 부모 동일 화면 비교 후 판정한다.
