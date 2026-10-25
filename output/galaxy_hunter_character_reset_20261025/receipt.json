@@ -1,0 +1,48 @@
+{
+  "provider": "Built-in image_gen",
+  "modelId": "not exposed",
+  "cost": "not exposed",
+  "referenceUse": "R02 weapon only; official game image researched visually but not supplied to generation or copied into runtime",
+  "files": [
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-redesign-marvel-study-20261025\\A_roguish_hunter.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_전면재디자인_20261025\\01_A_우주사냥꾼.png",
+      "bytes": 2030119,
+      "sha256": "51923e1a2ad57c4c6295e4df75ad1245b70679ee8cfbe6abc931d3717703914b",
+      "width": 1086,
+      "height": 1448,
+      "verified": true
+    },
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-redesign-marvel-study-20261025\\B_veteran_specialist.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_전면재디자인_20261025\\02_B_중화기전문가.png",
+      "bytes": 2149874,
+      "sha256": "966727c5979006b10e0687fe90fb034fc18ac409ba2917bdef10ab226e3440f7",
+      "width": 1086,
+      "height": 1448,
+      "verified": true
+    },
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-redesign-marvel-study-20261025\\A2_roguish_hunter_single_weapon.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_전면재디자인_20261025\\03_A2_단일무기_교정.png",
+      "bytes": 1970487,
+      "sha256": "d090d9821b3610a5c15c2aa25890138e47576a120b2aefdeb7195a956804c288",
+      "width": 1086,
+      "height": 1448,
+      "verified": true
+    },
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-redesign-marvel-study-20261025\\redesign_comparison.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_전면재디자인_20261025\\04_이전안_A2_B_비교.png",
+      "bytes": 1393881,
+      "sha256": "50884f7f0cda353a4b9c0906665d5a49d12dd60a99a8a842e55101ef943947d3",
+      "width": 1320,
+      "height": 914,
+      "verified": true
+    }
+  ],
+  "preferredByAgent": "A2 as exploration, user not accepted",
+  "visualVerdict": "RETOUCH",
+  "runtimeIntegrated": false,
+  "userAccepted": false
+}

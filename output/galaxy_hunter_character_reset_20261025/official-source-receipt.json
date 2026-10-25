@@ -1,0 +1,17 @@
+{
+  "developerArticle": "https://blog.playstation.com/?p=352351",
+  "developerPage": "https://www.eidosmontreal.com/games/marvels-guardians-of-the-galaxy/",
+  "officialImageViewed": {
+    "url": "https://eidos.nyc3.digitaloceanspaces.com/onlinedev-eidosmontrealsite-prod/2021/06/MAPLE_1080p_SCR_05_WITH_COPYRIGHT.jpg",
+    "sha256": "e1c73c5f3ec6bce040357ef7199e08e7a36fd044cdd7834bf3a7cdec36da6419",
+    "width": 1920,
+    "height": 1080
+  },
+  "secondImage": {
+    "url": "https://www.eidosmontreal.com/wp-content/uploads/2021/06/MAPLE_1080p_SCR_09_WITH_COPYRIGHT-1120x630.jpg",
+    "status": 404,
+    "viewed": false
+  },
+  "officialImagesUsedInGeneration": false,
+  "officialImagesUsedInRuntime": false
+}
