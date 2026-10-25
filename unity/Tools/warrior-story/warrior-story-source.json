@@ -1,0 +1,5019 @@
+{
+  "schema": "exoduser.unity.warrior-story-source.v1",
+  "sourceRoot": "/Users/fordeargamers/Projects/exoduser-migration-20261001",
+  "movie": "warrior_story_v23_clean.mp4",
+  "movieSource": "video/warrior_story_v23_clean.mp4?v=20261008-killu-montage",
+  "cues": [
+    1,
+    5.5,
+    10,
+    16,
+    22.5,
+    28,
+    33.5,
+    39,
+    42.24,
+    46.5,
+    51,
+    53.48,
+    56.019999999999996,
+    59.5,
+    59.98,
+    65,
+    70.67,
+    76,
+    81.5,
+    88,
+    90.33333333333333,
+    92.9
+  ],
+  "holdMilliseconds": 1200,
+  "nextEpsilonSeconds": 0.05,
+  "hintsHideVideoTimeSeconds": 3,
+  "videoVolume": 1,
+  "fit": "contain",
+  "captions": [
+    {
+      "code": "ko",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "전쟁에서 살아 돌아온 한 남자."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "하지만 집은 모두 불타 사라졌다."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "이웃이자 친구였던 킬루가 그의 가문을 짓밟았다."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "끝내 못 이겨 스스로 목숨을 끊었다."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "늙은 부모는 감옥에 갇혀 굶어 죽었다."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "킬루 가문의 모두가 알고 있었다."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31명이 보고도 못 본 척했다."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "그날 밤, 킬루 가문을 모두 죽였다."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "칼로 킬루의 팔다리를 자르고"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "불로 지혈까지 해주며"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "오래오래 살려두었다."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "\"기억하라.\""
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "\"그리고 지옥에서도 후회하라.\""
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "그리고 지옥에 떨어진다."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "\"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐.\""
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "\"지옥의 미로에는 매일 새로운 영혼이 떨어진다.\""
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "\"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자...\""
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "\"너는 왜 지옥에 왔느냐?\""
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "\"지옥을 탈출하라.\""
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "\"죄의 무게를 짊어진 자여.\"\n"
+        }
+      ],
+      "controls": [
+        "다음 대사",
+        "길게 누르기",
+        "클릭하여 계속",
+        "전사 이야기",
+        "건너뛰기"
+      ]
+    },
+    {
+      "code": "en",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "A man who returned alive from war."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "But his home had burned to nothing."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, once a neighbor and friend, had crushed his family."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "His wife was taken as a servant and suffered unspeakable horrors,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "until she could bear no more and took her own life."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "His children were sold into slavery — their fate unknown."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "His elderly parents were imprisoned and starved to death."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Everyone in the Killu household knew."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "Thirty-one of them saw everything and looked away."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "That night, he killed every last one of them."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "He cut off Killu's limbs with a blade,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "cauterized the wounds with fire,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "and kept him alive for a long, long time."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "\"Remember.\""
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "\"And regret it even in hell.\""
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "And so he fell into hell."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "\"...This is but one tale among countless avengers.\""
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "\"Every day, new souls fall into hell's labyrinth.\""
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "\"Those consumed by rage, driven mad by injustice, those who lost love...\""
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "\"Why have you come to hell?\""
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "\"Escape from hell.\""
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "\"You... who bear the weight of sin.\"\n"
+        }
+      ],
+      "controls": [
+        "Next line",
+        "Hold",
+        "Click to continue",
+        "Warrior story",
+        "Skip"
+      ]
+    },
+    {
+      "code": "zh",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "一个从战争中活着回来的男人。"
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "但家园已化为灰烬。"
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "曾是邻居和朋友的基路，摧毁了他的家族。"
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "妻子被掳为奴仆，受尽种种凌辱，"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "最终不堪忍受，结束了自己的生命。"
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "孩子们被卖为奴隶，下落不明。"
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "年迈的父母被关进牢狱，活活饿死。"
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "基路家族的所有人都知道。"
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "三十一人目睹一切，却视而不见。"
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "那天夜里，他杀光了基路全族。"
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "用刀砍断了基路的四肢，"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "甚至用火替他止血，"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "让他活了很久很久。"
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "“记住。”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "“在地狱里也要后悔。”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "然后，他坠入了地狱。"
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "“……这不过是无数复仇者中一人的故事。”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "“每天都有新的灵魂坠入地狱的迷宫。”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "“满怀愤怒的人、因冤屈而疯狂的人、失去挚爱的人……”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "“你为什么来到地狱？”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "“逃离地狱。”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "“你……背负罪孽之人。”\n"
+        }
+      ],
+      "controls": [
+        "下一句",
+        "长按",
+        "点击继续",
+        "战士的故事",
+        "跳过"
+      ]
+    },
+    {
+      "code": "zht",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "一個從戰爭中生還的男人。"
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "然而，他的家早已被烈火吞噬。"
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "曾是鄰居與朋友的基路，踐踏了他的家族。"
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "妻子被擄去當侍女，受盡凌辱，"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "最終不堪折磨，結束了自己的生命。"
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "孩子們被賣為奴隸，至今下落不明。"
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "年邁的父母被關進牢獄，活活餓死。"
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "基路家族的每個人都知道。"
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31人親眼目睹，卻佯裝不見。"
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "那一夜，他殺光了基路全族。"
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "他用刀斬斷基路的四肢，"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "甚至用火替他止血，"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "讓他久久不能死去。"
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "「記住。」"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "「到了地獄，也給我後悔吧。」"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "而後，他墜入地獄。"
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "「……這不過是無數復仇者中的一個故事。」"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "「每天都有新的靈魂墜入地獄迷宮。」"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "「滿懷憤怒的人、因冤屈而瘋狂的人、失去摯愛的人……」"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "「你又為何來到地獄？」"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "「逃離地獄。」"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "「你……背負罪孽之人。」\n"
+        }
+      ],
+      "controls": [
+        "下一句",
+        "長按",
+        "點擊繼續",
+        "戰士的故事",
+        "跳過"
+      ]
+    },
+    {
+      "code": "ja",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "戦争から生きて帰った一人の男。"
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "だが家はすべて焼け落ちていた。"
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "隣人であり友人だったキルルが、彼の一族を踏みにじった。"
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "妻は召使いとして連れ去られ、数々の非道な仕打ちを受け、"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "ついに耐えきれず自ら命を絶った。"
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "子供たちは奴隷として売られ、行方すら分からない。"
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "老いた両親は牢に閉じ込められ、餓死した。"
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "キルル家の誰もが知っていた。"
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "三十一人が見て見ぬふりをした。"
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "その夜、キルル家の全員を殺した。"
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "刃でキルルの手足を切り落とし、"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "火で傷口を焼いて血まで止めてやり、"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "長い長い間、生かし続けた。"
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "「覚えておけ。」"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "「そして地獄でも悔やめ。」"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "そして地獄に落ちた。"
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "「……これは数えきれない復讐者の中の、一つの物語に過ぎない。」"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "「地獄の迷宮には毎日新たな魂が落ちてくる。」"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "「怒りに満ちた者、理不尽に狂った者、愛を失った者……」"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "「お前はなぜ地獄に来た？」"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "「地獄から脱出せよ。」"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "「罪の重荷を背負いし者よ。」\n"
+        }
+      ],
+      "controls": [
+        "次の台詞",
+        "長押し",
+        "クリックして続行",
+        "戦士の物語",
+        "スキップ"
+      ]
+    },
+    {
+      "code": "vi",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Một người đàn ông sống sót trở về từ chiến tranh."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Nhưng mái nhà của anh đã cháy thành tro."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, người từng là hàng xóm và bạn bè, đã chà đạp cả gia đình anh."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Vợ anh bị bắt làm hầu gái, chịu đủ mọi sự ngược đãi,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "đến khi không thể chịu đựng nữa, cô đã tự kết liễu đời mình."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Các con bị bán làm nô lệ, chẳng ai biết chúng đang ở đâu."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Cha mẹ già bị giam trong ngục và chết đói."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Cả gia tộc Killu đều biết chuyện."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 người tận mắt chứng kiến nhưng vờ như không thấy."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Đêm ấy, anh giết sạch gia tộc Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Anh dùng kiếm chặt tay chân Killu,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "thậm chí còn dùng lửa cầm máu"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "để giữ hắn sống thật lâu, thật lâu."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "“Hãy nhớ lấy.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "“Và xuống địa ngục cũng phải hối hận.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Rồi anh rơi xuống địa ngục."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "“…Đây chỉ là câu chuyện của một trong vô vàn kẻ báo thù.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "“Mỗi ngày, những linh hồn mới lại rơi vào mê cung địa ngục.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "“Kẻ ngập tràn phẫn nộ, kẻ phát điên vì oan khuất, kẻ mất đi người mình yêu…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "“Còn ngươi, vì sao lại đến địa ngục?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "“Hãy thoát khỏi địa ngục.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "“Hỡi ngươi… kẻ mang gánh nặng tội lỗi.”\n"
+        }
+      ],
+      "controls": [
+        "Lời thoại tiếp theo",
+        "Nhấn giữ",
+        "Nhấp để tiếp tục",
+        "Câu chuyện chiến binh",
+        "Bỏ qua"
+      ]
+    },
+    {
+      "code": "th",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "ชายคนหนึ่งรอดชีวิตกลับมาจากสงคราม"
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "แต่บ้านของเขาถูกเผาจนเหลือเพียงเถ้าถ่าน"
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "คิลลู ผู้เคยเป็นทั้งเพื่อนบ้านและสหาย ได้ทำลายครอบครัวของเขา"
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "ภรรยาถูกจับไปเป็นสาวใช้และถูกทารุณสารพัด"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "จนทนไม่ไหวและจบชีวิตตนเองในที่สุด"
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "ลูก ๆ ถูกขายเป็นทาส ไม่มีใครรู้ด้วยซ้ำว่าอยู่ที่ใด"
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "พ่อแม่ที่แก่ชราถูกขังในคุกจนอดตาย"
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "ทุกคนในตระกูลคิลลูรู้เรื่องนี้"
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "คน 31 คนเห็นทุกอย่าง แต่แสร้งทำเป็นไม่เห็น"
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "คืนนั้น เขาฆ่าทุกคนในตระกูลคิลลู"
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "เขาใช้ดาบตัดแขนขาของคิลลู"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "ถึงกับใช้ไฟห้ามเลือดให้"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "เพื่อยื้อชีวิตมันไว้อีกนานแสนนาน"
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "“จงจำเอาไว้”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "“และจงเสียใจแม้ยามอยู่ในนรก”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "แล้วเขาก็ตกสู่นรก"
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "“…นี่เป็นเพียงเรื่องราวของผู้ล้างแค้นคนหนึ่งจากอีกนับไม่ถ้วน”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "“ทุกวัน มีวิญญาณดวงใหม่ตกลงสู่เขาวงกตนรก”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "“ผู้เปี่ยมด้วยโทสะ ผู้คลุ้มคลั่งเพราะความอยุติธรรม ผู้สูญเสียคนรัก…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "“แล้วเจ้ามานรกด้วยเหตุใด?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "“จงหนีออกจากนรก”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "“เจ้าผู้แบกรับน้ำหนักแห่งบาป…”\n"
+        }
+      ],
+      "controls": [
+        "บทพูดถัดไป",
+        "กดค้าง",
+        "คลิกเพื่อดำเนินต่อ",
+        "เรื่องราวของนักรบ",
+        "ข้าม"
+      ]
+    },
+    {
+      "code": "id",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Seorang pria pulang dari perang dalam keadaan hidup."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Namun, rumahnya telah terbakar menjadi abu."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, tetangga sekaligus sahabatnya, telah menghancurkan keluarganya."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Istrinya dibawa pergi sebagai pelayan dan mengalami segala macam penyiksaan,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "hingga tak tahan lagi dan mengakhiri hidupnya sendiri."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Anak-anaknya dijual sebagai budak. Tak ada yang tahu di mana mereka berada."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Orang tuanya yang renta mati kelaparan di penjara."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Seluruh keluarga Killu mengetahuinya."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 orang menyaksikan, lalu berpura-pura tidak melihat."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Malam itu, ia membunuh seluruh keluarga Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Dengan pedangnya, ia memotong tangan dan kaki Killu,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "bahkan membakar lukanya untuk menghentikan pendarahan,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "agar Killu tetap hidup untuk waktu yang amat lama."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "“Ingatlah.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "“Dan menyesallah, bahkan di neraka.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Lalu ia pun jatuh ke neraka."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "“…Ini hanyalah kisah satu dari tak terhitung banyaknya penuntut balas.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "“Setiap hari, jiwa-jiwa baru jatuh ke labirin neraka.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "“Yang penuh amarah, yang gila karena ketidakadilan, yang kehilangan orang tercinta…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "“Mengapa kau datang ke neraka?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "“Keluarlah dari neraka.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "“Wahai engkau… yang memikul beban dosa.”\n"
+        }
+      ],
+      "controls": [
+        "Dialog berikutnya",
+        "Tahan",
+        "Klik untuk melanjutkan",
+        "Kisah pejuang",
+        "Lewati"
+      ]
+    },
+    {
+      "code": "ms",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Seorang lelaki pulang dari perang dengan selamat."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Namun rumahnya telah hangus menjadi abu."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, jiran dan sahabatnya, telah menghancurkan keluarganya."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Isterinya dibawa pergi sebagai hamba suruhan dan mengalami pelbagai penderaan,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "hingga tidak tertanggung lagi, lalu menamatkan nyawanya sendiri."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Anak-anaknya dijual sebagai hamba. Tiada siapa tahu di mana mereka berada."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Ibu bapanya yang tua mati kelaparan di dalam penjara."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Seluruh keluarga Killu mengetahuinya."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 orang melihat segalanya, tetapi berpura-pura tidak nampak."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Malam itu, dia membunuh seluruh keluarga Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Dengan pedangnya, dia memotong tangan dan kaki Killu,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "malah membakar luka-lukanya untuk menghentikan pendarahan,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "agar Killu terus hidup untuk masa yang amat lama."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "“Ingatlah.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "“Dan menyesallah walaupun di neraka.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Kemudian dia jatuh ke neraka."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "“…Ini hanyalah kisah seorang daripada para penuntut bela yang tidak terhitung.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "“Setiap hari, roh baharu jatuh ke dalam labirin neraka.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "“Yang penuh amarah, yang gila kerana ketidakadilan, yang kehilangan insan tercinta…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "“Mengapa kau datang ke neraka?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "“Loloslah dari neraka.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "“Wahai engkau… yang memikul beban dosa.”\n"
+        }
+      ],
+      "controls": [
+        "Dialog seterusnya",
+        "Tekan dan tahan",
+        "Klik untuk teruskan",
+        "Kisah pahlawan",
+        "Langkau"
+      ]
+    },
+    {
+      "code": "es",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Un hombre regresó vivo de la guerra."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Pero su hogar había quedado reducido a cenizas."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, su vecino y amigo, había arrasado con su familia."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Su esposa fue llevada como sirvienta y sufrió toda clase de abusos,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "hasta que, incapaz de soportarlo, se quitó la vida."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Sus hijos fueron vendidos como esclavos. Nadie sabe dónde están."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Sus ancianos padres murieron de hambre en una prisión."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Todos en la casa de Killu lo sabían."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 personas lo vieron y fingieron no ver nada."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Aquella noche mató a toda la familia de Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Le cortó los brazos y las piernas con una espada,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "y hasta cauterizó sus heridas con fuego"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "para mantenerlo vivo durante mucho, mucho tiempo."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "«Recuerda»."
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "«Y arrepiéntete incluso en el infierno»."
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Y entonces cayó al infierno."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "«…Esta es solo la historia de uno entre incontables vengadores»."
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "«Cada día caen nuevas almas en el laberinto del infierno»."
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "«Almas llenas de ira, enloquecidas por la injusticia, privadas de su amor…»."
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "«¿Por qué has venido tú al infierno?»."
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "«Escapa del infierno»."
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "«Tú… que cargas con el peso del pecado».\n"
+        }
+      ],
+      "controls": [
+        "Siguiente frase",
+        "Mantener pulsado",
+        "Haz clic para continuar",
+        "Historia del guerrero",
+        "Omitir"
+      ]
+    },
+    {
+      "code": "fr",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Un homme revint vivant de la guerre."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Mais son foyer avait été réduit en cendres."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, son voisin et ami, avait anéanti sa famille."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Sa femme fut emmenée comme servante et subit les pires sévices,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "jusqu'à ce que, n'en pouvant plus, elle mette fin à ses jours."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Ses enfants furent vendus comme esclaves. Nul ne sait où ils sont."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Ses vieux parents moururent de faim en prison."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Toute la maison de Killu savait."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 personnes avaient vu et feint de ne rien voir."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Cette nuit-là, il tua toute la famille de Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "De sa lame, il trancha les bras et les jambes de Killu,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "allant jusqu'à cautériser ses plaies au feu"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "pour le garder en vie longtemps, très longtemps."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "« Souviens-toi. »"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "« Et regrette, jusque dans les enfers. »"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Puis il tomba en enfer."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "« …Ce n'est que l'histoire d'un vengeur parmi tant d'autres. »"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "« Chaque jour, de nouvelles âmes tombent dans le labyrinthe infernal. »"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "« Rongées par la colère, rendues folles par l'injustice, privées de l'être aimé… »"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "« Et toi, pourquoi es-tu venu en enfer ? »"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "« Échappe-toi de l'enfer. »"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "« Toi… qui portes le poids du péché. »\n"
+        }
+      ],
+      "controls": [
+        "Réplique suivante",
+        "Maintenir",
+        "Cliquez pour continuer",
+        "Histoire du guerrier",
+        "Passer"
+      ]
+    },
+    {
+      "code": "it",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Un uomo tornò vivo dalla guerra."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Ma la sua casa era stata ridotta in cenere."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, suo vicino e amico, aveva annientato la sua famiglia."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Sua moglie fu trascinata via come serva e subì ogni genere di abusi,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "finché, non potendo più sopportarli, si tolse la vita."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "I suoi figli furono venduti come schiavi. Nessuno sa dove siano."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "I suoi anziani genitori morirono di fame in prigione."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Tutti nella casata di Killu sapevano."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 persone videro e finsero di non vedere."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Quella notte uccise tutta la famiglia di Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Con la lama mozzò a Killu braccia e gambe,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "cauterizzando persino le ferite con il fuoco"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "per tenerlo in vita a lungo, molto a lungo."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "«Ricorda.»"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "«E pentiti anche all'inferno.»"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Poi precipitò all'inferno."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "«…Questa è soltanto la storia di uno fra innumerevoli vendicatori.»"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "«Ogni giorno nuove anime precipitano nel labirinto infernale.»"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "«Colme d'ira, impazzite per l'ingiustizia, private del loro amore…»"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "«Tu perché sei venuto all'inferno?»"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "«Fuggi dall'inferno.»"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "«Tu… che porti il peso del peccato.»\n"
+        }
+      ],
+      "controls": [
+        "Battuta successiva",
+        "Tieni premuto",
+        "Fai clic per continuare",
+        "Storia del guerriero",
+        "Salta"
+      ]
+    },
+    {
+      "code": "ptbr",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Um homem voltou vivo da guerra."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Mas seu lar havia sido reduzido a cinzas."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, seu vizinho e amigo, havia destruído sua família."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Sua esposa foi levada como criada e sofreu todo tipo de abuso,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "até que, sem suportar mais, tirou a própria vida."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Seus filhos foram vendidos como escravos. Ninguém sabe onde estão."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Seus pais idosos morreram de fome numa prisão."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Todos na casa de Killu sabiam."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 pessoas viram tudo e fingiram não ver nada."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Naquela noite, ele matou toda a família de Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Com sua lâmina, cortou os braços e as pernas de Killu,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "e até cauterizou as feridas com fogo"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "para mantê-lo vivo por muito, muito tempo."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "“Lembre-se.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "“E se arrependa até no inferno.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Então ele caiu no inferno."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "“…Esta é apenas a história de um entre incontáveis vingadores.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "“Todos os dias, novas almas caem no labirinto do inferno.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "“Cheias de ira, enlouquecidas pela injustiça, privadas de quem amavam…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "“Por que você veio ao inferno?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "“Escape do inferno.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "“Você… que carrega o peso do pecado.”\n"
+        }
+      ],
+      "controls": [
+        "Próxima fala",
+        "Segurar",
+        "Clique para continuar",
+        "História do guerreiro",
+        "Pular"
+      ]
+    },
+    {
+      "code": "ro",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Un om s-a întors viu din război."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Dar casa lui arsese din temelii."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, vecinul și prietenul său, îi zdrobise familia."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Soția lui fusese luată ca slujnică și supusă tuturor cruzimilor,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "până când, nemaiputând îndura, și-a luat viața."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Copiii fuseseră vânduți ca sclavi. Nimeni nu știe unde sunt."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Părinții săi bătrâni au murit de foame în temniță."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Toți din neamul lui Killu știau."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 de oameni au văzut și s-au prefăcut că nu văd."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "În acea noapte, a ucis întreaga familie a lui Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Cu lama i-a tăiat brațele și picioarele lui Killu,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "ba chiar i-a cauterizat rănile ca să oprească sângele,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "și l-a ținut în viață mult, foarte mult timp."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "„Ține minte.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "„Și căiește-te chiar și în iad.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Apoi a căzut în iad."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "„…Aceasta e doar povestea unuia dintre nenumărații răzbunători.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "„În fiecare zi, alte suflete cad în labirintul iadului.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "„Pline de furie, înnebunite de nedreptate, lipsite de cei iubiți…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "„Tu de ce ai venit în iad?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "„Scapă din iad.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "„Tu… care porți povara păcatului.”\n"
+        }
+      ],
+      "controls": [
+        "Replica următoare",
+        "Ține apăsat",
+        "Clic pentru a continua",
+        "Povestea războinicului",
+        "Omite"
+      ]
+    },
+    {
+      "code": "de",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Ein Mann kehrte lebend aus dem Krieg zurück."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Doch sein Zuhause war bis auf die Grundmauern niedergebrannt."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, sein Nachbar und Freund, hatte seine Familie vernichtet."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Seine Frau wurde als Dienerin verschleppt und grausam misshandelt,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "bis sie es nicht mehr ertrug und sich das Leben nahm."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Seine Kinder wurden als Sklaven verkauft. Niemand weiß, wo sie sind."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Seine alten Eltern verhungerten im Kerker."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Alle im Hause Killu wussten davon."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 Menschen sahen es und taten, als hätten sie nichts gesehen."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "In jener Nacht tötete er Killus gesamte Familie."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Mit seiner Klinge trennte er Killu Arme und Beine ab,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "stillte sogar die Blutung mit Feuer"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "und hielt ihn lange, sehr lange am Leben."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "„Erinnere dich.“"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "„Und bereue es noch in der Hölle.“"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Dann stürzte er in die Hölle."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "„…Dies ist nur die Geschichte eines von unzähligen Rächern.“"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "„Jeden Tag fallen neue Seelen in das Labyrinth der Hölle.“"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "„Von Zorn erfüllt, von Unrecht in den Wahnsinn getrieben, ihrer Liebe beraubt …“"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "„Warum bist du in die Hölle gekommen?“"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "„Entfliehe der Hölle.“"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "„Du … der du die Last der Sünde trägst.“\n"
+        }
+      ],
+      "controls": [
+        "Nächste Zeile",
+        "Gedrückt halten",
+        "Zum Fortfahren klicken",
+        "Geschichte des Kriegers",
+        "Überspringen"
+      ]
+    },
+    {
+      "code": "nl",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Een man keerde levend terug uit de oorlog."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Maar zijn huis was volledig afgebrand."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, zijn buurman en vriend, had zijn familie vernietigd."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Zijn vrouw werd meegenomen als dienstmeid en gruwelijk mishandeld,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "tot ze het niet langer verdroeg en zichzelf van het leven beroofde."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Zijn kinderen werden als slaven verkocht. Niemand weet waar ze zijn."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Zijn bejaarde ouders verhongerden in de gevangenis."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Iedereen in Killu's familie wist ervan."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 mensen zagen het en deden alsof ze niets hadden gezien."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Die nacht doodde hij Killu's hele familie."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Met zijn zwaard hakte hij Killu's armen en benen af,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "en schroeide zelfs de wonden dicht om het bloeden te stoppen,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "zodat hij hem lang, heel lang in leven kon houden."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "‘Onthoud dit.’"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "‘En heb er zelfs in de hel spijt van.’"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Daarna viel hij in de hel."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "‘…Dit is slechts het verhaal van één van ontelbare wrekers.’"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "‘Elke dag vallen nieuwe zielen in het labyrint van de hel.’"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "‘Vol woede, gek geworden van onrecht, beroofd van hun geliefden…’"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "‘Waarom ben jij naar de hel gekomen?’"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "‘Ontsnap uit de hel.’"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "‘Jij… die de last van de zonde draagt.’\n"
+        }
+      ],
+      "controls": [
+        "Volgende zin",
+        "Ingedrukt houden",
+        "Klik om door te gaan",
+        "Het verhaal van de krijger",
+        "Overslaan"
+      ]
+    },
+    {
+      "code": "sv",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "En man återvände levande från kriget."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Men hans hem hade brunnit till grunden."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, hans granne och vän, hade krossat hans familj."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Hans hustru fördes bort som tjänarinna och utsattes för alla slags övergrepp,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "tills hon inte stod ut längre och tog sitt liv."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Barnen såldes som slavar. Ingen vet ens var de finns."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Hans gamla föräldrar svalt ihjäl i fängelset."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Alla i Killus släkt visste."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 personer såg och låtsades att de inte sett något."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Den natten dödade han hela Killus familj."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Med sin klinga högg han av Killus armar och ben,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "brände till och med såren för att stoppa blodet,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "och höll honom vid liv länge, mycket länge."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "”Minns.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "”Och ångra dig även i helvetet.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Sedan föll han ner i helvetet."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "”…Detta är bara berättelsen om en av otaliga hämnare.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "”Varje dag faller nya själar ner i helvetets labyrint.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "”Fyllda av vrede, galna av orättvisa, berövade sin kärlek…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "”Varför kom du till helvetet?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "”Fly från helvetet.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "”Du… som bär syndens börda.”\n"
+        }
+      ],
+      "controls": [
+        "Nästa replik",
+        "Håll in",
+        "Klicka för att fortsätta",
+        "Krigarens berättelse",
+        "Hoppa över"
+      ]
+    },
+    {
+      "code": "da",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "En mand vendte levende hjem fra krigen."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Men hans hjem var brændt ned til grunden."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, hans nabo og ven, havde knust hans familie."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Hans kone blev ført bort som tjenestepige og udsat for alle tænkelige overgreb,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "indtil hun ikke kunne holde det ud længere og tog sit eget liv."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Børnene blev solgt som slaver. Ingen ved, hvor de er."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Hans gamle forældre sultede ihjel i fængslet."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Alle i Killus slægt vidste det."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 mennesker så det og lod, som om de intet havde set."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Den nat dræbte han hele Killus familie."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Med sin klinge huggede han Killus arme og ben af,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "brændte endda sårene for at standse blødningen,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "og holdt ham i live længe, meget længe."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "“Husk det.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "“Og fortryd det selv i helvede.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Så faldt han ned i helvede."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "“…Dette er blot historien om én af utallige hævnere.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "“Hver dag falder nye sjæle ned i helvedes labyrint.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "“Fyldt af vrede, vanvittige af uretfærdighed, berøvet deres kærlighed…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "“Hvorfor kom du til helvede?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "“Flygt fra helvede.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "“Du… som bærer syndens byrde.”\n"
+        }
+      ],
+      "controls": [
+        "Næste replik",
+        "Hold nede",
+        "Klik for at fortsætte",
+        "Krigerens historie",
+        "Spring over"
+      ]
+    },
+    {
+      "code": "no",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "En mann vendte levende hjem fra krigen."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Men hjemmet hans hadde brent ned til grunnen."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, naboen og vennen hans, hadde knust familien hans."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Kona ble ført bort som tjenestejente og utsatt for alle slags overgrep,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "helt til hun ikke orket mer og tok sitt eget liv."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Barna ble solgt som slaver. Ingen vet engang hvor de er."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "De gamle foreldrene hans sultet i hjel i fengselet."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Alle i Killus slekt visste om det."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 mennesker så det og lot som de ikke hadde sett noe."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Den natten drepte han hele Killus familie."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Med klingen hogg han av Killus armer og bein,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "og brente til og med sårene for å stanse blødningen,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "slik at han kunne holde ham i live lenge, svært lenge."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "«Husk.»"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "«Og angre, selv i helvete.»"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Så falt han ned i helvete."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "«…Dette er bare historien om én av utallige hevnere.»"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "«Hver dag faller nye sjeler ned i helvetes labyrint.»"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "«Fylt av raseri, drevet til vanvidd av urett, frarøvet sin kjærlighet…»"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "«Hvorfor kom du til helvete?»"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "«Flykt fra helvete.»"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "«Du… som bærer syndens byrde.»\n"
+        }
+      ],
+      "controls": [
+        "Neste replikk",
+        "Hold inne",
+        "Klikk for å fortsette",
+        "Krigerens historie",
+        "Hopp over"
+      ]
+    },
+    {
+      "code": "ru",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Один человек вернулся с войны живым."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Но его дом сгорел дотла."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Киллу, его сосед и друг, растоптал его семью."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Его жену увели в прислуги и подвергли бесчисленным издевательствам,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "пока, не выдержав, она не покончила с собой."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Детей продали в рабство. Никто не знает, где они теперь."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Его престарелые родители умерли от голода в темнице."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Все в доме Киллу знали об этом."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 человек видел всё и сделал вид, что не заметил."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "В ту ночь он убил всю семью Киллу."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Клинком он отсёк Киллу руки и ноги,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "даже прижёг раны огнём, чтобы остановить кровь,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "и долго, очень долго не давал ему умереть."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "«Помни»."
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "«И раскайся даже в аду»."
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "А затем он сам низвергся в ад."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "«…Это лишь история одного из бесчисленных мстителей»."
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "«Каждый день в лабиринт ада падают новые души»."
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "«Полные ярости, обезумевшие от несправедливости, потерявшие любимых…»"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "«А ты почему пришёл в ад?»"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "«Беги из ада»."
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "«Ты… несущий бремя греха».\n"
+        }
+      ],
+      "controls": [
+        "Следующая реплика",
+        "Удерживать",
+        "Нажмите, чтобы продолжить",
+        "История воина",
+        "Пропустить"
+      ]
+    },
+    {
+      "code": "uk",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Один чоловік повернувся з війни живим."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Та його дім згорів ущент."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Кіллу, його сусід і друг, розтоптав його родину."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Дружину забрали в служниці й піддали незліченним знущанням,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "аж зрештою вона не витримала й наклала на себе руки."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Дітей продали в рабство. Ніхто не знає, де вони."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Його старі батьки померли з голоду у в'язниці."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Усі в родині Кіллу знали."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 людина все бачила й удавала, що не бачить."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Тієї ночі він убив усю родину Кіллу."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Клинком відтяв Кіллу руки й ноги,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "навіть припік рани вогнем, щоб спинити кров,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "і тримав його живим довго, дуже довго."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "«Пам'ятай»."
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "«І шкодуй навіть у пеклі»."
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "А тоді він упав до пекла."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "«…Це лише історія одного з незліченних месників»."
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "«Щодня до пекельного лабіринту падають нові душі»."
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "«Сповнені люті, збожеволілі від кривди, позбавлені коханих…»"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "«А ти чому прийшов до пекла?»"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "«Утікай із пекла»."
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "«Ти… хто несе тягар гріха».\n"
+        }
+      ],
+      "controls": [
+        "Наступна репліка",
+        "Утримувати",
+        "Натисніть, щоб продовжити",
+        "Історія воїна",
+        "Пропустити"
+      ]
+    },
+    {
+      "code": "pl",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Pewien człowiek wrócił żywy z wojny."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Lecz jego dom spłonął doszczętnie."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, jego sąsiad i przyjaciel, zniszczył jego rodzinę."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Żonę uprowadzono na służbę i poddano wszelkim okrucieństwom,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "aż w końcu nie wytrzymała i odebrała sobie życie."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Dzieci sprzedano w niewolę. Nikt nie wie, gdzie są."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Sędziwi rodzice zmarli z głodu w lochu."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Wszyscy w rodzie Killu o tym wiedzieli."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 osób widziało wszystko i udawało, że nic nie widzi."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Tej nocy zabił całą rodzinę Killu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Ostrzem odciął Killu ręce i nogi,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "a nawet przypalił rany ogniem, by zatamować krew,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "i utrzymywał go przy życiu długo, bardzo długo."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "„Pamiętaj.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "„I żałuj nawet w piekle.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Potem sam runął do piekła."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "„…To tylko historia jednego z niezliczonych mścicieli.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "„Każdego dnia nowe dusze wpadają do piekielnego labiryntu.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "„Pełne gniewu, oszalałe od krzywdy, pozbawione ukochanych…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "„A ty dlaczego trafiłeś do piekła?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "„Ucieknij z piekła.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "„Ty… który dźwigasz ciężar grzechu.”\n"
+        }
+      ],
+      "controls": [
+        "Następna kwestia",
+        "Przytrzymaj",
+        "Kliknij, aby kontynuować",
+        "Historia wojownika",
+        "Pomiń"
+      ]
+    },
+    {
+      "code": "cs",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Jeden muž se vrátil živý z války."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Jeho domov však lehl popelem."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, jeho soused a přítel, zničil jeho rodinu."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Jeho ženu odvlekli jako služku a vystavili nejrůznějším krutostem,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "až to nedokázala snášet dál a vzala si život."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Děti prodali do otroctví. Nikdo neví, kde jsou."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Jeho staří rodiče zemřeli hlady ve vězení."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Všichni v Killuově rodě o tom věděli."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 lidí to vidělo a dělalo, že nevidí."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Té noci zabil celou Killuovu rodinu."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Čepelí usekl Killuovi ruce i nohy,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "dokonce mu ohněm vypálil rány, aby zastavil krvácení,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "a držel ho naživu dlouho, velmi dlouho."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "„Pamatuj.“"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "„A lituj i v pekle.“"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "A pak sám padl do pekla."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "„…Tohle je jen příběh jednoho z nesčetných mstitelů.“"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "„Každý den padají do pekelného labyrintu nové duše.“"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "„Plné hněvu, šílené z bezpráví, zbavené svých milovaných…“"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "„Proč jsi do pekla přišel ty?“"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "„Unikni z pekla.“"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "„Ty… jenž neseš tíhu hříchu.“\n"
+        }
+      ],
+      "controls": [
+        "Další replika",
+        "Podržet",
+        "Pokračujte kliknutím",
+        "Příběh válečníka",
+        "Přeskočit"
+      ]
+    },
+    {
+      "code": "hu",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Egy férfi élve tért haza a háborúból."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "De otthona porig égett."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, a szomszédja és barátja, eltiporta a családját."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Feleségét szolgálónak hurcolták el, és válogatott kegyetlenségeket szenvedett el,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "míg végül nem bírta tovább, és véget vetett az életének."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Gyermekeit rabszolgának adták el. Senki sem tudja, hol vannak."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Idős szülei éhen haltak a börtönben."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Killu családjában mindenki tudott róla."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 ember látta, mégis úgy tett, mintha semmit sem látott volna."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Azon az éjjelen megölte Killu egész családját."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Pengével levágta Killu karjait és lábait,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "még a sebeit is kiégette, hogy elállítsa a vérzést,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "és sokáig, nagyon sokáig életben tartotta."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "„Emlékezz.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "„És bánd meg még a pokolban is.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Azután a pokolba zuhant."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "„…Ez csak egy a megszámlálhatatlan bosszúálló története közül.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "„Nap mint nap új lelkek hullanak a pokol labirintusába.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "„Haragtól izzók, igazságtalanságba beleőrültek, szerelmüket elveszítők…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "„Te miért kerültél a pokolba?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "„Menekülj a pokolból.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "„Te… aki a bűn terhét hordozod.”\n"
+        }
+      ],
+      "controls": [
+        "Következő mondat",
+        "Tartsd nyomva",
+        "Kattints a folytatáshoz",
+        "A harcos története",
+        "Kihagyás"
+      ]
+    },
+    {
+      "code": "bg",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Един мъж се завърна жив от войната."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Но домът му беше изгорял до основи."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Килу, негов съсед и приятел, беше стъпкал семейството му."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Жена му била отведена като слугиня и подложена на всякакви издевателства,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "докато накрая не издържала и отнела живота си."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Децата му били продадени в робство. Никой не знае къде са."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Старите му родители умрели от глад в тъмницата."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Всички в рода на Килу знаели."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 души видели всичко и се престорили, че не виждат."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Онази нощ той изби целия род на Килу."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "С острието си отсече ръцете и краката на Килу,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "дори обгори раните му, за да спре кръвта,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "и го държа жив дълго, много дълго."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "„Помни.“"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "„И съжалявай дори в ада.“"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "А после падна в ада."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "„…Това е историята само на един от безброй отмъстители.“"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "„Всеки ден нови души падат в лабиринта на ада.“"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "„Изпълнени с гняв, полудели от неправда, загубили любимите си…“"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "„А ти защо дойде в ада?“"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "„Избягай от ада.“"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "„Ти… който носиш тежестта на греха.“\n"
+        }
+      ],
+      "controls": [
+        "Следваща реплика",
+        "Задръж",
+        "Щракни, за да продължиш",
+        "Историята на воина",
+        "Пропусни"
+      ]
+    },
+    {
+      "code": "el",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Ένας άντρας γύρισε ζωντανός από τον πόλεμο."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Μα το σπίτι του είχε γίνει στάχτη."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Ο Κίλου, γείτονας και φίλος του, είχε συντρίψει την οικογένειά του."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Τη γυναίκα του την πήραν για υπηρέτρια και την υπέβαλαν σε κάθε λογής κακοποίηση,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "ώσπου, μην αντέχοντας άλλο, έβαλε τέλος στη ζωή της."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Τα παιδιά του πουλήθηκαν ως σκλάβοι. Κανείς δεν ξέρει πού βρίσκονται."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Οι γέροι γονείς του πέθαναν από την πείνα στη φυλακή."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Όλοι στον οίκο του Κίλου γνώριζαν."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 άνθρωποι είδαν και έκαναν πως δεν έβλεπαν."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Εκείνη τη νύχτα σκότωσε ολόκληρη την οικογένεια του Κίλου."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Με τη λεπίδα του έκοψε τα χέρια και τα πόδια του Κίλου,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "καυτηριάζοντας ακόμη και τις πληγές για να σταματήσει το αίμα,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "και τον κράτησε ζωντανό για πολύ, πάρα πολύ καιρό."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "«Να θυμάσαι.»"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "«Και να μετανιώνεις ακόμη και στην κόλαση.»"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Κι έπειτα έπεσε στην κόλαση."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "«…Αυτή είναι μονάχα η ιστορία ενός από αμέτρητους εκδικητές.»"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "«Κάθε μέρα, νέες ψυχές πέφτουν στον λαβύρινθο της κόλασης.»"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "«Γεμάτες οργή, τρελαμένες από την αδικία, στερημένες την αγάπη τους…»"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "«Εσύ γιατί ήρθες στην κόλαση;»"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "«Απόδρασε από την κόλαση.»"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "«Εσύ… που κουβαλάς το βάρος της αμαρτίας.»\n"
+        }
+      ],
+      "controls": [
+        "Επόμενη ατάκα",
+        "Κράτημα",
+        "Κάντε κλικ για συνέχεια",
+        "Η ιστορία του πολεμιστή",
+        "Παράλειψη"
+      ]
+    },
+    {
+      "code": "fi",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Mies palasi sodasta hengissä."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Mutta hänen kotinsa oli palanut tuhkaksi."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Killu, hänen naapurinsa ja ystävänsä, oli tuhonnut hänen perheensä."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Hänen vaimonsa vietiin palvelijaksi ja joutui kärsimään julmaa kaltoinkohtelua,"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "kunnes ei enää kestänyt ja riisti oman henkensä."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Lapset myytiin orjiksi. Kukaan ei tiedä, missä he ovat."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Hänen vanhat vanhempansa kuolivat nälkään vankilassa."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Kaikki Killun suvussa tiesivät."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 ihmistä näki kaiken ja teeskenteli, ettei nähnyt mitään."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "Sinä yönä hän tappoi koko Killun suvun."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Terällään hän katkaisi Killun kädet ja jalat,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "jopa poltti haavat umpeen verenvuodon tyrehdyttämiseksi,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "ja piti hänet elossa pitkään, hyvin pitkään."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "”Muista.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "”Ja kadu vielä helvetissäkin.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Sitten hän syöksyi helvettiin."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "”…Tämä on vain yhden lukemattomista kostajista tarina.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "”Joka päivä uusia sieluja putoaa helvetin labyrinttiin.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "”Raivon täyttämiä, vääryydestä järkensä menettäneitä, rakkaansa menettäneitä…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "”Miksi sinä tulit helvettiin?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "”Pakene helvetistä.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "”Sinä… joka kannat synnin taakkaa.”\n"
+        }
+      ],
+      "controls": [
+        "Seuraava repliikki",
+        "Pidä painettuna",
+        "Jatka napsauttamalla",
+        "Soturin tarina",
+        "Ohita"
+      ]
+    },
+    {
+      "code": "tr",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "Bir adam savaştan sağ döndü."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "Ama evi yanıp kül olmuştu."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "Komşusu ve dostu Killu, ailesini ezip geçmişti."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "Karısı hizmetçi olarak götürülmüş, türlü eziyetlere uğramıştı;"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "sonunda dayanamayarak canına kıymıştı."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "Çocukları köle diye satılmıştı. Nerede oldukları bile bilinmiyordu."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "Yaşlı anne babası zindanda açlıktan ölmüştü."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "Killu hanesindeki herkes biliyordu."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "31 kişi görmüş, görmemiş gibi yapmıştı."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "O gece Killu'nun tüm ailesini öldürdü."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "Kılıcıyla Killu'nun kollarını ve bacaklarını kesti,"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "hatta kanamayı durdurmak için yaralarını ateşle dağladı,"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "onu çok, çok uzun süre hayatta tuttu."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "“Unutma.”"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "“Ve cehennemde bile pişman ol.”"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "Sonra cehenneme düştü."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "“…Bu, sayısız intikamcıdan yalnızca birinin hikâyesi.”"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "“Cehennemin labirentine her gün yeni ruhlar düşer.”"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "“Öfkeyle dolanlar, haksızlıktan delirenler, sevdiklerini kaybedenler…”"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "“Sen neden cehenneme geldin?”"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "“Cehennemden kaç.”"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "“Sen… günahın yükünü taşıyan kişi.”\n"
+        }
+      ],
+      "controls": [
+        "Sonraki replik",
+        "Basılı tut",
+        "Devam etmek için tıkla",
+        "Savaşçının hikâyesi",
+        "Atla"
+      ]
+    },
+    {
+      "code": "ar",
+      "cues": [
+        {
+          "id": "wa02",
+          "start": 1,
+          "end": 3.21,
+          "settings": "",
+          "text": "رجل عاد حيًا من الحرب."
+        },
+        {
+          "id": "wa04",
+          "start": 5.5,
+          "end": 7.51,
+          "settings": "",
+          "text": "لكن منزله كان قد احترق وصار رمادًا."
+        },
+        {
+          "id": "wa06",
+          "start": 10,
+          "end": 14.03,
+          "settings": "",
+          "text": "كيلو، جاره وصديقه، كان قد سحق عائلته."
+        },
+        {
+          "id": "wa08",
+          "start": 16,
+          "end": 20.43,
+          "settings": "",
+          "text": "اقتيدت زوجته لتعمل خادمة، وذاقت شتى صنوف التنكيل،"
+        },
+        {
+          "id": "wa09",
+          "start": 22.5,
+          "end": 25.33,
+          "settings": "",
+          "text": "حتى عجزت عن الاحتمال وأنهت حياتها بيدها."
+        },
+        {
+          "id": "wa11",
+          "start": 28,
+          "end": 32.05,
+          "settings": "",
+          "text": "بيع أطفاله عبيدًا. ولا أحد يعلم أين هم."
+        },
+        {
+          "id": "wa12",
+          "start": 33.5,
+          "end": 36.85,
+          "settings": "",
+          "text": "حُبس والداه المسنّان وماتا جوعًا في السجن."
+        },
+        {
+          "id": "wa14",
+          "start": 39,
+          "end": 41.51,
+          "settings": "",
+          "text": "كان كل فرد من عائلة كيلو يعلم."
+        },
+        {
+          "id": "wa15",
+          "start": 42.24,
+          "end": 45.15,
+          "settings": "",
+          "text": "شهد 31 شخصًا ما حدث وتظاهروا بأنهم لم يروا شيئًا."
+        },
+        {
+          "id": "wa17",
+          "start": 46.5,
+          "end": 49.05,
+          "settings": "",
+          "text": "في تلك الليلة، قتل عائلة كيلو بأكملها."
+        },
+        {
+          "id": "wa19",
+          "start": 51,
+          "end": 53.41,
+          "settings": "",
+          "text": "قطع ذراعي كيلو وساقيه بنصله،"
+        },
+        {
+          "id": "wa20",
+          "start": 53.48,
+          "end": 55.69,
+          "settings": "",
+          "text": "بل كوى جراحه بالنار ليوقف نزيفه،"
+        },
+        {
+          "id": "wa21",
+          "start": 56.02,
+          "end": 59.03,
+          "settings": "",
+          "text": "وأبقاه حيًا طويلًا، طويلًا جدًا."
+        },
+        {
+          "id": "wa22",
+          "start": 59.5,
+          "end": 59.98,
+          "settings": "",
+          "text": "«تذكّر.»"
+        },
+        {
+          "id": "wa23",
+          "start": 59.98,
+          "end": 62.43,
+          "settings": "",
+          "text": "«واندم، حتى في الجحيم.»"
+        },
+        {
+          "id": "wa24",
+          "start": 65,
+          "end": 66.51,
+          "settings": "",
+          "text": "ثم هوى إلى الجحيم."
+        },
+        {
+          "id": "wa26",
+          "start": 70.67,
+          "end": 73.86,
+          "settings": "",
+          "text": "«…هذه ليست سوى حكاية واحد من منتقمين لا حصر لهم.»"
+        },
+        {
+          "id": "wa28",
+          "start": 76,
+          "end": 79.45,
+          "settings": "",
+          "text": "«كل يوم تسقط أرواح جديدة في متاهة الجحيم.»"
+        },
+        {
+          "id": "wa29",
+          "start": 81.5,
+          "end": 87.41,
+          "settings": "",
+          "text": "«أرواح يملؤها الغضب، وأخرى جنّت من الظلم، وأخرى فقدت من تحب…»"
+        },
+        {
+          "id": "wa31",
+          "start": 88,
+          "end": 90.333,
+          "settings": "",
+          "text": "«لماذا أتيت أنت إلى الجحيم؟»"
+        },
+        {
+          "id": "wa33a",
+          "start": 90.333,
+          "end": 91.395,
+          "settings": "",
+          "text": "«اهرب من الجحيم.»"
+        },
+        {
+          "id": "wa33b",
+          "start": 92.9,
+          "end": 95.6,
+          "settings": "",
+          "text": "«يا من… تحمل ثقل الخطيئة.»\n"
+        }
+      ],
+      "controls": [
+        "السطر التالي",
+        "اضغط مطولًا",
+        "انقر للمتابعة",
+        "قصة المحارب",
+        "تخطي"
+      ]
+    }
+  ],
+  "controlsExtractionError": null,
+  "sourceFiles": [
+    {
+      "path": "character-story-player.js",
+      "bytes": 7663,
+      "sha256": "e44a78225e4ecd234609836529d51b350e82d219070a75db810349770f9c9983"
+    },
+    {
+      "path": "localization-data.js",
+      "bytes": 3478572,
+      "sha256": "d3494f4d01767326f97c177b6f0c01f09a9919a134cbd3d7aae46f6c5ef81f05"
+    },
+    {
+      "path": "video/warrior_story_v23_clean.mp4",
+      "bytes": 97796468,
+      "sha256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_ko.vtt",
+      "bytes": 1830,
+      "sha256": "37a50ddefc49d231cbf46eaa6af23428e71155418a7fc2a2a0fba8030c1e4d69"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_en.vtt",
+      "bytes": 1747,
+      "sha256": "fd4e9d1e92aa45fbe872691a51399c035b9ea7e716309e88a7db5e34c46506c6"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_zh.vtt",
+      "bytes": 1702,
+      "sha256": "7714d8761611aa728632cf5a41c357e81e4333be10aebc595adac7eeb761a19c"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_zht.vtt",
+      "bytes": 1707,
+      "sha256": "cdc5fa850a19cd44b9a9368a181aae0bdf8ada86f8a81cf8de6f2705902897a0"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_ja.vtt",
+      "bytes": 1972,
+      "sha256": "6cd67febed94ab558a4f7c5a9cc555e88e01b2be049f9f2f7c90c558103abf7a"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_vi.vtt",
+      "bytes": 2152,
+      "sha256": "8c869d709fca66110586f36d1e7f1c0858c06275c8fe6da4d08a13e19d4c72ae"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_th.vtt",
+      "bytes": 3106,
+      "sha256": "612de803184bc7eb3c43ceec891e75d00b918841b9c7642ca2b5e27ba18bae4a"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_id.vtt",
+      "bytes": 1953,
+      "sha256": "e1562e9a28a46c4553cb2451e86174ac1e0b30dadccbc22112fe70abe28554ee"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_ms.vtt",
+      "bytes": 1975,
+      "sha256": "db284b643f575426ba3a4f64c329295c037e43779cb0ea019c5554fbd918d75e"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_es.vtt",
+      "bytes": 1881,
+      "sha256": "88d4f652a344b041d5d48640d7a89d37acfcbeb92a5519f2706b578b80d57098"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_fr.vtt",
+      "bytes": 1911,
+      "sha256": "c7b09fc78eed528e45e4073dcfcb52740ba4e73cb05e48d5fa1f45676b733e43"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_it.vtt",
+      "bytes": 1836,
+      "sha256": "682835e52e0ccd3b66e2f4c3c316272b5e5d54ab60302279e48ebba2b9a28979"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_ptbr.vtt",
+      "bytes": 1840,
+      "sha256": "503a3d5a6e0b6f3648dc109d49fa7b67a567fcb3c461b5e9cd74f3eec09989a3"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_ro.vtt",
+      "bytes": 1879,
+      "sha256": "2cf03f28dda78ac1b4fcefe68eabcbce23f899249ecbbc0cc10a532ca3f914e8"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_de.vtt",
+      "bytes": 1923,
+      "sha256": "894696edc88473a85788ec3935e84faeb09d6d69d631fcc23e9dc965bf35393f"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_nl.vtt",
+      "bytes": 1915,
+      "sha256": "d6b3f6e51d8421916bcb77e36acddcfa27cc78a5550bb864ff9569760567a1cd"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_sv.vtt",
+      "bytes": 1827,
+      "sha256": "a527ff0f8c3f9e952e4f7140fd65563421679a6f9abea3bb2cf3eb33f50c407c"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_da.vtt",
+      "bytes": 1838,
+      "sha256": "90f7d72da1cef6bffc88d0b7d7b46e62d890450a475a7c414d32409f65df56a9"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_no.vtt",
+      "bytes": 1820,
+      "sha256": "d39a165bb44006d70592b07e7d574ef654c8841b23889a3731cc502c5be1c1a7"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_ru.vtt",
+      "bytes": 2385,
+      "sha256": "e1ee4e946b0cbe3ebce7a38fdcb85524e0ed01c2f491257eeeef73b2e4ca8b4e"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_uk.vtt",
+      "bytes": 2336,
+      "sha256": "bca53e8bc8d07e7f251c45199ae20af928ed665646f6c6af627e96055fb48c80"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_pl.vtt",
+      "bytes": 1830,
+      "sha256": "9aca78c1b03332f25f95cb19fb2c30c6f28271e25768a59abf42e9039abc1659"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_cs.vtt",
+      "bytes": 1782,
+      "sha256": "8b8c654e444318c7349b2fe6feb39331f47536aa650625ee0646a095ecb1a628"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_hu.vtt",
+      "bytes": 1928,
+      "sha256": "065213289ddb6b7f98795eb749fdf0849bb9c9cba99c62be390a974925f48cc4"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_bg.vtt",
+      "bytes": 2443,
+      "sha256": "6c39c79133c6c9061ef7a7b196f7e8be382749f05128f900161e0d7baae7bc8f"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_el.vtt",
+      "bytes": 2783,
+      "sha256": "65c691117b86295eb3f130d5d31e6f9fc468f8c326cf1940f6d3957173578d62"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_fi.vtt",
+      "bytes": 1916,
+      "sha256": "cc7413e136a80884089d7ccf8e94d6d18c87fd9236bcf2e9becf09f8f5673d23"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_tr.vtt",
+      "bytes": 1848,
+      "sha256": "b3f2bbbe28be096939af3e2dc4d786f99aa9965a204d7acd48a4fe6c1f4e3140"
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_ar.vtt",
+      "bytes": 2178,
+      "sha256": "1ab00508b6c115c20014621d68483bb39229484c82e0bd068ff7ba890f025dce"
+    }
+  ],
+  "limits": [
+    "Source extraction only; no Unity renderer, decoder or OS input verification",
+    "PC current media/script identity awaiting PC owner confirmation",
+    "Story creation-success gate and selected-character lifetime remain NativeLobby owner responsibility"
+  ]
+}

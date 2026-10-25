@@ -1,0 +1,36 @@
+{
+  "sourceFiles": 32,
+  "pcMatches": [
+    {
+      "path": "character-story-player.js",
+      "sha256": "e44a78225e4ecd234609836529d51b350e82d219070a75db810349770f9c9983",
+      "macMatches": true
+    },
+    {
+      "path": "video/warrior_story_v23_clean.mp4",
+      "sha256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+      "macMatches": true
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_ko.vtt",
+      "sha256": "37a50ddefc49d231cbf46eaa6af23428e71155418a7fc2a2a0fba8030c1e4d69",
+      "macMatches": true
+    },
+    {
+      "path": "video/subtitles/warrior_story_v23_en.vtt",
+      "sha256": "fd4e9d1e92aa45fbe872691a51399c035b9ea7e716309e88a7db5e34c46506c6",
+      "macMatches": true
+    }
+  ],
+  "cuts": 22,
+  "languages": 29,
+  "totalCaptionCues": 638,
+  "holdSeconds": 1.2,
+  "allControlsHaveFiveLabels": true,
+  "allCueTimesFiniteIncreasing": true,
+  "rawTextContainsMarkup": [],
+  "sourceVttSettings": [
+    ""
+  ],
+  "scope": "New source data structure and PC/Mac existing media identity; no playback test"
+}

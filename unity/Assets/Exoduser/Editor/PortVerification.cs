@@ -66,6 +66,11 @@ public static class PortVerification {
   foreach(var name in new[]{"fdg_intro.mp4","intro.mp4","world_intro_v22b_paint_en.mp4","title_motion_hd_20260929.mp4","title_motion_20260929.mp4","lobby_varkan_crypt_loop_v2_unity.mp4"})if(!File.Exists(Path.Combine(Application.streamingAssetsPath,"Lobby",name)))throw new Exception("Missing original movie "+name+"; run Tools/restore-lobby-media.cjs");
   foreach(var name in new[]{"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2","lobby"}){var clip=Resources.Load<AudioClip>("Audio/Lobby/"+name);if(clip==null||clip.samples<=0)throw new Exception("Lobby audio import "+name);}
   Debug.Log("UNITY_LOBBY_MEDIA_CAPTIONS_29X32_PASS");
+  var story=Resources.Load<TextAsset>("Data/warrior_story");
+  if(story==null||!File.Exists(Path.Combine(Application.streamingAssetsPath,"Lobby","warrior_story_v23_clean.mp4")))throw new Exception("Missing warrior story; run Tools/restore-warrior-story.cjs");
+  var storyData=JsonUtility.FromJson<LobbySubtitleData>(story.text);
+  if(storyData.cuts==null||storyData.cuts.Length!=22||storyData.captions==null||storyData.captions.Length!=29)throw new Exception("Warrior source data mismatch");
+  foreach(var language in storyData.captions)if(language.cues.Length!=22)throw new Exception("Warrior caption count "+language.code);
   foreach(var weight in new[]{"Regular","SemiBold","Bold"})if(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-"+weight)==null)throw new Exception("Missing static lobby font "+weight);
  }
  static void VerifyInventory(){

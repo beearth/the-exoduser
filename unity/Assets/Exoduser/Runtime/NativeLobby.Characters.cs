@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
   CharacterRoster CopyCharacters(){var copy=new CharacterRoster();var names=new string[Characters.Count];for(int i=0;i<names.Length;i++)names[i]=Characters.NameAt(i);copy.TryRestore(names,Characters.SelectedIndex);return copy;}
   bool CommitCharacters(CharacterRoster candidate){if(!characterWritesAllowed||writeCharacters!=null&&!writeCharacters(candidate))return false;Characters=candidate;return true;}
   public string ActiveCharacterName {get;private set;}="";
-  public bool CharacterModalOpen {get{return characterStep!=0;}}
+  public bool CharacterModalOpen {get{return characterStep!=0||CharacterStoryActive;}}
   int characterStep,characterVisual,characterScroll;
   bool characterFocus,characterInputFence;
   string characterName="",characterError="";
@@ -52,7 +52,7 @@ namespace Exoduser.UnityPort
    var candidate=CopyCharacters();
    if(!candidate.TryCreate(name,characterVisual,out var error)){characterError=CharacterError(error);return false;}
    if(!CommitCharacters(candidate))return false;
-   RevealSelectedCharacter();CloseCharacterCreation();return true;
+   RevealSelectedCharacter();CloseCharacterCreation();BeginCreatedCharacterStory();return true;
   }
   string CharacterError(CharacterCreateError error)
   {
