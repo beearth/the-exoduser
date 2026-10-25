@@ -57010,3 +57010,5 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 K panel, source 13 slot selection, Ki Slash description/state, HUD charge display and pause/input ownership. New 31 checks passed; Player verification pending. See engine/UNITY_MAC_SKILL_UI_20261025.md. Other skill executors and save integration remain unavailable.
 
 스킬 UI 첫 Player6/6 및 CUA K/숫자/End/ESC 흐름 확인. 1080p 슬롯 제목 하단 잘림을 발견해 제목 높이를64로 확장하고 해당 화면을 다시 검수한다. 자동 마우스 제약은 별도 유지한다.
+
+HUD 입력 차단이 진행 중인 차지를 해제하지 않도록 신규 공격에만 제한을 적용했다. 실제 버튼 해제는 기존 Tick에 전달하며 관련 경계3검사를 추가했다.

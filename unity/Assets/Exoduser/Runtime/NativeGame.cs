@@ -131,7 +131,7 @@ namespace Exoduser.UnityPort
             var p=Simulation.Player;var aim=view.ScreenToWorldPoint(Input.mousePosition);
             float x=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
             float y=(Input.GetKey(KeyCode.S)?1:0)-(Input.GetKey(KeyCode.W)?1:0);
-            Simulation.Tick(x,y,aim.x*100,-aim.y*100,Input.GetMouseButton(0)&&!skillInputFence&&!NativeHud.PointerOverSlots(Input.mousePosition),Input.GetKey(KeyCode.R));
+            Simulation.Tick(x,y,aim.x*100,-aim.y*100,SkillUiState.AttackHeld(Input.GetMouseButton(0),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition),p.KiChargeActive),Input.GetKey(KeyCode.R));
             DispatchFeedback();
             if(p.Hp<=0){Running=false;Toast("쓰러졌습니다");}
             if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의 +4");}

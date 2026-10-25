@@ -2,6 +2,9 @@ using System;using System.IO;using System.Linq;using System.Text.Json;using Exod
 class Program {
  static int passed;static void Check(bool ok,string name){if(!ok)throw new Exception(name);passed++;}
  static int Main(){var options=new JsonSerializerOptions{IncludeFields=true};var data=JsonSerializer.Deserialize<SkillUiData>(File.ReadAllText("../../Assets/Exoduser/Resources/Data/skill_ui.json"),options);
+ Check(!SkillUiState.AttackHeld(true,false,true,false),"UI slot blocks new attack");
+ Check(SkillUiState.AttackHeld(true,true,true,true),"existing charge follows held input across UI guards");
+ Check(!SkillUiState.AttackHeld(false,true,true,true),"actual release ends charge");
  Check(data.slots.Select(s=>s.key).SequenceEqual(new[]{"1","2","3","4","F","Z","LMB","RMB","Shift","E","Q","Ctrl","Space"}),"source slot order");Check(data.skill.id=="kiSlash"&&data.skill.description.Contains("2초"),"source description");
  var sim=new Simulation(SourceStarterFixture.CreateBasicWeapon());sim.Player.Hp=113;sim.Player.Stamina=61;sim.Player.Mana=47;sim.Player.Experience=4;sim.Materials=123;
  string before=JsonSerializer.Serialize(sim.Player,options);int ticks=sim.TickCount;

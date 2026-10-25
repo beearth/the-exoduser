@@ -6,6 +6,8 @@ namespace Exoduser.UnityPort.Core {
  // UI admission only. The existing Simulation owns attacks, costs, timing and damage.
  public static class SkillUiState {
   public const int LmbSlot=6,SlotCount=13;
+  // UI guards prevent a new attack, but only an actual button release ends an existing charge.
+  public static bool AttackHeld(bool held,bool releaseFence,bool overSlot,bool charging)=>held&&(charging||(!releaseFence&&!overSlot));
   public static float StaminaCost(Simulation sim)=>sim.Config.ActiveAttack=="kiSlash"?10+(Math.Max(1,sim.Config.KiSlashLevel)-1)*2:5;
   public static bool TryEquipKiSlash(Simulation sim,int slot){
    if(sim==null||slot!=LmbSlot||sim.Player.Hp<=0||sim.Player.State!="idle"||sim.Player.KiChargeActive)return false;
