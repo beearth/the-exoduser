@@ -41,8 +41,18 @@ write는 35/45/FPS144, 연속 fullscreen false→true 후 저장한다. read는 
 "$APP" --unity-settings-persistence-smoke -output "$Q/invalid" -settings-phase invalid
 ```
 
-각 phase JSON은 실제 targetFrameRate/vSync/fullscreen, SFX AudioSource.volume, lobby BGM AudioSource.volume 및 relative gain과 모델 일치를 판정한다. display/audio PNG 뒤 native movie/audio callback을 닫고 1초 drain 후 종료한다. 이 fixture는 production callback을 통한 scripted 좁은 인수이며 OS 키보드/마우스 입력이나 전체 pause/HUD suite를 대신하지 않는다. ROOT의 실제 Player phase/화면/키보드 인수는 아직 별도 대기다. QA 후 동일 source normal identity build도 ROOT가 수행한다.
+각 phase JSON은 실제 targetFrameRate/vSync/fullscreen, SFX AudioSource.volume, lobby BGM AudioSource.volume 및 relative gain과 모델 일치를 판정한다. display/audio PNG 뒤 native movie/audio callback을 닫고 1초 drain 후 종료한다. 이 fixture는 production callback을 통한 scripted 좁은 인수이며 OS 키보드/마우스 입력이나 전체 pause/HUD suite를 대신하지 않는다. 실제 Player와 화면의 최종 인수는 아래 결과를 따른다. 새 OS 입력 검사는 반복하지 않고 기존 키보드 인수를 유지한다.
 
 ROOT 실제 QA identity ARM64 빌드는 오류 0, write/read/write-failure host 검사는 각각 9/9/10 PASS였다. 최초 fixture PNG는 lobby blocking으로 설정 UI가 가려져 화면 인수에 실패했다. fixture만 오디오 측정값을 먼저 보존한 뒤 기존 SelectPreview/EnterNativeTest 경로로 입장하고 menu=true/Running=false/ShowSettings를 적용하도록 보정했다. 렌더 프레임 대기 및 preview 성공·!lobby.IsBlocking·SettingsOpen assertion 후 display/audio를 촬영한다. production scene/audio 동작 변경은 없다. ROOT는 수정 source의 defaults/invalid에서 실제 설정 UI를 추가 인수한다. 기존 순수/host 통과 검사는 반복하지 않는다.
 
-로드 실패 후 사용자 변경 저장이 NotLoaded로 거부될 때 최초 InvalidData/UnsupportedVersion 등 구체 상태를 보존하도록 host flush를 보정했다. invalid fixture는 기본60/60/120 확인 후 실제 SFX25 변경·flush를 호출하여 원래 오류+문제 안내 유지/손상 primary bytes 불변/live25와 후속 실제 AudioSource gain 일치를 확인한다. unknown 파일 덮어쓰기 금지는 유지한다. 이 경로는 ROOT의 신규 invalid Player 인수 대상이며 기존 통과 suite를 반복하지 않는다.
+로드 실패 후 사용자 변경 저장이 NotLoaded로 거부될 때 최초 InvalidData/UnsupportedVersion 등 구체 상태를 보존하도록 host flush를 보정했다. invalid fixture는 기본60/60/120 확인 후 실제 SFX25 변경·flush를 호출하여 원래 오류+문제 안내 유지/손상 primary bytes 불변/live25와 후속 실제 AudioSource gain 일치를 확인한다. unknown 파일 덮어쓰기 금지는 유지한다. 아래 최종 invalid 인수를 완료했으며 기존 통과 suite를 반복하지 않았다.
+
+## ROOT 최종 인수
+
+최종 제품 source `9d587ca157478c2a131eddb3c64346a08396a9a1`. 정상 identity ARM64 빌드 오류0 / 1,971,682,318 bytes. 일반 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-SETTINGS-PERSISTENCE-20261026/build-settings-release/EXODUSER-Unity.app`이다. 기존 사용자 앱38141/48476/52157은 보존했고 새 일반본으로 자동 재시작하지 않았다. [전체 영수증](UNITY_MAC_SETTINGS_PERSISTENCE_ACCEPTANCE_20261026.json).
+
+실제 별도 QA 프로세스6회·63/63 PASS: write9/read9/write-failure10은 d1733584b, defaults9는 캡처 보정 a8c9d6240, 손상13/범위초과13은 최종9d587ca15다. 최초35/45/FPS144/fullscreen=true가 종료 후 새 프로세스에서 실제 AudioSource gain·targetFrameRate/vSync·Screen.fullScreen까지 일치했다. Busy 실패는 disk bytes와 live SFX25를 유지했다. 실제 기본값 메뉴 callback은60/60/0(-1 host), fullscreen 유지와 disk revision2를 확인했다. 손상/범위초과는60/60/120으로 부팅하며 이후 SFX25 변경에도 오류 안내와 원본 bytes를 보존했다.
+
+초기3회 PNG는 로비가 설정을 가려 시각 증거에서 제외했다. 보정 후 defaults 화면/소리2장 및 invalid 소리1장을 직접 열어 값·저장 성공/오류 안내·하단 버튼의 잘림/겹침 없음을 확인했다. 검수 경로 수정은 제품 입장 흐름 변경이 아니다. 새 OS 입력 PASS로 확대하지 않는다.
+
+QA product/id와 Application.persistentDataPath는 정상본과 분리됐다. 일반 prefs는 전체 QA 이전 hash와 동일하다. 일반 캐릭터 JSON/lock은 별도 write/read 이후 readonly baseline부터 나머지 단계 이후까지 동일했다. 모든 phase는 명시 output만 사용했고 roster store를 열지 않는 assertion을 통과했다. 일반 settings 파일에서 테스트0, 기존 전체 suite·영상·물리 마우스 문제 재시도0.

@@ -1,3 +1,15 @@
+## 2026-10-26 Mac Unity 현재 소유 블록
+
+이 블록이 현재 Mac Unity 작업 상태다. 아래10/25 NEXT/ACTIVE는 완료 당시의 이력이므로 현재 할 일로 재사용하지 않는다.
+
+| 상태 | 현재 단위 / 담당 / 실제 범위 |
+|---|---|
+| COMPLETE | 첫2실습·world-blend HUD 인수 유지. 지원 SFX/BGM·FPS·fullscreen 저장/복원: 모델61+별도write3/read2, 실제 격리 Player6회63/63·성공/오류 설정창 확인. source9d587ca15, 정상 ARM64 errors0. [설정 인수](../UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md) / [최신 실행본](../UNITY_MAC_PLAYABLE_20261025.md) |
+| ACTIVE | ROOT가 설정 저장 단위의 통합docs/원격 복구 마감. 기존 language_pointer(Luna medium)가 다음720p 착용 안내 마침표 단독 줄 문제를 현행 NativeInventoryComparison.cs:43·기존 PNG에서 확인했다. 아직 다음 제품 수정0 |
+| NEXT | 같은 담당이 해당 착용 안내 한 곳만 국소 보정→변경 화면만 인수. 전체 소지품/설정 suite·영상·CUA offscreen 재시도0. 아래 완료 이력 중복 착수0 |
+
+일반 사용자 앱38141/48476/52157·원래 prefs·캐릭터 파일 보존. 검수는 별도 product/id와 명시 output만 사용했다. 첫부팅FPS120/기본값60·60·0/고정60Hz 유지. 웹/Godot/roster/전투save IO·새설정·새팀·자동화·유료생성·PC재가동0.
+
 ## 2026-10-25 Unity web language-menu parity COMPLETE
 
 Bounded menu/input unit; existing storage preserved. [Contract](../UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
