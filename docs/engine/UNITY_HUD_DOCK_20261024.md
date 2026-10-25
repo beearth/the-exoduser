@@ -63,3 +63,6 @@
 | 남은 범위 | 실제OS hover/클릭/스크롤/드래그·게임패드·전체해상도/현지화·HUD작은MP/ST/max글자·전체UI/전체게임인수는별도. 이번도킹PASS가전체UI/인트로재완주PASS는아님 |
 
 모든 상대 검수 경로는 I:/EXODUSER-Storage/qa/unity-ui-dock-20261024 기준이다. 최종 로컬/원격tree·복구bundle·기존공유상태는 SAVED.json에 기록한다.
+
+
+2026-10-25: K skill UI, 13 slot inspection and live Ki Slash HUD state: [current scope and verification](UNITY_MAC_SKILL_UI_20261025.md). Other skill executors remain unavailable.

@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
-        NativePauseMenu pauseMenu;NativeSettingsState settings;
+        NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;bool skillsWasRunning,skillInputFence;
         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
         bool basicWeaponMode;
         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
-            hud=new NativeHud();
+            hud=new NativeHud();skills=new NativeSkills();hud.SlotSelected=slot=>{if(!menu&&Simulation.Player.Hp>0)SetSkills(true,slot);};
             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
             BuildProps();
             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
@@ -64,9 +64,10 @@ namespace Exoduser.UnityPort
                 SetSfxPercent,SetBgmPercent,SetFrameCap,
                 value=>Screen.fullScreenMode=value?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed);
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             if(!legacyFixture){Running=false;lobby.Begin();}
-            if(Array.IndexOf(args,"--unity-ui-smoke")>=0){menu=true;Running=false;StartCoroutine(UiSmoke());}
+            if(Array.IndexOf(args,"--unity-skill-smoke")>=0){menu=false;Running=false;StartCoroutine(SkillSmoke());}
+            else if(Array.IndexOf(args,"--unity-ui-smoke")>=0){menu=true;Running=false;StartCoroutine(UiSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-controls-smoke")>=0){lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbyControlsSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-inventory-smoke")>=0){inventorySmoke=true;menu=false;Running=true;StartCoroutine(InventorySmoke());}
@@ -79,7 +80,7 @@ namespace Exoduser.UnityPort
             kiView?.Reset();impacts?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
             Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
-            inventory.Reset();Simulation.ApplyEquipment(inventory.State);
+            inventory.Reset();skills.SetOpen(false);skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
             // World drop item factory and persistent saves remain unimplemented.
             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
@@ -109,11 +110,15 @@ namespace Exoduser.UnityPort
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){Running=false;view.cullingMask=0;return;}
             view.cullingMask=worldMask;
+            if(skillInputFence&&!Input.GetMouseButton(0))skillInputFence=false;
             if(Input.GetKeyDown(KeyCode.Escape)){
+                if(skills.Open){SetSkills(false);return;}
                 if(inventory.Open)SetInventory(false);
                 else if((menu||Simulation.Player.Hp<=0)&&pauseMenu.HandleEscape()){}
                 else {menu=!menu;pauseMenu.Reset();Running=!menu&&Simulation.Player.Hp>0;}
             }
+            if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
+            if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.K)){SetSkills(true);return;}
             if(!menu&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.Tab))SetInventory(!inventory.Open);
             if(!menu&&!inventory.Open&&Input.GetKeyDown(KeyCode.R))Toast("드랍 아이템 생성 이식 대기");
             if(!menu&&!inventory.Open&&(Input.GetKeyDown(KeyCode.Q)||Input.GetKeyDown(KeyCode.E)))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
@@ -126,7 +131,7 @@ namespace Exoduser.UnityPort
             var p=Simulation.Player;var aim=view.ScreenToWorldPoint(Input.mousePosition);
             float x=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
             float y=(Input.GetKey(KeyCode.S)?1:0)-(Input.GetKey(KeyCode.W)?1:0);
-            Simulation.Tick(x,y,aim.x*100,-aim.y*100,Input.GetMouseButton(0),Input.GetKey(KeyCode.R));
+            Simulation.Tick(x,y,aim.x*100,-aim.y*100,Input.GetMouseButton(0)&&!skillInputFence&&!NativeHud.PointerOverSlots(Input.mousePosition),Input.GetKey(KeyCode.R));
             DispatchFeedback();
             if(p.Hp<=0){Running=false;Toast("쓰러졌습니다");}
             if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의 +4");}
@@ -219,6 +224,7 @@ namespace Exoduser.UnityPort
         void OnGUI()
         {
             if(Simulation==null||lobby!=null&&lobby.IsBlocking)return;
+            if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
             var p=Simulation.Player;
@@ -228,7 +234,7 @@ namespace Exoduser.UnityPort
             Panel(new Rect(statusX,0,316,124));GUI.Label(new Rect(statusX+20,12,276,32),"1장 · 썩은 숲",label);
             GUI.Label(new Rect(statusX+20,47,276,30),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,small);
             GUI.Label(new Rect(statusX+20,77,276,30),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,small);
-            hud.Draw(hudWidth,Screen.height/hudScale,basicWeaponMode?"weapon":"kiSlash");GUI.matrix=baseMatrix;
+            hud.Draw(hudWidth,Screen.height/hudScale,Simulation.Config.ActiveAttack,Simulation);GUI.matrix=baseMatrix;
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.HurtTicks<=0)continue;var pt=ToGUI(e.X,e.Y);Fill(new Rect(pt.x-42,pt.y-85,84,6),new Color(.12f,.08f,.07f));Fill(new Rect(pt.x-42,pt.y-85,84*Mathf.Clamp01((float)e.Hp/e.MaxHp),6),new Color(.66f,.12f,.08f));if(e.Shield>0)Fill(new Rect(pt.x-42,pt.y-93,84*e.Shield/e.MaxShield,4),new Color(.2f,.55f,.8f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
@@ -239,6 +245,12 @@ namespace Exoduser.UnityPort
             }
             GUI.matrix=old;
         }
+        void SetSkills(bool open,int slot=6){
+            if(open){skillsWasRunning=Running;Running=false;}
+            skills.SetOpen(open,slot);
+            if(!open){skillInputFence=true;Running=skillsWasRunning&&!menu&&Simulation.Player.Hp>0;}
+        }
+        void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);}
         void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);}
         void SetFrameCap(int cap){if(settings.TrySetFrameCap(cap))ApplyFrameCap(cap);}

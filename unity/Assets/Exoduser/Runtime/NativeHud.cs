@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
         public bool cornerTransparent,hpRed,hpUpperEmpty,hpLowerRed,manaBlue,manaUpperEmpty,staminaGreen,hpEmpty,manaEmpty,staminaEmpty;
     }
     // Source artwork and resource projection, in a compact central group.
-    public sealed class NativeHud : IDisposable
+    public sealed partial class NativeHud : IDisposable
     {
         readonly Material material;
         readonly RenderTexture hp,mana,shield,eye;
@@ -76,7 +76,7 @@ namespace Exoduser.UnityPort
             keyLabel=new GUIStyle(GUI.skin.label){font=Required<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=18,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(.85f,.80f,.69f);
             tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(.92f,.84f,.68f);
         }
-        public void Draw(float width,float height,string activeAttack)
+        public void Draw(float width,float height,string activeAttack,Simulation simulation=null)
         {
             if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
             const float scale=NativeHudDockLayout.ArtScale;
@@ -89,9 +89,10 @@ namespace Exoduser.UnityPort
             if(activeAttack=="kiSlash"){
                 var insetIcon=new Rect(lmb.x+3*scale,lmb.y+3*scale,lmb.width-6*scale,lmb.height-6*scale);
                 GUI.DrawTexture(insetIcon,icon,ScaleMode.ScaleToFit,true);if(Event.current.type==EventType.Repaint)IconDrawn=true;
-                if(lmb.Contains(Event.current.mousePosition))GUI.Box(new Rect(mid-150,slotBar.y-34,300,30),"기검참 · 좌클릭 3타 홀드 차지",tooltip);
+
             }
             DrawKeyLabels(slotBar,height);
+            DrawSkillSlots(dock,width,height,simulation);
             // Existing input executors own the other slots. No invented skill icons.
         }
         void DrawKeyLabels(Rect barRect,float height)

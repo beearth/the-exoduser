@@ -36,3 +36,6 @@
 
 
 2026-10-25 후속: 양측 도킹에 선택/착용 장비 비교와 상세 탭, 별도 일시정지·설정 화면 연결. 현재 구현과 실제 통합 검수는 [장비 비교·설정](UNITY_MAC_INVENTORY_SETTINGS_20261025.md)을 따른다. 전체 비교·전체 설정 이식 완료라는 뜻은 아니다.
+
+
+2026-10-25: K skill UI, 13 slot inspection and live Ki Slash HUD state: [current scope and verification](UNITY_MAC_SKILL_UI_20261025.md). Other skill executors remain unavailable.

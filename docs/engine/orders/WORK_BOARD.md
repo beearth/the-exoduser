@@ -1,5 +1,9 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-25 Mac skill UI ACTIVE
+
+K panel / source 13 slots / Ki Slash state and charge HUD implemented. New 31 checks passed; new Player verification pending. [Scope](../UNITY_MAC_SKILL_UI_20261025.md). Next: character creation and slot session boundaries.
+
 ## 2026-10-25 Mac 장비 비교·일시정지 설정 통합
 
 **이번 단위 완료:** 장비 비교156·지원 설정66·실제 Player15검사 통과, ARM64 build 오류0·화면8장 확인. OS 직접 메뉴 입력과 전체화면 전환은 미검수. **NEXT:** 스킬·퀵슬롯 → 캐릭터 생성·슬롯 → 남은 메뉴. 기존 담당이 원본/기존 기능 범위부터 연결하며 새 자동화·신규 팀을 만들지 않는다. [통합 범위](../UNITY_MAC_INVENTORY_SETTINGS_20261025.md). 언어 해상도 진단은 [근거 보존](../UNITY_MAC_LANGUAGE_DIAGNOSTICS_20261025.md) 후 마감, 자동 마우스/본문 글꼴·RTL은 미완료. 영상·offset·저장·PC·자동화 변경0.

@@ -1,0 +1,103 @@
+{
+  "sourceSha256": "ba930ad54520047fc260307c77c0dd14843fcf37dea2e117631f7a26e7aadeb8",
+  "forgeSha256": "ef68ac45d6d05805f7f088eba7a1daff2f1158fcdd6177f0a7f501ea3add11a0",
+  "skill": {
+    "id": "kiSlash",
+    "name": "기검참",
+    "description": "좌클 스킬: 3단 검기. 3타를 홀드해 2초에 걸쳐 최대 3단 충전(약 0.67초당 1단). 검기 피해 2/4/8배, 놓으면 발사. ST 10+Lv당2. 거리+15px/Lv",
+    "descriptionEn": "LMB skill: 3-hit ki blade. Hold the third hit to charge up to stage 3 over 2 seconds (one stage every ~0.67s). Blade damage ×2/×4/×8; release to fire. ST 10+2/Lv; +15px range/Lv"
+  },
+  "slots": [
+    {
+      "key": "1",
+      "kind": "num",
+      "index": 0,
+      "definition": "",
+      "variable": ""
+    },
+    {
+      "key": "2",
+      "kind": "num",
+      "index": 1,
+      "definition": "",
+      "variable": ""
+    },
+    {
+      "key": "3",
+      "kind": "num",
+      "index": 2,
+      "definition": "",
+      "variable": ""
+    },
+    {
+      "key": "4",
+      "kind": "num",
+      "index": 3,
+      "definition": "",
+      "variable": ""
+    },
+    {
+      "key": "F",
+      "kind": "num",
+      "index": 5,
+      "definition": "",
+      "variable": ""
+    },
+    {
+      "key": "Z",
+      "kind": "ult",
+      "index": -1,
+      "definition": "",
+      "variable": ""
+    },
+    {
+      "key": "LMB",
+      "kind": "fixed",
+      "index": -1,
+      "definition": "lmb",
+      "variable": "activeLMBSk"
+    },
+    {
+      "key": "RMB",
+      "kind": "fixed",
+      "index": -1,
+      "definition": "rmb",
+      "variable": "activeRMBSk"
+    },
+    {
+      "key": "Shift",
+      "kind": "fixed",
+      "index": -1,
+      "definition": "charge",
+      "variable": "activeChargeSk"
+    },
+    {
+      "key": "E",
+      "kind": "fixed",
+      "index": -1,
+      "definition": "magic",
+      "variable": "activeMagicSk"
+    },
+    {
+      "key": "Q",
+      "kind": "fixed",
+      "index": -1,
+      "definition": "q",
+      "variable": "activeQSk"
+    },
+    {
+      "key": "Ctrl",
+      "kind": "fixed",
+      "index": -1,
+      "definition": "ct",
+      "variable": "activeCtSk"
+    },
+    {
+      "key": "Space",
+      "kind": "num",
+      "index": 4,
+      "definition": "",
+      "variable": ""
+    }
+  ]
+}
