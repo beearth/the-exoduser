@@ -1,10 +1,20 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 namespace Exoduser.UnityPort
 {
  public sealed partial class NativeGame
  {
   bool frontendEntryInputFence;
+  readonly Dictionary<SpriteRenderer,bool> startupEnemyRendererVisibility=new Dictionary<SpriteRenderer,bool>();
+  void LateUpdate()
+  {
+   // Presentation only: apply after both Update methods and before the camera renders.
+   bool hide=lobby!=null&&lobby.StartupEntryActive&&lobby.StartupStage=="Guide";
+   if(hide){foreach(var enemy in enemies.Values){MaskStartupEnemyRenderer(enemy.body);MaskStartupEnemyRenderer(enemy.walk);}}
+   else if(startupEnemyRendererVisibility.Count>0){foreach(var saved in startupEnemyRendererVisibility)if(saved.Key!=null)saved.Key.enabled=saved.Value;startupEnemyRendererVisibility.Clear();}
+  }
+  void MaskStartupEnemyRenderer(SpriteRenderer renderer){if(renderer==null)return;if(!startupEnemyRendererVisibility.ContainsKey(renderer))startupEnemyRendererVisibility.Add(renderer,renderer.enabled);renderer.enabled=false;}
   void PrepareStartupGameplay(){ResetRun();pauseMenu.Reset();menu=false;Running=false;}
   void EnterFromLobby()
   {

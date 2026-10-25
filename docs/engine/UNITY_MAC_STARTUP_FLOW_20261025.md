@@ -69,3 +69,5 @@ GUI depth 경계: `DrawStartupEntry`는 진입 당시 `GUI.depth`를 저장하�
 | 전투/저장 경계 | 새 bonfire 보호효과·반경 판정·t·무적·스폰·세이브 값 변경0. barrier는 source bitmap을 그리는 presentation에만 존재. 기존 준비된 Simulation은 전환900ms 동안 정지 |
 | 좌표 보정 | clip group 안 GUI.matrix/TRS를 제거. 최종 glyph font만 GUIStyle 정수pixel로 반올림(최대.5px)하며 기존 physical box·line-height·letterspacing과 text/rule/button 좌표계를 통일 |
 | gradient 보정 | 다수 translucent strip의1px 겹침 제거. subtitle256pixel/guide512pixel bilinear clamp texture 각각 단1회draw. 동적 texture는 OnDestroy에서 모두 해제 |
+
+2026-10-25 최종 안내 표현 경계: source `_startIntro`의 적 비표시→안내 종료 후 표시를 맞추기 위해 NativeGame.StartupFlow의 LateUpdate에서 Guide 동안 enemy body/walk SpriteRenderer만 숨긴다. 각 renderer의 기존 enabled 값을 저장하고 Curtain 첫 렌더 전에 복원한다. Simulation의 기존5spawn·좌표·HP·계산·ResetRun1회·플레이어/props/HUD는 변경하지 않는다. 기존20검사 재실행 없이 총괄이 변경 guide→curtain PNG를 재인수한다.

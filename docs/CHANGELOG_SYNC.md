@@ -57112,3 +57112,5 @@ world_intro_v22b_steam.mp4/102204634B/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb
 2026-10-25 캐릭터 잠금 표시: 정적 keyart 3종 체인을 중앙 대형 표시에서 source CSS의 하단 72px 체인/라벨로 조정; Silvertail 중앙 체인은 유지. 통합 캡처 대기.
 2026-10-25 최초안내 시각 보정: actual PNG의 scroll 글자 원점과 gradient 겹침 줄을 수정하고, 실제 웹의 native world+bonfire_barrier560px presentation 및 display:none curtain 경계를 반영. 원본bitmapSHA·데이터ledger 보존, 전투보호효과0변경; 변경 화면만 총괄 재검수.
 2026-10-25 정적 keyart 체인 위치: 잠금 체인/라벨을 icon rail 아래 viewport 하단에서 stage 내부 하단으로 이동, source 간격 적용. 통합 캡처 대기.
+
+2026-10-25 최초안내 최종 표현: Guide 동안 적 body/walk renderer만 숨기고 Curtain 첫 프레임에 이전 enabled값 복원; Simulation5spawn/전투수치/ResetRun·플레이어·props·HUD 변경0. 변경 guide/curtain 화면은 총괄 재인수.
