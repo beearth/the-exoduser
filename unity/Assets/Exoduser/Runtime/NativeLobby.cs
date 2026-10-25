@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort
   public void ReplayIntro(){WorldEndedNaturally=false;active=true;splash=0;Flow.Replay();OpenForPage();}
   public void SelectPreview(){Flow.SelectPreview();}
   public bool EnterNativeTest(){if(!Flow.EnterTest())return false;movie.Close();StopMusic();enter?.Invoke();return true;}
-  public void SetLanguage(string code){if(subtitles!=null)foreach(var language in subtitles.captions)if(language.code==code){Language=code;return;}if(code=="ko"||code=="en")Language=code;}
+  public void SetLanguage(string code){code=LobbyLanguage.Normalize(code);if(subtitles!=null&&subtitles.captions!=null)foreach(var language in subtitles.captions)if(language.code==code){Language=code;return;}if(code=="ko"||code=="en")Language=code;}
   public void SetMix(float voice,float bgm){Flow.SetMix(voice,bgm);musicDucked=true;music.volume=(float)Flow.MusicGain;movie.Volume((float)Flow.VoiceGain);}
   public void NextCut(){if(Flow.Page!=LobbyPage.WorldIntro||!movie.Prepared)return;double next=Flow.NextCut(movie.Time);if(next<0)FinishIntro();else movie.Seek(next);}
   public void TogglePlayback(){if(Flow.Page!=LobbyPage.WorldIntro)return;if(VideoError.Length>0){OpenForPage();return;}movie.Toggle();if(movie.Player!=null&&movie.Player.isPlaying)music.UnPause();else music.Pause();}
@@ -103,8 +103,10 @@ namespace Exoduser.UnityPort
    else Fill(new Rect(1360,0,560,1080),new Color(.063f,.051f,.055f));
    // Source full/offline layout at1920x1080; user slots are deliberately never read.
    Fill(new Rect(1388,151.5f,140,27),new Color(.039f,.024f,.008f,.8f));Border(new Rect(1388,151.5f,140,27),new Color(.471f,.314f,.157f,.4f),1);
-   Label(new Rect(1399,151.5f,115,27),Language=="ko"?"한국어":"English",lobbyMicro,TextAnchor.MiddleLeft);var chevron=new Color(.722f,.639f,.525f);Line(new Vector2(1504,162),new Vector2(1508,166),chevron,1.5f);Line(new Vector2(1508,166),new Vector2(1512,162),chevron,1.5f);
-   if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))SetLanguage(Language=="ko"?"en":"ko");
+   Label(new Rect(1399,151.5f,115,27),K("자막: 한국어","Subtitles: "+Language.ToUpperInvariant()),lobbyMicro,TextAnchor.MiddleLeft);var chevron=new Color(.722f,.639f,.525f);Line(new Vector2(1504,162),new Vector2(1508,166),chevron,1.5f);Line(new Vector2(1508,166),new Vector2(1512,162),chevron,1.5f);
+   if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))showLanguages=!showLanguages;
+   Label(new Rect(1544,151.5f,230,27),K("메뉴: 한국어","Menu: English"),lobbyMicro,TextAnchor.MiddleLeft);
+   GUI.enabled=previousEnabled&&!showLanguages;
    Label(new Rect(1536,157,340,16),"OFFLINE",lobbyMode,TextAnchor.MiddleRight);
    Image(new Rect(1388,195,488,104),brand);
    for(int i=0;i<2;i++)
@@ -115,21 +117,34 @@ namespace Exoduser.UnityPort
    }
    Rect create=new Rect(1392,503,480,64);Fill(create,new Color(.105f,.09f,.095f,.94f));DashedBorder(create,new Color(.588f,.443f,.306f));
    Border(new Rect(1409,515,40,40),new Color(.47f,.38f,.26f),1);Label(new Rect(1409,515,40,40),"+",lobbyPlus,TextAnchor.MiddleCenter);Label(new Rect(1461,515,395,40),K("새 캐릭터","New character"),lobbyText,TextAnchor.MiddleLeft);
-   GUI.enabled=false;GUI.Button(create,"",GUIStyle.none);GUI.enabled=previousEnabled;
+   GUI.enabled=false;GUI.Button(create,"",GUIStyle.none);GUI.enabled=previousEnabled&&!showLanguages;
    Label(new Rect(1392,570,480,18),K("캐릭터 생성과 저장은 아직 지원되지 않습니다.","Character creation and saving are not yet available."),lobbyMicro,TextAnchor.MiddleCenter);
    Label(new Rect(1392,591,480,57),K("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다","Every Steam wishlist helps\nEXODUSER: HELL LORD\nbegin its next journey"),lobbyPromo,TextAnchor.MiddleCenter);
    Label(new Rect(1392,653,480,16),K("공식 출시 소식을 가장 먼저 받아보세요","Be the first to hear about the official release"),lobbyPromoDetail,TextAnchor.MiddleCenter);
    Image(new Rect(1532,674,200,44),lobbyBanner);if(GUI.Button(new Rect(1532,674,200,44),"",GUIStyle.none))Application.OpenURL("https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/");
    Fill(new Rect(1388,740,504,1),new Color(.588f,.443f,.306f,.333f));
    var tint=GUI.color;if(disabledEnter!=null)Image(new Rect(1392,751,496,132),disabledEnter);else{GUI.color=new Color(.45f,.45f,.45f);Image(new Rect(1392,751,496,132),enterButton);GUI.color=tint;}
-   GUI.enabled=false;GUI.Button(new Rect(1392,751,496,132),"",GUIStyle.none);GUI.enabled=previousEnabled;
+   GUI.enabled=false;GUI.Button(new Rect(1392,751,496,132),"",GUIStyle.none);GUI.enabled=previousEnabled&&!showLanguages;
    Label(new Rect(1388,897,180,32),K("▶ 시네마틱","▶ Cinematic"),lobbyMicro,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1388,897,180,32),"",GUIStyle.none))ReplayIntro();
    DrawPower(new Rect(1856,895,36,36));if(GUI.Button(new Rect(1856,895,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
    // Keep the existing disposable preview explicit without covering the cinematic.
    Rect preview=new Rect(1392,962,480,48);Fill(preview,new Color(.105f,.09f,.095f,.94f));Border(preview,new Color(.4f,.32f,.24f,.7f),1);
    Label(preview,K("플레이 미리보기","Play preview"),lobbyText,TextAnchor.MiddleCenter);if(GUI.Button(preview,"",GUIStyle.none)){SelectPreview();EnterNativeTest();}
    Label(new Rect(1392,1018,480,24),K("미리보기의 진행 상황은 저장되지 않습니다.","Preview progress is not saved."),lobbyMicro,TextAnchor.MiddleCenter);
+   GUI.enabled=previousEnabled;if(showLanguages)DrawLobbyLanguages();
    if(lobbyQuitPrompt){Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.75f));Fill(new Rect(710,427,500,226),new Color(.063f,.051f,.055f));Border(new Rect(710,427,500,226),new Color(.4f,.32f,.24f),1);Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),normal,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(755,552,180,48),K("취소","Cancel"),button))lobbyQuitPrompt=false;if(GUI.Button(new Rect(985,552,180,48),K("종료","Quit"),button))Application.Quit();}
+  }
+  void DrawLobbyLanguages()
+  {
+   var panel=new Rect(1388,187,488,268);Fill(panel,new Color(.063f,.051f,.055f,.99f));Border(panel,new Color(.588f,.443f,.306f),1);
+   Label(new Rect(1400,193,464,28),K("자막 언어","Subtitle language"),lobbyText,TextAnchor.MiddleLeft);
+   if(subtitles==null||subtitles.captions==null)return;
+   for(int i=0;i<LobbyLanguage.Count;i++){
+    string code=LobbyLanguage.GetCode(i);var option=new Rect(1400+(i%5)*92,227+(i/5)*36,84,30);
+    Fill(option,new Color(.105f,.09f,.095f));Border(option,code==Language?new Color(.85f,.67f,.4f):new Color(.4f,.32f,.24f,.55f),1);
+    Label(option,code.ToUpperInvariant(),lobbyText,TextAnchor.MiddleCenter);
+    if(GUI.Button(option,"",GUIStyle.none)){SetLanguage(code);showLanguages=false;}
+   }
   }
   void DrawLobbyBackground()
   {

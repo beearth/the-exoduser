@@ -1,0 +1,931 @@
+{
+  "catalogue": [
+    [
+      "ko",
+      "한국어"
+    ],
+    [
+      "en",
+      "English"
+    ],
+    [
+      "zh",
+      "中文简体"
+    ],
+    [
+      "zht",
+      "繁體中文"
+    ],
+    [
+      "ja",
+      "日本語"
+    ],
+    [
+      "vi",
+      "Tiếng Việt"
+    ],
+    [
+      "th",
+      "ไทย"
+    ],
+    [
+      "id",
+      "Bahasa Indonesia"
+    ],
+    [
+      "ms",
+      "Bahasa Melayu"
+    ],
+    [
+      "es",
+      "Español (España)"
+    ],
+    [
+      "fr",
+      "Français"
+    ],
+    [
+      "it",
+      "Italiano"
+    ],
+    [
+      "ptbr",
+      "Português (Brasil)"
+    ],
+    [
+      "ro",
+      "Română"
+    ],
+    [
+      "de",
+      "Deutsch"
+    ],
+    [
+      "nl",
+      "Nederlands"
+    ],
+    [
+      "sv",
+      "Svenska"
+    ],
+    [
+      "da",
+      "Dansk"
+    ],
+    [
+      "no",
+      "Norsk"
+    ],
+    [
+      "ru",
+      "Русский"
+    ],
+    [
+      "uk",
+      "Українська"
+    ],
+    [
+      "pl",
+      "Polski"
+    ],
+    [
+      "cs",
+      "Čeština"
+    ],
+    [
+      "hu",
+      "Magyar"
+    ],
+    [
+      "bg",
+      "Български"
+    ],
+    [
+      "el",
+      "Ελληνικά"
+    ],
+    [
+      "fi",
+      "Suomi"
+    ],
+    [
+      "tr",
+      "Türkçe"
+    ],
+    [
+      "ar",
+      "العربية"
+    ]
+  ],
+  "cases": [
+    {
+      "input": null,
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "en-US",
+      "resolve": "en",
+      "normalize": "en"
+    },
+    {
+      "input": "ko_KR",
+      "resolve": "ko",
+      "normalize": "ko"
+    },
+    {
+      "input": "zh-Hant",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zh_Hant_TW",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zh-TW",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zh-HK",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zh-MO",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zh-Hans",
+      "resolve": "zh",
+      "normalize": "zh"
+    },
+    {
+      "input": "zh-CN",
+      "resolve": "zh",
+      "normalize": "zh"
+    },
+    {
+      "input": "pt",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "pt-PT",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "pt_BR",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "pt-unknown",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "ptbr",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "nb",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "nb-NO",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "nn",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "nn_NO",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "no-NO",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "zht",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zht-TW",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zh-hantx",
+      "resolve": "zh",
+      "normalize": "zh"
+    },
+    {
+      "input": "zh-twfoo",
+      "resolve": "zh",
+      "normalize": "zh"
+    },
+    {
+      "input": "nbx",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "nnx",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "ptbrx",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "xx",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "unknown",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": " en",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "en ",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "en-US-extra",
+      "resolve": "en",
+      "normalize": "en"
+    },
+    {
+      "input": "ar-SA",
+      "resolve": "ar",
+      "normalize": "ar"
+    },
+    {
+      "input": "fi-FI",
+      "resolve": "fi",
+      "normalize": "fi"
+    },
+    {
+      "input": "tr-TR",
+      "resolve": "tr",
+      "normalize": "tr"
+    },
+    {
+      "input": "EN_us",
+      "resolve": "en",
+      "normalize": "en"
+    },
+    {
+      "input": "ko-",
+      "resolve": "ko",
+      "normalize": "ko"
+    },
+    {
+      "input": "-en",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "_ko",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "İ",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "EN\n",
+      "resolve": null,
+      "normalize": "en"
+    },
+    {
+      "input": "pt-",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "zh-hant-",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "nb-",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "ko",
+      "resolve": "ko",
+      "normalize": "ko"
+    },
+    {
+      "input": "KO",
+      "resolve": "ko",
+      "normalize": "ko"
+    },
+    {
+      "input": "ko-XX",
+      "resolve": "ko",
+      "normalize": "ko"
+    },
+    {
+      "input": "ko_XX",
+      "resolve": "ko",
+      "normalize": "ko"
+    },
+    {
+      "input": "en",
+      "resolve": "en",
+      "normalize": "en"
+    },
+    {
+      "input": "EN",
+      "resolve": "en",
+      "normalize": "en"
+    },
+    {
+      "input": "en-XX",
+      "resolve": "en",
+      "normalize": "en"
+    },
+    {
+      "input": "en_XX",
+      "resolve": "en",
+      "normalize": "en"
+    },
+    {
+      "input": "zh",
+      "resolve": "zh",
+      "normalize": "zh"
+    },
+    {
+      "input": "ZH",
+      "resolve": "zh",
+      "normalize": "zh"
+    },
+    {
+      "input": "zh-XX",
+      "resolve": "zh",
+      "normalize": "zh"
+    },
+    {
+      "input": "zh_XX",
+      "resolve": "zh",
+      "normalize": "zh"
+    },
+    {
+      "input": "ZHT",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zht-XX",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "zht_XX",
+      "resolve": "zht",
+      "normalize": "zht"
+    },
+    {
+      "input": "ja",
+      "resolve": "ja",
+      "normalize": "ja"
+    },
+    {
+      "input": "JA",
+      "resolve": "ja",
+      "normalize": "ja"
+    },
+    {
+      "input": "ja-XX",
+      "resolve": "ja",
+      "normalize": "ja"
+    },
+    {
+      "input": "ja_XX",
+      "resolve": "ja",
+      "normalize": "ja"
+    },
+    {
+      "input": "vi",
+      "resolve": "vi",
+      "normalize": "vi"
+    },
+    {
+      "input": "VI",
+      "resolve": "vi",
+      "normalize": "vi"
+    },
+    {
+      "input": "vi-XX",
+      "resolve": "vi",
+      "normalize": "vi"
+    },
+    {
+      "input": "vi_XX",
+      "resolve": "vi",
+      "normalize": "vi"
+    },
+    {
+      "input": "th",
+      "resolve": "th",
+      "normalize": "th"
+    },
+    {
+      "input": "TH",
+      "resolve": "th",
+      "normalize": "th"
+    },
+    {
+      "input": "th-XX",
+      "resolve": "th",
+      "normalize": "th"
+    },
+    {
+      "input": "th_XX",
+      "resolve": "th",
+      "normalize": "th"
+    },
+    {
+      "input": "id",
+      "resolve": "id",
+      "normalize": "id"
+    },
+    {
+      "input": "ID",
+      "resolve": "id",
+      "normalize": "id"
+    },
+    {
+      "input": "id-XX",
+      "resolve": "id",
+      "normalize": "id"
+    },
+    {
+      "input": "id_XX",
+      "resolve": "id",
+      "normalize": "id"
+    },
+    {
+      "input": "ms",
+      "resolve": "ms",
+      "normalize": "ms"
+    },
+    {
+      "input": "MS",
+      "resolve": "ms",
+      "normalize": "ms"
+    },
+    {
+      "input": "ms-XX",
+      "resolve": "ms",
+      "normalize": "ms"
+    },
+    {
+      "input": "ms_XX",
+      "resolve": "ms",
+      "normalize": "ms"
+    },
+    {
+      "input": "es",
+      "resolve": "es",
+      "normalize": "es"
+    },
+    {
+      "input": "ES",
+      "resolve": "es",
+      "normalize": "es"
+    },
+    {
+      "input": "es-XX",
+      "resolve": "es",
+      "normalize": "es"
+    },
+    {
+      "input": "es_XX",
+      "resolve": "es",
+      "normalize": "es"
+    },
+    {
+      "input": "fr",
+      "resolve": "fr",
+      "normalize": "fr"
+    },
+    {
+      "input": "FR",
+      "resolve": "fr",
+      "normalize": "fr"
+    },
+    {
+      "input": "fr-XX",
+      "resolve": "fr",
+      "normalize": "fr"
+    },
+    {
+      "input": "fr_XX",
+      "resolve": "fr",
+      "normalize": "fr"
+    },
+    {
+      "input": "it",
+      "resolve": "it",
+      "normalize": "it"
+    },
+    {
+      "input": "IT",
+      "resolve": "it",
+      "normalize": "it"
+    },
+    {
+      "input": "it-XX",
+      "resolve": "it",
+      "normalize": "it"
+    },
+    {
+      "input": "it_XX",
+      "resolve": "it",
+      "normalize": "it"
+    },
+    {
+      "input": "PTBR",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "ptbr-XX",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "ptbr_XX",
+      "resolve": "ptbr",
+      "normalize": "ptbr"
+    },
+    {
+      "input": "ro",
+      "resolve": "ro",
+      "normalize": "ro"
+    },
+    {
+      "input": "RO",
+      "resolve": "ro",
+      "normalize": "ro"
+    },
+    {
+      "input": "ro-XX",
+      "resolve": "ro",
+      "normalize": "ro"
+    },
+    {
+      "input": "ro_XX",
+      "resolve": "ro",
+      "normalize": "ro"
+    },
+    {
+      "input": "de",
+      "resolve": "de",
+      "normalize": "de"
+    },
+    {
+      "input": "DE",
+      "resolve": "de",
+      "normalize": "de"
+    },
+    {
+      "input": "de-XX",
+      "resolve": "de",
+      "normalize": "de"
+    },
+    {
+      "input": "de_XX",
+      "resolve": "de",
+      "normalize": "de"
+    },
+    {
+      "input": "nl",
+      "resolve": "nl",
+      "normalize": "nl"
+    },
+    {
+      "input": "NL",
+      "resolve": "nl",
+      "normalize": "nl"
+    },
+    {
+      "input": "nl-XX",
+      "resolve": "nl",
+      "normalize": "nl"
+    },
+    {
+      "input": "nl_XX",
+      "resolve": "nl",
+      "normalize": "nl"
+    },
+    {
+      "input": "sv",
+      "resolve": "sv",
+      "normalize": "sv"
+    },
+    {
+      "input": "SV",
+      "resolve": "sv",
+      "normalize": "sv"
+    },
+    {
+      "input": "sv-XX",
+      "resolve": "sv",
+      "normalize": "sv"
+    },
+    {
+      "input": "sv_XX",
+      "resolve": "sv",
+      "normalize": "sv"
+    },
+    {
+      "input": "da",
+      "resolve": "da",
+      "normalize": "da"
+    },
+    {
+      "input": "DA",
+      "resolve": "da",
+      "normalize": "da"
+    },
+    {
+      "input": "da-XX",
+      "resolve": "da",
+      "normalize": "da"
+    },
+    {
+      "input": "da_XX",
+      "resolve": "da",
+      "normalize": "da"
+    },
+    {
+      "input": "no",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "NO",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "no-XX",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "no_XX",
+      "resolve": "no",
+      "normalize": "no"
+    },
+    {
+      "input": "ru",
+      "resolve": "ru",
+      "normalize": "ru"
+    },
+    {
+      "input": "RU",
+      "resolve": "ru",
+      "normalize": "ru"
+    },
+    {
+      "input": "ru-XX",
+      "resolve": "ru",
+      "normalize": "ru"
+    },
+    {
+      "input": "ru_XX",
+      "resolve": "ru",
+      "normalize": "ru"
+    },
+    {
+      "input": "uk",
+      "resolve": "uk",
+      "normalize": "uk"
+    },
+    {
+      "input": "UK",
+      "resolve": "uk",
+      "normalize": "uk"
+    },
+    {
+      "input": "uk-XX",
+      "resolve": "uk",
+      "normalize": "uk"
+    },
+    {
+      "input": "uk_XX",
+      "resolve": "uk",
+      "normalize": "uk"
+    },
+    {
+      "input": "pl",
+      "resolve": "pl",
+      "normalize": "pl"
+    },
+    {
+      "input": "PL",
+      "resolve": "pl",
+      "normalize": "pl"
+    },
+    {
+      "input": "pl-XX",
+      "resolve": "pl",
+      "normalize": "pl"
+    },
+    {
+      "input": "pl_XX",
+      "resolve": "pl",
+      "normalize": "pl"
+    },
+    {
+      "input": "cs",
+      "resolve": "cs",
+      "normalize": "cs"
+    },
+    {
+      "input": "CS",
+      "resolve": "cs",
+      "normalize": "cs"
+    },
+    {
+      "input": "cs-XX",
+      "resolve": "cs",
+      "normalize": "cs"
+    },
+    {
+      "input": "cs_XX",
+      "resolve": "cs",
+      "normalize": "cs"
+    },
+    {
+      "input": "hu",
+      "resolve": "hu",
+      "normalize": "hu"
+    },
+    {
+      "input": "HU",
+      "resolve": "hu",
+      "normalize": "hu"
+    },
+    {
+      "input": "hu-XX",
+      "resolve": "hu",
+      "normalize": "hu"
+    },
+    {
+      "input": "hu_XX",
+      "resolve": "hu",
+      "normalize": "hu"
+    },
+    {
+      "input": "bg",
+      "resolve": "bg",
+      "normalize": "bg"
+    },
+    {
+      "input": "BG",
+      "resolve": "bg",
+      "normalize": "bg"
+    },
+    {
+      "input": "bg-XX",
+      "resolve": "bg",
+      "normalize": "bg"
+    },
+    {
+      "input": "bg_XX",
+      "resolve": "bg",
+      "normalize": "bg"
+    },
+    {
+      "input": "el",
+      "resolve": "el",
+      "normalize": "el"
+    },
+    {
+      "input": "EL",
+      "resolve": "el",
+      "normalize": "el"
+    },
+    {
+      "input": "el-XX",
+      "resolve": "el",
+      "normalize": "el"
+    },
+    {
+      "input": "el_XX",
+      "resolve": "el",
+      "normalize": "el"
+    },
+    {
+      "input": "fi",
+      "resolve": "fi",
+      "normalize": "fi"
+    },
+    {
+      "input": "FI",
+      "resolve": "fi",
+      "normalize": "fi"
+    },
+    {
+      "input": "fi-XX",
+      "resolve": "fi",
+      "normalize": "fi"
+    },
+    {
+      "input": "fi_XX",
+      "resolve": "fi",
+      "normalize": "fi"
+    },
+    {
+      "input": "tr",
+      "resolve": "tr",
+      "normalize": "tr"
+    },
+    {
+      "input": "TR",
+      "resolve": "tr",
+      "normalize": "tr"
+    },
+    {
+      "input": "tr-XX",
+      "resolve": "tr",
+      "normalize": "tr"
+    },
+    {
+      "input": "tr_XX",
+      "resolve": "tr",
+      "normalize": "tr"
+    },
+    {
+      "input": "ar",
+      "resolve": "ar",
+      "normalize": "ar"
+    },
+    {
+      "input": "AR",
+      "resolve": "ar",
+      "normalize": "ar"
+    },
+    {
+      "input": "ar-XX",
+      "resolve": "ar",
+      "normalize": "ar"
+    },
+    {
+      "input": "ar_XX",
+      "resolve": "ar",
+      "normalize": "ar"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "index.html",
+      "sha256": "36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12"
+    },
+    {
+      "path": "world-intro-subtitles-data.js",
+      "sha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768"
+    },
+    {
+      "path": "world-intro-subtitles.js",
+      "sha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b"
+    }
+  ]
+}

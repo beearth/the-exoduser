@@ -56977,3 +56977,8 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 ## 2026-10-25 로비 문구·미리보기 정리
 
 - NativeLobby.DrawLobby만 수정. 개발 오버레이 제거, 우측 preview 진입/저장 불가 안내, 생성·정식 ENTER 비활성 유지. 중복 QA 소스/캐시 실패 보존 후 source-only 새 프로젝트 빌드0오류, CUA 실제1920 로비 확인. 기존20/9 suite 재실행0. [기록](engine/UNITY_MAC_LOBBY_COPY_20261025.md).
+
+
+## 2026-10-25 Mac 로비 자막 언어 선택
+
+- 29개 선택 목록, 자막·메뉴 언어 구분, 원본 locale alias/unknown→en을 연결. 순수536 및 NativeLobby42검사, 코드 식별자 렌더와 OS 입력 한계를 구분 기록. [범위·검수](engine/UNITY_MAC_LOBBY_LANGUAGE_20261025.md).

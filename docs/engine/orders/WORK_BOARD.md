@@ -1,5 +1,10 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-25 Mac 로비 자막 선택 완료 → 팝업 조작 진행
+
+로비29선택·메뉴 ko/en 구분, 원본 locale alias/unknown→en 연결. 순수536/536·Native42/42, 원본 목록 순서 수정 후 ARM64 일반 빌드 오류0. 정상 CUA 기본 표시와 probe의 KO/FR/PTBR 렌더를 구분했으며 OS selector 클릭은 미인수. [근거](../UNITY_MAC_LOBBY_LANGUAGE_20261025.md). **NEXT/ACTIVE:** 같은 Mac 담당 NativeLobby 팝업 Esc/바깥 클릭 닫기·키보드 선택·입력 누출 방지. 자국어명/RTL 전체 현지화 미완료. 기존20/9 재검·영상/저장/전투/PC/자동화 변경0.
+
+
 ## 2026-10-25 Mac 로비 표시 완료 → 언어 선택 연결 진행
 
 로비 개발 오버레이 제거/우측 preview·저장 불가 안내 구현, 소스 전용 새 Mac QA에서 build errors0 및 CUA 실제 로비 화면 확인. 기존20/9 suite 재검0. 중복 소스/TypeDB 캐시 실패도 보존. [이번 결과](../UNITY_MAC_LOBBY_COPY_20261025.md). **NEXT/ACTIVE:** 같은 Mac 담당이 NativeLobby 언어 표시/29자막·ko/en메뉴 구분을 연결한다. 지원 담당은 별도 산출물 경로의 순수 locale alias resolver만 소유하며 공유 INDEX/GPU/빌드는 수정하지 않는다. 영상/offset/전투/저장/자동화 변경0.

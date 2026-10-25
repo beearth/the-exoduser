@@ -1,0 +1,235 @@
+{
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-language-final/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406124615
+  },
+  "probeBuild": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-language-probe-final/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406128517
+  },
+  "pure": {
+    "passed": 536,
+    "failed": 0,
+    "scope": "Pure C# versus original JS oracle and original HTML labels; no Unity runtime/render validation"
+  },
+  "native": {
+    "scope": "Native setter/data/GUI rendering; no OS click coverage",
+    "passed": true,
+    "checks": [
+      {
+        "name": "native_lobby_exists",
+        "passed": true
+      },
+      {
+        "name": "29_caption_languages",
+        "passed": true
+      },
+      {
+        "name": "select_ko",
+        "passed": true
+      },
+      {
+        "name": "select_en",
+        "passed": true
+      },
+      {
+        "name": "select_zh",
+        "passed": true
+      },
+      {
+        "name": "select_zht",
+        "passed": true
+      },
+      {
+        "name": "select_ja",
+        "passed": true
+      },
+      {
+        "name": "select_es",
+        "passed": true
+      },
+      {
+        "name": "select_fr",
+        "passed": true
+      },
+      {
+        "name": "select_de",
+        "passed": true
+      },
+      {
+        "name": "select_ptbr",
+        "passed": true
+      },
+      {
+        "name": "select_it",
+        "passed": true
+      },
+      {
+        "name": "select_ru",
+        "passed": true
+      },
+      {
+        "name": "select_uk",
+        "passed": true
+      },
+      {
+        "name": "select_pl",
+        "passed": true
+      },
+      {
+        "name": "select_cs",
+        "passed": true
+      },
+      {
+        "name": "select_hu",
+        "passed": true
+      },
+      {
+        "name": "select_ro",
+        "passed": true
+      },
+      {
+        "name": "select_bg",
+        "passed": true
+      },
+      {
+        "name": "select_el",
+        "passed": true
+      },
+      {
+        "name": "select_tr",
+        "passed": true
+      },
+      {
+        "name": "select_vi",
+        "passed": true
+      },
+      {
+        "name": "select_th",
+        "passed": true
+      },
+      {
+        "name": "select_id",
+        "passed": true
+      },
+      {
+        "name": "select_ar",
+        "passed": true
+      },
+      {
+        "name": "select_sv",
+        "passed": true
+      },
+      {
+        "name": "select_da",
+        "passed": true
+      },
+      {
+        "name": "select_no",
+        "passed": true
+      },
+      {
+        "name": "select_fi",
+        "passed": true
+      },
+      {
+        "name": "select_nl",
+        "passed": true
+      },
+      {
+        "name": "select_ms",
+        "passed": true
+      },
+      {
+        "name": "alias_ko-KR",
+        "passed": true
+      },
+      {
+        "name": "alias_en_US",
+        "passed": true
+      },
+      {
+        "name": "alias_zh-Hant",
+        "passed": true
+      },
+      {
+        "name": "alias_zh-TW",
+        "passed": true
+      },
+      {
+        "name": "alias_pt-BR",
+        "passed": true
+      },
+      {
+        "name": "alias_nb-NO",
+        "passed": true
+      },
+      {
+        "name": "alias_nn",
+        "passed": true
+      },
+      {
+        "name": "alias_fr-FR",
+        "passed": true
+      },
+      {
+        "name": "alias_unknown",
+        "passed": true
+      },
+      {
+        "name": "null_falls_back_to_en",
+        "passed": true
+      },
+      {
+        "name": "popup_field_exists",
+        "passed": true
+      }
+    ]
+  },
+  "inputs": [
+    {
+      "path": "Assets/Exoduser/Runtime/NativeLobby.cs",
+      "sha256": "927458be8361dca7be94c78724309d015a208418c2f0efc37d435fb87f822b53"
+    },
+    {
+      "path": "Assets/Exoduser/Runtime/Core/LobbyLanguage.cs",
+      "sha256": "261f8e09e0710723d07754bf116c853ad6aca02e5fa04845f1b5167cd23c5545"
+    },
+    {
+      "path": "Assets/Exoduser/Runtime/Core/LobbyLanguage.cs.meta",
+      "sha256": "10d92ccc34864190fc6976ceb51137b106c909302d6a89f740a16174451b6b14"
+    }
+  ],
+  "screens": [
+    "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/language-runtime-final/languages-ko.png",
+    "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/language-runtime-final/languages-fr.png",
+    "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/language-runtime-final/languages-ptbr.png"
+  ],
+  "visual": "FR initial and PTBR final inspected; 29 options fit, selected language distinct from English menu. JSON order corrected to source catalogue.",
+  "normalCua": "KO subtitle/menu labels observed; selector click did not open popup. OS click remains unverified.",
+  "probeScope": "Private popup opened by reflection; native setter tested; no OS input synthesis. Fixture excluded from final product Assets.",
+  "sourceBaseline": {
+    "head": "94ceeef5a420e93e464f2bb1b2513d5c879a354a",
+    "originMain": "fab7a167c30c6421bda8cf6d4c2ee2e7753e87f3"
+  },
+  "preserved": [
+    "media",
+    "subtitle text/timing",
+    "Steam offset",
+    "combat/maps/save/account",
+    "other worktrees"
+  ],
+  "next": "Lobby popup keyboard navigation, cancel and input isolation"
+}

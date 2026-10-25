@@ -100,3 +100,6 @@ Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션�
 
 
 2026-10-25 로비 표시 후속: 좌상단 개발 문구/UNITY footer를 제거하고 기존 미리보기를 우측 하단으로 옮겼다. 생성·저장 미지원과 preview 저장 불가 안내를 명시했다. 새 소스 전용 QA 빌드0오류 및 CUA 실제로비 화면 확인. [범위·검수](UNITY_MAC_LOBBY_COPY_20261025.md).
+
+
+2026-10-25 언어 후속: 로비 29자막 선택·메뉴 ko/en 구분과 원본 locale alias/unknown→en을 연결. 순수536/536·NativeLobby42/42, 실제 선택 렌더는 OS 직접 클릭과 구분. 자국어명/폰트/RTL 미완료. [Mac 통합 검수](UNITY_MAC_LOBBY_LANGUAGE_20261025.md).

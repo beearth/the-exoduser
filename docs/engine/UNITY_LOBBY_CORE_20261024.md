@@ -125,3 +125,6 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 
 
 2026-10-25 Mac: Core/Video변경없이세계관일시정지버튼진입을보완. 별도controls 실제Player9검사로pause/resume·focus상태를확인했고기존자연완주fixture강제focus복구와분리했다. OS직접입력인수는아니다. [증거](UNITY_MAC_LOBBY_CONTROLS_20261025.md).
+
+
+2026-10-25 언어 후속: 로비 29자막 선택·메뉴 ko/en 구분과 원본 locale alias/unknown→en을 연결. 순수536/536·NativeLobby42/42, 실제 선택 렌더는 OS 직접 클릭과 구분. 자국어명/폰트/RTL 미완료. [Mac 통합 검수](UNITY_MAC_LOBBY_LANGUAGE_20261025.md).

@@ -1,0 +1,7 @@
+# Lobby language verification
+
+Run `dotnet run --project LanguageTests.csproj -- oracle.json integrated-result.json` from this directory. The project links the actual Core/LobbyLanguage.cs. The 159-case oracle was obtained from the original world-intro-subtitles.js resolver/normalizer; catalogue labels/order were independently confirmed against PC G:/exoduser/index.html:684. The original JS SHA-256 is 9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b.
+
+`LanguageRuntimeProbe.cs` is QA-only and excluded from product Assets. Copy it into an isolated Unity project's Assets, build using PortVerification.Build, then run the built executable with `--language-runtime-probe -output <unique-directory>`. It validates the actual NativeLobby setter against 29 caption languages, nine locale/unknown cases and null, then captures KO/FR/PTBR dropdown renderings. It opens the private popup by reflection: this does not verify OS mouse input. Remove the QA-only source and its generated meta from the isolated project before a normal product build. Preserve the fixture in this directory.
+
+`result.json` is the support owner's original result; `integrated-result.json` is the result against the imported runtime source. Native runtime/build evidence is recorded separately in docs/engine/UNITY_MAC_LOBBY_LANGUAGE_20261025.json. Native-language typography and Arabic shaping/RTL remain unverified.
