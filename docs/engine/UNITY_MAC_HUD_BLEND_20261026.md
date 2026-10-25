@@ -42,3 +42,16 @@ CUA 실제 K 입력으로 기존 스킬창 열림을 확인했다. 좌표 클릭
 The 7d5200ca build's focused HUD receipt records 55/55 checks passing, including all 13 shared slot rectangles, positive gaps, center alignment, and bounds. Static review confirms `NativeGame` passes bottom-origin `Input.mousePosition` to `NativeHud.PointerOverSlots`, which converts it with the same uniform scale and `NativeHudDockLayout`/`SkillSlotRect` geometry used by drawing; this contract and the recorded geometry were left unchanged.
 
 In the keep-open CUA review, clicks aimed at visible screen positions `[754,1086]` and `[960,1086]` (plus a drag between them) produced MouseDown/MouseUp events, but Unity reported the same `Input.mousePosition=(1100,-264)` and GUI `eventPos=(1100,1344)` at 1920×1080. Both computed slot candidates were `-1`, with GUI enabled and depth 1; no `SlotSelected` callback followed. The coordinates are outside the Unity display, so this run demonstrates a CUA-to-window coordinate mismatch rather than a hitbox failure. K input still opened the skill screen. It does not verify physical mouse input, which remains untested. Raw trace: `pointer-review-5a933f6.log`.
+
+
+## 취침 중 자율 진행 후 최종 상태
+
+사용자 최신 직접 지시 “이식총괄아 작업좀 알아서 잘해봐라 잔다”에 따라 사소한 확인 질문 없이 남은 포인터 검증·정리·정상 실행본 제시를 계속했다. 일반 전역 memory·권한·구매·리셋·공개배포 설정은 변경하지 않았다.
+
+검수 로그 source5a933f6에서 별도 CUA 첫슬롯/LMB 클릭·드래그·창 Raise를 비교했다. 서로 다른 화면점에도 Unity Event=(1100,1344), Input.mousePosition=(1100,−264), 화면1920×1080이 고정되어 두 hit-test가모두−1이었다. 이벤트는 도착했고 GUI.enabled=true이며, 실제 slot에 닿지 않아 callback이 호출되지 않았다. 이 관측은 전달 좌표 문제를 설명하며 제품 hitbox 결함이나 물리 마우스 PASS를 증명하지 않는다. 제품을 도구 좌표에 맞춰 바꾸지 않았다. 로그와 SHA는 영수증에 남겼다.
+
+진단 앱을 모두 종료했다. 현재 앞에 열린 제품은 source7d5200ca6 `build-world-blend/EXODUSER-Unity.app`, 정상 모드 PID52157·한국어 로비·기존 캐릭터1/5다. 후속5a933f6은 keep-open 검수 모드의 관측 로그만 추가한 source이며 다른 HUD 디자인 버전이 아니다. 원래 사용자38141과 앞서 제시한9dd48476도 강제 종료하지 않았다. 캐릭터 생성/삭제/덮어쓰기0.
+
+기존 자동 진행 상태는 읽기전용으로 한 번 점검했다. 이 Mac의 CODEX_HOME/automations에는 automation.toml0개였고, 기존 id exoduser view는 앱에 카드를 표시했지만 활성/중지·호스트 상태를 모델에 반환하지 않았다. 따라서 실제 Mac 자동 실행을 확인했다고 주장하지 않는다. 생성·수정·재개·삭제0, 새 task/상시 scheduler0, PC paused 자동화 재개0.
+
+기존 담당이 현재 worktree MD와 실제 ROOT PROJECT_MANAGEMENT_MASTER 최신 끝부분까지 읽기전용 검토했다. 현재 포인터 확인 외에 선행 차단 없이 바로 착수할 구체적인 승인 Mac 업데이트 단위는 없었다. 미확정 제안·PC 배포·HOLD 렌더 계약을 새 업무로 승격하지 않았다. 다음 실제 게임 업데이트 우선순위는 이 목록과 미이식 목록을 구분해 이어받는다. 사용자를 깨우는 새 질문은 보내지 않았다.

@@ -1,5 +1,8 @@
 # Mac 현재 조작 가능한 누적 실행본 — 2026-10-25
 
+현재 열린 최신 제품 검수본: `build-world-blend/EXODUSER-Unity.app` (아래 절대경로, source7d5200ca6), 정상 모드 PID52157의 한국어 로비·기존 캐릭터1/5를 확인했다. QA 앱은 종료. 후속 포인터 로그는 화면 밖 고정 전달 좌표를 확인했으며 물리 마우스 수료/PASS로 바꾸지 않았다. [최종 HUD 상태](UNITY_MAC_HUD_BLEND_20261026.md).
+
+
 10/26 최신 사용자 HUD 피드백으로9dd의 두꺼운 받침/상시 상태판은 최종 디자인에서 제외했다. 첫2실습 기능 인수는 유지하며 HUD 표현은 낮고 월드가 비치는 연속 실루엣으로 보정 중이다. 후속 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/build-world-blend/EXODUSER-Unity.app` (source7d5200ca6, ARM64/오류0)이다. 새4PNG/55검사를 인수했고 OS마우스 callback은 좁은 수동확인으로 남겼다. [HUD 보정](UNITY_MAC_HUD_BLEND_20261026.md).
 
 

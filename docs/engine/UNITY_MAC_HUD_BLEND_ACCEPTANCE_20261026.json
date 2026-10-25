@@ -367,18 +367,79 @@
   "visualVerdict": "PASS for requested lower, transparent compact HUD direction, idle/charge at720/1080. User final aesthetic approval not implied.",
   "manual": {
     "keyboardKOpensExistingSkillScreen": true,
-    "mouseSlotCallbacks": "CUA coordinate clicks did not confirm callbacks. No OS mouse PASS claim; shared 13-slot centers/contained hit rectangles passed scripted geometry checks. Remains a narrow manual verification item.",
+    "mouseSlotCallbacks": "Unverified physical mouse. Distinct CUA clicks/drag and explicit window Raise delivered the same off-window Unity point: eventPos(1100,1344), Input.mousePosition(1100,-264) on1920x1080; both slot tests correctly returned-1. No product hitbox regression established and no CUA-specific hitbox workaround applied.",
     "evidence": "CUA conversation screenshots only; no saved manual screenshot claim."
   },
   "cleanup": {
-    "remainingQaPlayers": [
-      "50565 /Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/build-world-blend/EXODUSER-Unity.app/Contents/MacOS/EXODUSER · Unity 이식 검증판 --unity-hud-blend-smoke --keep-open-after-hud-blend -output /Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/capture-world-blend -logFile /Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/capture-world-blend.log"
+    "remainingQaPlayers": [],
+    "presentedNormalPlayerPid": 52157,
+    "presentedNormalApp": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/build-world-blend/EXODUSER-Unity.app",
+    "presentedProductSource": "7d5200ca64b7bfc6982239102b4c3fcee0f78151",
+    "presentedPage": "normal Korean lobby, existing1/5 character, CUA screenshot observed",
+    "preservedOriginalUserPlayerPids": [
+      38141,
+      48476
     ],
-    "note": "Attempted Cmd-Q; computer-use tool reported user changed app, so further UI actions stopped. Original user players and normal stores left untouched."
+    "normalCharacterCreationDeletionOverwrite": 0,
+    "diagnosticBuildIsNotAdvertisedAsDifferentProductDesign": true
   },
   "limitations": [
     "No new full frontend, tutorial, storage, map, performance, voice or VFX suites run.",
     "Original PNG bytes and core combat/resource formulas unchanged.",
     "13-slot OS mouse callback verification remains open; keyboard skill view and scripted geometry passed."
-  ]
+  ],
+  "pointerDiagnostics": {
+    "source": "5a933f6b95b575cbf23efd3e09eb34c062c30ffa",
+    "build": {
+      "passed": true,
+      "result": "Succeeded",
+      "engine": "6000.6.7f1",
+      "target": "StandaloneOSX",
+      "architecture": "ARM64",
+      "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/build-pointer-trace-5a933f6/EXODUSER-Unity.app",
+      "errors": 0,
+      "bytes": 1971664718
+    },
+    "runtime": {
+      "passed": true
+    },
+    "log": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/pointer-review-5a933f6.log",
+    "logSha256": "a8e0f9bd7e413cc98034a7c911570e4220dd7e21fb23021fa106bf1ca5a3f6eb",
+    "eventSamples": [
+      "[HUD POINTER TRACE] type=mouseDown button=0 eventPos=(1100.00, 1344.00) inputScreen=(1100.00, -264.00, 0.00) screenAsGui=(1100.00, 1344.00) eventSlot=-1 screenSlot=-1 screen=1920x1080 matrix=1.00000\t0.00000\t0.00000\t0.00000",
+      "[HUD POINTER TRACE] type=mouseUp button=0 eventPos=(1100.00, 1344.00) inputScreen=(1100.00, -264.00, 0.00) screenAsGui=(1100.00, 1344.00) eventSlot=-1 screenSlot=-1 screen=1920x1080 matrix=1.00000\t0.00000\t0.00000\t0.00000",
+      "[HUD POINTER TRACE] type=mouseDown button=0 eventPos=(1100.00, 1344.00) inputScreen=(1100.00, -264.00, 0.00) screenAsGui=(1100.00, 1344.00) eventSlot=-1 screenSlot=-1 screen=1920x1080 matrix=1.00000\t0.00000\t0.00000\t0.00000",
+      "[HUD POINTER TRACE] type=mouseUp button=0 eventPos=(1100.00, 1344.00) inputScreen=(1100.00, -264.00, 0.00) screenAsGui=(1100.00, 1344.00) eventSlot=-1 screenSlot=-1 screen=1920x1080 matrix=1.00000\t0.00000\t0.00000\t0.00000"
+    ],
+    "coordinateDeliveryInference": "Delivered event/input positions lie outside the window and remain constant across different targets; this explains why neither GUI hit test nor callback accepted them. Physical hardware input was not observed."
+  },
+  "overnightAuthorization": {
+    "userStatement": "이식총괄아 작업좀 알아서 잘해봐라 잔다",
+    "source": "User statement explicitly conveyed by trusted coordinator delegation; recorded only in project docs, no global memory edit.",
+    "settingsChanges": 0,
+    "paidGenerationOrPurchase": 0,
+    "publicDeployment": 0
+  },
+  "automationReadOnlyCheck": {
+    "localAutomationTomlFiles": 0,
+    "viewExistingId": "exoduser",
+    "toolResult": "Rendered automation card in the app; no machine-readable active/paused or host state returned.",
+    "activeMacExecutionConfirmed": false,
+    "createdUpdatedResumedDeletedAutomations": 0,
+    "note": "Existing view only. No duplicate scheduler, app task, or old PC automation resumed."
+  },
+  "nextApprovedWorkReview": {
+    "result": "No independent concrete approved next Mac game-update unit found beyond the current pointer verification.",
+    "checked": [
+      "current Mac playable/first-practice/HUD docs",
+      "/Users/fordeargamers/Projects/exoduser-migration-20261001/docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md latest sections"
+    ],
+    "excluded": [
+      "unconfirmed proposals",
+      "PC deployment work",
+      "held hitflash/VFX contract",
+      "unported mechanisms without a concrete next implementation order"
+    ],
+    "outcome": "Preserve the remaining list; do not fabricate a task or start paid/held/unrequested work."
+  }
 }
