@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort {
     ComparisonCard(new Rect(0,0,cardWidth,cardHeight),current,"현재 착용");
     ComparisonCard(new Rect(cardWidth+16,0,cardWidth,cardHeight),it,bag?"선택한 장비":"착용 중인 장비");
     float y=cardHeight+12;
-    if(!bag)GUI.Label(new Rect(0,y,cw,70),"현재 착용 중인 장비입니다.\n소지품을 선택하면 교체 전후를 비교합니다.",text);
+    if(!bag)GUI.Label(new Rect(0,y,cw,70),"현재 착용 중인 장비입니다.\n소지품에서 장비를 선택해 비교하세요.",text);
     else if(current==null){int slot=Array.IndexOf(InventoryState.Slots,InventoryComparison.TargetSlot(State,it));GUI.Label(new Rect(0,y,cw,55),(slot>=0?names[slot]:it.slot)+" 슬롯이 비어 있습니다. 교체 없이 장착합니다.",text);}
     else {
      GUI.Label(new Rect(0,y,cw,28),"장비 기본 수치 · 현재 → 선택 (차이)",small);y+=34;

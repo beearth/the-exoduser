@@ -10,6 +10,7 @@ namespace Exoduser.UnityPort {
   // Explicit developer CLI fixture, like the existing inventory smoke. Never runs in normal play.
   IEnumerator UiSmoke() {
    string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;Directory.CreateDirectory(output);
+   if(Argument("-ui-phase")=="equipped-guide"){yield return UiEquippedGuideSmoke(output);yield break;}
    var checks=new List<string>();int failures=0;
    Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
    var flags=BindingFlags.Instance|BindingFlags.NonPublic;
@@ -43,7 +44,25 @@ namespace Exoduser.UnityPort {
    File.WriteAllText(Path.Combine(output,"ui-smoke.json"),JsonUtility.ToJson(new UiSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
    if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-ui-smoke")>=0)Application.Quit(failures==0?0:2);
   }
+  IEnumerator UiEquippedGuideSmoke(string output){
+   var checks=new List<string>();int failures=0;
+   Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
+   ApplyPauseCommand(PauseMenuCommand.Resume);check(Running&&!menu,"existing UI-smoke entry path resumes gameplay");
+   var item=inventory.State.GetEquipped("weapon");check(item!=null,"starter weapon is currently equipped");
+   check(nativeSettingsStore==null&&nativeSettingsDirectory=="","UI-smoke QA keeps native settings IO disabled");check(lobby.CharacterStoreDirectory=="","UI-smoke QA keeps normal roster storage unopened");
+   if(item==null){File.WriteAllText(Path.Combine(output,"equipped-guide-smoke.json"),JsonUtility.ToJson(new EquippedGuideSmokeReceipt{passed=false,failures=failures,checks=checks.ToArray()},true));Application.Quit(2);yield break;}
+   inventory.State.Select(item);check(!inventory.State.Bag.Contains(item),"selected guide item remains equipped and outside the bag");SetInventory(true);check(inventory.Open&&!Running,"inventory opens through the existing pause path");
+   string[] names={"equipped-guide-1080p.png","equipped-guide-720p.png"};
+   Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);yield return UiGuideCapture(output,names[0]);
+   Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);yield return UiGuideCapture(output,names[1]);
+   bool a=File.Exists(Path.Combine(output,names[0])),b=File.Exists(Path.Combine(output,names[1]));check(a,"1080p equipped-guide capture written");check(b,"720p equipped-guide capture written");
+   bool passed=failures==0&&a&&b&&inventory.Open&&ReferenceEquals(item,inventory.State.GetEquipped("weapon"));
+   File.WriteAllText(Path.Combine(output,"equipped-guide-smoke.json"),JsonUtility.ToJson(new EquippedGuideSmokeReceipt{passed=passed,failures=failures,checks=checks.ToArray(),captures=names,selectedItem=item.name},true));
+   yield return new WaitForSecondsRealtime(1);Application.Quit(passed?0:2);
+  }
+  IEnumerator UiGuideCapture(string output,string name){yield return new WaitForEndOfFrame();string path=Path.Combine(output,name);ScreenCapture.CaptureScreenshot(path);float elapsed=0;long previous=-1;int stableFrames=0;while(elapsed<3f&&stableFrames<2){long size=File.Exists(path)?new FileInfo(path).Length:0;stableFrames=size>0&&size==previous?stableFrames+1:0;previous=size;elapsed+=Time.unscaledDeltaTime;yield return null;}}
   IEnumerator UiCapture(string output,string name){yield return new WaitForSecondsRealtime(.15f);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;}
+  [Serializable] sealed class EquippedGuideSmokeReceipt{public string scope="Focused equipped-item hint at 1080p/720p; existing UI only; no settings/save or roster IO";public bool passed;public int failures;public string selectedItem;public string[] checks,captures;}
   [Serializable] sealed class UiSmokeReceipt{public string scope="actual Unity Player fixture; not OS mouse input";public bool passed;public int failures;public string[] checks;}
  }
 }

@@ -14,6 +14,10 @@
 - Added keep-open-fixture-only pointer/event and actual slot callback diagnostics to separate GUI coordinates from hitbox/callback failures; no input behavior changed.
 - Recorded pointer review: scripted 13-slot geometry remains 55/55; CUA click/drag events carried off-window Unity coordinates and matched no slot, so no product hitbox change was made. Physical mouse remains unverified.
 
+## 2026-10-26 Unity inventory equipped-item hint
+
+- Shortened the current-equipped guide's second sentence so its final punctuation stays on the line within the existing 520px content width. Added an `equipped-guide` phase to the explicit UI smoke for two-resolution capture only. [Scope](engine/UNITY_MAC_INVENTORY_HINT_20261026.md).
+
 ## 2026-10-25 Unity 캐릭터 생성 표시·미디어 경로
 
 - source DOM의 720/1080 좌우 투명 패널, 정보 텍스트·썸네일·trait frame과 연속 원형 선택 ring을 반영하고 한국어 서체 fallback을 고정. 영상 2개를 `Assets/StreamingAssets/Lobby` 호출 경로로 이동(바이트/SHA 유지). Warrior·Silvertail·잠금 3직업과 한국어 이름/검증오류 캡처 fixture는 실제 파일명·준비 프레임이 일치해야 통과하고 두 영상 모두 닫은 뒤 종료한다. 아직 실행·빌드·화면 검수 전. [범위와 검수 경계](engine/UNITY_MAC_CHARACTER_PRESENTATION_20261025.md).
