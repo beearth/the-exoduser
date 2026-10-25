@@ -1,0 +1,57 @@
+{
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-popup/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406126151
+  },
+  "sourceSha256": "1330c670c5f9d96083b697687c746ef3c9105013a71e38767713e502f82b2459",
+  "method": "CUA normal product app; no runtime fixture or input synthesis outside CUA",
+  "checks": [
+    {
+      "name": "L opens 29-option popup",
+      "result": "passed"
+    },
+    {
+      "name": "Down twice + Enter selects FR and closes",
+      "result": "passed"
+    },
+    {
+      "name": "Right + Esc cancels, preserves FR",
+      "result": "passed"
+    },
+    {
+      "name": "End + Right + Down clamps to AR",
+      "result": "passed"
+    },
+    {
+      "name": "Tab wraps AR to KO and Enter applies",
+      "result": "passed"
+    },
+    {
+      "name": "Outside click closes popup and stays in lobby",
+      "result": "passed"
+    },
+    {
+      "name": "Small selector mouse open",
+      "result": "unverified: click produced no visible popup"
+    },
+    {
+      "name": "Quit modal mouse/cancel",
+      "result": "not exercised; code-reviewed only"
+    }
+  ],
+  "screenshots": "Native CUA conversation images, 1920x1080 content plus 64px title bar; no exported PNG claimed",
+  "playerLog": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/popup-player.log",
+  "runtimeErrorPatternLines": [],
+  "previousLanguageCheckpoint": "98d7a547ed8c3160350a4b996a891e46a947f9d8",
+  "limitations": [
+    "Small mouse targets remain unverified; broad backdrop success does not establish pixel-accurate CUA mapping",
+    "Only lobby keyboard popup changed; cinematic selector unchanged",
+    "Native language names and full font/RTL localization incomplete"
+  ]
+}

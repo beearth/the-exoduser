@@ -56982,3 +56982,8 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 ## 2026-10-25 Mac 로비 자막 언어 선택
 
 - 29개 선택 목록, 자막·메뉴 언어 구분, 원본 locale alias/unknown→en을 연결. 순수536 및 NativeLobby42검사, 코드 식별자 렌더와 OS 입력 한계를 구분 기록. [범위·검수](engine/UNITY_MAC_LOBBY_LANGUAGE_20261025.md).
+
+
+## 2026-10-25 Mac 로비 팝업 조작
+
+- L 열기·방향키/Enter 선택·Esc 취소·Tab순환·바깥 클릭 닫기·하위 로비 입력 차단. 일반 빌드 오류0와 CUA 실제 키 입력/화면 확인, 작은 마우스 selector와 종료 확인 직접 조작은 구분. [근거](engine/UNITY_MAC_LOBBY_POPUP_20261025.md).

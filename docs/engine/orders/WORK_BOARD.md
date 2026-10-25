@@ -1,5 +1,10 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-25 Mac 로비 팝업 조작 검수 → 언어 목록 가독성
+
+일반 Mac 빌드 오류0. CUA 실제 L 열기·FR 선택·Esc 취소·마지막 AR 경계·Tab KO 순환·바깥 클릭 닫기를 확인했다. 작은 selector 마우스 입력은 미확인, Unity 실행 차단 아님. [결과](../UNITY_MAC_LOBBY_POPUP_20261025.md). **NEXT/ACTIVE:** 같은 담당이 언어 목록의 자국어명 가독성·기존 폰트 지원 범위를 조사한다. 기존20/9·536/42 반복0, 영상/저장/전투/PC/자동화 변경0.
+
+
 ## 2026-10-25 Mac 로비 자막 선택 완료 → 팝업 조작 진행
 
 로비29선택·메뉴 ko/en 구분, 원본 locale alias/unknown→en 연결. 순수536/536·Native42/42, 원본 목록 순서 수정 후 ARM64 일반 빌드 오류0. 정상 CUA 기본 표시와 probe의 KO/FR/PTBR 렌더를 구분했으며 OS selector 클릭은 미인수. [근거](../UNITY_MAC_LOBBY_LANGUAGE_20261025.md). **NEXT/ACTIVE:** 같은 Mac 담당 NativeLobby 팝업 Esc/바깥 클릭 닫기·키보드 선택·입력 누출 방지. 자국어명/RTL 전체 현지화 미완료. 기존20/9 재검·영상/저장/전투/PC/자동화 변경0.

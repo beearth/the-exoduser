@@ -128,3 +128,6 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 
 
 2026-10-25 언어 후속: 로비 29자막 선택·메뉴 ko/en 구분과 원본 locale alias/unknown→en을 연결. 순수536/536·NativeLobby42/42, 실제 선택 렌더는 OS 직접 클릭과 구분. 자국어명/폰트/RTL 미완료. [Mac 통합 검수](UNITY_MAC_LOBBY_LANGUAGE_20261025.md).
+
+
+2026-10-25 팝업 후속: L/방향키/Enter/Esc·Tab순환과 바깥 클릭 닫기를 실제 Mac 키 입력으로 확인. 종료 확인도 하위 버튼 입력을 차단. 작은 마우스 selector 직접 입력은 미확인. [검수와 경계](UNITY_MAC_LOBBY_POPUP_20261025.md).
