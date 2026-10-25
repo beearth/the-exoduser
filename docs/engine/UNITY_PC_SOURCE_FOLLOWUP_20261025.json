@@ -1,0 +1,106 @@
+{
+  "dateKst": "2026-10-25",
+  "task": "PC/Mac Unity intro source coordination",
+  "supportOwner": {
+    "thread": "01a1714e-dd3c-7202-911d-fd1cbf1eec1b",
+    "scope": "Read-only source and subtitle comparison; no product file edits"
+  },
+  "pcSourceOwner": {
+    "thread": "01a16e21-f25a-71a0-9ef5-ac5d7d99136e",
+    "checkout": "G:\\exoduser",
+    "reply": "received",
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "receipt": "I:/EXODUSER-Storage/qa/unity-ui-dock-20261024/PC_SOURCE_BINDINGS_20261025.json",
+    "activePlayerSourceVerified": false,
+    "indexSha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621",
+    "currentJsMatchCapturedPcSha256": true
+  },
+  "selectors": {
+    "migrationRoot": "index.html:632 video/world_intro_v15_clean_en.mp4",
+    "initialCheckout": "index.html:514 video/world_intro_v13_exodus_en.mp4",
+    "unity": "NativeLobby.cs OpenForPage world_intro_v22b_paint_en.mp4",
+    "unityCapturedPc": "lobby_frontend.json worldVideo world_intro_v17_blood_en.mp4",
+    "pcCurrent": "G:/exoduser/index.html:632 video/world_intro_v17_blood_en.mp4"
+  },
+  "subtitleComparison": {
+    "method": "Execute original data publication in isolated Node vm; compare each JSON cue text/start/end",
+    "languages": 29,
+    "cues": 928,
+    "differences": [],
+    "sourceFiles": [
+      {
+        "path": "index.html",
+        "rootSha256": "36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12",
+        "capturedPcSha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621"
+      },
+      {
+        "path": "world-intro-player.js",
+        "rootSha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50",
+        "capturedPcSha256": "77eddd9269172ab9c27ae7a3a5f717cdcb2fb901cd9c9a09d7a0216e36f57b50"
+      },
+      {
+        "path": "world-intro-subtitles-data.js",
+        "rootSha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768",
+        "capturedPcSha256": "55b8f379da8cca06d396c8bb9da67fb9d4ead1ba9db3da1f120173ca0e610768"
+      },
+      {
+        "path": "world-intro-subtitles.js",
+        "rootSha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b",
+        "capturedPcSha256": "9e3ac2207ece4cf5591ef7eee5d3296f4024c0e5ecfdfcaeda19bd2918dbc92b"
+      }
+    ]
+  },
+  "cutComparison": {
+    "sourceCuts": [
+      0,
+      4.041667,
+      12.75,
+      17.291667,
+      27.791667,
+      46.291667,
+      56.291667,
+      69.291667,
+      76.291667,
+      78.041667,
+      80.291667,
+      84.791667,
+      87.791667,
+      90.791667,
+      95.791667,
+      102.791667,
+      109.291667
+    ],
+    "jsonMatch": true,
+    "runtimeMatch": true,
+    "method": "Static C# array versus original JS publication and captured JSON; no runtime suite rerun"
+  },
+  "mediaBoundaries": {
+    "pcWeb": {
+      "bytes": 77065370,
+      "sha256": "e424d076266933efd8c2386d5901e29072cd8e0d572495441d22f81a2e640dcb"
+    },
+    "unityProductionCandidate": {
+      "bytes": 98177870,
+      "sha256": "cd9fa7486fd1cf18952605408f5b1bae416a97b2307806476bc329498413199e",
+      "latestApprovedInGame": false
+    },
+    "steam": {
+      "filename": "world_intro_v22b_steam.mp4",
+      "sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+      "subtitleOffsetSeconds": 0.4,
+      "inGameReplacementApproved": false
+    }
+  },
+  "limits": [
+    "Latest user-approved intro not established",
+    "Data identity does not prove 29-language rendering, aliases or RTL",
+    "Existing 113-second playback suite not rerun",
+    "No GUI/build/server/save/automation changes",
+    "PC localhost:3333 ECONNREFUSED; current disk selector is not proof of an active player source"
+  ],
+  "evidenceOrigin": {
+    "path": "/Users/fordeargamers/.codex/visualizations/2026/10/25/01a1714e-dd3c-7202-911d-fd1cbf1eec1b/pc-mac-intro-source-comparison.json",
+    "sha256": "cadf5d1017a5358d9e150501aad827721be0103cdc11bf0ce60b4e64fa5520fa",
+    "classification": "Independent Mac support report with PC owner read-only measurements; this implementation owner did not rerun PC"
+  }
+}

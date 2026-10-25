@@ -56969,3 +56969,6 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 ## 2026-10-25 Mac 일시정지 제어
 
 - 세계관재생중일시정지버튼연결,paused/error의재생/재시도유지. controls전용fixture에서기존강제focus복구를분리해실제Player8/9→9/9,일반build0오류·실제화면2장. Core/Video/미디어/저장무변경,OS입력/전체디자인미인수. [보고서](engine/UNITY_MAC_LOBBY_CONTROLS_20261025.md).
+
+
+- 2026-10-25 PC/Mac원본공조: 현재PC디스크v17 selector·capturedSHA동일/928cue·17컷대조인수. Steam별도v22b자막+0.400초와인게임경계분리. 영상교체0/전체언어시각PASS미선언. [감사후속](engine/UNITY_SOURCE_BASELINE_20261024.md).

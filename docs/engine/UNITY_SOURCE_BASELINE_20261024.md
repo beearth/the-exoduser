@@ -48,3 +48,18 @@
 | `assets/lobby/lobby_varkan_crypt_poster_v2.webp` | `c79e0e0d40954b1ea924c8a48c06eacd38f9c7884bcba792803986c6429d961f` | `e2f4a8c153dde16fe3e63cfd8f5951a4b3bd4d2d71ed6cb586ebc0cf725ab64a` | 변환본: manifest 참조 |
 
 확정 가능한 교체 경로: 없음. 최신 승인본이 확인되지 않아 영상·원화 교체는 보류하며, 허용된 UI 구조 재설계는 독립 진행한다. 원본/기존 후보/Godot/사용자 저장은 보존한다.
+
+
+## 2026-10-25 PC/Mac 공조 원본 대조 후속
+
+별도 Mac 지원 담당이 원본을 읽기 대조하고 PC 담당의 측정 회신을 회수했다. 이 구현 담당은 PC를 재실행하지 않았으며 아래는 [지원/PC 담당 근거](UNITY_PC_SOURCE_FOLLOWUP_20261025.json)의 인수 기록이다.
+
+| 항목 | 후속 근거·경계 |
+|---|---|
+| 현재 PC 디스크 | G:/exoduser HEAD5659d14d38b8068518cb5866a336bf930a1abbce. index SHA8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621은Unity captured sourceFiles와일치. index632의selector는v17_blood |
+| v17 파일 |77,065,370B/SHAe424d076266933efd8c2386d5901e29072cd8e0d572495441d22f81a2e640dcb. PC localhost3333 ECONNREFUSED이므로현재실행창의source까지확정한것은아님 |
+| Unity v22b |98,177,870B/SHAcd9fa748…는제작후보와동일하나최종인게임채택근거는여전히미확인. 이번영상교체0 |
+| Steam 별도본 |world_intro_v22b_steam.mp4/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f. 자막+0.400초는Steam용경계이며인게임영상/코드변경0이라는PC문서회신. Unity인게임에영상이나offset을섞지않음 |
+| 자막·컷 |Mac지원담당이29언어928cue의text/start/end차이0,원JS/JSON/C#17컷정적일치를확인. 세JS SHA는현재PC파일→capturedPC→MacROOT까지일치. 전체29언어화면/alias/RTL검증은아님 |
+
+PC근거파일은I:/EXODUSER-Storage/qa/unity-ui-dock-20261024/PC_SOURCE_BINDINGS_20261025.json. 인게임기준문서는docs/cinematic/WORLD_INTRO_INGAME_20260907.md와WORLD_INTRO_V13_EXODUS_20260907.md의현행v17안내이며,Steam본은docs/13출시·마케팅/STEAM_WORLD_INTRO_SUBTITLES_20261025.md로분리되어있다는PC담당회신이다. 파일명숫자/mtime/제작후보만으로최신승인을판정하지않는다. 이번추가자료로기존113초suite를재실행하지않았다.

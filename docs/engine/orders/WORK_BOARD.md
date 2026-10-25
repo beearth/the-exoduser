@@ -343,3 +343,6 @@ P1-002.C~H, P2-001a~k, P2-002a/b, P2-003a, P2-004a, P2-005a~d — main ad7f15777
 2026-10-24 사용자 추가 요청 UI-DOCK: PoE2 참고 화면처럼 화면경계에 붙는 일체감을 HUD/인벤토리/독립검토로 병렬 진행한다. 기존 EXODUSER 아트를 사용하고 NativeHud·NativeInventory·NativeGame OnGUI 소유를 분리한다. 원본 구슬/bar 알파 여백에 따른 하단 틈·잘림과 인벤 개별카드 구조를 교정한다. 인트로 소스·Godot·사용자저장·공유 INDEX 보존. [범위·배치·검수](../UNITY_UI_DOCK_20261024.md).
 
 2026-10-24 UI-DOCK 검수: 실제3해상도×HUD/인벤6런PASS·18PNG실제크기대조, 독립시각이번도킹PASS(7PNG), build0오류. 고정E:실행본152파일SHA대조갱신, 이전본I:보존. 인트로/모델/세이브불변, OS직접입력·전체UI인수와구분. I:/EXODUSER-Storage/qa/unity-ui-dock-20261024/suite.json·LIVE.json·SAVED.json.
+
+
+2026-10-25 공조후속: PC현재디스크index는v17이며UnitycapturedPC와SHA일치,실제실행창은미확인. Steam별도v22b/+0.400초를인게임에섞지않는다. 지원담당928cue/17컷데이터대조를인수했고최종영상승인은계속미확정. [경계·지원근거](../UNITY_SOURCE_BASELINE_20261024.md#2026-10-25-pcmac-공조-원본-대조-후속).
