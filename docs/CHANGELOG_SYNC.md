@@ -1,3 +1,11 @@
+## 2026-10-25 Unity 캐릭터 생성 표시·미디어 경로
+
+- source DOM의 720/1080 좌우 투명 패널, 정보 텍스트·썸네일·trait frame과 원형 선택 ring을 반영하고 한국어 서체 fallback을 고정. 영상 2개를 `Assets/StreamingAssets/Lobby` 호출 경로로 이동(바이트/SHA 유지). Warrior·Silvertail·잠금 3직업과 한국어 이름/검증오류 캡처 전용 fixture를 추가했으나 아직 실행·빌드·화면 검수 전. [범위와 검수 경계](engine/UNITY_MAC_CHARACTER_PRESENTATION_20261025.md).
+
+## 2026-10-25 HUD 통합 후보
+
+- `6114fc1cb` HUD 공용 금속 기반 통합 커밋은 원격 반영됨. 이번 창에서 해당 변경 화면을 직접 확인하지 않았으며 전체 시작→게임 흐름의 시각 인수 전. [작업 후보 기록](engine/UNITY_HUD_INTEGRATED_20261025.md).
+
 ## 2026-10-25 Unity 언어 메뉴 hover 선택
 
 - 원본 웹의 포인터 좌표 변화에 따른 행 hover 강조를 IMGUI MouseMove/MouseDrag에 연결. 같은 위치의 정지 포인터는 키보드 탐색 선택을 덮지 않음. smoke controller 상호작용 세 확인 추가. OS 포인터 GUI 검수 및 런타임 실행은 미검증. [계약 및 범위](engine/UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
@@ -57096,3 +57104,5 @@ source219c9d3fe ARM64 errors0, 모델33/Player17 기존 결과 유지·8PNG 검�
 world_intro_v22b_steam.mp4/102204634B/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f를 최신 정본으로 고정. PC thread의 실제 사용자 첨부/발언 확인. 승인 상태와 Mac 파일 인수·런타임 적용 상태를 분리하며 이전 승인미확정/Steam용 제외 판단을 철회.
 
 정본 인수 대기 중 확인된 전환 차이 수정: 문 초대 아트1.1초 fade, 문끝1.5초 fade, 세계관 준비 중 닫힌문 포스터 재노출 제거. NativeLobby.CinematicPresentation에 격리하고 미디어/저장/전투 변경 없음. 실제 검수는 정본 적용 빌드에서 이어간다.
+
+2026-10-25 Unity 최초입장 후보: ENTER음향·1200ms로딩→원본Nemesis→physical CSS 4컷안내→커튼→기존run 연결, 명시review/capture roster격리 및 좁은runtime PNG fixture 추가; 정적검사만 인수, 실제화면/OS입력과 후속27실습은 미완료. 상세: [UNITY_MAC_STARTUP_FLOW_20261025](engine/UNITY_MAC_STARTUP_FLOW_20261025.md).

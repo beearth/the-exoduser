@@ -1,0 +1,194 @@
+{
+  "sourceIndex": {
+    "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-source-current/index.html",
+    "bytes": 354563,
+    "sha256": "8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621"
+  },
+  "currentPcArtHandoff": {
+    "commit": "ae9e93545b28c1d063222ce3fb450472995b1a15",
+    "sourceManifest": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-source-current/character-art-mac-receipt.json",
+    "files": 6,
+    "bytes": 12916443
+  },
+  "usedAssetCount": 24,
+  "usedAssetBytes": 62365998,
+  "unusedCurrentSourceBranch": "bg_scene1_loop.mp4/bg_scene2_loop.mp4 are referenced as sceneVid but selection source stops them whenever current warrior/silvertail idleVid is set; staticKeyart classes have no sceneVid, so they are not imported.",
+  "files": [
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/bg_scene1.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/bg_scene1.png",
+      "bytes": 2344651,
+      "sha256": "db0d355bb920d39bddf48ef95f91e2c22389babdfaa174b4c3b4730ca73c1ccf",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/bg_scene2.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/bg_scene2.png",
+      "bytes": 2425326,
+      "sha256": "79d64993d3cf9604480ef90df91fb2c5bd2aaa7dad815a26026e10866f547a06",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/coming_soon_chains_v2.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/coming_soon_chains_v2.png",
+      "bytes": 806319,
+      "sha256": "1f29f35b3109db297cd5b8dba111ac5f61b3ed93b1da31444c3511bd4fe23d25",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/emblem_warrior.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/emblem_warrior.png",
+      "bytes": 2022762,
+      "sha256": "48a04c8c164c9a49207f3c6ce2dd0a0c36f4fd5c471a92cee9233ca331068be8",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/emblem_silvertail.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/emblem_silvertail.png",
+      "bytes": 1999161,
+      "sha256": "4ee76ad956e34a1c0bcdfe1c310ca5e3810c08512d26ad12eb2d7aca7bf212ff",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/emblem_hellgunner.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/emblem_hellgunner.png",
+      "bytes": 458950,
+      "sha256": "74862f1b151ab2e3f8180cc05c7778c0ac169ae493243e8f66f15efd6e242233",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/emblem_transmuter.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/emblem_transmuter.png",
+      "bytes": 654833,
+      "sha256": "d3731153b9ff1aab67d3c85d99a478eebcaa5fe1f040674a6679b7f88801e2f0",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/emblem_spearmage.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/emblem_spearmage.png",
+      "bytes": 458617,
+      "sha256": "fdcc2efe11b31641777129cf04c3b7f2447c47610e2b8b506684c1e858063cc7",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/warrior_cut.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/warrior_cut.png",
+      "bytes": 1670346,
+      "sha256": "58e68f5f996c31966e9109c2de421185d93d138cec4fd5600da0ca1b58debfd4",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/silvertail_cut.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/silvertail_cut.png",
+      "bytes": 1670201,
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_warrior.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/portrait_warrior.png",
+      "bytes": 1437503,
+      "sha256": "3c68de92523252d8c34e27a39b5db5af6adc250e48261fd3e047e9198ff29fcc",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_silvertail.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/portrait_silvertail.png",
+      "bytes": 2704744,
+      "sha256": "4ca763dd6dd0aec0b914df027a2973f6aa6bdabb7e5971cca8f9ce72b8d3f4be",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/poster_idle_warrior_cs3_4k.jpg",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/poster_idle_warrior_cs3_4k.jpg",
+      "bytes": 1303747,
+      "sha256": "56269fec6f59bfd1a42fcb28f6eaad44921582e777c045a34c865671dabc6654",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/poster_idle_silvertail_4k.jpg",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/poster_idle_silvertail_4k.jpg",
+      "bytes": 485164,
+      "sha256": "bbf45686195c79d752b5a3173ad16bd0e19ea12e35157ec6c382cdd63a88fc45",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/idle_warrior_cs3_4k.mp4",
+      "destination": "unity/Assets/StreamingAssets/Lobby/cs_idle_warrior_cs3_4k.mp4",
+      "bytes": 14132329,
+      "sha256": "f982c42c9b60e64ddb644ae8c6f3983a08a9314597eb14b9a04065b485e6405f",
+      "transform": "none; byte-identical; MP4/H.264 routed through NativeLobbyVideo"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/idle_silvertail_4k.mp4",
+      "destination": "unity/Assets/StreamingAssets/Lobby/cs_idle_silvertail_4k.mp4",
+      "bytes": 11608396,
+      "sha256": "9966865d706b078361e8a2a0a1262683c0cea8f4a6dab0f3e94b5ffcea23c45c",
+      "transform": "none; byte-identical; MP4/H.264 routed through NativeLobbyVideo"
+    },
+    {
+      "source": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-source-current/assets/charselect/hellgunner_color_cut_20261021.png",
+      "sourceManifest": "character-art-mac-receipt.json",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/hellgunner_color_cut_20261021.png",
+      "bytes": 2605316,
+      "sha256": "709cfe1a4e7ab0ae56c8ef061544caf2b44db66de440cf7ed51f742635ec47de",
+      "transform": "none; byte-identical; source PNG dimensions 1536x2048 (cut) or 1024x1024 (portrait)"
+    },
+    {
+      "source": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-source-current/assets/charselect/portrait_hellgunner_color_20261021.png",
+      "sourceManifest": "character-art-mac-receipt.json",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/portrait_hellgunner_color_20261021.png",
+      "bytes": 1365630,
+      "sha256": "94924552183f5e5253622ca324471db93314555deb29a8988a125c5eea2d73e8",
+      "transform": "none; byte-identical; source PNG dimensions 1536x2048 (cut) or 1024x1024 (portrait)"
+    },
+    {
+      "source": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-source-current/assets/charselect/transmuter_color_cut_20261021.png",
+      "sourceManifest": "character-art-mac-receipt.json",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/transmuter_color_cut_20261021.png",
+      "bytes": 3373782,
+      "sha256": "76f2ccc31a9c23eb33181da3b1977ff6d76240246785ccaffb2daa416d0c1db5",
+      "transform": "none; byte-identical; source PNG dimensions 1536x2048 (cut) or 1024x1024 (portrait)"
+    },
+    {
+      "source": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-source-current/assets/charselect/portrait_transmuter_color_20261021.png",
+      "sourceManifest": "character-art-mac-receipt.json",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/portrait_transmuter_color_20261021.png",
+      "bytes": 1320569,
+      "sha256": "f477c98137133bd6d464aa3492e07d5b437027b301c63335e090336506da304b",
+      "transform": "none; byte-identical; source PNG dimensions 1536x2048 (cut) or 1024x1024 (portrait)"
+    },
+    {
+      "source": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-source-current/assets/charselect/spearmage_color_cut_20261021.png",
+      "sourceManifest": "character-art-mac-receipt.json",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/spearmage_color_cut_20261021.png",
+      "bytes": 2892567,
+      "sha256": "375e5fbc5e1871ccae147b40aca85e49f79492ea0264f20cb2d1a46dc385a50e",
+      "transform": "none; byte-identical; source PNG dimensions 1536x2048 (cut) or 1024x1024 (portrait)"
+    },
+    {
+      "source": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-source-current/assets/charselect/portrait_spearmage_color_20261021.png",
+      "sourceManifest": "character-art-mac-receipt.json",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/portrait_spearmage_color_20261021.png",
+      "bytes": 1358579,
+      "sha256": "617135bb2d0a577ef45abd45b35b1de19876681c33a54faca26aec0e85539d77",
+      "transform": "none; byte-identical; source PNG dimensions 1536x2048 (cut) or 1024x1024 (portrait)"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/ui/hell_gothic/iron.png",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/UI/iron.png",
+      "bytes": 2763927,
+      "sha256": "002b14f29ad42ea031d7fdc159cbed19e8a066377a2f1605b90be3450d91437d",
+      "transform": "none; byte-identical"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/img/ui/iron_covenant_20260924/button.webp",
+      "destination": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/UI/button_iron.png",
+      "sourceBytes": 110486,
+      "sourceSha256": "52348812edf117cf7200456fe279d807914c425d857a6cd853c1184ead79d1a8",
+      "bytes": 502579,
+      "sha256": "86ea8369e98a104e5f2ca590174dd27f3486f56af3623e6f89959161fcf22710",
+      "transform": "sips WebP decode to PNG; 1200x256 RGB pixels preserved; no resizing or generated pixels"
+    }
+  ]
+}
