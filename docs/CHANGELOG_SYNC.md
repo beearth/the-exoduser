@@ -57109,3 +57109,4 @@ world_intro_v22b_steam.mp4/102204634B/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb
 2026-10-25 최초입장 배선 인수: source언어별Nemesis데이터·26정본자산·physical guide/curtain·release fence와 `--unity-startup-capture`를 정상 native입장에 연결; 실제 Player/OS입력 판정 및27실습은 총괄 후속 검수로 유지.
 2026-10-25 HUD 공통 곡면받침·철재 ridge/키판 연결(6114fc1cb) 후 ROOT 1afffb9 실화면720/1080 확인; 긴 키라벨 좌우3logicalpx inset으로 간격 확보, 13슬롯/hitrect·문자높이·자원/전투/입력 불변. 라벨 최종 PNG 인수 대기. 상세: [UNITY_HUD_INTEGRATED_20261025](engine/UNITY_HUD_INTEGRATED_20261025.md).
 2026-10-25 캐릭터 생성창 표시 수정: 원본 trait 문자 래스터화, 원형 emblem/chain clip과 잠금 명도, blackiron sigil 및 패널 crest/corners 추가. 통합 GUI 검수는 총괄 후속.
+2026-10-25 캐릭터 잠금 표시: 정적 keyart 3종 체인을 중앙 대형 표시에서 source CSS의 하단 72px 체인/라벨로 조정; Silvertail 중앙 체인은 유지. 통합 캡처 대기.

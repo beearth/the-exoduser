@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort
   Texture2D presentationChains,presentationSceneWarrior,presentationSceneSilvertail,presentationWarriorPoster,presentationSilvertailPoster,presentationIron,presentationButton;
   int presentationVideoVisual=-1;
   float presentationVideoStartedAt;
-  GUIStyle presentationHeading,presentationKoHeading,presentationSubtitle,presentationJob,presentationKoJob,presentationName,presentationDescription,presentationTraitTitle,presentationTraitBody,presentationRail,presentationAction,presentationCreateAction,presentationInput,presentationNameTitle,presentationKoNameTitle,presentationNameDescription,presentationNameLabel,presentationNameError,presentationNameButton;
+  GUIStyle presentationHeading,presentationKoHeading,presentationSubtitle,presentationJob,presentationKoJob,presentationName,presentationDescription,presentationTraitTitle,presentationTraitBody,presentationRail,presentationReleaseLabel,presentationAction,presentationCreateAction,presentationInput,presentationNameTitle,presentationKoNameTitle,presentationNameDescription,presentationNameLabel,presentationNameError,presentationNameButton;
   readonly string[] presentationJobs={"전사","블레이드 댄서","혈월 사수","변성술사","공허 창술사"};
   readonly string[] presentationNames={"엑소듀서 전사","실버테일","헬거너","변성술사","창법사"};
   readonly string[] presentationDescriptions={"거대검을 휘두르는 흑철의 전사","회전하는 단 하나의 검, 그녀의 춤은 파멸","자신의 피를 탄환 삼는 혈월의 사수","코어의 청염을 활·낫·창·검으로 변성하는 사냥꾼","룬으로 공간을 봉인하는 공허의 전령"};
@@ -43,7 +43,7 @@ namespace Exoduser.UnityPort
    presentationDescription=new GUIStyle(characterText){fontSize=15};presentationDescription.normal.textColor=new Color(.72f,.64f,.53f);
    presentationTraitTitle=new GUIStyle(characterSmall){fontSize=15,fontStyle=FontStyle.Bold};presentationTraitTitle.normal.textColor=new Color(.89f,.81f,.65f);
    presentationTraitBody=new GUIStyle(characterSmall){fontSize=13};presentationTraitBody.normal.textColor=new Color(.56f,.50f,.41f);
-   presentationRail=new GUIStyle(characterSmall){fontSize=13,alignment=TextAnchor.MiddleCenter,fontStyle=FontStyle.Bold};presentationRail.normal.textColor=new Color(.52f,.45f,.35f);
+   presentationRail=new GUIStyle(characterSmall){fontSize=13,alignment=TextAnchor.MiddleCenter,fontStyle=FontStyle.Bold};presentationRail.normal.textColor=new Color(.52f,.45f,.35f);presentationReleaseLabel=new GUIStyle(characterSmall){fontSize=14,alignment=TextAnchor.MiddleCenter};presentationReleaseLabel.normal.textColor=new Color(.68f,.59f,.46f);
    presentationAction=new GUIStyle(characterButton){fontSize=15,padding=new RectOffset(12,12,12,12)};presentationAction.normal.background=presentationButton;presentationAction.hover.background=presentationButton;presentationAction.active.background=presentationButton;
    presentationCreateAction=new GUIStyle(presentationAction){fontSize=17};
    presentationInput=new GUIStyle(characterField){fontSize=16,alignment=TextAnchor.MiddleLeft,padding=new RectOffset(18,18,14,14)};
@@ -91,7 +91,8 @@ namespace Exoduser.UnityPort
    float actionX=(w-760)/2,cancelWidth=98.563f;Rect cancel=new Rect(actionX,actionY+1.25f,cancelWidth,44),create=new Rect(w*.5f+247.063f,actionY,132.938f,46.5f);
    bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;if(GUI.Button(cancel,K("취소","CANCEL"),presentationAction))CloseCharacterCreation();
    GUI.enabled=priorEnabled&&!locked;if(GUI.Button(create,locked?K("출시 준비 중","COMING SOON"):K("생성","CREATE"),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
-   if(locked){if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.58f);GUI.DrawTexture(new Rect(stageX,bodyY+bodyHeight*.18f,stageWidth,bodyHeight*.72f),presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(stageX,railY-31,stageWidth,26),K("출시 준비 중","COMING SOON"),presentationSubtitle,TextAnchor.MiddleCenter);}
+   if(i==1){if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.58f);GUI.DrawTexture(new Rect(stageX,bodyY+bodyHeight*.18f,stageWidth,bodyHeight*.72f),presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(stageX,railY-31,stageWidth,26),K("출시 준비 중","COMING SOON"),presentationSubtitle,TextAnchor.MiddleCenter);}
+   else if(i>=2){float chainSize=Mathf.Min(72,h*.20f);Rect chainRect=new Rect((w-chainSize)*.5f,h-4-28-chainSize,chainSize,chainSize);if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.78f);GUI.DrawTexture(chainRect,presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(w*.5f-150,h-32,300,28),K("출시 준비 중","COMING SOON"),presentationReleaseLabel,TextAnchor.MiddleCenter);}
   }
   void DrawCharacterNamePresentation()
   {
