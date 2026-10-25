@@ -50,3 +50,6 @@
 원본Game HTML은Mac migration ROOT의설정문서고정본과같은값을읽었으며,현재PC최신전체game과같은파일이라고단정하지않는다. code작성후전체docs에서sfxVol/bgmVol/fpsCap/_FPS_STEPS/일시정지/설정화면을grep하여85매칭을보존했다. source-settings-oracle.json·result.json·docs-matches.txt 동봉.
 
 기존20/9·536/42suite, Editor/GPU/새빌드/사용자앱·공유INDEX재검사0. 실제host음량/렌더/클릭/720p·초광폭/재열기·전체설정38필드/키재지정/패드/영구저장·29언어번역은미인수이며제품owner의새좁은실검수가필요하다. 원본설정전체이식완료가아니다.
+
+
+2026-10-25 실제 Mac 통합: build 오류0, Player15/15, PNG8장 확인. OS 마우스 경유 새 메뉴/전체화면 전환 미검수는 분리. 최종 근거: `docs/engine/UNITY_MAC_INVENTORY_SETTINGS_20261025.md` 및 동명JSON.

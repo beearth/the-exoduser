@@ -1,0 +1,80 @@
+{
+  "scope": "actual Unity Player fixture; not OS mouse input",
+  "passed": true,
+  "failures": 0,
+  "checks": [
+    "PASS menu preserves current 120fps",
+    "PASS settings Escape returns to paused main",
+    "PASS real audio callbacks update state",
+    "PASS muted actual sample source",
+    "PASS live voice uses raw volume when changing SFX",
+    "PASS default SFX gain restored",
+    "PASS frame cap does not alter simulation",
+    "PASS unlimited cap",
+    "PASS resume command",
+    "PASS view comparison pauses without equipping",
+    "PASS comparison candidate equips through existing handler",
+    "PASS inventory close resumes",
+    "PASS return lobby and BGM mute survives track change",
+    "PASS BGM retains phase gain",
+    "PASS default lobby mix restored"
+  ],
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-inventory-settings/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406147879
+  },
+  "sourceCommit": "505410330f33ccc7c5fe4327d2766bba5aea303a",
+  "screenshots": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/ui-smoke/audio-muted.png",
+      "sha256": "45d3af0a79d6df1e974cf32dcc014e4eda78185b077786359f16836ad732e844"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/ui-smoke/controls.png",
+      "sha256": "affd4b57f6543988d989fe6aed55cd8cb0c1f03bd8053ed689da650cc7e0b9f3"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/ui-smoke/display.png",
+      "sha256": "2acc4c567167431824091ec2d1da80452b48ac80636551e5641ca3431e152d3e"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/ui-smoke/inventory-comparison-1080p.png",
+      "sha256": "67257458f3d98ba9fcdda95ec9be5915ee555ef10b30d474a6bf9bc714637e66"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/ui-smoke/inventory-comparison-720p.png",
+      "sha256": "ec2f787edc3d45c553ae88f6a27f4d0de8adf05332c1307d63a96cda2accfeb7"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/ui-smoke/inventory-comparison-bottom.png",
+      "sha256": "47bbf515e103e97a2a885ce63d71fe4e6f570d583f0789ab9c2be9eb8705f91a"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/ui-smoke/inventory-equipped.png",
+      "sha256": "0c0b7ec102473f026c66fb543aa0225e2bbafa9d05efe239449c3bc6829abfe1"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/ui-smoke/pause.png",
+      "sha256": "fb8a2ed0addd1deafbb7e07069c5dada4eb282420da3375d7ff5cda605569e37"
+    }
+  ],
+  "nativeInput": {
+    "normalAppLaunched": true,
+    "introSkippedViaCUA": true,
+    "previewClickEnteredGame": false,
+    "menuEscapeViaOSInputVerified": false,
+    "fullscreenToggleVerified": false
+  },
+  "limits": [
+    "Programmatic fixture is not OS input QA",
+    "Fullscreen callback wired; toggle behavior not tested",
+    "No full CP/DPS/element comparison or persistent settings",
+    "Existing automated mouse-coordinate discrepancy remains open"
+  ]
+}

@@ -57001,3 +57001,6 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 
 ## 2026-10-25 Mac 장비 비교·일시정지 설정
 선택/착용 비교·수치 차이·실제 장착 대상, 재개/로비/종료확인·FPS·전체화면·SFX/BGM 연결. 비교156/설정66 검사 통과, Player 통합 검수 진행. 언어720p/초광폭 진단과 자막 글꼴 정적 근거도 보존. 상세: engine/UNITY_MAC_INVENTORY_SETTINGS_20261025.md.
+
+
+2026-10-25 실제 Mac 통합: build 오류0, Player15/15, PNG8장 확인. OS 마우스 경유 새 메뉴/전체화면 전환 미검수는 분리. 최종 근거: `docs/engine/UNITY_MAC_INVENTORY_SETTINGS_20261025.md` 및 동명JSON.
