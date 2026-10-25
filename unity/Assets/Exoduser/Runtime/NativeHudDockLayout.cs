@@ -7,7 +7,8 @@ namespace Exoduser.UnityPort
     // excluding isolated export specks; no texture pixels are modified.
     public sealed class NativeHudDockLayout
     {
-        public const float ArtScale=.9f;
+        public const float ArtScale=.78f;
+        public static readonly string[] KeyNames={"1","2","3","4","F","Z","LMB","RMB","Shift","E","Q","Ctrl","Space"};
         public Rect SlotBar,LeftLiquid,RightLiquid,LeftFrame,RightFrame;
         public Rect ActiveSlot;
 
@@ -32,5 +33,10 @@ namespace Exoduser.UnityPort
         static Rect Liquid(Rect frame){return new Rect(frame.x+48*ArtScale,frame.y+44*ArtScale,175*ArtScale,175*ArtScale);}
         public static Rect VisibleFrame(Rect frame){return new Rect(frame.x+frame.width*9/465,frame.y+frame.height*4/469,frame.width*452/465,frame.height*465/469);}
         public Rect VisibleBar{get{return new Rect(SlotBar.x+SlotBar.width*154/2460,SlotBar.y+SlotBar.height*84/546,SlotBar.width*2163/2460,SlotBar.height*378/546);}}
+        public static Rect KeyLabelRect(Rect barRect,float height,int index)
+        {
+            float step=44*ArtScale,center=barRect.x+(146.5f+index*44)*ArtScale;
+            return new Rect(center-step*.5f+1,height-44,step-2,31);
+        }
     }
 }

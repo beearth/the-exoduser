@@ -72,8 +72,8 @@ namespace Exoduser.UnityPort
         {
             if(hpNumber!=null)return;
             hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=24,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
-            maximum=new GUIStyle(hpNumber){fontSize=18};resourceNumber=new GUIStyle(hpNumber){fontSize=20};resourceLabel=new GUIStyle(hpNumber){fontSize=18};
-            keyLabel=new GUIStyle(GUI.skin.label){font=Required<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=18,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(.85f,.80f,.69f);
+            maximum=new GUIStyle(hpNumber){fontSize=18};resourceNumber=new GUIStyle(hpNumber){fontSize=17};resourceLabel=new GUIStyle(hpNumber){fontSize=14};
+            keyLabel=new GUIStyle(GUI.skin.label){font=Required<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=15,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(.78f,.74f,.66f);
             tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(.92f,.84f,.68f);
         }
         public void Draw(float width,float height,string activeAttack,Simulation simulation=null)
@@ -98,16 +98,11 @@ namespace Exoduser.UnityPort
         }
         void DrawKeyLabels(Rect barRect,float height)
         {
-            string[] keys={"1","2","3","4","F","Z","LMB","RMB","Shift","E","Q","Ctrl","Space"};
-            const float step=44*NativeHudDockLayout.ArtScale;
+            string[] keys=NativeHudDockLayout.KeyNames;
             for(int i=0;i<keys.Length;i++){
-                float center=barRect.x+(146.5f+i*44)*NativeHudDockLayout.ArtScale;
-                var rect=new Rect(center-step*.5f+1,height-44,step-2,31);
-                var tint=GUI.color;GUI.color=new Color(.37f,.37f,.35f);GUI.DrawTextureWithTexCoords(rect,dockIron,new Rect(i/13f,.5f,1/13f,.12f));GUI.color=tint;
-                // Keep 3 logical pixels inside each edge: long neighboring names
-                // retain at least 8 logical pixels of separation (5.3px at720p).
+                var rect=NativeHudDockLayout.KeyLabelRect(barRect,height,i);
                 var content=new Rect(rect.x+3,rect.y,rect.width-6,rect.height);
-                // Preserve key names and 12px physical height at720p; narrow only width.
+                // Keep every source key label in its shared slot without opaque keycap plates.
                 float natural=keyLabel.CalcSize(new GUIContent(keys[i])).x;
                 float squeeze=Mathf.Min(1,content.width/Mathf.Max(1,natural));var matrix=GUI.matrix;
                 GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(content.x,content.y,0),Quaternion.identity,new Vector3(squeeze,1,1));
@@ -133,8 +128,8 @@ namespace Exoduser.UnityPort
         }
         void ResourceText(Rect wrap,int side,string name,string current,string max,Color color)
         {
-            float x=wrap.x+side*wrap.width/2,w=wrap.width/2;
-            Text(new Rect(x,wrap.y+35,w,24),name,resourceLabel,color);Text(new Rect(x,wrap.y+60,w,28),current,resourceNumber,Color.white);Text(new Rect(x,wrap.y+89,w,24),max,resourceLabel,new Color(1,1,1,.5f));
+            const float s=NativeHudDockLayout.ArtScale;float x=wrap.x+side*wrap.width/2,w=wrap.width/2;
+            Text(new Rect(x,wrap.y+35*s,w,24*s),name,resourceLabel,color);Text(new Rect(x,wrap.y+60*s,w,28*s),current,resourceNumber,Color.white);Text(new Rect(x,wrap.y+89*s,w,24*s),max,resourceLabel,new Color(1,1,1,.5f));
         }
         static Texture2D Pixels(RenderTexture rt)
         {
