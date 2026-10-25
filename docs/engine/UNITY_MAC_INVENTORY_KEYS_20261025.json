@@ -1,0 +1,28 @@
+{
+  "source": "219c9d3fed61d4f21bf1faf5a000efe4729de36f",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-inventory-keys-focus/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1533227893
+  },
+  "modelPassed": 33,
+  "playerPassed": 17,
+  "modelAndPlayerSource": "65150e51e50a46f4f54c4d4de978817402077c3b",
+  "osInput": {
+    "pid": 36214,
+    "launch": "macOS LaunchServices",
+    "minimizeRestore": true,
+    "freshEnterUnequip": true,
+    "paneSelectionDetailsCloseReopen": true
+  },
+  "visualImagesReviewed": 8,
+  "limitations": [
+    "Direct executable launch did not restore application focus; use app launch for OS verification",
+    "Full language/RTL, gamepad and precise mouse acceptance separate"
+  ]
+}
