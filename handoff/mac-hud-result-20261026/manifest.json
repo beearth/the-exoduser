@@ -1,0 +1,12 @@
+{
+  "sourceCommit": "9dd5991057da5d8db116e4fae73db6f258ca6a77",
+  "sourceCapturePath": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/startup-capture-9dd5991/startup-gameplay-hud-720p.png",
+  "file": "startup-gameplay-hud-720p.png",
+  "bytes": 1491338,
+  "sha256": "061a07a074d148eb386a00e0f952fff4fa88ed2f8cad983760651010432bec76",
+  "width": 1280,
+  "height": 720,
+  "provenance": "Existing completed Mac HUD capture accepted by the Mac production lead; this handoff copies that exact original image only.",
+  "transformed": false,
+  "recaptured": false
+}
