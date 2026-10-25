@@ -1,0 +1,2609 @@
+{
+  "schema": "exoduser-startup-intro-v1",
+  "sourceSha256": "d73d691989c1cb847cb500ce02ae81430c575fb90d732a5af131742c96d2c8c5",
+  "languages": [
+    {
+      "code": "ko",
+      "lines": [
+        {
+          "id": "1",
+          "img": "00.png",
+          "t": 0,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "grade": "purple"
+          },
+          "fade": {
+            "in": 800,
+            "out": 200,
+            "type": "cross"
+          },
+          "sfx": "goddess_laugh"
+        },
+        {
+          "id": "2",
+          "img": "01.png",
+          "t": 2500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.15,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.35,
+            "chrom": 0.3,
+            "shake": 2
+          },
+          "fade": {
+            "type": "cross",
+            "in": 300
+          },
+          "sfx": "laugh_climax"
+        },
+        {
+          "id": "3",
+          "img": "02.png",
+          "t": 4000,
+          "dur": 4500,
+          "speaker": "GODDESS",
+          "text": "네놈의 그 짜릿한 복수극, 감명 깊게 잘 봤다. 명작이더구나.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "px": 5,
+            "py": 0,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 60,
+            "shadow": true
+          }
+        },
+        {
+          "id": "5",
+          "img": "03.png",
+          "t": 8500,
+          "dur": 5000,
+          "speaker": "GODDESS",
+          "text": "그토록 피를 묻히고도, 네놈 안의 선의는 아직 남아 있구나.\n네가 구해야 할 이가 누구인지… 잊지는 않았겠지?\n아직도 너를 기다리고 있다.\n서둘러라. 너무 늦기 전에.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.2,
+            "px": 0,
+            "py": 10,
+            "ease": "inout"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 60,
+            "shadow": true
+          }
+        },
+        {
+          "id": "6",
+          "img": "04.png",
+          "t": 13500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.3,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "shake": 3,
+            "chrom": 0.2
+          },
+          "fade": {
+            "type": "cut",
+            "out": 200
+          },
+          "sfx": "wood_horse_drop"
+        },
+        {
+          "id": "7",
+          "img": "05.png",
+          "t": 15000,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "py": 5,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "grade": "purple_blood"
+          },
+          "fade": {
+            "type": "cross",
+            "in": 600
+          },
+          "sfx": "body_thud"
+        },
+        {
+          "id": "8",
+          "img": "06.png",
+          "t": 17500,
+          "dur": 3000,
+          "speaker": "GODDESS",
+          "text": "그 아이의 목마를 보니 망자도 정신이 드는가 보구나.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "9",
+          "img": "07.png",
+          "t": 20500,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "sfx": "reach_strain"
+        },
+        {
+          "id": "10",
+          "img": "08.png",
+          "t": 25000,
+          "dur": 4500,
+          "speaker": "GODDESS",
+          "text": "그래, 이곳을 탈출하라. 내 친히 너를 도와주마.\n디로이와 핵터가 너를 안내할 것이다.",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.15,
+            "ease": "inout"
+          },
+          "vfx": {
+            "vig": 0.5,
+            "grade": "purple",
+            "shake": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 65,
+            "shadow": true
+          }
+        },
+        {
+          "id": "10c",
+          "img": "09.png",
+          "t": 29500,
+          "dur": 2500,
+          "speaker": "GODDESS",
+          "text": "또 보자, 망자여.",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "grade": "purple"
+          },
+          "fade": {
+            "type": "cross",
+            "in": 600
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 80,
+            "shadow": true
+          }
+        },
+        {
+          "id": "11",
+          "img": "10.png",
+          "t": 32000,
+          "dur": 3000,
+          "speaker": "DIROY",
+          "text": "놀랄 거 없어. 인사나 하지. 내가 디로이.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "glowEye": true
+          },
+          "fade": {
+            "type": "black",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "glow": true
+          }
+        },
+        {
+          "id": "12",
+          "img": "11.png",
+          "t": 33000,
+          "dur": 3500,
+          "speaker": "HECTOR",
+          "text": "내가 핵터. 우릴 여신님의 가호라고 생각하면 돼.\n우리도 이곳을 나가야 하거든.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "px": -10,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.3,
+            "flicker": 0.2
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "13",
+          "img": "12.png",
+          "t": 36500,
+          "dur": 4000,
+          "speaker": "DIROY",
+          "text": "악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "14",
+          "img": "13.png",
+          "t": 40500,
+          "dur": 5500,
+          "speaker": "HECTOR",
+          "text": "근데 너는 좀 특이해. 선의가 강하거든.\n악의는 일시적으로 폭발한 상태야. 그 기세도 곧 가라앉을 거야.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.15,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "15",
+          "img": "14.png",
+          "t": 46000,
+          "dur": 3500,
+          "speaker": "DIROY",
+          "text": "그래서 악마들이 네 냄새를 맡고 몰려들 거야.",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1,
+            "ease": "in"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "shake": 1
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "16",
+          "img": "15.png",
+          "t": 49500,
+          "dur": 5000,
+          "speaker": "DIROY",
+          "text": "여신님이 네게 무구를 내리셨어. 챙겨.",
+          "cam": {
+            "zs": 1.2,
+            "ze": 1,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "sparkHL": true,
+            "glowEye": true
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "weapons_appear",
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "17",
+          "img": "16.png",
+          "t": 54500,
+          "dur": 5500,
+          "speaker": "HECTOR",
+          "text": "여신님이 보내신 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.",
+          "cam": {
+            "zs": 1.15,
+            "ze": 1,
+            "px": -15,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "chrom": 0.3,
+            "particle": true
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "ghost_bond_hum",
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "glow": true
+          }
+        },
+        {
+          "id": "18",
+          "img": "17.png",
+          "t": 60000,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "ease": "out"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "chrom": 0.3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "crossbow_glow"
+        },
+        {
+          "id": "18b",
+          "img": "18.png",
+          "t": 62500,
+          "dur": 5500,
+          "speaker": "DIROY",
+          "text": "그 악의띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1.3,
+            "px": 40,
+            "py": 30,
+            "ease": "inout"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "particle": true,
+            "chrom": 0.3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "19",
+          "img": "19.png",
+          "t": 65500,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.08,
+            "ze": 1,
+            "py": 5,
+            "ease": "in"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "sfx": "armor_kneel"
+        },
+        {
+          "id": "20",
+          "img": "20.png",
+          "t": 68000,
+          "dur": 2000,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.7
+          },
+          "fade": {
+            "type": "cross",
+            "in": 300
+          },
+          "sfx": "armor_collapse"
+        },
+        {
+          "id": "21",
+          "img": "20.png",
+          "t": 70000,
+          "dur": 3500,
+          "speaker": "HECTOR",
+          "text": "이 인간 또 기절했네. 얼마나 안 잔 거야?",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "22",
+          "img": "20.png",
+          "t": 73500,
+          "dur": 4000,
+          "speaker": "DIROY",
+          "text": "복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "22b",
+          "img": "20.png",
+          "t": 77500,
+          "dur": 2500,
+          "speaker": "DIROY",
+          "text": "놔두면 잡아먹혀.",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "23",
+          "img": "20.png",
+          "t": 80000,
+          "dur": 2500,
+          "speaker": "HECTOR",
+          "text": "악의라도 먹여서 깨워야 해.",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 60,
+            "shadow": true
+          }
+        },
+        {
+          "id": "24",
+          "img": "12.png",
+          "t": 80000,
+          "dur": 2500,
+          "speaker": "DIROY",
+          "text": "...",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.5,
+            "shake": 3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 80,
+            "shadow": true
+          }
+        },
+        {
+          "id": "25",
+          "img": null,
+          "t": 82500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "exit": true,
+          "fade": {
+            "out": 1500,
+            "type": "black"
+          }
+        }
+      ]
+    },
+    {
+      "code": "en",
+      "lines": [
+        {
+          "id": "1",
+          "img": "00.png",
+          "t": 0,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "grade": "purple"
+          },
+          "fade": {
+            "in": 800,
+            "out": 200,
+            "type": "cross"
+          },
+          "sfx": "goddess_laugh"
+        },
+        {
+          "id": "2",
+          "img": "01.png",
+          "t": 2500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.15,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.35,
+            "chrom": 0.3,
+            "shake": 2
+          },
+          "fade": {
+            "type": "cross",
+            "in": 300
+          },
+          "sfx": "laugh_climax"
+        },
+        {
+          "id": "3",
+          "img": "02.png",
+          "t": 4000,
+          "dur": 4500,
+          "speaker": "GODDESS",
+          "text": "Your thrilling revenge play was quite the spectacle. A masterpiece, truly.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "px": 5,
+            "py": 0,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "5",
+          "img": "03.png",
+          "t": 8500,
+          "dur": 5000,
+          "speaker": "GODDESS",
+          "text": "Even after all the blood you have spilled, goodness still lingers within you.\nYou have not forgotten whom you must save… have you?\nThey are still waiting for you.\nMake haste. Before it is too late.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.2,
+            "px": 0,
+            "py": 10,
+            "ease": "inout"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "6",
+          "img": "04.png",
+          "t": 13500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.3,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "shake": 3,
+            "chrom": 0.2
+          },
+          "fade": {
+            "type": "cut",
+            "out": 200
+          },
+          "sfx": "wood_horse_drop"
+        },
+        {
+          "id": "7",
+          "img": "05.png",
+          "t": 15000,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "py": 5,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "grade": "purple_blood"
+          },
+          "fade": {
+            "type": "cross",
+            "in": 600
+          },
+          "sfx": "body_thud"
+        },
+        {
+          "id": "8",
+          "img": "06.png",
+          "t": 17500,
+          "dur": 3000,
+          "speaker": "GODDESS",
+          "text": "That rocking horse snapped you right awake, did it.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "9",
+          "img": "07.png",
+          "t": 20500,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "sfx": "reach_strain"
+        },
+        {
+          "id": "10",
+          "img": "08.png",
+          "t": 25000,
+          "dur": 4500,
+          "speaker": "GODDESS",
+          "text": "Very well. Escape this place. I'll personally see to it.\nDiroy and Hector will guide you.",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.15,
+            "ease": "inout"
+          },
+          "vfx": {
+            "vig": 0.5,
+            "grade": "purple",
+            "shake": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "10c",
+          "img": "09.png",
+          "t": 29500,
+          "dur": 2500,
+          "speaker": "GODDESS",
+          "text": "Until next time, dead one.",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "grade": "purple"
+          },
+          "fade": {
+            "type": "cross",
+            "in": 600
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 80,
+            "shadow": true
+          }
+        },
+        {
+          "id": "11",
+          "img": "10.png",
+          "t": 32000,
+          "dur": 3000,
+          "speaker": "DIROY",
+          "text": "Don't be alarmed. Let me introduce myself. I'm Diroy.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "glowEye": true
+          },
+          "fade": {
+            "type": "black",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "glow": true
+          }
+        },
+        {
+          "id": "12",
+          "img": "11.png",
+          "t": 33000,
+          "dur": 3500,
+          "speaker": "HECTOR",
+          "text": "I'm Hector. Think of us as a blessing from the goddess.\nWe need to get out of here too.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "px": -10,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.3,
+            "flicker": 0.2
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "13",
+          "img": "12.png",
+          "t": 36500,
+          "dur": 4000,
+          "speaker": "DIROY",
+          "text": "Demons are creatures born of malice.\nThey instinctively attack anything with goodness.",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "14",
+          "img": "13.png",
+          "t": 40500,
+          "dur": 5500,
+          "speaker": "HECTOR",
+          "text": "But you're special. Your goodness is strong.\nAnd your malice has temporarily erupted. It'll fade soon enough.",
+          "cam": {
+            "zs": 1,
+            "ze": 1.15,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "15",
+          "img": "14.png",
+          "t": 46000,
+          "dur": 3500,
+          "speaker": "DIROY",
+          "text": "So demons will catch your scent and swarm toward you.",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1,
+            "ease": "in"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "shake": 1
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "16",
+          "img": "15.png",
+          "t": 49500,
+          "dur": 5000,
+          "speaker": "DIROY",
+          "text": "The goddess has bestowed weapons upon you. Take them.",
+          "cam": {
+            "zs": 1.2,
+            "ze": 1,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "sparkHL": true,
+            "glowEye": true
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "weapons_appear",
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "17",
+          "img": "16.png",
+          "t": 54500,
+          "dur": 5500,
+          "speaker": "HECTOR",
+          "text": "A projection sent by the goddess. A soul from the battlefield.\nIt dwells in the crossbow and will fight alongside you.",
+          "cam": {
+            "zs": 1.15,
+            "ze": 1,
+            "px": -15,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "chrom": 0.3,
+            "particle": true
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "ghost_bond_hum",
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "glow": true
+          }
+        },
+        {
+          "id": "18",
+          "img": "17.png",
+          "t": 60000,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "ease": "out"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "chrom": 0.3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "crossbow_glow"
+        },
+        {
+          "id": "18b",
+          "img": "18.png",
+          "t": 62500,
+          "dur": 5500,
+          "speaker": "DIROY",
+          "text": "Wear that circlet too. It'll keep your mind intact\nbefore the erupted malice drives you insane.",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1.3,
+            "px": 40,
+            "py": 30,
+            "ease": "inout"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "particle": true,
+            "chrom": 0.3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "19",
+          "img": "19.png",
+          "t": 65500,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.08,
+            "ze": 1,
+            "py": 5,
+            "ease": "in"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "sfx": "armor_kneel"
+        },
+        {
+          "id": "20",
+          "img": "20.png",
+          "t": 68000,
+          "dur": 2000,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.7
+          },
+          "fade": {
+            "type": "cross",
+            "in": 300
+          },
+          "sfx": "armor_collapse"
+        },
+        {
+          "id": "21",
+          "img": "20.png",
+          "t": 70000,
+          "dur": 3500,
+          "speaker": "HECTOR",
+          "text": "This guy passed out again. How long has he been awake?",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "22",
+          "img": "20.png",
+          "t": 73500,
+          "dur": 4000,
+          "speaker": "DIROY",
+          "text": "Must've gone days without food or sleep, consumed by revenge.",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "23",
+          "img": "20.png",
+          "t": 77500,
+          "dur": 2500,
+          "speaker": "HECTOR",
+          "text": "Just feed him some malice.",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 45,
+            "shadow": true
+          }
+        },
+        {
+          "id": "24",
+          "img": "12.png",
+          "t": 80000,
+          "dur": 2500,
+          "speaker": "DIROY",
+          "text": "...",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.5,
+            "shake": 3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 80,
+            "shadow": true
+          }
+        },
+        {
+          "id": "25",
+          "img": null,
+          "t": 82500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "exit": true,
+          "fade": {
+            "out": 1500,
+            "type": "black"
+          }
+        }
+      ]
+    },
+    {
+      "code": "ja",
+      "lines": [
+        {
+          "id": "1",
+          "img": "00.png",
+          "t": 0,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "grade": "purple"
+          },
+          "fade": {
+            "in": 800,
+            "out": 200,
+            "type": "cross"
+          },
+          "sfx": "goddess_laugh"
+        },
+        {
+          "id": "2",
+          "img": "01.png",
+          "t": 2500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.15,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.35,
+            "chrom": 0.3,
+            "shake": 2
+          },
+          "fade": {
+            "type": "cross",
+            "in": 300
+          },
+          "sfx": "laugh_climax"
+        },
+        {
+          "id": "3",
+          "img": "02.png",
+          "t": 4000,
+          "dur": 4500,
+          "speaker": "GODDESS",
+          "text": "お前のあのスリリングな復讐劇、実に見事だった。傑作だよ。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "px": 5,
+            "py": 0,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "5",
+          "img": "03.png",
+          "t": 8500,
+          "dur": 5000,
+          "speaker": "GODDESS",
+          "text": "それほど血にまみれても、貴様の内にはまだ善意が残っているのだな。\n救うべき者が誰なのか…忘れてはいまい？\n今も貴様を待っている。\n急ぐがよい。手遅れになる前に。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.2,
+            "px": 0,
+            "py": 10,
+            "ease": "inout"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "6",
+          "img": "04.png",
+          "t": 13500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.3,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "shake": 3,
+            "chrom": 0.2
+          },
+          "fade": {
+            "type": "cut",
+            "out": 200
+          },
+          "sfx": "wood_horse_drop"
+        },
+        {
+          "id": "7",
+          "img": "05.png",
+          "t": 15000,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "py": 5,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "grade": "purple_blood"
+          },
+          "fade": {
+            "type": "cross",
+            "in": 600
+          },
+          "sfx": "body_thud"
+        },
+        {
+          "id": "8",
+          "img": "06.png",
+          "t": 17500,
+          "dur": 3000,
+          "speaker": "GODDESS",
+          "text": "あの木馬を見て目が覚めたか、亡者よ。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "9",
+          "img": "07.png",
+          "t": 20500,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "sfx": "reach_strain"
+        },
+        {
+          "id": "10",
+          "img": "08.png",
+          "t": 25000,
+          "dur": 4500,
+          "speaker": "GODDESS",
+          "text": "よかろう、ここから脱出しろ。私自ら手を貸してやる。\nディロイとヘクターがお前を導くだろう。",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.15,
+            "ease": "inout"
+          },
+          "vfx": {
+            "vig": 0.5,
+            "grade": "purple",
+            "shake": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 60,
+            "shadow": true
+          }
+        },
+        {
+          "id": "10c",
+          "img": "09.png",
+          "t": 29500,
+          "dur": 2500,
+          "speaker": "GODDESS",
+          "text": "また会おう、亡者よ。",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "grade": "purple"
+          },
+          "fade": {
+            "type": "cross",
+            "in": 600
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 80,
+            "shadow": true
+          }
+        },
+        {
+          "id": "11",
+          "img": "10.png",
+          "t": 32000,
+          "dur": 3000,
+          "speaker": "DIROY",
+          "text": "驚くな。挨拶しよう。俺はディロイだ。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "glowEye": true
+          },
+          "fade": {
+            "type": "black",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "glow": true
+          }
+        },
+        {
+          "id": "12",
+          "img": "11.png",
+          "t": 33000,
+          "dur": 3500,
+          "speaker": "HECTOR",
+          "text": "俺はヘクター。女神様の加護と思えばいい。\n俺たちもここを出なきゃならないんだ。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "px": -10,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.3,
+            "flicker": 0.2
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "13",
+          "img": "12.png",
+          "t": 36500,
+          "dur": 4000,
+          "speaker": "DIROY",
+          "text": "悪魔は悪意から生まれた存在だ。\n本能的に善意を攻撃しようとする。",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "14",
+          "img": "13.png",
+          "t": 40500,
+          "dur": 5500,
+          "speaker": "HECTOR",
+          "text": "でもお前はちょっと特別だ。善意が強い。\nそして悪意は一時的に暴発した状態だ。すぐに消えるさ、その暴発も。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.15,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "15",
+          "img": "14.png",
+          "t": 46000,
+          "dur": 3500,
+          "speaker": "DIROY",
+          "text": "だから悪魔どもがお前の匂いを嗅ぎつけて押し寄せてくる。",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1,
+            "ease": "in"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "shake": 1
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "16",
+          "img": "15.png",
+          "t": 49500,
+          "dur": 5000,
+          "speaker": "DIROY",
+          "text": "女神がお前に武器を授けた。受け取れ。",
+          "cam": {
+            "zs": 1.2,
+            "ze": 1,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "sparkHL": true,
+            "glowEye": true
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "weapons_appear",
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "17",
+          "img": "16.png",
+          "t": 54500,
+          "dur": 5500,
+          "speaker": "HECTOR",
+          "text": "女神が送った投影だ。戦場の魂さ。\n弩に宿ってお前と共に戦う。",
+          "cam": {
+            "zs": 1.15,
+            "ze": 1,
+            "px": -15,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "chrom": 0.3,
+            "particle": true
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "ghost_bond_hum",
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "glow": true
+          }
+        },
+        {
+          "id": "18",
+          "img": "17.png",
+          "t": 60000,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "ease": "out"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "chrom": 0.3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "crossbow_glow"
+        },
+        {
+          "id": "18b",
+          "img": "18.png",
+          "t": 62500,
+          "dur": 5500,
+          "speaker": "DIROY",
+          "text": "その頭飾りもつけろ。暴発した悪意に\n狂わされる前に正気を保ってくれるはずだ。",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1.3,
+            "px": 40,
+            "py": 30,
+            "ease": "inout"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "particle": true,
+            "chrom": 0.3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "19",
+          "img": "19.png",
+          "t": 65500,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.08,
+            "ze": 1,
+            "py": 5,
+            "ease": "in"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "sfx": "armor_kneel"
+        },
+        {
+          "id": "20",
+          "img": "20.png",
+          "t": 68000,
+          "dur": 2000,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.7
+          },
+          "fade": {
+            "type": "cross",
+            "in": 300
+          },
+          "sfx": "armor_collapse"
+        },
+        {
+          "id": "21",
+          "img": "20.png",
+          "t": 70000,
+          "dur": 3500,
+          "speaker": "HECTOR",
+          "text": "こいつまた気絶したぞ。どれだけ寝てないんだ？",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "22",
+          "img": "20.png",
+          "t": 73500,
+          "dur": 4000,
+          "speaker": "DIROY",
+          "text": "復讐のことだけ考えて何日も飯も食わず寝てもいなかったようだ。",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "23",
+          "img": "20.png",
+          "t": 77500,
+          "dur": 2500,
+          "speaker": "HECTOR",
+          "text": "悪意でも食わせろ。",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "24",
+          "img": "12.png",
+          "t": 80000,
+          "dur": 2500,
+          "speaker": "DIROY",
+          "text": "...",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.5,
+            "shake": 3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 80,
+            "shadow": true
+          }
+        },
+        {
+          "id": "25",
+          "img": null,
+          "t": 82500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "exit": true,
+          "fade": {
+            "out": 1500,
+            "type": "black"
+          }
+        }
+      ]
+    },
+    {
+      "code": "zh",
+      "lines": [
+        {
+          "id": "1",
+          "img": "00.png",
+          "t": 0,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "grade": "purple"
+          },
+          "fade": {
+            "in": 800,
+            "out": 200,
+            "type": "cross"
+          },
+          "sfx": "goddess_laugh"
+        },
+        {
+          "id": "2",
+          "img": "01.png",
+          "t": 2500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.15,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.35,
+            "chrom": 0.3,
+            "shake": 2
+          },
+          "fade": {
+            "type": "cross",
+            "in": 300
+          },
+          "sfx": "laugh_climax"
+        },
+        {
+          "id": "3",
+          "img": "02.png",
+          "t": 4000,
+          "dur": 4500,
+          "speaker": "GODDESS",
+          "text": "你那场痛快的复仇戏，我可是看得津津有味。真是杰作啊。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "px": 5,
+            "py": 0,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "5",
+          "img": "03.png",
+          "t": 8500,
+          "dur": 5000,
+          "speaker": "GODDESS",
+          "text": "沾染了那么多鲜血，你心中竟还留有善意。\n你该救的人是谁……你没有忘记吧？\n他们仍在等你。\n快去吧。趁一切还来得及。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.2,
+            "px": 0,
+            "py": 10,
+            "ease": "inout"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "6",
+          "img": "04.png",
+          "t": 13500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.3,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "shake": 3,
+            "chrom": 0.2
+          },
+          "fade": {
+            "type": "cut",
+            "out": 200
+          },
+          "sfx": "wood_horse_drop"
+        },
+        {
+          "id": "7",
+          "img": "05.png",
+          "t": 15000,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "py": 5,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "grade": "purple_blood"
+          },
+          "fade": {
+            "type": "cross",
+            "in": 600
+          },
+          "sfx": "body_thud"
+        },
+        {
+          "id": "8",
+          "img": "06.png",
+          "t": 17500,
+          "dur": 3000,
+          "speaker": "GODDESS",
+          "text": "看到那木马就清醒了吗，亡者。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "9",
+          "img": "07.png",
+          "t": 20500,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "sfx": "reach_strain"
+        },
+        {
+          "id": "10",
+          "img": "08.png",
+          "t": 25000,
+          "dur": 4500,
+          "speaker": "GODDESS",
+          "text": "好吧，从这里逃出去。我亲自帮你。\n迪罗伊和赫克特会引导你。",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.15,
+            "ease": "inout"
+          },
+          "vfx": {
+            "vig": 0.5,
+            "grade": "purple",
+            "shake": 0.5
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 60,
+            "shadow": true
+          }
+        },
+        {
+          "id": "10c",
+          "img": "09.png",
+          "t": 29500,
+          "dur": 2500,
+          "speaker": "GODDESS",
+          "text": "后会有期，亡者。",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "grade": "purple"
+          },
+          "fade": {
+            "type": "cross",
+            "in": 600
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 80,
+            "shadow": true
+          }
+        },
+        {
+          "id": "11",
+          "img": "10.png",
+          "t": 32000,
+          "dur": 3000,
+          "speaker": "DIROY",
+          "text": "别惊慌。先打个招呼吧。我是迪罗伊。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "glowEye": true
+          },
+          "fade": {
+            "type": "black",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "glow": true
+          }
+        },
+        {
+          "id": "12",
+          "img": "11.png",
+          "t": 33000,
+          "dur": 3500,
+          "speaker": "HECTOR",
+          "text": "我是赫克特。就当是女神的恩赐吧。\n我们也得离开这里。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "px": -10,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.3,
+            "flicker": 0.2
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "13",
+          "img": "12.png",
+          "t": 36500,
+          "dur": 4000,
+          "speaker": "DIROY",
+          "text": "恶魔是由恶意诞生的存在。\n它们本能地会攻击一切善意。",
+          "cam": {
+            "zs": 1.05,
+            "ze": 1.1,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "14",
+          "img": "13.png",
+          "t": 40500,
+          "dur": 5500,
+          "speaker": "HECTOR",
+          "text": "但你有点特别。你的善意很强。\n而你的恶意正处于暂时爆发状态。很快就会消退的。",
+          "cam": {
+            "zs": 1,
+            "ze": 1.15,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "15",
+          "img": "14.png",
+          "t": 46000,
+          "dur": 3500,
+          "speaker": "DIROY",
+          "text": "所以恶魔们会闻到你的气味蜂拥而来。",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1,
+            "ease": "in"
+          },
+          "vfx": {
+            "vig": 0.6,
+            "shake": 1
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 50,
+            "shadow": true
+          }
+        },
+        {
+          "id": "16",
+          "img": "15.png",
+          "t": 49500,
+          "dur": 5000,
+          "speaker": "DIROY",
+          "text": "女神赐予了你武器。拿着吧。",
+          "cam": {
+            "zs": 1.2,
+            "ze": 1,
+            "px": 0,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.4,
+            "sparkHL": true,
+            "glowEye": true
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "weapons_appear",
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "17",
+          "img": "16.png",
+          "t": 54500,
+          "dur": 5500,
+          "speaker": "HECTOR",
+          "text": "女神派来的投影。战场上的灵魂。\n寄宿在弩上，会与你并肩作战。",
+          "cam": {
+            "zs": 1.15,
+            "ze": 1,
+            "px": -15,
+            "py": 0,
+            "ease": "out"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "chrom": 0.3,
+            "particle": true
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "ghost_bond_hum",
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "glow": true
+          }
+        },
+        {
+          "id": "18",
+          "img": "17.png",
+          "t": 60000,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.08,
+            "ease": "out"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "chrom": 0.3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "sfx": "crossbow_glow"
+        },
+        {
+          "id": "18b",
+          "img": "18.png",
+          "t": 62500,
+          "dur": 5500,
+          "speaker": "DIROY",
+          "text": "那个头饰也戴上。在爆发的恶意\n把你逼疯之前，它能帮你保持清醒。",
+          "cam": {
+            "zs": 1.1,
+            "ze": 1.3,
+            "px": 40,
+            "py": 30,
+            "ease": "inout"
+          },
+          "vfx": {
+            "glowPulse": "blue",
+            "particle": true,
+            "chrom": 0.3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "19",
+          "img": "19.png",
+          "t": 65500,
+          "dur": 2500,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1.08,
+            "ze": 1,
+            "py": 5,
+            "ease": "in"
+          },
+          "vfx": {
+            "vig": 0.4
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "sfx": "armor_kneel"
+        },
+        {
+          "id": "20",
+          "img": "20.png",
+          "t": 68000,
+          "dur": 2000,
+          "speaker": null,
+          "text": "",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "ease": "linear"
+          },
+          "vfx": {
+            "vig": 0.7
+          },
+          "fade": {
+            "type": "cross",
+            "in": 300
+          },
+          "sfx": "armor_collapse"
+        },
+        {
+          "id": "21",
+          "img": "20.png",
+          "t": 70000,
+          "dur": 3500,
+          "speaker": "HECTOR",
+          "text": "这家伙又晕过去了。多久没睡了？",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cross",
+            "in": 500
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "22",
+          "img": "20.png",
+          "t": 73500,
+          "dur": 4000,
+          "speaker": "DIROY",
+          "text": "光想着复仇，好几天没吃没睡的样子。",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "23",
+          "img": "20.png",
+          "t": 77500,
+          "dur": 2500,
+          "speaker": "HECTOR",
+          "text": "喂他点恶意吧。",
+          "cam": {
+            "zs": 1,
+            "ze": 1
+          },
+          "vfx": {
+            "vig": 0.6
+          },
+          "fade": {
+            "type": "cut"
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 55,
+            "shadow": true
+          }
+        },
+        {
+          "id": "24",
+          "img": "12.png",
+          "t": 80000,
+          "dur": 2500,
+          "speaker": "DIROY",
+          "text": "...",
+          "cam": {
+            "zs": 1,
+            "ze": 1.05,
+            "ease": "out"
+          },
+          "vfx": {
+            "vig": 0.5,
+            "shake": 3
+          },
+          "fade": {
+            "type": "cross",
+            "in": 400
+          },
+          "text_cfg": {
+            "reveal": "char",
+            "speed": 80,
+            "shadow": true
+          }
+        },
+        {
+          "id": "25",
+          "img": null,
+          "t": 82500,
+          "dur": 1500,
+          "speaker": null,
+          "text": "",
+          "exit": true,
+          "fade": {
+            "out": 1500,
+            "type": "black"
+          }
+        }
+      ]
+    }
+  ]
+}

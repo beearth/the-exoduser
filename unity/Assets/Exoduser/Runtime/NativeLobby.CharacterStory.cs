@@ -48,12 +48,12 @@ namespace Exoduser.UnityPort
    if(warriorStory.EntryReady){
     string name=warriorStory.Name;bool valid=Characters.SelectedIndex==warriorSlot&&Characters.NameAt(warriorSlot)==name;
     CancelCharacterStory();characterInputFence=true;
-    if(valid)EnterSelectedCharacter();else ShowLobby();
+    if(valid)BeginCharacterEntry(true);else ShowLobby();
    }
   }
   void DrawCharacterStory()
   {
-   if(warriorStory.Entering){Label(new Rect(360,465,1200,100),K("지옥으로 입장하는 중...","Entering Hell..."),heading,TextAnchor.MiddleCenter);if(warriorError.Length>0)Label(new Rect(360,580,1200,70),K("이야기 영상을 재생하지 못했습니다. 캐릭터 목록은 보존됩니다.","The story could not play. Your character list is preserved."),normal,TextAnchor.MiddleCenter);return;}
+   if(warriorStory.Entering){DrawEntryLoadingLogo();if(warriorError.Length>0)Label(new Rect(360,580,1200,70),K("이야기 영상을 재생하지 못했습니다. 캐릭터 목록은 보존됩니다.","The story could not play. Your character list is preserved."),normal,TextAnchor.MiddleCenter);return;}
    DrawMovie(new Rect(0,0,1920,1080),null,false);
    if(warriorCaption==null){warriorCaption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=36,alignment=TextAnchor.MiddleCenter,wordWrap=true};warriorCaption.normal.textColor=Color.white;}
    if(SubtitleText.Length>0){var box=new Rect(180,864,1560,120);Fill(box,new Color(0,0,0,.64f));Label(box,SubtitleText,warriorCaption,TextAnchor.MiddleCenter);CaptionVisible=true;}

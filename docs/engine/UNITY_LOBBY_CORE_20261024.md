@@ -142,3 +142,5 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 
 
 2026-10-25 Mac 캐릭터 후속: 생성/선택의 세션 UI와 native preview 이름 전달을 연결했다. 원본 전사만 생성·최대5슬롯·이름 규칙 유지. 영속 저장/기존 슬롯/계정은 미연결. 최신 범위와 검수는 [UNITY_MAC_CHARACTER_UI_20261025](UNITY_MAC_CHARACTER_UI_20261025.md)를 따른다.
+
+2026-10-25 후속 후보: 캐릭터 입장 loading→네메시스→4컷 안내→커튼→기존 native run 연결과 명시적 review 저장 분리. [범위·정적 검증·남은27실습](UNITY_MAC_STARTUP_FLOW_20261025.md). 부모 통합/OS입력·시각 검수 전이며 위 기존 로비 단위와 전체 튜토리얼 인수를 구분한다.

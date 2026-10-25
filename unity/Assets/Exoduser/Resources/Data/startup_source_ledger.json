@@ -1,0 +1,162 @@
+{
+  "sourceGameSha256": "d73d691989c1cb847cb500ce02ae81430c575fb90d732a5af131742c96d2c8c5",
+  "gitRef": "fab7a167c30c6421bda8cf6d4c2ee2e7753e87f3",
+  "assets": [
+    {
+      "source": "git origin/main:assets/cutscene/images/00.png",
+      "destination": "Art/Startup/Nemesis/00.png",
+      "bytes": 4261852,
+      "sha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/01.png",
+      "destination": "Art/Startup/Nemesis/01.png",
+      "bytes": 4594206,
+      "sha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/02.png",
+      "destination": "Art/Startup/Nemesis/02.png",
+      "bytes": 2217395,
+      "sha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/03.png",
+      "destination": "Art/Startup/Nemesis/03.png",
+      "bytes": 4361613,
+      "sha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/04.png",
+      "destination": "Art/Startup/Nemesis/04.png",
+      "bytes": 2941022,
+      "sha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/05.png",
+      "destination": "Art/Startup/Nemesis/05.png",
+      "bytes": 4072419,
+      "sha256": "45697aa3825ee05bcd0b76f443d68cd662b53929d5e8feb94112cf55aabb35f6"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/06.png",
+      "destination": "Art/Startup/Nemesis/06.png",
+      "bytes": 3522569,
+      "sha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/07.png",
+      "destination": "Art/Startup/Nemesis/07.png",
+      "bytes": 3570659,
+      "sha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/08.png",
+      "destination": "Art/Startup/Nemesis/08.png",
+      "bytes": 4298747,
+      "sha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/09.png",
+      "destination": "Art/Startup/Nemesis/09.png",
+      "bytes": 3624668,
+      "sha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/10.png",
+      "destination": "Art/Startup/Nemesis/10.png",
+      "bytes": 3403975,
+      "sha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/11.png",
+      "destination": "Art/Startup/Nemesis/11.png",
+      "bytes": 1921711,
+      "sha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/12.png",
+      "destination": "Art/Startup/Nemesis/12.png",
+      "bytes": 4350488,
+      "sha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/13.png",
+      "destination": "Art/Startup/Nemesis/13.png",
+      "bytes": 3457243,
+      "sha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/14.png",
+      "destination": "Art/Startup/Nemesis/14.png",
+      "bytes": 3257716,
+      "sha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/15.png",
+      "destination": "Art/Startup/Nemesis/15.png",
+      "bytes": 2239732,
+      "sha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/16.png",
+      "destination": "Art/Startup/Nemesis/16.png",
+      "bytes": 2236838,
+      "sha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/17.png",
+      "destination": "Art/Startup/Nemesis/17.png",
+      "bytes": 3880012,
+      "sha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/18.png",
+      "destination": "Art/Startup/Nemesis/18.png",
+      "bytes": 3819719,
+      "sha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/19.png",
+      "destination": "Art/Startup/Nemesis/19.png",
+      "bytes": 4701553,
+      "sha256": "f2885a2441dd2ace72204f761b593f79279bc63389a004e3f31d0e1dbb4d99d3"
+    },
+    {
+      "source": "git origin/main:assets/cutscene/images/20.png",
+      "destination": "Art/Startup/Nemesis/20.png",
+      "bytes": 4398839,
+      "sha256": "8c3579884626acf6396fb1b129db8a7a122ae15780e2fa2b9af31073a7f83690"
+    },
+    {
+      "source": "git origin/main:assets/lobby/lobby_enter_sfx.mp3",
+      "destination": "Audio/Startup/enter.mp3",
+      "bytes": 49581,
+      "sha256": "ef42319809727dceede0cf2e709f33346510d91adf8e771772da8e8ba715eca5"
+    },
+    {
+      "source": "git origin/main:sfx/voice/voice_wakeup.mp3",
+      "destination": "Audio/Startup/wakeup.mp3",
+      "bytes": 170462,
+      "sha256": "dcc3995967af3174a953de2046c76f3251a28c43098e362e61a44a2f65303122"
+    },
+    {
+      "source": "git origin/main:bgm/공통/네메시아의 강림 V3.mp3",
+      "destination": "Audio/Startup/nemesis.mp3",
+      "bytes": 3557632,
+      "sha256": "d983380924b029a5f19c98f0bcded51c6607be06235346c10520dfcc7716d910"
+    },
+    {
+      "source": "git origin/main:img/logo_exoduser.png",
+      "destination": "Art/Startup/loading_logo.png",
+      "bytes": 241583,
+      "sha256": "dffad452cffa7aaf074ff80d2fbb9258858fdef1cbde750e8b07f3f3b264efbd"
+    },
+    {
+      "source": "git origin/main:bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3",
+      "destination": "Audio/Startup/stage_first.mp3",
+      "bytes": 6047859,
+      "sha256": "e2e718434dfbd792380117df1b072f8829fafb91c12c1834988bbaa706644999"
+    }
+  ]
+}

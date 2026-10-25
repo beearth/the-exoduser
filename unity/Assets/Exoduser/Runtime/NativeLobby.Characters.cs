@@ -14,15 +14,12 @@ namespace Exoduser.UnityPort
   int characterStep,characterVisual,characterScroll;
   bool characterFocus,characterInputFence;
   string characterName="",characterError="";
-  CharacterCatalog characterCatalog;Texture2D warriorArt,warriorPortrait;Texture2D[] classArt;
+  Texture2D warriorArt,warriorPortrait;
   GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton,characterDeleteButton,characterStorageText;
-  readonly string[] classEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
   void CharacterStyles()
   {
    if(characterText!=null)return;
-   characterCatalog=JsonUtility.FromJson<CharacterCatalog>(Resources.Load<TextAsset>("Data/character_ui").text);
-   warriorArt=Art("warrior_cut");warriorPortrait=Art("warrior_portrait");
-   classArt=new[]{warriorArt,Art("character_1"),Art("character_2"),Art("character_3"),Art("character_4")};
+   warriorArt=Resources.Load<Texture2D>("Art/CharacterSelect/warrior_cut");warriorPortrait=Resources.Load<Texture2D>("Art/CharacterSelect/portrait_warrior");
    characterText=new GUIStyle(lobbyText){fontSize=25,wordWrap=true,clipping=TextClipping.Clip};
    characterSmall=new GUIStyle(characterText){fontSize=20};
    characterStorageText=new GUIStyle(characterText){fontSize=16};
@@ -30,6 +27,7 @@ namespace Exoduser.UnityPort
    characterField=new GUIStyle(GUI.skin.textField){font=characterText.font,fontSize=30,padding=new RectOffset(16,16,10,10)};
    characterButton=new GUIStyle(GUI.skin.button){font=characterText.font,fontSize=24,padding=new RectOffset(12,12,8,8)};
    characterDeleteButton=new GUIStyle(characterButton){padding=new RectOffset(0,0,0,0)};
+   InitializeCharacterPresentation();
   }
   public bool OpenCharacterCreation()
   {
@@ -44,7 +42,7 @@ namespace Exoduser.UnityPort
   public bool ConfirmCharacterVisual()
   {
    if(characterStep!=1||characterVisual!=0)return false;
-   characterStep=2;characterFocus=true;characterError="";return true;
+   CloseCharacterPresentationVideo();characterStep=2;characterFocus=true;characterError="";return true;
   }
   public bool CreateCharacter(string name)
   {
@@ -64,13 +62,13 @@ namespace Exoduser.UnityPort
     default:return K("출시 준비 중입니다.","Coming soon.");
    }
   }
-  public void CloseCharacterCreation(){characterStep=0;characterError="";characterFocus=false;deletingCharacter=-1;deletingName="";deleteFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}
+  public void CloseCharacterCreation(){CloseCharacterPresentationVideo();characterStep=0;characterError="";characterFocus=false;deletingCharacter=-1;deletingName="";deleteFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}
   public bool SelectCharacter(int index){if(Flow.Page!=LobbyPage.Lobby||CharacterModalOpen)return false;if(index==Characters.SelectedIndex&&index>=0)return true;var candidate=CopyCharacters();if(!candidate.Select(index)||!CommitCharacters(candidate))return false;RevealSelectedCharacter();return true;}
   void RevealSelectedCharacter(){if(Characters.SelectedIndex<characterScroll)characterScroll=Characters.SelectedIndex;if(Characters.SelectedIndex>=characterScroll+2)characterScroll=Characters.SelectedIndex-1;characterScroll=Mathf.Clamp(characterScroll,0,Mathf.Max(0,Characters.Count-2));}
   public bool EnterSelectedCharacter()
   {
    if(Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||Characters.SelectedIndex<0)return false;
-   ActiveCharacterName=Characters.SelectedName;Flow.SelectPreview();characterInputFence=true;return EnterNativeTest();
+   ActiveCharacterName=Characters.SelectedName;characterInputFence=true;return BeginCharacterEntry(false);
   }
   void UpdateCharacterFence(){if(characterInputFence&&!Input.GetKey(KeyCode.Return)&&!Input.GetKey(KeyCode.KeypadEnter)&&!Input.GetKey(KeyCode.Escape)&&!Input.GetKey(KeyCode.N)&&!Input.GetKey(KeyCode.Delete)&&!Input.GetKey(KeyCode.Backspace)&&!Input.GetKey(KeyCode.Space))characterInputFence=false;}
   void HandleCharacterKeys()
@@ -125,29 +123,9 @@ namespace Exoduser.UnityPort
   {
    if(!CharacterModalOpen)return;
    if(CharacterDeleteOpen){DrawCharacterDelete();return;}
-   Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.83f));Rect panel=new Rect(350,100,1220,880);Fill(panel,new Color(.055f,.047f,.045f,.99f));Border(panel,new Color(.55f,.40f,.25f),2);
-   Label(new Rect(400,125,1120,65),K("새 캐릭터","New character"),characterTitle,TextAnchor.MiddleLeft);
-   for(int i=0;i<5;i++){
-    Rect tab=new Rect(400+i*224,211,212,74);Fill(tab,new Color(.10f,.085f,.08f));Border(tab,i==characterVisual?new Color(.8f,.61f,.38f):new Color(.3f,.25f,.20f),i==characterVisual?2:1);
-    string name=K(characterCatalog.visuals[i].name,classEnglish[i]);Label(new Rect(tab.x+8,tab.y+7,196,34),name,characterSmall,TextAnchor.MiddleCenter);
-    Label(new Rect(tab.x+8,tab.y+43,196,24),i==0?K("생성 가능","Available"):K("출시 준비 중","Coming soon"),lobbyText,TextAnchor.MiddleCenter);
-    if(characterStep==1&&GUI.Button(tab,"",GUIStyle.none))ChooseCharacterVisual(i);
-   }
-   var artTint=GUI.color;if(characterVisual!=0)GUI.color=new Color(.45f,.45f,.45f,1);
-   Image(new Rect(395,310,470,570),classArt[characterVisual]);GUI.color=artTint;
-   if(characterVisual!=0){Fill(new Rect(395,785,470,80),new Color(.03f,.025f,.025f,.90f));Label(new Rect(420,795,420,60),K("출시 준비 중","Coming soon"),characterTitle,TextAnchor.MiddleCenter);}
-   Label(new Rect(900,330,600,70),K(characterCatalog.visuals[characterVisual].name,classEnglish[characterVisual]),characterTitle,TextAnchor.MiddleLeft);
-   Label(new Rect(900,417,600,90),K(characterCatalog.visuals[characterVisual].description,characterVisual==0?"A black-iron warrior wielding a greatsword.":"This class is not available yet."),characterText,TextAnchor.UpperLeft);
-   Label(new Rect(900,530,600,105),CharacterCreationNote(),characterSmall,TextAnchor.UpperLeft);
-   if(characterStep==2){
-    Label(new Rect(900,652,600,38),K("캐릭터 이름 (2~8자)","Character name (2–8 characters)"),characterText,TextAnchor.MiddleLeft);
-    GUI.SetNextControlName("character-name");characterName=GUI.TextField(new Rect(900,698,600,64),characterName,8,characterField);
-    if(characterFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl("character-name");characterFocus=false;}
-    Label(new Rect(900,775,600,70),characterError,characterSmall,TextAnchor.UpperLeft);
-   }else Label(new Rect(900,665,600,90),K("← → 화신 선택 · Enter 이름 입력","← → Choose class · Enter to name"),characterSmall,TextAnchor.UpperLeft);
-   GUI.SetNextControlName("character-cancel");if(GUI.Button(new Rect(900,870,220,60),K("취소 · ESC","Cancel · ESC"),characterButton))CloseCharacterCreation();
-   bool enabled=GUI.enabled;GUI.enabled=enabled&&characterVisual==0;
-   GUI.SetNextControlName("character-create");if(GUI.Button(new Rect(1150,870,350,60),characterStep==1?K("이름 입력","Choose a name"):K("캐릭터 생성","Create character"),characterButton)){if(characterStep==1)ConfirmCharacterVisual();else CreateCharacter(characterName);}GUI.enabled=enabled;
+   bool guiEnabled=GUI.enabled;var matrix=GUI.matrix;GUI.matrix=Matrix4x4.identity;
+   if(characterStep==1)DrawCharacterVisualPresentation();else DrawCharacterNamePresentation();
+   GUI.matrix=matrix;GUI.enabled=guiEnabled;
   }
  }
 }

@@ -12,10 +12,10 @@ namespace Exoduser.UnityPort
   bool characterStoreProblem;
   void InitializeCharacterStore()
   {
-   var args=Environment.GetCommandLineArgs();bool fixture=false;
+   var args=Environment.GetCommandLineArgs();bool fixture=false;bool review=Array.IndexOf(args,"--unity-frontend-review")>=0||Array.IndexOf(args,"--unity-startup-capture")>=0;
    foreach(string arg in args)if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&arg.EndsWith("-smoke",StringComparison.Ordinal))fixture=true;
    if(fixture&&Array.IndexOf(args,"--unity-character-store-smoke")<0)return;
-   if(fixture){int at=Array.IndexOf(args,"-output");if(at<0||at+1>=args.Length){characterWritesAllowed=false;characterStoreProblem=true;CharacterStoreState=CharacterStoreStatus.IoError;return;}CharacterStoreDirectory=Path.Combine(Path.GetFullPath(args[at+1]),"character-roster-v1");}
+   if(fixture||review){int at=Array.IndexOf(args,"-output");if(at<0||at+1>=args.Length||string.IsNullOrWhiteSpace(args[at+1])||args[at+1].StartsWith("-",StringComparison.Ordinal)){characterWritesAllowed=false;characterStoreProblem=true;CharacterStoreState=CharacterStoreStatus.IoError;return;}CharacterStoreDirectory=Path.Combine(Path.GetFullPath(args[at+1]),"character-roster-v1");}
    else CharacterStoreDirectory=Path.Combine(Application.persistentDataPath,"character-roster-v1");
    characterStore=new CharacterRosterStore(CharacterStoreDirectory,value=>JsonUtility.ToJson(value,true),json=>JsonUtility.FromJson<CharacterRosterSnapshot>(json));
    bool loaded=characterStore.TryLoad(out var snapshot,out var status);CharacterStoreState=status;
