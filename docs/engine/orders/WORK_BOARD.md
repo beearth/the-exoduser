@@ -1,5 +1,9 @@
 # 공동 작업판 (Claude 총괄 ↔ Codex 총괄) — 단일 기준
 
+## 2026-10-25 Mac 일시정지·설정 키보드 ACTIVE
+
+원본 UI 우선 후속: 선택·값 조절·뒤로/재개와 창 포커스 복귀 차단을 구현. 새 모델33/33 PASS, 실제 Player/OS 검수 준비. [범위와 결과](../UNITY_MAC_PAUSE_KEYS_20261025.md). 기존 담당만 NativeGame/NativePauseMenu·빌드·공유 docs 소유.
+
 ## 2026-10-25 Mac 신규 전사 이야기·생성 진입 완료
 
 원본 영상·29×22자막,22cut/1.2초hold/1.2초gate 연결. 모델41/41·실제 skip15/실패7/자연완주8=30/30, ARM64 오류0. CUA 격리 저장으로 생성 Enter1.6초·짧은Esc/긴Esc·같은이름의실제플레이진입 확인, 저장revision1회증가·검수앱종료. [인수 기록](../UNITY_MAC_WARRIOR_STORY_20261025.md). 전투진행save/패드/전체다국어font·RTL은별도. **NEXT:** 남은 일시정지/설정 키보드 조작·메뉴 focus 복귀.

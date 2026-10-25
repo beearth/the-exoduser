@@ -64,9 +64,10 @@ namespace Exoduser.UnityPort
                 SetSfxPercent,SetBgmPercent,SetFrameCap,
                 value=>Screen.fullScreenMode=value?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed);
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             if(!legacyFixture){Running=false;lobby.Begin();}
-            if(Array.IndexOf(args,"--unity-character-story-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterStorySmoke());}
+            if(Array.IndexOf(args,"--unity-pause-smoke")>=0){pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();menu=true;Running=false;pauseMenu.Reset();StartCoroutine(PauseSmoke());}
+            else if(Array.IndexOf(args,"--unity-character-story-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterStorySmoke());}
             else if(Array.IndexOf(args,"--unity-character-store-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterStoreSmoke());}
             else if(Array.IndexOf(args,"--unity-character-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterSmoke());}
             else if(Array.IndexOf(args,"--unity-skill-smoke")>=0){menu=false;Running=false;StartCoroutine(SkillSmoke());}
@@ -113,12 +114,17 @@ namespace Exoduser.UnityPort
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){Running=false;view.cullingMask=0;return;}
             view.cullingMask=worldMask;
+            if(!gameFocused){Running=false;return;}
+            if(menu||Simulation.Player.Hp<=0){
+                if(!pauseSmoke)ApplyPauseCommand(pauseMenu.PollKeys(Simulation.Player.Hp<=0,Screen.fullScreen));
+                UpdateViews();return;
+            }
             if(skillInputFence&&!Input.GetMouseButton(0))skillInputFence=false;
             if(Input.GetKeyDown(KeyCode.Escape)){
                 if(skills.Open){SetSkills(false);return;}
                 if(inventory.Open)SetInventory(false);
-                else if((menu||Simulation.Player.Hp<=0)&&pauseMenu.HandleEscape()){}
-                else {menu=!menu;pauseMenu.Reset();Running=!menu&&Simulation.Player.Hp>0;}
+                else {menu=true;pauseMenu.Reset();Running=false;}
+                return;
             }
             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.K)){SetSkills(true);return;}
@@ -130,7 +136,7 @@ namespace Exoduser.UnityPort
         }
         void FixedUpdate()
         {
-            if(!Running||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
+            if(!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             var p=Simulation.Player;var aim=view.ScreenToWorldPoint(Input.mousePosition);
             float x=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
             float y=(Input.GetKey(KeyCode.S)?1:0)-(Input.GetKey(KeyCode.W)?1:0);
@@ -262,10 +268,10 @@ namespace Exoduser.UnityPort
         void ApplyFrameCap(int cap){QualitySettings.vSyncCount=0;Application.targetFrameRate=cap==0?-1:cap;}
         void ApplyPauseCommand(PauseMenuCommand command){
             switch(command){
-                case PauseMenuCommand.Resume: if(Simulation.Player.Hp>0){menu=false;Running=true;} break;
-                case PauseMenuCommand.Restart:ResetRun();menu=false;Running=true;break;
+                case PauseMenuCommand.Resume: if(gameFocused&&Simulation.Player.Hp>0){menu=false;skillInputFence=true;Running=true;} break;
+                case PauseMenuCommand.Restart:if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}break;
                 case PauseMenuCommand.ReturnLobby:Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
-                case PauseMenuCommand.Quit:Application.Quit();break;
+                case PauseMenuCommand.Quit:if(gameFocused)Application.Quit();break;
             }
         }
         Vector2 ToGUI(float x,float y){var v=view.WorldToViewportPoint(Point(x,y));return new Vector2(v.x*1920,(1-v.y)*1080);}

@@ -4,7 +4,8 @@
   <ImplicitUsings>disable</ImplicitUsings><Nullable>disable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
  </PropertyGroup>
  <ItemGroup>
-  <Compile Include="../../Assets/Exoduser/Runtime/Core/NativeSettingsState.cs"/><Compile Include="../../Assets/Exoduser/Runtime/NativePauseMenu.cs"/><Compile Include="Program.cs"/>
+  <Compile Include="../../Assets/Exoduser/Runtime/Core/NativeSettingsState.cs"/><Compile Include="../../Assets/Exoduser/Runtime/NativePauseMenu.cs"/><Compile Include="Program.cs"/><Compile Include="../../Assets/Exoduser/Runtime/Core/PauseNavigation.cs"/><Compile Include="../../Assets/Exoduser/Runtime/NativePauseMenu.Keyboard.cs"/>
+  <Reference Include="UnityEngine.InputLegacyModule"><HintPath>$(UnityManagedDirectory)/UnityEngine.InputLegacyModule.dll</HintPath></Reference>
   <Reference Include="UnityEngine.CoreModule"><HintPath>$(UnityManagedDirectory)/UnityEngine.CoreModule.dll</HintPath></Reference>
   <Reference Include="UnityEngine.IMGUIModule"><HintPath>$(UnityManagedDirectory)/UnityEngine.IMGUIModule.dll</HintPath></Reference>
   <Reference Include="UnityEngine.TextRenderingModule"><HintPath>$(UnityManagedDirectory)/UnityEngine.TextRenderingModule.dll</HintPath></Reference>

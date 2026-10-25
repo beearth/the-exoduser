@@ -7,19 +7,16 @@ namespace Exoduser.UnityPort
  public enum PauseMenuCommand { None, Resume, Restart, ReturnLobby, Quit }
 
  // A complete pause/settings view. The game owner retains simulation and input ownership.
- public sealed class NativePauseMenu
+ public sealed partial class NativePauseMenu
  {
-  enum Page { Main, Settings, Quit }
   readonly Font font;
   readonly NativeSettingsState settings;
   readonly Action<int> sfxChanged,bgmChanged,frameCapChanged;
   readonly Action<bool> fullscreenChanged;
-  Page page;
-  int tab;
   GUIStyle title,body,muted,button,tabButton,activeTab,fpsButton,activeFpsButton;
   bool ready;
   public bool English { get; set; }
-  public bool SettingsOpen { get { return page==Page.Settings; } }
+  public bool SettingsOpen { get { return page==PausePage.Settings; } }
   public NativeSettingsState Settings { get { return settings; } }
   public NativePauseMenu(Font font,NativeSettingsState settings,Action<int> sfxChanged,
                          Action<int> bgmChanged,Action<int> frameCapChanged,Action<bool> fullscreenChanged)
@@ -28,13 +25,12 @@ namespace Exoduser.UnityPort
    this.font=font;this.settings=settings;this.sfxChanged=sfxChanged;
    this.bgmChanged=bgmChanged;this.frameCapChanged=frameCapChanged;this.fullscreenChanged=fullscreenChanged;
   }
-  public void Reset() { page=Page.Main; }
-  public void ShowSettings() { page=Page.Settings; }
+  public void Reset() { navigation.Reset(); }
+  public void ShowSettings() { page=PausePage.Settings; }
   // Call once from the owner's Escape handler BEFORE toggling menu/Running.
   public bool HandleEscape()
   {
-   if(page==Page.Main)return false;
-   page=Page.Main;return true;
+   return navigation.BackPage();
   }
   string T(string ko,string en) { return English?en:ko; }
   void Init()
@@ -64,21 +60,23 @@ namespace Exoduser.UnityPort
    Init();Matrix4x4 oldMatrix=GUI.matrix;Color oldColor=GUI.color;bool oldEnabled=GUI.enabled;
    try
    {
+    if(Event.current.isKey)Event.current.Use();
+    GUI.enabled=oldEnabled&&navigation.Focused&&!navigation.WaitingForRelease;
     GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;
     Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.72f));
     float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2,0),Quaternion.identity,Vector3.one*scale);
     var panel=new Rect(300,72,680,576);Fill(panel,new Color(.055f,.047f,.043f,.98f));
     Border(panel,new Color(.48f,.36f,.23f));Fill(new Rect(328,151,624,1),new Color(.48f,.36f,.23f,.65f));
-    if(page==Page.Settings){DrawSettings(fullscreen);return PauseMenuCommand.None;}
-    if(page==Page.Quit)return DrawQuit();
+    if(page==PausePage.Settings){DrawSettings(fullscreen);return PauseMenuCommand.None;}
+    if(page==PausePage.Quit)return DrawQuit();
     GUI.Label(new Rect(336,98,608,48),dead?T("쓰러졌습니다","You have fallen"):T("일시정지","Paused"),title);
-    if(GUI.Button(new Rect(388,196,504,58),dead?T("다시 시작","Restart"):T("계속하기","Resume"),button))return dead?PauseMenuCommand.Restart:PauseMenuCommand.Resume;
-    if(GUI.Button(new Rect(388,272,504,58),T("설정","Settings"),button))page=Page.Settings;
-    if(GUI.Button(new Rect(388,348,504,58),T("로비로 돌아가기","Return to lobby"),button))return PauseMenuCommand.ReturnLobby;
-    if(GUI.Button(new Rect(388,424,504,58),T("게임 종료","Quit game"),button))page=Page.Quit;
+    if(MenuButton(new Rect(388,196,504,58),dead?T("다시 시작","Restart"):T("계속하기","Resume"),0,button))return dead?PauseMenuCommand.Restart:PauseMenuCommand.Resume;
+    if(MenuButton(new Rect(388,272,504,58),T("설정","Settings"),1,button))page=PausePage.Settings;
+    if(MenuButton(new Rect(388,348,504,58),T("로비로 돌아가기","Return to lobby"),2,button))return PauseMenuCommand.ReturnLobby;
+    if(MenuButton(new Rect(388,424,504,58),T("게임 종료","Quit game"),3,button))page=PausePage.Quit;
     GUI.Label(new Rect(364,524,552,58),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),muted);
-    GUI.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("ESC  계속하기 / 뒤로","ESC  Resume / Back"),muted);
+    GUI.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ / Tab 선택 · Enter 확인 · ESC 뒤로","↑↓ / Tab Select · Enter Confirm · ESC Back"),muted);
     return PauseMenuCommand.None;
    }
    finally { GUI.matrix=oldMatrix;GUI.color=oldColor;GUI.enabled=oldEnabled; }
@@ -87,27 +85,29 @@ namespace Exoduser.UnityPort
   {
    GUI.Label(new Rect(336,98,608,48),T("설정","Settings"),title);
    string[] tabs={T("화면","Display"),T("소리","Audio"),T("조작 안내","Controls")};
-   for(int i=0;i<tabs.Length;i++)if(GUI.Button(new Rect(340+i*202,174,194,44),tabs[i],tab==i?activeTab:tabButton))tab=i;
+   for(int i=0;i<tabs.Length;i++)if(MenuButton(new Rect(340+i*202,174,194,44),tabs[i],i,tab==i?activeTab:tabButton))tab=i;
    if(tab==0)DrawDisplay(fullscreen);else if(tab==1)DrawAudio();else DrawControls();
-   GUI.Label(new Rect(348,540,584,40),T("설정은 현재 실행에 적용됩니다.","Settings apply to the current session."),muted);
-   if(GUI.Button(new Rect(340,588,288,44),T("기본값 복원","Restore defaults"),button))RestoreDefaults();
-   if(GUI.Button(new Rect(652,588,288,44),T("뒤로","Back"),button))page=Page.Main;
+   GUI.Label(new Rect(348,540,584,40),T("↑↓ / Tab 선택 · ←→ 값 조절 · Enter 확인\n설정은 현재 실행에 적용됩니다.","↑↓ / Tab Select · ←→ Adjust · Enter Confirm\nSettings apply to the current session."),muted);
+   if(MenuButton(new Rect(340,588,288,44),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
+   if(MenuButton(new Rect(652,588,288,44),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
   }
   void DrawDisplay(bool fullscreen)
   {
    GUI.Label(new Rect(348,246,584,34),T("프레임 제한","Frame rate limit"),body);
    bool enabled=GUI.enabled;GUI.enabled=enabled&&frameCapChanged!=null;
+   PointAt(new Rect(344,286,592,54),3);FocusBorder(new Rect(344,286,592,54),3);
    for(int i=0;i<NativeSettingsState.FrameCapCount;i++)
    {
     int cap=NativeSettingsState.GetFrameCap(i);
     string label=cap==0?T("무제한","Unlimited"):cap.ToString();
     if(GUI.Button(new Rect(348+i*98,290,92,46),label,settings.FrameCap==cap?activeFpsButton:fpsButton))
-    { settings.TrySetFrameCap(cap);frameCapChanged(cap); }
+    { settings.TrySetFrameCap(cap);frameCapChanged(cap);navigation.Fence(); }
    }
    GUI.enabled=enabled&&fullscreenChanged!=null;
    string fullscreenLabel=fullscreen?T("전체 화면: 켜짐","Fullscreen: On"):T("전체 화면: 꺼짐","Fullscreen: Off");
+   PointAt(new Rect(348,372,584,42),4);FocusBorder(new Rect(348,372,584,42),4);
    bool next=GUI.Toggle(new Rect(348,372,584,42),fullscreen,fullscreenLabel,button);
-   if(next!=fullscreen&&fullscreenChanged!=null)fullscreenChanged(next);
+   if(next!=fullscreen&&fullscreenChanged!=null){fullscreenChanged(next);navigation.Fence();}
    GUI.enabled=enabled;
   }
   void DrawAudio()
@@ -119,6 +119,7 @@ namespace Exoduser.UnityPort
   }
   int VolumeRow(float y,string name,int value,bool connected)
   {
+   int cursor=y<300?3:4;PointAt(new Rect(344,y,592,90),cursor);FocusBorder(new Rect(344,y,592,90),cursor);
    GUI.Label(new Rect(348,y,456,34),name,body);GUI.Label(new Rect(830,y,104,34),value+"%",body);
    bool enabled=GUI.enabled;GUI.enabled=enabled&&connected;
    int next=Mathf.RoundToInt(GUI.HorizontalSlider(new Rect(350,y+54,580,34),value,0,100));GUI.enabled=enabled;
@@ -144,8 +145,8 @@ namespace Exoduser.UnityPort
   {
    GUI.Label(new Rect(340,160,600,112),T("게임을 종료하시겠습니까?","Quit the game?"),title);
    GUI.Label(new Rect(364,302,552,76),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),body);
-   if(GUI.Button(new Rect(360,450,264,58),T("취소","Cancel"),button))page=Page.Main;
-   if(GUI.Button(new Rect(656,450,264,58),T("종료","Quit"),button))return PauseMenuCommand.Quit;
+   if(MenuButton(new Rect(360,450,264,58),T("취소","Cancel"),0,button))navigation.BackPage();
+   if(MenuButton(new Rect(656,450,264,58),T("종료","Quit"),1,button))return PauseMenuCommand.Quit;
    return PauseMenuCommand.None;
   }
  }

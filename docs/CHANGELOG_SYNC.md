@@ -1,3 +1,7 @@
+## 2026-10-25 Mac 일시정지·설정 키보드
+
+- 기존 메뉴 키보드 탐색·선택 테두리·키 해제 차단, 설정/종료 포커스 보존과 전투 blur 일시정지 연결. 모델33/33, Player 검수 대기. [범위](engine/UNITY_MAC_PAUSE_KEYS_20261025.md).
+
 ## 2026-10-24 UNITY-UI-DOCK 화면 가장자리 일체감
 
 - 사용자 첨부 구조 참고로 HUD를 alpha실루엣 기준 양끝/바닥에 고정하고 원본 금속 bar를 재사용한 전체폭44px 받침으로 연결. 중앙 슬롯/수치/shader/아이콘 계약 보존. 인벤토리는 전체 화면 공유 iron shell/header/footer/rail로3개개별박스 제거, 정적400/600폰트·기사투명패딩crop·실제입력rect 유지. NativeGame의 공중 개발라벨/조작힌트 제거, 우상단 상태판 가장자리 부착·균등스케일. geometry36PASS/정적compile0오류는 실제 Player 검수와 구분하며 통합build0오류·실제3해상도6런/18PNG·기존자원/인벤동작PASS, 독립시각이번도킹PASS. 고정E:152파일SHA갱신·이전본I:보존. OS직접입력/전체UI는별도. Godot/로비인트로/세이브/공유WIP 보존. [소유·배치·한계](engine/UNITY_UI_DOCK_20261024.md).

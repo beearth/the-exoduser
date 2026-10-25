@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort {
    check(settings.FrameCap==120&&Application.targetFrameRate==120,"menu preserves current 120fps");
    yield return UiCapture(output,"pause");pauseMenu.ShowSettings();yield return UiCapture(output,"display");
    check(pauseMenu.HandleEscape()&&!pauseMenu.SettingsOpen&&!Running,"settings Escape returns to paused main");
-   pauseMenu.ShowSettings();typeof(NativePauseMenu).GetField("tab",flags).SetValue(pauseMenu,1);
+   pauseMenu.ShowSettings();pauseMenu.Navigation.SelectTab(1);
    SetSfxPercent(0);SetBgmPercent(0);yield return UiCapture(output,"audio-muted");
    check(settings.SfxPercent==0&&settings.BgmPercent==0,"real audio callbacks update state");
    var play=typeof(NativeFeedbackAudio).GetMethod("Play",flags);play.Invoke(sound,new object[]{"sword_swing1",.5f,1f,10});
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort {
    SetSfxPercent(60);check(sample!=null&&Mathf.Abs(sample.volume-.18f)<.00001f,"default SFX gain restored");sound.Reset();
    SetFrameCap(30);check(Application.targetFrameRate==30&&QualitySettings.vSyncCount==0&&Mathf.Abs(Time.fixedDeltaTime-1f/60)<.000001,"frame cap does not alter simulation");
    SetFrameCap(0);check(Application.targetFrameRate==-1,"unlimited cap");SetFrameCap(120);
-   typeof(NativePauseMenu).GetField("tab",flags).SetValue(pauseMenu,2);yield return UiCapture(output,"controls");pauseMenu.Reset();
+   pauseMenu.Navigation.SelectTab(2);yield return UiCapture(output,"controls");pauseMenu.Reset();
    ApplyPauseCommand(PauseMenuCommand.Resume);check(Running&&!menu,"resume command");SetInventory(true);int tick=Simulation.TickCount;
    var item=inventory.State.Bag.Find(i=>i.slot=="weapon");inventory.State.Select(item);var original=inventory.State.GetEquipped("weapon");
    yield return UiCapture(output,"inventory-comparison-1080p");check(!Running&&tick==Simulation.TickCount&&ReferenceEquals(original,inventory.State.GetEquipped("weapon")),"view comparison pauses without equipping");
