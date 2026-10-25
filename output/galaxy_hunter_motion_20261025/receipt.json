@@ -1,0 +1,48 @@
+{
+  "provider": "Built-in image_gen",
+  "modelId": "not exposed",
+  "cost": "not exposed",
+  "source": "I:/EXODUSER-Storage/qa/new-heroes-resume-20261025/galaxy_hunter_r08_preferred_original.png",
+  "sourceSha256": "3a9a473285a42b33626c0c129629128af4d018a1e31168c251906c0afffe3637",
+  "outputs": [
+    {
+      "name": "01_combat_move.png",
+      "bytes": 2196804,
+      "sha256": "5cdae4d73e6c286c87394c8c712c3e40cb8626f81cdc1b3a27086a8ad2bcb600",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "02_basic_fire_v1_retouch.png",
+      "bytes": 2259182,
+      "sha256": "32770251de1b1565cc101f97d3bc3319fc71804e165a8b3c6e8ad67a9b0d675e",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "03_charge_anticipation.png",
+      "bytes": 2272501,
+      "sha256": "62e946041cecd89cfca6b603d4ff283997e720bb16c61c146cec2c9b00c441e2",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "motion_comparison_3poses.png",
+      "bytes": 1177345,
+      "sha256": "307d0add06735a3c0f5e3e8ac3b3f0579d8989a3e99937719b17d2142c2305dc",
+      "width": 1408,
+      "height": 880
+    }
+  ],
+  "acceptedByUser": false,
+  "runtimeIntegrated": false,
+  "visualVerdict": "RETOUCH",
+  "previews": "160px and 96px whole-canvas resize; not measured in-game character size",
+  "correction": {
+    "status": "rejected-no-output",
+    "target": "02_basic_fire_v1_retouch.png",
+    "reason": "service safety filter violence/input",
+    "requestId": "9f8775c9-1a67-4c63-9ca7-eee39718b08c",
+    "retried": false
+  }
+}
