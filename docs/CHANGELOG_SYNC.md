@@ -1,3 +1,7 @@
+## 2026-10-25 웹 시네마틱 표시 재현
+
+- 원본과 다른 상시 pause 표시를 paused/error 조건으로, 언어 표시를 compact 위치로, hold 막대를 원형 게이지로 수정. 원본 CSS 문/제목 음영 연결. 신규 시스템 없이 기존 이식 차이 수정. [근거와 제한](engine/UNITY_WORLD_INTRO_CANONICAL_20261025.md).
+
 ## 2026-10-25 사용자 지정 세계관 영상 연결
 
 - 정본 steam102,204,634B/SHA3b99… Git 4부분 복원·실행 연결·빌드 해시 가드, 음성 실측 +0.4초 자막/컷 오프셋, 웹 문 전환1.1초/1.5초 fade. 신규 실행 검수 대기. [정본 기록](engine/UNITY_WORLD_INTRO_CANONICAL_20261025.md).

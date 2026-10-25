@@ -25,3 +25,9 @@ Git 경계: Mac 실행 source R=`/Users/fordeargamers/exoduser-wt/UNITY-MAC-2026
 전용 검수 `--unity-canonical-world-smoke`: 실행 앱의 정확 파일 bytes/SHA·문 초대 fade·문 끝 fade·준비 화면·신규 정본 자연끝/속도/정체/음성출력/게임정지 검사. 영상6/35/93초와 자연종료 로비 캡처. 구영상의 통과를 재사용하지 않으며 기존 인벤토리/캐릭터/설정 검사는 반복하지 않는다.
 
 이전 후보 runtime와meta는 QA canonical-media/previous-candidate에 복사·SHA 대조 후 Assets 밖으로 옮겼다. 새 패키지에 미사용 후보를 중복 포함하지 않으며 Git의 이전 복원 부분은 보존한다. 최신 작업 기준은 실제 웹의 기존 화면/입력/전환 재현이며 새 기능 확장은 제외한다. 원격main 브라우저 대조와 PC 실제 미커밋 실행본 대조는 구별한다.
+
+## 원본 화면 재현 후속
+
+우선순위는 웹 이식→동일 입력/장면 비교와 누락 수정→그 뒤 신규 업데이트다. 에디터/API는 import/배치/연결/검수에 우선 사용한다. 현재 대조 원본은 앞서 실제 열어 본 별도 main index(fab7a167...)와 cin-enter-engraved.css이며, PC 실행 중 미커밋 웹과 완전 일치했다고 주장하지 않는다.
+
+확인된 차이: 재생 중 상시 pause 버튼은 원본의 world-intro-attention 조건과 달랐다. 원본처럼 일시정지/오류시에만 회복 버튼을 표시한다. 언어 선택은 오른쪽4vw/위3vh의 작은 표시로 맞추고, 아래30px/오른쪽30px의120×100 원형 hold 표시(r34/th3)로 변경한다. 기존5초 동작 유지. 문 화면은 원본 CSS radial/linear 배경과 제목 뒤 radial을 런타임 텍스처로 재현해 밝은 원영상 위 글자가 묻히는 차이를 줄인다. logo blur/미세 이동·hover 호흡·진행90% glow·게임패드 표시는 아직 완전 동등 미검증이다.
