@@ -57127,3 +57127,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 첫 실습 후보: source 이동120px→실제 lesson10처치+3단차징kill을 native Tick event로 연결, transient arena/원래run 전체보존·보상0·자원refill·원본plaque/holdmeter·RMB미지원명시·웹save/badge0. 새범위모델34 PASS, review/capture fixture의 실제Player/시각은ROOT인수대기. [계약](engine/UNITY_MAC_FIRST_PRACTICE_20261026.md).
 
 2026-10-26 ROOT 첫 실습 인수 마감: d0ea9d1 ARM64 오류0, 334파일682135609B 입력 SHA 불일치0, 모델34/신규실행5 PASS·KO720/1080/EN720 새8PNG, CUA 실제 이동·좌클릭 유지/해제 두 체크→계속→pause 확인. HP/악의/clock/RNG/전체원래run 복원. QA종료·사용자38141/저장보존,9dd정상로비48476제시. 첫2조건만 인수하고 나머지이식목록은 게임업데이트와 구분 보존. [영수증](engine/UNITY_MAC_FIRST_PRACTICE_ACCEPTANCE_20261026.json).
+
+2026-10-26 ROOT HUD보정 마감: 사용자9dd최종디자인거절반영, 큰불투명판/상시상태바제거·.78/920폭연결HUD·키ghost/문구잘림수정. source7d5200ca6 ARM64오류0,335파일682143647B대조0,새720/1080 idle/charge4PNG 및55/55검사통과. K스킬창확인,OS마우스callback미확인명시. 기존저장/실습보존. [영수증](engine/UNITY_MAC_HUD_BLEND_ACCEPTANCE_20261026.json).

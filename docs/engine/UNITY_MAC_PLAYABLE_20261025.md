@@ -1,5 +1,8 @@
 # Mac 현재 조작 가능한 누적 실행본 — 2026-10-25
 
+10/26 최신 사용자 HUD 피드백으로9dd의 두꺼운 받침/상시 상태판은 최종 디자인에서 제외했다. 첫2실습 기능 인수는 유지하며 HUD 표현은 낮고 월드가 비치는 연속 실루엣으로 보정 중이다. 후속 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/build-world-blend/EXODUSER-Unity.app` (source7d5200ca6, ARM64/오류0)이다. 새4PNG/55검사를 인수했고 OS마우스 callback은 좁은 수동확인으로 남겼다. [HUD 보정](UNITY_MAC_HUD_BLEND_20261026.md).
+
+
 ## 최신 사용 가능 누적본 — 2026-10-26
 
 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FIRST-PRACTICE-20261026/build-d0ea9d1/EXODUSER-Unity.app` · source `d0ea9d1b656603952571ee63270e434571d9a1d5` · Unity6000.6.7f1/ARM64/오류0. 기존 생성·이야기·시작 안내·HUD에 실제 이동120px와 기검참10처치+3단 충전 처치 실습을 추가했다. 모델34/실행5 PASS, CUA 실제 이동·좌클릭 유지/해제 두 조건 완료 및 계속→pause 확인, 원래 run/자원/RNG 복원. [이번 인수](UNITY_MAC_FIRST_PRACTICE_20261026.md), [영수증](UNITY_MAC_FIRST_PRACTICE_ACCEPTANCE_20261026.json).

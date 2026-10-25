@@ -1,5 +1,10 @@
 # 하단 HUD 공통 받침 — 2026-10-25
 
+## 2026-10-26 사용자 최신 피드백 — 최종 디자인 인수 철회·보정 중
+
+사용자는 큰 불투명 받침/상시 상태판의 무게감을 거절하고 “화면에 녹아드는 저런 깔끔함이 필요하다”고 지정했다. 아래9dd 공통 받침 PASS는 당시 구현 인수 이력이며 최종 디자인 승인이 아니다. 낮고 컴팩트한 orb/얇은 연속 금속테두리/빈곳 월드 투명/상태표시 필요시 노출로 보정한다. 13슬롯·수치·키/마우스 기능은 유지한다. 새 범위는 UNITY_MAC_HUD_BLEND_20261026.md를 따른다.
+
+
 ## ROOT 최종 인수 — 2026-10-25
 
 ROOT 시각 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제720/1080 Player에서 공통 받침·구슬/슬롯 연결·라벨 간격을 확인했다. 새 PNG는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/startup-capture-9dd5991/startup-gameplay-hud-720p.png`와 같은 폴더의1080p이다. d8f00e2의 두 해상도에서 라벨 보정을 먼저 확인했고, 마지막9dd5991에서는 Guide/전환 후 같은 HUD를 확인했다. 입력 영역·전투 수치·13개 이름은 그대로다. 최신 실행본은 `UNITY_MAC_PLAYABLE_20261025.md`를 따른다. 아래 후보/인수대기 문장은 구현 단계의 이전 기록이다.
@@ -33,3 +38,5 @@ ROOT 시각 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제720/10
 ## ROOT 실화면 후 라벨 간격 보정 후보
 
 통합 `1afffb9`의 `startup-capture-1afffb9/startup-gameplay-hud-720p.png`와 `startup-gameplay-hud-1080p.png`를 직접 확인했다. ROOT는 공통 받침·연결 실루엣을 인수 가능으로 판단했다. 720p에서 LMB/RMB/Shift가 연속 문자열처럼 붙는 문제는 기존 각 label이 키판폭 끝까지 채워졌기 때문이다. 위 좌우3px 내용 inset만 추가했으며 key13문자·키판·hitrect·ArtScale·원본이미지·수치는 유지한다. 이 라벨 후보의 실제 PNG는 ROOT의 다음 통합 빌드에서 확인하며, worker의 GPU/GUI/빌드·기존 suite 재실행은 없다. 현재 라벨 최종 시각 인수는 대기다.
+
+10/26 후속 보정 실행 인수: [낮고 투명한 HUD](UNITY_MAC_HUD_BLEND_20261026.md)와 [영수증](UNITY_MAC_HUD_BLEND_ACCEPTANCE_20261026.json).9dd의큰판은최종안에서대체됨. 새4PNG/55검사통과,OS마우스callback확인은남음.

@@ -1,0 +1,384 @@
+{
+  "date": "2026-10-26",
+  "source": "7d5200ca64b7bfc6982239102b4c3fcee0f78151",
+  "scope": "Focused HUD drawing/layout correction after user rejected the 9dd opaque footing; first-practice mechanics acceptance retained separately.",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/build-world-blend/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1971663694
+  },
+  "input": {
+    "source": "7d5200ca64b7bfc6982239102b4c3fcee0f78151",
+    "baseline": "44e876956dfda953035a786e742c1b538b60feee",
+    "qaProject": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/project",
+    "copied": [
+      "unity/Assets/Exoduser/Runtime/NativeGame.HudBlendCapture.cs",
+      "unity/Assets/Exoduser/Runtime/NativeGame.cs",
+      "unity/Assets/Exoduser/Runtime/NativeHud.cs",
+      "unity/Assets/Exoduser/Runtime/NativeHudDockLayout.cs",
+      "unity/Assets/Exoduser/Runtime/NativeHudPresentation.cs",
+      "unity/Assets/Exoduser/Runtime/NativeHudSkills.cs"
+    ],
+    "verifiedNonMetaNonGeneratedSceneFiles": 335,
+    "verifiedBytes": 682143647,
+    "mismatches": [],
+    "extraRuntimeCSharp": [],
+    "passed": true
+  },
+  "runtime": {
+    "scope": "Narrow Native Player HUD screenshots and shared 1920x1080 logical layout geometry; no OS-input claim",
+    "passed": true,
+    "failures": 0,
+    "rosterNamespace": "none; generic smoke fixture does not initialize user roster storage",
+    "captures": [
+      "hud-blend-idle-720p.png",
+      "hud-blend-idle-1080p.png",
+      "hud-blend-charge-tier2-720p.png",
+      "hud-blend-charge-tier3-1080p.png"
+    ],
+    "checks": [
+      "PASS generic smoke fixture never initializes or writes the user roster",
+      "PASS capture invokes entry callback directly without claiming OS input",
+      "PASS preview reaches the existing native gameplay callback",
+      "PASS actual KiSlash input reaches charge tier 2",
+      "PASS actual KiSlash input reaches charge tier 3",
+      "PASS all 13 original key names are retained",
+      "PASS 13 hit rectangles share one layout with positive inter-slot gap",
+      "PASS 13 inset key-label rectangles share one layout with positive inter-label gap",
+      "PASS key label centered over shared slot 1",
+      "PASS slot hitbox remains within bar 1",
+      "PASS key label remains within visible rail 1",
+      "PASS key label centered over shared slot 2",
+      "PASS slot hitbox remains within bar 2",
+      "PASS key label remains within visible rail 2",
+      "PASS key label centered over shared slot 3",
+      "PASS slot hitbox remains within bar 3",
+      "PASS key label remains within visible rail 3",
+      "PASS key label centered over shared slot 4",
+      "PASS slot hitbox remains within bar 4",
+      "PASS key label remains within visible rail 4",
+      "PASS key label centered over shared slot F",
+      "PASS slot hitbox remains within bar F",
+      "PASS key label remains within visible rail F",
+      "PASS key label centered over shared slot Z",
+      "PASS slot hitbox remains within bar Z",
+      "PASS key label remains within visible rail Z",
+      "PASS key label centered over shared slot LMB",
+      "PASS slot hitbox remains within bar LMB",
+      "PASS key label remains within visible rail LMB",
+      "PASS key label centered over shared slot RMB",
+      "PASS slot hitbox remains within bar RMB",
+      "PASS key label remains within visible rail RMB",
+      "PASS key label centered over shared slot Shift",
+      "PASS slot hitbox remains within bar Shift",
+      "PASS key label remains within visible rail Shift",
+      "PASS key label centered over shared slot E",
+      "PASS slot hitbox remains within bar E",
+      "PASS key label remains within visible rail E",
+      "PASS key label centered over shared slot Q",
+      "PASS slot hitbox remains within bar Q",
+      "PASS key label remains within visible rail Q",
+      "PASS key label centered over shared slot Ctrl",
+      "PASS slot hitbox remains within bar Ctrl",
+      "PASS key label remains within visible rail Ctrl",
+      "PASS key label centered over shared slot Space",
+      "PASS slot hitbox remains within bar Space",
+      "PASS key label remains within visible rail Space",
+      "PASS status label hidden with no hover, selection, or charge",
+      "PASS status label shown on active-slot hover",
+      "PASS status label shown briefly after active-slot selection",
+      "PASS status label shown during charge",
+      "PASS capture exists: hud-blend-idle-720p.png",
+      "PASS capture exists: hud-blend-idle-1080p.png",
+      "PASS capture exists: hud-blend-charge-tier2-720p.png",
+      "PASS capture exists: hud-blend-charge-tier3-1080p.png"
+    ],
+    "keyNames": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "F",
+      "Z",
+      "LMB",
+      "RMB",
+      "Shift",
+      "E",
+      "Q",
+      "Ctrl",
+      "Space"
+    ],
+    "artScale": 0.7799999713897705,
+    "minSlotGap": 5.4599609375,
+    "minLabelGap": 7.99993896484375,
+    "minLabelGapAt720": 5.3332929611206055,
+    "slotBar": {
+      "serializedVersion": "2",
+      "x": 640.2000122070312,
+      "y": 951.8800048828125,
+      "width": 639.5999755859375,
+      "height": 141.95999145507812
+    },
+    "leftOrb": {
+      "serializedVersion": "2",
+      "x": 500.0,
+      "y": 866.8599853515625,
+      "width": 205.13999938964844,
+      "height": 205.13999938964844
+    },
+    "rightOrb": {
+      "serializedVersion": "2",
+      "x": 1214.8599853515625,
+      "y": 866.8599853515625,
+      "width": 205.13999938964844,
+      "height": 205.13999938964844
+    },
+    "visibleBar": {
+      "serializedVersion": "2",
+      "x": 680.239990234375,
+      "y": 973.7200317382812,
+      "width": 562.3800048828125,
+      "height": 98.27999114990234
+    },
+    "activeSlot": {
+      "serializedVersion": "2",
+      "x": 945.9599609375,
+      "y": 1006.47998046875,
+      "width": 28.85999870300293,
+      "height": 35.099998474121094
+    },
+    "statusLabel": {
+      "serializedVersion": "2",
+      "x": 780.0,
+      "y": 948.7200317382812,
+      "width": 360.0,
+      "height": 20.0
+    },
+    "skillHitRects": [
+      {
+        "serializedVersion": "2",
+        "x": 740.0400390625,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 774.3599853515625,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 808.6799926757812,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 843.0,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 877.3200073242188,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 911.6400146484375,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 945.9600219726562,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 980.280029296875,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1014.5999755859375,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1048.9200439453125,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1083.239990234375,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1117.5599365234375,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1151.8800048828125,
+        "y": 1006.47998046875,
+        "width": 28.85999870300293,
+        "height": 60.05999755859375
+      }
+    ],
+    "keyLabelRects": [
+      {
+        "serializedVersion": "2",
+        "x": 738.3099975585938,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 772.6300048828125,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 806.9500122070312,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 841.27001953125,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 875.5900268554688,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 909.9099731445312,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 944.22998046875,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 978.5499877929688,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1012.8699951171875,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1047.18994140625,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1081.510009765625,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1115.8299560546875,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      },
+      {
+        "serializedVersion": "2",
+        "x": 1150.1500244140625,
+        "y": 1036.0,
+        "width": 32.31999969482422,
+        "height": 31.0
+      }
+    ]
+  },
+  "images": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/capture-world-blend/hud-blend-charge-tier2-720p.png",
+      "sha256": "9b8123bb37b0b260c2a6c334285a9871cf072736de12b7fd637afb644852c6b5"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/capture-world-blend/hud-blend-charge-tier3-1080p.png",
+      "sha256": "07fde38adc1569b5f16883eae8b1d7da8a38b73f68a3023020ae31e4a038aec3"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/capture-world-blend/hud-blend-idle-1080p.png",
+      "sha256": "2d72fb933b5c4478d070e6b0e0164703f734abcaa03c90bc2188eefd4c959854"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/capture-world-blend/hud-blend-idle-720p.png",
+      "sha256": "fde1e80b73d7ef14766f614af2148f08c4f24d0a3c2b7668194a668efcf3820d"
+    }
+  ],
+  "visualVerdict": "PASS for requested lower, transparent compact HUD direction, idle/charge at720/1080. User final aesthetic approval not implied.",
+  "manual": {
+    "keyboardKOpensExistingSkillScreen": true,
+    "mouseSlotCallbacks": "CUA coordinate clicks did not confirm callbacks. No OS mouse PASS claim; shared 13-slot centers/contained hit rectangles passed scripted geometry checks. Remains a narrow manual verification item.",
+    "evidence": "CUA conversation screenshots only; no saved manual screenshot claim."
+  },
+  "cleanup": {
+    "remainingQaPlayers": [
+      "50565 /Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/build-world-blend/EXODUSER-Unity.app/Contents/MacOS/EXODUSER · Unity 이식 검증판 --unity-hud-blend-smoke --keep-open-after-hud-blend -output /Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/capture-world-blend -logFile /Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HUD-BLEND-20261026/capture-world-blend.log"
+    ],
+    "note": "Attempted Cmd-Q; computer-use tool reported user changed app, so further UI actions stopped. Original user players and normal stores left untouched."
+  },
+  "limitations": [
+    "No new full frontend, tutorial, storage, map, performance, voice or VFX suites run.",
+    "Original PNG bytes and core combat/resource formulas unchanged.",
+    "13-slot OS mouse callback verification remains open; keyboard skill view and scripted geometry passed."
+  ]
+}
