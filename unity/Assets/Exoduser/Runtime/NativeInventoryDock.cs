@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort {
             GUI.Label(new Rect(32,44,500,42),"장착 장비",heading);
             GUI.Label(new Rect(bag.x+28,44,350,42),"소지품  "+State.Bag.Count+" / 300",heading);
             if(DockButton(new Rect(bag.xMax-126,44,100,38),"닫기  ×"))close();
-            DrawDockEquipment(equipment,equipment.yMax,level,player);
+            DrawDockEquipment(equipment,equipment.yMax,level,player);DrawKeyboardHelp(equipment);
             float bagBottom=550;
             DrawDockBag(new Rect(bag.x,112,bag.width,bagBottom-112),bagBottom,level);
             Fill(new Rect(bag.x+28,bagBottom+8,bag.width-56,1),line);
@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort {
             const float knightHeight=560,knightWidth=560*309f/846f;
             GUI.DrawTextureWithTexCoords(new Rect(pane.center.x-knightWidth/2,148,knightWidth,knightHeight),knight,new Rect(187f/688,1-920f/1024,309f/688,846f/1024),true);
             GUI.color=color;
-            int[] order={14,4,9,16,10,3,8,11,0,6,1,5,13,7,2,12};
+            int[] order=Core.InventoryNavigation.EquipmentOrder;
             float[] columns={18,112,438,532};
             for(int cell=0;cell<order.Length;cell++){
                 int i=order[cell];float x=columns[cell%4],y=156+(cell/4)*124;

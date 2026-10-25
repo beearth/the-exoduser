@@ -25,10 +25,10 @@ namespace Exoduser.UnityPort {
             labels=JsonUtility.FromJson<LabelData>(Resources.Load<TextAsset>("Data/inventory_labels").text).labels;Reset();
         }
         Texture2D Load(string path){var t=Resources.Load<Texture2D>(path);if(t==null)throw new InvalidOperationException("Missing source inventory art "+path);return t;}
-        public void Reset(){State=new InventoryState(NativeInventorySeed.Load());Open=false;scroll=Vector2.zero;drag=null;dragging=false;message="";}
-        public void SetOpen(bool value){Open=value;drag=null;dragging=false;}
-        public bool Equip(InventoryItem item,int level){bool ok=State.TryEquip(item,level,out var why);message=ok?"장착했습니다":why;if(ok)changed();return ok;}
-        public bool Unequip(string slot){bool ok=State.TryUnequip(slot,out var why);message=ok?"해제했습니다":why;if(ok)changed();return ok;}
+        public void Reset(){State=new InventoryState(NativeInventorySeed.Load());Navigation=new InventoryNavigation(State);Open=false;scroll=Vector2.zero;drag=null;dragging=false;message="";}
+        public void SetOpen(bool value){Open=value;drag=null;dragging=false;if(value){Navigation.Open();RefreshSelection();}else Navigation.Fence();}
+        public bool Equip(InventoryItem item,int level){bool ok=State.TryEquip(item,level,out var why);message=ok?"장착했습니다":why;if(ok){changed();AfterOwnershipChange();}return ok;}
+        public bool Unequip(string slot){bool ok=State.TryUnequip(slot,out var why);message=ok?"해제했습니다":why;if(ok){changed();AfterOwnershipChange();}return ok;}
         public bool Move(InventoryItem item,int x,int y){bool ok=State.TryMove(item,x,y);message=ok?"가방 위치를 옮겼습니다":"그 위치에는 놓을 수 없습니다";return ok;}
         public void Sort(){State.Sort();message="장비 등급·아이템 위력 순으로 정리했습니다";}
         Texture2D IconFor(InventoryItem it){
@@ -43,11 +43,11 @@ namespace Exoduser.UnityPort {
         static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
         static void Border(Rect r,Color c){Fill(new Rect(r.x,r.y,r.width,1),c);Fill(new Rect(r.x,r.yMax-1,r.width,1),c);Fill(new Rect(r.x,r.y,1,r.height),c);Fill(new Rect(r.xMax-1,r.y,1,r.height),c);}
         public void Draw(int level,PlayerState player,Action close){
-            if(!Open)return;Init();DrawDock(level,player,close);
+            if(!Open)return;Init();bool enabled=GUI.enabled;try{if(Event.current.isKey)Event.current.Use();GUI.enabled=enabled&&Navigation.Focused&&!Navigation.WaitingForRelease;DrawDock(level,player,close);}finally{GUI.enabled=enabled;}
         }
         void HandleItem(Rect rect,InventoryItem it,string slot,int level){
-            var e=Event.current;if(it==null)return;
-            if(e.type==EventType.MouseDown&&rect.Contains(e.mousePosition)){State.Select(it);if(e.button==1){if(slot==null)Equip(it,level);else Unequip(slot);e.Use();}else if(e.button==0){drag=slot==null?it:null;dragging=false;e.Use();}}
+            var e=Event.current;if(it==null||!GUI.enabled)return;
+            if(e.type==EventType.MouseDown&&rect.Contains(e.mousePosition)){State.Select(it);Navigation.TrackSelection();RefreshSelection();if(e.button==1){if(slot==null)Equip(it,level);else Unequip(slot);e.Use();}else if(e.button==0){drag=slot==null?it:null;dragging=false;e.Use();}}
             if(e.type==EventType.MouseDrag&&drag!=null){dragging=true;e.Use();}
         }
         public bool DropAt(InventoryItem item,float mouseColumn,float mouseRow){

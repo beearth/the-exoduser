@@ -61,7 +61,7 @@ namespace Exoduser.UnityPort {
    }
    GUI.EndScrollView();
    bool enabled=GUI.enabled;GUI.enabled=enabled&&(!bag||it.reqLv<=level);
-   if(DockButton(new Rect(x,footerTop-52,w,44),bag?(it.reqLv>level?"레벨 "+it.reqLv+" 필요":"장착 · 교체"):"장착 해제",true)){if(bag)Equip(it,level);else Unequip(it.slot);}
+   if(DockButton(new Rect(x,footerTop-52,w,44),bag?(it.reqLv>level?"레벨 "+it.reqLv+" 필요":"장착 · 교체  [Enter]"):"장착 해제  [Enter]",true)){if(bag)Equip(it,level);else Unequip(it.slot);}
    GUI.enabled=enabled;
   }
   void ComparisonCard(Rect rect,InventoryItem item,string caption) {
