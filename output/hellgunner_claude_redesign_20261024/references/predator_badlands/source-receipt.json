@@ -1,0 +1,26 @@
+[
+  {
+    "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\references\\predator_badlands\\official_still_9.jpg",
+    "url": "https://lumiere-a.akamaihd.net/v1/images/g_20cs_predatorbadlands_still_9_2a4a9409.jpeg?region=0%2C0%2C1300%2C730",
+    "bytes": 123886,
+    "sha256": "621f2f21d2ea513fd3aa0d74a59e5500aa2367d023403e0fd32079a426c95087",
+    "sourcePage": "https://www.20thcenturystudios.com/movies/predator-badlands",
+    "use": "Official visual study and supporting facial anatomy/material reference for built-in R10 and R12. Not integrated into runtime or public Git."
+  },
+  {
+    "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\references\\predator_badlands\\official_still_15.jpg",
+    "url": "https://lumiere-a.akamaihd.net/v1/images/g_20cs_predatorbadlands_still_15_b4bfe9c9.jpeg?region=0%2C0%2C1300%2C730",
+    "bytes": 152994,
+    "sha256": "a6912f2b5fb6f3cce115d309616acb55e477abe4cba042dd1be7e34ecff3db2d",
+    "sourcePage": "https://www.20thcenturystudios.com/movies/predator-badlands",
+    "use": "Private visual research only; not a game runtime asset or generation reference upload"
+  },
+  {
+    "file": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\references\\predator_badlands\\official_still_8.jpg",
+    "url": "https://lumiere-a.akamaihd.net/v1/images/g_20cs_predatorbadlands_still_8_ef2bbe88.jpeg?region=0%2C0%2C1300%2C730",
+    "bytes": 159437,
+    "sha256": "d37fd0e907611e68623acf6e6bb8824e12833681bc165588b66989253cad1afb",
+    "sourcePage": "https://www.20thcenturystudios.com/movies/predator-badlands",
+    "use": "Private visual research only; not a game runtime asset or generation reference upload"
+  }
+]

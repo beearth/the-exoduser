@@ -1,0 +1,38 @@
+{
+  "stage": "R10",
+  "provider": "Built-in image_gen",
+  "exactUnderlyingModel": "Not exposed by tool",
+  "userAuthorization": "Different-model generation; subsequent requests to change pose, add dedicated background and reference latest Predator film",
+  "prompt": "Create a WIDE LANDSCAPE 16:9 cinematic character key art, not a portrait studio sheet. This is the next deliberate design iteration of an ORIGINAL male alien GALAXY HUNTER for EXODUSER. REFERENCE 1: retain our hunter's practical right cybernetic arm, angular body implants, worn black/oxblood equipment and especially his ENTIRE enormous black/silver/red rifle design. REFERENCE 2: a film still from Predator: Badlands, for studying convincingly alien facial construction, practical creature anatomy and weathered functional equipment. Use those design lessons to create OUR OWN distinct hunter, not an actor portrait or copied movie scene. His old spiky lizard/orc head needs redesign: broader flattened cranial shield, deep-set amber eyes under a bony brow, flattened nasal region, articulated outer cheek/jaw flanges framing a compact alien mouth, and a restrained fan of short heavy dark segmented sensory tendrils flowing back from the skull instead of spiny dinosaur fins. Original ash-grey skin, an old diagonal scar and subtle asymmetry; no movie logos, copied mask markings or franchise symbols. The face should feel like a living alien hunter rather than a muscular human or fantasy orc. Lean powerful athletic alien proportions: broad shoulders, long limbs and a compact waist; rough tough hide and a FEW angular skin-flush chrome implants, not bodybuilding glamour. One broad battered dark-iron shoulder guard, a readable faceted RIGHT mechanical arm, a restrained ammunition bandolier, compact belt equipment, rugged dark hunting trousers and broad flat combat boots. Keep material simplification: biological hide, matte charcoal iron, sparse worn chrome; no chrome patchwork everywhere.\n\nCHANGE THE POSE COMPLETELY. He is tracking dangerous prey on an alien cliff trail, one boot planted higher on a black rock and the rear leg grounded, knees flexed, torso turned three-quarter toward screen right, head alert and looking down the trail. He holds his MASSIVE rifle in BOTH HANDS at a dynamic low-ready diagonal across waist height: mechanical right hand on the rear firing grip, natural left hand supporting the forward fore-end. The stock sits against his shoulder/upper arm, muzzle points diagonally down toward screen right into open negative space. The full single long barrel, huge cylindrical chamber/bracket and angular skeletal stock must remain recognizable from reference 1, with the same black-metal/silver/red inset design and the same imposing overall weapon length. Do not turn it into a small generic assault rifle, a new plasma cannon or a sword. Both hands connect anatomically to the correct weapon parts. Keep the gun clear of the face. Show the entire figure, both boots and the entire gun with comfortable margins. No upright walking-stick gun pose and no front-on catalogue stance.\n\nDESIGN HIS DEDICATED ENVIRONMENT as part of the same illustration: an ominous extraterrestrial hunting world inspired by the hostile ecological atmosphere of Predator: Badlands, with a craggy wet basalt lookout above an alien jungle. Foreground low razor-shaped indigo ferns, pale spear-like reeds and a few muted amber alien pods; coherent large botanical forms, no random decorative clutter. A battered compact hunting outpost and his small landed utilitarian starship occupy a far midground ridge at screen right, subordinate to the character. Misty alien forest canopy and eroded stone spires recede in layered atmospheric depth. A large hazy ringed planet hangs in the distant teal-grey sky, making the galaxy setting unmistakable. No other people, no battle explosion, no buildings copied from the film. The hunter belongs physically in this environment: foot contact and weight on the rock, local mist around boots, warm late sidelight picking out face and worn metal edges, cool jungle/sky fill in shadows, matched shadows and reflected color across character, gun and landscape. Hero fills roughly three quarters of image height on the left/central side; open landscape to the right gives his gaze and muzzle space.\n\nPaint as premium dark science-fiction RPG KEY ART: intentional large silhouettes, powerful value grouping, selective crisp mechanical edges and face detail, tactile matte materials, painterly environmental depth and restrained worn-edge highlights. Avoid uniformly glossy CGI, procedural pore noise, repeated tiny rivets and greebles, fashion pinup poses, mismatched compositing, generic studio backgrounds, labels or text. One cohesive LANDSCAPE 16:9 illustration with a NEW POSE and a fully designed personal hunting-world background.",
+  "referenceImages": [
+    "I:/EXODUSER-Storage/qa/new-heroes-claude-20261024/galaxy_hunter_male_r09.png",
+    "I:/EXODUSER-Storage/qa/new-heroes-claude-20261024/references/predator_badlands/official_still_9.jpg"
+  ],
+  "officialSource": "https://www.20thcenturystudios.com/movies/predator-badlands",
+  "referenceUse": "Latest live-action film visual study based on official stills, not full film playback; one official still used as anatomy/style reference",
+  "generatedSource": "C:/Users/심도진/.codex/generated_images/01a16d9d-bc6d-7b23-9500-07b0af49f19b/exec-e6428602-5b8c-48fa-a0d4-a541b69c6f3c.png",
+  "candidateBasename": "galaxy_hunter_male_r10_hunting_world.png",
+  "reviewBasename": "갤럭시헌터_남성_R10_사냥포즈_전용배경.png",
+  "transparentBackground": false,
+  "cost": "Not exposed by tool",
+  "status": "completed-reviewed-candidate-not-adopted",
+  "scope": "Character illustration backdrop; not playable map geometry, chapter map canon or runtime integration",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\galaxy_hunter_male_r10_hunting_world.png",
+  "reviewCopy": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_남성_R10_사냥포즈_전용배경.png",
+  "sha256": "8783518204645b63911db0d617d7b20003de2e2f5df0aa2e5971fc5c381d5778",
+  "bytes": 3070822,
+  "width": 1672,
+  "height": 941,
+  "format": "PNG",
+  "archiveHashVerified": true,
+  "reviewCopyHashVerified": true,
+  "sharedGit": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "userAccepted": false,
+  "codexVisualVerdict": "RETOUCH",
+  "claudeVisualVerdict": "RETOUCH",
+  "actualReviewModel": "claude-opus-5-5",
+  "claudeVisualReviewCostUsdListBasis": 0.11401339999999999
+}

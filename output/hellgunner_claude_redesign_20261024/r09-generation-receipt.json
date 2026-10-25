@@ -1,0 +1,29 @@
+{
+  "stage": "R09",
+  "provider": "Built-in image_gen",
+  "exactUnderlyingModel": "Not exposed by tool",
+  "userAuthorization": "Different-model generation approved; one targeted refinement of R08",
+  "prompt": "Refine this exact male alien hunter design into a deliberate premium GAME CHARACTER CONCEPT, keeping his recognizable alien face and bony head crest, overall tall powerful anatomy, right cybernetic arm, natural left hand, stance, and the ENTIRE favored black/silver/red GIANT GUN unchanged in design and proportions. The main problem to fix is decorative visual noise and uniformly shiny generic AI-render surfaces. Simplify and art-direct the body and equipment. Use THREE LARGE READABLE MATERIAL MASSES: weathered ash-grey biological hide, matte charcoal dark iron, and sparse worn chrome only on the prosthetic side and its skin-flush body interfaces. Keep one broad asymmetrical dark-iron shoulder shell with a few meaningful dents, a right prosthetic arm with broad angular plates and readable major joints, and compact straight-edged chrome implant plates at the side ribs/hip. Remove the busy repeated rivet rows, tiny overlapping patch plates, redundant straps, accessory boxes and bags. Retain only the functional cartridge bandolier, one compact belt-mounted tracking unit and one small tooth trophy. The lower body should be rugged DARK hunting trousers with just ONE large protective kneecap and ONE single broad matte shin plate on each leg, plus simple heavy flat boots. No filigree or repeated chrome patchwork on legs. The groin protection is a small structural dark-iron inset, not a large bright triangular fashion ornament. Make every attachment deliberate, usable and physically connected. His exposed torso must read as large expressive anatomical planes of alien hide, with a few meaningful scars and subtle leathery texture, not dense uniform procedural pore noise. No glowing orange markings or shiny sweat. Preserve the hunter's grounded weight and intimidating veteran charisma. Preserve gun geometry and red accent insets; do not redesign or shrink the weapon. Show the entire figure and entire gun with slightly more breathing room at the top and bottom. Re-render as a high-end HAND-PAINTED dark sci-fi concept illustration: bold value grouping, strong silhouette, painterly planar form, visible controlled brushwork in midtones, selective crisp edges at face and mechanical joins, lost edges in shadow, restrained worn-edge highlights. Matte materials occupy most of the image; chrome reflects only where mechanically meaningful. Art-directed warm grey key light and subdued blue-grey rim on a quiet charcoal painted backdrop. Avoid photoreal CGI, oversharpened detailed noise, plastic mirror surfaces, uniformly bright edge tracing, excessive equipment, glossy armor all over and randomly scattered greebles. One coherent original space big-game hunter, not a fashion pinup. No text or labels.",
+  "referenceImage": "I:/EXODUSER-Storage/qa/new-heroes-claude-20261024/galaxy_hunter_male_r08.png",
+  "generatedSource": "C:/Users/심도진/.codex/generated_images/01a16d9d-bc6d-7b23-9500-07b0af49f19b/exec-7c32904f-a974-4087-bd91-4a6dab52d4f8.png",
+  "candidateBasename": "galaxy_hunter_male_r09.png",
+  "reviewBasename": "갤럭시헌터_남성외계사냥꾼_R09_재질정리.png",
+  "transparentBackground": false,
+  "cost": "Not exposed by tool",
+  "status": "completed-reviewed-candidate-not-adopted",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\galaxy_hunter_male_r09.png",
+  "reviewCopy": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_남성외계사냥꾼_R09_재질정리.png",
+  "sha256": "499bd73ee849bd87049e40dac9c93fdffeabe361239655cffe70cec13fe20490",
+  "bytes": 2586251,
+  "width": 941,
+  "height": 1672,
+  "format": "PNG",
+  "archiveHashVerified": true,
+  "reviewCopyHashVerified": true,
+  "sharedGit": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "userAccepted": false,
+  "codexVisualVerdict": "RETOUCH"
+}

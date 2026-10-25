@@ -1,0 +1,36 @@
+{
+  "stage": "R12",
+  "provider": "Built-in image_gen",
+  "exactUnderlyingModel": "Not exposed by tool",
+  "userAuthorization": "Different model, new pose, dedicated background, latest Predator film reference",
+  "prompt": "Portrait/anatomy and lighting correction within an existing science-fiction character illustration. IMAGE 1 is our current wide LANDSCAPE scene and must remain the base composition: keep the alien hunter's body, two-handed resting low-ready pose, right cybernetic arm, clothing, all equipment including the existing held prop, cliff trail, outpost, small ship, misty alien jungle, ringed planet and sunset. No combat or action is taking place. IMAGE 2 is an official Predator: Badlands still, used to understand alien FACIAL ANATOMY and practical creature texture.\n\nCorrect ONLY the hunter's HEAD DESIGN and the consistency of the lighting, plus a small foreground occlusion. The current head still looks like a human/orc with a protruding lizard muzzle. Replace it with a truly nonhuman alien hunter face, drawing substantially closer to the broad flattened creature anatomy seen in image 2: a wide relatively low cranial dome, a flat central nasal region, deep-set small amber eyes, a compact central mouth framed by FOUR short independently articulated OUTER MANDIBLE FOLDS, textured side cheeks and a tall folded neck. These are natural external mouth structures, not an injury; no blood or gore. The mouth is closed and calm. Do not use a prominent human nose, human lips, bearded human jaw, tusked orc face or a protruding reptile snout. Add short heavy dark segmented sensory tendrils from behind the skull, flowing backward in one coherent silhouette rather than dinosaur spikes. Keep our original ash-grey skin, diagonal old scar, uneven weathered cranial plates and distinct original facial proportions; do not reproduce the movie character's exact face or specific film markings. The face is uncovered, clear and recognizably alien. Expression: alert, patient, experienced tracker. Its head should have convincing size relative to the broad torso.\n\nRelight the illustration so hunter, landscape and sky belong together. The sun is at upper screen RIGHT: warm right-side rim/backlight must pick out the head, shoulder, forearm edges and upper ledge, with subdued cool diffuse sky fill on the front planes. Remove the even studio frontal illumination and plastic highlights. Keep strong meaningful shadows, matte worn metal and readable anatomical planes. Add subtle local atmospheric haze near the boots that matches the jungle mist. Quiet excessive HDR texture in the distant stone spires and lower their contrast so the head/face remains the main focal point. Slightly part only the foreground fern fronds blocking his REAR BOOT, revealing that boot firmly planted on the lower trail; keep his front boot on the higher rock, same balanced pose. Preserve the entire scene, wide framing and all other designs. Grounded cinematic concept illustration with coherent directional light, painterly value grouping, restrained fine detail and real creature-material texture. No text, logos, new characters or added decorations.",
+  "referenceImages": [
+    "I:/EXODUSER-Storage/qa/new-heroes-claude-20261024/galaxy_hunter_male_r10_hunting_world.png",
+    "I:/EXODUSER-Storage/qa/new-heroes-claude-20261024/references/predator_badlands/official_still_9.jpg"
+  ],
+  "officialSource": "https://www.20thcenturystudios.com/movies/predator-badlands",
+  "referenceUse": "Official still as facial anatomy/material study, no full-film viewing claimed",
+  "generatedSource": "C:/Users/심도진/.codex/generated_images/01a16d9d-bc6d-7b23-9500-07b0af49f19b/exec-1926b7e9-dd7b-4e6d-9665-a3d6a7e8796b.png",
+  "candidateBasename": "galaxy_hunter_male_r12_badlands_pose_world.png",
+  "reviewBasename": "갤럭시헌터_남성_R12_영화참고_포즈_전용배경.png",
+  "transparentBackground": false,
+  "cost": "Not exposed by tool",
+  "status": "completed-reviewed-candidate-not-adopted",
+  "scope": "Character illustration background only; no playable map/runtime changes",
+  "knownLimit": "Gun retains R10 variation; exact preferred original chamber/bracket restoration remains incomplete after R11 input rejection. R12 only changes head anatomy, lighting and occlusion.",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\galaxy_hunter_male_r12_badlands_pose_world.png",
+  "reviewCopy": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_남성_R12_영화참고_포즈_전용배경.png",
+  "sha256": "1bea453cd8c7ffb7d574888277c48d406159d0eac2ce04344962926cb36a178c",
+  "bytes": 2784711,
+  "width": 1672,
+  "height": 941,
+  "format": "PNG",
+  "archiveHashVerified": true,
+  "reviewCopyHashVerified": true,
+  "sharedGit": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "userAccepted": false,
+  "codexVisualVerdict": "RETOUCH"
+}

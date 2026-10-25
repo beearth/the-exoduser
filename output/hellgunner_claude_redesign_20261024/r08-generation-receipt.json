@@ -1,0 +1,35 @@
+{
+  "stage": "R08",
+  "provider": "Built-in image_gen",
+  "exactUnderlyingModel": "Not exposed by tool",
+  "userAuthorization": "2026-10-25: 만들어봐 다른모델로",
+  "intent": "Redesign adult male alien hunter, preserving R02 preferred giant gun as the reference",
+  "prompt": "Redesign the person in the reference as an entirely NEW ORIGINAL MALE ALIEN GALAXY HUNTER. The reference is binding ONLY for the GIANT GUN: preserve its full black/metallic-silver/dark-red design, long cylindrical barrel, huge central cylinder and bracket, skeleton stock, proportions and red inset details. This is a character redesign, not a male face pasted onto the woman's costume. Completely replace her head, anatomy, clothing, stance and material design. Make a threatening, charismatic, veteran alien big-game hunter with the imposing hunting presence associated with Predator-style space science fiction. Tall, powerful athletic male alien, broad shoulders and deep ribcage, long muscular limbs, balanced grounded stance. Weathered slate-grey slightly reptilian hide with thick natural folds; an angular overhanging brow, deep-set amber eyes, flattened broad nose, strong jaw with short bony cheek flanges, an old claw scar and a short backswept segmented bone crest. Show his unmasked alien face clearly. No human male model face. Build a clean original species with coherent anatomy. His RIGHT arm is a large rugged cybernetic prosthetic, connected through a readable shoulder socket; one battered asymmetric dark-metal shoulder guard. The opposite shoulder and much of the strong torso show rough skin. A FEW short angular trapezoidal chrome implants fit flush into collarbone, side ribs and pelvis, with straight diagonal boundaries and recessed dark joint seams: convincing replacement body structures, not silver tattoos or curving jewelry. Functional armored hunting shorts with a solid pelvic guard, segmented knee/shin guards and broad flat boots. A restrained bandolier of large cartridges and a compact prey tracker have clear mounts. One small worn alien tooth trophy is enough. His natural LEFT hand supports the familiar giant gun upright at screen right, convincingly conveying its mass; the mechanical right hand hangs relaxed and visible at screen left. Keep the full gun, whole figure, feet and head inside the frame with comfortable margins. Material hierarchy: rough ash-grey hide, matte black iron, brushed worn chrome on the cybernetic side, restrained oxblood accents matching the gun. Polish only the worn metal edges. The large masses of silhouette, distinctive face and giant weapon must read before the small details. The art should look deliberately DESIGNED and hand-painted for a high-end dark science-fiction action RPG: bold controlled shapes, atmospheric chiaroscuro, decisive painterly edge variation, substantial material roughness, warm side key and restrained cool rim against a charcoal studio-like backdrop. One single compelling full-body character concept, portrait composition. Avoid a glossy plastic AI pinup, fashion editorial pose, chrome swimwear, ornamental silver vines, random repeated greebles, glowing circuitry everywhere, draped rags, giant trophy clutter, point dithering, excessive noise, a flat symmetrical armor suit or an orc-like squat body. Do not draw text, labels, logos or a multi-character collage.",
+  "referenceImage": "I:/EXODUSER-Storage/qa/new-heroes-claude-20261024/hellgunner_r02.png",
+  "generatedSource": "C:/Users/심도진/.codex/generated_images/01a16d9d-bc6d-7b23-9500-07b0af49f19b/exec-8a02fb01-0890-4700-b814-05eb536fd596.png",
+  "transparentBackground": false,
+  "cost": "Not exposed by tool",
+  "status": "completed-reviewed-candidate-not-adopted",
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\galaxy_hunter_male_r08.png",
+  "reviewCopy": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_남성외계사냥꾼_R08.png",
+  "sha256": "3a9a473285a42b33626c0c129629128af4d018a1e31168c251906c0afffe3637",
+  "bytes": 2291725,
+  "width": 941,
+  "height": 1672,
+  "format": "PNG",
+  "archiveHashVerified": true,
+  "reviewCopyHashVerified": true,
+  "sharedGitBefore": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "userAccepted": false,
+  "codexVisualVerdict": "RETOUCH",
+  "sharedGitAfter": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "claudeVisualVerdict": "RETOUCH",
+  "actualReviewModel": "claude-opus-5-5",
+  "claudeVisualReviewCostUsdListBasis": 0.09894399999999999
+}

@@ -1,0 +1,48 @@
+{
+  "before": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "after": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "files": [
+    {
+      "path": "docs/11내러티브·로어디자인/NEW_HEROES_DESIGN_LOCK.md",
+      "beforeSha256": "f8772d97166052fcd6c27d9cc817d3bb9a3bf900c771319dfafe50823de6eaf0",
+      "afterSha256": "27a155f27b2b0ffc6f16b27a3b33e045668f5c4b31a758a9c7b82fecd72f85ac",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/NEW_HEROES_USER_PREFERRED_20261021.md",
+      "beforeSha256": "649b53e51d930446bfd7438a2f23d703de8e887f1f059ba2a7c925ec7aedb58b",
+      "afterSha256": "d7b34f338fca4e777d6f89c12fcb187327ffdc6a4b6f75fb06341f6b153fef3b",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/ART_TEAM_MASTER.md",
+      "beforeSha256": "a490aea79065a99f04b8231fa6e600c4357f396a80ff46c3cd4f9d522643ab39",
+      "afterSha256": "9bc90702a4bae5dd31552d6c3e30397a2d87c0a1b2e4658824ddf80088f88b99",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md",
+      "beforeSha256": "afdb8e744796013bc895c8c684163e1e475da382909539b0673519c8af4eaa3a",
+      "afterSha256": "02cdc53687a56a8e77da33b2c7675531f8bcdae59348664fdca185c2bcf21953",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/GALAXY_HUNTER_CONCEPT_20261025.md",
+      "beforeSha256": "eba6e0dd915a509661bd6d79f1f3c51065c73b7b5747385e1d21ac7307736f65",
+      "afterSha256": "f6bbf1e48fabd519db9912224173f3077ddbd53b9bfad52c2d08bcfbbdbbb5e6",
+      "previousBytesPreserved": true
+    },
+    {
+      "path": "docs/17게임아트팀/GALAXY_HUNTER_MALE_EXPLORATION_20261025.md",
+      "beforeSha256": "4798f7297a734266622046e4ff23e7a11a7900517f03ee2828d85911a854ccd3",
+      "afterSha256": "6a9cf5d6c9f361a7d29c3c7f984b9ea0cae6243986f2dcdbb3eaf21ad074ed8b",
+      "previousBytesPreserved": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "stage": "R11",
+  "provider": "Built-in image_gen",
+  "intent": "Restore user-preferred gun cylinder/bracket while preserving R10 pose and background",
+  "prompt": "Targeted weapon-continuity repair only. IMAGE 1 is the BASE FINAL SCENE: keep that entire composition, wide landscape canvas, new alien hunter face and tendrils, angular prosthetic right arm, low-ready two-handed hunting pose, raised boot on the rock, body anatomy, clothing, all lights and the entire dedicated alien jungle/stone-spire/planet/outpost/starship background unchanged. IMAGE 2 is the strict WEAPON DESIGN REFERENCE from the approved silver-haired version. Ignore the woman completely. Her giant upright gun must be faithfully reoriented into the same diagonal low-ready pose already used in IMAGE 1. Change ONLY the gun in IMAGE 1 to restore that recognizable reference design: one very long substantial cylindrical barrel section, the LARGE EXPOSED LONGITUDINAL CYLINDRICAL CHAMBER hanging prominently below the rear receiver, a distinctive external open squared U-shaped chamber bracket/cage on the side, thick metallic collars and the same angular open skeletal stock with dark-red inset and butt stripe. Preserve the black/gunmetal/silver/dark-red material and long weapon proportions from IMAGE 2. The large chamber must be visible and structurally attached, not shrunk into a tiny round receiver detail or replaced by a small conventional assault-rifle magazine. Keep the receiver, chamber, barrel, stock and trigger structure continuous and believable while reorienting the reference into the character's existing diagonal hold. The barrel still extends toward lower screen right, the stock remains near his right shoulder, his mechanical right hand grips the rear trigger grip and his natural left hand supports the fore-end. Preserve both hands and their natural attachment; adjust only tiny finger contact where required by the corrected receiver. Maintain the weapon's imposing scale and keep the entire barrel tip inside frame. Do not introduce a different weapon, shorten it, change its color scheme or shift the character. All non-weapon pixels/composition should remain as close as possible to IMAGE 1. This is a faithful gun design restoration in an already-completed illustrated scene, not a new character or background generation. No text, labels or new accessories.",
+  "references": [
+    "galaxy_hunter_male_r10_hunting_world.png",
+    "hellgunner_r02.png"
+  ],
+  "status": "input-rejected",
+  "category": "violence",
+  "outputReceived": false,
+  "requestId": "16e625ab-ece8-4ef4-8005-727a1a9d436e",
+  "resubmitted": false,
+  "latestAvailableScene": "galaxy_hunter_male_r10_hunting_world.png"
+}
