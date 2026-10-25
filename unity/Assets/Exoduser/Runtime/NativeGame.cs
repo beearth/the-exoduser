@@ -242,7 +242,7 @@ namespace Exoduser.UnityPort
         void OnGUI()
         {
             if(Simulation==null)return;
-            if(lobby!=null&&lobby.IsBlocking){if(lobby.StartupWorldVisible)DrawStartupWorldHud();return;}
+            if(lobby!=null&&lobby.IsBlocking){if(lobby.StartupHudVisible)DrawStartupWorldHud();return;}
             if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));

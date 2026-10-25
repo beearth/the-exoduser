@@ -157,6 +157,13 @@
       "destination": "Audio/Startup/stage_first.mp3",
       "bytes": 6047859,
       "sha256": "e2e718434dfbd792380117df1b072f8829fafb91c12c1834988bbaa706644999"
+    },
+    {
+      "source": "git origin/main:sprites/bonfire_barrier.png",
+      "destination": "Art/Startup/bonfire_barrier.png",
+      "bytes": 2527752,
+      "sha256": "1d5e27c507c869df1f978ac9935ab70e31f3daf43c96489d5102c82169490678",
+      "boundary": "Presentation only. Radius280, pulse1+sin(now/300)*.03, alpha.9. No native bonfire protection/state."
     }
   ]
 }

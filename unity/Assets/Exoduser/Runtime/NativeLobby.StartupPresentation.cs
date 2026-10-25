@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeLobby
  {
   readonly FrontendEntryFlow startup=new FrontendEntryFlow();StartupIntroData startupData;
-  Texture2D[] nemesisArt;Texture2D loadingLogo,startupShade;AudioSource startupAudio;AudioClip enterSound,wakeupSound;
+  Texture2D[] nemesisArt;Texture2D loadingLogo,startupBarrier,startupShade,startupSubtitleGradient,startupGuideGradient;AudioSource startupAudio;AudioClip enterSound,wakeupSound;
   FrontendEntryPage startupShown;int startupLine=-1;float nemesisMusicDelay=-1,stageMusicDelay=-1,startupSfxGain=.6f;bool guideSkipFocus,startupInputFence,keepStartupStageMusic,startupVoiceWasPlaying;
   GUIStyle startupBody,startupName,startupHint,guideTitle,guideDialogue,guideText,guideKey,guideProgress,guideAction;
   internal FrontendEntryFlow StartupCaptureState {get{return startup;}}
@@ -15,7 +15,8 @@ namespace Exoduser.UnityPort
   public Action StartupGameplayPrepare {private get;set;}
   public bool StartupGameplayPrepared {get;private set;}
   public bool StartupEntryActive{get{return startup.Active;}}
-  public bool StartupWorldVisible{get{return startup.Page==FrontendEntryPage.Curtain;}}
+  public bool StartupWorldVisible{get{return startup.Page==FrontendEntryPage.Guide||startup.Page==FrontendEntryPage.Curtain;}}
+  public bool StartupHudVisible{get{return startup.Page==FrontendEntryPage.Curtain;}}
   public string StartupStage{get{return startup.Active?startup.Page.ToString():"";}}
   public void SetStartupSfxPercent(int percent){startupSfxGain=Mathf.Clamp(percent,0,100)/100f;}
   void EnsureStartupMedia(){if(startupAudio!=null)return;startupAudio=gameObject.AddComponent<AudioSource>();startupAudio.playOnAwake=false;startupAudio.spatialBlend=0;enterSound=Resources.Load<AudioClip>("Audio/Startup/enter");wakeupSound=Resources.Load<AudioClip>("Audio/Startup/wakeup");}
@@ -78,7 +79,7 @@ namespace Exoduser.UnityPort
    if(startup.Page==FrontendEntryPage.Loading){DrawEntryLoadingLogo();return;}
    if(startup.Page==FrontendEntryPage.Nemesis){DrawNemesis();return;}
    if(startup.Page==FrontendEntryPage.Guide){DrawStartupGuide();return;}
-   if(startup.Page==FrontendEntryPage.Curtain){float t=StartupCurtainEase(Mathf.Clamp01((float)startup.Elapsed/.8f));DrawCurtain(new Rect(0,-540*t,1920,540),true);DrawCurtain(new Rect(0,540+540*t,1920,540),false);}
+   if(startup.Page==FrontendEntryPage.Curtain){var matrix=GUI.matrix;try{GUI.matrix=Matrix4x4.identity;DrawStartupBarrier();}finally{GUI.matrix=matrix;}if(startup.Elapsed<.4)DrawStartupGuide(Mathf.Clamp01(1-(float)startup.Elapsed/.4f),false);}
   }
   void DrawEntryLoadingLogo(){if(loadingLogo==null)loadingLogo=Resources.Load<Texture2D>("Art/Startup/loading_logo");Fill(new Rect(0,0,1920,1080),Color.black);Image(new Rect(0,0,1920,1080),loadingLogo);}
   void DrawNemesis()
@@ -95,7 +96,7 @@ namespace Exoduser.UnityPort
    if(!string.IsNullOrEmpty(l.speaker)&&!string.IsNullOrEmpty(l.text)){
     // Wrap the full text before revealing characters, keeping line breaks stable.
     float bodyH=startupBody.CalcHeight(new GUIContent(l.text),1612.8f),subH=Mathf.Max(237.6f,(37.8f+bodyH+27)/.75f),top=1080-subH;
-    for(int i=0;i<48;i++){float t=i/47f;Fill(new Rect(0,top+subH*i/48,1920,subH/48+1),new Color(0,0,0,t<.3f?t/.3f*.7f:Mathf.Lerp(.7f,.9f,(t-.3f)/.7f)));}
+    EnsureStartupGradients();GUI.DrawTexture(new Rect(0,top,1920,subH),startupSubtitleGradient);
     Color c=l.speaker=="GODDESS"?new Color(.753f,.518f,.988f):l.speaker=="HECTOR"?new Color(.984f,.573f,.235f):new Color(.91f,.831f,.722f);startupName.normal.textColor=c;
     string who=l.speaker=="GODDESS"?K("네메시아","Nemesia"):l.speaker=="HECTOR"?K("핵터","Hector"):K("디로이","Diroy");float y=top+subH*.25f;
     Label(new Rect(153.6f,y-14,1612.8f,32),who,startupName,TextAnchor.MiddleLeft);Fill(new Rect(153.6f,y+16.2f,startupName.CalcSize(new GUIContent(who)).x,1),new Color(c.r,c.g,c.b,.4f));
@@ -107,8 +108,18 @@ namespace Exoduser.UnityPort
   }
   static string RevealStartupText(string full,int count){int at=0,visible=0;while(at<full.Length&&(visible<count||full[at]=='\n')){if(full[at]!='\n')visible++;at++;}return full.Substring(0,at)+"<color=#00000000>"+full.Substring(at)+"</color>";}
   void DrawStartupVignette(float strength){if(strength<=0)return;if(startupShade==null){startupShade=new Texture2D(128,72,TextureFormat.RGBA32,false);for(int y=0;y<72;y++)for(int x=0;x<128;x++){float d=Vector2.Distance(new Vector2(x/127f,(y/71f)*.5625f),new Vector2(.5f,.28125f));startupShade.SetPixel(x,y,new Color(0,0,0,Mathf.Clamp01((d-.2f)/.5f)));}startupShade.Apply();}var c=GUI.color;GUI.color=new Color(1,1,1,strength);Image(new Rect(0,0,1920,1080),startupShade,ScaleMode.StretchToFill);GUI.color=c;}
-  static float StartupCurtainEase(float x){float lo=0,hi=1,t=.5f;for(int i=0;i<20;i++){t=(lo+hi)/2;float p=1-t,bx=3*p*p*t*.4f+3*p*t*t*.2f+t*t*t;if(bx<x)lo=t;else hi=t;}return 3*(1-t)*t*t+t*t*t;}
-  void DrawCurtain(Rect r,bool top){for(int i=0;i<64;i++){float t=i/63f,center=1-Mathf.Abs(t*2-1);Fill(new Rect(r.x+r.width*i/64,r.y,r.width/64+1,r.height),Color.Lerp(new Color(.012f,.012f,.012f),new Color(.071f,.055f,.043f,.94f),center));}Fill(new Rect(r.x,top?r.yMax-1:r.y,r.width,1),new Color(.522f,.435f,.31f,.33f));Fill(new Rect(r.x,top?r.yMax-9:r.y+8,r.width,1),new Color(.722f,.616f,.431f,.3f));}
+  Texture2D StartupGradient(int width,int height,Func<float,float,Color> color)
+  {
+   var texture=new Texture2D(width,height,TextureFormat.RGBA32,false);texture.wrapMode=TextureWrapMode.Clamp;texture.filterMode=FilterMode.Bilinear;
+   for(int y=0;y<height;y++)for(int x=0;x<width;x++)texture.SetPixel(x,y,color(x/(float)Mathf.Max(1,width-1),1-y/(float)Mathf.Max(1,height-1)));
+   texture.Apply();return texture;
+  }
+  void EnsureStartupGradients()
+  {
+   if(startupSubtitleGradient==null)startupSubtitleGradient=StartupGradient(1,256,(x,t)=>new Color(0,0,0,t<.3f?t/.3f*.7f:Mathf.Lerp(.7f,.9f,(t-.3f)/.7f)));
+   if(startupGuideGradient==null)startupGuideGradient=StartupGradient(512,1,(x,t)=>x<.46f?Color.Lerp(new Color(0,0,0,.9f),new Color(4/255f,3/255f,3/255f,.68f),x/.46f):Color.Lerp(new Color(4/255f,3/255f,3/255f,.68f),new Color(0,0,0,.82f),(x-.46f)/.54f));
+  }
+  void DestroyStartupPresentationTextures(){foreach(var tex in new[]{startupShade,startupSubtitleGradient,startupGuideGradient})if(tex!=null)Destroy(tex);}
   static readonly string[][] GuideDialogue={new[]{"눈을 떠","Open your eyes"},new[]{"정신 차려","Get a grip"},new[]{"이제 진짜 지옥이야","This is real hell"},new[]{"야! 몬스터다!!!","Hey! Monsters!!!"}};
   static readonly string[][] GuideTitles={new[]{"이동과 공격","Move & attack"},new[]{"패링과 이동","Parry & movement"},new[]{"스킬","Skills"},new[]{"살아남아","Stay alive"}};
   static readonly string[][][] GuideRows={
@@ -129,20 +140,25 @@ namespace Exoduser.UnityPort
   void GuidePhysicalText(Rect r,string text,GUIStyle style,float px,float spacing,float lineHeight)
   {
    var lines=GuidePhysicalLines(text,style,px,spacing,r.width);float y=r.y;
-   foreach(var line in lines){float x=r.x;foreach(char ch in line){float cw=style.CalcSize(new GUIContent(ch.ToString())).x;var matrix=GUI.matrix;try{GUI.matrix=Matrix4x4.TRS(new Vector3(x,y,0),Quaternion.identity,new Vector3(px/100,px/100,1));GUI.Label(new Rect(0,0,cw+4,lineHeight*100/px+20),ch.ToString(),style);}finally{GUI.matrix=matrix;}x+=cw*px/100+spacing;}y+=lineHeight;}
+   // Keep glyphs, rules and buttons in the scroll view's one physical coordinate space.
+   // GUIStyle uses integer font sizes; never scale GUI.matrix inside a clipped group.
+   style.fontSize=Mathf.RoundToInt(px);
+   foreach(var line in lines){float x=r.x;foreach(char ch in line){float cw=style.CalcSize(new GUIContent(ch.ToString())).x;GUI.Label(new Rect(x,y,cw+4,lineHeight+4),ch.ToString(),style);x+=cw+spacing;}y+=lineHeight;}
   }
-  void DrawStartupGuide()
+  float startupGuideOpacity=1;bool startupGuideDrawBarrier=true;
+  void DrawStartupGuide(float opacity=1,bool drawBarrier=true)
   {
-   var matrix=GUI.matrix;
-   try{GUI.matrix=Matrix4x4.identity;DrawStartupGuidePhysical();}
-   finally{GUI.matrix=matrix;}
+   var matrix=GUI.matrix;var tint=GUI.color;float previousOpacity=startupGuideOpacity;bool previousBarrier=startupGuideDrawBarrier;
+   try{GUI.matrix=Matrix4x4.identity;startupGuideOpacity=opacity;startupGuideDrawBarrier=drawBarrier;GUI.color=new Color(tint.r,tint.g,tint.b,tint.a*opacity);DrawStartupGuidePhysical();}
+   finally{GUI.matrix=matrix;GUI.color=tint;startupGuideOpacity=previousOpacity;startupGuideDrawBarrier=previousBarrier;}
   }
+  void DrawStartupBarrier(){if(startupBarrier==null)startupBarrier=Resources.Load<Texture2D>("Art/Startup/bonfire_barrier");if(startupBarrier==null)return;float size=560*(1+Mathf.Sin(Time.unscaledTime*1000/300)*.03f);var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*.9f);GUI.DrawTexture(new Rect((Screen.width-size)/2,(Screen.height-size)/2,size,size),startupBarrier,ScaleMode.StretchToFill);GUI.color=color;}
   void DrawStartupGuidePhysical()
   {
    float sw=Screen.width,sh=Screen.height;
-   Fill(new Rect(0,0,sw,sh),Color.black);DrawCurtain(new Rect(0,0,sw,sh/2),true);DrawCurtain(new Rect(0,sh/2,sw,sh/2),false);
-   for(int i=0;i<64;i++){float t=i/63f,a=t<.46f?Mathf.Lerp(.9f,.68f,t/.46f):Mathf.Lerp(.68f,.82f,(t-.46f)/.54f);Fill(new Rect(i*sw/64,0,sw/64+1,sh),new Color(0,0,0,a));}
-   int step=startup.GuideStep;if(guidePhysicalStep!=step){guidePhysicalStep=step;guideScroll=Vector2.zero;}
+   if(startupGuideDrawBarrier)DrawStartupBarrier();
+   EnsureStartupGradients();GUI.DrawTexture(new Rect(0,0,sw,sh),startupGuideGradient);
+   int step=startup.Page==FrontendEntryPage.Curtain?Mathf.Clamp(guidePhysicalStep,0,3):startup.GuideStep;if(guidePhysicalStep!=step){guidePhysicalStep=step;guideScroll=Vector2.zero;}
    bool pad=Array.Exists(Input.GetJoystickNames(),name=>!string.IsNullOrEmpty(name));
    float panelW=Mathf.Min(720,Mathf.Max(120,sw-96)),w=panelW-24,keyW=Mathf.Max(160,w*.38f),descW=Mathf.Max(20,w-keyW-20);
    float dialogueFont=GuideClamp(28.8f,sw*.026f,41.6f),titleFont=GuideClamp(20.8f,sw*.018f,28),bodyFont=GuideClamp(16,sw*.0135f,20.8f),keyFont=bodyFont*.86f;
@@ -161,16 +177,16 @@ namespace Exoduser.UnityPort
    guideScroll=GUI.BeginScrollView(new Rect(left,top,panelW,visibleH),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total),false,total>visibleH);
    float x=12,y=20;GuidePhysicalText(new Rect(x,y,w,16),(step+1)+" / 4",guideProgress,12,3,16);y+=28;
    GuidePhysicalText(new Rect(x,y,w,dialogueH),K(GuideDialogue[step][0],GuideDialogue[step][1]),guideDialogue,dialogueFont,dialogueFont*.12f,dialogueH);y+=dialogueH+10+24;
-   Fill(new Rect(x,y-6,64,1),new Color(.651f,.561f,.404f,.62f));y+=22;
+   Fill(new Rect(x,y-6,64,1),new Color(.651f,.561f,.404f,.62f*startupGuideOpacity));y+=22;
    GuidePhysicalText(new Rect(x,y,w,titleH),K(GuideTitles[step][0],GuideTitles[step][1]),guideTitle,titleFont,titleFont*.14f,titleH);y+=titleH+14;
    for(int i=0;i<keys.Count;i++){GuidePhysicalText(new Rect(x,y,keyW,heights[i]),keys[i],guideKey,keyFont,keyFont*.08f,lineH);GuidePhysicalText(new Rect(x+keyW+20,y,descW,heights[i]),descriptions[i],guideText,bodyFont,bodyFont*.04f,lineH);y+=heights[i]+(i+1<keys.Count?9:0);}
    if(step==3){y+=16;GuidePhysicalText(new Rect(x,y,w,noteH),note,guideText,15.2f,0,20.52f);y+=noteH;}
    y+=20;GuidePhysicalText(new Rect(x,y,w,hintH),hint,guideProgress,13.6f,.544f,17);y+=hintH+22;
    Rect skip=new Rect(x,y,120,45),next=new Rect(x+w-120,y,120,45);DrawGuideButton(skip,K("건너뛰기","Skip"),guideSkipFocus);DrawGuideButton(next,step==3?K("시작","Start"):K("다음","Next"),!guideSkipFocus);
-   Fill(new Rect(skip.x,skip.y,skip.width*(float)startup.HoldProgress,skip.height),new Color(.8f,.718f,.537f,.25f));
+   Fill(new Rect(skip.x,skip.y,skip.width*(float)startup.HoldProgress,skip.height),new Color(.8f,.718f,.537f,.25f*startupGuideOpacity));
    var e=Event.current;if(!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
    GUI.EndScrollView();
   }
-  void DrawGuideButton(Rect r,string text,bool focus){bool hover=r.Contains(Event.current.mousePosition);Fill(r,focus||hover?new Color(.161f,.125f,.078f):new Color(.082f,.067f,.051f));Border(r,focus?new Color(.773f,.671f,.486f):new Color(.392f,.337f,.267f),1);guideAction.fontSize=16;guideAction.alignment=TextAnchor.MiddleCenter;Label(r,text,guideAction,TextAnchor.MiddleCenter);}
+  void DrawGuideButton(Rect r,string text,bool focus){bool hover=r.Contains(Event.current.mousePosition);Fill(r,focus||hover?new Color(.161f,.125f,.078f,startupGuideOpacity):new Color(.082f,.067f,.051f,startupGuideOpacity));Border(r,focus?new Color(.773f,.671f,.486f,startupGuideOpacity):new Color(.392f,.337f,.267f,startupGuideOpacity),1);guideAction.fontSize=16;guideAction.alignment=TextAnchor.MiddleCenter;Label(r,text,guideAction,TextAnchor.MiddleCenter);}
  }
 }
