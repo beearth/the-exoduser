@@ -104,11 +104,14 @@ namespace Exoduser.UnityPort
                 float center=barRect.x+(146.5f+i*44)*NativeHudDockLayout.ArtScale;
                 var rect=new Rect(center-step*.5f+1,height-44,step-2,31);
                 var tint=GUI.color;GUI.color=new Color(.37f,.37f,.35f);GUI.DrawTextureWithTexCoords(rect,dockIron,new Rect(i/13f,.5f,1/13f,.12f));GUI.color=tint;
-                // Preserve key names; narrow only long labels, with a 12px physical height at720p.
+                // Keep 3 logical pixels inside each edge: long neighboring names
+                // retain at least 8 logical pixels of separation (5.3px at720p).
+                var content=new Rect(rect.x+3,rect.y,rect.width-6,rect.height);
+                // Preserve key names and 12px physical height at720p; narrow only width.
                 float natural=keyLabel.CalcSize(new GUIContent(keys[i])).x;
-                float squeeze=Mathf.Min(1,rect.width/Mathf.Max(1,natural));var matrix=GUI.matrix;
-                GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(rect.x,rect.y,0),Quaternion.identity,new Vector3(squeeze,1,1));
-                GUI.Label(new Rect(0,0,rect.width/squeeze,rect.height),keys[i],keyLabel);GUI.matrix=matrix;
+                float squeeze=Mathf.Min(1,content.width/Mathf.Max(1,natural));var matrix=GUI.matrix;
+                GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(content.x,content.y,0),Quaternion.identity,new Vector3(squeeze,1,1));
+                GUI.Label(new Rect(0,0,content.width/squeeze,content.height),keys[i],keyLabel);GUI.matrix=matrix;
             }
         }
         void Globe(Rect wrap,Rect frame,bool right)

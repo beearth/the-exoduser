@@ -18,10 +18,14 @@
 | 기존 금속 재사용 | `Art/ui/inventory/iron.png` 원본1254×1254를 상태 ridge·키판·바닥 rail에 UV로 재사용. PNG·import 설정 변경 없음 |
 | 상태 ridge | 중앙540×30, y=`VisibleBar.y−30`. 기존 떠 있던 `SlotBar.y−18` 검정판 제거. 동일 상태 문자열·충전 비율/5px meter 유지 |
 | 바닥 rail | 중앙620×10, y=`height−13`, 어두운 금속과1px 하단 반사. 기존 아트 아래 공통 기반으로 연결 |
-| 키13개 | 기존 각 키 rect·문자·가로 squeeze 유지, 독립 단색 검정 바탕을 동일 철 texture로 교체 |
+| 키13개 | 기존 각 키판 rect·문자 유지, 독립 단색 검정 바탕을 동일 철 texture로 교체. 내용은 좌우3px씩 inset(총6 logicalpx), 이 내용폭에 맞춰 가로 squeeze. 글자 높이18logicalpx=720p에서12physicalpx 유지. 인접 최대폭 글자 사이8logicalpx=720p에서약5.3physicalpx 확보 |
 
 기존 도킹/구도 이력은 `UNITY_UI_DOCK_20261024.md`, `UNITY_UI_COMPOSITION_20261024.md`를 유지한다. 이번 표현 후보의 현행 상세는 이 문서다. 이전 문서의 실제 렌더 PASS는 이번 변경의 시각 PASS로 승계하지 않는다.
 
 ## 검수 경계
 
 본 worker는 제품 소유3파일 중 `NativeHud.cs`, `NativeHudSkills.cs`와 새 presentation만 변경했다. `NativeHudDockLayout.cs`는 동일 byte. 정적 diff/geometry 계약 확인과 `git diff --check`를 수행한다. 기존 `PortVerification`의 layout 검사는 Editor 진입이 필요하여 재실행하지 않았고, 중복 컴파일·GPU·Unity 빌드·GUI·서버 조작도 하지 않는다. ROOT가 동일 실제 장면1920/1280 렌더의 연결 실루엣·글자·fill·잘림을 확인할 때까지 VISUAL VERDICT는 미검수다. 세이브·Simulation·NativeGame·캐릭터·로비·시작 flow·인벤토리는 변경하지 않는다.
+
+## ROOT 실화면 후 라벨 간격 보정 후보
+
+통합 `1afffb9`의 `startup-capture-1afffb9/startup-gameplay-hud-720p.png`와 `startup-gameplay-hud-1080p.png`를 직접 확인했다. ROOT는 공통 받침·연결 실루엣을 인수 가능으로 판단했다. 720p에서 LMB/RMB/Shift가 연속 문자열처럼 붙는 문제는 기존 각 label이 키판폭 끝까지 채워졌기 때문이다. 위 좌우3px 내용 inset만 추가했으며 key13문자·키판·hitrect·ArtScale·원본이미지·수치는 유지한다. 이 라벨 후보의 실제 PNG는 ROOT의 다음 통합 빌드에서 확인하며, worker의 GPU/GUI/빌드·기존 suite 재실행은 없다. 현재 라벨 최종 시각 인수는 대기다.
