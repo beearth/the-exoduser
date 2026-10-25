@@ -218,3 +218,7 @@ assets/vfx/boss/gen/
 # Original warrior v23 movie restored from Git-backed parts.
 /unity/Assets/StreamingAssets/Lobby/warrior_story_v23_clean.mp4
 !/unity/Tools/MediaRecovery/warrior-story-v23/*.bin
+
+# User-designated cinematic; byte-exact parts are versioned.
+/unity/Assets/StreamingAssets/Lobby/world_intro_v22b_steam.mp4
+!/unity/Tools/MediaRecovery/world-intro-v22b-steam-canonical/*.bin

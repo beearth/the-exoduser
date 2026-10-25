@@ -1,5 +1,7 @@
 # UNITY-LOBBY-01 — 원본 로비·세계관 영상의 Unity 네이티브 이식
 
+> 현행 세계관은 사용자 지정 `world_intro_v22b_steam.mp4`이며 아래 paint 이력은 이전 후보다. [정본 및 +0.400초 실측 적용](UNITY_WORLD_INTRO_CANONICAL_20261025.md)을 따른다.
+
 | 항목 | 구현 계약 |
 |---|---|
 | 최신 원본 | `G:/exoduser/index.html` SHA256 `8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621`; 작업 체크아웃의 구 index를 사용하지 않음 |

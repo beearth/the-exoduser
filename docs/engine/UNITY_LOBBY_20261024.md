@@ -1,5 +1,8 @@
 # UNITY-LOBBY-01 — 실행 첫 화면·인트로·로비
 
+> **2026-10-25 사용자 지정으로 기준 확정:** 최신 세계관 시네마틱은 `I:/EXODUSER-Storage/SteamUpload/world_intro_v22b_steam.mp4`, 102,204,634 bytes, SHA256 `3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f`다. 사용자가 파일을 직접 첨부하고 최신본으로 지정한 지시를 확인했다. 아래 ‘최신 승인 미확인’/‘Steam용이라 인게임 제외’는 이전 판단이며 현재 기준이 아니다. [정본 적용 상태](UNITY_WORLD_INTRO_CANONICAL_20261025.md)를 따른다.
+
+
 > 2026-10-24 원본 기준 정정: 이 문서의 “최신 v22b / 사용자 최신 override”는 승인 근거 미확인으로 철회한다. v22b 복사/재생 검사는 해당 후보의 결과만 뜻한다. [원본 대조](UNITY_SOURCE_BASELINE_20261024.md).
 
 

@@ -1,8 +1,8 @@
-// Reconstruct the byte-exact v22b runtime from the Git-backed small media parts.
+// Reconstruct the byte-exact user-designated world intro runtime from the Git-backed small media parts.
 // Tools belongs on I:; only the assembled active movie belongs on the SSD.
 const fs=require('fs'),path=require('path'),crypto=require('crypto');
 const i=process.argv.indexOf('--project'),project=path.resolve(i<0?path.join(__dirname,'..'):process.argv[i+1]);
-const input=project+'/Tools/MediaRecovery/world-intro-v22b',manifest=JSON.parse(fs.readFileSync(input+'/manifest.json','utf8'));
+const input=project+'/Tools/MediaRecovery/world-intro-v22b-steam-canonical',manifest=JSON.parse(fs.readFileSync(input+'/manifest.json','utf8'));
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const parts=manifest.parts.map(row=>{const b=fs.readFileSync(input+'/'+row.path);if(b.length!==row.bytes||hash(b)!==row.sha256)throw Error('Media part differs '+row.path);return b;});
 const bytes=Buffer.concat(parts);if(bytes.length!==manifest.bytes||hash(bytes)!==manifest.sha256)throw Error('Assembled movie differs');

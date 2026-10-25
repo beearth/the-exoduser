@@ -64,7 +64,7 @@
     }
   ],
   "assetCount": 30,
-  "bytes": 206351741,
+  "bytes": 210378505,
   "assets": [
     {
       "source": "video/fdg_intro.mp4",
@@ -99,12 +99,12 @@
       "transform": "byte_exact"
     },
     {
-      "source": "output/cinematic/a04_demonic_remaster_20261016/world_intro_v22b_paint_en.mp4",
-      "destination": "StreamingAssets/Lobby/world_intro_v22b_paint_en.mp4",
-      "bytes": 98177870,
-      "sourceSha256": "cd9fa7486fd1cf18952605408f5b1bae416a97b2307806476bc329498413199e",
-      "sha256": "cd9fa7486fd1cf18952605408f5b1bae416a97b2307806476bc329498413199e",
-      "transform": "byte_exact"
+      "source": "I:/EXODUSER-Storage/SteamUpload/world_intro_v22b_steam.mp4",
+      "destination": "StreamingAssets/Lobby/world_intro_v22b_steam.mp4",
+      "bytes": 102204634,
+      "sourceSha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+      "sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+      "transform": "byte_exact_user_designated_20261025"
     },
     {
       "source": "assets/lobby/lobby_varkan_crypt_loop_v2.mp4",

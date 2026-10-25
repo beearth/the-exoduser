@@ -1,0 +1,36 @@
+{
+  "schema": "exoduser.lobby.media-recovery.v1",
+  "source": "I:/EXODUSER-Storage/SteamUpload/world_intro_v22b_steam.mp4",
+  "destination": "Assets/StreamingAssets/Lobby/world_intro_v22b_steam.mp4",
+  "bytes": 102204634,
+  "sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+  "approval": "User explicitly identified this exact file as the latest world cinematic on 2026-10-25 KST; prior change was missed during handoff.",
+  "runtimeApplied": false,
+  "baseCommit": "ad4dc1f86b2c4db1fd6f9e5e4f1699b3196b3e3e",
+  "parts": [
+    {
+      "path": "part-01.bin",
+      "bytes": 31457280,
+      "sha256": "805aab9b108250715e863117f36cad8ffa19c14fca1ac84bfc014e60e7d20816",
+      "blob": "a1b777b7c8541b104ee32203c7affa239a025abe"
+    },
+    {
+      "path": "part-02.bin",
+      "bytes": 31457280,
+      "sha256": "da45c6d7e11f4442f804bde089126f5114b5be21c26fdc097057c7e56279823f",
+      "blob": "a055f08c33fa5916b2b0286307cecab3142e66b6"
+    },
+    {
+      "path": "part-03.bin",
+      "bytes": 31457280,
+      "sha256": "24ee62a466cbea46966eef9ffeb1664e7c3e29e69a4fa8d6e9d10911d85b764e",
+      "blob": "5123061504650fa3c584d0306cb6fd1fc190c495"
+    },
+    {
+      "path": "part-04.bin",
+      "bytes": 7832794,
+      "sha256": "4dd47f0bbedd03b7a5f36e27032c3a040816b033d70bc9dccaf232ce2a19a2b2",
+      "blob": "676f0cd5dcd8aefc46118389e2600aceaf3661ea"
+    }
+  ]
+}

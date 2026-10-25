@@ -1,3 +1,7 @@
+## 2026-10-25 사용자 지정 세계관 영상 연결
+
+- 정본 steam102,204,634B/SHA3b99… Git 4부분 복원·실행 연결·빌드 해시 가드, 음성 실측 +0.4초 자막/컷 오프셋, 웹 문 전환1.1초/1.5초 fade. 신규 실행 검수 대기. [정본 기록](engine/UNITY_WORLD_INTRO_CANONICAL_20261025.md).
+
 ## 2026-10-25 소지품 OS복귀 진단
 
 - Player17/17·CUA C/긴Enter 장착 확인 후 최소화복귀 입력차단을 발견. 완료 처리하지 않고 CLI 전용 상태 진단과 장착 안내2줄 보정, 시각2장/해당 복귀경로만 후속검수. [기록](engine/UNITY_MAC_INVENTORY_KEYS_20261025.md).
@@ -57062,3 +57066,9 @@ HUD 입력 차단이 진행 중인 차지를 해제하지 않도록 신규 공�
 ## 2026-10-25 Mac 소지품 키보드 최종 인수
 
 source219c9d3fe ARM64 errors0, 모델33/Player17 기존 결과 유지·8PNG 검토. LaunchServices PID36214에서 최소화→복원 app/host/nav true·해제·G/Right/C·ESC/Tab 확인. 직접 Popen 실행의 포커스 현상과 구분하고 보호 로직 변경 없이 문서화. 상세는 UNITY_MAC_INVENTORY_KEYS_20261025.md/json.
+
+## 2026-10-25 사용자 직접 첨부 세계관 정본 기준 정정
+
+world_intro_v22b_steam.mp4/102204634B/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f를 최신 정본으로 고정. PC thread의 실제 사용자 첨부/발언 확인. 승인 상태와 Mac 파일 인수·런타임 적용 상태를 분리하며 이전 승인미확정/Steam용 제외 판단을 철회.
+
+정본 인수 대기 중 확인된 전환 차이 수정: 문 초대 아트1.1초 fade, 문끝1.5초 fade, 세계관 준비 중 닫힌문 포스터 재노출 제거. NativeLobby.CinematicPresentation에 격리하고 미디어/저장/전투 변경 없음. 실제 검수는 정본 적용 빌드에서 이어간다.
