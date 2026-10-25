@@ -6,8 +6,9 @@
 |---|---|
 | COMPLETE | 첫2실습·world-blend HUD 인수 유지. 지원 SFX/BGM·FPS·fullscreen 저장/복원: 모델61+별도write3/read2, 실제 격리 Player6회63/63·성공/오류 설정창 확인. source9d587ca15, 정상 ARM64 errors0. [설정 인수](../UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md) / [최신 실행본](../UNITY_MAC_PLAYABLE_20261025.md) |
 | COMPLETE | 720p 착용 안내 문장만 짧게 정리. source837636a26·Player8/8·720/1080 두 PNG 직접 인수·정상 ARM64 errors0. 글꼴/viewport/스크롤바/장비 동작 보존. [인수](../UNITY_MAC_INVENTORY_HINT_20261026.md) |
-| ACTIVE | ROOT가 두 단위의 통합docs/원격 복구 마감. 기존 language_pointer(Luna medium)는 다음29언어 본문 글꼴/shaping 미완료를 코드·로컬 자막/폰트로 읽기 전용 대조 중. 제품·다운로드·GPU·저장 변경0 |
-| NEXT | 글꼴 누락의 실제 최소범위1개를 근거로 좁힌 뒤 기존 UI 후속 단위로 연결. cmap 검사를 shaping/RTL 인수로 확대하지 않음. 전체 suite·영상·CUA offscreen 재시도·아래 완료 이력 중복 착수0 |
+| COMPLETE | 같은 language_pointer가 다음 자막 범위를 읽기 전용으로 확정: 실제 caption=NanumMyeongjo-Regular, 우크라이나어 ї/є/і의 cmap 매핑 없음. 메뉴 Noto 검사와 구분·제품/다운로드/GPU/저장 변경0. [근거](../UNITY_MAC_LANGUAGE_DIAGNOSTICS_20261025.md) |
+| ACTIVE | 이번 설정·착용 안내 구현/실제 인수는 마감. 새 자막 제품 변경은 아직 착수하지 않음 |
+| NEXT | 실제 world-intro 자막에서 우크라이나어 ї(U+0457)·є(U+0454)·і(U+0456)의 표시만 좁게 확인. cmap 누락을 실제 렌더/shaping/RTL 결함으로 확대하지 않음. 전체 suite·영상완주·CUA offscreen 재시도·아래 완료 이력 중복 착수0 |
 
 일반 사용자 앱38141/48476/52157·원래 prefs·캐릭터 파일 보존. 검수는 별도 product/id와 명시 output만 사용했다. 첫부팅FPS120/기본값60·60·0/고정60Hz 유지. 웹/Godot/roster/전투save IO·새설정·새팀·자동화·유료생성·PC재가동0.
 
