@@ -1,0 +1,162 @@
+{
+  "codeCommit": "dc15b4a7d45625e906dab66379e7f76d749ae08e",
+  "behaviorVerifiedCommit": "8ea4f1e0bf844a60dbc39e35083ea4a277962737",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-character-ui-final/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1435276087
+  },
+  "model": {
+    "passed": 41,
+    "failed": 0,
+    "scope": "Source JS name oracle, class admission, capacity, selection and disposable session boundary"
+  },
+  "playerBehavior": {
+    "scope": "Actual Player callbacks and rendering; no native OS input claim; session-only identities",
+    "passed": true,
+    "failures": 0,
+    "checks": [
+      "PASS empty roster rejects entry",
+      "PASS locked class cannot open name step",
+      "PASS warrior opens name step",
+      "PASS invalid name does not create identity",
+      "PASS trimmed creation selects identity and closes modal",
+      "PASS duplicate rejected without changing roster",
+      "PASS cancel preserves roster",
+      "PASS create session slot 2",
+      "PASS create session slot 3",
+      "PASS create session slot 4",
+      "PASS create session slot 5",
+      "PASS five-slot limit blocks sixth creation",
+      "PASS selected identity enters a fresh native preview",
+      "PASS return to lobby retains session identities and selection",
+      "PASS different selected identity reaches native preview",
+      "PASS anonymous preview does not reuse selected name"
+    ]
+  },
+  "finalVisual": {
+    "scope": "Final display-only changes; class art, positioning, maximum name length and English form",
+    "captures": 9
+  },
+  "finalVisualExitCode": 0,
+  "sourceArt": [
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/warrior_cut.png",
+      "resource": "unity/Assets/Exoduser/Resources/Art/lobby/warrior_cut.png",
+      "sha256": "58e68f5f996c31966e9109c2de421185d93d138cec4fd5600da0ca1b58debfd4"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_warrior.png",
+      "resource": "unity/Assets/Exoduser/Resources/Art/lobby/warrior_portrait.png",
+      "sha256": "3c68de92523252d8c34e27a39b5db5af6adc250e48261fd3e047e9198ff29fcc"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/silvertail_cut.png",
+      "resource": "unity/Assets/Exoduser/Resources/Art/lobby/character_1.png",
+      "sha256": "a96ed5cf1c771b6e7f9fc8f94ab0be8024ff181b675425aa559663030909a5cd"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_hellgunner.jpg",
+      "resource": "unity/Assets/Exoduser/Resources/Art/lobby/character_2.jpg",
+      "sha256": "8551ac0003e6783f9c685f1e9385dd4b156fdde326af4090569a70239ca3f529"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_transmuter.jpg",
+      "resource": "unity/Assets/Exoduser/Resources/Art/lobby/character_3.jpg",
+      "sha256": "bb368100b763809332990bb32a45710c970bfe2fc0f36801be4cc2969251693c"
+    },
+    {
+      "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/charselect/portrait_spearmage.jpg",
+      "resource": "unity/Assets/Exoduser/Resources/Art/lobby/character_4.jpg",
+      "sha256": "514ca2f16c7d088240d59c455f542d8071bd0cac9ea67e22be661ffadfc97d5f"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-smoke/character-duplicate-720p.png",
+      "sha256": "a4ddf2693d181c9af39115d6d583070768669680b34dbcd1efce3b1ba4ef6642"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-smoke/character-entered-720p.png",
+      "sha256": "b8f148805dbe826e4fa0e006998551cac7685890ac4201735018bbd5e0bb6894"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-smoke/character-five-slots-720p.png",
+      "sha256": "441757b31a79cfd4de19a969e1a2b792455b19a55c096ae0b00f6937ca1def67"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-smoke/character-locked-720p.png",
+      "sha256": "d037018335beb266b2a8c4243055d8c3d133d5e85cee3331f5cd0b629d820d33"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-smoke/character-name-error-720p.png",
+      "sha256": "acaef5178bb495aa6f01fbf6bfe617e67b10c3afdc9de945ad4f3159091f0df6"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-smoke/character-warrior-1080p.png",
+      "sha256": "4d805ac00dbf3dce062114765f1df01ecbb51083947da7c641610176bce57bd3"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/class-0-720p.png",
+      "sha256": "9eec0560a20fe34c1bb0ad680a8f5615a5ad279a294ec487b8e4d2b12bb5b68c"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/class-1-720p.png",
+      "sha256": "2c7beb087824b14d3f8773469d2030be05762020082c2a02fcd55ea989a6e6df"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/class-2-720p.png",
+      "sha256": "b508bd5bdec15a28e6edbec73c8ed7976c2b597cfe1284b065deec34ba41b3c4"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/class-3-720p.png",
+      "sha256": "a00be8ecb25189001b878814cd4aa85d0679ceda48319524f2f9425e1465b2c7"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/class-4-720p.png",
+      "sha256": "a5155922c0ecb7b988ef324bfc60a34121aa4f6c90fa5021a6fa6131cc1fd923"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/name-badge-720p.png",
+      "sha256": "020cbedba9b30d2ce282e2ad1b6c3391385a1eff733bea0914c42a0bf3f7fa8a"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/name-english-1080p.png",
+      "sha256": "07c8d6bee807804d7d09df9696328c30615079bdaef77cde432cc18144792a0d"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/selected-name-1080p.png",
+      "sha256": "57edd4bf62e8cda0cf954558b0d36f4541ccbc80f272ed0f336777f921f4c6d2"
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/character-visual-final/selected-name-720p.png",
+      "sha256": "8b58feb1dee8d0021e906ebe51c614dfc459b1b54895318c494ad0e9b4500b19"
+    }
+  ],
+  "nativeInput": {
+    "build": "8ea4f1e0b",
+    "observed": [
+      "N opens creation",
+      "End and Return keep locked class unavailable",
+      "Home and Return open warrior naming",
+      "Korean name paste renders correctly",
+      "Return held 1.5 seconds creates and stays in lobby",
+      "Duplicate name error preserves form",
+      "Escape cancels form",
+      "L in name field enters text rather than language popup",
+      "Two identities created; Up then Return enters the selected name in native combat"
+    ]
+  },
+  "limitations": [
+    "Session-only identities; each entry resets combat",
+    "No persistent saves, existing user slots or account changes",
+    "IME composition itself not tested; Korean paste was tested",
+    "Automated mouse coordinate issue and fullscreen remain unverified",
+    "Character story/gate videos, locked-class executors and full frontend effects not ported"
+  ]
+}
