@@ -57114,3 +57114,7 @@ world_intro_v22b_steam.mp4/102204634B/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb
 2026-10-25 정적 keyart 체인 위치: 잠금 체인/라벨을 icon rail 아래 viewport 하단에서 stage 내부 하단으로 이동, source 간격 적용. 통합 캡처 대기.
 
 2026-10-25 최초안내 최종 표현: Guide 동안 적 body/walk renderer만 숨기고 Curtain 첫 프레임에 이전 enabled값 복원; Simulation5spawn/전투수치/ResetRun·플레이어·props·HUD 변경0. 변경 guide/curtain 화면은 총괄 재인수.
+
+## 2026-10-25 Mac 생성·입장·HUD 통합 인수
+
+source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hover controller12/12 및 CUA 격리 이름 생성→이야기→안내→입장·재시작·pause 확인. QA 누락 hover2코드 복구 후679459731B 소스/자산 SHA 대조0, 사용자 앱/저장 보존. UNITY_MAC_PLAYABLE과 각 단위 문서/통합 JSON 갱신. 실제 전투 실습27개·전체 보이스/VFX·OS마우스는 남은 범위.

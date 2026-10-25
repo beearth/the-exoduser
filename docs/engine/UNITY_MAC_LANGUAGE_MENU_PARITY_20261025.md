@@ -1,5 +1,9 @@
 # 웹 언어 목록 입력·표시 이식 — 2026-10-25
 
+## ROOT 최종 인수 — 2026-10-25
+
+ROOT 후속 hover 단위 인수: 최종 release9dd5991에서 `Q/language-hover-release-9dd5991/language-menu.json` controller12/12 통과. 최초 pointer hover, 이후 keyboard, 정지 pointer가 keyboard를 덮지 않음, 이동 pointer 재선택4개를 포함한다. Q 이전 빌드에 이2개 코드가 누락돼8개만 실행된 사실을 발견하여 full asset 대조로 복구한 뒤 최종 release에서12개를 확인했다. 입력 영수증은 `Q/frontend-full-asset-reconciliation.json`; 비meta/생성 scene 제외 실제 소스/자산679459731B SHA 불일치0. Unity가 확장하는 meta와 Editor 생성 scene은 별도로 분류했다. 실제 OS 마우스 좌표/hover는 여전히 미확정이며 keyboard 검수와 구별한다.
+
 기준은 canonical-media/reference-files.json에 pin된 대조 index의 `_langPopKeydown`과 `_positionLangPop`이다. 웹은 단일 열·최대60vh 스크롤 목록, Up/Down1칸, Home/End, Enter/Space 선택, Esc/Tab 취소다. 기존 Unity2열·Down2칸·Space 무반응·Tab 다음항목은 차이였다.
 
 | 항목 | 수정 계약 |

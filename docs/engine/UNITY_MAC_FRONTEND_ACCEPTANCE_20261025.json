@@ -1,0 +1,97 @@
+{
+  "source": "9dd5991057da5d8db116e4fae73db6f258ca6a77",
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-frontend-release-9dd5991/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1966917438
+  },
+  "sourceAssetBytesVerified": 679459731,
+  "assetMismatches": [],
+  "startup": {
+    "scope": "Narrow scripted runtime callbacks and Player PNGs for actual entry/guide/current HUD; not keyboard or mouse OS-input QA. No full tutorial/practice completion claim.",
+    "rosterDirectory": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/startup-capture-9dd5991/character-roster-v1",
+    "passed": true,
+    "automatedInput": false,
+    "failures": 0,
+    "resetDelta": 1,
+    "fenceSetFrame": 932,
+    "fenceReleasedFrame": 933,
+    "checks": [
+      "PASS explicit isolated roster namespace",
+      "PASS scripted callback capture leaves AutomatedInput false; no OS input claim",
+      "PASS create only inside explicit capture roster",
+      "PASS capture selected identity exists",
+      "PASS actual ordinary entry callback accepted",
+      "PASS actual loading blocks Simulation",
+      "PASS 1200ms loading reaches actual Nemesis",
+      "PASS source dialogue is typing",
+      "PASS first callback advance reveals dialogue",
+      "PASS second callback advance moves line",
+      "PASS Nemesis skip reaches actual guide with stopped Simulation",
+      "PASS source guide page 1",
+      "PASS source guide page 2",
+      "PASS source guide page 3",
+      "PASS source guide page 4",
+      "PASS Start opens curtain while Simulation is stopped",
+      "PASS actual completion resumes only after input release fence",
+      "PASS entry release fence armed and processed",
+      "PASS exactly one ResetRun during the entry",
+      "PASS capture holds gameplay stopped before shutdown"
+    ]
+  },
+  "characterPresentation": {
+    "scope": "Focused Player capture only; presentation frames/captures; no roster or storage mutation; no native OS input claim",
+    "videoFrames": [
+      "warrior-720p:prepared,expected=cs_idle_warrior_cs3_4k.mp4,actual=/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-frontend-final-9dd5991/EXODUSER-Unity.app/Contents/Resources/Data/StreamingAssets/Lobby/cs_idle_warrior_cs3_4k.mp4,error=",
+      "silvertail-720p:prepared,expected=cs_idle_silvertail_4k.mp4,actual=/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-frontend-final-9dd5991/EXODUSER-Unity.app/Contents/Resources/Data/StreamingAssets/Lobby/cs_idle_silvertail_4k.mp4,error=",
+      "warrior-1080p:prepared,expected=cs_idle_warrior_cs3_4k.mp4,actual=/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-frontend-final-9dd5991/EXODUSER-Unity.app/Contents/Resources/Data/StreamingAssets/Lobby/cs_idle_warrior_cs3_4k.mp4,error="
+    ],
+    "failures": 0,
+    "passed": true,
+    "presentationVideoClosed": true,
+    "lobbyVideoClosed": true
+  },
+  "languageMenu": {
+    "scope": "Native menu controller and rendering; no OS input claim",
+    "passed": true,
+    "checks": [
+      "PASS held L opens once",
+      "PASS first pointer move selects hovered row",
+      "PASS keyboard moves selection after hover",
+      "PASS stationary pointer does not override keyboard selection",
+      "PASS pointer movement selects newly hovered row",
+      "PASS Down selects next source option, not two rows",
+      "PASS Space accepts and closes",
+      "PASS Tab cancels without selecting",
+      "PASS End reaches final language",
+      "PASS Escape cancels without changing language",
+      "PASS Home and Enter select Korean",
+      "PASS fixture never opens user character storage"
+    ]
+  },
+  "osKeyboardReview": {
+    "scope": "CUA native keyboard, explicit isolated --unity-frontend-review namespace",
+    "name": "수동확인",
+    "path": "title/gate/world skip/lobby/N/visual/Enter/name/paste/create/story/hold skip/loading/Nemesia/Escape/guide/Enter/page2/Escape/game/death after unattended/restart/pause/quit",
+    "savedRoster": {
+      "schema": "exoduser.unity.character-roster",
+      "version": 1,
+      "revision": 1,
+      "names": [
+        "수동확인"
+      ],
+      "selectedIndex": 0
+    }
+  },
+  "fatalLogMatches": [],
+  "limitations": [
+    "Not a full tutorial or battle-system port",
+    "OS mouse hover not verified",
+    "Existing AVFoundation color-primaries fallback and Mono shutdown warnings retained"
+  ]
+}

@@ -1,5 +1,9 @@
 # 하단 HUD 공통 받침 — 2026-10-25
 
+## ROOT 최종 인수 — 2026-10-25
+
+ROOT 시각 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제720/1080 Player에서 공통 받침·구슬/슬롯 연결·라벨 간격을 확인했다. 새 PNG는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/startup-capture-9dd5991/startup-gameplay-hud-720p.png`와 같은 폴더의1080p이다. d8f00e2의 두 해상도에서 라벨 보정을 먼저 확인했고, 마지막9dd5991에서는 Guide/전환 후 같은 HUD를 확인했다. 입력 영역·전투 수치·13개 이름은 그대로다. 최신 실행본은 `UNITY_MAC_PLAYABLE_20261025.md`를 따른다. 아래 후보/인수대기 문장은 구현 단계의 이전 기록이다.
+
 상태: 표현 코드 구현, ROOT의 실제 Player 렌더·시각 인수 대기. 사용자의 HP/13슬롯/분할자원 구슬 일체감 개선 요청은 이번 HUD에 한해 원본 그대로 이식 원칙의 승인된 예외다. 새 전투 기능 또는 자원·입력 변경은 아니다.
 
 ## 근거와 목표

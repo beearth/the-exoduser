@@ -1,5 +1,13 @@
 # Mac 현재 조작 가능한 누적 실행본 — 2026-10-25
 
+## ROOT 최종 인수 — 2026-10-25
+
+최신 누적 실행본: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-frontend-release-9dd5991/EXODUSER-Unity.app`. source `9dd5991057da5d8db116e4fae73db6f258ca6a77`, Unity6000.6.7f1/ARM64/빌드 오류0. 전체 화면 외형 선택→별도 이름 창→기존 전사 이야기→네메시아→4쪽 조작 안내→게임 입장과 하단 HUD 공통 받침을 연결했다. 최초 전투 실습 전체 이식은 아직 아니다.
+
+ROOT는720/1080 Player PNG에서 배치·glyph·원형 선택·HUD 연결/라벨을 인수했다. 입장 callback20/20, 미리보기 영상3/3 및 decoder 종료, 언어 메뉴 controller12/12 통과. 최종 release 앱은 CUA 키보드로 격리 namespace의 ‘수동확인’을 생성해 이야기→안내→입장→재시작→일시정지를 확인한 뒤 종료했다. 기존 사용자 앱 PID38141/일반 저장은 보존했다. [통합 영수증](UNITY_MAC_FRONTEND_ACCEPTANCE_20261025.json), [시작 흐름](UNITY_MAC_STARTUP_FLOW_20261025.md), [생성창](UNITY_MAC_CHARACTER_PRESENTATION_20261025.md), [HUD](UNITY_HUD_INTEGRATED_20261025.md).
+
+다음 미완료 단위는 실제 이동·전투 실습이다. Q/E·우클릭·덫 등 미이식 기능의 성공 판정을 클릭으로 대신 만들지 않는다. 아래 최신/미검수 표현은 이전 실행본의 인수 이력이다.
+
 최신 검수본은 단일열 웹 언어 메뉴를 포함한다. controller8/8·720/1080 목록 시각 확인과 짧은 검수 앱 정상 정리를 완료했다. 아래 기존 실행 이력과 구별하며, 사용자가 조작 중이던 이전 앱을 자동 재시작하지 않았다. [메뉴 인수](UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
 
 정상 실행 경로: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-language-menu-clean-exit/EXODUSER-Unity.app`.

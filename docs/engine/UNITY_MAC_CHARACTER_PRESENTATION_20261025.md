@@ -1,5 +1,9 @@
 # Unity Mac character creation presentation — 2026-10-25
 
+## ROOT 최종 인수 — 2026-10-25
+
+ROOT 통합 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): `Q=/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025`; `Q/character-presentation-9dd5991`의10PNG/영수증에서 영상3/3 준비 프레임·예상URL·두 decoder 종료가 통과했다. ROOT는720/1080 전사와 한국어 이름/오류창, 실버테일, 정적3직업을 직접 확인했다. glyph의□·사각 ring·큰 체인으로 새 keyart를 가리던 문제를 보정했고, 마지막 stage-relative 체인 위치도 인수했다. 최종 release 앱에서 CUA N→Enter→한국어 이름 붙여넣기→Enter의 생성/이야기 연결도 확인했다. 아래 정적 후보의 시각 미검수 문장은 인수 이전 이력이다. 전체 CSS 효과·760px 미만 레이아웃·모든 언어의 완전한 일치는 미확정이다.
+
 ## Source and scope
 
 This presentation follows the PC-served `index.html` pin (`8bff9fd683b274fc538df531e7b007ec7c5e60e7317744948ffc2e5b4f088621`, 354,563 bytes) and its `charVisualPop`, `createModal`, CSS and `CHAR_VISUALS` data. The visual picker is a full-screen step; confirming the available Warrior closes its idle-video player and opens the separate name dialog. Cancel returns to the lobby. Character roster writes, name validation, story start and entry flow remain in their existing methods. The normal selected-character action now hands off to `BeginCharacterEntry(false)` as coordinated with the entry-flow owner.

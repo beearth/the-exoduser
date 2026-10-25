@@ -1,5 +1,11 @@
 # UNITY Mac — 캐릭터 입장 이야기·최초 안내 연결
 
+## ROOT 최종 인수 — 2026-10-25
+
+ROOT 통합 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제 시작 이야기·4쪽 안내·게임 입장 연결의 Player 렌더와 키보드 동선을 확인했다. `Q=/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025`; `Q/startup-capture-9dd5991/startup-capture.json`은20/20·ResetRun 증가1·입력 fence932→933·격리 roster를 확인한다. ROOT는 guide1~4·720/1080·네메시아 gradient·Guide 적 숨김/전환 복원 PNG를 직접 인수했다.
+
+최종 release 앱의 별도 `--unity-frontend-review -output Q/frontend-keyboard-review-9dd5991`에서 CUA N→외형 Enter→이름 ‘수동확인’→생성 Enter→전사 이야기 hold skip→로고→네메시아 Escape→guide Enter→2쪽 Escape→입장까지 확인했다. 무입력 전투 사망 뒤 재시작·일시정지도 확인하고 검수 앱을 종료했다. 실행 경로는 `UNITY_MAC_PLAYABLE_20261025.md`를 따른다. 아래 후보 구현/시각미검수 문장은 인수 이전 이력이다. 실제27개 실습·전체 보이스/VFX·전체 언어 이식 완료를 뜻하지 않는다.
+
 2026-10-25 구현 후보. 부모 총괄의 통합 빌드·실제 키보드/화면 검수 전이며 제품 전체 동선 또는 전체 튜토리얼 완료가 아니다. 기존 전투·캐릭터 저장 transaction/validation·일반 roster namespace는 유지한다.
 
 ## 원본과 인수 자산
