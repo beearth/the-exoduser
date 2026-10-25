@@ -1,6 +1,6 @@
 ## 2026-10-25 Unity 캐릭터 생성 표시·미디어 경로
 
-- source DOM의 720/1080 좌우 투명 패널, 정보 텍스트·썸네일·trait frame과 원형 선택 ring을 반영하고 한국어 서체 fallback을 고정. 영상 2개를 `Assets/StreamingAssets/Lobby` 호출 경로로 이동(바이트/SHA 유지). Warrior·Silvertail·잠금 3직업과 한국어 이름/검증오류 캡처 전용 fixture를 추가했으나 아직 실행·빌드·화면 검수 전. [범위와 검수 경계](engine/UNITY_MAC_CHARACTER_PRESENTATION_20261025.md).
+- source DOM의 720/1080 좌우 투명 패널, 정보 텍스트·썸네일·trait frame과 연속 원형 선택 ring을 반영하고 한국어 서체 fallback을 고정. 영상 2개를 `Assets/StreamingAssets/Lobby` 호출 경로로 이동(바이트/SHA 유지). Warrior·Silvertail·잠금 3직업과 한국어 이름/검증오류 캡처 fixture는 실제 파일명·준비 프레임이 일치해야 통과하고 두 영상 모두 닫은 뒤 종료한다. 아직 실행·빌드·화면 검수 전. [범위와 검수 경계](engine/UNITY_MAC_CHARACTER_PRESENTATION_20261025.md).
 
 ## 2026-10-25 HUD 통합 후보
 

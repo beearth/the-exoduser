@@ -50,31 +50,34 @@ namespace Exoduser.UnityPort
    string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;Directory.CreateDirectory(output);
    var receipt=new CharacterPresentationSmokeReceipt();
    Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.35f);
-   lobby.OpenCharacterCreation();lobby.ChooseCharacterVisual(0);yield return WaitForCharacterPresentationFrame(receipt,"warrior-720p");yield return SkillCapture(output,"character-presentation-warrior-720p");
-   lobby.ChooseCharacterVisual(1);yield return WaitForCharacterPresentationFrame(receipt,"silvertail-720p");yield return SkillCapture(output,"character-presentation-silvertail-720p");
+   lobby.OpenCharacterCreation();lobby.ChooseCharacterVisual(0);yield return WaitForCharacterPresentationFrame(receipt,"warrior-720p","cs_idle_warrior_cs3_4k.mp4");yield return SkillCapture(output,"character-presentation-warrior-720p");
+   lobby.ChooseCharacterVisual(1);yield return WaitForCharacterPresentationFrame(receipt,"silvertail-720p","cs_idle_silvertail_4k.mp4");yield return SkillCapture(output,"character-presentation-silvertail-720p");
    for(int i=2;i<5;i++){lobby.ChooseCharacterVisual(i);yield return SkillCapture(output,"character-presentation-class-"+i+"-720p");}
    lobby.ChooseCharacterVisual(0);Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.35f);
-   yield return WaitForCharacterPresentationFrame(receipt,"warrior-1080p");yield return SkillCapture(output,"character-presentation-warrior-1080p");
+   yield return WaitForCharacterPresentationFrame(receipt,"warrior-1080p","cs_idle_warrior_cs3_4k.mp4");yield return SkillCapture(output,"character-presentation-warrior-1080p");
    lobby.ConfirmCharacterVisual();yield return SkillCapture(output,"character-presentation-name-ko-1080p");
    lobby.CreateCharacter("<");yield return SkillCapture(output,"character-presentation-name-error-1080p");
    lobby.CloseCharacterCreation();Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.35f);
    lobby.OpenCharacterCreation();lobby.ConfirmCharacterVisual();yield return SkillCapture(output,"character-presentation-name-ko-720p");
    lobby.CreateCharacter("<");yield return SkillCapture(output,"character-presentation-name-error-720p");
    lobby.CloseCharacterCreation();receipt.scope="Focused Player capture only; presentation frames/captures; no roster or storage mutation; no native OS input claim";
-   var playback=lobby.GetComponent<NativeCharacterPresentationPlayback>();receipt.videoClosed=playback==null||playback.Video==null||playback.Video.Player==null;
+   var playback=lobby.GetComponent<NativeCharacterPresentationPlayback>();receipt.presentationVideoClosed=playback==null||playback.Video==null||playback.Video.Player==null;
+   if(lobby.CurrentVideo!=null)lobby.CurrentVideo.Close();receipt.lobbyVideoClosed=lobby.CurrentVideo==null||lobby.CurrentVideo.Player==null;receipt.passed=receipt.failures==0&&receipt.presentationVideoClosed&&receipt.lobbyVideoClosed;
    yield return new WaitForSecondsRealtime(1f);
    File.WriteAllText(Path.Combine(output,"character-presentation-smoke.json"),JsonUtility.ToJson(receipt,true));
    lobbySmoke=false;lobby.AutomatedInput=false;
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit(receipt.videoClosed?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit(receipt.passed?0:2);
   }
-  IEnumerator WaitForCharacterPresentationFrame(CharacterPresentationSmokeReceipt receipt,string name)
+  IEnumerator WaitForCharacterPresentationFrame(CharacterPresentationSmokeReceipt receipt,string name,string expectedFile)
   {
+   yield return new WaitForEndOfFrame();
    var playback=lobby.GetComponent<NativeCharacterPresentationPlayback>();var video=playback!=null?playback.Video:null;float deadline=Time.realtimeSinceStartup+20;
    while(video!=null&&!video.Prepared&&video.Error.Length==0&&Time.realtimeSinceStartup<deadline)yield return null;
    if(video!=null&&video.Prepared){deadline=Time.realtimeSinceStartup+5;while(video.Frame<0&&Time.realtimeSinceStartup<deadline)yield return null;}
-   bool ready=video!=null&&video.Prepared&&video.Frame>=0;receipt.videoFrames.Add(name+":"+(ready?"prepared":"unavailable")+(video==null?"":",error="+video.Error));
+   string actual=video!=null&&video.Player!=null?video.Player.url:"";bool correctSource=actual.EndsWith(expectedFile,StringComparison.OrdinalIgnoreCase),ready=correctSource&&video.Prepared&&video.Frame>=0;
+   receipt.videoFrames.Add(name+":"+(ready?"prepared":"FAIL")+",expected="+expectedFile+",actual="+actual+(video==null?"":",error="+video.Error));if(!ready)receipt.failures++;
   }
-  [Serializable] sealed class CharacterPresentationSmokeReceipt{public string scope;public List<string> videoFrames=new List<string>();public bool videoClosed;}
+  [Serializable] sealed class CharacterPresentationSmokeReceipt{public string scope;public List<string> videoFrames=new List<string>();public int failures;public bool passed,presentationVideoClosed,lobbyVideoClosed;}
   [Serializable] sealed class CharacterSmokeReceipt{public string scope="Actual Player callbacks and rendering; no native OS input claim; session-only identities";public bool passed;public int failures;public string[] checks;}
   IEnumerator CharacterVisualSmoke()
   {
