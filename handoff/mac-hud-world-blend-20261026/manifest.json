@@ -1,0 +1,13 @@
+{
+  "file": "hud-blend-idle-720p.png",
+  "bytes": 1508859,
+  "sha256": "fde1e80b73d7ef14766f614af2148f08c4f24d0a3c2b7668194a668efcf3820d",
+  "width": 1280,
+  "height": 720,
+  "sourceCommit": "7d5200ca64b7bfc6982239102b4c3fcee0f78151",
+  "sourceCommitEvidence": "docs/engine/UNITY_MAC_HUD_BLEND_20261026.md",
+  "capture": "capture-world-blend/hud-blend-idle-720p.png",
+  "provenance": "Latest world-blend HUD capture from the accepted Mac build; source commit is quoted from the existing Mac HUD acceptance document.",
+  "transformed": false,
+  "recaptured": false
+}
