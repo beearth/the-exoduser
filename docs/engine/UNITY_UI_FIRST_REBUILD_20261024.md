@@ -39,3 +39,6 @@
 
 
 2026-10-25: K skill UI, 13 slot inspection and live Ki Slash HUD state: [current scope and verification](UNITY_MAC_SKILL_UI_20261025.md). Other skill executors remain unavailable.
+
+
+2026-10-25 Mac 캐릭터 후속: 생성/선택의 세션 UI와 native preview 이름 전달을 연결했다. 원본 전사만 생성·최대5슬롯·이름 규칙 유지. 영속 저장/기존 슬롯/계정은 미연결. 최신 범위와 검수는 [UNITY_MAC_CHARACTER_UI_20261025](UNITY_MAC_CHARACTER_UI_20261025.md)를 따른다.

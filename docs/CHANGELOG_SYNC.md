@@ -57014,3 +57014,5 @@ K panel, source 13 slot selection, Ki Slash description/state, HUD charge displa
 HUD 입력 차단이 진행 중인 차지를 해제하지 않도록 신규 공격에만 제한을 적용했다. 실제 버튼 해제는 기존 Tick에 전달하며 관련 경계3검사를 추가했다.
 
 스킬 UI 최종 fabce904e: 모델34/34·Player6/6·ARM64 빌드 오류0, 네 화면 및 CUA End의 Space 제목 잘림 수정 확인. 상세와 JSON 영수증은 `engine/UNITY_MAC_SKILL_UI_20261025.md`에 연결한다. 다음 캐릭터 생성·선택의 원본 이름/5슬롯 규칙과 저장 미연결 경계를 기록했다.
+
+2026-10-25 Mac 캐릭터: 원본5화신/전사만 생성, 이름 trim·2~8자·금지문자·중복, 최대5세션 슬롯, 선택 이름으로 native preview 연결. 모델41/41; 실제 Player/화면/입력은 검수 진행. 저장·기존 슬롯·계정 미연결. [근거](engine/UNITY_MAC_CHARACTER_UI_20261025.md).

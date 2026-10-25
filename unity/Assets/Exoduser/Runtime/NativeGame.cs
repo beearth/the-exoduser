@@ -64,9 +64,10 @@ namespace Exoduser.UnityPort
                 SetSfxPercent,SetBgmPercent,SetFrameCap,
                 value=>Screen.fullScreenMode=value?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed);
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             if(!legacyFixture){Running=false;lobby.Begin();}
-            if(Array.IndexOf(args,"--unity-skill-smoke")>=0){menu=false;Running=false;StartCoroutine(SkillSmoke());}
+            if(Array.IndexOf(args,"--unity-character-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterSmoke());}
+            else if(Array.IndexOf(args,"--unity-skill-smoke")>=0){menu=false;Running=false;StartCoroutine(SkillSmoke());}
             else if(Array.IndexOf(args,"--unity-ui-smoke")>=0){menu=true;Running=false;StartCoroutine(UiSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-controls-smoke")>=0){lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbyControlsSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbySmoke());}
@@ -231,6 +232,7 @@ namespace Exoduser.UnityPort
             var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);
             float hudWidth=Screen.width/hudScale,statusX=hudWidth-316;
+            if(lobby.ActiveCharacterName.Length>0)GUI.Label(new Rect(24,20,520,40),lobby.ActiveCharacterName+" · "+(lobby.Language=="ko"?"미리보기":"Preview"),label);
             Panel(new Rect(statusX,0,316,124));GUI.Label(new Rect(statusX+20,12,276,32),"1장 · 썩은 숲",label);
             GUI.Label(new Rect(statusX+20,47,276,30),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,small);
             GUI.Label(new Rect(statusX+20,77,276,30),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,small);

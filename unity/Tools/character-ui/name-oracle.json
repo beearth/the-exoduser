@@ -1,0 +1,122 @@
+[
+  {
+    "raw": "",
+    "trimmed": "",
+    "expected": "NameLength"
+  },
+  {
+    "raw": "a",
+    "trimmed": "a",
+    "expected": "NameLength"
+  },
+  {
+    "raw": "ab",
+    "trimmed": "ab",
+    "expected": "None"
+  },
+  {
+    "raw": "abcdefgh",
+    "trimmed": "abcdefgh",
+    "expected": "None"
+  },
+  {
+    "raw": "abcdefghi",
+    "trimmed": "abcdefghi",
+    "expected": "NameLength"
+  },
+  {
+    "raw": "아린",
+    "trimmed": "아린",
+    "expected": "None"
+  },
+  {
+    "raw": "가나다라마바사아",
+    "trimmed": "가나다라마바사아",
+    "expected": "None"
+  },
+  {
+    "raw": "가나다라마바사아자",
+    "trimmed": "가나다라마바사아자",
+    "expected": "NameLength"
+  },
+  {
+    "raw": "  아린  ",
+    "trimmed": "아린",
+    "expected": "None"
+  },
+  {
+    "raw": "﻿아린﻿",
+    "trimmed": "아린",
+    "expected": "None"
+  },
+  {
+    "raw": "a",
+    "trimmed": "a",
+    "expected": "None"
+  },
+  {
+    "raw": " 아린　",
+    "trimmed": "아린",
+    "expected": "None"
+  },
+  {
+    "raw": "\t\r\n",
+    "trimmed": "",
+    "expected": "NameLength"
+  },
+  {
+    "raw": "a b",
+    "trimmed": "a b",
+    "expected": "None"
+  },
+  {
+    "raw": "🙂",
+    "trimmed": "🙂",
+    "expected": "None"
+  },
+  {
+    "raw": "🙂🙂🙂🙂",
+    "trimmed": "🙂🙂🙂🙂",
+    "expected": "None"
+  },
+  {
+    "raw": "🙂🙂🙂🙂a",
+    "trimmed": "🙂🙂🙂🙂a",
+    "expected": "NameLength"
+  },
+  {
+    "raw": "가<",
+    "trimmed": "가<",
+    "expected": "Forbidden"
+  },
+  {
+    "raw": "가>",
+    "trimmed": "가>",
+    "expected": "Forbidden"
+  },
+  {
+    "raw": "가\"",
+    "trimmed": "가\"",
+    "expected": "Forbidden"
+  },
+  {
+    "raw": "가'",
+    "trimmed": "가'",
+    "expected": "Forbidden"
+  },
+  {
+    "raw": "가&",
+    "trimmed": "가&",
+    "expected": "Forbidden"
+  },
+  {
+    "raw": "가/",
+    "trimmed": "가/",
+    "expected": "Forbidden"
+  },
+  {
+    "raw": "가\\",
+    "trimmed": "가\\",
+    "expected": "Forbidden"
+  }
+]

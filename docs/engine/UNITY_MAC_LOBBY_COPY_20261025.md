@@ -24,3 +24,6 @@ CUA로 일반 앱을 열고 Return 및 ESC 6초 유지로 로비에 진입했다
 ## 바로 이어갈 단위
 
 로비 언어 선택 표시를 정리한다. 현재 Language=fr 등이어도 로비는 English로 표시하며 버튼은 ko/en만 토글한다. 자막29언어와 ko/en 메뉴 문구 fallback의 경계를 분명히 표시한다. NativeLobby 연결은 이 Mac 담당, 원본 locale alias resolver의 순수 모듈과 검사는 별도 Mac 지원 담당이 맡는다. 지원 모듈은 산출물 폴더에서 받아 정상 통합하며 공유 INDEX를 건드리지 않는다. 영상/offset/저장/자동화는 변경하지 않는다.
+
+
+2026-10-25 Mac 캐릭터 후속: 생성/선택의 세션 UI와 native preview 이름 전달을 연결했다. 원본 전사만 생성·최대5슬롯·이름 규칙 유지. 영속 저장/기존 슬롯/계정은 미연결. 최신 범위와 검수는 [UNITY_MAC_CHARACTER_UI_20261025](UNITY_MAC_CHARACTER_UI_20261025.md)를 따른다.

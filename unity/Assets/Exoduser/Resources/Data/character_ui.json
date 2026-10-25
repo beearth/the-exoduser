@@ -1,0 +1,40 @@
+{
+  "sourceSha256": "36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12",
+  "visuals": [
+    {
+      "id": "exoduser_warrior",
+      "name": "엑소듀서 전사",
+      "job": "전사",
+      "description": "거대검을 휘두르는 흑철의 전사",
+      "locked": false
+    },
+    {
+      "id": "exoduser_silvertail",
+      "name": "실버테일",
+      "job": "블레이드 댄서",
+      "description": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+      "locked": true
+    },
+    {
+      "id": "exoduser_hellgunner",
+      "name": "헬거너",
+      "job": "창포수",
+      "description": "자신의 피를 탄환 삼는 혈월의 창포수",
+      "locked": true
+    },
+    {
+      "id": "exoduser_transmuter",
+      "name": "변성술사",
+      "job": "사신",
+      "description": "베어낸 영혼을 먹고 자라는 청염의 낫",
+      "locked": true
+    },
+    {
+      "id": "exoduser_spearmage",
+      "name": "창법사",
+      "job": "공허 창술사",
+      "description": "룬으로 공간을 봉인하는 공허의 전령",
+      "locked": true
+    }
+  ]
+}

@@ -4,7 +4,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
  // Original frontend media in native Unity. Save/auth backends are deliberately not invoked.
- public sealed class NativeLobby:MonoBehaviour
+ public sealed partial class NativeLobby:MonoBehaviour
  {
   public LobbyFlow Flow{get;private set;}=new LobbyFlow();
   public bool IsBlocking{get{return active&&Flow.Page!=LobbyPage.Playing;}}
@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort
   public void FinishIntro(){splash=0;Flow.FinishIntro();OpenForPage();}
   public void ShowLobby(){active=true;splash=0;Flow.ShowLobby();OpenForPage();}
   public void ReplayIntro(){WorldEndedNaturally=false;active=true;splash=0;Flow.Replay();OpenForPage();}
-  public void SelectPreview(){Flow.SelectPreview();}
+  public void SelectPreview(){ActiveCharacterName="";Flow.SelectPreview();}
   public bool EnterNativeTest(){if(!Flow.EnterTest())return false;movie.Close();StopMusic();enter?.Invoke();return true;}
   public void SetLanguage(string code){code=LobbyLanguage.Normalize(code);if(subtitles!=null&&subtitles.captions!=null)foreach(var language in subtitles.captions)if(language.code==code){Language=code;return;}if(code=="ko"||code=="en")Language=code;}
   public void SetMix(float voice,float bgm){Flow.SetMix(voice,bgm);musicDucked=true;MusicGain((float)Flow.MusicGain);movie.Volume((float)Flow.VoiceGain);}
@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort
   void StartMusic(string key,float gain){StopMusic();music.clip=Resources.Load<AudioClip>("Audio/Lobby/"+key);MusicGain(gain);if(music.clip!=null)music.Play();}
   void StopMusic(){if(music!=null)music.Stop();}
   void OpenForPage(){since=0;displayed=Flow.Page;SubtitleText="";showLanguages=false;languageInputFence=false;switch(Flow.Page){case LobbyPage.Title:StopMusic();movie.Open("intro.mp4",false,true,true);break;case LobbyPage.Gate:movie.Mute(false);movie.Play();movie.Volume(.6f);StartMusic(tracks[UnityEngine.Random.Range(0,tracks.Length)],.6f);break;case LobbyPage.WorldIntro:WorldEndedNaturally=false;movie.Open("world_intro_v22b_paint_en.mp4",false,false,false);movie.Volume((float)Flow.VoiceGain);musicFade=0;musicDucked=false;break;case LobbyPage.Lobby:movie.Open("lobby_varkan_crypt_loop_v2_unity.mp4",true,true,false);StartMusic("lobby",.65f);break;}}
-  void Update(){if(!IsBlocking||!ready)return;float dt=Time.unscaledDeltaTime;if(!focused)return;if(languageInputFence&&!Input.GetKey(KeyCode.Escape)&&!Input.GetKey(KeyCode.Space)&&!Input.GetKey(KeyCode.Return)&&!Input.GetKey(KeyCode.KeypadEnter)&&!Input.GetKey(KeyCode.RightArrow))languageInputFence=false;since+=dt;if(splash>0){if(splash==2&&movie.Error.Length>0&&!titleSdFallback){titleSdFallback=true;movie.Open("title_motion_20260929.mp4",true,true,false);}if(splash==1){bool complete=fdgWatchdog.Tick(since,movie.Time,movie.Error.Length>0,movie.Ended);if(fdgWatchdog.FallingBack)movie.Pause();if(complete)AdvanceSplash();}if(!AutomatedInput&&Input.anyKeyDown&&Time.frameCount!=inputFence)AdvanceSplash();return;}if(Flow.Page!=displayed){OpenForPage();return;}if(!AutomatedInput&&Flow.Page==LobbyPage.Title&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.Space)))StartGate();if(Flow.Page==LobbyPage.Gate){Flow.TickGate(since,movie.Time,movie.Error.Length>0,movie.Duration);if(movie.Ended)Flow.TickGate(since,100,false,8);if(Flow.Page!=displayed){OpenForPage();return;}}if(Flow.Page==LobbyPage.WorldIntro){if(movie.Ended){WorldEndedNaturally=true;FinishIntro();return;}if(movie.Error.Length>0){music.Pause();musicPausedForVideo=true;}else if(movie.Prepared&&movie.Player.isPlaying&&musicPausedForVideo){music.UnPause();musicPausedForVideo=false;}if(movie.Error.Length==0&&movie.Prepared&&movie.Player.isPlaying&&!musicDucked){musicFade+=dt;MusicGain(Mathf.Lerp(.6f,(float)Flow.MusicGain,Mathf.Min(1,musicFade)));if(musicFade>=1)musicDucked=true;}if(!AutomatedInput&&!showLanguages&&!languageInputFence&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.Space)))NextCut();UpdateCaption();}Flow.HoldSkip(!AutomatedInput&&!showLanguages&&!languageInputFence&&(Input.GetKey(KeyCode.Escape)||Input.GetKey(KeyCode.Space)),dt);holdDelta=(float)Flow.SkipProgress;if(Flow.Page!=displayed)OpenForPage();}
+  void Update(){UpdateCharacterFence();if(!IsBlocking||!ready)return;float dt=Time.unscaledDeltaTime;if(!focused)return;if(languageInputFence&&!Input.GetKey(KeyCode.Escape)&&!Input.GetKey(KeyCode.Space)&&!Input.GetKey(KeyCode.Return)&&!Input.GetKey(KeyCode.KeypadEnter)&&!Input.GetKey(KeyCode.RightArrow))languageInputFence=false;since+=dt;if(splash>0){if(splash==2&&movie.Error.Length>0&&!titleSdFallback){titleSdFallback=true;movie.Open("title_motion_20260929.mp4",true,true,false);}if(splash==1){bool complete=fdgWatchdog.Tick(since,movie.Time,movie.Error.Length>0,movie.Ended);if(fdgWatchdog.FallingBack)movie.Pause();if(complete)AdvanceSplash();}if(!AutomatedInput&&Input.anyKeyDown&&Time.frameCount!=inputFence)AdvanceSplash();return;}if(Flow.Page!=displayed){OpenForPage();return;}if(!AutomatedInput&&Flow.Page==LobbyPage.Title&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.Space)))StartGate();if(Flow.Page==LobbyPage.Gate){Flow.TickGate(since,movie.Time,movie.Error.Length>0,movie.Duration);if(movie.Ended)Flow.TickGate(since,100,false,8);if(Flow.Page!=displayed){OpenForPage();return;}}if(Flow.Page==LobbyPage.WorldIntro){if(movie.Ended){WorldEndedNaturally=true;FinishIntro();return;}if(movie.Error.Length>0){music.Pause();musicPausedForVideo=true;}else if(movie.Prepared&&movie.Player.isPlaying&&musicPausedForVideo){music.UnPause();musicPausedForVideo=false;}if(movie.Error.Length==0&&movie.Prepared&&movie.Player.isPlaying&&!musicDucked){musicFade+=dt;MusicGain(Mathf.Lerp(.6f,(float)Flow.MusicGain,Mathf.Min(1,musicFade)));if(musicFade>=1)musicDucked=true;}if(!AutomatedInput&&!showLanguages&&!languageInputFence&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.Space)))NextCut();UpdateCaption();}Flow.HoldSkip(!AutomatedInput&&!showLanguages&&!languageInputFence&&(Input.GetKey(KeyCode.Escape)||Input.GetKey(KeyCode.Space)),dt);holdDelta=(float)Flow.SkipProgress;if(Flow.Page!=displayed)OpenForPage();}
   void UpdateCaption(){SubtitleText="";if(subtitles==null||subtitles.captions==null)return;foreach(var language in subtitles.captions)if(language.code==Language){foreach(var cue in language.cues)if(movie.Time>=cue.start&&movie.Time<cue.end){SubtitleText=cue.text;return;}return;}}
   void OnApplicationFocus(bool focus){SetPlaybackFocus(focus);}
   public void SetPlaybackFocus(bool focus)
@@ -107,7 +107,7 @@ namespace Exoduser.UnityPort
   }
   void DrawLobby()
   {
-   LobbyStyles();HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;GUI.enabled=previousEnabled&&!lobbyQuitPrompt;DrawLobbyBackground();DrawAncestor();
+   LobbyStyles();CharacterStyles();HandleCharacterKeys();HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;DrawLobbyBackground();DrawSelectedCharacter();
    if(lobbyPanel!=null)Image(new Rect(1360,0,560,1080),lobbyPanel,ScaleMode.StretchToFill);
    else Fill(new Rect(1360,0,560,1080),new Color(.063f,.051f,.055f));
    // Source full/offline layout at1920x1080; user slots are deliberately never read.
@@ -115,38 +115,34 @@ namespace Exoduser.UnityPort
    Label(new Rect(1399,151.5f,115,27),K("자막: 한국어","Subtitles: "+Language.ToUpperInvariant()),lobbyMicro,TextAnchor.MiddleLeft);var chevron=new Color(.722f,.639f,.525f);Line(new Vector2(1504,162),new Vector2(1508,166),chevron,1.5f);Line(new Vector2(1508,166),new Vector2(1512,162),chevron,1.5f);
    if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))ToggleLanguages();
    Label(new Rect(1544,151.5f,230,27),K("메뉴: 한국어 · L: 자막","Menu: English · L: subtitles"),lobbyMicro,TextAnchor.MiddleLeft);
-   GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt;
+   GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
    Label(new Rect(1536,157,340,16),"OFFLINE",lobbyMode,TextAnchor.MiddleRight);
    Image(new Rect(1388,195,488,104),brand);
-   for(int i=0;i<2;i++)
-   {
-    Rect card=new Rect(1392,315+i*94,470,84);Fill(card,new Color(.12f,.105f,.11f,.1f));DashedBorder(card,new Color(.43f,.33f,.25f,.10f));
-    Rect thumb=new Rect(1417,329+i*94,56,56);Border(thumb,new Color(.47f,.24f,.16f,.07f),1);Label(thumb,"—",lobbyMode,TextAnchor.MiddleCenter);
-    var c=GUI.color;GUI.color=new Color(1,1,1,.18f);Label(new Rect(1489,329+i*94,250,56),"—",lobbyMicro,TextAnchor.MiddleLeft);GUI.color=c;
-   }
+   DrawCharacterSlots();
    Rect create=new Rect(1392,503,480,64);Fill(create,new Color(.105f,.09f,.095f,.94f));DashedBorder(create,new Color(.588f,.443f,.306f));
-   Border(new Rect(1409,515,40,40),new Color(.47f,.38f,.26f),1);Label(new Rect(1409,515,40,40),"+",lobbyPlus,TextAnchor.MiddleCenter);Label(new Rect(1461,515,395,40),K("새 캐릭터","New character"),lobbyText,TextAnchor.MiddleLeft);
-   GUI.enabled=false;GUI.Button(create,"",GUIStyle.none);GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt;
-   Label(new Rect(1392,570,480,18),K("캐릭터 생성과 저장은 아직 지원되지 않습니다.","Character creation and saving are not yet available."),lobbyMicro,TextAnchor.MiddleCenter);
+   Border(new Rect(1409,515,40,40),new Color(.47f,.38f,.26f),1);Label(new Rect(1409,515,40,40),"+",lobbyPlus,TextAnchor.MiddleCenter);Label(new Rect(1461,515,395,40),(Characters.Count<5?K("새 캐릭터 · N","New character · N"):K("슬롯 가득참 · 5 / 5","All slots occupied · 5 / 5")),lobbyText,TextAnchor.MiddleLeft);
+   GUI.enabled=GUI.enabled&&Characters.Count<CharacterRoster.Capacity;if(GUI.Button(create,"",GUIStyle.none))OpenCharacterCreation();GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
+   Label(new Rect(1392,570,480,18),K("이번 실행에서만 유지 · 입장할 때 새 전투 시작","This session only · Each entry starts a new battle"),lobbyMicro,TextAnchor.MiddleCenter);
    Label(new Rect(1392,591,480,57),K("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다","Every Steam wishlist helps\nEXODUSER: HELL LORD\nbegin its next journey"),lobbyPromo,TextAnchor.MiddleCenter);
    Label(new Rect(1392,653,480,16),K("공식 출시 소식을 가장 먼저 받아보세요","Be the first to hear about the official release"),lobbyPromoDetail,TextAnchor.MiddleCenter);
    Image(new Rect(1532,674,200,44),lobbyBanner);if(GUI.Button(new Rect(1532,674,200,44),"",GUIStyle.none))Application.OpenURL("https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/");
    Fill(new Rect(1388,740,504,1),new Color(.588f,.443f,.306f,.333f));
-   var tint=GUI.color;if(disabledEnter!=null)Image(new Rect(1392,751,496,132),disabledEnter);else{GUI.color=new Color(.45f,.45f,.45f);Image(new Rect(1392,751,496,132),enterButton);GUI.color=tint;}
-   GUI.enabled=false;GUI.Button(new Rect(1392,751,496,132),"",GUIStyle.none);GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt;
+   var tint=GUI.color;if(Characters.SelectedIndex>=0)Image(new Rect(1392,751,496,132),enterButton);else if(disabledEnter!=null)Image(new Rect(1392,751,496,132),disabledEnter);else{GUI.color=new Color(.45f,.45f,.45f);Image(new Rect(1392,751,496,132),enterButton);GUI.color=tint;}
+   GUI.enabled=GUI.enabled&&Characters.SelectedIndex>=0;if(GUI.Button(new Rect(1392,751,496,132),"",GUIStyle.none))EnterSelectedCharacter();GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
    Label(new Rect(1388,897,180,32),K("▶ 시네마틱","▶ Cinematic"),lobbyMicro,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1388,897,180,32),"",GUIStyle.none))ReplayIntro();
    DrawPower(new Rect(1856,895,36,36));if(GUI.Button(new Rect(1856,895,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
    // Keep the existing disposable preview explicit without covering the cinematic.
    Rect preview=new Rect(1392,962,480,48);Fill(preview,new Color(.105f,.09f,.095f,.94f));Border(preview,new Color(.4f,.32f,.24f,.7f),1);
-   Label(preview,K("플레이 미리보기","Play preview"),lobbyText,TextAnchor.MiddleCenter);if(GUI.Button(preview,"",GUIStyle.none)){SelectPreview();EnterNativeTest();}
+   Label(preview,K("이름 없이 미리보기","Preview without a name"),lobbyText,TextAnchor.MiddleCenter);if(GUI.Button(preview,"",GUIStyle.none)){SelectPreview();EnterNativeTest();}
    Label(new Rect(1392,1018,480,24),K("미리보기의 진행 상황은 저장되지 않습니다.","Preview progress is not saved."),lobbyMicro,TextAnchor.MiddleCenter);
-   GUI.enabled=previousEnabled&&!lobbyQuitPrompt;
+   GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;
    if(showLanguages){
     // Use IMGUI hit testing so dismissal follows the same scaled coordinates as buttons.
     if(DismissOutside(new Rect(1388,151.5f,488,587.5f))||GUI.Button(new Rect(1528,151.5f,348,35.5f),"",GUIStyle.none))showLanguages=false;
     if(showLanguages)DrawLanguages(187);
    }
    GUI.enabled=previousEnabled;
+   DrawCharacterModal();
    if(lobbyQuitPrompt&&DismissOutside(new Rect(710,427,500,226)))lobbyQuitPrompt=false;
    if(lobbyQuitPrompt){Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.75f));Fill(new Rect(710,427,500,226),new Color(.063f,.051f,.055f));Border(new Rect(710,427,500,226),new Color(.4f,.32f,.24f),1);Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),normal,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(755,552,180,48),K("취소","Cancel"),button))lobbyQuitPrompt=false;if(GUI.Button(new Rect(985,552,180,48),K("종료","Quit"),button))Application.Quit();}
   }
@@ -185,7 +181,7 @@ namespace Exoduser.UnityPort
   }
   void HandleLanguagePopupKeys()
   {
-   var e=Event.current;if(AutomatedInput||e.type!=EventType.KeyDown)return;
+   var e=Event.current;if(CharacterModalOpen||AutomatedInput||e.type!=EventType.KeyDown)return;
    if(lobbyQuitPrompt){if(e.keyCode==KeyCode.Escape)lobbyQuitPrompt=false;e.Use();return;}
    if(e.keyCode==KeyCode.L){ToggleLanguages();e.Use();return;}
    if(!showLanguages)return;

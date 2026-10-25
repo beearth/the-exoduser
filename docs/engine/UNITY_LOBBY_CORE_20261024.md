@@ -137,3 +137,6 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 
 
 2026-10-25 시네마틱 후속: 로비와29개 이름/2열 키보드 목록을 공유. 실제 EN 자막 선택, 목록 Esc6초의 skip 차단, 키 해제 후 정상 skip·KO 로비복귀 확인. 일반 build errors0. 전체29자막 글꼴/RTL·정밀 마우스와 구분. [검수](UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
+
+
+2026-10-25 Mac 캐릭터 후속: 생성/선택의 세션 UI와 native preview 이름 전달을 연결했다. 원본 전사만 생성·최대5슬롯·이름 규칙 유지. 영속 저장/기존 슬롯/계정은 미연결. 최신 범위와 검수는 [UNITY_MAC_CHARACTER_UI_20261025](UNITY_MAC_CHARACTER_UI_20261025.md)를 따른다.
