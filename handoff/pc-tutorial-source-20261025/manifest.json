@@ -1,0 +1,451 @@
+{
+  "sourceRoot": "G:/exoduser",
+  "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+  "remoteMain": "fab7a167c30c6421bda8cf6d4c2ee2e7753e87f3",
+  "branch": "main",
+  "localOnlyRemoteOnly": "1\t93",
+  "files": [
+    {
+      "path": "game.html",
+      "working": {
+        "bytes": 4195903,
+        "sha256": "d73d691989c1cb847cb500ce02ae81430c575fb90d732a5af131742c96d2c8c5"
+      },
+      "head": {
+        "bytes": 4195551,
+        "sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+      },
+      "index": {
+        "bytes": 4195551,
+        "sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4"
+      },
+      "remoteMain": {
+        "bytes": 4195903,
+        "sha256": "d73d691989c1cb847cb500ce02ae81430c575fb90d732a5af131742c96d2c8c5"
+      },
+      "matchesRemoteMain": true,
+      "status": "M game.html"
+    },
+    {
+      "path": "package.json",
+      "working": {
+        "bytes": 3076,
+        "sha256": "7ab8a9311bbc7b895b499878f282e6ef76da52eb9b4b6e03e0ad17acd3a17dfe"
+      },
+      "head": {
+        "bytes": 3076,
+        "sha256": "7ab8a9311bbc7b895b499878f282e6ef76da52eb9b4b6e03e0ad17acd3a17dfe"
+      },
+      "index": {
+        "bytes": 3076,
+        "sha256": "7ab8a9311bbc7b895b499878f282e6ef76da52eb9b4b6e03e0ad17acd3a17dfe"
+      },
+      "remoteMain": {
+        "bytes": 3076,
+        "sha256": "2db1867c0a3e0652c2fe75b3c21f63988af23991373f1d9f51b7979104853bf9"
+      },
+      "matchesRemoteMain": false,
+      "status": ""
+    },
+    {
+      "path": "build-target.js",
+      "reusedPriorManifest": true,
+      "priorSnapshot": "f7507915a6a7e343fed492a657c85e20bcd7025d:handoff/pc-startup-source-20261025/manifest.json",
+      "working": {
+        "bytes": 185,
+        "sha256": "0b5680d18292dcdd67bd9efcab896e65c55e43d3f8112a5c64cce9d7559327e6"
+      },
+      "head": {
+        "bytes": 185,
+        "sha256": "0b5680d18292dcdd67bd9efcab896e65c55e43d3f8112a5c64cce9d7559327e6"
+      },
+      "index": {
+        "bytes": 185,
+        "sha256": "0b5680d18292dcdd67bd9efcab896e65c55e43d3f8112a5c64cce9d7559327e6"
+      },
+      "remoteMain": {
+        "bytes": 185,
+        "sha256": "0b5680d18292dcdd67bd9efcab896e65c55e43d3f8112a5c64cce9d7559327e6"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "tutorial-badges.css",
+      "working": {
+        "bytes": 2711,
+        "sha256": "cc00a901fb9210f77c0d484c3745b41a3ef94637ad39c1fd0be8a9fda17e9b26"
+      },
+      "head": {
+        "bytes": 2711,
+        "sha256": "cc00a901fb9210f77c0d484c3745b41a3ef94637ad39c1fd0be8a9fda17e9b26"
+      },
+      "index": {
+        "bytes": 2711,
+        "sha256": "cc00a901fb9210f77c0d484c3745b41a3ef94637ad39c1fd0be8a9fda17e9b26"
+      },
+      "remoteMain": {
+        "bytes": 2711,
+        "sha256": "cc00a901fb9210f77c0d484c3745b41a3ef94637ad39c1fd0be8a9fda17e9b26"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "tutorial-badges.js",
+      "working": {
+        "bytes": 6653,
+        "sha256": "04c31affffccf8cc917f69d2ee8b91b36147165748d1ed11c59f70f5688329d5"
+      },
+      "head": {
+        "bytes": 6653,
+        "sha256": "04c31affffccf8cc917f69d2ee8b91b36147165748d1ed11c59f70f5688329d5"
+      },
+      "index": {
+        "bytes": 6653,
+        "sha256": "04c31affffccf8cc917f69d2ee8b91b36147165748d1ed11c59f70f5688329d5"
+      },
+      "remoteMain": {
+        "bytes": 6653,
+        "sha256": "04c31affffccf8cc917f69d2ee8b91b36147165748d1ed11c59f70f5688329d5"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "system-lesson.css",
+      "working": {
+        "bytes": 2640,
+        "sha256": "535678bef2c26e0bc193941b31200a740cb75d9f821a39c95169ea75220da1d2"
+      },
+      "head": {
+        "bytes": 2640,
+        "sha256": "535678bef2c26e0bc193941b31200a740cb75d9f821a39c95169ea75220da1d2"
+      },
+      "index": {
+        "bytes": 2640,
+        "sha256": "535678bef2c26e0bc193941b31200a740cb75d9f821a39c95169ea75220da1d2"
+      },
+      "remoteMain": {
+        "bytes": 2640,
+        "sha256": "535678bef2c26e0bc193941b31200a740cb75d9f821a39c95169ea75220da1d2"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "system-lesson.js",
+      "working": {
+        "bytes": 12547,
+        "sha256": "4db9c297608fae5e9734ab8664bc67eb61942c79aa3f937a85f9bf5d741d87ed"
+      },
+      "head": {
+        "bytes": 12547,
+        "sha256": "4db9c297608fae5e9734ab8664bc67eb61942c79aa3f937a85f9bf5d741d87ed"
+      },
+      "index": {
+        "bytes": 12547,
+        "sha256": "4db9c297608fae5e9734ab8664bc67eb61942c79aa3f937a85f9bf5d741d87ed"
+      },
+      "remoteMain": {
+        "bytes": 12547,
+        "sha256": "4db9c297608fae5e9734ab8664bc67eb61942c79aa3f937a85f9bf5d741d87ed"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "parry-lesson.css",
+      "working": {
+        "bytes": 10223,
+        "sha256": "928ba175cb68b1bace537d130fcd33bba42fd85e44a69a9b49c494d7fc17e073"
+      },
+      "head": {
+        "bytes": 10223,
+        "sha256": "928ba175cb68b1bace537d130fcd33bba42fd85e44a69a9b49c494d7fc17e073"
+      },
+      "index": {
+        "bytes": 10223,
+        "sha256": "928ba175cb68b1bace537d130fcd33bba42fd85e44a69a9b49c494d7fc17e073"
+      },
+      "remoteMain": {
+        "bytes": 10223,
+        "sha256": "928ba175cb68b1bace537d130fcd33bba42fd85e44a69a9b49c494d7fc17e073"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "resource-practice.js",
+      "working": {
+        "bytes": 30174,
+        "sha256": "6f3f59dc97b75faf4c2e65088263d364be1d37b11c0a0bcefb826f5b16d99e6e"
+      },
+      "head": {
+        "bytes": 30174,
+        "sha256": "6f3f59dc97b75faf4c2e65088263d364be1d37b11c0a0bcefb826f5b16d99e6e"
+      },
+      "index": {
+        "bytes": 30174,
+        "sha256": "6f3f59dc97b75faf4c2e65088263d364be1d37b11c0a0bcefb826f5b16d99e6e"
+      },
+      "remoteMain": {
+        "bytes": 30174,
+        "sha256": "6f3f59dc97b75faf4c2e65088263d364be1d37b11c0a0bcefb826f5b16d99e6e"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "parry-lesson.js",
+      "working": {
+        "bytes": 53008,
+        "sha256": "95fff33fdaef534cf9cf89e72c2cdf0fa165988b188c9a57ffa22d9b5b079464"
+      },
+      "head": {
+        "bytes": 53008,
+        "sha256": "95fff33fdaef534cf9cf89e72c2cdf0fa165988b188c9a57ffa22d9b5b079464"
+      },
+      "index": {
+        "bytes": 53008,
+        "sha256": "95fff33fdaef534cf9cf89e72c2cdf0fa165988b188c9a57ffa22d9b5b079464"
+      },
+      "remoteMain": {
+        "bytes": 53008,
+        "sha256": "95fff33fdaef534cf9cf89e72c2cdf0fa165988b188c9a57ffa22d9b5b079464"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "ui-foundation.css",
+      "reusedPriorManifest": true,
+      "priorSnapshot": "f7507915a6a7e343fed492a657c85e20bcd7025d:handoff/pc-startup-source-20261025/manifest.json",
+      "working": {
+        "bytes": 21174,
+        "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9"
+      },
+      "head": {
+        "bytes": 21174,
+        "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9"
+      },
+      "index": {
+        "bytes": 21174,
+        "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9"
+      },
+      "remoteMain": {
+        "bytes": 21174,
+        "sha256": "35e5e1e9c09ae52e2d716c104a6228aab5e6e639e011809e05bf28a454b630d9"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    },
+    {
+      "path": "ui-refinement.css",
+      "reusedPriorManifest": true,
+      "priorSnapshot": "f7507915a6a7e343fed492a657c85e20bcd7025d:handoff/pc-startup-source-20261025/manifest.json",
+      "working": {
+        "bytes": 153271,
+        "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0"
+      },
+      "head": {
+        "bytes": 153271,
+        "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0"
+      },
+      "index": {
+        "bytes": 153271,
+        "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0"
+      },
+      "remoteMain": {
+        "bytes": 153271,
+        "sha256": "f6240dfd946394d87bd908ac8ad7c836551a2a582dc10471fef013b1159e08b0"
+      },
+      "matchesRemoteMain": true,
+      "status": ""
+    }
+  ],
+  "references": [
+    {
+      "sourceTag": "<script src=\"build-target.js\">",
+      "path": "build-target.js"
+    },
+    {
+      "sourceTag": "<link rel=\"stylesheet\" href=\"tutorial-badges.css?v=20260929-earned-hud\">",
+      "path": "tutorial-badges.css"
+    },
+    {
+      "sourceTag": "<script src=\"tutorial-badges.js?v=20260929-earned-hud\">",
+      "path": "tutorial-badges.js"
+    },
+    {
+      "sourceTag": "<link rel=\"stylesheet\" href=\"system-lesson.css?v=20261012-finish-badge\">",
+      "path": "system-lesson.css"
+    },
+    {
+      "sourceTag": "<script src=\"system-lesson.js?v=20261012-finish-badge\">",
+      "path": "system-lesson.js"
+    },
+    {
+      "sourceTag": "<link rel=\"stylesheet\" href=\"parry-lesson.css?v=20261006-guide-scale\">",
+      "path": "parry-lesson.css"
+    },
+    {
+      "sourceTag": "<script src=\"resource-practice.js?v=20260916-recovery2\">",
+      "path": "resource-practice.js"
+    },
+    {
+      "sourceTag": "<script src=\"parry-lesson.js?v=20261016-interact-reset\">",
+      "path": "parry-lesson.js"
+    },
+    {
+      "sourceTag": "<link rel=\"stylesheet\" href=\"ui-foundation.css?v=20260930-lesson-translucent\">",
+      "path": "ui-foundation.css"
+    },
+    {
+      "sourceTag": "<link rel=\"stylesheet\" href=\"ui-refinement.css?v=20261006-panel-fit\">",
+      "path": "ui-refinement.css"
+    }
+  ],
+  "tutorialMarkers": [
+    {
+      "line": 49037,
+      "text": "  try{if(_introGuide)_renderIntroGuide()}catch(_e3){} // First startup precedes the guide's let initialization."
+    },
+    {
+      "line": 63294,
+      "text": "  _startIntroGuide();"
+    },
+    {
+      "line": 63296,
+      "text": "const _isPad=()=>!!_introGuidePad();"
+    },
+    {
+      "line": 63303,
+      "text": "let _introGuide=null;"
+    },
+    {
+      "line": 63304,
+      "text": "function _introGuideText(pair){return _L(pair[0],pair[1])}"
+    },
+    {
+      "line": 63305,
+      "text": "function _introGuidePad(){"
+    },
+    {
+      "line": 63310,
+      "text": "function _introGuideKeys(key){"
+    },
+    {
+      "line": 63314,
+      "text": "  const state=_introGuide;if(!state||state.done)return;"
+    },
+    {
+      "line": 63318,
+      "text": "  $('ikTitle').textContent=_introGuideText(step.title);"
+    },
+    {
+      "line": 63323,
+      "text": "    const key=document.createElement('span');key.textContent=state.pad?row[1]:_introGuideKeys(row[0]);"
+    },
+    {
+      "line": 63327,
+      "text": "  $('ikNote').textContent=step.note?_introGuideText(step.note):'';"
+    },
+    {
+      "line": 63328,
+      "text": "  $('ikHint').textContent=state.pad?'A · '+_introGuideText(['다음','Next'])+' / Start · '+_introGuideText(['건너뛰기','Skip']):_introGuideText(['클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기','Click / Enter / Space · Next    Hold Space / ESC · Skip']);"
+    },
+    {
+      "line": 63329,
+      "text": "  $('ikNext').textContent=_introGuideText(state.step===3?['시작','Start']:['다음','Next']);"
+    },
+    {
+      "line": 63330,
+      "text": "  $('ikSkip').textContent=_introGuideText(['건너뛰기','Skip']);"
+    },
+    {
+      "line": 63339,
+      "text": "  if(_introGuide===state){"
+    },
+    {
+      "line": 63341,
+      "text": "    _introGuide=null;"
+    },
+    {
+      "line": 63345,
+      "text": "  const state=_introGuide;if(!state||state.done)return;"
+    },
+    {
+      "line": 63349,
+      "text": "  _openIntroCurtain();"
+    },
+    {
+      "line": 63354,
+      "text": "  const state=_introGuide;if(!state||state.done||performance.now()<state.readyAt)return;"
+    },
+    {
+      "line": 63359,
+      "text": "function _startIntroGuide(){"
+    },
+    {
+      "line": 63360,
+      "text": "  _disposeIntroGuide(_introGuide);"
+    },
+    {
+      "line": 63362,
+      "text": "  const gp=_introGuidePad();"
+    },
+    {
+      "line": 63363,
+      "text": "  const state=_introGuide={step:0,done:false,pad:!!gp,readyAt:performance.now()+250,raf:0,spaceHeldAt:null,"
+    },
+    {
+      "line": 63391,
+      "text": "    if(_introGuide!==state||state.done)return;"
+    },
+    {
+      "line": 63397,
+      "text": "    const pad=_introGuidePad(),a=!!pad?.buttons[0]?.pressed,skip=!!pad?.buttons[9]?.pressed;"
+    },
+    {
+      "line": 63405,
+      "text": "  const play=()=>{if(_introGuide===state&&!state.done)playSample('voice_wakeup',1,1)};"
+    },
+    {
+      "line": 63412,
+      "text": "function _openIntroCurtain(){"
+    }
+  ],
+  "packageDeclaration": {
+    "source": "G:/exoduser/package.json",
+    "main": "http://localhost:3350/index.html",
+    "exoduserTarget": "full",
+    "actualRuntimeModeConfirmed": false
+  },
+  "processObservation": {
+    "method": "Read-only Win32_Process filter nw.exe/EXODUSER.exe/EXODUSER-Unity.exe",
+    "matchingProcessesFound": 0,
+    "nwPackageUsageConfirmed": false
+  },
+  "currentBrowserGameTab": {
+    "confirmed": false,
+    "reason": "No browser tab inspection performed. No current query values inferred from package or HTTP probe.",
+    "routingQueryValues": null,
+    "slotValueRead": false,
+    "charValueRead": false
+  },
+  "http": {
+    "url": "http://localhost:3333/game.html",
+    "status": 200,
+    "bytes": 4195903,
+    "sha256": "d73d691989c1cb847cb500ce02ae81430c575fb90d732a5af131742c96d2c8c5",
+    "servedBodyMatchesPcFile": true,
+    "processCwdVerified": false
+  },
+  "notes": [
+    "PC working game.html may differ from remote main; preserve WIP and compare provenance before adoption.",
+    "No save reads, account/token transmission, server start/restart, GUI actions, build, test execution or shared HEAD/index modification.",
+    "Prior startup-source dependencies are referenced from their existing verified manifest instead of being rehashed.",
+    "The HTTP request verifies served game bytes, not current user browser query/mode or process working directory."
+  ]
+}
