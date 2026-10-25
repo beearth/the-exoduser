@@ -131,3 +131,6 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 
 
 2026-10-25 팝업 후속: L/방향키/Enter/Esc·Tab순환과 바깥 클릭 닫기를 실제 Mac 키 입력으로 확인. 종료 확인도 하위 버튼 입력을 차단. 작은 마우스 selector 직접 입력은 미확인. [검수와 경계](UNITY_MAC_LOBBY_POPUP_20261025.md).
+
+
+2026-10-25 언어 이름 후속: 29개 목록을2열 이름+코드로 변경. 기존폰트23원문 이름 지원, 나머지6개 ko/en 대체 이름. 실제 한/영 목록과2열 키보드 이동 확인, build0오류. 전체자막/RTL과 구분. [근거](UNITY_MAC_LANGUAGE_NAMES_20261025.md).

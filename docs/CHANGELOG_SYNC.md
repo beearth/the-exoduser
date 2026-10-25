@@ -56987,3 +56987,8 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 ## 2026-10-25 Mac 로비 팝업 조작
 
 - L 열기·방향키/Enter 선택·Esc 취소·Tab순환·바깥 클릭 닫기·하위 로비 입력 차단. 일반 빌드 오류0와 CUA 실제 키 입력/화면 확인, 작은 마우스 selector와 종료 확인 직접 조작은 구분. [근거](engine/UNITY_MAC_LOBBY_POPUP_20261025.md).
+
+
+## 2026-10-25 Mac 로비 언어 이름
+
+- 코드 목록을2열 이름+코드로 개선. 기존폰트23원문 이름과6개 ko/en 대체 이름,35표시후보 cmap/폭 검사 및 실제 한/영 화면·2열 키 이동 확인. build 오류0. [근거](engine/UNITY_MAC_LANGUAGE_NAMES_20261025.md).

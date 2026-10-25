@@ -134,7 +134,7 @@ namespace Exoduser.UnityPort
    GUI.enabled=previousEnabled&&!lobbyQuitPrompt;
    if(showLanguages){
     // Use IMGUI hit testing so dismissal follows the same scaled coordinates as buttons.
-    if(DismissOutside(new Rect(1388,151.5f,488,329.5f))||GUI.Button(new Rect(1528,151.5f,348,35.5f),"",GUIStyle.none))showLanguages=false;
+    if(DismissOutside(new Rect(1388,151.5f,488,587.5f))||GUI.Button(new Rect(1528,151.5f,348,35.5f),"",GUIStyle.none))showLanguages=false;
     if(showLanguages)DrawLobbyLanguages();
    }
    GUI.enabled=previousEnabled;
@@ -143,16 +143,31 @@ namespace Exoduser.UnityPort
   }
   void DrawLobbyLanguages()
   {
-   var panel=new Rect(1388,187,488,294);Fill(panel,new Color(.063f,.051f,.055f,.99f));Border(panel,new Color(.588f,.443f,.306f),1);
+   var panel=new Rect(1388,187,488,552);Fill(panel,new Color(.063f,.051f,.055f,.99f));Border(panel,new Color(.588f,.443f,.306f),1);
    Label(new Rect(1400,193,464,28),K("자막 언어","Subtitle language"),lobbyText,TextAnchor.MiddleLeft);
    if(subtitles==null||subtitles.captions==null)return;
    for(int i=0;i<LobbyLanguage.Count;i++){
-    string code=LobbyLanguage.GetCode(i);var option=new Rect(1400+(i%5)*92,227+(i/5)*36,84,30);
+    string code=LobbyLanguage.GetCode(i);var option=new Rect(1400+(i%2)*236,227+(i/2)*32,228,28);
     Fill(option,new Color(.105f,.09f,.095f));Border(option,i==languageCursor?new Color(1,.86f,.61f):code==Language?new Color(.85f,.67f,.4f):new Color(.4f,.32f,.24f,.55f),i==languageCursor?2:1);
-    Label(option,code.ToUpperInvariant(),lobbyText,TextAnchor.MiddleCenter);
+    Label(new Rect(option.x+8,option.y,170,option.height),LobbyLanguageLabel(code),lobbyText,TextAnchor.MiddleLeft);
+    Label(new Rect(option.x+178,option.y,42,option.height),code.ToUpperInvariant(),lobbyMicro,TextAnchor.MiddleRight);
     if(GUI.Button(option,"",GUIStyle.none)){SetLanguage(code);showLanguages=false;}
    }
-   Label(new Rect(1400,446,464,25),K("방향키 이동 · Enter 선택 · Esc 닫기","Arrow keys: move · Enter: select · Esc: close"),lobbyMicro,TextAnchor.MiddleLeft);
+   Label(new Rect(1400,708,464,25),K("방향키 이동 · Enter 선택 · Esc 닫기","Arrow keys: move · Enter: select · Esc: close"),lobbyMicro,TextAnchor.MiddleLeft);
+  }
+  string LobbyLanguageLabel(string code)
+  {
+   // The bundled KR font lacks characters in these six native labels.
+   // Use readable menu-language names until full multilingual typography is available.
+   switch(code){
+    case "zh":return K("중국어 간체","Chinese (Simplified)");
+    case "th":return K("태국어","Thai");
+    case "uk":return K("우크라이나어","Ukrainian");
+    case "cs":return K("체코어","Czech");
+    case "el":return K("그리스어","Greek");
+    case "ar":return K("아랍어","Arabic");
+    default:return LobbyLanguage.GetDisplayName(code);
+   }
   }
   void ToggleLobbyLanguages()
   {
@@ -170,8 +185,8 @@ namespace Exoduser.UnityPort
     case KeyCode.Return:case KeyCode.KeypadEnter:SetLanguage(LobbyLanguage.GetCode(languageCursor));showLanguages=false;break;
     case KeyCode.LeftArrow:languageCursor=Mathf.Max(0,languageCursor-1);break;
     case KeyCode.RightArrow:languageCursor=Mathf.Min(LobbyLanguage.Count-1,languageCursor+1);break;
-    case KeyCode.UpArrow:languageCursor=Mathf.Max(0,languageCursor-5);break;
-    case KeyCode.DownArrow:languageCursor=Mathf.Min(LobbyLanguage.Count-1,languageCursor+5);break;
+    case KeyCode.UpArrow:languageCursor=Mathf.Max(0,languageCursor-2);break;
+    case KeyCode.DownArrow:languageCursor=Mathf.Min(LobbyLanguage.Count-1,languageCursor+2);break;
     case KeyCode.Home:languageCursor=0;break;
     case KeyCode.End:languageCursor=LobbyLanguage.Count-1;break;
     case KeyCode.Tab:languageCursor=(languageCursor+(e.shift?LobbyLanguage.Count-1:1))%LobbyLanguage.Count;break;

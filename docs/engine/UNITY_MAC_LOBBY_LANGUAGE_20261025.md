@@ -5,7 +5,7 @@
 | 항목 | 현재 동작 |
 |---|---|
 | 로비 selector | 한국어는 `자막: 한국어`, 나머지는 `Subtitles: CODE`. 별도로 `메뉴: 한국어` 또는 `Menu: English` 표시 |
-| 목록 | 원본 cinLang의 29개 순서. 5열×6행, 선택 강조. 코드 표기는 글꼴 미지원 언어도 식별할 수 있는 좁은 구현이며 원본 자국어 이름 UI 동등성은 미완료 |
+| 목록 | 원본 cinLang의 29개 순서. 현행은 2열×15행 이름+코드·선택 강조. 23개 원문 이름과6개 메뉴언어 대체 이름을 표시한다. [가독성 검수](UNITY_MAC_LANGUAGE_NAMES_20261025.md) |
 | 지역별 코드 | 원본 JS Normalize와 동일: ko-KR→ko, zh-Hant/TW/HK/MO→zht, pt-BR/pt→ptbr, nb/nn→no. 미지원/null→en |
 | 데이터 | 기존 29×32 자막·시간을 그대로 사용. 메뉴 번역은 기존 ko/en 경로 |
 | 팝업 | 열려 있는 동안 하위 로비 버튼 비활성화. 선택 또는 selector 재클릭으로 닫힘. Esc/바깥 클릭/키보드 이동은 후속 [팝업 조작](UNITY_MAC_LOBBY_POPUP_20261025.md)에서 연결 |

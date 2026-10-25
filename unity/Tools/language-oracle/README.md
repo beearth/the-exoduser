@@ -5,3 +5,5 @@ Run `dotnet run --project LanguageTests.csproj -- oracle.json integrated-result.
 `LanguageRuntimeProbe.cs` is QA-only and excluded from product Assets. Copy it into an isolated Unity project's Assets, build using PortVerification.Build, then run the built executable with `--language-runtime-probe -output <unique-directory>`. It validates the actual NativeLobby setter against 29 caption languages, nine locale/unknown cases and null, then captures KO/FR/PTBR dropdown renderings. It opens the private popup by reflection: this does not verify OS mouse input. Remove the QA-only source and its generated meta from the isolated project before a normal product build. Preserve the fixture in this directory.
 
 `result.json` is the support owner's original result; `integrated-result.json` is the result against the imported runtime source. Native runtime/build evidence is recorded separately in docs/engine/UNITY_MAC_LOBBY_LANGUAGE_20261025.json. Native-language typography and Arabic shaping/RTL remain unverified.
+
+`audit-font.py <receipt.json>` uses fonttools to inspect bundled font cmap coverage for original language names. It does not modify fonts or certify shaping/RTL.

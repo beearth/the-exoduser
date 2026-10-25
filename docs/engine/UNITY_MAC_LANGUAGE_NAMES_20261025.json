@@ -1,0 +1,378 @@
+{
+  "build": {
+    "passed": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-language-names/EXODUSER-Unity.app",
+    "errors": 0,
+    "bytes": 1406126663
+  },
+  "sourceSha256": "111db38359e4e880520cffd6ec0ef1e31fad79b4817783ff94bd05617517d791",
+  "fontAudit": {
+    "font": "/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024/unity/Assets/Exoduser/Resources/Art/fonts/NativeLobbyNotoSansKR-SemiBold.ttf",
+    "sha256": "f421550040faa5c301be87229a91d9aff22f64c8ea4fec488966310069668721",
+    "unicodeEntries": 23174,
+    "labels": [
+      {
+        "code": "ko",
+        "name": "한국어",
+        "missing": []
+      },
+      {
+        "code": "en",
+        "name": "English",
+        "missing": []
+      },
+      {
+        "code": "zh",
+        "name": "中文简体",
+        "missing": [
+          "简"
+        ]
+      },
+      {
+        "code": "zht",
+        "name": "繁體中文",
+        "missing": []
+      },
+      {
+        "code": "ja",
+        "name": "日本語",
+        "missing": []
+      },
+      {
+        "code": "vi",
+        "name": "Tiếng Việt",
+        "missing": []
+      },
+      {
+        "code": "th",
+        "name": "ไทย",
+        "missing": [
+          "ท",
+          "ย",
+          "ไ"
+        ]
+      },
+      {
+        "code": "id",
+        "name": "Bahasa Indonesia",
+        "missing": []
+      },
+      {
+        "code": "ms",
+        "name": "Bahasa Melayu",
+        "missing": []
+      },
+      {
+        "code": "es",
+        "name": "Español (España)",
+        "missing": []
+      },
+      {
+        "code": "fr",
+        "name": "Français",
+        "missing": []
+      },
+      {
+        "code": "it",
+        "name": "Italiano",
+        "missing": []
+      },
+      {
+        "code": "ptbr",
+        "name": "Português (Brasil)",
+        "missing": []
+      },
+      {
+        "code": "ro",
+        "name": "Română",
+        "missing": []
+      },
+      {
+        "code": "de",
+        "name": "Deutsch",
+        "missing": []
+      },
+      {
+        "code": "nl",
+        "name": "Nederlands",
+        "missing": []
+      },
+      {
+        "code": "sv",
+        "name": "Svenska",
+        "missing": []
+      },
+      {
+        "code": "da",
+        "name": "Dansk",
+        "missing": []
+      },
+      {
+        "code": "no",
+        "name": "Norsk",
+        "missing": []
+      },
+      {
+        "code": "ru",
+        "name": "Русский",
+        "missing": []
+      },
+      {
+        "code": "uk",
+        "name": "Українська",
+        "missing": [
+          "ї"
+        ]
+      },
+      {
+        "code": "pl",
+        "name": "Polski",
+        "missing": []
+      },
+      {
+        "code": "cs",
+        "name": "Čeština",
+        "missing": [
+          "Č",
+          "š"
+        ]
+      },
+      {
+        "code": "hu",
+        "name": "Magyar",
+        "missing": []
+      },
+      {
+        "code": "bg",
+        "name": "Български",
+        "missing": []
+      },
+      {
+        "code": "el",
+        "name": "Ελληνικά",
+        "missing": [
+          "ά"
+        ]
+      },
+      {
+        "code": "fi",
+        "name": "Suomi",
+        "missing": []
+      },
+      {
+        "code": "tr",
+        "name": "Türkçe",
+        "missing": []
+      },
+      {
+        "code": "ar",
+        "name": "العربية",
+        "missing": [
+          "ا",
+          "ب",
+          "ة",
+          "ر",
+          "ع",
+          "ل",
+          "ي"
+        ]
+      }
+    ],
+    "scope": "Font cmap coverage only; no shaping/RTL/rendering assertion"
+  },
+  "widths": {
+    "completeLabels": 35,
+    "maximumWidth": 146.58,
+    "availableWidth": 170,
+    "labels": [
+      {
+        "code": "ko",
+        "label": "한국어",
+        "unshapedAdvancePixelsAt15": 41.4
+      },
+      {
+        "code": "en",
+        "label": "English",
+        "unshapedAdvancePixelsAt15": 53.22
+      },
+      {
+        "code": "zh",
+        "label": "중국어 간체",
+        "unshapedAdvancePixelsAt15": 72.39
+      },
+      {
+        "code": "zh",
+        "label": "Chinese (Simplified)",
+        "unshapedAdvancePixelsAt15": 146.58
+      },
+      {
+        "code": "zht",
+        "label": "繁體中文",
+        "unshapedAdvancePixelsAt15": 60.0
+      },
+      {
+        "code": "ja",
+        "label": "日本語",
+        "unshapedAdvancePixelsAt15": 45.0
+      },
+      {
+        "code": "vi",
+        "label": "Tiếng Việt",
+        "unshapedAdvancePixelsAt15": 72.24
+      },
+      {
+        "code": "th",
+        "label": "태국어",
+        "unshapedAdvancePixelsAt15": 41.4
+      },
+      {
+        "code": "th",
+        "label": "Thai",
+        "unshapedAdvancePixelsAt15": 31.92
+      },
+      {
+        "code": "id",
+        "label": "Bahasa Indonesia",
+        "unshapedAdvancePixelsAt15": 128.19
+      },
+      {
+        "code": "ms",
+        "label": "Bahasa Melayu",
+        "unshapedAdvancePixelsAt15": 108.89
+      },
+      {
+        "code": "es",
+        "label": "Español (España)",
+        "unshapedAdvancePixelsAt15": 125.44
+      },
+      {
+        "code": "fr",
+        "label": "Français",
+        "unshapedAdvancePixelsAt15": 61.53
+      },
+      {
+        "code": "it",
+        "label": "Italiano",
+        "unshapedAdvancePixelsAt15": 56.2
+      },
+      {
+        "code": "ptbr",
+        "label": "Português (Brasil)",
+        "unshapedAdvancePixelsAt15": 131.16
+      },
+      {
+        "code": "ro",
+        "label": "Română",
+        "unshapedAdvancePixelsAt15": 60.6
+      },
+      {
+        "code": "de",
+        "label": "Deutsch",
+        "unshapedAdvancePixelsAt15": 59.35
+      },
+      {
+        "code": "nl",
+        "label": "Nederlands",
+        "unshapedAdvancePixelsAt15": 83.89
+      },
+      {
+        "code": "sv",
+        "label": "Svenska",
+        "unshapedAdvancePixelsAt15": 60.6
+      },
+      {
+        "code": "da",
+        "label": "Dansk",
+        "unshapedAdvancePixelsAt15": 44.97
+      },
+      {
+        "code": "no",
+        "label": "Norsk",
+        "unshapedAdvancePixelsAt15": 42.91
+      },
+      {
+        "code": "ru",
+        "label": "Русский",
+        "unshapedAdvancePixelsAt15": 62.25
+      },
+      {
+        "code": "uk",
+        "label": "우크라이나어",
+        "unshapedAdvancePixelsAt15": 82.8
+      },
+      {
+        "code": "uk",
+        "label": "Ukrainian",
+        "unshapedAdvancePixelsAt15": 71.61
+      },
+      {
+        "code": "pl",
+        "label": "Polski",
+        "unshapedAdvancePixelsAt15": 44.34
+      },
+      {
+        "code": "cs",
+        "label": "체코어",
+        "unshapedAdvancePixelsAt15": 41.4
+      },
+      {
+        "code": "cs",
+        "label": "Czech",
+        "unshapedAdvancePixelsAt15": 43.17
+      },
+      {
+        "code": "hu",
+        "label": "Magyar",
+        "unshapedAdvancePixelsAt15": 53.67
+      },
+      {
+        "code": "bg",
+        "label": "Български",
+        "unshapedAdvancePixelsAt15": 81.58
+      },
+      {
+        "code": "el",
+        "label": "그리스어",
+        "unshapedAdvancePixelsAt15": 55.2
+      },
+      {
+        "code": "el",
+        "label": "Greek",
+        "unshapedAdvancePixelsAt15": 43.01
+      },
+      {
+        "code": "fi",
+        "label": "Suomi",
+        "unshapedAdvancePixelsAt15": 46.71
+      },
+      {
+        "code": "tr",
+        "label": "Türkçe",
+        "unshapedAdvancePixelsAt15": 50.31
+      },
+      {
+        "code": "ar",
+        "label": "아랍어",
+        "unshapedAdvancePixelsAt15": 41.4
+      },
+      {
+        "code": "ar",
+        "label": "Arabic",
+        "unshapedAdvancePixelsAt15": 46.4
+      }
+    ],
+    "scope": "cmap and unshaped advance only; actual native render separately inspected"
+  },
+  "nativeObservation": {
+    "method": "CUA normal app with actual keyboard input",
+    "koMenu": "All29 names/codes visible, six Korean fallbacks, no observed tofu or overflow",
+    "enMenu": "All29 names/codes visible, six English fallbacks, longest Chinese label fits",
+    "navigation": "Home then Down selects ZH in the two-column layout; Enter closes",
+    "screenshots": "Native conversation images; no local PNG export claimed"
+  },
+  "scope": "23 original names + six readable menu-language fallbacks; no new fonts, subtitle-font/shaping/RTL changes"
+}
