@@ -1,0 +1,136 @@
+{
+  "stage": "R07",
+  "createdAt": "2026-10-25T03:55:15.562Z",
+  "magiclight": {
+    "testedModels": [
+      {
+        "model": "Nano Banana 2.1",
+        "displayedCost": 200
+      },
+      {
+        "model": "GPT Image 2.5 flare",
+        "displayedCost": 150
+      }
+    ],
+    "beforeBalance": 30390,
+    "afterBalance": 30390,
+    "prompt": "Preserve face, silver hair, right robot arm, pose and ENTIRE giant black/silver/red gun. Redesign adult galaxy hunter with skin-flush ANGULAR chrome body panels: flat facets, short straight/diagonal edges, chamfers, dark joint seams at collarbones, side ribs, hips. Opaque chrome chest and pelvic shells form the outfit. Bare shoulders, midriff and upper thighs. Streamlined mechanical legs, closed-toe boots. No cloth, drapes, skirt, silver vines or jewelry. Full figure, black backdrop.",
+    "reference": "hellgunner_r02.png",
+    "aspectRatio": "9:16",
+    "result": "Both Create actions opened membership purchase screen; Nano Banana action displayed 'This feature is available to members. Subscribe to continue.'",
+    "membership": "Standard Plan 2026/10/24 vip expired",
+    "imageReceived": false,
+    "proofScreenshot": "magiclight-nano-flare-membership-block-20261025.jpg"
+  },
+  "higgsfield": {
+    "beforeBalance": 0.38,
+    "nanoQuote": {
+      "cost": {
+        "credits": 1.5,
+        "credits_exact": 1.5
+      }
+    },
+    "nanoSubmitted": false,
+    "nanoReason": "Insufficient balance: 0.38 available, 1.5 credits quoted",
+    "flareQuote": {
+      "cost": {
+        "credits": 0.25,
+        "credits_exact": 0.25
+      },
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      }
+    },
+    "params": {
+      "model": "gpt_image_2_5",
+      "variant": "flare",
+      "quality": "low",
+      "resolution": "1k",
+      "aspect_ratio": "9:16",
+      "count": 1,
+      "prompt": "Preserve face, silver hair, right robot arm, pose and ENTIRE giant black/silver/red gun. Redesign adult galaxy hunter with skin-flush ANGULAR chrome body panels: flat facets, short straight/diagonal edges, chamfers, dark joint seams at collarbones, side ribs, hips. Opaque chrome chest and pelvic shells form the outfit. Bare shoulders, midriff and upper thighs. Streamlined mechanical legs, closed-toe boots. No cloth, drapes, skirt, silver vines or jewelry. Full figure, black backdrop.",
+      "medias": [
+        {
+          "role": "image",
+          "value": "https://skillsrc.octask.ai/gpt-image-2/7519727630287364096/ca54404f-9879-e557-17b5-5d05db74c079_0.png"
+        }
+      ]
+    },
+    "submission": {
+      "results": [
+        {
+          "id": "2dbc3943-dbc2-402c-9dd2-e9d27d6b2675",
+          "type": "image",
+          "status": "pending",
+          "model": "gpt_image_2_5",
+          "params": {
+            "prompt": "Preserve face, silver hair, right robot arm, pose and ENTIRE giant black/silver/red gun. Redesign adult galaxy hunter with skin-flush ANGULAR chrome body panels: flat facets, short straight/diagonal edges, chamfers, dark joint seams at collarbones, side ribs, hips. Opaque chrome chest and pelvic shells form the outfit. Bare shoulders, midriff and upper thighs. Streamlined mechanical legs, closed-toe boots. No cloth, drapes, skirt, silver vines or jewelry. Full figure, black backdrop.",
+            "aspect_ratio": "9:16",
+            "reference_images": [
+              "a77b2f08-fa8d-417d-a824-ba7ec1828653"
+            ],
+            "variant": "flare",
+            "quality": "low",
+            "resolution": "1k"
+          }
+        }
+      ],
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "GPT Image 2.5 backend expects schema-key media roles"
+        }
+      }
+    },
+    "status": {
+      "jobs": [
+        {
+          "index": 0,
+          "job_id": "2dbc3943-dbc2-402c-9dd2-e9d27d6b2675",
+          "status": "completed",
+          "type": "image",
+          "model": "gpt_image_2_5",
+          "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261025_035451_2dbc3943-dbc2-402c-9dd2-e9d27d6b2675.png"
+        }
+      ],
+      "summary": {
+        "total": 1,
+        "completed": 1,
+        "failed": 0,
+        "active": 0,
+        "errors": 0
+      },
+      "all_terminal": true
+    }
+  },
+  "newSubscriptionPurchased": false,
+  "output": "I:\\EXODUSER-Storage\\qa\\new-heroes-claude-20261024\\hellgunner_r07_flare.png",
+  "sourceImageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3G1zto9sz11Uf3iEOhJefE9HdGG/hf_20261025_035451_2dbc3943-dbc2-402c-9dd2-e9d27d6b2675.png",
+  "sha256": "3a0d453264631246a4017789f42c63cc7780658cddadab2642d3e3fd51f9c33a",
+  "bytes": 1322569,
+  "width": 752,
+  "height": 1344,
+  "format": "PNG",
+  "status": "completed-reviewed-candidate-not-adopted",
+  "sharedGitBefore": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "userAccepted": false,
+  "codexVisualVerdict": "RETOUCH",
+  "reviewCopy": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_각진크롬_R07_플레어.png",
+  "reviewCopyHashVerified": true,
+  "afterBalance": 0.13,
+  "sharedGitAfter": {
+    "head": "5659d14d38b8068518cb5866a336bf930a1abbce",
+    "index": "5f0f122de4ce9639d82ebd85ff0136379c7fb589d6c711897461cf62a10c235c"
+  },
+  "claudeVisualVerdict": "RETOUCH",
+  "actualReviewModel": "claude-opus-5-5",
+  "claudeReviewCostUsdListBasis": 0.0906478
+}
