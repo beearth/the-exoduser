@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
   bool characterFocus,characterInputFence;
   string characterName="",characterError="";
   CharacterCatalog characterCatalog;Texture2D warriorArt,warriorPortrait;Texture2D[] classArt;
-  GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton,characterDeleteButton;
+  GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton,characterDeleteButton,characterStorageText;
   readonly string[] classEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
   void CharacterStyles()
   {
@@ -25,6 +25,7 @@ namespace Exoduser.UnityPort
    classArt=new[]{warriorArt,Art("character_1"),Art("character_2"),Art("character_3"),Art("character_4")};
    characterText=new GUIStyle(lobbyText){fontSize=25,wordWrap=true,clipping=TextClipping.Clip};
    characterSmall=new GUIStyle(characterText){fontSize=20};
+   characterStorageText=new GUIStyle(characterText){fontSize=16};
    characterTitle=new GUIStyle(characterText){fontSize=38};
    characterField=new GUIStyle(GUI.skin.textField){font=characterText.font,fontSize=30,padding=new RectOffset(16,16,10,10)};
    characterButton=new GUIStyle(GUI.skin.button){font=characterText.font,fontSize=24,padding=new RectOffset(12,12,8,8)};
@@ -109,7 +110,7 @@ namespace Exoduser.UnityPort
     int index=characterScroll+i;string name=Characters.NameAt(index);bool filled=name.Length>0,selected=index==Characters.SelectedIndex;
     Rect card=new Rect(1392,315+i*94,470,84);Fill(card,new Color(.12f,.105f,.11f,filled?.92f:.1f));
     if(selected)Border(card,new Color(.75f,.57f,.34f),2);else DashedBorder(card,new Color(.43f,.33f,.25f,filled?.7f:.15f));
-    if(filled){Image(new Rect(1404,327+i*94,60,60),warriorPortrait,ScaleMode.ScaleAndCrop);Label(new Rect(1483,325+i*94,320,34),name,characterSmall,TextAnchor.MiddleLeft);Label(new Rect(1483,361+i*94,320,24),K("전사 · 이번 실행에서만 유지","Warrior · This session only"),lobbyText,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1814,337+i*94,36,36),new GUIContent("×",K("캐릭터 삭제","Delete character")),characterDeleteButton))RequestCharacterDelete(index);if(GUI.Button(new Rect(card.x,card.y,410,card.height),"",GUIStyle.none))SelectCharacter(index);}
+    if(filled){Image(new Rect(1404,327+i*94,60,60),warriorPortrait,ScaleMode.ScaleAndCrop);Label(new Rect(1483,325+i*94,320,34),name,characterSmall,TextAnchor.MiddleLeft);Label(new Rect(1483,361+i*94,320,24),CharacterSlotCaption(),lobbyText,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1814,337+i*94,36,36),new GUIContent("×",K("캐릭터 삭제","Delete character")),characterDeleteButton))RequestCharacterDelete(index);if(GUI.Button(new Rect(card.x,card.y,410,card.height),"",GUIStyle.none))SelectCharacter(index);}
     else Label(card,"—",lobbyMode,TextAnchor.MiddleCenter);
    }
   }
@@ -137,7 +138,7 @@ namespace Exoduser.UnityPort
    if(characterVisual!=0){Fill(new Rect(395,785,470,80),new Color(.03f,.025f,.025f,.90f));Label(new Rect(420,795,420,60),K("출시 준비 중","Coming soon"),characterTitle,TextAnchor.MiddleCenter);}
    Label(new Rect(900,330,600,70),K(characterCatalog.visuals[characterVisual].name,classEnglish[characterVisual]),characterTitle,TextAnchor.MiddleLeft);
    Label(new Rect(900,417,600,90),K(characterCatalog.visuals[characterVisual].description,characterVisual==0?"A black-iron warrior wielding a greatsword.":"This class is not available yet."),characterText,TextAnchor.UpperLeft);
-   Label(new Rect(900,530,600,105),K("이번 실행에서만 유지되는 캐릭터입니다.\n입장할 때 새 전투가 시작되며 진행은 저장되지 않습니다.","Characters last for this app session.\nEach entry starts a new battle; progress is not saved."),characterSmall,TextAnchor.UpperLeft);
+   Label(new Rect(900,530,600,105),CharacterCreationNote(),characterSmall,TextAnchor.UpperLeft);
    if(characterStep==2){
     Label(new Rect(900,652,600,38),K("캐릭터 이름 (2~8자)","Character name (2–8 characters)"),characterText,TextAnchor.MiddleLeft);
     GUI.SetNextControlName("character-name");characterName=GUI.TextField(new Rect(900,698,600,64),characterName,8,characterField);

@@ -1,0 +1,47 @@
+{
+  "owner": "01a1714e-dd3c-7202-911d-fd1cbf1eec1b",
+  "integrationOwner": "01a0f32f-a350-7430-85a4-fb71f336d5c7",
+  "productFile": "CharacterRosterStore.cs",
+  "destination": "unity/Assets/Exoduser/Runtime/Core/CharacterRosterStore.cs",
+  "readOnlyTestDependency": "CharacterRoster.cs is a test dependency snapshot; never overwrite product Core",
+  "isolatedDiskAssertions": 53,
+  "unityCodecAndRuntimeVerified": false,
+  "oldUserSavesAccessed": false,
+  "files": [
+    {
+      "path": "CharacterRosterStore.cs",
+      "bytes": 9894,
+      "sha256": "c36db23c667ec2cc19c0b86e77d04d834dca854c8e71939d5adbe8ef59aee987"
+    },
+    {
+      "path": "Program.cs",
+      "bytes": 9784,
+      "sha256": "c90a779954bc11c6e629dd0a1e50ca5453ab7337de9aa7972b1e00a7e0233224"
+    },
+    {
+      "path": "StoreTests.csproj",
+      "bytes": 409,
+      "sha256": "7e8c219e807298c00a319cfe80629a44d9c3e858acb7efd8dd38026482b4066b"
+    },
+    {
+      "path": "NuGet.Config",
+      "bytes": 74,
+      "sha256": "9508cae5f76364f56e80eb97cb16493977243cf38e5cca6284e3d74f83b20a2c"
+    },
+    {
+      "path": "result.json",
+      "bytes": 305,
+      "sha256": "9c54c05e2bd61e427241513eec0e1bb2ea8f871a0bf4cdcebeaebe51114001aa"
+    },
+    {
+      "path": "UNITY_CHARACTER_STORAGE_20261025.md",
+      "bytes": 6464,
+      "sha256": "be7f3a9458d5add63f8a0132144865ec6439e88d47695b4cfa0a3af75c7b8eb8"
+    },
+    {
+      "path": "docs-matches.txt",
+      "bytes": 3848,
+      "sha256": "7ba053a4f789c19d9602681e63dc273da14c549f9e855852e37dfec417a658fb"
+    }
+  ]
+}
