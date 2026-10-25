@@ -10,6 +10,7 @@ namespace Exoduser.UnityPort {
   void PauseTestKey(PauseKey key){pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(key,Simulation.Player.Hp<=0,Screen.fullScreen));}
   IEnumerator PauseSmoke(){
    string output=Argument("-output");if(string.IsNullOrEmpty(output))throw new InvalidOperationException("pause fixture needs -output");Directory.CreateDirectory(output);
+   if(Argument("-pause-phase")=="visual"){yield return PauseVisual(output);yield break;}
    var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
    SetGameFocus(true);pauseMenu.Reset();Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
    int tick=Simulation.TickCount;yield return UiCapture(output,"main-720p");check(!Running&&Simulation.TickCount==tick,"menu freezes actual simulation");
@@ -41,6 +42,17 @@ namespace Exoduser.UnityPort {
    pauseMenu.Reset();SetGameFocus(true);pauseSmoke=false;
    File.WriteAllText(Path.Combine(output,"pause-smoke.json"),JsonUtility.ToJson(new PauseSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
    if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)Application.Quit(failures==0?0:2);
+  }
+  IEnumerator PauseVisual(string output){
+   SetGameFocus(true);menu=true;Running=false;pauseMenu.ShowSettings();
+   foreach(int width in new[]{1280,1920}){
+    Screen.SetResolution(width,width==1280?720:1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+    for(int tab=0;tab<3;tab++){pauseMenu.Navigation.SelectTab(tab);pauseMenu.Navigation.ObserveReleased(false);yield return UiCapture(output,"settings-"+tab+"-"+width);}
+   }
+   pauseMenu.English=true;pauseMenu.Navigation.SelectTab(0);yield return UiCapture(output,"settings-en-1920");pauseMenu.Navigation.SelectTab(2);yield return UiCapture(output,"controls-en-1920");pauseMenu.English=false;
+   pauseMenu.Reset();SetGameFocus(true);pauseSmoke=false;
+   File.WriteAllText(Path.Combine(output,"pause-visual.json"),"{\"captures\":8,\"scope\":\"visual-only; prior behavioral checks not repeated\"}");
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)Application.Quit();
   }
   [Serializable]sealed class PauseSmokeReceipt{public string scope="actual Player handlers/focus model; OS input separately recorded";public bool passed;public int failures;public string[] checks;}
  }

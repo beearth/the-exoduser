@@ -87,7 +87,7 @@ namespace Exoduser.UnityPort
    string[] tabs={T("화면","Display"),T("소리","Audio"),T("조작 안내","Controls")};
    for(int i=0;i<tabs.Length;i++)if(MenuButton(new Rect(340+i*202,174,194,44),tabs[i],i,tab==i?activeTab:tabButton))tab=i;
    if(tab==0)DrawDisplay(fullscreen);else if(tab==1)DrawAudio();else DrawControls();
-   GUI.Label(new Rect(348,540,584,40),T("↑↓ / Tab 선택 · ←→ 값 조절 · Enter 확인\n설정은 현재 실행에 적용됩니다.","↑↓ / Tab Select · ←→ Adjust · Enter Confirm\nSettings apply to the current session."),muted);
+   GUI.Label(new Rect(348,528,584,56),T("↑↓ / Tab 선택 · ←→ 값 조절 · Enter 확인\n설정은 현재 실행에 적용됩니다.","↑↓ / Tab Select · ←→ Adjust · Enter Confirm\nSettings apply to the current session."),muted);
    if(MenuButton(new Rect(340,588,288,44),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
    if(MenuButton(new Rect(652,588,288,44),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
   }
@@ -127,11 +127,11 @@ namespace Exoduser.UnityPort
   }
   void DrawControls()
   {
-   string[] keys={"W A S D",T("마우스 왼쪽","Left mouse"),T("세 번째 공격 유지","Hold third attack"),"TAB","ESC"};
-   string[] actions={T("이동","Move"),T("기본 공격 / 기검참","Attack / Ki Slash"),T("차지 후 놓아서 발사","Charge and release"),T("소지품 열기 / 닫기","Open / close inventory"),T("닫기 / 일시정지","Back / Pause")};
+   string[] keys={"W A S D",T("마우스 왼쪽","Left mouse"),T("세 번째 공격 유지","Hold third attack"),"TAB","K","ESC"};
+   string[] actions={T("이동","Move"),T("기본 공격 / 기검참","Attack / Ki Slash"),T("차지 후 놓아서 발사","Charge and release"),T("소지품 열기 / 닫기","Open / close inventory"),T("스킬 창 열기 / 닫기","Open / close skills"),T("닫기 / 일시정지","Back / Pause")};
    for(int i=0;i<keys.Length;i++)
    {
-    GUI.Label(new Rect(348,246+i*54,240,44),keys[i],body);GUI.Label(new Rect(600,246+i*54,332,44),actions[i],body);
+    GUI.Label(new Rect(348,246+i*44,240,44),keys[i],body);GUI.Label(new Rect(600,246+i*44,332,44),actions[i],body);
    }
   }
   void RestoreDefaults()
