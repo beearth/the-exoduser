@@ -1,0 +1,57 @@
+{
+  "at": "2026-10-25T12:58:55.572Z",
+  "provider": "Built-in image_gen",
+  "modelId": "not exposed",
+  "cost": "not exposed",
+  "sourceReference": "R08 original + 01_combat_move",
+  "files": [
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-motion-20261025\\continuation-evade\\04_backward_hop.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_동작검토_20261025\\05_후방이동_공중자세.png",
+      "sha256": "c231aec3959a818c0bd1e26606b7076db67a59ee904c607e2e7138d06542c225",
+      "bytes": 2142420,
+      "width": 1254,
+      "height": 1254,
+      "verified": true
+    },
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-motion-20261025\\continuation-evade\\05_landing_ready.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_동작검토_20261025\\06_착지_복귀자세.png",
+      "sha256": "944055c3890e90de4a0413c2001f2fc328edf582b018c78e2a88a1886067369b",
+      "bytes": 2212155,
+      "width": 1254,
+      "height": 1254,
+      "verified": true
+    },
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-motion-20261025\\continuation-evade\\locomotion_comparison.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_동작검토_20261025\\07_이동_회피_복귀_비교.png",
+      "sha256": "68dfb866b77f9912ade5aee0d2587191e733fb229dc14325fe6bab005eb27078",
+      "bytes": 1135602,
+      "width": 1408,
+      "height": 880,
+      "verified": true
+    },
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-motion-20261025\\continuation-evade\\04_backward_hop_v2.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_동작검토_20261025\\08_후방이동_공중자세_v2.png",
+      "sha256": "667d03f51e069da0ede6952442610c3ae276cbafc8939ffaffc42aa2f5d8ec8f",
+      "bytes": 2059316,
+      "width": 1254,
+      "height": 1254,
+      "verified": true
+    },
+    {
+      "source": "I:\\EXODUSER-Storage\\qa\\galaxy-hunter-motion-20261025\\continuation-evade\\locomotion_comparison_v2.png",
+      "review": "C:\\Users\\심도진\\Desktop\\엑소듀서_검토\\갤럭시헌터_동작검토_20261025\\09_이동_후방회피_복귀_비교_v2.png",
+      "sha256": "db4a13c031b7fb849a57949828e91f3f19966e7ba3b588e0e9914c4f29593fd4",
+      "bytes": 1127522,
+      "width": 1408,
+      "height": 880,
+      "verified": true
+    }
+  ],
+  "visualVerdict": "RETOUCH",
+  "runtimeIntegrated": false,
+  "userAccepted": false
+}
