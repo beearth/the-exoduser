@@ -1,0 +1,22 @@
+{
+  "images": [
+    {
+      "filename": "reference-compact.png",
+      "source": "C:/Users/심도진/AppData/Local/Temp/codex-clipboard-c5137419-47b1-4238-b883-eae484c2360c.png",
+      "bytes": 351273,
+      "sha256": "ae54147d0a865a94a23b32c9e573b0088d393220317eac45fd02058f340c9aed",
+      "width": 716,
+      "height": 452
+    },
+    {
+      "filename": "reference-world-blend.png",
+      "source": "C:/Users/심도진/AppData/Local/Temp/codex-clipboard-93363991-850a-4410-af61-6bf434900cb9.png",
+      "bytes": 959330,
+      "sha256": "a9305e08b3e030061a3b7e0d0526f1e8849b4fcc25ca02eacb529f4849de0230",
+      "width": 1388,
+      "height": 597
+    }
+  ],
+  "instruction": "User wants a compact, clean HUD blending into the world. Lower the silhouette, reduce heavy opaque rectangular plates, connect original orbs/slots with restrained metal framing and let the world show through gaps. Preserve information and inputs.",
+  "scope": "Two exact user PNG attachments only. No transformation, generation or other clipboard access."
+}
