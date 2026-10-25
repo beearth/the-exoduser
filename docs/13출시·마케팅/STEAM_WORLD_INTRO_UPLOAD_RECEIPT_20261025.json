@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-10-25T04:39:55.821Z",
+  "partnerItem": 1189321,
+  "movieId": 1369319,
+  "assetId": 1767488827,
+  "title": "EXODUSER: HELL LORD — World Intro",
+  "category": {
+    "value": 3,
+    "label": "General/Cinematic"
+  },
+  "language": "English",
+  "base": "",
+  "save": {
+    "httpStatus": 200,
+    "response": {
+      "success": true
+    },
+    "reloadVerified": true
+  },
+  "observedWorldFootage": true,
+  "exactUploadedMasterHashVerified": false,
+  "subtitledUploadsCompleted": 0,
+  "localizedFilesReady": 29,
+  "publicationCompleted": false,
+  "blocker": {
+    "cdpDrag": "Unsupported by browser tool",
+    "fileChooser": "Clicking trailer drop area did not open a chooser; 10000ms timeout",
+    "nativeAutomationAvailable": false
+  },
+  "evidence": [
+    "world-intro-title-category-saved.png",
+    "english-upload-ready.png"
+  ]
+}

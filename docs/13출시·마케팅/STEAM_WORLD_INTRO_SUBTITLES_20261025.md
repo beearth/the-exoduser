@@ -79,10 +79,17 @@ CPU libx264 출력 일부에서 비트스트림 손상이 재현돼 최종 폴�
 
 ## Steam 반영 단계
 
-1. 기존 Story Trailer(1313572)에 videos/world_intro_v22b_english.mp4를 업로드하고 변환·실재생을 확인한다. 영어 기본 영상의 Base는 비우고 Language는 English로 둔다.
+1. 현재 World Intro(1369319)에 videos/world_intro_v22b_english.mp4를 업로드하고 변환·실재생을 확인한다. 영어 기본 영상의 Base는 비우고 Language는 English로 둔다.
 2. 나머지 28개 언어판은 해당 Language를 지정하고 Base를 위 영어판으로 연결한다. 각 파일명과 언어는 위 표를 따른다.
 3. 기존 공개 영상 보존, 언어별 노출·실재생·공개 반영은 별도 검수한다. 현재 브라우저 도구는 예고편 전용 OS 파일 드롭을 지원하지 않아 전송이 남아 있다.
 
 파일 해시·크기·실제 인코더·검수 결과는 artifact-manifest.json을 따른다. 새 영상은 게임 런타임에 연결하지 않았다.
 
 공식 기준: [Steam 예고편 Base/Language](https://partner.steamgames.com/doc/store/trailer). 프로젝트 언어 범위: [STEAM_LANGUAGE_SCOPE_20260909.md](../16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md).
+
+
+## 2026-10-25 Steam 실화면 재확인
+
+최신 편집 탭에는 World Intro 대상 1369319(asset 1767488827)와 Official Gameplay 1301291이 있다. 이전 탭의 Story Trailer 1313572는 최신 화면에 없어 업로드 대상으로 사용하지 않는다. 이미 올라간 첫 영상에서 세계관 장면을 확인했지만 파일 SHA/version 동일 여부는 미검증이다. 첫 영상 제목을 EXODUSER: HELL LORD — World Intro, 분류를 General/Cinematic(3)으로 저장했다. 저장 HTTP 200 / success:true 및 새로고침 후 값 유지 확인. English·Base 공란 유지, Gameplay와 출시일은 변경하지 않았다.
+
+29개 자막판 파일 전송은 0/29, 공개 반영도 미완료다. 현재 브라우저 도구가 파일 drag 명령을 지원하지 않으며, 스팀 드롭 영역 클릭은 파일 선택창 없이 10초 타임아웃됐다. 실제 파일 드롭에는 사용자 입력이 필요하다. 현재 World Intro의 바꾸기 영역을 열어 두었다. 메타데이터 저장 증거와 전송 제한 기록: I:/EXODUSER-Storage/steam/world_intro_localized_20261025/steam/metadata-update.json.
