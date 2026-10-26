@@ -26,6 +26,7 @@ namespace Exoduser.UnityPort
   public void BeginEmbeddedKeyCaptureForQa(string action,bool alternate){if(page!=PausePage.Settings||tab!=3)throw new InvalidOperationException("QA capture requires Controls tab");if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);keyList.BeginListening(action,alternate);}
   public void SetKeyScrollForTest(float value){keyScroll=value;}
   public bool English { get; set; }
+  public string LocaleCode { get; set; }="ko";
   public bool SettingsPersistenceEnabled {get;set;}
   public bool SettingsPersistenceProblem {get;set;}
   public bool SettingsPersistenceRecovered {get;set;}
@@ -48,6 +49,7 @@ namespace Exoduser.UnityPort
    return navigation.BackPage();
   }
   string T(string ko,string en) { return English?en:ko; }
+  string Exact(string id,string ko,string en){return NativeA15SettingsLabels.Get(id,LocaleCode,ko,en);}
   void Init()
   {
    if(ready)return;ready=true;
@@ -116,8 +118,8 @@ namespace Exoduser.UnityPort
    float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
    GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2,(Screen.height-1080*scale)/2,0),Quaternion.identity,Vector3.one*scale);
    var panel=new Rect(40,100,1840,935);Fill(panel,new Color(.055f,.047f,.043f,.98f));Border(panel,new Color(.48f,.36f,.23f));
-   GUI.Label(new Rect(80,119,1760,55),T("설정","Settings"),title);
-   string[] tabs={T("게임","Game"),T("화면","Display"),T("사운드","Audio"),T("조작","Controls")};
+   GUI.Label(new Rect(80,119,1760,55),Exact("settings.title","설정","Settings"),title);
+   string[] tabs={Exact("settings.tab.game","게임","Game"),Exact("settings.tab.display","화면","Display"),Exact("settings.tab.audio","사운드","Audio"),Exact("settings.tab.controls","조작","Controls")};
    bool navigationEnabled=GUI.enabled;if(keyList!=null&&keyList.Listening)GUI.enabled=false;
    for(int i=0;i<4;i++)if(MenuButton(new Rect(80+i*442,184,434,48),tabs[i],i,tab==i?activeTab:tabButton)){tab=i;settingsScroll=0;keyScroll=0;}
    GUI.enabled=navigationEnabled;

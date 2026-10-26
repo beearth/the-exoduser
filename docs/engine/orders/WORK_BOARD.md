@@ -549,3 +549,9 @@ QA 전용 직접 진입에서 OS Esc/Tab 키 캡처를 검증하고, 캡처 완�
 후속 보존 회귀: 같은 앱/코드로 새 표시된 A05 QA 루트에서 SFX35→36·주 키 KeyZ→Tab을 저장하고 재시작했다. `cinSeen:true`, 기존 패드 JSON, 별도 unknown sentinel, 보조 KeyX의 동일값·raw token을 확인했다. 실제 QA Player write/read 각1회, 빌드0. 요청1099px에서 캡처 창1100px·사운드2열이므로 1열/scroll은 HOLD. 사용자 앱3개·일반 설정/로스터를 건드리지 않았다. [표](../UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-a15-저장-시-a05미지원-데이터-보존-회귀).
 
 후속 1098px·라벨 후보 preflight: 고유 QA Player 새 표시 루트에서 1회 실행, 실제 1098px 사운드 1열 첫·끝 카드/고정 footer/휠 뒤 같은 위치 PASS. PC `157e3e8f…` 후보는 62 ID·29 locale 자료만 읽었고 공통373값 감사 외 전체 QA 확정 전 제품 연결0. Mac `NativeGame`/`NativePauseMenu` locale 전달·조회기와 PC 소유 키 목록 hook, IMGUI glyph/RTL 게이트를 기록. 코드/빌드0, 기존 사용자 앱3개 유지. [경계·이미지](../UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).
+
+## 2026-10-27 Mac A15 라벨 exact 43 부분 연결 / PC 키 목록 owner 검토 요청
+
+PC 고정 `766250b64d833acd4172c83fb694820777d68b1b`의 QA v2가 exact43×29=1247/1247(영어 fallback135), semantic6/native-only13을 확정했다. Mac은 검수된 exact43 값만 배열형 resource/provider에 담고 `NativePauseMenu` 제목·4탭 **5 ID**를 연결했다. ko/en 기존 화면, ja `設定`, es `Ajustes`, cs `Nastavení` 실제 제목 표시와 ARM64 QA 빌드 오류0. 키 목록 **38 ID**는 provider에는 있지만 화면은 영어로 남는다. `NativeKeyBindList`·`KeyBindings` 제품 코드는 수정하지 않았다.
+
+**PC 키 목록 owner 요청:** [검토용 좁은 patch](../unity_patches/A15_keylist_locale_seam.patch)는 `NativeKeyBindList`의 ko/en T/L·동작명·키명에 `NativeA15SettingsLabels.GetKeyByKo`를 넣고 Mac caller가 locale을 전달하는 hunk다. 현재 Mac HEAD에서 `git apply --check --ignore-space-change` PASS, **미적용·미컴파일**. PC가 소유 범위/문구 fallback·행 충돌 정책을 검토해 승인할 때만 별도 제품 연결/실화면 QA를 수행한다. semantic6/native-only13, 4탭 영어 fallback, ar/RTL HOLD, v2/`cinSeen`/입력·저장 불변. [43 ID 표·증거](../UNITY_MAC_A15_LABEL_ADAPTER_20261027.md).

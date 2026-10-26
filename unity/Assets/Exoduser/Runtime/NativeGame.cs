@@ -317,6 +317,7 @@ namespace Exoduser.UnityPort
             if(death.Active&&p.Hp<=0){death.Draw();}
             else if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){
                 pauseMenu.English=lobby.Language!="ko";
+                pauseMenu.LocaleCode=lobby.Language;
                 ApplyPauseCommand(pauseMenu.Draw(p.Hp<=0,Screen.fullScreen));
             }
             GUI.matrix=old;
