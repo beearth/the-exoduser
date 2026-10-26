@@ -39,15 +39,16 @@
 | 버전 | 현재 위치 | 문제 |
 |---|---|---|
 | **H5(웹)** | `main`: game.html·index.html·lang·Steam/NW 빌드 | — |
-| **Godot** | **`origin/main`의 `godot/` 2,176파일 + `engine/fdg` 49파일**. 10-20~21 커밋 61개 | 웹 main에 섞여 있음. 로컬 main을 동기화하면 공유 작업 폴더 G:\exoduser에 Godot 파일 2천여 개가 들어온다. Godot 작업은 10-26부터 중단 |
+| **Godot** | **`origin/main`의 `godot/` 2,176파일**(로컬 HEAD에도 이미 1,645파일). 10-20~21 커밋 61개 | 웹 main에 섞여 있음. Godot 작업은 10-26부터 중단 |
+| (주의) `engine/fdg` 49파일 | main | **Godot이 아니라 H5 런타임이다.** game.html 15행 `<script src="engine/fdg/druid-qa-storage.js">`, 62254·62303행 `import('./engine/fdg/…')`, build-nwjs.mjs 40행, tools/fdg-*.mjs·project-check.mjs가 쓴다. **main에 그대로 둔다** |
 | **Unity** | `main`에는 코드 없음. `claude/unity-pc-*` 9개, `codex/unity-*` 브랜치, E:/G: worktree | 통합 줄기 브랜치가 없다. B07 작업(코드 7개+도구+문서)이 커밋되지 않은 채 worktree `E:/exoduser-wt/pc-unity-a16`에 있다. `claude/unity-pc-b07-20261026`는 원격에 없다. `.meta` 419개 일괄 변경도 미커밋 |
 
 ## 3. 분리 원칙 (안)
 
 | 버전 | 줄기 브랜치 | 들어가는 것 | 들어가면 안 되는 것 |
 |---|---|---|---|
-| H5 | `main` | 웹 게임 코드·에셋·Steam/NW 빌드·DEMO/EA 동기화·공통 기획 docs(0~17) | `godot/`, `engine/fdg`, `unity/` |
-| Godot | `godot/main` (신설, 동결) | `godot/`, `engine/fdg`, Godot 전용 docs | — |
+| H5 | `main` | 웹 게임 코드·에셋·`engine/fdg`(웹 런타임)·Steam/NW 빌드·DEMO/EA 동기화·공통 기획 docs(0~17) | `godot/`, `unity/` |
+| Godot | `godot/main` (신설, 동결) | `godot/`, Godot 전용 docs | — |
 | Unity | `unity/main` (신설) 또는 기존 `codex/unity-mac-20261024` 지정 | `unity/`, Unity 도구·패치 | game.html 등 H5 코드 |
 
 - 작업 브랜치는 줄기별 접두어를 쓴다. `claude/unity-pc-*`·`codex/unity-*`는 Unity 줄기로만 병합하고, main으로는 병합하지 않는다.
@@ -59,7 +60,7 @@
 2. Unity 줄기 지정: 기존 Codex 기준 브랜치를 쓸지, `unity/main`을 새로 만들지 결정한다. B07은 맥북 총괄이 `claude/unity-pc-b07-20261026`에 분리 커밋한다(10-27 지시함).
 3. main 동기화는 **별도 worktree**(`E:/exoduser-wt/main-sync`)에서 한다. 공유 폴더 G:\exoduser는 건드리지 않는다.
    1. origin/main을 병합하고 §1.2의 충돌 9개를 해소한다.
-   2. 같은 브랜치에서 `godot/`·`engine/fdg`를 main에서 제거하는 커밋을 만든다(이력은 `godot/main`에 남음).
+   2. 같은 브랜치에서 `godot/`만 main에서 제거하는 커밋을 만든다(이력은 `godot/main`에 남음). `engine/fdg`는 남긴다. `tools/pet-dialogue-source.mjs`(153행, `godot/scripts/…`에 씀)는 Godot 생성기라 main에서는 쓰지 않는다는 주석만 단다.
    3. H5 회귀 확인: game.html 문법 검사와 guard.js를 실행한다.
    4. 비강제로 푸시한다.
 4. 공유 폴더 G:\exoduser 갱신: 다른 세션의 스테이징·미커밋 WIP가 있으므로, 겹치는 파일이 없는지 확인한 뒤 fast-forward한다. 겹치면 해당 세션과 조율한다.
