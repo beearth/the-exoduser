@@ -110,7 +110,9 @@ PC에서 창을 화면 밖에 두고 재면 Windows가 백그라운드 창을 �
 
 격리 실행의 `runtime_gamma075_final/battle_015.png`는 일반 공격, `battle_052.png`는 지옥강타다. 1920×1080 원본 프레임이며 5마리 생존 적, 지옥강타 4히트가 기록됐다. 포스트프로세싱은 없고, 홍보 캡처 실행에서 HUD·펫 자막만 표시하지 않았다. 이미지와 실행 영수증은 `I:/EXODUSER-Storage/steam/gallery_combat_20261026/runtime_gamma075_final/`에 보존한다. 두 컷 모두 같은 카메라 위치이므로 스팀 갤러리에 동시에 넣을 후보로는 부적합하다.
 
-`tests/test_map_look.gd` 격리 회귀 **28 assertions / 0 failures**: 맵 룩 OFF의 원본 감마·라이트맵, ON의 바닥 질량 3개와 z, 충돌 사각형 292개·기존 소품 위치·G 키 집합 불변. Godot stderr의 `SCRIPT ERROR`/`ERROR` 없음. 물리 플레이·8방향 카메라·지속 성능은 아직 검수되지 않았다.
+`tests/test_map_look.gd` 격리 회귀 **28 assertions / 0 failures**: 맵 룩 OFF의 원본 감마·라이트맵, ON의 바닥 질량 3개와 z, 충돌 사각형 292개·기존 소품 위치·G 키 집합 불변. Godot stderr의 `SCRIPT ERROR`/`ERROR` 없음. 자연 물리 플레이·8방향 카메라 전체·지속 성능은 아직 검수되지 않았다.
+
+추가 `duel_runtime_gamma075/ice_duel_105.png`에서는 북쪽 (4020,6660)의 기존 눈 몬스터 2개와 얼음보주 파쇄가 보인다. 캡처는 실제 런타임이지만 주변이 여전히 넓은 빈 바닥이므로 스팀 갤러리 후보로는 **RETOUCH**. 8개 카메라 지정 위치 중 START와 EARLY의 일부만 보았고 나머지 6지점·자연 플레이·지속 성능은 미검수다.
 
 ```text
 ================= MAP PRODUCTION REPORT =================
@@ -122,10 +124,10 @@ MEDIUM: connections=서쪽 나무→공터, 남쪽 바닥→공터 / remaining h
 GROUND: shadow=기존 그림자 유지 / contamination=뿌리·살점 3패치 / structure integration=z −2750·가장자리 페이드
 PLAYABLE: main arenas=기존 시작 공터 / travel space=기존 동선 / breathing space=중앙 개방 / threat space=인트로 적 5 / combat readability=지옥강타 4히트 캡처
 LANDMARK: primary=남서 생체나무 / secondary=동쪽 지면 / tertiary=남쪽 생체 바닥
-CAMERA QA: START=1920×1080 전투 2컷 RETOUCH / EARLY=미검수 / ARENA=미검수 / SIDE L=미검수 / SIDE R=미검수 / LANDMARK=미검수 / LATE=미검수 / EXIT=미검수
+CAMERA QA: START=1920×1080 전투 2컷 RETOUCH / EARLY=눈 몬스터 2마리 얼음보주, 빈 바닥으로 RETOUCH / ARENA=미검수 / SIDE L=미검수 / SIDE R=미검수 / LANDMARK=미검수 / LATE=미검수 / EXIT=미검수
 TECH QA: route=데이터 불변 / collision=292 불변 / pageerror=해당 없음 / 404=해당 없음 / seam=시작 컷 육안 확인 / loading=격리 실행 성공 / performance=미측정
 FILES: stage-owned=map_look_ch1.json,native_map_look.gd,native_screen_lighting.gd,test_map_look.gd,이 문서 / concurrent touched=없음 / unrelated touched=보존
 GIT: staged=본 작업 파일만 경로 지정 / commit=본 작업 코드·테스트·문서만 체크포인트 / push=별도 codex 브랜치에 백업 / deploy=없음
 VISUAL VERDICT: RETOUCH
-NEXT PASS: 다른 7개 카메라 지점의 큰 형태·상단 통로·전투 실측을 확인하고 서로 다른 장면의 스팀 컷을 선정
+NEXT PASS: 남은 6개 카메라 지점의 큰 형태·상단 통로·전투 실측을 확인하고 서로 다른 장면의 스팀 컷을 선정
 ```
