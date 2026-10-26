@@ -1,6 +1,6 @@
 ## 2026-10-26 Unity 로비 검수 진입 후보
 
-- 원본 웹에 없는 이름 없는 미리보기 버튼과 이식 저장 안내를 --unity-ui-diagnostics 옵션에서만 표시하도록 분리한 후보. 기존 캐릭터/검수 API는 보존하며 Mac 통합·실제 화면 검수는 미완료다. [범위와 검증 경계](engine/UNITY_LOBBY_DIAGNOSTICS_20261026.md).
+- 원본 웹에 없는 이름 없는 미리보기 버튼과 이식 저장 안내를 --unity-ui-diagnostics 옵션에서만 표시하도록 분리하고 Mac 소스에 통합. 기존 캐릭터/검수 API와 자막 fallback 보존, C#9 76소스 컴파일 오류0. 새 Player 실제 화면·OS 입력 검수는 미완료다. [범위와 검증 경계](engine/UNITY_LOBBY_DIAGNOSTICS_20261026.md).
 
 ## 2026-10-26 Unity 우상단 상태판 월드 블렌드
 
