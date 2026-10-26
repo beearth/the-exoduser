@@ -115,11 +115,14 @@ Unity 6000.6.7f1 `StandaloneOSX` ARM64의 `atg-fit-9cc2759c1-build-receipt.json`
 | 720p 짧은 cue29 | `atg-fit-720-cue29.jpg` | `الهروب.`의 짧은 배경·한 줄·잘림 없음 |
 | 720p 라틴 cue32 | `atg-fit-720-cue32.jpg` | `EXODUSER.` LTR 유지 |
 | 1080p 긴 cue21 | `atg-fit-1080-cue21.jpg` | 한 줄·잘림 없음, 내용 폭 배경 |
+| 1080p 짧은 cue26 | `atg-fit-1080-short-cue26.png` | `من بلغوا ذروة السحر.` 한 줄·잘림 없음, 짧은 내용 폭 배경 |
 | 1080p 긴 cue28와 언어 메뉴 | `atg-fit-1080-menu.jpg` | 하단 자막과 우상단 메뉴 동시 표시·겹침 없음 |
 | 1080p `ar→ko` | `atg-fit-1080-ar-to-ko.jpg` | 한국어 기본 자막·메뉴로 복귀, 아랍어 잔상 없음 |
 
-이 수정은 `maxWidth` 84%와 글꼴 크기를 유지해 기존 32큐의 최대 가로 한계를 넓히거나 줄이지 않았다. 새 빌드에서 720p 긴 cue21·cue28, 짧은 cue29, 라틴 cue32와 1080p 긴 cue21·cue28을 대표 확인했다. 앞 절의 `cdc50a1e6` 720p 32/32 가시 PASS는 변경 전 빌드의 근거이며, **`9cc2759c1`에서 32/32를 다시 관측한 기록은 아니다.** 1080p 32큐 전수·밀리초 경계·웹 픽셀 동일성도 미판정이다. 현재 판정은 **플래그 격리 배경폭 RETOUCH 대표 화면 PASS / 일반 실행 채택0**이다.
+이 수정은 `maxWidth` 84%와 글꼴 크기를 유지해 기존 32큐의 최대 가로 한계를 넓히거나 줄이지 않았다. 새 빌드에서 720p 긴 cue21·cue28, 짧은 cue29, 라틴 cue32와 1080p 긴 cue21·cue28, 짧은 cue26을 대표 확인했다. 앞 절의 `cdc50a1e6` 720p 32/32 가시 PASS는 변경 전 빌드의 근거이며, **`9cc2759c1`에서 32/32를 다시 관측한 기록은 아니다.** 1080p 32큐 전수·밀리초 경계·웹 픽셀 동일성도 미판정이다. 현재 판정은 **플래그 격리 배경폭 RETOUCH 대표 화면 PASS / 일반 실행 채택0**이다.
 
 ### QA 저장 경로 격리 조건
 
-`--unity-arabic-caption-preview`는 렌더 경로와 초기 언어만 고른다. **이 플래그 단독 실행은 저장 격리가 아니다.** 검수 명령에는 반드시 `--unity-frontend-review --unity-arabic-caption-preview -output /새로운/절대/경로`를 함께 지정한다. `--unity-frontend-review`가 설정 저장 I/O를 끄고, 캐릭터 목록은 `-output` 하위 `character-roster-v1`로 분리된다. `-output` 누락 시 검수 목록은 fail-closed이며 정상 사용자 파일로 폴백하지 않는다. 이번 720p, 1080p, 1080p 한국어 복귀 실행은 각각 `qa-fit-720-9cc2759c1`, `qa-fit-1080-9cc2759c1`, `qa-fit-1080-ko-9cc2759c1`이라는 새 절대 경로를 사용했다. 일반 사용자 앱과 저장/설정은 건드리지 않았다. 세 Player 로그 `atg-fit-720-player.log`, `atg-fit-1080-player.log`, `atg-fit-1080-ko-player.log`에서 예외·오류 문자열은 없었다.
+`--unity-arabic-caption-preview`는 렌더 경로와 초기 언어만 고른다. **이 플래그 단독 실행은 저장 격리가 아니다.** 검수 명령에는 반드시 `--unity-frontend-review --unity-arabic-caption-preview -output /새로운/절대/경로`를 함께 지정한다. `--unity-frontend-review`가 설정 저장 I/O를 끄고, 캐릭터 목록은 `-output` 하위 `character-roster-v1`로 분리된다. `-output` 누락 시 검수 목록은 fail-closed이며 정상 사용자 파일로 폴백하지 않는다. 유효한 720p, 1080p, 1080p 한국어 복귀, 1080p 짧은 자막 실행은 각각 `qa-fit-720-9cc2759c1`, `qa-fit-1080-9cc2759c1`, `qa-fit-1080-ko-9cc2759c1`, `qa-fit-1080-short2-9cc2759c1`이라는 새 절대 경로를 사용했다. 네 Player 로그 `atg-fit-720-player.log`, `atg-fit-1080-player.log`, `atg-fit-1080-ko-player.log`, `atg-fit-1080-short2-player.log`에서 예외·오류 문자열은 없었다.
+
+추가 1080p 캡처 도중 별도 `nohup` 실행이 바로 종료된 상태에서 CUA가 같은 앱을 **플래그 없이 자동 재실행한 PID1571**이 있었다. 한국어 세계관 화면을 보고 즉시 PID를 종료했으며, 이 화면은 ATG 검수 증거에서 제외했다. 플래그 없는 앱은 일반 설정·캐릭터 저장을 읽었을 수 있다. 해당 실행에서 캐릭터 생성이나 설정 변경 조작은 하지 않았지만 저장 파일 비변경을 사후 해시로 입증하지 못하므로 개인 데이터 무접근/무변경이라고 주장하지 않는다. 이후에는 셸에서 플래그 포함 PID를 먼저 확인한 뒤 CUA를 바인딩했다. **CUA `getApp`는 대상이 꺼져 있으면 자동 실행할 수 있으므로 반드시 사전 PID·인자 확인 후 사용한다.**

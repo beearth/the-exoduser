@@ -57191,3 +57191,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac ar ATG 배경폭 RETOUCH 인수: source9cc2759c1 Unity6000.6.7f1 ARM64 정상 빌드 오류0. 84% 투명 영역의 내용 폭 Label에만 alpha0.46 배경, padding 좌우2px. 격리 Player 720p 긴 cue21·웹 동일 cue22·짧은 cue29·라틴 cue32, 1080p 긴 cue21·cue28+메뉴 및 ar→ko 화면 PASS. 원문JSON SHA 불변. 이번 빌드의 32/32 재관측·1080 전수·웹 픽셀 동일성은 미판정; 기존 cdc50a1e6 32/32 결과와 구분. QA는 `--unity-frontend-review --unity-arabic-caption-preview -output 새절대경로` 조합이며 preview 단독은 저장 격리 아님. 일반 실행 채택0. [빌드·화면·격리 조건](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
 
 2026-10-26 Mac↔PC 협의 수신: Mac 송신 `763667931` WORK_BOARD에 대해 PC/Claude가 `f974d5e33` PC_TO_MAC_INBOX §밤4로 focus·키보드 QA/소스 SHA와 Mac 자막 우선·PC 별도 소유·공용 접점 추후 대조를 회신. 같은 전달함 최신 §밤6의 PC UI patch15 요청도 확인했으나 이번 자막 단위에는 병합·Mac 실기 검수0. [송수신 위치](engine/orders/WORK_BOARD.md).
+
+2026-10-26 Mac ar 1080p 짧은 cue 추가: 같은 source9cc2759c1/ARM64 앱의 신규 격리 실행에서 cue26 `من بلغوا ذروة السحر.` 내용 폭 배경·한 줄·잘림 없음 캡처. 중간에 CUA가 플래그 없는 앱 PID1571을 자동 열어 즉시 종료하고 그 화면을 증거 제외; 일반 프로필 읽기 가능성을 기록하며 개인 데이터 무접근/무변경을 주장하지 않는다. [상세](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
