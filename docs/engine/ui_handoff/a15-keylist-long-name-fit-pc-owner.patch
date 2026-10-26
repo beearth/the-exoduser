@@ -1,0 +1,40 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeKeyBindList.cs b/unity/Assets/Exoduser/Runtime/NativeKeyBindList.cs
+--- a/unity/Assets/Exoduser/Runtime/NativeKeyBindList.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeKeyBindList.cs
+@@ -213,6 +213,27 @@
+    return resetY+44;
+   }
+
++  void DrawActionName(Rect row,string name){
++   const int px=15;const float letter=.6f;
++   bool oneLine=Width(name,regular,px,15f,letter)<=NameW;
++   GUI.BeginGroup(new Rect(row.x+NameX,row.y,NameW,RowH));
++   try{
++    if(oneLine){Run(0,26,name,regular,px,15f,letter,C(215,200,166));return;}
++   string first="",second="";
++   foreach(var word in name.Split(new[]{' '},StringSplitOptions.RemoveEmptyEntries)){
++    string candidate=first.Length==0?word:first+" "+word;
++    if(second.Length==0&&Width(candidate,regular,px,15f,letter)<=NameW)first=candidate;
++    else second=second.Length==0?word:second+" "+word;
++   }
++   if(first.Length>0&&second.Length>0&&Width(second,regular,px,15f,letter)<=NameW){
++    Run(0,17,first,regular,px,15f,letter,C(215,200,166));
++    Run(0,36,second,regular,px,15f,letter,C(215,200,166));
++    return;
++   }
++   int small=px;while(small>10&&Width(name,regular,small,small,letter*small/px)>NameW)small--;
++   Run(0,26,name,regular,small,small,letter*small/px,C(215,200,166));
++   } finally {GUI.EndGroup();}
++  }
+   void DrawKbmRow(string action,float rx,float ry){
+    var row=R(rx,ry,ColW,RowH);bool paint=Event.current.type==EventType.Repaint;
+    bool mainL=Listening&&listenAction==action&&!listenAlt,altL=Listening&&listenAction==action&&listenAlt;
+@@ -223,7 +244,7 @@
+     if(mainL||altL){Grad(row,C(142,105,51,.18f),C(70,51,33,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(187,150,94));}   // :has(.listening)
+     else if(Hover(row))Fill(row,C(155,112,67,.086f));
+     Fill(new Rect(row.x,row.yMax-1,row.width,1),C(140,121,85,.11f));
+-    Run(row.x+NameX,row.y+26,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)),regular,15,15f,.6f,C(215,200,166));
++    DrawActionName(row,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)));
+     DrawKey(mainR,mainL?T(ui.texts.listenMain):NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(keys.Primary(action),false),LocaleCode,KeyBindings.KeyName(keys.Primary(action),English)),mainL,1f);
+     DrawKey(altR,altL?T(ui.texts.listenAlt):(alt!=null?NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(alt,false),LocaleCode,KeyBindings.KeyName(alt,English)):T(ui.texts.alt)),altL,alt!=null||altL?1f:.5f);
+     if(alt!=null){var dc=Hover(delR)?C(214,170,150):C(171,131,112);RunCentered(delR.center.x,delR.center.y,"✕",regular,16,16f,.32f,dc,1f,5);}
