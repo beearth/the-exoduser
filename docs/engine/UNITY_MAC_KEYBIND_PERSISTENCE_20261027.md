@@ -56,3 +56,9 @@ Mac 소유 `NativeSettingsStore`, `NativeSettingsJsonCodec`, `NativeGame.Setting
 코드 계약을 다시 대조했다. 전용 `--unity-settings-persistence-smoke`는 QA product/id가 아니면 초기화를 거부하고, 절대 `-output`이 없으면 store를 열지 않으며 저장 디렉터리는 해당 output 안의 `native-settings-v1`이다. 같은 플래그에서는 `NativeLobby.CharacterStore`가 일반 roster를 열지 않는다. 다른 `--unity-*-smoke/capture/review`에서는 설정 store가 열리지 않는다. 이는 실행 검증이 아니라 코드·경로 가드 대조다.
 
 현재 저장 v2 write/read fixture는 `Screen.fullScreen`, 실제 AudioSource와 `WaitForEndOfFrame`/PNG 캡처를 요구한다. 이 작업에 맞는 독립 headless Player smoke가 없으므로 새 ARM64 Player 빌드·실행 0, 사용자 앱/PID·설정/캐릭터 파일 접촉 0이다. v2 실제 저장·재기동·20동작 복원, GUI/OS 입력 및 19개 UI patch 런타임 인수는 **HOLD**. 이전 격리 .NET 90+write3/read2 PASS를 Unity runtime PASS로 승격하지 않는다.
+
+## Editor 전용 비대화형 IO fixture 계약
+
+`NativeSettingsIoVerification.Run`은 Mac 소유 Editor 전용 진입점이다. `-executeMethod`의 독립 Editor 프로세스에서 실제 `NativeSettingsJsonCodec`·`NativeSettingsStore`·`NativeKeyBindInput.TryKey`·`KeyBindings`를 사용한다. `NativeGame`/로비/캐릭터 roster·오디오/화면/Player는 생성하지 않는다. `--unity-settings-persistence-smoke`, `-settings-io-phase write|read`, 절대 `-output`·`-receipt`, 40자리 `-sourceSha`가 필수다. 출력 폴더는 부모 `_out` 아래 `UNITY-MAC-A15A16-IO-*` 이름이며, receipt는 그 안의 `editor-settings-write.json` 또는 `editor-settings-read.json`만 허용한다. `qa-output.marker`의 정확한 내용 `EXODUSER_MAC_SETTINGS_IO_V2\n`가 없으면 파일 읽기 전 거부한다. 실제 설정 IO는 지정 출력 아래 `native-settings-v1/settings.v1.json`에만 수행한다.
+
+write는 격리된 v1 revision7·35/45/FPS144/fullscreen=true·중첩 `gpKeyMap` fixture를 읽고 기본 20동작 양 슬롯을 확인한다. `up=KeyZ`, `up` 보조 `KeyX`, `interact` 보조 `KeyF`를 적용한 뒤 v2 revision8로 저장하고 기존 설정·패드 JSON 보존을 확인한다. read는 별도 Editor 프로세스로 v2를 다시 읽어 같은 20동작과 기존 설정·패드 JSON을 확인한다. 두 phase 모두 실제 인자·소스 SHA·Unity 버전·경로·결과를 receipt에 남긴다. 이 fixture의 통과는 Unity Editor 직렬화/IO 접점만 의미하며 일반 Player 재기동·GUI·OS 입력·19개 패치 화면 인수를 대체하지 않는다.
