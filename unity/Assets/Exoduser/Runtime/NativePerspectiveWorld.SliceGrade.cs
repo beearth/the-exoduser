@@ -12,8 +12,9 @@ namespace Exoduser.UnityPort
         // RETOUCH 2 (macbook lead decision): colours back to the LOOK-001 D key / fill / ambient (KeyColor, FillColor, AmbientColor and their energies,
         // stage-2 calibration kept); only the key elevation stays slice-specific. Floor albedo is tone-shifted to the Godot D v2 ground mean by a script-measured multiplier.
         public static readonly Vector3 SliceKeySource = new Vector3(-1000f, 760f, -1000f); // elevation atan(760/1414) = 28.2 deg (25-35 requested)
-        public const float SlicePoolGain = 5.5f, SlicePoolWrap = 0.55f;
-        public static readonly Vector3 SliceGroundToneDefault = new Vector3(0.417f, 0.447f, 0.579f); // linear albedo multiplier measured by script to match the Godot D v2 ground mean (was 0.85 x3); override: --unity-world3d-ground-tone=r,g,b
+        public const float SlicePoolGain = 5.0f, SlicePoolWrap = 0.55f;
+        public const float PaintDynamicWeight = 0.3f; // painted light 70% + dynamic light 30%
+        public static readonly Vector3 SliceGroundToneDefault = new Vector3(1.72f, 1.0f, 0.94f); // linear albedo multiplier measured by script to match the Godot D v2 ground mean (was 0.85 x3); override: --unity-world3d-ground-tone=r,g,b
         public static readonly Vector4 SliceHaze = new Vector4(0.00042f, 1300f, 0.0035f, 0f); // density, start distance px, height falloff
         public static readonly Color SliceHazeColor = new Color(0.26f, 0.19f, 0.16f);
 
@@ -36,7 +37,14 @@ namespace Exoduser.UnityPort
                     if (p.Length == 3 && float.TryParse(p[0], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out tr) && float.TryParse(p[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out tg) && float.TryParse(p[2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out tb)) tone = new Vector3(tr, tg, tb);
                 }
             Shader.SetGlobalVector("_L3D_GroundTone", new Vector4(tone.x, tone.y, tone.z, 1f));
-            Shader.SetGlobalVector("_L3D_Pool", new Vector4(SlicePoolGain, SlicePoolWrap, 0f, 0f));
+            {
+                // reference dynamic level = what the dynamic model gives on flat ground without pools/shadow: ambient + key*N.L + fill*N.L (N = up)
+                Vector3 kd = LinearDirection(keySource), fd = LinearDirection(FillSource);
+                var kc = Premultiplied(KeyColor, KeyEnergy * (Calibrated ? KeyCalibration : 1f)); var fc = Premultiplied(FillColor, FillEnergy); var ac = Premultiplied(AmbientColor, AmbientEnergy * (Calibrated ? AmbientCalibration : 1f));
+                float kn = Mathf.Max(kd.y, 0f), fn = Mathf.Max(fd.y, 0f);
+                Shader.SetGlobalVector("_L3D_PaintRef", new Vector4(ac.x + kc.x * kn + fc.x * fn, ac.y + kc.y * kn + fc.y * fn, ac.z + kc.z * kn + fc.z * fn, PaintDynamicWeight));
+            }
+            Shader.SetGlobalVector("_L3D_Pool", new Vector4(SlicePoolGain, SlicePoolWrap, 1.0f, 0f));
             Shader.SetGlobalVector("_L3D_Fog2", SliceHaze);
             Shader.SetGlobalVector("_L3D_Bump", new Vector4(SliceBumpAmplitude, SliceBumpWavelength, 130f, 430f));
             Shader.SetGlobalVector("_L3D_Focus", new Vector4(Map.startX, Map.startY, 0f, 0f));

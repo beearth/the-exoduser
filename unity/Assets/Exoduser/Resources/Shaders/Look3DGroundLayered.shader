@@ -27,6 +27,7 @@ Shader "EXODUSER/Look3DGroundLayered"
         _Disp ("Displacement px (walkable, wall)", Vector) = (3,18,0,0)
         _SDRange ("SD range px", Float) = 400
         _Debug ("Debug (0 off)", Float) = 0
+        _DetailNormal ("GPT detail normal strength", Float) = 0.2
     }
     SubShader
     {
@@ -35,7 +36,7 @@ Shader "EXODUSER/Look3DGroundLayered"
     #include "AutoLight.cginc"
     #include "Look3DCommon.cginc"
     sampler2D _FloorAlb, _FloorNhr, _BloodAlb, _BloodNhr, _RootAlb, _RootNhr, _MassAlb, _MassNhr, _MaskTex, _MacroTex;
-    float4 _MaskRect, _Tiles, _Disp; float _SDRange, _Debug;
+    float4 _MaskRect, _Tiles, _Disp; float _SDRange, _Debug, _DetailNormal;
 
     float SignedDistance(float2 px)
     {
@@ -79,13 +80,13 @@ Shader "EXODUSER/Look3DGroundLayered"
 
             float3 TangentToWorld(float3 t) { return float3(t.x, t.z, -t.y); } // T=east(+x), B=south(-z), N=up
 
-            struct Layer { float3 alb; float2 nrm; float h; float rough; };
-            Layer SampleLayer(sampler2D alb, sampler2D nhr, float2 uvA, float2 uvB, float mixB)
+            // PAINTGROUND: the GPT layers no longer contribute colour; they give the detail normal, roughness and the wall-transition weights only.
+            struct Layer { float2 nrm; float h; float rough; };
+            Layer SampleLayer(sampler2D nhr, float2 uvA, float2 uvB, float mixB)
             {
                 Layer l;
-                float3 aA; float4 dA; NoTile(alb,nhr,uvA,aA,dA);
+                float4 dA=NoTileData(nhr,uvA);
                 float4 dB=tex2D(nhr,uvB);
-                l.alb=lerp(aA, tex2D(alb,uvB).rgb, mixB);
                 l.nrm=(dA.xy*2-1)+(dB.xy*2-1)*0.6*mixB;
                 l.h=lerp(dA.b, dB.b, mixB*0.5);
                 l.rough=lerp(dA.a, dB.a, mixB*0.5);
@@ -110,10 +111,10 @@ Shader "EXODUSER/Look3DGroundLayered"
                 float mixB=0.22+0.38*L3D_Noise(px/800.0+21.0);
                 float2 uvA=pw/_Tiles.x, uvB=Rot17(pw)/(_Tiles.x*0.2713);
                 float2 uvM=pw/_Tiles.y, uvN=Rot17(pw)/(_Tiles.y*0.37);
-                Layer l0=SampleLayer(_FloorAlb,_FloorNhr,uvA,uvB,mixB);
-                Layer l1=SampleLayer(_BloodAlb,_BloodNhr,uvA*0.93+0.31,uvB*1.07+0.17,mixB);
-                Layer l2=SampleLayer(_RootAlb,_RootNhr,uvA*1.04+0.53,uvB*0.95+0.71,mixB);
-                Layer l3=SampleLayer(_MassAlb,_MassNhr,uvM,uvN,0.35);
+                Layer l0=SampleLayer(_FloorNhr,uvA,uvB,mixB);
+                Layer l1=SampleLayer(_BloodNhr,uvA*0.93+0.31,uvB*1.07+0.17,mixB);
+                Layer l2=SampleLayer(_RootNhr,uvA*1.04+0.53,uvB*0.95+0.71,mixB);
+                Layer l3=SampleLayer(_MassNhr,uvM,uvN,0.35);
 
                 // height blend: the layer with the higher height (plus its splat weight) wins; crevices of the lower layer stay visible
                 float a0=l0.h*0.55+wBase, a1=l1.h*0.55+wBlood, a2=l2.h*0.55+wRoot, a3=l3.h*0.55+wMass;
@@ -121,8 +122,7 @@ Shader "EXODUSER/Look3DGroundLayered"
                 float b0=max(a0-m,0), b1=max(a1-m,0), b2=max(a2-m,0), b3=max(a3-m,0);
                 float inv=1.0/(b0+b1+b2+b3+1e-5); b0*=inv; b1*=inv; b2*=inv; b3*=inv;
 
-                float3 albedo=L3D_DECODE(l0.alb*b0+l1.alb*b1+l2.alb*b2+l3.alb*b3);
-                float2 nxy=(l0.nrm*b0+l1.nrm*b1+l2.nrm*b2+l3.nrm*b3*1.1)*0.5;
+                float2 nxy=(l0.nrm*b0+l1.nrm*b1+l2.nrm*b2+l3.nrm*b3*1.1)*_DetailNormal;
                 float rough=l0.rough*b0+l1.rough*b1+l2.rough*b2+l3.rough*b3;
                 float3 n=TangentToWorld(float3(nxy, 1.0));
                 if(_L3D_Bump.x>0)
@@ -133,20 +133,26 @@ Shader "EXODUSER/Look3DGroundLayered"
                 }
                 n=normalize(n);
 
-                float2 macroUv=float2(reg.x, 1.0-reg.y); // RT row 0 = north (image top)
-                float3 macro=L3D_DECODE(tex2Dlod(_MacroTex, float4(macroUv,0,3.5)).rgb);
-                float3 mean=max(L3D_DECODE(tex2Dlod(_MacroTex, float4(0.5,0.5,0,12)).rgb), 0.004);
-                float3 tint=clamp(macro/mean, 0.55, 1.7);
-                albedo*=lerp(float3(1,1,1), tint, 0.75);
-                albedo*=1.0+(L3D_Fbm(px/520.0+11.0)-0.5)*0.20+(L3D_Fbm(px/90.0+2.0)-0.5)*0.08; // +-10% regional + +-4% mid-frequency world tint
-                albedo*=_L3D_GroundTone.a>0 ? _L3D_GroundTone.rgb : float3(0.85,0.85,0.85); // tone shift toward the Godot D v2 ground mean (script-measured), see UNITY_MAP3D_SLICE doc
-                // ambient occlusion where the outskirt wall rises out of the floor
-                albedo*=lerp(0.40, 1.0, smoothstep(-30, 170, sdRaw));
+                // base colour = the original hand-painted chunks (64 chunks, identical in web / Godot / Unity), projected 1:1 (1 px = 1 texel = 1 unit) from the
+                // pre-composited region texture; RT row 0 = north (image top)
+                float2 macroUv=float2(reg.x, 1.0-reg.y);
+                float3 paint=L3D_DECODE(tex2D(_MacroTex, macroUv).rgb);
+                float3 albedo=paint*(_L3D_GroundTone.a>0 ? _L3D_GroundTone.rgb : float3(1,1,1)); // tone: colour turned towards oxblood at the same lightness (art bible 3)
+                albedo*=lerp(0.55, 1.0, smoothstep(-30, 170, sdRaw)); // wall-base occlusion (the painted art already carries most of it)
 
                 UNITY_LIGHT_ATTENUATION(shadow, i, i.world);
-                shadow*=L3D_Gobo(px); // MAP3D-LIFE1 L3: moving canopy shadow on the key light
-                float3 color=albedo*L3D_Lighting(n, i.world, shadow);
-                color+=L3D_Spec(n, i.world, saturate((0.95-rough)/0.27), shadow);
+                float gobo=L3D_Gobo(px); shadow*=gobo; // MAP3D-LIFE1 L3: moving canopy shadow on the key light
+                float3 pools=L3D_PointLights(n, i.world);
+                float3 dyn=L3D_Lighting(n, i.world, shadow)-pools;
+                // painted light 70% + dynamic light 30%: dynamic / reference (the level that leaves the paint unchanged) is blended in with weight 0.3
+                float3 dref=_L3D_PaintRef.a>0 ? max(_L3D_PaintRef.rgb, 0.02) : float3(1,1,1); float wdyn=_L3D_PaintRef.a>0 ? _L3D_PaintRef.a : 1.0;
+                float3 lit=lerp(float3(1,1,1), dyn/dref, wdyn)+pools/dref*_L3D_Pool.z; // the coloured pools keep their own weight (light rhythm, art bible 7.2)
+                lit*=lerp(1.0, gobo, 0.6); // canopy shade also reads in the painted share (rhythm of light and shade, art bible 7.2)
+                float3 color=albedo*lit;
+                // wetness: pools and wall bases are wet (low roughness), the centre is damp semi-matte; the highlight is tinted warm-red, never grey
+                float wet=saturate(L3D_PoolLum(i.world)*0.9+(1.0-smoothstep(0.0, 90.0, sdRaw))*0.45);
+                float roughW=lerp(0.72, 0.22, wet)+(rough-0.85)*0.3;
+                color+=L3D_Spec(n, i.world, saturate((0.95-roughW)/0.27), shadow)*float3(1.0,0.50,0.40)*(0.10+0.30*wet);
                 color=L3D_Fog(color, i.world);
                 float3 rgb=L3D_ENCODE(color);
                 if(_Debug>0.5 && _Debug<1.5) rgb=L3D_ENCODE(L3D_DECODE(tex2D(_MacroTex, float2(reg.x,1.0-reg.y)).rgb));

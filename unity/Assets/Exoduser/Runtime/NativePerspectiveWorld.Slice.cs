@@ -56,12 +56,13 @@ namespace Exoduser.UnityPort
             SetKeySource(SliceKeySource);
             if (keyLight != null) keyLight.shadowStrength = 0.85f;
             ApplySlicePost();
-            AddSliceExtraLight(3430f, 7330f, 480f, 0.90f, 255f, 150f, 70f, 1f);
-            AddSliceExtraLight(4640f, 7540f, 460f, 0.80f, 255f, 72f, 44f, 0.6f);
-            AddSliceExtraLight(3700f, 7750f, 300f, 0.40f, 126f, 236f, 98f, 0.7f);
-            AddSliceExtraLight(4260f, 7770f, 430f, 0.75f, 255f, 170f, 90f, 0.8f);
+            AddSliceExtraLight(3430f, 7330f, 480f, 0.90f, 168f, 162f, 58f, 1f); // poison light (hue ~58 deg, bible 6)
+            AddSliceExtraLight(4640f, 7540f, 460f, 0.80f, 176f, 40f, 28f, 0.6f); // crimson pool core #b0281c
+            AddSliceExtraLight(3700f, 7750f, 300f, 0.40f, 122f, 127f, 140f, 0.7f); // cold fog light #7a7f8c
+            AddSliceExtraLight(4260f, 7770f, 430f, 0.75f, 110f, 106f, 40f, 0.8f); // dim poison light
             BuildDecals();
             BuildLife(); // MAP3D-LIFE1
+            BuildPaintCards(); // PAINTGROUND
             UpdateFieldLights();
         }
 
@@ -125,11 +126,13 @@ namespace Exoduser.UnityPort
             return Mathf.Lerp(a, b, ty);
         }
 
-        // ---------------- macro colour (original baked ground, region sized, with mips) ----------------
+        // ---------------- paint texture: the original hand-painted ground chunks of the slice region, 1 px = 1 texel (PAINTGROUND) ----------------
+        // The 64 chunks are byte-identical in the web game, Godot and Unity (SHA-256, see the PAINTGROUND doc). They are pre-composited once at the
+        // world resolution (1 map px = 1 texel = 1 unit) into one mip-mapped texture so the ground samples its base colour 1:1 without chunk seams.
         void BuildMacro()
         {
-            const int W = 1024, H = 560;
-            macroTexture = new RenderTexture(W, H, 0, RenderTextureFormat.ARGB32) { name = "SliceMacroColour", useMipMap = true, autoGenerateMips = false, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
+            int W = Mathf.RoundToInt(SliceRect.width), H = Mathf.RoundToInt(SliceRect.height);
+            macroTexture = new RenderTexture(W, H, 0, RenderTextureFormat.ARGB32) { name = "SlicePaintGround", useMipMap = true, autoGenerateMips = false, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp, anisoLevel = 8 };
             macroTexture.Create();
             var previous = RenderTexture.active; RenderTexture.active = macroTexture;
             GL.Clear(true, true, new Color(0.2f, 0.17f, 0.15f, 1f));
@@ -138,7 +141,7 @@ namespace Exoduser.UnityPort
             {
                 if (!SliceRect.Overlaps(new Rect(c.x, c.y, c.width, c.height))) continue;
                 var texture = Resources.Load<Texture2D>(c.texture); if (texture == null) continue;
-                var dst = new Rect((c.x - SliceRect.x) / SliceRect.width * W, (c.y - SliceRect.y) / SliceRect.height * H, c.width / SliceRect.width * W, c.height / SliceRect.height * H);
+                var dst = new Rect(c.x - SliceRect.x, c.y - SliceRect.y, c.width, c.height);
                 var src = new Rect((float)c.sx / texture.width, 1f - (float)(c.sy + c.sh) / texture.height, (float)c.sw / texture.width, (float)c.sh / texture.height);
                 Graphics.DrawTexture(dst, texture, src, 0, 0, 0, 0);
                 Resources.UnloadAsset(texture);
@@ -289,6 +292,13 @@ namespace Exoduser.UnityPort
             return result != null;
         }
 
+        // QA: hides / shows the outer mass meshes and root tubes (the pixels that change are the outer body mask of the art bible lightness measurement)
+        public void SetSliceMassesVisible(bool on)
+        {
+            if (sliceRoot == null) return;
+            foreach (Transform t in sliceRoot) if (t.name.StartsWith("slice mass_") || t.name.StartsWith("slice root_") || t.name.StartsWith("slice asset ")) t.gameObject.SetActive(on);
+        }
+
         float MinDistanceToPlaced(float x, float y)
         {
             float best = 1e6f; foreach (var q in SlicePlacements) best = Mathf.Min(best, Mathf.Sqrt((x - q.x) * (x - q.x) + (y - q.y) * (y - q.y)));
@@ -321,6 +331,7 @@ namespace Exoduser.UnityPort
             public string textureSamples = "vertex 3 (mask, 2 height) + fragment 17 ground (mask 1, macro 2, albedo 7, nhr 7) + mass 6 (triplanar albedo x3, normal x3) + decal 3 each (albedo, normal, alpha mip)";
             public int decals, decalsBlood, decalsBone, decalsRoot; public float keyElevationDegrees, fogHazeDensity;
             public string assetManifest; public int assetsLoaded, assetInstances; public List<string> assetRejections = new List<string>();
+            public int cards; public float cardFloorOcclusionPercent; public List<SliceCard> cardList = new List<SliceCard>();
             public int grassCount, grassNotWalkable, particleMax, particleAliveAtStill, pushFrames; public float lifeStillTime, windAmplitudePx, rootWindAmplitudePx, massPulsePx, goboStrength, pushRadiusPx; public string pushPath;
             public List<SliceDecal> decalList = new List<SliceDecal>();
             public List<SlicePlacement> list = new List<SlicePlacement>();
@@ -366,6 +377,7 @@ namespace Exoduser.UnityPort
             string png = Path.Combine(output, "unity-slice.png"); save(png);
             SetShadows(false); save(Path.Combine(output, "unity-slice-noshadow.png")); SetShadows(true);
             SetFieldLights(false); save(Path.Combine(output, "unity-slice-nolights.png")); SetFieldLights(true);
+            SetSliceMassesVisible(false); save(Path.Combine(output, "unity-slice-nomass.png")); SetSliceMassesVisible(true); // pixel mask of the outer bodies for the lightness measurement
             bool silhouette = PlayerSilhouetteShadow; PlayerSilhouetteShadow = !silhouette; save(Path.Combine(output, silhouette ? "unity-slice-blob-only.png" : "unity-slice-silhouette-shadow.png")); PlayerSilhouetteShadow = silhouette;
             SetCollisionOverlay(true); yield return null; save(Path.Combine(output, "unity-slice-collision.png")); SetCollisionOverlay(false);
             SetSliceDebug(2); save(Path.Combine(output, "unity-slice-debug-mask.png")); SetSliceDebug(3); save(Path.Combine(output, "unity-slice-debug-splat.png")); SetSliceDebug(0);
@@ -393,6 +405,7 @@ namespace Exoduser.UnityPort
             receipt.placements = SlicePlacements.Count; receipt.list = SlicePlacements; receipt.footprintWalkableViolations = CountFootprintWalkableViolations();
             receipt.shadowCascades = QualitySettings.shadowCascades; receipt.fieldLights = FieldLightCount; receipt.png = png;
             receipt.decalList = SliceDecals; receipt.decals = SliceDecals.Count; foreach (var d in SliceDecals) { if (d.kind.StartsWith("blood")) receipt.decalsBlood++; else if (d.kind.StartsWith("bone")) receipt.decalsBone++; else receipt.decalsRoot++; }
+            receipt.cards = SliceCards.Count; receipt.cardFloorOcclusionPercent = CardFloorOcclusionPercent; receipt.cardList = SliceCards;
             receipt.grassCount = GrassCount; receipt.grassNotWalkable = GrassNotWalkable; receipt.particleMax = ParticleLayerMax * ParticleLayerCount; receipt.lifeStillTime = LifeStillTime;
             receipt.windAmplitudePx = WindAmplitudePx; receipt.rootWindAmplitudePx = RootWindAmplitudePx; receipt.massPulsePx = MassPulsePx; receipt.goboStrength = GoboStrength; receipt.pushRadiusPx = GrassPushRadius;
             receipt.assetManifest = AssetManifestSource; receipt.assetsLoaded = AssetsLoaded; receipt.assetInstances = AssetInstances; receipt.assetRejections = AssetRejections;

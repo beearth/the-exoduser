@@ -14,6 +14,7 @@ Shader "EXODUSER/Look3DMass"
         _Pulse ("Pulse amplitude px along the normal (0 = off)", Float) = 0
         _WindAmp ("Wind amplitude px (0 = off)", Float) = 0
         _LifeH ("Height normaliser px for the pulse/wind mask", Float) = 300
+        _MassTone ("Mass albedo tone", Vector) = (1.8,1.0,0.95,0)
     }
     SubShader
     {
@@ -30,7 +31,7 @@ Shader "EXODUSER/Look3DMass"
             #include "UnityCG.cginc"
             #include "AutoLight.cginc"
             #include "Look3DCommon.cginc"
-            sampler2D _MassAlb, _MassNrm; float _Tile, _NormalStrength, _ContactHeight, _Pulse, _WindAmp, _LifeH;
+            sampler2D _MassAlb, _MassNrm; float _Tile, _NormalStrength, _ContactHeight, _Pulse, _WindAmp, _LifeH; float4 _MassTone;
             struct input { float4 vertex:POSITION; float3 normal:NORMAL; };
             struct output { float4 pos:SV_POSITION; float3 world:TEXCOORD0; float3 normal:TEXCOORD1; SHADOW_COORDS(2) };
             output vert(input v)
@@ -60,12 +61,19 @@ Shader "EXODUSER/Look3DMass"
                 float3 tX=float3(nX+n.zy, 1.0*abs(n.x)), tY=float3(nY+n.xz, 1.0*abs(n.y)), tZ=float3(nZ+n.xy, 1.0*abs(n.z));
                 float3 nw=normalize(tX.zyx*blend.x + tY.xzy*blend.y + tZ.xyz*blend.z);
                 if(dot(nw, n)<0.2) nw=n;
-                float3 albedo=L3D_DECODE(albedoGamma)*float3(0.70,0.62,0.60); // darker, redder than the raw texture so the masses sit in the scene tone
+                float3 albedo=L3D_DECODE(albedoGamma)*_MassTone.rgb; // tone: redder, lighter than the raw texture (outer body p50 >= 12, art bible 4)
+                float topMask=smoothstep(0.30, 1.0, saturate(i.world.y/max(_LifeH,1.0)));
+                albedo*=lerp(0.85, 1.5, topMask); // painted top light: the upper part of the wall catches the light
                 float contact=saturate(i.world.y/_ContactHeight);
                 albedo*=lerp(0.20, 1.0, contact*contact*(3-2*contact));
                 albedo*=1.0+(L3D_Fbm(i.world.xz/340.0)-0.5)*0.16;
                 UNITY_LIGHT_ATTENUATION(shadow, i, i.world);
-                float3 color=albedo*L3D_Lighting(nw, i.world, shadow);
+                float3 pools=L3D_PointLights(nw, i.world);
+                float3 dyn=L3D_Lighting(nw, i.world, shadow)-pools;
+                float3 dref=_L3D_PaintRef.a>0 ? max(_L3D_PaintRef.rgb, 0.02) : float3(1,1,1); float wdyn=_L3D_PaintRef.a>0 ? _L3D_PaintRef.a : 1.0;
+                float3 color=albedo*(lerp(float3(1,1,1), dyn/dref, wdyn)+pools/dref*_L3D_Pool.z); // painted light 70% + dynamic 30%, pools at their own weight, as on the ground
+                // bone / shell tip highlight: ivory light on the upward facing upper part, shadow-aware
+                color+=L3D_DECODE(float3(0.79,0.70,0.58))*pow(saturate(nw.y),3.0)*topMask*0.14*(0.4+0.6*shadow);
                 color=L3D_Fog(color, i.world);
                 return fixed4(L3D_ENCODE(color), 1);
             }

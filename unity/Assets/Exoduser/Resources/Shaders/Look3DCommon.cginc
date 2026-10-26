@@ -11,6 +11,7 @@ sampler2D _L3D_MaskTex; float4 _L3D_MaskRect; // slice splat mask (R = signed di
 float4 _L3D_Bump;  // x amplitude px (0 = off), y wavelength px, z/w fade-in distance from the focus (player keeps flat ground)
 float4 _L3D_Focus; // xy focus px
 float4 _L3D_GroundTone; // slice: rgb linear multiplier on the floor albedo (a = 0: unset -> 0.85)
+float4 _L3D_PaintRef; // PAINTGROUND: rgb = dynamic lighting level that leaves the painted ground unchanged (a = 0: unset); a = dynamic weight (0.3)
 float4 _L3D_Pool;   // slice grade: x point gain (0 = 1), y wrap (0..1): light pools read on the floor
 float4 _L3D_Fog2, _L3D_Fog2Col; // slice atmosphere: x density, y start distance, z height falloff (0 = off); rgb haze, a strength
 
@@ -31,11 +32,10 @@ float3 L3D_Stamp(float3 c, float t)
     return t<.28 ? lerp(a,b,t/.28) : t<.58 ? lerp(b,cc,(t-.28)/.30) : t<.82 ? lerp(cc,d,(t-.58)/.24) : lerp(d,0,saturate((t-.82)/.18));
 }
 
-float3 L3D_Lighting(float3 n, float3 world, float shadow)
+// the field point lights alone (the coloured pools)
+float3 L3D_PointLights(float3 n, float3 world)
 {
-    float3 lit=_L3D_Ambient.rgb
-        + _L3D_KeyCol.rgb*saturate(dot(n, _L3D_KeyDir.xyz))*shadow
-        + _L3D_FillCol.rgb*saturate(dot(n, _L3D_FillDir.xyz));
+    float3 lit=0;
     [loop] for(int k=0;k<16;k++)
     {
         if(k>=(int)_L3D_PtCount) break;
@@ -47,6 +47,14 @@ float3 L3D_Lighting(float3 n, float3 world, float shadow)
         lit+=stamp*lerp(ndl, 1, _L3D_Pool.y)*(_L3D_Pool.x>0 ? _L3D_Pool.x : 1);
     }
     return lit;
+}
+
+float3 L3D_Lighting(float3 n, float3 world, float shadow)
+{
+    return _L3D_Ambient.rgb
+        + _L3D_KeyCol.rgb*saturate(dot(n, _L3D_KeyDir.xyz))*shadow
+        + _L3D_FillCol.rgb*saturate(dot(n, _L3D_FillDir.xyz))
+        + L3D_PointLights(n, world);
 }
 
 float3 L3D_Spec(float3 n, float3 world, float smooth01, float shadow)
@@ -82,6 +90,28 @@ float L3D_BumpH(float2 px, float sdRaw)
     if(_L3D_Bump.x<=0) return 0;
     float h=(L3D_Fbm(px/_L3D_Bump.y+31.0)-0.5)*_L3D_Bump.x;
     return h*smoothstep(30,170,sdRaw)*smoothstep(_L3D_Bump.z,_L3D_Bump.w,length(px-_L3D_Focus.xy));
+}
+// Data-only variant (normal/height/roughness pack, no albedo): same region offsets as NoTile, plain smoothstep cross-fade.
+float4 NoTileData(sampler2D nhr, float2 uv)
+{
+    float k=L3D_Noise(uv*0.37+17.0)*0.999;
+    float l=k*8.0, f=frac(l), ia=floor(l+0.5), ib=floor(l);
+    f=min(f,1.0-f)*2.0;
+    float2 offa=sin(float2(3.0,7.0)*ia), offb=sin(float2(3.0,7.0)*ib);
+    float2 dx=ddx(uv), dy=ddy(uv);
+    return lerp(tex2Dgrad(nhr,uv+offa,dx,dy), tex2Dgrad(nhr,uv+offb,dx,dy), smoothstep(0.2,0.8,f));
+}
+// Sum of the point-light pool falloffs at a world position (unitless, ~0..1+): used as a wetness mask on the floor.
+float L3D_PoolLum(float3 world)
+{
+    float s=0;
+    [loop] for(int k=0;k<16;k++)
+    {
+        if(k>=(int)_L3D_PtCount) break;
+        float hz=length(_L3D_PtPos[k].xz-world.xz)/_L3D_PtPos[k].w;
+        if(hz<1) s+=pow(1.0-hz,1.4)*_L3D_PtCol[k].a;
+    }
+    return s;
 }
 float L3D_SdAt(float2 px) { return (tex2Dlod(_L3D_MaskTex, float4((px-_L3D_MaskRect.xy)/_L3D_MaskRect.zw,0,0)).r*2-1)*400.0; }
 

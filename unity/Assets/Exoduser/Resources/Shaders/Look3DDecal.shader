@@ -57,7 +57,8 @@ Shader "EXODUSER/Look3DDecal"
                 float edge=smoothstep(0.28, 0.72, c.a+(n1-0.5)*_Erode);
                 float ridge=1-0.5*smoothstep(0.58, 0.85, height);
                 float low=lerp(1.0, 1-smoothstep(0.34, 0.58, height), _LowOnly);
-                float a=saturate(edge*ridge*low*_Strength*_Tint.a);
+                float2 ed=abs(i.uv-0.5); float uvFade=1.0-smoothstep(0.34, 0.5, max(ed.x, ed.y)); // fades to 0 well inside the quad: no border can show
+                float a=saturate(edge*ridge*low*_Strength*_Tint.a*uvFade);
                 // normal: decal + floor
                 float2 nd=(nm.xy*2-1)*0.7, nf=(fd.xy*2-1)*0.25;
                 float3 tx=normalize(mul((float3x3)unity_ObjectToWorld, float3(1,0,0))), tz=normalize(mul((float3x3)unity_ObjectToWorld, float3(0,0,1)));
