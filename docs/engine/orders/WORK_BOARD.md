@@ -1,3 +1,16 @@
+## 2026-10-27 Mac A03/A04 원격 UI 후보 최소 인수 preflight
+
+읽기 기준은 Mac `58dbec328b75d54831874766f6c2ad3718ead5fb`와 PC 후보 원격 `codex/ui-resume-player-20261026` `97227ceb7c4a33becd2fe55d4ab1712dc8013182`다. `git fetch`/`git show`/차이 읽기만 수행했다. PC가 작성 중인 `a03-a04-mac-handoff.md`는 이 SHA의 트리에 아직 없어 실제 전달·수신·합의로 표시하지 않는다. 제품 파일 적용·merge·Editor/Player/빌드 0.
+
+| 분리된 최소 구역 | PC 후보 경로·고정값 | Mac 대조/의존 |
+|---|---|---|
+| A03 본문·언어 라벨 | `unity/Assets/Exoduser/Resources/Data/patch_notes.json` + `.meta`: 0.7.5/0.7.0 두 항목, SHA256 `e4eac388…`; `patch_notes_labels.json` + `.meta`: 29언어×3문구=87, SHA256 `bbea905b…` | 로비 콘텐츠 외 다른 리소스·옛 0.7.7 WIP 미인수. PC 문서의 정적 87/87은 PC 검수 근거이며 Mac 웹 재검수는 0 |
+| A03 UI | `unity/Assets/Exoduser/Runtime/NativeLobby.PatchNotes.cs` + `.meta` 신규, `NativeLobby.cs`의 로비 입력 차단·launcher·modal 호출 소규모 hunk | partial의 `K`/`Label`/`Fill`/`Border`/`DismissOutside`/`Language`/`AutomatedInput` 등 필요 심볼은 Mac 로비에 존재. 그러나 PC `NativeLobby.cs` 전체를 가져오면 Mac `--unity-arabic-caption-preview` overlay 초기화·world 합성과 `NativeLobbyBuildLabels.Draw(913f)`가 삭제됨. 해당 세 Mac 구역 보존 필수 |
+| A04 생성·삭제 라벨 | `character_dialog_labels.json` + `.meta`: 교정 후 SHA256 `423a5689…`, 29언어×14키=406. `NativeLobby.Characters.cs`의 라벨 lookup·초점 상태, `NativeLobby.CharacterPresentation.cs`의 이름 대화상자 사용, `NativeLobby.CharacterDelete.cs`의 삭제 질문/버튼/키보드 방향 hunk | `CharacterDialogLabel`은 Characters에서 정의해 Presentation/Delete가 참조. `characterRestoreCreateFocus`·`characterVisualFocusPending`은 Characters에서 정의해 로비·Presentation이 참조. 세 파일/로비의 create-card 초점 hunk를 묶어야 컴파일 가능성 있음. roster/저장 로직은 가져오지 않음 |
+| A04 시각선택 라벨 | `visual_select_labels.json` + `.meta`: SHA256 `4383fe4c…`, 29언어×42키=1,218. `NativeLobby.CharacterPresentation.cs`의 `VisualSelectionLabel` lookup·표시 hunk | 기존 캐릭터 문구 배열·미디어 경로는 보존. PC 문서의 별도 6개 한·영 폴백, 기존 콘텐츠 차이 7곳은 라벨 1,218 분모 밖이며 Mac 채택/디자인 예외 승인 아님 |
+
+다음 최소 적용 순서는 (1) A03 partial + 해당 JSON/meta와 Mac `NativeLobby.cs` **호출 hunk만** 수동 적응, (2) A04 교정 생성·삭제 JSON/meta + Characters/Presentation/Delete와 create-card 초점 hunk, (3) 시각선택 JSON/meta + Presentation의 라벨 hunk다. 각 단계는 PC 소유 원본 해시/manifest 수신 후 별도 인수·검증이 필요하다. PC 자체 Unity 컴파일 0오류 기록은 Mac 조합 컴파일 PASS가 아니다. `NativeLobby*.cs` 파일 통째 덮어쓰기, 전체 branch merge, raw `cin_title_logo.png`, 지역 글꼴/HOLD 자산, 기존 콘텐츠 차이 7곳의 임의 수리, 타 팀 WIP 인수는 하지 않는다. Mac ar overlay·누적19patch·설정 v2·build label은 유지한다. PC의 최신 디자인 예외·7곳 콘텐츠 차이 판단은 [PC 총괄 전달함](PC_TO_MAC_INBOX_20261021.md)으로 회신받을 사안으로 기록하며 현재 열람/동의는 확인되지 않았다.
+
 ## 2026-10-27 Mac A15/A16 설정 저장 후보
 
 Editor 전용 headless 설정 IO fixture `NativeSettingsIoVerification.Run`을 Mac 소유로 추가했다. 고유 `_out/UNITY-MAC-A15A16-IO-*`·marker·절대 경로·QA 플래그를 요구한다. 소스 `152378099`에서 Unity6000.6.7f1 독립 Editor write 50/50·read 45/45, 양쪽 종료 코드0. v1 revision7→v2 revision8, 20동작 두 슬롯·4설정·중첩 pad JSON 보존을 전용 파일에서 확인했다. 이는 Editor IO 인수이며 Player/GUI/OS 입력/19패치 런타임은 HOLD. [영수증·계약](../UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
