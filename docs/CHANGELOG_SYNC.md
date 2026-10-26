@@ -1,3 +1,5 @@
+2026-10-27 Mac A05 오류 뒤 마지막 cue 후속: 영상 오류만은 완료하지 않으며 사용자 수동 마지막 cue는 완료한다. 격리 Editor fixture 24/24 PASS. 고유 Settings QA ARM64 앱 1회 빌드·표시된 `_out` root에서 자연 완료 저장→동일 root 재시작 로비 직행 Player PASS. 키 리맵·패드 JSON 유지. [계약](engine/UNITY_MAC_A05_CINSEEN_20261027.md).
+
 2026-10-27 Mac A05 재방문 세계관 스킵: 설정 v2 선택적 boolean `cinSeen:true`를 자연 종료/마지막 cue 또는 실제 5초 hold 뒤만 저장하고 정상 앱 재시작에서 로비 직접 진입. 로비 복귀/다시 보기·기존 키/패드/설정 보존. 격리 Unity6000.6.7f1 Editor fixture 21/21·exit0, Player 자연 재시작 HOLD. [계약](engine/UNITY_MAC_A05_CINSEEN_20261027.md).
 
 2026-10-27 Mac 시작 seed QA 후속: PC-U04b 정본은 기본15+고유 유골함1=전체16, belt빈칸, bag10/어픽스20. Editor의 구형 전체15 검사만 정정, 제품 seed·아이템·전투·저장0변경. 집중 oracle대조8/8 뒤 Unity6000.6.7f1 Metal 전체 Verify 1회 exit0/receipt PASS. [슬롯·ID·검수](engine/UNITY_MAC_INVENTORY_SEED_QA_20261027.md).

@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A05 오류 뒤 수동 마지막 cue 후속
+
+오류 callback만은 완료0, 사용자 `NextCut()<0` 수동 마지막 cue는 오류 뒤에도 완료, 5초 hold는 별도 완료로 분리했다. 격리 Editor fixture 24/24 PASS. 고유 Settings QA ARM64 앱 1회 빌드 Succeeded/errors0. marker QA root에서 첫 실행 세계관 자연 종료→`cinSeen:true` revision2→3→동일 앱/루트 재시작 로비 직행 **Player PASS**; 키 리맵·패드 JSON 유지. [계약](../UNITY_MAC_A05_CINSEEN_20261027.md).
+
 ## 2026-10-27 Mac A05 재방문 세계관 스킵
 
 PC 검토 `571a08648`의 최소 hunk를 Mac 설정 v2 선택적 `cinSeen:true`와 정상 앱 첫 진입에 연결했다. 세계관 자연 종료/마지막 cue 또는 실제 5초 hold만 완료 처리한다. 격리 Unity Editor fixture 21/21 PASS·exit0/C# 오류0. 사용자 Player 자연 재시작·실창 입력은 HOLD. [계약·영수증](../UNITY_MAC_A05_CINSEEN_20261027.md).

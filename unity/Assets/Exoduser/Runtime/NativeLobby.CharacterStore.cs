@@ -12,7 +12,9 @@ namespace Exoduser.UnityPort
   bool characterStoreProblem;
   void InitializeCharacterStore()
   {
-   var args=Environment.GetCommandLineArgs();bool fixture=false;bool review=Array.IndexOf(args,"--unity-frontend-review")>=0||Array.IndexOf(args,"--unity-startup-capture")>=0||Array.IndexOf(args,"--unity-first-practice-review")>=0||Array.IndexOf(args,"--unity-first-practice-capture")>=0;
+   var args=Environment.GetCommandLineArgs();string cinematicRoot;bool cinematicReview=Array.IndexOf(args,NativeSettingsStorageScope.CinematicReviewArgument)>=0;
+   if(cinematicReview&&!NativeSettingsStorageScope.TryResolveCinematicReview(args,out cinematicRoot)){characterWritesAllowed=false;characterStoreProblem=true;CharacterStoreState=CharacterStoreStatus.IoError;return;}
+   bool fixture=false;bool review=cinematicReview||Array.IndexOf(args,"--unity-frontend-review")>=0||Array.IndexOf(args,"--unity-startup-capture")>=0||Array.IndexOf(args,"--unity-first-practice-review")>=0||Array.IndexOf(args,"--unity-first-practice-capture")>=0;
    foreach(string arg in args)if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&arg.EndsWith("-smoke",StringComparison.Ordinal))fixture=true;
    if(fixture&&Array.IndexOf(args,"--unity-character-store-smoke")<0)return;
    if(fixture||review){int at=Array.IndexOf(args,"-output");if(at<0||at+1>=args.Length||string.IsNullOrWhiteSpace(args[at+1])||args[at+1].StartsWith("-",StringComparison.Ordinal)){characterWritesAllowed=false;characterStoreProblem=true;CharacterStoreState=CharacterStoreStatus.IoError;return;}CharacterStoreDirectory=Path.Combine(Path.GetFullPath(args[at+1]),"character-roster-v1");}

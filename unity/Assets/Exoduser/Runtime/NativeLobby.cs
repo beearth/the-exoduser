@@ -38,15 +38,15 @@ namespace Exoduser.UnityPort
   public void Begin(){CancelStartupEntry();CancelCharacterStory();if(!ready)Initialize(null);active=true;WorldEndedNaturally=false;Flow=new LobbyFlow();splash=1;since=0;fdgWatchdog.Reset();StopMusic();movie.Open("fdg_intro.mp4",false,true,false);movie.Volume(1);}
   public void AdvanceSplash(){inputFence=Time.frameCount;if(splash==1){splash=2;since=0;titleSdFallback=false;movie.Open("title_motion_hd_20260929.mp4",true,true,false);}else if(splash==2){splash=0;OpenForPage();}}
   public void StartGate(){if(splash!=0||Flow.Page!=LobbyPage.Title||Time.frameCount==inputFence)return;PlayStartupEnter();Flow.EnterGate();OpenForPage();}
-  public void FinishIntro(){var before=Flow.Page;bool videoError=movie==null||movie.Error.Length>0;splash=0;Flow.FinishIntro();if(IntroCompletionWasEarned(before,Flow.Page,false,videoError))CinematicCompleted?.Invoke();OpenForPage();}
+  public void FinishIntro(bool manualLastCue=false){var before=Flow.Page;bool videoError=movie==null||movie.Error.Length>0;splash=0;Flow.FinishIntro();if(IntroCompletionWasEarned(before,Flow.Page,false,videoError,manualLastCue))CinematicCompleted?.Invoke();OpenForPage();}
   public void ShowLobby(){CancelStartupEntry();CancelCharacterStory();active=true;splash=0;Flow.ShowLobby();OpenForPage();}
   public void ReplayIntro(){CancelStartupEntry();CancelCharacterStory();WorldEndedNaturally=false;active=true;splash=0;Flow.Replay();OpenForPage();}
   public void SelectPreview(){ActiveCharacterName="";Flow.SelectPreview();}
   public bool EnterNativeTest(){if(!Flow.EnterTest())return false;movie.Close();if(!keepStartupStageMusic)StopMusic();enter?.Invoke();return true;}
   public void SetLanguage(string code){code=LobbyLanguage.Normalize(code);if(subtitles!=null&&subtitles.captions!=null)foreach(var language in subtitles.captions)if(language.code==code){Language=code;return;}if(code=="ko"||code=="en")Language=code;}
   public void SetMix(float voice,float bgm){Flow.SetMix(voice,bgm);musicDucked=true;MusicGain((float)Flow.MusicGain);movie.Volume((float)Flow.VoiceGain);}
-  public static bool IntroCompletionWasEarned(LobbyPage before,LobbyPage after,bool explicitHold,bool videoError){return after==LobbyPage.Lobby&&(explicitHold?(before==LobbyPage.Title||before==LobbyPage.Gate||before==LobbyPage.WorldIntro):before==LobbyPage.WorldIntro&&!videoError);}
-  public void NextCut(){if(Flow.Page!=LobbyPage.WorldIntro||!movie.Prepared)return;double next=Flow.NextCut(Math.Max(0,movie.Time-WorldCueOffset));if(next<0)FinishIntro();else movie.Seek(next+WorldCueOffset);}
+  public static bool IntroCompletionWasEarned(LobbyPage before,LobbyPage after,bool explicitHold,bool videoError,bool manualLastCue=false){return after==LobbyPage.Lobby&&(explicitHold?(before==LobbyPage.Title||before==LobbyPage.Gate||before==LobbyPage.WorldIntro):before==LobbyPage.WorldIntro&&(manualLastCue||!videoError));}
+  public void NextCut(){if(Flow.Page!=LobbyPage.WorldIntro||!movie.Prepared)return;double next=Flow.NextCut(Math.Max(0,movie.Time-WorldCueOffset));if(next<0)FinishIntro(true);else movie.Seek(next+WorldCueOffset);}
   public void TogglePlayback(){if(Flow.Page!=LobbyPage.WorldIntro)return;if(VideoError.Length>0){OpenForPage();return;}movie.Toggle();if(movie.Player!=null&&movie.Player.isPlaying)music.UnPause();else music.Pause();}
   void StartMusic(string key,float gain){StopMusic();music.clip=Resources.Load<AudioClip>("Audio/Lobby/"+key);MusicGain(gain);if(music.clip!=null)music.Play();}
   void StopMusic(){if(music!=null)music.Stop();}

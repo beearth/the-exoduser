@@ -100,6 +100,9 @@ public static class NativeSettingsIoVerification
    var gateHold=new LobbyFlow();gateHold.EnterGate();gateHold.HoldSkip(true,5.01);Check(gateHold.Page==LobbyPage.Lobby&&NativeLobby.IntroCompletionWasEarned(LobbyPage.Gate,gateHold.Page,true,false),"five-second gate hold earns marker",ref failures,checks);
    var lastCut=new LobbyFlow();lastCut.EnterGate();lastCut.TickGate(16,0,false,0);Check(lastCut.NextCut(109.30)<0,"last world cue reaches finish branch",ref failures,checks);
    lastCut.FinishIntro();Check(NativeLobby.IntroCompletionWasEarned(LobbyPage.WorldIntro,lastCut.Page,false,false),"last cue completion earns marker",ref failures,checks);
+   var manualError=new LobbyFlow();manualError.EnterGate();manualError.TickGate(16,0,false,0);manualError.FinishIntro();Check(NativeLobby.IntroCompletionWasEarned(LobbyPage.WorldIntro,manualError.Page,false,true,true),"manual last cue after playback error earns marker",ref failures,checks);
+   Check(!NativeLobby.IntroCompletionWasEarned(LobbyPage.WorldIntro,LobbyPage.Lobby,false,true,false),"playback error callback alone leaves marker unseen",ref failures,checks);
+   Check(complete.extra["cinSeen"]=="true"&&NativeLobby.IntroCompletionWasEarned(LobbyPage.WorldIntro,LobbyPage.Lobby,false,true,true),"previously completed marker survives later error",ref failures,checks);
    var failedBytes=File.ReadAllBytes(v1Path);Check(!NativeLobby.IntroCompletionWasEarned(LobbyPage.WorldIntro,LobbyPage.Lobby,false,true)&&Convert.ToBase64String(failedBytes)==Convert.ToBase64String(File.ReadAllBytes(v1Path)),"later video error preserves completed settings",ref failures,checks);
    Directory.CreateDirectory(invalid);string invalidPath=Path.Combine(invalid,NativeSettingsStore.DataFileName);File.WriteAllText(invalidPath,"{broken");byte[] invalidBefore=File.ReadAllBytes(invalidPath);
    var rejected=new NativeSettingsStore(invalid,NativeSettingsJsonCodec.Encode,NativeSettingsJsonCodec.Decode,state,false);

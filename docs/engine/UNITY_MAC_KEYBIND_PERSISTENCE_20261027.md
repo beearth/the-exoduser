@@ -1,3 +1,5 @@
+A05 오류 뒤 수동 마지막 cue 검증: 독립 Editor fixture 24/24 PASS. 별도 `--unity-cinematic-persistence-review`는 고유 Settings QA identity와 marker가 붙은 `_out/UNITY-MAC-A05-IO-*` 루트에서만 설정/로스터 I/O를 허용한다. 기존 `--unity-frontend-review`의 설정 I/O 금지는 유지한다. 고유 ARM64 Player 동일 root 자연 완료→재시작 로비 직행 PASS; `up=KeyZ`/보조 `KeyX`·중첩 패드 JSON 유지. [계약](UNITY_MAC_A05_CINSEEN_20261027.md).
+
 ## A05 선택적 완료 표식 후속 — 2026-10-27
 
 기존 schema v2 파일에 선택적 상위 JSON boolean `cinSeen:true`를 완료 때만 기록한다. 부재/false는 인트로를 시작하며 기존 4설정·20동작 양 슬롯·알 수 없는 패드 JSON을 유지한다. `NativeSettingsIoVerification.Run`의 전용 phase는 기존 `write|read`에 `cinematic`을 추가했다. 21/21 Editor PASS, Player 재시작 HOLD. [완료 판정과 격리 영수증](UNITY_MAC_A05_CINSEEN_20261027.md).
