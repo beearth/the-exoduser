@@ -1,0 +1,24 @@
+# 임펙트(VFX) 단순 세션 인계 — 2026-10-27
+- 세션: Sonnet 5.5 단순 세션(임펙트 총괄 소속). 세션 id는 앱 "Linked sessions" 목록에서 확인. 역할=캡처·측정·문서 반영 같은 명세 정해진 작업
+- 기준 문서(SSOT): `docs/5.1임펙트디자인/VFX_LEAD_MASTER_20261026.md` (§2.7 타격 임팩트 기준, VFX-D10~D13, 백로그 VFX-10·11)
+- 진행 중 작업 단위: 없음. 타격 임팩트 비교 캡처(우리 vs 노레위 vs PoE2) 완료, 기준 초안 문서 반영 완료
+- 완료: 커밋 `607110d52`(origin/main) — VFX 마스터 §2.7 등 +57줄, `docs/5.1임펙트디자인/HIT_TIMELINE_OURS_20261027.jpg`(1,356,673B)
+- 남은 것: `G:/exoduser-wt/_vfxref_20261027/` 삭제 — 사용자 확인 후에만. 그전에는 유지
+- 대기 중: 없음
+- 소속·연결: 임펙트 총괄 `local_da9cd0e7-37a8-4d5d-9ab6-090f7f9eb8ad`
+- 산출물(저장소 밖): `_vfxref_20261027/` 아래 `SUMMARY.md`, `measure.csv`, `refs.csv`, `sheets/`(timeline_ours·nrftw·poe2, compare_peak), `ours/<장면>/`, `nrftw/hits/`, `poe2/hits/`. SUMMARY 사본=side-session-notes 폴더 `vfx_ref_capture_20261027_SUMMARY.md`
+- 재사용 스크립트(`_vfxref_20261027/scripts/`, 실행은 `C:\nvm4w\nodejs\node.exe`):
+  - `capture_ours.mjs` — 우리 게임 테스트베드에서 hurtE 래핑으로 명중 틱에 정지, 40틱 단계 캡처 후 `ours/<장면>/full_XX.png`+meta.json 저장
+  - `vid.mjs` — 영상 프레임 캡처(scan/play/steps/grab, 환경변수 Q·STEP·FPS). 유튜브는 약 20장 후 플레이어 오류가 나므로 구간마다 새 세션
+  - `measure_lib.mjs` — 공통 측정(loadCrop·analyze·summarize: 밝기·핫픽셀·크기·색)
+  - `measure_ours.mjs` / `measure_refs.mjs` — 우리/레퍼런스 측정(refs는 `refs_spec.json` 읽음, WIDE=1이면 넓은 크롭) → json
+  - `motion_ours.mjs` / `motion_refs.mjs` — 화면 흔들림·정지 프레임 추정
+  - `sheet_ours.mjs` / `sheets_ref.mjs` — 타임라인·나란히 비교 시트 PNG 생성(sheets/)
+  - `gather_csv.py` — 측정 json을 measure.csv·refs.csv로 합침. `montage.mjs`·`strip.mjs`·`cuts.mjs` — 보조 시트·컷 검출
+- 확정된 결정: 타사 프레임은 저장소 밖에서만 사용, 우리 쪽 시트만 repo에 반입. 판정은 총괄 몫
+- 금지·주의:
+  - 자동 브라우저는 headless+음소거, 창·이미지 뷰어 자동 열기 금지
+  - 실패는 2회 반복 전에 원인 수정, 2회 실패면 멈추고 보고. 유튜브 재시도 루프 금지
+  - 커밋은 경로 지정, 로컬 main은 origin과 크게 갈라져 있어 임시 워크트리(`G:/exoduser-wt/_vfxpush`)에서 cherry-pick 후 push, 끝나면 워크트리 삭제
+  - 한계: PoE2 영상은 0~60초만 확보, 레퍼런스 흔들림·히트스톱은 트레일러 카메라와 분리 불가
+- 재개 후 첫 행동: 1) 이 파일과 MEMORY.md 읽기 2) 총괄 지시 대기, 새 작업 임의 착수 금지
