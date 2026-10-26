@@ -5,8 +5,11 @@ namespace Exoduser.UnityPort.Core {
  public static class InventoryCombatPower {
   public static CombatPower Calculate(InventoryState state,InventoryStats stats,int level) {
    if(state==null)throw new ArgumentNullException("state");if(stats==null)throw new ArgumentNullException("stats");
-   // statStr()=1; pDefAdd()=_altDef*30 with _altDef currently 0. P.baseDef already contains equipped def, as in the source.
-   double atk=stats.PlayerBaseAttack*2,def=stats.PlayerPhysicalDefense*3;
+   // statStr()=1; pDefAdd()=_altDef*30 with _altDef currently 0.
+   // P.baseDef excludes equipped def (game.html 27923 P.baseDef=2, 27944 += crystal def + defFlat + grit*.5), so remove it from PlayerPhysicalDefense.
+   double equippedDef=0;
+   foreach(var it in state.Equipped)if(it!=null&&(it.slot=="shield"||it.slot=="armor"||it.slot=="boots"||it.slot=="gloves"||it.slot=="pants"))equippedDef+=it.def;
+   double atk=stats.PlayerBaseAttack*2,def=(stats.PlayerPhysicalDefense-equippedDef)*3;
    // STATS (str/dex/int/lck) and PASSIVES are not ported yet: both terms are 0. Not ported, 0.
    double extra=level*10+stats.PlayerMaxHp*.5+stats.PlayerMaxStamina*.3+stats.PlayerMaxMana*.3;
    foreach(var it in state.Equipped) {
