@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort
         public Vector2 AppliedFocus { get; private set; }
         public bool ClampApplied { get; private set; }
         public int LoadedChunkCount { get { return chunks.Count; } }
-        public int MassCount { get { return massObjects.Count; } }
+        public int MassCount { get { return authoredMassCount; } }
         public int PropCount { get { return propObjects.Count; } }
 
         Material litMaterial;
@@ -159,7 +159,7 @@ namespace Exoduser.UnityPort
         public bool VisibleFootprint(out Rect footprint) { return GroundFootprint(out footprint); }
 
         // ---- ground: baked environment chunks as flat quads at y=-1.5 (native_perspective_view.gd:353-358, :260) ----
-        sealed class ChunkEntry { public GameObject go; public Texture2D texture; }
+        sealed class ChunkEntry { public GameObject go, massTop; public Texture2D texture; }
         readonly Dictionary<int, ChunkEntry> chunks = new Dictionary<int, ChunkEntry>();
 
         void StreamChunks()
@@ -184,13 +184,19 @@ namespace Exoduser.UnityPort
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = false;
                 var block = new MaterialPropertyBlock(); block.SetTexture("_MainTex", texture); block.SetColor("_Color", Color.white); block.SetFloat("_Cutoff", 0f);
                 renderer.SetPropertyBlock(block);
-                chunks.Add(i, new ChunkEntry { go = go, texture = texture });
+                chunks.Add(i, new ChunkEntry { go = go, massTop = CreateMassTop(c, texture, i), texture = texture });
             }
             List<int> remove = null;
             foreach (var pair in chunks) if (!keep.Contains(pair.Key)) { if (remove == null) remove = new List<int>(); remove.Add(pair.Key); }
             if (remove != null) foreach (int id in remove)
             {
-                var entry = chunks[id]; Destroy(entry.go.GetComponent<MeshFilter>().sharedMesh); Destroy(entry.go); chunks.Remove(id); Resources.UnloadAsset(entry.texture);
+                var entry = chunks[id]; Destroy(entry.go.GetComponent<MeshFilter>().sharedMesh); Destroy(entry.go);
+                if (entry.massTop != null)
+                {
+                    Destroy(entry.massTop.GetComponent<MeshFilter>().sharedMesh);
+                    Destroy(entry.massTop);
+                }
+                chunks.Remove(id); Resources.UnloadAsset(entry.texture);
             }
         }
 
@@ -234,16 +240,22 @@ namespace Exoduser.UnityPort
 
         void OnDestroy()
         {
-            foreach (var pair in chunks) { if (pair.Value.go != null) Destroy(pair.Value.go); }
-            chunks.Clear();
-            foreach (var go in massObjects)
-                if (go != null)
+            foreach (var pair in chunks)
+            {
+                if (pair.Value.go != null)
                 {
-                    var filter = go.GetComponent<MeshFilter>();
+                    var filter = pair.Value.go.GetComponent<MeshFilter>();
                     if (filter != null && filter.sharedMesh != null) Destroy(filter.sharedMesh);
+                    Destroy(pair.Value.go);
                 }
-            massObjects.Clear();
-            if (massMaterial != null) Destroy(massMaterial);
+                if (pair.Value.massTop != null)
+                {
+                    var filter = pair.Value.massTop.GetComponent<MeshFilter>();
+                    if (filter != null && filter.sharedMesh != null) Destroy(filter.sharedMesh);
+                    Destroy(pair.Value.massTop);
+                }
+            }
+            chunks.Clear();
             if (litMaterial != null) Destroy(litMaterial);
         }
     }

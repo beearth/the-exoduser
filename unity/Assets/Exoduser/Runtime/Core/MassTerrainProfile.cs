@@ -75,18 +75,19 @@ namespace Exoduser.UnityPort
         public float HeightAt(float pxX, float pxY)
         {
             double x = pxX, y = pxY;
-            // The authored 80 px lip stays low beside playable space; large solid interiors rise into broad mass.
-            // Bilinear sampling on tile centers keeps heights identical across separate rectangle meshes.
+            // Rise from the baked floor at the boundary; never leave an exposed per-tile vertical wall.
+            // Bilinear sampling on tile centers keeps heights identical across separate chunk meshes.
             double gx = x / tileSize - 0.5, gy = y / tileSize - 0.5;
             int tx = (int)Math.Floor(gx), ty = (int)Math.Floor(gy);
             double fx = gx - tx, fy = gy - ty;
             double top = InwardAt(tx, ty) * (1 - fx) + InwardAt(tx + 1, ty) * fx;
             double bottom = InwardAt(tx, ty + 1) * (1 - fx) + InwardAt(tx + 1, ty + 1) * fx;
             double d = Math.Max(0, Math.Min(1, (top * (1 - fy) + bottom * fy) / 6.0));
-            double broadRise = 150.0 * d * d * (3.0 - 2.0 * d);
-            return baseHeight + (float)(broadRise + 18.0 * Math.Sin(x / 710.0 + 0.3) * Math.Sin(y / 610.0 + 1.1)
+            double blend = d * d * (3.0 - 2.0 * d);
+            const double floor = -1.2; // 0.3 px above the existing baked ground to avoid z fighting
+            return (float)(floor + (baseHeight + 150.0 - floor) * blend + blend * (18.0 * Math.Sin(x / 710.0 + 0.3) * Math.Sin(y / 610.0 + 1.1)
                 + 9.0 * Math.Sin(x / 245.0 + y / 470.0)
-                + 4.0 * Math.Sin(x / 110.0 - y / 180.0));
+                + 4.0 * Math.Sin(x / 110.0 - y / 180.0)));
         }
 
         int InwardAt(int tx, int ty)

@@ -5,7 +5,7 @@ using UnityEngine;
 using Exoduser.UnityPort;
 
 // PC-MAP3D fast Editor-side render of the stage-1 world (no Player build):
-// Unity.exe -batchmode -projectPath <unity> -executeMethod NativePerspectiveWorldEditor.Render -output <dir>
+// Unity.exe -batchmode -projectPath <unity> -executeMethod NativePerspectiveWorldEditor.Render -output <dir> [-focusX <px> -focusY <px>]
 // Writes unity-world3d-editor.png, -nomass and -noblob variants. The Player capture (--unity-world3d-capture) is the authoritative evidence.
 public static class NativePerspectiveWorldEditor
 {
@@ -23,7 +23,10 @@ public static class NativePerspectiveWorldEditor
             world.Initialize(JsonUtility.FromJson<MapData>(resource.text));
             world.SyncPlayer(world.Map.startX, world.Map.startY, 15f, 2, 0);
             world.WorldCamera.enabled = true;
-            world.Prime(new Vector2(world.Map.startX, world.Map.startY));
+            float focusX, focusY;
+            if (!float.TryParse(Argument("-focusX"), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out focusX)) focusX = world.Map.startX;
+            if (!float.TryParse(Argument("-focusY"), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out focusY)) focusY = world.Map.startY;
+            world.Prime(new Vector2(focusX, focusY));
             Save(world, Path.Combine(output, "unity-world3d-editor.png"));
             var masses = go.transform.Find("NativePerspectiveWorld Root/Masses");
             masses.gameObject.SetActive(false);

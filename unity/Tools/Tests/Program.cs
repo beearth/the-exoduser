@@ -52,10 +52,14 @@ class Program
     float a=profile.HeightAt(x,y),b=profile.HeightAt(x+mapData.tileSize,y);
     min=Math.Min(min,a);max=Math.Max(max,a);largestStep=Math.Max(largestStep,Math.Abs(a-b));
    }
-   Check(max-min>=120f&&max>=200f&&min>=40f&&max<=300f,"mass rises into a broad bounded outer volume");
-   Check(largestStep<=45f,"mass height changes smoothly across tile seams");
+   Check(max-min>=200f&&max>=200f&&min>=-1.3f&&min<=0f&&max<=300f,"mass blends from the ground into a broad outer volume");
+   Check(largestStep<=70f,"mass height changes smoothly across tile seams max="+largestStep);
   }
   Check(mapData.width==200&&mapData.height==200&&mapData.chunks.Length==64,"original200x200 map/64chunks");
+  int misalignedChunks=0;
+  foreach(var c in mapData.chunks)
+   if(c.x%mapData.tileSize!=0||c.y%mapData.tileSize!=0||c.width%mapData.tileSize!=0||c.height%mapData.tileSize!=0)misalignedChunks++;
+  Check(misalignedChunks==0,"all baked chunks align with the 40px raised-mass tile grid");
   Check(map.CanMove(4020,7420,15),"original south start is walkable");
   Check(!map.CanMove(0,0,15)&&!map.CanMove(-1,100,15)&&!map.CanMove(float.NaN,0,15),"map wall bounds/nonfinite rejected");
   foreach(var c in mapData.colliders)Check(map.Blocked(c.x,c.y),"original prop ellipse center blocked "+c.x+","+c.y);

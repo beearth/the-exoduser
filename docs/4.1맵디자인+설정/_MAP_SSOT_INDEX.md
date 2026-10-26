@@ -1,4 +1,4 @@
-> 2026-10-26 **Unity CH1-1 3D 외곽 S2 시각 후보:** [형상·검수 경계·MAP PRODUCTION REPORT](UNITY_CH1_ORGANIC_MASS_S2_20261026.md). 원본 충돌·동선 불변, 외곽 높이장만 구현. 새 Unity 화면은 패키지 초기화 오류로 미검수이므로 **VISUAL VERDICT: RETOUCH**, main/PC 인수·Steam 적용 아님.
+> 2026-10-26 **Unity CH1-1 3D 외곽 S2 시각 후보:** [형상·Editor 8시점·MAP PRODUCTION REPORT](UNITY_CH1_ORGANIC_MASS_S2_20261026.md). 원본 충돌·동선 불변, 베이크 지면을 투영한 외곽 높이장. `-noUpm` Editor 정적 8시점 확인, Player/전투/FPS 미검수. **VISUAL VERDICT: RETOUCH**, main/PC 인수·Steam 적용 아님.
 
 > 2026-10-22 **PARITY-MAP-02 native 분기:** 원본61군락 얼굴·소품 국소변형/손3/매듭5·늪/독구덩이·원본 하프조명/DOM 안개 합성 이식. 원본 웹 수치·배치/충돌/카메라 변경0. 1440p청크·최종 판정은 [마감 기록](../engine/PARITY_MAP_02_20261022.md)을 따른다. 아래 웹 제작 이력은 보존한다. main/PC 인수 아님.
 
