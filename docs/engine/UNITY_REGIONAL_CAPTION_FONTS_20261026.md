@@ -29,3 +29,8 @@ SC/TC/JP는 공식 `notofonts/noto-cjk`의 완전한 정적 Regular OTF와 `Seri
 
 
 현재 단계: 선택형 oracle/실패 재현 fixture만 추가했고 제품 폰트 연결 전이다. 기존 oracle도 계속 허용하며 새 oracle의 fontResource는 실제 Resources.Load된 객체를 선택해야 한다. 제품 연결 전 RED Player 결과는 아직 대기다.
+
+
+## 실제 RED와 최소 연결
+
+지역별 글꼴 연결 전 Player에서 zh regional Font resource loaded 검사가 실패했고 누락 리소스 예외를 영수증에 기록했다. 이후 정확한4개언어에 정적Regular400 폰트와1회 생성한 caption/shadow 스타일만 연결했다. 기존4개기본/20개Noto 언어, 진단게이트, 자막문구/시간값은 유지한다. 새 자산의 원본과 OFL을 I:에 보존하고 실행에 필요한폰트 및 라이선스만 SSD runtime에 연결했다. 실제 GREEN 빌드/렌더 결과는 대기다.

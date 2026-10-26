@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort
   float musicBaseGain,bgmRelativeGain=1;
   public void SetBgmPercent(int percent){bgmRelativeGain=Mathf.Clamp(percent,0,100)/60f;if(music!=null)music.volume=musicBaseGain*bgmRelativeGain;}
   void MusicGain(float gain){musicBaseGain=gain;if(music!=null)music.volume=gain*bgmRelativeGain;}
-  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,captionShadow,ukCaption,ukCaptionShadow,button;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt,languageInputFence;int languageCursor;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
+  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,captionShadow,ukCaption,ukCaptionShadow,button;GUIStyle zhCaption,zhCaptionShadow,zhtCaption,zhtCaptionShadow,jaCaption,jaCaptionShadow,thCaption,thCaptionShadow;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt,languageInputFence;int languageCursor;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
   public void Initialize(Action enterNativeTest){enter=enterNativeTest;if(ready)return;ready=true;movie=new NativeLobbyVideo(transform);movie.SetPlaybackAllowed(focused);music=gameObject.AddComponent<AudioSource>();music.playOnAwake=false;music.loop=true;music.spatialBlend=0;var data=Resources.Load<TextAsset>("Data/lobby_frontend");if(data!=null)subtitles=JsonUtility.FromJson<LobbySubtitleData>(data.text);logo=Art("title_logo");enterArt=Art("enter_art");brand=Art("brand_logo");lobbyPoster=Art("lobby_poster");gatePoster=Art("gate_poster");splashTitle=Art("splash_title");splashBrand=Art("splash_brand");fdgEmblem=Art("fdg_emblem");ancestor=Art("varkan_idle");ancestorFirst=Art("varkan_first");enterButton=Art("lobby_enter");lobbyPanel=Art("lobby_panel");lobbyBanner=Art("lobby_banner");disabledEnter=Art("lobby_enter_disabled");InitializeCharacterStore();}
   Texture2D Art(string path){return Resources.Load<Texture2D>("Art/lobby/"+path);}
   public void Begin(){CancelStartupEntry();CancelCharacterStory();if(!ready)Initialize(null);active=true;WorldEndedNaturally=false;Flow=new LobbyFlow();splash=1;since=0;fdgWatchdog.Reset();StopMusic();movie.Open("fdg_intro.mp4",false,true,false);movie.Volume(1);}
@@ -65,7 +65,30 @@ namespace Exoduser.UnityPort
   }
 
   void OnDestroy(){DestroyStartupPresentationTextures();movie?.Dispose();StopMusic();if(gateShade!=null)Destroy(gateShade);if(invitationShade!=null)Destroy(invitationShade);}
-  void Styles(){if(normal!=null)return;var font=Resources.Load<Font>("Art/fonts/NotoSansKR");normal=new GUIStyle(GUI.skin.label){font=font,fontSize=23,wordWrap=true};normal.normal.textColor=new Color(.82f,.75f,.65f);small=new GUIStyle(normal){fontSize=17};heading=new GUIStyle(normal){fontSize=36,fontStyle=FontStyle.Bold};caption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=50,alignment=TextAnchor.LowerCenter,wordWrap=true};caption.normal.textColor=new Color(.933f,.898f,.835f);captionShadow=new GUIStyle(caption);captionShadow.normal.textColor=Color.black;var ukFont=Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");if(ukFont!=null){ukCaption=new GUIStyle(caption){font=ukFont};ukCaptionShadow=new GUIStyle(ukCaption);ukCaptionShadow.normal.textColor=Color.black;}button=new GUIStyle(GUI.skin.button){font=font,fontSize=23,padding=new RectOffset(14,14,8,8)};}
+  void Styles()
+  {
+   if(normal!=null)return;
+   var font=Resources.Load<Font>("Art/fonts/NotoSansKR");
+   normal=new GUIStyle(GUI.skin.label){font=font,fontSize=23,wordWrap=true};normal.normal.textColor=new Color(.82f,.75f,.65f);
+   small=new GUIStyle(normal){fontSize=17};heading=new GUIStyle(normal){fontSize=36,fontStyle=FontStyle.Bold};
+   caption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=50,alignment=TextAnchor.LowerCenter,wordWrap=true};
+   caption.normal.textColor=new Color(.933f,.898f,.835f);captionShadow=new GUIStyle(caption);captionShadow.normal.textColor=Color.black;
+   var ukFont=Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");
+   if(ukFont!=null){ukCaption=new GUIStyle(caption){font=ukFont};ukCaptionShadow=new GUIStyle(ukCaption);ukCaptionShadow.normal.textColor=Color.black;}
+   CreateRegionalCaptionStyles("Art/fonts/NotoSerifCJKsc-Regular",out zhCaption,out zhCaptionShadow);
+   CreateRegionalCaptionStyles("Art/fonts/NotoSerifCJKtc-Regular",out zhtCaption,out zhtCaptionShadow);
+   CreateRegionalCaptionStyles("Art/fonts/NotoSerifCJKjp-Regular",out jaCaption,out jaCaptionShadow);
+   CreateRegionalCaptionStyles("Art/fonts/NotoSerifThai-Regular",out thCaption,out thCaptionShadow);
+   button=new GUIStyle(GUI.skin.button){font=font,fontSize=23,padding=new RectOffset(14,14,8,8)};
+  }
+  void CreateRegionalCaptionStyles(string resource,out GUIStyle main,out GUIStyle shadow)
+  {
+   main=null;shadow=null;
+   var regionalFont=Resources.Load<Font>(resource);
+   if(regionalFont==null)return;
+   main=new GUIStyle(caption){font=regionalFont};
+   shadow=new GUIStyle(main);shadow.normal.textColor=Color.black;
+  }
   // These exact subtitle codes have missing source-font glyphs, while the existing Noto Serif font covers every visible cue character.
   static bool UseNotoCaptionForLanguage(string code)
   {
@@ -75,8 +98,16 @@ namespace Exoduser.UnityPort
     default:return false;
    }
   }
-  GUIStyle CaptionStyleForLanguage(){return UseNotoCaptionForLanguage(Language)&&ukCaption!=null?ukCaption:caption;}
-  GUIStyle CaptionShadowForLanguage(){return UseNotoCaptionForLanguage(Language)&&ukCaptionShadow!=null?ukCaptionShadow:captionShadow;}
+  GUIStyle CaptionStyleForLanguage()
+  {
+   switch(Language){case "zh":if(zhCaption!=null)return zhCaption;break;case "zht":if(zhtCaption!=null)return zhtCaption;break;case "ja":if(jaCaption!=null)return jaCaption;break;case "th":if(thCaption!=null)return thCaption;break;}
+   return UseNotoCaptionForLanguage(Language)&&ukCaption!=null?ukCaption:caption;
+  }
+  GUIStyle CaptionShadowForLanguage()
+  {
+   switch(Language){case "zh":if(zhCaptionShadow!=null)return zhCaptionShadow;break;case "zht":if(zhtCaptionShadow!=null)return zhtCaptionShadow;break;case "ja":if(jaCaptionShadow!=null)return jaCaptionShadow;break;case "th":if(thCaptionShadow!=null)return thCaptionShadow;break;}
+   return UseNotoCaptionForLanguage(Language)&&ukCaptionShadow!=null?ukCaptionShadow:captionShadow;
+  }
   public void Draw(){if(!IsBlocking||!ready)return;Styles();var old=GUI.matrix;var tint=GUI.color;bool enabled=GUI.enabled;int priorDepth=GUI.depth;GUI.matrix=Matrix4x4.identity;if(!StartupWorldVisible)Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*fit)/2,(Screen.height-1080*fit)/2,0),Quaternion.identity,new Vector3(fit,fit,1));OriginalArtDrawn=false;CaptionVisible=false;if(!StartupWorldVisible)Fill(new Rect(0,0,1920,1080),Color.black);if(StartupEntryActive)DrawStartupEntry();else if(CharacterStoryActive)DrawCharacterStory();else if(splash==1){if(fdgWatchdog.FallingBack)Image(new Rect(0,0,1920,1080),fdgEmblem);else DrawMovie(new Rect(0,0,1920,1080),fdgEmblem,false);Label(new Rect(0,955,1920,60),K("아무 키나 눌러 계속","Press any key to continue"),small,TextAnchor.MiddleCenter);}else if(splash==2){DrawSplash();if(since>1.2f)Label(new Rect(0,980,1920,48),K("아무 키나 눌러 계속","Press any key to continue"),normal,TextAnchor.MiddleCenter);}else if(Flow.Page==LobbyPage.Lobby)DrawLobby();else{DrawCinematicMovie();if(Flow.Page==LobbyPage.Title||Flow.Page==LobbyPage.Gate)DrawGatePresentation();if(Flow.Page==LobbyPage.WorldIntro)DrawWorldIntro();if(Flow.Page!=LobbyPage.Lobby){DrawCinematicSkip();}}GUI.color=tint;GUI.enabled=enabled;GUI.depth=priorDepth;GUI.matrix=old;}
   void OnGUI(){if(AutomatedInput&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
   string K(string ko,string en){return Language=="ko"?ko:en;}

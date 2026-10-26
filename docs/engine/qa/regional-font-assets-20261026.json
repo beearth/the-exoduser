@@ -1,0 +1,32 @@
+{
+  "projectRoot": "E:\\exoduser-runtime\\codex-ui-resume-20261026\\unity",
+  "projectRelativePaths": [
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKsc-Regular.otf",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKsc-Regular.otf.meta",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKtc-Regular.otf",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKtc-Regular.otf.meta",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKjp-Regular.otf",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKjp-Regular.otf.meta",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-Regular.ttf",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-Regular.ttf.meta",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJK-OFL.txt",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJK-OFL.txt.meta",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-OFL.txt",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-OFL.txt.meta"
+  ],
+  "sha256": {
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKsc-Regular.otf": "2a2eae2628df83556c54018c41e20fa532c1b862c5256ae8b3f23feb918d12ca",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKsc-Regular.otf.meta": "f8d673febbea8cd048269affe2f03514ac0782500dab9d035002717bf9fc36b4",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKtc-Regular.otf": "234301038e76e7c35c43113785024700c4e4fe7bdce1d1fbbc42fca7e6683798",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKtc-Regular.otf.meta": "4d9f85be91e593b997edff0e11817d6fc2fba0d510633abe51cdd587ea627c94",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKjp-Regular.otf": "d9854c7a8ef170b5a7932558856fd64eb8de0b007cd823fed6f9f514ad2803d3",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKjp-Regular.otf.meta": "5674592304b83660ee384bc99863a794a045975396409d75ff136cb61c76127a",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-Regular.ttf": "6ac215670f2719de202b566e4fc25a47a2e72c2cb9d2ab19e1aae3c01373ab79",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-Regular.ttf.meta": "a3698c5809f3df42b4b8547c817b4c3df466d0d12699fa1f597d22fa73a14208",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJK-OFL.txt": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJK-OFL.txt.meta": "9739fcc7f19b6ba101bade0d73d9bb7bcbee0e762312e2af4d8eb414d7a9d11a",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-OFL.txt": "2e98fd23a52d253db8612cd5942c8f2ff4111b21d2367050fdca91d8ccc374a0",
+    "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-OFL.txt.meta": "b047a8c5f3f5c625becfafe77f2c7ac1bae85260132d17d50d220e8c0310a170"
+  },
+  "note": "Only newly added regional font assets, their Unity meta files and OFL licenses. NativeLobby.cs is an existing owned source file and is excluded from this new-file manifest."
+}
