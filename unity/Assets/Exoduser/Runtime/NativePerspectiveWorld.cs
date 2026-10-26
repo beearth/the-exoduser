@@ -236,6 +236,14 @@ namespace Exoduser.UnityPort
         {
             foreach (var pair in chunks) { if (pair.Value.go != null) Destroy(pair.Value.go); }
             chunks.Clear();
+            foreach (var go in massObjects)
+                if (go != null)
+                {
+                    var filter = go.GetComponent<MeshFilter>();
+                    if (filter != null && filter.sharedMesh != null) Destroy(filter.sharedMesh);
+                }
+            massObjects.Clear();
+            if (massMaterial != null) Destroy(massMaterial);
             if (litMaterial != null) Destroy(litMaterial);
         }
     }

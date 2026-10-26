@@ -28,6 +28,33 @@ class Program
   s=Make();int draws=0;s.Random01=()=>{draws++;return .5;};s.CanMove=(x,y,r)=>false;e=s.SpawnNormalEnemy(40,0);Check(e==null&&draws==0,"rejected position consumes no enemy RNG");
   s=Make();e=s.SpawnNormalEnemy(40,0);s.HurtEnemy(e,1750);s.Tick(0,0,100,0,false,true);Check(s.CollectedLoot.Count==0,"unimplemented item factory cannot fake pickup");
   var mapData=JsonSerializer.Deserialize<MapData>(File.ReadAllText(args[1]),new JsonSerializerOptions{IncludeFields=true});var map=new SourceMap(mapData);
+  var massPath=Path.Combine(Path.GetDirectoryName(args[1]),"ch1_view_masses.json");
+  using(var massDoc=JsonDocument.Parse(File.ReadAllText(massPath)))
+  {
+   var mass=massDoc.RootElement;
+   var rects=JsonSerializer.Deserialize<int[]>(mass.GetProperty("rects").GetRawText());
+   var profile=new MassTerrainProfile(mapData.width,mapData.height,mapData.tileSize,rects,mass.GetProperty("viewHeight").GetSingle());
+   Check(profile.SolidTileCount==19755,"mass profile preserves 19755 authored solid tiles");
+   int mismatches=0,internalEdges=0,exposedEdges=0;
+   for(int ty=0;ty<mapData.height;ty++)for(int tx=0;tx<mapData.width;tx++)
+   {
+    bool solid=mapData.tiles[ty*mapData.width+tx]==1;
+    if(profile.IsSolidTile(tx,ty)!=solid)mismatches++;
+    if(!solid)continue;
+    if(profile.HasExposedSide(tx,ty,1,0))exposedEdges++;else internalEdges++;
+   }
+   Check(mismatches==0,"mass visual occupancy matches source collision tiles exactly");
+   Check(exposedEdges>0&&internalEdges>0,"mass exposes only the authored outer boundary");
+   float min=float.MaxValue,max=float.MinValue,largestStep=0f;
+   for(int ty=0;ty<mapData.height;ty++)for(int tx=0;tx<mapData.width;tx++)
+   {
+    float x=tx*mapData.tileSize,y=ty*mapData.tileSize;
+    float a=profile.HeightAt(x,y),b=profile.HeightAt(x+mapData.tileSize,y);
+    min=Math.Min(min,a);max=Math.Max(max,a);largestStep=Math.Max(largestStep,Math.Abs(a-b));
+   }
+   Check(max-min>=120f&&max>=200f&&min>=40f&&max<=300f,"mass rises into a broad bounded outer volume");
+   Check(largestStep<=45f,"mass height changes smoothly across tile seams");
+  }
   Check(mapData.width==200&&mapData.height==200&&mapData.chunks.Length==64,"original200x200 map/64chunks");
   Check(map.CanMove(4020,7420,15),"original south start is walkable");
   Check(!map.CanMove(0,0,15)&&!map.CanMove(-1,100,15)&&!map.CanMove(float.NaN,0,15),"map wall bounds/nonfinite rejected");
