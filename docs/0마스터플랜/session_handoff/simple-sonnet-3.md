@@ -1,48 +1,41 @@
-# 단순작업3(Sonnet) 인계 — 2026-10-26 (밤)
+# 단순작업3(Sonnet) 인계 — 2026-10-26 (PAINTGROUND-R 완료 직후, 컨텍스트 302K)
 
-- 세션 id `b8b2b4c2…` (local_b8b2b4c2-…) / Sonnet 5.5 / Unity 3D 맵 구현·캡처 담당(맵 총괄 전속). 모든 응답 한국어.
+- 세션 id `local_b8b2b4c2-…`(단순작업3, 이전 인계 기준; 이 세션의 시작 메시지 발신은 유니티 전체 총괄) / Sonnet 5.5 / Unity 3D 맵 구현·캡처 담당(맵 총괄 전속). 모든 응답 한국어.
 - 소속·연결: 맵 총괄 `local_9d17d95b-239c-4254-8bef-555b6c5e16e8`(명세·승인·검수, 현재 상위) · 디자인총괄(시각 판정 단일 창구) `local_eb8a8577-c0e4-4a9f-b628-fac0c8549dbf` · 맥북 총괄 `local_f25393ea-f5e3-45f1-80fa-c16e9daa4c6c` · 유니티 전체 총괄 `local_a65bb55a-bb3e-4c4a-a93d-412fc163bd80` · CTO `local_7072229c-70cf-4fdf-ab35-c3c59e683d53` · 단순작업4(텍스처·데칼 생성) `local_ee476d71-fea4-4528-8bbd-a09b9f527ba2`. 구 디자인총괄 `a1efbc31`은 퇴장(요청 보내지 말 것).
 
 ## 기준 문서(SSOT)
-- 맵 보드 `docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md` · 기획서 `UNITY_MAP_HQ_PRODUCTION_PLAN_20261026.md`(§4.5 L1~L9, §4.6) · **아트 바이블은 `docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md` 하나뿐**(맵 총괄 지시). `UNITY_ART_BIBLE_V1_20261026.md`는 대체됨 — 읽지 말 것(PAINTGROUND는 V1 기준으로 작업했음).
-- 내 문서(작업 트리): `docs/engine/UNITY_MAP3D_S2_/SLICE_/LIFE1_/M1_IMPORT_20261026.md`.
+- 맵 보드 `docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md` · 기획서 `UNITY_MAP_HQ_PRODUCTION_PLAN_20261026.md`(§4.5 L1~L9, §4.6) · **아트 바이블은 `MAP_ART_BIBLE_v2_20261026.md` 하나뿐**. 작업 트리(`E:/exoduser-wt/pc-unity-map3d`)에는 이 파일이 없다 → `git show fc4989628:"docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md"`로 읽는다(`E:/exoduser-wt/_out/design-reconcile/`에도 사본).
+- 내 문서(작업 트리): `docs/engine/UNITY_MAP3D_S2_/SLICE_/LIFE1_/M1_IMPORT_20261026.md`(SLICE 문서 끝에 PAINTGROUND·PAINTGROUND-R 절).
 
 ## 작업 위치·커밋 (전부 push됨)
-- worktree `E:/exoduser-wt/pc-unity-map3d`, 브랜치 `claude/unity-pc-map3d-20261026`, Unity `G:\unity\Editor\6000.6.7f1\Editor\Unity.exe`, Win64 빌드.
-- `b1b1d859b` S2(조준·충돌 오버레이·조명) → `e64e57889` 슬라이스 v1 → `23451c97a` v2 → `0bf374355` LIFE1+M1 본체 → **`db58d8c86` PAINTGROUND**(최신, 미보고 후속 없음).
-- 커밋 규칙: 원래 맥북 총괄이 커밋. 맵 총괄이 단위별로 "경로 지정 커밋·비강제 push"를 허용할 때만 한다. `git add -A` 금지, 재임포트 `.meta`·`FirstPlayable.unity`·`SceneTemplateSettings.json`·`unity/Tools/inventory-navigation/bin|obj`·미참조 `floor_v01b_normal/height.png`·`mass_v01_height.png`는 절대 스테이징하지 않는다. pre-commit이 `tools/guard.baseline.json`을 바꾸면 `git checkout -- tools/guard.baseline.json`.
+- worktree `E:/exoduser-wt/pc-unity-map3d`, 브랜치 `claude/unity-pc-map3d-20261026`, Unity `G:\unity\Editor\6000.6.7f1\Editor\Unity.exe`, Win64.
+- `db58d8c86` PAINTGROUND → `25dbeb377` **PAINTGROUND-R** → **`addf58c4f`**(LF 복구, 최신 tip). 중요: Python `open(...,'w')`는 Windows에서 CRLF로 쓴다 → 소스는 LF 저장소이니 python 편집 뒤 `sed -i 's/\r$//'` 필수(이번에 한 번 틀려 후속 커밋으로 복구).
+- 커밋 규칙: 맵 총괄이 "단위마다 1커밋, 그 단위에서 바꾼 파일만 경로 지정(`git commit <경로>`), 비강제 push"를 허용했다. `git add -A`·stash·reset·rebase·force 금지. 재임포트 `.meta`·`FirstPlayable.unity`·`SceneTemplateSettings.json`·`unity/Tools/inventory-navigation/bin|obj`·미참조 `floor_v01b_height/normal.png`·`mass_v01_height.png`는 절대 스테이징 금지. pre-commit이 `tools/guard.baseline.json`을 바꾸면 `git checkout -- tools/guard.baseline.json`.
 
-## 현재 슬라이스(START 초점 4020,7420, 1920×1080) 구조 요약
-- 지면 `Look3DGroundLayered`: 원본 손그림 청크 64개(Unity·Godot·웹 SHA 동일)를 3850×2100 렌더텍스처로 합성해 1:1 투사 → 기본색. GPT 4레이어는 세부 법선(0.2)·roughness·전이 가중치만. 색조 `SliceGroundToneDefault (1.72,1.0,0.94)`(옥스블러드, 중앙 L p50 14.1). 칠한 빛 70/동적 30(`PaintDynamicWeight`, `_L3D_PaintRef`), 점광원 웅덩이는 별도 가중(`_L3D_Pool.z`, 이득 5.0), 캐노피 고보.
-- 외곽 `Look3DMass`(맥동·뿌리 바람), 슬롯→에셋 교체 `Map3DAsset`(매니페스트 비면 OBJ 폴백, 출처 칸 필수 — `NativePerspectiveWorld.Assets.cs`, `Look3DProp.shader`, `Editor/Map3DMeshImport.cs`).
-- 생동감 `NativePerspectiveWorld.Life.cs`: `Look3DGrass`(풀 928, 인스턴싱, 바람·플레이어 밀기), GPU 쿼드 입자 `Look3DMote`(Particle System 모듈이 프로젝트에 꺼져 있고 `Packages` 변경 금지라 정점 셰이더로 구현), 광원 숨쉬기, 고보. 시간은 `SetLifeTime/ReleaseLifeTime`.
-- 카드 `NativePerspectiveWorld.Cards.cs`(원본 prop 직립 카드, 바닥 가림 0.087%). 슬라이스 전용 추가 광원 4개는 임의값(독액/진홍/안개/독액).
-- 슬라이스 실행 인자: `--unity-world3d-slice`, `--unity-world3d-fps-seconds N`, `--unity-world3d-ground-tone=r,g,b`(톤만 바꿔 재촬영, 재빌드 불필요), `--unity-world3d-assets=<매니페스트>`, `--unity-world3d-silhouette-shadow`.
+## 완료한 단위: PAINTGROUND-R (맵 총괄·디자인총괄에 보고 완료, 판정 대기)
+- 증거 `E:/exoduser-wt/_out/pc-map3d-paintground-r/`(시트 `sheet_before_after_target.jpg`, 크롭 3, 새 컷, slice.json, fps). 빌드 `…/map3d-slice/buildR3`, 캡처 `captureR3`.
+- 확정 상수는 `NativePerspectiveWorld.SliceGrade.cs`(`SlicePoolGain 9`, `SlicePoolWeight 2.4`, `SliceFloorOutsidePools 0.90`, `SlicePaintShadow 0.5`, `SliceMass*`) 와 `Slice.cs RetuneSliceLights()`(광원 12 독액 좌·13/14 진홍 우·15 소등). 실측: 바닥 중앙 p50 13.0·외곽 몸통 p50 8.4·전체 L*≥50 0.42%·FPS 119.7.
+- 자가 관찰 약점: 독액 웅덩이(좌)가 풀 색에 가림, 능선 상아 빛면이 크림 얼룩처럼 보임(메시 교체 대상). 디자인총괄 판정이 RETOUCH로 오면 `--unity-world3d-tune=pgain,pz,pdark,pshadow,mbody,msinew,mbone,mwet,pblob=값`으로 재빌드 없이 재촬영해 조정(`E:/exoduser-wt/_out/map3d-slice/tune_try2.sh <빌드태그> <출력태그> "<k=v,…>"`, 측정 `…/scratchpad/vstats.py` 대신 `E:/exoduser-wt/_out/map3d-slice/lstats.py massstats.py`, 시트 `make_pgr_sheet.py <이전> <새> <목표> <출력폴더>`).
 
-## 도구 (재사용)
-- `E:/exoduser-wt/_out/map3d-slice/build_and_capture.sh <태그> <FPS초>` — 빌드+캡처+요약(`build<태그>`, `capture<태그>`). `tone_try.sh <빌드> <출력태그> r,g,b`. `lstats.py`·`massstats.py`(명도 L\* 실측), `make_sheets14.py`·`make_slice_compare.py`(시트), 체크 PASS 5/5와 발자국 위반 0이 기본.
-- 파일 편집은 python 스크립트 파일(`E:/exoduser-wt/_out/pc-map3d/s2/edit_*.py`)을 Write 도구로 만든 뒤 실행(Bash 인라인 heredoc이 길면 EOF 파싱 오류가 난 적 있음).
-- 증거 폴더: `E:/exoduser-wt/_out/map3d-slice/{capture8,14,21,27f, life1, sheets14}`, `E:/exoduser-wt/_out/pc-map3d-paintground/`(최신 시트·크롭), Godot 기준 `E:/exoduser-wt/_out/godot-look001-refs-v2/`(C/D·ALTAR·compare).
+## 다음 단위: TOXIC (아직 시작 안 함 — 새 단위는 재생성 뒤에)
+- 명세 `E:/exoduser-wt/_out/pc-map3d-toxic/SPEC.md`(읽기만 했고 코드 변경 없음). 요지: 비보행 구역(53점 경계 바깥 띠·포켓·덩어리 틈)에 독성 늪 다수(생성기+시드, 손 배치 금지) + 양 사이드 독성 강(남→북) + 새 셰이더 `Look3DToxicSurface` + 기포(GPU 인스턴싱, 화면당 상한 상수) + 흐물거림 + 강 리본 메시 + 독기 안개 + 소리 위치 목록(T1~T6) + **§2.5 LIFE1-R 풀 RETOUCH**(군락 3~12포기·전투 중앙 비움·몸통 암색·끝만 광원색·밑동 AO·LIFE1 원본 전환 인자 + 비교 컷 2장). 색은 바이블 v2 §6(독액 40~65°, 몸체 `#3a2e0a`~`#4a3a0c`, 막 `#4a4220`~`#5a5030`, 발광 코어 L*≤35, 독액 표면 ≤12%·발광 ≤3%, 상수 한 곳에 모으기).
+- 보드 §3 좌표(R2 사이드·R5 제단 컷)는 맵 보드 파일에서 확인 필요(슬라이스 영역 `SliceRect` 2100,5900,3850×2100 밖이면 근거 좌표를 보고서에 적음). 문서 `docs/engine/UNITY_MAP3D_TOXIC_20261026.md` 신규. 이미지 생성·Meshy 금지.
+- 규모가 크므로(셰이더·리본 메시·인스턴싱 기포·생성기·풀 개편) 착수 때 맵 총괄에 단계 분할(예: T1 늪 표면+생성기 → T2/T3 기포·흐물 → T4 강 → 풀 RETOUCH)을 제안하고 단계마다 1커밋.
 
-## 진행 중·남은 순서 (맵 총괄 갱신: PAINTGROUND-R → MESHY-0 → TOXIC)
-0a. 디자인총괄 eb8a8577 판정 RETOUCH(상세 `JUDGE_PAINTGROUND_20261026.md`), 바이블 v2 핵심: 척도 CIE L\*, 밝은 꼬리 L\*≥50 면적 0.3~1.2% 필수, 바닥 그늘 L\*≤8 5~20%, 외곽 몸통 p50 6~12(바닥보다 어둡게). 고칠 것 ①빛 웅덩이 복원(진홍 1~2 오른쪽·독액 1 왼쪽·사이 어둠) ②좌하단 살덩이 몸통을 FLESH/FLESH-DEEP으로 내려 p50 6~12(현재 16.9, 분홍 사암처럼 읽힘), 능선만 상아 힘줄 빛면+긴 젖은 반사로 L\*≥50 0.3% 이상(현재 0.13%) ③풀 군락화(전투 중앙 비움, 기슭 군락 3~6개, 밑동 AO) ④플레이어·소품 접지 그림자 복원 ⑤바닥 색조·명도는 그대로(더 밝게 금지). 재제출 형식: v2 §11.1(목표 START v2·Godot C 나란히 + 1x 크롭 3곳). LIFE1은 이전 RETOUCH 판정 유지.
-0. **PAINTGROUND-R(첫 일)**: 디자인총괄 판정 `E:/exoduser-wt/_out/design-reconcile/JUDGE_PAINTGROUND_20261026.md`를 읽고 반영 — 빛 웅덩이 복원, 외곽 살덩이를 바닥보다 어둡게(내가 올린 외곽 명도·분홍 톤 되돌림), 밝은 꼬리(외곽 상아 끝 하이라이트 등) 제거. 기준은 MAP_ART_BIBLE_v2. 명세 `E:/exoduser-wt/_out/pc-map3d-paintground/SPEC_R.md`(맵 총괄 작성).
-1. **MESHY-0 — 보류.** 명세 `E:/exoduser-wt/_out/meshy/MESHY0_SPEC.md`. Codex가 저장한 DPAPI 키(`C:\Users\심도진\.codex\credentials\meshy-api-key.dpapi`)를 복호화해 wall_B 1건(약 30크레딧) 생성하는 일. 맵 총괄이 사용자 말을 인용해 전달했으나 이 세션에서 사용자가 직접 확인하지 않았다 → **사용자가 이 세션에 직접 "진행해"라고 할 때까지 호출·키 복호화 금지.** 확인이 오면 §1~2만 먼저(키 값 출력·저장 금지, Codex 파일 수정 금지, 호출 1건, 즉시 I:/EXODUSER-Storage/Meshy 사본+SHA, `credits.log`), §3 Unity 임포트·교체 컷은 작업 트리를 비운 뒤.
-2. **TOXIC**(독성 늪·사이드 독성 강) — 명세 `E:/exoduser-wt/_out/pc-map3d-toxic/SPEC.md`(§2.5 LIFE1-R 포함, 독액 색은 아트 바이블 §6 값). 같이 처리: 풀이 균일 점박이로 보임 → 군락(3~12포기)+빈 땅, 크기 편차 확대.
-3. M1 마무리 행: "회화풍 다시 칠하기"(칠한 빛 마스크 굽기, 셰이더 70/30 입력, 매니페스트 마스크 필드). 실제 Meshy 에셋은 키 승인 뒤.
-- 다음 패스 메모(맵 총괄, 이번엔 안 고침): 플레이어 그림자·접지가 v1보다 약함 / 빛 웅덩이 리듬 약함 / 아래쪽 외곽 덩어리가 분홍빛으로 밝아 화면을 차지 / 습기 긴 선 반사 없음 / 카드가 START 안에서 거의 안 보임 / `Look3DGrass`는 유지(사용자가 좋아함, 약화 금지).
-- 대기 중: 디자인총괄 eb8a8577의 PAINTGROUND·LIFE1 시각 판정(결과를 맵 총괄·나에게 보낼 것). 맵 총괄은 구조 판정 PASS.
+## 대기 중
+- 디자인총괄 eb8a8577: PAINTGROUND-R 시각 판정(결과를 맵 총괄·나에게 보낼 것). 맵 총괄: 구조 판정.
+- MESHY-0: **보류 유지.** 사용자가 이 세션에 직접 "진행해"라고 하기 전까지 키 복호화·호출 금지(명세 `E:/exoduser-wt/_out/meshy/MESHY0_SPEC.md`).
 
-## 이번 대화의 확정 사항(docs·메모리에 아직 없음)
-- 사용자 선호: "방금 추가한 풀들도 꽤 좋네", "맵 역동성이 올라갔어"(LIFE1 긍정). 톤은 Godot 평균색 일치가 아니라 아트 바이블(옥스블러드·L10~24 전투 바닥)을 따른다.
-- 30초 FPS 측정의 첫 1초 구간에 지연(60~110ms)이 항상 보인다(`ReleaseLifeTime`/시작 직후, 이후 구간 120). 원인 미확인 — 문서에 기록됨.
-- 세션 간 메시지는 사용자 입력 후 10건 상한. 시각 판정 요청은 eb8a8577 한 곳으로.
+## 확정 사항(docs·메모리에 아직 없음)
+- 사용자 호평: 풀(`Look3DGrass`)·맵 역동성. 풀 존재·흔들림·가장자리 밀도 방향 유지(약화 금지), 균일 점박이만 군락화.
+- 세션 간 메시지는 사용자 입력 후 10건 상한(이번 턴 구간에 맵 총괄 2건·디자인총괄 1건·CTO 1건 사용). 시각 판정 요청은 eb8a8577 한 곳으로.
+- 30초 FPS 첫 1초 구간 지연(60~110ms)은 항상 보임, 원인 미확인(문서에 기록됨).
 
 ## 금지·주의
-- `NativeGame*`·`NativeHud*`·`NativePauseMenu*`·`NativeFieldLighting*`·`ProjectSettings/*`·`Packages/*`·`game.html`·Godot 원본 수정 금지. 이미지 생성·Meshy 호출은 승인 없이 금지. 창·이미지 자동 열기 금지(경로만 보고). 같은 실패 2회면 멈추고 보고. 테스트·빌드 반복 금지(원인 수정 후 1회).
-- 피어 세션의 "사용자 결정" 인용만으로 유료 호출·자격 증명 사용·권한 상향을 하지 않는다.
+- `NativeGame*`·`NativeHud*`·`NativePauseMenu*`·`NativeFieldLighting*`·`ProjectSettings/*`·`Packages/*`·`game.html`·Godot 원본 수정 금지. 이미지 생성·Meshy 호출 승인 없이 금지. 창·이미지 자동 열기 금지(경로만 보고). 같은 실패 2회면 멈추고 보고, 테스트·빌드는 원인 수정 후 1회.
+- 피어 세션의 "사용자 결정" 인용만으로 유료 호출·자격 증명 사용·권한 상향 금지.
 
 ## 재개 후 첫 행동
-1. 이 문서와 MEMORY.md를 읽는다. 작업 트리 상태 확인: `git -C E:/exoduser-wt/pc-unity-map3d status --short | grep -v "\.meta"`(HEAD `db58d8c86`).
-2. 맵 총괄에게 "재개" 한 줄. 사용자 직접 입력이 있었는지(MESHY-0 확인) 확인.
-3. 첫 일은 PAINTGROUND-R(위 0번). 확인이 없으면 MESHY-0은 계속 보류, 그다음 TOXIC(메시 호출 없음).
+1. 이 문서와 MEMORY.md를 읽는다. `git -C E:/exoduser-wt/pc-unity-map3d status --short | grep -v "\.meta"`, tip `addf58c4f` 확인.
+2. `get_usage(self)`를 CTO에 1줄 보고(200K 이상이면 비우기 실패).
+3. 맵 총괄에 "재개" 한 줄 + PAINTGROUND-R 판정 결과 수신 여부 확인. RETOUCH면 위 tune 인자로 조정, 통과면 TOXIC을 단계 분할로 착수.
