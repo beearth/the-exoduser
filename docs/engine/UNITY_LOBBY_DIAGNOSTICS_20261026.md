@@ -19,3 +19,5 @@
 2026-10-26 후속: HEAD `207ffc8bf` 신규 일반 Player의 `lobby-normal.png`에서 버튼·안내가 보이지 않는 것을 실제 화면으로 확인했다. 옵션을 넣은 검수 실행의 표시·클릭은 아직 미검증이다. [출처·검수](UNITY_MAC_HEAD_PLAYER_20261026.md).
 
 2026-10-26 추가: 별도 일반 게임 HUD의 캐릭터 이름표도 `NativeLobby.DiagnosticUiEnabled`가 true일 때만 그린다. 새 ARM64 Player의 일반 게임 `normal-hud.png`에서 이름표 미표시와 기존 우상단 상태·하단 HUD 표시를 확인했다. 진단 옵션 화면은 소스 분기로만 검증했다. [정확한 게이트·빌드·화면 영수증](UNITY_MAC_LOCALE_INTEGRATION_20261026.md).
+
+2026-10-26 실측 후속: 같은 빌드의 `--unity-ui-diagnostics` Player에서도 확인했다. `--unity-frontend-review -output` 격리 캐릭터 `검수자`로 연습 화면에 진입했고 `diagnostic-nameplate-720p.png`에 `검수자 · Preview`와 기존 우상단 상태·하단 HUD가 함께 보인다. 일반 Player의 미표시와 진단 Player의 표시가 모두 실제 화면으로 확인됐다. [격리 경로와 PNG](UNITY_MAC_LOCALE_INTEGRATION_20261026.md).
