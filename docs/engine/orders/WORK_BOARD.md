@@ -1,3 +1,7 @@
+## 2026-10-27 Mac 시작 인벤토리 seed QA 교정·전체 Verify
+
+PC-U04b 정본의 기본 장비15+고유 유골함1=전체16, belt null, bag10/어픽스20과 Mac Editor 구형 `worn==15` 충돌을 확인했다. 제품 seed/oracle byte 동일, 집중 정적8/8. `VerifyInventory`의 QA 조건만 분리한 뒤 Unity6000.6.7f1 실제 Metal Editor 전체 `Verify` 단회 exit0/receipt PASS. HUD GPU·Inventory·Lobby 순차 PASS; Player/PC AMD·실기 UI 검사 아님. [슬롯·ID·SHA·로그](../UNITY_MAC_INVENTORY_SEED_QA_20261027.md).
+
 ## 2026-10-27 Mac A06 HUD Metal Editor 판정
 
 PC 계측·웹 clipping hunk만 Mac Editor QA에 적용했다. Unity6000.6.7f1 `-nographics` 없는 단회 실행에서 `Metal / Apple M5 Pro / Gamma`, raw RGBA 5점, composition PASS·HUD GPU resource mask PASS. 전체 `Verify`는 다음 Inventory seed counts 예외로 exit2/receipt없음이며 이 실패를 HUD GPU 오류로 계산하지 않는다. Player·Runtime·셰이더·Gamma·개인앱 변경0. [정확 수치·로그·남은 원인](../UNITY_MAC_A06_GPU_METAL_20261027.md).

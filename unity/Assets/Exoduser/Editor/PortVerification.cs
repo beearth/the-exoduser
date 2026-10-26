@@ -81,8 +81,10 @@ public static class PortVerification {
  static void VerifyInventory(){
   var data=Resources.Load<TextAsset>("Data/inventory_seed");if(data==null)throw new Exception("Missing original inventory seed");
   var inv=new InventoryState(NativeInventorySeed.Load());int worn=0,affixes=0;
-  foreach(var i in inv.Equipped)if(i!=null)worn++;foreach(var i in inv.Bag){if(i.rarity!=1)throw new Exception("Original magic bag rarity");affixes+=i.affixes.Length;}
-  if(worn!=15||inv.Bag.Count!=10||affixes!=20)throw new Exception("Original inventory seed counts");
+  foreach(var i in inv.Equipped)if(i!=null&&i.slot!="ossuary")worn++;foreach(var i in inv.Bag){if(i.rarity!=1)throw new Exception("Original magic bag rarity");affixes+=i.affixes.Length;}
+  var ossuary=inv.GetEquipped("ossuary");
+  if(worn!=15||ossuary==null||ossuary.name!="전대의 유골함"||ossuary.rarity!=5||inv.GetEquipped("belt")!=null||inv.Bag.Count!=10||affixes!=20)
+   throw new Exception("Original inventory seed counts: starter="+worn+" ossuary="+(ossuary==null?"missing":ossuary.name)+" bag="+inv.Bag.Count+" affixes="+affixes);
   var s=new Simulation(SourceStarterFixture.CreateKiSlash());s.ApplyEquipment(inv);if(s.Player.MaxHp!=526||s.Config.WeaponAttack!=18)throw new Exception("Inventory starter adapter mismatch");
   if(s.Config.DamageMultiplier!=.7)throw new Exception("Equipment lost double damage precision");
   s.Player.Level=2;s.ApplyEquipment(inv);if(s.CalculateKiSlashDamage(1)!=1999||s.Config.StrengthFlat!=0)throw new Exception("Equipment double-counted level strength");

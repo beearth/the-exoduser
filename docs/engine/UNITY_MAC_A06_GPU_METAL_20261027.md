@@ -1,5 +1,7 @@
 # Mac A06 HUD Editor Metal 계측 — 2026-10-27
 
+> 2026-10-27 후속: 아래 exit 2는 당시 구형 Inventory seed QA의 결과다. [유골함 포함 계약 정정·전체 Verify 재검](UNITY_MAC_INVENTORY_SEED_QA_20261027.md)에서 같은 Metal 장치의 전체 검사 exit 0/receipt PASS를 확인했다. 최초 실패 로그와 raw RGBA는 이력으로 보존한다.
+
 ## 범위·인수
 
 PC `244fc4b0ed16f8a6140cd2c60d1cc1b77fd5328d`의 GPU 계측 patch SHA256 `39f78d63c42760a7bfafe2a6e5dcb92865939d3af56f9f6bc8f452ddfdc3725a`, `97bddd6bd7de3a1692870f2e22c187821e576d9e`의 웹 clipping 계약 patch SHA256 `9d3f3f5501019ce931f39c82bb599728de84ebb94fbc2a5e67126e4fc854f4f4`를 Mac `PortVerification.cs`의 해당 hunk에만 적용했다. Mac 수정 전 Editor SHA256은 `ff55017265a1939c45eb3d8dc65191dd67c5643ca0c1b0a243518fe05bbe620a`, 수정 후는 `e7b2813a44a51568a5d8163a788428cf95d0e1d1ea53858c49a849ae774e37e2`다. 수정 전 사본·두 patch·실행 로그는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A06-GPU-METAL-20261027/`에 보존했다. Runtime, 셰이더, Gamma, 자원, 저장, 개인 앱은 변경하지 않았다.

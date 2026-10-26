@@ -1,3 +1,5 @@
+2026-10-27 Mac 시작 seed QA 후속: PC-U04b 정본은 기본15+고유 유골함1=전체16, belt빈칸, bag10/어픽스20. Editor의 구형 전체15 검사만 정정, 제품 seed·아이템·전투·저장0변경. 집중 oracle대조8/8 뒤 Unity6000.6.7f1 Metal 전체 Verify 1회 exit0/receipt PASS. [슬롯·ID·검수](engine/UNITY_MAC_INVENTORY_SEED_QA_20261027.md).
+
 2026-10-27 Mac A06 HUD Editor Metal 계측: PC 계측·웹 clipping hunk만 적용. Unity6000.6.7f1 Metal/Apple M5 Pro/Gamma, raw RGBA5점, composition·HUD GPU mask PASS. 전체 Verify는 후속 Inventory seed counts 예외로 exit2/receipt없음. Player·Runtime·셰이더·Gamma 변경0. [수치·경계](engine/UNITY_MAC_A06_GPU_METAL_20261027.md).
 
 2026-10-27 Mac A04 생성 이야기 가드: PC `08af46705`의 `NativeLobby.Characters.cs` 한 줄을 인수해 저장 성공 뒤 외형0에만 기존 전사 이야기·입장을 호출한다. 외형1–4 잠금·로스터/save/미디어는 불변이다. Mac Unity6000.6.7f1 Editor 컴파일1회 종료0/C# 오류0, Player 빌드0. PC 추출 검사6/6은 Mac 실기 GUI 검수가 아니다. [계약·경계](engine/UNITY_MAC_WARRIOR_STORY_20261025.md#2026-10-27-a04-생성-뒤-외형별-이야기-분기).
