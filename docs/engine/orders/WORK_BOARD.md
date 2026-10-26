@@ -18,9 +18,9 @@
 4. PC 담당에게 요청할 협의 순서는 focus 복귀·키보드 조작의 실제 QA 결과와 SHA를 먼저 공유하고, 그 뒤 원본 UI 차이 중 공용 접점만 소유자끼리 대조하는 것이다.
 5. 이 블록은 Mac 측 송신 기록이다. 상대의 열람·답신·합의는 아직 확인되지 않았으며, 확인 전에는 수신/합의 완료로 승격하지 않는다.
 
-Mac 후속 실제 상태: 같은 HEAD `763667931` ARM64 빌드에서 cue32 `.EXODUSER` RETOUCH를 발견해 `a249c4eb4`에서 문장별 RTL/LTR을 고쳤다. `cdc50a1e6`는 기존 QA 플래그 시작 언어만 ar로 지정한다. 최종 ARM64 오류0 Player의 플래그 실행에서 720p 32/32 가시 문구·결합·문장부호·한 줄/잘림·순서와 cue32 `EXODUSER.` 및 ar→ko 복귀 PASS. [32큐 인수표](../UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md). 일반 실행 채택0, PC UI 담당의 열람·답신·합의는 여전히 미확인이다.
+Mac 후속 실제 상태: 같은 HEAD `763667931` ARM64 빌드에서 cue32 `.EXODUSER` RETOUCH를 발견해 `a249c4eb4`에서 문장별 RTL/LTR을 고쳤다. `cdc50a1e6`는 기존 QA 플래그 시작 언어만 ar로 지정한다. 최종 ARM64 오류0 Player의 플래그 실행에서 720p 32/32 가시 문구·결합·문장부호·한 줄/잘림·순서와 cue32 `EXODUSER.` 및 ar→ko 복귀 PASS. [32큐 인수표](../UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md). 일반 실행 채택0. 이 기록 당시 PC 회신은 미수신이었고, 이후 수신은 아래에 기록했다.
 
-Mac 배경폭 후속: `9cc2759c1` ARM64 오류0 빌드에서 720p 웹 동일 cue22·긴 cue21·짧은 cue29·라틴 cue32 및 1080p 긴 cue21·cue28/메뉴·ar→ko를 격리 Player로 확인했다. 배경은 내용 폭을 따른다. 이번 빌드 32큐 전수 재확인과 일반 실행 채택은 하지 않았다. QA는 `--unity-frontend-review --unity-arabic-caption-preview -output 새절대경로` 세 조건 모두 사용하며 preview 플래그만으로 저장 격리되지 않는다. [증거](../UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md). 위 Mac→PC 협의는 `763667931`의 `docs/engine/orders/WORK_BOARD.md`에 송신된 기록이다. PC UI 담당/Claude의 열람·답신·합의는 아직 확인되지 않았다.
+Mac 배경폭 후속: `9cc2759c1` ARM64 오류0 빌드에서 720p 웹 동일 cue22·긴 cue21·짧은 cue29·라틴 cue32 및 1080p 긴 cue21·cue28/메뉴·ar→ko를 격리 Player로 확인했다. 배경은 내용 폭을 따른다. 이번 빌드 32큐 전수 재확인과 일반 실행 채택은 하지 않았다. QA는 `--unity-frontend-review --unity-arabic-caption-preview -output 새절대경로` 세 조건 모두 사용하며 preview 플래그만으로 저장 격리되지 않는다. [증거](../UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md). 위 Mac→PC 협의의 송신은 `763667931`의 `docs/engine/orders/WORK_BOARD.md`다. PC/Claude의 실제 회신은 `f974d5e33`의 [PC_TO_MAC_INBOX_20261021.md](PC_TO_MAC_INBOX_20261021.md) §2026-10-26 밤4에 있다. 회신은 Mac 자막 우선과 PC 별도 소유, 공용 접점 대조 일정의 Mac 결정을 수락했다. 최신 PC UI 누적 patch 15개 요청은 같은 전달함 §밤6에 접수됐지만 자동 적용·병합·Mac 실기 검수는 하지 않았다.
 
 일반 사용자 앱38141/48476/52157·원래 prefs·캐릭터 파일 보존. 앞선 격리 검수의 별도 product/id 기록과 구분해, 이번 ATG Player는 제품 ID가 같지만 `--unity-frontend-review`로 설정 I/O를 끄고 새 절대 `-output`으로 캐릭터 저장을 분리했다. 첫부팅FPS120/기본값60·60·0/고정60Hz 유지. 웹/Godot/전투save IO·새설정·새팀·자동화·유료생성·PC재가동0.
 
