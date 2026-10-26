@@ -150,6 +150,7 @@ export function render(entries) {
 export async function generate({ root = new URL('../', import.meta.url) } = {}) {
   const source = await readFile(new URL('game.html', root), 'utf8');
   const entries = extract(source);
+  // Godot 전용 생성기: godot/main 브랜치에서만 실행
   await writeFile(new URL('godot/scripts/native_pet_dialogue_catalog.gd', root), render(entries), 'utf8');
   return { total: Object.keys(entries).length, connected: Object.values(entries).filter(e => e.connected).length };
 }
