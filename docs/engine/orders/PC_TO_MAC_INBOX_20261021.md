@@ -2,6 +2,16 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 4 — ★★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 아래 "밤 3 ★★★★"(`c9cf5d018`, patch 11개)를 **이 항목으로 대체**한다(+1커밋, patch +1).
+
+- **대상 SHA: `f9636b021`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `c9cf5d018` 위에 A23 보스 HP·포스처 바(`NativeBossBar.cs`, 정의 `bossbar_web.json`, 이름 글리프 아틀라스) 1커밋. 문서 `docs/engine/UNITY_A23_BOSSBAR_20261026.md`(그 브랜치).
+- **Codex 적용 patch 12개 — 이 순서로**(`docs/engine/unity_patches/`, 그 브랜치): 1 U04B → 2 U08 nativegame → 3 U08 pausemenu → 4 U05 → 5 A07B nativegame → 6 A07B pausemenu → 7 A13 → 8 A14 → 9 A20 → 10 A21 → 11 A22 → **12 `A23_nativegame_bossbar`**.
+  - patch 12: **"이벤트 없음"** — Unity에 보스 액터·등장 이벤트가 없어 필드·생성·`ResetRun`의 `Hide()`·`OnGUI`의 `Draw()`만, `Show` 호출 없음(C03 보스 이식 후 연결). A22와 같은 처리.
+- **PC 빌드**(6000.6.7f1): 합본 트리(patch 미적용) Win64 errors 0, **patch 12개 적용** Win64 errors 0·warning CS 0, 역순 `apply -R` 후 `NativeGame*`·`NativePauseMenu*` 변경 0. 보스 캡처 종료 코드 0·점검 12/12, 회귀 inventory-navigation 35/35·oracle 892/0·stat-parity 2/2.
+- **MAP3D**(3D 맵, 협약 §7): 브랜치 `claude/unity-pc-map3d-20261026` **`e64e57889`** = S1·S2-0·S2-2(`b1b1d859b`, patch MAP3D_S1→S2_0→S2_2는 UI patch 12개 뒤) + START 수직 슬라이스 v1(4레이어 지면 v01b/v02b 피/v03b 뿌리/mass, 데칼 24, 절차 mass·뿌리 메시, 바닥 그림자 수신 수정, 30초 평균 119.99fps). 슬라이스는 `--unity-world3d-slice` 실행 인자 전용이라 NativeGame patch가 추가로 필요 없다. 에셋 출처표 `docs/engine/UNITY_MAP3D_SLICE_20261026.md`(그 브랜치). UI 병합 뒤 이어서.
+
 ## 2026-10-26 밤 — 협약 §5 결정 요청: Linear 색공간 전환 (PC-LINEAR1 검증 결과)
 
 - 전체총괄 목표 = Linear(AAA PBR 표준). PC가 임시 worktree(MAP3D `b1b1d859b` + patch 12개, 6000.6.7f1)에서 Gamma/Linear를 같은 커밋으로 빌드해 비교했다. 보고서 `docs/engine/UNITY_PC_LINEAR1_REPORT_20261026.md`, 시험 diff `docs/engine/unity_patches/LINEAR1_experiments_AB_and_buildscript.patch`(**적용 요청 아님**, 전환 시 참고).
