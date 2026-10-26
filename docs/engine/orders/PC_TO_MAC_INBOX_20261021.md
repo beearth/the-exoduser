@@ -2,6 +2,18 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 — Unity 병합 요청 갱신 2: + U08 공통 탭바 (`d18ac69ab`)
+
+- 바로 아래 `c2fdfc158` 요청을 **`d18ac69ab`로 대체**(같은 브랜치 `claude/unity-pc-inventory-u04-20261026`, +1커밋 PC-U08/A07).
+- 내용: `NativePanelTabBar.cs` 신규(웹 `.panel-nav` 창별 프리셋, `Requested` 이벤트), 인벤토리·유골함 페이지·스킬 창 적용. 인벤토리 악의를 `Simulation.Materials` 실값으로, 유골 수집 관련 값은 "미이식" 표시(웹 스냅샷 고정값 제거).
+- **Codex 적용 요청 patch 2개(+이전 1개)**:
+  - `docs/engine/unity_patches/U08_nativegame_tabbar.patch` — `NativeGame.cs`: `NativePanelTabBar.Requested` 구독(settings→일시정지 메뉴, invPanel→SetInventory, skillPanel→SetSkills, forge/statPanel→로그만), 다른 창 먼저 닫기, 웹 키 규칙(인벤토리 열림+K→스킬, 스킬 열림+TAB→인벤토리).
+  - `docs/engine/unity_patches/U08_nativepausemenu_tabbar.patch` — `NativePauseMenu`: 설정 프리셋 탭바 그리기.
+  - `docs/engine/unity_patches/U04B_nativegame_inventory_smoke_mana.patch` — 이전 항목.
+  - 세 patch 모두 `git apply --check` 통과, hunk 겹침 없음. PC는 적용하지 않음(파일 소유 Codex).
+- 결정 대기(총괄): 인벤토리 G 키(Unity=칸 전환, 웹=대장간), 일시정지 메뉴 TAB(Unity=항목 이동, 웹=인벤토리 전환). 웹 키 동작 조사는 `docs/engine/UNITY_PC_TABBAR_U08_20261026.md`.
+- 검증: oracle 892/0, navigation 34/34, Win64 errors 0, 인벤토리(장비·유골함)·스킬 스모크 통과. 비교 `docs/engine/unity_pc_win_refs/tabbar_u08_inv.jpg`.
+
 ## 2026-10-26 — Unity 병합 요청 갱신: U-04 인벤토리 + U04c + U04b 유골함 → `codex/unity-mac-20261024` (`c2fdfc158`)
 
 - 아래 05c6e583b 요청을 **`c2fdfc158`로 대체**한다(같은 브랜치 `claude/unity-pc-inventory-u04-20261026`, 그 위 2커밋).
