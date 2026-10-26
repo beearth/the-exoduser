@@ -47,14 +47,14 @@ public sealed class UiResumeReview : MonoBehaviour
     [Serializable] sealed class CaptionOracle { public int languageCount; public CaptionOracleRow[] rows; }
     [Serializable] sealed class CaptionOracleRow
     {
-        public string code;
+        public string code, fontResource;
         public int cueCount, visibleCodePoints;
         public string[] nanumMissing, notoMissing;
         public bool notoFallbackEligible;
     }
     [Serializable] sealed class CaptionCoverageResult
     {
-        public string code, status, fontName, cueText, missingCharacters;
+        public string code, status, fontName, fontResource, cueText, missingCharacters;
         public int visibleCharacterCount, missingCharacterCount;
         public bool expectedNoto, captionDrawn, shadowFontMatches;
     }
@@ -358,7 +358,7 @@ public sealed class UiResumeReview : MonoBehaviour
             data == null || data.captions == null || data.captions.Length != 29)
             throw new InvalidOperationException("Caption oracle and runtime data must each contain 29 languages");
         if (baseFont == null || notoFont == null) throw new InvalidOperationException("Caption font missing");
-        int complete = 0;
+        int complete = 0, expectedComplete = 0, expectedUnresolved = 0;
         var seen = new HashSet<string>(StringComparer.Ordinal);
         foreach (var row in oracle.rows)
         {
@@ -370,13 +370,30 @@ public sealed class UiResumeReview : MonoBehaviour
                 throw new InvalidOperationException("Missing runtime cues for " + row.code);
             if (row.notoFallbackEligible && (row.nanumMissing.Length == 0 || row.notoMissing.Length != 0))
                 throw new InvalidOperationException("Inconsistent Noto oracle row " + row.code);
-            bool unresolved = !row.notoFallbackEligible && row.nanumMissing.Length > 0;
-            var expectedFont = row.notoFallbackEligible ? notoFont : baseFont;
+            bool regional = !string.IsNullOrEmpty(row.fontResource);
+            if (regional && (row.nanumMissing.Length == 0 || row.notoFallbackEligible ||
+                !row.fontResource.StartsWith("Art/fonts/", StringComparison.Ordinal)))
+                throw new InvalidOperationException("Inconsistent regional oracle row " + row.code);
+            bool unresolved = !regional && !row.notoFallbackEligible && row.nanumMissing.Length > 0;
+            if (unresolved) expectedUnresolved++; else expectedComplete++;
+            var expectedFont = regional ? Resources.Load<Font>(row.fontResource) :
+                row.notoFallbackEligible ? notoFont : baseFont;
+            if (regional)
+            {
+                Check(expectedFont != null, row.code + " regional Font resource loaded: " + row.fontResource);
+                if (expectedFont == null) throw new InvalidOperationException("Regional Font resource missing: " + row.fontResource);
+            }
             string expectedCue = CueAt(language, lobby.CurrentVideo.Time - NativeLobby.WorldCueOffset);
             if (string.IsNullOrEmpty(expectedCue)) throw new InvalidOperationException("No paused cue for " + row.code);
             lobby.SetLanguage(row.code);
             yield return new WaitForEndOfFrame();
-            yield return Until(() => WorldCaptionReady(row.code, expectedCue, expectedFont),
+            if (regional)
+            {
+                bool selected = WorldCaptionReady(row.code, expectedCue, expectedFont);
+                Check(selected, row.code + " actual caption and shadow select exact regional Font object");
+                if (!selected) throw new InvalidOperationException("Regional caption/style selection failed for " + row.code);
+            }
+            else yield return Until(() => WorldCaptionReady(row.code, expectedCue, expectedFont),
                 row.code + " actual caption/style ready", 3f, false);
             var style = Style("CaptionStyleForLanguage");
             var shadow = Style("CaptionShadowForLanguage");
@@ -392,7 +409,7 @@ public sealed class UiResumeReview : MonoBehaviour
                     missing.Add(ch);
             }
             var result = new CaptionCoverageResult {
-                code = row.code, fontName = expectedFont.name, cueText = expectedCue,
+                code = row.code, fontName = expectedFont.name, fontResource = row.fontResource, cueText = expectedCue,
                 expectedNoto = row.notoFallbackEligible, captionDrawn = lobby.CaptionVisible,
                 shadowFontMatches = ReferenceEquals(style.font, shadow.font),
                 visibleCharacterCount = glyphs.Length, missingCharacterCount = missing.Count,
@@ -405,22 +422,23 @@ public sealed class UiResumeReview : MonoBehaviour
                 unresolvedLanguages.Add(row.code);
                 continue;
             }
-            bool preservedBase = row.nanumMissing.Length != 0 ||
+            bool preservedBase = regional || row.nanumMissing.Length != 0 ||
                 ReferenceEquals(style, baseStyle) && ReferenceEquals(shadow, baseShadow);
             bool passed = result.status == "COVERED" && result.shadowFontMatches && preservedBase;
             Check(passed, row.code + " complete 32-cue visible glyphs and selected style: " +
                 result.visibleCharacterCount + " chars, missing=" + result.missingCharacterCount);
             if (!passed) throw new InvalidOperationException("Supported caption coverage failed for " + row.code);
             complete++;
-            if (row.notoFallbackEligible)
+            if (row.notoFallbackEligible || regional)
             {
                 ExpectWorld(row.code, expectedCue, expectedFont);
                 yield return Capture("world-cover-" + row.code + "-720p", 1280, 720);
             }
         }
-        Check(complete == 24 && unresolvedLanguages.Count == 5,
-            "oracle-classified 24 fully covered and 5 UNRESOLVED languages");
-        if (complete != 24 || unresolvedLanguages.Count != 5)
+        Check(complete == expectedComplete && unresolvedLanguages.Count == expectedUnresolved &&
+            complete + unresolvedLanguages.Count == oracle.languageCount,
+            "oracle-classified " + expectedComplete + " fully covered and " + expectedUnresolved + " UNRESOLVED languages");
+        if (complete != expectedComplete || unresolvedLanguages.Count != expectedUnresolved)
             throw new InvalidOperationException("Unexpected caption coverage partition");
     }
 
