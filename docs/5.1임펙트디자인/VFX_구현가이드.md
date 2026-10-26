@@ -1457,3 +1457,8 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 2 / 정상 연결 | Main._ready의 world.set_player 뒤에 Player.bind_native_armor_inventory(Callable(source_state, read_current_inventory))를 연결한다. 실패하면 기존 _stop_source_player_startup 경로로 중단한다. source State/INV를 새로 만들거나 복원하지 않는다. |
 | 3 / 원 상수 | EL P=0/F=1/I=2/D=3/L=4/H=5/E=6. F→I, I→F, D→L, L→D, D→H, H→D, E→L, L→E는2. 동일 속성은 P0 제외0.5, 나머지는1. 기존 원 elMul/producer 분기·수치 변경0. |
 | 4 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
+
+
+## 2026-10-26 Godot 조명 작업본 지옥강타 표시 수정
+
+웹 수치 계약은 유지한다. 조명 작업본 native_skill_slots의 지옥강타 시트에 2셀 가중 프레임 연결, 셀 경계 .035 UV 알파 감쇠, 종료 draw 삭제를 적용했다. 원본 PNG·피해·비용·쿨·범위는 동일하며 Steam 설치 빌드에는 미배포다. [검증과 성능 한계](GODOT_GIANT_SLAM_VISUAL_FIX_20261026.md).

@@ -89,6 +89,7 @@ var _blade_rng := RandomNumberGenerator.new() # 원본 Math.random(비추적) �
 var _shatter_anims: Array = []
 var _ice_sheet: Texture2D
 var _add_layer: Node2D
+var _slam_layer: Node2D
 var _waves: Array = []
 var _zone_parts: Array = [] # 존 시각 파티클(37491s poolPart 상당 — 시각 전용·로컬 난수)
 var _visual_rng := RandomNumberGenerator.new()
@@ -132,6 +133,14 @@ func configure(main: Node, world: Node, player: Node2D, state: Node) -> bool:
 	sheet_material.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	_add_layer.material = sheet_material
 	add_child(_add_layer)
+	# Slam has cropped atlas edges; keep its feather material off ice-orb layers.
+	_slam_layer = SlamAdditiveLayer.new()
+	_slam_layer.host = self
+	var slam_material := ShaderMaterial.new()
+	slam_material.shader = preload("res://assets/vfx/slam_atlas_feather.gdshader")
+	_slam_layer.material = slam_material
+	add_child(_slam_layer)
+	move_child(_slam_layer, _add_layer.get_index()) # original order: slam, then ice
 	_configured = true
 	return true
 
@@ -141,6 +150,13 @@ class AdditiveLayer extends Node2D:
 	func _draw() -> void:
 		if is_instance_valid(host):
 			host._draw_additive_content(self)
+
+
+class SlamAdditiveLayer extends Node2D:
+	var host: Node2D
+	func _draw() -> void:
+		if is_instance_valid(host):
+			host._draw_slam_content(self)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -162,6 +178,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(_delta: float) -> void:
 	if not _configured:
 		return
+	var slam_was_active: bool = not _waves.is_empty()
 	# 35936~35937: 회복의 영역 안이면 _hdCdBonus=sp — 적용 대상은 cd별로 원본 라인 그대로:
 	# 36678 P._gslCd-=sp+_hdCdBonus(가속O) / 36517 P._gcCd-=sp(가속X) /
 	# 36679 P._hdCd-=sp(돔 자체 쿨은 가속 안 됨)
@@ -201,6 +218,9 @@ func _physics_process(_delta: float) -> void:
 			_waves[write] = wave
 			write += 1
 	_waves.resize(write)
+	# Redraw the empty list once as well: CanvasItem retains its previous commands.
+	if (slam_was_active or not _waves.is_empty()) and is_instance_valid(_slam_layer):
+		_slam_layer.queue_redraw()
 	if not _waves.is_empty() or not _zone_parts.is_empty() or not _read_fire_zones().is_empty() \
 			or _io_active or not _blades.is_empty() or not _shatter_anims.is_empty():
 		queue_redraw()
@@ -758,18 +778,28 @@ func _draw() -> void:
 
 
 ## ADD 자식 레이어 콘텐츠 — 인페르노 시트('screen' 56811)·보주 lighter 층·파쇄 VFX(lighter)
-func _draw_additive_content(canvas: Node2D) -> void:
+func _draw_slam_content(canvas: Node2D) -> void:
 	if _sheet != null:
 		for wave in _waves: # 56802~56813 영웅 시트(2×2 512 셀)
 			var p: float = float(wave["t"]) / float(wave["maxT"])
-			var frame: int = mini(3, int(p * 4.0))
+			var frame_pos: float = minf(3.0, p * 4.0)
+			var frame: int = int(floor(frame_pos))
+			var mix: float = frame_pos - float(frame)
 			var grow: float = 0.72 + 0.28 * minf(1.0, p * 3.5)
 			var size: float = float(wave["maxR"]) * 0.9 * grow
 			var alpha: float = 1.0 if p < 0.62 else maxf(0.0, (1.0 - p) / 0.38)
-			var src := Rect2((frame % 2) * 512, (frame / 2) * 512, 512, 512)
 			var center := Vector2(wave["x"], wave["y"]) - canvas.global_position
-			canvas.draw_texture_rect_region(_sheet, Rect2(center - Vector2(size, size) / 2.0, Vector2(size, size)),
-				src, Color(1, 1, 1, alpha))
+			for blend_i in range(2):
+				var weight: float = mix if blend_i == 1 else 1.0 - mix
+				if weight <= 0.0:
+					continue
+				var cell: int = mini(3, frame + blend_i)
+				var src := Rect2((cell % 2) * 512, (cell / 2) * 512, 512, 512)
+				canvas.draw_texture_rect_region(_sheet, Rect2(center - Vector2(size, size) / 2.0, Vector2(size, size)),
+					src, Color(1, 1, 1, alpha * weight))
+
+
+func _draw_additive_content(canvas: Node2D) -> void:
 	if _io_active and _ice_sheet != null: # 보주 lighter 층
 		var orb_p: float = minf(1.0, _io_t / 180.0)
 		_draw_ice_orb_layer(canvas, 0.2 + 0.12 * sin(orb_p * 8.0))
