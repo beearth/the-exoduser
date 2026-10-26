@@ -114,6 +114,18 @@ PC에서 창을 화면 밖에 두고 재면 Windows가 백그라운드 창을 �
 
 추가 `duel_runtime_gamma075/ice_duel_105.png`에서는 북쪽 (4020,6660)의 기존 눈 몬스터 2개와 얼음보주 파쇄가 보인다. 캡처는 실제 런타임이지만 주변이 여전히 넓은 빈 바닥이므로 스팀 갤러리 후보로는 **RETOUCH**. 8개 카메라 지정 위치 중 START와 EARLY의 일부만 보았고 나머지 6지점·자연 플레이·지속 성능은 미검수다.
 
+추가 카메라 검수는 같은 격리 Godot 4.7.2 실행에서 `tests/capture_map_look.gd`로 캠프·제단·남/북 독 웅덩이·시체나무·소환굴·고치 7개 지점을 1920×1080으로 촬영했다. 원본 프레임과 `report_on.json`은 `I:/EXODUSER-Storage/steam/gallery_combat_20261026/camera_qa_20261026/`에 보존한다. stderr는 Camera2D 보간 모드 경고 1건이며 `SCRIPT ERROR`/`ERROR`는 없다. 이 7개는 전투 적을 끈 랜드마크 검사라 스팀 전투 사진으로 사용하지 않는다.
+
+| 카메라 지점 | 육안 판정 | 남은 문제 |
+|---|---|---|
+| 캠프·제단 | 텐트/모닥불과 붉은 제단이 큰 형태로 구분됨 | 플레이어가 작고 주변 지면 여백이 넓음 |
+| 시체나무·고치 | 큰 생체 실루엣과 바닥 연결이 읽힘 | 지점 밖으로 이동하면 대비·연결 검수 필요 |
+| 북쪽 독 웅덩이 | 녹색 발광/가장자리 뿌리 읽힘 | 윗부분이 카메라에서 잘림 |
+| 남쪽 독 웅덩이 | 지면에 붙은 원판 형태로 보임 | 원화의 평면 UI 같은 녹색 원판 문제가 지속됨 |
+| 소환굴 | 어두운 구멍과 좌상단 생체나무가 구분됨 | 화면 중앙/우측 지면이 크게 비어 있음 |
+
+이 촬영의 프레임 모니터는 지점별 18~21fps, 평균 프레임 46~64ms였으나 창 상태·오프스크린 측정 영향과 ON/OFF 대조가 없으므로 성능 합격/퇴보 근거로 쓰지 않는다. 먼 카메라에서도 랜드마크 자체는 드러나지만, 전투와 이동 구간 전반의 맵 밀도는 아직 **RETOUCH**다. 스팀 상단 스크린샷은 기존 5개가 남아 있으며 새 파일 업로드·저장·공개 전환은 검증되지 않았다.
+
 ```text
 ================= MAP PRODUCTION REPORT =================
 STAGE: CH1-1 시작 전투 공터 표시 레이어
@@ -124,10 +136,10 @@ MEDIUM: connections=서쪽 나무→공터, 남쪽 바닥→공터 / remaining h
 GROUND: shadow=기존 그림자 유지 / contamination=뿌리·살점 3패치 / structure integration=z −2750·가장자리 페이드
 PLAYABLE: main arenas=기존 시작 공터 / travel space=기존 동선 / breathing space=중앙 개방 / threat space=인트로 적 5 / combat readability=지옥강타 4히트 캡처
 LANDMARK: primary=남서 생체나무 / secondary=동쪽 지면 / tertiary=남쪽 생체 바닥
-CAMERA QA: START=1920×1080 전투 2컷 RETOUCH / EARLY=눈 몬스터 2마리 얼음보주, 빈 바닥으로 RETOUCH / ARENA=미검수 / SIDE L=미검수 / SIDE R=미검수 / LANDMARK=미검수 / LATE=미검수 / EXIT=미검수
-TECH QA: route=데이터 불변 / collision=292 불변 / pageerror=해당 없음 / 404=해당 없음 / seam=시작 컷 육안 확인 / loading=격리 실행 성공 / performance=미측정
+CAMERA QA: START=1920×1080 전투 2컷 RETOUCH / EARLY=눈 몬스터 2마리 얼음보주, 빈 바닥으로 RETOUCH / ARENA=시작 공터만 확인·다른 전투 미검수 / SIDE L=캠프·고치 랜드마크 확인 / SIDE R=제단·남북 독 웅덩이 확인 / LANDMARK=시체나무·소환굴 확인 / LATE=전투 미검수 / EXIT=미검수
+TECH QA: route=데이터 불변 / collision=292 불변 / pageerror=해당 없음 / 404=해당 없음 / seam=시작·7개 랜드마크 컷 육안 확인 / loading=격리 실행 성공 / performance=ON/OFF 대조 없는 배경 창 모니터라 미확정
 FILES: stage-owned=map_look_ch1.json,native_map_look.gd,native_screen_lighting.gd,test_map_look.gd,이 문서 / concurrent touched=없음 / unrelated touched=보존
 GIT: staged=본 작업 파일만 경로 지정 / commit=본 작업 코드·테스트·문서만 체크포인트 / push=별도 codex 브랜치에 백업 / deploy=없음
 VISUAL VERDICT: RETOUCH
-NEXT PASS: 남은 6개 카메라 지점의 큰 형태·상단 통로·전투 실측을 확인하고 서로 다른 장면의 스팀 컷을 선정
+NEXT PASS: LATE·EXIT 자연 동선과 서로 다른 몬스터가 잡히는 전투를 촬영하고, 빈 지면·남쪽 독 원판을 보정한 뒤 스팀 상단 갤러리 업로드/저장을 검증
 ```
