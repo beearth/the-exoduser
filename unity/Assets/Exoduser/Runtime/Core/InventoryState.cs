@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort.Core {
    if(it.affixes!=null)foreach(var a in it.affixes)if(a==null||AffixUnit(a.id)==null||!Finite(a.value)||a.tier!=0)return false;
    if(it.slot=="weapon"&&Array.IndexOf(new[]{"sword","dagger","hammer","mace","club","axe","spear"},it.wtype)<0)return false;
    if(it.slot=="bow"&&Array.IndexOf(new[]{"crossbow","repeater","arcane"},it.btype)<0)return false;
-   if(!string.IsNullOrEmpty(it._implicitStat)&&Array.IndexOf(new[]{"_iAtkPct","_iBlockPct","_iMovSpd","_iPhysDR","_iMaxHP","_iPierce","_iAtkSpd","_iStsRes","_iMaxHPPct","_iElemRes","_iDashCd","_iRevPow","_iMagDmg"},it._implicitStat)<0)return false;
+   if(!string.IsNullOrEmpty(it._implicitStat)&&Array.IndexOf(new[]{"_iAtkPct","_iBlockPct","_iMovSpd","_iPhysDR","_iMaxHP","_iPierce","_iAtkSpd","_iStsRes","_iMaxHPPct","_iLifeHPPct","_iElemRes","_iDashCd","_iRevPow","_iMagDmg"},it._implicitStat)<0)return false;
    if(it.elements!=null)foreach(var e in it.elements)if(e==null||!Finite(e.dmg)||e.dmg<0)return false;
    foreach(var f in typeof(InventoryItem).GetFields())if(f.FieldType==typeof(double)&&!Finite((double)f.GetValue(it)))return false;
    reason=null;return true;
