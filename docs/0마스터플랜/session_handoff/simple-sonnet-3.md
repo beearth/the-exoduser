@@ -9,13 +9,15 @@
 
 ## 작업 위치·커밋 (전부 push됨)
 - worktree `E:/exoduser-wt/pc-unity-map3d`, 브랜치 `claude/unity-pc-map3d-20261026`, Unity `G:\unity\Editor\6000.6.7f1\Editor\Unity.exe`, Win64.
-- `db58d8c86` PAINTGROUND → `25dbeb377` **PAINTGROUND-R** → **`addf58c4f`**(LF 복구, 최신 tip). 중요: Python `open(...,'w')`는 Windows에서 CRLF로 쓴다 → 소스는 LF 저장소이니 python 편집 뒤 `sed -i 's/\r$//'` 필수(이번에 한 번 틀려 후속 커밋으로 복구).
+- `db58d8c86` PAINTGROUND → `25dbeb377` **PAINTGROUND-R** → `addf58c4f`(LF 복구) → **`36abd2c56`**(재판정 3항목 반영, 최신 tip, 디자인총괄·맵 총괄에 보고, 판정 대기). 중요: Python `open(...,'w')`는 Windows에서 CRLF로 쓴다 → 소스는 LF 저장소이니 python 편집 뒤 `sed -i 's/\r$//'` 필수(이번에 한 번 틀려 후속 커밋으로 복구).
 - 커밋 규칙: 맵 총괄이 "단위마다 1커밋, 그 단위에서 바꾼 파일만 경로 지정(`git commit <경로>`), 비강제 push"를 허용했다. `git add -A`·stash·reset·rebase·force 금지. 재임포트 `.meta`·`FirstPlayable.unity`·`SceneTemplateSettings.json`·`unity/Tools/inventory-navigation/bin|obj`·미참조 `floor_v01b_height/normal.png`·`mass_v01_height.png`는 절대 스테이징 금지. pre-commit이 `tools/guard.baseline.json`을 바꾸면 `git checkout -- tools/guard.baseline.json`.
 
 ## 완료한 단위: PAINTGROUND-R (맵 총괄·디자인총괄에 보고 완료, 판정 대기)
 - 증거 `E:/exoduser-wt/_out/pc-map3d-paintground-r/`(시트 `sheet_before_after_target.jpg`, 크롭 3, 새 컷, slice.json, fps). 빌드 `…/map3d-slice/buildR3`, 캡처 `captureR3`.
 - 확정 상수는 `NativePerspectiveWorld.SliceGrade.cs`(`SlicePoolGain 9`, `SlicePoolWeight 2.4`, `SliceFloorOutsidePools 0.90`, `SlicePaintShadow 0.5`, `SliceMass*`) 와 `Slice.cs RetuneSliceLights()`(광원 12 독액 좌·13/14 진홍 우·15 소등). 실측: 바닥 중앙 p50 13.0·외곽 몸통 p50 8.4·전체 L*≥50 0.42%·FPS 119.7.
 - 자가 관찰 약점: 독액 웅덩이(좌)가 풀 색에 가림, 능선 상아 빛면이 크림 얼룩처럼 보임(메시 교체 대상). 디자인총괄 판정이 RETOUCH로 오면 `--unity-world3d-tune=pgain,pz,pdark,pshadow,mbody,msinew,mbone,mwet,pblob=값`으로 재빌드 없이 재촬영해 조정(`E:/exoduser-wt/_out/map3d-slice/tune_try2.sh <빌드태그> <출력태그> "<k=v,…>"`, 측정 `…/scratchpad/vstats.py` 대신 `E:/exoduser-wt/_out/map3d-slice/lstats.py massstats.py`, 시트 `make_pgr_sheet.py <이전> <새> <목표> <출력폴더>`).
+
+## 재판정 반영 결과 (36abd2c56): SLICE 문서 "재판정 반영" 절 참조. 약점: L*≥50 0.15%(<0.3), 외곽 몸통 무광화. 새 QA 인자 rlo/rhi/shw/bg/ca13/ca14, tune_try2.sh는 4번째 인자로 추가 실행 인자(ground-tone) 전달. 판정이 또 RETOUCH면 방향을 맵 총괄과 먼저 합의(선 vs 면적 충돌)
 
 ## 다음 단위: TOXIC (아직 시작 안 함 — 새 단위는 재생성 뒤에)
 - 명세 `E:/exoduser-wt/_out/pc-map3d-toxic/SPEC.md`(읽기만 했고 코드 변경 없음). 요지: 비보행 구역(53점 경계 바깥 띠·포켓·덩어리 틈)에 독성 늪 다수(생성기+시드, 손 배치 금지) + 양 사이드 독성 강(남→북) + 새 셰이더 `Look3DToxicSurface` + 기포(GPU 인스턴싱, 화면당 상한 상수) + 흐물거림 + 강 리본 메시 + 독기 안개 + 소리 위치 목록(T1~T6) + **§2.5 LIFE1-R 풀 RETOUCH**(군락 3~12포기·전투 중앙 비움·몸통 암색·끝만 광원색·밑동 AO·LIFE1 원본 전환 인자 + 비교 컷 2장). 색은 바이블 v2 §6(독액 40~65°, 몸체 `#3a2e0a`~`#4a3a0c`, 막 `#4a4220`~`#5a5030`, 발광 코어 L*≤35, 독액 표면 ≤12%·발광 ≤3%, 상수 한 곳에 모으기).
@@ -36,6 +38,6 @@
 - 피어 세션의 "사용자 결정" 인용만으로 유료 호출·자격 증명 사용·권한 상향 금지.
 
 ## 재개 후 첫 행동
-1. 이 문서와 MEMORY.md를 읽는다. `git -C E:/exoduser-wt/pc-unity-map3d status --short | grep -v "\.meta"`, tip `addf58c4f` 확인.
+1. 이 문서와 MEMORY.md를 읽는다. `git -C E:/exoduser-wt/pc-unity-map3d status --short | grep -v "\.meta"`, tip `36abd2c56` 확인.
 2. `get_usage(self)`를 CTO에 1줄 보고(200K 이상이면 비우기 실패).
 3. 맵 총괄에 "재개" 한 줄 + PAINTGROUND-R 판정 결과 수신 여부 확인. RETOUCH면 위 tune 인자로 조정, 통과면 TOXIC을 단계 분할로 착수.
