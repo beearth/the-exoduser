@@ -18,7 +18,7 @@
 #skillForge>:not(.sf-canvas){position:relative;z-index:1;}
 /* 중앙 정렬 고정: 트레이 칩이 많아도 그리드 열이 패널 폭을 넘지 않게(넘치면 열이 늘어 전체가 오른쪽으로 밀렸다) */
 #skillForge{grid-template-columns:minmax(0,1fr);width:100%;box-sizing:border-box;}
-#skillForge>*,#skillForge .sf-mid>*,#skillForge .sf-tray>*{min-width:0;max-width:100%;}
+#skillForge>*,#skillForge .sf-mid>*{min-width:0;max-width:100%;}
 
 /* ── 키 슬롯 13 ── */
 #skillForge .sf-slots{display:flex;justify-content:center;align-items:flex-start;gap:clamp(4px,.8vw,14px);padding:4px 0 2px;flex-wrap:nowrap;}
@@ -26,11 +26,11 @@
 #skillForge .sf-slot-disc{position:relative;display:grid;place-items:center;width:clamp(44px,4.2vw,70px);aspect-ratio:1;border-radius:50%;
   background:radial-gradient(circle at 50% 38%,#2b2220,#0e0a0a 70%);border:2px solid #5a4b3c;box-shadow:inset 0 0 0 1px #0008,0 2px 6px #000a;transition:transform .15s,box-shadow .15s;}
 #skillForge .sf-slot-disc .sf-ico{width:92%;height:92%;border-radius:50%;overflow:hidden;display:grid;place-items:center;}
-/* 이미지는 절대 배치 — 세로형 원화(840×1024 등)의 고유 높이가 원을 타원으로 늘리지 않게(3D 구슬이 홈보다 아래로 밀리던 원인) */
-#skillForge :is(.sf-ico,.sf-chip-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico) img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.18);}
-#skillForge :is(.sf-ico,.sf-chip-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico){position:relative;display:grid;place-items:center;overflow:hidden;font-family:var(--font-hell-title);color:var(--sf-bone2);}
 #skillForge .sf-slot-disc{height:auto;min-height:0;}
 #skillForge .sf-slot-disc .sf-ico{aspect-ratio:1;height:auto;}
+/* 이미지는 절대 배치 — 세로형 원화(840×1024 등)의 고유 높이가 원을 타원으로 늘리지 않게(3D 구슬이 홈보다 아래로 밀리던 원인) */
+#skillForge :is(.sf-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico) img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.18);}
+#skillForge :is(.sf-ico,.sf-node-ico,.sf-core-ico,.sf-info-ico,.sf-mini-ico){position:relative;display:grid;place-items:center;overflow:hidden;font-family:var(--font-hell-title);color:var(--sf-bone2);}
 #skillForge .sf-slot-key{font-family:var(--font-hell-title);font-size:11px;letter-spacing:.08em;color:var(--sf-gold);line-height:1;}
 #skillForge .sf-slot-name{font-size:11px;line-height:1.15;color:var(--sf-bone2);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;}
 #skillForge .sf-slot.empty .sf-slot-name{color:var(--sf-dim);}
@@ -70,6 +70,7 @@
   display:grid;place-items:center;background:radial-gradient(circle,#4a1a10 0,#1a0c0a 62%,#0b0808 100%);border:3px solid #6b5843;box-shadow:0 0 30px #ec795866,inset 0 0 20px #000;}
 #skillForge .sf-core-ico{width:90%;height:90%;border-radius:50%;overflow:hidden;}
 #skillForge .sf-core.empty{opacity:.4;}
+#skillForge .sf-core.sf-unequip{cursor:grab;}
 #skillForge .sf-core.ready{border-color:var(--sf-fire);animation:sfPulse 1.6s ease-in-out infinite;}
 #skillForge .sf-core.fused{border-color:var(--sf-gold);}
 /* 합성 이름 명패: 제단 왼쪽 위 (아래 소켓을 가리지 않게) */
@@ -110,48 +111,14 @@
 #skillForge .sf-road-row.now .sf-road-state,#skillForge .sf-road-row.can .sf-road-state{color:#ffb08a;}
 #skillForge .sf-road-row.locked{opacity:.5;}
 
-/* ── 트레이 ── */
-#skillForge .sf-tray{padding:8px 12px 10px;border:1px solid var(--sf-line);border-radius:3px;background:linear-gradient(180deg,rgba(18,13,12,.92),rgba(10,8,8,.95));}
-#skillForge .sf-tray-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
-#skillForge .sf-tray-title{font-family:var(--font-hell-title);font-size:14px;letter-spacing:.06em;color:var(--sf-bone);}
-#skillForge .sf-tray-sub{font-size:12px;color:var(--sf-dim);}
-#skillForge .sf-tray-row{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:12px 2px 6px;scrollbar-width:thin;scrollbar-color:#75674f #121113;}
-#skillForge .sf-row-label{flex:0 0 64px;font-size:12px;color:var(--sf-gold);letter-spacing:.06em;}
-#skillForge .sf-chip{position:relative;flex:0 0 auto;display:flex;align-items:center;gap:8px;min-width:150px;max-width:210px;padding:6px 12px 6px 6px;cursor:grab;
-  border:1px solid #4d4136;border-radius:28px;background:linear-gradient(180deg,#241c18,#120e0d);box-shadow:0 2px 5px #000a;}
-#skillForge .sf-chip:focus-visible{outline:2px solid #d6bd89;outline-offset:2px;}
-#skillForge .sf-chip-ico{flex:0 0 40px;height:40px;border-radius:50%;overflow:hidden;border:1px solid #5a4b3c;}
-#skillForge .sf-chip-text{display:flex;flex-direction:column;min-width:0;}
-#skillForge .sf-chip-name{font-size:13px;color:var(--sf-bone);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#skillForge .sf-chip-lv{font-size:11px;color:var(--sf-bone2);}
-#skillForge .sf-chip .sf-crown{top:-9px;left:22px;transform:none;}
-#skillForge .sf-chip-badge{position:absolute;right:8px;top:-8px;padding:0 6px;font-size:10px;line-height:16px;color:var(--sf-bone2);background:#1a1310;border:1px solid #4d4136;border-radius:2px;}
-#skillForge .sf-chip.on{border-color:var(--sf-gold);box-shadow:0 0 0 1px #c9a66355,0 2px 5px #000a;}
-#skillForge .sf-chip.glow{border-color:var(--sf-fire);animation:sfChip 1.8s ease-in-out infinite;}
-#skillForge .sf-chip.dim{opacity:.45;filter:saturate(.35);cursor:pointer;}
-#skillForge .sf-chip.sealed{opacity:.5;filter:grayscale(1) brightness(.5);cursor:default;}
-#skillForge.dragging .sf-chip.glow{animation:none;}
 .sf-drag-ghost{position:fixed;left:0;top:0;width:56px;height:56px;border-radius:50%;overflow:hidden;z-index:100000;pointer-events:none;border:2px solid #ec7958;box-shadow:0 0 18px #ec7958aa;}
 .sf-drag-ghost img{width:100%;height:100%;object-fit:cover;display:block;}
 
 
-/* ── 2026-10-10 균형 보정(사용자 화면 1859×942): 트레이 항상 한 줄·제목판 축소·남는 높이는 제단으로 ── */
+/* ── 2026-10-10 균형 보정(사용자 화면 1859×942): 제목판 축소·남는 높이는 제단으로 (트레이는 2026-10-21 구슬로 대체) ── */
 #skillPanel .skill-pbox.sf-on>.ptitle{zoom:.78;}
 #skillForge{grid-template-rows:auto minmax(0,1fr) auto;}
-#skillForge .sf-tray{display:grid;grid-template-columns:minmax(150px,auto) minmax(0,1fr) minmax(0,1.35fr);align-items:center;gap:0 14px;padding:6px 12px;}
-#skillForge .sf-tray-head{flex-direction:column;align-items:flex-start;gap:2px;margin:0;}
-#skillForge .sf-tray-sub{font-size:11px;max-width:220px;line-height:1.35;}
-#skillForge .sf-tray-row{padding:12px 4px 6px;min-width:0;border-left:1px solid #77624644;padding-left:12px;}
-#skillForge .sf-row-label{flex:0 0 auto;margin-right:2px;}
-#skillForge .sf-chip{min-width:132px;max-width:190px;padding:4px 12px 4px 4px;}
-#skillForge .sf-chip-ico{flex-basis:34px;height:34px;}
 #skillForge .sf-mid{grid-template-columns:clamp(230px,19vw,330px) minmax(0,1fr) clamp(230px,19vw,330px);}
-/* 장착 칸이 넓게, 합성 재료 칸은 내용만큼(최대 45%) — 재료가 적을 때 빈 칸이 남지 않게 */
-#skillForge .sf-tray{grid-template-columns:minmax(150px,auto) minmax(0,1fr) fit-content(45%);}
-/* 배지(모체·추가 재료)는 칩 테두리 위에 얹어 이름을 가리지 않게 */
-#skillForge .sf-tray-row{padding-top:16px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);padding-right:26px;}
-#skillForge .sf-chip .sf-crown{top:-14px;left:16px;}
-#skillForge .sf-chip-badge{top:-14px;}
 #skillForge .sf-info,#skillForge .sf-road{align-self:stretch;}
 
 /* ── 3D 모드: 원·아이콘은 WebGL이 그린다 ── */
@@ -165,19 +132,105 @@
 @keyframes sfChip{0%,100%{box-shadow:0 0 0 1px #ec795833,0 0 8px #ec795833}50%{box-shadow:0 0 0 1px #ec7958aa,0 0 16px #ec795888}}
 @media (prefers-reduced-motion:reduce){#skillForge *{animation:none!important;transition:none!important;}}
 @media (max-width:1180px){#skillForge .sf-mid{grid-template-columns:minmax(0,1fr) clamp(220px,30vw,300px);} #skillForge .sf-info{display:none;}}
-/* 낮은 화면(1280×720 등): 제목판 비율 축소·슬롯 이름 숨김·트레이 한 줄(장착 | 합성 재료) */
+/* 낮은 화면(1280×720 등): 제목판 비율 축소·슬롯 이름 숨김 */
 @media (max-height:860px){
   #skillPanel .skill-pbox.sf-on>.ptitle{zoom:.6;}
   #skillForge{gap:6px;padding:6px 10px 8px;margin:2px 0 6px;}
   #skillForge .sf-slot-name{display:none;}
   #skillForge .sf-slot-disc{width:clamp(38px,3.4vw,52px);}
   #skillForge .sf-altar{min-height:200px;}
-  #skillForge .sf-tray{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.4fr);grid-template-rows:auto;align-items:center;gap:0 10px;padding:6px 10px;}
-  #skillForge .sf-tray-head{flex-direction:column;align-items:flex-start;gap:2px;margin:0;}
-  #skillForge .sf-tray-sub{display:none;}
-  #skillForge .sf-tray-row{padding:10px 2px 4px;}
-  #skillForge .sf-row-label{flex-basis:auto;writing-mode:horizontal-tb;}
-  #skillForge .sf-chip{min-width:118px;padding:4px 10px 4px 4px;}
-  #skillForge .sf-chip-ico{flex-basis:32px;height:32px;}
   #skillForge .sf-info-desc{font-size:12px;line-height:1.5;}
 }
+
+/* ── 2026-10-21 떠다니는 스킬 구슬 + 합성 전류 (아래 가로 스크롤 트레이 대체) ──
+   제단 원은 아래로 내려 줄이고(skill-forge.js renderAltar), 넣을 수 있는 스킬은 원 둘레 빈 공간에 구슬로 전부 펼친다.
+   구슬 = 흑철 테 + 금빛 헤어라인 + 유리 하이라이트 + 아래 지옥불 반사광. 부유(translate)는 JS rAF 하나가 .sf-orb-float에만 준다(글자는 고정). */
+#skillForge{grid-template-rows:auto minmax(0,1fr);}
+#skillForge .sf-nodes{pointer-events:none;}
+#skillForge .sf-node{pointer-events:auto;}
+#skillForge .sf-field{position:absolute;inset:0;z-index:0;pointer-events:none;}
+#skillForge .sf-field canvas.sf-bolts{display:block;position:absolute!important;inset:0!important;left:0!important;top:0!important;width:100%!important;height:100%!important;z-index:0!important;transform:none!important;pointer-events:none!important;}
+#skillForge .sf-orbs{position:absolute;inset:0;z-index:1;}
+#skillForge .sf-orb{--o:52px;--lw:110px;position:absolute;width:var(--o);height:var(--o);margin:calc(var(--o) / -2) 0 0 calc(var(--o) / -2);
+  pointer-events:auto;cursor:grab;outline:none;-webkit-tap-highlight-color:transparent;}
+#skillForge .sf-orb-float{position:absolute;inset:0;will-change:transform;}
+#skillForge .sf-orb-ball{position:absolute;inset:0;border-radius:50%;background:#0d0909;
+  box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #4d4136,0 0 0 3.5px rgba(164,147,115,.45),0 10px 16px -6px #000;
+  transition:transform .18s ease,box-shadow .18s ease;}
+#skillForge .sf-orb-ball>.sf-orb-ico{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;overflow:hidden;}
+/* 유리 구슬: 왼쪽 위 반사광 · 둥근 가장자리 음영 · 아래 지옥불 반사 */
+#skillForge .sf-orb-ball::after{content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse 44% 30% at 37% 22%,rgba(255,246,230,.40),rgba(255,246,230,.07) 62%,transparent 74%),
+    radial-gradient(circle at 50% 46%,transparent 54%,rgba(10,5,5,.30) 74%,rgba(0,0,0,.74) 100%),
+    radial-gradient(ellipse 62% 26% at 50% 97%,rgba(236,121,88,.32),transparent 72%);
+  box-shadow:inset 0 1px 1px rgba(255,238,214,.22),inset 0 -3px 5px rgba(0,0,0,.55);}
+/* 다음 합성을 완성하는 재료: 바깥 불꽃 고리가 숨쉬듯 (opacity·transform만 — 합성 레이어) */
+#skillForge .sf-orb-ball::before{content:'';position:absolute;inset:-10px;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(circle,rgba(236,121,88,0) 50%,rgba(236,110,70,.42) 61%,rgba(236,121,88,0) 73%);}
+#skillForge .sf-orb.glow .sf-orb-ball::before{animation:sfOrbGlow 1.8s ease-in-out infinite;}
+#skillForge.dragging .sf-orb.glow .sf-orb-ball::before{animation:none;opacity:.6;}
+#skillForge .sf-orb-label{position:absolute;left:50%;top:calc(100% + 5px);width:var(--lw);transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:1px;pointer-events:none;text-align:center;}
+#skillForge .sf-orb-name{max-width:100%;font-family:var(--font-hell);font-size:12px;line-height:1.25;color:var(--sf-bone);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 2px #000,0 0 6px #000,0 0 10px #000;}
+#skillForge .sf-orb-sub{max-width:100%;font-family:var(--font-hell);font-size:11px;line-height:1.2;color:var(--sf-bone2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px #000,0 0 6px #000;}
+#skillForge .sf-orb-sub.lv{font-family:var(--font-hell-title);letter-spacing:.06em;color:var(--sf-gold);}
+#skillForge .sf-orb-sub.badge{color:#e8ae86;}
+/* 상태 */
+#skillForge .sf-orb.mat .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #6e2c20,0 0 0 3.5px rgba(236,121,88,.55),0 10px 16px -6px #000,0 0 16px -4px rgba(236,90,40,.55);}
+#skillForge .sf-orb.on .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #8f7142,0 0 0 4px #e6c77a,0 10px 16px -6px #000,0 0 20px -4px rgba(230,199,122,.5);}
+#skillForge .sf-orb.on .sf-orb-name{color:#f0dca8;}
+#skillForge .sf-orb:hover .sf-orb-ball,#skillForge .sf-orb:focus-visible .sf-orb-ball{transform:scale(1.08);
+  box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #8a6f4a,0 0 0 4px rgba(230,199,122,.8),0 10px 16px -6px #000,0 0 22px -2px rgba(236,121,88,.55);}
+#skillForge .sf-orb.sel .sf-orb-ball{outline:1px solid #dfd6c2;outline-offset:6px;}
+#skillForge .sf-orb.dim{cursor:pointer;}
+#skillForge .sf-orb.dim .sf-orb-ico{filter:grayscale(.75) brightness(.56);}
+#skillForge .sf-orb.dim .sf-orb-name{color:#a39886;}
+#skillForge .sf-orb.sealed{cursor:default;}
+#skillForge .sf-orb.sealed .sf-orb-ball{background:radial-gradient(circle at 50% 40%,#1d1614,#070505 75%);}
+#skillForge .sf-orb-seal{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-hell-title);font-size:calc(var(--o) * .42);color:#6f6355;}
+/* 제단 오른쪽 위 명패 — 왼쪽 위 모체 명패(.sf-core-name)와 대칭 */
+#skillForge .sf-field-head{position:absolute;right:14px;top:10px;max-width:40%;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:3px;padding:6px 12px 5px 18px;
+  border-right:2px solid var(--sf-fire);background:linear-gradient(270deg,rgba(10,7,7,.88),rgba(10,7,7,0));pointer-events:none;text-align:right;}
+#skillForge .sf-field-title{font-family:var(--font-hell-title);font-size:clamp(14px,1.05vw,18px);letter-spacing:.06em;color:var(--sf-bone);text-shadow:0 1px 2px #000;white-space:nowrap;}
+#skillForge .sf-field-sub{font-size:11px;line-height:1.35;color:var(--sf-bone2);text-shadow:0 1px 2px #000;}
+/* compact(낮은 화면에 구슬이 많을 때): 이름 한 줄, 레벨은 구슬 오른쪽 아래 숫자 */
+#skillForge .sf-orb-pip{display:none;}
+#skillForge .sf-orb.compact .sf-orb-sub{display:none;}
+#skillForge .sf-orb.compact .sf-orb-pip{display:grid;place-items:center;position:absolute;right:-5px;bottom:-4px;min-width:15px;height:15px;padding:0 3px;box-sizing:border-box;border-radius:8px;
+  background:#120d0c;border:1px solid #8f7142;font-family:var(--font-hell-title);font-size:9.5px;line-height:1;color:var(--sf-bone);box-shadow:0 1px 3px #000;}
+@keyframes sfOrbGlow{0%,100%{opacity:.35;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
+@media (max-height:860px){#skillForge .sf-field-sub{display:none;} #skillForge .sf-orb-name{font-size:11.5px;}}
+
+/* ── 2026-10-21 2차 다듬기: 습득/미습득 대비 · 이름표 바탕 · 모체 둘째 줄 · 빈 소켓 의미 ── */
+/* 이름표는 부유 진폭(--lg)만큼 아래에 고정 — 구슬이 내려와도 글자를 덮지 않고, 글자는 흔들리지 않는다 */
+#skillForge .sf-orb-label{top:calc(100% + var(--lg,8px));gap:2px;}
+/* 이름표 바탕: 전류선이 지나가도 글자가 위에서 읽히게(가장자리가 흐린 흑철 연기) */
+#skillForge .sf-orb-name,#skillForge .sf-orb-sub{padding:0 7px;background:radial-gradient(closest-side,rgba(10,7,7,.86) 62%,rgba(10,7,7,0));}
+#skillForge .sf-orb-sub{display:flex;align-items:center;justify-content:center;gap:4px;}
+#skillForge .sf-orb-subt{min-width:0;overflow:hidden;text-overflow:ellipsis;}
+/* 모체 = 이름 둘째 줄 앞 금패(고정) + 구슬 안쪽 금빛 가는 테 */
+#skillForge .sf-orb-host{flex:0 0 auto;padding:0 5px;font-family:var(--font-hell);font-size:11.5px;line-height:15px;font-weight:700;letter-spacing:0;color:#f3e2b4;
+  background:linear-gradient(180deg,#3a2812,#1e140b);border:1px solid #b08a48;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,230,170,.18);}
+#skillForge .sf-orb.host .sf-orb-ball::after{outline:1px solid rgba(230,199,122,.55);outline-offset:-4px;}
+/* 습득: 안쪽 따뜻한 빛 + 더 밝은 금빛 테 */
+#skillForge .sf-orb.learned .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #6b5638,0 0 0 3.5px rgba(222,192,132,.8),0 10px 16px -6px #000,0 0 16px -5px rgba(236,140,80,.5);}
+#skillForge .sf-orb.learned .sf-orb-ball::after{box-shadow:inset 0 1px 1px rgba(255,238,214,.24),inset 0 -3px 5px rgba(0,0,0,.5),inset 0 0 calc(var(--o) * .3) rgba(255,118,50,.48);}
+#skillForge .sf-orb.learned.mat .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #7a3326,0 0 0 3.5px rgba(244,146,104,.82),0 10px 16px -6px #000,0 0 18px -4px rgba(236,90,40,.6);}
+#skillForge .sf-orb.learned.on .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #8f7142,0 0 0 4px #ecd08a,0 10px 16px -6px #000,0 0 22px -4px rgba(230,199,122,.6);}
+/* 미습득: 채도·밝기 낮춤, 지옥불 반사광·안쪽 빛 없이 유리 반사만. 아이콘 형태는 1x에서 보이게(밝기 .6) */
+#skillForge .sf-orb:not(.learned):not(.sealed) .sf-orb-ico{filter:grayscale(.85) brightness(.6) contrast(.92);}
+#skillForge .sf-orb:not(.learned) .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #2f2822,0 0 0 3.5px rgba(120,108,90,.32),0 10px 16px -6px #000;}
+#skillForge .sf-orb:not(.learned) .sf-orb-ball::after{background:radial-gradient(ellipse 44% 30% at 37% 22%,rgba(255,246,230,.34),rgba(255,246,230,.06) 62%,transparent 74%),
+  radial-gradient(circle at 50% 46%,transparent 52%,rgba(6,4,4,.4) 74%,rgba(0,0,0,.78) 100%);}
+#skillForge .sf-orb:not(.learned) .sf-orb-name{color:#958b7b;}
+#skillForge .sf-orb.learned.dim .sf-orb-ico{filter:saturate(.6) brightness(.8);}
+#skillForge .sf-orb.learned.dim .sf-orb-name{color:#c2b6a2;}
+/* 원판 위 빈 소켓(다음 재료를 넣는 자리): 3D에서도 점선 금테·지옥불 숨결·「+」를 보여 구멍이 아니라 넣을 자리로 읽히게 */
+#skillForge.sf-3d .sf-node.sf-ghost{border:1px dashed rgba(214,184,124,.62);background:radial-gradient(circle,rgba(236,121,88,.22),rgba(60,20,12,.35) 55%,rgba(10,7,7,0) 72%);
+  box-shadow:inset 0 0 14px rgba(236,121,88,.35);animation:sfGhost 2.6s ease-in-out infinite;}
+#skillForge.sf-3d .sf-node.sf-ghost>.sf-plus{opacity:1;color:#e6c77a;text-shadow:0 0 8px #ec7958,0 1px 2px #000;}
+#skillForge.dragging.sf-3d .sf-node.sf-ghost{border-style:solid;border-color:rgba(236,180,110,.85);}
+@keyframes sfGhost{0%,100%{box-shadow:inset 0 0 10px rgba(236,121,88,.25),0 0 0 rgba(236,121,88,0)}50%{box-shadow:inset 0 0 18px rgba(236,121,88,.5),0 0 14px rgba(236,121,88,.35)}}
+@media (max-height:860px){#skillForge .sf-orb-host{font-size:11px;line-height:14px;}}
+/* 레벨 숫자: Cinzel의 「1」이 로마자 I로 읽혀 명조 숫자로 */
+#skillForge .sf-orb-sub.lv{font-family:var(--font-hell);font-weight:700;letter-spacing:.02em;}

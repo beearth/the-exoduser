@@ -1,5 +1,7 @@
 # Unity 3D 맵 아트 바이블 v1 — "음습하고 아름다운 지옥" (2026-10-26)
 
+> **→ 통합본으로 대체됨: [MAP_ART_BIBLE_v2_20261026.md](MAP_ART_BIBLE_v2_20261026.md) (2026-10-26). 이 문서는 이력으로만 남긴다.**
+
 작성: 디자인 총괄(Claude Opus, PC). 상태: **v1 초안. Codex 검토 대기.** 이 문서는 [UNITY_MAP_HQ_PRODUCTION_PLAN_20261026](UNITY_MAP_HQ_PRODUCTION_PLAN_20261026.md) §4.1·M0의 아트 바이블이다. 원래 Codex 담당이었으나 미제출이라 디자인 총괄이 초안을 냈다. 품질 게이트는 [MAP_IMPROVEMENT_PROJECT §2](MAP_IMPROVEMENT_PROJECT.md)의 G1~G8, 작업 순서는 [UNITY_MAP_BOARD_20261026](UNITY_MAP_BOARD_20261026.md)를 따른다.
 
 이미지: [art_bible_v1/](art_bible_v1/)

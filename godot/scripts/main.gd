@@ -15,6 +15,8 @@ const SourceProvidersScript = preload("res://scripts/native_source_player_provid
 const SourceInitializationScript = preload("res://scripts/native_source_player_initialization.gd")
 const SourceInitializationServicesScript = preload("res://scripts/native_source_player_initialization_services.gd")
 const SourceLessonScript = preload("res://port_modules/parry_lesson_source/producer.gd")
+const ForgeScript = preload("res://scripts/native_forge_panel.gd") # DEMO11-27
+const AutoPotionScript = preload("res://scripts/native_potion_recovery.gd") # DEMO11-25
 const RegenerationPhaseScript = preload("res://scripts/native_source_player_regeneration_phase.gd") # P2-005d
 const NativeSpriteInspector = preload("res://port_modules/native_sprite_resource_readiness/producer.gd")
 const NativePlayerSpriteExpectation = preload("res://scripts/native_player_sprite_expectation.gd")
@@ -27,6 +29,8 @@ const SourcePostStageScript = preload("res://port_modules/source_post_stage_owne
 const QAdapterScript = preload("res://scripts/native_combat_qe_adapter.gd")
 const NativeFireballPhaseScript = preload("res://scripts/native_fireball_phase.gd")
 const QBurstDrawScript = preload("res://port_modules/character_clip/shield_burst_draw_caller.gd")
+const M29ContactServicesScript = preload("res://scripts/native_m29_contact_services.gd") # PC-M29-PARRY
+const CombatPackBScript = preload("res://scripts/native_combat_pack_b.gd") # PC-COMBAT-PACK-B
 const SOURCE_BOOT_EN_LABELS := {"맵 에셋 로딩...": "Loading map assets...",
 	"맵 캐시 생성 중...": "Building map cache...", "완료": "Complete"}
 # Recorded pins only. The baseline is not the compiled HEAD, and a source pin
@@ -42,6 +46,8 @@ const NATIVE_VERSION_CONFIG := {"schema": "fdg.native-content-version.v1", "cont
 		"latest_full_game": false},
 	"steam": {"version": null, "version_status": "NOT_VERIFIED", "parity": "NOT_VERIFIED", "accessible": false}}
 
+signal native_sound_event(kind: String, data: Dictionary) # DEMO11-40 audio-only observation
+var _combat_sound_consumer: Node
 signal source_document_visibility_changed
 
 # Platform samples only: never source dt/sp/acc or a gameplay update witness.
@@ -53,6 +59,8 @@ var native_perspective_view: Node
 var native_fireball_phase: RefCounted
 var native_fireball_delivery: Node
 var native_q_control: RefCounted
+var native_m29_contact: RefCounted # PC-M29-PARRY: M29 비투사체 접촉 서비스(준비 구역 설치)
+var native_combat_pack_b: RefCounted # PC-COMBAT-PACK-B: PCI-02/03/05/06/09 서비스(준비 구역 설치)
 var _q_burst_draw: Node2D
 var _q_view: SubViewport
 var _q_canvas: Node2D
@@ -81,6 +89,8 @@ var _source_l_eq_cache: Variant = null
 var _source_l_eq_write_context: Dictionary = {}
 var source_initialization_result: Dictionary = {}
 var source_lesson: RefCounted
+var source_forge: CanvasLayer # DEMO11-27
+var source_potion: RefCounted = AutoPotionScript.new() # DEMO11-25, Main lifetime
 var source_regeneration: RefCounted # P2-005d — 원본 자연 회복 단계(배선 후 Player 레거시 0.28 비활성)
 var _source_lesson_file_init_attempted: bool = false
 var _source_lesson_file_init_publish_calls: int = 0
@@ -106,6 +116,8 @@ var _native_source_object_registration: Dictionary = {}
 
 # Policy is selected only by the production boot, never URL/test metadata.
 var _native_demo11_policy: Dictionary = {}
+var native_demo_boss_actor: Node2D
+var native_demo_boss_projectiles: Node
 
 func read_native_demo_policy() -> Dictionary:
 	return _native_demo11_policy.duplicate(true) if not _native_demo11_policy.is_empty() else {"status": "NOT_READY", "reason": "boot_not_started"}
@@ -114,6 +126,21 @@ func evaluate_native_demo_exp_gate(state: Dictionary, today: String, in_loop: bo
 	if _native_demo11_policy.get("status") != "READY":
 		return {"allowed": false, "reason": "boot_not_started", "state": state.duplicate(true)}
 	return Demo11Authority.exp_gate(state, today, in_loop)
+
+func read_native_demo_boss() -> Dictionary:
+	return native_demo_boss_actor.snapshot() if is_instance_valid(native_demo_boss_actor) else {"status":"NOT_READY","reason":"actor_not_installed"}
+
+func spawn_native_demo_boss(request: Dictionary) -> Dictionary:
+	if not is_instance_valid(native_demo_boss_actor) or request.get("si") != read_native_demo_policy().get("stage"):
+		return {"status":"REJECTED","reason":"demo_actor_or_stage_unavailable"}
+	var current: Variant = source_state.read_current_p() if is_instance_valid(source_state) else null
+	if not current is Dictionary: return {"status":"NOT_READY","reason":"current_player_unavailable"}
+	var inputs := request.duplicate(true)
+	inputs["player_level"] = current.lv
+	return native_demo_boss_actor.spawn(inputs)
+
+func bind_native_demo_boss_owner(command: String, handler: Callable) -> bool:
+	return is_instance_valid(native_demo_boss_actor) and native_demo_boss_actor.bind_owner(command,handler)
 
 func _ready() -> void:
 	_native_demo11_policy = Demo11Authority.boot_manifest("demo")
@@ -275,6 +302,12 @@ func _ready() -> void:
 	if not native_skill_slots.configure(self, world, player, source_state):
 		push_error("Native skill slots configuration rejected (startup continues).")
 	hud.bind_native_skill_cooldowns(Callable(native_skill_slots, "read_native_slot_cooldowns"))
+	# P2-006a — 바닥 드랍 표시·줍기(worldItems 52485s·R 줍기 32935s·pickupItem 16398) — 표시·입력 어댑터
+	var native_world_drops: Node2D = preload("res://scripts/native_world_drops.gd").new()
+	native_world_drops.name = "NativeWorldDrops"
+	world.add_child(native_world_drops)
+	if not native_world_drops.configure(self, world, player, source_state):
+		push_error("Native world drops configuration rejected (display/input-only; startup continues).")
 	# P2-005d — 원본 자연 회복 단계 부팅 배선 (32705~32721: 돔 판정→플랫(10+2lv)/60→
 	# 자연률(_mpr/_str 32711~32712 ×_hdMul)→HP(32715)→ST/MP 대입(32717~32720, 레슨 ch2 게이트)).
 	# 소유권 이전: Player는 바인딩되면 같은 틱에 레거시 ST 0.28 경로를 비활성(player.gd 731
@@ -287,6 +320,9 @@ func _ready() -> void:
 	else:
 		if not _bind_native_source_regeneration_boot():
 			return
+	source_forge = ForgeScript.new() # DEMO11-27, existing actors/State only
+	source_forge.configure(self)
+	add_child(source_forge)
 	hud.bind_native_source_state(source_state) # P2-002a 원본 HUD 값 = state owner getter
 	# P3-002 initStage 소환굴 배치 — 원본 31655 `_regionInit(si)`가 "소환굴 확정 후" 지역 total을
 	# 계산하므로 지역 owner(P3-003) 구성보다 먼저 둔다(인트로 이전 순서도 유지).
@@ -301,10 +337,15 @@ func _ready() -> void:
 	hud.restart_requested.connect(_restart)
 	_build_native_character_selection_ui()
 	_install_native_q_control()
+	native_m29_contact = M29ContactServicesScript.install_native_boot(self) # PC-M29-PARRY
+	native_combat_pack_b = CombatPackBScript.install_native_boot(self) # PC-COMBAT-PACK-B
 	_install_native_attack_audio()
 	_bind_native_intro_curtain_view()
 	_bind_native_startup_services()
 	source_intro_sequence = IntroCurtainSequenceScript.install_native_boot(self) # P2-001i
+	native_demo_boss_actor = preload("res://scripts/native_demo11_boss_actor.gd").install_native_boot(self) # DEMO11-34
+	native_demo_boss_projectiles = preload("res://scripts/native_demo11_boss_projectiles.gd").install_native_boot(self) # DEMO11-35
+	_install_native_player_life() # PCI-01 HP0 death_token 발급 owner(이벤트 전용, 틱 0)
 	var metrics_timer := Timer.new()
 	metrics_timer.wait_time = 0.1
 	metrics_timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -1028,6 +1069,7 @@ func _update_native_screen_flash() -> void:
 		_native_flash_rect.color = Color(1, 1, 1, 0)
 
 func _physics_process(_delta: float) -> void:
+	source_potion.advance_native.call_deferred(self, _delta * 60.0, Engine.get_physics_frames()) # DEMO11-25: late 60Hz phase, after child regen
 	if not get_tree().paused and is_instance_valid(player) and is_instance_valid(camera):
 		player.z_index = clampi(int(player.position.y / 4.0), -4096, 4095)
 		camera.position = player.position
@@ -1272,9 +1314,7 @@ func reflect_native_q_source_projectile(projectile: Node, distance: float) -> Di
 	if distance>=radius:return {"reflected":false,"reason":"outside_source_q_radius","radius":radius}
 	var bank: float = 0.0
 	if is_black:
-		var bank_raw: Variant = p.get("parryBank")
-		var affix: Object = source_providers.get_provider_bundle().affix
-		bank=affix.js_to_number(bank_raw if affix.js_truthy(bank_raw) else 0,true)
+		bank=read_native_source_parry_bank(p)
 		if not is_finite(bank):return {"reflected":false,"reason":"actual_black_bank_nonfinite"}
 	var st: Dictionary = current.stats
 	var base: int = maxi(current_source_parry_int(float(raw.dmg)*(1.0+minf(1.0,float(st.parry_scale)/300.0))*0.5*float(st.parry_dmg_mul)*(1.0+float(st.parry_bonus))*float(st.leg_shield_parry)),int(st.ki_floor))
@@ -1291,7 +1331,7 @@ func reflect_native_q_source_projectile(projectile: Node, distance: float) -> Di
 	var target: Dictionary = _q_homing_target.query()
 	if target.get("ok")!=true:return {"reflected":false,"reason":target.get("error")}
 	var reward_multiplier: float = 1.5 if is_black else 1.0
-	var reward: int = current_source_parry_int(50.0*(1.0+float(st.parry_bonus))*(1.0+current.regen_lv*0.2)*reward_multiplier)
+	var reward: int = native_source_parry_reward(float(st.parry_bonus),current.regen_lv,reward_multiplier)
 	if reward<0:return {"reflected":false,"reason":"source_parry_reward_negative"}
 	var result: Dictionary
 	if is_black:
@@ -1312,6 +1352,22 @@ func reflect_native_q_source_projectile(projectile: Node, distance: float) -> Di
 
 func current_source_parry_int(value: float) -> int:
 	return source_providers.get_provider_bundle().formula.js_to_int32(value)
+
+# PC-M29-PARRY: doParry 보상식(G38483~38484 _prBase, 빨콩/무지개 외 기본 50) 단일 소유.
+# Q 반사(×1/×1.5)·E 파동 반사·M29 접촉 패링이 같은 식을 공유한다(식·평가 순서 기존과 동일).
+func native_source_parry_reward(parry_bonus: float, regen_lv: float, multiplier: float) -> int:
+	return current_source_parry_int(50.0*(1.0+parry_bonus)*(1.0+regen_lv*0.2)*multiplier)
+
+# PC-M29-PARRY: (P.parryBank||0) 읽기 단일 소유 — 비유한값은 호출자가 거부한다.
+func read_native_source_parry_bank(p: Dictionary) -> float:
+	var bank_raw: Variant = p.get("parryBank")
+	var affix: Object = source_providers.get_provider_bundle().affix
+	return affix.js_to_number(bank_raw if affix.js_truthy(bank_raw) else 0,true)
+
+# PC-M29-PARRY: type3 binding 의 M29 서비스 4종(player_context/handle_m29_parry/emit_m29_event/m29_readiness).
+# 미설치면 {}. FX 소비자 등록은 native_m29_contact.bind_m29_fx_consumer 로 한다.
+func get_native_m29_services() -> Dictionary:
+	return native_m29_contact.get_type3_m29_interfaces() if native_m29_contact != null else {}
 
 
 func read_native_e_control_source() -> Dictionary:
@@ -1653,6 +1709,8 @@ func _restart() -> void:
 	get_tree().reload_current_scene()
 
 func _record_event(kind: String, data: Dictionary) -> void:
+	if kind in ["native_attack_audio_queued","native_skill_sample_requested"]:
+		native_sound_event.emit(kind,data.duplicate(true))
 	if kind=="native_input_unavailable" and is_instance_valid(hud):
 		hud.show_native_input_status("Q 보호막: 실제 실행 소유자 연결 대기" if data.get("action")=="parry" else ("E 처내기: 동작 연결 대기" if data.get("action")=="shield_bash" else "Space: 원본 분노 스킬 슬롯 연결 대기"))
 	if is_instance_valid(capture):
@@ -1860,7 +1918,7 @@ func _reflect_native_e_wave(projectile: Node, raw: Dictionary) -> Dictionary:
 		if distance<nearest:nearest=distance;target=enemy
 	var result: Dictionary=projectile.apply_native_q_reflection(current_source_parry_int(float(base)*1.5),target,{"source_opt":current.options,"p_dot_pool":Callable(self,"_read_native_q_dot_pool"),"camera_position":func():return camera.global_position,"query_enemies":Callable(world,"query_native_enemies")},true)
 	if result.get("reflected")!=true:return result
-	var reward: int=current_source_parry_int(50.0*(1.0+float(st.parry_bonus))*(1.0+current.regen_lv*0.2))
+	var reward: int=native_source_parry_reward(float(st.parry_bonus),current.regen_lv,1.0)
 	var resources: Dictionary=source_resources.commit_native_q_parry_reward(self,float(reward))
 	_e_wave_reflections+=1
 	player.telemetry_event.emit("e_wave_projectile_reflected",{"frame":world.get_native_frame(),"base":base,"result":result,"resources":resources,"full_doparry":false})
@@ -2021,6 +2079,10 @@ func _install_native_attack_audio() -> void:
 	AudioServer.set_bus_name(source,_attack_audio_bus)
 	AudioServer.set_bus_send(source,_attack_audio_output)
 	_attack_audio_reason=""
+	_combat_sound_consumer=preload("res://scripts/native_combat_sound_consumer.gd").new()
+	add_child(_combat_sound_consumer)
+	if not _combat_sound_consumer.configure(self,_attack_audio_streams):
+		_attack_audio_reason="combat_sound_consumer_unavailable"
 	for enemy in world.get_enemies():_bind_native_attack_enemy_audio(enemy)
 	world.child_entered_tree.connect(_on_native_attack_audio_child_entered)
 
@@ -2103,6 +2165,11 @@ func _advance_native_attack_audio() -> void:
 	if _attack_audio_hit_cd>0:_attack_audio_hit_cd-=1
 	if _death_sfx_cd>0:_death_sfx_cd-=1
 	var settings: Dictionary=read_native_attack_audio_settings()
+	if is_instance_valid(_combat_sound_consumer):
+		_attack_audio_queue.clear() # subscribed event is the sole playback owner
+		var character: Variant=player.get_native_character_profile_snapshot().get("index")
+		_combat_sound_consumer.flush(settings,character if character is int else -1,get_tree().paused)
+		return
 	if settings.get("ready")!=true:
 		_attack_audio_queue.clear()
 		for entry in _attack_audio_active.duplicate():_finish_native_attack_audio(entry.id,"source_lost")
@@ -2183,12 +2250,14 @@ func _finish_native_attack_audio(id: int, reason: String) -> void:
 		return
 
 func get_native_attack_audio_snapshot() -> Dictionary:
+	if is_instance_valid(_combat_sound_consumer): return _combat_sound_consumer.snapshot()
 	var voices: Array=[]
 	for entry in _attack_audio_active:
 		if is_instance_valid(entry.player):voices.append({"id":entry.id,"key":entry.key,"playing":entry.player.playing,"position":entry.player.get_playback_position(),"bus":str(entry.player.bus)})
 	return {"scope":"CURRENT_ATTACK_SAMPLE_PLAYBACK_PARTIAL","settings":read_native_attack_audio_settings(),"driver":AudioServer.get_driver_name(),"source_bus":str(_attack_audio_bus),"output_bus":str(_attack_audio_output),"decoded_original_samples":_attack_audio_streams.size(),"active":voices,"queued":_attack_audio_queue.size(),"starts":_attack_audio_starts,"ends":_attack_audio_ended,"recent":_attack_audio_log.duplicate(true),"render_epoch":_attack_audio_render_epoch,"hit_cd":_attack_audio_hit_cd,"original_master_EQ_compressor_ported":false,"voice_BGM_other_skill_ported":false,"subjective_sound_equivalence_verified":false}
 
 func _dispose_native_attack_audio() -> void:
+	if is_instance_valid(_combat_sound_consumer): _combat_sound_consumer.close()
 	_attack_audio_queue.clear()
 	for entry in _attack_audio_active.duplicate():_finish_native_attack_audio(entry.id,"owner_exit")
 	for binding in _attack_audio_bindings.values():
@@ -2241,6 +2310,70 @@ func _native_fireball_ready_scalar(result: Variant) -> Variant:
 	if not result is Dictionary or result.get("status")!="READY":return null
 	var value: Variant=result.get("value")
 	return value if (value is int or value is float) and is_finite(float(value)) else null
+
+# DEMO11-16: cost inputs only; no combat/damage/active-owner changes.
+func read_native_skill_dispatch_cost_context() -> Dictionary:
+	var b: Dictionary = _native_fireball_provider_bundle()
+	if b.is_empty(): return {"ready":false,"reason":"providers_unready"}
+	var passives: Variant = source_state.read_current_passives()
+	var p: Variant = source_state.read_current_p()
+	if not passives is Dictionary or not p is Dictionary: return {"ready":false}
+	for key in ["pAtk", "pMelee"]:
+		if not (passives.get(key) is int or passives.get(key) is float) or not is_finite(float(passives[key])): return {"ready":false}
+	var values: Dictionary = {}
+	for key in ["stCostRed","cooldownRed","helmCooldown","endCooldownAll","skillCdRed"]:
+		var v: Variant = _native_fireball_ready_scalar(b.affix.eq_affix(key))
+		if v == null: return {"ready":false,"reason":"affix_unready:"+key}
+		values[key] = v
+	for key in ["_lHelmFree","_lNeckLow"]:
+		var v: Variant = _native_fireball_ready_scalar(b.formula.l_eq(key))
+		if v == null: return {"ready":false,"reason":"legend_unready:"+key}
+		values[key] = v
+	var magic: Variant = read_native_fireball_magic_cost()
+	if magic == null: return {"ready":false,"reason":"magic_cost_unready"}
+	return {"ready":true,"st_discount":maxf(.60,1.0-float(passives.pAtk)*.04)*maxf(.5,1.0-float(passives.pMelee)*.05)*(1.0+minf(0.0,values.stCostRed)),
+		"magic_cost":magic,"cd_red":values.cooldownRed+values.helmCooldown+values.endCooldownAll+values.skillCdRed-values._lHelmFree-(values._lNeckLow if float(p.hp)<=float(p.mhp)*.5 else 0.0)}
+
+# DEMO11-17: minimal callable seam for PC's future K/L UI; no layout/input takeover.
+var _native_skill_management: RefCounted
+
+func _skill_management_service() -> RefCounted:
+	if _native_skill_management==null:
+		var service: RefCounted=preload("res://scripts/native_skill_management.gd").new()
+		if not service.configure(self,source_state): return null
+		_native_skill_management=service
+	return _native_skill_management
+
+func request_native_skill_management(command: Dictionary) -> Dictionary:
+	var service: RefCounted=_skill_management_service()
+	if service==null: return {"accepted":false,"committed":false,"reason":"skill_service_unready","prefix":[]}
+	return service.request(command)
+
+func bind_native_skill_management_handoff(receiver: Callable) -> bool:
+	var service: RefCounted=_skill_management_service()
+	return service!=null and service.bind_handoff(receiver)
+
+func read_native_skill_management() -> Dictionary:
+	return source_state.read_native_skill_management_snapshot() if is_instance_valid(source_state) else {}
+
+
+# DEMO11-18: callable seams only; K/L layout stays with PC.
+func read_native_skill_fusion(key: String) -> Dictionary:
+	return source_state.read_native_skill_fusion(self,key) if is_instance_valid(source_state) else {"status":"NOT_READY","reason":"state_unavailable"}
+
+func request_native_skill_fusion(request_id: String, key: String) -> Dictionary:
+	return request_native_skill_management({"request_id":request_id,"action":"fuse","skill_id":key})
+
+func request_native_skill_fusion_undo(request_id: String, host_skill: String, confirmed: bool=false) -> Dictionary:
+	# Original reset selects the largest active group containing this skill.
+	return request_native_skill_management({"request_id":request_id,"action":"reset","skill_id":host_skill,"confirmed":confirmed})
+
+
+func dispatch_native_skill_slot(slot_key: String) -> Dictionary:
+	var adapter: Node = world.get_node_or_null("NativeSkillSlots") if is_instance_valid(world) else null
+	if not is_instance_valid(adapter): return {"accepted":false,"reason":"skill_dispatcher_unavailable"}
+	return adapter.dispatch_native_slot(slot_key)
+
 
 func read_native_fireball_magic_cost() -> Variant:
 	var b: Dictionary=_native_fireball_provider_bundle()
@@ -2891,3 +3024,184 @@ func is_native_source_play_time_context_current(services: RefCounted, state: Nod
 		return false
 	return state.is_native_play_time_owner_current(
 		self, player, world, source_resources, raw_g, require_g_identity)
+
+# DEMO11-40: existing skill sound callsites supply already resolved pitch/gain.
+func request_native_skill_sample(path: String, gain: float, rate: float) -> void:
+	if read_native_attack_audio_settings().get("ready")!=true or get_tree().paused:return
+	var key: String=path.get_file().get_basename()
+	if is_instance_valid(_combat_sound_consumer) and not _attack_audio_streams.has(key):
+		var stream:=AudioStreamMP3.new()
+		stream.data=FileAccess.get_file_as_bytes(path)
+		if stream.data.is_empty() or stream.get_length()<=0:return
+		_attack_audio_streams[key]=stream
+		_combat_sound_consumer.install_sample(key,stream)
+	_record_event("native_skill_sample_requested",{"key":key,"gain":gain,"rate":rate,"character":player.get_native_character_profile_snapshot().get("index",-1)})
+
+# PC-RUNTIME-STATS (2026-10-21) — runtime applyStats recalculation entry.
+# The pre-Tree initialization dispatcher stays single-use; this separate owner
+# is created on first request for this actual Main and reuses the original
+# producers. Contract: docs/engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md
+const RuntimeStatRefreshScript = preload("res://scripts/native_source_player_runtime_stat_refresh.gd")
+const NATIVE_RUNTIME_STAT_REFRESH_APPLY_STATS = "apply_stats"
+const NATIVE_RUNTIME_STAT_REFRESH_EQUIPMENT = "equipment_refresh"
+var source_runtime_stat_refresh: RefCounted
+
+## mode: "apply_stats" (G applyStats() — stat/passive invest·reset) or
+## "equipment_refresh" (G16287-16292 _refreshEquipmentStats — equip/unequip).
+## Returns the refresh receipt: status/ready/committed/reason/before/after.
+func request_native_runtime_stat_refresh(mode: String, reason: String = "") -> Dictionary:
+	if not _native_main_service_live():
+		return {"status": "REJECTED", "ready": false, "committed": false,
+			"reason": "runtime_stat_refresh_Main_not_live", "mode": mode, "caller_reason": reason}
+	if not is_instance_valid(source_runtime_stat_refresh):
+		var refresh: RefCounted = RuntimeStatRefreshScript.new()
+		var configured: Dictionary = refresh.configure(self)
+		if configured.get("ready") != true:
+			return {"status": "REJECTED", "ready": false, "committed": false,
+				"reason": str(configured.get("reason")), "mode": mode, "caller_reason": reason}
+		source_runtime_stat_refresh = refresh
+	return source_runtime_stat_refresh.refresh(self, mode, reason)
+
+func read_native_runtime_stat_refresh_snapshot() -> Dictionary:
+	if not is_instance_valid(source_runtime_stat_refresh):
+		return {"configured": false, "reason": "runtime_stat_refresh_not_requested"}
+	return source_runtime_stat_refresh.get_snapshot()
+
+## Main owns _lEqCache (_source_l_eq_cache). Only its own refresh module, during
+## an open pass, may clear it (G16289 / recalcSt G16426 _lEqCache=null).
+func invalidate_native_runtime_refresh_legendary_cache(refresh: Object) -> bool:
+	if not is_instance_valid(refresh) or refresh != source_runtime_stat_refresh \
+			or not refresh.is_native_runtime_stat_refresh_active(self):
+		return false
+	_source_l_eq_cache = null
+	return true
+
+# ── PC-COMBAT-PACK-B (2026-10-21): 공개 API — 실제 집행은 native_combat_pack_b.gd ──────────
+# 계약: docs/engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md. 미설치면 REJECTED 영수증(쓰기 0).
+func _pack_b_unavailable(kind: String) -> Dictionary:
+	return {"request": kind, "status": "REJECTED", "accepted": false, "reason": "pc_combat_pack_b_service_not_installed", "mutation": "none"}
+
+func request_native_hurte(actor: Variant, damage: Variant, angle: Variant, no_sound: bool, opts: Variant, attack_element: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.request_native_hurte(actor, damage, angle, no_sound, opts, attack_element, ctx) if native_combat_pack_b != null else _pack_b_unavailable("hurte")
+
+func bind_native_enemy_hurte_owner(actor: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.bind_native_enemy_hurte_owner(actor, ctx) if native_combat_pack_b != null else _pack_b_unavailable("bind")
+
+func register_native_enemy_death_effect(profile: Variant, consumer: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.register_native_enemy_death_effect(profile, consumer, ctx) if native_combat_pack_b != null else _pack_b_unavailable("death_effect")
+
+func admit_native_source_projectile(owner: Variant, packet: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.admit_native_source_projectile(owner, packet, ctx) if native_combat_pack_b != null else _pack_b_unavailable("admit")
+
+func advance_native_source_projectile(handle: Variant, sp: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.advance_native_source_projectile(handle, sp, ctx) if native_combat_pack_b != null else _pack_b_unavailable("advance")
+
+func advance_native_player_projectile_pass(sp: Variant, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.advance_native_player_projectile_pass(sp, ctx) if native_combat_pack_b != null else _pack_b_unavailable("pass")
+
+func resolve_native_projectile_interaction(packet: Variant, target: Variant, event: Dictionary, ctx: Dictionary) -> Dictionary:
+	return native_combat_pack_b.resolve_native_projectile_interaction(packet, target, event, ctx) if native_combat_pack_b != null else _pack_b_unavailable("interaction")
+
+# ═══ PCI-01 (PC-LIFE-PACK 2026-10-21) — 플레이어 생명주기 ═══
+# 계약: docs/engine/PC_LIFECYCLE_CONTRACT_20261021.md. 부팅 때 1회 구성(HP0 토큰 발급용
+# telemetry 연결). 틱 경로 코드 0. 기존 player.gd HP0 블록·피해 경로 수정 0.
+const PlayerLifeScript = preload("res://scripts/native_source_player_life.gd")
+signal native_player_life_phase_changed(snapshot: Dictionary)
+var source_player_life: RefCounted
+
+func _install_native_player_life() -> void:
+	if is_instance_valid(source_player_life):
+		return
+	var life: RefCounted = PlayerLifeScript.new()
+	source_player_life = life
+	var configured: Dictionary = life.configure(self)
+	if configured.get("ready") != true:
+		source_player_life = null
+		push_warning("PCI-01 player life owner not configured: " + str(configured.get("reason")))
+		return
+	life.native_player_life_phase_changed.connect(func(snapshot: Dictionary) -> void:
+		native_player_life_phase_changed.emit(snapshot))
+
+## op = fallen_enter | revive_once | revive_resolve | final_death | respawn | lobby_prepare.
+## request = {op, request_id:String(단회), player:Node(실제 Main.player), death_token:String,
+##   roll_receipt?:{can_revive,roll,chance,cd_frames}, step?:"exp_loss"|"reset"}.
+func request_native_player_life_transition(request: Dictionary) -> Dictionary:
+	if not is_instance_valid(source_player_life):
+		return {"status": "NOT_READY", "accepted": false, "reason": "player_life_owner_not_configured",
+			"op": request.get("op"), "token": request.get("request_id"), "replayed": false}
+	return source_player_life.request(self, request)
+
+## 읽기 전용: {phase, death_token, clear_blocked, readback{hp,mp,st,iframes,state,...}}.
+func read_native_player_life_phase() -> Dictionary:
+	if not is_instance_valid(source_player_life):
+		return {"configured": false, "phase": "unknown", "clear_blocked": true,
+			"reason": "player_life_owner_not_configured"}
+	return source_player_life.read_phase()
+
+# ═══ PCI-11 (PC-LIFE-PACK 2026-10-21) — 적 최종 처치 인계 ═══
+# 발행: native_normal_enemy_hurte._kill_pipeline G42733 앵커(처치 이벤트 전용, 틱 0).
+# Mac37 clear sink 복제 없음 — 구독자가 문지기/게이트/clear 귀속을 소비한다.
+const FinalEnemyDeathScript = preload("res://scripts/native_final_enemy_death.gd")
+## 최종 사망만(부활 대기/취소 제외). Mac DEMO11-37 bind_final_death_source(owner,event) 호환 시그니처.
+signal native_enemy_final_death(actor: Node, stage_index: int)
+var source_final_enemy_death: RefCounted
+
+func _final_enemy_death_bus() -> RefCounted:
+	if not is_instance_valid(source_final_enemy_death):
+		var bus: RefCounted = FinalEnemyDeathScript.new()
+		if not bus.configure(self):
+			return null
+		source_final_enemy_death = bus
+	return source_final_enemy_death
+
+## consumer.call(payload) — payload {event:"final_death"|"revival_pending"|"cancel", actor, death_token,
+## life_phase, stage, provider_revision, kill_receipt, gate_guard, player_life{phase,death_token,clear_blocked}}.
+## ctx = {subscriber: Node(Main 자신 또는 Main 자손, 필수), events?: Array}.
+func subscribe_native_final_enemy_death(consumer: Callable, ctx: Dictionary) -> Dictionary:
+	if not _native_main_service_live():
+		return {"status": "NOT_READY", "accepted": false, "reason": "final_death_bus_Main_not_live"}
+	var bus: RefCounted = _final_enemy_death_bus()
+	if bus == null:
+		return {"status": "NOT_READY", "accepted": false, "reason": "final_death_bus_not_configured"}
+	return bus.subscribe(consumer, ctx)
+
+func unsubscribe_native_final_enemy_death(subscription_id: String) -> bool:
+	return is_instance_valid(source_final_enemy_death) and source_final_enemy_death.unsubscribe(subscription_id)
+
+## hurtE 처치 파이프라인 전용 발행 지점(G42733). 다른 호출자 사용 금지.
+func publish_native_enemy_death(enemy: Node, context: Dictionary) -> Dictionary:
+	var bus: RefCounted = _final_enemy_death_bus()
+	if bus == null:
+		return {"published": false, "reason": "final_death_bus_not_configured"}
+	return bus.publish(enemy, context)
+
+func read_native_final_enemy_death_snapshot() -> Dictionary:
+	if not is_instance_valid(source_final_enemy_death):
+		return {"configured": false, "coverage": FinalEnemyDeathScript.coverage()}
+	return source_final_enemy_death.get_snapshot()
+
+# ═══ PCI-10 (PC-LIFE-PACK 2026-10-21) — 주술사 시체 부활(G38944–38958) ═══
+# caster tick/reviveT·reviveCd는 caster owner(Mac B9) 소유. 이 요청은 시체 선택·같은 identity 부활·
+# next_timer 반환. ctx = {request_id:String, revive_cd:number(caster e.reviveCd)}. 틱 경로 코드 0.
+const EnemyCorpseReviveScript = preload("res://scripts/native_enemy_corpse_revive.gd")
+var source_enemy_corpse_revive: RefCounted
+
+func request_native_enemy_revive(caster: Node, ctx: Dictionary) -> Dictionary:
+	if not _native_main_service_live():
+		return {"status": "NOT_READY", "accepted": false, "reason": "enemy_revive_Main_not_live", "revived": false}
+	if not is_instance_valid(source_enemy_corpse_revive):
+		var module: RefCounted = EnemyCorpseReviveScript.new()
+		if not module.configure(self):
+			return {"status": "NOT_READY", "accepted": false, "reason": "enemy_revive_not_configured", "revived": false}
+		source_enemy_corpse_revive = module
+	return source_enemy_corpse_revive.request(self, caster, ctx)
+
+# ═══ PCI-12 (PC-LIFE-PACK 2026-10-21) — 원본 recalcSt() 단독 writer(G16425–16431) ═══
+# 기존 runtime stat refresh owner의 "recalc_st" 모드: 캐시 3종 무효화 → 기존
+# resource_parameters.run_recalc_st → ST/mST commit만. 재련/빈 슬롯 제작(G50836·51176) 뒤
+# 별도 applyStats 1회는 호출자(Mac29)가 request_native_runtime_stat_refresh("apply_stats")로.
+func request_native_recalc_st(owner: Node, ctx: Dictionary = {}) -> Dictionary:
+	if owner != self:
+		return {"status": "REJECTED", "ready": false, "committed": false,
+			"reason": "runtime_stat_refresh_foreign_owner", "mode": "recalc_st", "caller_reason": str(ctx.get("reason", ""))}
+	return request_native_runtime_stat_refresh("recalc_st", str(ctx.get("reason", "recalc_st")))

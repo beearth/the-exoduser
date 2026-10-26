@@ -94,6 +94,11 @@ var _cat_static: Dictionary = {}
 var _cat_idle: Dictionary = {}
 var _cat_run: Dictionary = {}
 var _flame_tex: Array = []
+# PCI-13 (PC-LIFE-PACK 2026-10-21): 대사 초상 강한 참조 캐시 — configure 때 crow/cat 각 1회 로드,
+# 발화(_show_bubble) 때 ResourceLoader.exists/load 0회. 원본 웹 기능이 아닌 Godot hitch 개선.
+const PET_PORTRAIT_PATHS := {"crow": "res://assets/pets/crow_portrait.png", "cat": "res://assets/pets/cat_portrait.png"}
+var _portrait_cache: Dictionary = {}   # who → Texture2D (강한 참조)
+var _portrait_prepare: Dictionary = {} # who → {ready, cached, usec, reason}
 var _iris_glow_tex: GradientTexture2D
 
 
@@ -151,6 +156,8 @@ func configure(world: Node, player: Node2D, state: Node, lighting: CanvasLayer) 
 		elif kind == "player_damage":
 			_pet_hit_cnt += 1)
 	_build_subtitle_panel()
+	for who in ["crow", "cat"]:
+		prepare_native_pet_portrait(who)
 	_configured = true
 	return true
 
@@ -668,9 +675,12 @@ func _show_bubble(who: String, txt: String) -> void:
 		return
 	var is_crow := who == "crow"
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
-	var portrait_path := "res://assets/pets/crow_portrait.png" if is_crow else "res://assets/pets/cat_portrait.png"
-	if ResourceLoader.exists(portrait_path):
-		_portrait.texture = load(portrait_path)
+	# 9364–9378 초상 선택: crow→crow_portrait / 그 외→cat_portrait (원본 분기 그대로).
+	# PCI-13: 캐시 소비만 — 준비 실패한 key는 현재 초상 무변이(기존 exists 실패와 같은 관측), 대사 계속.
+	var portrait_key := "crow" if is_crow else "cat"
+	var cached: Variant = _portrait_cache.get(portrait_key)
+	if cached is Texture2D:
+		_portrait.texture = cached
 	# bottom 230px(1920×1080·ui-scale1), crow=left 20 / cat=right 20, origin bottom
 	var panel_height := 320.0 * 1.5
 	_subtitle_root.position = Vector2(20.0 if is_crow else viewport_size.x - 20.0 - 480.0 * 1.5,
@@ -685,6 +695,30 @@ func _show_bubble(who: String, txt: String) -> void:
 	_bubble_label.text = txt
 	_subtitle_root.modulate = Color(1, 1, 1, PET_OP_MAX)
 
+
+## PCI-13: 초상 1종 준비(로드+강한 참조). 이미 캐시면 재로드 0. 실패 시 그 key 캐시·현재 초상 무변이.
+func prepare_native_pet_portrait(who: String) -> Dictionary:
+	if not PET_PORTRAIT_PATHS.has(who):
+		return {"ready": false, "who": who, "cached": false, "resource_identity": null, "reason": "unknown_pet_portrait_key"}
+	if _portrait_cache.get(who) is Texture2D:
+		return {"ready": true, "who": who, "cached": true, "resource_identity": _portrait_cache[who].get_instance_id(), "reason": ""}
+	var path: String = PET_PORTRAIT_PATHS[who]
+	var started := Time.get_ticks_usec()
+	var texture: Variant = load(path) if ResourceLoader.exists(path) else null
+	var usec := Time.get_ticks_usec() - started
+	if not texture is Texture2D:
+		_portrait_prepare[who] = {"ready": false, "cached": false, "usec": usec, "reason": "portrait_resource_missing"}
+		return {"ready": false, "who": who, "cached": false, "resource_identity": null, "reason": "portrait_resource_missing"}
+	_portrait_cache[who] = texture
+	_portrait_prepare[who] = {"ready": true, "cached": false, "usec": usec, "reason": ""}
+	return {"ready": true, "who": who, "cached": false, "resource_identity": texture.get_instance_id(), "reason": ""}
+
+func get_native_pet_portrait_cache_snapshot() -> Dictionary:
+	var ids: Dictionary = {}
+	for who in _portrait_cache:
+		ids[who] = _portrait_cache[who].get_instance_id()
+	return {"keys": _portrait_cache.keys(), "resource_identity": ids, "prepare": _portrait_prepare.duplicate(true),
+		"bubble_loads": 0}
 
 # ── 렌더 (59905~60009 / 이리스 55288~55318) ──
 func _draw() -> void:

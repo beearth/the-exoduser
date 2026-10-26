@@ -1,0 +1,240 @@
+{
+ "meta": {
+  "unit": "PC-B05-EXTRACT",
+  "head": "b1b69752cb374f498d3a5bc82d2a3bacc389f6ea",
+  "source": "G:/exoduser/game.html (working tree, others uncommitted M)",
+  "frame_hz": 60,
+  "note": "Weapons 7 (identical numbers) + crossbow 3. Lines are working-tree based; \"bows 5\" in the board is wrong (see table E)."
+ },
+ "wtypes": {
+  "sword": {
+   "name": "검",
+   "emoji": "⚔️",
+   "atkMul": 1.0,
+   "stCost": 5,
+   "spdMul": 0.45,
+   "arcW": 0.95,
+   "range": 50,
+   "stagger": 8,
+   "line": 15864
+  },
+  "dagger": {
+   "name": "단검",
+   "emoji": "🗡️",
+   "atkMul": 1.0,
+   "stCost": 5,
+   "spdMul": 0.45,
+   "arcW": 0.95,
+   "range": 50,
+   "stagger": 8,
+   "line": 15865
+  },
+  "hammer": {
+   "name": "해머",
+   "emoji": "🔨",
+   "atkMul": 1.0,
+   "stCost": 5,
+   "spdMul": 0.45,
+   "arcW": 0.95,
+   "range": 50,
+   "stagger": 8,
+   "line": 15866
+  },
+  "mace": {
+   "name": "메이스",
+   "emoji": "⚔️",
+   "atkMul": 1.0,
+   "stCost": 5,
+   "spdMul": 0.45,
+   "arcW": 0.95,
+   "range": 50,
+   "stagger": 8,
+   "line": 15867
+  },
+  "club": {
+   "name": "곤봉",
+   "emoji": "⚔️",
+   "atkMul": 1.0,
+   "stCost": 5,
+   "spdMul": 0.45,
+   "arcW": 0.95,
+   "range": 50,
+   "stagger": 8,
+   "line": 15868
+  },
+  "axe": {
+   "name": "도끼",
+   "emoji": "🪓",
+   "atkMul": 1.0,
+   "stCost": 5,
+   "spdMul": 0.45,
+   "arcW": 0.95,
+   "range": 50,
+   "stagger": 8,
+   "line": 15869
+  },
+  "spear": {
+   "name": "창",
+   "emoji": "⚔️",
+   "atkMul": 1.0,
+   "stCost": 5,
+   "spdMul": 0.45,
+   "arcW": 0.95,
+   "range": 50,
+   "stagger": 8,
+   "line": 15870
+  }
+ },
+ "btypes": {
+  "crossbow": {
+   "name": "석궁",
+   "emoji": "⚙️",
+   "atkMul": 1.0,
+   "stCost": 5,
+   "spdMul": 1.0,
+   "range": 800,
+   "projSpd": 22,
+   "line": 15887
+  },
+  "repeater": {
+   "name": "연사석궁",
+   "emoji": "⚡",
+   "atkMul": 0.65,
+   "stCost": 5,
+   "spdMul": 1.5,
+   "range": 700,
+   "projSpd": 22,
+   "line": 15888
+  },
+  "arcane": {
+   "name": "마력석궁",
+   "emoji": "✨",
+   "atkMul": 1.4,
+   "stCost": 5,
+   "spdMul": 0.8,
+   "range": 840,
+   "projSpd": 22,
+   "line": 15889
+  }
+ },
+ "rarity_mul": [
+  1,
+  1.2,
+  1.5,
+  1.8,
+  2.2,
+  2.5
+ ],
+ "atk_floor": [
+  0,
+  0.05,
+  0.15,
+  0.25,
+  0.4,
+  0.5
+ ],
+ "mkItem": {
+  "atk_max": {
+   "base": 200,
+   "per_tier": 200,
+   "per_level": 1,
+   "scale": 0.25,
+   "line": 15922
+  },
+  "atk_roll": "max(1, trunc(atkMax*(floor+(1-floor)*random^2)))",
+  "weapon": {
+   "spd": "0.45*rm",
+   "wStCost": "trunc(5*(2-rm*0.3))",
+   "wArcW": 0.95,
+   "wRange": "trunc(50*(0.95+random*0.1))",
+   "wStagger": "trunc(8*rm)",
+   "bonusRange": "min(3,trunc((1+tier*0.4+rarity*0.5)*(0.8+random*0.4)))"
+  },
+  "bow": {
+   "bowSpd": "spdMul*rm",
+   "bowStCost": "trunc(5*(2-rm*0.3))",
+   "bowRange": "trunc(range*(0.95+random*0.1))",
+   "bowProjSpd": 22,
+   "bowPierce": "(0.02+tier*0.03+rarity*0.04)*(0.8+random*0.4)",
+   "bonusRange": "same as weapon"
+  },
+  "antiRevive": "0.01+0.19*random^3 (toFixed 2)"
+ },
+ "melee": {
+  "stage_frames": {
+   "swing": 5,
+   "hit_at_st2_cross": 3
+  },
+  "move_mul_during_attack": 0.8,
+  "range": "wRange(50 default)+bonusRange*4",
+  "arc": "wArcW(0.95 default)",
+  "raw": "trunc(((baseAtk+atk+enhMulAtk(enh))+15)*6)",
+  "then": "trunc(raw*pAtkMul()*pMeleeMul())+atkBon, per-enemy trunc(x*elMul)",
+  "recover": "trunc(16/((spd||0.3)*statDex()*(1+meleeAtkSpd+glovesAtkSpd)))",
+  "st_cost": 5,
+  "atk_bon_per_st": 1.5
+ },
+ "auto_bow": {
+  "XBOW_RANGE": 1000,
+  "XBOW_INTERVAL": 120,
+  "XBOW_DMG": 28,
+  "XBOW_SPEED": 13,
+  "XBOW_PIERCE": false,
+  "spec_range": "max(220,(max(bowRange||0,type.range||1000)+bonusRange*12)*pBowRange())",
+  "spec_speed": "bowProjSpd||type.projSpd||13",
+  "interval": "XBOW_INTERVAL/((bowSpd||1)*pXbowSpd())",
+  "st_gate": "P.st > P.mst*0.2",
+  "one_shot_per_frame": true,
+  "dmg": "trunc((bowRef*pBowMul*pXbowMul*type.atkMul+28)*(gxFiring||1))*3",
+  "projectile": {
+   "origin_offset": 10,
+   "radius": 3,
+   "stagger": 0,
+   "kb": 0,
+   "normalBow": true,
+   "ghostXbow": true
+  },
+  "extra_bolt": "legendary _lBowCrit: random*100<statCrit() -> +-0.12rad",
+  "st_cost_after": "(1.5+fanShotLv*1.5)*_stDisc(bow), clamp 0",
+  "gx_dmg_mul_declared": 1.5,
+  "gx_spd_mul_declared": 1.5,
+  "gx_effective": 1
+ },
+ "passives": {
+  "passDmgSum": "(1+sum)*0.7",
+  "pBowMul": "pBow*0.15",
+  "pXbowMul": "pXbow*0.05",
+  "pAtkMul": "pMelee*0.15 (+pAtk*0.10 + pHuman*0.05)",
+  "pBowCost": "max(0.60,1-pBow*0.04)",
+  "pBowRange": "1+pBow*0.08",
+  "pBowSpd": "1+pBow*0.10",
+  "pXbowSpd": "1+pXbow*0.05"
+ },
+ "refs": {
+  "meleeRef": "(atk+enh*.25 + flat + baseAtk + (str+eqStr+trunc(lv*.5)))*(seal?.3:1)",
+  "bowRef": "same with dex/bw",
+  "enhMulAtk": "n*0.25",
+  "statDex": "1+(dex+eqDex+lvB)*0.0005+glove.atkSpd+atkSpeed+implicit*0.01+..."
+ },
+ "projectile_pool": {
+  "size": 120,
+  "default_pierce_rate_on_reset": "50+pierceFlat",
+  "unified_pierce": "guaranteed floor(rate*91/1000), then (1-over*0.1) chance"
+ },
+ "bow_skill_slot_list": [
+  "normal",
+  "bladeShot",
+  "blastShot",
+  "fanShot",
+  "needleShot"
+ ],
+ "tables": {
+  "rows_defs": 72,
+  "functions": 28,
+  "flow": 10,
+  "hud": 10,
+  "diffs": 21,
+  "unity": 13,
+  "ownership": 10
+ }
+}

@@ -573,3 +573,15 @@ P는 mkP 반환 직후 값이며 최종저장값/장비적용후값이 아니다
 | 저장고정필드 | 다섯실제 리터럴을 재평가 없이 lexical 분리·player/inv/game만 펼침. union 68경로, cloud:67, local:67, web:67, demo:67, 500:49 |
 | 관련 docs 검색 | docs 전체 Markdown의 dbSave/dbRestore/api-slots/save_adapter/raw_grit/queue/shared 키워드 검색 수행. 기존문서 내용 수정0. 본문불일치의 기준은 지정설계폴더2파일 |
 | 한계 | 원본JS 런타임JSON 결과/undefined 생략/NaN→null·getter·외부모듈·비정상입력·Godot round-trip·실제slot ownership은 별도행동검증 전 **미확인**. 이부록은 source trace이며 동작동등성테스트가 아님 |
+
+## DEMO11-05 추가 인수 — native demo 로컬 IO (2026-10-21)
+
+사용자 2026-10-21 분할 배정 범위로 `port_modules/save_adapter/demo_local_storage.gd`를 추가했다. S07의 G62111/62128–62173과 I3486–3520의 **게임 단일 키·active·5슬롯**만 다룬다. 각 키는 별도 native `.json` 파일이며 내용은 원래 localStorage 값의 UTF-8 문자열 그대로다. JSON payload 필드·알 수 없는 필드·공백·null을 재직렬화하지 않고, 새 암호화/envelope/저장 마이그레이션을 만들지 않는다. 공유창고·demo500·cloud/web/API 저장은 이 adapter의 지원 키가 아니다.
+
+`readiness()`는 값 파일을 생성/읽기 전에 namespace와 link metadata를 검사하며 `EXODUSER-Godot-Native-First`를 거절한 뒤에만 경로 검사를 한다. `open_store()`는 현재 userdir가 `EXODUSER-demo11-*`인 경우에만 그 아래 `demo_local_storage`를 연다. 원본 경로/키를 외부 입력으로 받지 않는다. 실패한 open/읽기를 “저장 없음”으로 바꾸지 않고, 정상 열린 디렉터리에 키가 없는 경우만 MISSING이다. 손상 JSON/UTF-8은 보존하고 실패를 반환한다.
+
+`begin_set`/`begin_remove`→`advance` 또는 `run_request`가 실제 IO를 수행한다. 요청 ID와 작업/키/bytes가 같으면 진행/완료 결과를 재사용하고, ID 충돌·다른 진행 요청·재진입을 거절한다. receipt는 명시 `release_receipt` 전까지 최대128개로 보존하며 중복 방지는 해당 adapter 인스턴스 수명 범위다. 동일 root의 독점 `.writer` 디렉터리, 임시 파일 write/flush/readback→같은 파일시스템 rename을 사용한다. 기존 파일을 먼저 삭제하지 않는다. 각 키의 commit만 원자적이며 로비의 여러 키 교환을 하나의 트랜잭션으로 바꿨다는 뜻은 아니다. 정체불명의 잠금은 자동 삭제하지 않고 이전 commit 읽기를 유지한다.
+
+SV primitive의 `web_ack` 성공 시각 계산과 기존 `source_save_lifecycle_owner.gd`를 실제 재사용했다. `configure_lifecycle`의 기존 clock/state/collector/slot/rift Callable과 **현재 시점 `context.raw_json`**을 소비한다. `start_auto_save`/`schedule_boot_save`/`poll`은 원래30초·10초 성공 간격·3초 boot 계약을 유지한다(G3935–3944/62212). 실제 commit 뒤에만 성공 시각을 갱신하며, IO 이전 admission 실패도 알려진 실패 settlement로 전달해 boot ticket을 남기지 않는다. 기존 fixture primitive의 HOLD/readiness 및 다른 SV 모듈은 변경하지 않았다.
+
+이 좁은 native IO와 격리 재시작 읽기만 인수했다. Main/State 수정0, 실제 신규/이어하기·Player/INV restore·collector 직렬화·공유창고·로비 슬롯 활성 교환은 DEMO11-04/06 소비자 범위다. 현재 일반 Main의 기존 userdir에서는 안전하게 NOT_READY이며 별도 demo namespace 선택/실제 lifecycle pump 설치는 부팅/복원 담당이 인수해야 한다. flush/rename 검증은 전원 장애의 fsync 내구성, Windows 교체 rename, 적대적 동시 파일시스템 교체, crash 뒤 잠금 자동 복구의 증명이 아니다. 상세 수치/실패 원문/접점은 [DEMO11-05 보고서](orders/reports/demo11-05_REPORT.md)를 따른다.

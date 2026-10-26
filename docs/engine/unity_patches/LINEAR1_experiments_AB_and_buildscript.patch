@@ -1,0 +1,77 @@
+diff --git a/unity/Assets/Exoduser/Editor/PortVerification.cs b/unity/Assets/Exoduser/Editor/PortVerification.cs
+index fd7beedd0..19e943720 100644
+--- a/unity/Assets/Exoduser/Editor/PortVerification.cs
++++ b/unity/Assets/Exoduser/Editor/PortVerification.cs
+@@ -130,7 +130,7 @@ public static class PortVerification {
+   EditorSceneManager.SaveScene(scene,name);EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(name,true)};
+   PlayerSettings.companyName="ForDearGamers";PlayerSettings.productName="EXODUSER · Unity 이식 검증판";
+   PlayerSettings.defaultScreenWidth=1920;PlayerSettings.defaultScreenHeight=1080;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
+-  PlayerSettings.runInBackground=true;PlayerSettings.colorSpace=ColorSpace.Gamma;
++  PlayerSettings.runInBackground=true;PlayerSettings.colorSpace=ColorSpace.Linear;
+   return name;
+  }
+  static bool SettingsIdentifierOverride(){var so=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);var value=so.FindProperty("overrideDefaultApplicationIdentifier");if(value==null)throw new Exception("Cannot preserve application identifier override state");return value.boolValue;}
+diff --git a/unity/Assets/Exoduser/Resources/Shaders/HudOrb.shader b/unity/Assets/Exoduser/Resources/Shaders/HudOrb.shader
+index 97499fe6b..c73775041 100644
+--- a/unity/Assets/Exoduser/Resources/Shaders/HudOrb.shader
++++ b/unity/Assets/Exoduser/Resources/Shaders/HudOrb.shader
+@@ -11,6 +11,14 @@ Shader "EXODUSER/SourceHudOrb"
+             #pragma fragment frag
+             #include "UnityCG.cginc"
+             float _Mode,_HpTranslate,_Mana,_Stamina,_Shield,_ShieldAlpha;
++            // PC-LINEAR1 experiment A: colours below are authored as sRGB (web) values; in a Linear project the RT is sRGB, so write linear values.
++            float3 G2L(float3 c){
++            #if defined(UNITY_COLORSPACE_GAMMA)
++                return c;
++            #else
++                return GammaToLinearSpace(c);
++            #endif
++            }
+             float4 resourceGradient(float h,bool mana)
+             {
+                 float3 low=mana?float3(12,34,68):float3(12,51,34);
+@@ -23,14 +31,14 @@ Shader "EXODUSER/SourceHudOrb"
+             float4 frag(v2f_img i):SV_Target
+             {
+                 float2 d=i.uv-.5;float radius=length(d);
+-                if(_Mode>2.5){float a=exp(-radius*radius*28);return float4(1,.13,0,a);}
++                if(_Mode>2.5){float a=exp(-radius*radius*28);return float4(G2L(float3(1,.13,0)),a);}
+                 float edge=saturate((.5-radius)*256);
+                 if(_Mode>1.5){
+                     float track=smoothstep(.5-5.0/153,.5-3.5/153,radius)*edge;
+                     float angle=frac(atan2(d.x,d.y)/6.283185307+1);
+                     float blue=(_Shield>0&&angle<=_Shield)?saturate(.9*_ShieldAlpha):0;
+                     float alpha=blue+.28*(1-blue);
+-                    return float4(float3(50,150,255)/255*blue/max(alpha,.0001),track*alpha);
++                    return float4(G2L(float3(50,150,255)/255*blue/max(alpha,.0001)),track*alpha);
+                 }
+                 if(_Mode<.5){
+                     float top=1-i.uv.y;float3 color=float3(8,8,8)/255;
+@@ -38,12 +46,12 @@ Shader "EXODUSER/SourceHudOrb"
+                         float r=length(float2(d.x*.70710678,(top-_HpTranslate-.4)*1.1785113));
+                         color=r<.5?lerp(float3(107,16,32),float3(61,10,18),r*2)/255:lerp(float3(61,10,18),float3(30,5,10),saturate((r-.5)*2))/255;
+                     }
+-                    return float4(color,edge);
++                    return float4(G2L(color),edge);
+                 }
+                 bool mana=i.uv.x<.5;float ratio=mana?_Mana:_Stamina;
+                 float3 bg=float3(6,6,8)/255;
+                 if(i.uv.y<=ratio&&ratio>0){float4 g=resourceGradient(i.uv.y+1-ratio,mana);bg=lerp(bg,g.rgb,g.a);}
+-                return float4(bg,edge);
++                return float4(G2L(bg),edge);
+             }
+             ENDCG
+         }
+diff --git a/unity/Assets/Exoduser/Runtime/NativeHud.cs b/unity/Assets/Exoduser/Runtime/NativeHud.cs
+index 5f87773e1..af175ba40 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeHud.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeHud.cs
+@@ -115,7 +115,7 @@ namespace Exoduser.UnityPort
+         Texture2D BuildLabelCleanBar()
+         {
+             var old=RenderTexture.active;var rt=RenderTexture.GetTemporary(bar.width,bar.height,0,RenderTextureFormat.ARGB32);
+-            var copy=new Texture2D(bar.width,bar.height,TextureFormat.RGBA32,false){name="HUD bar with source key glyphs removed",filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
++            var copy=new Texture2D(bar.width,bar.height,TextureFormat.RGBA32,false,QualitySettings.activeColorSpace==ColorSpace.Linear){name="HUD bar with source key glyphs removed",filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
+             try{
+                 Graphics.Blit(bar,rt);RenderTexture.active=rt;copy.ReadPixels(new Rect(0,0,bar.width,bar.height),0,0);copy.Apply(false,false);
+                 var pixels=copy.GetPixels32();var glyph=new bool[pixels.Length];int h=bar.height,w=bar.width;

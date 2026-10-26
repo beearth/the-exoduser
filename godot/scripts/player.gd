@@ -285,6 +285,62 @@ func get_native_source_initialization_snapshot() -> Dictionary:
 		"committed_source_writes": _native_source_initialization_written_tags.size(),
 		"live_actor_writes": false, "owns_clock": false}
 
+# PC-RUNTIME-STATS — runtime applyStats batch sink. Separate from the
+# constructor seam above (whose pre-Tree guard is unchanged). Only the actual
+# Main-owned refresh module may write, and only inside its synchronous commit
+# window. No signal/callback between validation and the writes.
+const RUNTIME_STAT_REFRESH_PATH = "res://scripts/native_source_player_runtime_stat_refresh.gd"
+const RUNTIME_STAT_REFRESH_FIELDS = ["hp", "mhp", "baseDef", "speed", "maxPoise", "poise", "poiseR"]
+var _native_runtime_stat_commits := 0
+
+func validate_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> String:
+	if not is_inside_tree() or is_queued_for_deletion() or not is_instance_valid(owner) \
+			or owner != get_parent() or owner.get("player") != self or not is_instance_valid(_world) \
+			or owner.get("world") != _world or _world.get("player") != self:
+		return "player_runtime_refresh_owner_mismatch"
+	if not is_instance_valid(refresh) or refresh.get_script() == null \
+			or refresh.get_script().resource_path != RUNTIME_STAT_REFRESH_PATH \
+			or owner.get("source_runtime_stat_refresh") != refresh:
+		return "player_runtime_refresh_module_mismatch"
+	var window: Variant = refresh.is_native_runtime_stat_refresh_committing(owner)
+	if not window is bool or not window:
+		return "player_runtime_refresh_not_in_commit_window"
+	for field in fields:
+		if field not in RUNTIME_STAT_REFRESH_FIELDS:
+			return "player_runtime_refresh_field_denied:" + str(field)
+		var value: Variant = fields[field]
+		if not (value is int or value is float) or not is_finite(float(value)):
+			return "player_runtime_refresh_value_invalid:" + str(field)
+	if fields.has("maxPoise") and float(fields["maxPoise"]) != 4.0:
+		return "player_runtime_refresh_max_poise_constant"
+	if fields.has("speed") and not is_finite(float(fields["speed"]) * 60.0):
+		return "player_runtime_refresh_speed_non_finite"
+	if fields.has("hp") and float(fields["hp"]) > float(fields.get("mhp", max_hp)):
+		return "player_runtime_refresh_hp_above_mhp"
+	return ""
+
+func commit_native_runtime_stat_refresh(owner: Node, refresh: Object, fields: Dictionary) -> Dictionary:
+	var error := validate_native_runtime_stat_refresh(owner, refresh, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	for field in fields:
+		var value: Variant = fields[field]
+		match field:
+			"hp": hp = float(value)
+			"mhp": max_hp = float(value)
+			"baseDef": base_def = float(value)
+			"speed":
+				_native_source_speed_per_tick = value
+				_movement_speed = float(value) * 60.0
+				_native_source_speed_initialized = true
+			"maxPoise": max_poise = int(value)
+			"poise": poise = int(value)
+			"poiseR":
+				_native_source_poise_r = value
+				_native_source_poise_r_initialized = true
+	_native_runtime_stat_commits += 1
+	return {"accepted": true, "fields": fields.keys(), "commits": _native_runtime_stat_commits}
+
 func _native_source_initialization_constructor_ready() -> bool:
 	if is_inside_tree() or is_node_ready() or get_parent() != null or is_queued_for_deletion() \
 			or not is_instance_valid(_world) or _world.is_queued_for_deletion():
@@ -1413,3 +1469,68 @@ func _request_native_attack_sound(phase: String, step: int) -> void:
 	var main: Node=get_parent()
 	if is_instance_valid(main) and not main.is_queued_for_deletion() and main.has_method("request_native_attack_sound"):
 		main.request_native_attack_sound(self,phase,step,_native_attack_audio_serial)
+
+# ═══ PCI-01 (PC-LIFE-PACK 2026-10-21) — 생명주기 sink. 기존 HP0 블록·피해 경로 수정0. ═══
+# 등록된 Main.source_player_life 모듈의 동기 commit 창 안에서만 수락한다(임의 iframe setter 아님):
+# iframes는 원본 op 값 집합(0/120/300/9999)만, state는 생명주기 결과 상태만 허용.
+const PLAYER_LIFE_PATH = "res://scripts/native_source_player_life.gd"
+const PLAYER_LIFE_IFRAMES = [0.0, 120.0, 300.0, 9999.0] # G43870 / G43727·G43854 / G63521 / G43731
+const PLAYER_LIFE_FIELDS = ["state", "iframes", "state_left", "knockback_zero", "dot_slow_clear"]
+var _native_player_life_commits := 0
+
+func read_native_player_life_fields() -> Dictionary:
+	return {"state": state, "iframes": iframes, "state_left": _state_left, "knockback": _knockback,
+		"burns": _native_burns.duplicate(true), "freeze_slow": _native_freeze_slow_ticks}
+
+func validate_native_player_life_commit(owner: Node, life: Object, fields: Dictionary) -> String:
+	if not is_inside_tree() or is_queued_for_deletion() or not is_instance_valid(owner) \
+			or owner != get_parent() or owner.get("player") != self or not is_instance_valid(_world) \
+			or owner.get("world") != _world or _world.get("player") != self:
+		return "player_life_owner_mismatch"
+	if not is_instance_valid(life) or life.get_script() == null \
+			or life.get_script().resource_path != PLAYER_LIFE_PATH or owner.get("source_player_life") != life:
+		return "player_life_module_mismatch"
+	var window: Variant = life.is_native_player_life_committing(owner)
+	if not window is bool or not window:
+		return "player_life_not_in_commit_window"
+	if fields.has("restore_snapshot"):
+		return "" if fields.size() == 1 and fields["restore_snapshot"] is Dictionary else "player_life_restore_shape"
+	for field in fields:
+		if field not in PLAYER_LIFE_FIELDS:
+			return "player_life_field_denied:" + str(field)
+	if fields.has("state") and (not fields["state"] is String or String(fields["state"]).is_empty()):
+		return "player_life_state_invalid"
+	if fields.has("iframes") and (not (fields["iframes"] is float or fields["iframes"] is int) \
+			or float(fields["iframes"]) not in PLAYER_LIFE_IFRAMES):
+		return "player_life_iframes_not_source_value"
+	if fields.has("state_left") and float(fields["state_left"]) != 0.0:
+		return "player_life_state_left_only_zero"
+	for flag in ["knockback_zero", "dot_slow_clear"]:
+		if fields.has(flag) and fields[flag] != true:
+			return "player_life_flag_invalid:" + flag
+	return ""
+
+func commit_native_player_life(owner: Node, life: Object, fields: Dictionary) -> Dictionary:
+	var error := validate_native_player_life_commit(owner, life, fields)
+	if not error.is_empty():
+		return {"accepted": false, "reason": error}
+	if fields.has("restore_snapshot"):
+		var snap: Dictionary = fields["restore_snapshot"]
+		state = str(snap["state"])
+		iframes = float(snap["iframes"])
+		_state_left = float(snap["state_left"])
+		_knockback = snap["knockback"]
+		_native_burns.assign(snap["burns"])
+		_native_freeze_slow_ticks = snap["freeze_slow"]
+		return {"accepted": true, "restored": true}
+	# 순서 무관한 독립 필드 대입. 시그널/콜백 0(관찰은 life 모듈이 commit 뒤 1회 발행).
+	if fields.has("state"): state = String(fields["state"])
+	if fields.has("iframes"): iframes = float(fields["iframes"])
+	if fields.has("state_left"): _state_left = 0.0
+	if fields.has("knockback_zero"): _knockback = Vector2.ZERO
+	if fields.has("dot_slow_clear"):
+		# G63455 burnT/_rbBurn/_freezeSlow… — Godot 대응 필드: 화상 스택·빙결 둔화.
+		_native_burns.clear()
+		_native_freeze_slow_ticks = 0.0
+	_native_player_life_commits += 1
+	return {"accepted": true, "fields": fields.keys(), "commits": _native_player_life_commits}

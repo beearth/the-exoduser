@@ -544,3 +544,33 @@ func _draw() -> void:
 	for bar in BAR_LAYOUT.build(radius, float(hp), float(mhp), eShield, eShieldMax,
 			_stun_ticks, data.get("native_final", {}).get("_maxStunned")):
 		draw_rect(bar["rect"], bar["color"])
+
+# ═══ PCI-10 (PC-LIFE-PACK 2026-10-21): 주술사 시체 부활 writer G38949–38950 — 같은 노드 복귀. ═══
+# generic 상태기계에는 recover가 없어(P1-002.E 추적표 42382) s='recover';st2=60을 state 표기 +
+# _hit_stun 60틱(행동 정지)으로 매핑한다. 사망 쓰기가 끈 충돌/본체 표시는 _ready 값으로 복원.
+func apply_native_enemy_corpse_revive(caller_world: Node) -> Dictionary:
+	if caller_world != world or not _native_enemy_hp_owner_is_current():
+		return {"applied": false, "reason": "native_enemy_revive_owner_not_current"}
+	if alive:
+		return {"applied": false, "reason": "native_enemy_revive_not_dead"}
+	var native: Variant = data.get("native_final")
+	if not native is Dictionary:
+		return {"applied": false, "reason": "native_enemy_revive_fields_missing"}
+	var hp_value: int = int(float(mhp) * 0.5) # ~~(mhp*.5)
+	alive = true
+	hp = hp_value
+	eShield = 0.0
+	eShieldMax = 0.0
+	state = "recover"
+	_hit_stun = 60.0
+	_stun_ticks = 0.0
+	poise = max_poise
+	native["reviveIframes"] = 0.0
+	collision_layer = 4
+	collision_mask = 1 | 2
+	if is_instance_valid(_body):
+		_body.visible = true
+		_body.modulate = Color.WHITE
+	telemetry_event.emit("enemy_revived", {"id": data["id"], "hp": hp_value, "source_line": 38949})
+	queue_redraw()
+	return {"applied": true, "hp": hp_value, "recover_field": "_hit_stun"}

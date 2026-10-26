@@ -44,6 +44,7 @@ E는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-
 | emit_m29_event(actor,event)->bool | 원 windup/charge/recover/spark/trail/player_damage/parry event를actual warning/impact/sound provider에위임. rejected provider는runtime_binding_error로기록,빈FX를PASS로처리하지않음 |
 | m29_readiness()->Dictionary | combat_qe/warning_fx/impact_fx/detonate_sound 각각bool true필수. configure와ownerphase전확인;하나라도미준비면binding/phase거부. 준비값은actualparentprovider권위이며constructor recorder의test문맥과구분 |
 | SOUND actual parent API | `res://port_modules/sound_m29/caller.gd` Node를add_child후 `on_detonate()->handle`, `cancel_event(handle)` 사용. 기존sound15조건PASS는부모동결자료이며이번재실행0; 실제provider결선·공개청취는별도 |
+| PC 제공자(2026-10-21 PC-M29-PARRY) | `player_context`/`handle_m29_parry`/`emit_m29_event`/`m29_readiness` 실제 제공자 = `main.get_native_m29_services()`(native_m29_contact_services.gd). handle은 parryBank→doParry 기존 writer(보상·iframes25·poise+1)→actor `apply_native_source_poise_core(20)` 순서, projectile=false만 수용. FX 3능력은 실제 소비자 등록 전 false. 상세 [PC_M29_PARRY_CONTRACT_20261021.md](PC_M29_PARRY_CONTRACT_20261021.md) |
 
 ## modifier source order / exact damage dtype
 
@@ -89,3 +90,7 @@ E는 `/Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-
 | FILES/GIT | worker소유newbinding+uid/test/SSOT/E/type3-binding only. root완료/공유파일과다른worker 변경되돌림0. workerGit0, parent code+docscheckpoint완료SHA추정0 |
 | VISUAL VERDICT | **RETOUCH** — actualprovider/전체AI/소환·원render/audio/공개input·GPU/최저1080p240미검증 |
 | NEXT PASS | actualQE/FX/sound/emitterprovider인수→parentfreshstage첫meaningfulsubset→실패만수리. type7전체등록은모든필수caller準備후별도 |
+
+## PC-COMBAT-PACK-B PCI-02 추가 — 공용 hurtE field owner (2026-10-21)
+
+`type3_native_binding.gd`에 bind 프로토콜 owner 메서드 10개와 읽기 속성 `data`(`{id:"type3:<instance_id>", native_final:{col, ib:false}}`)를 **순수 추가**했다. 구현은 `native_bound_enemy_hurte_owner.gd`가 actor의 원본 필드 dict(`get_native_modifier_state()`)에 위임한다. `Main.bind_native_enemy_hurte_owner(actor, {token})`로 bind해야 동작한다 — bind 전에는 hurtE가 0행에서 정지(쓰기 0)하며 `receive_damage` 폴백은 없다(Player 근접·검기 포함). 기존 `receive_damage`·M29/M30·poise 코어·AI 경로 본문 변경 0. 메서드 목록·live identity 규칙: [PC_COMBAT_PACK_B_CONTRACT_20261021 §4](PC_COMBAT_PACK_B_CONTRACT_20261021.md). `freeze_hit`(42446 냉기 게이지)은 type3 미이식(거절).
