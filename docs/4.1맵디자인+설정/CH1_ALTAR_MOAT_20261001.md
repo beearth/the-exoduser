@@ -1,5 +1,7 @@
 # CH1-1 제단 독액 도랑 (2026-10-01)
 
+> 2026-10-26 Unity 분기 [UNITY-MOAT-01](../engine/UNITY_MOAT_01_20261026.md): 원본 hill/moat/glow/bubble cache4종 동일byte 인수, 기존 analytic 충돌·서쪽다리 보존. CPU39검사/9723질의 일치·runtime API컴파일 통과. PID61637 실행으로 Unity빌드·새캡처·성능은 미실시, **IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL RETOUCH**. 아래 웹1차 PASS를 Unity 인수로 해석하지 않는다.
+
 > 사용자 지시(2026-10-01): "중앙에 제단 같은 거 있고 사이드가 경계가 있는데 … 물효과를 넣던가, 못 가는 뭔가 물리적으로 만들던가, 독액 또랑을 만들던가 해서 — 지금은 그냥 막혀 있어 이상해."
 > 상태: **구현 완료 · VISUAL VERDICT PASS(맵 팀장, 1차판)**. 시각 전용 — 충돌·경사로·타일맵·구운 청크 불변.
 

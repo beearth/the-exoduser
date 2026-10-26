@@ -2,6 +2,8 @@
 
 상태: **IMPLEMENTED_UNVERIFIED**. **VISUAL VERDICT: RETOUCH**.
 
+후속 [UNITY-MOAT-01](UNITY_MOAT_01_20261026.md): 아래8fb4072db 빌드에서 결손이었던 언덕/해자/glow/bubble을 원본4PNG·동일충돌로 연결한 코드 후보. **IMPLEMENTED_UNVERIFIED — GPU 대기**, 새Unity빌드/화면/성능 미실시. 본문 캡처·ms·미이식 관측은02 당시 근거이며 새해자의 검수 증거로 전용하지 않는다.
+
 사용자 2026-10-26 지시를 수행한 후속 검수다. 소스 시작 SHA는 `d3a4a9a3b7aac338d31199842e0edc326658df60`, 기준은 `776ebe77d05450343b1482cca945f184733fd30c`다. 전용 브랜치 `codex/unity-map-light-01-20261026`만 비강제 push하며 main/다른 Unity WIP에 통합하지 않는다. 최종 SHA/원격 대조/정상 worktree 제거 결과는 외부 `DONE.txt`가 정본이다.
 
 ## 실제 수행과 입력

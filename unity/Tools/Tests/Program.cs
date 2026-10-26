@@ -30,6 +30,11 @@ class Program
   var mapData=JsonSerializer.Deserialize<MapData>(File.ReadAllText(args[1]),new JsonSerializerOptions{IncludeFields=true});var map=new SourceMap(mapData);
   Check(mapData.width==200&&mapData.height==200&&mapData.chunks.Length==64,"original200x200 map/64chunks");
   Check(map.CanMove(4020,7420,15),"original south start is walkable");
+  Check(mapData.altarMoat!=null&&mapData.altarMoat.hill=="Art/map/altar_moat/hill"&&
+   mapData.altarMoat.channel=="Art/map/altar_moat/moat"&&mapData.altarMoat.glow=="Art/map/altar_moat/moatGlow"&&
+   mapData.altarMoat.bubble=="Art/map/altar_moat/moatBubble","original altar terrain resources bound");
+  Check(map.CanMove(5200,3920,15),"west bridge crosses the blocked moat band");
+  Check(map.Blocked(5880,4258.4f)&&map.Blocked(6556.8f,3920),"south and east liquid mid-band block movement");
   Check(!map.CanMove(0,0,15)&&!map.CanMove(-1,100,15)&&!map.CanMove(float.NaN,0,15),"map wall bounds/nonfinite rejected");
   foreach(var c in mapData.colliders)Check(map.Blocked(c.x,c.y),"original prop ellipse center blocked "+c.x+","+c.y);
   string oracle=args.Length>2?args[2]:"";

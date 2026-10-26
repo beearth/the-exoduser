@@ -40,7 +40,10 @@ namespace Exoduser.UnityPort
         {
             yield return null; // Awake finishes before touching the existing lobby/settings.
             string output = Argument("-output"), mode = Argument("-lightingMode");
+            string scene = Argument("-lightingScene");
+            bool sampleAtAltar = scene == "altar";
             if (!SettingsQaIdentity || !Path.IsPathRooted(output) ||
+                (scene != "" && scene != "start" && scene != "altar") ||
                 (mode != "before" && mode != "after") || nativeSettingsStore != null ||
                 !string.IsNullOrEmpty(lobby.CharacterStoreDirectory))
             { Debug.LogError("Field lighting review requires isolated QA identity, absolute output and no storage"); Application.Quit(2); yield break; }
@@ -57,6 +60,12 @@ namespace Exoduser.UnityPort
             for (int i=0; i<180; i++) yield return null;
             UpdateViews();
             yield return SkillCapture(output,"field-start-"+mode);
+            if(sampleAtAltar)
+            {
+                Simulation.Player.X=5900;Simulation.Player.Y=4060;UpdateViews();
+                for(int i=0;i<180;i++)yield return null;
+                yield return SkillCapture(output,"field-altar-"+mode);
+            }
             const int count=900;
             var frameMs=new double[count];
             long totalBytes=0, maxBytes=0, profilerMax=0;
@@ -84,7 +93,7 @@ namespace Exoduser.UnityPort
             double sum=0;foreach(double value in frameMs)sum+=value;
             Array.Sort(frameMs);
             var receipt=new LightingReviewReceipt {
-                mode=mode,scope="1920x1080 stationary source start, 180 warmup / 900 frames at cap120 vsync0. Fixed simulation paused with existing pauseSmoke focus fence; render lighting clock runs. Main-thread whole-frame GC and lighting callback GC measured separately; existing user Players left running.",
+                mode=mode,scope="1920x1080 stationary source "+(sampleAtAltar?"altar(5900,4060)":"start(4020,7420)")+", 180 warmup / 900 frames at cap120 vsync0. Fixed simulation paused with existing pauseSmoke focus fence; render lighting clock runs. Main-thread whole-frame GC and lighting callback GC measured separately; GPU sharing gate must be checked before launch.",
                 product=Application.productName,identifier=Application.identifier,
                 settingsDirectory=nativeSettingsDirectory,rosterDirectory=lobby.CharacterStoreDirectory,
                 width=Screen.width,height=Screen.height,samples=count,loadedChunks=LoadedChunks,
@@ -99,9 +108,12 @@ namespace Exoduser.UnityPort
             };
             File.WriteAllText(Path.Combine(output,"performance-"+mode+".json"),JsonUtility.ToJson(receipt,true));
             File.WriteAllText(Path.Combine(output,"frames-"+mode+".json"),"["+string.Join(",",Array.ConvertAll(frameMs,v=>v.ToString("R",System.Globalization.CultureInfo.InvariantCulture)))+"]");
-            Simulation.Player.X=5900;Simulation.Player.Y=4060;UpdateViews();
-            for(int i=0;i<30;i++)yield return null;
-            yield return SkillCapture(output,"field-altar-"+mode);
+            if(!sampleAtAltar)
+            {
+                Simulation.Player.X=5900;Simulation.Player.Y=4060;UpdateViews();
+                for(int i=0;i<30;i++)yield return null;
+                yield return SkillCapture(output,"field-altar-"+mode);
+            }
             yield return new WaitForSecondsRealtime(.5f);
             Application.Quit(0);
         }

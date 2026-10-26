@@ -11,11 +11,13 @@ namespace Exoduser.UnityPort
         public MapChunk[] chunks;
         public MapProp[] props;
         public MapHill hill;
+        public MapAltarMoat altarMoat;
     }
     [Serializable] public sealed class MapEllipse { public float x,y,rx,ry; }
     [Serializable] public sealed class MapChunk { public string texture; public float x,y,width,height; public int sx,sy,sw,sh; }
     [Serializable] public sealed class MapProp { public string id,texture; public float x,y,width,height,pivotX,pivotY,rotation,alpha; public bool ground,flip; }
     [Serializable] public sealed class MapHill { public float cx,cy,rx,ry,inner,outer,rampX0,rampX1,rampY,rampHalf0,rampHalf1; }
+    [Serializable] public sealed class MapAltarMoat { public string hill,channel,glow,bubble; }
 
     // Original collision geometry, including analytic hill ramp and prop ellipses.
     // world.gd:3317-3375 corresponds to source canMv's four corner samples.

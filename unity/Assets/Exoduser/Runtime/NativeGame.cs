@@ -172,6 +172,7 @@ namespace Exoduser.UnityPort
         }
         void BuildProps()
         {
+            gameObject.AddComponent<NativeAltarMoat>().Initialize(Map.Data);
             foreach(var p in Map.Data.props){var r=CreateRenderer(p.id);var texture=Resources.Load<Texture2D>(p.texture);
                 if(texture==null)throw new InvalidOperationException("Missing original prop "+p.texture);
                 r.sprite=SpriteFor(p.texture,0,0,texture.width,texture.height,new Vector2(p.pivotX,1-p.pivotY));

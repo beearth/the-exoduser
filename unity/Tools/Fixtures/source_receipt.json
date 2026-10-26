@@ -2,8 +2,8 @@
   "schema": "exoduser.unity.source-assets.v1",
   "sourceSha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
   "mapSourceSha256": "c76238beda26087b6faa5cf65dfc3140dccfa9519d6ef30bd458cf11f949e5bb",
-  "assetCount": 143,
-  "bytes": 189544099,
+  "assetCount": 147,
+  "bytes": 193350371,
   "assets": [
     {
       "source": "godot/assets/map/production_finish/chunk_0_0.png",
@@ -862,6 +862,30 @@
       "destination": "Audio/sword_parry.mp3",
       "bytes": 25389,
       "sha256": "acadd944eaa45bf08412c6b10354ed08883124a88c49b5536b629b0caf2e68ec"
+    },
+    {
+      "source": "godot/assets/map/web_parity/living/hill.png",
+      "destination": "Art/map/altar_moat/hill.png",
+      "bytes": 2023715,
+      "sha256": "dda1f2a38b81a22a70a1bab5de9b7c6d7263838ec2156c4d379c10e6c3a9820f"
+    },
+    {
+      "source": "godot/assets/map/web_parity/living/moat.png",
+      "destination": "Art/map/altar_moat/moat.png",
+      "bytes": 1511790,
+      "sha256": "32c79712605ffb2a44fd92e5b4113b21cceacdbc055ac2b66f225bc732af4868"
+    },
+    {
+      "source": "godot/assets/map/web_parity/living/moatGlow.png",
+      "destination": "Art/map/altar_moat/moatGlow.png",
+      "bytes": 268750,
+      "sha256": "bfebb68d779e03c1d64413c05a4489bab14da9df295bc66beff58c452489348b"
+    },
+    {
+      "source": "godot/assets/map/web_parity/living/moatBubble.png",
+      "destination": "Art/map/altar_moat/moatBubble.png",
+      "bytes": 2017,
+      "sha256": "69a7b30c547c95aec90aa5331bf9f2076ea46e5e787e219db800129044ab8f85"
     }
   ]
 }

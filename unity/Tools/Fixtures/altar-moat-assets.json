@@ -1,0 +1,33 @@
+{
+  "baseSha": "8fb4072dbaab414203da69989159c327f9ca53f9",
+  "sourceSnapshotSha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "moatModuleSha256": "f5e1089d2f4a3ae2298472a30c02d6d7d6126265bb072e6ce50e9e6dce6dd1f0",
+  "historicalWebSourceSha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
+  "method": "Existing browser canvas exports from repository, copied byte-for-byte; historical web hash differs from snapshot. Hill builder block and moat module equal at export commit b1aa371e and pinned base. Runtime visual parity unverified.",
+  "assets": [
+    {
+      "source": "godot/assets/map/web_parity/living/hill.png",
+      "destination": "Art/map/altar_moat/hill.png",
+      "bytes": 2023715,
+      "sha256": "dda1f2a38b81a22a70a1bab5de9b7c6d7263838ec2156c4d379c10e6c3a9820f"
+    },
+    {
+      "source": "godot/assets/map/web_parity/living/moat.png",
+      "destination": "Art/map/altar_moat/moat.png",
+      "bytes": 1511790,
+      "sha256": "32c79712605ffb2a44fd92e5b4113b21cceacdbc055ac2b66f225bc732af4868"
+    },
+    {
+      "source": "godot/assets/map/web_parity/living/moatGlow.png",
+      "destination": "Art/map/altar_moat/moatGlow.png",
+      "bytes": 268750,
+      "sha256": "bfebb68d779e03c1d64413c05a4489bab14da9df295bc66beff58c452489348b"
+    },
+    {
+      "source": "godot/assets/map/web_parity/living/moatBubble.png",
+      "destination": "Art/map/altar_moat/moatBubble.png",
+      "bytes": 2017,
+      "sha256": "69a7b30c547c95aec90aa5331bf9f2076ea46e5e787e219db800129044ab8f85"
+    }
+  ]
+}

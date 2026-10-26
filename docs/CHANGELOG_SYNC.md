@@ -1,3 +1,8 @@
+## 2026-10-26 Unity CH1-1 제단 해자 UNITY-MOAT-01
+
+- 기준8fb4072db에서 원본 언덕/해자/glow/bubble PNG4종을 동일 byte 인수해 월드 조명 아래 연결. 기존 hill collision·서쪽다리·배치·40,000타일 보존, NativeGame은 BuildProps1hunk만 추가.
+- 기존CPU검사39건/충돌9723질의 차이0, runtime77파일 API컴파일 오류0. PID61637 실행으로 Unity빌드·캡처·성능0회, **IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL RETOUCH**. [원본구조·수치·구현·미검수](engine/UNITY_MOAT_01_20261026.md).
+
 ## 2026-10-26 Unity 초반 stage 무음 계측
 
 - Gate MP3-in-MP4/AVFoundation 트랙 인식 조사에 필요한 VideoPlayer 실제 audioTrackCount/controlledAudioTrackCount를 QA snapshot에 추가. Gate 제품 경로와 영상 bytes는 보존.
