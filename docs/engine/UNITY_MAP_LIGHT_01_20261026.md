@@ -1,5 +1,7 @@
 # UNITY-MAP-LIGHT-01 — CH1-1 월드 카메라 조명
 
+> 2026-10-26 START-PARITY-01 후속 후보: 실제 무개입 웹 레슨 intro에서 _gameFrame39/iris.t89가 동결됨을 관측했다. NativeFieldLighting의 Running 기준 render별 증가를 source update와 같은 Crow.T로 교정(레슨 중 reset0, 이리스OFF여도 crow 진행). 아래 광원 수치·stamp·합성 불변. [원본 행·실행 경계](UNITY_START_PARITY_01_20261026.md). GPU 검수 대기.
+
 > 2026-10-26 최신 통합실화면: [UNITY-FIELD-VERIFY-01](UNITY_FIELD_VERIFY_01_20261026.md). 새import/ARM64빌드errors0·펫/해자실행확인. 시작/제단각1회평균8.370909/8.370717ms(시작은Point교정전빌드),LIGHT03방사CSV재측정. 원본r470/iris250유지,같은actor/iris위상미통제로밝기동등성미인수·전체RETOUCH. 아래GPU대기/펫부재/후보미검수는각당시이력이다.
 
 
@@ -24,7 +26,7 @@
 | 플레이어 등불 | 4635–4637, 4658 | 위치 `(P.x,P.y−6)`, `r=470`, `a=.86+sin(frame×.07)×.03`. ci6 색은 `(255,214,158)`이지만 `_CENTER_GLOW=false`라 색 원판 제외. 임의 주황 bloom 추가 없음 |
 | 정적 광원 | 4639–4651, 4682–4685 | 원본 12개, 아래 별도 표. `a=baseA×(1+sin(frame×.09+i×1.7)×.10×f)`, viewport 바깥 ±300px cull. 플레이어 뒤 원본 정적 배열 순서 유지 |
 | 색 stamp·합성 | 4522–4542, 4552–4560, 4717–4732, 55201 | 256² stamp, source preset3 `(255,72,40)`, preset0 `(255,172,72)`, preset4 `(110,255,142)`. stop `0:.95 / .28:.52 / .58:.20 / .82:.05 / 1:0`; .58의 RGB=`floor(p×(.7,.6,.5))`, .82=`floor(p×(.4,.3,.2))`, 마지막 투명 검정. stamp는 premultiplied 보간. 내부 Canvas2D lighter 누적 `stamp×clamp(a×.85)`→RGBA clamp, 월드에는 **source-over** `world×(1−color.a×.62)+color.rgb×.62`. final additive로 대체하지 않음 |
-| 갱신 주기 | 32135–32139, 55200–55201 | 시뮬레이션 고정 tick과 분리한 화면 frame. 정지 시 frame%3=0, 카메라 이동/해상도 변경 즉시 캐시 갱신. pause 중 frame 정지. 같은 Unity frame의 복수 render 호출은 clock 중복 증가 없음 |
+| 갱신 주기 | 32135–32139, 55200–55201 | 원본 update32139의 _gameFrame. START-PARITY-01 후보는 동일 updatePet에서 증가하는 crow.T(초기0/레슨 중 리셋 없음)를 사용하며 Curtain 진행·레슨 intro/메뉴 정지를 따른다. 카메라 이동/해상도 변경 즉시, 그 외 frame%3=0 캐시 갱신. 동결 frame이3의 배수면 원본처럼 매 render 갱신할 수 있음. render 호출 자체는 phase를 증가시키지 않음 |
 | 추가 토치 어둠 | 8689, 55235 | `_TORCH.darkAlpha=0`, 원본 비활성 게이트 유지 |
 | 2D 안개 | 4358–4383, 55352–55372 | 하단 y=.6→1, .3 stop부터 `(60,90,120,.12)` 평탄. 상단 y=0→.3, `(40,60,90,.06)`→투명, top×.6. 병합 후 `pulse=.28+sin(now_ms×π/2000)×.08` (4초). 독립 realtime ms로 처리 |
 | 환경광 | 11985–11993, 55377–55388 | `(100,160,255,.06)` 전체 source-over |

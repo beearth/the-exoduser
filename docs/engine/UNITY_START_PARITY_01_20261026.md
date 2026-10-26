@@ -37,6 +37,7 @@
 | OPENING_RNG | rollElite→[rollMods1]→speed→r→st2→facing→projT→bossPatT→_bossOrbitAng→_erraticAng | 일반9/매직10 draw, 불허 위치0. bossPatT30+u×20 및 두 angle2πu는 etype0에서도 무조건 소비(31173/31262/31302). 이전 Unity는 일반 fixture의5draw만 사용. `constructor-source.json`은 실제 mkEn 원문 실행, CoreTests는 그 표본 대조 |
 | OPENING_FADE | 31361 `_spawnT=20`, 34448 tick별−1, 5249 alpha=max(0,1−t/20) | opening의 SpawnTicks20→0, body/walk 같은 alpha. 실습은 기존0 유지. 새 texture/빛/이미지 없음 |
 | WALL_RESCUE | 34427–34435: center+4corner tile 체크→1..5tile×8방향, 첫 center floor로 구출·kb0. 31724/38591은 몸4corner 통과하는40..200/20px×8방향 이동 | SourceMap tile-only 두 callback, 기존 geometry/prop collision 불변. Config AI가 켜진 일반 loop에서 사전 구출/AI 앞 body 밀어내기. 실패는 기존 ordinary death owner로 전달. 원본 전체 drop/reward 동일성으로 확대하지 않음 |
+| LIGHT_PHASE | source32113/32139: intro return 뒤에 _gameFrame++; 광원4664/4687은 이 값 사용 | Running 기준 render별 증가를 제거하고 같은 updatePet의 Crow.T(초기0/레슨 중 reset 없음)로 위상 연결. Curtain 진행·레슨 intro 동결. fog의 기존 render/실시간 시계·수치/캐시 조건 불변 |
 | IRIS_LIGHT | 기존 r250, halo150, player470/원본 alpha/cache/합성 | 수치·shader 변경0. 이리스 타깃을 플레이어 쪽으로 강제하지 않음 |
 | QA_ENTRY | 기존 `--unity-startup-capture -startParity true -output <절대경로>` | 별도 진단 테스트 파일0. 실제 BeginCharacterEntry callback→네메시스 skip→Guide180렌더 warmup→Curtain→첫 레슨. 임의 Simulation 위치/HP/RNG/적 배열 주입0. Unity callback 검수이며 OS입력 검수와 구분 |
 | QA_STATE | curtain-open/mid/lesson-intro | 같은 EndOfFrame의 screenshot 요청과 active/held 적 전체, etype/좌표/HP/상태/r/speed/타이머/정예/modifier/이리스 대상ID·목록소속/pose/clock을 JSON에 기록 |
@@ -46,7 +47,7 @@ M29/M30 modifier ID·생성 수치/소비 순서 인수는 해당 공격 패턴�
 
 ## CPU 검증과 GPU 인수 경계
 
-기존 CoreTests에 생성 draw순서·매직 반올림/위치거부·20tick fade·ring_04 r10/r22 구출/54tick 추적을 추가했다. 최신 **63/63 PASS**, 새 테스트 파일0. 이전56/59/62 통과 뒤 실제 코드 변경이 있었으므로 후속 검사는 새 변경에 대한 실행이다. Runtime81 C# API CPU compile은 최종 errors0/기존 CS0649 warnings27. 첫 compile의 Core namespace import 누락1회는 수정 후1회 통과했으며 무수정 실패 재실행0. 원문 constructor 추출의 쉼표 선언 파서 오류는 분석 코드 수정 후 해결했고 Unity 빌드 실패와 구분한다.
+기존 CoreTests에 생성 draw순서·매직 반올림/위치거부·20tick fade·ring_04 r10/r22 구출/54tick 추적을 추가했다. 최신 **63/63 PASS**, 기존 FirstPractice CPU **34/34 PASS**, 새 테스트 파일0. 이전56/59/62 통과 뒤 실제 코드 변경이 있었으므로 후속 검사는 새 변경에 대한 실행이다. Runtime81 C# API CPU compile은 최종 errors0/기존 CS0649 warnings27. 첫 compile의 Core namespace import 누락1회는 수정 후1회 통과했으며 무수정 실패 재실행0. 원문 constructor 추출의 쉼표 선언 파서 오류는 분석 코드 수정 후 해결했고 Unity 빌드 실패와 구분한다.
 
 Unity Editor·Player·Chrome 새 관측·1x/4x 비교·새 방사 밝기·성능·기존 HUD/practice Unity 시험은 **GPU 대기**다. 과거 사진/성능을 새 결과로 복사하지 않는다. r20 43.921 대83.947은 과거 서로 다른 적/시점의 결과이며 이 후보의 새 수치가 아니다.
 
@@ -72,7 +73,24 @@ NativeGame.cs는 구출 callback1줄, opening 생성 호출/주석, Curtain tick
 | LANDMARK | primary/secondary/tertiary 배치 변경0 |
 | CAMERA QA | START 대기/과거 RETOUCH; EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 이번 미실시 |
 | TECH QA | route/seam/웹 pageerror/404/실제 loading/performance 대기; 원본 collision 불변·CPU 검사 PASS |
-| FILES | 소유 코드8경로+관련docs. 공용 NativeGame 최소 hunk. unrelated0 |
+| FILES | 소유 코드9경로+관련docs. 공용 NativeGame 최소 hunk. unrelated0 |
 | GIT | 전용 branch 명시경로 commit·비강제 push; main/deploy0. 최종 SHA는 외부 DONE |
 | VISUAL VERDICT | **RETOUCH — VERIFIED 아님** |
 | NEXT PASS | GPU가 비면 무개입 새 캐릭터 first entry→동시점 화면/목록/CSV/performance/HUD/practice1회. 60분 초과면 후보 보존 |
+
+
+## 실제 웹 1차 읽기 전용 관측과 fixture 보완
+
+첫 격리 node3398/새 저장 없음→원본 splash click→네메시아 Space hold→안내 skip의 일반 UI를 사용했다. Chrome1920×1080/DPR1, renderer useGPU=true/useGL=false. 상태·목록·카메라·HP/RNG/DOM 주입0. Guide gameFrame0/ens0/iris(4040,7386,t50), 커튼 중 frame31/ens5/최근접ring_04, 레슨 intro frame39/active0/held5/iris(3763.621122,7746.161719,t89) 및 held target index3을 연속 읽었다. 여러 읽기 사이 frame39와 iris.t89는 그대로 유지됐다. native render clock 오류의 직접 관측 근거다.
+
+이 실행의 원본 HTML/JS는 일치했지만, 기존02 web 사본에 CSS18개·atlas runtime module·prefabs registry·atlas_player PNG 총21개가 없어 HTTP404였다. **초기 PNG는 최종1x/방사 비교에서 제외**한다. 원본 byte21개를 격리 사본에 보완하고 HTTP200 확인, 새 origin3399/새 save directory를 준비했다. 게임 원본 수정이나 브라우저 storage clear는 하지 않았다. 교정 웹 재관측 직전 타 QA96252/96257 재등장으로 중단·5분 간격 대기를 재개했다. 최초 GPU 대기 시작20:30:35 KST의60분 상한은 연장하지 않는다. 이 단계의 새 Unity 빌드/캡처/성능/HUD/practice는 아직0회다.
+
+| 원본1차 레슨 intro frame39, held | etype | x | y | HP | 상태 | 이리스 대상 |
+|---|---:|---:|---:|---:|---|---|
+| ring_01 | 0 | 4020.000000 | 6901.988639 | 875 | idle/alive/spawn0 | 아니오 |
+| ring_02 | 0 | 4504.014195 | 7255.120144 | 875 | idle/alive/spawn0 | 아니오 |
+| ring_03 | 0 | 4334.517827 | 7826.323993 | 875 | idle/alive/spawn0 | 아니오 |
+| ring_04 | 0 | 3782.913125 | 7765.925375 | 875 | idle/alive/spawn0 | held index3 |
+| ring_05 | 0 | 3529.411081 | 7252.971885 | 875 | idle/alive/spawn0 | 아니오 |
+
+Unity 같은 시점의 실제 목록은 GPU 대기로 **미측정**이다. 위 원본1차 자료는 로직 관측이고 CSS가 보완된 최종 시각 인수와 구분한다. 원본의 생성 local RNG9/10을 교정해도 전체 장비505draw·맵/부트 RNG와 C# seed stream 전체 replay가 같은 것은 아니다. 따라서 모든 남은 좌표 차이를 RNG뿐이라고 단정하지 않는다. source flow field/tier와 native fallback 차이도 잔여다.

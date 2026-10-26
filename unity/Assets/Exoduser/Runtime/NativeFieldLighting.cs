@@ -155,8 +155,10 @@ namespace Exoduser.UnityPort
                 if (lastUnityFrame != Time.frameCount)
                 {
                     lastUnityFrame = Time.frameCount;
-                    // Web _gameFrame is a render/update counter, not the native fixed tick.
-                    if (owner.Running) renderFrame++;
+                    // Source32113/32139: the light phase stops in lesson intro.
+                    // Crow starts at0 and advances once in the same updatePet tick,
+                    // including Curtain and iris-off, without resetting in lessons.
+                    if (owner.FieldPets != null) renderFrame = (int)owner.FieldPets.Crow.T;
                     fogTime += .016f;
                 }
                 float logicalHeight = worldCamera.orthographicSize * 200;

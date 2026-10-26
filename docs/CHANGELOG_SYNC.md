@@ -1,3 +1,8 @@
+## 2026-10-26 UNITY-START-PARITY-01 원본 광원 위상 후속
+
+- 실제 읽기 전용 웹 레슨 intro의 _gameFrame39 동결과 native render별 증가 차이를 확인. 광원 수치 불변, 같은 source updatePet의 Crow.T로 phase를 연결하고 기존 캐시 조건을 유지했다. 최종 CPU API compile 오류0/기존경고27, Core63/기존 FirstPractice34 PASS.
+- 첫 웹 사본의 CSS 등21개404를 원본 byte로 보완·HTTP200 확인. 초기 PNG는 최종 비교에서 제외, 교정 재관측 전 다른 QA 재등장으로 GPU 대기. [관측표·보호·수치](engine/UNITY_START_PARITY_01_20261026.md).
+
 ## 2026-10-26 Unity CH1-1 시작 동일성 UNITY-START-PARITY-01
 
 - 원본 시작 링5/580px 유지, magic3%·일반9/매직10 RNG(비보스의 bossPatT/두 angle도 소비),20tick 등장·타일벽 구출·Curtain900ms의60Hz 전투/펫 진행을 연결. 광원/이리스 수식·맵 geometry 불변.
