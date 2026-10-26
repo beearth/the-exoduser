@@ -28,7 +28,7 @@
 | A07 | 공통 상단 탭바 (ESC/TAB/G/K/J) | game.html | 2 | PC | U-08. PC-U08 명세 조사 중 |
 | A08 | 인벤토리 장비 페이지 | `#invPanel` | 2 | PC | U-04 `05c6e583b`, 미세 차이 PC-U04c 진행 중. Mac 병합 대기 |
 | A09 | 인벤토리 유골함 하위 탭 | `#invOssuaryPanel` | 2 | PC | PC-U04b |
-| A10 | 인벤토리 보관함 하위 탭 | `#invStorageCol` | 0 | PC | 하위 탭 바는 A09·A07에서 이식됨. 보관함 내용 PC-A10 배정 |
+| A10 | 인벤토리 보관함 하위 탭 | `#invStorageCol` | 2 | PC | `ec48ca112` UNITY_PC_INVENTORY_A10_STORAGE. 창고 개수 상태 미이식, 넣기·빼기·확장 동작 미이식. Mac 병합 대기 |
 | A11 | 인벤토리 유물 하위 탭 (크리스탈 패널) | `#invCrystalsPanel` | 2 | PC | `c9bb358be` UNITY_PC_INVENTORY_A11_CRYSTALS. 보유 유물·소켓석·가루 상태 미이식, 장착·합성 동작 미이식. Mac 병합 대기 |
 | A12 | 스킬 창 (13슬롯·합성 제단·로드맵) | `#skillPanel`, skill-forge.js | 2 | PC | U-05. 기준 캡처 `1c270003a`. 텍스트 목록만 있음 |
 | A13 | 능력치 창 | `#statPanel` | 2 | PC | `5178c0a09` UNITY_PC_STAT_PANEL_A13. 투자·AP·기여 상태 미이식, 투자·환불 동작 미이식. 연결 patch A13. Mac 병합 대기 |
@@ -38,7 +38,7 @@
 | A17 | 일시정지 | | 1 | Codex | PAUSE_KEYS |
 | A18 | 첫 실습 (27 레슨·펫 대사) | game.html tutorial | 1 | Codex | U-03. 첫 2조건만 있음, 웹은 펫 대사창 |
 | A19 | 시작 안내 4쪽 | | 2 | Codex | U-07 거의 같음 |
-| A20 | 레벨업 화면 | `#lvUpScreen` | 0 | PC | `#lvUpScreen`은 웹에서 열지 않는 미사용 오버레이 → 실제 레벨업 연출(`addExp`: 빛기둥·"Lv. N"·LEVEL UP! 토스트)이 기준. 명세 준비됨 |
+| A20 | 레벨업 화면 | `#lvUpScreen` | 2 | PC | `b287bc962` UNITY_A20_LEVELUP. `#lvUpScreen`은 미사용 → 실제 연출("Lv. N" 라벨·LEVEL UP! 토스트) 이식, 빛기둥 VFX·효과음·마성 판정 미이식. 트리거 patch A20(Player.Level 감시). Mac 병합 대기 |
 | A21 | 사망 화면·리플레이 | `#death` | 0 | 미배정 | |
 | A22 | 스테이지 클리어 결과 | `#clearResult` | 0 | 미배정 | |
 | A23 | 보스 HP·포스처 바 | `#bossBar` | 0 | 미배정 | |
@@ -123,3 +123,4 @@ A군을 다 마치기 전이라도 담당이 비면 B군을 바로 배정한다.
 - 2026-10-26: 신설. 행 64개. 현재 `2` 이상 5행(A08·A19·B02·E01·E02), `3`은 0행이다.
 - 2026-10-26 오후: A07·A08·A09·A12 웹동일 소스(d5f32ff57), Mac 병합 대기
 - 2026-10-26 저녁: A13·A14·A11 웹동일 소스(`cc39eb672`), A10·A11 정의 정정(A10=보관함 `#invStorageCol`, A11=유물 탭 `#invCrystalsPanel`), A20 기준을 실제 레벨업 연출로 정정. Mac 병합 대기
+- 2026-10-26 밤: A10·A20 웹동일 소스, **Unity 버전 통일 6000.6.7f1**(`3d40f822a`, 6000.4.8f1 종료 크래시 해결). PC 누적 병합 대상 `af86aa59c` + patch 9개. Mac 병합 대기

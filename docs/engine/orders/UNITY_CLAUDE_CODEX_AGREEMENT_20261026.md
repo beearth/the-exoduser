@@ -10,7 +10,7 @@
 | 맵·모션·이펙트 | 웹 구조 위에서 Unity 재제작 허용 (사용자 2026-10-24) |
 | 정의 vs 상태 | 웹에서 추출한 데이터는 정의(이름·설명·아이콘·규칙)로만 사용. 장착·레벨·SP·자원 같은 상태는 Unity 실제 값을 읽고, 없으면 "미이식" 표시. 웹 값을 상태처럼 고정 표시 금지 |
 | 진행 판정 | 마스터 보드 4단계(0 미착수 / 1 일부 / 2 웹동일 소스 / 3 실플레이 인수). 테스트 수로 진행률을 말하지 않음 |
-| Unity 버전 | PC 6000.4.8f1 / Mac 6000.6.7f1 차이 존재. 통합본 기준 버전을 Codex가 확정해 이 문서에 기록. `ProjectSettings/ProjectVersion.txt` 변경 시 보고 |
+| Unity 버전 | **통일 6000.6.7f1**(2026-10-26 전체총괄 결정). 저장소 기록 = `claude/unity-pc-inventory-u04-20261026` `3d40f822a`(ProjectVersion·manifest·packages-lock·PhysicsCoreProjectSettings2D·ProjectAuditorSettings). 근거: 6000.4.8f1 Player 종료 크래시가 6000.6.7f1에서 사라짐(UNITY_PC_EXIT_CRASH_20261026 §9). 6000.4.8f1 에디터는 PC에 보존. `ProjectVersion.txt` 변경 시 보고 |
 
 ## 2. 역할과 파일 소유
 

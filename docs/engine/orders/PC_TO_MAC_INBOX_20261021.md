@@ -2,6 +2,16 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 — ★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 아래 "2026-10-26 저녁 ★ 전체 누적"(`cc39eb672`)을 **이 항목으로 대체**한다.
+
+- **대상 SHA: `af86aa59c`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `cc39eb672` 이후 추가: A10 보관함 `ec48ca112`, A20 레벨업 표시(`b287bc962` merge `fc59b89de`), **Unity 6000.6.7f1 업그레이드 커밋 `3d40f822a`**, 경고 정리 `af86aa59c`.
+- **Unity 버전 통일 6000.6.7f1(전체총괄 결정)**: Mac은 이미 6000.6.7f1로 빌드 중이지만 Codex tip의 `ProjectVersion.txt`는 6000.4.8f1이다. **`3d40f822a`로 저장소 기록을 맞춘다. Mac 쪽에 커밋되지 않은 같은 업그레이드 변경(ProjectVersion·manifest 모듈 3개·packages-lock·PhysicsCoreProjectSettings2D·ProjectAuditorSettings)이 남아 있으면 이 커밋으로 대체한다.** 6000.4.8f1의 종료 크래시(UnityPlayer +0x107a81)는 6000.6.7f1에서 사라짐(`docs/engine/UNITY_PC_EXIT_CRASH_20261026.md` §9).
+- **Codex 적용 patch 9개 — 이 순서로**(`docs/engine/unity_patches/`, NativeGame*·NativePauseMenu*만): 1 `U04B_nativegame_inventory_smoke_mana` → 2 `U08_nativegame_tabbar` → 3 `U08_nativepausemenu_tabbar` → 4 `U05_nativegame_skill_smoke_focus` → 5 `A07B_nativegame_keys` → 6 `A07B_nativepausemenu_keys` → 7 `A13_nativegame_stat_panel` → 8 `A14_nativegame_forge_window` → 9 `A20_nativegame_levelup`. `af86aa59c` 트리 기준 9개 순서 apply 전부 통과(PC 확인).
+- **PC 빌드(Windows)**: `af86aa59c` patch 미적용 **6000.6.7f1** Win64 errors 0, Exoduser 런타임 스크립트 경고 0. patch 1~8 적용 6000.6.7f1 빌드 errors 0(단순작업2, `cc39eb672`), patch 1~9 적용 6000.4.8f1 빌드 errors 0(A20 브랜치). 이전 스모크 결과는 아래 항목 참고. Mac 6000.6.7f1 빌드 미확인.
+- MAP3D(3D 맵)는 별도 브랜치 `claude/unity-pc-map3d-20261026`(S1 `6d0227a65`) — UI 병합 후 이어서(협약 §7).
+
 ## 2026-10-26 — 종료 크래시 해결 확인: Unity 6000.6.7f1에서 사라짐 → PC·Mac 버전 통일 결정 필요
 
 - PC에 6000.6.7f1(b22767f04f04)을 `G:/unity/Editor/6000.6.7f1`에 설치(사용자 지시, 전체총괄 경유, 6000.4.8f1도 유지). Codex tip `b674ebce4`를 열면 프로젝트가 자동 업그레이드된다.
