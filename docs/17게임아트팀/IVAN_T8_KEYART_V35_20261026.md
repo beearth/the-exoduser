@@ -30,15 +30,16 @@ RETOUCH 3가지(컨셉 4.3): ① 배경 제거·순백 단색·전신 ② 주황
 | 파일 | 규격 | 바이트 | sha256 |
 |---|---|---|---|
 | `ivan_t8_r4.png` (확정 키아트, 흰 배경 전신) | 1152×1536 RGB | 2,002,316 | `f73b2874541e984c6c79af48703c2f7950a3a06b5cae4123efeccf72be9bc643` |
-| `ivan_t8_final_cut.png` (투명 컷) | 1010×1386 RGBA | 1,171,862 | `adb8320d05e44a98d1b73d08d09fdcd8a1d96bc544a35a33ec40fcd443c29e63` |
-| `ivan_t8_portrait.png` (가슴 위 초상) | 1024×1024 RGBA | 1,068,232 | `c6b0a4a174f9ae1cfda00c9f0e14b6644c78229aa9def8a7355f67d7f0feece1` |
+| `ivan_t8_final_cut.png` (투명 컷, 반짝임 제거본) | 1010×1386 RGBA | 1,171,814 | `b668f2e5a3b144622b674fcee58e01a5500040589629ceba3d4f0dddcfa1a589` |
+| `ivan_t8_portrait.png` (가슴 위 초상, 반짝임 제거본) | 1024×1024 RGBA | 1,068,198 | `74cd99fbe927b8c6d24fec217af62534afe4d51e60b47c2b3be1d0c4337cde54` |
 
-보조: `V29_original.png`, `ivan_t8_r1~r4.png`·`.json`(프롬프트·usage·비용), `ivan_t8_r3_fit.png`, `ivan_t8_compare_sheet.jpg`(V29|r1|r2|r3), `ivan_t8_r3_vs_r4.jpg`, `ivan_t8_cut_portrait_sheet.jpg`(투명 컷·초상을 검정·진홍 위에 합성 + halo 크롭), `ivan_t8_cut_halo_zoom3x.jpg`, `scripts/`(생성·누끼·초상 스크립트).
+보조: `ivan_t8_final_cut_pre_glint.png`(1,171,862B, sha `adb8320d…9e63`)·`ivan_t8_portrait_pre_glint.png`(1,068,232B, sha `c6b0a4a1…ece1`) = 반짝임 제거 전 백업, `ivan_t8_glint_before_after_3x.jpg`(전/후 3x), `V29_original.png`, `ivan_t8_r1~r4.png`·`.json`(프롬프트·usage·비용), `ivan_t8_r3_fit.png`, `ivan_t8_compare_sheet.jpg`(V29|r1|r2|r3), `ivan_t8_r3_vs_r4.jpg`, `ivan_t8_cut_portrait_sheet.jpg`(투명 컷·초상을 검정·진홍 위에 합성 + halo 크롭), `ivan_t8_cut_halo_zoom3x.jpg`, `scripts/`(생성·누끼·초상 스크립트).
 
 ## 4. 투명 컷·초상 제작
 
 - **누끼**: rembg 대신 로컬 스크립트(`scripts/cut.py`). 테두리에서 연결된 순백 영역을 배경으로 보고(바닥 접지 그림자는 하단 10% 구간에서 중성 회색을 같이 제거), 가장자리 2.5px 대역은 안쪽 색을 기준으로 알파를 역산, 가는 밝은 가닥(폭 5px 미만)은 열기 연산으로 억제. 유료·다운로드 도구 사용 없음.
 - **halo 검수**: 검정 `#000`·진홍 `#321d1c` 위에 합성해 머리카락 끝·찢긴 천 가장자리·총구를 확대 확인. 가장자리 3px 안의 흰색에 가까운 픽셀(luma>170, 채도<60) 20개 / 가장자리 25,896개. 캔버스 테두리에 닿는 알파 0. 찢긴 천 끝의 붉은 반짝임은 흰 halo가 아니라 원화의 진홍 하이라이트다.
+- **반짝임 제거(배정 7A)**: 디자인총괄 판정에서 찢긴 천 끝·머리카락 끝의 진홍 하이라이트 안 흰 코어가 1x에서 반짝이 점으로 보인다는 조건이 붙었다. 알파 경계 8px 안에서 L*≥70인 흰 코어를 주변 진홍(`#b0281c`~`#8a1a14` 보간)으로 눌렀다(진홍 하이라이트는 유지). 대상 픽셀: 투명 컷 L*≥70 136개(39덩어리) → 0, 초상 34개(7덩어리) → 0. 회색 머리 가닥(큰 면)·황동은 건드리지 않았다.
 - **초상 규격 근거**: [NEW_HEROES_DESIGN_LOCK.md](../11내러티브·로어디자인/NEW_HEROES_DESIGN_LOCK.md) "공통 포맷" 산출 행 — 전신 PNG → 투명 `*_cut.png` + 가슴 위 크롭 `portrait_*.png` **1024²**. 기존 `assets/charselect/portrait_warrior.png`는 1024×1536 RGB라 이 표와 다르며, 표를 따랐다. 투명 컷에서 470×470(머리끝~메달 아래 탄 4개)을 잘라 1024²로 키웠다(약 2.18배, LANCZOS). 원본 해상도가 1152×1536이라 더 선명한 초상이 필요하면 재생성 쪽이 맞다.
 
 ## 5. 남은 일 (이 문서 범위 밖)

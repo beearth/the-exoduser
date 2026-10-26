@@ -268,6 +268,7 @@ roughness는 0(매끈)~1(거침), normal은 0~1 상대 강도(1 = 생성 맵 원
 | 슬라이스 v2 (capture17s, 최신) | **RETOUCH** | 구조·명도는 맞다. ① 회갈 바닥(R/G 1.40, C1 위반) ② 밝은 꼬리 0%(V5 위반) ③ 색 없는 광택(C3) ④ 하단 외곽 검게 뭉개짐(V4) ⑤ 데칼 스티커감 | ① 바닥 색조를 FLOOR 군으로 돌리고 명도는 유지 ② 외곽에 상아 힘줄·뼈 끝·젖은 살 반사 추가(§7) ③ 바닥 중앙 roughness 0.65~0.80 + 하이라이트 광원 색 ④ 외곽 몸통 p50 4 이상 ⑤ 데칼 가장자리 페이드·바닥 normal과 섞기 |
 | GPT 콘셉트 wall_A / wall_B | 형태 PASS | §8 기준 이미지 | 재생성·Meshy 후처리 시 §7대로 살·힘줄에 습기를 넣는다 |
 | GPT 생성 공통 문구 `NO gloss, NO wet highlights` (`ai3d-trial/gpt/gen_common.py` COMMON_NO) | 정정 | 일괄 무광은 이 바이블과 충돌 | 점 금지는 유지한다. 광택 금지는 뼈·마른 피·껍질 생성에만 쓰고, 살·피·독액·힘줄은 `smooth long wet highlights, no sparkle points` |
+| PAINTGROUND (pc-map3d-paintground, 미커밋) | **RETOUCH** | 바닥 옥스블러드 PASS(R/G 1.68~1.72, 중앙 p50 14.3). 빛 웅덩이 소실(K3), 좌하단 살 덩어리 p50 16.9로 바닥보다 밝아 바위로 읽힘(K6·V1), L*≥50 0.13%(V5), 풀 균일 산포 | 웅덩이 복원(진홍 우·독액 좌), 살 몸통 p50 6~12 + 능선 상아·젖은 반사, 풀 군락 3~6 + 중앙 비움, 접지 그림자. 상세 E:/exoduser-wt/_out/design-reconcile/JUDGE_PAINTGROUND_20261026.md |
 
 ---
 
