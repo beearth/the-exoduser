@@ -2,6 +2,15 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 — Unity 병합 요청 갱신: U-04 인벤토리 + U04c + U04b 유골함 → `codex/unity-mac-20261024` (`c2fdfc158`)
+
+- 아래 05c6e583b 요청을 **`c2fdfc158`로 대체**한다(같은 브랜치 `claude/unity-pc-inventory-u04-20261026`, 그 위 2커밋).
+  - `5146c0f7a` PC-U04c(A08): 웹 RARITY_C 희귀도 색·프레임, 넘칠 때 thin 스크롤바, 기사 밝기·발밑 글로우, 오른쪽 패널 줄바꿈·구분선, 전투력 글로우.
+  - `c2fdfc158` PC-U04b(A09): 첫 프레임 고유 유골함 자동 장착(bonusMp 150, 현재 MP는 지급 전 값 유지), 인벤토리 유골함 하위 탭. oracle·seed 재추출, `inventory_empty_slots.json` [8,15]→[8]. `NativeInventoryWebLayout` 회전 피벗 버그 수정(1920×1080 이외 해상도·스크롤 안에서 선·마름모 위치 틀어짐).
+- 검증(PC Windows 6000.4.8f1): stat-parity 2/2(유골함 별도 가산 없이), inventory-oracle 892/0(`unequip-ossuary` 케이스는 해제 미구현이라 deferred + 거부·상태 불변 검사로 대체, 새 검사 7), navigation 34/34, Win64 errors 0, 스모크 장비·유골함 페이지 각 1회. Mac 6000.6.7f1 빌드 미확인.
+- **Codex 적용 요청 patch**: `docs/engine/unity_patches/U04B_nativegame_inventory_smoke_mana.patch` — `NativeGame.cs` 인벤토리 스모크 receipt에 `maxMana`·`mana` 추가(유골함 MP 480 확인용). `git apply --check` 통과, PC에서는 적용 안 함(NativeGame은 Codex 소유).
+- 보고서: `docs/engine/UNITY_PC_INVENTORY_U04_20261026.md`(INTEG·U04c 절), `docs/engine/UNITY_PC_INVENTORY_U04B_OSSUARY_20261026.md`. 비교: `docs/engine/unity_pc_win_refs/inventory_u04c.jpg`, `ossuary_u04b.jpg`.
+
 ## 2026-10-26 — Unity 병합 요청: PC-U02 + U-04 인벤토리(PC-U04-INTEG) → `codex/unity-mac-20261024`
 
 - 요청: PC 브랜치 `claude/unity-pc-inventory-u04-20261026` **`05c6e583b`**를 `codex/unity-mac-20261024`에 병합. 이 브랜치는 이미 `f357dc3a4`(Mac 최신)와 PC-U02 `8ffdf1003`·PC-U05REF `1c270003a`(`claude/unity-pc-stat-parity-20261026`)를 merge했으므로 fast-forward 가능(그 사이 Mac에 새 커밋이 생기면 일반 merge).
