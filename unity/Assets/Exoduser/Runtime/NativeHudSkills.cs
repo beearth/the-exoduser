@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort {
   GUIStyle skillStatus;
   float statusSelectionUntil;
   public static bool StatusShouldDisplay(bool hovering,bool charging,bool selectionActive){return hovering||charging||selectionActive;}
-  public static Rect SkillSlotRect(NativeHudDockLayout dock,int index){float s=NativeHudDockLayout.ArtScale;return new Rect(dock.SlotBar.x+(128+44*index)*s,dock.SlotBar.y+70*s,37*s,77*s);}
+  public static Rect SkillSlotRect(NativeHudDockLayout dock,int index){return dock.SlotRect(index);}
   // Normal bottom-origin screen input -> the same scaled HUD space used for drawing.
   public static bool PointerOverSlots(Vector3 screenPoint){float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);var point=new Vector2(screenPoint.x/s,(Screen.height-screenPoint.y)/s);var dock=NativeHudDockLayout.Create(Screen.width/s,Screen.height/s);for(int i=0;i<13;i++)if(SkillSlotRect(dock,i).Contains(point))return true;return false;}
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){

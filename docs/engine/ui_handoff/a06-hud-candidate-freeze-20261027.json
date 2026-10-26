@@ -1,0 +1,51 @@
+{
+  "status": "FROZEN_BEFORE_UNITY_QA_COMPILE",
+  "date": "2026-10-27",
+  "scope": "E isolated HUD coordinate candidate only",
+  "webMainCommit": "d209075ec471176ca5224d4c21c4912a3e72ed0a",
+  "macRemoteCommit": "a098077d1250d5a2c11509b6243aa5dae93628fc",
+  "files": [
+    {
+      "name": "NativeHudDockLayout.cs",
+      "beforeSha256": "9F55B59A885EB0186DDE3C6A81E9D000BA14E7FFB80A12816753B1CEFF018E2D",
+      "candidateSha256": "6011347812546114F65E13EEEA49D85F7B8CBCCC5BF178441D9D6CC1356276BB",
+      "changed": true
+    },
+    {
+      "name": "NativeHud.cs",
+      "beforeSha256": "61CDA848CA8868ADD9F6AECFFFBA91A9E82B0DDAB11605EE85FEF49E681A591C",
+      "candidateSha256": "61CDA848CA8868ADD9F6AECFFFBA91A9E82B0DDAB11605EE85FEF49E681A591C",
+      "changed": false
+    },
+    {
+      "name": "NativeHudPresentation.cs",
+      "beforeSha256": "606B0DB625FF2A21B2D1EDB1252E66AD9B36876C84A962AE72F3A14CF3E62FA3",
+      "candidateSha256": "606B0DB625FF2A21B2D1EDB1252E66AD9B36876C84A962AE72F3A14CF3E62FA3",
+      "changed": false
+    },
+    {
+      "name": "NativeHudSkills.cs",
+      "beforeSha256": "AC8E2E2AFB8223A815F2F539283B196103AAC98882A9A044E00B04145B2DDE9A",
+      "candidateSha256": "9EDA21F929EB4ABD6D46FBE3BEA211363994FFDE33AD71C09CC99B06177CA8FF",
+      "changed": true
+    },
+    {
+      "name": "NativeGame.cs",
+      "beforeSha256": "CC47E2CEFC006513867A2BC573EE165062F6930C5E0F83ACB523D13D6443CE15",
+      "candidateSha256": "CC47E2CEFC006513867A2BC573EE165062F6930C5E0F83ACB523D13D6443CE15",
+      "changed": false
+    }
+  ],
+  "reviewPatch": "a06-hud-coordinate-candidate.REVIEW.patch",
+  "reviewPatchSha256": "50F8B53C2D3AE484C2F85AE1CD22EBFF284EB70465B38D503D0933B17900D61E",
+  "docs": "a06-hud-parity-delta.md",
+  "docsSha256": "6AC53D9B960998F4F66676AA9324B2474426AEC08415A7EDF57752053EFD5FC7",
+  "oracleProject": "a06-hud-oracle/A06HudOracle.csproj",
+  "oracleResult": "red 0.78 vs 0.9; red key row y; green 1920x1080,1280x720,2560x1080",
+  "unityEditor": "NOT_RUN",
+  "unityPlayerVisual": "HOLD",
+  "macApplied": false,
+  "remotePushed": false,
+  "knownQaConflict": "Old PortVerification.VerifyUiComposition frame clipping/symmetry/width assertions conflict with source-web candidate",
+  "foundationNote": "generation code unchanged; shared ArtScale enlarges foundation 873.6x110.8 to 1008x127.8; visual HOLD"
+}
