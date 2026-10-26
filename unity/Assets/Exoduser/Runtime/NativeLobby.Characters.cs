@@ -14,6 +14,37 @@ namespace Exoduser.UnityPort
   int characterStep,characterVisual,characterScroll;
   bool characterFocus,characterInputFence,characterRestoreCreateFocus,characterVisualFocusPending;
   string characterName="",characterError="";
+  [System.Serializable] sealed class CharacterDialogLabels { public CharacterDialogLabelEntry[] entries; }
+  [System.Serializable] sealed class CharacterDialogLabelEntry { public string code,title,description,nameLabel,cancel,create,nameLength,forbidden,duplicate,full,comingSoon,deleteSuffix,confirm,delete,deleteFailure; }
+  CharacterDialogLabels characterDialogLabels;bool characterDialogLabelsLoaded;
+  void LoadCharacterDialogLabels()
+  {
+   if(characterDialogLabelsLoaded)return;characterDialogLabelsLoaded=true;
+   var source=Resources.Load<TextAsset>("Data/character_dialog_labels");
+   if(source!=null)try{characterDialogLabels=JsonUtility.FromJson<CharacterDialogLabels>(source.text);}catch(System.Exception e){Debug.LogWarning("Character dialog labels: "+e.Message);}
+  }
+  string CharacterDialogLabel(string field,string fallback)
+  {
+   if(Language=="ko")return fallback;
+   LoadCharacterDialogLabels();
+   CharacterDialogLabelEntry english=null;var entries=characterDialogLabels==null?null:characterDialogLabels.entries;
+   if(entries!=null)foreach(var entry in entries){
+    if(entry==null)continue;if(entry.code=="en")english=entry;
+    if(entry.code==Language){string value=CharacterDialogValue(entry,field);if(!string.IsNullOrEmpty(value))return value;}
+   }
+   string en=CharacterDialogValue(english,field);return string.IsNullOrEmpty(en)?fallback:en;
+  }
+  static string CharacterDialogValue(CharacterDialogLabelEntry entry,string field)
+  {
+   if(entry==null)return null;
+   switch(field){
+    case "title":return entry.title;case "description":return entry.description;case "nameLabel":return entry.nameLabel;
+    case "cancel":return entry.cancel;case "create":return entry.create;case "nameLength":return entry.nameLength;
+    case "forbidden":return entry.forbidden;case "duplicate":return entry.duplicate;case "full":return entry.full;
+    case "comingSoon":return entry.comingSoon;case "deleteSuffix":return entry.deleteSuffix;case "confirm":return entry.confirm;
+    case "delete":return entry.delete;case "deleteFailure":return entry.deleteFailure;default:return null;
+   }
+  }
   Texture2D warriorArt,warriorPortrait;
   GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton,characterDeleteButton,characterStorageText;
   void CharacterStyles()
@@ -56,11 +87,11 @@ namespace Exoduser.UnityPort
   string CharacterError(CharacterCreateError error)
   {
    switch(error){
-    case CharacterCreateError.NameLength:return K("이름은 2~8자여야 합니다.","Name must be 2-8 characters.");
-    case CharacterCreateError.Forbidden:return K("특수문자는 사용할 수 없습니다.","Special characters cannot be used.");
-    case CharacterCreateError.Duplicate:return K("이미 같은 이름의 캐릭터가 있습니다.","A character with this name already exists.");
-    case CharacterCreateError.Full:return K("슬롯이 가득 찼습니다.","All five slots are occupied.");
-    default:return K("출시 준비 중입니다.","Coming soon.");
+    case CharacterCreateError.NameLength:return CharacterDialogLabel("nameLength",K("이름은 2~8자여야 합니다.","Name must be 2-8 characters."));
+    case CharacterCreateError.Forbidden:return CharacterDialogLabel("forbidden",K("특수문자는 사용할 수 없습니다.","Special characters cannot be used."));
+    case CharacterCreateError.Duplicate:return CharacterDialogLabel("duplicate",K("이미 같은 이름의 캐릭터가 있습니다.","A character with this name already exists."));
+    case CharacterCreateError.Full:return CharacterDialogLabel("full",K("슬롯이 가득 찼습니다.","All five slots are occupied."));
+    default:return CharacterDialogLabel("comingSoon",K("출시 준비 중","Coming Soon"));
    }
   }
   public void CloseCharacterCreation(){characterRestoreCreateFocus=characterStep==1||characterStep==2;characterVisualFocusPending=false;CloseCharacterPresentationVideo();characterStep=0;characterError="";characterFocus=false;deletingCharacter=-1;deletingName="";deleteFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}

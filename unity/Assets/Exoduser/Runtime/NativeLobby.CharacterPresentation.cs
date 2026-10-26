@@ -94,8 +94,8 @@ namespace Exoduser.UnityPort
    if(GUI.GetNameOfFocusedControl()=="visual-info-right")Border(right,new Color(.92f,.78f,.53f),2);
    DrawCharacterRail(w,px,railY);
    float actionX=(w-760)/2,cancelWidth=98.563f;Rect cancel=new Rect(actionX,actionY+1.25f,cancelWidth,44),create=new Rect(w*.5f+247.063f,actionY,132.938f,46.5f);
-   bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;GUI.SetNextControlName("visual-cancel");if(GUI.Button(cancel,K("취소","CANCEL"),presentationAction))CloseCharacterCreation();
-   GUI.enabled=priorEnabled&&!locked;GUI.SetNextControlName("visual-create");if(GUI.Button(create,locked?K("출시 준비 중","COMING SOON"):K("생성","CREATE"),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
+   bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;GUI.SetNextControlName("visual-cancel");if(GUI.Button(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),presentationAction))CloseCharacterCreation();
+   GUI.enabled=priorEnabled&&!locked;GUI.SetNextControlName("visual-create");if(GUI.Button(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
    if(GUI.GetNameOfFocusedControl()=="visual-cancel")Border(cancel,new Color(.92f,.78f,.53f),2);
    if(!locked&&GUI.GetNameOfFocusedControl()=="visual-create")Border(create,new Color(.92f,.78f,.53f),2);
    if(characterVisualFocusPending&&Event.current.type==EventType.Repaint){GUI.FocusControl("visual-icon-"+i);characterVisualFocusPending=false;}
@@ -108,14 +108,14 @@ namespace Exoduser.UnityPort
    Fill(panel,new Color(.055f,.047f,.045f,.98f));if(presentationIron!=null){Color old=GUI.color;GUI.color=new Color(.19f,.19f,.19f,.55f);GUI.DrawTexture(panel,presentationIron,ScaleMode.StretchToFill,true);GUI.color=old;}
    Border(panel,new Color(.43f,.33f,.23f,.78f),1);
    float x=panel.x+41,y=panel.y;
-   Label(new Rect(x,y+49,358,32.5f),K("새 캐릭터 생성","Create Character"),Language=="ko"?presentationKoNameTitle:presentationNameTitle,TextAnchor.MiddleCenter);
-   Label(new Rect(x,y+89.5f,358,18.5f),K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell."),presentationNameDescription,TextAnchor.MiddleCenter);
-   Label(new Rect(x,y+136,358,21),K("캐릭터 이름 (2~8자)","Character name (2–8 characters)"),presentationNameLabel,TextAnchor.MiddleLeft);
+   Label(new Rect(x,y+49,358,32.5f),CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character")),Language=="ko"?presentationKoNameTitle:presentationNameTitle,TextAnchor.MiddleCenter);
+   Label(new Rect(x,y+89.5f,358,18.5f),CharacterDialogLabel("description",K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell.")),presentationNameDescription,TextAnchor.MiddleCenter);
+   Label(new Rect(x,y+136,358,21),CharacterDialogLabel("nameLabel",K("캐릭터 이름 (2~8자)","Character name (2–8 characters)")),presentationNameLabel,TextAnchor.MiddleLeft);
    GUI.SetNextControlName("character-name");characterName=GUI.TextField(new Rect(x,y+165,358,53),characterName,8,presentationInput);
    if(characterFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl("character-name");characterFocus=false;}
    if(!string.IsNullOrEmpty(characterError))Label(new Rect(x,y+218,358,18),characterError,presentationNameError,TextAnchor.MiddleLeft);
-   GUI.SetNextControlName("character-cancel");if(GUI.Button(new Rect(x,y+238,173,46.5f),K("취소","CANCEL"),presentationNameButton))CloseCharacterCreation();
-   GUI.SetNextControlName("character-create");if(GUI.Button(new Rect(x+185,y+238,173,46.5f),K("생성","CREATE"),presentationNameButton))CreateCharacter(characterName);
+   GUI.SetNextControlName("character-cancel");if(GUI.Button(new Rect(x,y+238,173,46.5f),CharacterDialogLabel("cancel",K("취소","CANCEL")),presentationNameButton))CloseCharacterCreation();
+   GUI.SetNextControlName("character-create");if(GUI.Button(new Rect(x+185,y+238,173,46.5f),CharacterDialogLabel("create",K("생성","CREATE")),presentationNameButton))CreateCharacter(characterName);
   }
   void DrawCharacterVisualVignette(float w,float h){
    Fill(new Rect(0,0,w,Mathf.Min(h*.11f,112)),new Color(0,0,0,.34f));Fill(new Rect(0,h-Mathf.Min(h*.132f,142),w,Mathf.Min(h*.132f,142)),new Color(0,0,0,.55f));
