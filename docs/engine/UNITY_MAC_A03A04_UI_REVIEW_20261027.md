@@ -1,5 +1,19 @@
 # Mac Unity A03/A04 통합 UI 실창 검수 — 2026-10-27
 
+## es 긴 문구 배치 수리 후보
+
+이전 1280×720 실창 `es-visual-long.png`의 우측 첫 특성 제목/본문과 하단 클래스 라벨 겹침을 대상으로 `NativeLobby.CharacterPresentation.cs`의 **표시 배치만** 고쳤다. `GUIStyle.CalcHeight`로 현지화 제목·본문 높이를 측정해 각 특성 행을 다음 행과 겹치지 않게 누적하고, 특성 패널은 하단 직업 레일 시작 8px 전까지만 확장한다. 더 낮은 화면에서 내용이 남으면 패널 내부 스크롤을 사용하며 직업 라벨은 번역 줄 수만큼 높이를 확보한 뒤 `출시 준비 중`을 2px 아래에 둔다. 문구·폰트 크기·선택/버튼 Rect·캐릭터 수치·저장 처리는 변경하지 않았다.
+
+| 항목 | 기존 | 후보 | 적용 위치 |
+|---|---:|---:|---|
+| 특성 제목 | 21px 고정 | 번역별 `max(21, ceil(CalcHeight))` | 우측 특성 3행 |
+| 특성 본문 | 행 높이에서 제목 22px 제외 | 번역별 `max(34, ceil(CalcHeight))` | 우측 특성 3행 |
+| 특성 행 | 720p 74.75px / 1080p 79.031px 고정 간격 | `max(기존 간격, 제목+2px+본문+7px)` 누적 | 우측 특성 3행 |
+| 패널 높이 | 720p 312.75px / 1080p 325.594px | 최소 기존 높이와 내용 높이를 비교하고 레일 위 8px까지 제한; 초과분 내부 스크롤 | 우측 특성 패널 |
+| 클래스 라벨 | 18px 고정, 다음 줄 +18px | `max(18, ceil(CalcHeight))`, 다음 줄 +2px | 하단 5직업 레일 |
+
+원인 확인·기존 화면 증거는 아래 첫 QA 결과를 따른다. 이 후보는 ARM64 실창 재검수 전이므로 아직 VISUAL PASS로 바꾸지 않는다.
+
 ## QA 후보 빌드 계약
 
 `PortVerification.Build`의 `-a03a04UiQa true`는 이번 통합 UI 검수 전용이다. `-settingsQa true`와 동시 지정은 거부한다. `StandaloneOSX`는 기존대로 ARM64, 출력명은 고유 `_out` 아래 `EXODUSER-Unity.app`이다. 이 QA 분기에서만 productName `EXODUSER A03 A04 QA`, applicationIdentifier `com.fordeargamers.exoduser.a03a04qa20261027`, identifier override `true`로 빌드하고 `finally`에서 원래 product/id/override를 복원한다. 빌드 영수증에 `uiQa`·product·identifier·architecture를 기록한다. 일반 빌드와 기존 Settings QA의 값은 그대로다.

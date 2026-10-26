@@ -57221,3 +57221,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac PC UI hook 13→14 적응: 최신 PC 답신/대체 patch 없음. A24는 Mac `DiagnosticUiEnabled` 배지 조건만 문맥에 맞추고 구역 제목 첫 진입1회·실제 목표 수치 패널을 독립 연결(지역 총량 미이식). A26은 정상 로비 전원 버튼 뒤에 `NativeLobbyBuildLabels.Draw(913f)` 1회 삽입; 세계관/ATG 분기와 기존 debug preview 보존. 적용·정적 diff PASS, 화면·Player·컴파일은 다음 단계. [적응 근거](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
 2026-10-26 Mac PC UI hook 15→19: A26 flavor build 인자, A16 실행 중 키 설정/QA hook, B11 자동 물약 Simulation 틱·장비 입력·웹식 킬 드랍을 순서대로 연결. 설정 저장 schema v2·새 Player/빌드0. B11 일반 킬 RNG 1→2회(기존 악의+4 유지, hp 종류만 +1), 자동 회복 악의−1·기본CD420f. Mac oracle2438/0, Unity6000.6.7f1 비대화형 컴파일 exit0·CS오류/경고0(기존 UAC1001). 검사 중 `.meta` churn을 사전 상태로 복원. 코드 1–19 통합·컴파일 PASS, 실제 Player·키 입력·로비 라벨·자동 물약·저장 회귀 미검증. [전체 관문](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+2026-10-27 Mac A04 es 긴 문구 수리 후보: 특성 3행 제목·본문과 하단 5직업 라벨의 번역별 실제 높이를 측정해 순서대로 배치한다. 우측 패널은 직업 레일 위 8px 경계를 지키고 좁은 화면 초과분은 내부 스크롤로 표시한다. 문구·폰트 크기·버튼 hitbox·선택/수치/저장 로직은 그대로다. ARM64 실창 재검수 전이므로 시각 판정은 대기. [수치·범위](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
+
