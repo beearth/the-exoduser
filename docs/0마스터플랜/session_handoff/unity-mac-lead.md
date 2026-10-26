@@ -22,7 +22,7 @@
 ## 진행 중 작업 단위
 | 단위 | 담당 Sonnet | 단계 | 명세 |
 |---|---|---|---|
-| B07 돌진·패링 Core + 원본 실행 oracle | 원 Sonnet `local_f344c67e-e388-4d43-a01e-47980c6f1bbd` | 구현 중(보고 대기). **이 Sonnet 964K → 재생성 먼저, 새 일 금지** | `E:/exoduser-wt/_out/pc-b07-impl/SPEC.md` (파일은 `Runtime/Core/` 평면 — 정정 메시지 보냄) |
+| B07 돌진·패링 Core + 원본 실행 oracle | 원 Sonnet `local_f344c67e-e388-4d43-a01e-47980c6f1bbd` | **검수 통과(oracle 146,580/0, 빌드 0, 보드 B07=1 유지)·미커밋** → 대기열 Q3 커밋. **이 Sonnet 964K → 재생성 먼저, 새 일 금지** | `E:/exoduser-wt/_out/pc-b07-impl/SPEC.md` (파일은 `Runtime/Core/` 평면 — 정정 메시지 보냄) |
 | PAINTGROUND → TOXIC → MESHY-0/M1 | 단순작업3(맵 총괄 전속) | PAINTGROUND 진행 | `_out/pc-map3d-paintground/SPEC.md`(§0.5 바이블 §12 RETOUCH 5항목), `_out/pc-map3d-toxic/SPEC.md`(색 = **통합 대기**) |
 - 원 Sonnet 다음 대기열: B05 Core 구현 → B03(공통 규칙 명세 `_out/pc-b03-core1/SPEC.md` 재사용 가능, 단순작업2가 남긴 PROGRESS 있음).
 - 문서 반영 대기열: `E:/exoduser-wt/_out/macbook-docs-queue/QUEUE.md` — **Q2 급한 통보(통합 바이블 v2 INBOX 두 곳)를 먼저**, 그다음 Q1(맵 보드 LIFE1 RETOUCH·§5 기준=v2). 원 Sonnet 재생성 뒤 실행(급하면 다른 방법을 전체총괄과 정함).
@@ -51,4 +51,4 @@
 ## 재개 후 첫 행동
 1. MEMORY.md와 이 문서, `unity-port-mac-supervisor-role.md`를 읽는다.
 2. 맵 총괄에 미전송 답장 1줄 보내기(위 "대기 중").
-3. 원 Sonnet 재생성 완료 확인(`get_usage`) 뒤 B07 결과를 받아 검수.
+3. 원 Sonnet 재생성 완료 확인(`get_usage`) 뒤 대기열 Q2(급함)→Q3(B07 커밋)→Q1 실행시키고 SHA 검증, B07 브랜치를 누적 브랜치에 병합(patch 20·21) 후 INBOX 두 곳. 다음 단위 = B05 Core 구현(명세 작성 필요, 추출표 `UNITY_B05_WEB_EXTRACT_20261026.md`).
