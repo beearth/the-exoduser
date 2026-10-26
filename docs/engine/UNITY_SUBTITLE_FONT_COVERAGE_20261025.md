@@ -145,3 +145,8 @@ NativeLobby의 현재 font를 유지한 상태에서 FR 악센트 및 UK/JA/TH/A
 
 
 검수 fixture: `--unity-ui-resume-smoke --qa-caption-coverage -caption-oracle <absolute caption-font-plan.json>`. TTF cmap 오라클로 29언어를 분류하고 24언어의 32큐 고유 글리프 전체를 실제 Unity Font API로 질의한다. 5언어는 UNRESOLVED로 기록한다. Noto Serif 20언어의 대표 큐 720p PNG를 출력한다. 아직 이 변경의 컴파일/실행 결과는 없다. 기존57개 검수의 성공은 변경 전 빌드 결과다.
+
+
+## 후속 실제 Player 검증
+
+20개 Noto 연결 후162개 UI 검사/29 PNG를 확보했다. 24언어의32큐 고유 문자 atlas probe이며20언어 대표큐 화면검수다. 5언어는 UNRESOLVED 유지. 엔진별 실제 종료 코드는 [A/B 문서](UNITY_CAPTION_AND_ENGINE_AB_20261026.md)를 따른다. 기존 후보 절은 실행 이전 이력이다.

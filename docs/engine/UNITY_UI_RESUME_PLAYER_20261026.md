@@ -51,3 +51,8 @@ RED 실행에서는 별도로 첫 GUI 렌더 전에 스타일을 질의한 검�
 종료 안정성은 FAIL이다. 최초 제품 변경 전 build의 두 프로세스도 UnityPlayer.dll+0x107a81에서 같은 0xc0000005 읽기 위반으로 종료됐다. 현재 작업의 dump를 공식 Unity PDB RSDS ID 14614C5211F24B0AA9B3EE2DE8B159B81로 해석한 fault symbol은 RuntimeStatic<PlatformAccessibilityManager,0>::StaticDestroy(void*)+0x51이며 읽기 주소0xe0이다. raw stack 후보에 RuntimeCleanup/DestroyGfxDevice/UnloadMono가 있으나 정식 unwind 스택은 아니다. 종료 충돌을 UI 검사 숫자로 숨기거나 정상 종료라 보고하지 않는다. 일반 제품 실행본 교체·배포와 main 병합은 하지 않았다.
 
 실제 OS 클릭·키보드, 29언어 전체/RTL, 프레임 성능, 전체 게임 이식은 미완료다. 이 검수 중 다른 팀 앱이 관측돼 독점 성능 QA를 주장하지 않는다. 기존 사용자 앱/세이브는 변경하지 않았다.
+
+
+## 후속 자막 확대와 엔진 A/B
+
+20언어 자막 글꼴 연결 후 UI162개/29 PNG 검수 및 엔진별 실제 종료 코드를 확보했다. [최신 실제 결과](UNITY_CAPTION_AND_ENGINE_AB_20261026.md)를 따른다. 이전 종료FAIL 표는6000.4.8에서의 실제 이력이다.
