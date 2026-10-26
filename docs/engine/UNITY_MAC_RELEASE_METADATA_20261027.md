@@ -13,4 +13,6 @@
 | Mac `patch_notes.json` | 기존 `0.7.5`·`0.7.0` 두 항목 유지, SHA256 `e4eac388fee4d9030b5a7731b74c0bb14e5075256570fc35ed3e9b52ea1d8962` |
 | 범위 밖 | 게임 내용, 세계관 v22b/전사 v23 미디어, app identifier, target flavor, 다른 Resources JSON/.meta 불변. 새 Player build 없음 |
 
-사전 백업은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-RELEASE-META-20261027/before/release_web.json`. `rg -l 'release_web|release-version|0\.7\.7|0\.7\.5' docs` 전체 검색에서 6개 문서를 대조했다. 과거 A03 UI 검수·원본 로비 추적 문서의 당시 관찰은 소급 변경하지 않았다. 최종 Editor Verify 영수증은 아래 후속에 기록한다.
+사전 백업은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-RELEASE-META-20261027/before/release_web.json`. `rg -l 'release_web|release-version|0\.7\.7|0\.7\.5' docs` 전체 검색에서 6개 문서를 대조했다. 과거 A03 UI 검수·원본 로비 추적 문서의 당시 관찰은 소급 변경하지 않았다.
+
+코드·메타 커밋 `8adfcc5772fd671ebe9af44ed4753bed2ce571bd`의 깨끗한 HEAD에서 Unity **6000.6.7f1** Mac Editor `PortVerification.Verify` 전체를 **1회** 실행했다. 종료 코드 **0**, receipt `passed:true`(`check:Unity_source_runtime_compile_asset_and_model`), 로그 `UNITY_HUD_GPU_RESOURCE_MASK_PASS`·`UNITY_INVENTORY_SEED_STATS_UNARMED_PASS`·`UNITY_LOBBY_MEDIA_CAPTIONS_29X32_PASS`·`UNITY_VERIFY_PASS`를 확인했다. receipt `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-RELEASE-META-20261027/editor-verify.json`, 로그 같은 폴더의 `editor-verify.log`. 이 검사는 현행 `cinSeen` 코드가 포함된 통합 Editor 회귀이며 별도 Player 빌드·0.7.5 실창 표시 판정은 아니다. Unity import가 재작성한 Resources `.meta` **411개**와 새 런타임 `.meta` **1개**는 import patch/사본을 외부 `_out`에 보존한 뒤 HEAD bytes로 복원했다. 제품 에셋/설정 추가 변경 0.

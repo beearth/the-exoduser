@@ -1,6 +1,6 @@
 ## 2026-10-27 Mac 표시 릴리스 메타 원격 main 동기화
 
-원격 main `607110d52`의 최신 INBOX에 0.7.7 통합 표시 승인 없음. `release-version.json`(0.7.5/2026-10-20/ea-full, blob `528ad945f`) bytes만 Mac `release_web.json`으로 인수했다. 게임/미디어/app id/flavor 변경0, 새 Player build0. [원본 SHA·범위](../UNITY_MAC_RELEASE_METADATA_20261027.md). 현재 HEAD 전체 Editor Verify 영수증은 후속 기록.
+원격 main `607110d52`의 최신 INBOX에 0.7.7 통합 표시 승인 없음. `release-version.json`(0.7.5/2026-10-20/ea-full, blob `528ad945f`) bytes만 Mac `release_web.json`으로 인수했다. 게임/미디어/app id/flavor 변경0, 새 Player build0. `8adfcc577` HEAD 전체 Unity6000.6.7f1 Editor Verify 1회 exit0/receipt PASS, HUD GPU·Inventory·Lobby PASS. 생성 `.meta` 411+1 원복. [원본 SHA·영수증](../UNITY_MAC_RELEASE_METADATA_20261027.md).
 
 ## 2026-10-27 Mac A05 오류 뒤 수동 마지막 cue 후속
 
