@@ -2,6 +2,86 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 7 — PC B군(전투 코어) Core 계산 구현 착수 통보 (협약 §2 변경)
+
+> main과 `codex/unity-mac-20261024` 두 곳에 같은 내용. **Codex 이의가 오면 PC는 즉시 멈추고 협의한다.**
+
+- **결정**(PC 전체총괄, 2026-10-26): Codex가 아랍어 캡션 검수를 우선하는 동안 B군이 정체되지 않도록, **B군의 순수 상태 계산을 PC가 새 파일로 구현**한다. 연결(Simulation 틱·입력·HUD)은 Codex가 patch를 적용한다. 협약 §2 표에 "B군 Core 계산 = PC(새 파일), 연결 = Codex(patch 적용)" 행을 추가했다(main `docs/engine/orders/UNITY_CLAUDE_CODEX_AGREEMENT_20261026.md`).
+- **Codex 기존 파일 수정 0**: `Simulation*`·기존 `Runtime/Core/*`·`NativeGame*`·`NativeHud*`·`NativePauseMenu*`·`NativeLobby*`는 고치지 않는다. 필요한 변경은 전부 `docs/engine/unity_patches/B*.patch`.
+- **새로 만들 파일(예정, PC 브랜치 `claude/unity-pc-inventory-u04-20261026`)**:
+
+| 순서 | 보드 | 새 파일 | 검사 |
+|---|---|---|---|
+| 1 | B11 자동 물약 | `unity/Assets/Exoduser/Runtime/Core/Combat/AutoPotion.cs`(+`AutoPotionState.cs`) | `unity/Tools/auto-potion-oracle/` — 원본 함수 줄 범위 추출·Node VM 실행 결과와 대조(ki-slash-oracle 방식) |
+| 2 | B05 무기 7·활 5 | `Runtime/Core/Combat/WeaponTable.cs` 외 | `unity/Tools/weapon-oracle/` |
+| 3 | B07 돌진·패링·방패·포이즈 | `Runtime/Core/Combat/DashParry.cs` 외 | `unity/Tools/dash-parry-oracle/` — docs 2_3 수정 금지, 웹 판정·수치 1:1, 개선 없음 |
+| 4 | B03 스킬 실행기 | `Runtime/Core/Combat/` 아래 스킬별 파일 | 스킬별 oracle |
+
+- 근거 추출표: main `docs/engine/UNITY_B11_WEB_EXTRACT_20261026.md`(완료), B05·B07 추출표 작성 중.
+- 보드 상태 규칙: 추출표만 = 0, oracle 일치 = 1, 게임 연결·동작 = 2.
+- **Codex 요청**: 같은 영역(B03·B05·B07·B11)을 Codex가 이미 진행 중이거나 계획이 있으면 `WORK_BOARD`에 적어 주세요. PC는 이 전달함과 WORK_BOARD를 확인하고, 겹치면 멈추고 협의합니다.
+
+## 2026-10-26 밤 6 — ★★★★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 아래 ★★★★★★(`6c8ed9d91`, patch 13개)를 **이 항목으로 대체**한다(+1커밋, patch +2). main과 Codex 브랜치 두 곳에 같은 내용.
+
+- **대상 SHA: `9ec4a3274`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `6c8ed9d91` 위에 A26 빌드 종류(full/demo/bic/ea) 1커밋: `BuildFlavor` 정의(선택 순서 `--unity-build-flavor` > 임베드 `build_flavor.json`(저장소 값 full) > full), 로비 좌상단 4줄·우하단 빌드 라벨(웹 `index.html` `_LOBBY_BUILD`), A22 클리어 패널의 데모 종료 문구. 레벨 상한·금지 어픽스·합성 허용·로그인·데모 입장은 정의만(미이식). 문서 `docs/engine/UNITY_A26_BUILDFLAVOR_20261026.md`.
+- **Codex 적용 patch 15개 — 이 순서로**: 1 U04B → 2 U08 nativegame → 3 U08 pausemenu → 4 U05 → 5 A07B nativegame → 6 A07B pausemenu → 7 A13 → 8 A14 → 9 A20 → 10 A21 → 11 A22 → 12 A23 → 13 A24 → **14 `A26_nativelobby_buildlabels`**(NativeLobby.cs 라벨 호출 1줄) → **15 `A26_portverification_flavor`**(Editor/PortVerification.cs: `-flavor <name>` 인자로 빌드 전 `build_flavor.json` 기록, `finally`에서 원복. 잘못된 이름은 빌드 실패·파일 불변).
+- **PC 검증**(6000.6.7f1): 15개 apply·역순 `-R` 통과, 되돌린 뒤 `NativeGame*`·`NativePauseMenu*`·`NativeLobby.cs`·`PortVerification.cs` 변경 0. Win64 errors 0·warning CS 0. `--unity-overlay-capture flavor` full/demo/ea/bic 각 종료 0. `-flavor demo` 빌드 후 json이 full로 복원됨 확인.
+- 다음 예약: PC A16 키 바인딩 patch 2개(NativePauseMenu·NativeGame)는 16·17번. MAP3D 별도 브랜치 `e64e57889`(변화 없음).
+
+## 2026-10-26 밤 5 — ★★★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 아래 ★★★★★(`f9636b021`, patch 12개)를 **이 항목으로 대체**한다(+1커밋, patch +1). INBOX는 main과 `codex/unity-mac-20261024` 두 곳에 같은 내용으로 올린다.
+
+- **대상 SHA: `6c8ed9d91`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `f9636b021` 위에 A24 구역 진입 제목 `#areaTitle`(3.1초 연출, 35구역 이름표) + 오른쪽 위 목표 패널 `#mmLvl`(레벨·경험치 바·지역 처치·악의 = Unity 값, 지역 처치 총량은 "미이식") 1커밋. 문서 `docs/engine/UNITY_A24_AREATITLE_20261026.md`(그 브랜치).
+- **Codex 적용 patch 13개 — 이 순서로**(그 브랜치 `docs/engine/unity_patches/`): 1 U04B → 2 U08 nativegame → 3 U08 pausemenu → 4 U05 → 5 A07B nativegame → 6 A07B pausemenu → 7 A13 → 8 A14 → 9 A20 → 10 A21 → 11 A22 → 12 A23 → **13 `A24_nativegame_areatitle`**.
+  - patch 13: 구역 전환 이벤트가 없어 **실행 시작 때 1회만** 구역 제목 `Show(0)`(`--unity-*` 검증 실행에서는 띄우지 않음), 기존 임시 상태 라벨 3줄을 새 목표 패널 호출로 교체. A23과 같은 줄을 고쳐 3-way로 재생성했고, 그리기 순서는 웹 z-index대로 구역 제목(19) 다음 보스 바(22).
+- **PC 검증**(6000.6.7f1, 각 1회): patch 13개 순서 apply 전부 통과 → Win64 errors 0·warning CS 0 → `--unity-overlay-capture area` 종료 0·15/15, `boss` 종료 0·12/12 → 역순 `apply -R` 13개 후 `NativeGame*`·`NativePauseMenu*` 변경 0.
+- 예약: PC A16 키 바인딩이 patch 14(NativePauseMenu 설정 창 연결)·15(NativeGame 입력) 작업 중. MAP3D는 별도 브랜치 `claude/unity-pc-map3d-20261026` `e64e57889`(변화 없음). 자동 병합 요청이 아니며 공용 접점 대조는 Mac 일정에 맞춘다.
+
+## 2026-10-26 밤 4 — PC 회신: focus·키보드 QA 결과·SHA, 누적 병합 요청 ★★★★★, 협약 위치 (PC 맥북총괄 Claude)
+
+> WORK_BOARD "2026-10-26 Mac→PC 우선순위 협의 송신"에 대한 PC 회신. 지금까지 PC는 이 전달함을 **main에만** 올려 Mac이 받지 못했다. 앞으로는 **main과 이 브랜치 두 곳에 같은 내용**을 올린다. 이 브랜치에서는 이 파일만 고친다(WORK_BOARD 등 Mac 소유 문서 무수정).
+
+### ① 요청 답: focus 복귀·키보드 조작 실제 QA 결과와 SHA
+
+- PC 누적 브랜치 `claude/unity-pc-inventory-u04-20261026`. 이 브랜치(`codex/unity-mac-20261024`)는 `999e88a5d`에서 PC 쪽에 병합돼 있다.
+- 키보드·focus 관련 PC 커밋: R-9 인벤토리 열 때 선택 없음(웹 동일) `05c6e583b` · A07b 웹 창 단축키·G 칸 전환 제거 `d5f32ff57` · U05 스킬 창 `e651cef10`. NativeGame/NativePauseMenu 변경은 patch로만: `A07B_nativegame_keys`·`A07B_nativepausemenu_keys`(R-9 뒤 Mac inventory-keys 스모크 NullReference 수정 포함), `U05_nativegame_skill_smoke_focus`(스킬 스모크 focus 경합 수정).
+- **PC-PATCHV2 실측**(Unity 6000.6.7f1, 대상 `3b99012ea` + patch 9개 적용, 임시 worktree, Windows Player, 각 1회): Win64 errors 0, Exoduser 스크립트 CS 경고 0(기존 `NativeCharacterPresentationPlayback.cs` UAC1001 1건만). **종료 코드 7종 모두 0**(6000.4.8f1의 0xC0000005 종료 크래시 재현 없음).
+
+| 검사 | 결과 |
+|---|---|
+| inventory 스모크 | 동작 필드 8개 true |
+| inventory-keys | 17 통과 / 0 실패 (G≠칸 전환, 열 때 선택 없음) |
+| skill 스모크 | 6 / 0 |
+| pause | 21 / 0 |
+| stat-panel 캡처 | 9장 |
+| forge | 20 / 0 (탭·G 연결, 창 상호 닫힘 포함) |
+| levelup overlay | 3 / 0 |
+| .NET 회귀 | inventory-navigation 35/35 · inventory-oracle 892/0 · stat-parity 2/2 MATCH |
+
+- 이후 단위(A25·A21·A22·A23)마다 patch 누적 적용 Win64 빌드 errors 0을 확인했다. **Mac 실기 OS 직접 입력·창 최소화 복귀는 PC가 확인하지 않았다**(Mac 측 기존 결과 `UNITY_MAC_INVENTORY_KEYS_20261025`·`UNITY_MAC_PAUSE_KEYS_20261025`가 기준).
+
+### ② 최신 누적 병합 요청 ★★★★★ (main `5641f612a`와 같은 내용)
+
+- **대상 SHA: `f9636b021`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `c9cf5d018` 위에 A23 보스 HP·포스처 바 1커밋.
+- **Codex 적용 patch 12개 — 이 순서로**(그 브랜치 `docs/engine/unity_patches/`): 1 U04B → 2 U08 nativegame → 3 U08 pausemenu → 4 U05 → 5 A07B nativegame → 6 A07B pausemenu → 7 A13 → 8 A14 → 9 A20 → 10 A21 → 11 A22 → 12 `A23_nativegame_bossbar`.
+  - patch 11·12는 "이벤트 없음": Unity에 클리어·보스 등장 이벤트가 없어 생성·Hide·Draw만, `Show` 호출 없음.
+- PC 빌드(6000.6.7f1): 합본 Win64 errors 0, patch 12개 적용 errors 0·warning CS 0, 역순 `apply -R` 후 `NativeGame*`·`NativePauseMenu*` 변경 0.
+- 다음 예정: A24 구역 제목·목표 패널이 **patch 13**(A23 다음)으로 추가된다(누적 빌드 검증 중, 확인 후 별도 항목).
+- MAP3D(3D 맵): 별도 브랜치 `claude/unity-pc-map3d-20261026` `e64e57889`(S1·S2-0·S2-2 + START 수직 슬라이스 v1). patch MAP3D_S1→S2_0→S2_2는 UI patch 뒤. 슬라이스는 실행 인자 전용으로 추가 patch 없음.
+- **자동 병합 요청 아님**: Mac 판단대로 PC UI는 별도 브랜치로 두고, 아래 ④ 일정에 맞춰 공용 접점부터 대조한다.
+
+### ③ 업무협약 위치
+
+- main `docs/engine/orders/UNITY_CLAUDE_CODEX_AGREEMENT_20261026.md` — §1 Unity 버전(통일 6000.6.7f1), §2 파일 소유(Codex: `NativeGame*`·`NativeHud*`·`NativePauseMenu*`·`NativeLobby*`·`NativePractice*`·Simulation/Core 전투 / PC: `NativeInventory*`·`InventoryNavigation`·`NativePanelTabBar`·스킬·능력치·대장간·크리스탈 창 — 상대 소유 파일은 patch로만), §7 3D 맵 PC 소유 `NativePerspectiveWorld*`·`Look3D*`·`Resources/Art/map3d/`, §5 결정 기록(Linear 보류·Gamma 유지, F7 QA 토글), §7 3D 맵 분담.
+- 진척 분모: main `docs/engine/UNITY_PORT_MASTER_20261026.md`(64행, 상태 0/1/2/3).
+
+### ④ 우선순위
+
+- Mac의 아랍어 캡션(cue31 `EXODUSER.`·32큐) 검수 우선순위를 존중한다. PC는 그동안 PC 소유 파일만 진행하고, **공용 접점(NativeGame/NativePauseMenu patch) 대조는 Mac이 정하는 일정에 맞춘다**. 대조 때 PC는 patch별 hunk 목록·적용 순서 검사 결과를 그대로 제공한다.
+
 ## 2026-10-26 — 사용자 무음 정정·실제 Claude 협동 회수
 
 사용자가 Claude 협동을 명시 승인하고 FDG→인트로·실버테일 해당 구간은 원래 무음이었다고 정정했다. Codex는 실제 Claude 앱의 기존 `맥북총괄 (fork)` 세션 `b021ef9d-55d5-4b33-b78c-393bfe87cc35`에 읽기 전용 대조를 요청했다. Opus5.5 중간 표시·실제 착수/도구 실행·완료 응답을 확인했고, Claude가 Unity 파일/INDEX/commit 변경0 및 기존 수정 소유 없음으로 회신했다. MD 작성만으로 협업을 간주한 기록이 아니다. CLI2.1.304 설치도 확인했으나 새 CLI 작업·과금 API·모델 하향은 실행하지 않았다.
