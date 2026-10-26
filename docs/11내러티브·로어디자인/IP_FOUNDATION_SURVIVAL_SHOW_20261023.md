@@ -1,6 +1,6 @@
 # IP 세계 기초 — 천상계의 서바이벌 쇼 (2026-10-23 사용자 확정)
 
-상태: **기초 확정**. 세부 결정(T1~T11 등)은 미확정이다. 이 문서는 `WORLD_CORE.md`(v1)와 `../HELL_EXODUSER_WORLDVIEW_v2.md`보다 우선한다. 충돌하면 이 문서를 따르고, 게임에 이미 들어간 대사(`game.html` PROLOGUE_LINES wa01~wa30, INTRO_CUTSCENE_LINES)는 고정값으로 둔다.
+상태: **기초 확정**. 세부 결정(T1~T11 등)은 미확정이다. 이 문서는 `WORLD_CORE.md`(v1)와 `../HELL_EXODUSER_WORLDVIEW_v2.md`보다 우선한다. 충돌하면 이 문서를 따르고, 게임에 이미 들어간 대사(`game.html` PROLOGUE_LINES wa01~wa30, INTRO_CUTSCENE_LINES)는 고정값으로 둔다. 이 문서와 다른 서사 문서(복원 바이블 포함)의 통합 판정은 [IP_CANON_INTEGRATED_20261026.md](IP_CANON_INTEGRATED_20261026.md)에 있다.
 
 ## 한 줄
 
