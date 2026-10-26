@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A03/A04 통합 UI QA 판정
+
+고유 앱 source `8bcba21b4` ARM64 빌드 1회 Succeeded/오류0. 실창 ja 생성·이름 및 격리 QA 캐릭터 삭제 기본취소 Return/Esc 확인, 실제 삭제0. es 긴 시각선택 특성·클래스 라벨 겹침/잘림으로 **VISUAL VERDICT: RETOUCH**. CUA 좌표 클릭이 Unity 기존 버튼에도 적용되지 않아 A03 modal·뒤입력은 HOLD. [화면·PID·args·빌드 영수증](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
+
 ## 2026-10-27 Mac A03/A04 UI 실창 검수 후보
 
 고유 QA 빌드 product/id 분기 `-a03a04UiQa true`를 Editor 빌드 경로에 추가했다. 일반·기존 Settings QA identity는 유지하고 빌드 뒤 복원한다. [고유 앱·저장 격리 계약](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md). 실제 ARM64 빌드·CUA 창 식별·입력 판정은 후속 기록한다.

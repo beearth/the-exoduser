@@ -1,3 +1,5 @@
+2026-10-27 Mac A03/A04 QA 결과: source `8bcba21b4` 고유 ARM64 앱 1회 빌드 Succeeded/오류0/C# 오류·경고0(기존 UAC1001). CUA는 고유 창/PID·격리 args를 식별했고 ja 생성/이름, es 이름, QA 캐릭터 생성 후 Delete 기본취소 Return·Esc/실삭제0을 확인했다. es 긴 시각선택 특성·클래스 라벨은 겹침/잘림으로 RETOUCH. CUA 좌표 클릭이 기존 버튼에도 적용되지 않아 A03 패치노트 modal/뒤입력은 실창 미검증. [영수증·화면](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
+
 2026-10-27 Mac A03/A04 실창 검수 후보: `PortVerification.Build -a03a04UiQa true` 전용 ARM64 빌드 identity `EXODUSER A03 A04 QA` / `com.fordeargamers.exoduser.a03a04qa20261027`를 추가했다. 기존 Settings QA와 동시 사용을 거부하고 빌드 뒤 product/id/override를 복원한다. 별도 앱·새 절대 output·`--unity-frontend-review`로 QA 실행을 격리한다. 실제 빌드와 실창 판정은 후속 영수증에 기록한다. [계약](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
 
 2026-10-27 Mac A03/A04 UI 최소 인수: PC 후보 `97227ceb7`/전달 `d132f425b`의 패치노트 0.7.5·0.7.0, 라벨 29언어×3=87, 생성·삭제 29×14=406, 시각선택 29×42=1,218을 원본 JSON/meta 및 partial 3개로 인수했다. Mac `NativeLobby.cs`는 패치노트 입력·launcher·modal과 생성 카드 초점 hunk만 연결해 아랍어 caption overlay·build label을 보존했다. Unity6000.6.7f1 batch import·compile exit0/C# 오류·경고0(기존 UAC1001). Player·GUI·실제 입력 검수0, A01 원화·raw title·콘텐츠 차이7곳은 미인수. [세부·검증](engine/UNITY_MAC_A03A04_INTEGRATION_20261027.md).
