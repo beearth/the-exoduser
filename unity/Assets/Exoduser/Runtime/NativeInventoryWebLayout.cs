@@ -89,6 +89,98 @@ namespace Exoduser.UnityPort {
         }
         float TextWidth(string s,int size,int weight){return TextStyle(size,weight,TextAnchor.MiddleLeft).CalcSize(new GUIContent(s)).x;}
 
+        // Web body face (Nanum Myeongjo) for the few labels that use it (bag item names, equipment footer labels).
+        Font fontSerif;
+        void TxtSerif(Rect r,string s,int size,Color c,TextAnchor anchor=TextAnchor.MiddleLeft){
+            if(fontSerif==null)fontSerif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??fontRegular;
+            long key=-(((long)size*16)+(int)anchor)-1;
+            if(!textStyles.TryGetValue(key,out var st)){
+                st=new GUIStyle(GUI.skin.label){font=fontSerif,fontSize=size,alignment=anchor,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
+                textStyles[key]=st;
+            }
+            st.normal.textColor=c;GUI.Label(r,s,st);
+        }
+        // CSS letter-spacing: IMGUI has none, so advance glyph by glyph (left aligned only).
+        void TxtSp(Rect r,string s,int size,Color c,int weight,float spacing){
+            float x=r.x;
+            foreach(char ch in s){var g=ch.ToString();Txt(new Rect(x,r.y,r.width,r.height),g,size,c,weight);x+=TextWidth(g,size,weight)+spacing;}
+        }
+        // CSS text-shadow: 0 0 8px color (cheap two-ring halo).
+        void TxtGlow(Rect r,string s,int size,Color halo,int weight){
+            for(int k=0;k<8;k++){
+                float a=k*Mathf.PI/4,ca=Mathf.Cos(a),sa=Mathf.Sin(a);
+                Txt(new Rect(r.x+ca*3,r.y+sa*3,r.width,r.height),s,size,new Color(halo.r,halo.g,halo.b,halo.a*.085f),weight);
+                Txt(new Rect(r.x+ca*5.5f,r.y+sa*5.5f,r.width,r.height),s,size,new Color(halo.r,halo.g,halo.b,halo.a*.04f),weight);
+            }
+        }
+        static float Erfc(float x){
+            float t=1f/(1f+.3275911f*Mathf.Abs(x));
+            float y=t*(.254829592f+t*(-.284496736f+t*(1.421413741f+t*(-1.453152027f+t*1.061405429f))))*Mathf.Exp(-x*x);
+            return x>=0?y:2f-y;
+        }
+        static Vector2[] Cubic(Vector2 p0,Vector2 p1,Vector2 p2,Vector2 p3,int n=8){
+            var pts=new Vector2[n+1];
+            for(int i=0;i<=n;i++){float t=i/(float)n,u=1-t;pts[i]=u*u*u*p0+3*u*u*t*p1+3*u*t*t*p2+t*t*t*p3;}
+            return pts;
+        }
+        static void Stroke(List<Vector2> pts,float w,Color c){for(int i=0;i+1<pts.Count;i++)Line(pts[i],pts[i+1],w,c);}
+
+        // Web .inv-eq-sil: filter brightness(1.65) contrast(1.02) drop-shadow(#000 0 8px 12px), baked once (the PNG is not CPU readable).
+        Texture2D knightLit;Rect knightRect;
+        void BakeKnight(){
+            try{BakeKnightLit();}
+            catch(Exception e){
+                Debug.LogError("Knight filter bake failed, drawing the plain image: "+e.Message);
+                float s=Mathf.Min(395f/knight.width,575f/knight.height);
+                knightLit=knight;knightRect=new Rect(200+(395-knight.width*s)/2f,279+(575-knight.height*s)/2f,knight.width*s,knight.height*s);
+            }
+        }
+        void BakeKnightLit(){
+            int w=knight.width,h=knight.height;
+            float s=575f/h;                                  // design px per source px (contain inside 395x575)
+            const int padX=40,padT=40,padB=56;
+            int cw=w+2*padX,ch=h+padT+padB;
+            var rt=RenderTexture.GetTemporary(w,h,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.Default);
+            var prev=RenderTexture.active;
+            Graphics.Blit(knight,rt);RenderTexture.active=rt;
+            var tmp=new Texture2D(w,h,TextureFormat.RGBA32,false);
+            tmp.ReadPixels(new Rect(0,0,w,h),0,0,false);
+            RenderTexture.active=prev;RenderTexture.ReleaseTemporary(rt);
+            var src=tmp.GetPixels32();UnityEngine.Object.Destroy(tmp);
+            // Half resolution alpha for the shadow blur (sigma 6 css px).
+            int hw=(cw+1)/2,hh=(ch+1)/2;var half=new float[hw*hh];
+            for(int y=0;y<ch;y++){
+                int sy=y-padB;if(sy<0||sy>=h)continue;
+                for(int x=0;x<cw;x++){int sx=x-padX;if(sx<0||sx>=w)continue;half[(y/2)*hw+x/2]+=src[sy*w+sx].a/255f*.25f;}
+            }
+            float sigma=6f/s/2f;int rad=Mathf.CeilToInt(sigma*3);var kern=new float[rad*2+1];float ksum=0;
+            for(int i=-rad;i<=rad;i++){kern[i+rad]=Mathf.Exp(-i*i/(2*sigma*sigma));ksum+=kern[i+rad];}
+            for(int i=0;i<kern.Length;i++)kern[i]/=ksum;
+            var tmpH=new float[hw*hh];
+            for(int y=0;y<hh;y++)for(int x=0;x<hw;x++){float v=0;for(int k=-rad;k<=rad;k++){int xx=x+k;if(xx>=0&&xx<hw)v+=half[y*hw+xx]*kern[k+rad];}tmpH[y*hw+x]=v;}
+            for(int y=0;y<hh;y++)for(int x=0;x<hw;x++){float v=0;for(int k=-rad;k<=rad;k++){int yy=y+k;if(yy>=0&&yy<hh)v+=tmpH[yy*hw+x]*kern[k+rad];}half[y*hw+x]=v;}
+            float off=8f/s;
+            var outPx=new Color32[cw*ch];
+            for(int y=0;y<ch;y++)for(int x=0;x<cw;x++){
+                // bilinear sample of the blurred alpha, shifted down by 8 css px (down = lower rows).
+                float fx=(x+.5f)/2-.5f,fy=(y+off+.5f)/2-.5f;
+                int x0=Mathf.Clamp(Mathf.FloorToInt(fx),0,hw-1),y0=Mathf.Clamp(Mathf.FloorToInt(fy),0,hh-1),x1=Mathf.Min(x0+1,hw-1),y1=Mathf.Min(y0+1,hh-1);
+                float tx=Mathf.Clamp01(fx-x0),ty=Mathf.Clamp01(fy-y0);
+                float sh=Mathf.Lerp(Mathf.Lerp(half[y0*hw+x0],half[y0*hw+x1],tx),Mathf.Lerp(half[y1*hw+x0],half[y1*hw+x1],tx),ty);
+                int sx=x-padX,sy=y-padB;float a=0,r=0,g=0,b=0;
+                if(sx>=0&&sx<w&&sy>=0&&sy<h){
+                    var p=src[sy*w+sx];a=p.a/255f;
+                    r=Mathf.Clamp01((Mathf.Clamp01(p.r/255f*1.65f)-.5f)*1.02f+.5f);g=Mathf.Clamp01((Mathf.Clamp01(p.g/255f*1.65f)-.5f)*1.02f+.5f);b=Mathf.Clamp01((Mathf.Clamp01(p.b/255f*1.65f)-.5f)*1.02f+.5f);
+                }
+                float oa=a+sh*(1-a);
+                if(oa>.0001f){float k=a/oa;outPx[y*cw+x]=new Color32((byte)(r*k*255+.5f),(byte)(g*k*255+.5f),(byte)(b*k*255+.5f),(byte)(Mathf.Clamp01(oa)*255+.5f));}
+            }
+            knightLit=new Texture2D(cw,ch,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            knightLit.SetPixels32(outPx);knightLit.Apply(false,true);
+            float imgX=200+(395-w*s)/2f;
+            knightRect=new Rect(imgX-padX*s,279-padT*s,cw*s,ch*s);
+        }
+
         // Web .panel-nav-tab / .ui-section-tab / .inv-actions button: gradient over the iron plate over #232225.
         void PlateFace(Rect r,bool active){
             Fill(r,C(35,34,37));GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);

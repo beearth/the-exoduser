@@ -41,7 +41,30 @@ namespace Exoduser.UnityPort {
             return GUI.Button(rect,GUIContent.none,GUIStyle.none);
         }
 
-        static Color RarityColor(int rarity){return rarity>=1?C(68,204,68):C(255,140,70,.18f);}
+        // Web RARITY_C (game.html:14350) '#aaa','#44cc44','#4488ff','#bb44ff','#ffaa00','#8e55e9'.
+        static readonly Color[] rarityColors={C(170,170,170),C(68,204,68),C(68,136,255),C(187,68,255),C(255,170,0),C(142,85,233)};
+        static Color RarityColor(int rarity){return rarityColors[Mathf.Clamp(rarity,0,5)];}
+        // renderInv item name: rarity 5 '#d9b8ffdd', otherwise RARITY_C + '88' (alpha 0x88 = .533).
+        static Color RarityNameColor(int rarity){
+            if(rarity==5)return C(217,184,255,.867f);
+            var c=RarityColor(rarity);return new Color(c.r,c.g,c.b,.533f);
+        }
+        // Web .iskin.r0..r5 box-shadow: inset line (rgb, alpha, thickness) + outer glow (blur px, alpha).
+        static readonly Color[] skinLine={C(150,150,150,.28f),C(76,203,76,.5f),C(75,143,255,.55f),C(187,85,255,.6f),C(255,170,0,.85f),C(142,85,233,.95f)};
+        static readonly float[] skinLineW={1,1,1,1,1.5f,1.5f},skinGlowBlur={0,4,5,6,9,12},skinGlowAlpha={0,.28f,.3f,.36f,.42f,.55f};
+        static void SkinFrame(Rect r,int rarity){
+            int q=Mathf.Clamp(rarity,0,5);var line=skinLine[q];
+            float blur=skinGlowBlur[q];
+            if(blur>0){
+                float sigma=blur/2f;int rings=Mathf.CeilToInt(blur*.75f)+1;
+                for(int k=1;k<=rings;k++){
+                    float a=skinGlowAlpha[q]*.5f*Erfc((k-.5f)/(sigma*1.41421356f));
+                    if(a>.004f)RoundBox(new Rect(r.x-k,r.y-k,r.width+2*k,r.height+2*k),new Color(line.r,line.g,line.b,a));
+                }
+            }
+            RoundBox(r,line);
+            if(skinLineW[q]>1)RoundBox(new Rect(r.x+1,r.y+1,r.width-2,r.height-2),new Color(line.r,line.g,line.b,line.a*.5f));
+        }
 
         void DrawDock(int level,Core.PlayerState player,Action close){
             var old=GUI.matrix;
@@ -75,19 +98,57 @@ namespace Exoduser.UnityPort {
 
         void DrawHeaderLine(CombatPower power,Action close){
             Txt(new Rect(50,105,34,18),"전투력",12,C(136,102,68),400);
-            Txt(new Rect(90,101,60,25),power.Total.ToString(),21,C(225,194,139),600);
-            // Breakdown icons are vector strokes (sword / shield ring / sparkle), values follow each icon.
-            float[] ix={146,181,216};int[] vals={power.Atk,power.Def,power.Extra};
-            for(int i=0;i<3;i++)Txt(new Rect(ix[i]+14,105,36,18),vals[i].ToString(),12,C(184,176,161),400);
-            var sword=C(255,136,102);Line(new Vector2(149,121),new Vector2(156,113),1.6f,sword);Line(new Vector2(152,113),new Vector2(157,118),1.4f,sword);Line(new Vector2(147,123),new Vector2(150,120),2.2f,sword);
-            var ring=C(136,170,204);Vector2 sc=new Vector2(187,116);for(int k=0;k<10;k++){float a0=k*36*Mathf.Deg2Rad,a1=(k+1)*36*Mathf.Deg2Rad;Line(sc+new Vector2(Mathf.Cos(a0),Mathf.Sin(a0))*4.6f,sc+new Vector2(Mathf.Cos(a1),Mathf.Sin(a1))*4.6f,1.3f,ring);}Fill(new Rect(186,115,2,2),ring);
-            var spark=C(255,221,136);Vector2 pc=new Vector2(222,115);Line(pc+new Vector2(0,-4.5f),pc+new Vector2(0,4.5f),1.6f,spark);Line(pc+new Vector2(-4.5f,0),pc+new Vector2(4.5f,0),1.6f,spark);Line(pc+new Vector2(3,3),pc+new Vector2(6,6),1.4f,spark);Fill(new Rect(225,119,3,3),spark);
+            // #cpVal: 21px / 600, text-shadow 0 0 8px rgba(255,200,0,.3).
+            var cpRect=new Rect(90,101,60,25);string cpText=power.Total.ToString();
+            TxtGlow(cpRect,cpText,21,C(255,200,0,.3f),600);
+            Txt(cpRect,cpText,21,C(225,194,139),600);
+            // #cpBreak: 12x12 viewBox-24 svg icons (stroke 1.6 -> .8px, drop-shadow 0 0 5px) followed by "value " text.
+            float bx=145.8f;int[] vals={power.Atk,power.Def,power.Extra};
+            for(int i=0;i<3;i++){
+                DrawCpIcon(i,new Vector2(bx,109.7f));bx+=12;
+                string v=vals[i].ToString();
+                Txt(new Rect(bx,105,80,18),v,12,C(184,176,161),400);
+                bx+=TextWidth(v+" ",12,400);
+            }
             Txt(new Rect(948,102,200,24),"악의: 1000",12,C(204,190,165),400,TextAnchor.MiddleCenter);
             var closeRect=new Rect(1842,100,28,28);
             Fill(closeRect,C(39,19,16));Border(closeRect,C(134,94,67));
             if(closeRect.Contains(Event.current.mousePosition))Fill(closeRect,new Color(1,1,1,.07f));
             var x=C(170,136,102);Line(new Vector2(1850,108),new Vector2(1862,120),2.4f,x);Line(new Vector2(1862,108),new Vector2(1850,120),2.4f,x);
             if(GUI.Button(closeRect,GUIContent.none,GUIStyle.none))close();
+        }
+
+        // Header breakdown icons: the web SVG paths (viewBox 24, drawn at 12px = 0.5 scale) as thin strokes.
+        void DrawCpIcon(int kind,Vector2 o){
+            Vector2 P(float x,float y){return o+new Vector2(x,y)*.5f;}
+            Color col=kind==0?C(255,136,102):kind==1?C(136,170,204):C(255,221,136);
+            Glow(o.x+6,o.y+6,9,9,new Color(col.r,col.g,col.b,.16f));
+            var paths=new List<List<Vector2>>();
+            if(kind==0){
+                paths.Add(new List<Vector2>{P(12,2),P(13.6f,5.2f),P(13.6f,12.5f),P(10.4f,12.5f),P(10.4f,5.2f),P(12,2)});
+                paths.Add(new List<Vector2>{P(8,12.5f),P(16,12.5f)});paths.Add(new List<Vector2>{P(12,12.5f),P(12,18)});paths.Add(new List<Vector2>{P(10.2f,17.5f),P(13.8f,17.5f)});
+                Fill(new Rect(o.x+5.2f,o.y+1.6f,1.6f,5f),new Color(col.r,col.g,col.b,.14f));
+            }else if(kind==1){
+                var sh=new List<Vector2>{P(12,3),P(19,5.5f),P(19,11.5f)};
+                foreach(var q in Cubic(P(19,11.5f),P(19,16),P(16,19),P(12,20.5f)))sh.Add(q);
+                foreach(var q in Cubic(P(12,20.5f),P(8,19),P(5,16),P(5,11.5f)))sh.Add(q);
+                sh.Add(P(5,5.5f));sh.Add(P(12,3));paths.Add(sh);
+                paths.Add(new List<Vector2>{P(12,8),P(12,14)});paths.Add(new List<Vector2>{P(9,11),P(15,11)});
+            }else{
+                var a=new List<Vector2>{P(12,2)};
+                foreach(var q in Cubic(P(12,2),P(12.6f,6.5f),P(14.9f,8.8f),P(19.4f,9.4f)))a.Add(q);
+                foreach(var q in Cubic(P(19.4f,9.4f),P(14.9f,10),P(12.6f,12.3f),P(12,16.8f)))a.Add(q);
+                foreach(var q in Cubic(P(12,16.8f),P(11.4f,12.3f),P(9.1f,10),P(4.6f,9.4f)))a.Add(q);
+                foreach(var q in Cubic(P(4.6f,9.4f),P(9.1f,8.8f),P(11.4f,6.5f),P(12,2)))a.Add(q);
+                paths.Add(a);
+                var b=new List<Vector2>();
+                foreach(var q in Cubic(P(18.5f,15),P(18.7f,16.6f),P(19.5f,17.4f),P(21.1f,17.6f),5))b.Add(q);
+                foreach(var q in Cubic(P(21.1f,17.6f),P(19.5f,17.8f),P(18.7f,18.6f),P(18.5f,20.2f),5))b.Add(q);
+                foreach(var q in Cubic(P(18.5f,20.2f),P(18.3f,18.6f),P(17.5f,17.8f),P(15.9f,17.6f),5))b.Add(q);
+                foreach(var q in Cubic(P(15.9f,17.6f),P(17.5f,17.4f),P(18.3f,16.6f),P(18.5f,15),5))b.Add(q);
+                paths.Add(b);
+            }
+            foreach(var path in paths)Stroke(path,1.35f,col);
         }
 
         void DrawBody(Rect body){
@@ -103,8 +164,11 @@ namespace Exoduser.UnityPort {
             Rail(pane,6,41);
             Txt(new Rect(62,199,671,28),"장착 중",12,C(209,193,163),400);
             Fill(new Rect(62,226,671,1),C(136,116,83,.3f));
-            // Knight: contain inside (200,279,395,575).
-            GUI.DrawTexture(new Rect(200,279,395,575),knight,ScaleMode.ScaleToFit,true);
+            // #invEqGrid::before floor glow: 204x26 ellipse at (286.8,804.3), radial-gradient(rgba(176,142,96,.19), transparent 70%) + 0 1px rgba(213,181,121,.133) rim.
+            Glow(388.8f,817.3f,102,13,C(176,142,96,.19f));
+            for(int dx=-101;dx<=101;dx++){float yb=13f*Mathf.Sqrt(Mathf.Max(0,1-(dx/102f)*(dx/102f)));Fill(new Rect(388.8f+dx,817.3f+yb,1,1),C(213,181,121,.133f));}
+            // Knight (filter brightness(1.65) contrast(1.02) drop-shadow baked into knightLit), contain inside (200,279,395,575).
+            GUI.DrawTexture(knightRect,knightLit,ScaleMode.StretchToFill,true);
             int[] order=InventoryNavigation.EquipmentOrder;
             for(int cell=0;cell<order.Length;cell++){
                 int i=order[cell];var it=State.Equipped[i];
@@ -114,11 +178,12 @@ namespace Exoduser.UnityPort {
             }
             int equipped=0;for(int i=0;i<State.Equipped.Length;i++)if(i!=15&&State.Equipped[i]!=null)equipped++;
             Fill(new Rect(62,924,671,1),C(136,116,83,.3f));
-            string[] names3={"장착 부위","유물 홈","전투력"};string[] vals={equipped+" / 16","0 / 0",power.Total.ToString()};float[] xs={62,286,509};
+            string[] names3={"장착 부위","유물 홈","전투력"};string[] vals={equipped+" / 16","0 / 0",power.Total.ToString()};float[] xs={62,286,509};  // dividers at web x=286/509 (cells start 285.5/509.1)
             for(int i=0;i<3;i++){
-                Txt(new Rect(xs[i]+10,946,100,15),names3[i],11,C(168,154,129),500);
-                Txt(new Rect(xs[i]+224-10-120,941,120,19),vals[i],16,C(231,207,150),700,TextAnchor.MiddleRight);
-                if(i>0)Fill(new Rect(xs[i]-1,935,1,32),C(136,116,83,.3f));
+                // .inv-equip-readout cells: 223.5px wide, padding 6px 10px, label 11px/500 (Nanum Myeongjo), value 16px/700, 1px divider rgba(136,116,83,.22).
+                TxtSerif(new Rect(xs[i]+(i>0?11:10),945.6f,100,15.4f),names3[i],11,C(168,154,129));
+                Txt(new Rect(xs[i]+223.5f-10-120,940.6f,120,19.2f),vals[i],16,C(231,207,150),700,TextAnchor.MiddleRight);
+                if(i>0)Fill(new Rect(xs[i],935,1,32),C(136,116,83,.22f));
             }
         }
 
@@ -190,11 +255,14 @@ namespace Exoduser.UnityPort {
                 var rect=new Rect(it._gx*GridCell,it._gy*GridCell,GridCell*2,GridCell*2);
                 Grad(rect,C(58,48,48,.79f),C(19,16,17,.92f),145);
                 bool selected=ReferenceEquals(State.Selected,it);Color rc=RarityColor(it.rarity);
+                // The web grid cells' own 3px rarity border is overridden by '#invPanel .inv-grid > div' (1px, !important),
+                // so the rarity shows in .iskin.rN (frame), the .rarity-dot and the name colour.
                 Border(rect,C(60,46,42));
-                if(it.rarity>=1)RoundBox(new Rect(rect.x+8,rect.y+3,96,93),new Color(rc.r,rc.g,rc.b,.62f));else RoundBox(new Rect(rect.x+8,rect.y+3,96,93),rc);
+                SkinFrame(new Rect(rect.x+8,rect.y+3,96,93),it.rarity);
                 GUI.DrawTexture(new Rect(rect.x+8,rect.y+2,96,96),IconFor(it),ScaleMode.ScaleToFit,true);
-                if(it.rarity>=1)Diamond(new Vector2(rect.x+8.5f,rect.y+7.5f),2.8f,rc);
-                Txt(new Rect(rect.x,rect.y+99,rect.width,12),it.name,10,it.rarity>=1?new Color(rc.r,rc.g,rc.b,.55f):C(223,208,181,.55f),500,TextAnchor.MiddleCenter);
+                var dot=new Vector2(rect.x+8.5f,rect.y+7.5f);
+                Diamond(dot,3.5f,C(9,9,9));Diamond(dot,2.5f,rc);
+                TxtSerif(new Rect(rect.x,rect.y+99,rect.width,12),it.name,10,RarityNameColor(it.rarity),TextAnchor.MiddleCenter);
                 var badge=new Rect(rect.x+79,rect.y+94,29,15);
                 Fill(badge,C(11,11,11,.8f));
                 Txt(new Rect(badge.x,badge.y,badge.width-3,badge.height),InventoryState.ItemPower(it).ToString(),10,C(236,226,206),700,TextAnchor.MiddleRight);
@@ -208,17 +276,28 @@ namespace Exoduser.UnityPort {
             }
             GUI.EndScrollView();
             if(Event.current.type==EventType.MouseUp){drag=null;dragging=false;}
-            // Slim scrollbar in the 28px gutter right of the 10 columns.
-            var track=new Rect(GridX+gridW,GridY,GridViewW-gridW,GridViewH);
-            float maxScroll=total-GridViewH,thumbH=Mathf.Max(36,GridViewH*GridViewH/total),thumbY=track.y+(GridViewH-thumbH)*(maxScroll>0?scroll.y/maxScroll:0);
-            var thumb=new Rect(track.x+10,thumbY,6,thumbH);
-            Fill(new Rect(track.x+12,track.y,2,track.height),C(30,28,26,.8f));Fill(thumb,scrollDrag?gold:C(120,104,78,.85f));
-            var ev=Event.current;
-            if(ev.type==EventType.MouseDown&&ev.button==0&&track.Contains(ev.mousePosition)){scrollDrag=true;ev.Use();}
-            if(scrollDrag&&(ev.type==EventType.MouseDown||ev.type==EventType.MouseDrag)){
-                float t=Mathf.Clamp01((ev.mousePosition.y-track.y-thumbH/2)/(GridViewH-thumbH));scroll.y=t*maxScroll;ev.Use();
-            }
-            if(ev.type==EventType.MouseUp)scrollDrag=false;
+            // Web '#invPanel #invGrid{scrollbar-width:thin;scrollbar-color:#7c6f58 #121113}' + 'scrollbar-gutter:stable' (ui-refinement.css:460):
+            // a 10px thin scrollbar (track #121113, 6px rounded thumb #7c6f58, arrow buttons) shown whenever the grid overflows.
+            float maxScroll=total-GridViewH;
+            if(maxScroll>0){
+                var track=new Rect(GridX+577f,GridY,10,GridViewH);
+                float inner=GridViewH-24f,thumbH=Mathf.Max(20f,inner*GridViewH/total),travel=inner-thumbH;
+                float thumbY=track.y+12+travel*Mathf.Clamp01(scroll.y/maxScroll);
+                var thumbCol=C(124,111,88);
+                Fill(track,C(18,17,19));
+                Fill(new Rect(track.x+2,thumbY+1.5f,6,thumbH-3),thumbCol);Fill(new Rect(track.x+3,thumbY,4,thumbH),thumbCol);
+                float[] aw={2,4,4,6};
+                for(int k=0;k<aw.Length;k++){
+                    Fill(new Rect(track.x+5-aw[k]/2f,track.y+2+k,aw[k],1),thumbCol);
+                    Fill(new Rect(track.x+5-aw[aw.Length-1-k]/2f,track.yMax-6+k,aw[aw.Length-1-k],1),thumbCol);
+                }
+                var ev=Event.current;
+                if(ev.type==EventType.MouseDown&&ev.button==0&&track.Contains(ev.mousePosition)){scrollDrag=true;ev.Use();}
+                if(scrollDrag&&(ev.type==EventType.MouseDown||ev.type==EventType.MouseDrag)){
+                    float t=Mathf.Clamp01((ev.mousePosition.y-track.y-12-thumbH/2)/Mathf.Max(1f,travel));scroll.y=t*maxScroll;ev.Use();
+                }
+                if(ev.type==EventType.MouseUp)scrollDrag=false;
+            }else scrollDrag=false;
         }
 
         void DrawRightPanel(int level,CombatPower power){
@@ -227,10 +306,14 @@ namespace Exoduser.UnityPort {
             GUI.BeginGroup(pane);Glow(pane.width*.75f,0,245,543,C(120,96,57,.16f));GUI.EndGroup();
             Border(pane,C(117,99,66));
             if(State.Selected!=null){DrawDetails(level,new Rect(pane.x,pane.y+17,pane.width,pane.height-34),pane.yMax-12);return;}
-            Txt(new Rect(1414,200,434,13),"장비 기록",10,C(174,140,93),700);
-            Txt(new Rect(1414,223,434,26),"현재 전투 구성",20,C(225,201,155),700);
-            var desc=TextStyle(12,400,TextAnchor.UpperLeft);desc.wordWrap=true;
-            desc.normal.textColor=C(169,156,133);GUI.Label(new Rect(1414,259,360,41),"장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.",desc);
+            // .inv-detail-kicker 10px/700 ls 2px, <strong> 20px/700 ls .8px.
+            TxtSp(new Rect(1414.2f,200,434,13),"장비 기록",10,C(174,140,93),700,2f);
+            TxtSp(new Rect(1414.2f,223,434,26),"현재 전투 구성",20,C(225,201,155),700,.8f);
+            // <p> 12px, line-height 20.4px, max-width 360px: Chrome fills line 1 up to "...확인합니" (347px) and wraps "다." (the full
+            // sentence is 361.4px > 360px). IMGUI measures the Noto face narrower, so the web's break is applied explicitly.
+            var descCol=C(169,156,133);
+            Txt(new Rect(1414.2f,259,360,20.4f),"장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니",12,descCol,400);
+            Txt(new Rect(1414.2f,279.4f,360,20.4f),"다.",12,descCol,400);
             string[] mk={"공격","방어","추가 효과","유물 장착"};string[] mv={power.Atk.ToString(),power.Def.ToString(),power.Extra.ToString(),"0 / 0"};
             float[] mx={1414,1635,1414,1635},my={316,316,365,365};
             for(int i=0;i<4;i++){
@@ -239,8 +322,9 @@ namespace Exoduser.UnityPort {
                 Txt(new Rect(box.x+13,box.y+17,100,14),mk[i],11,C(169,155,129),500);
                 Txt(new Rect(box.xMax-13-100,box.y+11,100,19),mv[i],16,C(234,210,161),700,TextAnchor.MiddleRight);
             }
-            Txt(new Rect(1414,441,200,15),"장착 목록",11,C(203,168,117),700);
-            Grad(new Rect(1414,466,434,1),C(136,116,83,.7f),C(136,116,83,.1f),90);
+            TxtSp(new Rect(1414.2f,441.4f,200,15.4f),"장착 목록",11,C(203,168,117),700,1.76f);
+            // .inv-loadout-title border-bottom: 1px solid #69563a (web pixel row y=465, x=1414..1847).
+            Fill(new Rect(1414,465,434,1),C(105,86,58));
             for(int row=0;row<8;row++)for(int col=0;col<2;col++){
                 int si=listPairs[row,col];var it=State.Equipped[si];
                 var box=new Rect(col==0?1414:1635,486+55*row,213,48);

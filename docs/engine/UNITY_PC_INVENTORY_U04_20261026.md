@@ -90,3 +90,20 @@ INTEG 뒤 남은 미세 차이(이번 범위 밖, 수치·아이템 배치는 �
 | R-13 | 가방 오른쪽에 Unity만 세로 스크롤바가 보인다 |
 | R-14 | 오른쪽 패널 설명문 줄바꿈(웹 두 줄, Unity 한 줄), "장착 목록" 아래 구분선이 Unity에서 희미함 |
 | R-15 | 머리줄 전투력 숫자·아이콘이 웹보다 작다, 하단 현황 줄 간격 미세 차이 |
+
+## PC-U04c 미세 차이 마감 (2026-10-26, 분모 A08)
+
+웹 수치는 격리 서버에 headless로 붙어 계산 스타일로 확보했다(프로브 `E:/exoduser-wt/_out/pc-u04c/probe/`).
+
+| 번호 | 웹 근거 | Unity 변경 | 판정 |
+|---|---|---|---|
+| R-11 기사 | `img.inv-eq-sil` filter `brightness(1.65) contrast(1.02) drop-shadow(#000 0 8px 12px)`, 발밑 `#invEqGrid::before` 204×26 타원 `radial-gradient(rgba(176,142,96,.19),transparent 70%)` | `NativeInventory.BakeKnight()`로 필터·그림자를 한 번 구워 그림(실패 시 원본 폴백), 타원 글로우 동일 수치 | 일치 |
+| R-12 희귀도 색 | `RARITY_C` game.html:14350, 이름색 50315 (`RARITY_C+'88'`, 유니크 `#d9b8ffdd`), 점 50318. 인라인 3px 왼쪽 테두리는 2169-2171 `!important` 1px 규칙에 덮여 실제로 안 보임. 프레임은 `.iskin.rN` 891-896 | 6색 표, 이름 알파 .533, 희귀도별 프레임·글로우, 점 1px `#090909` 테두리, 이름 서체 나눔명조 | 색값 일치. 이름이 1x에서 아주 조금 가늘게 보임(서체 렌더링) |
+| R-13 스크롤바 | `#invGrid` `overflow-y:auto`(552), ui-refinement.css:460 `scrollbar-width:thin; scrollbar-color:#7c6f58 #121113`, 10px 거터. 그리드가 항상 넘쳐 웹도 스크롤바가 보인다(기존 웹 캡처는 headless `--hide-scrollbars`라 안 보였음) | 트랙 10px·썸 6px·화살표를 같은 수치로, 넘칠 때만 그림. 휠·썸 드래그 유지 | 일치 |
+| R-14 오른쪽 패널 | 설명 `<p>` 12px, 줄높이 20.4, 폭 360 → "확인합니/다." 두 줄. 구분선 `1px solid #69563a` y465 | 같은 위치에 두 줄로 끊음(IMGUI 폭 측정 차이 때문에 이 문장만 하드 브레이크), 구분선·자간 웹 값 | 일치 |
+| R-15 머리줄·하단 | `#cpVal` 21px/600 + `text-shadow 0 0 8px rgba(255,200,0,.3)`, 분해 아이콘 12×12 SVG | 글로우 추가, 아이콘 웹 path 선 그리기, 하단 3칸 구분선 x·알파·y 웹 값 | 대체로 일치(아이콘 안티앨리어싱 없음) |
+
+- `resumed` false→true: `NativeGame.cs` `Running=gameFocused&&inventoryWasRunning&&!menu&&Hp>0`. 코드 변화가 아니라 스모크 창 포커스 상태에 따른 값이다. 의도된 변화가 아니며 판정에 쓰지 않는다.
+- 빌드: Win64 6000.4.8f1 `passed:true, errors:0`(수정 1회 + 아이콘 선 보정 1회, 2회 빌드). 스모크 1회: 동작 필드 전부 true.
+- 비교: `unity_pc_win_refs/inventory_u04c.jpg`, 1x 크롭 4장 `E:/exoduser-wt/_out/pc-u04c/cmp/`.
+- 남은 미세 차이: "장착 중" 라벨 약간 아래, 가방 전투력 배지 배경·위치, 오른쪽 패널 나머지 텍스트 1~2px 아래, 작은 라벨 일부가 아직 Noto Sans(웹은 나눔명조).

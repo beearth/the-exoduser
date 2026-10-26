@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort {
         [Serializable] sealed class LabelData {public AffixLabel[] labels;}
         public NativeInventory(Action onChanged){
             changed=onChanged;font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??Resources.Load<Font>("Art/fonts/NotoSansKR");
-            knight=Load("Art/ui/inventory/knight");socket=Load("Art/ui/inventory/socket");iron=Load("Art/ui/inventory/iron");
+            knight=Load("Art/ui/inventory/knight");socket=Load("Art/ui/inventory/socket");iron=Load("Art/ui/inventory/iron");BakeKnight();
             icons=JsonUtility.FromJson<IconData>(Resources.Load<TextAsset>("Data/inventory_icons").text).icons;
             labels=JsonUtility.FromJson<LabelData>(Resources.Load<TextAsset>("Data/inventory_labels").text).labels;Reset();
         }
