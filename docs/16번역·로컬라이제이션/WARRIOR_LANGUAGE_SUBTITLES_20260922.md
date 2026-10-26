@@ -3,10 +3,10 @@
 | 항목 | 현재 계약 |
 |---|---|
 | 영상 | video/warrior_story_v23_clean.mp4 |
-| 캐시 | 영상 src와 index 재생기 script 모두 ?v=20261026-killu-motion |
+| 캐시 | 영상 src와 index 재생기 script 모두 ?v=20261026-killu-brief-v2 |
 | 규격 | 1920×1080,60fps,5784프레임,96.4초 |
-| 바이트 / SHA256 | 95867541 / 7ca8b8142b2a79ebb5ec401347efd6a56a1dea8de6e380777c216b8f67668ad1 (2026-10-26 현행) |
-| 편집 | v23 공통 영상에 네메시아·손 교정 누적, 2026-10-26 응징51~58초만 3개 영상 컷으로 교체. 마지막 페이드·전체96.4초·자막 시각 보존. [현재 근거](../cinematic/WARINTRO_KILLU_REBUILD_20261025.md) |
+| 바이트 / SHA256 | 97232624 / b474bf53223dc10af401c54969bf8aef70aa1c7f7c3040a7b4f39bf6a25f541d (2026-10-26 v2 현행) |
+| 편집 | v23 공통 영상에 기존 교정 누적. v2는50.5~58초만 교정: 끼인 반초 앵글 제거·검 동작0.6초·동일 킬루 반응/화로/킬루4컷. 마지막 페이드·전체96.4초·자막 시각 유지. [근거](../cinematic/WARINTRO_KILLU_REBUILD_20261025.md) |
 | 오디오 | 출시 v22 AAC 스트림 그대로 복사, 음성+BGM 패킷 SHA256 일치 |
 | 자막 | video/subtitles/warrior_story_v23_<code>.vtt,29언어×22큐 |
 | 원문 | localization/warrior-story/cues.json, v21 실제 시작/끝 시각 |
