@@ -1,0 +1,5021 @@
+{
+  "entries": [
+    {
+      "code": "ko",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "캐릭터 선택"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "지옥에 강림할 화신을 선택하라"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "플레이 방식"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "출시 준비 중"
+        },
+        {
+          "key": "전사",
+          "text": "전사"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "엑소듀서 전사"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "거대검을 휘두르는 흑철의 전사"
+        },
+        {
+          "key": "근접 화신",
+          "text": "근접 화신"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "거대검을 휘두르는 정면 돌파형 전투가입니다."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "흑철의 방어"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "파멸의 일격"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "느리지만 치명적인 광역 참격을 내리꽂습니다."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "블레이드 댄서"
+        },
+        {
+          "key": "실버테일",
+          "text": "실버테일"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "회전하는 단 하나의 검, 그녀의 춤은 파멸"
+        },
+        {
+          "key": "검무의 화신",
+          "text": "검무의 화신"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "회전대검으로 사방의 적을 동시에 베어냅니다."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "쌍단검 기동"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "무희의 춤"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다."
+        },
+        {
+          "key": "헬거너",
+          "text": "헬거너"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "혈탄 장전"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "체력을 소모해 충전한 관통탄을 발사합니다."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "역추진 도약"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "사격 반동을 이용해 뒤로 도약합니다."
+        },
+        {
+          "key": "변성술사",
+          "text": "변성술사"
+        },
+        {
+          "key": "반월참",
+          "text": "반월참"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "낫을 크게 휘둘러 전방 반원을 베어냅니다."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "영혼 수확"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "망령 걸음"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "공허 창술사"
+        },
+        {
+          "key": "창법사",
+          "text": "창법사"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "룬으로 공간을 봉인하는 공허의 전령"
+        },
+        {
+          "key": "공허 투창",
+          "text": "공허 투창"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "공허창을 던져 관통시킨 뒤 다시 회수합니다."
+        },
+        {
+          "key": "룬 각인",
+          "text": "룬 각인"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "지면에 봉인 룬을 새겨 적을 묶습니다."
+        },
+        {
+          "key": "균열 이동",
+          "text": "균열 이동"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "공간을 찢고 룬이 있는 곳으로 이동합니다."
+        }
+      ]
+    },
+    {
+      "code": "en",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Character Select"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Select the incarnation to descend into Hell"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Playstyle"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Coming Soon"
+        },
+        {
+          "key": "전사",
+          "text": "Warrior"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser Warrior"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "A black-iron warrior wielding a greatsword"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar of Melee"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "A frontline fighter who breaks through enemies with a greatsword."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Black-Iron Defense"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Endure the enemy assault in black armor, then strike back."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Devastating Strike"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Deliver slow but lethal slashes across a wide area."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Blade Dancer"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "One spinning blade. Her dance brings ruin."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar of the Blade Dance"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Cut down enemies on every side with a spinning greatsword."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Twin-Dagger Mobility"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Close in with swift, agile chains of attacks."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Dancer's Grace"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Flow between graceful evasions and explosive bursts of damage."
+        },
+        {
+          "key": "헬거너",
+          "text": "Hellgunner"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Blood Round Loading"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Spend HP to fire charged piercing rounds."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Recoil Leap"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Use the recoil of your shots to leap backward."
+        },
+        {
+          "key": "변성술사",
+          "text": "Transmuter"
+        },
+        {
+          "key": "반월참",
+          "text": "Crescent Slash"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Swing your scythe wide to slash the half-circle ahead."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Soul Harvest"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Wraith Walk"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Scatter into blue flame and reappear where you choose."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Void Spearmaster"
+        },
+        {
+          "key": "창법사",
+          "text": "Spearmage"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "A herald of the void who seals space with runes"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Void Javelin"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Hurl your void spear to pierce through, then recall it."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Rune Inscription"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Carve a sealing rune into the ground to bind enemies."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Rift Step"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Tear through space and shift to where your rune lies."
+        }
+      ]
+    },
+    {
+      "code": "zh",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "角色选择"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "选择降临地狱的化身"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "玩法风格"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "即将推出"
+        },
+        {
+          "key": "전사",
+          "text": "战士"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser 战士"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "挥舞巨剑的黑铁战士"
+        },
+        {
+          "key": "근접 화신",
+          "text": "近战化身"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "以巨剑正面突破敌阵的前线战士。"
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "黑铁防御"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "以黑色铠甲承受敌人的攻势，再予以反击。"
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "毁灭一击"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "施展缓慢但致命的大范围斩击。"
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "剑舞者"
+        },
+        {
+          "key": "실버테일",
+          "text": "银尾"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "一把旋转之剑，她的舞蹈带来毁灭。"
+        },
+        {
+          "key": "검무의 화신",
+          "text": "剑舞化身"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "以旋转巨剑同时斩倒四周的敌人。"
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "双匕首机动"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "以迅捷灵活的连续攻击切入敌阵。"
+        },
+        {
+          "key": "무희의 춤",
+          "text": "舞者之姿"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "在华丽闪避与爆发伤害之间灵活转换。"
+        },
+        {
+          "key": "헬거너",
+          "text": "地狱枪手"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "血弹装填"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "消耗体力发射充能的贯穿弹。"
+        },
+        {
+          "key": "역추진 도약",
+          "text": "反冲跳跃"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "借射击后坐力向后跳跃。"
+        },
+        {
+          "key": "변성술사",
+          "text": "转化术士"
+        },
+        {
+          "key": "반월참",
+          "text": "半月斩"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "大幅挥镰，斩碎前方半圆。"
+        },
+        {
+          "key": "영혼 수확",
+          "text": "灵魂收割"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "亡灵步"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "化作青焰消散，在所选之处重现。"
+        },
+        {
+          "key": "공허 창술사",
+          "text": "虚空枪术师"
+        },
+        {
+          "key": "창법사",
+          "text": "枪法师"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "以符文封印空间的虚空传令"
+        },
+        {
+          "key": "공허 투창",
+          "text": "虚空投枪"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "掷出虚空之枪贯穿敌人后再行回收。"
+        },
+        {
+          "key": "룬 각인",
+          "text": "符文铭刻"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "在地面刻下封印符文，束缚敌人。"
+        },
+        {
+          "key": "균열 이동",
+          "text": "裂隙移动"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "撕裂空间，移动至符文所在之处。"
+        }
+      ]
+    },
+    {
+      "code": "zht",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "角色選擇"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "選擇降臨地獄的化身"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "玩法風格"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "即將推出"
+        },
+        {
+          "key": "전사",
+          "text": "戰士"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser 戰士"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "揮舞巨劍的黑鐵戰士"
+        },
+        {
+          "key": "근접 화신",
+          "text": "近戰化身"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "以巨劍正面突破敵陣的前線戰士。"
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "黑鐵防禦"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "以黑色鎧甲承受敵人的攻勢，再予以反擊。"
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "毀滅一擊"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "施展緩慢但致命的大範圍斬擊。"
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "劍舞者"
+        },
+        {
+          "key": "실버테일",
+          "text": "銀尾"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "一把旋轉之劍，她的舞蹈帶來毀滅。"
+        },
+        {
+          "key": "검무의 화신",
+          "text": "劍舞化身"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "以旋轉巨劍同時斬倒四周的敵人。"
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "雙匕首機動"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "以迅捷靈活的連續攻擊切入敵陣。"
+        },
+        {
+          "key": "무희의 춤",
+          "text": "舞者之姿"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "在華麗閃避與爆發傷害之間靈活轉換。"
+        },
+        {
+          "key": "헬거너",
+          "text": "地獄槍手"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "血彈裝填"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "消耗體力發射充能的貫穿彈。"
+        },
+        {
+          "key": "역추진 도약",
+          "text": "反衝跳躍"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "借射擊後座力向後跳躍。"
+        },
+        {
+          "key": "변성술사",
+          "text": "轉化術士"
+        },
+        {
+          "key": "반월참",
+          "text": "半月斬"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "大幅揮鐮，斬碎前方半圓。"
+        },
+        {
+          "key": "영혼 수확",
+          "text": "靈魂收割"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "亡靈步"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "化作青焰消散，在所選之處重現。"
+        },
+        {
+          "key": "공허 창술사",
+          "text": "虛空槍術師"
+        },
+        {
+          "key": "창법사",
+          "text": "槍法師"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "以符文封印空間的虛空傳令"
+        },
+        {
+          "key": "공허 투창",
+          "text": "虛空投槍"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "擲出虛空之槍貫穿敵人後再行回收。"
+        },
+        {
+          "key": "룬 각인",
+          "text": "符文銘刻"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "在地面刻下封印符文，束縛敵人。"
+        },
+        {
+          "key": "균열 이동",
+          "text": "裂隙移動"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "撕裂空間，移動至符文所在之處。"
+        }
+      ]
+    },
+    {
+      "code": "ja",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "キャラクター選択"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "地獄に降臨する化身を選択"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "プレイスタイル"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "近日登場"
+        },
+        {
+          "key": "전사",
+          "text": "戦士"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "エクソデューサーの戦士"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "大剣を振るう黒鉄の戦士"
+        },
+        {
+          "key": "근접 화신",
+          "text": "近接戦の化身"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "大剣で敵陣を正面突破する前衛の戦士です。"
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "黒鉄の守り"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "黒い鎧で敵の猛攻に耐え、反撃します。"
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "破滅の一撃"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "遅くとも致命的な斬撃を広範囲に叩き込みます。"
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "ブレードダンサー"
+        },
+        {
+          "key": "실버테일",
+          "text": "シルバーテイル"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "回転するただ一振りの剣。その舞は破滅をもたらす。"
+        },
+        {
+          "key": "검무의 화신",
+          "text": "剣舞の化身"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "回転する大剣で周囲の敵を同時に斬り倒します。"
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "双短剣の機動"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "素早く軽やかな連続攻撃で切り込みます。"
+        },
+        {
+          "key": "무희의 춤",
+          "text": "舞姫の舞"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "華麗な回避と爆発的なダメージを自在に織り交ぜます。"
+        },
+        {
+          "key": "헬거너",
+          "text": "ヘルガンナー"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "血弾装填"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "体力を消費して充填した貫通弾を発射します。"
+        },
+        {
+          "key": "역추진 도약",
+          "text": "逆噴射跳躍"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "射撃の反動を利用して後方へ跳躍します。"
+        },
+        {
+          "key": "변성술사",
+          "text": "変成術師"
+        },
+        {
+          "key": "반월참",
+          "text": "半月斬"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "鎌を大きく振るい、前方の半円を斬り払います。"
+        },
+        {
+          "key": "영혼 수확",
+          "text": "魂の収穫"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "亡霊の歩み"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "青炎となって散り、望む場所に再び現れます。"
+        },
+        {
+          "key": "공허 창술사",
+          "text": "虚空槍術士"
+        },
+        {
+          "key": "창법사",
+          "text": "槍法師"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "ルーンで空間を封印する虚空の伝令"
+        },
+        {
+          "key": "공허 투창",
+          "text": "虚空投槍"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "虚空の槍を投げて貫通させた後、再び回収します。"
+        },
+        {
+          "key": "룬 각인",
+          "text": "ルーン刻印"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "地面に封印のルーンを刻み、敵を縛ります。"
+        },
+        {
+          "key": "균열 이동",
+          "text": "亀裂移動"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "空間を裂き、ルーンのある場所へ移動します。"
+        }
+      ]
+    },
+    {
+      "code": "vi",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Chọn nhân vật"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Chọn hóa thân giáng xuống Địa Ngục"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Lối Chơi"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Sắp ra mắt"
+        },
+        {
+          "key": "전사",
+          "text": "Chiến binh"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Chiến binh Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Chiến binh hắc thiết vung đại kiếm"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Hiện thân cận chiến"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Chiến binh tuyến đầu phá xuyên hàng địch bằng đại kiếm."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Phòng thủ hắc thiết"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Chịu đựng đợt công kích trong giáp đen rồi phản công."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Đòn hủy diệt"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Giáng những nhát chém chậm nhưng chí mạng trên diện rộng."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Vũ công lưỡi kiếm"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Một lưỡi kiếm xoay. Điệu múa của nàng mang hủy diệt."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Hiện thân kiếm vũ"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Chém gục địch mọi phía bằng đại kiếm xoay."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Cơ động song đoản đao"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Áp sát bằng chuỗi tấn công nhanh và linh hoạt."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Duyên dáng vũ công"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Luân chuyển giữa né tránh uyển chuyển và sát thương bùng nổ."
+        },
+        {
+          "key": "헬거너",
+          "text": "Xạ thủ địa ngục"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Nạp huyết đạn"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Tiêu hao máu để bắn đạn xuyên đã tích năng."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Bật nhảy phản lực"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Lợi dụng độ giật khi bắn để nhảy lùi về sau."
+        },
+        {
+          "key": "변성술사",
+          "text": "Pháp sư biến hóa"
+        },
+        {
+          "key": "반월참",
+          "text": "Bán nguyệt trảm"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Vung rộng lưỡi hái, chém nửa vòng tròn phía trước."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Thu hoạch linh hồn"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Bước chân vong linh"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Tan thành thanh diễm rồi hiện ra tại nơi mong muốn."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Bậc thầy thương hư không"
+        },
+        {
+          "key": "창법사",
+          "text": "Thương pháp sư"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Sứ giả hư không dùng rune phong ấn không gian"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Phóng thương hư không"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Ném thương hư không xuyên qua kẻ địch rồi thu hồi."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Khắc ấn rune"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Khắc rune phong ấn xuống đất để trói buộc kẻ địch."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Di chuyển khe nứt"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Xé toạc không gian, dịch chuyển đến nơi có rune."
+        }
+      ]
+    },
+    {
+      "code": "th",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "เลือกตัวละคร"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "เลือกอวตารที่จะลงสู่นรก"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "รูปแบบการเล่น"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "เร็ว ๆ นี้"
+        },
+        {
+          "key": "전사",
+          "text": "นักรบ"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "นักรบ Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "นักรบเหล็กดำผู้กวัดแกว่งดาบใหญ่"
+        },
+        {
+          "key": "근접 화신",
+          "text": "อวตารระยะประชิด"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "นักสู้แนวหน้าผู้ใช้ดาบใหญ่ฝ่าศัตรู"
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "การป้องกันเหล็กดำ"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "รับการโจมตีในเกราะดำแล้วโต้กลับ"
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "ฟาดทำลายล้าง"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "ปล่อยคมดาบช้าแต่ร้ายแรงเป็นวงกว้าง"
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "นักระบำดาบ"
+        },
+        {
+          "key": "실버테일",
+          "text": "ซิลเวอร์เทล"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "ดาบหมุนเพียงเล่มเดียว ระบำของเธอนำความพินาศ"
+        },
+        {
+          "key": "검무의 화신",
+          "text": "อวตารระบำดาบ"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "ฟันศัตรูทุกด้านพร้อมกันด้วยดาบใหญ่หมุน"
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "ความคล่องตัวมีดคู่"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "เข้าประชิดด้วยชุดโจมตีรวดเร็วและว่องไว"
+        },
+        {
+          "key": "무희의 춤",
+          "text": "ลีลานักระบำ"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "สลับการหลบอันสง่างามกับระเบิดความเสียหาย"
+        },
+        {
+          "key": "헬거너",
+          "text": "มือปืนนรก"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "บรรจุกระสุนเลือด"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "ใช้พลังชีวิตเพื่อยิงกระสุนเจาะทะลุที่ชาร์จไว้"
+        },
+        {
+          "key": "역추진 도약",
+          "text": "กระโดดแรงถีบ"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "ใช้แรงสะท้อนจากการยิงเพื่อกระโดดถอยหลัง"
+        },
+        {
+          "key": "변성술사",
+          "text": "นักแปรธาตุ"
+        },
+        {
+          "key": "반월참",
+          "text": "ฟันจันทร์ครึ่งเสี้ยว"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "เหวี่ยงเคียววงกว้างฟันครึ่งวงกลมด้านหน้า"
+        },
+        {
+          "key": "영혼 수확",
+          "text": "เก็บเกี่ยววิญญาณ"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "ย่างก้าวภูตผี"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "สลายเป็นเพลิงครามแล้วปรากฏกายอีกครั้ง ณ จุดที่ต้องการ"
+        },
+        {
+          "key": "공허 창술사",
+          "text": "จอมทวนแห่งความว่างเปล่า"
+        },
+        {
+          "key": "창법사",
+          "text": "จอมเวทหอก"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "ผู้ถือสารแห่งความว่างเปล่าผู้ผนึกมิติด้วยรูน"
+        },
+        {
+          "key": "공허 투창",
+          "text": "พุ่งหอกแห่งความว่างเปล่า"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "ขว้างหอกแห่งความว่างเปล่าให้ทะลุศัตรูแล้วเรียกกลับคืน"
+        },
+        {
+          "key": "룬 각인",
+          "text": "สลักรูน"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "สลักรูนผนึกลงพื้นเพื่อตรึงศัตรู"
+        },
+        {
+          "key": "균열 이동",
+          "text": "เคลื่อนผ่านรอยแยก"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "ฉีกมิติแล้วเคลื่อนไปยังตำแหน่งที่มีรูน"
+        }
+      ]
+    },
+    {
+      "code": "id",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Pilih karakter"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Pilih perwujudan yang akan turun ke Neraka"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Gaya Bermain"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Segera hadir"
+        },
+        {
+          "key": "전사",
+          "text": "Kesatria"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Kesatria Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Kesatria besi hitam yang mengayunkan pedang besar"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar Pertarungan Jarak Dekat"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Petarung garis depan yang menerobos musuh dengan pedang besar."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Pertahanan Besi Hitam"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Tahan serbuan musuh dengan zirah hitam lalu balas menyerang."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Serangan Penghancur"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Lepaskan tebasan lambat tetapi mematikan di area luas."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Penari Pedang"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Satu bilah berputar. Tariannya membawa kehancuran."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar Tarian Pedang"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Tebas musuh di segala arah dengan pedang besar berputar."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Mobilitas Belati Kembar"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Dekati musuh dengan rangkaian serangan cepat dan lincah."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Keanggunan Penari"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Beralih antara elakan anggun dan ledakan kerusakan."
+        },
+        {
+          "key": "헬거너",
+          "text": "Penembak Neraka"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Isi Peluru Darah"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Korbankan nyawa untuk menembakkan peluru tembus bermuatan."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Lompatan Dorong Balik"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Manfaatkan hentakan tembakan untuk melompat ke belakang."
+        },
+        {
+          "key": "변성술사",
+          "text": "Ahli Transmutasi"
+        },
+        {
+          "key": "반월참",
+          "text": "Tebasan Bulan Sabit"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Ayunkan sabit lebar-lebar untuk menebas setengah lingkaran di depan."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Panen Jiwa"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Langkah Arwah"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Buyar menjadi api biru dan muncul kembali di tempat yang diinginkan."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Ahli Tombak Kehampaan"
+        },
+        {
+          "key": "창법사",
+          "text": "Penyihir Tombak"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Utusan kehampaan yang menyegel ruang dengan rune"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Lembing Kehampaan"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Lemparkan tombak kehampaan hingga menembus, lalu tarik kembali."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Ukiran Rune"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Ukir rune penyegel di tanah untuk mengikat musuh."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Perpindahan Celah"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Robek ruang dan berpindah ke tempat rune berada."
+        }
+      ]
+    },
+    {
+      "code": "ms",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Pilih watak"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Pilih penjelmaan yang akan turun ke Neraka"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Gaya permainan"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Akan datang"
+        },
+        {
+          "key": "전사",
+          "text": "Pahlawan"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Pahlawan Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Pahlawan besi hitam yang menghayun pedang besar"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Jelmaan Pertempuran Jarak Dekat"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Pejuang barisan hadapan yang menerobos musuh dengan pedang besar."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Pertahanan Besi Hitam"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Tahan serbuan musuh dengan zirah hitam, kemudian serang balas."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Serangan Pemusnah"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Lepaskan tebasan perlahan tetapi membawa maut di kawasan luas."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Penari Pedang"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Satu bilah berputar. Tariannya membawa kemusnahan."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Jelmaan Tarian Pedang"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Tebas musuh di semua arah dengan pedang besar berputar."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Mobiliti Belati Kembar"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Dekati musuh dengan rangkaian serangan pantas dan tangkas."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Keanggunan Penari"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Beralih antara elakan anggun dan ledakan kerosakan."
+        },
+        {
+          "key": "헬거너",
+          "text": "Penembak Neraka"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Isian Peluru Darah"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Korbankan nyawa untuk menembak peluru tembus bercas."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Lompatan Sentakan"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Gunakan sentakan tembakan untuk melompat ke belakang."
+        },
+        {
+          "key": "변성술사",
+          "text": "Ahli Transmutasi"
+        },
+        {
+          "key": "반월참",
+          "text": "Tetakan Bulan Sabit"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Hayun sabit luas-luas untuk menetak separuh bulatan di hadapan."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Tuaian Jiwa"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Langkah Lembaga"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Berselerak menjadi api biru dan muncul semula di tempat yang dikehendaki."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Pakar Tombak Kekosongan"
+        },
+        {
+          "key": "창법사",
+          "text": "Ahli Sihir Tombak"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Utusan kekosongan yang memeterai ruang dengan rune"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Lembing Kekosongan"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Lontar tombak kekosongan hingga menembusi, kemudian tarik semula."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Ukiran Rune"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Ukir rune pemeterai di tanah untuk mengikat musuh."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Anjakan Rekahan"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Koyakkan ruang dan beralih ke tempat rune berada."
+        }
+      ]
+    },
+    {
+      "code": "es",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Selección de personaje"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Elige la encarnación que descenderá al Infierno"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Estilo de juego"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Próximamente"
+        },
+        {
+          "key": "전사",
+          "text": "Guerrero"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Guerrero Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Un guerrero de hierro negro que empuña un espadón"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar del combate cercano"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Un luchador de primera línea que rompe las filas enemigas con un espadón."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Defensa de hierro negro"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Resiste el asalto enemigo con armadura negra y contraataca."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Golpe devastador"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Descarga tajos lentos pero letales sobre una amplia zona."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Bailarina de espadas"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Una sola hoja giratoria. Su danza trae la ruina."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar de la danza de espadas"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Abate a enemigos de todos los lados con un espadón giratorio."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Movilidad de dagas gemelas"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Acércate con cadenas de ataques rápidos y ágiles."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Gracia de la bailarina"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Alterna evasiones elegantes y ráfagas de daño explosivo."
+        },
+        {
+          "key": "헬거너",
+          "text": "Artillero infernal"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Carga de balas de sangre"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Consume tu salud para disparar balas perforantes cargadas."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Salto de retroceso"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Usa el retroceso del disparo para saltar hacia atrás."
+        },
+        {
+          "key": "변성술사",
+          "text": "Transmutador"
+        },
+        {
+          "key": "반월참",
+          "text": "Tajo de media luna"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Blande la guadaña con fuerza para segar el semicírculo frontal."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Cosecha de almas"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Paso espectral"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Dispérsate en llamas azules y reaparece donde elijas."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Maestro de lanza del vacío"
+        },
+        {
+          "key": "창법사",
+          "text": "Mago lancero"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Heraldo del vacío que sella el espacio con runas"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Jabalina del vacío"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Lanza tu lanza del vacío para perforar y luego recupérala."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Grabado rúnico"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Graba una runa de sellado en el suelo para atar a los enemigos."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Paso de grieta"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Desgarra el espacio y viaja hasta donde está tu runa."
+        }
+      ]
+    },
+    {
+      "code": "fr",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Sélection du personnage"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Choisissez l'incarnation qui descendra en Enfer"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Style de jeu"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Bientôt disponible"
+        },
+        {
+          "key": "전사",
+          "text": "Guerrier"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Guerrier Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Un guerrier de fer noir armé d'une épée à deux mains"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar de la mêlée"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Un combattant de première ligne qui brise les rangs ennemis avec une épée à deux mains."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Défense de fer noir"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Encaissez l'assaut ennemi dans votre armure noire, puis ripostez."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Frappe dévastatrice"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Assénez des coups lents mais mortels sur une large zone."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Danseuse des lames"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Une seule lame tournoyante. Sa danse apporte la ruine."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar de la danse des lames"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Abattez les ennemis de tous côtés avec une épée à deux mains tournoyante."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Mobilité aux dagues jumelles"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Approchez avec des enchaînements rapides et agiles."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Grâce de la danseuse"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Alternez esquives gracieuses et explosions de dégâts."
+        },
+        {
+          "key": "헬거너",
+          "text": "Canonnier infernal"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Chargement de balles de sang"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Consommez votre santé pour tirer des balles perforantes chargées."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Bond de recul"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Utilisez le recul du tir pour bondir en arrière."
+        },
+        {
+          "key": "변성술사",
+          "text": "Transmutateur"
+        },
+        {
+          "key": "반월참",
+          "text": "Taille en demi-lune"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Balayez largement votre faux pour trancher le demi-cercle devant vous."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Moisson d’âmes"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Pas spectral"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Dispersez-vous en flammes bleues et réapparaissez où vous voulez."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Maître-lancier du vide"
+        },
+        {
+          "key": "창법사",
+          "text": "Mage-lancier"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Héraut du vide qui scelle l’espace avec des runes"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Javelot du vide"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Lancez votre lance du vide pour transpercer, puis récupérez-la."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Gravure runique"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Gravez une rune de scellement au sol pour entraver les ennemis."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Pas de faille"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Déchirez l’espace et rejoignez l’emplacement de votre rune."
+        }
+      ]
+    },
+    {
+      "code": "it",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Selezione personaggio"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Scegli l'incarnazione che scenderà all'Inferno"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Stile di gioco"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Prossimamente"
+        },
+        {
+          "key": "전사",
+          "text": "Guerriero"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Guerriero Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Un guerriero di ferro nero che brandisce uno spadone"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar della mischia"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Un combattente di prima linea che sfonda i nemici con uno spadone."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Difesa di ferro nero"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Resisti all'assalto nemico con l'armatura nera, poi contrattacca."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Colpo devastante"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Sferra fendenti lenti ma letali su un'ampia area."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Danzatrice delle lame"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Una sola lama rotante. La sua danza porta rovina."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar della danza delle lame"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Abbatti i nemici su ogni lato con uno spadone rotante."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Mobilità dei pugnali gemelli"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Avvicinati con rapide e agili sequenze d'attacco."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Grazia della danzatrice"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Alterna schivate eleganti e raffiche di danni esplosivi."
+        },
+        {
+          "key": "헬거너",
+          "text": "Artigliere infernale"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Carica di proiettili di sangue"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Consuma la salute per sparare proiettili perforanti caricati."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Balzo di rinculo"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Sfrutta il rinculo dello sparo per balzare all’indietro."
+        },
+        {
+          "key": "변성술사",
+          "text": "Trasmutatore"
+        },
+        {
+          "key": "반월참",
+          "text": "Fendente a mezzaluna"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Rotea ampiamente la falce per mietere il semicerchio davanti a te."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Mietitura di anime"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Passo spettrale"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Disperditi in fiamme blu e riappari dove vuoi."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Maestro di lancia del vuoto"
+        },
+        {
+          "key": "창법사",
+          "text": "Mago lanciere"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Araldo del vuoto che sigilla lo spazio con le rune"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Giavellotto del vuoto"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Scaglia la lancia del vuoto per trafiggere, poi richiamala."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Incisione runica"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Incidi una runa sigillante nel terreno per vincolare i nemici."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Passo della fenditura"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Squarcia lo spazio e spostati dove si trova la tua runa."
+        }
+      ]
+    },
+    {
+      "code": "ptbr",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Seleção de personagem"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Escolha a encarnação que descerá ao Inferno"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Estilo de jogo"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Em breve"
+        },
+        {
+          "key": "전사",
+          "text": "Guerreiro"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Guerreiro Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Um guerreiro de ferro negro que empunha uma espada grande"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar do combate corpo a corpo"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Um combatente de linha de frente que rompe os inimigos com uma espada grande."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Defesa de ferro negro"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Resista ao ataque inimigo na armadura negra e contra-ataque."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Golpe devastador"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Desfira cortes lentos, mas letais, em uma área ampla."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Dançarina das lâminas"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Uma única lâmina giratória. Sua dança traz ruína."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar da dança das lâminas"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Derrube inimigos de todos os lados com uma espada grande giratória."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Mobilidade de adagas gêmeas"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Avance com sequências de ataques rápidos e ágeis."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Graça da dançarina"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Alterne esquivas graciosas e rajadas de dano explosivo."
+        },
+        {
+          "key": "헬거너",
+          "text": "Artilheiro infernal"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Carga de balas de sangue"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Consuma sua vida para disparar balas perfurantes carregadas."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Salto de recuo"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Use o recuo do disparo para saltar para trás."
+        },
+        {
+          "key": "변성술사",
+          "text": "Transmutador"
+        },
+        {
+          "key": "반월참",
+          "text": "Corte de meia-lua"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Gire a foice amplamente para ceifar o semicírculo à frente."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Colheita de almas"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Passo espectral"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Disperse-se em chamas azuis e reapareça onde quiser."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Mestre da lança do vazio"
+        },
+        {
+          "key": "창법사",
+          "text": "Mago lanceiro"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Arauto do vazio que sela o espaço com runas"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Dardo do vazio"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Arremesse sua lança do vazio para perfurar e depois a recupere."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Gravação rúnica"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Grave uma runa de selamento no chão para prender os inimigos."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Passo da fenda"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Rasgue o espaço e viaje até onde está sua runa."
+        }
+      ]
+    },
+    {
+      "code": "ro",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Alegere personaj"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Alege întruparea care va coborî în Iad"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Stil de joc"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "În curând"
+        },
+        {
+          "key": "전사",
+          "text": "Războinic"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Războinic Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Un războinic de fier negru cu o sabie mare"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatarul luptei apropiate"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Un luptător de primă linie care străpunge rândurile inamice cu o sabie mare."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Apărare de fier negru"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Rezistă asaltului inamic în armura neagră, apoi contraatacă."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Lovitură devastatoare"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Dezlănțuie tăieturi lente, dar letale, pe o zonă largă."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Dansatoarea lamelor"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "O singură lamă rotitoare. Dansul ei aduce ruina."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatarul dansului lamelor"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Doboară inamicii din toate părțile cu o sabie mare rotitoare."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Mobilitatea pumnalelor gemene"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Apropie-te cu șiruri de atacuri rapide și agile."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Grația dansatoarei"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Alternează eschive grațioase și explozii de daune."
+        },
+        {
+          "key": "헬거너",
+          "text": "Trăgător infernal"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Încărcarea gloanțelor de sânge"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Consumă viață pentru a trage gloanțe perforante încărcate."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Salt de recul"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Folosește reculul focului pentru a sări înapoi."
+        },
+        {
+          "key": "변성술사",
+          "text": "Transmutator"
+        },
+        {
+          "key": "반월참",
+          "text": "Tăietură în semilună"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Rotește larg coasa și seceră semicercul din față."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Recolta sufletelor"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Pasul strigoiului"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Risipește-te în flăcări albastre și reapari unde dorești."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Maestrul lăncii vidului"
+        },
+        {
+          "key": "창법사",
+          "text": "Mag lăncier"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Vestitor al vidului care pecetluiește spațiul cu rune"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Sulița vidului"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Aruncă lancea vidului să străpungă, apoi recheam-o."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Gravarea runei"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Gravează o rună de pecetluire pe pământ pentru a lega inamicii."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Pasul faliei"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Sfâșie spațiul și mută-te la runa ta."
+        }
+      ]
+    },
+    {
+      "code": "de",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Charakterwahl"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Wähle die Inkarnation, die in die Hölle hinabsteigt"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Spielstil"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Demnächst verfügbar"
+        },
+        {
+          "key": "전사",
+          "text": "Krieger"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser-Krieger"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Ein Krieger aus Schwarzeisen mit einem Großschwert"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar des Nahkampfs"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Ein Frontkämpfer, der mit einem Großschwert die feindlichen Reihen durchbricht."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Schwarzeisen-Verteidigung"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Halte dem feindlichen Ansturm in schwarzer Rüstung stand und schlage zurück."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Vernichtender Schlag"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Führe langsame, aber tödliche Hiebe über einen großen Bereich aus."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Klingentänzerin"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Eine einzige kreisende Klinge. Ihr Tanz bringt Verderben."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar des Klingentanzes"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Fälle mit einem kreisenden Großschwert Gegner auf allen Seiten."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Zwillingsdolch-Mobilität"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Rücke mit schnellen, wendigen Angriffsfolgen vor."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Anmut der Tänzerin"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Wechsle zwischen anmutigem Ausweichen und explosiven Schadensstößen."
+        },
+        {
+          "key": "헬거너",
+          "text": "Höllenschütze"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Blutkugel-Ladung"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Verbrauche Lebenspunkte, um aufgeladene Durchschlagskugeln abzufeuern."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Rückstoßsprung"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Nutze den Rückstoß des Schusses, um nach hinten zu springen."
+        },
+        {
+          "key": "변성술사",
+          "text": "Verwandler"
+        },
+        {
+          "key": "반월참",
+          "text": "Halbmondhieb"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Schwinge die Sense weit und schneide den Halbkreis vor dir."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Seelenernte"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Geisterschritt"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Zerstiebe in blauen Flammen und erscheine am gewünschten Ort erneut."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Speermeister der Leere"
+        },
+        {
+          "key": "창법사",
+          "text": "Speermagier"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Herold der Leere, der den Raum mit Runen versiegelt"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Leerenwurfspeer"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Schleudere den Leerenspeer zum Durchbohren und rufe ihn zurück."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Runengravur"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Ritze eine Siegelrune in den Boden, um Gegner zu fesseln."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Rissschritt"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Zerreiße den Raum und wechsle zu deiner Rune."
+        }
+      ]
+    },
+    {
+      "code": "nl",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Karakterkeuze"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Kies de incarnatie die naar de Hel afdaalt"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Speelstijl"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Binnenkort"
+        },
+        {
+          "key": "전사",
+          "text": "Krijger"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser-krijger"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Een krijger van zwart ijzer met een grootzwaard"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar van het nabijgevecht"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Een frontstrijder die met een grootzwaard door vijanden breekt."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Verdediging van zwart ijzer"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Doorsta de vijandelijke aanval in zwart pantser en sla terug."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Verwoestende slag"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Deel trage maar dodelijke slagen uit over een groot gebied."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Zwaarddanseres"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Eén draaiend lemmet. Haar dans brengt verderf."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar van de zwaarddans"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Vel vijanden aan alle kanten met een draaiend grootzwaard."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Mobiliteit met tweelingdolken"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Nader met snelle, behendige aanvalsreeksen."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Gratie van de danseres"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Wissel sierlijke ontwijkingen af met explosieve schade-uitbarstingen."
+        },
+        {
+          "key": "헬거너",
+          "text": "Helleschutter"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Bloedkogels laden"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Verbruik levenskracht om geladen doorborende kogels af te vuren."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Terugslagsprong"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Gebruik de terugslag van het schot om achterwaarts te springen."
+        },
+        {
+          "key": "변성술사",
+          "text": "Transmutator"
+        },
+        {
+          "key": "반월참",
+          "text": "Halvemaanhouw"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Zwaai de zeis wijd en maai de halve cirkel voor je."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Zielenoogst"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Schimmentred"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Verstuif in blauwe vlammen en verschijn waar je maar wilt."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Speermeester van de leegte"
+        },
+        {
+          "key": "창법사",
+          "text": "Speermagiër"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Heraut van de leegte die de ruimte verzegelt met runen"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Leegtespeer"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Werp je leegtespeer om te doorboren en roep hem daarna terug."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Runegravure"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Kerf een zegelrune in de grond om vijanden te binden."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Kloofstap"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Scheur de ruimte open en verplaats je naar je rune."
+        }
+      ]
+    },
+    {
+      "code": "sv",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Karaktärsval"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Välj gestalten som ska stiga ned i Helvetet"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Spelstil"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Kommer snart"
+        },
+        {
+          "key": "전사",
+          "text": "Krigare"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser-krigare"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "En svartjärnskrigare som svingar ett storsvärd"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Närstridens avatar"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "En frontkämpe som bryter igenom fiender med ett storsvärd."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Svartjärnsförsvar"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Uthärda fiendens anfall i svart rustning och slå tillbaka."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Förödande slag"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Dela ut långsamma men dödliga hugg över ett stort område."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Klingdansare"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "En enda roterande klinga. Hennes dans bringar förödelse."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Klingdansens avatar"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Hugg ner fiender på alla sidor med ett roterande storsvärd."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Tvillingdolksrörlighet"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Närma dig med snabba och smidiga attackkedjor."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Dansarens grace"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Växla mellan eleganta undanmanövrer och explosiva skadeutbrott."
+        },
+        {
+          "key": "헬거너",
+          "text": "Helvetesskytt"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Blodkuleladdning"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Förbruka hälsa för att avfyra laddade genomborrande kulor."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Rekylsprång"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Använd skottets rekyl för att hoppa bakåt."
+        },
+        {
+          "key": "변성술사",
+          "text": "Förvandlare"
+        },
+        {
+          "key": "반월참",
+          "text": "Halvmånehugg"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Svinga lien brett och skär halvcirkeln framför dig."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Själaskörd"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Vålnadssteg"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Skingras i blå eld och dyk upp igen där du vill."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Tomhetens spjutmästare"
+        },
+        {
+          "key": "창법사",
+          "text": "Spjutmagiker"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Tomhetens härold som förseglar rummet med runor"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Tomhetens spjut"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Kasta tomhetens spjut genom fienderna och kalla tillbaka det."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Runristning"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Rista en förseglingsruna i marken för att binda fiender."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Spricksteg"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Riv upp rummet och förflytta dig till din runa."
+        }
+      ]
+    },
+    {
+      "code": "da",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Karaktervalg"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Vælg skikkelsen, der skal stige ned i Helvede"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Spillestil"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Kommer snart"
+        },
+        {
+          "key": "전사",
+          "text": "Kriger"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser-kriger"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "En sortjernskriger med et storsværd"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Nærkampens avatar"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "En frontkæmper, der bryder gennem fjender med et storsværd."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Sortjernsforsvar"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Modstå fjendens angreb i sort rustning, og slå igen."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Ødelæggende slag"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Udfør langsomme, men dødelige hug over et stort område."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Klingedanser"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "En enkelt roterende klinge. Hendes dans bringer undergang."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Klingedansens avatar"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Fæld fjender på alle sider med et roterende storsværd."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Tvillingedolkens mobilitet"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Ryk ind med hurtige, smidige angrebsserier."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Danserens ynde"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Skift mellem yndefulde undvigelser og eksplosive skadesudbrud."
+        },
+        {
+          "key": "헬거너",
+          "text": "Helvedesskytte"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Blodkugleladning"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Forbrug helbred for at affyre ladede gennemborende kugler."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Rekylspring"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Brug skuddets rekyl til at springe bagud."
+        },
+        {
+          "key": "변성술사",
+          "text": "Forvandler"
+        },
+        {
+          "key": "반월참",
+          "text": "Halvmånehug"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Sving leen bredt og skær halvcirklen foran dig."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Sjælehøst"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Genfærdsskridt"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Opløs dig i blå flammer og vis dig igen, hvor du vil."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Tomhedens spydmester"
+        },
+        {
+          "key": "창법사",
+          "text": "Spydmagiker"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Tomhedens herold, der forsegler rummet med runer"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Tomhedens spyd"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Kast tomhedens spyd gennem fjenderne og kald det tilbage."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Runeristning"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Rist en forseglingsrune i jorden for at binde fjender."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Sprækkeskridt"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Flå rummet op og flyt dig hen til din rune."
+        }
+      ]
+    },
+    {
+      "code": "no",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Karaktervalg"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Velg skikkelsen som skal stige ned i Helvete"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Spillestil"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Kommer snart"
+        },
+        {
+          "key": "전사",
+          "text": "Kriger"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser-kriger"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "En svartjernskriger med et storsverd"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Nærkampens avatar"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "En frontkjemper som bryter gjennom fiender med et storsverd."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Svartjernsforsvar"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Motstå fiendens angrep i svart rustning og slå tilbake."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Ødeleggende slag"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Utfør langsomme, men dødelige hugg over et stort område."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Bladdanser"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Ett roterende blad. Dansen hennes bringer undergang."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Bladdansens avatar"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Fell fiender på alle sider med et roterende storsverd."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Tvillingdolkenes mobilitet"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Rykk inn med raske og smidige angrepsrekker."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Danserens ynde"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Veksle mellom grasiøse unnamanøvre og eksplosive skadeutbrudd."
+        },
+        {
+          "key": "헬거너",
+          "text": "Helvetesskytter"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Blodkuleladning"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Bruk helse for å avfyre ladede gjennomborende kuler."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Rekylhopp"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Bruk rekylen fra skuddet til å hoppe bakover."
+        },
+        {
+          "key": "변성술사",
+          "text": "Forvandler"
+        },
+        {
+          "key": "반월참",
+          "text": "Halvmånehugg"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Sving ljåen bredt og kutt halvsirkelen foran deg."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Sjelehøst"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Gjenferdssteg"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Spre deg i blå flammer og dukk opp igjen der du vil."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Tomhetens spydmester"
+        },
+        {
+          "key": "창법사",
+          "text": "Spydmagiker"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Tomhetens herold som forsegler rommet med runer"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Tomhetens spyd"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Kast tomhetens spyd gjennom fiendene og kall det tilbake."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Runeristning"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Rist en forseglingsrune i bakken for å binde fiender."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Sprekksteg"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Riv opp rommet og flytt deg til runen din."
+        }
+      ]
+    },
+    {
+      "code": "ru",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Выбор персонажа"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Выберите воплощение для нисхождения в Ад"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Стиль игры"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Скоро"
+        },
+        {
+          "key": "전사",
+          "text": "Воин"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Воин Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Воин в чёрном железе с двуручным мечом"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Воплощение ближнего боя"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Боец передовой, прорывающий врагов двуручным мечом."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Защита чёрного железа"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Выдержите натиск в чёрной броне и ударьте в ответ."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Сокрушительный удар"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Наносите медленные, но смертельные удары по большой площади."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Танцовщица клинков"
+        },
+        {
+          "key": "실버테일",
+          "text": "Сильвертейл"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Один вращающийся клинок. Её танец несёт погибель."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Воплощение танца клинков"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Сражайте врагов со всех сторон вращающимся двуручным мечом."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Подвижность парных кинжалов"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Сближайтесь быстрыми и ловкими сериями атак."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Грация танцовщицы"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Чередуйте изящные уклонения и взрывные всплески урона."
+        },
+        {
+          "key": "헬거너",
+          "text": "Адский стрелок"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Кровавый заряд"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Расходуйте здоровье, чтобы выпустить заряженные пробивающие пули."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Прыжок отдачей"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Используйте отдачу выстрела, чтобы отпрыгнуть назад."
+        },
+        {
+          "key": "변성술사",
+          "text": "Трансмутатор"
+        },
+        {
+          "key": "반월참",
+          "text": "Удар полумесяца"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Широко взмахните косой, срезая полукруг перед собой."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Жатва душ"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Поступь призрака"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Рассейтесь синим пламенем и появитесь в нужном месте."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Мастер копья пустоты"
+        },
+        {
+          "key": "창법사",
+          "text": "Маг-копейщик"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Вестник пустоты, запечатывающий пространство рунами"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Копьё пустоты"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Метните копьё пустоты, пронзив врагов, и верните его."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Рунная гравировка"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Начертите на земле руну печати, сковывая врагов."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Шаг сквозь разлом"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Разорвите пространство и переместитесь к своей руне."
+        }
+      ]
+    },
+    {
+      "code": "uk",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Вибір персонажа"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Виберіть втілення, яке зійде в Пекло"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Стиль гри"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Незабаром"
+        },
+        {
+          "key": "전사",
+          "text": "Воїн"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Воїн Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Воїн у чорному залізі з дворучним мечем"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Утілення ближнього бою"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Боєць передової, що прориває ворогів дворучним мечем."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Захист чорного заліза"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Витримайте натиск у чорній броні й ударте у відповідь."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Нищівний удар"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Завдавайте повільних, але смертельних ударів по великій площі."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Танцівниця клинків"
+        },
+        {
+          "key": "실버테일",
+          "text": "Сільвертейл"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Один обертовий клинок. Її танець несе загибель."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Утілення танцю клинків"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Здолайте ворогів з усіх боків обертовим дворучним мечем."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Рухливість парних кинджалів"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Зближуйтеся швидкими й спритними серіями атак."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Грація танцівниці"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Чергуйте витончені ухилення й вибухові сплески шкоди."
+        },
+        {
+          "key": "헬거너",
+          "text": "Пекельний стрілець"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Заряджання кривавих куль"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Витрачайте здоров’я, щоб випустити заряджені пробивні кулі."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Стрибок від віддачі"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Використайте віддачу пострілу, щоб відстрибнути назад."
+        },
+        {
+          "key": "변성술사",
+          "text": "Трансмутатор"
+        },
+        {
+          "key": "반월참",
+          "text": "Удар півмісяця"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Широко змахніть косою, зрізаючи півколо перед собою."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Жнива душ"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Хода привида"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Розсійтеся синім полум’ям і з’явіться в потрібному місці."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Майстер списа порожнечі"
+        },
+        {
+          "key": "창법사",
+          "text": "Маг-списоносець"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Вісник порожнечі, що запечатує простір рунами"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Спис порожнечі"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Метніть спис порожнечі, проштрикнувши ворогів, і поверніть його."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Рунне гравіювання"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Накресліть на землі руну печаті, сковуючи ворогів."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Крок крізь розлом"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Розірвіть простір і перемістіться до своєї руни."
+        }
+      ]
+    },
+    {
+      "code": "pl",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Wybór postaci"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Wybierz wcielenie, które zstąpi do Piekła"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Styl gry"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Wkrótce"
+        },
+        {
+          "key": "전사",
+          "text": "Wojownik"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Wojownik Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Wojownik z czarnego żelaza dzierżący wielki miecz"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Awatar walki wręcz"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Wojownik pierwszej linii przebijający wrogów wielkim mieczem."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Obrona czarnego żelaza"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Wytrzymaj natarcie w czarnej zbroi i kontratakuj."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Niszczycielski cios"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Zadawaj powolne, lecz śmiertelne cięcia na szerokim obszarze."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Tancerka ostrzy"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Jedno wirujące ostrze. Jej taniec niesie zagładę."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Awatar tańca ostrzy"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Powalaj wrogów ze wszystkich stron wirującym wielkim mieczem."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Mobilność bliźniaczych sztyletów"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Zbliżaj się szybkimi i zwinnymi seriami ataków."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Gracja tancerki"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Przechodź między wdzięcznymi unikami a wybuchami obrażeń."
+        },
+        {
+          "key": "헬거너",
+          "text": "Piekielny strzelec"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Ładowanie krwawych pocisków"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Poświęć zdrowie, by wystrzelić naładowane przebijające pociski."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Skok odrzutu"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Wykorzystaj odrzut strzału, by odskoczyć do tyłu."
+        },
+        {
+          "key": "변성술사",
+          "text": "Transmutator"
+        },
+        {
+          "key": "반월참",
+          "text": "Półksiężycowe cięcie"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Zamaszyście machnij kosą, tnąc półkole przed sobą."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Żniwo dusz"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Krok upiora"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Rozprosz się w błękitnym płomieniu i pojaw się w wybranym miejscu."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Mistrz włóczni pustki"
+        },
+        {
+          "key": "창법사",
+          "text": "Mag włóczni"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Herold pustki pieczętujący przestrzeń runami"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Oszczep pustki"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Ciśnij włócznią pustki, by przebić wrogów, po czym ją odzyskaj."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Wyrycie runy"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Wyryj runę pieczęci na ziemi, by spętać wrogów."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Krok przez szczelinę"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Rozedrzyj przestrzeń i przenieś się do swojej runy."
+        }
+      ]
+    },
+    {
+      "code": "cs",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Výběr postavy"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Vyberte vtělení, které sestoupí do Pekla"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Herní styl"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Již brzy"
+        },
+        {
+          "key": "전사",
+          "text": "Válečník"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Válečník Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Válečník z černého železa s velkým mečem"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Avatar boje zblízka"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Bojovník první linie, který proráží nepřátele velkým mečem."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Obrana černého železa"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Ustůj nápor v černém brnění a vrať úder."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Ničivý úder"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Zasazuj pomalé, ale smrtící seky do širokého okolí."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Tanečnice čepelí"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Jediná rotující čepel. Její tanec přináší zkázu."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Avatar tance čepelí"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Srážej nepřátele na všech stranách rotujícím velkým mečem."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Pohyblivost dvojitých dýk"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Přibliž se rychlými a hbitými sériemi útoků."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Půvab tanečnice"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Střídej ladné úhyby a výbušné dávky poškození."
+        },
+        {
+          "key": "헬거너",
+          "text": "Pekelný střelec"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Nabíjení krvavých kulek"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Obětuj zdraví a vypal nabité průrazné kulky."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Skok zpětným rázem"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Využij zpětný ráz výstřelu k odskoku vzad."
+        },
+        {
+          "key": "변성술사",
+          "text": "Transmutátor"
+        },
+        {
+          "key": "반월참",
+          "text": "Půlměsíčný sek"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Široce máchni kosou a prosekni půlkruh před sebou."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Sklizeň duší"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Přízračný krok"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Rozptyl se v modrém plameni a objev se na zvoleném místě."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Mistr kopí prázdnoty"
+        },
+        {
+          "key": "창법사",
+          "text": "Mág s kopím"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Herold prázdnoty, jenž pečetí prostor runami"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Oštěp prázdnoty"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Vrhni kopí prázdnoty skrz nepřátele a pak je přivolej zpět."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Vyrytí runy"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Vyryj do země pečetní runu a spoutej nepřátele."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Krok trhlinou"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Roztrhni prostor a přesuň se ke své runě."
+        }
+      ]
+    },
+    {
+      "code": "hu",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Karakterválasztás"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Válaszd ki a Pokolba alászálló megtestesülést"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Játékstílus"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Hamarosan"
+        },
+        {
+          "key": "전사",
+          "text": "Harcos"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser harcos"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Feketevas harcos, aki pallost forgat"
+        },
+        {
+          "key": "근접 화신",
+          "text": "A közelharc megtestesülése"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Első vonalbeli harcos, aki pallossal tör át az ellenfeleken."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Feketevas védelem"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Állj ellen az ellenség rohamának fekete páncélban, majd vágj vissza."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Pusztító csapás"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Lassú, de halálos vágásokat zúdít széles területre."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Pengetáncos"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Egyetlen forgó penge. Tánca pusztulást hoz."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "A pengetánc megtestesülése"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Forgó pallossal vágja le az ellenfeleket minden irányból."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Ikerpengés mozgékonyság"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Gyors, fürge támadássorokkal zárkózik fel."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "A táncos kecsessége"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Kecses kitérések és robbanásszerű sebzés között vált."
+        },
+        {
+          "key": "헬거너",
+          "text": "Pokoli lövész"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Vérlövedék töltése"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Életerőt áldozva feltöltött átütő lövedékeket lő ki."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Visszarúgásos ugrás"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "A lövés visszarúgását kihasználva hátraugrik."
+        },
+        {
+          "key": "변성술사",
+          "text": "Átváltoztató"
+        },
+        {
+          "key": "반월참",
+          "text": "Félhold-vágás"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Nagy ívben meglendíti a kaszát, és lekaszálja az előtte lévő félkört."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Lélekaratás"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Kísértetléptek"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Kék lánggá foszlik szét, majd a kívánt helyen jelenik meg újra."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Az üresség lándzsamestere"
+        },
+        {
+          "key": "창법사",
+          "text": "Lándzsamágus"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Az üresség hírnöke, aki rúnákkal pecsételi le a teret"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Az üresség gerelye"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Elhajítja az üresség lándzsáját, átdöfi vele az ellenfeleket, majd visszahívja."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Rúnavésés"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Pecsételő rúnát vés a földbe, amely megkötözi az ellenfeleket."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Hasadéklépés"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Feltépi a teret, és a rúnájához ugrik."
+        }
+      ]
+    },
+    {
+      "code": "bg",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Избор на персонаж"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Изберете въплъщението, което ще слезе в Ада"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Стил на игра"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Очаквайте скоро"
+        },
+        {
+          "key": "전사",
+          "text": "Воин"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Воин Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Воин от черно желязо с голям меч"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Въплъщение на близкия бой"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Боец на предната линия, който пробива враговете с голям меч."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Защита от черно желязо"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Издържай вражеския натиск в черна броня и отвърни."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Опустошителен удар"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Нанасяй бавни, но смъртоносни разсичания върху широка площ."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Танцьорка с остриета"
+        },
+        {
+          "key": "실버테일",
+          "text": "Силвъртейл"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Едно въртящо се острие. Танцът ѝ носи гибел."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Въплъщение на танца с остриета"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Поваляй врагове от всички страни с въртящ се голям меч."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Подвижност на двойните кинжали"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Приближавай с бързи и ловки поредици от атаки."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Грацията на танцьорката"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Редувай изящни избягвания и взривни изблици на щети."
+        },
+        {
+          "key": "헬거너",
+          "text": "Адски стрелец"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Зареждане на кървави куршуми"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Изразходвай здраве, за да изстреляш заредени пронизващи куршуми."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Скок с откат"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Използвай отката на изстрела, за да отскочиш назад."
+        },
+        {
+          "key": "변성술사",
+          "text": "Трансмутатор"
+        },
+        {
+          "key": "반월참",
+          "text": "Полулунно разсичане"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Замахни широко с косата и разсечи полукръга пред себе си."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Жътва на души"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Призрачна стъпка"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Разпръсни се в син пламък и се появи отново където пожелаеш."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Майстор на копието на пустотата"
+        },
+        {
+          "key": "창법사",
+          "text": "Копиен маг"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Вестител на пустотата, запечатващ пространството с руни"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Копие на пустотата"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Хвърли копието на пустотата, за да пронижеш врагове, после го прибери."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Рунно гравиране"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Издълбай запечатваща руна в земята, за да оковеш враговете."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Преминаване през разлом"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Разкъсай пространството и се премести при руната си."
+        }
+      ]
+    },
+    {
+      "code": "el",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Επιλογή χαρακτήρα"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Επιλέξτε την ενσάρκωση που θα κατέβει στην Κόλαση"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Στυλ παιχνιδιού"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Προσεχώς"
+        },
+        {
+          "key": "전사",
+          "text": "Πολεμιστής"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Πολεμιστής Exoduser"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Πολεμιστής από μαύρο σίδερο με μεγάλο σπαθί"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Ενσάρκωση της κοντινής μάχης"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Μαχητής πρώτης γραμμής που διασπά εχθρούς με μεγάλο σπαθί."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Άμυνα μαύρου σιδήρου"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Άντεξε την εχθρική επίθεση με μαύρη πανοπλία και αντεπιτέσου."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Καταστροφικό χτύπημα"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Εξαπέλυσε αργά αλλά θανατηφόρα κοψίματα σε μεγάλη έκταση."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Χορεύτρια λεπίδων"
+        },
+        {
+          "key": "실버테일",
+          "text": "Σίλβερτεϊλ"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Μία περιστρεφόμενη λεπίδα. Ο χορός της φέρνει όλεθρο."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Ενσάρκωση του χορού λεπίδων"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Κόψε εχθρούς από όλες τις πλευρές με περιστρεφόμενο μεγάλο σπαθί."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Κινητικότητα δίδυμων στιλέτων"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Πλησίασε με γρήγορες και ευέλικτες αλυσίδες επιθέσεων."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Χάρη της χορεύτριας"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Εναλλάξου ανάμεσα σε κομψές αποφυγές και εκρηκτική ζημιά."
+        },
+        {
+          "key": "헬거너",
+          "text": "Πυροβολητής της Κόλασης"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Γέμισμα αιμάτινων σφαιρών"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Ξόδεψε ζωή για να εκτοξεύσεις φορτισμένες διατρητικές σφαίρες."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Άλμα ανάκρουσης"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Χρησιμοποίησε την ανάκρουση της βολής για να αναπηδήσεις προς τα πίσω."
+        },
+        {
+          "key": "변성술사",
+          "text": "Μεταστοιχειωτής"
+        },
+        {
+          "key": "반월참",
+          "text": "Κοπή μισοφέγγαρου"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Κράδανε πλατιά το δρεπάνι και θέρισε το μπροστινό ημικύκλιο."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Θερισμός ψυχών"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Βήμα φαντάσματος"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Σκορπίσου σε γαλάζια φλόγα και εμφανίσου ξανά όπου θέλεις."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Δάσκαλος της λόγχης του κενού"
+        },
+        {
+          "key": "창법사",
+          "text": "Λογχομάγος"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Αγγελιοφόρος του κενού που σφραγίζει τον χώρο με ρούνους"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Ακόντιο του κενού"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Εκτόξευσε τη λόγχη του κενού να διαπεράσει και μετά ανακάλεσέ την."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Χάραξη ρούνου"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Χάραξε ρούνο σφράγισης στο έδαφος για να δεσμεύσεις τους εχθρούς."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Βήμα ρωγμής"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Σκίσε τον χώρο και μετακινήσου εκεί όπου βρίσκεται ο ρούνος σου."
+        }
+      ]
+    },
+    {
+      "code": "fi",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Hahmon valinta"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Valitse hahmo, joka laskeutuu Helvettiin"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Pelityyli"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Tulossa pian"
+        },
+        {
+          "key": "전사",
+          "text": "Soturi"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser-soturi"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Mustarautainen soturi, joka käyttää suurmiekkaa"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Lähitaistelun ilmentymä"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Etulinjan taistelija, joka murtautuu vihollisten läpi suurmiekalla."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Mustarautapuolustus"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Kestä vihollisen hyökkäys mustassa haarniskassa ja iske takaisin."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Tuhoisa isku"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Tee hitaita mutta kuolettavia viiltoja laajalle alueelle."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Terätanssija"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Yksi pyörivä terä. Hänen tanssinsa tuo tuhon."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Terätanssin ilmentymä"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Kaada vihollisia joka suunnasta pyörivällä suurmiekalla."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "Kaksostikarien liikkuvuus"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Lähesty nopeilla ja ketterillä hyökkäyssarjoilla."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Tanssijan sulous"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Vaihtele sulavia väistöjä ja räjähtäviä vahinkoryöppyjä."
+        },
+        {
+          "key": "헬거너",
+          "text": "Helvetinampuja"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Veriluotien lataus"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Kuluta elinvoimaa ampuaksesi ladattuja lävistäviä luoteja."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Rekyyliloikka"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Hyödynnä laukauksen rekyyliä loikataksesi taaksepäin."
+        },
+        {
+          "key": "변성술사",
+          "text": "Muuntomaagi"
+        },
+        {
+          "key": "반월참",
+          "text": "Puolikuuviilto"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Heilauta viikatetta laajasti ja viillä edessäsi oleva puoliympyrä."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Sielunkorjuu"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Aaveaskel"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Hajoa siniseksi liekiksi ja ilmesty haluamaasi paikkaan."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Tyhjyyden keihäsmestari"
+        },
+        {
+          "key": "창법사",
+          "text": "Keihäsmaagi"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Tyhjyyden airut, joka sinetöi tilan riimuilla"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Tyhjyyden keihäs"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Sinkoa tyhjyyden keihäs lävistämään viholliset ja kutsu se takaisin."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Riimukaiverrus"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Kaiverra maahan sinettiriimu, joka sitoo viholliset."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Halkeama-askel"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Revi tila auki ja siirry riimusi luo."
+        }
+      ]
+    },
+    {
+      "code": "tr",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "Karakter seçimi"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "Cehenneme inecek bedeninizi seçin"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "Oyun tarzı"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "Yakında"
+        },
+        {
+          "key": "전사",
+          "text": "Savaşçı"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "Exoduser Savaşçısı"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "Büyük kılıç kullanan kara demir savaşçı"
+        },
+        {
+          "key": "근접 화신",
+          "text": "Yakın Dövüşün Avatarı"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "Büyük kılıcıyla düşmanları yarıp geçen bir ön cephe savaşçısı."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "Kara Demir Savunması"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "Kara zırhınla düşman hücumuna dayan, sonra karşılık ver."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "Yıkıcı Darbe"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "Geniş alanda yavaş ama ölümcül kesikler indir."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "Kılıç Dansçısı"
+        },
+        {
+          "key": "실버테일",
+          "text": "Silvertail"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "Dönen tek bir kılıç. Dansı yıkım getirir."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "Kılıç Dansının Avatarı"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "Dönen büyük kılıçla her yöndeki düşmanları aynı anda kes."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "İkiz Hançer Hareketliliği"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "Hızlı ve çevik saldırı zincirleriyle yaklaş."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "Dansçının Zarafeti"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "Zarif kaçışlarla patlayıcı hasar arasında akıcı geçiş yap."
+        },
+        {
+          "key": "헬거너",
+          "text": "Cehennem Nişancısı"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "Kan Mermisi Doldurma"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "Can harcayarak şarj edilmiş delici mermiler ateşle."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "Geri Tepme Sıçrayışı"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "Atışın geri tepmesini kullanarak geriye sıçra."
+        },
+        {
+          "key": "변성술사",
+          "text": "Dönüşüm Büyücüsü"
+        },
+        {
+          "key": "반월참",
+          "text": "Yarım Ay Kesiği"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "Tırpanı geniş savurarak öndeki yarım daireyi biç."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "Ruh Hasadı"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "Hayalet Adımı"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "Mavi aleve dağılıp istediğin yerde yeniden belir."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "Hiçlik Mızrak Ustası"
+        },
+        {
+          "key": "창법사",
+          "text": "Mızrak Büyücüsü"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "Rünlerle mekânı mühürleyen hiçlik habercisi"
+        },
+        {
+          "key": "공허 투창",
+          "text": "Hiçlik Ciriti"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "Hiçlik mızrağını fırlatıp deldikten sonra geri çağır."
+        },
+        {
+          "key": "룬 각인",
+          "text": "Rün Kazıma"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "Yere mühür rünü kazıyarak düşmanları bağla."
+        },
+        {
+          "key": "균열 이동",
+          "text": "Yarık Geçişi"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "Mekânı yırt ve rünün olduğu yere geç."
+        }
+      ]
+    },
+    {
+      "code": "ar",
+      "labels": [
+        {
+          "key": "캐릭터 선택",
+          "text": "اختيار الشخصية"
+        },
+        {
+          "key": "지옥에 강림할 화신을 선택하라",
+          "text": "اختر التجسّد الذي سيهبط إلى الجحيم"
+        },
+        {
+          "key": "플레이 방식",
+          "text": "أسلوب اللعب"
+        },
+        {
+          "key": "출시 준비 중",
+          "text": "قريبًا"
+        },
+        {
+          "key": "전사",
+          "text": "محارب"
+        },
+        {
+          "key": "엑소듀서 전사",
+          "text": "محارب إكسوديوسر"
+        },
+        {
+          "key": "거대검을 휘두르는 흑철의 전사",
+          "text": "محارب من الحديد الأسود يحمل سيفًا عظيمًا"
+        },
+        {
+          "key": "근접 화신",
+          "text": "تجسد القتال القريب"
+        },
+        {
+          "key": "거대검을 휘두르는 정면 돌파형 전투가입니다.",
+          "text": "مقاتل في الصف الأمامي يخترق الأعداء بسيف عظيم."
+        },
+        {
+          "key": "흑철의 방어",
+          "text": "دفاع الحديد الأسود"
+        },
+        {
+          "key": "검은 갑옷으로 적의 공세를 견디고 되받아칩니다.",
+          "text": "تحمل هجوم العدو بدرع أسود ثم اضرب ردًا."
+        },
+        {
+          "key": "파멸의 일격",
+          "text": "ضربة مدمرة"
+        },
+        {
+          "key": "느리지만 치명적인 광역 참격을 내리꽂습니다.",
+          "text": "نفّذ قطوعًا بطيئة لكنها قاتلة على مساحة واسعة."
+        },
+        {
+          "key": "블레이드 댄서",
+          "text": "راقصة النصال"
+        },
+        {
+          "key": "실버테일",
+          "text": "سيلفرتيل"
+        },
+        {
+          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
+          "text": "نصل واحد يدور. رقصتها تجلب الهلاك."
+        },
+        {
+          "key": "검무의 화신",
+          "text": "تجسد رقصة النصال"
+        },
+        {
+          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
+          "text": "اقطع الأعداء من كل الجهات بسيف عظيم دوّار."
+        },
+        {
+          "key": "쌍단검 기동",
+          "text": "حركة الخنجرين التوأمين"
+        },
+        {
+          "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
+          "text": "اقترب بسلاسل هجمات سريعة ورشيقة."
+        },
+        {
+          "key": "무희의 춤",
+          "text": "رشاقة الراقصة"
+        },
+        {
+          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
+          "text": "تنقل بين تفادٍ رشيق ودفعات ضرر انفجارية."
+        },
+        {
+          "key": "헬거너",
+          "text": "مدفعي الجحيم"
+        },
+        {
+          "key": "혈탄 장전",
+          "text": "تعبئة رصاص الدم"
+        },
+        {
+          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
+          "text": "استهلك صحتك لإطلاق رصاصات خارقة مشحونة."
+        },
+        {
+          "key": "역추진 도약",
+          "text": "قفزة الارتداد"
+        },
+        {
+          "key": "사격 반동을 이용해 뒤로 도약합니다.",
+          "text": "استغل ارتداد الطلقة للقفز إلى الخلف."
+        },
+        {
+          "key": "변성술사",
+          "text": "ساحر التحويل"
+        },
+        {
+          "key": "반월참",
+          "text": "ضربة نصف القمر"
+        },
+        {
+          "key": "낫을 크게 휘둘러 전방 반원을 베어냅니다.",
+          "text": "لوّح بالمنجل بقوس واسع لتشق نصف الدائرة أمامك."
+        },
+        {
+          "key": "영혼 수확",
+          "text": "حصاد الأرواح"
+        },
+        {
+          "key": "망령 걸음",
+          "text": "خطوة الشبح"
+        },
+        {
+          "key": "청염으로 흩어졌다 원하는 곳에 다시 나타납니다.",
+          "text": "تبدد في اللهب الأزرق ثم اظهر من جديد حيث تشاء."
+        },
+        {
+          "key": "공허 창술사",
+          "text": "سيد رمح العدم"
+        },
+        {
+          "key": "창법사",
+          "text": "ساحر الرمح"
+        },
+        {
+          "key": "룬으로 공간을 봉인하는 공허의 전령",
+          "text": "رسول العدم الذي يختم الفضاء بالرونات"
+        },
+        {
+          "key": "공허 투창",
+          "text": "رمح العدم"
+        },
+        {
+          "key": "공허창을 던져 관통시킨 뒤 다시 회수합니다.",
+          "text": "اقذف رمح العدم ليخترق الأعداء ثم استرجعه."
+        },
+        {
+          "key": "룬 각인",
+          "text": "نقش الرونة"
+        },
+        {
+          "key": "지면에 봉인 룬을 새겨 적을 묶습니다.",
+          "text": "انقش رونة ختم على الأرض لتقييد الأعداء."
+        },
+        {
+          "key": "균열 이동",
+          "text": "الانتقال عبر الصدع"
+        },
+        {
+          "key": "공간을 찢고 룬이 있는 곳으로 이동합니다.",
+          "text": "مزق الفضاء وانتقل إلى حيث توجد رونتك."
+        }
+      ]
+    }
+  ]
+}
