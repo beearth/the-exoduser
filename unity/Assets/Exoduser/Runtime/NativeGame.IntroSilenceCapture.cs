@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
   [Serializable] sealed class IntroSilenceReceipt
   {
    public string scope,phase,product,identifier,persistentDataPath,output;
-   public bool harnessPassed,contractPassed,finalContractPending;public int failures,bgmPercent;public float bgmRelativeGain;
+   public bool harnessPassed,contractPassed,finalContractPending;public int failures,bgmPercent,fallbackClipSamples,fallbackClipFrequency,fallbackClipChannels,fallbackHeadFrames;public float bgmRelativeGain;public string fallbackHeadFile,fallbackHeadEncoding;
    public string[] checks,observedDifferences;public IntroSilenceSnapshot[] snapshots;
   }
   readonly float[] introSilenceSamples=new float[1024];
@@ -72,6 +72,12 @@ namespace Exoduser.UnityPort
    // Same SD decoder parameters as the existing fallback; this is an explicit media probe, not an injected failure.
    lobby.CurrentVideo.Open("title_motion_20260929.mp4",true,true,false);yield return IntroObserve(snapshots,"splash-title-sd-direct-probe",lobby.CurrentVideo,"true",.55f);
    lobby.AdvanceSplash();yield return IntroObserve(snapshots,"title-intro-frozen",lobby.CurrentVideo,"true",.4f);yield return UiCapture(output,"intro-silence-title");
+   var fallbackClip=lobby.CurrentVideo.UsesIntroAudioFallback?lobby.CurrentVideo.Voice.clip:null;
+   int headFrames=fallbackClip==null?0:Mathf.Min(4096,fallbackClip.samples);string headFile="";
+   if(fallbackClip!=null){
+    var pcm=new float[headFrames*fallbackClip.channels];bool read=fallbackClip.GetData(pcm,0);check(read,"read imported fallback PCM head for source priming alignment");
+    if(read){var bytes=new byte[pcm.Length*sizeof(float)];Buffer.BlockCopy(pcm,0,bytes,0,bytes.Length);if(!BitConverter.IsLittleEndian)for(int i=0;i<bytes.Length;i+=4)Array.Reverse(bytes,i,4);headFile=Path.Combine(output,"intro-fallback-head.f32");File.WriteAllBytes(headFile,bytes);}
+   }
    yield return null;lobby.StartGate();yield return IntroObserve(snapshots,"gate-voice-and-bgm",lobby.CurrentVideo,"false",1.2f);yield return UiCapture(output,"intro-silence-gate");
    lobby.SetPlaybackFocus(false);yield return new WaitForSecondsRealtime(.15f);yield return IntroObserve(snapshots,"gate-focus-paused",lobby.CurrentVideo,"false",.25f);
    check(!lobby.CurrentVideo.Player.isPlaying&&!lobby.CurrentVideo.Voice.isPlaying,"Gate pause stops both decoder and external/native voice");
@@ -90,7 +96,7 @@ namespace Exoduser.UnityPort
    foreach(var s in snapshots){if(s.label=="title-intro-frozen")check(!s.videoPlaying&&!s.voice.wasPlaying&&s.voice.mute,"Title freeze keeps original soundtrack stopped and muted");if(s.label=="gate-voice-and-bgm")check(s.audioTrackCount!=0&&!s.usesIntroAudioFallback||s.audioTrackCount==0&&s.usesIntroAudioFallback&&s.voice.clip=="intro_gate_original"&&s.voice.peak>.000001f,"Gate uses original external soundtrack only when native track count is zero");if(s.label=="gate-focus-restored")check(s.voice.wasPlaying&&s.voice.peak>.000001f,"Gate soundtrack resumes after focus permission returns");if(s.label=="world-voice-and-bgm"||s.label=="lobby-bgm"||s.label=="fdg-after-audible-lobby")check(!s.usesIntroAudioFallback&&s.voice.clip!="intro_gate_original",s.label+" closes old external intro soundtrack");}
    if(phase=="final")check(contractPassed,"all accepted stage mute contracts match");
    lobby.CloseStartupCaptureMedia();check(lobby.CurrentVideo.Player==null&&lobby.CurrentVideo.Voice==null&&!lobby.CurrentVideo.UsesIntroAudioFallback,"cleanup releases video and external voice");
-   File.WriteAllText(Path.Combine(output,"intro-silence-"+phase+".json"),JsonUtility.ToJson(new IntroSilenceReceipt{scope="QA-only short scripted stage/audio observations, not OS focus/input, natural gate completion, media completion or audibility certification. Baseline harness success does not mean mute contract passed. Accepted source stage contract is FDG/SplashTitle/Title muted, Gate/World voice enabled.",phase=phase,product=Application.productName,identifier=Application.identifier,persistentDataPath=Application.persistentDataPath,output=output,bgmPercent=settings.BgmPercent,bgmRelativeGain=settings.BgmRelativeGain,harnessPassed=failures==0,contractPassed=contractPassed,finalContractPending=pending,failures=failures,checks=checks.ToArray(),observedDifferences=differences.ToArray(),snapshots=snapshots.ToArray()},true));
+   File.WriteAllText(Path.Combine(output,"intro-silence-"+phase+".json"),JsonUtility.ToJson(new IntroSilenceReceipt{scope="QA-only short scripted stage/audio observations, not OS focus/input, natural gate completion, media completion or audibility certification. Baseline harness success does not mean mute contract passed. Accepted source stage contract is FDG/SplashTitle/Title muted, Gate/World voice enabled.",phase=phase,product=Application.productName,identifier=Application.identifier,persistentDataPath=Application.persistentDataPath,output=output,fallbackClipSamples=fallbackClip==null?0:fallbackClip.samples,fallbackClipFrequency=fallbackClip==null?0:fallbackClip.frequency,fallbackClipChannels=fallbackClip==null?0:fallbackClip.channels,fallbackHeadFrames=headFrames,fallbackHeadFile=headFile,fallbackHeadEncoding="float32 little-endian, interleaved channels; imported clip sample frame0",bgmPercent=settings.BgmPercent,bgmRelativeGain=settings.BgmRelativeGain,harnessPassed=failures==0,contractPassed=contractPassed,finalContractPending=pending,failures=failures,checks=checks.ToArray(),observedDifferences=differences.ToArray(),snapshots=snapshots.ToArray()},true));
    sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(failures==0?0:2);
   }
  }
