@@ -49,7 +49,7 @@
 |---|---|---|---|
 | H5 | `main` | 웹 게임 코드·에셋·`engine/fdg`(웹 런타임)·Steam/NW 빌드·DEMO/EA 동기화·공통 기획 docs(0~17) | `godot/`, `unity/` |
 | Godot | `godot/main` (신설, 동결) | `godot/`, Godot 전용 docs | — |
-| Unity | `unity/main` (신설) 또는 기존 `codex/unity-mac-20261024` 지정 | `unity/`, Unity 도구·패치 | game.html 등 H5 코드 |
+| Unity | **`unity/main` (10-27 사용자 결정으로 신설)**. 시작점 = `codex/unity-mac-20261024` 끝. Codex 전환은 INBOX(main·codex 두 곳)로 요청했고, 확인 전까지는 codex → unity/main 한 방향 fast-forward만 한다 | `unity/`, Unity 도구·패치 | H5 코드 수정. 안에 든 웹 파일은 대조용 사본 |
 
 - 작업 브랜치는 줄기별 접두어를 쓴다. `claude/unity-pc-*`·`codex/unity-*`는 Unity 줄기로만 병합하고, main으로는 병합하지 않는다.
 - `docs/engine/`(이식 보드·명세)는 모든 세션이 공유 폴더에서 읽으므로 당분간 main에 둔다. 코드만 분리한다.
