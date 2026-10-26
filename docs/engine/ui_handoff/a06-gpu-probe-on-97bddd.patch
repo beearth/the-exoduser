@@ -1,0 +1,37 @@
+diff --git a/unity/Assets/Exoduser/Editor/PortVerification.cs b/unity/Assets/Exoduser/Editor/PortVerification.cs
+index a05c5f092..53db785f7 100644
+--- a/unity/Assets/Exoduser/Editor/PortVerification.cs
++++ b/unity/Assets/Exoduser/Editor/PortVerification.cs
+@@ -138,13 +138,31 @@ public static class PortVerification {
+    var p=new PlayerState{MaxHp=526,MaxMana=330,MaxStamina=240,MaxShield=285};
+    for(int i=0;i<3;i++){
+     p.Hp=i==0?526:i==1?263.9f:0;p.Mana=i==0?330:i==1?82.9f:0;p.Stamina=i==0?240:i==1?180:0;p.Shield=i==0?285:i==1?142.5f:0;
+-    hud.Refresh(p,0,true);var v=hud.Probe(i.ToString());
++    hud.Refresh(p,0,true);
++    if(i==0){
++     Debug.Log("A06_HUD_GPU_DEVICE type="+SystemInfo.graphicsDeviceType+" name="+SystemInfo.graphicsDeviceName+" colorSpace="+QualitySettings.activeColorSpace);
++     try{
++      Debug.Log("A06_HUD_GPU_RGBA hpCorner="+HudProbePixel(hud,"hp",2,2)+" hpCenter="+HudProbePixel(hud,"hp",128,128)+" manaBlue="+HudProbePixel(hud,"mana",80,128)+" staminaGreen="+HudProbePixel(hud,"mana",180,128)+" manaCorner="+HudProbePixel(hud,"mana",253,253));
++     }catch(Exception e){Debug.Log("A06_HUD_GPU_RGBA_READ_ERROR "+e.GetType().Name+" "+e.Message);}
++    }
++    var v=hud.Probe(i.ToString());
+     bool ok=v.cornerTransparent&&(i==0?v.hpRed&&v.manaBlue&&v.staminaGreen:i==1?v.hpUpperEmpty&&v.hpLowerRed&&v.manaUpperEmpty&&v.staminaGreen:v.hpEmpty&&v.manaEmpty&&v.staminaEmpty);
+     if(!ok)throw new Exception("Native HUD GPU pixel mismatch "+JsonUtility.ToJson(v));
+    }
+    Debug.Log("UNITY_HUD_GPU_RESOURCE_MASK_PASS");
+   }finally{hud.Dispose();}
+  }
++ static string HudProbePixel(NativeHud hud,string field,int x,int y){
++  var info=typeof(NativeHud).GetField(field,System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
++  var rt=info==null?null:info.GetValue(hud) as RenderTexture;
++  if(rt==null)throw new Exception("HUD diagnostic target unavailable: "+field);
++  var old=RenderTexture.active;var pixel=new Texture2D(1,1,TextureFormat.RGBA32,false);
++  try{
++   RenderTexture.active=rt;pixel.ReadPixels(new Rect(x,y,1,1),0,0);pixel.Apply();
++   var c=pixel.GetPixel(0,0);
++   return "("+c.r.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.g.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.b.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.a.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+")";
++  }finally{RenderTexture.active=old;UnityEngine.Object.DestroyImmediate(pixel);}
++ }
+  static string MakeScene(){
+   var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+   new GameObject("EXODUSER Native CSharp").AddComponent<NativeGame>();
