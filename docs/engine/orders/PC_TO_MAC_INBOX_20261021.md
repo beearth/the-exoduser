@@ -2,6 +2,15 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 6 — ★★★★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 아래 ★★★★★★(`6c8ed9d91`, patch 13개)를 **이 항목으로 대체**한다(+1커밋, patch +2). main과 Codex 브랜치 두 곳에 같은 내용.
+
+- **대상 SHA: `9ec4a3274`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `6c8ed9d91` 위에 A26 빌드 종류(full/demo/bic/ea) 1커밋: `BuildFlavor` 정의(선택 순서 `--unity-build-flavor` > 임베드 `build_flavor.json`(저장소 값 full) > full), 로비 좌상단 4줄·우하단 빌드 라벨(웹 `index.html` `_LOBBY_BUILD`), A22 클리어 패널의 데모 종료 문구. 레벨 상한·금지 어픽스·합성 허용·로그인·데모 입장은 정의만(미이식). 문서 `docs/engine/UNITY_A26_BUILDFLAVOR_20261026.md`.
+- **Codex 적용 patch 15개 — 이 순서로**: 1 U04B → 2 U08 nativegame → 3 U08 pausemenu → 4 U05 → 5 A07B nativegame → 6 A07B pausemenu → 7 A13 → 8 A14 → 9 A20 → 10 A21 → 11 A22 → 12 A23 → 13 A24 → **14 `A26_nativelobby_buildlabels`**(NativeLobby.cs 라벨 호출 1줄) → **15 `A26_portverification_flavor`**(Editor/PortVerification.cs: `-flavor <name>` 인자로 빌드 전 `build_flavor.json` 기록, `finally`에서 원복. 잘못된 이름은 빌드 실패·파일 불변).
+- **PC 검증**(6000.6.7f1): 15개 apply·역순 `-R` 통과, 되돌린 뒤 `NativeGame*`·`NativePauseMenu*`·`NativeLobby.cs`·`PortVerification.cs` 변경 0. Win64 errors 0·warning CS 0. `--unity-overlay-capture flavor` full/demo/ea/bic 각 종료 0. `-flavor demo` 빌드 후 json이 full로 복원됨 확인.
+- 다음 예약: PC A16 키 바인딩 patch 2개(NativePauseMenu·NativeGame)는 16·17번. MAP3D 별도 브랜치 `e64e57889`(변화 없음).
+
 ## 2026-10-26 밤 5 — ★★★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
 
 > 아래 ★★★★★(`f9636b021`, patch 12개)를 **이 항목으로 대체**한다(+1커밋, patch +1). INBOX는 main과 `codex/unity-mac-20261024` 두 곳에 같은 내용으로 올린다.
