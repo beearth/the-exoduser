@@ -57187,3 +57187,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac ar ATG 배경폭 RETOUCH 후보: 웹 동일 cue22와 비교해 자막 글자 폭은 근접하지만 Unity 검정 배경은 84% cue 영역 전체를 채웠다. `NativeArabicCaptionOverlay`의 투명 84% 위치 영역 안에 내용 폭 Label을 가운데 두고 배경은 Label에만 적용; 가로 padding 8→2px, alpha0.46 유지. 32큐 원문·시각·방향 메타와 다른28언어는 불변. 실제 새 ARM64 Player 화면 판정은 빌드 후 기록한다. [원인·계약](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
 
 2026-10-26 Mac ar 32큐 검수 경로: 기존 preview 플래그에서만 시작 언어 ar 지정. 일반 실행 ko/다른28언어는 불변, 실제 전큐 판정은 새 HEAD Player 대기. [기록](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
+
+2026-10-26 Mac ar ATG 배경폭 RETOUCH 인수: source9cc2759c1 Unity6000.6.7f1 ARM64 정상 빌드 오류0. 84% 투명 영역의 내용 폭 Label에만 alpha0.46 배경, padding 좌우2px. 격리 Player 720p 긴 cue21·웹 동일 cue22·짧은 cue29·라틴 cue32, 1080p 긴 cue21·cue28+메뉴 및 ar→ko 화면 PASS. 원문JSON SHA 불변. 이번 빌드의 32/32 재관측·1080 전수·웹 픽셀 동일성은 미판정; 기존 cdc50a1e6 32/32 결과와 구분. QA는 `--unity-frontend-review --unity-arabic-caption-preview -output 새절대경로` 조합이며 preview 단독은 저장 격리 아님. 일반 실행 채택0. [빌드·화면·격리 조건](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).

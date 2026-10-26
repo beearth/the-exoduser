@@ -61,4 +61,4 @@ PNG는 `qa-followup/`에 보존했다. 이 판정은 cue20의 720p 가시 결과
 
 ## 2026-10-26 아랍어 후보 경계
 
-이 문서의 `ko/en/id/ms/ar` 일반 IMGUI 기본·복귀 계약은 현재도 유지된다. `--unity-arabic-caption-preview`가 있는 QA 실행에서만 `ar` 세계관 본문을 별도 ATG RenderTexture로 합성한다. 최종 `cdc50a1e6` ARM64 720p에서 32큐 전부의 가시 문구·결합·순서·문장부호·한 줄/잘림 없음과 `ar→ko` 복귀를 확인했다. cue32(0-based 31)의 강제 RTL 오류는 LTR 지정으로 수정했다. 1080p는 cue20 대표 화면만 확인했으며 일반 실행으로 채택하지 않았다. [별도 후보 기록](UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
+이 문서의 `ko/en/id/ms/ar` 일반 IMGUI 기본·복귀 계약은 현재도 유지된다. `--unity-arabic-caption-preview`가 있는 실행에서만 `ar` 세계관 본문을 별도 ATG RenderTexture로 합성한다. `cdc50a1e6` ARM64 720p에서 32큐 전부의 가시 문구·결합·순서·문장부호·한 줄/잘림 없음과 `ar→ko` 복귀를 확인했다. cue32(0-based 31)의 강제 RTL 오류는 LTR 지정으로 수정했다. 최신 `9cc2759c1`에서는 내용 폭 배경으로 바꾸고 720p 긴·짧은 대표 큐, 1080p 긴 대표 큐·메뉴·`ar→ko`를 검수했다. 최신 빌드의 32큐 전수·1080p 전수는 주장하지 않으며 일반 실행으로 채택하지 않았다. QA 저장 격리에는 frontend-review와 새 절대 `-output` 경로를 함께 쓴다. [별도 후보 기록](UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).

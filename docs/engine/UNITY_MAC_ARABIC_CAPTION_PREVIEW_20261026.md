@@ -2,7 +2,7 @@
 
 ## 범위와 현재 판정
 
-Mac `codex/unity-mac-20261024`의 `ar` 세계관 자막만 별도 렌더 후보로 연결했다. **`--unity-arabic-caption-preview`를 지정한 QA 실행에서만** UI Toolkit Advanced Text Generator(ATG) 패널을 만든다. 일반 실행의 `ar` 및 다른 28언어는 기존 IMGUI 경로 그대로다. 최종 `cdc50a1e6` ARM64 Player에서 32큐 전체의 순서·원문·가시 결합·문장부호·한 줄 배치·잘림 없음과 cue32 `EXODUSER.` LTR을 확인했다. 기본 실행으로는 승격하지 않는다.
+Mac `codex/unity-mac-20261024`의 `ar` 세계관 자막만 별도 렌더 후보로 연결했다. **`--unity-arabic-caption-preview`를 지정한 실행에서만** UI Toolkit Advanced Text Generator(ATG) 패널을 만든다. 일반 실행의 `ar` 및 다른 28언어는 기존 IMGUI 경로 그대로다. `cdc50a1e6` ARM64 Player에서 32큐 전체의 순서·원문·가시 결합·문장부호·한 줄 배치·잘림 없음과 cue32 `EXODUSER.` LTR을 확인했다. 최신 `9cc2759c1`은 배경폭을 줄이고 720/1080p 대표 화면을 검수했다. 저장 격리에는 아래 세 가지 QA 인자를 함께 사용한다. 기본 실행으로는 승격하지 않는다.
 
 원본 웹은 `index.html`의 `#worldIntroVideo[data-subtitle-language="ar"]::cue`에 `Noto Naskh Arabic`을 지정하고, `world-intro-subtitles.js`가 `VTTCue` 가운데 정렬·폭84%·아래쪽 선을 사용한다. Unity 6000.6.7f1의 [Advanced Text Generator](https://docs.unity3d.com/kr/6000.0/Manual/UIE-advanced-text-generator.html)는 HarfBuzz/ICU/FreeType 기반 복합 문자·RTL 경로다. 문자열을 역순으로 만들거나 자막 JSON을 고치지 않았다.
 
@@ -102,4 +102,24 @@ Naskh 단독 cmap은 현행 `ar` 32큐의 공백 외 고유 46문자 중 38문�
 
 원본 웹의 `#worldIntroVideo::cue`는 `background:transparent`이고 `world-intro-subtitles.js`는 `VTTCue.size=84`, 가운데 정렬, `line=-3`을 지정한다. 웹 `web-ar-cue20-720p.png`는 파일 이름과 달리 원문이 cue22 `الجحيم لا يسأل من أي عصر جئت.`인 화면이다. 동일 문장의 Unity `atg-final-cue22.jpg`에서 글자 본체 폭은 근접하지만, Unity의 검정 배경은 좌우 8% 안쪽 전체를 채운다. 이 차이는 글꼴이나 원문이 아니라 `NativeArabicCaptionOverlay`가 위치용 84% 폭 Label 자체에 배경색을 준 구조에서 생겼다.
 
-수정 후보는 투명한 84% `ArabicWorldCaptionArea`를 기존 좌우8%·하단18%에 두고, 그 안에서 내용 폭 Label을 중앙 정렬한다. Label `maxWidth=100%`로 원래 84% 최대 줄바꿈 한계를 지키며, 배경색은 Label에만 둔다. 가로 padding은 각8→2px, 세로 padding은 각2px을 유지한다. 배경 alpha0.46, 글꼴·폰트 크기·원문·cue start/end·RTL/LTR 판단·RenderTexture 합성은 변경하지 않는다. 수정 전 원본과 문서 SHA 백업은 `_out/UNITY-MAC-AR-20261026/background-retouch-backup-112740f8c/`에 있다. **이 단락은 소스 후보 설명이며 실제 ARM64 화면/빌드 판정 전이다.**
+`9cc2759c1`은 투명한 84% `ArabicWorldCaptionArea`를 기존 좌우8%·하단18%에 두고, 그 안에서 내용 폭 Label을 중앙 정렬한다. Label `maxWidth=100%`로 원래 84% 최대 줄바꿈 한계를 지키며, 배경색은 Label에만 둔다. 가로 padding은 각8→2px, 세로 padding은 각2px을 유지한다. 배경 alpha0.46, 글꼴·폰트 크기·원문·cue start/end·RTL/LTR 판단·RenderTexture 합성은 변경하지 않는다. 수정 전 원본과 문서 SHA 백업은 `_out/UNITY-MAC-AR-20261026/background-retouch-backup-112740f8c/`에 있다.
+
+### `9cc2759c1` 빌드 일치 화면 인수
+
+Unity 6000.6.7f1 `StandaloneOSX` ARM64의 `atg-fit-9cc2759c1-build-receipt.json`은 `Succeeded`, 컴파일 오류0, 2,049,414,412 bytes다. 검수 앱은 `_out/UNITY-MAC-AR-20261026/atg-fit-9cc2759c1-build/EXODUSER-Unity.app`; 빌드된 `NativeArabicCaptionOverlay.cs` SHA256은 `1d57ff8e6ecaf4dbfb2d78aa0d6ee39af832537b2edfcb6c796fb863b019f2f5`이다. 원문 `lobby_frontend.json` SHA256은 위와 같은 `32202897b58d1a1c29e149afaff8b32e9490633a1ae8b2c7350092ac28235562`다.
+
+| 화면 | 같은 빌드의 실제 Player 관측 | 판정 |
+|---|---|---|
+| 720p 긴 cue21 | `atg-fit-720-cue21.jpg` | 아랍어 결합·한 줄·잘림 없음. 검정 배경이 내용 폭을 따른다 |
+| 720p 동일 웹 문장 cue22 | 웹 `web-ar-cue20-720p.png`와 `atg-fit-720-cue22.jpg` | 글자와 배경이 모두 중앙에 모이고 검정 배경이 문장 폭을 따른다. 픽셀 단위 동일성은 주장하지 않는다 |
+| 720p 짧은 cue29 | `atg-fit-720-cue29.jpg` | `الهروب.`의 짧은 배경·한 줄·잘림 없음 |
+| 720p 라틴 cue32 | `atg-fit-720-cue32.jpg` | `EXODUSER.` LTR 유지 |
+| 1080p 긴 cue21 | `atg-fit-1080-cue21.jpg` | 한 줄·잘림 없음, 내용 폭 배경 |
+| 1080p 긴 cue28와 언어 메뉴 | `atg-fit-1080-menu.jpg` | 하단 자막과 우상단 메뉴 동시 표시·겹침 없음 |
+| 1080p `ar→ko` | `atg-fit-1080-ar-to-ko.jpg` | 한국어 기본 자막·메뉴로 복귀, 아랍어 잔상 없음 |
+
+이 수정은 `maxWidth` 84%와 글꼴 크기를 유지해 기존 32큐의 최대 가로 한계를 넓히거나 줄이지 않았다. 새 빌드에서 720p 긴 cue21·cue28, 짧은 cue29, 라틴 cue32와 1080p 긴 cue21·cue28을 대표 확인했다. 앞 절의 `cdc50a1e6` 720p 32/32 가시 PASS는 변경 전 빌드의 근거이며, **`9cc2759c1`에서 32/32를 다시 관측한 기록은 아니다.** 1080p 32큐 전수·밀리초 경계·웹 픽셀 동일성도 미판정이다. 현재 판정은 **플래그 격리 배경폭 RETOUCH 대표 화면 PASS / 일반 실행 채택0**이다.
+
+### QA 저장 경로 격리 조건
+
+`--unity-arabic-caption-preview`는 렌더 경로와 초기 언어만 고른다. **이 플래그 단독 실행은 저장 격리가 아니다.** 검수 명령에는 반드시 `--unity-frontend-review --unity-arabic-caption-preview -output /새로운/절대/경로`를 함께 지정한다. `--unity-frontend-review`가 설정 저장 I/O를 끄고, 캐릭터 목록은 `-output` 하위 `character-roster-v1`로 분리된다. `-output` 누락 시 검수 목록은 fail-closed이며 정상 사용자 파일로 폴백하지 않는다. 이번 720p, 1080p, 1080p 한국어 복귀 실행은 각각 `qa-fit-720-9cc2759c1`, `qa-fit-1080-9cc2759c1`, `qa-fit-1080-ko-9cc2759c1`이라는 새 절대 경로를 사용했다. 일반 사용자 앱과 저장/설정은 건드리지 않았다. 세 Player 로그 `atg-fit-720-player.log`, `atg-fit-1080-player.log`, `atg-fit-1080-ko-player.log`에서 예외·오류 문자열은 없었다.
