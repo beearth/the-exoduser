@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort {
   public InventoryNavigation Navigation {get;private set;}
   public bool ShowingDetails {get{return detailOnly;}}
   public float DetailScrollOffset {get{return detailScroll.y;}}
-  static readonly KeyCode[] inventoryKeys={KeyCode.Tab,KeyCode.Escape,KeyCode.Return,KeyCode.KeypadEnter,KeyCode.LeftArrow,KeyCode.RightArrow,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.Home,KeyCode.End,KeyCode.G,KeyCode.C,KeyCode.PageUp,KeyCode.PageDown};
+  static readonly KeyCode[] inventoryKeys={KeyCode.Tab,KeyCode.Escape,KeyCode.Return,KeyCode.KeypadEnter,KeyCode.LeftArrow,KeyCode.RightArrow,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.Home,KeyCode.End,KeyCode.C,KeyCode.PageUp,KeyCode.PageDown};
   public void SetFocus(bool focus){Navigation.SetFocus(focus);drag=null;dragging=false;}
   public bool PollKeys(int level){
    bool held=Input.GetMouseButton(0)||Input.GetMouseButton(1);foreach(var key in inventoryKeys)held|=Input.GetKey(key);Navigation.ObserveReleased(held);
@@ -16,7 +16,8 @@ namespace Exoduser.UnityPort {
    else if(Input.GetKeyDown(KeyCode.LeftArrow))input=InventoryKey.Left;else if(Input.GetKeyDown(KeyCode.RightArrow))input=InventoryKey.Right;
    else if(Input.GetKeyDown(KeyCode.UpArrow))input=InventoryKey.Up;else if(Input.GetKeyDown(KeyCode.DownArrow))input=InventoryKey.Down;
    else if(Input.GetKeyDown(KeyCode.Home))input=InventoryKey.Home;else if(Input.GetKeyDown(KeyCode.End))input=InventoryKey.End;
-   else if(Input.GetKeyDown(KeyCode.G))input=InventoryKey.SwitchPane;else if(Input.GetKeyDown(KeyCode.C))input=InventoryKey.Details;
+   // A07b: G no longer switches bag/equipment panes; it is left unconsumed so the window layer can treat it as the web forge key.
+   else if(Input.GetKeyDown(KeyCode.C))input=InventoryKey.Details;
    else if(Input.GetKeyDown(KeyCode.PageUp))input=InventoryKey.PageUp;else if(Input.GetKeyDown(KeyCode.PageDown))input=InventoryKey.PageDown;
    else if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter))input=InventoryKey.Accept;
    // The ossuary page has no bag/equipment selection to navigate; only Tab/Esc close it.

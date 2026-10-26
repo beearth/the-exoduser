@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 namespace Exoduser.UnityPort.Core {
  public enum InventoryPane { Bag, Equipment }
+ // SwitchPane (G) was removed in A07b: the web has no keyboard pane switching (G opens the forge). The member stays only so existing NativeGame smoke code compiles; Handle ignores it.
  public enum InventoryKey { Left,Right,Up,Down,Home,End,SwitchPane,Details,PageUp,PageDown,Accept,Close }
  public enum InventoryAction { None,Equip,Unequip,Details,ScrollUp,ScrollDown,Close }
  // Selection uses the actual item grid and shared equipment layout, never list order or IDs.
@@ -23,9 +24,9 @@ namespace Exoduser.UnityPort.Core {
   void SelectFirst(){var items=Items();Select(items.Count>0?items[0]:null);}
   void Position(InventoryItem it,out int x,out int y){if(Pane==InventoryPane.Bag){x=it._gx;y=it._gy;return;}int index=Array.IndexOf(EquipmentOrder,Array.IndexOf(state.Equipped,it));x=index%4;y=index/4;}
   public InventoryAction Handle(InventoryKey key){
+   if(key==InventoryKey.SwitchPane)return InventoryAction.None;
    if(!Focused||WaitingForRelease)return InventoryAction.None;Fence();
    if(key==InventoryKey.Close)return InventoryAction.Close;
-   if(key==InventoryKey.SwitchPane){TrackSelection();Pane=Pane==InventoryPane.Bag?InventoryPane.Equipment:InventoryPane.Bag;var previous=Pane==InventoryPane.Bag?lastBag:lastEquipment;if(InPane(previous))Select(previous);else SelectFirst();return InventoryAction.None;}
    if(!InPane(state.Selected)){SelectFirst();return InventoryAction.None;}
    if(key==InventoryKey.Details)return InventoryAction.Details;
    if(key==InventoryKey.PageUp)return InventoryAction.ScrollUp;if(key==InventoryKey.PageDown)return InventoryAction.ScrollDown;

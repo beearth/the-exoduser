@@ -9,6 +9,8 @@ namespace Exoduser.UnityPort {
     public static class NativePanelTabBar {
         public enum Preset { Settings, Inventory, InventoryOssuary, Forge, Skill, Stat }
         public static event Action<string> Requested;
+        // Lets other window layers (pause menu hotkeys) raise the same request a tab click would.
+        public static void Request(string id){Requested?.Invoke(id);}
         public static readonly string[] Ids={"settings","invPanel","forge","skillPanel","statPanel"};
         static readonly string[] Labels={"설정 [ESC]","인벤토리 [TAB]","대장간 [G]","스킬 [K]","능력치 [J]"};
 

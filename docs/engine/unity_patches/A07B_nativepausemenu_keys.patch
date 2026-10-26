@@ -1,0 +1,39 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativePauseMenu.Keyboard.cs b/unity/Assets/Exoduser/Runtime/NativePauseMenu.Keyboard.cs
+index 305f258..0a03066 100644
+--- a/unity/Assets/Exoduser/Runtime/NativePauseMenu.Keyboard.cs
++++ b/unity/Assets/Exoduser/Runtime/NativePauseMenu.Keyboard.cs
+@@ -14,9 +14,11 @@ namespace Exoduser.UnityPort
+   {
+    bool held=Input.GetMouseButton(0);foreach(var key in menuKeys)held|=Input.GetKey(key);navigation.ObserveReleased(held);
+    if(!navigation.Focused||navigation.WaitingForRelease)return PauseMenuCommand.None;
++   // Web togglePanel: another window's key switches straight to that window (menu items move with the arrow keys only).
++   if(Input.GetKeyDown(KeyCode.Tab)){NativePanelTabBar.Request("invPanel");return PauseMenuCommand.None;}
++   if(Input.GetKeyDown(KeyCode.K)){NativePanelTabBar.Request("skillPanel");return PauseMenuCommand.None;}
+    PauseKey? input=null;
+    if(Input.GetKeyDown(KeyCode.Escape))input=PauseKey.Back;
+-   else if(Input.GetKeyDown(KeyCode.Tab))input=Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift)?PauseKey.Previous:PauseKey.Next;
+    else if(Input.GetKeyDown(KeyCode.UpArrow))input=PauseKey.Up;
+    else if(Input.GetKeyDown(KeyCode.DownArrow))input=PauseKey.Down;
+    else if(Input.GetKeyDown(KeyCode.LeftArrow))input=PauseKey.Left;
+diff --git a/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs b/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
+index 4345728..de64811 100644
+--- a/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
++++ b/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
+@@ -83,7 +83,7 @@ namespace Exoduser.UnityPort
+     if(MenuButton(new Rect(388,348,504,58),T("로비로 돌아가기","Return to lobby"),2,button))return PauseMenuCommand.ReturnLobby;
+     if(MenuButton(new Rect(388,424,504,58),T("게임 종료","Quit game"),3,button))page=PausePage.Quit;
+     GUI.Label(new Rect(364,524,552,58),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),muted);
+-    GUI.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ / Tab 선택 · Enter 확인 · ESC 뒤로","↑↓ / Tab Select · Enter Confirm · ESC Back"),muted);
++    GUI.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리","↑↓ Select · Enter Confirm · ESC Back · TAB Inventory"),muted);
+     return PauseMenuCommand.None;
+    }
+    finally { GUI.matrix=oldMatrix;GUI.color=oldColor;GUI.enabled=oldEnabled; }
+@@ -94,7 +94,7 @@ namespace Exoduser.UnityPort
+    string[] tabs={T("화면","Display"),T("소리","Audio"),T("조작 안내","Controls")};
+    for(int i=0;i<tabs.Length;i++)if(MenuButton(new Rect(340+i*202,174,194,44),tabs[i],i,tab==i?activeTab:tabButton))tab=i;
+    if(tab==0)DrawDisplay(fullscreen);else if(tab==1)DrawAudio();else DrawControls();
+-   GUI.Label(new Rect(348,528,584,56),T("↑↓ / Tab 선택 · ←→ 값 조절 · Enter 확인\n","↑↓ / Tab Select · ←→ Adjust · Enter Confirm\n")+SettingsPersistenceNotice(),muted);
++   GUI.Label(new Rect(348,528,584,56),T("↑↓ 선택 · ←→ 값 조절 · Enter 확인\n","↑↓ Select · ←→ Adjust · Enter Confirm\n")+SettingsPersistenceNotice(),muted);
+    if(MenuButton(new Rect(340,588,288,44),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
+    if(MenuButton(new Rect(652,588,288,44),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
+   }
