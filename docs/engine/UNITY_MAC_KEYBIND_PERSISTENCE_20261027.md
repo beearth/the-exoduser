@@ -1,3 +1,7 @@
+## A05 선택적 완료 표식 후속 — 2026-10-27
+
+기존 schema v2 파일에 선택적 상위 JSON boolean `cinSeen:true`를 완료 때만 기록한다. 부재/false는 인트로를 시작하며 기존 4설정·20동작 양 슬롯·알 수 없는 패드 JSON을 유지한다. `NativeSettingsIoVerification.Run`의 전용 phase는 기존 `write|read`에 `cinematic`을 추가했다. 21/21 Editor PASS, Player 재시작 HOLD. [완료 판정과 격리 영수증](UNITY_MAC_A05_CINSEEN_20261027.md).
+
 # Mac A15/A16 키바인딩 저장 schema v2 후보 — 2026-10-27
 
 ## 범위와 소유

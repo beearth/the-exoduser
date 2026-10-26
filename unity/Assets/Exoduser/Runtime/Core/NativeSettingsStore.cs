@@ -132,11 +132,14 @@ namespace Exoduser.UnityPort.Core
    return TrySave(state,fullscreen,null,out status);
   }
   public bool TrySave(NativeSettingsState state,bool fullscreen,KeyBindings bindings,out NativeSettingsStoreStatus status)
+  { return TrySave(state,fullscreen,bindings,false,out status); }
+  public bool TrySave(NativeSettingsState state,bool fullscreen,KeyBindings bindings,bool cinSeen,out NativeSettingsStoreStatus status)
   {
    if(state==null){status=NativeSettingsStoreStatus.InvalidData;return false;}
    var next=lastSnapshot==null?Capture(state,fullscreen):Copy(lastSnapshot);next.version=Version;
    next.sfxPercent=state.SfxPercent;next.bgmPercent=state.BgmPercent;next.frameCap=state.FrameCap;next.fullscreen=fullscreen;
    if(bindings!=null){next.binds=new string[KeyBindings.Actions.Length];next.binds2=new string[KeyBindings.Actions.Length];for(int i=0;i<KeyBindings.Actions.Length;i++){next.binds[i]=bindings.Primary(KeyBindings.Actions[i]);next.binds2[i]=bindings.Secondary(KeyBindings.Actions[i]);}}
+   if(cinSeen)next.extra["cinSeen"]="true";
    return TrySaveSnapshot(next,out status);
   }
   static bool Same(string[] a,string[] b){if(a==null||b==null)return a==b;if(a.Length!=b.Length)return false;for(int i=0;i<a.Length;i++)if(a[i]!=b[i])return false;return true;}

@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A05 재방문 세계관 스킵
+
+PC 검토 `571a08648`의 최소 hunk를 Mac 설정 v2 선택적 `cinSeen:true`와 정상 앱 첫 진입에 연결했다. 세계관 자연 종료/마지막 cue 또는 실제 5초 hold만 완료 처리한다. 격리 Unity Editor fixture 21/21 PASS·exit0/C# 오류0. 사용자 Player 자연 재시작·실창 입력은 HOLD. [계약·영수증](../UNITY_MAC_A05_CINSEEN_20261027.md).
+
 ## 2026-10-27 Mac 시작 인벤토리 seed QA 교정·전체 Verify
 
 PC-U04b 정본의 기본 장비15+고유 유골함1=전체16, belt null, bag10/어픽스20과 Mac Editor 구형 `worn==15` 충돌을 확인했다. 제품 seed/oracle byte 동일, 집중 정적8/8. `VerifyInventory`의 QA 조건만 분리한 뒤 Unity6000.6.7f1 실제 Metal Editor 전체 `Verify` 단회 exit0/receipt PASS. HUD GPU·Inventory·Lobby 순차 PASS; Player/PC AMD·실기 UI 검사 아님. [슬롯·ID·SHA·로그](../UNITY_MAC_INVENTORY_SEED_QA_20261027.md).

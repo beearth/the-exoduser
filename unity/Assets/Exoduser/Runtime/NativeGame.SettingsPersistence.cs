@@ -8,18 +8,18 @@ namespace Exoduser.UnityPort
  {
   const string SettingsQaProduct="EXODUSER Settings QA",SettingsQaIdentifier="com.fordeargamers.exoduser.settingsqa";
   NativeSettingsStore nativeSettingsStore;NativeSettingsStoreStatus nativeSettingsStatus;
-  string nativeSettingsDirectory="";bool settingsSavePending,settingsScreenPending,settingsHostError;
+  string nativeSettingsDirectory="";bool settingsSavePending,settingsScreenPending,settingsHostError,cinSeen;
   float settingsSaveAt;int settingsScreenGeneration,settingsBindingsVersion;Coroutine settingsScreenOwner;
   bool SettingsQaIdentity {get{return Application.productName==SettingsQaProduct&&Application.identifier==SettingsQaIdentifier;}}
   bool SettingsFixtureRequested {get{return Array.IndexOf(Environment.GetCommandLineArgs(),NativeSettingsStorageScope.FixtureArgument)>=0;}}
   void InitializeNativeSettings()
   {
-   settings=new NativeSettingsState(120);var args=Environment.GetCommandLineArgs();string directory;
+   settings=new NativeSettingsState(120);cinSeen=false;var args=Environment.GetCommandLineArgs();string directory;
    if(SettingsFixtureRequested&&!SettingsQaIdentity){nativeSettingsStatus=NativeSettingsStoreStatus.IoError;return;}
    if(NativeSettingsStorageScope.TryResolve(args,Application.persistentDataPath,out directory,out nativeSettingsStatus)){
     nativeSettingsDirectory=directory;nativeSettingsStore=new NativeSettingsStore(directory,NativeSettingsJsonCodec.Encode,NativeSettingsJsonCodec.Decode,settings,Screen.fullScreen);
     NativeSettingsSnapshot snapshot;bool loaded=nativeSettingsStore.TryLoad(out snapshot,out nativeSettingsStatus);
-    if(loaded&&snapshot!=null){settings.TryRestore(snapshot.sfxPercent,snapshot.bgmPercent,snapshot.frameCap);if(nativeSettingsStatus!=NativeSettingsStoreStatus.Missing){RestoreNativeBindings(snapshot);RequestSettingsFullscreen(snapshot.fullscreen,false);}}
+    if(loaded&&snapshot!=null){string raw;cinSeen=snapshot.extra!=null&&snapshot.extra.TryGetValue("cinSeen",out raw)&&raw=="true";settings.TryRestore(snapshot.sfxPercent,snapshot.bgmPercent,snapshot.frameCap);if(nativeSettingsStatus!=NativeSettingsStoreStatus.Missing){RestoreNativeBindings(snapshot);RequestSettingsFullscreen(snapshot.fullscreen,false);}}
    }
    settingsBindingsVersion=NativeKeyBindInput.Bindings.Version;
    ApplySettingsHostValues();
@@ -35,11 +35,12 @@ namespace Exoduser.UnityPort
    NativeSettingsJsonCodec.ApplyBindings(snapshot,NativeKeyBindInput.Bindings,SupportedNativeBinding);
   }
   void ApplySettingsHostValues(){sound.SetVolumePercent(settings.SfxPercent);lobby.SetStartupSfxPercent(settings.SfxPercent);lobby.SetBgmPercent(settings.BgmPercent);ApplyFrameCap(settings.FrameCap);}
+  void MarkCinematicSeen(){if(cinSeen)return;cinSeen=true;QueueSettingsSave();}
   void QueueSettingsSave(){if(nativeSettingsStore==null)return;settingsSavePending=true;settingsSaveAt=Time.unscaledTime+.25f;}
   void FlushNativeSettings()
   {
    if(nativeSettingsStore==null||!settingsSavePending)return;settingsSavePending=false;
-   NativeSettingsStoreStatus saveStatus;nativeSettingsStore.TrySave(settings,Screen.fullScreen,NativeKeyBindInput.Bindings,out saveStatus);
+   NativeSettingsStoreStatus saveStatus;nativeSettingsStore.TrySave(settings,Screen.fullScreen,NativeKeyBindInput.Bindings,cinSeen,out saveStatus);
    // A rejected initial load leaves the store closed. Preserve its concrete diagnostic.
    if(saveStatus!=NativeSettingsStoreStatus.NotLoaded)nativeSettingsStatus=saveStatus;
    UpdateSettingsPersistenceNotice();
