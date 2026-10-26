@@ -19,13 +19,10 @@ namespace Exoduser.UnityPort {
  [Serializable] public sealed class ForgeRate {public string name;public int pct;public int[] col;}
  [Serializable] public sealed class ForgeCraftSlot {public string key,label,g;}
  [Serializable] public sealed class ForgeCraftDef {public string header,headerGlyph,costLabel,costUnit,tip,empty;public int cost;public ForgeRate[] rates;public ForgeCraftSlot[] slots;}
- [Serializable] public sealed class ForgeAffixDef {public string id,name;public int type;}
- [Serializable] public sealed class ForgeAffixUnit {public string id,unit;}
  [Serializable] public sealed class ForgeDefs {
   public ForgeSource source;public string title,matsLabel,closeLabel;
   public ForgeLoreRun[] lore;public ForgeTabDef[] tabs;public string[] rarityNames,slotKr;public ForgeSlotDef[] slots;
   public ForgeUpgradeDef upgrade;public ForgePotionDef potion;public ForgeSalvageDef salvage;public ForgeRerollDef reroll;public ForgeCrystalDef crystal;public ForgeCraftDef craft;
-  public ForgeAffixDef[] affixes;public ForgeAffixUnit[] affixUnits;
  }
  [Serializable] public sealed class ForgeGlyph {public string n;public int x,y,w,h;public float ox,oy,adv,lw,lh;}
  [Serializable] public sealed class ForgeGlyphFile {public int atlasW,atlasH;public ForgeGlyph[] glyphs;}

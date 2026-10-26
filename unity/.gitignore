@@ -29,3 +29,6 @@
 !/Tools/stat-parity/StatParityTests.csproj
 /Tools/stat-parity/bin/
 /Tools/stat-parity/obj/
+!/Tools/affix-defs-parity/AffixDefsParity.csproj
+/Tools/affix-defs-parity/bin/
+/Tools/affix-defs-parity/obj/

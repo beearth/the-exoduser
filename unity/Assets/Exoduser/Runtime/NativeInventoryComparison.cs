@@ -10,13 +10,12 @@ namespace Exoduser.UnityPort {
  // Hover over a bag item or an equipped slot shows the preview (hover wins over the keyboard/click selection while the pointer is on an item);
  // a bag item with a worn counterpart is shown next to it with the stat differences behind "수치 차이 전체 보기". Values are Unity item data;
  // the CP difference is Unity CalculateStats + InventoryCombatPower with a virtual equip swap; DPS uses the web formula with Unity's attack-speed
- // multiplier. Definitions: affix names/types/units from forge_web.json (no copy), type tables and affix descriptions from item_card_defs_web.json.
+ // multiplier. Definitions: affix names/types/units/descriptions from the shared affix_defs_web.json (AffixDefs), weapon/bow type tables from item_card_defs_web.json.
  // Not ported: relic socket lines (no relic state yet), unique/legendary special text, enhancement transfer note, helmet element rows, junk/lock tags.
  public sealed partial class NativeInventory {
   bool detailOnly;
   [Serializable] sealed class CardTypeDef {public string id,name;public float atkMul,spdMul;}
-  [Serializable] sealed class CardAffixDesc {public string id,desc;}
-  [Serializable] sealed class CardDefs {public CardTypeDef[] wtypes,btypes;public CardAffixDesc[] affixDesc;}
+  [Serializable] sealed class CardDefs {public CardTypeDef[] wtypes,btypes;}
   readonly Dictionary<string,CardTypeDef> cardW=new Dictionary<string,CardTypeDef>(),cardB=new Dictionary<string,CardTypeDef>();
   readonly Dictionary<string,string> affName=new Dictionary<string,string>(),affDesc=new Dictionary<string,string>(),affUnit=new Dictionary<string,string>();
   readonly Dictionary<string,int> affType=new Dictionary<string,int>();
@@ -29,9 +28,8 @@ namespace Exoduser.UnityPort {
   void EnsureCardDefs(){
    if(cardDefsReady)return;cardDefsReady=true;
    var d=JsonUtility.FromJson<CardDefs>(Resources.Load<TextAsset>("Data/item_card_defs_web").text);
-   foreach(var t in d.wtypes)cardW[t.id]=t;foreach(var t in d.btypes)cardB[t.id]=t;foreach(var a in d.affixDesc)affDesc[a.id]=a.desc;
-   var f=JsonUtility.FromJson<ForgeDefs>(Resources.Load<TextAsset>("Data/forge_web").text);
-   foreach(var a in f.affixes){affName[a.id]=a.name;affType[a.id]=a.type;}foreach(var u in f.affixUnits)affUnit[u.id]=u.unit;
+   foreach(var t in d.wtypes)cardW[t.id]=t;foreach(var t in d.btypes)cardB[t.id]=t;
+   foreach(var a in AffixDefs.All){affName[a.id]=a.name;affType[a.id]=a.type;if(!string.IsNullOrEmpty(a.unit))affUnit[a.id]=a.unit;if(!string.IsNullOrEmpty(a.desc))affDesc[a.id]=a.desc;}   // shared table: Data/affix_defs_web.json
   }
   // `--unity-inventory-hover <bag|equip> <index>` / `--unity-inventory-select <bag|equip> <index>` / `--unity-inventory-detail-scroll <px>`: capture entry, NativeGame untouched.
   void ApplyCaptureArgs(){

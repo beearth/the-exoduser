@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort {
   static readonly Rect GridView=new Rect(738,388.4f,676,570);
   const float CX=746,CY=396.4f,CW=650;
   readonly ForgeDefs defs;readonly Dictionary<string,ForgeGlyph> glyphs=new Dictionary<string,ForgeGlyph>();
-  readonly Dictionary<string,ForgeAffixDef> affixById=new Dictionary<string,ForgeAffixDef>();readonly Dictionary<string,string> unitById=new Dictionary<string,string>();
+  readonly Dictionary<string,AffixDef> affixById=new Dictionary<string,AffixDef>();readonly Dictionary<string,string> unitById=new Dictionary<string,string>();
   readonly Dictionary<string,float> gridScroll=new Dictionary<string,float>();float listScroll;
   Font nm,nsk,nskSemi;Texture2D windowBase,plate,iron,atlas;bool ready;
   readonly Dictionary<string,Texture2D> procedural=new Dictionary<string,Texture2D>();
@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort {
    if(defs.tabs.Length!=6||defs.slots.Length!=17)throw new InvalidOperationException("Web forge definition mismatch");
    var gf=JsonUtility.FromJson<ForgeGlyphFile>(Resources.Load<TextAsset>("Data/forge_glyphs").text);
    foreach(var g in gf.glyphs)glyphs[Key(g.n)]=g;
-   foreach(var a in defs.affixes)affixById[a.id]=a;foreach(var u in defs.affixUnits)unitById[u.id]=u.unit;
+   foreach(var a in AffixDefs.All){affixById[a.id]=a;if(!string.IsNullOrEmpty(a.unit))unitById[a.id]=a.unit;}   // shared table: Data/affix_defs_web.json
   }
   static string Key(string s){return s.Replace("️","");}
   public void SetOpen(bool value){Open=value;dragBar=0;}
