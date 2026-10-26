@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort
   public bool OpenCharacterCreation()
   {
    if(!characterWritesAllowed||Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||Characters.Count>=CharacterRoster.Capacity||showLanguages||lobbyQuitPrompt)return false;
-   characterStep=1;characterVisual=0;characterName="";characterError="";return true;
+   characterStep=1;characterName="";characterError="";return true;
   }
   public bool ChooseCharacterVisual(int index)
   {
