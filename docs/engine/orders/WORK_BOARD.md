@@ -26,6 +26,13 @@ Mac A02 자기 큐: 최종 fit `9cc2759c1` 720p cue1–32 전수 실화면 검�
 
 Mac UI 누적 통합 preflight: 최신 PC 전달함 밤11은 기존 18개를 `a48faf9ea` **19개**로 대체한다. Mac `941ee99bc`의 인덱스·제품 파일을 보존한 `_out` 임시 사본 순차 `git apply --check`에서 1 `U04B`, 13 `A24`, 14 `A26_nativelobby_buildlabels`가 FAIL(1·14의 3-way도 충돌), 나머지 16개 PASS*는 실패를 건너뛴 잠정 문맥 결과다. 실제 병합·빌드·schema 변경0. [19개 표·소유/충돌 구역](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). PC 답신 필요: 1번 inventory smoke 갱신 hunk, 13번 Mac `DiagnosticUiEnabled` 보존 기준, 14번 Mac 세계관/ATG 로비에서 build label 삽입점. 선행 충돌 해소 후 2–3번 U08 tab bar를 첫 UI 적용 후보로 재검사한다. A02 최종 fit 32큐 실화면 HOLD와 기존 앱·저장 보존은 유지한다.
 
+Mac UI 1번 U04B 후속: 현재 Mac inventory fixture의 기본 선택 흐름을 보존하고 PC patch가 요구한 `maxMana=Simulation.Player.MaxMana`, `mana=Simulation.Player.Mana` 두 QA 영수증 필드만 `NativeGame.cs`에 적응했다. `-output`/저장 계약·전투 수치 불변. 소스 백업과 독립 diff를 `_out/UNITY-MAC-UI-U04B-20261026/`에 보관했고 [키·시점·검사표](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md)에 기록했다. 수정 소스 임시 사본에서 다음 2→3 U08 tab bar `git apply --check`·임시 적용 2/2 PASS; 제품 적용·빌드·Player0. 13·14는 미해결, A02 fit32 실화면 HOLD 유지.
+
+PC에 답신 필요한 원본 근거 3건:
+1. 원본 `a48faf9ea:U04B_nativegame_inventory_smoke_mana.patch`는 기본 선택 해제 장면을 context로 쓰지만 Mac `NativeGame.cs` inventory smoke에는 그 장면이 없다. Mac은 영수증 두 필드를 같은 생성 지점에 적응했다. 이 스냅샷 시점·키 계약이 PC 의도와 일치하는지 확인 요청.
+2. 원본 `A24_nativegame_areatitle.patch` HUD hunk는 `if(lobby.ActiveCharacterName.Length>0)`을 기대하지만 Mac은 `if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0)`이다. 일반 실행의 진단 배지 숨김을 보존하면서 A24 objective panel을 연결하는 기준 확인 요청.
+3. 원본 `A26_nativelobby_buildlabels.patch`의 `DrawPower(...)` 다음 context는 Mac 로비/세계관·ATG 후속 문맥과 달라 적용되지 않는다. 현재 로비의 선택/캡션 분기를 보존한 build label 호출 삽입 기준점 확인 요청.
+
 일반 사용자 앱38141/48476/52157는 종료하지 않았다. 앞선 격리 검수의 별도 product/id 기록과 구분해, 이번 유효 ATG Player는 제품 ID가 같지만 `--unity-frontend-review`로 설정 I/O를 끄고 새 절대 `-output`으로 캐릭터 저장을 분리했다. 다만 위 플래그 없는 PID1571은 일반 프로필을 읽었을 수 있어 원래 prefs·캐릭터 파일 무접근/무변경은 입증하지 않는다. 첫부팅FPS120/기본값60·60·0/고정60Hz 유지. 웹/Godot/전투save IO·새설정·새팀·자동화·유료생성·PC재가동0.
 
 ### 2026-10-26 Mac→PC 맵 실행 보충안 참조 전달

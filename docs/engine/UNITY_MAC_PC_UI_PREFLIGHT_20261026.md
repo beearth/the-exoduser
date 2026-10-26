@@ -41,3 +41,16 @@
 | PC 신규 파일 | `NativePanelTabBar`, `NativeKeyBindList`, `KeyBindings`, `BuildFlavor`, `NativeAreaTitle`, `NativeLobbyBuildLabels`, `AutoPotion` 등은 Mac 기준에 없음 | PC SHA의 파일·meta·의존성을 정해진 단위별로 인수해야 컴파일 판정 가능 |
 
 Mac 작업 인덱스는 검사 전후 모두 clean, staged diff 동일. 제품 파일·빌드·Player·일반 설정·저장 변경은 0이다. **권장 다음 단위는 1번의 Mac inventory smoke 기준 갱신을 PC와 확정하는 것**이다. 2–3번 U08 tab bar 쌍은 해당 선행 충돌을 해소하면 바로 검사할 수 있는 첫 UI 적용 후보이며, 새 임시 사본에서 1→3 순서를 다시 확인해야 한다. PC 답신 필요 항목은 1번의 갱신 hunk, 13번의 `DiagnosticUiEnabled` 보존 방식, 14번의 build label 삽입 기준점 세 가지다.
+
+## 1번 U04B Mac 기준 적응 — 후속 단위
+
+원격 `main` `d209075ec`의 전달함에는 더 최신 UI 대체 요청이 없고 PC 대상 브랜치도 `a48faf9ea` 그대로다. 1번 원본 patch의 두 변경은 inventory smoke 영수증 생성 직후 `Simulation.Player.MaxMana`·`Simulation.Player.Mana`를 읽어 `maxMana`·`mana`에 담는 것이다. 현재 Mac에는 patch context가 기대하는 기본 선택 해제 장면이 없으므로 **그 장면을 억지로 넣지 않고**, 동일한 영수증 생성 지점과 자료형 선언만 수동 적응했다. fixture의 장착·해제, 화면, `-output` 경로, 설정·캐릭터 저장 계약, 전투 수치는 바꾸지 않았다.
+
+| 영수증 키 | 자료형 | 값/시점 | 출력 위치 |
+|---|---|---|---|
+| `maxMana` | `float` | `SetInventory(true)` 직후, 장착 조작 전 `Simulation.Player.MaxMana` | QA 전용 `--unity-inventory-smoke -output <격리 절대경로>`의 `inventory-smoke.json` |
+| `mana` | `float` | 같은 시점 `Simulation.Player.Mana` | 같은 JSON |
+
+백업: `_out/UNITY-MAC-UI-U04B-20261026/before/NativeGame.cs` SHA256 `17cf4abbdfa6655b2671f97516b7c2d70590630d19df4e3f5616ca4c7a85a558`. 적응 소스 SHA256 `63a119a75c027c74fc90d15166e1646e28c9767ac4def5c82ff7190a51eebc25`, 독립 diff `_out/UNITY-MAC-UI-U04B-20261026/U04B_mac_adapted.patch`. 이번 단위의 제품 변경은 `NativeGame.cs` 두 줄뿐이다. `git diff --check` 통과; Unity 빌드·Player 스모크는 범위 밖이므로 수치의 실제 JSON 관측 PASS는 주장하지 않는다.
+
+적응 소스의 두 파일만 새 임시 사본에 넣고 PC 2 `U08_nativegame_tabbar` → 3 `U08_nativepausemenu_tabbar`를 순서대로 `git apply --check`와 임시 적용했다. **2/2 문맥 PASS**, 세부 `_out/UNITY-MAC-UI-U04B-20261026/u08-preflight.json`. 이 두 patch와 PC 소유 `NativePanelTabBar`는 아직 제품에 적용하지 않았다. 13·14번 충돌은 그대로 미해결이다.

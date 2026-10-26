@@ -57195,3 +57195,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac ar 1080p 짧은 cue 추가: 같은 source9cc2759c1/ARM64 앱의 신규 격리 실행에서 cue26 `من بلغوا ذروة السحر.` 내용 폭 배경·한 줄·잘림 없음 캡처. 중간에 CUA가 플래그 없는 앱 PID1571을 자동 열어 즉시 종료하고 그 화면을 증거 제외; 일반 프로필 읽기 가능성을 기록하며 개인 데이터 무접근/무변경을 주장하지 않는다. [상세](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
 
 2026-10-26 Mac ar A02 전수 게이트: 최종 fit 720p 32큐를 새 Player에서 확인하려 했으나, 동일 제품 ID의 다중 앱과 CUA의 PID·시작 인자↔창 미제공 및 플래그 없는 자동 실행 이력으로 안전한 캡처 대상 확정 불가. 새 Player/빌드0, 기존 앱·개인 저장 접근0. 읽기 전용 JSON32큐와 이전 전수 manifest의 원문/start/end 32×3 일치, 최종 코드 SHA와 기존 빌드 일치, 폭 상한84% 불변·padding8→2 정적 대조. 이 근거를 새 32/32 시각 PASS로 확대하지 않고 일반 ar 채택 HOLD. [관문표](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
+
+2026-10-26 Mac PC UI U04B 첫 적응: 최신 `a48faf9ea` 19patch 중 1번 원본 hunk는 Mac inventory smoke 기본 선택 장면 차이로 충돌. 기존 fixture 흐름을 유지하면서 QA `inventory-smoke.json`에 실제 Player `maxMana`·`mana`를 장착 조작 전 영수증 시점에 기록하는 두 줄만 `NativeGame.cs`에 반영. 2→3 U08 tab bar는 수정 소스 임시 사본에서 문맥 검사·임시 적용 2/2 PASS, 제품 적용0. 13·14 충돌 유지. 빌드·Player0, A02 최종 fit32 HOLD. [키·시점·백업](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
