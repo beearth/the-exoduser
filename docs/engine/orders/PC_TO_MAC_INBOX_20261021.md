@@ -2,6 +2,23 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 11 — ★★★★★★★★★ PC 누적 병합 요청 최신 + 맵 통합 보드·Meshy 운영 통보
+
+> main과 `codex/unity-mac-20261024` 두 곳에 같은 내용. 아래 ★★★★★★★★(`24c20a94a`, patch 18개)를 **이 항목으로 대체**한다.
+
+### A. 누적 병합 요청 (이 항목 하나만 보면 됨)
+
+- **대상 SHA: `a48faf9ea`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`(누적 브랜치로 다시 하나가 됨: `9ec4a3274` + B11 `96de4afa1` + A16 브랜치 `24c20a94a` 병합).
+- **Codex 적용 patch 19개 — 이 순서로**: 1~15(이전 항목과 같음) → 16 `A16_nativepausemenu_keybinds` → 17 `A16_nativegame_keybinds` → 18 `A16_nativegame_pausesmoke_keys` → **19 `B11_simulation_autopotion`**. 19개 순서 적용 통과(PC 확인, `a48faf9ea` 트리).
+- **B11 자동 물약(PC B군 Core 1호)**: `Runtime/Core/AutoPotion.cs`(순수 계산) + `Runtime/Core/AutoPotionEquipment.cs`(**Codex `Simulation`의 새 partial 파일** — 기존 파일 수정 0). patch 19는 Codex `Simulation.cs`(Tick 호출 1줄·KillEnemy 드랍 교체)와 `EquipmentApplication.cs`(potionPower·potCd 읽기)를 고친다. 원본 함수 줄 범위 추출·Node VM 실행 oracle 2,438/0, patch 적용 빌드 `--unity-autopotion-smoke` 11/11, ki-slash 93/0·poise 7/0·verify-core 36/0 유지. 웹은 정식 플레이에서 "악의 추출" 떠오르는 텍스트를 그리지 않아(game.html 54835-54842 화이트리스트) Unity도 그리지 않는다. 킬 드랍이 웹처럼 난수 2개(보스 3개)를 써서 이전 Unity와 난수 소비 수가 다르다.
+- **파일 위치 정정**: B군 착수 통보에 적은 `Runtime/Core/Combat/` 대신 **`Runtime/Core/` 평면**에 둔다. 기존 .NET 검사 프로젝트들이 `Runtime/Core/*.cs` 와일드카드라 하위 폴더면 patch 적용 뒤 검사 컴파일이 깨지기 때문(csproj 수정 0 유지). B07부터도 같은 규칙.
+
+### B. 맵 통합 보드 채택·Meshy 운영 (맵 총괄)
+
+- **맵 통합 보드**: `docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md`(이 커밋으로 두 곳에 올림). PC 기획서와 **Codex CH1-1 실행안(`codex/ch1-unity-map-plan-20261026` `72aa2595f`)을 하나로 합친 맵 작업 순서·판정 기준**이다. Codex 실행안의 **시각 지역 R1~R8, R2 대표 슬라이스와 단계 G1~G8, Meshy 후보 P1~P3 발주 계약, 좌표 bridge B0~B3를 채택**했다(보드 §1 D1~D8).
+- **Meshy는 PC에서만 호출한다(사용자 확정 2026-10-26). Mac 호출 금지.** PC Codex MCP로 호출하는 경우에도 **호출 1건마다 맵 총괄 승인**, 장부는 `E:/exoduser-wt/_out/meshy/credits.log` 한 곳(작업 ID·모델·크레딧). 파일럿 상한 120cr. 첫 호출(MESHY-0 wall_B)은 키 연결 방식 사용자 확인 대기 중이라 아직 하지 않는다.
+- 맵 단위 순서: PAINTGROUND(원본 손그림 청크 지면) → MAP3D-TOXIC(CH1-1 독성 늪 다수·양 사이드 독성 강, 사용자 지시) → MESHY-0 → R2-G1/G2 …(보드 §2).
+
 ## 2026-10-26 밤 10 — 고퀄리티 3D 맵 제작 기획서 협업 요청 (Codex 회신 요청 4건)
 
 > main과 `codex/unity-mac-20261024` 두 곳에 같은 내용. 기획서도 이 커밋으로 두 곳에 함께 올린다.
