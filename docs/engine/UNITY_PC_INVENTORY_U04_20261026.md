@@ -52,7 +52,7 @@
 | R-6 | 슬롯 아이콘 선명도 | 웹 아이콘 소스가 더 선명, 슬롯 안쪽 회색 면 톤 미세 차이 |
 | R-7 | 아이템 테두리 둥근 모서리 | 모서리 3px 근사(RoundBox) |
 | R-8 | 오른쪽 패널 글로우·그라디언트 톤 | 웹 값이 잘려(truncated) 근사값 사용 |
-| R-9 | 열 때 첫 가방 아이템이 자동 선택됨 | `InventoryNavigation.Open`(Codex 키보드 내비 설계). 웹은 선택 없음이라 오른쪽 패널이 기본 상태 대신 상세로 열림 — 총괄 판단 필요 |
+| R-9 | ~~열 때 첫 가방 아이템이 자동 선택됨~~ **해결(PC-U04-INTEG)** | 웹 `openPanel`이 열 때 `INV.selected=null`(game.html:44052). `InventoryNavigation.Open()`을 선택 없음으로 바꿨고, 키보드 첫 입력이 그리드 첫 칸을 선택한다 |
 | R-10 | 쓰레기 지정된 아이템의 표시 | 웹 표현 미확인, Unity는 표시 없음(정렬 순서에만 반영) |
 
 ## 미이식
@@ -66,3 +66,27 @@
 | 유물 홈 수치 | 0 / 0 고정 |
 | 악의 수치 | 웹 캡처값 1000 고정 표기 (Unity 재화 연동 없음) |
 | 마우스 오버 비교 미리보기(웹 `inv-hover-preview`) | 없음 |
+
+## PC-U04-INTEG (2026-10-26)
+
+전체총괄 배정(사용자 확정 "UI는 일단 그대로 이식"). Codex의 양측 도킹 배치(UNITY_UI_COMPOSITION_20261024)는 웹 배치로 대체한다.
+
+| 항목 | 결과 |
+|---|---|
+| merge | 최신 `origin/codex/unity-mac-20261024`(f357dc3a4)와 `claude/unity-pc-stat-parity-20261026`(1c270003a)를 merge(rebase 아님). 충돌 0 |
+| R-9 | `Core/InventoryNavigation.cs` `Open()` = `Select(null)`, 가방 pane, fence. 검사 `Tools/inventory-navigation` 갱신(열 때 null, 첫 Right에 그리드 첫 칸) |
+| .NET | inventory-navigation 34/34, inventory-oracle 909/0, stat-parity 2/2 |
+| Windows 빌드 | Unity 6000.4.8f1 Win64 `passed:true, errors:0` |
+| 스모크 | `--unity-inventory-smoke` 1회. 동작 필드는 이전과 같고 `resumed`만 false→true(`NativeGame.cs` Running 조건의 포커스 상태, 선택 상태와 무관, 원인 미확인). 스모크 뒤 메뉴 대기로 프로세스가 스스로 끝나지 않아 240초에 종료 |
+| 비교 | `unity_pc_win_refs/inventory_integ.jpg`(왼쪽 웹, 오른쪽 Unity, 수치 차이=무작위 롤). 1x 크롭 3장은 `E:/exoduser-wt/_out/pc-u04-integ/cmp/` |
+| 판정 | 열자마자 오른쪽 패널이 웹과 같은 기본 상태, 가방 선택 표시 없음. 창·탭·슬롯 틀은 같은 게임으로 보임 |
+
+INTEG 뒤 남은 미세 차이(이번 범위 밖, 수치·아이템 배치는 무작위 롤이라 제외):
+
+| 번호 | 차이 |
+|---|---|
+| R-11 | 기사 그림이 웹보다 어둡고 채도가 낮다. 웹 발밑 타원 글로우가 없다 |
+| R-12 | 가방 아이템 이름 줄 색: 웹 초록 계열, Unity 회색 |
+| R-13 | 가방 오른쪽에 Unity만 세로 스크롤바가 보인다 |
+| R-14 | 오른쪽 패널 설명문 줄바꿈(웹 두 줄, Unity 한 줄), "장착 목록" 아래 구분선이 Unity에서 희미함 |
+| R-15 | 머리줄 전투력 숫자·아이콘이 웹보다 작다, 하단 현황 줄 간격 미세 차이 |

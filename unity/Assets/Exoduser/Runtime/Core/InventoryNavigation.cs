@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort.Core {
   public void Fence(){WaitingForRelease=true;}
   public void SetFocus(bool focus){Focused=focus;Fence();}
   public void ObserveReleased(bool held){if(Focused&&!held)WaitingForRelease=false;}
-  public void Open(){if(!state.Owns(state.Selected)){Pane=InventoryPane.Bag;SelectFirst();}else TrackSelection();Fence();}
+  public void Open(){state.Select(null);Pane=InventoryPane.Bag;Fence();}
   public void TrackSelection(){if(!state.Owns(state.Selected)){state.Select(null);return;}Pane=state.Bag.Contains(state.Selected)?InventoryPane.Bag:InventoryPane.Equipment;if(Pane==InventoryPane.Bag)lastBag=state.Selected;else lastEquipment=state.Selected;}
   bool InPane(InventoryItem it){return it!=null&&(Pane==InventoryPane.Bag?state.Bag.Contains(it):Array.IndexOf(state.Equipped,it)>=0);}
   List<InventoryItem> Items(){var result=new List<InventoryItem>();if(Pane==InventoryPane.Bag){result.AddRange(state.Bag);result.Sort((a,b)=>{int y=a._gy.CompareTo(b._gy);return y!=0?y:a._gx.CompareTo(b._gx);});}else foreach(int i in EquipmentOrder)if(state.Equipped[i]!=null)result.Add(state.Equipped[i]);return result;}
