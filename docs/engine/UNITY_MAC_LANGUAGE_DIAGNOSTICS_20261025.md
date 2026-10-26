@@ -17,3 +17,5 @@
 실제 TTF `unity/Assets/Exoduser/Resources/Art/fonts/NanumMyeongjo-Regular.ttf`는3,058,408 bytes/SHA256 `7ed9e8653a8ed04285d51dc343ffea6eb3d9c73afc27383ea8929ee4ffd03205`이며 cmap에 우크라이나어 자막의 ї(U+0457)·є(U+0454)·і(U+0456) 세 문자가 없다. 로컬 Resources 폰트6종에서도 세 문자의 대안을 찾지 못했다. 이는 폰트 테이블 범위 확인이며 Unity 실제 렌더/자동 fallback 또는 shaping 결함을 확정한 결과가 아니다. 다음 작은 인수 범위는 이3문자의 실제 자막 표시 확인이다. 신규 폰트 취득·제품 변경·추가 Unity 실행은 아직 하지 않았다.
 
 2026-10-26 후속: 위 마지막 문장은 당시 상태다. 공식 Noto Serif+OFL을 인수하고 `uk` 세계관 자막 전용 스타일을 연결했다. 현재 구현·SHA·cmap·컴파일 및 실제 화면 미검증 경계는 [자막 글꼴 지원](UNITY_SUBTITLE_FONT_COVERAGE_20261025.md#2026-10-26-우크라이나어-자막-전용-글꼴-인수)에 기록했다.
+
+2026-10-26 새 Player 후속: 빌드 소스 HEAD `207ffc8bf`에서 실제 `є`/`і` PNG와 `ї` CUA 화면을 확인했다. 세 문자의 현재 좁은 관측과 전체 자막·OS 마우스 미확인 경계는 [실행본 영수증](UNITY_MAC_HEAD_PLAYER_20261026.md)에 기록했다.

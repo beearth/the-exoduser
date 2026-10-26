@@ -19,3 +19,5 @@
 ## 검수 경계
 
 변경 전 원본 파일·HEAD·INDEX 항목과 관련 문서 검색 결과는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-STATUS-BLEND-20261026/`에 별도 보존했다. 코드 변경 전 다른 작업자의 tracked 변경은 없었다. 현재 여러 이전 Unity Player가 실행 중이어서 사용자 앱을 종료하거나 기존 빌드를 덮어쓰지 않았다. 새 720p/1080p Player 캡처와 실제 시각 판정은 독점 실행 가능 여부 확인 뒤 기록한다. 기존 캡처는 변경 전 근거이며 변경 후 합격 증거가 아니다.
+
+2026-10-26 후속: 최신 HEAD `207ffc8bf`로 만든 새 Player의 `status-world.png`에서 우측 상단 텍스트와 월드 위의 약한 배경을 확인했다. 이것은 한 정상 화면의 최소 시각 확인이며 720p/1080p 전수·수치 픽셀 측정·게임 전체 HUD 판정은 아니다. [빌드 출처](UNITY_MAC_HEAD_PLAYER_20261026.md).

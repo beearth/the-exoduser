@@ -15,3 +15,5 @@
 변경 파일은 unity/Assets/Exoduser/Runtime/NativeLobby.cs다. SelectPreview/EnterNativeTest 메서드와 CLI fixture 호출은 보존한다. 세이브 읽기·쓰기, 캐릭터 저장 정책, 영상·음원·언어 목록·하단 HUD는 변경하지 않는다. 이 안내를 숨긴 것이 전투 진행 저장 이식 완료를 의미하지 않는다.
 
 검증: 지정 부모 소스에 대한 git apply --check 통과. 원본 웹 및 Unity 코드를 직접 대조했다. 자막 글꼴 변경 위에 충돌 없이 통합했고, `NativeLobby`의 `diagnosticPreview` 조건·기존 `EnterSelectedCharacter`/`SelectPreview` 호출·우크라이나어 자막 선택식을 소스에서 확인했다. Unity 6000.6.7f1 C#9/Roslyn4.10 기존 Runtime+Editor 76소스 정적 컴파일 종료 코드 0, 오류 0, 기존 직렬화 필드 경고 18건. 일반 경로는 옵션 없을 때 해당 버튼과 안내를 그리지 않으며, 명시 옵션 경로에서만 기존 두 요소를 그린다. 새 일반 로비/검수 옵션의 실제 Player 렌더·OS 입력은 미검증이다.
+
+2026-10-26 후속: HEAD `207ffc8bf` 신규 일반 Player의 `lobby-normal.png`에서 버튼·안내가 보이지 않는 것을 실제 화면으로 확인했다. 옵션을 넣은 검수 실행의 표시·클릭은 아직 미검증이다. [출처·검수](UNITY_MAC_HEAD_PLAYER_20261026.md).

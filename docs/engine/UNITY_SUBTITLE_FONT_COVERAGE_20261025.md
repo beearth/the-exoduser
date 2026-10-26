@@ -83,3 +83,5 @@ NativeLobby의 현재 font를 유지한 상태에서 FR 악센트 및 UK/JA/TH/A
 | 코드 정적 검증 | Unity 6000.6.7f1 C#9/Roslyn4.10 기존 Runtime+Editor 76소스 컴파일 오류 0; 스타일 선택 분기·높이/그리기 동일 스타일·`uk→ko` 원본 객체 반환 정적 확인 |
 
 새 Unity Player 실행·실제 glyph 픽셀·폰트 import·런타임 객체 동일성은 아직 검증하지 않았다. 기존 29언어 전체의 shaping/RTL 판정도 유지한다. `uk→ko` 동일 객체는 소스 선택식으로 확인한 계약이며 Player 관측 결과로 승격하지 않는다.
+
+2026-10-26 후속: HEAD `207ffc8bf`로 새로 빌드한 Mac Player의 실제 세계관 자막에서 우크라이나어 `є`/`і`를 PNG로, `ї`를 CUA 화면으로 확인했다. 해당 한 cue의 `ї` 로컬 PNG는 저장되지 않았으며 전체32큐/다른 언어/`uk→ko` 런타임 객체 동일성은 검증하지 않았다. [새 Player 영수증](UNITY_MAC_HEAD_PLAYER_20261026.md).

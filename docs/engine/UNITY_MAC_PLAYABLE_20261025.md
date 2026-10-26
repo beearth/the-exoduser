@@ -1,5 +1,7 @@
 # Mac 현재 조작 가능한 누적 실행본 — 2026-10-25
 
+2026-10-26 최신 HEAD `207ffc8bf`에서 직접 빌드한 일반 ARM64 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HEAD-207FFC8-20261026/build/EXODUSER-Unity.app`이다. 소스/Player 해시·우크라이나어 실제 자막·일반 로비 진단 버튼 숨김·우측 상태 배경의 좁은 검수와 미확인 항목은 [최신 HEAD 실행본](UNITY_MAC_HEAD_PLAYER_20261026.md)에 기록했다. 아래 실행본 명칭과 SHA는 각 시점의 인수 이력이다.
+
 최신 준비된 일반 실행본: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INTRO-SILENCE-20261026/build-release/EXODUSER-Unity.app` · source `b4560e63adc28b2f0445e84318131adf3f7ffc1a` · ARM64/오류0. FDG→실버테일 타이틀→게이트 대기는 원본대로 무음이며 입장 뒤 원본 게이트 음원·BGM과 World 음성이 복귀한다. 격리 Player31/31을 인수했다. 기존 설정 저장·소지품 안내·첫2실습·world-blend HUD를 포함한다. [이번 인수](UNITY_MAC_INTRO_SILENCE_20261026.md) / [영수증](UNITY_MAC_INTRO_SILENCE_ACCEPTANCE_20261026.json).
 
 현재 열려 있던 사용자 제품은 world-blend source7d5200ca6 PID52157이며 기존38141/48476도 보존했다. 새 일반본으로 자동 교체/재시작하지 않았다. 아래10/25~10/26 실행·인수 기록은 당시 이력이다. [최종 HUD 상태](UNITY_MAC_HUD_BLEND_20261026.md).
