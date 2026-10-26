@@ -77,7 +77,14 @@ namespace Exoduser.UnityPort
    caption.style.display=visible?DisplayStyle.Flex:DisplayStyle.None;
    if(!visible)return;
    if(caption.text!=lobby.SubtitleText)caption.text=lobby.SubtitleText;
+   caption.languageDirection=ContainsArabicScript(lobby.SubtitleText)?LanguageDirection.RTL:LanguageDirection.LTR;
    caption.style.fontSize=Mathf.Clamp(Screen.height*.054f,32f,50f);
+  }
+
+  static bool ContainsArabicScript(string text)
+  {
+   for(int i=0;i<text.Length;i++)if(text[i]>='\u0600'&&text[i]<='\u06ff')return true;
+   return false;
   }
 
   void OnDestroy()

@@ -2,7 +2,7 @@
 
 ## 범위와 현재 판정
 
-Mac `codex/unity-mac-20261024`의 `ar` 세계관 자막만 별도 렌더 후보로 연결했다. **`--unity-arabic-caption-preview`를 지정한 QA 실행에서만** UI Toolkit Advanced Text Generator(ATG) 패널을 만든다. 일반 실행의 `ar` 및 다른 28언어는 기존 IMGUI 경로 그대로다. 본 후보는 실제 ARM64 Player의 대표 프레임에서 결합·RTL을 확인했으나, 32큐 전체와 마지막 영문 cue31의 실제 화면은 미확인이다. 기본 실행으로 승격하지 않는다.
+Mac `codex/unity-mac-20261024`의 `ar` 세계관 자막만 별도 렌더 후보로 연결했다. **`--unity-arabic-caption-preview`를 지정한 QA 실행에서만** UI Toolkit Advanced Text Generator(ATG) 패널을 만든다. 일반 실행의 `ar` 및 다른 28언어는 기존 IMGUI 경로 그대로다. 본 후보는 실제 ARM64 Player의 대표 프레임에서 결합·RTL을 확인했으나, 32큐 전체와 마지막 영문 cue32(0-based index31)의 실제 화면은 미확인이다. 기본 실행으로 승격하지 않는다.
 
 원본 웹은 `index.html`의 `#worldIntroVideo[data-subtitle-language="ar"]::cue`에 `Noto Naskh Arabic`을 지정하고, `world-intro-subtitles.js`가 `VTTCue` 가운데 정렬·폭84%·아래쪽 선을 사용한다. Unity 6000.6.7f1의 [Advanced Text Generator](https://docs.unity3d.com/kr/6000.0/Manual/UIE-advanced-text-generator.html)는 HarfBuzz/ICU/FreeType 기반 복합 문자·RTL 경로다. 문자열을 역순으로 만들거나 자막 JSON을 고치지 않았다.
 
@@ -14,7 +14,7 @@ Mac `codex/unity-mac-20261024`의 `ar` 세계관 자막만 별도 렌더 후보�
 | 진입 | `NativeLobby.Initialize`가 조건 충족 시 `NativeArabicCaptionOverlay`를 추가·초기화 |
 | 표시 | `WorldIntro`, 언어 `ar`, `SubtitleText.Length>0`, 패널 `Ready`일 때만 IMGUI 자막을 건너뛰고 ATG RenderTexture를 영화 위에 합성. 나머지는 기존 IMGUI 본문/그림자 |
 | 입력 | 기존 `LobbySubtitleData`의 `SubtitleText` 원문 그대로 Label에 전달. 문구·cue start/end·32큐·영상/음향 계약 변경 없음 |
-| 조형 | `Label.languageDirection=RTL`, `unityTextGenerator=Advanced`, 동적 `ArabicCaptionNaskhDynamic` FontAsset |
+| 조형 | `unityTextGenerator=Advanced`, 동적 `ArabicCaptionNaskhDynamic` FontAsset. 본문에 U+0600–U+06FF 아랍 문자가 있으면 `languageDirection=RTL`, 없으면 LTR |
 | 배치 | 패널 전체 화면 크기 RenderTexture, 본문 좌우 각8%·하단18%, 가운데 정렬, 폰트 크기 `Clamp(Screen.height×0.054,32,50)`px, 본문 색 `(0.933,0.898,0.835)`, 검정 배경 alpha0.46 |
 | 폰트 | `Resources/Art/fonts/NotoNaskhArabic-Regular.ttf`, Noto Naskh Arabic Regular 2.021, 247,336 bytes, SHA256 `6f0a92031367b2f5a2078fe9d24f3433122b61a0bad57c423aad8f3c39aa2e6e` |
 | 라이선스 | 같은 폴더 `NotoNaskhArabic-OFL.txt`, SIL OFL 1.1, SHA256 `a7a5a25eb188bf1cd96982030d53e23c33485c69b1044a562254226857ee13af` |
@@ -35,15 +35,21 @@ Naskh 단독 cmap은 현행 `ar` 32큐의 공백 외 고유 46문자 중 38문�
 | ar cue20 1080p | `atg-ar-cue20-1080p.png` | 같은 원문 한 줄·잘림 없음 |
 | 언어 메뉴 720p | `atg-ar-menu-720p.png` | 우상단 메뉴와 하단 자막 동시 표시·겹침 없음 |
 | `ar→ko` 720p | `atg-ko-return-720p.png` | 한국어 기본 IMGUI 자막 복귀·아랍어 잔상 없음 |
-| 마지막 영문 cue31 | 웹 `web-ar-cue31-720p.png`, Unity ATG 화면 PNG 없음 | `EXODUSER.`의 실제 Unity 폴백 결과 미확인 |
+| 마지막 영문 cue32(0-based index31) | 웹 `web-ar-cue31-720p.png`, Unity ATG 화면 PNG 없음 | `EXODUSER.`의 실제 Unity 폴백 결과 미확인 |
 
 초기 글꼴만 IMGUI에 바꾼 `candidate-ar-visible-720p.png`는 글자 결합/순서 결함이 남았다. 해당 경로는 제품 코드에서 철회했다. ATG 첫 자산 빌드는 FontAsset material/atlas 서브자산 누락으로 Player `TextUtilities.GetTextCoreSettingsForElement` NullReferenceException이 났다. FontAsset material/atlas를 자산에 포함해 재빌드한 뒤 예외가 사라졌다. 패널을 화면에 직접 출력하면 기존 IMGUI 영상에 가려졌고, 별도 투명 RenderTexture 합성으로 실제 화면 표시를 확인했다. 이 실패·수리 단계 로그와 최종 `atg-composite-build-receipt.json`은 같은 검수 폴더에 있다.
 
 ## 남은 gate
 
-1. cue31 `EXODUSER.`를 QA Player에서 실제 화면으로 확인하고 Latin fallback의 글자·순서·폭을 웹과 비교한다.
+1. cue32(0-based index31) `EXODUSER.`의 LTR 수정본을 새 QA Player에서 확인하고 Latin fallback의 글자·순서·폭을 웹과 비교한다.
 2. 32큐 전체에서 8개 Naskh 단독 누락 영향 큐와 다중 행·문장부호 배치를 확인한다.
 3. 검정 배경의 가로 폭을 웹 cue 길이에 맞출지 검수하고 720p/1080p에서 판정한다.
 4. 위 결과가 통과할 때만 기본 실행 `ar` 활성화를 별도 변경으로 검토한다.
 
 현 시점 판정: **ATG 후보 720p/1080p cue20 PASS, 전체 ar 인수 보류**. 웹/Unity 문구와 시간 데이터는 동일한 `lobby_frontend.json` SHA256 `32202897b58d1a1c29e149afaff8b32e9490633a1ae8b2c7350092ac28235562`를 유지한다.
+
+## 2026-10-26 HEAD 일치 후속과 cue32 RETOUCH
+
+`763667931` HEAD를 별도 경로에 새 ARM64 빌드했다. `atg-head-763667931-build-receipt.json`: Unity 6000.6.7f1, StandaloneOSX ARM64, `Succeeded`, 오류 0, 2,049,413,900 bytes. 빌드 직전 `NativeLobby.cs` SHA256 `7821f8ff9e5a28ba9d5a4511941a1d19250435aa37f2c90cdc7e20506d133f98`, `NativeArabicCaptionOverlay.cs` SHA256 `e5bb9ef7b75a49fd7a0e4a3086f07a08e86ca2b3d50a957414ac7c5d68f0ff1b`, 자막 JSON SHA256 `32202897b58d1a1c29e149afaff8b32e9490633a1ae8b2c7350092ac28235562`. `--unity-arabic-caption-preview`가 붙은 PID만 실제 ATG 판정에 썼다. 초기 CUA 바인딩이 플래그 없는 두 번째 인스턴스를 열어 그 화면은 ATG 근거에서 제외했다.
+
+실제 ATG 화면의 마지막 cue32(0-based index31, 109.600–111.100초)는 `.EXODUSER`로 표시됐다. 이는 아랍어용 `LanguageDirection.RTL`을 라틴 전용 자막에도 강제한 결과다. 이 한 실패에 대해 `NativeArabicCaptionOverlay`는 U+0600–U+06FF 아랍 문자가 있으면 RTL, 없으면 LTR로 지정한다. 현재 JSON의 `ar` 32큐 중 앞31큐에는 해당 아랍 문자가 있고 마지막 `EXODUSER.`만 없다. 이 수정은 소스·JSON·시간을 바꾸지 않으며, 수정 후 실제 빌드/화면 판정은 다음 영수증에서만 확정한다. 상태: **cue32 RETOUCH 발견, 수정 후보 검증 대기**.

@@ -57179,3 +57179,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 같은 HEAD Player 입력·진입 후속: Retina 창 bounds/캡처 배율을 확인하고 CUA 선택기·행·휠 미성공, 바깥 클릭 닫힘·Esc 재입력·End 마지막 행 표시를 기록. 제품 원인 미입증으로 C# 변경/재빌드0. 재시작 실제 화면에서 FDG→실버테일 타이틀→문 전환→세계관→로비와 Space 5초 건너뛰기 확인, 첫 무음 구간 계약 보존·오디오 실측 범위 밖. 기존 4앱/저장 SHA 보존. [후속 검수](engine/UNITY_MAC_HEAD_PLAYER_20261026.md#후속-os-입력진입-순서-검수--같은-빌드).
 
 2026-10-26 Mac ar 세계관 자막 ATG 후보: 공식 Noto Naskh Arabic Regular/OFL, 동적 FontAsset·라틴 fallback·UI Toolkit Advanced/RTL을 `--unity-arabic-caption-preview` QA에 격리. ARM64 cue20 720/1080 결합·배치와 메뉴·ar→ko 확인, cue31/32큐 전체와 웹 배경폭 parity 보류. 일반 ar/다른28언어·원문JSON/시각 보존. IMGUI 글꼴 단독 시도는 결합 실패로 철회. [기록](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
+
+2026-10-26 Mac ar ATG 후속: HEAD763667931 ARM64 오류0 일치 빌드에서 마지막 cue32(0-based31)가 강제RTL 때문에 `.EXODUSER`로 표시되어 RETOUCH. 아랍 문자 포함이면 RTL, 라틴 전용이면 LTR로 한 원인만 수정; 수정본 실제 Player 검증은 별도. [증거](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
