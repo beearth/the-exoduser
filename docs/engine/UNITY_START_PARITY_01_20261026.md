@@ -113,3 +113,6 @@ Unity 같은 시점의 실제 목록은 GPU 대기로 **미측정**이다. 위 �
 | 보완 검수 | 첫 시각 결과의 원인 수정 뒤 해당 장면만 | 기존 `--lighting-capture-only`를 startup parity 경로에도 적용. 최초 성능900프레임1회·HUD/practice1회는 반복하지 않는다. 최종 바닥 광원 build의 성능으로 최초 수치를 격상하지 않으며 최종 성능 미측정이면 VERIFIED를 주지 않는다 |
 
 의존파일 보완은 CSS 등21개 뒤 player PNG 로드가 새로 요구한 atlas_player.json1개까지 총22개다.3399 준비 reload는 첫 진입 조건이 달라 최종 비교에서 제외했고,3400은 완전히 새 origin/새 server 저장0에서 실제 Guide frame0→정상UI skip→54tick 레슨을 얻었다. source 상태/HP/카메라/ens/RNG/DOM 주입0. 관측용 requestAnimationFrame은 local 배열에 읽기만 하며 게임 함수/clock을 override하지 않았다. PROP/field 정적광원12개, 화면 culled active light2(player/iris), col canvas 중앙 RGBA0, 이리스 위치rgba255/172/73/49, ci6 gateOFF를 읽어 바닥 bitmap과 분리했다.
+
+
+후속 GPU 인수: [UNITY-START-PARITY-02](UNITY_START_PARITY_02_20261026.md). 위 01 측정은 Ori 교정 전 이력이며 그대로 보존한다.

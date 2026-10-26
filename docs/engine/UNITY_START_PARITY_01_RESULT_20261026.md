@@ -114,3 +114,6 @@ worktree는 최종GPU 미인수로 유지한다. `_out/project`에는 자기 최
 | FILES/GIT | code9+PNG/meta3+관련docs, 공용NativeGame 최소 hunk, unrelated0. 전용branch 비강제push/main·deploy0 |
 | VISUAL VERDICT | **RETOUCH — VERIFIED 아님** |
 | NEXT PASS | 최종Ori build/capture-only/방사와 최종 성능 인수. worktree 유지 |
+
+
+후속 GPU 인수: [UNITY-START-PARITY-02](UNITY_START_PARITY_02_20261026.md). 위 01 측정은 Ori 교정 전 이력이며 그대로 보존한다.

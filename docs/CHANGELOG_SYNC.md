@@ -57205,3 +57205,9 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 - 실제1920×1080 시작/제단1x보드·확대·방사CSV 생성. 해자구조/색계열/층PASS,펫4종/KO대사실관찰. 전체RETOUCH:웹actor/iris/전경/DOM차이,유효GC증거없음.
 - 시작평균/p95/p99=8.370909/8.553005/8.992624ms(필터교정전통합빌드1회),제단=8.370717/8.495579/8.994756ms(최종보완빌드1회),기준02평균8.361290. 시작교정후캡처만1회·성능반복0. HUD55/practice5각1회PASS,11kills/원본복원true.
 - 사용자3Player/일반저장/로비·오디오·intro-silence/다른WIP보존. 타QA90501/91013/91198종료까지GPU대기. 지정경로commit/동일branch비강제push·최종SHA/정상PET·MOAT제거영수증은외부DONE. [상세표·MAP PRODUCTION REPORT](engine/UNITY_FIELD_VERIFY_01_20261026.md).
+
+
+## 2026-10-26 UNITY-START-PARITY-02 — GPU 인수 준비
+
+- 이전34927cd/84ee74a의 별도 `_ptLight` 후보·기존웹54tick PNG를 인수. 타QA Player 대기 중이며 빌드/시작/성능/HUD/practice 실행 전이다. [검수 기록](engine/UNITY_START_PARITY_02_20261026.md).
+- 요청한 개발상태문구 금지에 따라 NativeGame.cs 이름 배지에서 일반실행에도 붙던 미리보기/Preview 접미사만 제거(1hunk). 시작검수 이름은 격리 StartParityCapture 전용임을 확인. 보호파일 변경0, 새로운 테스트파일0.
