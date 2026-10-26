@@ -86,6 +86,7 @@ Remote Control 연결이나 고정 상태 때문에 `clear_session`이 거부되
 - 다른 세션의 메시지로 시작된 턴에서는 `start_session`이 거부된다(제안 카드만 가능). 그래서 후임 세션 생성(§4.4)은 CTO가 사용자 대화 턴에서 한다.
 - 처리 대기 중인 메시지가 있으면 `clear_session("self")`가 거부된다("a clear would erase it"). 대기 메시지를 처리한 턴의 끝에서 다시 호출한다.
 - 메시지 10건 상한 때문에 CTO의 재개 메시지는 사용자가 CTO에 다음으로 입력할 때 한꺼번에 보낸다. 그 전까지 비워진 세션은 idle로 대기한다(작업 손실 없음).
+- Remote Control이 켜진 세션에는 `notify_when_idle`을 쓸 수 없다. 재개 담당은 `get_session`으로 대상의 `isRunning`이 false가 된 것을 확인한 뒤에 재개 메시지를 보낸다. 대상이 아직 작업 중일 때 보내면 비우기가 취소된다.
 - idle 세션은 프로세스가 내려가 `get_usage`로 컨텍스트를 읽을 수 없다. 비워졌는지는 재개 메시지를 받은 세션이 스스로 `get_usage(self)`로 확인해 보고한다.
 
 ## 5. 금지
