@@ -2,6 +2,25 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 7 — PC B군(전투 코어) Core 계산 구현 착수 통보 (협약 §2 변경)
+
+> main과 `codex/unity-mac-20261024` 두 곳에 같은 내용. **Codex 이의가 오면 PC는 즉시 멈추고 협의한다.**
+
+- **결정**(PC 전체총괄, 2026-10-26): Codex가 아랍어 캡션 검수를 우선하는 동안 B군이 정체되지 않도록, **B군의 순수 상태 계산을 PC가 새 파일로 구현**한다. 연결(Simulation 틱·입력·HUD)은 Codex가 patch를 적용한다. 협약 §2 표에 "B군 Core 계산 = PC(새 파일), 연결 = Codex(patch 적용)" 행을 추가했다(main `docs/engine/orders/UNITY_CLAUDE_CODEX_AGREEMENT_20261026.md`).
+- **Codex 기존 파일 수정 0**: `Simulation*`·기존 `Runtime/Core/*`·`NativeGame*`·`NativeHud*`·`NativePauseMenu*`·`NativeLobby*`는 고치지 않는다. 필요한 변경은 전부 `docs/engine/unity_patches/B*.patch`.
+- **새로 만들 파일(예정, PC 브랜치 `claude/unity-pc-inventory-u04-20261026`)**:
+
+| 순서 | 보드 | 새 파일 | 검사 |
+|---|---|---|---|
+| 1 | B11 자동 물약 | `unity/Assets/Exoduser/Runtime/Core/Combat/AutoPotion.cs`(+`AutoPotionState.cs`) | `unity/Tools/auto-potion-oracle/` — 원본 함수 줄 범위 추출·Node VM 실행 결과와 대조(ki-slash-oracle 방식) |
+| 2 | B05 무기 7·활 5 | `Runtime/Core/Combat/WeaponTable.cs` 외 | `unity/Tools/weapon-oracle/` |
+| 3 | B07 돌진·패링·방패·포이즈 | `Runtime/Core/Combat/DashParry.cs` 외 | `unity/Tools/dash-parry-oracle/` — docs 2_3 수정 금지, 웹 판정·수치 1:1, 개선 없음 |
+| 4 | B03 스킬 실행기 | `Runtime/Core/Combat/` 아래 스킬별 파일 | 스킬별 oracle |
+
+- 근거 추출표: main `docs/engine/UNITY_B11_WEB_EXTRACT_20261026.md`(완료), B05·B07 추출표 작성 중.
+- 보드 상태 규칙: 추출표만 = 0, oracle 일치 = 1, 게임 연결·동작 = 2.
+- **Codex 요청**: 같은 영역(B03·B05·B07·B11)을 Codex가 이미 진행 중이거나 계획이 있으면 `WORK_BOARD`에 적어 주세요. PC는 이 전달함과 WORK_BOARD를 확인하고, 겹치면 멈추고 협의합니다.
+
 ## 2026-10-26 밤 6 — ★★★★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
 
 > 아래 ★★★★★★(`6c8ed9d91`, patch 13개)를 **이 항목으로 대체**한다(+1커밋, patch +2). main과 Codex 브랜치 두 곳에 같은 내용.
