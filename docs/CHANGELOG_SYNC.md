@@ -57171,3 +57171,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac 우크라이나어 세계관 자막: 공식 Noto Serif variable upright+OFL을 Resources에 인수하고 `uk`에서만 전용 GUIStyle을 선택. 다른 언어 및 `uk→ko`는 기존 caption 객체, 리소스 누락도 기존 caption으로 복귀. 우크라이나어32큐/53고유문자 cmap 누락0, U+0454/0456/0457 지원, Unity C#9 76소스 정적 컴파일 오류0. 실제 Player 글리프·객체 동일성 시각/런타임 미검증. 상태 표시 문서 20px/16px은 `NativeGame.InitGUI`와 이미 일치해 보존. [계약·출처](engine/UNITY_SUBTITLE_FONT_COVERAGE_20261025.md#2026-10-26-우크라이나어-자막-전용-글꼴-인수).
 
 2026-10-26 Mac HEAD207ffc8 신규 ARM64 일반 Player: 정확한 worktree 소스/세 C# SHA를 빌드 전 고정, Unity6000.6.7f1 오류0·166파일1975013774B 산출, 새 일반 실행에서 UK `є`/`і` PNG·`ї` CUA관측, 로비 진단 버튼 숨김·우측 약한 상태 배경 확인. 메뉴 CUA 행 클릭은 미성공/OS좌표 미확정, 캐릭터 저장 전후SHA동일, 기존앱4개보존. 자동생성 meta 등은 백업 후 HEAD 바이트로 복원. I: 미마운트로 새 실행본/영수증은 고유 `_out`에 임시 보존. [영수증](engine/UNITY_MAC_HEAD_PLAYER_20261026.md).
+
+2026-10-26 같은 HEAD Player 입력·진입 후속: Retina 창 bounds/캡처 배율을 확인하고 CUA 선택기·행·휠 미성공, 바깥 클릭 닫힘·Esc 재입력·End 마지막 행 표시를 기록. 제품 원인 미입증으로 C# 변경/재빌드0. 재시작 실제 화면에서 FDG→실버테일 타이틀→문 전환→세계관→로비와 Space 5초 건너뛰기 확인, 첫 무음 구간 계약 보존·오디오 실측 범위 밖. 기존 4앱/저장 SHA 보존. [후속 검수](engine/UNITY_MAC_HEAD_PLAYER_20261026.md#후속-os-입력진입-순서-검수--같은-빌드).
