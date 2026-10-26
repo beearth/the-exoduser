@@ -1,0 +1,39 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.cs b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+index d5b0e389c..1b3711952 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+@@ -24,6 +24,7 @@ namespace Exoduser.UnityPort
+         NativeLevelUpOverlay levelUp;int levelUpSeen;
+         NativeDeathOverlay death;int deathCount;bool deathShown;
+         NativeStageClearOverlay stageClear;
++        NativeBossBar bossBar;
+         bool basicWeaponMode;
+         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
+         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
+@@ -51,7 +52,7 @@ namespace Exoduser.UnityPort
+             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
+             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
+             hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
+-            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();
++            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();
+             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
+             BuildProps();
+             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
+@@ -100,7 +101,7 @@ namespace Exoduser.UnityPort
+             kiView?.Reset();impacts?.Reset();sound?.Reset();
+             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
+             Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
+-            inventory.Reset();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
++            inventory.Reset();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
+             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
+             // World drop item factory and persistent saves remain unimplemented.
+             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
+@@ -306,6 +307,8 @@ namespace Exoduser.UnityPort
+             if(levelUp.Active){var lp=view.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
+             // Stage-clear panel: Unity has no stage-clear / boss / exit event yet, so nothing calls stageClear.Show(); once an event exists it is drawn here.
+             if(stageClear.Active)stageClear.Draw();
++            // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.
++            if(bossBar.Active)bossBar.Draw();
+             if(death.Active&&p.Hp<=0){death.Draw();}
+             else if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){
+                 pauseMenu.English=lobby.Language!="ko";
