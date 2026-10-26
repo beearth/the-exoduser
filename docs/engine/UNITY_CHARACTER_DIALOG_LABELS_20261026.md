@@ -41,4 +41,10 @@ I: `ui-simple/a04-character-dialog-static-qa.json`에서 위 네 파일과 메�
 
 고정 웹 소스 `d209075ec…`의 실제 병합/폴백 경로에 대해 UI 담당 재추출 결과 29언어×14키=406/406값 일치다(`I:/EXODUSER-Storage/qa/unity-ui-resume-20261026/ui-simple/a04-character-delete-static-qa.json`). 앞선 독립 QA 402/406은 **수정 전** JSON SHA `8B37800F…`의 결과이고, 이번 JSON SHA `423A5689…`는 수정 후 별도 입력이다. 삭제창 C# SHA `0EAE97E9…`; `RequestCharacterDelete`·`ConfirmCharacterDelete`의 대상 슬롯/이름 검증과 `TryRemove`/`CommitCharacters` 본문은 불변. 생성 C#·roster·저장 경로도 이번 후보에서 불변이다. 웹의 비동기 중복 방지·온라인 삭제 응답·이전 DOM 초점 복귀는 이 Unity 표시 수정의 동등 구현 판정에 넣지 않는다.
 
-이번 고정 입력의 **Editor import·컴파일 0회, Player 빌드/실GUI/실입력 0회**, 시각 판정 HOLD다. 이전 A04 배치 컴파일 0오류는 수정 전 JSON·삭제창 C#에만 적용한다. 다음 QA는 두 새 입력의 해시 대조 후 단독 import·컴파일 및 안전한 격리 데이터에서 실제 취소/확인·키보드/마우스·29언어 긴 문구/아랍어 배치를 검수한다.
+이번 고정 입력의 최초 체크포인트 시점에는 Editor import·컴파일 0회였다. 아래 독립 QA에서 이후 단독 import·컴파일을 확인했다. **Player 빌드/실GUI/실입력은 0회**, 시각 판정 HOLD다. 이전 A04 배치 컴파일 0오류는 수정 전 JSON·삭제창 C#에만 적용한다. 다음 QA는 두 새 입력의 해시 대조 후 단독 import·컴파일 및 안전한 격리 데이터에서 실제 취소/확인·키보드/마우스·29언어 긴 문구/아랍어 배치를 검수한다.
+
+## 2026-10-27 새 고정 입력의 독립 QA 영수증
+
+- I: `qa-contract/a04-dialog-label-comparison.json`의 고정 웹 실제 병합 경로 대조는 JSON SHA-256 `423A5689…`의 29언어×14키 **406/406, 차이 0**이다. 이는 수정 전 JSON `8B37800F…`의 402/406 결과와 다른 입력이다.
+- I: `qa-contract/a04-delete-compile.json` 및 `a04-delete-compile-editor.log`는 원격 `a8b372735…`의 삭제 C# `0EAE97E9…`, 라벨 JSON `423A5689…`를 전후 대조했다. Unity 6000.6.7f1 단독 배치 import·스크립트 컴파일 종료 코드 0, 컴파일 오류 0, JSON import 확인, Runtime C# 77개 실행 중 변경 0이다. QA 담당은 Editor 프로세스·잠금 파일 부재를 확인해 lease를 해제했다고 보고했다.
+- 이 검수는 정적 라벨·import/컴파일 범위다. 제품 Player 빌드, 삭제 확인창의 마우스·키보드 실제 입력, 29언어 줄넘침·아랍어 배치 등 시각 품질은 미검증/HOLD다. 저장 읽기·쓰기는 0이다.
