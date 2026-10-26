@@ -76,6 +76,7 @@ npm run sfx:forge -- list
 ## 6. 상태
 
 - 2026-10-21: 도구·카탈로그·테스트(9/9 PASS)·dry-run(14/14 유효)·`elevenlabs onboard check` 통과(키 끝자리 0ce8, SDK 선언·사용 확인).
-- **실제 생성·청음·게임 반영은 아직 0건**. 후보를 만든 뒤 사용자 청음 선택 → `promote` → 게임 코드의 SFX 매핑 연결 → 이 문서 표 갱신 순서로 진행한다.
+- 2026-10-26 확인: 카탈로그 14종 × 후보 3개(v1~v3) = 42개 **생성 완료**(`_out/sfx_forge/`). **사용자 청음 선택·promote·게임 반영은 아직 0건**. 진행 관리는 [사운드 총괄 마스터](SOUND_LEAD_MASTER_20261026.md) SND-01/02.
+- (이전 기록) 실제 생성·청음·게임 반영은 아직 0건이었다. 후보를 만든 뒤 사용자 청음 선택 → `promote` → 게임 코드의 SFX 매핑 연결 → 이 문서 표 갱신 순서로 진행한다.
 - 승격으로 `sfx/`가 바뀌면 배포 시 CLAUDE.md의 DEMO/EA 에셋 동기화 대상이 된다.
 - ElevenLabs MCP(`tools/mcp_elevenlabs_launcher.cjs`, `claude mcp` local scope)도 같은 키(`.env.local` 우선)를 읽는다. 출력은 저장소 옆 `../exoduser-wt/_out/elevenlabs`(`ELEVENLABS_MCP_BASE_PATH`로 변경). MCP는 세션 시작 때 로드된다. Mac 등록: `claude mcp add ElevenLabs -s local -- node <W>/tools/mcp_elevenlabs_launcher.cjs`(uvx 필요).
