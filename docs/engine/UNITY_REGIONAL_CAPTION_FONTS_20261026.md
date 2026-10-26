@@ -1,5 +1,7 @@
 # Unity 지역별 세계관 자막 폰트 연결 — 2026-10-26
 
+**현행 판정:** Windows `regional-transition-fixed` Player 190 검사 PASS·33 PNG·exit 0, 28언어 COVERED·`ar` UNRESOLVED. 아래 RED/초안/대기 문장은 각 당시 단계의 이력이며 최종 결과는 마지막 절을 따른다. 실제 OS 입력·전체 연속 재생·RTL은 미검증이다.
+
 # World intro 지역 폰트 연결 기록 초안 — 2026-10-26
 
 상태: **fixture와 선택형 oracle 준비, 제품 연결 전 RED 대기**. 이 문서는 I: 검수 초안이다. E: 제품 파일, Unity Editor/Player, 빌드, 커밋의 변경 또는 실행을 주장하지 않는다.
@@ -33,7 +35,7 @@ SC/TC/JP는 공식 `notofonts/noto-cjk`의 완전한 정적 Regular OTF와 `Seri
 
 ## 실제 RED와 최소 연결
 
-지역별 글꼴 연결 전 Player에서 zh regional Font resource loaded 검사가 실패했고 누락 리소스 예외를 영수증에 기록했다. 이후 정확한4개언어에 정적Regular400 폰트와1회 생성한 caption/shadow 스타일만 연결했다. 기존4개기본/20개Noto 언어, 진단게이트, 자막문구/시간값은 유지한다. 새 자산의 원본과 OFL을 I:에 보존하고 실행에 필요한폰트 및 라이선스만 SSD runtime에 연결했다. 실제 GREEN 빌드/렌더 결과는 대기다.
+지역별 글꼴 연결 전 Player에서 zh regional Font resource loaded 검사가 실패했고 누락 리소스 예외를 영수증에 기록했다. 이후 정확한4개언어에 정적Regular400 폰트와1회 생성한 caption/shadow 스타일만 연결했다. 기존4개기본/20개Noto 언어, 진단게이트, 자막문구/시간값은 유지한다. 새 자산의 원본과 OFL을 I:에 보존하고 실행에 필요한폰트 및 라이선스만 SSD runtime에 연결했다. 당시 GREEN 빌드/렌더 결과는 대기 상태였다. 이후 결과는 마지막 절에 기록했다.
 
 
 ## 실제 Windows Player 결과 — regional-transition-fixed
