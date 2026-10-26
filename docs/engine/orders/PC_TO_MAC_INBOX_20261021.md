@@ -2,6 +2,16 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 2 — ★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 바로 아래 "★★ 최신 누적"(`af86aa59c`)을 **이 항목으로 대체**한다(+1커밋, patch 변화 없음).
+
+- **대상 SHA: `3b99012ea`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `af86aa59c` 위에 PC-POLISH1(인수 화면 미세 차이 마감: 능력치 분석판 스크롤바·툴팁, 인벤토리 라벨·글꼴·빈 칸 질감) 1커밋. Unity **6000.6.7f1**(`3d40f822a`, 아래 항목 설명 그대로 — Mac 미커밋 업그레이드 변경은 이 커밋으로 대체).
+- **Codex 적용 patch 9개 — 이 순서로**(`docs/engine/unity_patches/`): U04B → U08 nativegame → U08 pausemenu → U05 → A07B nativegame → A07B pausemenu → A13 → A14 → A20.
+- **PC 전체 검증 PC-PATCHV2(6000.6.7f1, `3b99012ea` + patch 9개 적용, 임시 worktree)**: Win64 errors 0, Exoduser 스크립트 CS 경고 0(기존 `NativeCharacterPresentationPlayback.cs` UAC1001 1건만). 스모크·캡처 7종 전부 통과·**종료 코드 전부 0**(6000.4.8f1의 -1073741819 종료 크래시 재현 없음):
+  - inventory(동작 필드 8개 true), inventory-keys 17/0(G≠칸 전환, 열 때 선택 없음), skill 6/0, pause 21/0, stat-panel 캡처 9장, forge 20/0(탭/G 연결·창 상호 닫힘 포함), levelup overlay 3/0.
+- Mac 6000.6.7f1 빌드는 미확인. MAP3D는 별도 브랜치 `claude/unity-pc-map3d-20261026`(UI 병합 후, 협약 §7).
+
 ## 2026-10-26 밤 — ★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
 
 > 아래 "2026-10-26 저녁 ★ 전체 누적"(`cc39eb672`)을 **이 항목으로 대체**한다.
