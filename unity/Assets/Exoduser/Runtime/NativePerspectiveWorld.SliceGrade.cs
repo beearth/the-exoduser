@@ -15,8 +15,8 @@ namespace Exoduser.UnityPort
         public const float SlicePoolGain = 9.0f, SlicePoolWrap = 0.55f; // PAINTGROUND-R: gain 5.0 -> 9.0
         // PAINTGROUND-R (before: pool weight 1.0, no floor level outside the pools = 1.0, key shadow only in the 30% dynamic share = 0.0, outer body = texture x (1.8,1.0,0.95) tone)
         public const float SlicePoolWeight = 2.4f, SliceFloorOutsidePools = 0.90f, SlicePaintShadow = 0.5f;
-        public const float SliceMassBody = 0.8f, SliceMassSinew = 16.0f, SliceMassBone = 20.0f, SliceMassWet = 4.0f;
-        public const float SliceRidgeLo = 0.30f, SliceRidgeHi = 0.50f, SliceShadeWeight = 0.50f, SliceBodyGreen = 1.16f; // re-judge: ridge lines only, greyer body (whole-screen R/G <= 1.8) // flesh body level, sinew ridge, bone tip, wet streak gains
+        public const float SliceMassBody = 0.95f, SliceMassSinew = 0.0f, SliceMassBone = 0.0f, SliceMassWet = 0.0f; // design lead 2026-10-27: cream lines off (outer body = dark flesh only until the MESHY-0 meshes; V5 bright tail is a temporary exception)
+        public const float SliceRidgeLo = 0.30f, SliceRidgeHi = 0.50f, SliceShadeWeight = 0.30f, SliceBodyGreen = 1.22f; // re-judge: ridge lines only, greyer body (whole-screen R/G <= 1.8) // flesh body level, sinew ridge, bone tip, wet streak gains
         public const float PaintDynamicWeight = 0.3f; // painted light 70% + dynamic light 30%
         public static readonly Vector3 SliceGroundToneDefault = new Vector3(1.78f, 1.0f, 0.94f); // (PAINTGROUND-R re-judge: R 1.72 -> 1.78: floor centre R/G 1.69 after the crimson light was reduced, whole screen 1.77) linear albedo multiplier measured by script to match the Godot D v2 ground mean (was 0.85 x3); override: --unity-world3d-ground-tone=r,g,b
         public static readonly Vector4 SliceHaze = new Vector4(0.00042f, 1300f, 0.0035f, 0f); // density, start distance px, height falloff
