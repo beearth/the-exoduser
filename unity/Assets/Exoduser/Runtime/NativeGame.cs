@@ -56,6 +56,7 @@ namespace Exoduser.UnityPort
             if(hitSheet==null||hitSheet.width!=1254||hitSheet.height!=1254)throw new InvalidOperationException("Invalid original kiSlash 2x2 hit sheet");
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             sound=new NativeFeedbackAudio(transform,view);
+            InitializeWorldLighting();
             ResetRun();
             worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
             lobby.Initialize(EnterFromLobby);lobby.StartupGameplayPrepare=PrepareStartupGameplay;
@@ -373,6 +374,6 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){kiView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
+        void OnDestroy(){DisposeWorldLighting();kiView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
     }
 }

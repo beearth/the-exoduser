@@ -57153,3 +57153,8 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 ROOT HUD보정 마감: 사용자9dd최종디자인거절반영, 큰불투명판/상시상태바제거·.78/920폭연결HUD·키ghost/문구잘림수정. source7d5200ca6 ARM64오류0,335파일682143647B대조0,새720/1080 idle/charge4PNG 및55/55검사통과. K스킬창확인,OS마우스callback미확인명시. 기존저장/실습보존. [영수증](engine/UNITY_MAC_HUD_BLEND_ACCEPTANCE_20261026.json).
 
 2026-10-26 취침중자율진행기록: 사용자직접지시를프로젝트MD에만기록. 포인터5a933f6에서다른CUA점에도Unity(1100,1344)/Input(1100,-264)고정·hit-1확인,제품hitbox변경0·물리마우스미검증유지. QA모두종료,제품7d5200ca6정상로비PID52157/기존1캐릭터제시·원래38141/48476보존. 기존자동화view만/활성상태미확인/설정변경0. 현행·ROOT마스터의독립승인다음업데이트없음읽기전용확인,보류/새유료/새스케줄확장0.
+
+## 2026-10-26 UNITY-MAP-LIGHT-01 — 실행 금지 상태의 조명 구현 후보
+
+- 기준776ebe77d, 전용codex/unity-map-light-01-20261026에서 월드 카메라 source-over 조명·반해상도 어둠홀·정적12광원·2D안개·환경광·비네트·CSS grade·Mac 별도안개 gate를 포트했다. NativeGame.cs는 Awake 초기화/OnDestroy 정리2hunk만 변경. 원본 snapshot dee094fd의 행·수치·합성순서·미포트 동적 광원·자원 수명은 [상세 SSOT](engine/UNITY_MAP_LIGHT_01_20261026.md).
+- 상태 IMPLEMENTED_UNVERIFIED — Unity 소유 해제 대기. CPU managed compile 오류0/CS0649경고27. 이번 Unity Editor/Player/batchmode/빌드/캡처/GPU/회귀/성능 실행0, 사용자 저장·타 작업폴더·R 변경0. 기존 Godot/Unity 과거 PASS를 이번 검증으로 사용하지 않는다. worktree 보존·자기 경로 commit/push, 최종 SHA/원격 확인은 외부 DONE.
