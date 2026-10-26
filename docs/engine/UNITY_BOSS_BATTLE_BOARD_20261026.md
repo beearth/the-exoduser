@@ -13,6 +13,7 @@
 |---|---|---|---|
 | A23 | 보스 HP·쉴드·포이즈 바 `#bossBar` | 0 | BX-07 |
 | C03 | 보스 19종·BOSS_MOVES | 0 | BX-01~BX-06, BX-09, BX-10 |
+| C01 | 일반 몬스터 공통 틀 | 1 | CX-01~CX-05 (§5-1) |
 | C07 일부 | 보스방 진입·출구·클리어 | 0 | BX-04, BX-08 |
 | F01/F02/F04 일부 | 보스 모션·전조 VFX·보스 BGM | 1(공용) | BX-11 |
 
@@ -71,6 +72,22 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | BX-10 | 나머지 보스(1장 si1·si2 → 2~7장) | CH1/3/4 추적 | BX-03 | 0 | 미배정 | 보스별 oracle + 실플레이 |
 | BX-11 | 보스 표현(모델·모션·VFX·BGM) | 웹 에셋 → Unity 신규 가능 | BX-03 | 1 | 디자인·사운드 협조 | 디자인 총괄 PASS |
 
+## 5-1. C01 적 공통 틀 (2026-10-26 전체총괄 제안으로 보스전 총괄이 계획)
+
+보스는 일반 적과 같은 `mkEn`·`updateE`·`hurtE`를 지나간다. 그래서 C01 공통 틀이 BX 단위의 바닥이다. 범위는 **일반 적 100종이 올라탈 공통 틀까지**다. 개별 적 패턴 이식은 그다음 단위로 나눈다.
+
+| ID | 단위 | 웹 원본 (2026-10-26 줄 번호) | 상태 | 완료 조건 |
+|---|---|---|---|---|
+| CX-01 | 적 수치 테이블 `ETYPE_HP/ATK/SPD_RAW/R/RANGE/POISE/SHIELD/COL`, `E_TYPES` | 30825~30911, 25203 | 0 | 표 전 항목 C# 데이터 바이트 단위 일치 |
+| CX-02 | `mkEn` 전체 (좌표 보정·monLv·스테이지 배율·엘리트 `rollElite`/`rollMods`·보스 `ib` 분기) — BX-01 포함 | 31122~31365 | 0 | 레벨·난이도·si·etype·ib 표본 oracle 일치 |
+| CX-03 | `updateE` 공통 앞·뒤 처리와 etype별 분기 지점(분기 안 패턴은 비움) | 38586~41410 | 0 | etype0·보스 경로 tick 상태 oracle 일치 |
+| CX-04 | `hurtE` 공통 (DR·쉴드→HP 분배·포이즈·넉백·사망 판정·보스 분기) — BX-05 일부 | 42112~43121 | 0 | 피해 표본 oracle 일치, 쉴드 규칙은 CLAUDE.md eShield 계약 그대로 |
+| CX-05 | 적 표시 공통 (EnemyView 확장: etype별 시트·크기·색) | ETYPE_COL, 19916 `ETYPE_COLS` | 0 | 웹 나란히 캡처 |
+
+- 현재 Unity: `SimulationState.cs`의 `EnemyState`와 `Simulation.cs`의 mkEn 축약(etype0 고정, 그 외 `NotSupportedException`). 둘 다 **Codex 소유 파일**이다.
+- 방식: PC 새 파일(`Runtime/Core/Combat/Enemy/*`)에 공통 틀을 만들고, Codex 파일 연결은 patch + PC_TO_MAC_INBOX(main·codex 브랜치 두 곳)로 요청한다. Codex가 이의를 내면 그 부분은 멈춘다.
+- 크기: `updateE` 약 2,800줄, `hurtE` 약 1,000줄. CX-03·CX-04는 한 번에 넘기지 않고 공통 앞·뒤 처리부터 잘라 명세한다.
+
 ## 6. 작업 방식
 
 - Core 계산은 B군과 같은 방식: 원본 함수 줄 범위 추출 → Node VM oracle → C# 새 파일 대조. Codex 소유 `Simulation.cs`·`NativeGame` 수정은 patch + PC_TO_MAC_INBOX(main·codex 브랜치 두 곳).
@@ -82,3 +99,4 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | 날짜 | 내용 |
 |---|---|
 | 2026-10-26 | 보드 신설. Unity 보스 코드 0 확인, 선행 자료 정리, 순서 = 1-1 드루이드 우선 |
+| 2026-10-26 | 전체총괄 제안으로 C01 적 공통 틀(CX-01~05)도 보스전 총괄이 계획. A23·C03 담당 이관 확인(마스터 보드 반영은 맥북 총괄 docs 커밋) |
