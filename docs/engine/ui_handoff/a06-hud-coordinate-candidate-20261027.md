@@ -38,3 +38,15 @@ QA가 후보 원격 `741d97ba1245631a8098d9cecac5589332252189`와 E: freeze mani
 Unity 6000.6.7f1 격리 Editor를 `-batchmode -nographics -noUpm -quit`로 한 번 실행해 exit 0, 스크립트 컴파일 로그 확인, 컴파일 오류 0, 실행 중 Runtime C# 변경 0을 기록했다. Editor lease는 해제됐다. 구형 `PortVerification.VerifyUiComposition`은 **실행하지 않았다**. 후보의 웹 하단 앵커와 구형 frame assertion의 계약 충돌 가능성은 위 초안의 예상 사항이며 이번 검수의 관측 실패가 아니다. Player·시각·실입력·Mac 통합·저장·main 통합은 **HOLD/미검증**이다.
 
 상세 원시 근거는 I: `qa-contract/a06-hud-final-qa.md` SHA-256 `FD01AC466031F0EAD950F0A35DF641AFF24E4E7BDEAAF273DA7BDDB26C6A6D9F`, 좌표 JSON `EAE577CDA4FD8E8BEBB3625F13D98D430FFDCD288357074A4AFD049A75A38F49`, 컴파일 JSON `77037B3150288C1E0621F5B24FFB2E098744CB2E51AB3A80BC2D97ED8354B65B`, Editor 로그 `4852948859EE0EF0F5A9DA63C560F6325B68AA6866DEC6E14573C139D2D9FB4B`이다.
+
+## 구형 composition 검사 계약 정정 후보 — 2026-10-27
+
+기존 `PortVerification.VerifyUiComposition`을 변경 없이 한 번 실행하자 첫 1280×720에서 `HUD frame clipped`가 발생하고 Editor가 exit **2**로 끝났다. 이는 실제 구형 검사 FAIL이다. 기존 Editor SHA-256은 `4547037525479D248220A269C89EA7FF9C27A88634E6C373291B2676A69B33BA`, 후보는 `A3006751B50F07F09C279BCF0359CC86CA7688B916EFCFC831F6DE53A28BF4E7`다.
+
+웹의 `.globe-container`는 `overflow:visible`, 유리 장식은 `inset:-44px; margin-left:-4px`이다. 전체 그림 배율 `.9`, 바닥 여백 `10×uiScale`에서 유리 프레임 아래끝은 viewport 아래로 `29.6×uiScale` 내려간다: **720p 19.733px**, **1080p/2560×1080 29.6px**. 유리 그룹 중앙은 가상 화면 중앙보다 **3.6px 왼쪽**, 전체 폭은 가상 **1118.7px**이다. 기존 장식 frame 완전 포함·완전 대칭·폭 1100 상한은 이 웹 계약과 충돌한다.
+
+수정 후보는 `VerifyUiComposition`의 장식 경계를 웹 수치 ±0.1 가상 px로 고정한다. 장식과 달리 **자원 액체, 원본 바의 가시 영역, 13개 클릭 슬롯, 13개 키 글자 rect**는 viewport 안에 남는지 검사한다. 슬롯 아래끝은 1080p **1034.7px**/720p **689.8px**, 키 글자 아래끝은 1080p **1056.3px**/720p **704.2px**이다. 인벤토리 중앙 폭 및 전투 시야 위쪽 제한도 유지한다. 검사 삭제나 무조건 허용은 아니다.
+
+후보 재실행에서 `UNITY_UI_COMPOSITION_BOUNDS_PASS`를 관측했다. **Composition 단계 PASS**다. 그 다음 `VerifyHudPixels`의 `Native HUD GPU pixel mismatch`로 전체 `PortVerification.Verify`는 다시 exit **2 / FAIL**이었다. GPU 픽셀 실패 원인은 이 변경 범위에서 판정하지 않는다. 앞선 독립 좌표 PASS·Editor 스크립트 컴파일 0오류와 이 전체 Verify FAIL을 구분한다. QA는 Runtime C# 77개 중 기존 A06 HUD 두 파일 외 75개 byte 불변, Player·실클릭·새 시각 캡처 0, Editor lease 해제를 기록했다. Mac A06 실화면은 Mac 별도 영수증이다.
+
+원시 I: 근거: `qa-contract/a06-composition-contract-resolution.md` SHA-256 `DDDE42D4CBE55D463DC7133907FA491F3BF8103B9341F7E3EA74EEB44C5B293E`, 구조화 JSON `3168F0D97269C46592ADE6CDA4A1B5DC176FB40C10DC9529DD8DEAACE54CF365`, 구형 실패 로그 `A3391216C7FD81524225F3A621E86BE4CDCC816E22329ED8AABE10E40D00E723`, 후보 후속 실패 로그 `17930E66CA811D801A8B405433BEDB7F5B109BC342446A7887F30E7666EAD103`. 이번 체크포인트는 Editor QA 계약 후보와 문서만 담는다. GPU 실패를 PASS 처리하거나 Mac 제품에 적용하지 않았다.

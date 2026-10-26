@@ -102,10 +102,32 @@ public static class PortVerification {
    float scale=Mathf.Min(size.x/1920f,size.y/1080f),width=size.x/scale,height=size.y/scale;
    var layout=NativeHudDockLayout.Create(width,height);
    var left=NativeHudDockLayout.VisibleFrame(layout.LeftFrame);var right=NativeHudDockLayout.VisibleFrame(layout.RightFrame);
-   if(left.xMin<0||right.xMax>width||left.yMax>height-4||right.yMax>height-4)throw new Exception("HUD frame clipped "+size);
-   if(Math.Abs((layout.LeftFrame.xMin+layout.RightFrame.xMax)*.5f-width*.5f)>.01f)throw new Exception("HUD group lost center "+size);
-   if(layout.RightFrame.xMax-layout.LeftFrame.xMin>1100||left.yMin<height-260)throw new Exception("HUD occupies excessive combat view "+size);
+   // Web .globe-glass has inset:-44px and margin-left:-4px inside a 0.9-scaled
+   // 175px globe. Its lower decorative edge intentionally falls below viewport.
+   const float webArtScale=.9f;
+   float webGlassBottom=height-10f+44f*webArtScale;
+   if(left.xMin<0||right.xMax>width||left.yMin<0||right.yMin<0||
+      Math.Abs(left.yMax-webGlassBottom)>.1f||Math.Abs(right.yMax-webGlassBottom)>.1f)
+    throw new Exception("HUD frame outside web viewport clipping contract "+size);
+   float webGlassCenter=width*.5f-4f*webArtScale;
+   if(Math.Abs((layout.LeftFrame.xMin+layout.RightFrame.xMax)*.5f-webGlassCenter)>.1f)
+    throw new Exception("HUD group lost web glass center "+size);
+   float webGlassSpan=(2*490f+263f)*webArtScale;
+   if(Math.Abs(layout.RightFrame.xMax-layout.LeftFrame.xMin-webGlassSpan)>.1f||left.yMin<height-260)
+    throw new Exception("HUD occupies excessive combat view "+size);
+   foreach(var liquid in new[]{layout.LeftLiquid,layout.RightLiquid})
+    if(liquid.xMin<0||liquid.xMax>width||liquid.yMin<0||liquid.yMax>height)
+     throw new Exception("HUD resource liquid clipped "+size);
    if(!layout.VisibleBar.Contains(layout.ActiveSlot.min)||!layout.VisibleBar.Contains(layout.ActiveSlot.max))throw new Exception("Active skill outside visible slot bar "+size);
+   for(int i=0;i<13;i++){
+    var slot=layout.SlotRect(i);
+    if(slot.xMin<0||slot.xMax>width||slot.yMin<0||slot.yMax>height||
+       !layout.VisibleBar.Contains(slot.min)||!layout.VisibleBar.Contains(slot.max))
+     throw new Exception("HUD interactive slot clipped "+size+" index="+i);
+    var label=NativeHudDockLayout.KeyLabelRect(layout.SlotBar,height,i);
+    if(label.xMin<0||label.xMax>width||label.yMin<0||label.yMax>height)
+     throw new Exception("HUD key label clipped "+size+" index="+i);
+   }
    if(width-640-600<640)throw new Exception("Inventory central view too narrow "+size);
   }
   Debug.Log("UNITY_UI_COMPOSITION_BOUNDS_PASS");
