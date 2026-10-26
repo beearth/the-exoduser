@@ -1,6 +1,7 @@
 # 애니메이션·VFX팀 마스터 (ANIMVFX)
 
 > 총괄: Codex의 [PROJECT_MANAGEMENT_MASTER.md](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md). 이 문서는 애니메이션·VFX팀의 책임·소유 범위·작업 대장·검수 근거·미해결·다음 백로그를 관리한다.
+> **2026-10-26부터 이펙트 디자인 기준·방향·백로그는 [VFX_LEAD_MASTER_20261026.md](VFX_LEAD_MASTER_20261026.md)(임팩트 총괄)가 우선한다.** 이 문서는 개별 작업 운영 기록으로 유지한다.
 > 연속 진행·한국어 응대는 [TEAM_CONTINUATION_POLICY_20261001.md](../0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md)를 따른다.
 > 상세 수치·계약은 기존 SSOT([5.0애니메이션파이프라인](../5.0애니메이션파이프라인/5.0애니메이션파이프라인.md), [VFX_구현가이드](VFX_구현가이드.md), 캐릭터/스킬/몬스터 SSOT)를 따르고, 이 문서는 운영 현황을 관리한다.
 
