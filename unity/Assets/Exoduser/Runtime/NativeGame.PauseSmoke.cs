@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort {
   bool pauseSmoke;
   const string A15DirectArgument="--unity-a15-direct";
   bool a15DirectReview;
-  static readonly string[] A15QaLocales={"ko","en","ja","es","cs"};
+  static readonly string[] A15QaLocales={"ko","en","ja","es","cs","el","th","zh"};
   int a15QaLocaleIndex;
   void BeginA15DirectReview(string[] args){
    string root,phase=Argument("-a15-phase");

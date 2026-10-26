@@ -81,3 +81,5 @@ PC UI owner가 고정 base `7065b7fe309aacbbe09292dbd19e76b2fad55c94`의 검토 
 | Player 실표시 | 새 marker 루트 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-IO-A15-KEYLIST-20261027`에서 QA Player **1회**. `settings-ko/en/ja/es/cs.jpg`를 확인: ko/en 기존 제목·행, ja/es/cs 실제 동작명·보조·마우스 키명 표시. 1280×720의 대표 긴 행은 열 경계 안에 표시됨. 로그 `A15_LABEL_RESOURCE loaded=True ids=43`와 F8 locale 조회 일치 |
 | 캡처 격리 | 같은 Player에서 F6→Esc는 캡처만 취소하고 조작 탭 유지, F6→Tab은 `up=Tab`으로 표시하고 조작 탭 유지. 실제 `capture-esc.jpg`, `capture-tab.jpg` 보존. 새 격리 QA 루트 외 설정·로스터는 사용하지 않음 |
 | 남은 경계 | `ar` 영어 fallback은 코드 분기와 PC QA 데이터 감사로 확인, **ar 실화면/RTL 미검증**. 전체 29 locale 글리프·길이, 물리 마우스 클릭, 청각, 패드, 일반 실행 흐름은 이번 Player 1회의 PASS가 아님. semantic6/native-only13은 연결하지 않았고 기존 ko/en 문구를 유지 |
+
+후속 글꼴 감사: 아직 실화면 검수하지 않은 23 locale의 exact43 표시 문자열을 실제 Settings/KeyList 스타일 폰트 cmap과 대조했다. 15 locale/170 ID×locale 행에 결손이 있고 Mac 소유 `NativePauseMenu`의 el/th/zh 제목·탭만 번들 지역 폰트로 보완해 ARM64 빌드1회 및 격리 Player 위험 문자·ko 복귀를 확인했다. PC 소유 목록의 글꼴·장문 fit은 별도 patch 제안 상태다. [누락 최소표·실화면 범위](UNITY_MAC_A15_FONT_COVERAGE_20261027.md).

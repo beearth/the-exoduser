@@ -50,6 +50,14 @@ namespace Exoduser.UnityPort
   }
   string T(string ko,string en) { return English?en:ko; }
   string Exact(string id,string ko,string en){return NativeA15SettingsLabels.Get(id,LocaleCode,ko,en);}
+  void SelectExactLabelFont()
+  {
+   // Only these three Settings title labels need a regional font. These styles
+   // belong to this menu, and switching back to ko restores the original Font.
+   Font selected=LocaleCode=="el"||LocaleCode=="th"||LocaleCode=="zh"
+    ?NativeA15SettingsLabels.FontForLocale(LocaleCode,font):font;
+   title.font=selected;tabButton.font=selected;activeTab.font=selected;
+  }
   void Init()
   {
    if(ready)return;ready=true;
@@ -115,6 +123,7 @@ namespace Exoduser.UnityPort
   // A15: four web page headings with only the controls connected to this native host.
   void DrawSettingsA15(bool fullscreen)
   {
+   SelectExactLabelFont();
    float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
    GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2,(Screen.height-1080*scale)/2,0),Quaternion.identity,Vector3.one*scale);
    var panel=new Rect(40,100,1840,935);Fill(panel,new Color(.055f,.047f,.043f,.98f));Border(panel,new Color(.48f,.36f,.23f));

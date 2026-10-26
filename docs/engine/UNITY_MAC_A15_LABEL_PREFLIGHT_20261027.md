@@ -21,3 +21,5 @@ PC 고정 commit `157e3e8f3cb63299c48fd484ba7056fd9dceb9b8`의 `docs/engine/ui_h
 위 라벨 채택0은 PC `157e3e8f…` 당시 상태다. PC 최신 `766250b64d833acd4172c83fb694820777d68b1b`가 exact 43 ID/1247값과 semantic6/native-only13 경계를 확정한 뒤 Mac 화면 5 ID와 provider 자료를 부분 연결했다. PC 소유 키 목록의 38 ID 화면 연결은 검토용 패치로만 남았다. [고정 입력·ID별 상태·실화면](UNITY_MAC_A15_LABEL_ADAPTER_20261027.md).
 
 후속 승인에서 PC owner가 키 목록 최소 patch를 인수했고 Mac은 `NativeKeyBindList` 38 ID 실표시와 provider exact43 allowlist를 연결했다. 1280×720 ko/en/ja/es/cs 대표 목록·장문 및 Esc/Tab 캡처 격리를 QA Player 1회로 확인했다. 이 문서의 앞선 키 목록 미연결 상태는 preflight 시점 이력이다. ar 실화면/RTL·전체29언어·물리 마우스는 계속 HOLD. [최신 인수](UNITY_MAC_A15_LABEL_ADAPTER_20261027.md#2026-10-27-pc-seam-인수allowlist-보강-후속).
+
+글꼴 게이트 최신 상태: 위 표는 preflight 시점이다. Mac A15 제목/탭의 `el/th/zh`만 번들 지역 폰트로 보정해 1280×720 실화면을 봤다. PC 소유 키 목록은 [exact43 글꼴 감사·미적용 patch](UNITY_MAC_A15_FONT_COVERAGE_20261027.md)대로 15 locale의 현재 글꼴 cmap 결손과 대표 그리스어 긴 행 fit 위험이 남는다. 전체29 GUI/RTL PASS가 아니다.

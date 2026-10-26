@@ -25,6 +25,17 @@ namespace Exoduser.UnityPort
   };
   static readonly Dictionary<string,Dictionary<string,string>> byId=new Dictionary<string,Dictionary<string,string>>();
   static readonly Dictionary<string,string> keyIdByKo=new Dictionary<string,string>();
+  static readonly Dictionary<string,string> regionalFontPath=new Dictionary<string,string>{
+   {"bg","Art/fonts/NativeCaptionNotoSerif"},{"de","Art/fonts/NativeCaptionNotoSerif"},
+   {"el","Art/fonts/NativeCaptionNotoSerif"},{"fi","Art/fonts/NativeCaptionNotoSerif"},
+   {"hu","Art/fonts/NativeCaptionNotoSerif"},{"pl","Art/fonts/NativeCaptionNotoSerif"},
+   {"ptbr","Art/fonts/NativeCaptionNotoSerif"},{"ro","Art/fonts/NativeCaptionNotoSerif"},
+   {"ru","Art/fonts/NativeCaptionNotoSerif"},{"tr","Art/fonts/NativeCaptionNotoSerif"},
+   {"uk","Art/fonts/NativeCaptionNotoSerif"},{"vi","Art/fonts/NativeCaptionNotoSerif"},
+   {"th","Art/fonts/NotoSerifThai-Regular"},{"zh","Art/fonts/NotoSerifCJKsc-Regular"},
+   {"zht","Art/fonts/NotoSerifCJKtc-Regular"}
+  };
+  static readonly Dictionary<string,Font> regionalFontCache=new Dictionary<string,Font>();
   static bool tried,loaded;
   public static bool Loaded { get { EnsureLoaded();return loaded; } }
   public static int EntryCount { get { EnsureLoaded();return byId.Count; } }
@@ -73,6 +84,19 @@ namespace Exoduser.UnityPort
   {
    EnsureLoaded();string id;
    return loaded&&originalKo!=null&&keyIdByKo.TryGetValue(originalKo,out id)?Get(id,locale,originalKo,fallback):fallback;
+  }
+
+  // The same bundled regional font resources already used by lobby captions cover
+  // exact A15 labels missing from NotoSansKR/NanumMyeongjo. Callers own their styles.
+  public static Font FontForLocale(string locale,Font fallback)
+  {
+   EnsureLoaded();string path;Font selected;
+   if(!loaded||!regionalFontPath.TryGetValue(LobbyLanguage.Normalize(locale),out path))return fallback;
+   if(!regionalFontCache.TryGetValue(path,out selected)){
+    selected=Resources.Load<Font>(path);
+    regionalFontCache.Add(path,selected);
+   }
+   return selected??fallback;
   }
  }
 }
