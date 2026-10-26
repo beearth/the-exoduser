@@ -1,5 +1,7 @@
 # Godot 보존 · Unity 비교 시험 — 2026-10-24
 
+> **IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL VERDICT: RETOUCH.** 최초 ARM64 빌드·54tick 시작 촬영·성능1회·HUD55/practice5 각1회는 통과했다. 실제 웹도54tick/active0·held5/이리스ring_04를 확인했다. 마지막 별도 Ori 바닥광원 누락 교정은 push했으나 재빌드 직전 타 QA 재점유로 build/화면/성능 미검수다. 비교 PNG·43.646943 대63.382553·8.444413ms는 **Ori 수정 전** 실제 빌드이며 최종 AFTER가 아니다. worktree를 유지한다. [Latest result](UNITY_START_PARITY_01_RESULT_20261026.md).
+
 > 2026-10-26 CH1-1 시작 후보: [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md). 링5/580px의 종류0·safePt는 유지하며 실제 몸의 타일벽 구출, magic3% 생성·일반9/매직10draw·20tick 등장과 Curtain900ms 갱신을 교정. 조명값 불변, Core63 PASS/CPU compile 오류0. **IMPLEMENTED_UNVERIFIED — GPU 대기**, 아래 과거 Player 결과를 새 후보 인수로 읽지 않는다.
 
 > 2026-10-26 [UNITY-FIELD-VERIFY-01](UNITY_FIELD_VERIFY_01_20261026.md): 지정pet branch에한해새import/ARM64errors0·해자/펫실화면·필터교정·HUD55/practice5 PASS. 전체RETOUCH,main/PC/기존사용자Player배포0. NativeGame/로비/오디오/intro-silence추가변경0.

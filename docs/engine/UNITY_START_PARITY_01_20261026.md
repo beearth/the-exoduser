@@ -1,5 +1,7 @@
 # UNITY-START-PARITY-01 — CH1-1 첫 진입 시점·링·이리스
 
+> **IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL VERDICT: RETOUCH.** 최초 ARM64 빌드·54tick 시작 촬영·성능1회·HUD55/practice5 각1회는 통과했다. 실제 웹도54tick/active0·held5/이리스ring_04를 확인했다. 마지막 별도 Ori 바닥광원 누락 교정은 push했으나 재빌드 직전 타 QA 재점유로 build/화면/성능 미검수다. 비교 PNG·43.646943 대63.382553·8.444413ms는 **Ori 수정 전** 실제 빌드이며 최종 AFTER가 아니다. worktree를 유지한다. [Latest result](UNITY_START_PARITY_01_RESULT_20261026.md).
+
 상태: **IMPLEMENTED_UNVERIFIED — GPU 대기**. **VISUAL VERDICT: RETOUCH**.
 
 부모 `ec6e7b0a9fcbfac204ccbb8b2a7ea182b3cbfa04`, 전용 브랜치 `codex/unity-start-parity-01-20261026`. main/PC/사용자 실행본 반영이 아니다. 최종 SHA·원격 대조·GPU 대기 영수증·실제 검수 여부는 `~/exoduser-wt/_out/UNITY-START-PARITY-01/DONE.txt`에서 확정한다. 아래 CPU 계산을 웹/Unity 실행 관측으로 읽지 않는다.

@@ -1,5 +1,7 @@
 # Unity 원본 기반 기본 무기·기검참 코어 — 2026-10-24
 
+> **IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL VERDICT: RETOUCH.** 최초 ARM64 빌드·54tick 시작 촬영·성능1회·HUD55/practice5 각1회는 통과했다. 실제 웹도54tick/active0·held5/이리스ring_04를 확인했다. 마지막 별도 Ori 바닥광원 누락 교정은 push했으나 재빌드 직전 타 QA 재점유로 build/화면/성능 미검수다. 비교 PNG·43.646943 대63.382553·8.444413ms는 **Ori 수정 전** 실제 빌드이며 최종 AFTER가 아니다. worktree를 유지한다. [Latest result](UNITY_START_PARITY_01_RESULT_20261026.md).
+
 > 2026-10-26 시작 동일성 후보: [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md). `SpawnOpeningEnemy`는 stage0 링의 원본 magic3%·modifier M29/M30·일반9/매직10 RNG·spawn20tick을 복원한다. 기존 명시적 `SpawnNormalEnemy`의 비정예 fixture 계약은 유지. SourceMap tile-only 구출을 일반 loop/AI 앞에 연결, Curtain900ms는 기존60Hz 펫/전투를 진행한다. Core63/63·최종CPU API compile 오류0, 실제 화면/성능/HUD·practice는 GPU 대기. 전체 AI·정예 공격·드랍/장비 RNG 완료 아님.
 
 사용자 최신 지시에 따라 Godot를 보존하고 Unity도 비교 시험한다. 최종 엔진 선택은 미확정이다. 이 문서는 Unity용 순수 C# 코어의 실제 구현 범위와 검증을 기록한다. Godot 파일, 웹 게임 코드, 세이브는 수정하지 않았다. 초기 license 차단 뒤 부모가 실제 Editor import/compile/asset 검사를 통과했다. Windows Player/시각/수동 플레이는 별도 게이트다. 아래 .NET 검사와 전체 이식 완료를 혼동하지 않는다.

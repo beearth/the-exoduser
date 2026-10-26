@@ -1,5 +1,7 @@
 # Unity 첫 이동·좌클릭 실습 — 2026-10-26
 
+> **IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL VERDICT: RETOUCH.** 최초 ARM64 빌드·54tick 시작 촬영·성능1회·HUD55/practice5 각1회는 통과했다. 실제 웹도54tick/active0·held5/이리스ring_04를 확인했다. 마지막 별도 Ori 바닥광원 누락 교정은 push했으나 재빌드 직전 타 QA 재점유로 build/화면/성능 미검수다. 비교 PNG·43.646943 대63.382553·8.444413ms는 **Ori 수정 전** 실제 빌드이며 최종 AFTER가 아니다. worktree를 유지한다. [Latest result](UNITY_START_PARITY_01_RESULT_20261026.md).
+
 > 2026-10-26 시작 후보: [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md). 레슨 진입 전 Curtain900ms에 원본 전투·펫 clock을 진행한 뒤 Original을 보관한다. 따라서 Original의 clock/무적/적 좌표는 생성0tick과 다르다. Begin/End가 보관한 전체 객체를 변형 없이 복원한다는 아래 계약은 유지하며 Intro의 active 적0/펫 동결도 불변. GPU practice 재검수는 대기.
 
 상태: ROOT 실제 Player·직접입력·새 패널 인수 완료. 새 범위 모델34검사와 scripted runtime5검사 PASS. 전체 전투12·자원8·시스템7 실습 또는 배지 완료가 아니다.

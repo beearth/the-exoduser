@@ -1,3 +1,7 @@
+## 2026-10-26 UNITY-START-PARITY-01 final runtime boundary
+
+**IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL VERDICT: RETOUCH.** 최초 ARM64 빌드·54tick 시작 촬영·성능1회·HUD55/practice5 각1회는 통과했다. 실제 웹도54tick/active0·held5/이리스ring_04를 확인했다. 마지막 별도 Ori 바닥광원 누락 교정은 push했으나 재빌드 직전 타 QA 재점유로 build/화면/성능 미검수다. 비교 PNG·43.646943 대63.382553·8.444413ms는 **Ori 수정 전** 실제 빌드이며 최종 AFTER가 아니다. worktree를 유지한다. [Latest result](engine/UNITY_START_PARITY_01_RESULT_20261026.md).
+
 ## 2026-10-26 UNITY-START-PARITY-01 원본 Ori 바닥광원 보완
 
 - 실제 웹/Unity54tick·빈 active/held5·ring_04 추적을 확인한 뒤 남은 r20 차이에서 원문 _ptLight25502/51944 누락을 확인. 기존 r470/iris250을 바꾸지 않고 별도640²/r320 바닥 bitmap을 원본 PNG byte로 인수, 기존 additive shader로 actors/후처리 아래에 연결했다. 새 shader/매프레임 Resources.Load0.

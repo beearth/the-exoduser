@@ -1,5 +1,7 @@
 # UNITY-MAP-LIGHT-01 — CH1-1 월드 카메라 조명
 
+> **IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL VERDICT: RETOUCH.** 최초 ARM64 빌드·54tick 시작 촬영·성능1회·HUD55/practice5 각1회는 통과했다. 실제 웹도54tick/active0·held5/이리스ring_04를 확인했다. 마지막 별도 Ori 바닥광원 누락 교정은 push했으나 재빌드 직전 타 QA 재점유로 build/화면/성능 미검수다. 비교 PNG·43.646943 대63.382553·8.444413ms는 **Ori 수정 전** 실제 빌드이며 최종 AFTER가 아니다. worktree를 유지한다. [Latest result](UNITY_START_PARITY_01_RESULT_20261026.md).
+
 > START-PARITY-01 추가 교정: 원문25502/51944의 독립 Ori 바닥 광원640²/r320은 _CENTER_GLOW와 별도다. source bitmap 동일 byte를 actors/후처리 아래에 연결한다. r470/ci6 수치 불변. 최종 보완 build의 화면/성능 인수는 [후속 보고](UNITY_START_PARITY_01_20261026.md)를 따른다.
 
 > 2026-10-26 START-PARITY-01 후속 후보: 실제 무개입 웹 레슨 intro에서 _gameFrame39/iris.t89가 동결됨을 관측했다. NativeFieldLighting의 Running 기준 render별 증가를 source update와 같은 Crow.T로 교정(레슨 중 reset0, 이리스OFF여도 crow 진행). 아래 광원 수치·stamp·합성 불변. [원본 행·실행 경계](UNITY_START_PARITY_01_20261026.md). GPU 검수 대기.
