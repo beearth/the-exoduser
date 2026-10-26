@@ -1,0 +1,80 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.cs b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+index 8ecc536b3..994ee4aba 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+@@ -149,8 +149,8 @@ namespace Exoduser.UnityPort
+             // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
+             if(stats.Open){
+                 if(Input.GetKeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
+-                else if(!stats.TextInputActive&&Input.GetKeyDown(KeyCode.K))OnPanelRequested("skillPanel");
+-                else if(!stats.TextInputActive&&Input.GetKeyDown(KeyCode.Tab))OnPanelRequested("invPanel");
++                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("skill"))OnPanelRequested("skillPanel");
++                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("inventory"))OnPanelRequested("invPanel");
+                 else stats.HandleKeys(()=>SetStats(false));
+                 return;
+             }
+@@ -161,26 +161,26 @@ namespace Exoduser.UnityPort
+             // Web forge window (#forge): G toggles it in HandlePanelHotkeys; ESC closes (_panelBack); K / TAB switch directly to that window.
+             if(forge.Open){
+                 if(Input.GetKeyDown(KeyCode.Escape)){SetForge(false);return;}
+-                if(Input.GetKeyDown(KeyCode.K)){OnPanelRequested("skillPanel");return;}
+-                if(Input.GetKeyDown(KeyCode.Tab)){OnPanelRequested("invPanel");return;}
++                if(NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
++                if(NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
+                 UpdateViews();return;
+             }
+             // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
+-            if(inventory.Open&&!inventoryKeysSmoke&&Input.GetKeyDown(KeyCode.K)){OnPanelRequested("skillPanel");return;}
++            if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
+             if(inventory.Open){if(!inventoryKeysSmoke&&inventory.PollKeys(Simulation.Player.Level))SetInventory(false);UpdateViews();return;}
+             if(skillInputFence&&!Input.GetMouseButton(0))skillInputFence=false;
+-            if(Input.GetKeyDown(KeyCode.Escape)){
++            if(Input.GetKeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
+                 if(skills.Open){SetSkills(false);return;}
+                 if(inventory.Open)SetInventory(false);
+                 else {menu=true;pauseMenu.Reset();Running=false;}
+                 return;
+             }
+-            if(skills.Open&&Input.GetKeyDown(KeyCode.Tab)){OnPanelRequested("invPanel");return;}
++            if(skills.Open&&NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
+             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
+-            if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.K)){SetSkills(true);return;}
+-            if(!menu&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.Tab))SetInventory(!inventory.Open);
+-            if(!menu&&!inventory.Open&&Input.GetKeyDown(KeyCode.R))Toast("드랍 아이템 생성 이식 대기");
+-            if(!menu&&!inventory.Open&&(Input.GetKeyDown(KeyCode.Q)||Input.GetKeyDown(KeyCode.E)))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
++            if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("skill")){SetSkills(true);return;}
++            if(!menu&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("inventory"))SetInventory(!inventory.Open);
++            if(!menu&&!inventory.Open&&NativeKeyBindInput.Down("interact"))Toast("드랍 아이템 생성 이식 대기");
++            if(!menu&&!inventory.Open&&(NativeKeyBindInput.Down("parry")||NativeKeyBindInput.Down("shield")))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
+             UpdateViews();
+             if(smokeActive)sound?.Probe();
+         }
+@@ -188,11 +188,11 @@ namespace Exoduser.UnityPort
+         {
+             if(practiceScripted||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
+             var p=Simulation.Player;var aim=view.ScreenToWorldPoint(Input.mousePosition);
+-            float x=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
+-            float y=(Input.GetKey(KeyCode.S)?1:0)-(Input.GetKey(KeyCode.W)?1:0);
++            float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
++            float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
+             if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
+-            bool attack=SkillUiState.AttackHeld(Input.GetMouseButton(0),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition),p.KiChargeActive);
+-            if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,Input.GetKey(KeyCode.R));
++            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition),p.KiChargeActive);
++            if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
+             DispatchFeedback();
+             if(p.Hp<=0){Running=false;Toast("쓰러졌습니다");}
+             if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의 +4");}
+@@ -386,9 +386,9 @@ namespace Exoduser.UnityPort
+         // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats, F10 = settings toggle.
+         // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
+         bool HandlePanelHotkeys(){
+-            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive)return false;
+-            if(Input.GetKeyDown(KeyCode.G)){OnPanelRequested("forge");return true;}
+-            if(Input.GetKeyDown(KeyCode.J)){OnPanelRequested("statPanel");return true;}
++            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive)return false;   // A16: a key waiting in the binding page must not open windows
++            if(NativeKeyBindInput.Down("forge")){OnPanelRequested("forge");return true;}
++            if(NativeKeyBindInput.Down("stats")){OnPanelRequested("statPanel");return true;}
+             if(Input.GetKeyDown(KeyCode.F10)){
+                 if(menu){if(gameFocused){menu=false;skillInputFence=true;Running=true;}}   // togglePanel('settings') while settings is open closes it
+                 else OnPanelRequested("settings");

@@ -1,0 +1,57 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs b/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
+index 6a2e4b73e..d4789ffed 100644
+--- a/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
++++ b/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
+@@ -20,6 +20,10 @@ namespace Exoduser.UnityPort
+   NativeKeyBindList keyList;bool keyPage;float keyScroll;GUIStyle keyLabelStyle;
+   public bool KeyPageOpen{get{return keyPage;}}
+   public bool KeyCaptureActive{get{return keyPage&&keyList!=null&&keyList.Listening;}}
++  // A16 test hooks (pause smoke phase "keys"): open the page without the mouse, reach the list, force the scroll (clamped to the end).
++  public NativeKeyBindList KeyListForTest{get{return keyList;}}
++  public void OpenKeyPageForTest(){keyPage=true;keyScroll=0;if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);}
++  public void SetKeyScrollForTest(float value){keyScroll=value;}
+   public bool English { get; set; }
+   public bool SettingsPersistenceEnabled {get;set;}
+   public bool SettingsPersistenceProblem {get;set;}
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.PauseSmoke.cs b/unity/Assets/Exoduser/Runtime/NativeGame.PauseSmoke.cs
+index 6659182b1..10ecfe8bc 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.PauseSmoke.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.PauseSmoke.cs
+@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort {
+   IEnumerator PauseSmoke(){
+    string output=Argument("-output");if(string.IsNullOrEmpty(output))throw new InvalidOperationException("pause fixture needs -output");Directory.CreateDirectory(output);
+    if(Argument("-pause-phase")=="visual"||Argument("-pause-phase")=="visual-en"){yield return PauseVisual(output);yield break;}
++   if(Argument("-pause-phase")=="keys"){yield return PauseKeysCapture(output);yield break;}
+    var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
+    SetGameFocus(true);pauseMenu.Reset();Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
+    int tick=Simulation.TickCount;yield return UiCapture(output,"main-720p");check(!Running&&Simulation.TickCount==tick,"menu freezes actual simulation");
+@@ -43,6 +44,29 @@ namespace Exoduser.UnityPort {
+    File.WriteAllText(Path.Combine(output,"pause-smoke.json"),JsonUtility.ToJson(new PauseSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
+    if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)Application.Quit(failures==0?0:2);
+   }
++  // A16: Controls tab + the key-binding page of the pause menu (real NativeGame draw path). usage: --unity-pause-smoke -output <dir> -pause-phase keys --quit-after-pause-smoke
++  IEnumerator PauseKeysCapture(string output){
++   var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
++   SetGameFocus(true);menu=true;Running=false;pauseMenu.Reset();pauseMenu.ShowSettings();int tick=Simulation.TickCount;
++   foreach(int width in new[]{1920,1280}){
++    Screen.SetResolution(width,width==1920?1080:720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
++    pauseMenu.Navigation.SelectTab(2);pauseMenu.Navigation.ObserveReleased(false);yield return UiCapture(output,"keys-controls-tab-"+width);
++    pauseMenu.OpenKeyPageForTest();yield return new WaitForSecondsRealtime(.2f);check(pauseMenu.KeyPageOpen&&!Running,"key page opens over the paused game ("+width+")");
++    yield return UiCapture(output,"keys-page-default-"+width);
++    pauseMenu.KeyListForTest.BeginListening("weapon",false);pauseMenu.KeyListForTest.ForceListeningAge(1);yield return new WaitForSecondsRealtime(.2f);
++    check(pauseMenu.KeyCaptureActive&&!HandlePanelHotkeys(),"waiting key blocks window hotkeys ("+width+")");
++    yield return UiCapture(output,"keys-page-waiting-"+width);
++    pauseMenu.KeyListForTest.CancelListening();pauseMenu.SetKeyScrollForTest(100000f);yield return new WaitForSecondsRealtime(.2f);yield return UiCapture(output,"keys-page-end-"+width);
++    pauseMenu.KeyListForTest.CurrentTab=NativeKeyBindList.Tab.Pad;pauseMenu.SetKeyScrollForTest(0f);yield return new WaitForSecondsRealtime(.2f);yield return UiCapture(output,"keys-page-pad-top-"+width);
++    pauseMenu.SetKeyScrollForTest(100000f);yield return new WaitForSecondsRealtime(.2f);yield return UiCapture(output,"keys-page-pad-end-"+width);
++    pauseMenu.KeyListForTest.CurrentTab=NativeKeyBindList.Tab.Kbm;
++    pauseMenu.SetKeyScrollForTest(0f);pauseMenu.Reset();pauseMenu.ShowSettings();check(!pauseMenu.KeyPageOpen,"menu reset closes the key page ("+width+")");
++   }
++   check(Simulation.TickCount==tick&&!Running,"the game stays paused during all key-page captures");
++   pauseMenu.Reset();SetGameFocus(true);pauseSmoke=false;
++   File.WriteAllText(Path.Combine(output,"keys-smoke.json"),JsonUtility.ToJson(new PauseSmokeReceipt{scope="A16 pause menu key page; actual Player draw path, test hooks (not OS mouse input)",passed=failures==0,failures=failures,checks=checks.ToArray()},true));
++   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)Application.Quit(failures==0?0:2);
++  }
+   IEnumerator PauseVisual(string output){
+    SetGameFocus(true);menu=true;Running=false;pauseMenu.ShowSettings();
+    foreach(int width in Argument("-pause-phase")=="visual-en"?new int[0]:new[]{1280,1920}){

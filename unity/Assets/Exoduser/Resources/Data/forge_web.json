@@ -1,0 +1,437 @@
+{
+ "source": {
+  "commit": "d5f32ff57",
+  "file": "game.html",
+  "extractedAt": "2026-10-26T15:30+09:00",
+  "note": "정의(이름·문구·탭 구성·공식 문구)만. 상태(악의·장비·강화·성공률)는 Unity에서 읽는다. 공식은 ForgeFormulas에 이식.",
+  "lines": {
+   "renderForge": "50516-51200",
+   "enhRate": "28078",
+   "_malCost": "28083",
+   "enhCostRaw": "28088",
+   "enhCost": "28091",
+   "enhMul/enhMulAtk": "28095-28102",
+   "enhColor": "28107",
+   "enhRateColor": "28118",
+   "salvageVal": "28189",
+   "_itemEconomyRarity": "28188",
+   "itemDispName": "50444",
+   "CRAFT_COST": "50421",
+   "REROLL_COST": "50460",
+   "SLOT_KR": "15835",
+   "SLOT_SVG": "27788"
+  }
+ },
+ "title": "복수의 대장간",
+ "matsLabel": "악의",
+ "lore": [
+  {
+   "g": "lore12:🔴"
+  },
+  {
+   "t": "화염→빙결 2배 | "
+  },
+  {
+   "g": "lore12:🔵"
+  },
+  {
+   "t": "빙결→화염 2배 | "
+  },
+  {
+   "g": "lore12:⚪"
+  },
+  {
+   "t": "물리=중립 | 악마 처치 시 악의 영혼 드롭"
+  }
+ ],
+ "tabs": [
+  {
+   "id": "upgrade",
+   "label": "강화"
+  },
+  {
+   "id": "potion",
+   "label": "물약"
+  },
+  {
+   "id": "salvage",
+   "label": "분해"
+  },
+  {
+   "id": "reroll",
+   "label": "리롤"
+  },
+  {
+   "id": "crystal",
+   "label": "유물"
+  },
+  {
+   "id": "craft",
+   "label": "제작"
+  }
+ ],
+ "closeLabel": "닫기 [G]",
+ "rarityNames": [
+  "일반",
+  "고급",
+  "희귀",
+  "영웅",
+  "전설",
+  "유니크"
+ ],
+ "slots": [
+  {
+   "key": "weapon",
+   "label": "무기",
+   "emoji": "⚔️",
+   "chipW": 82
+  },
+  {
+   "key": "shield",
+   "label": "보조무기",
+   "emoji": "🛡️",
+   "chipW": 106.3
+  },
+  {
+   "key": "armor",
+   "label": "갑옷",
+   "emoji": "🦺",
+   "chipW": 82
+  },
+  {
+   "key": "helmet",
+   "label": "왕관",
+   "emoji": "👑",
+   "chipW": 82
+  },
+  {
+   "key": "boots",
+   "label": "부츠",
+   "emoji": "👢",
+   "chipW": 82
+  },
+  {
+   "key": "bow",
+   "label": "활",
+   "emoji": "🏹",
+   "chipW": 69.8
+  },
+  {
+   "key": "gloves",
+   "label": "장갑",
+   "emoji": "🧤",
+   "chipW": 82
+  },
+  {
+   "key": "pants",
+   "label": "바지",
+   "emoji": "👖",
+   "chipW": 82
+  },
+  {
+   "key": "belt",
+   "label": "벨트",
+   "emoji": "🥋",
+   "chipW": 0
+  },
+  {
+   "key": "necklace",
+   "label": "목걸이",
+   "emoji": "📿",
+   "chipW": 94.1
+  },
+  {
+   "key": "ring1",
+   "label": "반지1",
+   "emoji": "💍",
+   "chipW": 88.8
+  },
+  {
+   "key": "ring2",
+   "label": "반지2",
+   "emoji": "💍",
+   "chipW": 88.8
+  },
+  {
+   "key": "cape",
+   "label": "망토",
+   "emoji": "🧣",
+   "chipW": 82
+  },
+  {
+   "key": "bracelet",
+   "label": "팔찌",
+   "emoji": "⭕",
+   "chipW": 82
+  },
+  {
+   "key": "headband",
+   "label": "귀걸이1",
+   "emoji": "🎀",
+   "chipW": 101
+  },
+  {
+   "key": "headband2",
+   "label": "귀걸이2",
+   "emoji": "🎀",
+   "chipW": 101
+  },
+  {
+   "key": "ossuary",
+   "label": "유골함",
+   "emoji": "⚱️",
+   "chipW": 94.1
+  }
+ ],
+ "slotKr": [
+  "무기",
+  "보조무기",
+  "부츠",
+  "갑옷",
+  "왕관",
+  "석궁",
+  "장갑",
+  "바지",
+  "벨트",
+  "목걸이",
+  "반지1",
+  "반지2",
+  "망토",
+  "팔찌",
+  "귀걸이1",
+  "유골함",
+  "귀걸이2"
+ ],
+ "upgrade": {
+  "header": "장비 강화 (실패 시 재료만 소멸)",
+  "aiTitle": "AI 자동 강화",
+  "aiDesc": "장비 선택 → 목표치 설정 → 악의 투입 → 자동 시도",
+  "hint": "위에서 장비를 선택하세요",
+  "noItem": "장착된 장비가 없습니다.",
+  "targetLabel": "목표 강화치",
+  "estLabel": "예상 필요 악의",
+  "haveSlash": "/ 보유",
+  "startLabel": "강화 시작",
+  "haveLabel": "보유 악의",
+  "enoughLabel": "충분",
+  "shortLabel": "부족",
+  "needMore": "더 필요",
+  "successLabel": "성공률",
+  "costLabel": "악의",
+  "bonusDefault": "강화 보너스 적용"
+ },
+ "potion": {
+  "header": "⬆ 물약 강화 (최대 10단)",
+  "hpName": "HP 물약",
+  "healLabel": "회복량",
+  "costLabel": "악의",
+  "maxLabel": "최대 강화",
+  "needLabel": "필요"
+ },
+ "salvage": {
+  "header": "악의의 분해로 — 장비를 악의로 갈아버려라",
+  "rarLabel": "레어:",
+  "slotLabel": "슬롯:",
+  "all": "전체",
+  "slotFilters": [
+   {
+    "k": "all",
+    "g": ""
+   },
+   {
+    "k": "weapon",
+    "g": "salchip12:⚔️"
+   },
+   {
+    "k": "shield",
+    "g": "salchip12:🛡️"
+   },
+   {
+    "k": "armor",
+    "g": "salchip12:🦺"
+   },
+   {
+    "k": "helmet",
+    "g": "salchip12:⛑️"
+   },
+   {
+    "k": "boots",
+    "g": "salchip12:👢"
+   },
+   {
+    "k": "bow",
+    "g": "salchip12:🏹"
+   },
+   {
+    "k": "gloves",
+    "g": "salchip12:🧤"
+   },
+   {
+    "k": "pants",
+    "g": "salchip12:👖"
+   },
+   {
+    "k": "necklace",
+    "g": "salchip12:📿"
+   },
+   {
+    "k": "ring",
+    "g": "salchip12:💍"
+   },
+   {
+    "k": "bracelet",
+    "g": "salchip12:⭕"
+   },
+   {
+    "k": "headband",
+    "g": "salchip12:🎀"
+   }
+  ],
+  "bulk": [
+   "전체 선택",
+   "전체 해제",
+   "희귀 이하"
+  ],
+  "valueTable": [
+   1000,
+   2000,
+   10000,
+   20000,
+   50000
+  ],
+  "tierMul": 2,
+  "arrowLabel": "→",
+  "costLabel": "악의",
+  "empty": "분해할 아이템이 없습니다.",
+  "selPrefix": "선택",
+  "selUnit": "개 ->",
+  "selSuffix": "악의 획득 예상"
+ },
+ "reroll": {
+  "header": "리롤 — 접두/접미 재설정 | 악의 {cost}",
+  "rerollCost": 100,
+  "empty": "비어있음",
+  "noAffix": "어픽스 없음"
+ },
+ "crystal": {
+  "sub": [
+   "강화",
+   "합성",
+   "분해/제작"
+  ],
+  "owned": "보유:",
+  "dust": "가루:",
+  "malice": "악의:",
+  "cap": 9999,
+  "filters": [
+   "전체",
+   "공격",
+   "방어",
+   "자원"
+  ],
+  "note": "일괄 작업은 선택한 분류에만 적용됩니다. 장착·해제는 인벤의 장비 소켓에서 가능합니다.",
+  "bulk": "일괄강화+합성",
+  "empty": "이 분류에 유물이 없습니다"
+ },
+ "craft": {
+  "header": "장비 제작",
+  "headerGlyph": "craft16_8:🔨",
+  "cost": 100000,
+  "costLabel": "비용:",
+  "costUnit": "악의  |  보유:",
+  "rates": [
+   {
+    "name": "영웅",
+    "pct": 90,
+    "col": [
+     187,
+     68,
+     255
+    ]
+   },
+   {
+    "name": "전설",
+    "pct": 10,
+    "col": [
+     255,
+     170,
+     0
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "key": "weapon",
+    "label": "무기",
+    "g": "craft20_8:⚔️"
+   },
+   {
+    "key": "bow",
+    "label": "활",
+    "g": "craft20_8:🏹"
+   },
+   {
+    "key": "armor",
+    "label": "갑옷",
+    "g": "craft20_8:🦺"
+   },
+   {
+    "key": "shield",
+    "label": "보조무기",
+    "g": "craft20_8:🛡️"
+   },
+   {
+    "key": "helmet",
+    "label": "왕관",
+    "g": "craft20_8:👑"
+   },
+   {
+    "key": "pants",
+    "label": "바지",
+    "g": "craft20_8:👖"
+   },
+   {
+    "key": "gloves",
+    "label": "장갑",
+    "g": "craft20_8:🧤"
+   },
+   {
+    "key": "boots",
+    "label": "부츠",
+    "g": "craft20_8:👢"
+   },
+   {
+    "key": "belt",
+    "label": "벨트",
+    "g": "craft20_8:🥋"
+   },
+   {
+    "key": "necklace",
+    "label": "목걸이",
+    "g": "craft20_8:📿"
+   },
+   {
+    "key": "ring",
+    "label": "반지",
+    "g": "craft20_8:💍"
+   },
+   {
+    "key": "cape",
+    "label": "망토",
+    "g": "craft20_8:🧣"
+   },
+   {
+    "key": "bracelet",
+    "label": "팔찌",
+    "g": "craft20_8:⭕"
+   },
+   {
+    "key": "headband",
+    "label": "귀걸이",
+    "g": "craft20_8:🎀"
+   }
+  ],
+  "tip": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
+  "empty": "—"
+ }
+}

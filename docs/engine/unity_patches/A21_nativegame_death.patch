@@ -1,0 +1,61 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.cs b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+index 586e0f1..d4c7505 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+@@ -22,6 +22,7 @@ namespace Exoduser.UnityPort
+         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
+         NativeForgePanel forge;bool forgeWasRunning;
+         NativeLevelUpOverlay levelUp;int levelUpSeen;
++        NativeDeathOverlay death;int deathCount;bool deathShown;
+         bool basicWeaponMode;
+         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
+         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
+@@ -49,7 +50,7 @@ namespace Exoduser.UnityPort
+             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
+             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
+             hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
+-            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();
++            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;
+             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
+             BuildProps();
+             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
+@@ -98,7 +99,7 @@ namespace Exoduser.UnityPort
+             kiView?.Reset();impacts?.Reset();sound?.Reset();
+             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
+             Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
+-            inventory.Reset();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
++            inventory.Reset();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
+             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
+             // World drop item factory and persistent saves remain unimplemented.
+             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
+@@ -131,6 +132,11 @@ namespace Exoduser.UnityPort
+             view.cullingMask=worldMask;
+             // Web addExp (game.html 43136-43176): Simulation.AddExperience has no callback, so the level change is read from Player.Level.
+             if(Simulation!=null){int lv=Simulation.Player.Level;if(lv>levelUpSeen)levelUp.Show(lv);levelUpSeen=lv;}
++            // Web _fallenResolve death branch (game.html 43851-43896): Player.Hp <= 0 shows #death once. Unity has no chapter / max-combo / damage-log state: chapter 0 is the only ported chapter, combo and log stay unported.
++            if(Simulation!=null&&!pauseSmoke&&!hudSmoke&&!inventorySmoke){
++                if(Simulation.Player.Hp<=0){if(!deathShown){deathShown=true;deathCount++;death.Show(new NativeDeathOverlay.Info{kills=Simulation.Kills,chapter=0,expLoss=-1,maxCombo=-1,deaths=deathCount,damageLog=null});}}
++                else if(deathShown){deathShown=false;death.Hide();}
++            }
+             if(WaitForFrontendEntryInput())return;
+             if(traceInventoryKeys)TraceInventoryKeys();
+             if(!gameFocused){Running=false;return;}
+@@ -297,7 +303,8 @@ namespace Exoduser.UnityPort
+             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
+             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
+             if(levelUp.Active){var lp=view.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
+-            if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){
++            if(death.Active&&p.Hp<=0){death.Draw();}
++            else if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){
+                 pauseMenu.English=lobby.Language!="ko";
+                 ApplyPauseCommand(pauseMenu.Draw(p.Hp<=0,Screen.fullScreen));
+             }
+@@ -380,6 +387,8 @@ namespace Exoduser.UnityPort
+             }
+             return false;
+         }
++        // Death screen 'retry' button = the pause menu's Restart command.
++        void RetryFromDeath(){if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}}
+         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
+         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
+         void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);QueueSettingsSave();}

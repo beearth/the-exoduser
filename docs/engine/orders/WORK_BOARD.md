@@ -28,6 +28,8 @@ Mac UI 누적 통합 preflight: 최신 PC 전달함 밤11은 기존 18개를 `a4
 
 Mac UI 1번 U04B 후속: 현재 Mac inventory fixture의 기본 선택 흐름을 보존하고 PC patch가 요구한 `maxMana=Simulation.Player.MaxMana`, `mana=Simulation.Player.Mana` 두 QA 영수증 필드만 `NativeGame.cs`에 적응했다. `-output`/저장 계약·전투 수치 불변. 소스 백업과 독립 diff를 `_out/UNITY-MAC-UI-U04B-20261026/`에 보관했고 [키·시점·검사표](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md)에 기록했다. 수정 소스 임시 사본에서 다음 2→3 U08 tab bar `git apply --check`·임시 적용 2/2 PASS; 제품 적용·빌드·Player0. 13·14는 미해결, A02 fit32 실화면 HOLD 유지.
 
+Mac UI 누적 소스 checkpoint: PC 최신 `a48faf9ea`의 PC 소유 파일·문서를 merge로 인수한다. merge-tree가 예고한 충돌은 `NativeGame.cs` inventory smoke 한 곳이었고 Mac `ef8080387` U04B 두 필드/기존 fixture 흐름을 그대로 보존해 해소했다. PC 원본은 기본 선택 해제 QA 장면 두 줄을 가졌으나 이번 Mac fixture에는 추가하지 않는다. 2–12 hook 적용은 다음 단계, 13·14 충돌 보류. 이 시점 빌드·Player 판정 없음.
+
 PC에 답신 필요한 원본 근거 3건:
 1. 원본 `a48faf9ea:U04B_nativegame_inventory_smoke_mana.patch`는 기본 선택 해제 장면을 context로 쓰지만 Mac `NativeGame.cs` inventory smoke에는 그 장면이 없다. Mac은 영수증 두 필드를 같은 생성 지점에 적응했다. 이 스냅샷 시점·키 계약이 PC 의도와 일치하는지 확인 요청.
 2. 원본 `A24_nativegame_areatitle.patch` HUD hunk는 `if(lobby.ActiveCharacterName.Length>0)`을 기대하지만 Mac은 `if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0)`이다. 일반 실행의 진단 배지 숨김을 보존하면서 A24 objective panel을 연결하는 기준 확인 요청.

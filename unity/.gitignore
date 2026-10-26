@@ -10,9 +10,14 @@
 /Tools/Tests/bin/
 /Tools/Tests/obj/
 !/Tools/Tests/CoreTests.csproj
+!/Tools/keybind-parity/KeybindParityTests.csproj
+/Tools/keybind-parity/bin/
+/Tools/keybind-parity/obj/
 /Tools/ki-slash-oracle/runs/
 !/Tools/ki-slash-oracle/KiSlashTests.csproj
 !/Tools/ki-slash-oracle/PoiseTests.csproj
+!/Tools/auto-potion-oracle/AutoPotionTests.csproj
+/Tools/auto-potion-oracle/runs/
 !/Tools/feedback-oracle/FeedbackTests.csproj
 /Tools/feedback-oracle/runs/
 !/Tools/hud-oracle/HudTests.csproj
@@ -26,3 +31,9 @@
 /Tools/lobby-oracle/bin/
 /Tools/lobby-oracle/obj/
 /Tools/lobby-oracle/runs/
+!/Tools/stat-parity/StatParityTests.csproj
+/Tools/stat-parity/bin/
+/Tools/stat-parity/obj/
+!/Tools/affix-defs-parity/AffixDefsParity.csproj
+/Tools/affix-defs-parity/bin/
+/Tools/affix-defs-parity/obj/
