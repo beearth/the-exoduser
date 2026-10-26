@@ -502,3 +502,6 @@ P1-002.C~H, P2-001a~k, P2-002a/b, P2-003a, P2-004a, P2-005a~d — main ad7f15777
 
 
 2026-10-25 공조후속: PC현재디스크index는v17이며UnitycapturedPC와SHA일치,실제실행창은미확인. Steam별도v22b/+0.400초를인게임에섞지않는다. 지원담당928cue/17컷데이터대조를인수했고최종영상승인은계속미확정. [경계·지원근거](../UNITY_SOURCE_BASELINE_20261024.md#2026-10-25-pcmac-공조-원본-대조-후속).
+## 2026-10-27 Mac A06 HUD 좌표 인수
+
+PC freeze `741d97ba1`의 dock/skills 두 파일만 Mac에 적용, 원본 사본·SHA 보관. 720p/1080p 격리 ARM64 Player 네 화면/55검사 PASS, 해당 좌표·foundation 접점·키라벨 VISUAL PASS. OS 포인터와 구형 Editor composition oracle 갱신은 HOLD. 기존 사용자 앱·roster 보존. [인수 수치와 증거](../UNITY_MAC_A06_HUD_COORDINATE_20261027.md).
