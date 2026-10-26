@@ -94,3 +94,20 @@ NativeGame.cs는 구출 callback1줄, opening 생성 호출/주석, Curtain tick
 | ring_05 | 0 | 3529.411081 | 7252.971885 | 875 | idle/alive/spawn0 | 아니오 |
 
 Unity 같은 시점의 실제 목록은 GPU 대기로 **미측정**이다. 위 원본1차 자료는 로직 관측이고 CSS가 보완된 최종 시각 인수와 구분한다. 원본의 생성 local RNG9/10을 교정해도 전체 장비505draw·맵/부트 RNG와 C# seed stream 전체 replay가 같은 것은 아니다. 따라서 모든 남은 좌표 차이를 RNG뿐이라고 단정하지 않는다. source flow field/tier와 native fallback 차이도 잔여다.
+
+
+## 실제54tick 비교 뒤 발견한 별도 바닥 광원 누락 — 보완 후보
+
+최초 ARM64 build errors0, 시작 캡처/900프레임1회 exit0, HUD55/practice5 각각1회 PASS 뒤 정본 새 origin3400(저장0·의존파일404 0)에서 무개입 첫 진입을 읽었다. 웹/Unity 모두 Curtain54tick, active0/held5, etype0 idle·HP875·최근접ring_04, iris.t104였다. 이리스는 웹(3767.103193,7722.036636), Unity(3781.338234,7729.307047)로 둘 다 플레이어에서 멀리 있다. 위치 차이를 조명 수치 문제나 무조건 RNG뿐으로 단정하지 않는다.
+
+그런데 같은 조건의 중앙 r20은 Unity43.646943/웹63.382553였다. 원문을 더 대조해 `_CENTER_GLOW`와 별개인 **_ptLight** 누락을 확인했다. 25501–25502에서640² 캐시를 만들고51944–51948에서 플레이어 중심에 `lighter`로 그리며, **_CENTER_GLOW=false 또는 _TORCH.darkAlpha=0이어도 OPT.lighting이면 계속 그린다.** 종전 조명 정상 판정은 r470 hole/field color 계약에 대한 것이며 이 독립 바닥 bitmap의 존재를 배제하는 근거가 아니었다.
+
+| id | 원본 수치·순서 | 동일성 후보 |
+|---|---|---|
+| ORI_FLOOR |640×640, radius320, center RGBA255/190/90/.28, stop.4 RGBA220/120/40/.13, stop1=0/0/0/0 | 원본 `_ptLight.toDataURL` 읽기 전용 PNG 인수,414851B/SHA256 b7232a32e58bf8ed75d727f6013bebe83f6023bcab43fc91ef88af52bcddfef5 |
+| ORI_BLEND | 배경/언덕/해자/living detail 뒤, 환경 decor/actors·동적 lighting 앞. P.x/y 중심,640px1:1, lighter alpha1 | 기존 KiSlashAdditive One/One·Opacity1 재사용, SpriteRenderer order−19999(기존ground−20000 위/actors 아래), scale1/PPU100, 새 shader0. 후처리 이전 scene에 포함 |
+| ORI_CACHE | 원본1회 cache 생성 | Resources/Art/map/source-light/player-point PNG/meta+folder meta. 최초로드/Material/Sprite1회, 매 프레임 위치 struct/visible만 갱신. 추가 GPU 원본texture640² RGBA 약1,638,400B, RT추가0. Sprite/Material/renderer 종료 정리. sourceImage 생성서비스0 |
+| ORI_GATES | OPT.lighting | 기존 NativeFieldLighting 가시성/enable과 함께 숨김. 메뉴/로비/guide의 기존 world gate 유지. 광원 r470/iris250/alpha/cache/원본gradient를 보상값으로 변경0 |
+| 보완 검수 | 첫 시각 결과의 원인 수정 뒤 해당 장면만 | 기존 `--lighting-capture-only`를 startup parity 경로에도 적용. 최초 성능900프레임1회·HUD/practice1회는 반복하지 않는다. 최종 바닥 광원 build의 성능으로 최초 수치를 격상하지 않으며 최종 성능 미측정이면 VERIFIED를 주지 않는다 |
+
+의존파일 보완은 CSS 등21개 뒤 player PNG 로드가 새로 요구한 atlas_player.json1개까지 총22개다.3399 준비 reload는 첫 진입 조건이 달라 최종 비교에서 제외했고,3400은 완전히 새 origin/새 server 저장0에서 실제 Guide frame0→정상UI skip→54tick 레슨을 얻었다. source 상태/HP/카메라/ens/RNG/DOM 주입0. 관측용 requestAnimationFrame은 local 배열에 읽기만 하며 게임 함수/clock을 override하지 않았다. PROP/field 정적광원12개, 화면 culled active light2(player/iris), col canvas 중앙 RGBA0, 이리스 위치rgba255/172/73/49, ci6 gateOFF를 읽어 바닥 bitmap과 분리했다.

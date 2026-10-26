@@ -34,6 +34,9 @@ namespace Exoduser.UnityPort
         Material material;
         SourceFieldLightStamps stamps;
         Texture2D petHalo;
+        SpriteRenderer playerPoint;
+        Sprite playerPointSprite;
+        Material playerPointMaterial;
         RenderTexture darkness, colorMap,litWorld,bloom,bloomScratch;
         int width,height,renderFrame,lastUnityFrame = -1;
         Vector2 lastCenter;
@@ -60,6 +63,18 @@ namespace Exoduser.UnityPort
             material.SetTexture(HoleStampsId, stamps.Holes);
             material.SetTexture(ColorStampsId, stamps.Colors);
             petHalo=BuildPetHalo();material.SetTexture("_PetHaloMap",petHalo);
+            // Source25502/51944: independent Ori floor light, BEFORE actors and
+            // the postprocess. _CENTER_GLOW=false disables ci6, not this bitmap.
+            var pointTexture=Resources.Load<Texture2D>("Art/map/source-light/player-point");
+            var pointShader=Resources.Load<Shader>("Shaders/KiSlashAdditive");
+            if(pointTexture==null||pointShader==null)throw new InvalidOperationException("Missing original player floor light");
+            pointTexture.filterMode=FilterMode.Point;
+            playerPointSprite=Sprite.Create(pointTexture,new Rect(0,0,640,640),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);
+            playerPointMaterial=new Material(pointShader){hideFlags=HideFlags.HideAndDontSave};
+            playerPointMaterial.SetFloat("_Opacity",1);
+            var pointObject=new GameObject("Source player floor light");pointObject.transform.SetParent(owner.transform,false);
+            playerPoint=pointObject.AddComponent<SpriteRenderer>();playerPoint.sprite=playerPointSprite;
+            playerPoint.sharedMaterial=playerPointMaterial;playerPoint.sortingOrder=-19999;playerPoint.enabled=false;
             // Source 9072: Mac + navigator.gpu skips the separate THREE/WebGL fog canvas.
             bool mac = Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor;
             material.SetFloat(DomFogId, mac ? 0 : 1);
@@ -86,6 +101,8 @@ namespace Exoduser.UnityPort
         {
             if (!ready || worldCamera == null) return;
             long allocated = MeasureAllocations ? GC.GetAllocatedBytesForCurrentThread() : 0;
+            playerPoint.enabled=owner!=null&&owner.WorldLightingVisible;
+            if(playerPoint.enabled){var p=owner.Simulation.Player;playerPoint.transform.position=new Vector3(p.X/100,-p.Y/100,0);}
             // Resolution transition only. Stable frames perform no allocation or resource load.
             int w = Mathf.Max(2, worldCamera.pixelWidth), h = Mathf.Max(2, worldCamera.pixelHeight);
             if (w != width || h != height || !darkness.IsCreated() || !colorMap.IsCreated()) PrepareTargets(w,h);
@@ -240,8 +257,12 @@ namespace Exoduser.UnityPort
             if (material != null) { Destroy(material); material = null; }
             stamps?.Dispose(); stamps = null;
             if(petHalo!=null){Destroy(petHalo);petHalo=null;}
+            if(playerPoint!=null){Destroy(playerPoint.gameObject);playerPoint=null;}
+            if(playerPointSprite!=null){Destroy(playerPointSprite);playerPointSprite=null;}
+            if(playerPointMaterial!=null){Destroy(playerPointMaterial);playerPointMaterial=null;}
             owner = null;
         }
+        void OnDisable(){if(playerPoint!=null)playerPoint.enabled=false;}
         void OnDestroy() { Release(); }
     }
 }

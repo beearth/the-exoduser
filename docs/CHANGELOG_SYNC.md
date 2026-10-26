@@ -1,3 +1,8 @@
+## 2026-10-26 UNITY-START-PARITY-01 원본 Ori 바닥광원 보완
+
+- 실제 웹/Unity54tick·빈 active/held5·ring_04 추적을 확인한 뒤 남은 r20 차이에서 원문 _ptLight25502/51944 누락을 확인. 기존 r470/iris250을 바꾸지 않고 별도640²/r320 바닥 bitmap을 원본 PNG byte로 인수, 기존 additive shader로 actors/후처리 아래에 연결했다. 새 shader/매프레임 Resources.Load0.
+- 최초 빌드 errors0/시작900프레임1회/HUD55·practice5 각1회 PASS. 수정된 시각 장면만 capture-only로 보완하며 성능/HUD/practice 반복0. 최초 수치를 보완 build 성능으로 격상하지 않음. [수치·SHA·경계](engine/UNITY_START_PARITY_01_20261026.md).
+
 ## 2026-10-26 UNITY-START-PARITY-01 원본 광원 위상 후속
 
 - 실제 읽기 전용 웹 레슨 intro의 _gameFrame39 동결과 native render별 증가 차이를 확인. 광원 수치 불변, 같은 source updatePet의 Crow.T로 phase를 연결하고 기존 캐시 조건을 유지했다. 최종 CPU API compile 오류0/기존경고27, Core63/기존 FirstPractice34 PASS.

@@ -102,6 +102,8 @@ namespace Exoduser.UnityPort
    if(lobby.IsBlocking||!Running||FirstPracticeStage!="Intro"||startupCurtainTicks<=0)
    {Debug.LogError("Start parity lesson entry or curtain clock failed");Application.Quit(2);yield break;}
    yield return StartParityFrame(output,"start-lesson-intro");
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--lighting-capture-only")>=0)
+   {yield return new WaitForSecondsRealtime(.5f);lobby.CloseStartupCaptureMedia();sound?.Reset();Application.Quit(0);yield break;}
    // One performance sample of this naturally reached, stationary lesson intro.
    // The lesson itself freezes simulation/pets, exactly as the source intro does.
    const int count=900;var samples=new double[count];int running=0,focused=0;

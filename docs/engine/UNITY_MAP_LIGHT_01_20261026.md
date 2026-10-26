@@ -1,5 +1,7 @@
 # UNITY-MAP-LIGHT-01 — CH1-1 월드 카메라 조명
 
+> START-PARITY-01 추가 교정: 원문25502/51944의 독립 Ori 바닥 광원640²/r320은 _CENTER_GLOW와 별도다. source bitmap 동일 byte를 actors/후처리 아래에 연결한다. r470/ci6 수치 불변. 최종 보완 build의 화면/성능 인수는 [후속 보고](UNITY_START_PARITY_01_20261026.md)를 따른다.
+
 > 2026-10-26 START-PARITY-01 후속 후보: 실제 무개입 웹 레슨 intro에서 _gameFrame39/iris.t89가 동결됨을 관측했다. NativeFieldLighting의 Running 기준 render별 증가를 source update와 같은 Crow.T로 교정(레슨 중 reset0, 이리스OFF여도 crow 진행). 아래 광원 수치·stamp·합성 불변. [원본 행·실행 경계](UNITY_START_PARITY_01_20261026.md). GPU 검수 대기.
 
 > 2026-10-26 최신 통합실화면: [UNITY-FIELD-VERIFY-01](UNITY_FIELD_VERIFY_01_20261026.md). 새import/ARM64빌드errors0·펫/해자실행확인. 시작/제단각1회평균8.370909/8.370717ms(시작은Point교정전빌드),LIGHT03방사CSV재측정. 원본r470/iris250유지,같은actor/iris위상미통제로밝기동등성미인수·전체RETOUCH. 아래GPU대기/펫부재/후보미검수는각당시이력이다.
