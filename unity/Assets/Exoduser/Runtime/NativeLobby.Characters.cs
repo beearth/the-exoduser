@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort
   public string ActiveCharacterName {get;private set;}="";
   public bool CharacterModalOpen {get{return characterStep!=0||CharacterStoryActive;}}
   int characterStep,characterVisual,characterScroll;
-  bool characterFocus,characterInputFence;
+  bool characterFocus,characterInputFence,characterRestoreCreateFocus;
   string characterName="",characterError="";
   Texture2D warriorArt,warriorPortrait;
   GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton,characterDeleteButton,characterStorageText;
@@ -32,6 +32,7 @@ namespace Exoduser.UnityPort
   public bool OpenCharacterCreation()
   {
    if(!characterWritesAllowed||Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||Characters.Count>=CharacterRoster.Capacity||showLanguages||lobbyQuitPrompt)return false;
+   characterRestoreCreateFocus=false;
    characterStep=1;characterName="";characterError="";return true;
   }
   public bool ChooseCharacterVisual(int index)
@@ -50,7 +51,7 @@ namespace Exoduser.UnityPort
    var candidate=CopyCharacters();
    if(!candidate.TryCreate(name,characterVisual,out var error)){characterError=CharacterError(error);return false;}
    if(!CommitCharacters(candidate))return false;
-   RevealSelectedCharacter();CloseCharacterCreation();BeginCreatedCharacterStory();return true;
+   RevealSelectedCharacter();CloseCharacterCreation();characterRestoreCreateFocus=false;BeginCreatedCharacterStory();return true;
   }
   string CharacterError(CharacterCreateError error)
   {
@@ -62,7 +63,7 @@ namespace Exoduser.UnityPort
     default:return K("출시 준비 중입니다.","Coming soon.");
    }
   }
-  public void CloseCharacterCreation(){CloseCharacterPresentationVideo();characterStep=0;characterError="";characterFocus=false;deletingCharacter=-1;deletingName="";deleteFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}
+  public void CloseCharacterCreation(){characterRestoreCreateFocus=characterStep==1||characterStep==2;CloseCharacterPresentationVideo();characterStep=0;characterError="";characterFocus=false;deletingCharacter=-1;deletingName="";deleteFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}
   public bool SelectCharacter(int index){if(Flow.Page!=LobbyPage.Lobby||CharacterModalOpen)return false;if(index==Characters.SelectedIndex&&index>=0)return true;var candidate=CopyCharacters();if(!candidate.Select(index)||!CommitCharacters(candidate))return false;RevealSelectedCharacter();return true;}
   void RevealSelectedCharacter(){if(Characters.SelectedIndex<characterScroll)characterScroll=Characters.SelectedIndex;if(Characters.SelectedIndex>=characterScroll+2)characterScroll=Characters.SelectedIndex-1;characterScroll=Mathf.Clamp(characterScroll,0,Mathf.Max(0,Characters.Count-2));}
   public bool EnterSelectedCharacter()
@@ -93,6 +94,7 @@ namespace Exoduser.UnityPort
     if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter){if(GUI.GetNameOfFocusedControl()=="character-cancel")CloseCharacterCreation();else CreateCharacter(characterName);e.Use();return;}
     return;
    }
+   if(GUI.GetNameOfFocusedControl()=="character-create-card"&&(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space)){OpenCharacterCreation();e.Use();return;}
    if(e.keyCode==KeyCode.N){OpenCharacterCreation();e.Use();}
    else if(e.keyCode==KeyCode.Delete||e.keyCode==KeyCode.Backspace){RequestCharacterDelete(Characters.SelectedIndex);e.Use();}
    else if(e.keyCode==KeyCode.UpArrow){SelectCharacter(Mathf.Max(0,Characters.SelectedIndex-1));e.Use();}
