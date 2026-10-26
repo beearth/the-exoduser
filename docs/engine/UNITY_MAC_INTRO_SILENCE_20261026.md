@@ -66,3 +66,11 @@ fixture는 usesIntroAudioFallback, actual clip, voice.time/timeSamples와 native
 Unity imported clip은 354816 frames(308×1152)/44100/stereo였다. ROOT의 OS afconvert PCM cross-correlation 최대 .99999977에서 referenceShift=-529(Unity clip 표본이 CoreAudio보다529 늦음)으로 zero-shift 가설은 기각됐다. 원본 edit1105를 Unity clip에 한 번 적용한 표본은 CoreAudio reference576과 동일 파형에 해당한다. 제품 offset1105/44100은 유지한다. 이는 관측한 decode PCM 정렬 자료이며 브라우저와 sample-exact 동등하다는 주장은 아니다.
 
 추가 정적 보강으로 Seek에서 clamp된 local target을 한 번 계산하고 VideoPlayer.time과 fallback Voice.time(target+offset)에 함께 사용한다. 비동기 seek 직후 player.time을 다시 읽어 옛 시각을 가져올 race를 제거했다. 초반 Gate 사용자 경로에 Seek가 노출되지는 않으며 초반 Seek는 신규 실측 주장이 없다. 기존31 검사를 반복하지 않고 ROOT가 누적 normal source build만 확인한다.
+
+## ROOT 마감·다음 작업
+
+누적 source b4560e63 일반 ARM64 build 오류0, 실제 Info.plist 정상 identifier 확인. 정상 prefs/캐릭터 JSON/lock SHA256은 baseline 전후 동일하며 기존 사용자 앱3개는 유지했다. 31검사는 source80e1312 실제 Player 결과이고 이후 Seek 정적 보강의 신규 실측으로 확대하지 않는다. 실버테일 splash와 Gate PNG를 직접 확인했으며 기존 영상 구도 재승인이나 기기 청음 인증은 아니다. [통합 인수 영수증](UNITY_MAC_INTRO_SILENCE_ACCEPTANCE_20261026.json).
+
+초반 오디오 작업의 Unity/GPU를 종료하고 실제 Claude 맥북총괄에 해제를 전달했다. 별도 조명 d3a4a9a3b 구현은 아직 시각/성능 미인수이며 동일 담당이 별도 빌드·화면·성능 검수를 진행한다. 이 브랜치에 자동 병합하지 않는다.
+
+사용자 지정 GPT API 이미지 생성은 현재 실행 환경 OPENAI_API_KEY 부재로 요청0·생성0이다. 다른 서비스 잔액 부족은 확인하지 않았다. 키 값은 채팅/Git/log로 받지 않으며 실제 실행 환경의 로컬 인증 설정 후 첫 필요한 이미지1개만 진행한다. 기존 iron 텍스처 등 재사용 가능한 UI 자산을 불필요하게 재생성하지 않는다. 후보 이미지가 없어 보관 이동도0이며 I:의 Mac 대응 경로를 임의로 만들지 않았다.

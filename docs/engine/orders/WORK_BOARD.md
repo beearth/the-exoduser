@@ -7,8 +7,9 @@
 | COMPLETE | 첫2실습·world-blend HUD 인수 유지. 지원 SFX/BGM·FPS·fullscreen 저장/복원: 모델61+별도write3/read2, 실제 격리 Player6회63/63·성공/오류 설정창 확인. source9d587ca15, 정상 ARM64 errors0. [설정 인수](../UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md) / [최신 실행본](../UNITY_MAC_PLAYABLE_20261025.md) |
 | COMPLETE | 720p 착용 안내 문장만 짧게 정리. source837636a26·Player8/8·720/1080 두 PNG 직접 인수·정상 ARM64 errors0. 글꼴/viewport/스크롤바/장비 동작 보존. [인수](../UNITY_MAC_INVENTORY_HINT_20261026.md) |
 | COMPLETE | 같은 language_pointer가 다음 자막 범위를 읽기 전용으로 확정: 실제 caption=NanumMyeongjo-Regular, 우크라이나어 ї/є/і의 cmap 매핑 없음. 메뉴 Noto 검사와 구분·제품/다운로드/GPU/저장 변경0. [근거](../UNITY_MAC_LANGUAGE_DIAGNOSTICS_20261025.md) |
-| ACTIVE | 이번 설정·착용 안내 구현/실제 인수는 마감. 새 자막 제품 변경은 아직 착수하지 않음 |
-| NEXT | 실제 world-intro 자막에서 우크라이나어 ї(U+0457)·є(U+0454)·і(U+0456)의 표시만 좁게 확인. cmap 누락을 실제 렌더/shaping/RTL 결함으로 확대하지 않음. 전체 suite·영상완주·CUA offscreen 재시도·아래 완료 이력 중복 착수0 |
+| COMPLETE | 원본 초반 무음·Gate original soundtrack 복구. FDG 호출 muted=true, native intro track0일 때만 원본 MP3 packet fallback. 실제 Player31/31·normal b4560e63 ARM64 errors0, 정상 저장 hash 동일·기존 사용자 앱 유지. [인수](../UNITY_MAC_INTRO_SILENCE_20261026.md) |
+| ACTIVE | 실제 Claude 기존 조명 담당 UNITY-MAP-LIGHT-01의 d3a4a9a3b 코드 제출 회수. Unity/GPU 해제를 전달했으며 별도 빌드·화면·조명 전후 성능 검수로 진행. 공용 NativeGame 두 줄은 별도 patch 대조, 자동 병합/시각 PASS 아직 없음 |
+| PENDING | GPT API 이미지1개는 OPENAI_API_KEY 부재로 요청0·생성0. 안전한 로컬 인증 후 필요한 자산만 진행. 다른 제공자 잔액 소진 주장은 하지 않음. 자막3문자 후속은 보존 |
 
 일반 사용자 앱38141/48476/52157·원래 prefs·캐릭터 파일 보존. 검수는 별도 product/id와 명시 output만 사용했다. 첫부팅FPS120/기본값60·60·0/고정60Hz 유지. 웹/Godot/roster/전투save IO·새설정·새팀·자동화·유료생성·PC재가동0.
 
