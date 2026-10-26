@@ -1,6 +1,6 @@
 ## 2026-10-27 Mac A15/A16 설정 저장 후보
 
-Editor 전용 headless 설정 IO fixture `NativeSettingsIoVerification.Run`을 Mac 소유로 추가했다. 고유 `_out/UNITY-MAC-A15A16-IO-*`·marker·절대 경로·QA 플래그를 요구하고 v1 write→v2 별도 프로세스 read를 검사한다. 실행 영수증 전까지 PASS 아님. [fixture 계약](../UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
+Editor 전용 headless 설정 IO fixture `NativeSettingsIoVerification.Run`을 Mac 소유로 추가했다. 고유 `_out/UNITY-MAC-A15A16-IO-*`·marker·절대 경로·QA 플래그를 요구한다. 소스 `152378099`에서 Unity6000.6.7f1 독립 Editor write 50/50·read 45/45, 양쪽 종료 코드0. v1 revision7→v2 revision8, 20동작 두 슬롯·4설정·중첩 pad JSON 보존을 전용 파일에서 확인했다. 이는 Editor IO 인수이며 Player/GUI/OS 입력/19패치 런타임은 HOLD. [영수증·계약](../UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
 
 후속 import·compile: 고정 후보 `6edb0ce9d`에서 Unity6000.6.7f1 batchmode exit0/C# 오류0. 새 UAC1015는 `[NonSerialized]`로 수리 후 재컴파일 exit0·새 경고0(기존 UAC1001 유지). Resources 변경0. 창 없는 v2 write/read smoke는 기존 fixture의 fullscreen·오디오·PNG 조건과 충돌하므로 Player 빌드/실행0, 런타임 HOLD. [근거](../UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
 

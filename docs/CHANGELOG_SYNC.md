@@ -1,4 +1,4 @@
-2026-10-27 Mac A15/A16 Editor IO fixture: Mac 소유 `NativeSettingsIoVerification.Run`을 추가했다. 고유 `_out/UNITY-MAC-A15A16-IO-*`·marker·절대 출력·QA 플래그를 요구하며 실제 Unity Editor에서 v1 기본 20동작→v2 저장→별도 프로세스 재읽기와 기존 4설정·중첩 패드 JSON 보존을 검사한다. 현재 코드는 준비 상태이며 실행 PASS는 아직 아님. [계약](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
+2026-10-27 Mac A15/A16 Editor IO fixture: Mac 소유 `NativeSettingsIoVerification.Run`을 추가했다. 고유 `_out/UNITY-MAC-A15A16-IO-*`·marker·절대 출력·QA 플래그를 요구한다. 소스152378099 Unity6000.6.7f1 독립 Editor write50/50·read45/45, 양쪽 종료0. v1 기본20동작→v2 revision8 재읽기와 기존 4설정·중첩 패드 JSON 보존을 전용 파일에서 확인했다. Player/GUI/OS 입력/19패치 런타임은 HOLD. [영수증·계약](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
 
 2026-10-27 Mac A15/A16 후속: Unity6000.6.7f1 batchmode import·compile exit0/C# 오류0. 새 settings JSON 보존 dictionary의 UAC1015를 `[NonSerialized]`로 수리하고 재컴파일 exit0·새 경고0(기존 UAC1001 유지). Resources import `.meta` churn 411개 원래 bytes 복원. v2 write/read 기존 fixture는 화면·오디오·PNG를 요구해 headless Player 검증 불가; Player 빌드/실행0, runtime HOLD. [근거](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
 

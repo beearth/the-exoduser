@@ -62,3 +62,14 @@ Mac 소유 `NativeSettingsStore`, `NativeSettingsJsonCodec`, `NativeGame.Setting
 `NativeSettingsIoVerification.Run`은 Mac 소유 Editor 전용 진입점이다. `-executeMethod`의 독립 Editor 프로세스에서 실제 `NativeSettingsJsonCodec`·`NativeSettingsStore`·`NativeKeyBindInput.TryKey`·`KeyBindings`를 사용한다. `NativeGame`/로비/캐릭터 roster·오디오/화면/Player는 생성하지 않는다. `--unity-settings-persistence-smoke`, `-settings-io-phase write|read`, 절대 `-output`·`-receipt`, 40자리 `-sourceSha`가 필수다. 출력 폴더는 부모 `_out` 아래 `UNITY-MAC-A15A16-IO-*` 이름이며, receipt는 그 안의 `editor-settings-write.json` 또는 `editor-settings-read.json`만 허용한다. `qa-output.marker`의 정확한 내용 `EXODUSER_MAC_SETTINGS_IO_V2\n`가 없으면 파일 읽기 전 거부한다. 실제 설정 IO는 지정 출력 아래 `native-settings-v1/settings.v1.json`에만 수행한다.
 
 write는 격리된 v1 revision7·35/45/FPS144/fullscreen=true·중첩 `gpKeyMap` fixture를 읽고 기본 20동작 양 슬롯을 확인한다. `up=KeyZ`, `up` 보조 `KeyX`, `interact` 보조 `KeyF`를 적용한 뒤 v2 revision8로 저장하고 기존 설정·패드 JSON 보존을 확인한다. read는 별도 Editor 프로세스로 v2를 다시 읽어 같은 20동작과 기존 설정·패드 JSON을 확인한다. 두 phase 모두 실제 인자·소스 SHA·Unity 버전·경로·결과를 receipt에 남긴다. 이 fixture의 통과는 Unity Editor 직렬화/IO 접점만 의미하며 일반 Player 재기동·GUI·OS 입력·19개 패치 화면 인수를 대체하지 않는다.
+
+### 실제 격리 Editor 인수
+
+검증 소스 SHA `1523780994d996e84a31179f2ab55deac23f5540`, Unity **6000.6.7f1**. 전용 출력은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A15A16-IO-20261027`이고 두 실행 모두 `-batchmode -nographics -quit -projectPath /Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024/unity -executeMethod NativeSettingsIoVerification.Run --unity-settings-persistence-smoke -output <전용 출력> -receipt <전용 출력>/editor-settings-<phase>.json -settings-io-phase <phase> -sourceSha <소스 SHA>`를 사용했다. 정확한 전체 인자는 각 receipt의 `args`에 기록돼 있다.
+
+| 독립 프로세스 | 종료 코드 | 검사 | 영수증 / 로그 | 실제 설정 IO |
+|---|---:|---:|---|---|
+| write | 0 | 50/50 PASS | `editor-settings-write.json` / `editor-write.log` | 전용 출력의 `native-settings-v1/settings.v1.json`, `.bak`, `settings.lock` |
+| read | 0 | 45/45 PASS | `editor-settings-read.json` / `editor-read.log` | 같은 전용 v2 파일 읽기와 lock |
+
+seed v1은 **164 bytes**, write 결과 v2는 **806 bytes**, revision **7→8**이었다. 재읽은 JSON은 `binds`·`binds2` 각각 20개, `up=KeyZ`, 보조 `up=KeyX`·`interact=KeyF`, SFX35/BGM45/FPS144/fullscreen true, `gpKeyMap.pad0.buttons=[1,2]`를 유지했다. 두 Editor 프로세스에서 C# 오류는 없었다. 일반 사용자 설정·캐릭터 store·기존 실행 앱 접근 0, Player 빌드·실행 0이다. Editor import가 다시 생성한 Resources `.meta` 411개와 런타임 `.meta` 1개는 사전 HEAD bytes로 복원했다. 일반 Player v2 재시작·GUI/OS 입력·19개 UI 패치 실화면·A02 최종 fit은 계속 **HOLD**다.
