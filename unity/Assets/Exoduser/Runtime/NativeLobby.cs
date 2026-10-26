@@ -157,7 +157,7 @@ namespace Exoduser.UnityPort
   }
   void DrawLobby()
   {
-   LobbyStyles();CharacterStyles();HandlePatchNotesKeys();if(!patchNotesOpen&&Event.current.type!=EventType.Used){HandleCharacterKeys();HandleLanguagePopupKeys();}bool priorEnabled=GUI.enabled,previousEnabled=priorEnabled&&!patchNotesOpen;GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;DrawLobbyBackground();DrawSelectedCharacter();
+   LobbyStyles();CharacterStyles();OpenPatchNotesForQaOnce();HandlePatchNotesKeys();if(!patchNotesOpen&&Event.current.type!=EventType.Used){HandleCharacterKeys();HandleLanguagePopupKeys();}bool priorEnabled=GUI.enabled,previousEnabled=priorEnabled&&!patchNotesOpen;GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;DrawLobbyBackground();DrawSelectedCharacter();
    DrawPatchNotesLauncher();
    if(lobbyPanel!=null)Image(new Rect(1360,0,560,1080),lobbyPanel,ScaleMode.StretchToFill);
    else Fill(new Rect(1360,0,560,1080),new Color(.063f,.051f,.055f));

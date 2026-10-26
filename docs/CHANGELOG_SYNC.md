@@ -1,3 +1,5 @@
+2026-10-27 Mac A03 패치노트 직접진입 QA 후보: 고유 QA app identifier, `--unity-frontend-review`, 명시적 `--unity-patch-notes-review`, 새 절대 output/marker가 모두 있을 때 로비 첫 Repaint에서 기존 `OpenPatchNotes()`를 1회 호출한다. 일반 launcher·입력 동작 변경0. 열기/닫기 로그는 실제 Screen 내용 크기와 roster 수·선택을 기록한다. 요청한 1024×576과 관측 1280×720 내용/1280×784 캡처는 구분하고 최소 지원 창 크기는 미확정. 실창 결과 대기. [계약](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
+
 2026-10-27 Mac A04 es 배치 재검수: source `c03f20489` 고유 ARM64 build4 Succeeded/errors0/C# 오류·경고0. 1280×720 실창 es 특성·클래스·Próximamente 겹침/잘림 제거, 가로 스크롤0; ko/en/ja 대표 화면도 직접 겹침0. 목표 es 1280×720 visual PASS. 1024×576 요청은 실제 창이1280×720으로 떠 좁은 화면과 hitbox/스크롤 조작은 HOLD. CUA 뒤 무플래그 고유 QA PID4개 발견·종료, A03 클릭/modal도 HOLD. [화면·범위](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
 
 2026-10-27 Mac A03/A04 QA 결과: source `8bcba21b4` 고유 ARM64 앱 1회 빌드 Succeeded/오류0/C# 오류·경고0(기존 UAC1001). CUA는 고유 창/PID·격리 args를 식별했고 ja 생성/이름, es 이름, QA 캐릭터 생성 후 Delete 기본취소 Return·Esc/실삭제0을 확인했다. es 긴 시각선택 특성·클래스 라벨은 겹침/잘림으로 RETOUCH. CUA 좌표 클릭이 기존 버튼에도 적용되지 않아 A03 패치노트 modal/뒤입력은 실창 미검증. [영수증·화면](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).

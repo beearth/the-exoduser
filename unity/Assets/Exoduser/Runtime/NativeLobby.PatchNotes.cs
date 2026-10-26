@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace Exoduser.UnityPort
@@ -15,6 +16,8 @@ namespace Exoduser.UnityPort
   PatchNotesCatalog patchNotesCatalog;
   PatchNotesLabels patchNotesLabels;
   bool patchNotesLoaded,patchNotesOpen,patchNotesFocusClose,patchNotesRestoreFocus;
+  bool patchNotesQaChecked,patchNotesQaEnabled;
+  int patchNotesQaRosterCount,patchNotesQaSelectedIndex;
   string patchNotesPreviousFocus;
   Vector2 patchNotesScroll;
   GUIStyle patchNotesTitle,patchNotesVersion,patchNotesSection,patchNotesItem,patchNotesEmpty,patchNotesClose;
@@ -57,9 +60,24 @@ namespace Exoduser.UnityPort
    LoadPatchNotes();patchNotesPreviousFocus=GUI.GetNameOfFocusedControl();patchNotesScroll=Vector2.zero;
    patchNotesOpen=true;patchNotesFocusClose=true;patchNotesRestoreFocus=false;
   }
+  void OpenPatchNotesForQaOnce()
+  {
+   if(patchNotesQaChecked||Event.current.type!=EventType.Repaint)return;
+   patchNotesQaChecked=true;
+   var args=Environment.GetCommandLineArgs();
+   if(Array.IndexOf(args,"--unity-patch-notes-review")<0)return;
+   int outputAt=Array.IndexOf(args,"-output");
+   bool hasOutput=outputAt>=0&&outputAt+1<args.Length&&Path.IsPathRooted(args[outputAt+1]);
+   string output=hasOutput?Path.GetFullPath(args[outputAt+1]):"";
+   if(Array.IndexOf(args,"--unity-frontend-review")<0||Application.identifier!="com.fordeargamers.exoduser.a03a04qa20261027"||!hasOutput||!Directory.Exists(output)||!File.Exists(Path.Combine(output,"a03-modal-qa.marker"))){Debug.LogError("A03_QA_REJECTED: unique UI QA app, frontend review, absolute marked output required");return;}
+   patchNotesQaRosterCount=Characters.Count;patchNotesQaSelectedIndex=Characters.SelectedIndex;
+   OpenPatchNotes();patchNotesQaEnabled=patchNotesOpen;
+   Debug.Log("A03_QA_OPEN: "+patchNotesOpen+" output="+output+" screen="+Screen.width+"x"+Screen.height+" roster="+patchNotesQaRosterCount+" selected="+patchNotesQaSelectedIndex+" language="+Language);
+  }
   void ClosePatchNotes()
   {
    patchNotesOpen=false;patchNotesFocusClose=false;patchNotesRestoreFocus=true;
+   if(patchNotesQaEnabled)Debug.Log("A03_QA_CLOSE: roster="+Characters.Count+" selected="+Characters.SelectedIndex+" unchanged="+(Characters.Count==patchNotesQaRosterCount&&Characters.SelectedIndex==patchNotesQaSelectedIndex)+" language="+Language);
   }
   void HandlePatchNotesKeys()
   {

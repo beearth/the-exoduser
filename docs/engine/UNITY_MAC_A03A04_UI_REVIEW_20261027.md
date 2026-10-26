@@ -1,5 +1,18 @@
 # Mac Unity A03/A04 통합 UI 실창 검수 — 2026-10-27
 
+## A03 패치노트 QA 직접 진입 후보
+
+`NativeLobby.PatchNotes.cs`는 로비 `Repaint` 첫 회에만 `--unity-patch-notes-review`를 검사한다. 명시적 `--unity-frontend-review`, 고유 QA identifier `com.fordeargamers.exoduser.a03a04qa20261027`, 존재하는 절대 `-output` 폴더와 그 안의 `a03-modal-qa.marker`가 모두 있을 때 기존 `OpenPatchNotes()`를 **한 번** 호출한다. 조건 부족 시 모달을 열지 않고 `A03_QA_REJECTED`를 남긴다. 일반 launcher·버튼/입력/정상 실행 코드는 바꾸지 않았다. QA 열기/닫기 로그에는 `Screen.width×Screen.height`와 roster 수·선택을 기록해 Esc 후 뒤 상태를 대조한다.
+
+| 구분 | 값/관문 | 적용 위치 |
+|---|---|---|
+| QA 진입 옵션 | `--unity-patch-notes-review` + `--unity-frontend-review` | 고유 QA Player 명령행 |
+| 저장 격리 | 신규 절대 `-output` + `a03-modal-qa.marker` | `NativeLobby.CharacterStore`의 output 하위 roster, 패치노트 진입 가드 |
+| 앱 정체성 | `com.fordeargamers.exoduser.a03a04qa20261027` | 기존 `-a03a04UiQa true` 빌드만 |
+| 모달 동작 | 기존 `OpenPatchNotes`/`HandlePatchNotesKeys`/`ClosePatchNotes` | QA 직접 진입·Esc/PageDown/언어 전환 실창 검수 |
+
+창 크기 판정은 명령행 요청 `-screen-width/-screen-height`, 게임 내용의 `Screen.width×Screen.height`, macOS 제목 막대를 포함한 캡처 픽셀 크기를 구분한다. 앞선 `1024×576` 요청의 캡처가 `1280×784`(내용 `1280×720`)였으므로 **최소 지원 창 크기를 1024 또는 1280으로 확정하지 않는다**. QA 로그의 실제 `Screen` 수치와 캡처를 함께 기록한다. 이번 변경은 좁은 창 크기를 강제하지 않는다.
+
 ## es 긴 문구 배치 수리 후보
 
 이전 1280×720 실창 `es-visual-long.png`의 우측 첫 특성 제목/본문과 하단 클래스 라벨 겹침을 대상으로 `NativeLobby.CharacterPresentation.cs`의 **표시 배치만** 고쳤다. 첫 수정본은 ARM64 빌드 자체는 성공했으나 1280×720 실창에서 겹침이 남았다. `GUIStyle.CalcHeight`가 실제 줄바꿈 높이를 충분히 반환하지 않은 관측에 맞춰 줄폭을 단어 단위로 계산하고 긴 단어는 글자 단위로 세는 보수적 높이 측정을 더했다. 각 특성 행은 다음 행과 겹치지 않게 누적하고, 특성 패널은 하단 직업 레일 시작 8px 전까지만 확장한다. 더 낮은 화면에서 내용이 남으면 패널 내부 스크롤을 사용하며 직업 라벨은 번역 줄 수만큼 높이를 확보한 뒤 `출시 준비 중`을 2px 아래에 둔다. 문구·특성/클래스 폰트 크기·선택/버튼 Rect·캐릭터 수치·저장 처리는 변경하지 않았다.
