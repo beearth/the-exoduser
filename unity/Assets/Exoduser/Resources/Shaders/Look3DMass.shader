@@ -11,6 +11,9 @@ Shader "EXODUSER/Look3DMass"
         _Tile ("Tile px", Float) = 700
         _NormalStrength ("Normal strength", Float) = 0.8
         _ContactHeight ("Contact darkening height px", Float) = 110
+        _Pulse ("Pulse amplitude px along the normal (0 = off)", Float) = 0
+        _WindAmp ("Wind amplitude px (0 = off)", Float) = 0
+        _LifeH ("Height normaliser px for the pulse/wind mask", Float) = 300
     }
     SubShader
     {
@@ -27,13 +30,22 @@ Shader "EXODUSER/Look3DMass"
             #include "UnityCG.cginc"
             #include "AutoLight.cginc"
             #include "Look3DCommon.cginc"
-            sampler2D _MassAlb, _MassNrm; float _Tile, _NormalStrength, _ContactHeight;
+            sampler2D _MassAlb, _MassNrm; float _Tile, _NormalStrength, _ContactHeight, _Pulse, _WindAmp, _LifeH;
             struct input { float4 vertex:POSITION; float3 normal:NORMAL; };
             struct output { float4 pos:SV_POSITION; float3 world:TEXCOORD0; float3 normal:TEXCOORD1; SHADOW_COORDS(2) };
             output vert(input v)
             {
-                output o; o.pos=UnityObjectToClipPos(v.vertex); o.world=mul(unity_ObjectToWorld, v.vertex).xyz;
-                o.normal=UnityObjectToWorldNormal(v.normal); TRANSFER_SHADOW(o); return o;
+                output o; float3 w=mul(unity_ObjectToWorld, v.vertex).xyz; o.normal=UnityObjectToWorldNormal(v.normal);
+                if(_Pulse>0 || _WindAmp>0)
+                {
+                    // MAP3D-LIFE1 L6/L1/L9: slow pulse along the normal (period 4.5-9 s per object) and root wind; base fixed by the height mask
+                    float2 opx=float2(unity_ObjectToWorld._m03, -unity_ObjectToWorld._m23);
+                    float seed=frac(sin(dot(opx, float2(12.9898,78.233)))*43758.5453);
+                    float hm=saturate(w.y/_LifeH);
+                    if(_Pulse>0) { float period=4.5+4.5*frac(seed*5.17); float ph=seed*6.2832+L3D_Noise(w.xz/260.0)*3.0; w+=normalize(o.normal)*(_Pulse*sin(_L3D_Life.x*6.2832/period+ph)*smoothstep(0.0,0.35,hm)); }
+                    if(_WindAmp>0) w+=L3D_WindOffset(opx, float2(w.x,-w.z), hm, seed, _WindAmp);
+                }
+                o.pos=mul(UNITY_MATRIX_VP, float4(w,1)); o.world=w; TRANSFER_SHADOW(o); return o;
             }
             fixed4 frag(output i) : SV_Target
             {

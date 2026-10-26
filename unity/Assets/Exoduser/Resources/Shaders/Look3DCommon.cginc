@@ -101,4 +101,50 @@ void NoTile(sampler2D alb, sampler2D nhr, float2 uv, out float3 a, out float4 d)
 }
 
 
+
+// ---- MAP3D-LIFE1 (wind / player push / moving gobo shadow); all off (zero) unless the slice sets the globals ----
+float4 _L3D_Life;          // x = life time in seconds (script driven: deterministic captures)
+float4 _L3D_Trail[8];      // xy = px position, z = strength 0..1 (current position = 1, older samples decay), w = push radius px
+sampler2D _L3D_Gobo0, _L3D_Gobo1; float4 _L3D_GoboParams; // x strength (0 = off), y/z world px per gobo tile
+// Wind: two frequencies (big sway + tip flutter), world-noise gusts and wind direction, per-individual phase/speed through `seed` (0..1).
+// h = height mask (0 root fixed .. 1 tip); returns a world-space offset (x, y, z) in px.
+float3 L3D_WindOffset(float2 originPx, float2 posPx, float h, float seed, float amp)
+{
+    float t=_L3D_Life.x;
+    float gust=L3D_Noise(originPx/380.0+t*float2(0.06,0.025));
+    float ang=0.55+(L3D_Noise(originPx/760.0+5.0)-0.5)*1.4;
+    float2 dir=float2(cos(ang), sin(ang));
+    float s1=0.85+0.6*frac(seed*7.31), s2=4.2+2.4*frac(seed*3.77);
+    float big=sin(t*s1+dot(originPx,float2(0.012,0.008))+seed*6.2832);
+    float flutter=sin(t*s2+dot(posPx,float2(0.09,0.07))+seed*21.0+h*5.0);
+    float2 d=dir*(big*(0.3+0.7*gust)*amp*h*h+flutter*0.16*amp*h);
+    return float3(d.x, -(abs(d.x)+abs(d.y))*0.12*h, -d.y); // px y -> world -z
+}
+// Player push: tips are pushed away from the player (and its recent positions, which fade) and bent down.
+float3 L3D_TrailPush(float2 originPx, float h, float tuftHeight)
+{
+    float2 push=0; float down=0;
+    [unroll] for(int k=0;k<8;k++)
+    {
+        float4 tr=_L3D_Trail[k]; if(tr.z<=0.001) continue;
+        float2 dlt=originPx-tr.xy; float d=length(dlt)+0.001;
+        float f=smoothstep(tr.w, 0.0, d)*tr.z; push+=dlt/d*f; down+=f;
+    }
+    float m=length(push); if(m>1.0) push/=m; down=saturate(down);
+    float2 disp=push*h*h*tuftHeight*1.0;
+    return float3(disp.x, -down*h*h*tuftHeight*0.5, -disp.y);
+}
+// Moving gobo: two root/branch alpha textures (the decal alphas) projected on the floor, slowly rotating, drifting and wobbling = canopy shadow.
+float L3D_Gobo(float2 px)
+{
+    if(_L3D_GoboParams.x<=0) return 1.0;
+    float t=_L3D_Life.x;
+    float a0=0.42+0.10*sin(t*0.043), a1=-0.9+0.08*sin(t*0.037+1.0);
+    float2 r0=float2(cos(a0)*px.x-sin(a0)*px.y, sin(a0)*px.x+cos(a0)*px.y), r1=float2(cos(a1)*px.x-sin(a1)*px.y, sin(a1)*px.x+cos(a1)*px.y);
+    float2 w0=float2(sin(t*0.31+px.y*0.0043), cos(t*0.23+px.x*0.0039))*0.018, w1=float2(cos(t*0.27+px.y*0.0031), sin(t*0.19+px.x*0.0035))*0.014;
+    float2 q0=r0/_L3D_GoboParams.y+float2(t*0.0042,t*0.0021)+w0, q1=r1/_L3D_GoboParams.z+float2(-t*0.0028,t*0.0036)+w1;
+    float o0=tex2Dlod(_L3D_Gobo0, float4(q0,0,2.5)).a, o1=tex2Dlod(_L3D_Gobo1, float4(q1,0,2.5)).a;
+    return 1.0-_L3D_GoboParams.x*saturate(o0*0.85+o1*0.65);
+}
+
 #endif

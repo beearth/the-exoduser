@@ -74,7 +74,7 @@ namespace Exoduser.UnityPort
                 float flicker = s.a * (1f + Mathf.Sin(frame * 0.09f + i * 1.7f) * 0.10f * s.f);
                 var p = light.transform.position;
                 pointPositions[i] = new Vector4(p.x, p.y, p.z, light.range);
-                pointColors[i] = new Vector4(light.color.r, light.color.g, light.color.b, Mathf.Clamp01(flicker * 0.85f) * (light.enabled ? 1f : 0f));
+                pointColors[i] = new Vector4(light.color.r, light.color.g, light.color.b, Mathf.Clamp01(flicker * 0.85f * LightBreath(i)) * (light.enabled ? 1f : 0f));
             }
             Shader.SetGlobalVectorArray("_L3D_PtPos", pointPositions);
             Shader.SetGlobalVectorArray("_L3D_PtCol", pointColors);

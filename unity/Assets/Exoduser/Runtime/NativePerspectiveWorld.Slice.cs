@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort
         public int SliceVertexCount { get; private set; }
         public readonly List<SlicePlacement> SlicePlacements = new List<SlicePlacement>();
 
-        [Serializable] public sealed class SlicePlacement { public string mesh; public float x, y, angleDegrees, scale, radiusA, radiusB; public int footprintWalkableCells; public float minSd, heightStretch, heightPx; }
+        [Serializable] public sealed class SlicePlacement { public string mesh; public float x, y, angleDegrees, scale, radiusA, radiusB; public int footprintWalkableCells; public float minSd, heightStretch, heightPx; public string slot, assetId; }
 
         float[] sdGrid; int sdW, sdH;
         Material groundMaterial, massMaterial3D, aoMaterial;
@@ -61,6 +61,7 @@ namespace Exoduser.UnityPort
             AddSliceExtraLight(3700f, 7750f, 300f, 0.40f, 126f, 236f, 98f, 0.7f);
             AddSliceExtraLight(4260f, 7770f, 430f, 0.75f, 255f, 170f, 90f, 0.8f);
             BuildDecals();
+            BuildLife(); // MAP3D-LIFE1
             UpdateFieldLights();
         }
 
@@ -186,7 +187,7 @@ namespace Exoduser.UnityPort
         }
 
         // ---------------- masses, roots, contact AO ----------------
-        sealed class MeshSpec { public string name; public float scale; public bool root; }
+        sealed class MeshSpec { public string name, slot; public float scale; public bool root; }
 
         void BuildSliceMeshes()
         {
@@ -196,33 +197,47 @@ namespace Exoduser.UnityPort
             var massAlb = Resources.Load<Texture2D>("Art/map3d/mass_v01"); var massNrm = Resources.Load<Texture2D>("Art/map3d/mass_v01_normal");
             massAlb.wrapMode = TextureWrapMode.Repeat; massNrm.wrapMode = TextureWrapMode.Repeat; massAlb.filterMode = FilterMode.Bilinear; massNrm.filterMode = FilterMode.Bilinear;
             massMaterial3D.SetTexture("_MassAlb", massAlb); massMaterial3D.SetTexture("_MassNrm", massNrm);
+            rootMaterial3D = new Material(massMaterial3D) { name = "Look3DMass roots (wind)" }; // MAP3D-LIFE1: roots sway (wind), masses pulse; same textures
             var blobShader = Resources.Load<Shader>("Shaders/Look3DBlob");
             aoMaterial = new Material(blobShader) { name = "SliceContactAO" };
             aoMaterial.SetTexture("_MainTex", blobTexture); aoMaterial.SetColor("_Color", new Color(1f, 1f, 1f, 0.92f));
             var specs = new[]
             {
-                new MeshSpec { name = "mass_01", scale = 1.0f }, new MeshSpec { name = "mass_02", scale = 1.0f }, new MeshSpec { name = "mass_03", scale = 1.1f },
-                new MeshSpec { name = "mass_04", scale = 1.0f }, new MeshSpec { name = "mass_03", scale = 0.8f },
-                new MeshSpec { name = "root_01", scale = 1.0f, root = true }, new MeshSpec { name = "root_02", scale = 1.0f, root = true }, new MeshSpec { name = "root_03", scale = 1.1f, root = true },
+                // slot = the manifest slot id (map3d_assets.json slots[]); a slot with a loaded asset replaces the procedural OBJ `name`, otherwise the OBJ is used
+                new MeshSpec { name = "mass_01", slot = "mass_01", scale = 1.0f }, new MeshSpec { name = "mass_02", slot = "mass_02", scale = 1.0f }, new MeshSpec { name = "mass_03", slot = "mass_03", scale = 1.1f },
+                new MeshSpec { name = "mass_04", slot = "mass_04", scale = 1.0f }, new MeshSpec { name = "mass_03", slot = "mass_03_small", scale = 0.8f },
+                new MeshSpec { name = "root_01", slot = "root_01", scale = 1.0f, root = true }, new MeshSpec { name = "root_02", slot = "root_02", scale = 1.0f, root = true }, new MeshSpec { name = "root_03", slot = "root_03", scale = 1.1f, root = true },
             };
             var rng = new System.Random(20261026);
             foreach (var spec in specs)
             {
-                var model = Resources.Load<GameObject>("Art/map3d/mesh/" + spec.name);
-                if (model == null) throw new InvalidOperationException("Missing mesh " + spec.name);
-                var mesh = model.GetComponentInChildren<MeshFilter>().sharedMesh;
-                float scale = spec.scale * (0.92f + (float)rng.NextDouble() * 0.16f);
+                Map3DAsset asset;
+                bool useAsset = TryResolveSlot(spec.slot, out asset);
+                Mesh mesh;
+                if (useAsset) mesh = asset.lodMeshes[0];
+                else
+                {
+                    var model = Resources.Load<GameObject>("Art/map3d/mesh/" + spec.name);
+                    if (model == null) throw new InvalidOperationException("Missing mesh " + spec.name);
+                    mesh = model.GetComponentInChildren<MeshFilter>().sharedMesh;
+                }
+                float scale = spec.scale * (0.92f + (float)rng.NextDouble() * 0.16f) * (useAsset ? asset.normalizeScale : 1f);
                 SlicePlacement p;
                 if (!FindPlacement(mesh, spec, scale, out p)) { UnityEngine.Debug.LogWarning("Slice: no valid spot for " + spec.name); continue; }
-                // vertical stretch (footprint unchanged) so the masses read as walls of 150-400 px (mesh heights are 165-380)
-                p.heightStretch = spec.root ? 1f : Mathf.Clamp(380f / Mathf.Max(mesh.bounds.size.y * p.scale, 1f), 1f, 1.5f); p.heightPx = mesh.bounds.size.y * p.scale * p.heightStretch;
+                p.slot = spec.slot; p.assetId = useAsset ? asset.entry.id : "";
+                // vertical stretch (footprint unchanged) so the procedural masses read as walls of 150-400 px (mesh heights are 165-380); kit assets are sized by the manifest
+                p.heightStretch = (spec.root || useAsset) ? 1f : Mathf.Clamp(380f / Mathf.Max(mesh.bounds.size.y * p.scale, 1f), 1f, 1.5f); p.heightPx = mesh.bounds.size.y * p.scale * p.heightStretch;
                 SlicePlacements.Add(p);
+                if (useAsset) BuildAssetInstance(asset, p, sliceRoot);
+                else
+                {
                 var go = new GameObject("slice " + spec.name); go.transform.SetParent(sliceRoot, false);
                 go.AddComponent<MeshFilter>().sharedMesh = mesh;
-                var renderer = go.AddComponent<MeshRenderer>(); renderer.sharedMaterial = massMaterial3D;
+                var renderer = go.AddComponent<MeshRenderer>(); renderer.sharedMaterial = spec.root ? rootMaterial3D : massMaterial3D;
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided; renderer.receiveShadows = true;
                 // OBJ import mirrors X; file coords (x east, z south) -> Unity rotation y = theta + 180 (derivation in the doc).
                 go.transform.position = Unity(p.x, 0f, p.y); go.transform.rotation = Quaternion.Euler(0f, p.angleDegrees + 180f, 0f); go.transform.localScale = new Vector3(p.scale, p.scale * p.heightStretch, p.scale);
+                }
                 // contact AO ellipse under the footprint
                 var ao = new GameObject("contact AO " + spec.name); ao.transform.SetParent(sliceRoot, false);
                 ao.AddComponent<MeshFilter>().sharedMesh = FlatQuad(-0.5f, -0.5f, 1f, 1f, 0f, 0f, 0f, 1f, 1f);
@@ -305,10 +320,26 @@ namespace Exoduser.UnityPort
             public float gridStepPx, groundDisplacementWalkablePx, groundDisplacementWallPx;
             public string textureSamples = "vertex 3 (mask, 2 height) + fragment 17 ground (mask 1, macro 2, albedo 7, nhr 7) + mass 6 (triplanar albedo x3, normal x3) + decal 3 each (albedo, normal, alpha mip)";
             public int decals, decalsBlood, decalsBone, decalsRoot; public float keyElevationDegrees, fogHazeDensity;
+            public string assetManifest; public int assetsLoaded, assetInstances; public List<string> assetRejections = new List<string>();
+            public int grassCount, grassNotWalkable, particleMax, particleAliveAtStill, pushFrames; public float lifeStillTime, windAmplitudePx, rootWindAmplitudePx, massPulsePx, goboStrength, pushRadiusPx; public string pushPath;
             public List<SliceDecal> decalList = new List<SliceDecal>();
             public List<SlicePlacement> list = new List<SlicePlacement>();
             public List<string> checks = new List<string>();
             public bool passed; public string png, fpsJson;
+        }
+
+        // Start point (east-bound run of 4 steps of 36 px) with the most tufts within 80 px of the path, searched within 650 px of the focus.
+        Vector2 FindPushStart()
+        {
+            Vector2 focus = new Vector2(Map.startX, Map.startY), best = focus; int bestCount = -1;
+            for (float y = focus.y - 400f; y <= focus.y + 300f; y += 30f) for (float x = focus.x - 650f; x <= focus.x + 450f; x += 30f)
+            {
+                if (!sourceMap.CanMove(x, y, OverlayBodyRadius) || !sourceMap.CanMove(x + 108f, y, OverlayBodyRadius)) continue;
+                int count = 0;
+                foreach (var g in GrassPositions) { float dx = Mathf.Clamp(g.x - x, 0f, 108f) - (g.x - x), dy = g.y - y; if (dx * dx + dy * dy < 80f * 80f) count++; }
+                if (count > bestCount) { bestCount = count; best = new Vector2(x, y); }
+            }
+            return best;
         }
 
         IEnumerator SliceCaptureRoutine(string output)
@@ -331,6 +362,7 @@ namespace Exoduser.UnityPort
             var image = new Texture2D(1920, 1080, TextureFormat.RGB24, false); var previous = RenderTexture.active;
             Action<string> save = path => { WorldCamera.Render(); RenderTexture.active = rt; image.ReadPixels(new Rect(0, 0, 1920, 1080), 0, 0); image.Apply(); RenderTexture.active = previous; File.WriteAllBytes(path, image.EncodeToPNG()); };
             Prime(new Vector2(Map.startX, Map.startY)); yield return null; yield return null;
+            SetLifeTime(LifeStillTime); // MAP3D-LIFE1: deterministic still
             string png = Path.Combine(output, "unity-slice.png"); save(png);
             SetShadows(false); save(Path.Combine(output, "unity-slice-noshadow.png")); SetShadows(true);
             SetFieldLights(false); save(Path.Combine(output, "unity-slice-nolights.png")); SetFieldLights(true);
@@ -338,6 +370,21 @@ namespace Exoduser.UnityPort
             SetCollisionOverlay(true); yield return null; save(Path.Combine(output, "unity-slice-collision.png")); SetCollisionOverlay(false);
             SetSliceDebug(2); save(Path.Combine(output, "unity-slice-debug-mask.png")); SetSliceDebug(3); save(Path.Combine(output, "unity-slice-debug-splat.png")); SetSliceDebug(0);
             File.WriteAllBytes(Path.Combine(output, "unity-slice-splat-mask.png"), maskTexture.EncodeToPNG());
+            // ---- MAP3D-LIFE1: 12-frame motion strip (0.1 s apart, same camera) + player push strip ----
+            var seqDir = Path.Combine(output, "life-seq"); Directory.CreateDirectory(seqDir);
+            for (int i = 0; i < 12; i++) { SetLifeTime(LifeStillTime + i * 0.1f); save(Path.Combine(seqDir, "motion_" + i.ToString("00") + ".png")); }
+            SetLifeTime(LifeStillTime); receipt.particleAliveAtStill = ParticleAlive;
+            // push strip: the player runs east through the densest tuft patch near the fight area; 4 frames while passing, 2 while the grass recovers
+            Vector2 pushStart = FindPushStart(); receipt.pushPath = "start (" + Mathf.RoundToInt(pushStart.x) + "," + Mathf.RoundToInt(pushStart.y) + ") east, 36 px per 0.1 s";
+            SyncPlayer(pushStart.x - 40f, pushStart.y, 15f, 2, 0); SetLifeTime(2.9f);
+            for (int i = 0; i < 6; i++)
+            {
+                float t = i < 4 ? 3.0f + i * 0.1f : 3.3f + (i - 3) * 0.6f;
+                if (i < 4) SyncPlayer(pushStart.x + i * 36f, pushStart.y, 15f, 2, i % 2);
+                SetLifeTime(t); save(Path.Combine(seqDir, (i < 4 ? "push_" : "recover_") + i.ToString("0") + ".png"));
+            }
+            receipt.pushFrames = 6;
+            SyncPlayer(Map.startX, Map.startY, 15f, 2, 0); SetLifeTime(LifeStillTime);
             WorldCamera.targetTexture = shown; rt.Release(); Destroy(rt); Destroy(image);
             receipt.unityVersion = Application.unityVersion; receipt.graphicsDevice = SystemInfo.graphicsDeviceName; receipt.graphicsApi = SystemInfo.graphicsDeviceType.ToString();
             receipt.renderPipeline = UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline == null ? "Built-in" : "SRP";
@@ -346,6 +393,9 @@ namespace Exoduser.UnityPort
             receipt.placements = SlicePlacements.Count; receipt.list = SlicePlacements; receipt.footprintWalkableViolations = CountFootprintWalkableViolations();
             receipt.shadowCascades = QualitySettings.shadowCascades; receipt.fieldLights = FieldLightCount; receipt.png = png;
             receipt.decalList = SliceDecals; receipt.decals = SliceDecals.Count; foreach (var d in SliceDecals) { if (d.kind.StartsWith("blood")) receipt.decalsBlood++; else if (d.kind.StartsWith("bone")) receipt.decalsBone++; else receipt.decalsRoot++; }
+            receipt.grassCount = GrassCount; receipt.grassNotWalkable = GrassNotWalkable; receipt.particleMax = ParticleLayerMax * ParticleLayerCount; receipt.lifeStillTime = LifeStillTime;
+            receipt.windAmplitudePx = WindAmplitudePx; receipt.rootWindAmplitudePx = RootWindAmplitudePx; receipt.massPulsePx = MassPulsePx; receipt.goboStrength = GoboStrength; receipt.pushRadiusPx = GrassPushRadius;
+            receipt.assetManifest = AssetManifestSource; receipt.assetsLoaded = AssetsLoaded; receipt.assetInstances = AssetInstances; receipt.assetRejections = AssetRejections;
             receipt.keyElevationDegrees = Mathf.Atan2(SliceKeySource.y, new Vector2(SliceKeySource.x, SliceKeySource.z).magnitude) * Mathf.Rad2Deg; receipt.fogHazeDensity = SliceHaze.x;
             Action<bool, string> check = (ok, name) => receipt.checks.Add((ok ? "PASS " : "FAIL ") + name);
             check(receipt.renderPipeline == "Built-in", "Built-in render pipeline");
@@ -354,6 +404,7 @@ namespace Exoduser.UnityPort
             check(receipt.footprintWalkableViolations == 0, "no mass footprint sample is walkable per SourceMap.CanMove (24 samples each)");
             check(ShadowsEnabled, "key shadow on");
 
+            ReleaseLifeTime(); // the FPS run animates in real time (wind, trail, motes, pulse, breathing)
             // 30 s still-scene frame intervals (LOOK-001 definitions)
             float seconds = 30f; float parsed; if (float.TryParse(ArgumentValue(FpsSecondsArgument), out parsed) && parsed >= 1f) seconds = parsed;
             var fps = new FpsReceipt { scene = "vertical slice START still scene, key shadow + lights + fog + glow, no input", vSyncCount = QualitySettings.vSyncCount, targetFrameRate = Application.targetFrameRate };

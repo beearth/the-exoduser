@@ -144,6 +144,7 @@ Shader "EXODUSER/Look3DGroundLayered"
                 albedo*=lerp(0.40, 1.0, smoothstep(-30, 170, sdRaw));
 
                 UNITY_LIGHT_ATTENUATION(shadow, i, i.world);
+                shadow*=L3D_Gobo(px); // MAP3D-LIFE1 L3: moving canopy shadow on the key light
                 float3 color=albedo*L3D_Lighting(n, i.world, shadow);
                 color+=L3D_Spec(n, i.world, saturate((0.95-rough)/0.27), shadow);
                 color=L3D_Fog(color, i.world);

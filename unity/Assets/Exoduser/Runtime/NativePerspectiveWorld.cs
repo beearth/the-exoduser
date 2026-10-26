@@ -271,6 +271,7 @@ namespace Exoduser.UnityPort
             SyncCamera(Focus);
             FaceCamera();
             UpdateFieldLights();
+            UpdateLife();
             int cell = Mathf.FloorToInt(AppliedFocus.x / 40f) * 10007 + Mathf.FloorToInt(AppliedFocus.y / 40f);
             if (cell != streamCell) { streamCell = cell; StreamChunks(); }
         }
@@ -278,7 +279,7 @@ namespace Exoduser.UnityPort
         // One-shot synchronisation used by the capture and by callers that drive the world explicitly.
         public void Prime(Vector2 focus)
         {
-            Focus = focus; SyncCamera(focus); FaceCamera(); UpdateFieldLights(); StreamChunks();
+            Focus = focus; SyncCamera(focus); FaceCamera(); UpdateFieldLights(); UpdateLife(); StreamChunks();
         }
 
         public static Texture2D LoadBilinear(string resource)
