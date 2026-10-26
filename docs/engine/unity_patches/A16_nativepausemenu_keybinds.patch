@@ -1,5 +1,5 @@
 diff --git a/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs b/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
-index de6481149..6f7ffadf9 100644
+index de6481149..6a2e4b73e 100644
 --- a/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
 +++ b/unity/Assets/Exoduser/Runtime/NativePauseMenu.cs
 @@ -15,6 +15,11 @@ namespace Exoduser.UnityPort
@@ -8,7 +8,7 @@ index de6481149..6f7ffadf9 100644
    bool ready;
 +  // A16: web key-binding list (#keyBindList). The Unity settings window has no 2-column web layout yet (Codex A15), so the list opens as its own full-screen page from the
 +  // Controls tab (mouse only, wheel scroll, ESC / Back close it). While a key is waiting the page receives key events and the owner must not act on keys (KeyCaptureActive).
-+  NativeKeyBindList keyList;bool keyPage;float keyScroll;
++  NativeKeyBindList keyList;bool keyPage;float keyScroll;GUIStyle keyLabelStyle;
 +  public bool KeyPageOpen{get{return keyPage;}}
 +  public bool KeyCaptureActive{get{return keyPage&&keyList!=null&&keyList.Listening;}}
    public bool English { get; set; }
@@ -31,7 +31,7 @@ index de6481149..6f7ffadf9 100644
      if(Event.current.isKey)Event.current.Use();
      GUI.enabled=oldEnabled&&navigation.Focused&&!navigation.WaitingForRelease;
      GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;
-@@ -143,12 +149,29 @@ namespace Exoduser.UnityPort
+@@ -143,12 +149,34 @@ namespace Exoduser.UnityPort
    }
    void DrawControls()
    {
@@ -49,15 +49,20 @@ index de6481149..6f7ffadf9 100644
 +  // A16: web #keyBindList as a full-screen page in the 1920x1080 design space (same geometry as the web controls tab list).
 +  void DrawKeyPage()
 +  {
-+   Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.94f));
++   GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;   // the caller's matrix is not reset yet at this point (Draw() sets identity after the early return)
++   Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.97f));
 +   float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-+   keyList.English=English;var pane=new Rect(45,150,1830,800);
-+   GUI.Label(new Rect(0,84,1920,52),T("조작 키 설정 (클릭하여 변경)","Key bindings (click to change)"),title);
++   keyList.English=English;var pane=new Rect(45,60,1830,880);
 +   Fill(pane,new Color(.04f,.04f,.045f,.97f));Border(pane,new Color(.48f,.36f,.23f,.6f));
-+   float max=Mathf.Max(0,keyList.ContentHeight+32-pane.height);
++   float max=Mathf.Max(0,keyList.ContentHeight+51+32-pane.height);
 +   if(Event.current.type==EventType.ScrollWheel&&pane.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
 +   keyScroll=Mathf.Clamp(keyScroll,0,max);
-+   GUI.BeginGroup(pane);keyList.Draw(new Vector2(42,16-keyScroll),new Rect(0,0,pane.width,pane.height));GUI.EndGroup();
++   GUI.BeginGroup(pane);
++   // web `#settings-page-controls .set-label` computed style: Noto Sans KR 600 16px, letter-spacing .64px, rgb(200,181,143), left aligned, box 1736x39 (padding 4/0/10), hairline rgb(73,65,54) below, list 12px under it
++   if(keyLabelStyle==null){keyLabelStyle=new GUIStyle(GUI.skin.label){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??font,fontSize=16,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};keyLabelStyle.normal.textColor=new Color(200/255f,181/255f,143/255f);}
++   {float lx=42,ly=14-keyScroll+4;foreach(char ch in T("조작 키 설정 (클릭하여 변경)","Key bindings (click to change)")){string g=ch.ToString();GUI.Label(new Rect(lx,ly,40,24),g,keyLabelStyle);lx+=keyLabelStyle.CalcSize(new GUIContent(g)).x+.64f;}
++    Fill(new Rect(42,14-keyScroll+38,1736,1),new Color(73/255f,65/255f,54/255f));}
++   keyList.Draw(new Vector2(42,14+51-keyScroll),new Rect(0,0,pane.width,pane.height));GUI.EndGroup();
 +   keyList.DrawToasts();
 +   if(GUI.Button(new Rect(860,984,200,44),T("뒤로","Back"),button)&&!keyList.Listening)keyPage=false;
    }

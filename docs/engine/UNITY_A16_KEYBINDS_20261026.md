@@ -108,6 +108,38 @@ PC 소유 경로의 BINDS 소비자는 위 표의 PC 수정 4개 파일에서 �
 
 - 1x 비교 직접 확인: 탭·행(854×53)·주 키·보조·대기 버튼·초기화가 웹과 같다. 차이 = 대기 버튼의 금빛 포커스 테두리 없음, Unity 쪽 배경(설정 창 프레임 없음), "저장 미이식" 안내 줄.
 - 웹 특이사항 3건은 **웹 그대로**(UI 웹 동일 원칙): ① 초기화가 18개만 되돌려 `irisToggle`·`bladeToggle` 행이 사라짐 — 그대로 ② 사슬 거부·초기화 알림이 설정 창 아래에 가려져 안 보임 — `ToastsVisible=false` 그대로 ③ 탭 이름의 ⌨·🎮 이모지 — 웹 원본에 있으므로 이식은 그대로 두고, 프로젝트 규칙(게임 UI 이모지 금지) 위반은 **웹 쪽에서 먼저 고친 뒤 따라간다**(웹 수정 여부는 사용자·전체총괄 판단). 셋 다 웹 결함 후보로 기록.
+- 웹 결함 후보(추가): `keyName` 표에 Y·U가 없어 `irisToggle`·`bladeToggle`의 기본 키가 목록에 `KeyY`·`KeyU`로 표시된다 — 웹도 같아 그대로 둠.
 - patch 번호 확정: **16 `A16_nativepausemenu_keybinds`**, **17 `A16_nativegame_keybinds`**(1~15 위 적용·역순 확인).
 - 상태: patch 16의 일시정지 메뉴 "키 설정 변경" 페이지는 컴파일·적용만 확인, 실제 화면 캡처가 없어 보드 **A16 = 1**. patch 1~17 적용 빌드에서 그 페이지 캡처·1x 확인 뒤 2.
 - 브랜치: 이 커밋은 `claude/unity-pc-a16-20261026`(베이스 `f9636b021`). 누적 브랜치 병합은 `pc-unity-win` 작업(B11) 커밋 뒤.
+
+## 10. 일시정지 메뉴 "키 설정 변경" 페이지 실화면 검증 (patch 1~18 적용, 2026-10-26)
+
+patch 번호: 1~15 + **16** `A16_nativepausemenu_keybinds` + **17** `A16_nativegame_keybinds` + **18** `A16_nativegame_pausesmoke_keys`(신규, 검증용: `NativeGame.PauseSmoke.cs`에 `-pause-phase keys` 추가, `NativePauseMenu.cs`에 테스트 훅 3개 `KeyListForTest`·`OpenKeyPageForTest`·`SetKeyScrollForTest`). 18개를 차례로 `git apply --check`·적용 → 빌드 → 캡처 → 역순 `apply -R` 18개, `NativeGame*`·`NativePauseMenu*` 등 Codex 파일 변경 0 확인.
+
+| 항목 | 결과 |
+|---|---|
+| 실행 | `EXODUSER-Unity.exe --unity-pause-smoke -output <dir> -pause-phase keys --quit-after-pause-smoke` (창 (5120,0) NOACTIVATE), 종료 코드 **0**, `keys-smoke.json` 점검 7개 전부 PASS(키 페이지 열림·일시정지 유지·대기 중 창 단축키 차단·메뉴 Reset이 페이지를 닫음, 1920/1280 각각 + 틱 불변) |
+| Win64 빌드(1~18 적용) | Succeeded, errors 0, warning CS 0 |
+| 이미지 `E:/exoduser-wt/_out/pc-a16b/keys/` | `keys-controls-tab-{1920,1280}`, `keys-page-default-*`, `keys-page-waiting-*`, `keys-page-end-*`, `keys-page-pad-top-*`, `keys-page-pad-end-*` (모두 1920·1280) |
+
+### 검증에서 찾아 고친 결함 (patch 16 수정)
+
+1280×720에서 키 페이지의 검정 배경이 화면 일부(853×480)만 덮고 게임 장면이 비쳐 보였다. `Draw()`가 `GUI.matrix=identity`를 설정하기 **전에** `DrawKeyPage()`로 빠져서 호출한 쪽의 축소 행렬이 배경 채우기에 적용된 것. `DrawKeyPage()` 첫 줄에서 `GUI.matrix=identity`로 되돌리도록 patch 16을 고치고 배경 알파를 .94→.97로 올렸다(뒤의 HUD 글자가 비쳐 겹쳐 보이던 것 제거). 수정 후 재빌드·재캡처에서 1280도 정상(재현 1회→수정 1회, 같은 실패 반복 아님).
+
+### 1x 직접 확인 (글자 겹침·잘림)
+
+| 화면 | 판정 |
+|---|---|
+| 조작 안내 탭 1920/1280 | 줄 6개(WASD·좌클릭·TAB·K·ESC 등 현재 바인딩 키 이름) + "키 설정 변경" 버튼 + 하단 안내 2줄 + 기본값 복원/뒤로. 겹침·잘림 없음. 버튼(480~520)과 안내 줄(528~) 사이 간격 8px |
+| 키 페이지 기본 | 제목, 탭 2개, 행 20개, 초기화 버튼, "저장 미이식" 줄, 뒤로 버튼 모두 겹침·잘림 없음 |
+| 대기 중 | 대기 행 강조, `⟨ 입력 대기... ⟩` 버튼, 주황 안내 문구 + 저장 줄이 겹치지 않음 |
+| 스크롤 끝 | 키보드 탭은 내용(약 718)이 영역(800)보다 작아 스크롤이 없어 기본과 같다. 스크롤이 필요한 것은 **게임패드 탭**(`keys-page-pad-end-*`): 제목·행 5줄(고정 4 + 미이식)·패드 초기화(흐림)·조작 가이드 상자가 잘림 없이 끝까지 보임, 위쪽에 밀려 올라간 탭 줄이 영역 경계에서 잘려 보이는 것은 정상(스크롤 클립) |
+| 1280×720 | 글자가 작아졌지만(행 이름 약 10px) 읽힘, 겹침·잘림 없음 |
+
+### 남은 것
+
+- 마우스 클릭으로 "키 설정 변경"을 눌러 여는 경로·휠 스크롤은 OS 입력 없이 테스트 훅으로 대체해 확인(`OpenKeyPageForTest`). 실제 클릭·휠은 사람이 한 번 확인 필요.
+- 목록에서 키를 바꾼 뒤 게임(이동·창 열기)에 반영되는 것은 patch 17 컴파일·적용만 확인, 입력 주입 실험은 없음.
+- **제목 교체(총괄 후속)**: 키 페이지 제목을 웹 `#settings-page-controls .set-label` 계산 스타일 그대로 그렸다 — Noto Sans KR 600 16px, letter-spacing .64px, rgb(200,181,143), 왼쪽 정렬, 박스 1736×39(패딩 4/0/10), 아래 헤어라인 rgb(73,65,54), 목록은 12px 아래. game.html 2059-2085의 중앙 정렬·#ffcd97 글로 규칙은 실제 렌더에서 뒤쪽 규칙(ui-foundation)에 덮여 쓰이지 않는다(계산 스타일·스크린샷 `a16_1_default` 확인). patch 16만 수정(큰 흰 제목 삭제, 영역 y 150→60), patch 18은 재생성. 1~18 적용 빌드 errors 0·warning 0, `keys-smoke.json` 7/7, 역순 `apply -R` 후 Codex 파일 변경 0. 1x 비교 `E:/exoduser-wt/_out/pc-a16/cmp/a16_title_1x.jpg`·`a16_title_3x.jpg`: 색 최대값 (200,181,143) 동일, 획이 웹보다 약간 가늘다(잉크량 약 84%).
+- (맥북 총괄 인수, 2026-10-26) 페이지 제목은 웹 원문 CSS(2059-2085)가 아니라 실제 렌더 **계산 스타일**(ui-foundation이 덮어씀: Noto Sans KR 600 16px·rgb(200,181,143)·왼쪽 정렬·헤어라인)을 따른다 — "웹 화면 그대로" 원칙상 맞다. 1x 비교 일치, 획이 약간 가늚(잉크 약 84%)은 남은 차이. 일시정지 메뉴 실화면 7/7 확인으로 보드 **A16 = 2**. patch 18 `A16_nativegame_pausesmoke_keys`는 검증 훅(스모크 전용).
