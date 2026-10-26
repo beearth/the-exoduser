@@ -1,0 +1,145 @@
+{
+  "date": "2026-10-26",
+  "source": "b4560e63adc28b2f0445e84318131adf3f7ffc1a",
+  "scope": "FDG/title/gate waiting silence and original intro soundtrack on native track0 only. Existing later voice/BGM restored.",
+  "normalBuild": {
+    "passed": true,
+    "settingsQa": false,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INTRO-SILENCE-20261026/build-release/EXODUSER-Unity.app",
+    "product": "EXODUSER · Unity 이식 검증판",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "errors": 0,
+    "bytes": 1973120830
+  },
+  "actualBundleIdentifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+  "input": {
+    "source": "b4560e63adc28b2f0445e84318131adf3f7ffc1a",
+    "baseline": "9d4c4350141fb17dd9bda662aaa37680cc123658",
+    "qaProject": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/project",
+    "copied": [
+      "unity/Assets/Exoduser/Resources/Audio/Lobby/intro_gate_original.mp3",
+      "unity/Assets/Exoduser/Resources/Audio/Lobby/intro_gate_original.mp3.meta",
+      "unity/Assets/Exoduser/Runtime/NativeGame.IntroSilenceCapture.cs",
+      "unity/Assets/Exoduser/Runtime/NativeGame.IntroSilenceCapture.cs.meta",
+      "unity/Assets/Exoduser/Runtime/NativeGame.cs",
+      "unity/Assets/Exoduser/Runtime/NativeLobby.cs",
+      "unity/Assets/Exoduser/Runtime/NativeLobbyVideo.cs"
+    ],
+    "verifiedNonMetaNonGeneratedSceneFiles": 340,
+    "verifiedBytes": 682320102,
+    "mismatches": [],
+    "extraRuntimeCSharp": [],
+    "passed": true
+  },
+  "qaBuild": {
+    "passed": true,
+    "settingsQa": true,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INTRO-SILENCE-20261026/build-final-qa/EXODUSER-Unity.app",
+    "product": "EXODUSER Settings QA",
+    "identifier": "com.fordeargamers.exoduser.settingsqa",
+    "errors": 0,
+    "bytes": 1973120742
+  },
+  "baseline": {
+    "source": "f25b356228a533bdeeda3b095d0b239fbf65aa53",
+    "receipt": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INTRO-SILENCE-20261026/baseline/intro-silence-baseline.json",
+    "harnessPassed": true,
+    "contractPassed": false,
+    "scope": "19 baseline harness checks; actual FDG listener output violates original mute contract."
+  },
+  "runtime": {
+    "source": "80e1312be6506bf2b275f4063d0000f441937bcf",
+    "receipt": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INTRO-SILENCE-20261026/final/intro-silence-final.json",
+    "checks": 31,
+    "harnessPassed": true,
+    "contractPassed": true,
+    "limits": "QA-only short scripted stage/audio observations, not OS focus/input, natural gate completion, media completion or audibility certification. Baseline harness success does not mean mute contract passed. Accepted source stage contract is FDG/SplashTitle/Title muted, Gate/World voice enabled.",
+    "laterChange": "b456 Seek local target race fix is normal-build/static checked, not newly runtime exercised; no gate user seek exposure."
+  },
+  "media": {
+    "originalMp4Sha256": "0891964d17e19c9080fe07da97e7ee00e26918b5e51da8909b3d11e149f99620",
+    "originalMp4Bytes": 2901738,
+    "rawMp3Sha256": "0ce817e5bb7ce4a8c4fa1df51e92698bf28c896375615b6ab9aa085ff330cc7f",
+    "rawMp3Bytes": 128731,
+    "nativeAudioTrackCount": 0,
+    "extraction": "Original MP3 compressed packets, no reencoding; unchanged original MP4.",
+    "primingAnalysis": {
+      "scope": "Decode alignment only; initial zero-shift hypothesis in priming-comparison.json rejected, not a product test failure. No browser/sample-exact equivalence claim.",
+      "unityFrames": 354816,
+      "frequency": 44100,
+      "channels": 2,
+      "correlation": 0.9999997701496608,
+      "referenceShiftFrames": -529,
+      "interpretation": "Unity u[i] matches CoreAudio r[i-529]; Unity has 529 additional leading frames.",
+      "originalEditListFrames": 1105,
+      "appliedOnceToUnityRawClip": true,
+      "equivalentCoreAudioReferenceFrame": 576,
+      "productOffsetChanged": false
+    }
+  },
+  "stageImages": {
+    "reviewed": [
+      {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INTRO-SILENCE-20261026/final/intro-silence-splash-title.png",
+        "sha256": "70d81bf06632668650d4aa5227b70b35337e7eb9ce4e890bfb23a63671a800e7"
+      },
+      {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INTRO-SILENCE-20261026/final/intro-silence-gate.png",
+        "sha256": "4d3c7468321458a9627c0aff0a4ad6016298c2fed8ad2ff1ec2be69c85950410"
+      }
+    ],
+    "observed": "Correct Silvertail splash keyart and opening gate frames; no new layout approval or audio audibility claim."
+  },
+  "normalStorage": {
+    "unchanged": true,
+    "files": [
+      {
+        "path": "/Users/fordeargamers/Library/Preferences/com.ForDearGamers.EXODUSER----Unity-----------------.plist",
+        "sha256": "7d69ee819d6a257d6facf38a7e5ef7df72e29309d6d1d5d8a012e17f674e6f73",
+        "afterSha256": "7d69ee819d6a257d6facf38a7e5ef7df72e29309d6d1d5d8a012e17f674e6f73",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/fordeargamers/Library/Application Support/com.ForDearGamers.EXODUSER----Unity-----------------/character-roster-v1/characters.v1.json",
+        "sha256": "91c703949ae75be62fdaac1432f76e046ce72bf0aa9e9be0a72ec084102c87cd",
+        "afterSha256": "91c703949ae75be62fdaac1432f76e046ce72bf0aa9e9be0a72ec084102c87cd",
+        "unchanged": true
+      },
+      {
+        "path": "/Users/fordeargamers/Library/Application Support/com.ForDearGamers.EXODUSER----Unity-----------------/character-roster-v1/characters.lock",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "afterSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "unchanged": true
+      }
+    ],
+    "existingUserPlayersPreserved": [
+      38141,
+      48476,
+      52157
+    ]
+  },
+  "claudeCollaboration": {
+    "session": "b021ef9d-55d5-4b33-b78c-393bfe87cc35",
+    "title": "맥북총괄 (fork)",
+    "model": "Opus 5.5 중간",
+    "actualReadOnlyCrossreview": true,
+    "audioFileOwnershipConflict": false,
+    "gpuReleasedForLighting": true,
+    "lightingImplementation": "d3a4a9a3b separate branch; runtime/visual/performance acceptance pending"
+  },
+  "gptApiImage": {
+    "openaiApiKeyPresent": false,
+    "liveGenerationRequests": 0,
+    "newGeneratedImages": 0,
+    "status": "Authentication missing. No balance claim about other providers; no silent tool/provider substitution. First necessary image pending safe local API setup.",
+    "archive": "No generated candidate; Mac mapping to I: archive not verified."
+  }
+}

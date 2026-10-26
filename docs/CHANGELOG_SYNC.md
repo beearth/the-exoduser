@@ -1,3 +1,21 @@
+## 2026-10-26 Unity 우상단 상태판 월드 블렌드
+
+- 일반 게임에서도 보이는 우상단 장·레벨·경험치·처치·악의 판의 불투명 검정 배경을 약한 좌→우 음영으로 교체하고, 글자 크기를 유지한 채 여백·제목 색을 다듬었다. 316×124 위치·문구·값 공급자·하단 HUD는 그대로다. 기존 사용자 Player 4개가 실행 중이어서 새 720p/1080p 렌더 검수는 미완료다. [수치·범위·검수 경계](engine/UNITY_MAC_STATUS_BLEND_20261026.md).
+
+## 2026-10-26 Unity 초반 stage 무음 계측
+
+- ROOT final 31/31·무음/음향 복귀 PASS 및 PCM priming 정렬 차이를 기록. Seek 비동기 직후 시각 재읽기를 clamp local target 공유로 보정했으며 초반 Seek 신규 실측 주장은 하지 않는다.
+
+- QA imported fallback clip의 첫4096 sample frame PCM과 samples/frequency/channels를 기록해 ROOT 원본 PCM priming 상관분석을 지원. 제품 offset 변경 없이 비교 결과 대기.
+
+- intro.mp4 native track0에만 원본 packet-demux MP3를 기존 Voice로 복구하고 edit-list 1105/44100 offset·freeze/pause/resume/close 경계를 보존. external route/원본 clip 출력과 이후 cleanup QA를 추가했으며 실제 final 인수는 ROOT 대기.
+
+- Gate MP3-in-MP4/AVFoundation 트랙 인식 조사에 필요한 VideoPlayer 실제 audioTrackCount/controlledAudioTrackCount를 QA snapshot에 추가. Gate 제품 경로와 영상 bytes는 보존.
+
+- 실제 baseline의 FDG 유음(Listener peak .1878839)과 원본 무음 계약에 따라 FDG Open muted 인자 하나만 true로 보정. Gate 첫1.2초 voice0의 원인은 미확정으로 보존하며 Gate 제품 동작은 변경하지 않았다.
+
+- 제품 mute 변경 없이 별도 QA identity에서 FDG/SplashTitle(실버테일 키아트)/Title→Gate/World/lobby의 영상·음향·focus 출력 snapshot fixture를 추가. baseline 계측 성공과 무음 계약 차이를 분리하며 SD direct probe는 fallback 검수로 확대하지 않는다. [범위·명령](engine/UNITY_MAC_INTRO_SILENCE_20261026.md).
+
 ## 2026-10-26 Unity 지원 설정 저장·복원
 
 - 최초 설정 로드 오류 이후 저장 거부가 구체 오류를 덮지 않도록 보존하고 invalid fixture에 변경 후 오류 안내·원본 bytes·live SFX 검증을 추가.

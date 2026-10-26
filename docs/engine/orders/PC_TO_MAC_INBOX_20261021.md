@@ -2,6 +2,16 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 — 사용자 무음 정정·실제 Claude 협동 회수
+
+사용자가 Claude 협동을 명시 승인하고 FDG→인트로·실버테일 해당 구간은 원래 무음이었다고 정정했다. Codex는 실제 Claude 앱의 기존 `맥북총괄 (fork)` 세션 `b021ef9d-55d5-4b33-b78c-393bfe87cc35`에 읽기 전용 대조를 요청했다. Opus5.5 중간 표시·실제 착수/도구 실행·완료 응답을 확인했고, Claude가 Unity 파일/INDEX/commit 변경0 및 기존 수정 소유 없음으로 회신했다. MD 작성만으로 협업을 간주한 기록이 아니다. CLI2.1.304 설치도 확인했으나 새 CLI 작업·과금 API·모델 하향은 실행하지 않았다.
+
+회수 계약: source index.html605 FDG muted,580/4599 타이틀 muted,629 게이트 대기 muted,2273–2275 초반 로비 BGM 진입 차단. 실버테일은 원본 스플래시 문서80행의 `title_motion_hd_20260929.mp4` 키아트 반복이며 캐릭터선택 idle 영상은 이번 구간 밖이다. Gate ENTER에서 입장 효과음(1×2), intro.mp4 mute 해제/0.6, 프롤로그 BGM0.6이 시작되고 이후 WorldIntro voice/음악0.22·로비 BGM0.65는 유지한다. 현재 NativeLobby.Begin만 FDG muted=false로 여는 설정 차이를 확인했다. Claude의 파일 트랙 확인은 런타임 청음 PASS가 아니다.
+
+Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디오 최소 접점과 격리 fixture, ROOT는 실제 baseline→fix→직후 복귀 빌드를 소유한다. 전역 AudioListener/mixer·음량 설정/저장·영상 bytes/자막/offset·기존 Godot/Steam/PC WIP·자동화 변경0. WORK_BOARD의 현재 오더에 반영했다.
+
+추가 마감: 실제 baseline FDG 출력 결함과 Mac native intro audioTrackCount0을 각각 확인해 muted 호출 및 원본 MP3 조건부 fallback만 보정했다. final31/31, normal b4560e63 ARM64 오류0, 기존 저장 hash 동일이다. actual Claude의 파형/수명 crossreview를 회수했고 조명 d3a4a9a3b의 다음 별도 runtime 검수를 위해 Unity/GPU 해제를 전달했다. GPT API 키 부재로 이미지 요청·생성0이며 다른 사이트 잔액을 단정하지 않았다. [최종 인수](../UNITY_MAC_INTRO_SILENCE_20261026.md).
+
 ## 2026-10-21 — PCI-04 M29 비투사체 패링 main 반영 (main `f41402e2a`)
 
 - PC branch `claude/pc-m29-parry-20261021` `6484c1ef` → main `f41402e2a`(9ba14ba2a에서 fast-forward).
