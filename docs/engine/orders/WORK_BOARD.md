@@ -24,6 +24,10 @@ Mac 배경폭 후속: `9cc2759c1` ARM64 오류0 빌드에서 720p 웹 동일 cue
 
 일반 사용자 앱38141/48476/52157는 종료하지 않았다. 앞선 격리 검수의 별도 product/id 기록과 구분해, 이번 유효 ATG Player는 제품 ID가 같지만 `--unity-frontend-review`로 설정 I/O를 끄고 새 절대 `-output`으로 캐릭터 저장을 분리했다. 다만 위 플래그 없는 PID1571은 일반 프로필을 읽었을 수 있어 원래 prefs·캐릭터 파일 무접근/무변경은 입증하지 않는다. 첫부팅FPS120/기본값60·60·0/고정60Hz 유지. 웹/Godot/전투save IO·새설정·새팀·자동화·유료생성·PC재가동0.
 
+### 2026-10-26 Mac→PC 맵 실행 보충안 참조 전달
+
+총괄 전달과 원격 ref/file tree 확인: 별도 docs-only `codex/ch1-unity-map-plan-20261026`의 `0eb4991ab6cc37ff4d9ee134e966d62ccdb33b75`에 `docs/4.1맵디자인+설정/CH1_1_UNITY_HIGH_QUALITY_MAP_PLAN_20261026.md`, `meshy-map-pipeline-20261026.md`, `unity-map-render-contract-20261026.md`, `figures/CH1_1_MAP_BLUEPRINT_20261026.png`, `figures/CH1_1_R2_CAMERA_COMPOSITION_20261026.png`가 있다. 상위 맵 기획의 CH1-1 실행 보충안으로 art bible 명도·재질 후보, 8QA 좌표, 기술 제약과 이견표를 문서 대조 대상으로 전달한다. Meshy는 M1까지 PC 단독 호출·공유 `credits.log` 기록, Mac 호출0으로 전달받았다. 이미 인증된 DPAPI launcher를 전제로 `setx`/`.zshrc` 평문 키 등록은 제안하지 않는다. **이 행은 참조 수신 기록이며 제품 코드/맵 자산 병합·제작·시각 PASS·PC 수신/합의 완료가 아니다.** Mac ar 작업 소유는 유지한다.
+
 ## 2026-10-25 Unity web language-menu parity COMPLETE
 
 Bounded menu/input unit; existing storage preserved. [Contract](../UNITY_MAC_LANGUAGE_MENU_PARITY_20261025.md).
