@@ -9,8 +9,11 @@ namespace Exoduser.UnityPort
   [Serializable] sealed class PatchNotesEntry { public string version,date; public PatchNotesLanguage ko,en; }
   [Serializable] sealed class PatchNotesLanguage { public PatchNotesSection[] sections; }
   [Serializable] sealed class PatchNotesSection { public string title; public string[] items; }
+  [Serializable] sealed class PatchNotesLabels { public PatchNotesLabelEntry[] entries; }
+  [Serializable] sealed class PatchNotesLabelEntry { public string code,title,close,empty; }
 
   PatchNotesCatalog patchNotesCatalog;
+  PatchNotesLabels patchNotesLabels;
   bool patchNotesLoaded,patchNotesOpen,patchNotesFocusClose,patchNotesRestoreFocus;
   string patchNotesPreviousFocus;
   Vector2 patchNotesScroll;
@@ -22,6 +25,31 @@ namespace Exoduser.UnityPort
    patchNotesLoaded=true;
    var source=Resources.Load<TextAsset>("Data/patch_notes");
    if(source!=null){try{patchNotesCatalog=JsonUtility.FromJson<PatchNotesCatalog>(source.text);}catch(Exception e){Debug.LogWarning("Patch notes data: "+e.Message);}}
+   var labels=Resources.Load<TextAsset>("Data/patch_notes_labels");
+   if(labels!=null){try{patchNotesLabels=JsonUtility.FromJson<PatchNotesLabels>(labels.text);}catch(Exception e){Debug.LogWarning("Patch notes labels: "+e.Message);}}
+  }
+  string PatchNotesUiLabel(string field)
+  {
+   LoadPatchNotes();
+   PatchNotesLabelEntry english=null;
+   var entries=patchNotesLabels==null?null:patchNotesLabels.entries;
+   if(entries!=null)foreach(var entry in entries){
+    if(entry==null)continue;
+    if(entry.code=="en")english=entry;
+    if(entry.code==Language){string value=PatchNotesLabelValue(entry,field);if(!string.IsNullOrEmpty(value))return value;}
+   }
+   string fallback=PatchNotesLabelValue(english,field);
+   if(!string.IsNullOrEmpty(fallback))return fallback;
+   if(field=="title")return K("패치 노트","PATCH NOTES");
+   if(field=="close")return K("닫기","Close");
+   return K("패치 노트가 없습니다","No patch notes yet.");
+  }
+  static string PatchNotesLabelValue(PatchNotesLabelEntry entry,string field)
+  {
+   if(entry==null)return null;
+   if(field=="title")return entry.title;
+   if(field=="close")return entry.close;
+   return entry.empty;
   }
   void OpenPatchNotes()
   {
@@ -78,14 +106,14 @@ namespace Exoduser.UnityPort
    if(DismissOutside(panel)){ClosePatchNotes();return;}
    Fill(panel,new Color(.071f,.047f,.039f,.985f));Border(panel,new Color(.643f,.576f,.451f,.5f),1);
    Border(new Rect(panel.x+5,panel.y+5,panel.width-10,panel.height-10),new Color(.643f,.576f,.451f,.22f),1);
-   Label(new Rect(710,229,500,34),K("패치 노트","PATCH NOTES"),patchNotesTitle,TextAnchor.MiddleCenter);
+   Label(new Rect(710,229,500,34),PatchNotesUiLabel("title"),patchNotesTitle,TextAnchor.MiddleCenter);
    Fill(new Rect(716,274,488,1),new Color(.643f,.576f,.451f,.55f));
    float contentHeight=MeasurePatchNotesBody(body.width-22);
    patchNotesScroll=GUI.BeginScrollView(body,patchNotesScroll,new Rect(0,0,body.width-18,Mathf.Max(body.height,contentHeight)),false,true);
    DrawPatchNotesBody(body.width-22);
    GUI.EndScrollView();
    Rect close=new Rect(894,810,132,38);Fill(close,new Color(.114f,.078f,.075f));Border(close,new Color(.643f,.576f,.451f,.5f),1);
-   GUI.SetNextControlName("patch-notes-close");if(GUI.Button(close,K("닫기","Close"),patchNotesClose))ClosePatchNotes();
+   GUI.SetNextControlName("patch-notes-close");if(GUI.Button(close,PatchNotesUiLabel("close"),patchNotesClose))ClosePatchNotes();
    if(patchNotesFocusClose&&Event.current.type==EventType.Repaint){GUI.FocusControl("patch-notes-close");patchNotesFocusClose=false;}
    if(GUI.GetNameOfFocusedControl()=="patch-notes-close")Border(close,new Color(.84f,.47f,.28f),2);
   }
@@ -94,7 +122,7 @@ namespace Exoduser.UnityPort
   float RenderPatchNotesBody(float width,bool draw)
   {
    var notes=patchNotesCatalog==null?null:patchNotesCatalog.notes;
-   if(notes==null||notes.Length==0){if(draw)Label(new Rect(0,24,width,55),K("패치 노트가 없습니다","No patch notes yet."),patchNotesEmpty,TextAnchor.MiddleCenter);return 85;}
+   if(notes==null||notes.Length==0){if(draw)Label(new Rect(0,24,width,55),PatchNotesUiLabel("empty"),patchNotesEmpty,TextAnchor.MiddleCenter);return 85;}
    float y=2;
    for(int i=0;i<notes.Length;i++){
     var note=notes[i];if(note==null)continue;
