@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort {
         // Right-hand "장착 목록" rows: left / right slot index.
         static readonly int[,] listPairs={{0,1},{2,3},{4,5},{6,7},{8,9},{10,11},{12,13},{14,16}};
         bool scrollDrag;
-        const float GridCell=56f,GridX=780f,GridY=294f,GridViewW=588f,GridViewH=672f;
+        const float GridCell=56f;float GridX=780f,GridY=294f,GridViewW=588f,GridViewH=672f;   // bag viewport: equipment page / storage page differ
 
         void InitDockStyles(){
             var strong=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??font;
@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort {
             status=new GUIStyle(small){alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Clip};
             button=new GUIStyle(GUIStyle.none){font=strong,fontSize=18,alignment=TextAnchor.MiddleCenter,padding=new RectOffset(12,12,4,4)};
             button.normal.textColor=parchment;button.hover.textColor=Color.white;button.active.textColor=gold;
-            InitWebLayout();InitOssuary();InitCrystals();
+            InitWebLayout();InitOssuary();InitCrystals();InitStorage();
         }
 
         // Used by the shared details/comparison view: same plate face as every other web button.
@@ -81,6 +81,7 @@ namespace Exoduser.UnityPort {
             DrawBody(new Rect(lx,182,lw,tall?858:802),lx,lw);
             if(oss)DrawOssuaryPage(level,power);
             else if(Page==PageCrystals)DrawCrystalsPage(level,power);
+            else if(Page==PageStorage){DrawStoragePage(level);DrawActionRow();}
             else{
                 DrawEquipPanel(level,power);
                 DrawBagPanel(level);
@@ -171,11 +172,11 @@ namespace Exoduser.UnityPort {
 
         void DrawBody(Rect body,float lx,float lw){
             string[] subs={"장비","유골함","유물","보관함"};
-            // 1836 -> x 42,502,962,1421 w 457; 1330 -> x 548,881,1215,1548 w 330 (4 tabs, 2px gaps; 보관함 is not ported: display only)
+            // 1836 -> x 42,502,962,1421 w 457; 1330 -> x 548,881,1215,1548 w 330 (4 tabs, 2px gaps)
             float tw=(lw-6)/4f;
             for(int i=0;i<4;i++){
                 var r=new Rect(lx+i*(tw+2),136,tw,36);
-                if(i<3){if(PlateButton(r,subs[i],13,i==Page))SetPage(i);}
+                if(i<4){if(PlateButton(r,subs[i],13,i==Page))SetPage(i);}
                 else PlateTab(r,subs[i],13,false);
             }
             IronTile(body,iron480,480);Grad(body,C(5,7,7,.733f),C(8,9,9,.85f));Border(body,C(83,75,62));
@@ -258,7 +259,7 @@ namespace Exoduser.UnityPort {
             Grad(filter,C(65,50,34,.314f),C(20,17,21,.533f),90);Border(filter,C(81,70,56));
             var chev=C(170,150,115);Line(new Vector2(793,261),new Vector2(798,266),1.4f,chev);Line(new Vector2(798,266),new Vector2(793,271),1.4f,chev);
             Txt(new Rect(806,250,300,32),"아이템 필터",12,C(195,181,155),400);
-            DrawDockBag(level);
+            GridX=780f;GridY=294f;GridViewW=588f;GridViewH=672f;DrawDockBag(level);
         }
 
         void DrawDockBag(int level){
@@ -304,7 +305,7 @@ namespace Exoduser.UnityPort {
             // a 10px thin scrollbar (track #121113, 6px rounded thumb #7c6f58, arrow buttons) shown whenever the grid overflows.
             float maxScroll=total-GridViewH;
             if(maxScroll>0){
-                var track=new Rect(GridX+577f,GridY,10,GridViewH);
+                var track=new Rect(GridX+GridViewW-11f,GridY,10,GridViewH);
                 float inner=GridViewH-24f,thumbH=Mathf.Max(20f,inner*GridViewH/total),travel=inner-thumbH;
                 float thumbY=track.y+12+travel*Mathf.Clamp01(scroll.y/maxScroll);
                 var thumbCol=C(124,111,88);
