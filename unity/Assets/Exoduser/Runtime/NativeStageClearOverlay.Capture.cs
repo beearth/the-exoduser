@@ -56,6 +56,7 @@ namespace Exoduser.UnityPort {
     // (d) real Unity state: only Kills and elapsed ticks exist; everything else is "미이식"
     int kills=sim.Kills,ticks=sim.TickCount;
     var real=new NativeStageClearOverlay.Input{kind=NativeStageClearOverlay.Kind.Zone,stageKills=kills,clearSeconds=ticks/60};
+    real=NativeStageClearOverlay.WithAutoPotion(real,sim.PotionState);   // B11: potions used from the Core auto potion state
     overlay.Show(real);overlay.ForcedAge=1.5f;yield return new WaitForSecondsRealtime(.25f);yield return Shot("unity_clear_real");
     overlay.Hide();Check(!overlay.Active,"Hide() deactivates");show=false;
     var rec=new Receipt{passed=failures==0,failures=failures,width=Screen.width,height=Screen.height,simKills=kills,simTicks=ticks,parSeconds=par,parScore=parScore,rankFormal=rankFormal,rankDemo="S",

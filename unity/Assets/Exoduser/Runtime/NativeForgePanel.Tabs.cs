@@ -94,16 +94,26 @@ namespace Exoduser.UnityPort {
 
   // ===== 물약 =====
   void DrawPotion(Simulation sim){
-   var p=defs.potion;
+   var p=defs.potion;var potion=sim.PotionState;int lv=potion.PotLv;
+   bool maxed=AutoPotion.ForgeMaxed(lv),lvOk=sim.Player.Level>=AutoPotion.ForgeLevelGate(lv);int cost=AutoPotion.ForgeCost(lv),req=AutoPotion.ForgeLevelGate(lv);AutoPotion.ForgeHeal(lv,out int cur,out int nxt);
    string head=p.header.StartsWith("⬆ ")?p.header.Substring(2):p.header;float x=CX;x+=Spr("pot14_4:⬆",x,CY);
    Txt(new Rect(x,CY,CW,20),head,F.NM,14.4f,C(170,136,85),true,TextAnchor.MiddleLeft,1.44f);
-   var r=new Rect(CX,430.4f,CW,108);Card(r);float tx=r.x+15;
-   // potion level, heal amount, cost and the level gate depend on the potion upgrade state, which Unity does not have yet
+   // web: one card "HP 물약 Lv.N", values from POT_LV (Unity: Simulation.PotionState); clickable only when !maxed && player level >= (lv+1)*100
+   bool sel=potionSelected&&potionSelectedLv==lv;var r=new Rect(CX,430.4f,CW,maxed?72:108);
+   Card(r,sel?C(209,178,123):(Color?)null,sel?C(255,170,68,.06f):(Color?)null);
+   if(sel)Fill(new Rect(r.x,r.y,4,r.height),C(209,178,123));
+   float tx=r.x+15;
    float adv=Spr("card14:❤️‍🔥",tx,r.y+13);
-   Txt(new Rect(tx+adv,r.y+13,620,22.4f),p.hpName+" Lv."+NotPorted,F.SansSemi,14,Bone,false,TextAnchor.MiddleLeft,.21f,1f,new Color(0,0,0,.78f),1f);
-   Txt(new Rect(tx,r.y+39.4f,620,21.4f),p.healLabel+" "+NotPorted,F.Sans,12,C(192,179,157));
-   Fill(new Rect(tx,r.y+68.8f,620,1),C(137,113,77,.25f));
-   Txt(new Rect(tx,r.y+75.8f,620,19.2f),p.costLabel+" "+NotPorted,F.Sans,12,C(224,201,163));
+   Txt(new Rect(tx+adv,r.y+13,620,22.4f),p.hpName+" Lv."+lv+(maxed?" (MAX)":""),F.SansSemi,14,Bone,false,TextAnchor.MiddleLeft,.21f,1f,new Color(0,0,0,.78f),1f);
+   // fg-id: "회복량 cur → next" (+ red "⚠ Lv.N 필요" when the level gate is not met), or "최대 강화" at level 10
+   string line=maxed?p.maxLabel:p.healLabel+" "+cur+" → "+nxt;
+   float lw=Txt(new Rect(tx,r.y+39.4f,620,21.4f),line,F.Sans,12,C(192,179,157));
+   if(!maxed&&!lvOk){float wx=tx+lw+Meas(" ",F.Sans,12);wx+=Spr("warn12:⚠",wx,r.y+39.4f);Txt(new Rect(wx,r.y+39.4f,300,21.4f),"Lv."+req+" "+p.needLabel,F.Sans,12,C(255,68,68));}
+   if(!maxed){
+    Fill(new Rect(tx,r.y+68.8f,620,1),C(137,113,77,.25f));
+    Txt(new Rect(tx,r.y+75.8f,620,19.2f),p.costLabel+" "+cost,F.Sans,12,C(224,201,163));
+    if(AutoPotion.ForgeCanSelect(lv,sim.Player.Level)&&Hit(r)){potionSelected=true;potionSelectedLv=lv;potionSelectedCost=cost;potionNotice=null;}
+   }
   }
 
   // ===== 분해 =====

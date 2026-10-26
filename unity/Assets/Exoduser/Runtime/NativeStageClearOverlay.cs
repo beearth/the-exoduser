@@ -29,6 +29,8 @@ namespace Exoduser.UnityPort {
   Input input;bool active;float start;public float? ForcedAge;public Action OnNext;
   public bool Active{get{return active;}}
   public Kind ShownKind{get{return input.kind;}}
+  // B11: the "물약 N회" stat is G._sStats.potions = AutoPotionState.PotionsUsed (Unity value; null stays 미이식 for callers without a potion state)
+  public static Input WithAutoPotion(Input input,Exoduser.UnityPort.Core.AutoPotionState potion){if(potion!=null)input.potions=potion.PotionsUsed;return input;}
 
   public NativeStageClearOverlay(){
    defs=JsonUtility.FromJson<Defs>(Resources.Load<TextAsset>("Data/stageclear_web").text);

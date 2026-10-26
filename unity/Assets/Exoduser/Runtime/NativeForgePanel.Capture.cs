@@ -59,6 +59,21 @@ namespace Exoduser.UnityPort {
     panel.SelectTab("reroll");panel.SetListScrollForTest(100000);yield return new WaitForSecondsRealtime(.35f);yield return Shot(dir,"unity_forge_reroll_list_bottom");
     panel.SelectTab("craft");panel.SetScrollForTest("craft",100000);yield return new WaitForSecondsRealtime(.35f);yield return Shot(dir,"unity_forge_craft_bottom");
     Check(panel.Scroll("craft")>0,"craft tab scrolls ("+panel.Scroll("craft")+")");
+    // potion tab (B11): the card, the selection bar and the craft click are driven by the real Core state (Simulation.PotionState, Materials, Player.Level)
+    int level0=sim.Player.Level,mats0=sim.Materials;var potion=sim.PotionState;int potLv0=potion.PotLv;
+    panel.SelectTab("potion");sim.Player.Level=1;yield return new WaitForSecondsRealtime(.35f);yield return Shot(dir,"unity_forge_potion_gate");
+    Check(!AutoPotion.ForgeCanSelect(potion.PotLv,sim.Player.Level),"potion card Lv.0 is locked below player level 100");
+    sim.Player.Level=100;panel.SelectPotionForTest(sim);Check(panel.PotionSelected,"potion card Lv.0 selectable at player level 100");
+    yield return new WaitForSecondsRealtime(.35f);yield return Shot(dir,"unity_forge_potion_select");
+    int done=panel.CraftPotionForTest(sim,false);Check(done==1&&potion.PotLv==1&&sim.Materials==mats0-3&&!panel.PotionSelected,"craft once: Lv.0 -> Lv.1 for 3 malice, selection cleared (done "+done+", Lv "+potion.PotLv+", malice "+sim.Materials+")");
+    yield return new WaitForSecondsRealtime(.35f);yield return Shot(dir,"unity_forge_potion_lv1");
+    sim.Player.Level=1000;panel.SelectPotionForTest(sim);int m1=sim.Materials;done=panel.CraftPotionForTest(sim,true);
+    Check(done==10&&potion.PotLv==11&&sim.Materials==m1-50,"Shift/Ctrl craft repeats 10 times with the cost fixed at selection (web quirk: passes level 10): done "+done+", Lv "+potion.PotLv+", malice "+sim.Materials);
+    yield return new WaitForSecondsRealtime(.35f);yield return Shot(dir,"unity_forge_potion_max");
+    potion.PotLv=0;sim.Player.Level=100;sim.Materials=2;panel.SelectPotionForTest(sim);done=panel.CraftPotionForTest(sim,false);
+    Check(done==0&&panel.PotionNotice!=null&&panel.PotionSelected&&potion.PotLv==0&&sim.Materials==2,"not enough malice: nothing done, notice shown, selection kept");
+    yield return new WaitForSecondsRealtime(.35f);yield return Shot(dir,"unity_forge_potion_short");
+    sim.Player.Level=level0;sim.Materials=mats0;potion.PotLv=potLv0;
     var rec=new CaptureReceipt{passed=failures==0,failures=failures,width=Screen.width,height=Screen.height,checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"forge-capture.json"),JsonUtility.ToJson(rec,true));
     Application.Quit(failures==0?0:2);

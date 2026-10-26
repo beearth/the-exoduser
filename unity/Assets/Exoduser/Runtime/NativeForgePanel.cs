@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort {
   }
   static string Key(string s){return s.Replace("️","");}
   public void SetOpen(bool value){Open=value;dragBar=0;}
-  public void SelectTab(string id){foreach(var t in defs.tabs)if(t.id==id){Tab=id;listScroll=0;return;}}
+  public void SelectTab(string id){foreach(var t in defs.tabs)if(t.id==id){Tab=id;listScroll=0;potionSelected=false;potionNotice=null;return;}}   // web: tab switch clears _forgeSel
   // Web: clicking the already selected equipment chip keeps it; selecting a chip fills the AI row.
   public void SelectChip(string slot){SelectedChip=slot;}
   public void HandleKeys(Action close){if(Input.GetKeyDown(KeyCode.G)||Input.GetKeyDown(KeyCode.Escape))close();}
@@ -216,6 +216,7 @@ namespace Exoduser.UnityPort {
    // panel scrollbar sits in the padding box column x 1404..1414
    ScrollBar(1,new Rect(1404,388.4f,10,570),GridView.height,contentH,ref scroll);
    gridScroll[Tab]=scroll;
+   if(Tab=="potion")DrawPotionConfirm(sim);   // web #forgeConfirm sits below the grid, outside the scroll area
   }
   float ContentHeight(Simulation sim,InventoryState inv){
    switch(Tab){

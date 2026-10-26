@@ -13,6 +13,8 @@
 /Tools/ki-slash-oracle/runs/
 !/Tools/ki-slash-oracle/KiSlashTests.csproj
 !/Tools/ki-slash-oracle/PoiseTests.csproj
+!/Tools/auto-potion-oracle/AutoPotionTests.csproj
+/Tools/auto-potion-oracle/runs/
 !/Tools/feedback-oracle/FeedbackTests.csproj
 /Tools/feedback-oracle/runs/
 !/Tools/hud-oracle/HudTests.csproj
