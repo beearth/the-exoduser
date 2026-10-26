@@ -24,10 +24,11 @@ namespace Exoduser.UnityPort
   // clients and the lobby left open after verification retain all controls.
   public bool AutomatedInput{get;set;}
   public bool OriginalArtDrawn{get;private set;}
+  readonly bool diagnosticPreview=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-diagnostics")>=0;
   float musicBaseGain,bgmRelativeGain=1;
   public void SetBgmPercent(int percent){bgmRelativeGain=Mathf.Clamp(percent,0,100)/60f;if(music!=null)music.volume=musicBaseGain*bgmRelativeGain;}
   void MusicGain(float gain){musicBaseGain=gain;if(music!=null)music.volume=gain*bgmRelativeGain;}
-  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,button;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt,languageInputFence;int languageCursor;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
+  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,captionShadow,ukCaption,ukCaptionShadow,button;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt,languageInputFence;int languageCursor;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
   public void Initialize(Action enterNativeTest){enter=enterNativeTest;if(ready)return;ready=true;movie=new NativeLobbyVideo(transform);movie.SetPlaybackAllowed(focused);music=gameObject.AddComponent<AudioSource>();music.playOnAwake=false;music.loop=true;music.spatialBlend=0;var data=Resources.Load<TextAsset>("Data/lobby_frontend");if(data!=null)subtitles=JsonUtility.FromJson<LobbySubtitleData>(data.text);logo=Art("title_logo");enterArt=Art("enter_art");brand=Art("brand_logo");lobbyPoster=Art("lobby_poster");gatePoster=Art("gate_poster");splashTitle=Art("splash_title");splashBrand=Art("splash_brand");fdgEmblem=Art("fdg_emblem");ancestor=Art("varkan_idle");ancestorFirst=Art("varkan_first");enterButton=Art("lobby_enter");lobbyPanel=Art("lobby_panel");lobbyBanner=Art("lobby_banner");disabledEnter=Art("lobby_enter_disabled");InitializeCharacterStore();}
   Texture2D Art(string path){return Resources.Load<Texture2D>("Art/lobby/"+path);}
   public void Begin(){CancelStartupEntry();CancelCharacterStory();if(!ready)Initialize(null);active=true;WorldEndedNaturally=false;Flow=new LobbyFlow();splash=1;since=0;fdgWatchdog.Reset();StopMusic();movie.Open("fdg_intro.mp4",false,true,false);movie.Volume(1);}
@@ -63,7 +64,9 @@ namespace Exoduser.UnityPort
   }
 
   void OnDestroy(){DestroyStartupPresentationTextures();movie?.Dispose();StopMusic();if(gateShade!=null)Destroy(gateShade);if(invitationShade!=null)Destroy(invitationShade);}
-  void Styles(){if(normal!=null)return;var font=Resources.Load<Font>("Art/fonts/NotoSansKR");normal=new GUIStyle(GUI.skin.label){font=font,fontSize=23,wordWrap=true};normal.normal.textColor=new Color(.82f,.75f,.65f);small=new GUIStyle(normal){fontSize=17};heading=new GUIStyle(normal){fontSize=36,fontStyle=FontStyle.Bold};caption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=50,alignment=TextAnchor.LowerCenter,wordWrap=true};caption.normal.textColor=new Color(.933f,.898f,.835f);button=new GUIStyle(GUI.skin.button){font=font,fontSize=23,padding=new RectOffset(14,14,8,8)};}
+  void Styles(){if(normal!=null)return;var font=Resources.Load<Font>("Art/fonts/NotoSansKR");normal=new GUIStyle(GUI.skin.label){font=font,fontSize=23,wordWrap=true};normal.normal.textColor=new Color(.82f,.75f,.65f);small=new GUIStyle(normal){fontSize=17};heading=new GUIStyle(normal){fontSize=36,fontStyle=FontStyle.Bold};caption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=50,alignment=TextAnchor.LowerCenter,wordWrap=true};caption.normal.textColor=new Color(.933f,.898f,.835f);captionShadow=new GUIStyle(caption);captionShadow.normal.textColor=Color.black;var ukFont=Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");if(ukFont!=null){ukCaption=new GUIStyle(caption){font=ukFont};ukCaptionShadow=new GUIStyle(ukCaption);ukCaptionShadow.normal.textColor=Color.black;}button=new GUIStyle(GUI.skin.button){font=font,fontSize=23,padding=new RectOffset(14,14,8,8)};}
+  GUIStyle CaptionStyleForLanguage(){return Language=="uk"&&ukCaption!=null?ukCaption:caption;}
+  GUIStyle CaptionShadowForLanguage(){return Language=="uk"&&ukCaptionShadow!=null?ukCaptionShadow:captionShadow;}
   public void Draw(){if(!IsBlocking||!ready)return;Styles();var old=GUI.matrix;var tint=GUI.color;bool enabled=GUI.enabled;int priorDepth=GUI.depth;GUI.matrix=Matrix4x4.identity;if(!StartupWorldVisible)Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*fit)/2,(Screen.height-1080*fit)/2,0),Quaternion.identity,new Vector3(fit,fit,1));OriginalArtDrawn=false;CaptionVisible=false;if(!StartupWorldVisible)Fill(new Rect(0,0,1920,1080),Color.black);if(StartupEntryActive)DrawStartupEntry();else if(CharacterStoryActive)DrawCharacterStory();else if(splash==1){if(fdgWatchdog.FallingBack)Image(new Rect(0,0,1920,1080),fdgEmblem);else DrawMovie(new Rect(0,0,1920,1080),fdgEmblem,false);Label(new Rect(0,955,1920,60),K("아무 키나 눌러 계속","Press any key to continue"),small,TextAnchor.MiddleCenter);}else if(splash==2){DrawSplash();if(since>1.2f)Label(new Rect(0,980,1920,48),K("아무 키나 눌러 계속","Press any key to continue"),normal,TextAnchor.MiddleCenter);}else if(Flow.Page==LobbyPage.Lobby)DrawLobby();else{DrawCinematicMovie();if(Flow.Page==LobbyPage.Title||Flow.Page==LobbyPage.Gate)DrawGatePresentation();if(Flow.Page==LobbyPage.WorldIntro)DrawWorldIntro();if(Flow.Page!=LobbyPage.Lobby){DrawCinematicSkip();}}GUI.color=tint;GUI.enabled=enabled;GUI.depth=priorDepth;GUI.matrix=old;}
   void OnGUI(){if(AutomatedInput&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
   string K(string ko,string en){return Language=="ko"?ko:en;}
@@ -76,8 +79,8 @@ namespace Exoduser.UnityPort
   void DrawWorldIntro()
   {
    LobbyStyles();bool popupWasOpen=showLanguages;HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;
-   float h=caption.CalcHeight(new GUIContent(SubtitleText),1612);Rect r=new Rect(154,940-h,1612,h);
-   if(SubtitleText.Length>0){var color=caption.normal.textColor;caption.normal.textColor=Color.black;for(int dx=-2;dx<=2;dx+=2)for(int dy=-2;dy<=2;dy+=2)GUI.Label(new Rect(r.x+dx,r.y+dy,r.width,r.height),SubtitleText,caption);caption.normal.textColor=color;GUI.Label(r,SubtitleText,caption);CaptionVisible=true;}
+   var captionStyle=CaptionStyleForLanguage();var shadowStyle=CaptionShadowForLanguage();float h=captionStyle.CalcHeight(new GUIContent(SubtitleText),1612);Rect r=new Rect(154,940-h,1612,h);
+   if(SubtitleText.Length>0){for(int dx=-2;dx<=2;dx+=2)for(int dy=-2;dy<=2;dy+=2)GUI.Label(new Rect(r.x+dx,r.y+dy,r.width,r.height),SubtitleText,shadowStyle);GUI.Label(r,SubtitleText,captionStyle);CaptionVisible=true;}
    DrawCinematicLanguage();
    GUI.enabled=previousEnabled&&!showLanguages;
    // Source hides worldIntroMix during normal playback; show recovery only when paused/error.
@@ -134,10 +137,12 @@ namespace Exoduser.UnityPort
    GUI.enabled=GUI.enabled&&Characters.SelectedIndex>=0;if(GUI.Button(new Rect(1392,751,496,132),"",GUIStyle.none))EnterSelectedCharacter();GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
    Label(new Rect(1388,897,180,32),K("▶ 시네마틱","▶ Cinematic"),lobbyMicro,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1388,897,180,32),"",GUIStyle.none))ReplayIntro();
    DrawPower(new Rect(1856,895,36,36));if(GUI.Button(new Rect(1856,895,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
-   // Keep the existing disposable preview explicit without covering the cinematic.
-   Rect preview=new Rect(1392,946,480,48);Fill(preview,new Color(.105f,.09f,.095f,.94f));Border(preview,new Color(.4f,.32f,.24f,.7f),1);
-   Label(preview,K("이름 없이 미리보기","Preview without a name"),lobbyText,TextAnchor.MiddleCenter);if(GUI.Button(preview,"",GUIStyle.none)){SelectPreview();EnterNativeTest();}
-   Label(new Rect(1392,1000,480,48),CharacterPersistenceNote(),characterStorageText,TextAnchor.MiddleCenter);
+   // Migration-only entry remains available explicitly to QA without changing the source lobby.
+   if(diagnosticPreview){
+    Rect preview=new Rect(1392,946,480,48);Fill(preview,new Color(.105f,.09f,.095f,.94f));Border(preview,new Color(.4f,.32f,.24f,.7f),1);
+    Label(preview,K("이름 없이 미리보기","Preview without a name"),lobbyText,TextAnchor.MiddleCenter);if(GUI.Button(preview,"",GUIStyle.none)){SelectPreview();EnterNativeTest();}
+    Label(new Rect(1392,1000,480,48),CharacterPersistenceNote(),characterStorageText,TextAnchor.MiddleCenter);
+   }
    GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;
    if(showLanguages){
     // Use IMGUI hit testing so dismissal follows the same scaled coordinates as buttons.
