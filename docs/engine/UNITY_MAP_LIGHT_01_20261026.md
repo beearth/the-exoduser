@@ -1,3 +1,5 @@
+> 2026-10-26 [LIGHT03 CPU 재분석](UNITY_MAP_LIGHT_03_20261026.md): 기존 Unity02의 r470 어둠홀은 원본식과 RGB MAE .353/255로 부합하며 축소/방향/좌표/stamp 오류 근거를 찾지 못했다. 광량 변경0. 타 QA Player61637 실행으로 신규 빌드·캡처·성능은 차단, 수정 완료 아님. 아래02 검수/미인수 이력을 유지한다.
+
 # UNITY-MAP-LIGHT-01 — CH1-1 월드 카메라 조명
 
 상태: **IMPLEMENTED_UNVERIFIED — 02 검수에서 화면 차이·유효 GC 증거 부족**.

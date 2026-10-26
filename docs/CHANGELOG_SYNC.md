@@ -57166,3 +57166,9 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 - 전후900프레임 평균8.389746/8.361290ms(p95 8.672584/8.487210, p99 8.990250/8.902835), cap120/vsync0. 성능 향상 주장0. HUD55/practice5검사 통과.
 - 상태 IMPLEMENTED_UNVERIFIED·VISUAL RETOUCH 유지: 웹 도랑/환경·펫 차이, Release GC counter invalid·raw0의 양성대조 없음으로 매프레임 할당0 미인증. import후 전체mirror는 생성scene/meta차이2회 후 중단.
 - NativeGame.cs 추가hunk0, 로비/오디오/intro-silence/타UnityWIP/일반저장/원번역목록 변경0. 자기 경로만 commit/push 후 정상worktree 제거, 실제SHA와 정리결과는 외부DONE.
+
+
+## 2026-10-26 UNITY-MAP-LIGHT-03 — 어둠홀 CPU 재분석·GPU 차단
+
+- [상세·31개 반경 표](engine/UNITY_MAP_LIGHT_03_20261026.md): 기존 Unity02 AFTER는 원본470 어둠홀 합성과14863바닥픽셀 RGB MAE .353/255로 부합. 반경/좌표 이중절반·destination-out 방향·stamp 오류 근거 없음. 원본 r470/a.86±.03 보존, 생산 코드 수정0.
+- 타 QA Player61637가 살아 있어 새 빌드·캡처·성능 실행0. 기존 비교/크롭은 existing 명칭으로만 재결합, 신규 AFTER03로 사용0. 상태 CPU_ANALYZED_GPU_BLOCKED/미완료·VISUAL RETOUCH, 사용자3Player/저장/타WIP 보존.
