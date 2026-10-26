@@ -547,3 +547,5 @@ A06 고유 ARM64 QA 앱 재사용·신규 빌드0. 실제 일반 시작에서 �
 QA 전용 직접 진입에서 OS Esc/Tab 키 캡처를 검증하고, 캡처 완료 키가 메뉴에 중복 전달되는 결함을 소비 프레임 가드로 수정했다. 같은 표시된 격리 루트의 SFX61·`up=Tab` v2 저장과 재시작 화면 복원 PASS. ARM64 최종 빌드 오류0, 실제 Player 2회, 빌드 2회(첫 실행 발견 결함 수정). 일반 경로 마우스 클릭·좁은 창·청각·패드는 HOLD. [상세](../UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-조작-키-캡처격리-저장-player-후속).
 
 후속 보존 회귀: 같은 앱/코드로 새 표시된 A05 QA 루트에서 SFX35→36·주 키 KeyZ→Tab을 저장하고 재시작했다. `cinSeen:true`, 기존 패드 JSON, 별도 unknown sentinel, 보조 KeyX의 동일값·raw token을 확인했다. 실제 QA Player write/read 각1회, 빌드0. 요청1099px에서 캡처 창1100px·사운드2열이므로 1열/scroll은 HOLD. 사용자 앱3개·일반 설정/로스터를 건드리지 않았다. [표](../UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-a15-저장-시-a05미지원-데이터-보존-회귀).
+
+후속 1098px·라벨 후보 preflight: 고유 QA Player 새 표시 루트에서 1회 실행, 실제 1098px 사운드 1열 첫·끝 카드/고정 footer/휠 뒤 같은 위치 PASS. PC `157e3e8f…` 후보는 62 ID·29 locale 자료만 읽었고 공통373값 감사 외 전체 QA 확정 전 제품 연결0. Mac `NativeGame`/`NativePauseMenu` locale 전달·조회기와 PC 소유 키 목록 hook, IMGUI glyph/RTL 게이트를 기록. 코드/빌드0, 기존 사용자 앱3개 유지. [경계·이미지](../UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).

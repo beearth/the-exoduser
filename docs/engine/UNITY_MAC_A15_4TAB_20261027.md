@@ -67,3 +67,5 @@ PC 원본 `NativeKeyBindList`의 캡처 처리에 소비 프레임 한 필드만
 | 1099px 요청 | write Player에 `-screen-width 1099`를 줬으나 화면 JPEG는 **1100×784**(창 chrome 포함), 사운드 카드는 2열이었다. footer는 보였지만 1열 첫·끝 카드/scroll 상한은 실제 화면에서 볼 수 없었다 | 1열·wheel·scrollmax 0 시각 판정 **HOLD**; OS 창 강제 조정 없음 |
 
 증거는 같은 루트의 `preservation-receipt.json`, `player-write.log`, `player-read.log`, `controls-restored.jpg`, `audio-restored.jpg`, `audio-request-1099.jpg`이다. QA Player 실행은 write/read 각 1회로 종료했고 QA 프로세스는 남기지 않았다. 앞 절의 일반 경로 마우스·청각·미지원 게임 옵션 HOLD는 그대로다. 이 결과는 지원된 A15 설정 저장 경로의 보존 회귀이며 전체 A15 완료 판정은 아니다.
+
+2026-10-27 후속 1098px 단일 실행에서는 실제 JPEG 폭 **1098px**에서 사운드 첫·끝 카드가 1열로 보이고, 휠 1회 전후 위치와 footer가 유지돼 이 폭의 `scrollmax=0` 시각 게이트를 PASS했다. 29언어 라벨 후보 PC 고정 `157e3e8f…`는 62 ID 전체 QA 미확정으로 제품 적용0이며, 현재 Mac 언어/폰트 및 PC 소유 키 목록 hook만 preflight했다. [독립 범위·증거](UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).

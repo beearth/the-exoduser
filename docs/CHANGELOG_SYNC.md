@@ -57246,3 +57246,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-27 Mac A15 조작/저장 QA 후속: 표시된 전용 `_out` 루트에 직접 조작 키 캡처 진입을 추가하고, 캡처된 Esc/Tab의 같은 키가 메뉴로 재전달되는 문제를 소비 프레임 가드로 수정. ARM64 Settings QA 최종 빌드 오류0, 두 Player 실행에서 실제 Esc 취소, Tab 지정, SFX60→61%, v2 JSON 저장과 재시작 복원 PASS. 내용 높이 기준 스크롤 상한으로 변경. 입력 버그 수정 때문에 QA 빌드는 총2회; 일반 경로 마우스 클릭/좁은 창/청각/패드 HOLD. [계약·증거](engine/UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-조작-키-캡처격리-저장-player-후속).
 
 2026-10-27 Mac A15/A05 저장 보존 회귀: 기존 고유 Settings QA Player·새 marker 루트 사용, 빌드/코드 변경0. v2 seed의 `cinSeen:true`, `gpKeyMap` 중첩 패드 JSON, 별도 unknown sentinel, 보조 `up=KeyX`는 실제 SFX35→36·주 `up=KeyZ→Tab` 저장(revision3→5)과 동일 루트 재시작 뒤에도 보존. 요청한 물리 1099px 창은 JPEG1100px·사운드2열이어서 1열/scroll 화면 게이트 HOLD. [영수증·판정](engine/UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-a15-저장-시-a05미지원-데이터-보존-회귀).
+
+2026-10-27 Mac A15 1098px/29언어 preflight: 기존 QA Player 1회에서 실제 1098px 사운드 1열 첫·끝 카드와 고정 footer, 휠 뒤 동일 위치 PASS. PC 고정 `157e3e8f…`의 62 ID·29 locale 후보는 공통373값만 감사되고 원 QA 27 script 누락이 있어 제품 채택0. 현재 Mac boolean ko/en·IMGUI KR 폰트와 PC 소유 키 목록의 최소 hook 경계만 기록했다. 빌드/코드 변경0, 전체 A15·RTL·물리 마우스·청각은 HOLD. [판정](engine/UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).
