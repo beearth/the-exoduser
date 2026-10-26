@@ -50,3 +50,15 @@ Unity 6000.6.7f1 격리 Editor를 `-batchmode -nographics -noUpm -quit`로 한 �
 후보 재실행에서 `UNITY_UI_COMPOSITION_BOUNDS_PASS`를 관측했다. **Composition 단계 PASS**다. 그 다음 `VerifyHudPixels`의 `Native HUD GPU pixel mismatch`로 전체 `PortVerification.Verify`는 다시 exit **2 / FAIL**이었다. GPU 픽셀 실패 원인은 이 변경 범위에서 판정하지 않는다. 앞선 독립 좌표 PASS·Editor 스크립트 컴파일 0오류와 이 전체 Verify FAIL을 구분한다. QA는 Runtime C# 77개 중 기존 A06 HUD 두 파일 외 75개 byte 불변, Player·실클릭·새 시각 캡처 0, Editor lease 해제를 기록했다. Mac A06 실화면은 Mac 별도 영수증이다.
 
 원시 I: 근거: `qa-contract/a06-composition-contract-resolution.md` SHA-256 `DDDE42D4CBE55D463DC7133907FA491F3BF8103B9341F7E3EA74EEB44C5B293E`, 구조화 JSON `3168F0D97269C46592ADE6CDA4A1B5DC176FB40C10DC9529DD8DEAACE54CF365`, 구형 실패 로그 `A3391216C7FD81524225F3A621E86BE4CDCC816E22329ED8AABE10E40D00E723`, 후보 후속 실패 로그 `17930E66CA811D801A8B405433BEDB7F5B109BC342446A7887F30E7666EAD103`. 이번 체크포인트는 Editor QA 계약 후보와 문서만 담는다. GPU 실패를 PASS 처리하거나 Mac 제품에 적용하지 않았다.
+
+## GPU 계측 시도와 미해결 게이트 — 2026-10-27
+
+앞의 전체 `PortVerification.Verify` 후속 GPU 픽셀 실패를 원인 확정 없이 보존한다. 과거 두 실패 실행은 모두 `-nographics` / `Renderer: Null Device`였고, probe 영수증에는 색·투명도 판정 boolean만 있어 실제 RGBA가 없다. Null 렌더러가 유력한 가설이지만 제품 HUD shader·RenderTexture·probe 기대 좌표 중 무엇이 원인인지 현재 분리되지 않았다.
+
+QA는 Runtime 동결 원격 `08af46705af26291d9d5add4904ad82a268142c1`과 E: SHA를 확인한 뒤, 기존 색상 predicate를 유지한 채 장치 정보와 원시 RGBA만 읽는 단회 정상 GPU 검사를 시도했다. `-nographics`를 뺀 Editor는 **AMD Radeon RX 9070 XT**를 초기화했다. 그러나 새 QA 계측의 `Texture2D.GetPixel32()`가 Unity 6000.6.7f1에서 **CS1061**로 컴파일 실패해 Editor exit **1**이었고 `PortVerification.Verify` 및 픽셀 probe까지 도달하지 못했다. **실제 GPU RGBA 0개, GPU probe 판정 UNTESTED**다. 이 컴파일 실패는 QA 계측 오류이며 HUD 제품 오류가 아니다.
+
+QA는 미검증 계측을 제거하고 E: `PortVerification.cs`를 앞서 composition PASS를 얻은 SHA-256 `A3006751B50F07F09C279BCF0359CC86CA7688B916EFCFC831F6DE53A28BF4E7`로 정확히 복구했다. 따라서 이번 체크포인트에는 **Editor 소스 변경이 없다**. 종료 후 Unity 프로세스는 0이지만 E: 프로젝트에 0 byte `Temp/UnityLockfile`이 남았다. 정확한 파일의 비재귀 정리 명령이 자동 승인 검토에서 **`blocked by policy`**로 거부돼 우회·재실행하지 않았다. 잠금이 정상 해소되기 전에는 새 Editor 검사를 완료했다고 할 수 없다.
+
+다음 구분 검사는 lock 해소와 소스 SHA 재고정 뒤 지원되는 `GetPixel()` QA 계측을 사용해 정상 GPU batchmode에서 **한 번** 실제 RGBA와 기존 predicate를 함께 기록하는 것이다. 기대 색·알파 조건을 결과에 맞춰 낮추지 않는다. GPU 장치 초기화 사실을 HUD 픽셀 PASS로 옮기지 않는다. Player·실클릭·물리 GUI는 이번 시도 범위 밖이다.
+
+I: 원시 근거: `qa-contract/a06-gpu-probe-investigation.md` SHA-256 `64A01425944E03B8F0559744BCE3AD176599CF7A3A815242646BD3A7D4C09D21`, 시도 JSON `F57AEF7DCEBB3238B01DE89A94295E9E300ACEF091560FFCAE93229E09E6387C`, Editor 실행 영수증 `98B344434A8B150EF12D01D9ED36ADF7F5722169D2AA5EBF2679D0B9124C5C64`, 로그 `86292246D7447D5ECEE526E4403045B6F4BE08B1AA754EB1C213B40A19988AD9`.
