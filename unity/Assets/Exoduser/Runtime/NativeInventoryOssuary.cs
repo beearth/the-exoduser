@@ -23,9 +23,9 @@ namespace Exoduser.UnityPort {
         // --command line entry used for captures: "--unity-inventory-page ossuary" opens the window on this page.
         static int RequestedPage(){
             var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,"--unity-inventory-page");
-            return i>=0&&i+1<a.Length?(a[i+1]=="ossuary"?PageOssuary:a[i+1]=="crystals"?PageCrystals:PageEquipment):PageEquipment;
+            return i>=0&&i+1<a.Length?(a[i+1]=="ossuary"?PageOssuary:a[i+1]=="crystals"?PageCrystals:a[i+1]=="storage"?PageStorage:PageEquipment):PageEquipment;
         }
-        void OpenPage(){Page=RequestedPage();ossScroll=Vector2.zero;scrollDrag=false;crScroll=0;crScrollDrag=false;crFilter="all";}
+        void OpenPage(){Page=RequestedPage();ossScroll=Vector2.zero;scrollDrag=false;crScroll=0;crScrollDrag=false;crFilter="all";stListScroll=0;}
         // Web _invChangeCategory: switching the page clears the selection.
         void SetPage(int page){
             if(page==Page)return;
