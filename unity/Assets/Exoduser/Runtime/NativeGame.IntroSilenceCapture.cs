@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort
   {
    public string label,stage,url,error,audioOutputMode,expectedVoiceMute;
    public bool prepared,videoPlaying,ended,contractEvaluated,contractMatches,muteMatches,silentOutputMatches,soundOutputObserved;
-   public long firstFrame,lastFrame;public double firstTime,lastTime;
+   public long firstFrame,lastFrame;public double firstTime,lastTime;public int audioTrackCount,controlledAudioTrackCount;
    public float listenerPeak,listenerRms;public IntroAudioProbe voice,music,startupAudio;
   }
   [Serializable] sealed class IntroSilenceReceipt
@@ -45,7 +45,7 @@ namespace Exoduser.UnityPort
     AudioListener.GetOutputData(introSilenceSamples,0);foreach(float x in introSilenceSamples){s.listenerPeak=Mathf.Max(s.listenerPeak,Mathf.Abs(x));sum+=x*x;count++;}yield return null;
    }
    s.voice=voice;s.music=music;s.startupAudio=startup;s.listenerRms=count==0?0:Mathf.Sqrt(sum/count);
-   s.lastFrame=movie==null?-1:movie.Frame;s.lastTime=movie==null?0:movie.Time;s.error=movie==null?"Missing decoder":movie.Error;s.prepared=movie!=null&&movie.Prepared;s.ended=movie!=null&&movie.Ended;s.videoPlaying=p!=null&&p.isPlaying;s.audioOutputMode=p==null?"":p.audioOutputMode.ToString();
+   s.lastFrame=movie==null?-1:movie.Frame;s.lastTime=movie==null?0:movie.Time;s.error=movie==null?"Missing decoder":movie.Error;s.prepared=movie!=null&&movie.Prepared;s.ended=movie!=null&&movie.Ended;s.videoPlaying=p!=null&&p.isPlaying;s.audioOutputMode=p==null?"":p.audioOutputMode.ToString();s.audioTrackCount=p==null?-1:p.audioTrackCount;s.controlledAudioTrackCount=p==null?-1:p.controlledAudioTrackCount;
    s.contractEvaluated=expectedMute=="true"||expectedMute=="false";s.muteMatches=!s.contractEvaluated||voice.exists&&voice.mute==(expectedMute=="true");
    bool silentStage=label.StartsWith("fdg-",StringComparison.Ordinal)||label.StartsWith("splash-title-",StringComparison.Ordinal)||label=="title-intro-frozen";
    s.silentOutputMatches=s.audioOutputMode=="AudioSource"&&!music.wasPlaying&&!startup.wasPlaying&&s.listenerPeak<=.0001f&&s.listenerRms<=.00001f;
