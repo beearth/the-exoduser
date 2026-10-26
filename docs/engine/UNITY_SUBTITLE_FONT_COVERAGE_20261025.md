@@ -83,3 +83,65 @@ NativeLobby의 현재 font를 유지한 상태에서 FR 악센트 및 UK/JA/TH/A
 | 코드 정적 검증 | Unity 6000.6.7f1 C#9/Roslyn4.10 기존 Runtime+Editor 76소스 컴파일 오류 0; 스타일 선택 분기·높이/그리기 동일 스타일·`uk→ko` 원본 객체 반환 정적 확인 |
 
 새 Unity Player 실행·실제 glyph 픽셀·폰트 import·런타임 객체 동일성은 아직 검증하지 않았다. 기존 29언어 전체의 shaping/RTL 판정도 유지한다. `uk→ko` 동일 객체는 소스 선택식으로 확인한 계약이며 Player 관측 결과로 승격하지 않는다.
+
+
+## 2026-10-26 Noto Serif 20-language connection candidate
+
+# Unity 세계관 자막 글꼴 보완 후보 — 2026-10-26
+
+상태: PC 격리 프로젝트 `E:/exoduser-runtime/codex-ui-resume-20261026/unity`의 `NativeLobby.cs` 자막 스타일 선택 블록에 연결한 후보. Unity 컴파일·Player 실제 렌더·Mac 인수 전이다. 제품 저장소 문서 반영 시 이 내용을 `docs/engine/UNITY_SUBTITLE_FONT_COVERAGE_20261025.md`의 후속 절로 통합한다.
+
+## 입력과 판정
+
+- 데이터: `Resources/Data/lobby_frontend.json` SHA-256 `32202897B58D1A1C29E149AFAFF8B32E9490633A1AE8B2C7350092AC28235562` — 29언어 × 32큐.
+- 현행 글꼴: `NanumMyeongjo-Regular.ttf` SHA-256 `7ED9E8653A8ED04285D51DC343FFEA6EB3D9C73AFC27383EA8929EE4FFD03205`.
+- 기존 우크라이나어용 글꼴 재사용: `NativeCaptionNotoSerif.ttf` SHA-256 `4D8E6761424656867019081A1A01336F3CB086982682698714054FC33F782713`; `.meta` SHA-256 `040EFCD46972534B4ECB10A2A1CEFD8748D4E540103F9ABC30C249141C0E68E2`.
+- `caption-font-cmap-audit.py`가 두 TTF의 Unicode cmap 형식 4·12를 읽어 각 언어 32큐의 공백·제어문자 외 모든 보이는 코드포인트를 대조했다. 전체 문자와 누락 목록은 `caption-font-plan.json`에 있다. cmap coverage는 실제 글자 조형·결합·줄바꿈·시각 품질의 증명이 아니다.
+- `fontTools`는 현지 Python에 없어서 설치 없이 표준 TTF cmap 파서를 사용했다. 이전 `UNITY_SUBTITLE_FONT_COVERAGE_20261025.md`의 Nanum 누락 수와 29언어 모두 일치했다.
+
+| 코드 | Nanum 누락 고유 문자 | Noto 누락 고유 문자 | 연결 |
+|---|---:|---:|---|
+| ko | 0 | 155 | 현행 유지 |
+| en | 0 | 0 | 현행 유지 |
+| zh | 167 | 170 | 미해결 |
+| zht | 167 | 170 | 미해결 |
+| ja | 149 | 151 | 미해결 |
+| es | 6 | 0 | Noto Serif |
+| fr | 6 | 0 | Noto Serif |
+| de | 3 | 0 | Noto Serif |
+| ptbr | 10 | 0 | Noto Serif |
+| it | 3 | 0 | Noto Serif |
+| ru | 41 | 0 | Noto Serif |
+| uk | 42 | 0 | Noto Serif, 기존 유지 |
+| pl | 7 | 0 | Noto Serif |
+| cs | 13 | 0 | Noto Serif |
+| hu | 10 | 0 | Noto Serif |
+| ro | 6 | 0 | Noto Serif |
+| bg | 35 | 0 | Noto Serif |
+| el | 44 | 0 | Noto Serif |
+| tr | 9 | 0 | Noto Serif |
+| vi | 50 | 0 | Noto Serif |
+| th | 49 | 49 | 미해결 |
+| id | 0 | 0 | 현행 유지 |
+| ar | 37 | 37 | 미해결, RTL 별도 |
+| sv | 3 | 0 | Noto Serif |
+| da | 2 | 0 | Noto Serif |
+| no | 3 | 0 | Noto Serif |
+| fi | 2 | 0 | Noto Serif |
+| nl | 1 | 0 | Noto Serif |
+| ms | 0 | 0 | 현행 유지 |
+
+## 코드 계약과 남은 검수
+
+`NativeLobby.UseNotoCaptionForLanguage`는 위 20개 정확한 소문자 코드에만 true다. `SetLanguage`의 기존 `LobbyLanguage.Normalize` 경로, 29개 언어 목록 순서, 자막 문구·시각·음향은 변경하지 않았다. `CaptionStyleForLanguage`와 `CaptionShadowForLanguage`가 같은 기존 Noto Serif 글꼴의 한 번 생성된 스타일을 고르고, 높이는 선택된 caption 스타일의 `CalcHeight`를 그대로 쓴다. 글꼴 로드·GUIStyle 생성은 기존 `Styles()`의 1회 초기화만 사용한다. 기본 복귀는 기존 Nanum caption/shadow 스타일이다.
+
+`zh/zht/ja/th/ar`는 이 Noto Serif 한 벌로 32큐를 완전히 표시할 수 없어 연결하지 않았다. 특히 아랍어 RTL, 결합·양방향 배치와 중국어·일본어·태국어 전용 글꼴은 별도 구현/검수 대상이다. 20개 Noto Serif 언어도 실제 720p/1080p caption 렌더, 줄바꿈, 악센트·결합문자, 언어 전환 후 기본 복귀를 Player에서 검수해야 한다. 기존 우크라이나어 720p/1080p 화면 증거는 있으나 이 확장 변경의 빌드 검수 증거는 아니다.
+
+## 문서 검색과 소유권
+
+`G:/exoduser/docs` 전체를 `NanumMyeongjo|NativeCaptionNotoSerif|caption font|cmap`으로 검색한 결과는 Godot/UI 자료 3건이며 이 Unity 변경의 현행 문서는 없었다. PC Unity 문서에서는 `UNITY_SUBTITLE_FONT_COVERAGE_20261025.md`가 직접 관련되며, 기존 6 asset의 정적 coverage를 설명하므로 새 Noto Serif 자산과 이번 20언어 연결을 후속 절로 기록해야 한다. 대상 격리 프로젝트에는 `docs/engine`이 없다. 타 작업자의 PC worktree 문서는 수정하지 않았다.
+
+변경 전 `NativeLobby.cs` byte 백업은 `NativeLobby.before-caption-fallback.cs`다. 적용 범위는 `NativeLobby.cs`의 `CaptionStyleForLanguage`/`CaptionShadowForLanguage` 주변에 정확한 언어 선택 함수 1개를 더한 것뿐이다. 원본 데이터, 두 글꼴, `.meta`, 제품 저장소, Unity 빌드 설정은 그대로다.
+
+
+검수 fixture: `--unity-ui-resume-smoke --qa-caption-coverage -caption-oracle <absolute caption-font-plan.json>`. TTF cmap 오라클로 29언어를 분류하고 24언어의 32큐 고유 글리프 전체를 실제 Unity Font API로 질의한다. 5언어는 UNRESOLVED로 기록한다. Noto Serif 20언어의 대표 큐 720p PNG를 출력한다. 아직 이 변경의 컴파일/실행 결과는 없다. 기존57개 검수의 성공은 변경 전 빌드 결과다.

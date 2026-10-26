@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -23,6 +24,12 @@ public sealed class UiResumeReview : MonoBehaviour
     bool finished;
     bool diagnosticPreview;
     float namedHudTopLeftChangeRatio = -1f;
+    bool captionCoverageRequested;
+    string captionOraclePath = "";
+    readonly List<CaptionCoverageResult> captionCoverage = new List<CaptionCoverageResult>();
+    readonly List<string> unresolvedLanguages = new List<string>();
+    string expectedWorldCode = "", expectedWorldText = "";
+    Font expectedWorldFont;
     string ukCue = "";
     string ukText = "";
     string koText = "";
@@ -30,10 +37,26 @@ public sealed class UiResumeReview : MonoBehaviour
     [Serializable] sealed class Receipt
     {
         public string scope, output, error, ukCue, ukText, koText;
-        public bool passed, diagnosticPreview;
+        public string captionOraclePath;
+        public bool passed, diagnosticPreview, captionCoverageRequested;
         public float namedHudTopLeftChangeRatio;
         public int failures;
-        public string[] checks, images;
+        public string[] checks, images, unresolvedLanguages;
+        public CaptionCoverageResult[] captionCoverage;
+    }
+    [Serializable] sealed class CaptionOracle { public int languageCount; public CaptionOracleRow[] rows; }
+    [Serializable] sealed class CaptionOracleRow
+    {
+        public string code;
+        public int cueCount, visibleCodePoints;
+        public string[] nanumMissing, notoMissing;
+        public bool notoFallbackEligible;
+    }
+    [Serializable] sealed class CaptionCoverageResult
+    {
+        public string code, status, fontName, cueText, missingCharacters;
+        public int visibleCharacterCount, missingCharacterCount;
+        public bool expectedNoto, captionDrawn, shadowFontMatches;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -133,6 +156,8 @@ public sealed class UiResumeReview : MonoBehaviour
         var receipt = new Receipt {
             scope = "Controlled verification Player callbacks and screenshots only. No OS mouse or keyboard click proof, no natural-play or production-save claim.",
             output = output, error = error, ukCue = ukCue, ukText = ukText, koText = koText,
+            captionOraclePath = captionOraclePath, captionCoverageRequested = captionCoverageRequested,
+            captionCoverage = captionCoverage.ToArray(), unresolvedLanguages = unresolvedLanguages.ToArray(),
             passed = failures == 0 && error.Length == 0, diagnosticPreview = diagnosticPreview,
             namedHudTopLeftChangeRatio = namedHudTopLeftChangeRatio,
             failures = failures, checks = checks.ToArray(), images = images.ToArray()
@@ -150,7 +175,7 @@ public sealed class UiResumeReview : MonoBehaviour
         Application.Quit(failures == 0 && error.Length == 0 ? 0 : 2);
     }
 
-    IEnumerator Until(Func<bool> ready, string label, float seconds)
+    IEnumerator Until(Func<bool> ready, string label, float seconds, bool recordSuccess = true)
     {
         float deadline = Time.realtimeSinceStartup + seconds;
         while (!ready() && Time.realtimeSinceStartup < deadline)
@@ -159,7 +184,7 @@ public sealed class UiResumeReview : MonoBehaviour
             yield return null;
         }
         if (!ready()) throw new TimeoutException(label + " after " + seconds + " seconds");
-        Check(true, label);
+        if (recordSuccess) Check(true, label);
     }
     IEnumerator Capture(string name, int width, int height)
     {
@@ -169,7 +194,7 @@ public sealed class UiResumeReview : MonoBehaviour
         Check(Screen.width == width && Screen.height == height, name + " resolution");
         if (Screen.width != width || Screen.height != height) throw new InvalidOperationException(name + " resolution unavailable");
         if (name.StartsWith("world-", StringComparison.Ordinal))
-            yield return Until(() => WorldCaptionReady() && WorldTextureHasContent(),
+            yield return Until(() => WorldCaptionReady(expectedWorldCode, expectedWorldText, expectedWorldFont) && WorldTextureHasContent(),
                 name + " actual caption and decoded video frame", 8f);
         string path = Path.Combine(output, name + ".png");
         if (File.Exists(path)) throw new IOException("Refusing to overwrite existing QA image: " + path);
@@ -177,7 +202,11 @@ public sealed class UiResumeReview : MonoBehaviour
         ScreenCapture.CaptureScreenshot(path);
         yield return Until(() => PngFinished(path), name + " complete closed PNG", 5f);
         if (name.StartsWith("world-", StringComparison.Ordinal))
-            Check(WorldPngHasContent(path), name + " nonblack world PNG");
+        {
+            bool hasContent = WorldPngHasContent(path);
+            Check(hasContent, name + " nonblack world PNG");
+            if (!hasContent) throw new InvalidOperationException(name + " is a black world frame");
+        }
         images.Add(path);
     }
     static bool PngFinished(string path)
@@ -197,19 +226,22 @@ public sealed class UiResumeReview : MonoBehaviour
         }
         catch(IOException) { return false; }
     }
-    bool WorldCaptionReady()
+    bool WorldCaptionReady(string code, string cue, Font expectedFont)
     {
         if (lobby == null || lobby.Flow.Page != LobbyPage.WorldIntro || lobby.CurrentVideo == null ||
             !lobby.CurrentVideo.Prepared || lobby.CurrentVideo.Frame < 0 || !lobby.CaptionVisible ||
-            string.IsNullOrEmpty(lobby.SubtitleText)) return false;
+            lobby.Language != code || string.IsNullOrEmpty(lobby.SubtitleText) ||
+            expectedFont == null || !string.IsNullOrEmpty(cue) && lobby.SubtitleText != cue) return false;
         var style = Style("CaptionStyleForLanguage");
         var shadow = Style("CaptionShadowForLanguage");
-        if (style == null || shadow == null || style.font == null || !ReferenceEquals(style.font, shadow.font)) return false;
-        if (lobby.Language == "uk")
-            return ReferenceEquals(style.font, Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif")) && lobby.SubtitleText == ukCue;
-        return lobby.Language == "ko" &&
-            !ReferenceEquals(style.font, Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif")) &&
-            (string.IsNullOrEmpty(koText) || lobby.SubtitleText == koText);
+        return style != null && shadow != null && ReferenceEquals(style.font, expectedFont) &&
+            ReferenceEquals(shadow.font, expectedFont);
+    }
+    void ExpectWorld(string code, string cue, Font font)
+    {
+        expectedWorldCode = code;
+        expectedWorldText = cue;
+        expectedWorldFont = font;
     }
     bool WorldTextureHasContent()
     {
@@ -285,6 +317,113 @@ public sealed class UiResumeReview : MonoBehaviour
         }
     }
 
+    static LobbyCaptionLanguage CaptionLanguage(LobbySubtitleData data, string code)
+    {
+        if (data != null && data.captions != null)
+            foreach (var language in data.captions) if (language.code == code) return language;
+        return null;
+    }
+    static string CueAt(LobbyCaptionLanguage language, double sourceTime)
+    {
+        foreach (var cue in language.cues)
+            if (sourceTime >= cue.start && sourceTime < cue.end) return cue.text;
+        return "";
+    }
+    static string VisibleCharacters(LobbyCaptionLanguage language)
+    {
+        var unique = new SortedSet<char>();
+        foreach (var cue in language.cues)
+            foreach (char ch in cue.text ?? "")
+            {
+                var category = CharUnicodeInfo.GetUnicodeCategory(ch);
+                if (!char.IsWhiteSpace(ch) && category != UnicodeCategory.Control &&
+                    category != UnicodeCategory.Format && category != UnicodeCategory.Surrogate &&
+                    category != UnicodeCategory.PrivateUse && category != UnicodeCategory.OtherNotAssigned)
+                    unique.Add(ch);
+            }
+        var chars = new char[unique.Count];
+        unique.CopyTo(chars);
+        return new string(chars);
+    }
+    IEnumerator VerifyCaptionCoverage(LobbySubtitleData data, Font baseFont, Font notoFont,
+        GUIStyle baseStyle, GUIStyle baseShadow)
+    {
+        captionOraclePath = Argument("-caption-oracle");
+        if (string.IsNullOrWhiteSpace(captionOraclePath) || !Path.IsPathRooted(captionOraclePath) ||
+            !File.Exists(captionOraclePath))
+            throw new ArgumentException("--qa-caption-coverage requires absolute -caption-oracle JSON path");
+        captionOraclePath = Path.GetFullPath(captionOraclePath);
+        var oracle = JsonUtility.FromJson<CaptionOracle>(File.ReadAllText(captionOraclePath));
+        if (oracle == null || oracle.rows == null || oracle.languageCount != 29 || oracle.rows.Length != 29 ||
+            data == null || data.captions == null || data.captions.Length != 29)
+            throw new InvalidOperationException("Caption oracle and runtime data must each contain 29 languages");
+        if (baseFont == null || notoFont == null) throw new InvalidOperationException("Caption font missing");
+        int complete = 0;
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var row in oracle.rows)
+        {
+            if (row == null || string.IsNullOrEmpty(row.code) || !seen.Add(row.code) ||
+                row.nanumMissing == null || row.notoMissing == null || row.cueCount != 32)
+                throw new InvalidOperationException("Invalid caption oracle row");
+            var language = CaptionLanguage(data, row.code);
+            if (language == null || language.cues == null || language.cues.Length != 32)
+                throw new InvalidOperationException("Missing runtime cues for " + row.code);
+            if (row.notoFallbackEligible && (row.nanumMissing.Length == 0 || row.notoMissing.Length != 0))
+                throw new InvalidOperationException("Inconsistent Noto oracle row " + row.code);
+            bool unresolved = !row.notoFallbackEligible && row.nanumMissing.Length > 0;
+            var expectedFont = row.notoFallbackEligible ? notoFont : baseFont;
+            string expectedCue = CueAt(language, lobby.CurrentVideo.Time - NativeLobby.WorldCueOffset);
+            if (string.IsNullOrEmpty(expectedCue)) throw new InvalidOperationException("No paused cue for " + row.code);
+            lobby.SetLanguage(row.code);
+            yield return new WaitForEndOfFrame();
+            yield return Until(() => WorldCaptionReady(row.code, expectedCue, expectedFont),
+                row.code + " actual caption/style ready", 3f, false);
+            var style = Style("CaptionStyleForLanguage");
+            var shadow = Style("CaptionShadowForLanguage");
+            var glyphs = VisibleCharacters(language);
+            if (glyphs.Length != row.visibleCodePoints)
+                throw new InvalidOperationException("Stale caption oracle visible-character count for " + row.code);
+            var missing = new List<char>();
+            foreach (char ch in glyphs)
+            {
+                expectedFont.RequestCharactersInTexture(ch.ToString(), 50, FontStyle.Normal);
+                CharacterInfo info;
+                if (!expectedFont.HasCharacter(ch) || !expectedFont.GetCharacterInfo(ch, out info, 50, FontStyle.Normal))
+                    missing.Add(ch);
+            }
+            var result = new CaptionCoverageResult {
+                code = row.code, fontName = expectedFont.name, cueText = expectedCue,
+                expectedNoto = row.notoFallbackEligible, captionDrawn = lobby.CaptionVisible,
+                shadowFontMatches = ReferenceEquals(style.font, shadow.font),
+                visibleCharacterCount = glyphs.Length, missingCharacterCount = missing.Count,
+                missingCharacters = new string(missing.ToArray()),
+                status = unresolved ? "UNRESOLVED" : missing.Count == 0 ? "COVERED" : "FAIL"
+            };
+            captionCoverage.Add(result);
+            if (unresolved)
+            {
+                unresolvedLanguages.Add(row.code);
+                continue;
+            }
+            bool preservedBase = row.nanumMissing.Length != 0 ||
+                ReferenceEquals(style, baseStyle) && ReferenceEquals(shadow, baseShadow);
+            bool passed = result.status == "COVERED" && result.shadowFontMatches && preservedBase;
+            Check(passed, row.code + " complete 32-cue visible glyphs and selected style: " +
+                result.visibleCharacterCount + " chars, missing=" + result.missingCharacterCount);
+            if (!passed) throw new InvalidOperationException("Supported caption coverage failed for " + row.code);
+            complete++;
+            if (row.notoFallbackEligible)
+            {
+                ExpectWorld(row.code, expectedCue, expectedFont);
+                yield return Capture("world-cover-" + row.code + "-720p", 1280, 720);
+            }
+        }
+        Check(complete == 24 && unresolvedLanguages.Count == 5,
+            "oracle-classified 24 fully covered and 5 UNRESOLVED languages");
+        if (complete != 24 || unresolvedLanguages.Count != 5)
+            throw new InvalidOperationException("Unexpected caption coverage partition");
+    }
+
     IEnumerator Review()
     {
         output = Argument("-output");
@@ -292,6 +431,7 @@ public sealed class UiResumeReview : MonoBehaviour
             throw new ArgumentException("--unity-ui-resume-smoke requires an absolute -output QA directory");
         output = Path.GetFullPath(output);
         Directory.CreateDirectory(output);
+        captionCoverageRequested = Array.IndexOf(Environment.GetCommandLineArgs(), "--qa-caption-coverage") >= 0;
         yield return Until(() => NativeGame.Instance != null, "NativeGame instance", 5f);
         game = NativeGame.Instance;
         lobby = (NativeLobby)Field(game, "lobby");
@@ -337,8 +477,10 @@ public sealed class UiResumeReview : MonoBehaviour
         lobby.CurrentVideo.Pause();
         yield return null;
         yield return null;
+        var sourceCaptionFont = Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");
+        var notoCaptionFont = Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");
         lobby.SetLanguage("ko");
-        yield return Until(() => WorldCaptionReady(), "Korean caption actually drawn before style inspection", 8f);
+        yield return Until(() => WorldCaptionReady("ko", "", sourceCaptionFont), "Korean caption actually drawn before style inspection", 8f);
         var koStyle = Style("CaptionStyleForLanguage");
         var koShadow = Style("CaptionShadowForLanguage");
         Check(koStyle != null && koStyle.font != null, "Korean source caption style initialized");
@@ -347,25 +489,30 @@ public sealed class UiResumeReview : MonoBehaviour
         Check(!string.IsNullOrEmpty(koText), "Korean caption visible at probe time");
 
         lobby.SetLanguage("uk");
-        yield return Until(() => WorldCaptionReady(), "Ukrainian cue and font actually drawn", 8f);
+        yield return Until(() => WorldCaptionReady("uk", ukCue, notoCaptionFont), "Ukrainian cue and font actually drawn", 8f);
         var ukStyle = Style("CaptionStyleForLanguage");
         var ukShadow = Style("CaptionShadowForLanguage");
-        var ukFont = Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");
+        var ukFont = notoCaptionFont;
         Check(ukFont != null && ukStyle != null && ReferenceEquals(ukStyle.font, ukFont), "Ukrainian caption selects dedicated font");
         Check(ukShadow != null && ukStyle != null && ReferenceEquals(ukShadow.font, ukStyle.font), "Ukrainian shadow uses same font");
         if (ukFont == null) throw new InvalidOperationException("Ukrainian caption font missing");
         foreach (char glyph in new[] { 'є', 'і', 'ї' }) Check(Supports(ukFont, glyph), "Ukrainian glyph " + glyph);
         ukText = lobby.SubtitleText;
         Check(!string.IsNullOrEmpty(ukText) && ukText == ukCue, "actual Ukrainian cue after seek");
+        ExpectWorld("uk", ukCue, ukFont);
         yield return Capture("world-uk-720p", 1280, 720);
         yield return Capture("world-uk-1080p", 1920, 1080);
         lobby.SetLanguage("ko");
-        yield return Until(() => WorldCaptionReady(), "Korean cue and source font redrawn", 8f);
+        yield return Until(() => WorldCaptionReady("ko", koText, sourceCaptionFont), "Korean cue and source font redrawn", 8f);
         Check(ReferenceEquals(Style("CaptionStyleForLanguage"), koStyle), "Korean caption restores original style object");
         Check(ReferenceEquals(Style("CaptionShadowForLanguage"), koShadow), "Korean shadow restores original style object");
         Check(!string.IsNullOrEmpty(lobby.SubtitleText), "actual Korean cue after language return");
+        ExpectWorld("ko", koText, sourceCaptionFont);
         yield return Capture("world-ko-720p", 1280, 720);
         yield return Capture("world-ko-1080p", 1920, 1080);
+
+        if (captionCoverageRequested)
+            yield return VerifyCaptionCoverage(subtitles, sourceCaptionFont, notoCaptionFont, koStyle, koShadow);
 
         lobby.ShowLobby();
         yield return null;

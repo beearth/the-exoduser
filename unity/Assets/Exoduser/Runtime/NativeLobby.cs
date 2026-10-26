@@ -66,8 +66,17 @@ namespace Exoduser.UnityPort
 
   void OnDestroy(){DestroyStartupPresentationTextures();movie?.Dispose();StopMusic();if(gateShade!=null)Destroy(gateShade);if(invitationShade!=null)Destroy(invitationShade);}
   void Styles(){if(normal!=null)return;var font=Resources.Load<Font>("Art/fonts/NotoSansKR");normal=new GUIStyle(GUI.skin.label){font=font,fontSize=23,wordWrap=true};normal.normal.textColor=new Color(.82f,.75f,.65f);small=new GUIStyle(normal){fontSize=17};heading=new GUIStyle(normal){fontSize=36,fontStyle=FontStyle.Bold};caption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=50,alignment=TextAnchor.LowerCenter,wordWrap=true};caption.normal.textColor=new Color(.933f,.898f,.835f);captionShadow=new GUIStyle(caption);captionShadow.normal.textColor=Color.black;var ukFont=Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");if(ukFont!=null){ukCaption=new GUIStyle(caption){font=ukFont};ukCaptionShadow=new GUIStyle(ukCaption);ukCaptionShadow.normal.textColor=Color.black;}button=new GUIStyle(GUI.skin.button){font=font,fontSize=23,padding=new RectOffset(14,14,8,8)};}
-  GUIStyle CaptionStyleForLanguage(){return Language=="uk"&&ukCaption!=null?ukCaption:caption;}
-  GUIStyle CaptionShadowForLanguage(){return Language=="uk"&&ukCaptionShadow!=null?ukCaptionShadow:captionShadow;}
+  // These exact subtitle codes have missing source-font glyphs, while the existing Noto Serif font covers every visible cue character.
+  static bool UseNotoCaptionForLanguage(string code)
+  {
+   switch(code){
+    case "es":case "fr":case "de":case "ptbr":case "it":case "ru":case "uk":case "pl":case "cs":case "hu":
+    case "ro":case "bg":case "el":case "tr":case "vi":case "sv":case "da":case "no":case "fi":case "nl":return true;
+    default:return false;
+   }
+  }
+  GUIStyle CaptionStyleForLanguage(){return UseNotoCaptionForLanguage(Language)&&ukCaption!=null?ukCaption:caption;}
+  GUIStyle CaptionShadowForLanguage(){return UseNotoCaptionForLanguage(Language)&&ukCaptionShadow!=null?ukCaptionShadow:captionShadow;}
   public void Draw(){if(!IsBlocking||!ready)return;Styles();var old=GUI.matrix;var tint=GUI.color;bool enabled=GUI.enabled;int priorDepth=GUI.depth;GUI.matrix=Matrix4x4.identity;if(!StartupWorldVisible)Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*fit)/2,(Screen.height-1080*fit)/2,0),Quaternion.identity,new Vector3(fit,fit,1));OriginalArtDrawn=false;CaptionVisible=false;if(!StartupWorldVisible)Fill(new Rect(0,0,1920,1080),Color.black);if(StartupEntryActive)DrawStartupEntry();else if(CharacterStoryActive)DrawCharacterStory();else if(splash==1){if(fdgWatchdog.FallingBack)Image(new Rect(0,0,1920,1080),fdgEmblem);else DrawMovie(new Rect(0,0,1920,1080),fdgEmblem,false);Label(new Rect(0,955,1920,60),K("아무 키나 눌러 계속","Press any key to continue"),small,TextAnchor.MiddleCenter);}else if(splash==2){DrawSplash();if(since>1.2f)Label(new Rect(0,980,1920,48),K("아무 키나 눌러 계속","Press any key to continue"),normal,TextAnchor.MiddleCenter);}else if(Flow.Page==LobbyPage.Lobby)DrawLobby();else{DrawCinematicMovie();if(Flow.Page==LobbyPage.Title||Flow.Page==LobbyPage.Gate)DrawGatePresentation();if(Flow.Page==LobbyPage.WorldIntro)DrawWorldIntro();if(Flow.Page!=LobbyPage.Lobby){DrawCinematicSkip();}}GUI.color=tint;GUI.enabled=enabled;GUI.depth=priorDepth;GUI.matrix=old;}
   void OnGUI(){if(AutomatedInput&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
   string K(string ko,string en){return Language=="ko"?ko:en;}
