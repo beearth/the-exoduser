@@ -30,6 +30,7 @@ namespace Exoduser.UnityPort
 
         public MapData Map { get; private set; }
         public Camera WorldCamera { get; private set; }
+        public NativePerspectiveWorldPost Post { get; private set; }
         public Vector2 Focus { get; private set; }
         public Vector2 AppliedFocus { get; private set; }
         public bool ClampApplied { get; private set; }
@@ -64,11 +65,14 @@ namespace Exoduser.UnityPort
             WorldCamera.clearFlags = CameraClearFlags.SolidColor; WorldCamera.backgroundColor = BackgroundColor;
             WorldCamera.orthographic = false; WorldCamera.nearClipPlane = Near; WorldCamera.farClipPlane = Far;
             WorldCamera.allowHDR = false; WorldCamera.allowMSAA = false; WorldCamera.depth = 10; WorldCamera.enabled = false;
+            Post = cameraObject.AddComponent<NativePerspectiveWorldPost>();
             ApplyLighting();
+            InitializeOverlay();
             BuildProps();
             BuildMasses();
             BuildPlayerBlob();
             Focus = AppliedFocus = new Vector2(map.startX, map.startY);
+            ApplyOverlayArgument();
         }
 
         Transform Child(string name) { var t = new GameObject(name).transform; t.SetParent(root, false); return t; }
@@ -78,22 +82,40 @@ namespace Exoduser.UnityPort
         public void SetFocus(Vector2 px) { Focus = px; }
 
         // look_3d_variant.gd:8-15 constants. Colours become linear (Godot converts light/ambient colours from sRGB); energy
-        // already includes Godot's x PI which cancels the Lambert 1/PI. Real Directional Lights are kept (shadows off) for stage 2.
+        // already includes Godot's x PI which cancels the Lambert 1/PI. The key Directional Light is the real Unity main light
+        // (stage 2: soft shadow, look_3d_variant.gd:139-159); fill stays a Directional Light without effect on this shader.
+        // Empirical calibration (stage 2): the Godot D capture is brighter than the same constants evaluated by the Lambert model
+        // (per-pixel inversion of D through the modelled fog + brightness/contrast/saturation, regression over ground/billboard regions:
+        // ambient x1.44, key x1.525, fill ~x1; residual rms 3.2/255). The cause inside Godot is not identified. Documented in
+        // UNITY_MAP3D_S2_20261026.md; SetCalibration(false) restores the plain constants.
+        public const float AmbientCalibration = 1.44f, KeyCalibration = 1.525f;
+        public bool Calibrated { get; private set; }
+
         void ApplyLighting()
         {
-            Shader.SetGlobalVector("_L3D_KeyDir", LinearDirection(KeySource));
-            Shader.SetGlobalVector("_L3D_FillDir", LinearDirection(FillSource));
-            Shader.SetGlobalVector("_L3D_KeyCol", Premultiplied(KeyColor, KeyEnergy));
-            Shader.SetGlobalVector("_L3D_FillCol", Premultiplied(FillColor, FillEnergy));
-            Shader.SetGlobalVector("_L3D_Ambient", Premultiplied(AmbientColor, AmbientEnergy));
-            keyLight = MakeLight("NorthWestBoneKey", KeySource, KeyColor, KeyEnergy);
-            fillLight = MakeLight("SoftIronFill", FillSource, FillColor, FillEnergy);
+            keyLight = MakeLight("NorthWestBoneKey", KeySource, KeyColor, KeyEnergy, true);
+            fillLight = MakeLight("SoftIronFill", FillSource, FillColor, FillEnergy, false);
+            SetCalibration(true);
+            BuildStage2Lighting();
         }
 
-        Light MakeLight(string name, Vector3 source, Color color, float energy)
+        public void SetCalibration(bool on)
+        {
+            Calibrated = on;
+            Shader.SetGlobalVector("_L3D_KeyDir", LinearDirection(KeySource));
+            Shader.SetGlobalVector("_L3D_FillDir", LinearDirection(FillSource));
+            Shader.SetGlobalVector("_L3D_KeyCol", Premultiplied(KeyColor, KeyEnergy * (on ? KeyCalibration : 1f)));
+            Shader.SetGlobalVector("_L3D_FillCol", Premultiplied(FillColor, FillEnergy));
+            Shader.SetGlobalVector("_L3D_Ambient", Premultiplied(AmbientColor, AmbientEnergy * (on ? AmbientCalibration : 1f)));
+        }
+
+        Light MakeLight(string name, Vector3 source, Color color, float energy, bool shadows)
         {
             var go = new GameObject(name); go.transform.SetParent(root, false);
-            var light = go.AddComponent<Light>(); light.type = LightType.Directional; light.color = color; light.intensity = energy; light.shadows = LightShadows.None;
+            var light = go.AddComponent<Light>(); light.type = LightType.Directional; light.color = color; light.intensity = energy;
+            light.shadows = shadows ? LightShadows.Soft : LightShadows.None;
+            if (shadows) { light.shadowStrength = ShadowStrength; light.shadowBias = ShadowBias; light.shadowNormalBias = ShadowNormalBias; }
+            else light.cullingMask = 0; // fill is evaluated by the shader constants only
             var toLight = LinearDirection(source);
             go.transform.rotation = Quaternion.LookRotation(-toLight, Vector3.up); // light travels from the source towards the origin
             return light;
@@ -158,6 +180,20 @@ namespace Exoduser.UnityPort
 
         public bool VisibleFootprint(out Rect footprint) { return GroundFootprint(out footprint); }
 
+        // Aim: camera ray against the ground plane y=0 -> simulation px (Godot screen_to_world, native_perspective_view.gd:416-424). `mouse` uses Unity's
+        // bottom-left origin (Input.mousePosition). Returns false when there is no valid hit (Godot: aim becomes zero -> the player keeps its facing, player.gd:154-158).
+        public bool ScreenToGroundPx(Vector2 mouse, out Vector2 px)
+        {
+            float w = WorldCamera.targetTexture != null ? WorldCamera.targetTexture.width : Screen.width, h = WorldCamera.targetTexture != null ? WorldCamera.targetTexture.height : Screen.height;
+            return ScreenToGroundPxTopLeft(new Vector2(mouse.x, h - mouse.y), w, h, out px);
+        }
+
+        public bool ScreenToGroundPxTopLeft(Vector2 screen, float width, float height, out Vector2 px)
+        {
+            double x, y; bool hit = Exoduser.UnityPort.Core.NativePerspectiveWorldMath.ScreenToGround(AppliedFocus.x, AppliedFocus.y, screen.x, screen.y, width, height, 0.0, out x, out y);
+            px = new Vector2((float)x, (float)y); return hit;
+        }
+
         // ---- ground: baked environment chunks as flat quads at y=-1.5 (native_perspective_view.gd:353-358, :260) ----
         sealed class ChunkEntry { public GameObject go; public Texture2D texture; }
         readonly Dictionary<int, ChunkEntry> chunks = new Dictionary<int, ChunkEntry>();
@@ -181,16 +217,17 @@ namespace Exoduser.UnityPort
                 var mesh = FlatQuad(c.x, c.y, c.width, c.height, ChunkY, u0, v0, u1, v1);
                 go.AddComponent<MeshFilter>().sharedMesh = mesh;
                 var renderer = go.AddComponent<MeshRenderer>(); renderer.sharedMaterial = litMaterial;
-                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = false;
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = true; // ground receives the key shadow, never casts
                 var block = new MaterialPropertyBlock(); block.SetTexture("_MainTex", texture); block.SetColor("_Color", Color.white); block.SetFloat("_Cutoff", 0f);
                 renderer.SetPropertyBlock(block);
                 chunks.Add(i, new ChunkEntry { go = go, texture = texture });
+                EnsureOverlay(i);
             }
             List<int> remove = null;
             foreach (var pair in chunks) if (!keep.Contains(pair.Key)) { if (remove == null) remove = new List<int>(); remove.Add(pair.Key); }
             if (remove != null) foreach (int id in remove)
             {
-                var entry = chunks[id]; Destroy(entry.go.GetComponent<MeshFilter>().sharedMesh); Destroy(entry.go); chunks.Remove(id); Resources.UnloadAsset(entry.texture);
+                var entry = chunks[id]; ReleaseOverlay(id); Dispose(entry.go.GetComponent<MeshFilter>().sharedMesh); Dispose(entry.go); chunks.Remove(id); pendingUnload.Add(entry.texture);
             }
         }
 
@@ -206,12 +243,31 @@ namespace Exoduser.UnityPort
             return mesh;
         }
 
+        // Texture unloads are deferred by one frame: a chunk that streams out and back in within the same frame must not lose the texture a
+        // pending-destroy renderer still points at (seen as a black ground block when Prime() jumped between foci inside one frame).
+        readonly List<Texture2D> pendingUnload = new List<Texture2D>();
+        public void FlushUnloads()
+        {
+            for (int i = 0; i < pendingUnload.Count; i++)
+            {
+                var t = pendingUnload[i]; if (t == null) continue;
+                bool inUse = false; foreach (var e in chunks.Values) if (e.texture == t) { inUse = true; break; }
+                if (!inUse) Resources.UnloadAsset(t);
+            }
+            pendingUnload.Clear();
+        }
+
+        // Destroy() is a no-op in edit mode (Editor batch renders); DestroyImmediate there.
+        static void Dispose(UnityEngine.Object o) { if (o == null) return; if (Application.isPlaying) Destroy(o); else DestroyImmediate(o); }
+
         int streamCell = int.MinValue;
         void LateUpdate()
         {
             if (WorldCamera == null || !WorldCamera.enabled) return;
+            FlushUnloads();
             SyncCamera(Focus);
             FaceCamera();
+            UpdateFieldLights();
             int cell = Mathf.FloorToInt(AppliedFocus.x / 40f) * 10007 + Mathf.FloorToInt(AppliedFocus.y / 40f);
             if (cell != streamCell) { streamCell = cell; StreamChunks(); }
         }
@@ -219,7 +275,7 @@ namespace Exoduser.UnityPort
         // One-shot synchronisation used by the capture and by callers that drive the world explicitly.
         public void Prime(Vector2 focus)
         {
-            Focus = focus; SyncCamera(focus); FaceCamera(); StreamChunks();
+            Focus = focus; SyncCamera(focus); FaceCamera(); UpdateFieldLights(); StreamChunks();
         }
 
         public static Texture2D LoadBilinear(string resource)

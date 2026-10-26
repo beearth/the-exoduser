@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
         {
             var go = new GameObject(name); go.transform.SetParent(parent, false);
             var b = new Billboard { go = go, filter = go.AddComponent<MeshFilter>(), renderer = go.AddComponent<MeshRenderer>() };
-            b.renderer.sharedMaterial = litMaterial; b.renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; b.renderer.receiveShadows = false;
+            b.renderer.sharedMaterial = litMaterial; b.renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided; b.renderer.receiveShadows = true; // look_3d_variant.gd:189-193 upright sprites cast DOUBLE_SIDED
             billboards.Add(b); return b;
         }
 
@@ -130,7 +130,7 @@ namespace Exoduser.UnityPort
             mesh.normals = new[] { Vector3.up, Vector3.up, Vector3.up, Vector3.up }; mesh.triangles = new[] { 0, 1, 2, 0, 2, 3 }; mesh.RecalculateBounds();
             go.AddComponent<MeshFilter>().sharedMesh = mesh;
             var renderer = go.AddComponent<MeshRenderer>(); renderer.sharedMaterial = litMaterial;
-            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = false;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = true; // ground sprites do not cast (look_3d_variant.gd:192)
             var block = new MaterialPropertyBlock(); block.SetTexture("_MainTex", texture); block.SetColor("_Color", new Color(1, 1, 1, p.alpha)); block.SetFloat("_Cutoff", 0.1f);
             renderer.SetPropertyBlock(block);
             return go;
@@ -145,7 +145,7 @@ namespace Exoduser.UnityPort
             // foot = P + (0, (47-24)*2.5): "source foot y47 displayed at actor.y+23*visual_scale" (combat.json native_actor_origin)
             float footY = y + (PlayerAnchorY - 24f) * PlayerVisualScale;
             ShowBillboard(playerBillboard, texture, frame * 48, 0, 48, 48, PlayerAnchorX, PlayerAnchorY, PlayerVisualScale, false, Color.white, x, footY);
-            SyncBlob(x, y, radius, charge);
+            SyncBlob(x, y, radius, charge); OverlayPlayer(x, y, radius);
         }
 
         void BuildPlayerBlob()
@@ -193,6 +193,7 @@ namespace Exoduser.UnityPort
         {
             Billboard b;
             if (!enemyBillboards.TryGetValue(id, out b)) { b = MakeBillboard("Enemy " + id, actorRoot); enemyBillboards.Add(id, b); }
+            OverlayEnemy(id, x, y, radius, alive);
             if (!alive) { b.go.SetActive(false); return; }
             var texture = LoadBilinear("Art/enemy/atlas_ch1_8dir_" + EnemyDirections[((direction % 8) + 8) % 8]);
             float size = radius * 7f / 256f;

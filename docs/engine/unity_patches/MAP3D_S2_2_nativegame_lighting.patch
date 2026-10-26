@@ -1,0 +1,13 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.cs b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+index d4cf05b..b1bba66 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+@@ -223,7 +223,7 @@ namespace Exoduser.UnityPort
+         {
+             if(Simulation==null||view==null)return;var p=Simulation.Player;
+             view.transform.position=new Vector3(p.X/100,-p.Y/100,-10);
+-            if(world3d!=null){world3d.SetFocus(new Vector2(p.X,p.Y));world3d.SyncActors(Simulation);}else StreamChunks(p.X,p.Y);
++            if(world3d!=null){world3d.SimulationFrame=Simulation.TickCount;world3d.SetFocus(new Vector2(p.X,p.Y));world3d.SyncActors(Simulation);}else StreamChunks(p.X,p.Y);
+             bool newTick=renderedTick!=Simulation.TickCount;
+             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
+             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;

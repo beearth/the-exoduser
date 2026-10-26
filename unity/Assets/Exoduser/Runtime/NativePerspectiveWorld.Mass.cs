@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort
 
         readonly List<GameObject> massObjects = new List<GameObject>();
         Material massMaterial;
+        int[] massRects; // [x,y,w,h]*292, simulation px (collision_rects), also drawn by the QA overlay
         Texture2D massTexture;
         public float MaxMassHeight { get; private set; }
         public string MassTextureResource { get; private set; }
@@ -35,13 +36,13 @@ namespace Exoduser.UnityPort
             MassTextureResource = data.textureResource;
             massMaterial = new Material(litMaterial) { name = "Look3DLit(mass)" };
             massMaterial.SetTexture("_MainTex", massTexture); massMaterial.SetColor("_Color", Color.white); massMaterial.SetFloat("_Cutoff", 0.1f);
-            MaxMassHeight = data.viewHeight;
+            MaxMassHeight = data.viewHeight; massRects = data.rects;
             for (int i = 0; i < data.count; i++)
             {
                 var go = new GameObject("native_wall_rect_" + i.ToString("0000")); go.transform.SetParent(massRoot, false);
                 go.AddComponent<MeshFilter>().sharedMesh = MassMesh(data.rects[i * 4], data.rects[i * 4 + 1], data.rects[i * 4 + 2], data.rects[i * 4 + 3], data.viewHeight, massTexture.width, massTexture.height);
                 var renderer = go.AddComponent<MeshRenderer>(); renderer.sharedMaterial = massMaterial;
-                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = false; // stage 1: shadows off
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided; renderer.receiveShadows = true; // masses cast DOUBLE_SIDED (look_3d_variant.gd:230-231)
                 massObjects.Add(go);
             }
         }

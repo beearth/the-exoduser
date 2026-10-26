@@ -45,7 +45,9 @@ namespace Exoduser.UnityPort
             public string unityVersion, graphicsDevice, graphicsApi, renderPipeline, colorSpace, qualityLevel;
             public int vSyncCount, targetFrameRate, screenWidth, screenHeight, captureWidth, captureHeight;
             public float focusX, focusY, appliedFocusX, appliedFocusY, cameraFov, cameraNear, cameraFar, cameraX, cameraY, cameraZ, cameraPitchDegrees;
-            public bool clampApplied, passed;
+            public bool clampApplied, passed, shadows, postActive;
+            public float rayCenterErrorPx, rayCornerMaxErrorPx; public int pixelLightCount;
+            public int fieldLights, overlayChunks, shadowCascades; public float shadowDistance, altarFocusAppliedX, altarFocusAppliedY;
             public int loadedChunks, mapChunks, massCount, propCount;
             public float massHeight;
             public string massTexture;
@@ -82,12 +84,17 @@ namespace Exoduser.UnityPort
             // 1920x1080 world render (camera only, the Godot capture also contains its HUD layer).
             var rt = new RenderTexture(1920, 1080, 24, RenderTextureFormat.ARGB32) { antiAliasing = 1 };
             var shown = WorldCamera.targetTexture; WorldCamera.targetTexture = rt;
-            SyncCamera(Focus); FaceCamera(); StreamChunks();
-            WorldCamera.Render();
-            var previous = RenderTexture.active; RenderTexture.active = rt;
-            var image = new Texture2D(1920, 1080, TextureFormat.RGB24, false); image.ReadPixels(new Rect(0, 0, 1920, 1080), 0, 0); image.Apply();
-            RenderTexture.active = previous;
-            string png = Path.Combine(output, "unity-world3d.png"); File.WriteAllBytes(png, image.EncodeToPNG());
+            var image = new Texture2D(1920, 1080, TextureFormat.RGB24, false); var previous = RenderTexture.active;
+            Action<string> save = path =>
+            {
+                WorldCamera.Render();
+                RenderTexture.active = rt; image.ReadPixels(new Rect(0, 0, 1920, 1080), 0, 0); image.Apply(); RenderTexture.active = previous;
+                File.WriteAllBytes(path, image.EncodeToPNG());
+            };
+            FlickerFrameOverride = 0f; // deterministic stills; the live view flickers
+            var start = new Vector2(Map.startX, Map.startY); var altar = new Vector2(5900f, 3900f); // altar = map.json m_c1altar, same focus as the Godot altar cut
+            Prime(start); yield return null; yield return null; FlushUnloads();
+            string png = Path.Combine(output, "unity-world3d.png"); save(png);
             receipt.png = png; receipt.captureWidth = image.width; receipt.captureHeight = image.height;
             var cam = WorldCamera.transform.position;
             receipt.unityVersion = Application.unityVersion; receipt.graphicsDevice = SystemInfo.graphicsDeviceName; receipt.graphicsApi = SystemInfo.graphicsDeviceType.ToString();
@@ -98,21 +105,55 @@ namespace Exoduser.UnityPort
             receipt.cameraFov = WorldCamera.fieldOfView; receipt.cameraNear = WorldCamera.nearClipPlane; receipt.cameraFar = WorldCamera.farClipPlane;
             receipt.cameraX = cam.x; receipt.cameraY = cam.y; receipt.cameraZ = cam.z; receipt.cameraPitchDegrees = WorldCamera.transform.eulerAngles.x;
             receipt.loadedChunks = LoadedChunkCount; receipt.mapChunks = Map.chunks.Length; receipt.massCount = MassCount; receipt.propCount = PropCount; receipt.massHeight = MaxMassHeight; receipt.massTexture = MassTextureResource;
+            receipt.shadows = ShadowsEnabled; receipt.fieldLights = FieldLightCount; receipt.postActive = Post != null && Post.Active; receipt.shadowDistance = QualitySettings.shadowDistance; receipt.shadowCascades = QualitySettings.shadowCascades;
+            // Aim ray: screen centre must land on the camera focus; the four corners are cross-checked against Unity's own camera rays on the y=0 plane.
+            Vector2 centerHit; ScreenToGroundPxTopLeft(new Vector2(960f, 540f), 1920f, 1080f, out centerHit);
+            receipt.rayCenterErrorPx = Vector2.Distance(centerHit, AppliedFocus);
+            float cornerMax = 0f;
+            foreach (var corner in new[] { new Vector2(0, 0), new Vector2(1920, 0), new Vector2(1920, 1080), new Vector2(0, 1080) })
+            {
+                Vector2 mine; bool hit = ScreenToGroundPxTopLeft(corner, 1920f, 1080f, out mine);
+                var ray = WorldCamera.ScreenPointToRay(new Vector3(corner.x, 1080f - corner.y, 0f)); float t = -ray.origin.y / ray.direction.y;
+                var unityHit = ray.origin + ray.direction * t; var expected = new Vector2(unityHit.x, -unityHit.z);
+                cornerMax = Mathf.Max(cornerMax, hit ? Vector2.Distance(mine, expected) : 9999f);
+            }
+            receipt.rayCornerMaxErrorPx = cornerMax; receipt.pixelLightCount = QualitySettings.pixelLightCount;
             Action<bool, string> check = (ok, name) => receipt.checks.Add((ok ? "PASS " : "FAIL ") + name);
+            check(receipt.rayCenterErrorPx <= 1f, "aim ray: screen centre -> focus within 1 px");
+            check(receipt.rayCornerMaxErrorPx <= 1f, "aim ray: four corners equal Unity camera rays on y=0 within 1 px");
             check(receipt.renderPipeline == "Built-in", "Built-in render pipeline (no URP/SRP asset)");
             check(Mathf.Abs(receipt.cameraFov - 2f * Mathf.Atan(1080f / (2f * Distance * Zoom)) * Mathf.Rad2Deg) < 0.01f, "FOV = 2*atan(H/(2*d*zoom)) for H=1080");
             check(MassCount == 292, "292 authored masses");
             check(PropCount == Map.props.Length, "all original props placed");
             check(LoadedChunkCount > 0, "ground chunks streamed");
             check(image.width == 1920 && image.height == 1080, "1920x1080 capture");
+            check(receipt.shadows && receipt.shadowCascades == 4 && Mathf.Abs(receipt.shadowDistance - ShadowDistance) < 0.5f, "key shadow on: 4 cascades, distance 5000");
+            check(receipt.fieldLights == 12, "12 field Point Lights from ch1_lighting.json");
+            check(receipt.postActive, "glow + colour adjustment post pass active");
             // Variant without the authored masses: the Godot LOOK-001 D capture only built 3 of the 51 masses intersecting its view area
             // (_sync_visible_masses caches the camera cell before the corner rays are ready, native_perspective_view.gd:521-531),
-            // so this render is the like-for-like comparison for ground/props/player/lighting.
-            massRoot.gameObject.SetActive(false);
-            WorldCamera.Render();
-            RenderTexture.active = rt; image.ReadPixels(new Rect(0, 0, 1920, 1080), 0, 0); image.Apply(); RenderTexture.active = previous;
-            File.WriteAllBytes(Path.Combine(output, "unity-world3d-nomass.png"), image.EncodeToPNG());
+            // so these renders are the like-for-like comparison for ground/props/player/lighting.
+            massRoot.gameObject.SetActive(false); save(Path.Combine(output, "unity-world3d-nomass.png"));
             massRoot.gameObject.SetActive(true);
+            // Altar cut (Godot altar focus (5900,3900) = m_c1altar).
+            Prime(altar); yield return null; yield return null; FlushUnloads(); save(Path.Combine(output, "unity-world3d-altar.png"));
+            massRoot.gameObject.SetActive(false); save(Path.Combine(output, "unity-world3d-altar-nomass.png")); massRoot.gameObject.SetActive(true);
+            receipt.altarFocusAppliedX = AppliedFocus.x; receipt.altarFocusAppliedY = AppliedFocus.y;
+            // Uncalibrated constants (plain Godot look_3d_variant.gd energies) at START and altar.
+            SetCalibration(false); Prime(start); yield return null; yield return null; FlushUnloads(); save(Path.Combine(output, "unity-world3d-nocalibration.png")); massRoot.gameObject.SetActive(false); save(Path.Combine(output, "unity-world3d-nocalibration-nomass.png")); massRoot.gameObject.SetActive(true);
+            Prime(altar); yield return null; yield return null; FlushUnloads(); save(Path.Combine(output, "unity-world3d-altar-nocalibration.png")); SetCalibration(true);
+            // Lighting ablations at the start focus (shadow off / field lights off) prove the stage-2 terms have a visible effect.
+            Prime(start); yield return null; yield return null; FlushUnloads();
+            SetShadows(false); save(Path.Combine(output, "unity-world3d-noshadow.png")); SetShadows(true);
+            SetFieldLights(false); Prime(altar); yield return null; yield return null; FlushUnloads(); save(Path.Combine(output, "unity-world3d-altar-nofieldlight.png")); SetFieldLights(true);
+            // QA collision overlay (default off) at START and at the altar.
+            SetCollisionOverlay(true);
+            Prime(start); yield return null; yield return null; FlushUnloads(); save(Path.Combine(output, "unity-world3d-collision-start.png"));
+            Prime(altar); yield return null; yield return null; FlushUnloads(); save(Path.Combine(output, "unity-world3d-collision-altar.png"));
+            receipt.overlayChunks = overlays.Count;
+            SetCollisionOverlay(false);
+            check(receipt.overlayChunks > 0 && !CollisionOverlay, "collision overlay built from SourceMap and switched off again");
+            Prime(start); yield return null; yield return null; FlushUnloads(); FlickerFrameOverride = null;
             WorldCamera.targetTexture = shown; rt.Release(); Destroy(rt); Destroy(image);
 
             // Still-scene frame intervals. Window renders every frame to the screen; timestamps at end of frame (frame_post_draw analogue).

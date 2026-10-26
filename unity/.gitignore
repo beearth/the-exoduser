@@ -29,3 +29,6 @@
 !/Tools/stat-parity/StatParityTests.csproj
 /Tools/stat-parity/bin/
 /Tools/stat-parity/obj/
+!/Tools/map3d/ray-tests/RayTests.csproj
+/Tools/map3d/ray-tests/bin/
+/Tools/map3d/ray-tests/obj/
