@@ -37,6 +37,40 @@ namespace Exoduser.UnityPort
             return !Blocked(x-radius,y-radius) && !Blocked(x+radius,y-radius) &&
                    !Blocked(x-radius,y+radius) && !Blocked(x+radius,y+radius);
         }
+        // Source34427-34435 and31724: tile-only rescue, before ordinary AI.
+        // Spawn validation intentionally uses r10; ring_04's actual body is larger.
+        bool WallTile(float x,float y)
+        {
+            int tx=(int)(x/Data.tileSize),ty=(int)(y/Data.tileSize);
+            return tx<0||ty<0||tx>=Data.width||ty>=Data.height||Data.tiles[ty*Data.width+tx]==1;
+        }
+        bool BodyInTileWall(Core.EnemyState e)
+        {
+            return WallTile(e.X,e.Y)||WallTile(e.X-e.Radius,e.Y-e.Radius)||WallTile(e.X+e.Radius,e.Y-e.Radius)||
+                WallTile(e.X-e.Radius,e.Y+e.Radius)||WallTile(e.X+e.Radius,e.Y+e.Radius);
+        }
+        public bool RescueEnemyFromTiles(Core.EnemyState e)
+        {
+            if(!BodyInTileWall(e))return true;
+            for(int ring=1;ring<=5;ring++)for(int direction=0;direction<8;direction++){
+                double angle=direction*Math.PI/4;
+                float x=e.X+(float)(Math.Cos(angle)*Data.tileSize*ring),y=e.Y+(float)(Math.Sin(angle)*Data.tileSize*ring);
+                if(WallTile(x,y))continue;
+                e.X=x;e.Y=y;e.KnockbackX=e.KnockbackY=0;return true;
+            }
+            return false;
+        }
+        public void PushEnemyOutOfTiles(Core.EnemyState e)
+        {
+            if(!BodyInTileWall(e))return;
+            for(float distance=Data.tileSize;distance<=Data.tileSize*5;distance+=Data.tileSize/2f)for(int direction=0;direction<8;direction++){
+                double angle=direction*Math.PI/4;
+                float x=e.X+(float)(Math.Cos(angle)*distance),y=e.Y+(float)(Math.Sin(angle)*distance);
+                if(WallTile(x-e.Radius,y-e.Radius)||WallTile(x+e.Radius,y-e.Radius)||
+                    WallTile(x-e.Radius,y+e.Radius)||WallTile(x+e.Radius,y+e.Radius))continue;
+                e.X=x;e.Y=y;return;
+            }
+        }
         public bool LineOfSight(float x0,float y0,float x1,float y1)
         {
             if(!Finite(x0)||!Finite(y0)||!Finite(x1)||!Finite(y1))return false;

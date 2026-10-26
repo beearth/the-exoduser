@@ -1,5 +1,7 @@
 # Unity 원본 기반 기본 무기·기검참 코어 — 2026-10-24
 
+> 2026-10-26 시작 동일성 후보: [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md). `SpawnOpeningEnemy`는 stage0 링의 원본 magic3%·modifier M29/M30·일반9/매직10 RNG·spawn20tick을 복원한다. 기존 명시적 `SpawnNormalEnemy`의 비정예 fixture 계약은 유지. SourceMap tile-only 구출을 일반 loop/AI 앞에 연결, Curtain900ms는 기존60Hz 펫/전투를 진행한다. Core63/63·최종CPU API compile 오류0, 실제 화면/성능/HUD·practice는 GPU 대기. 전체 AI·정예 공격·드랍/장비 RNG 완료 아님.
+
 사용자 최신 지시에 따라 Godot를 보존하고 Unity도 비교 시험한다. 최종 엔진 선택은 미확정이다. 이 문서는 Unity용 순수 C# 코어의 실제 구현 범위와 검증을 기록한다. Godot 파일, 웹 게임 코드, 세이브는 수정하지 않았다. 초기 license 차단 뒤 부모가 실제 Editor import/compile/asset 검사를 통과했다. Windows Player/시각/수동 플레이는 별도 게이트다. 아래 .NET 검사와 전체 이식 완료를 혼동하지 않는다.
 
 ## 소스와 프로필
@@ -56,7 +58,7 @@ Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.Crea
 | 일반 포이즈 회복 | stun 만료는 `MaxStunned` marker만0으로 하고 포이즈를 최대치로 채우지 않음. hitStun/stunned 조기 return을 지난 eligible update 200회마다 `int(MaxPoise*.15)` 증가, 타이머0. 새 포이즈 피해는 타이머0 | 34451–34456, 38618–38638, 38663–38666, 19978–19979 |
 | 물리 피해 | `int((baseAtk+weaponAtk+enhanceAtk+15)*6)` → `int(raw*.7)+int(5*1.5)`; 반경과 각도 양쪽 판정 | 33360–33364, 37610–37619 |
 | JS 수치 | .7은 C# double로 보존. 장비 없는 표본 raw180×.7은 JS에서125.99999999999999, trunc125+7=132 | 오프라인 Node 수치 확인 |
-| 일반 적 | etype0, 비엘리트·물리 원소 제한. Lv1 stage0 diff5 HP875, 쉴드875, ATK31 | 31127–31186 |
+| 일반 적 | 명시적 SpawnNormalEnemy는 비엘리트 etype0·물리 fixture, Lv1 stage0 diff5 HP875/쉴드875/ATK31. 정상 시작 링은 SpawnOpeningEnemy의 원본 magic3% 분기 포함(HP1751/ATK40/r×1.08/projCd192). 일반9·매직10draw, spawn20tick | 31035–31049,31122–31364 |
 | 적 속도 / 반경 | `(.39+u*.08)*1.5`, `(10+u*2)*2` | 30860, 31139–31141 |
 | 피격 | 쉴드 우선→남는 피해 HP, 중복 사망 방지, 일반 HP 피격 idle 경직8, 넉백 최대15 | 42114–42115, 42345–42385, 42415–42416, 42464–42485 |
 | 사망 보상 | 일반 kill +4악의, 물약 hp/st/mp 1개 카운터, XP `max(5,int(lv*.4))`→`int(/3)` | 43094–43116, 43142 |
@@ -69,7 +71,7 @@ Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.Crea
 
 - 원본 기본 `kiSlash` 발사·수명·일반 etype0 접촉/피해·3타 홀드 기본 경로를 옮겼다. 유니크 예열/충전 추가피해/풀차지 회심/검기 패링·전설 콤보 분노·숙련도·field mob 별도 소비자는 남아 있다. 나머지 스킬, 보호 Q/E 설계는 이번 코드에서 재작성하지 않는다.
 - 원본은 hitstop3/6 요청을 기록하나32586에서 소비 직전0으로 비활성화한다. 임의 freeze는 추가하지 않는다. 화면 shake·slowMo 및 전체 clock은 별도다. 명중광·차지 섬광·5샘플 연결은 [UNITY-FEEDBACK-01](UNITY_FEEDBACK_20261024.md)로 후속하며 실제 Editor/Player 근거를 모델 검사와 구분한다.
-- etype0의 LOS 알림·추적 및 직접 이동 fallback·접촉 타격 부분을 이식했다. 원본 flow field, stuck 우회/텔레포트, 분리력, 벽충돌 추가 피해, 멀리 있는 적의 tier별 scheduler는 남아 있다. 임의 공격 티켓은 추가하지 않는다.
+- etype0의 LOS 알림·추적 및 직접 이동 fallback·접촉 타격 부분을 이식했다. 원본 tile-only center 구출/몸 밀어내기는 START-PARITY-01 후보에 연결했다. flow field, stuck 우회/텔레포트, 분리력, 벽충돌 추가 피해, 멀리 있는 적의 tier별 scheduler는 남아 있다. 임의 공격 티켓은 추가하지 않는다.
 - 원본 일반 원거리 타이머(180–300 초기, 240 cooldown, 60 charge, etype0 range400)는 상태값만 유지한다. 발사체/패링 클래스는 미구현이며 임의 탄으로 치환하지 않는다.
 - 장비 드롭은 `equipment-roll-pending` 요청이다. `mkItem`, affix/implicit 전체 생성, 실제 인벤토리/장착, 위치용 RNG, 유골/결정/돌/그 외 드롭은 남아 있다. 요청을 만들어 놓고 “정상 아이템 획득”이라고 보고하지 않는다.
 - C# 시뮬레이션은 전체 웹 RNG stream replay가 아니다. UNITY-FEEDBACK-01에서 기검참 cast/charge 샘플 RNG를 원본 순서대로 추가했으나, 그 외 presentation RNG·elite factory RNG·미이식 loot factory RNG가 남으므로 같은 seed로 모든 프레임/드롭 동일하다고 주장하지 않는다.

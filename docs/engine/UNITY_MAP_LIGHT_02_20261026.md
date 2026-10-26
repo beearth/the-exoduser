@@ -1,5 +1,7 @@
 # UNITY-MAP-LIGHT-02 — 실제 빌드·화면·성능 검수
 
+> 2026-10-26 시작 동시점 후보 [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md): 아래 통제 웹 이미지와 다른 시점의 frozen Unity 적/펫을 직접 첫 진입 동일성으로 판단하지 않는다. 새 후보는 광원·shader 변경 없이 Curtain900ms/링 구출·생성 순서를 교정. 새 무개입 웹 관측·방사/성능은 GPU 대기, 아래 수치는02 이력으로 유지한다.
+
 > 2026-10-26 후속통합검수 [UNITY-FIELD-VERIFY-01](UNITY_FIELD_VERIFY_01_20261026.md): 조명→해자→펫tip0250d967의실제빌드/화면/HUD·실습/성능완료,전체RETOUCH. 이문서의8.361290ms및펫/해자부재는02당시reference이며후속최종값과구분한다.
 
 

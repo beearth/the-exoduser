@@ -45,10 +45,14 @@ namespace Exoduser.UnityPort.Core
     public sealed class EnemyState
     {
         public int Id, Etype, Hp, MaxHp, Attack, Level;
+        public int Elite, EliteAttackModifier;
         public float X, Y, Radius, Speed, Facing, StateTicks, KnockbackX, KnockbackY;
         public float Shield, MaxShield, HitStun, HurtTicks, LastMoveX, LastMoveY, StuckTicks;
         public float Poise, MaxPoise, Stunned, MaxStunned, PoiseRegenTicks;
         public float ProjectileTicks, ProjectileChargeTicks;
+        public float ProjectileCooldownTicks=240, BossPatternTicks;
+        public float BossOrbitAngle, ErraticAngle;
+        public int SpawnTicks;
         public bool Alive = true, Alerted, HasLastMove;
         public string State = "idle";
     }

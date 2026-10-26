@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
  public sealed partial class NativeGame
  {
   bool frontendEntryInputFence;
+  int startupCurtainTicks;
   readonly Dictionary<SpriteRenderer,bool> startupEnemyRendererVisibility=new Dictionary<SpriteRenderer,bool>();
   void LateUpdate()
   {
@@ -15,7 +17,18 @@ namespace Exoduser.UnityPort
    else if(startupEnemyRendererVisibility.Count>0){foreach(var saved in startupEnemyRendererVisibility)if(saved.Key!=null)saved.Key.enabled=saved.Value;startupEnemyRendererVisibility.Clear();}
   }
   void MaskStartupEnemyRenderer(SpriteRenderer renderer){if(renderer==null)return;if(!startupEnemyRendererVisibility.ContainsKey(renderer))startupEnemyRendererVisibility.Add(renderer,renderer.enabled);renderer.enabled=false;}
-  void PrepareStartupGameplay(){ResetRun();pauseMenu.Reset();menu=false;Running=false;}
+  void PrepareStartupGameplay(){ResetRun();startupCurtainTicks=0;pauseMenu.Reset();menu=false;Running=false;}
+  bool TickStartupCurtain()
+  {
+   // Source63412 opens G.on immediately; only the lesson waits for the900ms
+   // curtain timeout. The lobby still owns the reveal and the input fence.
+   if(lobby==null||!lobby.StartupEntryActive||lobby.StartupCaptureState.Page!=FrontendEntryPage.Curtain)return false;
+   if(practiceScripted||!gameFocused||Simulation==null)return true;
+   TickPets();
+   var p=Simulation.Player;Simulation.Tick(0,0,p.X,p.Y,false,false);
+   startupCurtainTicks++;UpdateViews();
+   return true;
+  }
   void EnterFromLobby()
   {
    if(!lobby.StartupGameplayPrepared)ResetRun();skillInputFence=true;pauseMenu.Reset();menu=false;

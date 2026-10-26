@@ -15,6 +15,16 @@ class Program
   var s=Make();var e=s.SpawnNormalEnemy(40,0);
   Check(e.Hp==875&&Near(e.Shield,875)&&e.Attack==31,"source lv1 etype0 HP875 shield875 attack31");
   Check(Near(e.Speed,.645)&&Near(e.Radius,22),"source .5 random movement/radius");
+  var opening=Make();int openingDraws=0;double[] openingTape={.5,.1,.2,.3,.4,.5,.6,.7,.8};opening.Random01=()=>openingTape[openingDraws++];
+  var openingEnemy=opening.SpawnOpeningEnemy(40,0);
+  Check(openingDraws==9&&openingEnemy.Elite==0&&openingEnemy.Hp==875&&Near(openingEnemy.Speed,.597)&&Near(openingEnemy.Radius,20.8,.00001)&&Near(openingEnemy.StateTicks,45)&&Near(openingEnemy.Facing,Math.PI*.8)&&Near(openingEnemy.ProjectileTicks,240)&&Near(openingEnemy.BossPatternTicks,42)&&Near(openingEnemy.BossOrbitAngle,Math.PI*1.4)&&Near(openingEnemy.ErraticAngle,Math.PI*1.6),"opening ordinary constructor consumes nine source draws including dormant boss orbit and erratic angle");
+  opening=Make();openingDraws=0;double[] eliteTape={.01,.75,.1,.2,.3,.4,.5,.6,.7,.8};opening.Random01=()=>eliteTape[openingDraws++];openingEnemy=opening.SpawnOpeningEnemy(40,0);
+  Check(openingDraws==10&&openingEnemy.Elite==1&&openingEnemy.EliteAttackModifier==30&&openingEnemy.Hp==1751&&openingEnemy.Attack==40&&Near(openingEnemy.Radius,22.464,.00001)&&Near(openingEnemy.ProjectileCooldownTicks,192)&&Near(openingEnemy.ErraticAngle,Math.PI*1.6),"opening magic3percent source roll includes M30 draw and applies multipliers before integer truncation");
+  opening=Make();openingDraws=0;opening.Random01=()=>{openingDraws++;return .5;};opening.CanMove=(x,y,r)=>false;
+  Check(opening.SpawnOpeningEnemy(40,0)==null&&openingDraws==0,"opening rejected position consumes neither elite nor constructor RNG");
+  opening=Make();openingEnemy=opening.SpawnOpeningEnemy(40,0);for(int i=0;i<19;i++)opening.Tick(0,0,100,0,false,false);
+  bool openingFading=openingEnemy.SpawnTicks==1;opening.Tick(0,0,100,0,false,false);
+  Check(openingFading&&openingEnemy.SpawnTicks==0,"opening source20tick spawn fade expires in simulation, independently of render frames");
   s.Tick(0,0,100,0,true,false);Check(s.Player.State=="wSwing"&&Near(s.Player.StateTicks,5)&&Near(s.Player.Stamina,95),"original swing5/cost5 admission");
   s.Tick(0,0,100,0,false,false);Check(Near(e.Shield,875),"no premature hit tick2");
   s.Tick(0,0,100,0,false,false);Check(Near(e.Shield,743)&&e.Hp==875,"original hit on frame3 JS132 damage shield first");
@@ -30,6 +40,14 @@ class Program
   var mapData=JsonSerializer.Deserialize<MapData>(File.ReadAllText(args[1]),new JsonSerializerOptions{IncludeFields=true});var map=new SourceMap(mapData);
   Check(mapData.width==200&&mapData.height==200&&mapData.chunks.Length==64,"original200x200 map/64chunks");
   Check(map.CanMove(4020,7420,15),"original south start is walkable");
+  s=Make();s.Player.X=4020;s.Player.Y=7420;s.CanMove=map.CanMove;e=s.SpawnNormalEnemy(3679.0845f,7829.23f);
+  Check(e!=null&&map.CanMove(e.X,e.Y,10)&&!map.CanMove(e.X,e.Y,e.Radius),"opening ring04 source r10 spawn accepts body intersecting tile wall");
+  s.Config.EnemyAiEnabled=true;s.RescueEnemyFromTiles=map.RescueEnemyFromTiles;s.PushEnemyOutOfTiles=map.PushEnemyOutOfTiles;
+  float ringStartX=e.X,ringStartY=e.Y;s.Tick(0,0,100,0,false,false);
+  Check(e.Alive&&map.CanMove(e.X,e.Y,e.Radius)&&(e.X!=ringStartX||e.Y!=ringStartY),"ordinary enemy tick rescues ring04 before pursuit without changing collision geometry");
+  double ringDistance=Math.Sqrt((e.X-s.Player.X)*(e.X-s.Player.X)+(e.Y-s.Player.Y)*(e.Y-s.Player.Y));
+  for(int i=0;i<53;i++)s.Tick(0,0,100,0,false,false);
+  Check(e.Alive&&Math.Sqrt((e.X-s.Player.X)*(e.X-s.Player.X)+(e.Y-s.Player.Y)*(e.Y-s.Player.Y))<ringDistance,"ring04 continues pursuit through54 ticks rather than remaining stuck");
   Check(mapData.altarMoat!=null&&mapData.altarMoat.hill=="Art/map/altar_moat/hill"&&
    mapData.altarMoat.channel=="Art/map/altar_moat/moat"&&mapData.altarMoat.glow=="Art/map/altar_moat/moatGlow"&&
    mapData.altarMoat.bubble=="Art/map/altar_moat/moatBubble","original altar terrain resources bound");

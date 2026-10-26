@@ -1,5 +1,7 @@
 # Unity 첫 이동·좌클릭 실습 — 2026-10-26
 
+> 2026-10-26 시작 후보: [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md). 레슨 진입 전 Curtain900ms에 원본 전투·펫 clock을 진행한 뒤 Original을 보관한다. 따라서 Original의 clock/무적/적 좌표는 생성0tick과 다르다. Begin/End가 보관한 전체 객체를 변형 없이 복원한다는 아래 계약은 유지하며 Intro의 active 적0/펫 동결도 불변. GPU practice 재검수는 대기.
+
 상태: ROOT 실제 Player·직접입력·새 패널 인수 완료. 새 범위 모델34검사와 scripted runtime5검사 PASS. 전체 전투12·자원8·시스템7 실습 또는 배지 완료가 아니다.
 
 ## 원본과 범위

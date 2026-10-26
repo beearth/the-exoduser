@@ -96,6 +96,7 @@ namespace Exoduser.UnityPort
             kiView?.Reset();impacts?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
             Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
+            Simulation.RescueEnemyFromTiles=Map.RescueEnemyFromTiles;Simulation.PushEnemyOutOfTiles=Map.PushEnemyOutOfTiles;
             inventory.Reset();skills.SetOpen(false);skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
             // World drop item factory and persistent saves remain unimplemented.
@@ -103,12 +104,12 @@ namespace Exoduser.UnityPort
             if(playerView==null)playerView=CreateRenderer("Player");
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
-            // Source63425-63432: original five ordinary0 enemies on580px ring.
+            // Source63425-63432: five etype0 enemies on580px ring, including source elite roll.
             for(int i=0;i<5;i++)
             {
                 double a=Math.PI*2*i/5-Math.PI/2;
                 float x=config.StartX+(float)Math.Cos(a)*580,y=config.StartY+(float)Math.Sin(a)*580;
-                if(SafePoint(ref x,ref y,10))Simulation.SpawnNormalEnemy(x,y);
+                if(SafePoint(ref x,ref y,10))Simulation.SpawnOpeningEnemy(x,y);
             }
             ResetPets();UpdateViews();
         }
@@ -153,6 +154,7 @@ namespace Exoduser.UnityPort
         }
         void FixedUpdate()
         {
+            if(TickStartupCurtain())return;
             if(practiceScripted||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             var p=Simulation.Player;var aim=view.ScreenToWorldPoint(Input.mousePosition);
             float x=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
@@ -221,7 +223,8 @@ namespace Exoduser.UnityPort
                 ev.walk.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_walk_"+enemyDirections[dir],cellX*1024+((int)(ev.distance/128)%4)*256,cellY*256,256,256,new Vector2(.5f,.5f));
                 float size=e.Radius*7/256;ev.body.transform.position=ev.walk.transform.position=Point(e.X,e.Y);ev.body.transform.localScale=ev.walk.transform.localScale=Vector3.one*size;
                 ev.body.sortingOrder=(int)e.Y;ev.walk.sortingOrder=(int)e.Y+1;ev.walk.enabled=e.Alive&&ev.moving;
-                ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f):Color.white;
+                float spawnAlpha=e.SpawnTicks>0?Mathf.Max(0,1-e.SpawnTicks/20f):1;
+                ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f,spawnAlpha):new Color(1,1,1,spawnAlpha);
             }
             kiView?.Update(Simulation);
             impacts?.Update(Simulation.TickCount);

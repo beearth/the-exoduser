@@ -1,3 +1,8 @@
+## 2026-10-26 Unity CH1-1 시작 동일성 UNITY-START-PARITY-01
+
+- 원본 시작 링5/580px 유지, magic3%·일반9/매직10 RNG(비보스의 bossPatT/두 angle도 소비),20tick 등장·타일벽 구출·Curtain900ms의60Hz 전투/펫 진행을 연결. 광원/이리스 수식·맵 geometry 불변.
+- 기존 CoreTests63/63 PASS, Runtime81파일 CPU API compile 최종 오류0/기존경고27. 기존 startup capture에 동시점 적·이리스·PNG·900렌더프레임1회 경로 추가, 새 진단 테스트 파일0. 실제 웹/Unity/GPU/HUD·practice는 대기. [원본 행·표·보호·미인수](engine/UNITY_START_PARITY_01_20261026.md).
+
 ## 2026-10-26 Unity CH1-1 제단 해자 UNITY-MOAT-01
 
 - 기준8fb4072db에서 원본 언덕/해자/glow/bubble PNG4종을 동일 byte 인수해 월드 조명 아래 연결. 기존 hill collision·서쪽다리·배치·40,000타일 보존, NativeGame은 BuildProps1hunk만 추가.

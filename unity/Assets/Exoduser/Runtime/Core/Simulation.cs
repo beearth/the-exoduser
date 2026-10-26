@@ -17,6 +17,8 @@ namespace Exoduser.UnityPort.Core
         public readonly SimulationConfig Config;
         public Func<float, float, float, bool> CanMove;
         public Func<float, float, float, float, bool> HasLineOfSight;
+        public Func<EnemyState, bool> RescueEnemyFromTiles;
+        public Action<EnemyState> PushEnemyOutOfTiles;
         public Func<LootState, bool> IsLootOnScreen;
         public Func<LootState, bool> TryCollectLoot;
         public Func<double> Random01;
@@ -60,21 +62,39 @@ namespace Exoduser.UnityPort.Core
 
         // mkEn 31127-31170: explicitly ordinary etype0, no elite roll or substitution.
         public EnemyState SpawnNormalEnemy(float x, float y)
+        {return SpawnOrdinaryEnemy(x,y,false);}
+
+        // Source63425->mkEn: the opening ring rolls hell0 magic3%, then its
+        // one attack modifier, before speed/radius/state/facing/projectile RNG.
+        public EnemyState SpawnOpeningEnemy(float x,float y)
+        {
+            if(Config.StageIndex!=0)throw new InvalidOperationException("Opening ring requires stage0.");
+            return SpawnOrdinaryEnemy(x,y,true);
+        }
+        EnemyState SpawnOrdinaryEnemy(float x,float y,bool opening)
         {
             if (!Finite(x) || !Finite(y) || !Pass(x, y, 10)) return null;
+            int elite=opening&&NextRandom()<.03?1:0;
+            int modifier=elite>0?(NextRandom()<.5?29:30):0;
             int level = Math.Max(1, Player.Level + (Config.DifficultyIndex - 5) * 100);
             double curve = (level <= 500 ? .4 * level * level * level + 199 * level + 100 : 50000000 * Math.Pow(1.0014, level - 500)) * 2.925;
             double pacing = 1 / (1 + Math.Min(9, Math.Max(0, level - 1)) / 18.0);
-            int hp = (int)Math.Floor(Math.Floor(curve * pacing * Difficulty[Config.DifficultyIndex]) * (1 + Config.StageIndex * .02));
+            int hp = (int)Math.Floor(Math.Floor(curve * pacing * Difficulty[Config.DifficultyIndex] * (elite>0?2:1)) * (1 + Config.StageIndex * .02));
             var enemy = new EnemyState {
                 Id = nextEnemyId++, Etype = 0, X = x, Y = y, Hp = hp, MaxHp = hp,
                 Shield = hp, MaxShield = hp, Poise = hp, MaxPoise = hp, Level = level,
-                Attack = (int)Math.Floor((50 + level * 1.95) * .6 * Difficulty[Config.DifficultyIndex]),
+                Elite=elite,EliteAttackModifier=modifier,SpawnTicks=opening?20:0,
+                Attack = (int)Math.Floor((50 + level * 1.95) * .6 * Difficulty[Config.DifficultyIndex] * (elite>0?1.3:1)),
                 Speed = (float)((.3 * 1.3 + NextRandom() * .08) * 1.5),
-                Radius = (float)((10 + NextRandom() * 2) * 2),
+                Radius = (float)((10 + NextRandom() * 2) * 2 * (elite>0?1.08:1)),
                 StateTicks = (float)(30 + NextRandom() * 50), Facing = (float)(NextRandom() * Math.PI * 2),
-                ProjectileTicks = (float)(180 + NextRandom() * 120)
+                ProjectileTicks = (float)(180 + NextRandom() * 120),ProjectileCooldownTicks=elite>0?192:240
             };
+            if(opening){
+                enemy.BossPatternTicks=(float)(30+NextRandom()*20); // Source31173, even for nonboss etype0.
+                enemy.BossOrbitAngle=(float)(NextRandom()*Math.PI*2); // Source31262, unconditional.
+                enemy.ErraticAngle=(float)(NextRandom()*Math.PI*2); // Source31302, unconditional.
+            }
             Enemies.Add(enemy);
             return enemy;
         }
@@ -145,6 +165,8 @@ namespace Exoduser.UnityPort.Core
             }
             foreach (var enemy in Enemies) {
                 if (!enemy.Alive) continue;
+                if(Config.EnemyAiEnabled&&RescueEnemyFromTiles!=null&&!RescueEnemyFromTiles(enemy)){enemy.Hp=0;enemy.State="dead";KillEnemy(enemy);continue;}
+                if(enemy.SpawnTicks>0)enemy.SpawnTicks--;
                 enemy.HurtTicks = Math.Max(0, enemy.HurtTicks - 1);
                 enemy.HitStun = Math.Max(0, enemy.HitStun - 1);
                 if (enemy.Stunned > 0) {
@@ -308,6 +330,7 @@ namespace Exoduser.UnityPort.Core
 
         private void TickEnemy(EnemyState enemy)
         {
+            PushEnemyOutOfTiles?.Invoke(enemy);
             if (Math.Abs(enemy.KnockbackX) > .1 || Math.Abs(enemy.KnockbackY) > .1) {
                 float x = enemy.X + enemy.KnockbackX, y = enemy.Y + enemy.KnockbackY;
                 if (Pass(x, y, enemy.Radius)) { enemy.X = x; enemy.Y = y; }
@@ -348,7 +371,7 @@ namespace Exoduser.UnityPort.Core
             // Ranged/protected projectile classes are not silently replaced by
             // melee or invented bullets. Preserve their source charge countdown.
             if (enemy.ProjectileChargeTicks > 0) enemy.ProjectileChargeTicks--;
-            else { enemy.ProjectileTicks--; if (enemy.ProjectileTicks <= 0 && d < 400) { enemy.ProjectileTicks = 240; enemy.ProjectileChargeTicks = 60; } }
+            else { enemy.ProjectileTicks--; if (enemy.ProjectileTicks <= 0 && d < 400) { enemy.ProjectileTicks = enemy.ProjectileCooldownTicks; enemy.ProjectileChargeTicks = 60; } }
         }
 
         private void MoveEnemyFallback(EnemyState enemy)

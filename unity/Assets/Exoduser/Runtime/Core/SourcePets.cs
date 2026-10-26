@@ -20,6 +20,7 @@ namespace Exoduser.UnityPort.Core
         public int IrisSize=20;
         public const int IrisGlow=250;
         EnemyState irisTarget;
+        public EnemyState IrisTarget => irisTarget;
         int targetTicks;
         public void Reset(float x,float y,int catPhase)
         {

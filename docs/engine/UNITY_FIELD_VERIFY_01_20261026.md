@@ -1,5 +1,7 @@
 # UNITY-FIELD-VERIFY-01 — Unity 1-1 조명·해자·펫 실제 통합 검수
 
+> 2026-10-26 후속 시작 후보 [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md): 이전 웹 중앙 겹침은 무개입 첫 진입이 아닌 통제된 뒤쪽 프레임. 새 후보는 Curtain 갱신/링 구출/생성 RNG·fade를 교정하며 아래 r20/성능/PNG를 새 결과로 전용하지 않는다. **IMPLEMENTED_UNVERIFIED — GPU 대기**. 원본 광원값 변경0.
+
 상태: **RUNTIME_REVIEWED_RETOUCH**. **VISUAL VERDICT: RETOUCH**. 최종 원격 SHA·정리 영수증은 `~/exoduser-wt/_out/UNITY-FIELD-VERIFY-01/DONE.txt`와 본 문서 최종 표에 기록한다.
 
 기준 tip `0250d967ea4965289f53d58679a0a25d756d691a`, 부모 계보 lighting8fb4072db → moat66d4fd860 → pet0250d967. 지정된 `UNITY-PET-01`만 사용하며 main·PC·기존 사용자 Player 배포는 하지 않는다. 원본 snapshot SHA256 `dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209`.

@@ -1,5 +1,7 @@
 # UNITY Mac — 캐릭터 입장 이야기·최초 안내 연결
 
+> 2026-10-26 최신 시작 시계 후보: [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md). 원본63412의 G.on=true에 맞춰 Curtain900ms 동안 기존60Hz 전투·펫을 진행한다. Guide는 정지, 입력 release fence/Running과 로비 presentation은 유지한다. 아래 이전 후보의 “Simulation900ms 정지”는 과거 동작이며 최신 계약이 아니다. 기존 startup capture에 `-startParity true`를 추가해 실제 ordinary entry callback과 적/타깃/clock/PNG·성능1회를 기록한다. CPU PASS/실제 GPU 검수 대기.
+
 ## ROOT 최종 인수 — 2026-10-25
 
 ROOT 통합 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제 시작 이야기·4쪽 안내·게임 입장 연결의 Player 렌더와 키보드 동선을 확인했다. `Q=/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025`; `Q/startup-capture-9dd5991/startup-capture.json`은20/20·ResetRun 증가1·입력 fence932→933·격리 roster를 확인한다. ROOT는 guide1~4·720/1080·네메시아 gradient·Guide 적 숨김/전환 복원 PNG를 직접 인수했다.
@@ -30,7 +32,7 @@ ROOT 통합 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제 시�
 | 네메시스 | source data의 카메라 zoom/pan/ease·시간기반 shake·multiply 색보정·원형 비네트·대사 타이핑·화자색·자동 무대사컷·마지막1500ms fade. 대사중 클릭/Enter/Z: 전문 표시 후 다음 입력에 다음 컷. Space2000ms/패드B hold, Esc/패드Start 즉시 안내로 전환. 패드A 다음 |
 | BGM | 네메시스 시작400ms 뒤 전용곡 gain.6. 안내 진입 시500ms fade-out 요청에 대응하고600ms 뒤 1장 첫곡 gain.6. 기존 BGM 설정 배율 적용. 첫곡 이후 웹 공통곡 rotation은 이식 범위 밖 |
 | 4컷 안내 | source 대사·표제·키/설명순서. 250ms 다음 debounce. 클릭/Enter/Space/A 다음, Tab 다음↔건너뛰기 focus, Esc/Start 또는 skip 버튼 즉시, Space2000ms hold. 마지막 ‘시작’ → 커튼. 시작 시 voice_wakeup1회(source sample gain1×SFX master², 기본.36) |
-| 안내 종료 전환 | actual DOM의 상·하 curtain은 computed display:none. 검정 커튼을 새로 그리지 않고 기존 world/barrier와 HUD를 드러내며 안내만400ms fade-out,900ms까지 Simulation·입력 차단 |
+| 안내 종료 전환 | actual DOM의 상·하 curtain은 computed display:none. 검정 커튼을 새로 그리지 않고 기존 world/barrier와 HUD를 드러내며 안내만400ms fade-out,900ms까지 입력 차단. START-PARITY-01 후보는 이 구간 원본 전투·펫60Hz 진행 |
 | 실제 native 진입 | 4컷 안내 진입 때 기존 ResetRun1회로 새 run을 준비하고, 커튼 종료 callback은 준비된 run을 재생한다. source 신규5마리/무적/난이도/설정 저장 로직을 추가 이식하거나 중복 실행하지 않음. 모든 입력이 해제될 때까지 Running=false, 이후 기존 native gameplay로 연결 |
 | focus | focus 해제 시 타이머 진행·스킵 hold 중단, 전용 효과음 pause/resume. 원래 영상/BGM focus 수명 유지 |
 | smoke | 기존 `--unity-*-smoke`는 기존 직접 preview 진입 계약 유지. 새 제품 진입 UI의 OS입력 검수로 계산하지 않음 |

@@ -1,5 +1,7 @@
 # Godot 보존 · Unity 비교 시험 — 2026-10-24
 
+> 2026-10-26 CH1-1 시작 후보: [UNITY-START-PARITY-01](UNITY_START_PARITY_01_20261026.md). 링5/580px의 종류0·safePt는 유지하며 실제 몸의 타일벽 구출, magic3% 생성·일반9/매직10draw·20tick 등장과 Curtain900ms 갱신을 교정. 조명값 불변, Core63 PASS/CPU compile 오류0. **IMPLEMENTED_UNVERIFIED — GPU 대기**, 아래 과거 Player 결과를 새 후보 인수로 읽지 않는다.
+
 > 2026-10-26 [UNITY-FIELD-VERIFY-01](UNITY_FIELD_VERIFY_01_20261026.md): 지정pet branch에한해새import/ARM64errors0·해자/펫실화면·필터교정·HUD55/practice5 PASS. 전체RETOUCH,main/PC/기존사용자Player배포0. NativeGame/로비/오디오/intro-silence추가변경0.
 
 
