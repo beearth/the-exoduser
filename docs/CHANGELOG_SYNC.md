@@ -57163,3 +57163,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 ROOT HUD보정 마감: 사용자9dd최종디자인거절반영, 큰불투명판/상시상태바제거·.78/920폭연결HUD·키ghost/문구잘림수정. source7d5200ca6 ARM64오류0,335파일682143647B대조0,새720/1080 idle/charge4PNG 및55/55검사통과. K스킬창확인,OS마우스callback미확인명시. 기존저장/실습보존. [영수증](engine/UNITY_MAC_HUD_BLEND_ACCEPTANCE_20261026.json).
 
 2026-10-26 취침중자율진행기록: 사용자직접지시를프로젝트MD에만기록. 포인터5a933f6에서다른CUA점에도Unity(1100,1344)/Input(1100,-264)고정·hit-1확인,제품hitbox변경0·물리마우스미검증유지. QA모두종료,제품7d5200ca6정상로비PID52157/기존1캐릭터제시·원래38141/48476보존. 기존자동화view만/활성상태미확인/설정변경0. 현행·ROOT마스터의독립승인다음업데이트없음읽기전용확인,보류/새유료/새스케줄확장0.
+
+2026-10-26 Mac 우크라이나어 세계관 자막: 공식 Noto Serif variable upright+OFL을 Resources에 인수하고 `uk`에서만 전용 GUIStyle을 선택. 다른 언어 및 `uk→ko`는 기존 caption 객체, 리소스 누락도 기존 caption으로 복귀. 우크라이나어32큐/53고유문자 cmap 누락0, U+0454/0456/0457 지원, Unity C#9 76소스 정적 컴파일 오류0. 실제 Player 글리프·객체 동일성 시각/런타임 미검증. 상태 표시 문서 20px/16px은 `NativeGame.InitGUI`와 이미 일치해 보존. [계약·출처](engine/UNITY_SUBTITLE_FONT_COVERAGE_20261025.md#2026-10-26-우크라이나어-자막-전용-글꼴-인수).

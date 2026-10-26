@@ -67,3 +67,19 @@ NativeLobby의 현재 font를 유지한 상태에서 FR 악센트 및 UK/JA/TH/A
 반복 검수 없이 기존정적결과를 참조하는 재현 스크립트 `audit-subtitle-fonts.py`, 언어/폰트별 정확 문자와 영향큐 matrix `subtitle-font-coverage.json`을 함께 제출한다. 코드 작성 후 `docs/` 전체를 `NanumMyeongjo|Noto Serif|자막.*폰트|자막.*글꼴|cmap`으로 grep 검색한 목록은 `docs-matches.txt`에 보존했다. 현재 Unity 현황은 인수 담당이 해당 로비/시네마틱 문서·작업 보드와 정상 checkpoint에 연결한다.
 
 **판정: STATIC COVERAGE ONLY / 렌더·폰트 대체·복합문자·RTL 인수 미완료.**
+
+## 2026-10-26 우크라이나어 자막 전용 글꼴 인수
+
+위 표와 판정은 **변경 전 기존 6개 폰트**의 감사 결과다. 현재 `NativeLobby.Styles`는 기본 `caption`을 그대로 만들고, `Art/fonts/NativeCaptionNotoSerif`를 한 번 로드해 성공한 경우에만 우크라이나어 전용 스타일과 그림자 스타일을 별도로 만든다. `Language == "uk"`일 때만 전용 스타일을 선택하고, 한국어 등 다른 언어와 리소스 누락 시 원래 `caption` 객체로 돌아간다. `CalcHeight`와 본문 `GUI.Label`은 같은 선택 스타일을 쓴다. 그림자 색 변경을 위해 본문 스타일을 수정하지 않는다.
+
+| 항목 | 인수 값·적용 위치 |
+|---|---|
+| 언어·자막 | `uk` 세계관 본문 32큐만 전용 serif. 문구·cue start/end·영상·음향·선택 순서 변경 없음 |
+| 기본/복귀 | `ko` 포함 나머지 언어는 기존 `NanumMyeongjo-Regular`의 동일 `caption` 객체, 50px/LowerCenter/wordWrap 유지 |
+| 신규 자산 | `Resources/Art/fonts/NativeCaptionNotoSerif.ttf` (Google Fonts Noto Serif variable upright), 1,887,192 bytes, SHA256 `4d8e6761424656867019081a1a01336f3cb086982682698714054fc33f782713` |
+| 라이선스 | 같은 폴더 `NativeCaptionNotoSerif-OFL.txt`, SIL OFL 1.1, SHA256 `cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a` |
+| 공식 출처 | [google/fonts Noto Serif 원본](https://github.com/google/fonts/blob/49af86b54514f1390e126f3139ced33824f5d72e/ofl/notoserif/NotoSerif%5Bwdth%2Cwght%5D.ttf), [OFL](https://github.com/google/fonts/blob/6a23d718de1dbb1be9532aebf9c6ce335070e2ea/ofl/notoserif/OFL.txt) |
+| cmap 정적 검증 | `є` U+0454, `і` U+0456, `ї` U+0457 모두 존재; 현재 `lobby_frontend.json`의 `uk` 32큐에서 공백 외 고유 53문자 누락 0 |
+| 코드 정적 검증 | Unity 6000.6.7f1 C#9/Roslyn4.10 기존 Runtime+Editor 76소스 컴파일 오류 0; 스타일 선택 분기·높이/그리기 동일 스타일·`uk→ko` 원본 객체 반환 정적 확인 |
+
+새 Unity Player 실행·실제 glyph 픽셀·폰트 import·런타임 객체 동일성은 아직 검증하지 않았다. 기존 29언어 전체의 shaping/RTL 판정도 유지한다. `uk→ko` 동일 객체는 소스 선택식으로 확인한 계약이며 Player 관측 결과로 승격하지 않는다.
