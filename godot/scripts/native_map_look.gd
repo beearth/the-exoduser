@@ -43,6 +43,7 @@ var _embers: CPUParticles2D
 var _styled_chunks: Dictionary = {}
 var _styled_props := 0
 var _prop_shadows := 0
+var _ground_masses := 0
 var _foreground: Array = []   # {node, anchor, size}
 var _boundary_polygon := PackedVector2Array()
 var _sync_left := 0.0
@@ -111,6 +112,8 @@ func configure(owner_main: Node, screen_lighting: Node) -> bool:
 	add_child(_ambient)
 	if is_instance_valid(_screen_lighting) and _screen_lighting.has_method("set_native_lightmap_enabled"):
 		_screen_lighting.set_native_lightmap_enabled(false)
+	if is_instance_valid(_screen_lighting) and _screen_lighting.has_method("set_native_map_look_shadow_gamma"):
+		_screen_lighting.set_native_map_look_shadow_gamma(float(_data.get("shadow_gamma", 1.0)))
 	# 2) 플레이어 광원(따라다님) + 오브젝트 광원.
 	var pl: Dictionary = _data.get("player_light", {})
 	_player_light = _make_light("player_light", pl)
@@ -118,6 +121,7 @@ func configure(owner_main: Node, screen_lighting: Node) -> bool:
 	_mount_object_lights()
 	# 3) 그림 요철·흔들림 재질, 4) 나무 밑동 그림자.
 	_style_props()
+	_mount_ground_masses()
 	_mount_prop_shadows()
 	_mount_occluders()
 	_mount_foreground()
@@ -266,6 +270,41 @@ func _style_chunks() -> void:
 		if sprite.texture != null and str(sprite.texture.resource_path).begins_with(CHUNK_DIR):
 			sprite.material = _chunk_material
 			_styled_chunks[key] = true
+
+
+# 큰 생체 바닥은 충돌 없는 표시 레이어로 원본 청크와 소품 사이에 둔다.
+# 가장자리만 흐려 기존 바닥과 연결하고 중앙의 전투 공간은 비운다.
+func _mount_ground_masses() -> void:
+	var shader := Shader.new()
+	shader.code = """
+shader_type canvas_item;
+void fragment() {
+	float edge = min(min(UV.x, 1.0 - UV.x), min(UV.y, 1.0 - UV.y));
+	COLOR.a *= smoothstep(0.02, 0.13, edge);
+}
+"""
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	for spec in _data.get("ground_masses", []):
+		var path: String = str(spec.get("texture", ""))
+		if not ResourceLoader.exists(path):
+			continue
+		var texture: Texture2D = load(path)
+		var at: Array = spec.get("position", [])
+		var size: Array = spec.get("size", [])
+		if texture == null or at.size() != 2 or size.size() != 2:
+			continue
+		var sprite := Sprite2D.new()
+		sprite.name = "GroundMass_" + str(_ground_masses)
+		sprite.texture = texture
+		sprite.position = Vector2(float(at[0]), float(at[1]))
+		sprite.scale = Vector2(float(size[0]), float(size[1])) / texture.get_size()
+		sprite.modulate.a = clampf(float(spec.get("alpha", 1.0)), 0.0, 1.0)
+		sprite.z_as_relative = false
+		sprite.z_index = -2750
+		sprite.material = material
+		add_child(sprite)
+		_ground_masses += 1
 
 
 # ── 입체감: 소품 투사 그림자(월드 광원 북서 → 그림자 남동, MAP-012) ───────────
@@ -704,7 +743,7 @@ static func _make_radial_texture(size: int, offsets: Array, alphas: Array) -> Te
 func get_native_map_look_snapshot() -> Dictionary:
 	return {"active": active, "reason": _reason, "lights": _lights.size(),
 		"spawn_hole_lights": _hole_lights.size(), "occluders": _occluders.size(),
-		"styled_props": _styled_props, "prop_shadows": _prop_shadows, "foreground": _foreground.size(), "styled_chunks": _styled_chunks.size(),
+		"styled_props": _styled_props, "prop_shadows": _prop_shadows, "ground_masses": _ground_masses, "foreground": _foreground.size(), "styled_chunks": _styled_chunks.size(),
 		"ambient": [_ambient.color.r, _ambient.color.g, _ambient.color.b] if is_instance_valid(_ambient) else [],
 		"light_shafts": _shafts.size(), "modules": _modules.keys(), "fx_lights": _fx_light_count, "region_ambient": _region_ambient.size(), "spores": is_instance_valid(_spores), "embers": is_instance_valid(_embers),
 		"lightmap_overlay_enabled": _screen_lighting.call("is_native_lightmap_enabled") \

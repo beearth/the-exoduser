@@ -141,11 +141,13 @@ void fragment() {
 const FILTER_SHADER := "
 shader_type canvas_item;
 uniform sampler2D screen_tex : hint_screen_texture, filter_nearest;
+uniform float shadow_gamma = 1.0;
 void fragment() {
 	// 55414~55419: OPT.grain=true → canvas.style.filter 'contrast(1.05) brightness(0.97)'
 	vec4 c = texture(screen_tex, SCREEN_UV);
 	c.rgb = (c.rgb - 0.5) * 1.05 + 0.5;
 	c.rgb *= 0.97;
+	c.rgb = pow(clamp(c.rgb, 0.0, 1.0), vec3(shadow_gamma));
 	COLOR = vec4(clamp(c.rgb, 0.0, 1.0), 1.0);
 }
 "
@@ -232,6 +234,12 @@ func set_native_iris_light(screen_pos: Vector2, radius: float, alpha: float) -> 
 func set_native_lightmap_enabled(enabled: bool) -> void:
 	if is_instance_valid(_lightmap):
 		_lightmap.visible = enabled
+
+
+## MAP-LOOK 전용 어두운 톤 가독성. 기본 1.0은 기존 웹 색보정과 동일하다.
+func set_native_map_look_shadow_gamma(value: float) -> void:
+	if is_instance_valid(_filter_rect):
+		(_filter_rect.material as ShaderMaterial).set_shader_parameter("shadow_gamma", clampf(value, 0.6, 1.0))
 
 
 func is_native_lightmap_enabled() -> bool:

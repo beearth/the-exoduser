@@ -2,9 +2,30 @@
   "schema": "exoduser.map-look.ch1.v1",
   "note": "MAP-LOOK 2026-10-20: 맵 표현 강화 레이어(레퍼런스 PoE2·No Rest — 입체감·생동감·부분 광원). 게임플레이 데이터 아님. 색은 Hell Gothic(흑철·지옥불·독액·뼈색) 기준. 위치는 map.json props 앵커(id) 또는 월드 좌표.",
   "ambient": [
-    0.26,
-    0.28,
-    0.36
+    0.35,
+    0.33,
+    0.38
+  ],
+  "shadow_gamma": 0.75,
+  "ground_masses": [
+    {
+      "texture": "res://assets/map/ch1/floor_objects/prop_g_root.png",
+      "position": [3420, 7310],
+      "size": [1000, 960],
+      "alpha": 0.62
+    },
+    {
+      "texture": "res://assets/map/ch1/floor_objects/prop_g_edge.png",
+      "position": [4650, 7050],
+      "size": [1050, 620],
+      "alpha": 0.72
+    },
+    {
+      "texture": "res://assets/map/ch1/floor_objects/flesh_g_0.png",
+      "position": [4020, 7900],
+      "size": [750, 700],
+      "alpha": 0.5
+    }
   ],
   "player_light": {
     "color": [
@@ -413,24 +434,24 @@
   },
   "region_ambient": [
     [
-      0.22,
-      0.21,
-      0.31
-    ],
-    [
-      0.23,
-      0.26,
+      0.34,
+      0.32,
       0.37
     ],
     [
-      0.21,
-      0.28,
-      0.33
+      0.35,
+      0.37,
+      0.43
     ],
     [
-      0.28,
-      0.25,
-      0.28
+      0.33,
+      0.37,
+      0.38
+    ],
+    [
+      0.35,
+      0.33,
+      0.38
     ]
   ],
   "lightning": {

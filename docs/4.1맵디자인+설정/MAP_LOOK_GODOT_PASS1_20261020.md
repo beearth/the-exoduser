@@ -9,7 +9,7 @@
 
 | 층 | 구현 | 파일 |
 |---|---|---|
-| 어둠 | 원본 화면 오버레이의 라이트맵 어둠 단계를 끄고(`set_native_lightmap_enabled(false)`) 월드 캔버스 `CanvasModulate` 환경광 (0.26,0.28,0.36) — 차가운 어둠이라 따뜻한 광원이 대비됨. 안개·환경광·비네트·색보정은 원본 그대로 유지 | `scripts/native_map_look.gd`, `scripts/native_screen_lighting.gd` +11줄 |
+| 어둠 | 원본 화면 오버레이의 라이트맵 어둠 단계를 끄고(`set_native_lightmap_enabled(false)`) 월드 캔버스 `CanvasModulate` 환경광을 사용한다. 2026-10-26 현재 기본값은 (.35,.33,.38), 맵 룩 화면 색보정의 어두운 영역 감마는 .75다. 맵 룩 OFF일 때 감마 1.0으로 원본 보정을 유지한다. 안개·환경광·비네트는 원본 값 유지 | `scripts/native_map_look.gd`, `scripts/native_screen_lighting.gd`, `data/map_look_ch1.json` |
 | 부분 광원 (G8, MAP-023) | `PointLight2D` 37개 + 소환굴 14개(G.spawnHoles를 0.5초마다 읽어 생성·소멸 동기화). 광원마다 색·반경·깜빡임(불) 또는 박동(생체·독). 반경 비례 높이(반경×0.45) — 요철 조명 N·L이 바닥에 닿게. z 범위 전체(기본 ±1024는 바닥 z −3000·액터 y/4를 못 비춤) | 같은 스크립트, `data/map_look_ch1.json` |
 | 요철 | 그림 명암에서 노멀을 실시간 계산하는 캔버스 셰이더(바닥 청크 bump 2.8, 소품 2.2). 노멀맵 파일·AI 생성 0 | `assets/vfx/map_look_lit.gdshader` |
 | 입체감 | 소품 29개 투사 그림자: 같은 그림 알파를 흐려(12px) 남동쪽 오프셋(폭×.08, 높이×.06), 세로 소품(해골 토템·교수대·뼈 아치)은 밑동 기준으로 눕혀 기울임. 월드 광원 북서 고정(MAP-012). 나무 밑동 `LightOccluder2D` 15개 — 플레이어·모닥불 광원이 실제 그림자를 드리움 | `assets/vfx/map_look_silhouette.gdshader` |
@@ -23,7 +23,7 @@
 | 층 | 구현 |
 |---|---|
 | 빛줄기(생동감·깊이) | 수관 틈 빛줄기 8개(−32°, 폭 176~272·길이 700~1000). 절차 생성 텍스처(길이 방향 생성→바닥 끝 고임, 폭 방향 부드러운 소멸 — 1차 딱딱한 띠 RETOUCH 후 교체), 가산·α.17, 0.37Hz 일렁임, 줄기마다 먼지 14개, 바닥 끝에 옅은 광원(반경 폭×1.1·세기 .5) |
-| 지역 분위기(MAP-010) | 4지역 환경광: 북서 어둠 (.22,.21,.31), 북동 번개 (.23,.26,.37), 남서 물 (.21,.28,.33), 남동 불 (.28,.25,.28). 지역 이동 시 서서히 전환(초당 0.6) |
+| 지역 분위기(MAP-010) | 2026-10-26 현재 4지역 환경광: 북서 (.34,.32,.37), 북동 (.35,.37,.43), 남서 (.33,.37,.38), 남동 (.35,.33,.38). 지역 이동 시 서서히 전환(초당 0.6). 2026-10-20 1차 값은 각각 (.22,.21,.31), (.23,.26,.37), (.21,.28,.33), (.28,.25,.28)였다. |
 | 번개 지역 섬광 | 북동 지역에서 7~16초마다 0.42초 두 번 번쩍(환경광 → (.55,.62,.85) 55%), 고정 seed |
 
 시작 공터: 빛줄기 2개가 플레이어 주변 바닥에 고여 1차의 단조로움이 줄었다(`_out/maplook-v8/start_on.png`).
@@ -93,3 +93,39 @@ PC에서 창을 화면 밖에 두고 재면 Windows가 백그라운드 창을 �
 - 전투 VFX 가독성(어두운 환경광에서 검기·투사체·피격 숫자) 검수, 필요 시 VFX를 환경광 예외로.
 - 시작 공터 연출, pit_poison 원화, 2장 이후 맵 데이터(현재 1-1 전용 data/map_look_ch1.json).
 - Mac 실측 성능.
+
+## 7. 2026-10-26 시작 전투 공터 표시 개선
+
+사용자 지적: 먼 카메라에서 맵이 너무 검고 공터가 비어 보이며, 스팀 전투 컷에서 몬스터가 읽히지 않았다. 기존 CH1-1 조명 맵의 실제 Godot 런타임을 대상으로 표시 레이어를 보강했다. 아래 바닥 질량은 충돌·소환·게임플레이 데이터를 바꾸지 않는다.
+
+| 항목 | 현재 값 / 적용 위치 | 목적 |
+|---|---|---|
+| 기본 환경광 | RGB (.35,.33,.38), `data/map_look_ch1.json` | 맵의 큰 질감과 전투 외곽을 읽히게 함 |
+| 지역 환경광 | 북서 (.34,.32,.37), 북동 (.35,.37,.43), 남서 (.33,.37,.38), 남동 (.35,.33,.38) | 지역색을 유지하며 검은 면적 축소 |
+| 어두운 영역 감마 | 맵 룩 ON .75 / OFF 1.0, `native_screen_lighting.gd` | 원본 필터의 대비 1.05·밝기 .97은 유지, 맵 룩에서만 그림자 정보 표시 |
+| 서쪽 큰 뿌리 | `prop_g_root.png`, 중심 (3420,7310), 1000×960, α .62 | 남서 생체나무와 전투 공터를 연결 |
+| 동쪽 지면 | `prop_g_edge.png`, 중심 (4650,7050), 1050×620, α .72 | 오른쪽 외곽을 다른 실루엣으로 받침 |
+| 남쪽 생체 바닥 | `flesh_g_0.png`, 중심 (4020,7900), 750×700, α .50 | 시작점 남쪽에서 공터로 피부 바닥이 이어지게 함 |
+| 바닥 레이어 | z −2750, 원본 청크 −3000·지면 소품 −2500 사이, UV 바깥쪽 .02~.13 페이드 | 경계 이음새를 흐리고 전투 중앙을 열어 둠 |
+
+격리 실행의 `runtime_gamma075_final/battle_015.png`는 일반 공격, `battle_052.png`는 지옥강타다. 1920×1080 원본 프레임이며 5마리 생존 적, 지옥강타 4히트가 기록됐다. 포스트프로세싱은 없고, 홍보 캡처 실행에서 HUD·펫 자막만 표시하지 않았다. 이미지와 실행 영수증은 `I:/EXODUSER-Storage/steam/gallery_combat_20261026/runtime_gamma075_final/`에 보존한다. 두 컷 모두 같은 카메라 위치이므로 스팀 갤러리에 동시에 넣을 후보로는 부적합하다.
+
+`tests/test_map_look.gd` 격리 회귀 **28 assertions / 0 failures**: 맵 룩 OFF의 원본 감마·라이트맵, ON의 바닥 질량 3개와 z, 충돌 사각형 292개·기존 소품 위치·G 키 집합 불변. Godot stderr의 `SCRIPT ERROR`/`ERROR` 없음. 물리 플레이·8방향 카메라·지속 성능은 아직 검수되지 않았다.
+
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: CH1-1 시작 전투 공터 표시 레이어
+MASTER: silhouette=남서 생체나무와 양측 지면 / regions=기존 4지역 / main route=남→북 원본 유지 / side spaces=원본 유지
+OUTER MASS: LEFT=큰 뿌리 보강 / RIGHT=지면 보강 / TOP=미수정 / SOUTH=생체 바닥 보강 / major holes=상단 암부·다른 구역 미검수
+LARGE: source assets=기존 root/edge/flesh 3종 / composites=표시 레이어 3 / overlap=중앙 전투 공간 비움 / repeated silhouette=같은 에셋 반복 없음
+MEDIUM: connections=서쪽 나무→공터, 남쪽 바닥→공터 / remaining holes=상단 외곽
+GROUND: shadow=기존 그림자 유지 / contamination=뿌리·살점 3패치 / structure integration=z −2750·가장자리 페이드
+PLAYABLE: main arenas=기존 시작 공터 / travel space=기존 동선 / breathing space=중앙 개방 / threat space=인트로 적 5 / combat readability=지옥강타 4히트 캡처
+LANDMARK: primary=남서 생체나무 / secondary=동쪽 지면 / tertiary=남쪽 생체 바닥
+CAMERA QA: START=1920×1080 전투 2컷 RETOUCH / EARLY=미검수 / ARENA=미검수 / SIDE L=미검수 / SIDE R=미검수 / LANDMARK=미검수 / LATE=미검수 / EXIT=미검수
+TECH QA: route=데이터 불변 / collision=292 불변 / pageerror=해당 없음 / 404=해당 없음 / seam=시작 컷 육안 확인 / loading=격리 실행 성공 / performance=미측정
+FILES: stage-owned=map_look_ch1.json,native_map_look.gd,native_screen_lighting.gd,test_map_look.gd,이 문서 / concurrent touched=없음 / unrelated touched=보존
+GIT: staged=본 작업 파일만 경로 지정 / commit=본 작업 코드·테스트·문서만 체크포인트 / push=별도 codex 브랜치에 백업 / deploy=없음
+VISUAL VERDICT: RETOUCH
+NEXT PASS: 다른 7개 카메라 지점의 큰 형태·상단 통로·전투 실측을 확인하고 서로 다른 장면의 스팀 컷을 선정
+```

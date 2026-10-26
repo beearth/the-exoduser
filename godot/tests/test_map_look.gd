@@ -38,6 +38,10 @@ func _run() -> void:
 	_check(plain.world.get_node_or_null("NativeMapLook") == null, "harness default boot leaves map look off")
 	var lighting: Node = plain.get_node_or_null("NativeScreenLighting")
 	_check(lighting != null and lighting.is_native_lightmap_enabled() == true, "original lightmap overlay stays on when map look off")
+	var plain_filter: ColorRect = plain.get_node("NativeScreenLighting/NativeColorFilter") as ColorRect
+	var plain_gamma: Variant = (plain_filter.material as ShaderMaterial).get_shader_parameter("shadow_gamma")
+	_check(plain_gamma == null or is_equal_approx(float(plain_gamma), 1.0),
+		"original color filter keeps gamma 1 when map look is off")
 	var g_keys_plain: Array = plain.source_state.read_current_g().keys()
 	g_keys_plain.sort()
 	var props_plain := _prop_snapshot(plain)
@@ -52,11 +56,21 @@ func _run() -> void:
 		_check(int(snap.get("lights", 0)) >= 20, "object + tree + player lights mounted (%s)" % snap.get("lights"))
 		_check(int(snap.get("spawn_hole_lights", 0)) == 14, "one light per 1-1 spawn hole (%s)" % snap.get("spawn_hole_lights"))
 		_check(int(snap.get("prop_shadows", 0)) >= 20, "prop drop shadows (%s)" % snap.get("prop_shadows"))
+		_check(int(snap.get("ground_masses", 0)) == 3, "three authored ground masses mounted (%s)" % snap.get("ground_masses"))
+		var masses := 0
+		for child in look.get_children():
+			if child is Sprite2D and str(child.name).begins_with("GroundMass_"):
+				masses += 1
+				_check(child.z_index == -2750 and child.z_as_relative == false, "ground mass stays between chunks and props")
+		_check(masses == 3, "ground masses are visible render nodes")
 		_check(int(snap.get("foreground", 0)) >= 10, "parallax foreground silhouettes (%s)" % snap.get("foreground"))
 		_check(int(snap.get("occluders", 0)) >= 10, "trunk occluders (%s)" % snap.get("occluders"))
 		_check(int(snap.get("styled_props", 0)) == 36, "all 36 props get lit material (%s)" % snap.get("styled_props"))
 		_check(snap.get("spores") == true and snap.get("embers") == true, "spores and camp embers")
 		_check(snap.get("lightmap_overlay_enabled") == false, "original lightmap darkness handed to CanvasModulate")
+		var active_filter: ColorRect = main.get_node("NativeScreenLighting/NativeColorFilter") as ColorRect
+		_check(is_equal_approx(float((active_filter.material as ShaderMaterial).get_shader_parameter("shadow_gamma")), 0.75),
+			"map look lifts dark tone only while active")
 		var modulates := 0
 		for child in look.get_children():
 			if child is CanvasModulate: modulates += 1
