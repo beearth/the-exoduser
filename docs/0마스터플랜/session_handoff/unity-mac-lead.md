@@ -25,11 +25,11 @@
 | B07 돌진·패링 Core + 원본 실행 oracle | 원 Sonnet `local_f344c67e-e388-4d43-a01e-47980c6f1bbd` | 구현 중(보고 대기). **이 Sonnet 964K → 재생성 먼저, 새 일 금지** | `E:/exoduser-wt/_out/pc-b07-impl/SPEC.md` (파일은 `Runtime/Core/` 평면 — 정정 메시지 보냄) |
 | PAINTGROUND → TOXIC → MESHY-0/M1 | 단순작업3(맵 총괄 전속) | PAINTGROUND 진행 | `_out/pc-map3d-paintground/SPEC.md`(§0.5 바이블 §12 RETOUCH 5항목), `_out/pc-map3d-toxic/SPEC.md`(색 = **통합 대기**) |
 - 원 Sonnet 다음 대기열: B05 Core 구현 → B03(공통 규칙 명세 `_out/pc-b03-core1/SPEC.md` 재사용 가능, 단순작업2가 남긴 PROGRESS 있음).
-- 문서 반영 대기열: `E:/exoduser-wt/_out/macbook-docs-queue/QUEUE.md` Q1(맵 보드 LIFE1 행 상태, 두 곳). 원 Sonnet 재생성 뒤 실행.
+- 문서 반영 대기열: `E:/exoduser-wt/_out/macbook-docs-queue/QUEUE.md` — **Q2 급한 통보(통합 바이블 v2 INBOX 두 곳)를 먼저**, 그다음 Q1(맵 보드 LIFE1 RETOUCH·§5 기준=v2). 원 Sonnet 재생성 뒤 실행(급하면 다른 방법을 전체총괄과 정함).
 
 ## 대기 중
 - 원 Sonnet B07 결과 보고 → 검수(oracle 수·RED→GREEN·patch 1~19 위 적용·Codex 파일 변경 0) → 커밋은 Sonnet이 경로 지정으로 → 누적 브랜치 병합 → INBOX 두 곳.
-- 디자인총괄 `local_eb8a8577-c0e4-4a9f-b628-fac0c8549dbf`(유일): 두 아트 바이블 통합본 → 나오면 **급한 Codex 통보**로 INBOX 두 곳 + 맵·보스전 총괄 공지, TOXIC 색 상수 교체. 맵 보드 §5 임시 기준(두 바이블 혼합) 확인도 eb8a8577에 받을 것(대조표 `_out/design-reconcile/COMPARE.md`).
+- 디자인총괄 `local_eb8a8577-c0e4-4a9f-b628-fac0c8549dbf`(유일): **통합 바이블 v2 완료** main `fc4989628` `docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md` → 대기열 Q2로 INBOX 두 곳 + 맵·보스전 총괄 공지, TOXIC 색 상수 교체(맵 총괄이 TOXIC 명세를 이미 고쳤을 수 있음 — 현재 파일 확인). 맵 보드 §5 임시 기준(두 바이블 혼합) 확인도 eb8a8577에 받을 것(대조표 `_out/design-reconcile/COMPARE.md`).
 - 맵 총괄에 미전송 답장: "LIFE1 보드 수정 = 대기열 Q1, 급하면 단순작업3이 같은 절차로 해도 됨" (메시지 상한으로 못 보냄).
 - `_out/inbox-artbible-v1/`은 **보류**(구 디자인 총괄 기준, 게시 금지).
 
