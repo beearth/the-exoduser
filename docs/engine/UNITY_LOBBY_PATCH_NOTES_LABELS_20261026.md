@@ -15,6 +15,13 @@
 | 비어 있거나 읽기 실패한 라벨 | 동일 C# | 데이터의 영어 행, 마지막에는 기존 `K(ko,en)`로 폴백 |
 | 본문 2개 버전 | 기존 `patch_notes.json` | SHA-256 `E4EAC388FEE4D9030B5A7731B74C0BB14E5075256570FC35ED3E9B52EA1D8962`, 불변 |
 | 아랍어 및 긴 언어 문구의 글꼴/방향/줄넘침 | 실제 Player UI | 미검증, 시각 판정 HOLD |
-| 컴파일, 키보드·마우스, 초점 복구 | 실제 Editor/Player | 이번 후보로 미실행, QA 후속 필요 |
+| 컴파일, 키보드·마우스, 초점 복구 | 실제 Editor/Player | Editor import·컴파일은 아래 별도 QA 영수증으로 0오류; Player 키보드·마우스·초점은 미검증 |
 
-`G:/exoduser/docs` 전체 관련 키워드 검색은 수행했다. G: 공용 checkout의 타 팀 WIP와 문서 소유를 보존하기 위해 이 문서는 인수용 초안으로 I:에 두었다. 소유자가 후보를 받아들일 때 해당 Unity 이식 문서와 함께 정상 반영해야 한다. 제품 반영이나 시각 PASS 선언이 아니다.
+`G:/exoduser/docs` 전체 관련 키워드 검색을 수행했다. 이 문서는 후보 코드와 함께 격리 브랜치 `codex/ui-resume-player-20261026`에 백업됐다. 공유 G:의 타 팀 WIP·문서는 수정하지 않았으며 main 통합·Player 화면·시각 PASS는 별도 판정이다.
+
+## 2026-10-26 독립 QA import·컴파일
+
+- QA 입력 원격 `fb1183f114888795ffee371b4313f7350e00eba4`: `NativeLobby.PatchNotes.cs` SHA-256 `3148635121EA37F2BA973A8DC699C6F95512C7CF4C15E73DF6FA5D4E3C6485AC`, `patch_notes_labels.json` `BBEA905B33655A42FDA06BEFC572A55122BD25C8FCBC826AD2110C2CDCB41E85`, `.meta` `CD6737B52BD0B68F7CE3B7A6E86B730B2B673D10741492F7822F88E33D69DFE2`; 실행 전후 동일.
+- 독립 웹 oracle(`I:/EXODUSER-Storage/qa/unity-ui-resume-20261026/qa-contract/patchnote-label-comparison.json`)은 29언어×3문구=87값 **STATIC_MATCH**, 차이 0. 초기 오탐 46개는 `lobby_i18n.js` 평가 누락 때문이었고 실제 HTML 로드 순서대로 추출기를 수정해 재실행했다.
+- Unity 6000.6.7f1 `-batchmode -nographics -noUpm -quit` **한 번** 실행. QA 영수증 `qa-contract/a03-labels-compile.json`의 PID 53788, 종료 코드 **0**, C# 컴파일 오류 **0**. 로그에 `Compiling Scripts`, `patch_notes_labels.json` `TextScriptImporter` import, 정상 종료가 있다. Runtime C# 77개 해시는 실행 전후 동일하며 Editor lease는 해제됐다.
+- 이 영수증은 JSON import와 C# 스크립트 컴파일에 한한다. 제품 Player 빌드·실제 29언어 화면·클릭/키보드·초점·긴 문구 레이아웃은 **미검증**이다. 이전 `47f911…` 빌드와 `71d544…` 정적 A01 판정을 이 후보의 Player 결과로 재사용하지 않는다.
