@@ -7,7 +7,9 @@ namespace Exoduser.UnityPort
  // One native decoder; callbacks are detached before a new request is prepared.
  public sealed class NativeLobbyVideo:IDisposable
  {
-  readonly GameObject owner;
+  readonly GameObject owner;NativeIntroGateAudioSync introAudioSync;
+  public bool UsesIntroAudioFallback{get;private set;}
+  public const double IntroAudioMediaOffset=1105d/44100d;
   readonly bool diagnosticGameClock=HasArgument("--unity-video-clock-game"),diagnosticNoDrop=HasArgument("--unity-video-no-drop"),diagnosticAllowDrop=HasArgument("--unity-video-allow-drop"),diagnosticDirect=HasArgument("--unity-video-direct");
   VideoPlayer player;AudioSource voice;RenderTexture texture;bool freezeFirst,playbackAllowed=true,wantsPlayback,directMuted;float directGain=1;int generation;
   static bool HasArgument(string flag){return Array.IndexOf(Environment.GetCommandLineArgs(),flag)>=0;}
@@ -32,24 +34,43 @@ namespace Exoduser.UnityPort
    if(!diagnosticDirect)player.SetTargetAudioSource(0,voice);
    voice.mute=muted;directMuted=muted;directGain=1;
    player.sendFrameReadyEvents=true;
-   player.prepareCompleted+=p=>{if(token!=generation)return;int w=(int)p.width,h=(int)p.height;if(w<=0||h<=0){Error="Invalid video dimensions";return;}float scale=Mathf.Min(1,4096f/Mathf.Max(w,h));texture=new RenderTexture(Mathf.Max(1,(int)(w*scale)),Mathf.Max(1,(int)(h*scale)),0,RenderTextureFormat.ARGB32);texture.Create();p.targetTexture=texture;ApplyDirectMix();TryStartPlayback();};
+   player.prepareCompleted+=p=>{if(token!=generation)return;int w=(int)p.width,h=(int)p.height;if(w<=0||h<=0){Error="Invalid video dimensions";return;}float scale=Mathf.Min(1,4096f/Mathf.Max(w,h));texture=new RenderTexture(Mathf.Max(1,(int)(w*scale)),Mathf.Max(1,(int)(h*scale)),0,RenderTextureFormat.ARGB32);texture.Create();p.targetTexture=texture;ConfigureIntroAudio(filename);ApplyDirectMix();TryStartPlayback();};
    player.frameReady+=OnFrame;player.loopPointReached+=OnEnd;player.errorReceived+=OnError;
    try{player.Prepare();}catch(Exception e){Error=e.Message;}
   }
-  void OnFrame(VideoPlayer p,long frame){if(p!=player)return;if(freezeFirst){freezeFirst=false;wantsPlayback=false;p.Pause();}}
-  void OnEnd(VideoPlayer p){if(p==player&&!p.isLooping){Ended=true;wantsPlayback=false;}}
-  void OnError(VideoPlayer p,string message){if(p==player){Error=message;wantsPlayback=false;p.Pause();}}
+  void OnFrame(VideoPlayer p,long frame){if(p!=player)return;if(freezeFirst){freezeFirst=false;wantsPlayback=false;p.Pause();PauseIntroAudio();}}
+  void OnEnd(VideoPlayer p){if(p==player&&!p.isLooping){Ended=true;wantsPlayback=false;PauseIntroAudio();}}
+  void OnError(VideoPlayer p,string message){if(p==player){Error=message;wantsPlayback=false;p.Pause();PauseIntroAudio();}}
+  void ConfigureIntroAudio(string filename)
+  {
+   // The original MP3-in-MP4 track is absent in macOS native decoding. Other movies/routes stay native.
+   if(filename!="intro.mp4"||player.audioTrackCount!=0)return;
+   var clip=Resources.Load<AudioClip>("Audio/Lobby/intro_gate_original");
+   if(clip==null){Error="Missing original intro audio fallback";return;}
+   UsesIntroAudioFallback=true;player.audioOutputMode=VideoAudioOutputMode.None;voice.clip=clip;voice.loop=player.isLooping;
+   introAudioSync=owner.AddComponent<NativeIntroGateAudioSync>();introAudioSync.Poll=SyncIntroAudio;
+  }
+  void PauseIntroAudio(){if(UsesIntroAudioFallback&&voice!=null)voice.Pause();}
+  void SyncIntroAudio()
+  {
+   if(!UsesIntroAudioFallback||voice==null||player==null)return;
+   if(!playbackAllowed||!wantsPlayback||freezeFirst||!player.isPlaying||Error.Length>0||Ended){PauseIntroAudio();return;}
+   if(player.time+IntroAudioMediaOffset>=voice.clip.length){PauseIntroAudio();return;}
+   if(!voice.isPlaying){voice.time=(float)Math.Max(0,Math.Min(voice.clip.length-.001,player.time+IntroAudioMediaOffset));voice.Play();}
+  }
   // Permission polling and explicit Play cannot repeatedly restart an active decoder.
   void TryStartPlayback(){if(playbackAllowed&&wantsPlayback&&Prepared&&Error.Length==0&&!player.isPlaying)player.Play();}
   public void Play(){if(Error.Length>0)return;freezeFirst=false;wantsPlayback=true;TryStartPlayback();}
-  public void Pause(){wantsPlayback=false;if(player!=null)player.Pause();}
-  public void SetPlaybackAllowed(bool allowed){playbackAllowed=allowed;if(player==null)return;if(!allowed){if(player.isPlaying)player.Pause();}else TryStartPlayback();}
+  public void Pause(){wantsPlayback=false;if(player!=null)player.Pause();PauseIntroAudio();}
+  public void SetPlaybackAllowed(bool allowed){playbackAllowed=allowed;if(player==null)return;if(!allowed){if(player.isPlaying)player.Pause();PauseIntroAudio();}else TryStartPlayback();}
   public void Toggle(){if(!Prepared)return;if(player.isPlaying)Pause();else Play();}
-  public void Seek(double time){if(Prepared){freezeFirst=false;player.time=Math.Max(0,Math.Min(Duration,time));}}
-  void ApplyDirectMix(){if(diagnosticDirect&&Prepared){player.SetDirectAudioMute(0,directMuted);if(player.canSetDirectAudioVolume)player.SetDirectAudioVolume(0,directGain);}}
+  public void Seek(double time){if(Prepared){freezeFirst=false;player.time=Math.Max(0,Math.Min(Duration,time));if(UsesIntroAudioFallback&&voice!=null)voice.time=(float)Math.Max(0,Math.Min(voice.clip.length-.001,player.time+IntroAudioMediaOffset));}}
+  void ApplyDirectMix(){if(diagnosticDirect&&Prepared&&!UsesIntroAudioFallback){player.SetDirectAudioMute(0,directMuted);if(player.canSetDirectAudioVolume)player.SetDirectAudioVolume(0,directGain);}}
   public void Volume(float value){directGain=Mathf.Clamp01(value);if(voice!=null)voice.volume=directGain;ApplyDirectMix();}
   public void Mute(bool muted){directMuted=muted;if(voice!=null)voice.mute=muted;ApplyDirectMix();}
-  public void Close(){generation++;wantsPlayback=false;if(player!=null){player.Stop();player.targetTexture=null;player.frameReady-=OnFrame;player.loopPointReached-=OnEnd;player.errorReceived-=OnError;UnityEngine.Object.Destroy(player);player=null;}if(voice!=null){voice.Stop();UnityEngine.Object.Destroy(voice);voice=null;}if(texture!=null){texture.Release();UnityEngine.Object.Destroy(texture);texture=null;}}
+  public void Close(){generation++;wantsPlayback=false;if(introAudioSync!=null){introAudioSync.Poll=null;UnityEngine.Object.Destroy(introAudioSync);introAudioSync=null;}UsesIntroAudioFallback=false;if(player!=null){player.Stop();player.targetTexture=null;player.frameReady-=OnFrame;player.loopPointReached-=OnEnd;player.errorReceived-=OnError;UnityEngine.Object.Destroy(player);player=null;}if(voice!=null){voice.Stop();UnityEngine.Object.Destroy(voice);voice=null;}if(texture!=null){texture.Release();UnityEngine.Object.Destroy(texture);texture=null;}}
   public void Dispose(){Close();UnityEngine.Object.Destroy(owner);}
  }
+ // Runtime-only polling for the one unsupported intro soundtrack; detached synchronously on Close.
+ sealed class NativeIntroGateAudioSync:MonoBehaviour{public Action Poll;void Update(){Poll?.Invoke();}}
 }

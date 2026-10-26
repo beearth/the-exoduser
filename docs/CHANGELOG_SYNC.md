@@ -1,5 +1,7 @@
 ## 2026-10-26 Unity 초반 stage 무음 계측
 
+- intro.mp4 native track0에만 원본 packet-demux MP3를 기존 Voice로 복구하고 edit-list 1105/44100 offset·freeze/pause/resume/close 경계를 보존. external route/원본 clip 출력과 이후 cleanup QA를 추가했으며 실제 final 인수는 ROOT 대기.
+
 - Gate MP3-in-MP4/AVFoundation 트랙 인식 조사에 필요한 VideoPlayer 실제 audioTrackCount/controlledAudioTrackCount를 QA snapshot에 추가. Gate 제품 경로와 영상 bytes는 보존.
 
 - 실제 baseline의 FDG 유음(Listener peak .1878839)과 원본 무음 계약에 따라 FDG Open muted 인자 하나만 true로 보정. Gate 첫1.2초 voice0의 원인은 미확정으로 보존하며 Gate 제품 동작은 변경하지 않았다.

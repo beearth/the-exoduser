@@ -9,11 +9,11 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeGame
  {
   const string IntroSilenceFlag="--unity-intro-silence-smoke";
-  [Serializable] sealed class IntroAudioProbe {public bool exists,mute,isPlaying,wasPlaying;public string clip;public float volume,peak,rms;}
+  [Serializable] sealed class IntroAudioProbe {public bool exists,mute,isPlaying,wasPlaying;public string clip;public float volume,peak,rms,time;public int timeSamples;}
   [Serializable] sealed class IntroSilenceSnapshot
   {
-   public string label,stage,url,error,audioOutputMode,expectedVoiceMute;
-   public bool prepared,videoPlaying,ended,contractEvaluated,contractMatches,muteMatches,silentOutputMatches,soundOutputObserved;
+   public string label,stage,url,error,audioOutputMode,expectedVoiceMute,audioRoute;
+   public bool prepared,videoPlaying,ended,contractEvaluated,contractMatches,muteMatches,silentOutputMatches,soundOutputObserved,usesIntroAudioFallback;
    public long firstFrame,lastFrame;public double firstTime,lastTime;public int audioTrackCount,controlledAudioTrackCount;
    public float listenerPeak,listenerRms;public IntroAudioProbe voice,music,startupAudio;
   }
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
   IntroAudioProbe IntroAudio(AudioSource source)
   {
    var p=new IntroAudioProbe{exists=source!=null};if(source==null)return p;
-   p.mute=source.mute;p.isPlaying=source.isPlaying;p.wasPlaying=source.isPlaying;p.volume=source.volume;p.clip=source.clip==null?"":source.clip.name;
+   p.mute=source.mute;p.isPlaying=source.isPlaying;p.wasPlaying=source.isPlaying;p.volume=source.volume;p.time=source.time;p.timeSamples=source.timeSamples;p.clip=source.clip==null?"":source.clip.name;
    source.GetOutputData(introSilenceSamples,0);float sum=0;foreach(float x in introSilenceSamples){p.peak=Mathf.Max(p.peak,Mathf.Abs(x));sum+=x*x;}p.rms=Mathf.Sqrt(sum/introSilenceSamples.Length);return p;
   }
   IEnumerator IntroObserve(List<IntroSilenceSnapshot> results,string label,NativeLobbyVideo movie,string expectedMute,float seconds)
@@ -45,10 +45,10 @@ namespace Exoduser.UnityPort
     AudioListener.GetOutputData(introSilenceSamples,0);foreach(float x in introSilenceSamples){s.listenerPeak=Mathf.Max(s.listenerPeak,Mathf.Abs(x));sum+=x*x;count++;}yield return null;
    }
    s.voice=voice;s.music=music;s.startupAudio=startup;s.listenerRms=count==0?0:Mathf.Sqrt(sum/count);
-   s.lastFrame=movie==null?-1:movie.Frame;s.lastTime=movie==null?0:movie.Time;s.error=movie==null?"Missing decoder":movie.Error;s.prepared=movie!=null&&movie.Prepared;s.ended=movie!=null&&movie.Ended;s.videoPlaying=p!=null&&p.isPlaying;s.audioOutputMode=p==null?"":p.audioOutputMode.ToString();s.audioTrackCount=p==null?-1:p.audioTrackCount;s.controlledAudioTrackCount=p==null?-1:p.controlledAudioTrackCount;
+   s.lastFrame=movie==null?-1:movie.Frame;s.lastTime=movie==null?0:movie.Time;s.error=movie==null?"Missing decoder":movie.Error;s.prepared=movie!=null&&movie.Prepared;s.ended=movie!=null&&movie.Ended;s.videoPlaying=p!=null&&p.isPlaying;s.audioOutputMode=p==null?"":p.audioOutputMode.ToString();s.audioTrackCount=p==null?-1:p.audioTrackCount;s.controlledAudioTrackCount=p==null?-1:p.controlledAudioTrackCount;s.usesIntroAudioFallback=movie!=null&&movie.UsesIntroAudioFallback;s.audioRoute=s.usesIntroAudioFallback?"External Voice AudioSource (native Video output None)":s.audioOutputMode;
    s.contractEvaluated=expectedMute=="true"||expectedMute=="false";s.muteMatches=!s.contractEvaluated||voice.exists&&voice.mute==(expectedMute=="true");
    bool silentStage=label.StartsWith("fdg-",StringComparison.Ordinal)||label.StartsWith("splash-title-",StringComparison.Ordinal)||label=="title-intro-frozen";
-   s.silentOutputMatches=s.audioOutputMode=="AudioSource"&&!music.wasPlaying&&!startup.wasPlaying&&s.listenerPeak<=.0001f&&s.listenerRms<=.00001f;
+   s.silentOutputMatches=(s.audioOutputMode=="AudioSource"||s.audioOutputMode=="None"&&s.usesIntroAudioFallback)&&!music.wasPlaying&&!startup.wasPlaying&&s.listenerPeak<=.0001f&&s.listenerRms<=.00001f;
    bool audibleStage=label=="gate-voice-and-bgm"||label=="world-voice-and-bgm"||label=="lobby-bgm";
    s.soundOutputObserved=music.wasPlaying&&music.peak>.000001f&&s.listenerPeak>.000001f;
    bool entrySoundObserved=label!="gate-voice-and-bgm"||startup.wasPlaying&&startup.peak>.000001f;
@@ -73,6 +73,9 @@ namespace Exoduser.UnityPort
    lobby.CurrentVideo.Open("title_motion_20260929.mp4",true,true,false);yield return IntroObserve(snapshots,"splash-title-sd-direct-probe",lobby.CurrentVideo,"true",.55f);
    lobby.AdvanceSplash();yield return IntroObserve(snapshots,"title-intro-frozen",lobby.CurrentVideo,"true",.4f);yield return UiCapture(output,"intro-silence-title");
    yield return null;lobby.StartGate();yield return IntroObserve(snapshots,"gate-voice-and-bgm",lobby.CurrentVideo,"false",1.2f);yield return UiCapture(output,"intro-silence-gate");
+   lobby.SetPlaybackFocus(false);yield return new WaitForSecondsRealtime(.15f);yield return IntroObserve(snapshots,"gate-focus-paused",lobby.CurrentVideo,"false",.25f);
+   check(!lobby.CurrentVideo.Player.isPlaying&&!lobby.CurrentVideo.Voice.isPlaying,"Gate pause stops both decoder and external/native voice");
+   lobby.SetPlaybackFocus(true);yield return IntroObserve(snapshots,"gate-focus-restored",lobby.CurrentVideo,"false",.35f);
    // Exercise the existing gate watchdog boundary, not a claimed natural movie completion.
    lobby.Flow.TickGate(16,lobby.CurrentVideo.Time,false,lobby.CurrentVideo.Duration);yield return null;yield return null;
    yield return IntroObserve(snapshots,"world-voice-and-bgm",lobby.CurrentVideo,"false",1.2f);yield return UiCapture(output,"intro-silence-world");
@@ -84,9 +87,11 @@ namespace Exoduser.UnityPort
    bool pending=false;
    check(snapshots[0].lastTime>snapshots[0].firstTime,"FDG decoded time progresses during observation");
    foreach(var s in snapshots){if(s.label=="gate-voice-and-bgm")check(s.voice.exists&&Mathf.Abs(s.voice.volume-.6f)<.0001f&&s.music.exists&&Mathf.Abs(s.music.volume-.6f*settings.BgmRelativeGain)<.0001f,"Gate voice .6 and BGM .6 retain current session relative gain");if(s.label=="world-voice-and-bgm")check(s.voice.exists&&Mathf.Abs(s.voice.volume-1)<.0001f&&s.music.exists&&Mathf.Abs(s.music.volume-.22f*settings.BgmRelativeGain)<.0001f,"World voice1 and BGM .22 return after intro");if(s.label=="lobby-bgm")check(s.music.exists&&Mathf.Abs(s.music.volume-.65f*settings.BgmRelativeGain)<.0001f,"Lobby BGM .65 retains relative gain");}
+   foreach(var s in snapshots){if(s.label=="title-intro-frozen")check(!s.videoPlaying&&!s.voice.wasPlaying&&s.voice.mute,"Title freeze keeps original soundtrack stopped and muted");if(s.label=="gate-voice-and-bgm")check(s.audioTrackCount!=0&&!s.usesIntroAudioFallback||s.audioTrackCount==0&&s.usesIntroAudioFallback&&s.voice.clip=="intro_gate_original"&&s.voice.peak>.000001f,"Gate uses original external soundtrack only when native track count is zero");if(s.label=="gate-focus-restored")check(s.voice.wasPlaying&&s.voice.peak>.000001f,"Gate soundtrack resumes after focus permission returns");if(s.label=="world-voice-and-bgm"||s.label=="lobby-bgm"||s.label=="fdg-after-audible-lobby")check(!s.usesIntroAudioFallback&&s.voice.clip!="intro_gate_original",s.label+" closes old external intro soundtrack");}
    if(phase=="final")check(contractPassed,"all accepted stage mute contracts match");
+   lobby.CloseStartupCaptureMedia();check(lobby.CurrentVideo.Player==null&&lobby.CurrentVideo.Voice==null&&!lobby.CurrentVideo.UsesIntroAudioFallback,"cleanup releases video and external voice");
    File.WriteAllText(Path.Combine(output,"intro-silence-"+phase+".json"),JsonUtility.ToJson(new IntroSilenceReceipt{scope="QA-only short scripted stage/audio observations, not OS focus/input, natural gate completion, media completion or audibility certification. Baseline harness success does not mean mute contract passed. Accepted source stage contract is FDG/SplashTitle/Title muted, Gate/World voice enabled.",phase=phase,product=Application.productName,identifier=Application.identifier,persistentDataPath=Application.persistentDataPath,output=output,bgmPercent=settings.BgmPercent,bgmRelativeGain=settings.BgmRelativeGain,harnessPassed=failures==0,contractPassed=contractPassed,finalContractPending=pending,failures=failures,checks=checks.ToArray(),observedDifferences=differences.ToArray(),snapshots=snapshots.ToArray()},true));
-   lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(failures==0?0:2);
+   sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(failures==0?0:2);
   }
  }
 }

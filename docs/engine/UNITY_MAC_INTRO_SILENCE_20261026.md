@@ -46,3 +46,13 @@ f25b35622 QA ARM64 빌드 오류0, harness19/19 PASS, contractPassed=false를 �
 Gate snapshot은 time0→1.208/frame0→29, VideoPlayer.isPlaying=true/Voice.mute=false/volume.6이나 Voice.wasPlaying=false/peak0이었다. 실제 enter SFX peak2와 BGM peak .00843/volume .45는 관측됐다. World voice peak .53489/BGM .165, lobby BGM .4875와 positive output도 확인됐다. Gate 첫1.2초의 voice0이 원본 track 무음 구간인지 freeze 후 native 재생 문제인지는 아직 미확정이다. 따라서 Gate 제품 오디오는 수정하지 않았고, 해당 voice.wasPlaying 계약 실패를 전체 해결로 주장하지 않는다. 원본 발음 시작 시점의 읽기 전용 확인 후 필요한 QA 관측창 보강을 별도 결정한다.
 
 ROOT 추가 읽기 전용 매체 대조: 원본/QA intro.mp4는 2,901,738 bytes로 동일하며 MP4 soun track의 mp4a/esds objectTypeIndication=0x6b(MPEG1 audio/MP3), AVFoundation audio tracks=0이었다. native 미지원 가능성이 있어 첫1.2초 무음만으로 설명하지 않는다. fixture snapshot에 VideoPlayer.audioTrackCount/controlledAudioTrackCount를 추가해 실제 런타임 인식을 기록한다. 아직 MP3 분석/최종 원인 판정 및 Gate 제품 수정은 대기하며 영상 bytes는 변경하지 않았다.
+
+## 원본 Gate soundtrack의 native track0 복구
+
+ROOT가 원본 MP4 stsc/stco/stsz packet 순서로 재인코딩 없이 추출한 raw MP3만 Resources/Audio/Lobby/intro_gate_original.mp3에 인수했다. 원본 intro.mp4는 2,901,738 bytes / SHA256 `0891964d17e19c9080fe07da97e7ee00e26918b5e51da8909b3d11e149f99620`로 보존된다. raw MP3는 128,731 bytes / SHA256 `0ce817e5bb7ce4a8c4fa1df51e92698bf28c896375615b6ab9aa085ff330cc7f`, MPG3 stereo44100 / 8.045688s다. ROOT afconvert PCM 분석의 첫0–.25s peak .0743, .75–1s peak .6045로 초반부터 유효한 원본 음원임을 확인했다. 기존 enter.mp3는 이 soundtrack을 대신하지 않는다. ROOT QA 분석 파일은 Git에 넣지 않는다.
+
+NativeLobbyVideo의 prepareCompleted에서 filename이 정확히 intro.mp4이고 실제 native audioTrackCount==0일 때만 기존 Voice AudioSource에 이 clip을 연결한다. native Video audioOutputMode=None을 명시하여 외부 Voice와 native route가 겹치지 않게 한다. native track이 있거나 다른 영상이면 기존 route 그대로다. 새 일반 decoder framework는 만들지 않았으며 같은 파일의 작은 runtime polling component만 이 soundtrack을 추종하고 Close 즉시 callback을 분리한다.
+
+원본 MP4 edit list media_time=1105@44100에 따라 source 위치는 video.time+1105/44100(0.0250567s)이다. 임의 delay를 추가하지 않는다. Title 첫 frame freeze는 voice 재생을 시작하지 않으며 muted를 유지한다. 기존 StartGate의 Play/Mute(false)/Volume(.6) 이후 영상이 실제 재생될 때만 같은 Voice를 재생한다. pause/focus/재개/seek/끝/Close/reopen에 동일 상태를 적용하며 재개는 현재 video 시각에 원본 offset을 더해 맞춘다. 영상 끝에서는 멈추고, clip의 실제 끝을 넘은 재생은 재시작하지 않는다. 다음 World/다른 영상으로 Open하면 이전 Voice와 poll을 분리해 누출·중복을 막는다. 영상 bytes/offset/설정/mix/default/다른 영상 오디오는 그대로다.
+
+fixture는 usesIntroAudioFallback, actual clip, voice.time/timeSamples와 native track count를 기록한다. Video None + 명시적 external Voice(AudioSource)를 별도 audioRoute로 표시해 native route와 구분한다. frozen Title의 stopped/muted, Gate original clip positive output/포커스 pause와 resume, World/lobby/FDG에서 fallback 해제 및 종료 후 Player/Voice release를 검사한다. ROOT는 이전 baseline 이후 이 source로 FDG 무음+Gate 원본 복귀를 함께 final 인수한다. Runtime+Editor 정적 컴파일 오류0이며 실제 Player/출력 PASS는 아직 대기다.
