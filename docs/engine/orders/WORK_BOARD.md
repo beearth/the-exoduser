@@ -505,3 +505,7 @@ P1-002.C~H, P2-001a~k, P2-002a/b, P2-003a, P2-004a, P2-005a~d — main ad7f15777
 ## 2026-10-27 Mac A06 HUD 좌표 인수
 
 PC freeze `741d97ba1`의 dock/skills 두 파일만 Mac에 적용, 원본 사본·SHA 보관. 720p/1080p 격리 ARM64 Player 네 화면/55검사 PASS, 해당 좌표·foundation 접점·키라벨 VISUAL PASS. OS 포인터와 구형 Editor composition oracle 갱신은 HOLD. 기존 사용자 앱·roster 보존. [인수 수치와 증거](../UNITY_MAC_A06_HUD_COORDINATE_20261027.md).
+
+## 2026-10-27 Mac 실제 시작→필드 키보드 QA
+
+A06 고유 ARM64 QA 앱 재사용·신규 빌드0. 실제 일반 시작에서 실버테일 반복 타이틀→문→정본 v22b 영상→격리 로비0/5→전사 생성 취소→전사 `A06QA` 생성/스토리→안내 4단계→필드 HUD→W 이동까지 키보드 PASS. FDG 단독 frame·이번 청음, 113초 자연완주·실습 완료·OS 물리 마우스는 HOLD. 격리 QA roster revision1/1명, 기존 세 앱/개인 파일 보존, QA PID 종료. [단계별 표·원본 PNG](../UNITY_MAC_START_TO_FIELD_QA_20261027.md).
