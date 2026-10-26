@@ -19,7 +19,10 @@ namespace Exoduser.UnityPort
    // A16: the key-binding page owns the keyboard: while a key is waiting nothing else reacts, otherwise ESC closes the page.
    if(keyPage){if(keyList!=null&&keyList.Listening)return PauseMenuCommand.None;if(Input.GetKeyDown(KeyCode.Escape))keyPage=false;return PauseMenuCommand.None;}
    // Web togglePanel: another window's key switches straight to that window (menu items move with the arrow keys only).
-   if(Input.GetKeyDown(KeyCode.Tab)){NativePanelTabBar.Request("invPanel");return PauseMenuCommand.None;}
+   if(Input.GetKeyDown(KeyCode.Tab)){
+    if(page==PausePage.Settings)return HandleKey(PauseKey.Next,dead,fullscreen);
+    NativePanelTabBar.Request("invPanel");return PauseMenuCommand.None;
+   }
    if(Input.GetKeyDown(KeyCode.K)){NativePanelTabBar.Request("skillPanel");return PauseMenuCommand.None;}
    PauseKey? input=null;
    if(Input.GetKeyDown(KeyCode.Escape))input=PauseKey.Back;

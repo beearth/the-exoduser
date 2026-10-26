@@ -1,6 +1,6 @@
-## 2026-10-27 Mac A15 설정 4탭 최소 연결
+## 2026-10-27 Mac A15 설정 4탭 최소 연결·Player 후속
 
-PC `f0f882c19`의 레이아웃 명세/입력 oracle을 현재 Mac `a3869387` blob과 대조했다. Mac 소유 PauseMenu/Navigation/Keyboard의 게임·화면·사운드·조작 4탭, 실제 FPS/fullscreen/SFX/BGM callback, 조작 탭 내 기존 key list와 scroll/footer를 연결. 게임 옵션·패드 재지정은 미지원 명시. 순수 navigation40/40, Unity Editor Verify 1회 exit0·A15 정책 PASS. Player 실창·청취/재시작 HOLD. [범위·근거](../UNITY_MAC_A15_4TAB_20261027.md).
+PC `f0f882c19`의 레이아웃 명세/입력 oracle을 Mac `a3869387` blob과 대조했다. Mac 소유 PauseMenu/Navigation/Keyboard의 게임·화면·사운드·조작 4탭, 실제 FPS/fullscreen/SFX/BGM callback, 조작 탭 내 기존 key list와 scroll/footer를 연결. 게임 옵션·패드 재지정은 미지원 명시. 후속 비대기 Tab은 설정 초점을 옮기며, 순수 navigation42/42, 최종 Unity ARM64 Settings QA Player 빌드 Succeeded/오류0. 귀속 확인된 QA PID의 720p 4탭/SFX60→61%와 1080p 화면·사운드 2열 캡처 확인. 좁은 1열·실기 key capture·청취/재시작은 HOLD. [범위·근거](../UNITY_MAC_A15_4TAB_20261027.md).
 
 ## 2026-10-27 Mac 표시 릴리스 메타 원격 main 동기화
 

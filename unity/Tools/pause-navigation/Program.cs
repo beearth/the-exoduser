@@ -20,6 +20,8 @@ class Program {
  Key(PauseKey.Left);Check(n.Tab==3&&n.Cursor==3,"Game left wraps to Controls");
  Key(PauseKey.Home);Check(n.Tab==0&&n.Cursor==0,"tab Home selects Game");
  Key(PauseKey.End);Check(n.Tab==3&&n.Cursor==3,"tab End selects Controls");
+ Key(PauseKey.Next);Check(n.Tab==3&&n.Cursor==4&&n.Page==PausePage.Settings,"settings Tab advances focus without opening inventory");
+ Key(PauseKey.Previous);Check(n.Cursor==3,"settings focus returns to Controls tab");
  Key(PauseKey.Left);Check(n.Tab==2,"Controls left selects Audio");
  Key(PauseKey.Down);Key(PauseKey.Down);Check(n.Cursor==4&&Key(PauseKey.Left)==PauseAction.SfxDown,"SFX left");Check(Key(PauseKey.Right)==PauseAction.SfxUp,"SFX right");
  Key(PauseKey.Down);Check(Key(PauseKey.Left)==PauseAction.BgmDown,"BGM left");Check(Key(PauseKey.Right)==PauseAction.BgmUp,"BGM right");
