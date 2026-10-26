@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort
         readonly string[] enemyDirections={"east","south_east","south","south_west","west","north_west","north","north_east"};
         float walkDistance,lastX,lastY;int renderedTick=-1;bool playerMoving;
         bool menu=true; string notice=""; float noticeUntil; int lastKillCount;
-        GUIStyle label,small,title,center,button,characterBadge; bool guiReady;
+        GUIStyle label,small,title,center,button,characterBadge,statusTitle,statusDetail; bool guiReady;
         public static NativeGame Instance {get;private set;}
         sealed class ChunkView {public SpriteRenderer renderer;public string path;}
         sealed class EnemyView {public SpriteRenderer body,walk;public float distance,lastX,lastY;public int skin,hp;public float shield;public bool moving;}
@@ -245,6 +245,8 @@ namespace Exoduser.UnityPort
             if(guiReady)return;guiReady=true;
             label=new GUIStyle(GUI.skin.label){font=font,fontSize=20};label.normal.textColor=new Color(.88f,.85f,.76f);
             small=new GUIStyle(label){fontSize=16};title=new GUIStyle(label){fontSize=32};center=new GUIStyle(label){alignment=TextAnchor.MiddleCenter};
+            statusTitle=new GUIStyle(label){fontSize=20,fontStyle=FontStyle.Bold};statusTitle.normal.textColor=new Color(.9f,.84f,.69f);
+            statusDetail=new GUIStyle(small){fontSize=16};statusDetail.normal.textColor=new Color(.84f,.82f,.75f);
             button=new GUIStyle(GUI.skin.button){font=font,fontSize=22};
             characterBadge=new GUIStyle(label){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font};
         }
@@ -260,9 +262,9 @@ namespace Exoduser.UnityPort
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);
             float hudWidth=Screen.width/hudScale,statusX=hudWidth-316;
             if(lobby.ActiveCharacterName.Length>0){Panel(new Rect(16,12,420,50));GUI.Label(new Rect(28,20,396,40),lobby.ActiveCharacterName+" · "+(lobby.Language=="ko"?"미리보기":"Preview"),characterBadge);}
-            Panel(new Rect(statusX,0,316,124));GUI.Label(new Rect(statusX+20,12,276,32),"1장 · 썩은 숲",label);
-            GUI.Label(new Rect(statusX+20,47,276,30),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,small);
-            GUI.Label(new Rect(statusX+20,77,276,30),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,small);
+            StatusBackdrop(new Rect(statusX,0,316,124));GUI.Label(new Rect(statusX+18,14,280,30),"1장 · 썩은 숲",statusTitle);
+            GUI.Label(new Rect(statusX+18,48,280,28),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,statusDetail);
+            GUI.Label(new Rect(statusX+18,78,280,28),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,statusDetail);
             hud.Draw(hudWidth,Screen.height/hudScale,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.HurtTicks<=0)continue;var pt=ToGUI(e.X,e.Y);Fill(new Rect(pt.x-42,pt.y-85,84,6),new Color(.12f,.08f,.07f));Fill(new Rect(pt.x-42,pt.y-85,84*Mathf.Clamp01((float)e.Hp/e.MaxHp),6),new Color(.66f,.12f,.08f));if(e.Shield>0)Fill(new Rect(pt.x-42,pt.y-93,84*e.Shield/e.MaxShield,4),new Color(.2f,.55f,.8f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
@@ -296,6 +298,16 @@ namespace Exoduser.UnityPort
         Vector2 ToGUI(float x,float y){var v=view.WorldToViewportPoint(Point(x,y));return new Vector2(v.x*1920,(1-v.y)*1080);}
         static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
         static void Panel(Rect r){Fill(r,new Color(.025f,.032f,.027f,.94f));Fill(new Rect(r.x,r.y,r.width,1),new Color(.49f,.4f,.24f));Fill(new Rect(r.x,r.y+r.height-1,r.width,1),new Color(.28f,.24f,.16f));}
+        static void StatusBackdrop(Rect r)
+        {
+            const int bands=24;
+            for(int i=0;i<bands;i++)
+            {
+                float t=(i+.5f)/bands;
+                float left=r.x+r.width*i/bands,right=r.x+r.width*(i+1)/bands;
+                Fill(new Rect(left,r.y,right-left,r.height),new Color(.025f,.032f,.027f,Mathf.Lerp(.16f,.4f,t*t)));
+            }
+        }
         IEnumerator Smoke()
         {
             Running=false;smokeActive=true;float before=Simulation.Player.X;

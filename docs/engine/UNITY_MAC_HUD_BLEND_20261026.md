@@ -1,5 +1,7 @@
 # Unity HUD world blend adjustment — 2026-10-26
 
+우상단 상시 장·레벨·경험치·처치·악의 정보판은 이 문서의 하단 스킬 상태문구와 다른 UI다. 2026-10-26 후속으로 검정 직사각형 배경을 약화한 범위·수치는 [우측 상단 상태 표시 보정](UNITY_MAC_STATUS_BLEND_20261026.md)을 따른다. 아래 인수 결과는 후속 변경 전 하단 HUD에 관한 당시 기록이다.
+
 ## Visual target and scope
 
 The user's latest review withdrew the large black state plate and broad square footing from the 9dd integrated HUD candidate. The accepted direction is a low, compact grouping: the resource orbs and slot rail remain legible, the world stays visible around and between them, and a thin curved worn-metal contour ties the lower group together. The two reference images were viewed directly: `reference-compact.png` (716×452, SHA-256 `ae54147d0a865a94a23b32c9e573b0088d393220317eac45fd02058f340c9aed`) and `reference-world-blend.png` (1388×597, SHA-256 `a9305e08b3e030061a3b7e0d0526f1e8849b4fcc25ca02eacb529f4849de0230`). They inform scale, transparency, and restraint only; none of their artwork is copied.
