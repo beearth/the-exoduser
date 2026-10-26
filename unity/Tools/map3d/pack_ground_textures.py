@@ -1,7 +1,7 @@
 """PC-MAP3D S2-1: pack the GPT-TEX HANDOFF maps into the Unity Resources folder.
 
 Per ground layer one albedo PNG (sRGB) and one packed data PNG `<name>_nhr.png`:
-  R = normal.x, G = normal.y (OpenGL +Y, as exported), B = height, A = roughness.
+  R = normal.x, G = normal.y (OpenGL +Y, as exported; `_normal_soft.png` preferred when present), B = height, A = roughness.
 Decals: RGBA albedo + RGBA normal (alpha = decal alpha). Deterministic; run again to refresh.
 Usage: python pack_ground_textures.py <HANDOFF dir> <Resources/Art/map3d dir>
 """
@@ -19,7 +19,8 @@ for layer in ('floor_v01b', 'floor_v02b', 'floor_v03b', 'mass_v01'):
     albedo = os.path.join(src, layer + '.png')
     if not os.path.exists(os.path.join(dst, layer + '.png')):
         shutil.copyfile(albedo, os.path.join(dst, layer + '.png'))
-    nrm = np.array(Image.open(os.path.join(src, layer + '_normal.png')).convert('RGB'))
+    soft = os.path.join(src, layer + '_normal_soft.png')  # RETOUCH 2: fibre-free soft normals (simple-sonnet-4) when available (floor layers)
+    nrm = np.array(Image.open(soft if os.path.exists(soft) else os.path.join(src, layer + '_normal.png')).convert('RGB'))
     packed = np.dstack([nrm[:, :, 0], nrm[:, :, 1], gray(layer + '_height'), gray(layer + '_roughness')]).astype(np.uint8)
     Image.fromarray(packed, 'RGBA').save(os.path.join(dst, layer + '_nhr.png'))
     print('packed', layer)

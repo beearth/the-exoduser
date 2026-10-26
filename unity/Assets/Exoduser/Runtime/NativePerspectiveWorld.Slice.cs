@@ -158,6 +158,7 @@ namespace Exoduser.UnityPort
                 t.wrapMode = TextureWrapMode.Repeat; t.filterMode = FilterMode.Trilinear; t.anisoLevel = 8; groundMaterial.SetTexture(prop, t);
             };
             tex("_FloorAlb", "Art/map3d/floor_v01b"); tex("_FloorNhr", "Art/map3d/floor_v01b_nhr");
+            Shader.SetGlobalTexture("_L3D_FloorAlb", groundMaterial.GetTexture("_FloorAlb")); Shader.SetGlobalTexture("_L3D_FloorNhr", groundMaterial.GetTexture("_FloorNhr")); // decals read the floor height/normal/brightness
             tex("_BloodAlb", "Art/map3d/floor_v02b"); tex("_BloodNhr", "Art/map3d/floor_v02b_nhr");
             tex("_RootAlb", "Art/map3d/floor_v03b"); tex("_RootNhr", "Art/map3d/floor_v03b_nhr");
             tex("_MassAlb", "Art/map3d/mass_v01"); tex("_MassNhr", "Art/map3d/mass_v01_nhr");
@@ -333,6 +334,7 @@ namespace Exoduser.UnityPort
             string png = Path.Combine(output, "unity-slice.png"); save(png);
             SetShadows(false); save(Path.Combine(output, "unity-slice-noshadow.png")); SetShadows(true);
             SetFieldLights(false); save(Path.Combine(output, "unity-slice-nolights.png")); SetFieldLights(true);
+            bool silhouette = PlayerSilhouetteShadow; PlayerSilhouetteShadow = !silhouette; save(Path.Combine(output, silhouette ? "unity-slice-blob-only.png" : "unity-slice-silhouette-shadow.png")); PlayerSilhouetteShadow = silhouette;
             SetCollisionOverlay(true); yield return null; save(Path.Combine(output, "unity-slice-collision.png")); SetCollisionOverlay(false);
             SetSliceDebug(2); save(Path.Combine(output, "unity-slice-debug-mask.png")); SetSliceDebug(3); save(Path.Combine(output, "unity-slice-debug-splat.png")); SetSliceDebug(0);
             File.WriteAllBytes(Path.Combine(output, "unity-slice-splat-mask.png"), maskTexture.EncodeToPNG());
@@ -343,7 +345,7 @@ namespace Exoduser.UnityPort
             receipt.gridStepPx = SliceGridStep; receipt.groundDisplacementWalkablePx = 3f; receipt.groundDisplacementWallPx = 18f;
             receipt.placements = SlicePlacements.Count; receipt.list = SlicePlacements; receipt.footprintWalkableViolations = CountFootprintWalkableViolations();
             receipt.shadowCascades = QualitySettings.shadowCascades; receipt.fieldLights = FieldLightCount; receipt.png = png;
-            receipt.decalList = SliceDecals; receipt.decals = SliceDecals.Count; foreach (var d in SliceDecals) { if (d.kind == "blood") receipt.decalsBlood++; else if (d.kind == "bone") receipt.decalsBone++; else receipt.decalsRoot++; }
+            receipt.decalList = SliceDecals; receipt.decals = SliceDecals.Count; foreach (var d in SliceDecals) { if (d.kind.StartsWith("blood")) receipt.decalsBlood++; else if (d.kind.StartsWith("bone")) receipt.decalsBone++; else receipt.decalsRoot++; }
             receipt.keyElevationDegrees = Mathf.Atan2(SliceKeySource.y, new Vector2(SliceKeySource.x, SliceKeySource.z).magnitude) * Mathf.Rad2Deg; receipt.fogHazeDensity = SliceHaze.x;
             Action<bool, string> check = (ok, name) => receipt.checks.Add((ok ? "PASS " : "FAIL ") + name);
             check(receipt.renderPipeline == "Built-in", "Built-in render pipeline");

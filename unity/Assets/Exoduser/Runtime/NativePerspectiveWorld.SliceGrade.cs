@@ -9,10 +9,11 @@ namespace Exoduser.UnityPort
     // constants and the stage-2 lighting stay the defaults everywhere else (ApplySliceGrade runs only while SliceActive).
     public sealed partial class NativePerspectiveWorld
     {
+        // RETOUCH 2 (macbook lead decision): colours back to the LOOK-001 D key / fill / ambient (KeyColor, FillColor, AmbientColor and their energies,
+        // stage-2 calibration kept); only the key elevation stays slice-specific. Floor albedo is tone-shifted to the Godot D v2 ground mean by a script-measured multiplier.
         public static readonly Vector3 SliceKeySource = new Vector3(-1000f, 760f, -1000f); // elevation atan(760/1414) = 28.2 deg (25-35 requested)
-        public static readonly Color SliceKeyColor = new Color(1.00f, 0.80f, 0.60f), SliceFillColor = new Color(0.26f, 0.38f, 0.66f), SliceAmbientColor = new Color(0.34f, 0.40f, 0.56f);
-        public const float SliceKeyGain = 0.72f, SliceFillGain = 1.6f, SliceAmbientGain = 0.95f, SlicePoolGain = 5.5f, SlicePoolWrap = 0.55f;
-        public static readonly Vector3 SliceFillSource = new Vector3(800f, 520f, 1000f);
+        public const float SlicePoolGain = 5.5f, SlicePoolWrap = 0.55f;
+        public static readonly Vector3 SliceGroundToneDefault = new Vector3(0.417f, 0.447f, 0.579f); // linear albedo multiplier measured by script to match the Godot D v2 ground mean (was 0.85 x3); override: --unity-world3d-ground-tone=r,g,b
         public static readonly Vector4 SliceHaze = new Vector4(0.00042f, 1300f, 0.0035f, 0f); // density, start distance px, height falloff
         public static readonly Color SliceHazeColor = new Color(0.26f, 0.19f, 0.16f);
 
@@ -23,10 +24,18 @@ namespace Exoduser.UnityPort
         void ApplySliceGrade()
         {
             Shader.SetGlobalVector("_L3D_KeyDir", LinearDirection(keySource));
-            Shader.SetGlobalVector("_L3D_KeyCol", Premultiplied(SliceKeyColor, KeyEnergy * (Calibrated ? KeyCalibration : 1f) * SliceKeyGain));
-            Shader.SetGlobalVector("_L3D_FillDir", LinearDirection(SliceFillSource));
-            Shader.SetGlobalVector("_L3D_FillCol", Premultiplied(SliceFillColor, FillEnergy * SliceFillGain));
-            Shader.SetGlobalVector("_L3D_Ambient", Premultiplied(SliceAmbientColor, AmbientEnergy * (Calibrated ? AmbientCalibration : 1f) * SliceAmbientGain));
+            Shader.SetGlobalVector("_L3D_KeyCol", Premultiplied(KeyColor, KeyEnergy * (Calibrated ? KeyCalibration : 1f)));
+            Shader.SetGlobalVector("_L3D_FillDir", LinearDirection(FillSource));
+            Shader.SetGlobalVector("_L3D_FillCol", Premultiplied(FillColor, FillEnergy));
+            Shader.SetGlobalVector("_L3D_Ambient", Premultiplied(AmbientColor, AmbientEnergy * (Calibrated ? AmbientCalibration : 1f)));
+            var tone = SliceGroundToneDefault;
+            foreach (var a in Environment.GetCommandLineArgs())
+                if (a.StartsWith("--unity-world3d-ground-tone="))
+                {
+                    var p = a.Substring(a.IndexOf('=') + 1).Split(','); float tr, tg, tb;
+                    if (p.Length == 3 && float.TryParse(p[0], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out tr) && float.TryParse(p[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out tg) && float.TryParse(p[2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out tb)) tone = new Vector3(tr, tg, tb);
+                }
+            Shader.SetGlobalVector("_L3D_GroundTone", new Vector4(tone.x, tone.y, tone.z, 1f));
             Shader.SetGlobalVector("_L3D_Pool", new Vector4(SlicePoolGain, SlicePoolWrap, 0f, 0f));
             Shader.SetGlobalVector("_L3D_Fog2", SliceHaze);
             Shader.SetGlobalVector("_L3D_Bump", new Vector4(SliceBumpAmplitude, SliceBumpWavelength, 130f, 430f));
@@ -80,23 +89,28 @@ namespace Exoduser.UnityPort
         {
             var shader = Resources.Load<Shader>("Shaders/Look3DDecal");
             if (shader == null) throw new InvalidOperationException("Look3DDecal shader is missing");
-            var kinds = new[] { "blood", "bone", "root" };
-            var counts = new[] { 9, 5, 10 }; var sizes = new[] { 260f, 150f, 330f }; var tints = new[] { new Color(1f, 0.92f, 0.90f), new Color(0.88f, 0.84f, 0.78f), new Color(0.90f, 0.86f, 0.80f) };
-            var materials = new Material[3];
-            for (int k = 0; k < 3; k++)
+            // GPT-DECAL2 variants (HANDOFF section 6): blood drag / drops / cracked, bone ribs / skull, root branch / tangle
+            var kinds = new[] { "blood_drag", "blood_drops", "blood_cracked", "bone_ribs", "bone_skull", "root_branch", "root_tangle" };
+            // sizes: the previous values x DecalScale (0.45): the character is ~40 px tall, root vines must not be 6-8 character lengths, bone ~knee height
+            const float DecalScale = 0.5f;
+            var counts = new[] { 3, 3, 2, 3, 1, 5, 5 }; var sizes = new[] { 420f * DecalScale, 520f * DecalScale, 280f * DecalScale, 120f * DecalScale, 66f * DecalScale, 380f * DecalScale, 340f * DecalScale };
+            var erode = new[] { 0.3f, 0.3f, 0.8f, 0.2f, 0.2f, 0.25f, 0.25f }; var lowOnly = new[] { 0f, 0f, 1f, 0f, 0f, 0f, 0f }; // cracked pool: noise-eroded edge, only in low floor areas
+            var tints = new[] { new Color(1f, 0.92f, 0.90f), new Color(1f, 0.92f, 0.90f), new Color(0.82f, 0.70f, 0.67f), new Color(0.50f, 0.46f, 0.41f), new Color(0.44f, 0.41f, 0.37f), new Color(0.92f, 0.88f, 0.82f), new Color(0.90f, 0.86f, 0.80f) };
+            var materials = new Material[kinds.Length];
+            for (int k = 0; k < kinds.Length; k++)
             {
                 var albedo = Resources.Load<Texture2D>("Art/map3d/decal_" + kinds[k]); var normal = Resources.Load<Texture2D>("Art/map3d/decal_" + kinds[k] + "_nrm");
                 if (albedo == null || normal == null) throw new InvalidOperationException("Missing decal texture " + kinds[k]);
                 albedo.wrapMode = TextureWrapMode.Clamp; normal.wrapMode = TextureWrapMode.Clamp;
                 materials[k] = new Material(shader) { name = "Decal " + kinds[k] };
-                materials[k].SetTexture("_MainTex", albedo); materials[k].SetTexture("_NrmTex", normal);
+                materials[k].SetTexture("_MainTex", albedo); materials[k].SetTexture("_NrmTex", normal); materials[k].SetFloat("_Erode", erode[k]); materials[k].SetFloat("_LowOnly", lowOnly[k]);
             }
             var mesh = GridQuad(16);
             var rng = new System.Random(20261033);
             var view = new Rect(2500f, 6550f, 3050f, 1450f);
             var focus = new Vector2(Map.startX, Map.startY);
             var order = new List<int>();
-            for (int k = 0; k < 3; k++) for (int n = 0; n < counts[k]; n++) order.Add(k);
+            for (int k = 0; k < kinds.Length; k++) for (int n = 0; n < counts[k]; n++) order.Add(k);
             // shuffle so one kind does not claim the best spots first
             for (int i = order.Count - 1; i > 0; i--) { int j = rng.Next(i + 1); int t = order[i]; order[i] = order[j]; order[j] = t; }
             var decalRoot = Child("Decals");
@@ -110,11 +124,12 @@ namespace Exoduser.UnityPort
                     if ((new Vector2(x, y) - focus).magnitude < 140f) continue;
                     float boundary = Mathf.Exp(-Mathf.Pow((sd - 130f) / 160f, 2f));
                     float light = 0f; foreach (var l in fieldLights) light = Mathf.Max(light, 1f - Mathf.Sqrt((x - l.x) * (x - l.x) + (y - l.y) * (y - l.y)) / (l.r * 0.95f));
-                    float w = 0.10f + boundary * (k == 2 ? 1.0f : 0.65f) + Mathf.Max(light, 0f) * (k == 1 ? 1.0f : 0.6f);
+                    bool isRoot = k >= 5, isBone = k == 3 || k == 4;
+                    float w = 0.10f + boundary * (isRoot ? 1.0f : 0.65f) + Mathf.Max(light, 0f) * (isBone ? 1.0f : 0.6f);
                     if (rng.NextDouble() > Mathf.Clamp01(w / 1.3f)) continue;
-                    bool near = false; foreach (var d in SliceDecals) if ((d.x - x) * (d.x - x) + (d.y - y) * (d.y - y) < 200f * 200f) { near = true; break; }
+                    bool near = false; foreach (var d in SliceDecals) if ((d.x - x) * (d.x - x) + (d.y - y) * (d.y - y) < 150f * 150f) { near = true; break; }
                     if (near) continue;
-                    var decal = new SliceDecal { kind = kinds[k], x = x, y = y, sizePx = sizes[k] * (0.7f + (float)rng.NextDouble() * 0.6f), angleDegrees = (float)rng.NextDouble() * 360f, alpha = (k == 0 ? 0.55f + (float)rng.NextDouble() * 0.30f : 0.78f + (float)rng.NextDouble() * 0.22f), mirror = rng.NextDouble() < 0.5 };
+                    var decal = new SliceDecal { kind = kinds[k], x = x, y = y, sizePx = sizes[k] * (0.7f + (float)rng.NextDouble() * 0.6f), angleDegrees = (float)rng.NextDouble() * 360f, alpha = 0.62f + (float)rng.NextDouble() * 0.20f, mirror = rng.NextDouble() < 0.5 };
                     SliceDecals.Add(decal); placed = true;
                     var go = new GameObject("decal " + kinds[k]); go.transform.SetParent(decalRoot, false);
                     go.AddComponent<MeshFilter>().sharedMesh = mesh;

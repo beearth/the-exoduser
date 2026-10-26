@@ -23,6 +23,13 @@ namespace Exoduser.UnityPort
         readonly Dictionary<string, Mesh> billboardMeshes = new Dictionary<string, Mesh>();
         readonly Dictionary<int, Billboard> enemyBillboards = new Dictionary<int, Billboard>();
         Billboard playerBillboard;
+        bool playerSilhouetteShadow = Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-world3d-silhouette-shadow") >= 0;
+        // Default: the player's ground shadow is the spec blob only; the upright-sprite silhouette shadow is opt-in (toggle / --unity-world3d-silhouette-shadow).
+        public bool PlayerSilhouetteShadow
+        {
+            get { return playerSilhouetteShadow; }
+            set { playerSilhouetteShadow = value; if (playerBillboard != null) playerBillboard.renderer.shadowCastingMode = value ? UnityEngine.Rendering.ShadowCastingMode.TwoSided : UnityEngine.Rendering.ShadowCastingMode.Off; }
+        }
         GameObject blobObject; Material blobMaterial; Texture2D blobTexture;
         public Vector2 PlayerPosition { get; private set; }
         public bool PlayerShown { get { return playerBillboard != null && playerBillboard.go.activeSelf; } }
@@ -141,7 +148,7 @@ namespace Exoduser.UnityPort
         {
             PlayerPosition = new Vector2(x, y);
             var texture = LoadBilinear("Art/player/" + PlayerDirections[((direction % 8) + 8) % 8]);
-            if (playerBillboard == null) playerBillboard = MakeBillboard("Player", actorRoot);
+            if (playerBillboard == null) { playerBillboard = MakeBillboard("Player", actorRoot); playerBillboard.renderer.shadowCastingMode = playerSilhouetteShadow ? UnityEngine.Rendering.ShadowCastingMode.TwoSided : UnityEngine.Rendering.ShadowCastingMode.Off; }
             // foot = P + (0, (47-24)*2.5): "source foot y47 displayed at actor.y+23*visual_scale" (combat.json native_actor_origin)
             float footY = y + (PlayerAnchorY - 24f) * PlayerVisualScale;
             ShowBillboard(playerBillboard, texture, frame * 48, 0, 48, 48, PlayerAnchorX, PlayerAnchorY, PlayerVisualScale, false, Color.white, x, footY);

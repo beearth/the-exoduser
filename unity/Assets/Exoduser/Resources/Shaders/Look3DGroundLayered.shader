@@ -83,8 +83,9 @@ Shader "EXODUSER/Look3DGroundLayered"
             Layer SampleLayer(sampler2D alb, sampler2D nhr, float2 uvA, float2 uvB, float mixB)
             {
                 Layer l;
-                float4 dA=tex2D(nhr,uvA), dB=tex2D(nhr,uvB);
-                l.alb=lerp(tex2D(alb,uvA).rgb, tex2D(alb,uvB).rgb, mixB);
+                float3 aA; float4 dA; NoTile(alb,nhr,uvA,aA,dA);
+                float4 dB=tex2D(nhr,uvB);
+                l.alb=lerp(aA, tex2D(alb,uvB).rgb, mixB);
                 l.nrm=(dA.xy*2-1)+(dB.xy*2-1)*0.6*mixB;
                 l.h=lerp(dA.b, dB.b, mixB*0.5);
                 l.rough=lerp(dA.a, dB.a, mixB*0.5);
@@ -107,7 +108,7 @@ Shader "EXODUSER/Look3DGroundLayered"
                 float2 warp=float2(L3D_Fbm(px/310.0+3.3), L3D_Fbm(px/310.0+9.1))-0.5;
                 float2 pw=px+warp*150.0;
                 float mixB=0.22+0.38*L3D_Noise(px/800.0+21.0);
-                float2 uvA=pw/_Tiles.x, uvB=Rot17(pw)/(_Tiles.x*0.37);
+                float2 uvA=pw/_Tiles.x, uvB=Rot17(pw)/(_Tiles.x*0.2713);
                 float2 uvM=pw/_Tiles.y, uvN=Rot17(pw)/(_Tiles.y*0.37);
                 Layer l0=SampleLayer(_FloorAlb,_FloorNhr,uvA,uvB,mixB);
                 Layer l1=SampleLayer(_BloodAlb,_BloodNhr,uvA*0.93+0.31,uvB*1.07+0.17,mixB);
@@ -121,14 +122,14 @@ Shader "EXODUSER/Look3DGroundLayered"
                 float inv=1.0/(b0+b1+b2+b3+1e-5); b0*=inv; b1*=inv; b2*=inv; b3*=inv;
 
                 float3 albedo=L3D_DECODE(l0.alb*b0+l1.alb*b1+l2.alb*b2+l3.alb*b3);
-                float2 nxy=(l0.nrm*b0+l1.nrm*b1+l2.nrm*b2+l3.nrm*b3*1.1)*0.42;
+                float2 nxy=(l0.nrm*b0+l1.nrm*b1+l2.nrm*b2+l3.nrm*b3*1.1)*0.5;
                 float rough=l0.rough*b0+l1.rough*b1+l2.rough*b2+l3.rough*b3;
                 float3 n=TangentToWorld(float3(nxy, 1.0));
                 if(_L3D_Bump.x>0)
                 {
                     const float e=24.0;
                     float dx=(L3D_BumpH(px+float2(e,0),sdRaw)-L3D_BumpH(px-float2(e,0),sdRaw))/(2*e), dy=(L3D_BumpH(px+float2(0,e),sdRaw)-L3D_BumpH(px-float2(0,e),sdRaw))/(2*e);
-                    n+=float3(-dx*(1-wMass), 0, dy*(1-wMass)); // world z = -py
+                    n+=float3(-dx*(1-wMass), 0, dy*(1-wMass))*0.35; // world z = -py; the undulation is mostly height, only a small normal share (wet-sand ripple otherwise)
                 }
                 n=normalize(n);
 
@@ -138,7 +139,7 @@ Shader "EXODUSER/Look3DGroundLayered"
                 float3 tint=clamp(macro/mean, 0.55, 1.7);
                 albedo*=lerp(float3(1,1,1), tint, 0.75);
                 albedo*=1.0+(L3D_Fbm(px/520.0+11.0)-0.5)*0.20+(L3D_Fbm(px/90.0+2.0)-0.5)*0.08; // +-10% regional + +-4% mid-frequency world tint
-                albedo*=0.85; // tone, see UNITY_MAP3D_SLICE doc
+                albedo*=_L3D_GroundTone.a>0 ? _L3D_GroundTone.rgb : float3(0.85,0.85,0.85); // tone shift toward the Godot D v2 ground mean (script-measured), see UNITY_MAP3D_SLICE doc
                 // ambient occlusion where the outskirt wall rises out of the floor
                 albedo*=lerp(0.40, 1.0, smoothstep(-30, 170, sdRaw));
 

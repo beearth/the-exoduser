@@ -94,3 +94,64 @@ START 화면(초점 4020,7420 · 1920×1080 · Godot 카메라 pitch .85 / dista
 
 - 1920×1080 전체·1x 크롭 확인: 바닥 그림자 수신·4레이어·광원 웅덩이·외곽 mass 입체감 확인, 점 노이즈 없음. 이전 슬라이스 대비 "평평·단조" 해소 → **슬라이스 v1으로 커밋**.
 - 남은 차이(다음 단계): ① 피 데칼이 같은 별 모양으로 반복(텍스처 1종) ② 기본 바닥 물결 무늬가 모래 결처럼 읽힘 ③ Godot C보다 따뜻·밝음(색온도 판정은 사용자) ④ 플레이어 빌보드 그림자 사양 결정 ⑤ 추가 광원 4개·키/fill 값은 원본 데이터 없는 슬라이스 전용 임의값.
+
+
+---
+
+# RETOUCH 2 (톤 Godot 기준 맞춤 · 데칼 7종 · 반복 완화) — 2026-10-26
+
+커밋 없음. 산출: `E:/exoduser-wt/_out/map3d-slice/capture12/`(최종), `sheets12/`(웹|Godot D v2|Unity 3분할, 1x 크롭 3곳, 데칼 크롭, `ground_color_stats.txt`).
+
+## 변경
+| 항목 | RETOUCH 1 | RETOUCH 2 |
+|---|---|---|
+| key / fill / ambient 색 | 임의 따뜻한 key (1.0,0.80,0.60), 차가운 fill | **LOOK-001 D 원래값**: key `KeyColor`×`KeyEnergy`×캘리브레이션, fill `FillColor`·`FillSource`, ambient `AmbientColor`×`AmbientEnergy`×캘리브레이션. 슬라이스 전용으로 남은 것은 key 고도 28.2°와 광원 웅덩이 이득(5.5, 랩 .55)·haze·비네트·4개 추가 광원 |
+| 바닥 albedo 톤 | ×0.85 고정 | 스크립트 측정 곱셈값 **(0.417, 0.447, 0.579)** (재생성 없음, 셰이더 `_L3D_GroundTone`, 실행 인자 `--unity-world3d-ground-tone=r,g,b`로 재조정 가능). 목표 Godot D v2 지면 평균 ±5 |
+| 반복 | 도메인 워프, 가변 혼합, 타일 1250 | + **확률적 타일링**(iq 방식: 저주파 노이즈로 8개 UV 오프셋 중 선택·경계 교차 페이드, L0~L3 모든 레이어) + 두 번째 스케일 비 0.37→**0.2713**(바닥 3레이어, mass 레이어는 0.37 유지) |
+| 데칼 | blood/bone/root 1종씩 (24개) | 변주 7종(출처 아래) 중 blood_drag 3, blood_drops 3, **blood_cracked 0(빼냄: 벌집 격자로 읽힘)**, bone_ribs 3 (크기 200→120), bone_skull 1 (110→66), root_branch 5, root_tangle 5 = 20개. 뼈 tint 낮춤(~0.5), root tint 낮춤(~0.75) |
+| 바닥 기복 법선 | 1.0배 | 0.35배(기복은 높이 중심) — 지시 반영 |
+| 플레이어 그림자 | 빌보드 실루엣 | blob 기본, 실루엣은 `PlayerSilhouetteShadow`/`--unity-world3d-silhouette-shadow` 토글 |
+
+## 측정
+- 지면 중앙(700,400,550×300) 평균 RGB: Godot D v2 (41.8,32.4,27.6) / Unity (41.3,32.2,27.8) / 채널 차 (-0.6,-0.3,+0.2) → ±5 목표 충족.
+- 보고서 좌표 3곳: player-contact 차 1 이내, skin-ground R+3.5·G-2.2·B-2.7, **living-tree Unity 더 밝음(R+11.5 등)** — 좌측 추가 광원 웅덩이 근처이고 mass 아트 포함 구역이라 ±5 미충족(`ground_color_stats.txt`).
+- 체크 5/5 PASS, 발자국 위반 0, 데칼 20개.
+- FPS 30초(3596프레임): 평균 **119.867** / 최저 1초 116.197 / 최저 순간 20.8 / 최장 프레임 48.0ms. 평균 119 이상 목표는 충족했으나 **단발 지연 프레임이 있다**(직전 빌드 capture11 28.8ms, capture10 9.0ms, 같은 코드 계열 3초 측정 8.9ms — 원인 미확인, 재실행·분리 측정 안 함).
+
+## 한계
+- 최종 색온도는 사용자 판정. 이번 값은 "Godot 기준 맞춤"이다(Godot D v2 지면 평균).
+- 바닥 물결 결(텍스처 자체 법선)은 사양대로 보류 — 여전히 모래 결처럼 읽힘.
+- 확률적 타일링은 4레이어 모두에 적용해 프래그먼트 텍스처 샘플이 늘었다(L0~L3 각 albedo·nhr A스케일 2샘플씩; 총 약 25).
+
+## 신규 데칼 7종 출처 (`Resources/Art/map3d/decal_*.png`, `*_nrm.png`)
+| 파일 | 생성 | 후처리 |
+|---|---|---|
+| `decal_blood_drag`, `decal_blood_drops`, `decal_blood_cracked` | OpenAI `gpt-image-2.5-sunburst` `/v1/images/generations`, `background:"transparent"`, 1024² medium, 참조 없음 (단순작업4, HANDOFF §6) | 채택본 `decal2_*_b.png`: blood 채도×0.65·명도×0.78. normal=`decal2_*_b_normal_rgba.png` (루미넌스 60%+알파 블러 40% 높이맵의 래핑 중앙차분) |
+| `decal_bone_ribs`, `decal_bone_skull` | 같은 모델·방식 | 채도×0.7·명도×0.88 |
+| `decal_root_branch`, `decal_root_tangle` | 같은 모델·방식 | 채도×0.55·명도×0.95 |
+- 프롬프트·usage: `E:/exoduser-wt/_out/ai3d-trial/gpt/decal2/` `*.json`. 비용 7장 약 $0.0997(누적 약 $0.302). 점·잔점·디더링 없음(단순작업4 1x 확인 + 슬라이스 1x 크롭 재확인; blood_drops의 방울은 의도된 형태). `decal_blood_cracked`는 슬라이스에서 미사용(파일은 저장소에 포함).
+- 기존 `decal_blood/bone/root.png`(+`_nrm`)는 미참조로 남아 있음.
+
+
+---
+
+# RETOUCH 3 (데칼 스티커감 제거 · 소프트 법선) — 2026-10-26
+
+커밋 없음. 산출: `E:/exoduser-wt/_out/map3d-slice/capture14/`(최종), `sheets14/`(Godot D v2 | Unity v1 | Unity v2 3분할, 1x 크롭 3곳, `crop_decals_unity_1x.png`, `ground_color_stats.txt`). Unity v1 = capture8(RETOUCH 1, 커밋 e64e57889).
+
+| 항목 | 변경 |
+|---|---|
+| 데칼 스케일 | RETOUCH 2의 크기 × 0.5 (`DecalScale`): 뿌리 branch 190·tangle 170, 뼈 ribs 60·skull 33(캐릭터 약 40px 기준, 뼈는 무릎 높이 이하), blood drag 210·drops 260·cracked 140 (각각 ×무작위 0.7~1.3) |
+| 알파 | 0.62~0.82 (지시 0.55~0.75보다 약간 높임: 0.45배·0.55~0.75에서는 거의 보이지 않아 한 단계 올림) |
+| 바닥과 섞기 | 데칼 셰이더가 바닥 height(floor_v01b, 지면과 같은 워프·확률적 타일링)를 읽어 돌출부(height 0.58~0.85)에서 알파를 최대 50% 깎음, 데칼 법선에 바닥 법선(×0.25)을 더함, 데칼 색을 바닥 명도(floorLum/0.31, 0.55~1.25)에 맞춤, 뼈 tint ~0.45~0.5로 낮춤 |
+| blood_cracked | 복귀(2개): 가장자리를 노이즈로 깎음(`_Erode` .8), 바닥 height가 낮은 곳에만(`_LowOnly`, height 0.34~0.58에서 사라짐) |
+| 바닥 법선 | floor_v01b/v02b/v03b를 단순작업4의 `*_normal_soft.png`(섬유 결 제거)로 교체(`pack_ground_textures.py`가 있으면 우선 사용), 강도 0.42→0.5(soft 기준 ≈ 지시 "강도 1.0 기준 0.7~0.8 수준"에서 낮게 시작). mass는 기존 법선 유지 |
+| 28.8ms 순간 끊김 | 원인 미확인, 재실행 확인 안 함(기록만). 이번 최종 30초: 평균 119.985, 최저 1초 119.844, 최저 순간 106.2, 최장 9.41ms로 재현 안 됨 |
+
+한계: 소프트 법선으로 모래 알갱이 결은 사라졌지만 광원 웅덩이 안에서 물결무늬가 매끈한 소용돌이로 읽힌다(스펙·랩 라이트와 겹침). 데칼은 작아져 1x 전체 컷에서 은은하다.
+
+## RETOUCH 2·3 총괄 판정 (맥북 총괄, 2026-10-26 — 직접 본 결과, 슬라이스 v2로 커밋)
+
+- capture14 전체·데칼 1x 크롭 확인. 지면 중앙 평균색 Godot D v2와 채널 차 0.1/0.6/1.5(목표 ±5 달성), 하단 절단선 안 보임, 30초 평균 119.985fps. 별 모양 반복·모래 결 해소 → **슬라이스 v2 인수**.
+- 남은 차이: ① 데칼이 너무 희미 — `root_tangle`·`blood_drops`는 1x 크롭에서 거의 안 보임(개수·알파 재조정 또는 제외) ② 왼쪽 가운데(대략 x300~700, y300~700) 회색 안개 띠가 우윳빛으로 떠 보임(녹색 광원·높이 안개 겹침 의심) ③ 살아 있는 나무 크롭이 Godot보다 밝음(평균 차 17.5) ④ 광원 웅덩이 안 바닥 결이 매끈한 소용돌이로 읽힘 ⑤ `blood_cracked`는 침식 처리 후에도 둥근 덩어리 — 판정 보류.
+- 정리 대상(다음 단계): v1 데칼 `decal_blood/bone/root(.png,_nrm.png)`는 v2에서 참조하지 않지만 `Resources/`에 남아 빌드에 포함된다. 미참조 `floor_v01b_normal/height.png`·`mass_v01_height.png`는 커밋하지 않았다.

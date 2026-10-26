@@ -10,6 +10,7 @@ float _L3D_PtCount;
 sampler2D _L3D_MaskTex; float4 _L3D_MaskRect; // slice splat mask (R = signed distance / SDRange*.5+.5) and its world rect
 float4 _L3D_Bump;  // x amplitude px (0 = off), y wavelength px, z/w fade-in distance from the focus (player keeps flat ground)
 float4 _L3D_Focus; // xy focus px
+float4 _L3D_GroundTone; // slice: rgb linear multiplier on the floor albedo (a = 0: unset -> 0.85)
 float4 _L3D_Pool;   // slice grade: x point gain (0 = 1), y wrap (0..1): light pools read on the floor
 float4 _L3D_Fog2, _L3D_Fog2Col; // slice atmosphere: x density, y start distance, z height falloff (0 = off); rgb haze, a strength
 
@@ -21,15 +22,6 @@ float3 L3D_LinearToSrgb(float3 c) { c=saturate(c); return lerp(c*12.92, 1.055*po
 #else
 #define L3D_DECODE(c) (c)
 #define L3D_ENCODE(c) saturate(c)
-// gentle low-frequency undulation of the walkable floor (render only; no collision), faded to 0 at the outskirt boundary and around the focus
-float L3D_BumpH(float2 px, float sdRaw)
-{
-    if(_L3D_Bump.x<=0) return 0;
-    float h=(L3D_Fbm(px/_L3D_Bump.y+31.0)-0.5)*_L3D_Bump.x;
-    return h*smoothstep(30,170,sdRaw)*smoothstep(_L3D_Bump.z,_L3D_Bump.w,length(px-_L3D_Focus.xy));
-}
-float L3D_SdAt(float2 px) { return (tex2Dlod(_L3D_MaskTex, float4((px-_L3D_MaskRect.xy)/_L3D_MaskRect.zw,0,0)).r*2-1)*400.0; }
-
 #endif
 
 float3 L3D_Stamp(float3 c, float t)
@@ -92,5 +84,21 @@ float L3D_BumpH(float2 px, float sdRaw)
     return h*smoothstep(30,170,sdRaw)*smoothstep(_L3D_Bump.z,_L3D_Bump.w,length(px-_L3D_Focus.xy));
 }
 float L3D_SdAt(float2 px) { return (tex2Dlod(_L3D_MaskTex, float4((px-_L3D_MaskRect.xy)/_L3D_MaskRect.zw,0,0)).r*2-1)*400.0; }
+
+// Anti-tiling (iq 'texture repetition' method 1): a low-frequency value noise picks one of 8 random UV offsets per region; neighbouring
+// regions cross-fade where the index changes. Gradients are taken from the unshifted uv so mip selection stays stable.
+void NoTile(sampler2D alb, sampler2D nhr, float2 uv, out float3 a, out float4 d)
+{
+    float k=L3D_Noise(uv*0.37+17.0)*0.999;
+    float l=k*8.0, f=frac(l), ia=floor(l+0.5), ib=floor(l);
+    f=min(f,1.0-f)*2.0;
+    float2 offa=sin(float2(3.0,7.0)*ia), offb=sin(float2(3.0,7.0)*ib);
+    float2 dx=ddx(uv), dy=ddy(uv);
+    float4 ca=tex2Dgrad(alb,uv+offa,dx,dy), cb=tex2Dgrad(alb,uv+offb,dx,dy);
+    float4 da=tex2Dgrad(nhr,uv+offa,dx,dy), db=tex2Dgrad(nhr,uv+offb,dx,dy);
+    float t=smoothstep(0.2,0.8,f-0.1*dot(ca-cb,float4(1,1,1,0)));
+    a=lerp(ca.rgb,cb.rgb,t); d=lerp(da,db,t);
+}
+
 
 #endif
