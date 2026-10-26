@@ -35,7 +35,7 @@ mkdirSync(DIST, { recursive: true });
 
 // ── 2. 단일 파일 복사 ────────────────────────────────────────────────────────
 const FILES = [
-  'index.html', 'game.html', 'credits.html',
+  'index.html', 'game.html', 'credits.html', 'nw-boot.html',
   'build-target.js',
   'engine/fdg/druid-qa-storage.js',
   'tools/2_5d/atlas-clip-runtime.mjs',

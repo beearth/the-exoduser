@@ -3,12 +3,15 @@
   "private": true,
   "version": "0.7.7",
   "type": "module",
-  "main": "http://localhost:3350/index.html",
+  "main": "nw-boot.html",
   "node-main": "node-main.js",
-  "exoduser": {"target":"full","appId":4749590,"depotId":4749591,"port":3350,"saveNamespace":"EXODUSER-HELL-FULL"},
+  "exoduser": {"target":"full","appId":4749590,"depotId":4749591,"port":3350,"fallbackPorts":[3360,3370,3380,3390],"saveNamespace":"EXODUSER-HELL-FULL"},
   "node-remote": [
-    "http://127.0.0.1:3350",
-    "http://localhost:3350"
+    "http://127.0.0.1:3350", "http://localhost:3350",
+    "http://127.0.0.1:3360", "http://localhost:3360",
+    "http://127.0.0.1:3370", "http://localhost:3370",
+    "http://127.0.0.1:3380", "http://localhost:3380",
+    "http://127.0.0.1:3390", "http://localhost:3390"
   ],
   "window": {
     "title": "EXODUSER: HELL LORD",

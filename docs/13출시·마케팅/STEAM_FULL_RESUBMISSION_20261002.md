@@ -8,8 +8,8 @@
 |---|---|
 | 소스 | 패키지 실제 기반/로컬 HEAD는 `aacc7b02bef9d5cd7db6ea5d6466d7b8e4c11a3c` + 보존한 로컬 변경/본편 분리 패치. 최종 조회·fetch한 GitHub main은 `f5199925d8324c61473c5873a965a2429dcd7f7e`. 그 사이 3커밋/13경로는 웹 배포 도구·문서이며 NW 빌드 입력/실제 package.nw/Steam 포함 목록과 교집합 모두 0, 로컬 staged·unstaged·untracked와 충돌 0. 출하 런타임·빌드 입력에 영향 없음. manifest의 실제 aacc sourceCommit은 보존하며 f519에서 직접 빌드했다고 표기하지 않음. 공유 체크아웃 pull/merge·GitHub push 없음 |
 | 기존 변경 보존 | `tmp/steam-main-resubmit-20261002/before/`: 77개 파일·작업/스테이징 binary diff·공용 index·SHA-256 목록. 원본 인덱스 유지, 원격 push 없음 |
-| 본편 target | `full`, App 4749590/Depot 4749591, port 3350, APPDATA `EXODUSER-HELL-FULL/saves`, profile `./userdata-full` |
-| 데모 target 계약 | `demo`, App 5337590/Depot 5337591, port 3351, APPDATA `EXODUSER-HELL-DEMO/saves`, profile `./userdata-demo`. 이번에 데모 산출/업로드는 하지 않음. Depot 5337591은 업로드 전 별도 Steamworks 검증 필요 |
+| 본편 target | `full`, App 4749590/Depot 4749591, port 3350 (2026-10-26: 127.0.0.1+::1 동시 바인딩, 점유 시 3360→3370→3380→3390, 창 시작=`nw-boot.html` — [포트 바인딩 수정](NW_PORT_BINDING_FIX_20261026.md)), APPDATA `EXODUSER-HELL-FULL/saves`, profile `./userdata-full` |
+| 데모 target 계약 | `demo`, App 5337590/Depot 5337591, port 3351 (점유 시 3361→3391, 창 시작=`nw-boot.html?demo=1`), APPDATA `EXODUSER-HELL-DEMO/saves`, profile `./userdata-demo`. 이번에 데모 산출/업로드는 하지 않음. Depot 5337591은 업로드 전 별도 Steamworks 검증 필요 |
 | 웹 기본 | `build-target.js`는 NW manifest target 또는 `demo` 기본값. 기존 공개 웹은 데모 유지. 패키지 사본은 `window.EXODUSER_BUILD_TARGET='full';` 또는 demo를 명시 |
 | 로비 | `_LOBBY_BUILD=window.EXODUSER_BUILD_TARGET\|\|'demo'`. full은 기존 본편 OFFICIAL·전체 장·캐릭터 생성·오프라인 서버 저장 경로 사용 |
 | 게임 | `_DEMO_MODE=(window.EXODUSER_BUILD_TARGET\|\|'demo')==='demo'`. stage=0 종료, Lv100 상한, 데모 합체/어픽스 제한은 demo에만 적용. 본편 기존 7장/35스테이지 경로 사용 |

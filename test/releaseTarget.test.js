@@ -39,7 +39,7 @@ test('release HTML inline scripts parse and load target before scope constants',
 test('full manifest cannot start demo and QA profiles cannot leak into release',()=>{
  const cfg=createReleaseConfig('full','20261002-120000');
  const pkg=runtimeManifest(JSON.parse(fs.readFileSync('package.json','utf8')),cfg);
- assert.equal(new URL(pkg.main).searchParams.get('demo'),null);
+ assert.equal(new URL(pkg.main,'chrome-extension://app/').searchParams.get('demo'),null);
  assert.equal(pkg.exoduser.target,'full');assert.equal(pkg.exoduser.appId,4749590);
  assert.ok(pkg['chromium-args'].includes(cfg.profile));
 });
@@ -53,4 +53,17 @@ test('Steam validator rejects wrong app/depot, demo gates and altered artifacts'
  assert.throws(()=>validateReleasePackage({...art,buildTarget:"window.EXODUSER_BUILD_TARGET='demo';"},4749590,4749591));
  assert.throws(()=>validateReleasePackage({...art,package:{...pkg,main:pkg.main+'?demo=1'}},4749590,4749591));
  assert.throws(()=>validateReleasePackage({...art,exe:false},4749590,4749591));
+});
+test('release window boots locally and can reach every server port',()=>{
+ for(const target of ['full','demo']){
+  const cfg=createReleaseConfig(target,'20261002-120000');
+  const pkg=runtimeManifest(JSON.parse(fs.readFileSync('package.json','utf8')),cfg);
+  assert.equal(new URL(pkg.main,'chrome-extension://app/').pathname,'/nw-boot.html');
+  assert.equal(new URL(pkg.main,'chrome-extension://app/').searchParams.get('demo'),target==='demo'?'1':null);
+  for(const p of [cfg.port,...cfg.fallbackPorts])for(const h of ['127.0.0.1','localhost'])assert.ok(pkg['node-remote'].includes(`http://${h}:${p}`));
+ }
+ const full=createReleaseConfig('full','20261002-120000'),demo=createReleaseConfig('demo','20261002-120000');
+ const all=[full.port,...full.fallbackPorts,demo.port,...demo.fallbackPorts];
+ assert.equal(new Set(all).size,all.length);assert.ok(!all.includes(3333)&&!all.includes(3334));
+ assert.ok(fs.readFileSync('build-nwjs.mjs','utf8').includes("'nw-boot.html'"));
 });

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>EXODUSER: HELL LORD</title>
+<!-- NW.js 시작 페이지 (패키지 내부, 네트워크 없음).
+     node-main.js가 로컬 서버를 127.0.0.1+::1에 연 뒤 global.__exoduserServer에 실제 포트를 기록한다.
+     준비되면 그 포트의 index.html로 이동하고, 모든 후보 포트가 막혔으면 안내와 종료 버튼을 보여 준다.
+     다른 프로그램이 같은 포트를 쓰고 있어도 그 서버의 페이지를 열지 않는다(node-remote 권한 노출 방지). -->
+<style>
+:root{--bone:#dfd6c2;--bone-dim:#a89f8c;--gold-line:rgba(164,147,115,.5);--ember:#b0301c;--iron:rgba(14,10,10,.92)}
+html,body{margin:0;height:100%;background:#050304;color:var(--bone);overflow:hidden;cursor:default}
+#fail{display:none;height:100%;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 60%,rgba(120,24,12,.22),transparent 60%),#050304}
+#fail.on{display:flex}
+.panel{max-width:620px;margin:0 24px;padding:34px 44px 30px;background:var(--iron);
+  border:1px solid var(--gold-line);box-shadow:0 0 0 1px #000,0 0 48px rgba(176,48,28,.16);text-align:center;word-break:keep-all}
+h1{margin:0 0 6px;font:600 26px/1.3 'Cinzel','Nanum Myeongjo','Noto Serif KR',serif;letter-spacing:.06em}
+.rule{height:1px;margin:14px auto 18px;width:70%;background:linear-gradient(90deg,transparent,var(--gold-line),transparent)}
+p{margin:0;font:17px/1.7 'Nanum Myeongjo','Noto Serif KR','Gowun Batang',serif}
+.ports{margin-top:12px;direction:ltr;unicode-bidi:isolate;white-space:nowrap;font:13px/1.5 'Cinzel',serif;color:var(--bone-dim);letter-spacing:.04em}
+button{margin-top:24px;padding:9px 34px;font:600 16px/1.4 'Nanum Myeongjo','Noto Serif KR',serif;color:var(--bone);
+  background:linear-gradient(#2a1612,#160b09);border:1px solid var(--gold-line);cursor:pointer}
+button:hover,button:focus-visible{border-color:var(--ember);color:#fff;outline:none;box-shadow:0 0 12px rgba(176,48,28,.45)}
+</style>
+</head>
+<body>
+<div id="fail"><div class="panel"><h1 id="t"></h1><div class="rule"></div><p id="m"></p><div class="ports" id="ports"></div><button id="q"></button></div></div>
+<script>
+(function(){
+  var MSG={
+    ko:['게임을 시작할 수 없습니다','게임의 로컬 서버가 포트를 열지 못했습니다. 다른 프로그램이 사용 중일 수 있습니다. 그 프로그램을 종료한 뒤 게임을 다시 실행하세요.','게임 종료'],
+    en:['Unable to start the game',"The game's local server could not open a port. Another program may be using it. Close that program and launch the game again.",'Quit Game'],
+    ar:['تعذّر تشغيل اللعبة','تعذّر على الخادم المحلي للعبة فتح منفذ. قد يكون برنامج آخر يستخدمه. أغلق ذلك البرنامج ثم شغّل اللعبة مرة أخرى.','إنهاء اللعبة'],
+    bg:['Играта не може да стартира','Локалният сървър на играта не успя да отвори порт. Възможно е друга програма да го използва. Затворете тази програма и стартирайте играта отново.','Изход от играта'],
+    cs:['Hru nelze spustit','Místní server hry nemohl otevřít port. Možná ho používá jiný program. Zavřete tento program a spusťte hru znovu.','Ukončit hru'],
+    da:['Spillet kan ikke starte','Spillets lokale server kunne ikke åbne en port. Et andet program bruger den muligvis. Luk det program, og start spillet igen.','Afslut spil'],
+    de:['Das Spiel kann nicht gestartet werden','Der lokale Server des Spiels konnte keinen Port öffnen. Möglicherweise wird er von einem anderen Programm verwendet. Beende dieses Programm und starte das Spiel erneut.','Spiel beenden'],
+    el:['Δεν είναι δυνατή η εκκίνηση του παιχνιδιού','Ο τοπικός διακομιστής του παιχνιδιού δεν μπόρεσε να ανοίξει θύρα. Μπορεί να τη χρησιμοποιεί άλλο πρόγραμμα. Κλείστε το και ξεκινήστε ξανά το παιχνίδι.','Έξοδος'],
+    es:['No se puede iniciar el juego','El servidor local del juego no pudo abrir un puerto. Es posible que otro programa lo esté usando. Cierra ese programa y vuelve a iniciar el juego.','Salir del juego'],
+    fi:['Peliä ei voi käynnistää','Pelin paikallinen palvelin ei voinut avata porttia. Jokin toinen ohjelma saattaa käyttää sitä. Sulje kyseinen ohjelma ja käynnistä peli uudelleen.','Lopeta peli'],
+    fr:['Impossible de lancer le jeu',"Le serveur local du jeu n'a pas pu ouvrir de port. Un autre programme l'utilise peut-être. Fermez ce programme et relancez le jeu.",'Quitter le jeu'],
+    hu:['A játék nem indítható el','A játék helyi szervere nem tudott portot nyitni. Lehet, hogy egy másik program használja. Zárja be azt a programot, és indítsa újra a játékot.','Kilépés'],
+    id:['Tidak dapat memulai game','Server lokal game tidak dapat membuka port. Mungkin program lain sedang menggunakannya. Tutup program tersebut lalu jalankan game lagi.','Keluar game'],
+    it:['Impossibile avviare il gioco','Il server locale del gioco non è riuscito ad aprire una porta. Potrebbe essere in uso da un altro programma. Chiudi quel programma e avvia di nuovo il gioco.','Esci dal gioco'],
+    ja:['ゲームを起動できません','ゲームのローカルサーバーがポートを開けませんでした。別のプログラムが使用している可能性があります。そのプログラムを終了してから、ゲームを再度起動してください。','ゲーム終了'],
+    ms:['Permainan tidak dapat dimulakan','Pelayan setempat permainan tidak dapat membuka port. Program lain mungkin sedang menggunakannya. Tutup program itu dan lancarkan permainan semula.','Keluar permainan'],
+    nl:['Kan het spel niet starten','De lokale server van het spel kon geen poort openen. Mogelijk gebruikt een ander programma deze. Sluit dat programma en start het spel opnieuw.','Spel afsluiten'],
+    no:['Kan ikke starte spillet','Spillets lokale server kunne ikke åpne en port. Et annet program bruker den kanskje. Lukk det programmet og start spillet på nytt.','Avslutt spill'],
+    pl:['Nie można uruchomić gry','Lokalny serwer gry nie mógł otworzyć portu. Może go używać inny program. Zamknij ten program i uruchom grę ponownie.','Zakończ grę'],
+    ptbr:['Não foi possível iniciar o jogo','O servidor local do jogo não conseguiu abrir uma porta. Outro programa pode estar usando-a. Feche esse programa e inicie o jogo novamente.','Sair do jogo'],
+    ro:['Jocul nu poate porni','Serverul local al jocului nu a putut deschide un port. Este posibil ca alt program să îl folosească. Închide acel program și pornește din nou jocul.','Ieșire din joc'],
+    ru:['Не удалось запустить игру','Локальный сервер игры не смог открыть порт. Возможно, его использует другая программа. Закройте её и запустите игру снова.','Выход из игры'],
+    sv:['Det går inte att starta spelet','Spelets lokala server kunde inte öppna en port. Ett annat program kanske använder den. Stäng det programmet och starta spelet igen.','Avsluta spel'],
+    th:['ไม่สามารถเริ่มเกมได้','เซิร์ฟเวอร์ภายในของเกมไม่สามารถเปิดพอร์ตได้ อาจมีโปรแกรมอื่นใช้งานอยู่ ปิดโปรแกรมนั้นแล้วเปิดเกมอีกครั้ง','ออกจากเกม'],
+    tr:['Oyun başlatılamıyor','Oyunun yerel sunucusu bir bağlantı noktası açamadı. Başka bir program kullanıyor olabilir. O programı kapatıp oyunu yeniden başlatın.','Oyundan çık'],
+    uk:['Не вдалося запустити гру','Локальний сервер гри не зміг відкрити порт. Можливо, його використовує інша програма. Закрийте її та запустіть гру знову.','Вийти з гри'],
+    vi:['Không thể khởi động trò chơi','Máy chủ cục bộ của trò chơi không thể mở cổng. Có thể một chương trình khác đang sử dụng cổng này. Hãy đóng chương trình đó rồi khởi động lại trò chơi.','Thoát game'],
+    zh:['无法启动游戏','游戏的本地服务器无法打开端口。可能有其他程序正在使用该端口。请关闭该程序后重新启动游戏。','退出游戏'],
+    zht:['無法啟動遊戲','遊戲的本機伺服器無法開啟連接埠。可能有其他程式正在使用該連接埠。請關閉該程式後重新啟動遊戲。','退出遊戲']
+  };
+  function langCode(){
+    var l=String(navigator.language||'en').toLowerCase();
+    if(/^zh-(tw|hk|mo)|^zh-hant/.test(l))return 'zht';
+    if(l.indexOf('pt')===0)return 'ptbr';
+    if(/^(nb|nn|no)\b/.test(l))return 'no';
+    var c=l.split('-')[0];return MSG[c]?c:'en';
+  }
+  function quit(){try{nw.App.quit();}catch(e){window.close();}}
+  function fail(state){
+    var m=MSG[langCode()];
+    document.getElementById('t').textContent=m[0];
+    document.getElementById('m').textContent=m[1];
+    // 오류 코드는 oauth-debug.log에 남기고 화면에는 시도한 포트 번호만 표기
+    document.getElementById('ports').textContent=(state&&state.tried&&state.tried.length?'PORT  '+state.tried.map(function(t){return String(t).split(':')[0];}).join(' · '):'');
+    var q=document.getElementById('q');q.textContent=m[2];q.onclick=quit;
+    if(m===MSG.ar)document.querySelector('.panel').dir='rtl';
+    document.getElementById('fail').className='on';q.focus();
+    document.addEventListener('keydown',function(e){if(e.code==='Escape'||e.code==='Enter')quit();});
+  }
+  var t0=Date.now();
+  (function wait(){
+    var s=null;try{s=nw.global.__exoduserServer;}catch(e){}
+    if(s&&s.status==='ready'){location.replace('http://localhost:'+s.port+'/index.html'+location.search);return;}
+    if((s&&s.status==='failed')||Date.now()-t0>20000){fail(s);return;}
+    setTimeout(wait,30);
+  })();
+})();
+</script>
+</body>
+</html>

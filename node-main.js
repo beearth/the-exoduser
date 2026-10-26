@@ -17,6 +17,8 @@ const RELEASE_CONFIG = fs.existsSync(path.join(__dirname, 'release-config.json')
   ? JSON.parse(fs.readFileSync(path.join(__dirname, 'release-config.json'), 'utf8'))
   : JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).exoduser || null;
 const PORT = RELEASE_CONFIG ? RELEASE_CONFIG.port : 3333;
+// 기본 포트를 다른 프로그램이 점유했거나(EADDRINUSE) Windows 예약 범위(EACCES)일 때 순서대로 시도한다.
+const FALLBACK_PORTS = RELEASE_CONFIG && Array.isArray(RELEASE_CONFIG.fallbackPorts) ? RELEASE_CONFIG.fallbackPorts : [];
 const APP_DIR = __dirname;
 
 const MIME = {
@@ -66,7 +68,7 @@ function readBody(req) {
   });
 }
 
-http.createServer(async (req, res) => {
+const handleRequest = async (req, res) => {
   let pathname = urlMod.parse(req.url).pathname;
 
   // CORS preflight
@@ -213,6 +215,49 @@ http.createServer(async (req, res) => {
     res.writeHead(200, headers);
     res.end(req.method === 'HEAD' ? undefined : data);
   });
-}).listen(PORT, '127.0.0.1', () => {
-  dlog('HTTP server listening on port ' + PORT);
-});
+};
+
+// ── 서버 기동 ──
+// 창은 http://localhost:<port>로 연다. Chromium은 localhost를 ::1부터 시도하므로 127.0.0.1만 열면
+// [::]에 떠 있는 다른 서버(개발 server.cjs 등)가 대신 응답한다 → 두 loopback을 모두 점유한다.
+// nw-boot.html이 global.__exoduserServer를 보고 실제로 연 포트로 이동한다.
+const serverState = { status: 'pending', port: null, tried: [] };
+global.__exoduserServer = serverState;
+
+function listenOn(port, host) {
+  return new Promise((resolve, reject) => {
+    const server = http.createServer(handleRequest);
+    server.once('error', reject);
+    server.listen(port, host, () => { server.removeListener('error', reject); resolve(server); });
+  });
+}
+
+async function bindLoopback(port) {
+  const v4 = await listenOn(port, '127.0.0.1');
+  try {
+    return [v4, await listenOn(port, '::1')];
+  } catch (e) {
+    // IPv6가 꺼진 PC면 localhost도 127.0.0.1로만 간다
+    if (e.code === 'EADDRNOTAVAIL' || e.code === 'EAFNOSUPPORT') return [v4];
+    v4.close();
+    throw e;
+  }
+}
+
+(async () => {
+  for (const port of [PORT, ...FALLBACK_PORTS]) {
+    try {
+      const servers = await bindLoopback(port);
+      for (const s of servers) s.on('error', e => dlog('HTTP server error on port ' + port + ': ' + e.code));
+      serverState.port = port;
+      serverState.status = 'ready';
+      dlog('HTTP server listening on port ' + port + (servers.length > 1 ? ' (127.0.0.1 + ::1)' : ' (127.0.0.1 only)'));
+      return;
+    } catch (e) {
+      serverState.tried.push(port + ':' + e.code);
+      dlog('port ' + port + ' unavailable: ' + e.code);
+    }
+  }
+  serverState.status = 'failed';
+  dlog('HTTP server failed to start: ' + serverState.tried.join(', '));
+})();
