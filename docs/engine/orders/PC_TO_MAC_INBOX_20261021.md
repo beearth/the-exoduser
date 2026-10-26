@@ -2,6 +2,17 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 3 — ★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 바로 아래 "★★★"(`3b99012ea`, patch 9개)를 **이 항목으로 대체**한다.
+
+- **대상 SHA: `c9cf5d018`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `3b99012ea` 이후: A25 툴팁·아이템 비교 `649802205`, 어픽스 정의 공용화 `2e10850b1`(affix_defs_web.json), overlays 브랜치 merge(A21 사망 화면 `0eb95c2e4`, A22 클리어 결과 `98ed00497`). Unity 6000.6.7f1(`3d40f822a`).
+- **Codex 적용 patch 11개 — 이 순서로**(`docs/engine/unity_patches/`): 1 U04B → 2 U08 nativegame → 3 U08 pausemenu → 4 U05 → 5 A07B nativegame → 6 A07B pausemenu → 7 A13 → 8 A14 → 9 A20 → **10 `A21_nativegame_death`** → **11 `A22_nativegame_stageclear`**. `c9cf5d018` 트리 기준 11개 순서 apply 전부 통과(PC 확인).
+  - patch 10: Player.Hp ≤ 0이면 사망 화면, "다시 일어서라" = 기존 Restart 경로. 스모크 모드에서는 비활성.
+  - patch 11: **"이벤트 없음"** — Unity에 클리어/보스/구역 이탈 이벤트가 없어 오버레이 생성·Draw만 있고 `Show` 호출 없음(C07 이식 후 연결).
+- **PC 빌드**: 단위별 6000.6.7f1 Win64 errors 0(A25·DEFS1·A21·A22, 각 patch 1~11 누적 적용 빌드 포함). `c9cf5d018` 합본 트리 자체의 전체 빌드는 다음 PC 단위 빌드에서 확인 예정. 6000.6.7f1 patch 1~9 전체 스모크 7종 종료 코드 0(PC-PATCHV2, 아래 항목).
+- MAP3D(3D 맵): 별도 브랜치 `claude/unity-pc-map3d-20261026` `b1b1d859b`(S1·S2-0·S2-2, patch 3개 MAP3D_S1→S2_0→S2_2는 UI patch 뒤). UI 병합 후 이어서(협약 §7).
+
 ## 2026-10-26 밤 2 — ★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
 
 > 바로 아래 "★★ 최신 누적"(`af86aa59c`)을 **이 항목으로 대체**한다(+1커밋, patch 변화 없음).
