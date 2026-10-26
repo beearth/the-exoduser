@@ -65,3 +65,13 @@ Mac `ef8080387` 위에 PC 원격 `a48faf9ea`를 merge했다. 충돌은 `NativeGa
 | 3 | `U08_nativepausemenu_tabbar.patch` → `NativePauseMenu.cs` | 2 뒤 `git apply --check` 후 실제 적용 | 설정 창에 Settings 프리셋 탭바 표시 |
 
 두 patch는 PC 원본을 수정하지 않고 받은 순서대로 적용했다. `NativeGame.cs`의 ATG 세계관 분기·기존 저장 경로는 이 patch 범위가 아니다. 파일별 `git diff --check` 통과. 4–12 hook·Mac 컴파일/Player 판정은 다음 단계이며 13·14 충돌은 보류한다.
+
+## 4→6 스킬 포커스·웹 창 키 실제 연결 — 후속 checkpoint
+
+| 순서 | Mac 소유 연결 | 검사·결과 |
+|---:|---|---|
+| 4 | `U05_nativegame_skill_smoke_focus.patch` → `NativeGame.SkillSmoke.cs`, `NativeGame.cs` | 원본 patch 문맥 검사→실제 적용. 스킬 스모크 중 OS focus 경합을 피하도록 fixture 상태를 조정 |
+| 5 | `A07B_nativegame_keys.patch` → `NativeGame.cs`, `NativeGame.InventoryKeysSmoke.cs` | 순서 4 뒤 검사→적용. 웹 규칙의 G 대장간 요청·J 능력치 요청·F10 설정, 인벤토리 스모크의 선택 없음/G 무전환 기대값 연결 |
+| 6 | `A07B_nativepausemenu_keys.patch` → `NativePauseMenu.Keyboard.cs`, `NativePauseMenu.cs` | 순서 5 뒤 검사→적용. 일시정지 TAB=인벤토리·K=스킬 요청, 항목 탐색은 방향키 |
+
+PC 소유 `NativeInventory.Keyboard.cs`·`InventoryNavigation.cs`·`NativePanelTabBar.cs`는 merge에서 가져온 blob 그대로다. 이 단계는 Mac hook 문맥·diff 검사까지이며 OS 키 입력·Player PASS는 아직 주장하지 않는다. 7–12 hook과 13 경계 검사 후 비대화형 Mac 컴파일을 한 번 판단한다.

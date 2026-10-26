@@ -57201,3 +57201,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac PC UI 누적 소스 checkpoint: 원격 `a48faf9ea` PC 브랜치의 소유 파일·자료·문서를 merge로 인수. `NativeGame.cs` inventory smoke 단일 충돌은 Mac U04B 영수증 두 필드와 기존 QA 장면을 보존해 해소했다. PC 원본의 기본 선택 해제 장면은 가져오지 않았다. 후속 2–12 hook 적용·Mac 컴파일은 다음 단계이며 13·14 충돌 보류. [소유 기록](engine/orders/WORK_BOARD.md).
 
 2026-10-26 Mac PC UI U08 hook 2→3: PC 소스 인수 후 `NativeGame.cs` 탭 요청 라우팅, `NativePauseMenu.cs` 설정 탭바 patch를 순서대로 문맥 검사·실제 적용. PC `NativePanelTabBar` 원본 blob 유지. 파일별 diff 검사 통과, 4–12/컴파일/Player는 다음 단계·13·14 충돌 보류. [연결표](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+
+2026-10-26 Mac PC UI hook 4→6: 원본 patch 순서로 스킬 스모크 focus 조정, 웹 창 단축키 G/J/F10, 인벤토리 선택 없음/G 무전환 스모크 기대값, 일시정지 TAB/K 요청을 Mac 소유 `NativeGame*`·`NativePauseMenu*`에 연결. 각 문맥 검사·적용 및 diff 검사 통과. OS 입력·Player 미판정; 7–12/13 경계 후속. [표](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).

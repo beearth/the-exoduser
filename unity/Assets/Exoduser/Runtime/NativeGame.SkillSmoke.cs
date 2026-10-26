@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort {
    yield return SkillCapture(output,"hud-actual-charge");
    StepInput(0,0,Simulation.Player.X+100,Simulation.Player.Y,false,false);check(!Simulation.Player.KiChargeActive&&Simulation.KiComboStep==3,"same Tick executor releases third strike");
    // Restore a normal starter, leaving the new screen ready for optional native key inspection.
-   ResetRun();menu=false;Running=true;SetSkills(true,6);Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);yield return SkillCapture(output,"skill-lmb-1080p");
+   ResetRun();SetGameFocus(true);pauseSmoke=false;menu=false;Running=true;SetSkills(true,6);Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);yield return SkillCapture(output,"skill-lmb-1080p");
    File.WriteAllText(Path.Combine(output,"skill-smoke.json"),JsonUtility.ToJson(new SkillSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
    if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-skill-smoke")>=0)Application.Quit(failures==0?0:2);
   }

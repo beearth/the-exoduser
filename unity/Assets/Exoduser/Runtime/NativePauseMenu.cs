@@ -83,7 +83,7 @@ namespace Exoduser.UnityPort
     if(MenuButton(new Rect(388,348,504,58),T("로비로 돌아가기","Return to lobby"),2,button))return PauseMenuCommand.ReturnLobby;
     if(MenuButton(new Rect(388,424,504,58),T("게임 종료","Quit game"),3,button))page=PausePage.Quit;
     GUI.Label(new Rect(364,524,552,58),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),muted);
-    GUI.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ / Tab 선택 · Enter 확인 · ESC 뒤로","↑↓ / Tab Select · Enter Confirm · ESC Back"),muted);
+    GUI.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리","↑↓ Select · Enter Confirm · ESC Back · TAB Inventory"),muted);
     return PauseMenuCommand.None;
    }
    finally { GUI.matrix=oldMatrix;GUI.color=oldColor;GUI.enabled=oldEnabled; }
@@ -94,7 +94,7 @@ namespace Exoduser.UnityPort
    string[] tabs={T("화면","Display"),T("소리","Audio"),T("조작 안내","Controls")};
    for(int i=0;i<tabs.Length;i++)if(MenuButton(new Rect(340+i*202,174,194,44),tabs[i],i,tab==i?activeTab:tabButton))tab=i;
    if(tab==0)DrawDisplay(fullscreen);else if(tab==1)DrawAudio();else DrawControls();
-   GUI.Label(new Rect(348,528,584,56),T("↑↓ / Tab 선택 · ←→ 값 조절 · Enter 확인\n","↑↓ / Tab Select · ←→ Adjust · Enter Confirm\n")+SettingsPersistenceNotice(),muted);
+   GUI.Label(new Rect(348,528,584,56),T("↑↓ 선택 · ←→ 값 조절 · Enter 확인\n","↑↓ Select · ←→ Adjust · Enter Confirm\n")+SettingsPersistenceNotice(),muted);
    if(MenuButton(new Rect(340,588,288,44),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
    if(MenuButton(new Rect(652,588,288,44),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
   }

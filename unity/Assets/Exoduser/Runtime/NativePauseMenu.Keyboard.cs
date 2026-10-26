@@ -14,9 +14,11 @@ namespace Exoduser.UnityPort
   {
    bool held=Input.GetMouseButton(0);foreach(var key in menuKeys)held|=Input.GetKey(key);navigation.ObserveReleased(held);
    if(!navigation.Focused||navigation.WaitingForRelease)return PauseMenuCommand.None;
+   // Web togglePanel: another window's key switches straight to that window (menu items move with the arrow keys only).
+   if(Input.GetKeyDown(KeyCode.Tab)){NativePanelTabBar.Request("invPanel");return PauseMenuCommand.None;}
+   if(Input.GetKeyDown(KeyCode.K)){NativePanelTabBar.Request("skillPanel");return PauseMenuCommand.None;}
    PauseKey? input=null;
    if(Input.GetKeyDown(KeyCode.Escape))input=PauseKey.Back;
-   else if(Input.GetKeyDown(KeyCode.Tab))input=Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift)?PauseKey.Previous:PauseKey.Next;
    else if(Input.GetKeyDown(KeyCode.UpArrow))input=PauseKey.Up;
    else if(Input.GetKeyDown(KeyCode.DownArrow))input=PauseKey.Down;
    else if(Input.GetKeyDown(KeyCode.LeftArrow))input=PauseKey.Left;

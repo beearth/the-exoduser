@@ -78,7 +78,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-character-story-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterStorySmoke());}
             else if(Array.IndexOf(args,"--unity-character-store-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterStoreSmoke());}
             else if(Array.IndexOf(args,"--unity-character-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterSmoke());}
-            else if(Array.IndexOf(args,"--unity-skill-smoke")>=0){menu=false;Running=false;StartCoroutine(SkillSmoke());}
+            else if(Array.IndexOf(args,"--unity-skill-smoke")>=0){pauseSmoke=true;menu=false;Running=false;StartCoroutine(SkillSmoke());}
             else if(Array.IndexOf(args,"--unity-ui-smoke")>=0){menu=true;Running=false;StartCoroutine(UiSmoke());}
             else if(Array.IndexOf(args,"--unity-language-menu-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LanguageMenuSmoke());}
             else if(Array.IndexOf(args,"--unity-canonical-world-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(CanonicalWorldSmoke());}
@@ -130,6 +130,7 @@ namespace Exoduser.UnityPort
             if(WaitForFrontendEntryInput())return;
             if(traceInventoryKeys)TraceInventoryKeys();
             if(!gameFocused){Running=false;return;}
+            if(HandlePanelHotkeys())return;
             if(menu||Simulation.Player.Hp<=0){
                 if(!pauseSmoke)ApplyPauseCommand(pauseMenu.PollKeys(Simulation.Player.Hp<=0,Screen.fullScreen));
                 UpdateViews();return;
@@ -310,6 +311,19 @@ namespace Exoduser.UnityPort
                     Debug.Log("[PanelTabBar] "+id+" window is not ported yet");
                     break;
             }
+        }
+        // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats (no Unity window yet: log only), F10 = settings toggle.
+        // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
+        bool HandlePanelHotkeys(){
+            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return false;
+            if(Input.GetKeyDown(KeyCode.G)){OnPanelRequested("forge");return true;}
+            if(Input.GetKeyDown(KeyCode.J)){OnPanelRequested("statPanel");return true;}
+            if(Input.GetKeyDown(KeyCode.F10)){
+                if(menu){if(gameFocused){menu=false;skillInputFence=true;Running=true;}}   // togglePanel('settings') while settings is open closes it
+                else OnPanelRequested("settings");
+                return true;
+            }
+            return false;
         }
         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}

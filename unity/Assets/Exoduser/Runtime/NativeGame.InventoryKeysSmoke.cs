@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort {
    if(Argument("-inventory-keys-phase")=="visual"){yield return InventoryKeysVisual(output);yield break;}
    var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
    SetGameFocus(true);SetInventory(true);Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);int tick=Simulation.TickCount;
-   var item=inventory.State.Selected;check(item!=null&&inventory.State.Bag.Contains(item),"opening selects first visible bag item");
+   check(inventory.State.Selected==null,"opening starts with no selection (web parity, R-9)");InventoryTestKey(InventoryKey.Right);var item=inventory.State.Selected;check(item!=null&&inventory.State.Bag.Contains(item),"first arrow key selects the first visible bag item");
    int count=inventory.State.Bag.Count;var prior=inventory.State.GetEquipped(InventoryComparison.TargetSlot(inventory.State,item));
    inventory.Navigation.ObserveReleased(false);yield return UiCapture(output,"inventory-compare-720p");
    InventoryTestKey(InventoryKey.Details);check(inventory.ShowingDetails,"C switches to selected item details");yield return UiCapture(output,"inventory-details-720p");
@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort {
    check(inventory.Navigation.Pane==InventoryPane.Bag&&ReferenceEquals(inventory.State.Selected,item),"unequipped item remains selected and visible");
    // Exercise the existing level rejection through the new input route; this is memory-only fixture data.
    int required=item.reqLv;item.reqLv=Simulation.Player.Level+1;InventoryTestKey(InventoryKey.Accept);check(inventory.State.Bag.Contains(item),"keyboard honors required level");item.reqLv=required;
-   InventoryTestKey(InventoryKey.SwitchPane);check(inventory.Navigation.Pane==InventoryPane.Equipment,"G moves to equipped pane");InventoryTestKey(InventoryKey.SwitchPane);check(ReferenceEquals(inventory.State.Selected,item),"G returns to selected bag item");
+   InventoryTestKey(InventoryKey.SwitchPane);check(inventory.Navigation.Pane==InventoryPane.Bag&&ReferenceEquals(inventory.State.Selected,item),"G no longer switches panes (web: G = forge)");
    InventoryTestKey(InventoryKey.Right);check(inventory.State.Selected!=null,"arrows keep a valid owned selection");
    Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);inventory.Navigation.ObserveReleased(false);yield return UiCapture(output,"inventory-compare-1080p");InventoryTestKey(InventoryKey.Details);inventory.Navigation.ObserveReleased(false);yield return UiCapture(output,"inventory-details-1080p");
    check(!Running&&tick==Simulation.TickCount,"all selection and equipment operations leave simulation paused");
