@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A04 es 긴 문구 배치 재검수 후보
+
+기존 실창 RETOUCH의 특성 제목·본문/직업 레일 겹침을 `CalcHeight` 기반 가변 행·라벨 높이와 우측 패널 내부 스크롤로 수리했다. 번역·폰트 크기·선택/저장·버튼 hitbox는 변경0. [수치·기존 증거](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md). ARM64 재빌드·ko/en/ja/es 실창 비교 전이므로 판정 대기.
+
 ## 2026-10-27 Mac A03/A04 통합 UI QA 판정
 
 고유 앱 source `8bcba21b4` ARM64 빌드 1회 Succeeded/오류0. 실창 ja 생성·이름 및 격리 QA 캐릭터 삭제 기본취소 Return/Esc 확인, 실제 삭제0. es 긴 시각선택 특성·클래스 라벨 겹침/잘림으로 **VISUAL VERDICT: RETOUCH**. CUA 좌표 클릭이 Unity 기존 버튼에도 적용되지 않아 A03 modal·뒤입력은 HOLD. [화면·PID·args·빌드 영수증](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
@@ -494,7 +498,3 @@ P1-002.C~H, P2-001a~k, P2-002a/b, P2-003a, P2-004a, P2-005a~d — main ad7f15777
 
 
 2026-10-25 공조후속: PC현재디스크index는v17이며UnitycapturedPC와SHA일치,실제실행창은미확인. Steam별도v22b/+0.400초를인게임에섞지않는다. 지원담당928cue/17컷데이터대조를인수했고최종영상승인은계속미확정. [경계·지원근거](../UNITY_SOURCE_BASELINE_20261024.md#2026-10-25-pcmac-공조-원본-대조-후속).
-## 2026-10-27 Mac A04 es 긴 문구 배치 재검수 후보
-
-기존 실창 RETOUCH의 특성 제목·본문/직업 레일 겹침을 `CalcHeight` 기반 가변 행·라벨 높이와 우측 패널 내부 스크롤로 수리했다. 번역·폰트 크기·선택/저장·버튼 hitbox는 변경0. [수치·기존 증거](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md). ARM64 재빌드·ko/en/ja/es 실창 비교 전이므로 판정 대기.
-

@@ -1,3 +1,5 @@
+2026-10-27 Mac A04 es 긴 문구 수리 후보: 특성 3행 제목·본문과 하단 5직업 라벨의 번역별 실제 높이를 측정해 순서대로 배치한다. 우측 패널은 직업 레일 위 8px 경계를 지키고 좁은 화면 초과분은 내부 스크롤로 표시한다. 문구·폰트 크기·버튼 hitbox·선택/수치/저장 로직은 그대로다. ARM64 실창 재검수 전이므로 시각 판정은 대기. [수치·범위](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
+
 2026-10-27 Mac A03/A04 QA 결과: source `8bcba21b4` 고유 ARM64 앱 1회 빌드 Succeeded/오류0/C# 오류·경고0(기존 UAC1001). CUA는 고유 창/PID·격리 args를 식별했고 ja 생성/이름, es 이름, QA 캐릭터 생성 후 Delete 기본취소 Return·Esc/실삭제0을 확인했다. es 긴 시각선택 특성·클래스 라벨은 겹침/잘림으로 RETOUCH. CUA 좌표 클릭이 기존 버튼에도 적용되지 않아 A03 패치노트 modal/뒤입력은 실창 미검증. [영수증·화면](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
 
 2026-10-27 Mac A03/A04 실창 검수 후보: `PortVerification.Build -a03a04UiQa true` 전용 ARM64 빌드 identity `EXODUSER A03 A04 QA` / `com.fordeargamers.exoduser.a03a04qa20261027`를 추가했다. 기존 Settings QA와 동시 사용을 거부하고 빌드 뒤 product/id/override를 복원한다. 별도 앱·새 절대 output·`--unity-frontend-review`로 QA 실행을 격리한다. 실제 빌드와 실창 판정은 후속 영수증에 기록한다. [계약](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
@@ -57221,5 +57223,3 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac PC UI hook 13→14 적응: 최신 PC 답신/대체 patch 없음. A24는 Mac `DiagnosticUiEnabled` 배지 조건만 문맥에 맞추고 구역 제목 첫 진입1회·실제 목표 수치 패널을 독립 연결(지역 총량 미이식). A26은 정상 로비 전원 버튼 뒤에 `NativeLobbyBuildLabels.Draw(913f)` 1회 삽입; 세계관/ATG 분기와 기존 debug preview 보존. 적용·정적 diff PASS, 화면·Player·컴파일은 다음 단계. [적응 근거](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
 2026-10-26 Mac PC UI hook 15→19: A26 flavor build 인자, A16 실행 중 키 설정/QA hook, B11 자동 물약 Simulation 틱·장비 입력·웹식 킬 드랍을 순서대로 연결. 설정 저장 schema v2·새 Player/빌드0. B11 일반 킬 RNG 1→2회(기존 악의+4 유지, hp 종류만 +1), 자동 회복 악의−1·기본CD420f. Mac oracle2438/0, Unity6000.6.7f1 비대화형 컴파일 exit0·CS오류/경고0(기존 UAC1001). 검사 중 `.meta` churn을 사전 상태로 복원. 코드 1–19 통합·컴파일 PASS, 실제 Player·키 입력·로비 라벨·자동 물약·저장 회귀 미검증. [전체 관문](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
-2026-10-27 Mac A04 es 긴 문구 수리 후보: 특성 3행 제목·본문과 하단 5직업 라벨의 번역별 실제 높이를 측정해 순서대로 배치한다. 우측 패널은 직업 레일 위 8px 경계를 지키고 좁은 화면 초과분은 내부 스크롤로 표시한다. 문구·폰트 크기·버튼 hitbox·선택/수치/저장 로직은 그대로다. ARM64 실창 재검수 전이므로 시각 판정은 대기. [수치·범위](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
-
