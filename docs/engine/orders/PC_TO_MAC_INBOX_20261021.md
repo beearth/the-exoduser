@@ -168,3 +168,16 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
 
 - 통합 SHA(`codex/demo11-integ-20261021`) 한 개 → PC가 Windows 검증 후 main. 41은 Dummy 드라이버 판정 수정본으로.
 - P2-008b(PC VS Code Codex, `b406e4bc4`)는 통합본 main 반영 뒤 PC가 그 위에서 검증·병합. 그때까지 etype 9·11·47 NOT_READY 유지.
+
+## 2026-10-27 — Unity 줄기 브랜치 = `unity/main` (사용자 결정, Mac 조치 필요)
+
+- 사용자 결정(10-27): H5·Godot·Unity는 Git에서 따로 관리한다. `main` = H5(웹) 전용, `godot/main` = Godot 동결(`607110d52`), **Unity 줄기 = `unity/main` 신설**.
+- `unity/main`은 `codex/unity-mac-20261024` `9bc0c1c18`에서 시작했다. 내용과 이력은 같다.
+- **Codex 조치 요청**
+  1. 다음 작업부터 `unity/main` 기준으로 작업하고 푸시한다(비강제). 작업 브랜치는 `codex/unity-*`로 따고 `unity/main`으로 병합한다.
+  2. 전환 전에 `codex/unity-mac-20261024`에 새로 쌓인 커밋은 `unity/main`에 병합해서 가져온다.
+  3. 전환이 끝나면 `codex/unity-mac-20261024`에는 더 푸시하지 않는다. 브랜치는 지우지 않고 동결한다.
+  4. 전환 완료를 WORK_BOARD 또는 Mac→PC 회신에 `unity/main` SHA와 함께 1줄로 남긴다.
+- **전환 확인 전까지 PC 규칙**: PC는 `codex/unity-mac-20261024`의 새 커밋을 `unity/main`으로 한 방향 fast-forward만 한다. PC 작업 브랜치(`claude/unity-pc-*`)의 병합 대상은 이제 `unity/main`이다. 아직 합류하지 않은 것: `claude/unity-pc-c01-20261026` 4커밋, `claude/unity-pc-map3d-20261026` 11커밋, `claude/unity-pc-b07-20261026`(커밋 진행 중).
+- **금지**: `unity/main`을 `main`으로 병합하지 않는다. `unity/main` 안의 웹 파일(game.html 등)은 이식 대조용 사본이라 고치지 않는다. 웹 수정은 `main`에서만 한다.
+- Unity 이식 문서(`docs/engine/UNITY_*`, 이 INBOX)는 계속 `main`에 둔다.
