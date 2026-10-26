@@ -58,3 +58,7 @@ Mac 현행 자막 JSON SHA256은 `32202897b58d1a1c29e149afaff8b32e9490633a1ae8b2
 | `ko` 복귀 | `지옥의 모든 괴물은… 한때, 어딘가의 누군가였다.` | `ko-return-cue20-720p.png` | 같은 큐 한국어 기본 스타일 복귀 |
 
 PNG는 `qa-followup/`에 보존했다. 이 판정은 cue20의 720p 가시 결과이며 전체 32큐·다른 해상도·정교한 Thai 성조 조형·`ar` RTL의 합격으로 확대하지 않는다. 이번 검수 Player는 모두 종료했고 기존 일반 Player PID `38141/48476/52157`는 살아 있었다. 원래 관측됐던 설정 QA PID `61637`은 종료 시점에 보이지 않았으며 이번 검수에서 조작하지 않았다.
+
+## 2026-10-26 아랍어 후보 경계
+
+이 문서의 `ko/en/id/ms/ar` 일반 IMGUI 기본·복귀 계약은 현재도 유지된다. `--unity-arabic-caption-preview`가 있는 QA 실행에서만 `ar` 세계관 본문을 별도 ATG RenderTexture로 합성한다. cue20 720p/1080p 가시 조형과 `ar→ko`를 확인했으나 cue31과 전체 32큐는 아직 인수하지 않았다. [별도 후보 기록](UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).

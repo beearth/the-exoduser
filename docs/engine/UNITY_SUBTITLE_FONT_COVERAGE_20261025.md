@@ -91,3 +91,7 @@ NativeLobby의 현재 font를 유지한 상태에서 FR 악센트 및 UK/JA/TH/A
 현재 `NativeLobby.UseNotoCaptionForLanguage`는 `es/fr/de/ptbr/it/ru/uk/pl/cs/hu/ro/bg/el/tr/vi/sv/da/no/fi/nl` 정확 20코드에 기존 `NativeCaptionNotoSerif`를 선택한다. `zh/zht/ja/th`는 각각 정적 Regular 400 지역 글꼴을 선택하고, 리소스가 없으면 기존 `NanumMyeongjo-Regular` 기본 스타일로 돌아간다. `ko/en/id/ms/ar`도 기본 스타일을 유지한다. `ar`의 RTL·결합·양방향 배치는 별도 미해결이다. 본문/그림자는 같은 언어 쌍에서 선택되며 높이 계산도 그 본문 스타일을 쓴다. 29언어 순서와 32큐 문구·시각·음향은 변경하지 않았다. 상세 자산·출처·검수는 [Mac 지역 자막 인수](UNITY_MAC_LOCALE_INTEGRATION_20261026.md)에 있다.
 
 2026-10-26 720p 후속: 새 빌드 없이 같은 ARM64 Player에서 `zh/zht/ja/th` 최장 cue20의 원문 전체·그림자·잘림 없음과 같은 큐 `ko` 복귀를 실제 PNG로 확인했다. 이전 `zht` 빈 프레임은 자막이 보이는 PNG로 보완했다. [지역 자막 화면 증거](UNITY_MAC_LOCALE_INTEGRATION_20261026.md).
+
+## 2026-10-26 아랍어 ATG 격리 후보
+
+위 Mac 20언어·지역 4언어 표의 **일반 실행 계약은 그대로**다. `--unity-arabic-caption-preview`로만 `ar` 자막을 UI Toolkit Advanced Text Generator와 동적 Noto Naskh Arabic FontAsset에 보낸다. 실제 ARM64에서 cue20 720p/1080p의 결합·RTL·잘림 없음, 메뉴 겹침 없음, `ar→ko` 복귀를 확인했다. 단독 Naskh cmap 누락 8문자/8큐와 마지막 영문 cue31의 Unity 실제 화면은 추가 검수가 필요하다. [후보 계약·증거](UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).

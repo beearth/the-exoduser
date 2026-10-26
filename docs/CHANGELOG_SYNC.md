@@ -57177,3 +57177,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac HEAD207ffc8 신규 ARM64 일반 Player: 정확한 worktree 소스/세 C# SHA를 빌드 전 고정, Unity6000.6.7f1 오류0·166파일1975013774B 산출, 새 일반 실행에서 UK `є`/`і` PNG·`ї` CUA관측, 로비 진단 버튼 숨김·우측 약한 상태 배경 확인. 메뉴 CUA 행 클릭은 미성공/OS좌표 미확정, 캐릭터 저장 전후SHA동일, 기존앱4개보존. 자동생성 meta 등은 백업 후 HEAD 바이트로 복원. I: 미마운트로 새 실행본/영수증은 고유 `_out`에 임시 보존. [영수증](engine/UNITY_MAC_HEAD_PLAYER_20261026.md).
 
 2026-10-26 같은 HEAD Player 입력·진입 후속: Retina 창 bounds/캡처 배율을 확인하고 CUA 선택기·행·휠 미성공, 바깥 클릭 닫힘·Esc 재입력·End 마지막 행 표시를 기록. 제품 원인 미입증으로 C# 변경/재빌드0. 재시작 실제 화면에서 FDG→실버테일 타이틀→문 전환→세계관→로비와 Space 5초 건너뛰기 확인, 첫 무음 구간 계약 보존·오디오 실측 범위 밖. 기존 4앱/저장 SHA 보존. [후속 검수](engine/UNITY_MAC_HEAD_PLAYER_20261026.md#후속-os-입력진입-순서-검수--같은-빌드).
+
+2026-10-26 Mac ar 세계관 자막 ATG 후보: 공식 Noto Naskh Arabic Regular/OFL, 동적 FontAsset·라틴 fallback·UI Toolkit Advanced/RTL을 `--unity-arabic-caption-preview` QA에 격리. ARM64 cue20 720/1080 결합·배치와 메뉴·ar→ko 확인, cue31/32큐 전체와 웹 배경폭 parity 보류. 일반 ar/다른28언어·원문JSON/시각 보존. IMGUI 글꼴 단독 시도는 결합 실패로 철회. [기록](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
