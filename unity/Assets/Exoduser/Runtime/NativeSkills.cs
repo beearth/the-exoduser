@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort {
   public void SetOpen(bool value,int slot=6){Open=value;if(value){int req=RequestedSlot();Select(req>=0?req:slot);}}
   public void Select(int slot){SelectedSlot=Mathf.Clamp(slot,0,12);selectedOrb=null;}
   public void HandleKeys(Action close,Action equip){
-   if(Input.GetKeyDown(KeyCode.K)){close();return;}
+   if(NativeKeyBindInput.Down("skill")){close();return;}   // A16: web BINDS.skill
    if(Input.GetKeyDown(KeyCode.LeftArrow))Select(SelectedSlot-1);
    if(Input.GetKeyDown(KeyCode.RightArrow))Select(SelectedSlot+1);
    if(Input.GetKeyDown(KeyCode.Home))Select(0);if(Input.GetKeyDown(KeyCode.End))Select(12);

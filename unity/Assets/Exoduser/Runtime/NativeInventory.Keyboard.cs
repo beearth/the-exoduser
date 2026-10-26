@@ -9,10 +9,10 @@ namespace Exoduser.UnityPort {
   static readonly KeyCode[] inventoryKeys={KeyCode.Tab,KeyCode.Escape,KeyCode.Return,KeyCode.KeypadEnter,KeyCode.LeftArrow,KeyCode.RightArrow,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.Home,KeyCode.End,KeyCode.C,KeyCode.PageUp,KeyCode.PageDown};
   public void SetFocus(bool focus){Navigation.SetFocus(focus);drag=null;dragging=false;}
   public bool PollKeys(int level){
-   bool held=Input.GetMouseButton(0)||Input.GetMouseButton(1);foreach(var key in inventoryKeys)held|=Input.GetKey(key);Navigation.ObserveReleased(held);
+   bool held=Input.GetMouseButton(0)||Input.GetMouseButton(1);foreach(var key in inventoryKeys)held|=Input.GetKey(key);held|=NativeKeyBindInput.Held("inventory");Navigation.ObserveReleased(held);   // A16: the inventory key is a web binding
    if(!Navigation.Focused||Navigation.WaitingForRelease)return false;
    InventoryKey? input=null;
-   if(Input.GetKeyDown(KeyCode.Tab)||Input.GetKeyDown(KeyCode.Escape))input=InventoryKey.Close;
+   if(NativeKeyBindInput.Down("inventory")||Input.GetKeyDown(KeyCode.Escape))input=InventoryKey.Close;   // web: BINDS.inventory toggles the window, ESC is the fixed back key
    else if(Input.GetKeyDown(KeyCode.LeftArrow))input=InventoryKey.Left;else if(Input.GetKeyDown(KeyCode.RightArrow))input=InventoryKey.Right;
    else if(Input.GetKeyDown(KeyCode.UpArrow))input=InventoryKey.Up;else if(Input.GetKeyDown(KeyCode.DownArrow))input=InventoryKey.Down;
    else if(Input.GetKeyDown(KeyCode.Home))input=InventoryKey.Home;else if(Input.GetKeyDown(KeyCode.End))input=InventoryKey.End;
