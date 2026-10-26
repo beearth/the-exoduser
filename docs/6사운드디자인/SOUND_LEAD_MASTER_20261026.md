@@ -29,6 +29,7 @@
 |---|---|
 | 생성 | 카탈로그 14종 × 후보 3개 = **42개 생성 완료** (`G:\exoduser-wt\_out\sfx_forge\<분류>\<key>\v1~v3.mp3`) |
 | 청음 페이지 | `G:\exoduser-wt\_out\sfx_forge\index.html` |
+| 1차 추천 | 2026-10-26 완료 — [SFX_FORGE_RECOMMEND_20261026.md](SFX_FORGE_RECOMMEND_20261026.md). 바로 채택 가능 8 · 가공 후 채택 4 · 재생성 권장 2(crit_heavy·button_confirm). 추천순 청음 페이지 `G:\exoduser-wt\_out\sfx_forge\review_20261026.html` |
 | 사용자 청음·선택 | **미완** — 선택 0건, `promote` 0건, 게임 매핑 0건 |
 | 대상 | skill 4(ki_slash_cast·giant_slam_cast·ice_orb_cast·spike_trap_cast) / hit 4(blade_flesh·blade_bone·parry_clang·crit_heavy) / ui 5(menu_open·menu_close·button_hover·button_confirm·skill_learn) / ambient 1(hell_forest_bed) |
 
@@ -66,3 +67,4 @@
 | 날짜 | 내용 |
 |---|---|
 | 2026-10-26 | 사운드 총괄 신설. 현황 실측, SND-D1~D3 기록, 백로그 SND-01~06 작성 |
+| 2026-10-26 | SND-01 1차 추천 작성(42후보 수치 측정 + 파형/스펙트로그램 눈 확인). 사용자 청음 대기 |
