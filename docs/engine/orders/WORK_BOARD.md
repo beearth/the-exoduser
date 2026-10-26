@@ -1,3 +1,7 @@
+## 2026-10-27 Mac 표시 릴리스 메타 원격 main 동기화
+
+원격 main `607110d52`의 최신 INBOX에 0.7.7 통합 표시 승인 없음. `release-version.json`(0.7.5/2026-10-20/ea-full, blob `528ad945f`) bytes만 Mac `release_web.json`으로 인수했다. 게임/미디어/app id/flavor 변경0, 새 Player build0. [원본 SHA·범위](../UNITY_MAC_RELEASE_METADATA_20261027.md). 현재 HEAD 전체 Editor Verify 영수증은 후속 기록.
+
 ## 2026-10-27 Mac A05 오류 뒤 수동 마지막 cue 후속
 
 오류 callback만은 완료0, 사용자 `NextCut()<0` 수동 마지막 cue는 오류 뒤에도 완료, 5초 hold는 별도 완료로 분리했다. 격리 Editor fixture 24/24 PASS. 고유 Settings QA ARM64 앱 1회 빌드 Succeeded/errors0. marker QA root에서 첫 실행 세계관 자연 종료→`cinSeen:true` revision2→3→동일 앱/루트 재시작 로비 직행 **Player PASS**; 키 리맵·패드 JSON 유지. [계약](../UNITY_MAC_A05_CINSEEN_20261027.md).
