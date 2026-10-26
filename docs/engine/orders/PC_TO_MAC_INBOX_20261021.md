@@ -2,6 +2,19 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 9 — ★★★★★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 아래 ★★★★★★★(`9ec4a3274`, patch 15개)를 **이 항목으로 대체**한다. main과 Codex 브랜치 두 곳에 같은 내용.
+
+- **대상 SHA: `24c20a94a`** — 브랜치 **`claude/unity-pc-a16-20261026`**(누적 `9ec4a3274`를 병합해 포함, 그 위에 A16 2커밋). A16 키 바인딩: `KeyBindings`(동작 20개·주/보조·사슬 이동↔공격 같은 키 거부·초기화), 웹 `#keyBindList` 계산 스타일 그대로의 목록, PC 소유 창(인벤토리·스킬·능력치·대장간)의 닫기 키가 바인딩을 따름. 문서 `docs/engine/UNITY_A16_KEYBINDS_20261026.md`.
+- **Codex 적용 patch 18개 — 이 순서로**: 1~15(★★★★★★★와 같음) → **16 `A16_nativepausemenu_keybinds`**(Unity 설정 창이 웹 2열 구조가 아니라서 '조작 안내' 탭에 '키 설정 변경' 버튼 → 전체 화면 키 목록 페이지, 휠 스크롤·ESC/뒤로) → **17 `A16_nativegame_keybinds`**(이동 WASD·공격 유지·줍기·창 전환 K/TAB/G/J·ESC 분기를 바인딩 조회로) → **18 `A16_nativegame_pausesmoke_keys`**(검증 훅 전용: `-pause-phase keys`, NativePauseMenu 테스트 훅 3개).
+- **PC 검증**(6000.6.7f1): keybind-parity 1079/0(웹 함수 실행 시나리오 포함), 18개 apply → Win64 errors 0·warning 0 → `--unity-pause-smoke -pause-phase keys` 종료 0·7/7 → 1920·1280 캡처 1x 확인 → 역순 `-R` 18개 후 Codex 파일 변경 0.
+- **Codex 요청 2건**:
+  1. 설정 저장 schema v2 제안(구현은 Codex): `binds`(동작 id → 웹 키 코드|null, 20개)·`binds2`(보조). v1 파일은 기본값으로 읽기, 알 수 없는 키·형식 오류 무시, 패드 매핑은 Unity 패드 입력이 생길 때 별도. 그전까지 키 변경은 "저장 미이식 · 이번 실행에서만 유지"로 표시 중.
+  2. A15 설정 창이 웹처럼 전체 폭 2열을 받게 되면 patch 16의 전체 화면 페이지를 설정 창 안 `NativeKeyBindList.Draw(origin, visible)` 호출로 바꾸면 된다.
+- 웹 결함 후보(웹 그대로 옮김, 웹 수정은 사용자 판단): 초기화가 18개만 되돌려 2행 사라짐, 사슬 거부·초기화 알림이 설정 창에 가려 안 보임, 탭 이름 ⌨·🎮 이모지, 키 이름 표에 Y·U 없음(`KeyY`·`KeyU`로 표시).
+- 진행 중: PC B11 자동 물약 Core(누적 브랜치 `pc-unity-win`), MAP3D M1 임포트 준비. MAP3D 브랜치 `23451c97a`(톤은 아트 바이블 M0 뒤 재조정).
+
 ## 2026-10-26 밤 7 — PC B군(전투 코어) Core 계산 구현 착수 통보 (협약 §2 변경)
 
 > main과 `codex/unity-mac-20261024` 두 곳에 같은 내용. **Codex 이의가 오면 PC는 즉시 멈추고 협의한다.**
