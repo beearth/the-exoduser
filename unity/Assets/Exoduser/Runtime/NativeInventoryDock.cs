@@ -100,10 +100,17 @@ namespace Exoduser.UnityPort {
             Rail(windowFrame,pbox,60,266);
         }
 
+        // Common web window tab bar (NativePanelTabBar): equipment page = full width preset, ossuary page = x548 w1330 preset.
         void DrawNavigation(float lx,float lw){
-            string[] tabs={"설정 [ESC]","인벤토리 [TAB]","대장간 [G]","스킬 [K]","능력치 [J]"};
-            // 1836 -> x 42,410,777,1145,1512 w 366; 1330 -> x 548,814,1081,1347,1614 w 264
-            for(int i=0;i<5;i++)PlateTab(new Rect(lx+i*(lw+2)/5f,48,(lw-8)/5f,39),tabs[i],12,i==1);
+            NativePanelTabBar.Draw(Page==PageOssuary?NativePanelTabBar.Preset.InventoryOssuary:NativePanelTabBar.Preset.Inventory,"invPanel");
+        }
+
+        // #invResBar: _L('악의: ')+G.mats (no digit grouping). Unity state = Simulation.Materials, the same value the status panel shows.
+        static string MaliceText(){var g=NativeGame.Instance;return g!=null&&g.Simulation!=null?"악의: "+g.Simulation.Materials:"악의: 미이식";}
+        // Relic sockets: web counts filled crystals / total sockets of the equipped items; Unity admits only socketless items, so this is 0 / 0 from state.
+        void SocketCounts(out int filled,out int total){
+            filled=0;total=0;
+            foreach(var it in State.Equipped)if(it!=null){total+=it.socketCount;if(it.crystals!=null)filled+=it.crystals.Length;}
         }
 
         void DrawHeaderLine(CombatPower power,float dx,Action close){
@@ -120,7 +127,7 @@ namespace Exoduser.UnityPort {
                 Txt(new Rect(bx,105,80,18),v,12,C(184,176,161),400);
                 bx+=TextWidth(v+" ",12,400);
             }
-            Txt(new Rect(948+dx/2f,102,200,24),"악의: 1000",12,C(204,190,165),400,TextAnchor.MiddleCenter);
+            Txt(new Rect(948+dx/2f,102,200,24),MaliceText(),12,C(204,190,165),400,TextAnchor.MiddleCenter);
             var closeRect=new Rect(1842,100,28,28);
             Fill(closeRect,C(39,19,16));Border(closeRect,C(134,94,67));
             if(closeRect.Contains(Event.current.mousePosition))Fill(closeRect,new Color(1,1,1,.07f));
@@ -194,7 +201,8 @@ namespace Exoduser.UnityPort {
             }
             int equipped=0;for(int i=0;i<State.Equipped.Length;i++)if(i!=15&&State.Equipped[i]!=null)equipped++;
             Fill(new Rect(62,924,671,1),C(136,116,83,.3f));
-            string[] names3={"장착 부위","유물 홈","전투력"};string[] vals={equipped+" / 16","0 / 0",power.Total.ToString()};float[] xs={62,286,509};  // dividers at web x=286/509 (cells start 285.5/509.1)
+            SocketCounts(out int sockFilled,out int sockTotal);
+            string[] names3={"장착 부위","유물 홈","전투력"};string[] vals={equipped+" / 16",sockFilled+" / "+sockTotal,power.Total.ToString()};float[] xs={62,286,509};  // dividers at web x=286/509 (cells start 285.5/509.1)
             for(int i=0;i<3;i++){
                 // .inv-equip-readout cells: 223.5px wide, padding 6px 10px, label 11px/500 (Nanum Myeongjo), value 16px/700, 1px divider rgba(136,116,83,.22).
                 TxtSerif(new Rect(xs[i]+(i>0?11:10),945.6f,100,15.4f),names3[i],11,C(168,154,129));
@@ -329,7 +337,8 @@ namespace Exoduser.UnityPort {
             var descCol=C(169,156,133);
             Txt(new Rect(1414.2f,259,360,20.4f),"장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니",12,descCol,400);
             Txt(new Rect(1414.2f,279.4f,360,20.4f),"다.",12,descCol,400);
-            string[] mk={"공격","방어","추가 효과","유물 장착"};string[] mv={power.Atk.ToString(),power.Def.ToString(),power.Extra.ToString(),"0 / 0"};
+            string[] mk={"공격","방어","추가 효과","유물 장착"};SocketCounts(out int relicFilled,out int relicTotal);
+            string[] mv={power.Atk.ToString(),power.Def.ToString(),power.Extra.ToString(),relicFilled+" / "+relicTotal};
             float[] mx={1414,1635,1414,1635},my={316,316,365,365};
             for(int i=0;i<4;i++){
                 var box=new Rect(mx[i],my[i],213,42);

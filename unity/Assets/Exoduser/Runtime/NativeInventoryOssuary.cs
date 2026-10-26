@@ -97,7 +97,7 @@ namespace Exoduser.UnityPort {
             IronTile(head,iron320,320);Grad(head,C(25,22,25,.30f),C(17,16,21,.45f));
             Fill(new Rect(head.x,head.y,head.width,1),C(98,88,70));Fill(new Rect(head.x,head.yMax-1,head.width,1),C(98,88,70));
             // Ossuary-category items only (bone parts are not collected yet): 0 / 300.
-            float x=573;string count="0";
+            float x=573;string count=State.Bag.FindAll(i=>i.slot=="ossuary").Count.ToString();   // ossuary-category items in the bag (Unity admits none)
             Txt(new Rect(x,204,300,23),"가방 (",14,C(222,212,192),500);x+=TextWidth("가방 (",14,500);
             Txt(new Rect(x,204,300,23),count,14,C(240,223,189),700);x+=TextWidth(count,14,700);
             Txt(new Rect(x,204,300,23),"/",14,C(222,212,192),500);x+=TextWidth("/",14,500);
@@ -173,7 +173,7 @@ namespace Exoduser.UnityPort {
             Serif(new Rect(999,204,300,21),"선대의 유골 콜렉션",14,C(224,206,176),true,.98f,TextAnchor.MiddleLeft,true);
             var chip=new Rect(1394,201,67,27);
             Fill(chip,C(9,11,14,.5f));Border(chip,C(111,88,59,.44f));Fill(new Rect(chip.x+1,chip.y+1,chip.width-2,2),C(0,0,0,.35f));
-            Serif(chip,"수집 0 / 4",11,C(201,181,147),true,0,TextAnchor.MiddleCenter);
+            Serif(chip,"수집 미이식",11,C(201,181,147),true,0,TextAnchor.MiddleCenter);
             Fill(new Rect(999,236,462,1),C(117,96,68,.44f));
             // ritual ring + centre + four bone nodes (everything uncollected)
             GUI.DrawTexture(new Rect(990,316,480,480),ossRing);
@@ -187,7 +187,7 @@ namespace Exoduser.UnityPort {
                 GUI.DrawTexture(new Rect(n.x-100,n.y-100,200,200),ossNode);
                 GUI.DrawTexture(boneImageRects[i],ossBone[i]);
                 Serif(boneNameRects[i],bonePartNames[i],15,C(221,206,180),true,.89f,TextAnchor.MiddleCenter,true);
-                Txt(boneGradeRects[i],"미수집",15,C(147,140,126),600,TextAnchor.MiddleCenter,true);
+                Txt(boneGradeRects[i],"미이식",15,C(147,140,126),600,TextAnchor.MiddleCenter,true);
             }
             // footer
             var foot=new Rect(999,876,462,38);
@@ -196,7 +196,7 @@ namespace Exoduser.UnityPort {
             Serif(new Rect(1154,885,100,23),"철갑 전대",15,C(224,205,174),true,1.5f,TextAnchor.MiddleLeft,true);
             var state=new Rect(1237,885,69,23);
             Fill(state,C(11,13,15,.6f));Border(state,C(116,96,61,.4f));
-            Serif(state,"유골 수집 중",10,C(170,158,133),false,0,TextAnchor.MiddleCenter);
+            Serif(state,"미이식",10,C(170,158,133),false,0,TextAnchor.MiddleCenter);
             var detail=new Rect(999,918,462,42);
             Fill(detail,C(8,10,11,.61f));Border(detail,C(117,96,68,.25f));
             Txt(detail,"부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.",11,C(192,179,155),400,TextAnchor.MiddleCenter);
@@ -234,9 +234,9 @@ namespace Exoduser.UnityPort {
             Grad(cap,C(128,103,67,.09f),C(0,0,0,0),90);Fill(new Rect(cap.x,cap.y,cap.width,1),C(117,96,68,.44f));
             Serif(new Rect(1507,719,200,13),"ANCESTOR · 01",9,C(184,156,104),true,1.8f);
             Serif(new Rect(1507,733,300,29),"철갑 전대",22,C(240,215,173),true,1.76f,TextAnchor.MiddleLeft,true);
-            Serif(new Rect(1507,764,200,17),"유골 수집 중",11,C(170,157,135));
+            Serif(new Rect(1507,764,200,17),"미이식",11,C(170,157,135));
             Serif(new Rect(1507,799,200,15),"유골 수집",11,C(188,174,149));
-            Serif(new Rect(1836,799,23,15),"0 / 4",11,C(232,210,168),true,0,TextAnchor.MiddleRight);
+            Serif(new Rect(1762,799,97,15),"미이식",11,C(232,210,168),true,0,TextAnchor.MiddleRight);
             var track=new Rect(1507,820,352,4);
             Fill(track,C(6,8,8));InsetRing(track,1,C(106,86,54,.376f));
             Txt(new Rect(1507,834,352,15),"네 부위를 모으면 전대 소환이 해금됩니다.",10,C(150,141,124),400);

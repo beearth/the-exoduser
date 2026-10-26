@@ -30,7 +30,10 @@ namespace Exoduser.UnityPort {
    if(!Open)return;Styles();var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
     GUI.matrix=Matrix4x4.identity;Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.76f));
-    float s=Mathf.Min(Screen.width/1280f,Screen.height/720f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*s)/2,(Screen.height-720*s)/2,0),Quaternion.identity,Vector3.one*s);
+    // Web common tab bar at its 1920x1080 skill-window position (U-08); the interim 1280x720 body sits below it at 1.4x until U-05 redraws the window.
+    float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);var baseM=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
+    GUI.matrix=baseM;NativePanelTabBar.Draw(NativePanelTabBar.Preset.Skill,"skillPanel");
+    GUI.matrix=baseM*Matrix4x4.TRS(new Vector3(64,72,0),Quaternion.identity,Vector3.one*1.4f);
     Surface(new Rect(40,32,1200,656),true);GUI.Label(new Rect(68,50,720,50),"스킬 · 전투 슬롯",title);
     if(Button(new Rect(1080,52,132,44),"닫기  ESC"))close();
     for(int i=0;i<13;i++){

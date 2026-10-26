@@ -1,0 +1,69 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.cs b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+index b9303e5..fd6e25b 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+@@ -47,6 +47,7 @@ namespace Exoduser.UnityPort
+             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
+             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
+             hud=new NativeHud();skills=new NativeSkills();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
++            NativePanelTabBar.Requested+=OnPanelRequested;
+             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
+             BuildProps();
+             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
+@@ -133,6 +134,8 @@ namespace Exoduser.UnityPort
+                 if(!pauseSmoke)ApplyPauseCommand(pauseMenu.PollKeys(Simulation.Player.Hp<=0,Screen.fullScreen));
+                 UpdateViews();return;
+             }
++            // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
++            if(inventory.Open&&!inventoryKeysSmoke&&Input.GetKeyDown(KeyCode.K)){OnPanelRequested("skillPanel");return;}
+             if(inventory.Open){if(!inventoryKeysSmoke&&inventory.PollKeys(Simulation.Player.Level))SetInventory(false);UpdateViews();return;}
+             if(skillInputFence&&!Input.GetMouseButton(0))skillInputFence=false;
+             if(Input.GetKeyDown(KeyCode.Escape)){
+@@ -141,6 +144,7 @@ namespace Exoduser.UnityPort
+                 else {menu=true;pauseMenu.Reset();Running=false;}
+                 return;
+             }
++            if(skills.Open&&Input.GetKeyDown(KeyCode.Tab)){OnPanelRequested("invPanel");return;}
+             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
+             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.K)){SetSkills(true);return;}
+             if(!menu&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.Tab))SetInventory(!inventory.Open);
+@@ -282,6 +286,31 @@ namespace Exoduser.UnityPort
+             skills.SetOpen(open,slot);
+             if(!open){skillInputFence=true;Running=skillsWasRunning&&!menu&&Simulation.Player.Hp>0;}
+         }
++        // Web _injectPanelNav: a tab click opens that window (openPanel closes the others first); the active tab is ignored by the bar itself.
++        // forge/statPanel have no Unity window yet.
++        void OnPanelRequested(string id){
++            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return;
++            switch(id){
++                case "settings":
++                    if(skills.Open)SetSkills(false);
++                    if(inventory.Open)SetInventory(false);
++                    if(!menu){menu=true;pauseMenu.Reset();Running=false;}
++                    break;
++                case "invPanel":
++                    if(skills.Open)SetSkills(false);
++                    if(menu){menu=false;Running=true;}
++                    if(!inventory.Open)SetInventory(true);
++                    break;
++                case "skillPanel":
++                    if(inventory.Open)SetInventory(false);
++                    if(menu){menu=false;Running=true;}
++                    if(!skills.Open)SetSkills(true);
++                    break;
++                default:
++                    Debug.Log("[PanelTabBar] "+id+" window is not ported yet");
++                    break;
++            }
++        }
+         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
+         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
+         void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);QueueSettingsSave();}
+@@ -387,6 +416,6 @@ namespace Exoduser.UnityPort
+         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
+         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
+         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
+-        void OnDestroy(){kiView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
++        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
+     }
+ }
