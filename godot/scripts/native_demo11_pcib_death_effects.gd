@@ -31,6 +31,11 @@ func _explode(c: Dictionary) -> Dictionary:
  return {"applied":true,"nested":nested,"visual_remaining":"source _addBoom fire expansion"}
 func _shots(c: Dictionary) -> Dictionary:
  var actor: Node=c.actor
+ # PC-ENEMY-ACTORS(2026-10-23): 일반(비보스) 자연 29 의 42819 _spawnBossProjectile 은 _emitEnemyShot 사망 전조(60)로 간다.
+ # 아래 보스 래퍼 경로(prepare_boss_props: ib 전용)는 비보스에서 거절되므로 G owner 가 같은 8발·난수 순서로 처리한다.
+ if actor.get("g_owner")!=null and is_instance_valid(actor.g_owner):
+  calls[29]+=1
+  return actor.g_owner.death_shots(c)
  var registry: Node=main.native_demo_boss_projectiles
  if not is_instance_valid(registry) or not c.rand is Callable:return {"applied":false,"reason":"actual_DEMO11_35_registry_or_rand_lost"}
  var frame: Dictionary={"serial":int(main.world._native_clock_updates),"sp":main.world._native_last_ticks,

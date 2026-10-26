@@ -34,7 +34,9 @@ func read_projectile_context() -> Dictionary:
 func spawn_selected(owner: Node,group: String,source: Dictionary) -> Dictionary:
  if not current() or owner!=main.world.get_node("NativeSpawnHoleSystem"):return _no("actual_source_MAP11_owner_required")
  var etype: Variant=source.get("etype")
- if etype in [3,7]:return natural_boundary(etype,group)
+ # PC-ENEMY-ACTORS(2026-10-23): 소환굴 일반 공급(35674 mkEn el=undefined, room=h.room)은 문지기(31613 _isGateGuard·HP×4·ATK×2·r×1.4·elite3)
+ # 생성자가 아니다. 3/7/29 소환굴 공급은 G 계열 일반 생성자로 인계하고, _build_guard 는 문지기 배치 owner 전용으로 남긴다.
+ if etype in [3,7,29]:return main.request_native_etype_g_spawn(owner,group,source)
  if etype!=29 or not etype is int:return _no("outside_E")
  var options: Dictionary=main.source_initialization_services.read_current_options()
  var g: Dictionary=main.source_state.read_current_g()

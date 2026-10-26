@@ -100,6 +100,9 @@ var _swing_ticks: float = 5.0
 var _knockback := Vector2.ZERO
 var _native_burns: Array[Dictionary] = []
 var _native_freeze_slow_ticks = 0.0
+# PC-ENEMY-ACTORS(2026-10-23): 원본 P._webSlow(거미줄 35086)·P._trapSlowT(덫 34701) — idle 보행 _webMul(33024).
+var _native_web_slow_ticks = 0.0
+var _native_trap_slow_ticks = 0.0
 var _native_combat_qe: Object
 var _native_q_control: Object
 var _native_resource_regeneration: Object
@@ -950,8 +953,11 @@ func _physics_process(delta: float) -> void:
 	if state == "idle" and switch_state == "idle":
 		# Native status components observe the actual entered idle checkpoint.
 		native_idle_status_tick.emit(ticks)
+		# 33007–33009 webSlow/freezeSlow/trapSlowT 감소 → 33024 _webMul=(freeze>0)?.5:(web>0||trap>0)?.5:1
+		if _native_web_slow_ticks > 0.0: _native_web_slow_ticks -= ticks
 		_native_freeze_slow_ticks = maxf(0.0, _native_freeze_slow_ticks - ticks)
-		if _native_freeze_slow_ticks > 0.0:
+		if _native_trap_slow_ticks > 0.0: _native_trap_slow_ticks -= ticks
+		if _native_freeze_slow_ticks > 0.0 or _native_web_slow_ticks > 0.0 or _native_trap_slow_ticks > 0.0:
 			speed_scale *= 0.5
 	velocity = move_input * _movement_speed * speed_scale
 	if is_instance_valid(_native_q_control):
@@ -1230,6 +1236,19 @@ func apply_native_freeze_slow(duration_ticks: float) -> bool:
 
 func get_native_freeze_slow_ticks() -> float:
 	return _native_freeze_slow_ticks
+
+## 35086 거미줄 명중 P._webSlow=90(대입). 원본처럼 iframes/상태와 무관하게 쓴다(호출자가 원문 게이트를 지킨다).
+func apply_native_web_slow(duration_ticks: float) -> void:
+	_native_web_slow_ticks = duration_ticks
+	telemetry_event.emit("native_web_slow_applied", {"ticks": duration_ticks})
+
+## 34701 덫 P._trapSlowT=~~(120*(1-min(.5,slowRes)))(대입). slowRes 어픽스 값은 호출자가 반영한다.
+func apply_native_trap_slow(duration_ticks: float) -> void:
+	_native_trap_slow_ticks = float(int(duration_ticks))
+	telemetry_event.emit("native_trap_slow_applied", {"ticks": _native_trap_slow_ticks})
+
+func get_native_web_trap_slow_ticks() -> Dictionary:
+	return {"web": _native_web_slow_ticks, "trap": _native_trap_slow_ticks}
 
 func apply_native_burn(total_damage: float) -> bool:
 	# Called after the existing redBean generic-contact path, independently
@@ -1867,5 +1886,7 @@ func commit_native_player_life(owner: Node, life: Object, fields: Dictionary) ->
 		# G63455 burnT/_rbBurn/_freezeSlow… — Godot 대응 필드: 화상 스택·빙결 둔화.
 		_native_burns.clear()
 		_native_freeze_slow_ticks = 0.0
+		_native_web_slow_ticks = 0.0 # 63458 P._webSlow=0;P._trapSlowT=0
+		_native_trap_slow_ticks = 0.0
 	_native_player_life_commits += 1
 	return {"accepted": true, "fields": fields.keys(), "commits": _native_player_life_commits}

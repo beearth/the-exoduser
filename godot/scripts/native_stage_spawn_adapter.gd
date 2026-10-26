@@ -146,9 +146,9 @@ func _record_unoriginated_kill(actor: Node2D) -> Dictionary:
 func snapshot() -> Dictionary:
  return {"bound":_bound,"context":_context.duplicate(),"groups":_groups.size(),"origins":_origins.size(),"site_requests":_requests,"actual_etype_registration":false,"dynamic_budget_changes":"HOLD_owner_receipts"}
 
-# C15 only: retain the parent's Marker origin and source offset/safePt. No budget growth.
+# C15 split + G 7/17 summon: retain the parent's Marker origin and source offset/safePt. No budget growth.
 func request_split_child(parent: Node2D, requested: Vector2) -> Dictionary:
- if not is_current() or not is_instance_valid(parent) or parent.etype!=15 or not _origins.has(parent.get_instance_id()):return _no("split_parent_origin_not_current")
+ if not is_current() or not is_instance_valid(parent) or parent.etype not in [15,7,17] or not _origins.has(parent.get_instance_id()):return _no("split_parent_origin_not_current") # PC-ENEMY-ACTORS: 7 eSummon·17 모체 자식도 같은 mkEn safePt
  var origin: Dictionary=_origins[parent.get_instance_id()]
  if origin.actor.get_ref()!=parent or parent.get_parent()!=_world:return _no("split_parent_identity_lost")
  var group: Dictionary=_groups[origin.group]

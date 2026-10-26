@@ -685,7 +685,7 @@ const NATURAL_REGISTRATIONS = {
 	26: {"actor":preload("res://scripts/native_demo11_etype_f_actor.gd"),"factory_method":"create_demo11_etype_f","prepared_record_only":true},
 	27: {"actor":preload("res://scripts/native_demo11_etype_f_actor.gd"),"factory_method":"create_demo11_etype_f","prepared_record_only":true},
 	28: {"actor":preload("res://scripts/native_demo11_etype_f_actor.gd"),"factory_method":"create_demo11_etype_f","prepared_record_only":true},
-	29: {"actor":preload("res://scripts/enemy_type29_gate_guard.gd"),"factory_method":"create_demo11_gate_guard","prepared_record_only":true},
+	29: {"actor":preload("res://scripts/enemy_type29_gate_guard.gd"),"selected_actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_gate_guard","prepared_record_only":true},
 	0: {"actor":preload("res://scripts/native_natural_enemy_actor.gd"),"selected_actor":preload("res://scripts/enemy_demo11_a_0.gd"),"template":"res://data/etype0_physical_flesh_crawler.json","factory_method":"create_demo11_a","prepared_record_only":true,"constructor":"build_natural_etype0_runtime","profile":FLESH_PROFILE,"radius_base":10.0,"source_color":"#dd4455"},
 	1: {"actor":preload("res://scripts/enemy_demo11_a_1.gd"),"template":"res://data/etype1_lightning_hive_bloater.json","source_ingress":"a","factory_method":"create_demo11_a","prepared_record_only":true},
 	4: {"actor":preload("res://scripts/enemy_demo11_a_4.gd"),"template":"res://data/etype4_physical_spine_beast.json","source_ingress":"a","factory_method":"create_demo11_a","prepared_record_only":true},
@@ -701,6 +701,16 @@ const NATURAL_REGISTRATIONS = {
 	23: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
 	24: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
 	25: {"actor":preload("res://scripts/native_demo11_etype_d_actor.gd"),"factory_method":"create_demo11_d","prepared_record_only":true},
+	# PC-ENEMY-ACTORS(2026-10-23): 자연 공급 G 계열 9종. 29 는 문지기 생성자와 분리된 일반 소환굴 29(selected_actor).
+	3: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
+	7: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
+	13: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
+	14: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
+	16: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
+	17: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
+	20: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
+	21: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
+	47: {"actor":preload("res://scripts/native_demo11_etype_g_actor.gd"),"factory_method":"create_demo11_etype_g","prepared_record_only":true},
 }
 func natural_registration(etype: int) -> Dictionary:
 	return NATURAL_REGISTRATIONS.get(etype,{}).duplicate()
@@ -734,6 +744,8 @@ func create_demo11_d(native_record: Dictionary, owner_world: Node2D, owner: Node
 
 # Profile constructors stay at their original source-owned implementation.
 func prepare_natural_profile(record: Dictionary,world: Node2D,component: Object) -> Dictionary:
+	# PC-ENEMY-ACTORS: G 계열 record(자연 29 포함)는 문지기 생성자보다 먼저 자기 생성자로 간다.
+	if record.get("ai_profile")=="demo11_group_g_v1":return create_demo11_etype_g(record,world,component)
 	var entry:=natural_registration(int(record.get("etype",-1)))
 	if not entry.get("prepared_record_only",false):return {"ready":false,"reason":"natural_profile_constructor_not_registered"}
 	return call(entry.factory_method,record,world,component)
@@ -781,4 +793,16 @@ func create_demo11_etype15(runtime: Dictionary, world: Node2D, component: Object
 	var actor: CharacterBody2D=NATURAL_REGISTRATIONS[15].actor.new()
 	actor.configure(runtime,world)
 	if not actor.is_native_registry_ready():actor.free();return {"ready":false,"reason":"C15_profile_rejected"}
+	return {"ready":true,"actor":actor}
+
+# PC-ENEMY-ACTORS(2026-10-23): G 계열 자연 공급 생성자. 실제 G owner(Demo11EtypeG) 준비 record 만 받는다.
+const DEMO11_ETYPE_G_TYPES := [3,7,13,14,16,17,20,21,47,29]
+const DEMO11_ETYPE_G_ACTOR := preload("res://scripts/native_demo11_etype_g_actor.gd")
+func create_demo11_etype_g(runtime: Dictionary,world: Node2D,component: Object) -> Dictionary:
+	if runtime.get("etype") not in DEMO11_ETYPE_G_TYPES or runtime.get("ai_profile")!="demo11_group_g_v1":return {"ready":false,"reason":"outside_G_registration"}
+	if component==null or component.get_script().resource_path!="res://scripts/native_demo11_etype_g_spawn.gd":return {"ready":false,"reason":"G_actual_owner_required"}
+	var actor=DEMO11_ETYPE_G_ACTOR.new()
+	actor.g_owner=component
+	actor.configure(runtime,world)
+	if not actor.is_native_registry_ready():actor.free();return {"ready":false,"reason":"G_profile_rejected"}
 	return {"ready":true,"actor":actor}

@@ -3681,6 +3681,12 @@ func request_native_map11_transition(route: String) -> Dictionary:
 func bind_native_map11_gate_owner(owner: Node) -> bool:
 	return is_instance_valid(native_map11) and native_map11.bind_gate_owner(owner)
 
+# PC-ENEMY-ACTORS(2026-10-23): G 계열(3·7·13·14·16·17·20·21·47 + 일반 소환굴 29) 자연 공급 owner.
+func request_native_etype_g_spawn(owner: Node,group_id: String,source: Dictionary) -> Dictionary:
+	var profile: Node=world.get_node_or_null("Demo11EtypeG")
+	if profile==null:profile=preload("res://scripts/native_demo11_etype_g_spawn.gd").install(self)
+	return profile.spawn_selected(owner,group_id,source)
+
 # DEMO11-enemy-base3: Mac guard actor and honest type3/7 natural boundary.
 func request_native_etype_e_spawn(owner: Node,group_id: String,source: Dictionary) -> Dictionary:
 	var profile: Node=world.get_node_or_null("Demo11EtypeE")

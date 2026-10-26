@@ -2,6 +2,7 @@ extends Node
 ## Sole natural constructor/admission/clock bridge; no HP/hurtP/parry writer.
 const Factory=preload("res://scripts/enemy_factory.gd")
 const Holes=preload("res://scripts/native_spawn_hole_system.gd")
+const G_NATURAL_TYPES:=[3,7,13,14,16,17,20,21,47,29] # PC-ENEMY-ACTORS: 29 = 일반 소환굴 29(문지기 생성자 아님)
 var main: Node
 var holes: Node
 var adapter: RefCounted
@@ -94,6 +95,8 @@ func spawn_selected(source_owner: Node,group: String,source: Dictionary) -> Dict
 	if not source.get("etype") is int:return _no("invalid_etype")
 	var entry:=factory.natural_registration(source.etype)
 	if entry.is_empty():return _no("natural_etype_not_registered:"+str(source.etype))
+	# PC-ENEMY-ACTORS: G 계열 9종 자연 공급(선택 etype 인계만, 재추첨·대체 0).
+	if source.etype in G_NATURAL_TYPES:return main.request_native_etype_g_spawn(source_owner,group,source)
 	if source.etype!=0:return _no("natural_profile_scheduler_HOLD:"+str(source.etype))
 	if (not source.get("elite") is int or source.elite!=0) or source.get("mods")!=[]:return _no("elite_modifier_owner_not_ready")
 	for key in ["el","element","element_id"]:
@@ -217,6 +220,7 @@ func emit_profile_projectile(actor: Node,origin: Vector2,profile: Dictionary) ->
 
 func permits_profile_element(actor: Node,props: Dictionary) -> bool:
 	var component: Node=projectile_component(actor)
+	if component!=null and component.get_script().resource_path=="res://scripts/native_demo11_etype_g_spawn.gd":return component.authorizes_props(actor,props) # PC-ENEMY-ACTORS: 원문 eProjAt 명시 원소(29 EL.I 등)
 	return component!=null and actor.etype==29 and component.get_script().resource_path=="res://scripts/native_demo11_etype_e_spawn.gd" and component.authorizes_props(actor,props)
 
 func admit_split_record(component: RefCounted,record: Dictionary,site: Dictionary) -> Dictionary:
