@@ -2,6 +2,13 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 — Unity 병합 요청 갱신 3: + U05 스킬 창 (`e651cef10`)
+
+- 바로 아래 `d18ac69ab` 요청을 **`e651cef10`로 대체**(같은 브랜치, +1커밋 PC-U05/A12).
+- 내용: `NativeSkills.cs` 웹 스킬 창 배치(웹 3D 제단 원판 정지 캡처 바탕, 정의는 웹·상태는 Unity, 없는 상태는 "미이식"), `Resources/Data/skill_defs_web.json`, 아이콘 파생 96장, `Tools/skill-ui` 342 pass.
+- **Codex 적용 요청 patch 추가**: `docs/engine/unity_patches/U05_nativegame_skill_smoke_focus.patch` — 스킬 스모크를 `pauseSmoke`처럼 OS 포커스와 무관하게(해상도 변경 중 포커스를 잃으면 `menu=true`가 남아 `close restores play` 검사가 흔들림). 적용 순서: U04B → U08(nativegame, pausemenu) → U05. 모두 `git apply --check` 통과.
+- 비교: `docs/engine/unity_pc_win_refs/skill_u05_lmb.jpg`. 보고서 `docs/engine/UNITY_PC_SKILL_WINDOW_U05_20261026.md`.
+
 ## 2026-10-26 — Unity 병합 요청 갱신 2: + U08 공통 탭바 (`d18ac69ab`)
 
 - 바로 아래 `c2fdfc158` 요청을 **`d18ac69ab`로 대체**(같은 브랜치 `claude/unity-pc-inventory-u04-20261026`, +1커밋 PC-U08/A07).
