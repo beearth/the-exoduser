@@ -15,6 +15,14 @@
 
 두 번째 ARM64 후보 `ace149c9c`는 1280×720 실창에서 es 제목/본문의 직접 겹침을 없앴으나, 세 번째 본문까지 보려면 패널 스크롤이 필요했고 세로 스크롤바 때문에 가로 스크롤바도 생겼다. ko/en/ja 특성은 직접 겹치지 않았고, ja/es 레일은 클래스와 출시 문구의 줄 정렬을 더 다듬을 필요가 있었다. 세 번째 후보 `9774d2cf7`는 스크롤 내용 폭을 viewport보다 18px 좁히고 본문 폭도 2px 줄여 가로 스크롤을 제거했다. 스페인어 `Próximamente`는 13px 굵은 글꼴의 98px 레일에서 두 줄이 18px Rect 안에 잘리는 것을 확대 화면에서 확인했다. 출시 안내만 11px 일반 굵기의 단일 줄 스타일로 고치고 클래스 글꼴 13px와 링/버튼 Rect는 유지한다. `-screen-width 1024 -screen-height 576` 요청 실행도 창 캡처는 1280×784(내용 1280×720)로 남아 1024×576 화면 증거로 쓰지 않는다. 원인 확인·첫 화면 증거는 아래 첫 QA 결과를 따른다. 수정 후보의 ARM64 실창 재검수 전이므로 아직 VISUAL PASS로 바꾸지 않는다.
 
+## 최종 재검수 판정 — source `c03f20489`
+
+Unity 6000.6.7f1 고유 QA identity의 ARM64 네 번째 후보 `build4`는 `passed=true`, `Succeeded`, errors 0, C# `error CS`/`warning CS` 0이다. 기존 UAC1001만 남았다. 실제 1280×720 내용(캡처 1280×784)의 `es-release-final.png`에서 세 특성 제목/본문은 서로 겹치지 않고 패널 경계 안에 있으며, 가로 스크롤바는 없다. 넘치는 내용은 세로 스크롤바로 표시한다. 확대 캡처 `es-release-final-rail-crop.png`에서 네 `Próximamente`가 한 줄로 보이고 클래스 이름과 겹치거나 잘리지 않는다. 최종 `ko-final.png`, `en-final.png`, `ja-final.png`도 같은 1280×720 내용에서 특성·클래스/출시 안내의 직접 겹침이 없다. **A04 목표 es 1280×720 VISUAL VERDICT: PASS.** 버튼 클릭·스크롤 조작의 기능 PASS는 이 화면 증거만으로 주장하지 않는다.
+
+`-screen-width 1024 -screen-height 576`로 다시 실행해도 캡처는 1280×784였고, 그 시도는 이전 언어 선택 상태 때문에 노르웨이어를 표시했다. 해당 파일 `es-final-1024.png`는 좁은 화면 및 es 증거에서 제외한다. 1024×576 화면, 그 화면의 버튼 hitbox·스크롤 조작·패널 경계는 **HOLD**다. CUA 좌표 입력은 앞선 동일 QA 앱의 기본 버튼에도 작동하지 않았고 이번 scroll 시도도 시각 변화가 없어 A03 패치노트 modal/뒤입력 차단 GUI 관문도 **HOLD**다. 물리 마우스 실패로 추론하지 않는다.
+
+실행 파일에 직접 `--unity-frontend-review -output <QA>`를 지정해 띄운 PID 16974, 17150, 17362, 17389, 17550과 별개로 CUA app binding 뒤 같은 고유 QA build 경로의 무플래그 PID 16978, 17169, 17363, 17551이 확인됐다. CUA가 LaunchServices를 통해 만든 것인지 원인은 미확정이며, 따라서 실창 캡처의 격리 인자 귀속과 저장 회귀는 주장하지 않는다. 이 네 PID를 명시적으로 종료했고 종료 후 QA 실행 프로세스는 0, 기존 사용자 앱 PID38141·48476·52157은 계속 실행 중이다. 원래 사용자 파일은 열지 않았다. Unity import가 변경한 tracked 413개는 `build4-generated.patch`에, 신규 2개는 `build4-generated-untracked.tar.gz`에 보존한 뒤 HEAD bytes로 복원했다. Git reset/checkout은 사용하지 않았다.
+
 ## QA 후보 빌드 계약
 
 `PortVerification.Build`의 `-a03a04UiQa true`는 이번 통합 UI 검수 전용이다. `-settingsQa true`와 동시 지정은 거부한다. `StandaloneOSX`는 기존대로 ARM64, 출력명은 고유 `_out` 아래 `EXODUSER-Unity.app`이다. 이 QA 분기에서만 productName `EXODUSER A03 A04 QA`, applicationIdentifier `com.fordeargamers.exoduser.a03a04qa20261027`, identifier override `true`로 빌드하고 `finally`에서 원래 product/id/override를 복원한다. 빌드 영수증에 `uiQa`·product·identifier·architecture를 기록한다. 일반 빌드와 기존 Settings QA의 값은 그대로다.
