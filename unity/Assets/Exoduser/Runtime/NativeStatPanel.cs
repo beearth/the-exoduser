@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort {
   Font serif,cinzel,sans,sansSemi;Texture2D baseTex,plate;bool ready;GUIStyle searchStyle;
   // UI state (selection / filters / camera); no gameplay state lives here.
   string selected="pAtk",selectedStat,pathId="all",filter="all",search="";int selectedRank;
-  float zoom=1,panX,panY,detailScroll;bool searchFocused,blurSearch;
+  float zoom=1,panX,panY,detailScroll;bool searchFocused,blurSearch,detailDrag;string hover,forcedHover;
   bool dragging,moved;Vector2 dragStart,panStart;string pressed;float detailContent;
 
   public NativeStatPanel(){
@@ -190,7 +190,7 @@ namespace Exoduser.UnityPort {
     ClampPan();
     HandleTreeInput();
     // The tree is drawn straight over the still and the still is then re-drawn around the viewport (IMGUI groups break rotated quads).
-    DrawTree();CoverAround(new Rect(Viewport.x+1,Viewport.y+1,Viewport.width-2,Viewport.height-2));
+    DrawTree();CoverAround(new Rect(Viewport.x+1,Viewport.y+1,Viewport.width-2,Viewport.height-2));DrawPreview();
     NativePanelTabBar.Draw(NativePanelTabBar.Preset.Stat,"statPanel");
     DrawHeader();DrawLeft();DrawToolbar();DrawInspector();DrawFooter(close);
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
@@ -283,6 +283,7 @@ namespace Exoduser.UnityPort {
   void DrawTree(){
    float sc=Scale,ns=NodeScale;var inner=new Rect(Viewport.x+1,Viewport.y+1,Viewport.width-2,Viewport.height-2);
    {
+    hover=forcedHover??(!dragging&&Viewport.Contains(Event.current.mousePosition)?HitNode(Event.current.mousePosition):null);
     var route=new HashSet<string>(Route(SelectedKey));
     Color linkC=C(166,152,118,.72f),routeC=C(240,204,137);float lw=Mathf.Max(1f,1.35f*sc),rw=Mathf.Max(1.4f,2.5f*sc);
     // body links (parent -> node), then rank links
@@ -297,6 +298,13 @@ namespace Exoduser.UnityPort {
      bool onRoute=SelectedKey==st.key&&selectedStat==null&&st.rank<=Mathf.Max(1,selectedRank);
      if(!vis)Line(a,b,lw,C(166,152,118,.08f));else if(onRoute){Line(a,b,rw+4*sc,C(239,184,97,.22f));Line(a,b,rw,routeC);}else Line(a,b,lw,linkC);
     }
+    if(hover!=null){
+     // .growth-tree-links path.preview: dashed bone line along the hovered node's route (and its rank chain)
+     string hk=hover;int hr=0;int hat=hover.IndexOf('@');if(hat>0){hk=hover.Substring(0,hat);hr=int.Parse(hover.Substring(hat+1));}
+     var hroute=new HashSet<string>(Route(hk));var pc=C(236,224,189,.9f);float pw=Mathf.Max(1.4f,2.2f*sc);
+     foreach(var kv in parentOf){if(string.IsNullOrEmpty(kv.Value)||!hroute.Contains(kv.Key))continue;DashLine(ToWin(point[kv.Value]),ToWin(point[kv.Key]),pw,pc,4*sc,4*sc);}
+     foreach(var l in defs.starLinks){var st=starById[l.to];if(st.key==hk&&hr>0&&st.rank<=hr)DashLine(ToWin(point[l.from]),ToWin(point[l.to]),pw,pc,4*sc,4*sc);}
+    }
     DrawOrigin(sc);
     foreach(var st in defs.stars)if(StarVisible(st))DrawStar(st,sc);
     StatDefsNode top=null;
@@ -309,6 +317,10 @@ namespace Exoduser.UnityPort {
      Text(new Rect(box.x,box.y+39,box.width,25),"필터를 바꿔보세요.",sans,14,C(186,168,142),FontStyle.Normal,0,TextAnchor.MiddleCenter);
     }
    }
+  }
+  void DashLine(Vector2 a,Vector2 b,float w,Color col,float dash,float gap){
+   var d=b-a;float len=d.magnitude;if(len<.01f)return;var u=d/len;
+   for(float t=0;t<len;t+=dash+gap)Line(a+u*t,a+u*Mathf.Min(len,t+dash),w,col);
   }
   void DrawOrigin(float sc){
    var c=ToWin(SceneCenter);float r=13.5f*sc;
@@ -345,6 +357,40 @@ namespace Exoduser.UnityPort {
    if(Click(minus)&&zoom>1f)SetZoom(zoom-.25f);if(Click(reset))SetZoom(1f);if(Click(plus)&&zoom<2.5f)SetZoom(zoom+.25f);
   }
 
+  // .growth-node-preview: name + rank, "현재 → 다음" and up to two contribution rows. Node/attribute hover shows state values (미이식);
+  // a rank star shows the definition values of that rank (per-rank contribution table).
+  string FmtEffect(StatDefsEffect e,string key,float level){
+   float v=e.@base+e.per*Mathf.Max(0f,level);if(e.cap>=0)v=Mathf.Min(v,e.cap);
+   if(key=="pDemon"&&e.unit=="s")v=Mathf.Max(100f,v);v=Mathf.Round(v*10000f)/10000f;
+   if(e.unit=="×")return "×"+v.ToString("0.00");
+   return v.ToString("#,0.####")+(e.unit=="s"?"초":e.unit);
+  }
+  void DrawPreview(){
+   if(hover==null)return;
+   string cluster=hover;int rank=0;int at=hover.IndexOf('@');if(at>0){cluster=hover.Substring(0,at);rank=int.Parse(hover.Substring(at+1));}
+   var n=nodeByKey[cluster];bool stat=n.kind=="stat";
+   string title=Name(n)+(rank>0?" · Lv. "+rank:"");
+   string rankText=rank>0?rank+" / "+n.max:stat?NotPorted+" SP":NotPorted+" / "+n.max;
+   int rows=Mathf.Min(2,n.effects.Length);float W=380,H=96+rows*37.4f;
+   var c=ToWin(rank>0?point[hover]:new Vector2(n.x,n.y));
+   float half=rank>0?10*Scale:(n.major?27f:22f)*Scale*NodeScale;
+   float x=c.x+half+16;if(x+W>Viewport.xMax-12)x=c.x-half-W-16;float y=c.y-H/2;
+   x=Mathf.Clamp(x,Viewport.x+12,Viewport.xMax-W-12);y=Mathf.Clamp(y,Viewport.y+12,Viewport.yMax-H-12);
+   var box=new Rect(x,y,W,H);
+   Fill(new Rect(x-8,y+6,W+16,H+14),C(0,0,0,.2f));Fill(new Rect(x-3,y+3,W+6,H+8),C(0,0,0,.2f));
+   Fill(box,C(215,180,122));Fill(new Rect(x+2,y+2,W-4,H-4),C(18,25,21,.98f));
+   Text(new Rect(x+18,y+16,300,30),title,serif,20,C(227,215,190),FontStyle.Bold);
+   Text(new Rect(x+18,y+16,346,25.2f),rankText,serif,14,C(200,170,121),FontStyle.Normal,0,TextAnchor.MiddleRight);
+   Text(new Rect(x+18,y+56,346,21),"현재 → 다음",sans,14,C(158,140,113),FontStyle.Normal,0,TextAnchor.MiddleRight);
+   for(int i=0;i<rows;i++){
+    float ry=y+81+i*37.4f;var e=n.effects[i];
+    Fill(new Rect(x+18,ry,346,1),C(142,117,67,.17f));
+    Text(new Rect(x+18,ry+6,200,26.4f),e.ko,sans,16,C(227,215,190));
+    string val=rank>0?FmtEffect(e,n.key,rank-1)+" → "+FmtEffect(e,n.key,rank):NotPorted+" → "+NotPorted;
+    Text(new Rect(x+18,ry+8,346,22),val,serif,18,C(228,199,144),FontStyle.Normal,0,TextAnchor.MiddleRight);
+   }
+  }
+
   // ---- inspector ----
   void DrawInspector(){
    bool isStat=selectedStat!=null;var n=nodeByKey[SelectedKey];var path=isStat?null:PathOfKey(n.key);
@@ -379,7 +425,7 @@ namespace Exoduser.UnityPort {
     float ty=y,rows=46.7f;
     var eff=n.effects;var heights=new float[eff.Length];
     for(int i=0;i<eff.Length;i++){var lines=Wrap(eff[i].ko,sans,18,250);heights[i]=34f+lines.Count*27.9f;rows+=heights[i];}
-    Border(new Rect(x0,ty,w,rows+2),C(105,81,55));
+    Fill(new Rect(x0,ty,w,1),C(105,81,55));Fill(new Rect(x0,ty+rows+1,w,1),C(105,81,55));   // .growth-effects-table: 1px top/bottom borders only
     Text(new Rect(x0,ty+13,252,21.7f),isStat?"투자분의 기본 기여":"패시브 기여",sans,14,C(201,187,165),FontStyle.Normal,.56f);
     Text(new Rect(x0+264,ty+13,38,21.7f),"현재",sans,14,C(196,183,166),FontStyle.Normal,.56f);
     Text(new Rect(x0+314,ty+13,42,21.7f),third,sans,14,C(196,183,166),FontStyle.Normal,.56f);
@@ -395,18 +441,33 @@ namespace Exoduser.UnityPort {
     y=ty+rows+10;
     y+=Paragraph(new Rect(x0,y,w,100),n.noteKo,sans,18,C(213,200,182),30.6f);
     detailContent=y+detailScroll+10;
-    // scrollbar (web overflow:auto, thumb only when the content overflows)
-    float overflow=detailContent-rect.height;
-    if(overflow>0){
-     float track=rect.height-8,thumb=Mathf.Max(30,track*rect.height/detailContent),pos=4+(track-thumb)*(detailScroll/overflow);
-     Fill(new Rect(rect.width-9,pos,5,thumb),C(143,121,87));
-    } else detailScroll=0;
+    if(detailContent-rect.height<=0)detailScroll=0;
    } finally {GUI.matrix=oldM;}
    CoverRect(new Rect(1466,318,418,61));CoverRect(new Rect(1466,rect.yMax,418,992-rect.yMax));
+   DrawDetailScrollbar(rect);
    // the still carries the passive title: blank it with a plain patch of the same panel, then draw the current one
    GUI.DrawTextureWithTexCoords(new Rect(1489,336,160,30),baseTex,new Rect(1689f/1920f,1f-366f/1080f,160f/1920f,30f/1080f),false);
    Text(new Rect(1489,339,372,24),isStat?"능력치 분석":"패시브 분석",sans,16,C(213,194,162),FontStyle.Normal,2.56f);
    DrawActions(isStat);
+  }
+  // Web overflow:auto thin scroll bar (same face as the inventory lists): 10px track, 6px thumb, arrow tips; only when the content overflows.
+  void DrawDetailScrollbar(Rect rect){
+   float total=detailContent,view=rect.height,max=total-view;if(max<=0){detailDrag=false;return;}
+   var track=new Rect(rect.xMax-10,rect.y,10,view);
+   float inner=view-24f,thumbH=Mathf.Max(20f,inner*view/total),travel=inner-thumbH;
+   float thumbY=track.y+12+travel*Mathf.Clamp01(detailScroll/max);var thumbCol=C(124,111,88);
+   Fill(track,C(18,17,19));Fill(new Rect(track.x+2,thumbY+1.5f,6,thumbH-3),thumbCol);Fill(new Rect(track.x+3,thumbY,4,thumbH),thumbCol);
+   float[] aw={2,4,4,6};
+   for(int k=0;k<aw.Length;k++){
+    Fill(new Rect(track.x+5-aw[k]/2f,track.y+2+k,aw[k],1),thumbCol);
+    Fill(new Rect(track.x+5-aw[aw.Length-1-k]/2f,track.yMax-6+k,aw[aw.Length-1-k],1),thumbCol);
+   }
+   var ev=Event.current;
+   if(ev.type==EventType.MouseDown&&ev.button==0&&track.Contains(ev.mousePosition)){detailDrag=true;ev.Use();}
+   if(detailDrag&&(ev.type==EventType.MouseDown||ev.type==EventType.MouseDrag)){
+    float t=Mathf.Clamp01((ev.mousePosition.y-track.y-12-thumbH/2)/Mathf.Max(1f,travel));detailScroll=t*max;ev.Use();
+   }
+   if(ev.type==EventType.MouseUp)detailDrag=false;
   }
   void DrawActions(bool isStat){
    // The upgrade/refund buttons keep the web shapes (in the still); they do nothing yet (auto-invest reservation / refund plan are not ported).
@@ -441,6 +502,7 @@ namespace Exoduser.UnityPort {
     yield return Shot("unity-stat-default");
     panel.SelectNode("pDot",0);yield return Shot("unity-stat-node");
     panel.SelectNode("str",0);yield return Shot("unity-stat-node-stat");
+    panel.forcedHover="pDot";yield return Shot("unity-stat-hover-node");panel.forcedHover="pDot@3";yield return Shot("unity-stat-hover-star");panel.forcedHover="str";yield return Shot("unity-stat-hover-stat");panel.forcedHover=null;
     panel.SelectPath("survival");yield return Shot("unity-stat-path-survival");
     panel.SelectPath("all");panel.filter="learned";yield return Shot("unity-stat-tab-learned");
     panel.filter="all";panel.SetZoom(1.25f);yield return Shot("unity-stat-zoom125");

@@ -99,17 +99,15 @@ namespace Exoduser.UnityPort {
             // Ossuary-category items only (bone parts are not collected yet): 0 / 300.
             float x=573;string count=State.Bag.FindAll(i=>i.slot=="ossuary").Count.ToString();   // ossuary-category items in the bag (Unity admits none)
             Txt(new Rect(x,204,300,23),"가방 (",14,C(222,212,192),500);x+=TextWidth("가방 (",14,500);
-            Txt(new Rect(x,204,300,23),count,14,C(240,223,189),700);x+=TextWidth(count,14,700);
+            Serif(new Rect(x,204,300,23),count,14,C(240,223,189),true);x+=SerifWidth(count,14,true,0);
             Txt(new Rect(x,204,300,23),"/",14,C(222,212,192),500);x+=TextWidth("/",14,500);
-            Txt(new Rect(x,204,300,23),InventoryState.BagMax.ToString(),14,C(169,157,135),500);x+=TextWidth("300",14,500);
+            Serif(new Rect(x,204,300,23),InventoryState.BagMax.ToString(),14,C(169,157,135),false);x+=SerifWidth("300",14,false,0);
             Txt(new Rect(x,204,300,23),")",14,C(222,212,192),500);
             var sort=new Rect(836,201,66,28);
             PlateFace(sort,false);
-            var ar=C(199,190,173);float ax=850;
-            Line(new Vector2(ax,209),new Vector2(ax,223),1.3f,ar);Line(new Vector2(ax,209),new Vector2(ax-3,212.5f),1.3f,ar);Line(new Vector2(ax,209),new Vector2(ax+3,212.5f),1.3f,ar);Line(new Vector2(ax,223),new Vector2(ax-3,219.5f),1.3f,ar);Line(new Vector2(ax,223),new Vector2(ax+3,219.5f),1.3f,ar);
-            Txt(new Rect(863,201,36,28),"정렬",12,C(199,190,173),500,TextAnchor.MiddleLeft,true);
-            Border(new Rect(906,207,41,17),C(84,74,59,.7f));
-            Txt(new Rect(906,207,41,17),"최대",11,C(184,170,145),400,TextAnchor.MiddleCenter);
+            Txt(sort,"↕ 정렬",12,C(199,190,173),500,TextAnchor.MiddleCenter,true);
+            Fill(new Rect(906,207,1,17),C(117,98,71,.4f));
+            Serif(new Rect(915,207,30,17),"최대",11,C(184,170,145),false);
             var filter=new Rect(565,246,390,32);
             Grad(filter,C(65,50,34,.314f),C(20,17,21,.533f),90);Border(filter,C(81,70,56));
             var chev=C(170,150,115);Line(new Vector2(578,257),new Vector2(583,262),1.4f,chev);Line(new Vector2(583,262),new Vector2(578,267),1.4f,chev);
@@ -126,7 +124,7 @@ namespace Exoduser.UnityPort {
             var a=C(39,36,37,.565f);var b=C(18,17,20,.85f);
             for(int y=first;y<last;y++)for(int x=0;x<10;x++){
                 var r=new Rect(x*cell,y*cell,cell,cell);
-                Grad(r,a,b,145);Border(r,C(56,54,56));DiamondOutline(r.center,9.5f,C(120,112,100,.20f));
+                IronTile(r,iron320,240);Grad(r,a,b,145);Border(r,C(56,54,56));DiamondOutline(r.center,9f,C(157,141,99,.125f));
             }
             GUI.EndScrollView();
             float maxScroll=total-gh;

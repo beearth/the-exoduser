@@ -187,7 +187,7 @@ namespace Exoduser.UnityPort {
             IronTile(pane,iron480,480);Grad(pane,C(12,11,13,.867f),C(16,16,18,.91f));
             GUI.BeginGroup(pane);Glow(pane.width*.5f,pane.height*.58f,pane.width*.452f,pane.height*.525f,C(101,80,61,.19f));GUI.EndGroup();
             Rail(pane,6,41);
-            Txt(new Rect(62,199,671,28),"장착 중",12,C(209,193,163),400);
+            TxtSp(new Rect(62,192,671,28),"장착 중",12,C(209,193,163),500,3f);   // web glyph rows 200-212, letter-spacing 3px
             Fill(new Rect(62,226,671,1),C(136,116,83,.3f));
             // #invEqGrid::before floor glow: 204x26 ellipse at (286.8,804.3), radial-gradient(rgba(176,142,96,.19), transparent 70%) + 0 1px rgba(213,181,121,.133) rim.
             Glow(388.8f,817.3f,102,13,C(176,142,96,.19f));
@@ -243,17 +243,16 @@ namespace Exoduser.UnityPort {
             Fill(new Rect(head.x,head.y,head.width,1),C(98,88,70));Fill(new Rect(head.x,head.yMax-1,head.width,1),C(98,88,70));
             float x=788;string count=State.Bag.Count.ToString();
             Txt(new Rect(x,208,300,23),"가방 (",14,C(222,212,192),500);x+=TextWidth("가방 (",14,500);
-            Txt(new Rect(x,208,300,23),count,14,C(240,223,189),700);x+=TextWidth(count,14,700);
+            Serif(new Rect(x,208,300,23),count,14,C(240,223,189),true);x+=SerifWidth(count,14,true,0);
             Txt(new Rect(x,208,300,23),"/",14,C(222,212,192),500);x+=TextWidth("/",14,500);
-            Txt(new Rect(x,208,300,23),InventoryState.BagMax.ToString(),14,C(169,157,135),500);x+=TextWidth("300",14,500);
+            Serif(new Rect(x,208,300,23),InventoryState.BagMax.ToString(),14,C(169,157,135),false);x+=SerifWidth("300",14,false,0);
             Txt(new Rect(x,208,300,23),")",14,C(222,212,192),500);
             var sort=new Rect(1249,205,66,28);
             PlateFace(sort,false);
-            var ar=C(199,190,173);Line(new Vector2(1263,213),new Vector2(1263,227),1.3f,ar);Line(new Vector2(1263,213),new Vector2(1260,216.5f),1.3f,ar);Line(new Vector2(1263,213),new Vector2(1266,216.5f),1.3f,ar);Line(new Vector2(1263,227),new Vector2(1260,223.5f),1.3f,ar);Line(new Vector2(1263,227),new Vector2(1266,223.5f),1.3f,ar);
-            Txt(new Rect(1276,205,36,28),"정렬",12,C(199,190,173),500,TextAnchor.MiddleLeft,true);
+            Txt(sort,"↕ 정렬",12,C(199,190,173),500,TextAnchor.MiddleCenter,true);   // web button text is "↕ 정렬"
             if(GUI.Button(sort,GUIContent.none,GUIStyle.none))Sort();
-            Border(new Rect(1319,211,41,17),C(84,74,59,.7f));
-            Txt(new Rect(1319,211,41,17),"최대",11,C(184,170,145),400,TextAnchor.MiddleCenter);
+            Fill(new Rect(1319,211,1,17),C(117,98,71,.4f));   // #invExpand: border-left 1px #75624766, text starts at +9
+            Serif(new Rect(1328,211,30,17),"최대",11,C(184,170,145),false);
             // Collapsed item filter row (expanded state is not part of this port step).
             var filter=new Rect(780,250,588,32);
             Grad(filter,C(65,50,34,.314f),C(20,17,21,.533f),90);Border(filter,C(81,70,56));
@@ -272,8 +271,8 @@ namespace Exoduser.UnityPort {
             var cellA=C(39,36,37,.565f);var cellB=C(18,17,20,.85f);
             for(int y=first;y<last;y++)for(int x=0;x<InventoryState.Columns;x++){
                 var cell=new Rect(x*GridCell,y*GridCell,GridCell,GridCell);
-                Grad(cell,cellA,cellB,145);Border(cell,C(56,54,56));
-                DiamondOutline(cell.center,9,C(120,112,100,.10f));
+                IronTile(cell,iron320,240);Grad(cell,cellA,cellB,145);Border(cell,C(56,54,56));   // .inv-grid-bg: gradient over iron.png 240px
+                DiamondOutline(cell.center,9,C(157,141,99,.125f));
             }
             foreach(var it in new List<InventoryItem>(State.Bag)){
                 if(it._gy+2<first||it._gy>last)continue;
@@ -290,7 +289,7 @@ namespace Exoduser.UnityPort {
                 TxtSerif(new Rect(rect.x,rect.y+99,rect.width,12),it.name,10,RarityNameColor(it.rarity),TextAnchor.MiddleCenter);
                 var badge=new Rect(rect.x+79,rect.y+94,29,15);
                 Fill(badge,C(11,11,11,.8f));
-                Txt(new Rect(badge.x,badge.y,badge.width-3,badge.height),InventoryState.ItemPower(it).ToString(),10,C(236,226,206),700,TextAnchor.MiddleRight);
+                Txt(new Rect(badge.x,badge.y,badge.width-3,badge.height),InventoryState.ItemPower(it).ToString(),10,C(223,208,181),500,TextAnchor.MiddleRight);
                 if(selected){var g=gold;Fill(new Rect(rect.x,rect.y,rect.width,2),g);Fill(new Rect(rect.x,rect.yMax-2,rect.width,2),g);Fill(new Rect(rect.x,rect.y,2,rect.height),g);Fill(new Rect(rect.xMax-2,rect.y,2,rect.height),g);}
                 if(bagPointerInside||Event.current.type!=EventType.MouseDown)HandleItem(rect,it,null,level);
             }
@@ -332,8 +331,8 @@ namespace Exoduser.UnityPort {
             Border(pane,C(117,99,66));
             if(State.Selected!=null){DrawDetails(level,new Rect(pane.x,pane.y+17,pane.width,pane.height-34),pane.yMax-12);return;}
             // .inv-detail-kicker 10px/700 ls 2px, <strong> 20px/700 ls .8px.
-            TxtSp(new Rect(1414.2f,200,434,13),"장비 기록",10,C(174,140,93),700,2f);
-            TxtSp(new Rect(1414.2f,223,434,26),"현재 전투 구성",20,C(225,201,155),700,.8f);
+            Serif(new Rect(1414.2f,198.5f,434,13),"장비 기록",10,C(174,140,93),true,2f);
+            TxtSp(new Rect(1414.2f,222,434,26),"현재 전투 구성",20,C(225,201,155),700,.8f);
             // <p> 12px, line-height 20.4px, max-width 360px: Chrome fills line 1 up to "...확인합니" (347px) and wraps "다." (the full
             // sentence is 361.4px > 360px). IMGUI measures the Noto face narrower, so the web's break is applied explicitly.
             var descCol=C(169,156,133);
@@ -345,19 +344,19 @@ namespace Exoduser.UnityPort {
             for(int i=0;i<4;i++){
                 var box=new Rect(mx[i],my[i],213,42);
                 Fill(box,C(10,16,20,.72f));Border(box,C(102,88,61));
-                Txt(new Rect(box.x+13,box.y+17,100,14),mk[i],11,C(169,155,129),500);
+                Serif(new Rect(box.x+13,box.y+17,100,14),mk[i],11,C(169,155,129));
                 Txt(new Rect(box.xMax-13-100,box.y+11,100,19),mv[i],16,C(234,210,161),700,TextAnchor.MiddleRight);
             }
-            TxtSp(new Rect(1414.2f,441.4f,200,15.4f),"장착 목록",11,C(203,168,117),700,1.76f);
+            Serif(new Rect(1414.2f,441.4f,200,15.4f),"장착 목록",11,C(203,168,117),true,1.76f);
             // .inv-loadout-title border-bottom: 1px solid #69563a (web pixel row y=465, x=1414..1847).
             Fill(new Rect(1414,465,434,1),C(105,86,58));
             for(int row=0;row<8;row++)for(int col=0;col<2;col++){
                 int si=listPairs[row,col];var it=State.Equipped[si];
                 var box=new Rect(col==0?1414:1635,486+55*row,213,48);
                 Fill(box,C(16,21,24));Border(box,C(81,68,52));
-                Txt(new Rect(box.x+10,box.y+8,box.width-20,13),webSlotNames[si],10,it!=null?C(159,144,121):C(112,104,90),500);
+                TxtSerif(new Rect(box.x+10,box.y+8,box.width-20,13),webSlotNames[si],10,it!=null?C(159,144,121):C(112,104,90));
                 string nm=it!=null?it.name:"빈 칸";
-                Txt(new Rect(box.x+10,box.y+24,box.width-20,17),nm,12,it!=null?C(225,201,155):C(102,95,82),it!=null?600:400);
+                Txt(new Rect(box.x+10,box.y+23.5f,box.width-20,17),nm,12,it!=null?C(225,201,155):C(102,95,82),it!=null?600:400);
             }
         }
 
