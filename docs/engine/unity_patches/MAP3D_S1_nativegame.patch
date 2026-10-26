@@ -1,0 +1,30 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.cs b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+index 1034725..10cb2a1 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+@@ -20,6 +20,7 @@ namespace Exoduser.UnityPort
+         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
+         NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;bool skillsWasRunning,skillInputFence;
+         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
++        NativePerspectiveWorld world3d; // PC-MAP3D stage 1: null unless --unity-world-3d (default stays the 2D path)
+         bool basicWeaponMode;
+         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
+         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
+@@ -49,6 +50,7 @@ namespace Exoduser.UnityPort
+             hud=new NativeHud();skills=new NativeSkills();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
+             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
+             BuildProps();
++            if(NativePerspectiveWorld.WantsWorld3D){world3d=gameObject.AddComponent<NativePerspectiveWorld>();world3d.Initialize(Map.Data);view.enabled=false;world3d.SetCameraEnabled(true);}
+             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
+             if(kiSheet==null||kiSheet.width%3!=0||kiSheet.height%3!=0)throw new InvalidOperationException("Invalid original kiSlash 3x3 sheet");
+             kiView=new KiSlashView(transform,f=>SpriteFor("Art/vfx/ki_slash_silver_sheet",f%3*(kiSheet.width/3),f/3*(kiSheet.height/3),kiSheet.width/3,kiSheet.height/3,new Vector2(.5f,.5f)));
+@@ -194,7 +196,8 @@ namespace Exoduser.UnityPort
+         void UpdateViews()
+         {
+             if(Simulation==null||view==null)return;var p=Simulation.Player;
+-            view.transform.position=new Vector3(p.X/100,-p.Y/100,-10);StreamChunks(p.X,p.Y);
++            view.transform.position=new Vector3(p.X/100,-p.Y/100,-10);
++            if(world3d!=null){world3d.SetFocus(new Vector2(p.X,p.Y));world3d.SyncActors(Simulation);}else StreamChunks(p.X,p.Y);
+             bool newTick=renderedTick!=Simulation.TickCount;
+             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
+             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;
