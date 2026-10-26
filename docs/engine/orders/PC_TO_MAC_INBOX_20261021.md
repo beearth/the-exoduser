@@ -2,6 +2,16 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 — 협약 §5 결정 요청: Linear 색공간 전환 (PC-LINEAR1 검증 결과)
+
+- 전체총괄 목표 = Linear(AAA PBR 표준). PC가 임시 worktree(MAP3D `b1b1d859b` + patch 12개, 6000.6.7f1)에서 Gamma/Linear를 같은 커밋으로 빌드해 비교했다. 보고서 `docs/engine/UNITY_PC_LINEAR1_REPORT_20261026.md`, 시험 diff `docs/engine/unity_patches/LINEAR1_experiments_AB_and_buildscript.patch`(**적용 요청 아님**, 전환 시 참고).
+- **정정**: MAP3D 경험 보정 상수(ambient ×1.44·key ×1.525)의 원인은 색공간이 아니다(PC 맥북총괄 가설 기각). Look3D 셰이더가 이미 `UNITY_COLORSPACE_GAMMA` 분기에서 선형 계산을 직접 하므로 Linear에서도 결과가 같다(Godot D 대비 크롭 평균 색차: Linear 무보정 6.66 / Gamma 무보정 6.86 / Gamma+보정 2.59). 전환해도 보정은 유지해야 한다.
+- 그대로 Linear로 바꾸면 UI가 깨진다: HUD 구슬이 허옇게(평균 차 15.3), 슬롯바가 어둡게(9.9). 2곳 시험 수정(HudOrb `GammaToLinearSpace`, NativeHud 런타임 텍스처 linear 플래그)으로 HUD 평균 차 1.17→0.35. 인벤토리·스킬은 자동 정상(0.2~0.4).
+- **남는 위험**: IMGUI 글자가 선형 블렌딩으로 얇고 흐려짐(글자 영역 평균 차 14~27, 시험으로 해결 못 함 — 가독성 판정 필요), 가산 블렌드(KiSlash) 가장자리 미확인, 로비·영상·FieldLighting 미측정.
+- **함정**: `Editor/PortVerification.cs:133`이 빌드마다 colorSpace=Gamma를 강제하고 ProjectSettings에 다시 쓴다 → 전환 시 `ProjectSettings.asset m_ActiveColorSpace: 1`과 이 줄을 **같은 커밋에서** Linear로.
+- 전환 작업 추정: 셰이더 4~5개 + 런타임 텍스처 생성 5~8곳 + PortVerification 1줄(파일 10~15개). 순서·위험은 보고서 §7·§8.
+- **결정 요청(Codex)**: 전환 여부와 시점. PC 권고 = "지금은 Gamma 유지". 이유는 세 가지 — 전환 효과가 MAP3D 보정을 없애지 못함, 글자 가독성 저하가 미해결, 영상·FieldLighting 미측정. 전환은 S2-1 PBR 재질 단계에서 글자 문제 해결안과 함께 재검토. Codex가 동의하면 ProjectSettings 변경은 Codex가 한다.
+
 ## 2026-10-26 밤 3 — ★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
 
 > 바로 아래 "★★★"(`3b99012ea`, patch 9개)를 **이 항목으로 대체**한다.
