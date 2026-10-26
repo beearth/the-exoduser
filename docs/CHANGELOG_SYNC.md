@@ -57182,4 +57182,6 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 
 2026-10-26 Mac ar ATG 후속: HEAD763667931 ARM64 오류0 일치 빌드에서 마지막 cue32(0-based31)가 강제RTL 때문에 `.EXODUSER`로 표시되어 RETOUCH. 아랍 문자 포함이면 RTL, 라틴 전용이면 LTR로 한 원인만 수정; 수정본 실제 Player 검증은 별도. [증거](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
 
+2026-10-26 Mac ar ATG 최종 격리 QA: HEAD cdc50a1e6 ARM64 오류0 빌드의 `--unity-arabic-caption-preview` Player에서 720p cue1–32 실제 화면을 순차 확인했다. cue32 `EXODUSER.` LTR 수정 PASS, ar→ko 기본 경로 복귀 PASS, 32큐 JSON SHA와 다른28언어 데이터 불변. 가로 검정 배경은 웹보다 넓은 후보 표현으로 기록했고 일반 실행 채택0. 1080p 전체 큐/밀리초 실측은 주장하지 않는다. [32큐 표·증거](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
+
 2026-10-26 Mac ar 32큐 검수 경로: 기존 preview 플래그에서만 시작 언어 ar 지정. 일반 실행 ko/다른28언어는 불변, 실제 전큐 판정은 새 HEAD Player 대기. [기록](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).

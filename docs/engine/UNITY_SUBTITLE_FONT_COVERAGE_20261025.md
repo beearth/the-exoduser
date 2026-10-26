@@ -94,4 +94,4 @@ NativeLobby의 현재 font를 유지한 상태에서 FR 악센트 및 UK/JA/TH/A
 
 ## 2026-10-26 아랍어 ATG 격리 후보
 
-위 Mac 20언어·지역 4언어 표의 **일반 실행 계약은 그대로**다. `--unity-arabic-caption-preview`로만 `ar` 자막을 UI Toolkit Advanced Text Generator와 동적 Noto Naskh Arabic FontAsset에 보낸다. 실제 ARM64에서 cue20 720p/1080p의 결합·RTL·잘림 없음, 메뉴 겹침 없음, `ar→ko` 복귀를 확인했다. 단독 Naskh cmap 누락 8문자/8큐와 마지막 영문 cue31의 Unity 실제 화면은 추가 검수가 필요하다. [후보 계약·증거](UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
+위 Mac 20언어·지역 4언어 표의 **일반 실행 계약은 그대로**다. `--unity-arabic-caption-preview`로만 `ar` 자막을 UI Toolkit Advanced Text Generator와 동적 Noto Naskh Arabic FontAsset에 보낸다. 최종 `cdc50a1e6` ARM64 720p에서 아랍어 cue1–31의 결합·RTL·문장부호·잘림 없음, 라틴 cue32 `EXODUSER.`의 LTR fallback, 메뉴 겹침 없음, `ar→ko` 복귀를 확인했다. 단독 Naskh cmap 누락 8문자/8큐는 FontAsset fallback 포함 실제 화면에서 표시됐다. 1080p는 cue20 대표 화면만 검수했고 일반 실행 ar 후보 채택은 하지 않았다. [후보 계약·증거](UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
