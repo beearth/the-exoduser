@@ -175,10 +175,27 @@ public sealed class UiResumeReview : MonoBehaviour
         if (File.Exists(path)) throw new IOException("Refusing to overwrite existing QA image: " + path);
         yield return new WaitForEndOfFrame();
         ScreenCapture.CaptureScreenshot(path);
-        yield return Until(() => File.Exists(path) && new FileInfo(path).Length > 1024, name + " screenshot bytes", 5f);
+        yield return Until(() => PngFinished(path), name + " complete closed PNG", 5f);
         if (name.StartsWith("world-", StringComparison.Ordinal))
             Check(WorldPngHasContent(path), name + " nonblack world PNG");
         images.Add(path);
+    }
+    static bool PngFinished(string path)
+    {
+        try
+        {
+            using(var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                if(stream.Length < 1024) return false;
+                stream.Seek(-8, SeekOrigin.End);
+                var footer = new byte[8];
+                if(stream.Read(footer, 0, 8) != 8) return false;
+                byte[] expected = { 73, 69, 78, 68, 174, 66, 96, 130 };
+                for(int i=0;i<8;i++) if(footer[i] != expected[i]) return false;
+                return true;
+            }
+        }
+        catch(IOException) { return false; }
     }
     bool WorldCaptionReady()
     {
