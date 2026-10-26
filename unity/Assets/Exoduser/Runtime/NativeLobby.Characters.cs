@@ -55,8 +55,8 @@ namespace Exoduser.UnityPort
   string CharacterError(CharacterCreateError error)
   {
    switch(error){
-    case CharacterCreateError.NameLength:return K("이름은 2~8자여야 합니다.","Use 2 to 8 characters.");
-    case CharacterCreateError.Forbidden:return K("특수문자는 사용할 수 없습니다: < > \" ' & / \\","These characters are not allowed: < > \" ' & / \\");
+    case CharacterCreateError.NameLength:return K("이름은 2~8자여야 합니다.","Name must be 2-8 characters.");
+    case CharacterCreateError.Forbidden:return K("특수문자는 사용할 수 없습니다.","Special characters cannot be used.");
     case CharacterCreateError.Duplicate:return K("이미 같은 이름의 캐릭터가 있습니다.","A character with this name already exists.");
     case CharacterCreateError.Full:return K("슬롯이 가득 찼습니다.","All five slots are occupied.");
     default:return K("출시 준비 중입니다.","Coming soon.");
