@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Exoduser.UnityPort
@@ -19,12 +20,12 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class FieldLightData { public FieldLight[] statics; }
         [Serializable] sealed class FieldLight { public float x, y, r, a, cr, cg, cb, f; }
 
-        FieldLight[] fieldLights = new FieldLight[0];
-        Light[] pointLights = new Light[0];
-        readonly Vector4[] pointPositions = new Vector4[12], pointColors = new Vector4[12];
+        readonly List<FieldLight> fieldLights = new List<FieldLight>();
+        readonly List<Light> pointLights = new List<Light>();
+        readonly Vector4[] pointPositions = new Vector4[16], pointColors = new Vector4[16];
         public int? SimulationFrame; // simulation tick supplied by NativeGame (web _gameFrame); standalone uses render time*60
         public float? FlickerFrameOverride; // QA/capture: fixed flicker phase for deterministic stills
-        public int FieldLightCount { get { return fieldLights.Length; } }
+        public int FieldLightCount { get { return fieldLights.Count; } }
         public bool ShadowsEnabled { get { return keyLight != null && keyLight.shadows != LightShadows.None; } }
 
         void BuildStage2Lighting()
@@ -42,24 +43,31 @@ namespace Exoduser.UnityPort
             if (data == null) throw new InvalidOperationException("Original field lighting data is missing");
             var parsed = JsonUtility.FromJson<FieldLightData>(data.text);
             if (parsed == null || parsed.statics == null || parsed.statics.Length == 0 || parsed.statics.Length > 12) throw new InvalidOperationException("Invalid field lighting data");
-            fieldLights = parsed.statics; pointLights = new Light[fieldLights.Length];
-            for (int i = 0; i < fieldLights.Length; i++)
-            {
-                var s = fieldLights[i];
-                var go = new GameObject("FieldLight " + i); go.transform.SetParent(root, false);
-                go.transform.position = Unity(s.x, PointLightHeight, s.y);
-                var light = go.AddComponent<Light>(); light.type = LightType.Point; light.range = s.r; light.color = new Color(s.cr / 255f, s.cg / 255f, s.cb / 255f); light.intensity = s.a; light.shadows = LightShadows.None;
-                pointLights[i] = light;
-            }
-            Shader.SetGlobalFloat("_L3D_PtCount", fieldLights.Length);
+            for (int i = 0; i < parsed.statics.Length; i++) AddPointLight(parsed.statics[i], "FieldLight " + i);
             UpdateFieldLights();
+        }
+
+        void AddPointLight(FieldLight s, string name)
+        {
+            if (fieldLights.Count >= 16) throw new InvalidOperationException("At most 16 field lights are supported");
+            var go = new GameObject(name); go.transform.SetParent(root, false);
+            go.transform.position = Unity(s.x, PointLightHeight, s.y);
+            var light = go.AddComponent<Light>(); light.type = LightType.Point; light.range = s.r; light.color = new Color(s.cr / 255f, s.cg / 255f, s.cb / 255f); light.intensity = s.a; light.shadows = LightShadows.None;
+            fieldLights.Add(s); pointLights.Add(light);
+        }
+
+        // Slice only: lights that are NOT in the source table (placeholders to judge the look); never part of the 12 source statics.
+        public void AddSliceExtraLight(float x, float y, float r, float a, float cr, float cg, float cb, float f)
+        {
+            AddPointLight(new FieldLight { x = x, y = y, r = r, a = a, cr = cr, cg = cg, cb = cb, f = f }, "SliceExtraLight " + fieldLights.Count);
         }
 
         // Light values are sampled from the Light components so the Point Lights stay the single source of truth.
         void UpdateFieldLights()
         {
             float frame = FlickerFrameOverride.HasValue ? FlickerFrameOverride.Value : SimulationFrame.HasValue ? SimulationFrame.Value : Time.timeSinceLevelLoad * 60f; // web: _gameFrame (game.html:4683)
-            for (int i = 0; i < fieldLights.Length; i++)
+            Shader.SetGlobalFloat("_L3D_PtCount", fieldLights.Count);
+            for (int i = 0; i < fieldLights.Count; i++)
             {
                 var s = fieldLights[i]; var light = pointLights[i];
                 if (light == null) continue;
@@ -79,7 +87,7 @@ namespace Exoduser.UnityPort
 
         public void SetFieldLights(bool on)
         {
-            for (int i = 0; i < pointLights.Length; i++) if (pointLights[i] != null) pointLights[i].enabled = on;
+            for (int i = 0; i < pointLights.Count; i++) if (pointLights[i] != null) pointLights[i].enabled = on;
             UpdateFieldLights();
         }
     }

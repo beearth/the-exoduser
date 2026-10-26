@@ -32,8 +32,8 @@ Shader "EXODUSER/Look3DLit"
             #include "AutoLight.cginc"
             float4 _L3D_KeyDir, _L3D_KeyCol, _L3D_FillDir, _L3D_FillCol, _L3D_Ambient;
             float4 _L3D_Fog, _L3D_FogCol; // x = density, y = fog_light_energy
-            float4 _L3D_PtPos[12];        // xyz = Unity position, w = radius (px)
-            float4 _L3D_PtCol[12];        // rgb = source colour (0..1, gamma), a = alpha*flicker*.85 clamped
+            float4 _L3D_PtPos[16];        // xyz = Unity position, w = radius (px)
+            float4 _L3D_PtCol[16];        // rgb = source colour (0..1, gamma), a = alpha*flicker*.85 clamped
             float _L3D_PtCount;
             struct input { float4 vertex:POSITION; float3 normal:NORMAL; float2 uv:TEXCOORD0; };
             struct output { float4 pos:SV_POSITION; float2 uv:TEXCOORD0; float3 normal:TEXCOORD1; float3 world:TEXCOORD2; SHADOW_COORDS(3) };
@@ -72,7 +72,7 @@ Shader "EXODUSER/Look3DLit"
                 float3 lit=_L3D_Ambient.rgb
                     + _L3D_KeyCol.rgb*saturate(dot(n, _L3D_KeyDir.xyz))*shadow
                     + _L3D_FillCol.rgb*saturate(dot(n, _L3D_FillDir.xyz));
-                for(int k=0;k<12;k++)
+                for(int k=0;k<16;k++)
                 {
                     if(k>=(int)_L3D_PtCount) break;
                     float3 toLight=_L3D_PtPos[k].xyz-i.world;

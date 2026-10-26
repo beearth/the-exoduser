@@ -124,7 +124,17 @@ namespace Exoduser.UnityPort
         {
             CollisionOverlay = on;
             overlayRoot.gameObject.SetActive(on);
-            if (on) { BuildOverlayStatics(); foreach (var pair in chunks) EnsureOverlay(pair.Key); }
+            if (on)
+            {
+                BuildOverlayStatics();
+                if (SliceActive)
+                {
+                    // the slice owns the ground (no streamed chunks): build the cell textures for the chunks overlapping its region; draw through the displaced geometry
+                    overlayMaterial.SetFloat("_ZTest", 8f);
+                    for (int i = 0; i < Map.chunks.Length; i++) if (SliceRect.Overlaps(new Rect(Map.chunks[i].x, Map.chunks[i].y, Map.chunks[i].width, Map.chunks[i].height))) EnsureOverlay(i);
+                }
+                else foreach (var pair in chunks) EnsureOverlay(pair.Key);
+            }
         }
 
         void EnsureOverlay(int chunkIndex)

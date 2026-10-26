@@ -10,6 +10,7 @@ namespace Exoduser.UnityPort
         public const float Brightness = 1.02f, Contrast = 1.06f, Saturation = 0.86f;
         Material material;
         public bool Active = true;
+        public float Vignette, CenterLift, InnerRadius = 0.30f, ContrastScale = 1f; // slice grade (0 = off): screen-edge darkening, centre lift, contrast multiplier
 
         void OnEnable()
         {
@@ -27,7 +28,8 @@ namespace Exoduser.UnityPort
             var a = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32); var b = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32);
             a.filterMode = FilterMode.Bilinear; b.filterMode = FilterMode.Bilinear;
             material.SetVector("_GlowParams", new Vector4(GlowIntensity, GlowBloom, GlowThreshold, 0f));
-            material.SetVector("_BcsParams", new Vector4(Brightness, Contrast, Saturation, 0f));
+            material.SetVector("_BcsParams", new Vector4(Brightness, Contrast * ContrastScale, Saturation, 0f));
+            material.SetVector("_VigParams", new Vector4(Vignette, InnerRadius, CenterLift, 0f));
             Graphics.Blit(source, a, material, 0);
             material.SetVector("_BlurDirection", new Vector2(1.5f, 0f)); Graphics.Blit(a, b, material, 1);
             material.SetVector("_BlurDirection", new Vector2(0f, 1.5f)); Graphics.Blit(b, a, material, 1);

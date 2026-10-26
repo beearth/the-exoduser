@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort
             var go = new GameObject("NativePerspectiveWorld Capture");
             DontDestroyOnLoad(go);
             var world = go.AddComponent<NativePerspectiveWorld>();
-            world.StartCoroutine(world.CaptureRoutine(output));
+            world.StartCoroutine(WantsSlice ? world.SliceCaptureRoutine(output) : world.CaptureRoutine(output));
         }
 
         [Serializable] sealed class CaptureReceipt

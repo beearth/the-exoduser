@@ -42,6 +42,40 @@ public static class NativePerspectiveWorldEditor
         EditorApplication.Exit(exit);
     }
 
+    // Vertical slice quick render: Unity.exe -batchmode -projectPath <unity> -executeMethod NativePerspectiveWorldEditor.RenderSlice -output <dir> --unity-world3d-slice
+    public static void RenderSlice()
+    {
+        int exit = 2;
+        try
+        {
+            string output = Argument("-output"); Directory.CreateDirectory(output);
+            // Edit-mode QualitySettings writes ProjectSettings/QualitySettings.asset: only with -qualityShadows 1, and the caller must git-checkout the asset afterwards.
+            if (Argument("-qualityShadows") == "1")
+            {
+                QualitySettings.shadows = ShadowQuality.All; QualitySettings.shadowResolution = ShadowResolution.VeryHigh; QualitySettings.shadowProjection = ShadowProjection.StableFit;
+                QualitySettings.shadowDistance = 5000f; QualitySettings.shadowCascades = 4; QualitySettings.shadowCascade4Split = new Vector3(0.1f, 0.2f, 0.5f);
+            }
+            var resource = Resources.Load<TextAsset>("Data/ch1_map");
+            var go = new GameObject("NativePerspectiveWorld (editor slice)");
+            var world = go.AddComponent<NativePerspectiveWorld>();
+            world.Initialize(JsonUtility.FromJson<MapData>(resource.text));
+            world.FlickerFrameOverride = 0f;
+            world.SyncPlayer(world.Map.startX, world.Map.startY, 15f, 2, 0);
+            world.WorldCamera.enabled = true;
+            world.Prime(new Vector2(world.Map.startX, world.Map.startY));
+            Save(world, Path.Combine(output, "slice.png"));
+            world.SetSliceDebug(1); Save(world, Path.Combine(output, "slice-debug-macro.png"));
+            world.SetSliceDebug(2); Save(world, Path.Combine(output, "slice-debug-mask.png"));
+            world.SetSliceDebug(3); Save(world, Path.Combine(output, "slice-debug-weight.png")); world.SetSliceDebug(0);
+            world.SetShadows(false); Save(world, Path.Combine(output, "slice-noshadow.png")); world.SetShadows(true);
+            Debug.Log("SLICE placements=" + world.SlicePlacements.Count + " violations=" + world.CountFootprintWalkableViolations());
+            foreach (var p in world.SlicePlacements) Debug.Log("SLICE " + p.mesh + " at (" + p.x + "," + p.y + ") angle " + p.angleDegrees + " radii " + p.radiusA + "x" + p.radiusB + " maxSd " + p.minSd);
+            exit = 0;
+        }
+        catch (Exception e) { Debug.LogException(e); }
+        EditorApplication.Exit(exit);
+    }
+
     static void Save(NativePerspectiveWorld world, string path)
     {
         var rt = new RenderTexture(1920, 1080, 24, RenderTextureFormat.ARGB32) { antiAliasing = 1 };

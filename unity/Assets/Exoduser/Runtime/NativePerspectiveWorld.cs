@@ -73,6 +73,7 @@ namespace Exoduser.UnityPort
             BuildPlayerBlob();
             Focus = AppliedFocus = new Vector2(map.startX, map.startY);
             ApplyOverlayArgument();
+            if (WantsSlice) BuildSlice();
         }
 
         Transform Child(string name) { var t = new GameObject(name).transform; t.SetParent(root, false); return t; }
@@ -102,11 +103,12 @@ namespace Exoduser.UnityPort
         public void SetCalibration(bool on)
         {
             Calibrated = on;
-            Shader.SetGlobalVector("_L3D_KeyDir", LinearDirection(KeySource));
+            Shader.SetGlobalVector("_L3D_KeyDir", LinearDirection(keySource));
             Shader.SetGlobalVector("_L3D_FillDir", LinearDirection(FillSource));
             Shader.SetGlobalVector("_L3D_KeyCol", Premultiplied(KeyColor, KeyEnergy * (on ? KeyCalibration : 1f)));
             Shader.SetGlobalVector("_L3D_FillCol", Premultiplied(FillColor, FillEnergy));
             Shader.SetGlobalVector("_L3D_Ambient", Premultiplied(AmbientColor, AmbientEnergy * (on ? AmbientCalibration : 1f)));
+            if (SliceActive) ApplySliceGrade();
         }
 
         Light MakeLight(string name, Vector3 source, Color color, float energy, bool shadows)
@@ -200,6 +202,7 @@ namespace Exoduser.UnityPort
 
         void StreamChunks()
         {
+            if (SliceActive) return; // the vertical slice owns the ground
             Rect footprint; if (!GroundFootprint(out footprint)) return;
             var wanted = new Rect(footprint.x - 1000, footprint.y - 1000, footprint.width + 2000, footprint.height + 2000);
             var keep = new HashSet<int>();

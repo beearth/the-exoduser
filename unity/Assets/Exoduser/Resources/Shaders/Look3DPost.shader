@@ -11,6 +11,7 @@ Shader "EXODUSER/Look3DPost"
     sampler2D _MainTex, _GlowTex; float4 _MainTex_TexelSize;
     float4 _GlowParams;  // x intensity, y bloom, z threshold, w unused
     float4 _BcsParams;   // x brightness, y contrast, z saturation
+    float4 _VigParams;   // x edge darkening, y inner radius, z centre lift (all 0 = off)
     float2 _BlurDirection;
     struct input { float4 vertex:POSITION; float2 uv:TEXCOORD0; };
     struct output { float4 pos:SV_POSITION; float2 uv:TEXCOORD0; };
@@ -69,6 +70,9 @@ Shader "EXODUSER/Look3DPost"
                 s*=_BcsParams.x;
                 s=lerp(float3(0.5,0.5,0.5), s, _BcsParams.y);
                 s=lerp(dot(float3(1,1,1), s)*0.33333, s, _BcsParams.z);
+                float2 vc=(i.uv-0.5)*float2(1.25,1.0); float vd=length(vc);
+                s*=1-_VigParams.x*smoothstep(_VigParams.y, 0.80, vd);
+                s*=1+_VigParams.z*(1-smoothstep(0.0, 0.45, vd));
                 s=saturate(s);
                 #if defined(UNITY_COLORSPACE_GAMMA)
                 return fixed4(s, 1);

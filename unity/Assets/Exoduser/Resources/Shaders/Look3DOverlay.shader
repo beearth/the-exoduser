@@ -1,11 +1,11 @@
 // PC-MAP3D QA collision overlay: unlit translucent cell texture plus the 40px tile grid. QA only, never part of the normal view.
 Shader "EXODUSER/Look3DOverlay"
 {
-    Properties { [PerRendererData] _MainTex ("Collision cells", 2D) = "white" {} [PerRendererData] _Tint ("Tint", Color) = (1,1,1,1) [PerRendererData] _Grid ("Tile grid (1 = on)", Float) = 1 }
+    Properties { [PerRendererData] _MainTex ("Collision cells", 2D) = "white" {} [PerRendererData] _Tint ("Tint", Color) = (1,1,1,1) [PerRendererData] _Grid ("Tile grid (1 = on)", Float) = 1 _ZTest ("ZTest (4 = LEqual, 8 = Always)", Float) = 4 }
     SubShader
     {
         Tags { "Queue"="Transparent+10" "RenderType"="Transparent" "IgnoreProjector"="True" }
-        Cull Off ZWrite Off Lighting Off Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off ZWrite Off ZTest [_ZTest] Lighting Off Blend SrcAlpha OneMinusSrcAlpha
         Pass
         {
             CGPROGRAM
