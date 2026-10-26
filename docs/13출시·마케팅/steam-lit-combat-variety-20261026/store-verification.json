@@ -1,0 +1,187 @@
+{
+  "targetFields": 90,
+  "unrelatedPreserved": 870,
+  "mismatches": [],
+  "mediaPerLanguage": [
+    {
+      "lang": "english",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "french",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "italian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "german",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "spanish",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "greek",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "dutch",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "norwegian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "danish",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "russian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "romanian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "malay",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "vietnamese",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "bulgarian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "swedish",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "latam",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "ukrainian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "indonesian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "japanese",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "schinese",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "tchinese",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "czech",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "thai",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "turkish",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "brazilian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "portuguese",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "polish",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "finnish",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "koreana",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    },
+    {
+      "lang": "hungarian",
+      "images": 9,
+      "newGroups": true,
+      "oldGroups": false
+    }
+  ]
+}

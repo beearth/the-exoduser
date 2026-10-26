@@ -1,0 +1,602 @@
+[
+  {
+    "lang": "english",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Development combat preview: creatures surround a red-cloaked fighter beside a warmly lit organic camp.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Development combat preview: a red-cloaked fighter uses an ice orb among creatures beside a huge organic cocoon.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "french",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Aperçu de combat en développement : des créatures entourent un guerrier à cape rouge près d’un camp organique éclairé d’une lumière chaude.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Aperçu de combat en développement : un guerrier à cape rouge utilise un orbe de glace parmi des créatures, près d’un immense cocon organique.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "german",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Kampfvorschau aus der Entwicklung: Kreaturen umringen einen Kämpfer mit rotem Umhang neben einem warm beleuchteten organischen Lager.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Kampfvorschau aus der Entwicklung: Ein Kämpfer mit rotem Umhang nutzt eine Eiskugel zwischen Kreaturen neben einem riesigen organischen Kokon.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "italian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Anteprima di combattimento in sviluppo: creature circondano un guerriero dal mantello rosso accanto a un accampamento organico illuminato da luce calda.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Anteprima di combattimento in sviluppo: un guerriero dal mantello rosso usa una sfera di ghiaccio tra le creature, accanto a un enorme bozzolo organico.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "spanish",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Vista previa de combate en desarrollo: criaturas rodean a un guerrero con capa roja junto a un campamento orgánico iluminado por una luz cálida.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Vista previa de combate en desarrollo: un guerrero con capa roja usa un orbe de hielo entre criaturas junto a un enorme capullo orgánico.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "japanese",
+    "caption": true,
+    "images": [
+      {
+        "alt": "開発中の戦闘画面。暖かな光に照らされた生体キャンプのそばで、赤いマントの戦士を怪物が取り囲んでいます。",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "開発中の戦闘画面。巨大な生体の繭のそばで、赤いマントの戦士が怪物に囲まれながら氷のオーブを使っています。",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "schinese",
+    "caption": true,
+    "images": [
+      {
+        "alt": "开发中的战斗画面：暖光照亮的有机营地旁，怪物围住了一名身披红斗篷的战士。",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "开发中的战斗画面：巨大生体茧旁，身披红斗篷的战士在怪物之间使用冰球。",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "tchinese",
+    "caption": true,
+    "images": [
+      {
+        "alt": "開發中的戰鬥畫面：暖光照亮的有機營地旁，怪物包圍了一名身披紅斗篷的戰士。",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "開發中的戰鬥畫面：巨大生體繭旁，身披紅斗篷的戰士在怪物之間使用冰球。",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "russian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Боевой кадр из разрабатываемой игры: существа окружают бойца в красном плаще рядом с органическим лагерем в тёплом свете.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Боевой кадр из разрабатываемой игры: боец в красном плаще использует ледяной шар среди существ рядом с огромным органическим коконом.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "ukrainian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Бойовий кадр із гри в розробці: істоти оточують бійця в червоному плащі біля органічного табору в теплому світлі.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Бойовий кадр із гри в розробці: боєць у червоному плащі використовує крижану кулю серед істот біля величезного органічного кокона.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "polish",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Podgląd walki z gry w produkcji: stworzenia otaczają wojownika w czerwonym płaszczu obok organicznego obozu w ciepłym świetle.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Podgląd walki z gry w produkcji: wojownik w czerwonym płaszczu używa lodowej kuli wśród stworzeń obok ogromnego organicznego kokonu.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "czech",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Ukázka boje z vyvíjené hry: tvorové obklopují bojovníka v červeném plášti vedle organického tábora v teplém světle.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Ukázka boje z vyvíjené hry: bojovník v červeném plášti používá ledovou kouli mezi tvory vedle obrovského organického kokonu.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "portuguese",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Prévia de combate em desenvolvimento: criaturas rodeiam um guerreiro de capa vermelha junto a um acampamento orgânico iluminado por luz quente.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Prévia de combate em desenvolvimento: um guerreiro de capa vermelha usa um orbe de gelo entre criaturas junto a um enorme casulo orgânico.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "brazilian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Prévia de combate em desenvolvimento: criaturas cercam um guerreiro de capa vermelha ao lado de um acampamento orgânico iluminado por luz quente.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Prévia de combate em desenvolvimento: um guerreiro de capa vermelha usa um orbe de gelo entre criaturas ao lado de um enorme casulo orgânico.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "latam",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Vista previa de combate en desarrollo: criaturas rodean a un guerrero con capa roja junto a un campamento orgánico iluminado por una luz cálida.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Vista previa de combate en desarrollo: un guerrero con capa roja usa un orbe de hielo entre criaturas junto a un enorme capullo orgánico.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "hungarian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Fejlesztés alatti harci előnézet: lények veszik körül a vörös köpenyes harcost egy meleg fénnyel megvilágított szerves tábor mellett.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Fejlesztés alatti harci előnézet: vörös köpenyes harcos jéggömböt használ lények között, egy hatalmas szerves gubó mellett.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "romanian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Previzualizare de luptă din jocul în dezvoltare: creaturi înconjoară un luptător cu mantie roșie lângă o tabără organică în lumină caldă.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Previzualizare de luptă din jocul în dezvoltare: un luptător cu mantie roșie folosește un glob de gheață printre creaturi, lângă un cocon organic uriaș.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "bulgarian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Боен кадър от играта в разработка: създания обграждат воин с червено наметало до органичен лагер в топла светлина.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Боен кадър от играта в разработка: воин с червено наметало използва ледено кълбо сред създания до огромен органичен пашкул.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "greek",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Προεπισκόπηση μάχης υπό ανάπτυξη: πλάσματα περικυκλώνουν έναν μαχητή με κόκκινο μανδύα δίπλα σε οργανικό καταυλισμό με ζεστό φωτισμό.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Προεπισκόπηση μάχης υπό ανάπτυξη: μαχητής με κόκκινο μανδύα χρησιμοποιεί μια σφαίρα πάγου ανάμεσα σε πλάσματα, δίπλα σε ένα τεράστιο οργανικό κουκούλι.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "dutch",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Gevechtsvoorbeeld uit de ontwikkeling: wezens omringen een strijder met rode mantel naast een organisch kamp in warm licht.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Gevechtsvoorbeeld uit de ontwikkeling: een strijder met rode mantel gebruikt een ijsbol tussen wezens naast een enorme organische cocon.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "norwegian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Kampforhåndsvisning under utvikling: skapninger omringer en kriger med rød kappe ved en organisk leir i varmt lys.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Kampforhåndsvisning under utvikling: en kriger med rød kappe bruker en iskule blant skapninger ved en enorm organisk kokong.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "danish",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Kampforhåndsvisning under udvikling: væsner omringer en kriger med rød kappe ved en organisk lejr i varmt lys.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Kampforhåndsvisning under udvikling: en kriger med rød kappe bruger en iskugle blandt væsner ved en enorm organisk kokon.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "swedish",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Stridsförhandsvisning under utveckling: varelser omringar en krigare i röd mantel vid ett organiskt läger i varmt ljus.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Stridsförhandsvisning under utveckling: en krigare i röd mantel använder en iskula bland varelser vid en enorm organisk kokong.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "finnish",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Kehitteillä olevan taistelun esikatselu: olennot ympäröivät punaviittaista soturia lämpimästi valaistun orgaanisen leirin vieressä.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Kehitteillä olevan taistelun esikatselu: punaviittainen soturi käyttää jääpalloa olentojen keskellä valtavan orgaanisen kotelon vieressä.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "turkish",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Geliştirme aşamasındaki savaş önizlemesi: yaratıklar, sıcak ışıkla aydınlatılan organik kampın yanında kırmızı pelerinli bir savaşçıyı kuşatıyor.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Geliştirme aşamasındaki savaş önizlemesi: kırmızı pelerinli savaşçı, dev organik kozanın yanında yaratıkların arasında bir buz küresi kullanıyor.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "thai",
+    "caption": true,
+    "images": [
+      {
+        "alt": "ภาพตัวอย่างการต่อสู้ระหว่างพัฒนา: เหล่าสัตว์ประหลาดล้อมนักรบในผ้าคลุมสีแดงข้างค่ายสิ่งมีชีวิตที่สว่างด้วยแสงอบอุ่น",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "ภาพตัวอย่างการต่อสู้ระหว่างพัฒนา: นักรบในผ้าคลุมสีแดงใช้ลูกแก้วน้ำแข็งท่ามกลางสัตว์ประหลาดข้างดักแด้สิ่งมีชีวิตขนาดยักษ์",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "vietnamese",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Ảnh chiến đấu đang phát triển: các sinh vật vây quanh chiến binh áo choàng đỏ bên trại hữu cơ dưới ánh sáng ấm.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Ảnh chiến đấu đang phát triển: chiến binh áo choàng đỏ dùng cầu băng giữa các sinh vật cạnh một kén hữu cơ khổng lồ.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "indonesian",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Pratinjau pertempuran dalam pengembangan: makhluk-makhluk mengepung petarung berjubah merah di samping kamp organik dengan cahaya hangat.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Pratinjau pertempuran dalam pengembangan: petarung berjubah merah menggunakan bola es di antara makhluk-makhluk di samping kepompong organik raksasa.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "malay",
+    "caption": true,
+    "images": [
+      {
+        "alt": "Pratonton pertempuran dalam pembangunan: makhluk mengelilingi pejuang berjubah merah di sebelah kem organik dalam cahaya hangat.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "Pratonton pertempuran dalam pembangunan: pejuang berjubah merah menggunakan bebola ais antara makhluk di sebelah kepompong organik gergasi.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  },
+  {
+    "lang": "koreana",
+    "caption": true,
+    "images": [
+      {
+        "alt": "개발 중인 전투 화면. 따뜻한 빛을 받은 생체 캠프 옆에서 붉은 망토의 전사가 괴물들에게 둘러싸여 있습니다.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/6d010f9e1b006f22e04b3a781c4b39ef.avif?t=1790419030",
+        "width": 1560
+      },
+      {
+        "alt": "개발 중인 전투 화면. 거대한 생체 고치 옆에서 붉은 망토의 전사가 괴물들을 상대로 얼음보주를 사용합니다.",
+        "complete": true,
+        "height": 878,
+        "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/extras/432d948ed745d9023205e3426a0cf13e.avif?t=1790419030",
+        "width": 1560
+      }
+    ]
+  }
+]

@@ -450,3 +450,8 @@ SOUND·ITEM·BALANCE 등 나머지 팀은 해당 목표를 지원하는 기존 �
 | HOLD 분리 | ENEMY_GL_2D_BODY_FALLBACK_GATE의 body 실패·fallback/stride/queue/draw 권위는 미해결·미인수 유지. 보류된 general-Image warm branch도 포함하지 않음 |
 | 비용·한계 | Map/Set와 hit 중 per-layer 배열 추가, 비용 UNKNOWN. zoom/shake/native billboard pixel 정렬·base+walk 밝기·실화면 미인수. borrowed close/dispose·새 Image/fetch/RAF/timer/셰이더·맵/에셋 변경 없음 |
 | 새 검수 범위 | 자기 actor/Image/Proxy/GL로 실제 본체/walk call·flash if·queue wrapper·제출 뒤 marker·reset·중형 call seam만. 전체 draw/prepare/중형 함수·실GPU/카메라/사용자 창 실행 아님. 기존 통과 검사·에셋·픽셀 proof 재실행 없음 |
+
+
+## 2026-10-26 조명 전투 화면 다양화 후속
+
+캠프 지옥강타·고치 앞 얼음보주1920×1080 원본2장을 새로 촬영해 About 기존2장과교체했다. 대상90필드/비대상870필드보존 및30언어베타2장씩로드·alt·개발중/UI숨김캡션을확인했다. 하니스개발미리보기이며자연플레이/Steam설치본동일성/원본게임UI완성의증거아님. 상단갤러리파일전달0·기존5장교체미완료,출시일2026→2027선택대기로전체게시0·SteamPipe0. [실적·원본·MAP PRODUCTION REPORT](../13출시·마케팅/STEAM_LIT_COMBAT_VARIETY_20261026.md), VISUAL VERDICT: RETOUCH.

@@ -1,0 +1,10 @@
+{
+  "head": "373ae1c744daa2ff9a8d5214caadcd305f97f2e2",
+  "files": {
+    "scripts/native_skill_slots.gd": "c7ea02d5cf0ca7970b6c84c769b188edfd6515071b07b629964a503a95129205",
+    "scripts/native_map_look.gd": "cba4a6e794186020d13e90bcd100ca9ca25ba42e7ba380d3a1e9b60143b2674a",
+    "assets/vfx/slam_atlas_feather.gdshader": "e9c5cdc72e08f70760b8e09e5e08afd48e24e11e42da9ec3c2eb99695b7b5d39"
+  },
+  "worktreeDirty": true,
+  "overrideBytes": 0
+}
