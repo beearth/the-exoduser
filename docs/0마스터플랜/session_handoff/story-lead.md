@@ -1,0 +1,36 @@
+# 스토리 총괄 인계 — 2026-10-27
+
+- 세션: 스토리 총괄 / Opus 5.5 / 세계관·캐릭터 개인사·보스 사연·컷신 대사·트레일러 대본의 정합성과 정본 판정. **원칙: 스토리가 맵·보스보다 먼저 나간다**(사용자 2026-10-26).
+- 기준 문서(SSOT): `docs/11내러티브·로어디자인/STORY_LEAD_MASTER_20261026.md` (정본 계층·인물 현황·충돌 STY-D·백로그 STY-01~13·결정·사고 기록·§7 아이반 카드 문구)
+- 출처 색인: `docs/11내러티브·로어디자인/CHARACTER_STORY_SOURCE_INDEX_20261025.md`, 세계관 `docs/HELL_EXODUSER_WORLDVIEW_v2.md`(S0~S2 스포일러 티어 [20])
+- 메모리: `story-lead-role.md`
+
+## 진행 중 작업 단위
+| 단위 | 단계 | 남은 일 |
+|---|---|---|
+| **STY-12 CH1 스토리 뼈대 (P0)** | 착수 직전(자료 수집 시작만 함) | 1장 썩은 숲의 에리어별 장소 의미, 보스 사연(흑요염 파괴자·독버섯 거인·사냥꾼·기생수·다크드루이드 피날레), 등장 대사 기준표를 작성해 맵 총괄·보스전 총괄에 전달. 자료: `docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md`, `BOSS_CANONICAL_MAPPING.md`, `CH1_FIELD_NPC_ROSTER_20260923.md`, `CH1_1_DRUID_BOSS_ASSIGNMENT.md`, `UNITY_MAP_BOARD_20261026.md`(Unity CH1-1 R1~R8), `8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md` §6, WORLD_CORE [35보스=35사연]·[챕터 7단계](챕터1 "추락": 평범한 자들의 잠식) |
+| STY-13 스토리 트레일러(엘든 링 스타일 120초) | 기획 v1 완료 `docs/13출시·마케팅/STORY_TRAILER_ELDENRING_STYLE_PLAN_20261027.md` | 사용자 결정 D1~D5 대기(D1 내레이터=네메시아 권고). 승인 후 P1 애니매틱(단순작업) |
+| STY-10 아이반 로비 카드 | 문구 초안·T8 키아트 r4 경로 확정(SSOT §7) | 단순작업 카드 task_254a4fa9 사용자 시작 대기. 반짝임 보정본은 디자인총괄 확인 후 복사 |
+
+## 대기 중
+- 사용자: 트레일러 D1~D5, 단순작업 카드 시작 여부
+- 디자인총괄(local_eb8a8577): 아이반 키아트 반짝임 보정본 갱신 / 헬거너 카드 scene·emblem·aura 교체 여부 판정
+
+## 연결 세션
+CTO local_7072229c · 디자인총괄 local_eb8a8577(유일) · 보스전 총괄 local_a98acebe · 맵 총괄 local_9d17d95b · 사운드 총괄 local_cf0cb8d7 · 전체총괄 local_a65bb55a. 소속 단순 세션 없음(카드만 제안).
+
+## 이번 대화 확정 결정 (SSOT 결정 기록에 있음)
+- 총기 슬롯 = 검은 연기 아이반, 갤럭시 헌터 보관 / 네메시아 이름 유지("네세론" 기각) / 아이반 원화 = V29, 로비 키아트 = T8 r4
+- 완료: STY-03 실버테일 문구 29언어(16f8dedad·b7d5eb9b5), STY-04 내러티브 문서 현행화, STY-09 결정 전파
+
+## 금지·주의
+- G:\exoduser main 직접 push는 계속 거절됨(origin과 갈라짐). 로컬 커밋 a37793bd2·0016e0f04·16f8dedad·fe52d8779·b7d5eb9b5·4c8d4a441·9670ed56d·9a68189d3 미푸시. GIT_INDEX_FILE·commit-tree 방식은 권한 거부.
+- index.html·공유 작업트리에 타세션 WIP 상존. `git commit -- <경로>`만. 미추적 타세션 문서(BLACK_SMOKE·GALAXY_HUNTER·NEW_HEROES)는 내용 메모만 추가했고 미커밋.
+- 2026-10-26 22:30경 공유 작업트리 사고(NEW_HEROES 소실→blob 6a599015b로 복원, character-story-player.js WIP 되돌림, test 삭제) — 주체 미확인, SSOT §6.
+- 제목 화면 로고 검은 박스(RGB 로고 + cin-logo-art.js 매트 제거 실패 추정)는 **사용자가 직접 처리**. 손대지 말 것.
+- 실버테일 개인사 미회수 — 지어내지 말 것. 보스 칭호(트레일러 §4.1)는 제안 상태.
+
+## 재개 후 첫 행동
+1. 이 문서·SSOT·MEMORY.md 확인
+2. STY-12 CH1 자료 수집(위 목록) → CH1 스토리 뼈대 문서 작성(`docs/11내러티브·로어디자인/CH1_STORY_SPINE_<날짜>.md`)
+3. 맵 총괄·보스전 총괄에 경로 전달
