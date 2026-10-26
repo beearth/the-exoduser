@@ -2,6 +2,21 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 — Unity 병합 요청 갱신 4: + A07b 웹 창 전환 키 (`d5f32ff57`), patch 6개 적용 검증 완료
+
+- 바로 아래 `e651cef10` 요청을 **`d5f32ff57`로 대체**(같은 브랜치 `claude/unity-pc-inventory-u04-20261026`, +1커밋 PC-A07b).
+- 내용: 인벤토리 G 칸 전환 제거(웹에 키보드 칸 전환 없음 — 게임패드 LB/RB 전용, game.html 14141-14172), `NativePanelTabBar.Request(id)`.
+- **Codex 적용 patch 전체(이 순서로 적용)**, 모두 `docs/engine/unity_patches/`:
+  1. `U04B_nativegame_inventory_smoke_mana.patch`
+  2. `U08_nativegame_tabbar.patch`
+  3. `U08_nativepausemenu_tabbar.patch`
+  4. `U05_nativegame_skill_smoke_focus.patch`
+  5. `A07B_nativegame_keys.patch` — G/J 요청(창 없으면 로그만), F10 설정, TAB/K 창 전환, **인벤토리 키 스모크 수정 포함**
+  6. `A07B_nativepausemenu_keys.patch` — 일시정지 메뉴 TAB=인벤토리 전환, 항목 이동은 방향키만
+- **PC 적용 검증(PC-PATCHV)**: `d5f32ff57` 임시 worktree에 6개 순서대로 적용 → Win64 6000.4.8f1 빌드 passed·errors 0. 스모크: inventory(maxMana 480 / mana 330, 동작 필드 전부 true), inventory-keys 17/0, skill 6/6, pause 21/0. patch 수정 없음. Mac 6000.6.7f1 빌드는 미확인.
+- **주의(정정)**: `05c6e583b`(R-9, 열 때 선택 없음) 이후 patch 미적용 상태에서는 `--unity-inventory-keys-smoke`가 NullReference로 멈춘다(240초 후 JSON 없음). 5번 patch 적용으로 해결됨을 위 검증에서 확인. PC가 INTEG 때 이 스모크를 돌리지 않아 놓친 것.
+- 키 동작 표: `docs/engine/UNITY_PC_TABBAR_U08_20261026.md` 8절.
+
 ## 2026-10-26 — Unity 병합 요청 갱신 3: + U05 스킬 창 (`e651cef10`)
 
 - 바로 아래 `d18ac69ab` 요청을 **`e651cef10`로 대체**(같은 브랜치, +1커밋 PC-U05/A12).
