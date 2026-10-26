@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-10-26 20:57:50 +09:00",
+  "scope": "noninteractive Unity Editor script compilation only",
+  "project": "E:\\exoduser-runtime\\codex-ui-resume-20261026\\unity",
+  "candidate": {
+    "branch": "codex/ui-resume-player-20261026",
+    "remoteCommit": "d9626921992a782b794c4da9cea74a2bebaf519d",
+    "remoteCommitVerifiedBy": "git ls-remote origin refs/heads/codex/ui-resume-player-20261026",
+    "sourceSha256": {
+      "unity/Assets/Exoduser/Runtime/NativeLobby.Characters.cs": "C09330CFE409567F61AD961F3E4DF157666FD8106E4E3437425C626240150B5F",
+      "unity/Assets/Exoduser/Runtime/NativeLobby.CharacterPresentation.cs": "AE7674D960B34C76D4C0429D8DB9F0561527B2BD942B6EA722E6DDB5083460C2"
+    }
+  },
+  "editor": {
+    "path": "E:\\Unity\\Editors\\6000.6.7f1\\Editor\\Unity.exe",
+    "arguments": ["-batchmode", "-nographics", "-noUpm", "-quit", "-projectPath", "E:\\exoduser-runtime\\codex-ui-resume-20261026\\unity"],
+    "pid": 51276,
+    "exitCode": 0,
+    "log": "I:\\EXODUSER-Storage\\qa\\unity-ui-resume-20261026\\ui-simple\\visual-keyboard-compile-editor.log",
+    "logBytes": 17122,
+    "scriptCompilationObserved": true,
+    "compilerErrorLines": 0,
+    "batchmodeExitSuccessful": true,
+    "leaseReleased": true,
+    "candidateEditorProcessesAfter": 0
+  },
+  "existingPlayerPid50700Preserved": true,
+  "productBuildRun": false,
+  "newPlayerGuiRun": false,
+  "actualKeyboardInputVerified": false,
+  "longMalayCueVerified": false
+}
