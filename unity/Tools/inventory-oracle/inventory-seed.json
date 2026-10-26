@@ -354,7 +354,37 @@
       "crystals": [],
       "socketQ": []
     },
-    null,
+    {
+      "id": 1792796400000.756,
+      "slot": "ossuary",
+      "el": 0,
+      "rarity": 5,
+      "tier": 0,
+      "name": "전대의 유골함",
+      "emoji": "⚱️",
+      "eDef": 60,
+      "bonusMp": 150,
+      "affixes": [
+        {
+          "id": "ancHP",
+          "tier": 3,
+          "value": 0.9
+        }
+      ],
+      "_implicitStat": "_iAncPow",
+      "_implicitVal": 10,
+      "_implicitKo": "전대 위력 +X%",
+      "legendarySpecial": null,
+      "uniqueSpecial": null,
+      "itemLv": 0,
+      "reqLv": 0,
+      "socketCount": 0,
+      "crystals": [],
+      "socketQ": [],
+      "unique": true,
+      "anc": "iron_warlord",
+      "ancPow": 0.25
+    },
     {
       "id": 1792796400000.0999,
       "slot": "headband2",

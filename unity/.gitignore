@@ -26,3 +26,6 @@
 /Tools/lobby-oracle/bin/
 /Tools/lobby-oracle/obj/
 /Tools/lobby-oracle/runs/
+!/Tools/stat-parity/StatParityTests.csproj
+/Tools/stat-parity/bin/
+/Tools/stat-parity/obj/

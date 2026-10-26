@@ -362,6 +362,8 @@ namespace Exoduser.UnityPort
             SetInventory(true);int tick=Simulation.TickCount;
             int count=0;foreach(var it in inventory.State.Equipped)if(it!=null)count++;
             var receipt=new InventorySmokeReceipt{scope="actual_native_player_inventory_fixture",initialEquipped=count,initialBag=inventory.State.Bag.Count};
+            // Web default state: nothing selected, so the right panel shows the combat summary.
+            inventory.State.Select(null);yield return new WaitForSecondsRealtime(.3f);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-inventory-default.png"));yield return null;
             inventory.State.Select(inventory.State.GetEquipped("weapon"));
             yield return new WaitForSecondsRealtime(.4f);receipt.paused=!Running&&tick==Simulation.TickCount;
             yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-inventory-equipment.png"));yield return null;

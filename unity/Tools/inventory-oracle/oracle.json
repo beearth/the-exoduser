@@ -5,6 +5,7 @@
     "seed": 539365412,
     "starterDrawCount": 505,
     "drawCountAfterBag": 887,
+    "ossuaryGrantDraws": 43,
     "anchors": [
       {
         "name": "EL",
@@ -365,6 +366,21 @@
         "name": "unequipItem",
         "line": 16369,
         "equals_live": true
+      },
+      {
+        "name": "LEGENDARY_SPECIAL",
+        "line": 15037,
+        "equals_live": true
+      },
+      {
+        "name": "UNIQUE_SPECIAL",
+        "line": 15084,
+        "equals_live": true
+      },
+      {
+        "name": "_grantOssuaryIfNeeded",
+        "line": 45882,
+        "equals_live": true
       }
     ]
   },
@@ -724,7 +740,37 @@
         "crystals": [],
         "socketQ": []
       },
-      null,
+      {
+        "id": 1792796400000.756,
+        "slot": "ossuary",
+        "el": 0,
+        "rarity": 5,
+        "tier": 0,
+        "name": "전대의 유골함",
+        "emoji": "⚱️",
+        "eDef": 60,
+        "bonusMp": 150,
+        "affixes": [
+          {
+            "id": "ancHP",
+            "tier": 3,
+            "value": 0.9
+          }
+        ],
+        "_implicitStat": "_iAncPow",
+        "_implicitVal": 10,
+        "_implicitKo": "전대 위력 +X%",
+        "legendarySpecial": null,
+        "uniqueSpecial": null,
+        "itemLv": 0,
+        "reqLv": 0,
+        "socketCount": 0,
+        "crystals": [],
+        "socketQ": [],
+        "unique": true,
+        "anc": "iron_warlord",
+        "ancPow": 0.25
+      },
       {
         "id": 1792796400000.0999,
         "slot": "headband2",
@@ -1161,7 +1207,7 @@
     "PlayerBaseAttack": 15,
     "PlayerSpeed": 2.7196000000000002,
     "PlayerMaxStamina": 240,
-    "PlayerMaxMana": 330,
+    "PlayerMaxMana": 480,
     "PlayerMaxShield": 285,
     "PlayerHpRegen": 0.05,
     "PlayerStaminaRegen": 0.05,
@@ -1180,7 +1226,7 @@
     "WeaponArc": 0.95,
     "hp": 526,
     "st": 240,
-    "mp": 330,
+    "mp": 480,
     "shield": 285
   },
   "power": [
@@ -1204,7 +1250,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -1223,7 +1269,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -1242,7 +1288,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -1306,7 +1352,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 278,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 405,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -1325,7 +1371,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -1344,7 +1390,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -1408,7 +1454,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 277,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 405,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -1427,7 +1473,7 @@
         "WeaponArc": 0.95,
         "hp": 510,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -1446,7 +1492,7 @@
         "불꽃 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -1510,7 +1556,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -1529,7 +1575,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -1548,7 +1594,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -1612,7 +1658,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -1631,7 +1677,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -1650,7 +1696,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -1714,7 +1760,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 242,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -1733,7 +1779,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -1752,7 +1798,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -1816,7 +1862,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -1835,7 +1881,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -1854,7 +1900,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -1918,7 +1964,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.76796,
         "PlayerMaxStamina": 237,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -1937,7 +1983,7 @@
         "WeaponArc": 0.95,
         "hp": 516,
         "st": 237,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -1956,7 +2002,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2020,7 +2066,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2039,7 +2085,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2058,7 +2104,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2122,7 +2168,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2141,7 +2187,7 @@
         "WeaponArc": 0.95,
         "hp": 525,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2160,7 +2206,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2224,7 +2270,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2243,7 +2289,7 @@
         "WeaponArc": 0,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2262,7 +2308,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2331,7 +2377,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 228,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2350,7 +2396,7 @@
         "WeaponArc": 0.95,
         "hp": 505,
         "st": 228,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2369,7 +2415,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2438,7 +2484,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.6,
         "PlayerMaxStamina": 210,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2457,7 +2503,7 @@
         "WeaponArc": 0.95,
         "hp": 477,
         "st": 210,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2476,7 +2522,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2545,7 +2591,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 201,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2564,7 +2610,7 @@
         "WeaponArc": 0.95,
         "hp": 496,
         "st": 201,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2583,7 +2629,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2652,7 +2698,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2671,7 +2717,7 @@
         "WeaponArc": 0.95,
         "hp": 505,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2690,7 +2736,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2759,7 +2805,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2778,7 +2824,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2797,7 +2843,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2866,7 +2912,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 205,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2885,7 +2931,7 @@
         "WeaponArc": 0.95,
         "hp": 505,
         "st": 205,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -2904,7 +2950,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -2973,7 +3019,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 226,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -2992,7 +3038,7 @@
         "WeaponArc": 0.95,
         "hp": 500,
         "st": 226,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -3011,7 +3057,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -3080,7 +3126,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -3099,7 +3145,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -3118,7 +3164,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -3182,7 +3228,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 282,
+        "PlayerMaxMana": 432,
         "PlayerMaxShield": 248,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -3201,7 +3247,7 @@
         "WeaponArc": 0.95,
         "hp": 481,
         "st": 240,
-        "mp": 282,
+        "mp": 432,
         "shield": 248
       },
       "equipped": [
@@ -3220,7 +3266,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -3289,7 +3335,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 288,
+        "PlayerMaxMana": 438,
         "PlayerMaxShield": 246,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -3308,7 +3354,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 288,
+        "mp": 438,
         "shield": 246
       },
       "equipped": [
@@ -3327,7 +3373,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -3396,7 +3442,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 309,
+        "PlayerMaxMana": 459,
         "PlayerMaxShield": 268,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -3415,7 +3461,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 309,
+        "mp": 459,
         "shield": 268
       },
       "equipped": [
@@ -3434,7 +3480,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -3503,7 +3549,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 230,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -3522,7 +3568,7 @@
         "WeaponArc": 0.95,
         "hp": 497,
         "st": 230,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       },
       "equipped": [
@@ -3541,7 +3587,7 @@
         null,
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -3610,7 +3656,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 285,
+        "PlayerMaxMana": 435,
         "PlayerMaxShield": 241,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -3629,7 +3675,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 285,
+        "mp": 435,
         "shield": 241
       },
       "equipped": [
@@ -3648,7 +3694,7 @@
         "낡은 망토",
         null,
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -3717,7 +3763,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 289,
+        "PlayerMaxMana": 439,
         "PlayerMaxShield": 264,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -3736,7 +3782,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 289,
+        "mp": 439,
         "shield": 264
       },
       "equipped": [
@@ -3755,7 +3801,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         null,
-        null,
+        "전대의 유골함",
         "낡은 귀걸이"
       ],
       "bag": [
@@ -3819,6 +3865,7 @@
     {
       "name": "unequip-ossuary",
       "slot": "ossuary",
+      "deferred": "ossuary unequip/re-equip is not implemented in Unity (PC-U04b); Unity must refuse it and leave the state unchanged",
       "stats": {
         "PlayerMaxHp": 526,
         "PlayerBaseAttack": 15,
@@ -3915,6 +3962,11 @@
           "name": "그림자 머리띠",
           "x": 8,
           "y": 2
+        },
+        {
+          "name": "전대의 유골함",
+          "x": 0,
+          "y": 0
         }
       ]
     },
@@ -3926,7 +3978,7 @@
         "PlayerBaseAttack": 15,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 297,
+        "PlayerMaxMana": 447,
         "PlayerMaxShield": 258,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -3945,7 +3997,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 297,
+        "mp": 447,
         "shield": 258
       },
       "equipped": [
@@ -3964,7 +4016,7 @@
         "낡은 망토",
         "낡은 악마의 팔찌",
         "낡은 귀걸이",
-        null,
+        "전대의 유골함",
         null
       ],
       "bag": [
@@ -4036,7 +4088,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -4055,7 +4107,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     },
@@ -4068,7 +4120,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -4087,7 +4139,7 @@
         "WeaponArc": 0.95,
         "hp": 443,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     },
@@ -4100,7 +4152,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.7196000000000002,
         "PlayerMaxStamina": 240,
-        "PlayerMaxMana": 330,
+        "PlayerMaxMana": 480,
         "PlayerMaxShield": 285,
         "PlayerHpRegen": 0.05,
         "PlayerStaminaRegen": 0.05,
@@ -4119,7 +4171,7 @@
         "WeaponArc": 0.95,
         "hp": 417,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     },
@@ -4132,7 +4184,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.7248300000000003,
         "PlayerMaxStamina": 241,
-        "PlayerMaxMana": 333,
+        "PlayerMaxMana": 483,
         "PlayerMaxShield": 290,
         "PlayerHpRegen": 0.052000000000000005,
         "PlayerStaminaRegen": 0.055,
@@ -4151,7 +4203,7 @@
         "WeaponArc": 0.95,
         "hp": 559,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     },
@@ -4164,7 +4216,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.7248300000000003,
         "PlayerMaxStamina": 241,
-        "PlayerMaxMana": 333,
+        "PlayerMaxMana": 483,
         "PlayerMaxShield": 290,
         "PlayerHpRegen": 0.052000000000000005,
         "PlayerStaminaRegen": 0.055,
@@ -4183,7 +4235,7 @@
         "WeaponArc": 0.95,
         "hp": 449,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     },
@@ -4196,7 +4248,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.7248300000000003,
         "PlayerMaxStamina": 241,
-        "PlayerMaxMana": 333,
+        "PlayerMaxMana": 483,
         "PlayerMaxShield": 290,
         "PlayerHpRegen": 0.052000000000000005,
         "PlayerStaminaRegen": 0.055,
@@ -4215,7 +4267,7 @@
         "WeaponArc": 0.95,
         "hp": 417,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     },
@@ -4228,7 +4280,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.9811,
         "PlayerMaxStamina": 290,
-        "PlayerMaxMana": 480,
+        "PlayerMaxMana": 630,
         "PlayerMaxShield": 535,
         "PlayerHpRegen": 0.15000000000000002,
         "PlayerStaminaRegen": 0.3,
@@ -4247,7 +4299,7 @@
         "WeaponArc": 0.95,
         "hp": 636,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     },
@@ -4260,7 +4312,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.9811,
         "PlayerMaxStamina": 290,
-        "PlayerMaxMana": 480,
+        "PlayerMaxMana": 630,
         "PlayerMaxShield": 535,
         "PlayerHpRegen": 0.15000000000000002,
         "PlayerStaminaRegen": 0.3,
@@ -4279,7 +4331,7 @@
         "WeaponArc": 0.95,
         "hp": 526,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     },
@@ -4292,7 +4344,7 @@
         "PlayerBaseAttack": 23,
         "PlayerSpeed": 2.9811,
         "PlayerMaxStamina": 290,
-        "PlayerMaxMana": 480,
+        "PlayerMaxMana": 630,
         "PlayerMaxShield": 535,
         "PlayerHpRegen": 0.15000000000000002,
         "PlayerStaminaRegen": 0.3,
@@ -4311,7 +4363,7 @@
         "WeaponArc": 0.95,
         "hp": 417,
         "st": 240,
-        "mp": 330,
+        "mp": 480,
         "shield": 285
       }
     }
@@ -4353,7 +4405,7 @@
     "PlayerBaseAttack": 15,
     "PlayerSpeed": 2.7196000000000002,
     "PlayerMaxStamina": 242,
-    "PlayerMaxMana": 330,
+    "PlayerMaxMana": 480,
     "PlayerMaxShield": 285,
     "PlayerHpRegen": 0.05,
     "PlayerStaminaRegen": 0.05,
