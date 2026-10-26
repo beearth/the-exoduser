@@ -123,7 +123,7 @@
 
 | 대상 | 상태 |
 |---|---|
-| 대검전사 스토리 영상 `video/warrior_story_v23_clean.mp4` (신규 캐릭터 생성 직후 재생) | 2026-10-26 v2: 과장된 검 동작2.5→0.6초, 끼인50.5~51.0초 앵글 제거, 킬루 반응/화로/킬루4컷. 1920×1080/60fps/5784프레임/96.4초,97,232,624바이트. 음성·29언어VTT·앞3030/뒤2214프레임 유지. 캐시 `20261026-killu-brief-v2`, 회귀38/0. NW.js/Steam 별도 — [현재 근거](../cinematic/WARINTRO_KILLU_REBUILD_20261025.md) |
+| 대검전사 스토리 영상 `video/warrior_story_v23_clean.mp4` (신규 캐릭터 생성 직후 재생) | 2026-10-26 v3: 킬루 얼굴 두 컷51.1~53.5/56~58초를 고통 표정·피눈물 새 영상으로 교체. 검0.6초·화로·나머지5520프레임 인코딩 패킷·오디오·29언어VTT 유지. 1920×1080/60fps/5784프레임/96.4초,94,795,327바이트. 캐시 `20261026-killu-bloodtears-v3`, 회귀38/0. NW.js/Steam 별도 — [현재 근거](../cinematic/WARINTRO_KILLU_REBUILD_20261025.md) |
 | 구 전쟁 인트로 정지 이미지 `assets/cutscene/warintro/` 12장 (`?cutscene=1` 미리보기 전용) | 🟡 2026-10-01 마감: 12장 중 6장 교체(nemesia_hd·remember·war·throne·demonbattle·fallhell_custom), emg1 원본 유지(후보만 보존), 5장 미착수. 캐시 `?v=20261001-warstills2` — `docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md` |
 | 유니크 아이템 외관 27종 `assets/unique-items/ui-01~27.png`(원본) → `img/ui/unique-items/`(256px) | 🟡 2026-10-08 원화 채택·생성 완료(1x·4배 확대 점 검수 통과). 게임 연결(부위별 무작위 외관·이름·보라 등급색)은 진행 중 |
 | 캐릭터 선택 `portrait_warrior.png`(bust — 로비 캐릭터 썸네일·선택창 초상) | ✅ 2026-09-30 평범한 눈으로 교체 (`?v=20260930-eyefix`, 원본 `output/charselect_remaster_20260930/original/`) |
