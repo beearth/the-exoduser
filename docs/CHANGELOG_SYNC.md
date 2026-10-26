@@ -1,3 +1,7 @@
+## 2026-10-26 Mac Unity 자막 20+4 언어·일반 게임 이름표 gate
+
+- PC 승인 커밋 3건의 해당 범위만 Mac Unity에 이식했다. 20개 언어는 기존 Noto Serif, `zh/zht/ja/th`는 지역 정적 글꼴을 사용하며, 일반 게임의 개발용 이름표는 명시적 진단 옵션에만 보인다. Unity 6000.6.7f1 ARM64 빌드 오류 0; 실제 키보드 `zh/zht/ja/th→ko` 대표 자막과 일반 HUD를 확인했다. [수치·자산·영수증](engine/UNITY_MAC_LOCALE_INTEGRATION_20261026.md).
+
 ## 2026-10-26 Unity 로비 검수 진입 후보
 
 - 원본 웹에 없는 이름 없는 미리보기 버튼과 이식 저장 안내를 --unity-ui-diagnostics 옵션에서만 표시하도록 분리하고 Mac 소스에 통합. 기존 캐릭터/검수 API와 자막 fallback 보존, C#9 76소스 컴파일 오류0. 새 Player 실제 화면·OS 입력 검수는 미완료다. [범위와 검증 경계](engine/UNITY_LOBBY_DIAGNOSTICS_20261026.md).

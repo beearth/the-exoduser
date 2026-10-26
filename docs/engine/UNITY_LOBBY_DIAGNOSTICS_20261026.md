@@ -17,3 +17,5 @@
 검증: 지정 부모 소스에 대한 git apply --check 통과. 원본 웹 및 Unity 코드를 직접 대조했다. 자막 글꼴 변경 위에 충돌 없이 통합했고, `NativeLobby`의 `diagnosticPreview` 조건·기존 `EnterSelectedCharacter`/`SelectPreview` 호출·우크라이나어 자막 선택식을 소스에서 확인했다. Unity 6000.6.7f1 C#9/Roslyn4.10 기존 Runtime+Editor 76소스 정적 컴파일 종료 코드 0, 오류 0, 기존 직렬화 필드 경고 18건. 일반 경로는 옵션 없을 때 해당 버튼과 안내를 그리지 않으며, 명시 옵션 경로에서만 기존 두 요소를 그린다. 새 일반 로비/검수 옵션의 실제 Player 렌더·OS 입력은 미검증이다.
 
 2026-10-26 후속: HEAD `207ffc8bf` 신규 일반 Player의 `lobby-normal.png`에서 버튼·안내가 보이지 않는 것을 실제 화면으로 확인했다. 옵션을 넣은 검수 실행의 표시·클릭은 아직 미검증이다. [출처·검수](UNITY_MAC_HEAD_PLAYER_20261026.md).
+
+2026-10-26 추가: 별도 일반 게임 HUD의 캐릭터 이름표도 `NativeLobby.DiagnosticUiEnabled`가 true일 때만 그린다. 새 ARM64 Player의 일반 게임 `normal-hud.png`에서 이름표 미표시와 기존 우상단 상태·하단 HUD 표시를 확인했다. 진단 옵션 화면은 소스 분기로만 검증했다. [정확한 게이트·빌드·화면 영수증](UNITY_MAC_LOCALE_INTEGRATION_20261026.md).

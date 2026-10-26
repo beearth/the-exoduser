@@ -1,0 +1,42 @@
+# Mac Unity 자막 지역 글꼴·일반 HUD 이름표 gate — 2026-10-26
+
+## 소스와 선택 범위
+
+Mac 작업 브랜치 `codex/unity-mac-20261024`의 수정 전 HEAD `a3c13bb3a9c7f0f050c2f92c63104019df6da62f`는 tracked INDEX/WORK가 깨끗했다. `NativeLobby.cs` SHA256 `9ece3805bab894f0d7267ef6b02a31cd550317661ac0173000df0b5043de5d76`, `NativeGame.cs` SHA256 `c70f186bed63f32264d734e423b0386117a037a8f5530e95215bdb6579610301`이었다. 두 파일을 `_out/UNITY-MAC-LOCALE-20261026/backup`에 바이트 백업했다.
+
+정상 fetch한 PC 브랜치 `codex/ui-resume-player-20261026` 원격 SHA는 `c2af68a8284e665b9ac6fc6e68fc7cae3f208cdc`다. 원작성자 커밋 `2935c705b`(이름표 gate), `add394900`(20언어 Noto Serif), `5ee67eb5e`(지역 4글꼴)에서 아래 소유 범위만 대조해 이식했다. `UiResumeReview.cs`, PC 소지품·생성창 WIP, 전체 브랜치 merge, QA fixture는 인수하지 않았다. 공용 마스터의 현행 UI/UX 우선 범위와 기존 Mac 실행·저장 보존 규칙을 따른다.
+
+## 코드 계약
+
+| 위치 | 적용 조건 | 결과 |
+|---|---|---|
+| `NativeLobby.Styles` | 최초 1회 | 기본 Nanum 본문/그림자, 기존 Noto Serif 본문/그림자, 지역 4개 본문/그림자 쌍 생성. 지역 리소스 누락 시 해당 쌍은 null |
+| `UseNotoCaptionForLanguage` | `es/fr/de/ptbr/it/ru/uk/pl/cs/hu/ro/bg/el/tr/vi/sv/da/no/fi/nl` | 기존 Noto Serif 자산 선택, 20언어 × 32큐 |
+| 지역 선택 | `zh/zht/ja/th` | 각 지역 글꼴이 로드되면 해당 본문/그림자 쌍 선택, 미로드면 기본 Nanum 쌍 |
+| 기본·복귀 | `ko/en/id/ms/ar` 및 리소스 미로드 | 기존 `NanumMyeongjo-Regular`의 동일 `caption/captionShadow` 객체, fontSize 50, LowerCenter, wordWrap true |
+| 세계관 자막 | 선택된 스타일 | `CalcHeight`와 실제 `GUI.Label` 본문은 같은 스타일, 그림자는 짝 스타일. 32큐 텍스트·시간 변경 없음 |
+| `NativeLobby.DiagnosticUiEnabled` | 명시적 `--unity-ui-diagnostics`만 true | 인스턴스 초기화에 캐시한 기존 `diagnosticPreview` 읽기 전용 노출 |
+| `NativeGame.OnGUI` 이름표 | 진단 true이고 `ActiveCharacterName.Length>0` | 기존 `(16,12,420,50)` 패널과 `(28,20,396,40)` 이름표 표시. 일반 실행은 미표시. 우상단 상태·하단 HUD·이름 저장 변경 없음 |
+
+## 지역 실행 자산
+
+아래 파일들은 PC 원작성자 `5ee67eb5e`의 바이트를 그대로 가져왔다. `Resources/Art/fonts/` 아래이고 각 원본 글꼴과 OFL 텍스트에 별도 `.meta`가 있다. 6개 신규 GUID는 Unity Assets 전체에서 중복 0이다. 원본 자료 및 라이선스의 더 상세한 출처는 PC `UNITY_REGIONAL_CAPTION_FONTS_20261026.md`와 `regional-font-assets-20261026.json`에 기록돼 있다.
+
+| 언어 | Resources 이름 / 글꼴 파일 | 파일 bytes | SHA256 | 현행 32큐 cmap 누락 |
+|---|---|---:|---|---:|
+| `zh` | `NotoSerifCJKsc-Regular.otf` | 24,543,080 | `2a2eae2628df83556c54018c41e20fa532c1b862c5256ae8b3f23feb918d12ca` | 0 |
+| `zht` | `NotoSerifCJKtc-Regular.otf` | 24,541,904 | `234301038e76e7c35c43113785024700c4e4fe7bdce1d1fbbc42fca7e6683798` | 0 |
+| `ja` | `NotoSerifCJKjp-Regular.otf` | 24,573,864 | `d9854c7a8ef170b5a7932558856fd64eb8de0b007cd823fed6f9f514ad2803d3` | 0 |
+| `th` | `NotoSerifThai-Regular.ttf` | 59,668 | `6ac215670f2719de202b566e4fc25a47a2e72c2cb9d2ab19e1aae3c01373ab79` | 0 |
+| CJK OFL | `NotoSerifCJK-OFL.txt` | 4,301 | `6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2` | — |
+| Thai OFL | `NotoSerifThai-OFL.txt` | 4,380 | `2e98fd23a52d253db8612cd5942c8f2ff4111b21d2367050fdca91d8ccc374a0` | — |
+
+Mac 현행 자막 JSON SHA256은 `32202897b58d1a1c29e149afaff8b32e9490633a1ae8b2c7350092ac28235562`로 PC 원작성자 입력과 같다. 20개 Noto 언어의 cmap 누락 0 및 지역 4개 누락 0은 PC 정적 감사 결과다. Cmap 통과는 글자 조형·Thai 성조·CJK 글꼴 형태·720p 줄바꿈·RTL의 실제 화면 합격 판정이 아니다.
+
+## 빌드·Player 검수
+
+- Unity `6000.6.7f1` 1회 배치 빌드: `StandaloneOSX` ARM64 `Succeeded`, 오류 0, 출력 앱 2,048,745,678 bytes. 신규 글꼴 4종과 OFL 2종을 임포트했고, 최종 12개 신규 파일(각 `.meta` 포함)이 PC `5ee67eb5e`와 바이트 일치한다. Unity가 오래된 `.meta` 버전 경고를 기록했으나 임포트·빌드에 실패하지 않았다.
+- 실제 새 Player에서 세계관 재생 중 키보드 언어 메뉴로 `zh`, `zht`, `ja`, `th`를 차례로 선택하고 각 언어의 대표 자막을 화면에서 확인했다. 이어 `ko`로 돌아와 한국어 자막을 확인했다. `zh-caption.png`, `ja-caption.png`, `th-caption.png`, `ko-return.png`는 자막이 보이는 대표 프레임이다. `zht` 문장은 실제 Player 화면에서 보았지만 저장된 `zht-caption.png` 시점은 다음 큐 사이여서 자막이 없다. 이는 확인한 프레임의 가시 글리프 판정이며 29언어 전체 큐·자간·모든 해상도의 조형 합격은 아니다.
+- 일반 옵션 없는 새 Player에서 기존 캐릭터를 선택해 게임·연습 화면까지 진입했다. `normal-hud.png`에는 좌상단 개발용 이름표가 없고 우상단 상태와 하단 HUD가 남아 있다. `--unity-ui-diagnostics` 이름표 표시 경로는 조건식으로 검증했고 별도 Player 시각 실측은 하지 않았다.
+- 새 검수 Player만 종료했다. 기존 Player PID `38141/48476/52157/61637`는 유지됐다. 사용자 저장 SHA256은 작업 전후 `91c703949ae75be62fdaac1432f76e046ce72bf0aa9e9be0a72ec084102c87cd`로 동일했다. Unity 임포트가 건드린 기존 추적 파일 234개와 생성 파일 4개는 백업 후 원래 바이트로 복원했고, 이 작업 산출물만 남겼다.
+- 앱·영수증·PNG는 I: 볼륨 미연결로 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOCALE-20261026/`에 보존한다. OS 언어 메뉴 마우스 조작과 `ar` RTL은 별도 미확인이다.

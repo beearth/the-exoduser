@@ -70,12 +70,12 @@ NativeLobby의 현재 font를 유지한 상태에서 FR 악센트 및 UK/JA/TH/A
 
 ## 2026-10-26 우크라이나어 자막 전용 글꼴 인수
 
-위 표와 판정은 **변경 전 기존 6개 폰트**의 감사 결과다. 현재 `NativeLobby.Styles`는 기본 `caption`을 그대로 만들고, `Art/fonts/NativeCaptionNotoSerif`를 한 번 로드해 성공한 경우에만 우크라이나어 전용 스타일과 그림자 스타일을 별도로 만든다. `Language == "uk"`일 때만 전용 스타일을 선택하고, 한국어 등 다른 언어와 리소스 누락 시 원래 `caption` 객체로 돌아간다. `CalcHeight`와 본문 `GUI.Label`은 같은 선택 스타일을 쓴다. 그림자 색 변경을 위해 본문 스타일을 수정하지 않는다.
+위 표와 판정은 **변경 전 기존 6개 폰트**의 감사 결과다. 이 절은 우크라이나어를 먼저 인수한 당시의 계약이다. 당시 `NativeLobby.Styles`는 기본 `caption`을 그대로 만들고, `Art/fonts/NativeCaptionNotoSerif`를 한 번 로드해 성공한 경우에만 우크라이나어 전용 스타일과 그림자 스타일을 별도로 만들었다. 당시에는 `Language == "uk"`일 때만 전용 스타일을 선택했다. 현행 20개 언어 및 지역 4개 언어 확장은 아래 후속 절을 따른다. `CalcHeight`와 본문 `GUI.Label`은 같은 선택 스타일을 쓴다. 그림자 색 변경을 위해 본문 스타일을 수정하지 않는다.
 
 | 항목 | 인수 값·적용 위치 |
 |---|---|
-| 언어·자막 | `uk` 세계관 본문 32큐만 전용 serif. 문구·cue start/end·영상·음향·선택 순서 변경 없음 |
-| 기본/복귀 | `ko` 포함 나머지 언어는 기존 `NanumMyeongjo-Regular`의 동일 `caption` 객체, 50px/LowerCenter/wordWrap 유지 |
+| 언어·자막 | 당시 `uk` 세계관 본문 32큐만 전용 serif. 문구·cue start/end·영상·음향·선택 순서 변경 없음 |
+| 기본/복귀 | 당시 `ko` 포함 나머지 언어는 기존 `NanumMyeongjo-Regular`의 동일 `caption` 객체, 50px/LowerCenter/wordWrap 유지 |
 | 신규 자산 | `Resources/Art/fonts/NativeCaptionNotoSerif.ttf` (Google Fonts Noto Serif variable upright), 1,887,192 bytes, SHA256 `4d8e6761424656867019081a1a01336f3cb086982682698714054fc33f782713` |
 | 라이선스 | 같은 폴더 `NativeCaptionNotoSerif-OFL.txt`, SIL OFL 1.1, SHA256 `cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a` |
 | 공식 출처 | [google/fonts Noto Serif 원본](https://github.com/google/fonts/blob/49af86b54514f1390e126f3139ced33824f5d72e/ofl/notoserif/NotoSerif%5Bwdth%2Cwght%5D.ttf), [OFL](https://github.com/google/fonts/blob/6a23d718de1dbb1be9532aebf9c6ce335070e2ea/ofl/notoserif/OFL.txt) |
@@ -85,3 +85,7 @@ NativeLobby의 현재 font를 유지한 상태에서 FR 악센트 및 UK/JA/TH/A
 새 Unity Player 실행·실제 glyph 픽셀·폰트 import·런타임 객체 동일성은 아직 검증하지 않았다. 기존 29언어 전체의 shaping/RTL 판정도 유지한다. `uk→ko` 동일 객체는 소스 선택식으로 확인한 계약이며 Player 관측 결과로 승격하지 않는다.
 
 2026-10-26 후속: HEAD `207ffc8bf`로 새로 빌드한 Mac Player의 실제 세계관 자막에서 우크라이나어 `є`/`і`를 PNG로, `ї`를 CUA 화면으로 확인했다. 해당 한 cue의 `ї` 로컬 PNG는 저장되지 않았으며 전체32큐/다른 언어/`uk→ko` 런타임 객체 동일성은 검증하지 않았다. [새 Player 영수증](UNITY_MAC_HEAD_PLAYER_20261026.md).
+
+## 2026-10-26 Mac 20언어·지역 4언어 연결
+
+현재 `NativeLobby.UseNotoCaptionForLanguage`는 `es/fr/de/ptbr/it/ru/uk/pl/cs/hu/ro/bg/el/tr/vi/sv/da/no/fi/nl` 정확 20코드에 기존 `NativeCaptionNotoSerif`를 선택한다. `zh/zht/ja/th`는 각각 정적 Regular 400 지역 글꼴을 선택하고, 리소스가 없으면 기존 `NanumMyeongjo-Regular` 기본 스타일로 돌아간다. `ko/en/id/ms/ar`도 기본 스타일을 유지한다. `ar`의 RTL·결합·양방향 배치는 별도 미해결이다. 본문/그림자는 같은 언어 쌍에서 선택되며 높이 계산도 그 본문 스타일을 쓴다. 29언어 순서와 32큐 문구·시각·음향은 변경하지 않았다. 상세 자산·출처·검수는 [Mac 지역 자막 인수](UNITY_MAC_LOCALE_INTEGRATION_20261026.md)에 있다.
