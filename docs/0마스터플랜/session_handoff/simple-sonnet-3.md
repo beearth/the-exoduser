@@ -4,7 +4,7 @@
 - 소속·연결: 맵 총괄 `local_9d17d95b-239c-4254-8bef-555b6c5e16e8`(명세·승인·검수, 현재 상위) · 디자인총괄(시각 판정 단일 창구) `local_eb8a8577-c0e4-4a9f-b628-fac0c8549dbf` · 맥북 총괄 `local_f25393ea-f5e3-45f1-80fa-c16e9daa4c6c` · 유니티 전체 총괄 `local_a65bb55a-bb3e-4c4a-a93d-412fc163bd80` · CTO `local_7072229c-70cf-4fdf-ab35-c3c59e683d53` · 단순작업4(텍스처·데칼 생성) `local_ee476d71-fea4-4528-8bbd-a09b9f527ba2`. 구 디자인총괄 `a1efbc31`은 퇴장(요청 보내지 말 것).
 
 ## 기준 문서(SSOT)
-- 맵 보드 `docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md` · 기획서 `UNITY_MAP_HQ_PRODUCTION_PLAN_20261026.md`(§4.5 L1~L9, §4.6) · 아트 바이블 `UNITY_ART_BIBLE_V1_20261026.md`(내가 쓴 것) — 디자인총괄 eb8a8577 쪽은 `UNITY_MAP_ART_BIBLE_20261026.md`(main 6987ff6c4)라 값이 다르면 그쪽이 우선.
+- 맵 보드 `docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md` · 기획서 `UNITY_MAP_HQ_PRODUCTION_PLAN_20261026.md`(§4.5 L1~L9, §4.6) · **아트 바이블은 `docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md` 하나뿐**(맵 총괄 지시). `UNITY_ART_BIBLE_V1_20261026.md`는 대체됨 — 읽지 말 것(PAINTGROUND는 V1 기준으로 작업했음).
 - 내 문서(작업 트리): `docs/engine/UNITY_MAP3D_S2_/SLICE_/LIFE1_/M1_IMPORT_20261026.md`.
 
 ## 작업 위치·커밋 (전부 push됨)
@@ -24,7 +24,8 @@
 - 파일 편집은 python 스크립트 파일(`E:/exoduser-wt/_out/pc-map3d/s2/edit_*.py`)을 Write 도구로 만든 뒤 실행(Bash 인라인 heredoc이 길면 EOF 파싱 오류가 난 적 있음).
 - 증거 폴더: `E:/exoduser-wt/_out/map3d-slice/{capture8,14,21,27f, life1, sheets14}`, `E:/exoduser-wt/_out/pc-map3d-paintground/`(최신 시트·크롭), Godot 기준 `E:/exoduser-wt/_out/godot-look001-refs-v2/`(C/D·ALTAR·compare).
 
-## 진행 중·남은 순서
+## 진행 중·남은 순서 (맵 총괄 갱신: PAINTGROUND-R → MESHY-0 → TOXIC)
+0. **PAINTGROUND-R(첫 일)**: 디자인총괄 판정 `E:/exoduser-wt/_out/design-reconcile/JUDGE_PAINTGROUND_20261026.md`를 읽고 반영 — 빛 웅덩이 복원, 외곽 살덩이를 바닥보다 어둡게(내가 올린 외곽 명도·분홍 톤 되돌림), 밝은 꼬리(외곽 상아 끝 하이라이트 등) 제거. 기준은 MAP_ART_BIBLE_v2. 명세는 맵 총괄이 보낸다(없으면 판정 문서 기준으로 맵 총괄에 확인).
 1. **MESHY-0 — 보류.** 명세 `E:/exoduser-wt/_out/meshy/MESHY0_SPEC.md`. Codex가 저장한 DPAPI 키(`C:\Users\심도진\.codex\credentials\meshy-api-key.dpapi`)를 복호화해 wall_B 1건(약 30크레딧) 생성하는 일. 맵 총괄이 사용자 말을 인용해 전달했으나 이 세션에서 사용자가 직접 확인하지 않았다 → **사용자가 이 세션에 직접 "진행해"라고 할 때까지 호출·키 복호화 금지.** 확인이 오면 §1~2만 먼저(키 값 출력·저장 금지, Codex 파일 수정 금지, 호출 1건, 즉시 I:/EXODUSER-Storage/Meshy 사본+SHA, `credits.log`), §3 Unity 임포트·교체 컷은 작업 트리를 비운 뒤.
 2. **TOXIC**(독성 늪·사이드 독성 강) — 명세 `E:/exoduser-wt/_out/pc-map3d-toxic/SPEC.md`(§2.5 LIFE1-R 포함, 독액 색은 아트 바이블 §6 값). 같이 처리: 풀이 균일 점박이로 보임 → 군락(3~12포기)+빈 땅, 크기 편차 확대.
 3. M1 마무리 행: "회화풍 다시 칠하기"(칠한 빛 마스크 굽기, 셰이더 70/30 입력, 매니페스트 마스크 필드). 실제 Meshy 에셋은 키 승인 뒤.
@@ -43,4 +44,4 @@
 ## 재개 후 첫 행동
 1. 이 문서와 MEMORY.md를 읽는다. 작업 트리 상태 확인: `git -C E:/exoduser-wt/pc-unity-map3d status --short | grep -v "\.meta"`(HEAD `db58d8c86`).
 2. 맵 총괄에게 "재개" 한 줄. 사용자 직접 입력이 있었는지(MESHY-0 확인) 확인.
-3. 확인이 없으면 TOXIC 명세를 읽고 착수(메시 호출 없음).
+3. 첫 일은 PAINTGROUND-R(위 0번). 확인이 없으면 MESHY-0은 계속 보류, 그다음 TOXIC(메시 호출 없음).
