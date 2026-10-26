@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort.Core {
             Config.WeaponAttack=(float)s.WeaponAttack;Config.WeaponSpeed=(float)s.WeaponSpeed;Config.WeaponRange=(float)s.WeaponRange;Config.WeaponArc=(float)s.WeaponArc;
             Player.MaxHp=s.PlayerMaxHp;Player.MaxStamina=(float)s.PlayerMaxStamina;Player.MaxMana=(float)s.PlayerMaxMana;Player.MaxShield=(float)s.PlayerMaxShield;
             Player.BaseAttack=s.PlayerBaseAttack;Player.Speed=(float)s.PlayerSpeed;s.ClampResources(Player);
+            ApplyAutoPotionEquipment(inventory); // web _eqAffix('potionPower'), gl().potCd, blt().potCd
         }
     }
 }

@@ -135,8 +135,16 @@ public static class PortVerification {
  }
  static bool SettingsIdentifierOverride(){var so=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);var value=so.FindProperty("overrideDefaultApplicationIdentifier");if(value==null)throw new Exception("Cannot preserve application identifier override state");return value.boolValue;}
  static void SetSettingsIdentifierOverride(bool enabled){var so=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);var value=so.FindProperty("overrideDefaultApplicationIdentifier");if(value==null)throw new Exception("Cannot restore application identifier override state");value.boolValue=enabled;so.ApplyModifiedPropertiesWithoutUndo();}
+ // Build kind (full|demo|bic|ea): `-flavor <name>` writes it into the embedded Data/build_flavor.json for this build only; the committed file stays "full" and is restored in finally (also when the build fails).
+ const string FlavorFile="Assets/Exoduser/Resources/Data/build_flavor.json";
+ static string WriteFlavor(){
+  var name=Argument("-flavor");if(string.IsNullOrEmpty(name))return null;
+  if(Array.IndexOf(new[]{"full","demo","bic","ea"},name)<0)throw new ArgumentException("-flavor must be full|demo|bic|ea, got "+name);
+  var previous=File.ReadAllText(FlavorFile);File.WriteAllText(FlavorFile,"{\"selected\":\""+name+"\"}");AssetDatabase.Refresh();Debug.Log("UNITY_BUILD_FLAVOR "+name);return previous;
+ }
+ static void RestoreFlavor(string previous){if(previous==null)return;File.WriteAllText(FlavorFile,previous);AssetDatabase.Refresh();}
  public static void Build(){
-  bool settingsQa=Argument("-settingsQa")=="true";string restoreProduct=null,restoreIdentifier=null;bool restoreOverride=false;int exitCode=2;
+  bool settingsQa=Argument("-settingsQa")=="true";string restoreProduct=null,restoreIdentifier=null,restoreFlavor=null;bool restoreOverride=false;int exitCode=2;
   try {
    var target=EditorUserBuildSettings.activeBuildTarget;
    if(target!=BuildTarget.StandaloneWindows64&&target!=BuildTarget.StandaloneOSX)
@@ -151,6 +159,7 @@ public static class PortVerification {
    if(target==BuildTarget.StandaloneOSX)throw new NotSupportedException("Build the Mac verification app with the Mac Editor");
 #endif
    if(settingsQa){restoreOverride=SettingsIdentifierOverride();restoreProduct=PlayerSettings.productName;restoreIdentifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone);}
+   restoreFlavor=WriteFlavor();
    VerifyLobby();var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
    if(settingsQa){PlayerSettings.productName="EXODUSER Settings QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.settingsqa");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("Settings QA must have a distinct application identifier");}
    var output=Path.Combine(directory,target==BuildTarget.StandaloneOSX?"EXODUSER-Unity.app":"EXODUSER-Unity.exe");
@@ -160,7 +169,7 @@ public static class PortVerification {
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion,target=target.ToString(),architecture=architecture,output=output,settingsQa=settingsQa,product=PlayerSettings.productName,identifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)},true));
    Debug.Log("UNITY_BUILD "+report.summary.result);exitCode=ok?0:2;
   }catch(Exception e){Debug.LogException(e);}
-  finally{if(restoreProduct!=null){PlayerSettings.productName=restoreProduct;PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,restoreIdentifier);SetSettingsIdentifierOverride(restoreOverride);}}
+  finally{RestoreFlavor(restoreFlavor);if(restoreProduct!=null){PlayerSettings.productName=restoreProduct;PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,restoreIdentifier);SetSettingsIdentifierOverride(restoreOverride);}}
   EditorApplication.Exit(exitCode);
  }
  public static void Capture(){MakeScene();EditorApplication.playModeStateChanged+=CaptureState;EditorApplication.isPlaying=true;}

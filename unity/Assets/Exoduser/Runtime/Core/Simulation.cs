@@ -157,6 +157,8 @@ namespace Exoduser.UnityPort.Core
             }
             UpdateKiProjectiles();
             TickKiTimers();
+            // Web update() auto potion block (game.html 35895-35911): runs once per frame after the enemy loop.
+            TickAutoPotion();
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
         }
@@ -243,9 +245,8 @@ namespace Exoduser.UnityPort.Core
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
             enemy.Alive = false; Kills++; Combo++; ComboTicks = Math.Min(1200, ComboTicks + 60);
             Materials += 4;
-            // Exact normal kill potion destination is quickslot, not fake world loot.
-            int potion = (int)(NextRandom() * 3);
-            if (potion == 0) PotionHp++; else if (potion == 1) PotionStamina++; else PotionMana++;
+            // Web kill drop (game.html 43094-43099): hp pays malice (+1, a third of the draws), st/mp are discarded; the old quickslot counters stay unused.
+            ApplyKillDrop(enemy);
             RollNormalEquipment(enemy);
             double bonus = 1 + (Combo / 100) * .05 + Math.Max(0, Config.DifficultyIndex - 5) * .10;
             AddExperience((int)(Math.Max(5, (int)(enemy.Level * .4)) * bonus));

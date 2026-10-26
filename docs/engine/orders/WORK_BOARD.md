@@ -38,6 +38,8 @@ Mac UI hook 7→12 checkpoint: A13 능력치·A14 대장간·A20 레벨업·A21 
 
 Mac UI hook 13→14 후속: PC 새 답신이 없는 상태에서 Mac 소유 문맥만 수동 적응했다. A24는 `DiagnosticUiEnabled` 진단 배지 조건을 보존하면서 구역 제목 1회·정본 목표 패널을 조건 밖에 연결; 지역 총량은 미이식. A26 lobby는 `DrawLobby()` 전원 버튼 뒤에 BuildFlavor 라벨 호출 1회, 기존 세계관/ATG·진단 preview 분기 유지. [적응 patch·계약](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). 정적 적용·diff 검사만 PASS, 화면/Player 미검증. 아래 PC 질문은 원본 충돌·Mac 적응 근거로 유지하며 PC 확인이 오면 대조한다. 15–19는 다음 순서 검사 단계.
 
+Mac UI hook 15→19 후속: A26 PortVerification flavor, A16 PauseMenu/NativeGame 키 설정·QA, B11 Simulation 자동 물약/장비 입력을 원본 patch 순서로 적용했다. 저장 schema v2 구현0. B11은 `Materials += 4` 유지, 일반 킬 드랍 난수 1→2개와 hp만 악의+1인 웹 계약으로 변경. [19개 완료 단계표·공식·남은 런타임 관문](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). Mac B11 원본 함수 oracle2438/0, Unity6000.6.7f1 비대화형 compile exit0·CS오류/경고0(기존 UAC1001). Editor `.meta` churn은 사전 작업 상태로 복원. **코드 통합·컴파일 PASS, Player/OS 입력/로비라벨/자동물약 실플레이/저장 회귀 미검증**. 기존 앱·개인 저장 보존, A02 fit32 실화면 HOLD. 아래 PC 질문은 Mac 적응의 확인 요청으로 남긴다.
+
 PC에 답신 필요한 원본 근거 3건:
 1. 원본 `a48faf9ea:U04B_nativegame_inventory_smoke_mana.patch`는 기본 선택 해제 장면을 context로 쓰지만 Mac `NativeGame.cs` inventory smoke에는 그 장면이 없다. Mac은 영수증 두 필드를 같은 생성 지점에 적응했다. 이 스냅샷 시점·키 계약이 PC 의도와 일치하는지 확인 요청.
 2. 원본 `A24_nativegame_areatitle.patch` HUD hunk는 `if(lobby.ActiveCharacterName.Length>0)`을 기대하지만 Mac은 `if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0)`이다. 일반 실행의 진단 배지 숨김을 보존하면서 A24 objective panel을 연결하는 기준 확인 요청.

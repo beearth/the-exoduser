@@ -1,5 +1,7 @@
 # Mac ↔ PC Unity UI 누적 패치 사전 대조 — 2026-10-26
 
+최신 판정: PC `a48faf9ea`의 1–19 순서를 Mac 소유 접점에 반영했다(1·13·14는 아래 Mac 문맥 적응). Unity C# 컴파일 PASS, Player 런타임 미검증. 아래 첫 표의 FAIL/PASS*는 **적용 전 preflight 이력**이며 최종 상태는 문서 끝의 후속 checkpoint다.
+
 ## 범위와 기준
 
 - Mac 기준: `codex/unity-mac-20261024` `941ee99bc`. 제품 파일·Git 인덱스 변경 없이 읽기 전용으로 조사했다.
@@ -104,3 +106,24 @@ Mac Unity 6000.6.7f1 Editor 단독 상태를 확인하고 **비대화형 script 
 | 14 A26 lobby | 오래된 preview 주석/블록 문맥 | 같은 호출을 현재 전원 버튼 바로 뒤에 1회 삽입 | 정적 호출 위치·중복 없음·diff 검사 PASS, 화면 미검증 |
 
 원본 백업은 `_out/UNITY-MAC-UI-13-19-20261026/before/`에 있다. 이 단계에서 15–19번 hook, Editor compile, Player는 아직 실행하지 않았다.
+
+## 15→19 적용·Mac 컴파일 — 후속 checkpoint
+
+| 순서 | 실제 적용 파일 | 계약·이번 판정 |
+|---:|---|---|
+| 15 `A26_portverification_flavor` | `Editor/PortVerification.cs` | `-flavor full/demo/bic/ea`를 빌드 호출에서만 `build_flavor.json`에 쓰고 `finally`에서 원문 복원하는 PC patch. `git apply --check`→적용 PASS; 이번 단위에서 실제 빌드는 하지 않아 flavor 왕복 런타임 미검증 |
+| 16 `A16_nativepausemenu_keybinds` | `NativePauseMenu.cs`, `.Keyboard.cs` | 설정 창의 키 변경 페이지·입력 대기 연결. PC `KeyBindings` 정의 사용, 저장 schema v1→v2 변경 없음(변경값은 이번 실행에서만 유지) |
+| 17 `A16_nativegame_keybinds` | `NativeGame.cs` | 이동·무기·상호작용·창 전환을 `NativeKeyBindInput` 조회로 연결. Q/E는 기존 미이식 안내만 유지, 전투 배율 변경 없음 |
+| 18 `A16_nativegame_pausesmoke_keys` | `NativePauseMenu.cs`, `NativeGame.PauseSmoke.cs` | `-pause-phase keys` QA hook과 키 페이지 검사 연결. 일반 저장 경로 변경 없음 |
+| 19 `B11_simulation_autopotion` | `Core/Simulation.cs`, `Core/EquipmentApplication.cs` | 적 루프 뒤 틱마다 자동 물약 호출, 장비 `potionPower`·장갑/벨트 `potCd` 입력, 처치 드랍을 웹식 `ApplyKillDrop`으로 교체. 기존 `Materials += 4` 유지; 일반 킬 난수 소비 1→2회(보스는 구현 호출 전용)로 이후 동일 시드 장비 드랍 순서가 달라지는 PC 원본 계약 |
+
+각 patch는 14번 Mac 적응 상태에서 순서대로 `git apply --check` 후 원본 바이트 그대로 적용했다. 자동 물약은 `HP>0`, 악의>0, 부족 HP≥회복량, 쿨≤0 및 패링 연습 아님 조건일 때 악의 1을 쓴다. 회복량은 `~~(potHeal(Lv)×(1+potionPower))`, `potHeal(0)=100`, `potHeal(1)=150`, `potHeal(Lv≥2)=Lv×100`이다. 쿨은 `max(6, ~~(420×(1−min(장갑.potCd, .2)−min(벨트.potCd, .2)−min(pRegen×.03, .3))))`프레임이다. `potionCdRed`는 자동 쿨에 넣지 않는다. 드랍은 일반 킬에서 난수 2개를 쓰고 hp 종류만 악의 +1, st/mp는 폐기한다. 세부 경계·전체 격자는 [PC B11 원본 계약](UNITY_B11_AUTOPOTION_20261026.md)에 있다. 이 연결은 퀵슬롯 카운터를 더하지 않으며 새 세이브/설정 schema를 만들지 않는다.
+
+| 검사 | 결과·한계 |
+|---|---|
+| B11 오프라인 원본 함수 oracle | Mac SDK8에서 **2,438/0**, `_out/UNITY-MAC-UI-13-19-20261026/oracle/mac-integrated.json`. 순수 계산 확인이며 Unity Player의 틱·UI 인수는 아님 |
+| Mac Unity 6000.6.7f1 비대화형 script compile 1회 | 종료 0, `error CS` 0·`warning CS` 0. 기존 `NativeCharacterPresentationPlayback.cs` UAC1001 한 종류만 기록. `_out/UNITY-MAC-UI-13-19-20261026/compile/mac-ui-13-19-compile.log` |
+| Editor import 메타데이터 | 검사 전 제품 수정 7파일 → 검사 뒤 같은 7파일. tracked `.meta` 411개는 사전 status/HEAD 대조 후 원본 bytes로 복원, 새 `.meta` 1개는 `_out/.../compile/untracked-meta-backup/`에 보존. 다른 제품 파일 차이 0 |
+| 런타임 | Player·OS 키·실제 로비/구역 제목·자동 물약 실플레이·설정 저장 회귀 **미검증**. 기존 사용자 앱·저장 조작0 |
+
+현재 판정은 **PC 1–19 patch 순서의 Mac 접점 코드 통합·C# 컴파일 PASS / Player 런타임 미검증**이다. 1·13·14는 원본 patch의 Mac 문맥만 수동 적응했고, PC 소유 파일은 merge된 원본을 직접 수정하지 않았다. `NativeGame.cs` SHA256 `fffa0748667ad914f6b84849e4e62537b9047c2d708b7bfd1069907ba29acc7d`.

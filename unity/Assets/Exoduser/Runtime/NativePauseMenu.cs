@@ -15,6 +15,15 @@ namespace Exoduser.UnityPort
   readonly Action<bool> fullscreenChanged;
   GUIStyle title,body,muted,button,tabButton,activeTab,fpsButton,activeFpsButton;
   bool ready;
+  // A16: web key-binding list (#keyBindList). The Unity settings window has no 2-column web layout yet (Codex A15), so the list opens as its own full-screen page from the
+  // Controls tab (mouse only, wheel scroll, ESC / Back close it). While a key is waiting the page receives key events and the owner must not act on keys (KeyCaptureActive).
+  NativeKeyBindList keyList;bool keyPage;float keyScroll;GUIStyle keyLabelStyle;
+  public bool KeyPageOpen{get{return keyPage;}}
+  public bool KeyCaptureActive{get{return keyPage&&keyList!=null&&keyList.Listening;}}
+  // A16 test hooks (pause smoke phase "keys"): open the page without the mouse, reach the list, force the scroll (clamped to the end).
+  public NativeKeyBindList KeyListForTest{get{return keyList;}}
+  public void OpenKeyPageForTest(){keyPage=true;keyScroll=0;if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);}
+  public void SetKeyScrollForTest(float value){keyScroll=value;}
   public bool English { get; set; }
   public bool SettingsPersistenceEnabled {get;set;}
   public bool SettingsPersistenceProblem {get;set;}
@@ -30,7 +39,7 @@ namespace Exoduser.UnityPort
    this.font=font;this.settings=settings;this.sfxChanged=sfxChanged;
    this.bgmChanged=bgmChanged;this.frameCapChanged=frameCapChanged;this.fullscreenChanged=fullscreenChanged;
   }
-  public void Reset() { navigation.Reset(); }
+  public void Reset() { navigation.Reset();keyPage=false;if(keyList!=null)keyList.CancelListening(); }
   public void ShowSettings() { page=PausePage.Settings; }
   // Call once from the owner's Escape handler BEFORE toggling menu/Running.
   public bool HandleEscape()
@@ -65,6 +74,7 @@ namespace Exoduser.UnityPort
    Init();Matrix4x4 oldMatrix=GUI.matrix;Color oldColor=GUI.color;bool oldEnabled=GUI.enabled;
    try
    {
+    if(keyPage&&page==PausePage.Settings){DrawKeyPage();return PauseMenuCommand.None;}
     if(Event.current.isKey)Event.current.Use();
     GUI.enabled=oldEnabled&&navigation.Focused&&!navigation.WaitingForRelease;
     GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;
@@ -143,12 +153,34 @@ namespace Exoduser.UnityPort
   }
   void DrawControls()
   {
-   string[] keys={"W A S D",T("마우스 왼쪽","Left mouse"),T("세 번째 공격 유지","Hold third attack"),"TAB","K","ESC"};
+   var bind=NativeKeyBindInput.Bindings;string KN(string action){return KeyBindings.KeyName(bind.Primary(action),English);}   // A16: shows the current web bindings
+   string[] keys={KN("up")+" "+KN("left")+" "+KN("down")+" "+KN("right"),KN("weapon"),T("세 번째 공격 유지","Hold third attack"),KN("inventory"),KN("skill"),KN("settings")};
    string[] actions={T("이동","Move"),T("기본 공격 / 기검참","Attack / Ki Slash"),T("차지 후 놓아서 발사","Charge and release"),T("소지품 열기 / 닫기","Open / close inventory"),T("스킬 창 열기 / 닫기","Open / close skills"),T("닫기 / 일시정지","Back / Pause")};
    for(int i=0;i<keys.Length;i++)
    {
-    GUI.Label(new Rect(348,246+i*44,240,44),keys[i],body);GUI.Label(new Rect(600,246+i*44,332,44),actions[i],body);
+    GUI.Label(new Rect(348,246+i*38,240,38),keys[i],body);GUI.Label(new Rect(600,246+i*38,332,38),actions[i],body);
    }
+   if(GUI.Button(new Rect(348,480,584,40),T("키 설정 변경","Change key bindings"),button)){keyPage=true;keyScroll=0;if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);}
+  }
+  // A16: web #keyBindList as a full-screen page in the 1920x1080 design space (same geometry as the web controls tab list).
+  void DrawKeyPage()
+  {
+   GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;   // the caller's matrix is not reset yet at this point (Draw() sets identity after the early return)
+   Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.97f));
+   float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
+   keyList.English=English;var pane=new Rect(45,60,1830,880);
+   Fill(pane,new Color(.04f,.04f,.045f,.97f));Border(pane,new Color(.48f,.36f,.23f,.6f));
+   float max=Mathf.Max(0,keyList.ContentHeight+51+32-pane.height);
+   if(Event.current.type==EventType.ScrollWheel&&pane.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
+   keyScroll=Mathf.Clamp(keyScroll,0,max);
+   GUI.BeginGroup(pane);
+   // web `#settings-page-controls .set-label` computed style: Noto Sans KR 600 16px, letter-spacing .64px, rgb(200,181,143), left aligned, box 1736x39 (padding 4/0/10), hairline rgb(73,65,54) below, list 12px under it
+   if(keyLabelStyle==null){keyLabelStyle=new GUIStyle(GUI.skin.label){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??font,fontSize=16,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};keyLabelStyle.normal.textColor=new Color(200/255f,181/255f,143/255f);}
+   {float lx=42,ly=14-keyScroll+4;foreach(char ch in T("조작 키 설정 (클릭하여 변경)","Key bindings (click to change)")){string g=ch.ToString();GUI.Label(new Rect(lx,ly,40,24),g,keyLabelStyle);lx+=keyLabelStyle.CalcSize(new GUIContent(g)).x+.64f;}
+    Fill(new Rect(42,14-keyScroll+38,1736,1),new Color(73/255f,65/255f,54/255f));}
+   keyList.Draw(new Vector2(42,14+51-keyScroll),new Rect(0,0,pane.width,pane.height));GUI.EndGroup();
+   keyList.DrawToasts();
+   if(GUI.Button(new Rect(860,984,200,44),T("뒤로","Back"),button)&&!keyList.Listening)keyPage=false;
   }
   void RestoreDefaults()
   {
