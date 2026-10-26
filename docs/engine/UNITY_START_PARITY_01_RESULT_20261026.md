@@ -1,7 +1,7 @@
 # UNITY-START-PARITY-01 최종 인수 결과
 
 <!-- SUMMARY_BEGIN -->
-**IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL VERDICT: RETOUCH.** 최초 ARM64 빌드·54tick 시작 촬영·성능1회·HUD55/practice5 각1회는 통과했다. 실제 웹도54tick/active0·held5/이리스ring_04를 확인했다. 마지막 별도 Ori 바닥광원 누락 교정은 push했으나 재빌드 직전 타 QA 재점유로 build/화면/성능 미검수다. 비교 PNG·43.646943 대63.382553·8.444413ms는 **Ori 수정 전** 실제 빌드이며 최종 AFTER가 아니다. worktree를 유지한다.
+**IMPLEMENTED_UNVERIFIED / VISUAL VERDICT: RETOUCH.** 02에서 독립 바닥빛의 실제 ARM64 렌더·54tick·900프레임·HUD55/practice5를 인수했다. 첫 가산 과다를 원본 GPU normal alpha/linear로 교정하고 해당 시작장면만1회 재촬영했지만 r40=71.135259 대60.631586(+10.503673)가 남아 VERIFIED 아님. 성능8.640282/p95 9.303167/p99 11.413166ms는 합성 교정 전02 빌드의1회 측정이며 최종 합성 뒤 재측정0. worktree 보존. [후속 상세](UNITY_START_PARITY_02_20261026.md).
 <!-- SUMMARY_END -->
 
 부모 `ec6e7b0a9fcbfac204ccbb8b2a7ea182b3cbfa04`, 코드 후보 `84ee74a573ff147f706f6fe4d297e7a77cfcf841`, 브랜치 `codex/unity-start-parity-01-20261026`. 최종 docs commit SHA/원격 확인은 외부 `~/exoduser-wt/_out/UNITY-START-PARITY-01/DONE.txt` 첫 줄과 remote receipt다. [원문 행·구현표·중간 이력](UNITY_START_PARITY_01_20261026.md).

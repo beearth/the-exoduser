@@ -1,6 +1,6 @@
 ## 2026-10-26 UNITY-START-PARITY-01 final runtime boundary
 
-**IMPLEMENTED_UNVERIFIED — GPU 대기 / VISUAL VERDICT: RETOUCH.** 최초 ARM64 빌드·54tick 시작 촬영·성능1회·HUD55/practice5 각1회는 통과했다. 실제 웹도54tick/active0·held5/이리스ring_04를 확인했다. 마지막 별도 Ori 바닥광원 누락 교정은 push했으나 재빌드 직전 타 QA 재점유로 build/화면/성능 미검수다. 비교 PNG·43.646943 대63.382553·8.444413ms는 **Ori 수정 전** 실제 빌드이며 최종 AFTER가 아니다. worktree를 유지한다. [Latest result](engine/UNITY_START_PARITY_01_RESULT_20261026.md).
+**IMPLEMENTED_UNVERIFIED / VISUAL VERDICT: RETOUCH.** 02에서 독립 바닥빛의 실제 ARM64 렌더·54tick·900프레임·HUD55/practice5를 인수했다. 첫 가산 과다를 원본 GPU normal alpha/linear로 교정하고 해당 시작장면만1회 재촬영했지만 r40=71.135259 대60.631586(+10.503673)가 남아 VERIFIED 아님. 성능8.640282/p95 9.303167/p99 11.413166ms는 합성 교정 전02 빌드의1회 측정이며 최종 합성 뒤 재측정0. worktree 보존. [Latest result](engine/UNITY_START_PARITY_02_20261026.md).
 
 ## 2026-10-26 UNITY-START-PARITY-01 원본 Ori 바닥광원 보완
 
@@ -57213,3 +57213,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 - 요청한 개발상태문구 금지에 따라 NativeGame.cs 이름 배지에서 일반실행에도 붙던 미리보기/Preview 접미사만 제거(1hunk). 시작검수 이름은 격리 StartParityCapture 전용임을 확인. 보호파일 변경0, 새로운 테스트파일0.
 
 2026-10-26 UNITY-START-PARITY-02 실제 GPU첫검수: 바닥빛 과다(r40 80.169대60.632)의 원인은 원문GPU proxy가 lighter설정을 무시하는 normal pipeline인데 이식본이 One One이었던 점. 원본PNG·stops·반경유지, 전용SourcePlayerFloor shader의 SrcAlpha/OneMinusSrcAlpha·Bilinear로 교정. 첫빌드/54tick/성능1/HUD55/practice5완료, 해당장면 capture-only1회 재검수 예정. [수치·근거](engine/UNITY_START_PARITY_02_20261026.md).
+
+2026-10-26 UNITY-START-PARITY-02 마감: 최종sourceGPU합성교정실제54tick/1x·4x/방사표완료이나r40+10.503673 잔차로RETOUCH·VERIFIED아님. 동일시각항목2회불일치후추가실행중지. build2모두errors0,HUD55/practice5각1PASS;성능1회mean8.640282/p959.303167/p9911.413166ms는교정전02코드b03,최종교정후재측정0명시. 사용자3Player·저장·보호파일보존/worktree유지. 상세표·MAP보고는UNITY_START_PARITY_02.
