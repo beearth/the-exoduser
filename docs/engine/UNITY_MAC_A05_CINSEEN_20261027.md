@@ -49,7 +49,10 @@ QA 진입 후보는 기존 **고유 Settings QA 앱**의 product `EXODUSER Setti
 |---|---|
 | 첫 실행 | 고유 PID26911·명시 `--unity-cinematic-persistence-review -output <전용 root>`에서 FDG→제목→문→세계관을 실창 확인. 세계관 도중 추가 입력 없이 자연 종료해 로비 진입. 영상 재생 오류 기록 없음. |
 | 완료 저장 | 전용 `native-settings-v1/settings.v1.json`: `cinSeen:true`, revision **2→3**. SFX35/BGM45/FPS144/fullscreen false, `up=KeyZ`/보조 `KeyX`, 중첩 패드 JSON 보존. 전용 로스터 폴더 생성 없음. |
+
 | 동일 앱·동일 root 재시작 | 첫 앱 종료 뒤 다시 실행해 최초 화면이 곧바로 로비임을 실창 확인. 설정 revision3·키/패드/완료 표식 유지. 재시작 때 저장 재기록 없음. |
 | 경계 | 두 앱 실행 모두 전용 root와 고유 QA identity. 기존 사용자 앱 PID38141/48476/52157·개인 설정/로스터 파일을 열거나 변경하지 않음. |
+
+2026-10-27 A15 저장 보존 회귀: 위 A05 **QA 전용** v2 파일을 새로운 marker 루트에 복사하고 중첩 unknown sentinel을 추가했다. 실제 Player 조작 키/SFX 저장으로 revision3→5가 된 뒤에도 `cinSeen:true` boolean, `gpKeyMap.pad0.buttons=[1,2]`, sentinel, 보조 `up=KeyX`가 동일했다. 재시작한 QA 직접 진입 화면에서 주 `up=Tab`과 SFX36을 확인했다. 직접 진입이므로 자연 시작→로비 분기·패드 동작을 다시 PASS로 계상하지 않는다. [실행표](UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-a15-저장-시-a05미지원-데이터-보존-회귀).
 
 따라서 **Mac Player 자연 완료→저장→동일 profile 재시작 로비 직행 PASS**. 오류 뒤 수동 마지막 cue는 격리 Editor 정책 검사 PASS이며 실제 Player에서 오류를 인위적으로 발생시키지 않았다. 다른 `--unity-frontend-review`의 설정 I/O와 일반 사용자 Player 경로 검수로 확대 해석하지 않는다. Unity 빌드가 재작성한 Resources `.meta` 411개·새 `.meta` 1개·Scene/ProjectSettings 생성물은 백업한 뒤 HEAD bytes로 복원했다.

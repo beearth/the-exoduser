@@ -53,3 +53,17 @@ Unity 6000.6.7f1 Mac ARM64 `PortVerification.Build -settingsQa true` **1회**: r
 | 빌드·실행 범위 | Unity 6000.6.7f1 ARM64 Settings QA `PortVerification.Build` 첫 빌드와 입력 버그 수정 후 최종 재빌드 모두 `Succeeded`, C# 오류0. 첫 빌드 앱의 write 실행 PID31536, 최종 빌드 앱의 read 실행 PID31735, 총 Player 실행 2회. 둘 다 위 같은 명시 루트를 사용했고 종료했다. `build-receipt-final.json`, `build-final.log`, `player-write.log`, `player-read.log`는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A15-CAPTURE-20261027/`에 있다. 요구한 빌드 1회는 실제 버그 수정을 위해 2회가 되었으며 이를 1회로 계상하지 않는다. |
 
 PC 원본 `NativeKeyBindList`의 캡처 처리에 소비 프레임 한 필드만 추가했고 게임패드 재지정·키 충돌 정책은 바꾸지 않았다. 저장은 기존 v2 직렬화 경로이며 별도 키 저장 형식을 만들지 않았다. 전용 QA 진입·사용자 데이터 분리와 OS Esc/Tab 및 SFX/키 저장 복원은 이 범위에서 PASS. 일반 경로 마우스 클릭, 좁은 창, 청각 출력, 다른 메뉴와의 충돌, 패드 입력은 여전히 HOLD다.
+
+## 2026-10-27 A15 저장 시 A05·미지원 데이터 보존 회귀
+
+같은 `e7fe487bfba541f01ac4033f4d4d744210e7b04e` 소스의 기존 Settings QA ARM64 Player를 재사용했다. 새 빌드·코드 변경은 0. 새 절대 루트 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-IO-A15-PRESERVE-20261027`에 정확한 A05 marker를 만들고, 이전 **QA 전용** A05 파일의 v2 설정을 복사해 별도 `qaSentinel`을 추가했다. 원본과 편집 전 문서 사본은 이 루트의 `seed-settings.v2.json`, `before/`에 보존했다. 기존 사용자 설정이나 로스터는 입력으로 사용하지 않았다.
+
+| 항목 | seed → Player 저장·재시작 | 판정 |
+|---|---|---|
+| 지원 설정·키 | revision **3→5**, SFX **35→36%**, `binds.up` **KeyZ→Tab**. read Player 시작 로그 `sfx=36 up=Tab`, 조작 화면 `TAB`/보조 `X`, 사운드 화면 `36%` | 실제 지원 UI save/read PASS |
+| A05 완료 표식 | 상위 boolean `cinSeen:true`가 저장 파일에 그대로 남음 | 값·raw token 보존 PASS; QA 직접 진입이라 자연 로비 분기는 재검증하지 않음 |
+| 미지원·기존 자료 | `gpKeyMap.pad0.buttons=[1,2]`, 별도 `qaSentinel.nested.keep="A15-preserve-20261027"`와 중첩 배열, `binds2.up=KeyX` 모두 저장 전후 동일. 두 unknown JSON value와 `cinSeen:true`의 원문 token도 동일 | 저장 보존 PASS; 실제 패드 입력/적용은 HOLD |
+| 기타 설정 | BGM45/FPS144/fullscreen false, schema/version 및 모든 보조 키 동일 | 저장 파일 대조 PASS |
+| 1099px 요청 | write Player에 `-screen-width 1099`를 줬으나 화면 JPEG는 **1100×784**(창 chrome 포함), 사운드 카드는 2열이었다. footer는 보였지만 1열 첫·끝 카드/scroll 상한은 실제 화면에서 볼 수 없었다 | 1열·wheel·scrollmax 0 시각 판정 **HOLD**; OS 창 강제 조정 없음 |
+
+증거는 같은 루트의 `preservation-receipt.json`, `player-write.log`, `player-read.log`, `controls-restored.jpg`, `audio-restored.jpg`, `audio-request-1099.jpg`이다. QA Player 실행은 write/read 각 1회로 종료했고 QA 프로세스는 남기지 않았다. 앞 절의 일반 경로 마우스·청각·미지원 게임 옵션 HOLD는 그대로다. 이 결과는 지원된 A15 설정 저장 경로의 보존 회귀이며 전체 A15 완료 판정은 아니다.
