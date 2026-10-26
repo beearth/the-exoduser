@@ -1,0 +1,47 @@
+{
+  "currentLanguage": "한국어",
+  "rows": [
+    {
+      "alt": "거대한 뼈 형상의 괴물이 화면 위쪽을 차지하고, 그 아래에서 캐릭터와 적들이 푸른빛과 붉은빛의 전투 효과에 둘러싸여 있다.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/da5d3a6063a6d8dee5d08bae353b2202b1e91a73/ss_da5d3a6063a6d8dee5d08bae353b2202b1e91a73.800x600.jpg"
+    },
+    {
+      "alt": "어두운 숲의 불빛 사이에서 캐릭터가 적들과 마주하고 있다. 적 머리 위의 체력 막대와 화면 아래의 스킬 및 자원 표시가 보인다.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/f0f56cc934a54f5cc6b353689947a2092ee83c25/ss_f0f56cc934a54f5cc6b353689947a2092ee83c25.800x600.jpg"
+    },
+    {
+      "alt": "어두운 숲을 위에서 내려다본 전투 화면. 캐릭터 주변에 주황색 불빛과 색색의 구체가 보이고, 오른쪽 아래에 황금색 원형 문양이 펼쳐져 있다.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/90c3dc24653f80873a804f85fa2f4821e2e91d80/ss_90c3dc24653f80873a804f85fa2f4821e2e91d80.800x600.jpg"
+    },
+    {
+      "alt": "캐릭터가 어두운 숲의 중앙에 서 있다. 주변의 주황색과 초록색 불빛이 바닥을 비추고, 아래쪽에 체력과 스킬 표시가 배치되어 있다.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/47b0bf0a0b658890642062e3c2af244bbbdb889c/ss_47b0bf0a0b658890642062e3c2af244bbbdb889c.800x600.jpg"
+    },
+    {
+      "alt": "위에서 내려다본 화면에 푸른 그물 모양의 선들이 넓게 겹쳐 있고, 아래쪽 중앙에 작은 캐릭터와 붉은 전투 효과가 보인다.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/b070d0a51fd7f32affc789ec180f80cc2ab4a3e6/ss_b070d0a51fd7f32affc789ec180f80cc2ab4a3e6.800x600.jpg"
+    }
+  ],
+  "english": [
+    {
+      "alt": "A huge skeletal creature fills the upper part of the screen, while characters and enemies below are surrounded by blue and red combat effects.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/da5d3a6063a6d8dee5d08bae353b2202b1e91a73/ss_da5d3a6063a6d8dee5d08bae353b2202b1e91a73.800x600.jpg"
+    },
+    {
+      "alt": "A character faces enemies among the lights of a dark forest. Enemy health bars and the skill and resource displays are visible.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/f0f56cc934a54f5cc6b353689947a2092ee83c25/ss_f0f56cc934a54f5cc6b353689947a2092ee83c25.800x600.jpg"
+    },
+    {
+      "alt": "Top-down combat in a dark forest, with orange lights and colored orbs around the character and a golden circular pattern at the lower right.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/90c3dc24653f80873a804f85fa2f4821e2e91d80/ss_90c3dc24653f80873a804f85fa2f4821e2e91d80.800x600.jpg"
+    },
+    {
+      "alt": "A character stands in the center of a dark forest. Orange and green lights illuminate the ground, with health and skill displays along the bottom.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/47b0bf0a0b658890642062e3c2af244bbbdb889c/ss_47b0bf0a0b658890642062e3c2af244bbbdb889c.800x600.jpg"
+    },
+    {
+      "alt": "A top-down view covered by overlapping blue web-like lines, with a small character and red combat effects near the lower center.",
+      "src": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4749590/b070d0a51fd7f32affc789ec180f80cc2ab4a3e6/ss_b070d0a51fd7f32affc789ec180f80cc2ab4a3e6.800x600.jpg"
+    }
+  ]
+}

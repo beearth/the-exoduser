@@ -1,0 +1,37 @@
+{
+  "before": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "originalOrder": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "savedOrder": [
+    1,
+    2,
+    0,
+    3,
+    4
+  ],
+  "koreana": [
+    "어두운 숲을 위에서 내려다본 전투 화면. 캐릭터 주변에 주황색 불빛과 색색의 구체가 보이고, 오른쪽 아래에 황금색 원형 문양이 펼쳐져 있다.",
+    "거대한 뼈 형상의 괴물이 화면 위쪽을 차지하고, 그 아래에서 캐릭터와 적들이 푸른빛과 붉은빛의 전투 효과에 둘러싸여 있다.",
+    "어두운 숲의 불빛 사이에서 캐릭터가 적들과 마주하고 있다. 적 머리 위의 체력 막대와 화면 아래의 스킬 및 자원 표시가 보인다.",
+    "캐릭터가 어두운 숲의 중앙에 서 있다. 주변의 주황색과 초록색 불빛이 바닥을 비추고, 아래쪽에 체력과 스킬 표시가 배치되어 있다.",
+    "위에서 내려다본 화면에 푸른 그물 모양의 선들이 넓게 겹쳐 있고, 아래쪽 중앙에 작은 캐릭터와 붉은 전투 효과가 보인다."
+  ],
+  "english": [
+    "Top-down combat in a dark forest, with orange lights and colored orbs around the character and a golden circular pattern at the lower right.",
+    "A huge skeletal creature fills the upper part of the screen, while characters and enemies below are surrounded by blue and red combat effects.",
+    "A character faces enemies among the lights of a dark forest. Enemy health bars and the skill and resource displays are visible.",
+    "A character stands in the center of a dark forest. Orange and green lights illuminate the ground, with health and skill displays along the bottom.",
+    "A top-down view covered by overlapping blue web-like lines, with a small character and red combat effects near the lower center."
+  ]
+}
