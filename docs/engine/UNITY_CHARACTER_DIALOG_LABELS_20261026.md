@@ -28,3 +28,17 @@ I: `ui-simple/a04-character-dialog-static-qa.json`에서 위 네 파일과 메�
 - I: `qa-contract/a04-dialog-label-comparison.json`: 고정 웹 `d209075ec…`의 실제 언어 병합/폴백 경로와 JSON SHA-256 `8B37800F…`를 비교했다. 29언어×14키=406값 중 402개 일치, 4개 차이(`ja.cancel`, `ja.confirm`, `es.cancel`, `es.confirm`). 최초 후보의 406개 일치 표기는 이 독립 결과로 정정한다.
 - I: `qa-contract/a04-dialog-compile.json` 및 `a04-dialog-compile-editor.log`: 원격 후보 `a1541cdd5…`의 두 C#·JSON/meta 입력 해시를 전후 대조했다. Unity 6000.6.7f1 배치 import·컴파일 종료 코드 0, 컴파일 오류 0, JSON `TextScriptImporter` 확인, Runtime C# 77개 실행 중 변경 0이다. 이 검수는 네 라벨 차이를 해소하지 않는다.
 - Editor lease 해제는 QA 담당 보고 기준이다. Player 빌드·실GUI/실입력·시각 검수는 0이며 삭제 확인창은 별도 범위다.
+
+## 2026-10-27 삭제 확인창 표시·4개 라벨 교정 후보
+
+| 항목 | 웹 기준·이번 후보 | 변경 경계 |
+|---|---|---|
+| 삭제 질문 | 선택한 이름 + `deleteSuffix`를 한 문장으로 표시 | `NativeLobby.CharacterDelete.cs` 표시 |
+| 버튼 | 왼쪽 `confirm`/오른쪽 `cancel`, 기본 초점 취소 | 기존 최종 삭제·닫기 함수 연결, Tab/좌우 선택 |
+| 중앙 창 | 기존 780×420 초상화·설명 행에서 466×230 질문·두 버튼으로 변경 | 시각 검수 전 후보 |
+| `ja` 라벨 | `cancel=キャンセル`, `confirm=確認` | JSON 두 값만 웹 현행값으로 교정 |
+| `es` 라벨 | `cancel=Cancelar`, `confirm=Confirmar` | JSON 두 값만 웹 현행값으로 교정 |
+
+고정 웹 소스 `d209075ec…`의 실제 병합/폴백 경로에 대해 UI 담당 재추출 결과 29언어×14키=406/406값 일치다(`I:/EXODUSER-Storage/qa/unity-ui-resume-20261026/ui-simple/a04-character-delete-static-qa.json`). 앞선 독립 QA 402/406은 **수정 전** JSON SHA `8B37800F…`의 결과이고, 이번 JSON SHA `423A5689…`는 수정 후 별도 입력이다. 삭제창 C# SHA `0EAE97E9…`; `RequestCharacterDelete`·`ConfirmCharacterDelete`의 대상 슬롯/이름 검증과 `TryRemove`/`CommitCharacters` 본문은 불변. 생성 C#·roster·저장 경로도 이번 후보에서 불변이다. 웹의 비동기 중복 방지·온라인 삭제 응답·이전 DOM 초점 복귀는 이 Unity 표시 수정의 동등 구현 판정에 넣지 않는다.
+
+이번 고정 입력의 **Editor import·컴파일 0회, Player 빌드/실GUI/실입력 0회**, 시각 판정 HOLD다. 이전 A04 배치 컴파일 0오류는 수정 전 JSON·삭제창 C#에만 적용한다. 다음 QA는 두 새 입력의 해시 대조 후 단독 import·컴파일 및 안전한 격리 데이터에서 실제 취소/확인·키보드/마우스·29언어 긴 문구/아랍어 배치를 검수한다.
