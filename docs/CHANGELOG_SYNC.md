@@ -57181,3 +57181,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac ar 세계관 자막 ATG 후보: 공식 Noto Naskh Arabic Regular/OFL, 동적 FontAsset·라틴 fallback·UI Toolkit Advanced/RTL을 `--unity-arabic-caption-preview` QA에 격리. ARM64 cue20 720/1080 결합·배치와 메뉴·ar→ko 확인, cue31/32큐 전체와 웹 배경폭 parity 보류. 일반 ar/다른28언어·원문JSON/시각 보존. IMGUI 글꼴 단독 시도는 결합 실패로 철회. [기록](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
 
 2026-10-26 Mac ar ATG 후속: HEAD763667931 ARM64 오류0 일치 빌드에서 마지막 cue32(0-based31)가 강제RTL 때문에 `.EXODUSER`로 표시되어 RETOUCH. 아랍 문자 포함이면 RTL, 라틴 전용이면 LTR로 한 원인만 수정; 수정본 실제 Player 검증은 별도. [증거](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
+
+2026-10-26 Mac ar 32큐 검수 경로: 기존 preview 플래그에서만 시작 언어 ar 지정. 일반 실행 ko/다른28언어는 불변, 실제 전큐 판정은 새 HEAD Player 대기. [기록](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
