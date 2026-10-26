@@ -47,6 +47,13 @@ for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/exoduser/$f" "G:/exodus
 - 개발 중 버전 전환: `?bic` → BIC부스 데모(Lv100), `?demo` → 일반데모(Lv500), 파라미터 없음 → 정식
 - **`_LOBBY_BUILD`**: DEMO=`'demo'`, EA=`'ea'`, 정식=`'full'` — 복사 후 반드시 sed로 변경
 
+## 엔진별 버전 분리 (2026-10-27 사용자 확정)
+
+- **H5(웹) = `main`**: game.html·index.html·lang·`engine/fdg`(웹 런타임, game.html이 import)·Steam/NW 빌드·공통 기획 docs.
+- **Godot = `godot/main`** (동결, 607110d52). main에 `godot/`를 다시 넣지 않는다.
+- **Unity = Unity 줄기 브랜치만** (`claude/unity-pc-*`·`codex/unity-*`). main으로 병합하지 않는다. 줄기 브랜치 지정은 미결정.
+- 엔진 코드를 커밋하기 전에 지금 브랜치가 그 엔진 줄기인지 확인한다. 상세·이력: `docs/0마스터플랜/REPO_SYNC_ENGINE_SPLIT_20261027.md`
+
 ## 서버
 
 ```
