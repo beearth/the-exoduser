@@ -1,0 +1,108 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.cs b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+index 60ea1a4..e754239 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort
+         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
+         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
+         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
+-        NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;bool skillsWasRunning,skillInputFence;
++        NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;NativeStatPanel stats;bool skillsWasRunning,statsWasRunning,skillInputFence;
+         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
+         bool basicWeaponMode;
+         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
+@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
+             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
+             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
+             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
+-            hud=new NativeHud();skills=new NativeSkills();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
++            hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
+             NativePanelTabBar.Requested+=OnPanelRequested;
+             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
+             BuildProps();
+@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort
+             kiView?.Reset();impacts?.Reset();sound?.Reset();
+             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
+             Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
+-            inventory.Reset();skills.SetOpen(false);skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
++            inventory.Reset();skills.SetOpen(false);stats.SetOpen(false);skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
+             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
+             // World drop item factory and persistent saves remain unimplemented.
+             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
+@@ -131,6 +131,14 @@ namespace Exoduser.UnityPort
+             if(traceInventoryKeys)TraceInventoryKeys();
+             if(!gameFocused){Running=false;return;}
+             if(HandlePanelHotkeys())return;
++            // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
++            if(stats.Open){
++                if(Input.GetKeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
++                else if(!stats.TextInputActive&&Input.GetKeyDown(KeyCode.K))OnPanelRequested("skillPanel");
++                else if(!stats.TextInputActive&&Input.GetKeyDown(KeyCode.Tab))OnPanelRequested("invPanel");
++                else stats.HandleKeys(()=>SetStats(false));
++                return;
++            }
+             if(menu||Simulation.Player.Hp<=0){
+                 if(!pauseSmoke)ApplyPauseCommand(pauseMenu.PollKeys(Simulation.Player.Hp<=0,Screen.fullScreen));
+                 UpdateViews();return;
+@@ -259,6 +267,7 @@ namespace Exoduser.UnityPort
+         {
+             if(Simulation==null)return;
+             if(lobby!=null&&lobby.IsBlocking){if(lobby.StartupHudVisible)DrawStartupWorldHud();return;}
++            if(stats.Open){stats.Draw(()=>SetStats(false));return;}
+             if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
+             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
+             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
+@@ -287,35 +296,50 @@ namespace Exoduser.UnityPort
+             skills.SetOpen(open,slot);
+             if(!open){skillInputFence=true;Running=skillsWasRunning&&!menu&&Simulation.Player.Hp>0;}
+         }
++        void SetStats(bool open){
++            if(open&&firstPractice!=null)return;
++            if(open){statsWasRunning=Running;Running=false;}
++            stats.SetOpen(open);
++            if(!open){skillInputFence=true;Running=statsWasRunning&&!menu&&Simulation.Player.Hp>0;}
++        }
+         // Web _injectPanelNav: a tab click opens that window (openPanel closes the others first); the active tab is ignored by the bar itself.
+-        // forge/statPanel have no Unity window yet.
++        // forge has no Unity window yet.
+         void OnPanelRequested(string id){
+             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return;
+             switch(id){
+                 case "settings":
++                    if(stats.Open)SetStats(false);
+                     if(skills.Open)SetSkills(false);
+                     if(inventory.Open)SetInventory(false);
+                     if(!menu){menu=true;pauseMenu.Reset();Running=false;}
+                     break;
+                 case "invPanel":
++                    if(stats.Open)SetStats(false);
+                     if(skills.Open)SetSkills(false);
+                     if(menu){menu=false;Running=true;}
+                     if(!inventory.Open)SetInventory(true);
+                     break;
+                 case "skillPanel":
++                    if(stats.Open)SetStats(false);
+                     if(inventory.Open)SetInventory(false);
+                     if(menu){menu=false;Running=true;}
+                     if(!skills.Open)SetSkills(true);
+                     break;
++                case "statPanel":
++                    if(skills.Open)SetSkills(false);
++                    if(inventory.Open)SetInventory(false);
++                    if(menu){menu=false;Running=true;}
++                    SetStats(!stats.Open);
++                    break;
+                 default:
+                     Debug.Log("[PanelTabBar] "+id+" window is not ported yet");
+                     break;
+             }
+         }
+-        // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats (no Unity window yet: log only), F10 = settings toggle.
++        // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats, F10 = settings toggle.
+         // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
+         bool HandlePanelHotkeys(){
+-            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return false;
++            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive)return false;
+             if(Input.GetKeyDown(KeyCode.G)){OnPanelRequested("forge");return true;}
+             if(Input.GetKeyDown(KeyCode.J)){OnPanelRequested("statPanel");return true;}
+             if(Input.GetKeyDown(KeyCode.F10)){
