@@ -6,12 +6,14 @@
 
 | 파일 | 내용 |
 |---|---|
-| `unity/Assets/Exoduser/Runtime/Core/Combat/Enemy/EnemyTables.cs` | `static class EnemyTables`: `Hp`, `Atk`, `SpdRaw`, `Spd`, `R`, `Range`, `Poise`, `Shield` (`double[90]`), `Col`, `Cols` (`string[90]`), `Eres` (`double[120][7]`), `Rare` (`RareEnemyDef[10]`)+`FindRare(etype)`, `IsRareEtype(et)`, `DiffMul`, `DiffLvOff`, `TotalStages`, `SiToHell`, `SiToFloor` (`byte[35]`), `Stg` (`StageDef[35]`). 상수 `EtypeCount=90`, `EresRows=120`, `ElementCount=7` |
-| `unity/Assets/Exoduser/Runtime/Core/Combat/Enemy/EliteTables.cs` | `static class EliteTables`: `Tiers`(`EliteTierDef[4]`), `Prob`(`double[7][3]`), `Mods`(`ModDef[31]`) |
+| `unity/Assets/Exoduser/Runtime/Core/EnemyTables.cs` | `static class EnemyTables`: `Hp`, `Atk`, `SpdRaw`, `Spd`, `R`, `Range`, `Poise`, `Shield` (`double[90]`), `Col`, `Cols` (`string[90]`), `Eres` (`double[120][7]`), `Rare` (`RareEnemyDef[10]`)+`FindRare(etype)`, `IsRareEtype(et)`, `DiffMul`, `DiffLvOff`, `TotalStages`, `SiToHell`, `SiToFloor` (`byte[35]`), `Stg` (`StageDef[35]`). 상수 `EtypeCount=90`, `EresRows=120`, `ElementCount=7` |
+| `unity/Assets/Exoduser/Runtime/Core/EliteTables.cs` | `static class EliteTables`: `Tiers`(`EliteTierDef[4]`), `Prob`(`double[7][3]`), `Mods`(`ModDef[31]`) |
 | `unity/Tools/enemy-tables-oracle/*` | `export.cjs`(원본 추출·실행), `gen-cs.cjs`(위 두 파일 생성), `Program.cs`+`EnemyTablesTests.csproj`(.NET 대조), `RedStub/`, `run.cjs`, `run-red.cjs`, `runner.cjs`, `README.md`, `oracle.json` |
 | `unity/.gitignore` | `EnemyTablesTests.csproj` 예외, `runs/` 무시 |
 
-- 두 `.cs`는 **`gen-cs.cjs`가 `oracle.json`(원본 실행 결과)에서 생성**했다. 값을 손으로 옮기지 않았다. 기존 .NET csproj는 `Runtime/Core/*.cs`를 비재귀로 컴파일하므로 하위 폴더인 이 파일들은 기존 검사에 섞이지 않는다.
+- 두 `.cs`는 **`gen-cs.cjs`가 `oracle.json`(원본 실행 결과)에서 생성**했다. 값을 손으로 옮기지 않았다.
+- **위치 정정(보스전 총괄 지시, 맥북 총괄 권고)**: 처음 `Core/Combat/Enemy/`에 만들었으나, 기존 .NET 검사 프로젝트가 `Runtime/Core/*.cs`를 비재귀 와일드카드로 모으므로 하위 폴더에 두면 patch 적용 뒤 컴파일에서 빠진다. 그래서 `Runtime/Core/` 바로 아래(평면)로 `git mv` 했다(후속 커밋). 이동 뒤 확인: oracle GREEN **2,784/0** 재통과, 와일드카드로 이 파일을 함께 컴파일하는 csproj 10개 중 7개(Feedback, Hud, Inventory, KiSlash, Poise, StatParity, CoreTests) 빌드 오류 0.
+  Comparison/FirstPractice/SkillUi 3개는 폴더에 NuGet.Config/global.json이 없어 **환경 문제(NU1100, Ref pack 복원)로 빌드하지 못했다**(이 변경과 무관, 같은 원인 2회라 중단). 이 3개 폴더에는 같은 이름 타입(RareEnemyDef/StageDef/EliteTierDef/ModDef/EnemyTables/EliteTables)이 없음을 grep으로만 확인했다. `NativeBossBar` 안의 private 중첩 `StageDef`는 중첩 타입이 우선하므로 충돌하지 않는다(Unity 컴파일은 하지 않아 미확인).
 - 숫자는 `double`(웹 Number 그대로, 비트 동일), 색은 문자열(`"#dd4455"`, `"#888"` 포함). `Spd`는 C#에서 `v==0?0:Math.Max(0.2,v*1.3)`로 `SpdRaw`에서 계산한다(원본 변환식과 비트 일치 확인).
 - `RareEnemyDef`/`StageDef`/`EliteTierDef`/`ModDef`는 필드 이름만 PascalCase로 바꾼 데이터 클래스이며 로직이 없다. `MOD_DEFS`는 웹에서 함수 필드 없이 `id,name,col,hell`만 가진다.
 

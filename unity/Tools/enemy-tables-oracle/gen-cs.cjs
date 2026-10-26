@@ -1,9 +1,9 @@
 // Emits EnemyTables.cs / EliteTables.cs from oracle.json (= the original tables evaluated in the Node VM). Nothing is typed by hand.
-//   node gen-cs.cjs [--oracle oracle.json] [--out <Runtime/Core/Combat/Enemy>]
+//   node gen-cs.cjs [--oracle oracle.json] [--out <Runtime/Core>]
 const fs=require('node:fs'),path=require('node:path');
 const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1];};
 const oracle=JSON.parse(fs.readFileSync(arg('--oracle',path.join(__dirname,'oracle.json')),'utf8'));
-const outDir=arg('--out',path.join(__dirname,'../../Assets/Exoduser/Runtime/Core/Combat/Enemy'));
+const outDir=arg('--out',path.join(__dirname,'../../Assets/Exoduser/Runtime/Core'));
 const T=oracle.tables,src=oracle.source;
 const num=v=>{if(typeof v!=='number'||!isFinite(v))throw Error('not a finite number: '+v);return String(v);};
 const str=v=>{if(typeof v!=='string')throw Error('not a string: '+v);return JSON.stringify(v);};

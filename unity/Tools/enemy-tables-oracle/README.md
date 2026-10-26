@@ -1,6 +1,6 @@
 # 적 수치 테이블 원본 대조 (CX-01 oracle)
 
-`Runtime/Core/Combat/Enemy/EnemyTables.cs`, `EliteTables.cs`(웹 `ETYPE_*`, `RARE_ETYPE`, `ELITE_*`, `MOD_DEFS`, `DIFF_*`, `SI_TO_*`, `STG`)를 **원본 game.html 선언을 실제로 실행한 결과**와 대조하는 offline .NET 검사다. Unity Player/Editor 검증이나 게임 전체 판정이 아니다. 손으로 옮긴 기대값도, 손으로 옮긴 C# 값도 없다(C# 값은 `gen-cs.cjs`가 같은 실행 결과에서 생성).
+`Runtime/Core/EnemyTables.cs`, `EliteTables.cs`(웹 `ETYPE_*`, `RARE_ETYPE`, `ELITE_*`, `MOD_DEFS`, `DIFF_*`, `SI_TO_*`, `STG`)를 **원본 game.html 선언을 실제로 실행한 결과**와 대조하는 offline .NET 검사다. Unity Player/Editor 검증이나 게임 전체 판정이 아니다. 손으로 옮긴 기대값도, 손으로 옮긴 C# 값도 없다(C# 값은 `gen-cs.cjs`가 같은 실행 결과에서 생성).
 
 ```powershell
 # 1) 원본 실행 → oracle.json (Node VM, game.html 읽기 전용)
