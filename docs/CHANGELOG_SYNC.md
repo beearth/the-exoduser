@@ -1,3 +1,7 @@
+## 2026-10-26 Unity 초반 stage 무음 계측
+
+- 제품 mute 변경 없이 별도 QA identity에서 FDG/SplashTitle(실버테일 키아트)/Title→Gate/World/lobby의 영상·음향·focus 출력 snapshot fixture를 추가. baseline 계측 성공과 무음 계약 차이를 분리하며 SD direct probe는 fallback 검수로 확대하지 않는다. [범위·명령](engine/UNITY_MAC_INTRO_SILENCE_20261026.md).
+
 ## 2026-10-26 Unity 지원 설정 저장·복원
 
 - 최초 설정 로드 오류 이후 저장 거부가 구체 오류를 덮지 않도록 보존하고 invalid fixture에 변경 후 오류 안내·원본 bytes·live SFX 검증을 추가.
