@@ -57178,3 +57178,11 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 - 기준66d4fd8601·전용브랜치/worktree에 원본 펫4종·원본44PNG·추종/애니·초상 대사/번역·이리스 r250 색광원/헤일로/블룸 연결. 기존 player/static 값 변경0, torch darkAlpha0 유지. [원본행·수치·171 ID·소유 경계](engine/UNITY_PET_01_20261026.md), [펫 시스템](2_4%20펫시스템/2_4%20펫시스템.md) 동기화. 전체 docs 키워드 검색1124행/226문서.
 - 전체Runtime C#81파일 CPU compile 오류0/기존CS0649경고27, 기존Core57·레슨34 PASS. active펫 motion/dialogue10000CPU틱0byte; 실제Unity렌더/IMGUI/GPU allocation은 미검증. 테스트/컴파일 실패0·실패 무수정 재시도0·새진단테스트파일0.
 - 상태 IMPLEMENTED_UNVERIFIED — GPU 대기. 보호Player4개/소유금지소스/실제저장 보존, Unity실행/import/빌드/캡처/측정0. NativeGame8개 연결점(기본 diff7hunk/무문맥diff8hunk). 자기경로 commit/push·원격SHA확인후 worktree 보존, 상세DONE은 외부경로.
+
+
+## 2026-10-26 UNITY-FIELD-VERIFY-01 — 조명·해자·펫 통합 실검수
+
+- 기준0250d967 pet branch 한정. fresh import838 Assets byte대조, ARM64 최초+Point결함교정 각1회빌드errors0. NativePetView 최초로드Point복원/초상Bilinear,기존WorldLighting QA에펫60Hz/선택장면/pose·자연응답/capture-only추가. NativeGame.cs hunk0.
+- 실제1920×1080 시작/제단1x보드·확대·방사CSV 생성. 해자구조/색계열/층PASS,펫4종/KO대사실관찰. 전체RETOUCH:웹actor/iris/전경/DOM차이,유효GC증거없음.
+- 시작평균/p95/p99=8.370909/8.553005/8.992624ms(필터교정전통합빌드1회),제단=8.370717/8.495579/8.994756ms(최종보완빌드1회),기준02평균8.361290. 시작교정후캡처만1회·성능반복0. HUD55/practice5각1회PASS,11kills/원본복원true.
+- 사용자3Player/일반저장/로비·오디오·intro-silence/다른WIP보존. 타QA90501/91013/91198종료까지GPU대기. 지정경로commit/동일branch비강제push·최종SHA/정상PET·MOAT제거영수증은외부DONE. [상세표·MAP PRODUCTION REPORT](engine/UNITY_FIELD_VERIFY_01_20261026.md).

@@ -1,5 +1,8 @@
 # UNITY-MAP-LIGHT-01 — CH1-1 월드 카메라 조명
 
+> 2026-10-26 최신 통합실화면: [UNITY-FIELD-VERIFY-01](UNITY_FIELD_VERIFY_01_20261026.md). 새import/ARM64빌드errors0·펫/해자실행확인. 시작/제단각1회평균8.370909/8.370717ms(시작은Point교정전빌드),LIGHT03방사CSV재측정. 원본r470/iris250유지,같은actor/iris위상미통제로밝기동등성미인수·전체RETOUCH. 아래GPU대기/펫부재/후보미검수는각당시이력이다.
+
+
 2026-10-26 후속 [UNITY-PET-01](UNITY_PET_01_20261026.md)은 원본 펫4종·말풍선/번역·이리스 r250 광원/헤일로/블룸을 별도 후보로 연결했다. 상태 IMPLEMENTED_UNVERIFIED — GPU 대기, Core57/레슨34 CPU PASS. 아래 펫 부재는 당시 이력이며 현재 후보의 실제 화면 검증은 아직0회다. main/PC/기존 Player 반영0.
 
 상태: **IMPLEMENTED_UNVERIFIED — 02 검수에서 화면 차이·유효 GC 증거 부족**.

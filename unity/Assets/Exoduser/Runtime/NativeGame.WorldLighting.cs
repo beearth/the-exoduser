@@ -32,6 +32,10 @@ namespace Exoduser.UnityPort
             public bool profilerGcValid;
             public int runningFrames, focusedFrames, lightingRenderCalls, lightingCacheRefreshes;
             public float playerX, playerY;
+            public int petTicks;
+            public string dialogueWho, dialogueId;
+            public double[] petState;
+            public bool sourcePetFiltering;
         }
 
         // Explicit QA mode only. Reuses the existing direct preview entry and screenshot path;
@@ -57,15 +61,28 @@ namespace Exoduser.UnityPort
             worldLighting.MeasureAllocations = mode == "after";
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
             QualitySettings.vSyncCount = 0; Application.targetFrameRate = 120;
-            for (int i=0; i<180; i++) yield return null;
-            UpdateViews();
-            yield return SkillCapture(output,"field-start-"+mode);
             if(sampleAtAltar)
             {
                 Simulation.Player.X=5900;Simulation.Player.Y=4060;UpdateViews();
-                for(int i=0;i<180;i++)yield return null;
-                yield return SkillCapture(output,"field-altar-"+mode);
             }
+            // The old lighting fixture froze all FixedUpdate, including newly integrated pets.
+            // Keep combat stationary for the 02 comparison, but run cosmetics at source60Hz.
+            pets.Reset(Simulation.Player.X,Simulation.Player.Y,0);petDialogue.Reset();
+            double petTime=0;int petTicks=0;
+            string capture=sampleAtAltar?"field-altar-":"field-start-";
+            for (int i=0; i<180; i++) { yield return null; ReviewPetTicks(ref petTime,ref petTicks); }
+            UpdateViews();
+            yield return SkillCapture(output,capture+mode);
+            File.WriteAllText(Path.Combine(output,"pets-primary.json"),JsonUtility.ToJson(ReviewPetState(petTicks),true));
+            // Two actual rendered poses and the natural five-second crow -> cat response.
+            for(int i=0;i<30;i++){yield return null;ReviewPetTicks(ref petTime,ref petTicks);}
+            yield return SkillCapture(output,capture+"animation");
+            File.WriteAllText(Path.Combine(output,"pets-animation.json"),JsonUtility.ToJson(ReviewPetState(petTicks),true));
+            while(petDialogue.Who!="cat"&&petTicks<660){yield return null;ReviewPetTicks(ref petTime,ref petTicks);}
+            yield return SkillCapture(output,capture+"dialogue-cat");
+            File.WriteAllText(Path.Combine(output,"pets-dialogue.json"),JsonUtility.ToJson(ReviewPetState(petTicks),true));
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--lighting-capture-only")>=0)
+            {yield return new WaitForSecondsRealtime(.5f);Application.Quit(0);yield break;}
             const int count=900;
             var frameMs=new double[count];
             long totalBytes=0, maxBytes=0, profilerMax=0;
@@ -80,6 +97,7 @@ namespace Exoduser.UnityPort
             for (int i=0; i<count; i++)
             {
                 yield return null;
+                ReviewPetTicks(ref petTime,ref petTicks);
                 long current=GC.GetAllocatedBytesForCurrentThread();
                 long bytes=current-previous; previous=current;
                 totalBytes+=bytes; if(bytes>maxBytes)maxBytes=bytes;
@@ -93,7 +111,7 @@ namespace Exoduser.UnityPort
             double sum=0;foreach(double value in frameMs)sum+=value;
             Array.Sort(frameMs);
             var receipt=new LightingReviewReceipt {
-                mode=mode,scope="1920x1080 stationary source "+(sampleAtAltar?"altar(5900,4060)":"start(4020,7420)")+", 180 warmup / 900 frames at cap120 vsync0. Fixed simulation paused with existing pauseSmoke focus fence; render lighting clock runs. Main-thread whole-frame GC and lighting callback GC measured separately; GPU sharing gate must be checked before launch.",
+                mode=mode,scope="1920x1080 stationary source "+(sampleAtAltar?"altar(5900,4060)":"start(4020,7420)")+", 180 warmup plus pose/dialogue captures / 900 frames at cap120 vsync0. Combat simulation paused with existing pauseSmoke focus fence; pets advance60Hz and render lighting clock runs. Main-thread GC raw observation, not certification; GPU sharing gate checked before launch.",
                 product=Application.productName,identifier=Application.identifier,
                 settingsDirectory=nativeSettingsDirectory,rosterDirectory=lobby.CharacterStoreDirectory,
                 width=Screen.width,height=Screen.height,samples=count,loadedChunks=LoadedChunks,
@@ -104,18 +122,29 @@ namespace Exoduser.UnityPort
                 profilerGcValid=gcValid,profilerFrameGcMax=profilerMax,
                 runningFrames=runningFrames,focusedFrames=focusedFrames,
                 lightingRenderCalls=worldLighting.RenderCalls,lightingCacheRefreshes=worldLighting.CacheRefreshes,
-                targetRecreates=worldLighting.TargetRecreates,playerX=Simulation.Player.X,playerY=Simulation.Player.Y
+                targetRecreates=worldLighting.TargetRecreates,playerX=Simulation.Player.X,playerY=Simulation.Player.Y,
+                petTicks=petTicks,dialogueWho=petDialogue.Who,dialogueId=petDialogue.CurrentId,petState=ReviewPetState(petTicks).petState,
+                sourcePetFiltering=petView.SourceFiltering
             };
             File.WriteAllText(Path.Combine(output,"performance-"+mode+".json"),JsonUtility.ToJson(receipt,true));
             File.WriteAllText(Path.Combine(output,"frames-"+mode+".json"),"["+string.Join(",",Array.ConvertAll(frameMs,v=>v.ToString("R",System.Globalization.CultureInfo.InvariantCulture)))+"]");
-            if(!sampleAtAltar)
-            {
-                Simulation.Player.X=5900;Simulation.Player.Y=4060;UpdateViews();
-                for(int i=0;i<30;i++)yield return null;
-                yield return SkillCapture(output,"field-altar-"+mode);
-            }
             yield return new WaitForSecondsRealtime(.5f);
             Application.Quit(0);
+        }
+
+        void ReviewPetTicks(ref double time,ref int ticks)
+        {
+            time+=Time.unscaledDeltaTime;
+            while(time>=1.0/60){TickPets();ticks++;time-=1.0/60;}
+            RenderPets();
+        }
+        LightingReviewReceipt ReviewPetState(int ticks)
+        {
+            return new LightingReviewReceipt{petTicks=ticks,dialogueWho=petDialogue.Who,dialogueId=petDialogue.CurrentId,
+                sourcePetFiltering=petView.SourceFiltering,
+                playerX=Simulation.Player.X,playerY=Simulation.Player.Y,
+                petState=new[]{pets.Crow.X,pets.Crow.Y,pets.Crow.T,pets.Cat.X,pets.Cat.Y,pets.Cat.T,
+                    pets.Xbow.X,pets.Xbow.Y,pets.Xbow.T,pets.Iris.X,pets.Iris.Y,pets.Iris.T}};
         }
 
         void DisposeWorldLighting()

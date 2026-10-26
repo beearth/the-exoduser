@@ -19,6 +19,9 @@ namespace Exoduser.UnityPort
         readonly Texture2D circle;
         public readonly Texture2D[] Flames=new Texture2D[4];
         public readonly Texture2D CrowPortrait,CatPortrait;
+        internal bool SourceFiltering => crowStatic[0].texture.filterMode==FilterMode.Point &&
+            catStatic[0].texture.filterMode==FilterMode.Point && idle[0][0].texture.filterMode==FilterMode.Point &&
+            Flames[0].filterMode==FilterMode.Point && CrowPortrait.filterMode==FilterMode.Bilinear && CatPortrait.filterMode==FilterMode.Bilinear;
         static readonly string[] Dirs={"east","south-east","south","south-west","west","north-west","north","north-east"};
         public NativePetView(Transform parent)
         {
@@ -58,7 +61,15 @@ namespace Exoduser.UnityPort
             xbowShadow=Create("Crossbow shadow",disc,31022);
         }
         readonly Mesh arrowMesh;readonly MeshRenderer arrowRenderer;readonly Material arrowMaterial;readonly MaterialPropertyBlock arrowProperties;
-        Texture2D Texture(string key){var t=Resources.Load<Texture2D>("Art/pets/"+key);if(t==null)throw new InvalidOperationException("Missing source pet art "+key);return t;}
+        Texture2D Texture(string key)
+        {
+            var t=Resources.Load<Texture2D>("Art/pets/"+key);
+            if(t==null)throw new InvalidOperationException("Missing source pet art "+key);
+            // The shared source importer overwrites the supplied Point metadata on a fresh
+            // import. Match world canvas smoothing=false; DOM portraits retain bilinear.
+            t.filterMode=key.EndsWith("/portrait",StringComparison.Ordinal)?FilterMode.Bilinear:FilterMode.Point;
+            return t;
+        }
         Sprite Load(string key){var t=Texture(key);var s=Sprite.Create(t,new Rect(0,0,t.width,t.height),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);owned.Add(s);return s;}
         Sprite[] Frames(string key,int count){var a=new Sprite[count];for(int i=0;i<count;i++)a[i]=Load("cat/"+key+"/frame_"+i.ToString("D3"));return a;}
         SpriteRenderer Create(string name,Sprite sprite,int order){var go=new GameObject(name);go.transform.SetParent(root.transform,false);var r=go.AddComponent<SpriteRenderer>();r.sprite=sprite;r.sortingOrder=order;return r;}

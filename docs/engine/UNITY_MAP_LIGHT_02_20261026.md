@@ -1,5 +1,8 @@
 # UNITY-MAP-LIGHT-02 — 실제 빌드·화면·성능 검수
 
+> 2026-10-26 후속통합검수 [UNITY-FIELD-VERIFY-01](UNITY_FIELD_VERIFY_01_20261026.md): 조명→해자→펫tip0250d967의실제빌드/화면/HUD·실습/성능완료,전체RETOUCH. 이문서의8.361290ms및펫/해자부재는02당시reference이며후속최종값과구분한다.
+
+
 상태: **IMPLEMENTED_UNVERIFIED**. **VISUAL VERDICT: RETOUCH**.
 
 후속 [UNITY-MOAT-01](UNITY_MOAT_01_20261026.md): 아래8fb4072db 빌드에서 결손이었던 언덕/해자/glow/bubble을 원본4PNG·동일충돌로 연결한 코드 후보. **IMPLEMENTED_UNVERIFIED — GPU 대기**, 새Unity빌드/화면/성능 미실시. 본문 캡처·ms·미이식 관측은02 당시 근거이며 새해자의 검수 증거로 전용하지 않는다.
