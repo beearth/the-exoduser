@@ -30,6 +30,8 @@ Mac UI 1번 U04B 후속: 현재 Mac inventory fixture의 기본 선택 흐름을
 
 Mac UI 누적 소스 checkpoint: PC 최신 `a48faf9ea`의 PC 소유 파일·문서를 merge로 인수한다. merge-tree가 예고한 충돌은 `NativeGame.cs` inventory smoke 한 곳이었고 Mac `ef8080387` U04B 두 필드/기존 fixture 흐름을 그대로 보존해 해소했다. PC 원본은 기본 선택 해제 QA 장면 두 줄을 가졌으나 이번 Mac fixture에는 추가하지 않는다. 2–12 hook 적용은 다음 단계, 13·14 충돌 보류. 이 시점 빌드·Player 판정 없음.
 
+Mac UI hook 2→3 checkpoint: PC 소스 merge 뒤 `U08_nativegame_tabbar`·`U08_nativepausemenu_tabbar`를 받은 순서로 `git apply --check`→실제 적용했다. `NativeGame.cs` 탭 요청 라우팅과 `NativePauseMenu.cs` 설정 프리셋 표시는 [계약표](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md)에 기록. `NativePanelTabBar`는 PC blob 그대로, Mac ATG·설정 저장 코드는 변경0. 4–12 후속/13·14 충돌 보류, Mac 빌드·Player 미실행.
+
 PC에 답신 필요한 원본 근거 3건:
 1. 원본 `a48faf9ea:U04B_nativegame_inventory_smoke_mana.patch`는 기본 선택 해제 장면을 context로 쓰지만 Mac `NativeGame.cs` inventory smoke에는 그 장면이 없다. Mac은 영수증 두 필드를 같은 생성 지점에 적응했다. 이 스냅샷 시점·키 계약이 PC 의도와 일치하는지 확인 요청.
 2. 원본 `A24_nativegame_areatitle.patch` HUD hunk는 `if(lobby.ActiveCharacterName.Length>0)`을 기대하지만 Mac은 `if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0)`이다. 일반 실행의 진단 배지 숨김을 보존하면서 A24 objective panel을 연결하는 기준 확인 요청.

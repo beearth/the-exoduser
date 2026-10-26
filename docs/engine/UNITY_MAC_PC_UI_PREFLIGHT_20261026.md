@@ -54,3 +54,14 @@ Mac 작업 인덱스는 검사 전후 모두 clean, staged diff 동일. 제품 �
 백업: `_out/UNITY-MAC-UI-U04B-20261026/before/NativeGame.cs` SHA256 `17cf4abbdfa6655b2671f97516b7c2d70590630d19df4e3f5616ca4c7a85a558`. 적응 소스 SHA256 `63a119a75c027c74fc90d15166e1646e28c9767ac4def5c82ff7190a51eebc25`, 독립 diff `_out/UNITY-MAC-UI-U04B-20261026/U04B_mac_adapted.patch`. 이번 단위의 제품 변경은 `NativeGame.cs` 두 줄뿐이다. `git diff --check` 통과; Unity 빌드·Player 스모크는 범위 밖이므로 수치의 실제 JSON 관측 PASS는 주장하지 않는다.
 
 적응 소스의 두 파일만 새 임시 사본에 넣고 PC 2 `U08_nativegame_tabbar` → 3 `U08_nativepausemenu_tabbar`를 순서대로 `git apply --check`와 임시 적용했다. **2/2 문맥 PASS**, 세부 `_out/UNITY-MAC-UI-U04B-20261026/u08-preflight.json`. 이 두 patch와 PC 소유 `NativePanelTabBar`는 아직 제품에 적용하지 않았다. 13·14번 충돌은 그대로 미해결이다.
+
+## PC 소스 인수와 2→3 U08 실제 연결 — 후속 checkpoint
+
+Mac `ef8080387` 위에 PC 원격 `a48faf9ea`를 merge했다. 충돌은 `NativeGame.cs` inventory smoke 하나였고 U04B 영수증·Mac fixture 선택 흐름을 보존했다. PC 소유 `NativePanelTabBar`와 관련 창 파일은 PC blob 그대로 인수했다. merge checkpoint에서 Unity 빌드·Player는 실행하지 않았다.
+
+| 순서 | Mac 소유 연결 | 적용 결과 | 웹/PC 계약 |
+|---:|---|---|---|
+| 2 | `U08_nativegame_tabbar.patch` → `NativeGame.cs` | `git apply --check` 후 실제 적용 | `NativePanelTabBar.Requested` 구독·해제와 `settings`/`invPanel`/`skillPanel` 요청, 기존 실행·일시정지 상태 연결. `forge`·`statPanel`은 후속 패치 전까지 로그 경로 |
+| 3 | `U08_nativepausemenu_tabbar.patch` → `NativePauseMenu.cs` | 2 뒤 `git apply --check` 후 실제 적용 | 설정 창에 Settings 프리셋 탭바 표시 |
+
+두 patch는 PC 원본을 수정하지 않고 받은 순서대로 적용했다. `NativeGame.cs`의 ATG 세계관 분기·기존 저장 경로는 이 patch 범위가 아니다. 파일별 `git diff --check` 통과. 4–12 hook·Mac 컴파일/Player 판정은 다음 단계이며 13·14 충돌은 보류한다.
