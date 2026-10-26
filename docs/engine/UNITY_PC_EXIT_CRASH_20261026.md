@@ -103,3 +103,28 @@ CodeReloadManager destroyed      <- 마지막 줄, 이 뒤에서 크래시
    - 재현되면 심볼 서버를 쓰는 WinDbg 분석(설치 승인 필요) 또는 Unity 버그 리포트로 이관.
 
 `fix.patch`(D3D11 고정)는 효과가 없어 **적용 대상 아님**(보존만). 배포 빌드 영향: 사용자에게 나가는 Windows 빌드도 종료 시 같은 크래시가 날 수 있으므로 E05 인수 전 해결 필요.
+
+## 9. Unity 6000.6.7f1 재현 결과 (사용자 지시, 전체총괄 경유)
+
+| 항목 | 값 |
+|---|---|
+| 설치 | Unity Hub 3.18 헤드리스 `install --version 6000.6.7f1`(Hub 릴리스 목록에 있어 changeset 불필요). 설치 위치 **`G:/unity/Editor/6000.6.7f1/Editor/Unity.exe`**(C: 미사용). 설치 전 Hub 기본 경로를 G:로 바꿨다가 끝나자 원래 값 `C:/Program Files/Unity/Hub/Editor`로 복원. 모듈 추가 없음: 에디터 본체에 `PlaybackEngines/windowsstandalonesupport/Variations/win64_player_*_mono`가 이미 있고 이 프로젝트는 Mono 백엔드(Player.log `Mono path`)라 IL2CPP 불필요. 6000.4.8f1은 그대로. 라이선스·계정 파일 미접촉, 설치 중 라이선스 문제 없음 |
+| 트리 | 새 임시 worktree `E:/exoduser-wt/pc-unity66`, Codex tip `b674ebce4`, **ProjectVersion.txt = 6000.4.8f1 (f8b72d3d7343)**(업그레이드 전 값). 기존 worktree(pc-unity-win, pc-unity-a14, pc-unity-map3d)의 프로젝트는 열지 않음 |
+| 에디터 | 6000.6.7f1 (b22767f04f04). 프로젝트를 열자 ProjectVersion.txt가 6000.6.7f1로 자동 업그레이드됨(아래 업그레이드 변경) |
+| 빌드(PC patch 없음) | `PortVerification.Build` Win64: receipt `passed`, `errors 0`, `engine 6000.6.7f1`, error CS 0, **warning CS 0** (`_out/pc-unity66/receipt-codex66.json`, `build-codex66.log`) |
+| 실행 | `--unity-skill-smoke --quit-after-skill-smoke`, `-screen-fullscreen 0 -screen-width 1920 -screen-height 1080`, 창 (5120,0) NOACTIVATE, 1회: **종료 코드 0** (6000.4.8f1 같은 빌드는 -1073741819), `skill-smoke.json` passed=true/failures 0 |
+| 이벤트 1000 | 이 실행 뒤 **새 `EXODUSER-Unity.exe` 크래시 이벤트 없음**(최신 이벤트는 모두 6000.4.8f1 빌드들의 `UnityPlayer.dll +0x107a81`). 비교할 새 오프셋이 없다 |
+| Player.log | `Initialize engine version: 6000.6.7f1 (b22767f04f04)`, Direct3D 12(AMD RX 9070 XT) 그대로, 종료 마지막 줄 동일(`CodeReloadManager destroyed`) — **D3D12를 그대로 쓰는데도 크래시 없음** (`_out/pc-unity66/Player-66.log`) |
+
+판정: §7의 "D3D 무관 `UnityPlayer.dll` 엔진 결함"이 **6000.6.7f1에서 사라졌다.** 원인은 Unity 6000.4.8f1 엔진 쪽 결함으로 확정(게임 코드·그래픽 API 무관). 해결책은 에디터 버전을 6000.6.7f1로 올리는 것.
+
+### PC 누적 브랜치 `cc39eb672` + patch 8개, 6000.6.7f1 빌드 (1회)
+
+- 같은 임시 worktree를 `git switch --detach cc39eb672`로 옮겨(업그레이드된 ProjectVersion·Library 유지) patch 8개(U04B→U08 NativeGame→U08 PauseMenu→U05→A07B NativeGame→A07B PauseMenu→A13→A14)를 순서대로 `git apply --check`+적용(전부 OK) → Win64 빌드: **receipt `passed`, `errors 0`, `engine 6000.6.7f1`, error CS 0** (`receipt-pc66.json`, `build-pc66.log`).
+- **새 경고(기준 대비)**: 기준(patch 없음)은 `warning CS` 0, `UAC1001` 1종(`NativeCharacterPresentationPlayback.cs(8,27)`, 기존). patch 적용 상태는 `warning CS` 12줄(= 서로 다른 3종 × 컴파일 4회), 전부 **PC 소유 신규 파일** `NativeForgePanel.Capture.cs`(A14):
+  1. `(37,24)` CS0618 `Object.FindObjectsByType<T>(FindObjectsSortMode)` obsolete (6000.6에서 폐기 표시)
+  2. `(37,55)` CS0618 `FindObjectsSortMode` obsolete
+  3. `(26,66)` CS0414 `ForgeCaptureHost.closed` 대입만 하고 쓰지 않음
+  6000.4.8f1 빌드에서는 1·2 경고가 없었다. 같은 호출이 A20 `NativeLevelUpOverlay.Capture.cs`에도 있다. 수정안(적용하지 않음, PC 소유): `FindObjectsByType<AudioSource>(FindObjectsSortMode.None)`를 정렬 인자 없는 오버로드로 바꾸고 `closed` 필드는 제거.
+- **업그레이드로 바뀐 프로젝트 파일**(Mac이 6000.6.7f1로 열 때도 생김): `Packages/manifest.json`에 모듈 3개 추가(`com.unity.modules.physicscore2d`, `tetgen`, `timelinefoundation`)·`video` 항목 순서 이동, `Packages/packages-lock.json`(+33/-6), `ProjectSettings/ProjectVersion.txt`(6000.6.7f1 b22767f04f04), 새 파일 `ProjectSettings/PhysicsCoreProjectSettings2D.asset`, `ProjectAuditorSettings.asset`. 전체 diff: `_out/pc-unity66/upgrade-diff.txt`.
+- 정리: patch 8개를 `git apply -R` 역순으로 모두 되돌림(NativeGame*·NativePauseMenu* 변경 0), reparse point 0개(`_out/pc-unity66/reparse.txt`) → `git worktree remove --force` 완료. 빌드 산출물(`build-codex66`, `build-pc66`)과 로그는 남김.
