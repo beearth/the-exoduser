@@ -22,3 +22,19 @@
 **시각/입력 HOLD:** art 크기·구슬 간격·foundation 접점은 1920×1080/1280×720/2560×1080의 동일 상태 웹·Unity 전체 프레임+하단 crop으로 비교해야 한다. 13개 슬롯의 시각 rect와 클릭 rect가 일치하는지 실제 OS pointer로 확인하고, 슬롯 바깥 클릭이 기존 무기 입력으로 이어지는지 별도로 검수한다. 이번 후보는 숫자 oracle PASS만 있으며 **VISUAL VERDICT: HOLD / 실화면 미검수**다. QA Editor, Mac 빌드·GUI, 자연 플레이, 저장/릴리스는 미검수다.
 
 관련 `docs/` 검색은 `NativeHudDockLayout`, `ArtScale`, `스킬바`, `구슬`, `HUD 좌표`로 수행했다. 현재 웹 축척 SSOT `docs/3.1 ui hud 디자인/UI_SCALING_20260929.md`는 변경하지 않는다. Unity 포트 운영 표의 `docs/engine/UNITY_PORT_MASTER_20261026.md` A06 행에 이 후보의 **좌표 구현/독립 수치 검증/Editor·시각·입력 HOLD**를 게시해야 하지만 공유 G: 문서는 이 격리 코드 소유자가 수정하지 않는다. 본 I: 문서가 이번 후보의 docs 동기화 초안이며 후속 문서 소유자가 정상 체크포인트와 함께 반영한다.
+
+## QA 독립 검수 — 2026-10-27 02:49 KST
+
+QA가 후보 원격 `741d97ba1245631a8098d9cecac5589332252189`와 E: freeze manifest의 SHA를 재확인했다. Runtime C# 77개 중 `NativeHudDockLayout.cs`·`NativeHudSkills.cs`만 변경됐고 75개는 동일 byte다. 후보의 `game.html`과 기존 웹 oracle의 HUD CSS·`applyUIScale()`·13슬롯 좌표·pointer 규칙은 동일하다.
+
+| 화면 | 바 rect 웹↔Unity 최대 차이 | 구슬 액체 중심 | 13슬롯 rect | Unity draw↔자체 pointer 변환 |
+| --- | ---: | ---: | ---: | ---: |
+| 1920×1080 | 0px | 0px | 0px | 0px |
+| 1280×720 | 0.0246px | 0.0147px | 0.00846px | 0px |
+| 2560×1080 | 0px | 0px | 0px | 0px |
+
+720p의 잔차는 웹 `toFixed(4)=0.6667`과 Unity의 `2/3` 배율 차이다. A06-1 배율·A06-2 구슬/바/슬롯 앵커의 **정적 좌표 PASS**만 확정한다. 실제 OS 클릭 전달과 GUI.matrix 이벤트 처리는 검증되지 않았다. 공통 ArtScale을 소비하는 A06-3 foundation의 픽셀·접점 품질은 **VISUAL HOLD**다.
+
+Unity 6000.6.7f1 격리 Editor를 `-batchmode -nographics -noUpm -quit`로 한 번 실행해 exit 0, 스크립트 컴파일 로그 확인, 컴파일 오류 0, 실행 중 Runtime C# 변경 0을 기록했다. Editor lease는 해제됐다. 구형 `PortVerification.VerifyUiComposition`은 **실행하지 않았다**. 후보의 웹 하단 앵커와 구형 frame assertion의 계약 충돌 가능성은 위 초안의 예상 사항이며 이번 검수의 관측 실패가 아니다. Player·시각·실입력·Mac 통합·저장·main 통합은 **HOLD/미검증**이다.
+
+상세 원시 근거는 I: `qa-contract/a06-hud-final-qa.md` SHA-256 `FD01AC466031F0EAD950F0A35DF641AFF24E4E7BDEAAF273DA7BDDB26C6A6D9F`, 좌표 JSON `EAE577CDA4FD8E8BEBB3625F13D98D430FFDCD288357074A4AFD049A75A38F49`, 컴파일 JSON `77037B3150288C1E0621F5B24FFB2E098744CB2E51AB3A80BC2D97ED8354B65B`, Editor 로그 `4852948859EE0EF0F5A9DA63C560F6325B68AA6866DEC6E14573C139D2D9FB4B`이다.
