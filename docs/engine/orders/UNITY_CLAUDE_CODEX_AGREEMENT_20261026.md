@@ -67,7 +67,8 @@
 | 담당 | 범위 | 브랜치 / 파일 |
 |---|---|---|
 | Claude (PC) | 3D 렌더러 코드, 지면·mass·조명·후처리 셰이더, 메시·재질 임포트 파이프라인, 충돌 오버레이 QA 도구, Windows 빌드 | `claude/unity-pc-map3d-20261026` / `NativePerspectiveWorld*`, `Look3D*.shader`, `Resources/Art/map3d/`, `Resources/Data/ch1_*` |
-| Codex 맵 | 시각 기준(무드보드·색·명도·재질 레퍼런스), 카메라 QA 컷 목록과 판정, NativeGame 연결 patch 적용, Mac 빌드·성능, Steam 반영 | Codex 브랜치의 docs·QA 산출물. 3D 구현 파일은 수정하지 않음 |
+| Codex 맵 | 카메라 QA 컷 좌표·1차 시각 의견, 아트 바이블 검토, NativeGame 연결 patch 적용, Mac 빌드·성능, Steam 반영 | Codex 브랜치의 docs·QA 산출물. 3D 구현 파일은 수정하지 않음 |
+| 디자인총괄 (PC) | **시각 기준·2차 판정**: 아트 바이블(`docs/4.1맵디자인+설정/UNITY_MAP_ART_BIBLE_20261026.md`) 작성·유지, 맵 시각 결과물 PASS/RETOUCH 판정(사용자 지시 2026-10-26) | 아트 바이블·판정 기록 |
 | 사용자 | 3D 에셋 생성 서비스와 크레딧 사용 승인, 최종 아트 판정 | — |
 
 ### 7.2 통합 순서
