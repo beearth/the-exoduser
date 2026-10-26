@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A03/A04 UI 실창 검수 후보
+
+고유 QA 빌드 product/id 분기 `-a03a04UiQa true`를 Editor 빌드 경로에 추가했다. 일반·기존 Settings QA identity는 유지하고 빌드 뒤 복원한다. [고유 앱·저장 격리 계약](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md). 실제 ARM64 빌드·CUA 창 식별·입력 판정은 후속 기록한다.
+
 ## 2026-10-27 Mac A03/A04 전달 인수·컴파일 현행
 
 PC 전달 문서 커밋 `d132f425b67a16bc1d393eea710778d86222abd5`를 확인했다. 제품 후보 `97227ceb7c4a33becd2fe55d4ab1712dc8013182`의 Runtime tree `8376905b93fc0df4170c9ecc67acb47577990f99`를 고정해 A03 패치노트와 A04 생성·삭제·시각선택 해당 파일·hunk만 Mac에 인수했다. 아래 preflight는 전달 전 시점의 읽기 기록이다. 현재 상태는 [인수 상세와 검증 경계](../UNITY_MAC_A03A04_INTEGRATION_20261027.md)를 따른다. Unity 6000.6.7f1 batch import·compile exit 0, C# 오류·경고 0; 기존 UAC1001은 남는다. Player·GUI 실행 0이며 실제 화면·키 입력 검수는 미실시다.

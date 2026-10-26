@@ -144,8 +144,9 @@ public static class PortVerification {
  }
  static void RestoreFlavor(string previous){if(previous==null)return;File.WriteAllText(FlavorFile,previous);AssetDatabase.Refresh();}
  public static void Build(){
-  bool settingsQa=Argument("-settingsQa")=="true";string restoreProduct=null,restoreIdentifier=null,restoreFlavor=null;bool restoreOverride=false;int exitCode=2;
+  bool settingsQa=Argument("-settingsQa")=="true",uiQa=Argument("-a03a04UiQa")=="true";string restoreProduct=null,restoreIdentifier=null,restoreFlavor=null;bool restoreOverride=false;int exitCode=2;
   try {
+   if(settingsQa&&uiQa)throw new ArgumentException("Choose one QA build identity");
    var target=EditorUserBuildSettings.activeBuildTarget;
    if(target!=BuildTarget.StandaloneWindows64&&target!=BuildTarget.StandaloneOSX)
     throw new NotSupportedException("Verification build requires -buildTarget Win64 or OSXUniversal");
@@ -158,15 +159,16 @@ public static class PortVerification {
 #else
    if(target==BuildTarget.StandaloneOSX)throw new NotSupportedException("Build the Mac verification app with the Mac Editor");
 #endif
-   if(settingsQa){restoreOverride=SettingsIdentifierOverride();restoreProduct=PlayerSettings.productName;restoreIdentifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone);}
+   if(settingsQa||uiQa){restoreOverride=SettingsIdentifierOverride();restoreProduct=PlayerSettings.productName;restoreIdentifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone);}
    restoreFlavor=WriteFlavor();
    VerifyLobby();var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
    if(settingsQa){PlayerSettings.productName="EXODUSER Settings QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.settingsqa");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("Settings QA must have a distinct application identifier");}
+   if(uiQa){PlayerSettings.productName="EXODUSER A03 A04 QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.a03a04qa20261027");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("A03/A04 UI QA must have a distinct application identifier");}
    var output=Path.Combine(directory,target==BuildTarget.StandaloneOSX?"EXODUSER-Unity.app":"EXODUSER-Unity.exe");
    // Local frontend verification needs no development PlayerConnection listener.
    var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{scene},locationPathName=output,target=target,options=BuildOptions.None});
    bool ok=report.summary.result==BuildResult.Succeeded;
-   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion,target=target.ToString(),architecture=architecture,output=output,settingsQa=settingsQa,product=PlayerSettings.productName,identifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)},true));
+   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion,target=target.ToString(),architecture=architecture,output=output,settingsQa=settingsQa,uiQa=uiQa,product=PlayerSettings.productName,identifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)},true));
    Debug.Log("UNITY_BUILD "+report.summary.result);exitCode=ok?0:2;
   }catch(Exception e){Debug.LogException(e);}
   finally{RestoreFlavor(restoreFlavor);if(restoreProduct!=null){PlayerSettings.productName=restoreProduct;PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,restoreIdentifier);SetSettingsIdentifierOverride(restoreOverride);}}
@@ -186,5 +188,5 @@ public static class PortVerification {
   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="native_Unity_camera_world_capture_only",passed=game.LoadedChunks>0,engine=Application.unityVersion},true));
   EditorApplication.Exit(0);
  }
- [Serializable]class BuildReceipt{public bool passed,settingsQa;public string result,engine,target,architecture,output,product,identifier;public int errors;public ulong bytes;}
+ [Serializable]class BuildReceipt{public bool passed,settingsQa,uiQa;public string result,engine,target,architecture,output,product,identifier;public int errors;public ulong bytes;}
 }
