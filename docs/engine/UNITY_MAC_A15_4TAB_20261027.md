@@ -40,3 +40,16 @@ Unity 6000.6.7f1 Mac ARM64 `PortVerification.Build -settingsQa true` **1회**: r
 | 1280×720 실창 | 게임/화면/사운드/조작 4탭과 화면·사운드 2열, 조작 목록의 20동작 양 슬롯 상단·고정 footer를 육안 확인했다. 설정의 비대기 Tab은 인벤토리 대신 다음 탭/footer의 주황 초점 테두리로 이동; Home/End 탭 이동, SFX 60→61% 키보드 한 칸, 설정 Esc→일시정지 복귀를 확인했다. 원본 캡처 `game-720p-isolated.png`, `tab-focus-720p-isolated.png`, `display-720p-isolated.png`, `audio-720p-isolated.png`, `sfx-61-720p-isolated.png`, `controls-720p-isolated.png`가 같은 `_out` 폴더에 있다. `--unity-frontend-review`에서는 정상 설정 저장 I/O가 비활성이라 디스크 저장 성공으로 계상하지 않는다. |
 | 1920×1080 Player 캡처 | 같은 빌드의 기존 `--unity-pause-smoke -pause-phase visual`은 `settings-0/1/2-1920.png`를 남겼다. 화면·사운드 2열과 footer 겹침0을 실제 1920×1080 픽셀에서 확인했다. 이 구형 visual harness는 탭 0–2만 캡처하므로 **조작 탭 1080p는 미검증**. `pause-visual.json`은 visual-only이며 입력 PASS가 아니다. |
 | 남은 HOLD | 조작 목록 마우스 클릭에 대기 표시가 나타나지 않아 실제 Esc 취소·Tab 바인딩 입력의 Player PASS는 없다. 좁은 물리 폭 <1100px 1열/scroll, 목록 맨 아래, 루트 일시정지 Tab→인벤토리(첫 연습 구간에서는 panel 전환이 차단됨), SFX 0/100 실기 clamp, 청각 출력, 재시작 후 v2/`cinSeen` 보존, 패드 재지정은 실기 미검증이다. Editor fixture의 직접 key-list 정책 PASS와 구분한다. 전체 A15 인수는 HOLD. |
+
+## 2026-10-27 조작 키 캡처·격리 저장 Player 후속
+
+앞 표의 HOLD는 이전 빌드 시점 기록이다. 이 후속은 `--unity-a15-direct` QA 전용 진입을 추가했다. 실행에는 `--unity-cinematic-persistence-review`, Settings QA 제품명/번들 ID, `_out/UNITY-MAC-A05-IO-*` 절대 경로와 정확한 `qa-output.marker`가 모두 필요하다. `-a15-phase write`는 로비 미리보기 필드의 설정→조작에 직접 진입하고 `up` 주 키 캡처를 시작한다. `read`는 같은 페이지에 대기 없이 진입한다. 이 경로에서만 F6은 `up` 캡처 재개, F7은 사운드 탭/SFX 카드 초점이다. 일반 제품의 로비·설정 입력은 이 플래그를 쓰지 않는다.
+
+| 항목 | 코드 계약 및 실제 증거 |
+|---|---|
+| OS 키 캡처 | 첫 QA Player에서 Esc 취소 직후 설정이 닫히고 Tab 지정 직후 footer로 초점이 이동하는 중복 입력을 발견했다. `NativeKeyBindList.CaptureConsumedFrame`을 캡처 키 다운에서 기록하고 `NativePauseMenu.PollKeys`가 해당 프레임과 다음 프레임의 메뉴 처리를 건너뛰도록 수정했다. 두 번째 Player의 실제 Esc는 대기만 취소하고 조작 탭을 유지했다. F6→Tab도 `up=Tab`을 표시하면서 조작 탭 초점을 유지했다. |
+| 저장·재시작 | 같은 격리 루트의 `native-settings-v1/settings.v1.json` v2 revision2에 `sfxPercent:61`, `binds.up:"Tab"`가 저장됐다. 두 번째 Player의 시작 로그 `A15_QA_DIRECT phase=read ... sfx=61 up=Tab listening=False`, 조작 탭 `TAB`, 사운드 탭 `61%`가 일치했다. 기존 BGM60/FPS120 값과 캐릭터 로스터 경로는 QA 루트 안에 있었다. `cinSeen` 항목과 실제 소리 청취는 이 테스트 대상이 아니다. |
+| 스크롤 | 고정 상한 `220`을 제거하고 페이지의 카드 시작 Y·높이·하단 여백에서 `max(0, contentHeight-content.height)`를 계산한다. 현재 설계 좌표의 두 카드 배치는 단열일 때 `238+190+18=446`, 그 외 `18+190+18=226`, 뷰 높이 `610`이므로 상한 0이다. 좁은 물리 폭의 실제 시각·마우스 wheel은 별도 게이트다. |
+| 빌드·실행 범위 | Unity 6000.6.7f1 ARM64 Settings QA `PortVerification.Build` 첫 빌드와 입력 버그 수정 후 최종 재빌드 모두 `Succeeded`, C# 오류0. 첫 빌드 앱의 write 실행 PID31536, 최종 빌드 앱의 read 실행 PID31735, 총 Player 실행 2회. 둘 다 위 같은 명시 루트를 사용했고 종료했다. `build-receipt-final.json`, `build-final.log`, `player-write.log`, `player-read.log`는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A15-CAPTURE-20261027/`에 있다. 요구한 빌드 1회는 실제 버그 수정을 위해 2회가 되었으며 이를 1회로 계상하지 않는다. |
+
+PC 원본 `NativeKeyBindList`의 캡처 처리에 소비 프레임 한 필드만 추가했고 게임패드 재지정·키 충돌 정책은 바꾸지 않았다. 저장은 기존 v2 직렬화 경로이며 별도 키 저장 형식을 만들지 않았다. 전용 QA 진입·사용자 데이터 분리와 OS Esc/Tab 및 SFX/키 저장 복원은 이 범위에서 PASS. 일반 경로 마우스 클릭, 좁은 창, 청각 출력, 다른 메뉴와의 충돌, 패드 입력은 여전히 HOLD다.

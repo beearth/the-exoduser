@@ -36,6 +36,7 @@ namespace Exoduser.UnityPort {
   public bool English;public Tab CurrentTab=Tab.Kbm;
   public KeyBindings Bindings{get{return keys;}}
   public bool Listening{get{return listenAction!=null;}}
+  public int CaptureConsumedFrame{get;private set;}=-10;
   public string ListeningAction{get{return listenAction;}}
   public bool ListeningAlt{get{return listenAlt;}}
   public float ContentHeight{get;private set;}
@@ -154,6 +155,7 @@ namespace Exoduser.UnityPort {
     bool repeat=!held.Add(e.keyCode);
     if(Listening){
      if(repeat){e.Use();return;}                                   // e.repeat -> ignored
+     CaptureConsumedFrame=Time.frameCount;
      if(e.keyCode==KeyCode.Escape){CancelListening();e.Use();return;}  // ESC = cancel
      var code=NativeKeyBindInput.CodeFor(e.keyCode);if(code!=null)Apply(code);e.Use();return;
     }

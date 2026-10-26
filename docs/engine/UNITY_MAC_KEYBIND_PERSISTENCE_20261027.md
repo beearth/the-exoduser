@@ -2,6 +2,8 @@
 
 기존 `NativeKeyBindList`를 Mac 설정 4번째 조작 탭 안으로 옮겼다. v2 binds/binds2 20동작·0.25초 예약 저장과 `cinSeen`은 변경하지 않았다. Editor 입력 정책 검증 PASS, Player 실기/재시작은 A15 단위에서 HOLD. [범위](UNITY_MAC_A15_4TAB_20261027.md).
 
+2026-10-27 Player 후속: 위 HOLD는 당시 기록이다. 고유 Settings QA 앱과 marker가 있는 `_out/UNITY-MAC-A05-IO-*` 루트에서 `--unity-cinematic-persistence-review --unity-a15-direct -a15-phase write|read`를 사용해 OS Tab을 `up` 주 키로 지정하고 SFX를 **60→61%** 조정했다. v2 JSON revision2의 `binds.up="Tab"`·`sfxPercent:61`을 실제 read 재실행의 조작/사운드 화면에서 확인했다. 캡처 직후 Esc/Tab의 메뉴 중복 처리를 막는 소비 프레임 가드를 추가했다. 키 20종·보조 슬롯·0.25초 저장 공식과 스키마는 동일하다. [실행별 판정](UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-조작-키-캡처격리-저장-player-후속).
+
 A05 오류 뒤 수동 마지막 cue 검증: 독립 Editor fixture 24/24 PASS. 별도 `--unity-cinematic-persistence-review`는 고유 Settings QA identity와 marker가 붙은 `_out/UNITY-MAC-A05-IO-*` 루트에서만 설정/로스터 I/O를 허용한다. 기존 `--unity-frontend-review`의 설정 I/O 금지는 유지한다. 고유 ARM64 Player 동일 root 자연 완료→재시작 로비 직행 PASS; `up=KeyZ`/보조 `KeyX`·중첩 패드 JSON 유지. [계약](UNITY_MAC_A05_CINSEEN_20261027.md).
 
 ## A05 선택적 완료 표식 후속 — 2026-10-27

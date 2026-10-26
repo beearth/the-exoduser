@@ -7,6 +7,24 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   bool pauseSmoke;
+  const string A15DirectArgument="--unity-a15-direct";
+  bool a15DirectReview;
+  void BeginA15DirectReview(string[] args){
+   string root,phase=Argument("-a15-phase");
+   if(!NativeSettingsStorageScope.TryResolveCinematicReview(args,out root)||nativeSettingsStore==null||nativeSettingsDirectory!=Path.Combine(root,"native-settings-v1")||lobby.CharacterStoreDirectory!=Path.Combine(root,"character-roster-v1")||(phase!="write"&&phase!="read")){
+    Debug.LogError("A15_QA_REJECTED: marked Settings QA root, persistence review and write/read phase required");Application.Quit(2);return;
+   }
+   a15DirectReview=true;lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Debug.LogError("A15_QA_REJECTED: preview entry failed");Application.Quit(2);return;}
+   frontendEntryInputFence=false;SetGameFocus(true);pauseMenu.Reset();pauseMenu.ShowSettings();pauseMenu.Navigation.SelectTab(3);menu=true;Running=false;
+   if(phase=="write")pauseMenu.BeginEmbeddedKeyCaptureForQa("up",false);
+   Debug.Log("A15_QA_DIRECT phase="+phase+" root="+root+" sfx="+settings.SfxPercent+" up="+NativeKeyBindInput.Bindings.Primary("up")+" listening="+pauseMenu.KeyCaptureActive);
+  }
+  bool HandleA15DirectKeys(){
+   if(pauseMenu.KeyCaptureActive)return false;
+   if(Input.GetKeyDown(KeyCode.F6)){pauseMenu.Navigation.SelectTab(3);pauseMenu.BeginEmbeddedKeyCaptureForQa("up",false);Debug.Log("A15_QA_REARM up");return true;}
+   if(Input.GetKeyDown(KeyCode.F7)){pauseMenu.Navigation.SelectTab(2);pauseMenu.Navigation.PointAt(4);Debug.Log("A15_QA_AUDIO sfx="+settings.SfxPercent+" up="+NativeKeyBindInput.Bindings.Primary("up"));return true;}
+   return false;
+  }
   void PauseTestKey(PauseKey key){pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(key,Simulation.Player.Hp<=0,Screen.fullScreen));}
   IEnumerator PauseSmoke(){
    string output=Argument("-output");if(string.IsNullOrEmpty(output))throw new InvalidOperationException("pause fixture needs -output");Directory.CreateDirectory(output);

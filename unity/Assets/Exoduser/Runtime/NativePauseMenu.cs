@@ -23,6 +23,7 @@ namespace Exoduser.UnityPort
   // A16 test hooks (pause smoke phase "keys"): open the page without the mouse, reach the list, force the scroll (clamped to the end).
   public NativeKeyBindList KeyListForTest{get{return keyList;}}
   public void OpenKeyPageForTest(){keyPage=true;keyScroll=0;if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);}
+  public void BeginEmbeddedKeyCaptureForQa(string action,bool alternate){if(page!=PausePage.Settings||tab!=3)throw new InvalidOperationException("QA capture requires Controls tab");if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);keyList.BeginListening(action,alternate);}
   public void SetKeyScrollForTest(float value){keyScroll=value;}
   public bool English { get; set; }
   public bool SettingsPersistenceEnabled {get;set;}
@@ -125,7 +126,8 @@ namespace Exoduser.UnityPort
    else
    {
     bool single=Screen.width<1100;float gap=28,cardW=single?content.width-32:(content.width-48-gap)/2;
-    float max=single&&tab!=0?220:0;
+    float contentHeight=single&&tab!=0?238+190+18:18+190+18;
+    float max=Mathf.Max(0,contentHeight-content.height);
     if(Event.current.type==EventType.ScrollWheel&&content.Contains(Event.current.mousePosition)){settingsScroll=Mathf.Clamp(settingsScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
     settingsScroll=Mathf.Clamp(settingsScroll,0,max);
     GUI.BeginGroup(content);
