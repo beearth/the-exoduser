@@ -57211,3 +57211,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 
 - 이전34927cd/84ee74a의 별도 `_ptLight` 후보·기존웹54tick PNG를 인수. 타QA Player 대기 중이며 빌드/시작/성능/HUD/practice 실행 전이다. [검수 기록](engine/UNITY_START_PARITY_02_20261026.md).
 - 요청한 개발상태문구 금지에 따라 NativeGame.cs 이름 배지에서 일반실행에도 붙던 미리보기/Preview 접미사만 제거(1hunk). 시작검수 이름은 격리 StartParityCapture 전용임을 확인. 보호파일 변경0, 새로운 테스트파일0.
+
+2026-10-26 UNITY-START-PARITY-02 실제 GPU첫검수: 바닥빛 과다(r40 80.169대60.632)의 원인은 원문GPU proxy가 lighter설정을 무시하는 normal pipeline인데 이식본이 One One이었던 점. 원본PNG·stops·반경유지, 전용SourcePlayerFloor shader의 SrcAlpha/OneMinusSrcAlpha·Bilinear로 교정. 첫빌드/54tick/성능1/HUD55/practice5완료, 해당장면 capture-only1회 재검수 예정. [수치·근거](engine/UNITY_START_PARITY_02_20261026.md).

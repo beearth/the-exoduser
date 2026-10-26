@@ -65,13 +65,14 @@ namespace Exoduser.UnityPort
             petHalo=BuildPetHalo();material.SetTexture("_PetHaloMap",petHalo);
             // Source25502/51944: independent Ori floor light, BEFORE actors and
             // the postprocess. _CENTER_GLOW=false disables ci6, not this bitmap.
+            // GPU source6028 ignores globalCompositeOperation; source5592 uses
+            // SrcAlpha/OneMinusSrcAlpha and source5614 samples this canvas linearly.
             var pointTexture=Resources.Load<Texture2D>("Art/map/source-light/player-point");
-            var pointShader=Resources.Load<Shader>("Shaders/KiSlashAdditive");
+            var pointShader=Resources.Load<Shader>("Shaders/SourcePlayerFloor");
             if(pointTexture==null||pointShader==null)throw new InvalidOperationException("Missing original player floor light");
-            pointTexture.filterMode=FilterMode.Point;
+            pointTexture.filterMode=FilterMode.Bilinear;
             playerPointSprite=Sprite.Create(pointTexture,new Rect(0,0,640,640),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);
             playerPointMaterial=new Material(pointShader){hideFlags=HideFlags.HideAndDontSave};
-            playerPointMaterial.SetFloat("_Opacity",1);
             var pointObject=new GameObject("Source player floor light");pointObject.transform.SetParent(owner.transform,false);
             playerPoint=pointObject.AddComponent<SpriteRenderer>();playerPoint.sprite=playerPointSprite;
             playerPoint.sharedMaterial=playerPointMaterial;playerPoint.sortingOrder=-19999;playerPoint.enabled=false;
