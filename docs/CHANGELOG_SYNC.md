@@ -1,3 +1,8 @@
+## 2026-10-26 UNITY-START-PARITY-03 실제 단회검수 마감
+
+- source GPU normal bloom1hunk,ARM64 build1/errors0,actual54tick/900frames1회. r20차+6.842223→+1.568692,r260+6.781058→+4.039426,r400+6.223269→+3.706712. P3 ICC정규화보조표/1x색관리보드와기존byte표별도보존.
+- 제단1회/해자·서쪽다리유지관찰,전체시각RETOUCH. mean8.435440/p958.838422/p999.924830ms,HUD55/practice5 PASS. 잔차전체원인미확정/완전동등성미달,VERIFIED아님·worktree보존. [원시근거·전체표·보호](engine/UNITY_START_PARITY_03_20261026.md).
+
 ## 2026-10-26 UNITY-START-PARITY-03 블룸 일반합성 교정
 
 - 시작청크4장 원본SHA동일/조명OFF 같은바닥 영역평균차 약−.03..−.05byte로 texture 전역오프셋을 배제. 웹 GPU proxy의 lighter no-op에 맞춰 블룸 최종을 가산→alpha.08 source-over로 교정, 원본 수치·감마·순서·캐시 보존.

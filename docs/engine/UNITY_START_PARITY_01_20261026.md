@@ -1,3 +1,5 @@
+> 2026-10-26 최신03: 블룸의GPU source-over복원으로r20차+6.842223→+1.568692,r260+6.781058→+4.039426. 54tick/ARM64/900프레임/HUD55/practice5단회인수. 잔차로 **RETOUCH**, worktree보존. [최종03](UNITY_START_PARITY_03_20261026.md). 아래는이전차수이력.
+
 > 2026-10-26 후속03: 블룸 GPU 일반합성 오류를 분리·교정한 후보와 새 실측은 [UNITY-START-PARITY-03](UNITY_START_PARITY_03_20261026.md)를 따른다. 아래02 수치는 당시 이력이다.
 
 # UNITY-START-PARITY-01 — CH1-1 첫 진입 시점·링·이리스
