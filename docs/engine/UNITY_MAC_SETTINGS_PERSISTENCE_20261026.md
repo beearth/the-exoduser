@@ -1,5 +1,7 @@
 # Unity Mac 지원 설정 저장·복원 — 2026-10-26
 
+> 아래 2026-10-26 인수는 당시 v1 빌드의 이력이다. 현재 v2 키바인딩 후보 상태는 [A15/A16 후속](UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md)을 따른다. 같은 `native-settings-v1/settings.v1.json` 경로에서 JSON `version=2`를 기록하며 기존 v1은 기본 키 20개로 읽는다.
+
 현재 native 메뉴가 지원하는 SFX/BGM 0–100, FPS 30/60/120/144/244/무제한(0), fullscreen bool만 저장한다. 신규 해상도·모드·설정은 추가하지 않았다. 최초 파일 없는 부팅은 기존 60/60/FPS120과 현재 화면을 유지한다. 기존 기본값 복원은 60/60/FPS0이고 fullscreen을 변경하지 않는다. FPS0은 실제 Application.targetFrameRate=-1, vSync=0이며 fixedDeltaTime=1/60과 전투값은 변경하지 않는다.
 
 ## 원본 대조와 보존 경계

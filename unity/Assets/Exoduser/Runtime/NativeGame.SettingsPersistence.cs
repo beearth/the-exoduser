@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort
   const string SettingsQaProduct="EXODUSER Settings QA",SettingsQaIdentifier="com.fordeargamers.exoduser.settingsqa";
   NativeSettingsStore nativeSettingsStore;NativeSettingsStoreStatus nativeSettingsStatus;
   string nativeSettingsDirectory="";bool settingsSavePending,settingsScreenPending,settingsHostError;
-  float settingsSaveAt;int settingsScreenGeneration;Coroutine settingsScreenOwner;
+  float settingsSaveAt;int settingsScreenGeneration,settingsBindingsVersion;Coroutine settingsScreenOwner;
   bool SettingsQaIdentity {get{return Application.productName==SettingsQaProduct&&Application.identifier==SettingsQaIdentifier;}}
   bool SettingsFixtureRequested {get{return Array.IndexOf(Environment.GetCommandLineArgs(),NativeSettingsStorageScope.FixtureArgument)>=0;}}
   void InitializeNativeSettings()
@@ -17,24 +17,36 @@ namespace Exoduser.UnityPort
    settings=new NativeSettingsState(120);var args=Environment.GetCommandLineArgs();string directory;
    if(SettingsFixtureRequested&&!SettingsQaIdentity){nativeSettingsStatus=NativeSettingsStoreStatus.IoError;return;}
    if(NativeSettingsStorageScope.TryResolve(args,Application.persistentDataPath,out directory,out nativeSettingsStatus)){
-    nativeSettingsDirectory=directory;nativeSettingsStore=new NativeSettingsStore(directory,s=>JsonUtility.ToJson(s,true),json=>JsonUtility.FromJson<NativeSettingsSnapshot>(json),settings,Screen.fullScreen);
+    nativeSettingsDirectory=directory;nativeSettingsStore=new NativeSettingsStore(directory,NativeSettingsJsonCodec.Encode,NativeSettingsJsonCodec.Decode,settings,Screen.fullScreen);
     NativeSettingsSnapshot snapshot;bool loaded=nativeSettingsStore.TryLoad(out snapshot,out nativeSettingsStatus);
-    if(loaded&&snapshot!=null){settings.TryRestore(snapshot.sfxPercent,snapshot.bgmPercent,snapshot.frameCap);if(nativeSettingsStatus!=NativeSettingsStoreStatus.Missing)RequestSettingsFullscreen(snapshot.fullscreen,false);}
+    if(loaded&&snapshot!=null){settings.TryRestore(snapshot.sfxPercent,snapshot.bgmPercent,snapshot.frameCap);if(nativeSettingsStatus!=NativeSettingsStoreStatus.Missing){RestoreNativeBindings(snapshot);RequestSettingsFullscreen(snapshot.fullscreen,false);}}
    }
+   settingsBindingsVersion=NativeKeyBindInput.Bindings.Version;
    ApplySettingsHostValues();
+  }
+  static bool SupportedNativeBinding(string code)
+  {
+   if(code==null)return true;
+   UnityEngine.KeyCode key;
+   return NativeKeyBindInput.TryKey(code,out key)||code=="mouse0"||code=="mouse1"||code=="mouse2"||code=="mouse3"||code=="mouse4";
+  }
+  static void RestoreNativeBindings(NativeSettingsSnapshot snapshot)
+  {
+   NativeSettingsJsonCodec.ApplyBindings(snapshot,NativeKeyBindInput.Bindings,SupportedNativeBinding);
   }
   void ApplySettingsHostValues(){sound.SetVolumePercent(settings.SfxPercent);lobby.SetStartupSfxPercent(settings.SfxPercent);lobby.SetBgmPercent(settings.BgmPercent);ApplyFrameCap(settings.FrameCap);}
   void QueueSettingsSave(){if(nativeSettingsStore==null)return;settingsSavePending=true;settingsSaveAt=Time.unscaledTime+.25f;}
   void FlushNativeSettings()
   {
    if(nativeSettingsStore==null||!settingsSavePending)return;settingsSavePending=false;
-   NativeSettingsStoreStatus saveStatus;nativeSettingsStore.TrySave(settings,Screen.fullScreen,out saveStatus);
+   NativeSettingsStoreStatus saveStatus;nativeSettingsStore.TrySave(settings,Screen.fullScreen,NativeKeyBindInput.Bindings,out saveStatus);
    // A rejected initial load leaves the store closed. Preserve its concrete diagnostic.
    if(saveStatus!=NativeSettingsStoreStatus.NotLoaded)nativeSettingsStatus=saveStatus;
    UpdateSettingsPersistenceNotice();
   }
   void UpdateSettingsPersistence()
   {
+   if(NativeKeyBindInput.Bindings.Version!=settingsBindingsVersion){settingsBindingsVersion=NativeKeyBindInput.Bindings.Version;QueueSettingsSave();}
    if(settingsSavePending&&!settingsScreenPending&&Time.unscaledTime>=settingsSaveAt)FlushNativeSettings();UpdateSettingsPersistenceNotice();
   }
   void UpdateSettingsPersistenceNotice()

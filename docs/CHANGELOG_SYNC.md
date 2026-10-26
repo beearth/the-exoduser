@@ -1,3 +1,5 @@
+2026-10-27 Mac A15/A16: native 설정 JSON v2에 20개 `binds`/`binds2` 웹 keycode|null, v1 기본값 읽기, 유효하지 않은 동작값 기본값 유지, 미지원·unknown 항목 무시, 기존 gamepad 상위 JSON 보존, 키 변경 시 저장 예약을 구현했다. 격리 모델/IO 90와 별도 write3/read2 PASS. Player/Editor 빌드·GUI 실기 인수는 보류. [계약](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
+
 ## 2026-10-26 Mac Unity 자막 20+4 언어·일반 게임 이름표 gate
 
 - PC 승인 커밋 3건의 해당 범위만 Mac Unity에 이식했다. 20개 언어는 기존 Noto Serif, `zh/zht/ja/th`는 지역 정적 글꼴을 사용하며, 일반 게임의 개발용 이름표는 명시적 진단 옵션에만 보인다. Unity 6000.6.7f1 ARM64 빌드 오류 0; 실제 키보드 `zh/zht/ja/th→ko` 대표 자막과 일반 HUD를 확인했다. 같은 빌드 후속에서 번체 자막·진단 이름표 PNG, 네 지역 최장 cue20의 720p 한 줄·잘림 없음·그림자·한국어 복귀를 추가 확인했다. [수치·자산·영수증](engine/UNITY_MAC_LOCALE_INTEGRATION_20261026.md).

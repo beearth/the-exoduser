@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace Exoduser.UnityPort.Core
 {
@@ -13,6 +13,8 @@ namespace Exoduser.UnityPort.Core
   public long revision;
   public int sfxPercent,bgmPercent,frameCap;
   public bool fullscreen;
+  public string[] binds,binds2;
+  public Dictionary<string,string> extra;
  }
  public enum NativeSettingsStoreStatus
  {
@@ -20,11 +22,11 @@ namespace Exoduser.UnityPort.Core
   UnsupportedVersion,WrongSchema,TooLarge,IoError,Busy,Conflict,CodecError
  }
  // Atomic IO control flow reused from CharacterRosterStore. The roster store is unchanged.
- // Only four supported native preferences. No web/Godot/character/combat saves.
+ // Native preferences and keyboard binding values only. No web/Godot/character/combat saves.
  public sealed class NativeSettingsStore
  {
   public const string Schema="exoduser.unity.settings";
-  public const int Version=1;
+  public const int Version=2;
   public const int MaximumBytes=8192;
   public const string DataFileName="settings.v1.json";
   public const string BackupFileName="settings.v1.bak";
@@ -36,6 +38,7 @@ namespace Exoduser.UnityPort.Core
   readonly NativeSettingsSnapshot defaults;
   bool loaded;
   long expectedRevision;
+  NativeSettingsSnapshot lastSnapshot;
   public NativeSettingsStore(string absoluteDirectory,Func<NativeSettingsSnapshot,string> encode,
                               Func<string,NativeSettingsSnapshot> decode,NativeSettingsState initialState,bool initialFullscreen)
   {
@@ -51,18 +54,17 @@ namespace Exoduser.UnityPort.Core
   public static NativeSettingsSnapshot Capture(NativeSettingsState state,bool fullscreen)
   {
    if(state==null)throw new ArgumentNullException("state");
-   return new NativeSettingsSnapshot{schema=Schema,version=Version,revision=0,sfxPercent=state.SfxPercent,bgmPercent=state.BgmPercent,frameCap=state.FrameCap,fullscreen=fullscreen};
+   return new NativeSettingsSnapshot{schema=Schema,version=Version,revision=0,sfxPercent=state.SfxPercent,bgmPercent=state.BgmPercent,frameCap=state.FrameCap,fullscreen=fullscreen,binds=NativeSettingsJsonCodec.Defaults(false),binds2=NativeSettingsJsonCodec.Defaults(true),extra=new Dictionary<string,string>()};
   }
-  static NativeSettingsSnapshot Copy(NativeSettingsSnapshot s){return new NativeSettingsSnapshot{schema=s.schema,version=s.version,revision=s.revision,sfxPercent=s.sfxPercent,bgmPercent=s.bgmPercent,frameCap=s.frameCap,fullscreen=s.fullscreen};}
+  static NativeSettingsSnapshot Copy(NativeSettingsSnapshot s){return new NativeSettingsSnapshot{schema=s.schema,version=s.version,revision=s.revision,sfxPercent=s.sfxPercent,bgmPercent=s.bgmPercent,frameCap=s.frameCap,fullscreen=s.fullscreen,binds=s.binds==null?null:(string[])s.binds.Clone(),binds2=s.binds2==null?null:(string[])s.binds2.Clone(),extra=s.extra==null?new Dictionary<string,string>():new Dictionary<string,string>(s.extra)};}
   public static bool Validate(NativeSettingsSnapshot s,out NativeSettingsStoreStatus status)
   {
    status=NativeSettingsStoreStatus.InvalidData;if(s==null)return false;
    if(s.schema!=Schema){if(s.schema!=null)status=NativeSettingsStoreStatus.WrongSchema;return false;}
    if(s.version>Version){status=NativeSettingsStoreStatus.UnsupportedVersion;return false;}
-   if(s.version!=Version||s.revision<0||s.sfxPercent<0||s.sfxPercent>100||s.bgmPercent<0||s.bgmPercent>100||!NativeSettingsState.IsFrameCapSupported(s.frameCap))return false;
+   if((s.version!=1&&s.version!=Version)||s.revision<0||s.sfxPercent<0||s.sfxPercent>100||s.bgmPercent<0||s.bgmPercent>100||!NativeSettingsState.IsFrameCapSupported(s.frameCap))return false;
    status=NativeSettingsStoreStatus.Loaded;return true;
   }
-  static bool RequiredFields(string json){foreach(string key in new[]{"schema","version","revision","sfxPercent","bgmPercent","frameCap","fullscreen"})if(Regex.Matches(json,"\""+key+"\"\\s*:").Count!=1)return false;return true;}
   bool Read(string path,out NativeSettingsSnapshot snapshot,out NativeSettingsStoreStatus status)
   {
    snapshot=null;status=NativeSettingsStoreStatus.Missing;
@@ -82,7 +84,6 @@ namespace Exoduser.UnityPort.Core
    catch(DecoderFallbackException){status=NativeSettingsStoreStatus.InvalidData;return false;}
    catch(IOException){status=NativeSettingsStoreStatus.IoError;return false;}
    catch(UnauthorizedAccessException){status=NativeSettingsStoreStatus.IoError;return false;}
-   if(!RequiredFields(json)){status=NativeSettingsStoreStatus.InvalidData;return false;}
    try { snapshot=decode(json); }
    catch(Exception){status=NativeSettingsStoreStatus.InvalidData;return false;}
    if(!Validate(snapshot,out status)){snapshot=null;return false;}
@@ -117,26 +118,35 @@ namespace Exoduser.UnityPort.Core
    {
     if(File.Exists(directory)){status=NativeSettingsStoreStatus.IoError;return false;}
     snapshot=Copy(defaults);status=NativeSettingsStoreStatus.Missing;
-    expectedRevision=0;loaded=true;return true;
+    expectedRevision=0;lastSnapshot=Copy(snapshot);loaded=true;return true;
    }
    using(var lease=Acquire(out status))
    {
     if(lease==null)return false;
     if(!ReadBest(out snapshot,out status))return false;
-    expectedRevision=snapshot.revision;loaded=true;return true;
+    expectedRevision=snapshot.revision;lastSnapshot=Copy(snapshot);loaded=true;return true;
    }
   }
   public bool TrySave(NativeSettingsState state,bool fullscreen,out NativeSettingsStoreStatus status)
   {
-   if(state==null){status=NativeSettingsStoreStatus.InvalidData;return false;}return TrySaveSnapshot(Capture(state,fullscreen),out status);
+   return TrySave(state,fullscreen,null,out status);
   }
-  static bool Equal(NativeSettingsSnapshot a,NativeSettingsSnapshot b){return a.schema==b.schema&&a.version==b.version&&a.revision==b.revision&&a.sfxPercent==b.sfxPercent&&a.bgmPercent==b.bgmPercent&&a.frameCap==b.frameCap&&a.fullscreen==b.fullscreen;}
+  public bool TrySave(NativeSettingsState state,bool fullscreen,KeyBindings bindings,out NativeSettingsStoreStatus status)
+  {
+   if(state==null){status=NativeSettingsStoreStatus.InvalidData;return false;}
+   var next=lastSnapshot==null?Capture(state,fullscreen):Copy(lastSnapshot);next.version=Version;
+   next.sfxPercent=state.SfxPercent;next.bgmPercent=state.BgmPercent;next.frameCap=state.FrameCap;next.fullscreen=fullscreen;
+   if(bindings!=null){next.binds=new string[KeyBindings.Actions.Length];next.binds2=new string[KeyBindings.Actions.Length];for(int i=0;i<KeyBindings.Actions.Length;i++){next.binds[i]=bindings.Primary(KeyBindings.Actions[i]);next.binds2[i]=bindings.Secondary(KeyBindings.Actions[i]);}}
+   return TrySaveSnapshot(next,out status);
+  }
+  static bool Same(string[] a,string[] b){if(a==null||b==null)return a==b;if(a.Length!=b.Length)return false;for(int i=0;i<a.Length;i++)if(a[i]!=b[i])return false;return true;}
+  static bool Equal(NativeSettingsSnapshot a,NativeSettingsSnapshot b){if(a.schema!=b.schema||a.version!=b.version||a.revision!=b.revision||a.sfxPercent!=b.sfxPercent||a.bgmPercent!=b.bgmPercent||a.frameCap!=b.frameCap||a.fullscreen!=b.fullscreen||!Same(a.binds,b.binds)||!Same(a.binds2,b.binds2))return false;if(a.extra==null||b.extra==null)return a.extra==b.extra;if(a.extra.Count!=b.extra.Count)return false;foreach(var pair in a.extra){string value;if(!b.extra.TryGetValue(pair.Key,out value)||value!=pair.Value)return false;}return true;}
   public bool TrySaveSnapshot(NativeSettingsSnapshot snapshot,out NativeSettingsStoreStatus status)
   {
    status=NativeSettingsStoreStatus.NotLoaded;if(!loaded)return false;
    if(!Validate(snapshot,out status))return false;
    if(expectedRevision==long.MaxValue){status=NativeSettingsStoreStatus.Conflict;return false;}
-   var next=Copy(snapshot);next.revision=expectedRevision+1;
+   var next=Copy(snapshot);next.version=Version;next.revision=expectedRevision+1;
    byte[] payload;
    try
    {
@@ -172,7 +182,7 @@ namespace Exoduser.UnityPort.Core
       else File.Replace(temporary,primary,backup);
      }
      else File.Move(temporary,primary);
-     expectedRevision=next.revision;status=NativeSettingsStoreStatus.Saved;return true;
+     expectedRevision=next.revision;lastSnapshot=Copy(next);status=NativeSettingsStoreStatus.Saved;return true;
     }
     catch(IOException){status=NativeSettingsStoreStatus.IoError;return false;}
     catch(UnauthorizedAccessException){status=NativeSettingsStoreStatus.IoError;return false;}

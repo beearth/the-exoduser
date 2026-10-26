@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A15/A16 설정 저장 후보
+
+Mac 소유 `NativeSettingsStore`/`NativeGame.SettingsPersistence`/`NativePauseMenu` 어댑터에 JSON schema v2 `binds`·`binds2` 20동작을 연결했다. 기존 v1 경로·4개 설정값·패드 JSON을 보존하고 v1 기본 키로 이주한다. 격리 .NET 모델/IO 90 + 별도 프로세스 write3/read2 PASS. Player/Editor 빌드와 실제 키 페이지·OS 입력·기존 19개 GUI 통합 인수는 아직 HOLD. PC 소유 `KeyBindings`/`NativeKeyBindList`는 미수정. [계약·위험](../UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
+
 ## 2026-10-26 Mac Unity 현재 소유 블록
 
 이 블록이 현재 Mac Unity 작업 상태다. 아래10/25 NEXT/ACTIVE는 완료 당시의 이력이므로 현재 할 일로 재사용하지 않는다.
