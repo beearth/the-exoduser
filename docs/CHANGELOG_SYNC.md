@@ -3,7 +3,7 @@
 | 항목 | 결과 |
 |---|---|
 | 사용자 기준 | 거부된 영상·유사 후보는 채택본과 필수 원본을 확인한 뒤 삭제. I:나 검토 폴더에 거부본을 누적하지 않음 |
-| 삭제 | 이번 전사 시네마틱의 거부·미채택 파일37개/690,107,036바이트(영상29·이미지8). 파일별 해시는 I: revision_v3_blood_tears/rejected_media_deletion_receipt_20261026.json |
+| 삭제 | 이번 전사 시네마틱의 거부·미채택 파일44개/691,521,358바이트(영상29·이미지15). 파일별 해시는 I: revision_v3_blood_tears/rejected_media_deletion_receipt_20261026.json |
 | 보존·범위 | v3 실행본·원본·승인된 검0.6초·화로 유지. 공유 main/INDEX 보존. GitHub 이전 커밋 이력 재작성 없음. [현행 보고](cinematic/WARINTRO_KILLU_REBUILD_20261025.md) |
 
 ## 2026-10-26 전사 응징 v3 — 킬루 고통 표정과 피눈물
@@ -3234,7 +3234,7 @@ The independent peace_shield_admission_hold group then passed FIRST 1/20 with FA
 | 이번 spine 단위 항목 | 원 source 계약 / 새 인수 범위 |
 |---|---|
 | 정확 입장 / 이름 | `ch1_initial_014`, order13, etype4, physical/EL.P0, `spine_beast`, elite0·mods[]·aura=null만 별도 profile `native_ch1_etype4_physical_spine_beast_v1`로 소비한다. 원 etype4 명칭 `갑각 사도`, 스킨 `척추 괴수(spine_beast)`, 원 record name `native etype 4`는 서로 구분하며 runtime name을 추정 변경하지 않음 |
-| 원 목록 / typed 설정 | 원16개체 `godot/data/encounters.json`·seed/RNG/배치와 지정 record의 `support.runtime_supported=false`/`runtime=null`은 그대로 보존한다. 새 `godot/data/etype4_physical_spine_beast.json`만 exact admission에 사용. 이 config26588bytes/SHA-256 `d098280a24d0c3ee4729c145b71cb849d3ef5171153a8d1de6df7c129d79064e`, native_final 원값27개 subset이며 원 full337개는 snapshot/report에 보존. 목록 재추출·재해시0 |
+| 원 목록 / typed 설정 | 원16개체 `godot/data/encounters.json`·seed/RNG/배치와 지정 record의 `support.runtime_supported=false`/`runtime=null`은 그대로 보존한다. 새 `godot/data/etype4_physical_spine_beast.json`만 exact admission에 사용. 이 config26588bytes/SHA-256 `d098280a24d0c3ee4729c145b71cb849d3ef5171153a8d1de6df7c129d79064e`, native_final 원값27개 subset이며 원 full344개는 snapshot/report에 보존. 목록 재추출·재해시0 |
 | 원 수치 / 위치 | spawn3878.7467967160046/340, HP875·ATK31·radius34.3551987009123·speed0.40462583759799603px/native60tick, idle30.77384915202856·projT299.5166686736047·facing0.384930423474355, eShield/eShieldMax875·poise/maxPoise875. map RLE/nav/geometry/STARTEXIT/camera 불변 |
 | 실제 일반 AI | 원800px+LOS 어그로·단거리(range400) 분류의 d>30 밀착추적과 일반 idle 이동을 소비한다. 일반 접촉은 atk×.8의 raw24, cooldown40~59tick. common60tick 차지 후 actor-center의 physical raw24 탄이며 새로운 탱크 전용 공격·방어감산·attack-ticket를 추정 추가하지 않음 |
 | shield / 피격 | eShield875가 최종 배율 뒤 먼저 흡수하고 overflow만 HP로. 전부 흡수하면 HP·hitstun·KB·poise 감소0. 남은 HP 피해의 일반 idle hitstun8·KB=min(remaining×.25,15)×kbMult·poiseHit opt-in 및 stun/차지 중단은 기존 공통 소비 계약. tank renderer의 case4 외형을 특수 AI로 해석하지 않음 |
@@ -3280,7 +3280,7 @@ The independent peace_shield_admission_hold group then passed FIRST 1/20 with FA
 | 물리탄 / clock | actor-center 발사, damage24·sz3·life120·life decay.667/native tick·speed300px/sec·homing.00109083rad/tick(life>30). `parryClass=physical`이지만 실제 피해 `dtype=parry`는 기존 energy_def 분기 소비. redBean 수명 종료는 카메라 안 life=1 연장 대상이 아니며 별도 카메라2500px recycle·만료 폭발FX는 미이식 |
 | KB leaf / 보존 | player `receive_damage`에 optional `native_knockback_strength=-1.0`만 추가. 새 물리탄은 받아들인 non-DOT 피해에서 heading×2를 기본 KB 대신 더함. 기존 phys/magic/parry 방어 선택·HP·포이즈·충전·Q·60Hz 시계와 기존 medium/dark AI·탄 소비 유지 |
 | 기존 원화 / 애니메이션 | 원 atlas16장+`proj_phys_mouth.png`1장 =17 PNG/26,726,245bytes를 가공 없이 복사, source 전후와 destination SHA 일치. 본체8방향/base crop1536/0/256/256·walk4 crop6144~6912/0/256/256, `floor(walkDist/128)%4`와 base+walk overlay·cell center pivot128/128 보존. 실제24장/24FPS 신규 제작 없음 |
-| 새 검증 결과 | 이번 consumer의 고유3개 기술 **PASS**. 최초 shield_packet1PASS / admission·native_clock2 fixtureFAIL(3assertions, 명시 method524회)→fixture 오라클 수정 후 실패2개만 재실행2PASS(exit0, 명시 method474회). admission은 native_final27개 subset을 report full337개 전체와 같다고 잘못 기대하여 subset 원값·report full337 보존 검증으로 정정; clock은 원 `_gameFrame++`가 update 시작이므로 birth330을 기대329에서 정정. 제품 수정0·통과 shield_packet 재실행0·이전3/5/JS0·GUI0·자동 simulation0. 이번 source를 현재 인간의 전체화면 일시정지 앱에 로드하지 않았음 |
+| 새 검증 결과 | 이번 consumer의 고유3개 기술 **PASS**. 최초 shield_packet1PASS / admission·native_clock2 fixtureFAIL(3assertions, 명시 method524회)→fixture 오라클 수정 후 실패2개만 재실행2PASS(exit0, 명시 method474회). admission은 native_final27개 subset을 report full344개 전체와 같다고 잘못 기대하여 subset 원값·report full337 보존 검증으로 정정; clock은 원 `_gameFrame++`가 update 시작이므로 birth330을 기대329에서 정정. 제품 수정0·통과 shield_packet 재실행0·이전3/5/JS0·GUI0·자동 simulation0. 이번 source를 현재 인간의 전체화면 일시정지 앱에 로드하지 않았음 |
 | 미이식 / 미검수 | ticket 조건부 windup 자동 진입·burn DOT·부활 미이식. 생존 stun 실제 관측·새 source 실앱 플레이·픽셀/시각·최저사양240FPS 미검수. **VISUAL VERDICT: RETOUCH** — 새 기술 검증 결과를 전체 모델/VFX/출시 품질 통과로 확대하지 않음 |
 
 ## 2026-10-13 · CH1 초기 적 factory 소비 · 후속 제작
@@ -51552,7 +51552,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | E 동시 동작 | sDraw/kiGather 중 발동해도 상태 유지. 이동 중 E 릴리즈/자동 충전 완료 시 실제 sBash 발동. 착지가 sBash/충전을 idle로 덮어쓰지 않음. 충전 일반 걷기는 사슬 끌어당김/칼날이동 중 중복 적용하지 않음 |
 | 종료 | 별도 이동 중 사망·fallen·pStun이면 `_bdMoveT=0` 및 `_preBdState=null`. 값은 런타임 전용 |
 | 물리탄 패링 | 입/뱀탄·titanEye는 실제 E 패링 창과 거리로 판정, iframes에 막히지 않음. bwBean은 기존 피격 가드에 E 반사 가능 조건만 예외 추가. 일반 피격 무적·E 외 상태·Q 마법탄/blackBean 계약 유지 |
-| 검증 | 수정 전 Shift 충전 소거·칼날이동 상태 소거·무적 중 물리탄 패링 테스트 실패, 수정 후 E/칼날이동/물리탄 분류/Q 패링/실버테일 모션 37개 PASS |
+| 검증 | 수정 전 Shift 충전 소거·칼날이동 상태 소거·무적 중 물리탄 패링 테스트 실패, 수정 후 E/칼날이동/물리탄 분류/Q 패링/실버테일 모션 44개 PASS |
 
 수정 금지인 `2_3 돌진+패링+방패시스템`의 과거 Shift 순수 캔슬 설명보다 이 최신 사용자 지시를 우선한다.
 
@@ -52576,7 +52576,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 중복 보호 | 오프라인 버튼 override도 disabled이면 재진입 차단. localStorage hellsave_demo_0~4를 먼저 조사해 같은 이름이 있으면 빈 슬롯이 있어도 저장 없이 중단 |
 | 기존 제한 | 폴백5슬롯 유지. 가득참·중복 이름·명시적 서버 생성 실패 모두 공통 실패 UI로 복귀. 기존 캐릭터 삭제·덮어쓰기 없음 |
 | 테스트 | 버튼/직접 경로×용량 예외/슬롯 가득참/중복 이름6건 추가. 중복은 첫 슬롯 동일 이름·나머지 빈 슬롯으로 확인. 저장 실패 시 스토리0회,기존 데이터 쓰기0회(용량 오류의 실패 시도1회) |
-| 검증 | 생성·삭제·스토리37개 통과, 보강한 중복 fixture 포함6건 재통과,inline4개 구문 통과. 수정 전 신규6건 실패. 모의 API/localStorage만 사용. tmp/lobby-offline-retry/changes.patch |
+| 검증 | 생성·삭제·스토리44개 통과, 보강한 중복 fixture 포함6건 재통과,inline4개 구문 통과. 수정 전 신규6건 실패. 모의 API/localStorage만 사용. tmp/lobby-offline-retry/changes.patch |
 
 ## 2026-09-27 맵40차 지면소품4종폐기
 
@@ -53208,7 +53208,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 원인 | 로컬 _renderSlotList가 #charList 부모에 _wheelBound로 wheel을 영구 연결. 온라인 전환 후 .char-scroll-vp wheel 이벤트가 부모로 전파되면 오래된 로컬 핸들러도 실행하여 온라인 카드가 로컬 카드로 교체 |
 | 수정 | 로컬 wheel을 현재 렌더한 vp(.char-scroll-vp)에 연결,온라인과 동일 범위. cl._wheelBound 제거. replaceChildren으로 뷰포트가 교체되면 이전 핸들러도 현재 목록 이벤트 경로에서 제외 |
 | 입력 범위 | 캐릭터 카드 뷰포트 위에서 목록 이동. 고정 생성 카드·화살표 등 뷰포트 밖의 휠은 본문 스크롤로 전달. 시작/끝/deltaY0은 preventDefault하지 않음. Math.sign(deltaY),현재 _localSlots 길이 및 VIEW2 유지 |
-| 검증 | 신규2회귀 수정 전 실패→통과. 로컬→온라인 전환 후 휠1회가 온라인 인덱스만 이동,로컬 인덱스0 유지. 로컬 왕복/끝 경계 기본 스크롤 확인. 슬롯·패드 탐색·캐릭터 동기화·데모 경로37개 통과 |
+| 검증 | 신규2회귀 수정 전 실패→통과. 로컬→온라인 전환 후 휠1회가 온라인 인덱스만 이동,로컬 인덱스0 유지. 로컬 왕복/끝 경계 기본 스크롤 확인. 슬롯·패드 탐색·캐릭터 동기화·데모 경로44개 통과 |
 | 브라우저 | Chromium960×540 실제 HTML/CSS/렌더러 격리 실행. 버블링 WheelEvent로 수정 전 online1/local1·local-1,local-2 표시 재현→수정 후 online1/local0·online-1,online-2 표시. 계정/저장 API 호출 없음 |
 | 기록 | tmp/lobby-wheel-scope/browser-report.json,changes.patch. 기존 Git 쓰기 제한으로 커밋 미완료 |
 
@@ -54598,7 +54598,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | 목표 / 적용 | `EDITOR_MAP_PACK_NATIVE_FIRST`: 기존Studio 하단→map-pack 배치 UI→JSON export/reset/import→같은3333 game.html의 명시 r4/perspective/ruinedforest/mapPackfirst fragment 소비 |
 | v1 | version1/id/name/baseSceneId/map/start/exit/camera/enemies/objects/dependencies. 최대32768 UTF-8bytes·38기존props·quarter타일 좌표·bone간격≥5타일·dependencies23=환경19+몬스터4. 원지형72×84/T40/RLE·START35/68·EXIT41/16·camera·4초기enemy/source계약 exact 보호 |
-| 실제 저작 | prop-035 m_c1sbone X43→44/Y53/scale.85/noCol1/ground 유지. compact5768bytes→실제 MAP_OBJS(1760,2120), 나머지37개 동일. 원PNG/모델·HP/AI/Q/E/poise/physics 수치 변경0 |
+| 실제 저작 | prop-035 m_c1sbone X43→44/Y53/scale.85/noCol1/ground 유지. compact5768bytes→실제 MAP_OBJS(1760,2120), 나머지44개 동일. 원PNG/모델·HP/AI/Q/E/poise/physics 수치 변경0 |
 | native binding | 공유 prepare Promise로1회검증→genFromTemplate/MAP_OBJS/mkEn/camera. invalid명시fragment는 P/월드 초기화 전 차단·fallback0. readonly `_FDGNativeMapPack.snapshot`은 actual MAP_OBJS 조회 |
 | 공개 재생 | 기존시작/재시작 및 pack에만 재생/정지/재개 버튼. 기존 `_btFramePause` toggle만 사용, 새clock0. 특정리프DOM만 수정 |
 | 새 검사 | pure13+integration5=18고유 PASS. pure강제변환1FAIL 재현수리, integration최초fixture콜백누락3FAIL 수리·실패3만재실행. pause/resume5번째만 변경후재실행. 이전40/55/main9 완료검사 반복0 |
