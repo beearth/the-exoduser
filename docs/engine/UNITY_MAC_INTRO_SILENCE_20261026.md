@@ -1,6 +1,6 @@
 # Unity Mac 초반 stage 무음 계측 — 2026-10-26
 
-이번 checkpoint는 QA fixture만 추가한다. FDG의 현재 `movie.Open(fdg_intro.mp4,false,false,false)` 및 volume1을 포함한 제품 mute/volume/재생 동작은 변경하지 않았다. ROOT baseline 출력 증거 후 호출단의 최소 수정을 별도 인수한다.
+최초 checkpoint f25b35622는 QA fixture만 추가했다. ROOT baseline 출력 증거 후 NativeLobby.Begin의 `movie.Open(fdg_intro.mp4,false,false,false)`에서 muted 인자 하나만 true로 바꾼다. volume1/재생/영상 bytes 및 다음 단계는 그대로 유지한다.
 
 ## 확정 stage 계약
 
@@ -38,3 +38,9 @@ baseline은 harnessPassed와 contractPassed/observedDifferences를 분리한다.
 ## 현재 인수 상태
 
 Runtime + Editor Unity 참조 정적 컴파일 오류0. 새 Player/실제 재생·출력·시각 검수는 ROOT 대기다. 기존 영상 완주/설정/전투/전체 suite는 재실행하지 않았다. ROOT 소유 WORK_BOARD/PLAYABLE 및 타 WIP는 포함하지 않는다.
+
+## ROOT 실제 baseline 회수와 제품 최소 보정
+
+f25b35622 QA ARM64 빌드 오류0, harness19/19 PASS, contractPassed=false를 확인했다. FDG playing Voice.mute=false, 실제 Listener peak .1878839/RMS .0494865, resume peak .3682925, 유음 lobby→FDG 재진입 peak .1878839였다. HD/SD 키아트 및 frozen intro Title은 Listener0이었다. 이 실관측과 원본 muted 계약에 따라 Begin FDG Open의 세 번째 인자만 true로 수정한다. 실제 수정 후 무음 출력은 ROOT final 인수 대기다.
+
+Gate snapshot은 time0→1.208/frame0→29, VideoPlayer.isPlaying=true/Voice.mute=false/volume.6이나 Voice.wasPlaying=false/peak0이었다. 실제 enter SFX peak2와 BGM peak .00843/volume .45는 관측됐다. World voice peak .53489/BGM .165, lobby BGM .4875와 positive output도 확인됐다. Gate 첫1.2초의 voice0이 원본 track 무음 구간인지 freeze 후 native 재생 문제인지는 아직 미확정이다. 따라서 Gate 제품 오디오는 수정하지 않았고, 해당 voice.wasPlaying 계약 실패를 전체 해결로 주장하지 않는다. 원본 발음 시작 시점의 읽기 전용 확인 후 필요한 QA 관측창 보강을 별도 결정한다.

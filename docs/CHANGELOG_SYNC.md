@@ -1,5 +1,7 @@
 ## 2026-10-26 Unity 초반 stage 무음 계측
 
+- 실제 baseline의 FDG 유음(Listener peak .1878839)과 원본 무음 계약에 따라 FDG Open muted 인자 하나만 true로 보정. Gate 첫1.2초 voice0의 원인은 미확정으로 보존하며 Gate 제품 동작은 변경하지 않았다.
+
 - 제품 mute 변경 없이 별도 QA identity에서 FDG/SplashTitle(실버테일 키아트)/Title→Gate/World/lobby의 영상·음향·focus 출력 snapshot fixture를 추가. baseline 계측 성공과 무음 계약 차이를 분리하며 SD direct probe는 fallback 검수로 확대하지 않는다. [범위·명령](engine/UNITY_MAC_INTRO_SILENCE_20261026.md).
 
 ## 2026-10-26 Unity 지원 설정 저장·복원
