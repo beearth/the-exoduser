@@ -1,0 +1,1077 @@
+{
+  "webRevision": "607110d52a56a1e5622a78e2ce7d09582946920a",
+  "nativeRevision": "e7fe487bfba541f01ac4033f4d4d744210e7b04e",
+  "candidateCommit": "157e3e8f3cb63299c48fd484ba7056fd9dceb9b8",
+  "candidateSha256": "25FD0D15ACB6B76C28B9A99FEDC87BB0C4E006981949E7EBD14140E2823EF7EC",
+  "loadedLanguageScripts": [
+    "lang_zh.js",
+    "lang_ja.js",
+    "lang_es.js",
+    "lang_zht.js",
+    "lang_ru.js",
+    "lang_de.js",
+    "lang_ptbr.js",
+    "lang_fr.js",
+    "lang_pl.js",
+    "lang_it.js",
+    "lang_uk.js",
+    "lang_tr.js",
+    "lang_vi.js",
+    "lang_th.js",
+    "lang_id.js",
+    "lang_ar.js",
+    "lang_sv.js",
+    "lang_da.js",
+    "lang_no.js",
+    "lang_fi.js",
+    "lang_cs.js",
+    "lang_hu.js",
+    "lang_ro.js",
+    "lang_nl.js",
+    "lang_el.js",
+    "lang_bg.js",
+    "lang_ms.js"
+  ],
+  "languageCount": 29,
+  "idCount": 62,
+  "counts": {
+    "exact": 43,
+    "semantic": 6,
+    "native-only": 13
+  },
+  "valueCounts": {
+    "exactCompared": 1247,
+    "exactMatch": 1247,
+    "semanticCompared": 174,
+    "semanticSame": 168,
+    "fallbackCompared": 135,
+    "nativeOnlyUnscored": 377
+  },
+  "sourceHashes": {
+    "game.html": "D73D691989C1CB847CB500CE02AE81430C575FB90D732A5AF131742C96D2C8C5",
+    "ui-panels.js": "E325928DC6B689AF6C1E84F0F1DCCE5349449329D87BA78AACC98CD573706697",
+    "localization-data.js": "D3494F4D01767326F97C177B6F0C01F09A9919A134CBD3D7AAE46F6C5EF81F05",
+    "localization-runtime.js": "00CDAE7B9EA4742D7A905394E62809F8B67869C00F91189781F96988F2074205",
+    "NativePauseMenu.cs": "E1B51F2C719A0BCF1A85826A9E618191D8348A6018331EFF7DAC0C59EBE43EB1",
+    "NativeKeyBindList.cs": "3CF58B19F7B70545881BB9CDE1E7630B02F5AA9AAF6C7F4709C482D1A1DA0D06",
+    "KeyBindings.cs": "F115FC198B4BDA01CF98488FEC785A13752FB9DF0A1B467BD1EC7E04C9E47D26",
+    "keybind_ui_web.json": "252B402563436A511C2765612AE5100918E83A67CECDC402815BF8A5F3C0C4C0",
+    "candidate.json": "25FD0D15ACB6B76C28B9A99FEDC87BB0C4E006981949E7EBD14140E2823EF7EC"
+  },
+  "ids": {
+    "settings.title": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "설정",
+      "nativeEn": "Settings",
+      "webKo": "설정",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "settings.tab.game": {
+      "category": "exact",
+      "webRuntime": "ui-panels-pair",
+      "nativeKo": "게임",
+      "nativeEn": "Game",
+      "webKo": "게임",
+      "differences": [],
+      "fallbackCodes": [
+        "zh",
+        "zht",
+        "ja",
+        "es",
+        "fr",
+        "de",
+        "ru",
+        "ptbr",
+        "it",
+        "vi",
+        "th",
+        "id",
+        "tr",
+        "pl",
+        "cs",
+        "hu",
+        "bg",
+        "el",
+        "fi",
+        "sv",
+        "da",
+        "no",
+        "nl",
+        "ro",
+        "uk",
+        "ar",
+        "ms"
+      ],
+      "originCounts": {
+        "ko-literal": 1,
+        "english-literal": 28
+      }
+    },
+    "settings.tab.display": {
+      "category": "exact",
+      "webRuntime": "ui-panels-pair",
+      "nativeKo": "화면",
+      "nativeEn": "Display",
+      "webKo": "화면",
+      "differences": [],
+      "fallbackCodes": [
+        "zh",
+        "zht",
+        "ja",
+        "es",
+        "fr",
+        "de",
+        "ru",
+        "ptbr",
+        "it",
+        "vi",
+        "th",
+        "id",
+        "tr",
+        "pl",
+        "cs",
+        "hu",
+        "bg",
+        "el",
+        "fi",
+        "sv",
+        "da",
+        "no",
+        "nl",
+        "ro",
+        "uk",
+        "ar",
+        "ms"
+      ],
+      "originCounts": {
+        "ko-literal": 1,
+        "english-literal": 28
+      }
+    },
+    "settings.tab.audio": {
+      "category": "exact",
+      "webRuntime": "ui-panels-pair",
+      "nativeKo": "사운드",
+      "nativeEn": "Audio",
+      "webKo": "사운드",
+      "differences": [],
+      "fallbackCodes": [
+        "zh",
+        "zht",
+        "ja",
+        "es",
+        "fr",
+        "de",
+        "ru",
+        "ptbr",
+        "it",
+        "vi",
+        "th",
+        "id",
+        "tr",
+        "pl",
+        "cs",
+        "hu",
+        "bg",
+        "el",
+        "fi",
+        "sv",
+        "da",
+        "no",
+        "nl",
+        "ro",
+        "uk",
+        "ar",
+        "ms"
+      ],
+      "originCounts": {
+        "ko-literal": 1,
+        "english-literal": 28
+      }
+    },
+    "settings.tab.controls": {
+      "category": "exact",
+      "webRuntime": "ui-panels-pair",
+      "nativeKo": "조작",
+      "nativeEn": "Controls",
+      "webKo": "조작",
+      "differences": [],
+      "fallbackCodes": [
+        "zh",
+        "zht",
+        "ja",
+        "es",
+        "fr",
+        "de",
+        "ru",
+        "ptbr",
+        "it",
+        "vi",
+        "th",
+        "id",
+        "tr",
+        "pl",
+        "cs",
+        "hu",
+        "bg",
+        "el",
+        "fi",
+        "sv",
+        "da",
+        "no",
+        "nl",
+        "ro",
+        "uk",
+        "ar",
+        "ms"
+      ],
+      "originCounts": {
+        "ko-literal": 1,
+        "english-literal": 28
+      }
+    },
+    "settings.game.unavailable": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "이 빌드에서 변경할 수 있는 게임 설정이 없습니다.",
+      "nativeEn": "No game settings can be changed in this build.",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.display.fps": {
+      "category": "semantic",
+      "webRuntime": "t",
+      "nativeKo": "프레임 제한",
+      "nativeEn": "Frame rate limit",
+      "webKo": "FPS 제한",
+      "differences": [
+        {
+          "code": "ko",
+          "expected": "FPS 제한",
+          "actual": "프레임 제한",
+          "origin": "ko-key",
+          "candidateValue": "explicit"
+        }
+      ],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "settings.display.unlimited": {
+      "category": "semantic",
+      "webRuntime": "l",
+      "nativeKo": "무제한",
+      "nativeEn": "Unlimited",
+      "webKo": "제한없음",
+      "differences": [
+        {
+          "code": "ko",
+          "expected": "제한없음",
+          "actual": "무제한",
+          "origin": "ko-key",
+          "candidateValue": "explicit"
+        }
+      ],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "settings.display.fullscreen": {
+      "category": "semantic",
+      "webRuntime": "t",
+      "nativeKo": "전체 화면",
+      "nativeEn": "Fullscreen",
+      "webKo": "전체화면",
+      "differences": [
+        {
+          "code": "ko",
+          "expected": "전체화면",
+          "actual": "전체 화면",
+          "origin": "ko-key",
+          "candidateValue": "explicit"
+        }
+      ],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "settings.display.on": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "켜짐",
+      "nativeEn": "On",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.display.off": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "꺼짐",
+      "nativeEn": "Off",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.audio.sfx": {
+      "category": "semantic",
+      "webRuntime": "t",
+      "nativeKo": "효과음",
+      "nativeEn": "Sound effects",
+      "webKo": "효과음 볼륨",
+      "differences": [
+        {
+          "code": "ko",
+          "expected": "효과음 볼륨",
+          "actual": "효과음",
+          "origin": "ko-key",
+          "candidateValue": "explicit"
+        }
+      ],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "settings.audio.bgm": {
+      "category": "semantic",
+      "webRuntime": "t",
+      "nativeKo": "배경 음악",
+      "nativeEn": "Background music",
+      "webKo": "음악 볼륨",
+      "differences": [
+        {
+          "code": "ko",
+          "expected": "음악 볼륨",
+          "actual": "배경 음악",
+          "origin": "ko-key",
+          "candidateValue": "explicit"
+        }
+      ],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "settings.footer.restore": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "기본값 복원",
+      "nativeEn": "Restore defaults",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.footer.back": {
+      "category": "semantic",
+      "webRuntime": "t",
+      "nativeKo": "뒤로",
+      "nativeEn": "Back",
+      "webKo": "닫기 [ESC]",
+      "differences": [
+        {
+          "code": "ko",
+          "expected": "닫기 [ESC]",
+          "actual": "뒤로",
+          "origin": "ko-key",
+          "candidateValue": "explicit"
+        }
+      ],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "settings.notice.applyPending": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "화면 설정을 적용하는 중입니다.",
+      "nativeEn": "Applying display settings.",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.notice.applyFailed": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "화면 변경을 적용하지 못했습니다. 현재 화면을 유지합니다.",
+      "nativeEn": "Display change failed. The current display is retained.",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.notice.saveFailed": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "설정 저장에 문제가 있습니다. 이번 실행의 값은 유지됩니다.",
+      "nativeEn": "Settings could not be saved. Current session values are retained.",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.notice.qaUnsaved": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "검수 실행의 설정은 저장하지 않습니다.",
+      "nativeEn": "Settings are not saved during this QA run.",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.notice.backupRecovered": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "설정 백업을 복원했습니다. 변경은 이 Mac에 저장됩니다.",
+      "nativeEn": "Settings backup restored. Changes are saved on this Mac.",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "settings.notice.saved": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "설정은 이 Mac에 저장되어 다음 실행에도 적용됩니다.",
+      "nativeEn": "Settings are saved on this Mac for the next launch.",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "key.mode.kbm": {
+      "category": "exact",
+      "webRuntime": "l",
+      "nativeKo": "⌨ 키보드·마우스",
+      "nativeEn": "⌨ Keyboard & Mouse",
+      "webKo": "⌨ 키보드·마우스",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "explicit-english-fallback": 1,
+        "merged-game-table": 27
+      }
+    },
+    "key.mode.pad": {
+      "category": "exact",
+      "webRuntime": "l",
+      "nativeKo": "🎮 게임패드",
+      "nativeEn": "🎮 Gamepad",
+      "webKo": "🎮 게임패드",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "explicit-english-fallback": 1,
+        "merged-game-table": 27
+      }
+    },
+    "key.text.alt": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "보조",
+      "nativeEn": "Sub",
+      "webKo": "보조",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.listenMain": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "⟨ 입력 대기... ⟩",
+      "nativeEn": "⟨ Waiting... ⟩",
+      "webKo": "⟨ 입력 대기... ⟩",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.listenAlt": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "⟨ 대기 ⟩",
+      "nativeEn": "⟨ Wait ⟩",
+      "webKo": "⟨ 대기 ⟩",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.hint": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "아무 키 또는 마우스 버튼을 누르세요 (ESC = 취소)",
+      "nativeEn": "Press any key or mouse button (ESC = cancel)",
+      "webKo": "아무 키 또는 마우스 버튼을 누르세요 (ESC = 취소)",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.reset": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "키 설정 초기화 (또는 F5 키)",
+      "nativeEn": "Reset Key Bindings (or F5)",
+      "webKo": "키 설정 초기화 (또는 F5 키)",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.resetDone": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "키 설정 초기화 완료",
+      "nativeEn": "Key settings reset",
+      "webKo": "키 설정 초기화 완료",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.fixed": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "고정",
+      "nativeEn": "Lock",
+      "webKo": "고정",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.padTitle": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "🎮 게임패드 버튼 설정",
+      "nativeEn": "🎮 Gamepad Button Config",
+      "webKo": "🎮 게임패드 버튼 설정",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.padReset": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "패드 키 초기화",
+      "nativeEn": "Reset Pad Keys",
+      "webKo": "패드 키 초기화",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.text.padGuide": {
+      "category": "exact",
+      "webRuntime": "t",
+      "nativeKo": "🎮 전체 조작 가이드",
+      "nativeEn": "🎮 Full Controls Guide",
+      "webKo": "🎮 전체 조작 가이드",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.up": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "위로 이동",
+      "nativeEn": "Move Up",
+      "webKo": "위로 이동",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.down": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "아래로 이동",
+      "nativeEn": "Move Down",
+      "webKo": "아래로 이동",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.left": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "왼쪽 이동",
+      "nativeEn": "Move Left",
+      "webKo": "왼쪽 이동",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.right": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "오른쪽 이동",
+      "nativeEn": "Move Right",
+      "webKo": "오른쪽 이동",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.weapon": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "무기 공격",
+      "nativeEn": "Weapon Attack",
+      "webKo": "무기 공격",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.shield": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "칼등 처내기 (탭=처내기, 홀드=연사)",
+      "nativeEn": "Blade Parry (tap=parry, hold=rapid)",
+      "webKo": "칼등 처내기 (탭=처내기, 홀드=연사)",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.bow": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "Space 분노 폭발",
+      "nativeEn": "Space Rage Burst",
+      "webKo": "Space 분노 폭발",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.charge": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "사슬 이동",
+      "nativeEn": "Chain Dash",
+      "webKo": "사슬 이동",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.parry": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "데빌포스 흡수",
+      "nativeEn": "Devilforce Absorb",
+      "webKo": "데빌포스 흡수",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.beam": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "마법 (탭=투사체, 홀드=빔)",
+      "nativeEn": "Magic (tap=projectile, hold=beam)",
+      "webKo": "마법 (탭=투사체, 홀드=빔)",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.skill": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "전투 스킬",
+      "nativeEn": "Combat Skills",
+      "webKo": "전투 스킬",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.forge": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "대장간",
+      "nativeEn": "Forge",
+      "webKo": "대장간",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.inventory": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "인벤토리",
+      "nativeEn": "Inventory",
+      "webKo": "인벤토리",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.settings": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "설정",
+      "nativeEn": "Settings",
+      "webKo": "설정",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.interact": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "아이템 줍기",
+      "nativeEn": "Pick Up Item",
+      "webKo": "아이템 줍기",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.storage": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "보관함",
+      "nativeEn": "Storage",
+      "webKo": "보관함",
+      "differences": [],
+      "fallbackCodes": [
+        "zh",
+        "zht",
+        "ja",
+        "es",
+        "fr",
+        "de",
+        "ru",
+        "ptbr",
+        "it",
+        "vi",
+        "th",
+        "id",
+        "tr",
+        "pl",
+        "cs",
+        "hu",
+        "bg",
+        "el",
+        "fi",
+        "sv",
+        "da",
+        "no",
+        "nl",
+        "ro",
+        "uk",
+        "ar",
+        "ms"
+      ],
+      "originCounts": {
+        "ko-key": 1,
+        "explicit-english-fallback": 28
+      }
+    },
+    "key.action.stats": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "능력치 (스탯/패시브)",
+      "nativeEn": "Stats (Stats/Passives)",
+      "webKo": "능력치 (스탯/패시브)",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.skillCycle": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "스킬 슬롯 배정",
+      "nativeEn": "Skill Slot Assign",
+      "webKo": "스킬 슬롯 배정",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.irisToggle": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "유령불꽃 켜기/끄기",
+      "nativeEn": "Ghost Flame On/Off",
+      "webKo": "유령불꽃 켜기/끄기",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.action.bladeToggle": {
+      "category": "exact",
+      "webRuntime": "bind-name",
+      "nativeKo": "기동칼날개 자동 켜기/끄기",
+      "nativeEn": "Bladewing Auto On/Off",
+      "webKo": "기동칼날개 자동 켜기/끄기",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.code.none": {
+      "category": "exact",
+      "webRuntime": "l",
+      "nativeKo": "없음",
+      "nativeEn": "None",
+      "webKo": "없음",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.code.mouse0": {
+      "category": "exact",
+      "webRuntime": "l",
+      "nativeKo": "좌클릭",
+      "nativeEn": "LMB",
+      "webKo": "좌클릭",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.code.mouse1": {
+      "category": "exact",
+      "webRuntime": "l",
+      "nativeKo": "휠클릭",
+      "nativeEn": "MMB",
+      "webKo": "휠클릭",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.code.mouse2": {
+      "category": "exact",
+      "webRuntime": "l",
+      "nativeKo": "우클릭",
+      "nativeEn": "RMB",
+      "webKo": "우클릭",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.code.mouse3": {
+      "category": "exact",
+      "webRuntime": "l",
+      "nativeKo": "마우스4",
+      "nativeEn": "Mouse4",
+      "webKo": "마우스4",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.code.mouse4": {
+      "category": "exact",
+      "webRuntime": "l",
+      "nativeKo": "마우스5",
+      "nativeEn": "Mouse5",
+      "webKo": "마우스5",
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {
+        "ko-key": 1,
+        "merged-game-table": 28
+      }
+    },
+    "key.notice.saveFailure": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "키 설정을 저장하지 못했습니다 · 이번 실행의 값은 유지됩니다",
+      "nativeEn": "Key bindings could not be saved · current session values remain",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "key.notice.saveEnabled": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "키 설정 변경은 이 Mac에 자동 저장됩니다",
+      "nativeEn": "Key binding changes are saved on this Mac",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    },
+    "key.notice.qaUnsaved": {
+      "category": "native-only",
+      "webRuntime": "native-only",
+      "nativeKo": "검수 실행의 키 설정은 저장하지 않습니다",
+      "nativeEn": "Key bindings are not saved during this QA run",
+      "webKo": null,
+      "differences": [],
+      "fallbackCodes": [],
+      "originCounts": {}
+    }
+  },
+  "differences": [
+    {
+      "id": "settings.display.fps",
+      "category": "semantic",
+      "code": "ko",
+      "expected": "FPS 제한",
+      "actual": "프레임 제한",
+      "origin": "ko-key",
+      "candidateValue": "explicit"
+    },
+    {
+      "id": "settings.display.unlimited",
+      "category": "semantic",
+      "code": "ko",
+      "expected": "제한없음",
+      "actual": "무제한",
+      "origin": "ko-key",
+      "candidateValue": "explicit"
+    },
+    {
+      "id": "settings.display.fullscreen",
+      "category": "semantic",
+      "code": "ko",
+      "expected": "전체화면",
+      "actual": "전체 화면",
+      "origin": "ko-key",
+      "candidateValue": "explicit"
+    },
+    {
+      "id": "settings.audio.sfx",
+      "category": "semantic",
+      "code": "ko",
+      "expected": "효과음 볼륨",
+      "actual": "효과음",
+      "origin": "ko-key",
+      "candidateValue": "explicit"
+    },
+    {
+      "id": "settings.audio.bgm",
+      "category": "semantic",
+      "code": "ko",
+      "expected": "음악 볼륨",
+      "actual": "배경 음악",
+      "origin": "ko-key",
+      "candidateValue": "explicit"
+    },
+    {
+      "id": "settings.footer.back",
+      "category": "semantic",
+      "code": "ko",
+      "expected": "닫기 [ESC]",
+      "actual": "뒤로",
+      "origin": "ko-key",
+      "candidateValue": "explicit"
+    }
+  ],
+  "limit": "Pinned source/string comparison only. Semantic mappings, native-only text, locale runtime adoption, glyphs, RTL/shaping, layout, input and Player remain separate."
+}

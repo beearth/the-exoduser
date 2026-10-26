@@ -18,3 +18,9 @@
 - 별도 감사 문서 a15-settings-locale-oracle-audit-20261027.md의 보정 오라클과 공통 13매핑의 373값을 문자 대조해 불일치 0개였다. 원 QA 추출기는 lang_*.js를 누락했으므로 비한국어 fallback 판정은 사용하지 않는다. 서로 다른 웹 revision을 고정해 비교한 범위는 감사 문서를 따른다.
 - 후보 전체 62 ID를 실제 Native 조회 지점에 연결한 결과는 없다. Arabic 원문 존재는 IMGUI glyph coverage, shaping, bidi/RTL, 길이 fit의 시각 PASS가 아니다. 언어별 실화면과 입력 검수 전 제품 채택 0.
 - 자료 게시는 제품 코드·설정·번역 런타임·사용자 데이터 변경을 수반하지 않는다. 일반 마우스·청각 출력·미지원 게임 옵션과 전체 A15는 별도 HOLD다.
+
+## 07:25 후속 인계
+
+- 최신 후보 JSON SHA-256 10308928CEBFDD117ABF6009691E084C9E129E59565B443F6E5914A8C1B4DB78은 기존 25FD… 후보의 62 ID/locale 값이 동일하고 Native 표시 위치(nativeSite)와 소유 경계(adapterOwner)만 entry마다 추가됐다. QA v2 결과 JSON SHA-256 54D16AA0D70CC739371F5C4B2F501634D2DB206C6B382408F7EAF0C3019B0364는 이전 값 후보 기준으로 직접 대응 43 ID의 1,247/1,247 유효 표시값 일치, 의미 대응 6 ID와 native-only 13 ID를 분리한다. 검수 분모와 원본 oracle 결함은 동봉 감사 문서 참조.
+- Mac 5b0c8ed580be03099dc30249bc4e141902474d0b의 읽기 전용 preflight는 기존 정규화 locale 코드를 메뉴에 전달하고 검증된 ID만 조회하는 작은 adapter, PC 소유 키 목록의 좁은 hook, JsonUtility 고정 스키마와 후보 가변 entries의 변환 필요성을 기록했다. 제품 적용·빌드0. 1098px QA Player의 사운드 1열·footer·휠 시각 PASS는 언어 표시 검수가 아니다.
+- 실제 29언어 적용 시에는 번역값 확인과 별도로 폰트 글리프·길이·아랍어 shaping/bidi/RTL 실화면 게이트가 필요하다. 현행 ko/en fallback과 native-only 안내를 무단 제거하지 않는다.

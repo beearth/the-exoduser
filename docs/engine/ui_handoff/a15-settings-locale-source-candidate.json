@@ -77,7 +77,9 @@
         "ar": "إعدادات",
         "ms": "Tetapan"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativePauseMenu.cs:119 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.tab.game": {
       "nativeKo": "게임",
@@ -118,7 +120,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:120 T[0]",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.tab.display": {
       "nativeKo": "화면",
@@ -159,7 +163,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:120 T[1]",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.tab.audio": {
       "nativeKo": "사운드",
@@ -200,7 +206,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:120 T[2]",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.tab.controls": {
       "nativeKo": "조작",
@@ -241,7 +249,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:120 T[3]",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.game.unavailable": {
       "nativeKo": "이 빌드에서 변경할 수 있는 게임 설정이 없습니다.",
@@ -282,7 +292,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:135 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.display.fps": {
       "nativeKo": "프레임 제한",
@@ -322,7 +334,9 @@
         "ar": "حد FPS",
         "ms": "Batas FPS"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativePauseMenu.cs:149 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.display.unlimited": {
       "nativeKo": "무제한",
@@ -391,7 +405,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:152 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.display.fullscreen": {
       "nativeKo": "전체 화면",
@@ -431,7 +447,9 @@
         "ar": "شاشة كاملة",
         "ms": "Skrin penuh"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativePauseMenu.cs:157 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.display.on": {
       "nativeKo": "켜짐",
@@ -472,7 +490,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:159 T(true)",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.display.off": {
       "nativeKo": "꺼짐",
@@ -513,7 +533,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:159 T(false)",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.audio.sfx": {
       "nativeKo": "효과음",
@@ -553,7 +575,9 @@
         "ar": "مستوى المؤثرات",
         "ms": "Volume SFX"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativePauseMenu.cs:166 T(sfx)",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.audio.bgm": {
       "nativeKo": "배경 음악",
@@ -593,7 +617,9 @@
         "ar": "مستوى الموسيقى",
         "ms": "Volume Musik"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativePauseMenu.cs:166 T(bgm)",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.footer.restore": {
       "nativeKo": "기본값 복원",
@@ -634,7 +660,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:143 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.footer.back": {
       "nativeKo": "뒤로",
@@ -674,7 +702,9 @@
         "ar": "إغلاق [ESC]",
         "ms": "Tutup [ESC]"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativePauseMenu.cs:144 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.notice.applyPending": {
       "nativeKo": "화면 설정을 적용하는 중입니다.",
@@ -715,7 +745,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:184 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.notice.applyFailed": {
       "nativeKo": "화면 변경을 적용하지 못했습니다. 현재 화면을 유지합니다.",
@@ -756,7 +788,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:185 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.notice.saveFailed": {
       "nativeKo": "설정 저장에 문제가 있습니다. 이번 실행의 값은 유지됩니다.",
@@ -797,7 +831,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:186 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.notice.qaUnsaved": {
       "nativeKo": "검수 실행의 설정은 저장하지 않습니다.",
@@ -838,7 +874,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:187 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.notice.backupRecovered": {
       "nativeKo": "설정 백업을 복원했습니다. 변경은 이 Mac에 저장됩니다.",
@@ -879,7 +917,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:188 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "settings.notice.saved": {
       "nativeKo": "설정은 이 Mac에 저장되어 다음 실행에도 적용됩니다.",
@@ -920,7 +960,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:189 T",
+      "adapterOwner": "Mac NativePauseMenu lookup wrapper"
     },
     "key.mode.kbm": {
       "nativeKo": "⌨ 키보드·마우스",
@@ -959,7 +1001,9 @@
         "ar": "⌨ لوحة المفاتيح والفأرة",
         "ms": "⌨ Papan kekunci & Tetikus"
       },
-      "enSource": "native explicit en fallback"
+      "enSource": "native explicit en fallback",
+      "nativeSite": "NativeKeyBindList.cs:189-193 ui.tabs[0] L",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.mode.pad": {
       "nativeKo": "🎮 게임패드",
@@ -998,7 +1042,9 @@
         "ar": "🎮 ذراع التحكم",
         "ms": "🎮 Gamepad"
       },
-      "enSource": "native explicit en fallback"
+      "enSource": "native explicit en fallback",
+      "nativeSite": "NativeKeyBindList.cs:189-193 ui.tabs[1] L",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.alt": {
       "nativeKo": "보조",
@@ -1037,7 +1083,9 @@
         "ar": "فرعي",
         "ms": "Sokongan"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:222 ui.texts.alt T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.listenMain": {
       "nativeKo": "⟨ 입력 대기... ⟩",
@@ -1076,7 +1124,9 @@
         "ar": "⟨ انتظار... ⟩",
         "ms": "⟨ Menunggu... ⟩"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:221 ui.texts.listenMain T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.listenAlt": {
       "nativeKo": "⟨ 대기 ⟩",
@@ -1115,7 +1165,9 @@
         "ar": "⟨ انتظار ⟩",
         "ms": "⟨ Tunggu ⟩"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:222 ui.texts.listenAlt T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.hint": {
       "nativeKo": "아무 키 또는 마우스 버튼을 누르세요 (ESC = 취소)",
@@ -1154,7 +1206,9 @@
         "ar": "اضغط أي مفتاح (ESC = إلغاء)",
         "ms": "Tekan butang apapun (ESC = batal)"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:177 ui.texts.hint T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.reset": {
       "nativeKo": "키 설정 초기화 (또는 F5 키)",
@@ -1193,7 +1247,9 @@
         "ar": "إعادة تعيين المفاتيح (أو F5)",
         "ms": "Tetap semula Butang (atau F5)"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:206 ui.texts.reset T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.resetDone": {
       "nativeKo": "키 설정 초기화 완료",
@@ -1232,7 +1288,9 @@
         "ar": "تم إعادة تعيين المفاتيح",
         "ms": "Tetapan butang direset"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:67 ui.texts.resetDone T (toast currently hidden)",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.fixed": {
       "nativeKo": "고정",
@@ -1271,7 +1329,9 @@
         "ar": "ثابت",
         "ms": "Tetap"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:274 ui.texts.fixed T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.padTitle": {
       "nativeKo": "🎮 게임패드 버튼 설정",
@@ -1310,7 +1370,9 @@
         "ar": "🎮 إعدادات أزرار الذراع",
         "ms": "🎮 Tetapan butang gamepad"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:264 ui.texts.padTitle T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.padReset": {
       "nativeKo": "패드 키 초기화",
@@ -1349,7 +1411,9 @@
         "ar": "إعادة تعيين أزرار الذراع",
         "ms": "Tetap semula butang gamepad"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:278 ui.texts.padReset T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.text.padGuide": {
       "nativeKo": "🎮 전체 조작 가이드",
@@ -1388,7 +1452,9 @@
         "ar": "🎮 دليل التحكم الكامل",
         "ms": "🎮 Panduan Kontrol"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:283 ui.texts.padGuide T",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.up": {
       "nativeKo": "위로 이동",
@@ -1427,7 +1493,9 @@
         "ar": "تحرك للأعلى",
         "ms": "Gerak Atas"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.down": {
       "nativeKo": "아래로 이동",
@@ -1466,7 +1534,9 @@
         "ar": "تحرك للأسفل",
         "ms": "Gerak Bawah"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.left": {
       "nativeKo": "왼쪽 이동",
@@ -1505,7 +1575,9 @@
         "ar": "تحرك يساراً",
         "ms": "Gerak Kiri"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.right": {
       "nativeKo": "오른쪽 이동",
@@ -1544,7 +1616,9 @@
         "ar": "تحرك يميناً",
         "ms": "Gerak Kanan"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.weapon": {
       "nativeKo": "무기 공격",
@@ -1583,7 +1657,9 @@
         "ar": "هجوم بالسلاح",
         "ms": "Serangan senjata"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.shield": {
       "nativeKo": "칼등 처내기 (탭=처내기, 홀드=연사)",
@@ -1622,7 +1698,9 @@
         "ar": "صد (اضغط=صد، امسك=وابل)",
         "ms": "Parri (ketuk=parri, tahan=salvo)"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.bow": {
       "nativeKo": "Space 분노 폭발",
@@ -1690,7 +1768,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.charge": {
       "nativeKo": "사슬 이동",
@@ -1729,7 +1809,9 @@
         "ar": "اندفاع الرمح",
         "ms": "Lompat Rantai"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.parry": {
       "nativeKo": "데빌포스 흡수",
@@ -1768,7 +1850,9 @@
         "ar": "امتصاص قوة الشيطان",
         "ms": "Serap kekuatan iblis"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.beam": {
       "nativeKo": "마법 (탭=투사체, 홀드=빔)",
@@ -1807,7 +1891,9 @@
         "ar": "سحر (اضغط=قذيفة، امسك=شعاع)",
         "ms": "Sihir (ketuk=proyektil, tahan=sinar)"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.skill": {
       "nativeKo": "전투 스킬",
@@ -1846,7 +1932,9 @@
         "ar": "مهارات قتالية",
         "ms": "Kemahiran Tempur"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.forge": {
       "nativeKo": "대장간",
@@ -1885,7 +1973,9 @@
         "ar": "مصهر",
         "ms": "Tempa"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.inventory": {
       "nativeKo": "인벤토리",
@@ -1924,7 +2014,9 @@
         "ar": "المخزون",
         "ms": "Inventaris"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.settings": {
       "nativeKo": "설정",
@@ -1963,7 +2055,9 @@
         "ar": "إعدادات",
         "ms": "Tetapan"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.interact": {
       "nativeKo": "아이템 줍기",
@@ -2002,7 +2096,9 @@
         "ar": "التقاط عنصر",
         "ms": "Ambil Item"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.storage": {
       "nativeKo": "보관함",
@@ -2043,7 +2139,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.stats": {
       "nativeKo": "능력치 (스탯/패시브)",
@@ -2082,7 +2180,9 @@
         "ar": "إحصائيات (إحصائيات/سلبيات)",
         "ms": "Stat (Stat/Pasif)"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.skillCycle": {
       "nativeKo": "스킬 슬롯 배정",
@@ -2121,7 +2221,9 @@
         "ar": "تعيين الفتحة",
         "ms": "Penetapan slot"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.irisToggle": {
       "nativeKo": "유령불꽃 켜기/끄기",
@@ -2160,7 +2262,9 @@
         "ar": "شعلة الشبح تشغيل/إيقاف",
         "ms": "Api Hantu Nyala/Mati"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.action.bladeToggle": {
       "nativeKo": "기동칼날개 자동 켜기/끄기",
@@ -2199,7 +2303,9 @@
         "ar": "جناح الشفرة تلقائي تشغيل/إيقاف",
         "ms": "Sayap-Bilah Automatik Nyala/Mati"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:220 KeyBindings.Name(action,English) -> Core/KeyBindings.cs:16-17,41",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.code.none": {
       "nativeKo": "없음",
@@ -2238,7 +2344,9 @@
         "ar": "لا شيء",
         "ms": "Tidak Ada"
       },
-      "enSource": "game.html _EN"
+      "enSource": "game.html _EN",
+      "nativeSite": "NativeKeyBindList.cs:221-222 KeyBindings.KeyName -> Core/KeyBindings.cs:85-96",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.code.mouse0": {
       "nativeKo": "좌클릭",
@@ -2306,7 +2414,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativeKeyBindList.cs:221-222 KeyBindings.KeyName -> Core/KeyBindings.cs:85-96",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.code.mouse1": {
       "nativeKo": "휠클릭",
@@ -2374,7 +2484,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativeKeyBindList.cs:221-222 KeyBindings.KeyName -> Core/KeyBindings.cs:85-96",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.code.mouse2": {
       "nativeKo": "우클릭",
@@ -2442,7 +2554,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativeKeyBindList.cs:221-222 KeyBindings.KeyName -> Core/KeyBindings.cs:85-96",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.code.mouse3": {
       "nativeKo": "마우스4",
@@ -2510,7 +2624,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativeKeyBindList.cs:221-222 KeyBindings.KeyName -> Core/KeyBindings.cs:85-96",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.code.mouse4": {
       "nativeKo": "마우스5",
@@ -2578,7 +2694,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativeKeyBindList.cs:221-222 KeyBindings.KeyName -> Core/KeyBindings.cs:85-96",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.notice.saveFailure": {
       "nativeKo": "키 설정을 저장하지 못했습니다 · 이번 실행의 값은 유지됩니다",
@@ -2619,7 +2737,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:174 SaveNote/SaveNoteEn -> NativeKeyBindList.cs:180 L",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.notice.saveEnabled": {
       "nativeKo": "키 설정 변경은 이 Mac에 자동 저장됩니다",
@@ -2660,7 +2780,9 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:175 SaveNote/SaveNoteEn -> NativeKeyBindList.cs:180 L",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     },
     "key.notice.qaUnsaved": {
       "nativeKo": "검수 실행의 키 설정은 저장하지 않습니다",
@@ -2701,8 +2823,17 @@
         "uk",
         "ar",
         "ms"
-      ]
+      ],
+      "nativeSite": "NativePauseMenu.cs:176 SaveNote/SaveNoteEn -> NativeKeyBindList.cs:180 L",
+      "adapterOwner": "PC key-list narrow lookup adapter + Mac caller"
     }
   },
-  "localeSourceRule": "ko=nativeKo; en=enSource; other present locale=lang_<locale>.js except uiOverrideLocales from localization-data.js ui; omitted locale retains nativeEn fallback as a candidate (web _T may instead retain Korean)."
+  "localeSourceRule": "ko=nativeKo; en=enSource; other present locale=lang_<locale>.js except uiOverrideLocales from localization-data.js ui; omitted locale retains nativeEn fallback as a candidate (web _T may instead retain Korean).",
+  "macSiteCommit": "b73b4c6ff78f386a15b1c07c48ff316f3721b202",
+  "macSiteBlobs": {
+    "NativePauseMenu": "06ce64ad213933422bf7197511958dfdb7525033",
+    "NativeKeyBindList": "3ffd4a57c902c6745b3895973b9abfc79ac1c36e",
+    "NativeGame": "a16d625df948f0721a7f728a66c01c018047b634",
+    "KeyBindings": "d776cfd6b17ba3403b23cc2f7315b7c71b48aa89"
+  }
 }
