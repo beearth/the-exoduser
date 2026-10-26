@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A06 HUD Metal Editor 판정
+
+PC 계측·웹 clipping hunk만 Mac Editor QA에 적용했다. Unity6000.6.7f1 `-nographics` 없는 단회 실행에서 `Metal / Apple M5 Pro / Gamma`, raw RGBA 5점, composition PASS·HUD GPU resource mask PASS. 전체 `Verify`는 다음 Inventory seed counts 예외로 exit2/receipt없음이며 이 실패를 HUD GPU 오류로 계산하지 않는다. Player·Runtime·셰이더·Gamma·개인앱 변경0. [정확 수치·로그·남은 원인](../UNITY_MAC_A06_GPU_METAL_20261027.md).
+
 ## 2026-10-27 Mac A04 생성 뒤 전사 이야기 외형 가드
 
 PC `08af46705af26291d9d5add4904ad82a268142c1`의 `NativeLobby.Characters.cs` 한 줄을 Mac에 적응했다. 저장 성공 뒤 외형 0만 기존 전사 이야기·입장으로 가고, 외형 1–4는 현재 잠금 유지·미래 생성 허용 시 로비 잔류다. Mac Unity6000.6.7f1 Editor 컴파일1회 종료0/C# 오류0, Player 빌드0. PC 추출 검사 6/6은 실기 GUI 결과가 아니다. [외형별 계약·Mac 검증](../UNITY_MAC_WARRIOR_STORY_20261025.md#2026-10-27-a04-생성-뒤-외형별-이야기-분기).

@@ -1,5 +1,7 @@
 # Mac Unity A06 HUD 좌표 인수 — 2026-10-27
 
+> 2026-10-27 후속: 아래에 남긴 구형 `VerifyUiComposition` 충돌은 [Mac Metal Editor 계측](UNITY_MAC_A06_GPU_METAL_20261027.md)에서 웹 clipping 계약으로 정정했고, 실제 Metal 자원 마스크를 통과했다. 전체 `Verify`는 후속 Inventory 검사에서 종료2이므로 전체 PASS가 아니다.
+
 PC 고정 커밋 `741d97ba1245631a8098d9cecac5589332252189`의 `NativeHudDockLayout.cs`와 `NativeHudSkills.cs` 두 파일만 Mac에 byte-exact 적용했다. 수정 전 원본 두 파일은 `_out/UNITY-MAC-A06-20261027/before/`에 보존했다. 적용 후 SHA-256은 각각 `6011347812546114f65e13eeea49d85f7b8cbccc5bf178441d9d6cc1356276bb`, `9eda21f929eb4abd6d46fbe3bea211363994ffde33ad71c09cc99b06177ca8ff`이다. `NativeHud.cs`, `NativeHudPresentation.cs`, `NativeGame.cs`, 원본 이미지, 자원·전투·키 동작은 변경하지 않았다. 이전 HUD blend 문서의 `.78` 수치와 시각 PASS는 당시 2026-10-26 빌드의 이력이며 현재 A06 좌표는 이 문서가 우선한다.
 
 ## 1920×1080 논리 좌표 계약

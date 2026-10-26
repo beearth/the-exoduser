@@ -102,10 +102,32 @@ public static class PortVerification {
    float scale=Mathf.Min(size.x/1920f,size.y/1080f),width=size.x/scale,height=size.y/scale;
    var layout=NativeHudDockLayout.Create(width,height);
    var left=NativeHudDockLayout.VisibleFrame(layout.LeftFrame);var right=NativeHudDockLayout.VisibleFrame(layout.RightFrame);
-   if(left.xMin<0||right.xMax>width||left.yMax>height-4||right.yMax>height-4)throw new Exception("HUD frame clipped "+size);
-   if(Math.Abs((layout.LeftFrame.xMin+layout.RightFrame.xMax)*.5f-width*.5f)>.01f)throw new Exception("HUD group lost center "+size);
-   if(layout.RightFrame.xMax-layout.LeftFrame.xMin>1100||left.yMin<height-260)throw new Exception("HUD occupies excessive combat view "+size);
+   // Web .globe-glass has inset:-44px and margin-left:-4px inside a 0.9-scaled
+   // 175px globe. Its lower decorative edge intentionally falls below viewport.
+   const float webArtScale=.9f;
+   float webGlassBottom=height-10f+44f*webArtScale;
+   if(left.xMin<0||right.xMax>width||left.yMin<0||right.yMin<0||
+      Math.Abs(left.yMax-webGlassBottom)>.1f||Math.Abs(right.yMax-webGlassBottom)>.1f)
+    throw new Exception("HUD frame outside web viewport clipping contract "+size);
+   float webGlassCenter=width*.5f-4f*webArtScale;
+   if(Math.Abs((layout.LeftFrame.xMin+layout.RightFrame.xMax)*.5f-webGlassCenter)>.1f)
+    throw new Exception("HUD group lost web glass center "+size);
+   float webGlassSpan=(2*490f+263f)*webArtScale;
+   if(Math.Abs(layout.RightFrame.xMax-layout.LeftFrame.xMin-webGlassSpan)>.1f||left.yMin<height-260)
+    throw new Exception("HUD occupies excessive combat view "+size);
+   foreach(var liquid in new[]{layout.LeftLiquid,layout.RightLiquid})
+    if(liquid.xMin<0||liquid.xMax>width||liquid.yMin<0||liquid.yMax>height)
+     throw new Exception("HUD resource liquid clipped "+size);
    if(!layout.VisibleBar.Contains(layout.ActiveSlot.min)||!layout.VisibleBar.Contains(layout.ActiveSlot.max))throw new Exception("Active skill outside visible slot bar "+size);
+   for(int i=0;i<13;i++){
+    var slot=layout.SlotRect(i);
+    if(slot.xMin<0||slot.xMax>width||slot.yMin<0||slot.yMax>height||
+       !layout.VisibleBar.Contains(slot.min)||!layout.VisibleBar.Contains(slot.max))
+     throw new Exception("HUD interactive slot clipped "+size+" index="+i);
+    var label=NativeHudDockLayout.KeyLabelRect(layout.SlotBar,height,i);
+    if(label.xMin<0||label.xMax>width||label.yMin<0||label.yMax>height)
+     throw new Exception("HUD key label clipped "+size+" index="+i);
+   }
    if(width-640-600<640)throw new Exception("Inventory central view too narrow "+size);
   }
   Debug.Log("UNITY_UI_COMPOSITION_BOUNDS_PASS");
@@ -116,12 +138,30 @@ public static class PortVerification {
    var p=new PlayerState{MaxHp=526,MaxMana=330,MaxStamina=240,MaxShield=285};
    for(int i=0;i<3;i++){
     p.Hp=i==0?526:i==1?263.9f:0;p.Mana=i==0?330:i==1?82.9f:0;p.Stamina=i==0?240:i==1?180:0;p.Shield=i==0?285:i==1?142.5f:0;
-    hud.Refresh(p,0,true);var v=hud.Probe(i.ToString());
+    hud.Refresh(p,0,true);
+    if(i==0){
+     Debug.Log("A06_HUD_GPU_DEVICE type="+SystemInfo.graphicsDeviceType+" name="+SystemInfo.graphicsDeviceName+" colorSpace="+QualitySettings.activeColorSpace);
+     try{
+      Debug.Log("A06_HUD_GPU_RGBA hpCorner="+HudProbePixel(hud,"hp",2,2)+" hpCenter="+HudProbePixel(hud,"hp",128,128)+" manaBlue="+HudProbePixel(hud,"mana",80,128)+" staminaGreen="+HudProbePixel(hud,"mana",180,128)+" manaCorner="+HudProbePixel(hud,"mana",253,253));
+     }catch(Exception e){Debug.Log("A06_HUD_GPU_RGBA_READ_ERROR "+e.GetType().Name+" "+e.Message);}
+    }
+    var v=hud.Probe(i.ToString());
     bool ok=v.cornerTransparent&&(i==0?v.hpRed&&v.manaBlue&&v.staminaGreen:i==1?v.hpUpperEmpty&&v.hpLowerRed&&v.manaUpperEmpty&&v.staminaGreen:v.hpEmpty&&v.manaEmpty&&v.staminaEmpty);
     if(!ok)throw new Exception("Native HUD GPU pixel mismatch "+JsonUtility.ToJson(v));
    }
    Debug.Log("UNITY_HUD_GPU_RESOURCE_MASK_PASS");
   }finally{hud.Dispose();}
+ }
+ static string HudProbePixel(NativeHud hud,string field,int x,int y){
+  var info=typeof(NativeHud).GetField(field,System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+  var rt=info==null?null:info.GetValue(hud) as RenderTexture;
+  if(rt==null)throw new Exception("HUD diagnostic target unavailable: "+field);
+  var old=RenderTexture.active;var pixel=new Texture2D(1,1,TextureFormat.RGBA32,false);
+  try{
+   RenderTexture.active=rt;pixel.ReadPixels(new Rect(x,y,1,1),0,0);pixel.Apply();
+   var c=pixel.GetPixel(0,0);
+   return "("+c.r.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.g.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.b.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.a.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+")";
+  }finally{RenderTexture.active=old;UnityEngine.Object.DestroyImmediate(pixel);}
  }
  static string MakeScene(){
   var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);

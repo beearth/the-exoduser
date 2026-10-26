@@ -1,3 +1,5 @@
+2026-10-27 Mac A06 HUD Editor Metal 계측: PC 계측·웹 clipping hunk만 적용. Unity6000.6.7f1 Metal/Apple M5 Pro/Gamma, raw RGBA5점, composition·HUD GPU mask PASS. 전체 Verify는 후속 Inventory seed counts 예외로 exit2/receipt없음. Player·Runtime·셰이더·Gamma 변경0. [수치·경계](engine/UNITY_MAC_A06_GPU_METAL_20261027.md).
+
 2026-10-27 Mac A04 생성 이야기 가드: PC `08af46705`의 `NativeLobby.Characters.cs` 한 줄을 인수해 저장 성공 뒤 외형0에만 기존 전사 이야기·입장을 호출한다. 외형1–4 잠금·로스터/save/미디어는 불변이다. Mac Unity6000.6.7f1 Editor 컴파일1회 종료0/C# 오류0, Player 빌드0. PC 추출 검사6/6은 Mac 실기 GUI 검수가 아니다. [계약·경계](engine/UNITY_MAC_WARRIOR_STORY_20261025.md#2026-10-27-a04-생성-뒤-외형별-이야기-분기).
 
 2026-10-27 Mac A03 패치노트 직접진입 QA 결과: source `fae70452d` 고유 ARM64 1회 Succeeded/errors0/C# 오류·경고0. `open -n` 단일 격리 PID18734에서 ko 0.7.5/0.7.0 본문, 키보드 Down 스크롤, es/cs 긴 라벨, N 뒤입력 차단, Esc 닫기 및 roster0/selected-1 불변을 실창·로그로 확인. launcher 물리 마우스 클릭은 HOLD. 실제 내용1280×720/제목막대 포함 캡처1280×784를 구분하며 1024 최소창은 미검증. [화면·PID·경계](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
