@@ -22,6 +22,8 @@ Mac 후속 실제 상태: 같은 HEAD `763667931` ARM64 빌드에서 cue32 `.EXO
 
 Mac 배경폭 후속: `9cc2759c1` ARM64 오류0 빌드에서 720p 웹 동일 cue22·긴 cue21·짧은 cue29·라틴 cue32 및 1080p 긴 cue21·cue28/메뉴·짧은 cue26·ar→ko를 격리 Player로 확인했다. 배경은 내용 폭을 따른다. 이번 빌드 32큐 전수 재확인과 일반 실행 채택은 하지 않았다. QA는 `--unity-frontend-review --unity-arabic-caption-preview -output 새절대경로` 세 조건 모두 사용하며 preview 플래그만으로 저장 격리되지 않는다. 추가 화면 수집 중 CUA가 플래그 없는 PID1571을 자동 실행해 즉시 종료·증거 제외했고, 이 앱의 일반 프로필 읽기 가능성은 [QA 기록](../UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md)에 남겼다. 위 Mac→PC 협의의 송신은 `763667931`의 `docs/engine/orders/WORK_BOARD.md`다. PC/Claude의 실제 회신은 `f974d5e33`의 [PC_TO_MAC_INBOX_20261021.md](PC_TO_MAC_INBOX_20261021.md) §2026-10-26 밤4에 있다. 회신은 Mac 자막 우선과 PC 별도 소유, 공용 접점 대조 일정의 Mac 결정을 수락했다. 최신 PC UI 누적 patch 15개 요청은 같은 전달함 §밤6에 접수됐지만 자동 적용·병합·Mac 실기 검수는 하지 않았다.
 
+Mac A02 자기 큐: 최종 fit `9cc2759c1` 720p cue1–32 전수 실화면 검수는 안전한 PID/인자↔창 선택 수단이 없어 미검증. CUA `getApp` 자동 실행 경로를 재사용하지 않고 새 Player/빌드0; 이전 32큐 manifest와 최종 JSON 32×3 동일·최종 코드 SHA/빌드 일치·가로 최대84% 불변을 읽기 전용 대조했다. [채택 관문표](../UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md). 일반 ar 승격 HOLD, 기존 Player·개인 저장 보존, PC patch18 통합은 별도 소유 합의·검수 범위로 유지한다.
+
 일반 사용자 앱38141/48476/52157는 종료하지 않았다. 앞선 격리 검수의 별도 product/id 기록과 구분해, 이번 유효 ATG Player는 제품 ID가 같지만 `--unity-frontend-review`로 설정 I/O를 끄고 새 절대 `-output`으로 캐릭터 저장을 분리했다. 다만 위 플래그 없는 PID1571은 일반 프로필을 읽었을 수 있어 원래 prefs·캐릭터 파일 무접근/무변경은 입증하지 않는다. 첫부팅FPS120/기본값60·60·0/고정60Hz 유지. 웹/Godot/전투save IO·새설정·새팀·자동화·유료생성·PC재가동0.
 
 ### 2026-10-26 Mac→PC 맵 실행 보충안 참조 전달

@@ -126,3 +126,19 @@ Unity 6000.6.7f1 `StandaloneOSX` ARM64의 `atg-fit-9cc2759c1-build-receipt.json`
 `--unity-arabic-caption-preview`는 렌더 경로와 초기 언어만 고른다. **이 플래그 단독 실행은 저장 격리가 아니다.** 검수 명령에는 반드시 `--unity-frontend-review --unity-arabic-caption-preview -output /새로운/절대/경로`를 함께 지정한다. `--unity-frontend-review`가 설정 저장 I/O를 끄고, 캐릭터 목록은 `-output` 하위 `character-roster-v1`로 분리된다. `-output` 누락 시 검수 목록은 fail-closed이며 정상 사용자 파일로 폴백하지 않는다. 유효한 720p, 1080p, 1080p 한국어 복귀, 1080p 짧은 자막 실행은 각각 `qa-fit-720-9cc2759c1`, `qa-fit-1080-9cc2759c1`, `qa-fit-1080-ko-9cc2759c1`, `qa-fit-1080-short2-9cc2759c1`이라는 새 절대 경로를 사용했다. 네 Player 로그 `atg-fit-720-player.log`, `atg-fit-1080-player.log`, `atg-fit-1080-ko-player.log`, `atg-fit-1080-short2-player.log`에서 예외·오류 문자열은 없었다.
 
 추가 1080p 캡처 도중 별도 `nohup` 실행이 바로 종료된 상태에서 CUA가 같은 앱을 **플래그 없이 자동 재실행한 PID1571**이 있었다. 한국어 세계관 화면을 보고 즉시 PID를 종료했으며, 이 화면은 ATG 검수 증거에서 제외했다. 플래그 없는 앱은 일반 설정·캐릭터 저장을 읽었을 수 있다. 해당 실행에서 캐릭터 생성이나 설정 변경 조작은 하지 않았지만 저장 파일 비변경을 사후 해시로 입증하지 못하므로 개인 데이터 무접근/무변경이라고 주장하지 않는다. 이후에는 셸에서 플래그 포함 PID를 먼저 확인한 뒤 CUA를 바인딩했다. **CUA `getApp`는 대상이 꺼져 있으면 자동 실행할 수 있으므로 반드시 사전 PID·인자 확인 후 사용한다.**
+
+## A02 최종 fit 720p 32큐 전수 게이트 — 2026-10-26
+
+승인된 A02 범위는 이미 빌드한 `9cc2759c1` ARM64 앱을 그대로 사용해 최종 fit 상태의 720p cue1–32를 한 번 순서대로 다시 확인하는 것이다. **이번 시도에서 새 Player는 실행하지 않았고, 최종 fit 32/32 실화면 판정은 미검증이다.** Mac CUA 앱 목록에는 제품 ID가 같은 여러 Unity Player가 보이지만 PID/시작 인자/창 ID가 대응돼 있지 않다. Mac용 CUA는 실행 중인 특정 PID의 창을 안전하게 바인딩할 수 있는 진입점을 제공하지 않는다. 이전 `getApp` 경로가 플래그 없는 앱을 자동 실행한 사례가 있어 이 경로로 재시작하지 않았다. 기존 일반 Player·설정·저장에는 이번 A02에서 접근하지 않았다.
+
+읽기 전용 대조 결과: 최종 소스 `NativeArabicCaptionOverlay.cs` SHA256 `1d57ff8e6ecaf4dbfb2d78aa0d6ee39af832537b2edfcb6c796fb863b019f2f5`가 빌드 당시와 같고 `9cc2759c1..HEAD`의 해당 코드·자막 JSON 차이는 0이다. JSON SHA256 `32202897b58d1a1c29e149afaff8b32e9490633a1ae8b2c7350092ac28235562`의 ar 32큐는 이전 `cdc50a1e6` 32큐 화면 manifest와 cue별 원문/start/end 32×3항목 모두 일치한다. 이전 32/32 화면은 `atg-ar32-cue-contact-sheet.png`; 최종 fit 대표 화면은 이 문서의 720/1080p 표와 `atg-fit-720-contact.png`다. 새 배치는 투명 84% 영역과 Label `maxWidth=100%`로 기존 최대 폭을 유지하고 가로 padding을 각8→2px로 줄여, 소스만 보면 줄바꿈 여유가 줄지 않았다. 이는 **줄바꿈 위험의 정적 근거이지 새 빌드 32큐 가시 PASS는 아니다.**
+
+| 일반 `ar` 채택 관문 | 현재 근거 | 상태/잔여 조건 |
+|---|---|---|
+| 원문·순서·시간 데이터 | JSON 32큐와 이전 전수 manifest 32×3 동일, SHA 불변 | 데이터 PASS |
+| ATG 결합·RTL/LTR·전큐 한 줄 | 이전 `cdc50a1e6` 720p 32/32 PASS, 최종 `9cc2759c1` 긴·짧은 대표 화면 PASS | **최종 fit 720p 32/32 실화면 미검증**. PID·창·인자를 안전하게 대응할 수 있는 캡처 경로에서 1회 재검수 필요 |
+| 배경 폭·메뉴 층 | 최종 fit 720/1080p 대표 화면과 웹 동일 cue22 비교 | 대표 화면 PASS, 전큐 배경 폭/웹 픽셀 일치는 미판정 |
+| 저장 격리 | `--unity-frontend-review --unity-arabic-caption-preview -output 새절대경로` 계약 | 명령 인자와 실제 창의 일대일 확인이 필요. preview 플래그 단독은 저장 격리 아님 |
+| 일반 실행 전환 | 현재 일반 `ar`는 기존 IMGUI, ATG는 플래그 전용 | **채택 HOLD**. 위 최종 fit 전수와 별도 제품 결정을 거친 뒤 적용/빌드/회귀 검수 필요 |
+
+이번 A02에서 새 빌드0, 일반 `ar` 활성화0, 공용 Core 변경0, 기존 Player 종료0이다.
