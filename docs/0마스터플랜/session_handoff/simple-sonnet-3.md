@@ -25,7 +25,8 @@
 - 증거 폴더: `E:/exoduser-wt/_out/map3d-slice/{capture8,14,21,27f, life1, sheets14}`, `E:/exoduser-wt/_out/pc-map3d-paintground/`(최신 시트·크롭), Godot 기준 `E:/exoduser-wt/_out/godot-look001-refs-v2/`(C/D·ALTAR·compare).
 
 ## 진행 중·남은 순서 (맵 총괄 갱신: PAINTGROUND-R → MESHY-0 → TOXIC)
-0. **PAINTGROUND-R(첫 일)**: 디자인총괄 판정 `E:/exoduser-wt/_out/design-reconcile/JUDGE_PAINTGROUND_20261026.md`를 읽고 반영 — 빛 웅덩이 복원, 외곽 살덩이를 바닥보다 어둡게(내가 올린 외곽 명도·분홍 톤 되돌림), 밝은 꼬리(외곽 상아 끝 하이라이트 등) 제거. 기준은 MAP_ART_BIBLE_v2. 명세는 맵 총괄이 보낸다(없으면 판정 문서 기준으로 맵 총괄에 확인).
+0a. 디자인총괄 eb8a8577 판정 RETOUCH(상세 `JUDGE_PAINTGROUND_20261026.md`), 바이블 v2 핵심: 척도 CIE L\*, 밝은 꼬리 L\*≥50 면적 0.3~1.2% 필수, 바닥 그늘 L\*≤8 5~20%, 외곽 몸통 p50 6~12(바닥보다 어둡게). 고칠 것 ①빛 웅덩이 복원(진홍 1~2 오른쪽·독액 1 왼쪽·사이 어둠) ②좌하단 살덩이 몸통을 FLESH/FLESH-DEEP으로 내려 p50 6~12(현재 16.9, 분홍 사암처럼 읽힘), 능선만 상아 힘줄 빛면+긴 젖은 반사로 L\*≥50 0.3% 이상(현재 0.13%) ③풀 군락화(전투 중앙 비움, 기슭 군락 3~6개, 밑동 AO) ④플레이어·소품 접지 그림자 복원 ⑤바닥 색조·명도는 그대로(더 밝게 금지). 재제출 형식: v2 §11.1(목표 START v2·Godot C 나란히 + 1x 크롭 3곳). LIFE1은 이전 RETOUCH 판정 유지.
+0. **PAINTGROUND-R(첫 일)**: 디자인총괄 판정 `E:/exoduser-wt/_out/design-reconcile/JUDGE_PAINTGROUND_20261026.md`를 읽고 반영 — 빛 웅덩이 복원, 외곽 살덩이를 바닥보다 어둡게(내가 올린 외곽 명도·분홍 톤 되돌림), 밝은 꼬리(외곽 상아 끝 하이라이트 등) 제거. 기준은 MAP_ART_BIBLE_v2. 명세 `E:/exoduser-wt/_out/pc-map3d-paintground/SPEC_R.md`(맵 총괄 작성).
 1. **MESHY-0 — 보류.** 명세 `E:/exoduser-wt/_out/meshy/MESHY0_SPEC.md`. Codex가 저장한 DPAPI 키(`C:\Users\심도진\.codex\credentials\meshy-api-key.dpapi`)를 복호화해 wall_B 1건(약 30크레딧) 생성하는 일. 맵 총괄이 사용자 말을 인용해 전달했으나 이 세션에서 사용자가 직접 확인하지 않았다 → **사용자가 이 세션에 직접 "진행해"라고 할 때까지 호출·키 복호화 금지.** 확인이 오면 §1~2만 먼저(키 값 출력·저장 금지, Codex 파일 수정 금지, 호출 1건, 즉시 I:/EXODUSER-Storage/Meshy 사본+SHA, `credits.log`), §3 Unity 임포트·교체 컷은 작업 트리를 비운 뒤.
 2. **TOXIC**(독성 늪·사이드 독성 강) — 명세 `E:/exoduser-wt/_out/pc-map3d-toxic/SPEC.md`(§2.5 LIFE1-R 포함, 독액 색은 아트 바이블 §6 값). 같이 처리: 풀이 균일 점박이로 보임 → 군락(3~12포기)+빈 땅, 크기 편차 확대.
 3. M1 마무리 행: "회화풍 다시 칠하기"(칠한 빛 마스크 굽기, 셰이더 70/30 입력, 매니페스트 마스크 필드). 실제 Meshy 에셋은 키 승인 뒤.
