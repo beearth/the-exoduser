@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort {
    else if(Input.GetKeyDown(KeyCode.PageUp))input=InventoryKey.PageUp;else if(Input.GetKeyDown(KeyCode.PageDown))input=InventoryKey.PageDown;
    else if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter))input=InventoryKey.Accept;
    // The ossuary page has no bag/equipment selection to navigate; only Tab/Esc close it.
-   if(Page==PageOssuary&&input!=InventoryKey.Close)return false;
+   if(Page!=PageEquipment&&input!=InventoryKey.Close)return false;
    return input.HasValue&&HandleKey(input.Value,level);
   }
   public bool HandleKey(InventoryKey key,int level){

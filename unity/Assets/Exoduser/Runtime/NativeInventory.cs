@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort {
         }
         Texture2D Load(string path){var t=Resources.Load<Texture2D>(path);if(t==null)throw new InvalidOperationException("Missing source inventory art "+path);return t;}
         public void Reset(){State=new InventoryState(NativeInventorySeed.Load());Navigation=new InventoryNavigation(State);Open=false;scroll=Vector2.zero;drag=null;dragging=false;message="";}
-        public void SetOpen(bool value){Open=value;drag=null;dragging=false;if(value){OpenPage();Navigation.Open();if(Page==PageOssuary)State.Select(null);RefreshSelection();}else Navigation.Fence();}
+        public void SetOpen(bool value){Open=value;drag=null;dragging=false;if(value){OpenPage();Navigation.Open();if(Page!=PageEquipment)State.Select(null);RefreshSelection();}else Navigation.Fence();}
         public bool Equip(InventoryItem item,int level){bool ok=State.TryEquip(item,level,out var why);message=ok?"장착했습니다":why;if(ok){changed();AfterOwnershipChange();}return ok;}
         public bool Unequip(string slot){bool ok=State.TryUnequip(slot,out var why);message=ok?"해제했습니다":why;if(ok){changed();AfterOwnershipChange();}return ok;}
         public bool Move(InventoryItem item,int x,int y){bool ok=State.TryMove(item,x,y);message=ok?"가방 위치를 옮겼습니다":"그 위치에는 놓을 수 없습니다";return ok;}

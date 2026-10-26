@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort {
             status=new GUIStyle(small){alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Clip};
             button=new GUIStyle(GUIStyle.none){font=strong,fontSize=18,alignment=TextAnchor.MiddleCenter,padding=new RectOffset(12,12,4,4)};
             button.normal.textColor=parchment;button.hover.textColor=Color.white;button.active.textColor=gold;
-            InitWebLayout();InitOssuary();
+            InitWebLayout();InitOssuary();InitCrystals();
         }
 
         // Used by the shared details/comparison view: same plate face as every other web button.
@@ -72,14 +72,15 @@ namespace Exoduser.UnityPort {
             Fill(new Rect(0,0,Screen.width,Screen.height),C(0,0,0,.53f));
             GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2f,(Screen.height-1080*scale)/2f,0),Quaternion.identity,new Vector3(scale,scale,1));
             var stats=State.CalculateStats(level);var power=InventoryCombatPower.Calculate(State,stats,level);
-            bool oss=Page==PageOssuary;
+            bool oss=Page==PageOssuary,tall=oss||Page==PageCrystals;
             // The ossuary page narrows the window to x518 w1390; the tab bar, header line and sub tabs scale with it.
             float wx=oss?518:12,ww=oss?1390:1896,lx=oss?548:42,lw=oss?1330:1836;
             DrawWindow(new Rect(wx,12,ww,1056),oss);
             DrawNavigation(lx,lw);
             DrawHeaderLine(power,lx-42,close);
-            DrawBody(new Rect(lx,182,lw,oss?858:802),lx,lw);
+            DrawBody(new Rect(lx,182,lw,tall?858:802),lx,lw);
             if(oss)DrawOssuaryPage(level,power);
+            else if(Page==PageCrystals)DrawCrystalsPage(level,power);
             else{
                 DrawEquipPanel(level,power);
                 DrawBagPanel(level);
@@ -170,11 +171,11 @@ namespace Exoduser.UnityPort {
 
         void DrawBody(Rect body,float lx,float lw){
             string[] subs={"장비","유골함","유물","보관함"};
-            // 1836 -> x 42,502,962,1421 w 457; 1330 -> x 548,881,1215,1548 w 330 (4 tabs, 2px gaps; 유물/보관함 are not ported: display only)
+            // 1836 -> x 42,502,962,1421 w 457; 1330 -> x 548,881,1215,1548 w 330 (4 tabs, 2px gaps; 보관함 is not ported: display only)
             float tw=(lw-6)/4f;
             for(int i=0;i<4;i++){
                 var r=new Rect(lx+i*(tw+2),136,tw,36);
-                if(i<2){if(PlateButton(r,subs[i],13,i==Page))SetPage(i);}
+                if(i<3){if(PlateButton(r,subs[i],13,i==Page))SetPage(i);}
                 else PlateTab(r,subs[i],13,false);
             }
             IronTile(body,iron480,480);Grad(body,C(5,7,7,.733f),C(8,9,9,.85f));Border(body,C(83,75,62));
