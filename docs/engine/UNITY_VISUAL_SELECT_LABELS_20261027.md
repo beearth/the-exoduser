@@ -16,6 +16,13 @@
 
 현재 후보 파일 SHA-256: `NativeLobby.CharacterPresentation.cs` `A7F5F3548FE58A184A18F65E0F7BD998B31FBF6636738024B80E11E2D68462C5`, `visual_select_labels.json` `4383FE4CFBF4D612167FCA41BE710A46DD6C1C13A22C59734D8E4EDCB786AE3F`, `.meta` `8FD6D5D4F30E23078FAD889ECE152AAB20BD04E1B482E3EDA0BC60BD1B1E4072`. QA의 이전 삭제창 컴파일 종료·lease 해제 뒤 입력 SHA를 재확인해 이 두 파일만 E: 격리 후보에 적용했다.
 
-이번 입력으로 Unity Editor 컴파일·Player 화면·29언어 줄넘침·글꼴·아랍어 방향·실입력을 아직 확인하지 않았다. 시각 판정 **HOLD**. 생성·삭제 대화상자와 제품/배포 완료의 근거로 사용하지 않는다.
+이 입력의 최초 체크포인트 시점에는 Unity Editor 컴파일을 아직 확인하지 않았다. 아래 독립 QA에서 이후 단독 import·컴파일을 확인했다. Player 화면·29언어 줄넘침·글꼴·아랍어 방향·실입력은 아직 확인하지 않았다. 시각 판정 **HOLD**. 생성·삭제 대화상자와 제품/배포 완료의 근거로 사용하지 않는다.
 
 `G:/exoduser/docs` 관련 키워드 검색을 수행했다. 공용 checkout의 타 팀 WIP와 docs 소유를 보존하기 위해 이 문서는 Unity 이식 문서 반영용 I: 초안으로 둔다.
+
+## 2026-10-27 독립 QA: 원문·고정 구역·컴파일
+
+- I: `qa-contract/a04-visual-label-comparison.json`: 고정 웹 실제 병합 경로와 원격 `2ca42e6c8…` JSON SHA-256 `4383FE4C…`를 독립 비교했다. **42키×29언어=1,218/1,218**, 차이 0. 기존 콘텐츠 차이 7곳과 Unity 전용 한·영 폴백 6문구는 이 라벨 분모에 포함하지 않는다.
+- I: `qa-contract/a04-visual-unchanged.json`: 부모 `334fb091…`와 후보의 캐릭터 문구 배열 구역 및 미디어 초기화 구역을 바이트 단위로 대조해 두 구역 모두 동일했다.
+- I: `qa-contract/a04-visual-compile.json` 및 `a04-visual-compile-editor.log`: Unity 6000.6.7f1 단독 배치 import·스크립트 컴파일 **종료 코드 0·오류 0**, `visual_select_labels.json` import 확인, Runtime C# 77개 실행 중 변경 0. QA 담당은 Editor 프로세스·잠금 파일 부재를 확인해 lease를 해제했다고 보고했다.
+- 제품 Player·실GUI·키보드/마우스, 긴 번역·glyph·RTL·초점의 실제 시각 검수는 **0/HOLD**다. 개인 세이브 IO는 0이다.
