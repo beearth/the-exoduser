@@ -57158,3 +57158,11 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 
 - 기준776ebe77d, 전용codex/unity-map-light-01-20261026에서 월드 카메라 source-over 조명·반해상도 어둠홀·정적12광원·2D안개·환경광·비네트·CSS grade·Mac 별도안개 gate를 포트했다. NativeGame.cs는 Awake 초기화/OnDestroy 정리2hunk만 변경. 원본 snapshot dee094fd의 행·수치·합성순서·미포트 동적 광원·자원 수명은 [상세 SSOT](engine/UNITY_MAP_LIGHT_01_20261026.md).
 - 상태 IMPLEMENTED_UNVERIFIED — Unity 소유 해제 대기. CPU managed compile 오류0/CS0649경고27. 이번 Unity Editor/Player/batchmode/빌드/캡처/GPU/회귀/성능 실행0, 사용자 저장·타 작업폴더·R 변경0. 기존 Godot/Unity 과거 PASS를 이번 검증으로 사용하지 않는다. worktree 보존·자기 경로 commit/push, 최종 SHA/원격 확인은 외부 DONE.
+
+
+## 2026-10-26 UNITY-MAP-LIGHT-02 — 실제 검수·미인수 사유
+
+- [검수 SSOT](engine/UNITY_MAP_LIGHT_02_20261026.md): 새 import/field shader 검사/ARM64 Release 빌드 오류0, QA focus 교정 빌드1회. 같은 시작·제단의1920×1080 웹/Unity전후1x 비교와 crop 보존.
+- 전후900프레임 평균8.389746/8.361290ms(p95 8.672584/8.487210, p99 8.990250/8.902835), cap120/vsync0. 성능 향상 주장0. HUD55/practice5검사 통과.
+- 상태 IMPLEMENTED_UNVERIFIED·VISUAL RETOUCH 유지: 웹 도랑/환경·펫 차이, Release GC counter invalid·raw0의 양성대조 없음으로 매프레임 할당0 미인증. import후 전체mirror는 생성scene/meta차이2회 후 중단.
+- NativeGame.cs 추가hunk0, 로비/오디오/intro-silence/타UnityWIP/일반저장/원번역목록 변경0. 자기 경로만 commit/push 후 정상worktree 제거, 실제SHA와 정리결과는 외부DONE.

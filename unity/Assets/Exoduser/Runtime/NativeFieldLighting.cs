@@ -37,6 +37,9 @@ namespace Exoduser.UnityPort
         Vector2 lastLogicalSize;
         bool dirty = true,ready;
         float fogTime;
+        internal bool MeasureAllocations;
+        internal long RenderAllocatedBytes, UpdateAllocatedBytes;
+        internal int TargetRecreates, RenderCalls, CacheRefreshes;
 
         public void Initialize(NativeGame game, Camera camera)
         {
@@ -76,13 +79,16 @@ namespace Exoduser.UnityPort
         void Update()
         {
             if (!ready || worldCamera == null) return;
+            long allocated = MeasureAllocations ? GC.GetAllocatedBytesForCurrentThread() : 0;
             // Resolution transition only. Stable frames perform no allocation or resource load.
             int w = Mathf.Max(2, worldCamera.pixelWidth), h = Mathf.Max(2, worldCamera.pixelHeight);
             if (w != width || h != height || !darkness.IsCreated() || !colorMap.IsCreated()) PrepareTargets(w,h);
+            if (MeasureAllocations) UpdateAllocatedBytes += GC.GetAllocatedBytesForCurrentThread() - allocated;
         }
 
         void PrepareTargets(int w, int h)
         {
+            TargetRecreates++;
             ReleaseTarget(ref darkness);
             ReleaseTarget(ref colorMap);
             width = w; height = h;
@@ -110,6 +116,8 @@ namespace Exoduser.UnityPort
                 source.width != width || source.height != height || !darkness.IsCreated() || !colorMap.IsCreated())
             { Graphics.Blit(source, destination); return; }
 
+            long allocated = MeasureAllocations ? GC.GetAllocatedBytesForCurrentThread() : 0;
+            if (MeasureAllocations) RenderCalls++;
             var previousTarget = RenderTexture.active;
             bool previousSrgb = GL.sRGBWrite;
             GL.sRGBWrite = false;
@@ -130,6 +138,7 @@ namespace Exoduser.UnityPort
                 // Source 55201: moving camera/resize refresh immediately; stationary every 3 frames.
                 if (dirty || renderFrame % 3 == 0 || center != lastCenter || logicalSize != lastLogicalSize)
                 {
+                    if (MeasureAllocations) CacheRefreshes++;
                     CollectLights(center,logicalSize);
                     Graphics.Blit(null, darkness, material, 0);
                     Graphics.Blit(null, colorMap, material, 1);
@@ -140,7 +149,8 @@ namespace Exoduser.UnityPort
                 material.SetFloat(FogTimeId, fogTime);
                 Graphics.Blit(source, destination, material, 2);
             }
-            finally { GL.sRGBWrite = previousSrgb; RenderTexture.active = previousTarget; }
+            finally { GL.sRGBWrite = previousSrgb; RenderTexture.active = previousTarget;
+                if (MeasureAllocations) RenderAllocatedBytes += GC.GetAllocatedBytesForCurrentThread() - allocated; }
         }
 
         void CollectLights(Vector2 center, Vector2 size)

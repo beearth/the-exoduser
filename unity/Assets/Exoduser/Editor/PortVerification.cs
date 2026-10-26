@@ -151,6 +151,9 @@ public static class PortVerification {
    if(target==BuildTarget.StandaloneOSX)throw new NotSupportedException("Build the Mac verification app with the Mac Editor");
 #endif
    if(settingsQa){restoreOverride=SettingsIdentifierOverride();restoreProduct=PlayerSettings.productName;restoreIdentifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone);}
+   var lighting=Resources.Load<Shader>("Shaders/FieldLighting");
+   if(lighting==null||!lighting.isSupported||ShaderUtil.ShaderHasError(lighting))throw new Exception("Field lighting shader import error");
+   Debug.Log("UNITY_FIELD_LIGHTING_SHADER_IMPORT_PASS");
    VerifyLobby();var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
    if(settingsQa){PlayerSettings.productName="EXODUSER Settings QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.settingsqa");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("Settings QA must have a distinct application identifier");}
    var output=Path.Combine(directory,target==BuildTarget.StandaloneOSX?"EXODUSER-Unity.app":"EXODUSER-Unity.exe");

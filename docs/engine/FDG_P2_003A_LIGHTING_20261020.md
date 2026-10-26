@@ -1,6 +1,6 @@
 > 2026-10-22 PARITY-MAP-02 분기 갱신: CH1-1은 실제 C/2 라이트맵·정적12광원/iris색층·render-frame/밀리초분리·CSS뒤DOM안개 합성, 원본61군락얼굴/소품관절/늪/독구덩이를 연결한다. 배치/충돌/카메라·PC/UI/저장 변경0. [원본 대응·1440p청크·최종검수](PARITY_MAP_02_20261022.md). 아래20261020 수치·측정은 당시 이력이며 main/PC 인수 아님.
 
-> 2026-10-26 Unity 후속: [UNITY-MAP-LIGHT-01](UNITY_MAP_LIGHT_01_20261026.md)은 같은 snapshot의 반해상도 어둠홀/정적12광원/source-over 색층/2D안개/환경광/비네트/CSS·Mac fog gate를 월드 카메라로 포트한 **IMPLEMENTED_UNVERIFIED** 후보다. Unity 실행 소유가 다른 작업자에게 있어 빌드·캡처·회귀·성능은 미실시. 아래 Godot 과거 검수 수치를 Unity 검증으로 사용하지 않는다.
+> 2026-10-26 Unity 후속: [UNITY-MAP-LIGHT-02](UNITY_MAP_LIGHT_02_20261026.md)에서 같은 snapshot 조명 후보를 새 import·shader 검사·ARM64 빌드(오류0)하고 실제1x 비교·전후900프레임·HUD55/practice5검사를 수행했다. **IMPLEMENTED_UNVERIFIED** 유지: 웹의 도랑·환경/펫 표현 차이와 GC 할당0 미인증. 아래 Godot 과거 검수는 Unity 검증 수치로 사용하지 않는다.
 
 # P2-003A — 맵 조명·어둠·안개·비네트·색보정 원본화 (2026-10-20)
 

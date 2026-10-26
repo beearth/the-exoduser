@@ -1,6 +1,8 @@
 # UNITY-MAP-LIGHT-01 — CH1-1 월드 카메라 조명
 
-상태: **IMPLEMENTED_UNVERIFIED — Unity 소유 해제 대기**.
+상태: **IMPLEMENTED_UNVERIFIED — 02 검수에서 화면 차이·유효 GC 증거 부족**.
+
+2026-10-26 후속 [UNITY-MAP-LIGHT-02 검수](UNITY_MAP_LIGHT_02_20261026.md): 소유 해제 후 새 import/셰이더 검사/ARM64 빌드 오류0, 시작·제단 1x 비교, 900프레임 전후 측정, HUD 55·practice 5검사 통과. 전체 화면 동등성과 매 프레임 GC 0은 미인수다. 아래 실행 금지·미실시·worktree 보존 문장은 01 당시 이력이다. 02는 경로 지정 commit/push 후 정상 worktree 제거 대상이며 타 Unity WIP는 통합하지 않는다.
 
 사용자 2026-10-26 지시 “조명처리 된 맵으로 쓰고”의 구현 후보다. 기준 부모는 `776ebe77d05450343b1482cca945f184733fd30c`, 전용 브랜치는 `codex/unity-map-light-01-20261026`, worktree는 `~/exoduser-wt/UNITY-MAP-LIGHT-01`이다. Unity 총괄의 Editor·Player·GPU 소유를 존중하여 이번에는 실행·import·빌드·캡처·GPU 측정을 하지 않는다. 마지막의 일반 worktree 제거 지시보다 우선하는 실행 소유 규칙에 따라 worktree를 유지한다. 원격 main 및 다른 Unity 작업 폴더에는 반영하지 않는다.
 
