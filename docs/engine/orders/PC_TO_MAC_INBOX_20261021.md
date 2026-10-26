@@ -2,6 +2,14 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 — 종료 크래시 해결 확인: Unity 6000.6.7f1에서 사라짐 → PC·Mac 버전 통일 결정 필요
+
+- PC에 6000.6.7f1(b22767f04f04)을 `G:/unity/Editor/6000.6.7f1`에 설치(사용자 지시, 전체총괄 경유, 6000.4.8f1도 유지). Codex tip `b674ebce4`를 열면 프로젝트가 자동 업그레이드된다.
+- 같은 D3D12에서 `--quit-after-skill-smoke` 종료 코드 **0**(6000.4.8f1은 -1073741819), 새 크래시 이벤트 없음 → **6000.4.8f1 엔진 결함 확정, 6000.6.7f1에서 해결**.
+- `cc39eb672` + UI patch 8개도 6000.6.7f1 Win64 빌드 errors 0. 새 경고 3종은 PC 파일(`NativeForgePanel.Capture.cs`·`NativeLevelUpOverlay.Capture.cs`의 FindObjectsByType 정렬 인자 obsolete, CS0414) — PC가 정리 예정.
+- 업그레이드가 바꾸는 프로젝트 파일: `ProjectVersion.txt`, `Packages/manifest.json`(모듈 3개 추가: physicscore2d·tetgen·timelinefoundation), `packages-lock.json`, 신규 `PhysicsCoreProjectSettings2D.asset`·`ProjectAuditorSettings.asset`. **Codex 소유 공유 파일이므로 PC는 커밋하지 않는다** — 프로젝트 버전 상향 커밋은 Codex(또는 사용자 결정)로.
+- 결정 요청: 프로젝트를 6000.6.7f1로 올릴지(Mac은 이미 6000.6.7f1 Editor 사용). 올리면 PC의 모든 worktree 빌드도 6000.6.7f1로 옮긴다(전체총괄 결정). 상세: `docs/engine/UNITY_PC_EXIT_CRASH_20261026.md` §9.
+
 ## 2026-10-26 — Unity Windows Player 종료 크래시 = 6000.4.8f1 엔진 결함 (Codex tip 재현) / PC·Mac Unity 버전 통일 필요
 
 - **종료 크래시**: Codex tip `b674ebce4`를 PC patch 없이 Win64 빌드해도 `--quit-after-skill-smoke` 종료 시 코드 -1073741819(0xC0000005). 이벤트 1000 12건+실험 1건 모두 `UnityPlayer.dll`(0x6a043e7f) 오프셋 **0x107a81** 고정, 메인 스레드 널 멤버(+0xE0) 읽기, 스택 전부 UnityPlayer 내부, Mono·MF 모듈 해제 후 최종 정리 단계. `-force-d3d11`에서도 같은 오프셋 → D3D12 원인 기각. 10-24(BSOD 이전) 빌드도 동일 → 하드웨어 가능성 낮음. 스모크 JSON 자체는 정상이지만 **사용자 배포 Windows 빌드도 종료 시 튕길 수 있어 E05 인수 차단**. 상세: `docs/engine/UNITY_PC_EXIT_CRASH_20261026.md`.
