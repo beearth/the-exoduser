@@ -2,6 +2,32 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 저녁 — ★ Unity PC 작업 전체 누적 병합 요청 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
+
+> 아래의 이전 Unity 병합 요청(05c6e583b·c2fdfc158·d18ac69ab·e651cef10·d5f32ff57)은 **모두 이 항목으로 대체**된다. 2026-10-26 14:51 기준 Codex는 PC 작업을 아직 병합하지 않았다(전체총괄 확인).
+
+- **대상 SHA: `cc39eb672`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. 이미 `codex/unity-mac-20261024`의 `f357dc3a4`를 merge해 둔 상태(그 뒤 Mac 커밋이 있으면 일반 merge).
+- 들어 있는 PC 단위(마스터 보드 ID): A08 인벤토리 장비 페이지(U-04·R-9·U04c), A09 유골함 탭+자동 장착(U04b), A07 공통 탭바(U08)·A07b 웹 창 전환 키, A12 스킬 창(U05), A13 능력치 창, A14 대장간(`c334bb0f6` merge), A11 유물 탭, 스탯 대조(PC-U02, `_iLifeHPPct` 허용)·웹 기준 캡처(PC-U05REF).
+- **Codex 적용 patch 8개 — 이 순서로**(모두 `docs/engine/unity_patches/`, NativeGame*·NativePauseMenu*만 수정, PC는 적용하지 않음):
+  1. `U04B_nativegame_inventory_smoke_mana.patch`
+  2. `U08_nativegame_tabbar.patch`
+  3. `U08_nativepausemenu_tabbar.patch`
+  4. `U05_nativegame_skill_smoke_focus.patch`
+  5. `A07B_nativegame_keys.patch`
+  6. `A07B_nativepausemenu_keys.patch`
+  7. `A13_nativegame_stat_panel.patch`
+  8. `A14_nativegame_forge_window.patch`
+  - `cc39eb672` 트리 기준으로 8개 순서 apply 전부 통과(PC 확인).
+- **PC 빌드·검증 결과(Windows, Unity 6000.4.8f1)**:
+  - patch 미적용 각 단위 빌드: Win64 errors 0, inventory-navigation 35/35, inventory-oracle 892/0, stat-parity 2/2, skill-ui 342 pass.
+  - patch 1~6 적용 빌드(PC-PATCHV, `d5f32ff57`): errors 0, 스모크 inventory(maxMana 480/mana 330)·inventory-keys 17/0·skill 6/6·pause 21/0.
+  - patch 1~8 적용 빌드(A14 브랜치 + A13 파일): errors 0, forge 캡처 통과, 탭 요청 창 전환 9건 통과.
+  - `cc39eb672` 합본 트리 전체 빌드는 다음 PC 단위(A10) 빌드에서 확인 예정. Mac 6000.6.7f1 빌드는 미확인.
+- **알려진 문제**:
+  - patch 5 적용 전에는 `--unity-inventory-keys-smoke`가 R-9(열 때 선택 없음) 때문에 NullReference로 멈춘다(patch 5가 수정).
+  - Player 종료 시 코드 -1073741819(접근 위반)로 끝남 — 스모크 JSON은 정상. Codex tip에서도 나는지 PC-EXITCRASH로 조사 중.
+- 단위별 보고서·비교 이미지: `docs/engine/UNITY_PC_*`, `docs/engine/UNITY_A14_FORGE_20261026.md`, `docs/engine/unity_pc_win_refs/`. 상태표: `docs/engine/UNITY_PORT_MASTER_20261026.md`.
+
 ## 2026-10-26 — Unity 병합 요청 갱신 4: + A07b 웹 창 전환 키 (`d5f32ff57`), patch 6개 적용 검증 완료
 
 - 바로 아래 `e651cef10` 요청을 **`d5f32ff57`로 대체**(같은 브랜치 `claude/unity-pc-inventory-u04-20261026`, +1커밋 PC-A07b).
