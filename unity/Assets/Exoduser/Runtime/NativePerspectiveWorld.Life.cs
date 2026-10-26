@@ -104,6 +104,18 @@ namespace Exoduser.UnityPort
             return mesh;
         }
 
+        // PAINTGROUND-R: no grass inside the core of the poison pool (3400,7340), thinning out to its rim, so the pool reads at a glance (judge: grass hid it)
+        static bool PoisonPoolClearsGrass(float x, float y)
+        {
+            float d = Mathf.Sqrt((x - 3400f) * (x - 3400f) + (y - 7340f) * (y - 7340f));
+            if (d < PoisonClearCore) return true;
+            if (d > PoisonClearRim) return false;
+            float keep = Mathf.SmoothStep(0f, 1f, (d - PoisonClearCore) / (PoisonClearRim - PoisonClearCore));
+            float h = Mathf.Repeat(Mathf.Sin(x * 12.9898f + y * 78.233f) * 43758.5453f, 1f);
+            return h > keep;
+        }
+        public const float PoisonClearCore = 230f, PoisonClearRim = 400f;
+
         void BuildGrass()
         {
             var shader = Resources.Load<Shader>("Shaders/Look3DGrass");
@@ -133,12 +145,14 @@ namespace Exoduser.UnityPort
                 float dFocus = (new Vector2(c.x, c.y) - focus).magnitude;
                 float near = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(180f, 520f, dFocus)); // smaller close to the fight area
                 float sy = Mathf.Lerp(0.35f, 0.9f, (float)rng.NextDouble()) * Mathf.Lerp(1f, 0.7f, near), sxz = Mathf.Lerp(0.7f, 1.25f, (float)rng.NextDouble()); // 17-45 px tall: the character (~40 px) must stay readable
+                float rotation = (float)rng.NextDouble() * 360f; var tuftMesh = meshes[variant++ % meshes.Length]; // same random draws as before
+                if (PoisonPoolClearsGrass(c.x, c.y)) continue; // PAINTGROUND-R: the poison pool on the left is not hidden by grass
                 var go = new GameObject("tuft"); go.transform.SetParent(lifeRoot, false);
-                go.AddComponent<MeshFilter>().sharedMesh = meshes[variant++ % meshes.Length];
+                go.AddComponent<MeshFilter>().sharedMesh = tuftMesh;
                 var renderer = go.AddComponent<MeshRenderer>(); renderer.sharedMaterial = grassMaterial;
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = true;
                 renderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off; renderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
-                go.transform.position = Unity(c.x, 0f, c.y); go.transform.rotation = Quaternion.Euler(0f, (float)rng.NextDouble() * 360f, 0f); go.transform.localScale = new Vector3(sxz, sy, sxz);
+                go.transform.position = Unity(c.x, 0f, c.y); go.transform.rotation = Quaternion.Euler(0f, rotation, 0f); go.transform.localScale = new Vector3(sxz, sy, sxz);
                 GrassPositions.Add(new Vector2(c.x, c.y));
                 if (!sourceMap.CanMove(c.x, c.y, OverlayBodyRadius)) GrassNotWalkable++;
             }

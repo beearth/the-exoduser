@@ -83,9 +83,9 @@ namespace Exoduser.UnityPort
         void RetuneSliceLights()
         {
             RetuneSliceLight(12, 3400f, 7340f, 450f, 0.95f, 152f, 162f, 52f);   // LIGHT-TOXIC: poison pool, left
-            RetuneSliceLight(13, 4680f, 7520f, 460f, 0.95f, 176f, 40f, 28f);    // LIGHT-HELL #b0281c: large crimson pool, right
-            RetuneSliceLight(14, 4380f, 7870f, 300f, 0.70f, 176f, 40f, 28f);    // LIGHT-HELL: small crimson pool at the south wall base (was the cold fog light)
-            RetuneSliceLight(15, 4260f, 7770f, 430f, 0f, 110f, 106f, 40f);      // off (was the dim poison light in the middle of the floor)
+            RetuneSliceLight(13, 4680f, 7520f, 400f, SliceTune("ca13", 0.78f), 176f, 40f, 28f);    // LIGHT-HELL #b0281c: large crimson pool, right
+            RetuneSliceLight(14, 4380f, 7870f, 280f, SliceTune("ca14", 0.30f), 176f, 40f, 28f);    // LIGHT-HELL: small crimson pool at the south wall base (was the cold fog light)
+            RetuneSliceLight(15, 3400f, 7340f, 190f, 0.55f, 150f, 160f, 48f);   // LIGHT-TOXIC small core on the poison pool (re-judge: reads at a glance, core stays <= L*35)
         }
 
         // ---------------- signed-distance mask ----------------
