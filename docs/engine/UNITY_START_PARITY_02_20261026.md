@@ -1,3 +1,5 @@
+> 2026-10-26 후속03: 블룸 GPU 일반합성 오류를 분리·교정한 후보와 새 실측은 [UNITY-START-PARITY-03](UNITY_START_PARITY_03_20261026.md)를 따른다. 아래02 수치는 당시 이력이다.
+
 # UNITY-START-PARITY-02 — 독립 시작 바닥광원 GPU 검수
 
 상태: **IMPLEMENTED_UNVERIFIED / VISUAL VERDICT: RETOUCH**. 이전 34927cd7125673f1013ebc2854cb716ba993e0b4 / runtime 84ee74a573ff147f706f6fe4d297e7a77cfcf841 인수. 최종 판정은 외부 `_out/UNITY-START-PARITY-02/DONE.txt`와 실측 근거에서 확정한다.

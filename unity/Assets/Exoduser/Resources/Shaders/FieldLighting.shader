@@ -101,7 +101,9 @@ Shader "EXODUSER/SourceFieldLighting"
         {
             float3 world=sourceWorld(i);
             if(_PetEnabled>.5){
-                world=saturate(world+tex2D(_BloomMap,i.uv).rgb*.08);
+                // Source4481-4497/55203 requests lighter, but GPU proxy6028 is a no-op.
+                // Its normal pipeline5592 draws this opaque canvas with globalAlpha=.08.
+                world=over(world,tex2D(_BloomMap,i.uv).rgb,.08);
                 // Source25504 / 55290-55318: blue halo, lighter, r=irisGlow*.6=150.
                 float2 px=screenPoint(i.uv), local=px-_PetSprite.xy;
                 float2 haloUV=local/300+.5;

@@ -1,3 +1,5 @@
+> 2026-10-26 후속03: 블룸 GPU 일반합성 오류를 분리·교정한 후보와 새 실측은 [UNITY-START-PARITY-03](UNITY_START_PARITY_03_20261026.md)를 따른다. 아래02 수치는 당시 이력이다.
+
 # UNITY-START-PARITY-01 — CH1-1 첫 진입 시점·링·이리스
 
 > **IMPLEMENTED_UNVERIFIED / VISUAL VERDICT: RETOUCH.** 02에서 독립 바닥빛의 실제 ARM64 렌더·54tick·900프레임·HUD55/practice5를 인수했다. 첫 가산 과다를 원본 GPU normal alpha/linear로 교정하고 해당 시작장면만1회 재촬영했지만 r40=71.135259 대60.631586(+10.503673)가 남아 VERIFIED 아님. 성능8.640282/p95 9.303167/p99 11.413166ms는 합성 교정 전02 빌드의1회 측정이며 최종 합성 뒤 재측정0. worktree 보존. [Latest result](UNITY_START_PARITY_02_20261026.md).
