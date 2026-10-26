@@ -37,7 +37,7 @@
 
 | ID | 문제 | 영향 | 상태 |
 |---|---|---|---|
-| SND-D1 | `bgm/` 한글 폴더가 Git에 **NFC·NFD 두 벌**로 추적됨(예: `1장_썩은숲` NFC 28파일 + NFD 25파일, `공통` 각 30파일). Mac에서 넣은 NFD 경로가 Windows에서 별도 폴더로 보임 | 저장소·빌드 용량 중복, DEMO/EA `cp -r` 동기화 시 두 벌 복사, 어느 쪽이 실제 참조되는지 혼동 | 조사 완료 → [`BGM_NFC_NFD_AUDIT_20261026.md`](BGM_NFC_NFD_AUDIT_20261026.md), 정리 실행은 사용자 확인 대기 |
+| SND-D1 | `bgm/` 한글 폴더가 Git에 **NFC·NFD 두 벌**로 추적됨(예: `1장_썩은숲` NFC·NFD 각 25파일, `공통` 각 30파일). Mac에서 넣은 NFD 경로가 Windows에서 별도 폴더로 보임 | 저장소·빌드 용량 중복, DEMO/EA `cp -r` 동기화 시 두 벌 복사, 어느 쪽이 실제 참조되는지 혼동 | 조사 완료 → [`BGM_NFC_NFD_AUDIT_20261026.md`](BGM_NFC_NFD_AUDIT_20261026.md), 정리 실행은 사용자 확인 대기 |
 | SND-D2 | `SFX_FORGE_ELEVENLABS_20261021.md` §6이 「생성 0건」으로 남아 있었음 | 문서-실물 불일치 | 2026-10-26 정정 |
 | SND-D3 | ElevenLabs MCP 연결 실패(CONNECTION_CLOSED) | 대화 중 MCP 직접 생성 불가 | SFX Forge(`npm run sfx:forge`, SDK 직접 호출)로 우회 가능 |
 
