@@ -131,6 +131,7 @@
 | CH1 썩은 생체나무 변형 05~12 | ✅ 채택·배치 (2026-10-08, Seedream 5.0 Pro 1:1 1920² 8장) `assets/map/ch1/collision/rotforest_tree_05~12.png` — 원본·컷 `output/rotforest_variants_20261008/`, 배정·생성 id·검수 [PASS98](../4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md) |
 | 캐릭터 선택 실버테일(`portrait_silvertail.png`·`silvertail_cut.png`)·배경(`bg_scene1/2.png`)·로비 포스터·엠블럼 | ✅ 점검(2026-10-01): 잔점 없음 |
 | 출시 예정 3종 `portrait_/poster_idle_` spearmage·hellgunner·transmuter (JPG 96~213KB) | ⚠ 압축으로 흐릿함 — 디자인 확정 후 고화질 재제작 필요 |
+| 아이반(검은 연기) T8 키아트 V35 `E:/exoduser-wt/_out/ivan-keyart-t8/` (Git 밖) | ✅ 2026-10-26 디자인총괄 확정 = r4(V29 잔점 제거판 1152×1536). 투명 컷 `ivan_t8_final_cut.png` 1010×1386·가슴 위 초상 `ivan_t8_portrait.png` 1024², halo 검수 통과. 로비·게임 미연결 — [기록](IVAN_T8_KEYART_V35_20261026.md) |
 
 ### 4.4 배포·동기화 상태 (2026-10-01 실측, 조회 시점 기준)
 
@@ -185,6 +186,7 @@
 | 2026-10-08 | 막힌 보석 홈 그림 `img/ui/gem_socket_sealed_v1.png` 256×256 RGBA — gem_socket_v1 raw를 Seedream 5.0 Pro 1:1 edit(흑철 봉인 뚜껑, 빈 홈을 막은 형태)로 파생, 회색 배경 원형 마스크 키잉, 원본 `output/gem_socket_20261008/seedream_sealed_raw_1920.png`. 보석 탭 5홈 고정 배치의 미개방 자리 표시 — UI_COMPOSITION 2026-10-08 소켓석 절 | MagicLight 100 |
 | 2026-10-08 | 유니크 아이템 외관: UI-01~22 최종 채택(Higgsfield 원본, UI-05만 하이힐 실루엣 때문에 Seedream 후보), 빈 부위 5종 UI-23 바지·24 도끼·25 메이스·26 곤봉·27 창 Seedream 5.0 Pro 1:1 생성(카탈로그 공통 프롬프트), 27종 게임용 256px `img/ui/unique-items/` — `docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md` 2026-10-08 절 | MagicLight 500 (5장, 표시 54,390 기준) |
 | 2026-10-08 | CH1 생체나무 변형 8종 생성(MagicLight Seedream 5.0 Pro, 1:1, 100pt×8 성공, 서비스 일시 불가 실패 4건 환불 후 재시도) — 레퍼런스=기존 tree_01~04 회색 합성, 원본별 2종씩. 회색 키잉·잔편 제거·하단 정렬 1024²·기존 4종 평균색 게인 보정, 1x 확대로 점·회색 테두리 없음 확인(tree_11 회색 잔편 3구역 수동 제거). 12종 눈·입·혹 좌표 등록, 런타임 흔들림·전체 깜빡임 적용 — [PASS98](../4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md) |
+| 2026-10-26 | 아이반 T8 키아트: V29 → GPT Image 2.5 sunburst edits 4회(r1 총구 잘림·r2 천 붉게 이탈 반려, r3 잔점 조건부, **r4 확정**), 로컬 누끼 투명 컷 + 가슴 위 초상 1024², 검정·진홍 합성 halo 검수 — [IVAN_T8_KEYART_V35_20261026.md](IVAN_T8_KEYART_V35_20261026.md) | GPT Image API 약 $0.0999 (MagicLight·Higgsfield 0) |
 
 ### 지시 수신 기록
 
