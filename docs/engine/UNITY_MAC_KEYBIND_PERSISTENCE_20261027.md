@@ -48,3 +48,11 @@ Mac 소유 `NativeSettingsStore`, `NativeSettingsJsonCodec`, `NativeGame.Setting
 ## 검증과 남은 관문
 
 별도 `/tmp/exoduser-settings-fixture-20261027*`와 `/tmp/exoduser-settings-check-20261027`만 사용했다. .NET `SettingsPersistenceTests` 기존 IO/backup/손상/QA 격리와 추가 v1→v2·20값·부분/잘못된 값·unknown/pad 보존·왕복 저장 총 **90 PASS**. 별도 프로세스 write **3 PASS**, read **2 PASS**. 일반 사용자 설정·세이브 파일은 열지 않았다. Unity Player/Editor 빌드, 실제 키 목록 표시, OS 입력, 정상 종료 후 재기동은 이 단위에서 미검증이다. 기존 19개 UI patch의 실제 GUI 검수 및 A02 최종 fit 32/32도 별도 HOLD다.
+
+## 2026-10-27 import·compile 후속
+
+고정 후보 `6edb0ce9d3c66d9ef80ab5dad74b97f3abbb7cf9`에서 Unity 6000.6.7f1 Mac Editor `-batchmode -nographics -quit -projectPath <이 작업트리>/unity` import·compile 1회를 수행해 exit 0, C# 오류 0을 확인했다. 새 `UAC1015`가 `NativeSettingsSnapshot.extra`에 발생해 JSON 보존용 필드에 `[NonSerialized]`를 명시했다. 수리 후 재컴파일도 exit 0/C# 오류 0, 새 `UAC1015` 0이다. 남은 `NativeCharacterPresentationPlayback.Video`의 `UAC1001`은 기존 경고다. 로그는 작업트리 밖 `_out/UNITY-MAC-A15A16-20261027/compile.log`, `compile-warning-repair.log`에 있다. Unity가 재작성한 Resources `.meta` 411개와 새 런타임 `.meta` 1개는 사전 HEAD bytes로 복원해 제품 Resources 변경 0이다.
+
+코드 계약을 다시 대조했다. 전용 `--unity-settings-persistence-smoke`는 QA product/id가 아니면 초기화를 거부하고, 절대 `-output`이 없으면 store를 열지 않으며 저장 디렉터리는 해당 output 안의 `native-settings-v1`이다. 같은 플래그에서는 `NativeLobby.CharacterStore`가 일반 roster를 열지 않는다. 다른 `--unity-*-smoke/capture/review`에서는 설정 store가 열리지 않는다. 이는 실행 검증이 아니라 코드·경로 가드 대조다.
+
+현재 저장 v2 write/read fixture는 `Screen.fullScreen`, 실제 AudioSource와 `WaitForEndOfFrame`/PNG 캡처를 요구한다. 이 작업에 맞는 독립 headless Player smoke가 없으므로 새 ARM64 Player 빌드·실행 0, 사용자 앱/PID·설정/캐릭터 파일 접촉 0이다. v2 실제 저장·재기동·20동작 복원, GUI/OS 입력 및 19개 UI patch 런타임 인수는 **HOLD**. 이전 격리 .NET 90+write3/read2 PASS를 Unity runtime PASS로 승격하지 않는다.

@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort.Core
   public int sfxPercent,bgmPercent,frameCap;
   public bool fullscreen;
   public string[] binds,binds2;
-  public Dictionary<string,string> extra;
+  [NonSerialized] public Dictionary<string,string> extra;
  }
  public enum NativeSettingsStoreStatus
  {

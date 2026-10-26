@@ -1,3 +1,5 @@
+2026-10-27 Mac A15/A16 후속: Unity6000.6.7f1 batchmode import·compile exit0/C# 오류0. 새 settings JSON 보존 dictionary의 UAC1015를 `[NonSerialized]`로 수리하고 재컴파일 exit0·새 경고0(기존 UAC1001 유지). Resources import `.meta` churn 411개 원래 bytes 복원. v2 write/read 기존 fixture는 화면·오디오·PNG를 요구해 headless Player 검증 불가; Player 빌드/실행0, runtime HOLD. [근거](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
+
 2026-10-27 Mac A15/A16: native 설정 JSON v2에 20개 `binds`/`binds2` 웹 keycode|null, v1 기본값 읽기, 유효하지 않은 동작값 기본값 유지, 미지원·unknown 항목 무시, 기존 gamepad 상위 JSON 보존, 키 변경 시 저장 예약을 구현했다. 격리 모델/IO 90와 별도 write3/read2 PASS. Player/Editor 빌드·GUI 실기 인수는 보류. [계약](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
 
 ## 2026-10-26 Mac Unity 자막 20+4 언어·일반 게임 이름표 gate
