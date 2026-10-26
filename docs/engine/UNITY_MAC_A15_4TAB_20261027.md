@@ -75,3 +75,5 @@ PC 원본 `NativeKeyBindList`의 캡처 처리에 소비 프레임 한 필드만
 PC owner의 키 목록 seam 승인 후 Mac은 `NativeKeyBindList`에 38 ID 표시 hook을 적용했다. 새 ARM64 Settings QA 빌드1회 오류0, 격리 Player1회에서 ko/en 기존 목록과 ja/es/cs 실제 목록·대표 긴 행·Esc 취소/Tab 캡처 시 조작 탭 유지가 보였다. 앞 문단의 키 목록 영어 상태는 이전 빌드 이력이다. 저장 v2·`cinSeen`·입력 처리와 19 patch는 변경하지 않았다. ar 영어 fallback은 코드/자료만 확인했고 ar GUI/RTL 및 일반 마우스는 HOLD. [상세](UNITY_MAC_A15_LABEL_ADAPTER_20261027.md#2026-10-27-pc-seam-인수allowlist-보강-후속).
 
 A15 글꼴 후속에서는 미검수 언어 exact43의 실제 스타일 cmap을 감사했다. Mac 설정 제목/탭 `el/th/zh`의 지역 폰트 보정은 ARM64 빌드 오류0·격리 Player 3화면 및 ko 원상복귀로 확인했다. PC 키 목록의 지역 폰트·긴 행 배치는 제안 patch만 남겨 제품 연결·실기 PASS가 아니다. [누락 최소표·경계](UNITY_MAC_A15_FONT_COVERAGE_20261027.md).
+
+추가 PC owner 인수 `97be6444b6…`의 지역 font와 clip 포함 긴 이름 최소 hunk를 `NativeKeyBindList`에 적용했다. Unity 6000.6.7f1의 `GetInstanceID()` CS0619만 font·px 튜플 cache 키로 치환한 뒤 ARM64 QA 빌드 성공/오류0. el/th/zh 실화면·ko 복귀, el 방패 두 줄, 1920 하단 스크롤과 Esc/Tab 캡처 격리를 확인했다. **OS 마우스는 오른쪽 E 표시 버튼 클릭이 왼쪽 Q 캡처로 이어져 HIT RECT FAIL**, 1280 스크롤과 전체29 언어 fit은 HOLD. 제품 입력/저장 코드는 바꾸지 않았다. [적용 범위·증거](UNITY_MAC_A15_FONT_COVERAGE_20261027.md#pc-소유-수정본-인수제품-적용--실화면--2026-10-27).

@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort {
   public string SaveNote="저장 미이식 · 이번 실행에서만 유지",SaveNoteEn="Saving not ported · kept for this session only";
 
   readonly KeyBindings keys;readonly UiDefs ui;readonly GlyphFile gl;readonly Dictionary<string,string> en=new Dictionary<string,string>();readonly Dictionary<string,GlyphTok> glyph=new Dictionary<string,GlyphTok>();
-  Texture2D plate,glyphTex;Font regular,semi,bold,serif;bool ready;readonly Dictionary<string,Texture2D> gradients=new Dictionary<string,Texture2D>();readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
+  Texture2D plate,glyphTex;Font regular,semi,bold,serif,regionalFont;string regionalLocale;bool ready;readonly Dictionary<string,Texture2D> gradients=new Dictionary<string,Texture2D>();readonly Dictionary<(Font,int),GUIStyle> styles=new Dictionary<(Font,int),GUIStyle>();
   readonly HashSet<KeyCode> held=new HashSet<KeyCode>();
   string listenAction;bool listenAlt;float listenAt;string phText,notifText;float phUntil,notifUntil;
   Rect visible;Vector2 origin;float curA=1;
@@ -92,7 +92,7 @@ namespace Exoduser.UnityPort {
    var old=GUI.color;GUI.color=new Color(1,1,1,curA);GUI.DrawTexture(r,t);GUI.color=old;
   }
   GUIStyle Style(Font f,int px){
-   long key=(f==regular?1:f==semi?2:f==bold?3:4)*1000L+px;
+   var key=(f,px);
    if(!styles.TryGetValue(key,out var s)){s=new GUIStyle(GUI.skin.label){font=f,fontSize=px,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};styles[key]=s;}
    return s;
   }
@@ -108,15 +108,21 @@ namespace Exoduser.UnityPort {
    }
    return null;
   }
+  Font LabelFont(string text,Font source){
+   if(regionalLocale!=LocaleCode){regionalLocale=LocaleCode;regionalFont=NativeA15SettingsLabels.FontForLocale(LocaleCode,null);}
+   if(regionalFont==null||string.IsNullOrEmpty(text))return source;
+   foreach(char ch in text)if(ch>=0xAC00&&ch<=0xD7A3)return source; // native-only Korean copy keeps its original font
+   return regionalFont;
+  }
   // width of a run (css advance incl. letter spacing)
   float Width(string text,Font f,int px,float css,float ls,int ctx=0){
-   var st=Style(f,px);float w=0;
+   f=LabelFont(text,f);var st=Style(f,px);float w=0;
    foreach(var g in Elements(text)){var id=GlyphId(g,ctx);if(id!=null&&glyph.TryGetValue(id,out var t)){w+=t.adv;continue;}w+=st.CalcSize(new GUIContent(g)).x*(css/px)+ls;}
    return w;
   }
   // draws a run with its vertical centre at cy; returns the advance
   float Run(float x,float cy,string text,Font f,int px,float css,float ls,Color col,float shadow=0,int ctx=0){
-   var st=Style(f,px);float w=0;
+   f=LabelFont(text,f);var st=Style(f,px);float w=0;
    foreach(var g in Elements(text)){
     var id=GlyphId(g,ctx);
     if(id!=null&&glyph.TryGetValue(id,out var t)){
@@ -207,6 +213,27 @@ namespace Exoduser.UnityPort {
    return resetY+44;
   }
 
+  void DrawActionName(Rect row,string name){
+   const int px=15;const float letter=.6f;
+   bool oneLine=Width(name,regular,px,15f,letter)<=NameW;
+   GUI.BeginGroup(new Rect(row.x+NameX,row.y,NameW,RowH));
+   try{
+    if(oneLine){Run(0,26,name,regular,px,15f,letter,C(215,200,166));return;}
+   string first="",second="";
+   foreach(var word in name.Split(new[]{' '},StringSplitOptions.RemoveEmptyEntries)){
+    string candidate=first.Length==0?word:first+" "+word;
+    if(second.Length==0&&Width(candidate,regular,px,15f,letter)<=NameW)first=candidate;
+    else second=second.Length==0?word:second+" "+word;
+   }
+   if(first.Length>0&&second.Length>0&&Width(second,regular,px,15f,letter)<=NameW){
+    Run(0,17,first,regular,px,15f,letter,C(215,200,166));
+    Run(0,36,second,regular,px,15f,letter,C(215,200,166));
+    return;
+   }
+   int small=px;while(small>10&&Width(name,regular,small,small,letter*small/px)>NameW)small--;
+   Run(0,26,name,regular,small,small,letter*small/px,C(215,200,166));
+   } finally {GUI.EndGroup();}
+  }
   void DrawKbmRow(string action,float rx,float ry){
    var row=R(rx,ry,ColW,RowH);bool paint=Event.current.type==EventType.Repaint;
    bool mainL=Listening&&listenAction==action&&!listenAlt,altL=Listening&&listenAction==action&&listenAlt;
@@ -217,7 +244,7 @@ namespace Exoduser.UnityPort {
     if(mainL||altL){Grad(row,C(142,105,51,.18f),C(70,51,33,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(187,150,94));}   // :has(.listening)
     else if(Hover(row))Fill(row,C(155,112,67,.086f));
     Fill(new Rect(row.x,row.yMax-1,row.width,1),C(140,121,85,.11f));
-    Run(row.x+NameX,row.y+26,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)),regular,15,15f,.6f,C(215,200,166));
+    DrawActionName(row,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)));
     DrawKey(mainR,mainL?T(ui.texts.listenMain):NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(keys.Primary(action),false),LocaleCode,KeyBindings.KeyName(keys.Primary(action),English)),mainL,1f);
     DrawKey(altR,altL?T(ui.texts.listenAlt):(alt!=null?NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(alt,false),LocaleCode,KeyBindings.KeyName(alt,English)):T(ui.texts.alt)),altL,alt!=null||altL?1f:.5f);
     if(alt!=null){var dc=Hover(delR)?C(214,170,150):C(171,131,112);RunCentered(delR.center.x,delR.center.y,"✕",regular,16,16f,.32f,dc,1f,5);}

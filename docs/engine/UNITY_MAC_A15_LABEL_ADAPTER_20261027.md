@@ -83,3 +83,5 @@ PC UI owner가 고정 base `7065b7fe309aacbbe09292dbd19e76b2fad55c94`의 검토 
 | 남은 경계 | `ar` 영어 fallback은 코드 분기와 PC QA 데이터 감사로 확인, **ar 실화면/RTL 미검증**. 전체 29 locale 글리프·길이, 물리 마우스 클릭, 청각, 패드, 일반 실행 흐름은 이번 Player 1회의 PASS가 아님. semantic6/native-only13은 연결하지 않았고 기존 ko/en 문구를 유지 |
 
 후속 글꼴 감사: 아직 실화면 검수하지 않은 23 locale의 exact43 표시 문자열을 실제 Settings/KeyList 스타일 폰트 cmap과 대조했다. 15 locale/170 ID×locale 행에 결손이 있고 Mac 소유 `NativePauseMenu`의 el/th/zh 제목·탭만 번들 지역 폰트로 보완해 ARM64 빌드1회 및 격리 Player 위험 문자·ko 복귀를 확인했다. PC 소유 목록의 글꼴·장문 fit은 별도 patch 제안 상태다. [누락 최소표·실화면 범위](UNITY_MAC_A15_FONT_COVERAGE_20261027.md).
+
+PC UI owner의 새 인수본 `97be6444b6…` 뒤 키 목록 38 ID 표시 경로에 지역 font/폭·렌더 동일 style과 이름 2행/clip을 적용했다. 기존 exact43 자료/ID allowlist는 변경하지 않았다. el/th/zh 목록 및 ko 복귀는 격리 Player 상단 화면에서 보였으나 OS 마우스 hit rect 실패와 전체29 언어/RTL·Thai shaping은 HOLD. [최신 제품·검수 경계](UNITY_MAC_A15_FONT_COVERAGE_20261027.md#pc-소유-수정본-인수제품-적용--실화면--2026-10-27).
