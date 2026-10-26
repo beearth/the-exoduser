@@ -22,10 +22,12 @@ S1 시작점 `docs/engine/unity_pc_win_refs/map3d_s1_mass.jpg`의 밝은 직선 
 ## 검수
 
 - 독립 .NET `CoreTests`: 41개/실패 0. 19,755타일 전수 일치·높이 범위·인접 높이 변화 상한·64청크의 타일 정렬 포함. 영수증 `I:/EXODUSER-Storage/qa/map3d_20261026/core_commit2.json`.
+- 최종 커밋 기준 재검사도 41개/실패 0. 영수증 `I:/EXODUSER-Storage/qa/map3d_20261026/core_current.json`.
 - Unity 6000.4.8f1 관리 DLL 참조 소스 컴파일: 오류 0, JSON 역직렬화 필드 기존 경고 11. Editor import/Player build 증거는 아니다.
 - 일반 Unity Editor 실행은 패키지 초기화 `Failed to resolve packages: The "path" argument must be of type string. Received undefined`로 중단됐다. Unity 공식 `-noUpm` 옵션으로 독립 G 작업공간의 Editor 빠른 렌더는 성공했다. 사용 패키지는 현재 기본 제공 모듈뿐이다. 이는 Player 빌드/패키지 매니저 복구가 아니다.
 - Editor 1920×1080 8시점: `I:/EXODUSER-Storage/qa/map3d_20261026/views/`의 `START_FINAL`, `EARLY`, `ARENA_FINAL`, `SIDE_L_FINAL`, `SIDE_R`, `ALTAR`, `LATE`, `EXIT`. 벽 재질의 사각형 덮개·타일별 삼각형 경계는 사라졌다. START 하단의 베이크 지면 직선 접합은 남아 있다. ARENA/EARLY/EXIT는 여전히 넓고 어두운 빈 면으로 읽히고, 나무/소품은 빌보드다. 정적 캡처만 있으며 FPS 없음.
 - S1 단독 시작점 캡처에는 적/전투가 없다. 이 후보를 플레이 검수나 Steam 갤러리 이미지로 채택하지 않는다.
+- Godot LOOK-001 D의 안개 밀도 `0.00006`·색보정 밝기 `1.02`/대비 `1.06`/채도 `0.86`을 Unity 셰이더에 임시 이식해 `START_GRADE`/`ALTAR_GRADE`를 비교했다. START 전체 RGB 평균이 `36.95/27.54/24.27`에서 `30.06/22.18/19.51`로 내려가 이미 어두운 지면을 더 가렸다. 이 후보는 폐기하고 최종 코드에서는 안개·색보정을 적용하지 않았다. 실험 캡처는 I: 검수 자료로만 보존한다.
 
 ## MAP PRODUCTION REPORT (§23)
 
@@ -42,7 +44,7 @@ S1 시작점 `docs/engine/unity_pc_win_refs/map3d_s1_mass.jpg`의 밝은 직선 
 | CAMERA QA — START / EARLY / ARENA / SIDE L / SIDE R / LANDMARK / LATE / EXIT | 8개 위치 독립 Editor 정적 캡처 확인. LANDMARK=ALTAR. ARENA/EARLY/EXIT는 여전히 빈 면·어두운 톤으로 RETOUCH. 실제 HUD/적/전투 카메라 미검수 |
 | TECH QA — route / collision / pageerror / 404 / seam / loading / performance | 데이터 충돌 일치·수치 seam PASS. Editor `-noUpm` 정적 로딩 PASS. 실제 이동·Player 로딩·FPS 미검수. pageerror/404는 Unity 단독 메시 해당 없음 |
 | FILES — stage-owned / concurrent touched / unrelated touched | 이 후보의 월드·mass·profile+meta·Editor QA·검사·본 문서·SSOT 색인만 수정. Unity import가 자동 수정한 meta 233개는 목록을 I:에 남기고 이 독립 작업공간에서 원본 byte로 되돌림. 다른 작업자의 dirty worktree 수정 없음 |
-| GIT — staged / commit / push / deploy | 독립 `codex/unity-map3d-organic-mass-20261026`에 첫 커밋·원격 백업 `5a8294be4`; 현 시각 추가 시각 보정은 후속 커밋 예정. 제품 반영·배포 없음 |
+| GIT — staged / commit / push / deploy | 독립 `codex/unity-map3d-organic-mass-20261026`에 형상 `5a8294be4`와 시각 보정 `6478b2cbc` 커밋·원격 백업 확인. 제품 반영·배포 없음 |
 
 **VISUAL VERDICT: RETOUCH.** 8개 Editor 화면에서 깨진 사각 외곽은 개선됐지만 전체 색·조명·중심 전투 공간·빌보드 나무 품질은 여전히 부족하다. 실제 전투 화면은 확인하지 못했다.
 
