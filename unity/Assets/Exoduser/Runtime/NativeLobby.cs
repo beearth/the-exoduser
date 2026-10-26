@@ -25,6 +25,7 @@ namespace Exoduser.UnityPort
   public bool AutomatedInput{get;set;}
   public bool OriginalArtDrawn{get;private set;}
   readonly bool diagnosticPreview=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-diagnostics")>=0;
+  internal bool DiagnosticUiEnabled{get{return diagnosticPreview;}}
   float musicBaseGain,bgmRelativeGain=1;
   public void SetBgmPercent(int percent){bgmRelativeGain=Mathf.Clamp(percent,0,100)/60f;if(music!=null)music.volume=musicBaseGain*bgmRelativeGain;}
   void MusicGain(float gain){musicBaseGain=gain;if(music!=null)music.volume=gain*bgmRelativeGain;}

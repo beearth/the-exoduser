@@ -261,7 +261,7 @@ namespace Exoduser.UnityPort
             var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);
             float hudWidth=Screen.width/hudScale,statusX=hudWidth-316;
-            if(lobby.ActiveCharacterName.Length>0){Panel(new Rect(16,12,420,50));GUI.Label(new Rect(28,20,396,40),lobby.ActiveCharacterName+" · "+(lobby.Language=="ko"?"미리보기":"Preview"),characterBadge);}
+            if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0){Panel(new Rect(16,12,420,50));GUI.Label(new Rect(28,20,396,40),lobby.ActiveCharacterName+" · "+(lobby.Language=="ko"?"미리보기":"Preview"),characterBadge);}
             StatusBackdrop(new Rect(statusX,0,316,124));GUI.Label(new Rect(statusX+18,14,280,30),"1장 · 썩은 숲",statusTitle);
             GUI.Label(new Rect(statusX+18,48,280,28),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,statusDetail);
             GUI.Label(new Rect(statusX+18,78,280,28),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,statusDetail);

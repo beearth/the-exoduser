@@ -55,13 +55,14 @@ public sealed class UiResumeReview : MonoBehaviour
     {
         var stack = new Stack<IEnumerator>();
         stack.Push(root);
+        string terminalError = "";
         while (stack.Count > 0 && !finished)
         {
             if (Time.realtimeSinceStartup - started > LimitSeconds)
             {
                 Fail("60 second fixture timeout");
-                Finish("timeout");
-                yield break;
+                terminalError = "timeout";
+                break;
             }
             bool moved = false;
             object value = null;
@@ -71,14 +72,22 @@ public sealed class UiResumeReview : MonoBehaviour
             if (stepError != null)
             {
                 Fail("fixture exception: " + stepError);
-                Finish(stepError.ToString());
-                yield break;
+                terminalError = stepError.ToString();
+                break;
             }
             if (!moved) { stack.Pop(); continue; }
             if (value is IEnumerator nested) { stack.Push(nested); continue; }
             yield return value;
         }
-        if (!finished) Finish("");
+        // Native VideoPlayer/RenderTexture destruction is deferred until a later frame.
+        Exception closeError = null;
+        try { if (lobby != null && lobby.CurrentVideo != null) lobby.CurrentVideo.Close(); }
+        catch (Exception e) { closeError = e; }
+        if (closeError != null) { Fail("decoder cleanup: " + closeError); terminalError += closeError; }
+        yield return new WaitForEndOfFrame();
+        yield return null;
+        yield return new WaitForSecondsRealtime(.5f);
+        if (!finished) Finish(terminalError);
     }
 
     void Check(bool ok, string name)
@@ -159,12 +168,72 @@ public sealed class UiResumeReview : MonoBehaviour
         yield return null;
         Check(Screen.width == width && Screen.height == height, name + " resolution");
         if (Screen.width != width || Screen.height != height) throw new InvalidOperationException(name + " resolution unavailable");
+        if (name.StartsWith("world-", StringComparison.Ordinal))
+            yield return Until(() => WorldCaptionReady() && WorldTextureHasContent(),
+                name + " actual caption and decoded video frame", 8f);
         string path = Path.Combine(output, name + ".png");
         if (File.Exists(path)) throw new IOException("Refusing to overwrite existing QA image: " + path);
         yield return new WaitForEndOfFrame();
         ScreenCapture.CaptureScreenshot(path);
         yield return Until(() => File.Exists(path) && new FileInfo(path).Length > 1024, name + " screenshot bytes", 5f);
+        if (name.StartsWith("world-", StringComparison.Ordinal))
+            Check(WorldPngHasContent(path), name + " nonblack world PNG");
         images.Add(path);
+    }
+    bool WorldCaptionReady()
+    {
+        if (lobby == null || lobby.Flow.Page != LobbyPage.WorldIntro || lobby.CurrentVideo == null ||
+            !lobby.CurrentVideo.Prepared || lobby.CurrentVideo.Frame < 0 || !lobby.CaptionVisible ||
+            string.IsNullOrEmpty(lobby.SubtitleText)) return false;
+        var style = Style("CaptionStyleForLanguage");
+        var shadow = Style("CaptionShadowForLanguage");
+        if (style == null || shadow == null || style.font == null || !ReferenceEquals(style.font, shadow.font)) return false;
+        if (lobby.Language == "uk")
+            return ReferenceEquals(style.font, Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif")) && lobby.SubtitleText == ukCue;
+        return lobby.Language == "ko" &&
+            !ReferenceEquals(style.font, Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif")) &&
+            (string.IsNullOrEmpty(koText) || lobby.SubtitleText == koText);
+    }
+    bool WorldTextureHasContent()
+    {
+        var source = lobby.CurrentVideo.Texture;
+        if (source == null) return false;
+        var previous = RenderTexture.active;
+        var small = RenderTexture.GetTemporary(64, 36, 0, RenderTextureFormat.ARGB32);
+        var pixels = new Texture2D(64, 36, TextureFormat.RGBA32, false);
+        try
+        {
+            Graphics.Blit(source, small);
+            RenderTexture.active = small;
+            pixels.ReadPixels(new Rect(0, 0, 64, 36), 0, 0);
+            pixels.Apply(false, false);
+            int lit = 0;
+            foreach (var p in pixels.GetPixels32()) if (p.r > 20 || p.g > 20 || p.b > 20) lit++;
+            return lit > 64 * 36 / 100;
+        }
+        finally
+        {
+            RenderTexture.active = previous;
+            RenderTexture.ReleaseTemporary(small);
+            UnityEngine.Object.Destroy(pixels);
+        }
+    }
+    static bool WorldPngHasContent(string path)
+    {
+        var png = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        try
+        {
+            if (!png.LoadImage(File.ReadAllBytes(path), false)) return false;
+            var pixels = png.GetPixels32();
+            int step = Math.Max(1, pixels.Length / 4096), lit = 0, total = 0;
+            for (int i = 0; i < pixels.Length; i += step)
+            {
+                total++;
+                if (pixels[i].r > 20 || pixels[i].g > 20 || pixels[i].b > 20) lit++;
+            }
+            return lit > total / 100;
+        }
+        finally { UnityEngine.Object.Destroy(png); }
     }
     static float TopLeftChangeRatio(string baselinePath, string changedPath)
     {
@@ -252,7 +321,7 @@ public sealed class UiResumeReview : MonoBehaviour
         yield return null;
         yield return null;
         lobby.SetLanguage("ko");
-        yield return null;
+        yield return Until(() => WorldCaptionReady(), "Korean caption actually drawn before style inspection", 8f);
         var koStyle = Style("CaptionStyleForLanguage");
         var koShadow = Style("CaptionShadowForLanguage");
         Check(koStyle != null && koStyle.font != null, "Korean source caption style initialized");
@@ -261,8 +330,7 @@ public sealed class UiResumeReview : MonoBehaviour
         Check(!string.IsNullOrEmpty(koText), "Korean caption visible at probe time");
 
         lobby.SetLanguage("uk");
-        yield return null;
-        yield return null;
+        yield return Until(() => WorldCaptionReady(), "Ukrainian cue and font actually drawn", 8f);
         var ukStyle = Style("CaptionStyleForLanguage");
         var ukShadow = Style("CaptionShadowForLanguage");
         var ukFont = Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");
@@ -275,8 +343,7 @@ public sealed class UiResumeReview : MonoBehaviour
         yield return Capture("world-uk-720p", 1280, 720);
         yield return Capture("world-uk-1080p", 1920, 1080);
         lobby.SetLanguage("ko");
-        yield return null;
-        yield return null;
+        yield return Until(() => WorldCaptionReady(), "Korean cue and source font redrawn", 8f);
         Check(ReferenceEquals(Style("CaptionStyleForLanguage"), koStyle), "Korean caption restores original style object");
         Check(ReferenceEquals(Style("CaptionShadowForLanguage"), koShadow), "Korean shadow restores original style object");
         Check(!string.IsNullOrEmpty(lobby.SubtitleText), "actual Korean cue after language return");
