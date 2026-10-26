@@ -1,5 +1,7 @@
 # Godot 보존 · Unity 비교 시험 — 2026-10-24
 
+2026-10-26 후속 [UNITY-PET-01](UNITY_PET_01_20261026.md)은 원본 펫4종·말풍선/번역·이리스 r250 광원/헤일로/블룸을 별도 후보로 연결했다. 상태 IMPLEMENTED_UNVERIFIED — GPU 대기, Core57/레슨34 CPU PASS. 아래 펫 부재는 당시 이력이며 현재 후보의 실제 화면 검증은 아직0회다. main/PC/기존 Player 반영0.
+
 2026-10-26 [UNITY-MAP-LIGHT-02](UNITY_MAP_LIGHT_02_20261026.md): 월드 조명 후보의 새 Unity import·셰이더 검사·ARM64 빌드 오류0, 1920×1080 웹/Unity 전후 1x 비교, 전후900프레임 측정, HUD55·practice5검사 통과. **IMPLEMENTED_UNVERIFIED** 유지: 도랑·환경/펫 표현 차이와 유효 GC 할당 증거 부족. main·기존 사용자 실행본 반영 없음. 아래 과거 미이식/검증 표기는 해당 당시 이력이다.
 
 현재 최우선 단위는 사용자 지정 [게임 로비·인트로/시네마틱 이식](UNITY_LOBBY_20261024.md)이다. 드랍/전투 확장보다 FDG·타이틀·지옥문·세계관 영상·로비의 실제 동작/시각 검수를 먼저 한다.

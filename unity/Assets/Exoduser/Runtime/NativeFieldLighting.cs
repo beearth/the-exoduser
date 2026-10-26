@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
     [DisallowMultipleComponent, RequireComponent(typeof(Camera))]
     public sealed class NativeFieldLighting : MonoBehaviour
     {
-        const int StaticCount = 12, LightCount = StaticCount + 1;
+        const int StaticCount = 12, LightCount = StaticCount + 2, IrisIndex = LightCount - 1;
         [Serializable] sealed class SourceLights { public SourceLight[] statics; }
         [Serializable] sealed class SourceLight { public float x,y,r,a,cr,cg,cb,f; }
 
@@ -23,6 +23,8 @@ namespace Exoduser.UnityPort
         static readonly int FogPulseId = Shader.PropertyToID("_FogPulse");
         static readonly int FogTimeId = Shader.PropertyToID("_FogTime");
         static readonly int DomFogId = Shader.PropertyToID("_DomFogEnabled");
+        static readonly int PetSpriteId=Shader.PropertyToID("_PetSprite"), PetFlameId=Shader.PropertyToID("_PetFlame");
+        static readonly int PetEnabledId=Shader.PropertyToID("_PetEnabled"), BloomMapId=Shader.PropertyToID("_BloomMap"), BloomShiftId=Shader.PropertyToID("_BloomShift");
 
         readonly Vector4[] lights = new Vector4[LightCount];
         readonly Vector4[] colorRects = new Vector4[LightCount], holeRects = new Vector4[LightCount];
@@ -31,7 +33,8 @@ namespace Exoduser.UnityPort
         SourceLight[] statics;
         Material material;
         SourceFieldLightStamps stamps;
-        RenderTexture darkness, colorMap;
+        Texture2D petHalo;
+        RenderTexture darkness, colorMap,litWorld,bloom,bloomScratch;
         int width,height,renderFrame,lastUnityFrame = -1;
         Vector2 lastCenter;
         Vector2 lastLogicalSize;
@@ -56,6 +59,7 @@ namespace Exoduser.UnityPort
             stamps = new SourceFieldLightStamps();
             material.SetTexture(HoleStampsId, stamps.Holes);
             material.SetTexture(ColorStampsId, stamps.Colors);
+            petHalo=BuildPetHalo();material.SetTexture("_PetHaloMap",petHalo);
             // Source 9072: Mac + navigator.gpu skips the separate THREE/WebGL fog canvas.
             bool mac = Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor;
             material.SetFloat(DomFogId, mac ? 0 : 1);
@@ -70,6 +74,8 @@ namespace Exoduser.UnityPort
             }
             // _CENTER_GLOW=false: player ci6 contributes a hole, never a color disc.
             holeRects[0] = stamps.HoleRect(470);
+            // Source4685-4690: existing warm preset0, OPT.irisGlow||250, not a player boost.
+            holeRects[IrisIndex]=stamps.HoleRect(250);colorRects[IrisIndex]=stamps.ColorRect(0);
             material.SetVectorArray(ColorRectsId, colorRects);
             material.SetVectorArray(HoleRectsId, holeRects);
             PrepareTargets(Mathf.Max(2, camera.pixelWidth), Mathf.Max(2, camera.pixelHeight));
@@ -91,9 +97,16 @@ namespace Exoduser.UnityPort
             TargetRecreates++;
             ReleaseTarget(ref darkness);
             ReleaseTarget(ref colorMap);
+            ReleaseTarget(ref litWorld);ReleaseTarget(ref bloom);ReleaseTarget(ref bloomScratch);
             width = w; height = h;
             darkness = CreateTarget("Source half-resolution darkness", w / 2, h / 2);
             colorMap = CreateTarget("Source half-resolution color lights", w / 2, h / 2);
+            litWorld=CreateTarget("Source lit world before bloom",w,h);
+            bloom=CreateTarget("Source sixth-resolution bloom",Mathf.Max(1,w/6),Mathf.Max(1,h/6));
+            bloom.filterMode=FilterMode.Point; // Source4464: world canvas imageSmoothingEnabled=false.
+            bloomScratch=CreateTarget("Source bloom self-copy",Mathf.Max(1,w/6),Mathf.Max(1,h/6));
+            var active=RenderTexture.active;RenderTexture.active=bloom;GL.Clear(false,true,Color.clear);RenderTexture.active=active;
+            material.SetTexture(BloomMapId,bloom);
             material.SetTexture(DarknessId, darkness);
             material.SetTexture(ColorMapId, colorMap);
             dirty = true;
@@ -108,6 +121,22 @@ namespace Exoduser.UnityPort
             };
             target.Create();
             return target;
+        }
+
+        static Texture2D BuildPetHalo()
+        {
+            // Source25504: literal cached400x400 premultiplied canvas, sampled with world smoothing off.
+            var pixels=new Color32[400*400];
+            var a=new Vector4(60*.22f/255,160*.22f/255,.22f,.22f);
+            var b=new Vector4(40*.12f/255,130*.12f/255,220*.12f/255,.12f);
+            var c=new Vector4(30*.04f/255,100*.04f/255,180*.04f/255,.04f);
+            for(int y=0;y<400;y++)for(int x=0;x<400;x++){
+                float dx=(x+.5f-200)/200,dy=(y+.5f-200)/200,t=Mathf.Sqrt(dx*dx+dy*dy);
+                var v=t<.3f?Vector4.Lerp(a,b,t/.3f):t<.7f?Vector4.Lerp(b,c,(t-.3f)/.4f):Vector4.Lerp(c,Vector4.zero,(t-.7f)/.3f);
+                pixels[y*400+x]=new Color32((byte)Mathf.RoundToInt(v.x*255),(byte)Mathf.RoundToInt(v.y*255),(byte)Mathf.RoundToInt(v.z*255),(byte)Mathf.RoundToInt(v.w*255));
+            }
+            var texture=new Texture2D(400,400,TextureFormat.RGBA32,false,true){name="Source cached iris halo",filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp};
+            texture.SetPixels32(pixels);texture.Apply(false,true);return texture;
         }
 
         void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -147,7 +176,27 @@ namespace Exoduser.UnityPort
                 // Source performance.now milliseconds, independent of pause/fixed update.
                 material.SetFloat(FogPulseId, .28f + (float)Math.Sin(Time.realtimeSinceStartupAsDouble * Math.PI / 2) * .08f);
                 material.SetFloat(FogTimeId, fogTime);
-                Graphics.Blit(source, destination, material, 2);
+                var pets=owner.FieldPets;
+                bool iris=pets!=null&&!pets.IrisOff;
+                material.SetFloat(PetEnabledId,iris?1:0);
+                if(iris){
+                    var pet=pets.Iris;float t=(float)pet.T;
+                    material.SetVector(PetSpriteId,new Vector4((float)pet.X-center.x+logicalSize.x/2,
+                        (float)pet.Y+Mathf.Sin(t*.07f)*5-center.y+logicalSize.y/2,
+                        20+pets.IrisSize*.8f,.85f+Mathf.Sin(t*.09f)*.1f+Mathf.Sin(t*.17f)*.05f));
+                    material.SetTexture(PetFlameId,owner.PetFlame);
+                }
+                Graphics.Blit(source,litWorld,material,3);
+                // Source4481-4497 / 55203: original sixth-size multiply/self-copies, every3 offset1.
+                // Torch mask55259 is dormant: source _TORCH.darkAlpha=0. Do not activate it.
+                if(iris&&renderFrame%3==1){
+                    Graphics.Blit(litWorld,bloom,material,4);
+                    material.SetVector(BloomShiftId,new Vector4(2f/bloom.width,-2f/bloom.height,0,0));
+                    Graphics.Blit(bloom,bloomScratch,material,5);
+                    material.SetVector(BloomShiftId,new Vector4(-2f/bloom.width,2f/bloom.height,0,0));
+                    Graphics.Blit(bloomScratch,bloom,material,5);
+                }
+                Graphics.Blit(litWorld, destination, material, 2);
             }
             finally { GL.sRGBWrite = previousSrgb; RenderTexture.active = previousTarget;
                 if (MeasureAllocations) RenderAllocatedBytes += GC.GetAllocatedBytesForCurrentThread() - allocated; }
@@ -162,6 +211,9 @@ namespace Exoduser.UnityPort
                 var s = statics[i];
                 lights[i + 1] = Light(s.x,s.y,s.r,s.a * (1 + Mathf.Sin(renderFrame * .09f + i * 1.7f) * .10f * s.f),center,size);
             }
+            var iris=owner.FieldPets;
+            lights[IrisIndex]=Light((float)iris.Iris.X,(float)iris.Iris.Y,250,
+                iris.IrisOff?0:(.45f+Mathf.Sin(renderFrame*.1f)*.08f+Mathf.Sin(renderFrame*.17f)*.05f)*.6f,center,size);
             material.SetVectorArray(LightsId, lights);
         }
 
@@ -182,8 +234,10 @@ namespace Exoduser.UnityPort
         {
             ready = false;
             ReleaseTarget(ref darkness); ReleaseTarget(ref colorMap);
+            ReleaseTarget(ref litWorld);ReleaseTarget(ref bloom);ReleaseTarget(ref bloomScratch);
             if (material != null) { Destroy(material); material = null; }
             stamps?.Dispose(); stamps = null;
+            if(petHalo!=null){Destroy(petHalo);petHalo=null;}
             owner = null;
         }
         void OnDestroy() { Release(); }

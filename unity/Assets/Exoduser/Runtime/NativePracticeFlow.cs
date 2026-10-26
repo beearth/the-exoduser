@@ -22,6 +22,7 @@ namespace Exoduser.UnityPort
             config.StartX=Simulation.Player.X;config.StartY=Simulation.Player.Y;
             config.ActiveAttack="kiSlash";config.EnemyAiEnabled=false;
             practiceSession=new FirstPracticeSession(Simulation,config);Simulation=practiceSession.Arena;
+            Simulation.PetLessonActive=true; // Source43418: lesson hurtP never advances pet hit counters.
             Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
             firstPractice=new FirstPracticeFlow();Simulation.FirstPracticeHit+=OnFirstPracticeHit;
             ClearPracticeViews();skillInputFence=true;

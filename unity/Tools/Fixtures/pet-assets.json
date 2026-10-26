@@ -1,0 +1,499 @@
+{
+  "schema": "exoduser.unity.source-pets.v1",
+  "ref": "66d4fd8601a4a708c2d3609dd72c2451bd7ca98a",
+  "sourceSha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
+  "assetCount": 44,
+  "assets": [
+    {
+      "source": "img/crow/east.png",
+      "destination": "Art/pets/crow/east.png",
+      "bytes": 797,
+      "sha256": "bc3b6937867465e2b61c693b0e576fff73e3e308233fcf9a3183d2ad3cc19c22",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/crow/south-east.png",
+      "destination": "Art/pets/crow/south-east.png",
+      "bytes": 786,
+      "sha256": "2ad246ee3a081bdd3880966c84d6ca619a1a3c07c748b629569a654877c5d96c",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/crow/south.png",
+      "destination": "Art/pets/crow/south.png",
+      "bytes": 645,
+      "sha256": "8a4e4d24d11f78503e1127d5b7f03f62560d703cab4aff43fe55d10705b8559c",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/crow/south-west.png",
+      "destination": "Art/pets/crow/south-west.png",
+      "bytes": 780,
+      "sha256": "ddb861b73d2e8cf0dfb4e212e9539024b9aea60a7bfa9e533ff473c892e5d6a0",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/crow/west.png",
+      "destination": "Art/pets/crow/west.png",
+      "bytes": 814,
+      "sha256": "30bae6aa9c3b07e54106eef43370efd34dbd6fb34ff850b2e7032f245761363e",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/crow/north-west.png",
+      "destination": "Art/pets/crow/north-west.png",
+      "bytes": 825,
+      "sha256": "0fbf4e94068d68c9320d27f19deaba0496d98d4463f4fcf7405eb7f664af1742",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/crow/north.png",
+      "destination": "Art/pets/crow/north.png",
+      "bytes": 589,
+      "sha256": "eed7df4661e7c8400ab4eb58047ea38a4f65e584cb6ffdc302dd5f6cb1b77df5",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/crow/north-east.png",
+      "destination": "Art/pets/crow/north-east.png",
+      "bytes": 730,
+      "sha256": "0db561e164deec4997ace433c4daeaa5bf83b184fd5c83c0e85f81cafea10ee2",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/crow/portrait.png",
+      "destination": "Art/pets/crow/portrait.png",
+      "bytes": 1799019,
+      "sha256": "8126b8a90e44f95dcf3ec1c52c7a7ba24294807639ab81e030a1f572b5dd374c",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "source": "img/cat_pet/east.png",
+      "destination": "Art/pets/cat/east.png",
+      "bytes": 951,
+      "sha256": "ab23bf23b28ad194386abcaf673bae421193dacd8bb2e9a529d72a30c642783f",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet/south-east.png",
+      "destination": "Art/pets/cat/south-east.png",
+      "bytes": 850,
+      "sha256": "9eb9e23742b4fd85140f1a41d32238659925053360890710fed958e73a95ab22",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet/south.png",
+      "destination": "Art/pets/cat/south.png",
+      "bytes": 686,
+      "sha256": "adf9414a3a1ee8b6003f67624bbd414e36b2f2f2fc4923bc9cc26105ed8f44ab",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet/south-west.png",
+      "destination": "Art/pets/cat/south-west.png",
+      "bytes": 852,
+      "sha256": "b79dc554b277b49ad83ffe83d7552e63f7ebd3e08b11496b89e0aba5158672ec",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet/west.png",
+      "destination": "Art/pets/cat/west.png",
+      "bytes": 950,
+      "sha256": "1b3dce123fae6cc3c659002a51367a8df567e824a831be057100c5d69c35d0d5",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet/north-west.png",
+      "destination": "Art/pets/cat/north-west.png",
+      "bytes": 930,
+      "sha256": "bb4c758289ac4e5f2373f03b3467b20c3bfcf7aba0df0244ed14f5b4ee31da6a",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet/north.png",
+      "destination": "Art/pets/cat/north.png",
+      "bytes": 720,
+      "sha256": "be5fe30f1ba358c950b47e82911eb5fc79a575b5690c670df0c3841aad12c2f0",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet/north-east.png",
+      "destination": "Art/pets/cat/north-east.png",
+      "bytes": 868,
+      "sha256": "ba0870e04dccdd3e5f0b6b41b585b522ca8bceba4af704e0ce8977630603063c",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet/portrait.png",
+      "destination": "Art/pets/cat/portrait.png",
+      "bytes": 1829510,
+      "sha256": "63d844c4bc807829aca1a1858ae4fcdc0377ee07c4bc0d148b64f78a86003bcc",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south/frame_000.png",
+      "destination": "Art/pets/cat/idle/south/frame_000.png",
+      "bytes": 393,
+      "sha256": "975c8b83c3798c9a14450e4199345a7ccc771bcf49d4078bc54ed47bdc9dfc85",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south/frame_001.png",
+      "destination": "Art/pets/cat/idle/south/frame_001.png",
+      "bytes": 364,
+      "sha256": "30a51086f2b997c867f7a55507b6945d6cd142ff2486dd9a17df0ccf59196b89",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south/frame_002.png",
+      "destination": "Art/pets/cat/idle/south/frame_002.png",
+      "bytes": 363,
+      "sha256": "e5185af79a01562742acf68e96b13c88dfb5364fa3de8b4a825d4b1886d24b58",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south/frame_003.png",
+      "destination": "Art/pets/cat/idle/south/frame_003.png",
+      "bytes": 377,
+      "sha256": "abea0998d470020c1cfbfdf082ff0fc23731dd0b8556b7e8a886d565118bc030",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south/frame_004.png",
+      "destination": "Art/pets/cat/idle/south/frame_004.png",
+      "bytes": 369,
+      "sha256": "eac0a872935047087c72f60361acae88f33510f2bc6f8d6d8570c20e543ad407",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south/frame_005.png",
+      "destination": "Art/pets/cat/idle/south/frame_005.png",
+      "bytes": 379,
+      "sha256": "bbc6c28bc3ae82f01bd163735ec69307159e80db6621e3f084aa68fff274d606",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south/frame_006.png",
+      "destination": "Art/pets/cat/idle/south/frame_006.png",
+      "bytes": 362,
+      "sha256": "1f629f68998e9e9234bca86898ed53677706052b684b7229155f727ae084d6df",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south/frame_007.png",
+      "destination": "Art/pets/cat/idle/south/frame_007.png",
+      "bytes": 376,
+      "sha256": "5cb214eea6433c9d431ea895f178b69b50b89703af33f2cfbe4f68549274bb2f",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south-west/frame_000.png",
+      "destination": "Art/pets/cat/idle/south-west/frame_000.png",
+      "bytes": 484,
+      "sha256": "7d654f473311b2442ccdb5e627116e39e29744d32f4982cad3e0f9f6b1f3c926",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/idle/south-west/frame_001.png",
+      "destination": "Art/pets/cat/idle/south-west/frame_001.png",
+      "bytes": 484,
+      "sha256": "7d654f473311b2442ccdb5e627116e39e29744d32f4982cad3e0f9f6b1f3c926",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/south/frame_000.png",
+      "destination": "Art/pets/cat/running-4-frames/south/frame_000.png",
+      "bytes": 385,
+      "sha256": "effa6f6cff92923de020b78b4527d78b46ac43c7bbfb8f398af8d43caab90d82",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/south/frame_001.png",
+      "destination": "Art/pets/cat/running-4-frames/south/frame_001.png",
+      "bytes": 418,
+      "sha256": "2b18a3c2b3b8adc614a87c3d8d05144137a6db9f726655634575353935cd423a",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/south/frame_002.png",
+      "destination": "Art/pets/cat/running-4-frames/south/frame_002.png",
+      "bytes": 395,
+      "sha256": "6243546754862571acbf19ad9da9cc3613755b0b9c9926abaeeb6c1ae14ad965",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/south/frame_003.png",
+      "destination": "Art/pets/cat/running-4-frames/south/frame_003.png",
+      "bytes": 385,
+      "sha256": "2ec26375e969a9209cf1e6516f12dc6a868167a8bcd5dca5f1743b474997fde1",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/south-west/frame_000.png",
+      "destination": "Art/pets/cat/running-4-frames/south-west/frame_000.png",
+      "bytes": 344,
+      "sha256": "68057febada74b1f936ad3e0b9cce2ba06b356254866c6a9dd7e62dcdae58600",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/south-west/frame_001.png",
+      "destination": "Art/pets/cat/running-4-frames/south-west/frame_001.png",
+      "bytes": 402,
+      "sha256": "d03471a88430786a027fda8a40145d564b0938a123614b72741a7b18ce23e495",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/south-west/frame_002.png",
+      "destination": "Art/pets/cat/running-4-frames/south-west/frame_002.png",
+      "bytes": 365,
+      "sha256": "a06df0cff43d6f7fa367dd7a376936854107298f29ad3d77dcfa22871278c3de",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/south-west/frame_003.png",
+      "destination": "Art/pets/cat/running-4-frames/south-west/frame_003.png",
+      "bytes": 383,
+      "sha256": "bb981787e29bb8536fa8a9fa71481a825738152774b032d049adfe126dac91ac",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/west/frame_000.png",
+      "destination": "Art/pets/cat/running-4-frames/west/frame_000.png",
+      "bytes": 439,
+      "sha256": "6f8157fe182d5270fba08ff994b36b7a5c96d6ae45a7b9943cf87d68be321569",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/west/frame_001.png",
+      "destination": "Art/pets/cat/running-4-frames/west/frame_001.png",
+      "bytes": 446,
+      "sha256": "38248339fb1dac3ca18738ac280fdc7ce298ae1a1be6c985733f450e04858173",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/west/frame_002.png",
+      "destination": "Art/pets/cat/running-4-frames/west/frame_002.png",
+      "bytes": 373,
+      "sha256": "621a0bb15a3df0d336d4f4e9f0c12850c873836d93a7ce859c4ec9efa99428be",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/cat_pet_anim/animations/running-4-frames/west/frame_003.png",
+      "destination": "Art/pets/cat/running-4-frames/west/frame_003.png",
+      "bytes": 451,
+      "sha256": "0f21fa1026892413882b3743bcba7f09677f07a1c09d98b28a00c8647ed532a1",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "img/fx/flame01.png",
+      "destination": "Art/pets/flame01.png",
+      "bytes": 369009,
+      "sha256": "0e6bd3e31ac007b13d32c4a968ee6037ebbbf6b67642e16baf869aebdb3689ad",
+      "width": 540,
+      "height": 810
+    },
+    {
+      "source": "img/fx/flame02.png",
+      "destination": "Art/pets/flame02.png",
+      "bytes": 398830,
+      "sha256": "76b9c6cb0fc86c962075326c86cf1e140231ff767c3a8a49e2a67d0a84544224",
+      "width": 540,
+      "height": 810
+    },
+    {
+      "source": "img/fx/flame03.png",
+      "destination": "Art/pets/flame03.png",
+      "bytes": 385117,
+      "sha256": "f26ee8d6c09902a3d18771ed63bfdd10867d8769aeb849b49448f126109799e5",
+      "width": 540,
+      "height": 810
+    },
+    {
+      "source": "img/fx/flame04.png",
+      "destination": "Art/pets/flame04.png",
+      "bytes": 329442,
+      "sha256": "f917983fa38dd245155f92998765d09a915349bf441491ce1278c1efb5cf78f4",
+      "width": 540,
+      "height": 810
+    }
+  ],
+  "dialogueIds": 171,
+  "languages": [
+    {
+      "code": "en",
+      "translated": 196,
+      "total": 329
+    },
+    {
+      "code": "zh",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "zht",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "ja",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "vi",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "th",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "id",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "es",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "fr",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "it",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "ptbr",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "ro",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "de",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "nl",
+      "translated": 51,
+      "total": 329
+    },
+    {
+      "code": "sv",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "da",
+      "translated": 51,
+      "total": 329
+    },
+    {
+      "code": "no",
+      "translated": 51,
+      "total": 329
+    },
+    {
+      "code": "ru",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "uk",
+      "translated": 51,
+      "total": 329
+    },
+    {
+      "code": "pl",
+      "translated": 49,
+      "total": 329
+    },
+    {
+      "code": "cs",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "hu",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "bg",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "el",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "fi",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "tr",
+      "translated": 52,
+      "total": 329
+    },
+    {
+      "code": "ar",
+      "translated": 52,
+      "total": 329
+    }
+  ],
+  "torchDarkAlpha": 0
+}

@@ -44,6 +44,47 @@ class Program
     bool got=map.CanMove(sample[0].GetSingle(),sample[1].GetSingle(),sample[2].GetSingle());if(got!=sample[3].GetBoolean())mismatches++;total++;
    }Check(mismatches==0,"original JS canMv collision oracle "+total+" samples mismatches"+mismatches);
   }
+  var pets=new SourcePets();s=Make();pets.Reset(0,0,0);
+  Check(Near(pets.Crow.Y,-20)&&Near(pets.Cat.Y,10)&&Near(pets.Xbow.X,-30)&&Near(pets.Iris.Y,-34),"source four simultaneous pet spawn offsets");
+  pets.Tick(s);
+  double tx=Math.Cos(.025)*38,ty=-22+Math.Sin(.035)*10;
+  Check(Near(pets.Crow.X,tx*.12)&&Near(pets.Crow.Y,-20+(ty+20)*.12)&&pets.Crow.Moving,"crow exact orbit and d*.12 movement");
+  Check(Near(pets.Cat.X,Math.Cos(.018)*28*.12)&&Near(pets.Cat.Y,10+(22+Math.Sin(.022)*4)*.12),"cat exact ground follow formula");
+  s.Player.X=2000;s.Player.Y=2000;pets.Tick(s);
+  Check(Near(pets.Crow.X,1976)&&Near(pets.Crow.Y,1982)&&Near(pets.Cat.X,2018)&&Near(pets.Xbow.X,1970),"source520px unstuck offsets");
+  s=Make();e=s.SpawnNormalEnemy(600,0);pets.Reset(0,0,0);pets.Tick(s);
+  Check(Near(pets.Iris.X,20+(600+Math.Cos(51*.03)*20-20)*.12)&&Near(pets.Iris.Y,-34+(-e.Radius-15+Math.Sin(51*.03)*8+34)*.12),"iris800px nearest target head orbit");
+  double irisX=pets.Iris.X,irisT=pets.Iris.T;pets.IrisOff=true;pets.Tick(s);
+  Check(Near(pets.Iris.X,irisX)&&Near(pets.Iris.T,irisT)&&e.Hp==875&&s.Kills==0,"iris off freezes movement and all pets cause no damage");
+  int[] runGroups={2,1,0,1,2,1,0,1},idleGroups={1,1,0,1,1,0,0,0};bool mappings=true;
+  for(int i=0;i<8;i++)mappings&=SourcePets.CatRunGroup(i)==runGroups[i]&&SourcePets.CatIdleGroup(i)==idleGroups[i]&&SourcePets.CatRunFlip(i)==(i==0||i==1||i==7);
+  Check(mappings,"all eight source animation groups and mirrors");
+  var petData=JsonSerializer.Deserialize<PetDialogueData>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(args[1]),"pets.json")),new JsonSerializerOptions{IncludeFields=true});
+  Check(petData.entries.Length==171&&petData.languages.Length==27&&petData.sourceSha256.StartsWith("dee094fd"),"snapshot171 dialogue IDs plus27 original translation tables");
+  var dlg=new SourcePetDialogue(petData);s=Make();dlg.Tick(s,false,0,false,false);
+  Check(dlg.CurrentId=="tut_start"&&dlg.Who=="crow"&&dlg.Text=="일어나. 여신이 널 여기 보낸 건 죽으라고가 아니야."&&dlg.Remaining==300&&Near(dlg.Alpha,.6),"original opening line and five second timer");
+  dlg.SetLanguage("en");string english=dlg.Text;int remainder=dlg.Remaining;dlg.SetLanguage("ko");
+  Check(english!=dlg.Text&&dlg.Remaining==remainder&&dlg.Who=="crow","live source translation refresh preserves active timer and speaker");
+  for(int i=0;i<300;i++)dlg.Tick(s,false,0,false,false);
+  Check(dlg.Who=="cat"&&dlg.Text=="…아직 살아있네. 좌클릭으로 저것들 쳐봐."&&dlg.Remaining==300,"source response begins exactly after300ticks");
+  s.Player.Hp=1;dlg.Tick(s,false,0,false,false);
+  Check(dlg.CurrentId=="hp_critical"&&dlg.Who=="crow"&&dlg.Remaining==180,"survival priority interrupts pending response with exact180ticks");
+  dlg.Reset();s=Make();e=s.SpawnNormalEnemy(40,0);s.HurtEnemy(e,1);s.HurtPlayer(1);
+  Check(s.PetAttackCount==1&&s.PetHitCount==1,"pet counters consume admitted damage entries");
+  s.Player.Iframes=999;s.HurtPlayer(1);Check(s.PetHitCount==2,"source hit attempt counts before iframe rejection");
+  s.PetLessonActive=true;s.HurtPlayer(1);Check(s.PetHitCount==2,"lesson hit attempt does not advance pet counter");
+  var killDialogue=new SourcePetDialogue(petData);var killSim=Make();killSim.Player.Hp=1;killSim.PetKilled+=killDialogue.OnKill;
+  var killed=killSim.SpawnNormalEnemy(40,0);killSim.HurtEnemy(killed,1750);
+  Check(killDialogue.CurrentId=="low_hp_kill"&&killDialogue.Remaining==240,"source kill callback speaks immediately without waiting for next pet tick");
+  var lessonSim=Make();var lessonEnemy=lessonSim.SpawnNormalEnemy(40,0);int lessonKills=0;lessonSim.PetKilled+=_=>lessonKills++;
+  lessonSim.RegisterFirstPracticeActor(lessonEnemy);lessonSim.HurtEnemy(lessonEnemy,1);
+  Check(lessonSim.PetAttackCount==0&&lessonKills==0&&!lessonEnemy.Alive,"lesson kill bypasses both normal pet attack and kill events");
+  pets.Reset(0,0,0); // measure the active iris nearest-target path as well as crow/cat/xbow.
+  for(int i=0;i<100;i++)dlg.Tick(s,false,0,false,false);
+  long allocated=GC.GetAllocatedBytesForCurrentThread();
+  for(int i=0;i<10000;i++){pets.Tick(s);dlg.Tick(s,false,0,false,false);}
+  long petBytes=GC.GetAllocatedBytesForCurrentThread()-allocated;
+  Check(petBytes==0,"pet motion and dialogue10000stable CPU ticks allocate0bytes (view/GPU unmeasured)");
   var result=JsonSerializer.Serialize(new {scope="standalone_dotnet_not_Unity_runtime",passed=failed==0,failed,checks=Rows},new JsonSerializerOptions{WriteIndented=true});
   if(args.Length>0)File.WriteAllText(args[0],result);Console.WriteLine("CORE_RESULT "+Rows.Count+" checks / "+failed+" failures");return failed==0?0:2;
  }

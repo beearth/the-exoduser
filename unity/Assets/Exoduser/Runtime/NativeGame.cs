@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort
             if(hitSheet==null||hitSheet.width!=1254||hitSheet.height!=1254)throw new InvalidOperationException("Invalid original kiSlash 2x2 hit sheet");
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             sound=new NativeFeedbackAudio(transform,view);
-            InitializeWorldLighting();
+            InitializePets();InitializeWorldLighting();
             ResetRun();
             worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
             lobby.Initialize(EnterFromLobby);lobby.StartupGameplayPrepare=PrepareStartupGameplay;
@@ -110,7 +110,7 @@ namespace Exoduser.UnityPort
                 float x=config.StartX+(float)Math.Cos(a)*580,y=config.StartY+(float)Math.Sin(a)*580;
                 if(SafePoint(ref x,ref y,10))Simulation.SpawnNormalEnemy(x,y);
             }
-            UpdateViews();
+            ResetPets();UpdateViews();
         }
         bool SafePoint(ref float x,ref float y,float r)
         {
@@ -146,6 +146,7 @@ namespace Exoduser.UnityPort
             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.K)){SetSkills(true);return;}
             if(!menu&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.Tab))SetInventory(!inventory.Open);
             if(!menu&&!inventory.Open&&Input.GetKeyDown(KeyCode.R))Toast("드랍 아이템 생성 이식 대기");
+            if(!menu&&!inventory.Open)PollPetInput();
             if(!menu&&!inventory.Open&&(Input.GetKeyDown(KeyCode.Q)||Input.GetKeyDown(KeyCode.E)))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
             UpdateViews();
             if(smokeActive)sound?.Probe();
@@ -158,13 +159,14 @@ namespace Exoduser.UnityPort
             float y=(Input.GetKey(KeyCode.S)?1:0)-(Input.GetKey(KeyCode.W)?1:0);
             if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
             bool attack=SkillUiState.AttackHeld(Input.GetMouseButton(0),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition),p.KiChargeActive);
+            TickPets();
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,Input.GetKey(KeyCode.R));
             DispatchFeedback();
             if(p.Hp<=0){Running=false;Toast("쓰러졌습니다");}
             if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의 +4");}
         }
         public void StepInput(float x,float y,float aimX,float aimY,bool attack,bool pickup)
-        {Simulation.Tick(x,y,aimX,aimY,attack,pickup);DispatchFeedback();UpdateViews();}
+        {TickPets();Simulation.Tick(x,y,aimX,aimY,attack,pickup);DispatchFeedback();UpdateViews();}
         void DispatchFeedback()
         {
             while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();impacts.Handle(e);sound.Handle(e);}
@@ -224,6 +226,7 @@ namespace Exoduser.UnityPort
             kiView?.Update(Simulation);
             impacts?.Update(Simulation.TickCount);
             hud?.Refresh(p,Simulation.TickCount);
+            RenderPets();
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         SpriteRenderer CreateRenderer(string name){var go=new GameObject(name);go.transform.SetParent(transform);return go.AddComponent<SpriteRenderer>();}
@@ -265,7 +268,7 @@ namespace Exoduser.UnityPort
             Panel(new Rect(statusX,0,316,124));GUI.Label(new Rect(statusX+20,12,276,32),"1장 · 썩은 숲",label);
             GUI.Label(new Rect(statusX+20,47,276,30),"Lv."+p.Level+"   경험치 "+p.Experience+" / "+p.MaxExperience,small);
             GUI.Label(new Rect(statusX+20,77,276,30),"처치 "+Simulation.Kills+"   악의 "+Simulation.Materials,small);
-            hud.Draw(hudWidth,Screen.height/hudScale,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
+            hud.Draw(hudWidth,Screen.height/hudScale,Simulation.Config.ActiveAttack,Simulation);DrawPets(hudWidth,Screen.height/hudScale);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.HurtTicks<=0)continue;var pt=ToGUI(e.X,e.Y);Fill(new Rect(pt.x-42,pt.y-85,84,6),new Color(.12f,.08f,.07f));Fill(new Rect(pt.x-42,pt.y-85,84*Mathf.Clamp01((float)e.Hp/e.MaxHp),6),new Color(.66f,.12f,.08f));if(e.Shield>0)Fill(new Rect(pt.x-42,pt.y-93,84*e.Shield/e.MaxShield,4),new Color(.2f,.55f,.8f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
@@ -375,6 +378,6 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){DisposeWorldLighting();kiView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
+        void OnDestroy(){DisposePets();DisposeWorldLighting();kiView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
     }
 }

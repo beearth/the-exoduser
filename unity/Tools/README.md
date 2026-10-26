@@ -40,3 +40,7 @@ Node와 .NET SDK8을 사용한다. 산출물은 I:의 고유 경로로 지정한
 Library·Temp·Logs·UserSettings·Editor 도구·Tests는 이 체크아웃에서 I:로 연결했다. Git 복원본에는 소스 파일만 존재하므로 새 PC에서는 같은 저장 정책을 적용한 뒤 import한다. 기존 Godot와 웹 원본은 그대로 보존했다.
 
 자세한 상태·원본 행·미완료는 `docs/engine/UNITY_PORT_20261024.md`와 `UNITY_SOURCE_CORE_20261024.md`를 따른다.
+
+## 2026-10-26 펫 후보
+
+`UNITY-PET-01`은 지정 웹 snapshot의 펫4종·대사·이리스 광원 후보다. Core57/레슨34 CPU PASS이며 **IMPLEMENTED_UNVERIFIED — GPU 대기**다. 171대사 ID 중64선언연결/107데이터만, 펫 옵션 저장·음성·보스/패링 외부 owner와 실제 화면은 미인수다. 원문행·수치·범위는 `docs/engine/UNITY_PET_01_20261026.md`, 원본 이미지44개의 byte 전송/대사 추출은 `node unity/Tools/export-pets.mjs`다. Unity Editor/Player/import/build를 실행하는 명령이 아니다.

@@ -57171,3 +57171,10 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 - 전후900프레임 평균8.389746/8.361290ms(p95 8.672584/8.487210, p99 8.990250/8.902835), cap120/vsync0. 성능 향상 주장0. HUD55/practice5검사 통과.
 - 상태 IMPLEMENTED_UNVERIFIED·VISUAL RETOUCH 유지: 웹 도랑/환경·펫 차이, Release GC counter invalid·raw0의 양성대조 없음으로 매프레임 할당0 미인증. import후 전체mirror는 생성scene/meta차이2회 후 중단.
 - NativeGame.cs 추가hunk0, 로비/오디오/intro-silence/타UnityWIP/일반저장/원번역목록 변경0. 자기 경로만 commit/push 후 정상worktree 제거, 실제SHA와 정리결과는 외부DONE.
+
+
+## 2026-10-26 UNITY-PET-01 — CPU 구현, GPU 대기
+
+- 기준66d4fd8601·전용브랜치/worktree에 원본 펫4종·원본44PNG·추종/애니·초상 대사/번역·이리스 r250 색광원/헤일로/블룸 연결. 기존 player/static 값 변경0, torch darkAlpha0 유지. [원본행·수치·171 ID·소유 경계](engine/UNITY_PET_01_20261026.md), [펫 시스템](2_4%20펫시스템/2_4%20펫시스템.md) 동기화. 전체 docs 키워드 검색1124행/226문서.
+- 전체Runtime C#81파일 CPU compile 오류0/기존CS0649경고27, 기존Core57·레슨34 PASS. active펫 motion/dialogue10000CPU틱0byte; 실제Unity렌더/IMGUI/GPU allocation은 미검증. 테스트/컴파일 실패0·실패 무수정 재시도0·새진단테스트파일0.
+- 상태 IMPLEMENTED_UNVERIFIED — GPU 대기. 보호Player4개/소유금지소스/실제저장 보존, Unity실행/import/빌드/캡처/측정0. NativeGame8개 연결점(기본 diff7hunk/무문맥diff8hunk). 자기경로 commit/push·원격SHA확인후 worktree 보존, 상세DONE은 외부경로.

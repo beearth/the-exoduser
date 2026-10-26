@@ -210,6 +210,7 @@ namespace Exoduser.UnityPort.Core
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
             if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
+            PetAttackCount++; // Source42117 _petOnAtk, after lesson interception.
             damage = Math.Max(1, damage);
             if (Config.AccessoryDamageBonus > 0) damage = (int)(damage * (1 + Config.AccessoryDamageBonus));
             if (NextRandom() * 100 < Config.PlayerCriticalChance) damage = (int)(damage * Config.PlayerCriticalMultiplier);
@@ -242,6 +243,7 @@ namespace Exoduser.UnityPort.Core
             if (!enemy.Alive) return;
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
             enemy.Alive = false; Kills++; Combo++; ComboTicks = Math.Min(1200, ComboTicks + 60);
+            PetKilled?.Invoke(this); // Source42702 _petOnKill: immediate, no fabricated lesson kills.
             Materials += 4;
             // Exact normal kill potion destination is quickslot, not fake world loot.
             int potion = (int)(NextRandom() * 3);
@@ -363,6 +365,8 @@ namespace Exoduser.UnityPort.Core
 
         public void HurtPlayer(int damage)
         {
+            // Source43427 counts the hit attempt BEFORE iframes, after lesson/fallen/dead gates.
+            if(!PetLessonActive&&Player.Hp>0&&Player.State!="fallen"&&Player.State!="dead")PetHitCount++;
             if (Player.Hp <= 0 || Player.Iframes > 0) return;
             double dr = Math.Min(.75, Config.PlayerPhysicalDefense / (Config.PlayerPhysicalDefense + 2500.0));
             int capped = Math.Min(damage, (int)(Player.MaxHp * .33));

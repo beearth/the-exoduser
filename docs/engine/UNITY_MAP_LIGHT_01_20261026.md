@@ -1,5 +1,7 @@
 # UNITY-MAP-LIGHT-01 — CH1-1 월드 카메라 조명
 
+2026-10-26 후속 [UNITY-PET-01](UNITY_PET_01_20261026.md)은 원본 펫4종·말풍선/번역·이리스 r250 광원/헤일로/블룸을 별도 후보로 연결했다. 상태 IMPLEMENTED_UNVERIFIED — GPU 대기, Core57/레슨34 CPU PASS. 아래 펫 부재는 당시 이력이며 현재 후보의 실제 화면 검증은 아직0회다. main/PC/기존 Player 반영0.
+
 상태: **IMPLEMENTED_UNVERIFIED — 02 검수에서 화면 차이·유효 GC 증거 부족**.
 
 후속 [UNITY-MOAT-01](UNITY_MOAT_01_20261026.md)은 기준8fb4072db의 결손 해자·언덕을 기존원본4PNG/애니메이션으로 연결한 별도 후보다. 조명데이터·합성값은 보존. GPU 대기로 실제빌드/화면 인수는 미실시이며 아래02 당시 결손 관측은 이력으로 유지한다.
