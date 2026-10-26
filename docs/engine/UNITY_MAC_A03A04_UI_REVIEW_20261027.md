@@ -1,6 +1,6 @@
 # Mac Unity A03/A04 통합 UI 실창 검수 — 2026-10-27
 
-## A03 패치노트 QA 직접 진입 후보
+## A03 패치노트 QA 직접 진입 계약
 
 `NativeLobby.PatchNotes.cs`는 로비 `Repaint` 첫 회에만 `--unity-patch-notes-review`를 검사한다. 명시적 `--unity-frontend-review`, 고유 QA identifier `com.fordeargamers.exoduser.a03a04qa20261027`, 존재하는 절대 `-output` 폴더와 그 안의 `a03-modal-qa.marker`가 모두 있을 때 기존 `OpenPatchNotes()`를 **한 번** 호출한다. 조건 부족 시 모달을 열지 않고 `A03_QA_REJECTED`를 남긴다. 일반 launcher·버튼/입력/정상 실행 코드는 바꾸지 않았다. QA 열기/닫기 로그에는 `Screen.width×Screen.height`와 roster 수·선택을 기록해 Esc 후 뒤 상태를 대조한다.
 
@@ -12,6 +12,20 @@
 | 모달 동작 | 기존 `OpenPatchNotes`/`HandlePatchNotesKeys`/`ClosePatchNotes` | QA 직접 진입·Esc/PageDown/언어 전환 실창 검수 |
 
 창 크기 판정은 명령행 요청 `-screen-width/-screen-height`, 게임 내용의 `Screen.width×Screen.height`, macOS 제목 막대를 포함한 캡처 픽셀 크기를 구분한다. 앞선 `1024×576` 요청의 캡처가 `1280×784`(내용 `1280×720`)였으므로 **최소 지원 창 크기를 1024 또는 1280으로 확정하지 않는다**. QA 로그의 실제 `Screen` 수치와 캡처를 함께 기록한다. 이번 변경은 좁은 창 크기를 강제하지 않는다.
+
+## A03 QA 직접 진입·키보드 실창 결과 — source `fae70452d`
+
+고유 ARM64 `build` 1회는 Unity 6000.6.7f1 `Succeeded`, `passed=true`, errors 0, C# 오류·경고 0(기존 UAC1001만 유지)이다. `open -n -a <고유 QA app> --args --unity-frontend-review --unity-patch-notes-review -output <QA>/player-data ...`로 띄운 PID18734 하나의 전체 argv·앱 경로를 확인한 뒤 CUA가 그 실행 앱에 바인딩됐다. 무플래그 중복 PID는 0이었고, 종료도 PID18734만 수행했다. `A03_QA_OPEN`은 `screen=1280x720`, roster=0, selected=-1, language=ko 및 새 절대 output을 기록했다. 1280×784 PNG의 위쪽 64px은 앱 제목 막대이므로 내용의 실제 크기와 구분한다. 1024 최소창 크기는 이 검수에서 시험하지 않았다.
+
+| 관문 | 결과 | 실창·로그 증거 |
+|---|---|---|
+| 모달 직접 진입 | PASS (QA 진입 한정) | `patch-modal-initial.png`: 기존 `OpenPatchNotes()`의 본문 `v0.7.5 · 20261020`, 제목·닫기·세로 스크롤 표시 |
+| 두 항목·스크롤 | PASS (키보드) | Down 반복 후 `patch-modal-scroll.png`, `patch-modal-bottom.png`: 목록이 이동해 `v0.7.0 · 20261009`와 본문 표시 |
+| 언어 전환·긴 제목 | PASS (표시 범위) | Esc→L/Home/Down/Return 뒤 launcher 초점의 Return으로 재개방. `patch-modal-es.png`의 `Notas del parche`/`Cerrar`, `patch-modal-cs-long.png`의 `Poznámky k aktualizaci`/`Zavřít`가 패널 안에 표시됨. 본문은 기존 ko/en 데이터 계약에 따라 es/cs에서 en fallback |
+| 뒤 입력 차단·닫기 | PASS (키보드) | cs 모달에서 N 입력 뒤 `patch-modal-behind-input.png`에 생성창 없이 모달 유지. Esc 뒤 `patch-modal-closed-cs.png`; `A03_QA_CLOSE` ko/es/cs 3회 모두 roster=0, selected=-1, `unchanged=True` |
+| 버전 launcher 마우스 | **HOLD** | QA가 기존 열기 함수를 직접 호출했다. launcher의 물리 마우스 hitbox·CUA 좌표 라우팅 PASS는 주장하지 않음 |
+
+이 결과는 명시된 QA 직접진입과 실제 키보드 입력의 관문이다. 저장 데이터 변경·실제 삭제는 없었다. 일반 사용자 앱 PID38141·48476·52157은 실행 상태로 보존했다. Unity import의 무관한 tracked 413개와 신규 2개는 `<QA>/build-generated.patch`·`build-generated-untracked.tar.gz`에 보존하고 HEAD bytes로 복원했다. Git reset/checkout은 사용하지 않았다.
 
 ## es 긴 문구 배치 수리 후보
 
@@ -42,7 +56,7 @@ Unity 6000.6.7f1 고유 QA identity의 ARM64 네 번째 후보 `build4`는 `pass
 
 검수 실행은 **이 고유 앱의 Contents/MacOS 실제 실행 파일**에 `--unity-frontend-review -output /Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A03A04-UI-20261027/player-data`를 지정한다. `NativeSettingsStorageScope.IsQa`는 `-review`일 때 설정 store 초기화를 건너뛰며, `NativeLobby.CharacterStore`는 새 절대 output 하위 `character-roster-v1`만 사용한다. 앱 identity가 별도라 Unity PlayerPrefs 네임스페이스도 분리된다. 기존 사용자 앱과 개인 저장 파일은 열거나 종료하지 않는다. 이 분기의 코드 변경은 Editor 빌드 정체성에만 있으며 A03/A04 일반 UI 경로에는 영향을 주지 않는다.
 
-## 빌드·실창·입력 결과
+## 최초 빌드·실창·입력 결과 (A03 직접 진입 전)
 
 빌드 소스 SHA `8bcba21b4`, Unity `6000.6.7f1`, 명령은 `-batchmode -nographics -quit -projectPath <Mac worktree>/unity -buildTarget OSXUniversal -executeMethod PortVerification.Build -a03a04UiQa true -output <QA>/build -receipt <QA>/build-receipt.json -logFile <QA>/build.log`이다. `<QA>`는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A03A04-UI-20261027`다. 이 소스로 ARM64 후보 **1회** 빌드했다. 영수증 `passed=true`, `Succeeded`, 오류 0, `2,176,431,063` bytes, Info.plist `CFBundleIdentifier=com.fordeargamers.exoduser.a03a04qa20261027`, `CFBundleExecutable=EXODUSER A03 A04 QA`를 확인했다. C# `error CS`·`warning CS` 0, 기존 UAC1001 2회만 로그에 있다. 빌드 import가 만든 tracked `.meta` 411개·씬·ProjectSettings를 HEAD bytes로 되돌리고 신규 `.meta`·SceneTemplateSettings 2개는 별도 archive 뒤 제거했다. 생성 당시 차이는 `<QA>/build-generated.patch`와 `build-generated-untracked.tar.gz`에 보존한다. Git reset/checkout은 사용하지 않았다.
 

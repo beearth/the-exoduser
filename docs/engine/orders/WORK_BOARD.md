@@ -1,6 +1,6 @@
-## 2026-10-27 Mac A03 패치노트 직접진입 QA 후보
+## 2026-10-27 Mac A03 패치노트 QA 직접진입 실창 결과
 
-고유 QA app + `--unity-frontend-review` + `--unity-patch-notes-review` + 신규 절대 output/marker 조합에서만 기존 패치노트 모달을 로비 1회 열도록 연결했다. 일반 launcher/버튼/입력 변경0. 실제 본문·언어·스크롤·Esc 닫기와 뒤 roster 상태는 ARM64 실창 미확인. 이전 1024 요청은 1280×720 내용/1280×784 캡처였으며 최소 지원 크기는 미확정. [가드·크기 계약](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
+source `fae70452d` 고유 ARM64 1회 Succeeded/errors0/C# 오류·경고0. `open -n` 단일 격리 PID18734에서 ko 0.7.5/0.7.0 본문, 키보드 Down 스크롤, es/cs 긴 라벨, N 뒤입력 차단, Esc 닫기와 roster0/selected-1 불변을 확인했다. **QA 직접진입·키보드 PASS**, launcher 실제 마우스 클릭 HOLD. 실제 내용1280×720/캡처1280×784이며 1024 최소창 미검증. [영수증·화면·경계](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
 
 ## 2026-10-27 Mac A04 es 긴 문구 배치 재검수 결과
 
