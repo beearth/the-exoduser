@@ -23,9 +23,9 @@ namespace Exoduser.UnityPort {
 
   [Serializable] sealed class CaptureReceipt {public bool passed;public int failures,width,height;public string[] checks;public string[] files;}
   sealed class ForgeCaptureHost : MonoBehaviour {
-   NativeForgePanel panel;Simulation sim;InventoryState inv;bool closed;readonly List<string> checks=new List<string>(),files=new List<string>();int failures;
+   NativeForgePanel panel;Simulation sim;InventoryState inv;readonly List<string> checks=new List<string>(),files=new List<string>();int failures;
    void Check(bool ok,string what){checks.Add((ok?"PASS ":"FAIL ")+what);if(!ok)failures++;}
-   void OnGUI(){if(panel==null||sim==null)return;GUI.depth=-1000;panel.Draw(sim,inv,()=>closed=true);}
+   void OnGUI(){if(panel==null||sim==null)return;GUI.depth=-1000;panel.Draw(sim,inv,()=>{});}
    IEnumerator Start(){
     AudioListener.volume=0;AudioListener.pause=true;
     while(NativeGame.Instance==null||NativeGame.Instance.Simulation==null)yield return null;
@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort {
     Wiring(game);
     game.enabled=false;
     var lobby=game.GetComponent<NativeLobby>();if(lobby!=null)lobby.enabled=false;
-    foreach(var src in FindObjectsByType<AudioSource>(FindObjectsSortMode.None))src.Stop();
+    foreach(var src in FindObjectsByType<AudioSource>())src.Stop();
     if(Camera.main!=null){Camera.main.cullingMask=0;Camera.main.backgroundColor=new Color(.015f,.02f,.018f);}
     sim=game.Simulation;inv=new InventoryState(NativeInventorySeed.Load());
     string dir=CaptureDir();Directory.CreateDirectory(dir);

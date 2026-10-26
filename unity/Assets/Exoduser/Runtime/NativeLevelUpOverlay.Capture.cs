@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort {
     while(NativeGame.Instance==null||NativeGame.Instance.Simulation==null)yield return null;
     var game=NativeGame.Instance;yield return null;yield return null;
     game.enabled=false;var lobby=game.GetComponent<NativeLobby>();if(lobby!=null)lobby.enabled=false;
-    foreach(var src in FindObjectsByType<AudioSource>(FindObjectsSortMode.None))src.Stop();
+    foreach(var src in FindObjectsByType<AudioSource>())src.Stop();
     if(Camera.main!=null){Camera.main.cullingMask=0;Camera.main.backgroundColor=new Color(.015f,.02f,.018f);}
     Directory.CreateDirectory(dir);
     var sim=game.Simulation;int before=sim.Player.Level,spBefore=sim.Player.StatPoints;
