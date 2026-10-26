@@ -181,6 +181,8 @@ namespace Exoduser.UnityPort
    GUI.enabled=GUI.enabled&&Characters.SelectedIndex>=0;if(GUI.Button(new Rect(1392,751,496,132),"",GUIStyle.none))EnterSelectedCharacter();GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
    Label(new Rect(1388,897,180,32),K("▶ 시네마틱","▶ Cinematic"),lobbyMicro,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1388,897,180,32),"",GUIStyle.none))ReplayIntro();
    DrawPower(new Rect(1856,895,36,36));if(GUI.Button(new Rect(1856,895,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
+   // Web build labels (index.html #lobbyVerOverlay / #lobbyVersionTxt): build kind from BuildFlavor, centred on the quit button (y 913).
+   NativeLobbyBuildLabels.Draw(913f);
    // Migration-only entry remains available explicitly to QA without changing the source lobby.
    if(diagnosticPreview){
     Rect preview=new Rect(1392,946,480,48);Fill(preview,new Color(.105f,.09f,.095f,.94f));Border(preview,new Color(.4f,.32f,.24f,.7f),1);

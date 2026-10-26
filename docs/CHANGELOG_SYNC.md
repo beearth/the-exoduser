@@ -57205,3 +57205,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac PC UI hook 4→6: 원본 patch 순서로 스킬 스모크 focus 조정, 웹 창 단축키 G/J/F10, 인벤토리 선택 없음/G 무전환 스모크 기대값, 일시정지 TAB/K 요청을 Mac 소유 `NativeGame*`·`NativePauseMenu*`에 연결. 각 문맥 검사·적용 및 diff 검사 통과. OS 입력·Player 미판정; 7–12/13 경계 후속. [표](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
 2026-10-26 Mac PC UI hook 7→12: PC 원본 A13/A14/A20/A21/A22/A23을 순서대로 Mac `NativeGame.cs`에 적용; A22 클리어·A23 보스바는 이벤트가 없어 Show 호출 없이 배선만. 13 A24는 Mac 진단 배지 조건에서 `git apply --check` 실패로 미적용, 14 이후 순서상 보류. Unity6000.6.7f1 비대화형 compile exit0·CS오류0/경고0(기존 UAC1001 한 종류); Player/OS 키/화면 미검증. Editor `.meta` churn은 사전 상태로 복원. [단계표·로그](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+
+2026-10-26 Mac PC UI hook 13→14 적응: 최신 PC 답신/대체 patch 없음. A24는 Mac `DiagnosticUiEnabled` 배지 조건만 문맥에 맞추고 구역 제목 첫 진입1회·실제 목표 수치 패널을 독립 연결(지역 총량 미이식). A26은 정상 로비 전원 버튼 뒤에 `NativeLobbyBuildLabels.Draw(913f)` 1회 삽입; 세계관/ATG 분기와 기존 debug preview 보존. 적용·정적 diff PASS, 화면·Player·컴파일은 다음 단계. [적응 근거](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).

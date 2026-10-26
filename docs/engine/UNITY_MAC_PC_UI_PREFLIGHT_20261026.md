@@ -91,3 +91,16 @@ PC 소유 `NativeInventory.Keyboard.cs`·`InventoryNavigation.cs`·`NativePanelT
 2–12는 PC 원본 patch의 순서와 내용을 지켜 Mac 소유 hook에 실제 적용했다. PC 소유 창/코어 파일은 merge된 blob에서 수동 수정하지 않았다. Mac ATG·저장 연결과 기존 사용자 Player는 건드리지 않았다. `NativeGame.cs` SHA256 `c3a9a2081ca801a62ae804ec9613a2057e50476801fe8615a886bf4048ebe51f`.
 
 Mac Unity 6000.6.7f1 Editor 단독 상태를 확인하고 **비대화형 script compile 1회** 실행했다. 종료 코드 0, 로그에 `error CS` 0·`warning CS` 0, 기존 `NativeCharacterPresentationPlayback.cs`의 `UAC1001` 한 종류가 두 번 기록됐다. 로그: `_out/UNITY-MAC-UI-MERGE-20261026/compile/mac-ui-2-12-compile.log`. Editor import가 만든 tracked `.meta` 411개는 사전 status(`NativeGame.cs` 수정 한 파일)와 Git HEAD를 대조해 원본 bytes로 복원했고 새 `.meta` 1개는 `_out/.../compile/untracked-meta-backup/`에 이동 보존했다. 검사 뒤 제품 작업 트리 차이는 `NativeGame.cs` hook뿐이다. Player·OS 키 입력·실제 창 화면·설정/캐릭터 저장 회귀는 실행하지 않았으므로 이 단계는 **컴파일 PASS / 런타임 미검증**이다.
+
+## 13→14 Mac 문맥 수동 적응 — 후속 checkpoint
+
+원격 `main` `d209075ec` 전달함과 PC 대상 `a48faf9ea`에는 13·14번에 대한 새 답신·대체 patch가 없다. PC 원본 A24를 Mac `DiagnosticUiEnabled` 조건을 기대하는 문맥으로 **한 줄만 바꾼** `_out/UNITY-MAC-UI-13-19-20261026/A24_mac_debug_badge_context.patch`는 `git apply --check` PASS 후 적용했다. 결과에서 진단용 캐릭터 배지는 기존 조건 안에 남고, 새 `NativeObjectivePanel`은 그 조건 **밖**에서 실제 `Player.Level/Experience/MaxExperience`, `Simulation.Kills/Materials`를 받는다. 지역 처치 총량은 `null`로 넘겨 "미이식"으로 보인다. `NativeAreaTitle`은 로비 차단 해제 후 stage 0을 **실행마다 1회** 표시하며, `--unity-*` QA 픽스처에서는 비표시(`--unity-world-3d` 예외). 구역 전환 이벤트나 새 진행 값은 추가하지 않았다.
+
+14번 PC 원본은 오래된 `NativeLobby.cs`의 preview 영역 문맥을 기대해 그대로는 실패한다. Mac의 현재 `DrawLobby()`에서 전원 버튼 직후·`diagnosticPreview` 블록 이전에 원본과 동일한 `NativeLobbyBuildLabels.Draw(913f)` 호출을 **한 번** 넣었다. 이 위치는 웹의 왼쪽 위 4줄·전원 버튼 옆 빌드 라벨을 정상 로비에서 그리고, 세계관/ATG `DrawWorldIntro()`에는 호출하지 않는다. 기존 로비 우측의 `OFFLINE` 모드 표시는 별도 위치·용도의 라벨이며 BuildFlavor 라벨 중복 호출은 없다. 독립 diff `_out/UNITY-MAC-UI-13-19-20261026/A26_mac_lobby_buildlabels.patch`.
+
+| 순서 | 원본 충돌 | Mac 적응 범위 | 현재 검증 |
+|---:|---|---|---|
+| 13 A24 | HUD 진단 배지 조건 문맥 | 문맥 한 줄만 Mac 조건으로 조정, 나머지 PC hunk 보존 | 적용·파일 diff 검사 PASS, 화면 미검증 |
+| 14 A26 lobby | 오래된 preview 주석/블록 문맥 | 같은 호출을 현재 전원 버튼 바로 뒤에 1회 삽입 | 정적 호출 위치·중복 없음·diff 검사 PASS, 화면 미검증 |
+
+원본 백업은 `_out/UNITY-MAC-UI-13-19-20261026/before/`에 있다. 이 단계에서 15–19번 hook, Editor compile, Player는 아직 실행하지 않았다.
