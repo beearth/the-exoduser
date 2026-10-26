@@ -11,6 +11,13 @@
 | ACTIVE | 실제 Claude 기존 조명 담당 UNITY-MAP-LIGHT-01의 d3a4a9a3b 코드 제출 회수. Unity/GPU 해제를 전달했으며 별도 빌드·화면·조명 전후 성능 검수로 진행. 공용 NativeGame 두 줄은 별도 patch 대조, 자동 병합/시각 PASS 아직 없음 |
 | PENDING | GPT API 이미지1개는 OPENAI_API_KEY 부재로 요청0·생성0. 안전한 로컬 인증 후 필요한 자산만 진행. 다른 제공자 잔액 소진 주장은 하지 않음. 자막3문자 후속은 보존 |
 
+### 2026-10-26 Mac→PC 우선순위 협의 송신 — Mac 소유 기록
+1. Mac `codex/unity-mac-20261024`의 `eaa1c0bff`는 `--unity-arabic-caption-preview` 전용 ATG 후보이며 일반 실행 채택은 0이다. cue20 720/1080과 `ar→ko`만 실제 확인했다.
+2. Mac 우선순위는 같은 HEAD 재빌드 1회 후 cue31 `EXODUSER.`와 아랍어 32큐의 원문·시간·결합·문장부호·줄바꿈을 순서대로 확인하는 것이다. 실패 큐는 RETOUCH로 남긴다.
+3. PC UI는 별도 브랜치·소유 범위로 유지해 Mac ATG 검수와 자동 병합하지 않는다. 현재 PC focus·키보드 QA 결과는 Mac 측에서 수신·인수한 증거가 없어 완료라고 표시하지 않는다.
+4. PC 담당에게 요청할 협의 순서는 focus 복귀·키보드 조작의 실제 QA 결과와 SHA를 먼저 공유하고, 그 뒤 원본 UI 차이 중 공용 접점만 소유자끼리 대조하는 것이다.
+5. 이 블록은 Mac 측 송신 기록이다. 상대의 열람·답신·합의는 아직 확인되지 않았으며, 확인 전에는 수신/합의 완료로 승격하지 않는다.
+
 일반 사용자 앱38141/48476/52157·원래 prefs·캐릭터 파일 보존. 검수는 별도 product/id와 명시 output만 사용했다. 첫부팅FPS120/기본값60·60·0/고정60Hz 유지. 웹/Godot/roster/전투save IO·새설정·새팀·자동화·유료생성·PC재가동0.
 
 ## 2026-10-25 Unity web language-menu parity COMPLETE
