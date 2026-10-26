@@ -35,6 +35,7 @@ public static class PortVerification {
    VerifyHudPixels();
    VerifyInventory();
    VerifyLobby();
+   VerifyA15Settings();
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="Unity_source_runtime_compile_asset_and_model",passed=true,engine=Application.unityVersion},true));
    Debug.Log("UNITY_VERIFY_PASS");EditorApplication.Exit(0);
   }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(2);}
@@ -77,6 +78,25 @@ public static class PortVerification {
   if(storyData.cuts==null||storyData.cuts.Length!=22||storyData.captions==null||storyData.captions.Length!=29)throw new Exception("Warrior source data mismatch");
   foreach(var language in storyData.captions)if(language.cues.Length!=22)throw new Exception("Warrior caption count "+language.code);
   foreach(var weight in new[]{"Regular","SemiBold","Bold"})if(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-"+weight)==null)throw new Exception("Missing static lobby font "+weight);
+ }
+ static void VerifyA15Settings(){
+  var state=new NativeSettingsState(120);int writes=0;
+  var menu=new NativePauseMenu(null,state,value=>writes++,null,null,null);
+  menu.ShowSettings();menu.Navigation.SelectTab(2);
+  menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Down,false,false);
+  menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Down,false,false);
+  if(menu.Navigation.Cursor!=4)throw new Exception("A15 audio SFX keyboard focus");
+  menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Right,false,false);
+  if(state.SfxPercent!=61||writes!=1)throw new Exception("A15 SFX right must step by one and write once");
+  state.SetSfxPercent(0);menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Right,false,false);
+  if(state.SfxPercent!=1||writes!=2)throw new Exception("A15 SFX minimum step");
+  state.SetSfxPercent(100);menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Right,false,false);
+  if(state.SfxPercent!=100||writes!=2)throw new Exception("A15 SFX maximum must not write unchanged value");
+  var bindings=new KeyBindings();var list=new NativeKeyBindList(bindings);
+  list.BeginListening("up",false);list.CancelListening();
+  if(list.Listening||bindings.Primary("up")!="KeyW")throw new Exception("A15 Escape cancel must not alter binding");
+  list.BeginListening("up",false);if(!list.CaptureApply("Tab")||list.Listening||bindings.Primary("up")!="Tab")throw new Exception("A15 capture Tab must bind without menu navigation");
+  Debug.Log("UNITY_A15_SETTINGS_NAV_SFX_CAPTURE_PASS");
  }
  static void VerifyInventory(){
   var data=Resources.Load<TextAsset>("Data/inventory_seed");if(data==null)throw new Exception("Missing original inventory seed");

@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A15 설정 4탭 최소 연결
+
+PC `f0f882c19`의 레이아웃 명세/입력 oracle을 현재 Mac `a3869387` blob과 대조했다. Mac 소유 PauseMenu/Navigation/Keyboard의 게임·화면·사운드·조작 4탭, 실제 FPS/fullscreen/SFX/BGM callback, 조작 탭 내 기존 key list와 scroll/footer를 연결. 게임 옵션·패드 재지정은 미지원 명시. 순수 navigation40/40, Unity Editor Verify 1회 exit0·A15 정책 PASS. Player 실창·청취/재시작 HOLD. [범위·근거](../UNITY_MAC_A15_4TAB_20261027.md).
+
 ## 2026-10-27 Mac 표시 릴리스 메타 원격 main 동기화
 
 원격 main `607110d52`의 최신 INBOX에 0.7.7 통합 표시 승인 없음. `release-version.json`(0.7.5/2026-10-20/ea-full, blob `528ad945f`) bytes만 Mac `release_web.json`으로 인수했다. 게임/미디어/app id/flavor 변경0, 새 Player build0. `8adfcc577` HEAD 전체 Unity6000.6.7f1 Editor Verify 1회 exit0/receipt PASS, HUD GPU·Inventory·Lobby PASS. 생성 `.meta` 411+1 원복. [원본 SHA·영수증](../UNITY_MAC_RELEASE_METADATA_20261027.md).

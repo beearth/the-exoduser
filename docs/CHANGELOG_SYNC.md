@@ -1,3 +1,5 @@
+2026-10-27 Mac A15 설정 4탭 후보: 게임/화면/사운드/조작 구조와 지원된 FPS/fullscreen/SFX/BGM·기존 key list 연결. 미지원 게임 설정/패드 재지정은 기능으로 노출하지 않음. Navigation40/40·Unity Editor 전체 Verify exit0/A15 입력 정책 PASS; Player 실창 HOLD. [계약](engine/UNITY_MAC_A15_4TAB_20261027.md).
+
 2026-10-27 Mac 표시 릴리스 메타: main `607110d52`의 `release-version.json` blob `528ad945f`를 `release_web.json`에 동일 bytes 반영. 현재 표시 0.7.5/2026-10-20/ea-full; 기존 0.7.7 WIP 스냅샷 대체. `8adfcc577` Editor 전체 Verify 1회 exit0/receipt PASS. [SHA·범위](engine/UNITY_MAC_RELEASE_METADATA_20261027.md).
 
 2026-10-27 Mac A05 오류 뒤 마지막 cue 후속: 영상 오류만은 완료하지 않으며 사용자 수동 마지막 cue는 완료한다. 격리 Editor fixture 24/24 PASS. 고유 Settings QA ARM64 앱 1회 빌드·표시된 `_out` root에서 자연 완료 저장→동일 root 재시작 로비 직행 Player PASS. 키 리맵·패드 JSON 유지. [계약](engine/UNITY_MAC_A05_CINSEEN_20261027.md).

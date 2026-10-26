@@ -11,10 +11,10 @@ namespace Exoduser.UnityPort.Core
   public int Cursor {get;private set;}
   public bool Focused {get;private set;}=true;
   public bool WaitingForRelease {get;private set;}
-  public int Count {get{return Page==PausePage.Main?4:Page==PausePage.Quit?2:Tab==2?5:7;}}
+  public int Count {get{return Page==PausePage.Main?4:Page==PausePage.Quit?2:Tab==1||Tab==2?8:6;}}
   public void Reset(){Page=PausePage.Main;Cursor=0;Fence();}
   public void Open(PausePage page){Page=page;Cursor=page==PausePage.Settings?Tab:0;Fence();}
-  public void SelectTab(int tab){if(tab<0||tab>2)return;Tab=tab;Cursor=tab;Fence();}
+  public void SelectTab(int tab){if(tab<0||tab>3)return;Tab=tab;Cursor=tab;Fence();}
   public void PointAt(int index){if(Focused&&index>=0&&index<Count)Cursor=index;}
   public void Fence(){WaitingForRelease=true;}
   public void ObserveReleased(bool anyHeld){if(Focused&&!anyHeld)WaitingForRelease=false;}
@@ -27,16 +27,16 @@ namespace Exoduser.UnityPort.Core
    if(key==PauseKey.Back)return BackPage()?PauseAction.None:dead?PauseAction.None:PauseAction.Resume;
    if(key==PauseKey.Up||key==PauseKey.Previous){Cursor=(Cursor+Count-1)%Count;return PauseAction.None;}
    if(key==PauseKey.Down||key==PauseKey.Next){Cursor=(Cursor+1)%Count;return PauseAction.None;}
-   if(key==PauseKey.Home){Cursor=0;return PauseAction.None;}
-   if(key==PauseKey.End){Cursor=Count-1;return PauseAction.None;}
+   if(key==PauseKey.Home){if(Page==PausePage.Settings&&Cursor<4)SelectTab(0);else Cursor=0;return PauseAction.None;}
+   if(key==PauseKey.End){if(Page==PausePage.Settings&&Cursor<4)SelectTab(3);else Cursor=Count-1;return PauseAction.None;}
    bool left=key==PauseKey.Left,right=key==PauseKey.Right;
    if(Page==PausePage.Quit){if(left||right){Cursor=1-Cursor;return PauseAction.None;}if(key==PauseKey.Accept){if(Cursor==0){BackPage();return PauseAction.None;}return PauseAction.Quit;}return PauseAction.None;}
    if(Page==PausePage.Main){if(key!=PauseKey.Accept)return PauseAction.None;switch(Cursor){case 0:return dead?PauseAction.Restart:PauseAction.Resume;case 1:Open(PausePage.Settings);break;case 2:return PauseAction.ReturnLobby;case 3:Open(PausePage.Quit);break;}return PauseAction.None;}
-   if(Cursor<3){if(left||right)SelectTab((Cursor+(left?2:1))%3);else if(key==PauseKey.Accept)SelectTab(Cursor);return PauseAction.None;}
+   if(Cursor<4){if(left||right)SelectTab((Cursor+(left?3:1))%4);else if(key==PauseKey.Accept)SelectTab(Cursor);return PauseAction.None;}
    if(Cursor==Count-1&&key==PauseKey.Accept){BackPage();return PauseAction.None;}
    if(Cursor==Count-2&&key==PauseKey.Accept)return PauseAction.Defaults;
-   if(Tab==0){if(Cursor==3){if(left)return PauseAction.FramePrevious;if(right)return PauseAction.FrameNext;}if(Cursor==4&&key==PauseKey.Accept)return PauseAction.ToggleFullscreen;}
-   if(Tab==1){if(Cursor==3){if(left)return PauseAction.SfxDown;if(right)return PauseAction.SfxUp;}if(Cursor==4){if(left)return PauseAction.BgmDown;if(right)return PauseAction.BgmUp;}}
+   if(Tab==1){if(Cursor==4){if(left)return PauseAction.FramePrevious;if(right)return PauseAction.FrameNext;}if(Cursor==5&&key==PauseKey.Accept)return PauseAction.ToggleFullscreen;}
+   if(Tab==2){if(Cursor==4){if(left)return PauseAction.SfxDown;if(right)return PauseAction.SfxUp;}if(Cursor==5){if(left)return PauseAction.BgmDown;if(right)return PauseAction.BgmUp;}}
    return PauseAction.None;
   }
  }

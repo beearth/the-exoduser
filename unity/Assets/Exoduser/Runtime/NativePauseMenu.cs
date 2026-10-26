@@ -15,11 +15,11 @@ namespace Exoduser.UnityPort
   readonly Action<bool> fullscreenChanged;
   GUIStyle title,body,muted,button,tabButton,activeTab,fpsButton,activeFpsButton;
   bool ready;
-  // A16: web key-binding list (#keyBindList). The Unity settings window has no 2-column web layout yet (Codex A15), so the list opens as its own full-screen page from the
-  // Controls tab (mouse only, wheel scroll, ESC / Back close it). While a key is waiting the page receives key events and the owner must not act on keys (KeyCaptureActive).
-  NativeKeyBindList keyList;bool keyPage;float keyScroll;GUIStyle keyLabelStyle;
+  // A16: the same key-binding list now lives inside A15 Controls. The old
+  // full-screen keyPage entry remains only for the existing isolated QA hook.
+  NativeKeyBindList keyList;bool keyPage;float keyScroll,settingsScroll;GUIStyle keyLabelStyle;
   public bool KeyPageOpen{get{return keyPage;}}
-  public bool KeyCaptureActive{get{return keyPage&&keyList!=null&&keyList.Listening;}}
+  public bool KeyCaptureActive{get{return keyList!=null&&keyList.Listening&&(keyPage||page==PausePage.Settings&&tab==3);}}
   // A16 test hooks (pause smoke phase "keys"): open the page without the mouse, reach the list, force the scroll (clamped to the end).
   public NativeKeyBindList KeyListForTest{get{return keyList;}}
   public void OpenKeyPageForTest(){keyPage=true;keyScroll=0;if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);}
@@ -39,8 +39,8 @@ namespace Exoduser.UnityPort
    this.font=font;this.settings=settings;this.sfxChanged=sfxChanged;
    this.bgmChanged=bgmChanged;this.frameCapChanged=frameCapChanged;this.fullscreenChanged=fullscreenChanged;
   }
-  public void Reset() { navigation.Reset();keyPage=false;if(keyList!=null)keyList.CancelListening(); }
-  public void ShowSettings() { page=PausePage.Settings; }
+  public void Reset() { navigation.Reset();keyPage=false;keyScroll=0;settingsScroll=0;if(keyList!=null)keyList.CancelListening(); }
+  public void ShowSettings() { page=PausePage.Settings;keyScroll=0;settingsScroll=0; }
   // Call once from the owner's Escape handler BEFORE toggling menu/Running.
   public bool HandleEscape()
   {
@@ -75,12 +75,13 @@ namespace Exoduser.UnityPort
    try
    {
     if(keyPage&&page==PausePage.Settings){DrawKeyPage();return PauseMenuCommand.None;}
-    if(Event.current.isKey)Event.current.Use();
+    if(Event.current.isKey&&!KeyCaptureActive)Event.current.Use();
     GUI.enabled=oldEnabled&&navigation.Focused&&!navigation.WaitingForRelease;
     GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;
     Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.72f));
     // Web common window tab bar at the settings-window position (1920x1080 design space).
     {float s1=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s1)/2,(Screen.height-1080*s1)/2,0),Quaternion.identity,Vector3.one*s1);NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");GUI.matrix=Matrix4x4.identity;}
+    if(page==PausePage.Settings){DrawSettingsA15(fullscreen);return PauseMenuCommand.None;}
     float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2,0),Quaternion.identity,Vector3.one*scale);
     var panel=new Rect(300,72,680,576);Fill(panel,new Color(.055f,.047f,.043f,.98f));
@@ -107,6 +108,74 @@ namespace Exoduser.UnityPort
    GUI.Label(new Rect(348,528,584,56),T("↑↓ 선택 · ←→ 값 조절 · Enter 확인\n","↑↓ Select · ←→ Adjust · Enter Confirm\n")+SettingsPersistenceNotice(),muted);
    if(MenuButton(new Rect(340,588,288,44),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
    if(MenuButton(new Rect(652,588,288,44),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
+  }
+  // A15: four web page headings with only the controls connected to this native host.
+  void DrawSettingsA15(bool fullscreen)
+  {
+   float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
+   GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2,(Screen.height-1080*scale)/2,0),Quaternion.identity,Vector3.one*scale);
+   var panel=new Rect(40,100,1840,935);Fill(panel,new Color(.055f,.047f,.043f,.98f));Border(panel,new Color(.48f,.36f,.23f));
+   GUI.Label(new Rect(80,119,1760,55),T("설정","Settings"),title);
+   string[] tabs={T("게임","Game"),T("화면","Display"),T("사운드","Audio"),T("조작","Controls")};
+   bool navigationEnabled=GUI.enabled;if(keyList!=null&&keyList.Listening)GUI.enabled=false;
+   for(int i=0;i<4;i++)if(MenuButton(new Rect(80+i*442,184,434,48),tabs[i],i,tab==i?activeTab:tabButton)){tab=i;settingsScroll=0;keyScroll=0;}
+   GUI.enabled=navigationEnabled;
+   var content=new Rect(80,260,1760,610);Fill(content,new Color(.035f,.032f,.031f,.96f));Border(content,new Color(.28f,.23f,.18f));
+   if(tab==3)DrawEmbeddedBindings(content);
+   else
+   {
+    bool single=Screen.width<1100;float gap=28,cardW=single?content.width-32:(content.width-48-gap)/2;
+    float max=single&&tab!=0?220:0;
+    if(Event.current.type==EventType.ScrollWheel&&content.Contains(Event.current.mousePosition)){settingsScroll=Mathf.Clamp(settingsScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
+    settingsScroll=Mathf.Clamp(settingsScroll,0,max);
+    GUI.BeginGroup(content);
+    float x1=16,x2=single?16:16+cardW+gap,y1=18-settingsScroll,y2=single?238-settingsScroll:y1;
+    if(tab==0)GUI.Label(new Rect(x1,y1,cardW,100),T("이 빌드에서 변경할 수 있는 게임 설정이 없습니다.","No game settings can be changed in this build."),body);
+    else if(tab==1){DrawA15FrameCard(new Rect(x1,y1,cardW,190));DrawA15FullscreenCard(new Rect(x2,y2,cardW,190),fullscreen);}
+    else{DrawA15VolumeCard(new Rect(x1,y1,cardW,190),true);DrawA15VolumeCard(new Rect(x2,y2,cardW,190),false);}
+    GUI.EndGroup();
+   }
+   Fill(new Rect(80,895,1760,1),new Color(.48f,.36f,.23f,.65f));
+   GUI.Label(new Rect(84,910,1090,82),SettingsPersistenceNotice(),muted);
+   if(keyList!=null&&keyList.Listening)GUI.enabled=false;
+   if(MenuButton(new Rect(1210,924,300,54),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
+   if(MenuButton(new Rect(1530,924,300,54),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
+   GUI.enabled=navigationEnabled;
+  }
+  void DrawA15FrameCard(Rect card)
+  {
+   Fill(card,new Color(.10f,.085f,.07f,.85f));Border(card,new Color(.34f,.27f,.19f));GUI.Label(new Rect(card.x+12,card.y+12,card.width-24,38),T("프레임 제한","Frame rate limit"),body);
+   PointAt(card,4);FocusBorder(card,4);bool enabled=GUI.enabled;GUI.enabled=enabled&&frameCapChanged!=null;
+   float buttonW=(card.width-36)/NativeSettingsState.FrameCapCount;
+   for(int i=0;i<NativeSettingsState.FrameCapCount;i++){int cap=NativeSettingsState.GetFrameCap(i);string label=cap==0?T("무제한","Unlimited"):cap.ToString();if(GUI.Button(new Rect(card.x+12+i*buttonW,card.y+78,buttonW-2,46),label,settings.FrameCap==cap?activeFpsButton:fpsButton)){settings.TrySetFrameCap(cap);frameCapChanged(cap);navigation.Fence();}}
+   GUI.enabled=enabled;
+  }
+  void DrawA15FullscreenCard(Rect card,bool fullscreen)
+  {
+   Fill(card,new Color(.10f,.085f,.07f,.85f));Border(card,new Color(.34f,.27f,.19f));GUI.Label(new Rect(card.x+12,card.y+12,card.width-24,38),T("전체 화면","Fullscreen"),body);
+   PointAt(card,5);FocusBorder(card,5);bool enabled=GUI.enabled;GUI.enabled=enabled&&fullscreenChanged!=null;
+   bool next=GUI.Toggle(new Rect(card.x+12,card.y+76,card.width-24,48),fullscreen,fullscreen?T("켜짐","On"):T("꺼짐","Off"),button);
+   if(next!=fullscreen&&fullscreenChanged!=null){fullscreenChanged(next);navigation.Fence();}GUI.enabled=enabled;
+  }
+  void DrawA15VolumeCard(Rect card,bool sfx)
+  {
+   int value=sfx?settings.SfxPercent:settings.BgmPercent,index=sfx?4:5;bool connected=sfx?sfxChanged!=null:bgmChanged!=null;
+   Fill(card,new Color(.10f,.085f,.07f,.85f));Border(card,new Color(.34f,.27f,.19f));PointAt(card,index);FocusBorder(card,index);
+   GUI.Label(new Rect(card.x+12,card.y+12,card.width-140,38),sfx?T("효과음","Sound effects"):T("배경 음악","Background music"),body);GUI.Label(new Rect(card.xMax-110,card.y+12,98,38),value+"%",body);
+   bool enabled=GUI.enabled;GUI.enabled=enabled&&connected;int next=Mathf.RoundToInt(GUI.HorizontalSlider(new Rect(card.x+16,card.y+88,card.width-32,34),value,0,100));GUI.enabled=enabled;
+   if(next!=value&&connected){if(sfx){settings.SetSfxPercent(next);sfxChanged(settings.SfxPercent);}else{settings.SetBgmPercent(next);bgmChanged(settings.BgmPercent);}}
+  }
+  void DrawEmbeddedBindings(Rect content)
+  {
+   if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);
+   keyList.English=English;
+   if(SettingsPersistenceProblem){keyList.SaveNote="키 설정을 저장하지 못했습니다 · 이번 실행의 값은 유지됩니다";keyList.SaveNoteEn="Key bindings could not be saved · current session values remain";}
+   else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 이 Mac에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on this Mac";}
+   else{keyList.SaveNote="검수 실행의 키 설정은 저장하지 않습니다";keyList.SaveNoteEn="Key bindings are not saved during this QA run";}
+   float max=Mathf.Max(0,keyList.ContentHeight+28-content.height);
+   if(Event.current.type==EventType.ScrollWheel&&content.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
+   keyScroll=Mathf.Clamp(keyScroll,0,max);
+   GUI.BeginGroup(content);keyList.Draw(new Vector2(12,14-keyScroll),new Rect(0,0,content.width,content.height));GUI.EndGroup();
   }
   string SettingsPersistenceNotice()
   {
@@ -162,7 +231,7 @@ namespace Exoduser.UnityPort
    }
    if(GUI.Button(new Rect(348,480,584,40),T("키 설정 변경","Change key bindings"),button)){keyPage=true;keyScroll=0;if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);}
   }
-  // A16: web #keyBindList as a full-screen page in the 1920x1080 design space (same geometry as the web controls tab list).
+  // Legacy A16 QA hook; normal settings draw the list inside Controls.
   void DrawKeyPage()
   {
    GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;   // the caller's matrix is not reset yet at this point (Draw() sets identity after the early return)
