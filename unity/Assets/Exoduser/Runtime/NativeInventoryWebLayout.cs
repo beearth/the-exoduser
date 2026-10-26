@@ -65,16 +65,31 @@ namespace Exoduser.UnityPort {
             Piece(rail,new Rect(r.x+b,r.y,r.width-2*b,b),s,0,mw,s);Piece(rail,new Rect(r.x+b,r.yMax-b,r.width-2*b,b),s,H-s,mw,s);
             Piece(rail,new Rect(r.x,r.y+b,b,r.height-2*b),0,s,s,mh);Piece(rail,new Rect(r.xMax-b,r.y+b,b,r.height-2*b),W-s,s,s,mh);
         }
+        // IMGUI's RotateAroundPivot takes the pivot in screen space and ignores the design-space scale/offset, so rotate in local space.
+        static void RotateLocal(float angle,Vector2 pivot){
+            GUI.matrix=GUI.matrix*Matrix4x4.TRS(pivot,Quaternion.Euler(0,0,angle),Vector3.one)*Matrix4x4.TRS(-pivot,Quaternion.identity,Vector3.one);
+        }
         static void Line(Vector2 a,Vector2 b,float w,Color c){
-            var m=GUI.matrix;var d=b-a;GUIUtility.RotateAroundPivot(Mathf.Atan2(d.y,d.x)*Mathf.Rad2Deg,a);
+            var m=GUI.matrix;var d=b-a;RotateLocal(Mathf.Atan2(d.y,d.x)*Mathf.Rad2Deg,a);
             Fill(new Rect(a.x,a.y-w/2,d.magnitude,w),c);GUI.matrix=m;
         }
-        static void Diamond(Vector2 center,float half,Color c){
-            var m=GUI.matrix;GUIUtility.RotateAroundPivot(45,center);Fill(new Rect(center.x-half,center.y-half,half*2,half*2),c);GUI.matrix=m;
+        // Diamonds are textures, not rotated quads: IMGUI's rotation pivot is wrong inside BeginGroup/ScrollView under a scaled matrix.
+        Texture2D DiamondTexture(int thickPermille){
+            string key="dia"+thickPermille;if(procedural.TryGetValue(key,out var t))return t;
+            const int n=64;t=new Texture2D(n,n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            var px=new Color[n*n];float inner=thickPermille<=0?-1f:1f-thickPermille/1000f;
+            for(int y=0;y<n;y++)for(int x=0;x<n;x++){
+                float u=(Mathf.Abs(x+.5f-n/2f)+Mathf.Abs(y+.5f-n/2f))/(n/2f);
+                float a=Mathf.Clamp01((1f-u)*n*.35f+.5f);if(inner>0)a*=Mathf.Clamp01((u-inner)*n*.35f+.5f);
+                px[y*n+x]=new Color(1,1,1,a);
+            }
+            t.SetPixels(px);t.Apply(false,true);procedural[key]=t;return t;
         }
-        static void DiamondOutline(Vector2 center,float half,Color c){
-            var m=GUI.matrix;GUIUtility.RotateAroundPivot(45,center);Border(new Rect(center.x-half,center.y-half,half*2,half*2),c);GUI.matrix=m;
+        void DrawDiamond(Vector2 center,float half,Color c,int thickPermille){
+            float s=half*2.8284271f;var old=GUI.color;GUI.color=c;GUI.DrawTexture(new Rect(center.x-s/2,center.y-s/2,s,s),DiamondTexture(thickPermille));GUI.color=old;
         }
+        void Diamond(Vector2 center,float half,Color c){DrawDiamond(center,half,c,0);}
+        void DiamondOutline(Vector2 center,float half,Color c){DrawDiamond(center,half,c,Mathf.Clamp(Mathf.RoundToInt(1000f/half),1,1000));}
 
         GUIStyle TextStyle(int size,int weight,TextAnchor anchor){
             long key=((long)size*1000+weight)*16+(int)anchor;

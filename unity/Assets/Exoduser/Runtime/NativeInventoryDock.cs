@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort {
             status=new GUIStyle(small){alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Clip};
             button=new GUIStyle(GUIStyle.none){font=strong,fontSize=18,alignment=TextAnchor.MiddleCenter,padding=new RectOffset(12,12,4,4)};
             button.normal.textColor=parchment;button.hover.textColor=Color.white;button.active.textColor=gold;
-            InitWebLayout();
+            InitWebLayout();InitOssuary();
         }
 
         // Used by the shared details/comparison view: same plate face as every other web button.
@@ -72,45 +72,55 @@ namespace Exoduser.UnityPort {
             Fill(new Rect(0,0,Screen.width,Screen.height),C(0,0,0,.53f));
             GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2f,(Screen.height-1080*scale)/2f,0),Quaternion.identity,new Vector3(scale,scale,1));
             var stats=State.CalculateStats(level);var power=InventoryCombatPower.Calculate(State,stats,level);
-            DrawWindow();
-            DrawNavigation(close);
-            DrawHeaderLine(power,close);
-            DrawBody(new Rect(42,182,1836,802));
-            DrawEquipPanel(level,power);
-            DrawBagPanel(level);
-            DrawRightPanel(level,power);
-            DrawActionRow();
+            bool oss=Page==PageOssuary;
+            // The ossuary page narrows the window to x518 w1390; the tab bar, header line and sub tabs scale with it.
+            float wx=oss?518:12,ww=oss?1390:1896,lx=oss?548:42,lw=oss?1330:1836;
+            DrawWindow(new Rect(wx,12,ww,1056),oss);
+            DrawNavigation(lx,lw);
+            DrawHeaderLine(power,lx-42,close);
+            DrawBody(new Rect(lx,182,lw,oss?858:802),lx,lw);
+            if(oss)DrawOssuaryPage(level,power);
+            else{
+                DrawEquipPanel(level,power);
+                DrawBagPanel(level);
+                DrawRightPanel(level,power);
+                DrawActionRow();
+            }
             GUI.matrix=old;
         }
 
-        void DrawWindow(){
-            var pbox=new Rect(12,12,1896,1056);
-            IronTile(pbox,iron320,320);Grad(pbox,C(23,23,25,.933f),C(8,11,13,.96f));
+        void DrawWindow(Rect pbox,bool sigil){
+            IronTile(pbox,iron320,320);
+            if(sigil){
+                // ossuary page: linear-gradient(#141315d9,#09090af2), sigil center -150px / 620px, iron (ui-refinement.css:591).
+                GUI.BeginGroup(pbox);GUI.DrawTexture(new Rect(pbox.width/2f-310,-150,620,620),ossSigil);GUI.EndGroup();
+                Grad(pbox,C(20,19,21,.851f),C(9,9,10,.949f));
+            }else Grad(pbox,C(23,23,25,.933f),C(8,11,13,.96f));
             Border(pbox,C(102,94,80));Border(new Rect(pbox.x+3,pbox.y+3,pbox.width-6,pbox.height-6),C(52,53,48));
             Rail(windowFrame,pbox,60,266);
         }
 
-        void DrawNavigation(Action close){
+        void DrawNavigation(float lx,float lw){
             string[] tabs={"설정 [ESC]","인벤토리 [TAB]","대장간 [G]","스킬 [K]","능력치 [J]"};
-            float[] xs={42,410,777,1145,1512};
-            for(int i=0;i<5;i++)PlateTab(new Rect(xs[i],48,366,39),tabs[i],12,i==1);
+            // 1836 -> x 42,410,777,1145,1512 w 366; 1330 -> x 548,814,1081,1347,1614 w 264
+            for(int i=0;i<5;i++)PlateTab(new Rect(lx+i*(lw+2)/5f,48,(lw-8)/5f,39),tabs[i],12,i==1);
         }
 
-        void DrawHeaderLine(CombatPower power,Action close){
-            Txt(new Rect(50,105,34,18),"전투력",12,C(136,102,68),400);
+        void DrawHeaderLine(CombatPower power,float dx,Action close){
+            Txt(new Rect(50+dx,105,34,18),"전투력",12,C(136,102,68),400);
             // #cpVal: 21px / 600, text-shadow 0 0 8px rgba(255,200,0,.3).
-            var cpRect=new Rect(90,101,60,25);string cpText=power.Total.ToString();
+            var cpRect=new Rect(90+dx,101,60,25);string cpText=power.Total.ToString();
             TxtGlow(cpRect,cpText,21,C(255,200,0,.3f),600);
             Txt(cpRect,cpText,21,C(225,194,139),600);
             // #cpBreak: 12x12 viewBox-24 svg icons (stroke 1.6 -> .8px, drop-shadow 0 0 5px) followed by "value " text.
-            float bx=145.8f;int[] vals={power.Atk,power.Def,power.Extra};
+            float bx=145.8f+dx;int[] vals={power.Atk,power.Def,power.Extra};
             for(int i=0;i<3;i++){
                 DrawCpIcon(i,new Vector2(bx,109.7f));bx+=12;
                 string v=vals[i].ToString();
                 Txt(new Rect(bx,105,80,18),v,12,C(184,176,161),400);
                 bx+=TextWidth(v+" ",12,400);
             }
-            Txt(new Rect(948,102,200,24),"악의: 1000",12,C(204,190,165),400,TextAnchor.MiddleCenter);
+            Txt(new Rect(948+dx/2f,102,200,24),"악의: 1000",12,C(204,190,165),400,TextAnchor.MiddleCenter);
             var closeRect=new Rect(1842,100,28,28);
             Fill(closeRect,C(39,19,16));Border(closeRect,C(134,94,67));
             if(closeRect.Contains(Event.current.mousePosition))Fill(closeRect,new Color(1,1,1,.07f));
@@ -151,9 +161,15 @@ namespace Exoduser.UnityPort {
             foreach(var path in paths)Stroke(path,1.35f,col);
         }
 
-        void DrawBody(Rect body){
-            string[] subs={"장비","유골함","유물","보관함"};float[] xs={42,502,962,1421};
-            for(int i=0;i<4;i++)PlateTab(new Rect(xs[i],136,457,36),subs[i],13,i==0);
+        void DrawBody(Rect body,float lx,float lw){
+            string[] subs={"장비","유골함","유물","보관함"};
+            // 1836 -> x 42,502,962,1421 w 457; 1330 -> x 548,881,1215,1548 w 330 (4 tabs, 2px gaps; 유물/보관함 are not ported: display only)
+            float tw=(lw-6)/4f;
+            for(int i=0;i<4;i++){
+                var r=new Rect(lx+i*(tw+2),136,tw,36);
+                if(i<2){if(PlateButton(r,subs[i],13,i==Page))SetPage(i);}
+                else PlateTab(r,subs[i],13,false);
+            }
             IronTile(body,iron480,480);Grad(body,C(5,7,7,.733f),C(8,9,9,.85f));Border(body,C(83,75,62));
         }
 
@@ -223,8 +239,7 @@ namespace Exoduser.UnityPort {
             Txt(new Rect(x,208,300,23),")",14,C(222,212,192),500);
             var sort=new Rect(1249,205,66,28);
             PlateFace(sort,false);
-            var ar=C(199,190,173);Line(new Vector2(1262,215),new Vector2(1262,226),1.3f,ar);Line(new Vector2(1262,214),new Vector2(1259,217.5f),1.3f,ar);Line(new Vector2(1262,214),new Vector2(1265,217.5f),1.3f,ar);
-            Line(new Vector2(1268,225),new Vector2(1268,214),1.3f,ar);Line(new Vector2(1268,226),new Vector2(1265,222.5f),1.3f,ar);Line(new Vector2(1268,226),new Vector2(1271,222.5f),1.3f,ar);
+            var ar=C(199,190,173);Line(new Vector2(1263,213),new Vector2(1263,227),1.3f,ar);Line(new Vector2(1263,213),new Vector2(1260,216.5f),1.3f,ar);Line(new Vector2(1263,213),new Vector2(1266,216.5f),1.3f,ar);Line(new Vector2(1263,227),new Vector2(1260,223.5f),1.3f,ar);Line(new Vector2(1263,227),new Vector2(1266,223.5f),1.3f,ar);
             Txt(new Rect(1276,205,36,28),"정렬",12,C(199,190,173),500,TextAnchor.MiddleLeft,true);
             if(GUI.Button(sort,GUIContent.none,GUIStyle.none))Sort();
             Border(new Rect(1319,211,41,17),C(84,74,59,.7f));

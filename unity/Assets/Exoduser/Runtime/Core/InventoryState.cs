@@ -10,12 +10,23 @@ namespace Exoduser.UnityPort.Core {
    if(data==null||data.equipped==null||data.equipped.Length!=Slots.Length||data.bag==null||data.bag.Length>BagMax)throw new ArgumentException("Invalid native inventory seed");
    var owned=new HashSet<InventoryItem>();
    for(int i=0;i<data.equipped.Length;i++){var it=data.equipped[i];if(it==null)continue;string why;if(!Admitted(it,out why)||it.slot!=Slots[i]||!owned.Add(it))throw new ArgumentException("Unsupported equipped item: "+why);Equipped[i]=it;}
-   foreach(var it in data.bag){string why;if(!Admitted(it,out why)||!owned.Add(it))throw new ArgumentException("Unsupported bag item: "+why);Bag.Add(it);}
+   foreach(var it in data.bag){string why;if(it!=null&&it.slot=="ossuary")throw new ArgumentException("The ossuary is never a bag item");if(!Admitted(it,out why)||!owned.Add(it))throw new ArgumentException("Unsupported bag item: "+why);Bag.Add(it);}
    // Missing coordinates are placed as the original inventory opening path does.
    bool missing=false;foreach(var it in Bag)if(it._gx<0||it._gy<0)missing=true;
    if(missing)Sort();else for(int i=0;i<Bag.Count;i++)if(!CanPlace(i,Bag[i]._gx,Bag[i]._gy))throw new ArgumentException("Overlapping seed inventory");
   }
+  // The one fixed unique ossuary of the source (game.html mkItem ossuary branch 16155-16166). Never a bag/equip-page item.
+  static bool AdmittedOssuary(InventoryItem it,out string reason) {
+   reason="Only the fixed source unique ossuary is admitted";
+   if(it.rarity!=5||it.tier!=0||it.enh!=0||it.socketCount!=0||it.itemLv!=0||it.reqLv!=0||it.el!=0||!string.IsNullOrEmpty(it.legendarySpecial)||!string.IsNullOrEmpty(it.uniqueSpecial))return false;
+   if(it.crystals!=null&&it.crystals.Length!=0||it.socketQ!=null&&it.socketQ.Length!=0||it.elements!=null&&it.elements.Length!=0)return false;
+   if(it.affixes==null||it.affixes.Length!=1||it.affixes[0]==null||it.affixes[0].id!="ancHP"||it.affixes[0].tier!=3||!Finite(it.affixes[0].value))return false;
+   if(it._implicitStat!="_iAncPow")return false;
+   foreach(var f in typeof(InventoryItem).GetFields())if(f.FieldType==typeof(double)&&!Finite((double)f.GetValue(it)))return false;
+   reason=null;return true;
+  }
   public static bool Admitted(InventoryItem it,out string reason) {
+   if(it!=null&&it.slot=="ossuary")return AdmittedOssuary(it,out reason);
    reason="Only admitted unenhanced, socketless source starter equipment is available";
    if(it==null||Array.IndexOf(Slots,it.slot)<0||it.slot=="ossuary"||it.rarity<0||it.rarity>1||it.enh!=0||it.socketCount!=0||it.tier!=0||it.itemLv!=0||it.reqLv<0||it.crystals!=null&&it.crystals.Length!=0||it.socketQ!=null&&it.socketQ.Length!=0||!string.IsNullOrEmpty(it.legendarySpecial)||!string.IsNullOrEmpty(it.uniqueSpecial))return false;
    if(it.affixes!=null)foreach(var a in it.affixes)if(a==null||AffixUnit(a.id)==null||!Finite(a.value)||a.tier!=0)return false;
@@ -37,6 +48,7 @@ namespace Exoduser.UnityPort.Core {
   public bool TryMove(InventoryItem item,int gx,int gy){int i=Bag.IndexOf(item);if(!CanPlace(i,gx,gy))return false;item._gx=gx;item._gy=gy;return true;}
   public bool TryEquip(InventoryItem item,int playerLevel,out string reason){
    reason="Item is not in the bag";if(item==null||!Bag.Contains(item))return false;
+   if(item.slot=="ossuary"){reason="The ossuary is not equipped from the equipment page";return false;}
    if(!Admitted(item,out reason))return false;
    if(item.reqLv>playerLevel){reason="Required level: "+item.reqLv;return false;}
    string target=item.slot;if(target=="headband"||target=="headband2")target=GetEquipped("headband")==null?"headband":GetEquipped("headband2")==null?"headband2":item.slot;
@@ -45,7 +57,7 @@ namespace Exoduser.UnityPort.Core {
    if(old!=null){old._gx=item._gx;old._gy=item._gy;Bag.Add(old);}
    Equipped[slot]=item;item.slot=target;Bag.Remove(item);reason=null;return true;
   }
-  public bool TryUnequip(string slot,out string reason){int index=Array.IndexOf(Slots,slot);reason="No equipped item";if(index<0||Equipped[index]==null)return false;var item=Equipped[index];if(!Admitted(item,out reason))return false;
+  public bool TryUnequip(string slot,out string reason){int index=Array.IndexOf(Slots,slot);reason="No equipped item";if(index<0||Equipped[index]==null)return false;if(slot=="ossuary"){reason="The ossuary is not unequipped from the equipment page";return false;}var item=Equipped[index];if(!Admitted(item,out reason))return false;
    // Original unequip checks the grid, not BAG_MAX: the 300-item grid is the limit.
    Bag.Add(item);int x,y;if(!FindSpace(Bag.Count-1,out x,out y)){Bag.RemoveAt(Bag.Count-1);reason="No bag space";return false;}item._gx=x;item._gy=y;Equipped[index]=null;reason=null;return true;}
   public void Sort(){var order=new Dictionary<InventoryItem,int>();for(int i=0;i<Bag.Count;i++)order.Add(Bag[i],i);Bag.Sort((a,b)=>{int d=b.fav.CompareTo(a.fav);if(d!=0)return d;d=a.junk.CompareTo(b.junk);if(d!=0)return d;d=b.rarity.CompareTo(a.rarity);if(d!=0)return d;d=ItemPower(b).CompareTo(ItemPower(a));if(d!=0)return d;d=b.itemLv.CompareTo(a.itemLv);if(d!=0)return d;d=b.enh.CompareTo(a.enh);return d!=0?d:order[a].CompareTo(order[b]);});for(int i=0;i<Bag.Count;i++){Bag[i]._gx=i%5*2;Bag[i]._gy=i/5*2;}}
@@ -56,7 +68,7 @@ namespace Exoduser.UnityPort.Core {
    double iv=Math.Abs(i._implicitVal);if(iv!=0)p+=iv>1?iv*2:iv*80;
    if(i.affixes!=null)foreach(var a in i.affixes){string unit=AffixUnit(a.id);double v=Math.Abs(a.value);p+=(unit=="pct"||unit=="prob"?v*150:v*1.5)+a.tier*15;}return (int)p;
   }
-  static string AffixUnit(string id){switch(id){case "defFlat":case "shieldFlat":case "pickupRadius":case "flatLightDmg":return "val";case "poisonDot":return "dps";case "onHitPoison":case "onHitBleed":return "prob";case "projDmgPct":case "pierceDmgKeep":case "reflect":case "dropRate":case "cooldownRed":case "darkPen":case "counterAtkDmg":case "maxHPPct":case "darkDR":case "slowDmgUp":case "poisonDmgPct":case "skDarkPillarDmg":return "pct";default:return null;}}
+  static string AffixUnit(string id){switch(id){case "defFlat":case "shieldFlat":case "pickupRadius":case "flatLightDmg":return "val";case "poisonDot":return "dps";case "onHitPoison":case "onHitBleed":return "prob";case "ancHP":case "projDmgPct":case "pierceDmgKeep":case "reflect":case "dropRate":case "cooldownRed":case "darkPen":case "counterAtkDmg":case "maxHPPct":case "darkDR":case "slowDmgUp":case "poisonDmgPct":case "skDarkPillarDmg":return "pct";default:return null;}}
   double Affix(string name){double v=0;foreach(var i in Equipped)if(i?.affixes!=null)foreach(var a in i.affixes)if(a.id==name)v+=a.value;return v;}
   double Implicit(string name){double v=0;foreach(var i in Equipped)if(i!=null&&i._implicitStat==name)v+=i._implicitVal;return v;}
   public InventoryStats CalculateStats(int level,int stage=1,int difficultySigned=0){if(level<1||stage<1||difficultySigned<-5||difficultySigned>5)throw new ArgumentOutOfRangeException();

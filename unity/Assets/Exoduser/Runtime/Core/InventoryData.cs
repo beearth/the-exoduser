@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort.Core {
  // Original source names and double IDs are retained; ownership uses reference identity.
  [Serializable] public sealed class InventoryItem {
   public double id; public string slot,name,emoji,wtype,btype,brType,_implicitStat,_implicitKo,legendarySpecial,uniqueSpecial;
-  public int el,rarity,tier,itemLv,reqLv,enh,socketCount;
+  public int el,rarity,tier,itemLv,reqLv,enh,socketCount; public string anc; public bool unique; public double ancPow;
   public int _gx=-1,_gy=-1; public bool fav,junk;
   public double atk,spd,wStCost,wArcW,wRange,wStagger,bonusRange,shieldWt,def,bonusSt,stagger,bonusHp,chargeDist,charge,chargeW,bonusChargeDist,beamDmg,bowSpd,bowStCost,bowRange,bowProjSpd,bowPierce,potCd,eDef,bonusShield,bonusMp,splashR;
   public double bStr,bDex,bInt,bLck,critRate,critDmg,atkSpd,dmgBonus,chargeAoE,chargeCharge,splashMul,magicPen,stRegen,mpRegen,_implicitVal;
