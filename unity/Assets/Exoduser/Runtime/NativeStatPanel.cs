@@ -51,7 +51,7 @@ namespace Exoduser.UnityPort {
   public void BlurSearch(){blurSearch=true;searchFocused=false;}
   public void HandleKeys(Action close){
    if(searchFocused)return;
-   if(Input.GetKeyDown(KeyCode.J))close();
+   if(NativeKeyBindInput.Down("stats"))close();   // A16: web BINDS.stats
   }
 
   // ---- resources / primitives ----
