@@ -509,3 +509,7 @@ PC freeze `741d97ba1`의 dock/skills 두 파일만 Mac에 적용, 원본 사본�
 ## 2026-10-27 Mac 실제 시작→필드 키보드 QA
 
 A06 고유 ARM64 QA 앱 재사용·신규 빌드0. 실제 일반 시작에서 실버테일 반복 타이틀→문→정본 v22b 영상→격리 로비0/5→전사 생성 취소→전사 `A06QA` 생성/스토리→안내 4단계→필드 HUD→W 이동까지 키보드 PASS. FDG 단독 frame·이번 청음, 113초 자연완주·실습 완료·OS 물리 마우스는 HOLD. 격리 QA roster revision1/1명, 기존 세 앱/개인 파일 보존, QA PID 종료. [단계별 표·원본 PNG](../UNITY_MAC_START_TO_FIELD_QA_20261027.md).
+
+## 2026-10-27 Mac 정본 세계관 일반 UI 자연완주
+
+같은 A06 고유 앱·신규 빌드0, 새 절대 QA output/PID22329에서 제목문 `Return` 뒤 입력 없이 정본 SHA `3b99d59b…`의 초반·중간 frame을 관찰하고 129.133초 gate→로비 wall 후 0/5 자동 전환을 확인했다. 일반 UI 자연 로비 전환 PASS; 정밀 영상 길이/마지막 frame PNG·이번 오디오 계측은 HOLD. 이전 시작→필드 보고의 skip 경로와 분리한다. QA PID 종료·기존 앱3 유지·roster 파일 생성0. [시간표·PNG](../UNITY_MAC_NATURAL_WORLD_INTRO_20261027.md).

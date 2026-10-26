@@ -1,5 +1,7 @@
 # Mac Unity 시작→필드 실키보드 QA — 2026-10-27
 
+> 후속 독립 순회에서 같은 QA 앱의 정본 세계관 영상이 입력 없이 자동 로비 전환됨을 확인했다. 그 자연완주 범위와 마지막 영상 프레임 미캡처 경계는 [자연완주 QA](UNITY_MAC_NATURAL_WORLD_INTRO_20261027.md)에 기록했다. 아래 표는 첫 번째 skip 순회의 당시 판정이다.
+
 ## 실행 경계
 
 A06 source `5427869fe8cd7aa8eaf1a51505ce437bc2522496`로 이미 빌드된 ARM64 고유 앱 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A06-20261027/build/EXODUSER-Unity.app`을 재사용했다. 새 빌드·소스 변경은 없다. `CFBundleIdentifier=com.fordeargamers.exoduser.a03a04qa20261027`, product `EXODUSER A03 A04 QA`. `open -n`의 최초 PID 21703과 제목 캡처용 재실행 PID 21814는 모두 `--unity-frontend-review -output /Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-START-FLOW-20261027 -logFile <각 전용 로그>`를 가진 단일 QA 프로세스였고 종료했다. 이 옵션의 roster는 `<output>/character-roster-v1`에만 저장되며 설정 store는 QA 경로에서 초기화되지 않는다. 실행 전 그 roster는 없었고, 종료 시 revision 1, `A06QA` 한 명, selectedIndex 0이다. 원래 일반 앱 PID 38141/48476/52157은 유지했다. 사용자 roster 파일을 열거나 캐릭터를 삭제하지 않았다.
