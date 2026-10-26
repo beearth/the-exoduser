@@ -48,6 +48,9 @@
 | 2026-10-26 | G = 대장간, 장비/가방 칸 전환 키 삭제(웹은 게임패드 LB/RB 전용) | game.html:32122, 14141-14172 |
 | 2026-10-26 | 일시정지 TAB = 인벤토리 전환, ESC = 웹 `_panelBack` 규칙 | 웹 키 규칙 |
 | 2026-10-26 | 스킬 창 원판 = 웹 3D 정지 캡처, 회전·발광은 미이식 | 모션·이펙트는 Unity 재제작 원칙 |
+| 2026-10-26 | Linear 보류(Gamma 유지). 재판단 시점 = Meshy PBR 에셋 도입 또는 S3 | REPORT E:/exoduser-wt/_out/pc-linear1/REPORT.md (사본 `docs/engine/UNITY_PC_LINEAR1_REPORT_20261026.md`) — MAP3D 밝기 차이와 무관, 전환 시 UI 깨짐 |
+| 2026-10-26 | Unity 버전 통일 6000.6.7f1 | 6000.4.8f1 종료 크래시 해결(UNITY_PC_EXIT_CRASH §9), 커밋 `3d40f822a` |
+| 2026-10-26 | 충돌 QA 오버레이 토글 = F7(개발 빌드 전용), F9 금지(웹 디버그 키) | game.html·index.html·ui-panels.js·Unity Runtime에 F7 미사용 |
 
 ## 6. 현재 미처리 요청 (2026-10-26 기준)
 

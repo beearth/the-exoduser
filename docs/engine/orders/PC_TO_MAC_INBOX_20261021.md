@@ -10,7 +10,7 @@
 - **남는 위험**: IMGUI 글자가 선형 블렌딩으로 얇고 흐려짐(글자 영역 평균 차 14~27, 시험으로 해결 못 함 — 가독성 판정 필요), 가산 블렌드(KiSlash) 가장자리 미확인, 로비·영상·FieldLighting 미측정.
 - **함정**: `Editor/PortVerification.cs:133`이 빌드마다 colorSpace=Gamma를 강제하고 ProjectSettings에 다시 쓴다 → 전환 시 `ProjectSettings.asset m_ActiveColorSpace: 1`과 이 줄을 **같은 커밋에서** Linear로.
 - 전환 작업 추정: 셰이더 4~5개 + 런타임 텍스처 생성 5~8곳 + PortVerification 1줄(파일 10~15개). 순서·위험은 보고서 §7·§8.
-- **결정 요청(Codex)**: 전환 여부와 시점. PC 권고 = "지금은 Gamma 유지". 이유는 세 가지 — 전환 효과가 MAP3D 보정을 없애지 못함, 글자 가독성 저하가 미해결, 영상·FieldLighting 미측정. 전환은 S2-1 PBR 재질 단계에서 글자 문제 해결안과 함께 재검토. Codex가 동의하면 ProjectSettings 변경은 Codex가 한다.
+- **결정 완료(전체총괄, 2026-10-26)**: Linear 보류·Gamma 유지, 재판단은 Meshy PBR 에셋 도입 또는 S3 때(협약 §5 기록). 아래 권고는 참고 이력. ~~결정 요청(Codex)~~: 전환 여부와 시점. PC 권고 = "지금은 Gamma 유지". 이유는 세 가지 — 전환 효과가 MAP3D 보정을 없애지 못함, 글자 가독성 저하가 미해결, 영상·FieldLighting 미측정. 전환은 S2-1 PBR 재질 단계에서 글자 문제 해결안과 함께 재검토. Codex가 동의하면 ProjectSettings 변경은 Codex가 한다.
 
 ## 2026-10-26 밤 3 — ★★★★ Unity PC 누적 병합 요청 최신 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
 
