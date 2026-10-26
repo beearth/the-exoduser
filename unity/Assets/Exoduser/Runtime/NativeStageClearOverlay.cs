@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort {
  public sealed class NativeStageClearOverlay {
   public enum Kind {Zone,HellEscape,DemoEnd}
   public struct Input {
-   public Kind kind;public int hellIndex;
+   public Kind kind;public int hellIndex;public int? stageIndex;   // stageIndex: lets the build flavor turn the last stage's zone clear into the demo-end panel (web 42003)
    public int? clearSeconds,totalSpawned,stageKills,regionsCleared,deaths,dmgTaken,comboMax,dmgDealt,crits,parries,potions,maxHit,dashCount,dashMeters,walkMeters;
    public bool? bossKilled;
    public int? bestSeconds,bestScore;public string bestRank;   // previous best record; null = none (first clear: best = this run)
@@ -28,6 +28,7 @@ namespace Exoduser.UnityPort {
   Texture2D atlas,radial,diamond;Font nanum,sansSemi,cinzelDec;bool ready;readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
   Input input;bool active;float start;public float? ForcedAge;public Action OnNext;
   public bool Active{get{return active;}}
+  public Kind ShownKind{get{return input.kind;}}
 
   public NativeStageClearOverlay(){
    defs=JsonUtility.FromJson<Defs>(Resources.Load<TextAsset>("Data/stageclear_web").text);
@@ -35,7 +36,11 @@ namespace Exoduser.UnityPort {
   }
   float Now{get{return Time.unscaledTime;}}
   float Age{get{return ForcedAge.HasValue?ForcedAge.Value:Now-start;}}
-  public void Show(Input value){input=value;active=true;start=Now;}
+  public void Show(Input value){
+   // web: _DEMO_MODE && G.stage===_DEMO_LAST_STAGE -> demo-end sub/button (BuildFlavor holds the definition; full/ea keep the zone texts)
+   if(value.kind==Kind.Zone&&value.stageIndex.HasValue&&BuildFlavor.Current.DemoEndAtStage(value.stageIndex.Value))value.kind=Kind.DemoEnd;
+   input=value;active=true;start=Now;
+  }
   public void Hide(){active=false;}
 
   // ---- web formulas (game.html 42015-42057) ----
@@ -162,13 +167,13 @@ namespace Exoduser.UnityPort {
    // ---- ZONE CLEARED (Cinzel 9.6px, ls .34em) ----
    string en=i.kind==Kind.HellEscape?defs.hell.titleEn:defs.zone.titleEn;float ew=CinzelWidth(9,en,3.264f);Cinzel(9,en,960-ew/2f,enY+6.5f,C(168,153,127,.72f*a),3.264f);
    // ---- sub (14.08px Nanum, ls .12em) ----
-   string sub=i.kind==Kind.DemoEnd?defs.demo.sub:v.sub;CenterText(960,subY,18,sub,nanum,14,C(199,187,172,.88f*a),1.6896f);
+   string sub=i.kind==Kind.DemoEnd?(BuildFlavor.Current.DemoEndSub(false)??defs.demo.sub):v.sub;CenterText(960,subY,18,sub,nanum,14,C(199,187,172,.88f*a),1.6896f);
    // ---- result block ----
    DrawResult(resultY,resultH,a,i,sc,par,rows,gridRows);
    // ---- stats lines ----
    float y=statsY;foreach(var line in stats){DrawStatLine(960,y,line,a);y+=17.952f;}
    // ---- next button ----
-   string btn=i.kind==Kind.DemoEnd?defs.demo.button:v.button;DrawButton(new Rect(850,btnY,220,44),btn,a);
+   string btn=i.kind==Kind.DemoEnd?(BuildFlavor.Current.DemoEndButton(false)??defs.demo.button):v.button;DrawButton(new Rect(850,btnY,220,44),btn,a);
   }
 
   void DrawResult(float y,float h,float a,Input i,Score sc,int? par,List<KeyValuePair<string,KeyValuePair<string,bool>>> rows,int gridRows){

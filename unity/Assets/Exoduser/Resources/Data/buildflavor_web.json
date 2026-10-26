@@ -1,0 +1,193 @@
+{
+ "source": {
+  "file": "game.html / index.html (G:/exoduser main 1770c2698) + build-nwjs.mjs + tools/release-target.mjs + CLAUDE.md DEMO/EA 동기화",
+  "extractedAt": "2026-10-26T23:40+09:00",
+  "lines": {
+   "_BIC (정의만, 읽는 곳 없음)": "game.html 16647",
+   "_DEMO_MODE = EXODUSER_BUILD_TARGET==='demo'": "game.html 16648",
+   "_DEMO_LV_CAP=100": "game.html 16649, 사용 43139/43150",
+   "_DEMO_LAST_STAGE=0": "game.html 16650",
+   "_DEMO_FUSE_ALLOWED 22종": "game.html 16651, 사용 44612",
+   "_DEMO_AFFIX_BANNED 7종": "game.html 16652, 사용 15137",
+   "클리어 데모 종료 문구": "game.html 42003-42006, 버튼 동작 63665",
+   "로비 복귀 주소(demo=1)": "game.html 63683",
+   "데모 시작 경로": "game.html 63886-63892",
+   "_LOBBY_BUILD": "index.html 1262",
+   "라벨/제한/멘트": "index.html 1264-1275",
+   "좌상단 #lobbyVerOverlay 갱신": "index.html 2885-2890, 3737-3743",
+   "로그인 제목(demo)": "index.html 2186, 2832",
+   "패키징 대상(full|demo만)": "tools/release-target.mjs createReleaseConfig"
+  },
+  "note": "정의(라벨·제한 문구·캡·허용/금지 목록·패키지 식별자)만. 표시 값은 BuildFlavor가 해석해 호출자에게 준다. 현행 web은 CLAUDE.md의 sed 절차(_BIC=true 등) 대신 build-target.js(window.EXODUSER_BUILD_TARGET)로 대상을 정한다."
+ },
+ "default": "full",
+ "flavors": {
+  "full": {
+   "label": "OFFICIAL",
+   "limits": "All Chapters · No Level Cap",
+   "loginHeading": [
+    "계정으로 입장하세요",
+    "Sign in to enter"
+   ],
+   "demoMode": false,
+   "levelCap": 0,
+   "clearFinal": null,
+   "release": {
+    "packaged": true,
+    "appId": 4749590,
+    "depotId": 4749591,
+    "port": 3350,
+    "saveNamespace": "EXODUSER-HELL-FULL",
+    "entry": "nw-boot.html"
+   }
+  },
+  "demo": {
+   "label": "DEMO",
+   "limits": "Lv.1 START · Stage 1-1 Only · Lv.100 Cap · 1~2h",
+   "loginHeading": [
+    "데모버전에 오신 것을 환영합니다",
+    "Welcome to the Demo"
+   ],
+   "demoMode": true,
+   "levelCap": 100,
+   "clearFinal": {
+    "stage": 0,
+    "sub": [
+     "썩은 숲을 정복했습니다.",
+     "You conquered the Rotten Forest."
+    ],
+    "button": [
+     "데모 종료",
+     null
+    ]
+   },
+   "release": {
+    "packaged": true,
+    "appId": 5337590,
+    "depotId": 5337591,
+    "port": 3351,
+    "saveNamespace": "EXODUSER-HELL-DEMO",
+    "entry": "nw-boot.html?demo=1"
+   }
+  },
+  "bic": {
+   "label": "DEMO",
+   "limits": "Lv.1 START · Stage 1-1 Only · Lv.100 Cap · 1~2h",
+   "loginHeading": [
+    "데모버전에 오신 것을 환영합니다",
+    "Welcome to the Demo"
+   ],
+   "demoMode": true,
+   "levelCap": 100,
+   "clearFinal": {
+    "stage": 0,
+    "sub": [
+     "썩은 숲을 정복했습니다.",
+     "You conquered the Rotten Forest."
+    ],
+    "button": [
+     "데모 종료",
+     null
+    ]
+   },
+   "release": {
+    "packaged": false,
+    "appId": 0,
+    "depotId": 0,
+    "port": 0,
+    "saveNamespace": "",
+    "entry": "game.html?bic (BIC 부스: 데모 빌드 + 쿼리 bic)"
+   },
+   "note": "web _BIC는 쿼리 bic 여부만 담고(16647) 현재 코드에서 읽는 곳이 없다. CLAUDE.md의 BIC 규칙(데모, Lv100)은 데모 정의와 같다."
+  },
+  "ea": {
+   "label": "EARLY ACCESS",
+   "limits": "Lv.500 · Chapter 1 (1-1~1-4) · 8~15h",
+   "loginHeading": [
+    "계정으로 입장하세요",
+    "Sign in to enter"
+   ],
+   "demoMode": false,
+   "levelCap": 0,
+   "clearFinal": null,
+   "release": {
+    "packaged": false,
+    "appId": 0,
+    "depotId": 0,
+    "port": 0,
+    "saveNamespace": "",
+    "entry": "(createReleaseConfig는 full|demo만 허용 — EA 패키지 식별자 미정)"
+   },
+   "note": "EA의 Lv.500 캡은 라벨 문구에만 있고 game.html에 EA용 캡 코드는 없다."
+  }
+ },
+ "demoLists": {
+  "affixBanned": [
+   "sharpAtk",
+   "brutalAtk",
+   "ruinAtk",
+   "overkilDmg",
+   "staggerExplosion",
+   "parryExplosion",
+   "elemConvert"
+  ],
+  "fuseAllowed": [
+   "dimBreach",
+   "dimSlam",
+   "sixFuse",
+   "elemFuse",
+   "whirlDet",
+   "slamStorm",
+   "bladeFuse",
+   "bladeEcho",
+   "plagueFuse",
+   "plagueVenom",
+   "boneStorm",
+   "elecRepent",
+   "shieldFuse",
+   "holyFuse",
+   "holyIce",
+   "iceMortar",
+   "pillarSpike",
+   "pillarSlam",
+   "infernoSlam",
+   "thunderGhost",
+   "dualScarecrow",
+   "siegeGhost"
+  ]
+ },
+ "lobby": {
+  "overlay": {
+   "x": 14,
+   "y": 12,
+   "fontSize": 12,
+   "letterSpacing": 1.8,
+   "lineHeight": 19.2,
+   "color": [
+    160,
+    130,
+    90,
+    0.5
+   ],
+   "limitsColor": [
+    200,
+    120,
+    80,
+    0.5
+   ],
+   "modeOffline": "OFFLINE",
+   "modeOnline": "ONLINE"
+  },
+  "corner": {
+   "fontSize": 10.24,
+   "letterSpacing": 2.8672,
+   "color": [
+    125,
+    100,
+    70,
+    0.32
+   ],
+   "rightEdge": 1844
+  }
+ }
+}
