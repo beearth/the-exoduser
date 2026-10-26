@@ -18,8 +18,13 @@ namespace Exoduser.UnityPort
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
-        NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;bool skillsWasRunning,skillInputFence;
+        NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;NativeStatPanel stats;bool skillsWasRunning,statsWasRunning,skillInputFence;
         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
+        NativeForgePanel forge;bool forgeWasRunning;
+        NativeLevelUpOverlay levelUp;int levelUpSeen;
+        NativeDeathOverlay death;int deathCount;bool deathShown;
+        NativeStageClearOverlay stageClear;
+        NativeBossBar bossBar;
         bool basicWeaponMode;
         readonly Dictionary<string,Sprite> spriteCache=new Dictionary<string,Sprite>();
         readonly Dictionary<int,ChunkView> chunks=new Dictionary<int,ChunkView>();
@@ -46,8 +51,8 @@ namespace Exoduser.UnityPort
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
-            hud=new NativeHud();skills=new NativeSkills();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
-            NativePanelTabBar.Requested+=OnPanelRequested;
+            hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
+            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();
             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
             BuildProps();
             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
@@ -96,7 +101,7 @@ namespace Exoduser.UnityPort
             kiView?.Reset();impacts?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;
             Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
-            inventory.Reset();skills.SetOpen(false);skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
+            inventory.Reset();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
             // World drop item factory and persistent saves remain unimplemented.
             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
@@ -127,12 +132,34 @@ namespace Exoduser.UnityPort
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;return;}
             view.cullingMask=worldMask;
+            // Web addExp (game.html 43136-43176): Simulation.AddExperience has no callback, so the level change is read from Player.Level.
+            if(Simulation!=null){int lv=Simulation.Player.Level;if(lv>levelUpSeen)levelUp.Show(lv);levelUpSeen=lv;}
+            // Web _fallenResolve death branch (game.html 43851-43896): Player.Hp <= 0 shows #death once. Unity has no chapter / max-combo / damage-log state: chapter 0 is the only ported chapter, combo and log stay unported.
+            if(Simulation!=null&&!pauseSmoke&&!hudSmoke&&!inventorySmoke){
+                if(Simulation.Player.Hp<=0){if(!deathShown){deathShown=true;deathCount++;death.Show(new NativeDeathOverlay.Info{kills=Simulation.Kills,chapter=0,expLoss=-1,maxCombo=-1,deaths=deathCount,damageLog=null});}}
+                else if(deathShown){deathShown=false;death.Hide();}
+            }
             if(WaitForFrontendEntryInput())return;
             if(traceInventoryKeys)TraceInventoryKeys();
             if(!gameFocused){Running=false;return;}
             if(HandlePanelHotkeys())return;
+            // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
+            if(stats.Open){
+                if(Input.GetKeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
+                else if(!stats.TextInputActive&&Input.GetKeyDown(KeyCode.K))OnPanelRequested("skillPanel");
+                else if(!stats.TextInputActive&&Input.GetKeyDown(KeyCode.Tab))OnPanelRequested("invPanel");
+                else stats.HandleKeys(()=>SetStats(false));
+                return;
+            }
             if(menu||Simulation.Player.Hp<=0){
                 if(!pauseSmoke)ApplyPauseCommand(pauseMenu.PollKeys(Simulation.Player.Hp<=0,Screen.fullScreen));
+                UpdateViews();return;
+            }
+            // Web forge window (#forge): G toggles it in HandlePanelHotkeys; ESC closes (_panelBack); K / TAB switch directly to that window.
+            if(forge.Open){
+                if(Input.GetKeyDown(KeyCode.Escape)){SetForge(false);return;}
+                if(Input.GetKeyDown(KeyCode.K)){OnPanelRequested("skillPanel");return;}
+                if(Input.GetKeyDown(KeyCode.Tab)){OnPanelRequested("invPanel");return;}
                 UpdateViews();return;
             }
             // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
@@ -259,6 +286,8 @@ namespace Exoduser.UnityPort
         {
             if(Simulation==null)return;
             if(lobby!=null&&lobby.IsBlocking){if(lobby.StartupHudVisible)DrawStartupWorldHud();return;}
+            if(stats.Open){stats.Draw(()=>SetStats(false));return;}
+            if(forge.Open){forge.Draw(Simulation,inventory.State,()=>SetForge(false));return;}
             if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
@@ -275,7 +304,13 @@ namespace Exoduser.UnityPort
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);}
             int pending=0;foreach(var loot in Simulation.Loot)if(!loot.Picked)pending++;if(pending>0)GUI.Label(new Rect(42,135,600,30),"장비 드랍 생성 대기 "+pending,small);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
-            if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){
+            if(levelUp.Active){var lp=view.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
+            // Stage-clear panel: Unity has no stage-clear / boss / exit event yet, so nothing calls stageClear.Show(); once an event exists it is drawn here.
+            if(stageClear.Active)stageClear.Draw();
+            // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.
+            if(bossBar.Active)bossBar.Draw();
+            if(death.Active&&p.Hp<=0){death.Draw();}
+            else if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){
                 pauseMenu.English=lobby.Language!="ko";
                 ApplyPauseCommand(pauseMenu.Draw(p.Hp<=0,Screen.fullScreen));
             }
@@ -287,35 +322,68 @@ namespace Exoduser.UnityPort
             skills.SetOpen(open,slot);
             if(!open){skillInputFence=true;Running=skillsWasRunning&&!menu&&Simulation.Player.Hp>0;}
         }
+        void SetForge(bool open){
+            if(open&&firstPractice!=null)return;
+            if(open){forgeWasRunning=Running;Running=false;}
+            forge.SetOpen(open);
+            if(!open){skillInputFence=true;Running=forgeWasRunning&&!menu&&Simulation.Player.Hp>0;}
+        }
+        void SetStats(bool open){
+            if(open&&firstPractice!=null)return;
+            if(open){statsWasRunning=Running;Running=false;}
+            stats.SetOpen(open);
+            if(!open){skillInputFence=true;Running=statsWasRunning&&!menu&&Simulation.Player.Hp>0;}
+        }
         // Web _injectPanelNav: a tab click opens that window (openPanel closes the others first); the active tab is ignored by the bar itself.
-        // forge/statPanel have no Unity window yet.
+        // forge: the tab bar never requests the active window, so a request while open is the G key (toggle).
         void OnPanelRequested(string id){
             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return;
             switch(id){
                 case "settings":
+                    if(forge.Open)SetForge(false);
+                    if(stats.Open)SetStats(false);
                     if(skills.Open)SetSkills(false);
                     if(inventory.Open)SetInventory(false);
                     if(!menu){menu=true;pauseMenu.Reset();Running=false;}
                     break;
                 case "invPanel":
+                    if(forge.Open)SetForge(false);
+                    if(stats.Open)SetStats(false);
                     if(skills.Open)SetSkills(false);
                     if(menu){menu=false;Running=true;}
                     if(!inventory.Open)SetInventory(true);
                     break;
                 case "skillPanel":
+                    if(forge.Open)SetForge(false);
+                    if(stats.Open)SetStats(false);
                     if(inventory.Open)SetInventory(false);
                     if(menu){menu=false;Running=true;}
                     if(!skills.Open)SetSkills(true);
+                    break;
+                case "statPanel":
+                    if(forge.Open)SetForge(false);
+                    if(skills.Open)SetSkills(false);
+                    if(inventory.Open)SetInventory(false);
+                    if(menu){menu=false;Running=true;}
+                    SetStats(!stats.Open);
+                    break;
+                case "forge":
+                    if(forge.Open){SetForge(false);break;}
+                    if(stats.Open)SetStats(false);
+                    if(skills.Open)SetSkills(false);
+                    if(inventory.Open)SetInventory(false);
+                    if(menu){menu=false;Running=true;}
+                    SetForge(true);
                     break;
                 default:
                     Debug.Log("[PanelTabBar] "+id+" window is not ported yet");
                     break;
             }
         }
-        // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats (no Unity window yet: log only), F10 = settings toggle.
+        // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats, F10 = settings toggle.
         // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
         bool HandlePanelHotkeys(){
-            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return false;
+            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive)return false;
             if(Input.GetKeyDown(KeyCode.G)){OnPanelRequested("forge");return true;}
             if(Input.GetKeyDown(KeyCode.J)){OnPanelRequested("statPanel");return true;}
             if(Input.GetKeyDown(KeyCode.F10)){
@@ -325,6 +393,8 @@ namespace Exoduser.UnityPort
             }
             return false;
         }
+        // Death screen 'retry' button = the pause menu's Restart command.
+        void RetryFromDeath(){if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}}
         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
         void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);QueueSettingsSave();}

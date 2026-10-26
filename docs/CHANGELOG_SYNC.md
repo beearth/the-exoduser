@@ -57203,3 +57203,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-26 Mac PC UI U08 hook 2→3: PC 소스 인수 후 `NativeGame.cs` 탭 요청 라우팅, `NativePauseMenu.cs` 설정 탭바 patch를 순서대로 문맥 검사·실제 적용. PC `NativePanelTabBar` 원본 blob 유지. 파일별 diff 검사 통과, 4–12/컴파일/Player는 다음 단계·13·14 충돌 보류. [연결표](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
 2026-10-26 Mac PC UI hook 4→6: 원본 patch 순서로 스킬 스모크 focus 조정, 웹 창 단축키 G/J/F10, 인벤토리 선택 없음/G 무전환 스모크 기대값, 일시정지 TAB/K 요청을 Mac 소유 `NativeGame*`·`NativePauseMenu*`에 연결. 각 문맥 검사·적용 및 diff 검사 통과. OS 입력·Player 미판정; 7–12/13 경계 후속. [표](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+
+2026-10-26 Mac PC UI hook 7→12: PC 원본 A13/A14/A20/A21/A22/A23을 순서대로 Mac `NativeGame.cs`에 적용; A22 클리어·A23 보스바는 이벤트가 없어 Show 호출 없이 배선만. 13 A24는 Mac 진단 배지 조건에서 `git apply --check` 실패로 미적용, 14 이후 순서상 보류. Unity6000.6.7f1 비대화형 compile exit0·CS오류0/경고0(기존 UAC1001 한 종류); Player/OS 키/화면 미검증. Editor `.meta` churn은 사전 상태로 복원. [단계표·로그](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).

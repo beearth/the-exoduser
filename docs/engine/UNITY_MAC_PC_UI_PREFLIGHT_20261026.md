@@ -75,3 +75,19 @@ Mac `ef8080387` 위에 PC 원격 `a48faf9ea`를 merge했다. 충돌은 `NativeGa
 | 6 | `A07B_nativepausemenu_keys.patch` → `NativePauseMenu.Keyboard.cs`, `NativePauseMenu.cs` | 순서 5 뒤 검사→적용. 일시정지 TAB=인벤토리·K=스킬 요청, 항목 탐색은 방향키 |
 
 PC 소유 `NativeInventory.Keyboard.cs`·`InventoryNavigation.cs`·`NativePanelTabBar.cs`는 merge에서 가져온 blob 그대로다. 이 단계는 Mac hook 문맥·diff 검사까지이며 OS 키 입력·Player PASS는 아직 주장하지 않는다. 7–12 hook과 13 경계 검사 후 비대화형 Mac 컴파일을 한 번 판단한다.
+
+## 7→12 창·오버레이 연결과 13번 경계 — 후속 checkpoint
+
+| 순서 | 원본 patch / 실제 Mac 접점 | `git apply --check` → 적용 | 런타임 트리거 계약 |
+|---:|---|---|---|
+| 7 | `A13_nativegame_stat_panel` / `NativeGame.cs` | PASS → 적용 | 능력치 창 요청·닫기, 실제 Unity 상태 사용 |
+| 8 | `A14_nativegame_forge_window` / `NativeGame.cs` | PASS → 적용 | 대장간 요청·닫기, 다른 창과 상호 전환 |
+| 9 | `A20_nativegame_levelup` / `NativeGame.cs` | PASS → 적용 | 실제 `Player.Level` 상승을 `Update`에서 감지 |
+| 10 | `A21_nativegame_death` / `NativeGame.cs` | PASS → 적용 | 실제 `Player.Hp ≤ 0` 사망 분기 |
+| 11 | `A22_nativegame_stageclear` / `NativeGame.cs` | PASS → 적용 | 필드·초기화·숨김·그리기만. Unity에 클리어 이벤트가 없어 `Show` 호출 없음 |
+| 12 | `A23_nativegame_bossbar` / `NativeGame.cs` | PASS → 적용 | 필드·초기화·숨김·그리기만. Unity에 보스 등장 이벤트가 없어 `Show` 호출 없음 |
+| 13 | `A24_nativegame_areatitle` / `NativeGame.cs` | **FAIL → 미적용** | 296행 HUD hunk가 Mac `DiagnosticUiEnabled` 배지 조건과 충돌. 14번 이후는 순서상 적용 보류 |
+
+2–12는 PC 원본 patch의 순서와 내용을 지켜 Mac 소유 hook에 실제 적용했다. PC 소유 창/코어 파일은 merge된 blob에서 수동 수정하지 않았다. Mac ATG·저장 연결과 기존 사용자 Player는 건드리지 않았다. `NativeGame.cs` SHA256 `c3a9a2081ca801a62ae804ec9613a2057e50476801fe8615a886bf4048ebe51f`.
+
+Mac Unity 6000.6.7f1 Editor 단독 상태를 확인하고 **비대화형 script compile 1회** 실행했다. 종료 코드 0, 로그에 `error CS` 0·`warning CS` 0, 기존 `NativeCharacterPresentationPlayback.cs`의 `UAC1001` 한 종류가 두 번 기록됐다. 로그: `_out/UNITY-MAC-UI-MERGE-20261026/compile/mac-ui-2-12-compile.log`. Editor import가 만든 tracked `.meta` 411개는 사전 status(`NativeGame.cs` 수정 한 파일)와 Git HEAD를 대조해 원본 bytes로 복원했고 새 `.meta` 1개는 `_out/.../compile/untracked-meta-backup/`에 이동 보존했다. 검사 뒤 제품 작업 트리 차이는 `NativeGame.cs` hook뿐이다. Player·OS 키 입력·실제 창 화면·설정/캐릭터 저장 회귀는 실행하지 않았으므로 이 단계는 **컴파일 PASS / 런타임 미검증**이다.
