@@ -19,3 +19,5 @@ PC 고정 commit `157e3e8f3cb63299c48fd484ba7056fd9dceb9b8`의 `docs/engine/ui_h
 실제 사운드 화면에서 효과음 카드가 위, 배경 음악 카드가 아래에 놓인 **1열**을 확인했다. 첫·끝 카드가 content 안에 완전히 보이고 고정 footer의 기본값/뒤로 버튼과 겹치지 않았다. content 설계 높이 610, 단열 마지막 카드 끝+여백 `238+190+18=446`이므로 코드의 `max(0,446-610)=0`; content 안에서 휠을 한 번 내린 전후 카드와 footer 위치도 그대로였다. 이 조건의 1열·scroll 상한 0·footer 시각 판정은 PASS. 조작 목록 자체의 맨 아래, 다른 언어 fit/RTL, 물리 마우스, 청각 출력, 미지원 게임 옵션과 A15 전체 완료는 별도 HOLD다. 앞선 1099px 요청에서 1100px·2열이었던 사실은 [A15 기록](UNITY_MAC_A15_4TAB_20261027.md)에 보존한다.
 
 위 라벨 채택0은 PC `157e3e8f…` 당시 상태다. PC 최신 `766250b64d833acd4172c83fb694820777d68b1b`가 exact 43 ID/1247값과 semantic6/native-only13 경계를 확정한 뒤 Mac 화면 5 ID와 provider 자료를 부분 연결했다. PC 소유 키 목록의 38 ID 화면 연결은 검토용 패치로만 남았다. [고정 입력·ID별 상태·실화면](UNITY_MAC_A15_LABEL_ADAPTER_20261027.md).
+
+후속 승인에서 PC owner가 키 목록 최소 patch를 인수했고 Mac은 `NativeKeyBindList` 38 ID 실표시와 provider exact43 allowlist를 연결했다. 1280×720 ko/en/ja/es/cs 대표 목록·장문 및 Esc/Tab 캡처 격리를 QA Player 1회로 확인했다. 이 문서의 앞선 키 목록 미연결 상태는 preflight 시점 이력이다. ar 실화면/RTL·전체29언어·물리 마우스는 계속 HOLD. [최신 인수](UNITY_MAC_A15_LABEL_ADAPTER_20261027.md#2026-10-27-pc-seam-인수allowlist-보강-후속).

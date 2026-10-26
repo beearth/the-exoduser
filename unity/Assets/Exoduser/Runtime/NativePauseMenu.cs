@@ -172,7 +172,7 @@ namespace Exoduser.UnityPort
   void DrawEmbeddedBindings(Rect content)
   {
    if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);
-   keyList.English=English;
+   keyList.English=English;keyList.LocaleCode=LocaleCode;
    if(SettingsPersistenceProblem){keyList.SaveNote="키 설정을 저장하지 못했습니다 · 이번 실행의 값은 유지됩니다";keyList.SaveNoteEn="Key bindings could not be saved · current session values remain";}
    else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 이 Mac에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on this Mac";}
    else{keyList.SaveNote="검수 실행의 키 설정은 저장하지 않습니다";keyList.SaveNoteEn="Key bindings are not saved during this QA run";}
@@ -241,7 +241,7 @@ namespace Exoduser.UnityPort
    GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;   // the caller's matrix is not reset yet at this point (Draw() sets identity after the early return)
    Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.97f));
    float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-   keyList.English=English;
+   keyList.English=English;keyList.LocaleCode=LocaleCode;
    if(SettingsPersistenceProblem){keyList.SaveNote="키 설정을 저장하지 못했습니다 · 이번 실행의 값은 유지됩니다";keyList.SaveNoteEn="Key bindings could not be saved · current session values remain";}
    else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 이 Mac에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on this Mac";}
    else{keyList.SaveNote="검수 실행의 키 설정은 저장하지 않습니다";keyList.SaveNoteEn="Key bindings are not saved during this QA run";}

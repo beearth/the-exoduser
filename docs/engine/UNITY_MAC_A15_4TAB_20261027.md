@@ -71,3 +71,5 @@ PC 원본 `NativeKeyBindList`의 캡처 처리에 소비 프레임 한 필드만
 2026-10-27 후속 1098px 단일 실행에서는 실제 JPEG 폭 **1098px**에서 사운드 첫·끝 카드가 1열로 보이고, 휠 1회 전후 위치와 footer가 유지돼 이 폭의 `scrollmax=0` 시각 게이트를 PASS했다. 29언어 라벨 후보 PC 고정 `157e3e8f…`는 62 ID 전체 QA 미확정으로 제품 적용0이며, 현재 Mac 언어/폰트 및 PC 소유 키 목록 hook만 preflight했다. [독립 범위·증거](UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).
 
 후속 PC `766250b64…` 확정 후 exact 43 ID 자료와 Mac 설정 제목·4탭 5 ID를 부분 연결했다. 기존 ko/en 값 유지와 ja/es/cs 제목 실화면을 확인했으며, PC 소유 키 목록 38 ID의 실제 행은 여전히 영어다. semantic6/native-only13과 ar/RTL은 제품 번역으로 채택하지 않았다. 앞 문단의 채택0은 이전 preflight 시점 판정이다. [ID별 현재 상태](UNITY_MAC_A15_LABEL_ADAPTER_20261027.md).
+
+PC owner의 키 목록 seam 승인 후 Mac은 `NativeKeyBindList`에 38 ID 표시 hook을 적용했다. 새 ARM64 Settings QA 빌드1회 오류0, 격리 Player1회에서 ko/en 기존 목록과 ja/es/cs 실제 목록·대표 긴 행·Esc 취소/Tab 캡처 시 조작 탭 유지가 보였다. 앞 문단의 키 목록 영어 상태는 이전 빌드 이력이다. 저장 v2·`cinSeen`·입력 처리와 19 patch는 변경하지 않았다. ar 영어 fallback은 코드/자료만 확인했고 ar GUI/RTL 및 일반 마우스는 HOLD. [상세](UNITY_MAC_A15_LABEL_ADAPTER_20261027.md#2026-10-27-pc-seam-인수allowlist-보강-후속).

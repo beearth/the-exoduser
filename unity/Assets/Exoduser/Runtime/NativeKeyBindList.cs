@@ -33,7 +33,7 @@ namespace Exoduser.UnityPort {
   readonly HashSet<KeyCode> held=new HashSet<KeyCode>();
   string listenAction;bool listenAlt;float listenAt;string phText,notifText;float phUntil,notifUntil;
   Rect visible;Vector2 origin;float curA=1;
-  public bool English;public Tab CurrentTab=Tab.Kbm;
+  public bool English;public string LocaleCode="ko";public Tab CurrentTab=Tab.Kbm;
   public KeyBindings Bindings{get{return keys;}}
   public bool Listening{get{return listenAction!=null;}}
   public int CaptureConsumedFrame{get;private set;}=-10;
@@ -54,8 +54,8 @@ namespace Exoduser.UnityPort {
   }
 
   // ---- text ----
-  string T(string ko){string v;return English&&en.TryGetValue(ko,out v)?v:ko;}
-  string L(string ko,string eng){return English?eng:ko;}
+  string T(string ko){string v;string fallback=English&&en.TryGetValue(ko,out v)?v:ko;return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,fallback);}
+  string L(string ko,string eng){return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,English?eng:ko);}
 
   // ---- state changes ----
   public void BeginListening(string action,bool alternate){held.Clear();listenAction=action;listenAlt=alternate;listenAt=Time.unscaledTime;}
@@ -217,9 +217,9 @@ namespace Exoduser.UnityPort {
     if(mainL||altL){Grad(row,C(142,105,51,.18f),C(70,51,33,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(187,150,94));}   // :has(.listening)
     else if(Hover(row))Fill(row,C(155,112,67,.086f));
     Fill(new Rect(row.x,row.yMax-1,row.width,1),C(140,121,85,.11f));
-    Run(row.x+NameX,row.y+26,KeyBindings.Name(action,English),regular,15,15f,.6f,C(215,200,166));
-    DrawKey(mainR,mainL?T(ui.texts.listenMain):KeyBindings.KeyName(keys.Primary(action),English),mainL,1f);
-    DrawKey(altR,altL?T(ui.texts.listenAlt):(alt!=null?KeyBindings.KeyName(alt,English):T(ui.texts.alt)),altL,alt!=null||altL?1f:.5f);
+    Run(row.x+NameX,row.y+26,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)),regular,15,15f,.6f,C(215,200,166));
+    DrawKey(mainR,mainL?T(ui.texts.listenMain):NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(keys.Primary(action),false),LocaleCode,KeyBindings.KeyName(keys.Primary(action),English)),mainL,1f);
+    DrawKey(altR,altL?T(ui.texts.listenAlt):(alt!=null?NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(alt,false),LocaleCode,KeyBindings.KeyName(alt,English)):T(ui.texts.alt)),altL,alt!=null||altL?1f:.5f);
     if(alt!=null){var dc=Hover(delR)?C(214,170,150):C(171,131,112);RunCentered(delR.center.x,delR.center.y,"✕",regular,16,16f,.32f,dc,1f,5);}
    }
    if(Click(mainR))BeginListening(action,false);
