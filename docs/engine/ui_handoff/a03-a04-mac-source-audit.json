@@ -1,0 +1,168 @@
+{
+  "remoteCommit": "97227ceb7c4a33becd2fe55d4ab1712dc8013182",
+  "runtimeTree": "8376905b93fc0df4170c9ecc67acb47577990f99",
+  "files": [
+    {
+      "path": "unity/Assets/Exoduser/Runtime/NativeLobby.cs",
+      "remoteSha256": "5276DDEA831B001EB6DBF79D896207AC36E89E7CB5EC814358B0FE2DF2BA929E",
+      "localSha256": "5276DDEA831B001EB6DBF79D896207AC36E89E7CB5EC814358B0FE2DF2BA929E",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/NativeLobby.PatchNotes.cs",
+      "remoteSha256": "3148635121EA37F2BA973A8DC699C6F95512C7CF4C15E73DF6FA5D4E3C6485AC",
+      "localSha256": "3148635121EA37F2BA973A8DC699C6F95512C7CF4C15E73DF6FA5D4E3C6485AC",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/NativeLobby.Characters.cs",
+      "remoteSha256": "AC46FAFC5A48B5123B0DBAFA5E560249AE42B8AF714E0AF291C6D708EB2DA7D6",
+      "localSha256": "AC46FAFC5A48B5123B0DBAFA5E560249AE42B8AF714E0AF291C6D708EB2DA7D6",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/NativeLobby.CharacterPresentation.cs",
+      "remoteSha256": "A7F5F3548FE58A184A18F65E0F7BD998B31FBF6636738024B80E11E2D68462C5",
+      "localSha256": "A7F5F3548FE58A184A18F65E0F7BD998B31FBF6636738024B80E11E2D68462C5",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/NativeLobby.CharacterDelete.cs",
+      "remoteSha256": "0EAE97E9E56D1C8342D79FD50792C92BA8E8B4BDDDF9E27C6B0B00D5D7E138B6",
+      "localSha256": "0EAE97E9E56D1C8342D79FD50792C92BA8E8B4BDDDF9E27C6B0B00D5D7E138B6",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/Core/CharacterRoster.cs",
+      "remoteSha256": "9092D2DF1624A9EEE02E66FE667C5C3094E98106C24F83D09DE26B230914460F",
+      "localSha256": "9092D2DF1624A9EEE02E66FE667C5C3094E98106C24F83D09DE26B230914460F",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/patch_notes.json",
+      "remoteSha256": "E4EAC388FEE4D9030B5A7731B74C0BB14E5075256570FC35ED3E9B52EA1D8962",
+      "localSha256": "E4EAC388FEE4D9030B5A7731B74C0BB14E5075256570FC35ED3E9B52EA1D8962",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/patch_notes.json.meta",
+      "remoteSha256": "FB49D5D8A61D1056365CEC88C8FC3C8D0C438CBF416CF7D1300314AC7E6F4DC8",
+      "localSha256": "FB49D5D8A61D1056365CEC88C8FC3C8D0C438CBF416CF7D1300314AC7E6F4DC8",
+      "byteEqual": true,
+      "remoteGuid": "ec2dc819ffb7444f9cf201d327ef3d2a",
+      "localGuid": "ec2dc819ffb7444f9cf201d327ef3d2a",
+      "guidEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/patch_notes_labels.json",
+      "remoteSha256": "BBEA905B33655A42FDA06BEFC572A55122BD25C8FCBC826AD2110C2CDCB41E85",
+      "localSha256": "BBEA905B33655A42FDA06BEFC572A55122BD25C8FCBC826AD2110C2CDCB41E85",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/patch_notes_labels.json.meta",
+      "remoteSha256": "CD6737B52BD0B68F7CE3B7A6E86B730B2B673D10741492F7822F88E33D69DFE2",
+      "localSha256": "CD6737B52BD0B68F7CE3B7A6E86B730B2B673D10741492F7822F88E33D69DFE2",
+      "byteEqual": true,
+      "remoteGuid": "0dcb193892544857a8e72b47a9c028f4",
+      "localGuid": "0dcb193892544857a8e72b47a9c028f4",
+      "guidEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/character_dialog_labels.json",
+      "remoteSha256": "423A56890251E126FE73E8E167FC1DCE72EBCDC73FB973DC97702F31E217A9D8",
+      "localSha256": "423A56890251E126FE73E8E167FC1DCE72EBCDC73FB973DC97702F31E217A9D8",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/character_dialog_labels.json.meta",
+      "remoteSha256": "8A07ADBA72CAD700877415D41E95A81909B3AE37948D9525C137A5C427D03F3F",
+      "localSha256": "8A07ADBA72CAD700877415D41E95A81909B3AE37948D9525C137A5C427D03F3F",
+      "byteEqual": true,
+      "remoteGuid": "e91422e4597c4213923390065c80f3b1",
+      "localGuid": "e91422e4597c4213923390065c80f3b1",
+      "guidEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/visual_select_labels.json",
+      "remoteSha256": "4383FE4CFBF4D612167FCA41BE710A46DD6C1C13A22C59734D8E4EDCB786AE3F",
+      "localSha256": "4383FE4CFBF4D612167FCA41BE710A46DD6C1C13A22C59734D8E4EDCB786AE3F",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/visual_select_labels.json.meta",
+      "remoteSha256": "8FD6D5D4F30E23078FAD889ECE152AAB20BD04E1B482E3EDA0BC60BD1B1E4072",
+      "localSha256": "8FD6D5D4F30E23078FAD889ECE152AAB20BD04E1B482E3EDA0BC60BD1B1E4072",
+      "byteEqual": true,
+      "remoteGuid": "c04740a73cab44c390509ea746df3436",
+      "localGuid": "c04740a73cab44c390509ea746df3436",
+      "guidEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Art/lobby/title_logo.png",
+      "remoteSha256": "92CA6EEA0C1840BF6E0EB8E30BD7E9EB96052796101F2E121488FED587D81541",
+      "localSha256": "92CA6EEA0C1840BF6E0EB8E30BD7E9EB96052796101F2E121488FED587D81541",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Art/lobby/title_logo.png.meta",
+      "remoteSha256": "77E94D42739B5861662F95C87F44FAC92AD8FD422A7D6D6EB5A2F39097DB7A89",
+      "localSha256": "1EE4181304B89AA1D97EF4F734561E2E2C1D56B3079272C1453AB1D180404DD7",
+      "byteEqual": false,
+      "remoteGuid": "aba729fb32aa48fd99390506d0080d41",
+      "localGuid": "aba729fb32aa48fd99390506d0080d41",
+      "guidEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Art/lobby/enter_art.png",
+      "remoteSha256": "2EB185DA4D4987381F313D969239AF380CBF9E245645AEA3D7701A35C7B99F37",
+      "localSha256": "2EB185DA4D4987381F313D969239AF380CBF9E245645AEA3D7701A35C7B99F37",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Art/lobby/enter_art.png.meta",
+      "remoteSha256": "0D9D8493FC5778B2DD2AEC18A2D1AD6DFFEBD5613657F3F2B076CEA5015CE73C",
+      "localSha256": "CB3F3F6627E3E74EA43774620D1D98111B7F55BA489BD6E8F4069157FCE5E4CF",
+      "byteEqual": false,
+      "remoteGuid": "8c4a1a8f6471e2c8007e0807ee9a636e",
+      "localGuid": "8c4a1a8f6471e2c8007e0807ee9a636e",
+      "guidEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Art/lobby/brand_logo.png",
+      "remoteSha256": "DFFAD452CFFA7AAF074FF80D2FBB9258858FDEF1CBDE750E8B07F3F3B264EFBD",
+      "localSha256": "DFFAD452CFFA7AAF074FF80D2FBB9258858FDEF1CBDE750E8B07F3F3B264EFBD",
+      "byteEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Art/lobby/brand_logo.png.meta",
+      "remoteSha256": "666D6682C5DB1C4D0B768F6B667FE85784FE628F6CB38225B4EA3163F178863A",
+      "localSha256": "DB8DB329720675CB69F2ED310D5440009032892C327F2067C98710B1FBEB8418",
+      "byteEqual": false,
+      "remoteGuid": "44be4c1348cb69d5581507fb2e1d8f1d",
+      "localGuid": "44be4c1348cb69d5581507fb2e1d8f1d",
+      "guidEqual": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Art/lobby/cin_title_logo.png",
+      "remoteSha256": "185ABB93942EA45A21DCC2D80564E44E1895AFA14127D4EAC110FAEB979A85BA",
+      "localSha256": "185ABB93942EA45A21DCC2D80564E44E1895AFA14127D4EAC110FAEB979A85BA",
+      "byteEqual": true
+    }
+  ],
+  "sourceReferences": {
+    "titleLogo": true,
+    "enterArt": true,
+    "rawTitleReference": false
+  },
+  "allSelectedBytesEqual": false,
+  "allNonMetaBytesEqual": true,
+  "allMetaGuidsEqual": true,
+  "differentExistingArtMetas": [
+    "unity/Assets/Exoduser/Resources/Art/lobby/title_logo.png.meta",
+    "unity/Assets/Exoduser/Resources/Art/lobby/enter_art.png.meta",
+    "unity/Assets/Exoduser/Resources/Art/lobby/brand_logo.png.meta"
+  ],
+  "rawPngTrackedButUnreferenced": true,
+  "limits": "Read-only PC Git tree and isolated PC source audit. This does not verify the Mac checkout, integration, Player screen, or save behavior."
+}
