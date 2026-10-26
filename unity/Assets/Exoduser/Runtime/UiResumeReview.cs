@@ -22,6 +22,7 @@ public sealed class UiResumeReview : MonoBehaviour
     int failures;
     bool finished;
     bool diagnosticPreview;
+    float namedHudTopLeftChangeRatio = -1f;
     string ukCue = "";
     string ukText = "";
     string koText = "";
@@ -30,6 +31,7 @@ public sealed class UiResumeReview : MonoBehaviour
     {
         public string scope, output, error, ukCue, ukText, koText;
         public bool passed, diagnosticPreview;
+        public float namedHudTopLeftChangeRatio;
         public int failures;
         public string[] checks, images;
     }
@@ -123,6 +125,7 @@ public sealed class UiResumeReview : MonoBehaviour
             scope = "Controlled verification Player callbacks and screenshots only. No OS mouse or keyboard click proof, no natural-play or production-save claim.",
             output = output, error = error, ukCue = ukCue, ukText = ukText, koText = koText,
             passed = failures == 0 && error.Length == 0, diagnosticPreview = diagnosticPreview,
+            namedHudTopLeftChangeRatio = namedHudTopLeftChangeRatio,
             failures = failures, checks = checks.ToArray(), images = images.ToArray()
         };
         try
@@ -162,6 +165,38 @@ public sealed class UiResumeReview : MonoBehaviour
         ScreenCapture.CaptureScreenshot(path);
         yield return Until(() => File.Exists(path) && new FileInfo(path).Length > 1024, name + " screenshot bytes", 5f);
         images.Add(path);
+    }
+    static float TopLeftChangeRatio(string baselinePath, string changedPath)
+    {
+        var baseline = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        var changed = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        try
+        {
+            if (!baseline.LoadImage(File.ReadAllBytes(baselinePath), false) ||
+                !changed.LoadImage(File.ReadAllBytes(changedPath), false))
+                throw new InvalidOperationException("HUD comparison PNG decode failed");
+            if (baseline.width != changed.width || baseline.height != changed.height ||
+                baseline.width < 310 || baseline.height < 80)
+                throw new InvalidOperationException("HUD comparison resolution mismatch");
+            var a = baseline.GetPixels32();
+            var b = changed.GetPixels32();
+            int different = 0;
+            const int areaWidth = 310, areaHeight = 80;
+            for (int y = baseline.height - areaHeight; y < baseline.height; y++)
+                for (int x = 0; x < areaWidth; x++)
+                {
+                    int at = y * baseline.width + x;
+                    if (Math.Abs(a[at].r - b[at].r) >= 16 ||
+                        Math.Abs(a[at].g - b[at].g) >= 16 ||
+                        Math.Abs(a[at].b - b[at].b) >= 16) different++;
+                }
+            return (float)different / (areaWidth * areaHeight);
+        }
+        finally
+        {
+            UnityEngine.Object.Destroy(baseline);
+            UnityEngine.Object.Destroy(changed);
+        }
     }
 
     IEnumerator Review()
@@ -259,6 +294,18 @@ public sealed class UiResumeReview : MonoBehaviour
         yield return null;
         Check(!game.Running && !lobby.IsBlocking, "gameplay drawn while simulation stopped");
         yield return Capture("hud-status-720p", 1280, 720);
+        string originalName = lobby.ActiveCharacterName;
+        SetField(lobby, "<ActiveCharacterName>k__BackingField", "UI 검수");
+        yield return null;
+        Check(!game.Running && !lobby.IsBlocking && lobby.ActiveCharacterName == "UI 검수", "named HUD controlled state");
+        yield return Capture("named-hud-720p", 1280, 720);
+        namedHudTopLeftChangeRatio = TopLeftChangeRatio(
+            Path.Combine(output, "hud-status-720p.png"), Path.Combine(output, "named-hud-720p.png"));
+        Check(diagnosticPreview ? namedHudTopLeftChangeRatio > .02f : namedHudTopLeftChangeRatio < .001f,
+            "named HUD upper-left visual gate ratio=" + namedHudTopLeftChangeRatio.ToString("F6") +
+            (diagnosticPreview ? " expected >0.02" : " expected <0.001"));
+        SetField(lobby, "<ActiveCharacterName>k__BackingField", originalName);
+        yield return null;
         yield return Capture("hud-status-1080p", 1920, 1080);
     }
 }
