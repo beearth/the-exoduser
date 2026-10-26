@@ -68,6 +68,7 @@ namespace Exoduser.UnityPort {
 
         void DrawDock(int level,Core.PlayerState player,Action close){
             var old=GUI.matrix;
+            BeginDockEvent();HandlePreviewWheel();
             float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
             Fill(new Rect(0,0,Screen.width,Screen.height),C(0,0,0,.53f));
             GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2f,(Screen.height-1080*scale)/2f,0),Quaternion.identity,new Vector3(scale,scale,1));
@@ -81,12 +82,12 @@ namespace Exoduser.UnityPort {
             DrawBody(new Rect(lx,182,lw,tall?858:802),lx,lw);
             if(oss)DrawOssuaryPage(level,power);
             else if(Page==PageCrystals)DrawCrystalsPage(level,power);
-            else if(Page==PageStorage){DrawStoragePage(level);DrawActionRow();}
+            else if(Page==PageStorage){DrawStoragePage(level);DrawActionRow(level);}
             else{
                 DrawEquipPanel(level,power);
                 DrawBagPanel(level);
                 DrawRightPanel(level,power);
-                DrawActionRow();
+                DrawActionRow(level);
             }
             GUI.matrix=old;
         }
@@ -198,7 +199,7 @@ namespace Exoduser.UnityPort {
             for(int cell=0;cell<order.Length;cell++){
                 int i=order[cell];var it=State.Equipped[i];
                 var slot=new Rect(slotColumns[cell%4],slotRows[cell/4],98,98);
-                DrawSlot(slot,it,webSlotNames[i]);
+                DrawSlot(slot,it,webSlotNames[i]);NoteHover(slot,it);
                 HandleItem(slot,it,InventoryState.Slots[i],level);
             }
             int equipped=0;for(int i=0;i<State.Equipped.Length;i++)if(i!=15&&State.Equipped[i]!=null)equipped++;
@@ -291,6 +292,7 @@ namespace Exoduser.UnityPort {
                 Fill(badge,C(11,11,11,.8f));
                 Txt(new Rect(badge.x,badge.y,badge.width-3,badge.height),InventoryState.ItemPower(it).ToString(),10,C(223,208,181),500,TextAnchor.MiddleRight);
                 if(selected){var g=gold;Fill(new Rect(rect.x,rect.y,rect.width,2),g);Fill(new Rect(rect.x,rect.yMax-2,rect.width,2),g);Fill(new Rect(rect.x,rect.y,2,rect.height),g);Fill(new Rect(rect.xMax-2,rect.y,2,rect.height),g);}
+                if(bagPointerInside)NoteHover(rect,it);
                 if(bagPointerInside||Event.current.type!=EventType.MouseDown)HandleItem(rect,it,null,level);
             }
             var e=Event.current;
@@ -329,7 +331,9 @@ namespace Exoduser.UnityPort {
             Grad(pane,C(21,27,31,.94f),C(10,12,14,.96f),145);
             GUI.BeginGroup(pane);Glow(pane.width*.75f,0,245,543,C(120,96,57,.16f));GUI.EndGroup();
             Border(pane,C(117,99,66));
-            if(State.Selected!=null){DrawDetails(level,new Rect(pane.x,pane.y+17,pane.width,pane.height-34),pane.yMax-12);return;}
+            // hover preview wins over the selection while the pointer is on an item (web _invHover / _invRestoreSelectedActions)
+            panelItem=hoverItem??State.Selected;panelPreview=hoverItem!=null;
+            if(panelItem!=null){DrawItemPanel(pane,panelItem,panelPreview,level,power);return;}
             // .inv-detail-kicker 10px/700 ls 2px, <strong> 20px/700 ls .8px.
             Serif(new Rect(1414.2f,198.5f,434,13),"장비 기록",10,C(174,140,93),true,2f);
             TxtSp(new Rect(1414.2f,222,434,26),"현재 전투 구성",20,C(225,201,155),700,.8f);
@@ -367,13 +371,30 @@ namespace Exoduser.UnityPort {
             Fill(new Rect(r.x+1,r.y+2,1,1),c);Fill(new Rect(r.xMax-2,r.y+2,1,1),c);Fill(new Rect(r.x+1,r.yMax-3,1,1),c);Fill(new Rect(r.xMax-2,r.yMax-3,1,1),c);
         }
 
-        void DrawActionRow(){
+        // #invActionBtns (left) follows the shown item; the junk button is centred in the remaining width (web flex row).
+        void DrawActionRow(int level){
             Fill(new Rect(42,992,1836,1),C(91,81,67));
-            int n=0;foreach(var it in State.Bag)if(!it.junk&&!it.fav)n++;
+            float startX=42;var it=panelItem;
+            if(it!=null){
+                bool bag=State.Bag.Contains(it);bool reqFail=bag&&it.reqLv>level;
+                string main=bag?(reqFail?"Lv."+it.reqLv+" 필요":"장착"):"해제";
+                var r1=new Rect(43,1004,TextWidth(main,12,500)+28,34);
+                PlateFace(r1,bag&&!reqFail);Txt(r1,main,12,reqFail?C(255,68,68):C(199,190,173),500,TextAnchor.MiddleCenter,true);
+                if(GUI.Button(r1,GUIContent.none,GUIStyle.none)&&!reqFail){if(bag)Equip(it,level);else Unequip(it.slot);}
+                startX=r1.xMax;
+                if(bag){
+                    // salvage (악의+N) needs the salvage value table: not ported, shape only
+                    string sal="분해 (악의+미이식)";var r2=new Rect(r1.xMax+6,1004,TextWidth(sal,12,500)+28,34);
+                    PlateFace(r2,false);Txt(r2,sal,12,C(199,190,173),500,TextAnchor.MiddleCenter,true);startX=r2.xMax;
+                }
+                startX+=8;
+            }
+            int n=0;foreach(var b in State.Bag)if(!b.junk&&!b.fav)n++;
             if(n==0)return;
             // Web invJunkSelBtn: every non-favorite bag item becomes junk.
-            if(PlateButton(new Rect(886,1004,156,34),"전체 쓰레기 지정 ("+n+"개)",12)){
-                foreach(var it in State.Bag)if(!it.fav)it.junk=true;
+            string junk="전체 쓰레기 지정 ("+n+"개)";float jw=156;float jx=startX+(1882-startX)/2f-jw/2f;
+            if(PlateButton(new Rect(jx,1004,jw,34),junk,12)){
+                foreach(var b in State.Bag)if(!b.fav)b.junk=true;
             }
         }
     }
