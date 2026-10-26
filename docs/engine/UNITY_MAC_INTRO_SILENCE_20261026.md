@@ -58,3 +58,11 @@ NativeLobbyVideo의 prepareCompleted에서 filename이 정확히 intro.mp4이고
 fixture는 usesIntroAudioFallback, actual clip, voice.time/timeSamples와 native track count를 기록한다. Video None + 명시적 external Voice(AudioSource)를 별도 audioRoute로 표시해 native route와 구분한다. frozen Title의 stopped/muted, Gate original clip positive output/포커스 pause와 resume, World/lobby/FDG에서 fallback 해제 및 종료 후 Player/Voice release를 검사한다. ROOT는 이전 baseline 이후 이 source로 FDG 무음+Gate 원본 복귀를 함께 final 인수한다. Runtime+Editor 정적 컴파일 오류0이며 실제 Player/출력 PASS는 아직 대기다.
 
 최종 QA 전 priming 중복 제거 여부를 위해 fixture만 추가 계측한다. frozen Title 준비 뒤 현재 fallback AudioClip.GetData(sample offset0)로 첫 min(4096,clip.samples) sample frame×channels를 한 번 읽어 output/intro-fallback-head.f32에 float32 little-endian interleaved로 저장한다. receipt의 fallbackClipSamples/Frequency/Channels, fallbackHeadFrames/File/Encoding이 실제 import 결과를 기록한다. ROOT가 원본 afconvert PCM과 cross-correlation해 Unity import의 MP3 priming 제거 여부를 판단하기 전까지 제품 1105/44100 offset은 변경하지 않는다. GetData dump는 QA 출력에만 생성하며 영상/음원 asset 및 일반 실행 경로는 이번 보강에서 변경하지 않았다.
+
+## ROOT final 회수와 Seek 정적 보강
+
+80e1312 QA 실제 31/31 PASS, contractPassed=true. FDG/HD/SD/frozen Title의 Listener peak/RMS0, FDG focus/resume와 유음 lobby 뒤 재진입도0이었다. Gate native audioTrackCount0/fallback=true, Voice peak .35562/volume .6, enter SFX peak2/BGM .45를 확인했다. focus pause0/resume positive, World/lobby의 fallback 해제와 마지막 Close release도 PASS였다.
+
+Unity imported clip은 354816 frames(308×1152)/44100/stereo였다. ROOT의 OS afconvert PCM cross-correlation 최대 .99999977에서 referenceShift=-529(Unity clip 표본이 CoreAudio보다529 늦음)으로 zero-shift 가설은 기각됐다. 원본 edit1105를 Unity clip에 한 번 적용한 표본은 CoreAudio reference576과 동일 파형에 해당한다. 제품 offset1105/44100은 유지한다. 이는 관측한 decode PCM 정렬 자료이며 브라우저와 sample-exact 동등하다는 주장은 아니다.
+
+추가 정적 보강으로 Seek에서 clamp된 local target을 한 번 계산하고 VideoPlayer.time과 fallback Voice.time(target+offset)에 함께 사용한다. 비동기 seek 직후 player.time을 다시 읽어 옛 시각을 가져올 race를 제거했다. 초반 Gate 사용자 경로에 Seek가 노출되지는 않으며 초반 Seek는 신규 실측 주장이 없다. 기존31 검사를 반복하지 않고 ROOT가 누적 normal source build만 확인한다.

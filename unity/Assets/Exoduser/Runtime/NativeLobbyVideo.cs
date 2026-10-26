@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort
   public void Pause(){wantsPlayback=false;if(player!=null)player.Pause();PauseIntroAudio();}
   public void SetPlaybackAllowed(bool allowed){playbackAllowed=allowed;if(player==null)return;if(!allowed){if(player.isPlaying)player.Pause();PauseIntroAudio();}else TryStartPlayback();}
   public void Toggle(){if(!Prepared)return;if(player.isPlaying)Pause();else Play();}
-  public void Seek(double time){if(Prepared){freezeFirst=false;player.time=Math.Max(0,Math.Min(Duration,time));if(UsesIntroAudioFallback&&voice!=null)voice.time=(float)Math.Max(0,Math.Min(voice.clip.length-.001,player.time+IntroAudioMediaOffset));}}
+  public void Seek(double time){if(Prepared){freezeFirst=false;double target=Math.Max(0,Math.Min(Duration,time));player.time=target;if(UsesIntroAudioFallback&&voice!=null)voice.time=(float)Math.Max(0,Math.Min(voice.clip.length-.001,target+IntroAudioMediaOffset));}}
   void ApplyDirectMix(){if(diagnosticDirect&&Prepared&&!UsesIntroAudioFallback){player.SetDirectAudioMute(0,directMuted);if(player.canSetDirectAudioVolume)player.SetDirectAudioVolume(0,directGain);}}
   public void Volume(float value){directGain=Mathf.Clamp01(value);if(voice!=null)voice.volume=directGain;ApplyDirectMix();}
   public void Mute(bool muted){directMuted=muted;if(voice!=null)voice.mute=muted;ApplyDirectMix();}

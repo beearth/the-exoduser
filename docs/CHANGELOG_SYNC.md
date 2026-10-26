@@ -1,5 +1,7 @@
 ## 2026-10-26 Unity 초반 stage 무음 계측
 
+- ROOT final 31/31·무음/음향 복귀 PASS 및 PCM priming 정렬 차이를 기록. Seek 비동기 직후 시각 재읽기를 clamp local target 공유로 보정했으며 초반 Seek 신규 실측 주장은 하지 않는다.
+
 - QA imported fallback clip의 첫4096 sample frame PCM과 samples/frequency/channels를 기록해 ROOT 원본 PCM priming 상관분석을 지원. 제품 offset 변경 없이 비교 결과 대기.
 
 - intro.mp4 native track0에만 원본 packet-demux MP3를 기존 Voice로 복구하고 edit-list 1105/44100 offset·freeze/pause/resume/close 경계를 보존. external route/원본 clip 출력과 이후 cleanup QA를 추가했으며 실제 final 인수는 ROOT 대기.
