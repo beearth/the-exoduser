@@ -1,5 +1,20 @@
 # Mac 신규 전사 이야기 — 2026-10-25
 
+## 2026-10-27 A04 생성 뒤 외형별 이야기 분기
+
+PC 후보 `08af46705af26291d9d5add4904ad82a268142c1`의 `NativeLobby.Characters.cs` 한 줄을 Mac에 인수했다. `CreateCharacter()`는 기존대로 `TryCreate`와 `CommitCharacters`가 성공한 뒤 선택 표시·생성창 닫기를 수행하며, 그 뒤 `characterVisual==0`일 때만 `BeginCreatedCharacterStory()`를 호출한다. 원본 `index.html` `_afterCharacterCreated(name, visualIdx)`의 외형 0 분기와 일치한다.
+
+| 외형 인덱스·한글명 | 현재 일반 UI/로스터 | 저장 성공 뒤 Mac 호출 | 이야기·자동 입장 |
+|---|---|---|---|
+| 0 전사 | 생성 허용 | `BeginCreatedCharacterStory()` 1회 | 기존 전사 영상·입장 경로 유지 |
+| 1 실버테일 | `ConfirmCharacterVisual`·`CharacterRoster.Validate`에서 잠김 | 해당 호출 0회 | 0회; 미래 생성 허용 시 로비에 남음 |
+| 2 헬거너 | 위와 같음 | 0회 | 0회; 미래 생성 허용 시 로비에 남음 |
+| 3 트랜스뮤터 | 위와 같음 | 0회 | 0회; 미래 생성 허용 시 로비에 남음 |
+| 4 창마법사 | 위와 같음 | 0회 | 0회; 미래 생성 허용 시 로비에 남음 |
+| 생성·저장 실패 | 기존 오류 반환 | 0회 | 0회 |
+
+PC 추출 메서드 검사는 수정 전 RED(외형 1의 이야기·입장 1/1), 수정 후 6/6 GREEN이었다. 이 검사는 잠긴 외형 1–4의 제품 UI 재현이 아니다. Mac에서는 수정 전 소스를 별도 `_out/UNITY-MAC-A04-STORY-GUARD-20261027/before/`에 백업했고 수정 전·후 SHA256은 각각 `ac46fafc5a48b5123b0dbafa5e560249ae42b8af714e0af291c6d708eb2da7d6`, `2a614ea20fbe3302bfa6479b1ca589d2d4124eb6d9ae04953d74e316add8bd22`다. Unity 6000.6.7f1 Mac Editor `-batchmode -nographics -quit` import·컴파일 1회는 종료0, C# 오류·경고0이며 기존 `NativeCharacterPresentationPlayback.Video` UAC1001만 로그에 2회 기록됐다. 로그는 `_out/UNITY-MAC-A04-STORY-GUARD-20261027/compile.log`에 있다. Unity가 자동 재작성한 기존 `.meta` 411개와 신규 1개는 변경 patch·사본을 `_out`에 백업하고 원래 바이트로 복원했다. 로스터/save·영상·다른 Runtime/Resources 제품 변경은 없다. 아래 2026-10-25 Player 합격 기록은 당시 소스의 전사 정상 경로 기록이며 이 한 줄의 새 Player 검수가 아니다.
+
 캐릭터 슬롯 저장 단위 완료 뒤 승인된 다음 원본 흐름을 연결한다. 원본 character-story-player.js와 index.html _afterCharacterCreated/showCharGate를 대조했다. 생성 저장 성공 후에만 한 번 재생하고 영상 종료/스킵 뒤 같은 이름으로1.2초 입장 화면을 거쳐 새 미리보기 전투에 진입한다. 기존 전체 전투 세이브나 storySeen 영구 flag를 만들지 않는다.
 
 ## 원본 계약과 자산

@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A04 생성 뒤 전사 이야기 외형 가드
+
+PC `08af46705af26291d9d5add4904ad82a268142c1`의 `NativeLobby.Characters.cs` 한 줄을 Mac에 적응했다. 저장 성공 뒤 외형 0만 기존 전사 이야기·입장으로 가고, 외형 1–4는 현재 잠금 유지·미래 생성 허용 시 로비 잔류다. Mac Unity6000.6.7f1 Editor 컴파일1회 종료0/C# 오류0, Player 빌드0. PC 추출 검사 6/6은 실기 GUI 결과가 아니다. [외형별 계약·Mac 검증](../UNITY_MAC_WARRIOR_STORY_20261025.md#2026-10-27-a04-생성-뒤-외형별-이야기-분기).
+
 ## 2026-10-27 Mac A03 패치노트 QA 직접진입 실창 결과
 
 source `fae70452d` 고유 ARM64 1회 Succeeded/errors0/C# 오류·경고0. `open -n` 단일 격리 PID18734에서 ko 0.7.5/0.7.0 본문, 키보드 Down 스크롤, es/cs 긴 라벨, N 뒤입력 차단, Esc 닫기와 roster0/selected-1 불변을 확인했다. **QA 직접진입·키보드 PASS**, launcher 실제 마우스 클릭 HOLD. 실제 내용1280×720/캡처1280×784이며 1024 최소창 미검증. [영수증·화면·경계](../UNITY_MAC_A03A04_UI_REVIEW_20261027.md).

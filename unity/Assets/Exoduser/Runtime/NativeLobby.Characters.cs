@@ -82,7 +82,7 @@ namespace Exoduser.UnityPort
    var candidate=CopyCharacters();
    if(!candidate.TryCreate(name,characterVisual,out var error)){characterError=CharacterError(error);return false;}
    if(!CommitCharacters(candidate))return false;
-   RevealSelectedCharacter();CloseCharacterCreation();characterRestoreCreateFocus=false;BeginCreatedCharacterStory();return true;
+   RevealSelectedCharacter();CloseCharacterCreation();characterRestoreCreateFocus=false;if(characterVisual==0)BeginCreatedCharacterStory();return true;
   }
   string CharacterError(CharacterCreateError error)
   {
