@@ -2,6 +2,11 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 — Unity Windows Player 종료 크래시 = 6000.4.8f1 엔진 결함 (Codex tip 재현) / PC·Mac Unity 버전 통일 필요
+
+- **종료 크래시**: Codex tip `b674ebce4`를 PC patch 없이 Win64 빌드해도 `--quit-after-skill-smoke` 종료 시 코드 -1073741819(0xC0000005). 이벤트 1000 12건+실험 1건 모두 `UnityPlayer.dll`(0x6a043e7f) 오프셋 **0x107a81** 고정, 메인 스레드 널 멤버(+0xE0) 읽기, 스택 전부 UnityPlayer 내부, Mono·MF 모듈 해제 후 최종 정리 단계. `-force-d3d11`에서도 같은 오프셋 → D3D12 원인 기각. 10-24(BSOD 이전) 빌드도 동일 → 하드웨어 가능성 낮음. 스모크 JSON 자체는 정상이지만 **사용자 배포 Windows 빌드도 종료 시 튕길 수 있어 E05 인수 차단**. 상세: `docs/engine/UNITY_PC_EXIT_CRASH_20261026.md`.
+- **PC·Mac Unity 버전 통일 필요(별도 결정 항목)**: PC 6000.4.8f1(프로젝트 `ProjectVersion.txt` 기준) / Mac Editor 6000.6.7f1. 해결 후보 실험 = PC에 6000.6.7f1 설치 후 같은 tip 빌드·1회 재현(문서 §8, **미실행·미설치** — 설치·프로젝트 버전 상향은 Codex와 사용자 확인 후 결정).
+
 ## 2026-10-26 저녁 — ★ Unity PC 작업 전체 누적 병합 요청 (이 항목 하나만 보면 됨) → `codex/unity-mac-20261024`
 
 > 아래의 이전 Unity 병합 요청(05c6e583b·c2fdfc158·d18ac69ab·e651cef10·d5f32ff57)은 **모두 이 항목으로 대체**된다. 2026-10-26 14:51 기준 Codex는 PC 작업을 아직 병합하지 않았다(전체총괄 확인).
