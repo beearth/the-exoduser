@@ -13,6 +13,7 @@ namespace Exoduser.UnityPort
   UIDocument document;
   PanelSettings panel;
   RenderTexture target;
+  VisualElement captionArea;
   Label caption;
   public bool Ready { get; private set; }
 
@@ -30,27 +31,33 @@ namespace Exoduser.UnityPort
    root.pickingMode=PickingMode.Ignore;
    root.style.width=Length.Percent(100);
    root.style.height=Length.Percent(100);
+   captionArea=new VisualElement();
+   captionArea.name="ArabicWorldCaptionArea";
+   captionArea.pickingMode=PickingMode.Ignore;
+   captionArea.style.position=Position.Absolute;
+   captionArea.style.left=Length.Percent(8);
+   captionArea.style.right=Length.Percent(8);
+   captionArea.style.bottom=Length.Percent(18);
+   captionArea.style.alignItems=Align.Center;
    caption=new Label();
    caption.name="ArabicWorldCaption";
    caption.pickingMode=PickingMode.Ignore;
    caption.enableRichText=false;
    caption.languageDirection=LanguageDirection.RTL;
-   caption.style.position=Position.Absolute;
-   caption.style.left=Length.Percent(8);
-   caption.style.right=Length.Percent(8);
-   caption.style.bottom=Length.Percent(18);
+   caption.style.maxWidth=Length.Percent(100);
    caption.style.unityFontDefinition=FontDefinition.FromSDFFont(font);
    caption.style.unityTextGenerator=new StyleEnum<TextGeneratorType>(TextGeneratorType.Advanced);
    caption.style.unityTextAlign=TextAnchor.MiddleCenter;
    caption.style.whiteSpace=WhiteSpace.Normal;
    caption.style.color=new Color(.933f,.898f,.835f);
    caption.style.backgroundColor=new Color(0,0,0,.46f);
-   caption.style.paddingLeft=8;
-   caption.style.paddingRight=8;
+   caption.style.paddingLeft=2;
+   caption.style.paddingRight=2;
    caption.style.paddingTop=2;
    caption.style.paddingBottom=2;
    caption.style.display=DisplayStyle.None;
-   root.Add(caption);
+   captionArea.Add(caption);
+   root.Add(captionArea);
    Ready=true;
   }
 

@@ -15,7 +15,7 @@ Mac `codex/unity-mac-20261024`의 `ar` 세계관 자막만 별도 렌더 후보�
 | 표시 | `WorldIntro`, 언어 `ar`, `SubtitleText.Length>0`, 패널 `Ready`일 때만 IMGUI 자막을 건너뛰고 ATG RenderTexture를 영화 위에 합성. 나머지는 기존 IMGUI 본문/그림자 |
 | 입력 | 기존 `LobbySubtitleData`의 `SubtitleText` 원문 그대로 Label에 전달. 문구·cue start/end·32큐·영상/음향 계약 변경 없음 |
 | 조형 | `unityTextGenerator=Advanced`, 동적 `ArabicCaptionNaskhDynamic` FontAsset. 본문에 U+0600–U+06FF 아랍 문자가 있으면 `languageDirection=RTL`, 없으면 LTR |
-| 배치 | 패널 전체 화면 크기 RenderTexture, 본문 좌우 각8%·하단18%, 가운데 정렬, 폰트 크기 `Clamp(Screen.height×0.054,32,50)`px, 본문 색 `(0.933,0.898,0.835)`, 검정 배경 alpha0.46 |
+| 배치 | 패널 전체 화면 크기 RenderTexture, 84% 폭 배치 영역(좌우 각8%)·하단18%에 내용 너비 Label을 가운데 정렬, 폰트 크기 `Clamp(Screen.height×0.054,32,50)`px, 본문 색 `(0.933,0.898,0.835)`, Label 자체 검정 배경 alpha0.46·가로 padding 각2px·세로 padding 각2px. 배치 영역은 투명 |
 | 폰트 | `Resources/Art/fonts/NotoNaskhArabic-Regular.ttf`, Noto Naskh Arabic Regular 2.021, 247,336 bytes, SHA256 `6f0a92031367b2f5a2078fe9d24f3433122b61a0bad57c423aad8f3c39aa2e6e` |
 | 라이선스 | 같은 폴더 `NotoNaskhArabic-OFL.txt`, SIL OFL 1.1, SHA256 `a7a5a25eb188bf1cd96982030d53e23c33485c69b1044a562254226857ee13af` |
 | 출처 | [Noto Arabic 공식 프로젝트](https://github.com/notofonts/arabic), 공식 dashboard 고정 commit `cb61ee...`의 static Regular/OFL |
@@ -41,7 +41,7 @@ Naskh 단독 cmap은 현행 `ar` 32큐의 공백 외 고유 46문자 중 38문�
 
 ## gate 판정
 
-최종 `cdc50a1e6`의 720p 실화면 32큐는 아래 순서표대로 확인했다. 1080p는 선행 후보의 cue20 대표 화면까지만 검수했으므로 전 32큐의 1080p 가시 판정으로 확대하지 않는다. 웹은 cue 텍스트 배경이 글자 길이를 따르지만 Unity 후보는 cue 폭 84% 전체에 검정 alpha 0.46을 칠해 짧은 문장에서도 배경이 넓다. 읽기성·영상 가림을 720p에서 확인한 결과 이번 **격리 QA 후보**에서는 허용하되 웹과 완전 동일한 배경 폭이라고 주장하지 않는다. 일반 실행 채택은 별도 제품 결정이다.
+최종 `cdc50a1e6`의 720p 실화면 32큐는 아래 순서표대로 확인했다. 1080p는 선행 후보의 cue20 대표 화면까지만 검수했으므로 전 32큐의 1080p 가시 판정으로 확대하지 않는다. 웹은 cue 텍스트 배경이 글자 길이를 따르지만 이때 Unity 후보는 cue 폭 84% 전체에 검정 alpha 0.46을 칠해 짧은 문장에서도 배경이 넓었다. 후속 배경폭 RETOUCH 후보는 아래 별도 절에 기록한다. 일반 실행 채택은 별도 제품 결정이다.
 
 웹/Unity 문구와 시간 데이터는 동일한 `lobby_frontend.json` SHA256 `32202897b58d1a1c29e149afaff8b32e9490633a1ae8b2c7350092ac28235562`를 유지한다.
 
@@ -97,3 +97,9 @@ Naskh 단독 cmap은 현행 `ar` 32큐의 공백 외 고유 46문자 중 38문�
 한 번의 런에서 0.5초 간격으로 찍은 화면과 같은 HEAD의 두 보완 런을 사용했다. 첫 캡처의 중간 구간 13·14큐는 런 사이 간격에 걸렸으므로 세 번째 런에서 실제 표시를 다시 확인했다. 가장 짧은 cue24(1.320초)와 cue29(1.360초)도 별도 조밀 시트에서 확인했다. 촬영 wall clock은 영상 media clock과 같지 않아 JSON의 시작/종료 밀리초를 화면만으로 계측했다고 주장하지 않는다. 코드 `UpdateCaption()`이 `movie.Time-WorldCueOffset`과 각 cue의 `[start,end)`를 사용하며 JSON SHA는 원본과 동일하다. 실제 순서와 공백·지속의 상대 흐름에서 누락/역전은 없었다. 별도 `atg-final-ar-to-ko.jpg`는 같은 HEAD에서 L→Home→Return으로 한국어 자막과 기본 IMGUI 스타일로 복귀한 화면이다. QA Player 로그 네 개에 예외/오류가 없다. 다른 28언어 자막 데이터와 경로는 변경하지 않았다.
 
 판정: **플래그 격리 ar 32/32 가시 PASS, cue32 RETOUCH 완료, 일반 실행 채택 0**. 1080p 전체 큐와 웹 배경 폭의 픽셀 일치는 아직 검수 범위 밖이다.
+
+## 배경 폭 RETOUCH 후보 — 동일 cue22 비교
+
+원본 웹의 `#worldIntroVideo::cue`는 `background:transparent`이고 `world-intro-subtitles.js`는 `VTTCue.size=84`, 가운데 정렬, `line=-3`을 지정한다. 웹 `web-ar-cue20-720p.png`는 파일 이름과 달리 원문이 cue22 `الجحيم لا يسأل من أي عصر جئت.`인 화면이다. 동일 문장의 Unity `atg-final-cue22.jpg`에서 글자 본체 폭은 근접하지만, Unity의 검정 배경은 좌우 8% 안쪽 전체를 채운다. 이 차이는 글꼴이나 원문이 아니라 `NativeArabicCaptionOverlay`가 위치용 84% 폭 Label 자체에 배경색을 준 구조에서 생겼다.
+
+수정 후보는 투명한 84% `ArabicWorldCaptionArea`를 기존 좌우8%·하단18%에 두고, 그 안에서 내용 폭 Label을 중앙 정렬한다. Label `maxWidth=100%`로 원래 84% 최대 줄바꿈 한계를 지키며, 배경색은 Label에만 둔다. 가로 padding은 각8→2px, 세로 padding은 각2px을 유지한다. 배경 alpha0.46, 글꼴·폰트 크기·원문·cue start/end·RTL/LTR 판단·RenderTexture 합성은 변경하지 않는다. 수정 전 원본과 문서 SHA 백업은 `_out/UNITY-MAC-AR-20261026/background-retouch-backup-112740f8c/`에 있다. **이 단락은 소스 후보 설명이며 실제 ARM64 화면/빌드 판정 전이다.**

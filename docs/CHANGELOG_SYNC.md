@@ -57184,4 +57184,6 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 
 2026-10-26 Mac ar ATG 최종 격리 QA: HEAD cdc50a1e6 ARM64 오류0 빌드의 `--unity-arabic-caption-preview` Player에서 720p cue1–32 실제 화면을 순차 확인했다. cue32 `EXODUSER.` LTR 수정 PASS, ar→ko 기본 경로 복귀 PASS, 32큐 JSON SHA와 다른28언어 데이터 불변. 가로 검정 배경은 웹보다 넓은 후보 표현으로 기록했고 일반 실행 채택0. 1080p 전체 큐/밀리초 실측은 주장하지 않는다. [32큐 표·증거](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
 
+2026-10-26 Mac ar ATG 배경폭 RETOUCH 후보: 웹 동일 cue22와 비교해 자막 글자 폭은 근접하지만 Unity 검정 배경은 84% cue 영역 전체를 채웠다. `NativeArabicCaptionOverlay`의 투명 84% 위치 영역 안에 내용 폭 Label을 가운데 두고 배경은 Label에만 적용; 가로 padding 8→2px, alpha0.46 유지. 32큐 원문·시각·방향 메타와 다른28언어는 불변. 실제 새 ARM64 Player 화면 판정은 빌드 후 기록한다. [원인·계약](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
+
 2026-10-26 Mac ar 32큐 검수 경로: 기존 preview 플래그에서만 시작 언어 ar 지정. 일반 실행 ko/다른28언어는 불변, 실제 전큐 판정은 새 HEAD Player 대기. [기록](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
