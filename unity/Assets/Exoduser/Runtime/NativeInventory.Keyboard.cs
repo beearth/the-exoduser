@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort {
    return false;
   }
   void RefreshSelection(){detailItem=State.Selected;detailOnly=false;detailScroll=Vector2.zero;RevealSelection();}
-  void RevealSelection(){var it=State.Selected;if(it==null||!State.Bag.Contains(it))return;const float cellSize=52.2f,visibleHeight=386;float top=it._gy*cellSize,bottom=(it._gy+2)*cellSize;if(top<scroll.y)scroll.y=top;else if(bottom>scroll.y+visibleHeight)scroll.y=bottom-visibleHeight;}
+  void RevealSelection(){var it=State.Selected;if(it==null||!State.Bag.Contains(it))return;const float cellSize=56f,visibleHeight=672;float top=it._gy*cellSize,bottom=(it._gy+2)*cellSize;if(top<scroll.y)scroll.y=top;else if(bottom>scroll.y+visibleHeight)scroll.y=bottom-visibleHeight;}
   void AfterOwnershipChange(){Navigation.TrackSelection();Navigation.Fence();RefreshSelection();}
   void DrawKeyboardHelp(Rect pane){
    GUI.Label(new Rect(pane.x+32,pane.yMax-70,pane.width-64,68),"방향키 선택 · G 가방/장착 장비 · Enter 장착/해제\nC 비교/상세 · PgUp/PgDn 상세 스크롤 · Tab/ESC 닫기",small);
