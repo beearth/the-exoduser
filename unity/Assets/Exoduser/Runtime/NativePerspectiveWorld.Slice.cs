@@ -22,6 +22,7 @@ namespace Exoduser.UnityPort
 
         public static readonly Rect SliceRect = new Rect(2100f, 5900f, 3850f, 2100f);
         public const float SliceCell = 10f, SliceSdRange = 400f, SliceGridStep = 8f;
+        public const float SlicePlayerBlobAlpha = 0.38f;
         public bool SliceActive { get; private set; }
         public int SliceVertexCount { get; private set; }
         public readonly List<SlicePlacement> SlicePlacements = new List<SlicePlacement>();
@@ -63,7 +64,28 @@ namespace Exoduser.UnityPort
             BuildDecals();
             BuildLife(); // MAP3D-LIFE1
             BuildPaintCards(); // PAINTGROUND
+            RetuneSliceLights(); // PAINTGROUND-R: after decals / grass, whose seeded placement reads the four light positions above (kept so they do not move)
+            PlayerSilhouetteShadow = true; // PAINTGROUND-R: the player's key-light silhouette shadow back (slice v1 level)
+            if (blobMaterial != null) blobMaterial.SetColor("_Color", new Color(1f, 1f, 1f, SliceTune("pblob", SlicePlayerBlobAlpha)));
             UpdateFieldLights();
+        }
+
+        // PAINTGROUND-R light pools (art bible v2 9, L-1/L-2, C2): poison on the left, crimson on the right (one large, one small at the wall base), the cold fog light
+        // is gone (C7: no cold light on the combat floor) and the fourth light is switched off, so the floor between the pools stays dark.
+        // Entries 12..15 are the four slice extras added above; edited in place after the seeded decals / grass were placed.
+        void RetuneSliceLight(int index, float x, float y, float r, float a, float cr, float cg, float cb)
+        {
+            if (index >= fieldLights.Count) return;
+            var s = fieldLights[index]; s.x = x; s.y = y; s.r = r; s.a = a; s.cr = cr; s.cg = cg; s.cb = cb;
+            var l = pointLights[index]; l.transform.position = Unity(x, PointLightHeight, y); l.range = r; l.intensity = a; l.color = new Color(cr / 255f, cg / 255f, cb / 255f);
+        }
+
+        void RetuneSliceLights()
+        {
+            RetuneSliceLight(12, 3400f, 7340f, 450f, 0.95f, 152f, 162f, 52f);   // LIGHT-TOXIC: poison pool, left
+            RetuneSliceLight(13, 4680f, 7520f, 460f, 0.95f, 176f, 40f, 28f);    // LIGHT-HELL #b0281c: large crimson pool, right
+            RetuneSliceLight(14, 4380f, 7870f, 300f, 0.70f, 176f, 40f, 28f);    // LIGHT-HELL: small crimson pool at the south wall base (was the cold fog light)
+            RetuneSliceLight(15, 4260f, 7770f, 430f, 0f, 110f, 106f, 40f);      // off (was the dim poison light in the middle of the floor)
         }
 
         // ---------------- signed-distance mask ----------------
@@ -201,6 +223,7 @@ namespace Exoduser.UnityPort
             massAlb.wrapMode = TextureWrapMode.Repeat; massNrm.wrapMode = TextureWrapMode.Repeat; massAlb.filterMode = FilterMode.Bilinear; massNrm.filterMode = FilterMode.Bilinear;
             massMaterial3D.SetTexture("_MassAlb", massAlb); massMaterial3D.SetTexture("_MassNrm", massNrm);
             rootMaterial3D = new Material(massMaterial3D) { name = "Look3DMass roots (wind)" }; // MAP3D-LIFE1: roots sway (wind), masses pulse; same textures
+            rootMaterial3D.SetFloat("_Kind", 1f); // PAINTGROUND-R: roots use the root brown ramp, the masses the flesh ramp
             var blobShader = Resources.Load<Shader>("Shaders/Look3DBlob");
             aoMaterial = new Material(blobShader) { name = "SliceContactAO" };
             aoMaterial.SetTexture("_MainTex", blobTexture); aoMaterial.SetColor("_Color", new Color(1f, 1f, 1f, 0.92f));

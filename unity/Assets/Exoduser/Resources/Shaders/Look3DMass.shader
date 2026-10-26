@@ -14,7 +14,8 @@ Shader "EXODUSER/Look3DMass"
         _Pulse ("Pulse amplitude px along the normal (0 = off)", Float) = 0
         _WindAmp ("Wind amplitude px (0 = off)", Float) = 0
         _LifeH ("Height normaliser px for the pulse/wind mask", Float) = 300
-        _MassTone ("Mass albedo tone", Vector) = (1.8,1.0,0.95,0)
+        _MassTone ("Mass albedo tone (unused since PAINTGROUND-R)", Vector) = (1.8,1.0,0.95,0)
+        _Kind ("0 = flesh mass, 1 = root", Float) = 0
     }
     SubShader
     {
@@ -31,7 +32,7 @@ Shader "EXODUSER/Look3DMass"
             #include "UnityCG.cginc"
             #include "AutoLight.cginc"
             #include "Look3DCommon.cginc"
-            sampler2D _MassAlb, _MassNrm; float _Tile, _NormalStrength, _ContactHeight, _Pulse, _WindAmp, _LifeH; float4 _MassTone;
+            sampler2D _MassAlb, _MassNrm; float _Tile, _NormalStrength, _ContactHeight, _Pulse, _WindAmp, _LifeH, _Kind; float4 _MassTone;
             struct input { float4 vertex:POSITION; float3 normal:NORMAL; };
             struct output { float4 pos:SV_POSITION; float3 world:TEXCOORD0; float3 normal:TEXCOORD1; SHADOW_COORDS(2) };
             output vert(input v)
@@ -61,19 +62,41 @@ Shader "EXODUSER/Look3DMass"
                 float3 tX=float3(nX+n.zy, 1.0*abs(n.x)), tY=float3(nY+n.xz, 1.0*abs(n.y)), tZ=float3(nZ+n.xy, 1.0*abs(n.z));
                 float3 nw=normalize(tX.zyx*blend.x + tY.xzy*blend.y + tZ.xyz*blend.z);
                 if(dot(nw, n)<0.2) nw=n;
-                float3 albedo=L3D_DECODE(albedoGamma)*_MassTone.rgb; // tone: redder, lighter than the raw texture (outer body p50 >= 12, art bible 4)
+                // PAINTGROUND-R (art bible v2 7): the texture only gives the relief; the colour comes from the flesh palette. Body = FLESH-DEEP .. FLESH (roots: root brown),
+                // darker than the floor (V1: body p50 6..12); only the ridge (SINEW ivory) and the bone tips are bright, shadow-aware.
+                float tx=saturate(dot(albedoGamma, float3(0.30,0.59,0.11))/0.5); // relief 0..1 (texture luminance p50 ~0.45, p90 ~0.8)
+                float3 cDeep=L3D_DECODE(_Kind>0.5 ? float3(0.122,0.071,0.047) : float3(0.227,0.086,0.078)); // root #1f120c / FLESH-DEEP #3a1614
+                float3 cBody=L3D_DECODE(_Kind>0.5 ? float3(0.227,0.141,0.094) : float3(0.416,0.165,0.149)); // root #3a2418 / FLESH #6a2a26
+                float3 albedo=lerp(cDeep, cBody, smoothstep(0.15,0.9,tx))*_L3D_MassTune.x;
                 float topMask=smoothstep(0.30, 1.0, saturate(i.world.y/max(_LifeH,1.0)));
-                albedo*=lerp(0.85, 1.5, topMask); // painted top light: the upper part of the wall catches the light
+                albedo*=lerp(0.80, 1.25, topMask); // painted top light: the upper part of the wall catches the light
                 float contact=saturate(i.world.y/_ContactHeight);
-                albedo*=lerp(0.20, 1.0, contact*contact*(3-2*contact));
+                float contactK=lerp(0.20, 1.0, contact*contact*(3-2*contact));
+                albedo*=contactK;
                 albedo*=1.0+(L3D_Fbm(i.world.xz/340.0)-0.5)*0.16;
                 UNITY_LIGHT_ATTENUATION(shadow, i, i.world);
+                float facing=saturate(nw.y);
+                float toKey=saturate(dot(nw,_L3D_KeyDir.xyz)*1.3); // faces the key light: only the lit side of a ridge shines
+                float heightMask=smoothstep(0.10,0.55,saturate(i.world.y/max(_LifeH,1.0)));
+                float notRoot=(_Kind>0.5 ? 0.0 : 1.0);
+                float crest=smoothstep(0.40,0.78,tx)*heightMask*toKey*notRoot;
+                float tip=smoothstep(0.64,0.88,tx)*heightMask*toKey*notRoot;
+                float lightOn=(0.35+0.65*shadow)*contactK;
+                // SINEW-SHADE #5f4c55 patches (grey-mauve shade side, art bible 3) at low frequency, so the body is not one flat red
+                float shadeN=smoothstep(0.55,0.78, L3D_Fbm(i.world.xz/240.0+i.world.y/170.0+11.0))*notRoot;
+                albedo=lerp(albedo, L3D_DECODE(float3(0.373,0.298,0.333))*0.55*_L3D_MassTune.x, shadeN*0.55);
+                albedo=lerp(albedo, L3D_DECODE(float3(0.541,0.416,0.322))*lightOn, saturate(crest*_L3D_MassTune.y)); // SINEW #8a6a52
+                albedo=lerp(albedo, L3D_DECODE(float3(0.788,0.702,0.580))*lightOn, saturate(tip*_L3D_MassTune.z)); // BONE #c9b394
                 float3 pools=L3D_PointLights(nw, i.world);
                 float3 dyn=L3D_Lighting(nw, i.world, shadow)-pools;
                 float3 dref=_L3D_PaintRef.a>0 ? max(_L3D_PaintRef.rgb, 0.02) : float3(1,1,1); float wdyn=_L3D_PaintRef.a>0 ? _L3D_PaintRef.a : 1.0;
                 float3 color=albedo*(lerp(float3(1,1,1), dyn/dref, wdyn)+pools/dref*_L3D_Pool.z); // painted light 70% + dynamic 30%, pools at their own weight, as on the ground
-                // bone / shell tip highlight: ivory light on the upward facing upper part, shadow-aware
-                color+=L3D_DECODE(float3(0.79,0.70,0.58))*pow(saturate(nw.y),3.0)*topMask*0.14*(0.4+0.6*shadow);
+                // wet flesh: long streak-shaped reflections in the colour of the light (key + the coloured pools x FLESH-WET #b06a5c), never grey or point-like (art bible 7)
+                float3 vdir=normalize(_WorldSpaceCameraPos-i.world), hv=normalize(_L3D_KeyDir.xyz+vdir);
+                float refl=pow(saturate(dot(nw,hv)), 18.0);
+                float streak=smoothstep(0.60,0.78, L3D_Noise(float2(i.world.x/52.0+i.world.y/150.0, i.world.z/210.0+i.world.y/70.0)));
+                float3 wetLight=_L3D_KeyCol.rgb*0.55+pools*1.2;
+                color+=L3D_DECODE(float3(0.69,0.42,0.36))*wetLight*refl*streak*shadow*contactK*smoothstep(0.1,0.5,topMask+facing*0.3)*_L3D_MassTune.w*(_Kind>0.5 ? 0.35 : 1.0);
                 color=L3D_Fog(color, i.world);
                 return fixed4(L3D_ENCODE(color), 1);
             }

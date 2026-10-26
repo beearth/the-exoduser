@@ -141,6 +141,7 @@ Shader "EXODUSER/Look3DGroundLayered"
                 albedo*=lerp(0.55, 1.0, smoothstep(-30, 170, sdRaw)); // wall-base occlusion (the painted art already carries most of it)
 
                 UNITY_LIGHT_ATTENUATION(shadow, i, i.world);
+                float rawShadow=shadow;
                 float gobo=L3D_Gobo(px); shadow*=gobo; // MAP3D-LIFE1 L3: moving canopy shadow on the key light
                 float3 pools=L3D_PointLights(n, i.world);
                 float3 dyn=L3D_Lighting(n, i.world, shadow)-pools;
@@ -148,9 +149,12 @@ Shader "EXODUSER/Look3DGroundLayered"
                 float3 dref=_L3D_PaintRef.a>0 ? max(_L3D_PaintRef.rgb, 0.02) : float3(1,1,1); float wdyn=_L3D_PaintRef.a>0 ? _L3D_PaintRef.a : 1.0;
                 float3 lit=lerp(float3(1,1,1), dyn/dref, wdyn)+pools/dref*_L3D_Pool.z; // the coloured pools keep their own weight (light rhythm, art bible 7.2)
                 lit*=lerp(1.0, gobo, 0.6); // canopy shade also reads in the painted share (rhythm of light and shade, art bible 7.2)
+                lit*=lerp(1.0, rawShadow, _L3D_PaintShadow.x); // PAINTGROUND-R: player / prop / mass key shadows read in full, not only in the 30% dynamic share
+                float poolSum=L3D_PoolLum(i.world);
+                lit*=_L3D_Pool.w>0 ? lerp(_L3D_Pool.w, 1.0, saturate(poolSum*1.4)) : 1.0; // PAINTGROUND-R: the floor between the light pools stays dark (V2 rhythm, L-1)
                 float3 color=albedo*lit;
                 // wetness: pools and wall bases are wet (low roughness), the centre is damp semi-matte; the highlight is tinted warm-red, never grey
-                float wet=saturate(L3D_PoolLum(i.world)*0.9+(1.0-smoothstep(0.0, 90.0, sdRaw))*0.45);
+                float wet=saturate(poolSum*0.9+(1.0-smoothstep(0.0, 90.0, sdRaw))*0.45);
                 float roughW=lerp(0.72, 0.22, wet)+(rough-0.85)*0.3;
                 color+=L3D_Spec(n, i.world, saturate((0.95-roughW)/0.27), shadow)*float3(1.0,0.50,0.40)*(0.10+0.30*wet);
                 color=L3D_Fog(color, i.world);

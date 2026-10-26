@@ -41,6 +41,7 @@ namespace Exoduser.UnityPort
         const float ShadowPlayerScale = 2f, ShadowCenterDrop = 12f, ShadowWidthPad = 2f, ShadowHeightRatio = 0.35f, ShadowBlobAlpha = 0.38f, ShadowSpan = 2.3f;
         static readonly Vector2 ShadowShift = new Vector2(0.12f, 0.18f);
         public const float PlayerShadowRenderY = -0.01f; // native_perspective_view.gd:9
+        public const float SliceBlobHeight = 2.2f; // slice: the displaced ground rises +-1.5 px at the player, so the blob sits above it (PAINTGROUND-R: it was buried at -0.01)
 
         Billboard MakeBillboard(string name, Transform parent)
         {
@@ -191,7 +192,7 @@ namespace Exoduser.UnityPort
         {
             float scaled = radius * ShadowPlayerScale, width = scaled + (charge ? 6f : ShadowWidthPad), height = scaled * ShadowHeightRatio, cx = 0f, cy = scaled + ShadowCenterDrop;
             float rx = cx - width * 1.15f + width * ShadowShift.x, ry = cy - height * 1.15f + height * ShadowShift.y, rw = width * ShadowSpan, rh = height * ShadowSpan;
-            blobObject.transform.position = Unity(x + rx + rw * 0.5f, PlayerShadowRenderY, y + ry + rh * 0.5f);
+            blobObject.transform.position = Unity(x + rx + rw * 0.5f, SliceActive ? SliceBlobHeight : PlayerShadowRenderY, y + ry + rh * 0.5f);
             blobObject.transform.localScale = new Vector3(rw, 1f, rh);
             blobObject.SetActive(true);
         }

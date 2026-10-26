@@ -12,7 +12,10 @@ namespace Exoduser.UnityPort
         // RETOUCH 2 (macbook lead decision): colours back to the LOOK-001 D key / fill / ambient (KeyColor, FillColor, AmbientColor and their energies,
         // stage-2 calibration kept); only the key elevation stays slice-specific. Floor albedo is tone-shifted to the Godot D v2 ground mean by a script-measured multiplier.
         public static readonly Vector3 SliceKeySource = new Vector3(-1000f, 760f, -1000f); // elevation atan(760/1414) = 28.2 deg (25-35 requested)
-        public const float SlicePoolGain = 5.0f, SlicePoolWrap = 0.55f;
+        public const float SlicePoolGain = 9.0f, SlicePoolWrap = 0.55f; // PAINTGROUND-R: gain 5.0 -> 9.0
+        // PAINTGROUND-R (before: pool weight 1.0, no floor level outside the pools = 1.0, key shadow only in the 30% dynamic share = 0.0, outer body = texture x (1.8,1.0,0.95) tone)
+        public const float SlicePoolWeight = 2.4f, SliceFloorOutsidePools = 0.90f, SlicePaintShadow = 0.5f;
+        public const float SliceMassBody = 0.8f, SliceMassSinew = 4.0f, SliceMassBone = 6.0f, SliceMassWet = 8.0f; // flesh body level, sinew ridge, bone tip, wet streak gains
         public const float PaintDynamicWeight = 0.3f; // painted light 70% + dynamic light 30%
         public static readonly Vector3 SliceGroundToneDefault = new Vector3(1.72f, 1.0f, 0.94f); // linear albedo multiplier measured by script to match the Godot D v2 ground mean (was 0.85 x3); override: --unity-world3d-ground-tone=r,g,b
         public static readonly Vector4 SliceHaze = new Vector4(0.00042f, 1300f, 0.0035f, 0f); // density, start distance px, height falloff
@@ -21,6 +24,21 @@ namespace Exoduser.UnityPort
         public const float SliceBumpAmplitude = 30f, SliceBumpWavelength = 420f; // fbm of range ~+-0.35 -> floor undulation of about +-10 px
         [Serializable] public sealed class SliceDecal { public string kind; public float x, y, sizePx, angleDegrees, alpha; public bool mirror; }
         public readonly List<SliceDecal> SliceDecals = new List<SliceDecal>();
+
+        // QA tuning without a rebuild: --unity-world3d-tune=key=value,key=value (pgain, pz, pdark, pshadow, mbody, msinew, mbone, mwet, pblob); absent -> the default constant.
+        static float SliceTune(string key, float fallback)
+        {
+            foreach (var a in Environment.GetCommandLineArgs())
+            {
+                if (!a.StartsWith("--unity-world3d-tune=")) continue;
+                foreach (var pair in a.Substring(a.IndexOf('=') + 1).Split(','))
+                {
+                    var kv = pair.Split('='); float v;
+                    if (kv.Length == 2 && kv[0] == key && float.TryParse(kv[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out v)) return v;
+                }
+            }
+            return fallback;
+        }
 
         void ApplySliceGrade()
         {
@@ -44,7 +62,9 @@ namespace Exoduser.UnityPort
                 float kn = Mathf.Max(kd.y, 0f), fn = Mathf.Max(fd.y, 0f);
                 Shader.SetGlobalVector("_L3D_PaintRef", new Vector4(ac.x + kc.x * kn + fc.x * fn, ac.y + kc.y * kn + fc.y * fn, ac.z + kc.z * kn + fc.z * fn, PaintDynamicWeight));
             }
-            Shader.SetGlobalVector("_L3D_Pool", new Vector4(SlicePoolGain, SlicePoolWrap, 1.0f, 0f));
+            Shader.SetGlobalVector("_L3D_Pool", new Vector4(SliceTune("pgain", SlicePoolGain), SlicePoolWrap, SliceTune("pz", SlicePoolWeight), SliceTune("pdark", SliceFloorOutsidePools)));
+            Shader.SetGlobalVector("_L3D_PaintShadow", new Vector4(SliceTune("pshadow", SlicePaintShadow), 0f, 0f, 0f));
+            Shader.SetGlobalVector("_L3D_MassTune", new Vector4(SliceTune("mbody", SliceMassBody), SliceTune("msinew", SliceMassSinew), SliceTune("mbone", SliceMassBone), SliceTune("mwet", SliceMassWet)));
             Shader.SetGlobalVector("_L3D_Fog2", SliceHaze);
             Shader.SetGlobalVector("_L3D_Bump", new Vector4(SliceBumpAmplitude, SliceBumpWavelength, 130f, 430f));
             Shader.SetGlobalVector("_L3D_Focus", new Vector4(Map.startX, Map.startY, 0f, 0f));

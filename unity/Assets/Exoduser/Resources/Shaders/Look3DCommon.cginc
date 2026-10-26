@@ -12,7 +12,9 @@ float4 _L3D_Bump;  // x amplitude px (0 = off), y wavelength px, z/w fade-in dis
 float4 _L3D_Focus; // xy focus px
 float4 _L3D_GroundTone; // slice: rgb linear multiplier on the floor albedo (a = 0: unset -> 0.85)
 float4 _L3D_PaintRef; // PAINTGROUND: rgb = dynamic lighting level that leaves the painted ground unchanged (a = 0: unset); a = dynamic weight (0.3)
-float4 _L3D_Pool;   // slice grade: x point gain (0 = 1), y wrap (0..1): light pools read on the floor
+float4 _L3D_Pool;   // slice grade: x point gain (0 = 1), y wrap (0..1): light pools read on the floor, z pool weight on the painted ground, w floor level outside the pools (0 = off) (PAINTGROUND-R)
+float4 _L3D_PaintShadow; // PAINTGROUND-R: x = weight of the key shadow (player / props / masses) on the painted 70% share (0 = off)
+float4 _L3D_MassTune; // PAINTGROUND-R: outer flesh mass x body level, y sinew crest, z bone tip, w wet reflection
 float4 _L3D_Fog2, _L3D_Fog2Col; // slice atmosphere: x density, y start distance, z height falloff (0 = off); rgb haze, a strength
 
 float3 L3D_SrgbToLinear(float3 c) { return lerp(c/12.92, pow((c+0.055)/1.055, 2.4), step(0.04045, c)); }
