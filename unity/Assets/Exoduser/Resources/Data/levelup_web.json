@@ -1,0 +1,305 @@
+{
+ "source": {
+  "file": "game.html (G:/exoduser main 1770c2698, same lines at d5f32ff57) + level-up-vfx.js",
+  "extractedAt": "2026-10-26T16:10+09:00",
+  "lines": {
+   "addExp": "game.html 43136-43176 (trigger 43164 showPH, 43169 _levelUpVfx.trigger)",
+   "drawLabel": "level-up-vfx.js 96-107 (called game.html 54493)",
+   "trigger/update": "level-up-vfx.js 74-95",
+   "showPH": "game.html 43611",
+   "#ph CSS": "game.html 679-680",
+   "SP float text": "addTxt 43167 is dropped by the whitelist at game.html 54839-54845 (never drawn)",
+   "unused": "#lvUpScreen 3103-3107 (never opened)"
+  },
+  "note": "정의(타이밍·문구·색·스프라이트 좌표)만. 표시할 레벨 숫자는 호출자가 넘긴 Unity 값."
+ },
+ "label": {
+  "duration": 3.5,
+  "fadeIn": 0.08,
+  "fadeOut": 0.6,
+  "rise": 18,
+  "offsetY": -70,
+  "merge": 0.24,
+  "font": "24px Cinzel, Georgia, serif",
+  "outline": "4 diagonal copies at +-1px",
+  "prefix": "Lv. ",
+  "tokens": [
+   {
+    "pal": "gold",
+    "t": "Lv. ",
+    "x": 0,
+    "y": 0,
+    "w": 43,
+    "h": 48,
+    "adv": 36.774017333984375,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "0",
+    "x": 43,
+    "y": 0,
+    "w": 22,
+    "h": 48,
+    "adv": 15.6719970703125,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "1",
+    "x": 65,
+    "y": 0,
+    "w": 16,
+    "h": 48,
+    "adv": 9.431991577148438,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "2",
+    "x": 81,
+    "y": 0,
+    "w": 21,
+    "h": 48,
+    "adv": 14.807998657226562,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "3",
+    "x": 102,
+    "y": 0,
+    "w": 20,
+    "h": 48,
+    "adv": 13.511993408203125,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "4",
+    "x": 122,
+    "y": 0,
+    "w": 21,
+    "h": 48,
+    "adv": 14.855987548828125,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "5",
+    "x": 143,
+    "y": 0,
+    "w": 20,
+    "h": 48,
+    "adv": 13.295989990234375,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "6",
+    "x": 163,
+    "y": 0,
+    "w": 22,
+    "h": 48,
+    "adv": 15.1199951171875,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "7",
+    "x": 185,
+    "y": 0,
+    "w": 20,
+    "h": 48,
+    "adv": 13.079986572265625,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "8",
+    "x": 205,
+    "y": 0,
+    "w": 21,
+    "h": 48,
+    "adv": 14.472000122070312,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "gold",
+    "t": "9",
+    "x": 226,
+    "y": 0,
+    "w": 22,
+    "h": 48,
+    "adv": 15.1199951171875,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "Lv. ",
+    "x": 0,
+    "y": 48,
+    "w": 43,
+    "h": 48,
+    "adv": 36.774017333984375,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "0",
+    "x": 43,
+    "y": 48,
+    "w": 22,
+    "h": 48,
+    "adv": 15.6719970703125,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "1",
+    "x": 65,
+    "y": 48,
+    "w": 16,
+    "h": 48,
+    "adv": 9.431991577148438,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "2",
+    "x": 81,
+    "y": 48,
+    "w": 21,
+    "h": 48,
+    "adv": 14.807998657226562,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "3",
+    "x": 102,
+    "y": 48,
+    "w": 20,
+    "h": 48,
+    "adv": 13.511993408203125,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "4",
+    "x": 122,
+    "y": 48,
+    "w": 21,
+    "h": 48,
+    "adv": 14.855987548828125,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "5",
+    "x": 143,
+    "y": 48,
+    "w": 20,
+    "h": 48,
+    "adv": 13.295989990234375,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "6",
+    "x": 163,
+    "y": 48,
+    "w": 22,
+    "h": 48,
+    "adv": 15.1199951171875,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "7",
+    "x": 185,
+    "y": 48,
+    "w": 20,
+    "h": 48,
+    "adv": 13.079986572265625,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "8",
+    "x": 205,
+    "y": 48,
+    "w": 21,
+    "h": 48,
+    "adv": 14.472000122070312,
+    "pad": 3,
+    "cy": 24
+   },
+   {
+    "pal": "demonic",
+    "t": "9",
+    "x": 226,
+    "y": 48,
+    "w": 22,
+    "h": 48,
+    "adv": 15.1199951171875,
+    "pad": 3,
+    "cy": 24
+   }
+  ]
+ },
+ "toast": {
+  "text": "LEVEL UP!",
+  "transcendText": "TRANSCEND!",
+  "transcendAboveLevel": 1000,
+  "color": [
+   255,
+   221,
+   0
+  ],
+  "demonicColor": [
+   211,
+   138,
+   255
+  ],
+  "duration": 2.5,
+  "fade": 0.1,
+  "bottom": 180,
+  "fontSize": 28.8,
+  "letterSpacing": 5.76,
+  "fontWeight": 900,
+  "glowBlur": 25,
+  "fontFamily": "Noto Sans KR",
+  "box": {
+   "x": 858.8,
+   "y": 859,
+   "w": 202.4,
+   "h": 41
+  }
+ },
+ "vfx": {
+  "status": "미이식 (level-up-vfx.js 캔버스 빛기둥·링·불꽃, Unity 재제작 대상)",
+  "duration": 3.0
+ },
+ "unusedOverlay": "#lvUpScreen(3103-3107)은 어디서도 열리지 않아 이식하지 않음"
+}
