@@ -1,0 +1,178 @@
+{
+  "entries": [
+    {
+      "code": "ko",
+      "title": "패치 노트",
+      "close": "닫기",
+      "empty": "패치 노트가 없습니다"
+    },
+    {
+      "code": "en",
+      "title": "PATCH NOTES",
+      "close": "Close",
+      "empty": "No patch notes yet."
+    },
+    {
+      "code": "zh",
+      "title": "更新日志",
+      "close": "关闭",
+      "empty": "暂无更新日志"
+    },
+    {
+      "code": "zht",
+      "title": "更新日誌",
+      "close": "關閉",
+      "empty": "目前沒有更新日誌"
+    },
+    {
+      "code": "ja",
+      "title": "パッチノート",
+      "close": "閉じる",
+      "empty": "パッチノートはまだありません"
+    },
+    {
+      "code": "vi",
+      "title": "Ghi chú bản vá",
+      "close": "Đóng",
+      "empty": "Chưa có ghi chú bản vá"
+    },
+    {
+      "code": "th",
+      "title": "บันทึกแพตช์",
+      "close": "ปิด",
+      "empty": "ยังไม่มีบันทึกแพตช์"
+    },
+    {
+      "code": "id",
+      "title": "Catatan patch",
+      "close": "Tutup",
+      "empty": "Belum ada catatan patch"
+    },
+    {
+      "code": "ms",
+      "title": "PATCH NOTES",
+      "close": "Tutup",
+      "empty": "No patch notes yet."
+    },
+    {
+      "code": "es",
+      "title": "Notas del parche",
+      "close": "Cerrar",
+      "empty": "Aún no hay notas del parche"
+    },
+    {
+      "code": "fr",
+      "title": "Notes de mise à jour",
+      "close": "Fermer",
+      "empty": "Aucune note de mise à jour pour le moment"
+    },
+    {
+      "code": "it",
+      "title": "Note sulla patch",
+      "close": "Chiudi",
+      "empty": "Nessuna nota sulla patch"
+    },
+    {
+      "code": "ptbr",
+      "title": "Notas de atualização",
+      "close": "Fechar",
+      "empty": "Ainda não há notas de atualização"
+    },
+    {
+      "code": "ro",
+      "title": "Note de actualizare",
+      "close": "Închide",
+      "empty": "Încă nu există note de actualizare"
+    },
+    {
+      "code": "de",
+      "title": "Patch Notes",
+      "close": "Schließen",
+      "empty": "Noch keine Patch Notes"
+    },
+    {
+      "code": "nl",
+      "title": "Patchnotities",
+      "close": "Sluiten",
+      "empty": "Nog geen patchnotities"
+    },
+    {
+      "code": "sv",
+      "title": "Patchanteckningar",
+      "close": "Stäng",
+      "empty": "Inga patchanteckningar ännu"
+    },
+    {
+      "code": "da",
+      "title": "Patchnoter",
+      "close": "Luk",
+      "empty": "Ingen patchnoter endnu"
+    },
+    {
+      "code": "no",
+      "title": "Patchnotater",
+      "close": "Lukk",
+      "empty": "Ingen patchnotater ennå"
+    },
+    {
+      "code": "ru",
+      "title": "Список изменений",
+      "close": "Закрыть",
+      "empty": "Пока нет списка изменений"
+    },
+    {
+      "code": "uk",
+      "title": "Список змін",
+      "close": "Закрити",
+      "empty": "Поки немає списку змін"
+    },
+    {
+      "code": "pl",
+      "title": "Lista zmian",
+      "close": "Zamknij",
+      "empty": "Brak listy zmian"
+    },
+    {
+      "code": "cs",
+      "title": "Poznámky k aktualizaci",
+      "close": "Zavřít",
+      "empty": "Zatím žádné poznámky k aktualizaci"
+    },
+    {
+      "code": "hu",
+      "title": "Frissítési jegyzetek",
+      "close": "Bezárás",
+      "empty": "Még nincsenek frissítési jegyzetek"
+    },
+    {
+      "code": "bg",
+      "title": "Бележки по версията",
+      "close": "Затвори",
+      "empty": "Все още няма бележки по версията"
+    },
+    {
+      "code": "el",
+      "title": "Σημειώσεις ενημέρωσης",
+      "close": "Κλείσιμο",
+      "empty": "Δεν υπάρχουν ακόμη σημειώσεις ενημέρωσης"
+    },
+    {
+      "code": "fi",
+      "title": "Päivitystiedot",
+      "close": "Sulje",
+      "empty": "Ei vielä päivitystietoja"
+    },
+    {
+      "code": "tr",
+      "title": "Yama notları",
+      "close": "Kapat",
+      "empty": "Henüz yama notu yok"
+    },
+    {
+      "code": "ar",
+      "title": "ملاحظات التحديث",
+      "close": "إغلاق",
+      "empty": "لا توجد ملاحظات تحديث بعد"
+    }
+  ]
+}

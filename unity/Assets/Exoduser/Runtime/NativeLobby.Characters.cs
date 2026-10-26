@@ -12,8 +12,39 @@ namespace Exoduser.UnityPort
   public string ActiveCharacterName {get;private set;}="";
   public bool CharacterModalOpen {get{return characterStep!=0||CharacterStoryActive;}}
   int characterStep,characterVisual,characterScroll;
-  bool characterFocus,characterInputFence;
+  bool characterFocus,characterInputFence,characterRestoreCreateFocus,characterVisualFocusPending;
   string characterName="",characterError="";
+  [System.Serializable] sealed class CharacterDialogLabels { public CharacterDialogLabelEntry[] entries; }
+  [System.Serializable] sealed class CharacterDialogLabelEntry { public string code,title,description,nameLabel,cancel,create,nameLength,forbidden,duplicate,full,comingSoon,deleteSuffix,confirm,delete,deleteFailure; }
+  CharacterDialogLabels characterDialogLabels;bool characterDialogLabelsLoaded;
+  void LoadCharacterDialogLabels()
+  {
+   if(characterDialogLabelsLoaded)return;characterDialogLabelsLoaded=true;
+   var source=Resources.Load<TextAsset>("Data/character_dialog_labels");
+   if(source!=null)try{characterDialogLabels=JsonUtility.FromJson<CharacterDialogLabels>(source.text);}catch(System.Exception e){Debug.LogWarning("Character dialog labels: "+e.Message);}
+  }
+  string CharacterDialogLabel(string field,string fallback)
+  {
+   if(Language=="ko")return fallback;
+   LoadCharacterDialogLabels();
+   CharacterDialogLabelEntry english=null;var entries=characterDialogLabels==null?null:characterDialogLabels.entries;
+   if(entries!=null)foreach(var entry in entries){
+    if(entry==null)continue;if(entry.code=="en")english=entry;
+    if(entry.code==Language){string value=CharacterDialogValue(entry,field);if(!string.IsNullOrEmpty(value))return value;}
+   }
+   string en=CharacterDialogValue(english,field);return string.IsNullOrEmpty(en)?fallback:en;
+  }
+  static string CharacterDialogValue(CharacterDialogLabelEntry entry,string field)
+  {
+   if(entry==null)return null;
+   switch(field){
+    case "title":return entry.title;case "description":return entry.description;case "nameLabel":return entry.nameLabel;
+    case "cancel":return entry.cancel;case "create":return entry.create;case "nameLength":return entry.nameLength;
+    case "forbidden":return entry.forbidden;case "duplicate":return entry.duplicate;case "full":return entry.full;
+    case "comingSoon":return entry.comingSoon;case "deleteSuffix":return entry.deleteSuffix;case "confirm":return entry.confirm;
+    case "delete":return entry.delete;case "deleteFailure":return entry.deleteFailure;default:return null;
+   }
+  }
   Texture2D warriorArt,warriorPortrait;
   GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton,characterDeleteButton,characterStorageText;
   void CharacterStyles()
@@ -32,7 +63,8 @@ namespace Exoduser.UnityPort
   public bool OpenCharacterCreation()
   {
    if(!characterWritesAllowed||Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||Characters.Count>=CharacterRoster.Capacity||showLanguages||lobbyQuitPrompt)return false;
-   characterStep=1;characterVisual=0;characterName="";characterError="";return true;
+   characterRestoreCreateFocus=false;characterVisualFocusPending=true;
+   characterStep=1;characterName="";characterError="";return true;
   }
   public bool ChooseCharacterVisual(int index)
   {
@@ -42,7 +74,7 @@ namespace Exoduser.UnityPort
   public bool ConfirmCharacterVisual()
   {
    if(characterStep!=1||characterVisual!=0)return false;
-   CloseCharacterPresentationVideo();characterStep=2;characterFocus=true;characterError="";return true;
+   CloseCharacterPresentationVideo();characterStep=2;characterVisualFocusPending=false;characterFocus=true;characterError="";return true;
   }
   public bool CreateCharacter(string name)
   {
@@ -50,19 +82,19 @@ namespace Exoduser.UnityPort
    var candidate=CopyCharacters();
    if(!candidate.TryCreate(name,characterVisual,out var error)){characterError=CharacterError(error);return false;}
    if(!CommitCharacters(candidate))return false;
-   RevealSelectedCharacter();CloseCharacterCreation();BeginCreatedCharacterStory();return true;
+   RevealSelectedCharacter();CloseCharacterCreation();characterRestoreCreateFocus=false;BeginCreatedCharacterStory();return true;
   }
   string CharacterError(CharacterCreateError error)
   {
    switch(error){
-    case CharacterCreateError.NameLength:return K("이름은 2~8자여야 합니다.","Use 2 to 8 characters.");
-    case CharacterCreateError.Forbidden:return K("특수문자는 사용할 수 없습니다: < > \" ' & / \\","These characters are not allowed: < > \" ' & / \\");
-    case CharacterCreateError.Duplicate:return K("이미 같은 이름의 캐릭터가 있습니다.","A character with this name already exists.");
-    case CharacterCreateError.Full:return K("슬롯이 가득 찼습니다.","All five slots are occupied.");
-    default:return K("출시 준비 중입니다.","Coming soon.");
+    case CharacterCreateError.NameLength:return CharacterDialogLabel("nameLength",K("이름은 2~8자여야 합니다.","Name must be 2-8 characters."));
+    case CharacterCreateError.Forbidden:return CharacterDialogLabel("forbidden",K("특수문자는 사용할 수 없습니다.","Special characters cannot be used."));
+    case CharacterCreateError.Duplicate:return CharacterDialogLabel("duplicate",K("이미 같은 이름의 캐릭터가 있습니다.","A character with this name already exists."));
+    case CharacterCreateError.Full:return CharacterDialogLabel("full",K("슬롯이 가득 찼습니다.","All five slots are occupied."));
+    default:return CharacterDialogLabel("comingSoon",K("출시 준비 중","Coming Soon"));
    }
   }
-  public void CloseCharacterCreation(){CloseCharacterPresentationVideo();characterStep=0;characterError="";characterFocus=false;deletingCharacter=-1;deletingName="";deleteFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}
+  public void CloseCharacterCreation(){characterRestoreCreateFocus=characterStep==1||characterStep==2;characterVisualFocusPending=false;CloseCharacterPresentationVideo();characterStep=0;characterError="";characterFocus=false;deletingCharacter=-1;deletingName="";deleteFocus=false;characterInputFence=true;if(Event.current!=null)GUI.FocusControl(null);}
   public bool SelectCharacter(int index){if(Flow.Page!=LobbyPage.Lobby||CharacterModalOpen)return false;if(index==Characters.SelectedIndex&&index>=0)return true;var candidate=CopyCharacters();if(!candidate.Select(index)||!CommitCharacters(candidate))return false;RevealSelectedCharacter();return true;}
   void RevealSelectedCharacter(){if(Characters.SelectedIndex<characterScroll)characterScroll=Characters.SelectedIndex;if(Characters.SelectedIndex>=characterScroll+2)characterScroll=Characters.SelectedIndex-1;characterScroll=Mathf.Clamp(characterScroll,0,Mathf.Max(0,Characters.Count-2));}
   public bool EnterSelectedCharacter()
@@ -81,18 +113,27 @@ namespace Exoduser.UnityPort
     if(Input.compositionString.Length>0)return;
     if(e.keyCode==KeyCode.Escape){CloseCharacterCreation();e.Use();return;}
     if(characterStep==1){
-     if(e.keyCode==KeyCode.LeftArrow)characterVisual=Mathf.Max(0,characterVisual-1);
-     else if(e.keyCode==KeyCode.RightArrow)characterVisual=Mathf.Min(4,characterVisual+1);
-     else if(e.keyCode==KeyCode.Home)characterVisual=0;
-     else if(e.keyCode==KeyCode.End)characterVisual=4;
-     else if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter)ConfirmCharacterVisual();
-     else if(e.keyCode==KeyCode.Tab)characterVisual=(characterVisual+(e.shift?4:1))%5;
+     string focused=GUI.GetNameOfFocusedControl();
+     if(e.keyCode==KeyCode.Tab){
+      string[] controls=characterVisual==0?new[]{"visual-info-left","visual-info-right","visual-icon-0","visual-icon-1","visual-icon-2","visual-icon-3","visual-icon-4","visual-cancel","visual-create"}:new[]{"visual-info-left","visual-info-right","visual-icon-0","visual-icon-1","visual-icon-2","visual-icon-3","visual-icon-4","visual-cancel"};
+      int at=System.Array.IndexOf(controls,focused);GUI.FocusControl(controls[at<0?(e.shift?controls.Length-1:0):(at+(e.shift?controls.Length-1:1))%controls.Length]);
+     }
+     else if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space){
+      if(focused=="visual-cancel")CloseCharacterCreation();
+      else if(focused=="visual-create")ConfirmCharacterVisual();
+      else for(int n=0;n<5;n++)if(focused=="visual-icon-"+n){ChooseCharacterVisual(n);break;}
+     }
+     else for(int n=0;n<5;n++)if(focused=="visual-icon-"+n){
+      int next=e.keyCode==KeyCode.Home?0:e.keyCode==KeyCode.End?4:e.keyCode==KeyCode.LeftArrow?Mathf.Max(0,n-1):e.keyCode==KeyCode.RightArrow?Mathf.Min(4,n+1):n;
+      if(next!=n){ChooseCharacterVisual(next);GUI.FocusControl("visual-icon-"+next);}break;
+     }
      e.Use();return;
     }
     if(e.keyCode==KeyCode.Tab){string focusedControl=GUI.GetNameOfFocusedControl();int at=focusedControl=="character-cancel"?1:focusedControl=="character-create"?2:0;GUI.FocusControl(new[]{"character-name","character-cancel","character-create"}[(at+(e.shift?2:1))%3]);e.Use();return;}
     if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter){if(GUI.GetNameOfFocusedControl()=="character-cancel")CloseCharacterCreation();else CreateCharacter(characterName);e.Use();return;}
     return;
    }
+   if(GUI.GetNameOfFocusedControl()=="character-create-card"&&(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space)){OpenCharacterCreation();e.Use();return;}
    if(e.keyCode==KeyCode.N){OpenCharacterCreation();e.Use();}
    else if(e.keyCode==KeyCode.Delete||e.keyCode==KeyCode.Backspace){RequestCharacterDelete(Characters.SelectedIndex);e.Use();}
    else if(e.keyCode==KeyCode.UpArrow){SelectCharacter(Mathf.Max(0,Characters.SelectedIndex-1));e.Use();}

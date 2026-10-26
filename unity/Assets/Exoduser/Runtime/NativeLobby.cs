@@ -157,7 +157,8 @@ namespace Exoduser.UnityPort
   }
   void DrawLobby()
   {
-   LobbyStyles();CharacterStyles();HandleCharacterKeys();HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;DrawLobbyBackground();DrawSelectedCharacter();
+   LobbyStyles();CharacterStyles();HandlePatchNotesKeys();if(!patchNotesOpen&&Event.current.type!=EventType.Used){HandleCharacterKeys();HandleLanguagePopupKeys();}bool priorEnabled=GUI.enabled,previousEnabled=priorEnabled&&!patchNotesOpen;GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;DrawLobbyBackground();DrawSelectedCharacter();
+   DrawPatchNotesLauncher();
    if(lobbyPanel!=null)Image(new Rect(1360,0,560,1080),lobbyPanel,ScaleMode.StretchToFill);
    else Fill(new Rect(1360,0,560,1080),new Color(.063f,.051f,.055f));
    // Source full/offline layout at1920x1080; only the dedicated Unity roster is read.
@@ -171,7 +172,7 @@ namespace Exoduser.UnityPort
    DrawCharacterSlots();
    Rect create=new Rect(1392,503,480,64);Fill(create,new Color(.105f,.09f,.095f,.94f));DashedBorder(create,new Color(.588f,.443f,.306f));
    Border(new Rect(1409,515,40,40),new Color(.47f,.38f,.26f),1);Label(new Rect(1409,515,40,40),"+",lobbyPlus,TextAnchor.MiddleCenter);Label(new Rect(1461,515,395,40),(Characters.Count<5?K("새 캐릭터 · N","New character · N"):K("슬롯 가득참 · 5 / 5","All slots occupied · 5 / 5")),lobbyText,TextAnchor.MiddleLeft);
-   GUI.enabled=GUI.enabled&&characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity;if(GUI.Button(create,"",GUIStyle.none))OpenCharacterCreation();GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
+   GUI.enabled=GUI.enabled&&characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity;GUI.SetNextControlName("character-create-card");if(GUI.Button(create,"",GUIStyle.none))OpenCharacterCreation();if(characterRestoreCreateFocus&&Event.current.type==EventType.Repaint){if(GUI.enabled)GUI.FocusControl("character-create-card");characterRestoreCreateFocus=false;}GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
    Label(new Rect(1392,570,480,18),K("↑↓ 선택 · Enter 입장 · Delete 삭제","↑↓ Select · Enter play · Delete remove"),lobbyMicro,TextAnchor.MiddleCenter);
    Label(new Rect(1392,591,480,57),K("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다","Every Steam wishlist helps\nEXODUSER: HELL LORD\nbegin its next journey"),lobbyPromo,TextAnchor.MiddleCenter);
    Label(new Rect(1392,653,480,16),K("공식 출시 소식을 가장 먼저 받아보세요","Be the first to hear about the official release"),lobbyPromoDetail,TextAnchor.MiddleCenter);
@@ -194,10 +195,11 @@ namespace Exoduser.UnityPort
     // Use IMGUI hit testing so dismissal follows the same scaled coordinates as buttons.
     DrawLanguages(new Rect(1388,151.5f,140,27));
    }
-   GUI.enabled=previousEnabled;
+   GUI.enabled=previousEnabled&&!patchNotesOpen;
    DrawCharacterModal();
    if(lobbyQuitPrompt&&DismissOutside(new Rect(710,427,500,226)))lobbyQuitPrompt=false;
    if(lobbyQuitPrompt){Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.75f));Fill(new Rect(710,427,500,226),new Color(.063f,.051f,.055f));Border(new Rect(710,427,500,226),new Color(.4f,.32f,.24f),1);Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),normal,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(755,552,180,48),K("취소","Cancel"),button))lobbyQuitPrompt=false;if(GUI.Button(new Rect(985,552,180,48),K("종료","Quit"),button))Application.Quit();}
+   GUI.enabled=priorEnabled;DrawPatchNotesPanel();
   }
   string LobbyLanguageLabel(string code)
   {

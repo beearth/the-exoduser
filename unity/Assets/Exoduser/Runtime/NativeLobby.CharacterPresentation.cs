@@ -4,6 +4,26 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeLobby
  {
   NativeCharacterPresentationPlayback characterPresentationPlayback;
+  [System.Serializable] sealed class VisualLabelCatalog { public VisualLabelLanguage[] entries; }
+  [System.Serializable] sealed class VisualLabelLanguage { public string code; public VisualLabelItem[] labels; }
+  [System.Serializable] sealed class VisualLabelItem { public string key,text; }
+  VisualLabelCatalog visualLabelCatalog;bool visualLabelCatalogLoaded;string visualLabelLanguage="";
+  readonly System.Collections.Generic.Dictionary<string,string> visualLabelMap=new System.Collections.Generic.Dictionary<string,string>();
+  string VisualSelectionLabel(string key,string fallback)
+  {
+   if(Language=="ko")return key;
+   if(!visualLabelCatalogLoaded){
+    visualLabelCatalogLoaded=true;var source=Resources.Load<TextAsset>("Data/visual_select_labels");
+    if(source!=null)try{visualLabelCatalog=JsonUtility.FromJson<VisualLabelCatalog>(source.text);}catch(System.Exception e){Debug.LogWarning("Visual selection labels: "+e.Message);}
+   }
+   if(visualLabelLanguage!=Language){
+    visualLabelLanguage=Language;visualLabelMap.Clear();VisualLabelLanguage selected=null,english=null;
+    var entries=visualLabelCatalog==null?null:visualLabelCatalog.entries;
+    if(entries!=null)foreach(var entry in entries){if(entry==null)continue;if(entry.code=="en")english=entry;if(entry.code==Language)selected=entry;}
+    var row=selected??english;if(row!=null&&row.labels!=null)foreach(var item in row.labels)if(item!=null&&!string.IsNullOrEmpty(item.key)&&!string.IsNullOrEmpty(item.text))visualLabelMap[item.key]=item.text;
+   }
+   return visualLabelMap.TryGetValue(key,out var value)?value:fallback;
+  }
   Texture2D[] presentationCutouts,presentationBusts;
   Texture2D presentationRingAtlas,presentationRingChains,presentationTraitGlyphs,presentationSigil;
   Texture2D presentationChains,presentationSceneWarrior,presentationSceneSilvertail,presentationWarriorPoster,presentationSilvertailPoster,presentationIron,presentationButton;
@@ -78,21 +98,29 @@ namespace Exoduser.UnityPort
    Fill(new Rect(0,0,w,h),new Color(.025f,.016f,.021f,.22f));Fill(new Rect(0,0,w,Mathf.Min(h*.16f,174)),new Color(0,0,0,.24f));Fill(new Rect(0,railY,w,h-railY),new Color(0,0,0,.62f));
    DrawCharacterVisualVignette(w,h);
    float frameX=Mathf.Min(w*.014f,20),frameY=Mathf.Min(h*.016f,16);Border(new Rect(frameX,frameY,w-frameX*2,h-frameY*2),new Color(.48f,.34f,.20f,.65f),1);Corner(new Vector2(frameX,frameY),1,1);Corner(new Vector2(w-frameX,h-frameY),-1,-1);
-   Label(new Rect(0,Mathf.Min(h*.045f,42),w,50),K("캐릭터 선택","CHOOSE YOUR CHARACTER"),Language=="ko"?presentationKoHeading:presentationHeading,TextAnchor.MiddleCenter);
-   Label(new Rect(0,Mathf.Min(h*.045f,42)+51,w,26),K("지옥에 강림할 화신을 선택하라","Choose your vessel to descend into hell"),presentationSubtitle,TextAnchor.MiddleCenter);
+   Label(new Rect(0,Mathf.Min(h*.045f,42),w,50),VisualSelectionLabel("캐릭터 선택","CHOOSE YOUR CHARACTER"),Language=="ko"?presentationKoHeading:presentationHeading,TextAnchor.MiddleCenter);
+   Label(new Rect(0,Mathf.Min(h*.045f,42)+51,w,26),VisualSelectionLabel("지옥에 강림할 화신을 선택하라","Choose your vessel to descend into hell"),presentationSubtitle,TextAnchor.MiddleCenter);
    float rightY=Mathf.LerpUnclamped(127.195f,143.992f,(h-720f)/360f);Rect left=new Rect(px,bodyY,side,bodyHeight),right=new Rect(rightX,rightY,side,bodyHeight);
    float inset=8,inner=side-inset*2,viewT=(h-720f)/360f;
-   Label(new Rect(px+inset,Mathf.LerpUnclamped(150.545f,326.016f,viewT),inner,18.5f),K(presentationJobs[i],new[]{"WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"}[i]),Language=="ko"?presentationKoJob:presentationJob,TextAnchor.MiddleLeft);
-   Label(new Rect(px+inset,Mathf.LerpUnclamped(183.045f,358.516f,viewT),inner,Mathf.LerpUnclamped(52.273f,52.64f,viewT)),K(presentationNames[i],new[]{"Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"}[i]),presentationName,TextAnchor.UpperLeft);
+   Label(new Rect(px+inset,Mathf.LerpUnclamped(150.545f,326.016f,viewT),inner,18.5f),VisualSelectionLabel(presentationJobs[i],new[]{"WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"}[i]),Language=="ko"?presentationKoJob:presentationJob,TextAnchor.MiddleLeft);
+   Label(new Rect(px+inset,Mathf.LerpUnclamped(183.045f,358.516f,viewT),inner,Mathf.LerpUnclamped(52.273f,52.64f,viewT)),VisualSelectionLabel(presentationNames[i],new[]{"Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"}[i]),presentationName,TextAnchor.UpperLeft);
    Fill(new Rect(px+inset,Mathf.LerpUnclamped(233.317f,409.156f,viewT),56,2),new Color(.78f,.57f,.25f,.8f));
-   Label(new Rect(px+inset,Mathf.LerpUnclamped(255.318f,431.156f,viewT),inner,Mathf.LerpUnclamped(23.547f,24.32f,viewT)),K(presentationDescriptions[i],new[]{"A black-iron warrior wielding a greatsword.","One spinning sword; her dance is annihilation.","A blood-moon marksman who uses her own blood as ammunition.","A hunter who transmutes core flame into bow, scythe, spear and sword.","A herald of the void who seals space with runes."}[i]),presentationDescription,TextAnchor.UpperLeft);
+   Label(new Rect(px+inset,Mathf.LerpUnclamped(255.318f,431.156f,viewT),inner,Mathf.LerpUnclamped(23.547f,24.32f,viewT)),VisualSelectionLabel(presentationDescriptions[i],new[]{"A black-iron warrior wielding a greatsword.","One spinning sword; her dance is annihilation.","A blood-moon marksman who uses her own blood as ammunition.","A hunter who transmutes core flame into bow, scythe, spear and sword.","A herald of the void who seals space with runes."}[i]),presentationDescription,TextAnchor.UpperLeft);
    Texture2D bust=presentationBusts[i];if(bust!=null){float thumbW=Mathf.Min(w*.11f,150),thumbY=Mathf.LerpUnclamped(302.865f,479.477f,viewT);Rect thumb=new Rect(px+inset,thumbY,thumbW,thumbW*4/3);Fill(thumb,new Color(.08f,.065f,.055f));DrawTextureTopAlignedCrop(thumb,bust);Border(thumb,new Color(.56f,.39f,.20f,.8f),1);}
-   DrawTraitFrame(right,i);DrawCharacterRail(w,px,railY);
+   DrawTraitFrame(right,i);
+   GUI.SetNextControlName("visual-info-left");if(GUI.Button(left,"",GUIStyle.none))GUI.FocusControl("visual-info-left");
+   GUI.SetNextControlName("visual-info-right");if(GUI.Button(right,"",GUIStyle.none))GUI.FocusControl("visual-info-right");
+   if(GUI.GetNameOfFocusedControl()=="visual-info-left")Border(left,new Color(.92f,.78f,.53f),2);
+   if(GUI.GetNameOfFocusedControl()=="visual-info-right")Border(right,new Color(.92f,.78f,.53f),2);
+   DrawCharacterRail(w,px,railY);
    float actionX=(w-760)/2,cancelWidth=98.563f;Rect cancel=new Rect(actionX,actionY+1.25f,cancelWidth,44),create=new Rect(w*.5f+247.063f,actionY,132.938f,46.5f);
-   bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;if(GUI.Button(cancel,K("취소","CANCEL"),presentationAction))CloseCharacterCreation();
-   GUI.enabled=priorEnabled&&!locked;if(GUI.Button(create,locked?K("출시 준비 중","COMING SOON"):K("생성","CREATE"),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
-   if(i==1){if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.58f);GUI.DrawTexture(new Rect(stageX,bodyY+bodyHeight*.18f,stageWidth,bodyHeight*.72f),presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(stageX,railY-31,stageWidth,26),K("출시 준비 중","COMING SOON"),presentationSubtitle,TextAnchor.MiddleCenter);}
-   else if(i>=2){float releaseBottom=bodyY+bodyHeight-4,chainSize=Mathf.Min(72,bodyHeight*.20f);Rect chainRect=new Rect((w-chainSize)*.5f,releaseBottom-28-8-chainSize,chainSize,chainSize);if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.78f);GUI.DrawTexture(chainRect,presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(w*.5f-150,releaseBottom-28,300,28),K("출시 준비 중","COMING SOON"),presentationReleaseLabel,TextAnchor.MiddleCenter);}
+   bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;GUI.SetNextControlName("visual-cancel");if(GUI.Button(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),presentationAction))CloseCharacterCreation();
+   GUI.enabled=priorEnabled&&!locked;GUI.SetNextControlName("visual-create");if(GUI.Button(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
+   if(GUI.GetNameOfFocusedControl()=="visual-cancel")Border(cancel,new Color(.92f,.78f,.53f),2);
+   if(!locked&&GUI.GetNameOfFocusedControl()=="visual-create")Border(create,new Color(.92f,.78f,.53f),2);
+   if(characterVisualFocusPending&&Event.current.type==EventType.Repaint){GUI.FocusControl("visual-icon-"+i);characterVisualFocusPending=false;}
+   if(i==1){if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.58f);GUI.DrawTexture(new Rect(stageX,bodyY+bodyHeight*.18f,stageWidth,bodyHeight*.72f),presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(stageX,railY-31,stageWidth,26),VisualSelectionLabel("출시 준비 중","COMING SOON"),presentationSubtitle,TextAnchor.MiddleCenter);}
+   else if(i>=2){float releaseBottom=bodyY+bodyHeight-4,chainSize=Mathf.Min(72,bodyHeight*.20f);Rect chainRect=new Rect((w-chainSize)*.5f,releaseBottom-28-8-chainSize,chainSize,chainSize);if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.78f);GUI.DrawTexture(chainRect,presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(w*.5f-150,releaseBottom-28,300,28),VisualSelectionLabel("출시 준비 중","COMING SOON"),presentationReleaseLabel,TextAnchor.MiddleCenter);}
   }
   void DrawCharacterNamePresentation()
   {
@@ -100,14 +128,14 @@ namespace Exoduser.UnityPort
    Fill(panel,new Color(.055f,.047f,.045f,.98f));if(presentationIron!=null){Color old=GUI.color;GUI.color=new Color(.19f,.19f,.19f,.55f);GUI.DrawTexture(panel,presentationIron,ScaleMode.StretchToFill,true);GUI.color=old;}
    Border(panel,new Color(.43f,.33f,.23f,.78f),1);
    float x=panel.x+41,y=panel.y;
-   Label(new Rect(x,y+49,358,32.5f),K("새 캐릭터 생성","Create Character"),Language=="ko"?presentationKoNameTitle:presentationNameTitle,TextAnchor.MiddleCenter);
-   Label(new Rect(x,y+89.5f,358,18.5f),K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell."),presentationNameDescription,TextAnchor.MiddleCenter);
-   Label(new Rect(x,y+136,358,21),K("캐릭터 이름 (2~8자)","Character name (2–8 characters)"),presentationNameLabel,TextAnchor.MiddleLeft);
+   Label(new Rect(x,y+49,358,32.5f),CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character")),Language=="ko"?presentationKoNameTitle:presentationNameTitle,TextAnchor.MiddleCenter);
+   Label(new Rect(x,y+89.5f,358,18.5f),CharacterDialogLabel("description",K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell.")),presentationNameDescription,TextAnchor.MiddleCenter);
+   Label(new Rect(x,y+136,358,21),CharacterDialogLabel("nameLabel",K("캐릭터 이름 (2~8자)","Character name (2–8 characters)")),presentationNameLabel,TextAnchor.MiddleLeft);
    GUI.SetNextControlName("character-name");characterName=GUI.TextField(new Rect(x,y+165,358,53),characterName,8,presentationInput);
    if(characterFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl("character-name");characterFocus=false;}
    if(!string.IsNullOrEmpty(characterError))Label(new Rect(x,y+218,358,18),characterError,presentationNameError,TextAnchor.MiddleLeft);
-   GUI.SetNextControlName("character-cancel");if(GUI.Button(new Rect(x,y+238,173,46.5f),K("취소","CANCEL"),presentationNameButton))CloseCharacterCreation();
-   GUI.SetNextControlName("character-create");if(GUI.Button(new Rect(x+185,y+238,173,46.5f),K("생성","CREATE"),presentationNameButton))CreateCharacter(characterName);
+   GUI.SetNextControlName("character-cancel");if(GUI.Button(new Rect(x,y+238,173,46.5f),CharacterDialogLabel("cancel",K("취소","CANCEL")),presentationNameButton))CloseCharacterCreation();
+   GUI.SetNextControlName("character-create");if(GUI.Button(new Rect(x+185,y+238,173,46.5f),CharacterDialogLabel("create",K("생성","CREATE")),presentationNameButton))CreateCharacter(characterName);
   }
   void DrawCharacterVisualVignette(float w,float h){
    Fill(new Rect(0,0,w,Mathf.Min(h*.11f,112)),new Color(0,0,0,.34f));Fill(new Rect(0,h-Mathf.Min(h*.132f,142),w,Mathf.Min(h*.132f,142)),new Color(0,0,0,.55f));
@@ -117,14 +145,14 @@ namespace Exoduser.UnityPort
   {
    float viewT=(Screen.height-720f)/360f,height=Mathf.LerpUnclamped(312.75f,325.594f,viewT),yOffset=Mathf.LerpUnclamped(36.998f,195.953f,viewT);
    Rect box=new Rect(r.x+8,r.y+yOffset,r.width-16,height);Fill(box,new Color(.08f,.058f,.043f,.88f));if(presentationSigil!=null){Color old=GUI.color;GUI.color=new Color(.68f,.56f,.39f,.16f);GUI.DrawTexture(box,presentationSigil,ScaleMode.ScaleAndCrop,true);GUI.color=old;}Border(box,new Color(.43f,.32f,.20f,.58f),1);DrawFrameCorners(box,20,2,new Color(.72f,.53f,.32f,.88f));
-   Label(new Rect(box.x+22,box.y+26,box.width-44,34.5f),K("플레이 방식","PLAYSTYLE"),presentationTraitTitle,TextAnchor.MiddleCenter);Fill(new Rect(box.x+22,box.y+60,box.width-44,1),new Color(.48f,.34f,.20f,.55f));
+   Label(new Rect(box.x+22,box.y+26,box.width-44,34.5f),VisualSelectionLabel("플레이 방식","PLAYSTYLE"),presentationTraitTitle,TextAnchor.MiddleCenter);Fill(new Rect(box.x+22,box.y+60,box.width-44,1),new Color(.48f,.34f,.20f,.55f));
    float rowStep=Mathf.LerpUnclamped(74.75f,79.031f,viewT),firstRow=Mathf.LerpUnclamped(67.5f,67.5f,viewT);DrawCircleFill(new Vector2(box.center.x,box.y-14),14,new Color(.12f,.085f,.058f,.98f));DrawCircleOutline(new Vector2(box.center.x,box.y-14),14,1,new Color(.61f,.43f,.24f,.9f));DrawGlyph(new Rect(box.center.x-14,box.y-28,28,28),15,new Color(.82f,.67f,.43f,1));
-   for(int i=0;i<3;i++){string[] bits=presentationTraits[visual,i].Split('|');float y=box.y+firstRow+i*rowStep;Rect icon=new Rect(box.x+22,y,34,34);Fill(icon,new Color(.10f,.075f,.05f,.85f));DrawTraitFrameCorners(icon,6,1,new Color(.48f,.36f,.22f,.66f));DrawGlyph(icon,visual*3+i,new Color(.79f,.66f,.46f,1));Label(new Rect(box.x+69,y,box.width-91,21),K(bits[1],TraitEnglish(visual,i)),presentationTraitTitle,TextAnchor.MiddleLeft);Label(new Rect(box.x+69,y+22,box.width-91,rowStep-22),K(bits[2],TraitEnglishBody(visual,i)),presentationTraitBody,TextAnchor.UpperLeft);}
+   for(int i=0;i<3;i++){string[] bits=presentationTraits[visual,i].Split('|');float y=box.y+firstRow+i*rowStep;Rect icon=new Rect(box.x+22,y,34,34);Fill(icon,new Color(.10f,.075f,.05f,.85f));DrawTraitFrameCorners(icon,6,1,new Color(.48f,.36f,.22f,.66f));DrawGlyph(icon,visual*3+i,new Color(.79f,.66f,.46f,1));Label(new Rect(box.x+69,y,box.width-91,21),VisualSelectionLabel(bits[1],TraitEnglish(visual,i)),presentationTraitTitle,TextAnchor.MiddleLeft);Label(new Rect(box.x+69,y+22,box.width-91,rowStep-22),VisualSelectionLabel(bits[2],TraitEnglishBody(visual,i)),presentationTraitBody,TextAnchor.UpperLeft);}
   }
   void DrawCharacterRail(float w,float px,float y)
   {
    float size=Mathf.Min(70,Mathf.Max(44,w*.056f)),gap=Mathf.Min(w*.026f,36),total=5*size+4*gap,start=(w-total)/2;float labelY=y+size+9;string[] labels={"전사","실버테일","헬거너","변성술사","창법사"};
-   for(int i=0;i<5;i++){Rect ring=new Rect(start+i*(size+gap),y,size,size);DrawCircleFill(new Vector2(ring.center.x,ring.center.y),size*.5f,new Color(.12f,.10f,.09f,.95f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+2,2,new Color(.04f,.03f,.025f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+4,2,i==characterVisual?new Color(.48f,.17f,.14f):new Color(.24f,.18f,.13f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+5,1,new Color(.17f,.08f,.07f));if(presentationRingAtlas!=null){int cell=i==0?0:i+5;Rect uv=new Rect((cell%5)/5f,1f-((cell/5)+1)/2f,.2f,.5f);GUI.DrawTextureWithTexCoords(ring,presentationRingAtlas,uv,true);}if(i>0&&presentationRingChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.68f);GUI.DrawTexture(ring,presentationRingChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(ring.x-14,labelY,ring.width+28,18),K(labels[i],new[]{"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"}[i]),presentationRail,TextAnchor.MiddleCenter);if(i>0)Label(new Rect(ring.x-14,labelY+18,ring.width+28,14),K("출시 준비 중","Coming soon"),presentationRail,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(ring.x-14,ring.y-4,ring.width+28,size+45),"",GUIStyle.none))ChooseCharacterVisual(i);}
+   for(int i=0;i<5;i++){Rect ring=new Rect(start+i*(size+gap),y,size,size);DrawCircleFill(new Vector2(ring.center.x,ring.center.y),size*.5f,new Color(.12f,.10f,.09f,.95f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+2,2,new Color(.04f,.03f,.025f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+4,2,i==characterVisual?new Color(.48f,.17f,.14f):new Color(.24f,.18f,.13f));DrawCircleOutline(new Vector2(ring.center.x,ring.center.y),size*.5f+5,1,new Color(.17f,.08f,.07f));if(presentationRingAtlas!=null){int cell=i==0?0:i+5;Rect uv=new Rect((cell%5)/5f,1f-((cell/5)+1)/2f,.2f,.5f);GUI.DrawTextureWithTexCoords(ring,presentationRingAtlas,uv,true);}if(i>0&&presentationRingChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.68f);GUI.DrawTexture(ring,presentationRingChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(ring.x-14,labelY,ring.width+28,18),VisualSelectionLabel(labels[i],new[]{"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"}[i]),presentationRail,TextAnchor.MiddleCenter);if(i>0)Label(new Rect(ring.x-14,labelY+18,ring.width+28,14),VisualSelectionLabel("출시 준비 중","Coming soon"),presentationRail,TextAnchor.MiddleCenter);Rect button=new Rect(ring.x-14,ring.y-4,ring.width+28,size+45);GUI.SetNextControlName("visual-icon-"+i);if(GUI.Button(button,"",GUIStyle.none)){ChooseCharacterVisual(i);GUI.FocusControl("visual-icon-"+i);}if(GUI.GetNameOfFocusedControl()=="visual-icon-"+i)Border(button,new Color(.92f,.78f,.53f),2);}
   }
   void DrawGlyph(Rect rect,int index,Color color){if(presentationTraitGlyphs==null)return;int col=index%5,row=index/5;Rect uv=new Rect(col/5f,1f-(row+1)/4f,.2f,.25f);Color old=GUI.color;GUI.color=color;GUI.DrawTextureWithTexCoords(rect,presentationTraitGlyphs,uv,true);GUI.color=old;}
   void DrawFrameCorners(Rect r,float length,float thickness,Color color){float x=r.x,y=r.y,w=r.width,h=r.height;Fill(new Rect(x,y,length,thickness),color);Fill(new Rect(x,y,thickness,length),color);Fill(new Rect(x+w-length,y,length,thickness),color);Fill(new Rect(x+w-thickness,y,thickness,length),color);Fill(new Rect(x,y+h-thickness,length,thickness),color);Fill(new Rect(x,y+h-length,thickness,length),color);Fill(new Rect(x+w-length,y+h-thickness,length,thickness),color);Fill(new Rect(x+w-thickness,y+h-length,thickness,length),color);}

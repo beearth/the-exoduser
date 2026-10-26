@@ -1,3 +1,7 @@
+## 2026-10-27 Mac A03/A04 전달 인수·컴파일 현행
+
+PC 전달 문서 커밋 `d132f425b67a16bc1d393eea710778d86222abd5`를 확인했다. 제품 후보 `97227ceb7c4a33becd2fe55d4ab1712dc8013182`의 Runtime tree `8376905b93fc0df4170c9ecc67acb47577990f99`를 고정해 A03 패치노트와 A04 생성·삭제·시각선택 해당 파일·hunk만 Mac에 인수했다. 아래 preflight는 전달 전 시점의 읽기 기록이다. 현재 상태는 [인수 상세와 검증 경계](../UNITY_MAC_A03A04_INTEGRATION_20261027.md)를 따른다. Unity 6000.6.7f1 batch import·compile exit 0, C# 오류·경고 0; 기존 UAC1001은 남는다. Player·GUI 실행 0이며 실제 화면·키 입력 검수는 미실시다.
+
 ## 2026-10-27 Mac A03/A04 원격 UI 후보 최소 인수 preflight
 
 읽기 기준은 Mac `58dbec328b75d54831874766f6c2ad3718ead5fb`와 PC 후보 원격 `codex/ui-resume-player-20261026` `97227ceb7c4a33becd2fe55d4ab1712dc8013182`다. `git fetch`/`git show`/차이 읽기만 수행했다. PC가 작성 중인 `a03-a04-mac-handoff.md`는 이 SHA의 트리에 아직 없어 실제 전달·수신·합의로 표시하지 않는다. 제품 파일 적용·merge·Editor/Player/빌드 0.
