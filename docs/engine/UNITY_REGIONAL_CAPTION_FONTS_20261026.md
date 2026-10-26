@@ -34,3 +34,10 @@ SC/TC/JP는 공식 `notofonts/noto-cjk`의 완전한 정적 Regular OTF와 `Seri
 ## 실제 RED와 최소 연결
 
 지역별 글꼴 연결 전 Player에서 zh regional Font resource loaded 검사가 실패했고 누락 리소스 예외를 영수증에 기록했다. 이후 정확한4개언어에 정적Regular400 폰트와1회 생성한 caption/shadow 스타일만 연결했다. 기존4개기본/20개Noto 언어, 진단게이트, 자막문구/시간값은 유지한다. 새 자산의 원본과 OFL을 I:에 보존하고 실행에 필요한폰트 및 라이선스만 SSD runtime에 연결했다. 실제 GREEN 빌드/렌더 결과는 대기다.
+
+
+## 실제 Windows Player 결과 — regional-transition-fixed
+
+Unity 6000.6.7f1 Windows 빌드 뒤 실제 Player 영수증에서 190개 UI 검사 PASS, 33개 PNG, 종료 코드 0을 확인했다. 앞선 regional-green과 regional-transition의 zht 실패는 실제 Font 객체 불일치가 아니라 전환 첫 프레임 자막 cue 갱신 지연이었다. QA fixture의 지역 경로에 최대 3초 대기를 적용한 뒤 같은 정확한 Font 객체 검사를 유지했다. 29언어 가운데 28언어의 32큐 고유문자 atlas 질의에서 누락 0이며 새 지역 4언어의 대표 큐 720p PNG를 기록했다. 이는 전체 32큐 연속 자연 재생, 실제 OS 입력, 29언어 일반 UI 일치 증거가 아니다. ar RTL/shaping은 UNRESOLVED다. 상세 영수증은 docs/engine/qa의 regional-font-player-*.json, 원본 PNG는 I:/EXODUSER-Storage/qa/unity-ui-resume-20261026/regional-transition-fixed 에 있다.
+
+6개 신규 .meta의 GUID와 SHA-256은 보존되었고 Unity가 importer 설정을 자동 보충한 파일은 없었다. 따라서 includeFontData=1 및 dynamic importer 설정은 .meta에서 확인되지 않는다. 세부값은 docs/engine/qa/regional-font-assets-20261026.json의 unityImportMetaAudit에 기록했다.

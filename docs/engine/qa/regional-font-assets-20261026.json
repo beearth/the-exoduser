@@ -28,5 +28,77 @@
     "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-OFL.txt": "2e98fd23a52d253db8612cd5942c8f2ff4111b21d2367050fdca91d8ccc374a0",
     "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-OFL.txt.meta": "b047a8c5f3f5c625becfafe77f2c7ac1bae85260132d17d50d220e8c0310a170"
   },
-  "note": "Only newly added regional font assets, their Unity meta files and OFL licenses. NativeLobby.cs is an existing owned source file and is excluded from this new-file manifest."
+  "note": "Only newly added regional font assets, their Unity meta files and OFL licenses. NativeLobby.cs is an existing owned source file and is excluded from this new-file manifest.",
+  "unityImportMetaAudit": {
+    "checkedAt": "2026-10-26T05:37:43.020Z",
+    "files": [
+      {
+        "path": "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKsc-Regular.otf.meta",
+        "guid": "1a207067855b4d5eaf1f84a5417e1efc",
+        "originalHash": "f8d673febbea8cd048269affe2f03514ac0782500dab9d035002717bf9fc36b4",
+        "currentHash": "f8d673febbea8cd048269affe2f03514ac0782500dab9d035002717bf9fc36b4",
+        "changedByUnityImport": false,
+        "importer": null,
+        "includeFontData": null,
+        "dynamic": null,
+        "bytes": 60
+      },
+      {
+        "path": "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKtc-Regular.otf.meta",
+        "guid": "44e8c2014e51437b88aca32d85b5845f",
+        "originalHash": "4d9f85be91e593b997edff0e11817d6fc2fba0d510633abe51cdd587ea627c94",
+        "currentHash": "4d9f85be91e593b997edff0e11817d6fc2fba0d510633abe51cdd587ea627c94",
+        "changedByUnityImport": false,
+        "importer": null,
+        "includeFontData": null,
+        "dynamic": null,
+        "bytes": 60
+      },
+      {
+        "path": "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJKjp-Regular.otf.meta",
+        "guid": "78a3b33420b341cd8ee08aa95d3915ff",
+        "originalHash": "5674592304b83660ee384bc99863a794a045975396409d75ff136cb61c76127a",
+        "currentHash": "5674592304b83660ee384bc99863a794a045975396409d75ff136cb61c76127a",
+        "changedByUnityImport": false,
+        "importer": null,
+        "includeFontData": null,
+        "dynamic": null,
+        "bytes": 60
+      },
+      {
+        "path": "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-Regular.ttf.meta",
+        "guid": "be964ebb8bbd4568ab1af5749dab2e1b",
+        "originalHash": "a3698c5809f3df42b4b8547c817b4c3df466d0d12699fa1f597d22fa73a14208",
+        "currentHash": "a3698c5809f3df42b4b8547c817b4c3df466d0d12699fa1f597d22fa73a14208",
+        "changedByUnityImport": false,
+        "importer": null,
+        "includeFontData": null,
+        "dynamic": null,
+        "bytes": 60
+      },
+      {
+        "path": "Assets/Exoduser/Resources/Art/fonts/NotoSerifCJK-OFL.txt.meta",
+        "guid": "20069492b4f144a1ada18840042f3198",
+        "originalHash": "9739fcc7f19b6ba101bade0d73d9bb7bcbee0e762312e2af4d8eb414d7a9d11a",
+        "currentHash": "9739fcc7f19b6ba101bade0d73d9bb7bcbee0e762312e2af4d8eb414d7a9d11a",
+        "changedByUnityImport": false,
+        "importer": null,
+        "includeFontData": null,
+        "dynamic": null,
+        "bytes": 60
+      },
+      {
+        "path": "Assets/Exoduser/Resources/Art/fonts/NotoSerifThai-OFL.txt.meta",
+        "guid": "34d2b496750e470b9ba8413fdca0c0c4",
+        "originalHash": "b047a8c5f3f5c625becfafe77f2c7ac1bae85260132d17d50d220e8c0310a170",
+        "currentHash": "b047a8c5f3f5c625becfafe77f2c7ac1bae85260132d17d50d220e8c0310a170",
+        "changedByUnityImport": false,
+        "importer": null,
+        "includeFontData": null,
+        "dynamic": null,
+        "bytes": 60
+      }
+    ],
+    "conclusion": "No Unity-generated meta supplement observed; all six files retain GUID-only metadata. Importer, includeFontData and dynamic settings cannot be claimed from these files."
+  }
 }

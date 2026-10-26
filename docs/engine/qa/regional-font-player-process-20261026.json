@@ -1,0 +1,161 @@
+{
+  "phase": "regional-transition-fixed",
+  "build": "build-regional-transition-fixed",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "passed": true,
+  "checks": 190,
+  "failures": [],
+  "images": 33,
+  "coverage": [
+    {
+      "code": "ko",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "en",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "zh",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "zht",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "ja",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "es",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "fr",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "de",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "ptbr",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "it",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "ru",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "uk",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "pl",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "cs",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "hu",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "ro",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "bg",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "el",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "tr",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "vi",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "th",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "id",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "ar",
+      "status": "UNRESOLVED",
+      "missing": 0
+    },
+    {
+      "code": "sv",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "da",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "no",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "fi",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "nl",
+      "status": "COVERED",
+      "missing": 0
+    },
+    {
+      "code": "ms",
+      "status": "COVERED",
+      "missing": 0
+    }
+  ],
+  "unresolved": [
+    "ar"
+  ]
+}

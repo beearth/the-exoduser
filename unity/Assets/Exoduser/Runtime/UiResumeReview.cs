@@ -27,6 +27,7 @@ public sealed class UiResumeReview : MonoBehaviour
     bool captionCoverageRequested;
     string captionOraclePath = "";
     readonly List<CaptionCoverageResult> captionCoverage = new List<CaptionCoverageResult>();
+    readonly List<CaptionTransitionDiagnostic> captionTransitions = new List<CaptionTransitionDiagnostic>();
     readonly List<string> unresolvedLanguages = new List<string>();
     string expectedWorldCode = "", expectedWorldText = "";
     Font expectedWorldFont;
@@ -43,6 +44,7 @@ public sealed class UiResumeReview : MonoBehaviour
         public int failures;
         public string[] checks, images, unresolvedLanguages;
         public CaptionCoverageResult[] captionCoverage;
+        public CaptionTransitionDiagnostic[] captionTransitions;
     }
     [Serializable] sealed class CaptionOracle { public int languageCount; public CaptionOracleRow[] rows; }
     [Serializable] sealed class CaptionOracleRow
@@ -57,6 +59,14 @@ public sealed class UiResumeReview : MonoBehaviour
         public string code, status, fontName, fontResource, cueText, missingCharacters;
         public int visibleCharacterCount, missingCharacterCount;
         public bool expectedNoto, captionDrawn, shadowFontMatches;
+    }
+    [Serializable] sealed class CaptionTransitionDiagnostic
+    {
+        public string phase, code, language, subtitleText, expectedText;
+        public string styleFontName, shadowFontName, expectedFontName;
+        public bool captionVisible, cueMatches, styleFontMatches, shadowFontMatches;
+        public bool worldPage, videoPrepared, videoFrameReady;
+        public string styleFontId, shadowFontId, expectedFontId;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -158,6 +168,7 @@ public sealed class UiResumeReview : MonoBehaviour
             output = output, error = error, ukCue = ukCue, ukText = ukText, koText = koText,
             captionOraclePath = captionOraclePath, captionCoverageRequested = captionCoverageRequested,
             captionCoverage = captionCoverage.ToArray(), unresolvedLanguages = unresolvedLanguages.ToArray(),
+            captionTransitions = captionTransitions.ToArray(),
             passed = failures == 0 && error.Length == 0, diagnosticPreview = diagnosticPreview,
             namedHudTopLeftChangeRatio = namedHudTopLeftChangeRatio,
             failures = failures, checks = checks.ToArray(), images = images.ToArray()
@@ -236,6 +247,29 @@ public sealed class UiResumeReview : MonoBehaviour
         var shadow = Style("CaptionShadowForLanguage");
         return style != null && shadow != null && ReferenceEquals(style.font, expectedFont) &&
             ReferenceEquals(shadow.font, expectedFont);
+    }
+    CaptionTransitionDiagnostic RegionalTransition(string phase, string code, string cue, Font expectedFont)
+    {
+        var style = Style("CaptionStyleForLanguage");
+        var shadow = Style("CaptionShadowForLanguage");
+        var styleFont = style == null ? null : style.font;
+        var shadowFont = shadow == null ? null : shadow.font;
+        return new CaptionTransitionDiagnostic {
+            phase = phase, code = code, language = lobby.Language, subtitleText = lobby.SubtitleText,
+            expectedText = cue, captionVisible = lobby.CaptionVisible,
+            cueMatches = lobby.SubtitleText == cue,
+            worldPage = lobby.Flow.Page == LobbyPage.WorldIntro,
+            videoPrepared = lobby.CurrentVideo != null && lobby.CurrentVideo.Prepared,
+            videoFrameReady = lobby.CurrentVideo != null && lobby.CurrentVideo.Frame >= 0,
+            styleFontName = styleFont == null ? "" : styleFont.name,
+            shadowFontName = shadowFont == null ? "" : shadowFont.name,
+            expectedFontName = expectedFont == null ? "" : expectedFont.name,
+            styleFontId = styleFont == null ? "" : styleFont.GetEntityId().ToString(),
+            shadowFontId = shadowFont == null ? "" : shadowFont.GetEntityId().ToString(),
+            expectedFontId = expectedFont == null ? "" : expectedFont.GetEntityId().ToString(),
+            styleFontMatches = ReferenceEquals(styleFont, expectedFont),
+            shadowFontMatches = ReferenceEquals(shadowFont, expectedFont)
+        };
     }
     void ExpectWorld(string code, string cue, Font font)
     {
@@ -389,6 +423,10 @@ public sealed class UiResumeReview : MonoBehaviour
             yield return new WaitForEndOfFrame();
             if (regional)
             {
+                captionTransitions.Add(RegionalTransition("first-frame", row.code, expectedCue, expectedFont));
+                yield return Until(() => WorldCaptionReady(row.code, expectedCue, expectedFont),
+                    row.code + " actual caption/style ready", 3f, false);
+                captionTransitions.Add(RegionalTransition("settled", row.code, expectedCue, expectedFont));
                 bool selected = WorldCaptionReady(row.code, expectedCue, expectedFont);
                 Check(selected, row.code + " actual caption and shadow select exact regional Font object");
                 if (!selected) throw new InvalidOperationException("Regional caption/style selection failed for " + row.code);
