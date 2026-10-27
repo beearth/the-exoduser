@@ -11,6 +11,25 @@ namespace Exoduser.UnityPort {
   public static Rect SkillSlotRect(NativeHudDockLayout dock,int index){return dock.SlotRect(index);}
   // Normal bottom-origin screen input -> the same scaled HUD space used for drawing.
   public static bool PointerOverSlots(Vector3 screenPoint){float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);var point=new Vector2(screenPoint.x/s,(Screen.height-screenPoint.y)/s);var dock=NativeHudDockLayout.Create(Screen.width/s,Screen.height/s);for(int i=0;i<13;i++)if(SkillSlotRect(dock,i).Contains(point))return true;return false;}
+  GUIStyle rageText;
+  // Web updateHUD (28534-28547): the Space (rage burst) slot gets a red fill rising from the bottom (height = rage / _rageMax) with the raw "N%" at the top,
+  // a border that warms at 50 / 100 and an inner glow at 100. Nothing is drawn while rage is 0.
+  public static Color RageBorder(double rage){return rage>=100?new Color(1f,.133f,0):rage>=50?new Color(.8f,.267f,0):new Color(.533f,.267f,0);}
+  public static float RageFill(double rage,double max){return max>0?(float)Math.Min(100,rage*100/max)/100f:0;}
+  void DrawRageSlot(Rect slot,Simulation simulation){
+   double rage=simulation.Rage;if(!(rage>0))return;
+   if(rageText==null){rageText=new GUIStyle(keyLabel){fontSize=13,fontStyle=FontStyle.Bold,alignment=TextAnchor.UpperCenter};}
+   var old=GUI.color;float fill=RageFill(rage,simulation.RageMaximum);
+   GUI.color=new Color(1f,.078f,0,.45f);GUI.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*fill,slot.width,slot.height*fill),Texture2D.whiteTexture);
+   GUI.color=RageBorder(rage);const float b=2;
+   GUI.DrawTexture(new Rect(slot.x,slot.y,slot.width,b),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(slot.x,slot.yMax-b,slot.width,b),Texture2D.whiteTexture);
+   GUI.DrawTexture(new Rect(slot.x,slot.y,b,slot.height),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(slot.xMax-b,slot.y,b,slot.height),Texture2D.whiteTexture);
+   if(rage>=100){GUI.color=new Color(1f,.118f,0,.6f);const float g=5;GUI.DrawTexture(new Rect(slot.x+b,slot.y+b,slot.width-2*b,g),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(slot.x+b,slot.yMax-b-g,slot.width-2*b,g),Texture2D.whiteTexture);}
+   string label=Math.Truncate(rage).ToString("0")+"%";
+   GUI.color=new Color(.4f,0,0,.9f);GUI.Label(new Rect(slot.x+1,slot.y+3,slot.width,slot.height),label,rageText);
+   GUI.color=Color.white;GUI.Label(new Rect(slot.x,slot.y+2,slot.width,slot.height),label,rageText);
+   GUI.color=old;
+  }
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
    if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
     int eventHit=-1,screenHit=-1;Vector2 guiPoint=Event.current.mousePosition;float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);Vector2 screenPoint=new Vector2(Input.mousePosition.x/scale,(Screen.height-Input.mousePosition.y)/scale);
@@ -23,6 +42,7 @@ namespace Exoduser.UnityPort {
     if(GUI.Button(rect,"",GUIStyle.none)){statusSelectionUntil=i==6?Time.unscaledTime+1.6f:0;SlotSelected?.Invoke(i);}
    }
    if(simulation==null)return;
+   DrawRageSlot(SkillSlotRect(dock,12),simulation);
    if(skillStatus==null){skillStatus=new GUIStyle(keyLabel){fontSize=14,alignment=TextAnchor.MiddleCenter};skillStatus.normal.textColor=new Color(.74f,.69f,.59f);}
    string name=simulation.Config.ActiveAttack=="kiSlash"?"기검참":"기본 무기";
    var statusRect=DockStatusRect(dock,width);
