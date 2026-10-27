@@ -12222,7 +12222,7 @@ const _SFX_MAX=IS_MOBILE?1:2; // 프레임당 카테고리별 최대
 const _sfxQueue=[];        // {key,vol,rate,pri} 대기열
 const _SFX_PER_FRAME=IS_MOBILE?3:6;    // 프레임당 최대 처리 수
 // ── 사운드 우선순위 ──
-const _SFX_PRI={SKILL:10,VOICE:9,PLAYER_HIT:8,DEATH:4,STEP:3,HIT:2,PROJ:1,AMB:0};
+const _SFX_PRI={TELL:12,SKILL:10,VOICE:9,PLAYER_HIT:8,DEATH:4,STEP:3,HIT:2,PROJ:1,AMB:0};
 const _activeNodes=[];      // {src,gain,pri,key,_dn} 재생 중 노드 추적
 const _MAX_PROJ_NODES=IS_MOBILE?2:5;    // PROJ(탄막히트) 동시 최대
 const _MAX_HIT_NODES=IS_MOBILE?2:3;     // HIT 동시 최대
@@ -12639,6 +12639,7 @@ const SFX={
   magicHit(){},
   // ── Charge: rising whoosh + engine rumble ──
   charge(){
+    for(let i=0;i<5&&_activeNodeCnt>=_MAX_ACTIVE_NODES;i++){if(!_evictLowest(_SFX_PRI.TELL))break;}
     playNoise(.35,1200,.18,9000,.008);
     playNoise(.3,600,.07,5000,.01,'bandpass');
     playFM(120,30,200,.3,.05,'sawtooth',400);
@@ -36704,7 +36705,7 @@ function update(){
       P.iframes=Math.max(P.iframes,30); // 탈출 무적 0.5초
       // 잔상 이펙트
       for(let k=0;k<8;k++){const t=k/8;poolPart(_ox+(_bx-_ox)*t,_oy+(_by-_oy)*t,(Math.random()-.5)*2,(Math.random()-.5)*2,'#88ddff',2+Math.random()*3,10+Math.random()*6)}
-      SFX.charge();addTxt(P.x,P.y-20,_T('❄ 탈출!'),'#aaeeff',30);
+      playSample('chain_dash',.5,1.1);addTxt(P.x,P.y-20,_T('❄ 탈출!'),'#aaeeff',30);
     }
   }
   // ═══ 필살기 쿨다운 (회복의 영역 2배속 미적용) ═══
@@ -39816,7 +39817,7 @@ function updateE(e,sp){
     // 잡기: 2초간 플레이어 이동 불가 + 지속 데미지
     if(d<30+e.r&&e._seaGrabCd<=0&&P.iframes<=0&&P.s!=='charge'){
       P._seaGrabbed=120;e._seaGrabCd=120+Math.random()*40;
-      hurtP(~~(e.atk*.5));addTxt(P.x,P.y-15,_T('잡기!'),'#334466',30);SFX.charge();
+      hurtP(~~(e.atk*.5));addTxt(P.x,P.y-15,_T('잡기!'),'#334466',30);
     }
     // 물 뿜기: 전방 부채꼴 감속
     if(e._seaSpitCd<=0&&d<150&&d>30){
@@ -39900,7 +39901,7 @@ function updateE(e,sp){
         e._eelBurrowed=false;e._eelBurrowCd=100+Math.random()*40;
         if(dst(P.x,P.y,e.x,e.y)<35+P.r){
           e._eelGrabT=60;P._seaGrabbed=Math.max(P._seaGrabbed||0,60);
-          hurtP(~~(e.atk));addTxt(e.x,e.y-15,_T('감아올리기!'),'#99bb88',30);SFX.charge();addParts(e.x,e.y,'#667755',8);
+          hurtP(~~(e.atk));addTxt(e.x,e.y-15,_T('감아올리기!'),'#99bb88',30);addParts(e.x,e.y,'#667755',8);
         }else{addParts(e.x,e.y,'#99bb88',5)}
       }
     }
@@ -40046,7 +40047,7 @@ function updateE(e,sp){
       e._tePullCd=150+Math.random()*50;
       if(P.iframes<=0){
         const pa=Math.atan2(e.y-P.y,e.x-P.x);P.kb.x+=Math.cos(pa)*15;P.kb.y+=Math.sin(pa)*15;
-        addTxt(P.x,P.y-15,_T('끌려감!'),'#ccaa88',30);SFX.charge();
+        addTxt(P.x,P.y-15,_T('끌려감!'),'#ccaa88',30);
       }
       addTxt(e.x,e.y-15,_T('체인!'),'#ccaa88',30);addParts(e.x,e.y,'#554433',8);
     }
@@ -40098,7 +40099,7 @@ function updateE(e,sp){
     if(e._psGrabCd<=0&&d<50+e.r&&P.iframes<=0&&P.s!=='charge'){
       e._psGrabCd=150+Math.random()*50;
       P._seaGrabbed=Math.max(P._seaGrabbed||0,90);
-      hurtP(~~(e.atk*.4));addTxt(P.x,P.y-15,_T('잡기!'),'#cc8855',30);SFX.charge();
+      hurtP(~~(e.atk*.4));addTxt(P.x,P.y-15,_T('잡기!'),'#cc8855',30);
     }
     if(e._psSpawnCd<=0&&e.hp<e.mhp*.3&&ens.length<200){
       e._psSpawnCd=300+Math.random()*80;
@@ -45028,7 +45029,7 @@ function _bladeEchoTryStart(){
   P._bladeEchoRun={path:ready.path,index:1,damage:ready.damage,hit:new Set(),trail:[{x:first.x,y:first.y}]};
   P.x=first.x;P.y=first.y;P.s='bladeEcho';P.st2=0;
   P.iframes=Math.max(P.iframes,15);
-  SFX.charge();playSample('chain_dash',.7,_r(1.2,.08));shake(5);
+  playSample('chain_dash',.7,_r(1.2,.08));shake(5);
   spawnElecBurst(first.x,first.y,.28);
   addParts(first.x,first.y,'#b6f6ff',18);
   _addBlastLight(first.x,first.y,150,12,120,230,255);
@@ -45458,7 +45459,7 @@ function activateBladeDash(dir){
   if(P.s!=='sDraw'&&P.s!=='kiGather'&&!_isKiCharging()){P.s='bladeDash';P.st2=6}
   P.facing=_bdAng;
   P.iframes=Math.max(P.iframes,15);
-  SFX.charge();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))}
+  {const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))}
   
   addParts(P.x,P.y,'#44ddff',8);
   shake(4);
