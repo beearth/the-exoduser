@@ -156,6 +156,49 @@
   - 잘림 0
   - 시트에서 heartbeat는 두 박, grab은 끝으로 갈수록 커지는지 확인
 
+## 6. 2차 제작 — 장면 기준 (2026-10-27 사용자 청음 반려 뒤)
+
+### 6.1 반려와 원인
+- 사용자 청음: "다 좀 안맞다 상황하고". 16키 추천본(§5·§5.1) 전부 반려. 사용자는 "내가 고를 수 있는 옵션도 있어야지"라고도 함.
+- 원인(총괄 판단): 1차 문구가 "low swell", "metallic tick"처럼 소리 모양만 적었고, 누가·무엇이·어디서 내는 소리인지(장면)를 적지 않았다. 고르기도 총괄이 수치·그림으로 했다. 수치로는 불량(잘림·긴 꼬리·고음 잔향)만 걸러 낼 수 있고, 장면에 맞는지는 판정할 수 없다.
+- 바뀌는 점: ① 문구를 장면 기준으로 다시 쓴다(§6.2). ② "총괄 추천"을 붙이지 않는다. 수치 불량만 "주의"로 표시한다. ③ 사용자가 직접 고르고 결과가 파일로 남는 고르기 페이지를 만든다(§6.3).
+
+### 6.2 장면 카드와 생성 문구 (키마다 4개, ElevenLabs)
+공통 꼬리말(모든 문구 끝에 붙임): `dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice`. 1-1 일반몹은 눈이 여러 개 달리고 이빨·촉수가 있는 살덩이 괴물(다안 육괴, `docs/8.0몬스터디자인/CH1_1_START_다안육괴_중형몬스터.md`)이다. 드루이드는 굽은 나무 지팡이를 든 늙은 숲지기다(`docs/engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md`).
+
+| 키 | 장면(무엇이 보이는가) | 뒤따르는 일 | 길이 | 문구 |
+|---|---|---|---|---|
+| `tell_melee` | 살덩이 괴물이 몸을 뒤로 젖히며 물어뜯을 준비 | 약 0.4초 뒤 물기 | 0.35s | wet guttural snarl of a many-eyed flesh beast rearing back to bite, slimy sinew stretching, short and close |
+| `tell_ranged` | 살덩이 괴물의 목이 부풀며 썩은 덩어리를 뱉을 준비(공격링 60f) | 1초 뒤 발사 | 0.6s | bloated flesh creature's throat swelling and gurgling as it builds up to spit a glob of rot, wet bubbling rise that stops right before the spit |
+| `tell_boss` | 드루이드 범위 기술 직전, 바닥에 어두운 독액 얼룩이 점점 진해짐 | 얼룩 자리에 뿌리·독이 터짐 | 0.9s | deep groan beneath a forest floor, soil cracking and dark sap seeping upward, pressure building, ends abruptly |
+| `tell_parry` | 드루이드 지팡이 끝이 한 번 번쩍임(패링 가능 근접, 기술 1·2·3·10) | 14~20f 뒤 지팡이 타격 | 0.25s | short scrape of an iron-capped gnarled wooden staff being raised for a strike, one dry metallic glint, no ringing |
+| `tell_grab` | 드루이드 눈이 빛나고 나무껍질 같은 손을 뻗은 채 멈춤(60f) | 1초 뒤 잡기 | 1.0s | old forest keeper's hoarse hungry breath drawn in as a gnarled bark hand creaks open and reaches out, knuckles of wood cracking, dead leaves rustling, slow tense build |
+| `roll_body` | 갑옷 입은 전사가 젖은 흙·낙엽 위로 구름 | — | 0.45s | armored warrior dodge roll on damp forest dirt and dead leaves, leather and chainmail shuffle, one body thud, quick |
+| `druid_burrow` | 드루이드가 땅속으로 뛰어들어 사라짐(기술 7 시작) | 흙 흔적이 플레이어를 따라옴 | 0.8s | robed old man plunging into the ground, wet soil collapsing over him, roots snapping shut, muffled |
+| `druid_erupt` | 플레이어 발밑에서 드루이드가 흙과 뿌리를 뚫고 솟음 | 피격 판정 | 0.7s | violent burst of earth and roots from beneath the ground, clods of wet dirt and splintering wood flying, heavy and close |
+| `druid_sink` | 세 번째 쓰러짐 뒤 드루이드가 땅속으로 천천히 가라앉아 달아남(STY-D9) | 대사 "숲은 아직 배고프다…" | 2.5s | slow sinking into rotting forest ground, mud and roots dragging a body down, long wet gurgling swallow of earth fading out |
+| `amb_toxic_river` | 아레나 가장자리를 도는 얕은 독액 수로 | 반복 | 8s 루프 | slow viscous toxic sludge stream flowing over roots, thick bubbling liquid, occasional plop, seamless loop, no birds, no wind |
+| `toxic_bubble` | 늪·수로 표면에서 기포 하나가 터짐(2~6초마다) | — | 0.4s | single thick bubble bursting in a pool of toxic sludge, viscous wet pop, close |
+| `druid_staff_tap` | P1 시작, 드루이드가 지팡이로 바닥을 3번 두드림 | 3번째 뒤 뿌리 기둥 솟음 | 0.5s | heavy gnarled wooden staff struck once on hard packed earth, deep dull knock with ground resonance |
+| `druid_roots_rise` | 아레나 뿌리 기둥 4개가 땅을 찢고 솟음 | — | 1.2s | massive tree roots tearing up through soil and rising into pillars, deep wood groaning and cracking, dirt falling |
+| `druid_root_pierce` | 쓰러진 드루이드가 무릎 꿇고, 등에 뿌리가 꽂힘(2.0초 연출 시작) | 플레이어가 뿌리를 때릴 수 있음 | 0.6s | thick wooden roots stabbing into an old body, wet crunch and bark splintering, short |
+| `druid_heartbeat` | P3, 아레나 전체가 숲의 심장 박동에 맞춰 울림(3박, 박마다 45f) | 박마다 파동 피해 | 0.8s(1박) | giant heartbeat thumping deep underground in a rotten forest, roots throbbing with it, single beat, low and physical |
+| `druid_tide` | P3, 독액 수로에서 독액 고리가 솟아 퍼짐(틈 1곳) | 고리에 닿으면 피해 | 1.5s | wave of thick toxic sludge surging out of a stream and spreading across the ground, heavy liquid rush with gurgling foam |
+
+- 1차·r2·합성 후보는 지우지 않고 고르기 페이지에 "이전 후보"로 함께 둔다(사용자가 이전 것을 고를 수도 있음).
+- 가공은 1차와 같다: −1dBTP 정규화, 뒤 무음 정리, 루프는 이음매 확인. 원본은 그대로 둔다.
+
+### 6.3 고르기 페이지 `pick_rm1.html` (sound-simple 제작)
+- 위치: `G:\exoduser-wt\_out\sfx_forge\pick_rm1.html`. 로컬 서버 `G:\exoduser-wt\_out\sfx_forge\_tools\serve.cjs`(127.0.0.1:3399, 정적 파일 + `POST /api/picks`)로 연다. 미리보기 창(정적 그림)에서는 소리가 안 나므로 반드시 서버 주소로 연다.
+- 키마다 카드 1장: 장면 설명(§6.2 표의 장면·뒤따르는 일), 가능하면 해당 원화 한 장(드루이드 = `assets/sprites/boss/boss_dark_druid_{dive,emerge,attack,idle}.png` 중 맞는 칸, 일반몹 = 다안 육괴 원화).
+- 후보마다 재생 버튼 2개:
+  - **그냥 듣기**
+  - **장면에서 듣기**: 1-1 BGM(`bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3`)과 숲 바닥음(`sfx/ambient/hell_forest_bed.mp3`)을 게임 음량 비율로 깔고, 1초 뒤 후보를 재생한다. "뒤따르는 일"이 있으면 그 소리를 이어서 낸다. 예: `tell_parry` 뒤 18f에 지팡이 휘두름과 타격음, `tell_melee` 뒤 0.4초에 물기 타격음. 기존 게임 소리 중에서 sound-simple이 고른다(무엇을 썼는지 페이지에 적는다).
+- 후보마다 고르기 단추(라디오)를 둔다. 키마다 추가 선택지 두 개: "전부 안 맞음 — 다시"와 메모 칸.
+- 선택은 바뀔 때마다 자동 저장한다 → `G:\exoduser-wt\_out\sfx_forge\picks_rm1.json`(`{key:{pick:"<파일 경로>"|"none", memo:"..."}}`). 페이지 맨 위에 "저장됨 HH:MM:SS"와 고른 키 수(n/16)를 표시한다.
+- 꾸밈은 `rm1_listen_16.html`과 같은 흑철·뼈색 톤. 이모지 금지.
+- 수치 불량(잘림, 6kHz 이상 뒤 구간 3% 초과, 꼬리가 목표 길이의 2배 초과)은 후보 옆에 "주의: <이유>"만 작게 적는다. 추천 표시는 없다.
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -176,3 +219,4 @@
 | 2026-10-27 | r2 3키 탈락 판정, 세 번째 생성 대신 합성 방식(§5.1)으로 전환. sound-simple은 296K로 재생성(clear) 후 인계 문서로 재개 |
 | 2026-10-27 | §5.1 합성본 3키 제작(sound-simple, `_analysis/rm1_comp.py`·재료는 staging 원본): `druid_heartbeat_comp` 0.65s(−1.6dBTP·잘림 0·6k 뒤 0.0·저역<120Hz 98.6%·시트에서 0~180ms·210~400ms 두 박 확인) / `druid_erupt_comp` 0.8s(−1.6dBTP·잘림 0·6k 뒤 0.0·저역 97.9%·정점 160ms) / `tell_grab_comp` 1.0s(−1.6dBTP·잘림 0·6k 뒤 0.1%·정점 945ms·끝으로 갈수록 커짐, 단 위층 r2 v2의 딸깍 줄무늬가 시트에 그대로 남음 — 청음 판정 필요). 6k 이상 뒤 구간 3% 이하·잘림 0 기준 3키 모두 충족. 시트 `sheet_rm1_comp.png`, 측정 `metrics_rm1_proc.json`의 `comp`, 청음 페이지는 3키 맨 앞에 "총괄 추천(합성본)"·r2 가공본은 "탈락" 표시 |
 | 2026-10-27 | 합성본 3키 판정 PASS(사운드 총괄, `sheet_rm1_comp.png` 눈 확인): heartbeat는 0ms·210ms 두 박이 분명하고, erupt는 흙·나무 어택 위에 붐이 0.6초 동안 줄어들며, grab은 삐걱임과 저음이 끝으로 갈수록 커짐. 6k 뒤 0~0.1%, 잘림 0. 16키 추천본 확정 → 사용자 청음 요청 |
+| 2026-10-27 | 사용자 청음 "다 좀 안맞다 상황하고" → 16키 추천본 전부 반려. 원인 = 장면 없는 문구와 수치 기준 추천. §6 2차 제작(장면 카드·새 문구 16키×4·고르기 페이지 `pick_rm1.html`, 추천 표시 없음) 결정, sound-simple 배정 |
