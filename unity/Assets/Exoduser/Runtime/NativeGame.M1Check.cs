@@ -188,6 +188,29 @@ namespace Exoduser.UnityPort
             yield return null; yield return M1Shot("09-levelup");
             M1Add("09", "level up", p.Level > lv0 ? "ok" : "fail", "level " + lv0 + " -> " + p.Level + ", overlay active " + levelUp.Active + ", exp " + exp0 + " -> " + p.Experience + "/" + p.MaxExperience + " over " + lvKills + " kills (null spawns " + nullSpawns + ")", "09-levelup.png");
 
+            // ---- 09b skill use (B03; placed after the loot / level-up steps so its random draws and kills do not shift the earlier stages): spike trap (1), giant slam (Space), holy dome (F) and ice orb (Ctrl) through the same SetSkillInput entry FixedUpdate uses ----
+            levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear(); p.State = "idle"; p.Iframes = 0; p.Hp = p.MaxHp * .6f; p.Stamina = p.MaxStamina; p.Mana = p.MaxMana; sim.Materials = Math.Max(sim.Materials, 100);
+            var skA = sim.SpawnNormalEnemy(p.X + 130, p.Y); var skB = sim.SpawnNormalEnemy(p.X - 160, p.Y + 40);
+            Action<bool, bool, bool, bool> skPress = (d1, sp, fk, ct) => {
+                sim.SetSkillInput(false, false, false, false, false, false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
+                sim.SetSkillInput(d1, false, false, false, sp, fk, ct, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
+                sim.SetSkillInput(false, false, false, false, false, false, false, false); };
+            int skMats0 = sim.Materials; int skHpA = skA != null ? skA.Hp + (int)skA.Shield : 0;
+            skPress(true, false, false, false); for (int i = 0; i < 70; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
+            bool spikeOk = sim.FireZones.Exists(z => z.Type == "spikeTrap") && skA != null && skA.Hp + (int)skA.Shield < skHpA && sim.Materials == skMats0 - 5;
+            yield return M1Shot("09b-skill-spike-trap");
+            p.Stamina = p.MaxStamina; int slamMats0 = sim.Materials; skPress(false, true, false, false); for (int i = 0; i < 6; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
+            bool slamOk = sim.SlamWaves.Count == 1 && sim.GiantSlamCd > 1700 && p.Stamina < p.MaxStamina - 40;   // malice: the slam kills the spike-trapped enemy (+4 each), so the cost is checked by the sim test yield return M1Shot("09b-skill-giant-slam");
+            for (int i = 0; i < 40; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
+            float domeHp0 = p.Hp; skPress(false, false, true, false); for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
+            bool domeOk = sim.FireZones.Exists(z => z.Type == "holyDome") && p.Hp > domeHp0 + 10 && sim.HolyDomeCd > 0; yield return M1Shot("09b-skill-holy-dome");
+            float orbMp0 = p.Mana; skPress(false, false, false, true); for (int i = 0; i < 40; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
+            bool orbIn = sim.IceOrbActive && p.State == "iceOrb" && p.Mana < orbMp0 - 40; yield return M1Shot("09b-skill-ice-orb");
+            for (int i = 0; i < 90; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); if (i == 8) yield return M1Shot("09b-skill-ice-shatter"); }
+            bool orbOk = orbIn && !sim.IceOrbActive && p.State == "idle" && sim.IceOrbCd > 0;
+            sim.SkillBlades.Clear(); sim.FireZones.Clear(); sim.SlamWaves.Clear(); sim.Enemies.Clear(); sim.SpikeTrapCd = sim.GiantSlamCd = sim.HolyDomeCd = sim.IceOrbCd = 0; p.State = "idle"; p.Hp = p.MaxHp; p.Stamina = p.MaxStamina; p.Mana = p.MaxMana;
+            M1Add("09b", "skill use (1 / Space / F / Ctrl)", spikeOk && slamOk && domeOk && orbOk ? "ok" : "fail", "spike trap " + spikeOk + " (zone, malice 5, DOT), giant slam " + slamOk + " (wave, malice 10, cd 1800), holy dome " + domeOk + " (zone, regen), ice orb " + orbOk + " (MP 50, orb -> auto shatter); " + sim.SkillCastCount + " casts, denied " + sim.SkillDeniedCount, "09b-skill-spike-trap.png");
+
             // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). The druid is the boss Core's job (pending): a harness stand-in boss walks the real flow. ----
             levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();   // BX: the real druid (Simulation.AttachDruidBoss) is the BossSpawners entry; AI stays off until the arena intro is over
             var flow = sim.Stage; bool naturalUnlock = flow.BossUnlocked; string unlockNote = naturalUnlock ? "gate opened by the kill ratio (" + sim.Stage.StageKills + "/" + flow.TotalSpawned + ")" : "gate still sealed at " + flow.StageKills + "/" + flow.TotalSpawned + " kills: forced open by the harness";

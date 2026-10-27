@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
         {
             this.parent=parent;
             if(camera.GetComponent<AudioListener>()==null)camera.gameObject.AddComponent<AudioListener>();
-            foreach(string key in new[]{"sword_swing1","sword_swing2","sword_swing3","scarecrow_charge","sword_parry","player_hit1","player_hit2","player_hit3","player_hit4"}){
+            foreach(string key in new[]{"sword_swing1","sword_swing2","sword_swing3","scarecrow_charge","sword_parry","player_hit1","player_hit2","player_hit3","player_hit4","spike_trap","heavy_hit","ice_storm","voice_holyDome","voice_holyDome2","voice_grunt","male_grunt"}){
                 var clip=Resources.Load<AudioClip>("Audio/"+key);
                 if(clip==null)throw new InvalidOperationException("Missing original audio sample "+key);
                 clip.LoadAudioData();clips.Add(key,clip);
