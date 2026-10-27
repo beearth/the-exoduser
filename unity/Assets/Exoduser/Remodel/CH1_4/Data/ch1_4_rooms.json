@@ -1,0 +1,314 @@
+{
+ "si": 3,
+ "templateRooms": [
+  {
+   "id": "s",
+   "type": "start",
+   "cx": 100,
+   "cy": 185,
+   "shape": "ellipse",
+   "rx": 14,
+   "ry": 6
+  },
+  {
+   "id": "r1",
+   "type": "combat",
+   "cx": 100,
+   "cy": 155,
+   "shape": "ellipse",
+   "rx": 18,
+   "ry": 10,
+   "spawns": [
+    {
+     "dx": -6,
+     "dy": 0,
+     "grade": 0
+    },
+    {
+     "dx": 6,
+     "dy": 0,
+     "grade": 0
+    }
+   ]
+  },
+  {
+   "id": "f",
+   "type": "forge",
+   "cx": 100,
+   "cy": 120,
+   "shape": "rect",
+   "rx": 8,
+   "ry": 5
+  },
+  {
+   "id": "r2",
+   "type": "combat",
+   "cx": 80,
+   "cy": 85,
+   "shape": "ellipse",
+   "rx": 16,
+   "ry": 9,
+   "spawns": [
+    {
+     "dx": -4,
+     "dy": 0,
+     "grade": 1
+    },
+    {
+     "dx": 4,
+     "dy": 0,
+     "grade": 1
+    }
+   ]
+  },
+  {
+   "id": "r3",
+   "type": "combat",
+   "cx": 120,
+   "cy": 50,
+   "shape": "ellipse",
+   "rx": 16,
+   "ry": 9,
+   "spawns": [
+    {
+     "dx": 0,
+     "dy": -3,
+     "grade": 2
+    },
+    {
+     "dx": 0,
+     "dy": 3,
+     "grade": 2
+    },
+    {
+     "dx": -5,
+     "dy": 0,
+     "grade": 2
+    }
+   ]
+  },
+  {
+   "id": "b",
+   "type": "boss",
+   "cx": 100,
+   "cy": 18,
+   "shape": "ellipse",
+   "rx": 20,
+   "ry": 12,
+   "pillars": [
+    {
+     "dx": -10,
+     "dy": -5,
+     "w": 3,
+     "h": 3
+    },
+    {
+     "dx": 10,
+     "dy": -5,
+     "w": 3,
+     "h": 3
+    },
+    {
+     "dx": -10,
+     "dy": 5,
+     "w": 3,
+     "h": 3
+    },
+    {
+     "dx": 10,
+     "dy": 5,
+     "w": 3,
+     "h": 3
+    }
+   ]
+  }
+ ],
+ "templateCorridors": [
+  {
+   "from": "s",
+   "to": "r1",
+   "width": 10,
+   "style": "cave"
+  },
+  {
+   "from": "r1",
+   "to": "f",
+   "width": 9,
+   "style": "cave"
+  },
+  {
+   "from": "f",
+   "to": "r2",
+   "width": 10,
+   "style": "cave"
+  },
+  {
+   "from": "r2",
+   "to": "r3",
+   "width": 10,
+   "style": "cave"
+  },
+  {
+   "from": "r3",
+   "to": "b",
+   "width": 10,
+   "style": "cave"
+  }
+ ],
+ "runtimeRooms": [
+  {
+   "i": 0,
+   "type": "start",
+   "x": 86,
+   "y": 179,
+   "w": 28,
+   "h": 12,
+   "cx": 100,
+   "cy": 185
+  },
+  {
+   "i": 1,
+   "type": "combat",
+   "x": 82,
+   "y": 145,
+   "w": 36,
+   "h": 20,
+   "cx": 100,
+   "cy": 155
+  },
+  {
+   "i": 2,
+   "type": "forge",
+   "x": 92,
+   "y": 115,
+   "w": 16,
+   "h": 10,
+   "cx": 100,
+   "cy": 120
+  },
+  {
+   "i": 3,
+   "type": "combat",
+   "x": 64,
+   "y": 76,
+   "w": 32,
+   "h": 18,
+   "cx": 80,
+   "cy": 85
+  },
+  {
+   "i": 4,
+   "type": "combat",
+   "x": 104,
+   "y": 41,
+   "w": 32,
+   "h": 18,
+   "cx": 120,
+   "cy": 50
+  },
+  {
+   "i": 5,
+   "type": "boss",
+   "x": 80,
+   "y": 6,
+   "w": 40,
+   "h": 24,
+   "cx": 100,
+   "cy": 18
+  }
+ ],
+ "start": [
+  100,
+  185
+ ],
+ "startPlayerPx": [
+  4020,
+  7420
+ ],
+ "exit": {
+  "tiles": [
+   [
+    99,
+    7
+   ],
+   [
+    100,
+    7
+   ],
+   [
+    101,
+    7
+   ]
+  ],
+  "tileValues": [
+   2,
+   2,
+   2
+  ]
+ },
+ "bossGate": {
+  "tiles": [
+   [
+    99,
+    5
+   ],
+   [
+    100,
+    5
+   ],
+   [
+    101,
+    5
+   ]
+  ],
+  "gateY": 5,
+  "bossCx": 100,
+  "bossCy": 18
+ },
+ "features": [
+  {
+   "type": "alcove",
+   "x": 35,
+   "y": 140,
+   "r": 5
+  },
+  {
+   "type": "alcove",
+   "x": 165,
+   "y": 110,
+   "r": 4
+  },
+  {
+   "type": "alcove",
+   "x": 50,
+   "y": 65,
+   "r": 4
+  }
+ ],
+ "gKeysBoss": [
+  "bossAlive",
+  "_bossRef",
+  "_bossArena",
+  "_bossLoadPhase",
+  "_bossLoadFade",
+  "_druidFinaleBoss",
+  "cellDistToBoss",
+  "maxDistToBoss",
+  "bossGate",
+  "bossGateOpen",
+  "bossSealed",
+  "_bossCx",
+  "_bossCy",
+  "_gateY",
+  "_bossEntY",
+  "_bossUnlocked",
+  "_gateGuardKilled",
+  "_fieldBoss",
+  "_fieldBosses",
+  "_gateGuard",
+  "_regGateIdx",
+  "_bossClearT"
+ ],
+ "hell": 0,
+ "floor": 3
+}
