@@ -38,6 +38,7 @@
 ## 3. 드루이드 연결 (`DruidBoss.Reflect.cs`, 끈 상태 oracle 불변)
 
 - 탄 루프는 `reflectHost`가 있을 때만 새 경로를 탄다. 적 탄이 플레이어 400px 안에 오면 `Resolve`; 반사면 탄을 목록에 둔 채 친화 상태로 바꾸고 `doParry`를 지급, 아니면 옛 경로(`HurtPlayer`).
+- **리모델링(`DruidRemodel`)에서는 반사하지 않는다**(보스전 총괄 판정 2026-10-28): 리모델링에서 탄을 쏘는 기술은 5번 독포자 부채뿐이고 명세 §3에서 패링 불가이며, 반사하면 보스 최대 HP 10 % 이상이 깎여 목숨 HP 곡선·RB1-5 시간 기준이 무너진다. `TryReflect` 첫 줄이 `if (Remodel) return false;`이고 리모델링 탄은 기존 피격 경로를 탄다.
 - 친화 탄: 플레이어를 쫓는 유도·플레이어 충돌을 하지 않고, 청콩이면 400px 안의 가장 가까운 적을 향해 선회, 적에 닿으면 폭발해 소멸. 벽에 닿아도 소멸.
 - `ApplyParrySuccess(bool qParry, double resourceMul = 1, string parryEl = null)`와 `ApplyEnemyDamage(..., blueBean, parryBlueBean, magicHit)`에 **끝 선택 인자**만 추가했다(`Simulation.PlayerCombat.cs`·`Simulation.cs`, 기존 호출 불변).
 
@@ -46,8 +47,8 @@
 | 항목 | 결과 |
 |---|---|
 | `parry-reflect-oracle` (웹 원문 실행 대조) | 48,708 검사 / 0 불일치 — 반사 3000건(26종 탄, 반사 326건·6종 전부), 유도 90건, 접촉 폭발 1800건 |
-| `parry-reflect-test` (실제 Simulation + 드루이드 탄) | 20 검사 / 0 실패 — E 쳐내기·Q 패링·무방비·오입력·표적 없음 |
-| 회귀 | `dash-parry-oracle` 187,165 / 0, `druid-boss-oracle --rev origin/main --cases 48` 5,421,635 / 0 불일치, `druid-remodel-test` 41,185 / 0 |
+| `parry-reflect-test` (실제 Simulation + 드루이드 탄) | 26 검사 / 0 실패 — 이식본: E 쳐내기·Q 패링·무방비·오입력·표적 없음, 리모델링: E·Q 창에서 반사 0 |
+| 회귀 | `dash-parry-oracle` 187,165 / 0, `druid-boss-oracle --rev origin/main --cases 48` 5,421,635 / 0 불일치, `druid-remodel-test` 41,195 / 0(`ParryGuardChecks` 10검사 포함) |
 | Unity 6000.6.7f1 헤드리스 빌드 | 오류 0건 |
 
 ## 5. 미구현·후속
@@ -61,4 +62,4 @@
 | 반사 폭탄 가지(`p.bomb`), 유니크 관통·분열(`_uParrySplit`) | 아이템 시스템 이식 때 |
 | 적 독 상태(`poisonT`·`poisonStk`) | Core에 적 독 DOT이 없어 수치만 반환 |
 | `statInt()`·`statStr()` | 1(E 쳐내기와 같은 대용치) |
-| 지뢰(`p.mine`) 패링 | 드루이드 탄 루프의 지뢰 가지는 충돌 전에 끝난다. 웹은 반사 시 즉시 소멸 |
+| 지뢰(`p.mine`) 패링 | 이식본 경로에만 해당하는 알려진 차이(보스전 총괄: 이식 단계 보스는 동작만 맞추는 수준이라 고치지 않음). 드루이드 탄 루프의 지뢰 가지는 충돌 전에 끝난다. 웹은 반사 시 즉시 소멸 |
