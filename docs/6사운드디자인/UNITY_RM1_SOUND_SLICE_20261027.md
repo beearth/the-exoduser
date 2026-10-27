@@ -237,6 +237,44 @@
   - 음량은 1차값(예고 .45, 드루이드 연출 .5, 침강 .55)으로 넣고 게임 녹음으로 조정. `6사운드디자인.md` 키 표 갱신, DEMO·EA 동기화.
 - **Unity**: 트랙 A 구조(믹서)는 RM-0 병합 뒤 유니티 총괄 배정이다. 지금은 채택 11키 파일을 `claude/unity-pc-sound-rm1-20261027` 브랜치의 `unity/Assets/Exoduser/Resources/Audio/RM1/<key>.mp3`로 넣고, 키·용도·분류(`_SFX_PRI`)·믹서 그룹·공간음 값을 적은 `RM1_AUDIO_KEYS.json`을 같이 둔다(코드 변경 없음). 유니티 총괄에 브랜치와 커밋을 알린다.
 
+### 6.6 트랙 A 판정 기준 — 드루이드 기술별 소리 키 (2026-10-28 사운드 총괄)
+
+유니티 총괄이 트랙 A(A1~A8) 구현을 RM-0 세션(`local_7bb6eaac`)에 배정했다(브랜치 `claude/unity-pc-sound-rm1-20261027`, 채택 11키 파일은 이미 `48fdc2e29`에 있음 — 새로 넣지 말고 그 위에 쌓는다). 드루이드 기준 명세는 main `091ea32b9`의 `docs/engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md`(§3 기술 12종·§4 텔레그래프), Core는 unity/main `cfc5a0957`. A6(웹 `_BOSS_SFX` 임시 연결) 중 피격·포효·사망은 그대로 두고, 기술 소리는 아래 표가 대신한다.
+
+**규칙**
+- 텔레그래프 1개 = 예고음 1개, 텔레그래프가 시작되는 프레임에 낸다. 패링 가능하면 `tell_parry`가 우선(바닥 예고가 같이 떠도 `tell_boss`는 내지 않는다).
+- `tell_*`는 120ms 안에 같은 키를 다시 내지 않는다. 화면에 겹치는 예고가 최대 2개(§4)라 예고음도 동시에 2개를 넘지 않는다.
+- 3차 청음 대기 키는 아래 "대기 중" 칸대로 둔다. 비워 두는 키도 Receipt에는 키 이름을 찍는다(파일 없음 표시) — 채택 뒤 파일만 넣으면 되게.
+
+| # | 기술 | 시점 | 키 | 대기 중(3차 미채택) |
+|---|---|---|---|---|
+| 1 | 가지 채찍 3연 | 1·2타 텔레그래프 시작 | `tell_parry` | `tell_melee` |
+| 1 | 〃 | 3타(패링 불가) 텔레그래프 시작 | `tell_boss` | — |
+| 2 | 거름 내려찍기 | 35f 시작 | `tell_parry` | `tell_melee` |
+| 3 | 뿌리 끌기 돌진 | 40f 시작 | `tell_parry` | `tell_melee` |
+| 4 | 가시 뿌리 줄기 | 25f 시작 | `tell_boss` | — |
+| 5 | 독포자 부채 | 25f 시작 | `tell_boss` | — |
+| 6 | 거름 거두기(잡기) | 60f 시작(눈빛·손 뻗기) | `tell_grab` | — |
+| 7 | 땅속 잠행 기습 | 땅속으로 들어감(50f 시작) | `druid_burrow` | `tell_boss` |
+| 7 | 〃 | 발밑에서 솟음(판정) | `druid_erupt` | — |
+| 8 | 기생 뿌리 추적 | 첫 장판 20f 시작만 | `tell_boss` | — |
+| 9 | 거름 일으키기 | 45f 시작 | `tell_boss` | — |
+| 10 | 독액 해일 | 60f 시작(틈 밝힘) | `tell_parry` | `tell_melee` |
+| 10 | 〃 | 고리가 솟아 퍼짐(판정 시작) | `druid_tide` | — |
+| 11 | 포자 꼬투리 | 25f 시작 | `tell_boss` | — |
+| 12 | 숲의 심장 박동 | 패턴 시작 1회 | `tell_boss` | — |
+| 12 | 〃 | 박동 판정마다(3박) | `druid_heartbeat` | — |
+| — | P1 진입 | 지팡이 3번 | `druid_staff_tap` ×3(rate ±4%) | 비움 |
+| — | P1 진입 | 뿌리 기둥 4개 솟음 | `druid_roots_rise` | — |
+| — | P2·P3 진입 | 쓰러져 등에 뿌리 꽂힘 | `druid_root_pierce` | 비움 |
+| — | 3번째 쓰러짐 | 침강 도주 | `druid_sink` | — |
+| — | 구르기(A7) | 구르기 시작 | `roll_body` | 웹 `footstep`·`footstep2` |
+
+**판정에 필요한 제출물**
+1. Receipt 로그: 소리 1회마다 한 줄 — 프레임, 키, 낸 곳(기술 번호/이벤트), 믹서 그룹, 음량, 파일 유무. 1-1 한 판(START → R2 전투 → 드루이드 P1~P3 → 침강) 전체.
+2. 녹음 60초 1개: 드루이드전에서 `tell_parry`(대기 중 `tell_melee`)·`tell_boss`·`tell_grab`·`druid_erupt`·`druid_heartbeat`·`druid_tide`가 각 1회 이상 들어가게(디버그 페이즈 이동 허용, 쓴 방법을 적는다). R2 전투(일반몹 예고·피격·사망·환경음·독성 강)는 30초 1개 추가.
+3. 판정 항목: 예고음이 혼전·BGM에 묻히지 않음(Tell 덕킹 동작), 환경음이 BGM을 덮지 않음, `Boss` 스냅샷에서 환경음 −8dB, 같은 키 겹침 0, 디자인 7장 규칙 위반 0.
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -263,3 +301,4 @@
 | 2026-10-27 | §6.4 3차(s3) 제작(sound-simple): "전부 안 맞음" 5키(`tell_parry`·`roll_body`·`druid_burrow`·`druid_staff_tap`·`druid_root_pierce`)를 키마다 서로 다른 해석 4개(a~d, 문구마다 1개)로 ElevenLabs 20개 생성 — 카탈로그 `tools/sfx_forge_catalog_rm1_s3.json`, staging `<cat>/<key>_s3a~d/v1.mp3`(키가 문구마다 달라 `_s3a`~`_s3d`). 가공 1차와 같음(tell_parry만 0.25s 컷+끝 20ms 페이드): `_preview_s3/<key>_s3<a~d>_proc.mp3` 20개, 전부 잘림 0·TP −1.1~−2.3dBTP. 수치 주의 6kHz 이상 뒤 구간 3% 초과: tell_parry a 71.5%, roll_body d 71.2%, druid_burrow c 29.6%, druid_root_pierce a 29.1%·b 27.1%. `pick_rm1.html`: 5키 카드는 3차 후보(방향 한 줄 표기)를 맨 위에, 2차는 접은 묶음으로 옮기고 채택 11키 카드는 "채택됨: <후보>"를 표시해 접음. `picks_rm1.json` 기존 16키 선택 보존(검수 때 백업·복구 확인). headless·음소거: audio 144개 오류 0, 저장·복원·배지 확인 |
 | 2026-10-27 | §6.5 트랙 C 웹 반영(sound-simple): 채택 7키(`tell_melee`·`tell_ranged`·`tell_boss`·`tell_grab`·`druid_erupt`·`druid_sink`·`druid_tide`)를 `sfx/tell/`·`sfx/boss/`로 복사, `game.html`에 `_sampleFiles` 7키·`_sfxPri`(tell_*=TELL·druid_*=SKILL)·헬퍼 `_playTell`(120ms 쿨다운·화면 밖 제외)·`_bossTellSfx`·`_playDruidSfx`, 연결 = `updateE` windup 진입·`_emitEnemyShot` 경고·`_bossStartPattern` 내 `SFX.charge()` 19곳(드루이드일 때만 `tell_boss`, 잡기는 `tell_grab`)·`bossDruidUnder` 분출·`tideWave`·`_druidSinkStart`. 웹에 장면 없는 4키는 미반영. `6사운드디자인.md` 키 표 갱신. 헤드리스 검증 통과(상세 6사운드디자인.md). 음량은 1차값 |
 | 2026-10-27 | §6.5 트랙 C Unity 전달(sound-simple): 채택 11키 mp3 + `RM1_AUDIO_KEYS.json`(키·용도·믹서 그룹·`_SFX_PRI` 분류·공간음·시작 음량·쿨다운)을 브랜치 `claude/unity-pc-sound-rm1-20261027`(origin/unity/main `cfc5a0957` 기준)의 `unity/Assets/Exoduser/Resources/Audio/RM1/`에 커밋 `48fdc2e29`, 브랜치만 push(unity/main 병합 안 함, 코드 변경 없음, `.meta`는 Unity가 임포트 때 생성). `amb_toxic_river`는 s2 v1 가공본에 등전력 크로스페이드 1.5초(루프 6.5초)로 이음매 RMS 차 3.7→0.4dB·샘플 점프 0.0001, 게인·음색 변경 없음(`_analysis/rm1_river_loop.py`, `_preview_s2/amb_toxic_river_loop.mp3`). 웹은 DEMO·EA 동기화 완료(`game.html`·`gamedemo.html` 동일 패치 + sfx 7개) |
+| 2026-10-28 | 유니티 총괄 공지: 트랙 A(A1~A8) 구현 = RM-0 세션 `local_7bb6eaac`, 브랜치 `claude/unity-pc-sound-rm1-20261027`. §6.6 드루이드 기술 12종 → 소리 키 표·3차 대기 키 임시값·Receipt/녹음 제출 기준 작성, RM-0 세션에 전달 |
