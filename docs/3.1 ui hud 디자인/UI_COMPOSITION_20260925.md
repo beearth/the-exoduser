@@ -2970,6 +2970,24 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 로비 | `.lobby-divider` 높이 104→148px(index.html 507행, 761px 이상 높이)로 키워 1920·1600 모두 로고 폭 310px. 문구·찜 블록과 겹침 없음. 미검증: 캐릭터 목록이 있는 로비 화면 |
 | 상세 | `docs/cinematic/ENTER_ENGRAVED_20260907.md` §2026-10-27 개정, `docs/17게임아트팀/ART_TEAM_MASTER.md` 현황표·로그 |
 
+## 2026-10-27 첫 화면 타이틀 메뉴 (와일드하트급 시안 채택)
+
+사용자 지시 "이 시안 그대로 실제 첫 화면에 넣어줘". 시안 = `E:/exoduser-wt/_out/title-menu/title_menu_mock.html`(디자인총괄). 레퍼런스는 Wyldheart 타이틀(금속 로고 + 반투명 판 버튼 세로 줄)이고, 색·글꼴은 이 게임 기준으로 바꿨다.
+
+| 항목 | 내용 |
+|---|---|
+| 위치 | `index.html` 스플래시 3단계(타이틀 영상 `video/title_motion_hd_20260929.mp4` 위). `#splashTitleUI` > `#splashTitleStage`(1920×1080 무대, `min(w/1920,h/1080)` 축소·가운데) |
+| 제거 | 옛 SVG 세리프 제목 `#splashTitleBrand`(EXODUSER·HELL LORD·THOSE WHO DEFY THE FALL)와 "아무 키나 눌러 계속" `#splashTitlePrompt` — 타이틀 화면에서는 아무 키로 넘어가지 않는다 |
+| 로고 | 로고 C `img/logo_exoduser.png` 폭 760px, 무대 (92,118). 검정 drop-shadow 2겹 |
+| 어둠 | 왼쪽 기둥 방사형(알파 .62→0)+왼쪽 가로 그라데이션(.55→0, 55%)+바닥(.7→0, 26%)+가장자리 비네트(.55) — 로고·버튼 가독성용, 오른쪽 기사는 가리지 않는다 |
+| 버튼 판 | 440×52, 간격 9px, 무대 (252,548)부터. 양 끝 뾰족한 6각 판: 바탕 `rgba(13,10,9,.8)`, 바깥선 `rgba(164,147,115,.55)` 1px, 안쪽 4px 들여 `rgba(164,147,115,.17)`, 양 끝 마름모(황동 선) |
+| 선택 | 바깥선 `#c9a86a`, 판 가운데 진홍 방사 `#7a1610`(.62)→투명, 양 끝 마름모 `#b52e25` 채움, 글자 `#f3e8cf` + 진홍 그림자. 마우스 올림·↑↓/W S·패드 십자키/왼쪽 스틱으로 이동, Enter/Space/패드 A로 실행 |
+| 글자 | `'Nanum Myeongjo','Noto Serif KR','Noto Serif',serif` 500 20px 자간 .16em `#dfd6c2`. 긴 번역은 판 안(390px)에 맞을 때까지 자간 .04em → 17px → 15px(글꼴 로딩 끝날 때마다 다시 맞춤) |
+| 항목 | 게임 시작(→ 로그인/입장, 기존 "아무 키" 진행과 같음) · 인트로 다시 보기(`_goCinematic`) · STEAM 위시리스트 추가(데모 빌드만) · 게임 종료(NW.js/Electron 실행본만). 제작진·설정·이어하기는 아직 그 화면이 없어 넣지 않았다(가짜 버튼 금지) |
+| 아래 장식 | 마지막 버튼 12px 아래 금빛 헤어라인 + 진홍 마름모 `#splashTitleRule`. 오른쪽 아래 빌드 표기 `#splashTitleBuild` = `DEMO/EARLY ACCESS/OFFICIAL · v버전` + `FOR DEAR GAMERS`(Cinzel 12px) |
+| 번역 | 신규 3개 No.3386~3388, `_TITLE_MENU_I18N` 28개 언어 |
+| 검수 | 1920·1600 실제 index.html 캡처, 1x 크롭(기본·선택 이동), hu/bg/en/ar 언어별 판 안 맞춤 확인, 키보드 이동·Enter 진행·인트로 진입·빈 곳 클릭 무시, pageerror 0. 미검증: 실제 NW.js 실행본의 종료 버튼, 게임패드 실기 |
+
 ## 조용한 단계 — 설정 [ESC] 웹 반영 (2026-10-27)
 
 컨셉 5장 U13(두 밀도 단계)의 첫 적용. 시안 v1(`E:/exoduser-wt/_out/ui-quiet-tier/quiet_settings_*.png`)을 현행 [ESC] 창에 CSS로 옮겼다.
