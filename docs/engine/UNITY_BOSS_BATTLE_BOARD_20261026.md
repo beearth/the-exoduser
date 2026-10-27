@@ -96,7 +96,7 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 |---|---|---|---|---|
 | CX-01 | 적 수치 테이블 `ETYPE_HP/ATK/_ETYPE_SPD_RAW→ETYPE_SPD/R/RANGE/POISE/SHIELD/COL`(0~89), `ETYPE_ERES`, `ETYPE_COLS`, `RARE_ETYPE`(90~99), `ELITE_TIERS/ELITE_PROB/MOD_DEFS`, `DIFF_MUL/DIFF_LV_OFF`, `SI_TO_HELL/STG` | 30825~30911, 14336, 19916, 30957, 31035~31064, 9272/9276, 16660/16699 | 2 웹동일 소스(데이터·oracle 2,784/0, 연결 전) | 표 전 항목 C# 데이터 바이트 단위 일치. 브랜치 claude/unity-pc-c01-20261026 80ea201b4(StageDef→EnemyStageDef 개명 포함), 보고서 UNITY_CX01_ENEMY_TABLES_20261026. unity/main 병합 ab563f98c(10-27, PC 병합·병합 뒤 oracle 2,784/0·204,592/0·빌드 오류 0) |
 | CX-02 | `mkEn` 전체 (좌표 보정·monLv·스테이지 배율·엘리트 `rollElite`/`rollMods`·보스 `ib` 분기) — BX-01 포함 | 31122~31365 | 2 웹동일 소스(mkEn 전체·oracle 538케이스 204,592/0·변이 22/23, 연결 전) | 레벨·난이도·si·etype·ib 표본 oracle 일치. 브랜치 claude/unity-pc-c01-20261026 9d11d4325, 보고서 UNITY_CX02_ENEMY_SPAWN_20261026. unity/main 병합 ab563f98c(10-27, PC 병합·병합 뒤 oracle 2,784/0·204,592/0·빌드 오류 0) |
-| CX-03a | 적 루프 앞처리(티어링·컬링·벽 끼임·타이머) + `updateE` 앞~DOT 직전 | 34418~34494, 38586~약38721 | 0 | tick 상태 oracle 일치. 명세 `E:/exoduser-wt/_out/pc-cx03a/SPEC.md` |
+| CX-03a | 적 루프 앞처리(티어링·컬링·벽 끼임·타이머) + `updateE` 앞~DOT 직전 | 34415~34494, 38587~38721 | 2 웹동일 소스(L1+U1, oracle 1,240케이스 3,246,746/0·변이 86/87, 연결 전) | tick 상태 oracle 일치. 브랜치 claude/unity-pc-c01-20261026 a05ee1467, 보고서 UNITY_CX03A_ENEMY_TICK_HEAD_20261027. 명세 `E:/exoduser-wt/_out/pc-cx03a/SPEC.md` |
 | CX-03b | ATK 리셋·DOT 5종·엘리트 모디파이어 틱·오라 ATK·비어그로 대기 게이트 | 약 38722~38888 | 0 | CX-04·CX-02 의존 |
 | CX-03c | etype 분기 뒤 공통 상태 머신(windup→attack·projT·공전 대기 등) | 38586~41410 중 etype 분기 뒤 | 0 | etype0·보스 경로 tick 상태 oracle 일치 |
 | CX-04 | `hurtE` 공통 (DR·쉴드→HP 분배·포이즈·넉백·사망 판정·보스 분기) — BX-05 일부 | 42112~43121 | 0 | 피해 표본 oracle 일치, 쉴드 규칙은 CLAUDE.md eShield 계약 그대로 |
@@ -106,7 +106,7 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 - 현재 Unity: `SimulationState.cs`의 `EnemyState`와 `Simulation.cs`의 mkEn 축약(etype0 고정, 그 외 `NotSupportedException`). 둘 다 **Codex 소유 파일**이다.
 - 방식: PC 새 파일(`Runtime/Core/` 평면(하위 폴더 금지 — .NET 검사 와일드카드))에 공통 틀을 만들고, Codex 파일 연결은 patch + PC_TO_MAC_INBOX(main·codex 브랜치 두 곳)로 요청한다. Codex가 이의를 내면 그 부분은 멈춘다.
 - 크기: `updateE` 약 2,800줄, `hurtE` 약 1,000줄. CX-03·CX-04는 한 번에 넘기지 않고 공통 앞·뒤 처리부터 잘라 명세한다.
-- 미확인: CX-02 `Math.Pow`/`Math.Cos`/`Math.Sin` 비트 일치는 .NET 8 Windows에서만 확인. Mac·IL2CPP는 상태 3 인수 때 확인
+- 미확인: CX-02·03a는 `JsMath`(fdlibm 포트)로 `Atan2`/`Cos`/`Sin`을 V8과 비트 일치시킴(.NET Windows 약 2.3만 값 확인). `Math.Pow`는 .NET 그대로 — Mac·IL2CPP 비트 일치는 상태 3 때 실측
 
 ## 6. 작업 방식
 
@@ -126,3 +126,4 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | 2026-10-27 | CX-02 인수(9d11d4325), CX-03을 a/b/c로 분할, CX-03a 배정 |
 | 2026-10-27 | M1 우선순위 결정·CX-06·BX-12 신설 |
 | 2026-10-27 | CX-01·CX-02 unity/main 병합 ab563f98c(PC 병합·병합 뒤 oracle 2,784/0·204,592/0·빌드 오류 0) |
+| 2026-10-27 | CX-03a 인수(a05ee1467), JsMath 도입, CX-04 명세 작성 중 |
