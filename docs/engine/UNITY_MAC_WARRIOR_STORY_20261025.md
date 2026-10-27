@@ -14,6 +14,21 @@
 
 4파트 합계와 조립 SHA는 위 실행 영상과 동일하다. `restore-warrior-story.cjs` 실행은 4/4 파트·전체·쓰기 뒤 해시를 검증하고 성공했다. `warrior_story.json`의 영상 파일명·22컷·29언어×22자막, `NativeLobby.CharacterStory`의 `movie.Open(warriorStoryData.video,...)` 참조는 그대로다. 영상/파트 외 제품 UI·컷·자막·세이브 수정 0. Mac의 기존 런타임 영상과 복구 파트는 `_out/UNITY-MAC-KILLU-V3-20261027/backup/`에 별도 보관했으며 PC I:에는 접근하지 않았다. 실제 Unity Editor 디코드·Windows Player 생성→영상→진입·51~58초 표정/피눈물·음성/자막 싱크·종료/건너뛰기 검수는 **별도 gate/HOLD**다. Rev4 검토 앱은 이전 영상 snapshot으로 자동 교체하지 않았다.
 
+### 2026-10-27 Mac ARM64 v3 후보 재생 gate
+
+위 HOLD는 당시 미디어 입력 단계 기록이다. `5e170ab59c6269641715ba81e40089213b72c2b0` 소스에서 Unity **6000.6.7f1**의 기존 `PortVerification.Build -settingsQa true`를 **1회** 실행해 별도 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/build/EXODUSER-Unity.app`을 만들었다. 원본·StreamingAssets·앱 내부 영상은 모두 **94,795,327B / SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`**다. 실행 파일 SHA-256은 `5b8ea55aaf5df81f7f7ba9de2ee4178c6e9ca2d615da8a919bb78122ecdd857e`다.
+
+| gate | 관측 결과 | 판정 |
+|---|---|---|
+| Editor import·C# | 빌드 `Succeeded`, CS 오류 0. `NativeGame.cs:16`의 `MaterialPropertyBlock` 필드 초기화가 `CreateImpl` UnityException을 내며 build receipt `errors=1` | 산출 앱은 생성; **오류 0 gate는 RETOUCH** |
+| VideoPlayer 준비·자막 | 새 앱 `--unity-character-story-smoke -story-mode natural` 고유 PID58680, 임시 세션 roster, 첫 프레임·한국어 첫 자막, 디코드 오류 없음 | PASS |
+| 51~58초 주요 컷 | 기존 fixture `VideoPlayer.Time>50` 중간 캡처, 이어서 실창의 킬루 고통 표정·양눈 피눈물과 후속 전사 장면 확인. 실창 추가 캡처는 wall-clock 기준이며 정확한 `VideoPlayer.Time` 계측 아님 | **화면 PASS**, 프레임별 정밀 타임코드·색 정확도 HOLD |
+| 자연 종료·진입 | 자연 fixture **8/8**, 종료0, 같은 `전사이야기` 이름으로 필드 진입·중복 슬롯0; 첫 화면·중간·필드 PNG 보존 | PASS |
+| skip | 같은 앱 별도 프로세스 fixture **15/15**, 종료0; 다음 cue, 짧은 hold·해제/focus cancel, 1.2초 완료 후 필드 진입 | PASS |
+| 음성·자막 싱크 / Windows | Mac Player 로그에 AVFoundation color primaries fallback 경고. 청음·정밀 자막 싱크 미측정, Windows Player 빌드/재생0 | HOLD |
+
+[버전 고정 영수증](UNITY_MAC_KILLU_V3_PLAYER_QA_20261027.json)의 원로그·PNG는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/`에 있다. 새 후보의 [검토 launcher](/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/launch-v3-review.command)는 별도 빈 `_out/UNITY-MAC-A05-IO-KILLU-V3-REVIEW-20261027` marker root와 전용 Settings QA identity만 사용한다. 기존 Rev4 앱 내부 영상은 구 97,796,468B 그대로이며 교체하지 않았다. 관찰 도구가 자연 fixture 종료 뒤 같은 QA 앱을 인자 없이 자동 재실행한 PID58730은 즉시 종료했고 그 화면을 증거에서 제외했다. 기존 사용자 앱 PID38141/48476/52157, 정상 identity 저장소, 세계관/전체 UI suite 및 배포는 조작하지 않았다. 빌드 뒤 생성된 `.meta`·ProjectSettings 차이는 사전 tar 백업에서 복원해 Git 제품 변경0이다.
+
 2026-10-27 QA 전용 의미 프레임으로 실제 `NativeLobby`의 전사 Next·짧은 hold 해제·1.2초 완료와 안내/필드 연결을 검수했다. 이후 웹 동시 Next+Skip hold 계약을 맞춰 [최종 18/18 영수증·검토 앱·물리 패드 HOLD](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트)로 갱신했다.
 
 동일 Rev4 앱의 별도 빈 검토 root에서 전사 `MacQA27`을 일반 키보드로 생성하고 정본 영상에 Next/skip 입력 없이 자연 종료해 네메시스 대사까지 확인했다. 시작→네메시스 화면 간 105.5초로 원본 영상 96.4초보다 길다. [후속 경로와 캡처](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#rev4-일반-키보드-자연-경로-후속--2026-10-27). 물리 패드·청음 판정은 별도 HOLD다.

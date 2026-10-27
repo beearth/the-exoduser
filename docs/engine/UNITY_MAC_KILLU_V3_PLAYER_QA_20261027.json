@@ -1,0 +1,79 @@
+{
+  "scope": "Mac ARM64 v3 media candidate; original session-only native story smoke, no Windows/deployment or audio-listening claim",
+  "sourceCommit": "5e170ab59c6269641715ba81e40089213b72c2b0",
+  "editor": {
+    "engine": "6000.6.7f1",
+    "result": "Succeeded",
+    "reportedErrors": 1,
+    "csErrors": 0,
+    "exception": "NativeGame MaterialPropertyBlock field initializer CreateImpl",
+    "cleanGate": false
+  },
+  "app": {
+    "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/build/EXODUSER-Unity.app",
+    "product": "EXODUSER Settings QA",
+    "identifier": "com.fordeargamers.exoduser.settingsqa",
+    "executableSha256": "5b8ea55aaf5df81f7f7ba9de2ee4178c6e9ca2d615da8a919bb78122ecdd857e",
+    "movieBytes": 94795327,
+    "movieSha256": "8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab"
+  },
+  "natural": {
+    "passed": true,
+    "checks": 8,
+    "failures": 0,
+    "pid": 58680,
+    "exitCode": 0,
+    "firstCaption": true,
+    "middleCaptureThreshold": "VideoPlayer.Time > 50 seconds",
+    "naturalCompletionToSameCharacter": true
+  },
+  "skip": {
+    "passed": true,
+    "checks": 15,
+    "failures": 0,
+    "exitCode": 0
+  },
+  "captures": [
+    {
+      "file": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/natural/story-first-natural-720p.png",
+      "sha256": "6c90b9b9587523c7d12623048489827cf77d7147b45848778545cef19b8891ff",
+      "modifiedAt": "2026-10-27T05:54:45.586Z"
+    },
+    {
+      "file": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/natural/story-natural-middle-720p.png",
+      "sha256": "16d95bfb0c4c4616ccad5c2b5540c6b27bc2da1a962b57238bbb62c034768ac2",
+      "modifiedAt": "2026-10-27T05:55:34.300Z"
+    },
+    {
+      "file": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/natural/killu-window-55s.png",
+      "sha256": "93d3405547b7191996d210dfe95afc3fd1e63311d30cbdd0d2c0b5ed913105e5",
+      "modifiedAt": "2026-10-27T05:55:41.343Z"
+    },
+    {
+      "file": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/natural/killu-window-57s.png",
+      "sha256": "b021436603a4107159363d555f9275957c32d9241320a9339d90f70f186b2c9a",
+      "modifiedAt": "2026-10-27T05:55:48.885Z"
+    },
+    {
+      "file": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/natural/story-gameplay-natural-720p.png",
+      "sha256": "abb18b196d3ae6f5dad853a6fe4880687a6f4aef05664215eb20ba4ca8fd0e66",
+      "modifiedAt": "2026-10-27T05:56:21.862Z"
+    }
+  ],
+  "captureTimeCaveat": "Computer-use screenshots around the 51-58 second montage use wall-clock timing; exact VideoPlayer.Time was not instrumented. Built-in middle capture asserts >50 seconds.",
+  "warnings": [
+    "AVFoundation color primaries fallback in Player log; no decode failure reported",
+    "Audio and subtitle timing were not audibly measured",
+    "Windows Player remains HOLD"
+  ],
+  "excludedObservation": {
+    "pid": 58730,
+    "reason": "computer-use observation relaunched the same QA app without fixture argv after natural run exited",
+    "terminated": true,
+    "evidenceUsed": false
+  },
+  "reviewLauncher": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/launch-v3-review.command",
+  "oldRev4Replaced": false,
+  "mediaPlaybackPassed": true,
+  "overallGate": "RETOUCH: Editor build reports one existing NativeGame constructor exception; Windows Player and audio listen remain HOLD"
+}
