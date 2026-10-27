@@ -6,7 +6,8 @@
 - 담당
   - 전체총괄: PC Claude "유니티 이식 전체 총괄" 세션
   - PC 구현: PC Claude "유니티 이식 맥북 총괄" 세션(Git 경유)
-  - Mac 구현: Codex, 브랜치 `codex/unity-mac-20261024`
+  - Mac 구현: Codex, 작업 브랜치 `codex/unity-mac-20261024`
+  - Unity 줄기(병합 대상): `unity/main` (2026-10-27 신설, 시작점 codex/unity-mac-20261024 끝). PC·Codex 작업 브랜치는 unity/main으로만 병합하고 main으로는 병합하지 않는다. Codex 전환 확인 전까지 codex → unity/main 한 방향 fast-forward만. 규칙: CLAUDE.md §엔진별 버전 분리
 - 상태 표기
   - `0 미착수`
   - `1 일부`: 소스는 있지만 웹과 다르거나 범위가 일부만 있음
@@ -133,3 +134,4 @@ A군을 다 마치기 전이라도 담당이 비면 B군을 바로 배정한다.
 - 2026-10-26 밤 10: B03 웹 원본 추출표 1차. 고퀄리티 3D 맵 제작 기획서(`docs/4.1맵디자인+설정/UNITY_MAP_HQ_PRODUCTION_PLAN_20261026.md`)를 main·Codex 브랜치에 게시, Codex 요청 4건
 - 2026-10-26 밤 11: B11 = 2(PC B군 Core 1호). A23·C03 담당 → 보스전 총괄(신설). 맵 통합 보드(맵 총괄 신설) 채택, Meshy는 PC에서만 호출. PC 병합 요청 `a48faf9ea` + patch 19개
 - 2026-10-26 밤 12: C01 담당 → 보스전 총괄. B05 웹 원본 추출표(행 이름 "활 5종" → "석궁 3종" 정정). 맵 아트 바이블 v1 게시·맵 시각 2차 판정 = 디자인총괄(협약 §7.1 개정)
+- 2026-10-27: 엔진별 버전 분리(사용자 확정). Unity 병합 대상 = `unity/main`(이전 기록의 "PC 누적 병합 대상"은 당시 기준). Codex 전환 요청은 INBOX 두 곳(CTO 게시)

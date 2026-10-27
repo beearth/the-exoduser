@@ -4,7 +4,7 @@
 ## 기준 문서(SSOT)
 - 100% 분모: `docs/engine/UNITY_PORT_MASTER_20261026.md` (main, 64행, 상태 0/1/2/3)
 - 업무협약: `docs/engine/orders/UNITY_CLAUDE_CODEX_AGREEMENT_20261026.md` (§1 Unity 6000.6.7f1 통일, §2 소유, §5 결정, §7 3D 맵 분담)
-- PC→Mac 요청: `docs/engine/orders/PC_TO_MAC_INBOX_20261021.md` — **main과 codex/unity-mac-20261024 두 곳에 동시 게시**(Codex는 자기 브랜치만 읽음)
+- PC→Mac 요청: `docs/engine/orders/PC_TO_MAC_INBOX_20261021.md` — **main과 codex/unity-mac-20261024 두 곳에 동시 게시**(Codex는 자기 브랜치만 읽음) 병합 대상은 unity/main(10-27, CLAUDE.md §엔진별 버전 분리).
 - 3D 맵 기획서: `docs/4.1맵디자인+설정/UNITY_MAP_HQ_PRODUCTION_PLAN_20261026.md` (§4.5 생동감 L1~L9, §4.6 Moon Studios 방식)
 - 맵 아트 바이블 통합본 v2: main `fc4989628` (디자인총괄 eb8a8577, `MAP_ART_BIBLE_v2_*`). 이전 두 바이블(UNITY_MAP_ART_BIBLE / UNITY_ART_BIBLE_V1)은 대체
 - 메모리: `unity-port-overall-lead.md`, `sonnet-simple-session-always-on.md`, `port-switched-to-unity-codex.md`
