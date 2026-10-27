@@ -103,3 +103,10 @@ dash-parry 187,165/0 · skill-oracle 8,416/0 · enemy-pool 26,271/0 · c01-field
 | 발사체 속도 정규화·패링 | `_normalizeEnemyBulletSpeed`, `fbEnergy` 패링 제외 등은 투사체 입구(Druid 투사체 시스템)와 unity-rmb1의 반사 이식 몫 |
 | 스프라이트 외 연출 | §2 |
 | 번역 | 문구는 웹 원문(`심연의 앵글러` No.3001, `필드보스 처치!` No.3002, `심연의 앵글러를 모두 처치하라` No.3022 — 번역 목록에 등록돼 있음) |
+
+## 8. 병합 뒤 상태 (미완 1건)
+
+- 병합 이력: 최초 구현 커밋 `fe1e6c73c`, 이후 `origin/unity/main`(A18 패링 5단계, RM-B1 드루이드 Core)을 두 번 병합. 충돌 없음.
+- 병합 **뒤** .NET 검증은 모두 통과: fieldboss-oracle · region-oracle · dash-parry-oracle exit 0, 실제 맵 테스트 113/0.
+- Unity 빌드와 m1-check(§6)는 **병합 전 코드**로 batchmode 20/20, 창 모드 20/20. 병합 뒤 Unity 빌드는 아직 못 돌렸다: 에디터가 두 번 크래시했다(첫 번째는 메모리 할당기, 두 번째는 Bee 빌드 캐시 손상 뒤 실행 중 크래시, 로그 `E:/exoduser-wt/_out/fixedmobs/build8.log`, `build8c.log`). 같은 시각 창 모드 플레이어 좀비 프로세스 6개가 커밋 한도를 차지하고 있었다. 이후 "빌드는 PC 전체에서 한 번에 하나, 차례는 유니티 총괄이 알림" 규칙이 생겨 차례를 요청해야 한다. 차례를 받으면 `Library/Bee`를 새로 만들고(옛 것은 `_out/fixedmobs/Bee.stale-0231`로 옮겨 둠) 빌드 → m1-check batchmode·창 모드를 한 번씩 돌린다.
+
