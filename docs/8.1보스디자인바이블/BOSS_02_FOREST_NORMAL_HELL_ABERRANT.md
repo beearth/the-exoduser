@@ -10,7 +10,7 @@
 | 스케일 | `dw=e.r*7.0`, `dh=e.r*8.4` (꼬리 실루엣) |
 | 글로우 | 용암 `rgba(255,70,20,.42)` |
 | 전조 | si2만 tele ×1.4 (다크소울식 읽기) |
-| 테스트 | `http://127.0.0.1:3333/game.html?bosstest=2` (node `server.cjs` :3333, 필드/인트로 없음, 보스 남쪽 10타일에서 시작) |
+| 테스트 | `http://127.0.0.1:3333/game.html?bosstest=2` (node `server.cjs` :3333, 필드/인트로 없음, 보스 남쪽 3타일(`P.y=boss.y+3*T`)에서 시작) |
 
 ## 얼굴 기술 (`_HELL_ABERRANT_FACE`, +2.0)
 

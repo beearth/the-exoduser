@@ -33,11 +33,11 @@
 | 잠행 피해 중심 | 피날레는 `_diveTx/_diveTy` 고정 좌표로 분출 VFX·피해·실패 넉백 방향 계산. 본체 분리 보정으로 e.x/y가 움직여도 전조 위치와 타격 위치 일치. 일반 드루이드는 기존 e.x/y 중심 유지 |
 | 잠행 경고 | 확정 좌표에 반경 e.r+120, 선3px·진행호6px, 반투명 .13 녹색 원. 잠행/분출 타격 전까지만 표시. 진행호는 잔여30f 기준 clamp. `_drawDruidFinaleRing` 48개 선분으로 WebGL에서도 경계 표시 |
 | 잠행 수치 보존 | 침강 최소48f(공용 teleM 후 하한), 잠행45f, 분출40f의 8f 경과 시 1회, 입력 피해 floor(atk×2.2), 실패 중독+4/감속90f. 기존 패링 경로 유지 |
-| HP 페이즈 전환 | 기존 HP상한 보정·ATK×1.3·SPD/포이즈/쿨다운 강화·무적90f 보존. 피날레만 제자리 rest90f로 전환하여 뒤 순간이동·즉시 피해·방사탄 제외 |
+| HP 페이즈 전환 | 기존 HP상한 보정·ATK×1.3(현행 v0.4 코드: 피날레는 `e.atk=_druidFinaleAtk(e)` = base×[1,1.12,1.25,1.4,1.6][phase])·SPD/포이즈/쿨다운 강화·무적90f 보존. 피날레만 제자리 rest90f로 전환하여 뒤 순간이동·즉시 피해·방사탄 제외 |
 | 큰 막 전환 연출 | 60%→`숲의 포식자 / Forest predator`, 20%→`숲의 단말마 / Death throes`, 텍스트90f, 기존 druid_shockring(e.r×3/256,5f/frame), shake8·SFX.groggy. 80/40%는 같은 막 유지. 잘못된 공용 HP+30% 표기는 이 분기에서 사용하지 않음 |
 | 부활 상태 초기화 | 즉시/폴백 부활에서 `_druidAct=-1`, `_druidStep=0`, `_druidRest=0`, `_druidTargetLocked=false`. 원래 부활 HP·확률·포인트·최종 사망/클리어 경로 유지 |
 | 독늪 판정 | 3개·반경150·중심간격360·전조55/73/91f·maxT300 유지. 틱30f, 입력 floor(atk×0.9)의0.4배×상성도 기존 유지. 새 독 디버프를 추가하지 않음 |
-| 독늪 시각 | `_drawDruidFinalePool`: 기존 aoe4×2 시트를 반경150 원에 내접하는 정사각 박스(한 변150×√2≈212.13px)에 표시. WebGL clip은 no-op이므로 의존하지 않음. texture alpha 예고.14/활성.32, 바닥 fill .06/.16, 테두리 alpha .85·3px, 예고 진행호5px, 원/호48선분. 마지막60f fade. 기존 비피날레 R=lp.r×1.4 렌더 유지 |
+| 독늪 시각 | `_drawDruidFinalePool` (코드 재확인): ① `_drawDruidPoolClip`(풀 클립 아틀라스, R=lp.r×1.12, 내부 테두리 alpha×.55) → 미준비 시 ② `_drawDruidGroundRing` 순으로 alpha 예고 .36/활성 .72(×fade). 둘 다 실패하면 ③ 기존 aoe4×2 시트를 반경150 원에 내접하는 정사각 박스(반변 lp.r×√½, 한 변≈212.13px)에 alpha 예고 .10/활성 .24(×fade). 이어 경계 원 alpha .38×fade·선폭1.5px(예고 `#d4f7a8`/활성 `#8bdd45`), 예고 중 진행호 선폭1.5px, 원/호48선분. 별도 바닥 fill 없음. 마지막60f fade. WebGL clip은 no-op이므로 의존하지 않음. 비피날레 si0/si3도 풀 클립→그라운드 링→aoe 시트(R=lp.r×1.4) 순 |
 | 스프라이트 | 기존 walk/attack/transform/beast/dive/aoe 사용. 전용 volley 상태는 attack 시트150ms/frame 사용. 신규 bitmap/캐릭터 없음 |
 | 검증 URL | `http://127.0.0.1:3333/game.html?demo&bosstest=3` (`?bic&bosstest=3`도 동일 전투 프로필). 기존 테스트 패널은 공용 기술 카탈로그를 표시하며 자연 AI의5종 목록과 구분 |
 | 종료 UI | 데모 마지막 stage·hell0에서 출구 클리어 시 clearSub=`썩은 숲을 정복했습니다. / You conquered the Rotten Forest.`, nextBtn=`데모 종료 / End of Demo`. 클릭은 `_showNextDiffPop`을 생략하고 `nextStage()`의 기존 demoEnd로 연결. 일반 stage/정식 모드는 기존 난이도 선택 유지 |

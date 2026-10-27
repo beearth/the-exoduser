@@ -89,15 +89,16 @@
 ```
 보스 게이트 접촉
   → G._bossLoadPhase=1 (페이드 아웃 50f)
-  → G._bossLoadPhase=2 (보스 네임카드 130f)
-  → _enterBossArena() 호출
-    1. _preArenaBackup 저장 (사망 시 복원용)
+  → 페이드 완료 순간 _enterBossArena() 호출 + G._bossLoadPhase=2 (보스 네임카드 130f)
+  → G._bossLoadPhase=3 (페이드 인 50f) → G._bossLoadPhase=4 (보스 입장 연출 100f)
+  _enterBossArena() 내부:
+    1. _preArenaBackup 저장 (사망 시 복원용, retry 아닐 때만)
     2. genBossArena(si) 로 새 맵 생성
     3. ens/projs/worldItems/G 상태 전체 초기화
-    4. 플레이어를 entryX, entryY로 이동
-    5. mkEn() 으로 보스 스폰 (ib=true, _isLargeBoss=true when si===0)
+    4. 플레이어를 entryX, entryY로 이동 (P.iframes=90)
+    5. mkEn() 으로 보스 스폰 (ib=true. `_isLargeBoss`는 현재 설정하는 코드가 없음 — 1-1 드루이드는 `_CODEX_BOSS` use2D 렌더)
     6. G._bossArena=true, G.bossSealed=true 설정
-    7. 봉인 파티클 32개 + 보스 포효 SFX
+    7. 봉인 파티클 32개(외부16+내부16) + 보스 포효 SFX
 ```
 
 ---
@@ -109,12 +110,13 @@
 **실제 적용 공식 (`game.html` `mkEn`):**
 | 항목 | 공식 / 값 | 소스 |
 |---|---|---|
-| HP 기본커브 | `(Lv≤500? 0.4·Lv³+199·Lv+100 : 5e7·1.0014^(Lv−500))×2.925` | `game.html:29632` |
-| HP pacing | `_enemyHpPacing(Lv)=1/(1+min(9,max(0,Lv−1))/18)` (Lv1=1, Lv10+=2/3) | `29607` |
-| 보스 HP 배율 | **`_bossMul = ib?24:1`** (일반 보스·최종 보스 공통 ×24, 별도 최종보스 배율 없음) | `29633` |
-| HP 최종 | `floor( floor(기본커브·pacing·24·dm·et.hpMul) · (1+stage·0.02) )` | `29634` |
-| 보스 ATK | `floor( ((75 + Lv·2.9)·0.6) · dm · et.atkMul )` (일반몹은 50/1.95) | `29638-29639` |
-| 최종 보스(si3 데모/bic 피날레) | 별도 `_druidFinaleHp` (상단 v0.4 주석) | `29636` |
+| HP 기본커브 | `(Lv≤500? 0.4·Lv³+199·Lv+100 : 5e7·1.0014^(Lv−500))×2.925` | `game.html:31328` |
+| HP pacing | `_enemyHpPacing(Lv)=1/(1+min(9,max(0,Lv−1))/18)` (Lv1=1, Lv10+=2/3) | `31302` |
+| 보스 HP 배율 | **`_bossMul = ib?24:1`** (일반 보스·최종 보스 공통 ×24, 별도 최종보스 배율 없음) | `31329` |
+| HP 최종 | `floor( floor(기본커브·pacing·24·dm·et.hpMul) · (1+stage·0.02) )` | `31330` |
+| 보스 ATK | `floor( ((75 + Lv·2.9)·0.6) · dm · et.atkMul )` (일반몹은 50/1.95) | `31334-31335` |
+| 최종 보스(si3 데모/bic 피날레) | 별도 `_druidFinaleHp` (상단 v0.4 주석) | `31331-31332` |
+| 포이즈 초기값 | `poise = maxPoise = HP` (포이즈=HP 100%) | `31347` |
 
 **현행값 (dm=1·et 배율=1·stage=0, 감사 하니스 산출):**
 | Lv | 일반몹 HP | 보스 HP(×24) | 일반몹 ATK | 보스 ATK |
@@ -134,26 +136,27 @@
 
 | 함수 | 역할 |
 |---|---|
-| `_doPoise(e, amt, stunT, label)` | 포이즈 데미지 적용 |
+| `_poiseHit(e, amt, label)` | 포이즈 데미지 적용 (통합 포이즈 함수, 반환=그로기 발동 여부) |
 | `_poiseReset(e)` | 그로기 종료 후 포이즈 100% 회복 |
 
 ### 포이즈 데미지 흐름
 
 ```
-_doPoise(e, amt) 호출
+_poiseHit(e, amt, label) 호출
   → e.ib && e._pImmune > 0 → 면역: return false (적용 안 함)
-  → e.poise -= amt
-  → e.poise <= 0 → 그로기 발동:
-      e.stunned = stunT
-      e._maxStunned = stunT
+  → e.poise -= amt, e.poiseR = 0
+  → e.poise <= 0 → 그로기 발동 (poise=0):
+      stunT = e.ib ? 90 : 180   (보스 1.5초, 일반 3초 — 고정값)
+      e.stunned = max(e.stunned, stunT)
+      e._maxStunned = max(e._maxStunned, stunT)
       e.ib → e._pImmune = 300 (5초, 60fps 기준)
-      SFX.groggy() + addTxt('💥 그로기!')
+      SFX.groggy() + addTxt('💥 그로기!') + slowMo 20f(_noHitStopT 아닐 때) + 파티클 14개
 ```
 
 ### 그로기 종료 → 포이즈 재충전
 
 ```javascript
-// game.html line ~24408
+// game.html line ~34637
 if(e.stunned<=0 && e._maxStunned){
   e._maxStunned=0;
   if(e.ib){
@@ -168,9 +171,9 @@ if(e.stunned<=0 && e._maxStunned){
 
 | 상태 | 색상 | 표시 |
 |---|---|---|
-| 그로기 중 (`stunned > 0`) | `#ff8800` 주황 | 게이지 0% |
-| 면역 충전 중 (`_pImmune > 0`) | `#4455cc→#8899ff` 파란 그라데이션 | 0→100% (300f 동안 채워짐) |
-| 정상 | `#cc3300→#ff6600` 빨간 | 현재 poise / maxPoise % |
+| 그로기 중 (`stunned > 0`) | `#ff6600→#ffaa00` 주황 그라데이션, 테두리 `#ff6600`, 문구 `그로기! N.Ns` | 남은 stunned/_maxStunned % (줄어듦) |
+| 면역 충전 중 (`_pImmune > 0`) | `#4455cc→#8899ff` 파란 그라데이션, 테두리 `#4455cc`, 문구 `충전 중 N.Ns` | 0→100% (300f 동안 채워짐) |
+| 정상 | poise% ≥60: `#aaaaaa→#ffffff` 회백 / 30~60: `#ddaa00→#ffcc44` 노랑 / <30: `#ff4400→#ff8800` 주황빨강(테두리 `#ff4400`) | 현재 poise / maxPoise %, 문구 `포이즈 N%` |
 
 ---
 
@@ -196,12 +199,14 @@ if(e.stunned<=0 && e._maxStunned){
 |---|---|
 | 1 | HP 회복 — 페이즈 상한까지 (`e.mhp × ph.hp[1]`) |
 | 2 | 무적 1.5초 (`reviveIframes = 90`) |
-| 3 | 스탯 강화 — atk×1.3, speed×1.15, maxPoise×1.2 / 현재 포이즈 그대로 유지 (회복 없음, 2026-05-13) |
-| 4 | 상태 초기화 — stunned=0, s='recover', 콤보/딜레이 리셋 |
+| 3 | 스탯 강화 — atk×1.3(데모/bic 피날레는 `_druidFinaleAtk`), speed=`min(speed×1.15, 1.8+_bp×0.1)`, maxPoise×1.2, bossPatCd=`max(20, bossPatCd×(0.9−_bp×0.05))` / 현재 포이즈 그대로 유지 (회복 없음, 2026-05-13) |
+| 4 | 상태 초기화 — stunned=0, s='recover', st2=45(보스 recover는 20f로 상한), bossPatT=10, 콤보/페인트/딜레이 리셋, `_moveCDs` 전부 0 |
 | 5 | 텔레포트 — 플레이어 등 뒤 (거리 `80+_bp*25`) + 파티클 VFX |
 | 6 | 충격파 — 반경 `100+_bp*30`, 데미지 `atk*(0.4+_bp*0.1)` |
-| 7 | 분노 탄막 방사 — `8+_bp*4`발 (빨콩 50% + 무지개 50% 교대) |
+| 7 | 분노 탄막 방사 — `8+_bp*4`발 (짝수 인덱스 빨콩 `atk×1.5` 유도 / 홀수 무지개 `atk×1.2`, 속도 3~4, 수명 380f) |
 | 8 | 연출 — 텍스트, `_reviveVFX()`, HitStop, SlowMo, **셰이크, 포효** |
+
+> 데모/bic 피날레 드루이드(`_isDruidFinale`)는 4번 뒤 `s='bossDruidRest'`, `st2=90`으로 바꾸고 막 전환 큐만 처리한 뒤 **return** — 5~8번(텔레포트·충격파·탄막·연출)은 실행하지 않는다.
 
 ### 연출 수치 (8번 — 2026-05-08 업데이트)
 
@@ -223,25 +228,32 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 
 ## 6. 보스 무브셋 (`_BOSS_MOVESET`)
 
-스테이지(si) → 허용 기술 Set. `null` = 전체 49종 사용.
+스테이지(si) → 허용 기술 Set. `BOSS_MOVES` 정의는 **59종**(idx 0~29·31~58·60, idx30·59 결번). 루프(`si<35`)가 Set이 없는 si에 전체 59종 Set을 채운 뒤 **모든 si에서 `cageTrap`을 삭제**하므로 실사용 상한은 58종이다. 아래 "개수"는 cageTrap 삭제 후 실제 Set 크기.
 
-| si | 챕터 | 보스명 | 특이 기술 추가 |
-|---|---|---|---|
-| 0 | 1장 썩은 숲 | 흑요염 파괴자 | 기본 18종 (no summon), `lavaPools`, `charge`, `slam` 중심 |
-| 1 | 1장 | 독버섯 거인 | + `summon, mine` |
-| 2 | 1장 | 사냥꾼 | + `cageTrap` |
-| 3 | 1장 | 기생수 | + `seekerMines`; `lavaPools`는 중앙=`P+진행축×120px`, 좌/우=`중앙±수직축×360px` 3지점(`r=150`, 여백 60px, 전조 55/73/91f, 300f, `floor(atk×0.9)`) |
-| 4~9 | 2장 벌레굴 | 벌레 수호자~여왕 구더기 | 점진 해금: `fanWave→wallPush→shieldBash2→spiralBullet` |
-| 10~13 | 3장 지옥의 겨울 | 얼음 망령~봉인 괴물 | + `laser, safeCorner, teleStrike, delaySlash, perilThrust, gravityWell` |
-| 14~20 | 4장 화염지대 | 화염 악마~화염 감옥지기 | + `meteor, radialLaser, swordWave, pillars, burstCounter, chainLightning` |
-| 21~25 | 5장 군단 | 전쟁의 잔해~군단 지휘관 | + `mirrorGuard, rewindStrike, orbWeave, mirrorClone` |
-| 26~31 | 6장 사도의 마굴 | 살점의 수호자~대사도 | + `itemSteal` |
-| 32~34 | 7장 지옥성 | 전체 49종 해금 | `null` (필터 없음) |
+| si | 챕터 | 보스명 (`HELL_BOSSES`) | 개수 | 기술 / 직전 si 대비 변화 |
+|---|---|---|---:|---|
+| 0 | 1장 썩은 숲 | 다크드루이드 | 23 | `_BOSS_MOVESET[0]=new Set(_BOSS_MOVESET[3])` — si3과 동일 (아래 si3 참조). 소스의 흑요염용 20종 Set 선언은 이 줄에 덮어써짐 |
+| 1 | 1장 | 독버섯 거인 | 21 | `slashCombo, slam, sweep, charge, jump, burst, shock, fan, groundFissure, poisonTrail, spin, grab, multiDash, tideWave, chaseAoe, elemBall, beanStorm, summon, mine, lavaPools, rapidMissile` |
+| 2 | 1장 | 지옥기형 | 10 | `jump, charge, slashCombo, sweep, tailSwipe, spin, slam, beanStorm, fan, multiDash` (전용 소형 Set) |
+| 3 | 1장 | 다크드루이드 | 23 | si1 21종 + `seekerMines, burrowStrike` (`cageTrap` 삭제). `lavaPools`는 중앙=`P+진행축×120px`, 좌/우=`중앙±수직축×360px` 3지점(`r=150`, 여백 60px, 전조 55/73/91f, 300f, `floor(atk×0.9)`) |
+| 4 | 2장 벌레굴 | 벌레 수호자 | 27 | `_ch2Base`: si1 기본에서 `vortex, beanRain, fireRain, shockGrid, donutSlam, crossWipe` 추가 |
+| 5~9 | 2장 | 점액 괴수~여왕 구더기 | 28~32 | 점진 해금: `seekerMines(5)→fanWave(6)→wallPush(7)→shieldBash2(8)→spiralBullet(9)` |
+| 10 | 3장 지옥의 겨울 | 얼음 망령 | 32 | `_ch3Base`: + `laser, safeCorner, tidalWipe` (si9 대비 `poisonTrail, wallPush, spiralBullet` 빠짐) |
+| 11~13 | 3장 | 서리의 기사~얼음 속 봉인 괴물 | 34~37 | + `teleStrike, delaySlash(11)` → `perilThrust, spiralBullet(12)` → `gravityWell(13)` |
+| 14 | 4장 화염지대 | 화염 악마 | 39 | `_ch4Base`: + `meteor, radialLaser, poisonTrail` (si13 대비 `gravityWell` 빠짐) |
+| 15~20 | 4장 | 불기둥 수호자~화염 감옥지기 | 40~45 | `swordWave(15)→pillars(16)→burstCounter(17)→wallPush(18)→gravityWell(19)→chainLightning(20)` |
+| 21 | 5장 군단 | 전쟁의 잔해 | 48 | `_ch5Base`: + `judgeCut, phantomSwords, crescendoCombo` |
+| 22~25 | 5장 | 뼈산의 왕~군단 지휘관 | 49~52 | `mirrorGuard(22)→rewindStrike(23)→orbWeave(24)→mirrorClone(25)` |
+| 26~27 | 6장 사도의 마굴 | 살점의 수호자·인간뼈 감시자 | 55 | `_ch6Base`: + `darkZone, soulAnchor, doppelganger` |
+| 28~31 | 6장 | 뒤틀린 자~대사도 | 56 | + `itemSteal` |
+| 32~34 | 7장 지옥성 | 검은 성의 수호자·Killu·지옥 군주 | 58 | Set 미선언 → 전체 59종 Set 생성 후 `cageTrap` 삭제 (si31 대비 `burrowStrike, tailSwipe` 추가) |
 
-전체 기술 49종 목록은 `9적ai패턴디자인/` 참조.
+전체 기술 목록은 `9적ai패턴디자인/` 참조 (코드 정의 수는 위 59종).
 
 ### `cageTrap` 뼈감옥 전투·VFX 계약 (2026-09-03)
 
+> **현행 코드(재확인):** 모든 보스 cageTrap 금지 — `_bossScore`에서 `cageTrap`은 -1, 모든 si 무브셋에서 삭제, `_bossStartPattern`의 `case'cageTrap'`은 `e.s='recover';e.st2=25`만 실행(감옥 데이터 push 없음). 아래 판정 데이터 표의 보스 `G._cageTraps.push` 경로는 보스 쪽에 더 이상 없다(이전 기록).
+>
 > 2026-09-06: 다크드루이드(si0/si3)는 cageTrap 사용 금지. 무브셋에서 제외하고 강제 실행도 recover/25f로 종료하며 감옥·생성음을 만들지 않는다. 다른 보스와 플레이어 뼈감옥은 아래 계약 유지. 드루이드 본체 dw=9.3/dh=14.1(1.5배), r=44 피격 판정 불변.
 
 | ID | 한글명 | 생성 위치 | 반경 | 경고 | 총 수명 | 피해 | 타격 조건 |
@@ -301,6 +313,8 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 > 외부 오버레이를 제거해 이중 렌더·불일치를 근본 차단했다. 부수효과로 하니스의 여분 WebGL 컨텍스트 1개가 사라져 컨텍스트 소실(§ Mac 컨텍스트 소실) 압력도 완화된다. 백업: `game_backup_boss3d_test_pre_align.html`.
 
 ### 챕터 모델 선택·비동기 교체 (2026-08-16 LOCK)
+
+> 현행 코드: `_enterBossArena`는 `_CODEX_BOSS[G.stage].use2D`가 참인 stage(si0·si3 다크드루이드)에서는 `_b3loadModel`을 호출하지 않는다. 1장 si1·si2는 Codex 2.5D(use2D 아님)라 hell0 모델 로드 대상이다.
 
 `_b3animate()`는 매 프레임 `SI_TO_HELL[G.stage]`로 필요한 hell index를 계산하고, 현재 모델과 다르면 `window._b3loadModel(hellIdx)`를 호출한다. `window._b3loadModel`은 classic/module 스코프 경계를 넘어 테스트·보스 진입 코드에서 쓸 수 있도록 노출한 동일 함수다.
 
@@ -492,7 +506,8 @@ http://127.0.0.1:3333/game.html?bosstest=2
 |---|---|---|
 | 추적 대상 | 플레이어 (`P.x/y + look-ahead`) | 플레이어+보스 중간점 (`.5+.5` 믹스) |
 | 룩어헤드 반영 | 100% (`G._camLkX/Y`) | 30%만 반영 |
-| 줌 (`G._camZoom`) | `1.0` | `0.80` (줌아웃) |
+| 줌 (`G._camZoom`) | `1.0` | `0.80` (줌아웃, 보간 `1−0.94^dt`) |
+| 예외 | — | `window._btActive`(테스트베드)면 중간점 분기 미사용. 데모/bic 피날레 si3는 `_druidFinaleFrame` 전용 프레이밍(줌 .30~.80, 보간 넓힐 때 `1−.88^dt`/당길 때 `1−.98^dt`) |
 
 ### 카메라 코드 (`game.html` — 업데이트 루프)
 
@@ -504,7 +519,7 @@ G._camLkY += (_lkY - G._camLkY) * _lkSmooth;
 
 // 추적 타겟
 let targetX = P.x + G._camLkX, targetY = P.y + G._camLkY;
-if(G._bossRef && G._bossRef.alive){
+if(!window._btActive && G._bossRef && G._bossRef.alive){
   targetX = (P.x + G._bossRef.x) * .5 + G._camLkX * .3;
   targetY = (P.y + G._bossRef.y) * .5 + G._camLkY * .3;
 }
@@ -540,7 +555,7 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 플래그 | 타입 | 설명 |
 |---|---|---|
 | `e.ib` | bool | 보스 여부 (isBoss 약자) — 핵심 식별자 |
-| `e._isLargeBoss` | bool | si===0 (흑요염 파괴자)만 true |
+| `e._isLargeBoss` | bool | 현재 설정 코드 없음(항상 undefined). 렌더 분기 `_drawLargeBoss` 조건만 잔존 — 구 흑요염 si0 전용 플래그 |
 | `e._pImmune` | int | 포이즈 면역 남은 프레임 (300 = 5초) |
 | `e.poise` | float | 현재 포이즈 |
 | `e.maxPoise` | float | 포이즈 최대값 |
