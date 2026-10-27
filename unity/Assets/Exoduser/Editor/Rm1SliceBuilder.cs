@@ -132,7 +132,9 @@ namespace Exoduser
 
             BuildToxic(world.transform, mats);
             BuildBlockout(world.transform, mats);
+            BuildBgCards(world.transform, mats);
             BuildDecals(world.transform, mats);
+            FgMat = mats.FgRoots;
             BuildLighting(mats);
             WalkOverlap();
             var marker = BuildCamera();
@@ -143,7 +145,7 @@ namespace Exoduser
         }
 
         // ---------------------------------------------------------------- materials
-        class Mats { public Material Toxic, Blockout, Mass, Bark, Shaft1, Shaft2; public Dictionary<string, Material> Decal = new Dictionary<string, Material>(); }
+        class Mats { public Material Toxic, Blockout, Mass, Bark, FgRoots, BgTree, Shaft1, Shaft2; public Dictionary<string, Material> Decal = new Dictionary<string, Material>(); }
         static Material Mat(string path, Shader sh, Action<Material> init)
         {
             var m = AssetDatabase.LoadAssetAtPath<Material>(path);
@@ -172,6 +174,10 @@ namespace Exoduser
             Action<Material, Color, float> massInit = (m, tint, smooth) => { m.SetTexture("_BaseMap", massTex); m.SetColor("_BaseColor", tint); m.SetTexture("_BumpMap", nrmTex); m.SetFloat("_BumpScale", 1f); m.EnableKeyword("_NORMALMAP"); m.SetFloat("_Smoothness", smooth); m.SetFloat("_Metallic", 0f); };
             mats.Mass = Mat(Root + "/Materials/M_RottenWoodMembrane.mat", lit, m => massInit(m, new Color(.62f, .56f, .54f), .10f));
             mats.Bark = Mat(Root + "/Materials/M_CursedBark.mat", lit, m => massInit(m, new Color(.40f, .34f, .33f), .06f));
+            var cardSh = Shader.Find("EXODUSER/FgCard");
+            var fgTex = ProcCard(GenDir + "/card_fg_roots.png", 11, true); var bgTex = ProcCard(GenDir + "/card_bg_tree.png", 23, false);
+            mats.FgRoots = Mat(Root + "/Materials/M_FgRoots.mat", cardSh, m => { m.SetTexture("_MainTex", fgTex); m.SetColor("_Color", new Color(.045f, .028f, .022f, .80f)); });
+            mats.BgTree = Mat(Root + "/Materials/M_BgTree.mat", cardSh, m => { m.SetTexture("_MainTex", bgTex); m.SetColor("_Color", new Color(.20f, .17f, .19f, .55f)); });   // FOG_FAR-tinted, so far silhouettes sink into the haze
             var shaft = Shader.Find("EXODUSER/LightShaft");
             mats.Shaft1 = Mat(Root + "/Materials/M_Shaft_Hell_1.mat", shaft, m => { m.SetColor("_Color", LightHell); m.SetFloat("_Intensity", 0.42f); m.SetFloat("_Phase", 0.4f); });
             mats.Shaft2 = Mat(Root + "/Materials/M_Shaft_Hell_2.mat", shaft, m => { m.SetColor("_Color", LightHell); m.SetFloat("_Intensity", 0.34f); m.SetFloat("_Phase", 2.1f); });
@@ -224,6 +230,7 @@ namespace Exoduser
             td.terrainLayers = layers.ToArray();
             td.SetHeights(0, 0, ComputeHeights());
             td.SetAlphamaps(0, 0, ComputeAlpha());
+            AddGrass(td);
             return td;
         }
 
@@ -390,56 +397,146 @@ namespace Exoduser
                     bool ok = true; foreach (var p in placed) if ((p - c).magnitude < sep) { ok = false; break; }
                     if (!ok) continue; placed.Add(c);
                     float w = Mathf.Lerp(2.0f, 3.6f, (float)rnd.NextDouble()), dp = Mathf.Lerp(1.6f, 3.0f, (float)rnd.NextDouble()), hh = Mathf.Lerp(hLo, hHi, (float)rnd.NextDouble());
-                    float rx = (float)(rnd.NextDouble() - .5) * 10f, yaw = (float)rnd.NextDouble() * 360f, rz = (float)(rnd.NextDouble() - .5) * 10f;
-                    var wp = W(c.x, c.y); float gy = GroundY(wp.x, wp.z);
+                    float yaw = (float)rnd.NextDouble() * 360f; var wp = W(c.x, c.y); float gy = GroundY(wp.x, wp.z);
                     // never cover a Core walk tile: shrink the footprint until it clears every walkable tile centre, else skip this candidate
                     var fp = new FP { kind = "mass", cx = wp.x, cz = wp.z, hw = w * .5f, hd = dp * .5f, yaw = yaw }; int shrink = 0;
                     while (FpHitsWalk(fp) && shrink++ < 8) { w *= .85f; dp *= .85f; fp.hw = w * .5f; fp.hd = dp * .5f; }
                     if (FpHitsWalk(fp) || w < 1.0f) { placed.RemoveAt(placed.Count - 1); continue; }
                     // camera-side masses (a walkable tile lies north of them) are cut down so they never cover more than ~15% of the screen height
                     if (SouthOfWalk(Mathf.FloorToInt(c.x), Mathf.FloorToInt(c.y))) hh = Mathf.Min(hh, 0.9f);
-                    var pb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); pb.name = "Mass_" + (count++).ToString("00");
-                    pb.transform.SetParent(root.transform, false); pb.transform.localScale = new Vector3(w, hh, dp);
-                    pb.transform.SetPositionAndRotation(new Vector3(wp.x, gy + hh * .5f - .15f, wp.z), Quaternion.Euler(rx, yaw, rz));
-                    pb.GetComponent<MeshRenderer>().sharedMaterial = mats.Mass; WorldUv(pb, 2.4f); fps.Add(fp);
+                    MakeLump("Mass_" + (count++).ToString("00"), root.transform, new Vector3(wp.x, gy, wp.z), yaw, fp.hw, fp.hd, hh, 5000 + count * 13, mats.Mass, 2.4f, false);
+                    fps.Add(fp);
                 }
             }
             foreach (var pl in river.pools)
             {
                 if (pl.trunkTileCenter == null || pl.trunkTileCenter.Length < 2 || pl.kind == "w8props") continue;
                 var wp = W(pl.trunkTileCenter[0], pl.trunkTileCenter[1]); float gy = GroundY(wp.x, wp.z);
-                var tr = ShapeGenerator.CreateShape(ShapeType.Cylinder, PivotLocation.Center); tr.name = "Trunk_" + pl.name; tr.transform.SetParent(root.transform, false);
                 var tfp = new FP { kind = "trunk", cx = wp.x, cz = wp.z, hw = 0.95f, circle = true }; int ts = 0;
                 while (FpHitsWalk(tfp) && ts++ < 8) tfp.hw *= .85f;                  // trunk radius shrinks until it stays on blocked tiles
-                float tdia = tfp.hw * 2f;
-                tr.transform.localScale = new Vector3(tdia * .78f, 4.6f, tdia * .78f); tr.transform.position = new Vector3(wp.x, gy + 2.2f, wp.z); tr.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(tr, 2.0f); fps.Add(tfp);
-                var fl = ShapeGenerator.CreateShape(ShapeType.Cylinder, PivotLocation.Center); fl.name = "TrunkFlare_" + pl.name; fl.transform.SetParent(root.transform, false);
-                fl.transform.localScale = new Vector3(tdia * .98f, 0.9f, tdia * .98f); fl.transform.position = new Vector3(wp.x, gy + 0.2f, wp.z); fl.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(fl, 2.0f);
+                // cursed tree: tapering irregular trunk, 3-5 buttress lobes spreading into the ground, broken (jagged) top
+                int seedT = 9000 + count * 31; MakeLump("Trunk_" + pl.name, root.transform, new Vector3(wp.x, gy, wp.z), 0f, tfp.hw, tfp.hw, 4.6f, seedT, mats.Bark, 2.0f, true);
+                fps.Add(tfp); count++;
+                // two broken limbs on the camera side (south = -z), bent up and out so they read from the game view
                 for (int lb = 0; lb < 2; lb++)
                 {
-                    var limb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); limb.name = "TrunkLimb_" + pl.name + "_" + lb; limb.transform.SetParent(root.transform, false);
-                    float la = 40f + lb * 170f; var ld = Quaternion.Euler(0, la, 0) * Vector3.right; limb.transform.localScale = new Vector3(0.28f, 1.7f, 0.28f);
-                    limb.transform.SetPositionAndRotation(new Vector3(wp.x, gy + 4.5f, wp.z) + ld * (tdia * .35f), Quaternion.Euler(0, la, -32f)); limb.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(limb, 1.6f);
+                    float sgn = lb == 0 ? -1f : 1f; var dirL = new Vector3(sgn * .55f, 0, -.83f).normalized; var path = new List<Vector3>();
+                    for (int k = 0; k <= 8; k++) { float t = k / 8f; path.Add(new Vector3(wp.x, gy + 2.9f + lb * .5f, wp.z) + dirL * (0.15f + 1.55f * t) + Vector3.up * (0.9f * t - 0.35f * t * t) + new Vector3(0, 0, 0)); }
+                    var lm = TubeMesh(path, 0.22f, 0.07f, 7, seedT + 7 + lb, 1.6f, true, 1.0f); AddMeshObj("TrunkLimb_" + pl.name + "_" + lb, root.transform, lm, mats.Bark);
                 }
-                for (int k = 0; k < 5; k++)
+                var rr = new System.Random(seedT + 3); int roots = 3 + rr.Next(3);
+                for (int k = 0; k < roots; k++)
                 {
-                    float ang = k * 72f + 14f; var dir = Quaternion.Euler(0, ang, 0) * Vector3.right; float len = 2.4f; FP rfp = default; bool ok = false;
+                    float ang = k * (360f / roots) + 14f + (float)rr.NextDouble() * 18f; var dir = Quaternion.Euler(0, ang, 0) * Vector3.right; float len = 2.4f; FP rfp = default; bool ok = false;
                     for (int it = 0; it < 8 && len > 0.7f; it++)
                     {
-                        rfp = new FP { kind = "root", cx = wp.x + dir.x * (tfp.hw * .8f + len * .5f), cz = wp.z + dir.z * (tfp.hw * .8f + len * .5f), hw = len * .5f, hd = 0.325f, yaw = ang };
+                        rfp = new FP { kind = "root", cx = wp.x + dir.x * (tfp.hw * .8f + len * .5f), cz = wp.z + dir.z * (tfp.hw * .8f + len * .5f), hw = len * .5f, hd = 0.4f, yaw = ang };
                         if (!FpHitsWalk(rfp)) { ok = true; break; } len *= .85f;
                     }
                     if (!ok) continue;
-                    var rb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); rb.name = "Root_" + pl.name + "_" + k; rb.transform.SetParent(root.transform, false);
-                    rb.transform.localScale = new Vector3(len, 0.55f, 0.65f);
-                    rb.transform.SetPositionAndRotation(new Vector3(rfp.cx, gy + 0.2f, rfp.cz), Quaternion.Euler(0, ang, -9f));   // yaw = ang: long axis points along the same radial dir as the offset
-                    rb.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(rb, 1.6f); fps.Add(rfp);
+                    var path = new List<Vector3>(); var side = new Vector3(-dir.z, 0, dir.x); float wob = (float)rr.NextDouble() * 6.28f;
+                    for (int q = 0; q <= 8; q++) { float t = q / 8f; var pp = new Vector3(wp.x, gy, wp.z) + dir * (tfp.hw * .45f + (len + tfp.hw * .35f) * t) + side * (Mathf.Sin(wob + t * 4f) * 0.12f * t); pp.y = GroundY(pp.x, pp.z) + 0.46f * (1f - t) * (1f - t * .5f) + 0.05f - 0.06f * t; path.Add(pp); }
+                    AddMeshObj("Root_" + pl.name + "_" + k, root.transform, TubeMesh(path, 0.30f, 0.07f, 7, seedT + 40 + k, 1.4f, false, 1.0f), mats.Bark); fps.Add(rfp);
                 }
             }
             FillIslands(root.transform, mats, poolTiles, ref count);
             Debug.Log("[RM1] blockout masses=" + count);
         }
 
+        static void AddMeshObj(string name, Transform parent, Mesh m, Material mat)
+        {
+            var go = new GameObject(name); go.transform.SetParent(parent, false); go.AddComponent<MeshFilter>().sharedMesh = m; var r = go.AddComponent<MeshRenderer>(); r.sharedMaterial = mat; r.shadowCastingMode = ShadowCastingMode.On;
+        }
+        static void MakeLump(string name, Transform parent, Vector3 pos, float yaw, float hw, float hd, float h, int seed, Material mat, float tile, bool trunk)
+        {
+            var rnd = new System.Random(seed); var lp = new LumpP { hw = hw, hd = hd, h = h, seed = seed, tile = tile };
+            if (trunk) { lp.n = 2f; lp.K = 26; lp.R = 20; lp.body = .52f; lp.top = .82f; lp.flareT = .26f; lp.lobes = 3 + rnd.Next(3); lp.lobeAmp = .34f; lp.lobeDecay = .38f; lp.noise = .16f; lp.lean = .10f; lp.jag = .55f; lp.topBump = .06f; }
+            else { lp.n = Mathf.Lerp(2.1f, 3.4f, (float)rnd.NextDouble()); lp.body = Mathf.Lerp(.68f, .9f, (float)rnd.NextDouble()); lp.top = Mathf.Lerp(.45f, .8f, (float)rnd.NextDouble()); lp.flareT = Mathf.Lerp(.2f, .4f, (float)rnd.NextDouble()); lp.lobes = 3 + rnd.Next(4); lp.lobeAmp = Mathf.Lerp(.14f, .28f, (float)rnd.NextDouble()); lp.lobeDecay = Mathf.Lerp(.3f, .5f, (float)rnd.NextDouble()); lp.noise = Mathf.Lerp(.10f, .22f, (float)rnd.NextDouble()); lp.lean = Mathf.Lerp(.05f, .26f, (float)rnd.NextDouble()); lp.topBump = Mathf.Lerp(.12f, .26f, (float)rnd.NextDouble()); lp.jag = 0f; lp.dome = Mathf.Lerp(.16f, .34f, (float)rnd.NextDouble()); lp.top = Mathf.Min(lp.top, .66f); }
+            var go = new GameObject(name); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(pos, Quaternion.Euler(0, yaw, 0));
+            go.AddComponent<MeshFilter>().sharedMesh = LumpMesh(lp); var r = go.AddComponent<MeshRenderer>(); r.sharedMaterial = mat; r.shadowCastingMode = ShadowCastingMode.On;
+        }
+        class LumpP { public float dome = 0f, hw, hd, h, n = 2.8f, body = .82f, top = .7f, flareT = .3f, lobeAmp = .18f, lobeDecay = .4f, noise = .12f, lean = .12f, jag = 0f, topBump = .12f, tile = 2.4f, sink = .25f; public int K = 28, R = 10, lobes = 5, seed; }
+        // Organic mass: stacked rings (superellipse footprint, never larger than hw x hd), base lobes spreading like roots, taper, lean, noise-rough sides, bumpy / jagged top. Local space, base at y=0 (ring 0 is sunk below ground).
+        static Mesh LumpMesh(LumpP p)
+        {
+            var rnd = new System.Random(p.seed); float ph = (float)rnd.NextDouble() * 6.283f, nx = (float)rnd.NextDouble() * 80f, nz0 = (float)rnd.NextDouble() * 80f, la = (float)rnd.NextDouble() * 6.283f;
+            var lean = new Vector2(Mathf.Cos(la), Mathf.Sin(la)) * p.lean * Mathf.Min(p.hw, p.hd); var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
+            int K = p.K, R = p.R; float perim = Mathf.PI * (p.hw + p.hd);
+            for (int j = 0; j <= R; j++)
+            {
+                float t = j / (float)R, y = Mathf.Lerp(-p.sink, p.h, t);
+                float s = Mathf.Lerp(1f, p.body, Smooth(0f, p.flareT, t)) * Mathf.Lerp(1f, p.top, Smooth(p.flareT, 1f, t)); float lamp = p.lobeAmp * (1f - Smooth(0f, p.lobeDecay, t));
+                for (int k = 0; k <= K; k++)
+                {
+                    float th = k / (float)K * 6.2831853f, c = Mathf.Cos(th), sn = Mathf.Sin(th);
+                    float rb = Mathf.Pow(Mathf.Pow(Mathf.Abs(c) / p.hw, p.n) + Mathf.Pow(Mathf.Abs(sn) / p.hd, p.n), -1f / p.n);
+                    float lobe = 0.5f + 0.5f * Mathf.Cos(p.lobes * th + ph + t * 0.8f);
+                    float nv = Mathf.PerlinNoise(nx + c * 1.4f + 5f, nz0 + sn * 1.4f + t * 2.3f);
+                    float rad = rb * s * (1f - lamp * (1f - lobe)) * (1f - p.noise * nv);                  // every factor <= 1: the footprint is a hard upper bound
+                    float yy = y; if (j == R && p.jag > 0f) yy += p.jag * (Mathf.Abs(Mathf.Sin(th * 2.5f + ph)) * 0.55f - 0.2f);
+                    var sh = lean * (t * t);
+                    verts.Add(new Vector3(c * rad + sh.x, yy, sn * rad + sh.y)); uvs.Add(new Vector2(k / (float)K * perim / p.tile, (y + p.sink) / p.tile));
+                }
+            }
+            int stride = K + 1; var sideTris = new List<int>();
+            for (int j = 0; j < R; j++) for (int k = 0; k < K; k++)
+                {
+                    int a0 = j * stride + k, a1 = a0 + 1, b0 = a0 + stride, b1 = b0 + 1;
+                    sideTris.AddRange(new[] { a0, b0, a1, a1, b0, b1 });
+                }
+            { var va = verts[sideTris[0]]; var vb = verts[sideTris[1]]; var vc = verts[sideTris[2]]; if (Vector3.Dot(Vector3.Cross(vb - va, vc - va), new Vector3(va.x - lean.x * 0f, 0, va.z)) < 0f) for (int i = 0; i < sideTris.Count; i += 3) { int tmp = sideTris[i + 1]; sideTris[i + 1] = sideTris[i + 2]; sideTris[i + 2] = tmp; } }
+            tris.AddRange(sideTris);
+            // top cap: concentric rings shrinking to the centre, bumpy heights, planar uv (no pole pinch)
+            int ringBase = verts.Count; var topRing = new List<Vector3>(); for (int k = 0; k < K; k++) topRing.Add(verts[R * stride + k]);
+            var cen = Vector3.zero; foreach (var v in topRing) cen += v; cen /= K; float[] sc = { 1f, .68f, .36f }; int ringsN = sc.Length;
+            for (int r = 0; r < ringsN; r++) for (int k = 0; k < K; k++)
+                {
+                    var v = topRing[k]; var q = new Vector3(Mathf.Lerp(cen.x, v.x, sc[r]), v.y, Mathf.Lerp(cen.z, v.z, sc[r]));
+                    float bump = (Mathf.PerlinNoise(nx + q.x * 1.7f, nz0 + q.z * 1.7f) - .45f) * p.topBump * p.h * (r == 0 ? .5f : 1f) * 2f; q.y = Mathf.Max(v.y + bump, v.y - .25f * p.h) + p.h * p.dome * (1f - sc[r] * sc[r]); if (p.jag > 0f && r > 0) q.y -= p.jag * .3f * (r / (float)ringsN);
+                    verts.Add(q); uvs.Add(new Vector2(q.x, q.z) / p.tile);
+                }
+            int centerIdx = verts.Count; verts.Add(new Vector3(cen.x, topRing.Count > 0 ? cen.y - (p.jag > 0f ? p.jag * .35f : -p.topBump * p.h * .25f) : cen.y, cen.z)); uvs.Add(new Vector2(cen.x, cen.z) / p.tile);
+            var capTris = new List<int>();
+            for (int r = 0; r < ringsN - 1; r++) for (int k = 0; k < K; k++)
+                {
+                    int k1 = (k + 1) % K; int o0 = ringBase + r * K + k, o1 = ringBase + r * K + k1, i0 = ringBase + (r + 1) * K + k, i1 = ringBase + (r + 1) * K + k1;
+                    capTris.AddRange(new[] { o0, i0, o1, o1, i0, i1 });
+                }
+            for (int k = 0; k < K; k++) { int k1 = (k + 1) % K; capTris.AddRange(new[] { ringBase + (ringsN - 1) * K + k, centerIdx, ringBase + (ringsN - 1) * K + k1 }); }
+            for (int i = 0; i < capTris.Count; i += 3) { var va = verts[capTris[i]]; var vb = verts[capTris[i + 1]]; var vc = verts[capTris[i + 2]]; if (Vector3.Cross(vb - va, vc - va).y < 0f) { int tmp = capTris[i + 1]; capTris[i + 1] = capTris[i + 2]; capTris[i + 2] = tmp; } }   // cap faces up
+            tris.AddRange(capTris);
+            var m = new Mesh { name = "Lump", indexFormat = IndexFormat.UInt32 }; m.SetVertices(verts); m.SetUVs(0, uvs); m.SetTriangles(tris, 0); m.RecalculateNormals();
+            var nrm = m.normals; for (int j = 0; j <= R; j++) { var n = (nrm[j * stride] + nrm[j * stride + K]).normalized; nrm[j * stride] = n; nrm[j * stride + K] = n; } m.normals = nrm;   // hide the uv seam
+            m.RecalculateBounds(); m.RecalculateTangents(); return m;
+        }
+        // irregular tube along a path (roots / limbs); the end is a flat broken cap when capEnd is set
+        static Mesh TubeMesh(List<Vector3> path, float r0, float r1, int sides, int seed, float tile, bool capEnd, float irregular)
+        {
+            var rnd = new System.Random(seed); int M = path.Count; var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>(); float along = 0f; float ph = (float)rnd.NextDouble() * 6.28f;
+            for (int i = 0; i < M; i++)
+            {
+                var tg = (path[Mathf.Min(i + 1, M - 1)] - path[Mathf.Max(i - 1, 0)]).normalized; var n = Vector3.Cross(tg, Vector3.up); if (n.sqrMagnitude < 1e-4f) n = Vector3.Cross(tg, Vector3.right); n.Normalize(); var b = Vector3.Cross(tg, n);
+                if (i > 0) along += (path[i] - path[i - 1]).magnitude; float r = Mathf.Lerp(r0, r1, i / (M - 1f));
+                for (int k = 0; k <= sides; k++)
+                {
+                    float th = k / (float)sides * 6.2831853f; float rr = r * (1f + irregular * 0.18f * (Mathf.PerlinNoise(seed * .01f + k * .9f, i * .7f) - .5f) * 2f);
+                    verts.Add(path[i] + (Mathf.Cos(th) * n + Mathf.Sin(th) * b) * rr); uvs.Add(new Vector2(k / (float)sides * 6.2831853f * r0 / tile, along / tile));
+                }
+            }
+            int stride = sides + 1;
+            for (int i = 0; i < M - 1; i++) for (int k = 0; k < sides; k++)
+                {
+                    int a0 = i * stride + k, a1 = a0 + 1, b0 = a0 + stride, b1 = b0 + 1; int[] tr = { a0, b0, a1, a1, b0, b1 };
+                    for (int q = 0; q < 6; q += 3) { var va = verts[tr[q]]; var vb = verts[tr[q + 1]]; var vc = verts[tr[q + 2]]; var cen = path[i]; if (Vector3.Dot(Vector3.Cross(vb - va, vc - va), (va + vb + vc) / 3f - cen) < 0f) { int tmp = tr[q + 1]; tr[q + 1] = tr[q + 2]; tr[q + 2] = tmp; } }
+                    tris.AddRange(tr);
+                }
+            if (capEnd)
+            {
+                int c = verts.Count; verts.Add(path[M - 1] + (path[M - 1] - path[M - 2]).normalized * 0.02f); uvs.Add(new Vector2(.5f, .5f)); int last = (M - 1) * stride;
+                for (int k = 0; k < sides; k++) { int a = last + k, bb = last + k + 1; var va = verts[a]; var vb = verts[bb]; var vc = verts[c]; var o = (path[M - 1] - path[M - 2]); if (Vector3.Dot(Vector3.Cross(vb - va, vc - va), o) < 0f) { tris.AddRange(new[] { a, c, bb }); } else tris.AddRange(new[] { a, bb, c }); }
+            }
+            var m = new Mesh { name = "Tube", indexFormat = IndexFormat.UInt32 }; m.SetVertices(verts); m.SetUVs(0, uvs); m.SetTriangles(tris, 0); m.RecalculateNormals(); m.RecalculateBounds(); m.RecalculateTangents(); return m;
+        }
 
         // world-space auto UVs (tile = metres per texture repeat) so scaled cubes keep one texel density
         static void WorldUv(ProBuilderMesh pb, float tile)
@@ -505,8 +602,7 @@ namespace Exoduser
                         while (FpHitsWalk(fp) && sh++ < 10) { w *= .85f; d *= .85f; fp.hw = w * .5f; fp.hd = d * .5f; }
                         if (FpHitsWalk(fp) || w < 0.3f) { made.Add("skipped(no room)"); continue; }
                         float hh = Mathf.Min(0.5f + 0.1f * Mathf.Sqrt(cl.Count), SouthOfWalk(Mathf.FloorToInt(mx / T), Mathf.FloorToInt(-mz / T)) ? 0.9f : 1.5f);
-                        var pb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); pb.name = "Fill_" + (count++).ToString("00"); pb.transform.SetParent(root, false); pb.transform.localScale = new Vector3(w, hh, d);
-                        pb.transform.SetPositionAndRotation(new Vector3(mx, gy + hh * .5f - .1f, mz), Quaternion.Euler(0, yaw, 0)); pb.GetComponent<MeshRenderer>().sharedMaterial = mats.Mass; WorldUv(pb, 2.4f); fps.Add(fp); made.Add(pb.name);
+                        string fname = "Fill_" + (count++).ToString("00"); MakeLump(fname, root, new Vector3(mx, gy, mz), yaw, fp.hw, fp.hd, hh, 7000 + count * 17, mats.Mass, 2.4f, false); fps.Add(fp); made.Add(fname);
                     }
                     filled++;
                 }
@@ -516,6 +612,104 @@ namespace Exoduser
             }
             File.WriteAllText(Root + "/Data/rm1_islands.json", "{\"rule\":\"every blocked island (<=100 tiles) and every thin protrusion of a larger mass (distWalk<=3 and <=36 of 81 blocked tiles within 4 tiles) must be covered by a 3D object; uncovered clusters get a filler placed only on blocked tiles\",\"window\":[60,138,140,192],\"items\":[" + string.Join(",", report) + "]}");
             Debug.Log("[RM1] islands/protrusions checked=" + report.Count + " filled clusters=" + filled);
+        }
+
+
+        // ---------------------------------------------------------------- W5/W4: grass (LIFE1 colours, clustered, darker than the floor) + procedural alpha cards
+        static Color32 Lerp32(Color a, Color b, float t) { return (Color32)Color.Lerp(a, b, t); }
+        static void AddGrass(TerrainData td)
+        {
+            var path = GenDir + "/grass_blade_proc.png"; const int S = 128; var px = new Color32[S * S];
+            Color baseC = new Color(.06f, .04f, .035f), tipC = new Color(.25f, .135f, .105f);   // LIFE1 baseColor / tipColor
+            var rnd = new System.Random(77);
+            for (int b = 0; b < 7; b++)
+            {
+                float x0 = 24 + b * 13f + (float)rnd.NextDouble() * 6f, dx = ((float)rnd.NextDouble() - .5f) * 46f, tip = 70f + (float)rnd.NextDouble() * 48f, w0 = 4.2f + (float)rnd.NextDouble() * 2f;
+                for (int k = 0; k <= 80; k++)
+                {
+                    float t = k / 80f; float cx = x0 + dx * Mathf.Pow(t, 1.6f), cy = tip * t, r = Mathf.Max(0.6f, w0 * Mathf.Pow(1f - t, .8f));
+                    var col = Lerp32(baseC, tipC, Mathf.Clamp01(t * 1.15f));
+                    for (int yy = -6; yy <= 6; yy++) for (int xx = -6; xx <= 6; xx++)
+                        {
+                            int X = Mathf.RoundToInt(cx) + xx, Y = Mathf.RoundToInt(cy) + yy; if (X < 0 || Y < 0 || X >= S || Y >= S) continue;
+                            float d = Mathf.Sqrt(xx * xx + yy * yy); if (d > r) continue; float a = Mathf.Clamp01((r - d) * 1.5f);
+                            var o = px[Y * S + X]; if (a * 255f > o.a) { col.a = (byte)(a * 255f); px[Y * S + X] = col; }
+                        }
+                }
+            }
+            for (int x = 0; x < S; x++) for (int y = 0; y < 14; y++) { var o = px[y * S + x]; if (o.a == 0) continue; float ao = Mathf.Lerp(.55f, 1f, y / 14f); px[y * S + x] = new Color32((byte)(o.r * ao), (byte)(o.g * ao), (byte)(o.b * ao), o.a); }   // base AO
+            var tex = new Texture2D(S, S, TextureFormat.RGBA32, false); tex.SetPixels32(px); File.WriteAllBytes(path, tex.EncodeToPNG()); UnityEngine.Object.DestroyImmediate(tex); AssetDatabase.ImportAsset(path);
+            var ti = AssetImporter.GetAtPath(path) as TextureImporter; if (ti != null) { ti.alphaIsTransparency = true; ti.wrapMode = TextureWrapMode.Clamp; ti.mipmapEnabled = false; ti.SaveAndReimport(); }
+            var dp = new DetailPrototype { prototypeTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(path), usePrototypeMesh = false, renderMode = DetailRenderMode.GrassBillboard, minWidth = .30f, maxWidth = .52f, minHeight = .32f, maxHeight = .55f, noiseSpread = .35f,
+                healthyColor = new Color(1f, .94f, .90f), dryColor = new Color(.82f, .84f, .68f) };   // tintFleshy / tintOlive
+            td.detailPrototypes = new[] { dp }; td.SetDetailResolution(256, 16);
+            var map = new int[256, 256]; var segs = RiverSegs(); int used = 0;
+            for (int i = 0; i < 256; i++) for (int j = 0; j < 256; j++)
+                {
+                    float X = TX0 + (TX1 - TX0) * (j / 255f), Y = TY1 - (TY1 - TY0) * (i / 255f);
+                    if (!Walk(Mathf.FloorToInt(X), Mathf.FloorToInt(Y)) || DistToSegs(segs, X, Y) < 3.4f) continue;
+                    float n = Mathf.PerlinNoise(X * .11f + 5f, Y * .11f + 9f) * .65f + Mathf.PerlinNoise(X * .37f, Y * .37f) * .35f;   // clustered: only inside high-noise patches
+                    if (n > .76f && Hash(i, j) < .15f) { map[i, j] = 1 + (Hash(j, i) < .4f ? 1 : 0); used++; }
+                }
+            td.SetDetailLayer(0, 0, 0, map); td.wavingGrassStrength = .35f; td.wavingGrassAmount = .3f; td.wavingGrassSpeed = .5f;
+            Debug.Log("[RM1] grass clumps=" + used);
+        }
+        // procedural alpha card (blurred): fg = hanging/rising root tangles, bg = dead-tree silhouettes fading into haze
+        static Texture2D ProcCard(string path, int seed, bool fg)
+        {
+            const int S = 256; var a = new float[S * S]; var rnd = new System.Random(seed);
+            void Stamp(float cx, float cy, float r, float v) { int ri = Mathf.CeilToInt(r) + 1; for (int yy = -ri; yy <= ri; yy++) for (int xx = -ri; xx <= ri; xx++) { int X = Mathf.RoundToInt(cx) + xx, Y = Mathf.RoundToInt(cy) + yy; if (X < 0 || Y < 0 || X >= S || Y >= S) continue; float d = Mathf.Sqrt(xx * xx + yy * yy); if (d > r) continue; int ix = Y * S + X; a[ix] = Mathf.Max(a[ix], v * Mathf.Clamp01((r - d) * 1.2f)); } }
+            void Branch(Vector2 p, float ang, float len, float w, int depth)
+            {
+                int steps = Mathf.Max(6, (int)len); for (int k = 0; k < steps; k++) { float t = k / (float)steps; p += new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)); ang += ((float)rnd.NextDouble() - .5f) * (fg ? .5f : .22f); Stamp(p.x, p.y, Mathf.Max(1.3f, w * (1f - t * .8f)), 1f); if (depth > 0 && rnd.NextDouble() < (fg ? .035 : .05)) Branch(p, ang + ((float)rnd.NextDouble() - .5f) * 1.7f, len * .55f, w * .6f, depth - 1); }
+            }
+            if (fg) { for (int r = 0; r < 6; r++) Branch(new Vector2(30 + r * 38 + (float)rnd.NextDouble() * 20, 0), 1.45f + ((float)rnd.NextDouble() - .5f) * .9f, 120 + (float)rnd.NextDouble() * 80, 9 + (float)rnd.NextDouble() * 6, 3); }
+            else { Branch(new Vector2(S * .5f, 0), 1.5708f + ((float)rnd.NextDouble() - .5f) * .08f, 150, 11, 4); Branch(new Vector2(S * .5f + 4, 60), 1.0f, 70, 5, 2); Branch(new Vector2(S * .5f - 4, 85), 2.15f, 70, 5, 2); }
+            for (int pass = 0; pass < 2; pass++)   // two box blurs (radius 3) = out-of-focus layer
+            {
+                var t = new float[S * S];
+                for (int y = 0; y < S; y++) for (int x = 0; x < S; x++) { float sum = 0; int n = 0; for (int k = -3; k <= 3; k++) { int X = Mathf.Clamp(x + k, 0, S - 1); sum += a[y * S + X]; n++; } t[y * S + x] = sum / n; }
+                for (int y = 0; y < S; y++) for (int x = 0; x < S; x++) { float sum = 0; int n = 0; for (int k = -3; k <= 3; k++) { int Y = Mathf.Clamp(y + k, 0, S - 1); sum += t[Y * S + x]; n++; } a[y * S + x] = sum / n; }
+            }
+            var px = new Color32[S * S];
+            for (int y = 0; y < S; y++) for (int x = 0; x < S; x++) { float v = a[y * S + x] * (fg ? 1f : Mathf.Lerp(.35f, 1f, y / (float)S)); float edge = Mathf.Clamp01(Mathf.Min(Mathf.Min(x, S - 1 - x), S - 1 - y) / 10f); px[y * S + x] = new Color32(255, 255, 255, (byte)(Mathf.Clamp01(v) * edge * 255f)); }
+            var tex = new Texture2D(S, S, TextureFormat.RGBA32, false); tex.SetPixels32(px); File.WriteAllBytes(path, tex.EncodeToPNG()); UnityEngine.Object.DestroyImmediate(tex); AssetDatabase.ImportAsset(path);
+            var ti = AssetImporter.GetAtPath(path) as TextureImporter; if (ti != null) { ti.alphaIsTransparency = true; ti.wrapMode = TextureWrapMode.Clamp; ti.mipmapEnabled = false; ti.SaveAndReimport(); }
+            return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        }
+        // far layer: dead-tree silhouette cards beyond the outer masses, never south of the walk area (they must not block the camera view of the combat floor)
+        static void BuildBgCards(Transform parent, Mats mats)
+        {
+            var root = new GameObject("Background Cards").transform; root.SetParent(parent, false); var rnd = new System.Random(1106); var placed = new List<Vector2>(); int n = 0;
+            for (int guard = 0; guard < 4000 && n < 16; guard++)
+            {
+                int tx = rnd.Next(TX0 + 2, TX1 - 2), ty = rnd.Next(TY0 + 2, TY1 - 2); if (Walk(tx, ty) || distWalk[ty, tx] < 6 || distWalk[ty, tx] > 14 || SouthOfWalk(tx, ty)) continue;
+                var c = new Vector2(tx, ty); bool ok = true; foreach (var p in placed) if ((p - c).magnitude < 9f) { ok = false; break; } if (!ok) continue; placed.Add(c);
+                var q = GameObject.CreatePrimitive(PrimitiveType.Quad); q.name = "BG_Tree_" + (n++).ToString("00"); UnityEngine.Object.DestroyImmediate(q.GetComponent<Collider>()); q.transform.SetParent(root, false);
+                float h = Mathf.Lerp(5.5f, 9f, (float)rnd.NextDouble()), w = h * 0.8f; var wp = W(tx + .5f, ty + .5f); float gy = GroundY(wp.x, wp.z);
+                q.transform.SetPositionAndRotation(new Vector3(wp.x, gy + h * .5f - .3f, wp.z), Quaternion.Euler(Pitch * Mathf.Rad2Deg, 0, 0)); q.transform.localScale = new Vector3(w * (rnd.NextDouble() < .5 ? 1f : -1f), h, 1f);
+                var qr = q.GetComponent<MeshRenderer>(); qr.sharedMaterial = mats.BgTree; qr.shadowCastingMode = ShadowCastingMode.Off; qr.receiveShadows = false;
+            }
+            Debug.Log("[RM1] bg cards=" + n);
+        }
+
+        // ---------------------------------------------------------------- FPS: same START view, 3D layer (World root) on vs off, 1600x900, 240 frames each
+        public static void Fps()
+        {
+            var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
+            var outJson = Arg("-out", "rm1-fps.json"); Load(); EditorSceneManager.OpenScene(ScenePath);
+            var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
+            var w0 = W(100f, 185f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); brain.ManualUpdate();
+            var world = GameObject.Find("World"); var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
+            var tex = new Texture2D(4, 4, TextureFormat.RGB24, false); var res = new List<string>();
+            foreach (var on in new[] { true, false, true })
+            {
+                world.SetActive(on); for (int i = 0; i < 20; i++) cam.Render(); RenderTexture.active = rt; tex.ReadPixels(new Rect(0, 0, 4, 4), 0, 0);
+                var sw = System.Diagnostics.Stopwatch.StartNew(); const int N = 240; for (int i = 0; i < N; i++) cam.Render(); RenderTexture.active = rt; tex.ReadPixels(new Rect(0, 0, 4, 4), 0, 0); sw.Stop();
+                res.Add("{\"world3d\":" + (on ? "true" : "false") + ",\"frames\":" + N + ",\"ms\":" + sw.ElapsedMilliseconds + ",\"fps\":" + (N * 1000.0 / sw.ElapsedMilliseconds).ToString("F1") + "}");
+            }
+            RenderTexture.active = null; cam.targetTexture = null; Directory.CreateDirectory(Path.GetDirectoryName(outJson) ?? "."); File.WriteAllText(outJson, "{\"gpu\":\"" + SystemInfo.graphicsDeviceName + "\",\"note\":\"batchmode camera.Render loop (editor), no vsync cap; relative on/off comparison\",\"runs\":[" + string.Join(",", res) + "]}");
+            Debug.Log("[RM1] fps done " + string.Join(" ", res));
         }
 
         // ---------------------------------------------------------------- decals (quad decals until the URP Decal feature lands)
@@ -631,6 +825,7 @@ namespace Exoduser
         }
 
         // ---------------------------------------------------------------- camera: LOOK-001 perspective (pitch .85 rad elevation, distance 1400px = 14u, vertical FOV = 2*atan(H/(2*1400)))
+        static Material FgMat;
         static Transform BuildCamera()
         {
             var camGo = new GameObject("Main Camera") { tag = "MainCamera" }; var cam = camGo.AddComponent<Camera>();
@@ -639,6 +834,14 @@ namespace Exoduser
             var offset = new Vector3(0, Mathf.Sin(Pitch), -Mathf.Cos(Pitch)) * DistU; var start = W(100f, 185f);
             camGo.transform.SetPositionAndRotation(start + offset, Quaternion.Euler(Pitch * Mathf.Rad2Deg, 0, 0));
             camGo.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = true;
+            // W4 foreground layer: two blurred root cards in the lower screen corners, parented to the camera (they follow the view)
+            float fz = 6.5f; var fgRoot = new GameObject("Foreground Cards"); fgRoot.transform.SetParent(camGo.transform, false);
+            foreach (var (nm, lx, ly, sc) in new[] { ("FG_Roots_L", -3.15f, -1.72f, 1.5f), ("FG_Roots_R", 3.2f, -1.78f, 1.3f) })
+            {
+                var q = GameObject.CreatePrimitive(PrimitiveType.Quad); q.name = nm; UnityEngine.Object.DestroyImmediate(q.GetComponent<Collider>()); q.transform.SetParent(fgRoot.transform, false);
+                q.transform.localPosition = new Vector3(lx, ly, fz); q.transform.localScale = new Vector3(sc * (lx < 0 ? 1f : -1f), sc * .85f, 1f);
+                var qr = q.GetComponent<MeshRenderer>(); qr.sharedMaterial = FgMat; qr.shadowCastingMode = ShadowCastingMode.Off; qr.receiveShadows = false;
+            }
             camGo.AddComponent<CinemachineBrain>().DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.Cut, 0); camGo.AddComponent<AudioListener>();
 
             var marker = new GameObject("Player Marker"); marker.transform.position = new Vector3(start.x, GroundY(start.x, start.z), start.z);
@@ -707,6 +910,11 @@ namespace Exoduser
             terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             RPt rp = null; foreach (var p in river.rivers.R) if (p.ty == 182) rp = p;
             var focus = new Dictionary<string, Vector2> { { "start", new Vector2(100f, 185f) }, { "r2", new Vector2(112f, 152f) }, { "river", new Vector2((rp != null ? rp.tx : 124f) - 8f, 181f) } };
+            if (Arg("-shape", "0") == "1")
+            {   // shape check only: neutral flat light so silhouettes can be judged independent of the (dark) hell lighting; the saved scene is untouched
+                RenderSettings.ambientMode = AmbientMode.Flat; RenderSettings.ambientLight = new Color(.5f, .48f, .47f); RenderSettings.fog = false;
+                foreach (var l in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) if (l.type == LightType.Directional) { l.intensity = 1.7f; l.color = Color.white; }
+            }
             bool capsule = Arg("-capsule", "0") == "1";
             GameObject cap = null;
             if (capsule)
@@ -719,12 +927,25 @@ namespace Exoduser
             foreach (var cut in cuts)
             {
                 if (cut == "top") { CaptureTop(outDir); continue; }
-                if (!focus.TryGetValue(cut, out var f)) continue;
-                var w = W(f.x, f.y); marker.position = new Vector3(w.x, GroundY(w.x, w.z), w.z);
+                if (cut == "close" || cut == "trunk")
+                {   // close-up: the Mass_* nearest to START (close) or the first Trunk_* (trunk) centred on the marker
+                    Transform best = null; float bd = 1e9f; var s0 = W(112f, 152f);
+                    foreach (Transform ch in GameObject.Find("Blockout").transform)
+                    {
+                        bool isM = cut == "close" && ch.name.StartsWith("Mass_"); bool isT = cut == "trunk" && ch.name.StartsWith("Trunk_") && !ch.name.Contains("Limb");
+                        if (!isM && !isT) continue; float d = new Vector2(ch.position.x - s0.x, ch.position.z - s0.z).magnitude; if (cut == "close" && d < 3f) continue; if (isM && d < bd || isT && best == null) { bd = d; best = ch; }
+                    }
+                    if (best == null) continue; marker.position = best.position + new Vector3(0, 0.2f, -2.2f);
+                }
+                else
+                {
+                    if (!focus.TryGetValue(cut, out var f)) continue;
+                    var w = W(f.x, f.y); marker.position = new Vector3(w.x, GroundY(w.x, w.z), w.z);
+                }
                 var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
                 brain.ManualUpdate(); cam.Render();
                 RenderTexture.active = rt; var tex = new Texture2D(1600, 900, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, 1600, 900), 0, 0); tex.Apply();
-                File.WriteAllBytes(Path.Combine(outDir, "rm1_" + cut + (capsule ? "_cap" : "") + ".png"), tex.EncodeToPNG()); RenderTexture.active = null; cam.targetTexture = null;
+                File.WriteAllBytes(Path.Combine(outDir, "rm1_" + cut + (capsule ? "_cap" : "") + (Arg("-shape", "0") == "1" ? "_shape" : "") + ".png"), tex.EncodeToPNG()); RenderTexture.active = null; cam.targetTexture = null;
                 UnityEngine.Object.DestroyImmediate(tex); rt.Release();
                 Debug.Log("[RM1] captured " + cut);
             }
