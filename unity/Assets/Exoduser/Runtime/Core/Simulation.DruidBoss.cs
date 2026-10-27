@@ -43,12 +43,15 @@ namespace Exoduser.UnityPort.Core
             webOwner[web] = e;
             AddEnemy(e);
             Druid.ClearHazards();
+            Druid.Remodel = DruidRemodel;
             Druid.Attach(e);
+            if (DruidRemodel) RemodelAttach(e);
             return e;
         }
 
         void DruidBossTick(EnemyState e)
         {
+            if (DruidRemodel && RemodelPreTick(e)) return;   // RM-B1: kneeling between lives
             if (Druid != null && (Config.StageIndex == 0 || Config.StageIndex == 3)) Druid.TickBoss(e); else TickEnemy(e);
         }
 
