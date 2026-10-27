@@ -321,6 +321,13 @@
 - 수치(조건부 인정, 재녹음 뒤 같은 방법으로 다시 잼): SFX 그룹 Compressor(임계 −9.2dB·attack 10ms·release 40ms) → R2 피크 −4.44dBFS(3회 −3.6~−4.4)·RMS −0.79dB / 덕킹 임계 −45dB·ratio 1.33·Tell Send pre-fader → Ambience Explore −4.07dB·Boss −4.18dB, EnemyHit 깊이 미확정 / 그룹 RMS 1초 창 중앙값 Music Explore −30.5·Boss −27.8, Ambience Explore −38.7·Boss −46.6, SFX Explore −23.3·Boss −22.8 → Ambience−Music −8.2dB, Boss Ambience −7.84dB / 기술 11 텔레그래프 frame 6334 1회 / `fireball` R2 3회(.90·Skill).
 - 남은 순서: BGM 재시작 원인 판별(런타임/녹음 도구)·BGM 10초 연속성 r≥0.9 → 메아리 3건 수정 → 재녹음 → 총괄 수치 확인 → 사용자 청음.
 
+**재녹음 제출 판정 (2026-10-28, `4dd31bac3`, `E:/exoduser-wt/_out/rm1-sound/submit4/`)** — 수치 PASS, 사용자 청음 요청
+- BGM 되감김 원인(RM-0): AudioRenderer 오프라인 녹음 × 스트리밍 임포트 클립. 런타임 `NativeGameMusic`은 키가 바뀔 때만 Stop→Play. 실제 게임도 스트리밍 스레드에 기대지 않게 `Audio/Bgm` 임포트를 CompressedInMemory(.meta loadType 2→1)로 변경.
+- 총괄 재확인: `druid_full.wav` 100ms 조각을 `boss.mp3`와 대조, rec 4.0~5.4초가 원본 0.389→1.789초로 0.2초씩 연속(r=0.88~0.98). 자기상관 400ms 봉우리 소멸. 피크 드루이드 60초 −4.05dBFS·R2 −4.19dBFS, 0.9 이상 0.
+- 메아리 3건: 구르기 `footstep` 시작 frame / `footstep2` 끝 frame 분리(예: frame 532→549), `player_hit` 100ms 안 재발 DROPPED, Receipt 시간축 표기 버그 수정(TIME AXIS CHECK 0). null test 5키 꼬리 길이 원본과 같고 두 번째 사본 상관 ≤0.19 → 이중 재생 경로 없음.
+- 믹스: 피크 제어 2단(SFX Compressor −9.2dB/40ms + Master Compressor −8dB/10ms), R2 RMS 변화 −0.75dB·드루이드 −0.17dB. 그룹 RMS 중앙값 Music Explore −29.7·Boss −23.3, Ambience Explore −38.7·Boss −46.6, SFX Explore −24.0·Boss −23.9 → Ambience−Music −9.1dB, Boss Ambience −7.84dB. Ambience 덕킹 Explore −4.06·Boss −3.68dB. EnemyHit 덕킹 미확정(유지).
+- 청음 페이지 `http://127.0.0.1:3399/listen_trackA.html`(새 녹음 `druid_v2`·`r2_v2`), 시안 폴더 `tmp/design-review/20261028_rm1_sound/`.
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -353,3 +360,4 @@
 | 2026-10-28 | 사용자 청음 "메아리같이 들린다" → 원인 후보 3건(구르기 발소리 2개 같은 frame·플레이어 피격음 0.13초 3연속·host 이벤트 시간축 어긋남)+null test를 RM-0에 우선 지시(§6.7) |
 | 2026-10-28 | 사용자 "BGM 포함 전부 메아리" → 녹음 BGM이 0.4초마다 원본 앞부분으로 되돌아감을 원본 대조로 확인. 1차 녹음 무효, RM-0 최우선 지시(런타임/녹음 도구 원인 판별·BGM 연속성 r≥0.9 확인 후 재녹음) |
 | 2026-10-28 | 트랙 A 2차 제출(`5abee7623`) 판정: BGM 0.4초 반복·구르기 발소리 동시 재생 미수정으로 귀 판정 보류. 피크 제어·Ambience 덕킹·그룹 음량·기술 11·fireball은 수치 조건부 인정(재녹음 뒤 재측정), EnemyHit 덕킹 미확정 |
+| 2026-10-28 | 트랙 A 재녹음(`4dd31bac3`) 판정: BGM 되감김(오프라인 녹음×스트리밍 임포트, BGM CompressedInMemory로 변경)·메아리 3건 수정을 원본 대조로 재확인, 수치 PASS(EnemyHit 덕킹만 미확정). 1·2차 녹음 무효. 사용자 청음 요청 |
