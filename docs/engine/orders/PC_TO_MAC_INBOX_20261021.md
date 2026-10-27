@@ -223,3 +223,4 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
   - 제외 유지: `FirstPlayable.unity`, `SceneTemplateSettings.json`, `HudBlendCapture.cs.meta`, 재임포트 `.meta`.
 - **Codex 조치**: C01 → B07 순서로 `unity/main`에 병합(비강제 push). 병합 후 Unity 컴파일 오류 0을 확인하고, `unity/main` SHA를 Mac→PC 회신에 1줄로 남긴다.
 - 아직 남은 PC 브랜치: `claude/unity-pc-map3d-20261026`(이번 요청 아님).
+- **갱신(CTO 지시)**: PC가 직접 병합했다. unity/main `044c6f34c9c5038eaa5fa08479e8cc8cf8b69e77`. Codex는 병합하지 말고 pull만 한다. Unity 컴파일 오류 0 확인과 SHA 회신은 그대로 요청한다.
