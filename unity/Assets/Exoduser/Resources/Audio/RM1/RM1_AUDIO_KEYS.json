@@ -1,0 +1,243 @@
+{
+ "about": "RM-1 사운드 채택 11키 — 사용자 청음 채택(picks_rm1.json, 2026-10-27, 명세 docs/6사운드디자인/UNITY_RM1_SOUND_SLICE_20261027.md §6.4·§6.5). 파일은 SFX Forge 2차(_s2) 후보의 −1dBTP 가공본. 코드는 바꾸지 않은 데이터 전달용이며 트랙 A(믹서 구조)는 RM-0 병합 뒤 유니티 총괄 배정. 음량·쿨다운은 웹 1차값(시작값)이고 최종값은 녹음을 듣고 정한다.",
+ "mixer": {
+  "asset": "Exoduser.mixer(트랙 A에서 생성)",
+  "groups": "Master > Music·Ambience·SFX, SFX > Tell·PlayerHit·Skill·Voice·EnemyHit·Death·Step·UI",
+  "duck": "Tell 그룹 Send → EnemyHit·Ambience Duck Volume −4dB, attack 10ms, release 250ms"
+ },
+ "priorityTable": {
+  "TELL": 12,
+  "SKILL": 10,
+  "VOICE": 9,
+  "PLAYER_HIT": 8,
+  "DEATH": 4,
+  "STEP": 3,
+  "HIT": 2,
+  "PROJ": 1,
+  "AMB": 0
+ },
+ "keys": [
+  {
+   "key": "tell_melee",
+   "file": "Audio/RM1/tell_melee",
+   "use": "일반 근접몹 windup 진입(AD3 2단계)",
+   "mixerGroup": "SFX/Tell",
+   "category": "TELL",
+   "priority": 12,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.394,
+   "bytes": 7566,
+   "truePeakDbTP": -1.5,
+   "source": "s2 v3 (hit/tell_melee_s2/v3)",
+   "cooldownMs": 120,
+   "skipOffscreen": true,
+   "note": "주의 6kHz 이상 뒤 3.3% — 사용자 선택, 그대로"
+  },
+  {
+   "key": "tell_ranged",
+   "file": "Audio/RM1/tell_ranged",
+   "use": "원거리 몹 60f 공격링 시작",
+   "mixerGroup": "SFX/Tell",
+   "category": "TELL",
+   "priority": 12,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.529,
+   "bytes": 9656,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v3 (skill/tell_ranged_s2/v3)",
+   "cooldownMs": 120,
+   "skipOffscreen": true
+  },
+  {
+   "key": "tell_boss",
+   "file": "Audio/RM1/tell_boss",
+   "use": "드루이드 범위 기술 전조(RM-B1 기술 4·5·7·8·9·11·12 및 2·3의 범위 쪽). 웹은 드루이드 전조에만 사용",
+   "mixerGroup": "SFX/Tell",
+   "category": "TELL",
+   "priority": 12,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.703,
+   "bytes": 12163,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v3 (skill/tell_boss_s2/v3)",
+   "cooldownMs": 120,
+   "skipOffscreen": true
+  },
+  {
+   "key": "tell_grab",
+   "file": "Audio/RM1/tell_grab",
+   "use": "드루이드 잡기 전조(RM-B1 기술 6, 60f)",
+   "mixerGroup": "SFX/Tell",
+   "category": "TELL",
+   "priority": 12,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.838,
+   "bytes": 14671,
+   "truePeakDbTP": -1.4,
+   "source": "s2 v4 (skill/tell_grab_s2/v4)",
+   "cooldownMs": 120,
+   "skipOffscreen": true,
+   "note": "주의 6kHz 이상 뒤 37.6% — 사용자 선택 우선. 녹음에서 거슬리면 꼬리만 LP"
+  },
+  {
+   "key": "druid_erupt",
+   "file": "Audio/RM1/druid_erupt",
+   "use": "드루이드 굴파기 분출",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.5,
+   "durationSeconds": 0.479,
+   "bytes": 8820,
+   "truePeakDbTP": -1.7,
+   "source": "s2 v4 (skill/druid_erupt_s2/v4)"
+  },
+  {
+   "key": "druid_sink",
+   "file": "Audio/RM1/druid_sink",
+   "use": "1-1 마지막 사망 침강 도주(STY-D9), 대사 \"숲은 아직 배고프다…\" 앞",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.55,
+   "durationSeconds": 2.22,
+   "bytes": 36405,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v3 (skill/druid_sink_s2/v3)",
+   "note": "2.22초"
+  },
+  {
+   "key": "druid_tide",
+   "file": "Audio/RM1/druid_tide",
+   "use": "드루이드 독액 해일(P3 기술 10)",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.5,
+   "durationSeconds": 0.938,
+   "bytes": 15925,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v1 (skill/druid_tide_s2/v1)"
+  },
+  {
+   "key": "druid_roots_rise",
+   "file": "Audio/RM1/druid_roots_rise",
+   "use": "뿌리 기둥 4개 솟음(P1 진입). Unity 전용(웹에 대응 장면 없음)",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.5,
+   "durationSeconds": 0.978,
+   "bytes": 16761,
+   "truePeakDbTP": -1.9,
+   "source": "s2 v4 (skill/druid_roots_rise_s2/v4)",
+   "note": "주의 6kHz 이상 뒤 29.4% — 사용자 선택 우선"
+  },
+  {
+   "key": "druid_heartbeat",
+   "file": "Audio/RM1/druid_heartbeat",
+   "use": "P3 숲의 심장 박동. 박동 1회 = 1번 재생(3박, 박마다 45f). Unity 전용",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.5,
+   "durationSeconds": 0.738,
+   "bytes": 12999,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v4 (skill/druid_heartbeat_s2/v4)",
+   "playPerBeat": true,
+   "beatFrames": 45
+  },
+  {
+   "key": "amb_toxic_river",
+   "file": "Audio/RM1/amb_toxic_river",
+   "use": "1-1 양 사이드 독성 강 흐름(A8). 강 스플라인을 따라 12m 간격 루프 소스",
+   "mixerGroup": "Ambience",
+   "category": "AMB",
+   "priority": 0,
+   "spatial": {
+    "spatialBlend": 1.0,
+    "rolloff": "Logarithmic",
+    "minDistance": 4,
+    "maxDistance": 30
+   },
+   "startVolume": 0.15,
+   "durationSeconds": 6.5,
+   "bytes": 104950,
+   "truePeakDbTP": -2.0,
+   "source": "s2 v1 (ambient/amb_toxic_river_s2/v1) + 등전력 크로스페이드 1.5초(루프 6.5초, 이음매 RMS 차 3.7→0.4dB, 음색 변경 없음)",
+   "loop": true,
+   "sourceSpacingMeters": 12,
+   "note": "웹에는 없음"
+  },
+  {
+   "key": "toxic_bubble",
+   "file": "Audio/RM1/toxic_bubble",
+   "use": "독성 늪·수로 표면 기포 터짐(A8). 늪마다 원샷을 무작위 2~6초 간격으로",
+   "mixerGroup": "Ambience",
+   "category": "AMB",
+   "priority": 0,
+   "spatial": {
+    "spatialBlend": 1.0,
+    "rolloff": "Logarithmic",
+    "minDistance": 4,
+    "maxDistance": 30
+   },
+   "startVolume": 0.3,
+   "durationSeconds": 0.334,
+   "bytes": 6312,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v4 (hit/toxic_bubble_s2/v4)",
+   "oneShotIntervalSeconds": [
+    2,
+    6
+   ],
+   "note": "웹에는 없음"
+  }
+ ]
+}
