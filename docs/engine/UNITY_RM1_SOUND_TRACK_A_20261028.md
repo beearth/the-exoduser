@@ -119,6 +119,12 @@ SFX 단계 하나로는 R2 피크와 전체 RMS 변화(≤ 1 dB)를 함께 맞�
 
 | 설정 | R2 피크 | R2 RMS 변화(압축기 끈 기준) | 드루이드 피크 / RMS 변화 |
 |---|---|---|---|
-| SFX −9.2 dB / 40 ms + Master −8 dB / 10 ms | **−4.19 dBFS** | **−0.75 dB** | −4.05 dBFS / −0.17 dB |
+| SFX −6 dB / 40 ms + Master −8 dB / 10 ms (최종 기본값) | **−3.92 dBFS** | **−0.82 dB** | −3.95 dBFS / −0.18 dB |
 
 BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS는 §5와 다르다(1초 창 중앙값 / 전체, dBFS): Music Explore −29.7 / −27.1 · Music Boss −23.3 / −22.4 · Ambience Explore −38.7 / −38.7 · Ambience Boss −46.6 / −45.7 · SFX Explore −24.0 / −23.0 · SFX Boss −23.9 / −22.9. Ambience − Music(Explore, 중앙값) **−9.1 dB**. Ambience Boss − Explore 중앙값 −7.84 dB. 덕킹(Ambience, 예고 6회): Explore **−4.06 dB**, Boss **−3.68 dB**. EnemyHit 덕킹은 이번에는 다시 재지 않았다(A/B 녹음 내용 불일치로 §5와 같은 이유로 신뢰 못 함).
+
+### 6.1 결정론 수정과 EnemyHit 덕킹 (같은 날 추가)
+
+- 같은 키 30 ms 중복 차단이 `Time.realtimeSinceStartup`을 쓰고 있어 오프라인 녹음 속도에 따라 어느 소리가 걸러지는지가 실행마다 달랐다(A/B 녹음 내용 불일치의 원인). Core 틱(60/s)으로 바꿔 결정적으로 만들었다. 게임 안에서는 둘이 같은 33 ms이다.
+- 그 뒤 A/B 녹음의 예고 구간 밖 에너지 비는 ±0.02 dB(같은 내용). 덕킹 깊이(에너지 가중, 예고 구간 0.05~0.45초): **EnemyHit Explore −4.18 dB**(5창), Ambience Explore −3.95 dB, Ambience Boss −4.17 dB. 목표 −4±1 dB 충족.
+- 피크 제어 기본값을 SFX −6 dB / Master −8 dB로 정리(이전 −9.2 dB는 새 결정적 타임라인에서 RMS 변화가 −1.03 dB로 경계를 넘음).

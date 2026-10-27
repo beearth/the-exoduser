@@ -90,7 +90,7 @@ namespace Exoduser.UnityPort.Editor
                         }
                         if ((string)Get(fx, "effectName") == "Compressor")
                         {   // peak control behind the SFX fader (Unity's compressor has no ratio: above the threshold the gain follows the attack / release)
-                            foreach (var kv in new[] { new KeyValuePair<string, float>("Threshold", ((UnityEngine.Object)g).name == "Master" ? F("-masterThr", -8f) : F("-compThr", -9.2f)), new KeyValuePair<string, float>("Attack", F("-compAtk", 10f)), new KeyValuePair<string, float>("Release", ((UnityEngine.Object)g).name == "Master" ? F("-masterRel", 10f) : F("-compRel", 40f)), new KeyValuePair<string, float>("Make up gain", F("-compMakeup", 0f)) })
+                            foreach (var kv in new[] { new KeyValuePair<string, float>("Threshold", ((UnityEngine.Object)g).name == "Master" ? F("-masterThr", -8f) : F("-compThr", -6f)), new KeyValuePair<string, float>("Attack", F("-compAtk", 10f)), new KeyValuePair<string, float>("Release", ((UnityEngine.Object)g).name == "Master" ? F("-masterRel", 10f) : F("-compRel", 40f)), new KeyValuePair<string, float>("Make up gain", F("-compMakeup", 0f)) })
                             {
                                 var guid = Call(fx, "GetGUIDForParameter", kv.Key);
                                 foreach (var s in snaps) Call(s, "SetValue", guid, kv.Value);

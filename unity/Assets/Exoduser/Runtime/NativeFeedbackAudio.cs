@@ -136,7 +136,8 @@ namespace Exoduser.UnityPort
             Receipt.requested++;
             if(e.Source!=null){HandleLogical(e);return;}
             if(!clips.ContainsKey(e.SampleKey))throw new NotSupportedException("Audio sample outside admitted scope "+e.SampleKey);
-            double now=Time.realtimeSinceStartupAsDouble;var r=Make(e.SampleKey,e.Volume,e.QueuedRate,e.X!=0||e.Y!=0?World(e):Vector3.zero,e);
+            double now=e.Tick/60.0;   // Core clock (60 ticks/s): the same-key 30 ms rule must not depend on how fast the frames are rendered
+            var r=Make(e.SampleKey,e.Volume,e.QueuedRate,e.X!=0||e.Y!=0?World(e):Vector3.zero,e);
             if(e.SampleKey=="fireball"){r.volume=.9f;r.pitch=Jitter(.7f,.1f);}   // section 6.6: start values of the web E spell cast (vol .9, rate .7 +-.1), the Core only says 'a fireball was cast'
             if(e.SampleKey.StartsWith("tell_",StringComparison.Ordinal)){   // AD3: the same telegraph key at most once per 120 ms
                 if(lastAt.TryGetValue(e.SampleKey,out double lastTell)&&now-lastTell<.12){Receipt.dropped++;return;}
@@ -176,7 +177,7 @@ namespace Exoduser.UnityPort
         static string Line(int tick,string key,string source,string group,float volume,string file){return "frame="+tick+" key="+key+" from=\""+source+"\" group="+group+" vol="+volume.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+" file="+file;}
         void Queue(Req r)
         {
-            double now=Time.realtimeSinceStartupAsDouble;
+            double now=r.tick/60.0;   // Core clock, see HandleSample
             if(r.priority<PriSkill&&lastAt.TryGetValue(r.key,out double last)&&now-last<.03){Receipt.dropped++;return;}
             lastAt[r.key]=now;pending.Add(r);
         }
