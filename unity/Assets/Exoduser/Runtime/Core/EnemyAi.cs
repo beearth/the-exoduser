@@ -34,7 +34,10 @@ namespace Exoduser.UnityPort.Core
         void Shot(EnemySpawn e, ProjSpec shot);                  // _emitEnemyShot (60 frame warning ring, then spawnProj)
         void Proj(EnemySpawn e, ProjSpec shot);                  // spawnProj directly
         void Teleported(EnemySpawn e, double x, double y);       // teleportE arrival (presentation hook; the oracle records it)
-        void Zone(EnemySpawn e, string kind, double x, double y, double life, double r, double dmg);   // ground zones spawned as zero-speed bullets (web / trap / iceZone / blizzard)
+        void Zone(EnemySpawn e, string kind, double x, double y, double life, double r, double dmg, double el);   // ground zones spawned as zero-speed bullets (trap / iceZone / blizzard)
+        double DotDur();                                         // pDotDur()
+        double DotDmg();                                         // pDotDmg()
+        void HurtDot(EnemySpawn e, int damage, bool maliceHunt, double? atkEl);   // hurtE(e,dmg,undefined,true,{dot:true,[maliceHunt:true,]shieldHit:true},atkEl)
     }
 
     // Field enemy AI of the web updateE for the 1-1 etypes (game.html 38950~41493), the part after the shared head (CX-03a) and the DOT block:
@@ -42,7 +45,7 @@ namespace Exoduser.UnityPort.Core
     // and the contact + projectile shot of the idle state. Boss branches (ib), rare etypes (90~99) and the etypes of chapters 2..7 are not ported here.
     public static class EnemyAi
     {
-        const double EL_P = 0, EL_F = 1, EL_I = 2, EL_D = 3;
+        const double EL_P = 0, EL_F = 1, EL_I = 2, EL_D = 3, EL_L = 4;
         static readonly string[] ElCol = { "#bbbbbb", "#ff5522", "#3388ff", "#9933cc", "#ffee00", "#ff88cc", "#88aa44" };
         static readonly HashSet<int> NoProj = new HashSet<int> { 5, 9, 11, 20, 24, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59 };   // _noProjEtypes
         static readonly HashSet<int> KeepDistance = new HashSet<int> { 1, 7, 8, 9, 11, 16, 17, 21, 23, 25, 26, 31, 34, 38, 62 };
@@ -150,9 +153,81 @@ namespace Exoduser.UnityPort.Core
         // ============================================================================================================================================
         // updateE after "D4식 DOT": d = distance computed by the head
         // ============================================================================================================================================
+        // JS String(number) for the whole-number stack counts of the DOT texts
+        static string Num(double v) { return v == Math.Floor(v) && Math.Abs(v) < 1e15 ? ((long)v).ToString(System.Globalization.CultureInfo.InvariantCulture) : v.ToString("R", System.Globalization.CultureInfo.InvariantCulture); }
+
+        // "D4식 DOT" block of updateE (hit-damage pools drained once per second), then the timers of the hit marks and the ice / malice-hunt DOT
+        static void DotTick(IEnemyAiHost h, EnemySpawn e, double sp)
+        {
+            if (e.bleedT > 0)
+            {
+                e.bleedT -= sp / h.DotDur();
+                if (Math.Floor(e.bleedT / 60) < Math.Floor((e.bleedT + sp) / 60))
+                {
+                    double sec = Math.Max(1, Math.Ceiling(e.bleedT / 60));
+                    int dmg = Math.Max(1, Js.Int(e._bleedPool / sec * h.DotDmg()));
+                    e._bleedPool = Math.Max(0, e._bleedPool - Math.Max(1, Js.Int(e._bleedPool / sec)));
+                    double stk = Js.Or(e.bleedStk, 1);
+                    h.HurtDot(e, dmg, false, null); h.Text(e.x, e.y - 18, "🩸" + Num(stk) + " -" + dmg, "#cc2222", 20); h.Parts(e.x, e.y, "#880000", 1 + Js.Int(stk / 3));
+                }
+                if (e.bleedT <= 0) { e.bleed = 0; e.bleedStk = 0; e._bleedPool = 0; }
+            }
+            if (e.poisonT > 0)
+            {
+                e.poisonT -= sp / h.DotDur();
+                if (Math.Floor(e.poisonT / 60) < Math.Floor((e.poisonT + sp) / 60))
+                {
+                    double sec = Math.Max(1, Math.Ceiling(e.poisonT / 60));
+                    int dmg = Math.Max(1, Js.Int(e._poisonPool / sec * h.DotDmg()));
+                    e._poisonPool = Math.Max(0, e._poisonPool - Math.Max(1, Js.Int(e._poisonPool / sec)));
+                    double stk = Js.Or(e.poisonStk, 1);
+                    h.HurtDot(e, dmg, false, null); h.Parts(e.x, e.y, "#006600", 1 + Js.Int(stk / 3));
+                }
+                if (e.poisonT <= 0) { e.poison = 0; e.poisonStk = 0; e._poisonPool = 0; }
+            }
+            if (e.burnT > 0)
+            {
+                e.burnT -= sp / h.DotDur();
+                if (Math.Floor(e.burnT / 60) < Math.Floor((e.burnT + sp) / 60))
+                {
+                    double sec = Math.Max(1, Math.Ceiling(e.burnT / 60));
+                    int dmg = Math.Max(1, Js.Int(e._burnPool / sec * h.DotDmg()));
+                    e._burnPool = Math.Max(0, e._burnPool - Math.Max(1, Js.Int(e._burnPool / sec)));
+                    double stk = Js.Or(e.burnStk, 1);
+                    h.HurtDot(e, dmg, false, EL_F); h.Text(e.x, e.y - 18, "🔥" + Num(stk) + " -" + dmg, "#ff6600", 20); h.Parts(e.x, e.y, "#ff4400", 1 + Js.Int(stk / 3));
+                }
+                if (e.burnT <= 0) { e.burnT = 0; e.burnStk = 0; e._burnPool = 0; }
+            }
+            if ((e._hrMarkT ?? 0) > 0) { e._hrMarkT -= sp; if (e._hrMarkT <= 0) { e._hrMark = 0; e._hrMarkT = 0; } }
+            if ((e._bbStkT ?? 0) > 0) { e._bbStkT -= sp; if (e._bbStkT <= 0) { e._bbStk = 0; e._bbStkT = 0; } }
+            if ((e._iceDotT ?? 0) > 0)
+            {
+                e._iceDotT -= sp;
+                e.spd = Js.Or(e.baseSpd, Js.Or(e.spd ?? 0, 2)) * .55;
+                if (Math.Floor(e._iceDotT.Value / 60) < Math.Floor((e._iceDotT.Value + sp) / 60))
+                {
+                    int ice = (int)Math.Max(1, Js.Or(e._iceDotDmg ?? 0, Js.Int(e.mhp * .008)));
+                    h.HurtDot(e, ice, false, EL_I); h.Text(e.x, e.y - 18, "-" + ice, "#88ccff", 20); h.Parts(e.x, e.y, "#4499ff", 2);
+                }
+                if (e._iceDotT <= 0) { e._iceDotT = 0; e._iceSlowed = false; e.spd = Js.Or(e.baseSpd, Js.Or(e.spd ?? 0, 2)); }
+            }
+            if ((e._mhDot ?? 0) > 0)
+            {
+                e._mhDot -= sp;
+                if (Math.Floor(e._mhDot.Value / 40) < Math.Floor((e._mhDot.Value + sp) / 40))
+                {
+                    int mh = (int)Math.Max(1, Js.Or(e._mhDotDmg ?? 0, Js.Int(e.mhp * .02)));
+                    h.HurtDot(e, mh, true, EL_P);
+                    if (h.Rand() > .5) { h.Rand(); h.Rand(); h.Rand(); h.Rand(); h.Rand(); h.Rand(); }   // poolPart(e.x+(r-.5)*8, e.y+(r-.5)*8, (r-.5)*2, -1-r, col, 2+r*2, 10+r*6): cosmetic, draws only
+                }
+                if (e._mhDot <= 0) { e._mhDot = 0; e._mhDotDmg = 0; }
+            }
+        }
+
         public static void UpdateBody(IEnemyAiHost h, EnemySpawn e, double sp, double d)
         {
             double px = h.PX, py = h.PY, pr = h.PRadius;
+            DotTick(h, e, sp);
             e.atk = e.baseAtk;   // _isDruidFinale(e) is false for field enemies
             if ((e._tpFlashT ?? 0) > 0) e._tpFlashT -= sp;
             if (e.mods != null && e.mods.Count > 0) EliteTick(h, e, sp, d);
@@ -186,7 +261,7 @@ namespace Exoduser.UnityPort.Core
                 if (e.webT <= 0 && d < 1200 && d > 30)
                 {
                     double wa = JsMath.Atan2(py - e.y, px - e.x);
-                    h.Shot(e, new ProjSpec { X = e.x, Y = e.y, Vx = JsMath.Cos(wa) * 3, Vy = JsMath.Sin(wa) * 3, Dmg = Js.Int(e.atk * .5), El = 0, Life = 200, Ml = 200, Col = "#aaaaaa", Sz = 1.2 });
+                    h.Shot(e, new ProjSpec { X = e.x, Y = e.y, Vx = JsMath.Cos(wa) * 3, Vy = JsMath.Sin(wa) * 3, Dmg = Js.Int(e.atk * .5), El = 0, Life = 200, Ml = 200, Col = "#aaaaaa", Sz = 1.2, Web = true });
                     e.webT = e.webCd; h.Parts(e.x, e.y, "#aaaaaa", 3);
                 }
             }
@@ -203,7 +278,7 @@ namespace Exoduser.UnityPort.Core
             if (et == 25 && e.s == "idle")
             {
                 e._iceSlimeT -= sp;
-                if (e._iceSlimeT <= 0) { h.Zone(e, "iceZone", e.x, e.y, 480, 2, 0); e._iceSlimeT = e._iceSlimeCd; h.Parts(e.x, e.y, "#5e10a8", 3); }
+                if (e._iceSlimeT <= 0) { h.Zone(e, "iceZone", e.x, e.y, 480, 2, 0, EL_D); e._iceSlimeT = e._iceSlimeCd; h.Parts(e.x, e.y, "#5e10a8", 3); }
             }
             if (et == 26 && e.s == "idle")
             {
@@ -211,7 +286,7 @@ namespace Exoduser.UnityPort.Core
                 if (e._iceBlizzT <= 0 && d < 1200)
                 {
                     double zx = px + (h.Rand() - .5) * 60, zy = py + (h.Rand() - .5) * 60;
-                    h.Zone(e, "blizzard", zx, zy, 180, 3, Js.Int(e.atk * .3));
+                    h.Zone(e, "blizzard", zx, zy, 180, 3, Js.Int(e.atk * .3), EL_D);
                     e._iceBlizzT = e._iceBlizzCd; h.Text(e.x, e.y - 15, "🌑", "#5e10a8", 30); h.Sfx("magic");
                 }
             }
@@ -253,6 +328,33 @@ namespace Exoduser.UnityPort.Core
                 {
                     m.eliteBusy = 54; m.eliteRing = 0; if (e._eliteZones == null) e._eliteZones = new List<EliteZone>();
                     e._eliteZones.Add(new EliteZone { x = px, y = py, t = 54, dur = 54, r = 125, kind = "burst", col = "#ff2438" });
+                }
+            }
+            if (e.mods.Contains("M31"))
+            {
+                if (e._eliteBoltWarn > 0)
+                {
+                    e._eliteBoltWarn -= sp;
+                    if (e._eliteBoltWarn <= 0) { double a = e._eliteBoltAim; ProjAt(h, e, a - .24, 3, .72, EL_L, 260, "#ffee44", 3.5); ProjAt(h, e, a, 3, .72, EL_L, 260, "#ffee44", 3.5); ProjAt(h, e, a + .24, 3, .72, EL_L, 260, "#ffee44", 3.5); }
+                }
+                else if (d < 850)
+                {
+                    m.eliteBolt += sp;
+                    if (m.eliteBolt >= 360 && m.eliteBusy <= 0) { m.eliteBusy = 45; m.eliteBolt = 0; e._eliteBoltAim = JsMath.Atan2(py - e.y, px - e.x); e._eliteBoltWarn = 45; }
+                }
+            }
+            if (e.mods.Contains("M32") && d < 1100)
+            {
+                m.eliteMortar += sp;
+                if (m.eliteMortar >= 600 && m.eliteBusy <= 0)
+                {
+                    m.eliteBusy = 126; m.eliteMortar = 0; if (e._eliteZones == null) e._eliteZones = new List<EliteZone>();
+                    double a = JsMath.Atan2(py - e.y, px - e.x), zx = px, zy = py;
+                    for (int i = -1; i <= 1; i++)
+                    {
+                        double off = i * 92;
+                        e._eliteZones.Add(new EliteZone { x = zx - JsMath.Sin(a) * off, y = zy + JsMath.Cos(a) * off, t = 78 + (i + 1) * 24, dur = 78 + (i + 1) * 24, r = 68, kind = "mortar", col = "#ff3322" });
+                    }
                 }
             }
             if (e._eliteZones != null && e._eliteZones.Count > 0)
@@ -410,7 +512,7 @@ namespace Exoduser.UnityPort.Core
             e.trapT -= sp;
             if (e.trapT <= 0 && d < 250)
             {
-                h.Zone(e, "trap", e.x, e.y, 600, .8, Js.Int(e.atk * 1.5));
+                h.Zone(e, "trap", e.x, e.y, 600, .8, Js.Int(e.atk * 1.5), e.el ?? 0);
                 e.trapT = e.trapCd; h.Text(e.x, e.y - 10, "⚠", "#ff3a00", 20); h.Parts(e.x, e.y, "#ff6600", 4);
             }
             if (d < 100) Back(h, e, sp, 1);
@@ -494,7 +596,7 @@ namespace Exoduser.UnityPort.Core
             {
                 e._stCloneT = e._stCloneCd;
                 double cx = e.x + (h.Rand() - .5) * 60, cy = e.y + (h.Rand() - .5) * 60;
-                var clone = h.Create(cx, cy, 40, e.el ?? EL_D);   // the web builds the 원령 clone but never pushes it into ens
+                var clone = h.Create(cx, cy, 40, Js.Or(e.el ?? 0, EL_D));   // e.el||EL.D: element 0 (physical) is falsy too   // the web builds the 원령 clone but never pushes it into ens
                 if (clone != null) { clone.hp = Js.Int(clone.hp * .3); clone.mhp = clone.hp; clone.eShield = 0; clone.eShieldMax = 0; clone.atk = Js.Int(clone.atk * .5); }
                 h.Text(e.x, e.y - 15, "분신!", "#cc44ff", 25); h.Parts(e.x, e.y, "#cc44ff", 6);
             }
