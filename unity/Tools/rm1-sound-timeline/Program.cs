@@ -82,21 +82,46 @@ static class P
         var p = s.Player; var rows = new List<Row>(); int guard = 0;
         while (guard++ < 1500 && !(s.Stage.InArena && s.Stage.LoadPhase == 0 && s.Stage.Boss != null)) { s.Tick(0, 0, p.X + 100, p.Y, false, false); Drain(s, rows); }
         var boss = s.Stage.Boss; if (boss == null) throw new Exception("boss did not spawn");
-        int dmg = Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.012)), hitCd = 0, killGuard = 0, rollCd = 0;
+        int dmg = Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.0085)), hitCd = 0, killGuard = 0;   // ~2.7 hits a second (every 22 ticks)
+        var rng = new Random((int)seed * 7 + 1); DruidData dd = null; s.Druid.Data.TryGetValue(boss, out dd);
+        string prevState = ""; int attacks = 0, evadeRoll = 0, evadeParry = 0, taken = 0, rollAt = -1, parryAt = -1, parryHold = 0, hurt0 = s.HurtCount, parries0 = s.ParryCount, lastParries = s.ParryCount;
+        var hurtByState = new Dictionary<string, int>(); int lastHurt = s.HurtCount; double orbit = 0.9; int moveCd = 0;
+        Func<string, bool> isAttackState = n => n != null && (n.EndsWith("Wind") || n == "bossDruidDive" || n == "bossSlash");
         for (int i = 0; i < 200; i++) { s.Tick(0, 0, boss.X, boss.Y, false, false); p.Hp = p.MaxHp; Drain(s, rows); }
         while (boss.Alive && killGuard++ < 40000)
         {
             p.Hp = p.MaxHp; var st = s.DruidLife(boss);
+            if (dd == null) s.Druid.Data.TryGetValue(boss, out dd);
             if (st == null || !st.Collapsing)
             {
-                double ang = Math.Atan2(boss.Y - 800, boss.X - 800) + 0.9; p.X = (float)(boss.X + Math.Cos(ang) * 110); p.Y = (float)(boss.Y + Math.Sin(ang) * 110);
+                // telegraph reading: the moment he enters a wind-up / dive / follow-up swing, decide (fixture RNG): ~70 % avoid it (roll, or a parry for parryable swings), ~30 % take it
+                if (dd != null && dd.S != prevState && isAttackState(dd.S))
+                {
+                    attacks++; double pick = rng.NextDouble();
+                    if (pick < .85)
+                    {
+                        if (dd.AtkParryable && rng.NextDouble() < .45) { parryAt = s.TickCount + Math.Max(0, (int)dd.St2 - 7); evadeParry++; }
+                        else { rollAt = s.TickCount + Math.Max(0, (int)dd.St2 - 9); evadeRoll++; }
+                    }
+                    else taken++;
+                }
+                if (dd != null) prevState = dd.S;
+                if (rollAt >= 0 && s.TickCount >= rollAt) { s.QueueRoll(attacks % 4); rollAt = -1; }
+                double ang = Math.Atan2(boss.Y - 800, boss.X - 800) + orbit; p.X = (float)(boss.X + Math.Cos(ang) * 110); p.Y = (float)(boss.Y + Math.Sin(ang) * 110);
                 if (!s.CanMove((float)p.X, (float)p.Y, p.Radius)) { p.X = boss.X + 110; p.Y = boss.Y; }
-                if (hitCd-- <= 0) { s.HurtEnemy(boss, dmg); hitCd = 30; }
-                if (rollCd-- <= 0) { s.QueueRoll(killGuard / 300 % 4); rollCd = 300; }
+                if (hitCd-- <= 0) { s.HurtEnemy(boss, dmg); hitCd = 22; }
+                if (dd != null && killGuard % 30 == 0) foreach (var mn in dd.Minions.ToArray()) if (mn.Alive) s.HurtEnemy(mn, 100000);   // a real player cuts down the summoned minions at once
             }
+            bool qNow = false; if (parryAt >= 0 && s.TickCount >= parryAt) { parryHold = 22; parryAt = -1; } if (parryHold-- > 0) qNow = true;
+            s.SetPlayerCombatInput(qNow, false, false);
             s.Tick(0, 0, boss.X, boss.Y, false, false); Drain(s, rows);
+            if (s.HurtCount != lastHurt) { string k = (dd != null ? dd.S : "?"); int mm = 0; foreach (var d2 in s.Druid.Data.Values) mm += d2.Minions.Count(x => x.Alive); k += mm > 0 ? "+minions" : ""; hurtByState[k] = (hurtByState.ContainsKey(k) ? hurtByState[k] : 0) + (s.HurtCount - lastHurt); lastHurt = s.HurtCount; if (moveCd <= 0) { orbit += 0.9; moveCd = 60; p.Iframes = Math.Max(p.Iframes, 60); } }   // a real player steps out of whatever hit him (hazard zone, pool) and gets a moment of grace
+            if (moveCd > 0) moveCd--;
+            if (s.ParryCount != lastParries) { rows.Add(new Row { Tick = s.TickCount, Type = "note", Kind = "ParrySuccess", Key = "parry", Source = "druid fight: player parry succeeded (ParryCount " + s.ParryCount + ")" }); lastParries = s.ParryCount; }
         }
         for (int i = 0; i < 300; i++) { p.Hp = p.MaxHp; p.Iframes = 600; s.Tick(0, 0, p.X + 100, p.Y, false, false); Drain(s, rows); }
+        Console.WriteLine("druid fight script: attacks seen " + attacks + " (evade by roll " + evadeRoll + ", by parry " + evadeParry + ", not evaded " + taken + "); hits that landed on the player " + (s.HurtCount - hurt0) + " (" + (attacks > 0 ? ((s.HurtCount - hurt0) * 100 / attacks).ToString() : "0") + " % of the attacks seen); parries succeeded " + (s.ParryCount - parries0));
+        Console.WriteLine("hurt by boss state: " + string.Join(", ", hurtByState.OrderByDescending(kv => kv.Value).Select(kv => kv.Key + "=" + kv.Value)));
         Console.WriteLine("druid seed " + seed + " moves: " + string.Join(",", s.Druid.MoveLog.GroupBy(m => m.Move).Select(g => g.Key + "x" + g.Count())));
         Write(Path.Combine(outDir, "timeline-druid.json"), rows, "1-1 druid fight: arena entry, P1-P3, sink (real Simulation, DruidRemodel on, seed " + seed + ")");
         Console.WriteLine("druid rows=" + rows.Count + " ticks=" + s.TickCount + " kinds=" + string.Join(",", rows.GroupBy(r => r.Kind + ":" + r.Key).Select(g => g.Key + "x" + g.Count())));

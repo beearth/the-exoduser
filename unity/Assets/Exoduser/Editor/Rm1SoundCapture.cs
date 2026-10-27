@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort.Editor
         Rm1Row[] rows; int[] playFrame; int next, frame, endFrame, channels;
         Vector3 player = Vector3.zero; bool inArena, bossAlive = true, started;
         readonly List<float> pcm = new List<float>(); readonly List<string> musicLog = new List<string>(); int lastTick;
-        string lastMusic = ""; int annotated; HashSet<string> solo;
+        string lastMusic = ""; int annotated; HashSet<string> solo; readonly List<string> parryNotes = new List<string>();
 
         void Start()
         {
@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort.Editor
         {
             passIndex = index; pass = passes[index];
             if (sound != null) { sound.Dispose(); music.Dispose(); ambient.Dispose(); }
-            pcm.Clear(); musicLog.Clear(); frame = 0; next = 0; annotated = 0; lastMusic = ""; inArena = false; bossAlive = true; player = Vector3.zero; lastTick = 0;
+            pcm.Clear(); musicLog.Clear(); parryNotes.Clear(); frame = 0; next = 0; annotated = 0; lastMusic = ""; inArena = false; bossAlive = true; player = Vector3.zero; lastTick = 0;
             sound = new NativeFeedbackAudio(transform, cam);
             music = new NativeGameMusic(transform, sound.Bus); ambient = new NativeAmbientSources(transform, sound.Bus);
             var mixer = sound.Bus.Mixer; mixer.ClearFloat("TellVol"); mixer.ClearFloat("SfxCompThreshold"); mixer.ClearFloat("MasterCompThreshold");
@@ -135,6 +135,7 @@ namespace Exoduser.UnityPort.Editor
         void Feed(Rm1Row r)
         {
             lastTick = r.tick;
+            if (r.type == "note") { parryNotes.Add("PARRY frame=" + r.tick + " rec=" + (frame / (float)Fps).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "s " + r.source + " -- the Core queues no parry sound (web doParry plays q_parry / sword_parry + sword_back + a voice)"); return; }
             if (r.type == "stage")
             {
                 if (r.kind == "ArenaEntered") { inArena = true; bossAlive = true; }
@@ -180,6 +181,7 @@ namespace Exoduser.UnityPort.Editor
             foreach (var m in musicLog) sb.AppendLine(m);
             sb.AppendLine();
             foreach (var l in sound.Lines) sb.AppendLine(l);
+            foreach (var n in parryNotes) sb.AppendLine(n);
             sb.AppendLine();
             // checks the judge asked for
             var played = sound.Lines.Where(l => !l.Contains("DROPPED")).ToList();
@@ -192,6 +194,8 @@ namespace Exoduser.UnityPort.Editor
             sb.AppendLine("TIME AXIS CHECK: Core frames whose sounds start at different rec times = " + skewed + " (0 = every sound of one Core frame sits on the same recording time)");
             sb.AppendLine("SUMMARY lines=" + sound.Lines.Count + " played=" + played.Count + " dropped(adapter)=" + sound.Receipt.dropped + " same-key tell overlaps<120ms=" + overlaps);
             foreach (var g in played.GroupBy(l => Field(l, "key=")).OrderBy(g => g.Key)) sb.AppendLine("  " + g.Key + " x" + g.Count() + " groups=" + string.Join("/", g.Select(l => Field(l, "group=")).Distinct()));
+            sb.AppendLine("  parry successes in the fight: " + parryNotes.Count + " (parry sounds queued by the Core: 0)");
+            sb.AppendLine("  per-key counts (played): " + string.Join(", ", played.GroupBy(l => Field(l, "key=")).OrderBy(g => g.Key).Select(g => g.Key + " x" + g.Count())));
             sb.AppendLine("  no-file keys: " + string.Join(", ", sound.Lines.Where(l => l.Contains("no file yet")).Select(l => Field(l, "key=")).Distinct()));
             sb.AppendLine("  temporary-file keys: " + string.Join(", ", sound.Lines.Where(l => l.Contains("temporary file")).Select(l => Field(l, "key=")).Distinct()));
             var seeker = rows.Count(r => r.source != null && r.source.Contains("seekerMines"));

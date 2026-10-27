@@ -175,8 +175,10 @@ namespace Exoduser.UnityPort
             }
         }
         static string Line(int tick,string key,string source,string group,float volume,string file){return "frame="+tick+" key="+key+" from=\""+source+"\" group="+group+" vol="+volume.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+" file="+file;}
+        int lastBossHitTick = -1000;
         void Queue(Req r)
         {
+            if(r.key=="boss_hit"){if(r.tick-lastBossHitTick<8){Receipt.dropped++;return;}lastBossHitTick=r.tick;}   // A3: same 8 f cooldown as every enemy hit
             double now=r.tick/60.0;   // Core clock, see HandleSample
             if(r.priority<PriSkill&&lastAt.TryGetValue(r.key,out double last)&&now-last<.03){Receipt.dropped++;return;}
             lastAt[r.key]=now;pending.Add(r);
@@ -237,7 +239,7 @@ namespace Exoduser.UnityPort
             AudioListener.GetOutputData(output,0);
             foreach(float value in output)Receipt.listenerPeak=Mathf.Max(Receipt.listenerPeak,Mathf.Abs(value));
         }
-        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();lastPlayerHitTick=-1000;foreach(var v in voices){v.source.Stop();v.ends=0;}}
+        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();lastPlayerHitTick=-1000;lastBossHitTick=-1000;foreach(var v in voices){v.source.Stop();v.ends=0;}}
         public void Dispose(){Reset();foreach(var v in voices)UnityEngine.Object.Destroy(v.source.gameObject);voices.Clear();if(listenerObject!=null)UnityEngine.Object.Destroy(listenerObject);}
     }
 }
