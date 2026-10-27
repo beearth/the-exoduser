@@ -134,6 +134,7 @@
 | 캐릭터 선택 실버테일(`portrait_silvertail.png`·`silvertail_cut.png`)·배경(`bg_scene1/2.png`)·로비 포스터·엠블럼 | ✅ 점검(2026-10-01): 잔점 없음 |
 | 출시 예정 3종 `portrait_/poster_idle_` spearmage·hellgunner·transmuter (JPG 96~213KB) | ⚠ 압축으로 흐릿함 — 디자인 확정 후 고화질 재제작 필요 |
 | 아이반(검은 연기) T8 키아트 V35 `E:/exoduser-wt/_out/ivan-keyart-t8/` (Git 밖) | ✅ 2026-10-26 디자인총괄 확정 = r4(V29 잔점 제거판 1152×1536). 투명 컷 `ivan_t8_final_cut.png` 1010×1386·가슴 위 초상 `ivan_t8_portrait.png` 1024², halo 검수 통과. 로비·게임 미연결 — [기록](IVAN_T8_KEYART_V35_20261026.md) |
+| 첫 화면·로비 공용 로고 `img/logo_exoduser.png`(1551×740 RGBA) + ENTER `output/imagegen/enter-gothic-v2-brass.png`(1536×1024 RGBA) | ✅ 2026-10-27 사용자 선택 안 C(지옥왕의 관: 흑철 대문자+낮은 뿔 왕관, 진홍 빛은 틈에서만)로 교체·통일. 원본(해골 로고 835×348)은 `img/logo_exoduser_v1_skull.png`로 보존, 기존 첫 화면 RGB 로고 `output/imagegen/exoduser-hell-lord-logo-api-v1.png`·ENTER `enter-gothic-api-v1.png`는 미참조 보존. 후보 A/B/C·목업 `E:/exoduser-wt/_out/title-logo-redesign/`(Git 밖), 적용 캡처 `…/apply/`. 런타임 캔버스 키잉(`cin-logo-art.js`)은 참조 제거. 상세: `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md` 말미 · `docs/cinematic/ENTER_ENGRAVED_20260907.md` §2026-10-27 개정 |
 
 ### 4.4 배포·동기화 상태 (2026-10-01 실측, 조회 시점 기준)
 
@@ -168,6 +169,8 @@
 ---
 
 ## 6. 작업 로그
+
+2026-10-27: 첫 화면(간판) 재디자인 — 로고 후보 A/B/C 생성(gpt-image 2.5 sunburst, 약 $0.13) 후 사용자가 C 선택, `img/logo_exoduser.png`를 C안(알파 bbox 크롭+사방 30px 투명 여백, 1551×740)으로 교체해 첫 화면·로비·게이트·인트로 컷 로고 통일. ENTER 그림은 오프라인 키잉(alpha=clamp((max(r,g,b)-8)/24)+구멍 메움)·녹슨 황동 리컬러로 RGBA 신규 파일화. 점·가장자리 회색 테두리 없음(검정·진홍 배경 3x 확인).
 
 2026-10-06: 사용자 스크린샷의 첫 장면 손 교정 완료. PC 작업 허용 지시에 따라 Seedream 5.0 Pro 이미지 1장 + Hailuo 2.3 영상 1개만 생성·채택. MagicLight 잔액 58,340→57,990(350 감소). 1920×1080/60fps/96.4초 유지, 첫 300프레임만 교체하고 원본·후보 보존. 재생기·index 캐시 갱신, 관련 테스트 67/69 통과(2건 변경 전 동일 실패), Steam/NW.js/웹 배포 없음. 상세 검수·프롬프트·해시는 `docs/cinematic/WARINTRO_HAND_FIX_20261006.md`.
 
