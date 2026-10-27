@@ -1,0 +1,53 @@
+{
+  "baseRevision": "495a75eeab208e5cedcd3116772c9e6335a6fadc",
+  "cause": {
+    "firstStack": "UnityEngine.MaterialPropertyBlock.CreateImpl -> MaterialPropertyBlock..ctor -> NativeGame..ctor -> PortVerification.MakeScene",
+    "constructorStackSite": "NativeGame.cs:16 partial class declaration",
+    "actualInitializer": "NativeGame.WorldDrops.cs:16 readonly field = new MaterialPropertyBlock()",
+    "fix": "defer one MaterialPropertyBlock creation until a beam is rendered in UpdateDropViews; existing opacity formula and Get/SetPropertyBlock unchanged"
+  },
+  "source": {
+    "worldDropsSha256": "7baf02749c480f435b22d67f7564238f30c4199af5aab26783da50baccff260a",
+    "mediaSha256": "8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab"
+  },
+  "editor": {
+    "engine": "6000.6.7f1",
+    "previousReportedErrors": 1,
+    "currentReportedErrors": 0,
+    "result": "Succeeded",
+    "csErrors": 0,
+    "constructorExceptionOccurrences": 0
+  },
+  "app": {
+    "path": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-NATIVEGAME-CTOR-FIX-20261027/build/EXODUSER-Unity.app",
+    "product": "EXODUSER Settings QA",
+    "identifier": "com.fordeargamers.exoduser.settingsqa",
+    "executableSha256": "9d6c3d94e7ae7eaccf984da344e9bae3bd8bc5de682f9d9af86c8333f918c7a8",
+    "mediaBytes": 94795327,
+    "mediaSha256": "8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab"
+  },
+  "settings": {
+    "isolatedScopeChecks": 18,
+    "failures": 0,
+    "markerPath": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-IO-KILLU-V3-CTOR-FIX-20261027/qa-output.marker",
+    "markerSha256": "10a1a2da25a44f4f9872dbdb70540152726177d5f6feb090a4438f3b7d12e050",
+    "normalUserRootUsed": false
+  },
+  "drop": {
+    "passed": true,
+    "dropViewsPeak": 15,
+    "dropsRolled": 15,
+    "collected": 15,
+    "nonNormalRarity": 6,
+    "failures": "",
+    "groundImage": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-NATIVEGAME-CTOR-FIX-20261027/drop/unity-d01-ground.png",
+    "groundImageSha256": "dd4eac005d24cc709957fea4a4ff79f0f550063683cba1d3985425d94a147484"
+  },
+  "reviewLauncher": "/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-NATIVEGAME-CTOR-FIX-20261027/launch-fixed-v3-review.command",
+  "previousV3AndRev4Replaced": false,
+  "fullVideoRerun": false,
+  "windowsPlayer": "HOLD",
+  "audioListening": "HOLD",
+  "deployment": false,
+  "passed": true
+}

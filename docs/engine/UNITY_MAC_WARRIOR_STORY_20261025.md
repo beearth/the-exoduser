@@ -20,7 +20,7 @@
 
 | gate | 관측 결과 | 판정 |
 |---|---|---|
-| Editor import·C# | 빌드 `Succeeded`, CS 오류 0. `NativeGame.cs:16`의 `MaterialPropertyBlock` 필드 초기화가 `CreateImpl` UnityException을 내며 build receipt `errors=1` | 산출 앱은 생성; **오류 0 gate는 RETOUCH** |
+| Editor import·C# | 빌드 `Succeeded`, CS 오류 0. 스택의 `NativeGame.cs:16`은 partial 클래스 선언 위치다. 실제 필드 초기화는 `NativeGame.WorldDrops.cs:16`의 `beamProperties = new MaterialPropertyBlock()`이며 `CreateImpl` UnityException으로 build receipt `errors=1` | 당시 산출 앱은 생성; **당시 오류 0 gate는 RETOUCH** |
 | VideoPlayer 준비·자막 | 새 앱 `--unity-character-story-smoke -story-mode natural` 고유 PID58680, 임시 세션 roster, 첫 프레임·한국어 첫 자막, 디코드 오류 없음 | PASS |
 | 51~58초 주요 컷 | 기존 fixture `VideoPlayer.Time>50` 중간 캡처, 이어서 실창의 킬루 고통 표정·양눈 피눈물과 후속 전사 장면 확인. 실창 추가 캡처는 wall-clock 기준이며 정확한 `VideoPlayer.Time` 계측 아님 | **화면 PASS**, 프레임별 정밀 타임코드·색 정확도 HOLD |
 | 자연 종료·진입 | 자연 fixture **8/8**, 종료0, 같은 `전사이야기` 이름으로 필드 진입·중복 슬롯0; 첫 화면·중간·필드 PNG 보존 | PASS |
@@ -28,6 +28,20 @@
 | 음성·자막 싱크 / Windows | Mac Player 로그에 AVFoundation color primaries fallback 경고. 청음·정밀 자막 싱크 미측정, Windows Player 빌드/재생0 | HOLD |
 
 [버전 고정 영수증](UNITY_MAC_KILLU_V3_PLAYER_QA_20261027.json)의 원로그·PNG는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/`에 있다. 새 후보의 [검토 launcher](/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-KILLU-V3-PLAYER-QA-20261027/launch-v3-review.command)는 별도 빈 `_out/UNITY-MAC-A05-IO-KILLU-V3-REVIEW-20261027` marker root와 전용 Settings QA identity만 사용한다. 기존 Rev4 앱 내부 영상은 구 97,796,468B 그대로이며 교체하지 않았다. 관찰 도구가 자연 fixture 종료 뒤 같은 QA 앱을 인자 없이 자동 재실행한 PID58730은 즉시 종료했고 그 화면을 증거에서 제외했다. 기존 사용자 앱 PID38141/48476/52157, 정상 identity 저장소, 세계관/전체 UI suite 및 배포는 조작하지 않았다. 빌드 뒤 생성된 `.meta`·ProjectSettings 차이는 사전 tar 백업에서 복원해 Git 제품 변경0이다.
+
+### 2026-10-27 NativeGame 생성자 오류 수정과 v3 후속 후보
+
+`PortVerification.MakeScene`가 `NativeGame`을 구성할 때 MonoBehaviour 인스턴스 필드 초기화로 `MaterialPropertyBlock.CreateImpl`을 호출한 것이 위 Editor 오류의 원인이다. `NativeGame.WorldDrops.cs`의 `beamProperties`를 필드 선언만 남기고 실제 빔을 그리는 `UpdateDropViews`의 `v.beam != null` 분기에서 처음 한 번 생성하게 했다. 예외를 잡거나 QA gate를 완화하지 않았다.
+
+| ID·적용 위치 | 이전 | 현재 | 검증 |
+|---|---|---|---|
+| D01 드랍 빔 `beamProperties` / `NativeGame.WorldDrops.cs` | `NativeGame` 생성 시 즉시 생성 | 최초 빔 렌더 때 1회 생성, 이후 재사용 | 실제 Player 드랍 15/15 수집·빔 대상 희귀도 1/2 합계 6개; 지면 PNG |
+| D01 빔 투명도 / 같은 파일 | `.46f + Mathf.Sin(now / 400f + loot.X) * .05f` | 동일 | 수식·Get/SetPropertyBlock 유지 |
+| Editor / `PortVerification.Build` | 이전 v3 후보 `Succeeded`, receipt `errors=1` | Unity 6000.6.7f1 ARM64 Settings QA `Succeeded`, receipt `errors=0`, CS 오류 0, 해당 생성자 예외 0 | 이번 빌드 1회 |
+| Settings QA 격리 / 저장소 | A05 marker·절대 output·QA identity | 새 빈 marker root·`com.fordeargamers.exoduser.settingsqa` | 독립 scope 18/18, 일반 사용자 root 사용 0 |
+| v3 영상 / 앱 내부 | 94,795,327B, SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab` | 동일 | 앱 내부 미디어 해시 일치 |
+
+새 앱은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-NATIVEGAME-CTOR-FIX-20261027/build/EXODUSER-Unity.app`, 실행 파일 SHA-256 `9d6c3d94e7ae7eaccf984da344e9bae3bd8bc5de682f9d9af86c8333f918c7a8`이다. [새 검토 launcher](/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-NATIVEGAME-CTOR-FIX-20261027/launch-fixed-v3-review.command)는 고유 marker root와 정상 영상 시작 경로를 사용한다. [후속 영수증](UNITY_MAC_NATIVEGAME_CTOR_FIX_20261027.json)과 로그·지면 PNG는 같은 `_out/UNITY-MAC-NATIVEGAME-CTOR-FIX-20261027/`에 있다. 이전 v3/Rev4 앱 교체, 영상 전체 재검수, Windows Player, 청음, 배포는 0/HOLD다. 이 후속은 **Editor 오류 0 gate와 D01 실제 드랍 범위**의 인수이며 이전 영상 8/8·15/15 기록을 재실행 결과로 합산하지 않는다.
 
 2026-10-27 QA 전용 의미 프레임으로 실제 `NativeLobby`의 전사 Next·짧은 hold 해제·1.2초 완료와 안내/필드 연결을 검수했다. 이후 웹 동시 Next+Skip hold 계약을 맞춰 [최종 18/18 영수증·검토 앱·물리 패드 HOLD](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트)로 갱신했다.
 

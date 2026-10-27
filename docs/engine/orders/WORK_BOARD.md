@@ -607,3 +607,7 @@ PC 고정 `766250b64d833acd4172c83fb694820777d68b1b`의 QA v2가 exact43×29=124
 **Mac A05 킬루 피눈물 v3 미디어 입력:** 채택 `main:d038ba4ab:video/warrior_story_v23_clean.mp4` 94,795,327B/SHA `8b824842…dba28ab`를 Unity StreamingAssets와 Git 복구 4파트/manifest에 동일 바이트로 반영. `restore-warrior-story.cjs`·원본/복원 `cmp` PASS, 기존 영상/파트 `_out` 백업. JSON 영상명·22컷·29×22자막·NativeLobby 재생 참조 불변. 새 영상 생성/편집·Unity Editor/Windows Player 빌드·배포0; 실제 51~58초 시청/음성·자막·종료/skip은 별도 검수 HOLD. 기존 Rev4 앱은 이전 미디어 snapshot. [해시·파트 표](../UNITY_MAC_WARRIOR_STORY_20261025.md#2026-10-27-킬루-피눈물-v3-미디어-입력-동기화).
 
 **Mac A05 v3 후속 재생 인수:** 새 ARM64 Settings QA 후보 build1, 앱 내 영상 94,795,327B/`8b824842…dba28ab`, 실행 파일 `5b8ea55a…dd857e`. 실제 VideoPlayer 첫 자막·>50초 컷/피눈물 화면·자연 종료→같은 전사 필드 **8/8**, 별도 skip **15/15** PASS. Editor C# 오류0·build Succeeded이나 `NativeGame` 생성자 UnityException으로 receipt `errors=1`: clean gate RETOUCH. AVFoundation 색공간 fallback, 청음/정밀 싱크, Windows Player HOLD. 기존 Rev4/정상 앱·저장·배포 변경0; 관찰 도구의 인자 없는 QA 재실행 PID58730 즉시 종료/증거 제외. [후보 launcher·영수증·조건](../UNITY_MAC_WARRIOR_STORY_20261025.md#2026-10-27-mac-arm64-v3-후보-재생-gate).
+
+## 2026-10-27 Mac A05 v3 Editor 오류 0 후속
+
+`NativeGame.WorldDrops.cs` D01 빔 `MaterialPropertyBlock`을 생성자 필드 초기화에서 첫 실제 빔 렌더로 옮겼다. ARM64 Settings QA build `Succeeded/errors=0`, 설정 격리 18/18, Player 드랍 15/15·빔6, v3 미디어 SHA 일치. 새 격리 검토 launcher는 [후속 영수증](../UNITY_MAC_NATIVEGAME_CTOR_FIX_20261027.json)에 고정했다. 이전 v3/Rev4와 사용자 앱·저장은 유지. 전체 영상 재실행·Windows·청음은 HOLD.
