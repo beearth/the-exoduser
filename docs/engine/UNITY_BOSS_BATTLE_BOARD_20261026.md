@@ -74,10 +74,10 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | ID | 단위 | 웹 원본 | 선행 | 상태 | 담당 | 완료 조건 |
 |---|---|---|---|---|---|---|
 | BX-01 | 보스 생성·HP/ATK/쉴드/부활력 공식·초기 상태 필드 | mkEn ib 분기, HELL_BOSSES | C01 틀 | 0 | 미배정 | oracle 대조 일치(레벨·난이도 표본) |
-| BX-02 | `_bossAI` 틱 순서·Utility 점수·콤보·쿨다운·HP 페이즈 전환 | `_bossAI`, BOSS_MOVES | BX-01 | 0 | 미배정 | 같은 RNG 시드로 무브 선택열 일치 |
-| BX-03 | 1-1 드루이드 기술 23종 실행기(전조→판정→회복) | BOSS_MOVES + 드루이드 전용 | BX-02, B07 | 0 | 미배정 | 기술별 투사체·장판 생성 인자 oracle 일치 |
+| BX-02 | `_bossAI` 틱 순서·Utility 점수·콤보·쿨다운·HP 페이즈 전환 | `_bossAI`, BOSS_MOVES | BX-01 | 0 | d01 d1638a472(druid-boss-oracle 48케이스 0, 보스전 총괄 200케이스 재검사 2,262건 불일치=c141 오브 좌표 float 오차 ~1.3e-3), 표현 6908358f3 RETOUCH | 같은 RNG 시드로 무브 선택열 일치 |
+| BX-03 | 1-1 드루이드 기술 23종 실행기(전조→판정→회복) | BOSS_MOVES + 드루이드 전용 | BX-02, B07 | 0 | d01 d1638a472(druid-boss-oracle 48케이스 0, 보스전 총괄 200케이스 재검사 2,262건 불일치=c141 오브 좌표 float 오차 ~1.3e-3), 표현 6908358f3 RETOUCH | 기술별 투사체·장판 생성 인자 oracle 일치 |
 | BX-04 | 보스 아레나 생성·진입·출구·재도전 | `genBossArena`, `_enterBossArena` | C04 | 0 | 미배정 | 타일·스폰·진입 좌표 일치, 맵 총괄 비주얼 협의 |
-| BX-05 | 보스 피격·포이즈 리셋·패링 상호작용·사망 판정 | hurtE 보스 분기, `_poiseReset` | B07, B09 | 0 | 미배정 | 포이즈·스턴 프레임 oracle 일치 |
+| BX-05 | 보스 피격·포이즈 리셋·패링 상호작용·사망 판정 | hurtE 보스 분기, `_poiseReset` | B07, B09 | 0 | d01 d1638a472(druid-boss-oracle 48케이스 0, 보스전 총괄 200케이스 재검사 2,262건 불일치=c141 오브 좌표 float 오차 ~1.3e-3), 표현 6908358f3 RETOUCH | 포이즈·스턴 프레임 oracle 일치 |
 | BX-06 | 전조 표시·보스 카메라 | tele 프레임, 아레나 카메라 | BX-03 | 0 | 미배정 | 웹 나란히 캡처 + 디자인 총괄 판정 |
 | BX-07 | 보스 바 HUD (A23) | `#bossBar` | BX-01 | 진행 중 | Sonnet(맥북 총괄 배정) | 표시 UI: 웹 나란히 캡처 1x 일치(2026-10-26 `_out/pc-a23/cmp` 1차 확인 — 칩 간격만 미세 차이). 보스 연결: 실보스 HP·포이즈 변화에 따라 갱신 |
 | BX-08 | 보스 사망·클리어·보상·피날레(도달성 재확인) | 클리어 흐름, 피날레 v0.4 | BX-05 | 0 | 미배정 | 클리어 흐름 일치 |
@@ -97,12 +97,12 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | CX-01 | 적 수치 테이블 `ETYPE_HP/ATK/_ETYPE_SPD_RAW→ETYPE_SPD/R/RANGE/POISE/SHIELD/COL`(0~89), `ETYPE_ERES`, `ETYPE_COLS`, `RARE_ETYPE`(90~99), `ELITE_TIERS/ELITE_PROB/MOD_DEFS`, `DIFF_MUL/DIFF_LV_OFF`, `SI_TO_HELL/STG` | 30825~30911, 14336, 19916, 30957, 31035~31064, 9272/9276, 16660/16699 | 2 웹동일 소스(데이터·oracle 2,784/0, 연결 전) | 표 전 항목 C# 데이터 바이트 단위 일치. 브랜치 claude/unity-pc-c01-20261026 80ea201b4(StageDef→EnemyStageDef 개명 포함), 보고서 UNITY_CX01_ENEMY_TABLES_20261026. unity/main 병합 ab563f98c(10-27, PC 병합·병합 뒤 oracle 2,784/0·204,592/0·빌드 오류 0) |
 | CX-02 | `mkEn` 전체 (좌표 보정·monLv·스테이지 배율·엘리트 `rollElite`/`rollMods`·보스 `ib` 분기) — BX-01 포함 | 31122~31365 | 2 웹동일 소스(mkEn 전체·oracle 538케이스 204,592/0·변이 22/23, 연결 전) | 레벨·난이도·si·etype·ib 표본 oracle 일치. 브랜치 claude/unity-pc-c01-20261026 9d11d4325, 보고서 UNITY_CX02_ENEMY_SPAWN_20261026. unity/main 병합 ab563f98c(10-27, PC 병합·병합 뒤 oracle 2,784/0·204,592/0·빌드 오류 0) |
 | CX-03a | 적 루프 앞처리(티어링·컬링·벽 끼임·타이머) + `updateE` 앞~DOT 직전 | 34415~34494, 38587~38721 | 2 웹동일 소스(L1+U1, oracle 1,240케이스 3,246,746/0·변이 86/87, 연결 전) | tick 상태 oracle 일치. 브랜치 claude/unity-pc-c01-20261026 a05ee1467, 보고서 UNITY_CX03A_ENEMY_TICK_HEAD_20261027. 명세 `E:/exoduser-wt/_out/pc-cx03a/SPEC.md` |
-| CX-03b | ATK 리셋·DOT 5종·엘리트 모디파이어 틱·오라 ATK·비어그로 대기 게이트 | 약 38722~38888 | 0 | CX-04·CX-02 의존 |
-| CX-03c | etype 분기 뒤 공통 상태 머신(windup→attack·projT·공전 대기 등) | 38586~41410 중 etype 분기 뒤 | 0 | etype0·보스 경로 tick 상태 oracle 일치 |
+| CX-03b | ATK 리셋·DOT 5종·엘리트 모디파이어 틱·오라 ATK·비어그로 대기 게이트 | 약 38722~38888 | 1-1 etype(0~29·47) 범위는 d05 C01-AI aeb998ba2(enemy-ai oracle 474케이스 713,918/0)로 연결됨, 나머지 etype은 M1 뒤 | CX-04·CX-02 의존 |
+| CX-03c | etype 분기 뒤 공통 상태 머신(windup→attack·projT·공전 대기 등) | 38586~41410 중 etype 분기 뒤 | 1-1 etype(0~29·47) 범위는 d05 C01-AI aeb998ba2(enemy-ai oracle 474케이스 713,918/0)로 연결됨, 나머지 etype은 M1 뒤 | etype0·보스 경로 tick 상태 oracle 일치 |
 | CX-04a | `hurtE` 앞부분(관문·피해 배율·에너지쉴드 흡수) — 함수 첫 줄 ~ `// ═══ 데미지 → HP 직행 ═══` 앞줄 | 42178~42420 | 2 웹동일 소스(H1, oracle 960케이스 933,221/0·변이 135/138, 연결 전) | 피해 표본 oracle 일치, 쉴드 규칙은 CLAUDE.md eShield 계약 그대로. 브랜치 claude/unity-pc-c01-20261026 dfe67be3b, 보고서 UNITY_CX04A_ENEMY_HURT_HEAD_20261027 |
-| CX-04b | `hurtE` HP 적용 ~ 포이즈 블록 끝(흡수·onHit·피격 경직·빙결 게이지·넉백·포이즈) | 42421~42567 | 2 웹동일 소스(H2, oracle 746+연결672, 2,437,201/0·변이 131/132, 연결 전) — 비교 규칙 보완 후 확정 | 피해 표본 oracle 일치. 브랜치 claude/unity-pc-c01-20261026 c03388fb1, 보고서 UNITY_CX04B_ENEMY_HURT_BODY_20261027 |
-| CX-04c1 | `hurtE` 사망부 앞쪽(디코이·도플갱어·보스 부활·일반몹 부활·On-Kill·STY-D9 침강·콤보·문지기) `if(e.hp<=0){` ~ `// ═══ 지옥의 잔해 드롭 ═══` 앞 — BX-05·BX-08 상태 근거 | 42568~42817 | 1 배정(단순작업2) | 명세 `E:/exoduser-wt/_out/pc-cx04c1/SPEC.md`. 비고: BX-05·BX-08 묶음, STY-D9 원격 반영 fce195067 기준 |
-| CX-04c2 | `hurtE` 잔해 드롭 ~ 함수 끝(`}finally{_shBufI--}` 포함) + **함수 전체 통합 oracle**(H1→H2→H3, 같은 적 재진입 포함) | 42818~43191 | 0 | c1 인수 뒤 명세 |
+| CX-04b | `hurtE` HP 적용 ~ 포이즈 블록 끝(흡수·onHit·피격 경직·빙결 게이지·넉백·포이즈) | 42421~42567 | 2 웹동일 소스(H2, oracle 746+연결672, 2,437,201/0·변이 131/132, 연결 전) 확정(b4b00507e) | 피해 표본 oracle 일치. 브랜치 claude/unity-pc-c01-20261026 c03388fb1, 보고서 UNITY_CX04B_ENEMY_HURT_BODY_20261027 |
+| CX-04c1 | `hurtE` 사망부 앞쪽(디코이·도플갱어·보스 부활·일반몹 부활·On-Kill·STY-D9 침강·콤보·문지기) `if(e.hp<=0){` ~ `// ═══ 지옥의 잔해 드롭 ═══` 앞 — BX-05·BX-08 상태 근거 | 42568~42817 | 2 웹동일 소스(H3a, oracle 1,071+연결414, 4,225,618/0·변이 474/486), 브랜치 6496a5660, 보고서 UNITY_CX04C1_ENEMY_HURT_DEATH_HEAD_20261027, 연결 전 | 명세 `E:/exoduser-wt/_out/pc-cx04c1/SPEC.md`. 비고: BX-05·BX-08 묶음, STY-D9 원격 반영 fce195067 기준 |
+| CX-04c2 | `hurtE` 잔해 드롭 ~ 함수 끝(`}finally{_shBufI--}` 포함) + **함수 전체 통합 oracle**(H1→H2→H3, 같은 적 재진입 포함) | 42818~43191 | 0 | M1 뒤 (c1 인수 완료 10-27) |
 | CX-05 | 적 표시 공통 (EnemyView 확장: etype별 시트·크기·색) | ETYPE_COL, 19916 `ETYPE_COLS` | 0 | 웹 나란히 캡처 |
 | CX-06 | 1-1 일반 몹 etype별 AI 분기(M1 우선순위 절의 etype 목록) + `rollEtype`(si0) | `rollEtype` 31055~, `updateE` etype 분기 | 0 | etype별 tick 상태 oracle 일치 |
 
@@ -133,3 +133,4 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | 2026-10-27 | CX-04를 a/b/c로 분할, CX-04a 배정, STY-D9 웹 반영(fb4c929aa) 접수 |
 | 2026-10-27 | CX-04a 인수(dfe67be3b), CX-04b 배정, pure 주석 낡음 판정(동작은 계약대로) |
 | 2026-10-27 | CX-04b 조건부 인수(c03388fb1, NaN 비교 규칙 보완 조건), CX-04c를 c1/c2로 분할, c1 배정 |
+| 2026-10-27 | CX-04c1 인수, CX-04b 확정, M1 재배분(BX-02/03/05=d01, C01 연결·AI=d05), CX-04c2는 M1 뒤 |
