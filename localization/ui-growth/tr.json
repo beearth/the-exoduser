@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "SP ve dağıtım sınırını kontrol et.",
   "추가 후 계획 잔여 SP {n}": "Ekleme sonrası kalan SP: {n}",
   "습득": "Öğrenilen",
-  "변경 중": "Bekleyen"
+  "변경 중": "Bekleyen",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "{n} otomatik yatırım rezervasyonu kaydedildi · Her çift seviyede +1 AP; karşılanabilir rütbeler sırayla yatırılır.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Yeterli AP olmadan da rezerve edilebilir · çift seviyeler AP verir ve karşılanabilir rütbeler sırayla otomatik yatırılır.",
+  "자동 투자 예약 · {n} AP": "Otomatik yatırımı rezerve et · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "Mevcut AP {ap} · rezerve hedef rütbe {rank} · AP yettiğinde otomatik yatırım",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "{n} otomatik yatırım rezervasyonu kaydedildi · aşağıdan tek tek iptal et",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Yeterli AP olmadan da rezerve edebilirsin. Rezervasyonlar anında kaydedilir.",
+  "자동 투자 예약": "OTOMATİK YATIRIM SIRASI",
+  "예약 취소": "İptal",
+  "자동 투자 예약 취소": "Otomatik yatırım rezervasyonunu iptal et"
 }

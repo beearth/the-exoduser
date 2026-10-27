@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "Verifică SP și limita de alocare.",
   "추가 후 계획 잔여 SP {n}": "SP rămase după adăugare: {n}",
   "습득": "Învățate",
-  "변경 중": "În așteptare"
+  "변경 중": "În așteptare",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "{n} rezervări de investiție automată salvate · +1 AP la fiecare nivel par; rangurile accesibile se investesc pe rând.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Poți rezerva fără AP suficienți · nivelurile pare dau AP, iar rangurile accesibile se investesc automat pe rând.",
+  "자동 투자 예약 · {n} AP": "Rezervă investiția automată · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "AP curenți {ap} · rang țintă rezervat {rank} · investiție automată când ajung AP",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "{n} rezervări de investiție automată salvate · anulează pe rând mai jos",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Poți rezerva fără AP suficienți. Rezervările se salvează imediat.",
+  "자동 투자 예약": "COADA DE INVESTIȚII AUTOMATE",
+  "예약 취소": "Anulează",
+  "자동 투자 예약 취소": "Anulează rezervarea de investiție automată"
 }

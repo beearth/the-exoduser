@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "Tarkista SP ja sijoitusraja.",
   "추가 후 계획 잔여 SP {n}": "SP jäljellä lisäyksen jälkeen: {n}",
   "습득": "Opitut",
-  "변경 중": "Odottavat"
+  "변경 중": "Odottavat",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "{n} automaattisen sijoituksen varausta tallennettu · +1 AP jokaisella parillisella tasolla; maksettavissa olevat arvot sijoitetaan järjestyksessä.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Voit varata ilman riittävästi AP:tä · parilliset tasot antavat AP:tä ja maksettavissa olevat arvot sijoitetaan automaattisesti järjestyksessä.",
+  "자동 투자 예약 · {n} AP": "Varaa automaattinen sijoitus · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "Nykyinen AP {ap} · varattu tavoitearvo {rank} · automaattinen sijoitus, kun AP riittää",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "{n} automaattisen sijoituksen varausta tallennettu · peruuta yksitellen alla",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Voit varata ilman riittävästi AP:tä. Varaukset tallennetaan heti.",
+  "자동 투자 예약": "AUTOMAATTISEN SIJOITUKSEN JONO",
+  "예약 취소": "Peruuta",
+  "자동 투자 예약 취소": "Peruuta automaattisen sijoituksen varaus"
 }

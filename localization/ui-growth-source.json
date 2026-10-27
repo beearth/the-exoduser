@@ -546,5 +546,41 @@
   {
     "key": "변경 중",
     "en": "Pending"
+  },
+  {
+    "key": "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.",
+    "en": "{n} auto-invest reservations saved · Gain 1 AP every even level; affordable ranks invest in order."
+  },
+  {
+    "key": "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.",
+    "en": "Reserve without enough AP · even levels grant AP and affordable ranks auto-invest in order."
+  },
+  {
+    "key": "자동 투자 예약 · {n} AP",
+    "en": "Reserve auto-invest · {n} AP"
+  },
+  {
+    "key": "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자",
+    "en": "Current AP {ap} · reserved target rank {rank} · auto-invest when affordable"
+  },
+  {
+    "key": "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능",
+    "en": "{n} auto-invest reservations saved · cancel individually below"
+  },
+  {
+    "key": "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.",
+    "en": "Reserve without enough AP. Reservations save immediately."
+  },
+  {
+    "key": "자동 투자 예약",
+    "en": "AUTO-INVEST QUEUE"
+  },
+  {
+    "key": "예약 취소",
+    "en": "Cancel"
+  },
+  {
+    "key": "자동 투자 예약 취소",
+    "en": "Cancel auto-invest reservation"
   }
 ]

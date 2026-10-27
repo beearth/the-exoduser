@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "Semak SP dan had pengagihan.",
   "추가 후 계획 잔여 SP {n}": "SP berbaki selepas tambahan: {n}",
   "습득": "Dipelajari",
-  "변경 중": "Tertunda"
+  "변경 중": "Tertunda",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "{n} tempahan pelaburan automatik disimpan · +1 AP setiap tahap genap; pangkat yang mampu dilabur mengikut urutan.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Boleh menempah tanpa AP mencukupi · tahap genap memberi AP dan pangkat yang mampu dilabur secara automatik mengikut urutan.",
+  "자동 투자 예약 · {n} AP": "Tempah pelaburan automatik · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "AP semasa {ap} · pangkat sasaran ditempah {rank} · pelaburan automatik apabila AP cukup",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "{n} tempahan pelaburan automatik disimpan · batalkan satu per satu di bawah",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Anda boleh menempah tanpa AP mencukupi. Tempahan disimpan serta-merta.",
+  "자동 투자 예약": "BARISAN PELABURAN AUTOMATIK",
+  "예약 취소": "Batal",
+  "자동 투자 예약 취소": "Batalkan tempahan pelaburan automatik"
 }

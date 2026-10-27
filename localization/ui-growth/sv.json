@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "Kontrollera SP och fördelningstaket.",
   "추가 후 계획 잔여 SP {n}": "SP kvar efter tillägg: {n}",
   "습득": "Inlärda",
-  "변경 중": "Väntande"
+  "변경 중": "Väntande",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "{n} reservationer för automatisk investering sparade · +1 AP varje jämn nivå; överkomliga rank investeras i ordning.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Reservera utan tillräckligt med AP · jämna nivåer ger AP och överkomliga rank investeras automatiskt i ordning.",
+  "자동 투자 예약 · {n} AP": "Reservera automatisk investering · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "Nuvarande AP {ap} · reserverat målrank {rank} · automatisk investering när AP räcker",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "{n} reservationer för automatisk investering sparade · avbryt en och en nedan",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Du kan reservera utan tillräckligt med AP. Reservationer sparas direkt.",
+  "자동 투자 예약": "KÖ FÖR AUTOMATISK INVESTERING",
+  "예약 취소": "Avbryt",
+  "자동 투자 예약 취소": "Avbryt reservation för automatisk investering"
 }

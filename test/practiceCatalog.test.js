@@ -11,5 +11,5 @@ test('every tutorial registry row matches the live source and preserves dynamic 
   assert.deepEqual(tokens(en),tokens(key),key);
   assert.doesNotMatch(en,/[가-힣]/,key);
  }
- assert.equal(rows.length,170);
+ assert.equal(rows.length,173);
 });

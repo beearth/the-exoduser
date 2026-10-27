@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "Vérifiez les SP et le plafond d'attribution.",
   "추가 후 계획 잔여 SP {n}": "SP restants après ajout : {n}",
   "습득": "Appris",
-  "변경 중": "En attente"
+  "변경 중": "En attente",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "{n} réservations d'investissement automatique enregistrées · +1 AP à chaque niveau pair ; les rangs abordables s'investissent dans l'ordre.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Réservation possible sans assez d'AP · les niveaux pairs donnent des AP et les rangs abordables s'investissent automatiquement dans l'ordre.",
+  "자동 투자 예약 · {n} AP": "Réserver l'investissement auto · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "AP actuels {ap} · rang cible réservé {rank} · investissement auto dès que possible",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "{n} réservations d'investissement automatique enregistrées · annulez-les une par une ci-dessous",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Vous pouvez réserver sans assez d'AP. Les réservations sont enregistrées immédiatement.",
+  "자동 투자 예약": "FILE D'INVESTISSEMENT AUTO",
+  "예약 취소": "Annuler",
+  "자동 투자 예약 취소": "Annuler la réservation d'investissement auto"
 }

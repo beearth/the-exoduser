@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "Zkontroluj SP a limit přidělení.",
   "추가 후 계획 잔여 SP {n}": "SP po přidání: {n}",
   "습득": "Naučené",
-  "변경 중": "Čekající"
+  "변경 중": "Čekající",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "Uloženo rezervací automatické investice: {n} · +1 AP na každé sudé úrovni; dostupné hodnosti se investují postupně.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Rezervovat lze i bez dostatku AP · sudé úrovně dávají AP a dostupné hodnosti se investují samy postupně.",
+  "자동 투자 예약 · {n} AP": "Rezervovat automatickou investici · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "Aktuální AP {ap} · rezervovaná cílová hodnost {rank} · automatická investice, jakmile AP stačí",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "Uloženo rezervací automatické investice: {n} · zrušit jednotlivě níže",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Rezervovat můžeš i bez dostatku AP. Rezervace se ukládají okamžitě.",
+  "자동 투자 예약": "FRONTA AUTOMATICKÉ INVESTICE",
+  "예약 취소": "Zrušit",
+  "자동 투자 예약 취소": "Zrušit rezervaci automatické investice"
 }

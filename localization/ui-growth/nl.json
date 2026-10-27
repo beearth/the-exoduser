@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "Controleer SP en de toewijzingslimiet.",
   "추가 후 계획 잔여 SP {n}": "SP over na toevoegen: {n}",
   "습득": "Geleerd",
-  "변경 중": "In afwachting"
+  "변경 중": "In afwachting",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "{n} reserveringen voor automatisch investeren opgeslagen · +1 AP bij elk even niveau; betaalbare rangen worden op volgorde geïnvesteerd.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Reserveren zonder genoeg AP · even niveaus geven AP en betaalbare rangen worden automatisch op volgorde geïnvesteerd.",
+  "자동 투자 예약 · {n} AP": "Automatisch investeren reserveren · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "Huidige AP {ap} · gereserveerde doelrang {rank} · automatisch investeren zodra AP volstaat",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "{n} reserveringen voor automatisch investeren opgeslagen · hieronder per stuk annuleren",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Je kunt reserveren zonder genoeg AP. Reserveringen worden direct opgeslagen.",
+  "자동 투자 예약": "WACHTRIJ AUTOMATISCH INVESTEREN",
+  "예약 취소": "Annuleren",
+  "자동 투자 예약 취소": "Reservering voor automatisch investeren annuleren"
 }

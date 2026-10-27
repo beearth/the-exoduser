@@ -135,5 +135,14 @@
   "SP 또는 투자 상한을 확인하세요.": "Kiểm tra SP và giới hạn phân bổ.",
   "추가 후 계획 잔여 SP {n}": "SP còn sau khi thêm: {n}",
   "습득": "Đã học",
-  "변경 중": "Đang chờ"
+  "변경 중": "Đang chờ",
+  "자동 투자 예약 {n}개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.": "Đã lưu {n} lượt đặt trước đầu tư tự động · +1 AP mỗi cấp chẵn; các bậc đủ điều kiện sẽ được đầu tư theo thứ tự.",
+  "AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.": "Có thể đặt trước dù chưa đủ AP · cấp chẵn cho AP, các bậc đủ điều kiện tự động đầu tư theo thứ tự.",
+  "자동 투자 예약 · {n} AP": "Đặt trước đầu tư tự động · {n} AP",
+  "현재 AP {ap} · 예약 후 예상 레벨 {rank} · AP가 모이면 자동 투자": "AP hiện tại {ap} · bậc mục tiêu đã đặt trước {rank} · tự động đầu tư khi đủ AP",
+  "자동 투자 예약 {n}개 저장됨 · 아래에서 개별 취소 가능": "Đã lưu {n} lượt đặt trước đầu tư tự động · hủy từng lượt ở bên dưới",
+  "AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.": "Bạn có thể đặt trước dù chưa đủ AP. Đặt trước được lưu ngay.",
+  "자동 투자 예약": "HÀNG ĐỢI ĐẦU TƯ TỰ ĐỘNG",
+  "예약 취소": "Hủy",
+  "자동 투자 예약 취소": "Hủy đặt trước đầu tư tự động"
 }
