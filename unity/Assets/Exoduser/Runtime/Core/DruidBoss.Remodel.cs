@@ -9,6 +9,8 @@ namespace Exoduser.UnityPort.Core
         public bool RmFire, FeintUsed;                 // StartPattern re-entry after a telegraph / one feint per combo
         public BossMove RmPending;                     // move waiting behind the bossRmWind telegraph
         public int HbBeat;                             // heartbeat: beats already pulsed
+        public string RmMoveId;                        // move started last (a grab picked beyond 120 px turns into a charge wind: only the id tells them apart)
+        public double RmTeleTotal, RmGap;              // frames of the wind state just entered / tide-wave gap angle drawn at the move start (telegraph list)
         public double HeartCd;                         // idle ticks until the next heartbeat (0 = ready: set at P3 entry)
         public int GrabHits; public double GrabLast, GrabAcc;
         public List<EnemyState> Minions = new List<EnemyState>();
