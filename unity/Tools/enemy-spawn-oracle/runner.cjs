@@ -5,7 +5,7 @@ module.exports=function(name,oracle,defaultLabel,red){
  const out=path.resolve(arg('--out',path.join(__dirname,'runs'))),label=arg('--label',defaultLabel);
  fs.mkdirSync(out,{recursive:true});
  const executable=process.platform==='win32'?'C:/Program Files/dotnet/dotnet.exe':'dotnet';
- const options={cwd:__dirname,env:{...process.env,DOTNET_CLI_HOME:path.join(out,'dotnet-home'),DOTNET_NOLOGO:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1',DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE:'true'},windowsHide:true,timeout:240000,encoding:'utf8'};
+ const options={cwd:__dirname,env:{...process.env,DOTNET_CLI_HOME:path.resolve(__dirname,'..','.dotnet-home'),DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:'false',DOTNET_NOLOGO:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1',DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE:'true'},windowsHide:true,timeout:240000,encoding:'utf8'};
  const binary=path.join(out,'bin-'+label+'-'+name),intermediate=path.join(out,'obj-'+label+'-'+name);
  const build=cp.spawnSync(executable,['build',path.join(__dirname,name+'.csproj'),'--verbosity','quiet','-p:NuGetAudit=false','-p:ExoduserProject='+project,'-p:Red='+(red?'true':'false'),'-p:BaseIntermediateOutputPath='+intermediate+'/','-p:OutputPath='+binary+'/'],options);
  let result=build,output=(build.stdout||'')+'\n'+(build.stderr||'');
