@@ -143,7 +143,7 @@ namespace Exoduser
         }
 
         // ---------------------------------------------------------------- materials
-        class Mats { public Material Toxic, Blockout, Shaft1, Shaft2; public Dictionary<string, Material> Decal = new Dictionary<string, Material>(); }
+        class Mats { public Material Toxic, Blockout, Mass, Bark, Shaft1, Shaft2; public Dictionary<string, Material> Decal = new Dictionary<string, Material>(); }
         static Material Mat(string path, Shader sh, Action<Material> init)
         {
             var m = AssetDatabase.LoadAssetAtPath<Material>(path);
@@ -165,12 +165,19 @@ namespace Exoduser
             var mats = new Mats(); var lit = Shader.Find("Universal Render Pipeline/Lit");
             mats.Toxic = Mat(Root + "/Materials/M_ToxicFlow.mat", Shader.Find("EXODUSER/ToxicFlow"), m => { });
             mats.Blockout = Mat(Root + "/Materials/M_Blockout_Grey.mat", lit, m => { m.SetColor("_BaseColor", new Color(.42f, .42f, .42f)); m.SetFloat("_Smoothness", 0.05f); });
+            // D2 rotten wood + flesh membrane: the confirmed hand-painted mass_v01 (bark plates, sinew webbing, red veins) + its normal map, no generated art
+            var massPath = Root + "/Materials/Mass/mass_v01.png"; var nrmPath = Root + "/Materials/Mass/mass_v01_normal.png"; TexSettings(massPath, false, 1024, false);
+            var ni = AssetImporter.GetAtPath(nrmPath) as TextureImporter; if (ni != null && ni.textureType != TextureImporterType.NormalMap) { ni.textureType = TextureImporterType.NormalMap; ni.maxTextureSize = 1024; ni.SaveAndReimport(); }
+            var massTex = AssetDatabase.LoadAssetAtPath<Texture2D>(massPath); var nrmTex = AssetDatabase.LoadAssetAtPath<Texture2D>(nrmPath);
+            Action<Material, Color, float> massInit = (m, tint, smooth) => { m.SetTexture("_BaseMap", massTex); m.SetColor("_BaseColor", tint); m.SetTexture("_BumpMap", nrmTex); m.SetFloat("_BumpScale", 1f); m.EnableKeyword("_NORMALMAP"); m.SetFloat("_Smoothness", smooth); m.SetFloat("_Metallic", 0f); };
+            mats.Mass = Mat(Root + "/Materials/M_RottenWoodMembrane.mat", lit, m => massInit(m, new Color(.62f, .56f, .54f), .10f));
+            mats.Bark = Mat(Root + "/Materials/M_CursedBark.mat", lit, m => massInit(m, new Color(.40f, .34f, .33f), .06f));
             var shaft = Shader.Find("EXODUSER/LightShaft");
             mats.Shaft1 = Mat(Root + "/Materials/M_Shaft_Hell_1.mat", shaft, m => { m.SetColor("_Color", LightHell); m.SetFloat("_Intensity", 0.42f); m.SetFloat("_Phase", 0.4f); });
             mats.Shaft2 = Mat(Root + "/Materials/M_Shaft_Hell_2.mat", shaft, m => { m.SetColor("_Color", LightHell); m.SetFloat("_Intensity", 0.34f); m.SetFloat("_Phase", 2.1f); });
             EnsureWetTexture();
             var decal = Shader.Find("EXODUSER/GroundDecal");
-            foreach (var n in new[] { "blood", "blood_cracked", "blood_drag", "blood_drops", "root", "root_branch", "root_tangle", "bone", "wet" })
+            foreach (var n in new[] { "blood", "blood_cracked", "blood_drag", "blood_drops", "root", "root_branch", "root_tangle", "bone", "bone_ribs", "bone_skull", "wet" })
             {
                 var p = Root + "/Materials/Decals/decal_" + n + ".png"; TexSettings(p, true, 1024, true);
                 var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(p);
@@ -394,7 +401,7 @@ namespace Exoduser
                     var pb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); pb.name = "Mass_" + (count++).ToString("00");
                     pb.transform.SetParent(root.transform, false); pb.transform.localScale = new Vector3(w, hh, dp);
                     pb.transform.SetPositionAndRotation(new Vector3(wp.x, gy + hh * .5f - .15f, wp.z), Quaternion.Euler(rx, yaw, rz));
-                    pb.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; pb.ToMesh(); pb.Refresh(); fps.Add(fp);
+                    pb.GetComponent<MeshRenderer>().sharedMaterial = mats.Mass; WorldUv(pb, 2.4f); fps.Add(fp);
                 }
             }
             foreach (var pl in river.pools)
@@ -405,7 +412,15 @@ namespace Exoduser
                 var tfp = new FP { kind = "trunk", cx = wp.x, cz = wp.z, hw = 0.95f, circle = true }; int ts = 0;
                 while (FpHitsWalk(tfp) && ts++ < 8) tfp.hw *= .85f;                  // trunk radius shrinks until it stays on blocked tiles
                 float tdia = tfp.hw * 2f;
-                tr.transform.localScale = new Vector3(tdia, 4.6f, tdia); tr.transform.position = new Vector3(wp.x, gy + 2.2f, wp.z); tr.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; tr.ToMesh(); tr.Refresh(); fps.Add(tfp);
+                tr.transform.localScale = new Vector3(tdia * .78f, 4.6f, tdia * .78f); tr.transform.position = new Vector3(wp.x, gy + 2.2f, wp.z); tr.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(tr, 2.0f); fps.Add(tfp);
+                var fl = ShapeGenerator.CreateShape(ShapeType.Cylinder, PivotLocation.Center); fl.name = "TrunkFlare_" + pl.name; fl.transform.SetParent(root.transform, false);
+                fl.transform.localScale = new Vector3(tdia * .98f, 0.9f, tdia * .98f); fl.transform.position = new Vector3(wp.x, gy + 0.2f, wp.z); fl.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(fl, 2.0f);
+                for (int lb = 0; lb < 2; lb++)
+                {
+                    var limb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); limb.name = "TrunkLimb_" + pl.name + "_" + lb; limb.transform.SetParent(root.transform, false);
+                    float la = 40f + lb * 170f; var ld = Quaternion.Euler(0, la, 0) * Vector3.right; limb.transform.localScale = new Vector3(0.28f, 1.7f, 0.28f);
+                    limb.transform.SetPositionAndRotation(new Vector3(wp.x, gy + 4.5f, wp.z) + ld * (tdia * .35f), Quaternion.Euler(0, la, -32f)); limb.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(limb, 1.6f);
+                }
                 for (int k = 0; k < 5; k++)
                 {
                     float ang = k * 72f + 14f; var dir = Quaternion.Euler(0, ang, 0) * Vector3.right; float len = 2.4f; FP rfp = default; bool ok = false;
@@ -418,10 +433,89 @@ namespace Exoduser
                     var rb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); rb.name = "Root_" + pl.name + "_" + k; rb.transform.SetParent(root.transform, false);
                     rb.transform.localScale = new Vector3(len, 0.55f, 0.65f);
                     rb.transform.SetPositionAndRotation(new Vector3(rfp.cx, gy + 0.2f, rfp.cz), Quaternion.Euler(0, ang, -9f));   // yaw = ang: long axis points along the same radial dir as the offset
-                    rb.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; rb.ToMesh(); rb.Refresh(); fps.Add(rfp);
+                    rb.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(rb, 1.6f); fps.Add(rfp);
                 }
             }
+            FillIslands(root.transform, mats, poolTiles, ref count);
             Debug.Log("[RM1] blockout masses=" + count);
+        }
+
+
+        // world-space auto UVs (tile = metres per texture repeat) so scaled cubes keep one texel density
+        static void WorldUv(ProBuilderMesh pb, float tile)
+        {
+            foreach (var f in pb.faces) { var u = f.uv; u.useWorldSpace = true; u.scale = new Vector2(tile, tile); f.uv = u; }
+            pb.ToMesh(); pb.Refresh();
+        }
+        // every blocked component inside the slice window is either an island (<=100 tiles) or part of a bigger mass whose thin protrusions stick into the walk area; each one must show a 3D object.
+        static void FillIslands(Transform root, Mats mats, HashSet<(int, int)> poolTiles, ref int count)
+        {
+            const int WX0 = 60, WX1 = 140, WY0 = 138, WY1 = 192;
+            var seen = new bool[200, 200]; var comps = new List<List<(int, int)>>();
+            for (int y = WY0; y < WY1; y++) for (int x = WX0; x < WX1; x++)
+                {
+                    if (Walk(x, y) || seen[y, x]) continue; var q = new Queue<(int, int)>(); var list = new List<(int, int)>(); q.Enqueue((x, y)); seen[y, x] = true;
+                    while (q.Count > 0) { var (cx, cy) = q.Dequeue(); list.Add((cx, cy)); foreach (var (dx, dy) in new[] { (1, 0), (-1, 0), (0, 1), (0, -1) }) { int nx = cx + dx, ny = cy + dy; if (nx < WX0 || ny < WY0 || nx >= WX1 || ny >= WY1 || Walk(nx, ny) || seen[ny, nx]) continue; seen[ny, nx] = true; q.Enqueue((nx, ny)); } }
+                    comps.Add(list);
+                }
+            var poolCover = new HashSet<(int, int)>(); foreach (var pl in river.pools) if (pl.kind != "w8props") foreach (var t in pl.tiles) poolCover.Add((t.tx, t.ty));   // the R1 w8props pool has no tree, so it does not count as a visible object
+            string CoverKind(int tx, int ty)
+            {
+                float px = (tx + .5f) * T, pz = -(ty + .5f) * T;
+                foreach (var f in fps) if (InFP(f, px, pz, 0.6f * T)) return f.kind;
+                if (poolCover.Contains((tx, ty))) return "pool";
+                var p = new Vector2(px, pz); foreach (var qd in ribbonQuads) if (InTri(p, qd[0], qd[1], qd[2]) || InTri(p, qd[0], qd[2], qd[3])) return "river";
+                return null;
+            }
+            int Sparse(int tx, int ty) { int n = 0; for (int y = ty - 4; y <= ty + 4; y++) for (int x = tx - 4; x <= tx + 4; x++) if (!Walk(x, y)) n++; return n; }
+            var rnd = new System.Random(1105); var report = new List<string>(); int id = 0, filled = 0;
+            foreach (var comp in comps)
+            {
+                bool island = comp.Count <= 100; var cand = new List<(int, int)>();
+                foreach (var (tx, ty) in comp) { if (island || (distWalk[ty, tx] <= 3 && Sparse(tx, ty) <= 36)) cand.Add((tx, ty)); }
+                if (cand.Count == 0) continue;
+                var covered = new Dictionary<string, int>(); var open = new List<(int, int)>();
+                foreach (var (tx, ty) in cand) { var k = CoverKind(tx, ty); if (k == null) open.Add((tx, ty)); else covered[k] = covered.TryGetValue(k, out var n) ? n + 1 : 1; }
+                int bx0 = 999, by0 = 999, bx1 = -1, by1 = -1; foreach (var (tx, ty) in comp) { bx0 = Mathf.Min(bx0, tx); by0 = Mathf.Min(by0, ty); bx1 = Mathf.Max(bx1, tx); by1 = Mathf.Max(by1, ty); }
+                var made = new List<string>(); var openSet = new HashSet<(int, int)>(open); var done = new HashSet<(int, int)>();
+                foreach (var t0 in open)
+                {
+                    if (done.Contains(t0)) continue; var cl = new List<(int, int)>(); var qq = new Queue<(int, int)>(); qq.Enqueue(t0); done.Add(t0);
+                    while (qq.Count > 0) { var cur = qq.Dequeue(); cl.Add(cur); for (int dy = -1; dy <= 1; dy++) for (int dx = -1; dx <= 1; dx++) { var nb = (cur.Item1 + dx, cur.Item2 + dy); if (openSet.Contains(nb) && !done.Contains(nb)) { done.Add(nb); qq.Enqueue(nb); } } }
+                    if (cl.Count < 2 && !island) continue;                                              // single stray tiles of a big mass edge stay terrain mound
+                    float mx = 0, mz = 0; int cx0 = 999, cy0 = 999, cx1 = -1, cy1 = -1; foreach (var (tx, ty) in cl) { mx += (tx + .5f) * T; mz += -(ty + .5f) * T; cx0 = Mathf.Min(cx0, tx); cy0 = Mathf.Min(cy0, ty); cx1 = Mathf.Max(cx1, tx); cy1 = Mathf.Max(cy1, ty); }
+                    mx /= cl.Count; mz /= cl.Count; float gy = GroundY(mx, mz); bool w8 = cx0 == 83 && cy0 == 183 && cx1 == 85 && cy1 == 185;
+                    if (w8)
+                    {   // R1 fall site: broken planks + a splintered stump on the 5-tile cross (W8 story prop)
+                        for (int k = 0; k < 4; k++)
+                        {
+                            float ang = 20f + k * 47f, len = k == 3 ? 0.55f : 0.95f; var fp = new FP { kind = "w8prop", cx = mx + Mathf.Cos(k * 1.7f) * 0.12f, cz = mz + Mathf.Sin(k * 1.7f) * 0.12f, hw = len * .5f, hd = 0.09f, yaw = ang }; int sh = 0;
+                            while (FpHitsWalk(fp) && sh++ < 8) { len *= .85f; fp.hw = len * .5f; }
+                            if (FpHitsWalk(fp)) continue;
+                            var pb = ShapeGenerator.CreateShape(k == 3 ? ShapeType.Cylinder : ShapeType.Cube, PivotLocation.Center); pb.name = "W8_" + (count++).ToString("00"); pb.transform.SetParent(root, false);
+                            if (k == 3) { pb.transform.localScale = new Vector3(0.36f, 0.55f, 0.36f); pb.transform.position = new Vector3(mx, gy + 0.2f, mz); fp.circle = true; fp.hw = 0.18f; }
+                            else { pb.transform.localScale = new Vector3(len, 0.07f, 0.2f); pb.transform.SetPositionAndRotation(new Vector3(fp.cx, gy + 0.12f + k * 0.05f, fp.cz), Quaternion.Euler(0, ang, (k % 2 == 0 ? 9f : -13f))); }
+                            pb.GetComponent<MeshRenderer>().sharedMaterial = mats.Bark; WorldUv(pb, 1.2f); fps.Add(fp); made.Add(pb.name);
+                        }
+                    }
+                    else
+                    {
+                        float w = Mathf.Max(0.5f, (cx1 - cx0 + 1) * T * .9f), d = Mathf.Max(0.5f, (cy1 - cy0 + 1) * T * .9f); float yaw = (float)(rnd.NextDouble() - .5) * 30f;
+                        var fp = new FP { kind = island ? "island-fill" : "tip-fill", cx = mx, cz = mz, hw = w * .5f, hd = d * .5f, yaw = yaw }; int sh = 0;
+                        while (FpHitsWalk(fp) && sh++ < 10) { w *= .85f; d *= .85f; fp.hw = w * .5f; fp.hd = d * .5f; }
+                        if (FpHitsWalk(fp) || w < 0.3f) { made.Add("skipped(no room)"); continue; }
+                        float hh = Mathf.Min(0.5f + 0.1f * Mathf.Sqrt(cl.Count), SouthOfWalk(Mathf.FloorToInt(mx / T), Mathf.FloorToInt(-mz / T)) ? 0.9f : 1.5f);
+                        var pb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); pb.name = "Fill_" + (count++).ToString("00"); pb.transform.SetParent(root, false); pb.transform.localScale = new Vector3(w, hh, d);
+                        pb.transform.SetPositionAndRotation(new Vector3(mx, gy + hh * .5f - .1f, mz), Quaternion.Euler(0, yaw, 0)); pb.GetComponent<MeshRenderer>().sharedMaterial = mats.Mass; WorldUv(pb, 2.4f); fps.Add(fp); made.Add(pb.name);
+                    }
+                    filled++;
+                }
+                var cov = new List<string>(); foreach (var kv in covered) cov.Add("\"" + kv.Key + "\":" + kv.Value);
+                var madeJ = new List<string>(); foreach (var x in made) madeJ.Add("\"" + x + "\"");
+                report.Add("{\"id\":" + (id++) + ",\"kind\":\"" + (island ? "island" : "protrusion") + "\",\"bbox\":[" + bx0 + "," + by0 + "," + bx1 + "," + by1 + "],\"componentTiles\":" + comp.Count + ",\"checkedTiles\":" + cand.Count + ",\"coveredBy\":{" + string.Join(",", cov) + "},\"uncoveredTiles\":" + open.Count + ",\"filledBy\":[" + string.Join(",", madeJ) + "]}");
+            }
+            File.WriteAllText(Root + "/Data/rm1_islands.json", "{\"rule\":\"every blocked island (<=100 tiles) and every thin protrusion of a larger mass (distWalk<=3 and <=36 of 81 blocked tiles within 4 tiles) must be covered by a 3D object; uncovered clusters get a filler placed only on blocked tiles\",\"window\":[60,138,140,192],\"items\":[" + string.Join(",", report) + "]}");
+            Debug.Log("[RM1] islands/protrusions checked=" + report.Count + " filled clusters=" + filled);
         }
 
         // ---------------------------------------------------------------- decals (quad decals until the URP Decal feature lands)
@@ -439,7 +533,7 @@ namespace Exoduser
             }
             var bones = new List<Vector3>();   // bone piles never sit next to each other: >= 3.2u apart, mirrored/rotated/scaled differently each time
             bool BoneOk(Vector3 p) { foreach (var o in bones) if ((new Vector2(o.x - p.x, o.z - p.z)).magnitude < 3.2f) return false; return true; }
-            void AddBone(Vector3 p, float lo, float hi, float a) { if (!BoneOk(p)) return; bones.Add(p); Add("bone", p, Mathf.Lerp(lo, hi, (float)rnd.NextDouble()), (float)rnd.NextDouble() * 360f, new Color(.9f, .9f, .9f, a), rnd.NextDouble() < .5); }
+            void AddBone(Vector3 p, float lo, float hi, float a) { if (!BoneOk(p)) return; bones.Add(p); double bk = rnd.NextDouble(); Add(bk < .4 ? "bone" : bk < .7 ? "bone_ribs" : "bone_skull", p, Mathf.Lerp(lo, hi, (float)rnd.NextDouble()), (float)rnd.NextDouble() * 360f, new Color(.9f, .9f, .9f, a), rnd.NextDouble() < .5); }
             string[] kinds = { "blood", "blood", "blood", "blood_drag", "blood_drops", "blood_drops", "root", "root", "root_branch", "root_tangle", "bone", "blood_cracked" };
             int n = 0;
             while (n < 70)
@@ -587,7 +681,7 @@ namespace Exoduser
             var cj = new List<string>(); foreach (var (tx, ty) in coreOnly) { bool edge = false; for (int dy = -1; dy <= 1; dy++) for (int dx = -1; dx <= 1; dx++) if (!Walk(tx + dx, ty + dy)) edge = true; cj.Add($"{{\"tx\":{tx},\"ty\":{ty},\"boundary\":{(edge ? "true" : "false")}}}"); }
             var nj = new List<string>(); foreach (var (tx, ty) in navOnly) nj.Add($"[{tx},{ty}]");
             Directory.CreateDirectory("../../_out/rm1");
-            File.WriteAllText("../../_out/rm1/navmesh_diff.json", "{\"window\":[60,138,140,192],\"tested\":" + tested + ",\"pass1\":{\"coreWalkNavNo\":" + pass1Core + ",\"navWalkCoreNo\":" + pass1Nav + "},\"coreWalkNavNo\":" + coreOnly.Count + ",\"navWalkCoreNo\":" + navOnly.Count + ",\"carvedVolumes\":" + navOnly1.Count + ",\"navOnlyTiles\":[" + string.Join(",", nj) + "],\"coreOnlyTiles\":[" + string.Join(",", cj) + "]}");
+            File.WriteAllText("../../_out/rm1/navmesh_diff.json", "{\"note\":\"NavMesh baked straight from the walk-tile mesh with agentRadius 0.1u (voxel 0.04u, agentHeight 1.6u) so it matches the Core walk grid; mob spacing and body clearance must be set on the NavMeshAgent (radius), not by eroding the mesh. coreOnlyTiles entries carry boundary=true when the tile touches a blocked tile.\",\"window\":[60,138,140,192],\"tested\":" + tested + ",\"pass1\":{\"coreWalkNavNo\":" + pass1Core + ",\"navWalkCoreNo\":" + pass1Nav + "},\"coreWalkNavNo\":" + coreOnly.Count + ",\"navWalkCoreNo\":" + navOnly.Count + ",\"carvedVolumes\":" + navOnly1.Count + ",\"navOnlyTiles\":[" + string.Join(",", nj) + "],\"coreOnlyTiles\":[" + string.Join(",", cj) + "]}");
             Debug.Log($"[RM1] navmesh tested={tested} pass1 coreOnly={pass1Core} navOnly={pass1Nav} -> final coreWalkNavNo={coreOnly.Count} navWalkCoreNo={navOnly.Count}");
         }
         // walk-grid vs baked NavMesh over the slice window; the baked surface sits ~0.1u above the mesh, so height is tolerated and the horizontal distance decides
