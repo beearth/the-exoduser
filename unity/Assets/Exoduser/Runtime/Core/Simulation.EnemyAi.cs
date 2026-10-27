@@ -9,10 +9,12 @@ namespace Exoduser.UnityPort.Core
     public sealed partial class Simulation
     {
         sealed class ShotWarning { public EnemySpawn Owner; public double T = 60; public bool Dead; public double X, Y; public readonly List<ProjSpec> Shots = new List<ProjSpec>(); }
-        public sealed class FieldZone { public string Kind; public double X, Y, Life, R, Dmg; }
+        public sealed class FieldZone { public string Kind; public double X, Y, Life, R, Dmg, El; }
 
         public float PlayerFreezeSlow;                              // P._freezeSlow (frames, halves the walk like _webSlow)
-        public readonly List<FieldZone> FieldZones = new List<FieldZone>();   // web / trap / iceZone / blizzard bullets: recorded, ground effects are not ported yet
+        public readonly List<FieldZone> FieldZones = new List<FieldZone>();   // trap / iceZone / blizzard bullets (zero-speed projectiles of the web): TickFieldZones is their projectile-loop half
+        public float PlayerTrapSlow;                                // P._trapSlowT (frames, halves the walk like _webSlow)
+        bool inEnemyLoop;                                           // true while the L1 loop runs: hurtE then works on the live web objects, no state -> web copy
         public int ShotsFired, EnemySummons;                         // counters for the oracle / QA
         public event Action<string> EnemySfx;                        // charge / groggy / magic ... (presentation hook)
 
@@ -30,7 +32,7 @@ namespace Exoduser.UnityPort.Core
                 IsWall = (x, y, f) => IsProjectileWall != null ? IsProjectileWall((float)x, (float)y) : !Pass((float)x, (float)y, 0),
                 HasLos = (a, b, c, d) => HasLineOfSight == null || HasLineOfSight((float)a, (float)b, (float)c, (float)d),
                 WallStuck = (x, y) => false, PushOutWall = w => { }, PushOutsideBonfire = (w, bf, c) => { }, BonfireClearance = w => w.r * 1.5 + 2,
-                FlowMove = FlowMove, HurtEnemy = (w, dmg) => { }, CancelProjCharge = w => { w._projChargeT = 0; w._projChargeCol = null; w._projChargeBean = null; w._projChargeParryClass = null; },
+                FlowMove = FlowMove, HurtEnemy = (w, dmg) => { EnemyState o; if (webOwner.TryGetValue(w, out o)) ApplyEnemyDamage(o, (int)dmg, 0, false, 1); }, CancelProjCharge = w => { w._projChargeT = 0; w._projChargeCol = null; w._projChargeBean = null; w._projChargeParryClass = null; },
                 RollDrop = w => { }, AddExp = n => { }, RegKill = w => { }, BossReviveGrandVfx = (w, r) => { }, UpdateE = UpdateEnemyBody,
                 Translate = s => s, AddText = (x, y, t, c, l) => { }, AddParts = (x, y, c, n) => { }, Block = () => { }, Shake = n => { }, PlaySample = (n, v, r) => { }, RandomRate = (a, b) => a + b * .5,
                 Stage = 0, DemoLastStage = Config.DemoLastStage, DemoMode = Config.DemoMode
@@ -102,8 +104,11 @@ namespace Exoduser.UnityPort.Core
                 webEns.Add(w);
             }
             tickFrame = EnemyTick.BeginFrame(tickCtx, 1);
-            for (int i = 0; i < webEns.Count; i++) if (EnemyTick.Step(tickCtx, tickFrame, webEns, i, 1)) break;
+            inEnemyLoop = true;
+            try { for (int i = 0; i < webEns.Count; i++) if (EnemyTick.Step(tickCtx, tickFrame, webEns, i, 1)) break; }
+            finally { inEnemyLoop = false; }
             TickShotWarnings();
+            TickFieldZones();
             foreach (var w in webEns)
             {
                 EnemyState e; if (!webOwner.TryGetValue(w, out e)) continue;
@@ -131,6 +136,55 @@ namespace Exoduser.UnityPort.Core
             if (n < shotWarnings.Count) shotWarnings.RemoveRange(n, shotWarnings.Count - n);
         }
 
+        // the armor element of the web `ar().el` (undefined without armor)
+        double? ArmorElement() { var it = EquippedInventory != null ? EquippedInventory.GetEquipped("armor") : null; return it != null ? (double?)it.el : null; }
+
+        // The projectile-loop half of the zero-speed enemy bullets (game.html 34775-34790 trap, 35159-35178 iceZone / blizzard): they stay until touched (the web resets an
+        // expired life to 1 while the bullet is near the camera), any touch consumes them, and an invulnerable or dashing player is not affected (the trap vanishes anyway).
+        void TickFieldZones()
+        {
+            if (FieldZones.Count == 0) return;
+            double px = Player.X, py = Player.Y, pr = Player.Radius; int w = 0;
+            for (int i = 0; i < FieldZones.Count; i++)
+            {
+                var z = FieldZones[i]; bool dead = false;
+                z.Life -= .667;
+                double dist = Math.Sqrt((px - z.X) * (px - z.X) + (py - z.Y) * (py - z.Y));
+                bool dashing = DashActive || HarpActive || Player.State == "charge";
+                if (z.Kind == "trap")
+                {
+                    if (dist < 28 && !dashing)
+                    {
+                        if (Player.Iframes <= 0)
+                        {
+                            HurtPlayer(Js.Int(z.Dmg * EnemyHurt.ElMul(z.El, ArmorElement())), new HurtOptions { Magic = true });
+                            double ka = JsMath.Atan2(py - z.Y, px - z.X); Player.KnockbackX += (float)(JsMath.Cos(ka) * 8); Player.KnockbackY += (float)(JsMath.Sin(ka) * 8);
+                            double slowRes = EquippedInventory != null ? EquippedInventory.AffixTotal("slowRes") : 0;
+                            PlayerTrapSlow = Js.Int(120 * (1 - Math.Min(.5, slowRes)));
+                            HurtText(px, py - 20, "⚠ 덫!", "⚠ Trap!", "#ffcc00", 40); HurtShake(4);
+                        }
+                        dead = true;
+                    }
+                }
+                else if (dist < pr + (z.R != 0 ? z.R : 1) * 3 + 4 && Player.Iframes <= 0 && !dashing)
+                {
+                    if (z.Kind == "iceZone")
+                    {
+                        if (z.El == 2) PlayerFreezeSlow = Math.Max(PlayerFreezeSlow, 60);   // ice element: slow; the dark (purple) slime pool does nothing
+                    }
+                    else if (z.Kind == "blizzard")
+                    {
+                        HurtPlayer(Js.Int((z.Dmg != 0 ? z.Dmg : 5) * EnemyHurt.ElMul(z.El, ArmorElement())), new HurtOptions { Magic = true });
+                        if (z.El == 2) { PlayerFreezeSlow = Math.Max(PlayerFreezeSlow, 90); HurtText(px, py - 20, "🌨빙결!", "🌨Frozen!", "#9999ff", 25); }
+                    }
+                    dead = true;
+                }
+                if (!dead && z.Kind != "trap" && z.Life <= 0) { if (dist > 2500) dead = true; else z.Life = 1; }
+                if (!dead) FieldZones[w++] = z;
+            }
+            if (w < FieldZones.Count) FieldZones.RemoveRange(w, FieldZones.Count - w);
+        }
+
         void SpawnFieldProjectile(ProjSpec s)
         {
             ShotsFired++;
@@ -153,11 +207,12 @@ namespace Exoduser.UnityPort.Core
             public void ScaleKnock(double m) { s.Player.KnockbackX *= (float)m; s.Player.KnockbackY *= (float)m; }
             public void FreezeSlow(double frames) { s.PlayerFreezeSlow = Math.Max(s.PlayerFreezeSlow, (float)frames); }
             public void StaggerPlayer(double frames) { s.Player.State = "stagger"; s.Player.StateTicks = (float)frames; }
-            public double ElMul(double? attackerElement) { return 1; }   // ar().el: the armor element is not fed by the equipment layer yet
+            public double ElMul(double? attackerElement) { return EnemyHurt.ElMul(attackerElement, s.ArmorElement()); }   // elMul(e.el, ar().el)
             public bool IsParryWindow() { return s.Player.Hp > 0 && ParryRules.IsParryWindow(s.Player.State, s.Player.StateTicks, 0, s.SbParryT, s.CapeParry); }
             public void Parry(EnemySpawn e, double atk)
             {
                 bool q = s.Player.State == "sBlock" || s.Player.State == "peaceShield" || s.SbParryT > 0;
+                s.ParryBank += atk != 0 ? atk : 10;   // P.parryBank += e.atk||10
                 s.ApplyParrySuccess(q);
                 EnemyState owner; if (!s.webOwner.TryGetValue(e, out owner)) return;
                 var r = EnemyPoiseRules.PoiseHit(new EnemyPoiseRules.Enemy { Alive = owner.Alive, Boss = false, Poise = owner.Poise, MaxPoise = owner.MaxPoise, PoiseR = owner.PoiseRegenTicks, Stunned = owner.Stunned,
@@ -225,7 +280,19 @@ namespace Exoduser.UnityPort.Core
             }
             public void Proj(EnemySpawn e, ProjSpec shot) { s.SpawnFieldProjectile(shot); }
             public void Teleported(EnemySpawn e, double x, double y) { }
-            public void Zone(EnemySpawn e, string kind, double x, double y, double life, double r, double dmg) { s.FieldZones.Add(new FieldZone { Kind = kind, X = x, Y = y, Life = life, R = r, Dmg = dmg }); }
+            public void Zone(EnemySpawn e, string kind, double x, double y, double life, double r, double dmg, double el)
+            {
+                s.FieldZones.Add(new FieldZone { Kind = kind, X = x, Y = y, Life = life, R = r, Dmg = dmg, El = el });
+                if (kind == "trap")
+                {   // trap cap 50: the oldest (smallest life) goes first
+                    int count = 0, oldest = -1; double oldLife = double.PositiveInfinity;
+                    for (int i = 0; i < s.FieldZones.Count; i++) { var z = s.FieldZones[i]; if (z.Kind != "trap") continue; count++; if (z.Life < oldLife) { oldLife = z.Life; oldest = i; } }
+                    if (count > 50 && oldest >= 0) s.FieldZones.RemoveAt(oldest);
+                }
+            }
+            public double DotDur() { return 1; }   // pDotDur(): 1 + passive pDot * .1 (the passive tree is not ported)
+            public double DotDmg() { return 1; }   // pDotDmg(): _passDmgSum('dot')
+            public void HurtDot(EnemySpawn e, int damage, bool maliceHunt, double? atkEl) { EnemyState o; if (s.webOwner.TryGetValue(e, out o)) s.ApplyEnemyDot(o, damage, maliceHunt, atkEl ?? 0); }
         }
     }
 }

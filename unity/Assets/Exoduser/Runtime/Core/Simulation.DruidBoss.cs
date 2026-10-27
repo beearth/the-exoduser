@@ -12,12 +12,12 @@ namespace Exoduser.UnityPort.Core
         public float PlayerPoison, PlayerWebSlow;            // P.poison (DOT stacks) / P._webSlow (frames, halves the walk speed)
         public event Action<string, double, double, double> BossFx;   // presentation hook: (kind, x, y, radius)
         internal double NextBossRandom() { return NextRandom(); }
-        float MoveSlowMultiplier { get { return PlayerWebSlow > 0 || PlayerFreezeSlow > 0 ? .5f : 1f; } }
+        float MoveSlowMultiplier { get { return PlayerWebSlow > 0 || PlayerFreezeSlow > 0 || PlayerTrapSlow > 0 ? .5f : 1f; } }
 
         public void AttachDruidBoss()
         {
             if (Druid != null) return;
-            Druid = new DruidBoss(new BossHostAdapter(this));
+            Druid = new DruidBoss(new BossHostAdapter(this)) { ElementMul = el => EnemyHurt.ElMul(el, ArmorElement()) };
             Stage.BossSpawners[0] = SpawnDruid; Stage.BossSpawners[3] = SpawnDruid;
             BossTick = DruidBossTick;
             AfterEnemyTick += TickDruidWorld;
@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort.Core
         void TickDruidWorld()
         {
             // PlayerWebSlow / poison belong to the player update of the web (33143, 33151)
-            if (PlayerWebSlow > 0) PlayerWebSlow--; if (PlayerFreezeSlow > 0) PlayerFreezeSlow--;
+            if (PlayerWebSlow > 0) PlayerWebSlow--; if (PlayerFreezeSlow > 0) PlayerFreezeSlow--; if (PlayerTrapSlow > 0) PlayerTrapSlow--;
             if (PlayerPoison > 0 && Player.Hp > 0)
             {
                 PlayerPoison -= .02f;
@@ -113,6 +113,7 @@ namespace Exoduser.UnityPort.Core
                     {
                         int pd = Js.Int((s.Player.BaseAttack + s.Config.WeaponAttack + s.Config.WeaponEnhanceAttack) * dmgMul * ParryRules.ParryCounterDamageMul(s.PParry));
                         s.HurtEnemy(boss, pd, (float)knockAngle);
+                        s.ParryBank += pd;   // P.parryBank += _pd (the counter damage)
                     }
                 }
                 s.ApplyParrySuccess(q);

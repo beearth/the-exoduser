@@ -62,6 +62,7 @@ class EnemyAiProgram
     static object Get(EnemySpawn e, string key)
     {
         if (key == "kb.x") return e.kb.x; if (key == "kb.y") return e.kb.y;
+        if (key.StartsWith("modT.")) { var mf = typeof(EnemyModT).GetField(key.Substring(5), BindingFlags.Public | BindingFlags.Instance); if (mf == null) throw new InvalidOperationException("C# EnemyModT has no field " + key); return mf.GetValue(e.modT); }
         var f = typeof(EnemySpawn).GetField(key, BindingFlags.Public | BindingFlags.Instance);
         if (f == null) throw new InvalidOperationException("C# EnemySpawn has no field " + key);
         return f.GetValue(e);
@@ -71,7 +72,7 @@ class EnemyAiProgram
     sealed class Host : IEnemyAiHost
     {
         public Func<double> Random; public List<object[]> Log = new List<object[]>(); public List<EnemySpawn> Ens = new List<EnemySpawn>(), Dead = new List<EnemySpawn>();
-        public double Px = 1000, Py = 1000, Pr = 10, PFace, Piframes, PkbX, PkbY, Pfreeze, Pst2; public string Ps = "idle"; public bool Pwin; public int Si; public bool P_st2Set;
+        public double Px = 1000, Py = 1000, Pr = 10, PFace, Piframes, PkbX, PkbY, Pfreeze, Pst2, ArmEl; public string Ps = "idle"; public bool Pwin; public int Si; public bool P_st2Set;
         EnemySpawnContext Ctx() { return new EnemySpawnContext { PlayerLevel = 100, DifficultyIndex = 5, StageDiffOffset = 0, Stage = Si, DemoMode = false, DemoLastStage = 0, CanMove = (x, y, r) => true, Random = Random }; }
         public EnemySpawn Make(int etype, double? el, double? room) { return EnemyFactory.Create(Ctx(), 1000, 1000, Si, etype, false, el, room); }
         void L(params object[] a) { Log.Add(a); }
@@ -85,7 +86,7 @@ class EnemyAiProgram
         public void ScaleKnock(double m) { PkbX *= m; PkbY *= m; }
         public void FreezeSlow(double frames) { Pfreeze = Math.Max(Pfreeze, frames); }
         public void StaggerPlayer(double frames) { Ps = "stagger"; Pst2 = frames; P_st2Set = true; }
-        public double ElMul(double? a) { return 1; }
+        public double ElMul(double? a) { return EnemyHurt.ElMul(a, ArmEl); }   // elMul(e.el, ar().el) with the scenario's armor element
         public bool IsParryWindow() { return Pwin; }
         public void Parry(EnemySpawn e, double atk) { L("txt", "⚡패링!"); L("doParry", atk, e.x, e.y); L("poiseHit", new Ref { E = Idx(e) }, 20.0); }
         public void Text(double x, double y, string text, string color, int life) { L("txt", text); }
@@ -111,10 +112,12 @@ class EnemyAiProgram
         {
             c.alive = true; c.hp = Math.Truncate(c.mhp * .5); c.eShield = 0; c.eShieldMax = 0; c.s = "recover"; c.st2 = 60; c.stunned = 0; c.poise = c.maxPoise; c.reviveIframes = 0;
         }
-        public void Shot(EnemySpawn e, ProjSpec s) { L("shot", s.X, s.Y, s.Vx, s.Vy, s.Dmg, (double)s.El, s.Life, s.Ml, s.Col, s.Sz, s.RedBean, s.Homing, s.FireMagic, s.Commit); }
+        public void Shot(EnemySpawn e, ProjSpec s) { L("shot", s.X, s.Y, s.Vx, s.Vy, s.Dmg, (double)s.El, s.Life, s.Ml, s.Col, s.Sz, s.RedBean, s.Homing, s.FireMagic, s.Commit, s.Web); }
         public void Proj(EnemySpawn e, ProjSpec s) { L("proj", s.X, s.Y, s.Vx, s.Vy, s.Dmg, (double)s.El, s.Life, s.Ml, s.Col, s.Sz, s.RedBean, s.Homing, s.FireMagic, s.BlackBean, s.Commit); }
         public void Teleported(EnemySpawn e, double x, double y) { L("tp", x, y); }
-        public void Zone(EnemySpawn e, string kind, double x, double y, double life, double r, double dmg) { L("zone", x, y, life, r, dmg, kind); }
+        public void Zone(EnemySpawn e, string kind, double x, double y, double life, double r, double dmg, double el) { L("zone", x, y, life, r, dmg, kind, el); }
+        public double DotDur() { return 1; } public double DotDmg() { return 1; }
+        public void HurtDot(EnemySpawn e, int damage, bool maliceHunt, double? atkEl) { L("hurtE", new Ref { E = Idx(e) }, (double)damage, null, true, true, true, maliceHunt, atkEl.HasValue ? (object)atkEl.Value : null); }
     }
     sealed class Ref { public int E; }
 
@@ -167,7 +170,7 @@ class EnemyAiProgram
             int etype = (int)c.GetProperty("etype").GetDouble(), si = (int)c.GetProperty("si").GetDouble(), seed = (int)c.GetProperty("seed").GetDouble(), ticks = (int)c.GetProperty("ticks").GetDouble();
             double sp = c.GetProperty("sp").GetDouble(), ang = c.GetProperty("ang").GetDouble(), dist = c.GetProperty("dist").GetDouble();
             var rnd = Mulberry(seed); int draws = 0; bool first = true;
-            var host = new Host { Si = si, PFace = c.GetProperty("pfacing").GetDouble(), Piframes = c.GetProperty("piframes").GetDouble(), Ps = c.GetProperty("ps").GetString(), Pwin = c.GetProperty("pwin").GetBoolean() };
+            var host = new Host { Si = si, PFace = c.GetProperty("pfacing").GetDouble(), Piframes = c.GetProperty("piframes").GetDouble(), Ps = c.GetProperty("ps").GetString(), Pwin = c.GetProperty("pwin").GetBoolean(), ArmEl = c.TryGetProperty("armEl", out var armEl) ? armEl.GetDouble() : 0 };
             host.Random = () => { draws++; if (first) { first = false; return 0.9999; } return rnd(); };
             // note: the web sequence is [0.9999, r0, r1 ...]; the first draw (mkEn's elite roll) is 0.9999, the rest the mulberry stream
             var e = host.Make(etype, 1, 2);

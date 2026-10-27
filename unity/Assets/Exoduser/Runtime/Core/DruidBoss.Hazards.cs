@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort.Core
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4;
         public int El;
         public string Col = "", ParryClass = "";
-        public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed;
+        public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web;
     }
 
     public sealed class BossProjectile
@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Core
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4, Dist;
         public int El;
         public string Col = "", ParryClass = "";
-        public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Active = true;
+        public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
     }
 
     public sealed class ChaseZone { public double X, Y, R, T, Delay, ExplT, ExplMax; public int Dmg; public bool Hit, Druid; }
@@ -47,6 +47,7 @@ namespace Exoduser.UnityPort.Core
         public double VolleyT, OrbT; public int VolleyN;   // G._druidParryT / _druidOrbT / _druidParryVolley
         public bool ProjectileFlight = true;       // false: oracle (the web projectile loop is not extracted, spawn parameters only)
         public Action<BossProjectile> OnSpawn;
+        public Func<int, double> ElementMul;       // elMul(p.el, ar().el): null = 1 (the oracle and the boss arena)
 
         public const double ESpeedPhysMin = 300.0 / 60, ESpeedPhysMax = 300.0 / 60, ESpeedMagicMin = 500.0 / 60, ESpeedMagicMax = 600.0 / 60;
 
@@ -74,15 +75,15 @@ namespace Exoduser.UnityPort.Core
         {
             var p = new BossProjectile { X = s.X, Y = s.Y, Vx = s.Vx, Vy = s.Vy, Dmg = s.Dmg, Life = s.Life, Ml = s.Ml, Sz = s.Sz, R = s.R, El = s.El, Col = s.Col, ParryClass = s.ParryClass,
                 RedBean = s.RedBean, BlackBean = s.BlackBean, Homing = s.Homing, Mine = s.Mine, ElemBall = s.ElemBall, DruidStraight = s.DruidStraight, DruidParryVolley = s.DruidParryVolley,
-                Commit = s.Commit, FireMagic = s.FireMagic, MissileTrail = s.MissileTrail, Typed = s.Typed };
+                Commit = s.Commit, FireMagic = s.FireMagic, MissileTrail = s.MissileTrail, Typed = s.Typed, Web = s.Web };
             if (viaBoss) { p.DruidPoison = e != null && e.IsBoss && DruidStage; p.DruidStraight = p.DruidStraight && e != null && e.IsBoss && DruidStage; }
             if (p.DruidPoison) { p.ParryClass = ClassOf(p); p.El = EL_P; p.Col = "#66dd22"; }
             p.ParryClass = ClassOf(p);
             if (p.Ml == 0 && p.Life != 0) p.Ml = p.Life;
             bool moving = p.Vx * p.Vx + p.Vy * p.Vy > 0;
-            bool speedBand = moving && !p.Mine && !p.ElemBall;   // the other exclusions (web, trap, bomb, swordWave ...) are flags this boss never sets
+            bool speedBand = moving && !p.Mine && !p.ElemBall && !p.Web;   // the other exclusions (trap, bomb, swordWave ...) are flags this boss never sets
             if (speedBand && ClassOf(p) == "magic") p.Homing = true;
-            if (moving && p.El == EL_P && p.ParryClass == "physical" && !p.BlackBean && !p.FireMagic && !p.Mine && !p.ElemBall)
+            if (moving && p.El == EL_P && p.ParryClass == "physical" && !p.BlackBean && !p.FireMagic && !p.Mine && !p.ElemBall && !p.Web)
             {
                 p.Homing = !p.DruidStraight;
                 if (!p.RedBean) { p.Vx *= 1.3; p.Vy *= 1.3; p.RedBean = true; }
@@ -187,7 +188,8 @@ namespace Exoduser.UnityPort.Core
                 double hitR = host.ParryWindowOpen() ? collR * 3 + 12 : collR + 4;
                 if (pd < hitR && (host.ParryWindowOpen() || host.PIframes <= 0))
                 {
-                    host.HurtPlayer(I(p.Dmg), true);
+                    if (p.Web) { host.PlayerPoison(0, 90); host.Text(px, py - 20, "🕸둔화!", "#aaaaaa", 30); }   // spider web: 1.5 s slow, no damage
+                    else host.HurtPlayer(I((p.Dmg != 0 ? p.Dmg : 10) * (ElementMul != null ? ElementMul(p.El) : 1)), true);
                     p.Active = false; continue;
                 }
                 Projectiles[w++] = p;

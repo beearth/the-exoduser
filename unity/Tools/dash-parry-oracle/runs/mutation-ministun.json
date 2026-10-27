@@ -1,0 +1,177 @@
+{
+  "schema": "exoduser.unity.dash-parry-oracle-result.v1",
+  "checks": 187165,
+  "failures": 655,
+  "oracleSha": "f459dd1faee75a68f686f89da464aa346a4156780a8f1a5bca4e7bb2636cb73a",
+  "sections": {
+    "constants": {
+      "checks": 11,
+      "failures": 0
+    },
+    "parryTicks": {
+      "checks": 16,
+      "failures": 0
+    },
+    "isPWin": {
+      "checks": 2160,
+      "failures": 0
+    },
+    "swing": {
+      "checks": 1800,
+      "failures": 0
+    },
+    "gate": {
+      "checks": 19800,
+      "failures": 0
+    },
+    "sblockRadius": {
+      "checks": 14,
+      "failures": 0
+    },
+    "sblockZone": {
+      "checks": 45,
+      "failures": 0
+    },
+    "projectile": {
+      "checks": 6404,
+      "failures": 0
+    },
+    "passives": {
+      "checks": 224,
+      "failures": 0
+    },
+    "parryProjDmg": {
+      "checks": 576,
+      "failures": 0
+    },
+    "doParry": {
+      "checks": 2816,
+      "failures": 0
+    },
+    "harpDist": {
+      "checks": 6720,
+      "failures": 0
+    },
+    "chainTier": {
+      "checks": 131,
+      "failures": 0
+    },
+    "chainRelease": {
+      "checks": 1728,
+      "failures": 0
+    },
+    "gaugeRegen": {
+      "checks": 1620,
+      "failures": 0
+    },
+    "gaugeMax": {
+      "checks": 900,
+      "failures": 0
+    },
+    "chainPull": {
+      "checks": 105,
+      "failures": 0
+    },
+    "chainFlight": {
+      "checks": 294,
+      "failures": 0
+    },
+    "chainStep": {
+      "checks": 90,
+      "failures": 0
+    },
+    "chainLanding": {
+      "checks": 144,
+      "failures": 0
+    },
+    "chainCancelTier": {
+      "checks": 10,
+      "failures": 0
+    },
+    "focusState": {
+      "checks": 17,
+      "failures": 0
+    },
+    "playerHit": {
+      "checks": 10368,
+      "failures": 0
+    },
+    "blockBranch": {
+      "checks": 32958,
+      "failures": 0
+    },
+    "stunExit": {
+      "checks": 2240,
+      "failures": 0
+    },
+    "poiseHit": {
+      "checks": 18146,
+      "failures": 0
+    },
+    "poiseAmount": {
+      "checks": 5184,
+      "failures": 0
+    },
+    "groggyDamage": {
+      "checks": 50,
+      "failures": 0
+    },
+    "poiseMultDefault": {
+      "checks": 4,
+      "failures": 0
+    },
+    "enemyFrame": {
+      "checks": 30000,
+      "failures": 0
+    },
+    "shieldCost": {
+      "checks": 6,
+      "failures": 0
+    },
+    "sRecover": {
+      "checks": 14,
+      "failures": 0
+    },
+    "kiGather": {
+      "checks": 121,
+      "failures": 0
+    },
+    "sBashFire": {
+      "checks": 392,
+      "failures": 0
+    },
+    "sBashStrike": {
+      "checks": 30,
+      "failures": 0
+    },
+    "sdTap": {
+      "checks": 64,
+      "failures": 0
+    },
+    "sBlockEnter": {
+      "checks": 486,
+      "failures": 0
+    },
+    "sBlockTick": {
+      "checks": 864,
+      "failures": 0
+    },
+    "sBlockRelease": {
+      "checks": 28,
+      "failures": 0
+    },
+    "bashDamage": {
+      "checks": 5400,
+      "failures": 0
+    },
+    "slamHit": {
+      "checks": 35185,
+      "failures": 655
+    }
+  },
+  "firstFailures": [
+    "slamHit: {\u0022d\u0022:0,\u0022r\u0022:10,\u0022range\u0022:160,\u0022stunRange\u0022:0,\u0022mult\u0022:1,\u0022ib\u0022:false,\u0022poise\u0022:1,\u0022maxPoise\u0022:100,\u0022stunned\u0022:0,\u0022kills\u0022:false,\u0022raw\u0022:0,\u0022pAtkMul\u0022:1,\u0022atkBon\u0022:0,\u0022gslLv\u0022:0,\u0022giantSlam\u0022:1} stunned C#=61 web=60",
+    "slamHit: {\u0022d\u0022:0,\u0022r\u0022:10,\u0022range\u0022:160,\u0022stunRange\u0022:0,\u0022mult\u0022:1,\u0022ib\u0022:false,\u0022poise\u0022:100,\u0022maxPoise\u0022:100,\u0022stunned\u0022:0,\u0022kills\u0022:false,\u0022raw\u0022:0,\u0022pAtkMul\u0022:1,\u0022atkBon\u0022:0,\u0022gslLv\u0022:0,\u0022giantSlam\u0022:1} stunned C#=61 web=60",
+    "slamHit: {\u0022d\u0022:100,\u0022r\u0022:20,\u0022range\u0022:160,\u0022stunRange\u0022:400,\u0022mult\u0022:1,\u0022ib\u0022:false,\u0022poise\u0022:100,\u0022maxPoise\u0022:31166,\u0022stunned\u0022:0,\u0022kills\u0022:false,\u0022raw\u0022:0,\u0022pAtkMul\u0022:1,\u0022atkBon\u0022:7,\u0022gslLv\u0022:3,\u0022giantSlam\u0022:5} stunned C#=61 web=60"
+  ]
+}

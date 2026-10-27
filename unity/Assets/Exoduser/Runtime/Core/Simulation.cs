@@ -83,6 +83,7 @@ namespace Exoduser.UnityPort.Core
             Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen / regenDivisor);
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
+            attackHeldForMagic = attack;
             TickPlayerShieldAndRevive();
             ConsumeRollTrigger();
             TickPlayerCombat();
@@ -216,10 +217,12 @@ namespace Exoduser.UnityPort.Core
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
             if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
-            var web = SyncToWeb(enemy);
+            bool live = inEnemyLoop && enemy.Web != null;   // inside the L1 loop the web object is the live one (see ApplyEnemyDot): no state -> web copy
+            var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
             var context = BuildHurtContext(player, typeDamagePct, critRateBonus);
             var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null };
+            if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
             var head = EnemyHurt.Head(context, web, damage, angle, true, opts, atkEl);
             if (head == null) { SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }   // revive iframes swallowed it / parry lesson
@@ -228,6 +231,28 @@ namespace Exoduser.UnityPort.Core
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
             LastHitDamage = total; TotalDamage += total;
             if (enemy.Hp <= 0) OnEnemyZeroHp(enemy);
+            if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }
+        }
+
+        // hurtE(e, dmg, undefined, true, {dot:true, [maliceHunt:true,] shieldHit:true}, atkEl): the DOT block of updateE. Same as ApplyEnemyDamage without an angle / knockback.
+        private void ApplyEnemyDot(EnemyState enemy, int damage, bool maliceHunt, double atkEl)
+        {
+            if (enemy == null || !enemy.Alive || enemy.Hp <= 0 || IsFirstPracticeActor(enemy)) return;
+            bool live = inEnemyLoop && enemy.Web != null;
+            var web = live ? enemy.Web : SyncToWeb(enemy);
+            var player = HurtPlayerView();
+            var context = BuildHurtContext(player, 0, 0);
+            var opts = new EnemyHurtOpts { dot = true, shieldHit = true, maliceHunt = maliceHunt ? (bool?)true : null, noImpact = true };
+            if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
+            double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
+            var head = EnemyHurt.Head(context, web, damage, null, true, opts, atkEl);
+            if (head == null) { SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }
+            EnemyHurt.Body(context, web, null, true, opts, head);
+            SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
+            int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
+            LastHitDamage = total; TotalDamage += total;
+            if (enemy.Hp <= 0) OnEnemyZeroHp(enemy);
+            if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }
         }
 
         private void KillEnemy(EnemyState enemy)

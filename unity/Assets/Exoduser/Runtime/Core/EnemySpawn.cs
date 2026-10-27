@@ -107,6 +107,7 @@ namespace Exoduser.UnityPort.Core
         public double poison;
         public double poisonT;
         public double poisonStk;
+        public double _mwStk;   // 악의 약화 stacks (B03b, web e._mwStk)
         public double _poisonPool;
         public double burnT;
         public double burnStk;

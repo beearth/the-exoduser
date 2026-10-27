@@ -147,6 +147,43 @@ namespace Exoduser.UnityPort.Core.Combat
             r.ChgMul = 1; r.AtkBon = Js.Int(cost * 1.5); r.S = "sBash"; r.St2 = 20;
             return r;
         }
+        // ---- sBash strike (33498 `_gsDmg2` + `_gSlamHit` 46675): the E strike is a circular hit like the giant slam, damage 200 % melee (+21 %/Lv, x charge multiplier) ----
+        // ~~(meleeRef()*2.0*(1+(_sdLv>=1?(_sdLv-1)*0.21:0))*statStr()*pShieldMul()*_chgM)+(P._atkBon||0)
+        public static double BashDamage(double meleeRef, double maliceSwipe, double statStr, double pShieldMul, double chgMul, double atkBon)
+        {
+            double sd = Js.Or(maliceSwipe, 0);
+            return Js.Int(meleeRef * 2.0 * (1 + (sd >= 1 ? (sd - 1) * 0.21 : 0)) * statStr * pShieldMul * chgMul) + Js.Or(atkBon, 0);
+        }
+        // `dmg=~~(dmg*pAtkMul())+(P._atkBon||0)` at the head of _gSlamHit
+        public static double SlamBaseDamage(double dmg, double pAtkMul, double atkBon) { return Js.Int(dmg * pAtkMul) + Js.Or(atkBon, 0); }
+        // `_gslLv||giantSlam||1` stun length of a broken ordinary enemy: min(300, 150 + (Lv-1)*15)
+        public static double SlamFullStunFrames(double gslLv) { return Math.Min(300, 150 + (Js.Or(gslLv, 1) - 1) * 15); }
+        public const double MiniStun = 60;   // _MINI_STUN
+        public struct SlamTargetIn { public double D, R, Mult, Poise, MaxPoise, Stunned; public bool Boss; }
+        public struct SlamTargetOut
+        {
+            public bool Targeted, Hurt, Killed; public double Dmg, Stunned, Poise, BossPoiseAmt; public bool BossPoise, Mini, Break, Weak;
+        }
+        // one enemy of the _gSlamHit loop. `killed` = the enemy died from the damage (the stun part is skipped); `range` damage radius, `stunRange` (0 = same as range)
+        public static SlamTargetOut SlamHitTarget(in SlamTargetIn e, double range, double stunRange, double dmg, bool killed, double gslLv)
+        {
+            var o = new SlamTargetOut { Stunned = e.Stunned, Poise = e.Poise, BossPoiseAmt = -1 };
+            double sR = stunRange != 0 ? stunRange : range;
+            if (e.D > sR + e.R) return o;
+            o.Targeted = true;
+            if (e.D <= range + e.R) { o.Hurt = true; o.Dmg = Js.Int(dmg * e.Mult); }
+            if (o.Hurt && killed) { o.Killed = true; return o; }
+            if (e.Boss) { o.BossPoise = true; o.BossPoiseAmt = Js.Int(e.MaxPoise * 0.25); }
+            else
+            {
+                o.Stunned = Math.Max(o.Stunned, MiniStun);
+                if (e.Poise <= 0) { o.Stunned = Math.Max(o.Stunned, Js.Int(SlamFullStunFrames(gslLv) * e.Mult)); o.Poise = 0; o.Break = true; }
+                else o.Mini = true;
+            }
+            if (e.Mult >= 2) o.Weak = true;
+            return o;
+        }
+
         // sBash strike moment: P.st2<=12&&P.st2+sp>12
         public static bool SBashStrikes(double st2, double sp) { return st2 <= 12 && st2 + sp > 12; }
         // sDraw: hold (>10) switches to kiGather, tap (<=10 and released) fires sBash

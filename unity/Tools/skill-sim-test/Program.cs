@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using Exoduser.UnityPort.Core;
 using Exoduser.UnityPort.Core.Skills;
+using Exoduser.UnityPort.Core.Combat;
 
 // PC-B03 behaviour checks of the skill executor on the real Simulation (standalone .NET, no Unity): input edges, costs, cooldowns, zones, slam, ice orb, holy dome,
 // level up and the save round trip. Numeric formulas are the skill-oracle's job; this file checks that the Simulation applies them in the right order.
@@ -86,6 +87,55 @@ class Program
         Check(!s.UpgradeSkill("spikeTrap"), "Lv2 reached the lock (50/50+1=2)");
         s.Player.StatPoints = 0; s.Player.Level = 100; Check(!s.CanUpgradeSkill("spikeTrap"), "no SP no upgrade");
 
+        Dictionary<string, double> sk; string[] slots; string ult, ct;
+        // ---- malice orb (E slot, web fireball): beam key from idle -> magicCast 7 f -> homing orb -> blast + poison + malice weakness -> magicRecover 12 f ----
+        s = Make();
+        Check(s.Skills.Level("fireball") == 1 && s.Skills.MagicSkill == "fireball", "new character has the fireball on the E slot");
+        s = Make(); e = s.SpawnNormalEnemy(200, 0); float orbMp0 = s.Player.Mana; int orbHp0 = e.Hp; float orbSh0 = e.Shield;
+        s.SetMagicInput(true); s.Tick(0, 0, 100, 0, false, false);
+        Check(s.Player.State == "magicCast" && s.Player.Mana == orbMp0 - 10, "beam key starts magicCast and spends 10 mana (mpCost('magic'))");
+        for (int i = 0; i < 8; i++) { s.SetMagicInput(false); s.Tick(0, 0, 100, 0, false, false); }
+        Check(s.MaliceOrbShots == 1 && s.MaliceOrbs.Count + s.MaliceOrbBlasts >= 1, "the orb is fired after floor(14 / 2) = 7 frames");
+        Idle(s, 120);
+        var ew = e.Web; Check(s.MaliceOrbBlasts >= 1 && (e.Shield < orbSh0 || e.Hp < orbHp0), "the orb blast hurts the enemy it flew into");
+        Check(ew != null && ew.poisonStk == 1 && ew.poisonT > 0 && ew.poison == 1, "the blast poisons (1 stack, 600 f)");
+        Check(ew != null && ew._mwStk == 1, "the blast stacks one malice weakness");
+        Check(s.Player.State == "idle" && s.MaliceOrbs.Count == 0, "magicRecover ends in idle after 12 frames");
+        s = Make(); s.Player.Mana = 5; s.SetMagicInput(true); s.Tick(0, 0, 100, 0, false, false); Check(s.Player.State == "idle" && s.MaliceOrbShots == 0, "no cast below 10 mana");
+        s = Make(); for (int i = 0; i < 80; i++) { s.SetMagicInput(true); s.Tick(0, 0, 100, 0, false, false); }
+        Check(s.MaliceOrbShots >= 4, "holding the beam key fires again every 7 + 12 frames (shots " + s.MaliceOrbShots + ")");
+        s = Make(); s.SetMagicInput(true); s.Tick(0, 0, 100, 0, false, false); s.SetMagicInput(false); Idle(s, 7 + 80);
+        Check(s.MaliceOrbShots == 1 && s.MaliceOrbBlasts == 1 && s.MaliceOrbs.Count == 0, "an orb with no target blasts at the end of its 400 px range");
+        s = Make(); s.SpawnNormalEnemy(60, 0); s.SetMagicInput(true); s.Tick(0, 0, 100, 0, true, false);
+        Check(s.Player.State != "magicCast", "a held weapon attack wins over the beam key (web branch order)");
+        s = Make(); s.Skills.Levels["fireball"] = 3; Check(SkillRules.FireballExplosionRadius(3) == 160 && SkillRules.FireballRadiusMax(3) == 24 && SkillRules.FireballRange(3, 0) == 500, "fireball Lv3: blast r160, grown r24, range 500");
+        Check(SkillRules.FireballDamage(100, 1, 1, 1) == 1320, "fireball damage = magicRef * pMagicMul * skMul (13.2 at Lv1)");
+        s = Make(); s.Skills.Levels["fireball"] = 4; s.CaptureSkills(out sk, out slots, out ult, out ct); var t = Make(); t.RestoreSkills(sk, slots, ult, ct);
+        Check(t.Skills.Level("fireball") == 4, "the fireball level survives a capture / restore");
+        t = Make(); t.RestoreSkills(new Dictionary<string, double> { { "spikeTrap", 1 } }, new string[6], null, null); Check(t.Skills.Level("fireball") == 1, "an old save without the fireball keeps it at Lv1");
+
+        // ---- E strike (B07b): sDraw -> sBash 20 f -> the circular hit at the 8th frame (st2 12), damage + knock-back + mini stun, then sRecover ----
+        {
+            Action<Simulation, bool> eKey = (sim, down) => { sim.SetPlayerCombatInput(false, down, false); sim.Tick(0, 0, 100, 0, false, false); };
+            s = Make(); var near = s.SpawnNormalEnemy(60, 0); var far2 = s.SpawnNormalEnemy(160, 0); float nh = near.Hp + near.Shield, fh = far2.Hp + far2.Shield;
+            eKey(s, true); eKey(s, false);
+            Check(s.Player.State == "sBash", "E tap enters sBash");
+            int tk = 0; while (s.Player.State == "sBash" && s.BashStrikeCount == 0 && tk++ < 30) eKey(s, false);
+            Check(s.BashStrikeCount == 1 && s.Player.StateTicks == 12, "the strike lands when st2 crosses 12 (state ticks " + s.Player.StateTicks + ")");
+            Check(near.Hp + near.Shield < nh, "the E strike hurts an enemy inside the 70 px circle");
+            Check(far2.Hp + far2.Shield == fh, "an enemy outside the circle is untouched");
+            Check(near.Stunned >= ParryRules.MiniStun - 1 || !near.Alive, "the struck enemy gets the 60 f mini stun");
+            Check(s.SlamWaves.Count >= 1 && s.SlamWaves[s.SlamWaves.Count - 1].Bash, "the strike draws the blue shock wave");
+            for (int i = 0; i < 12; i++) eKey(s, false);
+            Check(s.Player.State == "sRecover" || s.Player.State == "idle", "sBash ends in sRecover");
+            s = Make(); var mid = s.SpawnNormalEnemy(160, 0); float mh = mid.Hp + mid.Shield; s.SBashChgMul = 3;
+            s.Player.State = "sBash"; s.Player.StateTicks = 20; for (int i = 0; i < 12; i++) eKey(s, false);
+            Check(s.BashStrikeCount == 1 && mid.Hp + mid.Shield < mh, "a full charge (x3) widens the circle to 210 px");
+            s = Make(); s.Player.State = "sRecover"; s.Player.StateTicks = 20; s.Player.Mana = 100;
+            s.SetPlayerCombatInput(false, false, false); s.Tick(0, 0, 100, 0, false, false); s.SetPlayerCombatInput(true, false, false); s.Tick(0, 0, 100, 0, false, false);
+            Check(s.Player.State == "sBlock", "Q cancels sRecover into the shield");
+        }
+
         // ---- regression: the enemy AI keeps hurting the player after skills were used (M1 07b) ----
         foreach (bool used in new[] { false, true })
         {
@@ -104,8 +154,8 @@ class Program
 
         // ---- save round trip ----
         s = Make(); s.Skills.Levels["spikeTrap"] = 3;
-        Dictionary<string, double> sk; string[] slots; string ult, ct; s.CaptureSkills(out sk, out slots, out ult, out ct);
-        var t = Make(); t.Skills.Levels["spikeTrap"] = 1; t.Skills.Slots[0] = null; t.RestoreSkills(sk, slots, ult, ct);
+        s.CaptureSkills(out sk, out slots, out ult, out ct);
+        t = Make(); t.Skills.Levels["spikeTrap"] = 1; t.Skills.Slots[0] = null; t.RestoreSkills(sk, slots, ult, ct);
         Check(t.Skills.Level("spikeTrap") == 3 && t.Skills.Slots[0] == "spikeTrap" && t.Skills.CtSkill == "iceOrb", "skills survive a capture / restore");
         var legacy = Make(); legacy.RestoreSkills(null, null, null, null); Check(legacy.Skills.Level("giantSlam") == 1, "a save without skills keeps the start state");
 

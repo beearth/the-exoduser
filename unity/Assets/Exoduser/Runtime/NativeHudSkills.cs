@@ -30,9 +30,9 @@ namespace Exoduser.UnityPort {
    GUI.color=Color.white;GUI.Label(new Rect(slot.x,slot.y+2,slot.width,slot.height),label,rageText);
    GUI.color=old;
   }
-  // B03: dock slot -> equipped skill (0..3 = keys 1-4, 4 = F, 5 = Z, 11 = Ctrl, 12 = Space); the LMB slot keeps its own kiSlash drawing
+  // B03: dock slot -> equipped skill (0..3 = keys 1-4, 4 = F, 5 = Z, 7 = RMB, 8 = Shift, 9 = E, 10 = Q, 11 = Ctrl, 12 = Space; web _slotSkId: RMB maliceSwipe / Shift charge / Q parry are fixed unless re-slotted); the LMB slot keeps its own kiSlash drawing
   public static string SlotSkillId(Simulation s,int index){
-   switch(index){case 0:case 1:case 2:case 3:return s.Skills.Slots[index];case 4:return s.Skills.Slots[5];case 5:return s.Skills.UltSlot;case 11:return s.Skills.CtSkill;case 12:return s.Skills.Slots[4];default:return null;}
+   switch(index){case 0:case 1:case 2:case 3:return s.Skills.Slots[index];case 4:return s.Skills.Slots[5];case 5:return s.Skills.UltSlot;case 7:return "maliceSwipe";case 8:return "charge";case 9:return s.Skills.MagicSkill;case 10:return "parry";case 11:return s.Skills.CtSkill;case 12:return s.Skills.Slots[4];default:return null;}
   }
   readonly System.Collections.Generic.Dictionary<string,Texture2D> slotIcons=new System.Collections.Generic.Dictionary<string,Texture2D>();
   GUIStyle cooldownText;
@@ -47,6 +47,12 @@ namespace Exoduser.UnityPort {
     if(cooldownText==null){cooldownText=new GUIStyle(keyLabel){fontSize=15,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter};}
     GUI.color=new Color(.87f,.84f,.76f,1f);GUI.Label(slot,Mathf.CeilToInt(cd/60f).ToString(),cooldownText);GUI.color=old;
    }
+  }
+  // Web updateHUD (60406): a 3 px bar along the bottom of the Shift slot, width = _harpGauge / _HARP_GAUGE_MAX, #44ffaa full / #88ccff from half / #ff8844 below
+  public static Color ChainGaugeColor(double pct){return pct>=1?new Color(.267f,1f,.667f):pct>=.5f?new Color(.533f,.8f,1f):new Color(1f,.533f,.267f);}
+  void DrawChainGauge(Rect slot,Simulation s){
+   double max=s.HarpGaugeMax;if(!(max>0))return;float pct=(float)Math.Min(1,s.HarpGauge/max);
+   var old=GUI.color;GUI.color=ChainGaugeColor(pct);GUI.DrawTexture(new Rect(slot.x,slot.yMax-3*NativeHudDockLayout.ArtScale,slot.width*pct,3*NativeHudDockLayout.ArtScale),Texture2D.whiteTexture);GUI.color=old;
   }
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
    if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
@@ -63,6 +69,7 @@ namespace Exoduser.UnityPort {
    }
    if(simulation==null)return;
    DrawRageSlot(SkillSlotRect(dock,12),simulation);
+   DrawChainGauge(SkillSlotRect(dock,8),simulation);
    if(skillStatus==null){skillStatus=new GUIStyle(keyLabel){fontSize=14,alignment=TextAnchor.MiddleCenter};skillStatus.normal.textColor=new Color(.74f,.69f,.59f);}
    string name=simulation.Config.ActiveAttack=="kiSlash"?"기검참":"기본 무기";
    var statusRect=DockStatusRect(dock,width);
