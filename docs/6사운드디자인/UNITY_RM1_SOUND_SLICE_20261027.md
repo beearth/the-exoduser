@@ -199,6 +199,44 @@
 - 꾸밈은 `rm1_listen_16.html`과 같은 흑철·뼈색 톤. 이모지 금지.
 - 수치 불량(잘림, 6kHz 이상 뒤 구간 3% 초과, 꼬리가 목표 길이의 2배 초과)은 후보 옆에 "주의: <이유>"만 작게 적는다. 추천 표시는 없다.
 
+### 6.4 사용자 고르기 결과 (2026-10-27 `picks_rm1.json`, 메모 없음)
+**채택 11키** — 사용자가 귀로 고른 것이 최종이다. 아래 "주의"는 기록만 하고 소리는 바꾸지 않는다.
+
+| 키 | 채택본 (`G:\exoduser-wt\_out\sfx_forge\` 기준) | 원본 | 반영 메모 |
+|---|---|---|---|
+| `tell_melee` | `_preview_s2/tell_melee_s2_v3_proc.mp3` | `hit/tell_melee_s2/v3.mp3` | 주의 6k 뒤 3.3% — 그대로 |
+| `tell_ranged` | `_preview_s2/tell_ranged_s2_v3_proc.mp3` | `skill/tell_ranged_s2/v3.mp3` | |
+| `tell_boss` | `_preview_s2/tell_boss_s2_v3_proc.mp3` | `skill/tell_boss_s2/v3.mp3` | 썩은 숲 성격이라 웹에서는 드루이드 전조에만 쓴다(다른 장 보스는 `SFX.charge()` 유지) |
+| `tell_grab` | `_preview_s2/tell_grab_s2_v4_proc.mp3` | `skill/tell_grab_s2/v4.mp3` | 주의 6k 뒤 37.6% — 사용자 선택 우선. 게임 안 녹음에서 거슬리면 꼬리만 LP |
+| `druid_erupt` | `_preview_s2/druid_erupt_s2_v4_proc.mp3` | `skill/druid_erupt_s2/v4.mp3` | |
+| `druid_sink` | `_preview_s2/druid_sink_s2_v3_proc.mp3` | `skill/druid_sink_s2/v3.mp3` | |
+| `amb_toxic_river` | `_preview_s2/amb_toxic_river_s2_v1_proc.mp3` | `ambient/amb_toxic_river_s2/v1.mp3` | 이음매 3.7dB → 루프 끝·처음 크로스페이드로 1dB 이하로만 정리(음색 변경 금지) |
+| `toxic_bubble` | `_preview_s2/toxic_bubble_s2_v4_proc.mp3` | `hit/toxic_bubble_s2/v4.mp3` | |
+| `druid_roots_rise` | `_preview_s2/druid_roots_rise_s2_v4_proc.mp3` | `skill/druid_roots_rise_s2/v4.mp3` | 주의 6k 뒤 29.4% — 사용자 선택 우선 |
+| `druid_heartbeat` | `_preview_s2/druid_heartbeat_s2_v4_proc.mp3` | `skill/druid_heartbeat_s2/v4.mp3` | |
+| `druid_tide` | `_preview_s2/druid_tide_s2_v1_proc.mp3` | `skill/druid_tide_s2/v1.mp3` | |
+
+**전부 안 맞음 5키** — `tell_parry`, `roll_body`, `druid_burrow`, `druid_staff_tap`, `druid_root_pierce`. 메모가 없어 방향을 알 수 없으므로, 3차(s3)는 후보 4개를 **서로 다른 해석**으로 만든다(한 문구 4번이 아니라 4가지 방향). 사용자가 고른 방향을 다음 기준으로 삼는다. 공통 꼬리말은 §6.2와 같다.
+
+| 키 | a | b | c | d |
+|---|---|---|---|---|
+| `tell_parry` (0.25s로 컷) | quick sharp blade-edge shing as light catches a weapon tip, single bright scrape, very short | short whoosh of a heavy wooden staff drawn back fast, air cut, tight | dry wooden creak of a gnarled staff gripped hard right before a swing, short | short dull iron ring of a weapon being readied, cut off immediately, no sustain |
+| `roll_body` | quick body roll on soft forest dirt, cloth and leather rustle, soft thud, no metal | fast whoosh of a heavy cloak during a dodge roll, fabric flap, light ground scuff | armored knight rolling on gravel and dirt, plate armor clatter, heavy thump | short evasive dash through dry leaves, leaves crunch and scatter, boot skid |
+| `druid_burrow` | something diving fast into loose earth, quick soil whoosh and thud, dirt settling | deep underground rumble as a body tunnels down, muffled earth grinding | roots coiling around a body and dragging it into the ground, wood creak and crumbling soil | wet mud splash and suction as a figure sinks into a bog in one motion |
+| `druid_staff_tap` | wooden staff butt slammed on forest dirt, soft heavy thud, dull and earthy | staff struck on a stone floor, hard wooden crack with short echo | ritual staff tap on the ground with a deep low boom spreading through the earth | gnarled staff knocked on a hollow tree root, hollow wooden knock |
+| `druid_root_pierce` | roots bursting up and impaling, fast wood splinter and crack | wet organic stab with a short squelch | roots burrowing into bark-like skin, slow creaking crunch | wooden spike thrust into a body, thick thunk with a crack |
+
+- 고르기 페이지는 같은 `pick_rm1.html`에 5키만 3차 후보를 맨 위에 추가한다(2차 후보는 접어 둔 묶음으로). 채택 11키 카드는 "채택됨" 표시로 접는다. `picks_rm1.json`의 기존 선택은 지우지 않는다.
+
+### 6.5 트랙 C 반영 범위 (채택 11키)
+- **웹(game.html)**
+  - AD3 2단계: `tell_melee` = 일반 근접몹 `windup` 진입, `tell_ranged` = 원거리 60f 공격링 시작(`_emitEnemyShot`의 경고 생성). 두 키 모두 같은 키 120ms 쿨다운, 화면 밖 몹 제외, 분류 `TELL`.
+  - 드루이드(si0·si3) 전조: 기존 `SFX.charge()` 호출 중 보스가 다크드루이드일 때만 `tell_boss`로 바꾸고, 잡기 전조는 `tell_grab`으로 바꾼다. 다른 보스는 그대로 둔다.
+  - 드루이드 분출 `SFX.detonate()` → `druid_erupt`, 침강 도주 `_druidSinkStart` 시작에 `druid_sink`, 드루이드 독액 해일(tideWave를 쓰면) 발동에 `druid_tide`.
+  - 웹에 대응 장면이 없는 키(`druid_roots_rise`·`druid_heartbeat`·`amb_toxic_river`·`toxic_bubble`)는 웹에 넣지 않는다(Unity 리모델링 전용).
+  - 음량은 1차값(예고 .45, 드루이드 연출 .5, 침강 .55)으로 넣고 게임 녹음으로 조정. `6사운드디자인.md` 키 표 갱신, DEMO·EA 동기화.
+- **Unity**: 트랙 A 구조(믹서)는 RM-0 병합 뒤 유니티 총괄 배정이다. 지금은 채택 11키 파일을 `claude/unity-pc-sound-rm1-20261027` 브랜치의 `unity/Assets/Exoduser/Resources/Audio/RM1/<key>.mp3`로 넣고, 키·용도·분류(`_SFX_PRI`)·믹서 그룹·공간음 값을 적은 `RM1_AUDIO_KEYS.json`을 같이 둔다(코드 변경 없음). 유니티 총괄에 브랜치와 커밋을 알린다.
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -221,3 +259,4 @@
 | 2026-10-27 | 합성본 3키 판정 PASS(사운드 총괄, `sheet_rm1_comp.png` 눈 확인): heartbeat는 0ms·210ms 두 박이 분명하고, erupt는 흙·나무 어택 위에 붐이 0.6초 동안 줄어들며, grab은 삐걱임과 저음이 끝으로 갈수록 커짐. 6k 뒤 0~0.1%, 잘림 0. 16키 추천본 확정 → 사용자 청음 요청 |
 | 2026-10-27 | 사용자 청음 "다 좀 안맞다 상황하고" → 16키 추천본 전부 반려. 원인 = 장면 없는 문구와 수치 기준 추천. §6 2차 제작(장면 카드·새 문구 16키×4·고르기 페이지 `pick_rm1.html`, 추천 표시 없음) 결정, sound-simple 배정 |
 | 2026-10-27 | §6 2차 제작 실행(sound-simple): 카탈로그 `tools/sfx_forge_catalog_rm1_s2.json`(16키, 키 `<key>_s2`)로 ElevenLabs 64후보(16×4) 생성, staging `<cat>/<key>_s2/v1~v4.mp3`(원본 보존, 1차·r2·합성 후보 유지). API 최소 0.5s라 tell_melee·tell_parry·roll_body·toxic_bubble은 0.5s로 생성. 가공(1차와 같음, 루프는 RMS −24dBFS): `_preview_s2/<key>_s2_v<N>_proc.mp3` 64개, 전부 TP −1.3~−1.9dBTP(루프 v2만 RMS 기준 −4.8)·잘림 0. 수치 "주의" 18후보(6kHz 이상 뒤 구간 >3%: tell_melee v2~v4, tell_grab v2·v4, roll_body v1~v4, druid_erupt v1, druid_roots_rise v1~v4, druid_root_pierce v1 / 루프 이음매 RMS 차 >3dB: amb_toxic_river v1·v3·v4)이며 추천은 붙이지 않음. 이전 후보 60개(r1 v1~v3 정규화본 35개 `_preview_s2/prev/` + 1차 추천 가공본 13 + r2 가공본 9 + 합성본 3)는 키마다 접어 둠. 고르기 페이지 `pick_rm1.html`(장면 카드·그냥/장면에서 듣기·라디오·"전부 안 맞음"+메모·`picks_rm1.json` 자동 저장)과 서버 `_tools/serve.cjs`(127.0.0.1:3399, Range·`/game/` 읽기 전용 별칭 bgm/·sfx/·`GET/POST /api/picks`)는 저장소 밖 `G:\exoduser-wt\_out\sfx_forge\`. headless·음소거 검수: audio 124개 readyState≥1·오류 0, 선택→저장→새로고침 복원·장면 재생 오류 0 |
+| 2026-10-27 | 사용자 고르기 완료(`picks_rm1.json`): 채택 11키, 전부 안 맞음 5키(메모 없음). §6.4 채택표·3차(s3) 4방향 문구, §6.5 트랙 C 범위 결정. sound-simple 배정 |
