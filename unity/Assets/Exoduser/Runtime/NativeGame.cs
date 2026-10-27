@@ -74,6 +74,7 @@ namespace Exoduser.UnityPort
             pauseMenu=new NativePauseMenu(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font,settings,
                 SetSfxPercent,SetBgmPercent,SetFrameCap,
                 SetFullscreenPreference);
+            pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
             bool legacyFixture=Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
@@ -89,6 +90,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
             else if(Array.IndexOf(args,"--unity-hud-blend-smoke")>=0){menu=true;Running=false;StartCoroutine(HudBlendCapture());}
             else if(Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0){inventoryKeysSmoke=true;traceInventoryKeys=true;pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();StartCoroutine(InventoryKeysSmoke());}
+            else if(Array.IndexOf(args,"--unity-ui-finish-capture")>=0){menu=true;Running=false;pauseSmoke=true;StartCoroutine(UiFinishCapture());}
             else if(Array.IndexOf(args,"--unity-pause-smoke")>=0){pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();menu=true;Running=false;pauseMenu.Reset();StartCoroutine(PauseSmoke());}
             else if(Array.IndexOf(args,"--unity-character-story-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterStorySmoke());}
             else if(Array.IndexOf(args,"--unity-character-store-smoke")>=0){menu=true;Running=false;lobbySmoke=true;lobby.AutomatedInput=true;lobby.ShowLobby();StartCoroutine(CharacterStoreSmoke());}
@@ -114,8 +116,8 @@ namespace Exoduser.UnityPort
             startupResetCount++;
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
-            var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
-            Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;
+            var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
+            Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
@@ -184,7 +186,7 @@ namespace Exoduser.UnityPort
             if(Input.GetKeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
                 if(skills.Open){SetSkills(false);return;}
                 if(inventory.Open)SetInventory(false);
-                else {menu=true;pauseMenu.Reset();Running=false;}
+                else {menu=true;pauseMenu.OpenSettingsDirect();Running=false;}
                 return;
             }
             if(skills.Open&&NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
@@ -245,7 +247,7 @@ namespace Exoduser.UnityPort
         void UpdateViews()
         {
             if(Simulation==null||view==null)return;var p=Simulation.Player;
-            float shk=Simulation.ShakeAmount;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
+            float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             view.transform.position=new Vector3(p.X/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-p.Y/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);BossCameraZoom();StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
@@ -361,6 +363,7 @@ namespace Exoduser.UnityPort
                 ApplyPauseCommand(pauseMenu.Draw(PlayerDown,Screen.fullScreen));
                 TraceA15HitRoot("after");
             }
+            DrawSettingsOverlays();
             GUI.matrix=old;
         }
         void SetSkills(bool open,int slot=6){
@@ -393,7 +396,7 @@ namespace Exoduser.UnityPort
                     if(stats.Open)SetStats(false);
                     if(skills.Open)SetSkills(false);
                     if(inventory.Open)SetInventory(false);
-                    if(!menu){menu=true;pauseMenu.Reset();Running=false;}
+                    if(!menu){menu=true;pauseMenu.OpenSettingsDirect();Running=false;}
                     break;
                 case "invPanel":
                     if(forge.Open)SetForge(false);
