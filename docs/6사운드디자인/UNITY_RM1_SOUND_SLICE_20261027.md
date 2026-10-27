@@ -129,6 +129,33 @@
 - `druid_erupt` (skill, 0.8s): "ground bursting open from below, crunchy dirt explosion with splintering wood and roots tearing upward, debris and soil raining down, moderate low impact, not a pure sub boom"
 - `druid_heartbeat` (skill, 0.8s): "giant organic heartbeat, double thump lub-dub through the ground, wet fibrous muscle squeeze on each beat, short low pressure swell between, no electronic kick"
 
+### 5.1 r2 판정과 합성(레이어) 방식 전환 (2026-10-27)
+- r2 판정: 3키 모두 탈락.
+  - `tell_grab`: 여전히 딸깍이 연속됨
+  - `druid_erupt`: −19~−24dBTP로 작고, 뒤쪽 6k 이상이 66~74%
+  - `druid_heartbeat`: 쿵 한 번뿐이고 두 박자가 아님
+- 같은 문장으로 세 번째 생성을 하지 않고, 이미 있는 후보를 겹치고 다듬어 만듭니다. 확정된 방법(숫자는 고정, 결과는 사운드 총괄이 판정)은 아래와 같습니다.
+- **`druid_heartbeat_comp`** (0.65s, 쿵-쿵):
+  1. 재료는 r1 v3 원본의 0~180ms 구간
+  2. 첫 박: 0ms에 0dB
+  3. 둘째 박: 210ms에 −4dB, 피치 −8%(리샘플)
+  4. 두 박 모두 끝 40ms 페이드
+  5. 전체 110Hz 아래만 남기지 말고 원본 그대로 두고, `toxic_bubble` v1 원본을 각 박 +15ms 위치에 −16dB로 겹침(축축한 질감)
+  6. −1dBTP 정규화
+- **`druid_erupt_comp`** (0.8s):
+  1. r1 v2 원본(저음 붐)을 250Hz 로우패스, −6dB
+  2. `druid_burrow` v2 원본의 0~400ms(흙·나무 어택)를 0dB로 0ms에 겹침
+  3. r2 v2 원본(파편)을 +18dB, 6kHz 로우패스로 60ms 위치에 겹침
+  4. 합친 뒤 −1dBTP 정규화, 끝 60ms 페이드
+- **`tell_grab_comp`** (1.0s, 쌓이는 예고):
+  1. 바닥층: 사인 45Hz→60Hz 상승 스윕, 진폭은 0→1 지수 곡선(0.95s), 끝 50ms 페이드, −10dBFS
+  2. 위층: r2 v2 원본(부드러운 삐걱임)에 게인 곡선 −14dB→0dB 직선을 적용
+  3. 합친 뒤 −1dBTP 정규화
+- 판정 기준(합성본):
+  - 6k 이상 뒤 구간 3% 이하
+  - 잘림 0
+  - 시트에서 heartbeat는 두 박, grab은 끝으로 갈수록 커지는지 확인
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -146,3 +173,4 @@
 | 2026-10-27 | 트랙 B 추가 2키(`tell_parry`·`tell_grab`)와 트랙 B2 5키(`druid_staff_tap`·`druid_roots_rise`·`druid_root_pierce`·`druid_heartbeat`·`druid_tide`) × 3 = 21후보 생성(sound-simple, 카탈로그 `tools/sfx_forge_catalog_rm1.json` 16키). 이로써 트랙 B 11키 + B2 5키 = 16키 × 3 = 48후보. 측정 `_analysis/metrics_rm1.json`(정점→−30/−40dB 감쇠·저역<120Hz 추가)·시트 `sheet_rm1_<key>.png`, 청음 페이지 RM-1 묶음을 총괄 지정 순서(예고음 5 → roll_body → druid 3 → 독성 강 2 → 드루이드 연출 5)로 재배열. `tell_parry`: 정점→−40dB 240~330ms(전부 400ms 이내)·6kHz 이상은 뒤 구간 0.1~1.1%, v3은 100ms 부근에 2번째 틱. `druid_heartbeat`: 저역<120Hz 98~99.7%, v1 −9.0dBTP 무잘림 / v2·v3 +2.3·+1.8dBTP 잘림 230·356 → −1dBTP 가공본(`_preview_rm1/druid_heartbeat_v2·v3_tp-1.mp3`, 게인 −3.36·−2.88dB, −1.54·−1.55dBTP, 잘림 0) 병기. `druid_staff_tap`은 셋 다 −26dBTP로 매우 작음(승격 때 게인 보정 필요) |
 | 2026-10-27 | 48후보 1차 판정(§5): 13키 추천+가공 방식, 3키(`tell_grab`·`druid_erupt`·`druid_heartbeat`) 다시 생성 r2. 다시 생성된 후보까지 판정한 뒤 사용자 청음 한 번에 요청 |
 | 2026-10-27 | §5 1차 판정 실행(sound-simple): 가공본 13개 `_preview_rm1/<key>_v<N>_proc.mp3`(−1dBTP 정규화+뒤 무음 정리 공통, tell_parry v2 0.25s 컷, amb_toxic_river v2 RMS −24.0dBFS·이음매 0.7dB·피크 −6.9dBTP, druid_staff_tap v2 −1dBTP로 +24.7dB, druid_roots_rise v3 6.5kHz LP로 6k 이상 뒤 구간 9.8%→2.0%) + r2 재생성 3키(`tell_grab_r2`·`druid_erupt_r2`·`druid_heartbeat_r2`) × 3 = 9후보와 각각의 −1dBTP 가공본 9개. 측정 `_analysis/metrics_rm1_proc.json`, r2 시트 `sheet_rm1_<key>_r2.png` 3장, 청음 페이지는 키마다 맨 앞에 "총괄 추천(가공본)"·r2 3키는 r2 가공본 3개 + r1 "탈락" 표시. r2 결과(수치 사실): `tell_grab_r2`는 여전히 딸깍 연속(시트 확인, 큰 딸깍 약 9~10회·펄스 근사 11/16/20), `druid_heartbeat_r2`는 저역<120Hz 96.7~99.4%이고 시트상 파형은 첫 수십 ms에 쿵이 몰리고 이후는 작은 잔진동뿐이라 두 박자(쿵-쿵)가 눈으로 확인되지 않음(박 근사 4/5/2는 잔진동 포함 수치), `druid_erupt_r2`는 6kHz 이상이 뒤 구간 66.5~74.2%(v2만 어택 3.4%)로 CH1 고역 규칙 크게 초과하고 원본 피크가 −19~−24dBTP로 매우 작음(가공 게인 +18~+22dB). 2회째 생성이라 재생성은 총괄 판정 대기 |
+| 2026-10-27 | r2 3키 탈락 판정, 세 번째 생성 대신 합성 방식(§5.1)으로 전환. sound-simple은 296K로 재생성(clear) 후 인계 문서로 재개 |
