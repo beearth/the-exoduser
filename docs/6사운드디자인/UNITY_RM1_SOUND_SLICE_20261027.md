@@ -280,6 +280,34 @@
 - 트랙 A 기준: 분류 `SKILL`(10, 웹 `_SKILL_SFX_KEYS`에 있음), 믹서 그룹 `SFX/Skill`, 2D(플레이어 소리), 시작값은 웹 E 마법 시전과 같게 음량 .9·rate .7±.1(`game.html` 화염구 시전 2곳). 웹의 다른 사용처(.6/1/.5, 혈류 계열)는 Unity에 해당 기술이 들어올 때 따로 정한다.
 - 트랙 A 구현 때 `RM1_AUDIO_KEYS.json`에 이 키를 같은 형식으로 한 줄 추가한다(파일은 옮기지 않는다).
 
+### 6.7 트랙 A 1차 판정 (2026-10-28 사운드 총괄)
+
+제출: RM-0 세션, 브랜치 `claude/unity-pc-sound-rm1-20261027` `5797c22fb`(48fdc2e29 + origin/unity/main `b280ddf61` merge, unity/main 미병합), 구현 문서 `docs/engine/UNITY_RM1_SOUND_TRACK_A_20261028.md`, 산출물 `E:/exoduser-wt/_out/rm1-sound/`. 녹음은 Simulation(적 AI·DruidRemodel·StageFlow)이 낸 소리 이벤트 타임라인을 실제 어댑터(`NativeFeedbackAudio`·`NativeGameMusic`·`NativeAmbientSources`)와 `Exoduser.mixer`로 재생해 AudioRenderer로 뜬 것(3초 넘는 간격은 3초로 줄임). 드루이드 페이즈는 디버그 이동 없이 실제 진행.
+
+**기능(Receipt) — PASS**
+- 드루이드 Receipt를 §6.6 표와 출처별로 대조: 기술 1의 1·2타 `tell_parry`(9·9회)·3타 `tell_boss`(9), 2 `tell_parry`(6), 3 `tell_parry`(11), 4 `tell_boss`(8), 5 `tell_boss`(5), 6 `tell_grab`(4), 7 `druid_burrow`(2, 임시 tell_boss)→`druid_erupt`(2), 8 첫 장판만 `tell_boss`(2), 9 `tell_boss`(1), 10 `tell_parry`(2)→`druid_tide`(2), 12 `tell_boss`(1)→`druid_heartbeat` 3박, P1 진입 `druid_staff_tap`×3(파일 없음)→`druid_roots_rise`, P2·P3 `druid_root_pierce`(2, 파일 없음), `druid_sink` 1. 표와 어긋난 줄 0.
+- 같은 키 예고음 겹침 0(DROPPED 0). BGM `hell1`→`boss`(스냅샷 Boss)→`victory`. 대기 키 표시 규칙대로.
+- 기술 11(포자 꼬투리)은 이번 한 판에서 나오지 않아 미검증.
+
+**수치(불량 검사만) — 조건부**
+| 녹음 | 길이 | 샘플 피크 | 0.9 이상 | 전체 RMS | 400ms RMS 최대 / 중앙 |
+|---|---|---|---|---|---|
+| 드루이드 60초(39.7~99.7초) | 60.0s | 0.882(−1.09dBFS) | 0 | −19.5dBFS | −14.3 / −20.9 |
+| 드루이드 전체 | 114.0s | 0.884 | 0 | −20.3 | −11.8 / −22.1 |
+| R2 전투 | 35.9s | 0.974(−0.23dBFS) | 5샘플(25.2초) | −20.0 | −11.6 / −21.7 |
+- R2 25.2초: 0.2초 안에 사망 2(`death_crack3` .88·`death_crack2` .76)+플레이어 피격 2가 겹쳐 여유 0.2dB. 잘림은 없지만 혼전이 더 커지면 잘린다 → SFX 버스에 피크 제어 필요.
+- 덕킹: 설정값(임계 −20dB·ratio 1.5·attack 10ms·release 250ms)만 있고 실제 깊이 미측정. 목표 −4dB.
+- 환경음 대 BGM, Boss 스냅샷 −8dB는 섞인 녹음에서 분리해 잴 수 없음 → 그룹별 분리 녹음 필요.
+
+**귀 판정 — 사용자 청음 대기**: 시안 폴더 `tmp/design-review/20261028_rm1_sound/`(드루이드 60초·R2 mp3 + Receipt). 총괄은 소리를 들을 수 없어 수치로는 불량만 거른다(§6.1).
+
+**RM-0 지시(2차 제출)**
+1. SFX 버스(또는 Master)에 피크 제어(Compressor 등): 같은 타임라인 R2 녹음 샘플 피크 ≤ −3dBFS(0.708), 전체 RMS 변화 1dB 이내.
+2. 덕킹 실측: Tell이 나는 구간과 안 나는 구간에서 `Ambience`·`EnemyHit` 그룹만 분리 녹음해 깊이를 잰다. −4dB ±1dB가 되게 임계·ratio 조정.
+3. 그룹별 분리 녹음 RMS 표(Music·Ambience·SFX, Explore와 Boss 각각): 탐험 중 Ambience 중앙값이 Music보다 6dB 이상 작은지, Boss에서 Ambience가 Explore 대비 −8dB인지.
+4. 기술 11이 Core P3 기술 목록에 있으면 다음 타임라인에 포함, 없으면 Receipt 요약에 "미사용"으로 적는다.
+5. 음량(시작값)은 사용자 청음 결과가 올 때까지 바꾸지 않는다.
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -308,3 +336,4 @@
 | 2026-10-27 | §6.5 트랙 C Unity 전달(sound-simple): 채택 11키 mp3 + `RM1_AUDIO_KEYS.json`(키·용도·믹서 그룹·`_SFX_PRI` 분류·공간음·시작 음량·쿨다운)을 브랜치 `claude/unity-pc-sound-rm1-20261027`(origin/unity/main `cfc5a0957` 기준)의 `unity/Assets/Exoduser/Resources/Audio/RM1/`에 커밋 `48fdc2e29`, 브랜치만 push(unity/main 병합 안 함, 코드 변경 없음, `.meta`는 Unity가 임포트 때 생성). `amb_toxic_river`는 s2 v1 가공본에 등전력 크로스페이드 1.5초(루프 6.5초)로 이음매 RMS 차 3.7→0.4dB·샘플 점프 0.0001, 게인·음색 변경 없음(`_analysis/rm1_river_loop.py`, `_preview_s2/amb_toxic_river_loop.mp3`). 웹은 DEMO·EA 동기화 완료(`game.html`·`gamedemo.html` 동일 패치 + sfx 7개) |
 | 2026-10-28 | 유니티 총괄 공지: 트랙 A(A1~A8) 구현 = RM-0 세션 `local_7bb6eaac`, 브랜치 `claude/unity-pc-sound-rm1-20261027`. §6.6 드루이드 기술 12종 → 소리 키 표·3차 대기 키 임시값·Receipt/녹음 제출 기준 작성, RM-0 세션에 전달 |
 | 2026-10-28 | 유니티 총괄 공지: UI 세션이 E 마법 예외 해소용으로 `fireball`을 Unity에 넣음(unity/main `40256751b`). §6.6에 트랙 A 편입 기준(SKILL·`SFX/Skill`·2D·.9/rate .7±.1) 추가, RM-0 세션에 전달 |
+| 2026-10-28 | 트랙 A 1차 제출(RM-0, `5797c22fb`) 판정 §6.7: Receipt 기능 PASS(§6.6 대조 어긋남 0·겹침 0, 기술 11 미검증), 수치 조건부(R2 피크 −0.23dBFS·덕킹 깊이·그룹 음량 미측정), 귀 판정은 사용자 청음 대기. RM-0에 2차 지시 5건 |
