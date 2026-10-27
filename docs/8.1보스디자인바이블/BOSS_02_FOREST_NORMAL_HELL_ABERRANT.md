@@ -28,3 +28,6 @@
 콤보: jump→slam→sweep / charge→tailSwipe / slashCombo→tailSwipe→beanStorm.
 
 2_3·티켓·blackBean·쉴드·기검참 불변.
+
+## 2026-10-27 STY-12 마지막 사망 한 줄 대사
+- 지옥기형 si2 마지막 사망: **"…밥 먹을 시간인데."** (EN "…It's time to eat.") — 어머니 원형, 짐승 울음 뒤 사람 말 한 마디. `#bossLine` 자막, 번역 No.3346. 부활 판정이 걸린 사망에서는 띄우지 않는다. 근거 `11내러티브·로어디자인/CH1_STORY_SPINE_20261027.md` §5.

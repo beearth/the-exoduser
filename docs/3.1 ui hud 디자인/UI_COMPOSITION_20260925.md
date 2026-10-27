@@ -3006,3 +3006,16 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 - `!important` 약 331곳은 기존 CSS(ui-refinement.css 1162~1300행대 등)와 game.html 인라인 style을 덮기 위한 것이다. 장기적으로는 기존 settings 규칙을 걷어내고 이 파일로 일원화하는 정리가 필요하다.
 - 그래픽 품질 선택 칩(`#gfxPresetRow button`)의 선택 상태는 JS가 인라인 style에 `border: 1px solid …`를 쓰는 것을 `[style*="border: 1px"]`로 매칭한다 — 인라인 문자열 형식에 의존해 취약하다. JS가 선택 칩에 `aria-pressed`나 클래스를 달도록 바꾸는 것을 권장(game.html 수정이 필요해 이번에는 하지 않음).
 - 새 글자: 분류 줄 `SETTINGS`(`::before` 영문 고정)뿐. 번역 목록에는 등록하지 않았다(영문 고정 관례).
+## 2026-10-27 STY-12 보스 한 줄 자막 `#bossLine` (game.html)
+
+보스 한 줄 대사 전용 자막. 펫 말풍선(`_petSay`)과 별개 UI이며 `#areaTitle` 계열 Hell Gothic 토큰을 그대로 쓴다. 이모지·산세리프 없음.
+
+| 항목 | 현재 계약 |
+|---|---|
+| DOM | `#bossLine`(`#areaTitle` 바로 뒤) > `#bossLineName`(화자=`_T(STG[G.stage].bn)`) + `#bossLineText`(대사). 리프 노드만 `textContent` 교체 |
+| 위치·크기 | `position:fixed` 하단 중앙 `bottom:19%`, `width:min(80vw,860px)`, `z-index:19`(`#stageClear` 25·`#demoEnd` 99 아래), `pointer-events:none` |
+| 표면 | 좌우 페이드 흑철 반투명 띠 `rgba(7,6,6,.74)`, 위·아래 1px 금빛 헤어라인 `rgba(164,147,115,.5)`, 그림자 `drop-shadow(0 5px 12px)` |
+| 글꼴·색 | 화자: `'Cinzel',var(--font-hell)` `clamp(.52rem,.72vw,.7rem)` 자간.32em `rgba(168,153,127,.72)`. 대사: `var(--font-hell)` `clamp(.95rem,1.4vw,1.3rem)` 자간.05em 뼈색 `rgba(223,214,194,.93)` |
+| 표시 | `.show` 애니메이션 `hudBossLine` 3.2s(14%까지 페이드 인·78%부터 아웃, 위로 4px). 재표시 시 class 제거→reflow→추가 |
+| 호출 | `_bossLine(key)` — 키 `intro0/sink0/die1/die2/die3`, 아레나 진입(`_enterBossArena`) 시 `G._bossLineSeen` 초기화, 키별 1회. 보스 대사 5줄·번역: `번역대상_전체목록.md` No.3343~3349 |
+| 불변 | 순수 DOM — 보스 생사·`G.bossAlive`·출구 개방 틱과 무관(헤드리스 A/B 209/210틱·29틱 동일) |

@@ -337,6 +337,14 @@ canvas{display:block;position:fixed;inset:0}
 #areaTitleEn{margin-top:5px;color:rgba(168,153,127,.72);font-family:'Cinzel',var(--font-hell);font-size:clamp(.52rem,.72vw,.7rem);letter-spacing:.32em}
 #areaTitle.show{animation:hudAreaTitle 3.1s ease-in-out both}
 @keyframes hudAreaTitle{0%{opacity:0;transform:translate(-50%,-15px);filter:blur(5px) drop-shadow(0 5px 12px #000)}13%,69%{opacity:1;transform:translate(-50%,0);filter:blur(0) drop-shadow(0 5px 12px #000)}100%{opacity:0;transform:translate(-50%,7px);filter:blur(2px) drop-shadow(0 5px 12px #000)}}
+/* ── [STY-12] 보스 한 줄 대사 자막 — #areaTitle 계열 Hell Gothic (흑철 반투명 띠 + 금빛 헤어라인 + 뼈색 문자) ── */
+#bossLine{position:fixed;left:50%;bottom:19%;z-index:19;width:min(80vw,860px);box-sizing:border-box;padding:12px 56px 13px;pointer-events:none;opacity:0;text-align:center;transform:translate(-50%,6px);font-family:var(--font-hell);background:linear-gradient(90deg,rgba(7,6,6,0),rgba(7,6,6,.74) 16%,rgba(7,6,6,.74) 84%,rgba(7,6,6,0));filter:drop-shadow(0 5px 12px rgba(0,0,0,.9))}
+#bossLine::before,#bossLine::after{content:'';position:absolute;left:6%;right:6%;height:1px;background:linear-gradient(90deg,transparent,rgba(164,147,115,.5),transparent)}
+#bossLine::before{top:0}#bossLine::after{bottom:0}
+#bossLineName{color:rgba(168,153,127,.72);font-family:'Cinzel',var(--font-hell);font-size:clamp(.52rem,.72vw,.7rem);letter-spacing:.32em}
+#bossLineText{margin-top:6px;color:rgba(223,214,194,.93);font-size:clamp(.95rem,1.4vw,1.3rem);letter-spacing:.05em;line-height:1.5;text-shadow:0 2px 6px #000}
+#bossLine.show{animation:hudBossLine 3.2s ease-in-out both}
+@keyframes hudBossLine{0%{opacity:0;transform:translate(-50%,8px)}14%,78%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-4px)}}
 /* ── [REGION] 지역 배너 — #areaTitle 계열 Hell Gothic (진입/정화) ── */
 #regionBanner{position:fixed;top:28%;left:50%;z-index:19;width:min(64vw,620px);pointer-events:none;opacity:0;text-align:center;transform:translate(-50%,-8px);font-family:var(--font-hell);filter:drop-shadow(0 4px 10px rgba(0,0,0,.9))}
 #regionBanner::before,#regionBanner::after{content:'';position:absolute;top:.78em;width:21%;height:1px;background:linear-gradient(90deg,transparent,rgba(164,147,115,.54));opacity:.8}
@@ -2677,6 +2685,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 </div>
 <div id="stageClock"><div id="stageTimerHud">00:00</div><div id="stageProgress"><div id="stageProgressFill"></div></div></div>
 <div id="areaTitle" aria-live="polite"><div id="areaTitleKr"></div><div id="areaTitleEn"></div></div>
+<div id="bossLine" aria-live="polite"><div id="bossLineName"></div><div id="bossLineText"></div></div>
 <div id="regionBanner" aria-live="polite"><div id="regionBannerFlare"></div><div><span class="rb-gem" id="rbGemL"></span><span id="regionBannerKr"></span><span class="rb-gem" id="rbGemR"></span></div><div id="regionBannerEn"></div><div id="regionBannerSub"></div></div>
 <div id="keyGuide" style="display:none;position:fixed;top:38px;right:10px;background:rgba(0,0,0,.85);border:1px solid #554422;border-radius:6px;padding:12px 16px;z-index:50;font-size:.8rem;color:#ccaa77;line-height:1.7;pointer-events:auto;max-width:300px">
   <div style="color:#ffcc66;font-weight:700;font-size:.9rem;margin-bottom:4px">⌨ 조작법</div>
@@ -10897,11 +10906,22 @@ function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
     im.onload=(function(kk){return function(){_druidSheets[kk].ready=true}})(k);
     im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260927-edge3';}
 })();
+// ── [STY-12] 1장 보스 한 줄 대사 자막 (번역대상 No.3343~3347) — 부활 판정이 있는 보스는 마지막 사망 때만. 펫 말풍선(_petSay)과 별개 UI(#bossLine)
+const _BOSS_LINES={intro0:'새 거름이 떨어졌군.',sink0:'숲은 아직 배고프다. 둥지에서 보자.',die1:'…아직 거둘 때가 아닌데.',die2:'…밥 먹을 시간인데.',die3:'…죽기 싫었을 뿐이다.'};
+Object.assign(_EN,{'다크드루이드':'Dark Druid','새 거름이 떨어졌군.':'Fresh compost has fallen.','숲은 아직 배고프다. 둥지에서 보자.':'The forest is still hungry. See you at the nest.','…아직 거둘 때가 아닌데.':"…It isn't harvest time yet.",'…밥 먹을 시간인데.':"…It's time to eat.",'…죽기 싫었을 뿐이다.':"…I just didn't want to die."});
+function _bossLine(key){
+  const ko=_BOSS_LINES[key],el=$('bossLine');if(!ko||!el)return;
+  const seen=G._bossLineSeen||(G._bossLineSeen={});if(seen[key])return;seen[key]=1; // 아레나 진입당 키별 1회
+  const st=STG[G.stage];
+  $('bossLineName').textContent=st?_T(st.bn):'';
+  $('bossLineText').textContent=_T(ko);
+  el.classList.remove('show');void el.offsetWidth;el.classList.add('show');
+}
 // ── [STY-D9] 1-1(si0) 다크드루이드 마지막 사망 = 땅속 침강 도주 (표시만 교체 — 수치·부활판정·보상·출구 개방·G.bossAlive 흐름 무변경) ──
 const _DRUID_SINK_SHEET='emerge'; // 침강 시트(4x2, 0→7). 디자인총괄 판정: emerge 확정(dive.png와 바이트 동일) — 바꾸려면 이 한 줄만 교체
 const _DRUID_SINK_FT=8.25,_DRUID_SINK_HOLD=18,_DRUID_SINK_FADE=18; // 디자인총괄 판정(2026-10-27): 8칸 66틱(1.1초) 균등 → 7번 칸 0.3초 유지 → 0.3초 알파 1→0
 function _isSi0DruidSink(e){return !!(e&&e.ib&&!e._fmKind&&G.stage===0&&!_isDruidFinale(e))}
-function _druidSinkStart(e){e._sinkDruid=true;e._corpseSpawned=true;G._druidSink={x:e.x,y:e.y,r:e.r,t:0}} // _corpseSpawned: update()의 시체 보충 생성(미생성 사망체 자동 시체)도 막는다
+function _druidSinkStart(e){e._sinkDruid=true;e._corpseSpawned=true;G._druidSink={x:e.x,y:e.y,r:e.r,t:0};_bossLine('sink0')} // _corpseSpawned: update()의 시체 보충 생성(미생성 사망체 자동 시체)도 막는다
 function _druidSinkTick(sp){
   const s=G._druidSink;if(!s)return;
   const prev=s.t;s.t+=sp;const body=_DRUID_SINK_FT*8;
@@ -30813,7 +30833,7 @@ function genBossArena(si){
 }
 let _preArenaBackup=null; // 보스 진입 전 맵 백업
 function _enterBossArena(retry=false){
-  G._druidVictory=null;G._druidFinaleBoss=null;G._druidActCue=null;G._druidSink=null;
+  G._druidVictory=null;G._druidFinaleBoss=null;G._druidActCue=null;G._druidSink=null;G._bossLineSeen={};
   // 보스 진입 전 맵 백업 (사망 시 게이트 입구 리스폰용)
   if(!retry)_preArenaBackup={map:G.map.map(r=>[...r]),mw:G.mw,mh:G.mh,rooms:G.rooms.slice(),exits:G.exits.slice(),
     bossGate:G.bossGate,bossGateOpen:G.bossGateOpen,bossSealed:G.bossSealed,
@@ -41876,6 +41896,7 @@ function checkRooms(){
           // 포효 SFX
           const _bsf=_bossSfx(G.stage);
           playSample(_bsf?_bsf.howl:'boss_howl',1.0,_r(_bsf?_bsf.howlP:.9,.1));
+          if(G.stage===0)_bossLine('intro0'); // [STY-12] 1-1 드루이드 등장 대사
         }
       }
       if(G._bossLoadT>=100){G._bossLoadPhase=0;G._bossLoadT=0;G._bossLoadFade=0}
@@ -42772,6 +42793,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // [STY-D9] 1-1 드루이드의 마지막 사망(부활 없음 확정)만 침강 도주로 표시 — 피·고어·시체·사망 문구 숨김, 판정·보상 로직은 아래 그대로
     const _sinkDruid=_isSi0DruidSink(e)&&!(e._reviveTimer>0&&e._bossRevived&&(e._bossRevRoll??1)<(e._bossRevChance||0));
     if(_sinkDruid)_druidSinkStart(e);
+    else if(e.ib&&!e._fmKind&&G.stage>=1&&G.stage<=3&&!_isDruidFinale(e)&&!(e._reviveTimer>0&&e._bossRevived&&(e._bossRevRoll??1)<(e._bossRevChance||0)))_bossLine('die'+G.stage); // [STY-12] si1~3 보스 마지막 사망 한 줄
     // 버스트루프 광역 사망음 카운터
     if(opts&&opts._blastKill&&G._blDeathSndQ!==undefined){
       // 사망음은 큐에만 쌓고 deathFX는 묵음 처리
