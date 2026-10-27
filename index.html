@@ -4562,7 +4562,7 @@ function showCharGate(charId,storySeen=false){
 
   // ── SCREEN 3: 타이틀 키아트 (여캐 고정, 클릭/키 입력 시 진행) ──
   const _titleArt=new Image();
-  _titleArt.src='img/title_clean_plate_20260929.png';
+  _titleArt.src='img/title_bg_20261028.jpg';
   const _titleVideo=document.getElementById('splashTitleVideo');
   const _titleUI=document.getElementById('splashTitleUI'),_titleStage=document.getElementById('splashTitleStage');
   const _titleMenu=document.getElementById('splashTitleMenu');
@@ -4625,10 +4625,7 @@ function showCharGate(charId,storySeen=false){
     _titleStage.style.transform=`translate(${(w-1920*k)/2}px,${(h-1080*k)/2}px) scale(${k})`;
   }
   window.addEventListener('resize',_fitTitleStage);
-  _titleVideo.addEventListener('error',()=>{
-    if(done||phase!==2||_titleVideo.dataset.sdFallback)return;
-    _titleVideo.dataset.sdFallback='1';_titleVideo.src='video/title_motion_20260929.mp4?v=20260929-cs3';syncTitlePlayback();
-  });
+  // 영상 오류 시 titleLoop가 같은 장면의 정지 그림(_titleArt)으로 그린다.
   function syncTitlePlayback(){
     if(done||phase!==2||document.hidden){_titleVideo.pause();return;}
     _titleVideo.play().catch(()=>{});
@@ -4713,7 +4710,7 @@ function showCharGate(charId,storySeen=false){
       return;
     } else if(phase===2){
       // 무음 타이틀 영상 반복, 로딩/실패 시 기존 키아트. 입력 전까지 유지.
-      _titleVideo.src='video/title_motion_hd_20260929.mp4?v=20260929-cs3';
+      _titleVideo.src='video/title_motion_20261028.mp4?v=20261028';
       _titleVideo.muted=true;
       _buildTitleMenu();_fitTitleStage();
       syncTitlePlayback();
@@ -4731,7 +4728,7 @@ function showCharGate(charId,storySeen=false){
         const w=cv.offsetWidth,h=cv.offsetHeight;
         const fadeIn=Math.min(1,elapsed/1000);
         // Keep UI text native and avoid redrawing an identical 24fps video frame at monitor refresh rate.
-        const frame=_titleVideo.readyState>=2?Math.floor(_titleVideo.currentTime*24):-1;
+        const frame=_titleVideo.readyState>=2?Math.floor(_titleVideo.currentTime*60):-1;
         const uiReady=_titleVideo.readyState>=2||_titleArt.complete&&_titleArt.naturalWidth>0;
         if(uiReady&&_titleUI.style.display!=='block'){_titleUI.style.display='block';_fitTitleLabels();}
         else if(!uiReady)_titleUI.style.display='none';
@@ -4744,13 +4741,11 @@ function showCharGate(charId,storySeen=false){
         const titleWidth=titleSource.videoWidth||titleSource.naturalWidth;
         const titleHeight=titleSource.videoHeight||titleSource.naturalHeight;
         if(titleWidth&&titleHeight){
-          // 에셋에 구워진 검은 띠를 제외한 그림을 화면 높이에 맞춘다.
-          const isTitleVideo=titleSource===_titleVideo;
-          const sy=titleHeight*(isTitleVideo?78/768:80/793);
-          const sh=titleHeight*(isTitleVideo?616/768:636/793);
-          const dh=h,dw=dh*titleWidth/sh;
-          const dx=Math.max((w-dw)/2,-dw*0.1); // 좁은 화면에서도 왼쪽 로고 보존.
-          cx.drawImage(titleSource,0,sy,titleWidth,sh,dx,0,dw,dh);
+          // 16:9 전체 화면 그림을 cover로 채운다. 좁은 화면은 오른쪽 인물을 살리도록 가로 62% 기준으로 자른다.
+          const k=Math.max(w/titleWidth,h/titleHeight);
+          const dw=titleWidth*k,dh=titleHeight*k;
+          const dx=Math.min(0,Math.max(w-dw,(w-dw)*0.62)),dy=(h-dh)/2;
+          cx.drawImage(titleSource,dx,dy,dw,dh);
         }else{
           cx.textAlign='center';cx.textBaseline='middle';
           cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
