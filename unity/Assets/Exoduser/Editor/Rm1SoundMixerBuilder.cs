@@ -90,7 +90,7 @@ namespace Exoduser.UnityPort.Editor
                         }
                         if ((string)Get(fx, "effectName") == "Compressor")
                         {   // peak control behind the SFX fader (Unity's compressor has no ratio: above the threshold the gain follows the attack / release)
-                            foreach (var kv in new[] { new KeyValuePair<string, float>("Threshold", F("-compThr", -9.2f)), new KeyValuePair<string, float>("Attack", F("-compAtk", 10f)), new KeyValuePair<string, float>("Release", F("-compRel", 40f)), new KeyValuePair<string, float>("Make up gain", F("-compMakeup", 0f)) })
+                            foreach (var kv in new[] { new KeyValuePair<string, float>("Threshold", ((UnityEngine.Object)g).name == "Master" ? F("-masterThr", -8f) : F("-compThr", -9.2f)), new KeyValuePair<string, float>("Attack", F("-compAtk", 10f)), new KeyValuePair<string, float>("Release", ((UnityEngine.Object)g).name == "Master" ? F("-masterRel", 10f) : F("-compRel", 40f)), new KeyValuePair<string, float>("Make up gain", F("-compMakeup", 0f)) })
                             {
                                 var guid = Call(fx, "GetGUIDForParameter", kv.Key);
                                 foreach (var s in snaps) Call(s, "SetValue", guid, kv.Value);
@@ -173,18 +173,20 @@ namespace Exoduser.UnityPort.Editor
                 object guid = Call(comp, "GetGUIDForParameter", name);
                 log.AppendLine("compressor " + name + " guid ok=" + Call(comp, "ContainsParameterGUID", guid) + " default=" + Call(comp, "GetValueForParameter", ctrl, snaps[0], name));
             }
+            // second stage: a fast Compressor on Master that only catches what the SFX stage lets through above its threshold (peaks), so the overall level hardly moves
+            var mcomp = AddEffect(master, "Compressor", ((Array)Get(master, "effects")).Length);
             // Boss snapshot: Ambience -8 dB
             Call(ambience, "SetValueForVolume", ctrl, snaps[1], -8f);
             Call(ambience, "SetValueForVolume", ctrl, snaps[0], 0f);
 
             // exposed settings volumes: SfxVol (SFX group), MusicVol (Music group). The forest bed follows the SFX volume in code (a mixer parameter would fight the Boss snapshot).
-            var exposed = Array.CreateInstance(exposedType, 4);
-            foreach (var pair in new[] { new { name = "SfxVol", group = sfx, fx = (object)null }, new { name = "MusicVol", group = music, fx = (object)null }, new { name = "TellVol", group = tell, fx = (object)null }, new { name = "SfxCompThreshold", group = sfx, fx = comp } })
+            var exposed = Array.CreateInstance(exposedType, 5);
+            foreach (var pair in new[] { new { name = "SfxVol", group = sfx, fx = (object)null }, new { name = "MusicVol", group = music, fx = (object)null }, new { name = "TellVol", group = tell, fx = (object)null }, new { name = "SfxCompThreshold", group = sfx, fx = comp }, new { name = "MasterCompThreshold", group = master, fx = mcomp } })
             {
                 object item = Activator.CreateInstance(exposedType);
                 exposedType.GetField("guid").SetValue(item, pair.fx != null ? Call(pair.fx, "GetGUIDForParameter", "Threshold") : Call(pair.group, "GetGUIDForVolume"));
                 exposedType.GetField("name").SetValue(item, pair.name);
-                exposed.SetValue(item, pair.name == "SfxVol" ? 0 : pair.name == "MusicVol" ? 1 : pair.name == "TellVol" ? 2 : 3);
+                exposed.SetValue(item, pair.name == "SfxVol" ? 0 : pair.name == "MusicVol" ? 1 : pair.name == "TellVol" ? 2 : pair.name == "SfxCompThreshold" ? 3 : 4);
             }
             controllerType.GetProperty("exposedParameters", All).SetValue(ctrl, exposed);
             EditorUtility.SetDirty((UnityEngine.Object)ctrl);

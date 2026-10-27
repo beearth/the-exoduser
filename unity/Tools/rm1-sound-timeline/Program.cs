@@ -10,11 +10,11 @@ using Exoduser.UnityPort.Core;
 
 static class P
 {
-    sealed class Row { public int Tick; public string Type, Kind, Key, Source; public float X, Y, Volume, Rate, Size; public int Etype; public bool Boss; }
+    sealed class Row { public int Tick; public string Type, Kind, Key, Source; public float X, Y, Volume, Rate, Size; public int Etype, Step; public bool Boss; }
 
     static string J(string s) { return s == null ? "null" : "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\""; }
     static string F(float v) { return v.ToString("0.###", CultureInfo.InvariantCulture); }
-    static string Line(Row r) { return "{\"tick\":" + r.Tick + ",\"type\":" + J(r.Type) + ",\"kind\":" + J(r.Kind) + ",\"key\":" + J(r.Key) + ",\"source\":" + J(r.Source) + ",\"x\":" + F(r.X) + ",\"y\":" + F(r.Y) + ",\"volume\":" + F(r.Volume) + ",\"rate\":" + F(r.Rate) + ",\"size\":" + F(r.Size) + ",\"etype\":" + r.Etype + ",\"boss\":" + (r.Boss ? "true" : "false") + "}"; }
+    static string Line(Row r) { return "{\"tick\":" + r.Tick + ",\"type\":" + J(r.Type) + ",\"kind\":" + J(r.Kind) + ",\"key\":" + J(r.Key) + ",\"source\":" + J(r.Source) + ",\"x\":" + F(r.X) + ",\"y\":" + F(r.Y) + ",\"volume\":" + F(r.Volume) + ",\"rate\":" + F(r.Rate) + ",\"size\":" + F(r.Size) + ",\"etype\":" + r.Etype + ",\"step\":" + r.Step + ",\"boss\":" + (r.Boss ? "true" : "false") + "}"; }
 
     static void Drain(Simulation s, List<Row> rows)
     {
@@ -22,7 +22,7 @@ static class P
         {
             var e = s.Feedback.Dequeue();
             if (e.Kind == FeedbackKind.KiChargeFlash || e.Kind == FeedbackKind.KiSlashHit) continue;
-            rows.Add(new Row { Tick = e.Tick, Type = "feedback", Kind = e.Kind.ToString(), Key = e.SampleKey, Source = e.Source, X = e.X, Y = e.Y, Volume = e.Volume, Rate = e.QueuedRate != 0 ? e.QueuedRate : e.Rate, Size = e.Size, Etype = e.Etype, Boss = e.IsBoss });
+            rows.Add(new Row { Tick = e.Tick, Type = "feedback", Kind = e.Kind.ToString(), Key = e.SampleKey, Source = e.Source, X = e.X, Y = e.Y, Volume = e.Volume, Rate = e.QueuedRate != 0 ? e.QueuedRate : e.Rate, Size = e.Size, Etype = e.Etype, Step = e.Step, Boss = e.IsBoss });
         }
         while (s.Stage.Events.Count > 0)
         {

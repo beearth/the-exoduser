@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
         // web _SFX_PRI (TELL 12, SKILL 10, VOICE 9, PLAYER_HIT 8, DEATH 4, STEP 3, HIT 2, PROJ 1, AMB 0)
         public const int PriTell=12,PriSkill=10,PriVoice=9,PriPlayerHit=8,PriDeath=4,PriStep=3,PriHit=2,PriProj=1,PriAmb=0;
         sealed class Voice {public AudioSource source;public int priority;public double started,ends;public float rawVolume;}
-        sealed class Req {public string key,category,group,logical,source,note;public int tick;public float volume,pitch,blend,delay,pan;public int priority;public Vector3 pos;public bool front;}
+        sealed class Req {public string key,category,group,logical,source,note,fileKey;public int tick;public float volume,pitch,blend,delay,pan;public int priority;public Vector3 pos;public bool front;}
         readonly Transform parent;float volumeGain=.6f;
         readonly NativeAudioMixer bus;readonly GameObject listenerObject;
         readonly Dictionary<string,AudioMixerGroup> groupCache=new Dictionary<string,AudioMixerGroup>();
@@ -47,6 +47,7 @@ namespace Exoduser.UnityPort
         static readonly Dictionary<string,float> StartVolume=new Dictionary<string,float>{
             {"tell_melee",.45f},{"tell_ranged",.45f},{"tell_boss",.45f},{"tell_grab",.45f},{"tell_parry",.45f},{"druid_erupt",.5f},{"druid_sink",.55f},{"druid_tide",.5f},{"druid_roots_rise",.5f},{"druid_heartbeat",.5f},{"druid_burrow",.45f},{"druid_staff_tap",.5f},{"druid_root_pierce",.5f}};
         readonly Dictionary<string,int> lastTellTick=new Dictionary<string,int>();
+        int lastPlayerHitTick=-1000;
         public NativeFeedbackAudio(Transform parent,Camera camera)
         {
             this.parent=parent;bus=new NativeAudioMixer();
@@ -98,9 +99,9 @@ namespace Exoduser.UnityPort
                 case FeedbackKind.EnemyDeath:HandleDeath(e);break;
                 case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));break;   // _BOSS_SFX[0].die
                 case FeedbackKind.Roll:
-                    Receipt.requested++;
-                    direct.Add(Make("roll_body",.55f,Jitter(1.15f,.1f),World(e),e));   // the web has no roll sample yet: it borrows the footsteps (roll_body replaces them)
-                    var second=Make("roll_body",.5f,1,World(e),e);second.delay=.08f;direct.Add(second);break;
+                    Receipt.requested++;   // the web has no roll sample yet: it borrows footstep at the roll start and footstep2 in _finishRoll (roll_body replaces them)
+                    var step=e.Step==0?Make("roll_body",.55f,Jitter(1.15f,.1f),World(e),e):Make("roll_body",.5f,Jitter(1f,.1f),World(e),e);
+                    step.fileKey=e.Step==0?"footstep":"footstep2";step.source=e.Step==0?"roll start":"roll end (_finishRoll)";direct.Add(step);break;
             }
         }
         // _hitSfxForEtype: Core names the category (EnemySoundTables.Hit) and the base pitch; the variant is drawn here, never in the Core
@@ -140,6 +141,10 @@ namespace Exoduser.UnityPort
             if(e.SampleKey.StartsWith("tell_",StringComparison.Ordinal)){   // AD3: the same telegraph key at most once per 120 ms
                 if(lastAt.TryGetValue(e.SampleKey,out double lastTell)&&now-lastTell<.12){Receipt.dropped++;return;}
                 lastAt[e.SampleKey]=now;pending.Insert(0,r);return;
+            }
+            if(e.SampleKey.StartsWith("player_hit",StringComparison.Ordinal)){   // web: one hit sound per damage instance; several landing within 100 ms count once
+                if(lastPlayerHitTick>=0&&e.Tick-lastPlayerHitTick<6){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source??("Core "+e.Kind),"PlayerHit",e.Volume,"DROPPED another player hit within 100 ms"));return;}
+                lastPlayerHitTick=e.Tick;
             }
             if(!r.front){
                 if(lastAt.TryGetValue(e.SampleKey,out double last)&&now-last<.03){Receipt.dropped++;return;}
@@ -215,7 +220,7 @@ namespace Exoduser.UnityPort
                 source.rolloffMode=AudioRolloffMode.Custom;source.SetCustomCurve(AudioSourceCurveType.CustomRolloff,AnimationCurve.Constant(0,1,1));source.spread=0;   // direction only: no distance fall-off
                 available=new Voice{source=source};voices.Add(available);
             }
-            string fileKey=r.key=="roll_body"?(r.delay>0?"footstep2":"footstep"):r.key;   // roll_body is not adopted yet: the web footsteps stand in
+            string fileKey=r.fileKey??(r.key=="roll_body"?"footstep":r.key);   // roll_body is not adopted yet: the web footsteps stand in
             if(r.key=="roll_body")r.note="temporary file "+fileKey;
             var clip=clips[fileKey];if(clip.loadState!=AudioDataLoadState.Loaded){Receipt.dropped++;return;}
             var s=available.source;s.clip=clip;s.pitch=r.pitch;s.outputAudioMixerGroup=GroupFor(r.group);s.spatialBlend=r.blend;s.transform.position=r.pos;
@@ -231,7 +236,7 @@ namespace Exoduser.UnityPort
             AudioListener.GetOutputData(output,0);
             foreach(float value in output)Receipt.listenerPeak=Mathf.Max(Receipt.listenerPeak,Mathf.Abs(value));
         }
-        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();foreach(var v in voices){v.source.Stop();v.ends=0;}}
+        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();lastPlayerHitTick=-1000;foreach(var v in voices){v.source.Stop();v.ends=0;}}
         public void Dispose(){Reset();foreach(var v in voices)UnityEngine.Object.Destroy(v.source.gameObject);voices.Clear();if(listenerObject!=null)UnityEngine.Object.Destroy(listenerObject);}
     }
 }

@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort.Editor
         }
     }
 
-    [Serializable] public sealed class Rm1Row { public int tick; public string type, kind, key, source; public float x, y, volume, rate, size; public int etype; public bool boss; }
+    [Serializable] public sealed class Rm1Row { public int tick; public string type, kind, key, source; public float x, y, volume, rate, size; public int etype, step; public bool boss; }
     [Serializable] public sealed class Rm1Doc { public string scenario; public Rm1Row[] rows; }
 
     public sealed class Rm1SoundReplay : MonoBehaviour
@@ -88,9 +88,9 @@ namespace Exoduser.UnityPort.Editor
             pcm.Clear(); musicLog.Clear(); frame = 0; next = 0; annotated = 0; lastMusic = ""; inArena = false; bossAlive = true; player = Vector3.zero; lastTick = 0;
             sound = new NativeFeedbackAudio(transform, cam);
             music = new NativeGameMusic(transform, sound.Bus); ambient = new NativeAmbientSources(transform, sound.Bus);
-            var mixer = sound.Bus.Mixer; mixer.ClearFloat("TellVol"); mixer.ClearFloat("SfxCompThreshold");
+            var mixer = sound.Bus.Mixer; mixer.ClearFloat("TellVol"); mixer.ClearFloat("SfxCompThreshold"); mixer.ClearFloat("MasterCompThreshold");
             sound.SetVolumePercent(60); music.SetPercents(60, 60);
-            if (Cfg("comp") == "off") mixer.SetFloat("SfxCompThreshold", 0f);
+            if (Cfg("comp") == "off") { mixer.SetFloat("SfxCompThreshold", 0f); mixer.SetFloat("MasterCompThreshold", 0f); }
             if (Cfg("tellvol") == "off") mixer.SetFloat("TellVol", -80f);
             solo = null;
             if (!string.IsNullOrEmpty(Cfg("solo")))
@@ -145,7 +145,7 @@ namespace Exoduser.UnityPort.Editor
             if (Cfg("notell") == "1" && r.key != null && r.key.StartsWith("tell_", StringComparison.Ordinal)) return;
             FeedbackKind kind; if (!Enum.TryParse(r.kind, out kind)) return;
             if (r.key == "player_hit1" || r.key == "player_hit2" || r.key == "player_hit3" || r.key == "player_hit4" || kind == FeedbackKind.Roll) player = new Vector3(r.x / 100, -r.y / 100, 0);
-            var e = new FeedbackEvent { Kind = kind, Tick = r.tick, X = r.x, Y = r.y, SampleKey = r.key, Source = string.IsNullOrEmpty(r.source) ? null : r.source, Volume = r.volume, Rate = r.rate, QueuedRate = r.rate, Size = r.size, Etype = r.etype, IsBoss = r.boss };
+            var e = new FeedbackEvent { Kind = kind, Tick = r.tick, X = r.x, Y = r.y, SampleKey = r.key, Source = string.IsNullOrEmpty(r.source) ? null : r.source, Volume = r.volume, Rate = r.rate, QueuedRate = r.rate, Size = r.size, Etype = r.etype, Step = r.step, IsBoss = r.boss };
             sound.Handle(e);
         }
 
@@ -188,6 +188,8 @@ namespace Exoduser.UnityPort.Editor
             {
                 int last = -1000; foreach (var l in g.OrderBy(l => int.Parse(Field(l, "frame=")))) { int t = int.Parse(Field(l, "frame=")); if (t - last < 8) overlaps++; last = t; }
             }
+            int skewed = played.GroupBy(l => Field(l, "frame=")).Count(g => g.Select(l => Field(l, "rec=")).Distinct().Count() > 1);
+            sb.AppendLine("TIME AXIS CHECK: Core frames whose sounds start at different rec times = " + skewed + " (0 = every sound of one Core frame sits on the same recording time)");
             sb.AppendLine("SUMMARY lines=" + sound.Lines.Count + " played=" + played.Count + " dropped(adapter)=" + sound.Receipt.dropped + " same-key tell overlaps<120ms=" + overlaps);
             foreach (var g in played.GroupBy(l => Field(l, "key=")).OrderBy(g => g.Key)) sb.AppendLine("  " + g.Key + " x" + g.Count() + " groups=" + string.Join("/", g.Select(l => Field(l, "group=")).Distinct()));
             sb.AppendLine("  no-file keys: " + string.Join(", ", sound.Lines.Where(l => l.Contains("no file yet")).Select(l => Field(l, "key=")).Distinct()));

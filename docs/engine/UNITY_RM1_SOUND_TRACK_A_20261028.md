@@ -80,7 +80,7 @@
 
 | 항목 | 설정 | 측정(R2 타임라인, 30초, E 마법 3회 포함) |
 |---|---|---|
-| 피크 제어 | `SFX` 그룹 페이더 뒤 Compressor: 임계 −9.2 dB · attack 10 ms · release 40 ms · makeup 0 (Unity 압축기는 ratio가 없고 임계 위에서 attack/release로만 움직임). 임계는 `SfxCompThreshold`로 노출 | 최종 믹스 피크 **−4.44 dBFS**(0.600) · 압축기 끈 기준 대비 전체 RMS 변화 **−0.79 dB**. 같은 설정으로 세 번 잰 범위: 피크 −3.6~−4.4 dBFS, RMS 변화 −0.6~−1.0 dB(실행마다 보이스 겹침이 조금 달라 흔들림) |
+| 피크 제어 (§6에서 2단으로 바뀜) | `SFX` 그룹 페이더 뒤 Compressor: 임계 −9.2 dB · attack 10 ms · release 40 ms · makeup 0 (Unity 압축기는 ratio가 없고 임계 위에서 attack/release로만 움직임). 임계는 `SfxCompThreshold`로 노출 | 최종 믹스 피크 **−4.44 dBFS**(0.600) · 압축기 끈 기준 대비 전체 RMS 변화 **−0.79 dB**. 같은 설정으로 세 번 잰 범위: 피크 −3.6~−4.4 dBFS, RMS 변화 −0.6~−1.0 dB(실행마다 보이스 겹침이 조금 달라 흔들림) |
 | 덕킹 | 임계 −45 dB · ratio 1.33(133 %) · attack 10 ms · release 250 ms. `Tell`의 Send는 **페이더 앞(pre-fader)**, 레벨 0 dB. 임계 −20 dB일 때는 사이드체인 레벨이 낮아 덕킹이 0 dB였음 | Ambience: Explore **−4.07 dB**, Boss **−4.18 dB**(예고 6회, 0.3초 창 RMS 비교, 같은 타임라인에서 Tell 이벤트만 뺀 녹음과 대조). EnemyHit: 같은 이펙트 설정이지만 A/B 녹음 내용이 예고 구간 밖에서도 달라(보이스 배정 차이로 추정) 직접 수치가 −5~−10 dB로 흔들려 **신뢰 못 함** |
 | 그룹 RMS (1초 창 중앙값 / 전체, dBFS) | 분리 녹음(다른 그룹 음원 mute) | Music Explore −30.5 / −29.2 · Music Boss(boss 트랙) −27.8 / −24.0 · Ambience Explore −38.7 / −38.7 · Ambience Boss −46.6 / −45.7 · SFX Explore −23.3 / −22.6 · SFX Boss −22.8 / −22.5 |
 | Ambience − Music (Explore, 중앙값) | | **−8.2 dB** (기준 ≤ −6) |
@@ -88,3 +88,37 @@
 | 기술 11(포자 꼬투리) | `seekerMines`는 P3 목록에 있음 | 이번 드루이드 타임라인(시드 13: 12기술 전부 등장)에 텔레그래프 1회 Receipt에 있음(`#11 seekerMines telegraph`, frame 6334, 녹음 106.8초) |
 
 주의: 덕킹 임계는 Tell 음원의 사이드체인 레벨(−7 dB 근처에서 시작)에 의존하므로, 예고음 시작 음량이 바뀌면 임계·ratio를 다시 맞춰야 한다(`Rm1SoundMixerBuilder.ConfigureDuck -duckThr -duckRatio -compThr ...`).
+
+## 6. 귀 판정 대응 수정 (사운드 총괄 §6.7 우선 지시, 2026-10-28)
+
+사용자가 첫 녹음을 듣고 "메아리"라고 했다. 원인을 하나씩 확인했다.
+
+| # | 원인 | 위치 | 조치 |
+|---|---|---|---|
+| 1 | **BGM이 약 0.4초마다 되감김** — 녹음 속 같은 0.4초 조각 반복(rec 4.4·4.8·5.2 s가 모두 원본 0.303 s와 r=0.75, 자기상관 400 ms 봉우리) | **하니스(AudioRenderer 오프라인 녹음) × 스트리밍 클립의 상호작용**. 런타임 `NativeGameMusic`은 재생 시작(`Stop`→`Play`)을 키가 바뀔 때 한 번만 하며 매 프레임 되풀이하지 않는다(코드 확인). 다만 `Audio/Bgm/`을 스트리밍으로 임포트한 것이 원인을 만들었으므로 임포트를 `CompressedInMemory`(MP3)로 바꿔 실제 게임에서도 스트리밍 스레드 의존을 없앴다 | `SourceAudioImporter` v3. 확인: BGM만 10초 녹음해 원본(ffmpeg 디코드)과 1~2초 간격 100 ms 조각 대조 → 모든 조각이 일정한 오프셋(0.475 s)으로 원본 t−오프셋과 일치(r=1.00) |
+| 2 | 구르기 소리 둘이 같은 frame에 겹침 | `Simulation.Roll.cs`가 `footstep2`를 시작 때 같이 냈음 | 웹대로 분리: 시작 frame에 `footstep`(.55, 1.15±.1), 끝(`FinishRoll`) frame에 `footstep2`(.5, 1±.1) (`Roll` 이벤트 `Step` 0/1). Receipt 예: frame 121 start → frame 138 end (rec 4.02 → 4.30 s) |
+| 3 | 플레이어 피격음이 0.13초 안에 3개 | Core는 피해 1회마다 1번 큐잉하지만 피격이 연달아 들어오면 그대로 재생 | 어댑터에서 Core 100 ms(6틱) 안에 또 오는 `player_hit*`는 1번만(Receipt에 `DROPPED another player hit within 100 ms`). 새 타임라인에서 재생된 쌍 중 6틱 미만 간격 0 |
+| 4 | 같은 frame인데 rec가 다름 | 조각난 Sample 이벤트의 `frame=`을 어댑터의 직전 틱(`CurrentTick`)으로 찍던 **Receipt 표기 오류**(소리 시각이 아니라 표기). `Make(…, e)`로 이벤트 자신의 틱을 쓰도록 고침 | Receipt 끝에 `TIME AXIS CHECK`(같은 Core frame의 소리가 서로 다른 rec 시각에 시작한 frame 수) 추가 — R2·드루이드 모두 0 |
+| 5 | 파이프라인에 소리가 두 번 재생되는 경로가 있는지 | — | null test(`Rm1SoundNullTest`): 키를 앞뒤 1초 무음과 함께 어댑터+믹서로 녹음, 원본 디코드와 비교. 아래 표 |
+
+### null test 결과 (`Tools`에 스크립트 없음, 산출물 `null_test.txt`)
+
+| 키 | 믹서 통과 이득 | 잔차 RMS(녹음 대비) | 원본 꼬리 / 녹음 꼬리(−60 dBFS) | 두 번째 사본(상대 상관) |
+|---|---|---|---|---|
+| tell_grab | −3.6 dB | −20.9 dB | 0.86 s / 0.86 s | 0.12 |
+| tell_boss | −3.0 dB | −54.5 dB | 0.75 s / 0.75 s | 0.15 |
+| boss_hit | +0.4 dB | −22.6 dB | 1.05 s / 1.05 s | 0.19 |
+| player_hit1 | 0.0 dB | −240 dB (완전 일치) | 0.98 s / 0.98 s | 0.10 |
+| footstep | −3.0 dB | −46.4 dB | 0.34 s / 0.34 s | 0.15 |
+
+해석: 모노 클립은 `spatialBlend` .5에서 등전력 패닝으로 −3 dB(정상). 잔차가 큰 키(tell_grab −21, boss_hit −23)는 44.1 kHz→48 kHz 재샘플러 차이와 공간화 때문이고 꼬리 길이가 원본과 같으며 다른 시각에 두 번째 사본(상관 > 0.2)이 없어 리버브·이중 재생은 없다. 시작 지연은 2.7~24 ms(오디오 버퍼 정렬).
+
+### 피크 제어 (2단)
+
+SFX 단계 하나로는 R2 피크와 전체 RMS 변화(≤ 1 dB)를 함께 맞추지 못했다(임계 −11 dB → 피크 −3.3 dBFS이지만 RMS −1.3 dB). `Master` 그룹에 빠른 Compressor를 한 단 더 두어(임계 −8 dB · attack 10 ms · release 10 ms, 노출 `MasterCompThreshold`) 첫 단이 놓친 피크만 잡도록 했다.
+
+| 설정 | R2 피크 | R2 RMS 변화(압축기 끈 기준) | 드루이드 피크 / RMS 변화 |
+|---|---|---|---|
+| SFX −9.2 dB / 40 ms + Master −8 dB / 10 ms | **−4.19 dBFS** | **−0.75 dB** | −4.05 dBFS / −0.17 dB |
+
+BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS는 §5와 다르다(1초 창 중앙값 / 전체, dBFS): Music Explore −29.7 / −27.1 · Music Boss −23.3 / −22.4 · Ambience Explore −38.7 / −38.7 · Ambience Boss −46.6 / −45.7 · SFX Explore −24.0 / −23.0 · SFX Boss −23.9 / −22.9. Ambience − Music(Explore, 중앙값) **−9.1 dB**. Ambience Boss − Explore 중앙값 −7.84 dB. 덕킹(Ambience, 예고 6회): Explore **−4.06 dB**, Boss **−3.68 dB**. EnemyHit 덕킹은 이번에는 다시 재지 않았다(A/B 녹음 내용 불일치로 §5와 같은 이유로 신뢰 못 함).
