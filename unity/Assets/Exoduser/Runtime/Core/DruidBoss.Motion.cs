@@ -33,8 +33,8 @@ namespace Exoduser.UnityPort.Core
             if (!Remodel) return target;
             double limit = 0;
             string s = d.S;
-            if (s == "idle") limit = DruidRemodelData.WalkTurn;
-            else if (s.EndsWith("Wind") || s == "bossDruidDive") limit = d.St2 > DruidRemodelData.AimFixTicks ? DruidRemodelData.TeleTurn : 0;
+            if (s == "idle") limit = Set.WalkTurn;
+            else if (s.EndsWith("Wind") || s == "bossDruidDive") limit = d.St2 > Set.AimFixTicks ? Set.TeleTurn : 0;
             return TurnToward(d.Facing, target, limit);
         }
 
@@ -43,13 +43,13 @@ namespace Exoduser.UnityPort.Core
         void RmWalk(EnemyState e, DruidData d, double dist)
         {
             if (e.Stunned > 0) return;
-            double vmax = DruidRemodelData.WalkSpeed * Ph(d.BossPhase).SpdM;
+            double vmax = Set.WalkSpeed * Ph(d.BossPhase).SpdM;
             double toP = Atan2(host.PY - d.Y, host.PX - d.X), heading = toP, fx, fy;
-            bool walk = d.Alerted && dist > DruidRemodelData.WalkStandOff;
+            bool walk = d.Alerted && dist > Set.WalkStandOff;
             if (walk && host.FlowDir(d.X, d.Y, out fx, out fy)) heading = Atan2(fy, fx);
-            d.Facing = TurnToward(d.Facing, heading, DruidRemodelData.WalkTurn);
-            if (walk && Math.Abs(WrapAngle(heading - d.Facing)) < 0.8) d.RmVel = Math.Min(vmax, d.RmVel + vmax / DruidRemodelData.WalkAccelTicks);
-            else d.RmVel = Math.Max(0, d.RmVel - vmax / DruidRemodelData.WalkStopTicks);
+            d.Facing = TurnToward(d.Facing, heading, Set.WalkTurn);
+            if (walk && Math.Abs(WrapAngle(heading - d.Facing)) < 0.8) d.RmVel = Math.Min(vmax, d.RmVel + vmax / Set.WalkAccelTicks);
+            else d.RmVel = Math.Max(0, d.RmVel - vmax / Set.WalkStopTicks);
             RmStep(d);
         }
 
@@ -59,7 +59,7 @@ namespace Exoduser.UnityPort.Core
             if (d.RmVel <= 0) return;
             string s = d.S;
             if (s == "idle") return;   // RmWalk owns the speed while he walks
-            if (s.EndsWith("Wind") || s == "bossRec") { d.RmVel = Math.Max(0, d.RmVel - DruidRemodelData.WalkSpeed * Ph(d.BossPhase).SpdM / DruidRemodelData.WalkStopTicks); RmStep(d); }
+            if (s.EndsWith("Wind") || s == "bossRec") { d.RmVel = Math.Max(0, d.RmVel - Set.WalkSpeed * Ph(d.BossPhase).SpdM / Set.WalkStopTicks); RmStep(d); }
             else d.RmVel = 0;
         }
 
@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort.Core
         int RmRecoveryTicks(DruidData d, double webSt2)
         {
             string id = d.RmMoveId ?? "";
-            if (id == "grab") return webSt2 == 40 ? DruidRemodelData.GrabMissRecovery : DruidRemodelData.GrabHeldRecovery;   // 40 = the miss of the web code
+            if (id == "grab" && RmGrab) return webSt2 == 40 ? DruidRemodelData.GrabMissRecovery : DruidRemodelData.GrabHeldRecovery;   // 40 = the miss of the web code
             var mv = FindMove(id);
             return mv != null ? mv.Rec : 40;
         }

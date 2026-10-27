@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
         bool scriptShift,scriptSpace,practiceDirHeld;
         string practiceHoldLabel="";float practiceHoldValue;
         int practiceStepSeen=-1;
-        void BindPracticeSteps(){Simulation.ParryLessonActive=true;Simulation.RageCastHook+=OnPracticeRageCast;practiceStepSeen=-1;practiceHoldLabel="";practiceHoldValue=0;}
+        void BindPracticeSteps(){ResetParryState();Simulation.ParryLessonActive=true;Simulation.RageCastHook+=OnPracticeRageCast;practiceStepSeen=-1;practiceHoldLabel="";practiceHoldValue=0;}
         void UnbindPracticeSteps(Simulation sim){if(sim!=null){sim.RageCastHook-=OnPracticeRageCast;}}
         void OnPracticeRageCast(double amount){firstPractice?.ObserveRageCast(amount,practiceDirHeld);}
         // resetPose(): back to idle with every hold / chain / roll state cleared
@@ -23,8 +23,8 @@ namespace Exoduser.UnityPort
         void OnPracticeStepEnter()
         {
             foreach(var a in practiceActors)if(a.Alive)a.Alive=false;practiceActors.Clear();
-            ResetPracticePose();practiceHoldLabel="";practiceHoldValue=0;
-            if(firstPractice.Step==PracticeStep.RageBurst){Simulation.GainRage(100);SpawnRageEnemies();firstPractice.FocusTicks=150;}
+            ResetPracticePose();ClearLessonShots();ResetParryState();practiceHoldLabel="";practiceHoldValue=0;
+            if(firstPractice.Step==PracticeStep.RageBurst){Simulation.GainRage(Math.Max(0,100-Simulation.Rage));SpawnRageEnemies();firstPractice.FocusTicks=150;}
         }
         // spawnRageEnemies: 24 one-hit monsters in two rings (180 / 280 px)
         void SpawnRageEnemies()
@@ -44,7 +44,8 @@ namespace Exoduser.UnityPort
         {
             bool chain=practising&&step==PracticeStep.Chain,roll=practising&&step==PracticeStep.Roll,rage=practising&&step==PracticeStep.RageBurst&&firstPractice.FocusTicks<=0&&!practiceDirHeld;
             bool shift=practiceScripted?scriptShift:NativeKeyBindInput.Held("charge"),space=practiceScripted?scriptSpace:NativeKeyBindInput.HeldKeyboard("roll");
-            Simulation.SetPlayerCombatInput(false,false,chain&&shift);
+            bool parry=practising&&(step==PracticeStep.ParryMagic||step==PracticeStep.ParryPhysical||step==PracticeStep.HoldMagic||step==PracticeStep.HoldPhysical||step==PracticeStep.RageParry);
+            Simulation.SetPlayerCombatInput(parry&&(practiceScripted?scriptQ:NativeKeyBindInput.Held("parry")),parry&&(practiceScripted?scriptE:NativeKeyBindInput.Held("shield")),chain&&shift);
             if(roll)Simulation.SetRollInput(practiceScripted?scriptUp:NativeKeyBindInput.Held("up")||Input.GetKey(KeyCode.UpArrow),practiceScripted?scriptDown:NativeKeyBindInput.Held("down")||Input.GetKey(KeyCode.DownArrow),practiceScripted?scriptLeft:NativeKeyBindInput.Held("left")||Input.GetKey(KeyCode.LeftArrow),practiceScripted?scriptRight:NativeKeyBindInput.Held("right")||Input.GetKey(KeyCode.RightArrow),space);
             else Simulation.SetRollInput(false,false,false,false,false);
             practiceSpaceForRage=rage&&space;

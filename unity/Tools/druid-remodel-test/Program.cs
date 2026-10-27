@@ -1,5 +1,6 @@
 // RM-B1 (RB1-1 / RB1-2) check: the remodelled 1-1 druid driven through the real Simulation (EnemyAi on, arena entered through StageFlow) by a scripted player.
 // usage: DruidRemodelTests.dll <out-dir>      writes remodel-fight-A.json (root cut) / remodel-fight-B.json (root not hit) / remodel-report.md ; exit 1 when a check fails
+// RM-B0: FrameworkChecks.cs (test-only si1 / si2 sets through the same Simulation) runs after the druid checks and is counted on its own line
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -153,15 +154,17 @@ static partial class P
         string dir = args.Length > 0 ? args[0] : "remodel-out"; Directory.CreateDirectory(dir);
         var a = Fight("A-root-cut", true, 20261027u); var b = Fight("B-root-not-hit", false, 20261028u);
         Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); VerifyMoveTable(); VerifyMotionTotals();
+        int druidChecks = checks, druidBad = bad;
+        FrameworkChecks();
+        int fwChecks = checks - druidChecks, fwBad = bad - druidBad;
         File.WriteAllText(Path.Combine(dir, "remodel-telegraphs.json"), TelegraphJson(), new UTF8Encoding(false));
         File.WriteAllText(Path.Combine(dir, "remodel-fight-A.json"), ToJson(a), new UTF8Encoding(false));
         File.WriteAllText(Path.Combine(dir, "remodel-fight-B.json"), ToJson(b), new UTF8Encoding(false));
-        var sb = new StringBuilder("# RM-B1 RB1-1/2 fight check\n\nchecks " + checks + ", failed " + bad + "\n");
-        foreach (var n in motionNotes) sb.Append("- NOTE ").Append(n).Append('\n');
-        sb.Append("- fight ticks (arena entry -> boss dead) A ").Append(a.FightTicks).Append(", B ").Append(b.FightTicks).Append(" ; moves started in the fight A ").Append(a.Moves.Count).Append(", B ").Append(b.Moves.Count).Append('\n');
+        var sb = new StringBuilder("# RM-B1 RB1-1/2 fight check\n\nchecks " + druidChecks + ", failed " + druidBad + "\n\n# RM-B0 remake frame check\n\nchecks " + fwChecks + ", failed " + fwBad + "\n\n" + fwSummary);
         foreach (var f in failures) sb.Append("- FAIL ").Append(f).Append('\n');
         File.WriteAllText(Path.Combine(dir, "remodel-report.md"), sb.ToString(), new UTF8Encoding(false));
-        Console.WriteLine("druid-remodel: " + checks + " checks, " + bad + " failed");
+        Console.WriteLine("druid-remodel: " + druidChecks + " checks, " + druidBad + " failed");
+        Console.WriteLine("remodel-frame: " + fwChecks + " checks, " + fwBad + " failed");
         return bad == 0 ? 0 : 1;
     }
 }

@@ -28,10 +28,10 @@ namespace Exoduser.UnityPort.Core
         // SafeZones = centre x, centre y, radius. RB1-3 fills it with the four root pillar shadows; empty means the heartbeat can only be dodged with i-frames.
         public readonly List<double[]> SafeZones = new List<double[]>();
 
-        BossPhaseDef Ph(int phase) { return Remodel ? DruidRemodelData.Phases[Math.Min(Math.Max(phase, 0), DruidRemodelData.Lives - 1)] : DruidBossData.Phases[phase]; }
-        BossMove[] MoveTable { get { return Remodel ? DruidRemodelData.Moves : DruidBossData.Moves; } }
-        BossCombo[] ComboTable { get { return Remodel ? DruidRemodelData.Combos : DruidBossData.Combos; } }
-        double CooldownOf(BossMove mv, BossPhaseDef ph) { return Remodel && mv.Id == "heartbeat" ? mv.Cd : mv.Cd * ph.CdM; }
+        BossPhaseDef Ph(int phase) { return Remodel ? Set.Phases[Math.Min(Math.Max(phase, 0), Set.Lives - 1)] : DruidBossData.Phases[phase]; }
+        BossMove[] MoveTable { get { return Remodel ? Set.Moves : DruidBossData.Moves; } }
+        BossCombo[] ComboTable { get { return Remodel ? Set.Combos : DruidBossData.Combos; } }
+        double CooldownOf(BossMove mv, BossPhaseDef ph) { return Remodel && Set.Forced.Contains(mv.Id) ? mv.Cd : mv.Cd * ph.CdM; }
 
         static int AliveMinions(DruidData d)
         {
@@ -103,7 +103,7 @@ namespace Exoduser.UnityPort.Core
         {
             DruidData d; if (!Data.TryGetValue(e, out d)) return;
             d.BossPhase = life; e.BossPhase = life;
-            d.S = "bossRec"; d.St2 = 60; d.BossPatT = DruidRemodelData.GapTicks[Math.Min(Math.Max(life, 0), 2)]; d.PImmune = 0; d.ComboSeq = null; d.ComboIdx = 0; d.Feinting = false; d.FeintUsed = false; d.Delaying = 0;
+            d.S = "bossRec"; d.St2 = 60; d.BossPatT = Set.GapTicks[Math.Min(Math.Max(life, 0), 2)]; d.PImmune = 0; d.ComboSeq = null; d.ComboIdx = 0; d.Feinting = false; d.FeintUsed = false; d.Delaying = 0;
             d.HeartCd = 0; d.R = e.Radius; d.RmVel = 0; d.RmParryPending = false; d.RmBonusApplied = false;
             for (int i = 0; i < d.MoveCDs.Length; i++) d.MoveCDs[i] = 0;
             WriteBack(e, d);

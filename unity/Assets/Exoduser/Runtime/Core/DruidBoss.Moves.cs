@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort.Core
 
         void StartPattern(EnemyState e, DruidData d, BossMove mv, double dist, int phase, int extraDelay)
         {
-            d.AtkParryable = (Remodel ? DruidRemodelData.Parryable : Parryable).Contains(mv.Id);
+            d.AtkParryable = (Remodel ? Set.Parryable : Parryable).Contains(mv.Id);
             int tele = I(mv.Tele * Ph(phase).TeleM) + extraDelay;
             double px = host.PX, py = host.PY;
             if (Remodel)
@@ -26,12 +26,12 @@ namespace Exoduser.UnityPort.Core
                     if (mv.Id == "groundFissure") d.RmDir = Atan2(py - d.Y, px - d.X);   // spec #4: the line is aimed once, at the first telegraph tick
                     if (mv.Id == "tideWave") d.RmGap = R() * Math.PI * 2;
                 }
-                if (!d.RmFire && DruidRemodelData.Instant.Contains(mv.Id))
+                if (!d.RmFire && Set.Instant.Contains(mv.Id))
                 {   // the web fires these the moment they are picked; the remodel shows the telegraph first (spec §4: it never gets shorter)
                     d.S = "bossRmWind"; d.St2 = Or(tele, 25); d.RmTeleTotal = d.St2; d.RmPending = mv; host.Text(d.X, d.Y - 30, "⚠", "#a9cc63", 40); return;
                 }
             }
-            switch (mv.Id)
+            if (!RmStartHook(e, d, mv, dist, phase, tele)) switch (mv.Id)   // RM-B0: the boss's own file may take the move first (BossRemodelHooks.StartMove)
             {
                 case "burst": d.S = "bossBurstWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "⚠ 광역 발사!", "#ff6600", 50); break;
                 case "fan": d.S = "bossFanWind"; d.St2 = Or(tele, 30); host.Text(d.X, d.Y - 30, "🔥 확산!", "#ff4444", 35); break;
@@ -63,7 +63,7 @@ namespace Exoduser.UnityPort.Core
                 case "chaseAoe":
                     if (Remodel)
                     {   // spec #8: chase zones with a 20 f warning each + the poison trail the boss leaves on his way (no charge)
-                        ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = DruidRemodelData.ChaseZoneCount, T = 0, Interval = 60, R = DruidRemodelData.ChaseZoneRadius, Delay = DruidRemodelData.ChaseZoneWarn, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
+                        ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = Set.ChaseZoneCount, T = 0, Interval = 60, R = Set.ChaseZoneRadius, Delay = Set.ChaseZoneWarn, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
                         host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
                         d.PtAng = d.Facing; d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = DruidRemodelData.PoisonDashTicks; break;   // the dash goes where the telegraph aim was frozen (12 f before), no re-aim
                     }
@@ -159,7 +159,7 @@ namespace Exoduser.UnityPort.Core
         {
             double px = host.PX, py = host.PY, pr = host.PRadius;
             int stage = host.Stage;
-            switch (d.S)
+            if (!RmTickHook(e, d, dist)) switch (d.S)   // RM-B0: the boss's own file may take the state first (BossRemodelHooks.TickState)
             {
                 case "idle":
                     {
@@ -222,7 +222,7 @@ namespace Exoduser.UnityPort.Core
                     }
                     break;
                 case "bossChargeWind":
-                    if (!DruidStage || d.St2 > (Remodel ? DruidRemodelData.AimFixTicks : 18)) d.Facing = Face(d, Atan2(py - d.Y, px - d.X));
+                    if (!DruidStage || d.St2 > (Remodel ? Set.AimFixTicks : 18)) d.Facing = Face(d, Atan2(py - d.Y, px - d.X));
                     if (d.St2 <= 0) { d.S = "bossCharge"; d.St2 = Remodel ? DruidRemodelData.ChargeTicks : 50; d.EchDx = Cos(d.Facing); d.EchDy = Sin(d.Facing); }
                     break;
                 case "bossCharge":
@@ -274,7 +274,7 @@ namespace Exoduser.UnityPort.Core
                     if (d.St2 <= 0)
                     {
                         int cnt = 3 + I(stage * .5);
-                        if (Remodel) { cnt = 2 + I(R() * 2); cnt = Math.Min(cnt, DruidRemodelData.SummonMax - AliveMinions(d)); }   // spec #9: 2-3 mobs, at most 3 alive at once
+                        if (Remodel) { cnt = 2 + I(R() * 2); cnt = Math.Min(cnt, Set.SummonMax - AliveMinions(d)); }   // spec #9: 2-3 mobs, at most 3 alive at once
                         int[] etypes = { 0, 2, 3, 3, 3 };
                         for (int si = 0; si < cnt; si++)
                         {
@@ -290,16 +290,16 @@ namespace Exoduser.UnityPort.Core
                         double ga = Atan2(py - d.Y, px - d.X);
                         if (Remodel) { ga = Face(d, ga); d.Facing = ga; }
                         d.GrabAng = ga;
-                        if (!Remodel)   // remodel: the boss stands still, the lunge is the next state
+                        if (!RmGrab)   // druid remodel: the boss stands still, the lunge is the next state; other sets keep the web approach
                         {
                             double gs = d.Speed * 1.5, gmx = Cos(ga) * gs, gmy = Sin(ga) * gs, gnx = d.X + gmx, gny = d.Y + gmy;
                             if (host.CanMove(gnx, gny, d.R)) { d.X = gnx; d.Y = gny; }
                             else { if (host.CanMove(d.X + gmx, d.Y, d.R)) d.X += gmx; else if (host.CanMove(d.X, d.Y + gmy, d.R)) d.Y += gmy; }
                         }
-                        if (d.St2 <= 0 && Remodel) { d.S = "bossGrabLunge"; d.St2 = DruidRemodelData.GrabLungeTicks; }
+                        if (d.St2 <= 0 && RmGrab) { d.S = "bossGrabLunge"; d.St2 = DruidRemodelData.GrabLungeTicks; }
                         else if (d.St2 <= 0)
                         {
-                            if (Dst(px, py, d.X, d.Y) < d.R + pr + 200 && host.PIframes <= 0) { d.S = "bossGrab"; d.St2 = Remodel ? DruidRemodelData.GrabTicks : 60; if (Remodel) GrabStart(e, d); host.Text(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); }
+                            if (Dst(px, py, d.X, d.Y) < d.R + pr + 200 && host.PIframes <= 0) { d.S = "bossGrab"; d.St2 = RmGrab ? DruidRemodelData.GrabTicks : 60; if (RmGrab) GrabStart(e, d); host.Text(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); }
                             else { Recover(d, 40); }
                         }
                         break;
@@ -315,10 +315,10 @@ namespace Exoduser.UnityPort.Core
                     }
                 case "bossGrab":
                     {
-                        if (Remodel && GrabEscaped(e, d)) break;   // spec #6: mashing breaks the hold (the absorption stops with it)
+                        if (RmGrab && GrabEscaped(e, d)) break;   // spec #6: mashing breaks the hold (the absorption stops with it)
                         host.PX = d.X + Cos(d.GrabAng) * 25; host.PY = d.Y + Sin(d.GrabAng) * 25; host.StopPlayerKnock();
                         if (d.St2 % 10 == 0 && host.PIframes <= 0) host.HurtPlayer(I(d.Atk * .4), false);
-                        if (Remodel && d.St2 % 10 == 0) GrabAbsorb(e, d);
+                        if (RmGrab && d.St2 % 10 == 0) GrabAbsorb(e, d);
                         if (d.St2 <= 0)
                         {
                             host.HurtPlayer(I(d.Atk * 1.8), false);
@@ -461,10 +461,10 @@ namespace Exoduser.UnityPort.Core
                         double slProg = 1 - d.St2 / 8; d.WeaponAng = -1.2 + slProg * 2.4;
                         if (d.St2 <= 0)
                         {
-                            d.WeaponAng = 0; double slamR = Remodel ? DruidRemodelData.SlamRadius : 1000 + stage * 30 + d.BossPhase * 80, slamD = Dst(px, py, d.X, d.Y);
+                            d.WeaponAng = 0; double slamR = Remodel ? Set.SlamRadius : 1000 + stage * 30 + d.BossPhase * 80, slamD = Dst(px, py, d.X, d.Y);
                             if (slamD < slamR && host.PIframes <= 0) { if (!Parry(e, d, 4, 80, 20, d.Facing + Math.PI)) PlayerHit(e, d, 2.2, 14); }
                             d.ShockR = 0; d.ShockMax = slamR; host.Shake(14);
-                            if (Remodel && d.BossPhase >= 2) { PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = 240, R = DruidRemodelData.SlamRadius, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, DruidRemodelData.SlamRadius); }
+                            if (Remodel && d.BossPhase >= 2) { PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = 240, R = Set.SlamRadius, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, Set.SlamRadius); }
                             Recover(d, 40);
                         }
                         break;
@@ -522,7 +522,7 @@ namespace Exoduser.UnityPort.Core
                         double pdSpd = Remodel ? DruidRemodelData.PoisonDashSpeed : 5, pmx = Cos(d.PtAng) * pdSpd, pmy = Sin(d.PtAng) * pdSpd;
                         if (host.CanMove(d.X + pmx, d.Y + pmy, d.R)) { d.X += pmx; d.Y += pmy; }
                         d.PtT += 1;
-                        if (d.PtT >= 8) { d.PtT -= 8; PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = Remodel ? DruidRemodelData.PoisonTrailTicks : 240, R = 175, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, 175); }
+                        if (d.PtT >= 8) { d.PtT -= 8; PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = Remodel ? Set.PoisonTrailTicks : 240, R = 175, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, 175); }
                         if (d.St2 <= 0) { Recover(d, 25); }
                         break;
                     }

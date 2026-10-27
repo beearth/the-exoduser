@@ -381,7 +381,7 @@ namespace Exoduser.UnityPort.Core
         double Score(BossMove mv, double dist, int phase, DruidData d)
         {
             ScoreEvals++;
-            if (mv.Id == "cageTrap" || (Remodel && mv.Id == "heartbeat")) return -1;   // heartbeat is forced by the AI (P3 entry + 40 s cooldown), never scored
+            if (mv.Id == "cageTrap" || (Remodel && Set.Forced.Contains(mv.Id))) return -1;   // heartbeat is forced by the AI (P3 entry + 40 s cooldown), never scored
             if (!mv.InPhase(phase)) return -1;
             if (d.MoveCDs[mv.Idx] > 0) return 0;
             double mid = (mv.RangeMin + mv.RangeMax) / 2, span = Math.Max(1, (mv.RangeMax - mv.RangeMin) / 2);
@@ -435,7 +435,7 @@ namespace Exoduser.UnityPort.Core
             double engDist = 180 - d.BossPhase * 20;
             d.CombatSt = dist > engDist + 30 ? "approach" : dist < 50 ? "retreat" : "engage";
             d.BossPatT -= 1;
-            if (Remodel && ForceHeartbeat(e, d, dist)) return;
+            if (Remodel && RmForcedPick(e, d, dist)) return;
             if (d.BossPatT > 0 || dist > 500 || dist < 20) return;
             // G._pStats.avgDist is a statistic nothing else reads in the ported slice
             if (d.ComboSeq != null && d.ComboIdx < d.ComboSeq.Length)
@@ -446,7 +446,7 @@ namespace Exoduser.UnityPort.Core
                 {
                     d.ComboIdx++;
                     d.MoveCDs[nmv.Idx] = CooldownOf(nmv, ph);
-                    d.BossPatT = Remodel ? DruidRemodelData.ComboLinkTicks : I(6 + R() * 6);
+                    d.BossPatT = Remodel ? Set.ComboLinkTicks : I(6 + R() * 6);
                     d.LastMoves.Add(nmv.Id); if (d.LastMoves.Count > 5) d.LastMoves.RemoveAt(0);
                     d.MeleeStreak = nmv.HasTag("ranged") ? 0 : d.MeleeStreak + 1;
                     d.Feinting = nmv.CanFeint && !(Remodel && d.FeintUsed) && R() < ph.FeintC; if (d.Feinting) d.FeintUsed = true;
@@ -477,7 +477,7 @@ namespace Exoduser.UnityPort.Core
             d.LastMoves.Add(bestMv.Id); if (d.LastMoves.Count > 5) d.LastMoves.RemoveAt(0);
             d.MeleeStreak = bestMv.HasTag("ranged") ? 0 : d.MeleeStreak + 1;
             d.MoveCDs[bestMv.Idx] = CooldownOf(bestMv, ph);
-            d.BossPatT = Remodel ? DruidRemodelData.GapTicks[Math.Min(Math.Max(d.BossPhase, 0), 2)] : (d.BossPatCd + R() * 15) * ph.CdM;
+            d.BossPatT = Remodel ? Set.GapTicks[Math.Min(Math.Max(d.BossPhase, 0), 2)] : (d.BossPatCd + R() * 15) * ph.CdM;
             if (R() < ph.ComboC)
             {
                 var mc = new List<BossCombo>();
