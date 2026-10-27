@@ -5,6 +5,8 @@
 - 교체 영상이 포함된 `main/0a81912b2e4e86e326538afd7f91626ea1729671`의 [Deploy and Build 실행](https://github.com/beearth/the-exoduser/actions/runs/40450295727)은 정적 업로드 합계 4,003,685,155바이트로 프로젝트 사전 예산 4,000,000,000바이트를 초과해 실패했다. 영상 파일의 게임 로컬 적용과 GitHub main 반영은 이 실패와 구분한다.
 - `tools/web-runtime-manifest.mjs`의 동적 CH1 경로 선택에서 웹 실행에 쓰지 않는 제작 원본 3개만 제외한다: `assets/map/ch1/rottenwood_field_rootworld_master_v2.png`, `assets/map/ch1/rottenwood_poison_master_higgsfield_v2_wide.png`, `assets/map/ch1/rottenwood_poison_tree_detail_v3_source.png`. 원본 파일 자체는 삭제하거나 이동하지 않는다. CH1 실행 청크 선택은 유지한다.
 - 로컬 선택 목록은 2,825개/4,036,367,600바이트에서 2,822개/3,977,014,362바이트로 감소했다(59,353,238바이트). `test/webDeployment.test.js`는 세 제작 원본 제외와 실행 청크 유지를 검증하며 관련 6개 검사가 통과했다. 이 수치는 로컬 선택 목록이며 Vercel 최종 반영 여부는 새 Actions 실행과 공개 URL로 따로 확인한다.
+- 용량 수정은 `13c3629e3d590aca38b4d935494de06e5e8e7980`으로 main에 반영했다. 다른 작업의 후속 main 푸시가 앞선 실행을 취소했으나, 수정 커밋을 포함한 `48b804d34475f78a7c2a06173045fd7beec52c65`의 [Deploy and Build 실행](https://github.com/beearth/the-exoduser/actions/runs/40451606853)은 정적 용량 검사와 Vercel 업로드를 포함해 성공했다.
+- 2026-10-27 공개 주소 `https://the-exoduser.vercel.app`: `index.html`이 새 버전 `20261027-killu-bloodtears-v3`를 참조하고 `character-story-player.js`가 해당 영상 쿼리를 사용함을 확인했다. 공개 MP4는 HTTP 200, 94,795,327바이트이며 전체 다운로드 SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`가 승인 후보와 일치한다. 브라우저에서 전체 96.4초 재생을 끝까지 시청하는 검수는 별도다. Steam 배포와 Windows 플레이어 빌드는 이 웹 배포에 포함되지 않는다.
 
 | 항목 | 현행 계약 / 검증 근거 |
 |---|---|
