@@ -61,6 +61,12 @@ for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/exoduser/$f" "G:/exodus
 - 사용자에게 묻는 것은 다음뿐이다: 기존 레퍼런스·목표에 없는 새 방향, 유료 크레딧 지출(Higgsfield 등), Steam Set Live·외부 게시·배포, 되돌릴 수 없는 삭제.
 - 결정의 근거와 판정은 해당 SSOT 문서에 남긴다.
 
+## 디스크 사용 (2026-10-27 사용자 확정)
+
+- C 드라이브(시스템 SSD)에는 대용량 산출물을 두지 않는다. 빌드, 캡처, Playwright 프로필, 덤프, 로그처럼 크거나 임시인 파일은 `I:\EXODUSER-Storage\`(또는 `E:\exoduser-wt\_out`)에 쓴다. 자주 쓰는 메인 작업 파일만 SSD(G:)에 둔다.
+- 백그라운드 명령에서 `python -`처럼 stdin을 기다리는 형태를 쓰지 않는다. stdin이 없으면 대화형 REPL이 오류를 무한 반복하며 디스크를 채운다(10-27 Temp 로그 162GB 사고). 스크립트는 파일로 넘긴다.
+- Playwright·브라우저 임시 프로필은 쓰고 나면 지운다.
+
 ## 서버
 
 ```
