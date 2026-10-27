@@ -37,3 +37,5 @@
 !/Tools/affix-defs-parity/AffixDefsParity.csproj
 /Tools/affix-defs-parity/bin/
 /Tools/affix-defs-parity/obj/
+!/Tools/enemy-tables-oracle/EnemyTablesTests.csproj
+/Tools/enemy-tables-oracle/runs/
