@@ -23,7 +23,7 @@
 | 순위 | 자료 | 날짜 | 비고 |
 |---|---|---|---|
 | 1 | 사용자 최신 지시·승인 대사 | 수시 | 예: 네메시아 INTRO id5 4문장(2026-09-10 승인), 아이반 이름 제안(2026-10-26) |
-| 2 | 게임에 실제 재생되는 원문 | 현행 | 전사 영상 `localization/warrior-story/ko.json`(22큐, `video/warrior_story_v23_clean.mp4?v=20261026-killu-bloodtears-v3`), `game.html` `PROLOGUE_LINES`·`INTRO_CUTSCENE_LINES` |
+| 2 | 게임에 실제 재생되는 원문 | 현행 | 전사 영상 `localization/warrior-story/ko.json`(22큐, `video/warrior_story_v23_clean.mp4?v=20261027-killu-bloodtears-v3`), `game.html` `PROLOGUE_LINES`·`INTRO_CUTSCENE_LINES` |
 | 3 | `docs/HELL_EXODUSER_WORLDVIEW_v2.md` | 2026-07-12 | WORLDVIEW MASTER. 우주론·종족 편입·스포일러 티어 |
 | 4 | `WORLD_CORE.md` | 2026-05-07 | 초기안. TBD T1~T11 다수. 3순위와 충돌 시 3순위 우선 |
 | 5 | GDD v4.0~4.2(docx), 옛 콘티 | 각기 | 압축 서술. 콘티 존재 ≠ 영상 완성 |

@@ -1,3 +1,12 @@
+## 2026-10-27 전사 킬루 피눈물 v3 웹 실행본 재적용
+
+| 항목 | 상태 |
+|---|---|
+| 영상 | `video/warrior_story_v23_clean.mp4`를 보관 후보 v3와 동일 SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`로 교체. 기존 원본은 I:에 보존 |
+| 캐시·자막 | player·index 캐시 `20261027-killu-bloodtears-v3`, VTT 29언어×22큐 유지 |
+| 범위 | 웹 실행본 적용. 패키지·Godot·Steam 공개 상태는 별도 검수 |
+| 근거 | [킬루 재제작 기록](cinematic/WARINTRO_KILLU_REBUILD_20261025.md) 및 I: 배포 영수증 |
+
 ## 2026-10-21 PC-LIFE-PACK — PCI-01 생명주기·PCI-11 최종 처치·PCI-10 시체 부활·PCI-12 recalcSt·PCI-13 펫 초상 캐시
 
 | 항목 | 구현·검수 근거 |
