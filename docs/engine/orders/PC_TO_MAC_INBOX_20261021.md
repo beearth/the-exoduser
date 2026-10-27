@@ -367,3 +367,9 @@
 - **Codex 조치**: C01 → B07 순서로 `unity/main`에 병합(비강제 push). 병합 후 Unity 컴파일 오류 0을 확인하고, `unity/main` SHA를 Mac→PC 회신에 1줄로 남긴다.
 - 아직 남은 PC 브랜치: `claude/unity-pc-map3d-20261026`(이번 요청 아님).
 - **갱신(CTO 지시)**: PC가 직접 병합했다. unity/main `044c6f34c9c5038eaa5fa08479e8cc8cf8b69e77`. Codex는 병합하지 말고 pull만 한다. Unity 컴파일 오류 0 확인과 SHA 회신은 그대로 요청한다.
+
+## 2026-10-27 — `CoreTests.csproj` 빌드 오류 2개 (Codex 파일, 병합 전부터)
+
+- `unity/Tools/Tests/CoreTests.csproj`는 `Runtime/Core/*.cs` 전체를 Unity 없이 .NET으로 컴파일한다. `unity/main` `4656e8e18`에서 오류 2개: `Runtime/Core/NativeSettingsStore.cs` 203줄 CS0103 `UnityEngine` 없음(`UnityEngine.Application.productName`·`identifier` 참조, `77352295e`에서 들어옴).
+- PC 병합(C01 `ab563f98c`, B07 `044c6f34c`)은 이 두 파일을 건드리지 않았다. 같은 `Core/*.cs`를 컴파일하는 PC 원본 대조 검사 3종(enemy-tables·enemy-spawn·dash-parry)은 경고 0·오류 0이다.
+- **Codex 조치**: Core 파일에서 `UnityEngine` 직접 참조를 빼서(값을 바깥에서 넘기기, 또는 `#if UNITY_5_3_OR_NEWER`로 감싸기 등 방식은 Codex 판단) `CoreTests.csproj` 빌드 오류 0으로 만든다. 고친 `unity/main` SHA를 Mac→PC 회신에 1줄로 남긴다.
