@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
             hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
             NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d");
-            inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);});
+            inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);RequestCombatSave();});
             BuildProps();
             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
             if(kiSheet==null||kiSheet.width%3!=0||kiSheet.height%3!=0)throw new InvalidOperationException("Invalid original kiSlash 3x3 sheet");
@@ -65,7 +65,7 @@ namespace Exoduser.UnityPort
             sound=new NativeFeedbackAudio(transform,view);
             ResetRun();
             worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
-            lobby.Initialize(EnterFromLobby);lobby.StartupGameplayPrepare=PrepareStartupGameplay;lobby.CinematicCompleted=MarkCinematicSeen;
+            lobby.Initialize(EnterFromLobby);lobby.HasCombatSave=HasCombatSave;lobby.CharacterDeleted=DeleteCombatSave;lobby.StartupGameplayPrepare=PrepareStartupGameplay;lobby.CinematicCompleted=MarkCinematicSeen;
             InitializeNativeSettings();
             pauseMenu=new NativePauseMenu(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font,settings,
                 SetSfxPercent,SetBgmPercent,SetFrameCap,
@@ -81,6 +81,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-frontend-pad-qa")>=0){Running=false;StartCoroutine(FrontendPadIntegrationQa());}
             else if(Array.IndexOf(args,"--unity-first-practice-review")>=0||Array.IndexOf(args,"--unity-first-practice-capture")>=0){Running=false;StartCoroutine(FirstPracticeFixture(Array.IndexOf(args,"--unity-first-practice-capture")>=0));}
             else if(Array.IndexOf(args,"--unity-startup-capture")>=0){Running=false;StartCoroutine(StartupCapture());}
+            else if(Array.IndexOf(args,CombatSaveCaptureFlag)>=0){Running=false;StartCoroutine(CombatSaveCapture());}
             else if(Array.IndexOf(args,"--unity-hud-blend-smoke")>=0){menu=true;Running=false;StartCoroutine(HudBlendCapture());}
             else if(Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0){inventoryKeysSmoke=true;traceInventoryKeys=true;pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();StartCoroutine(InventoryKeysSmoke());}
             else if(Array.IndexOf(args,"--unity-pause-smoke")>=0){pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();menu=true;Running=false;pauseMenu.Reset();StartCoroutine(PauseSmoke());}
@@ -103,9 +104,9 @@ namespace Exoduser.UnityPort
             startupResetCount++;
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();
             kiView?.Reset();impacts?.Reset();sound?.Reset();
-            var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;
+            var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;
-            inventory.Reset();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);
+            inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
             // World drop item factory and persistent saves remain unimplemented.
             // Therefore TryCollectLoot remains absent: R cannot fabricate an item.
@@ -131,7 +132,7 @@ namespace Exoduser.UnityPort
         }
         void Update()
         {
-            UpdateSettingsPersistence();
+            UpdateSettingsPersistence();UpdateCombatSave();
             lobby.AutomatedInput=lobbySmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;return;}
@@ -347,7 +348,7 @@ namespace Exoduser.UnityPort
         // Web _injectPanelNav: a tab click opens that window (openPanel closes the others first); the active tab is ignored by the bar itself.
         // forge: the tab bar never requests the active window, so a request while open is the G key (toggle).
         // Web addExp -> _levelUpVfx.trigger(P,stage,lvd,demonic): one overlay trigger per addExp call that gained levels.
-        void OnLevelledUp(LevelUpEvent up){levelUp.Show(up.NewLevel);levelUpSeen=up.NewLevel;}
+        void OnLevelledUp(LevelUpEvent up){levelUp.Show(up.NewLevel);levelUpSeen=up.NewLevel;RequestCombatSave();}
         void OnPanelRequested(string id){
             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return;
             switch(id){
@@ -416,8 +417,8 @@ namespace Exoduser.UnityPort
             switch(command){
                 case PauseMenuCommand.Resume: if(gameFocused&&Simulation.Player.Hp>0){menu=false;skillInputFence=true;Running=true;} break;
                 case PauseMenuCommand.Restart:if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}break;
-                case PauseMenuCommand.ReturnLobby:Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
-                case PauseMenuCommand.Quit:if(gameFocused)Application.Quit();break;
+                case PauseMenuCommand.ReturnLobby:SaveCombatNow();Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
+                case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
             }
         }
         Vector2 ToGUI(float x,float y){var v=view.WorldToViewportPoint(Point(x,y));return new Vector2(v.x*1920,(1-v.y)*1080);}

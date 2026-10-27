@@ -27,7 +27,9 @@ namespace Exoduser.UnityPort
    // Bind confirmation to the identity displayed, not a slot that may have moved.
    var candidate=CopyCharacters();
    if(Characters.NameAt(deletingCharacter)!=deletingName||!candidate.TryRemove(deletingCharacter)){CloseCharacterCreation();return false;}
+   string removedName=deletingName;
    if(!CommitCharacters(candidate))return false;
+   CharacterDeleted?.Invoke(removedName);   // E03: the character's combat save goes with it (a re-created name must not inherit it)
    RevealSelectedCharacter();CloseCharacterCreation();return true;
   }
   void HandleCharacterDeleteKeys(Event e)

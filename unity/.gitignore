@@ -50,3 +50,6 @@
 /Tools/level-exp-oracle/runs/
 /Tools/level-exp-oracle/oracle.json
 /Tools/.dotnet-home/
+/Tools/save-oracle/oracle.json
+/Tools/save-oracle/runs/
+!/Tools/save-oracle/SaveTests.csproj
