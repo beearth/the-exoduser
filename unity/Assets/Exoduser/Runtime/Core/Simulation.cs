@@ -83,6 +83,7 @@ namespace Exoduser.UnityPort.Core
             Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen / regenDivisor);
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
+            attackHeldForMagic = attack;
             TickPlayerShieldAndRevive();
             ConsumeRollTrigger();
             TickPlayerCombat();

@@ -12,11 +12,12 @@ namespace Exoduser.UnityPort
     {
         sealed class Item { public GameObject go; public SpriteRenderer a, b; public LineRenderer[] rings; }
         readonly Transform parent; readonly Material add, addFlat, alpha;
-        readonly Dictionary<int, Item> zones = new Dictionary<int, Item>(), waves = new Dictionary<int, Item>(), blades = new Dictionary<int, Item>();
+        readonly Dictionary<int, Item> zones = new Dictionary<int, Item>(), waves = new Dictionary<int, Item>(), blades = new Dictionary<int, Item>(), orbs = new Dictionary<int, Item>();
+        readonly Dictionary<int, List<Vector3>> orbTrails = new Dictionary<int, List<Vector3>>();   // web p._trail: the last 14 positions of a malice orb
         readonly List<int> stale = new List<int>();
-        Sprite spike, dome, shard, disc; readonly Sprite[] slamFrames = new Sprite[4], orbFrames = new Sprite[9];
+        Sprite spike, dome, shard, disc; readonly Sprite[] slamFrames = new Sprite[4], orbFrames = new Sprite[9], maliceFrames = new Sprite[20];
         Item orb; int lastTick = -1;
-        public int ActiveZones, ActiveWaves, ActiveBlades; public bool OrbShown;
+        public int ActiveZones, ActiveWaves, ActiveBlades, ActiveMaliceOrbs; public bool OrbShown;
 
         public NativeSkillView(Transform parent)
         {
@@ -29,6 +30,9 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 4; i++) slamFrames[i] = Sprite.Create(slam, new Rect(i % 2 * hw, slam.height - (i / 2 + 1) * hh, hw, hh), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             var orbTex = Resources.Load<Texture2D>("Art/vfx/skill_ice_orb_sheet"); int fw = orbTex.width / 3, fh = orbTex.height / 3;
             for (int i = 0; i < 9; i++) orbFrames[i] = Sprite.Create(orbTex, new Rect(i % 3 * fw, orbTex.height - (i / 3 + 1) * fh, fw, fh), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
+            // web _MO_IMG (assets/vfx/vfx_magic_orb.png): 7 x 3 cells of 171 px, 20 frames, drawn 'lighter' at r * 5
+            var mo = Resources.Load<Texture2D>("Art/vfx/skill_malice_orb_sheet");
+            for (int i = 0; i < 20; i++) maliceFrames[i] = Sprite.Create(mo, new Rect(i % 7 * 171, mo.height - (i / 7 + 1) * 171, 171, 171), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             shard = BuildShard(); disc = BuildDisc();
         }
         static Sprite Whole(string path)
@@ -93,7 +97,7 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim, float time)
         {
-            ActiveZones = ActiveWaves = ActiveBlades = 0; var p = sim.Player;
+            ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
             foreach (var z in sim.FireZones)
@@ -141,6 +145,23 @@ namespace Exoduser.UnityPort
                 float ang = Mathf.Atan2(-b.Vy, b.Vx) + time * 12f; it.a.transform.localRotation = Quaternion.Euler(0, 0, ang * Mathf.Rad2Deg);
             }
             Drop(blades, stale);
+            // ---- malice orbs (E slot) ----
+            stale.Clear(); foreach (var k in orbs.Keys) stale.Add(k);
+            foreach (var o in sim.MaliceOrbs)
+            {
+                if (!o.Active) continue; stale.Remove(o.Id); Item it; List<Vector3> trail;
+                if (!orbs.TryGetValue(o.Id, out it)) { it = NewItem("malice" + o.Id); orbs[o.Id] = it; it.a = NewRenderer(it, "orb", maliceFrames[0], add, 0); it.rings = new[] { NewTrail(it) }; orbTrails[o.Id] = new List<Vector3>(); }
+                trail = orbTrails[o.Id]; ActiveMaliceOrbs++;
+                var pos = Point(o.X, o.Y); it.go.transform.position = pos; it.a.sortingOrder = (int)o.Y + 3;
+                int fr = (int)(time * 1000f * .12f + o.X * .1f); it.a.sprite = maliceFrames[((fr % 20) + 20) % 20];
+                Fit(it.a, o.R * 5f, 171); it.a.color = new Color(1, 1, 1, .85f);
+                trail.Add(pos); if (trail.Count > 14) trail.RemoveAt(0);
+                var line = it.rings[0]; line.positionCount = trail.Count;
+                for (int ti = 0; ti < trail.Count; ti++) line.SetPosition(ti, trail[trail.Count - 1 - ti] - pos);
+                line.widthMultiplier = Mathf.Max(4, o.R) * 2f / 100f; line.sortingOrder = (int)o.Y + 2;
+            }
+            foreach (int id in stale) orbTrails.Remove(id);
+            Drop(orbs, stale);
             // ---- the orb the player stands in ----
             OrbShown = sim.IceOrbActive;
             if (orb == null) { orb = NewItem("ice orb"); orb.a = NewRenderer(orb, "base0", orbFrames[0], alpha, 0); orb.b = NewRenderer(orb, "base1", orbFrames[0], alpha, 0); var g0 = NewRenderer(orb, "glow0", orbFrames[0], add, 0); var g1 = NewRenderer(orb, "glow1", orbFrames[0], add, 0); orb.rings = null; glow0 = g0; glow1 = g1; }
@@ -161,6 +182,16 @@ namespace Exoduser.UnityPort
         {
             r.sprite = orbFrames[Mathf.Clamp(frame, 0, 8)]; Fit(r, drawPx, r.sprite.rect.width); r.color = c; r.sortingOrder = order; r.enabled = c.a > 0.001f;
         }
+        // web _drawMaliceOrbTrail: a dark smoke ribbon under an additive violet / ember ribbon that thins out to the tail
+        LineRenderer NewTrail(Item item)
+        {
+            var go = new GameObject("trail"); go.transform.SetParent(item.go.transform, false);
+            var l = go.AddComponent<LineRenderer>(); l.useWorldSpace = false; l.numCapVertices = 4; l.sharedMaterial = add;
+            l.widthCurve = new AnimationCurve(new Keyframe(0, .55f), new Keyframe(1, 0));
+            var g = new Gradient(); g.SetKeys(new[] { new GradientColorKey(new Color(.86f, .55f, 1f), 0), new GradientColorKey(new Color(.55f, .18f, .8f), .5f), new GradientColorKey(new Color(.25f, .05f, .4f), 1) },
+                new[] { new GradientAlphaKey(.55f, 0), new GradientAlphaKey(.3f, .5f), new GradientAlphaKey(0, 1) });
+            l.colorGradient = g; return l;
+        }
         void BuildZone(Item it, FireZone z)
         {
             if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); return; }
@@ -174,9 +205,9 @@ namespace Exoduser.UnityPort
 
         public void Reset()
         {
-            foreach (var m in new[] { zones, waves, blades }) { foreach (var it in m.Values) UnityEngine.Object.Destroy(it.go); m.Clear(); }
+            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) UnityEngine.Object.Destroy(it.go); m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
-            ActiveZones = ActiveWaves = ActiveBlades = 0;
+            orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()
         {

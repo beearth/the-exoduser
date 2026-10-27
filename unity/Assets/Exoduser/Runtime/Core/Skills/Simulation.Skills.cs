@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort.Core
     {
         public readonly Dictionary<string, int> Levels = new Dictionary<string, int>();
         public readonly string[] Slots = new string[SkillRules.SlotCount];   // SKILL_SLOTS: 1,2,3,4,Space,F
-        public string UltSlot, CtSkill = "iceOrb";                          // ULT_SLOT, P.activeCtSk
+        public string UltSlot, CtSkill = "iceOrb", MagicSkill = "fireball";  // ULT_SLOT, P.activeCtSk, P.activeMagicSk (E slot; fireball is the only ported one)
         public int Level(string id) { int v; return id != null && Levels.TryGetValue(id, out v) ? v : 0; }
         public bool Learned(string id) { return Level(id) >= 1; }
     }
@@ -56,10 +56,11 @@ namespace Exoduser.UnityPort.Core
             Skills.Levels["holyDome"] = 1; Skills.Slots[SkillRules.SlotF] = "holyDome";
             Skills.Levels["spikeTrap"] = 1; Skills.Slots[0] = "spikeTrap";
             Skills.Levels["iceOrb"] = 1; Skills.CtSkill = "iceOrb";
+            Skills.Levels["fireball"] = 1; Skills.MagicSkill = "fireball";   // E: P.skills.fireball||1 is always usable (default skill)
         }
 
         // ---- save (web `skills`, `skillSlots`, `ultSlot`, `activeCtSk`): only the skills this executor runs are owned by Unity ----
-        public static readonly string[] PortedSkillIds = { "spikeTrap", "giantSlam", "holyDome", "iceOrb" };
+        public static readonly string[] PortedSkillIds = { "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball" };
         static bool IsPorted(string id) { return id != null && Array.IndexOf(PortedSkillIds, id) >= 0; }
         public void CaptureSkills(out Dictionary<string, double> skills, out string[] slots, out string ult, out string ct)
         {
@@ -71,7 +72,7 @@ namespace Exoduser.UnityPort.Core
         public void RestoreSkills(Dictionary<string, double> skills, string[] slots, string ult, string ct)
         {
             if (skills == null) return;
-            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
+            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if (id == "fireball" && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
             for (int i = 0; i < SkillRules.SlotCount; i++) Skills.Slots[i] = slots != null && i < slots.Length && IsPorted(slots[i]) && Skills.Learned(slots[i]) ? slots[i] : null;
             Skills.CtSkill = IsPorted(ct) && Skills.Learned(ct) ? ct : (Skills.Learned("iceOrb") ? "iceOrb" : null);
         }
@@ -143,8 +144,9 @@ namespace Exoduser.UnityPort.Core
             if (!dead) DispatchSkillKeys();
             TickSkillCooldowns();
             if (IceOrbActive) TickIceOrb();
+            TickMagicIdle(); TickMagicStates();
             TickFireZones();
-            TickSkillBlades();
+            TickSkillBlades(); TickMaliceOrbs();
             for (int i = SlamWaves.Count - 1; i >= 0; i--) { var w = SlamWaves[i]; w.T++; if (w.T >= w.MaxT) SlamWaves.RemoveAt(i); }
         }
 

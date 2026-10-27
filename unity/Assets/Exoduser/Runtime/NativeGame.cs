@@ -303,7 +303,8 @@ namespace Exoduser.UnityPort
         void SetSkillKeys()
         {
             string bow=NativeKeyBindInput.Bindings.Primary("bow"),roll=NativeKeyBindInput.Bindings.Primary("roll");
-            if(menu||skills.Open||inventory.Open||stats.Open||forge.Open){Simulation.SetSkillInput(false,false,false,false,false,false,false,false);return;}   // the panels use the digit keys themselves
+            if(menu||skills.Open||inventory.Open||stats.Open||forge.Open){Simulation.SetSkillInput(false,false,false,false,false,false,false,false);Simulation.SetMagicInput(false);return;}   // the panels use the digit keys themselves
+            Simulation.SetMagicInput(NativeKeyBindInput.Held("beam"));   // B03b: E-slot malice orb (web 'beam' action, default mouse2)
             Simulation.SetSkillInput(Input.GetKey(KeyCode.Alpha1),Input.GetKey(KeyCode.Alpha2),Input.GetKey(KeyCode.Alpha3),Input.GetKey(KeyCode.Alpha4),
                 NativeKeyBindInput.Held("bow"),Input.GetKey(KeyCode.F),Input.GetKey(KeyCode.LeftControl),Input.GetKey(KeyCode.Z),bow!=null&&bow==roll);
         }

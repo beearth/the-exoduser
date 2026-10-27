@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort.Core.Skills
         }
 
         // ---- costs (31986-31998): _COST_BASE x _dpsCostMul (1+(Lv-1)*scale) x discount; ST capped at 90 % of the maximum ----
-        public static double CostBase(string key) { switch (key) { case "giantSlam": return 50; case "iceOrb": return 50; case "mortar": return 50; case "weapon": return 10; default: return 5; } }
+        public static double CostBase(string key) { switch (key) { case "giantSlam": return 50; case "iceOrb": return 50; case "mortar": return 50; case "magic": return 10; case "weapon": return 10; default: return 5; } }
         static double DpsScale(string key) { switch (key) { case "giantSlam": return .45; case "iceOrb": return .35; case "mortar": return .35; default: return .10; } }
         public static double DpsCostMul(string key, int skillLv) { return 1 + (Math.Max(1, skillLv) - 1) * DpsScale(key); }
         // stDisc = pAtkCost * pMeleeStCost * (1 + min(0, stCostRed))
@@ -87,5 +87,13 @@ namespace Exoduser.UnityPort.Core.Skills
         // unified pierce (35701-35712): guaranteed floor(rate*91/1000) hits, then 1 - 0.1 per extra hit
         public static int GuaranteedPierce(double rate) { return (int)Math.Floor(rate * 91 / 1000); }
         public static double PierceSurvive(int pierced, double rate) { int over = pierced - GuaranteedPierce(rate); return Math.Max(0, 1 - over * 0.1); }
+        // ---- 악의구 (E 마법 슬롯 기본, 33727+ "악의구 (기본 폴백)", 투사체 루프 35322+, _fireballExplode 24710, _maliceWeakMul 24707) ----
+        public const double FireballSpeed = 5.5, FireballRadius0 = 12, FireballHomingRange = 280, FireballTurn = .35, FireballKnockback = .1, FireballElement = 3, MaliceWeakStep = .3;
+        public const int FireballMaxBounce = 3, FireballBounceCool = 6, FireballPoisonFrames = 600, MaliceWeakMax = 10;
+        public static double FireballScale(int lv) { return 1 + (Math.Max(1, lv) - 1) * 0.50; }
+        public static int FireballDamage(double magicRef, double statInt, double pMagicMul, int lv) { return Js.Int(magicRef * statInt * pMagicMul * SkMul("fireball", lv)); }
+        public static double FireballRange(int lv, double bonusRange) { return 400 + (Math.Max(1, lv) - 1) * 50 + bonusRange * 20; }
+        public static double FireballRadiusMax(int lv) { return Js.Int(12 * FireballScale(lv)); }
+        public static double FireballExplosionRadius(int lv) { return Js.Int(80 * FireballScale(lv)); }
     }
 }
