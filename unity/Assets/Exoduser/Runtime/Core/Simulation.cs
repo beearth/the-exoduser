@@ -254,11 +254,13 @@ namespace Exoduser.UnityPort.Core
 
         // D01: web rollDrop equipment half (WorldDrop/ItemFactory, oracle-checked against game.html). Bone parts, crystals and socket stones the
         // web rolls afterwards are other bags and not part of this slice. dropBonus = statDropBonus() (Config.DropBonus); no greed curse yet.
+        // CHAPTER_STAGES startSi+stages-1 (game.html 16636-16644): the stage whose boss is the chapter boss
+        private static readonly int[] ChapterLastStage = { 3, 9, 13, 20, 25, 31, 34 };
         public int MinPickRarity, MinPickLevelTier;
         public Func<double> NowMs = () => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         private void RollNormalEquipment(EnemyState enemy)
         {
-            var tier = WorldDrop.Classify(false, enemy.Etype, 0, false);
+            var tier = WorldDrop.Classify(enemy.IsBoss, enemy.Etype, enemy.Elite, Array.IndexOf(ChapterLastStage, Config.StageIndex) >= 0);
             int dropTier = Math.Min((int)EnemyTables.SiToHell[Math.Min(Config.StageIndex, EnemyTables.SiToHell.Length - 1)], 4);
             var options = new WorldDrop.Options { MinPickRarity = MinPickRarity, MinPickLevelTier = MinPickLevelTier, PlayerLevel = Player.Level, NowMs = NowMs(), DemoMode = BuildIsDemo };
             foreach (var drop in WorldDrop.Roll(tier, Config.DropBonus, dropTier, enemy.X, enemy.Y, options, NextRandom, () => nextLootId++)) WorldDrop.Push(Loot, drop);
