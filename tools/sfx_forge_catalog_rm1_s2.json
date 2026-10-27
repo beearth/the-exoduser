@@ -1,0 +1,119 @@
+{
+ "about": "SFX Forge 카탈로그 RM-1 2차(장면 기준, SND-08 §6.2) — 16키 x 4후보. 키는 <key>_s2로 staging. API 최소 0.5s라 tell_melee(0.35)·tell_parry(0.25)·roll_body(0.45)·toxic_bubble(0.4)은 0.5s로 생성, 승격 때 트림. 사용: node --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <this> --variants 4",
+ "sounds": [
+  {
+   "category": "hit",
+   "key": "tell_melee_s2",
+   "raw": true,
+   "duration": 0.5,
+   "text": "wet guttural snarl of a many-eyed flesh beast rearing back to bite, slimy sinew stretching, short and close. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "tell_ranged_s2",
+   "raw": true,
+   "duration": 0.6,
+   "text": "bloated flesh creature's throat swelling and gurgling as it builds up to spit a glob of rot, wet bubbling rise that stops right before the spit. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "tell_boss_s2",
+   "raw": true,
+   "duration": 0.9,
+   "text": "deep groan beneath a forest floor, soil cracking and dark sap seeping upward, pressure building, ends abruptly. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "tell_parry_s2",
+   "raw": true,
+   "duration": 0.5,
+   "text": "short scrape of an iron-capped gnarled wooden staff being raised for a strike, one dry metallic glint, no ringing. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "tell_grab_s2",
+   "raw": true,
+   "duration": 1.0,
+   "text": "old forest keeper's hoarse hungry breath drawn in as a gnarled bark hand creaks open and reaches out, knuckles of wood cracking, dead leaves rustling, slow tense build. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "roll_body_s2",
+   "raw": true,
+   "duration": 0.5,
+   "text": "armored warrior dodge roll on damp forest dirt and dead leaves, leather and chainmail shuffle, one body thud, quick. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_burrow_s2",
+   "raw": true,
+   "duration": 0.8,
+   "text": "robed old man plunging into the ground, wet soil collapsing over him, roots snapping shut, muffled. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_erupt_s2",
+   "raw": true,
+   "duration": 0.7,
+   "text": "violent burst of earth and roots from beneath the ground, clods of wet dirt and splintering wood flying, heavy and close. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_sink_s2",
+   "raw": true,
+   "duration": 2.5,
+   "text": "slow sinking into rotting forest ground, mud and roots dragging a body down, long wet gurgling swallow of earth fading out. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "ambient",
+   "key": "amb_toxic_river_s2",
+   "raw": true,
+   "duration": 8,
+   "text": "slow viscous toxic sludge stream flowing over roots, thick bubbling liquid, occasional plop, seamless loop, no birds, no wind. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice",
+   "loop": true,
+   "promptInfluence": 0.4
+  },
+  {
+   "category": "hit",
+   "key": "toxic_bubble_s2",
+   "raw": true,
+   "duration": 0.5,
+   "text": "single thick bubble bursting in a pool of toxic sludge, viscous wet pop, close. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "druid_staff_tap_s2",
+   "raw": true,
+   "duration": 0.5,
+   "text": "heavy gnarled wooden staff struck once on hard packed earth, deep dull knock with ground resonance. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_roots_rise_s2",
+   "raw": true,
+   "duration": 1.2,
+   "text": "massive tree roots tearing up through soil and rising into pillars, deep wood groaning and cracking, dirt falling. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_root_pierce_s2",
+   "raw": true,
+   "duration": 0.6,
+   "text": "thick wooden roots stabbing into an old body, wet crunch and bark splintering, short. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_heartbeat_s2",
+   "raw": true,
+   "duration": 0.8,
+   "text": "giant heartbeat thumping deep underground in a rotten forest, roots throbbing with it, single beat, low and physical. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_tide_s2",
+   "raw": true,
+   "duration": 1.5,
+   "text": "wave of thick toxic sludge surging out of a stream and spreading across the ground, heavy liquid rush with gurgling foam. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  }
+ ]
+}
