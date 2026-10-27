@@ -78,6 +78,21 @@
 - m1-check 전체 **16 ok / 2 not ok**(`12` 보스 처치·침몰, `13` 스테이지 클리어). 12/13은 `-batchmode`에서 베이스(`origin/unity/main`)도 같은 실패(B07b 보고 참조, 원인 미규명). 이번 변경 이전부터 있던 항목.
 - **첫 실행에서 `07b`(적 공격)·`08`(드롭 장착)이 실패**했다. 둘 다 고정 시드 난수열에 민감한 항목이라, 시작 몹 배치가 난수를 소비해 이후 첫 전투·드롭 롤이 달라진 것이 원인으로 판단했다(고친 뒤 통과로 확인). 조치: `SpawnStartEnemies`가 실행 후 `randomState`를 되돌린다(첫 전투·드롭 롤이 시작 몹 배치에 좌우되지 않게). 고친 뒤 빌드·m1-check 1회 재실행 → 07b·08 통과.
 
+## 4b. m1-check 12·13 "회귀" 판정 (유니티 총괄 지적, 2026-10-28)
+
+결론: **회귀가 아니다. 실행 방식 차이다.** 고정 몹 변경이 만든 문제가 아니며 게임 로직·시나리오 수정은 없다.
+
+| 실행 | 방식 | 결과 |
+|---|---|---|
+| `_out/rmb1` (b280ddf61, 고정 몹 이전) | 창 모드: `--unity-m1-check -screen-fullscreen 0 -popupwindow`, 우측 보조 모니터 (5120,0) 1920x1080 (`run-rmb1-m1.ps1`) | 17/17 ok |
+| 같은 rmb1 빌드를 이번에 다시 | 같은 창 모드 | 17/17 ok — 12단계 276 lethal hit, 13단계 kills 18/15, clear 80s |
+| 고정 몹 빌드, 이전 두 번 | `-batchmode` | 12·13 fail — 12단계 276 lethal hit, 13단계 kills 18/15, clear 80s (**창 모드 수치와 완전히 동일**) |
+| 고정 몹 빌드(e3b522b58 병합 후) | 창 모드, 위와 같은 스크립트 | **18/18 ok** (02b 포함), 12 "exit tiles opened (verified)", 13 ok |
+
+원인: 12단계의 `exitOpen`은 `!bossBar.Active`를 요구한다. `NativeBossBar.active`는 숨김 연출이 끝난 뒤 **그리기 단계(OnGUI)에서만** false가 된다(`NativeBossBar.cs:141`). `-batchmode -nographics`는 OnGUI가 돌지 않아 `Active`가 true로 남고, 12가 실패하며 `exitOpen`을 쓰는 13도 따라 실패한다. 보스 처치 수·클리어 수치·출구 개방(`flow.Exits`, 아레나 타일)은 두 방식에서 같다. 웹 규칙(보스 처치 후 출구 개방)과의 차이는 없다. 앞으로 m1-check는 창 모드로 돌린다(headless 금지 항목). 시작 몹 16마리는 m1-check의 처치 수(18/15)에 영향을 주지 않는다 — 12단계 이전에 `sim.Enemies.Clear()`가 필드를 비우고 분모는 07c가 다시 센다.
+
+기준 실행 스크립트: `E:/exoduser-wt/_out/fixedmobs/run-fixedmobs-m1.ps1` (rmb1 스크립트의 빌드 경로만 교체).
+
 ## 5. 미이식·차이
 
 | 항목 | 사유 |

@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort
     // `--unity-m1-check -output <dir>`: M1 route walk-through with the real NativeGame (lobby character creation and story entry, first practice, then gameplay driven through the
     // same Tick / input entry points FixedUpdate uses). Reports "ok / fail / not implemented" per stage with one capture each (<dir>/caps). Nothing is fixed here; the run is isolated
     // (roster and combat save live under <dir>), so a normal player's save is never touched.
+    // Run it in a window (no -batchmode / -nographics, see _out/rmb1/run-rmb1-m1.ps1): NativeBossBar.Active only drops in OnGUI, so steps 12 and 13 read "fail" headless although the flow is correct.
     public sealed partial class NativeGame
     {
         [Serializable] sealed class M1Stage { public string id, name, status, note, capture; }
