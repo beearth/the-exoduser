@@ -1,4 +1,4 @@
-# 사운드 총괄 인계 — 2026-10-27 13:20 KST
+# 사운드 총괄 인계 — 2026-10-27 18:40 KST
 
 - 세션 id `local_9c9b2f79-f02e-404e-ba44-282d087fa454` / Opus 5.5 / 사운드 전 영역(SFX·BGM·보이스·믹스·Unity F04) 총괄. 조사·판단·명세·검수·배정만, 실행은 단순 세션
 - SSOT: `docs/6사운드디자인/SOUND_LEAD_MASTER_20261026.md` (현황·백로그 SND-01~06·기록), 상세 계약 `docs/6사운드디자인/6사운드디자인.md`
@@ -7,12 +7,15 @@
 ## 진행 중 작업 단위
 | 단위 | 단계 | 남은 일 | 산출물 |
 |---|---|---|---|
-| SND-01 효과음 후보 | 1차 추천 완료(8 채택가능·4 가공·2 재생성). 디자인 7장 대조로 `hell_forest_bed` v1 보류→v2 임시 | **sound-simple이 재생성 4키 생성·측정 중**(`crit_heavy_r2`·`button_confirm_r2`·`button_hover_r2`·`hell_forest_bed_ch1`, 각 3개, `_out/sfx_forge/<분류>/<key>/`) → 보고 오면 총괄이 격자 이미지 보고 판정 → `SFX_FORGE_RECOMMEND_20261026.md`에 §5 재생성 판정 추가, review 페이지 갱신(`_analysis/review.py` 데이터 R에 추가) → **사용자 청음 선택 대기** | `docs/6사운드디자인/SFX_FORGE_RECOMMEND_20261026.md`, 청음 `G:\exoduser-wt\_out\sfx_forge\review_20261026.html`, 분석 스크립트 `G:\exoduser-wt\_out\sfx_forge\_analysis\` |
-| SND-02 채택본 반영 | 대기(SND-01 선택 후) | 가공(자르기·-1dBTP·크로스페이드) → promote → game.html 매핑 → docs → DEMO/EA 동기화. 단순 세션 | — |
+| SND-01 효과음 후보 | **완료**(2026-10-27 사용자 청음: 재생성 4키 총괄 추천 가공본 채택, 판정 `SFX_FORGE_RECOMMEND_20261026.md` §5) | 1차 14키 중 나머지 키 채택 여부는 별도(청음 페이지 유지) | 청음 `G:\exoduser-wt\_out\sfx_forge
+eview_20261026.html` |
+| SND-02 채택본 반영 | **반영 완료**(origin `780ac692b`, DEMO·EA = origin game.html 동일 해시). crit_heavy·ui_button_hover/confirm·amb_hell_forest_bed | 게임 안 음량·쿨다운 실청 조정(1차값). 로컬 G: 작업 트리에 AD3·SND-02 game.html 변경 미커밋 잔존(타세션 WIP와 섞임, origin엔 반영) | `docs/6사운드디자인/SND02_ADOPT_R2_20261027.md` |
 | SND-03 BGM NFD 중복 | **완료**(origin `758efa140`·`2e20e53a4`, 로컬 `db107b6f2`, DEMO·EA 각 71 제거). Mac 후속 공지 main·unity/main INBOX 반영 | Codex 회신(Mac `git ls-files bgm`=81·precomposeunicode) 대기만. DEMO/EA 전용 3곡(Rotten Forest - Ashen Gate, Godot 1-1 데모 신곡 `db6539b7e`, claude/demo11-* 브랜치)은 보존 | `docs/6사운드디자인/BGM_NFC_NFD_AUDIT_20261026.md` ⑦ |
+| **SND-08 RM-1 Unity 1-1 슬라이스(최우선)** | 명세 완료·트랙 B(새 후보 7키×3) sound-simple 배정 | B 생성 → 총괄 판정 → 사용자 청음 / 트랙 A Unity 이식(브랜치 `claude/unity-pc-sound-rm1-20261027`) / 트랙 C 채택 반영(웹+Unity) | `docs/6사운드디자인/UNITY_RM1_SOUND_SLICE_20261027.md` |
+| SND-07 AD3 예고음 | 1단계 **반영 완료**(origin `c3c2441bf`) | 2단계 `tell_melee`·`tell_ranged`·`tell_boss` Forge 생성 → 사용자 청음 / 3단계 우선순위 전체 재배열 보류 | `docs/6사운드디자인/AD3_ENEMY_TELL_SFX_20261027.md` |
 
 ## 다음 착수 후보 (총괄 자율 결정, 순서)
-1. AD3: 적 공격 예고음 범주 신설·`_SFX_PRI`(game.html:12225 `{SKILL:10,VOICE:9,PLAYER_HIT:8,DEATH:4,STEP:3,HIT:2,PROJ:1,AMB:0}`) 재배열 검토 — 현행 예고음 존재 여부 조사부터(디자인 컨셉 7장 A4·A8)
+1. (AD3 → SND-07로 진행 중)
 2. AD2: UI 소리 전수(메뉴 열기·탭·장착음) 현황표
 3. SND-04: Unity F04 이식 명세(웹 키·파일·음량·rate·우선순위 표 → Unity AudioDirector 계약), INBOX는 **main + unity/main**(codex/unity-mac-20261024 퇴역)
 4. SND-05·06

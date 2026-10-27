@@ -62,6 +62,7 @@
 | 5 | SND-05 | 6사운드디자인.md 「예정 항목」(보이스 키 매핑, 포맷 규칙) 정리 | 총괄 | 표로 완결 |
 | 6 | SND-06 | 2장 이후 BGM 보강(장2~7 각 2~4곡뿐) — Suno 프롬프트 기획 | 총괄 기획 / 사용자 생성 | 장별 최소 곡 수 목표 합의 |
 | 7 | SND-07 (AD3) | 적 공격 예고음 범주 `TELL` 신설·예고음 오용 7곳 제거·새 예고음 3키 — `AD3_ENEMY_TELL_SFX_20261027.md` | 총괄 명세 / Sonnet 구현 / 사용자 청음(2단계) | 1단계 반영 + 2단계 후보 청음 선택 |
+| 0 | SND-08 (RM-1) | **Unity 리모델링 1-1 슬라이스 사운드**(최우선, 2026-10-27 CTO·사용자 지시) — 트랙 A 웹 소리 Unity 이식(BGM·환경음·적 피격/사망·치명타·보스·구르기 임시) / 트랙 B 새 후보 7키(`tell_melee`·`tell_ranged`·`tell_boss`·`roll_body`·`druid_burrow`·`druid_erupt`·`druid_sink`) / 트랙 C 채택 반영(웹+Unity) — `UNITY_RM1_SOUND_SLICE_20261027.md`. SND-07 2단계를 흡수 | 총괄 명세 / Sonnet 구현 / 사용자 청음(B) | Unity 1-1 한 판 수신 로그 + 녹음 귀 판정 |
 
 ## 4. 결정·작업 기록
 
@@ -73,3 +74,4 @@
 | 2026-10-27 | SND-03 정리 실행(사용자 승인): NFD 중복 71경로를 origin/main·로컬 G:에서 제거(`git ls-files bgm` 152→81), DEMO·EA 작업 폴더의 NFD 파일 각 71개 제거(해시 동일 확인분만). DEMO/EA에만 있는 곡 3개(Rotten Forest - Ashen Gate 계열)는 보존. 상세 보고서 ⑦ |
 | 2026-10-27 | AD3 조사: 예고음은 프로시저럴 `SFX.charge()` 하나(58곳), 플레이어 3곳·명중 결과 4곳 오용(A4 위반), 일반몹 근접·원거리 예고 무음, 프로시저럴은 우선순위 밖이라 노드 한도에서 드롭. 1~3단계 결정(SND-07) |
 | 2026-10-27 | SND-01/02 R2 4키(`crit_heavy`·`ui_button_hover`·`ui_button_confirm`·`amb_hell_forest_bed`) 사용자 청음 채택 → 반영(sound-simple). 신규 연결 4곳: `hurtE` 치명타(12f 쿨다운)·document hover/click 위임·`BGM.play('hell1')` 앰비언스 루프. 발견: `_startLoop` 이름 중복(오디오용이 메인 루프 시작기에 가려짐, 미수정). 상세 `SND02_ADOPT_R2_20261027.md`·`6사운드디자인.md` §SND-02 |
+| 2026-10-27 | Unity 리모델링 착수(CTO 전달, 사용자 원문 "이식작업은 대충 된거같으니까 유니티 리모델링 작업들어간다 오늘부터"). 1-1 슬라이스 사운드 조사: Unity는 게임 안 BGM·환경음·적 피격·사망·구르기·드루이드 소리 전무(`NativeFeedbackAudio` 16키뿐), 웹도 구르기=발소리 차용·드루이드 예고/굴파기/분출=프로시저럴. SND-08 트랙 A·B·C 결정, B 먼저 배정 |
