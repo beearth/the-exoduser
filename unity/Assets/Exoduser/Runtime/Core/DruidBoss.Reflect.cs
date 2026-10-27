@@ -34,6 +34,7 @@ namespace Exoduser.UnityPort.Core
         // an enemy bullet reached the player's parry reach: if the web would turn it around (E strike / Q parry), do it. Returns true when the bullet was reflected (it stays in the list).
         bool TryReflect(BossProjectile p, double px, double py, double pr, double ox, double oy, double nx, double ny)
         {
+            if (Remodel) return false;                   // RM-B1 (boss-battle lead 2026-10-28): the only remodel bullet move, #5 spore fan, is not parryable (spec §3), so no remodel bullet is turned around
             if (p.Friendly || p.Mine) return false;
             double pd = Math.Min(Dst(px, py, p.X, p.Y), SegDist(ox, oy, nx, ny, px, py));
             if (pd > 400) return false;                  // the web skips the whole collision part beyond 400 px (the Q band is checked below)
