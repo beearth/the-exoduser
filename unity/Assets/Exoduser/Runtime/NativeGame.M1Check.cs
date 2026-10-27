@@ -22,11 +22,11 @@ namespace Exoduser.UnityPort
             UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
             ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null;
         }
-        // status: "ok", "fail", "missing"
+        // status: "ok", "fail", "missing", "pending-core" (needs the boss Core, not a flow gap)
         void M1Add(string id, string name, string status, string note, string cap)
         {
             m1.stages.Add(new M1Stage { id = id, name = name, status = status, note = note, capture = cap });
-            if (status != "ok" && m1.firstBlocked == null) m1.firstBlocked = id + " " + name + " (" + status + "): " + note;
+            if (status != "ok" && status != "pending-core" && m1.firstBlocked == null) m1.firstBlocked = id + " " + name + " (" + status + "): " + note;
         }
 
         IEnumerator M1Check()
@@ -131,15 +131,43 @@ namespace Exoduser.UnityPort
             yield return null; yield return M1Shot("09-levelup");
             M1Add("09", "level up", p.Level > lv0 ? "ok" : "fail", "level " + lv0 + " -> " + p.Level + ", overlay active " + levelUp.Active + ", exp " + exp0 + " -> " + p.Experience + "/" + p.MaxExperience + " over " + lvKills + " kills (null spawns " + nullSpawns + ")", "09-levelup.png");
 
-            // ---- 10..13 boss arena / druid / kill+sink / stage clear : no way to reach them (checked) ----
-            bool bossEntry = false; // Unity has no boss-entry event, boss actor or arena trigger: NativeGame.cs 326 / 329 comments, SpawnNormalEnemy throws for etype != 0
-            bool notSupported = false; try { var t = sim.SpawnNormalEnemy(p.X + 50, p.Y); if (t != null) { t.Etype = 1; sim.HurtEnemy(t, 1); } } catch (NotSupportedException) { notSupported = true; }
-            sim.Enemies.Clear();
-            yield return M1Shot("10-boss-arena-no-entry");
-            M1Add("10", "boss arena entry", bossEntry ? "ok" : "missing", "no arena trigger / boss-entry event in the native game (stage ends only by walking); a non-etype0 enemy throws NotSupported=" + notSupported, "10-boss-arena-no-entry.png");
-            M1Add("11", "druid boss fight", "missing", "no boss actor: the simulation only admits the ordinary etype0 profile; BossBar.Show is never called", "10-boss-arena-no-entry.png");
-            M1Add("12", "boss kill and sink", "missing", "B08 druid sink / boss revive rules exist in Core but only a flagged ordinary enemy in ReviveSmoke reaches them; nothing spawns a druid", "10-boss-arena-no-entry.png");
-            M1Add("13", "stage clear", "missing", "stageClear.Show is never called (no stage-clear / exit event, NativeGame.cs 326)", "10-boss-arena-no-entry.png");
+            // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). The druid is the boss Core's job (pending): a harness stand-in boss walks the real flow. ----
+            levelUp.Hide(); RegisterHarnessBoss(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();
+            var flow = sim.Stage; bool naturalUnlock = flow.BossUnlocked; string unlockNote = naturalUnlock ? "gate opened by the kill ratio (" + sim.Stage.StageKills + "/" + flow.TotalSpawned + ")" : "gate still sealed at " + flow.StageKills + "/" + flow.TotalSpawned + " kills: forced open by the harness";
+            if (!naturalUnlock) flow.ForceUnlock();
+            // the field route (~7000 px of forest) is not walked: the player is placed on the gate approach, like the web's own checkRooms would see him
+            var gate = flow.Exits[1]; p.X = (gate.X + .5f) * 40; p.Y = (gate.Y + .5f) * 40; p.Hp = p.MaxHp; p.Iframes = 600;
+            int guardTicks = 0; while (flow.LoadPhase == 0 && !flow.InArena && guardTicks++ < 120) StepInput(0, 0, p.X + 100, p.Y, false, false);
+            bool loadStarted = flow.LoadPhase == 1; int loadTicks = 0;
+            while (flow.LoadPhase != 2 && loadTicks++ < 400) StepInput(0, 0, p.X + 100, p.Y, false, false);
+            for (int i = 0; i < 70; i++) StepInput(0, 0, p.X + 100, p.Y, false, false);   // name card fully faded in (35 ticks)
+            yield return M1Shot("10a-arena-load-namecard");
+            while (flow.LoadPhase != 0 && loadTicks++ < 800) StepInput(0, 0, p.X + 100, p.Y, false, false);
+            for (int i = 0; i < 30; i++) StepInput(0, 0, p.X + 100, p.Y + 1, false, false);
+            var bossActor = flow.FindBoss(); if (bossActor != null) { p.X = bossActor.X; p.Y = bossActor.Y + 220; }   // capture only: the web's ?bosstest places the player at the boss's feet; the real entrance is ~2000 px away
+            StepInput(0, 0, p.X, p.Y - 100, false, false); yield return new WaitForSecondsRealtime(2.3f);   // boss bar intro (2.0 s real time)
+            yield return M1Shot("10-arena-entry-boss-bar");
+            bool arenaOk = loadStarted && flow.InArena && flow.Arena != null && bossActor != null && bossBar.Active && arenaView != null && chunks.Count == 0 && !sim.CanMove(0, 0, 15) && sim.CanMove((flow.Arena.EntryX + .5f) * 40, (flow.Arena.EntryY + .5f) * 40, 15);
+            M1Add("10", "boss arena entry", arenaOk ? "ok" : "fail", "exit tile -> fade -> name card -> arena " + BossArenaLayout.Width + "x" + BossArenaLayout.Height + " (type " + flow.Arena?.Type + ") -> player at the 6 o'clock entrance, boss at the centre, boss bar shown; " + unlockNote + "; load ticks " + loadTicks + "; field map, props and chunks swapped out", "10a-arena-load-namecard.png, 10-arena-entry-boss-bar.png");
+
+            float hpBefore = bossActor != null ? bossActor.Hp : 0; if (bossActor != null) sim.HurtEnemy(bossActor, (int)(bossActor.MaxShield + bossActor.MaxHp * .5f));
+            StepInput(0, 0, p.X + 100, p.Y, false, false); float barHp = LastBossBarInput.hp01;
+            M1Add("11", "druid boss fight", "pending-core", "Core wait: no druid actor / moves / AI yet (boss battle lead, BX-01..05). Stand-in boss is a plain etype0 body: bar follows its real hp (" + barHp.ToString("0.00") + " after half the hp), real drops roll on its death. Extension point: Simulation.Stage.BossSpawners[stage] + Simulation.BossTick", "10-arena-entry-boss-bar.png");
+
+            if (bossActor != null) sim.HurtEnemy(bossActor, bossActor.MaxHp * 4);
+            int open = 0; while (flow.Exits.Count == 0 && open++ < 500) StepInput(0, 0, p.X + 100, p.Y, false, false);
+            StepInput(0, 0, p.X + 100, p.Y, false, false);
+            yield return new WaitForSecondsRealtime(.8f);
+            p.X = (flow.Arena.ExitX + .5f) * 40; p.Y = (flow.Arena.ExitY + 4.5f) * 40;   // in sight of the opened exit
+            StepInput(0, 0, p.X, p.Y - 100, false, false); yield return M1Shot("12-boss-dead-exit-open");
+            bool exitOpen = !flow.BossAlive && flow.Exits.Count == 1 && flow.Arena.Tile(flow.Arena.ExitX, flow.Arena.ExitY) == 0 && !bossBar.Active;
+            M1Add("12", "boss kill and sink", "pending-core", "kill -> bossAlive=false -> exit tiles opened (" + (exitOpen ? "verified" : "FAILED") + "), boss bar hidden, loot " + sim.Loot.Count + " dropped; the druid sink (B08 1-1 sink / finale) needs the druid actor from the boss Core", "12-boss-dead-exit-open.png");
+
+            p.X = (flow.Arena.ExitX + .5f) * 40; p.Y = (flow.Arena.ExitY + .5f) * 40; int clearTicks = 0;
+            while (!flow.StageCleared && clearTicks++ < 120) StepInput(0, 0, p.X, p.Y - 100, false, false);
+            yield return new WaitForSecondsRealtime(.9f); yield return M1Shot("13-stage-clear");
+            M1Add("13", "stage clear", flow.StageCleared && stageClear.Active && exitOpen ? "ok" : "fail", "exit step -> +10 SP -> stage-clear panel (kills " + flow.StageKills + "/" + flow.TotalSpawned + ", clear time " + flow.BossClearSeconds + "s); next area 1-2 is not ported: the Next button saves and returns to the lobby", "13-stage-clear.png");
+            stageClear.Hide();
 
             // ---- 14 save and continue ----
             p.Hp = p.MaxHp; sim.Materials = 4321; bool saved = SaveCombatNow(); var before = SnapshotCombat("before");

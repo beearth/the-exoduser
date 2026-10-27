@@ -120,6 +120,7 @@ namespace Exoduser.UnityPort
             if(playerView==null)playerView=CreateRenderer("Player");
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
+            StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
             // Source63425-63432: original five ordinary0 enemies on580px ring.
             for(int i=0;i<5;i++)
             {
@@ -202,16 +203,17 @@ namespace Exoduser.UnityPort
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
             if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
-            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition),p.KiChargeActive);
+            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition)||PointerOverStageClear(),p.KiChargeActive);
+            Simulation.Stage.Enabled=firstPractice==null;
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
             Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
-            DispatchFeedback();
+            StageFlowPump();DispatchFeedback();
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
             if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의 +4");}
         }
         public void StepInput(float x,float y,float aimX,float aimY,bool attack,bool pickup)
-        {Simulation.Tick(x,y,aimX,aimY,attack,pickup);DispatchFeedback();UpdateViews();}
+        {Simulation.Stage.Enabled=firstPractice==null;Simulation.Tick(x,y,aimX,aimY,attack,pickup);StageFlowPump();DispatchFeedback();UpdateViews();}
         void DispatchFeedback()
         {
             while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();impacts.Handle(e);sound.Handle(e);}
@@ -242,7 +244,7 @@ namespace Exoduser.UnityPort
         void UpdateViews()
         {
             if(Simulation==null||view==null)return;var p=Simulation.Player;
-            view.transform.position=new Vector3(p.X/100,-p.Y/100,-10);StreamChunks(p.X,p.Y);
+            view.transform.position=new Vector3(p.X/100,-p.Y/100,-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;
@@ -268,12 +270,13 @@ namespace Exoduser.UnityPort
                 float size=e.Radius*7/256;ev.body.transform.position=ev.walk.transform.position=Point(e.X,e.Y);ev.body.transform.localScale=ev.walk.transform.localScale=Vector3.one*size;
                 ev.body.sortingOrder=(int)e.Y;ev.walk.sortingOrder=(int)e.Y+1;ev.walk.enabled=e.Alive&&ev.moving;
                 Color tint=Color.white;if(e.IsGhoul&&e.Col!=null)ColorUtility.TryParseHtmlString(e.Col,out tint);if(e.IsGhoul)tint=Color.Lerp(Color.white,tint,.62f); // ghoul: no art of its own, a green-grey body (web draws it procedurally)
+                if(e.IsBoss)tint=Color.Lerp(tint,new Color(1,.55f,.45f),.5f);   // C07: a boss actor without art of its own reads as a boss
                 ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f):tint;
             }
             UpdateDropViews();
             kiView?.Update(Simulation);
             impacts?.Update(Simulation.TickCount);
-            hud?.Refresh(p,Simulation.TickCount);
+            hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         SpriteRenderer CreateRenderer(string name){var go=new GameObject(name);go.transform.SetParent(transform);return go.AddComponent<SpriteRenderer>();}
@@ -312,6 +315,7 @@ namespace Exoduser.UnityPort
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
             var p=Simulation.Player;
+            StageFlowDrawLoad();   // C07: black load screen under the HUD (the web draws it on the canvas, below the DOM HUD)
             var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);
             float hudWidth=Screen.width/hudScale,statusX=hudWidth-316;
@@ -329,6 +333,7 @@ namespace Exoduser.UnityPort
             if(areaTitle.Active)areaTitle.Draw();
             // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.
             if(bossBar.Active)bossBar.Draw();
+            StageFlowDrawWorld();
             if(p.State=="fallen"&&!death.Active)revive.DrawFallen(p,label);
             if(death.Active&&PlayerDown){death.Draw();}
             else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke){
@@ -420,7 +425,7 @@ namespace Exoduser.UnityPort
             return false;
         }
         // Death screen 'retry' button = the pause menu's Restart command.
-        void RetryFromDeath(){if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}}
+        void RetryFromDeath(){if(gameFocused){if(RetryInsideArena())return;ResetRun();skillInputFence=true;menu=false;Running=true;}}
         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
         void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);QueueSettingsSave();}

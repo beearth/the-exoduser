@@ -76,7 +76,7 @@ namespace Exoduser.UnityPort.Core
                 StateTicks = (float)(30 + NextRandom() * 50), Facing = (float)(NextRandom() * Math.PI * 2),
                 ProjectileTicks = (float)(180 + NextRandom() * 120)
             };
-            Enemies.Add(enemy);
+            Enemies.Add(enemy); Stage.TotalSpawned++;   // C07: G._totalSpawned (gate progress denominator)
             return enemy;
         }
 
@@ -89,6 +89,7 @@ namespace Exoduser.UnityPort.Core
         private void TickFirstPracticeObserved(float moveX,float moveY,float aimX,float aimY,bool attack,bool pickup)
         {
             if (!Finite(moveX) || !Finite(moveY) || !Finite(aimX) || !Finite(aimY)) throw new ArgumentException("Non-finite input");
+            if (Stage.Enabled && Stage.LoadPhase > 0) { moveX = 0; moveY = 0; attack = false; pickup = false; }   // C07: the boss-arena load screen freezes the player (web 43568, 61395)
             TickCount++;
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
@@ -162,7 +163,7 @@ namespace Exoduser.UnityPort.Core
                 // Source34456 resets poise here only for bosses. This admitted
                 // ordinary profile only clears the stun presentation marker.
                 if (enemy.Stunned <= 0 && enemy.MaxStunned > 0) enemy.MaxStunned = 0;
-                if (Config.EnemyAiEnabled) TickEnemy(enemy);
+                if (Config.EnemyAiEnabled) { if (enemy.IsBoss && BossTick != null) BossTick(enemy); else TickEnemy(enemy); }   // C07: boss Core plug-in
             }
             TickCorpses();
             UpdateKiProjectiles();
@@ -171,6 +172,7 @@ namespace Exoduser.UnityPort.Core
             TickAutoPotion();
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
+            Stage.Tick();   // C07: checkRooms (arena entry / boss defeat / exit / clear)
         }
 
         private void MovePlayer(float x, float y, float multiplier)
@@ -218,7 +220,7 @@ namespace Exoduser.UnityPort.Core
         private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
-            if (enemy.Etype != 0 && !enemy.IsGhoul) throw new NotSupportedException("Only admitted normal etype0 profile (and its revived ghouls) is implemented.");
+            if (enemy.Etype != 0 && !enemy.IsGhoul && !enemy.IsBoss) throw new NotSupportedException("Only admitted normal etype0 profile (and its revived ghouls) is implemented.");
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
             if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
