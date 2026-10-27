@@ -154,3 +154,16 @@ PC-U04b 원문과 Mac seed QA 계약을 먼저 대조했다. 최종 ARM64 Settin
 | 실제 Player 영수증 | `initialEquipped=16`, `initialBag=10`, `maxMana=480`, `mana=330`, `maxHp=526`; 유골함 페이지의 가방 0/300은 별도 범주 수 | 장비·유골함 영수증 모두 같은 초기 값 | U04B seed/MP 계약 PASS |
 
 장비 초기 Player 영수증은 `UNITY-MAC-A05-IO-U04B-SCREEN-20261027/inventory-smoke.json`, 초기 장비 선택 화면은 같은 루트의 `unity-inventory-equipment.png`다. 유골함 두 루트에도 각각 영수증과 스크린샷이 있다. 영수증의 equip/unequip/drop/sort bool은 **픽스처 내부 메모리 조작** 결과이며 실제 물리 mouse 클릭·이동·장착의 증거가 아니다. 유골함 해제/재장착, 뼈 수집·소환, 유물/보관함 본문은 U04B 원문 자체의 미구현 경계를 유지한다. 실제 마우스 tab/아이템 동작은 기존 CUA 클릭 위치 문제 때문에 HOLD다. 이번 대표 컷에서 새 제목·본문 가림 또는 화면 밖 잘림 결함은 보이지 않아 owner patch 요청은 없다. U08의 오래된 Settings TAB 문구는 현행 Settings 초점 이동과 일시정지 루트의 인벤토리 전환을 구분해 [U08 문서](UNITY_PC_TABBAR_U08_20261026.md)에 정정했으며 키 코드는 바꾸지 않았다.
+
+## U05 K skill window representative Player acceptance — 2026-10-27
+
+[PC-U05 계약](UNITY_PC_SKILL_WINDOW_U05_20261026.md)과 [Mac 선행 스킬 UI](UNITY_MAC_SKILL_UI_20261025.md)를 읽고, 최종 ARM64 Settings QA 앱의 기존 U08 실제 OS 키 캡처를 재검수했다. 이번 단위의 새 Player 실행·build·제품 수정은 0이다. 기존 캡처는 `A15-GAME-FULLSCREEN-20261027/u08-1280-skill.png`와 `u08-1920-skill.png`이며 각각 같은 앱의 Settings→K Skill 경로다. U08 검수에서 1280 Skill ESC→field, field ESC→pause, pause K→Skill도 실제 키로 관측했다. 이번 화면 판정은 기존 컷 재판독이고 새 키 입력 검사의 재실행은 아니다.
+
+| U05 항목 | 1280×720 viewport | 1920×1080 viewport | 판정 |
+|---|---|---|---|
+| 제목·상단 탭 | `전투 스킬` 제목과 붉은 Skill 탭이 본문 위에 보임 | 같은 구조, 탭/제목/본문 사이 가림 없음 | 대표 배치 PASS |
+| 13슬롯·라벨 | 1/2/3/4/F/Z/LMB/RMB/SHIFT/E/Q/CTRL/SPACE 원판 13개가 창 안에 있음. LMB 기검참 외 12개는 `미이식` | 13개 모두 오른쪽 끝 SPACE까지 창 안에 있음. LMB 선택 테·기검참 명패 보임 | U05 초기 상태/배치 PASS |
+| 정보판·제단·로드맵 | 왼쪽 기검참 `Lv 1 / 20`, 설명, `강화 미이식`, `SP 미이식 · 악의 1,000 · LV 1`; 가운데 제단/구슬·안내; 오른쪽 로드맵이 보임 | 같은 값과 3영역이 창 안에 있음 | 초기 QA 값/텍스트 배치 PASS |
+| 하단·경계 | 닫기[ESC]/일괄 레벨업/추천 자동 버튼, 프레임 하단이 viewport 안에 있음 | 같은 하단 버튼·프레임이 viewport 안에 있음 | 화면 밖 잘림 없음 |
+
+소스 확인 범위: `NativeGame.cs`의 시작 `Simulation.Materials=1000`, `SourceStarterFixture.CreateKiSlash()`의 LMB 기검참, `NativeSkills.cs`의 `Config.KiSlashLevel`·`Player.Level`·`Materials` 표시와 `미이식` 분기는 U05 정의/상태 계약에 맞는다. 이는 화면/소스 확인이며 새 습득·강화·합성 실행 검사가 아니다. 물리 mouse 클릭·호버로 하는 세부 습득/장착은 이전 CUA 클릭 위치 문제로 HOLD를 유지하고 재시도하지 않았다. U05 원문의 미이식 12슬롯·SP/강화·동적 제단 범위도 그대로다. 대표 화면에서 새 가림/잘림 결함은 발견되지 않아 owner hunk 요청은 없다.
