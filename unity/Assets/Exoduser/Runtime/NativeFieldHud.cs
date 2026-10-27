@@ -65,17 +65,19 @@ namespace Exoduser.UnityPort
    }
    var p=sim.Player;float px=ox+p.X/T*mapSc,py=oy+p.Y/T*mapSc;float cx=canvas.x+px*k,cy=canvas.y+py*k,r=7*k;
    // direction triangle, then the white disc with the black+white double ring (_mmDrawPlayerMarker without portrait).
-   var m=GUI.matrix;GUIUtility.RotateAroundPivot(-p.Facing*Mathf.Rad2Deg,new Vector2(cx,cy));Fill(new Rect(cx+r+.5f,cy-1.2f,4,2.4f),Color.white);GUI.matrix=m;
+   var m=GUI.matrix;RotateLocal(new Vector2(cx,cy),-p.Facing*Mathf.Rad2Deg);Fill(new Rect(cx+r+.5f,cy-1.2f,4,2.4f),Color.white);GUI.matrix=m;
    Fill(new Rect(cx-r-.5f,cy-r-.5f,(r+.5f)*2,(r+.5f)*2),Color.black);Fill(new Rect(cx-r+.5f,cy-r+.5f,(r-.5f)*2,(r-.5f)*2),Color.white);Fill(new Rect(cx-r+1.5f,cy-r+1.5f,(r-1.5f)*2,(r-1.5f)*2),new Color32(232,226,208,255));
    if(frame!=null){GUI.color=new Color(1,1,1,.94f);GUI.DrawTexture(new Rect(8,8,141.1f,141.1f),frame,ScaleMode.StretchToFill,true);GUI.color=old;}
   }
+  // Rotation about a point in the current (scaled) GUI space; RotateAroundPivot assumes an unscaled matrix.
+  static void RotateLocal(Vector2 pivot,float deg){GUI.matrix=GUI.matrix*Matrix4x4.TRS(pivot,Quaternion.Euler(0,0,deg),Vector3.one)*Matrix4x4.TRS(-pivot,Quaternion.identity,Vector3.one);}
   void Star(float cx,float cy,float s,Color c)
   {
-   var m=GUI.matrix;Fill(new Rect(cx-s,cy-.9f,s*2,1.8f),c);Fill(new Rect(cx-.9f,cy-s,1.8f,s*2),c);GUIUtility.RotateAroundPivot(45,new Vector2(cx,cy));Fill(new Rect(cx-s*.6f,cy-.7f,s*1.2f,1.4f),c);Fill(new Rect(cx-.7f,cy-s*.6f,1.4f,s*1.2f),c);GUI.matrix=m;
+   var m=GUI.matrix;Fill(new Rect(cx-s,cy-.9f,s*2,1.8f),c);Fill(new Rect(cx-.9f,cy-s,1.8f,s*2),c);RotateLocal(new Vector2(cx,cy),45);Fill(new Rect(cx-s*.6f,cy-.7f,s*1.2f,1.4f),c);Fill(new Rect(cx-.7f,cy-s*.6f,1.4f,s*1.2f),c);GUI.matrix=m;
   }
   void Lozenge(float cx,float cy,float s,Color c)
   {
-   var m=GUI.matrix;GUIUtility.RotateAroundPivot(45,new Vector2(cx,cy));var r=new Rect(cx-s*.7f,cy-s*.7f,s*1.4f,s*1.4f);Fill(new Rect(r.x,r.y,r.width,1),c);Fill(new Rect(r.x,r.yMax-1,r.width,1),c);Fill(new Rect(r.x,r.y,1,r.height),c);Fill(new Rect(r.xMax-1,r.y,1,r.height),c);GUI.matrix=m;
+   var m=GUI.matrix;RotateLocal(new Vector2(cx,cy),45);var r=new Rect(cx-s*.7f,cy-s*.7f,s*1.4f,s*1.4f);Fill(new Rect(r.x,r.y,r.width,1),c);Fill(new Rect(r.x,r.yMax-1,r.width,1),c);Fill(new Rect(r.x,r.y,1,r.height),c);Fill(new Rect(r.xMax-1,r.y,1,r.height),c);GUI.matrix=m;
   }
   static string Compact(double n){return n>=1e9?(n/1e9).ToString("0.00")+"B":n>=1e6?(n/1e6).ToString("0.00")+"M":n>=1e3?(n/1e3).ToString("0.0")+"K":((int)n).ToString();}
   void DrawCorner(Info info)
