@@ -250,8 +250,8 @@ namespace Exoduser.UnityPort
             playerView.sprite=attack?SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80)):
                 SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f));
             playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2;playerView.sortingOrder=(int)p.Y;
-            // web roll: the body curls up and turns once (360 degrees) over the 6 frames, dust trail
-            playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/6f)):Quaternion.identity;
+            // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
+            playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
             foreach(var e in Simulation.Enemies)
             {
                 if(!enemies.TryGetValue(e.Id,out var ev)){

@@ -67,12 +67,12 @@ const sections = {};
   sections.activateRoll = out; }
 
 // ---- _tickBladeDash roll branch + _finishRoll (trajectory) ----
-{ const src = consts + fn('function _finishRoll(){') + tickRollSrc(), out = [];
+{ const src = consts + fn('function _rollStepDist(step){') + fn('function _finishRoll(){') + tickRollSrc(), out = [];
   const angles = [0, Math.PI / 4, Math.PI / 2, 3 * Math.PI / 4, Math.PI, -3 * Math.PI / 4, -Math.PI / 2, -Math.PI / 4, 0.3, -2.1];
   for (const ang of angles) for (const wall of [undefined, 1000, 1030, 1100, 1160]) for (const pre of [null, 'sBlock']) for (const parry of [false, true]) for (const mp of [0, 5]) {
-    const c = makeCtx({ wall, act: { parry }, held: {} }); const p = { s: 'bladeDash', st2: 6, x: 1000, y: 500, r: 15, mp, st: 5, _bdMoveT: 6, _bdAng: ang, _bdRoll: true, _preBdState: pre, iframes: 5 };
+    const c = makeCtx({ wall, act: { parry }, held: {} }); const p = { s: 'bladeDash', st2: 18, x: 1000, y: 500, r: 15, mp, st: 5, _bdMoveT: 18, _bdAng: ang, _bdRoll: true, _preBdState: pre, iframes: 5 };
     vm.runInContext(src, c); c.P = p; const frames = [];
-    for (let f = 0; f < 8 && p._bdMoveT > 0; f++) {
+    for (let f = 0; f < 24 && p._bdMoveT > 0; f++) {
       vm.runInContext('_tickBladeDash(1)', c);
       frames.push({ x: p.x, y: p.y, moveT: p._bdMoveT, s: p.s, st2: p.st2, roll: p._bdRoll === true });
     }
@@ -101,6 +101,6 @@ const sections = {};
   }
   sections.warpRefund = out; }
 
-const result = { source: { file: path.basename(SRC), sha256: sha(text), note: 'web game.html (origin/main 614cf73a0 / 593be3aa4 roll implementation)' }, blocks, sections };
+const result = { source: { file: path.basename(SRC), sha256: sha(text), note: 'web game.html (roll: 614cf73a0; 18 frame ease-out: 574cc2158)' }, blocks, sections };
 fs.writeFileSync(OUT, JSON.stringify(result));
 console.log(JSON.stringify({ out: OUT, blocks: blocks.length, canRoll: sections.canRoll.length, activateRoll: sections.activateRoll.length, trajectory: sections.trajectory.length, blinkWeak: sections.blinkWeak.length, warpRefund: sections.warpRefund.length }));

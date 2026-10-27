@@ -65,12 +65,12 @@ namespace Exoduser.UnityPort.Core
             Player.Iframes = Math.Max(Player.Iframes, RollRules.Iframes);
         }
 
-        // _tickBladeDash(sp = 1): 175/6 per frame, stops on a wall, finishes after 6 frames
+        // _tickBladeDash(sp = 1): ease-out 175 px over 18 frames (_rollStepDist), stops on a wall
         internal void TickRoll()
         {
             if (!RollActive) return;
             if (Player.Hp <= 0 || Player.State == "fallen" || Player.State == "dead" || Player.State == "pStun") { RollActive = false; RollMoveT = 0; preRollState = null; return; }
-            double step = RollRules.Step(1, RollMoveT), distance = RollRules.StepDistance(step);
+            double step = RollRules.Step(1, RollMoveT), distance = RollRules.StepDistance(step, RollMoveT);
             float nx = Player.X + (float)(Math.Cos(RollAngle) * distance), ny = Player.Y + (float)(Math.Sin(RollAngle) * distance);
             if (Pass(nx, Player.Y, Player.Radius)) Player.X = nx; else RollMoveT = 0;
             if (Pass(Player.X, ny, Player.Radius)) Player.Y = ny; else RollMoveT = 0;

@@ -41,13 +41,13 @@ namespace Exoduser.UnityPort
             sim.SetRollInput(up, down, left, right, false); sim.Tick(0, 0, aimX, aimY, false, false);               // direction held, roll key not yet
             yield return B07Shot(output, "b07-roll-0-start");
             sim.SetRollInput(up, down, left, right, true);                                                           // roll key pressed while a direction is held
-            for (int f = 1; f <= 6; f++)
+            for (int f = 1; f <= RollRules.Frames; f++)
             {
                 sim.Tick(0, 0, aimX, aimY, false, false);
-                if (f == 1) { check(p.State == "bladeDash" && sim.RollActive && p.Iframes >= 4, "roll started: " + p.State + " iframes " + p.Iframes); check(Math.Abs(sim.HarpGauge - 180) < .1, "gauge 225 -> 180 (+ one tick of regen .094): " + sim.HarpGauge); }
+                if (f == 1) { check(p.State == "bladeDash" && sim.RollActive && p.Iframes >= RollRules.Iframes - 1, "roll started: " + p.State + " iframes " + p.Iframes); check(Math.Abs(sim.HarpGauge - 180) < .1, "gauge 225 -> 180 (+ one tick of regen .094): " + sim.HarpGauge); }
                 if (f == 3) { sim.QueueRoll(dir); sim.Tick(0, 0, aimX, aimY, false, false); f++; check(sim.RollDenied == 1, "no second roll while rolling: denied " + sim.RollDenied); }
-                int hp = (int)p.Hp; if (f < 6) { sim.HurtPlayer(500); check((int)p.Hp == hp, "invulnerable frame " + f); }
-                yield return B07Shot(output, "b07-roll-" + f);
+                int hp = (int)p.Hp; if (f <= RollRules.Iframes) { sim.HurtPlayer(500); check((int)p.Hp == hp, "invulnerable frame " + f); }
+                if (f == 1 || f % 3 == 0) yield return B07Shot(output, "b07-roll-" + f.ToString("00"));
             }
             double moved = Math.Sqrt((p.X - x0) * (p.X - x0) + (p.Y - y0) * (p.Y - y0)); rec.rollDistance = moved; rec.rollGaugeAfter = sim.HarpGauge;
             check(Math.Abs(moved - 175) < .5, "roll distance 175: " + moved);
@@ -59,11 +59,11 @@ namespace Exoduser.UnityPort
             sim.HarpGauge = 225; sim.Tick(0, 0, aimX, aimY, false, false);
             p.State = "pStun"; p.StateTicks = 200; p.Poise = 0; sim.SetRollInput(up, down, left, right, true); sim.QueueRoll(dir); sim.Tick(0, 0, aimX, aimY, false, false);
             check(p.State == "bladeDash" && p.Poise == 4, "pStun escape by roll: " + p.State + " poise " + p.Poise);
-            for (int i = 0; i < 8; i++) sim.Tick(0, 0, aimX, aimY, false, false);
+            for (int i = 0; i < 20; i++) sim.Tick(0, 0, aimX, aimY, false, false);
             sim.SetRollInput(false, false, false, false, false); sim.HarpGauge = 225;
             p.State = "stagger"; p.StateTicks = 6; sim.SetRollInput(up, down, left, right, true); sim.QueueRoll(dir); sim.Tick(0, 0, aimX, aimY, false, false);
             check(p.State == "bladeDash", "stagger escape by roll: " + p.State);
-            for (int i = 0; i < 8; i++) sim.Tick(0, 0, aimX, aimY, false, false);
+            for (int i = 0; i < 20; i++) sim.Tick(0, 0, aimX, aimY, false, false);
             sim.SetRollInput(false, false, false, false, false);
 
             // ---- chain dash: Shift hold then release (tier 3) ----

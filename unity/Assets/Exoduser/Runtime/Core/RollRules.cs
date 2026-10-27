@@ -8,8 +8,8 @@ namespace Exoduser.UnityPort.Core
     public static class RollRules
     {
         public const double Dist = 250 * 0.7;     // _ROLL_DIST (175)
-        public const int Frames = 6;              // _ROLL_FRAMES
-        public const int Iframes = 5;             // _ROLL_IFRAMES (first 5 of 6 frames)
+        public const int Frames = 18;             // _ROLL_FRAMES (0.3 s; was 6 until web 574cc2158)
+        public const int Iframes = 14;            // _ROLL_IFRAMES (first 14 of 18 frames, the last 4 are open)
         public static double GaugeCost { get { return ChainDash.GaugeCost[1]; } }   // _ROLL_GAUGE_COST = _HARP_GAUGE_COST[1] (45)
 
         // _canRoll(): not already rolling and one full gauge cell
@@ -30,9 +30,14 @@ namespace Exoduser.UnityPort.Core
         public static int CellsLeft(double gaugeAfter) { return (int)Math.Floor(gaugeAfter / GaugeCost); }
         public static int CellsMax(double gaugeMax) { return (int)Math.Floor(gaugeMax / GaugeCost); }
 
-        // _tickBladeDash(sp): step = min(sp, moveT); distance this step = Dist/6*step
+        // _tickBladeDash(sp): step = min(sp, moveT)
         public static double Step(double sp, double moveT) { return Math.Min(sp, moveT); }
-        public static double StepDistance(double step) { return Dist / 6 * step; }
+        // _rollStepDist(step): ease-out, speed = average x (1.5 - u) at the frame midpoint progress u; the 18 frames sum to Dist exactly
+        public static double StepDistance(double step, double moveT)
+        {
+            double u = Math.Max(0, Math.Min(1, 1 - (moveT - step / 2) / Frames));
+            return Dist / Frames * (1.5 - u) * step;
+        }
 
         // u_d06 _uqMoveRefund(cost): back = min(cost*value, max(0, gaugeMax-gauge)); the caller only asks while the 180f token is up
         public static double WarpRefund(double cost, double value, double gauge, double gaugeMax)
