@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort.Core
     public sealed class ChaseAoe { public int Cnt, MaxCnt, Dmg, Serial; public double T, Interval, R, Delay; public bool Druid; public List<ChaseZone> Zones = new List<ChaseZone>(); }
     public sealed class Fissure { public double X, Y, Ang, Spd, Len, MaxLen, T, MaxT, W, ExplR; public int Dmg, Serial; public bool Exploded, Druid, Straight, Hit, Done; }   // Straight/Hit/Done: RM-B1 straight fissure (spec #4)
     public sealed class TideWave { public double X, Y, Rad, MaxR, Spd, T, MaxT, GapAng, GapSize, W, HitT; public int Dmg, Serial; public bool Druid; }
-    public sealed class SeekerMine { public bool DruidMine; public double X, Y, Vx, Vy, Spd, T, ArmT, MaxT, R; public int Dmg, El, Hp; }
+    public sealed class SeekerMine { public bool DruidMine; public double X, Y, Vx, Vy, Spd, SpeedCap = 1.5, T, ArmT, MaxT, R; public int Dmg, El, Hp; }
     public sealed class PoisonPool { public double X, Y, T, MaxT, R, TickT; public int Dmg; }
     public sealed class LavaPool { public double X, Y, T, WarnT, MaxT, R, TickT; public int Dmg; }
     public sealed class DruidOrb { public double X, Y, Vx, Vy, T, R; public int Dmg; }
@@ -305,6 +305,7 @@ namespace Exoduser.UnityPort.Core
                         if (Math.Abs(gd) > tw.GapSize)
                         {
                             if (!host.TryParry(Boss, 0, 0, 0, 0)) host.HurtPlayer(I(tw.Dmg), false);
+                            else if (Remodel) { DruidData bd; if (Boss != null && Data.TryGetValue(Boss, out bd)) OnBossParried(bd); }
                         }
                     }
                 }
@@ -325,7 +326,7 @@ namespace Exoduser.UnityPort.Core
                     double hAng = Atan2(py - sm.Y, px - sm.X);
                     sm.Vx += (Cos(hAng) * sm.Spd * .02); sm.Vy += (Sin(hAng) * sm.Spd * .02);
                     double sv = Math.Sqrt(sm.Vx * sm.Vx + sm.Vy * sm.Vy);
-                    if (sv > 1.5) { sm.Vx *= 1.5 / sv; sm.Vy *= 1.5 / sv; }
+                    if (sv > sm.SpeedCap) { sm.Vx *= sm.SpeedCap / sv; sm.Vy *= sm.SpeedCap / sv; }
                 }
                 sm.X += sm.Vx; sm.Y += sm.Vy;
                 bool del = false;
