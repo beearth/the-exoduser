@@ -1,0 +1,21 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeGame.cs b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+index 994ee4aba..b0afaec07 100644
+--- a/unity/Assets/Exoduser/Runtime/NativeGame.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeGame.cs
+@@ -180,7 +180,7 @@ namespace Exoduser.UnityPort
+             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("skill")){SetSkills(true);return;}
+             if(!menu&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("inventory"))SetInventory(!inventory.Open);
+             if(!menu&&!inventory.Open&&NativeKeyBindInput.Down("interact"))Toast("드랍 아이템 생성 이식 대기");
+-            if(!menu&&!inventory.Open&&(NativeKeyBindInput.Down("parry")||NativeKeyBindInput.Down("shield")))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
++            if(!menu&&!inventory.Open&&!Simulation.PlayerCombatWired&&(NativeKeyBindInput.Down("parry")||NativeKeyBindInput.Down("shield")))Toast("패링·방패 기능은 아직 사용할 수 없습니다");   // B07 draft: stays blocked until PlayerCombatWired
+             UpdateViews();
+             if(smokeActive)sound?.Probe();
+         }
+@@ -192,6 +192,7 @@ namespace Exoduser.UnityPort
+             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
+             if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
+             bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition),p.KiChargeActive);
++            Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));   // B07 draft: Q / E / Shift held states for the player combat states
+             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
+             DispatchFeedback();
+             if(p.Hp<=0){Running=false;Toast("쓰러졌습니다");}

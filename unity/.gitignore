@@ -11,6 +11,12 @@
 /Tools/Tests/obj/
 !/Tools/Tests/CoreTests.csproj
 !/Tools/keybind-parity/KeybindParityTests.csproj
+!/Tools/dash-parry-oracle/DashParryTests.csproj
+/Tools/dash-parry-oracle/bin/
+/Tools/dash-parry-oracle/obj/
+/Tools/dash-parry-oracle/runs/bin-*/
+/Tools/dash-parry-oracle/runs/obj-*/
+/Tools/dash-parry-oracle/runs/dotnet-home/
 /Tools/keybind-parity/bin/
 /Tools/keybind-parity/obj/
 /Tools/ki-slash-oracle/runs/
