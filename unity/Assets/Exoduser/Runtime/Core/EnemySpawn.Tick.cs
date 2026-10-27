@@ -8,6 +8,7 @@ namespace Exoduser.UnityPort.Core
     {
         public double? exp, _reviveTimer, _origR, _bossReviveVFXPending, _hitStun, _hitFlash, _stunImmune, _pImmune, _maxStunned, _teleDropY, hurt, _frozen, _stuckT, _walkDist;
         public double? _telegraphT, _telegraphR, _cursed, _shockT, _shockStk, _spikeSlow, _spikeSlowLv, _bluHitCD;
+        public double? _mwStk;   // 악의 약화 stacks (B03b): web `e._mwStk||0` in _maliceWeakMul — undefined until the first orb hit, so it cannot be a plain double on the generated spawn object
         public double? _prevX, _prevY, _moveHold, _moveAng, _freezeGauge, _frozenImmune, _webSlow, _iceResDown, _iceShardRes;
         public double? _weakT, _weakPhys, _weakMag, _weakPj, _shockDRT, _shockDR, _blinkWeakT, _blinkWeak, _mSfxCd;
         public double? _wwStk, _wwStkT, _comboStk, _comboHitT, _comboDecayT;
