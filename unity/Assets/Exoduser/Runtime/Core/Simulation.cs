@@ -216,7 +216,7 @@ namespace Exoduser.UnityPort.Core
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
-            if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
+            if(IsFirstPracticeActor(enemy)){ApplyPracticeDamage(enemy,damage);return;}
             bool live = inEnemyLoop && enemy.Web != null;   // inside the L1 loop the web object is the live one (see ApplyEnemyDot): no state -> web copy
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();

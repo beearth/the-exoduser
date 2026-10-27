@@ -104,13 +104,13 @@ namespace Exoduser.UnityPort.Core
         }
 
         // shQuery: the web returns the enemies of every spatial-hash cell (128 px) touched by [x-r, x+r] x [y-r, y+r], cell by cell (row, then column).
-        private List<EnemyState> ShQuery(double x, double y, double r)
+        private List<EnemyState> ShQuery(double x, double y, double r, bool lessonActors = false)
         {
             int cx0 = (int)((x - r) / 128), cx1 = (int)((x + r) / 128), cy0 = (int)((y - r) / 128), cy1 = (int)((y + r) / 128);
             var found = new List<KeyValuePair<long, EnemyState>>();
             for (int i = 0; i < Enemies.Count; i++)
             {
-                var e = Enemies[i]; if (!e.Alive || IsFirstPracticeActor(e)) continue;   // the parry lesson actor is not in the web spatial hash
+                var e = Enemies[i]; if (!e.Alive || (!lessonActors && IsFirstPracticeActor(e))) continue;   // crossbow keeps the source oracle's quirk (the lesson actor is not in its hash); the right-click lesson fireball does see them (web: _shDirty rebuild after spawn)
                 int cx = (int)(e.X / 128), cy = (int)(e.Y / 128);
                 if (cx < cx0 || cx > cx1 || cy < cy0 || cy > cy1) continue;
                 found.Add(new KeyValuePair<long, EnemyState>((((long)(cy - cy0)) * 1000000L + (cx - cx0)) * 100000L + i, e));

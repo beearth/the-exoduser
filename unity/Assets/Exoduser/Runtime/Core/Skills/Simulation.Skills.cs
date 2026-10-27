@@ -399,7 +399,9 @@ namespace Exoduser.UnityPort.Core
                         {
                             if (!e.Alive || Distance(z.X, z.Y, e.X, e.Y) > z.R) continue;
                             if (!spikeHitThisFrame.Add(e)) continue;   // _stHitCap: one spike-trap hit per enemy per frame
+                            bool wasAlive = e.Alive; practiceHitKind = "spikeTrap";
                             ApplyEnemyDamage(e, z.Dmg, (float)Math.Atan2(e.Y - z.Y, e.X - z.X), false, 1, true, true, 0, 0, false, 0);
+                            practiceHitKind = null; EmitFirstPracticeHit(e, "spikeTrap", 0, 0, wasAlive, true);
                             var w = e.Web ?? SyncToWeb(e);
                             w.bleedT = Math.Max(w.bleedT, SkillRules.SpikeTrapBleedFrames); w.bleedStk = Math.Min(10, w.bleedStk + 1); w.bleed = 1;
                             w._spikeSlow = Math.Max(w._spikeSlow ?? 0, SkillRules.SpikeTrapSlowFrames); w._spikeSlowLv = z.Lv;
