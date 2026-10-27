@@ -1,5 +1,7 @@
 # Mac 신규 전사 이야기 — 2026-10-25
 
+2026-10-27 QA 전용 의미 프레임으로 실제 `NativeLobby`의 전사 Next·짧은 hold 해제·1.2초 완료와 안내/필드 연결을 검수했다. [16/16 영수증·검토 앱·물리 패드 HOLD](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md).
+
 ## 2026-10-27 기존 네이티브 패드 입력의 전사 이야기 연결
 
 `FrontendPadPolicy`는 Unity 입력 번호를 직접 해석하지 않는 순수 프레임 정책이다. `NativeLobby`가 현재 프로젝트의 Submit/Confirm(버튼 0), Cancel(버튼 1), 기존 Start 처리(버튼 7/9)를 읽어 전달한다. 웹 원본의 추가 Next 버튼 2/3을 새 물리 매핑으로 추정해 연결하지 않았다.

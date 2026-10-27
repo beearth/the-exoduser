@@ -16,6 +16,8 @@ PC UI/QA 확정에 따라 `NativeLobby.StartupPresentation.cs`의 4쪽 하단 no
 
 # UNITY Mac — 캐릭터 입장 이야기·최초 안내 연결
 
+2026-10-27 QA 전용 의미 프레임으로 실제 안내 초기 250ms gate, skip focus 중 A=다음, Start=즉시 건너뛰기와 4/4 물약 문구를 확인했다. [16/16 영수증·격리 검토 앱](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md). 실제 OS 패드 판정은 HOLD다.
+
 ## 2026-10-27 기존 패드 Confirm/Start 논리 분기
 
 전사 이야기와 공유하는 `FrontendPadPolicy`가 기존 네이티브 Confirm(버튼 0), Cancel(버튼 1), Start(기존 버튼 7/9) 읽기만 소비한다. `GuideRows`·표시 hint·키보드 Tab/Enter/Space·마우스·영상·저장은 그대로다.

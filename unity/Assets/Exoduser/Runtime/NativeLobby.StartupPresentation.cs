@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
   Texture2D[] nemesisArt;Texture2D loadingLogo,startupBarrier,startupShade,startupSubtitleGradient,startupGuideGradient;AudioSource startupAudio;AudioClip enterSound,wakeupSound;
   FrontendEntryPage startupShown;int startupLine=-1;float nemesisMusicDelay=-1,stageMusicDelay=-1,startupSfxGain=.6f;bool guideSkipFocus,startupInputFence,keepStartupStageMusic,startupVoiceWasPlaying;
   readonly FrontendPadPolicy frontendPad=new FrontendPadPolicy();
-  static FrontendPadFrame ReadFrontendPadFrame(){return new FrontendPadFrame{
+  FrontendPadFrame ReadFrontendPadFrame(){if(frontendPadQaEnabled)return ReadFrontendPadQaFrame();return new FrontendPadFrame{
    Number=Time.frameCount,
    ConfirmDown=Input.GetKeyDown(KeyCode.JoystickButton0),ConfirmHeld=Input.GetKey(KeyCode.JoystickButton0),
    CancelHeld=Input.GetKey(KeyCode.JoystickButton1),
