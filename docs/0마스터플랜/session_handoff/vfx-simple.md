@@ -11,11 +11,12 @@
    - 방식: 승인 필드보스 화염 임팩트 `assets/vfx/fieldboss/boss_fire_impact_24_20261010.png` 재격자(AI 생성 아님, 비용 0). 재현 `tools/vfx/regrid_fire_pack.py`(적용 에셋과 픽셀 차이 0)
    - 문서: VFX_LEAD_MASTER §3.5·VFX-D14·VFX-12·§7, 사용처 docs 4곳(VFX_구현가이드·몬스터_공격시스템·몬스터_총관리·탄막시스템_총정리), 전후 `docs/5.1임펙트디자인/FIRE_PACK_BEFORE_AFTER_20261027.jpg`
    - 반영 확인 캡처: `G:/exoduser-wt/_vfx2_fire/sheets/applied_check.png`(route 없이 저장소 파일 그대로)
+3. VFX-02 2차 2묶음 — 암흑 팩 4종 교체(F안, 승인 에셋 재채색·비용 0): 커밋은 SSOT §3.6·§7 참고. `Dark_DarkSmoke_FBF_4x4`(Ice 안개 재채색)·`Dark_Smoke_Sheet_6x6`(BW 연기 재채색, 알파 0.58)·`Dark_MediumImpact`·`Dark_BasicImpact`(Fire C2 재채색). 재현 `tools/vfx/regrid_dark_pack.py`(적용 에셋과 픽셀 차이 0), 작업 폴더 `G:/exoduser-wt/_vfx2_dark/`(SPEC·cand D1/D2/E1/E2/F·cap·sheets·scripts), 반영 확인 `sheets/applied_check_dark.png`
 
 ## 남은 것·대기
 - VFX-12: `_addBoom` 시트 크기 증가 곡선(`Math.pow(Math.min(1,_ep*3),.5)` 류) 때문에 공통 폭발 몸체가 0.35초에야 커짐 + 기동불꽃 화면 주황 덮개(VFX-D14, `G._flashCol='#ff4400'`) — game.html 시각 코드, 총괄 명세 대기
 - 데모/EA 폴더 동기화는 배포 때(CLAUDE.md 배포 규칙). 열린 게임 창에는 Git 반영만으로 갱신되지 않음
-- VFX-02 나머지: 암흑 연기 `Dark_DarkSmoke_FBF_4x4`·`Dark_Smoke_Sheet_6x6`(청록·자홍) — 총괄 지시 후
+- VFX-02 3묶음 후보(총괄 지시 후): `Poison_MediumImpact` 형광 초록 별(VFX-D16), `Arcane_Arcane_FBF_6x6` 마젠타 점(VFX-D15), 그 외 네온 팩. Dark 콤보 0.6초 잔여층 부족은 시트가 아니라 콤보 레이어 수명(game.html)
 - 물리 패링 폭발(`physical`, ImpactFire 첫 행 흰 틴트)은 흰 스플래시로 읽힘 확인, 디자인 판정은 총괄 몫
 
 ## 작업 폴더·스크립트 (저장소 밖 `G:/exoduser-wt/_vfx2_fire/`)

@@ -19,7 +19,7 @@ r9은 자기 격리 QA에서 기존 boom의 늦은 보라색 잔광·장식 연�
 
 | kind / sheet / frame | r9 한정 소비 |
 |---|---|
-| Dark Medium Impact | 기존 `Dark_MediumImpact.png`, 4×4/16프레임. frame0..7 코어의 native alpha는 정확히 유지. frame8..15 큰 purple 잔광만 접촉 AABB 겹침에서 policy gain 소비. kind `dark` 또는 `dark02`만 exact basename으로 허용 |
+| Dark Medium Impact | 기존 `Dark_MediumImpact.png`, 4×4/16프레임(2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): 파일명·격자 동일, 내용은 C2 화염 시트를 암흑 램프로 재채색한 보라 소용돌이 — 프레임 구분은 이 문서 작성 당시 옛 시트 기준이므로 엔진 이식 시 새 시트를 다시 본다). frame0..7 코어의 native alpha는 정확히 유지. frame8..15 큰 purple 잔광만 접촉 AABB 겹침에서 policy gain 소비. kind `dark` 또는 `dark02`만 exact basename으로 허용 |
 | dark smoke | kind `dark`의 secondary `Dark_DarkSmoke_FBF_4x4.png`만 장식 smoke gain 소비. `dark02`에는 이 secondary smoke가 없으며 추가하지 않는다 |
 | 제외 | allowlist 밖 kind/sheet/color/source·비행탄·위험/독장판·다른 VFX는 원 native 경로. 원 효과 프레임·UV·색·재질·blend·draw 순서 유지 |
 | 원 boom clock | policy progress는 기존 `ep=t/mt`. native t/mt·66/72 등의 수명 유지. atlas layerPhase는 `min(1,max(0,ep−si*.04)/max(.01,1−si*.04))`, frame=min(15,floor(layerPhase×16)). policy fade를 layerPhase/seconds/새 clock으로 바꾸지 않는다 |
