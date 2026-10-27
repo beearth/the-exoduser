@@ -161,6 +161,8 @@ const M=[
  [B,'injured leech 35% -> 36%','P.hp <= P.mhp * .35 ? c.EqAffix("injuredLeech")','P.hp <= P.mhp * .36 ? c.EqAffix("injuredLeech")'],
  [B,'lifeLeech not capped','P.hp = Math.Min(P.mhp, P.hp + dmg * ll);','P.hp = P.hp + dmg * ll;'],
  [B,'manaLeech not capped','P.mp = Math.Min(P.mmp, P.mp + dmg * ml);','P.mp = P.mp + dmg * ml;'],
+ [B,'stLeech undefined stamina treated as 0 (NaN lost)','P.st = Math.Min(N(P.mst), N(P.st) + dmg * sl);','P.st = Math.Min(N(P.mst), Or(P.st, 0) + dmg * sl);'],
+ [B,'stLeech undefined max stamina treated as 0 (NaN lost)','P.st = Math.Min(N(P.mst), N(P.st) + dmg * sl);','P.st = Math.Min(Or(P.mst, 0), N(P.st) + dmg * sl);'],
  [B,'stLeech uses mana cap','P.st = Math.Min(N(P.mst), N(P.st) + dmg * sl);','P.st = Math.Min(N(P.mst), N(P.st) + dmg * sl * 2);'],
  [B,'lifeOnHit scaled by damage','P.hp = Math.Min(P.mhp, P.hp + loh);','P.hp = Math.Min(P.mhp, P.hp + loh * 2);'],
  [B,'axe leech needs bleed (not bleedT)','(e.bleed > 0 || e.bleedT > 0)','(e.bleed > 0)'],

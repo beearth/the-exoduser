@@ -28,6 +28,26 @@ class EnemyHurtProgram
         else { failures++; if (failures <= 80) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
     }
     static bool Same(double a, double b) => BitConverter.DoubleToInt64Bits(a) == BitConverter.DoubleToInt64Bits(b);
+    // {"$n":"NaN"|"Infinity"|"-Infinity"|"-0"}: numbers JSON cannot carry (recorded by export.cjs)
+    static bool IsNumTag(JsonElement e, out string tag)
+    {
+        tag = null;
+        if (e.ValueKind != JsonValueKind.Object) return false;
+        int n = 0; foreach (var p in e.EnumerateObject()) { n++; if (p.Name == "$n" && p.Value.ValueKind == JsonValueKind.String) tag = p.Value.GetString(); }
+        return n == 1 && tag != null;
+    }
+    static bool NumTagMatches(object cs, string tag)
+    {
+        if (!(cs is double d)) return false;
+        switch (tag)
+        {
+            case "NaN": return double.IsNaN(d);
+            case "Infinity": return double.IsPositiveInfinity(d);
+            case "-Infinity": return double.IsNegativeInfinity(d);
+            case "-0": return BitConverter.DoubleToInt64Bits(d) == BitConverter.DoubleToInt64Bits(-0.0);
+            default: return false;
+        }
+    }
 
     static void Fill(object target, JsonElement obj)
     {
@@ -64,11 +84,10 @@ class EnemyHurtProgram
     {
         switch (js.ValueKind)
         {
-            case JsonValueKind.Null: Check(cs == null || (cs is double nd && double.IsNaN(nd)), path + " expected null (JSON null also stands for a JS NaN)"); return;
+            case JsonValueKind.Null: Check(cs == null, path + " expected null, C# " + (cs ?? "null")); return;
             case JsonValueKind.Number:
                 if (cs == null || cs is string || cs is bool) { Check(false, path + " C# " + (cs ?? "null") + " vs web " + js.GetDouble().ToString("R")); return; }
                 double d = Convert.ToDouble(cs), w = js.GetDouble();
-                if (d == 0 && w == 0) d = w;
                 Check(Same(d, w), path + " C# " + d.ToString("R") + " vs web " + w.ToString("R")); return;
             case JsonValueKind.True: case JsonValueKind.False:
                 Check(cs is bool b && b == (js.ValueKind == JsonValueKind.True), path + " C# " + (cs ?? "null") + " vs web " + js.ValueKind); return;
@@ -80,6 +99,7 @@ class EnemyHurtProgram
                 for (int i = 0; i < Math.Min(list.Count, js.GetArrayLength()); i++) Cmp(list[i], js[i], path + "[" + i + "]");
                 return;
             case JsonValueKind.Object:
+                if (IsNumTag(js, out var tag)) { Check(NumTagMatches(cs, tag), path + " expected " + tag + ", C# " + (cs is double td ? td.ToString("R") : (cs ?? "null").ToString())); return; }
                 if (cs == null) { Check(false, path + " expected object, C# null"); return; }
                 var type = cs.GetType(); var seen = new HashSet<string>();
                 foreach (var p in js.EnumerateObject())
@@ -142,6 +162,7 @@ class EnemyHurtProgram
             case JsonValueKind.True: return ga is bool b1 && b1;
             case JsonValueKind.False: return ga is bool b2 && !b2;
             case JsonValueKind.Object:
+                if (IsNumTag(wa, out var ntag)) return NumTagMatches(ga, ntag);
                 if (wa.TryGetProperty("e", out var ee)) return ga is Ref r && r.E == ee.GetInt32();
                 var arr = wa.GetProperty("o"); var pr = ga as Pairs; if (pr == null || pr.V.Count != arr.GetArrayLength()) return false;
                 for (int i = 0; i < pr.V.Count; i++) { if (pr.V[i].Key != arr[i][0].GetString() || !SameArg(pr.V[i].Value, arr[i][1])) return false; }

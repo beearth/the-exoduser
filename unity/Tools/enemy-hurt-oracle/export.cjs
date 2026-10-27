@@ -112,7 +112,9 @@ var _dpsDmg=0,_txtPerFrame=0,_impPerFrame=0,_uqScCtx,_uqS,VW=1600,VH=900;
 var SFX={block:function(){__rec('sfxBlock');},groggy:function(){__rec('sfxGroggy');}};`,ctx);
 for(const b of blocks)vm.runInContext(b,ctx);
 vm.runInContext(H1,ctx);vm.runInContext(H2,ctx);
-const plain=o=>JSON.parse(JSON.stringify(o,(k,v)=>ArrayBuffer.isView(v)?Array.from(v):v));
+// numbers JSON cannot carry are recorded as tags so nothing is silently turned into null: {"$n":"NaN"} {"$n":"Infinity"} {"$n":"-Infinity"} {"$n":"-0"}
+const numTag=v=>Number.isNaN(v)?{$n:'NaN'}:v===Infinity?{$n:'Infinity'}:v===-Infinity?{$n:'-Infinity'}:Object.is(v,-0)?{$n:'-0'}:v;
+const plain=o=>JSON.parse(JSON.stringify(o,(k,v)=>ArrayBuffer.isView(v)?Array.from(v):typeof v==='number'?numTag(v):v));
 const get=n=>plain(vm.runInContext(n,ctx));
 const tables={ELC:get('ELC'),ELP:get('ELP'),EL:get('EL'),UNDEAD_ET:get('Array.from(_UNDEAD_ET).sort((a,b)=>a-b)')};
 
@@ -430,6 +432,9 @@ h2('kb club on a boss with a big factor (wall probe skipped for bosses)',{leq:{_
 h2('kb club wall hit on a dead target (no wall text)',{leq:{_lClubKB:2},over:e0({alive:false}),w2:W2({canMv:'blockAll'})});
 h2('poise: amt truncates to 0 resets nothing but is a no-op (poiseR kept)',{args:{opts:POI},head:H({dmg:1,psM:0.4}),over:e0({poise:50,maxPoise:500,poiseR:30})});
 h2('poise: dmg 0 keeps poiseR',{args:{opts:POI},head:H({dmg:0}),over:e0({poise:50,maxPoise:500,poiseR:30})});
+h2('stLeech with undefined stamina (Math.min with NaN)',{aff:{stLeech:0.5},world:WP({st:undefined,mst:100})});
+h2('stLeech with undefined max stamina (NaN)',{aff:{stLeech:0.5},world:WP({st:50,mst:undefined})});
+h2('stLeech both defined (control)',{aff:{stLeech:0.5},world:WP({st:50,mst:100})});
 // --- chain cases: every H1 case also runs H2 with its REAL return value (cases whose H1 returns early are dropped at run time) ---
 const fc=mulberry32(31337);const pc=a=>a[Math.floor(fc()*a.length)];
 h1Snapshot.forEach((c0)=>{const c=JSON.parse(JSON.stringify(c0));
@@ -445,6 +450,7 @@ for(const c of cases){c.kind=c.kind||'H1';c.w2=c.w2||defW2();if(c.world.sStats){
 // keys given as undefined in an override mean 'delete the key' (JS undefined); JSON drops them, so record them explicitly as 'del'
 for(const c of cases){c.del=Object.keys(c.over||{}).filter(k=>c.over[k]===undefined);for(const o of c.others)o.del=Object.keys(o.over||{}).filter(k=>o.over[k]===undefined);}
 // ---- run ----
+const tagTotals={NaN:0,Infinity:0,'-Infinity':0,'-0':0};function countTags(v){if(v&&typeof v==='object'){if(Array.isArray(v)){for(const x of v)countTags(x);}else if(Object.keys(v).length===1&&typeof v.$n==='string'){tagTotals[v.$n]++;}else for(const k of Object.keys(v))countTags(v[k]);}}
 const bad=[];function safe(v,p){if(typeof v==='number'&&(!isFinite(v)||Object.is(v,-0)))bad.push(p+'='+(Object.is(v,-0)?'-0':v));else if(v&&typeof v==='object')for(const k of Object.keys(v))safe(v[k],p+'.'+k);}
 function setup(c){
   const w=c.world;ctx.__w=w;ctx.__vals=c.vals;ctx.__aff=c.aff;ctx.__leq=c.leq;ctx.__ueq=c.ueq;
@@ -470,13 +476,13 @@ for(const c of cases){
   const snap=snapshot();
   const diffs=snap.ens.map((fin,i)=>{const ini=initial[i],d={};for(const k of new Set([...Object.keys(fin),...Object.keys(ini)])){if(JSON.stringify(fin[k])!==JSON.stringify(ini[k])){if(!(k in fin))throw Error('field deleted: '+k);d[k]=fin[k];}}return d;});
   const pdiff={};for(const k of new Set([...Object.keys(snap.P),...Object.keys(initP)]))if(JSON.stringify(snap.P[k])!==JSON.stringify(initP[k])){if(!(k in snap.P))throw Error('P field deleted');pdiff[k]=snap.P[k];}
-  safe(ret,'ret');safe(ret2,'ret2');safe(diffs,'diff');safe(pdiff,'P');safe(snap.log,'log');safe(snap.G,'G');safe(snap.btLog,'btLog');if(bad.length)throw Error('case '+c.name+': non-JSON-safe numbers '+bad.splice(0).join(','));
+  for(const v of [ret,ret2,diffs,pdiff,snap.log,snap.G,snap.btLog])countTags(v);if(bad.length)throw Error('case '+c.name+': non-JSON-safe numbers '+bad.splice(0).join(','));
   c.expected={ret,ret2,diffs,pdiff,G:snap.G,shBufI:snap.shBufI,hitSfxCd:snap.hitSfxCd,btLog:snap.btLog===undefined?null:snap.btLog,log:snap.log,consumed:snap.consumed};
   c.seq=ctx.__seq.slice(0,snap.consumed+4);delete c.seed;delete c.first;
 }
 for(let i=cases.length-1;i>=0;i--)if(cases[i].drop)cases.splice(i,1);
 const K=k=>cases.filter(c=>c.kind===k);
-const sum={cases:cases.length,h1:K('H1').length,h2:K('H2').length,chain:K('CH').length,chainDropped:dropped.length,earlyReturns:K('H1').filter(c=>c.expected.ret===null).length,fallThrough:K('H1').filter(c=>c.expected.ret!==null).length,crits:cases.filter(c=>(c.expected.ret&&c.expected.ret._isCrit)).length,
+const sum={nonFiniteTags:tagTotals,cases:cases.length,h1:K('H1').length,h2:K('H2').length,chain:K('CH').length,chainDropped:dropped.length,earlyReturns:K('H1').filter(c=>c.expected.ret===null).length,fallThrough:K('H1').filter(c=>c.expected.ret!==null).length,crits:cases.filter(c=>(c.expected.ret&&c.expected.ret._isCrit)).length,
   shielded:cases.filter(c=>c.expected.ret&&c.expected.ret._shBlocked).length,logEntries:cases.reduce((s,c)=>s+c.expected.log.length,0),randomDraws:cases.reduce((s,c)=>s+c.expected.consumed,0),enemies:cases.reduce((s,c)=>s+1+c.others.length,0),
   h2Killed:cases.filter(c=>c.expected.ret2&&c.expected.ret2&&c.kind!=='H1').length};
 const callNames={};for(const c of cases)for(const l of c.expected.log)callNames[l[0]]=(callNames[l[0]]||0)+1;sum.injectedCalls=callNames;
