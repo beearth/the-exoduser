@@ -83,11 +83,9 @@ namespace Exoduser.UnityPort.Core
                         double tot = d.RmTeleTotal, rem = d.St2;
                         if (pend.Id == "groundFissure")
                         {
-                            int maxLen = FissureMaxLen(); double explR = Math.Min(750, maxLen * .3);
+                            // spec #4 (ruling 2026-10-28): a straight line aimed once at the first telegraph tick; only the head hurts (half width 70 + player radius), no end blast
                             t = Tele(into, "groundFissure", DruidTeleKind.GroundDecal, DruidTeleShape.Line, tot, rem, 0);
-                            t.X = d.X; t.Y = d.Y; t.Dir = d.Facing; t.Length = maxLen; t.Width = 140;   // 140 = Fissure.W; the head homes on the player, only the end blast hurts
-                            t = Tele(into, "groundFissure", DruidTeleKind.GroundDecal, DruidTeleShape.Circle, tot, rem, 1);
-                            t.X = d.X + Cos(d.Facing) * maxLen; t.Y = d.Y + Sin(d.Facing) * maxLen; t.Radius = explR; t.Dir = d.Facing;
+                            t.X = d.X; t.Y = d.Y; t.Dir = d.RmDir; t.Length = FissureMaxLen(); t.Width = 2 * FissureHitHalfWidth;
                         }
                         else if (pend.Id == "tideWave")
                         {
@@ -187,16 +185,12 @@ namespace Exoduser.UnityPort.Core
                         Total = z.Delay, Remaining = z.Delay - z.T, X = z.X, Y = z.Y, Radius = z.R };
                     into.Add(t);
                 }
-            // fissures in flight: the head crawls (and turns to the player) until Len == MaxLen, then the blast of radius ExplR goes off at the head
+            // fissures in flight: the head crawls straight along its fixed direction; the part it has passed stays on screen but is harmless
             foreach (var f in Fissures)
             {
-                if (f.Exploded) continue;
-                double ticks = Math.Ceiling((f.MaxLen - f.Len) / f.Spd);
+                double ticks = f.Done ? 0 : Math.Ceiling((f.MaxLen - f.Len) / f.Spd);
                 t = new DruidTelegraph { Move = MoveNo("groundFissure"), MoveId = "groundFissure", Kind = DruidTeleKind.GroundDecal, Shape = DruidTeleShape.Line, Serial = f.Serial, Index = 0, Live = true,
                     X = f.X, Y = f.Y, Dir = f.Ang, Length = f.MaxLen, Width = f.W, Progress = f.Len, Total = f.MaxLen / f.Spd, Remaining = ticks };
-                into.Add(t);
-                t = new DruidTelegraph { Move = MoveNo("groundFissure"), MoveId = "groundFissure", Kind = DruidTeleKind.GroundDecal, Shape = DruidTeleShape.Circle, Serial = f.Serial, Index = 1, Live = true,
-                    X = f.X + Cos(f.Ang) * f.MaxLen, Y = f.Y + Sin(f.Ang) * f.MaxLen, Dir = f.Ang, Radius = f.ExplR, Total = f.MaxLen / f.Spd, Remaining = ticks };
                 into.Add(t);
             }
             foreach (var w in TideWaves) AddTideRing(into, w.MaxT, w.MaxT - w.T, true, w.X, w.Y, w.Rad, w.MaxR, w.GapAng, w.GapSize, w.W, w.Serial);

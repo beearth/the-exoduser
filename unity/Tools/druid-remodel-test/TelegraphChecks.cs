@@ -10,13 +10,15 @@ static partial class P
 {
     static readonly HashSet<int> seenMoves = new HashSet<int>();
     static readonly Dictionary<string, DruidTelegraph> samples = new Dictionary<string, DruidTelegraph>();
-    static int teleObservations, teleEvents;
+    static int teleObservations, teleEvents, fissureHitsTotal;
 
     sealed class TeleTrack
     {
         public readonly List<DruidTelegraph> Cur = new List<DruidTelegraph>(), Prev = new List<DruidTelegraph>();
         public readonly Dictionary<string, double> PrevRem = new Dictionary<string, double>();
         public int Tide, Mines, Fiss, Beat; public string S = "";
+        public readonly Dictionary<Fissure, double[]> Fissures = new Dictionary<Fissure, double[]>();   // fixed direction, length last tick
+        public readonly HashSet<Fissure> FissureHit = new HashSet<Fissure>();
     }
 
     static string TKey(DruidTelegraph t) { return t.Serial + "/" + t.Move + "/" + (int)t.Kind + "/" + t.Index + "/" + (t.Live ? "L" : "W"); }
@@ -77,10 +79,28 @@ static partial class P
                 }
                 if (ev == "groundFissure")
                 {
-                    var f = s.Druid.Fissures[s.Druid.Fissures.Count - 1]; var line = warned.FirstOrDefault(w => w.Shape == DruidTeleShape.Line); var blast = warned.FirstOrDefault(w => w.Shape == DruidTeleShape.Circle);
-                    Check(line != null && Math.Abs(line.Length - f.MaxLen) < 1e-9 && Math.Abs(line.Width - f.W) < 1e-9 && blast != null && Math.Abs(blast.Radius - f.ExplR) < 1e-9, name + ": fissure length/width/blast differ from the telegraph");
+                    var f = s.Druid.Fissures[s.Druid.Fissures.Count - 1]; var line = warned.FirstOrDefault(w => w.Shape == DruidTeleShape.Line);
+                    Check(line != null && Math.Abs(line.Length - f.MaxLen) < 1e-9 && Math.Abs(line.Width - f.W) < 1e-9 && Math.Abs(line.Dir - f.Ang) < 1e-9 && f.Straight, name + ": fissure length/width/direction differ from the telegraph");
+                    Check(warned.Count == 1, name + ": fissure telegraph must be one line (" + warned.Count + " entries)");
                 }
                 if (ev == "slam") Check(warned.Count == 2 && warned.All(w => w.Shape == DruidTeleShape.Circle && Math.Abs(w.Radius - DruidRemodelData.SlamRadius) < 1e-9), name + ": slam telegraph is not 2 circles of the slam radius");
+            }
+            foreach (var f in s.Druid.Fissures)
+            {   // spec #4 (ruling 2026-10-28): fixed direction, no end blast, one hit per cast, only on the segment swept that tick
+                double[] st;
+                if (!tr.Fissures.TryGetValue(f, out st)) { st = new[] { f.Ang, 0.0 }; tr.Fissures[f] = st; }
+                Check(Math.Abs(f.Ang - st[0]) < 1e-12, name + ": fissure turned (" + st[0] + " -> " + f.Ang + ")");
+                Check(!f.Exploded, name + ": fissure end blast went off");
+                Check(f.Len - st[1] <= f.Spd + 1e-9 && f.Len >= st[1], name + ": fissure head step " + (f.Len - st[1]));
+                Check(f.Len <= f.MaxLen + 1e-9, name + ": fissure past its max length");
+                if (f.Hit && tr.FissureHit.Add(f))
+                {
+                    fissureHitsTotal++;
+                    double ax = f.X + Math.Cos(f.Ang) * st[1], ay = f.Y + Math.Sin(f.Ang) * st[1], bx = f.X + Math.Cos(f.Ang) * f.Len, by = f.Y + Math.Sin(f.Ang) * f.Len;
+                    double dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy, t = l2 <= 0 ? 0 : Math.Max(0, Math.Min(1, ((s.Player.X - ax) * dx + (s.Player.Y - ay) * dy) / l2));
+                    Check(Dist(s.Player.X, s.Player.Y, ax + dx * t, ay + dy * t) <= DruidBoss.FissureHitHalfWidth + s.Player.Radius + 3, name + ": fissure hit outside the swept segment");
+                }
+                st[1] = f.Len;
             }
             tr.Tide = s.Druid.TideWaves.Count; tr.Mines = s.Druid.SeekerMines.Count; tr.Fiss = s.Druid.Fissures.Count; tr.S = d.S; tr.Beat = d.HbBeat;
         }
@@ -100,7 +120,7 @@ static partial class P
 
     static string TelegraphJson()
     {
-        var sb = new StringBuilder("{\n  \"observations\": " + teleObservations + ",\n  \"spawnChecks\": " + teleEvents + ",\n  \"samples\": [\n");
+        var sb = new StringBuilder("{\n  \"observations\": " + teleObservations + ",\n  \"spawnChecks\": " + teleEvents + ",\n  \"fissureHits\": " + fissureHitsTotal + ",\n  \"samples\": [\n");
         var list = samples.OrderBy(x => x.Value.Move).ThenBy(x => x.Key, StringComparer.Ordinal).ToList();
         for (int i = 0; i < list.Count; i++)
         {
