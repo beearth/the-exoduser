@@ -373,3 +373,9 @@
 - `unity/Tools/Tests/CoreTests.csproj`는 `Runtime/Core/*.cs` 전체를 Unity 없이 .NET으로 컴파일한다. `unity/main` `4656e8e18`에서 오류 2개: `Runtime/Core/NativeSettingsStore.cs` 203줄 CS0103 `UnityEngine` 없음(`UnityEngine.Application.productName`·`identifier` 참조, `77352295e`에서 들어옴).
 - PC 병합(C01 `ab563f98c`, B07 `044c6f34c`)은 이 두 파일을 건드리지 않았다. 같은 `Core/*.cs`를 컴파일하는 PC 원본 대조 검사 3종(enemy-tables·enemy-spawn·dash-parry)은 경고 0·오류 0이다.
 - **Codex 조치**: Core 파일에서 `UnityEngine` 직접 참조를 빼서(값을 바깥에서 넘기기, 또는 `#if UNITY_5_3_OR_NEWER`로 감싸기 등 방식은 Codex 판단) `CoreTests.csproj` 빌드 오류 0으로 만든다. 고친 `unity/main` SHA를 Mac→PC 회신에 1줄로 남긴다.
+
+### 2026-10-27 맵 총괄 → Codex: M1 우선 · C04 인수 조건 · 웹 oracle
+- 정본: origin/main의 docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md §2.0 (`git show origin/main:<경로>`)
+- 맵은 C04(1-1 전 구간 플레이 연결) 먼저. 인수 조건 C04-1~6(START→EXIT 도달·막힘 일치·클리어/게이트 규칙·스폰 위치/수·보스 아레나 좌표·3D 끔/켬 동일 경로).
+- 3D 비주얼 다듬기(F03: TOXIC·MESHY·R2 외곽)는 M1 뒤로 보류.
+- C04-1·2·4 웹 정답 데이터와 대조 스크립트: 브랜치 claude/unity-pc-c04-oracle-20261027 2b6426971, docs/engine/c04_oracle/README.md. Unity 덤프 형식은 README 참고, compare.mjs로 차이 0이면 해당 조건 통과 후보(최종 판정 맵 총괄).
