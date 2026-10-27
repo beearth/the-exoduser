@@ -39,6 +39,8 @@ const browser = await chromium.launch({ headless: true, executablePath: CHROME, 
 
 const inPage = (si) => {
   G._cutsceneDone = true; if (!P) P = mkP(); G.stage = si; initStage(si);
+  // si≠0은 initMapObjects(소품·충돌물)가 _bgInitQueue로 미뤄진다(initStage 끝에서 si===0만 즉시 실행). 큐를 비워야 충돌물이 들어간다(RM-3 공유, 10-28).
+  const bgQueued = !_bgInitDone; if (!_bgInitDone) _tickBgInit(9999);
   const N = G.mw, M = G.mh, TT = T;
   const walk = new Array(N * M), partial = [];
   const OFF = [[-10, -10], [10, -10], [-10, 10], [10, 10]];
@@ -67,7 +69,7 @@ const inPage = (si) => {
     regions: (G._regions || []).map(r => ({ id: r.id, nameKo: r.nameKo, x0: r.x0, y0: r.y0, x1: r.x1, y1: r.y1, total: r.total, cleared: r.cleared })), regGateIdx: G._regGateIdx,
     mapObjs: MAP_OBJS.map(o => ({ type: o.type, x: Math.round(o.x), y: Math.round(o.y), tx: ~~(o.x / TT), ty: ~~(o.y / TT), scale: o.scale || 1, noCol: o.noCol ? 1 : 0, role: o.role || null, region: o.region || null })),
     colObjs: _colObjs.filter(o => !o.noCol).map(o => ({ type: o.type, x: Math.round(o.x), y: Math.round(o.y), rect: o._colRect ? 1 : 0, rot: o._colRot ? +o._colRot.toFixed(4) : 0, w: o._colW ? +o._colW.toFixed(1) : 0, h: o._colH ? +o._colH.toFixed(1) : 0, sz: o._colSz ? +o._colSz.toFixed(1) : 0, colOy: (_OBJ_META[o.type] && _OBJ_META[o.type].colOy) || 0 })),
-    hillActive: !_FDG_RUINED_FOREST_FIRST && G.stage === 0, mapType: G.mapType ?? null,
+    hillActive: !_FDG_RUINED_FOREST_FIRST && G.stage === 0, mapType: G.mapType ?? null, bgQueueFlushed: bgQueued, bgInitDone: _bgInitDone,
     compose: pc ? { keys: Object.keys(pc), empty: pc.empty || null, basin: pc.basin || null, hasPath: !!pc.path } : null,
     geometry: geo,
   };
@@ -180,7 +182,7 @@ fs.writeFileSync(path.join(OUT, NAME + '_receipt.json'), JSON.stringify({
   extractedAt: new Date().toISOString(), si: SI, mainRef: REF, mainSha: refSha, mainRepo: MAIN,
   gameHtmlSha256: sha256(gameBlob), sourcePolicy: 'same-origin 코드 요청(html/js/mjs/json/css)을 커밋본 blob으로 fulfill. 이미지·소리·커밋본에 없는 경로는 서버(디스크) 통과',
   servedFromCommit: Object.fromEntries([...served].filter(([k]) => /\.(js|html|json)$/.test(k)).sort()), servedCount: served.size, passedToServer: [...passed].sort(),
-  bootSequence: `G._cutsceneDone=true; if(!P)P=mkP(); G.stage=${SI}; initStage(${SI}) (headless Chrome --mute-audio)`,
+  bootSequence: `G._cutsceneDone=true; if(!P)P=mkP(); G.stage=${SI}; initStage(${SI}); if(!_bgInitDone)_tickBgInit(9999) (headless Chrome --mute-audio)`, bgQueueFlushed: runs.map(r => r.bgQueueFlushed),
   bfs: 'tile-centre 4-neighbour from start', determinism: det, pageErrors: runs.map(r => r.pageErrors), collisionPng: PNG,
 }, null, 1));
 

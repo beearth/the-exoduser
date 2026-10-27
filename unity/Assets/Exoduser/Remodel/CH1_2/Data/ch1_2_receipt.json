@@ -1,8 +1,8 @@
 {
- "extractedAt": "2026-10-27T17:59:21.786Z",
+ "extractedAt": "2026-10-27T18:09:21.470Z",
  "si": 1,
  "mainRef": "origin/main",
- "mainSha": "782b4ccad21d7112f77483630150c217b8bb5164",
+ "mainSha": "6c0bba8c71e75b3216536ddcbb12683c502ce929",
  "mainRepo": "G:/exoduser",
  "gameHtmlSha256": "cfb0a739454f330733547c7a15a58301461b68193197ca04a824d83815b88122",
  "sourcePolicy": "same-origin 코드 요청(html/js/mjs/json/css)을 커밋본 blob으로 fulfill. 이미지·소리·커밋본에 없는 경로는 서버(디스크) 통과",
@@ -173,7 +173,14 @@
   "sprites/*",
   "sprites/spike_trap/*"
  ],
- "bootSequence": "G._cutsceneDone=true; if(!P)P=mkP(); G.stage=1; initStage(1) (headless Chrome --mute-audio)",
+ "bootSequence": "G._cutsceneDone=true; if(!P)P=mkP(); G.stage=1; initStage(1); if(!_bgInitDone)_tickBgInit(9999) (headless Chrome --mute-audio)",
+ "bgQueueFlushed": [
+  true,
+  true,
+  true,
+  true,
+  true
+ ],
  "bfs": "tile-centre 4-neighbour from start",
  "determinism": {
   "runs": 5,
