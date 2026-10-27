@@ -131,6 +131,7 @@ namespace Exoduser.UnityPort
             // C01-AI: the natural 1-1 field spawns come from the 14 소환굴 of initStage(0) (rollEtype pool), not from a fixed ring of etype0.
             Simulation.FloorTile=(tx,ty)=>!Map.Blocked((tx+.5f)*40,(ty+.5f)*40);
             Simulation.EnableFieldSpawns();
+            Simulation.SpawnStartEnemies();   // M1 fix: the fixed 다안 육괴 x2 + 문지기 + 호위 12~16 initStage(0) places on top of the holes
             UpdateViews();
         }
         bool SafePoint(ref float x,ref float y,float r)
