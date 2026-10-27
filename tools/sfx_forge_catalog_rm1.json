@@ -1,0 +1,12 @@
+{
+  "about": "SFX Forge 카탈로그 RM-1 (Unity 1-1 슬라이스, SND-08 트랙 B) — `npm run sfx:forge -- batch --catalog tools/sfx_forge_catalog_rm1.json --variants 3`. raw 프롬프트라 category 공통 꼬리를 붙이지 않는다(스웰·구르기 등 CATEGORY_PRESETS 꼬리와 충돌). 공통 금지 문장은 각 text 끝에 직접 넣었다. API 최소 길이가 0.5초라 tell_melee(명세 0.35s)·roll_body(명세 0.45s)는 0.5초로 만든다 — 승격 때 트림.",
+  "sounds": [
+    { "category": "hit", "key": "tell_melee", "raw": true, "duration": 0.5, "text": "Short low breathy swell: a creature drawing breath and leather creaking just before a strike, dark fantasy action RPG, rotten forest, dry, tail cut off quickly, no high tones. No embers, no chimes, no sustained high pure tones, no voice or music." },
+    { "category": "skill", "key": "tell_ranged", "raw": true, "duration": 0.6, "text": "Taut bowstring and bone scrape tension rising, brief bright attack only, dry, short tail, dark fantasy action RPG. No embers, no chimes, no sustained high pure tones, no voice or music." },
+    { "category": "skill", "key": "tell_boss", "raw": true, "duration": 0.9, "text": "Deep rising sub swell with rotten wood creak and root tearing, ominous build, tail cut short, dark fantasy boss attack warning. No embers, no chimes, no sustained high pure tones, no voice or music." },
+    { "category": "hit", "key": "roll_body", "raw": true, "duration": 0.5, "text": "Armored body roll on damp forest soil: cloth and leather whoosh then a dull earth thud, minimal mail jingle, single dry action, dark fantasy action RPG. No embers, no chimes, no sustained high pure tones, no voice or music." },
+    { "category": "skill", "key": "druid_burrow", "raw": true, "duration": 0.9, "text": "Heavy body sinking into wet rotten earth, roots snapping, soil collapse rumble, dark fantasy boss, dry short tail. No embers, no chimes, no sustained high pure tones, no voice or music." },
+    { "category": "skill", "key": "druid_erupt", "raw": true, "duration": 0.8, "text": "Violent eruption from underground: dirt and roots bursting upward, low impact boom, debris patter, dark fantasy boss, tail under one second. No embers, no chimes, no sustained high pure tones, no voice or music." },
+    { "category": "skill", "key": "druid_sink", "raw": true, "duration": 1.7, "text": "Wounded creature slowly sinking into swamp soil: wet suction, roots closing over, fading rumble, dark fantasy boss retreat, no scream. No embers, no chimes, no sustained high pure tones, no voice or music." }
+  ]
+}
