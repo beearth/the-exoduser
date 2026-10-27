@@ -1,0 +1,31 @@
+diff --git a/unity/Assets/Exoduser/Runtime/Core/Simulation.cs b/unity/Assets/Exoduser/Runtime/Core/Simulation.cs
+index 88b084cc8..e56078454 100644
+--- a/unity/Assets/Exoduser/Runtime/Core/Simulation.cs
++++ b/unity/Assets/Exoduser/Runtime/Core/Simulation.cs
+@@ -99,6 +99,7 @@ namespace Exoduser.UnityPort.Core
+             Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen / regenDivisor);
+             Player.StateTicks--;
+             Player.Iframes = Math.Max(0, Player.Iframes - 1);
++            TickPlayerCombat();   // B07 draft: inert while PlayerCombatWired is false
+             MoveKnockback();
+             if (Player.State == "stagger" || Player.State == "pStun") {
+                 if (Player.StateTicks <= 0) { Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
+@@ -365,14 +366,18 @@ namespace Exoduser.UnityPort.Core
+         public void HurtPlayer(int damage)
+         {
+             if (Player.Hp <= 0 || Player.Iframes > 0) return;
++            if (CombatBeforeHurt(ref damage)) return;   // B07 draft: chain-move invulnerability, E strike window, Q shield / release parry
+             double dr = Math.Min(.75, Config.PlayerPhysicalDefense / (Config.PlayerPhysicalDefense + 2500.0));
+             int capped = Math.Min(damage, (int)(Player.MaxHp * .33));
+             int amount = Math.Max(Math.Max(1, (int)(Player.MaxHp * .005)), Math.Max(1, (int)(capped * (1-dr))));
+             float absorbed = Math.Min(Player.Shield, amount); Player.Shield -= absorbed;
+             Player.Hp -= amount-absorbed;
++            if (PlayerCombatWired) CombatApplyHitPoise();   // B07 draft: web rule (focus states, pStun guard, ccRes/stunRes)
++            else {
+             Player.Poise = Math.Max(0, Player.Poise-1);
+             if (Player.Poise <= 0) { Player.State = "pStun"; Player.StateTicks = 240; CancelKiCharge(); }
+             else if (!Player.KiChargeActive) { Player.State = "stagger"; Player.StateTicks = 6; }
++            }
+             if (Player.Hp <= 0) { Player.Hp=0; Player.State="fallen"; Player.StateTicks=300; Player.Iframes=9999; CancelKiCharge(); }
+         }
+     }

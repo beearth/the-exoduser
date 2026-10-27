@@ -1,0 +1,10 @@
+E:\exoduser-wt\pc-unity-a16\unity\Assets\Exoduser\Runtime\Core\ParryRules.cs(186,28): error CS0102: 'ParryRules' 형식에 이미 'SBlockRelease'에 대한 정의가 포함되어 있습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+
+빌드하지 못했습니다.
+
+E:\exoduser-wt\pc-unity-a16\unity\Assets\Exoduser\Runtime\Core\ParryRules.cs(186,28): error CS0102: 'ParryRules' 형식에 이미 'SBlockRelease'에 대한 정의가 포함되어 있습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+    경고 0개
+    오류 1개
+
+경과 시간: 00:00:10.01
+

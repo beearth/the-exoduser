@@ -1,0 +1,20 @@
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/ChainDash.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/ParryRules.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/PlayerPoise.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/ParryRewards.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/EnemyPoiseRules.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/Js.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+
+빌드하지 못했습니다.
+
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/ChainDash.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/ParryRules.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/PlayerPoise.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/ParryRewards.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/EnemyPoiseRules.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+CSC : error CS2001: 'E:\exoduser-wt\_out\pc-b07-impl\red-project/Assets/Exoduser/Runtime/Core/Js.cs' 소스 파일을 찾을 수 없습니다. [E:\exoduser-wt\pc-unity-a16\unity\Tools\dash-parry-oracle\DashParryTests.csproj]
+    경고 0개
+    오류 6개
+
+경과 시간: 00:00:02.20
+

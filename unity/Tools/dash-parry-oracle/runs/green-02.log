@@ -1,0 +1,16 @@
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:02.11
+
+
+DASH_PARRY_ORACLE 146580 checks / 867 failures
+  poiseAmount: {"dmg":0,"poiseMult":null,"isBoss":false,"atkEl":0,"isDot":false,"pImmune":0,"staggerBns":0,"poiseHit":true} amt C#=0 web=null
+  poiseAmount: {"dmg":0,"poiseMult":null,"isBoss":false,"atkEl":0,"isDot":false,"pImmune":0,"staggerBns":3.7,"poiseHit":true} amt C#=3 web=null
+  poiseAmount: {"dmg":0,"poiseMult":null,"isBoss":false,"atkEl":0,"isDot":false,"pImmune":1,"staggerBns":0,"poiseHit":true} amt C#=0 web=null
+  kiGather: {"kgChg":5} fizzle.chg C#=0 web=5
+  kiGather: {"kgChg":17} fizzle.chg C#=0 web=17
+  kiGather: {"kgChg":17.9} fizzle.chg C#=0 web=17.9
+
