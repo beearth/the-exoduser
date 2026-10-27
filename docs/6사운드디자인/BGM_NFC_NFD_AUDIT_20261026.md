@@ -176,7 +176,7 @@ for d in sfx img assets bgm sprites; do cp -r "G:/exoduser/$d/"* "G:/exoduser-DE
 | 항목 | 결과 |
 |---|---|
 | 사전 점검 | `G:\exoduser\bgm`·`G:\exoduser-DEMO\bgm`·`G:\exoduser-ea\bgm` reparse point(junction·symlink) **0개**. 제거 목록 71개 = key 각 조각 NFD 변환 후 `git ls-files -z bgm` 바이트 일치 71/71, 디스크에서 NFC·NFD 쌍 모두 존재·sha1 동일 71/71 |
-| origin/main 반영 | 별도 worktree(`sound/bgm-nfd-cleanup`, sparse)에서 `git rm --cached --sparse --pathspec-from-file … --pathspec-file-nul` 71경로 → 비강제 push **시도했으나 origin/main이 그 사이 전진해 non-fast-forward로 거부됨**(worktree 브랜치 `sound/bgm-nfd-cleanup` 커밋 `57100acf2`가 로컬에 보존, origin 미반영 — 사운드 총괄 판단 대기) |
+| origin/main 반영 | 별도 worktree(`sound/bgm-nfd-cleanup`, sparse)에서 `git rm --cached --sparse --pathspec-from-file … --pathspec-file-nul` 71경로 → 비강제 push. 검증 `git ls-tree -r --name-only origin/main bgm` = **81** (커밋 해시는 아래 표) |
 | 로컬 `G:\exoduser` main | `git rm --pathspec-from-file`(인덱스+파일) 71경로 → 그 71경로만 경로 지정 커밋. 빈 NFD 폴더 8개 `os.rmdir`. `git ls-files bgm` = **81** |
 | 제거 개수 | G: 71 (1,158.7 MB) · DEMO 71 (1,158.7 MB) · EA 71 (1,158.7 MB) |
 | DEMO/EA 방식 | 파일 단위: 같은 이름 NFC 파일이 있고 sha1 동일할 때만 `os.remove`, 파일이 빠진 NFD 폴더 8개만 `os.rmdir`. `rm -rf`·와일드카드·robocopy·탐색기 미사용. 남긴(해시 불일치·NFC 없음) NFD 파일 **0개**, `rmdir` 실패 0 |
@@ -190,7 +190,7 @@ for d in sfx img assets bgm sprites; do cp -r "G:/exoduser/$d/"* "G:/exoduser-DE
 | `bgm/1장_썩은숲/Rotten Forest - Ashen Gate B.mp3` | 5,072,481 B |
 | `bgm/1장_썩은숲/Rotten Forest - Ashen Gate.mp3` | 5,214,259 B |
 
-(합계 15,305,269 B ≈ 15.3 MB. 원본에 없는 옛 곡으로 추정 — 보존/삭제는 사운드 총괄 판단.)
+(합계 15,305,269 B ≈ 15.3 MB. **옛 곡이 아니라 Godot 1-1 데모 전용 Suno 신곡**(2026-10-21 `db6539b7e` "1-1 데모 전용 1장 필드 BGM 덮어쓰기", `claude/demo11-*` 브랜치에만 있고 origin/main 미반영). 웹 `game.html`은 참조하지 않는다. 보존 — 처리는 해당 브랜치 병합 여부를 따른다.)
 
 **Mac 후속:** pull 후 `git ls-files bgm | wc -l` = 81 확인 → NFC `bgm/…` 파일이 사라졌으면 `git restore bgm` → Mac 저장소에서 `git config core.precomposeunicode true` 확인.
 
@@ -198,8 +198,7 @@ for d in sfx img assets bgm sprites; do cp -r "G:/exoduser/$d/"* "G:/exoduser-DE
 
 | 대상 | 해시 |
 |---|---|
-| origin/main 정리 커밋 | 미반영(push 거부) — 로컬 worktree 브랜치 `57100acf2` |
+| origin/main 정리 커밋 | `758efa140` (첫 push는 origin 전진으로 non-fast-forward 거부 → 사운드 총괄이 최신 origin/main 위로 cherry-pick 후 비강제 push, `053c45bc2..758efa140`) |
 | 로컬 G: main 정리 커밋 | `db107b6f2` (71경로) |
 
 관련 문서: `SOUND_LEAD_MASTER_20261026.md` §2.3 SND-D1 · §3 SND-03 · `6사운드디자인.md`
-
