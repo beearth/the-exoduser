@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
   public void SetPlaybackFocus(bool focus)
   {
    if(focused==focus)return;
-   focused=focus;SetStartupAudioFocus(focus);if(!focus&&warriorStory!=null)warriorStory.CancelHold();if(movie==null||music==null)return;
+   focused=focus;SetStartupAudioFocus(focus);if(!focus){frontendPad.Reset();if(warriorStory!=null)warriorStory.CancelHold();}if(movie==null||music==null)return;
    movie.SetPlaybackAllowed(focus);
    if(!focus){musicWasPlayingOnBlur=music.isPlaying;music.Pause();}
    else if(musicWasPlayingOnBlur)

@@ -1,5 +1,17 @@
 # Mac 신규 전사 이야기 — 2026-10-25
 
+## 2026-10-27 기존 네이티브 패드 입력의 전사 이야기 연결
+
+`FrontendPadPolicy`는 Unity 입력 번호를 직접 해석하지 않는 순수 프레임 정책이다. `NativeLobby`가 현재 프로젝트의 Submit/Confirm(버튼 0), Cancel(버튼 1), 기존 Start 처리(버튼 7/9)를 읽어 전달한다. 웹 원본의 추가 Next 버튼 2/3을 새 물리 매핑으로 추정해 연결하지 않았다.
+
+| 화면·입력 ID | 적용 위치 | 동작·수치 | 범위 |
+|---|---|---|---|
+| 전사 이야기 Confirm Down | `NativeLobby.CharacterStory` → `NextCharacterStory` | 한 edge에 다음 cut 1회, 마지막 cut 뒤 기존 완료 경로 | 버튼 0 기존 매핑만 |
+| 전사 이야기 Cancel 또는 Start Held | `FrontendPadPolicy.Hold` → `WarriorStoryState.SetHeld("pad-skip")` | 기존 1.2초 hold, 해제·focus 이탈 시 0부터 재시작 | 버튼 1 및 기존 Start 7/9만 |
+| 진입·씬 전환·focus | `FrontendPadPolicy.Reset`/release fence | 눌린 버튼은 모두 해제되기 전 Next/Skip 0회; 프레임 번호당 판정 1회 | 캐릭터 저장·영상·컷·게이트 변경 없음 |
+
+순수 논리 Editor 검사 20/20은 프레임 중복, release/focus/씬 전환 fence, 1.2초 미만/초과 hold를 확인했다. Unity 6000.6.7f1 ARM64 Settings QA 빌드 1회 오류 0. **실제 OS 패드 입력과 모든 기종의 버튼 표기·웹 버튼 2/3 동등성은 미검수/HOLD**다. 기존 키보드·포인터와 로스터·미디어는 변경하지 않았다.
+
 2026-10-27 일반 생성 → 정본 영상 자연완주 → 네메시아 입장 시네마틱 → 시작 안내 1/4의 실제 키보드 QA는 [별도 시간표와 화면 증거](UNITY_MAC_WARRIOR_NATURAL_QA_20261027.md)에 기록했다. 네메시아 첫 대사는 영상 정지가 아니며 입력 대기다. 제품 코드 최종 변경 없이 PASS, 이번 청각 검수는 HOLD다.
 
 ## 2026-10-27 A04 생성 뒤 외형별 이야기 분기
@@ -35,7 +47,7 @@ PC 추출 메서드 검사는 수정 전 RED(외형 1의 이야기·입장 1/1),
 
 ## 원본 계약 인수와 첫 실행 검수
 
-[지원 원본 계약](UNITY_WARRIOR_STORY_SOURCE_20261025.md)을 인수했다. native는 기존 focus 시 영상 일시정지 정책을 유지하며, 원본 JS의 blur=hold취소와 구분한다. 원본과 같은 실패 후 자동진입에1.2초 실패문구만 표시한다. 키보드/마우스만 구현했으며 실제 패드와29언어글꼴/RTL은 미완료다.
+[지원 원본 계약](UNITY_WARRIOR_STORY_SOURCE_20261025.md)을 인수했다. native는 기존 focus 시 영상 일시정지 정책을 유지하며, 원본 JS의 blur=hold취소와 구분한다. 원본과 같은 실패 후 자동진입에1.2초 실패문구만 표시한다. 2026-10-25 당시 구현은 키보드/마우스만이었다. 위 2026-10-27 후속에서 기존 Confirm/Cancel/Start 논리 연결을 추가했지만 실제 OS 패드와29언어글꼴/RTL은 미검수다.
 
 소스 b45d7af0f42f9f1ce3d0516bd4a414b09b9cb856 ARM64빌드 오류0/1,533,203,669B. 모델41/41, 실제Player skip15/15·missing-video7/7 통과. 원본 첫자막·다음cue·hold해제/focus취소·gate·동일이름진입·중복슬롯없음·로비복귀시늦은진입취소를 확인했다. 자연완주 검수는 이어서 진행한다. AVFoundation은 원본 영상의 color primaries fallback 경고를 남겼으며 영상을 재인코딩하지 않았다. 색상 완전동등성을 주장하지 않는다.
 

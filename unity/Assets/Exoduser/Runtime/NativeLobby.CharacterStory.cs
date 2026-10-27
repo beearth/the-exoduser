@@ -24,20 +24,22 @@ namespace Exoduser.UnityPort
    if(warriorStoryData==null||warriorStoryData.cuts==null){characterError=K("캐릭터는 저장됐지만 이야기 자료를 읽지 못했습니다.","The character was saved, but story data could not be loaded.");return;}
    if(warriorStory==null)warriorStory=new WarriorStoryState(warriorStoryData.cuts);
    if(!warriorStory.Begin(Characters.SelectedName))return;
-   warriorSlot=Characters.SelectedIndex;warriorDecoderClosed=false;warriorError="";SubtitleText="";
+   warriorSlot=Characters.SelectedIndex;warriorDecoderClosed=false;warriorError="";SubtitleText="";frontendPad.Reset();
    StopMusic();movie.Open(warriorStoryData.video,false,false,false);movie.Volume(1);
   }
   public void NextCharacterStory(){if(!CharacterStoryActive||warriorStory.Entering||!movie.Prepared)return;double next=warriorStory.Next(movie.Time);if(next<0)warriorStory.Finish(true);else movie.Seek(next);}
   public void HoldCharacterStory(string source,bool held){if(warriorStory!=null)warriorStory.SetHeld(source,held);}
-  void CancelCharacterStory(){if(warriorStory!=null)warriorStory.Cancel();warriorSlot=-1;SubtitleText="";}
+  void CancelCharacterStory(){if(warriorStory!=null)warriorStory.Cancel();warriorSlot=-1;SubtitleText="";frontendPad.Reset();}
   void UpdateCharacterStory(float delta)
   {
    if(!CharacterStoryActive)return;
    if(!warriorStory.Entering){
     if(movie.Error.Length>0){warriorError=movie.Error;warriorStory.Finish(false);}
     else if(movie.Ended)warriorStory.Finish(true);
+    var pad=frontendPad.Step(FrontendPadPhase.Story,ReadFrontendPadFrame(),!AutomatedInput&&!characterInputFence);
+    HoldCharacterStory("pad-skip",pad.Hold);
     if(!AutomatedInput&&!characterInputFence){
-     if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.Space))NextCharacterStory();
+     if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.Space)||pad.Next)NextCharacterStory();
      HoldCharacterStory("keyboard-Escape",Input.GetKey(KeyCode.Escape));HoldCharacterStory("keyboard-Space",Input.GetKey(KeyCode.Space));
      if(!Input.GetMouseButton(0))HoldCharacterStory("pointer",false);
     }

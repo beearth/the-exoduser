@@ -16,6 +16,20 @@ PC UI/QA 확정에 따라 `NativeLobby.StartupPresentation.cs`의 4쪽 하단 no
 
 # UNITY Mac — 캐릭터 입장 이야기·최초 안내 연결
 
+## 2026-10-27 기존 패드 Confirm/Start 논리 분기
+
+전사 이야기와 공유하는 `FrontendPadPolicy`가 기존 네이티브 Confirm(버튼 0), Cancel(버튼 1), Start(기존 버튼 7/9) 읽기만 소비한다. `GuideRows`·표시 hint·키보드 Tab/Enter/Space·마우스·영상·저장은 그대로다.
+
+| 화면·입력 ID | 적용 위치 | 실제 분기·시간 | 검수 경계 |
+|---|---|---|---|
+| 네메시스 Confirm Down | `UpdateStartupEntry` | 현재 대사 전문 표시/다음 컷 `Advance` | 기존 버튼 0 |
+| 네메시스 Cancel Held / Start Down | `FrontendEntryFlow.Tick` / `Skip` | Cancel은 기존 2초 hold, Start는 즉시 Guide | 기존 버튼 1/7/9 |
+| 안내 1~4 Confirm Down | `UpdateStartupEntry` → `Advance` | 키보드 `guideSkipFocus`와 무관하게 다음; 기존 250ms gate 유지 | 기존 버튼 0 |
+| 안내 1~4 Start Down | `UpdateStartupEntry` → `Skip` | 즉시 Guide 종료; 같은 프레임 Confirm보다 우선 | 기존 버튼 7/9 |
+| 진입·페이지 전환·focus | `FrontendPadPolicy` | 현재 눌린 버튼 전부 해제 후 새 edge만 수용, 프레임당 1회 | 실제 OS 패드 입력 미검수 |
+
+순수 논리 Editor 검사 20/20과 ARM64 Settings QA 빌드 1회 오류 0을 확인했다. 이는 물리 패드·기종별 버튼 표기·전체 웹 패드 동등성 PASS가 아니다. 별도 X/Y/2/3 물리 매핑, 새 Input System package, 전투 `Simulation`/세이브 확장은 없다.
+
 ## ROOT 최종 인수 — 2026-10-25
 
 ROOT 통합 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제 시작 이야기·4쪽 안내·게임 입장 연결의 Player 렌더와 키보드 동선을 확인했다. `Q=/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025`; `Q/startup-capture-9dd5991/startup-capture.json`은20/20·ResetRun 증가1·입력 fence932→933·격리 roster를 확인한다. ROOT는 guide1~4·720/1080·네메시아 gradient·Guide 적 숨김/전환 복원 PNG를 직접 인수했다.

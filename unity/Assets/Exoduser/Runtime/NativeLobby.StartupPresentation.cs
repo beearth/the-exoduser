@@ -9,6 +9,14 @@ namespace Exoduser.UnityPort
   readonly FrontendEntryFlow startup=new FrontendEntryFlow();StartupIntroData startupData;
   Texture2D[] nemesisArt;Texture2D loadingLogo,startupBarrier,startupShade,startupSubtitleGradient,startupGuideGradient;AudioSource startupAudio;AudioClip enterSound,wakeupSound;
   FrontendEntryPage startupShown;int startupLine=-1;float nemesisMusicDelay=-1,stageMusicDelay=-1,startupSfxGain=.6f;bool guideSkipFocus,startupInputFence,keepStartupStageMusic,startupVoiceWasPlaying;
+  readonly FrontendPadPolicy frontendPad=new FrontendPadPolicy();
+  static FrontendPadFrame ReadFrontendPadFrame(){return new FrontendPadFrame{
+   Number=Time.frameCount,
+   ConfirmDown=Input.GetKeyDown(KeyCode.JoystickButton0),ConfirmHeld=Input.GetKey(KeyCode.JoystickButton0),
+   CancelHeld=Input.GetKey(KeyCode.JoystickButton1),
+   StartDown=Input.GetKeyDown(KeyCode.JoystickButton7)||Input.GetKeyDown(KeyCode.JoystickButton9),
+   StartHeld=Input.GetKey(KeyCode.JoystickButton7)||Input.GetKey(KeyCode.JoystickButton9)
+  };}
   GUIStyle startupBody,startupName,startupHint,guideTitle,guideDialogue,guideText,guideKey,guideProgress,guideAction;
   internal FrontendEntryFlow StartupCaptureState {get{return startup;}}
   internal void CloseStartupCaptureMedia(){CancelStartupEntry();CancelCharacterStory();movie.Close();StopMusic();}
@@ -33,30 +41,33 @@ namespace Exoduser.UnityPort
    if(nemesisArt==null){nemesisArt=new Texture2D[21];for(int i=0;i<21;i++)nemesisArt[i]=Resources.Load<Texture2D>("Art/Startup/Nemesis/"+i.ToString("00"));loadingLogo=Resources.Load<Texture2D>("Art/Startup/loading_logo");}
    keepStartupStageMusic=false;StartupGameplayPrepared=false;
    if(!loadingAlreadyShown)PlayStartupEnter();CancelCharacterStory();movie.Close();StopMusic();
-   startup.Begin(lines,loadingAlreadyShown);startupShown=FrontendEntryPage.Idle;startupLine=-1;guideSkipFocus=false;startupInputFence=true;nemesisMusicDelay=-1;stageMusicDelay=-1;EnsureStartupMedia();return true;
+   startup.Begin(lines,loadingAlreadyShown);startupShown=FrontendEntryPage.Idle;startupLine=-1;guideSkipFocus=false;startupInputFence=true;frontendPad.Reset();nemesisMusicDelay=-1;stageMusicDelay=-1;EnsureStartupMedia();return true;
   }
   void StartStartupMusic(string key,float gain){StopMusic();music.clip=Resources.Load<AudioClip>("Audio/Startup/"+key);MusicGain(gain);if(music.clip!=null)music.Play();}
   void SetStartupAudioFocus(bool focus){if(startupAudio==null)return;if(!focus){startupVoiceWasPlaying=startupAudio.isPlaying;startupAudio.Pause();}else if(startupVoiceWasPlaying){startupAudio.UnPause();startupVoiceWasPlaying=false;}}
-  void CancelStartupEntry(){StartupGameplayPrepared=false;keepStartupStageMusic=false;startup.Cancel();if(startupAudio!=null)startupAudio.Stop();nemesisMusicDelay=-1;stageMusicDelay=-1;}
+  void CancelStartupEntry(){StartupGameplayPrepared=false;keepStartupStageMusic=false;startup.Cancel();frontendPad.Reset();if(startupAudio!=null)startupAudio.Stop();nemesisMusicDelay=-1;stageMusicDelay=-1;}
   void UpdateStartupEntry(float delta)
   {
    if(!startup.Active)return;
-   if(!focused){startup.Tick(0,false,false);return;}
+   if(!focused){frontendPad.Reset();startup.Tick(0,false,false);return;}
    if(startupInputFence&&!Input.anyKey&&!Input.GetMouseButton(0))startupInputFence=false;
    var before=startup.Page;
+   var pad=startup.Page==FrontendEntryPage.Nemesis||startup.Page==FrontendEntryPage.Guide
+    ?frontendPad.Step(startup.Page==FrontendEntryPage.Guide?FrontendPadPhase.Guide:FrontendPadPhase.Nemesis,ReadFrontendPadFrame(),!AutomatedInput&&!startupInputFence)
+    :default(FrontendPadDecision);
    if(!AutomatedInput&&!startupInputFence){
-    if(Input.GetKeyDown(KeyCode.Escape)||Input.GetKeyDown(KeyCode.JoystickButton7)||Input.GetKeyDown(KeyCode.JoystickButton9))startup.Skip();
-    else if(startup.Page==FrontendEntryPage.Nemesis&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.Z)||Input.GetKeyDown(KeyCode.JoystickButton0)))startup.Advance();
-    else if(startup.Page==FrontendEntryPage.Guide){if(Input.GetKeyDown(KeyCode.Tab))guideSkipFocus=!guideSkipFocus;else if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.JoystickButton0)){if(guideSkipFocus)startup.Skip();else startup.Advance();}}
+    if(Input.GetKeyDown(KeyCode.Escape)||pad.Skip)startup.Skip();
+    else if(startup.Page==FrontendEntryPage.Nemesis&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.Z)||pad.Next))startup.Advance();
+    else if(startup.Page==FrontendEntryPage.Guide){if(Input.GetKeyDown(KeyCode.Tab))guideSkipFocus=!guideSkipFocus;else if(pad.Next)startup.Advance();else if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.Space)){if(guideSkipFocus)startup.Skip();else startup.Advance();}}
    }
-   bool held=!AutomatedInput&&!startupInputFence&&(Input.GetKey(KeyCode.Space)||(startup.Page==FrontendEntryPage.Nemesis&&Input.GetKey(KeyCode.JoystickButton1)));
+   bool held=!AutomatedInput&&!startupInputFence&&(Input.GetKey(KeyCode.Space)||pad.Hold);
    startup.Tick(delta,held,focused);
-   if(startup.Page!=before){startupInputFence=true;guideSkipFocus=false;}
+   if(startup.Page!=before){startupInputFence=true;guideSkipFocus=false;frontendPad.Reset();}
    if(startup.Page!=startupShown){startupShown=startup.Page;if(startupShown==FrontendEntryPage.Nemesis){nemesisMusicDelay=.4f;StopMusic();}else if(startupShown==FrontendEntryPage.Guide){StartupGameplayPrepare?.Invoke();StartupGameplayPrepared=true;nemesisMusicDelay=-1;stageMusicDelay=.6f;EnsureStartupMedia();if(wakeupSound!=null)startupAudio.PlayOneShot(wakeupSound,startupSfxGain*startupSfxGain);} }
    if(nemesisMusicDelay>=0){nemesisMusicDelay-=delta;if(nemesisMusicDelay<0)StartStartupMusic("nemesis",.6f);}
    // The source fades Nemesis out and requests the stage track after 600ms.
    if(stageMusicDelay>=0){stageMusicDelay-=delta;if(music!=null)MusicGain(.6f*Mathf.Clamp01(stageMusicDelay/.5f));if(stageMusicDelay<0){StartStartupMusic("stage_first",.6f);keepStartupStageMusic=true;}}
-   if(startup.Page==FrontendEntryPage.Complete){startup.Cancel();Flow.SelectPreview();EnterNativeTest();startupInputFence=true;}
+   if(startup.Page==FrontendEntryPage.Complete){startup.Cancel();frontendPad.Reset();Flow.SelectPreview();EnterNativeTest();startupInputFence=true;}
   }
   void StartupStyles(){if(startupBody!=null)return;LobbyStyles();var f=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??normal.font;
    startupBody=new GUIStyle(normal){font=f,fontSize=19,wordWrap=true,richText=true};startupBody.normal.textColor=Color.white;
