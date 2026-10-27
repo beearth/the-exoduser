@@ -52,6 +52,7 @@ for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/exoduser/$f" "G:/exodus
 - **H5(웹) = `main`**: game.html·index.html·lang·`engine/fdg`(웹 런타임, game.html이 import)·Steam/NW 빌드·공통 기획 docs.
 - **Godot = `godot/main`** (동결, 607110d52). main에 `godot/`를 다시 넣지 않는다.
 - **Unity = `unity/main`** (10-27 신설, 시작점 = `codex/unity-mac-20261024` 끝). 작업 브랜치 `claude/unity-pc-*`·`codex/unity-*`는 `unity/main`으로만 병합하고, main으로는 병합하지 않는다. `unity/main` 안의 웹 파일은 이식 대조용 사본이라 고치지 않는다. Codex는 10-27 `unity/main`으로 전환했다(Codex 커밋으로 확인). `codex/unity-mac-20261024`는 퇴역 — 새 커밋 금지. PC→Codex 공지(INBOX)는 main과 `unity/main` 두 곳에 올린다. Unity 이식 문서(`docs/engine/UNITY_*`, INBOX)는 main에 둔다.
+- **Unity 리모델링 (2026-10-27 사용자 확정, 이식 단계 종료)**: 이식한 전투·시스템 Core(`unity/Assets/Exoduser/Runtime/Core`, 웹 원본 oracle 검증)는 그대로 쓰고 게임 규칙의 정답으로 삼는다. 표현은 Unity 도구로 새로 만든다: URP·Volume, Terrain·ProBuilder·NavMesh, Cinemachine, Timeline·Animator, VFX Graph·Shader Graph, Input System, Audio Mixer. 맵·보스는 웹을 따라 하지 않고 새로 설계한다. UI는 웹 그대로 유지한다.
 - 엔진 코드를 커밋하기 전에 지금 브랜치가 그 엔진 줄기인지 확인한다. 상세·이력: `docs/0마스터플랜/REPO_SYNC_ENGINE_SPLIT_20261027.md`
 
 ## 총괄 자율 결정 (2026-10-27 사용자 확정)
