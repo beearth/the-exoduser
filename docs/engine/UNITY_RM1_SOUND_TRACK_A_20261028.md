@@ -75,3 +75,16 @@
 | 날짜 | 내용 |
 |---|---|
 | 2026-10-28 | 트랙 A A1~A8 구현·Receipt/녹음 하니스. 믹서 에셋 생성(Duck 수치는 `ConfigureDuck`로 설정·읽기 확인). 덕킹 깊이는 미측정 |
+
+## 5. 2차 제출 측정 (사운드 총괄 §6.7 요청, 2026-10-28)
+
+| 항목 | 설정 | 측정(R2 타임라인, 30초, E 마법 3회 포함) |
+|---|---|---|
+| 피크 제어 | `SFX` 그룹 페이더 뒤 Compressor: 임계 −9.2 dB · attack 10 ms · release 40 ms · makeup 0 (Unity 압축기는 ratio가 없고 임계 위에서 attack/release로만 움직임). 임계는 `SfxCompThreshold`로 노출 | 최종 믹스 피크 **−4.44 dBFS**(0.600) · 압축기 끈 기준 대비 전체 RMS 변화 **−0.79 dB**. 같은 설정으로 세 번 잰 범위: 피크 −3.6~−4.4 dBFS, RMS 변화 −0.6~−1.0 dB(실행마다 보이스 겹침이 조금 달라 흔들림) |
+| 덕킹 | 임계 −45 dB · ratio 1.33(133 %) · attack 10 ms · release 250 ms. `Tell`의 Send는 **페이더 앞(pre-fader)**, 레벨 0 dB. 임계 −20 dB일 때는 사이드체인 레벨이 낮아 덕킹이 0 dB였음 | Ambience: Explore **−4.07 dB**, Boss **−4.18 dB**(예고 6회, 0.3초 창 RMS 비교, 같은 타임라인에서 Tell 이벤트만 뺀 녹음과 대조). EnemyHit: 같은 이펙트 설정이지만 A/B 녹음 내용이 예고 구간 밖에서도 달라(보이스 배정 차이로 추정) 직접 수치가 −5~−10 dB로 흔들려 **신뢰 못 함** |
+| 그룹 RMS (1초 창 중앙값 / 전체, dBFS) | 분리 녹음(다른 그룹 음원 mute) | Music Explore −30.5 / −29.2 · Music Boss(boss 트랙) −27.8 / −24.0 · Ambience Explore −38.7 / −38.7 · Ambience Boss −46.6 / −45.7 · SFX Explore −23.3 / −22.6 · SFX Boss −22.8 / −22.5 |
+| Ambience − Music (Explore, 중앙값) | | **−8.2 dB** (기준 ≤ −6) |
+| Ambience Boss − Explore | 스냅샷 −8 dB | 중앙값 **−7.84 dB**, 전체 RMS −7.06 dB. 1초 창별로는 거의 전부 −8.0 dB이고 예고음이 겹친 4개 창에서만 벗어남(분리 녹음에서 Tell 음원을 켜 둔 영향으로 추정) |
+| 기술 11(포자 꼬투리) | `seekerMines`는 P3 목록에 있음 | 이번 드루이드 타임라인(시드 13: 12기술 전부 등장)에 텔레그래프 1회 Receipt에 있음(`#11 seekerMines telegraph`, frame 6334, 녹음 106.8초) |
+
+주의: 덕킹 임계는 Tell 음원의 사이드체인 레벨(−7 dB 근처에서 시작)에 의존하므로, 예고음 시작 음량이 바뀌면 임계·ratio를 다시 맞춰야 한다(`Rm1SoundMixerBuilder.ConfigureDuck -duckThr -duckRatio -compThr ...`).

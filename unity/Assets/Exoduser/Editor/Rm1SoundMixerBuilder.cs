@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort.Editor
         static bool Fits(MethodInfo m, object[] args)
         {
             var ps = m.GetParameters();
-            for (int i = 0; i < ps.Length; i++) if (args[i] != null && !ps[i].ParameterType.IsAssignableFrom(args[i].GetType())) return false;
+            for (int i = 0; i < ps.Length; i++) { var pt = ps[i].ParameterType.IsByRef ? ps[i].ParameterType.GetElementType() : ps[i].ParameterType; if (args[i] != null && !pt.IsAssignableFrom(args[i].GetType())) return false; }
             return true;
         }
         static object Get(object target, string name)
@@ -41,6 +41,7 @@ namespace Exoduser.UnityPort.Editor
             var f = t.GetField(name, All); if (f != null) return f.GetValue(target);
             throw new MissingMemberException(t.Name + "." + name);
         }
+        static float F(string name, float fallback) { return float.Parse(Arg(name, fallback.ToString(System.Globalization.CultureInfo.InvariantCulture)), System.Globalization.CultureInfo.InvariantCulture); }
         static string Arg(string name, string fallback)
         {
             var a = Environment.GetCommandLineArgs(); for (int i = 0; i < a.Length - 1; i++) if (a[i] == name) return a[i + 1]; return fallback;
@@ -69,14 +70,37 @@ namespace Exoduser.UnityPort.Editor
                     {
                         if ((bool)Call(fx, "IsSend"))
                         {   // the Tell sends: full level (the default send level is silent)
-                            log.AppendLine("send on " + ((UnityEngine.Object)g).name + " before " + Call(fx, "GetValueForMixLevel", ctrl, snaps[0]));
-                            foreach (var s in snaps) Call(fx, "SetValueForMixLevel", ctrl, s, 0f);
-                            log.AppendLine("send on " + ((UnityEngine.Object)g).name + " now " + Call(fx, "GetValueForMixLevel", ctrl, snaps[0]) + " target " + (Get(fx, "sendTarget") != null));
+                            var mixGuid = Call(fx, "GetGUIDForMixLevel");
+                            log.AppendLine("send mixGuid=" + mixGuid + " enableWetMix=" + Get(fx, "enableWetMix") + " bypass=" + Get(fx, "bypass") + " target=" + ((UnityEngine.Object)Get(fx, "sendTarget")).name);
+                            foreach (var sn in snaps) { object[] args = { mixGuid, 0f }; bool has = (bool)Call(sn, "GetValue", args); log.AppendLine("  snapshot " + ((UnityEngine.Object)sn).name + " mixlevel stored=" + has + " value=" + args[1]); }
+                            foreach (var s in snaps) Call(s, "SetValue", mixGuid, F("-sendLevel", 0f));
+                            foreach (var sn in snaps) { object[] args = { mixGuid, 0f }; bool has = (bool)Call(sn, "GetValue", args); log.AppendLine("  after set: snapshot " + ((UnityEngine.Object)sn).name + " stored=" + has + " value=" + args[1]); }
+                            // the Send effect's own parameter is "Send level" (default -80 dB = silent); the wet mix level is a different thing
+                            foreach (var cand in new[] { "Send level", "Send Level", "Level" })
+                            {
+                                var guid = Call(fx, "GetGUIDForParameter", cand);
+                                bool ok = (bool)Call(fx, "ContainsParameterGUID", guid);
+                                log.AppendLine("send on " + ((UnityEngine.Object)g).name + " param '" + cand + "' valid=" + ok + (ok ? " before " + Call(fx, "GetValueForParameter", ctrl, snaps[0], cand) : ""));
+                                if (!ok) continue;
+                                foreach (var s in snaps) Call(s, "SetValue", guid, F("-sendLevel", 0f));
+                                log.AppendLine("send on " + ((UnityEngine.Object)g).name + " '" + cand + "' now " + Call(fx, "GetValueForParameter", ctrl, snaps[0], cand) + " target " + (Get(fx, "sendTarget") != null));
+                                break;
+                            }
+                            continue;
+                        }
+                        if ((string)Get(fx, "effectName") == "Compressor")
+                        {   // peak control behind the SFX fader (Unity's compressor has no ratio: above the threshold the gain follows the attack / release)
+                            foreach (var kv in new[] { new KeyValuePair<string, float>("Threshold", F("-compThr", -9.2f)), new KeyValuePair<string, float>("Attack", F("-compAtk", 10f)), new KeyValuePair<string, float>("Release", F("-compRel", 40f)), new KeyValuePair<string, float>("Make up gain", F("-compMakeup", 0f)) })
+                            {
+                                var guid = Call(fx, "GetGUIDForParameter", kv.Key);
+                                foreach (var s in snaps) Call(s, "SetValue", guid, kv.Value);
+                                log.AppendLine("compressor " + kv.Key + " now " + Call(fx, "GetValueForParameter", ctrl, snaps[0], kv.Key));
+                            }
                             continue;
                         }
                         if (!(bool)Call(fx, "IsDuckVolume")) continue;
                         log.AppendLine("duck on " + ((UnityEngine.Object)g).name);
-                        foreach (var kv in new[] { new KeyValuePair<string, float>("Threshold", -20f), new KeyValuePair<string, float>("Ratio", 1.5f), new KeyValuePair<string, float>("Attack Time", .01f), new KeyValuePair<string, float>("Release Time", .25f), new KeyValuePair<string, float>("Knee", 0f) })
+                        foreach (var kv in new[] { new KeyValuePair<string, float>("Threshold", F("-duckThr", -45f)), new KeyValuePair<string, float>("Ratio", F("-duckRatio", 1.33f)), new KeyValuePair<string, float>("Attack Time", .01f), new KeyValuePair<string, float>("Release Time", .25f), new KeyValuePair<string, float>("Knee", 0f) })
                         {
                             var guid = Call(fx, "GetGUIDForParameter", kv.Key);
                             log.AppendLine("  " + kv.Key + " guid=" + guid + " contains=" + Call(fx, "ContainsParameterGUID", guid));
@@ -93,7 +117,7 @@ namespace Exoduser.UnityPort.Editor
 
         static void BuildInner(StringBuilder log)
         {
-            if (File.Exists(AssetPath)) throw new InvalidOperationException("Exoduser.mixer already exists: delete it first to rebuild");
+            if (File.Exists(AssetPath)) { if (Array.IndexOf(Environment.GetCommandLineArgs(), "-force") < 0) throw new InvalidOperationException("Exoduser.mixer already exists: pass -force to rebuild"); AssetDatabase.DeleteAsset(AssetPath); }
             var controllerType = FindType("UnityEditor.Audio.AudioMixerController");
             var effectType = FindType("UnityEditor.Audio.AudioMixerEffectController");
             var exposedType = FindType("UnityEditor.Audio.ExposedAudioParameter");
@@ -127,7 +151,7 @@ namespace Exoduser.UnityPort.Editor
             foreach (var target in new[] { sub["EnemyHit"], ambience })
             {
                 var duck = AddEffect(target, "Duck Volume", 0);
-                var send = AddEffect(tell, "Send", ((Array)Get(tell, "effects")).Length);
+                var send = AddEffect(tell, "Send", 0);   // pre-fader: the sidechain does not depend on the Tell fader
                 effectType.GetProperty("sendTarget", All).SetValue(send, duck);
                 foreach (var s in snaps)
                 {
@@ -142,18 +166,25 @@ namespace Exoduser.UnityPort.Editor
                 foreach (var name in new[] { "Threshold", "Ratio", "Attack Time", "Release Time", "Knee" })
                     log.AppendLine("duck on " + ((UnityEngine.Object)target).name + " " + name + " = " + Call(duck, "GetValueForParameter", ctrl, snaps[0], name));
             }
+            // peak control: a Compressor behind the SFX fader (RM-1 sound 2nd submission); its threshold is exposed so a measurement pass can switch it off
+            var comp = AddEffect(sfx, "Compressor", ((Array)Get(sfx, "effects")).Length);
+            foreach (var name in new[] { "Threshold", "Ratio", "Attack", "Release", "Make up gain" })
+            {
+                object guid = Call(comp, "GetGUIDForParameter", name);
+                log.AppendLine("compressor " + name + " guid ok=" + Call(comp, "ContainsParameterGUID", guid) + " default=" + Call(comp, "GetValueForParameter", ctrl, snaps[0], name));
+            }
             // Boss snapshot: Ambience -8 dB
             Call(ambience, "SetValueForVolume", ctrl, snaps[1], -8f);
             Call(ambience, "SetValueForVolume", ctrl, snaps[0], 0f);
 
             // exposed settings volumes: SfxVol (SFX group), MusicVol (Music group). The forest bed follows the SFX volume in code (a mixer parameter would fight the Boss snapshot).
-            var exposed = Array.CreateInstance(exposedType, 2);
-            foreach (var pair in new[] { new { name = "SfxVol", group = sfx }, new { name = "MusicVol", group = music } })
+            var exposed = Array.CreateInstance(exposedType, 4);
+            foreach (var pair in new[] { new { name = "SfxVol", group = sfx, fx = (object)null }, new { name = "MusicVol", group = music, fx = (object)null }, new { name = "TellVol", group = tell, fx = (object)null }, new { name = "SfxCompThreshold", group = sfx, fx = comp } })
             {
                 object item = Activator.CreateInstance(exposedType);
-                exposedType.GetField("guid").SetValue(item, Call(pair.group, "GetGUIDForVolume"));
+                exposedType.GetField("guid").SetValue(item, pair.fx != null ? Call(pair.fx, "GetGUIDForParameter", "Threshold") : Call(pair.group, "GetGUIDForVolume"));
                 exposedType.GetField("name").SetValue(item, pair.name);
-                exposed.SetValue(item, pair.name == "SfxVol" ? 0 : 1);
+                exposed.SetValue(item, pair.name == "SfxVol" ? 0 : pair.name == "MusicVol" ? 1 : pair.name == "TellVol" ? 2 : 3);
             }
             controllerType.GetProperty("exposedParameters", All).SetValue(ctrl, exposed);
             EditorUtility.SetDirty((UnityEngine.Object)ctrl);

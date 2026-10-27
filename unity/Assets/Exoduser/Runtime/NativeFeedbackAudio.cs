@@ -135,7 +135,7 @@ namespace Exoduser.UnityPort
             Receipt.requested++;
             if(e.Source!=null){HandleLogical(e);return;}
             if(!clips.ContainsKey(e.SampleKey))throw new NotSupportedException("Audio sample outside admitted scope "+e.SampleKey);
-            double now=Time.realtimeSinceStartupAsDouble;var r=Make(e.SampleKey,e.Volume,e.QueuedRate,e.X!=0||e.Y!=0?World(e):Vector3.zero);
+            double now=Time.realtimeSinceStartupAsDouble;var r=Make(e.SampleKey,e.Volume,e.QueuedRate,e.X!=0||e.Y!=0?World(e):Vector3.zero,e);
             if(e.SampleKey=="fireball"){r.volume=.9f;r.pitch=Jitter(.7f,.1f);}   // section 6.6: start values of the web E spell cast (vol .9, rate .7 +-.1), the Core only says 'a fireball was cast'
             if(e.SampleKey.StartsWith("tell_",StringComparison.Ordinal)){   // AD3: the same telegraph key at most once per 120 ms
                 if(lastAt.TryGetValue(e.SampleKey,out double lastTell)&&now-lastTell<.12){Receipt.dropped++;return;}

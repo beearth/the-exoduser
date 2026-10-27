@@ -62,7 +62,9 @@ static class P
             if (tick % 240 == 120) s.QueueRoll(tick / 240 % 4);
             p.Poise = 4; if (p.State == "pStun" || p.State == "stagger") { p.State = "idle"; p.StateTicks = 0; }   // the fixture keeps the player on his feet
             if (tick % 14 == 0) { var live = s.Enemies.Where(q => q.Alive).ToList(); if (live.Count > 0) { var tg = live[(tick / 14) % live.Count]; if ((tick / 14) % 9 == 0) { tg.Hp = Math.Min(tg.Hp, 60); tg.Shield = 0; } s.HurtEnemy(tg, 140, (float)Math.Atan2(tg.Y - p.Y, tg.X - p.X)); } }   // a steady stream of hits, kills and crits
-            s.Tick(mx, my, ax, ay, true, false);
+            p.Mana = p.MaxMana;
+            s.SetMagicInput(tick % 600 >= 300 && tick % 600 < 306);   // the E spell (fireball): a short press every 10 s, once released after one cast
+            s.Tick(mx, my, ax, ay, tick % 600 >= 300 && tick % 600 < 306 ? false : true, false);
             Drain(s, rows);
         }
         Console.WriteLine("r2 kills=" + s.Kills + " damage=" + s.TotalDamage + " hurtPlayer=" + s.HurtCount + " enemiesNow=" + string.Join(",", s.Enemies.Where(e => e.Alive).Select(e => e.Etype + ":" + e.Hp + "@" + (int)Math.Sqrt((e.X - p.X) * (e.X - p.X) + (e.Y - p.Y) * (e.Y - p.Y)))) + " playerState=" + p.State);
@@ -71,9 +73,9 @@ static class P
     }
 
     // the whole remodelled druid fight (arena entry -> P1 -> P2 -> P3 -> sink), the same scripted player as Tools/druid-remodel-test
-    static void Druid(string outDir)
+    static void Druid(string outDir, uint seed)
     {
-        var s = new Simulation(new SimulationConfig { StageIndex = 0, DifficultyIndex = 5, EnemyAiEnabled = true, PlayerMaxHp = 2000000, PlayerBaseAttack = 40 }, 11);
+        var s = new Simulation(new SimulationConfig { StageIndex = 0, DifficultyIndex = 5, EnemyAiEnabled = true, PlayerMaxHp = 2000000, PlayerBaseAttack = 40 }, seed);
         s.DruidRemodel = true; s.Player.Level = 8; s.Player.Hp = s.Player.MaxHp; s.AttachDruidBoss();
         s.Stage.Enabled = true; s.Stage.FieldBossDone = true; s.Stage.BossUnlocked = true;
         s.Stage.Exits.Add(new StageFlow.Tile(100, 7)); s.Player.X = 100.5f * 40; s.Player.Y = 7.5f * 40; s.Stage.CheckT = 29;
@@ -95,13 +97,14 @@ static class P
             s.Tick(0, 0, boss.X, boss.Y, false, false); Drain(s, rows);
         }
         for (int i = 0; i < 300; i++) { p.Hp = p.MaxHp; p.Iframes = 600; s.Tick(0, 0, p.X + 100, p.Y, false, false); Drain(s, rows); }
-        Write(Path.Combine(outDir, "timeline-druid.json"), rows, "1-1 druid fight: arena entry, P1-P3, sink (real Simulation, DruidRemodel on)");
+        Console.WriteLine("druid seed " + seed + " moves: " + string.Join(",", s.Druid.MoveLog.GroupBy(m => m.Move).Select(g => g.Key + "x" + g.Count())));
+        Write(Path.Combine(outDir, "timeline-druid.json"), rows, "1-1 druid fight: arena entry, P1-P3, sink (real Simulation, DruidRemodel on, seed " + seed + ")");
         Console.WriteLine("druid rows=" + rows.Count + " ticks=" + s.TickCount + " kinds=" + string.Join(",", rows.GroupBy(r => r.Kind + ":" + r.Key).Select(g => g.Key + "x" + g.Count())));
     }
 
     static int Main(string[] args)
     {
         string outDir = args.Length > 0 ? args[0] : "."; Directory.CreateDirectory(outDir);
-        R2(outDir); Druid(outDir); return 0;
+        uint seed = args.Length > 1 ? uint.Parse(args[1]) : 11; if (args.Length < 3 || args[2] != "druid-only") R2(outDir); Druid(outDir, seed); return 0;
     }
 }
