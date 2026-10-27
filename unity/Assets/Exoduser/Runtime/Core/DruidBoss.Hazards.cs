@@ -142,7 +142,7 @@ namespace Exoduser.UnityPort.Core
             UpdateTideWaves();
             UpdateSeekerMines();
             UpdatePoisonPools();
-            if (DruidStage && bossAliveFlag) { UpdateRhythmVolley(); UpdateOrbs(); }
+            if (DruidStage && bossAliveFlag && !Remodel) { UpdateRhythmVolley(); UpdateOrbs(); }   // remodel: not among the 12 moves
             UpdateLavaPools();
         }
 

@@ -62,9 +62,14 @@ namespace Exoduser.UnityPort
   }
   // ---- primitives ----
   static void HLine(float x,float y,float w,Color c){Fill(new Rect(x,y,w,1),c);}
+  static Texture2D diamondTex;
+  // Filled diamond as a texture: GUIUtility.RotateAroundPivot is wrong under a scaled matrix inside a group.
   void Diamond(float cx,float cy,float size,Color c)
   {
-   var old=GUI.matrix;var oc=GUI.color;GUIUtility.RotateAroundPivot(45,new Vector2(cx,cy));GUI.color=c;GUI.DrawTexture(new Rect(cx-size/2,cy-size/2,size,size),Texture2D.whiteTexture);GUI.color=oc;GUI.matrix=old;
+   if(diamondTex==null){const int n=32;diamondTex=new Texture2D(n,n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var px=new Color[n*n];
+    for(int y=0;y<n;y++)for(int x=0;x<n;x++){float d=Mathf.Abs((x+.5f)/n-.5f)+Mathf.Abs((y+.5f)/n-.5f);px[y*n+x]=new Color(1,1,1,Mathf.Clamp01((.5f-d)*n*.7f));}
+    diamondTex.SetPixels(px);diamondTex.Apply(false,true);}
+   var oc=GUI.color;GUI.color=c;float h=size*1.42f;GUI.DrawTexture(new Rect(cx-h/2,cy-h/2,h,h),diamondTex);GUI.color=oc;
   }
   string FmtCap(int cap){return cap==0?W("v.unlimited","Unlimited"):cap.ToString();}
   int GetVal(OptionDef d)
@@ -189,10 +194,9 @@ namespace Exoduser.UnityPort
    for(int i=0;i<4;i++)
    {
     string s=W(keys[i],fb[i]);float w=TW(s,18,FontStyle.Bold)+4;var r=new Rect(x,213,w,42);bool sel=tab==i;
-    PointAt(r,i);
-    Txt(new Rect(x+2,213+8,w,22),s,18,sel?Title:Sub,TextAnchor.MiddleLeft,FontStyle.Bold);
-    if(sel)Fill(new Rect(x,253,w,2),new Color32(176,40,28,255));
-    FocusBorder(r,i);
+    PointAt(r,i);bool focus=navigation.Focused&&navigation.Cursor==i;
+    Txt(new Rect(x+2,213+8,w,22),s,18,sel?Title:focus?Bone:Sub,TextAnchor.MiddleLeft,FontStyle.Bold);
+    if(sel)Fill(new Rect(x,253,w,2),new Color32(176,40,28,255));else if(focus)Fill(new Rect(x,253,w,1),Line);
     if(GUI.Button(r,GUIContent.none,GUIStyle.none)){if(tab!=i){tab=i;openSelect=-1;}navigation.Fence();}
     x+=w+40;
    }
@@ -414,8 +418,8 @@ namespace Exoduser.UnityPort
    if(character)
    {
     string[] parts=W("char."+idx,"").Split('\u0002');
-    Texture2D emblem=Resources.Load<Texture2D>(idx==0?"Art/CharacterSelect/emblem_warrior":"Art/CharacterSelect/emblem_silvertail");
-    if(emblem!=null)GUI.DrawTexture(new Rect(r.x+r.width/2-44,r.y+14,88,88),emblem,ScaleMode.ScaleToFit,true);
+    Texture2D sprite=Resources.Load<Texture2D>("Art/ui/settings/char_"+idx);
+    if(sprite!=null){sprite.filterMode=FilterMode.Point;GUI.DrawTexture(new Rect(r.x+r.width/2-44,r.y+14,88,88),sprite,ScaleMode.ScaleToFit,true);}
     Txt(new Rect(r.x+8,r.y+118,r.width-16,24),parts.Length>0?parts[0]:"",16,sel?Title:Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
     var desc=St(13,FontStyle.Normal,Dim,TextAnchor.UpperCenter);desc.wordWrap=true;
     GUI.Label(new Rect(r.x+14,r.y+146,r.width-28,48),parts.Length>1?parts[1]:"",desc);

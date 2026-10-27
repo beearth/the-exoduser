@@ -14,9 +14,17 @@ namespace Exoduser.UnityPort.Core
 
         void StartPattern(EnemyState e, DruidData d, BossMove mv, double dist, int phase, int extraDelay)
         {
-            d.AtkParryable = Parryable.Contains(mv.Id);
-            int tele = I(mv.Tele * DruidBossData.Phases[phase].TeleM) + extraDelay;
+            d.AtkParryable = (Remodel ? DruidRemodelData.Parryable : Parryable).Contains(mv.Id);
+            int tele = I(mv.Tele * Ph(phase).TeleM) + extraDelay;
             double px = host.PX, py = host.PY;
+            if (Remodel)
+            {
+                if (MoveLog != null) MoveLog.Add(new MoveLogEntry { Tick = Clock != null ? Clock() : Tick, Phase = phase, Move = mv.Id });
+                if (!d.RmFire && DruidRemodelData.Instant.Contains(mv.Id))
+                {   // the web fires these the moment they are picked; the remodel shows the telegraph first (spec §4: it never gets shorter)
+                    d.S = "bossRmWind"; d.St2 = Or(tele, 25); d.RmPending = mv; host.Text(d.X, d.Y - 30, "⚠", "#a9cc63", 40); return;
+                }
+            }
             switch (mv.Id)
             {
                 case "burst": d.S = "bossBurstWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "⚠ 광역 발사!", "#ff6600", 50); break;
@@ -33,22 +41,29 @@ namespace Exoduser.UnityPort.Core
                 case "summon": d.S = "bossSummonWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "👹 소환!", "#aa00ff", 50); break;
                 case "grab":
                     if (dist < 120) { d.S = "bossGrabWind"; d.St2 = Or(tele, 40); d.GrabWindMax = d.St2; d.GrabAng = d.Facing; host.Text(d.X, d.Y - 30, "🖐 잡기!", "#cc00ff", 45); }
-                    else { d.S = "bossChargeWind"; d.St2 = Or(I(55 * DruidBossData.Phases[phase].TeleM) + extraDelay, 55); host.Text(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); }
+                    else { d.S = "bossChargeWind"; d.St2 = Or(I(55 * Ph(phase).TeleM) + extraDelay, 55); host.Text(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); }
                     break;
                 case "spin": d.S = "bossSpinWind"; d.St2 = Or(tele, 35); d.SpinAng = 0; host.Text(d.X, d.Y - 30, "🌀 회전참!", "#ff6644", 45); break;
                 case "mine": d.S = "bossMineWind"; d.St2 = Or(tele, 30); host.Text(d.X, d.Y - 30, "💣 지뢰!", "#5e10a8", 40); break;
                 case "multiDash": d.S = "bossMultiDashWind"; d.St2 = Or(tele, 20); d.DashCnt = 4 + I(phase * 1.5); d.DashIdx = 0; host.Text(d.X, d.Y - 30, "⚡ 연격!", "#ff4488", 45); break;
-                case "slashCombo": d.S = "bossSlashWind"; d.St2 = Or(tele, 20); d.SlashCnt = 3 + I(phase * 1.5); d.SlashIdx = 0; d.WeaponAng = 0; host.Text(d.X, d.Y - 30, "⚔ 난타!", "#ff8844", 45); break;
+                case "slashCombo": d.S = "bossSlashWind"; d.St2 = Or(tele, 20); d.SlashCnt = Remodel ? 3 : 3 + I(phase * 1.5); d.SlashIdx = 0; d.WeaponAng = 0; host.Text(d.X, d.Y - 30, "⚔ 난타!", "#ff8844", 45); break;
                 case "slam": d.S = "bossSlamWind"; d.St2 = Or(tele, 35); d.WeaponAng = -1.2; host.Text(d.X, d.Y - 30, "💥 강타!", "#ff4400", 50); break;
                 case "sweep": d.S = "bossSweepWind"; d.St2 = Or(tele, 25); d.WeaponAng = -.8; d.SweepDir = R() > .5 ? 1 : -1; host.Text(d.X, d.Y - 30, "🌀 휘두르기!", "#ffaa00", 40); break;
+                case "heartbeat": d.S = "bossHeartWind"; d.St2 = Or(tele, DruidRemodelData.HeartbeatBeatWind); d.HbBeat = 0; host.Text(d.X, d.Y - 30, "♥", "#aa2222", 50); host.Fx("druidHeartbeatWind", d.X, d.Y, d.R); break;
                 case "burrowStrike":
                     d.TeleOx = d.X; d.TeleOy = d.Y; d.Facing = Atan2(py - d.Y, px - d.X);
                     d.S = "bossDruidDive"; d.St2 = Or(tele, 50); d.DiveMax = Or(tele, 50); host.Text(d.X, d.Y - 30, "🌿⚠", "#66dd22", 60); break;
                 case "beanStorm": d.S = "bossBeanStormWind"; d.St2 = Or(tele, 25); d.BsWave = 0; d.BsMaxWave = 3 + I(phase); host.Text(d.X, d.Y - 30, "🔴 빨간콩 폭풍!", "#cc1100", 50); break;
                 case "chaseAoe":
+                    if (Remodel)
+                    {   // spec #8: chase zones with a 20 f warning each + the poison trail the boss leaves on his way (no charge)
+                        ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = DruidRemodelData.ChaseZoneCount, T = 0, Interval = 60, R = DruidRemodelData.ChaseZoneRadius, Delay = DruidRemodelData.ChaseZoneWarn, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage });
+                        host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
+                        d.PtAng = Atan2(py - d.Y, px - d.X); d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = 50; break;
+                    }
                     ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = 10, T = 0, Interval = 60, R = 450, Delay = 90, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage });
                     host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
-                    d.S = "bossChargeWind"; d.St2 = Or(I(40 * DruidBossData.Phases[phase].TeleM) + extraDelay, 40);
+                    d.S = "bossChargeWind"; d.St2 = Or(I(40 * Ph(phase).TeleM) + extraDelay, 40);
                     d.Facing = Atan2(py - d.Y, px - d.X); host.Text(d.X, d.Y - 45, "⚠ 돌진!", "#ffaa00", 40); break;
                 case "elemBall":
                     {
@@ -76,7 +91,7 @@ namespace Exoduser.UnityPort.Core
                     }
                 case "tideWave":
                     {
-                        int n = 2 + Math.Min(d.BossPhase, 2);
+                        int n = Remodel ? 1 : 2 + Math.Min(d.BossPhase, 2);   // remodel: one ring, one gap (spec #10)
                         for (int ti = 0; ti < n; ti++)
                         {
                             double gap = R() * Math.PI * 2;
@@ -86,7 +101,7 @@ namespace Exoduser.UnityPort.Core
                     }
                 case "seekerMines":
                     {
-                        int n = 3 + Math.Min(d.BossPhase, 2);
+                        int n = Remodel ? 3 : 3 + Math.Min(d.BossPhase, 2);   // remodel: three mines (spec #11)
                         for (int mi = 0; mi < n; mi++)
                         {
                             double ma = d.Facing + Math.PI * 2 * mi / n;
@@ -149,13 +164,20 @@ namespace Exoduser.UnityPort.Core
                             d.St2 = 40 + I(R() * 20);
                         }
                         // generic ranged charge (projCd 50)
-                        if (d.ProjCd < 9000 && !(d.ProjChargeT > 0))
+                        if (!Remodel && d.ProjCd < 9000 && !(d.ProjChargeT > 0))
                         {
                             d.ProjT -= 1;
                             if (d.ProjT <= 0 && dist < 400) { d.ProjT = d.ProjCd; d.ProjChargeBean = "normal"; d.ProjChargeT = 60; }
                         }
                         break;
                     }
+                case "bossRmWind":
+                    d.Facing = Atan2(py - d.Y, px - d.X);
+                    if (d.St2 <= 0) { var pend = d.RmPending; d.RmPending = null; d.RmFire = true; StartPattern(e, d, pend, dist, d.BossPhase, 0); d.RmFire = false; }
+                    break;
+                case "bossHeartWind":
+                    if (d.St2 <= 0) HeartbeatPulse(e, d);
+                    break;
                 case "bossBurstWind":
                     if (d.St2 <= 0)
                     {
@@ -236,12 +258,13 @@ namespace Exoduser.UnityPort.Core
                     if (d.St2 <= 0)
                     {
                         int cnt = 3 + I(stage * .5);
+                        if (Remodel) { cnt = 2 + I(R() * 2); cnt = Math.Min(cnt, DruidRemodelData.SummonMax - AliveMinions(d)); }   // spec #9: 2-3 mobs, at most 3 alive at once
                         int[] etypes = { 0, 2, 3, 3, 3 };
                         for (int si = 0; si < cnt; si++)
                         {
                             double a = Math.PI * 2 * si / cnt, sd = 50 + R() * 30, sx = d.X + Cos(a) * sd, sy = d.Y + Sin(a) * sd;
                             int el = I(R() * 6); int et = etypes[I(R() * 5)];
-                            host.SpawnMinion(sx, sy, el, et);
+                            var mn = host.SpawnMinion(sx, sy, el, et); if (Remodel && mn != null) d.Minions.Add(mn);
                         }
                         host.Text(d.X, d.Y - 20, cnt + "체 소환!", "#cc66ff", 40); d.S = "recover"; d.St2 = 70;
                     }
@@ -254,15 +277,17 @@ namespace Exoduser.UnityPort.Core
                         else { if (host.CanMove(d.X + gmx, d.Y, d.R)) d.X += gmx; else if (host.CanMove(d.X, d.Y + gmy, d.R)) d.Y += gmy; }
                         if (d.St2 <= 0)
                         {
-                            if (Dst(px, py, d.X, d.Y) < d.R + pr + 200 && host.PIframes <= 0) { d.S = "bossGrab"; d.St2 = 60; host.Text(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); }
+                            if (Dst(px, py, d.X, d.Y) < d.R + pr + 200 && host.PIframes <= 0) { d.S = "bossGrab"; d.St2 = Remodel ? DruidRemodelData.GrabTicks : 60; if (Remodel) GrabStart(e, d); host.Text(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); }
                             else { d.S = "recover"; d.St2 = 40; }
                         }
                         break;
                     }
                 case "bossGrab":
                     {
+                        if (Remodel && GrabEscaped(e, d)) break;   // spec #6: mashing breaks the hold (the absorption stops with it)
                         host.PX = d.X + Cos(d.GrabAng) * 25; host.PY = d.Y + Sin(d.GrabAng) * 25; host.StopPlayerKnock();
                         if (d.St2 % 10 == 0 && host.PIframes <= 0) host.HurtPlayer(I(d.Atk * .4), false);
+                        if (Remodel && d.St2 % 10 == 0) GrabAbsorb(e, d);
                         if (d.St2 <= 0)
                         {
                             host.HurtPlayer(I(d.Atk * 1.8), false);
@@ -368,16 +393,17 @@ namespace Exoduser.UnityPort.Core
                         double swProg = 1 - d.St2 / 10; d.WeaponAng = -.8 + swProg * 2.0;
                         double smx = Cos(d.Facing) * 2.5, smy = Sin(d.Facing) * 2.5;
                         if (host.CanMove(d.X + smx, d.Y + smy, d.R)) { d.X += smx; d.Y += smy; }
+                        if (Remodel) d.AtkParryable = d.SlashIdx < 2;   // spec #1: the big third swing cannot be parried
                         if (swProg > .3 && swProg < .7 && Dst(px, py, d.X, d.Y) < d.R + pr + 300 && host.PIframes <= 0)
                         {
                             double toP = Atan2(py - d.Y, px - d.X), aDiff = Math.Abs(((toP - d.Facing) % (Math.PI * 2) + (Math.PI * 3)) % (Math.PI * 2) - Math.PI);
-                            if (aDiff < 1.2) { if (!Parry(e, d, 3, 60, 20, d.Facing + Math.PI)) PlayerHit(e, d, 1.5, 7); }
+                            if (aDiff < 1.2) { if ((Remodel && d.SlashIdx >= 2) || !Parry(e, d, 3, 60, 20, d.Facing + Math.PI)) PlayerHit(e, d, 1.5, 7); }
                         }
                         if (d.St2 <= 0)
                         {
                             d.SlashIdx++;
-                            if (d.SlashIdx < d.SlashCnt) { d.Facing = Atan2(py - d.Y, px - d.X); d.S = "bossSlash"; d.St2 = 8 + I(R() * 4); d.WeaponAng = -.8; host.Shake(3); }
-                            else { d.S = "recover"; d.St2 = 25; d.WeaponAng = 0; host.Shake(5); }
+                            if (d.SlashIdx < d.SlashCnt) { d.Facing = Atan2(py - d.Y, px - d.X); d.S = "bossSlash"; d.St2 = Remodel ? 14 : 8 + I(R() * 4); d.WeaponAng = -.8; host.Shake(3); }
+                            else { d.S = Remodel ? "bossRec" : "recover"; d.St2 = Remodel ? 40 : 25; d.WeaponAng = 0; host.Shake(5); }   // remodel: bossRec keeps the full 40 f counter window (recover clamps to 20)
                         }
                         break;
                     }
@@ -394,9 +420,10 @@ namespace Exoduser.UnityPort.Core
                         double slProg = 1 - d.St2 / 8; d.WeaponAng = -1.2 + slProg * 2.4;
                         if (d.St2 <= 0)
                         {
-                            d.WeaponAng = 0; double slamR = 1000 + stage * 30 + d.BossPhase * 80, slamD = Dst(px, py, d.X, d.Y);
+                            d.WeaponAng = 0; double slamR = Remodel ? DruidRemodelData.SlamRadius : 1000 + stage * 30 + d.BossPhase * 80, slamD = Dst(px, py, d.X, d.Y);
                             if (slamD < slamR && host.PIframes <= 0) { if (!Parry(e, d, 4, 80, 20, d.Facing + Math.PI)) PlayerHit(e, d, 2.2, 14); }
                             d.ShockR = 0; d.ShockMax = slamR; host.Shake(14);
+                            if (Remodel && d.BossPhase >= 2) { PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = 240, R = DruidRemodelData.SlamRadius, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, DruidRemodelData.SlamRadius); }
                             d.S = "recover"; d.St2 = 40;
                         }
                         break;
@@ -454,7 +481,7 @@ namespace Exoduser.UnityPort.Core
                         double pmx = Cos(d.PtAng) * 5, pmy = Sin(d.PtAng) * 5;
                         if (host.CanMove(d.X + pmx, d.Y + pmy, d.R)) { d.X += pmx; d.Y += pmy; }
                         d.PtT += 1;
-                        if (d.PtT >= 8) { d.PtT -= 8; PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = 240, R = 175, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, 175); }
+                        if (d.PtT >= 8) { d.PtT -= 8; PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = Remodel ? DruidRemodelData.PoisonTrailTicks : 240, R = 175, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, 175); }
                         if (d.St2 <= 0) { d.S = "recover"; d.St2 = 25; }
                         break;
                     }
