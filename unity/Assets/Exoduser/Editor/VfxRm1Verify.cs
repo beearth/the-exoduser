@@ -26,5 +26,21 @@ namespace Exoduser
             }
             if (bad > 0) EditorApplication.Exit(1);
         }
+
+        // Block subgraphs must import as VisualEffectSubgraphBlock and expose their blocks; logs the asset names (import errors show as "Shader error"/exception lines in the editor log).
+        public static void Subgraphs()
+        {
+            AssetDatabase.Refresh();
+            int bad = 0;
+            foreach (var guid in AssetDatabase.FindAssets("", new[] { Dir + "/Subgraphs" }))
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                if (!path.EndsWith(".vfxblock")) continue;
+                var asset = AssetDatabase.LoadMainAssetAtPath(path);
+                Debug.Log("[VFXRM1] subgraph " + path + " loaded=" + (asset != null) + " type=" + (asset != null ? asset.GetType().Name : "-"));
+                if (asset == null) bad++;
+            }
+            if (bad > 0) EditorApplication.Exit(1);
+        }
     }
 }
