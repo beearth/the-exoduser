@@ -94,23 +94,113 @@ namespace Exoduser
             QualitySettings.SetQualityLevel(5, false);
         }
 
+        // RM0-LIGHT: art bible v2 §9 L-5 (weak key). Sun is nearly neutral-warm; crimson comes from pools (Pool_Hell_Test), not from the key.
+        public static readonly Color SunColor = new Color(1f, .95f, .92f);
+        public const float SunIntensity = 0.6f, SunShadowStrength = 0.85f, ReflectionIntensity = 0.6f;
+        public static readonly Color AmbientSky = new Color(.16f, .16f, .18f), AmbientEquator = new Color(.11f, .10f, .095f), AmbientGround = new Color(.05f, .04f, .036f);
+        public static readonly Color ColorFilter = new Color(1f, .98f, .97f);
+        public static readonly Color PoolColor = new Color(0xb0 / 255f, 0x28 / 255f, 0x1c / 255f);   // LIGHT-HELL #b0281c
+        const string EnvCubemapPath = "Assets/Exoduser/Remodel/Common/Lighting/Env_NeutralSteel.cubemap";
+
+        // Applies the key light and scene-wide lighting (ambient + custom reflection). Shared by the sandbox and the capture tools, so values cannot drift.
+        public static void ApplyHellLighting(Light sun)
+        {
+            sun.type = LightType.Directional; sun.color = SunColor; sun.intensity = SunIntensity; sun.shadows = LightShadows.Soft; sun.shadowStrength = SunShadowStrength;
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
+            RenderSettings.ambientSkyColor = AmbientSky; RenderSettings.ambientEquatorColor = AmbientEquator; RenderSettings.ambientGroundColor = AmbientGround;
+            RenderSettings.ambientIntensity = 1f;
+            RenderSettings.defaultReflectionMode = UnityEngine.Rendering.DefaultReflectionMode.Custom;
+            RenderSettings.customReflectionTexture = EnsureEnvCubemap();
+            RenderSettings.reflectionIntensity = ReflectionIntensity;
+        }
+
+        // 64px three-stop gradient (up / horizon / down), written in place when it already exists so the GUID stays stable.
+        public static Cubemap EnsureEnvCubemap()
+        {
+            var up = new Color(.30f, .31f, .34f); var hor = new Color(.17f, .16f, .16f); var down = new Color(.06f, .045f, .04f);
+            const int n = 64;
+            var cm = new Cubemap(n, TextureFormat.RGBA32, true);
+            for (int f = 0; f < 6; f++)
+            {
+                var px = new Color[n * n];
+                for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
+                {
+                    float u = (x + .5f) / n * 2f - 1f, v = 1f - (y + .5f) / n * 2f;   // v: +1 at the image top row
+                    Vector3 d;
+                    switch ((CubemapFace)f)
+                    {
+                        case CubemapFace.PositiveX: d = new Vector3(1, v, -u); break;
+                        case CubemapFace.NegativeX: d = new Vector3(-1, v, u); break;
+                        case CubemapFace.PositiveY: d = new Vector3(u, 1, -v); break;
+                        case CubemapFace.NegativeY: d = new Vector3(u, -1, v); break;
+                        case CubemapFace.PositiveZ: d = new Vector3(u, v, 1); break;
+                        default: d = new Vector3(-u, v, -1); break;
+                    }
+                    float dy = d.normalized.y;
+                    var c = dy >= 0 ? Color.Lerp(hor, up, dy) : Color.Lerp(hor, down, -dy);
+                    c.a = 1f; px[y * n + x] = c;
+                }
+                cm.SetPixels(px, (CubemapFace)f);
+            }
+            cm.Apply(true, false);
+            Directory.CreateDirectory(Path.GetDirectoryName(EnvCubemapPath));
+            var existing = AssetDatabase.LoadAssetAtPath<Cubemap>(EnvCubemapPath);
+            if (existing == null) { AssetDatabase.CreateAsset(cm, EnvCubemapPath); existing = cm; }
+            else { EditorUtility.CopySerialized(cm, existing); Object.DestroyImmediate(cm); EditorUtility.SetDirty(existing); }
+            return existing;
+        }
+
+        // Components must be sub-assets of the profile, otherwise the .asset keeps only null references (the e10b54d36 asset was saved empty).
+        static T Ensure<T>(VolumeProfile p) where T : VolumeComponent
+        {
+            if (p.TryGet(out T c)) return c;
+            c = p.Add<T>(true); c.name = typeof(T).Name;
+            AssetDatabase.AddObjectToAsset(c, p);
+            return c;
+        }
+
+        // Always (re)applies the values, so an existing GlobalVolume_Hell.asset is brought up to date and re-running changes nothing.
         static VolumeProfile CreateVolumeProfile()
         {
             var path = $"{Dir}/GlobalVolume_Hell.asset";
             var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(path);
-            if (profile != null) return profile;
-            profile = ScriptableObject.CreateInstance<VolumeProfile>();
-            AssetDatabase.CreateAsset(profile, path);
-            var tone = profile.Add<Tonemapping>(true); tone.mode.Override(TonemappingMode.ACES);
-            var bloom = profile.Add<Bloom>(true);
+            if (profile == null) { profile = ScriptableObject.CreateInstance<VolumeProfile>(); AssetDatabase.CreateAsset(profile, path); }
+            profile.components.RemoveAll(x => x == null);   // drop the null entries left by the empty e10b54d36 asset
+            Ensure<Tonemapping>(profile).mode.Override(TonemappingMode.ACES);
+            var bloom = Ensure<Bloom>(profile);
             bloom.threshold.Override(1.05f); bloom.intensity.Override(0.28f); bloom.scatter.Override(0.55f); bloom.tint.Override(new Color(1f, .82f, .72f));
-            var grade = profile.Add<ColorAdjustments>(true);
-            // Art bible v2: dark oxblood hell. Slightly under-exposed, contrast up, saturation held back, warm-red filter (no cold/blue cast).
-            grade.postExposure.Override(-0.15f); grade.contrast.Override(10f); grade.saturation.Override(-8f); grade.colorFilter.Override(new Color(1f, .93f, .9f));
-            var vig = profile.Add<Vignette>(true);
+            var grade = Ensure<ColorAdjustments>(profile);
+            // Art bible v2: dark oxblood hell. Slightly under-exposed, contrast up, saturation held back, light warm filter (no cold/blue cast; metal must read neutral).
+            grade.postExposure.Override(-0.15f); grade.contrast.Override(10f); grade.saturation.Override(-8f); grade.colorFilter.Override(ColorFilter);
+            var vig = Ensure<Vignette>(profile);
             vig.intensity.Override(0.28f); vig.smoothness.Override(0.55f); vig.color.Override(new Color(.07f, .025f, .02f));
             EditorUtility.SetDirty(profile);
             return profile;
+        }
+
+        // Pool_Hell_Test: one crimson test light so inside/outside of a "light pool" can be compared in the same cut (art bible L-4 rim light).
+        static void EnsurePool()
+        {
+            var go = GameObject.Find("Pool_Hell_Test"); if (go == null) go = new GameObject("Pool_Hell_Test");
+            go.transform.position = new Vector3(-3f, 0.3f, -2.5f);
+            var l = go.GetComponent<Light>(); if (l == null) l = go.AddComponent<Light>();
+            l.type = LightType.Point; l.color = PoolColor; l.range = 3.5f; l.intensity = 3f; l.shadows = LightShadows.None;
+        }
+
+        // `-executeMethod Exoduser.Rm0EngineSetup.ApplyLight`: brings the existing sandbox scene and Volume asset to the RM0-LIGHT values (idempotent).
+        public static void ApplyLight()
+        {
+            var profile = CreateVolumeProfile();
+            var scene = EditorSceneManager.OpenScene(ScenePath);
+            var sun = GameObject.Find("Hell Sun").GetComponent<Light>();
+            ApplyHellLighting(sun);
+            sun.transform.rotation = Quaternion.Euler(52, -35, 0);
+            GameObject.Find("Global Volume").GetComponent<Volume>().sharedProfile = profile;
+            EnsurePool();
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene, ScenePath);
+            AssetDatabase.SaveAssets();
+            Debug.Log("[RM0] light applied");
         }
 
         static Sprite CreateTestSprite()
@@ -175,8 +265,9 @@ namespace Exoduser
 
             // Directional sun (red-tinted) and Global Volume.
             var sunGo = new GameObject("Hell Sun");
-            var sun = sunGo.AddComponent<Light>(); sun.type = LightType.Directional; sun.color = new Color(1f, .62f, .5f); sun.intensity = 1.1f; sun.shadows = LightShadows.Soft;
+            var sun = sunGo.AddComponent<Light>(); ApplyHellLighting(sun);
             sunGo.transform.rotation = Quaternion.Euler(52, -35, 0);
+            EnsurePool();
             var volGo = new GameObject("Global Volume");
             var vol = volGo.AddComponent<Volume>(); vol.isGlobal = true; vol.sharedProfile = profile;
 
