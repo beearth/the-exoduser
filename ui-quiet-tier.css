@@ -1,0 +1,236 @@
+/* 조용한 단계(Quiet tier) — 설정 [ESC] · 2026-10-27
+ * 오래 읽는 화면은 바깥 틀(.pbox 이중 레일)과 상단 탭바(.panel-nav)만 두고, 안쪽은 장식 대신 여백·글자 위계·가는 선으로 정리한다.
+ * 색·폰트·재질 언어는 Hell Gothic 그대로. 범위는 #settings 안쪽뿐이다(다른 패널·공통 .panel 규칙은 건드리지 않음).
+ * 새 글자를 만들지 않는다: 토글은 기존 checkbox를 꾸미고, 분류 줄 "SETTINGS"만 영문 고정 ::before.
+ * 기존 규칙(ui-refinement.css 등)이 :is(#settings,…) :is(.frame-inner-panel,#skillInfo)처럼 ID 2개 특이도 + !important로 막고 있어,
+ * 선택자 앞에 #settings를 두 번 써서(#settings#settings) ID 특이도를 맞추고, 막힌 속성에만 !important를 쓴다. game.html 인라인 style도 !important로만 덮을 수 있다.
+ * 설계 근거: docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md "조용한 단계 — 설정", 컨셉 5장 U13.
+ */
+#settings.panel.ui-composed{--qt-line:rgba(164,147,115,.5);--qt-line-soft:rgba(164,147,115,.18);--qt-bone:#dfd6c2;--qt-title:#ebdaba;--qt-sub:#b6a58f;--qt-dim:#8f8170;--qt-brass:#ac7953;--qt-gap:64px;--qt-side:56px;}
+
+/* ── 바탕·틀 안쪽: 흑철 질감·장미창 제거, 아주 옅은 세로 그라데이션 ── */
+#settings#settings.panel.ui-composed .pbox{background:linear-gradient(180deg,#100d0c,#151110)!important;}
+
+/* ── T7 제목: 큰 돌 명패 대신 분류 줄 + 세리프 제목 + 헤어라인 ── */
+#settings#settings.panel.ui-composed .pbox>.ptitle{
+  display:block!important;position:relative!important;flex:0 0 auto!important;align-self:flex-start!important;
+  width:auto!important;height:auto!important;min-height:0!important;
+  margin:20px var(--qt-side) 0!important;padding:26px 0 12px!important;
+  background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;
+  text-align:left!important;letter-spacing:.02em!important;
+  font:800 40px/1.2 var(--font-hell),serif!important;color:var(--qt-title)!important;-webkit-text-fill-color:var(--qt-title)!important;text-shadow:none!important;
+}
+#settings#settings.panel.ui-composed .pbox>.ptitle::before{
+  content:'SETTINGS'!important;display:block!important;position:absolute!important;left:0!important;top:0!important;right:auto!important;transform:none!important;
+  width:auto!important;height:auto!important;border:0!important;border-radius:0!important;background:none!important;filter:none!important;box-shadow:none!important;
+  font:400 13px/1 'Cinzel',var(--font-hell),serif!important;letter-spacing:.14em!important;color:var(--qt-sub)!important;white-space:nowrap!important;
+}
+#settings#settings.panel.ui-composed .pbox>.ptitle::after{
+  content:''!important;position:absolute!important;inset:auto auto 0 0!important;width:120%!important;height:1px!important;
+  border:0!important;border-image:none!important;background:var(--qt-line)!important;pointer-events:none;
+}
+
+/* ── T1 하위 탭: 돌 판 대신 글자 탭, 선택 탭만 진홍 밑줄 ── */
+#settings#settings.panel.ui-composed .pbox .ui-section-tabs{
+  display:flex!important;gap:40px!important;align-items:flex-end!important;flex:0 0 auto!important;
+  margin:16px var(--qt-side) 0!important;padding:0!important;background:none!important;
+  border:0!important;border-bottom:1px solid rgba(164,147,115,.3)!important;box-shadow:none!important;
+}
+#settings#settings.panel.ui-composed .pbox .ui-section-tab,
+#settings#settings.panel.ui-composed .pbox .ui-section-tab[aria-selected=true]{
+  flex:0 0 auto!important;position:relative;min-height:0!important;margin:0!important;padding:8px 2px 12px!important;
+  background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+  font:700 18px var(--font-hell),serif!important;letter-spacing:.04em!important;color:var(--qt-sub)!important;text-shadow:none!important;
+}
+#settings#settings.panel.ui-composed .pbox .ui-section-tab:hover{color:var(--qt-bone)!important;background:none!important;}
+#settings#settings.panel.ui-composed .pbox .ui-section-tab[aria-selected=true]{color:var(--qt-title)!important;}
+#settings#settings.panel.ui-composed .pbox .ui-section-tab[aria-selected=true]::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#b0281c;}
+
+/* ── 본문 영역: 안쪽 이중 프레임·질감 제거, 열 간격 64px ── */
+#settings#settings.panel.ui-composed .pbox .settings-pages.frame-inner-panel{
+  margin:0 var(--qt-side)!important;padding:10px 18px 12px 0!important;
+  border:0!important;border-image:none!important;background:none!important;box-shadow:none!important;
+}
+#settings#settings.panel.ui-composed .pbox .settings-pages.frame-inner-panel::before{display:none!important;}
+/* 안쪽 스크롤이 생기면 아래 24px에서 바탕색으로 서서히 사라지게 해 "아래에 더 있다"를 알린다.
+ * 스크롤 영역 맨 아래에 고정(sticky)·클릭 통과. 스크롤이 없으면(타임라인 비활성) 투명이고, 맨 아래까지 내리면 사라진다.
+ * scroll-driven animation(Chromium 115+, NW.js 0.111 포함)이 없는 브라우저는 페이드가 없을 뿐 동작은 같다. */
+#settings#settings.panel.ui-composed .pbox .settings-pages.frame-inner-panel::after{
+  content:''!important;display:block!important;position:sticky!important;bottom:-12px;height:24px;margin:-24px 0 0!important;opacity:0;
+  background:linear-gradient(180deg,rgba(20,17,16,0),#141110)!important;border:0!important;pointer-events:none;z-index:2;
+  animation:qtScrollFade linear both;animation-timeline:scroll(nearest block);
+}
+@keyframes qtScrollFade{0%,85%{opacity:1}100%{opacity:0}}
+#settings#settings.panel.ui-composed .pbox .settings-page:not([hidden]){display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--qt-gap);row-gap:0;align-content:start;}
+#settings#settings.panel.ui-composed .pbox .settings-page[hidden]{display:none!important;}
+/* 페이지 제목 줄(h3)은 쓰지 않는다 — 분류 줄·하위 탭이 대신한다. 사운드 탭은 이 줄이 유일한 구역 제목이라 구역 제목 서식으로 보인다 */
+#settings#settings.panel.ui-composed .pbox .settings-page>.ui-section-heading{display:none!important;}
+#settings#settings.panel.ui-composed .pbox #settings-page-audio>.ui-section-heading{
+  display:block!important;grid-column:1/-1;min-height:0!important;margin:0 0 6px!important;padding:0 0 9px!important;border:0!important;border-bottom:1px solid var(--qt-line)!important;background:none!important;
+  font:700 15px var(--font-hell),serif!important;letter-spacing:.08em!important;color:var(--qt-sub)!important;text-shadow:none!important;
+}
+
+/* ── T2 구역 제목 ── */
+#settings#settings.panel.ui-composed .pbox .set-label,
+#settings#settings.panel.ui-composed .pbox .settings-group-heading{
+  display:block!important;margin:0 0 6px!important;padding:0 0 9px!important;text-align:left!important;transform:none!important;width:auto!important;max-width:none!important;
+  border:0!important;border-bottom:1px solid var(--qt-line)!important;background:none!important;
+  font:700 15px/1.4 var(--font-hell),serif!important;letter-spacing:.08em!important;color:var(--qt-sub)!important;text-shadow:none!important;
+}
+#settings#settings.panel.ui-composed .pbox .set-section::before,
+#settings#settings.panel.ui-composed .pbox .set-section::after{display:none!important;}
+#settings#settings.panel.ui-composed .pbox .set-section{border-radius:0!important;margin:0!important;padding:0!important;border:0!important;background:none!important;min-width:0!important;}
+
+/* ── T3 설정 행 ── */
+#settings#settings.panel.ui-composed .pbox :is(.set-range-row,.set-row){
+  display:flex!important;align-items:center!important;gap:20px!important;height:48px!important;min-height:0!important;margin:0!important;padding:0!important;
+  border:0!important;border-bottom:1px solid var(--qt-line-soft)!important;background:none!important;box-sizing:border-box;
+}
+#settings#settings.panel.ui-composed .pbox :is(.set-range-row,.set-row):hover{background:none!important;}
+#settings#settings.panel.ui-composed .pbox .set-name{
+  flex:0 0 230px!important;width:230px!important;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font:400 17px/1.4 var(--font-hell),serif!important;color:var(--qt-bone)!important;text-shadow:none!important;
+}
+#settings#settings.panel.ui-composed .pbox .set-range-val,
+#settings#settings.panel.ui-composed .pbox .set-range-row>span:last-child:not(.set-name){
+  flex:0 0 112px!important;min-width:112px!important;max-width:112px!important;text-align:right!important;
+  font:400 15px 'Cinzel',var(--font-hell),serif!important;letter-spacing:.03em!important;color:var(--qt-title)!important;
+}
+
+/* ── T4 조작부: 드롭다운 / 슬라이더 / 체크박스 ── */
+#settings#settings.panel.ui-composed .pbox select{
+  appearance:none;-webkit-appearance:none;min-height:38px!important;height:38px;padding:0 34px 0 14px!important;
+  background:#0e0c0b url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23b6a58f' stroke-width='1.4'/%3E%3C/svg%3E") right 12px center/10px 6px no-repeat!important;
+  border:1px solid rgba(164,147,115,.5)!important;border-radius:0!important;color:var(--qt-bone)!important;
+  font:400 16px var(--font-hell),serif!important;box-shadow:none!important;
+}
+#settings#settings.panel.ui-composed .pbox .set-range-row>select{flex:0 0 280px!important;width:280px;max-width:100%;margin-left:auto;}
+#settings#settings.panel.ui-composed .pbox .set-range-row>label select{flex:0 0 auto;width:160px;margin-left:auto;}
+#settings#settings.panel.ui-composed .pbox input[type=range]{
+  -webkit-appearance:none;appearance:none;flex:1 1 auto;width:auto;min-width:0;height:20px!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important;accent-color:var(--qt-brass)!important;
+}
+#settings#settings.panel.ui-composed .pbox input[type=range]::-webkit-slider-runnable-track{height:1px;background:rgba(164,147,115,.35);border:0;}
+#settings#settings.panel.ui-composed .pbox input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:9px;height:9px;margin-top:-4px;border:0;border-radius:0;background:var(--qt-brass);transform:rotate(45deg);}
+#settings#settings.panel.ui-composed .pbox input[type=range]::-moz-range-track{height:1px;background:rgba(164,147,115,.35);}
+#settings#settings.panel.ui-composed .pbox input[type=range]::-moz-range-thumb{width:8px;height:8px;border:0;border-radius:0;background:var(--qt-brass);transform:rotate(45deg);}
+#settings#settings.panel.ui-composed .pbox input[type=checkbox]{
+  -webkit-appearance:none;appearance:none;flex:0 0 18px!important;width:18px!important;height:18px!important;margin:0!important;
+  border:1px solid rgba(164,147,115,.6)!important;border-radius:0!important;background:#0e0c0b!important;box-shadow:none!important;accent-color:var(--qt-brass)!important;
+}
+#settings#settings.panel.ui-composed .pbox input[type=checkbox]:checked{
+  border-color:rgba(223,214,194,.8)!important;
+  background:#0e0c0b url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 .5L9.5 5 5 9.5.5 5z' fill='%23ac7953'/%3E%3C/svg%3E") center/10px 10px no-repeat!important;
+}
+#settings#settings.panel.ui-composed .pbox .set-range-row>label{display:flex!important;align-items:center!important;width:100%!important;gap:20px!important;flex-direction:row-reverse;justify-content:space-between;cursor:pointer;}
+#settings#settings.panel.ui-composed .pbox .set-range-row>label>.set-name{flex:1 1 auto!important;width:auto!important;}
+
+/* ── T5 버튼: 전부 테두리 칩, 위험 행동만 탁한 적갈 테두리 ── */
+#settings#settings.panel.ui-composed .pbox :is(#saveP1,#loadP1,#saveP2,#loadP2,#toLobbyBtn2,#resetBtn,#quitBtn,#resetYes,#resetNo,#btnRedetect,#gfxPresetRow button,button[onclick="toggleFullscreen()"],.bind-reset,.bind-mode,#setClose){
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;width:auto!important;
+  height:40px!important;min-height:0!important;margin:0!important;padding:0 22px!important;
+  border:1px solid rgba(164,147,115,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  font:700 16px var(--font-hell),serif!important;letter-spacing:0!important;color:var(--qt-bone)!important;text-shadow:none!important;white-space:nowrap;cursor:pointer;filter:none;transition:none!important;
+}
+#settings#settings.panel.ui-composed .pbox :is(#saveP1,#loadP1,#saveP2,#loadP2,#toLobbyBtn2,#resetBtn,#quitBtn,#resetYes,#resetNo,#btnRedetect,#gfxPresetRow button,button[onclick="toggleFullscreen()"],.bind-reset,.bind-mode,#setClose):hover{border-color:rgba(223,214,194,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
+#settings#settings.panel.ui-composed .pbox button:is(#resetBtn,#quitBtn,#resetYes){border-color:#6b2a20!important;color:#c9a39a!important;background:transparent!important;}
+#settings#settings.panel.ui-composed .pbox button:is(#resetBtn,#quitBtn,#resetYes):hover{border-color:#8a3a2c!important;color:#d9b5ab!important;background:rgba(107,42,32,.12)!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .bind-mode[aria-pressed=true]{background:rgba(172,121,83,.18)!important;border-color:rgba(196,160,118,.7)!important;color:var(--qt-title)!important;}
+#settings#settings.panel.ui-composed .pbox #gfxPresetRow button[style*="border: 1px"]{border-color:rgba(223,214,194,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
+#settings#settings.panel.ui-composed .pbox #gfxPresetRow{display:flex!important;flex-wrap:wrap;gap:12px!important;justify-content:flex-start!important;margin:12px 0 10px!important;}
+#settings#settings.panel.ui-composed .pbox #saveMsg{margin:0!important;text-align:left!important;font-size:14px!important;color:var(--qt-dim)!important;}
+#settings#settings.panel.ui-composed .pbox #saveMsg:empty{display:none!important;}
+
+/* ── 게임 탭 배치: 시스템·프리셋(왼) / 캐릭터 선택(오른) / 게임 설정 / 위험(맨 아래) ── */
+#settings#settings.panel.ui-composed .pbox #settings-system-options{display:contents!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.settings-group-heading{grid-column:1;grid-row:1;margin-bottom:6px!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.set-range-row{grid-column:1;grid-row:2;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.set-section:has(#charSelectGrid){grid-column:2;grid-row:1/span 4;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.set-section:has(#settingsPresetLabel){grid-column:1;grid-row:4;display:flex!important;flex-wrap:wrap;gap:12px;align-content:flex-start;margin-top:22px!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.set-section:has(#settingsPresetLabel)>.set-label{flex:0 0 100%;margin-bottom:0!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.set-section:has(#settingsPresetLabel)>div:not(#saveMsg):not(.set-label){display:contents!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.set-section:has(#toLobbyBtn2){grid-column:1;grid-row:3;display:flex!important;flex-wrap:wrap;gap:12px;margin-top:14px!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.set-section:has(#resetBtn){grid-column:1;grid-row:6;margin-top:22px!important;padding-top:0!important;border-top:1px solid #6b2a20!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>.set-section:has(#resetBtn)>#resetBtn{margin-top:20px!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>#quitSection{grid-column:2;grid-row:6;margin-top:22px!important;border-top:1px solid #6b2a20!important;}
+#settings#settings.panel.ui-composed .pbox #settings-system-options>#quitSection>#quitBtn{margin-top:20px!important;}
+#settings#settings.panel.ui-composed .pbox #resetConfirm{display:none;text-align:left!important;margin-top:12px!important;}
+#settings#settings.panel.ui-composed .pbox #resetConfirm>div{color:#c9a39a!important;font:400 16px var(--font-hell),serif!important;margin-bottom:10px!important;}
+#settings#settings.panel.ui-composed .pbox #resetConfirm>button{margin-right:12px!important;}
+#settings#settings.panel.ui-composed .pbox #settings-game-options{grid-column:1/-1;grid-row:5;margin-top:22px!important;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--qt-gap);align-content:start;}
+#settings#settings.panel.ui-composed .pbox #settings-game-options>.set-label{grid-column:1/-1;margin-bottom:0!important;}
+#settings#settings.panel.ui-composed .pbox #settings-game-options>.set-range-row{margin-top:0!important;}
+/* 위험 구역은 구역명 없이 위 헤어라인 + 간격으로만 구분 */
+
+
+/* ── T6 캐릭터·커서 카드 ── */
+#settings#settings.panel.ui-composed .pbox #charSelectGrid,
+#settings#settings.panel.ui-composed .pbox #cursorGrid{display:flex!important;flex-wrap:wrap;gap:16px!important;justify-content:flex-start!important;margin-top:12px;}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice{
+  position:relative;display:flex!important;flex-direction:column;align-items:center;width:220px!important;padding:18px 14px 14px!important;
+  border:1px solid rgba(164,147,115,.3)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;text-align:center!important;
+  font-family:var(--font-hell),serif!important;transition:none!important;cursor:pointer;min-height:0!important;height:auto!important;
+}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice:hover{border-color:rgba(223,214,194,.55)!important;background:rgba(255,255,255,.02)!important;}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice[aria-pressed=true]{border-color:rgba(223,214,194,.8)!important;background:rgba(255,255,255,.035)!important;}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice[aria-pressed=true]::after{content:'';position:absolute;right:7px;top:7px;width:9px;height:9px;background:var(--qt-bone);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid) .settings-choice-name{display:block;margin:0 0 6px!important;font:700 17px var(--font-hell),serif!important;color:var(--qt-bone)!important;}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid) .settings-choice[aria-pressed=true] .settings-choice-name{color:var(--qt-title)!important;}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid) .settings-choice-description{display:block;font:400 14px/1.5 var(--font-hell),serif!important;color:var(--qt-dim)!important;}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid) .settings-choice-selected{display:block;margin-top:10px!important;font:400 13px var(--font-hell),serif!important;letter-spacing:.04em;color:var(--qt-sub)!important;}
+#settings#settings.panel.ui-composed .pbox #cursorGrid>.settings-cursor-choice{width:200px!important;padding:16px 12px!important;}
+#settings#settings.panel.ui-composed .pbox #cursorGrid>.settings-cursor-choice img{max-height:40px;width:auto;margin:0 auto 10px;display:block;}
+
+/* ── 화면 탭: 화면 효과(왼) / 그래픽 품질(오른) / 하드웨어 진단 ── */
+#settings#settings.panel.ui-composed .pbox #settings-page-display>.set-section:nth-of-type(1){grid-column:1;}
+#settings#settings.panel.ui-composed .pbox #settings-page-display>#optScreenSection{grid-column:1;}
+#settings#settings.panel.ui-composed .pbox #settings-page-display>.set-section:has(#gfxPresetRow){grid-column:2;grid-row:1/span 2;}
+#settings#settings.panel.ui-composed .pbox #settings-page-display>.set-section:has(#btnRedetect){grid-column:1/-1;margin-top:22px!important;}
+#settings#settings.panel.ui-composed .pbox #settings-page-display>.set-section:has(#btnRedetect)>div:not(.set-label){font:400 15px/1.6 var(--font-hell),serif!important;color:var(--qt-bone)!important;}
+#settings#settings.panel.ui-composed .pbox #settings-page-display>.set-section:has(#btnRedetect) span{color:inherit!important;}
+#settings#settings.panel.ui-composed .pbox #btnRedetect{margin-top:12px!important;}
+
+/* ── 사운드 탭: 좁은 열 ── */
+#settings#settings.panel.ui-composed .pbox #settings-page-audio>.set-range-row{grid-column:1/-1;max-width:960px;}
+
+/* ── 조작 탭: 커서 / 키 설정 2열 ── */
+#settings#settings.panel.ui-composed .pbox #settings-page-controls>.set-section{grid-column:1/-1;}
+#settings#settings.panel.ui-composed .pbox #settings-page-controls>.set-section:first-of-type .set-range-row{max-width:960px;}
+#settings#settings.panel.ui-composed .pbox #keyBindList{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--qt-gap);}
+#settings#settings.panel.ui-composed .pbox #keyBindList>div:first-child{grid-column:1/-1;display:flex!important;gap:12px;margin:12px 0 4px!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList>.bind-reset{grid-column:1/-1;justify-self:start;margin-top:16px!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-row .set-name{flex:1 1 auto!important;width:auto!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-key{
+  min-width:70px!important;min-height:34px!important;height:34px;padding:0 16px!important;margin:0!important;
+  border:1px solid rgba(164,147,115,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  font:400 14px 'Cinzel',var(--font-hell),serif!important;letter-spacing:.04em!important;color:var(--qt-title)!important;text-shadow:none!important;
+}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-key:hover{border-color:rgba(223,214,194,.8)!important;background:rgba(255,255,255,.035)!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-key[aria-label$="보조"]{color:var(--qt-dim)!important;border-color:rgba(164,147,115,.25)!important;min-width:60px!important;font-family:var(--font-hell),serif!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-key[aria-pressed=true],#settings#settings.panel.ui-composed .pbox #keyBindList .set-key.listening{border-color:rgba(196,160,118,.9)!important;background:rgba(172,121,83,.18)!important;}
+
+/* ── 하단: 자동 저장 표시·닫기 ── */
+#settings#settings.panel.ui-composed .pbox>.settings-footer{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;flex:0 0 auto;
+  margin:0 var(--qt-side)!important;padding:10px 0 14px!important;border:0!important;border-top:1px solid var(--qt-line-soft)!important;background:none!important;box-shadow:none!important;text-align:left!important;
+}
+#settings#settings.panel.ui-composed .pbox #settingsAutoSaveLabel{font:400 14px var(--font-hell),serif!important;letter-spacing:.06em!important;color:var(--qt-dim)!important;margin:0!important;text-align:left!important;}
+
+/* ── 좁은 화면: 한 열 ── */
+@media (max-width:1100px){
+  #settings.panel.ui-composed{--qt-gap:32px;--qt-side:24px;}
+  #settings#settings.panel.ui-composed .pbox .settings-page:not([hidden]){grid-template-columns:minmax(0,1fr);}
+  #settings#settings.panel.ui-composed .pbox #settings-system-options>*,#settings#settings.panel.ui-composed .pbox #settings-game-options,#settings#settings.panel.ui-composed .pbox #settings-page-display>*{grid-column:1!important;grid-row:auto!important;}
+}
+
+/* ── 보정: 라벨 안에 select가 있는 행(분위기 효과)은 이름이 왼쪽, 선택 상자가 오른쪽 ── */
+#settings#settings.panel.ui-composed .pbox .set-range-row>label:has(select){flex-direction:row!important;}
+#settings#settings.panel.ui-composed .pbox .set-range-row>label:has(select)>select{margin-left:auto;}
+/* ── 하드웨어 진단 상자: 두꺼운 카드 대신 가는 선 ── */
+#settings#settings.panel.ui-composed .pbox #settings-page-display>.set-section:has(#btnRedetect)>div:not(.set-label){border:1px solid var(--qt-line-soft)!important;border-radius:0!important;background:none!important;box-shadow:none!important;}
+#settings#settings.panel.ui-composed .pbox #settings-page-display>.set-section:has(#btnRedetect)>div:not(.set-label)>div{border-color:var(--qt-line-soft)!important;}
+/* ── 조작 탭 보정 ── */
+#settings#settings.panel.ui-composed .pbox #settings-page-controls>.set-section{display:block!important;padding:0!important;margin-top:0!important;}
+#settings#settings.panel.ui-composed .pbox #settings-page-controls>.set-section:first-of-type .set-range-row{margin-top:14px!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-row{display:flex!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-row .set-key{flex:0 0 auto!important;width:auto!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-row .set-name{flex:1 1 auto!important;width:auto!important;min-width:0;}

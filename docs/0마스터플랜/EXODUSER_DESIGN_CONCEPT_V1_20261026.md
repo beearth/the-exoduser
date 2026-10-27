@@ -195,7 +195,8 @@
 |---|---|---|---|
 | UD1 | 대장간 재료 문구가 `font:600 14px/1.5 'Noto Sans KR',sans-serif`로 고정돼 U5 위반 | `ui-refinement.css` 630행 `#forge.panel .pbox #forgeMats`(코드 확인), 문서 UI_COMPOSITION 2026-09-26 "스타일 수치 원본" | RETOUCH 후보 |
 | UD2 | game.html에 `Noto Sans KR`이 86곳 남아 있다. 폴백 위치(`var(--font-hell)` 뒤)인지 단독 지정인지, 이모지 아이콘이 남았는지는 아직 전수 조사하지 않았다 | game.html·index.html·ui-*.css | 조사 배정 예정 |
-| UD3 | 설정 화면 캐릭터 카드의 노랑 이름·✓ 기호(U3·U6 위반), 위험 버튼(게임 리셋·게임 종료)의 진홍 넓은 판(U4 위반) | 설정 창 게임 탭(`web-refs-20261026/12_1_settings_game.png`) | 조용한 단계 v1로 해소 예정 |
+| UD3 | 설정 화면 캐릭터 카드의 노랑 이름·✓ 기호(U3·U6 위반), 위험 버튼(게임 리셋·게임 종료)의 진홍 넓은 판(U4 위반) | 설정 창 게임 탭(`web-refs-20261026/12_1_settings_game.png`) | 해소(2026-10-27 웹 반영: `ui-quiet-tier.css`, 상세 UI_COMPOSITION "조용한 단계 — 설정"). 남은 기호: `✓ 선택됨`·`✓ 설정 자동 저장`·조작 탭 `⌨`/`🎮`는 번역 문자열 안이라 번역 작업에서 처리 |
+| UD4 | 이모지·기호가 번역 문자열 안에 붙어 있음 — `✓ 선택됨`(game.html 48767행, 번역 키 7044행), `✓ 설정 자동 저장`(2889행, 번역 키 7226행), `⌨ 키보드·마우스`·`🎮 게임패드`(48779행). 🎮는 컬러 이모지로 보인다(U6 위반) | game.html 설정 창(.settings-choice-selected·#settingsAutoSaveLabel·.bind-mode) | 번역 키 변경이 필요하므로 번역 절차(번역대상_전체목록 등록 → 28개 언어)로 따로 처리 |
 
 ---
 

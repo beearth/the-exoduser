@@ -2969,3 +2969,40 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 규칙 | 로고 이미지는 항상 RGBA로 굳혀서 쓴다(런타임 캔버스 키잉·밝기 키 금지 — 어두운 철 면이 같이 지워짐). 하이라이트는 진홍·잉걸불, 흰·중성 회색 금지 |
 | 로비 | `.lobby-divider` 높이 104→148px(index.html 507행, 761px 이상 높이)로 키워 1920·1600 모두 로고 폭 310px. 문구·찜 블록과 겹침 없음. 미검증: 캐릭터 목록이 있는 로비 화면 |
 | 상세 | `docs/cinematic/ENTER_ENGRAVED_20260907.md` §2026-10-27 개정, `docs/17게임아트팀/ART_TEAM_MASTER.md` 현황표·로그 |
+
+## 조용한 단계 — 설정 [ESC] 웹 반영 (2026-10-27)
+
+컨셉 5장 U13(두 밀도 단계)의 첫 적용. 시안 v1(`E:/exoduser-wt/_out/ui-quiet-tier/quiet_settings_*.png`)을 현행 [ESC] 창에 CSS로 옮겼다.
+
+| 항목 | 내용 |
+|---|---|
+| 파일 | 새 `ui-quiet-tier.css` 1개(범위 = `#settings` 안쪽만, 모든 규칙이 `#settings#settings.panel.ui-composed .pbox …`로 시작). `game.html` 변경은 `<link rel="stylesheet" href="ui-quiet-tier.css?v=20261027-settings">` 1줄(`inventory-gems-balance.css` 링크 바로 뒤, 마지막 스타일 링크) |
+| 바깥 | 바깥 이중 레일 `.pbox`·상단 탭바 `.panel-nav`는 그대로. 안쪽 바탕만 `linear-gradient(180deg,#100d0c,#151110)`(흑철 질감·장미창 제거) |
+| 제목(T7) | 큰 돌 명패 `.ptitle`(크레스트·명패 ::before/::after)를 분류 줄 + 세리프 제목 + 헤어라인으로 교체. 분류 줄은 `::before{content:'SETTINGS'}` 영문 고정(번역 불요), 제목 `800 40px var(--font-hell)` `#ebdaba`, 헤어라인 폭 120% `rgba(164,147,115,.5)`. "· 게임" 같은 하위 탭명은 붙이지 않는다(JS 복사 없음) |
+| 하위 탭(T1) | 돌 판 4개 → 글자 탭(18px `#b6a58f`), 선택 탭 `#ebdaba` + 2px 진홍 `#b0281c` 밑줄. 진홍은 "바깥 상단 탭 1곳 + 창 안 1곳(하위 탭 밑줄)"까지 |
+| 구역(T2)·행(T3) | 구역 제목 15px `#b6a58f` + 헤어라인, 행 48px(시안 값) 이름 왼쪽·조작 오른쪽, 행 사이 `rgba(164,147,115,.18)`. 페이지 제목 줄 `h3.ui-section-heading`은 숨김(사운드 탭만 구역 제목으로 표시), 게임 탭의 "시스템/게임 설정" 점프 버튼도 이 h3 안이라 함께 숨겨진다 |
+| 조작부(T4) | 드롭다운 38px `#0e0c0b` + 황동 헤어라인 + 벡터 화살표, 슬라이더 = 1px 레일 + 9px 마름모 손잡이(채움 없음), 체크박스 = 기존 `<input type=checkbox>`를 18px 정사각 + 켜짐이면 안쪽 10px 황동 마름모(SVG 배경). **새 글자 없음**("켜짐/꺼짐" 칩 안 씀) |
+| 버튼(T5) | 전부 테두리 칩(높이 40, 1px `rgba(164,147,115,.5)`). 위험 행동(게임 리셋·게임 종료·확인)은 `#6b2a20` 테두리 + `#c9a39a` 글자. 위험 구역은 구역명 없이 위 헤어라인(`#6b2a20`) + 22px 간격으로만 구분하고 게임 탭 맨 아래에 둔다 |
+| 카드(T6) | 캐릭터·커서 카드: 노랑 이름·금 테두리 제거, 선택 카드 = 1px `rgba(223,214,194,.8)` + 오른쪽 위 벡터 마름모(`clip-path`), 이름 `#dfd6c2`(선택 `#ebdaba`), 설명 14px `#8f8170` |
+| 레이아웃 | 게임 탭은 `#settings-system-options{display:contents}`로 자식을 페이지 그리드(2열, 열 간격 64px)에 올려 시스템·프리셋(왼) / 캐릭터 선택(오른) / 게임 설정(전체 폭 2열) / 위험(맨 아래, 리셋=왼 열·종료=오른 열)으로 배치. 화면 탭 = 화면 효과(왼) / 그래픽 품질(오른) / 하드웨어 진단(아래), 조작 탭 = 커서 / 키 설정 2열 |
+| 특이도 | 기존 규칙이 `:is(#settings,…) :is(.frame-inner-panel,#skillInfo)`처럼 ID 2개 + `!important`, 또 `#settings.panel .pbox #charSelectGrid>.settings-choice` 같은 ID 포함 선택자라, 선택자 앞을 `#settings#settings`(ID 2개)로 맞췄다. game.html 인라인 `style`(버튼 색·카드 테두리·이름 색 등)과 JS가 쓰는 인라인 값은 `!important`로만 덮을 수 있어 해당 속성에 `!important`를 썼다(전체 약 330곳, 모두 `#settings` 범위 안) |
+| 1600×900 | 현행처럼 본문 영역 내부 스크롤. 1920×1080 게임 탭은 스크롤 없이 위험 구역까지 보인다. 스크롤이 생기면 스크롤 영역 맨 아래 24px에 바탕색(`#141110`)으로 사라지는 페이드(`.settings-pages::after`, sticky·`pointer-events:none`, scroll-driven animation `qtScrollFade`)가 "아래가 더 있다"를 알리고, 스크롤이 없거나 맨 아래면 투명 |
+| 숨김 상태 | "화면 설정"(`#optScreenSection`)은 웹에서 인라인 `display:none`이라 그대로 숨김, 게임 리셋 확인 문구(`#resetConfirm`)도 숨김 상태 그대로 |
+
+### 번역 문자열에 붙어 있어 이번에 바꾸지 못한 기호(번역 작업은 따로)
+| 기호 포함 문자열 | 위치 |
+|---|---|
+| `✓ 선택됨` | 캐릭터 카드 `.settings-choice-selected`(`game.html` 48767행, 번역 키 7044행) |
+| `✓ 설정 자동 저장` | `#settingsAutoSaveLabel`(2889행, 번역 키 7226행, 49027행) |
+| `⌨ 키보드·마우스` · `🎮 게임패드` | 조작 탭 `.bind-mode`(48779행 배열) |
+
+### 검증(2026-10-27, headless·음소거·격리 save, 실제 game.html)
+- [ESC] 4탭 × 1920·1600 캡처 pageerror 0. 설정 저장 회귀: 체크박스 1개(보스 AI 디버그)·슬라이더 2개(난이도·효과음, 트랙 클릭)·언어 드롭다운(English) 변경 후 새로고침해도 값·`OPT` 유지.
+- 다른 패널(인벤토리·대장간·스킬·능력치) 반영 전/후 캡처 차이는 같은 상태 두 번 찍은 차이(랜덤 드롭·3D 합성 창)와 같은 수준이고, 능력치 창은 최대 12(밝기 0~255) 차이 1,449픽셀뿐.
+- 캐릭터 카드·슬라이더 채움: 슬라이더 채움(값 왼쪽 황동 선)은 CSS만으로 값을 알 수 없어 넣지 않았다(시안과 다른 점).
+- 미검증: 캐릭터 3명 이상일 때 카드 줄바꿈, 설정 값이 매우 긴 언어(아랍어 RTL·태국어) 레이아웃.
+
+### 유지보수 메모 (조용한 단계 — 설정)
+- `!important` 약 331곳은 기존 CSS(ui-refinement.css 1162~1300행대 등)와 game.html 인라인 style을 덮기 위한 것이다. 장기적으로는 기존 settings 규칙을 걷어내고 이 파일로 일원화하는 정리가 필요하다.
+- 그래픽 품질 선택 칩(`#gfxPresetRow button`)의 선택 상태는 JS가 인라인 style에 `border: 1px solid …`를 쓰는 것을 `[style*="border: 1px"]`로 매칭한다 — 인라인 문자열 형식에 의존해 취약하다. JS가 선택 칩에 `aria-pressed`나 클래스를 달도록 바꾸는 것을 권장(game.html 수정이 필요해 이번에는 하지 않음).
+- 새 글자: 분류 줄 `SETTINGS`(`::before` 영문 고정)뿐. 번역 목록에는 등록하지 않았다(영문 고정 관례).
