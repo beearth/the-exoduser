@@ -99,9 +99,9 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | CX-03a | 적 루프 앞처리(티어링·컬링·벽 끼임·타이머) + `updateE` 앞~DOT 직전 | 34415~34494, 38587~38721 | 2 웹동일 소스(L1+U1, oracle 1,240케이스 3,246,746/0·변이 86/87, 연결 전) | tick 상태 oracle 일치. 브랜치 claude/unity-pc-c01-20261026 a05ee1467, 보고서 UNITY_CX03A_ENEMY_TICK_HEAD_20261027. 명세 `E:/exoduser-wt/_out/pc-cx03a/SPEC.md` |
 | CX-03b | ATK 리셋·DOT 5종·엘리트 모디파이어 틱·오라 ATK·비어그로 대기 게이트 | 약 38722~38888 | 0 | CX-04·CX-02 의존 |
 | CX-03c | etype 분기 뒤 공통 상태 머신(windup→attack·projT·공전 대기 등) | 38586~41410 중 etype 분기 뒤 | 0 | etype0·보스 경로 tick 상태 oracle 일치 |
-| CX-04a | `hurtE` 앞부분(관문·피해 배율·에너지쉴드 흡수) — 함수 첫 줄 ~ `// ═══ 데미지 → HP 직행 ═══` 앞줄 | 42175~약42417 | 1 배정(단순작업2) | 피해 표본 oracle 일치, 쉴드 규칙은 CLAUDE.md eShield 계약 그대로. 명세 `E:/exoduser-wt/_out/pc-cx04a/SPEC.md` |
-| CX-04b | `hurtE` HP 적용 ~ 포이즈 블록 끝(흡수·onHit·피격 경직·빙결 게이지·넉백·포이즈) | 약42418~42564 | 0 | 피해 표본 oracle 일치 |
-| CX-04c | `hurtE` 사망 처리(디코이·보스 부활·일반몹 부활·On-Kill·장별 사망 효과)부터 함수 끝(`}finally{_shBufI--}` 포함) — BX-05 일부 | 42565~43188 | 0 | 비고: BX-05·BX-08 묶음, STY-D9 원격 반영 뒤 |
+| CX-04a | `hurtE` 앞부분(관문·피해 배율·에너지쉴드 흡수) — 함수 첫 줄 ~ `// ═══ 데미지 → HP 직행 ═══` 앞줄 | 42178~42420 | 2 웹동일 소스(H1, oracle 960케이스 933,221/0·변이 135/138, 연결 전) | 피해 표본 oracle 일치, 쉴드 규칙은 CLAUDE.md eShield 계약 그대로. 브랜치 claude/unity-pc-c01-20261026 dfe67be3b, 보고서 UNITY_CX04A_ENEMY_HURT_HEAD_20261027 |
+| CX-04b | `hurtE` HP 적용 ~ 포이즈 블록 끝(흡수·onHit·피격 경직·빙결 게이지·넉백·포이즈) | 42421~42567 | 1 배정(단순작업2) | 피해 표본 oracle 일치. 명세 `E:/exoduser-wt/_out/pc-cx04b/SPEC.md` |
+| CX-04c | `hurtE` 사망 처리(디코이·보스 부활·일반몹 부활·On-Kill·장별 사망 효과)부터 함수 끝(`}finally{_shBufI--}` 포함) — BX-05 일부 | 42568~43191 | 0 | 비고: BX-05·BX-08 묶음, STY-D9 원격 반영 뒤 |
 | CX-05 | 적 표시 공통 (EnemyView 확장: etype별 시트·크기·색) | ETYPE_COL, 19916 `ETYPE_COLS` | 0 | 웹 나란히 캡처 |
 | CX-06 | 1-1 일반 몹 etype별 AI 분기(M1 우선순위 절의 etype 목록) + `rollEtype`(si0) | `rollEtype` 31055~, `updateE` etype 분기 | 0 | etype별 tick 상태 oracle 일치 |
 
@@ -130,3 +130,4 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | 2026-10-27 | CX-01·CX-02 unity/main 병합 ab563f98c(PC 병합·병합 뒤 oracle 2,784/0·204,592/0·빌드 오류 0) |
 | 2026-10-27 | CX-03a 인수(a05ee1467), JsMath 도입, CX-04 명세 작성 중 |
 | 2026-10-27 | CX-04를 a/b/c로 분할, CX-04a 배정, STY-D9 웹 반영(fb4c929aa) 접수 |
+| 2026-10-27 | CX-04a 인수(dfe67be3b), CX-04b 배정, pure 주석 낡음 판정(동작은 계약대로) |
