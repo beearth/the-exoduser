@@ -19,6 +19,7 @@
 | Codex 총괄 (Mac) | Unity 줄기 `unity/main` 소유·병합·Mac 빌드(10-27 전환, 이전 `codex/unity-mac-20261024` 퇴역). A06 HUD, A15 설정, A18 첫 실습, 로비·인트로, 맵 조명, 전투 코어(B군) | `NativeGame*`, `NativeHud*`, `NativePauseMenu*`, `NativeLobby*`, `NativePractice*`, Simulation/Core 전투 |
 | Claude 총괄 (PC) | 웹 창 UI 이식·Windows 빌드 검증. A07~A14, A20~A24 | `NativeInventory*`, `InventoryNavigation`, `NativePanelTabBar`, 스킬 창, 이후 능력치·대장간·크리스탈 창 |
 | B군 Core 계산 (2026-10-26 추가) | **PC = 계산(새 파일)**, **Codex = 연결(patch 적용)**. 순서 B11 → B05 → B07 → B03. 웹 원본 추출표 → 원본 함수 실행 oracle 일치 → patch로 Simulation·입력·HUD 연결. Codex 이의 시 PC 즉시 중단·협의 | PC: `Runtime/Core/Combat/*`(신규), `unity/Tools/*-oracle/`(신규), `docs/engine/unity_patches/B*.patch`. Codex 기존 `Simulation*`·Core 파일은 PC 수정 0 |
+| M1 연결 (2026-10-27 추가, CTO 결정) | M1 동안 PC가 맡은 행(B03·B05·B07·B08·B10·B11·D01·D05·E03)은 **PC가 연결까지 직접** `unity/main`에 넣는다. fetch → merge → PC 6000.6.7f1 컴파일 오류 0 → 비강제 push. Codex가 최근 고친 줄은 지우지 않는다. Codex는 해당 파일을 고치기 전에 fetch/merge한다. | `Simulation*`·`NativeGame*`·`NativeHud*` 중 해당 행 연결 부분 |
 
 - 상대 소유 파일은 직접 고치지 않는다. 필요한 변경은 `docs/engine/unity_patches/*.patch`로 넘기고, 받는 쪽이 적용한다.
 - 같은 파일을 동시에 고칠 일이 생기면 먼저 이 문서에 소유 변경을 적는다.

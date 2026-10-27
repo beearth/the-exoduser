@@ -63,3 +63,4 @@
 | 날짜 | 내용 |
 |---|---|
 | 2026-10-27 | 조사 완료·1~3단계 결정. 1단계 구현 sound-simple 배정, 2단계 Forge 생성은 재생성 4키 끝난 뒤 |
+| 2026-10-27 | 1단계 T1~T4 반영(sound-simple): `_SFX_PRI`에 `TELL:12`, `SFX.charge()` 첫 줄 노드 확보(`_evictLowest(_SFX_PRI.TELL)` ≤5회), 플레이어 3곳 정리('❄ 탈출!'→`playSample('chain_dash',.5,1.1)`, 칼날 메아리·돌진은 `SFX.charge();`만 삭제), 잡기·끌기 명중 4곳 삭제. `SFX.charge()` 호출 58→51. `6사운드디자인.md` `_SFX_PRI` 표 갱신. 커밋 해시는 `git log --grep "AD3 1단계"` 참조 |
