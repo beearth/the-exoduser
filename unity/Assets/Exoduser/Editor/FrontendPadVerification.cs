@@ -23,6 +23,12 @@ public static class FrontendPadVerification
   Check(next.Next&&!next.Hold&&!next.Skip,"story Confirm edge is Next");
   Check(!policy.Step(FrontendPadPhase.Story,Frame(2,confirm:true,confirmDown:true),true).Next,"one action per frame");
   Check(!policy.Step(FrontendPadPhase.Story,Frame(3,confirm:true),true).Next,"held Confirm does not repeat Next");
+  var combinedPolicy=new FrontendPadPolicy();combinedPolicy.Step(FrontendPadPhase.Story,Frame(1),true);
+  var combined=combinedPolicy.Step(FrontendPadPhase.Story,Frame(2,confirm:true,cancel:true,confirmDown:true),true);
+  Check(combined.Next&&combined.Hold&&!combined.Skip,"story Confirm edge and Cancel hold coexist in one frame");
+  combinedPolicy.Step(FrontendPadPhase.Story,Frame(3),true);
+  combined=combinedPolicy.Step(FrontendPadPhase.Story,Frame(4,confirm:true,start:true,confirmDown:true,startDown:true),true);
+  Check(combined.Next&&combined.Hold&&!combined.Skip,"story Confirm edge and Start hold coexist in one frame");
 
   var story=new WarriorStoryState(new double[]{1,5});Check(story.Begin("pad"),"story begins");
   var hold=policy.Step(FrontendPadPhase.Story,Frame(4,start:true,startDown:true),true);

@@ -1,6 +1,26 @@
 # Mac 전사·시작 안내 패드 연결 검토 앱 — 2026-10-27
 
-## 산출물과 안전 경계
+## 최종 Rev4 — 동시 입력 회귀와 패드 힌트
+
+웹 `index.html`의 `lobbyNav`는 전사 이야기 중 매 프레임 `setSkipHeld(B||Start)`를 호출하고, 같은 프레임 Confirm edge에는 `next()`를 호출한다. 처음 Unity `FrontendPadPolicy`는 Cancel/Start hold 중 Confirm Next를 막아 이 조합을 빠뜨렸다. 현재 Story 분기는 **Next=ConfirmDown, Hold=CancelHeld||StartHeld**를 독립적으로 전달한다. 마지막 cue·미준비·재생 오류에서 Next가 무효인 기존 `NextCharacterStory` 조건은 그대로다. Guide에서는 기존 Start 우선순위를 유지한다.
+
+| ID | 최종 값·증거 | 판정 |
+|---|---|---|
+| 최종 앱 | `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FRONTEND-PAD-INTEGRATED-REV4-20261027/build/EXODUSER-Unity.app`; Settings QA ARM64, 2,176,514,782 B, `Succeeded`/errors0 | PASS |
+| 실행 파일 SHA256 | `6594af88ead86e476eb24e142aa5e19082496c998c9abfc400219e11fe363f2f` | PASS |
+| 격리 주입 launcher/root | `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-FRONTEND-PAD-INTEGRATED-REV4-20261027/launch-pad-qa.command` → `UNITY-MAC-A05-IO-FRONTEND-PAD-INJECTION-REV4-20261027` | A05 marker+추가 marker+제품/PID/root 계약 |
+| 일반 검토 launcher/root | 같은 폴더 `launch-review.command` → `UNITY-MAC-A05-IO-FRONTEND-PAD-REVIEW-REV4-20261027` | 별도 빈 profile·주입 flag 없음. 첫 제목 화면 `normal-first-screen.jpg` 확인, 전체 일반 동선 재완주 없음 |
+| Editor 논리 | `frontend-pad-policy.json`: 기존 20+동시 Confirm+Cancel/Start 2 = **22/22** | PASS |
+| 실제 로비 주입 | `frontend-pad-integration.json`: 기존16+동시 Next/Hold·해제 2 = **18/18**, 실패0 | PASS |
+| 동시 프레임 추적 | 요청 전 영상5.733333s, 다음 cue10.000000s, `NextCharacterStory` 수용 횟수1→2, hold=true, bounded seek 뒤 영상10.000000s, 해제 뒤 hold=0 | PASS. 단순 화면 변화만으로 판정하지 않음 |
+| 가드 실패 | `--frontend-pad-qa-pid 0`은 exit2·거절 로그; 격리 로스터 revision1/이름1 유지 | PASS |
+| 미디어 SHA256 | 전사 `277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34`, 세계관 `3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f`; 소스↔앱 동일 | PASS |
+
+실제 주입 앱의 전사 초반 `story-pad-hint-720p.png`, 네메시스 `nemesis-pad-hint-720p.png`, 안내 4/4 `guide-4-potion-720p.png`를 시각 확인했다. 패드 감지 시 전사 Next는 `A / Enter`, 1.2초 Skip은 `B / Start 길게`, 네메시스는 `A 다음 / B 길게 / Start 건너뛰기`로 표시한다. 기존 키보드 분기와 입력 동작은 유지한다. 버튼명은 기존 Guide의 A/B/Start 표현만 사용하며 새 기종 매핑을 주장하지 않는다. 네메시스 하단 힌트는 기존 11px 스타일 때문에 720p에서 작게 보인다.
+
+`manifest.json`은 최종 커밋 SHA·코드 파일 해시·앱/영상 해시·실행 경로와 영수증을 묶는다. 아래 첫 앱과 중간 Rev2/Rev3 앱은 **superseded**이며 최종 인수 대상이 아니다. Rev2의 1/18 실패는 seek 직후 표시 시간을 같은 프레임에 읽은 검수 계측 문제였다. Rev4는 다음 cue 요청·수용 횟수·hold·bounded seek 완료를 한 영수증에서 판정한다. 물리 OS 패드/기종별 번호·청음은 HOLD, 일반 launcher의 전체 세계관→필드 재완주도 미실시다. 사용자 앱·기본 앱·일반 저장·Godot는 조작하지 않았다.
+
+## 첫 후보 기록 — superseded
 
 | ID | 위치·값 | 범위 |
 |---|---|---|
