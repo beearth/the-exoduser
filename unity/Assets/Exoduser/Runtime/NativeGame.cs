@@ -265,7 +265,7 @@ namespace Exoduser.UnityPort
                     int idx=((int)(e.X*31)&0x7fffffff)%40;
                     ev=new EnemyView{body=CreateRenderer("Enemy "+e.Id),walk=CreateRenderer("Enemy walk "+e.Id),skin=idx,lastX=e.X,lastY=e.Y,hp=e.Hp,shield=e.Shield};enemies.Add(e.Id,ev);
                 }
-                ev.body.enabled=e.Alive;ev.walk.enabled=e.Alive;if(!e.Alive)continue;
+                ev.body.enabled=e.Alive;ev.walk.enabled=e.Alive;if(!e.Alive){BossSinkDraw(e,ev);continue;}
                 int dealtHp=Mathf.RoundToInt(ev.hp-e.Hp),dealtShield=Mathf.RoundToInt(ev.shield-e.Shield);if(dealtShield>0)damage.Add(new DamageText{x=e.X,y=e.Y-24,amount=dealtShield,shield=true,until=Time.unscaledTime+1});if(dealtHp>0)damage.Add(new DamageText{x=e.X,y=e.Y,amount=dealtHp,until=Time.unscaledTime+1});ev.hp=e.Hp;ev.shield=e.Shield;
                 if(newTick){float ex=e.X-ev.lastX,ey=e.Y-ev.lastY;float travel=Mathf.Sqrt(ex*ex+ey*ey);ev.distance+=travel;ev.lastX=e.X;ev.lastY=e.Y;ev.moving=travel>.001f;}
                 int dir=((int)Math.Floor(e.Facing/(Math.PI/4)+.5)%8+8)%8,cellX=ev.skin%8,cellY=ev.skin/8;
@@ -279,7 +279,7 @@ namespace Exoduser.UnityPort
             }
             UpdateDropViews();
             kiView?.Update(Simulation);
-            boltView?.Update(Simulation);
+            boltView?.Update(Simulation);BossViewUpdate();
             impacts?.Update(Simulation.TickCount);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);

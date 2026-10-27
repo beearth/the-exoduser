@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort
             flow.InitializeField(Map.Data.tiles, Map.Data.width);
             flow.FieldBossDone = true;   // G._fbDone: the stage-0 abyssal angler field boss is not ported, so the gate does not wait for it
             flow.Enabled = firstPractice == null;
-            DestroyArenaView();
+            DestroyArenaView();BossViewAttach();   // BX: druid boss behind the BossSpawners extension point + its view
             foreach (var r in props) if (r != null) r.enabled = true;
             worldTexts.Clear(); bossBar.Hide(); BossBarShown = false; stageClear.OnNext = StageClearNext;
         }

@@ -147,6 +147,7 @@ namespace Exoduser.UnityPort.Core
                 if (Config.EnemyAiEnabled) { if (enemy.IsBoss && BossTick != null) BossTick(enemy); else TickEnemy(enemy); }   // C07: boss Core plug-in
             }
             TickCorpses();
+            if (AfterEnemyTick != null) AfterEnemyTick();   // BX: boss projectiles and hazards (Simulation.DruidBoss.cs)
             TickCrossbow(); // B05: auto crossbow fire + bolt update
             UpdateKiProjectiles();
             TickKiTimers();
@@ -162,7 +163,7 @@ namespace Exoduser.UnityPort.Core
         {
             double length = Math.Sqrt(x*x+y*y);
             if (length <= 0) return;
-            float distance = Player.Speed * multiplier;
+            float distance = Player.Speed * multiplier * MoveSlowMultiplier;   // BX: P._webSlow halves the walk (web 33160)
             float nx = Player.X + (float)(x / length) * distance, ny = Player.Y + (float)(y / length) * distance;
             if (Pass(nx, Player.Y, Player.Radius)) Player.X = nx;
             if (Pass(Player.X, ny, Player.Radius)) Player.Y = ny;

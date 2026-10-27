@@ -163,7 +163,7 @@ namespace Exoduser.UnityPort
             M1Add("09", "level up", p.Level > lv0 ? "ok" : "fail", "level " + lv0 + " -> " + p.Level + ", overlay active " + levelUp.Active + ", exp " + exp0 + " -> " + p.Experience + "/" + p.MaxExperience + " over " + lvKills + " kills (null spawns " + nullSpawns + ")", "09-levelup.png");
 
             // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). The druid is the boss Core's job (pending): a harness stand-in boss walks the real flow. ----
-            levelUp.Hide(); RegisterHarnessBoss(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();
+            levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();   // BX: the real druid (Simulation.AttachDruidBoss) is the BossSpawners entry; AI stays off until the arena intro is over
             var flow = sim.Stage; bool naturalUnlock = flow.BossUnlocked; string unlockNote = naturalUnlock ? "gate opened by the kill ratio (" + sim.Stage.StageKills + "/" + flow.TotalSpawned + ")" : "gate still sealed at " + flow.StageKills + "/" + flow.TotalSpawned + " kills: forced open by the harness";
             if (!naturalUnlock) flow.ForceUnlock();
             // the field route (~7000 px of forest) is not walked: the player is placed on the gate approach, like the web's own checkRooms would see him
@@ -181,18 +181,44 @@ namespace Exoduser.UnityPort
             bool arenaOk = loadStarted && flow.InArena && flow.Arena != null && bossActor != null && bossBar.Active && arenaView != null && chunks.Count == 0 && !sim.CanMove(0, 0, 15) && sim.CanMove((flow.Arena.EntryX + .5f) * 40, (flow.Arena.EntryY + .5f) * 40, 15);
             M1Add("10", "boss arena entry", arenaOk ? "ok" : "fail", "exit tile -> fade -> name card -> arena " + BossArenaLayout.Width + "x" + BossArenaLayout.Height + " (type " + flow.Arena?.Type + ") -> player at the 6 o'clock entrance, boss at the centre, boss bar shown; " + unlockNote + "; load ticks " + loadTicks + "; field map, props and chunks swapped out", "10a-arena-load-namecard.png, 10-arena-entry-boss-bar.png");
 
-            float hpBefore = bossActor != null ? bossActor.Hp : 0; if (bossActor != null) sim.HurtEnemy(bossActor, (int)(bossActor.MaxShield + bossActor.MaxHp * .5f));
-            StepInput(0, 0, p.X + 100, p.Y, false, false); float barHp = LastBossBarInput.hp01;
-            M1Add("11", "druid boss fight", "pending-core", "Core wait: no druid actor / moves / AI yet (boss battle lead, BX-01..05). Stand-in boss is a plain etype0 body: bar follows its real hp (" + barHp.ToString("0.00") + " after half the hp), real drops roll on its death. Extension point: Simulation.Stage.BossSpawners[stage] + Simulation.BossTick", "10-arena-entry-boss-bar.png");
+            // ---- 11 druid boss fight (BX-02/03/05): the real 23-move AI runs; the player stands in the open and is healed every tick so the fight can be observed ----
+            sim.Config.EnemyAiEnabled = true; var druid = sim.Druid; var moveStates = new HashSet<string>(); int maxPhase = 0, maxShots = 0, fightHurt0 = sim.HurtCount, shotCaptures = 0, hazardCaptures = 0, fightTicks = 0;
+            float hpBefore = bossActor != null ? bossActor.Hp : 0; float shieldBefore = bossActor != null ? bossActor.Shield : 0; bool deathNoted = false;
+            if (bossActor != null) { p.X = bossActor.X + 260; p.Y = bossActor.Y; }
+            while (druid != null && bossActor != null && fightTicks++ < 2600 && bossActor.Alive)
+            {
+                p.Hp = p.MaxHp; p.Shield = p.MaxShield; if (fightTicks > 420) p.Iframes = 600;   // first 420 ticks: let hits land (the point is to see the moves hit); afterwards untouchable so the captures stay readable
+                StepInput(0, 0, bossActor.X, bossActor.Y, false, false);
+                DruidData dd; if (druid.Data.TryGetValue(bossActor, out dd)) { if (dd.S != "idle" && dd.S != "recover" && dd.S != "bossRec") moveStates.Add(dd.S); maxPhase = Math.Max(maxPhase, dd.BossPhase); }
+                int shots = 0; foreach (var pr in druid.Projectiles) if (pr.Active) shots++; maxShots = Math.Max(maxShots, shots);
+                if (shots >= 8 && shotCaptures < 1 && fightTicks > 480) { shotCaptures++; yield return M1Shot("11a-druid-volley"); }
+                int hazards = druid.LavaPools.Count + druid.Fissures.Count + druid.TideWaves.Count + druid.SeekerMines.Count + druid.PoisonPools.Count;
+                if (hazards > 0 && hazardCaptures < 1 && fightTicks > 540) { hazardCaptures++; yield return M1Shot("11b-druid-hazards"); }
+                if (fightTicks % 170 == 0) sim.HurtEnemy(bossActor, (int)Math.Max(1, bossActor.MaxShield * .22f + bossActor.MaxHp * .06f));   // walk the HP phases
+                if (maxPhase >= 3 && fightTicks > 900 && shotCaptures > 0 && hazardCaptures > 0) break;
+                if (fightTicks % 30 == 0) yield return null;
+            }
+            bool fightOk = druid != null && moveStates.Count >= 6 && maxPhase >= 2 && maxShots >= 4 && sim.HurtCount > fightHurt0;
+            M1Add("11", "druid boss fight", fightOk ? "ok" : "fail", "real 23-move druid AI (BX-02/03/05): " + moveStates.Count + " distinct move states [" + string.Join(",", moveStates) + "], hp phase " + maxPhase + ", bullets in flight up to " + maxShots + ", the player was hit " + (sim.HurtCount - fightHurt0) + "x (hp " + hpBefore + " shield " + shieldBefore + " -> " + (bossActor != null ? bossActor.Hp + " / " + bossActor.Shield : "-") + "), " + druid.Spawned + " bullets spawned, " + druid.Dropped + " dropped by the 1/3 rule; moves are oracle-checked (unity/Tools/druid-boss-oracle)", "11a-druid-volley.png");
 
-            if (bossActor != null) sim.HurtEnemy(bossActor, bossActor.MaxHp * 4);
+            // ---- 12 kill + sink: the final death of the 1-1 druid is a sink into the ground; the exit opens after the judged revive timer ----
+            int kills = 0, killGuard = 0; int sinkSeenAt = -1;
+            while (flow.BossAlive && killGuard++ < 4000)
+            {
+                p.Hp = p.MaxHp;
+                if (bossActor != null && bossActor.Alive) { sim.HurtEnemy(bossActor, bossActor.MaxHp * 4); kills++; }
+                StepInput(0, 0, p.X + 100, p.Y, false, false);
+                if (bossActor != null && !bossActor.Alive && bossActor.SinkDruid && sinkSeenAt < 0) { sinkSeenAt = killGuard; p.X = bossActor.X; p.Y = bossActor.Y + 240; p.Iframes = 600; }
+            }
+            bool sunk = bossActor != null && !bossActor.Alive && bossActor.SinkDruid;
+            if (sunk) { p.X = bossActor.X; p.Y = bossActor.Y + 240; p.Iframes = 600; for (int k = 0; k < 90; k++) { StepInput(0, 0, bossActor.X, bossActor.Y, false, false); if (k == 6) yield return M1Shot("12a-druid-sink-start"); if (k == 40) yield return M1Shot("12b-druid-sink-mid"); } }   // the sink plays on the render frames after the final death (66 tick body, 18 hold, 18 fade)
             int open = 0; while (flow.Exits.Count == 0 && open++ < 500) StepInput(0, 0, p.X + 100, p.Y, false, false);
             StepInput(0, 0, p.X + 100, p.Y, false, false);
             yield return new WaitForSecondsRealtime(.8f);
             p.X = (flow.Arena.ExitX + .5f) * 40; p.Y = (flow.Arena.ExitY + 4.5f) * 40;   // in sight of the opened exit
             StepInput(0, 0, p.X, p.Y - 100, false, false); yield return M1Shot("12-boss-dead-exit-open");
             bool exitOpen = !flow.BossAlive && flow.Exits.Count == 1 && flow.Arena.Tile(flow.Arena.ExitX, flow.Arena.ExitY) == 0 && !bossBar.Active;
-            M1Add("12", "boss kill and sink", "pending-core", "kill -> bossAlive=false -> exit tiles opened (" + (exitOpen ? "verified" : "FAILED") + "), boss bar hidden, loot " + sim.Loot.Count + " dropped; the druid sink (B08 1-1 sink / finale) needs the druid actor from the boss Core", "12-boss-dead-exit-open.png");
+            M1Add("12", "boss kill and sink", exitOpen && sunk ? "ok" : "fail", "killed with " + kills + " lethal hit(s) (immediate revive rolls included) -> bossAlive=false -> druid sink " + (sunk ? "set" : "MISSING") + " (STY-D9: 66-tick body, 18 hold, 18 fade, no death texts) -> exit tiles opened (" + (exitOpen ? "verified" : "FAILED") + "), boss bar hidden, loot " + sim.Loot.Count + " dropped", "12-boss-dead-exit-open.png");
 
             p.X = (flow.Arena.ExitX + .5f) * 40; p.Y = (flow.Arena.ExitY + .5f) * 40; int clearTicks = 0;
             while (!flow.StageCleared && clearTicks++ < 120) StepInput(0, 0, p.X, p.Y - 100, false, false);

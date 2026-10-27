@@ -1,0 +1,480 @@
+using System;
+using System.Collections.Generic;
+using Exoduser.UnityPort.Core.Combat;
+
+namespace Exoduser.UnityPort.Core
+{
+    // BX-03: _bossStartPattern (start side of the 23 moves) and the `switch(e.s)` states of updateE they use (game.html 40703-41517). Damage numbers are raw ATK
+    // multipliers exactly as in the original; the host applies defence, shield, hit cap, knock-back and parry (B09 / B07 Core).
+    public sealed partial class DruidBoss
+    {
+        // _PARRYABLE_ATK (red = parryable, purple = not): only the part inside the druid moveset
+        static readonly HashSet<string> Parryable = new HashSet<string> { "charge", "slashCombo", "slam", "sweep", "spin", "multiDash", "jump", "tideWave" };
+        static double Or(double v, double fb) { return v != 0 && !double.IsNaN(v) ? v : fb; }   // `tele||fb`
+
+        void StartPattern(EnemyState e, DruidData d, BossMove mv, double dist, int phase, int extraDelay)
+        {
+            d.AtkParryable = Parryable.Contains(mv.Id);
+            int tele = I(mv.Tele * DruidBossData.Phases[phase].TeleM) + extraDelay;
+            double px = host.PX, py = host.PY;
+            switch (mv.Id)
+            {
+                case "burst": d.S = "bossBurstWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "⚠ 광역 발사!", "#ff6600", 50); break;
+                case "fan": d.S = "bossFanWind"; d.St2 = Or(tele, 30); host.Text(d.X, d.Y - 30, "🔥 확산!", "#ff4444", 35); break;
+                case "charge": d.S = "bossChargeWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); break;
+                case "jump":
+                    {
+                        double jx = px, jy = py, sx, sy;
+                        if (!host.CanMove(jx, jy, d.R)) { if (host.SafePoint(jx, jy, d.R, out sx, out sy)) { jx = sx; jy = sy; } else { jx = d.X; jy = d.Y; } }
+                        d.JumpX = jx; d.JumpY = jy; d.JumpOx = d.X; d.JumpOy = d.Y;
+                        d.S = "bossJumpWind"; d.St2 = Or(tele, 34); d.TelegraphT = Or(tele, 34); d.TelegraphR = d.R + 30; host.Text(d.X, d.Y - 30, "🦅 도약 준비!", "#cc66ff", 40); break;
+                    }
+                case "shock": d.S = "bossShockWind"; d.St2 = Or(tele, 45); host.Text(d.X, d.Y - 30, "🌊 충격파!", "#44aaff", 40); break;
+                case "summon": d.S = "bossSummonWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "👹 소환!", "#aa00ff", 50); break;
+                case "grab":
+                    if (dist < 120) { d.S = "bossGrabWind"; d.St2 = Or(tele, 40); d.GrabWindMax = d.St2; d.GrabAng = d.Facing; host.Text(d.X, d.Y - 30, "🖐 잡기!", "#cc00ff", 45); }
+                    else { d.S = "bossChargeWind"; d.St2 = Or(I(55 * DruidBossData.Phases[phase].TeleM) + extraDelay, 55); host.Text(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); }
+                    break;
+                case "spin": d.S = "bossSpinWind"; d.St2 = Or(tele, 35); d.SpinAng = 0; host.Text(d.X, d.Y - 30, "🌀 회전참!", "#ff6644", 45); break;
+                case "mine": d.S = "bossMineWind"; d.St2 = Or(tele, 30); host.Text(d.X, d.Y - 30, "💣 지뢰!", "#5e10a8", 40); break;
+                case "multiDash": d.S = "bossMultiDashWind"; d.St2 = Or(tele, 20); d.DashCnt = 4 + I(phase * 1.5); d.DashIdx = 0; host.Text(d.X, d.Y - 30, "⚡ 연격!", "#ff4488", 45); break;
+                case "slashCombo": d.S = "bossSlashWind"; d.St2 = Or(tele, 20); d.SlashCnt = 3 + I(phase * 1.5); d.SlashIdx = 0; d.WeaponAng = 0; host.Text(d.X, d.Y - 30, "⚔ 난타!", "#ff8844", 45); break;
+                case "slam": d.S = "bossSlamWind"; d.St2 = Or(tele, 35); d.WeaponAng = -1.2; host.Text(d.X, d.Y - 30, "💥 강타!", "#ff4400", 50); break;
+                case "sweep": d.S = "bossSweepWind"; d.St2 = Or(tele, 25); d.WeaponAng = -.8; d.SweepDir = R() > .5 ? 1 : -1; host.Text(d.X, d.Y - 30, "🌀 휘두르기!", "#ffaa00", 40); break;
+                case "burrowStrike":
+                    d.TeleOx = d.X; d.TeleOy = d.Y; d.Facing = Atan2(py - d.Y, px - d.X);
+                    d.S = "bossDruidDive"; d.St2 = Or(tele, 50); d.DiveMax = Or(tele, 50); host.Text(d.X, d.Y - 30, "🌿⚠", "#66dd22", 60); break;
+                case "beanStorm": d.S = "bossBeanStormWind"; d.St2 = Or(tele, 25); d.BsWave = 0; d.BsMaxWave = 3 + I(phase); host.Text(d.X, d.Y - 30, "🔴 빨간콩 폭풍!", "#cc1100", 50); break;
+                case "chaseAoe":
+                    ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = 10, T = 0, Interval = 60, R = 450, Delay = 90, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage });
+                    host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
+                    d.S = "bossChargeWind"; d.St2 = Or(I(40 * DruidBossData.Phases[phase].TeleM) + extraDelay, 40);
+                    d.Facing = Atan2(py - d.Y, px - d.X); host.Text(d.X, d.Y - 45, "⚠ 돌진!", "#ffaa00", 40); break;
+                case "elemBall":
+                    {
+                        d.Facing = Atan2(py - d.Y, px - d.X);
+                        double spd = 6, rr = 16; int dmg = I(d.Atk * 3); int cnt = 10 + I(d.BossPhase * 1.5); double fanW = Math.PI * .55;
+                        for (int bi = 0; bi < cnt; bi++)
+                        {
+                            double ba = d.Facing - fanW / 2 + fanW * bi / (cnt - 1);
+                            SpawnBossProjectile(e, d, new ProjSpec { X = d.X + Cos(ba) * 30, Y = d.Y + Sin(ba) * 30, Vx = Cos(ba) * spd, Vy = Sin(ba) * spd, Dmg = dmg, El = EL_P, Life = 400, Ml = 400, Col = "el", Sz = rr, ElemBall = true,
+                                Homing = false, ParryClass = "magic", DruidStraight = true, R = rr });
+                        }
+                        host.Text(d.X, d.Y - 30, "💥 속성탄!", "#ff8844", 45); host.Shake(8);
+                        d.S = "recover"; d.St2 = 30; break;
+                    }
+                case "groundFissure":
+                    {
+                        d.Facing = Atan2(py - d.Y, px - d.X);
+                        int gfPh = d.BossPhase; int n = gfPh >= 3 ? 3 : gfPh >= 1 ? 2 : 1;
+                        for (int fi = 0; fi < n; fi++)
+                        {
+                            double off = (fi - (n - 1) / 2.0) * .3, ang = d.Facing + off; int maxLen = I(Math.Max(Or(host.ArenaW / T, 50), Or(host.ArenaH / T, 42)) * T * .45);
+                            Fissures.Add(new Fissure { X = d.X, Y = d.Y, Ang = ang, Spd = 20, Len = 0, MaxLen = maxLen, T = 0, MaxT = 140, W = 140, Dmg = I(d.Atk * 2), Exploded = false, ExplR = Math.Min(750, maxLen * .3), Druid = e.IsBoss && DruidStage });
+                        }
+                        host.Shake(10); host.Text(d.X, d.Y - 30, "🌋 균열!", "#a9cc63", 50); d.S = "recover"; d.St2 = 30; break;
+                    }
+                case "tideWave":
+                    {
+                        int n = 2 + Math.Min(d.BossPhase, 2);
+                        for (int ti = 0; ti < n; ti++)
+                        {
+                            double gap = R() * Math.PI * 2;
+                            TideWaves.Add(new TideWave { X = d.X, Y = d.Y, Rad = 20 + ti * 8, MaxR = 1750, Spd = 15, T = 0, MaxT = 120, GapAng = gap, GapSize = .8, W = 60, Dmg = I(d.Atk * 1.5), HitT = 0, Druid = e.IsBoss && DruidStage });
+                        }
+                        host.Text(d.X, d.Y - 30, "🌊 파동!", "#a9cc63", 50); d.S = "recover"; d.St2 = 35; break;
+                    }
+                case "seekerMines":
+                    {
+                        int n = 3 + Math.Min(d.BossPhase, 2);
+                        for (int mi = 0; mi < n; mi++)
+                        {
+                            double ma = d.Facing + Math.PI * 2 * mi / n;
+                            SeekerMines.Add(new SeekerMine { DruidMine = e.IsBoss && DruidStage, X = d.X + Cos(ma) * 20, Y = d.Y + Sin(ma) * 20, Vx = Cos(ma) * 1, Vy = Sin(ma) * 1, Spd = 1, T = 0, ArmT = 60, MaxT = 360, R = 60, Dmg = I(d.Atk * 2), El = EL_D, Hp = 1 });
+                        }
+                        host.Text(d.X, d.Y - 30, "💣 추적지뢰!", "#5e10a8", 50); d.S = "recover"; d.St2 = 25; break;
+                    }
+                case "poisonTrail":
+                    d.PtAng = Atan2(py - d.Y, px - d.X); d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = 50; host.Text(d.X, d.Y - 30, "☠ 독안개!", "#44cc00", 55); break;
+                case "lavaPools":
+                    {
+                        // druid branch: three poison pools on the player's approach axis (centre +120, flanks +-360)
+                        double a = Atan2(py - d.Y, px - d.X), ux = Cos(a), uy = Sin(a);
+                        double cx = px + ux * 120, cy = py + uy * 120, nx = -uy, ny = ux;
+                        double[] xs = { cx, cx + nx * 360, cx - nx * 360 }, ys = { cy, cy + ny * 360, cy - ny * 360 };
+                        for (int l = 0; l < 3; l++) LavaPools.Add(new LavaPool { X = xs[l], Y = ys[l], T = 0, WarnT = 55 + l * 18, MaxT = 300, R = 150, Dmg = I(d.Atk * .9), TickT = 0 });
+                        host.Text(d.X, d.Y - 30, "☠ 독 늪!", "#66dd22", 60); d.S = "recover"; d.St2 = 25; break;
+                    }
+                case "rapidMissile":
+                    {
+                        d.Facing = Atan2(py - d.Y, px - d.X);
+                        int n = 3 + Math.Min(d.BossPhase, 3);
+                        for (int mi = 0; mi < n; mi++)
+                        {
+                            double off = (mi - (n - 1) / 2.0) * .15, ang = d.Facing + off, spd = 14 + d.BossPhase * 2;
+                            SpawnBossProjectile(e, d, new ProjSpec { X = d.X + Cos(ang) * d.R, Y = d.Y + Sin(ang) * d.R, Vx = Cos(ang) * spd, Vy = Sin(ang) * spd, Dmg = I(d.Atk * 2), El = EL_P, Life = 300, Ml = 300, Col = "#ff4444", Sz = 3, Homing = true, MissileTrail = true });
+                        }
+                        host.Shake(8); host.Text(d.X, d.Y - 30, "🚀 미사일!", "#ff2200", 55); d.S = "recover"; d.St2 = 30; break;
+                    }
+            }
+        }
+
+        // ---- the updateE `switch(e.s)` ------------------------------------------------------------------------------------------------------------------------
+        void PlayerHit(EnemyState e, DruidData d, double mul, double kb, bool magic = false)
+        {
+            host.HurtPlayer(I(d.Atk * mul), magic);
+            if (kb != 0) { double ka = Atan2(host.PY - d.Y, host.PX - d.X); host.KnockPlayer(Cos(ka) * kb, Sin(ka) * kb); }
+        }
+        bool Parry(EnemyState e, DruidData d, double mul, double stun, double poise, double angle)
+        {
+            return host.TryParry(e, mul, stun, poise, angle);
+        }
+        bool Idle() { return host.PIframes <= 0; }
+
+        void StateSwitch(EnemyState e, DruidData d, double dist)
+        {
+            double px = host.PX, py = host.PY, pr = host.PRadius;
+            int stage = host.Stage;
+            switch (d.S)
+            {
+                case "idle":
+                    {
+                        // `case'idle'` else-branch of a melee etype: forward step speed*1.6 along the facing
+                        double a1 = d.Speed * 1.6, mx = Cos(d.Facing) * a1, my = Sin(d.Facing) * a1, nx = d.X + mx, ny = d.Y + my;
+                        if (host.CanMove(nx, ny, d.R)) { d.X = nx; d.Y = ny; }
+                        // etype0 contact attack
+                        if (dist < d.R + pr + 8 && host.PIframes <= 0 && d.St2 <= 0)
+                        {
+                            host.HurtPlayer(I(d.Atk * 0.8), false);
+                            d.St2 = 40 + I(R() * 20);
+                        }
+                        // generic ranged charge (projCd 50)
+                        if (d.ProjCd < 9000 && !(d.ProjChargeT > 0))
+                        {
+                            d.ProjT -= 1;
+                            if (d.ProjT <= 0 && dist < 400) { d.ProjT = d.ProjCd; d.ProjChargeBean = "normal"; d.ProjChargeT = 60; }
+                        }
+                        break;
+                    }
+                case "bossBurstWind":
+                    if (d.St2 <= 0)
+                    {
+                        int cnt = I(Math.Max(10, 6 + Math.Min(stage, 6)) * (1 + (d.BossPhase - 1) * .12));
+                        for (int i = 0; i < cnt; i++)
+                        {
+                            double a = Math.PI * 2 * i / cnt, r2 = R(); bool bk = r2 < .5, rb = r2 >= .5; double sp = bk ? 4.4 : rb ? 4.0 : 3.2;
+                            SpawnBossProjectile(e, d, new ProjSpec { X = d.X, Y = d.Y, Vx = Cos(a) * sp, Vy = Sin(a) * sp, Dmg = I(d.Atk * (bk ? 1.5 : rb ? 2.5 : 1.2)), El = EL_P, Life = 400, Ml = 400,
+                                Col = bk ? "#00aa00" : rb ? "#cc1100" : "col", Sz = bk ? 2.0 : rb ? 1.8 : 1.2, RedBean = rb, BlackBean = bk, Homing = rb });
+                        }
+                        host.Shake(8); d.S = "recover"; d.St2 = 50;
+                    }
+                    break;
+                case "bossFanWind":
+                    if (d.St2 <= 0)
+                    {
+                        double fanW = Math.PI * (.7 + d.BossPhase * .06); int cnt = I(Math.Max(12, 4 + Math.Min(stage, 5)) * (1 + (d.BossPhase - 1) * .12)); double aim = d.Facing;
+                        for (int i = 0; i < cnt; i++)
+                        {
+                            double a = aim - fanW / 2 + fanW * i / (cnt - 1), lane = (double)i / (cnt - 1);
+                            bool physical = lane < .28 || lane > .72, black = d.BossPhase >= 2 && i % 4 == 1;
+                            SpawnBossProjectile(e, d, new ProjSpec { X = d.X, Y = d.Y, Vx = Cos(a) * 4.4, Vy = Sin(a) * 4.4, Dmg = I(d.Atk * (black ? 1.5 : 1.3)), El = physical && !black ? EL_P : EL_P, Life = 400, Ml = 400,
+                                Col = black ? "#00aa00" : physical ? "#8a5a2a" : "col", Sz = black ? 2 : 1.2, BlackBean = black, ParryClass = physical && !black ? "physical" : "magic", Homing = false, DruidStraight = true });
+                        }
+                        d.S = "recover"; d.St2 = 45;
+                    }
+                    break;
+                case "bossChargeWind":
+                    if (!DruidStage || d.St2 > 18) d.Facing = Atan2(py - d.Y, px - d.X);
+                    if (d.St2 <= 0) { d.S = "bossCharge"; d.St2 = 50; d.EchDx = Cos(d.Facing); d.EchDy = Sin(d.Facing); }
+                    break;
+                case "bossCharge":
+                    {
+                        double spd = 35, nx = d.X + d.EchDx * spd, ny = d.Y + d.EchDy * spd;
+                        if (host.CanMove(nx, ny, d.R)) { d.X = nx; d.Y = ny; }
+                        else if (host.CanMove(d.X + d.EchDx * spd, d.Y, d.R)) { d.X += d.EchDx * spd; }
+                        else if (host.CanMove(d.X, d.Y + d.EchDy * spd, d.R)) { d.Y += d.EchDy * spd; }
+                        else { d.ShockR = 0; d.ShockMax = 800; d.S = "bossShock"; d.St2 = 20; host.Shake(25); host.Fx("wallSlam", d.X, d.Y, 150); break; }
+                        if (Dst(px, py, d.X, d.Y) < pr + d.R + 80 && host.PIframes <= 0)
+                        {
+                            if (Parry(e, d, 5, 90, 20, d.Facing + Math.PI))
+                            {
+                                e.KnockbackX = (float)(Cos(d.Facing + Math.PI) * 18); e.KnockbackY = (float)(Sin(d.Facing + Math.PI) * 18);
+                            }
+                            else PlayerHit(e, d, 2, 12);
+                            d.S = "recover"; d.St2 = 40; break;
+                        }
+                        if (d.St2 <= 0) { d.S = "recover"; d.St2 = 40; }
+                        break;
+                    }
+                case "bossJumpWind":
+                    if (d.St2 <= 0) { d.S = "bossJump"; d.St2 = 40; host.Text(d.X, d.Y - 30, "🦅 도약!", "#cc66ff", 30); }
+                    break;
+                case "bossJump":
+                    {
+                        double prog = 1 - d.St2 / 40, jx, jy;
+                        if (prog < .5) { double t = prog * 2; jx = d.JumpOx + (d.JumpX - d.JumpOx) * t * .3; jy = d.JumpOy + (d.JumpY - d.JumpOy) * t * .3; }
+                        else { double t = (prog - .5) * 2; jx = d.JumpOx + (d.JumpX - d.JumpOx) * (.3 + t * .7); jy = d.JumpOy + (d.JumpY - d.JumpOy) * (.3 + t * .7); }
+                        if (host.CanMove(jx, jy, d.R)) { d.X = jx; d.Y = jy; }
+                        if (d.St2 <= 0)
+                        {
+                            d.ShockR = 0; d.ShockMax = 800 + stage * 50; d.S = "bossShock"; d.St2 = 25; host.Shake(25);
+                            if (Dst(px, py, d.X, d.Y) < 300 && host.PIframes <= 0) PlayerHit(e, d, 1.8, 15);
+                        }
+                        break;
+                    }
+                case "bossShockWind":
+                    if (d.St2 <= 0) { d.ShockR = 0; d.ShockMax = 1000 + stage * 50; d.S = "bossShock"; d.St2 = 30; host.Shake(10); }
+                    break;
+                case "bossShock":
+                    {
+                        d.ShockR += 4.5;
+                        if (Math.Abs(Dst(px, py, d.X, d.Y) - d.ShockR) < 18 && host.PIframes <= 0) PlayerHit(e, d, 1.4, 8);
+                        if (d.ShockR >= d.ShockMax || d.St2 <= 0) { d.S = "recover"; d.St2 = 55; }
+                        break;
+                    }
+                case "bossSummonWind":
+                    if (d.St2 <= 0)
+                    {
+                        int cnt = 3 + I(stage * .5);
+                        int[] etypes = { 0, 2, 3, 3, 3 };
+                        for (int si = 0; si < cnt; si++)
+                        {
+                            double a = Math.PI * 2 * si / cnt, sd = 50 + R() * 30, sx = d.X + Cos(a) * sd, sy = d.Y + Sin(a) * sd;
+                            int el = I(R() * 6); int et = etypes[I(R() * 5)];
+                            host.SpawnMinion(sx, sy, el, et);
+                        }
+                        host.Text(d.X, d.Y - 20, cnt + "체 소환!", "#cc66ff", 40); d.S = "recover"; d.St2 = 70;
+                    }
+                    break;
+                case "bossGrabWind":
+                    {
+                        double ga = Atan2(py - d.Y, px - d.X); d.GrabAng = ga;
+                        double gs = d.Speed * 1.5, gmx = Cos(ga) * gs, gmy = Sin(ga) * gs, gnx = d.X + gmx, gny = d.Y + gmy;
+                        if (host.CanMove(gnx, gny, d.R)) { d.X = gnx; d.Y = gny; }
+                        else { if (host.CanMove(d.X + gmx, d.Y, d.R)) d.X += gmx; else if (host.CanMove(d.X, d.Y + gmy, d.R)) d.Y += gmy; }
+                        if (d.St2 <= 0)
+                        {
+                            if (Dst(px, py, d.X, d.Y) < d.R + pr + 200 && host.PIframes <= 0) { d.S = "bossGrab"; d.St2 = 60; host.Text(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); }
+                            else { d.S = "recover"; d.St2 = 40; }
+                        }
+                        break;
+                    }
+                case "bossGrab":
+                    {
+                        host.PX = d.X + Cos(d.GrabAng) * 25; host.PY = d.Y + Sin(d.GrabAng) * 25; host.StopPlayerKnock();
+                        if (d.St2 % 10 == 0 && host.PIframes <= 0) host.HurtPlayer(I(d.Atk * .4), false);
+                        if (d.St2 <= 0)
+                        {
+                            host.HurtPlayer(I(d.Atk * 1.8), false);
+                            double ta = d.GrabAng; host.StopPlayerKnock(); host.KnockPlayer(Cos(ta) * 18, Sin(ta) * 18);
+                            host.PIframes = 30; host.Text(host.PX, host.PY - 30, "💥 내던지기!", "#ff4400", 50); host.Shake(15);
+                            d.S = "recover"; d.St2 = 70;
+                        }
+                        break;
+                    }
+                case "bossSpinWind":
+                    if (d.St2 <= 0) { d.S = "bossSpin"; d.St2 = 50; d.SpinAng = 0; }
+                    break;
+                case "bossSpin":
+                    {
+                        d.SpinAng += .35; double spR = 500 + stage * 15;
+                        if (d.St2 % 8 < 1)
+                        {
+                            double sa = d.SpinAng;
+                            SpawnBossProjectile(e, d, new ProjSpec { X = d.X + Cos(sa) * 20, Y = d.Y + Sin(sa) * 20, Vx = Cos(sa) * 4, Vy = Sin(sa) * 4, Dmg = I(d.Atk * .8), El = EL_P, Life = 250, Ml = 250, Col = "col", Sz = 2 });
+                        }
+                        if (Dst(px, py, d.X, d.Y) < spR && host.PIframes <= 0 && d.St2 % 12 < 1)
+                        {
+                            if (!Parry(e, d, 0, 0, 20, 0)) PlayerHit(e, d, 1.2, 6);
+                        }
+                        if (d.St2 <= 0) { d.S = "recover"; d.St2 = 55; host.Shake(6); }
+                        break;
+                    }
+                case "bossMineWind":
+                    if (d.St2 <= 0)
+                    {
+                        int mc = 3 + I(d.BossPhase) + I(stage * .3);
+                        for (int mi = 0; mi < mc; mi++)
+                        {
+                            double ma = Math.PI * 2 * mi / mc, md = 60 + R() * 80, mx = d.X + Cos(ma) * md, my = d.Y + Sin(ma) * md;
+                            SpawnBossProjectile(e, d, new ProjSpec { X = mx, Y = my, Vx = 0, Vy = 0, Dmg = I(d.Atk * 1.6), El = EL_D, Life = 180, Ml = 180, Col = "#ff2000", Sz = 5, Mine = true });
+                        }
+                        host.Text(d.X, d.Y - 20, mc + "개 설치!", "#5e10a8", 35); d.S = "recover"; d.St2 = 50;
+                    }
+                    break;
+                case "bossMultiDashWind":
+                    d.Facing = Atan2(py - d.Y, px - d.X);
+                    if (d.St2 <= 0) { d.EchDx = Cos(d.Facing); d.EchDy = Sin(d.Facing); d.S = "bossMultiDash"; d.St2 = 12; }
+                    break;
+                case "bossMultiDash":
+                    {
+                        double spd = 9, nx = d.X + d.EchDx * spd, ny = d.Y + d.EchDy * spd;
+                        if (host.CanMove(nx, ny, d.R)) { d.X = nx; d.Y = ny; }
+                        else if (host.CanMove(d.X + d.EchDx * spd, d.Y, d.R)) { d.X += d.EchDx * spd; }
+                        else if (host.CanMove(d.X, d.Y + d.EchDy * spd, d.R)) { d.Y += d.EchDy * spd; }
+                        if (Dst(px, py, d.X, d.Y) < pr + d.R + 10 && host.PIframes <= 0)
+                        {
+                            if (!Parry(e, d, 4, 90, 0, d.Facing + Math.PI)) PlayerHit(e, d, 1.3, 8);
+                        }
+                        if (d.St2 <= 0)
+                        {
+                            d.DashIdx++;
+                            if (d.DashIdx < d.DashCnt)
+                            {
+                                d.Facing = Atan2(py - d.Y, px - d.X) + ((R() - .5) * .4); d.EchDx = Cos(d.Facing); d.EchDy = Sin(d.Facing);
+                                d.St2 = 10 + I(R() * 5); host.Shake(4);
+                            }
+                            else { d.S = "recover"; d.St2 = 25; host.Shake(8); }
+                        }
+                        break;
+                    }
+                case "bossDruidDive":
+                    d.Facing = Atan2(py - d.Y, px - d.X);
+                    if (d.St2 <= 0) { d.DiveTx = px; d.DiveTy = py; d.S = "bossDruidUnder"; d.St2 = 45; d.UnderMax = 45; d.Iframes = Math.Max(d.Iframes, 50); host.Fx("druidDust", d.X, d.Y, d.R); }
+                    break;
+                case "bossDruidUnder":
+                    {
+                        d.DiveTx += (px - d.DiveTx) * .06; d.DiveTy += (py - d.DiveTy) * .06;
+                        double up = 1 - d.St2 / (Or(d.UnderMax, 45));
+                        d.X = d.TeleOx + (d.DiveTx - d.TeleOx) * up; d.Y = d.TeleOy + (d.DiveTy - d.TeleOy) * up;
+                        d.Iframes = Math.Max(d.Iframes, 5);
+                        if (d.St2 <= 0) { d.X = d.DiveTx; d.Y = d.DiveTy; host.Fx("druidDust", d.X, d.Y, d.R * 1.3); d.S = "bossDruidErupt"; d.St2 = 40; d.EruptMax = 40; d.EruptHit = false; host.Text(d.X, d.Y - 40, "🌿💥", "#66dd22", 60); host.Shake(12); }
+                        break;
+                    }
+                case "bossDruidErupt":
+                    {
+                        if (!d.EruptHit && d.St2 <= (d.EruptMax - 8))
+                        {
+                            d.EruptHit = true; double erR = d.R + 120; int erDmg = I(d.Atk * 2.2);
+                            host.Fx("druidRoots", d.X, d.Y, erR);
+                            if (Dst(px, py, d.X, d.Y) < erR && host.PIframes <= 0)
+                            {
+                                if (!Parry(e, d, 4, 60, 20, d.Facing + Math.PI))
+                                {
+                                    host.HurtPlayer(erDmg, false); host.PlayerPoison(4, 90); host.Text(px, py - 16, "☠속박!", "#66dd22", 24);
+                                    double ka = Atan2(py - d.Y, px - d.X); host.KnockPlayer(Cos(ka) * 14, Sin(ka) * 14);
+                                }
+                            }
+                        }
+                        if (d.St2 <= 0) { d.S = "recover"; d.St2 = 30; }
+                        break;
+                    }
+                case "bossSlashWind":
+                    d.Facing = Atan2(py - d.Y, px - d.X); d.WeaponAng = -.8 + Sin(d.St2 * .3) * .3;
+                    if (d.St2 <= 0) { d.S = "bossSlash"; d.St2 = 10; d.WeaponAng = -.8; }
+                    break;
+                case "bossSlash":
+                    {
+                        double swProg = 1 - d.St2 / 10; d.WeaponAng = -.8 + swProg * 2.0;
+                        double smx = Cos(d.Facing) * 2.5, smy = Sin(d.Facing) * 2.5;
+                        if (host.CanMove(d.X + smx, d.Y + smy, d.R)) { d.X += smx; d.Y += smy; }
+                        if (swProg > .3 && swProg < .7 && Dst(px, py, d.X, d.Y) < d.R + pr + 300 && host.PIframes <= 0)
+                        {
+                            double toP = Atan2(py - d.Y, px - d.X), aDiff = Math.Abs(((toP - d.Facing) % (Math.PI * 2) + (Math.PI * 3)) % (Math.PI * 2) - Math.PI);
+                            if (aDiff < 1.2) { if (!Parry(e, d, 3, 60, 20, d.Facing + Math.PI)) PlayerHit(e, d, 1.5, 7); }
+                        }
+                        if (d.St2 <= 0)
+                        {
+                            d.SlashIdx++;
+                            if (d.SlashIdx < d.SlashCnt) { d.Facing = Atan2(py - d.Y, px - d.X); d.S = "bossSlash"; d.St2 = 8 + I(R() * 4); d.WeaponAng = -.8; host.Shake(3); }
+                            else { d.S = "recover"; d.St2 = 25; d.WeaponAng = 0; host.Shake(5); }
+                        }
+                        break;
+                    }
+                case "bossSlamWind":
+                    {
+                        d.Facing = Atan2(py - d.Y, px - d.X); d.WeaponAng = -1.2 + Sin(d.St2 * .15) * .2;
+                        double smx = Cos(d.Facing) * 1.5, smy = Sin(d.Facing) * 1.5;
+                        if (Dst(px, py, d.X, d.Y) > 50 && host.CanMove(d.X + smx, d.Y + smy, d.R)) { d.X += smx; d.Y += smy; }
+                        if (d.St2 <= 0) { d.S = "bossSlam"; d.St2 = 8; }
+                        break;
+                    }
+                case "bossSlam":
+                    {
+                        double slProg = 1 - d.St2 / 8; d.WeaponAng = -1.2 + slProg * 2.4;
+                        if (d.St2 <= 0)
+                        {
+                            d.WeaponAng = 0; double slamR = 1000 + stage * 30 + d.BossPhase * 80, slamD = Dst(px, py, d.X, d.Y);
+                            if (slamD < slamR && host.PIframes <= 0) { if (!Parry(e, d, 4, 80, 20, d.Facing + Math.PI)) PlayerHit(e, d, 2.2, 14); }
+                            d.ShockR = 0; d.ShockMax = slamR; host.Shake(14);
+                            d.S = "recover"; d.St2 = 40;
+                        }
+                        break;
+                    }
+                case "bossSweepWind":
+                    d.Facing = Atan2(py - d.Y, px - d.X); d.WeaponAng = (d.SweepDir != 0 ? d.SweepDir : 1) * -1.2;
+                    if (d.St2 <= 0) { d.S = "bossSweep"; d.St2 = 14; }
+                    break;
+                case "bossSweep":
+                    {
+                        double sw = 1 - d.St2 / 14, dir = d.SweepDir != 0 ? d.SweepDir : 1; d.WeaponAng = dir * (-1.2 + sw * 2.8);
+                        double swR = d.R + pr + 400;
+                        if (sw > .15 && sw < .85 && Dst(px, py, d.X, d.Y) < swR && host.PIframes <= 0)
+                        {
+                            double toP = Atan2(py - d.Y, px - d.X), aDiff = Math.Abs(((toP - d.Facing) % (Math.PI * 2) + (Math.PI * 3)) % (Math.PI * 2) - Math.PI);
+                            if (aDiff < 1.7) { if (!Parry(e, d, 3, 60, 20, d.Facing + Math.PI)) PlayerHit(e, d, 1.8, 10); }
+                        }
+                        if (d.St2 <= 0)
+                        {
+                            d.WeaponAng = 0;
+                            if (d.BossPhase >= 2)
+                            {
+                                double swA = d.Facing;
+                                for (int si = -2; si <= 2; si++)
+                                {
+                                    double a = swA + si * 0.25;
+                                    SpawnBossProjectile(e, d, new ProjSpec { X = d.X + Cos(a) * 20, Y = d.Y + Sin(a) * 20, Vx = Cos(a) * 4, Vy = Sin(a) * 4, Dmg = I(d.Atk * .8), El = EL_P, Life = 200, Ml = 200, Col = "#ffaa00", Sz = 2 });
+                                }
+                                host.Text(d.X, d.Y - 20, "wind!", "#ffcc00", 20);
+                            }
+                            d.S = "recover"; d.St2 = 30; host.Shake(6);
+                        }
+                        break;
+                    }
+                case "bossBeanStormWind":
+                    d.Facing = Atan2(py - d.Y, px - d.X);
+                    if (d.St2 <= 0) { d.S = "bossBeanStorm"; d.St2 = 8; d.BsWave = 0; }
+                    break;
+                case "bossBeanStorm":
+                    if (d.St2 <= 0)
+                    {
+                        int cnt = 5 + Math.Min(I(stage * .3), 4) + d.BossPhase; double baseAng = Atan2(py - d.Y, px - d.X), spread = Math.PI * (.5 + d.BossPhase * .1);
+                        for (int i = 0; i < cnt; i++)
+                        {
+                            double a = baseAng - spread / 2 + spread * i / (cnt - 1) + (R() - .5) * .15, spd = 2.5 + R() * 1.5, r4 = R(); bool bk = r4 < .5, rb = r4 >= .5; double sp = bk ? 4.4 : spd;
+                            SpawnBossProjectile(e, d, new ProjSpec { X = d.X, Y = d.Y, Vx = Cos(a) * sp, Vy = Sin(a) * sp, Dmg = I(d.Atk * (bk ? 1.5 : rb ? 2 : 1)), El = EL_P, Life = bk ? 400 : 350, Ml = bk ? 400 : 350,
+                                Col = bk ? "#00aa00" : rb ? "#cc1100" : "col", Sz = bk ? 2.0 : rb ? 1.8 : 1.2, RedBean = rb, BlackBean = bk, Homing = rb });
+                        }
+                        host.Shake(4); d.BsWave++;
+                        if (d.BsWave >= d.BsMaxWave) { d.S = "recover"; d.St2 = 25; } else d.St2 = 10 + I(R() * 6);
+                    }
+                    break;
+                case "bossPoisonDash":
+                    {
+                        double pmx = Cos(d.PtAng) * 5, pmy = Sin(d.PtAng) * 5;
+                        if (host.CanMove(d.X + pmx, d.Y + pmy, d.R)) { d.X += pmx; d.Y += pmy; }
+                        d.PtT += 1;
+                        if (d.PtT >= 8) { d.PtT -= 8; PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = 240, R = 175, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, 175); }
+                        if (d.St2 <= 0) { d.S = "recover"; d.St2 = 25; }
+                        break;
+                    }
+                case "bossRec":
+                    if (d.St2 <= 0) { d.S = "idle"; d.St2 = 3 + R() * 5; }
+                    break;
+                case "recover":
+                    if (d.St2 > 20) d.St2 = 20;
+                    if (d.St2 <= 0) { d.S = "idle"; d.St2 = 3 + R() * 5; }
+                    break;
+            }
+        }
+
+        // _fireChargedProj for a boss with a physical element (`else` branch): one plain bullet aimed at the player, life ~~(range*.3)
+        void FireChargedProj(EnemyState e, DruidData d)
+        {
+            double aim = Atan2(host.PY - d.Y, host.PX - d.X); d.Facing = aim;
+            int pLife = I(400 * .3);
+            SpawnProjectile(e, d, new ProjSpec { X = d.X, Y = d.Y, Vx = Cos(aim) * 3, Vy = Sin(aim) * 3, Dmg = I(d.Atk * .8), El = EL_P, Life = pLife, Ml = pLife, Col = "col", Sz = 1.5, Commit = true }, false);
+            d.ProjChargeT = 0;
+        }
+    }
+}
