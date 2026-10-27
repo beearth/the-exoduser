@@ -56,10 +56,11 @@ namespace Exoduser.UnityPort.Core
     [Serializable]
     public sealed class LootState
     {
-        // A source roll request, deliberately not a fabricated mkItem result.
+        // A world drop (web worldItems entry {type:'item', item, picked}); Item is the real mkItem result (D01).
         public int Id, Rarity, Tier, Element;
         public float X, Y;
-        public string Slot, Kind = "equipment-roll-pending";
+        public string Slot, Kind = "equipment";
         public bool Picked;
+        public InventoryItem Item;
     }
 }

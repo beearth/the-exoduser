@@ -3,7 +3,7 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeGame
  {
   bool gameFocused=true;
-  void OnApplicationFocus(bool focus){if(!pauseSmoke)SetGameFocus(focus);}
+  void OnApplicationFocus(bool focus){if(!pauseSmoke&&!dropSmoke)SetGameFocus(focus);}
   public void SetGameFocus(bool focus)
   {
    gameFocused=focus;if(pauseMenu==null)return;pauseMenu.SetFocus(focus);inventory.SetFocus(focus);

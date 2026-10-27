@@ -10,6 +10,8 @@ namespace Exoduser.UnityPort.Core {
   public int _gx=-1,_gy=-1; public bool fav,junk;
   public double atk,spd,wStCost,wArcW,wRange,wStagger,bonusRange,shieldWt,def,bonusSt,stagger,bonusHp,chargeDist,charge,chargeW,bonusChargeDist,beamDmg,bowSpd,bowStCost,bowRange,bowProjSpd,bowPierce,potCd,eDef,bonusShield,bonusMp,splashR;
   public double bStr,bDex,bInt,bLck,critRate,critDmg,atkSpd,dmgBonus,chargeAoE,chargeCharge,splashMul,magicPen,stRegen,mpRegen,_implicitVal;
+  // D01 world drops (mkItem): legendarySpecial/uniqueSpecial hold the web {stat} name (the web also sets item[stat]=val, read here via legendaryVal/uniqueVal).
+  public string uniqueArt,legendaryKo,uniqueKo,uniqueSecs; public double bGrit,antiRevive,legendaryVal,uniqueVal,uniqueDisp;
   public InventoryAffix[] affixes; public InventoryCrystal[] crystals; public double[] socketQ; public InventoryElement[] elements;
  }
  [Serializable] public sealed class InventorySeedData { public InventoryItem[] equipped,bag; }

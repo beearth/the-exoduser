@@ -252,19 +252,19 @@ namespace Exoduser.UnityPort.Core
             AddExperience((int)(Math.Max(5, (int)(enemy.Level * .4)) * bonus));
         }
 
+        // D01: web rollDrop equipment half (WorldDrop/ItemFactory, oracle-checked against game.html). Bone parts, crystals and socket stones the
+        // web rolls afterwards are other bags and not part of this slice. dropBonus = statDropBonus() (Config.DropBonus); no greed curse yet.
+        public int MinPickRarity, MinPickLevelTier;
+        public Func<double> NowMs = () => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         private void RollNormalEquipment(EnemyState enemy)
         {
-            if (NextRandom() > .45 * Config.DropBonus) return;
-            double roll = NextRandom() * 100.01, accumulated = 0;
-            int rarity = 0;
-            for (int i = 0; i < NormalRarityWeights.Length; i++) { accumulated += NormalRarityWeights[i]; if (roll < accumulated) { rarity = i; break; } }
-            var loot = new LootState { Id = nextLootId++, Rarity = rarity, Tier = 0,
-                Slot = DropSlots[(int)(NextRandom() * DropSlots.Length)], Element = (int)(NextRandom() * 6),
-                X = enemy.X, Y = enemy.Y };
-            // mkItem itself consumes RNG before position offsets. Until that factory
-            // is ported, no false claim is made about complete seeded drop replay.
-            Loot.Add(loot);
+            var tier = WorldDrop.Classify(false, enemy.Etype, 0, false);
+            int dropTier = Math.Min((int)EnemyTables.SiToHell[Math.Min(Config.StageIndex, EnemyTables.SiToHell.Length - 1)], 4);
+            var options = new WorldDrop.Options { MinPickRarity = MinPickRarity, MinPickLevelTier = MinPickLevelTier, PlayerLevel = Player.Level, NowMs = NowMs(), DemoMode = BuildIsDemo };
+            foreach (var drop in WorldDrop.Roll(tier, Config.DropBonus, dropTier, enemy.X, enemy.Y, options, NextRandom, () => nextLootId++)) WorldDrop.Push(Loot, drop);
         }
+        // _DEMO_MODE only bans a few affixes in rollAffixes; the Steam/EA builds are not demo.
+        public bool BuildIsDemo;
 
         private void PickSourcePriorityLoot()
         {
@@ -278,7 +278,7 @@ namespace Exoduser.UnityPort.Core
                 if (best == null || loot.Rarity > best.Rarity || (loot.Rarity == best.Rarity && d < bestDistance)) { best = loot; bestDistance = d; }
             }
             if (best == null || !TryCollectLoot(best)) return;
-            best.Picked = true; CollectedLoot.Add(best);
+            best.Picked = true; CollectedLoot.Add(best); Loot.Remove(best); // the web drops picked entries from worldItems
         }
 
         public static int CalculateMaxExperience(int level)

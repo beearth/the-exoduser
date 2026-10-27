@@ -27,15 +27,31 @@ namespace Exoduser.UnityPort.Core {
   }
   public static bool Admitted(InventoryItem it,out string reason) {
    if(it!=null&&it.slot=="ossuary")return AdmittedOssuary(it,out reason);
-   reason="Only admitted unenhanced, socketless source starter equipment is available";
-   if(it==null||Array.IndexOf(Slots,it.slot)<0||it.slot=="ossuary"||it.rarity<0||it.rarity>1||it.enh!=0||it.socketCount!=0||it.tier!=0||it.itemLv!=0||it.reqLv<0||it.crystals!=null&&it.crystals.Length!=0||it.socketQ!=null&&it.socketQ.Length!=0||!string.IsNullOrEmpty(it.legendarySpecial)||!string.IsNullOrEmpty(it.uniqueSpecial))return false;
-   if(it.affixes!=null)foreach(var a in it.affixes)if(a==null||AffixUnit(a.id)==null||!Finite(a.value)||a.tier!=0)return false;
+   // D01: any mkItem result is admitted (rarity 0-5, tier 0-4, level fields, known affix ids, implicit/legendary/unique fields); enhancement,
+   // sockets and crystals stay unadmitted because they have no native owner yet.
+   reason="Only admitted unenhanced, socketless source equipment is available";
+   if(it==null||Array.IndexOf(Slots,it.slot)<0||it.slot=="ossuary"||it.rarity<0||it.rarity>5||it.tier<0||it.tier>4||it.enh!=0||it.socketCount!=0||it.itemLv<0||it.reqLv<0||it.crystals!=null&&it.crystals.Length!=0||it.socketQ!=null&&it.socketQ.Length!=0)return false;
+   if(it.affixes!=null)foreach(var a in it.affixes)if(a==null||!KnownAffix(a.id)||!Finite(a.value)||a.tier<0||a.tier>4)return false;
    if(it.slot=="weapon"&&Array.IndexOf(new[]{"sword","dagger","hammer","mace","club","axe","spear"},it.wtype)<0)return false;
    if(it.slot=="bow"&&Array.IndexOf(new[]{"crossbow","repeater","arcane"},it.btype)<0)return false;
-   if(!string.IsNullOrEmpty(it._implicitStat)&&Array.IndexOf(new[]{"_iAtkPct","_iBlockPct","_iMovSpd","_iPhysDR","_iMaxHP","_iPierce","_iAtkSpd","_iStsRes","_iMaxHPPct","_iLifeHPPct","_iElemRes","_iDashCd","_iRevPow","_iMagDmg"},it._implicitStat)<0)return false;
+   if(!string.IsNullOrEmpty(it._implicitStat)&&!ImplicitStats.Contains(it._implicitStat))return false;
    if(it.elements!=null)foreach(var e in it.elements)if(e==null||!Finite(e.dmg)||e.dmg<0)return false;
    foreach(var f in typeof(InventoryItem).GetFields())if(f.FieldType==typeof(double)&&!Finite((double)f.GetValue(it)))return false;
    reason=null;return true;
+  }
+  static readonly HashSet<string> KnownAffixIds=BuildKnownAffixIds(),ImplicitStats=BuildImplicitStats();
+  static HashSet<string> BuildKnownAffixIds(){var h=new HashSet<string>();foreach(var a in DropTablesData.AffixPool)h.Add(a.Id);return h;}
+  static HashSet<string> BuildImplicitStats(){var h=new HashSet<string>();foreach(var d in DropTablesData.Implicit.Values)if(d.Stat!="_iAncPow")h.Add(d.Stat);return h;}
+  static bool KnownAffix(string id)=>id!=null&&KnownAffixIds.Contains(id);
+  // Web pickupItem (16401): the grid must have a free 2x2 cell; the item goes to the bag (never auto-equipped) and a closed panel re-sorts the bag.
+  // The web leaves potCd NaN on unique gloves/belts (index [5] of a 5-entry table); a native item holds only finite numbers, so NaN becomes 0.
+  public bool TryPickup(InventoryItem item,bool sortIfClosed,out string reason){
+   reason="No item";if(item==null)return false;
+   foreach(var f in typeof(InventoryItem).GetFields())if(f.FieldType==typeof(double)&&double.IsNaN((double)f.GetValue(item)))f.SetValue(item,0.0);
+   if(!Admitted(item,out reason))return false;
+   if(Owns(item)){reason="Item already owned";return false;}
+   Bag.Add(item);int x,y;if(!FindSpace(Bag.Count-1,out x,out y)){Bag.RemoveAt(Bag.Count-1);reason="No bag space";return false;}
+   item._gx=x;item._gy=y;reason=null;if(sortIfClosed)Sort();return true;
   }
   static bool Finite(double v)=>!double.IsNaN(v)&&!double.IsInfinity(v);
   public InventoryItem GetEquipped(string slot){int i=Array.IndexOf(Slots,slot);return i<0?null:Equipped[i];}
@@ -66,8 +82,12 @@ namespace Exoduser.UnityPort.Core {
    p+=i.def*5+i.eDef*3+i.bonusHp*2+i.bonusSt*1.5+i.spd*30+i.wStagger*2+i.wRange*3+i.bonusRange*8+i.bowRange*2+i.bowPierce*150+i.stagger*2+i.charge+i.chargeDist+i.chargeW*.5+i.chargeAoE*2+i.bonusChargeDist*8+i.chargeCharge*60+i.critRate*20+i.critDmg*120+i.atkSpd*200+i.potCd*80+i.beamDmg*15+i.splashR*3+i.splashMul*60+i.magicPen*25;
    if(i.elements!=null)foreach(var e in i.elements)p+=e.dmg*.6;p+=i.stRegen*150+i.mpRegen*400+(i.bStr+i.bDex+i.bInt)*3;
    double iv=Math.Abs(i._implicitVal);if(iv!=0)p+=iv>1?iv*2:iv*80;
-   if(i.affixes!=null)foreach(var a in i.affixes){string unit=AffixUnit(a.id);double v=Math.Abs(a.value);p+=(unit=="pct"||unit=="prob"?v*150:v*1.5)+a.tier*15;}return (int)p;
+   if(i.affixes!=null)foreach(var a in i.affixes){string unit=PoolUnit(a.id);double v=Math.Abs(a.value);p+=(unit=="pct"||unit=="prob"?v*150:unit=="val"||unit=="dmg"||unit=="dps"?v*1.5:v*3)+a.tier*15;}
+   if(!string.IsNullOrEmpty(i.legendarySpecial))p+=120;if(!string.IsNullOrEmpty(i.uniqueSpecial))p+=200;
+   return double.IsNaN(p)?0:(int)p;
   }
+  // itemPower: the unit of the FIRST AFFIX_POOL entry with this id, 'val' when unknown
+  static string PoolUnit(string id){foreach(var e in DropTablesData.AffixPool)if(e.Id==id)return e.Unit;return "val";}
   static string AffixUnit(string id){switch(id){case "defFlat":case "shieldFlat":case "pickupRadius":case "flatLightDmg":return "val";case "poisonDot":return "dps";case "onHitPoison":case "onHitBleed":return "prob";case "ancHP":case "projDmgPct":case "pierceDmgKeep":case "reflect":case "dropRate":case "cooldownRed":case "darkPen":case "counterAtkDmg":case "maxHPPct":case "darkDR":case "slowDmgUp":case "poisonDmgPct":case "skDarkPillarDmg":return "pct";default:return null;}}
   double Affix(string name){double v=0;foreach(var i in Equipped)if(i?.affixes!=null)foreach(var a in i.affixes)if(a.id==name)v+=a.value;return v;}
   double Implicit(string name){double v=0;foreach(var i in Equipped)if(i!=null&&i._implicitStat==name)v+=i._implicitVal;return v;}

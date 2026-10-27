@@ -37,7 +37,22 @@ namespace Exoduser.UnityPort {
             }
             // Earrings can change their original slot when equipped into the empty partner slot.
             if(it.slot=="headband"||it.slot=="headband2")foreach(var i in icons)if((i.slot=="headband"||i.slot=="headband2")&&i.el==it.el){if(!textures.TryGetValue(i.resource,out var t)){t=Load(i.resource);textures.Add(i.resource,t);}return t;}
+            // D01: dropped items cover slot/element/type combinations the starter icon table lacks. The web falls back from the element art to the
+            // physical art of the same base (weapon type / bow type / slot); the cut-out art is element free.
+            string baseKey=!string.IsNullOrEmpty(it.wtype)?it.wtype:!string.IsNullOrEmpty(it.btype)?(it.btype=="crossbow"?"crossbow":it.btype):it.slot;
+            if(baseKey=="ring1"||baseKey=="ring2")baseKey="ring";if(baseKey=="headband"||baseKey=="headband2")baseKey="earring";
+            foreach(var i in icons)if(i.slot==it.slot&&(i.wtype??"")==(it.wtype??"")&&(i.btype??"")==(it.btype??"")){if(!textures.TryGetValue(i.resource,out var t)){t=Load(i.resource);textures.Add(i.resource,t);}return t;}
+            string cut="Art/ui/inventory/items/"+baseKey+"_cutout";
+            if(textures.TryGetValue(cut,out var cached))return cached;
+            var loaded=Resources.Load<Texture2D>(cut)??Resources.Load<Texture2D>("Art/ui/inventory/items/"+baseKey+"_phys");if(loaded!=null){textures.Add(cut,loaded);return loaded;}
+            foreach(var i in icons)if(i.slot==it.slot){if(!textures.TryGetValue(i.resource,out var t)){t=Load(i.resource);textures.Add(i.resource,t);}return t;}
             throw new InvalidOperationException("No original item icon: "+it.name);
+        }
+        public Texture2D IconTexture(InventoryItem it)=>IconFor(it);
+        // Web pickupItem: the item goes into the bag; a closed panel re-sorts the bag (_invAutoSortIfClosed).
+        public bool Pickup(InventoryItem item,out string message){
+            bool ok=State.TryPickup(item,!Open,out var why);this.message=ok?"":(why=="No bag space"?"가방에 공간이 없습니다!":why);message=this.message;
+            if(ok){changed();if(Open)AfterOwnershipChange();}return ok;
         }
         void Init(){if(ready)return;ready=true;InitDockStyles();}
         static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
@@ -56,6 +71,6 @@ namespace Exoduser.UnityPort {
             int y=Mathf.Clamp(Mathf.FloorToInt(mouseRow-InventoryState.Height(item)/2f+.5f),0,InventoryState.Rows-InventoryState.Height(item));
             return Move(item,x,y);
         }
-        string AffixText(InventoryAffix a){foreach(var l in labels)if(l.id==a.id){bool pct=l.unit=="pct"||l.unit=="prob";return l.name+"  "+(pct?a.value*100:a.value).ToString("0.##")+(pct?"%":l.unit=="dps"?"/s":"");}throw new InvalidOperationException("Unknown source affix label "+a.id);}
+        string AffixText(InventoryAffix a){foreach(var l in labels)if(l.id==a.id){bool pct=l.unit=="pct"||l.unit=="prob";return l.name+"  "+(pct?a.value*100:a.value).ToString("0.##")+(pct?"%":l.unit=="dps"?"/s":"");}foreach(var d in AffixDefs.All)if(d.id==a.id){bool pct=d.unit=="pct"||d.unit=="prob";return d.name+"  "+(pct?a.value*100:a.value).ToString("0.##")+(pct?"%":d.unit=="dps"?"/s":"");}throw new InvalidOperationException("Unknown source affix label "+a.id);}
     }
 }
