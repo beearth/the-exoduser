@@ -234,3 +234,89 @@
 #settings#settings.panel.ui-composed .pbox #keyBindList .set-row{display:flex!important;}
 #settings#settings.panel.ui-composed .pbox #keyBindList .set-row .set-key{flex:0 0 auto!important;width:auto!important;}
 #settings#settings.panel.ui-composed .pbox #keyBindList .set-row .set-name{flex:1 1 auto!important;width:auto!important;min-width:0;}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 스킬 창 [K] — 조용한 단계 (2026-10-27)
+ * 가운데 합성 제단(3D 캔버스·링·구슬)·13칸 슬롯 줄·바깥 틀·상단 탭바는 무거운 단계 그대로 둔다.
+ * 바꾸는 것: 창 제목, 왼쪽 상세 판(.sf-info), 오른쪽 합성 로드맵(.sf-road), 제단 명패 2개(.sf-core-name·.sf-field-head), 버튼.
+ * 새 글자 없음 — 분류 줄 "SKILL"만 ::before 영문 고정. 선택자는 #skillPanel#skillPanel(ID 2개)로 시작해 기존 규칙과 특이도를 맞춘다.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+#skillPanel.panel{--qt-line:rgba(164,147,115,.5);--qt-line-soft:rgba(164,147,115,.22);--qt-bone:#dfd6c2;--qt-title:#ebdaba;--qt-sub:#b6a58f;--qt-dim:#8f8170;--qt-brass:#ac7953;}
+
+/* ── 바탕: 장미창 워터마크·질감 대신 옅은 세로 그라데이션(제단 상자 #skillForge는 그대로) ── */
+#skillPanel#skillPanel.panel .pbox.skill-pbox{background:linear-gradient(180deg,#100d0c,#151110)!important;}
+
+/* ── K2 제목: 큰 돌 명패 대신 분류 줄 + 세리프 제목 + 헤어라인(줄어든 높이만큼 제단이 커진다) ── */
+#skillPanel#skillPanel.panel .pbox.skill-pbox.sf-on>.ptitle{
+  zoom:1!important;display:block!important;position:relative!important;flex:0 0 auto!important;align-self:flex-start!important;
+  width:auto!important;height:auto!important;min-height:0!important;margin:10px 0 8px 12px!important;padding:22px 0 10px!important;
+  background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;text-align:left!important;letter-spacing:.02em!important;
+  font:800 30px/1.2 var(--font-hell),serif!important;color:var(--qt-title)!important;-webkit-text-fill-color:var(--qt-title)!important;text-shadow:none!important;
+}
+#skillPanel#skillPanel.panel .pbox.skill-pbox.sf-on>.ptitle::before{
+  content:'SKILL'!important;display:block!important;position:absolute!important;left:0!important;top:0!important;right:auto!important;transform:none!important;
+  width:auto!important;height:auto!important;border:0!important;border-radius:0!important;background:none!important;filter:none!important;box-shadow:none!important;
+  font:400 13px/1 'Cinzel',var(--font-hell),serif!important;letter-spacing:.14em!important;color:var(--qt-sub)!important;white-space:nowrap!important;
+}
+#skillPanel#skillPanel.panel .pbox.skill-pbox.sf-on>.ptitle::after{
+  content:''!important;position:absolute!important;inset:auto auto 0 0!important;width:120%!important;height:1px!important;border:0!important;border-image:none!important;
+  background:var(--qt-line)!important;pointer-events:none;
+}
+
+/* ── K3·K4 왼쪽 상세 판·오른쪽 로드맵 판: 질감·이중 프레임 제거, 1px 헤어라인 + 옅은 바탕 ── */
+#skillPanel#skillPanel #skillForge .sf-info,
+#skillPanel#skillPanel #skillForge .sf-road{
+  padding:20px 22px 18px;border:1px solid var(--qt-line-soft);border-radius:0;background:rgba(12,10,9,.72);box-shadow:none;
+}
+#skillPanel#skillPanel #skillForge .sf-info-head{gap:14px;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--qt-line);}
+#skillPanel#skillPanel #skillForge .sf-info-ico{flex:0 0 56px;height:56px;border:1px solid var(--qt-line-soft);}
+#skillPanel#skillPanel #skillForge .sf-info-name{font:800 28px/1.2 var(--font-hell),serif;letter-spacing:.02em;color:var(--qt-title);}
+#skillPanel#skillPanel #skillForge .sf-info-sub{font:400 13px 'Cinzel',var(--font-hell),serif;letter-spacing:.06em;color:var(--qt-sub);margin-top:4px;}
+#skillPanel#skillPanel #skillForge .sf-info-desc{font:400 16px/1.75 var(--font-hell),serif;color:var(--qt-bone);margin:0 0 14px;}
+/* 강화 SP · 해금 조건: 이름 왼쪽 / 값 오른쪽 2열 행, 해금 조건은 탁한 적갈 */
+#skillPanel#skillPanel #skillForge .sf-info-cost{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin:0 0 16px;padding:10px 2px;
+  border-top:1px solid var(--qt-line-soft);border-bottom:1px solid var(--qt-line-soft);font:400 15px var(--font-hell),serif;color:var(--qt-sub);}
+#skillPanel#skillPanel #skillForge .sf-warn{color:#c9a39a;}
+#skillPanel#skillPanel #skillForge .sf-info-res{padding-top:12px;border-top:1px solid var(--qt-line-soft);font:400 13px 'Cinzel',var(--font-hell),serif;letter-spacing:.06em;color:var(--qt-sub);}
+#skillPanel#skillPanel #skillForge .sf-info-btns{gap:10px;margin-bottom:16px;}
+#skillPanel#skillPanel #skillForge .sf-info-empty,#skillPanel#skillPanel #skillForge .sf-empty{font:400 14px var(--font-hell),serif;color:var(--qt-dim);}
+
+/* 합성 로드맵: 구역 제목 서식 + 행은 선만 */
+#skillPanel#skillPanel #skillForge .sf-road-title{font:700 15px var(--font-hell),serif;letter-spacing:.08em;color:var(--qt-sub);padding-bottom:9px;margin-bottom:8px;border-bottom:1px solid var(--qt-line);}
+#skillPanel#skillPanel #skillForge .sf-road-row{padding:10px 4px 10px 12px;margin:0;border-left:2px solid rgba(164,147,115,.3);border-bottom:1px solid var(--qt-line-soft);background:none;}
+#skillPanel#skillPanel #skillForge .sf-road-name{font:400 15px var(--font-hell),serif;color:var(--qt-bone);}
+#skillPanel#skillPanel #skillForge .sf-road-state{font:400 13px var(--font-hell),serif;color:var(--qt-dim);}
+#skillPanel#skillPanel #skillForge .sf-road-star{color:#a49373;}
+#skillPanel#skillPanel #skillForge .sf-road-row.done{border-left-color:var(--qt-brass);}
+#skillPanel#skillPanel #skillForge .sf-road-row.done .sf-road-state{color:var(--qt-sub);}
+#skillPanel#skillPanel #skillForge .sf-road-row:is(.now,.can){border-left-color:var(--qt-brass);background:rgba(172,121,83,.1);}
+#skillPanel#skillPanel #skillForge .sf-road-row:is(.now,.can) .sf-road-state{color:var(--qt-title);}
+#skillPanel#skillPanel #skillForge .sf-road-mat{border-color:rgba(164,147,115,.25);}
+#skillPanel#skillPanel #skillForge .sf-road-mat.have{border-color:rgba(164,147,115,.6);}
+
+/* ── K5 제단 명패 2개: 진홍 세로 막대·그라데이션 판 제거, 분류 줄 크기 글자 + 보조 문구(3D 캔버스 위라 글자 그림자는 유지) ── */
+#skillPanel#skillPanel #skillForge .sf-field-head{padding:4px 2px 4px 12px;border-right:0;background:none;}
+#skillPanel#skillPanel #skillForge .sf-field-title{font:700 15px var(--font-hell),serif;letter-spacing:.08em;color:var(--qt-bone);}
+#skillPanel#skillPanel #skillForge .sf-field-sub{font:400 13px var(--font-hell),serif;color:var(--qt-sub);}
+#skillPanel#skillPanel #skillForge .sf-core-name{padding:4px 12px 4px 2px;border-left:0;background:none;font:800 20px var(--font-hell),serif;letter-spacing:.02em;color:var(--qt-title);}
+#skillPanel#skillPanel #skillForge .sf-core-star{left:4px;color:#a49373;}
+
+/* ── K6 버튼: 테두리 칩, 주 행동(강화 +)만 황동 틴트 ── */
+#skillPanel#skillPanel #skillForge .sf-btn{
+  display:inline-flex;align-items:center;justify-content:center;min-height:0;height:40px;padding:0 20px;
+  font:700 16px var(--font-hell),serif;color:var(--qt-bone);border:1px solid rgba(164,147,115,.5);border-radius:0;background:transparent;box-shadow:none;
+}
+#skillPanel#skillPanel #skillForge .sf-btn:hover:not(:disabled){filter:none;border-color:rgba(223,214,194,.8);color:var(--qt-title);background:rgba(255,255,255,.035);}
+#skillPanel#skillPanel #skillForge .sf-btn-fire{background:rgba(172,121,83,.18);border-color:rgba(196,160,118,.7);color:var(--qt-title);}
+#skillPanel#skillPanel #skillForge .sf-btn-ghost{background:transparent;color:var(--qt-bone);}
+#skillPanel#skillPanel #skillForge .sf-btn:disabled{opacity:.42;filter:none;}
+#skillPanel#skillPanel.panel .pbox .skill-close .pclose{
+  display:inline-flex!important;align-items:center;justify-content:center;height:40px!important;min-height:0!important;min-width:0!important;margin:0 6px!important;padding:0 22px!important;
+  border:1px solid rgba(164,147,115,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  font:700 16px var(--font-hell),serif!important;letter-spacing:0!important;color:var(--qt-bone)!important;text-shadow:none!important;filter:none!important;transition:none!important;
+}
+#skillPanel#skillPanel.panel .pbox .skill-close .pclose:hover{border-color:rgba(223,214,194,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
+/* 하단 버튼 줄이 바깥 틀 안쪽 가장자리에 걸려 잘리던 것을 위로 올린다(제단 상자 아래 여백 + 버튼 줄 위아래 여백) */
+#skillPanel#skillPanel.panel .pbox.skill-pbox.sf-on>#skillForge{margin-bottom:18px;}
+#skillPanel#skillPanel.panel .pbox.skill-pbox.sf-on>.skill-close{margin:0 0 20px!important;padding:0!important;text-align:center;}
