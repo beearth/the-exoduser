@@ -81,12 +81,15 @@
 | `druid_sink` | 1-1 마지막 사망 침강 도주(1.1s 시트 + 0.3s 유지 + 0.3s 페이드) | skill, 1.7s | wounded creature slowly sinking into swamp soil, wet suction, roots closing over, fading rumble, no scream |
 
 - **예고음 체계 = RM-B1 §4 표시 3종과 1:1**: 패링 가능 근접 `tell_parry`, 피해야 하는 범위 `tell_boss`(드루이드 기술 4·5·7·8·9·11·12와 2·3의 범위 쪽 공통), 잡기 `tell_grab`. 일반몹은 `tell_melee`·`tell_ranged`. 한 화면에 겹치는 예고는 최대 2개라는 RM-B1 규칙에 맞춰, 같은 키는 120ms 안에 다시 내지 않습니다.
-- **트랙 B2(보류: 드루이드 명세가 main에 커밋된 뒤 생성)**: 드루이드 리모델링에서 새로 생긴 연출 소리입니다.
-  - `druid_staff_tap`: P1 진입, 지팡이로 바닥 3번
-  - `druid_roots_rise`: 뿌리 기둥 4개가 솟음
-  - `druid_root_pierce`: 쓰러짐 2.0초 동안 뿌리가 등에 꽂힘
-  - `druid_heartbeat`: 숲의 심장 박동 3박, 아레나 전체
-  - `druid_tide`: 독액 해일이 수로에서 솟음
+- **트랙 B2(드루이드 연출음, 유니티 총괄 요청으로 E: 초안 기준 즉시 생성)**: 드루이드 리모델링에서 새로 생긴 연출 소리입니다. 키마다 3개씩 만들고, 판정 기준은 트랙 B와 같습니다.
+
+| 키 | 용도(RM-B1) | 카테고리·길이 | 프롬프트 요지 |
+|---|---|---|---|
+| `druid_staff_tap` | P1 진입, 지팡이로 바닥 3번. 한 번 두드리는 소리를 3회 재생(rate ±4%) | hit, 0.5s | heavy gnarled wooden staff striking damp forest earth once, deep hollow knock with root resonance |
+| `druid_roots_rise` | 뿌리 기둥 4개가 솟음(P1 진입) | skill, 1.5s | massive roots tearing up through soil and rising, cracking bark, dirt cascade, deep groan of living wood |
+| `druid_root_pierce` | 쓰러짐 2.0초 동안 뿌리가 등에 꽂힘(P2·P3 진입) | skill, 0.8s | thick root stabbing into a body, wet wood piercing flesh-like bark, tight crunch, no scream |
+| `druid_heartbeat` | 숲의 심장 박동, 박동 1회 = 1번 재생(3박) | skill, 1.0s | enormous organic heartbeat pulsing through the ground, deep sub thump with wet fibrous squeeze, short pressure wave |
+| `druid_tide` | 독액 해일이 수로에서 솟아 퍼짐(P3 기술 10) | skill, 1.5s | wave of thick toxic sludge surging up from a channel and spreading outward, heavy viscous rush, low roar |
 - 모든 프롬프트에 붙이는 공통 금지 조건: CH1 규칙(불씨·차임 금지, 높은 순음 금지), voice/music/melody 금지.
 - 출력 위치는 `G:\exoduser-wt\_out\sfx_forge\` staging입니다. 청음 페이지는 기존 `review_20261026.html` 형식에 **RM-1 묶음**으로 추가합니다. 파형·스펙트럼 시트는 `_analysis/sheet_rm1_*.png`에 둡니다.
 - 판정 기준: 길이 범위, 6kHz 이상 에너지가 어택에만 있는지, 피크 −1dBTP 이하, 무음 꼬리 정리.
@@ -108,3 +111,4 @@
 | 2026-10-27 | CLAUDE.md §Unity 리모델링(`cf506002d`)에 맞춰 트랙 A 구조를 Audio Mixer(그룹 11개·스냅샷 Explore/Boss·Tell 덕킹)로 확정. 웹 값은 시작값으로만 사용 |
 | 2026-10-27 | 유니티 총괄 공지 반영: 트랙 A 구현 배정 = 유니티 총괄, 착수 = RM-0 병합 뒤. 공간음 규칙 추가. 맵 RM-1에 독성 강·늪이 합쳐져(fd7bebcc4) A8과 트랙 B 2키(`amb_toxic_river`·`toxic_bubble`)를 추가해 트랙 B는 9키. `tell_boss`는 드루이드 RM-B1 RB1-4 텔레그래프 소리를 맡음 |
 | 2026-10-27 | 드루이드 RM-B1 초안(`E:/exoduser-wt/_out/boss-rm-druid/UNITY_BOSS_RM1_DARK_DRUID_20261027.md`, 아직 origin 미커밋) §3·§4를 읽고, 예고음을 표시 3종과 1:1로 결정. 트랙 B에 `tell_parry`·`tell_grab`을 추가해 11키×3이 됨. 새 연출음 5키는 트랙 B2로 보류(명세가 main에 커밋된 뒤 생성) |
+| 2026-10-27 | 유니티 총괄 요청: 트랙 B2(드루이드 연출음 5키)를 드루이드 명세 커밋을 기다리지 않고 E: 초안 기준으로 바로 생성. 타이밍이 바뀌어도 사용자 청음 전이라 다시 만드는 비용이 작음 |
