@@ -28,49 +28,49 @@ namespace Exoduser.UnityPort.Core
                 }
                 if (!d.RmFire && Set.Instant.Contains(mv.Id))
                 {   // the web fires these the moment they are picked; the remodel shows the telegraph first (spec §4: it never gets shorter)
-                    d.S = "bossRmWind"; d.St2 = Or(tele, 25); d.RmTeleTotal = d.St2; d.RmPending = mv; host.Text(d.X, d.Y - 30, "⚠", "#a9cc63", 40); return;
+                    d.S = "bossRmWind"; d.St2 = Or(tele, 25); d.RmTeleTotal = d.St2; d.RmPending = mv; RmText(d.X, d.Y - 30, "⚠", "#a9cc63", 40); return;
                 }
             }
             if (!RmStartHook(e, d, mv, dist, phase, tele)) switch (mv.Id)   // RM-B0: the boss's own file may take the move first (BossRemodelHooks.StartMove)
             {
-                case "burst": d.S = "bossBurstWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "⚠ 광역 발사!", "#ff6600", 50); break;
-                case "fan": d.S = "bossFanWind"; d.St2 = Or(tele, 30); host.Text(d.X, d.Y - 30, "🔥 확산!", "#ff4444", 35); break;
-                case "charge": d.S = "bossChargeWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); break;
+                case "burst": d.S = "bossBurstWind"; d.St2 = Or(tele, 55); RmText(d.X, d.Y - 30, "⚠ 광역 발사!", "#ff6600", 50); break;
+                case "fan": d.S = "bossFanWind"; d.St2 = Or(tele, 30); RmText(d.X, d.Y - 30, "🔥 확산!", "#ff4444", 35); break;
+                case "charge": d.S = "bossChargeWind"; d.St2 = Or(tele, 55); RmText(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); break;
                 case "jump":
                     {
                         double jx = px, jy = py, sx, sy;
                         if (!host.CanMove(jx, jy, d.R)) { if (host.SafePoint(jx, jy, d.R, out sx, out sy)) { jx = sx; jy = sy; } else { jx = d.X; jy = d.Y; } }
                         d.JumpX = jx; d.JumpY = jy; d.JumpOx = d.X; d.JumpOy = d.Y;
-                        d.S = "bossJumpWind"; d.St2 = Or(tele, 34); d.TelegraphT = Or(tele, 34); d.TelegraphR = d.R + 30; host.Text(d.X, d.Y - 30, "🦅 도약 준비!", "#cc66ff", 40); break;
+                        d.S = "bossJumpWind"; d.St2 = Or(tele, 34); d.TelegraphT = Or(tele, 34); d.TelegraphR = d.R + 30; RmText(d.X, d.Y - 30, "🦅 도약 준비!", "#cc66ff", 40); break;
                     }
-                case "shock": d.S = "bossShockWind"; d.St2 = Or(tele, 45); host.Text(d.X, d.Y - 30, "🌊 충격파!", "#44aaff", 40); break;
-                case "summon": d.S = "bossSummonWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "👹 소환!", "#aa00ff", 50); break;
+                case "shock": d.S = "bossShockWind"; d.St2 = Or(tele, 45); RmText(d.X, d.Y - 30, "🌊 충격파!", "#44aaff", 40); break;
+                case "summon": d.S = "bossSummonWind"; d.St2 = Or(tele, 55); RmText(d.X, d.Y - 30, "👹 소환!", "#aa00ff", 50); break;
                 case "grab":
-                    if (dist < 120) { d.S = "bossGrabWind"; d.St2 = Or(tele, 40); d.GrabWindMax = d.St2; d.GrabAng = d.Facing; host.Text(d.X, d.Y - 30, "🖐 잡기!", "#cc00ff", 45); }
-                    else { d.S = "bossChargeWind"; d.St2 = Or(I(55 * Ph(phase).TeleM) + extraDelay, 55); host.Text(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); }
+                    if (dist < 120) { d.S = "bossGrabWind"; d.St2 = Or(tele, 40); d.GrabWindMax = d.St2; d.GrabAng = d.Facing; RmText(d.X, d.Y - 30, "🖐 잡기!", "#cc00ff", 45); }
+                    else { d.S = "bossChargeWind"; d.St2 = Or(I(55 * Ph(phase).TeleM) + extraDelay, 55); RmText(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); }
                     break;
-                case "spin": d.S = "bossSpinWind"; d.St2 = Or(tele, 35); d.SpinAng = 0; host.Text(d.X, d.Y - 30, "🌀 회전참!", "#ff6644", 45); break;
-                case "mine": d.S = "bossMineWind"; d.St2 = Or(tele, 30); host.Text(d.X, d.Y - 30, "💣 지뢰!", "#5e10a8", 40); break;
-                case "multiDash": d.S = "bossMultiDashWind"; d.St2 = Or(tele, 20); d.DashCnt = 4 + I(phase * 1.5); d.DashIdx = 0; host.Text(d.X, d.Y - 30, "⚡ 연격!", "#ff4488", 45); break;
-                case "slashCombo": d.S = "bossSlashWind"; d.St2 = Or(tele, 20); d.SlashCnt = Remodel ? 3 : 3 + I(phase * 1.5); d.SlashIdx = 0; d.WeaponAng = 0; host.Text(d.X, d.Y - 30, "⚔ 난타!", "#ff8844", 45); break;
-                case "slam": d.S = "bossSlamWind"; d.St2 = Or(tele, 35); d.WeaponAng = -1.2; host.Text(d.X, d.Y - 30, "💥 강타!", "#ff4400", 50); break;
-                case "sweep": d.S = "bossSweepWind"; d.St2 = Or(tele, 25); d.WeaponAng = -.8; d.SweepDir = R() > .5 ? 1 : -1; host.Text(d.X, d.Y - 30, "🌀 휘두르기!", "#ffaa00", 40); break;
-                case "heartbeat": d.S = "bossHeartWind"; d.St2 = Or(tele, DruidRemodelData.HeartbeatBeatWind); d.HbBeat = 0; host.Text(d.X, d.Y - 30, "♥", "#aa2222", 50); host.Fx("druidHeartbeatWind", d.X, d.Y, d.R); break;
+                case "spin": d.S = "bossSpinWind"; d.St2 = Or(tele, 35); d.SpinAng = 0; RmText(d.X, d.Y - 30, "🌀 회전참!", "#ff6644", 45); break;
+                case "mine": d.S = "bossMineWind"; d.St2 = Or(tele, 30); RmText(d.X, d.Y - 30, "💣 지뢰!", "#5e10a8", 40); break;
+                case "multiDash": d.S = "bossMultiDashWind"; d.St2 = Or(tele, 20); d.DashCnt = 4 + I(phase * 1.5); d.DashIdx = 0; RmText(d.X, d.Y - 30, "⚡ 연격!", "#ff4488", 45); break;
+                case "slashCombo": d.S = "bossSlashWind"; d.St2 = Or(tele, 20); d.SlashCnt = Remodel ? 3 : 3 + I(phase * 1.5); d.SlashIdx = 0; d.WeaponAng = 0; RmText(d.X, d.Y - 30, "⚔ 난타!", "#ff8844", 45); break;
+                case "slam": d.S = "bossSlamWind"; d.St2 = Or(tele, 35); d.WeaponAng = -1.2; RmText(d.X, d.Y - 30, "💥 강타!", "#ff4400", 50); break;
+                case "sweep": d.S = "bossSweepWind"; d.St2 = Or(tele, 25); d.WeaponAng = -.8; d.SweepDir = R() > .5 ? 1 : -1; RmText(d.X, d.Y - 30, "🌀 휘두르기!", "#ffaa00", 40); break;
+                case "heartbeat": d.S = "bossHeartWind"; d.St2 = Or(tele, DruidRemodelData.HeartbeatBeatWind); d.HbBeat = 0; RmText(d.X, d.Y - 30, "♥", "#aa2222", 50); host.Fx("druidHeartbeatWind", d.X, d.Y, d.R); break;
                 case "burrowStrike":
                     d.TeleOx = d.X; d.TeleOy = d.Y; if (!Remodel) d.Facing = Atan2(py - d.Y, px - d.X);
-                    d.S = "bossDruidDive"; d.St2 = Or(tele, 50); d.DiveMax = Or(tele, 50); host.Text(d.X, d.Y - 30, "🌿⚠", "#66dd22", 60); break;
-                case "beanStorm": d.S = "bossBeanStormWind"; d.St2 = Or(tele, 25); d.BsWave = 0; d.BsMaxWave = 3 + I(phase); host.Text(d.X, d.Y - 30, "🔴 빨간콩 폭풍!", "#cc1100", 50); break;
+                    d.S = "bossDruidDive"; d.St2 = Or(tele, 50); d.DiveMax = Or(tele, 50); RmText(d.X, d.Y - 30, "🌿⚠", "#66dd22", 60); break;
+                case "beanStorm": d.S = "bossBeanStormWind"; d.St2 = Or(tele, 25); d.BsWave = 0; d.BsMaxWave = 3 + I(phase); RmText(d.X, d.Y - 30, "🔴 빨간콩 폭풍!", "#cc1100", 50); break;
                 case "chaseAoe":
                     if (Remodel)
                     {   // spec #8: chase zones with a 20 f warning each + the poison trail the boss leaves on his way (no charge)
                         ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = Set.ChaseZoneCount, T = 0, Interval = 60, R = Set.ChaseZoneRadius, Delay = Set.ChaseZoneWarn, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
-                        host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
+                        RmText(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
                         d.PtAng = d.Facing; d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = DruidRemodelData.PoisonDashTicks; break;   // the dash goes where the telegraph aim was frozen (12 f before), no re-aim
                     }
                     ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = 10, T = 0, Interval = 60, R = 450, Delay = 90, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage });
-                    host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
+                    RmText(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
                     d.S = "bossChargeWind"; d.St2 = Or(I(40 * Ph(phase).TeleM) + extraDelay, 40);
-                    d.Facing = Atan2(py - d.Y, px - d.X); host.Text(d.X, d.Y - 45, "⚠ 돌진!", "#ffaa00", 40); break;
+                    d.Facing = Atan2(py - d.Y, px - d.X); RmText(d.X, d.Y - 45, "⚠ 돌진!", "#ffaa00", 40); break;
                 case "elemBall":
                     {
                         d.Facing = Atan2(py - d.Y, px - d.X);
@@ -81,7 +81,7 @@ namespace Exoduser.UnityPort.Core
                             SpawnBossProjectile(e, d, new ProjSpec { X = d.X + Cos(ba) * 30, Y = d.Y + Sin(ba) * 30, Vx = Cos(ba) * spd, Vy = Sin(ba) * spd, Dmg = dmg, El = EL_P, Life = 400, Ml = 400, Col = "el", Sz = rr, ElemBall = true,
                                 Homing = false, ParryClass = "magic", DruidStraight = true, R = rr });
                         }
-                        host.Text(d.X, d.Y - 30, "💥 속성탄!", "#ff8844", 45); host.Shake(8);
+                        RmText(d.X, d.Y - 30, "💥 속성탄!", "#ff8844", 45); host.Shake(8);
                         Recover(d, 30); break;
                     }
                 case "groundFissure":
@@ -90,10 +90,10 @@ namespace Exoduser.UnityPort.Core
                         int gfPh = d.BossPhase; int n = Remodel ? 1 : gfPh >= 3 ? 3 : gfPh >= 1 ? 2 : 1;   // remodel: one straight line
                         for (int fi = 0; fi < n; fi++)
                         {
-                            double off = (fi - (n - 1) / 2.0) * .3, ang = (Remodel ? d.RmDir : d.Facing) + off; int maxLen = FissureMaxLen();
+                            double off = (fi - (n - 1) / 2.0) * .3, ang = (Remodel ? d.RmDir : d.Facing) + off; int maxLen = FissureMaxLen(); if (Remodel) maxLen = (int)Math.Floor(RmFissureReach(d.X, d.Y, ang, Math.Min(maxLen, DruidRemodelData.FissureSpeed * 140)));
                             Fissures.Add(new Fissure { X = d.X, Y = d.Y, Ang = ang, Spd = Remodel ? DruidRemodelData.FissureSpeed : 20, Len = 0, MaxLen = maxLen, T = 0, MaxT = 140, W = 140, Dmg = I(d.Atk * 2), Exploded = false, ExplR = Math.Min(750, maxLen * .3), Druid = e.IsBoss && DruidStage, Serial = TeleSerial, Straight = Remodel });
                         }
-                        host.Shake(10); host.Text(d.X, d.Y - 30, "🌋 균열!", "#a9cc63", 50); Recover(d, 30); break;
+                        host.Shake(10); RmText(d.X, d.Y - 30, "🌋 균열!", "#a9cc63", 50); Recover(d, 30); break;
                     }
                 case "tideWave":
                     {
@@ -103,7 +103,7 @@ namespace Exoduser.UnityPort.Core
                             double gap = Remodel ? d.RmGap : R() * Math.PI * 2;   // remodel: drawn when the move started (one ring, ti == 0)
                             TideWaves.Add(new TideWave { X = d.X, Y = d.Y, Rad = 20 + ti * 8, MaxR = 1750, Spd = Remodel ? 15 * DruidRemodelData.TideSpeedMul : 15, T = 0, MaxT = 120, GapAng = gap, GapSize = .8, W = 60, Dmg = I(d.Atk * 1.5), HitT = 0, Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
                         }
-                        host.Text(d.X, d.Y - 30, "🌊 파동!", "#a9cc63", 50); Recover(d, 35); break;
+                        RmText(d.X, d.Y - 30, "🌊 파동!", "#a9cc63", 50); Recover(d, 35); break;
                     }
                 case "seekerMines":
                     {
@@ -113,10 +113,10 @@ namespace Exoduser.UnityPort.Core
                             double ma = d.Facing + Math.PI * 2 * mi / n;
                             SeekerMines.Add(new SeekerMine { DruidMine = e.IsBoss && DruidStage, X = d.X + Cos(ma) * 20, Y = d.Y + Sin(ma) * 20, Vx = Cos(ma) * (Remodel ? DruidRemodelData.MineSpeedMul : 1), Vy = Sin(ma) * (Remodel ? DruidRemodelData.MineSpeedMul : 1), Spd = Remodel ? DruidRemodelData.MineSpeedMul : 1, SpeedCap = Remodel ? 1.5 * DruidRemodelData.MineSpeedMul : 1.5, T = 0, ArmT = 60, MaxT = 360, R = 60, Dmg = I(d.Atk * 2), El = EL_D, Hp = 1 });
                         }
-                        host.Text(d.X, d.Y - 30, "💣 추적지뢰!", "#5e10a8", 50); Recover(d, 25); break;
+                        RmText(d.X, d.Y - 30, "💣 추적지뢰!", "#5e10a8", 50); Recover(d, 25); break;
                     }
                 case "poisonTrail":
-                    d.PtAng = Atan2(py - d.Y, px - d.X); d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = 50; host.Text(d.X, d.Y - 30, "☠ 독안개!", "#44cc00", 55); break;
+                    d.PtAng = Atan2(py - d.Y, px - d.X); d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = 50; RmText(d.X, d.Y - 30, "☠ 독안개!", "#44cc00", 55); break;
                 case "lavaPools":
                     {
                         // druid branch: three poison pools on the player's approach axis (centre +120, flanks +-360)
@@ -124,7 +124,7 @@ namespace Exoduser.UnityPort.Core
                         double cx = px + ux * 120, cy = py + uy * 120, nx = -uy, ny = ux;
                         double[] xs = { cx, cx + nx * 360, cx - nx * 360 }, ys = { cy, cy + ny * 360, cy - ny * 360 };
                         for (int l = 0; l < 3; l++) LavaPools.Add(new LavaPool { X = xs[l], Y = ys[l], T = 0, WarnT = 55 + l * 18, MaxT = 300, R = 150, Dmg = I(d.Atk * .9), TickT = 0 });
-                        host.Text(d.X, d.Y - 30, "☠ 독 늪!", "#66dd22", 60); Recover(d, 25); break;
+                        RmText(d.X, d.Y - 30, "☠ 독 늪!", "#66dd22", 60); Recover(d, 25); break;
                     }
                 case "rapidMissile":
                     {
@@ -135,7 +135,7 @@ namespace Exoduser.UnityPort.Core
                             double off = (mi - (n - 1) / 2.0) * .15, ang = d.Facing + off, spd = 14 + d.BossPhase * 2;
                             SpawnBossProjectile(e, d, new ProjSpec { X = d.X + Cos(ang) * d.R, Y = d.Y + Sin(ang) * d.R, Vx = Cos(ang) * spd, Vy = Sin(ang) * spd, Dmg = I(d.Atk * 2), El = EL_P, Life = 300, Ml = 300, Col = "#ff4444", Sz = 3, Homing = true, MissileTrail = true });
                         }
-                        host.Shake(8); host.Text(d.X, d.Y - 30, "🚀 미사일!", "#ff2200", 55); Recover(d, 30); break;
+                        host.Shake(8); RmText(d.X, d.Y - 30, "🚀 미사일!", "#ff2200", 55); Recover(d, 30); break;
                     }
             }
             if (Remodel && !d.RmFire) d.RmTeleTotal = d.St2;   // telegraph length of the wind state just entered (DruidTelegraph.cs)
@@ -245,7 +245,7 @@ namespace Exoduser.UnityPort.Core
                         break;
                     }
                 case "bossJumpWind":
-                    if (d.St2 <= 0) { d.S = "bossJump"; d.St2 = 40; host.Text(d.X, d.Y - 30, "🦅 도약!", "#cc66ff", 30); }
+                    if (d.St2 <= 0) { d.S = "bossJump"; d.St2 = 40; RmText(d.X, d.Y - 30, "🦅 도약!", "#cc66ff", 30); }
                     break;
                 case "bossJump":
                     {
@@ -282,7 +282,7 @@ namespace Exoduser.UnityPort.Core
                             int el = I(R() * 6); int et = etypes[I(R() * 5)];
                             var mn = host.SpawnMinion(sx, sy, el, et); if (Remodel && mn != null) d.Minions.Add(mn);
                         }
-                        host.Text(d.X, d.Y - 20, cnt + "체 소환!", "#cc66ff", 40); Recover(d, 70);
+                        RmText(d.X, d.Y - 20, cnt + "체 소환!", "#cc66ff", 40); Recover(d, 70);
                     }
                     break;
                 case "bossGrabWind":
@@ -299,7 +299,7 @@ namespace Exoduser.UnityPort.Core
                         if (d.St2 <= 0 && RmGrab) { d.S = "bossGrabLunge"; d.St2 = DruidRemodelData.GrabLungeTicks; }
                         else if (d.St2 <= 0)
                         {
-                            if (Dst(px, py, d.X, d.Y) < d.R + pr + 200 && host.PIframes <= 0) { d.S = "bossGrab"; d.St2 = RmGrab ? DruidRemodelData.GrabTicks : 60; if (RmGrab) GrabStart(e, d); host.Text(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); }
+                            if (Dst(px, py, d.X, d.Y) < d.R + pr + 200 && host.PIframes <= 0) { d.S = "bossGrab"; d.St2 = RmGrab ? DruidRemodelData.GrabTicks : 60; if (RmGrab) GrabStart(e, d); RmText(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); }
                             else { Recover(d, 40); }
                         }
                         break;
@@ -309,7 +309,7 @@ namespace Exoduser.UnityPort.Core
                         double lmx = Cos(d.GrabAng) * DruidRemodelData.GrabLungeSpeed, lmy = Sin(d.GrabAng) * DruidRemodelData.GrabLungeSpeed;
                         if (host.CanMove(d.X + lmx, d.Y + lmy, d.R)) { d.X += lmx; d.Y += lmy; }
                         if (Dst(px, py, d.X, d.Y) < d.R + pr + DruidRemodelData.GrabContact && host.PIframes <= 0)
-                        { d.S = "bossGrab"; d.St2 = DruidRemodelData.GrabTicks; GrabStart(e, d); host.Text(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); break; }
+                        { d.S = "bossGrab"; d.St2 = DruidRemodelData.GrabTicks; GrabStart(e, d); RmText(px, py - 25, "⚠ 잡혔다!", "#cc00ff", 50); host.Shake(10); break; }
                         if (d.St2 <= 0) Recover(d, 40);
                         break;
                     }
@@ -323,7 +323,7 @@ namespace Exoduser.UnityPort.Core
                         {
                             host.HurtPlayer(I(d.Atk * 1.8), false);
                             double ta = d.GrabAng; host.StopPlayerKnock(); host.KnockPlayer(Cos(ta) * 18, Sin(ta) * 18);
-                            host.PIframes = 30; host.Text(host.PX, host.PY - 30, "💥 내던지기!", "#ff4400", 50); host.Shake(15);
+                            host.PIframes = 30; RmText(host.PX, host.PY - 30, "💥 내던지기!", "#ff4400", 50); host.Shake(15);
                             Recover(d, 70);
                         }
                         break;
@@ -355,7 +355,7 @@ namespace Exoduser.UnityPort.Core
                             double ma = Math.PI * 2 * mi / mc, md = 60 + R() * 80, mx = d.X + Cos(ma) * md, my = d.Y + Sin(ma) * md;
                             SpawnBossProjectile(e, d, new ProjSpec { X = mx, Y = my, Vx = 0, Vy = 0, Dmg = I(d.Atk * 1.6), El = EL_D, Life = 180, Ml = 180, Col = "#ff2000", Sz = 5, Mine = true });
                         }
-                        host.Text(d.X, d.Y - 20, mc + "개 설치!", "#5e10a8", 35); Recover(d, 50);
+                        RmText(d.X, d.Y - 20, mc + "개 설치!", "#5e10a8", 35); Recover(d, 50);
                     }
                     break;
                 case "bossMultiDashWind":
@@ -396,10 +396,11 @@ namespace Exoduser.UnityPort.Core
                             if (md > 1e-9) { d.DiveTx += mdx / md * ms; d.DiveTy += mdy / md * ms; }
                         }
                         else { d.DiveTx += (px - d.DiveTx) * .06; d.DiveTy += (py - d.DiveTy) * .06; }
-                        double up = 1 - d.St2 / (Or(d.UnderMax, 45));
-                        d.X = d.TeleOx + (d.DiveTx - d.TeleOx) * up; d.Y = d.TeleOy + (d.DiveTy - d.TeleOy) * up;
+                        double up = 1 - d.St2 / (Or(d.UnderMax, 45)), bux, buy;
+                        BurrowTarget(d, d.DiveTx, d.DiveTy, out bux, out buy);   // RB1-3: he comes up at a root pillar (the marker itself without pillars)
+                        d.X = d.TeleOx + (bux - d.TeleOx) * up; d.Y = d.TeleOy + (buy - d.TeleOy) * up;
                         d.Iframes = Math.Max(d.Iframes, 5);
-                        if (d.St2 <= 0) { d.X = d.DiveTx; d.Y = d.DiveTy; host.Fx("druidDust", d.X, d.Y, d.R * 1.3); d.S = "bossDruidErupt"; d.St2 = Remodel ? DruidRemodelData.BurrowEruptWarn + DruidRemodelData.BurrowEruptPost : 40; d.EruptMax = d.St2; d.EruptHit = false; host.Text(d.X, d.Y - 40, "🌿💥", "#66dd22", 60); host.Shake(12); }
+                        if (d.St2 <= 0) { d.X = bux; d.Y = buy; host.Fx("druidDust", d.X, d.Y, d.R * 1.3); d.S = "bossDruidErupt"; d.St2 = Remodel ? DruidRemodelData.BurrowEruptWarn + DruidRemodelData.BurrowEruptPost : 40; d.EruptMax = d.St2; d.EruptHit = false; RmText(d.X, d.Y - 40, "🌿💥", "#66dd22", 60); host.Shake(12); }
                         break;
                     }
                 case "bossDruidErupt":
@@ -412,7 +413,7 @@ namespace Exoduser.UnityPort.Core
                             {
                                 if (!Parry(e, d, 4, 60, 20, d.Facing + Math.PI))
                                 {
-                                    host.HurtPlayer(erDmg, false); host.PlayerPoison(4, 90); host.Text(px, py - 16, "☠속박!", "#66dd22", 24);
+                                    host.HurtPlayer(erDmg, false); host.PlayerPoison(4, 90); RmText(px, py - 16, "☠속박!", "#66dd22", 24);
                                     double ka = Atan2(py - d.Y, px - d.X); host.KnockPlayer(Cos(ka) * 14, Sin(ka) * 14);
                                 }
                             }
@@ -493,7 +494,7 @@ namespace Exoduser.UnityPort.Core
                                     double a = swA + si * 0.25;
                                     SpawnBossProjectile(e, d, new ProjSpec { X = d.X + Cos(a) * 20, Y = d.Y + Sin(a) * 20, Vx = Cos(a) * 4, Vy = Sin(a) * 4, Dmg = I(d.Atk * .8), El = EL_P, Life = 200, Ml = 200, Col = "#ffaa00", Sz = 2 });
                                 }
-                                host.Text(d.X, d.Y - 20, "wind!", "#ffcc00", 20);
+                                RmText(d.X, d.Y - 20, "wind!", "#ffcc00", 20);
                             }
                             Recover(d, 30); host.Shake(6);
                         }

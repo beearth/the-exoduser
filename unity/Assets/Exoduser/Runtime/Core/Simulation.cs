@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort.Core
             return value;
         }
 
-        private bool Pass(float x, float y, float radius) => CanMove == null || CanMove(x, y, radius);
+        private bool Pass(float x, float y, float radius) => (CanMove == null || CanMove(x, y, radius)) && !PillarBlocked(x, y, radius);   // RB1-3: the root pillars of the remodelled boss arena are solid
         private static float Distance(float x, float y, float xx, float yy) { return (float)Math.Sqrt((x-xx)*(x-xx)+(y-yy)*(y-yy)); }
         private static bool Finite(float value) => !float.IsInfinity(value) && !float.IsNaN(value);
 

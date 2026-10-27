@@ -11,7 +11,24 @@ using Exoduser.UnityPort.Core;
 static partial class P
 {
     static int checks, bad; static readonly List<string> failures = new List<string>();
-    static void Check(bool ok, string what) { checks++; if (!ok) { bad++; failures.Add(what); Console.WriteLine("FAIL " + what); } }
+    // checks per kind (the total moves with the order of the moves in a fight, so reports carry this table)
+    static readonly SortedDictionary<string, int> cats = new SortedDictionary<string, int>();
+    static string Cat(string w)
+    {
+        if (w.Contains("pillars:")) return "pillars (geometry, solid, bullets, fissure)";
+        if (w.Contains("popups:")) return "popups (no glyph text)";
+        if (w.Contains("burrow circle")) return "burrow on a pillar";
+        if (w.Contains("telegraph ")) return "api telegraph entry (per entry per tick)";
+        if (w.Contains("M2 aim")) return "M2 aim (per tick)";
+        if (w.Contains("M5")) return "M5 speed/accel (per tick)";
+        if (w.Contains("M4")) return "M4 gap";
+        if (w.Contains("heartbeat")) return "heartbeat (probes, safe ring, pillar shadow)";
+        if (w.Contains("API")) return "api Total / Safe";
+        if (w.Contains("§10.2") || w.Contains("M3 ") || w.Contains("M1 ") || w.Contains("move table")) return "spec table (10.2, M1, M3)";
+        if (w.Contains("parry guard")) return "parry guard (no reflection)";
+        return "other (lives, kneel, shield, per-move allowed list, spawn checks ...)";
+    }
+    static void Check(bool ok, string what) { checks++; { var c = Cat(what); int n; cats.TryGetValue(c, out n); cats[c] = n + 1; } if (!ok) { bad++; failures.Add(what); Console.WriteLine("FAIL " + what); } }
 
     sealed class Run
     {
@@ -153,7 +170,7 @@ static partial class P
     {
         string dir = args.Length > 0 ? args[0] : "remodel-out"; Directory.CreateDirectory(dir);
         var a = Fight("A-root-cut", true, 20261027u); var b = Fight("B-root-not-hit", false, 20261028u);
-        Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); VerifyMoveTable(); VerifyMotionTotals();
+        Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); PillarChecks(); VerifyMoveTable(); VerifyMotionTotals();
         int druidChecks = checks, druidBad = bad;
         FrameworkChecks();
         int fwChecks = checks - druidChecks, fwBad = bad - druidBad;
@@ -161,6 +178,8 @@ static partial class P
         File.WriteAllText(Path.Combine(dir, "remodel-fight-A.json"), ToJson(a), new UTF8Encoding(false));
         File.WriteAllText(Path.Combine(dir, "remodel-fight-B.json"), ToJson(b), new UTF8Encoding(false));
         var sb = new StringBuilder("# RM-B1 RB1-1/2 fight check\n\nchecks " + druidChecks + ", failed " + druidBad + "\n\n# RM-B0 remake frame check\n\nchecks " + fwChecks + ", failed " + fwBad + "\n\n" + fwSummary);
+        foreach (var kv in cats) sb.Append("- CAT ").Append(kv.Key).Append(" = ").Append(kv.Value).Append('\n');
+        foreach (var kv in cats) Console.WriteLine("CAT " + kv.Key + " = " + kv.Value);
         foreach (var f in failures) sb.Append("- FAIL ").Append(f).Append('\n');
         File.WriteAllText(Path.Combine(dir, "remodel-report.md"), sb.ToString(), new UTF8Encoding(false));
         Console.WriteLine("druid-remodel: " + druidChecks + " checks, " + druidBad + " failed");

@@ -32,7 +32,9 @@ namespace Exoduser.UnityPort.Core
         public double Progress;          // fissure head length / ring radius now / trail length already travelled (moves 4, 7, 10)
         public double Total, Remaining;  // ticks from the first telegraph frame to the damage check, and what is left of it (Live: lifetime of the hazard)
         public double TipX, TipY;        // staff tip (kind ParryGlint); 0,0 otherwise
-        public double[][] Safe;          // ArenaMinusSafe: {centre x, centre y, radius} of every safe zone (null = none: i-frames are the only answer)
+        public double[][] Safe;          // ArenaMinusSafe: {centre x, centre y, radius} of every safe circle: Safe[0] = the ring around the boss (null = none)
+        public double[][] Shadows;       // ArenaMinusSafe: the root pillars {x, y, radius}; the safe shadow of each is the area behind it as seen from (SrcX, SrcY) (null = no pillars)
+        public double SrcX, SrcY;        // ArenaMinusSafe: where the pulse comes from (the boss)
         public double Elapsed { get { return Total - Remaining; } }   // the glint fires at Elapsed == 2 (VFX spec §3.3 ①)
     }
 
@@ -80,7 +82,7 @@ namespace Exoduser.UnityPort.Core
                         {
                             // spec #4 (ruling 2026-10-28): a straight line aimed once at the first telegraph tick; only the head hurts (half width 70 + player radius), no end blast
                             t = Tele(into, "groundFissure", DruidTeleKind.GroundDecal, DruidTeleShape.Line, tot, rem, 0);
-                            t.X = d.X; t.Y = d.Y; t.Dir = d.RmDir; t.Length = Math.Min(FissureMaxLen(), DruidRemodelData.FissureSpeed * FissureMaxT); t.Width = 2 * FissureHitHalfWidth;
+                            t.X = d.X; t.Y = d.Y; t.Dir = d.RmDir; t.Length = Math.Floor(RmFissureReach(d.X, d.Y, d.RmDir, Math.Min(FissureMaxLen(), DruidRemodelData.FissureSpeed * FissureMaxT))); t.Width = 2 * FissureHitHalfWidth;   // the arena size, the pillars and the wall cut the length
                         }
                         else if (pend.Id == "tideWave")
                         {
@@ -140,17 +142,19 @@ namespace Exoduser.UnityPort.Core
                     {   // the circle under the player's feet is where he surfaces: the target locks when the dive ends
                         double tot = d.RmTeleTotal + BurrowUnder + BurrowEruptLead;
                         t = Tele(into, "burrowStrike", DruidTeleKind.GroundDecal, DruidTeleShape.Circle, tot, d.St2 + BurrowUnder + BurrowEruptLead, 0);
-                        t.X = host.PX; t.Y = host.PY; t.Radius = d.R + EruptReachExtra;
+                        double dvx, dvy; BurrowTarget(d, host.PX, host.PY, out dvx, out dvy);   // he comes up at the pillar nearest to where the player is
+                        t.X = dvx; t.Y = dvy; t.Radius = d.R + EruptReachExtra;
                         break;
                     }
                 case "bossDruidUnder":
                     {
                         double tot = d.RmTeleTotal + BurrowUnder + BurrowEruptLead, rem = d.St2 + BurrowEruptLead;
-                        double dx = d.DiveTx - d.TeleOx, dy = d.DiveTy - d.TeleOy;
+                        double ux, uy; BurrowTarget(d, d.DiveTx, d.DiveTy, out ux, out uy);
+                        double dx = ux - d.TeleOx, dy = uy - d.TeleOy;
                         t = Tele(into, "burrowStrike", DruidTeleKind.GroundDecal, DruidTeleShape.Trail, tot, rem, 0);
                         t.X = d.TeleOx; t.Y = d.TeleOy; t.Dir = Atan2(dy, dx); t.Length = Math.Sqrt(dx * dx + dy * dy); t.Progress = Dst(d.TeleOx, d.TeleOy, d.X, d.Y);
                         t = Tele(into, "burrowStrike", DruidTeleKind.GroundDecal, DruidTeleShape.Circle, tot, rem, 1);
-                        t.X = d.DiveTx; t.Y = d.DiveTy; t.Radius = d.R + EruptReachExtra;
+                        t.X = ux; t.Y = uy; t.Radius = d.R + EruptReachExtra;
                         break;
                     }
                 case "bossDruidErupt":
@@ -168,6 +172,8 @@ namespace Exoduser.UnityPort.Core
                         // first beat 90 f (Moves[11].Tele), beats 2-3 60 f; the safe zones are the ring of 260 around the boss (always) and the pillar shadows (SafeZones, RB1-3)
                         t = Tele(into, "heartbeat", DruidTeleKind.GroundDecal, DruidTeleShape.ArenaMinusSafe, d.HbBeat == 0 ? d.RmTeleTotal : DruidRemodelData.HeartbeatBeatWind, d.St2, d.HbBeat);
                         t.X = host.ArenaW / 2; t.Y = host.ArenaH / 2; t.Length = host.ArenaW; t.Width = host.ArenaH;
+                        t.SrcX = d.X; t.SrcY = d.Y;
+                        if (Pillars.Count > 0) { t.Shadows = new double[Pillars.Count][]; for (int pi = 0; pi < Pillars.Count; pi++) t.Shadows[pi] = new[] { Pillars[pi].X, Pillars[pi].Y, Pillars[pi].R }; }
                         t.Safe = new double[SafeZones.Count + 1][]; t.Safe[0] = new[] { d.X, d.Y, DruidRemodelData.HeartbeatSafeRadius };
                         for (int i = 0; i < SafeZones.Count; i++) t.Safe[i + 1] = (double[])SafeZones[i].Clone();
                         break;

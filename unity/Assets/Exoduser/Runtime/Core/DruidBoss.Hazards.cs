@@ -164,7 +164,7 @@ namespace Exoduser.UnityPort.Core
                     if (Dst(px, py, p.X, p.Y) < 30 && host.PIframes <= 0)
                     {
                         host.HurtPlayer(I(p.Dmg), true);
-                        double ka = Atan2(py - p.Y, px - p.X); host.KnockPlayer(Cos(ka) * 10, Sin(ka) * 10); host.Text(px, py - 20, "💥 지뢰!", "#ffcc00", 40); host.Shake(6); dead = true;
+                        double ka = Atan2(py - p.Y, px - p.X); host.KnockPlayer(Cos(ka) * 10, Sin(ka) * 10); RmText(px, py - 20, "💥 지뢰!", "#ffcc00", 40); host.Shake(6); dead = true;
                     }
                     else if (p.Life <= 0) dead = true;
                     if (dead) { p.Active = false; continue; }
@@ -188,6 +188,7 @@ namespace Exoduser.UnityPort.Core
                 double nx = p.X + p.Vx, ny = p.Y + p.Vy;
                 p.X = nx; p.Y = ny; p.Dist += Math.Sqrt(p.Vx * p.Vx + p.Vy * p.Vy);
                 if (host.IsWall(nx, ny)) { p.Active = false; continue; }
+                if (Remodel && PillarBlocks(nx, ny, Math.Max(p.R, 2))) { p.Active = false; continue; }   // RB1-3: the root pillars stop every bullet
                 if (p.Friendly)
                 {   // a reflected bullet never hurts the player: it looks for an enemy (ParryReflect.Blast) and is used up on contact
                     if (reflectHost != null && ReflectContact(p)) { p.Active = false; continue; }
@@ -199,7 +200,7 @@ namespace Exoduser.UnityPort.Core
                 double hitR = host.ParryWindowOpen() ? collR * 3 + 12 : collR + 4;
                 if (pd < hitR && (host.ParryWindowOpen() || host.PIframes <= 0))
                 {
-                    if (p.Web) { host.PlayerPoison(0, 90); host.Text(px, py - 20, "🕸둔화!", "#aaaaaa", 30); }   // spider web: 1.5 s slow, no damage
+                    if (p.Web) { host.PlayerPoison(0, 90); RmText(px, py - 20, "🕸둔화!", "#aaaaaa", 30); }   // spider web: 1.5 s slow, no damage
                     else host.HurtPlayer(I((p.Dmg != 0 ? p.Dmg : 10) * (ElementMul != null ? ElementMul(p.El) : 1)), true);
                     p.Active = false; continue;
                 }
@@ -275,15 +276,17 @@ namespace Exoduser.UnityPort.Core
         {
             if (f.Done) return;
             double prev = f.Len, next = Math.Min(f.MaxLen, prev + f.Spd);
+            double stop = PillarRayDistance(f.X, f.Y, Cos(f.Ang), Sin(f.Ang), next);   // RB1-3: the head stops at a pillar
+            bool atPillar = stop < next; if (atPillar) next = Math.Max(prev, stop);
             double nx = f.X + Cos(f.Ang) * next, ny = f.Y + Sin(f.Ang) * next;
-            if (!host.CanMove(nx, ny, 10)) { f.Done = true; return; }
+            if (!host.CanMove(nx, ny, 10) && !PillarBlocks(nx, ny, 10)) { f.Done = true; return; }   // the arena wall ends it (CanMove also refuses the pillar margin: that is the pillar stop above, not a wall)
             f.Len = next;
             if (!f.Hit && host.PIframes <= 0 && SegDist(f.X + Cos(f.Ang) * prev, f.Y + Sin(f.Ang) * prev, nx, ny, px, py) <= FissureHitHalfWidth + host.PRadius)
             {
                 f.Hit = true; host.HurtPlayer(I(f.Dmg), false);
                 double ka = Atan2(py - ny, px - nx); host.KnockPlayer(Cos(ka) * 10, Sin(ka) * 10);
             }
-            if (f.Len >= f.MaxLen) { f.Done = true; host.Shake(12); }
+            if (f.Len >= f.MaxLen || atPillar) { f.Done = true; host.Shake(12); }
         }
 
         public const double FissureHitHalfWidth = 70;
@@ -354,7 +357,7 @@ namespace Exoduser.UnityPort.Core
                 var pp = PoisonPools[pi]; pp.T += 1; pp.TickT += 1;
                 if (Dst(px, py, pp.X, pp.Y) < pp.R + pr && host.PIframes <= 0 && pp.TickT >= 60)
                 {
-                    pp.TickT = 0; host.HurtPlayer(I(pp.Dmg * .5), false); host.Text(px, py - 15, "독!", "#44cc00", 20);
+                    pp.TickT = 0; host.HurtPlayer(I(pp.Dmg * .5), false); RmText(px, py - 15, "독!", "#44cc00", 20);
                     if (DruidStage) host.PlayerPoison(2, 60);
                 }
                 if (pp.T < pp.MaxT) PoisonPools[w++] = pp;
@@ -379,7 +382,7 @@ namespace Exoduser.UnityPort.Core
                     SpawnBossProjectile(b, d, new ProjSpec { X = d.X + Cos(ang) * d.R, Y = d.Y - 36 + Sin(ang) * d.R, Vx = Cos(ang) * 6, Vy = Sin(ang) * 6, Dmg = I((d.Atk != 0 ? d.Atk : 100) * .35), El = 1, Life = 240, Ml = 240,
                         Col = "#66dd22", Sz = 2, R = 10, FireMagic = true, Typed = true, DruidParryVolley = true });
                 }
-                host.Text(d.X, d.Y - 60, "Q!", "#66dd22", 32); VolleyN++;
+                RmText(d.X, d.Y - 60, "Q!", "#66dd22", 32); VolleyN++;
             }
         }
 
@@ -402,7 +405,7 @@ namespace Exoduser.UnityPort.Core
                     bool pw = host.ParryWindowOpen(); double obR = 90; int obDmg = Math.Max(40, I((o.Dmg != 0 ? o.Dmg : 60) * 1.2));
                     if (b != null && b.Alive && Dst(o.X, o.Y, b.X, b.Y) <= obR) host.BossHurt(b, obDmg, Atan2(b.Y - o.Y, b.X - o.X));
                     if (pw) host.TryParry(b, 0, 0, 0, 0);
-                    else if (host.PIframes <= 0) { host.HurtPlayer(I(o.Dmg), false); host.PlayerPoison(3, 80); host.Text(px, py - 16, "☠속박!", "#66dd22", 22); }
+                    else if (host.PIframes <= 0) { host.HurtPlayer(I(o.Dmg), false); host.PlayerPoison(3, 80); RmText(px, py - 16, "☠속박!", "#66dd22", 22); }
                     del = true;
                 }
                 if (o.T > 460 || o.X < -40 || o.Y < -40 || o.X > host.ArenaW + 40 || o.Y > host.ArenaH + 40) del = true;
