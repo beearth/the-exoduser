@@ -336,3 +336,9 @@
   4. Unity `Resources/Audio`에는 NFC 또는 ASCII 경로만 쓴다.
   5. 확인 결과를 Mac→PC 회신에 1줄로 남긴다(81 여부, precomposeunicode 값).
 - 상세: `docs/6사운드디자인/BGM_NFC_NFD_AUDIT_20261026.md` ⑥·⑦.
+
+## 2026-10-27 CTO — Codex 공지 경로 변경 (사용자 지시)
+
+- 이제부터 PC→Codex 공지는 `main`과 `unity/main` 두 곳에 올린다. Codex는 `unity/main`의 이 파일을 읽는다.
+- `codex/unity-mac-20261024`는 퇴역한다. 새 커밋을 하지 않는다(PC 측도 금지).
+- 맵 아트 바이블 v2(`docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md`)와 맵 보드 LIFE1 갱신을 `unity/main`에 반영했다. 맵 판정 기준은 v2다(A/B 대체).
