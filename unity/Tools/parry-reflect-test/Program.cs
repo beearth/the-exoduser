@@ -16,10 +16,10 @@ static class P
 
     sealed class Rig { public Simulation S; public EnemyState Boss; public PlayerState Pl; }
 
-    static Rig Setup(uint seed)
+    static Rig Setup(uint seed, bool remodel = false)   // the web-port druid: the remodel does not reflect (see the last scenario)
     {
         var s = new Simulation(new SimulationConfig { StageIndex = 0, DifficultyIndex = 5, EnemyAiEnabled = true, PlayerMaxHp = 2000000, PlayerBaseAttack = 40 }, seed);
-        s.DruidRemodel = true; s.Player.Level = 8; s.Player.Hp = s.Player.MaxHp;
+        s.DruidRemodel = remodel; s.Player.Level = 8; s.Player.Hp = s.Player.MaxHp;
         s.AttachDruidBoss();
         s.Stage.Enabled = true; s.Stage.FieldBossDone = true; s.Stage.BossUnlocked = true;
         s.Stage.Exits.Add(new StageFlow.Tile(100, 7)); s.Player.X = 100.5f * 40; s.Player.Y = 7.5f * 40; s.Stage.CheckT = 29;
@@ -125,6 +125,19 @@ static class P
             int t = Run(r, b, 60, () => b.Friendly);
             if (t > 0) Check(b.Vx * vx0 < 0 || b.Vy * vy0 < 0 || (Math.Abs(b.Vx) + Math.Abs(b.Vy)) > 0, "no target: bullet turned back");
             log.Add("no target: reflected after " + t + " ticks");
+        }
+
+        // --- 6. remodel on: nothing is reflected, in the E window and in the Q window (spec §3: #5 is not parryable) ---
+        foreach (var key in new[] { "E", "Q" })
+        {
+            var r = Setup(key == "E" ? 20261033u : 20261034u, true); var s = r.S; var b = Shoot(r, key == "E" ? 0 : 3, true, key == "E" ? 90 : 140);
+            float hp0 = r.Pl.Hp; bool everFriendly = false;
+            if (key == "E") { r.Pl.State = "sBash"; r.Pl.StateTicks = 20; } else { r.Pl.State = "sBlock"; r.Pl.StateTicks = 999; s.SbParryT = 18; }
+            int t = Run(r, b, 80, () => { everFriendly |= b.Friendly; return !b.Active; });
+            Check(s.DruidRemodel && s.Druid.Remodel, "remodel " + key + ": flag on");
+            Check(s.ReflectCount == 0 && !everFriendly && !b.BlueBean, "remodel " + key + ": no reflection (reflect count " + s.ReflectCount + ", friendly " + everFriendly + ")");
+            Check(t > 0, "remodel " + key + ": the bullet ended through the old hurt path (" + t + ")");
+            log.Add("remodel " + key + " window: reflected=" + everFriendly + ", bullet ended after " + t + " ticks, player HP " + hp0 + " -> " + r.Pl.Hp);
         }
         Directory.CreateDirectory(dir);
         var sb = new StringBuilder("# parry reflect in the simulation\n\nchecks " + checks + ", failed " + bad + "\n\n");
