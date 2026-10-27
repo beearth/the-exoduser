@@ -340,11 +340,11 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 | 타입 | 지속시간 | 애니 프레임 수 | 시트 | 성능 영향 |
 |------|---------|-------------|------|----------|
 | fire | 66 (1.1초) | 16 | Fire_FBF_4x4 (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5)) | 낮음 (drawImage 1회/프레임) |
-| black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 | 낮음 |
+| black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Ice 안개 재채색·반투명 보라 연기, 알파 최대 0.58, 코어 없음) | 낮음 |
 | redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5)) | 낮음 |
 | rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록) | 중간 (drawImage 4회/프레임) |
-| rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF + Dark_Smoke_6x6 + Dark_BasicImpact | 중간 |
-| dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact | 낮음 |
+| rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Ice 안개 재채색·반투명 보라 연기, 알파 최대 0.58, 코어 없음) + Dark_Smoke_6x6 (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): BW 사망 연기 재채색·밀도=알파, 최대 0.58) + Dark_BasicImpact (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Fire_BasicImpact C2 재채색) | 중간 |
+| dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Fire_MediumImpact C2 재채색 — 라벤더 코어→찢긴 보라 소용돌이, 마젠타 별 제거) | 낮음 |
 | physical_parry(물리탄 E패링) | 12f(0.2초) | 4 | `Fire_ImpactFire_Sheet.png` 첫 행 흰 틴트(2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 첫 행 = 코어 별→불덩이 팽창 4프레임, 반영 확인 캡처로 흰 스플래시 가독 확인), `_addBoom(x,y,60,12,'physical')`, 최대180px | `redBean+EL.P`·일반/관통 입탄·`titanEye`의 physicalProjectile 분기. 파편12개·flash0.25도 #ffffff. Q·무지개·기타 E 효과 불변 |
 | fire_medium | 66 (1.1초, min보정) | 16 (4×4) | Fire_MediumImpact (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 좌우 반전+90° 회전) | 낮음 — 빨콩 패링 적중, 보호막 흡수, **동물형 돌진(22/30/43) 적중 임팩트** (`_addBoom 80,48`, 2026-06-28) |
 | explosion | 66 (1.1초) | 프로시저럴 | arms 기반 렌더 | 낮음 |
@@ -945,7 +945,7 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | 물리 P | physical → Fire_ImpactFire_Sheet.png 첫 행 4프레임(index0~3, 2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 이제 백열 코어 별→불덩이 팽창 프레임 — 옛 섬광·파편 아님) 흰색 틴트. 원본4×4 중 나머지12셀 제외, 최대180px, 12f(0.2초). _physicalImpactSheet는 이미지별 WeakMap 캐시, _tintHolyDome(img,255,255,255): RGB255/alpha=반올림(max(원본RGB)×원본alpha/255). 기존 Fire FBF 흰 연기 연결 제거. 원본/다른 속성/탄 비행/패링 효과 유지 |
 | 화염 F | fire 또는 redbean → Fire_FBF_4x4.png (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 승인 필드보스 화염 임팩트 재격자, 180° 회전) |
 | 얼음 I | ice → Ice_ImpactIce_Sheet.png + Ice_MistSmoke_FBF_4x4.png (물파란콩은 기존 별도 Water Impact 경로 유지) |
-| 어둠 D | dark → Dark_MediumImpact.png + Dark_DarkSmoke_FBF_4x4.png |
+| 어둠 D | dark → Dark_MediumImpact.png (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Fire_MediumImpact C2 재채색 — 라벤더 코어→찢긴 보라 소용돌이, 마젠타 별 제거) + Dark_DarkSmoke_FBF_4x4.png (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Ice 안개 재채색·반투명 보라 연기, 알파 최대 0.58, 코어 없음) |
 | 번개 L | lightning → Lightning_ImpactLightning_Sheet.png + Lightning_Lightning_FBF_4x3.png |
 | 신성 H / 대지 E | holy → Light_ImpactLight_Sheet.png / earth → Earth_ImpactEarth_Sheet.png |
 | 다크볼 추가 피격 파편 | 기존 초록/파랑 대신 #a44cff 6개 + #6d21ad 6개 |
@@ -1352,7 +1352,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | gate | 기존 own r4 storage.active + fdgDruidCombat=r9, QA contactVfxReadability:true && native-ai. framing/readability 계승·old branches 유지 |
 | 대상 | kind dark/dark02+exact basename Dark_MediumImpact.png 4×4/16f core0..7 native alpha 그대로·late8..15 잔광만 overlap gain. kinddark+exact Dark_DarkSmoke_FBF_4x4.png secondarysmoke0..15; dark02 secondary추가0 |
-| 현행 source / 개요 구분 | 현재 commonboom dark=[Dark_MediumImpact,Dark_DarkSmoke_FBF_4x4],dark02=[Dark_MediumImpact]. 기존 총정리의 dark procedural 표기는 일반 과거 개요이며 이 실제dark/dark02 sheet 소비와 구분한다. 타kind 확대수정0 |
+| 현행 source / 개요 구분 | **시트 내용 변경 주의(2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6)):** 이 표의 core0..7·late8..15 구분은 옛 네온(마젠타 별) 시트 기준이었다. 현재 Dark_MediumImpact는 C2 화염 시트를 암흑 램프로 재채색한 것(0프레임 라벤더 코어 별 → 찢긴 보라 소용돌이 팽창 → 어두운 잔광 소멸)이며 프레임 인덱스·격자(4×4/16)는 동일하다. 현재 commonboom dark=[Dark_MediumImpact,Dark_DarkSmoke_FBF_4x4],dark02=[Dark_MediumImpact]. 기존 총정리의 dark procedural 표기는 일반 과거 개요이며 이 실제dark/dark02 sheet 소비와 구분한다. 타kind 확대수정0 |
 | policy | mediumTailStartFrame8/mediumFrameCount16/mediumTailGain.16/darkSmokeGain.12/fadeStart.60/fadeEnd1/fadeTailGain.25. modifier=gain×(1−.75×clamp((progress−.60)/.40,0,1)), renderAlpha=nativeAlpha×modifier |
 | tail / passthrough | 끝 medium modifier.04/smoke.03은 절대alpha하한 아님. 원alpha0은0. inactive/unlisted/hazard/invalid는 Object.is native scalar 유지, 삭제/hide/drop0 |
 | 보존 | boomt/mt(원66/72 등)·worldxy/r·size3.0+si*.4/power scale·frameUV/색/material/blend·비행탄·위험/독/QE/AI/time/피해/포이즈/pets/map/save 그대로 |
