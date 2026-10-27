@@ -57278,3 +57278,5 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-27 Mac A05-IO 전사 이야기 자연완주: 기존 최종 Settings QA 앱 일반 타이틀→세계관→새 전사 생성 뒤 무입력 영상 완주를 관찰했다. 끝의 네메시아 화면은 별도 입장 시네마틱의 대사 입력 대기로 판별. 추적 ARM64 빌드1회/오류0에서 96.400초 정본 영상 time95.000까지 증가·종료 우회0, 입장 대사를 정상 진행해 첫 시작 안내1/4 화면 PASS. 소스/앱 영상 SHA 일치, 격리 roster 각1명/revision1, 중복·재생 오류0. 임시 추적 코드를 복원해 최종 제품 변경0; 청음 HOLD. [증거](engine/UNITY_MAC_WARRIOR_NATURAL_QA_20261027.md).
 
 2026-10-27 Mac 시작 안내4쪽 물약 note: ko `물약은 자동 사용`, en `Potions activate automatically`로 한 줄 수정. 기존 `설정한 HP%` 주장은 Mac 설정 API와 B11 자동 발동식에 맞지 않았다. GuideRows/hint/영상/Core/저장 변경0, 소스 대조만 완료·실제 Player/청음 미검수. [범위·조건](engine/UNITY_MAC_STARTUP_FLOW_20261025.md#2026-10-27-a05-시작-안내-4쪽-물약-문구).
+
+2026-10-27 Mac A14/B11 대장간 물약 상태 설명 정정: A14 SSOT의 Unity 상태·미이식/동작 두 표 행과 `NativeForgePanel.cs` 머리 주석을 현재 B11 `PotionState.PotLv`·레벨 게이트·카드 선택/확인 바/제작 연결에 맞게 갱신했다. 제품 동작·조건·수치·Core/asset/save 변경0, 문서·주석 diff만 확인했고 새 Player/물리 마우스 검수는 하지 않았다. [현행 상태](engine/UNITY_A14_FORGE_20261026.md#2-정의와-상태-전체총괄-원칙).

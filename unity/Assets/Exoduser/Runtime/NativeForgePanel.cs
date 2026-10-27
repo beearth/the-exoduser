@@ -9,8 +9,8 @@ namespace Exoduser.UnityPort {
  // Static chrome (frame, crest, name plate, malice strip, list panel) is a still of the web window with every dynamic element hidden
  // (Art/ui/forge/window_base.png). Emoji / slot glyphs are 1x crops of the web render (Art/ui/forge/forge_glyphs.png, Data/forge_glyphs.json).
  // Definitions come from Data/forge_web.json; money, equipment, bag and player level are read from Unity at draw time, and anything Unity
- // does not have yet (potion level, relic bag, ...) is drawn as "미이식". Working: tab switch, AI-enhance chip select, scroll, close [G]/ESC.
- // Enhance / potion / salvage / reroll / relic / craft execution is shape only.
+ // does not have yet (relic bag, ...) is drawn as "미이식". Working: tab switch, AI-enhance chip select, scroll, close [G]/ESC.
+ // Potion selection/craft reads Simulation.PotionState (B11); enhance / salvage / reroll / relic / general craft execution is shape only.
  public sealed partial class NativeForgePanel {
   public bool Open {get;private set;}
   public string Tab {get;private set;}="upgrade";
