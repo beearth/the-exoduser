@@ -53,10 +53,10 @@ vm.runInContext(updateE,ctx);
 vm.runInContext("var __mkOrig=mkEn;mkEn=function(x,y,si,etype,ib,el,room){const o=__mkOrig(x,y,si,etype,ib,el,room);__log.push(['mk',x,y,si,etype,el===undefined?null:el,o?o.hp:null,o?o.atk:null]);return o;};",ctx);
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 const seqFor=(seed,n)=>{const r=mulberry32(seed),a=[];while(a.length<n)a.push(r());return a;};
-const SNAP=['x','y','hp','mhp','atk','baseAtk','speed','s','st2','facing','projT','projCd','_projChargeT','_projChargeBean','stunned','poise','alive','_alerted','reviveIframes','_hitStun','_telegraphT','_moveAng','_sepCd','echDx','echDy','_chgVisLen','_enraged','_cloaked','webT','swoopT','trapT','motherT','wombT','slamT','stealthT','reviveT','teleportT','summonT','shieldBashT','shieldAng','_tpWarnT','_tpWarnX','_tpWarnY','_stCloneT','_stTpCd','_iceChargeT','_iceSlimeT','_iceBlizzT','_iceSwoopT','_iceSlamT','_escorting','_swoopOx','_iceSwoopOx','eShield'];
+const SNAP=['x','y','hp','mhp','atk','baseAtk','speed','s','st2','facing','projT','projCd','_projChargeT','_projChargeBean','stunned','poise','alive','_alerted','reviveIframes','_hitStun','_telegraphT','_moveAng','_sepCd','echDx','echDy','_chgVisLen','_enraged','_cloaked','webT','swoopT','trapT','motherT','wombT','slamT','stealthT','reviveT','teleportT','summonT','shieldBashT','shieldAng','_tpWarnT','_tpWarnX','_tpWarnY','_stCloneT','_stTpCd','_iceChargeT','_iceSlimeT','_iceBlizzT','_iceSwoopT','_iceSlamT','_escorting','_swoopOx','_iceSwoopOx','eShield','bleed','bleedT','bleedStk','_bleedPool','poison','poisonT','poisonStk','_poisonPool','burnT','burnStk','_burnPool','_hrMark','_hrMarkT','_bbStk','_bbStkT','_iceDotT','_iceDotDmg','_iceSlowed','_mhDot','_mhDotDmg','spd','baseSpd','_eliteBoltWarn','_eliteBoltAim','modT.eliteBolt','modT.eliteMortar','modT.eliteBusy','modT.eliteCharge','modT.eliteRing','modT.regen'];
 ctx.__SNAP=SNAP;
 const RUN=`(function(){
- const c=__setup;P.x=1000;P.y=1000;P.r=10;P.facing=c.pfacing;P.iframes=c.piframes;P.s=c.ps;P.kb={x:0,y:0};P._freezeSlow=0;P.__pwin=!!c.pwin;
+ const c=__setup;P.x=1000;P.y=1000;P.r=10;P.facing=c.pfacing;P.iframes=c.piframes;P.s=c.ps;P.kb={x:0,y:0};P._freezeSlow=0;P.__pwin=!!c.pwin;P.__armEl=c.armEl===undefined?0:c.armEl;
  G.stage=c.si;ens=[];_deadPool=[];__log=[];
  const e=mkEn(1000,1000,c.si,c.etype,false,1,2);
  e.x=1000+Math.cos(c.ang)*c.dist;e.y=1000+Math.sin(c.ang)*c.dist;Object.assign(e,c.over);e._aAtkM=1;e._aSpdM=1;ens.push(e);
@@ -67,7 +67,7 @@ const RUN=`(function(){
  for(let t=0;t<c.ticks;t++){_gameFrame++;__log=[];for(const q of ens){if(q.alive){q._aAtkM=1;q._aSpdM=1;}}
   const cnt=ens.length;for(let i=0;i<cnt;i++){if(ens[i].alive)updateE(ens[i],c.sp);}
   logs.push(__log.map(l=>l.slice()));tr.push([e.x,e.y,e.facing,e.s]);
-  if(t%5===4||t===c.ticks-1){const q={};for(const k of __SNAP)q[k]=e[k]===undefined?null:e[k];q['kb.x']=e.kb.x;q['kb.y']=e.kb.y;q.n=ens.length;q.t=t;snaps.push(q);}}
+  if(t%5===4||t===c.ticks-1){const q={};for(const k of __SNAP)if(k.indexOf('.')<0)q[k]=e[k]===undefined?null:e[k];q['kb.x']=e.kb.x;q['kb.y']=e.kb.y;q['modT.eliteBolt']=e.modT.eliteBolt;q['modT.eliteMortar']=e.modT.eliteMortar;q['modT.eliteBusy']=e.modT.eliteBusy;q['modT.eliteCharge']=e.modT.eliteCharge;q['modT.eliteRing']=e.modT.eliteRing;q['modT.regen']=e.modT.regen;q.n=ens.length;q.t=t;snaps.push(q);}}
  return {snaps:snaps,logs:logs,tr:tr,P:{kbx:P.kb.x,kby:P.kb.y,fz:P._freezeSlow,s:P.s,st2:P.st2===undefined?null:P.st2},rand:__i,ensN:ens.length};})()`;
 const pf=a=>a;
 function runCase(c){
@@ -109,9 +109,34 @@ mk('mother spawns',17,{dist:300,over:{_alerted:true,motherT:0},ticks:80});
 mk('shadow twin clone+tp',47,{dist:500,over:{_alerted:true,_stCloneT:0,_stTpCd:0},ticks:260});
 mk('enraged 12',12,{dist:100,over:{_alerted:true,hp:1},ticks:40});
 mk('separation crowd',0,{dist:200,over:{_alerted:true},allies:[{etype:0,over:{x:1205,y:1002}},{etype:0,over:{x:1198,y:998}},{etype:0,over:{x:1202,y:1006}}],ticks:50});
-for(const m of ['M04','M29','M30']){
+for(const m of ['M04','M29','M30','M31','M32']){
   for(const et of [0,4]) mk('elite '+m+' '+et,et,{dist:m==='M29'?300:200,over:{_alerted:true,mods:[m],elite:1},ticks:700});
 }
+for(const combo of [['M31','M32'],['M30','M31'],['M29','M32'],['M04','M31','M32'],['M30','M32','M31']]){
+  for(const et of [0,4,1,8]) mk('elite combo '+combo.join('+')+' '+et,et,{dist:pick([150,260,420]),ang:rn(0,6.28),over:{_alerted:true,mods:combo,elite:3},ticks:900,pfacing:rn(-3,3)});
+}
+for(const m of ['M31','M32']) for(const [dist,piframes,ps] of [[1000,0,'idle'],[840,0,'idle'],[300,100,'idle'],[300,0,'charge'],[60,0,'idle'],[1090,0,'idle'],[1110,0,'idle']]) mk('elite '+m+' edge d'+dist+' pi'+piframes+' '+ps,4,{dist,piframes,ps,over:{_alerted:true,mods:[m],elite:2},ticks:760});
+// ---- C01-FX: D4 DOT block (bleed / poison / burn pools, ice DOT, malice-hunt DOT, mark timers) ----
+for(const et of [0,3,4,13,16,25]){
+  for(let k=0;k<3;k++){
+    const over={_alerted:true};
+    if(k===0){over.bleedT=300;over._bleedPool=pick([0,40,900,5000,123456]);over.bleedStk=pick([0,1,3,10]);over.bleed=1;}
+    if(k===1){over.poisonT=pick([60,300,330]);over._poisonPool=pick([0,10,777,4000]);over.poisonStk=pick([0,2,7]);over.poison=1;over.burnT=pick([0,180]);over._burnPool=pick([0,500,3100]);over.burnStk=pick([0,1,4]);}
+    if(k===2){over.bleedT=pick([61,119,180]);over._bleedPool=2000;over.bleedStk=4;over.poisonT=250;over._poisonPool=1500;over.burnT=180;over._burnPool=2500;over.burnStk=10;over._hrMarkT=pick([5,200]);over._hrMark=1;over._bbStkT=pick([3,90]);over._bbStk=4;}
+    mk('dot '+k+' '+et,et,{dist:pick([60,250,600]),ang:rn(0,6.28),over,sp:pick([1,1,2]),ticks:420});
+  }
+  mk('dot ice '+et,et,{dist:300,over:{_alerted:true,_iceDotT:200,_iceDotDmg:pick([0,33]),baseSpd:pick([0,2.5])},ticks:260});
+  mk('dot ice end '+et,et,{dist:300,over:{_alerted:true,_iceDotT:7,_iceSlowed:true},ticks:30,sp:2});
+  mk('dot mh '+et,et,{dist:300,over:{_alerted:true,_mhDot:260,_mhDotDmg:pick([0,45])},ticks:300});
+  mk('dot mh sp2 '+et,et,{dist:300,over:{_alerted:true,_mhDot:150},ticks:120,sp:2});
+  mk('dot all '+et,et,{dist:140,over:{_alerted:true,bleedT:400,_bleedPool:3000,bleedStk:6,poisonT:400,_poisonPool:2000,poisonStk:3,burnT:400,_burnPool:1000,burnStk:2,_iceDotT:300,_mhDot:300,_hrMarkT:50,_bbStkT:50},ticks:520});
+}
+// ---- C01-FX: elMul with the armor element (contact, charges, shots, zones) ----
+for(const et of SCOPE){
+  for(let k=0;k<3;k++){const armEl=1+Math.floor(fz()*6),el=Math.floor(fz()*7);
+    mk('armor el '+et+' k'+k+' a'+armEl+' e'+el,et,{dist:pick([22,40,90,200]),ang:rn(0,6.28),armEl,over:{_alerted:true,el},ticks:200,piframes:0,pfacing:rn(-3,3)});}
+}
+for(const [st,et] of [['eChargeWind',22],['eSwoop',14],['eSlamWind',19],['eShieldBash',6],['windup',5],['attack',0],['eSlamWind',28]]) for(const armEl of [1,2,3,4,5,6]) mk('armor state '+st+' '+et+' a'+armEl,et,{dist:25,armEl,ang:0.7,over:{_alerted:true,el:armEl===1?2:armEl===2?1:armEl===3?4:armEl===4?3:armEl===5?3:4,s:st,st2:pick([1,8,25]),echDx:1,echDy:0,_chgSpd:32,_chgDur:18,_chgAimMax:60,_chgLen:640}});
 mk('iceOnHit melee charge',22,{dist:200,over:{_alerted:true,_iceChargeT:0,_iceOnHit:true},ticks:200});
 mk('stage 1 pool etype 4 shooter',4,{dist:250,over:{_alerted:true,projCd:240,projT:2},ticks:200});
 for(let k=0;k<4;k++)for(const et of [1,8,13,16,21,23,25,26,0,3]) mk('shooter fuzz '+k+' '+et,et,{dist:pick([100,250,500]),ang:rn(0,6.28),over:{_alerted:true,projT:pick([1,10,40])},ticks:260,sp:1});

@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
         GUIStyle label,small,title,center,button,characterBadge,statusTitle,statusDetail; bool guiReady;
         public static NativeGame Instance {get;private set;}
         sealed class ChunkView {public SpriteRenderer renderer;public string path;}
-        sealed class EnemyView {public SpriteRenderer body,walk;public float distance,lastX,lastY;public int skin,hp;public float shield;public bool moving;}
+        sealed class EnemyView {public SpriteRenderer body,walk,arc;public float distance,lastX,lastY;public int skin,hp;public float shield;public bool moving;}
         sealed class DamageText {public float x,y,until;public int amount;public bool shield;}
         readonly NativeReviveHud revive=new NativeReviveHud(); // B08: revive/shield floaters + fallen countdown
         bool PlayerDown{get{var q=Simulation.Player;return q.State=="dead"||(q.Hp<=0&&q.State!="fallen");}} // fallen = 5 s revive countdown, not dead yet
@@ -86,6 +86,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-startup-capture")>=0){Running=false;StartCoroutine(StartupCapture());}
             else if(Array.IndexOf(args,CombatSaveCaptureFlag)>=0){Running=false;StartCoroutine(CombatSaveCapture());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
+            else if(Array.IndexOf(args,"--unity-field-compare")>=0){Running=false;StartCoroutine(FieldCompare());}
             else if(Array.IndexOf(args,"--unity-hud-blend-smoke")>=0){menu=true;Running=false;StartCoroutine(HudBlendCapture());}
             else if(Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0){inventoryKeysSmoke=true;traceInventoryKeys=true;pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();StartCoroutine(InventoryKeysSmoke());}
             else if(Array.IndexOf(args,"--unity-pause-smoke")>=0){pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();menu=true;Running=false;pauseMenu.Reset();StartCoroutine(PauseSmoke());}
@@ -258,21 +259,25 @@ namespace Exoduser.UnityPort
             foreach(var e in Simulation.Enemies)
             {
                 if(!enemies.TryGetValue(e.Id,out var ev)){
-                    int idx=((int)(e.X*31)&0x7fffffff)%40;
+                    // web _assignMobSkin: the fixed atlas cell the factory rolled from the etype and the spawn x (_mob8Col/_mob8Row); revived ghouls have none and keep the position hash
+                    int idx=e.Web!=null&&e.Web._mob8Col.HasValue&&e.Web._mob8Row.HasValue?(int)e.Web._mob8Row.Value*8+(int)e.Web._mob8Col.Value:((int)(e.X*31)&0x7fffffff)%40;
                     ev=new EnemyView{body=CreateRenderer("Enemy "+e.Id),walk=CreateRenderer("Enemy walk "+e.Id),skin=idx,lastX=e.X,lastY=e.Y,hp=e.Hp,shield=e.Shield};enemies.Add(e.Id,ev);
                 }
-                ev.body.enabled=e.Alive;ev.walk.enabled=e.Alive;if(!e.Alive){BossSinkDraw(e,ev);continue;}
+                ev.body.enabled=e.Alive;ev.walk.enabled=e.Alive;if(ev.arc!=null&&!e.Alive)ev.arc.enabled=false;if(!e.Alive){BossSinkDraw(e,ev);continue;}
                 int dealtHp=Mathf.RoundToInt(ev.hp-e.Hp),dealtShield=Mathf.RoundToInt(ev.shield-e.Shield);if(dealtShield>0)damage.Add(new DamageText{x=e.X,y=e.Y-24,amount=dealtShield,shield=true,until=Time.unscaledTime+1});if(dealtHp>0)damage.Add(new DamageText{x=e.X,y=e.Y,amount=dealtHp,until=Time.unscaledTime+1});ev.hp=e.Hp;ev.shield=e.Shield;
                 if(newTick){float ex=e.X-ev.lastX,ey=e.Y-ev.lastY;float travel=Mathf.Sqrt(ex*ex+ey*ey);ev.distance+=travel;ev.lastX=e.X;ev.lastY=e.Y;ev.moving=travel>.001f;}
                 if(BossBodyDraw(e,ev,newTick))continue;   // BX: the 1-1 druid has its own sheets (damage numbers and walk bookkeeping above already ran)
-                int dir=((int)Math.Floor(e.Facing/(Math.PI/4)+.5)%8+8)%8,cellX=ev.skin%8,cellY=ev.skin/8;
+                double faceAng=e.Facing;if(!ev.moving&&p.Hp>0&&Mathf.Sqrt((p.X-e.X)*(p.X-e.X)+(p.Y-e.Y)*(p.Y-e.Y))<800)faceAng=Math.Atan2(p.Y-e.Y,p.X-e.X);   // drawEnBody: standing mobs within 800 px look at the player
+                int dir=((int)Math.Floor(faceAng/(Math.PI/4)+.5)%8+8)%8,cellX=ev.skin%8,cellY=ev.skin/8;
                 ev.body.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_"+enemyDirections[dir],cellX*256,cellY*256,256,256,new Vector2(.5f,.5f));
                 ev.walk.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_walk_"+enemyDirections[dir],cellX*1024+((int)(ev.distance/128)%4)*256,cellY*256,256,256,new Vector2(.5f,.5f));
                 float size=e.Radius*7/256;ev.body.transform.position=ev.walk.transform.position=Point(e.X,e.Y);ev.body.transform.localScale=ev.walk.transform.localScale=Vector3.one*size;
                 ev.body.sortingOrder=(int)e.Y;ev.walk.sortingOrder=(int)e.Y+1;ev.walk.enabled=e.Alive&&ev.moving;
                 Color tint=Color.white;if(e.IsGhoul&&e.Col!=null)ColorUtility.TryParseHtmlString(e.Col,out tint);if(e.IsGhoul)tint=Color.Lerp(Color.white,tint,.62f); // ghoul: no art of its own, a green-grey body (web draws it procedurally)
                 if(e.IsBoss)tint=Color.Lerp(tint,new Color(1,.55f,.45f),.5f);   // C07: a boss actor without art of its own reads as a boss
-                ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f):tint;
+                if(Simulation.Config.EnemyAiEnabled&&e.Web!=null&&e.Web._spawnT>0)tint.a=Mathf.Max(0,1-(float)e.Web._spawnT/20);   // drawEn: 20 frame fade-in of a fresh spawn
+                ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f,tint.a):tint;
+                UpdateEnemyShieldArc(e,ev);
             }
             UpdateDropViews();
             kiView?.Update(Simulation);
@@ -280,6 +285,35 @@ namespace Exoduser.UnityPort
             impacts?.Update(Simulation.TickCount);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
+        }
+        // game.html drawEn (53853-53870): every mob with an energy shield carries a pulsing pale-blue arc (radius r+5, +-1.0 rad around shieldAng, 5 px stroke, 25% wedge fill);
+        // once the shield is gone the dark physical-shield arc stays (r+4, +-0.8 rad, 3 px, #445577). Baked per radius, tinted / pulsed per frame.
+        static readonly Dictionary<int,Sprite> arcSprites=new Dictionary<int,Sprite>();
+        static Sprite ArcSprite(int radius,bool physical)
+        {
+            int key=radius*2+(physical?1:0);if(arcSprites.TryGetValue(key,out var cached))return cached;
+            float ring=radius+(physical?4:5),stroke=physical?3:5,span=physical?.8f:1f;const int ss=2;int n=((int)ring+8)*2*ss;
+            var tex=new Texture2D(n,n,TextureFormat.RGBA32,false){filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};var px=new Color32[n*n];
+            Color sc=physical?new Color(.267f,.333f,.467f):new Color(.267f,.8f,1f),fc=physical?new Color(60/255f,80/255f,110/255f):new Color(68/255f,200/255f,1f);
+            for(int y=0;y<n;y++)for(int x=0;x<n;x++)
+            {
+                float dx=(x+.5f-n/2f)/ss,dy=(n/2f-(y+.5f))/ss,d=Mathf.Sqrt(dx*dx+dy*dy),a=Mathf.Atan2(dy,dx);
+                float edge=Mathf.Clamp01(1-(Mathf.Abs(a)-span)*ring*ss*.5f);   // ~1 px soft end
+                float sa=Mathf.Clamp01(stroke/2-Mathf.Abs(d-ring)+.5f)*edge,fa=(d<=ring+.5f?Mathf.Clamp01(ring+.5f-d):0)*edge*.25f;
+                float oa=sa+fa*(1-sa);Color o=oa>0?(sc*sa+fc*fa*(1-sa))/oa:Color.black;
+                px[y*n+x]=new Color(o.r,o.g,o.b,oa);
+            }
+            tex.SetPixels32(px);tex.Apply(false,true);
+            var s=Sprite.Create(tex,new Rect(0,0,n,n),new Vector2(.5f,.5f),100f*ss,0,SpriteMeshType.FullRect);arcSprites[key]=s;return s;
+        }
+        void UpdateEnemyShieldArc(EnemyState e,EnemyView ev)
+        {
+            if(e.Web==null||e.IsBoss||e.MaxShield<=0||e.Web.eShieldMax<=0){if(ev.arc!=null)ev.arc.enabled=false;return;}
+            if(ev.arc==null)ev.arc=CreateRenderer("Enemy shield "+e.Id);
+            bool phys=e.Shield<=0;ev.arc.enabled=true;ev.arc.sprite=ArcSprite(Mathf.Max(1,Mathf.RoundToInt(e.Radius)),phys);
+            float now=Time.unscaledTime*1000f,ratio=Mathf.Clamp01(e.Shield/e.MaxShield),pulse=.5f+Mathf.Sin(now/150)*.15f;
+            ev.arc.color=phys?Color.white:new Color(1,1,1,(.4f+ratio*.4f)*pulse);
+            ev.arc.transform.position=Point(e.X,e.Y);ev.arc.transform.rotation=Quaternion.Euler(0,0,-(float)e.Web.shieldAng*Mathf.Rad2Deg);ev.arc.sortingOrder=(int)e.Y+2;
         }
         SpriteRenderer CreateRenderer(string name){var go=new GameObject(name);go.transform.SetParent(transform);return go.AddComponent<SpriteRenderer>();}
         Sprite SpriteFor(string resource,int x,int top,int width,int height,Vector2 pivot)
@@ -330,7 +364,9 @@ namespace Exoduser.UnityPort
             // Web #mmLvl objective panel (game.html 2576-2586): level / experience / area kills / malice from Unity state; Unity has no area-kill total (shown as 미이식).
             objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=Simulation.Kills,areaTotal=null,english=lobby.Language!="ko"});
             hud.Draw(hudWidth,Screen.height/hudScale,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
-            foreach(var e in Simulation.Enemies){if(!e.Alive||e.HurtTicks<=0)continue;var pt=ToGUI(e.X,e.Y);Fill(new Rect(pt.x-42,pt.y-85,84,6),new Color(.12f,.08f,.07f));Fill(new Rect(pt.x-42,pt.y-85,84*Mathf.Clamp01((float)e.Hp/e.MaxHp),6),new Color(.66f,.12f,.08f));if(e.Shield>0)Fill(new Rect(pt.x-42,pt.y-93,84*e.Shield/e.MaxShield,4),new Color(.2f,.55f,.8f));}
+            // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it
+            foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
+                Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);var keep=center.normal.textColor;if(d.shield)center.normal.textColor=new Color(.4f,.87f,1f);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);center.normal.textColor=keep;}
             revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);

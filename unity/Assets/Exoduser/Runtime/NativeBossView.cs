@@ -90,9 +90,9 @@ namespace Exoduser.UnityPort
             r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
         }
 
-        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order)
+        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order, double angle = 0)
         {
-            var r = NextAdd(); r.sprite = s; r.sortingOrder = order; r.color = Color.white; r.transform.rotation = Quaternion.identity;
+            var r = NextAdd(); r.sprite = s; r.sortingOrder = order; r.color = Color.white; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
             r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
             r.GetPropertyBlock(block); block.SetFloat(NativeDruidArt.Opacity, opacity); r.SetPropertyBlock(block);
         }
@@ -137,6 +137,7 @@ namespace Exoduser.UnityPort
         {
             used = 0; addUsed = 0;
             if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
+            DrawFieldZones(sim);
             var druid = sim.Druid; if (druid == null) { Finish(); return; }
             int t = sim.TickCount; boundTick = t;
             double nowMs = Time.unscaledTime * 1000.0;
@@ -241,6 +242,30 @@ namespace Exoduser.UnityPort
                 i++;
             }
             Finish();
+        }
+
+        // The field enemies' zero-speed bullets (game.html 54198 trap, 54262 iceZone / blizzard): the trap is the right half of the AI-made ward sheet (img/vfx/mine_trap_ward_sheet.png),
+        // screen-blended (additive here) at 112 px, turning at -.00018 rad/ms, alpha .78 + .18 pulse; the floor zones are three flat discs (R = sz*5, .6 R, .28 R) pulsing with
+        // .5 + sin(t/250 + x) * .3, dark purple for the dark element and pale blue for ice.
+        const string WardSheet = "Art/vfx/field/mine_trap_ward_sheet";
+        void DrawFieldZones(Simulation sim)
+        {
+            if (sim.FieldZones.Count == 0) return;
+            double now = Time.unscaledTime * 1000.0;
+            foreach (var z in sim.FieldZones)
+            {
+                if (z.Kind == "trap")
+                {
+                    double pulse = .5 + Math.Sin(now / 200) * .5;
+                    PutAdd(NativeDruidArt.ClipFrame(WardSheet, 2, 1, 1), z.X, z.Y, 112, 112, (float)(.78 + pulse * .18), (int)z.Y - 20, -now * .00018);
+                    continue;
+                }
+                bool dark = z.El == 3; double zr = (z.R != 0 ? z.R : 2) * 5, zp = .5 + Math.Sin(now / 250 + z.X) * .3;
+                Color c0 = dark ? new Color32(0x1a, 0x00, 0x33, 255) : new Color32(0x2a, 0x4a, 0x66, 255), c1 = dark ? new Color32(0x3a, 0x00, 0x70, 255) : new Color32(0x44, 0x88, 0xaa, 255), c2 = dark ? new Color32(0x5e, 0x10, 0xa8, 255) : new Color32(0x88, 0xcc, 0xff, 255);
+                Put(disc, z.X, z.Y, zr, new Color(c0.r, c0.g, c0.b, (float)(.12 * zp)), (int)z.Y - 30);
+                Put(disc, z.X, z.Y, zr * .6, new Color(c1.r, c1.g, c1.b, (float)(.26 * zp)), (int)z.Y - 29);
+                Put(disc, z.X, z.Y, zr * .28, new Color(c2.r, c2.g, c2.b, (float)(.46 * zp)), (int)z.Y - 28);
+            }
         }
 
         void Finish()

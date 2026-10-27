@@ -40,7 +40,13 @@ namespace Exoduser.UnityPort
 
             // ---- 01 lobby -> warrior -> 1-1 ----
             lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.6f);
-            if (lobby.Characters.Count == 0) { lobby.OpenCharacterCreation(); lobby.ChooseCharacterVisual(0); lobby.ConfirmCharacterVisual(); lobby.CreateCharacter("M1점검"); lobby.ShowLobby(); }
+            // Always a brand-new character: a roster/combat save left in <output> by an earlier run makes BeginCharacterEntry take the "continue" path (HasCombatSave), which skips the
+            // story and the first practice arena (step 02 "not shown"). A fresh unique name has no combat save, so the new-character route is always walked.
+            {
+                string fresh = "M1" + (DateTime.Now.Ticks % 100000).ToString("00000");
+                if (lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual()) lobby.CreateCharacter(fresh);
+                lobby.ShowLobby();
+            }
             yield return M1Shot("01-lobby-warrior-selected");
             bool entered = lobby.BeginCharacterEntry(false);
             deadline = Time.realtimeSinceStartup + 15; while (lobby.StartupCaptureState.Page != FrontendEntryPage.Nemesis && Time.realtimeSinceStartup < deadline) yield return null;
