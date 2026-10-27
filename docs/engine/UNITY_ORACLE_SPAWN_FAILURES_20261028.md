@@ -43,4 +43,4 @@
 | weapon-xbow-oracle | 108,780 / 0 |
 | ki-slash-oracle | 93 / 0 |
 | skill-sim-test | 67 / 0 |
-| m1-check | 아래(창 모드) |
+| m1-check (창 모드: run-player 1920×1080, 비-batchmode) | 18/18 ok |
