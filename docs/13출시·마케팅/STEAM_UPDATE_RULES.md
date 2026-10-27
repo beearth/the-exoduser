@@ -36,7 +36,7 @@
 
 1. 전날 업데이트 태그 이후 커밋 확인 → 없으면 종료.
 2. `release-version.json` 버전 올림 + 패치노트 초안 생성.
-3. **커밋된 HEAD 기준**으로 빌드(다른 세션의 미커밋 작업이 섞이지 않게). 작업 트리를 그대로 빌드하지 않는다.
+3. **커밋된 HEAD 기준**으로 빌드(다른 세션의 미커밋 작업이 섞이지 않게). 작업 트리를 그대로 빌드하지 않는다. **2026-10-27 CTO 결정: 기준 HEAD = fetch한 원격 `origin/main`** — `E:\exoduser-wt\steam-build-<날짜>` worktree로 떼어 내 그 안에서 버전 커밋·빌드하고, 업로드 성공 시에만 로컬 태그 + `git push origin HEAD:main`(비강제, 거절 시 merge 1회 후 재시도), 끝나면 worktree 제거. 공유 폴더 `G:\exoduser`의 로컬 main은 쓰지 않는다. 태그 push는 7번(공개 후) 그대로.
 4. smoke(실제 실행 점검) → preview(SteamPipe 미리 올리기) → upload(`setlive ""`, 공개 전환 안 함).
 5. 사용자에게 알림: 새 BuildID·버전·패치노트 초안.
 6. **공개 전환(Set Live)과 패치노트 게시는 사용자 확인 후에만.** 자동 공개 금지(기존 안전장치 유지: DEPLOY/SETLIVE 입력, smoke/preview 통과 필수).
