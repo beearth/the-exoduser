@@ -1,0 +1,145 @@
+{
+ "about": "SFX Forge 카탈로그 RM-1 3차(SND-08 §6.4) — 전부 안 맞음 5키 × 서로 다른 해석 4개(a~d), 키 <key>_s3a~d(문구마다 variant 1개). API 최소 0.5s라 tell_parry·staff_tap은 0.5s 생성(tell_parry는 승격 때 0.25s 컷). 사용: node --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <this> --variants 1",
+ "sounds": [
+  {
+   "category": "hit",
+   "key": "tell_parry_s3a",
+   "raw": true,
+   "duration": 0.5,
+   "text": "quick sharp blade-edge shing as light catches a weapon tip, single bright scrape, very short. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "tell_parry_s3b",
+   "raw": true,
+   "duration": 0.5,
+   "text": "short whoosh of a heavy wooden staff drawn back fast, air cut, tight. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "tell_parry_s3c",
+   "raw": true,
+   "duration": 0.5,
+   "text": "dry wooden creak of a gnarled staff gripped hard right before a swing, short. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "tell_parry_s3d",
+   "raw": true,
+   "duration": 0.5,
+   "text": "short dull iron ring of a weapon being readied, cut off immediately, no sustain. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "roll_body_s3a",
+   "raw": true,
+   "duration": 0.5,
+   "text": "quick body roll on soft forest dirt, cloth and leather rustle, soft thud, no metal. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "roll_body_s3b",
+   "raw": true,
+   "duration": 0.5,
+   "text": "fast whoosh of a heavy cloak during a dodge roll, fabric flap, light ground scuff. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "roll_body_s3c",
+   "raw": true,
+   "duration": 0.5,
+   "text": "armored knight rolling on gravel and dirt, plate armor clatter, heavy thump. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "roll_body_s3d",
+   "raw": true,
+   "duration": 0.5,
+   "text": "short evasive dash through dry leaves, leaves crunch and scatter, boot skid. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_burrow_s3a",
+   "raw": true,
+   "duration": 0.8,
+   "text": "something diving fast into loose earth, quick soil whoosh and thud, dirt settling. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_burrow_s3b",
+   "raw": true,
+   "duration": 0.8,
+   "text": "deep underground rumble as a body tunnels down, muffled earth grinding. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_burrow_s3c",
+   "raw": true,
+   "duration": 0.8,
+   "text": "roots coiling around a body and dragging it into the ground, wood creak and crumbling soil. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_burrow_s3d",
+   "raw": true,
+   "duration": 0.8,
+   "text": "wet mud splash and suction as a figure sinks into a bog in one motion. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "druid_staff_tap_s3a",
+   "raw": true,
+   "duration": 0.5,
+   "text": "wooden staff butt slammed on forest dirt, soft heavy thud, dull and earthy. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "druid_staff_tap_s3b",
+   "raw": true,
+   "duration": 0.5,
+   "text": "staff struck on a stone floor, hard wooden crack with short echo. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "druid_staff_tap_s3c",
+   "raw": true,
+   "duration": 0.5,
+   "text": "ritual staff tap on the ground with a deep low boom spreading through the earth. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "hit",
+   "key": "druid_staff_tap_s3d",
+   "raw": true,
+   "duration": 0.5,
+   "text": "gnarled staff knocked on a hollow tree root, hollow wooden knock. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_root_pierce_s3a",
+   "raw": true,
+   "duration": 0.6,
+   "text": "roots bursting up and impaling, fast wood splinter and crack. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_root_pierce_s3b",
+   "raw": true,
+   "duration": 0.6,
+   "text": "wet organic stab with a short squelch. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_root_pierce_s3c",
+   "raw": true,
+   "duration": 0.6,
+   "text": "roots burrowing into bark-like skin, slow creaking crunch. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  },
+  {
+   "category": "skill",
+   "key": "druid_root_pierce_s3d",
+   "raw": true,
+   "duration": 0.6,
+   "text": "wooden spike thrust into a body, thick thunk with a crack. dark fantasy ARPG, rotting forest, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice"
+  }
+ ]
+}
