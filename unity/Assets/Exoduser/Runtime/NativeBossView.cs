@@ -13,7 +13,9 @@ namespace Exoduser.UnityPort
     public sealed class NativeBossView
     {
         readonly Transform root; readonly List<SpriteRenderer> pool = new List<SpriteRenderer>(), addPool = new List<SpriteRenderer>(); int used, addUsed;
-        readonly Sprite disc, ring, thinRing;
+        readonly Sprite disc, ring, thinRing, hardDisc;
+        // game.html draws the pool rim as arc(r) + reversed arc(r-1.2) fill; its GPU canvas proxy fills that as a whole disc (#a9d76a at .55 of the clip alpha). The web as played shows the disc, so it is kept; set false for the 1.2 px hairline the code means.
+        const bool PoolRimAsWebProxyDisc = true;
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
         static readonly Color Poison = new Color(.40f, .87f, .13f), Root = new Color(.52f, .66f, .24f), Mine = new Color(.37f, .06f, .66f), RimGreen = new Color(.663f, .843f, .416f);
 
@@ -37,7 +39,7 @@ namespace Exoduser.UnityPort
         public NativeBossView(Transform parent)
         {
             root = new GameObject("BossView").transform; root.SetParent(parent, false);
-            disc = MakeSprite(0); ring = MakeSprite(1); thinRing = MakeSprite(2);
+            disc = MakeSprite(0); ring = MakeSprite(1); thinRing = MakeSprite(2); hardDisc = MakeSprite(3);
         }
 
         public void Dispose()
@@ -48,13 +50,14 @@ namespace Exoduser.UnityPort
 
         static Sprite MakeSprite(int mode)
         {
-            int n = mode == 2 ? 512 : 128; var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            int n = mode >= 2 ? 512 : 128; var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
             var px = new Color32[n * n];
             for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
             {
                 float dx = (x + .5f) / n * 2 - 1, dy = (y + .5f) / n * 2 - 1, r = Mathf.Sqrt(dx * dx + dy * dy), a;
                 if (mode == 1) a = Mathf.Clamp01(1 - Mathf.Abs(r - .93f) / .06f) * (r <= 1 ? 1 : 0);
                 else if (mode == 2) a = Mathf.Clamp01(1 - Mathf.Abs(r - .99f) / .006f);   // ~1.5 px hairline: the web strokes the pool rim 1.2 px wide
+                else if (mode == 3) a = Mathf.Clamp01((1 - r) * 256f);   // hard-edged disc, 1 px antialias
                 else a = r >= 1 ? 0 : Mathf.Clamp01((1 - r) / .22f);
                 px[y * n + x] = new Color32(255, 255, 255, (byte)(a * 255));
             }
@@ -112,7 +115,7 @@ namespace Exoduser.UnityPort
         {
             double R = r * 1.12;
             PutBox(ClipSprite(PoolClip, LoopFrame(PoolClip, t)), x, y, R * 2, R * 2, new Color(1, 1, 1, (float)alpha), order);
-            Put(thinRing, x, y, r, new Color(RimGreen.r, RimGreen.g, RimGreen.b, (float)(alpha * .55)), order + 1);
+            Put(PoolRimAsWebProxyDisc ? hardDisc : thinRing, x, y, r, new Color(RimGreen.r, RimGreen.g, RimGreen.b, (float)(alpha * .55)), order + 1);
         }
 
         void Spawn(Clip c, double x, double y, double w, double h, int born, int frameTime, int maxFrames)

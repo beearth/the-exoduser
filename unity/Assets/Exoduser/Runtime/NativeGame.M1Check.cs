@@ -207,6 +207,30 @@ namespace Exoduser.UnityPort
             bool arenaOk = loadStarted && flow.InArena && flow.Arena != null && bossActor != null && bossBar.Active && arenaView != null && chunks.Count == 0 && !sim.CanMove(0, 0, 15) && sim.CanMove((flow.Arena.EntryX + .5f) * 40, (flow.Arena.EntryY + .5f) * 40, 15);
             M1Add("10", "boss arena entry", arenaOk ? "ok" : "fail", "exit tile -> fade -> name card -> arena " + BossArenaLayout.Width + "x" + BossArenaLayout.Height + " (type " + flow.Arena?.Type + ") -> player at the 6 o'clock entrance, boss at the centre, boss bar shown; " + unlockNote + "; load ticks " + loadTicks + "; field map, props and chunks swapped out", "10a-arena-load-namecard.png, 10-arena-entry-boss-bar.png");
 
+            // ---- BX art: deterministic comparison scenes against the web (AI off, nothing floating): idle druid + poison volley, pools + orbs, final sink at tick 20 ----
+            DruidData cdd; DruidBoss cap = sim.Druid;
+            if (bossActor != null && cap != null && cap.Data.TryGetValue(bossActor, out cdd))
+            {
+                string s0 = cdd.S; double st0 = cdd.St2, f0 = cdd.Facing; float bf0 = bossActor.Facing, py0 = p.Y; string bst0 = bossActor.State; float bstt0 = bossActor.StateTicks;
+                cdd.S = "idle"; cdd.St2 = 9999; cdd.Facing = Math.PI / 2; bossActor.Facing = (float)(Math.PI / 2); bossActor.State = "idle"; bossActor.StateTicks = 9999;
+                p.X = bossActor.X; p.Y = bossActor.Y + 330; p.Iframes = 600;
+                float[][] vol = { new[] { -420f, 180 }, new[] { -250f, 260 }, new[] { -90f, 300 }, new[] { 90f, 300 }, new[] { 250f, 260 }, new[] { 420f, 180 }, new[] { -330f, 40 }, new[] { 330f, 40 } };
+                cap.Projectiles.Clear(); cap.Orbs.Clear(); cap.LavaPools.Clear(); cap.PoisonPools.Clear(); cap.ChaseAoes.Clear(); cap.Fissures.Clear(); cap.TideWaves.Clear(); cap.SeekerMines.Clear();
+                for (int i = 0; i < 150; i++) { cdd.S = "idle"; cdd.St2 = 9999; StepInput(0, 0, p.X, p.Y - 100, false, false); }   // let the arena-entry screen flash fade (tick based)
+                cap.Projectiles.Clear(); cap.Orbs.Clear(); cap.LavaPools.Clear(); cap.PoisonPools.Clear(); cap.ChaseAoes.Clear(); cap.Fissures.Clear(); cap.TideWaves.Clear(); cap.SeekerMines.Clear(); cdd.S = "idle"; cdd.St2 = 9999; p.X = bossActor.X; p.Y = bossActor.Y + 330;
+                foreach (var o in vol) cap.Projectiles.Add(new BossProjectile { X = bossActor.X + o[0], Y = bossActor.Y + o[1], Sz = 5, R = 4, DruidPoison = true, ParryClass = "physical", Active = true });
+                damage.Clear(); yield return M1Shot("art-a-idle-volley"); cap.Projectiles.Clear();
+                cap.LavaPools.Add(new LavaPool { X = bossActor.X + 40, Y = bossActor.Y + 330, R = 300, T = 150, WarnT = 60, MaxT = 1e9 });
+                cap.PoisonPools.Add(new PoisonPool { X = bossActor.X - 380, Y = bossActor.Y + 160, R = 175, T = 60, MaxT = 1e9 });
+                cap.Orbs.Add(new DruidOrb { X = bossActor.X + 420, Y = bossActor.Y - 20, R = 40, T = 30 }); cap.Orbs.Add(new DruidOrb { X = bossActor.X + 500, Y = bossActor.Y + 150, R = 40, T = 50 });
+                damage.Clear(); yield return M1Shot("art-b-pools-orbs"); cap.LavaPools.Clear(); cap.PoisonPools.Clear(); cap.Orbs.Clear();
+                var corpse = new EnemyState { Id = 99999, IsBoss = true, SinkDruid = true, Alive = false, X = bossActor.X, Y = bossActor.Y, Radius = bossActor.Radius, Hp = 0, MaxHp = 1 };
+                int bossIdx = sim.Enemies.IndexOf(bossActor); sim.Enemies.Remove(bossActor); sim.Enemies.Add(corpse); UpdateViews();
+                for (int i = 0; i < 20; i++) StepInput(0, 0, p.X, p.Y - 100, false, false);
+                damage.Clear(); yield return M1Shot("art-c-sink"); sim.Enemies.Remove(corpse); sim.Enemies.Insert(Math.Min(Math.Max(bossIdx, 0), sim.Enemies.Count), bossActor); UpdateViews();
+                cdd.S = s0; cdd.St2 = st0; cdd.Facing = f0; bossActor.Facing = bf0; bossActor.State = bst0; bossActor.StateTicks = bstt0; p.Y = bossActor.Y + 220; p.Iframes = 0;
+            }
+
             // ---- 11 druid boss fight (BX-02/03/05): the real 23-move AI runs; the player stands in the open and is healed every tick so the fight can be observed ----
             sim.Config.EnemyAiEnabled = true; var druid = sim.Druid; var moveStates = new HashSet<string>(); int maxPhase = 0, maxShots = 0, fightHurt0 = sim.HurtCount, shotCaptures = 0, hazardCaptures = 0, poolCaptures = 0, fightTicks = 0;
             float hpBefore = bossActor != null ? bossActor.Hp : 0; float shieldBefore = bossActor != null ? bossActor.Shield : 0; bool deathNoted = false;
