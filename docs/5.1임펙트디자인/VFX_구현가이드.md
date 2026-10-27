@@ -342,7 +342,7 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 | fire | 66 (1.1초) | 16 | Fire_FBF_4x4 (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5)) | 낮음 (drawImage 1회/프레임) |
 | black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Ice 안개 재채색·반투명 보라 연기, 알파 최대 0.58, 코어 없음) | 낮음 |
 | redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5)) | 낮음 |
-| rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록) | 중간 (drawImage 4회/프레임) |
+| rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록; Poison_MediumImpact는 2026-10-27 3묶음 A안 교체(VFX_LEAD_MASTER §3.7): Fire_MediumImpact C2를 독 램프 `#1c2810`/`#5f8a2e`/`#c8e8a8`로 재채색·프레임별 좌우 반전 — 라임 형광 별→탁한 녹색 소용돌이) | 중간 (drawImage 4회/프레임) |
 | rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Ice 안개 재채색·반투명 보라 연기, 알파 최대 0.58, 코어 없음) + Dark_Smoke_6x6 (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): BW 사망 연기 재채색·밀도=알파, 최대 0.58) + Dark_BasicImpact (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Fire_BasicImpact C2 재채색) | 중간 |
 | dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Fire_MediumImpact C2 재채색 — 라벤더 코어→찢긴 보라 소용돌이, 마젠타 별 제거) | 낮음 |
 | physical_parry(물리탄 E패링) | 12f(0.2초) | 4 | `Fire_ImpactFire_Sheet.png` 첫 행 흰 틴트(2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 첫 행 = 코어 별→불덩이 팽창 4프레임, 반영 확인 캡처로 흰 스플래시 가독 확인), `_addBoom(x,y,60,12,'physical')`, 최대180px | `redBean+EL.P`·일반/관통 입탄·`titanEye`의 physicalProjectile 분기. 파편12개·flash0.25도 #ffffff. Q·무지개·기타 E 효과 불변 |

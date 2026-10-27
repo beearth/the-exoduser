@@ -14,7 +14,7 @@
 | 풀·충돌·피해·중독 | 기존 boom pool 12, 생성 arms/RNG, 충돌·피해·중독·Q 패링·무적 분기 그대로 |
 | 패링 규칙 | blackBean은 Q 마법 패링만, E 불가. 성공한 Q/블루콩과 friendly에는 새 접촉 예외 없음 |
 | 입력 가드 | b 존재, t/mt/r/x/y finite, mt/r>0. age=max(0,t), p=min(1,age/mt), p>=1이면 그리지 않음 |
-| 이미지 | 기존 `assets/vfx/Poison_MediumImpact.png` 512×512, 4×4. complete 및 naturalWidth/Height>=8일 때만 사용 |
+| 이미지 | 기존 `assets/vfx/Poison_MediumImpact.png` 512×512, 4×4. complete 및 naturalWidth/Height>=8일 때만 사용. **2026-10-27 3묶음 A안 교체(VFX_LEAD_MASTER §3.7): 파일명·크기·격자 동일, 내용은 Fire_MediumImpact C2를 독 램프로 재채색·프레임별 좌우 반전한 탁한 녹색 소용돌이(0~7프레임 셀 가장자리 1px 안쪽 알파 ≤0.016, 폴백 잘림 없음 확인)** |
 | 원화·자산 | 첫 8개 스플래시 셀만 사용. 뒤의 링·구체 셀 제외. 원PNG 수정·새 생성·복제 프레임 없음 |
 | 상태 안전 | save/try/finally/restore, translate(x,y), lighter, filter=none. 입력 boom 변경·랜덤·wallclock 호출 없음 |
 
