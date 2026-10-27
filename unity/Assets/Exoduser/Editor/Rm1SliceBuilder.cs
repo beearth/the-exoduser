@@ -45,6 +45,63 @@ namespace Exoduser
         static Vector3 W(float tx, float ty, float y = 0f) { return new Vector3(tx * T, y, -ty * T); }
         static float Smooth(float a, float b, float x) { x = Mathf.Clamp01((x - a) / (b - a)); return x * x * (3 - 2 * x); }
 
+        // ---- footprints of 3D masses (XZ world), used to prove no wall/trunk/river covers a Core walk tile
+        struct FP { public string kind; public float cx, cz, hw, hd, yaw; public bool circle; }
+        static readonly List<FP> fps = new List<FP>();
+        static readonly List<Vector2[]> ribbonQuads = new List<Vector2[]>();
+        static bool InFP(FP f, float px, float pz, float margin)
+        {
+            float dx = px - f.cx, dz = pz - f.cz;
+            if (f.circle) return dx * dx + dz * dz < (f.hw + margin) * (f.hw + margin);
+            float c = Mathf.Cos(f.yaw * Mathf.Deg2Rad), s = Mathf.Sin(f.yaw * Mathf.Deg2Rad);
+            float lx = dx * c - dz * s, lz = dx * s + dz * c;
+            return Mathf.Abs(lx) < f.hw + margin && Mathf.Abs(lz) < f.hd + margin;
+        }
+        static bool FpHitsWalk(FP f)
+        {
+            float r = f.circle ? f.hw : Mathf.Sqrt(f.hw * f.hw + f.hd * f.hd);
+            int x0 = Mathf.FloorToInt((f.cx - r) / T) - 1, x1 = Mathf.CeilToInt((f.cx + r) / T) + 1, y0 = Mathf.FloorToInt((-f.cz - r) / T) - 1, y1 = Mathf.CeilToInt((-f.cz + r) / T) + 1;
+            for (int ty = y0; ty <= y1; ty++) for (int tx = x0; tx <= x1; tx++)
+                    if (Walk(tx, ty) && InFP(f, (tx + .5f) * T, -(ty + .5f) * T, 0.04f)) return true;
+            return false;
+        }
+        static bool InTri(Vector2 p, Vector2 a, Vector2 b, Vector2 c)
+        {
+            float d1 = (p.x - b.x) * (a.y - b.y) - (a.x - b.x) * (p.y - b.y), d2 = (p.x - c.x) * (b.y - c.y) - (b.x - c.x) * (p.y - c.y), d3 = (p.x - a.x) * (c.y - a.y) - (c.x - a.x) * (p.y - a.y);
+            bool neg = d1 < 0 || d2 < 0 || d3 < 0, pos = d1 > 0 || d2 > 0 || d3 > 0; return !(neg && pos);
+        }
+        static bool SouthOfWalk(int tx, int ty)   // a walkable tile lies north of this one within the camera's view => camera-side mass
+        {
+            for (int y = ty - 16; y < ty; y++) for (int x = tx - 5; x <= tx + 5; x++) if (Walk(x, y)) return true;
+            return false;
+        }
+        static List<Vector2> Chaikin(List<Vector2> p, int it)
+        {
+            for (int n = 0; n < it; n++)
+            {
+                var o = new List<Vector2> { p[0] };
+                for (int i = 0; i + 1 < p.Count; i++) { o.Add(.75f * p[i] + .25f * p[i + 1]); o.Add(.25f * p[i] + .75f * p[i + 1]); }
+                o.Add(p[p.Count - 1]); p = o;
+            }
+            return p;
+        }
+        // Counts walk tiles (slice window x60..140 y138..192) whose centre lies inside a 3D footprint; "deep" = centre at least 0.5 tile inside the footprint edge.
+        static void WalkOverlap()
+        {
+            int any = 0, deep = 0; var byKind = new Dictionary<string, int>(); var tiles = new List<string>();
+            for (int ty = 138; ty < 192; ty++) for (int tx = 60; tx < 140; tx++)
+                {
+                    if (!Walk(tx, ty)) continue; float px = (tx + .5f) * T, pz = -(ty + .5f) * T; string hit = null; bool dp = false;
+                    foreach (var f in fps) if (InFP(f, px, pz, 0f)) { hit = f.kind; dp = InFP(f, px, pz, -0.5f * T); break; }
+                    if (hit == null) { var p = new Vector2(px, pz); foreach (var q in ribbonQuads) if (InTri(p, q[0], q[1], q[2]) || InTri(p, q[0], q[2], q[3])) { hit = "river"; dp = true; break; } }
+                    if (hit == null) continue; any++; if (dp) deep++; byKind[hit] = byKind.TryGetValue(hit, out var n) ? n + 1 : 1; tiles.Add($"[{tx},{ty},\"{hit}\"]");
+                }
+            Directory.CreateDirectory("../../_out/rm1");
+            var kinds = new List<string>(); foreach (var kv in byKind) kinds.Add($"\"{kv.Key}\":{kv.Value}");
+            File.WriteAllText("../../_out/rm1/walk_overlap.json", "{\"window\":[60,138,140,192],\"footprints\":" + fps.Count + ",\"ribbonQuads\":" + ribbonQuads.Count + ",\"walkTilesCoveredCentre\":" + any + ",\"walkTilesCoveredDeep05\":" + deep + ",\"byKind\":{" + string.Join(",", kinds) + "},\"tiles\":[" + string.Join(",", tiles) + "]}");
+            Debug.Log($"[RM1] walk overlap centre={any} deep(>=0.5 tile)={deep}");
+        }
+
         static void Load()
         {
             var dump = JsonUtility.FromJson<WalkDump>(File.ReadAllText(Root + "/Data/unity_1_1_walk_dump.json"));
@@ -64,7 +121,7 @@ namespace Exoduser
         public static void Run()
         {
             Directory.CreateDirectory(GenDir); AssetDatabase.Refresh();
-            Load();
+            Load(); fps.Clear(); ribbonQuads.Clear();
             var mats = MakeMaterials();
             var td = BuildTerrainData();
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
@@ -77,6 +134,7 @@ namespace Exoduser
             BuildBlockout(world.transform, mats);
             BuildDecals(world.transform, mats);
             BuildLighting(mats);
+            WalkOverlap();
             var marker = BuildCamera();
             BuildNavMesh(world.transform);
             EditorSceneManager.SaveScene(scene, ScenePath);
@@ -123,13 +181,13 @@ namespace Exoduser
         // soft irregular wet blob (alpha mask) for banks and pool rims — procedural, no generated art
         static void EnsureWetTexture()
         {
-            var p = Root + "/Materials/Decals/decal_wet.png"; if (File.Exists(p)) return;
+            var p = Root + "/Materials/Decals/decal_wet.png";   // regenerated every run (deterministic); alpha is forced to 0 well before the quad edge so no straight cut line shows
             const int S = 256; var t = new Texture2D(S, S, TextureFormat.RGBA32, false);
             for (int y = 0; y < S; y++) for (int x = 0; x < S; x++)
             {
                 float u = (x - S / 2f) / (S / 2f), v = (y - S / 2f) / (S / 2f), r = Mathf.Sqrt(u * u + v * v);
                 float n = Mathf.PerlinNoise(x * .035f + 3.1f, y * .035f + 9.4f) * .55f + Mathf.PerlinNoise(x * .09f, y * .09f) * .25f;
-                float a = Mathf.Clamp01((0.95f - r + (n - .4f) * .8f) * 1.7f); a *= a;
+                float a = Mathf.Clamp01((0.95f - r + (n - .4f) * .8f) * 1.7f); a *= a; a *= Smooth(0.92f, 0.62f, r) * (1f - Smooth(0.86f, 1f, Mathf.Max(Mathf.Abs(u), Mathf.Abs(v))));
                 t.SetPixel(x, y, new Color(1, 1, 1, a));
             }
             File.WriteAllBytes(p, t.EncodeToPNG()); UnityEngine.Object.DestroyImmediate(t); AssetDatabase.ImportAsset(p);
@@ -254,17 +312,38 @@ namespace Exoduser
             var root = new GameObject("Toxic"); root.transform.SetParent(parent, false);
             foreach (var side in new[] { ("L", river.rivers.L), ("R", river.rivers.R) })
             {
-                var pts = new List<RPt>(); foreach (var p in side.Item2) if (p.tx >= TX0 && p.tx <= TX1 && p.ty >= TY0 && p.ty <= TY1) pts.Add(p);
-                if (pts.Count < 2) continue;
-                var vs = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>(); float along = 0f; const float half = 2.3f, level = -0.21f;
-                for (int i = 0; i < pts.Count; i++)
+                // one continuous strip per bank: smoothed centre line, width shrunk wherever the strip would fold over itself or reach a Core walk tile
+                var raw = new List<Vector2>(); foreach (var p in side.Item2) if (p.tx >= TX0 && p.tx <= TX1 && p.ty >= TY0 && p.ty <= TY1) raw.Add(new Vector2(p.tx, p.ty + .5f));
+                if (raw.Count < 2) continue;
+                var cl = Chaikin(raw, 2);
+                var vs = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>(); float along = 0f; const float halfMax = 2.3f, level = -0.21f;
+                int N = cl.Count; var nms = new Vector2[N]; var hreq = new float[N];
+                for (int i = 0; i < N; i++) { var tg = (cl[Mathf.Min(i + 1, N - 1)] - cl[Mathf.Max(i - 1, 0)]).normalized; nms[i] = new Vector2(-tg.y, tg.x); }
+                for (int i = 0; i < N; i++)
                 {
-                    var c = new Vector2(pts[i].tx, pts[i].ty + .5f); var n = pts[Mathf.Min(i + 1, pts.Count - 1)]; var pr = pts[Mathf.Max(i - 1, 0)];
-                    var tg = (new Vector2(n.tx, n.ty + .5f) - new Vector2(pr.tx, pr.ty + .5f)).normalized; var nm = new Vector2(-tg.y, tg.x);
-                    if (i > 0) along += (c - new Vector2(pts[i - 1].tx, pts[i - 1].ty + .5f)).magnitude * T;
-                    var l = c + nm * half; var r = c - nm * half;
+                    float half = halfMax; var c = cl[i];
+                    for (int it = 0; it < 10; it++)
+                    {
+                        var l = c + nms[i] * half; var r = c - nms[i] * half;
+                        bool bad = Walk(Mathf.FloorToInt(l.x), Mathf.FloorToInt(l.y)) || Walk(Mathf.FloorToInt(r.x), Mathf.FloorToInt(r.y));
+                        if (!bad && i > 0) { var sc = c - cl[i - 1]; float thr = 0.15f * sc.sqrMagnitude; var lp = cl[i - 1] + nms[i - 1] * half; var rp = cl[i - 1] - nms[i - 1] * half; if (Vector2.Dot(l - lp, sc) <= thr || Vector2.Dot(r - rp, sc) <= thr) bad = true; }
+                        if (!bad) break; half *= 0.75f;
+                    }
+                    hreq[i] = half;
+                }
+                // smooth the width: min-filter (+-8) then box blur (+-4) can only narrow it, so the fold / walk-tile guarantees stay while the banks stop zig-zagging
+                var hmin = new float[N]; var hs = new float[N];
+                for (int i = 0; i < N; i++) { float mn = 9f; for (int k = Mathf.Max(0, i - 8); k <= Mathf.Min(N - 1, i + 8); k++) mn = Mathf.Min(mn, hreq[k]); hmin[i] = mn; }
+                for (int i = 0; i < N; i++) { float sum = 0; int cnt = 0; for (int k = Mathf.Max(0, i - 4); k <= Mathf.Min(N - 1, i + 4); k++) { sum += hmin[k]; cnt++; } hs[i] = sum / cnt; }
+                var prevW = new Vector2[2];
+                for (int i = 0; i < N; i++)
+                {
+                    var c = cl[i]; float half = hs[i]; var l = c + nms[i] * half; var r = c - nms[i] * half;
+                    if (i > 0) along += (c - cl[i - 1]).magnitude * T;
                     vs.Add(W(l.x, l.y, level)); vs.Add(W(r.x, r.y, level)); uvs.Add(new Vector2(-half * T, along)); uvs.Add(new Vector2(half * T, along));
-                    if (i > 0) { int b = (i - 1) * 2; tris.AddRange(new[] { b, b + 2, b + 1, b + 1, b + 2, b + 3 }); }
+                    if (i > 0) { int b = (i - 1) * 2; tris.AddRange(new[] { b, b + 2, b + 1, b + 1, b + 2, b + 3 });
+                        ribbonQuads.Add(new[] { prevW[0], prevW[1], new Vector2(r.x * T, -r.y * T), new Vector2(l.x * T, -l.y * T) }); }
+                    prevW[0] = new Vector2(l.x * T, -l.y * T); prevW[1] = new Vector2(r.x * T, -r.y * T);
                 }
                 var m = new Mesh { name = "River_" + side.Item1 }; m.SetVertices(vs); m.SetUVs(0, uvs); m.SetTriangles(tris, 0); m.RecalculateNormals(); m.RecalculateBounds();
                 SaveMesh(m, "River_" + side.Item1);
@@ -304,11 +383,18 @@ namespace Exoduser
                     bool ok = true; foreach (var p in placed) if ((p - c).magnitude < sep) { ok = false; break; }
                     if (!ok) continue; placed.Add(c);
                     float w = Mathf.Lerp(2.0f, 3.6f, (float)rnd.NextDouble()), dp = Mathf.Lerp(1.6f, 3.0f, (float)rnd.NextDouble()), hh = Mathf.Lerp(hLo, hHi, (float)rnd.NextDouble());
+                    float rx = (float)(rnd.NextDouble() - .5) * 10f, yaw = (float)rnd.NextDouble() * 360f, rz = (float)(rnd.NextDouble() - .5) * 10f;
                     var wp = W(c.x, c.y); float gy = GroundY(wp.x, wp.z);
+                    // never cover a Core walk tile: shrink the footprint until it clears every walkable tile centre, else skip this candidate
+                    var fp = new FP { kind = "mass", cx = wp.x, cz = wp.z, hw = w * .5f, hd = dp * .5f, yaw = yaw }; int shrink = 0;
+                    while (FpHitsWalk(fp) && shrink++ < 8) { w *= .85f; dp *= .85f; fp.hw = w * .5f; fp.hd = dp * .5f; }
+                    if (FpHitsWalk(fp) || w < 1.0f) { placed.RemoveAt(placed.Count - 1); continue; }
+                    // camera-side masses (a walkable tile lies north of them) are cut down so they never cover more than ~15% of the screen height
+                    if (SouthOfWalk(Mathf.FloorToInt(c.x), Mathf.FloorToInt(c.y))) hh = Mathf.Min(hh, 0.9f);
                     var pb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); pb.name = "Mass_" + (count++).ToString("00");
                     pb.transform.SetParent(root.transform, false); pb.transform.localScale = new Vector3(w, hh, dp);
-                    pb.transform.SetPositionAndRotation(new Vector3(wp.x, gy + hh * .5f - .15f, wp.z), Quaternion.Euler((float)(rnd.NextDouble() - .5) * 10f, (float)rnd.NextDouble() * 360f, (float)(rnd.NextDouble() - .5) * 10f));
-                    pb.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; pb.ToMesh(); pb.Refresh();
+                    pb.transform.SetPositionAndRotation(new Vector3(wp.x, gy + hh * .5f - .15f, wp.z), Quaternion.Euler(rx, yaw, rz));
+                    pb.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; pb.ToMesh(); pb.Refresh(); fps.Add(fp);
                 }
             }
             foreach (var pl in river.pools)
@@ -316,14 +402,23 @@ namespace Exoduser
                 if (pl.trunkTileCenter == null || pl.trunkTileCenter.Length < 2 || pl.kind == "w8props") continue;
                 var wp = W(pl.trunkTileCenter[0], pl.trunkTileCenter[1]); float gy = GroundY(wp.x, wp.z);
                 var tr = ShapeGenerator.CreateShape(ShapeType.Cylinder, PivotLocation.Center); tr.name = "Trunk_" + pl.name; tr.transform.SetParent(root.transform, false);
-                tr.transform.localScale = new Vector3(1.9f, 4.6f, 1.9f); tr.transform.position = new Vector3(wp.x, gy + 2.2f, wp.z); tr.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; tr.ToMesh(); tr.Refresh();
+                var tfp = new FP { kind = "trunk", cx = wp.x, cz = wp.z, hw = 0.95f, circle = true }; int ts = 0;
+                while (FpHitsWalk(tfp) && ts++ < 8) tfp.hw *= .85f;                  // trunk radius shrinks until it stays on blocked tiles
+                float tdia = tfp.hw * 2f;
+                tr.transform.localScale = new Vector3(tdia, 4.6f, tdia); tr.transform.position = new Vector3(wp.x, gy + 2.2f, wp.z); tr.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; tr.ToMesh(); tr.Refresh(); fps.Add(tfp);
                 for (int k = 0; k < 5; k++)
                 {
-                    float ang = k * 72f + 14f; var rb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); rb.name = "Root_" + pl.name + "_" + k; rb.transform.SetParent(root.transform, false);
-                    rb.transform.localScale = new Vector3(2.4f, 0.55f, 0.65f);
-                    var dir = Quaternion.Euler(0, ang, 0) * Vector3.right;
-                    rb.transform.SetPositionAndRotation(new Vector3(wp.x, gy + 0.2f, wp.z) + dir * 1.35f, Quaternion.Euler(0, -ang, -9f));
-                    rb.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; rb.ToMesh(); rb.Refresh();
+                    float ang = k * 72f + 14f; var dir = Quaternion.Euler(0, ang, 0) * Vector3.right; float len = 2.4f; FP rfp = default; bool ok = false;
+                    for (int it = 0; it < 8 && len > 0.7f; it++)
+                    {
+                        rfp = new FP { kind = "root", cx = wp.x + dir.x * (tfp.hw * .8f + len * .5f), cz = wp.z + dir.z * (tfp.hw * .8f + len * .5f), hw = len * .5f, hd = 0.325f, yaw = ang };
+                        if (!FpHitsWalk(rfp)) { ok = true; break; } len *= .85f;
+                    }
+                    if (!ok) continue;
+                    var rb = ShapeGenerator.CreateShape(ShapeType.Cube, PivotLocation.Center); rb.name = "Root_" + pl.name + "_" + k; rb.transform.SetParent(root.transform, false);
+                    rb.transform.localScale = new Vector3(len, 0.55f, 0.65f);
+                    rb.transform.SetPositionAndRotation(new Vector3(rfp.cx, gy + 0.2f, rfp.cz), Quaternion.Euler(0, ang, -9f));   // yaw = ang: long axis points along the same radial dir as the offset
+                    rb.GetComponent<MeshRenderer>().sharedMaterial = mats.Blockout; rb.ToMesh(); rb.Refresh(); fps.Add(rfp);
                 }
             }
             Debug.Log("[RM1] blockout masses=" + count);
@@ -335,40 +430,57 @@ namespace Exoduser
             var root = new GameObject("Decals"); root.transform.SetParent(parent, false);
             var rnd = new System.Random(1104); var segs = RiverSegs();
             var buckets = new Dictionary<string, (List<Vector3> v, List<Vector2> uv, List<Color> c, List<int> t)>();
-            void Add(string kind, Vector3 c, float size, float rot, Color col)
+            void Add(string kind, Vector3 c, float size, float rot, Color col, bool flip = false)
             {
                 if (!buckets.TryGetValue(kind, out var b)) { b = (new List<Vector3>(), new List<Vector2>(), new List<Color>(), new List<int>()); buckets[kind] = b; }
                 float h = size * .5f; var q = Quaternion.Euler(0, rot, 0); int i0 = b.v.Count;
-                foreach (var (dx, dz, u, v) in new[] { (-h, -h, 0f, 0f), (h, -h, 1f, 0f), (-h, h, 0f, 1f), (h, h, 1f, 1f) }) { var p = c + q * new Vector3(dx, 0, dz); p.y = GroundY(p.x, p.z) + 0.014f; b.v.Add(p); b.uv.Add(new Vector2(u, v)); b.c.Add(col); }
-                b.t.AddRange(new[] { i0, i0 + 2, i0 + 1, i0 + 1, i0 + 2, i0 + 3 });
+                foreach (var (dx, dz, u, v) in new[] { (-h, -h, 0f, 0f), (h, -h, 1f, 0f), (-h, h, 0f, 1f), (h, h, 1f, 1f) }) { var p = c + q * new Vector3(dx, 0, dz); p.y = GroundY(p.x, p.z) + 0.014f; b.v.Add(p); b.uv.Add(new Vector2(flip ? 1f - u : u, v)); b.c.Add(col); }
+                if (flip) b.t.AddRange(new[] { i0, i0 + 1, i0 + 2, i0 + 2, i0 + 1, i0 + 3 }); else b.t.AddRange(new[] { i0, i0 + 2, i0 + 1, i0 + 1, i0 + 2, i0 + 3 });
             }
+            var bones = new List<Vector3>();   // bone piles never sit next to each other: >= 3.2u apart, mirrored/rotated/scaled differently each time
+            bool BoneOk(Vector3 p) { foreach (var o in bones) if ((new Vector2(o.x - p.x, o.z - p.z)).magnitude < 3.2f) return false; return true; }
+            void AddBone(Vector3 p, float lo, float hi, float a) { if (!BoneOk(p)) return; bones.Add(p); Add("bone", p, Mathf.Lerp(lo, hi, (float)rnd.NextDouble()), (float)rnd.NextDouble() * 360f, new Color(.9f, .9f, .9f, a), rnd.NextDouble() < .5); }
             string[] kinds = { "blood", "blood", "blood", "blood_drag", "blood_drops", "blood_drops", "root", "root", "root_branch", "root_tangle", "bone", "blood_cracked" };
             int n = 0;
             while (n < 70)
             {
                 int tx = rnd.Next(62, 140), ty = rnd.Next(140, 192); if (!Walk(tx, ty)) continue; var wp = W(tx + (float)rnd.NextDouble(), ty + (float)rnd.NextDouble());
-                float k = 0.75f + 0.25f * (float)rnd.NextDouble();
-                Add(kinds[rnd.Next(kinds.Length)], wp, Mathf.Lerp(1.4f, 3.0f, (float)rnd.NextDouble()), (float)rnd.NextDouble() * 360f, new Color(k, k, k, 0.5f + 0.35f * (float)rnd.NextDouble())); n++;
+                float k = 0.75f + 0.25f * (float)rnd.NextDouble(); string kind = kinds[rnd.Next(kinds.Length)];
+                if (kind == "bone") AddBone(wp, 1.4f, 2.4f, 0.5f + 0.35f * (float)rnd.NextDouble());
+                else Add(kind, wp, Mathf.Lerp(1.4f, 3.0f, (float)rnd.NextDouble()), (float)rnd.NextDouble() * 360f, new Color(k, k, k, 0.5f + 0.35f * (float)rnd.NextDouble()), rnd.NextDouble() < .5);
+                n++;
             }
-            // wet banks along both rivers + pool rims
+            // wet banks: small soft blobs just outside the river body, spaced so they never stack into translucent overlaps
+            var wetPlaced = new List<Vector2>();
             foreach (var arr in new[] { river.rivers.L, river.rivers.R })
                 for (int i = 0; i + 1 < arr.Length; i += 2)
                 {
                     var p = arr[i]; if (p.tx < TX0 + 2 || p.tx > TX1 - 2 || p.ty < TY0 || p.ty > TY1) continue; var q = arr[i + 1];
                     var tg = new Vector2(q.tx - p.tx, q.ty - p.ty).normalized; var nm = new Vector2(-tg.y, tg.x);
-                    foreach (int s in new[] { -1, 1 }) { var c = new Vector2(p.tx, p.ty + .5f) + nm * s * 3.0f; if (!Walk(Mathf.FloorToInt(c.x), Mathf.FloorToInt(c.y)) && DistToSegs(segs, c.x, c.y) > 3.2f) continue;
-                        Add("wet", W(c.x, c.y), Mathf.Lerp(1.8f, 2.8f, (float)rnd.NextDouble()), (float)rnd.NextDouble() * 360f, new Color(1, 1, 1, 0.55f)); }
+                    foreach (int s in new[] { -1, 1 })
+                    {
+                        var c = new Vector2(p.tx, p.ty + .5f) + nm * s * 4.4f; float sz = Mathf.Lerp(0.9f, 1.3f, (float)rnd.NextDouble());
+                        if (DistToSegs(segs, c.x, c.y) < 2.3f + sz * .5f / T + 0.4f) continue;
+                        var cw = new Vector2(c.x * T, -c.y * T); bool clash = false; foreach (var o in wetPlaced) if ((o - cw).magnitude < 1.7f) { clash = true; break; }
+                        if (clash) continue; wetPlaced.Add(cw);
+                        Add("wet", W(c.x, c.y), sz, (float)rnd.NextDouble() * 360f, new Color(1, 1, 1, 0.55f), rnd.NextDouble() < .5);
+                    }
                 }
             foreach (var pl in river.pools) foreach (var t in pl.tiles) if (t.role == "shore") Add("wet", W(t.tx + .5f, t.ty + .5f), 1.3f, (float)rnd.NextDouble() * 360f, new Color(1, 1, 1, 0.6f));
             // W8: R1 fall site (island x83..85 y183..185) = drag marks + scattered bones; R2 = first-fight remains near the outer masses
             var fall = W(84.5f, 184.5f);
             Add("blood_drag", fall + new Vector3(1.2f, 0, -0.9f), 2.6f, 20f, new Color(1, 1, 1, 0.9f)); Add("blood_drag", fall + new Vector3(2.0f, 0, -1.7f), 2.2f, 35f, new Color(1, 1, 1, 0.8f));
-            for (int k = 0; k < 4; k++) Add("bone", fall + new Vector3((float)(rnd.NextDouble() * 3 - 0.5), 0, (float)(rnd.NextDouble() * -3)), Mathf.Lerp(1.0f, 1.7f, (float)rnd.NextDouble()), (float)rnd.NextDouble() * 360f, Color.white);
+            AddBone(fall + new Vector3(0.2f, 0, -0.4f), 1.0f, 1.3f, 1f); AddBone(fall + new Vector3(3.6f, 0, -2.6f), 1.5f, 1.9f, 1f);
             for (int cl = 0; cl < 4; cl++)
             {
                 int tx, ty, guard = 0; do { tx = rnd.Next(76, 130); ty = rnd.Next(141, 168); } while ((!Walk(tx, ty) || distBlock[ty, tx] < 3 || distBlock[ty, tx] > 6) && guard++ < 3000);
                 var cw = W(tx + .5f, ty + .5f);
-                for (int k = 0; k < 5; k++) Add(k % 2 == 0 ? "bone" : (k == 1 ? "blood_drag" : "blood_drops"), cw + new Vector3((float)(rnd.NextDouble() * 3 - 1.5), 0, (float)(rnd.NextDouble() * 3 - 1.5)), Mathf.Lerp(1.1f, 2.2f, (float)rnd.NextDouble()), (float)rnd.NextDouble() * 360f, new Color(.9f, .9f, .9f, .85f));
+                for (int k = 0; k < 5; k++)
+                {
+                    var pp = cw + new Vector3((float)(rnd.NextDouble() * 3 - 1.5), 0, (float)(rnd.NextDouble() * 3 - 1.5)); float sz = Mathf.Lerp(1.1f, 2.2f, (float)rnd.NextDouble());
+                    if (k == 0) AddBone(pp, 1.3f, 2.2f, .85f);                                   // one bone pile per remains cluster; the rest are different kinds
+                    else Add(k == 1 ? "blood_drag" : k == 2 ? "blood_drops" : k == 3 ? "root_branch" : "blood", pp, sz, (float)rnd.NextDouble() * 360f, new Color(.9f, .9f, .9f, .85f), rnd.NextDouble() < .5);
+                }
             }
             foreach (var kv in buckets)
             {
@@ -456,24 +568,38 @@ namespace Exoduser
             var vs = new List<Vector3>(); var tris = new List<int>();
             for (int ty = TY0; ty < TY1; ty++) for (int tx = TX0; tx < TX1; tx++)
                 {
-                    // walkable tiles + a one-tile ring: the default agent (radius .5u) erodes about that much, so the baked edge lands near the true tile boundary
-                    if (!Walk(tx, ty) && (tx < 0 || ty < 0 || tx >= 200 || ty >= 200 || distWalk[ty, tx] > 1)) continue;
+                    if (!Walk(tx, ty)) continue;   // walkable tiles only: no ring, so nothing outside the Core walk grid can become NavMesh
                     int b = vs.Count; vs.Add(W(tx, ty)); vs.Add(W(tx + 1, ty)); vs.Add(W(tx, ty + 1)); vs.Add(W(tx + 1, ty + 1)); tris.AddRange(new[] { b, b + 1, b + 2, b + 2, b + 1, b + 3 });
                 }
             var m = new Mesh { name = "NavWalk", indexFormat = IndexFormat.UInt32 }; m.SetVertices(vs); m.SetTriangles(tris, 0); m.RecalculateNormals(); m.RecalculateBounds(); SaveMesh(m, "NavWalk");
             var go = new GameObject("NavWalkMesh"); go.transform.SetParent(root.transform, false); go.AddComponent<MeshFilter>().sharedMesh = m; go.AddComponent<MeshCollider>().sharedMesh = m;
-            var surf = root.AddComponent<NavMeshSurface>(); surf.collectObjects = CollectObjects.Children; surf.useGeometry = NavMeshCollectGeometry.PhysicsColliders; surf.BuildNavMesh();
+            var surf = root.AddComponent<NavMeshSurface>(); surf.collectObjects = CollectObjects.Children; surf.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+            // bake straight from the walk-tile mesh with a small clearance radius (0.1u): a tile centre is 0.2u from the nearest blocked edge, so every walk tile survives erosion and no blocked tile is ever covered
+            var st = NavMesh.GetSettingsByID(surf.agentTypeID); st.agentRadius = 0.1f; st.agentHeight = 1.6f; st.overrideVoxelSize = true; st.voxelSize = 0.04f; st.minRegionArea = 0f;
+            var src = new List<NavMeshBuildSource> { new NavMeshBuildSource { shape = NavMeshBuildSourceShape.Mesh, sourceObject = m, transform = Matrix4x4.identity, area = 0, component = null } };
+            var bnd = new Bounds(new Vector3((TX0 + TX1) * .5f * T, 0f, -(TY0 + TY1) * .5f * T), new Vector3((TX1 - TX0) * T + 4f, 8f, (TY1 - TY0) * T + 4f));
+            var data = NavMeshBuilder.BuildNavMeshData(st, src, bnd, Vector3.zero, Quaternion.identity);
+            surf.navMeshData = data; surf.AddData();
+            int pass1Nav = 0, pass1Core = 0; var navOnly1 = new List<(int, int)>();
             AssetDatabase.DeleteAsset(GenDir + "/RM1_NavMesh.asset"); AssetDatabase.CreateAsset(surf.navMeshData, GenDir + "/RM1_NavMesh.asset");
             var tri = NavMesh.CalculateTriangulation(); Debug.Log("[RM1] navmesh verts=" + tri.vertices.Length + " tris=" + tri.indices.Length / 3);
-            int onlyCore = 0, onlyNav = 0, tested = 0; var diff = new List<string>();
+            var navOnly = NavDiff(out var coreOnly, out int tested);
+            var cj = new List<string>(); foreach (var (tx, ty) in coreOnly) { bool edge = false; for (int dy = -1; dy <= 1; dy++) for (int dx = -1; dx <= 1; dx++) if (!Walk(tx + dx, ty + dy)) edge = true; cj.Add($"{{\"tx\":{tx},\"ty\":{ty},\"boundary\":{(edge ? "true" : "false")}}}"); }
+            var nj = new List<string>(); foreach (var (tx, ty) in navOnly) nj.Add($"[{tx},{ty}]");
+            Directory.CreateDirectory("../../_out/rm1");
+            File.WriteAllText("../../_out/rm1/navmesh_diff.json", "{\"window\":[60,138,140,192],\"tested\":" + tested + ",\"pass1\":{\"coreWalkNavNo\":" + pass1Core + ",\"navWalkCoreNo\":" + pass1Nav + "},\"coreWalkNavNo\":" + coreOnly.Count + ",\"navWalkCoreNo\":" + navOnly.Count + ",\"carvedVolumes\":" + navOnly1.Count + ",\"navOnlyTiles\":[" + string.Join(",", nj) + "],\"coreOnlyTiles\":[" + string.Join(",", cj) + "]}");
+            Debug.Log($"[RM1] navmesh tested={tested} pass1 coreOnly={pass1Core} navOnly={pass1Nav} -> final coreWalkNavNo={coreOnly.Count} navWalkCoreNo={navOnly.Count}");
+        }
+        // walk-grid vs baked NavMesh over the slice window; the baked surface sits ~0.1u above the mesh, so height is tolerated and the horizontal distance decides
+        static List<(int, int)> NavDiff(out List<(int, int)> coreOnly, out int tested)
+        {
+            var navOnly = new List<(int, int)>(); coreOnly = new List<(int, int)>(); tested = 0;
             for (int ty = 138; ty < 192; ty++) for (int tx = 60; tx < 140; tx++)
                 {
-                    bool core = Walk(tx, ty); var c = W(tx + .5f, ty + .5f); bool nav = NavMesh.SamplePosition(c, out var nh, 0.5f, NavMesh.AllAreas) && new Vector2(nh.position.x - c.x, nh.position.z - c.z).magnitude < 0.06f;   // baked surface sits ~0.1u above the mesh: tolerate height, judge by horizontal distance
-                    tested++; if (core == nav) continue; if (core) onlyCore++; else onlyNav++; diff.Add($"[{tx},{ty},{(core ? "core" : "nav")}]");
+                    bool core = Walk(tx, ty); var c = W(tx + .5f, ty + .5f); bool nav = NavMesh.SamplePosition(c, out var nh, 0.5f, NavMesh.AllAreas) && new Vector2(nh.position.x - c.x, nh.position.z - c.z).magnitude < 0.06f;
+                    tested++; if (core == nav) continue; if (core) coreOnly.Add((tx, ty)); else navOnly.Add((tx, ty));
                 }
-            Directory.CreateDirectory("../../_out/rm1");
-            File.WriteAllText("../../_out/rm1/navmesh_diff.json", "{\"window\":[60,138,140,192],\"tested\":" + tested + ",\"coreWalkNavNo\":" + onlyCore + ",\"navWalkCoreNo\":" + onlyNav + ",\"tiles\":[" + string.Join(",", diff) + "]}");
-            Debug.Log($"[RM1] navmesh tested={tested} coreWalkNavNo={onlyCore} navWalkCoreNo={onlyNav}");
+            return navOnly;
         }
 
         // ---------------------------------------------------------------- capture
@@ -487,17 +613,46 @@ namespace Exoduser
             terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             RPt rp = null; foreach (var p in river.rivers.R) if (p.ty == 182) rp = p;
             var focus = new Dictionary<string, Vector2> { { "start", new Vector2(100f, 185f) }, { "r2", new Vector2(112f, 152f) }, { "river", new Vector2((rp != null ? rp.tx : 124f) - 8f, 181f) } };
+            bool capsule = Arg("-capsule", "0") == "1";
+            GameObject cap = null;
+            if (capsule)
+            {   // player-size stand-in (1.6u tall, 0.5u wide) to judge occlusion; hides the sandbox marker sprite
+                var ms = marker.Find("Marker Sprite"); if (ms != null) ms.gameObject.SetActive(false);
+                cap = GameObject.CreatePrimitive(PrimitiveType.Capsule); cap.name = "Capture Capsule"; cap.transform.SetParent(marker, false); cap.transform.localPosition = new Vector3(0, 0.8f, 0); cap.transform.localScale = new Vector3(0.5f, 0.8f, 0.5f);
+                UnityEngine.Object.DestroyImmediate(cap.GetComponent<Collider>());
+                var cm = new Material(Shader.Find("Universal Render Pipeline/Lit")); cm.SetColor("_BaseColor", new Color(.25f, .85f, .95f)); cap.GetComponent<MeshRenderer>().sharedMaterial = cm;
+            }
             foreach (var cut in cuts)
             {
+                if (cut == "top") { CaptureTop(outDir); continue; }
                 if (!focus.TryGetValue(cut, out var f)) continue;
                 var w = W(f.x, f.y); marker.position = new Vector3(w.x, GroundY(w.x, w.z), w.z);
                 var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
                 brain.ManualUpdate(); cam.Render();
                 RenderTexture.active = rt; var tex = new Texture2D(1600, 900, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, 1600, 900), 0, 0); tex.Apply();
-                File.WriteAllBytes(Path.Combine(outDir, "rm1_" + cut + ".png"), tex.EncodeToPNG()); RenderTexture.active = null; cam.targetTexture = null;
+                File.WriteAllBytes(Path.Combine(outDir, "rm1_" + cut + (capsule ? "_cap" : "") + ".png"), tex.EncodeToPNG()); RenderTexture.active = null; cam.targetTexture = null;
                 UnityEngine.Object.DestroyImmediate(tex); rt.Release();
                 Debug.Log("[RM1] captured " + cut);
             }
+        }
+        // orthographic top view of the slice window (x60..140 y138..192) with the Core walk tiles overlaid in translucent green
+        static void CaptureTop(string outDir)
+        {
+            var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); if (brain != null) brain.enabled = false;
+            const int Wpx = 3200, Hpx = 2160; const float x0 = 60 * T, x1 = 140 * T, zN = -138 * T, zS = -192 * T;
+            cam.orthographic = true; cam.orthographicSize = (zN - zS) * .5f; cam.nearClipPlane = 0.1f; cam.farClipPlane = 200f;
+            cam.transform.SetPositionAndRotation(new Vector3((x0 + x1) * .5f, 60f, (zN + zS) * .5f), Quaternion.Euler(90f, 0f, 0f));
+            var rt = new RenderTexture(Wpx, Hpx, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt; cam.Render();
+            RenderTexture.active = rt; var tex = new Texture2D(Wpx, Hpx, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, Wpx, Hpx), 0, 0);
+            var px = tex.GetPixels32();
+            for (int r = 0; r < Hpx; r++) for (int c = 0; c < Wpx; c++)
+                {
+                    float wx = x0 + (c + .5f) / Wpx * (x1 - x0), wz = zS + (r + .5f) / Hpx * (zN - zS); int tx = Mathf.FloorToInt(wx / T), ty = Mathf.FloorToInt(-wz / T);
+                    if (!Walk(tx, ty)) continue; var p = px[r * Wpx + c]; p.r = (byte)(p.r * .62f + 40 * .38f); p.g = (byte)(p.g * .62f + 255 * .38f); p.b = (byte)(p.b * .62f + 60 * .38f); px[r * Wpx + c] = p;
+                }
+            tex.SetPixels32(px); tex.Apply();
+            File.WriteAllBytes(Path.Combine(outDir, "rm1_top_walk_overlay.png"), tex.EncodeToPNG()); RenderTexture.active = null; cam.targetTexture = null;
+            UnityEngine.Object.DestroyImmediate(tex); rt.Release(); Debug.Log("[RM1] captured top");
         }
     }
 }
