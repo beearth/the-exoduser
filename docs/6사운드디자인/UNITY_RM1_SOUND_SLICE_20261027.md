@@ -71,6 +71,8 @@
 | `tell_melee` | 일반 근접몹 `windup` 진입(AD3 2단계) | hit, 0.35s | short low breathy swell, creature inhale and leather creak before a strike, no high tones |
 | `tell_ranged` | 원거리 60f 공격링 시작(AD3 2단계) | skill, 0.6s | taut bowstring and bone scrape tension rising, brief bright attack only, dry |
 | `tell_boss` | 보스 전조. `SFX.charge()` 대체 후보, 드루이드 전 패턴 공통. 다크드루이드 RM-B1 명세 §4·RB1-4(텔레그래프 소리)의 기본 소리 — 그 명세가 패턴별로 소리를 나누면 변형 키를 추가 | skill, 0.9s | deep rising sub swell with rotten wood creak and root tearing, ominous build, cut tail short |
+| `tell_parry` | 드루이드 RM-B1 §4 "패링 가능 근접" 예고(무기 끝 섬광과 같은 프레임). 기술 1(1·2타)·2·3·10 | hit, 0.2s | short dull iron glint scrape on a gnarled staff tip, one quick metallic tick, dry, no ringing tail |
+| `tell_grab` | 드루이드 RM-B1 §4 "잡기" 예고(60f, 눈빛·손 뻗기). 기술 6 | skill, 1.0s | low creaking of living wood stretching, roots tightening like a hand closing, hollow rotten wind drawn inward, slow ominous build |
 | `roll_body` | 전사 구르기 | hit, 0.45s | armored body roll on damp forest soil, cloth and leather whoosh then dull earth thud, mail jingle minimal |
 | `druid_burrow` | 드루이드 굴파기 진입(`bossDruidUnder`) | skill, 0.9s | heavy body sinking into wet rotten earth, roots snapping, soil collapse rumble |
 | `druid_erupt` | 드루이드 분출(`bossDruidErupt`) | skill, 0.8s | violent eruption from underground, dirt and roots bursting upward, low impact boom, debris patter |
@@ -78,6 +80,13 @@
 | `toxic_bubble` | 늪·강 기포 터짐(A8, 3D 원샷) | hit, 0.4s | single thick toxic bubble rising and popping in viscous sludge, wet low plop, short |
 | `druid_sink` | 1-1 마지막 사망 침강 도주(1.1s 시트 + 0.3s 유지 + 0.3s 페이드) | skill, 1.7s | wounded creature slowly sinking into swamp soil, wet suction, roots closing over, fading rumble, no scream |
 
+- **예고음 체계 = RM-B1 §4 표시 3종과 1:1**: 패링 가능 근접 `tell_parry`, 피해야 하는 범위 `tell_boss`(드루이드 기술 4·5·7·8·9·11·12와 2·3의 범위 쪽 공통), 잡기 `tell_grab`. 일반몹은 `tell_melee`·`tell_ranged`. 한 화면에 겹치는 예고는 최대 2개라는 RM-B1 규칙에 맞춰, 같은 키는 120ms 안에 다시 내지 않습니다.
+- **트랙 B2(보류: 드루이드 명세가 main에 커밋된 뒤 생성)**: 드루이드 리모델링에서 새로 생긴 연출 소리입니다.
+  - `druid_staff_tap`: P1 진입, 지팡이로 바닥 3번
+  - `druid_roots_rise`: 뿌리 기둥 4개가 솟음
+  - `druid_root_pierce`: 쓰러짐 2.0초 동안 뿌리가 등에 꽂힘
+  - `druid_heartbeat`: 숲의 심장 박동 3박, 아레나 전체
+  - `druid_tide`: 독액 해일이 수로에서 솟음
 - 모든 프롬프트에 붙이는 공통 금지 조건: CH1 규칙(불씨·차임 금지, 높은 순음 금지), voice/music/melody 금지.
 - 출력 위치는 `G:\exoduser-wt\_out\sfx_forge\` staging입니다. 청음 페이지는 기존 `review_20261026.html` 형식에 **RM-1 묶음**으로 추가합니다. 파형·스펙트럼 시트는 `_analysis/sheet_rm1_*.png`에 둡니다.
 - 판정 기준: 길이 범위, 6kHz 이상 에너지가 어택에만 있는지, 피크 −1dBTP 이하, 무음 꼬리 정리.
@@ -98,4 +107,4 @@
 | 2026-10-27 | CTO 지시로 착수. 현황 조사(Unity = 게임 안 BGM·환경음·적 피격·구르기·드루이드 소리 없음), 트랙 A·B·C 결정. 트랙 B(7키×3개)를 먼저 sound-simple에 배정하고, 이어서 트랙 A |
 | 2026-10-27 | CLAUDE.md §Unity 리모델링(`cf506002d`)에 맞춰 트랙 A 구조를 Audio Mixer(그룹 11개·스냅샷 Explore/Boss·Tell 덕킹)로 확정. 웹 값은 시작값으로만 사용 |
 | 2026-10-27 | 유니티 총괄 공지 반영: 트랙 A 구현 배정 = 유니티 총괄, 착수 = RM-0 병합 뒤. 공간음 규칙 추가. 맵 RM-1에 독성 강·늪이 합쳐져(fd7bebcc4) A8과 트랙 B 2키(`amb_toxic_river`·`toxic_bubble`)를 추가해 트랙 B는 9키. `tell_boss`는 드루이드 RM-B1 RB1-4 텔레그래프 소리를 맡음 |
-| 2026-10-27 | 트랙 B 7키(`tell_melee`·`tell_ranged`·`tell_boss`·`roll_body`·`druid_burrow`·`druid_erupt`·`druid_sink`) × 3 = 21후보 생성(sound-simple, ElevenLabs raw 프롬프트·카탈로그 `tools/sfx_forge_catalog_rm1.json`, staging `G:\exoduser-wt\_out\sfx_forge\{hit,skill}\<key>1~v3.mp3`). 측정·시트 `_analysis/metrics_rm1.json`·`sheet_rm1_<key>.png`, 청음 페이지 `review_20261026.html` 맨 아래 RM-1 묶음. 공통: 디코드 피크 +1~+3dBTP·잘림 샘플 다수라 승격 때 -1dBTP 정리 필요, API 최소 길이 0.5s라 `tell_melee`·`roll_body`는 승격 때 트림. `amb_toxic_river`·`toxic_bubble` 2키는 미생성(배정 7키 밖) |
+| 2026-10-27 | 드루이드 RM-B1 초안(`E:/exoduser-wt/_out/boss-rm-druid/UNITY_BOSS_RM1_DARK_DRUID_20261027.md`, 아직 origin 미커밋) §3·§4를 읽고, 예고음을 표시 3종과 1:1로 결정. 트랙 B에 `tell_parry`·`tell_grab`을 추가해 11키×3이 됨. 새 연출음 5키는 트랙 B2로 보류(명세가 main에 커밋된 뒤 생성) |
