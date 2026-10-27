@@ -43,3 +43,10 @@
 1. MEMORY.md와 이 문서를 읽고, 사운드 총괄의 다음 지시(SND-02 청음 후 조정, AD3 2단계 Forge 생성, SND-04 명세 보조 등)를 기다린다.
 2. 작업 시작 전 `git fetch origin main` 후 `git status`로 타 세션 변경과 자기 소유 경로를 분리 확인한다.
 3. Forge 생성 전 `--dry-run`으로 프롬프트(450자 이내)·비용부터 확인한다(ElevenLabs 크레딧은 넉넉하지만 반영은 청음 선택 후).
+
+## SND-08 §6 후속 (갱신 — 2026-10-27 밤)
+- 2차(s2) 16키×4 → 사용자 고르기 `pick_rm1.html`(서버 `G:\exoduser-wt\_out\sfx_forge\_tools\serve.cjs`, 127.0.0.1:3399, `picks_rm1.json` 자동 저장) → 채택 11키·"전부 안 맞음" 5키. 3차(s3) 5키×4해석(`<key>_s3a~d`, `_preview_s3/`)은 같은 페이지에 올림(5키 카드는 3차 맨 위·2차 접음·채택 카드 접음).
+- 트랙 C 웹 반영 완료(커밋 05d519db7: `game.html` `_sampleFiles` 7키·`_playTell`·`_bossTellSfx`·`_playDruidSfx` + `sfx/tell/`·`sfx/boss/`), DEMO·EA는 같은 `patch_web.py`(`_out/sfx_forge/_s2/web/`)로 동기화. Unity는 브랜치 `claude/unity-pc-sound-rm1-20261027`(48fdc2e29)에 11키 전달.
+- 대기: 사용자가 s3 5키를 고르면 `picks_rm1.json`을 읽어 채택본을 같은 방식으로 승격(웹 대응 장면 있는 키: `tell_parry`는 드루이드 패링 가능 근접 전조에 연결할 곳이 아직 없음 — 총괄 결정 필요).
+- 파일을 쓸 때 줄바꿈: Windows 파이썬 텍스트 모드는 LF를 CRLF로 바꾼다 → 항상 바이트로 쓰거나 `newline='
+'`.
