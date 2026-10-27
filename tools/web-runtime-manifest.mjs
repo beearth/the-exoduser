@@ -1,6 +1,8 @@
 // The playable CH1 map uses its chunks/layout, not the large authoring master.
 export function isMapAuthoringSource(path) {
-  return /^assets\/map\/ch1\/production_finish\/(?:CH1_1_PRODUCTION_MASTER\.png$|(?:outer\d+|skin\d+|floor\d+)_sources\/)/.test(path.replaceAll('\\','/'));
+  const normalized=path.replaceAll('\\','/');
+  return /^assets\/map\/ch1\/production_finish\/(?:CH1_1_PRODUCTION_MASTER\.png$|(?:outer\d+|skin\d+|floor\d+)_sources\/)/.test(normalized)
+    || /^assets\/map\/ch1\/(?:rottenwood_field_rootworld_master_v2|rottenwood_poison_master_higgsfield_v2_wide|rottenwood_poison_tree_detail_v3_source)\.png$/.test(normalized);
 }
 
 function isWebAuthoringSource(path) {
