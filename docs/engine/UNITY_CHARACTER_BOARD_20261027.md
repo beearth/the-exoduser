@@ -25,7 +25,8 @@
 | UCH-02b | 리깅 전사 Unity 6000.6.7f1 임포트(Humanoid·URP/Lit)·걷기 재생·게임 각도 컷, 얼굴 점 1개 텍스처 수정 | **완료** (PASS, 커밋 보류) |
 | UCH-03a | 전사 대검 Meshy multi-image-to-3d 1건(정면+옆면) → Unity 임포트(전장 1.60)·텍스처 보정(핏줄 제거·금속 탈색) | **완료** (30cr, 조건부 PASS, 커밋 보류) |
 | UCH-03b | 망토 전용 뼈 분리(다리 끌림 해소)·손 파지 고정 포즈/무기 소켓·애니 FBX 메시 제거 | **완료** (조건부 PASS, 커밋 보류) |
-| UCH-03d | Hero Light(캐릭터 전용 보조광, 바이블 §8 L-9 캐릭터 총괄 소유)·웅덩이 림광·RM-0 확정 조명(unity/main b280ddf6) 재촬영 | 진행 |
+| UCH-03d | Hero Light(캐릭터 전용 보조광, 바이블 §8 L-9 캐릭터 총괄 소유)·웅덩이 림광·RM-0 확정 조명(unity/main b280ddf6) 재촬영 | **완료** (Hero 0.6 PASS, L-4 테두리 색 미해결, 디자인총괄 2차 판정 대기) |
+| UCH-03e | 웅덩이 테두리광 재설계: 림 Point를 카메라 기준 옆뒤·가슴 높이로 → 안 되면 웅덩이 색 Fresnel(Shader Graph) | 대기 |
 | UCH-03c | Animator 기본(대기·이동·구르기·공격 1) | 대기 |
 | UCH-04 | 인게임 판정: 1-1 맵 위 1920×1080·1x 크롭, 전사·실버테일 옆 T1~T8 | 대기 |
 
@@ -86,3 +87,7 @@
   - 총괄 판정 **조건부 PASS**: 측면·게임 시점에서 원화처럼 칼끝이 아래·뒤로 끌리는 대검으로 읽히고 1x 게임 시점에서 주먹으로 쥔 것으로 읽힌다. 가드 아래 매끈한 면(UCH-03a 조건 2)은 게임 거리에서 보이지 않아 해소. 남은 결함: 손 근접에서 `Fist_R` 손가락이 판처럼 각지고 가는 흰 조각이 보인다 → 게임 카메라에선 무관, 근접 컷(시네마틱)이 필요해지면 손가락 뼈 리깅으로 다시 한다(백로그). 걷기 캡처는 클립 이동량 0이라 1.4m/s로 전진시켰다 → 게임 실제 이동 속도로 망토 재확인 필요.
   - 재구성 순서(프리팹을 다시 만들 때): `WarriorR2Fit.WriteClip` → `WarriorCapeRig.Run` → `WarriorR2Apply.Run`. `WarriorImport.Run`을 다시 돌리면 프리팹이 FBX 기준으로 초기화돼 망토·소켓이 사라진다.
   - 캡처: `E:/exoduser-wt/_out/unity-charsheet/unity_uch03b_20261027_2335/`(R1), `unity_uch03b_r2_20261028_0018/`(R2, `pose_ref_compare.png` 포함).
+- 2026-10-28 UCH-03d(무료): worktree를 origin/unity/main b280ddf6(RM-0 확정 조명)로 옮겨 측정. `HeroLight.cs`(Directional, 렌더링 레이어 `Hero`, 그림자 없음, 카메라 정면 기준 요 +25°·절대 피치 −35°)·`PoolRimLight.cs`(`Lights/Pools`의 `Pool_Hell_*`·`Pool_Toxic_*`마다 Hero 전용 Point, 웅덩이 안에서만 켜지고 가장자리에서 서서히 꺼짐).
+  - 측정(Hero 끔 → 0.5/0.6/0.7): 대검 날 p95(단독) 0.226 → 0.367/0.399/0.433(기준 ≥0.35), 바닥 ΔL*(캐릭터 14px 밖) 0, 날 채도 4.8%, 흑철 R/G 1.245/1.243/1.242, 날 하이라이트 R/B 1.03~1.08. L-4 외곽 p95 − 웅덩이 바닥 p50: −1.3 → +16.5/+19.8/+24.1. 림 Point는 카메라 반대쪽이라 +0.4~1.1만 보탬(Hero 0.6+림 2.5 = +20.7).
+  - 총괄 판정: **Hero Light 0.6 PASS**(얼굴·날·흑철이 1x로 읽히고 바닥 불변). **L-4 테두리 색 미해결**: 수치는 중성 Hero 덕에 통과하지만 웅덩이 색 테두리광이 눈에 보이지 않는다 → UCH-03e.
+  - 공용 설정 필요(로컬 측정만, 미커밋): `ProjectSettings/TagManager.asset` 렌더링 레이어 `Hero` 이름, `URP_PC_High`·`URP_Mac_Balanced`의 `m_SupportsLightLayers: 1`, `RenderSettings.sun`을 Hell Sun으로 고정(Hero가 더 밝으면 메인 라이트가 바뀌어 키 그림자가 사라짐). 소유·커밋 위치를 유니티 총괄에 협의 중. diff는 `E:/exoduser-wt/_out/unity-charsheet/unity_uch03d_20261028_0050/`.
