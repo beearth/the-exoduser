@@ -62,6 +62,10 @@ Each MouseDown reports `Screen=1920x1080`, `dpi=228`, identity `GUI.matrix`, `co
 
 **VISUAL VERDICT: RETOUCH/HOLD for mouse input.** CUA screenshots show the pointer at different visible targets, but the Player received the same MouseDown position for all four actions. This evidence does not separate a macOS synthetic-input delivery issue from a physical-mouse product issue. Do not compensate product rectangles from this trace. Retest the same PID/window with a physical mouse or an independent input path, comparing the pre-group and group-local MouseDown values, before assigning a product fix or a physical-mouse PASS.
 
+### Supported input API boundary
+
+The documented macOS computer-use `Target`/`App` methods expose `click`, `drag`, and `scroll`, but no pointer-only `move` or `hover` method. `drag` is a pressed-button operation and cannot establish a hover position before an independent click. The documented macOS `getApp(path)` may launch an app; it previously created an unflagged duplicate QA process. Consequently, a safe same-PID pointer-move-then-click cross-check is unavailable through this tool. No additional Player, build, click loop, or undocumented native event injection was performed for this follow-up. The source rectangle and group arithmetic pass their static check; OS input delivery and physical-mouse behavior remain HOLD. The repeated `(493,590)` observation is insufficient grounds for a product coordinate correction.
+
 ## PC 소유 수정본 인수·제품 적용 / 실화면 — 2026-10-27
 
 PC UI 인계 commit `97be6444b6bebe0fba186209191353eb830988fe`의 `docs/engine/ui_handoff/` 세 파일만 읽었다. 대상 `NativeKeyBindList.cs` base blob `4abe399e66264c30f9622c24e1306688e4dcf7fd`가 현재 Mac `unity/main` `94cc7dce1`과 동일함을 확인했다. 승인된 **지역 글꼴 patch** SHA-256 `f706e7b9f270c8b258b7234f782cc48b49be8611a58cdaafec489ce2940cfe14`, **clip 포함 수정 긴 이름 patch** SHA-256 `f456ef12593e4bcd237fc3f5fd9dda0db4043b0751a2643351711502f68c17da`를 그 순서로 `git apply --ignore-space-change` 적용했다. 위 절의 최초 긴 이름 제안은 이 인수에서 적용하지 않았다.
