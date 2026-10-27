@@ -59,3 +59,4 @@
 !/Tools/drop-oracle/DropTests.csproj
 /Tools/drop-oracle/bin/
 /Tools/drop-oracle/obj/
+/Tools/.dotnet-cli-home/
