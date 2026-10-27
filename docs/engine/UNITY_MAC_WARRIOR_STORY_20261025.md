@@ -1,5 +1,7 @@
 # Mac 신규 전사 이야기 — 2026-10-25
 
+2026-10-27 일반 생성 → 정본 영상 자연완주 → 네메시아 입장 시네마틱 → 시작 안내 1/4의 실제 키보드 QA는 [별도 시간표와 화면 증거](UNITY_MAC_WARRIOR_NATURAL_QA_20261027.md)에 기록했다. 네메시아 첫 대사는 영상 정지가 아니며 입력 대기다. 제품 코드 최종 변경 없이 PASS, 이번 청각 검수는 HOLD다.
+
 ## 2026-10-27 A04 생성 뒤 외형별 이야기 분기
 
 PC 후보 `08af46705af26291d9d5add4904ad82a268142c1`의 `NativeLobby.Characters.cs` 한 줄을 Mac에 인수했다. `CreateCharacter()`는 기존대로 `TryCreate`와 `CommitCharacters`가 성공한 뒤 선택 표시·생성창 닫기를 수행하며, 그 뒤 `characterVisual==0`일 때만 `BeginCreatedCharacterStory()`를 호출한다. 원본 `index.html` `_afterCharacterCreated(name, visualIdx)`의 외형 0 분기와 일치한다.
