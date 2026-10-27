@@ -27,10 +27,10 @@
 | 음악 | 1·2막=boss, 3막/마지막 저항=finalboss, 확정 처치=victory. 기존 BGM 전환/사용자 설정 사용. 부활180f 대기 중 필드 음악으로 자동 복귀하지 않음. 새 음원·믹서 추가 없음 |
 | `_retryDruidFinale()` | 데모 si3 아레나의 retryBtn에서 `_enterBossArena(true)` 실행. 다른 사망은 기존 필드/일반 재시작. 버튼 리프 문구=`보스 재도전 / Retry Boss` |
 | `_enterBossArena(retry=false)` | retry=true일 때 원래 필드 `_preArenaBackup` 보존, 잔존 일반몹 kill 누적 생략, 기존 아레나 생성·모든 공격/장판 정리·새 보스 생성 사용. 재시도마다 적/부활/보상 상태는 새 전투로 시작 |
-| 재도전 위치 | 새 보스 남쪽500px를 safePt(P.r)로 확인 후 배치, 실패 시 기존6시 입구. 카메라를 플레이어로 초기화. 보스 `_druidRetry=true`, rest90f/무적90f. 테스트베드용10타일 배치는 retry에서 생략 |
+| 재도전 위치 | 새 보스 남쪽500px를 safePt(P.r)로 확인 후 배치, 실패 시 기존6시 입구. 카메라를 플레이어로 초기화. 보스 `_druidRetry=true`, rest90f/무적90f. 테스트베드용 보스 남쪽3타일(`P.y=boss.y+3*T`) 배치는 retry에서 생략 |
 | 재도전 첫 프레임 잡담 | `_petSay`의 피날레 판정은 demo/마지막si3/bossAlive 및 (arena 또는 기존 bossRef)로 판단한다. HUD가 새 bossRef를 찾기 전에도 tier≤2 잡담을 차단하며 `_PET_SURV_W` 생존 대사는 보존한다 |
 | 재도전 음악·대사 | `_retryDruidFinale`에서 boss 음악을 명시 재생해 death 트랙 고착 방지. arena retry 시 기존 `_petBubble.t=0/pair=null/_uid=null`로 이전 전투 대사를 종료 |
-| 독립 필드몹 | 데모 si3 아레나 진입에서 `G._worms=[]`, `_wmStage=G.stage`. `_wmTick`도 같은 아레나 조건이면 배열을 비우고 즉시 반환하여 필드 곰치4마리의 재생성 차단. 필드와 일반 모드에서는 기존 스폰/공격 유지 |
+| 독립 필드몹 | 데모 si3 아레나 진입에서 `G._worms=[]`, `_wmStage=G.stage`. `_wmTick`도 같은 아레나 조건(현행 코드: `G._bossArena&&(G.stage===0||데모 마지막 si3)` — si0 아레나 포함)이면 배열을 비우고 즉시 반환하여 필드 곰치4마리(`_WM_COUNT=4`)의 재생성 차단. si0 아레나 진입 시에도 `_enterBossArena`가 `G._worms=[]`. 필드와 일반 모드에서는 기존 스폰/공격 유지 |
 | 재도전 상태 | bossLoadPhase/T/Fade=0, stageCleared=false, deathSpawned=false, flashT/chromaT=0, paused=false. 공통 후처리에서 player idle/무적300f·넉백0·화톳불300f/반경280, applyStats→자원 완충. 경험치30% 손실은 클릭당1회. 화폐/물약/스킬 쿨다운 계약은 기존대로 |
 | `_druidFinaleIntro` | 재도전 보스 카드60f, `_introFill=1`로 실제 HP 즉시 표시. 첫 입장180f/HP 채움90f 유지. 긴 네임카드·입장 로딩 시퀀스를 재도전에서는 반복하지 않음 |
 

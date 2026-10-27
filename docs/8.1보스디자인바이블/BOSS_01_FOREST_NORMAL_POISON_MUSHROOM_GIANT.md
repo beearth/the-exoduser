@@ -4,7 +4,7 @@
 |---|---|
 | si | 1 |
 | 한글명 | 독버섯 거인 (`HELL_BOSSES[0][1]`) |
-| 영문명 | Poison Mushroom Giant |
+| 영문명 | Toxic Mushroom Giant (`_EN['독버섯 거인']`, 게임 표시명) |
 | 렌더 | Codex 2.5D — punch/kick 아틀라스보다 우선 |
 | PNG | `assets/sprites/boss/stage1_codex_poison_mushroom_giant.png` (832×1248) |
 | 로더 | `_CODEX_BOSS[1]`, `_drawCodexBoss(...,1)` |
