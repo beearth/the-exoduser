@@ -169,3 +169,9 @@ FW-C(테스트 전용 si1 세트 `sampleRules`, 매듭 3·그루터기 1·하한
 - **소품은 적 목록 안에 있으므로, 지금의 `NativeGame`은 소품을 일반 적 스프라이트(보스 색조)로 그린다.** 표현 쪽에서 `sim.IsRemodelProp(e)`인 적은 적 그리기·적 HP 바를 건너뛰고 `RemodelProps`로 따로 그려야 한다(Codex 소유 파일이라 여기서 고치지 않음). 리메이크 플래그가 기본 꺼짐이라 지금 게임에는 영향이 없다.
 - 소품은 `IsBoss`라 보스·엘리트 타격의 분노 획득·보스 포이즈 판정이 소품 타격에도 적용된다(소품 HP가 작아 실질 영향은 작음). 문제가 되면 보스전 총괄 판정 후 조정한다.
 - `BossLineRaised`를 받아 대사 띠를 띄우는 표현은 아직 없다(웹 `_bossLine`과 같은 자리).
+
+### 8.3 조건부 PASS 확인 — 소품 체력·집계 제외 (2026-10-28, `0e6368d3c`, 하니스만 추가·Core 변경 없음)
+
+- **체력 두 방식**: `SpawnRemodelProp(kind, x, y, r, hp)`의 `hp`가 그대로 체력이다. B2 싹 = `hp` 1(어떤 피해든 1타), B4 탯줄 매듭 = `(int)Math.Round(st.BaseMaxHp * 0.05)`(여러 타에 걸쳐 깎이고 피해 합이 체력에 닿으면 끊김). 하니스 FW-C에서 매듭(기준 HP×0.05)이 첫 타를 버티고 체력이 줄어든 뒤, 체력의 ¼씩 때려 몇 타 뒤 `broken`으로 끝나는 것을 확인했다.
+- **집계 제외**: 소품은 `OnEnemyZeroHp` → `RemodelPropZeroHp`에서 끝나므로 `KillEnemy`(처치 수 `Kills`·콤보·드랍 `ApplyKillDrop`·장비 롤·경험치·분노/악의·`RegKill`)를 타지 않는다. 웹 적 루프의 처치 경로(`EnemyTick` `c.Kills++`·`RollDrop`·`AddExp`)는 `IsBoss`라 들어가지 않는다. 생성은 `AddEnemy`(Id만 부여)라 `Stage.TotalSpawned`에 들어가지 않는다. `RegKill`은 `IsBoss`면 바로 빠진다. 하니스에서 지역 4개를 켜고 소품 4개(1타 3·체력형 1)를 끊은 앞뒤로 `Kills`·`Stage.StageKills`·`Stage.TotalSpawned`·`Loot`·경험치·레벨·`Combo`·지역 처치 합이 모두 같고, 보스가 죽을 때 남아 있던 소품(`final`)도 세지 않아 전투 뒤 처치 수는 보스 1만 늘었다.
+- 검사: druid-remodel 41,195/0(JSON 바이트 동일), 틀 **131/0**. Core는 `75dc0d790`과 같다(oracle 5,421,635검사 0불일치).
