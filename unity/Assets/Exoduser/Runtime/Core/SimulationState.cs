@@ -28,6 +28,7 @@ namespace Exoduser.UnityPort.Core
         public double PlayerCriticalChance = 0, PlayerCriticalMultiplier = 1.5;
         public float AttackSpeedMultiplier = 1;
         public double DamageMultiplier = .7, AccessoryDamageBonus = 0;
+        public double AccessoryDamageSum = 0;   // sum of the accessory dmgBonus values (hurtE multiplies the sum by 0.01 itself)
         public float DropBonus = 1;
         public bool EnemyAiEnabled = true;
         public double ExpBonus = 0;   // web _eqAffix('expBonus') (necklace base expBonus field is not an Unity item field)
@@ -78,6 +79,7 @@ namespace Exoduser.UnityPort.Core
         public int BaseAttack, DruidBaseAttack; public string Col;
         public double BlinkWeak; public int BlinkWeakTicks; // u_n02 roll weak (e._blinkWeak / _blinkWeakT)
         public string State = "idle";
+        [NonSerialized] public EnemySpawn Web;   // C01 wire: the web-shaped enemy the Core (mkEn / hurtE) works on
     }
 
     [Serializable]

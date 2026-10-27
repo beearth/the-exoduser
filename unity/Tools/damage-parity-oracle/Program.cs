@@ -79,8 +79,8 @@ static class P
                 int unityPacket = ki.CalculateKiSlashDamage(step, charge);
                 Check(unityPacket == row.GetProperty("packetDmg").GetInt32(), "kiSlash packet" + tag + " " + unityPacket + " vs web " + row.GetProperty("packetDmg").GetInt32());
 
-                var sim = NewSim("kiSlash"); double rnd = crit ? 0 : .5; sim.Random01 = () => rnd;
-                var mob = sim.SpawnNormalEnemy(14, 0);
+                var sim = NewSim("kiSlash"); double rnd = .5; sim.Random01 = () => rnd;
+                var mob = sim.SpawnNormalEnemy(14, 0); rnd = crit ? 0 : .5;   // spawn with a neutral roll (no elite), then pick crit / no crit
                 Begin("ki-hit");
                 if (mob == null) { Check(false, "mob not spawned"); continue; }
                 int hitNo = 0;
@@ -114,8 +114,8 @@ static class P
             foreach (var row in web.GetProperty("swing").EnumerateArray())
             {
                 bool crit = row.GetProperty("crit").GetBoolean(); string tag = crit ? " crit" : "";
-                var sim = NewSim("weapon"); double rnd = crit ? 0 : .5; sim.Random01 = () => rnd;
-                var mob = sim.SpawnNormalEnemy(30, 0);
+                var sim = NewSim("weapon"); double rnd = .5; sim.Random01 = () => rnd;
+                var mob = sim.SpawnNormalEnemy(30, 0); rnd = crit ? 0 : .5;
                 Begin("swing-hit");
                 if (mob == null) { Check(false, "mob not spawned"); continue; }
                 int hitNo = 0;

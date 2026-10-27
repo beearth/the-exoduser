@@ -178,7 +178,7 @@ namespace Exoduser.UnityPort.Core
         {
             if (BoltHurt != null) { BoltHurt(enemy, damage, angle); return; }
             // hurtE for an arrow: no knockback (ranged), no poise hit, typed % + critRateBow
-            ApplyEnemyDamage(enemy, damage, (float)angle, false, 0, false, false, Crossbow.RangedDmgPct, Crossbow.CritRateBowPercent);
+            ApplyEnemyDamage(enemy, damage, (float)angle, false, 0, false, false, Crossbow.RangedDmgPct, Crossbow.CritRateBowPercent, true);
         }
 
         // The normalBow branch of the web player projectile loop.

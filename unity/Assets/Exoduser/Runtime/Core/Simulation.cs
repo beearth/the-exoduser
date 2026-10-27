@@ -58,27 +58,8 @@ namespace Exoduser.UnityPort.Core
         private static float Distance(float x, float y, float xx, float yy) { return (float)Math.Sqrt((x-xx)*(x-xx)+(y-yy)*(y-yy)); }
         private static bool Finite(float value) => !float.IsInfinity(value) && !float.IsNaN(value);
 
-        // mkEn 31127-31170: explicitly ordinary etype0, no elite roll or substitution.
-        public EnemyState SpawnNormalEnemy(float x, float y)
-        {
-            if (!Finite(x) || !Finite(y) || !Pass(x, y, 10)) return null;
-            int level = Math.Max(1, Player.Level + (Config.DifficultyIndex - 5) * 100);
-            double curve = (level <= 500 ? .4 * level * level * level + 199 * level + 100 : 50000000 * Math.Pow(1.0014, level - 500)) * 2.925;
-            double pacing = 1 / (1 + Math.Min(9, Math.Max(0, level - 1)) / 18.0);
-            int hp = (int)Math.Floor(Math.Floor(curve * pacing * Difficulty[Config.DifficultyIndex]) * (1 + Config.StageIndex * .02));
-            var enemy = new EnemyState {
-                Id = nextEnemyId++, Etype = 0, X = x, Y = y, Hp = hp, MaxHp = hp,
-                Shield = hp, MaxShield = hp, Poise = hp, MaxPoise = hp, Level = level,
-                Attack = (int)Math.Floor((50 + level * 1.95) * .6 * Difficulty[Config.DifficultyIndex]),
-                BaseAttack = (int)Math.Floor((50 + level * 1.95) * .6 * Difficulty[Config.DifficultyIndex]), // mkEn baseAtk (ghoul atk = baseAtk*2)
-                Speed = (float)((.3 * 1.3 + NextRandom() * .08) * 1.5),
-                Radius = (float)((10 + NextRandom() * 2) * 2),
-                StateTicks = (float)(30 + NextRandom() * 50), Facing = (float)(NextRandom() * Math.PI * 2),
-                ProjectileTicks = (float)(180 + NextRandom() * 120)
-            };
-            Enemies.Add(enemy); Stage.TotalSpawned++;   // C07: G._totalSpawned (gate progress denominator)
-            return enemy;
-        }
+        // mkEn (EnemyFactory, oracle-checked field by field and by Random() order): the ordinary etype0 body. Elite rolls, mods and auras are the web's.
+        public EnemyState SpawnNormalEnemy(float x, float y) { return SpawnEnemy(x, y, 0); }
 
         public void Tick(float moveX, float moveY, float aimX, float aimY, bool attack, bool pickup)
         {
@@ -219,41 +200,24 @@ namespace Exoduser.UnityPort.Core
             ApplyEnemyDamage(enemy, damage, angle, false, 1, dot, shieldHit);
         }
 
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0)
+        // hurtE: the oracle-checked Core head + middle (EnemyHurt). The death tail (revive / ghoul / boss revive / kill rewards) is the Simulation's.
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
-            if (enemy.Etype != 0 && !enemy.IsGhoul && !enemy.IsBoss) throw new NotSupportedException("Only admitted normal etype0 profile (and its revived ghouls) is implemented.");
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
             if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
-            { double ri = enemy.ReviveIframes; bool swallowed = EnergyShield.SwallowedByReviveIframes(ref ri, dot); enemy.ReviveIframes = ri; if (swallowed) return; } // hurtE 42208-42209
-            damage = Math.Max(1, damage);
-            if (typeDamagePct > 0) damage = (int)(damage * (1 + typeDamagePct)); // hurtE Phase2 typed damage % (arrow: rangedDmgPct + projDmgPct)
-            if (Config.AccessoryDamageBonus > 0) damage = (int)(damage * (1 + Config.AccessoryDamageBonus));
-            if (NextRandom() * 100 < Config.PlayerCriticalChance + critRateBonus) damage = (int)(damage * Config.PlayerCriticalMultiplier);
-            if (enemy.Stunned > 0) damage = (int)(damage * 1.5);
-            if (enemy.BlinkWeak > 0 && enemy.BlinkWeakTicks > 0) damage = (int)(damage * (1 + enemy.BlinkWeak));   // u_n02 roll weak
-            int total = damage;
-            // B08 energy shield: after every multiplier, spent before HP; only the overflow reaches HP; DOT skips it unless shieldHit.
-            var sh = EnergyShield.AbsorbEnemy(enemy.Shield, enemy.MaxShield, damage, dot, shieldHit);
-            enemy.Shield = (float)sh.Shield;
-            damage = (int)sh.Damage;
-            LastHitDamage = total; TotalDamage += total; enemy.HurtTicks = 6;
-            if (damage > 0) {
-                enemy.Alerted = true;
-                if (enemy.State == "recover") { enemy.State = "idle"; enemy.StateTicks = 0; }
-                else if (enemy.State == "idle" && enemy.StateTicks > 5) enemy.StateTicks = 5;
-                enemy.Hp -= damage;
-                if (enemy.State == "idle") enemy.HitStun = 8;
-            }
-            float knockback = Math.Min(damage * .25f * knockbackMultiplier, 15 * knockbackMultiplier);
-            enemy.KnockbackX += (float)Math.Cos(angle) * knockback;
-            enemy.KnockbackY += (float)Math.Sin(angle) * knockback;
-            if (poiseHit && damage > 0) {
-                enemy.Poise = Math.Max(0, enemy.Poise - damage);
-                enemy.PoiseRegenTicks = 0;
-                if (enemy.Poise <= 0) { enemy.Stunned = Math.Max(enemy.Stunned, 180); enemy.MaxStunned = Math.Max(enemy.MaxStunned, 180); }
-            }
+            var web = SyncToWeb(enemy);
+            var player = HurtPlayerView();
+            var context = BuildHurtContext(player, typeDamagePct, critRateBonus);
+            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null };
+            double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
+            var head = EnemyHurt.Head(context, web, damage, angle, true, opts, 0);
+            if (head == null) { SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }   // revive iframes swallowed it / parry lesson
+            EnemyHurt.Body(context, web, angle, true, opts, head);
+            SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
+            int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
+            LastHitDamage = total; TotalDamage += total;
             if (enemy.Hp <= 0) OnEnemyZeroHp(enemy);
         }
 
