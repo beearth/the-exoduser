@@ -165,6 +165,7 @@
 | U10 | 다국어 | 제목판은 번역 글자 폭으로 S/M/L(360/520/680px)을 고른다. 새 UI 글자는 반드시 번역 목록에 등록 | COMPOSITION 명패, CLAUDE.md 번역 규칙 |
 | U11 | 동작 | 색·테두리·그림자 전환 120ms 수준, 위치 이동 호버 없음, reduced-motion이면 전환 없음 | COMPOSITION 디테일 마감 "반응" |
 | U12 | 새 화면 기준 | 새 요소는 같은 화면에 이미 있는 비슷한 요소의 CSS를 그대로 출발점으로 삼는다(예: 구역 제목 `#areaTitle`, 스테이지 클리어 패널, 레벨업 연출) | CLAUDE.md 퀄리티 1항 |
+| U13 | 두 밀도 단계 | 무거운 단계(첫 화면·로비·HUD·보스 이름판·레벨업·클리어·합성 제단)는 현행 장식을 유지한다. 조용한 단계(오래 읽는 화면: 설정·스킬 상세·도감·아이템 상세)는 바깥 틀과 탭바만 남기고, 안쪽은 분류 줄 → 세리프 제목 → 헤어라인 → 본문 → 2열 수치, 테두리 칩, 진홍 1곳으로 한다. 색·폰트·재질 언어는 두 단계가 같다 | 2026-10-27 사용자 레퍼런스(요즘 RPG 퀘스트 화면, 노 레스트 포 더 위키드)를 보고 스킬 창 시안 v0을 만들었고 디자인총괄이 1x 판정 후 채택. 명세 `E:/exoduser-wt/_out/ui-quiet-tier/SPEC_QUIET_TIER_SKILL_20261027.md`(Q1~Q11), `E:/exoduser-wt/_out/ui-quiet-tier/SPEC_QUIET_TIER_SETTINGS_20261027.md`(S1~S5·T1~T7) |
 
 ### 5.3 Unity 이식 규칙
 
@@ -194,6 +195,7 @@
 |---|---|---|---|
 | UD1 | 대장간 재료 문구가 `font:600 14px/1.5 'Noto Sans KR',sans-serif`로 고정돼 U5 위반 | `ui-refinement.css` 630행 `#forge.panel .pbox #forgeMats`(코드 확인), 문서 UI_COMPOSITION 2026-09-26 "스타일 수치 원본" | RETOUCH 후보 |
 | UD2 | game.html에 `Noto Sans KR`이 86곳 남아 있다. 폴백 위치(`var(--font-hell)` 뒤)인지 단독 지정인지, 이모지 아이콘이 남았는지는 아직 전수 조사하지 않았다 | game.html·index.html·ui-*.css | 조사 배정 예정 |
+| UD3 | 설정 화면 캐릭터 카드의 노랑 이름·✓ 기호(U3·U6 위반), 위험 버튼(게임 리셋·게임 종료)의 진홍 넓은 판(U4 위반) | 설정 창 게임 탭(`web-refs-20261026/12_1_settings_game.png`) | 조용한 단계 v1로 해소 예정 |
 
 ---
 
