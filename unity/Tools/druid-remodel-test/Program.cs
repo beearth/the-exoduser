@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using Exoduser.UnityPort.Core;
 
-static class P
+static partial class P
 {
     static int checks, bad; static readonly List<string> failures = new List<string>();
     static void Check(bool ok, string what) { checks++; if (!ok) { bad++; failures.Add(what); Console.WriteLine("FAIL " + what); } }
@@ -33,6 +33,7 @@ static class P
         boss = s.Stage.Boss; if (boss == null) { r.Error = "boss did not spawn"; return r; }
         r.ArenaTick = s.TickCount; r.BaseHp = boss.MaxHp;
         int hitCd = 0, rootLeft = rootHit ? 3 : 0, killGuard = 0, lastLife = 0, hurt0 = s.HurtCount, collapseTick = -1;
+        var tele = new TeleTrack();
         r.MaxHp[0] = boss.MaxHp; r.Radius[0] = boss.Radius; r.Shield[0] = boss.Shield; r.ShieldMax[0] = boss.MaxShield;
         int dmg = Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.012));
         // the intro stun / revive-iframes of StageFlow (90 / 110 f) run out first
@@ -66,6 +67,7 @@ static class P
                 lastLife = st.Life; if (st.Life < 3) { r.MaxHp[st.Life] = boss.MaxHp; r.Radius[st.Life] = boss.Radius; r.Shield[st.Life] = boss.Shield; r.ShieldMax[st.Life] = boss.MaxShield; dmg = Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.012)); }
             }
             s.Tick(0, 0, boss.X, boss.Y, false, false);
+            ObserveTelegraphs(name, s, boss, tele);
             if (s.Druid != null) { int alive = 0; foreach (var d in s.Druid.Data.Values) foreach (var m in d.Minions) if (m.Alive) alive++; r.MaxMinionsAlive = Math.Max(r.MaxMinionsAlive, alive); }
         }
         r.FightTicks = s.TickCount - r.ArenaTick; r.FinalTick = s.TickCount; r.PlayerHits = s.HurtCount - hurt0;
@@ -147,7 +149,8 @@ static class P
     {
         string dir = args.Length > 0 ? args[0] : "remodel-out"; Directory.CreateDirectory(dir);
         var a = Fight("A-root-cut", true, 20261027u); var b = Fight("B-root-not-hit", false, 20261028u);
-        Verify(a); Verify(b);
+        Verify(a); Verify(b); VerifyTelegraphs();
+        File.WriteAllText(Path.Combine(dir, "remodel-telegraphs.json"), TelegraphJson(), new UTF8Encoding(false));
         File.WriteAllText(Path.Combine(dir, "remodel-fight-A.json"), ToJson(a), new UTF8Encoding(false));
         File.WriteAllText(Path.Combine(dir, "remodel-fight-B.json"), ToJson(b), new UTF8Encoding(false));
         var sb = new StringBuilder("# RM-B1 RB1-1/2 fight check\n\nchecks " + checks + ", failed " + bad + "\n");

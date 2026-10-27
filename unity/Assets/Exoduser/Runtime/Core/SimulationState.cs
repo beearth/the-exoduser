@@ -73,6 +73,7 @@ namespace Exoduser.UnityPort.Core
         public float ProjectileTicks, ProjectileChargeTicks;
         public bool Alive = true, Alerted, HasLastMove;
         public bool IsBoss; public int Elite; // web e.ib / e.elite (tier index): kill XP, combo timer
+        public bool IsGateGuard;              // web e._isGateGuard: the Hell Gate guardian (killing it adds +10 % clear progress)
         // B08 revive / energy-shield state (web e.deaths, _revPts, _revived, _reviveTimer ...). Defaults are the web's undefined/0.
         public double Deaths, RevPts, MaxRevPts, ReviveIframes, OrigR, ReviveTimer, ReviveX, ReviveY, BossRevChance, BossRevRoll = 1, BossPhase, BossPatCd, SpawnTicks, BossReviveVfxPending;
         public bool Revived, IsGhoul, ReviveAsGhoul, ReviveChase, BossRevJudged, BossRevived, DruidLastStand, SinkDruid, FmKind, DgRevived, Corpse;

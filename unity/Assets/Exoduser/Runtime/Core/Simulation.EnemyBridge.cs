@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort.Core
         public InventoryState EquippedInventory;
 
         /// <summary>mkEn(x, y, stage, etype, false, undefined, undefined) for any ordinary etype; null where mkEn returns null (no free spot).</summary>
-        public EnemyState SpawnEnemy(float x, float y, int etype, double? room = null, bool countSpawned = true)
+        public EnemyState SpawnEnemy(float x, float y, int etype, double? room = null, bool countSpawned = true, double? el = null)
         {
             if (!Finite(x) || !Finite(y)) return null;
             var context = new EnemySpawnContext {
@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort.Core
                 DemoMode = Config.DemoMode, DemoLastStage = Config.DemoLastStage,
                 CanMove = (cx, cy, cr) => Pass((float)cx, (float)cy, (float)cr), Random = NextRandom
             };
-            var web = EnemyFactory.Create(context, x, y, Config.StageIndex, etype, false, null, room);
+            var web = EnemyFactory.Create(context, x, y, Config.StageIndex, etype, false, el, room);
             if (web == null) return null;
             var enemy = new EnemyState {
                 Id = nextEnemyId++, Etype = (int)web.etype, X = (float)web.x, Y = (float)web.y, Radius = (float)web.r,

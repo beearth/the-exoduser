@@ -20,10 +20,11 @@ namespace Exoduser.UnityPort.Core
         public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
     }
 
-    public sealed class ChaseZone { public double X, Y, R, T, Delay, ExplT, ExplMax; public int Dmg; public bool Hit, Druid; }
-    public sealed class ChaseAoe { public int Cnt, MaxCnt, Dmg; public double T, Interval, R, Delay; public bool Druid; public List<ChaseZone> Zones = new List<ChaseZone>(); }
-    public sealed class Fissure { public double X, Y, Ang, Spd, Len, MaxLen, T, MaxT, W, ExplR; public int Dmg; public bool Exploded, Druid; }
-    public sealed class TideWave { public double X, Y, Rad, MaxR, Spd, T, MaxT, GapAng, GapSize, W, HitT; public int Dmg; public bool Druid; }
+    // Serial / Idx: RM-B1 telegraph list (DruidTelegraph.cs) only, the id of the move start that made the hazard; the oracle never reads them
+    public sealed class ChaseZone { public double X, Y, R, T, Delay, ExplT, ExplMax; public int Dmg, Serial, Idx; public bool Hit, Druid; }
+    public sealed class ChaseAoe { public int Cnt, MaxCnt, Dmg, Serial; public double T, Interval, R, Delay; public bool Druid; public List<ChaseZone> Zones = new List<ChaseZone>(); }
+    public sealed class Fissure { public double X, Y, Ang, Spd, Len, MaxLen, T, MaxT, W, ExplR; public int Dmg, Serial; public bool Exploded, Druid, Straight, Hit, Done; }   // Straight/Hit/Done: RM-B1 straight fissure (spec #4)
+    public sealed class TideWave { public double X, Y, Rad, MaxR, Spd, T, MaxT, GapAng, GapSize, W, HitT; public int Dmg, Serial; public bool Druid; }
     public sealed class SeekerMine { public bool DruidMine; public double X, Y, Vx, Vy, Spd, T, ArmT, MaxT, R; public int Dmg, El, Hp; }
     public sealed class PoisonPool { public double X, Y, T, MaxT, R, TickT; public int Dmg; }
     public sealed class LavaPool { public double X, Y, T, WarnT, MaxT, R, TickT; public int Dmg; }
@@ -207,7 +208,7 @@ namespace Exoduser.UnityPort.Core
                 if (ca.T >= ca.Interval && ca.Cnt < ca.MaxCnt)
                 {
                     ca.T = 0; ca.Cnt++;
-                    ca.Zones.Add(new ChaseZone { X = px, Y = py, R = ca.R, T = 0, Delay = ca.Delay, Dmg = ca.Dmg, Hit = false, Druid = ca.Druid });
+                    ca.Zones.Add(new ChaseZone { X = px, Y = py, R = ca.R, T = 0, Delay = ca.Delay, Dmg = ca.Dmg, Hit = false, Druid = ca.Druid, Serial = ca.Serial, Idx = ca.Cnt });
                 }
                 int zw = 0;
                 for (int zi = 0; zi < ca.Zones.Count; zi++)
@@ -239,6 +240,7 @@ namespace Exoduser.UnityPort.Core
             for (int fi = 0; fi < Fissures.Count; fi++)
             {
                 var f = Fissures[fi]; f.T += 1;
+                if (f.Straight) { UpdateStraightFissure(f, px, py); if (f.T < f.MaxT) Fissures[w++] = f; continue; }
                 double hx = f.X + Cos(f.Ang) * f.Len, hy = f.Y + Sin(f.Ang) * f.Len;
                 double toP = Atan2(py - hy, px - hx); hx += Cos(toP) * f.Spd; hy += Sin(toP) * f.Spd;
                 f.Ang = Atan2(hy - f.Y, hx - f.X); f.Len = Math.Min(f.MaxLen, Dst(f.X, f.Y, hx, hy));
@@ -256,6 +258,25 @@ namespace Exoduser.UnityPort.Core
             }
             if (w < Fissures.Count) Fissures.RemoveRange(w, Fissures.Count - w);
         }
+
+        // RM-B1 spec #4 (boss-battle lead ruling 2026-10-28): the head keeps the direction fixed when the telegraph started, crawls Spd per tick up to MaxLen or the arena edge,
+        // and hurts only where it is: the segment it swept this tick, once per cast, no end blast. The part it has already passed stays on screen but is harmless.
+        void UpdateStraightFissure(Fissure f, double px, double py)
+        {
+            if (f.Done) return;
+            double prev = f.Len, next = Math.Min(f.MaxLen, prev + f.Spd);
+            double nx = f.X + Cos(f.Ang) * next, ny = f.Y + Sin(f.Ang) * next;
+            if (!host.CanMove(nx, ny, 10)) { f.Done = true; return; }
+            f.Len = next;
+            if (!f.Hit && host.PIframes <= 0 && SegDist(f.X + Cos(f.Ang) * prev, f.Y + Sin(f.Ang) * prev, nx, ny, px, py) <= FissureHitHalfWidth + host.PRadius)
+            {
+                f.Hit = true; host.HurtPlayer(I(f.Dmg), false);
+                double ka = Atan2(py - ny, px - nx); host.KnockPlayer(Cos(ka) * 10, Sin(ka) * 10);
+            }
+            if (f.Len >= f.MaxLen) { f.Done = true; host.Shake(12); }
+        }
+
+        public const double FissureHitHalfWidth = 70;
 
         void UpdateTideWaves()
         {
