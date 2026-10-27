@@ -275,6 +275,11 @@
 2. 녹음 60초 1개: 드루이드전에서 `tell_parry`(대기 중 `tell_melee`)·`tell_boss`·`tell_grab`·`druid_erupt`·`druid_heartbeat`·`druid_tide`가 각 1회 이상 들어가게(디버그 페이즈 이동 허용, 쓴 방법을 적는다). R2 전투(일반몹 예고·피격·사망·환경음·독성 강)는 30초 1개 추가.
 3. 판정 항목: 예고음이 혼전·BGM에 묻히지 않음(Tell 덕킹 동작), 환경음이 BGM을 덮지 않음, `Boss` 스냅샷에서 환경음 −8dB, 같은 키 겹침 0, 디자인 7장 규칙 위반 0.
 
+**기존 키 편입 — `fireball` (2026-10-28 유니티 총괄 공지)**
+- UI 세션이 A18 작업 중 E 마법(우클릭) 시전 예외를 막으려고 웹 `sfx/magic/fireball.mp3`를 `unity/Assets/Exoduser/Resources/Audio/fireball.mp3`로 넣고 `NativeFeedbackAudio` 허용 목록에 추가했다(unity/main `40256751b`). 파일·키 이름은 그대로 쓴다.
+- 트랙 A 기준: 분류 `SKILL`(10, 웹 `_SKILL_SFX_KEYS`에 있음), 믹서 그룹 `SFX/Skill`, 2D(플레이어 소리), 시작값은 웹 E 마법 시전과 같게 음량 .9·rate .7±.1(`game.html` 화염구 시전 2곳). 웹의 다른 사용처(.6/1/.5, 혈류 계열)는 Unity에 해당 기술이 들어올 때 따로 정한다.
+- 트랙 A 구현 때 `RM1_AUDIO_KEYS.json`에 이 키를 같은 형식으로 한 줄 추가한다(파일은 옮기지 않는다).
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -302,3 +307,4 @@
 | 2026-10-27 | §6.5 트랙 C 웹 반영(sound-simple): 채택 7키(`tell_melee`·`tell_ranged`·`tell_boss`·`tell_grab`·`druid_erupt`·`druid_sink`·`druid_tide`)를 `sfx/tell/`·`sfx/boss/`로 복사, `game.html`에 `_sampleFiles` 7키·`_sfxPri`(tell_*=TELL·druid_*=SKILL)·헬퍼 `_playTell`(120ms 쿨다운·화면 밖 제외)·`_bossTellSfx`·`_playDruidSfx`, 연결 = `updateE` windup 진입·`_emitEnemyShot` 경고·`_bossStartPattern` 내 `SFX.charge()` 19곳(드루이드일 때만 `tell_boss`, 잡기는 `tell_grab`)·`bossDruidUnder` 분출·`tideWave`·`_druidSinkStart`. 웹에 장면 없는 4키는 미반영. `6사운드디자인.md` 키 표 갱신. 헤드리스 검증 통과(상세 6사운드디자인.md). 음량은 1차값 |
 | 2026-10-27 | §6.5 트랙 C Unity 전달(sound-simple): 채택 11키 mp3 + `RM1_AUDIO_KEYS.json`(키·용도·믹서 그룹·`_SFX_PRI` 분류·공간음·시작 음량·쿨다운)을 브랜치 `claude/unity-pc-sound-rm1-20261027`(origin/unity/main `cfc5a0957` 기준)의 `unity/Assets/Exoduser/Resources/Audio/RM1/`에 커밋 `48fdc2e29`, 브랜치만 push(unity/main 병합 안 함, 코드 변경 없음, `.meta`는 Unity가 임포트 때 생성). `amb_toxic_river`는 s2 v1 가공본에 등전력 크로스페이드 1.5초(루프 6.5초)로 이음매 RMS 차 3.7→0.4dB·샘플 점프 0.0001, 게인·음색 변경 없음(`_analysis/rm1_river_loop.py`, `_preview_s2/amb_toxic_river_loop.mp3`). 웹은 DEMO·EA 동기화 완료(`game.html`·`gamedemo.html` 동일 패치 + sfx 7개) |
 | 2026-10-28 | 유니티 총괄 공지: 트랙 A(A1~A8) 구현 = RM-0 세션 `local_7bb6eaac`, 브랜치 `claude/unity-pc-sound-rm1-20261027`. §6.6 드루이드 기술 12종 → 소리 키 표·3차 대기 키 임시값·Receipt/녹음 제출 기준 작성, RM-0 세션에 전달 |
+| 2026-10-28 | 유니티 총괄 공지: UI 세션이 E 마법 예외 해소용으로 `fireball`을 Unity에 넣음(unity/main `40256751b`). §6.6에 트랙 A 편입 기준(SKILL·`SFX/Skill`·2D·.9/rate .7±.1) 추가, RM-0 세션에 전달 |
