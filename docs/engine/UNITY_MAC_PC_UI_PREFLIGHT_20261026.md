@@ -167,3 +167,15 @@ PC-U04b 원문과 Mac seed QA 계약을 먼저 대조했다. 최종 ARM64 Settin
 | 하단·경계 | 닫기[ESC]/일괄 레벨업/추천 자동 버튼, 프레임 하단이 viewport 안에 있음 | 같은 하단 버튼·프레임이 viewport 안에 있음 | 화면 밖 잘림 없음 |
 
 소스 확인 범위: `NativeGame.cs`의 시작 `Simulation.Materials=1000`, `SourceStarterFixture.CreateKiSlash()`의 LMB 기검참, `NativeSkills.cs`의 `Config.KiSlashLevel`·`Player.Level`·`Materials` 표시와 `미이식` 분기는 U05 정의/상태 계약에 맞는다. 이는 화면/소스 확인이며 새 습득·강화·합성 실행 검사가 아니다. 물리 mouse 클릭·호버로 하는 세부 습득/장착은 이전 CUA 클릭 위치 문제로 HOLD를 유지하고 재시도하지 않았다. U05 원문의 미이식 12슬롯·SP/강화·동적 제단 범위도 그대로다. 대표 화면에서 새 가림/잘림 결함은 발견되지 않아 owner hunk 요청은 없다.
+
+## A14 G forge window Player acceptance — 2026-10-27
+
+[PC-A14 원문](UNITY_A14_FORGE_20261026.md)과 현재 `NativeGame.cs`의 `HandlePanelHotkeys`→`OnPanelRequested("forge")`, 기본 `forge=KeyG` 바인딩을 먼저 확인했다. 최종 ARM64 Settings QA 앱을 새 marker 루트에서 재사용한 실제 OS 키 검수다(build 0·제품/전투/seed/save 변경 0). 1280 PID 45601과 1920 PID 45678을 정확 argv·`A15_QA_DIRECT phase=read` 로그로 식별하고 모두 종료했다. 처음 flag 누락으로 입구 화면을 연 PID 45569는 G 검수 전에 종료했으며 판정에 포함하지 않는다. 다른 사용자 앱은 조작하지 않았다.
+
+| 항목 | 1280×720 viewport | 1920×1080 viewport | 판정 |
+|---|---|---|---|
+| G 열기·닫기 | Settings→G로 대장간, 다시 G로 field 복귀 | Settings→G로 대장간, ESC로 field 복귀 | 실제 OS 키 경로 PASS |
+| 제목·탭·본문 | `복수의 대장간`, 상단 대장간 활성 붉은 탭, 왼쪽 6개 탭(강화/물약/분해/리롤/유물/제작), 오른쪽 강화 본문이 창 안에 있음 | 같은 구성·하단 닫기[G]가 창 안에 있음 | 대표 배치 PASS |
+| 현재 fixture 표시 | 악의 1,000, 장착 장비 카드 `녹슨 검 +0`/`나무 견갑 +0`/`천 갑옷 +0`, 성공률 99%, 보이는 카드 비용 악의 7500 | 같은 값; 상단 AI 강화 칩·스크롤 바도 보임 | 표시값 대조 PASS; 구매/강화 실행은 별도 |
+
+컷은 `_out/A15-GAME-FULLSCREEN-20261027/a14-1280-forge.png`·`a14-1920-forge.png`, 로그는 `a14-a13-1280.log`·`a14-a13-1920.log`다. 긴 강화 목록의 아래 항목은 **내부 스크롤 영역**에 있고 전체 창/푸터는 viewport 안에 있다. 이번 컷은 기본 강화 탭만 검수했다. 다른 5개 탭의 실화면, 실제 물리 mouse 탭·칩·스크롤·강화 시도는 HOLD이며 PC-A14가 정의한 표시 전용 실행 버튼을 PASS로 바꾸지 않는다. 이전 CUA click 위치 gate는 재시도하지 않았다. 현재 대표 컷에서 새 가림·화면 밖 잘림 결함이 없어 PC owner hunk 요청은 없다.
