@@ -202,7 +202,7 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
 ## 2026-10-27 — main `bgm/` NFD 중복 71개 삭제 (`758efa140`, Mac pull 주의)
 
 - 사운드총괄이 `bgm/`의 NFD(Mac 분해형) 중복 경로 71개를 지웠다(사용자 승인). 지운 파일은 NFC 사본과 해시가 같고 코드는 전부 NFC 경로를 쓰므로 재생 영향은 없다.
-- **위험**: macOS 파일시스템은 NFC/NFD를 같은 이름으로 본다. NFD 경로 삭제가 적용될 때 같은 이름의 NFC 파일까지 디스크에서 지워질 수 있다. `main`을 pull할 때, 그리고 `codex/unity-mac-20261024`·`unity/main`(아직 `bgm/` 154개)에서 `main`으로 checkout을 바꿀 때 모두 해당한다.
+- **위험**: macOS 파일시스템은 NFC/NFD를 같은 이름으로 본다. NFD 경로 삭제가 적용될 때 같은 이름의 NFC 파일까지 디스크에서 지워질 수 있다. `main`을 pull할 때, 그리고 `unity/main`(아직 `bgm/` 154개)에서 `main`으로 checkout을 바꿀 때 모두 해당한다.
 - **Codex 조치**
   1. pull/checkout 전에 `git status --short bgm`이 빈 출력인지 확인한다.
   2. `main` 반영 후 `git ls-files bgm | wc -l` = 81, `git status --short bgm` = 빈 출력인지 확인한다. 파일이 사라졌으면 `git restore bgm`으로 복원한다.
@@ -210,3 +210,16 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
   4. Unity `Resources/Audio`에는 NFC 또는 ASCII 경로만 쓴다.
   5. 확인 결과를 Mac→PC 회신에 1줄로 남긴다(81 여부, precomposeunicode 값).
 - 상세: `docs/6사운드디자인/BGM_NFC_NFD_AUDIT_20261026.md` ⑥·⑦.
+
+## 2026-10-27 — PC Unity 브랜치 2개 `unity/main` 병합 요청 (C01 → B07 순)
+
+- PC가 `unity/main` `16985ab15` 기준으로 대조했다. 두 브랜치 모두 파일 추가만 있고 지운 파일은 없다. 각각 붙여도, C01 → B07 순서로 이어 붙여도 merge-tree 충돌 0이다. 두 브랜치가 함께 고치는 파일은 `unity/.gitignore` 하나이며 서로 다른 줄이다.
+- **1. `claude/unity-pc-c01-20261026` `9d11d4325`** (6커밋, 36파일 +6,519)
+  - CX-01 적 수치표: 원본 대조 2,784건 / 불일치 0
+  - CX-02 mkEn 전체(EnemySpawn/EnemyFactory): 원본 대조 538케이스 204,592건 / 불일치 0, 변이 테스트 22/23 검출
+  - Codex 파일 변경 0. 게임 연결 전(Simulation 미연결).
+- **2. `claude/unity-pc-b07-20261026` `09f56d877`** (1커밋, 35파일 +2,284)
+  - 돌진·패링·방패·포이즈 Core: 원본 함수 대조 146,580건. 게임 연결 패치는 초안으로만 포함.
+  - 제외 유지: `FirstPlayable.unity`, `SceneTemplateSettings.json`, `HudBlendCapture.cs.meta`, 재임포트 `.meta`.
+- **Codex 조치**: C01 → B07 순서로 `unity/main`에 병합(비강제 push). 병합 후 Unity 컴파일 오류 0을 확인하고, `unity/main` SHA를 Mac→PC 회신에 1줄로 남긴다.
+- 아직 남은 PC 브랜치: `claude/unity-pc-map3d-20261026`(이번 요청 아님).
