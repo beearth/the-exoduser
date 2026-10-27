@@ -117,7 +117,7 @@ namespace Exoduser.UnityPort
         {
             ResetFirstPractice();
             startupResetCount++;
-            foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();
+            foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();ResetFieldBossViews();
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ApplySettingsOptions();
@@ -134,6 +134,8 @@ namespace Exoduser.UnityPort
             Simulation.EnableFieldSpawns();
             Simulation.SpawnStartEnemies();   // M1 fix: the fixed 다안 육괴 x2 + 문지기 + 호위 12~16 initStage(0) places on top of the holes
             Simulation.InitRegions();   // M1-REGION R-A: _regionInit after the holes, start enemies and the gate guard exist
+            Simulation.EnableFieldBosses();   // M1-REGION R-B: the four 심연의 앵글러 (spawned by the first tick); the camera decides when they may shoot (_fieldEnemyCanShoot)
+            Simulation.FieldEnemyCanShoot=(x,y)=>{float hh=view.orthographicSize*100f,hw=hh*view.aspect,cx=view.transform.position.x*100f,cy=-view.transform.position.y*100f;return Math.Abs(x-cx)<=Math.Max(0,hw-64)&&Math.Abs(y-cy)<=Math.Max(0,hh-64);};
             UpdateViews();
         }
         bool SafePoint(ref float x,ref float y,float r)
@@ -289,6 +291,7 @@ namespace Exoduser.UnityPort
                 ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f,tint.a):tint;
                 UpdateEnemyShieldArc(e,ev);
             }
+            PruneEnemyViews();FieldBossViews();
             UpdateDropViews();
             kiView?.Update(Simulation);
             boltView?.Update(Simulation);BossViewUpdate();
@@ -388,6 +391,7 @@ namespace Exoduser.UnityPort
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
+            DrawFieldBossBars();
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);var keep=center.normal.textColor;if(d.shield)center.normal.textColor=new Color(.4f,.87f,1f);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);center.normal.textColor=keep;}
             revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);

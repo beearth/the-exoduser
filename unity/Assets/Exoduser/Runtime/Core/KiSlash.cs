@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort.Core
         public int TrailHead;
         // The original Set stores actor identity, not an ID that could be reused.
         internal readonly HashSet<EnemyState> HitEnemies = new HashSet<EnemyState>();
+        internal readonly HashSet<FieldBossState> HitFieldMobs = new HashSet<FieldBossState>();   // c._hitSet for the anglers (updateCrescents -> _hurtFieldMobs)
         internal bool FirstPracticeBornInTick;
         internal int FirstPracticeChargeTier;
     }
@@ -67,7 +68,7 @@ namespace Exoduser.UnityPort.Core
             projectile.FirstPracticeChargeTier=step==3?KiChargeTier(chargeFrames):0;
             for (int i = 0; i < 5; i++) { projectile.TrailX[i] = Player.X; projectile.TrailY[i] = Player.Y; }
             projectile.TrailHead = 0;
-            projectile.HitEnemies.Clear();
+            projectile.HitEnemies.Clear(); projectile.HitFieldMobs.Clear();
             return projectile;
         }
 
@@ -83,6 +84,7 @@ namespace Exoduser.UnityPort.Core
                 projectile.TrailY[projectile.TrailHead] = projectile.Y;
                 bool wall = IsProjectileWall != null ? IsProjectileWall(projectile.X, projectile.Y) : !Pass(projectile.X, projectile.Y, 0);
                 if (wall) { projectile.Active = false; continue; }
+                HurtFieldMobs(projectile.X, projectile.Y, projectile.Radius, projectile.Damage, projectile.HitFieldMobs);   // web 20025
                 foreach (var enemy in Enemies) {
                     if (!enemy.Alive || !Finite(enemy.X) || !Finite(enemy.Y) || projectile.HitEnemies.Contains(enemy)) continue;
                     if (!(Distance(projectile.X, projectile.Y, enemy.X, enemy.Y) < projectile.Radius + enemy.Radius)) continue;
