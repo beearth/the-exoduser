@@ -33,7 +33,9 @@ namespace Exoduser.UnityPort {
   Texture2D sharpTex,blurTex,glyphTex,glow;Font sans;bool ready;readonly Dictionary<string,Texture2D> gradients=new Dictionary<string,Texture2D>();
   readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
   Input input;bool active,hiding;float start,hideStart,hideFrom;public float? ForcedAge;
-  public bool Active{get{return active;}}
+  // The hide fade finishes in the state check, not only while drawing: OnGUI does not run without graphics (-batchmode / -nographics), and the M1 route check reads this value.
+  public bool Active{get{ResolveHide();return active;}}
+  void ResolveHide(){if(active&&hiding&&Alpha()<=.001f){active=false;hiding=false;}}
   // set by the caller while a full-screen panel (inventory, forge, skills, stats, settings) is open: web ui-foundation.css 124 / game.html 2469 hide #bossBar then
   public bool Suppressed;
   // measurements for the capture check (design px)
