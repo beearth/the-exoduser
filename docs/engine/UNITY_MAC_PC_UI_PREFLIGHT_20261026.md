@@ -127,3 +127,17 @@ Mac Unity 6000.6.7f1 Editor 단독 상태를 확인하고 **비대화형 script 
 | 런타임 | Player·OS 키·실제 로비/구역 제목·자동 물약 실플레이·설정 저장 회귀 **미검증**. 기존 사용자 앱·저장 조작0 |
 
 현재 판정은 **PC 1–19 patch 순서의 Mac 접점 코드 통합·C# 컴파일 PASS / Player 런타임 미검증**이다. 1·13·14는 원본 patch의 Mac 문맥만 수동 적응했고, PC 소유 파일은 merge된 원본을 직접 수정하지 않았다. `NativeGame.cs` SHA256 `fffa0748667ad914f6b84849e4e62537b9047c2d708b7bfd1069907ba29acc7d`.
+
+## U08 keyboard tab transition Player review — 2026-10-27
+
+The preceding checkpoint's Player HOLD was specific to that earlier source. The final ARM64 Settings QA app from `/Users/fordeargamers/exoduser-wt/_out/A15-GAME-FULLSCREEN-20261027/build/EXODUSER-Unity.app` was reused without a build or product edit. A fresh exact-marker root `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-IO-U08-TABBAR-20261027` isolated the direct A15 entry. The 1280x720 viewport belonged to flagged PID 43596 and the 1920x1080 viewport to flagged PID 43626; full argv and `A15_QA_DIRECT ... listening=False` were checked. Both were stopped, and no unflagged or user app was operated.
+
+| Keyboard path / layout | 1280 Player | 1920 Player | Verdict |
+|---|---|---|---|
+| Settings initial | `u08-1280-settings.png`: Settings nav red; Controls A15 body below nav | `u08-1920-settings.png`: same active nav and body separation | Representative visual PASS |
+| Settings K → Skill | `u08-1280-skill.png`: Skill nav red, skill altar/content below nav | `u08-1920-skill.png`: same active nav/content hierarchy | OS keyboard PASS |
+| Skill TAB → Inventory | `u08-1280-inventory.png`: Inventory nav red, equipment/bag/summary columns below nav | `u08-1920-inventory.png`: Inventory nav red, equipment/bag/comparison below nav | OS keyboard PASS |
+| Inventory K → Skill | `u08-1280-skill-return.png`: Skill nav red again | Not separately replayed at 1920 | 1280 OS keyboard PASS |
+| ESC close/reopen | At 1280, Skill ESC and Inventory ESC each returned to field; field ESC opened pause menu; pause menu K opened Skill (`u08-1280-after-esc.png`, `u08-1280-inventory-esc-world.png`, `u08-1280-pause-main.png`, `u08-1280-pause-to-skill.png`). At 1920, Inventory ESC returned to field (`u08-1920-after-esc.png`) | As stated | Observed paths PASS |
+
+The tab bar and body did not overlap in these captures; this is a representative 1280/1920 visual verdict, not a pixel parity judgment for all windows. Mouse tab clicks were intentionally not repeated because the prior macOS click-position tool path is unresolved. Forge/Stat panel state, first-practice gating, physical mouse, and web-equivalent color/font pixel parity remain separate. The PC-owned `NativePanelTabBar` and persistence schema were unchanged. Logs: `u08-1280-player.log` and `u08-1920-player.log` beside the screenshots.
