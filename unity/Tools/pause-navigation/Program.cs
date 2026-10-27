@@ -11,8 +11,10 @@ class Program {
  n.ObserveReleased(true);Check(n.WaitingForRelease,"held opening key stays fenced");
  Check(Key(PauseKey.Back)==PauseAction.Resume,"main Escape resumes");
  n.Reset();Key(PauseKey.Up);Check(n.Cursor==3,"reverse wrap");Key(PauseKey.Down);Check(n.Cursor==0,"forward wrap");
- Key(PauseKey.Next);Key(PauseKey.Accept);Check(n.Page==PausePage.Settings&&n.Tab==0&&n.Cursor==0&&n.Count==6,"keyboard opens four-tab settings");
+ Key(PauseKey.Next);Key(PauseKey.Accept);Check(n.Page==PausePage.Settings&&n.Tab==0&&n.Cursor==0&&n.Count==7,"keyboard opens four-tab settings");
  Check(n.Handle(PauseKey.Accept,false)==PauseAction.None,"held Enter does not act again");
+ Key(PauseKey.Down);Key(PauseKey.Down);Key(PauseKey.Down);Key(PauseKey.Down);Check(n.Cursor==4&&Key(PauseKey.Accept)==PauseAction.ToggleFullscreen,"Game fullscreen uses shared toggle action");
+ Key(PauseKey.Home);Check(n.Tab==0&&n.Cursor==0,"Game Home returns to tab");
  Key(PauseKey.Right);Check(n.Tab==1&&n.Cursor==1&&n.Count==8,"Game right selects Display");
  Key(PauseKey.Right);Check(n.Tab==2&&n.Cursor==2&&n.Count==8,"Display right selects Audio without changing values");
  Key(PauseKey.Right);Check(n.Tab==3&&n.Cursor==3&&n.Count==6,"Audio right selects Controls");

@@ -10,7 +10,7 @@ PC 전달 branch `codex/ui-resume-player-20261026` SHA `f0f882c19fd201ebcdc7a323
 
 | 탭/영역 | 현재 연결 | 제한 |
 |---|---|---|
-| 게임 0 | 4탭 순서와 제목, 이 빌드에서 변경 가능한 게임 설정이 없다는 안내 | 언어·캐릭터 선택·난이도·자동 물약 등 엔진/저장 owner 미연결. 활성 스위치/가짜 값 없음 |
+| 게임 0 | 4탭 순서와 제목. 2026-10-27 후속부터 기존 전체 화면 상태/콜백을 공유하는 켜짐·꺼짐 버튼 | 언어·캐릭터 선택·난이도·자동 물약 등 나머지 엔진/저장 owner 미연결. F11 단축키 추가 없음 |
 | 화면 1 | FPS **30/60/120/144/244/무제한**, 전체 화면 **켜짐/꺼짐**; 기존 frameCapChanged/fullscreenChanged callback | 웹 해상도·borderless·화면 scale 선택 미이식 |
 | 사운드 2 | SFX/BGM **0–100%**; 기존 sfxChanged/bgmChanged callback. 키보드 좌/우 한 칸 **1%**, 0·100 clamp, 변화 없으면 callback 호출 없음 | BGM 곡 선택·실제 청음은 미검증 |
 | 조작 3 | 기존 `NativeKeyBindList` 인스턴스를 페이지 안에 삽입. KBM 주/보조 20동작·삭제/리셋, 기존 패드 안내, v2 저장 Version 감지는 그대로 | 실제 패드 입력 재지정은 미연결. 목록 자체의 좁은 창 내부 열 재구성은 PC 소유 목록 변경이 필요해 후속 시각 게이트 |
@@ -42,6 +42,7 @@ Unity 6000.6.7f1 Mac ARM64 `PortVerification.Build -settingsQa true` **1회**: r
 | 남은 HOLD | 조작 목록 마우스 클릭에 대기 표시가 나타나지 않아 실제 Esc 취소·Tab 바인딩 입력의 Player PASS는 없다. 좁은 물리 폭 <1100px 1열/scroll, 목록 맨 아래, 루트 일시정지 Tab→인벤토리(첫 연습 구간에서는 panel 전환이 차단됨), SFX 0/100 실기 clamp, 청각 출력, 재시작 후 v2/`cinSeen` 보존, 패드 재지정은 실기 미검증이다. Editor fixture의 직접 key-list 정책 PASS와 구분한다. 전체 A15 인수는 HOLD. |
 
 ## 2026-10-27 조작 키 캡처·격리 저장 Player 후속
+
 
 앞 표의 HOLD는 이전 빌드 시점 기록이다. 이 후속은 `--unity-a15-direct` QA 전용 진입을 추가했다. 실행에는 `--unity-cinematic-persistence-review`, Settings QA 제품명/번들 ID, `_out/UNITY-MAC-A05-IO-*` 절대 경로와 정확한 `qa-output.marker`가 모두 필요하다. `-a15-phase write`는 로비 미리보기 필드의 설정→조작에 직접 진입하고 `up` 주 키 캡처를 시작한다. `read`는 같은 페이지에 대기 없이 진입한다. 이 경로에서만 F6은 `up` 캡처 재개, F7은 사운드 탭/SFX 카드 초점이다. 일반 제품의 로비·설정 입력은 이 플래그를 쓰지 않는다.
 
@@ -77,3 +78,17 @@ PC owner의 키 목록 seam 승인 후 Mac은 `NativeKeyBindList`에 38 ID 표�
 A15 글꼴 후속에서는 미검수 언어 exact43의 실제 스타일 cmap을 감사했다. Mac 설정 제목/탭 `el/th/zh`의 지역 폰트 보정은 ARM64 빌드 오류0·격리 Player 3화면 및 ko 원상복귀로 확인했다. PC 키 목록의 지역 폰트·긴 행 배치는 제안 patch만 남겨 제품 연결·실기 PASS가 아니다. [누락 최소표·경계](UNITY_MAC_A15_FONT_COVERAGE_20261027.md).
 
 추가 PC owner 인수 `97be6444b6…`의 지역 font와 clip 포함 긴 이름 최소 hunk를 `NativeKeyBindList`에 적용했다. Unity 6000.6.7f1의 `GetInstanceID()` CS0619만 font·px 튜플 cache 키로 치환한 뒤 ARM64 QA 빌드 성공/오류0. el/th/zh 실화면·ko 복귀, el 방패 두 줄, 1920 하단 스크롤과 Esc/Tab 캡처 격리를 확인했다. **OS 마우스는 오른쪽 E 표시 버튼 클릭이 왼쪽 Q 캡처로 이어져 HIT RECT FAIL**, 1280 스크롤과 전체29 언어 fit은 HOLD. 제품 입력/저장 코드는 바꾸지 않았다. [적용 범위·증거](UNITY_MAC_A15_FONT_COVERAGE_20261027.md#pc-소유-수정본-인수제품-적용--실화면--2026-10-27).
+
+## 2026-10-27 Game 탭 전체 화면 버튼 후속
+
+웹 `game.html:2617`은 Game 설정 영역 하단에 폭 100% `전체화면 (F11)` 버튼을 두고 `toggleFullscreen()`을 호출한다. Unity는 이 위치의 기능을 Game 탭 첫 카드로 제시하며 F11 단축키 문구와 새 단축키는 추가하지 않았다. `NativePauseMenu.DrawA15FullscreenCard`를 Game index 4와 Display index 5가 공유한다. 두 탭 모두 `Screen.fullScreen`을 받아 같은 `fullscreenChanged` → `NativeGame.SetFullscreenPreference` → `RequestSettingsFullscreen`/host 확인/지연 v2 저장 경로를 쓴다. `PauseNavigation.Count`는 Game에서 6→7(탭 0–3, 버튼 4, 기본값 5, 뒤로 6); Game index 4 Enter는 기존 `PauseAction.ToggleFullscreen`을 반환한다. Display 8, Audio 8, Controls 6과 F11/새 설정값/로비 저장 경로는 변경하지 않았다.
+
+| 영역/ID | 현재 값·위치 | 적용 경로 |
+|---|---|---|
+| Game `fullscreen` | 제목 `전체 화면`/`Fullscreen`, 버튼 `켜짐·꺼짐`/`On·Off`; index 4, 카드 x=16·y=18·width=`content.width-32`·height=190 | 기존 Display 카드의 `GUI.Toggle`과 동일 host callback |
+| Display `fullscreen` | 기존 index 5, 2열 카드 x=`16+cardW+28`·y=18 (좁은 창에서는 x=16·y=238) | Game과 동일 `Screen.fullScreen` 표시·v2 `fullscreen` 필드 |
+| Game footer | 기본값 index 5, 뒤로 index 6 | 기존 기본값 SFX/BGM/FPS만 복원; fullscreen 기본값 신설 없음 |
+
+순수 `PauseNavigationTests` **44/44 PASS**(Game 버튼 선택·공유 Toggle action·Home 복귀 2건 포함). Unity 6000.6.7f1 ARM64 Settings QA 빌드 **1회 Succeeded/errors0**, receipt `/Users/fordeargamers/exoduser-wt/_out/A15-GAME-FULLSCREEN-20261027/build-receipt.json`. marker `EXODUSER_MAC_A05_IO_V1`의 새 격리 루트 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-IO-A15-GAME-FULLSCREEN-20261027`에서 v2 revision10·`fullscreen:true`와 기존 `binds2.up=KeyX`/중첩 `gpKeyMap`/unknown `qaSentinel`/`cinSeen:true`를 seed했다. 전체 argv가 일치한 고유 QA PID42292에서 Game 탭 켜짐 → 키보드 Down×4·Return → 실제 1280×720 창 모드, Game 꺼짐, Display 꺼짐을 확인했다. 저장된 JSON은 revision11·`fullscreen:false`이며 나머지 위 보존값과 sfx36/bgm45/frameCap144가 그대로다. PID42346으로 같은 격리 루트를 재시작해 1280×720 창과 Game 꺼짐을 확인했고, QA F8 English에서 `Fullscreen`/`Off`가 카드 안에 표시됐다. 원본 PNG는 같은 `_out/A15-GAME-FULLSCREEN-20261027/`의 `game-fullscreen-before.png`, `game-windowed-after.png`, `display-windowed-sync.png`, `restart-game.png`, `restart-game-en.png`; Player 로그 `player-1.log`/`player-2.log`다. 두 QA PID는 종료했고, 기존 사용자 앱은 조작하지 않았다.
+
+**VISUAL VERDICT: PASS**는 변경된 Game 카드의 ko/en 문구·창 전환 및 Display 표시 동기화에 한정한다. 일반 물리 마우스, 전체29언어, Game 로비 버튼, F11은 이 판정에 포함하지 않는다. Unity import의 tracked 413파일과 untracked 2파일은 `_out/A15-GAME-FULLSCREEN-20261027/`에 백업하고 원래 HEAD bytes로 복원했다.

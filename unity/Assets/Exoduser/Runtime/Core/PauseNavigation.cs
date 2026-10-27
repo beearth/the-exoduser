@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort.Core
   public int Cursor {get;private set;}
   public bool Focused {get;private set;}=true;
   public bool WaitingForRelease {get;private set;}
-  public int Count {get{return Page==PausePage.Main?4:Page==PausePage.Quit?2:Tab==1||Tab==2?8:6;}}
+  public int Count {get{return Page==PausePage.Main?4:Page==PausePage.Quit?2:Tab==0?7:Tab==1||Tab==2?8:6;}}
   public void Reset(){Page=PausePage.Main;Cursor=0;Fence();}
   public void Open(PausePage page){Page=page;Cursor=page==PausePage.Settings?Tab:0;Fence();}
   public void SelectTab(int tab){if(tab<0||tab>3)return;Tab=tab;Cursor=tab;Fence();}
@@ -35,6 +35,7 @@ namespace Exoduser.UnityPort.Core
    if(Cursor<4){if(left||right)SelectTab((Cursor+(left?3:1))%4);else if(key==PauseKey.Accept)SelectTab(Cursor);return PauseAction.None;}
    if(Cursor==Count-1&&key==PauseKey.Accept){BackPage();return PauseAction.None;}
    if(Cursor==Count-2&&key==PauseKey.Accept)return PauseAction.Defaults;
+   if(Tab==0&&Cursor==4&&key==PauseKey.Accept)return PauseAction.ToggleFullscreen;
    if(Tab==1){if(Cursor==4){if(left)return PauseAction.FramePrevious;if(right)return PauseAction.FrameNext;}if(Cursor==5&&key==PauseKey.Accept)return PauseAction.ToggleFullscreen;}
    if(Tab==2){if(Cursor==4){if(left)return PauseAction.SfxDown;if(right)return PauseAction.SfxUp;}if(Cursor==5){if(left)return PauseAction.BgmDown;if(right)return PauseAction.BgmUp;}}
    return PauseAction.None;

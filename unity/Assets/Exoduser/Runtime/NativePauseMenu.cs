@@ -144,8 +144,8 @@ namespace Exoduser.UnityPort
     settingsScroll=Mathf.Clamp(settingsScroll,0,max);
     GUI.BeginGroup(content);
     float x1=16,x2=single?16:16+cardW+gap,y1=18-settingsScroll,y2=single?238-settingsScroll:y1;
-    if(tab==0)GUI.Label(new Rect(x1,y1,cardW,100),T("이 빌드에서 변경할 수 있는 게임 설정이 없습니다.","No game settings can be changed in this build."),body);
-    else if(tab==1){DrawA15FrameCard(new Rect(x1,y1,cardW,190));DrawA15FullscreenCard(new Rect(x2,y2,cardW,190),fullscreen);}
+    if(tab==0)DrawA15FullscreenCard(new Rect(x1,y1,content.width-32,190),fullscreen,4);
+    else if(tab==1){DrawA15FrameCard(new Rect(x1,y1,cardW,190));DrawA15FullscreenCard(new Rect(x2,y2,cardW,190),fullscreen,5);}
     else{DrawA15VolumeCard(new Rect(x1,y1,cardW,190),true);DrawA15VolumeCard(new Rect(x2,y2,cardW,190),false);}
     GUI.EndGroup();
    }
@@ -164,10 +164,10 @@ namespace Exoduser.UnityPort
    for(int i=0;i<NativeSettingsState.FrameCapCount;i++){int cap=NativeSettingsState.GetFrameCap(i);string label=cap==0?T("무제한","Unlimited"):cap.ToString();if(GUI.Button(new Rect(card.x+12+i*buttonW,card.y+78,buttonW-2,46),label,settings.FrameCap==cap?activeFpsButton:fpsButton)){settings.TrySetFrameCap(cap);frameCapChanged(cap);navigation.Fence();}}
    GUI.enabled=enabled;
   }
-  void DrawA15FullscreenCard(Rect card,bool fullscreen)
+  void DrawA15FullscreenCard(Rect card,bool fullscreen,int cursor)
   {
    Fill(card,new Color(.10f,.085f,.07f,.85f));Border(card,new Color(.34f,.27f,.19f));GUI.Label(new Rect(card.x+12,card.y+12,card.width-24,38),T("전체 화면","Fullscreen"),body);
-   PointAt(card,5);FocusBorder(card,5);bool enabled=GUI.enabled;GUI.enabled=enabled&&fullscreenChanged!=null;
+   PointAt(card,cursor);FocusBorder(card,cursor);bool enabled=GUI.enabled;GUI.enabled=enabled&&fullscreenChanged!=null;
    bool next=GUI.Toggle(new Rect(card.x+12,card.y+76,card.width-24,48),fullscreen,fullscreen?T("켜짐","On"):T("꺼짐","Off"),button);
    if(next!=fullscreen&&fullscreenChanged!=null){fullscreenChanged(next);navigation.Fence();}GUI.enabled=enabled;
   }
