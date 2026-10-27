@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort.Core
         public int CalculateKiSlashDamage(int step, float chargeFrames = 0)
         {
             int level = Math.Max(1, Config.KiSlashLevel);
-            double reference = Config.WeaponAttack + Config.WeaponEnhanceAttack + Player.BaseAttack + Config.StrengthFlat + (int)(Player.Level * .5);
+            double reference = Config.WeaponAttack + Config.WeaponEnhanceAttack + Config.WeaponFlatAttack + Player.BaseAttack + Config.StrengthFlat + (int)(Player.Level * .5);
             double skill = 12 + (level - 1) * 10.08 * .5;
             double charge = step == 3 ? Math.Pow(2, KiChargeTier(chargeFrames)) : 1;
             return (int)(reference * 7.0 * Config.DamageMultiplier * skill * charge);

@@ -15,13 +15,17 @@ namespace Exoduser.UnityPort.Core
         public float StartX, StartY;
         public int StageIndex = 0, DifficultyIndex = 5;
         public float WeaponAttack = 0, WeaponEnhanceAttack = 0;
+        // web _slotFlatAtk(wp()): sharpAtk + brutalAtk + ruinAtk values. meleeRef (kiSlash) adds it; the plain weapon swing line in the update loop does not.
+        public float WeaponFlatAttack = 0;
         public float WeaponSpeed = .45f, WeaponRange = 50, WeaponArc = .95f;
         public int PlayerMaxHp = 300, PlayerBaseAttack = 15;
         public float PlayerSpeed = 2.6f, PlayerMaxStamina = 100, PlayerMaxMana = 100;
         public float PlayerMaxShield = 100, PlayerStartingShield = 0;
         public float InitialIframes = 0;
         public float PlayerHpRegen = .05f, PlayerStaminaRegen = .05f, PlayerManaRegen = .05f;
-        public float PlayerPhysicalDefense = 2, PlayerCriticalChance = 0, PlayerCriticalMultiplier = 1.5f;
+        public float PlayerPhysicalDefense = 2;
+        // double like the web statCrit()/statCritDmg(): a float multiplier truncates the crit damage one point low on large hits.
+        public double PlayerCriticalChance = 0, PlayerCriticalMultiplier = 1.5;
         public float AttackSpeedMultiplier = 1;
         public double DamageMultiplier = .7, AccessoryDamageBonus = 0;
         public float DropBonus = 1;
