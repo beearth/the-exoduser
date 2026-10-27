@@ -26,6 +26,8 @@ namespace Exoduser.UnityPort.Core
         public double DamageMultiplier = .7, AccessoryDamageBonus = 0;
         public float DropBonus = 1;
         public bool EnemyAiEnabled = true;
+        public double ExpBonus = 0;   // web _eqAffix('expBonus') (necklace base expBonus field is not an Unity item field)
+        public int LevelCap = 0;      // web _DEMO_MODE ? _DEMO_LV_CAP : none (0 = none)
     }
 
     [Serializable]
@@ -37,6 +39,7 @@ namespace Exoduser.UnityPort.Core
         public bool KiChargeActive;
         public float KiChargeTicks;
         public int Level = 1, Experience, MaxExperience = 15, StatPoints, PassivePoints;
+        public string TransDate; public int TransCount; // web P._transLvDate/_transLvCount (one transcend level per local day)
         public int BaseAttack, BaseDefense = 2;
         public string State = "idle";
     }
@@ -50,6 +53,7 @@ namespace Exoduser.UnityPort.Core
         public float Poise, MaxPoise, Stunned, MaxStunned, PoiseRegenTicks;
         public float ProjectileTicks, ProjectileChargeTicks;
         public bool Alive = true, Alerted, HasLastMove;
+        public bool IsBoss; public int Elite; // web e.ib / e.elite (tier index): kill XP, combo timer
         public string State = "idle";
     }
 

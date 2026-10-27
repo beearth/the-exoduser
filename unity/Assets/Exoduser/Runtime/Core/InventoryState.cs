@@ -70,6 +70,7 @@ namespace Exoduser.UnityPort.Core {
   }
   static string AffixUnit(string id){switch(id){case "defFlat":case "shieldFlat":case "pickupRadius":case "flatLightDmg":return "val";case "poisonDot":return "dps";case "onHitPoison":case "onHitBleed":return "prob";case "ancHP":case "projDmgPct":case "pierceDmgKeep":case "reflect":case "dropRate":case "cooldownRed":case "darkPen":case "counterAtkDmg":case "maxHPPct":case "darkDR":case "slowDmgUp":case "poisonDmgPct":case "skDarkPillarDmg":return "pct";default:return null;}}
   double Affix(string name){double v=0;foreach(var i in Equipped)if(i?.affixes!=null)foreach(var a in i.affixes)if(a.id==name)v+=a.value;return v;}
+  public double AffixTotal(string name){return Affix(name);} // web _eqAffix(id)
   double Implicit(string name){double v=0;foreach(var i in Equipped)if(i!=null&&i._implicitStat==name)v+=i._implicitVal;return v;}
   public InventoryStats CalculateStats(int level,int stage=1,int difficultySigned=0){if(level<1||stage<1||difficultySigned<-5||difficultySigned>5)throw new ArgumentOutOfRangeException();
    double lb=(int)(level*.5),str=lb,dex=lb,intel=lb,lck=lb,hp=0,mp=0,shield=0,st=0,def=2,damage=0;

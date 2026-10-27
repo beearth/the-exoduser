@@ -243,13 +243,13 @@ namespace Exoduser.UnityPort.Core
         {
             if (!enemy.Alive) return;
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
-            enemy.Alive = false; Kills++; Combo++; ComboTicks = Math.Min(1200, ComboTicks + 60);
+            enemy.Alive = false; Kills++; Combo++; ComboTicks = enemy.IsBoss ? Math.Min(1800, ComboTicks + 1800) : Math.Min(1200, ComboTicks + 60);
             Materials += 4;
             // Web kill drop (game.html 43094-43099): hp pays malice (+1, a third of the draws), st/mp are discarded; the old quickslot counters stay unused.
             ApplyKillDrop(enemy);
             RollNormalEquipment(enemy);
-            double bonus = 1 + (Combo / 100) * .05 + Math.Max(0, Config.DifficultyIndex - 5) * .10;
-            AddExperience((int)(Math.Max(5, (int)(enemy.Level * .4)) * bonus));
+            bool trans; int xp = LevelExp.KillValue(Player.Level, enemy.Level, enemy.IsBoss, enemy.Elite, LevelExp.ComboBonus(Combo, Config.DifficultyIndex - 5), out trans);
+            AddExperience(xp, trans);
         }
 
         private void RollNormalEquipment(EnemyState enemy)
@@ -281,28 +281,22 @@ namespace Exoduser.UnityPort.Core
             best.Picked = true; CollectedLoot.Add(best);
         }
 
-        public static int CalculateMaxExperience(int level)
-        {
-            if (level < 1) throw new ArgumentOutOfRangeException(nameof(level));
-            if (level < 1000) return (int)((15 + level * 2.5 + level * level * .05) * Math.Pow(1.001, level));
-            return (int)Math.Floor(5000000 + (double)(level - 999) * (level - 999) * 10000);
-        }
+        public static int CalculateMaxExperience(int level) { return LevelExp.MaxExperience(level); }
 
-        public void AddExperience(int input)
+        // Raised once per addExp call that gained a level (web addExp 43226-43242); NativeGame shows the A20 overlay from it.
+        public event Action<LevelUpEvent> LevelledUp;
+        public Func<string> TodayKey = () => LevelExp.TodayKey(DateTime.Now);
+
+        public void AddExperience(int input, bool trans = false)
         {
-            Player.Experience += input / 3;
-            bool levelled = false;
-            // This slice excludes transcendence, its date lock and unlock side effects.
-            while (Player.Experience >= Player.MaxExperience && Player.Level < 1000) {
-                Player.Experience -= Player.MaxExperience; Player.Level++; levelled = true;
-                Player.MaxExperience = CalculateMaxExperience(Player.Level); Player.StatPoints += 3;
-                if (Player.Level % 2 == 0) Player.PassivePoints++;
-            }
-            if (levelled) {
-                Player.Hp = Math.Min(Player.MaxHp, Player.Hp + (int)(Player.MaxHp * .2));
-                Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + (int)(Player.MaxStamina * .2));
-                Player.Mana = Math.Min(Player.MaxMana, Player.Mana + (int)(Player.MaxMana * .2));
-            }
+            var ctx = new ExpContext { AffixExpBonus = Config.ExpBonus, DemoLevelCap = Config.LevelCap, Today = TodayKey() };
+            var up = LevelExp.Add(Player, input, trans, ctx);
+            if (up == null) return;
+            // Web 43228: +20% of each maximum, capped. Passive-queue auto-invest (_processPassiveQueue) and the Lv300/700 skill unlocks belong to the passive/skill rows.
+            Player.Hp = Math.Min(Player.MaxHp, Player.Hp + (int)(Player.MaxHp * .2));
+            Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + (int)(Player.MaxStamina * .2));
+            Player.Mana = Math.Min(Player.MaxMana, Player.Mana + (int)(Player.MaxMana * .2));
+            var handler = LevelledUp; if (handler != null) handler(up);
         }
 
         private void TickEnemy(EnemyState enemy)

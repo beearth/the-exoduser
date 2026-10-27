@@ -46,3 +46,6 @@
 !/Tools/enemy-tables-oracle/EnemyTablesTests.csproj
 /Tools/enemy-tables-oracle/runs/
 /Tools/enemy-spawn-oracle/runs/
+!/Tools/level-exp-oracle/LevelExpTests.csproj
+/Tools/level-exp-oracle/runs/
+/Tools/level-exp-oracle/oracle.json
