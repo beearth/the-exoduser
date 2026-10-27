@@ -62,6 +62,7 @@ const FILES = [
   'growth-tree-detail.css', 'growth-tree-fixed-background.css', 'growth-tree-information.css',
   'ui-foundation.css',
   'ui-refinement.css',
+  'ui-quiet-tier.css',
   'inventory-gems.css',
   'inventory-gems-finish.css',
   'inventory-space.css',
