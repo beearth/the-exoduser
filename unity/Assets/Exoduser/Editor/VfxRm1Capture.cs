@@ -68,6 +68,9 @@ namespace Exoduser
         }
 
         // HDR target (the game camera renders HDR into its intermediate buffer); readback is clamped to 0..1, i.e. what an LDR display shows without tonemapping.
+        // The HDR target holds linear values in a Linear project; the display applies the sRGB curve, so stats must too (Gamma: stored = displayed).
+        static float Disp(float v) { return PlayerSettings.colorSpace == ColorSpace.Linear ? Mathf.LinearToGammaSpace(Mathf.Max(0f, v)) : v; }
+
         static Texture2D Render(Rig rig)
         {
             rig.cam.Render();
@@ -75,9 +78,21 @@ namespace Exoduser
             var hdr = new Texture2D(W, H, TextureFormat.RGBAHalf, false); hdr.ReadPixels(new Rect(0, 0, W, H), 0, 0); hdr.Apply();
             RenderTexture.active = prev;
             var src = hdr.GetPixels(); var dst = new Color32[src.Length];
-            for (int i = 0; i < src.Length; i++) dst[i] = new Color32((byte)Mathf.RoundToInt(Mathf.Clamp01(src[i].r) * 255f), (byte)Mathf.RoundToInt(Mathf.Clamp01(src[i].g) * 255f), (byte)Mathf.RoundToInt(Mathf.Clamp01(src[i].b) * 255f), 255);
+            for (int i = 0; i < src.Length; i++) dst[i] = new Color32((byte)Mathf.RoundToInt(Mathf.Clamp01(Disp(src[i].r)) * 255f), (byte)Mathf.RoundToInt(Mathf.Clamp01(Disp(src[i].g)) * 255f), (byte)Mathf.RoundToInt(Mathf.Clamp01(Disp(src[i].b)) * 255f), 255);
             UnityEngine.Object.DestroyImmediate(hdr);
             var tex = new Texture2D(W, H, TextureFormat.RGB24, false); tex.SetPixels32(dst); tex.Apply(); return tex;
+        }
+
+        // Same state rendered at another resolution (bloom depends on the target size), same display conversion.
+        static Texture2D RenderSized(Rig rig, int w, int h)
+        {
+            var rt2 = new RenderTexture(w, h, 24, RenderTextureFormat.ARGBHalf); rig.cam.targetTexture = rt2; rig.cam.Render();
+            var prev = RenderTexture.active; RenderTexture.active = rt2;
+            var hdr = new Texture2D(w, h, TextureFormat.RGBAHalf, false); hdr.ReadPixels(new Rect(0, 0, w, h), 0, 0); hdr.Apply(); RenderTexture.active = prev;
+            var src = hdr.GetPixels(); var dst = new Color32[src.Length];
+            for (int i = 0; i < src.Length; i++) dst[i] = new Color32((byte)Mathf.RoundToInt(Mathf.Clamp01(Disp(src[i].r)) * 255f), (byte)Mathf.RoundToInt(Mathf.Clamp01(Disp(src[i].g)) * 255f), (byte)Mathf.RoundToInt(Mathf.Clamp01(Disp(src[i].b)) * 255f), 255);
+            UnityEngine.Object.DestroyImmediate(hdr); rig.cam.targetTexture = rig.rt; rt2.Release(); UnityEngine.Object.DestroyImmediate(rt2);
+            var tex = new Texture2D(w, h, TextureFormat.RGB24, false); tex.SetPixels32(dst); tex.Apply(); return tex;
         }
 
         // Deterministic: pause the effect, reset it, and advance exactly ticks x 1/60 s (VisualEffect.Simulate); the render that follows draws that state.
@@ -172,6 +187,7 @@ namespace Exoduser
                 log.AppendLine("t=" + Labels[i] + "s tick=" + Ticks[i] + " crop400: mean=" + mean.ToString("F1") + " top1%=" + top1.ToString("F1") + " max=" + max.ToString("F0") + "  fullscreen mean delta vs env-only=" + (full - envMean).ToString("F2"));
                 if (Labels[i] == "0.1") Save(frame, Path.Combine(dir, "core_0.1s_1920x1080.png"));
                 if (Labels[i] == "0.033") Save(frame, Path.Combine(dir, "core_0.033s_1920x1080.png"));
+                if (Labels[i] == "0.033") { var f900 = RenderSized(rig, 1600, 900); Save(f900, Path.Combine(dir, "core_0.033s_1600x900.png")); }
             }
             strip.Apply(); Save(strip, Path.Combine(dir, "core_strip_7x400.png"));
             // Core with bloom OFF at peak: shows what the bloom adds.
@@ -190,6 +206,16 @@ namespace Exoduser
                 float halo = Ring(pk, W / 2, H / 2, 60, 4, 80);   // glow ring around the core disc (core half-size ~60px)
                 log.AppendLine("sweep threshold=" + th.ToString("F2") + " intensity=" + rig.bloom.intensity.value.ToString("F2") + ": lamp_spill=" + lh.ToString("F2") + " ember_spill=" + eh.ToString("F2") + " core_peak top1%=" + pt.ToString("F1") + " core_halo_ring=" + halo.ToString("F1"));
             }
+            // Colour check: intensity-1 core (VFX_CoreColor), every post effect off. Centre pixel at the peak minus the ground-only pixel = the additive contribution, compared with #fff4d0.
+            foreach (var comp in rig.volume.profile.components) comp.active = false;
+            rig.core.SetActive(false); var colorEnv = rig.vfx.visualEffectAsset;
+            rig.vfx.visualEffectAsset = AssetDatabase.LoadAssetAtPath<VisualEffectAsset>("Assets/Exoduser/VFX/RM1/VFX_CoreColor.vfx");
+            rig.core.SetActive(false); yield return null; yield return null; var gnd = Render(rig);
+            rig.core.SetActive(true); Sample(rig, 3); yield return null; var cc = Render(rig);
+            var g0 = gnd.GetPixel(W / 2, H / 2); var c0 = cc.GetPixel(W / 2, H / 2);
+            Func<float, float, float> add = (c, g) => Mathf.LinearToGammaSpace(Mathf.Max(0f, Mathf.GammaToLinearSpace(c) - Mathf.GammaToLinearSpace(g))) * 255f;   // additive blend happens in linear: subtract there, then encode
+            float dr = add(c0.r, g0.r), dg = add(c0.g, g0.g), db = add(c0.b, g0.b);
+            log.AppendLine("color_check centre add(display 8-bit) r=" + dr.ToString("F1") + " g=" + dg.ToString("F1") + " b=" + db.ToString("F1") + "  target #fff4d0 = 255/244/208 scaled to r=" + dr.ToString("F1") + " -> g=" + (dr * 244f / 255f).ToString("F1") + " b=" + (dr * 208f / 255f).ToString("F1") + "  ground=" + (g0.r * 255f).ToString("F0") + "/" + (g0.g * 255f).ToString("F0") + "/" + (g0.b * 255f).ToString("F0") + " colorSpace=" + PlayerSettings.colorSpace);
             File.WriteAllText(Path.Combine(dir, "measure.txt"), log.ToString());
             Debug.Log("[VFXRM1] CoreTest\n" + log);
             UnityEngine.Object.DestroyImmediate(rig.rt);

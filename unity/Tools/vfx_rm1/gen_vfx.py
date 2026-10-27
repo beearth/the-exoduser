@@ -34,8 +34,12 @@ def split_docs(s):
 def doc_id(d):
     return re.match(r'--- !u!\d+ &(\d+)', d).group(1)
 
+def srgb_to_linear(c):
+    return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
 def hdr(color, intensity):
-    return {"r": color[0] * intensity, "g": color[1] * intensity, "b": color[2] * intensity, "a": 1.0}
+    # The project is Linear: VFX Graph gradient colours are used as linear values, so the authored sRGB hex is converted first, then the HDR multiplier is applied.
+    return {"r": srgb_to_linear(color[0]) * intensity, "g": srgb_to_linear(color[1]) * intensity, "b": srgb_to_linear(color[2]) * intensity, "a": 1.0}
 
 def gradient_json(color, intensity, alpha_keys, two=False):
     ck = [{"color": hdr(color, intensity), "time": 0.0}] + ([{"color": hdr(color, intensity), "time": 1.0}] if two else [])
