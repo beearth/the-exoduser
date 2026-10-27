@@ -23,6 +23,7 @@ namespace Exoduser.UnityPort.Core
                 if (!d.RmFire)
                 {   // telegraph list (DruidTelegraph.cs): one serial per move start; the tide-wave gap is drawn now so the ring can show it from the first telegraph frame (same one draw, earlier)
                     TeleSerial++; d.RmMoveId = mv.Id;
+                    if (mv.Id == "groundFissure") d.RmDir = Atan2(py - d.Y, px - d.X);   // spec #4: the line is aimed once, at the first telegraph tick
                     if (mv.Id == "tideWave") d.RmGap = R() * Math.PI * 2;
                 }
                 if (!d.RmFire && DruidRemodelData.Instant.Contains(mv.Id))
@@ -85,12 +86,12 @@ namespace Exoduser.UnityPort.Core
                     }
                 case "groundFissure":
                     {
-                        d.Facing = Atan2(py - d.Y, px - d.X);
-                        int gfPh = d.BossPhase; int n = gfPh >= 3 ? 3 : gfPh >= 1 ? 2 : 1;
+                        d.Facing = Remodel ? d.RmDir : Atan2(py - d.Y, px - d.X);
+                        int gfPh = d.BossPhase; int n = Remodel ? 1 : gfPh >= 3 ? 3 : gfPh >= 1 ? 2 : 1;   // remodel: one straight line
                         for (int fi = 0; fi < n; fi++)
                         {
                             double off = (fi - (n - 1) / 2.0) * .3, ang = d.Facing + off; int maxLen = FissureMaxLen();
-                            Fissures.Add(new Fissure { X = d.X, Y = d.Y, Ang = ang, Spd = 20, Len = 0, MaxLen = maxLen, T = 0, MaxT = 140, W = 140, Dmg = I(d.Atk * 2), Exploded = false, ExplR = Math.Min(750, maxLen * .3), Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
+                            Fissures.Add(new Fissure { X = d.X, Y = d.Y, Ang = ang, Spd = 20, Len = 0, MaxLen = maxLen, T = 0, MaxT = 140, W = 140, Dmg = I(d.Atk * 2), Exploded = false, ExplR = Math.Min(750, maxLen * .3), Druid = e.IsBoss && DruidStage, Serial = TeleSerial, Straight = Remodel });
                         }
                         host.Shake(10); host.Text(d.X, d.Y - 30, "🌋 균열!", "#a9cc63", 50); d.S = "recover"; d.St2 = 30; break;
                     }
