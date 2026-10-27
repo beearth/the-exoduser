@@ -339,14 +339,14 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 
 | 타입 | 지속시간 | 애니 프레임 수 | 시트 | 성능 영향 |
 |------|---------|-------------|------|----------|
-| fire | 66 (1.1초) | 16 | Fire_FBF_4x4 | 낮음 (drawImage 1회/프레임) |
+| fire | 66 (1.1초) | 16 | Fire_FBF_4x4 (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5)) | 낮음 (drawImage 1회/프레임) |
 | black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 | 낮음 |
-| redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 | 낮음 |
+| redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5)) | 낮음 |
 | rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록) | 중간 (drawImage 4회/프레임) |
 | rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF + Dark_Smoke_6x6 + Dark_BasicImpact | 중간 |
 | dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact | 낮음 |
-| physical_parry(물리탄 E패링) | 12f(0.2초) | 4 | `Fire_ImpactFire_Sheet.png` 첫 행 흰 틴트, `_addBoom(x,y,60,12,'physical')`, 최대180px | `redBean+EL.P`·일반/관통 입탄·`titanEye`의 physicalProjectile 분기. 파편12개·flash0.25도 #ffffff. Q·무지개·기타 E 효과 불변 |
-| fire_medium | 66 (1.1초, min보정) | 16 (4×4) | Fire_MediumImpact | 낮음 — 빨콩 패링 적중, 보호막 흡수, **동물형 돌진(22/30/43) 적중 임팩트** (`_addBoom 80,48`, 2026-06-28) |
+| physical_parry(물리탄 E패링) | 12f(0.2초) | 4 | `Fire_ImpactFire_Sheet.png` 첫 행 흰 틴트(2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 첫 행 = 코어 별→불덩이 팽창 4프레임, 반영 확인 캡처로 흰 스플래시 가독 확인), `_addBoom(x,y,60,12,'physical')`, 최대180px | `redBean+EL.P`·일반/관통 입탄·`titanEye`의 physicalProjectile 분기. 파편12개·flash0.25도 #ffffff. Q·무지개·기타 E 효과 불변 |
+| fire_medium | 66 (1.1초, min보정) | 16 (4×4) | Fire_MediumImpact (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 좌우 반전+90° 회전) | 낮음 — 빨콩 패링 적중, 보호막 흡수, **동물형 돌진(22/30/43) 적중 임팩트** (`_addBoom 80,48`, 2026-06-28) |
 | explosion | 66 (1.1초) | 프로시저럴 | arms 기반 렌더 | 낮음 |
 | ice/lightning/dark | 66 (1.1초) | 프로시저럴 | 원+링 렌더 | 낮음 |
 
@@ -942,8 +942,8 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | 어둠탄 이동 | 기존 마법500~600px/s·유도 규칙. 피해·sz/r 원본값은 변경하지 않음 |
 | _projHitFx | r60, 물리12f/기타48f. 실제 el 우선. isRed는 EL.F일 때만 redbean 폭발·붉은 파티클14개·플래시0.18. 물리는 #ffffff, 나머지는 ELC[el] 파티클12개·플래시0.15, shake6 |
 | 물리탄 수명 만료 (2026-09-08) | 공통 만료 분기의 `p.redBean && _projectileParryClass(p)==='physical'`만 `_addBoom(x,y,60,12,'physical')`: 기존 흰 Fire Impact 첫 행4프레임, 최대180px/0.2초. 흰 파편 `#ffffff` 12개·shake3, 화염 boom·추가 explosion 임팩트·피격 플래시 없음. `redBean+EL.P`와 물리 정체성의 titanEye(EL.F 포함)에 적용. 비물리 redBean은 기존 r40/72f redbean·붉은 파편12·explosion·shake3 유지 |
-| 물리 P | physical → Fire_ImpactFire_Sheet.png 첫 행 섬광·파편4프레임(index0~3) 흰색 틴트. 원본4×4 중 나머지12셀 제외, 최대180px, 12f(0.2초). _physicalImpactSheet는 이미지별 WeakMap 캐시, _tintHolyDome(img,255,255,255): RGB255/alpha=반올림(max(원본RGB)×원본alpha/255). 기존 Fire FBF 흰 연기 연결 제거. 원본/다른 속성/탄 비행/패링 효과 유지 |
-| 화염 F | fire 또는 redbean → Fire_FBF_4x4.png |
+| 물리 P | physical → Fire_ImpactFire_Sheet.png 첫 행 4프레임(index0~3, 2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 이제 백열 코어 별→불덩이 팽창 프레임 — 옛 섬광·파편 아님) 흰색 틴트. 원본4×4 중 나머지12셀 제외, 최대180px, 12f(0.2초). _physicalImpactSheet는 이미지별 WeakMap 캐시, _tintHolyDome(img,255,255,255): RGB255/alpha=반올림(max(원본RGB)×원본alpha/255). 기존 Fire FBF 흰 연기 연결 제거. 원본/다른 속성/탄 비행/패링 효과 유지 |
+| 화염 F | fire 또는 redbean → Fire_FBF_4x4.png (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 승인 필드보스 화염 임팩트 재격자, 180° 회전) |
 | 얼음 I | ice → Ice_ImpactIce_Sheet.png + Ice_MistSmoke_FBF_4x4.png (물파란콩은 기존 별도 Water Impact 경로 유지) |
 | 어둠 D | dark → Dark_MediumImpact.png + Dark_DarkSmoke_FBF_4x4.png |
 | 번개 L | lightning → Lightning_ImpactLightning_Sheet.png + Lightning_Lightning_FBF_4x3.png |
