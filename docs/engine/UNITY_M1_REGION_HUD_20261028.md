@@ -35,8 +35,10 @@
 | 항목 | 내용 |
 |---|---|
 | **웹은 게이트 떠다니는 문구를 화면에 그리지 않는다** | `addTxt('지옥문이 봉인됨 — 지역 클리어 N/4')`(웹 42106)는 55092~55100 화이트리스트(시전/그로기/무적/CRIT/사망/탈출) 밖이라 테스트베드(`_btActive`) 밖에서는 숨겨진다. Unity R-A는 이 문구를 띄웠으므로 `GateSealed`·`GateAnglerBlocked`의 월드 텍스트를 제거해 웹과 맞췄다(이벤트는 로그용으로 유지). 플레이어가 보는 것은 포탈 위 `▼ 지옥문 봉인 (지역 N/4) ▼` 라벨뿐 |
-| 게이트 라벨 서체 | 웹은 `bold 13px "Noto Sans KR"`. 작업 규칙(산세리프 금지)에 따라 Nanum Myeongjo(굵게)로 그렸다 |
-| 영문 줄 서체 | 웹 `Cinzel`(일반) — Unity에는 `CinzelDecorative-Bold`만 있어 그것을 쓴다 |
+| 서체 원칙 | Unity UI는 웹 그대로(유니티 총괄 10-28 지시): 웹이 Noto Sans KR이면 Noto Sans KR, Cinzel이면 Cinzel. **웹 서체가 산세리프임 → 디자인총괄 검토 후보**: 웹 게이트 라벨 `bold 13px "Noto Sans KR"`(52269)이 디자인 규칙(산세리프 금지)에 어긋난다. 웹이 바뀌면 Unity도 따라간다 |
+| 게이트 라벨 서체 | 웹과 같은 Noto Sans KR 굵은 글꼴(`NativeLobbyNotoSansKR-Bold`) |
+| 영문 줄·거리 숫자 서체 | 웹 `Cinzel`과 같은 Cinzel(가변 `Cinzel-VariableFont_wght.ttf`, OFL, godot 폰트 폴더에서 Resources로 복사). 웹의 600 굵기는 `FontStyle.Bold`로 근사 — 가변 굵기 축을 IMGUI 동적 폰트가 못 고른다 |
+| 배너 한글 줄 안의 라틴 글자 | 웹 `Cinzel Decorative` 400. Unity에는 Bold/Black 파일뿐이라 `CinzelDecorative-Bold`를 쓴다(1-1 지역명은 한글이라 영향은 영문 UI에서만) |
 | CSS blur()/drop-shadow() | IMGUI에 없어 오프셋 복사 8방향으로 근사 |
 | 펫 대사·SFX | `한 지역 클리어! 미니맵에서 다음 지역을 확인해.`(펫 대사)와 `SFX.magic(1)`은 펫·해당 SFX 미이식이라 연결하지 않았다 |
 | 앵글러(R-B) | 화살표의 앵글러 분기와 배너 보조 줄 `앵글러 생존`은 `RegionFbAlive`를 읽는다. 앵글러 위치는 R-B 전이라 `_FB_SITES` 좌표(사이트)를 쓰며, R-B가 실제 위치를 노출하면 그 값으로 바꾼다 |

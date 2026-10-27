@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort
   public Vector2 ArrowPos { get; private set; }
   public string ArrowLabel { get { return raLabel; } }
 
-  Font nanum, cinzel; Texture2D arrowTex, lineTex, flareTex; bool ready;
+  Font nanum, cinzelDeco, cinzel, notoSans; Texture2D arrowTex, lineTex, flareTex; bool ready;
   readonly Dictionary<string, GUIStyle> styles = new Dictionary<string, GUIStyle>();
   readonly Dictionary<Color32, Texture2D> glowCache = new Dictionary<Color32, Texture2D>();
 
@@ -104,7 +104,8 @@ namespace Exoduser.UnityPort
   void Init()
   {
    if (ready) return; ready = true;
-   nanum = Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"); cinzel = Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold");
+   nanum = Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"); cinzelDeco = Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold"); cinzel = Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght") ?? cinzelDeco;
+   notoSans = Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Bold") ?? nanum;   // web: Noto Sans KR bold (gate label)
    arrowTex = Resources.Load<Texture2D>("Art/ui/region_arrow");
    lineTex = new Texture2D(32, 1, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
    for (int i = 0; i < 32; i++) lineTex.SetPixel(i, 0, new Color(164 / 255f, 147 / 255f, 115 / 255f, .54f * i / 31f)); lineTex.Apply(false, true);
@@ -131,27 +132,27 @@ namespace Exoduser.UnityPort
   }
   static bool Latin(char ch) { return ch < 0x250 || ch == 0x00B7 || ch == 0x2014; }
   // text with CSS letter-spacing (ls in px added after every glyph, the trailing one included as the browser does); Latin runs use Cinzel Decorative, Hangul Nanum Myeongjo.
-  float SpacedWidth(string s, int size, float ls, bool latinCinzel)
+  float SpacedWidth(string s, int size, float ls, Font latin)
   {
-   float w = 0; foreach (char ch in s) w += CharW(ch, size, latinCinzel) + ls; return w;
+   float w = 0; foreach (char ch in s) w += CharW(ch, size, latin) + ls; return w;
   }
-  float CharW(char ch, int size, bool latinCinzel)
+  float CharW(char ch, int size, Font latin)
   {
-   var f = latinCinzel && Latin(ch) ? cinzel : nanum; var st = St(f, size, TextAnchor.MiddleLeft);
+   var f = latin != null && Latin(ch) ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft);
    return st.CalcSize(new GUIContent(ch.ToString())).x;
   }
-  void SpacedLine(string s, float cx, float cy, int size, float ls, Color col, bool latinCinzel, Vector2 off)
+  void SpacedLine(string s, float cx, float cy, int size, float ls, Color col, Font latin, Vector2 off)
   {
-   float w = SpacedWidth(s, size, ls, latinCinzel); float x = cx - w / 2f + off.x;
+   float w = SpacedWidth(s, size, ls, latin); float x = cx - w / 2f + off.x;
    foreach (char ch in s)
    {
-    var f = latinCinzel && Latin(ch) ? cinzel : nanum; var st = St(f, size, TextAnchor.MiddleLeft); st.normal.textColor = col;
+    var f = latin != null && Latin(ch) ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft); st.normal.textColor = col;
     GUI.Label(new Rect(x, cy + off.y - size, 80, size * 2), ch.ToString(), st);
-    x += CharW(ch, size, latinCinzel) + ls;
+    x += CharW(ch, size, latin) + ls;
    }
   }
   // soft shadow / blur approximation: ring of offset copies with the total alpha preserved
-  void Ring(string s, float cx, float cy, int size, float ls, bool lc, Color col, float radius, float dy)
+  void Ring(string s, float cx, float cy, int size, float ls, Font lc, Color col, float radius, float dy)
   {
    for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; SpacedLine(s, cx, cy, size, ls, new Color(col.r, col.g, col.b, col.a * .16f), lc, new Vector2(Mathf.Cos(a) * radius, dy + Mathf.Sin(a) * radius)); }
   }
@@ -203,24 +204,24 @@ namespace Exoduser.UnityPort
    }
    GUI.color = old;
    // row 1: gem  KR  gem
-   float kw = SpacedWidth(bKr, KrSize, KrLs, true);
+   float kw = SpacedWidth(bKr, KrSize, KrLs, cinzelDeco);
    Color krCol = bannerPurge ? C(233, 216, 180, .96f * op) : C(223, 214, 194, .92f * op);
-   Ring(bKr, cx, top + KrCy, KrSize, KrLs, true, new Color(0, 0, 0, .9f * op), 5f, 4f);                       // filter: drop-shadow(0 4px 10px rgba(0,0,0,.9))
-   SpacedLine(bKr, cx, top + KrCy, KrSize, KrLs, new Color(0, 0, 0, .55f * op), true, new Vector2(0, 2));      // text-shadow 0 2px 6px #000
-   if (blur > .6f) { Ring(bKr, cx, top + KrCy, KrSize, KrLs, true, new Color(krCol.r, krCol.g, krCol.b, krCol.a * 2.2f), blur * .5f, 0); SpacedLine(bKr, cx, top + KrCy, KrSize, KrLs, new Color(krCol.r, krCol.g, krCol.b, krCol.a * .3f), true, Vector2.zero); }
-   else SpacedLine(bKr, cx, top + KrCy, KrSize, KrLs, krCol, true, Vector2.zero);
+   Ring(bKr, cx, top + KrCy, KrSize, KrLs, cinzelDeco, new Color(0, 0, 0, .9f * op), 5f, 4f);                       // filter: drop-shadow(0 4px 10px rgba(0,0,0,.9))
+   SpacedLine(bKr, cx, top + KrCy, KrSize, KrLs, new Color(0, 0, 0, .55f * op), cinzelDeco, new Vector2(0, 2));      // text-shadow 0 2px 6px #000
+   if (blur > .6f) { Ring(bKr, cx, top + KrCy, KrSize, KrLs, cinzelDeco, new Color(krCol.r, krCol.g, krCol.b, krCol.a * 2.2f), blur * .5f, 0); SpacedLine(bKr, cx, top + KrCy, KrSize, KrLs, new Color(krCol.r, krCol.g, krCol.b, krCol.a * .3f), cinzelDeco, Vector2.zero); }
+   else SpacedLine(bKr, cx, top + KrCy, KrSize, KrLs, krCol, cinzelDeco, Vector2.zero);
    float gemHalf = 3f, gemGap = 12f + 3f;   // 6px diamond, margin 0 12px
    DrawGem(cx - kw / 2f - gemGap, top + KrCy, bGem, op); DrawGem(cx + kw / 2f + gemGap, top + KrCy, bGem, op);
    // row 2: English line, uppercase Cinzel .32em
    string en = bEn.ToUpperInvariant();
-   Ring(en, cx, top + EnCy, EnSize, EnLs, true, new Color(0, 0, 0, .9f * op), 5f, 4f);
-   SpacedLine(en, cx, top + EnCy, EnSize, EnLs, C(168, 153, 127, .72f * op), true, Vector2.zero);
+   Ring(en, cx, top + EnCy, EnSize, EnLs, cinzel, new Color(0, 0, 0, .9f * op), 5f, 4f);
+   SpacedLine(en, cx, top + EnCy, EnSize, EnLs, C(168, 153, 127, .72f * op), cinzel, Vector2.zero);
    // row 3: sub line
    if (!string.IsNullOrEmpty(bSub))
    {
-    Ring(bSub, cx, top + SubCy, SubSize, SubLs, false, new Color(0, 0, 0, .9f * op), 5f, 4f);
-    SpacedLine(bSub, cx, top + SubCy, SubSize, SubLs, new Color(0, 0, 0, .95f * op), false, new Vector2(0, 1));
-    SpacedLine(bSub, cx, top + SubCy, SubSize, SubLs, C(219, 208, 190, .92f * op), false, Vector2.zero);
+    Ring(bSub, cx, top + SubCy, SubSize, SubLs, null, new Color(0, 0, 0, .9f * op), 5f, 4f);
+    SpacedLine(bSub, cx, top + SubCy, SubSize, SubLs, new Color(0, 0, 0, .95f * op), null, new Vector2(0, 1));
+    SpacedLine(bSub, cx, top + SubCy, SubSize, SubLs, C(219, 208, 190, .92f * op), null, Vector2.zero);
    }
    GUI.color = old;
   }
@@ -344,7 +345,7 @@ namespace Exoduser.UnityPort
    float dm = Mathf.Floor(Mathf.Sqrt((raX - sim.Player.X) * (raX - sim.Player.X) + (raY - sim.Player.Y) * (raY - sim.Player.Y)) / 64f);
    float lx = ax - Mathf.Cos(ang) * 68, ly = ay - Mathf.Sin(ang) * 68;
    if (!string.IsNullOrEmpty(raLabel)) OutlinedCenter(raLabel, lx, ly, nanum, 14, FontStyle.Bold, C(228, 214, 185, .96f), 1.5f);
-   OutlinedCenter(dm + "m", lx, ly + 16, cinzel, 12, FontStyle.Normal, C(201, 184, 145, .92f), 1.4f);
+   OutlinedCenter(dm + "m", lx, ly + 16, cinzel, 12, FontStyle.Bold, C(201, 184, 145, .92f), 1.4f);
   }
   void OutlinedCenter(string s, float x, float y, Font f, int size, FontStyle fs, Color col, float o)
   {
@@ -372,7 +373,7 @@ namespace Exoduser.UnityPort
    string text = "▼ " + (unlocked ? L("보스방", "Boss Room") : (sim.Regions != null ? L("지옥문 봉인 (지역 ", "Gate Sealed (Regions ") + sim.RegionClearedCount() + "/4)" : L("지옥문 봉인 (80% 처치)", "Gate Sealed (80% kills)"))) + " ▼";
    GateLabelText = text; GateLabelShown = true;
    Vector2 pt = ToGUI(pcx, pcy - psz * .45f);
-   var st = St(nanum, 13, TextAnchor.LowerCenter, FontStyle.Bold); var keep = st.normal.textColor;
+   var st = St(notoSans, 13, TextAnchor.LowerCenter, FontStyle.Normal); var keep = st.normal.textColor;   // web: bold 13px "Noto Sans KR" (Bold face)
    Color col = unlocked ? Hex("#66ccff") : Hex("#ff6644"); col.a = alpha;
    st.normal.textColor = col; GUI.Label(new Rect(pt.x - 300, pt.y - 40, 600, 40), text, st); st.normal.textColor = keep;
   }
