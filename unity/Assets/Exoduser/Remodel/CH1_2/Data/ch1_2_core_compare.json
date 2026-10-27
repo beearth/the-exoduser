@@ -1,0 +1,180 @@
+{
+ "web": {
+  "source": "ch1_2_receipt.json",
+  "walkable": 14394,
+  "start": [
+   100,
+   185
+  ],
+  "exits": [
+   [
+    99,
+    33
+   ],
+   [
+    100,
+    33
+   ],
+   [
+    101,
+    33
+   ]
+  ],
+  "gate": [
+   [
+    99,
+    31
+   ],
+   [
+    100,
+    31
+   ],
+   [
+    101,
+    31
+   ]
+  ],
+  "holes": 13
+ },
+ "unity": {
+  "status": "unity/main 미이식(Resources/Data에 ch1_map.json=1-1만). 대충 변환본만 로컬 브랜치에 있음",
+  "branch": "claude/unity-pc-maps-rough-20261027",
+  "ref": "7d59aa487",
+  "file": "unity/Assets/Exoduser/Resources/Data/maps_rough.json",
+  "walkable": 14394,
+  "start": [
+   100,
+   185
+  ],
+  "exits": [
+   [
+    99,
+    33
+   ],
+   [
+    100,
+    33
+   ],
+   [
+    101,
+    33
+   ]
+  ],
+  "gate": [
+   [
+    99,
+    31
+   ],
+   [
+    100,
+    31
+   ],
+   [
+    101,
+    31
+   ]
+  ],
+  "holes": 13
+ },
+ "diff": {
+  "webWalkUnityBlocked": {
+   "count": 0,
+   "onWebPartial": 0,
+   "bbox": null,
+   "tiles": []
+  },
+  "webBlockedUnityWalk": {
+   "count": 0,
+   "onWebPartial": 0,
+   "bbox": null,
+   "tiles": []
+  },
+  "start": true,
+  "exits": true,
+  "gate": true,
+  "holes": {
+   "web": 13,
+   "unity": 13,
+   "perWebHole": [
+    {
+     "tx": 84,
+     "ty": 168,
+     "size": 0.5,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 136,
+     "ty": 151,
+     "size": 0.3,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 44,
+     "ty": 151,
+     "size": 0.5,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 145,
+     "ty": 142,
+     "size": 0.3,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 69,
+     "ty": 95,
+     "size": 0.5,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 114,
+     "ty": 64,
+     "size": 0.5,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 59,
+     "ty": 69,
+     "size": 0.3,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 121,
+     "ty": 96,
+     "size": 0.5,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 94,
+     "ty": 155,
+     "size": 0.3,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 84,
+     "ty": 85,
+     "size": 0.55,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 120,
+     "ty": 47,
+     "size": 0.8,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 100,
+     "ty": 138,
+     "size": 0.3,
+     "nearestUnityTiles": 0
+    },
+    {
+     "tx": 100,
+     "ty": 103,
+     "size": 0.3,
+     "nearestUnityTiles": 0
+    }
+   ]
+  }
+ }
+}

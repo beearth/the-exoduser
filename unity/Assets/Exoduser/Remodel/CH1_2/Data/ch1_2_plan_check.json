@@ -1,0 +1,193 @@
+{
+ "landmarks": [
+  {
+   "id": "LM1",
+   "tiles": 1,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": false,
+   "camSideTiles": 1
+  },
+  {
+   "id": "LM2",
+   "tiles": 53,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": false,
+   "camSideTiles": 53
+  },
+  {
+   "id": "LM3",
+   "tiles": 98,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": true,
+   "camSideTiles": 0
+  },
+  {
+   "id": "LM4",
+   "tiles": 459,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": true,
+   "camSideTiles": 0
+  },
+  {
+   "id": "LM5",
+   "tiles": 81,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": true,
+   "camSideTiles": 0
+  }
+ ],
+ "toxic": [
+  {
+   "id": "TX1",
+   "tiles": 312,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  },
+  {
+   "id": "TX2",
+   "tiles": 65,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  },
+  {
+   "id": "TX3",
+   "tiles": 69,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  },
+  {
+   "id": "DRY",
+   "tiles": 286,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  }
+ ],
+ "pools": [
+  {
+   "id": "Pool_Hell_1",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_2",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_3",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_4",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_5",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_6",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_7",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_8",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_9",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_10",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_11",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_12",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_13",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_14",
+   "onWalk": true
+  }
+ ],
+ "cuts": [
+  {
+   "id": "START",
+   "c": [
+    100,
+    185
+   ],
+   "hellPools": [
+    "Pool_Hell_1",
+    "Pool_Hell_2"
+   ],
+   "toxicLights": [],
+   "shafts": 1
+  },
+  {
+   "id": "REP-A 서쪽 분지·막힌 물길",
+   "c": [
+    62,
+    160
+   ],
+   "hellPools": [
+    "Pool_Hell_3",
+    "Pool_Hell_4"
+   ],
+   "toxicLights": [
+    "TX1"
+   ],
+   "shafts": 0
+  },
+  {
+   "id": "REP-B 분지 북서·쌍둥이 고목",
+   "c": [
+    80,
+    64
+   ],
+   "hellPools": [
+    "Pool_Hell_8",
+    "Pool_Hell_9"
+   ],
+   "toxicLights": [],
+   "shafts": 1
+  },
+  {
+   "id": "REP-C 갈림길 목·혀 웅덩이",
+   "c": [
+    116,
+    106
+   ],
+   "hellPools": [
+    "Pool_Hell_7",
+    "Pool_Hell_14"
+   ],
+   "toxicLights": [
+    "TX2"
+   ],
+   "shafts": 0
+  }
+ ],
+ "zones": {
+  "blocked": 25606,
+  "cameraSideLow": 5519,
+  "tallAllowed": 20087,
+  "rule": "막힘 칸 중 북쪽 16칸·좌우 5칸 안에 걷기 칸이 있으면 카메라 쪽(높이 0.9u 이하), RM-1 Rm1SliceBuilder.SouthOfWalk와 같은 규칙"
+ },
+ "ok": true
+}
