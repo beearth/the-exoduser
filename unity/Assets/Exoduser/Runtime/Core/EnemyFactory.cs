@@ -114,7 +114,7 @@ namespace Exoduser.UnityPort.Core
             for (double d = Tile; d <= Tile * 5; d += Tile / 2)
                 for (int a = 0; a < 8; a++)
                 {
-                    double nx = x + Math.Cos(Math.PI / 4 * a) * d, ny = y + Math.Sin(Math.PI / 4 * a) * d;
+                    double nx = x + JsMath.Cos(Math.PI / 4 * a) * d, ny = y + JsMath.Sin(Math.PI / 4 * a) * d;
                     if (c.CanMove(nx, ny, r)) { ox = nx; oy = ny; return true; }
                 }
             ox = 0; oy = 0; return false;

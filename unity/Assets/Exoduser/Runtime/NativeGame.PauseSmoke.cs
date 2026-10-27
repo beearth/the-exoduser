@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort {
   int a15QaLocaleIndex;
   void BeginA15DirectReview(string[] args){
    string root,phase=Argument("-a15-phase");
-   if(!NativeSettingsStorageScope.TryResolveCinematicReview(args,out root)||nativeSettingsStore==null||nativeSettingsDirectory!=Path.Combine(root,"native-settings-v1")||lobby.CharacterStoreDirectory!=Path.Combine(root,"character-roster-v1")||(phase!="write"&&phase!="read")){
+   if(!NativeSettingsStorageScope.TryResolveCinematicReview(args,Application.productName,Application.identifier,out root)||nativeSettingsStore==null||nativeSettingsDirectory!=Path.Combine(root,"native-settings-v1")||lobby.CharacterStoreDirectory!=Path.Combine(root,"character-roster-v1")||(phase!="write"&&phase!="read")){
     Debug.LogError("A15_QA_REJECTED: marked Settings QA root, persistence review and write/read phase required");Application.Quit(2);return;
    }
    a15DirectReview=true;a15HitTrace=Array.IndexOf(args,"-a15-hittrace")>=0;pauseMenu.HitTraceForQa=a15HitTrace;lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Debug.LogError("A15_QA_REJECTED: preview entry failed");Application.Quit(2);return;}
