@@ -156,9 +156,9 @@ namespace Exoduser.UnityPort.Core
             {
                 PlayerState = Player.State, ForceQ = qParry, SbParryT = SbParryT, ResourceMul = 1, ParryBonus = ParryBonus, PRegen = PRegen, OptHitStop = 100, OptShake = 100,
                 Iframes = Player.Iframes, Hp = Player.Hp, Mhp = Player.MaxHp, St = Player.Stamina, Mst = Player.MaxStamina, Mp = Player.Mana, Mmp = Player.MaxMana, Poise = Player.Poise, MaxPoise = PlayerPoise.MaxPoise,
-                Rage = 0, RageMax = 100, Mats = Materials, HarpGauge = HarpGauge, HarpGaugeMax = HarpGaugeMax,
+                Rage = Rage, RageMax = RageMaximum, Mats = Materials, HarpGauge = HarpGauge, HarpGaugeMax = HarpGaugeMax,
             });
-            Player.Iframes = (float)r.Iframes; Player.Hp = (float)r.Hp; Player.Stamina = (float)r.St; Player.Mana = (float)r.Mp; Player.Poise = (float)r.Poise; HarpGauge = r.HarpGauge; Materials = (int)r.Mats;
+            Player.Iframes = (float)r.Iframes; Player.Hp = (float)r.Hp; Player.Stamina = (float)r.St; Player.Mana = (float)r.Mp; Player.Poise = (float)r.Poise; HarpGauge = r.HarpGauge; AddMalice((int)r.Mats - Materials); SetRage(r.Rage);
             ParryCount++; LastParryHp = r.Hp;
         }
 

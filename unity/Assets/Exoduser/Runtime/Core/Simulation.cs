@@ -251,11 +251,13 @@ namespace Exoduser.UnityPort.Core
             if (!enemy.Alive) return;
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
             enemy.Alive = false; Kills++; Combo++; ComboTicks = enemy.IsBoss ? Math.Min(1800, ComboTicks + 1800) : Math.Min(1200, ComboTicks + 60);
-            Materials += 4;
+            AddMalice(4);
             // Web kill drop (game.html 43094-43099): hp pays malice (+1, a third of the draws), st/mp are discarded; the old quickslot counters stay unused.
             ApplyKillDrop(enemy);
+            double comboBonus = LevelExp.ComboBonus(Combo, Config.DifficultyIndex - 5);
+            AddEliteKillMalice(enemy, comboBonus); // B10: elite / boss malice (43170-43201), after the potion draw like the web
             RollNormalEquipment(enemy);
-            bool trans; int xp = LevelExp.KillValue(Player.Level, enemy.Level, enemy.IsBoss, enemy.Elite, LevelExp.ComboBonus(Combo, Config.DifficultyIndex - 5), out trans);
+            bool trans; int xp = LevelExp.KillValue(Player.Level, enemy.Level, enemy.IsBoss, enemy.Elite, comboBonus, out trans);
             AddExperience(xp, trans);
         }
 
