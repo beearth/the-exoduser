@@ -132,6 +132,7 @@ namespace Exoduser.UnityPort
             Simulation.FloorTile=(tx,ty)=>!Map.Blocked((tx+.5f)*40,(ty+.5f)*40);
             Simulation.EnableFieldSpawns();
             Simulation.SpawnStartEnemies();   // M1 fix: the fixed 다안 육괴 x2 + 문지기 + 호위 12~16 initStage(0) places on top of the holes
+            Simulation.InitRegions();   // M1-REGION R-A: _regionInit after the holes, start enemies and the gate guard exist
             UpdateViews();
         }
         bool SafePoint(ref float x,ref float y,float r)
