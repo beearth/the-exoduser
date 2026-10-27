@@ -135,3 +135,37 @@ Core 변경은 Runtime 화면 코드를 건드리지 않고 플래그 기본값�
 - 보스별 움직임 원칙 M1~M5(최대 이동 px/틱·회전 상한·빈 시간)는 공용 이동(`IdleMove`·`FlowMove`) 쪽 규칙이다. RB1-6이 드루이드 파일에 넣을 때 세트 필드(예: `MoveSpeedCap`·`TurnRate`)로 받으면 모든 보스가 같이 쓴다 — RB1-6 담당과 보스전 총괄이 정한다.
 - 1-4(RM-B4)의 박동 변경·흡수 등은 `Stage3` 슬롯 + 자기 상태 훅으로 만든다. 박동·잡기 수치를 세트로 옮길지는 RB4-1에서 정한다(지금은 드루이드 상수).
 - 2장 이후 보스: `BossRemodelSets`에 슬롯 선언 한 줄씩 추가.
+
+## 8. RM-B0b — 공통 규칙 6종 (2026-10-28)
+
+보스전 총괄이 RM-B2·B3·B4 명세와 대조해 낸 후속 지시(유니티 총괄 전달). RM-B0은 unity/main `781a59198`에 병합됐고, 그 위에서 이어 갔다. 브랜치 `claude/unity-pc-rmb0b-20261028` = `75dc0d790`.
+
+**드루이드 파일(`DruidBoss*.cs`·`DruidRemodelData.cs`·`DruidTelegraph.cs`)은 고치지 않았다.** 바뀐 파일은 공용 파일뿐이다: `BossRemodel.cs`(+46/−2), `Simulation.DruidBoss.cs`(+9/−1), `Simulation.DruidRemodel.cs`(+43/−7). 새 파일은 `Simulation.BossRemodelRules.cs`(+meta)이고, 하니스는 `FrameworkChecks.cs`만 고쳤다(`Program.cs`·csproj는 RB1-6이 고치므로 건드리지 않음).
+
+| # | 요구 | 쓰는 법 | 쓰는 보스 |
+|---|---|---|---|
+| 1 | 플레이어 타격으로 사라지는 위험물 | `sim.SpawnRemodelProp(kind, x, y, r, hp, tag)` → `RemodelProp`. 몸체는 적 목록 안의 `EnemyState`(`IsBoss` = 필드 AI 제외, 자기 AI 없음)라서 **근접·스킬·탄 등 모든 플레이어 피해가 그대로 맞는다**. HP 0이면 부활·보상·처치 수 없이 사라지고 `Hooks.PropBroken`이 불린다. 보스 파일이 직접 없앨 때는 `EndRemodelProp(p, "harvest")` 등. 몸체는 적 루프가 끝난 뒤 목록에서 빠진다. 보스 최종 처치 때 남은 소품은 `final`로 끝난다. 읽기: `RemodelProps`(위치·HP·생존·끝난 이유), `IsRemodelProp(e)` | RM-B2 싹(HP 1), RM-B4 탯줄 매듭(HP n) |
+| 2 | 보스 피해 배율·차단 | `Hooks.DamageScale(sim, e, st)`를 목숨이 진행되는 동안 보스 틱마다 묻는다. `< 1`이면 웹 `hurtE`의 `_aDefM`(피해 배율)로 줄이고, `<= 0`이면 부활 무적 프레임으로 막는다. 막힌 타수는 `blocked` 이벤트(`DruidRemodelLog`)와 `st.BlockedHits`에 남는다(표현 쪽 "둔탁한 소리"의 근거) | RM-B4 매듭 (3−k)/3 |
+| 3 | 보스별 처치 처리 | `Set.FinalTicks > 0`이면 마지막 목숨 0 때 `dying` 이벤트 → 무적·AI 정지 상태로 `Hooks.DyingTick`을 그 틱 수만큼 부른 뒤 처치한다(RM-B3 둥지로 기어감 90f). 침강은 세트 스위치 `Sink`. **si3 등록 세트 = 드루이드와 같은 표·침강 없음**(RM-B4 §1, `BossRemodelSets.Build`의 `Clone()`) | RM-B3, RM-B4 |
+| 4 | 세트별 아레나 장애물·반응 | `Set.Obstacles`에 `RemodelObstacleDef`(아레나 px 중심·반지름, `BlocksMove`·`BlocksShots`)를 넣으면 전투 시작 때 놓인다. 아레나의 `CanMove`·`IsProjectileWall`을 감싸서 **플레이어·보스·몹 이동과 탄·보스 위험물의 벽 판정**을 함께 막는다(아레나를 나가면 StageFlow가 원래 판정을 되돌려 놓아 감싸기도 풀린다). 보스 AI가 그 틱에 장애물로 들어가려 했으면 `Hooks.ObstacleHit(boss, e, d, o)`가 불린다 — `d.S`로 어떤 기술인지 보고 반응한다(사냥 돌진이면 기절 90f). 읽기: `RemodelObstacles`(`BossBumps` 수) | RM-B3 그루터기 3, RM-B4 뿌리 기둥 4 |
+| 5 | 대사 키 intro/die + si | 웹 `_BOSS_LINES` 키를 그대로 쓴다(`BossLines.Keys` = intro0·sink0·die1·die2·die3). 전투 시작 때 `"intro"+si`, 끝날 때 침강이면 `"sink"+si`, 아니면 `"die"+si`. 표에 없는 키는 조용히 넘어가고, 한 판에 키마다 1회. `BossLineRaised(key)` 이벤트·`BossLineLog`. 문구는 표현 쪽이 웹 표·번역(No.3345~3346 등)에서 가져온다 | 전 보스 (si0 intro0·sink0, si1 die1, si2 die2, si3 die3) |
+| 6 | 전환 중 피해 하한 | `Set.CollapseVulnerable = true`이면 목숨 전환 동안 보스가 피해를 받는다. 다음 목숨 HP가 그 동안 깎이고(`st.Pool`), `Set.CollapseHpFloor`(다음 목숨 HP 비율) 밑으로는 내려가지 않는다. 넉백·경직은 받지 않는다. `CollapseTick`에서 `st.Vulnerable`을 틱마다 바꿀 수 있다(도약 중 무적, 애도 중 피격). 다음 목숨 시작 때 `life` 이벤트 메모에 "taken while down"이 붙는다 | RM-B3 애도 180f, 하한 70% |
+
+### 8.1 검사 (산출물 `E:/exoduser-wt/_out/rmb0/`, 각 1회)
+
+| 검사 | 결과 |
+|---|---|
+| `druid-boss-oracle --rev origin/main --cases 48` (플래그 끔) | **5,421,635검사 0불일치** (`oracle3/`) |
+| `druid-remodel-test` 드루이드 | **41,195 / 0**, `remodel-fight-A/B.json`·`remodel-telegraphs.json`이 RM-B0 이전과 **바이트 동일** |
+| `druid-remodel-test` 틀 검사 | **126 / 0** (FW-A·B + 새 FW-C 21개) |
+| `parry-reflect-test` | **26 / 0**, 보고서 동일 |
+| RB1-6 브랜치(`29fc1a7d9`)와 합친 트리 | `git merge-tree` 충돌 0, 합친 트리로 하니스 빌드·실행: 드루이드 **96,253 / 0**(RB1-6 움직임 검사 포함), 틀 **119 / 0** |
+| m1-check | 미실행(§5.1, 메모리 회복 뒤 `run-rmb0-unity.ps1` 1회) |
+
+FW-C(테스트 전용 si1 세트 `sampleRules`, 매듭 3·그루터기 1·하한 70%·죽는 연출 60틱): 매듭 3개 살아 있을 때 보스 피해 0(12타 모두 `blocked`로 셈), 보스가 그루터기에 18틱 부딪힘(훅 호출 수 일치), 매듭은 1타에 처치 수 없이 사라지고 다음 틱에 적 목록에서 빠짐, 매듭 1·2·3개를 끊을 때 피해 1000/2000/3000(3000 피해 기준 ⅓·⅔·전부), 전환 중 다음 목숨 HP의 45%를 깎자 2목숨이 70% 하한에서 시작, 죽는 연출 60틱 뒤 처치(침강 없음), 대사 `die1` 1회, 출구 열림·남은 소품 없음. 드루이드 si0 전투는 `intro0`으로 시작.
+
+### 8.2 표현 쪽(Codex·NativeGame)에 남는 일
+
+- **소품은 적 목록 안에 있으므로, 지금의 `NativeGame`은 소품을 일반 적 스프라이트(보스 색조)로 그린다.** 표현 쪽에서 `sim.IsRemodelProp(e)`인 적은 적 그리기·적 HP 바를 건너뛰고 `RemodelProps`로 따로 그려야 한다(Codex 소유 파일이라 여기서 고치지 않음). 리메이크 플래그가 기본 꺼짐이라 지금 게임에는 영향이 없다.
+- 소품은 `IsBoss`라 보스·엘리트 타격의 분노 획득·보스 포이즈 판정이 소품 타격에도 적용된다(소품 HP가 작아 실질 영향은 작음). 문제가 되면 보스전 총괄 판정 후 조정한다.
+- `BossLineRaised`를 받아 대사 띠를 띄우는 표현은 아직 없다(웹 `_bossLine`과 같은 자리).
