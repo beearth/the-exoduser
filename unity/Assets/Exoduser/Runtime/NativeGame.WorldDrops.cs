@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
         readonly Dictionary<int, DropView> drops = new Dictionary<int, DropView>();
         readonly Dictionary<Texture2D, Sprite> dropIcons = new Dictionary<Texture2D, Sprite>();
         readonly Dictionary<string, Sprite> beamTiles = new Dictionary<string, Sprite>();
-        readonly MaterialPropertyBlock beamProperties = new MaterialPropertyBlock();
+        MaterialPropertyBlock beamProperties;
         static readonly int BeamOpacity = Shader.PropertyToID("_Opacity");
         Material beamMaterial, maskMaterial;
         public int DropViewCount => drops.Count;
@@ -118,6 +118,7 @@ namespace Exoduser.UnityPort
                     v.beam.transform.position = Point(loot.X, loot.Y + bob);
                     v.beam.transform.localScale = new Vector3(.6f, 1.6f, 1f);
                     v.beam.sortingOrder = (int)loot.Y + 1;
+                    if (beamProperties == null) beamProperties = new MaterialPropertyBlock();
                     v.beam.GetPropertyBlock(beamProperties); beamProperties.SetFloat(BeamOpacity, .46f + Mathf.Sin(now / 400f + loot.X) * .05f); v.beam.SetPropertyBlock(beamProperties);
                 }
             }
