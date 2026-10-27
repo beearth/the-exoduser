@@ -68,3 +68,4 @@
 |---|---|
 | 2026-10-28 | 사용자 지시로 착수. v3 Receipt 진단(60초에 `boss_hit` 108·`player_hit` 43·드루이드 고유음 11), 6층 세트·제작 절차·녹음 현실화 결정. 생성 sound-simple, 녹음 RM-0 |
 | 2026-10-28 | RM-0 기준 녹음(`71bed2766`): 스크립트 플레이어 85% 회피·`player_hit` 43→19 인정. 보스 피격 110회는 공격 리듬 수 → 쿨다운 대신 `druid_hit` 변형 순환+연타 감쇠로 결정. 패링 성공 소리 웹 `doParry`대로 연결 지시 |
+| 2026-10-28 | sound-simple 제작: 새 키 15개 x 해석 4개 = 60후보(`<key>_v2a~d`, 카탈로그 `tools/sfx_forge_catalog_druid_v2.json`, 장면 카드·문구 키마다 직접 작성, 목소리 키 꼬리 "old hoarse male voice, no words, no monster roar") + L6 BGM 3곡(ElevenLabs Music `/v1/music` `music_v1` 120초 mp3, A 행진 북 ~100bpm·B 장송곡 ~70bpm·C 질주 ~140bpm, API 정상). 가공 SND-08과 같음(-1dBTP·뒤 무음 정리, 아레나는 크로스페이드 후 RMS -24dBFS). 고르기 `pick_druid.html`(127.0.0.1:3399, `picks_druid.json`) 16카드 63후보, 수치 주의 32개(BGM 원본 피크 3 포함), 헤드리스·음소거 검수 audio 63/63 오류 0·저장·복원 통과. 선택 대기(사용자 청음) |

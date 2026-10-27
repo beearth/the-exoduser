@@ -129,7 +129,7 @@ const _SL = {
 // val: [min, max] 롤 범위
 const IMPLICIT_TABLE = {
   weapon:   {ko:'공격력 +X%',      stat:'_iAtkPct',  val:[5,15]},
-  bow:      {ko:'관통 확률 +X%',   stat:'_ipierce',   val:[5,15]},
+  bow:      {ko:'관통 확률 +X%',   stat:'_iPierce',   val:[5,15]},
   shield:   {ko:'방어율 +X%',      stat:'_iBlockPct', val:[3,8]},
   armor:    {ko:'물리 피해감소 +X%',stat:'_iPhysDR',  val:[3,8]},
   helmet:   {ko:'최대 HP +X',      stat:'_iMaxHP',    val:[10,30]},
@@ -141,7 +141,16 @@ const IMPLICIT_TABLE = {
   necklace: {ko:'최대 HP +X%',     stat:'_iMaxHPPct', val:[5,12]},
   cape:     {ko:'회피 쿨다운 -X%', stat:'_iDashCd',   val:[5,12]},
   belt:     {ko:'물약 쿨다운 -X%',  stat:'_iBeltPot', val:[3,8]},
+  bracelet_demon:{ko:'부활력 +X%',  stat:'_iRevPow',  val:[5,12]},
+  bracelet_life:{ko:'최대 HP +X%', stat:'_iLifeHPPct',val:[5,12]},
+  headband: {ko:'마법 데미지 +X%', stat:'_iMagDmg',   val:[5,12]},
+  ossuary:  {ko:'전대 위력 +X%',   stat:'_iAncPow',   val:[5,15]},
 };
+// 2026-10-28 코드 감사: 위 IMPLICIT_TABLE은 game.html:15195 현행과 일치시킴 (bow stat 철자 _iPierce, 팔찌 2종·headband·ossuary 추가).
+// 이 아래 AFFIX_POOL 스니펫은 2026-03 3티어 시절 과거 코드다. 현행 값은 슬롯별_어픽스_풀.md G절.
+// _eqImplicit()로 읽히는 implicit: _iAtkSpd·_iMaxHP·_iMaxHPPct·_iMovSpd·_iRevPow·_iLifeHPPct·_iMagDmg·_iAncPow.
+// 읽는 곳이 없는 implicit(롤·툴팁만): _iAtkPct·_iPierce·_iBlockPct·_iPhysDR·_iStsRes·_iElemRes·_iDashCd·_iBeltPot.
+// 유골함 implicit은 mkItem 유골함 분기에서 _implicitVal=10 고정.
 
 // ─── 어픽스 풀 (PREFIX=0, SUFFIX=1) ───
 // id, type, ko(표시명), stat(적용 필드), tiers[T1,T2,T3],
@@ -232,6 +241,8 @@ Object.freeze(AFFIX_POOL);
 
 ### 어픽스 구현 상태 (2026-03-21)
 
+> **2026-10-28 코드 감사 주석**: 아래 두 표(03-21·03-23)의 티어(1/2/3)·슬롯 열은 당시 3티어 값이다. 현재 5티어 값·슬롯은 [슬롯별_어픽스_풀.md G절](슬롯별_어픽스_풀.md)(AFFIX_POOL 재추출)이 정본이다. 삭제된 id와 바뀐 한글명은 행에 표기했다.
+
 #### ✅ 구현 완료 (23종)
 
 | id | 한글 | 타입 | 티어 (1/2/3) | 단위 | 슬롯 | 적용 위치 |
@@ -239,29 +250,29 @@ Object.freeze(AFFIX_POOL);
 | poisonDot | 맹독의 | PREFIX | 8/14/22 | val | wpn | hurtE: e.poisonT 설정 |
 | fireDot | 불꽃의 | PREFIX | 10/17/26 | val | wpn | hurtE: e.burnT 설정 |
 | iceDot | 냉기의 | PREFIX | 7/12/18 | val | wpn | hurtE: e._iceDotT 설정 |
-| lifeSteal | 피흡의 | PREFIX | 4%/7%/12% | pct | wpn,rng | hurtE: 피흡 HP 회복 |
-| critChance | 광폭의 | PREFIX | 6%/10%/16% | pct | wpn,rng | statCrit() |
-| critDmg | 처형의 | PREFIX | 25%/40%/65% | pct | wpn | statCritDmg() (무기 전용, 레거시) |
+| lifeSteal | 피흡의 | PREFIX | 4%/7%/12% | pct | wpn,rng | hurtE: 피흡 HP 회복 **[2026-10-28: AFFIX_POOL에서 삭제됨(코드 없음)]** |
+| critChance | 광폭의 | PREFIX | 6%/10%/16% | pct | wpn,rng | statCrit() **[2026-10-28: AFFIX_POOL에서 삭제됨(코드 없음)]** 현재 `광폭의`=`critRate` |
+| critDmg | 처형의 | PREFIX | 25%/40%/65% | pct | wpn | statCritDmg() (무기 전용, 레거시) **[2026-10-28: AFFIX_POOL에서 삭제됨(코드 없음)]** |
 | atkSpeed | 쾌속의 | PREFIX | 6%/10%/16% | pct | wpn,glv | statDex() |
 | maxHPFlat | 강인의 | PREFIX | 100/200/300 | val | 방어구 | statMaxHP() |
 | shieldFlat | 수호의 | PREFIX | 120/200/400/600/840 | val | 장신구 | P.mshield |
 | maxHPPct | 활력의 | PREFIX | 8%/14%/22% | pct | arm,nck | statMaxHP() |
-| movSpd | 신속의 | PREFIX | 5%/9%/14% | pct | bts,clk | statPlayerSpeed() |
-| killHeal | 회복의 | PREFIX | 8/15/25 | val | arm,rng | 적 처치 시 HP 회복 |
+| movSpd | 신속의 | PREFIX | 5%/9%/14% | pct | bts,clk | statPlayerSpeed() **[2026-10-28: AFFIX_POOL에서 삭제됨(코드 없음)]** 현재 `신속의`=`movSpeed` |
+| killHeal | 회복의 | PREFIX | 8/15/25 | val | arm,rng | 적 처치 시 HP 회복 **[2026-10-28: AFFIX_POOL에서 삭제됨(코드 없음)]** |
 | fireRes | 화염수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 화염 저항 |
 | iceRes | 빙결수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 빙결 저항 |
 | lightRes | 암전수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 암전 저항 |
 | darkRes | 암흑수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 암흑 저항 |
 | poisonRes | 독수호 | SUFFIX | 10%/18%/28% | pct | arm,rng,nck | 피격 시 독 저항 |
 | allRes | 전원소수호 | SUFFIX | 5%/9%/15% | pct | nck | 모든 원소 저항 추가 |
-| physDR | 강철의 | SUFFIX | 6%/10%/16% | pct | arm,shd | 물리 피해 감소 |
+| physDR | 물리방패의 (구 강철의) | SUFFIX | 6%/10%/16% | pct | arm,shd | 물리 피해 감소 |
 | dropRate | 약탈의 | SUFFIX | 12%/20%/32% | pct | bts,clk | statDropBonus() |
 | extraST | 사슬의 | SUFFIX | 10/20/30 | val | bts,pnt | 사슬게이지 MAX 추가 |
-| stRegen | 회복의 | SUFFIX | 6%/10%/18% | pct | arm,rng,nck | ST 재생 배율 |
-| dpRegen | 마력의 | SUFFIX | 6%/10%/18% | pct | hlm,nck | MP 재생 배율 |
+| stRegen | 회복의 | SUFFIX | 6%/10%/18% | pct | arm,rng,nck | ST 재생 배율 **[2026-10-28: AFFIX_POOL에서 삭제됨(코드 없음)]** |
+| dpRegen | 마력의 | SUFFIX | 6%/10%/18% | pct | hlm,nck | MP 재생 배율 **[2026-10-28: AFFIX_POOL에서 삭제됨(코드 없음)]** |
 | antiRevive | 진혼의 | SUFFIX | 4%/8%/12%/16%/20% (5티어, 고티어 극악확률 tierW:50/30/15/4/1) | pct | neck,wpn,bracelet (반지: 2/4/8/12/16%) | 보스 부활 억제 (최대20%) |
-| critDmgA | 행운의 | PREFIX | 반지: 5%/10%/15%/20%/25% (5티어, tierW:40/30/20/8/2) / 목걸이: 10%/20%/30%/40%/50% | pct | ring,neck | statCritDmg() — 크리뎀 |
-| critDmgB | 극대화의 | SUFFIX | 반지: 5%/10%/15%/20%/25% (5티어, tierW:40/30/20/8/2) / 목걸이: 10%/20%/30%/40%/50% | pct | ring,neck | statCritDmg() — 크리뎀 |
+| critDmgA | 행운의 **[2026-10-28: 풀 삭제, `statCritDmg()` 구세이브 읽기만 유지]** | PREFIX | 반지: 5%/10%/15%/20%/25% (5티어, tierW:40/30/20/8/2) / 목걸이: 10%/20%/30%/40%/50% | pct | ring,neck | statCritDmg() — 크리뎀 |
+| critDmgB | 극대화의 **[2026-10-28: 풀 삭제, `statCritDmg()` 구세이브 읽기만 유지 — 현재 `극대화의`=`critDmgW`]** | SUFFIX | 반지: 5%/10%/15%/20%/25% (5티어, tierW:40/30/20/8/2) / 목걸이: 10%/20%/30%/40%/50% | pct | ring,neck | statCritDmg() — 크리뎀 |
 
 #### ✅ 구현 완료 (27종, 2026-03-23)
 
@@ -269,14 +280,14 @@ Object.freeze(AFFIX_POOL);
 |---|---|---|---|---|---|---|
 | lightChain | 번개의 | PREFIX | 13/22/35 | val | wpn | 피격 시 주변 적 2명에게 연쇄뎀 (반경120) |
 | darkCurse | 암흑의 | PREFIX | 20%/35%/55% | prob | wpn | 확률로 저주(3초), 저주 상태 뎀+25% |
-| armorPen | 관통의 | PREFIX | 8%/14%/22% | pct | wpn | eShield 추가파괴 (dmg×배율) |
+| armorPen | 관통의 | PREFIX | 8%/14%/22% | pct | wpn | eShield 추가파괴 (dmg×배율) — **2026-10-28 코드: 스탯창 표시(`_af('armorPen')`)만 읽고 전투 계산에서 읽는 곳 없음** |
 | staggerBns | 파쇄의 | PREFIX | 8/14/22 | val | wpn | 포이즈 추가 감소 (고정값) |
 | chainTarget | 연쇄의 | PREFIX | 1/2/3 | val | wpn | 주변 적 N명에게 30% 뎀 (반경100) |
 | killSlayer | 학살의 | PREFIX | 15%/25%/40% | pct | wpn | 처치 후 3초간 뎀×(1+배율) |
-| elemFocus | 원소집중의 | PREFIX | 12%/20%/32% | pct | wpn,nck | 속성 공격 시 뎀×(1+배율) |
+| elemFocus | 집중의 (구 원소집중의) | PREFIX | 12%/20%/32% | pct | wpn,nck | 속성 공격 시 뎀×(1+배율) |
 | parryBonus | 패리의 | PREFIX | 20%/35%/55% | pct | wpn,clk | 패링 HP/ST/MP 회복량 ×(1+배율) |
-| comboBoost | 콤보의 | PREFIX | 20%/35%/55% | pct | wpn | 같은 적 연속 공격 시 +5%/중첩 |
-| dashBoost | 돌진의 | PREFIX | 25%/40%/65% | pct | wpn,bts | 사슬/돌진 데미지 ×(1+배율) |
+| comboBoost | 추적자의 (구 콤보의) | PREFIX | 20%/35%/55% | pct | wpn | 같은 적 연속 공격 시 +5%/중첩 |
+| dashBoost | 사슬의 (구 돌진의) | PREFIX | 25%/40%/65% | pct | wpn,bts | 사슬/돌진 데미지 ×(1+배율) |
 | skillBoost | 궁극의 | PREFIX | 15%/25%/40% | pct | wpn | 선택스킬 데미지 ×(1+배율) (_fuseMul 내장) |
 | cooldownRed | 집중력의 | PREFIX | -2%/-3%/-5%/-7%/-10% | pct | wpn | 스킬 쿨다운 ×(1+값) (음수=감소) |
 | reflect | 반사의 | SUFFIX | 5%/9%/15% | pct | arm,shd,rng | 피격 데미지×배율 반사 (반경80, 1명) |
@@ -340,7 +351,7 @@ Object.freeze(AFFIX_POOL);
 | onKillHeal | 처치회복의 | 5/10/18/28/40 | 처치 시 HP 회복 |
 | onKillMana | 처치흡마의 | 5/10/18/28/40 | 처치 시 MP 회복 |
 | onKillStam | 처치활력의 | 3/6/10/16/24 | 처치 시 ST 회복 |
-| onKillExplode | 처치폭발의 | 8/14/22/32/44% | 처치 시 시체폭발 (적 최대HP×%) |
+| onKillExplode | 처치폭발의 | 8/14/22/32/44% | 처치 시 시체폭발 (적 최대HP×%) **[2026-10-28: AFFIX_POOL에서 삭제됨(코드 없음)]** (AFFIX_NAMES_KO에만 이름 잔존) |
 | onKillSpeed | 처치질주의 | 5/8/12/18/25% | 처치 후 2초 이속 버프 |
 
 #### 조건부 방어 (방어구 파트 SUFFIX)
@@ -436,7 +447,7 @@ const LEGENDARY_SPECIAL={
 | 18 | necklace | `_lNeckLow` | HP 50% 이하 시 전 스킬 쿨다운 -30% | -0.30 (조건부) | `_cdRed()` 합산 (`P.hp<=P.mhp*.5` 시) | 원문 그대로 (구 문서 -50%→현행 -30%). "전 스킬"=_cdRed 사용 스킬 전체 |
 | 19 | belt | `_lBeltBuff` | 물약 사용 시 5초간 피해 +15% | ×1.15, 300f | `useQuickslot()`·자동물약 → `P._lBeltT=300`, `hurtE()` 배율 | 원문 그대로 (구 문서 "스태미나 완전 회복 시"는 폐기된 설계) |
 
-**헬퍼 함수 (2026-10-08 추가, `_uEq` 바로 아래 game.html ~15745):**
+**헬퍼 함수 (2026-10-08 추가, game.html:16801 `_lEq` — 2026-10-28 줄번호):**
 - `_lEq(stat)` — `_uEq`와 동일 규칙(장착 슬롯 순회·첫 값 1개·비가산)이되, 핫패스 비용 때문에 **장비 변경 시 재계산되는 캐시**(`_lEqCache`) 사용. 무효화 지점은 `_eqAffixCache`와 동일(_refreshEquipmentStats·recalcSt·_testAffix·_testAffixClear).
 - **구세이브 폴백**: `_lEqRebuild()`가 `item[stat]`이 없고 `legendarySpecial.stat/val`만 있는 구버전 아이템에서 `item[stat]=legendarySpecial.val`을 복원한다 → 옛 세이브의 전설 아이템도 그대로 동작.
 - `_legSpKo(ls)` — 툴팁 표기는 저장된 `ko` 문자열이 아니라 **stat 기준 현행 테이블 문구**를 사용(`_LS_BY_STAT`), 구세이브의 옛 문구가 자동 정규화된다.
@@ -447,7 +458,7 @@ const LEGENDARY_SPECIAL={
 
 **등급 체계**: 일반(0) → 고급(1) → 희귀(2) → 영웅(3) → 전설(4) → **유니크(5)**
 
-- 색상: `#ff4466` (붉은 핑크)
+- 색상: `#8e55e9` (자수정, `RARITY_C[5]`, 2026-10-08 변경 — 이전 `#ff4466` 붉은 핑크)
 - RARITY_MUL: 2.5
 - 어픽스 수: 7개 (전설6 +1)
 - ATK 최소 보장: 50%
@@ -456,7 +467,7 @@ const LEGENDARY_SPECIAL={
 - 전설 특수 효과 상속 + **유니크 특수 효과 1개 추가**
 
 ```javascript
-// ─── 유니크 특수 효과 (rarity=5 전용, 슬롯+무기타입별 고정 1개) ───
+// ─── 유니크 특수 효과 (rarity=5 전용, 아래 풀에서 무작위 1개 — 키는 원래 출처 부위 표기용) ─── (2026-10-28: 현행 풀은 이 12종 + u_n01~u_d22 25종 + u_p01·u_p02 = 39종)
 const UNIQUE_SPECIAL = {
   weapon_sword:    {ko:'분노의 최대치가 100% 추가된다 (200%까지)',  stat:'_uRageMax',       val:100},
   weapon_dagger:   {ko:'패링한 탄막의 관통률이 100% 추가된다',      stat:'_uDaggerPierce',  val:1.0},
@@ -465,7 +476,7 @@ const UNIQUE_SPECIAL = {
   weapon_mace:     {ko:'적 처치 시 폭발 (최대HP의 30% AoE)',       stat:'_uMaceExplode',   val:0.30},
   weapon_club:     {ko:'적 스턴 중 데미지 ×3',                    stat:'_uClubStun',      val:3},
   bow:             {ko:'투사체 관통력 50% 증가',                   stat:'_uBowPierce',     val:0.5},
-  shield:          {ko:'보호막이 탄막을 흡수하면 분노 10%를 생성',  stat:'_uShieldRage',    val:10},
+  shield:          {ko:'보호막이 탄막을 흡수하면 분노 10%를 생성한다',  stat:'_uShieldRage',    val:10},
   armor:           {ko:'피격 시 25% 확률로 데미지를 분노로 전환',   stat:'_uArmorRage',     val:0.25},
   helmet:          {ko:'마법 스킬 데미지 +50% + 마나 소모 -50%',   stat:'_uHelmMagic',     val:0.50},
   gloves:          {ko:'공격속도 +40%',                           stat:'_uGloveSpd',      val:0.40},
@@ -494,7 +505,7 @@ const UNIQUE_SPECIAL = {
 | 10 | gloves | `_uGloveSpd` | 공격속도 +40% | `statDex()` 에 val 합산 | 공속 배율 |
 | 11 | cape | `_uParryRageCd` | 패링 성공 시 Space 분노스킬 쿨다운 0.5~1.0초 추가 회복 (롤) | `doParry()` → `_uEq('_uParryRageCd')` 조회, `P._gslCd`에서 val 차감. 천공쇄기는 기본 30f에 val을 합산해 `P._scCd` 차감 | 어픽스 추가량만 프레임당1회(`P._parryCdFrame!==G.frame`). 별도 물리탄 기본30f는 한 발마다 누적 |
 
-**헬퍼 함수**: `_uEq(stat)` — 전 장비 슬롯에서 해당 stat 값 반환 (없으면 0). 위치: `game.html:12376`
+**헬퍼 함수**: `_uEq(stat)` — 장착 슬롯을 `SLOT_NAMES` 순서로 보고 처음 찾은 값 1개 반환 (없으면 0, 비가산). 위치: `game.html:16693` (2026-10-28)
 
 **mkItem 저장 (2026-10-08 확장)**: `item[_us.stat] = _us.val` (롤링 유니크는 `_uv`) — 유니크 특수 효과의 stat/val을 아이템 객체에 직접 프로퍼티로 저장. `_uEq()`가 `INV.equipped[slot][stat]`으로 접근. 롤링 유니크는 `uniqueSpecial.secs`(초 표기)와 **`uniqueSpecial.disp`(롤 원본 정수, 2026-10-08 신설)** 를 함께 저장하고, `scale`이 있으면 `_uv=+(롤×scale).toFixed(4)`(소수)를 저장한다. `ko`엔 `{s}`/`{p}`/`{n}` 템플릿 유지 — 툴팁(`_invCardFields`)에서 secs/disp로 치환하고 roll 3등분 하/중/상옵 라벨을 붙인다. 구세이브 아이템(disp 없음)은 scale 유무로 역산 폴백.
 
