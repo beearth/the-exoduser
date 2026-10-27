@@ -17,6 +17,8 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; }
         M1Receipt m1; string m1Caps; int m1Index;
 
+        // BX art: a stray OS key (ESC / TAB) during the unattended run must not leave the pause menu / a window over the comparison scenes
+        void ArtScreenClear() { if (menu) { menu = false; pauseMenu.Reset(); Running = true; } if (inventory.Open) SetInventory(false); if (skills.Open) SetSkills(false); }
         IEnumerator M1Shot(string name)
         {
             UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
@@ -242,15 +244,15 @@ namespace Exoduser.UnityPort
                 for (int i = 0; i < 150; i++) { cdd.S = "idle"; cdd.St2 = 9999; StepInput(0, 0, p.X, p.Y - 100, false, false); }   // let the arena-entry screen flash fade (tick based)
                 cap.Projectiles.Clear(); cap.Orbs.Clear(); cap.LavaPools.Clear(); cap.PoisonPools.Clear(); cap.ChaseAoes.Clear(); cap.Fissures.Clear(); cap.TideWaves.Clear(); cap.SeekerMines.Clear(); cdd.S = "idle"; cdd.St2 = 9999; p.X = bossActor.X; p.Y = bossActor.Y + 330;
                 foreach (var o in vol) cap.Projectiles.Add(new BossProjectile { X = bossActor.X + o[0], Y = bossActor.Y + o[1], Sz = 5, R = 4, DruidPoison = true, ParryClass = "physical", Active = true });
-                damage.Clear(); yield return M1Shot("art-a-idle-volley"); cap.Projectiles.Clear();
+                damage.Clear(); ArtScreenClear(); yield return M1Shot("art-a-idle-volley"); cap.Projectiles.Clear();
                 cap.LavaPools.Add(new LavaPool { X = bossActor.X + 40, Y = bossActor.Y + 330, R = 300, T = 150, WarnT = 60, MaxT = 1e9 });
                 cap.PoisonPools.Add(new PoisonPool { X = bossActor.X - 380, Y = bossActor.Y + 160, R = 175, T = 60, MaxT = 1e9 });
                 cap.Orbs.Add(new DruidOrb { X = bossActor.X + 420, Y = bossActor.Y - 20, R = 40, T = 30 }); cap.Orbs.Add(new DruidOrb { X = bossActor.X + 500, Y = bossActor.Y + 150, R = 40, T = 50 });
-                damage.Clear(); yield return M1Shot("art-b-pools-orbs"); cap.LavaPools.Clear(); cap.PoisonPools.Clear(); cap.Orbs.Clear();
+                damage.Clear(); ArtScreenClear(); yield return M1Shot("art-b-pools-orbs"); cap.LavaPools.Clear(); cap.PoisonPools.Clear(); cap.Orbs.Clear();
                 var corpse = new EnemyState { Id = 99999, IsBoss = true, SinkDruid = true, Alive = false, X = bossActor.X, Y = bossActor.Y, Radius = bossActor.Radius, Hp = 0, MaxHp = 1 };
                 int bossIdx = sim.Enemies.IndexOf(bossActor); sim.Enemies.Remove(bossActor); sim.Enemies.Add(corpse); UpdateViews();
                 for (int i = 0; i < 20; i++) StepInput(0, 0, p.X, p.Y - 100, false, false);
-                damage.Clear(); yield return M1Shot("art-c-sink"); sim.Enemies.Remove(corpse); sim.Enemies.Insert(Math.Min(Math.Max(bossIdx, 0), sim.Enemies.Count), bossActor); UpdateViews();
+                damage.Clear(); ArtScreenClear(); yield return M1Shot("art-c-sink"); sim.Enemies.Remove(corpse); sim.Enemies.Insert(Math.Min(Math.Max(bossIdx, 0), sim.Enemies.Count), bossActor); UpdateViews();
                 cdd.S = s0; cdd.St2 = st0; cdd.Facing = f0; bossActor.Facing = bf0; bossActor.State = bst0; bossActor.StateTicks = bstt0; p.Y = bossActor.Y + 220; p.Iframes = 0;
             }
 

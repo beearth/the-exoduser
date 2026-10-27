@@ -14,8 +14,8 @@ namespace Exoduser.UnityPort
     {
         readonly Transform root; readonly List<SpriteRenderer> pool = new List<SpriteRenderer>(), addPool = new List<SpriteRenderer>(); int used, addUsed;
         readonly Sprite disc, ring, thinRing, hardDisc;
-        // game.html draws the pool rim as arc(r) + reversed arc(r-1.2) fill; its GPU canvas proxy fills that as a whole disc (#a9d76a at .55 of the clip alpha). The web as played shows the disc, so it is kept; set false for the 1.2 px hairline the code means.
-        const bool PoolRimAsWebProxyDisc = true;
+        // game.html draws the pool rim as arc(r) + reversed arc(r-1.2) fill; its GPU canvas proxy fills that as a whole disc (#a9d76a at .55 of the clip alpha). Boss lead / design lead decision (10-27): keep the 1.2 px hairline the code means; true reproduces the web's disc.
+        const bool PoolRimAsWebProxyDisc = false;
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
         static readonly Color Poison = new Color(.40f, .87f, .13f), Root = new Color(.52f, .66f, .24f), Mine = new Color(.37f, .06f, .66f), RimGreen = new Color(.663f, .843f, .416f);
 
