@@ -30,6 +30,24 @@ namespace Exoduser.UnityPort {
    GUI.color=Color.white;GUI.Label(new Rect(slot.x,slot.y+2,slot.width,slot.height),label,rageText);
    GUI.color=old;
   }
+  // B03: dock slot -> equipped skill (0..3 = keys 1-4, 4 = F, 5 = Z, 7 = RMB, 8 = Shift, 9 = E, 10 = Q, 11 = Ctrl, 12 = Space; web _slotSkId: RMB maliceSwipe / Shift charge / Q parry are fixed unless re-slotted); the LMB slot keeps its own kiSlash drawing
+  public static string SlotSkillId(Simulation s,int index){
+   switch(index){case 0:case 1:case 2:case 3:return s.Skills.Slots[index];case 4:return s.Skills.Slots[5];case 5:return s.Skills.UltSlot;case 7:return "maliceSwipe";case 8:return "charge";case 9:return s.Skills.MagicSkill;case 10:return "parry";case 11:return s.Skills.CtSkill;case 12:return s.Skills.Slots[4];default:return null;}
+  }
+  readonly System.Collections.Generic.Dictionary<string,Texture2D> slotIcons=new System.Collections.Generic.Dictionary<string,Texture2D>();
+  GUIStyle cooldownText;
+  // web updateQS: the slot shows the skill icon with a dark sweep that shrinks as the cooldown runs out and the remaining seconds
+  void DrawSlotSkill(Rect slot,string id,Simulation s){
+   Texture2D tex;if(!slotIcons.TryGetValue(id,out tex)){tex=Resources.Load<Texture2D>("Art/ui/skill_icons/orb/"+id);slotIcons[id]=tex;}
+   const float scale=NativeHudDockLayout.ArtScale;
+   if(tex!=null){var inset=new Rect(slot.x+3*scale,slot.y+3*scale,slot.width-6*scale,slot.height-6*scale);GUI.DrawTexture(inset,tex,ScaleMode.ScaleToFit,true);}
+   float total;float cd=s.SkillCooldown(id,out total);
+   if(cd>0&&total>0){
+    var old=GUI.color;float frac=Mathf.Clamp01(cd/total);GUI.color=new Color(0,0,0,.62f);GUI.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*frac,slot.width,slot.height*frac),Texture2D.whiteTexture);
+    if(cooldownText==null){cooldownText=new GUIStyle(keyLabel){fontSize=15,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter};}
+    GUI.color=new Color(.87f,.84f,.76f,1f);GUI.Label(slot,Mathf.CeilToInt(cd/60f).ToString(),cooldownText);GUI.color=old;
+   }
+  }
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
    if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
     int eventHit=-1,screenHit=-1;Vector2 guiPoint=Event.current.mousePosition;float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);Vector2 screenPoint=new Vector2(Input.mousePosition.x/scale,(Screen.height-Input.mousePosition.y)/scale);
@@ -38,7 +56,9 @@ namespace Exoduser.UnityPort {
    }
    for(int i=0;i<13;i++){
     var rect=SkillSlotRect(dock,i);
-    if(i!=6){var old=GUI.color;GUI.color=new Color(.5f,.47f,.40f,.7f);GUI.Label(new Rect(rect.x,rect.y+4,rect.width,25),"—",keyLabel);GUI.color=old;}
+    string slotSkill=simulation!=null?SlotSkillId(simulation,i):null;
+    if(slotSkill!=null)DrawSlotSkill(rect,slotSkill,simulation);
+    else if(i!=6){var old=GUI.color;GUI.color=new Color(.5f,.47f,.40f,.7f);GUI.Label(new Rect(rect.x,rect.y+4,rect.width,25),"—",keyLabel);GUI.color=old;}
     if(GUI.Button(rect,"",GUIStyle.none)){statusSelectionUntil=i==6?Time.unscaledTime+1.6f:0;SlotSelected?.Invoke(i);}
    }
    if(simulation==null)return;

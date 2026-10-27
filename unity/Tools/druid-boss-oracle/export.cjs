@@ -4,11 +4,15 @@
 // spawnProj with its helpers, _fireChargedProj, and the update() hazard blocks (chase AoE, fissure, tide wave, seeker mine, poison pool, druid rhythm volley, druid orb,
 // lava pool). NOT covered: the enemy projectile FLIGHT / hit loop (450 lines of shared Q/E parry code) — spawn parameters only.
 // Visual-only Math.random() calls (particles) are routed to a second stream (`_vr`) so both sides draw the gameplay stream in the same order.
-// usage: node export.cjs [--source G:/exoduser/game.html] [--out oracle.json] [--cases N]
+// usage: node export.cjs [--source <game.html>] [--rev <label>] [--head <commit sha>] [--out oracle.json] [--cases N]   (run.cjs passes the committed game.html of a rev)
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1];};
-const SRC=path.resolve(arg('--source','G:/exoduser/game.html')),OUT=path.resolve(arg('--out',path.join(__dirname,'oracle.json')));
-const text=fs.readFileSync(SRC,'utf8'),lines=text.split('\n'),sha=s=>crypto.createHash('sha256').update(s).digest('hex'),blocks=[];
+const OUT=path.resolve(arg('--out',path.join(__dirname,'oracle.json')));
+// without --source: the COMMITTED game.html of --rev (default origin/main) from the repo, not the shared working tree (other sessions' WIP)
+let SRC=arg('--source',null),REV=arg('--rev','origin/main'),HEAD=arg('--head',null),textGit=null;
+if(!SRC){const cp=require('node:child_process'),repo=arg('--repo','G:/exoduser'),g=a=>{const r=cp.spawnSync('git',['-C',repo,...a],{encoding:'utf8',maxBuffer:1<<28});if(r.status!==0)throw new Error('git '+a.join(' ')+': '+r.stderr);return r.stdout;};
+  HEAD=g(['rev-parse',REV]).trim();textGit=g(['show',HEAD+':game.html']);SRC='git:'+HEAD+':game.html';}
+const text=textGit!==null?textGit:fs.readFileSync(path.resolve(SRC),'utf8'),lines=text.split('\n'),sha=s=>crypto.createHash('sha256').update(s).digest('hex'),blocks=[];
 function at(prefix,occ=0,from=0){let n=0;for(let i=from;i<lines.length;i++)if(lines[i].trimStart().startsWith(prefix)){if(n++===occ)return i+1;}throw new Error('source drift: no line starts with "'+prefix+'"');}
 function rec(a,b,label){const body=lines.slice(a-1,b).join('\n');blocks.push({label,from:a,to:b,sha256:sha(body)});return body+'\n';}
 function line(prefix,occ=0,from=0){const n=at(prefix,occ,from);return rec(n,n,prefix.slice(0,40));}
@@ -188,6 +192,6 @@ const cases=makeCases(n).map(runCase);
 // coverage: which states / moves / draws the cases reached (a case set that never reaches a move proves nothing)
 const states=new Set(),moves=new Set();let totalTicks=0,totalDraws=0,spawns=0;
 for(const c of cases)for(const t of c.out){states.add(t.e.s);totalTicks++;totalDraws+=t.draws;spawns+=t.spawn.length;}
-fs.writeFileSync(OUT,JSON.stringify({generated:new Date().toISOString(),source:sha(text),blocks,visualLines:[...visual],cases,coverage:{states:[...states].sort(),ticks:totalTicks,draws:totalDraws,spawns}}));
+fs.writeFileSync(OUT,JSON.stringify({generated:new Date().toISOString(),sourceRev:SRC.startsWith('git:')||arg('--head',null)?REV:'working-file',sourceHead:HEAD||'working-file',source:sha(text),blocks,visualLines:[...visual],cases,coverage:{states:[...states].sort(),ticks:totalTicks,draws:totalDraws,spawns}}));
 console.log('cases',cases.length,'ticks',totalTicks,'draws',totalDraws,'projectile spawns',spawns,'states',[...states].sort().join(','));
 console.log('visual-only lines routed to _vr:',visual.size);

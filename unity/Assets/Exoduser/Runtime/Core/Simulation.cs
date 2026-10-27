@@ -43,6 +43,7 @@ namespace Exoduser.UnityPort.Core
                 Shield = config.PlayerStartingShield, MaxShield = config.PlayerMaxShield, Iframes = config.InitialIframes,
                 Speed = config.PlayerSpeed, BaseAttack = config.PlayerBaseAttack
             };
+            InitStartingSkills();   // B03: new character start skills
         }
 
         private double NextRandom()
@@ -82,15 +83,18 @@ namespace Exoduser.UnityPort.Core
             Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen / regenDivisor);
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
+            attackHeldForMagic = attack;
             TickPlayerShieldAndRevive();
             ConsumeRollTrigger();
             TickPlayerCombat();
             TickRoll();
+            TickSkills();   // B03: skill keys, cooldowns, zones, ice orb
             MoveKnockback();
             if (Player.State == "bladeDash") { }   // roll: TickRoll moves the player, no walking / attacking meanwhile (web case 'bladeDash')
             else if (Player.State == "stagger" || Player.State == "pStun") {
                 if (Player.StateTicks <= 0) { Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
             }
+            else if (TickSkillState(moveX, moveY)) { }   // B03: giant slam windup / strike / recover, ice orb
             else {
                 MovePlayer(moveX, moveY, Player.State == "idle" ? 1 : .8f);
                 if (Player.State == "idle") {
@@ -207,7 +211,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // hurtE: the oracle-checked Core head + middle (EnemyHurt). The death tail (revive / ghoul / boss revive / kill rewards) is the Simulation's.
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false)
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
@@ -217,10 +221,10 @@ namespace Exoduser.UnityPort.Core
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
             var context = BuildHurtContext(player, typeDamagePct, critRateBonus);
-            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null };
+            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null };
             if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
-            var head = EnemyHurt.Head(context, web, damage, angle, true, opts, 0);
+            var head = EnemyHurt.Head(context, web, damage, angle, true, opts, atkEl);
             if (head == null) { SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }   // revive iframes swallowed it / parry lesson
             EnemyHurt.Body(context, web, angle, true, opts, head);
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);

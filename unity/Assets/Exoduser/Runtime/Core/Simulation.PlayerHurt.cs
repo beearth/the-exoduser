@@ -52,6 +52,7 @@ namespace Exoduser.UnityPort.Core
             if (Player.Hp <= 0 || Player.State == "fallen" || Player.State == "dead") return;   // fallen / dead are invulnerable
             if (Stage.Enabled && Stage.LoadPhase > 0) return;                                  // G._bossLoadPhase: invulnerable while the arena loads
             if (Player.Iframes > 0) return;
+            if (IceOrbActive) return;                                                         // B03: nothing reaches the player inside the ice orb (web !P._ioActive)
             if (HarpActive || DashActive) return;                                             // chain move cannot be interrupted
             // dodge: (DEX + level bonus + equipment DEX) * .05 + dodgeChance affix, cap 35 %, not against DOT. The draw happens even at 0 %.
             if (!o.Dot)

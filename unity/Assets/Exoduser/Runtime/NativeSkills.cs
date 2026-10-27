@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Exoduser.UnityPort.Core;
+using Exoduser.UnityPort.Core.Skills;
 
 namespace Exoduser.UnityPort {
  // Web skill window (skill-forge.js / skill-forge.css, #skillPanel) in the 1920x1080 design space.
@@ -29,6 +30,14 @@ namespace Exoduser.UnityPort {
   readonly Dictionary<string,Texture2D> orbIcons=new Dictionary<string,Texture2D>(),procedural=new Dictionary<string,Texture2D>();
   readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
   string selectedOrb;bool ready;
+  Texture2D discEmpty;Simulation cur;
+  // B03 ports: these skills run in the Simulation (Skills/*.cs); everything else stays "미이식"
+  static bool Ported(string id){return id=="kiSlash"||id=="spikeTrap"||id=="giantSlam"||id=="holyDome"||id=="iceOrb"||id=="fireball";}
+  string EquippedId(int slot){
+    if(slot==SkillUiState.LmbSlot)return cur.Config.ActiveAttack=="kiSlash"?"kiSlash":null;
+    return NativeHud.SlotSkillId(cur,slot);
+  }
+  int SkillLevelOf(string id){return id=="kiSlash"?Math.Max(1,cur.Config.KiSlashLevel):cur.Skills.Level(id);}
 
   public NativeSkills(){
    data=JsonUtility.FromJson<SkillUiData>(Resources.Load<TextAsset>("Data/skill_ui").text);
@@ -56,7 +65,7 @@ namespace Exoduser.UnityPort {
    if(ready)return;ready=true;
    serif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??serif;
    sans=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");sansSemi=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??sans;
-   windowBase=Tex("Art/ui/skill/window_base");altarLmb=Tex("Art/ui/skill/altar_lmb");discEmptySel=Tex("Art/ui/skill/disc_empty_sel");discLmb=Tex("Art/ui/skill/disc_lmb");discLmbSel=Tex("Art/ui/skill/disc_lmb_sel");
+   windowBase=Tex("Art/ui/skill/window_base");altarLmb=Tex("Art/ui/skill/altar_lmb");discEmpty=Tex("Art/ui/skill/disc_empty");discEmptySel=Tex("Art/ui/skill/disc_empty_sel");discLmb=Tex("Art/ui/skill/disc_lmb");discLmbSel=Tex("Art/ui/skill/disc_lmb_sel");
    plate=Tex("Art/ui/inventory/plate");
   }
   static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
@@ -164,7 +173,7 @@ namespace Exoduser.UnityPort {
     GUI.matrix=Matrix4x4.identity;Fill(new Rect(0,0,Screen.width,Screen.height),C(0,0,0,.53f));
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-    bool lmb=sim.Config.ActiveAttack=="kiSlash";int level=Math.Max(1,sim.Config.KiSlashLevel);
+    cur=sim;bool lmb=sim.Config.ActiveAttack=="kiSlash";int level=Math.Max(1,sim.Config.KiSlashLevel);
     GUI.DrawTexture(WindowRect,windowBase,ScaleMode.StretchToFill,false);
     NativePanelTabBar.Draw(NativePanelTabBar.Preset.Skill,"skillPanel");
     DrawSlots(lmb);
@@ -179,11 +188,17 @@ namespace Exoduser.UnityPort {
    for(int i=0;i<13;i++){
     var d=defs.slots[i];bool sel=i==SelectedSlot,equipped=i==SkillUiState.LmbSlot&&lmb;
     var disc=new Vector2(324+106*i,264);var sprite=new Rect(disc.x-53,disc.y-53,106,106);
-    if(equipped)GUI.DrawTexture(sprite,sel?discLmbSel:discLmb);else if(sel)GUI.DrawTexture(sprite,discEmptySel);
+    string slotSkill=i==SkillUiState.LmbSlot?null:EquippedId(i);
+    if(equipped)GUI.DrawTexture(sprite,sel?discLmbSel:discLmb);
+    else if(slotSkill!=null){
+     GUI.DrawTexture(sprite,sel?discEmptySel:discEmpty);var tex=OrbIcon(slotSkill,false);
+     if(tex!=null){Disc(disc,29,C(90,75,60));GUI.DrawTexture(new Rect(disc.x-27,disc.y-27,54,54),tex);}
+    }
+    else if(sel)GUI.DrawTexture(sprite,discEmptySel);
     var key=R(d.keyRect);var name=R(d.nameRect);var button=R(d.button);
     // .sf-slot-key 11px Cinzel ls .08em gold; .sf-slot-name 11px (empty = dim, on = bone).
     Text(new Rect(button.x,key.y,button.width,key.height),d.key.ToUpperInvariant(),cinzel,11,C(201,166,99),FontStyle.Normal,.88f,TextAnchor.MiddleCenter);
-    string label=equipped?data.skill.name:NotPorted;
+    string label=equipped?data.skill.name:slotSkill!=null&&skillById.ContainsKey(slotSkill)?skillById[slotSkill].name:NotPorted;
     Color col=sel?C(223,214,194):equipped?C(185,171,146):C(125,114,100);
     Text(new Rect(button.x-6,name.y,button.width+12,name.height),label,serif,11,col,FontStyle.Normal,0,TextAnchor.MiddleCenter);
     if(GUI.Button(button,GUIContent.none,GUIStyle.none))Select(i);
@@ -191,21 +206,23 @@ namespace Exoduser.UnityPort {
   }
 
   void DrawInfo(Simulation sim,bool lmb,int level,Action equip){
-   string id=selectedOrb??(SelectedSlot==SkillUiState.LmbSlot&&lmb?"kiSlash":null);
+   string id=selectedOrb??EquippedId(SelectedSlot);
    if(id==null||!skillById.TryGetValue(id,out var def)){Text(new Rect(68,356,300,20),NotPorted,serif,12,C(125,114,100));DrawInfoResources(sim,584);return;}
    bool ki=id=="kiSlash";
    // icon circle (64px, 2px #5a4b3c border) + name / level
    var ic=new Vector2(98,386);Disc(ic,32,C(90,75,60));var tex=OrbIcon(id,false);if(tex!=null)GUI.DrawTexture(new Rect(ic.x-30,ic.y-30,60,60),tex);
    Text(new Rect(142,366,220,22),ki?data.skill.name:def.name,serif,18,C(223,214,194),FontStyle.Bold,.54f);
-   Text(new Rect(142,391,220,15),ki?"Lv "+level+" / 20":"Lv "+NotPorted,serif,12,C(201,166,99));
+   bool ported=Ported(id);int slv=ported?SkillLevelOf(id):0;bool learned=ported&&slv>=1;
+   Text(new Rect(142,391,220,15),ki?"Lv "+level+" / 20":learned?"Lv "+slv+" / 20":ported?"미습득":"Lv "+NotPorted,serif,12,C(201,166,99));
    Fill(new Rect(66,428,300,1),C(164,147,115,.5f));
    // Line breaks are the ones Chrome produced for the web description (captured per skill); the wrap helper is only a fallback.
    if(def.lines!=null&&def.lines.Length>0){for(int i=0;i<def.lines.Length;i++)Text(new Rect(66,439+i*21.45f,320,21.45f),def.lines[i],serif,13,C(216,204,184));}
    else Paragraph(new Rect(66,439,300,64),ki?data.skill.description:def.desc,serif,13,C(216,204,184),21.45f);
    // upgrade cost / lock depend on the learned level and SP: not ported.
-   Text(new Rect(66,513,300,15),"강화 "+NotPorted,serif,12,C(185,171,146));
+   Text(new Rect(66,513,300,15),learned?"강화 SP "+SkillRules.UpgradeSpCost+" · 레벨 제한 Lv "+SkillRules.SkillLevelLock(sim.Player.Level):"강화 "+NotPorted,serif,12,C(185,171,146));
    // upgrade +/-/reset keep the web look (start-state web captures show +/- greyed); they do nothing yet.
-   WebButton(new Rect(66,538,67,34),"강화 +",C(40,28,26),C(27,18,18),C(64,50,47),C(150,138,130));
+   bool canUp=learned&&!ki&&sim.CanUpgradeSkill(id);
+   if(WebButton(new Rect(66,538,67,34),"강화 +",canUp?C(70,34,26):C(40,28,26),canUp?C(38,18,14):C(27,18,18),canUp?C(150,92,60):C(64,50,47),canUp?C(223,214,194):C(150,138,130),canUp))sim.UpgradeSkill(id);
    WebButton(new Rect(139,538,66,34),"강화 −",C(26,23,22),C(18,16,15),C(55,50,46),C(115,110,100));
    WebButton(new Rect(210,538,55,34),"리셋",C(0,0,0,0),C(0,0,0,0),C(107,88,67),C(185,171,146));
    float resY=584;
@@ -225,7 +242,7 @@ namespace Exoduser.UnityPort {
   void DrawInfoResources(Simulation sim,float y){
    Fill(new Rect(66,y,300,1),C(164,147,115,.5f));
    string malice=sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture);
-   Mixed(new Rect(66,y+8,300,17),"SP "+NotPorted+"  ·  악의 "+malice+"  ·  LV "+sim.Player.Level,12,C(185,171,146),.48f,TextAnchor.MiddleLeft);
+   Mixed(new Rect(66,y+8,300,17),"SP "+sim.Player.StatPoints+"  ·  악의 "+malice+"  ·  LV "+sim.Player.Level,12,C(185,171,146),.48f,TextAnchor.MiddleLeft);
   }
 
   void DrawAltar(bool lmb,int level){
@@ -252,7 +269,7 @@ namespace Exoduser.UnityPort {
 
   void DrawOrb(SkillDefsOrb o,int level){
    var c=AltarOrigin+new Vector2(o.x,o.y);float r=o.o/2f;bool ki=o.id=="kiSlash";
-   bool dim=o.dim;
+   bool dim=o.dim&&!(cur!=null&&Ported(o.id)&&SkillLevelOf(o.id)>=1);
    // ball: shadow ring layers (web box-shadow), dark ball, circular icon
    Glow(c.x,c.y+10,r+8,r+4,C(0,0,0,.5f));
    if(!dim)Glow(c.x,c.y,r+18,r+18,C(230,199,122,.28f));
