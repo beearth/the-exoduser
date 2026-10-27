@@ -111,6 +111,15 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 - 크기: `updateE` 약 2,800줄, `hurtE` 약 1,000줄. CX-03·CX-04는 한 번에 넘기지 않고 공통 앞·뒤 처리부터 잘라 명세한다.
 - 미확인: CX-02·03a는 `JsMath`(fdlibm 포트)로 `Atan2`/`Cos`/`Sin`을 V8과 비트 일치시킴(.NET Windows 약 2.3만 값 확인). `Math.Pow`는 .NET 그대로 — Mac·IL2CPP 비트 일치는 상태 3 때 실측
 
+## 5-2. H5 백로그 (웹 결함, M1 뒤 CTO가 웹 수정 세션에 배정)
+
+Unity 이식 중 찾은 웹 결함. 이식은 웹 그대로 두고, 웹 수정은 M1 범위 밖이다. 웹 행 번호는 2026-10-27 origin/main(6089f2ff2) game.html을 텍스트로 다시 찾은 값이다.
+
+| ID | 내용 | 웹 행(origin/main 기준) | 의도·영향 | 판정·처리 |
+|---|---|---|---|---|
+| H5-01 | 독웅덩이 테두리가 GPU 프록시에서 속 찬 원판으로 그려짐 | game.html 10886~10888 `_drawDruidPoolClip`(`#a9d76a` α×0.55, `arc(r)` 뒤 `arc(max(0,r-1.2), …, true)` 역방향). 같은 패턴 2곳: 57772(`lp` 장판 `_la*1.8`), 58236(`pp` `_ppF*.55`) | 의도는 1.2px 고리. 프록시가 역방향 감김을 무시해 원판이 웅덩이 그림을 덮음(납작한 네온 면) | 디자인총괄 판정(10-27): 웹 버그, Unity는 1.2px 선 유지. 피해 판정 원 r은 웹과 같은 계약이라 변경 없음 |
+| H5-02 | 보스 동반부활 mkEn 인자 자리 오류 | game.html 42788 `mkEn(_sx,_sy,G.stage,0,true,_cet,0)`(시그니처 x,y,si,etype,ib,el,room). 아레나 보스 생성은 30954 `mkEn(…,si,0,true,STG[si].be,0)` | `_cet`(이전 보스 etype)가 el 자리로 감, etype은 늘 0. 아레나 보스가 etype 0이라 `_killedBosses`가 전부 0 → `et!==e.etype` 필터에서 풀이 비어 일반 플레이에서는 도달 불가 | 기획 확인 필요(어느 보스를 되살릴지) — M1 뒤 CTO가 사용자에게 의도 확인. Unity는 웹 그대로(CX-04c1) |
+
 ## 6. 작업 방식
 
 - Core 계산은 B군과 같은 방식: 원본 함수 줄 범위 추출 → Node VM oracle → C# 새 파일 대조. Codex 소유 `Simulation.cs`·`NativeGame` 수정은 patch + PC_TO_MAC_INBOX(main·codex 브랜치 두 곳).
