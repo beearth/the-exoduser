@@ -20,7 +20,8 @@
 | 단위 | 내용 | 상태 |
 |---|---|---|
 | UCH-01 | Unity용 캐릭터 시트 1차: 3명 × body(정면·3/4·측면·뒤, A포즈)·head·weapon, 회색 배경·평면 조명, 뷰 분할(Meshy 다중 입력용) | **완료** (9장 PASS, $0.645) |
-| UCH-02 | 시트 → 3D 메시 시험(Meshy, 1명 1건) → Unity 6000.6.7f1 임포트·스케일·재질 | 대기 |
+| UCH-02a | 전사 body 시트 → Meshy multi-image-to-3d 1건 | **완료** (30cr, 조건부 PASS) |
+| UCH-02b | 전사 메시 Unity 6000.6.7f1 임포트·스케일·재질·1-1 맵 위 컷, 얼굴 점 1개 텍스처 수정 | 대기 |
 | UCH-03 | 리깅(휴머노이드)·Animator 기본(대기·이동·구르기·공격 1) | 대기 |
 | UCH-04 | 인게임 판정: 1-1 맵 위 1920×1080·1x 크롭, 전사·실버테일 옆 T1~T8 | 대기 |
 
@@ -43,3 +44,15 @@
   - 아이반 weapon: r4 크롭의 원통 약실·삼각 문양 고리·총구 고리와 일치한다. 개머리는 r4에 보이지 않아 새로 그렸으므로 모델링 때 키아트 전신과 대조한다.
   - 아이반 body는 뷰 2·3 사이 전경 0 열에서 다시 분할해 4뷰가 됐다.
   - 최종 파일: `E:/exoduser-wt/_out/unity-charsheet/<id>/`(`<id>_body`·`_head`·`_weapon`, 실버테일 body=`silvertail_body_r2b.png`), Meshy용 뷰 `<id>/views/*.png` 1024², 격자 `lineup_r2.jpg`.
+- 2026-10-27 UCH-02a(사용자 승인 "크레딧은 1건만"): Meshy `POST /openapi/v1/multi-image-to-3d` 1건을 돌렸다.
+  - 작업 ID `01a17cf8-4a78-7626-8991-c2d2722c4ae8`
+  - 요청: meshy-7.1(latest), 입력 정면·측면·뒤 3장, PBR 2k, 삼각형 60k remesh, `pose_mode=a-pose`, glb·fbx·obj
+  - 크레딧: 잔액 4440 → 4410(30cr, `consumed_credits` 30)
+  - 키: Codex DPAPI를 메모리에서만 복호화했다
+  - 장부: `E:/exoduser-wt/_out/meshy/credits.log`
+  - 결과 수치: 정점 30,951, 삼각형 61,981, bbox 1.186×1.904×0.498(Y-up, 정면 +Z), 텍스처 2048² 4장(base_color·metallic·roughness·normal)
+  - 저장: `E:/exoduser-wt/_out/unity-charsheet/meshy/warrior_body_20261027_1946/`, 사본은 `I:/EXODUSER-Storage/Meshy/` 같은 이름 폴더(sha256.txt 포함)
+  - 미리보기: numpy 정사영 렌더 `compare.jpg`
+  - 총괄 판정 **조건부 PASS**: 시트의 얼굴(평범한 짙은 눈·흉터)·흑발·겹친 둥근 견갑·암적 스카프·후드형 망토가 정면·측면·뒤에서 읽히고, 구멍이나 떠다니는 조각이 없다. A포즈라 리깅할 수 있다.
+  - 고칠 점: ① 왼쪽 눈 아래 검은 점 1개(텍스처 수정) ② 정면 망토 폭이 시트보다 좁고 허리·정강이 갑옷이 단순해졌다(실루엣 허용 범위, 인게임 카메라 거리에서 재판정) ③ OBJ의 mtl은 `texture_0.png`를 참조한다(파일명은 `tex_base_color.png`).
+- 메모: Meshy multi-image는 첫 장을 정면으로 본다. `origin_at`은 `auto_size=true`일 때만 적용되고, 크레딧표는 문서에 없어 응답의 `consumed_credits`를 정본으로 한다. 리깅 API는 별도 유료(문서상 5cr)다.
