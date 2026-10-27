@@ -2,7 +2,7 @@
 
 원료(모두 게임에서 이미 쓰는 승인 에셋, 읽기 전용):
   assets/vfx/Dark_Smoke_BW_6x6.png      1024x1024 6x6 (RGB 전부 검정, 알파=연기 밀도) — 사망 연기
-  assets/vfx/Ice_MistSmoke_FBF_4x4.png  512x512 4x4 (균일 청색, 알파 최대 0.48의 반투명 안개)
+  tools/vfx/src/Ice_MistSmoke_FBF_4x4_orig.png  512x512 4x4 (균일 청색, 알파 최대 0.48의 반투명 안개 — 교체 전 원본 보존본)
   assets/vfx/Fire_MediumImpact.png      512x512 4x4 (1묶음 C2 적용본, regrid_fire_pack.py 산출)
   assets/vfx/Fire_BasicImpact.png       256x256 3x3 (1묶음 C2 적용본)
 출력(원본 파일명·크기·격자 그대로 → game.html 수정 없이 교체):
@@ -24,6 +24,7 @@ from scipy.ndimage import gaussian_filter
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 VFX = os.path.join(ROOT, 'assets', 'vfx')
+SRC = os.path.join(ROOT, 'tools', 'vfx', 'src')   # 4묶음(빙결·물)에서 Ice_MistSmoke 가 교체되므로 원본을 여기 보존하고 읽는다
 DST = sys.argv[1] if len(sys.argv) > 1 else VFX
 
 
@@ -74,7 +75,7 @@ def smoke_frame(i):
 
 def mist_frames():
     """Ice_MistSmoke_FBF_4x4(균일 청색 반투명 안개)를 같은 램프로 재채색 → 128px 프레임 16개(프리멀티플라이)"""
-    im = np.asarray(Image.open(os.path.join(VFX, 'Ice_MistSmoke_FBF_4x4.png')).convert('RGBA')).astype(np.float32) / 255
+    im = np.asarray(Image.open(os.path.join(SRC, 'Ice_MistSmoke_FBF_4x4_orig.png')).convert('RGBA')).astype(np.float32) / 255
     out = []
     for n in range(16):
         r, c = divmod(n, 4)
