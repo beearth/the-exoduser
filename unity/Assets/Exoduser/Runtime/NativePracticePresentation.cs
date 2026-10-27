@@ -46,6 +46,14 @@ namespace Exoduser.UnityPort
                 case PracticeStep.Move:return PracticeCopy("moveHint");
                 case PracticeStep.Left:return PracticeCopy("attackHint").Replace("{p0}",Math.Min(10,firstPractice.LeftKills).ToString()).Replace("{p1}",firstPractice.FullChargeKill?"1":"0");
                 case PracticeStep.Right:return PracticeCopy("rightHint").Replace("{p0}",firstPractice.RightKills.ToString());
+                case PracticeStep.ParryMagic:case PracticeStep.ParryPhysical:
+                {
+                    bool q=step==PracticeStep.ParryMagic;string key=q?"Q":"E";
+                    string status=practiceMissed?PracticeCopy("missHint"):firstPractice.ParriedShot?PracticeCopy("parryHintDone"):PracticeCopy("parryHintTry");
+                    return PracticeCopy("parryHintRing")+PracticeCopy(q?"parryHint0a":"parryHint1a").Replace("{p0}",key)+"\n"+status;
+                }
+                case PracticeStep.HoldMagic:case PracticeStep.HoldPhysical:return PracticeCopy(step==PracticeStep.HoldMagic?"parryHint2":"parryHint3").Replace("{p0}",step==PracticeStep.HoldMagic?"Q":"E");
+                case PracticeStep.RageParry:return PracticeCopy("parryHint6");
                 case PracticeStep.Chain:return ChainHint();
                 case PracticeStep.Roll:return PracticeCopy("rollHint").Replace("{p0}",firstPractice.RollCount.ToString());
                 case PracticeStep.RageBurst:return PracticeCopy("rageHint");
@@ -81,9 +89,9 @@ namespace Exoduser.UnityPort
             Fill(new Rect(capRect.x+3,capRect.y+3,capRect.width-6,capRect.height-6),Hex(0x17141a,.55f));FrameRect(capRect,accent);GUI.Label(capRect,cap,capStyle);
             y+=16+10+artH+(intro?16:14);
             // title + subtitle
-            string title=PracticeStepTitle(step);var titleStyle=LessonStyle(29,TextAnchor.UpperLeft,Hex(0xf4e6d2),true,true);
+            string title=done?PracticeCopy("doneTitle"):PracticeStepTitle(step);var titleStyle=LessonStyle(29,TextAnchor.UpperLeft,Hex(0xf4e6d2),true,true);
             float lineH=titleStyle.CalcHeight(new GUIContent("가"),w),titleH=titleStyle.CalcHeight(new GUIContent(title),w);int titleLines=Mathf.Max(1,Mathf.RoundToInt(titleH/lineH));GUI.Label(new Rect(x+1,y+2,w,titleH),title,LessonStyle(29,TextAnchor.UpperLeft,new Color(0,0,0,.8f),true,true));GUI.Label(new Rect(x,y,w,titleH),title,titleStyle);y+=titleLines*37.7f+7;
-            int number=firstPractice.Index+1;string sub=number+" / 12 · "+(step==PracticeStep.Trap?PracticeCopy("trapShort"):PracticeRowLabel(firstPractice.Index));
+            int number=firstPractice.Index+1;string sub=done?PracticeCopy("doneSub"):number+" / 12 · "+(step==PracticeStep.Trap?PracticeCopy("trapShort"):PracticeRowLabel(firstPractice.Index));
             GUI.Label(new Rect(x,y,w,20),sub,LessonStyle(12,TextAnchor.MiddleLeft,Hex(0xc2b6a9)));y+=19+20;
             // checklist: 4 basic rows then the 8 parry rows; the current row opens its hint
             var line=Hex(0x65453c);Fill(new Rect(x,y,w,1),line);y+=1+16;
@@ -103,11 +111,10 @@ namespace Exoduser.UnityPort
                     string hint=done?(lobby.Language=="ko"?"이식된 실습(이동·좌클릭·우클릭·가시덫·사슬·구르기·분노 폭발)을 마쳤습니다. 패링 실습은 패링 반사 규칙 이식 뒤에 이어집니다.":"The ported exercises (movement, left click, right click, Spike Trap, chain, roll, Rage burst) are complete. The parry exercises follow once the parry reflection rule is ported."):PracticeStepHint(step);var hintStyle=LessonStyle(14,TextAnchor.UpperLeft,Hex(0xe8d9c6),true,true);float hintH=hintStyle.CalcHeight(new GUIContent(hint),w-16);
                     GUI.Label(new Rect(x+8,y,w-16,hintH),hint,hintStyle);y+=hintH+10;
                     if(step==PracticeStep.Left&&!intro&&phase==FirstPracticePhase.Practice)y=DrawLessonHold(x+8,y,w-16,accent);
-                    else if(step==PracticeStep.Chain&&!intro&&phase==FirstPracticePhase.Practice)y=DrawChainHold(x+8,y,w-16,accent);
+                    else if((step==PracticeStep.Chain||step==PracticeStep.HoldMagic||step==PracticeStep.HoldPhysical||step==PracticeStep.RageParry)&&!intro&&phase==FirstPracticePhase.Practice)y=DrawChainHold(x+8,y,w-16,accent);
                 }
             }
-            if(done){string note=lobby.Language=="ko"?"이식된 실습(이동·좌클릭·우클릭·가시덫·사슬·구르기·분노 폭발)을 마쳤습니다. 패링 실습은 패링 반사 규칙 이식 뒤에 이어집니다.":"The ported exercises (movement, left click, right click, Spike Trap, chain, roll, Rage burst) are complete. The parry exercises follow once the parry reflection rule is ported.";
-                var ns=LessonStyle(14,TextAnchor.UpperLeft,Hex(0xe8d9c6),true,true);float nh=ns.CalcHeight(new GUIContent(note),w-16);GUI.Label(new Rect(x+8,y+4,w-16,nh),note,ns);}
+            if(done){string note=PracticeCopy("doneHint");var ns=LessonStyle(14,TextAnchor.UpperLeft,Hex(0xe8d9c6),true,true);float nh=ns.CalcHeight(new GUIContent(note),w-16);GUI.Label(new Rect(x+8,y+4,w-16,nh),note,ns);}
             y+=10;
             // footer (bottom anchored): optional primary button, then skip, then the progress hairline
             float bottom=rect.yMax;float skipY=bottom-69,progressY=bottom-23;
