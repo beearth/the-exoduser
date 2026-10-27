@@ -72,13 +72,15 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | BX-10 | 나머지 보스(1장 si1·si2 → 2~7장) | CH1/3/4 추적 | BX-03 | 0 | 미배정 | 보스별 oracle + 실플레이 |
 | BX-11 | 보스 표현(모델·모션·VFX·BGM) | 웹 에셋 → Unity 신규 가능 | BX-03 | 1 | 디자인·사운드 협조 | 디자인 총괄 PASS |
 
+- BX-08 의존: si0 다크드루이드 침강 도주(STY-D9, 사용자 확정 10-27, 연출만) — 웹 game.html 반영 뒤 웹과 같게 옮김. Unity 선행 금지. 근거 `docs/11내러티브·로어디자인/CH1_STORY_SPINE_20261027.md` §3.1
+
 ## 5-1. C01 적 공통 틀 (2026-10-26 전체총괄 제안으로 보스전 총괄이 계획)
 
 보스는 일반 적과 같은 `mkEn`·`updateE`·`hurtE`를 지나간다. 그래서 C01 공통 틀이 BX 단위의 바닥이다. 범위는 **일반 적 100종이 올라탈 공통 틀까지**다. 개별 적 패턴 이식은 그다음 단위로 나눈다.
 
 | ID | 단위 | 웹 원본 (2026-10-26 줄 번호) | 상태 | 완료 조건 |
 |---|---|---|---|---|
-| CX-01 | 적 수치 테이블 `ETYPE_HP/ATK/_ETYPE_SPD_RAW→ETYPE_SPD/R/RANGE/POISE/SHIELD/COL`(0~89), `ETYPE_ERES`, `ETYPE_COLS`, `RARE_ETYPE`(90~99), `ELITE_TIERS/ELITE_PROB/MOD_DEFS`, `DIFF_MUL/DIFF_LV_OFF`, `SI_TO_HELL/STG` | 30825~30911, 14336, 19916, 30957, 31035~31064, 9272/9276, 16660/16699 | 2 웹동일 소스(데이터·oracle 2,784/0, 연결 전) | 표 전 항목 C# 데이터 바이트 단위 일치. 브랜치 claude/unity-pc-c01-20261026 8faade542, 보고서 UNITY_CX01_ENEMY_TABLES_20261026 |
+| CX-01 | 적 수치 테이블 `ETYPE_HP/ATK/_ETYPE_SPD_RAW→ETYPE_SPD/R/RANGE/POISE/SHIELD/COL`(0~89), `ETYPE_ERES`, `ETYPE_COLS`, `RARE_ETYPE`(90~99), `ELITE_TIERS/ELITE_PROB/MOD_DEFS`, `DIFF_MUL/DIFF_LV_OFF`, `SI_TO_HELL/STG` | 30825~30911, 14336, 19916, 30957, 31035~31064, 9272/9276, 16660/16699 | 2 웹동일 소스(데이터·oracle 2,784/0, 연결 전) | 표 전 항목 C# 데이터 바이트 단위 일치. 브랜치 claude/unity-pc-c01-20261026 80ea201b4(StageDef→EnemyStageDef 개명 포함), 보고서 UNITY_CX01_ENEMY_TABLES_20261026 |
 | CX-02 | `mkEn` 전체 (좌표 보정·monLv·스테이지 배율·엘리트 `rollElite`/`rollMods`·보스 `ib` 분기) — BX-01 포함 | 31122~31365 | 0 | 레벨·난이도·si·etype·ib 표본 oracle 일치 |
 | CX-03 | `updateE` 공통 앞·뒤 처리와 etype별 분기 지점(분기 안 패턴은 비움) | 38586~41410 | 0 | etype0·보스 경로 tick 상태 oracle 일치 |
 | CX-04 | `hurtE` 공통 (DR·쉴드→HP 분배·포이즈·넉백·사망 판정·보스 분기) — BX-05 일부 | 42112~43121 | 0 | 피해 표본 oracle 일치, 쉴드 규칙은 CLAUDE.md eShield 계약 그대로 |
@@ -102,3 +104,4 @@ Godot 이식은 중단됐지만 **웹 원본 추적 결과는 엔진과 무관�
 | 2026-10-26 | 전체총괄 제안으로 C01 적 공통 틀(CX-01~05)도 보스전 총괄이 계획. A23·C03 담당 이관 확인(마스터 보드 반영은 맥북 총괄 docs 커밋) |
 | 2026-10-26 | A23 표시 UI는 맥북 총괄 순서로 Sonnet 진행 중임을 확인(중복 배정 안 함, 1차 비교 캡처 확인). CX-01 명세 작성: `E:/exoduser-wt/_out/pc-cx01/SPEC.md` → 맥북 총괄에 Sonnet 배정 요청 |
 | 2026-10-26 | CX-01 인수(단순작업2, 8faade542). 웹 몬스터_총관리.md와 코드 차이: RAW_R 13곳·RAW_COL[65] — docs 수정은 별도 |
+| 2026-10-27 | STY-D9 회신(웹 가능·si0만·표시만), CX-02 배정 |
