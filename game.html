@@ -3497,6 +3497,29 @@ function _ensureBaseWingStrike(p){
   p.skills.shieldThrow=Math.max(1,Number(p.skills.shieldThrow)||1);
   if(!p._fused)p._fused={};p._fused.shieldFuse=true;
   p.activeRMBSk='maliceSwipe';
+  _ensureMobilitySkill(p);
+}
+// ═══ 기본 기동 (2026-10-27 사용자 지시): 전사(비마법사)=구르기(스킬 슬롯 없음) / 마법사 계열=전격이동(bladeDash) ═══
+// 플레이 가능한 마법사 계열 영웅이 아직 없어 현재 bladeDash는 아무도 얻지 못한다(스킬 데이터는 mageOnly로 보존).
+const _MAGE_CHAR_IDS=['exoduser_transmuter','exoduser_spearmage'];
+function _isMageChar(){try{const c=CHAR_LIST[_charIdx];return !!(c&&_MAGE_CHAR_IDS.indexOf(c.id)>=0)}catch(e){return false}}
+function _mobilityKind(){return _isMageChar()?'bladeDash':'roll'}
+// 옛 세이브: 전사가 갖고 있던 bladeDash(와 이를 쓰는 합체)를 제거하고 투자한 SP를 환급한다. 마법사 계열은 bladeDash 1렙을 기본 보장.
+function _ensureMobilitySkill(p){
+  if(!p||!p.skills)return;
+  if(_isMageChar()){p.skills.bladeDash=Math.max(1,Number(p.skills.bladeDash)||1);return}
+  const f=p._fused||{};
+  if(!(p.skills.bladeDash>0)&&!f.bladeEcho&&!f.thunderGhost)return;
+  let refund=0;
+  const lv=Math.max(1,~~p.skills.bladeDash);
+  for(let i=1;i<lv;i++)refund+=f.thunderGhost?_fuseUpSpCost(i,2):_skillUpSpCost(i);
+  ['bladeEcho','thunderGhost'].forEach(k=>{if(f[k]){refund+=2*3;delete f[k]}});
+  delete p.skills.bladeDash;
+  if(p._skProf)delete p._skProf.bladeDash;
+  p.sp=Math.max(0,~~(Number(p.sp)||0))+refund;
+  try{if(typeof SKILL_SLOTS!=='undefined')for(let i=0;i<SKILL_SLOTS.length;i++)if(SKILL_SLOTS[i]==='bladeDash')SKILL_SLOTS[i]=null}catch(e){}
+  p._rollMigrated=true;
+  setTimeout(()=>{try{notify(_T('전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.')+(refund>0?' +'+refund+' SP':''))}catch(e){}},2500);
 }
 function _wingStrikeLevel(){return Math.max(1,Math.min(P.skills.maliceSwipe||1,P.skills.shieldThrow||1))}
 function _eSkillRangeMul(){return 1+(_wingStrikeLevel()-1)*.05}
@@ -6198,7 +6221,7 @@ async function _bootRenderer(){
 let BINDS={
   up:'KeyW', down:'KeyS', left:'KeyA', right:'KeyD',
   weapon:'mouse0', shield:'KeyE',
-  bow:'Space', charge:'ShiftLeft',
+  bow:'Space', charge:'ShiftLeft', roll:'Space',
   parry:'KeyQ',
   beam:'mouse2', forge:'KeyG',
   inventory:'Tab', settings:'Escape',
@@ -6208,7 +6231,7 @@ let BINDS={
 let BINDS2={
   up:null, down:null, left:null, right:null,
   weapon:null, shield:null,
-  bow:null, charge:null,
+  bow:null, charge:null, roll:null,
   parry:null, beam:null, skill:null,
   forge:null, inventory:null, settings:null,
   interact:null, storage:null, stats:null, skill:null,
@@ -6253,6 +6276,10 @@ function _repairChainAttackBinds(){
   if(_chainAttackBindingConflict('charge',BINDS2.charge))BINDS2.charge=null;
 }
 function _setInputBinding(action,key,alternate){
+  if(action==='roll'&&String(key||'').startsWith('mouse')){
+    showPH(_L('구르기는 키보드 키로 지정하세요.','Bind Roll to a keyboard key.'),'#ffaa44');
+    return false;
+  }
   if(_chainAttackBindingConflict(action,key)){
     showPH(_L('사슬 이동과 공격에는 서로 다른 키를 지정하세요.','Use separate keys for chain movement and attacks.'),'#ffaa44');
     return false;
@@ -6264,7 +6291,7 @@ function _setInputBinding(action,key,alternate){
 const BIND_NAMES={
   up:'위로 이동', down:'아래로 이동', left:'왼쪽 이동', right:'오른쪽 이동',
   weapon:'무기 공격', shield:'칼등 처내기 (탭=처내기, 홀드=연사)',
-  bow:'Space 분노 폭발', charge:'사슬 이동',
+  bow:'Space 분노 폭발', charge:'사슬 이동', roll:'구르기 (방향키 +)',
   parry:'데빌포스 흡수', beam:'마법 (탭=투사체, 홀드=빔)',
   skill:'전투 스킬', forge:'대장간',
   inventory:'인벤토리', settings:'설정',
@@ -6276,7 +6303,7 @@ const BIND_NAMES={
 const BIND_NAMES_EN={
   up:'Move Up', down:'Move Down', left:'Move Left', right:'Move Right',
   weapon:'Weapon Attack', shield:'Blade Parry (tap=parry, hold=rapid)',
-  bow:'Space Rage Burst', charge:'Chain Dash',
+  bow:'Space Rage Burst', charge:'Chain Dash', roll:'Roll (Arrow Keys +)',
   parry:'Devilforce Absorb', beam:'Magic (tap=projectile, hold=beam)',
   skill:'Combat Skills', forge:'Forge',
   inventory:'Inventory', settings:'Settings',
@@ -9538,10 +9565,11 @@ function _checkPetDialogue(){
   // 기절 — 탈출기 동적 목록
   if(P.s==='pStun'){
     const _esc=['Shift 사슬'];
-    if(P.skills.bladeDash>0)_esc.push('더블탭 전격이동');
+    if(_mobilityKind()==='roll')_esc.push('방향키+Space 구르기');
+    else if(P.skills.bladeDash>0)_esc.push('더블탭 전격이동');
     if(P.skills.ghostWalk>0)_esc.push('Ctrl 유령걸음');
     else if(P.skills.iceOrb>0)_esc.push('Ctrl 얼음보주');
-    _petSayUrgent('stun_warn','cat',_T('기절!')+' '+_esc.map(e=>_T(e)).join(' / ')+' '+_T('으로 탈출!'),4,8,'crow',P.skills.bladeDash>0?'더블탭 or Shift+방향키! 전격이동으로 탈출해!':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
+    _petSayUrgent('stun_warn','cat',_T('기절!')+' '+_esc.map(e=>_T(e)).join(' / ')+' '+_T('으로 탈출!'),4,8,'crow',_mobilityKind()==='roll'?'방향키+Space! 굴러서 탈출해!':P.skills.bladeDash>0?'더블탭 or Shift+방향키! 전격이동으로 탈출해!':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
   }
   // MP 위기 (v4 — INT빌드)
   if(P.mp<P.mmp*.2&&(STATS.int||0)>Math.max(STATS.str||0,STATS.dex||0))_petBidCD('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
@@ -10909,6 +10937,9 @@ function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
 // ── [STY-12] 1장 보스 한 줄 대사 자막 (번역대상 No.3343~3347) — 부활 판정이 있는 보스는 마지막 사망 때만. 펫 말풍선(_petSay)과 별개 UI(#bossLine)
 const _BOSS_LINES={intro0:'새 거름이 떨어졌군.',sink0:'숲은 아직 배고프다. 둥지에서 보자.',die1:'…아직 거둘 때가 아닌데.',die2:'…밥 먹을 시간인데.',die3:'…죽기 싫었을 뿐이다.'};
 Object.assign(_EN,{'다크드루이드':'Dark Druid',"…달아났다. 숲 깊은 곳으로.":"…It fled. Deeper into the forest.","도망갔어! 그래도 우리가 이긴 거 맞지?":"It ran away! We still won, right?",'새 거름이 떨어졌군.':'Fresh compost has fallen.','숲은 아직 배고프다. 둥지에서 보자.':'The forest is still hungry. See you at the nest.','…아직 거둘 때가 아닌데.':"…It isn't harvest time yet.",'…밥 먹을 시간인데.':"…It's time to eat.",'…죽기 싫었을 뿐이다.':"…I just didn't want to die."});
+// [ROLL] 전사 구르기·키 설정 (2026-10-27, 번역대상 No.3372~3376)
+Object.assign(_EN,{"구르기 (방향키 +)":"Roll (Arrow Keys +)","방향키+Space 구르기":"Arrow Key+Space Roll","방향키+Space! 굴러서 탈출해!":"Arrow Key+Space! Roll out of it!","구르기는 키보드 키로 지정하세요.":"Bind Roll to a keyboard key.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Flash Step has been replaced by Roll (Arrow Keys + Space). Invested skill points are refunded."});
+Object.assign(_EN,{'구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)':'Enemies in the Roll / Flash Step path are weakened — damage taken +{p}% (5s)'});
 function _bossLine(key){
   const ko=_BOSS_LINES[key],el=$('bossLine');if(!ko||!el)return;
   const seen=G._bossLineSeen||(G._bossLineSeen={});if(seen[key])return;seen[key]=1; // 아레나 진입당 키별 1회
@@ -13312,23 +13343,24 @@ addEventListener('keydown',e=>{
     else if(!_dashHold&&_harpGauge>0){_dashHold=true;_dashHoldF=0;_dashTier=0}
     else if(!_dashHold&&_harpGauge<=0){showPH(_T('충전 중...'),'#ff8844')}
   }
-  // ═══ 칼날이동 — 더블탭 or 방향키+스페이스 동시 입력 ═══
-  if(G.on&&!G.paused&&!e.repeat&&P.s!=='fallen'&&P.s!=='dead'&&P.skills&&P.skills.bladeDash>=1){
+  // ═══ 기본 기동 입력 — 구르기(전사): 방향키 + 구르기 키(BINDS.roll) 동시 입력 / 전격이동(마법사 계열): 위 + 방향키 더블탭 ═══
+  if(G.on&&!G.paused&&!e.repeat&&P.s!=='fallen'&&P.s!=='dead'&&P.skills&&(_mobilityKind()==='roll'||P.skills.bladeDash>=1)){
     const _bdDirs={[BINDS.up]:0,[BINDS.down]:1,[BINDS.left]:2,[BINDS.right]:3};
     if(BINDS2.up)_bdDirs[BINDS2.up]=0;if(BINDS2.down)_bdDirs[BINDS2.down]=1;
     if(BINDS2.left)_bdDirs[BINDS2.left]=2;if(BINDS2.right)_bdDirs[BINDS2.right]=3;
+    const _rlKeys=[BINDS.roll,BINDS2.roll].filter(k=>k&&!k.startsWith('mouse'));
     const _bdDir=_bdDirs[e.code];
     if(_bdDir!==undefined){
-      // 1) 방향키+스페이스 동시
-      if(KH['Space']){P._bdTrigger=_bdDir;K['Space']=false;KH['Space']=false;return}
-      // 2) 더블탭 (250ms 이내 같은 방향키 2번)
-      else{const _now=performance.now();
+      // 1) 방향키 + 구르기 키 동시 (구르기 키가 석궁 키와 같아도 방향 입력이 있을 때만 구르기)
+      if(_rlKeys.some(k=>KH[k])){P._bdTrigger=_bdDir;_rlKeys.forEach(k=>{K[k]=false;KH[k]=false});return}
+      // 2) 더블탭 (250ms 이내 같은 방향키 2번) — 마법사 계열 전격이동 전용, 전사는 오입력 방지로 없음
+      else if(_mobilityKind()==='bladeDash'){const _now=performance.now();
         if(P._bdLastDir===_bdDir&&_now-P._bdLastT<250){P._bdTrigger=_bdDir;P._bdLastDir=-1;P._bdLastT=0}
         else{P._bdLastDir=_bdDir;P._bdLastT=_now}}
     }
-    // 스페이스 눌렀을 때 방향키 이미 눌려있으면 (사슬기동 중 제외 — 기동불꽃 입력 보호)
-    if(e.code==='Space'&&!(_harpActive||_dashActive)){
-      for(const[code,dir]of Object.entries(_bdDirs)){if(KH[code]){P._bdTrigger=dir;K['Space']=false;return}}
+    // 구르기 키를 눌렀을 때 방향키가 이미 눌려있으면 (사슬기동 중 제외 — 기동불꽃 입력 보호)
+    if(_rlKeys.indexOf(e.code)>=0&&!(_harpActive||_dashActive)){
+      for(const[code,dir]of Object.entries(_bdDirs)){if(KH[code]){P._bdTrigger=dir;K[e.code]=false;return}}
     }
   }
   // ── 인벤토리 열린 상태: Space/X=쓰레기 토글, F=중요잠금 토글, Y=장착 ──
@@ -15182,7 +15214,7 @@ const UNIQUE_SPECIAL={
   // roll=정수 균등. scale 있으면 item[stat]=롤값×scale(소수 저장), 없으면 롤값 그대로.
   // 툴팁 치환: {s}=롤값/60초, {p}=롤값(%표기), {n}=롤값(개수/발수/분노). 구 12종 세이브는 scale 없어 무변경.
   u_n01: {ko:'분노가 가득 차면 분노스킬 쿨다운 {s}초 회복',                    stat:'_uRageFullCd',        val:600,  roll:[600,1800]},
-  u_n02: {ko:'전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)',            stat:'_uBlinkWeak',         val:0.50, roll:[50,100], scale:0.01},
+  u_n02: {ko:'구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)',            stat:'_uBlinkWeak',         val:0.50, roll:[50,100], scale:0.01},
   u_n03: {ko:'기검참 차징 3타 데미지 +{p}%',                                 stat:'_uKiChargeDmg',       val:0.50, roll:[50,100], scale:0.01},
   u_d01: {ko:'패링 후 5초 내 다음 악의구가 반향 구체 2발 추가 (각 {p}%)',      stat:'_uParryOrbEcho',      val:0.20, roll:[20,40],  scale:0.01},
   u_d02: {ko:'악의구 폭발이 중독 3중첩 적에게 2차 폭발 ({p}%)',               stat:'_uOrbPoisonBurst',    val:0.30, roll:[30,50],  scale:0.01},
@@ -29114,7 +29146,7 @@ function mkP(){
     activeRMBSk:'maliceSwipe',
     activeQSk:'parry',
     activeCtSk:'ghostWalk',
-    skills:{kiSlash:1,fireball:1,bladeDash:1,maliceSwipe:1,shieldThrow:1},_fused:{shieldFuse:true},maskOn:true};
+    skills:{kiSlash:1,fireball:1,maliceSwipe:1,shieldThrow:1},_fused:{shieldFuse:true},maskOn:true};
 }
 
 // ═══════════════════════════════════════
@@ -32241,8 +32273,8 @@ function update(){
   const _pPrevX=P.x,_pPrevY=P.y; // 투사체 충돌용: 이동 전 위치 저장
   const _pDead=P.s==='fallen'||P.s==='dead'||P.s==='pStun';
   // ═══ 전격이동 탈출: 경직/상태이상 중에도 더블탭으로 발동 ═══
-  if(!_pDead&&P._bdTrigger!=null&&_canBladeDash()&&!(P._seaParalyzed>0)){
-    activateBladeDash(P._bdTrigger);P._bdTrigger=null;
+  if(!_pDead&&P._bdTrigger!=null&&_canMobility()&&!(P._seaParalyzed>0)){
+    activateMobility(P._bdTrigger);P._bdTrigger=null;
   }
   if(G.pets)updatePet(); // 펫 이동은 항상, 수거는 petAuto 토글
   _updateBurst(_dtSp); // GPU Burst (별도 context)
@@ -33117,10 +33149,10 @@ function update(){
     if(_wdd>0){const _prevD=P._walkDist||0;P._walkDist=_prevD+_wdd;const _prevF=~~(_prevD/32)%8,_curF=~~(P._walkDist/32)%8;if(_prevF!==_curF&&(_curF===0||_curF===4)){playSample(_curF===0?'footstep':'footstep2',.3,_r(.9,.15))}}else P._walkDist=P._walkDist||0
     // ═══ 칼날이동 — 더블탭 트리거 소비 ═══
     if(P._bdTrigger!=null){
-      if(_canBladeDash()&&!(P._seaParalyzed>0)){
-        activateBladeDash(P._bdTrigger);
-      }else if(_harpGauge<_HARP_GAUGE_COST[1]*7/10){showPH(_T('충전 중...'),'#ff8844')}
-      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
+      if(_canMobility()&&!(P._seaParalyzed>0)){
+        activateMobility(P._bdTrigger);
+      }else if(_harpGauge<_mobilityGaugeCost()){showPH(_T('충전 중...'),'#ff8844')}
+      else if(_mobilityKind()==='bladeDash'&&P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
     if(P._ioActive){P.s='iceOrb'} // 얼음보주 안: 모든 행동/이동 차단, 상태 강제 복구
@@ -33210,10 +33242,10 @@ function update(){
     if(_isFused('whirlDet'))_addFuseProfTick('slamStorm'); // 지진폭풍 합체 시간 축적
     // 전격이동: 회전 중에도 더블탭 대시 허용
     if(P._bdTrigger!=null){
-      if(_canBladeDash()&&!(P._seaParalyzed>0)){
-        activateBladeDash(P._bdTrigger);
-      }else if(_harpGauge<_HARP_GAUGE_COST[1]*7/10){showPH(_T('충전 중...'),'#ff8844')}
-      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
+      if(_canMobility()&&!(P._seaParalyzed>0)){
+        activateMobility(P._bdTrigger);
+      }else if(_harpGauge<_mobilityGaugeCost()){showPH(_T('충전 중...'),'#ff8844')}
+      else if(_mobilityKind()==='bladeDash'&&P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
     // 회전참: 이동 80%, ST 지속소모, 15f마다 360도 히트
@@ -33832,10 +33864,10 @@ function update(){
     }
     // 전격이동: 보호막 중에도 더블탭 대시 허용
     if(P._bdTrigger!=null){
-      if(_canBladeDash()&&!(P._seaParalyzed>0)){
-        activateBladeDash(P._bdTrigger);
-      }else if(_harpGauge<_HARP_GAUGE_COST[1]*7/10){showPH(_T('충전 중...'),'#ff8844')}
-      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
+      if(_canMobility()&&!(P._seaParalyzed>0)){
+        activateMobility(P._bdTrigger);
+      }else if(_harpGauge<_mobilityGaugeCost()){showPH(_T('충전 중...'),'#ff8844')}
+      else if(_mobilityKind()==='bladeDash'&&P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
     if(!isHeld('parry')||P.mp<=0){
@@ -34197,10 +34229,10 @@ function update(){
     if(!isAct('beam')||P.mp<=0){const _wasOmni=!!(P.skills.omniBeam&&P.skills.fanShot&&_isFused('sixFuse'));if(_wasOmni&&P.mp<=0){P._beamCd=300;addTxt(P.x,P.y-30,_T('⚡ 과부하! 5초'),'#ffaa00',40)}P.s='idle';P.mp=Math.max(0,P.mp);P._omniPts=null;SFX.beamStop();break}
     // 전격이동: 빔 중에도 더블탭 대시 허용
     if(P._bdTrigger!=null){
-      if(_canBladeDash()&&!(P._seaParalyzed>0)){
-        activateBladeDash(P._bdTrigger);
-      }else if(_harpGauge<_HARP_GAUGE_COST[1]*7/10){showPH(_T('충전 중...'),'#ff8844')}
-      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
+      if(_canMobility()&&!(P._seaParalyzed>0)){
+        activateMobility(P._bdTrigger);
+      }else if(_harpGauge<_mobilityGaugeCost()){showPH(_T('충전 중...'),'#ff8844')}
+      else if(_mobilityKind()==='bladeDash'&&P.mp<(10+((P.skills.bladeDash||1)-1)*5)*7/10){showPH(_T('MP 부족!'),'#4444ff')}
       P._bdTrigger=null;
     }
     const _isOmni=!!(P.skills.omniBeam&&P.skills.fanShot&&_isFused('sixFuse'));
@@ -34419,14 +34451,14 @@ function update(){
     if(isJust('charge')||(K.ShiftLeft&&(_dashHold||_harpActive||_dashActive))){P.s='idle';P.st2=0;break}
     if(isJust('parry')){P.s='idle';P.st2=0;break}
     if(isJust('skill7')){P.s='idle';P.st2=0;break}
-    if(P._bdTrigger!=null&&_canBladeDash()&&!(P._seaParalyzed>0)){P.st2=0;activateBladeDash(P._bdTrigger);P._bdTrigger=null;break}
+    if(P._bdTrigger!=null&&_canMobility()&&!(P._seaParalyzed>0)){P.st2=0;activateMobility(P._bdTrigger);P._bdTrigger=null;break}
     if(P.st2<=0)P.s='idle';break;}
   case 'pStun':{
     if(_gameFrame-(P._pStunSayF||0)>=480){P._pStunSayF=_gameFrame;addTxt(P.x,P.y-40,_T('여기가 지옥인가'),'#ffcc44',48)} // 기절 순간 대사 1회(480f=8초 쿨)
     // ═══ 기절: Shift/Ctrl/전격이동(더블탭) 탈출기로 즉시 해제 ═══
     if(isJust('charge')||(K.ShiftLeft&&(_dashHold||_harpActive||_dashActive))){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
     if(isJust('skill7')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
-    if(P._bdTrigger!=null&&_canBladeDash()&&!(P._seaParalyzed>0)){P.poise=4;P.poiseR=0;activateBladeDash(P._bdTrigger);P._bdTrigger=null;break}
+    if(P._bdTrigger!=null&&_canMobility()&&!(P._seaParalyzed>0)){P.poise=4;P.poiseR=0;activateMobility(P._bdTrigger);P._bdTrigger=null;break}
     if(P.st2<=0){P.s='idle';P.iframes=60;P.poise=4;P.poiseR=0}
     break;}
   }
@@ -44190,7 +44222,7 @@ const SKILL_CATS=[
 const SKILL_REC_PATH=[
   {phase:'1. 악의기둥+가시덫',phaseEn:'1. Dark Pillar+Spike Trap',skills:['darkPillar','spikeTrap'],fuse:'pillarSpike',desc:'악의기둥 + 가시덫 → 합체: 기둥가시',descEn:'Dark Pillar + Spike Trap → Fuse: Pillar Spike'},
   {phase:'2. 해골무덤+악의폭풍',phaseEn:'2. Bone Wall+Malice Storm',skills:['boneWall','maliceStorm'],fuse:'boneStorm',desc:'해골무덤 + 악의폭풍 → 합체: 해골번개',descEn:'Bone Wall + Malice Storm → Fuse: Bone Lightning'},
-  {phase:'3. 전격의창+아이스스톰',phaseEn:'3. Thunder Spear + Ice Storm',skills:['thunderStake','bladeDash','iceStorm'],fuse:'thunderGhost',desc:'뇌전창+전격이동 → 전격의창. 아이스스톰으로 빙결존 설치 — 물과 전류가 만나면 강화되어 몬스터를 당겨온다. 나중에 물의 영역으로 확장',descEn:'Thunder Stake+Blade Dash → Thunder Spear. Ice Storm creates freeze zones — water meets lightning, empowered pull draws monsters in. Upgrade to Water Domain later'},
+  {phase:'3. 뇌전창+아이스스톰',phaseEn:'3. Thunder Stake + Ice Storm',skills:['thunderStake','iceStorm'],fuse:null,desc:'뇌전창 + 아이스스톰. 아이스스톰으로 빙결존 설치 — 물과 전류가 만나면 강화되어 몬스터를 당겨온다. 나중에 물의 영역으로 확장',descEn:'Thunder Stake + Ice Storm. Ice Storm creates freeze zones — water meets lightning, empowered pull draws monsters in. Upgrade to Water Domain later'},
   {phase:'4. 이동+사슬',phaseEn:'4. Movement+Chain',skills:['chargeBoost','magicBlink','chainAssault','chainSlam'],fuse:'dimBreach',desc:'충돌+화염+사슬 확장 → 합체: 사슬기동 / 기동:전폭',descEn:'Impact+Flame+Chain Expand → Fuse: Chain Breach / Maneuver:Thunder'},
   {phase:'5. 칼날+역병',phaseEn:'5. Blade+Plague',skills:['maliceHunt','guardian','plagueBurst'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 + 폭독칼날 → 합체: 칼날 해방 / 독혈 해방',descEn:'Malice Hunt + Guardian + Plague Burst → Fuse: Blade Liberation / Plague Liberation'},
   {phase:'6. 💀 필살기 선택',phaseEn:'6. 💀 Ultimate Pick',skills:['blackStar','lavaSummon','execution'],fuse:null,pick:true,desc:'필살기 1개 선택! 블랙(몬스터 흡인) / 탄막블랙홀(탄막흡수+폭발) / 처형(보스킬)',descEn:'Pick 1 ultimate! Black Star(monster pull) / Bullet Black Hole(bullet absorb+blast) / Execution(boss kill)'},
@@ -44258,7 +44290,7 @@ const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
-  {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 250유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 250-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
+  {id:'bladeDash',name:'전격이동',cat:'move',mageOnly:true,desc:'[마법사 계열 전용 이동기] 방향키+Space 또는 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 250유닛 순간이동, 무적(15프레임). MP[(10+(Lv-1)×5)×0.7] + 공용 기동게이지 0.7칸(31.5)을 소모한다. 기본 기동게이지 5칸, Shift 사슬과 공유. 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mage-class only mobility] Arrow key + Space or double-tap to activate. Escapes stagger/stun. 250-unit blink, invincible 15f. Costs MP[(10+(Lv-1)×5)×0.7] plus 0.7 shared mobility-gauge cells (31.5). Base gauge has 5 cells and is shared with Shift chain. Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 3단 검기. 3타를 홀드해 2초에 걸쳐 최대 3단 충전(약 0.67초당 1단). 검기 피해 2/4/8배, 놓으면 발사. ST 10+Lv당2. 거리+15px/Lv',descEn:'LMB skill: 3-hit ki blade. Hold the third hit to charge up to stage 3 over 2 seconds (one stage every ~0.67s). Blade damage ×2/×4/×8; release to fire. ST 10+2/Lv; +15px range/Lv',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용). 맞은 적에게 악의 약화 — 다음 악의구 피해 +30%씩 누적(최대 +120%), 3초간 안 맞으면 해제',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul). Hits apply Malice Weakness — next orb DMG +30% per stack (max +120%), resets after 3s without a hit',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -45435,24 +45467,86 @@ function activateNeedleShot(){
   playSample('crossbow_shot',.8,_r(1.4,.1));
   addTxt(P.x,P.y-30,_T('🪡 바늘출!'),'#ccddff',35);shake(2);
 }
-// ═══ 전격이동 — Shift 사슬과 공용 기동게이지 0.7칸 소비 ═══
+// ═══ 기본 기동 분기: 전사=구르기 / 마법사 계열=전격이동 (입력·탈출·게이지 부족 안내 공용) ═══
+function _canMobility(){return _mobilityKind()==='roll'?_canRoll():_canBladeDash()}
+function _mobilityGaugeCost(){return _mobilityKind()==='roll'?_ROLL_GAUGE_COST:_HARP_GAUGE_COST[1]*7/10}
+function activateMobility(dir){if(_mobilityKind()==='roll')activateRoll(dir);else activateBladeDash(dir)}
+// u_n02 전격 약화: 이동 경로(시작점→도착점 선분)에 걸린 적에게 받는 피해 +50~100% (5초, 갱신·Math.max, 보스 동일 효율) — 전격이동·구르기 공용
+function _applyBlinkWeakPath(ang,len){
+  const _bwV=_uEq('_uBlinkWeak');
+  if(!(_bwV>0))return;
+  const _bx0=P.x,_by0=P.y,_bx1=P.x+Math.cos(ang)*len,_by1=P.y+Math.sin(ang)*len;
+  const _bdx=_bx1-_bx0,_bdy=_by1-_by0;const _bl2=_bdx*_bdx+_bdy*_bdy;
+  const _bne=shQuery((_bx0+_bx1)/2,(_by0+_by1)/2,len/2+80);
+  for(let _bi=0;_bi<_bne.length;_bi++){const e=_bne[_bi];if(!e.alive)continue;
+    let t=_bl2>0?((e.x-_bx0)*_bdx+(e.y-_by0)*_bdy)/_bl2:0;t=Math.max(0,Math.min(1,t));
+    const px=_bx0+_bdx*t,py=_by0+_bdy*t;
+    if(dst(e.x,e.y,px,py)>e.r+20)continue;
+    const _was=(e._blinkWeakT||0)>0;
+    e._blinkWeak=Math.max(e._blinkWeak||0,_bwV);e._blinkWeakT=300;
+    if(!_was)addTxt(e.x,e.y-30,_T('약화!'),'#bb66ff',30);
+  }
+}
+// ═══ 구르기 — 전사 기본 기동 (방향키 + 구르기 키). 전격이동 값에서 파생: 거리 250×0.7, 지속 6f 동일, 쿨다운 없음(게이지 게이팅) 동일 ═══
+//  무적 = 시작~끝 직전(6f 중 5f), 피해·착지 장판 없음, 공용 기동게이지 1칸(45), MP 소모 없음, 경직·기절 탈출 가능, 스킬 슬롯 미사용
+const _ROLL_DIST=250*0.7,_ROLL_FRAMES=6,_ROLL_IFRAMES=5,_ROLL_GAUGE_COST=_HARP_GAUGE_COST[1];
+function _canRoll(){return !!(P&&!(P._bdMoveT>0)&&_harpGauge>=_ROLL_GAUGE_COST)}
+function activateRoll(dir){
+  let _rDx=0,_rDy=0;
+  if(dir===0)_rDy=-1;else if(dir===1)_rDy=1;else if(dir===2)_rDx=-1;else _rDx=1;
+  // 다른 방향키가 눌려있으면 대각선
+  if(dir===0||dir===1){if(isAct('left'))_rDx=-1;else if(isAct('right'))_rDx=1}
+  if(dir===2||dir===3){if(isAct('up'))_rDy=-1;else if(isAct('down'))_rDy=1}
+  const _rAng=Math.atan2(_rDy,_rDx);
+  if(_harpGauge<_ROLL_GAUGE_COST)return;
+  _harpGauge=Math.max(0,_harpGauge-_ROLL_GAUGE_COST);
+  _uqMoveRefund(_ROLL_GAUGE_COST); // 유니크 u_d06: 시간왜곡 후 첫 기동기 비용 환급
+  _applyBlinkWeakPath(_rAng,_ROLL_DIST); // 유니크 u_n02: 구르기 이동선 기준
+  const _rCells=Math.floor(_harpGauge/_ROLL_GAUGE_COST),_rMax=Math.floor(_HARP_GAUGE_MAX/_ROLL_GAUGE_COST);
+  addTxt(P.x,P.y-45,_rCells+'/'+_rMax,'#dfd6c2',30);
+  P._bdAng=_rAng;P._bdRoll=true;
+  const _holdStates={'whirlwind':1,'sBlock':1,'beam':1};
+  P._preBdState=_holdStates[P.s]?P.s:null;
+  P._bdMoveT=_ROLL_FRAMES;
+  // 차징 중엔 상태 유지 — 이동만 _tickBladeDash로 진행 (전격이동과 동일)
+  if(P.s!=='sDraw'&&P.s!=='kiGather'&&!_isKiCharging()){P.s='bladeDash';P.st2=_ROLL_FRAMES}
+  P.facing=_rAng;
+  P.iframes=Math.max(P.iframes,_ROLL_IFRAMES);
+  playSample('footstep',.55,_r(1.15,.1));
+  addParts(P.x,P.y,'#6e6050',5);
+  shake(2);
+}
+function _finishRoll(){
+  playSample('footstep2',.5,_r(1,.1));
+  addParts(P.x,P.y,'#6e6050',4);
+  if(P.s==='bladeDash'){
+    if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
+    else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
+    else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
+    else{P.s='idle';P._preBdState=null}
+  }
+  P._bdMoveT=0;P._preBdState=null;P._bdRoll=false;
+}
+// ═══ 전격이동 — Shift 사슬과 공용 기동게이지 0.7칸 소비 (마법사 계열 전용) ═══
 function _canBladeDash(){return !!(P&&P.skills&&P.skills.bladeDash>=1&&_harpGauge>=_HARP_GAUGE_COST[1]*7/10&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5)*7/10)}
 function _tickBladeDash(sp){
     // 이전 실제 이동감 복구: 250유닛/6f, E 차징과 독립 진행.
     if(!(P._bdMoveT>0)||!(sp>0))return;
     const _bdStep=Math.min(sp,P._bdMoveT);
-    P.iframes=Math.max(P.iframes,3);
-    const _bdSpd=250/6*_bdStep;
+    if(!P._bdRoll)P.iframes=Math.max(P.iframes,3); // 구르기 무적은 시작 시 5f 한 번(끝 직전까지)
+    const _bdSpd=(P._bdRoll?_ROLL_DIST:250)/6*_bdStep;
     const _bdNx=P.x+Math.cos(P._bdAng)*_bdSpd,_bdNy=P.y+Math.sin(P._bdAng)*_bdSpd;
     if(canMvBlink(_bdNx,P.y,P.r))P.x=_bdNx;else if(!canMv(_bdNx,P.y,P.r)){P._bdMoveT=0} // 실제 벽만 정지, 해골무덤 통과
     if(canMvBlink(P.x,_bdNy,P.r))P.y=_bdNy;else if(!canMv(P.x,_bdNy,P.r)){P._bdMoveT=0}
-    // 전기 잔상 파티클
-    if(Math.random()>.3){const _pa=Math.random()*Math.PI*2;
+    // 전기 잔상 파티클 (구르기는 먼지)
+    if(P._bdRoll){if(Math.random()>.4)poolPart(P.x+(Math.random()-.5)*P.r,P.y+P.r*.6,(Math.random()-.5)*2,-Math.random()*1.5,'#6e6050',2+Math.random()*2,10+Math.random()*6)}
+    else if(Math.random()>.3){const _pa=Math.random()*Math.PI*2;
       poolPart(P.x+Math.cos(_pa)*P.r,P.y+Math.sin(_pa)*P.r,(Math.random()-.5)*3,(Math.random()-.5)*3,
         Math.random()>.5?'#44ddff':'#ffee44',2+Math.random()*2,8+Math.random()*4)}
     P._bdMoveT-=_bdStep;
     if(P.s==='bladeDash')P.st2=P._bdMoveT;
     if(P._bdMoveT<=0){
+      if(P._bdRoll){_finishRoll();return}
       // 착지 사운드
       playSample('chain_land',.7,_r(1,.1));
       addParts(P.x,P.y,'#44ddff',5);
@@ -45513,6 +45607,7 @@ function _tickBladeDash(sp){
 
 function activateBladeDash(dir){
   _addSkProf('bladeDash');
+  P._bdRoll=false;
   // dir: 0=상,1=하,2=좌,3=우 → 8방향 지원 (다른 방향키 홀드 시 대각선)
   let _bdDx=0,_bdDy=0;
   if(dir===0)_bdDy=-1;else if(dir===1)_bdDy=1;else if(dir===2)_bdDx=-1;else _bdDx=1;
@@ -45526,21 +45621,7 @@ function activateBladeDash(dir){
   P.mp-=_bdCost;if(P.mp<0)P.mp=0;
   _harpGauge=Math.max(0,_harpGauge-_bdGaugeCost);
   _uqMoveRefund(_bdGaugeCost); // 유니크 u_d06: 시간왜곡 후 첫 기동기 비용 환급
-  // 유니크 u_n02 전격 약화: 이동 경로(시작점→도착점 250px 선분)에 걸린 적에게 받는 피해 +50~100% (5초, 갱신·Math.max, 보스 동일 효율)
-  {const _bwV=_uEq('_uBlinkWeak');
-   if(_bwV>0){
-     const _bx0=P.x,_by0=P.y,_bx1=P.x+Math.cos(_bdAng)*250,_by1=P.y+Math.sin(_bdAng)*250;
-     const _bdx=_bx1-_bx0,_bdy=_by1-_by0;const _bl2=_bdx*_bdx+_bdy*_bdy;
-     const _bne=shQuery((_bx0+_bx1)/2,(_by0+_by1)/2,205);
-     for(let _bi=0;_bi<_bne.length;_bi++){const e=_bne[_bi];if(!e.alive)continue;
-       let t=_bl2>0?((e.x-_bx0)*_bdx+(e.y-_by0)*_bdy)/_bl2:0;t=Math.max(0,Math.min(1,t));
-       const px=_bx0+_bdx*t,py=_by0+_bdy*t;
-       if(dst(e.x,e.y,px,py)>e.r+20)continue;
-       const _was=(e._blinkWeakT||0)>0;
-       e._blinkWeak=Math.max(e._blinkWeak||0,_bwV);e._blinkWeakT=300;
-       if(!_was)addTxt(e.x,e.y-30,_T('약화!'),'#bb66ff',30);
-     }
-   }}
+  _applyBlinkWeakPath(_bdAng,250); // 유니크 u_n02 전격 약화
   const _bdCells=Math.floor(_harpGauge/_bdGaugeCost),_bdMaxCells=Math.floor(_HARP_GAUGE_MAX/_bdGaugeCost);
   addTxt(P.x,P.y-45,'⚡ '+_bdCells+'/'+_bdMaxCells,'#44ddff',30);showPH('⚡ '+_bdCells+'/'+_bdMaxCells,'#44ddff');
   P._bdAng=_bdAng;
@@ -47573,7 +47654,7 @@ function renderSkillPanel(){
   if(!_isRecTab) SKILL_CATS.forEach(cat=>{
     if(_visibleCats.indexOf(cat.id)<0)return;
     const _sixMoved=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-    const catSkills=SKILL_LIST.filter(s=>{let c=s.cat;if(s.id==='fanShot'&&_sixMoved)c='magic';return c===cat.id});
+    const catSkills=SKILL_LIST.filter(s=>{if(s.mageOnly&&!_isMageChar())return false;let c=s.cat;if(s.id==='fanShot'&&_sixMoved)c='magic';return c===cat.id});
     if(!catSkills.length)return;
     // 성급 정렬: 1성(기본) 위, 높은 성급 아래
     catSkills.sort((a,b)=>{const ga=_allFuseGemGroups(a.id),gb=_allFuseGemGroups(b.id);return ga.length-gb.length});
@@ -48845,8 +48926,8 @@ function renderSettings(){
   resetBtn.style.cssText='text-align:center;margin-top:12px;padding:8px;background:rgba(100,0,0,.2);border:1px solid #663333;color:#ff6666;cursor:pointer;font-size:.95rem;font-weight:700;letter-spacing:.1em';
   resetBtn.textContent=_T('키 설정 초기화 (또는 F5 키)');
   window._resetBinds=()=>{
-    BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'KeyE',bow:'Space',charge:'ShiftLeft',parry:'KeyQ',beam:'mouse2',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyN',stats:'KeyJ',skill:'KeyK',skillCycle:'KeyL'};
-    BINDS2={up:null,down:null,left:null,right:null,weapon:null,shield:null,bow:null,charge:null,parry:null,beam:null,skill:null,forge:null,inventory:null,settings:null,interact:null,storage:null,stats:null,skillCycle:null};
+    BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'KeyE',bow:'Space',charge:'ShiftLeft',roll:'Space',parry:'KeyQ',beam:'mouse2',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyN',stats:'KeyJ',skill:'KeyK',skillCycle:'KeyL'};
+    BINDS2={up:null,down:null,left:null,right:null,weapon:null,shield:null,bow:null,charge:null,roll:null,parry:null,beam:null,skill:null,forge:null,inventory:null,settings:null,interact:null,storage:null,stats:null,skillCycle:null};
     _resetInteractInput();
     listeningBind=null;_listenAlt=false;saveSettings();renderSettings();
     notify(_T('키 설정 초기화 완료'));
@@ -58647,7 +58728,7 @@ function drawP(){
     }
     X.globalAlpha=fl?.3:1;
   // ══ 칼날이동: 전기 변신 (소형 전기구체) ══
-  }else if(P.s==='bladeDash'&&!isDead){
+  }else if(P.s==='bladeDash'&&!P._bdRoll&&!isDead){
     const _bdT=_now;const _bdR=_pR+4+Math.sin(_bdT*.08)*2;
     X.globalAlpha=.25;X.fillStyle='rgba(60,160,255,1)';X.beginPath();X.arc(_px,_py,_bdR*.8,0,Math.PI*2);X.fill();
     X.globalAlpha=.12;X.fillStyle='rgba(30,100,220,1)';X.beginPath();X.arc(_px,_py,_bdR*1.4,0,Math.PI*2);X.fill();
@@ -58772,6 +58853,12 @@ function drawP(){
       const _sqX=1+0.15*_lp; // 착지 순간 X 1.15배 → 점점 복귀
       X.translate(0,(_pScale*48*(1-_sqY))*0.5); // 스쿼시만큼 바닥에 붙이기
       X.scale(_pScale*_sqX,_pScale*_sqY);
+    }else if(P.s==='bladeDash'&&P._bdRoll&&!_apDead){
+      // ── 구르기: 몸을 웅크려 진행 방향으로 한 바퀴 굴림 (시각 전용, 이동 6f 동안 360°) ──
+      const _rlP=Math.max(0,Math.min(1,1-P.st2/_ROLL_FRAMES));
+      X.translate(0,_pScale*5);
+      X.rotate(_rlP*Math.PI*2*(Math.cos(P.facing)>=0?1:-1));
+      X.scale(_pScale*.9,_pScale*.86);
     }else if(P.s==='bladeDash'&&!_apDead){
       // ── bladeDash 스쿼시: 발동순간 가로 stretch/세로 squash → 종료로 원복 (MOTION 커널, 시각 전용) ──
       const _bdSq=MOTION.squash((12-P.st2)/12,0.22); // t=0 발동→[1.22,0.78], t=1 종료→[1,1]. 사전할당 배열 즉시 읽음
@@ -58894,7 +58981,7 @@ function drawP(){
       }
     }
     // ── bladeDash 속도선 ──
-    if(_ps==='bladeDash'){
+    if(_ps==='bladeDash'&&!P._bdRoll){
       X.save();X.globalAlpha=.35;X.strokeStyle='#ffcc44';X.lineWidth=2;
       for(let _si=0;_si<3;_si++){
         const _so=(_si-1)*8,_sl=15+_si*5;
@@ -63392,7 +63479,7 @@ function _startIntro(){
 const _isPad=()=>!!_introGuidePad();
 const _INTRO_KEY_STEPS=[
   {title:['이동과 공격','Move & attack'],rows:[['up/down/left/right','L 스틱','이동','Move'],['weapon','A','무기 공격','Weapon attack'],['beam','R3','마법 (탭=투사체, 홀드=빔)','Magic (tap: projectile, hold: beam)']]},
-  {title:['패링과 이동','Parry & movement'],rows:[['parry','Y','마법 패링 · 보호막','Magic parry / shield'],['shield','X','칼등 처내기','Weapon parry'],['charge','LB','사슬 이동','Chain movement'],['방향키 더블탭 / Space+방향키','LS 더블탭 / B+LS','전격이동','Flash Step']]},
+  {title:['패링과 이동','Parry & movement'],rows:[['parry','Y','마법 패링 · 보호막','Magic parry / shield'],['shield','X','칼등 처내기','Weapon parry'],['charge','LB','사슬 이동','Chain movement'],['roll','LS + B','구르기 (방향키 +)','Roll (Arrow Keys +)']]},
   {title:['스킬','Skills'],rows:[['bow','B','지옥강타 · 분노 폭발','Hell Slam / rage burst'],['1','LT+A','가시덫','Spike Trap'],['F','LT','회복의 영역','Healing Domain'],['CTRL','RB','CT 스킬 (뇌전걸음 / 얼음보주)','CT skill (Ghost Walk / Ice Orb)'],['T',null,'석궁 자동발사','Automatic crossbow']]},
   {title:['살아남아','Stay alive'],rows:[['interact','L3','아이템 줍기','Pick up items'],['inventory','D-pad →','인벤토리','Inventory'],['settings','Start','설정','Settings']],note:['물약은 설정한 HP% 이하 시 자동 사용','Potions activate automatically below your configured HP%.']}
 ];

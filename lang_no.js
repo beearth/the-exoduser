@@ -3973,3 +3973,7 @@ Object.assign(_NO,{"새 거름이 떨어졌군.":"Ny gjødsel har falt ned.","�
 Object.assign(_NO,{"다크드루이드":"Mørk druide","지옥기형":"Helvetes-misdannelse"});
 // [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
 Object.assign(_NO,{"…달아났다. 숲 깊은 곳으로.":"…Den flyktet. Dypt inn i skogen.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Den stakk av! Men vi vant likevel, ikke sant?"});
+// [ROLL] 전사 구르기·키 설정 (2026-10-27, 번역대상 No.3372~3376)
+Object.assign(_NO,{"구르기 (방향키 +)":"Rulling (piltaster +)","방향키+Space 구르기":"piltaster+Space Rulling","방향키+Space! 굴러서 탈출해!":"piltaster+Space! Rull deg unna!","구르기는 키보드 키로 지정하세요.":"Tilordne Rulling til en tastaturtast.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Lynnedslag Bevegelse er erstattet med Rulling (piltaster + Space). Investerte ferdighetspoeng refunderes."});
+// [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
+Object.assign(_NO,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Svekker fiender i banen til Rulling og Lynsteg — mottatt skade +{p}% (5s)"});

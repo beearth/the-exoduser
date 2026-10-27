@@ -14,7 +14,7 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 |---|---|---|---|---|---|---|
 | 1 | 악의기둥+가시덫 | darkPillar, spikeTrap | pillarSpike | 기둥가시 | Pillar Spike | darkPillar + spikeTrap |
 | 2 | 해골무덤+악의폭풍 | boneWall, maliceStorm | boneStorm | 해골번개 | Bone Lightning | maliceStorm + boneWall |
-| 3 | 전격의창+아이스스톰 | thunderStake, bladeDash, iceStorm | thunderGhost | 전격의창 | Thunder Spear | bladeDash + thunderStake (iceStorm은 빙결존, 합체 비포함) |
+| 3 | 뇌전창+아이스스톰 (2026-10-27 개정, 구 "전격의창+아이스스톰") | thunderStake, iceStorm | — | — | — | 전격이동(bladeDash)이 마법사 계열 전용이 되어 전사 경로에서 제외, 전격의창 합체(thunderGhost) 불가 → 합체 없음. phase 제목 "3. 뇌전창+아이스스톰" / "3. Thunder Stake + Ice Storm" |
 | 4 | 이동+사슬 | chargeBoost, magicBlink, chainAssault, chainSlam | dimBreach | 사슬기동 / 기동:전폭 | Chain Breach / Maneuver:Thunder | chargeBoost + magicBlink / +chainAssault + chainSlam |
 | 5 | 칼날+역병 | maliceHunt, guardian, plagueBurst | bladeFuse | 칼날 해방 / 독혈 해방 | Blade Liberation / Plague Liberation | maliceHunt + guardian / maliceHunt + guardian + plagueBurst |
 | 6 | 💀 필살기 선택 | blackStar/lavaSummon(탄막블랙홀)/execution (1택) | — | — | — | — |

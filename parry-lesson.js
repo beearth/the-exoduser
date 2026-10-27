@@ -2,7 +2,7 @@
 window._parryLesson = {
   t(ko,en,values) { return typeof _L==='function' ? _L(ko,en,values) : ko.replace(/\{(\w+)\}/g,(all,key)=>values?.[key]??all); },
   active: false, seen: false, phase: 'intro', step: 0, checks: Array(8).fill(false), shot: null,
-  get labels() { return this.chapter===2?window._resourcePractice.labels:[this.t("마법탄 패링","Parry magic projectiles"), this.t("물리탄 패링","Parry physical projectiles"), this.t("Q 홀딩 · 다수 마법탄 패링","Hold Q · Parry multiple magic projectiles"), this.t("E 홀딩 · 다수 물리탄 패링","Hold E · Parry multiple physical projectiles"), this.t("Shift · 사슬 이동","Shift · Chain movement"), this.t("방향키 + Space · 전격이동","Direction + Space · Lightning Dash"), this.t("패링 · 분노 축적","Parry · Build Rage"), this.t("Space · 분노 발동","Space · Unleash Rage")]; },
+  get labels() { return this.chapter===2?window._resourcePractice.labels:[this.t("마법탄 패링","Parry magic projectiles"), this.t("물리탄 패링","Parry physical projectiles"), this.t("Q 홀딩 · 다수 마법탄 패링","Hold Q · Parry multiple magic projectiles"), this.t("E 홀딩 · 다수 물리탄 패링","Hold E · Parry multiple physical projectiles"), this.t("Shift · 사슬 이동","Shift · Chain movement"), this.t("방향키 + Space · 구르기","Direction + Space · Roll"), this.t("패링 · 분노 축적","Parry · Build Rage"), this.t("Space · 분노 발동","Space · Unleash Rage")]; },
   heldDirections: new Set(),
   skipKey() {
     const params=new URLSearchParams(location.search);
@@ -46,7 +46,7 @@ window._parryLesson = {
     if(this.chapter===2)return window._resourcePractice.allowKey(this,code);
     const allowed=this.actions().some(a => code === BINDS[a] || code === BINDS2[a]);
     if(this.step === 7 && code === 'Space' && this.directionHeld())return false;
-    if(allowed&&this.step===5&&(code===BINDS.bow||code===BINDS2.bow)&&this.directionHeld())this.armDashPractice(code);
+    if(allowed&&this.step===5&&(code===BINDS.bow||code===BINDS2.bow||code===BINDS.roll||code===BINDS2.roll)&&this.directionHeld())this.armDashPractice(code);
     return allowed;
   },
   node(tag, text, css) {
@@ -137,7 +137,7 @@ window._parryLesson = {
     this.keycap.textContent = complete ? '✓' : this.key();
     this.title.textContent = complete ? this.t("전투 준비 완료","Ready for combat") : [this.t("마법을 되돌려라","Reflect the magic"), this.t("물리탄을 쳐내라","Deflect physical projectiles"), this.t("보호막을 펼쳐라","Raise your shield"), this.t("힘을 모아 쳐내라","Charge and deflect"), this.t("사슬로 이동하라","Move with your chain"), this.t("방향을 정해 이동하라","Choose a direction and dash"), this.t("패링으로 분노를 채워라","Build Rage by parrying"), this.t("분노를 폭발시켜라","Unleash your Rage")][this.step];
     this.subtitle.textContent = complete ? this.t("전투 기본 조작을 모두 익혔습니다.","You have learned the basic combat controls.") : `${this.step + 1} / ${this.labels.length} · ${this.label(this.step)}`;
-    const tips = this.step === 4 ? this.t("이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.","Point the mouse toward your destination, then press and release Shift. Successfully firing the chain completes this exercise.") : this.step === 5 ? this.t("WASD 또는 방향키를 누른 채 Space를 누르세요. 전격이동을 5번 발동하면 성공입니다.","Hold WASD or an arrow key and press Space. Activate Lightning Dash 5 times to complete this exercise.") : this.step === 6 ? this.t("Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.","Hold Q for 2 seconds, then release it as the 10 incoming magic projectiles approach. Parry several at once to fill Rage to 100%.") : this.step === 7 ? this.t("몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.","Monsters surround you. Release the direction keys and press Space only to sweep them away with a Rage burst.") : this.step === 2 ? this.t("[{p0}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.","Hold [{p0}] for 2 seconds. Watch the fire, water, dark, lightning and rainbow projectiles, then release the key to parry at least 3 at once. While held, the shield absorbs some damage and prevents Groggy. It does not make you invulnerable.",{p0:(this.key())}) : this.step === 3 ? this.t("[{p0}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.","Hold [{p0}] while facing the incoming projectiles. Tooth-mouth, blood-eye, piercing, physical sword-wave and physical phantom-sword projectiles arrive together. Charge to tier 3, then release to deflect at least 3 of the 5 at once. Automatic release at full charge also counts.",{p0:(this.key())}) : q ? this.t("보라색 탄이 가까워지는 순간 [{p0}]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.","Press [{p0}] just as the purple projectile approaches. If you press too early, release the key and try again.",{p0:(this.key())}) : this.t("탄을 바라보고 [{p0}]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.","Face the projectile, then briefly press and release [{p0}]. Holding the key charges the attack.",{p0:(this.key())});
+    const tips = this.step === 4 ? this.t("이동할 곳에 마우스를 향하고 Shift를 눌렀다 떼세요. 사슬이 실제 발사되면 성공입니다.","Point the mouse toward your destination, then press and release Shift. Successfully firing the chain completes this exercise.") : this.step === 5 ? this.t("WASD 또는 방향키를 누른 채 Space를 누르세요. 구르기를 5번 발동하면 성공입니다.","Hold WASD or an arrow key and press Space. Roll 5 times to complete this exercise.") : this.step === 6 ? this.t("Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.","Hold Q for 2 seconds, then release it as the 10 incoming magic projectiles approach. Parry several at once to fill Rage to 100%.") : this.step === 7 ? this.t("몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.","Monsters surround you. Release the direction keys and press Space only to sweep them away with a Rage burst.") : this.step === 2 ? this.t("[{p0}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.","Hold [{p0}] for 2 seconds. Watch the fire, water, dark, lightning and rainbow projectiles, then release the key to parry at least 3 at once. While held, the shield absorbs some damage and prevents Groggy. It does not make you invulnerable.",{p0:(this.key())}) : this.step === 3 ? this.t("[{p0}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.","Hold [{p0}] while facing the incoming projectiles. Tooth-mouth, blood-eye, piercing, physical sword-wave and physical phantom-sword projectiles arrive together. Charge to tier 3, then release to deflect at least 3 of the 5 at once. Automatic release at full charge also counts.",{p0:(this.key())}) : q ? this.t("보라색 탄이 가까워지는 순간 [{p0}]를 누르세요. 너무 일찍 눌렀다면 떼고 다시 시도하세요.","Press [{p0}] just as the purple projectile approaches. If you press too early, release the key and try again.",{p0:(this.key())}) : this.t("탄을 바라보고 [{p0}]를 짧게 눌렀다 떼세요. 길게 누르면 차징이 됩니다.","Face the projectile, then briefly press and release [{p0}]. Holding the key charges the attack.",{p0:(this.key())});
     this.hint.textContent = complete ? this.t("모든 연습 성공! 잠시 후 1-1 전투로 이어집니다.","All exercises complete! Combat in 1-1 will resume shortly.") : tips;
     if(this.step===0||this.step===1)this.updateParryPractice();
     this.holdBox.hidden = (this.step !== 2 && this.step !== 3) || complete;
@@ -336,14 +336,14 @@ window._parryLesson = {
     const d=this.initDashPractice();
     if(d.flight){
       if(!(P._bdMoveT>0)&&!d.pressed){d.flight=false;P.mp=P.mmp;_harpGauge=_HARP_GAUGE_MAX;}
-    }else if(d.armed&&P._bdMoveT>0&&(!requireCost||P.mp<d.mp&&_harpGauge<d.gauge)){
+    }else if(d.armed&&P._bdMoveT>0&&(!requireCost||((typeof _mobilityKind==='function'&&_mobilityKind()==='roll')||P.mp<d.mp)&&_harpGauge<d.gauge)){
       d.count++;d.armed=false;d.flight=true;
       if(d.count===5)this.completeStep();
     }
     if(this.chapter===1)this.updateDashPractice();
   },
   updateDashPractice() {
-    this.hint.textContent=this.t("WASD 또는 방향키를 누른 채 Space로 전격이동을 5번 사용하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.\n전격이동 성공 ","Hold WASD or an arrow key and press Space to use Lightning Dash 5 times. Release Space after each dash, then press it again.\nSuccessful dashes ")+(this.dashPractice?.count||0)+'/5';
+    this.hint.textContent=this.t("WASD 또는 방향키를 누른 채 Space로 구르기를 5번 사용하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.\n구르기 성공 ","Hold WASD or an arrow key and press Space to Roll 5 times. Release Space after each roll, then press it again.\nSuccessful rolls ")+(this.dashPractice?.count||0)+'/5';
   },
   tickChainPractice() {
     if(!this.chainPractice){
@@ -399,7 +399,7 @@ window._parryLesson = {
     _shDirty = true;
     for (const key of ['spawnHoles', 'rifts', '_fieldBosses', '_fireDevils', '_fireZones']) { this.saved.fields[key] = G[key]; G[key] = []; }
     for (const key of ['_bonfire', '_fieldBoss', '_gateGuard', '_bossRef']) { this.saved.fields[key] = G[key]; G[key] = null; }
-    P.skills={...P.skills,kiSlash:Math.max(1,P.skills.kiSlash||0),bladeDash:Math.max(1,P.skills.bladeDash||0),giantSlam:1};P._fused={};P._ioActive=false;
+    P.skills={...P.skills,kiSlash:Math.max(1,P.skills.kiSlash||0),giantSlam:1,...(typeof _mobilityKind==='function'&&_mobilityKind()==='bladeDash'?{bladeDash:Math.max(1,P.skills.bladeDash||0)}:{})};P._fused={};P._ioActive=false;
     SKILL_SLOTS[4]='giantSlam';P.activeChargeSk='charge';P._gslCd=0;P.rage=0;
     BINDS2={...BINDS2,up:BINDS2.up||'ArrowUp',down:BINDS2.down||'ArrowDown',left:BINDS2.left||'ArrowLeft',right:BINDS2.right||'ArrowRight'};
     this.focusTicks=0;this.rageParried=false;this.rageClearTicks=0;this.failTicks=0;

@@ -2823,3 +2823,7 @@ Object.assign(_HU,{"새 거름이 떨어졌군.":"Friss trágya hullott le.","�
 Object.assign(_HU,{"다크드루이드":"Sötét druida","지옥기형":"Pokoli torzszülött"});
 // [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
 Object.assign(_HU,{"…달아났다. 숲 깊은 곳으로.":"…Elmenekült. Az erdő mélyére.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Elmenekült! De mi nyertünk, ugye?"});
+// [ROLL] 전사 구르기·키 설정 (2026-10-27, 번역대상 No.3372~3376)
+Object.assign(_HU,{"구르기 (방향키 +)":"Gurulás (nyílgombok +)","방향키+Space 구르기":"nyílgombok+Space Gurulás","방향키+Space! 굴러서 탈출해!":"nyílgombok+Space! Gurulj ki belőle!","구르기는 키보드 키로 지정하세요.":"A Gurulást billentyűzet-gombra kösd.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"A(z) Villám Lépés helyébe Gurulás lépett (nyílgombok + Space). A befektetett képességpontok visszajárnak."});
+// [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
+Object.assign(_HU,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Legyengíti a Gurulás és a Villámlépés útvonalán lévő ellenfeleket — kapott sebzés +{p}% (5s)"});

@@ -3876,3 +3876,7 @@ Object.assign(_CS,{"새 거름이 떨어졌군.":"Spadlo čerstvé hnojivo.","�
 Object.assign(_CS,{"다크드루이드":"Temný druid","지옥기형":"Pekelná zrůda"});
 // [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
 Object.assign(_CS,{"…달아났다. 숲 깊은 곳으로.":"…Utekl. Hluboko do lesa.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Utekl! Ale my jsme vyhráli, ne?"});
+// [ROLL] 전사 구르기·키 설정 (2026-10-27, 번역대상 No.3372~3376)
+Object.assign(_CS,{"구르기 (방향키 +)":"Kotoul (šipky +)","방향키+Space 구르기":"šipky+Space Kotoul","방향키+Space! 굴러서 탈출해!":"šipky+Space! Udělej kotoul a uteč!","구르기는 키보드 키로 지정하세요.":"Přiřaď kotoul ke klávese klávesnice.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Bleskový přesun byl nahrazen: Kotoul (šipky + Space). Investované body dovedností se vracejí."});
+// [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
+Object.assign(_CS,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Oslabuje nepřátele v dráze Kotoulu a Bleskového kroku — přijímané poškození +{p}% (5s)"});

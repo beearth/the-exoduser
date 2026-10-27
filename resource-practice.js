@@ -3,7 +3,7 @@ window._resourcePractice = {
   t(ko,en,values) { return typeof _L==='function' ? _L(ko,en,values) : ko.replace(/\{(\w+)\}/g,(all,key)=>values?.[key]??all); },
   stepOrder: [0,1,2,3,10,7,8,9], // Temporarily omit the three standalone movement/resource exercises.
   completionChecks(l) { return this.stepOrder.map(step=>l.checks[step]); },
-  get escapeLabels() { return [this.t("Space · 지옥강타","Space · Hell Slam"),this.t("Shift · 사슬 탈출","Shift · Chain escape"),this.t("방향키 + Space · 전격이동","Direction + Space · Lightning Dash"),this.t("왼쪽 Ctrl · 유령걸음","Left Ctrl · Ghost Walk")]; },
+  get escapeLabels() { return [this.t("Space · 지옥강타","Space · Hell Slam"),this.t("Shift · 사슬 탈출","Shift · Chain escape"),this.t("방향키 + Space · 구르기","Direction + Space · Roll"),this.t("왼쪽 Ctrl · 유령걸음","Left Ctrl · Ghost Walk")]; },
   get resourceSets() { return [
     {key:'Q',action:'parry',label:this.t("Q 보호막 · 파란 마력(MP)","Q shield · Blue Mana (MP)"),tip:this.t("Q로 보호막을 펼쳐 파란 마력(MP) 소모를 확인하세요. 홀딩 중에도 소모되며, 마법탄 패링에 성공하면 자원이 회복됩니다.","Raise your shield with Q and watch your blue Mana (MP) decrease. Holding it also drains Mana; successfully parrying magic projectiles restores resources.")},
     {key:'E',action:'shield',label:this.t("E 검격 · 스태미나(ST)","E sword strike · Stamina (ST)"),tip:this.t("E를 짧게 눌렀다 떼어 검격을 사용하세요. 스태미나는 E 검격 같은 신체 기술에 쓰입니다.","Briefly press and release E to use a sword strike. Stamina fuels physical techniques such as the E strike.")},
@@ -14,10 +14,10 @@ window._resourcePractice = {
     this.t("해골눈 4개는 정신력입니다. 피격 −1, 패링 +1, 0이면 그로기입니다. Q·E·Shift와 자원 짝을 살펴본 뒤, 탄을 한 번 맞아보세요.","The 4 skull eyes represent Poise. Taking a hit costs 1; parrying restores 1. At 0, you become Groggy. Check the resources used by Q, E and Shift, then let one projectile hit you."),
     this.t("다가오는 마법탄을 Q로 패링하세요. 실제 패링에 성공하면 꺼진 해골눈 1개가 다시 켜집니다.","Parry the incoming magic projectile with Q. A successful parry lights up one depleted skull eye."),
     this.t("4발이 연속으로 날아옵니다. 화살표가 가리키는 해골눈이 피격마다 4 → 3 → 2 → 1 → 0으로 줄어들고 그로기에 걸리는 것을 확인하세요.","4 projectiles arrive in succession. Watch the skull eyes marked by the arrows decrease with each hit: 4 → 3 → 2 → 1 → 0, leaving you Groggy."),
-    this.t("Space 지옥강타 · Shift 사슬 · 방향키 + Space 전격이동 · 왼쪽 Ctrl 유령걸음으로 순서와 상관없이 각각 한 번씩 탈출하세요. 이미 성공한 방법은 중복 집계하지 않습니다. 탈출 후 그로기와 자원·쿨타임을 다시 준비합니다. Space 지옥강타는 방향키를 떼고 누르세요.","Escape once with each method, in any order: Space for Hell Slam, Shift for the chain, direction + Space for Lightning Dash, and Left Ctrl for Ghost Walk. Repeating a completed method does not count. Groggy, resources and cooldowns reset for the next attempt. Release direction keys before using Space for Hell Slam."),
+    this.t("Space 지옥강타 · Shift 사슬 · 방향키 + Space 구르기 · 왼쪽 Ctrl 유령걸음으로 순서와 상관없이 각각 한 번씩 탈출하세요. 이미 성공한 방법은 중복 집계하지 않습니다. 탈출 후 그로기와 자원·쿨타임을 다시 준비합니다. Space 지옥강타는 방향키를 떼고 누르세요.","Escape once with each method, in any order: Space for Hell Slam, Shift for the chain, direction + Space for Roll, and Left Ctrl for Ghost Walk. Repeating a completed method does not count. Groggy, resources and cooldowns reset for the next attempt. Release direction keys before using Space for Hell Slam."),
     this.t("마우스로 이동할 곳을 가리키고 Shift를 누르세요. 오래 누를수록 더 멀리 이동하며 기동력과 스태미나 소모가 커집니다. 1·2단은 키를 떼면 발사하고, 3단 충전이 끝나면 자동 발사합니다. 아래 단계별 수치를 확인하세요.","Point the mouse toward your destination and hold Shift. A longer hold moves you farther and costs more Mobility and Stamina. Release the key to launch tiers 1 and 2; tier 3 launches automatically at full charge. Check the values for each tier below."),
     this.t("Q 보호막 → E 검격 → Shift 사슬 순서로 기술을 사용하며, 각 기술이 쓰는 자원을 확인하세요. 세 짝을 모두 직접 실습해야 완료됩니다.","Use the Q shield → E sword strike → Shift chain in order and observe each resource cost. You must perform all three pairs to complete the exercise."),
-    this.t("방향키 또는 WASD를 누른 채 Space로 전격이동을 5번 사용하세요. 매번 노란 기동력과 파란 마력이 함께 줄어드는 것을 확인하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.","Hold an arrow key or WASD and use Space for Lightning Dash 5 times. Watch both yellow Mobility and blue Mana decrease each time. Release Space after each dash before pressing it again."),
+    this.t("방향키 또는 WASD를 누른 채 Space로 구르기를 5번 사용하세요. 매번 노란 기동력이 줄어드는 것을 확인하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.","Hold an arrow key or WASD and use Space to Roll 5 times. Watch yellow Mobility decrease each time. Release Space after each roll before pressing it again."),
     this.t("보호막의 기본 피해 흡수율은 30%입니다. 수호신 패시브는 레벨당 +2%p, 견갑의 블록흡수 옵션은 +4~22%p를 더하며 합산 최대 50%입니다. 이번 실습처럼 패링 타이밍 이후 계속 홀딩하면 흡수율은 절반(기본 15%, 최대 25%), 남은 피해는 1.3배가 됩니다. 홀딩 중에는 마지막 해골눈을 지켜 그로기를 막지만 HP 피해는 받습니다. Q를 떼지 말고 3발 모두 받아내세요.","Base shield absorption is 30%. Guardian Spirit adds 2 percentage points per level; the pauldron Block Absorption affix adds 4–22 points, up to 50% total. Continuing to hold past the parry window, as in this exercise, halves absorption (15% base, 25% maximum) and multiplies the remaining damage by 1.3. Holding preserves the last skull eye and prevents Groggy, but you still lose HP. Keep holding Q through all 3 hits."),
     this.t("왼쪽 Ctrl을 눌러 유령걸음을 발동하세요. 이번 실습에서는 유령걸음을 제공하며, 발동 후 Ctrl 슬롯의 쿨타임도 확인하세요.","Press Left Ctrl to activate Ghost Walk. It is provided for this exercise. After activation, check the cooldown on the Ctrl slot."),
     this.t("줄어든 체력(HP)·스태미나·마력·기동력을 확인하고 Q로 탄을 2회 패링하세요. 매번 실제 패링 보상으로 네 자원이 모두 회복되어야 합니다. 첫 성공 후 자원을 다시 낮춰 두 번째 실습을 준비합니다.","Check your reduced HP, Stamina, Mana and Mobility, then parry 2 projectiles with Q. Each successful parry must restore all four resources through the actual parry reward. After the first success, resources are lowered again for the second attempt."),
@@ -70,7 +70,7 @@ window._resourcePractice = {
       const attempt=code==='ControlLeft'?3:code==='ShiftLeft'?1:code===BINDS.bow||code===BINDS2.bow?(l.directionHeld()?2:0):code===BINDS.charge||code===BINDS2.charge?1:-1;
       if(attempt>=0){this.escapeAttempt=attempt;this.escapePressed=true;}
     }
-    if(ok&&l.step===6&&(code===BINDS.bow||code===BINDS2.bow)&&l.directionHeld())l.armDashPractice(code);
+    if(ok&&l.step===6&&(code===BINDS.bow||code===BINDS2.bow||code===BINDS.roll||code===BINDS2.roll)&&l.directionHeld())l.armDashPractice(code);
     return ok;
   },
   enter(l,preserveRecovery=false) {
@@ -206,7 +206,7 @@ window._resourcePractice = {
     const eye=P.s==='pStun'?0:Math.max(0,Math.min(4,P.poise||0));
     l.resourceReadout.textContent=this.t("정신력 {p0}/4 · HP {p1}/{p2}\n기동력 {p3}/{p4}\nST {p5}/{p6} · MP {p7}/{p8}{p9}","Poise {p0}/4 · HP {p1}/{p2}\nMobility {p3}/{p4}\nST {p5}/{p6} · MP {p7}/{p8}{p9}",{p0:(eye),p1:(Math.ceil(P.hp)),p2:(P.mhp),p3:(Math.floor(_harpGauge)),p4:(_HARP_GAUGE_MAX),p5:(Math.floor(P.st)),p6:(P.mst),p7:(Math.floor(P.mp)),p8:(P.mmp),p9:(this.feedback?'\n'+this.feedback:'')});
     if(l.step===5)l.resourceReadout.textContent+=this.t("\n자원·기술 확인 ","\nResource/skill pairs confirmed ")+this.resourceChecks.filter(Boolean).length+'/3';
-    if(l.step===6)l.resourceReadout.textContent+=this.t("\n전격이동 성공 ","\nSuccessful dashes ")+(l.dashPractice?.count||0)+'/5';
+    if(l.step===6)l.resourceReadout.textContent+=this.t("\n구르기 성공 ","\nSuccessful rolls ")+(l.dashPractice?.count||0)+'/5';
     if(l.step===9)l.resourceReadout.textContent+=this.t("\n자원 회복 성공 ","\nResource recovery successes ")+this.recoveryCount+'/2';
     if(l.step===3)l.resourceReadout.textContent+=this.t("\n탈출 성공 ","\nSuccessful escapes ")+this.escapeChecks.filter(Boolean).length+'/4\n'+this.escapeLabels.map((name,i)=>(this.escapeChecks[i]?'✓ ':'□ ')+name).join('\n');
     if(l.step===7)l.resourceReadout.textContent+=this.t("\n현재 보호막 흡수율 {p0}% · 이번 홀딩 적용 {p1}%","\nCurrent shield absorption {p0}% · Applied while holding {p1}%",{p0:(Math.round(pGuardAbsorb()*100)),p1:(Math.round(Math.min(.25,pGuardAbsorb()*.5)*100))});

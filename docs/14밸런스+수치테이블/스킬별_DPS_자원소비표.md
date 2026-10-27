@@ -75,7 +75,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | chargeBoost | 사슬기동:충돌 | ST | 10×1=10 → 10×10=100 (물리할인) | 3회 충전식 | STR × meleeRef × pAtkMul | 충전 3회, 이동중 무적, 관통뎀+그로기 |
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
-| bladeDash | 전격이동 | MP + 기동게이지 | MP (10+(Lv−1)×5)×7/10 (1렙7, 10렙38.5), 기동게이지31.5 | 공용게이지 회복, 전용 스톡/재충전 없음 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→122(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트. (50% 너프 2026-06-11) |
+| bladeDash | 전격이동 (2026-10-27 마법사 계열 전용 — 전사 기본 기동은 구르기: 피해 없음, MP 0, 게이지 45 / [ROLL_MOBILITY_20261027.md](../2_3%20돌진+패링+방패시스템/ROLL_MOBILITY_20261027.md)) | MP + 기동게이지 | MP (10+(Lv−1)×5)×7/10 (1렙7, 10렙38.5), 기동게이지31.5 | 공용게이지 회복, 전용 스톡/재충전 없음 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→122(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트. (50% 너프 2026-06-11) |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급. 불바닥을 여러 개 쌓은 뒤 충돌 스킬(기동파괴) 또는 분노 스킬(지옥강타 1)로 일괄 기폭 가능. 천공쇄기 착탄은 활성 `assaultFlame` 전량을 기존 총피해 공식 그대로 즉시 기폭(추가 비용 없음) |
 | chainSlam | 기동파괴 | ST | `20+Lv*2` | 없음 (이동 중) | STR × pAtkMul × _skMul(chainSlam) × 티어(×1/×2/×3) × fuseMul | 전방3경로, 적당1회; 길이450+(Lv-1)*25, 반폭36+(Lv-1)*2. 일반몹5초기절, 보스최대체간30% |
 | chainSlash | 기동칼날개 | 없음 | 0 | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 (레벨제한 없음) |
