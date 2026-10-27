@@ -110,3 +110,12 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 | smoke 포트 | 3333 고정 → 정식판 3350 미대응, 타 세션 dev 서버와 충돌 | steam_smoke.mjs: package.nw/release-config.json 포트 사용, 빈 세이브 `/api/load` 404만 정상 처리 |
 | 생성 VDF 경로 | output\daily의 VDF가 depot VDF 상대경로를 못 찾아 preview 실패 | daily_release.ps1: depot VDF를 scripts 절대경로로 치환 |
 | 실행 로그 | 예약 실행 출력이 남지 않음 | daily_release.ps1: Start-Transcript → G:\exoduser-steam\logs\daily_release_*.log |
+
+## 9. 운영 사고 기록
+
+| 날짜 | 증상 | 원인 | 조치 |
+|---|---|---|---|
+| 2026-10-27 | 09:00 예약 작업이 종료코드 **9009**로 끝나고 로그 파일이 없음(빌드 0회) | 사용자 PATH가 12.7K자(182항목)로 불어나 새 cmd가 `powershell`·`where`를 못 찾음. 원인은 Unity 오라클·뮤테이션 테스트가 실행마다 `DOTNET_CLI_HOME`을 새 `dotnet-home`으로 잡아, dotnet 첫 실행이 `…\dotnet-home\.dotnet\tools`를 사용자 PATH에 영구 추가한 것(157개) | 사용자 PATH를 25항목(939자)으로 정리, 원본 백업 `G:\exoduser-steam\state\user_path_backup_20261027.txt`. 재발 방지로 사용자 환경변수 `DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false` 추가, Unity 러너 쪽 동일 설정은 CTO 경유로 요청. 같은 날 13시대에 오늘 몫 1회를 수동 실행. 정리 후에도 이미 떠 있던 러너가 다시 붙여(13:31 기준 40개) 3차 정리. **예약 작업 자체를 PATH와 무관하게 수정**: `daily_release.bat`이 `chcp`·`powershell`을 `%SystemRoot%` 전체 경로로 부르고, `daily_release.ps1`이 시작할 때 레지스트리 Machine+User PATH를 다시 읽어 `\.dotnet\tools` 찌꺼기를 뺀다(PATH 12,954자 셸에서 DryRun 통과 확인, 수정 전 사본 `state\daily_release.*.bak_20261027`) |
+| 2026-10-27 | 수동 실행이 smoke FAIL로 중단(빌드 산출물 검사 단계, preview·upload 없음) | `index.html`의 ENTER 버튼 이미지가 `output/imagegen/enter-gothic-v2-brass.png`를 참조(로고 C안 커밋). `output/`은 출시본에 들어가지 않아 404 | 디자인총괄에 에셋 폴더 이동 요청. 오늘은 재실행하지 않음(하루 1회·실패 반복 금지). 로컬 커밋 `1d0f1b478`·로컬 태그 `v0.7.8`은 남고, 10/28 09:00이 v0.7.9로 v0.7.8 변경분까지 함께 빌드한다. Steam 이벤트 패치노트는 v0.7.8+v0.7.9를 합쳐 다듬는다 |
+
+**9009 점검법**: 예약 작업 `LastTaskResult`가 9009이고 `logs\daily_release_<오늘>-*.log`가 없으면 PATH 문제다. 레지스트리 PATH로 새 cmd를 띄워 `where powershell`이 되는지 확인한다(이미 떠 있는 셸은 예전 PATH를 물려받으므로 판정에 쓰지 않는다).
