@@ -44,6 +44,23 @@
 | 2026-10-27 | RM-0 키 라이트를 약하게(L-5) 유지하고, 캐릭터 밝기는 캐릭터 전용 Hero Light(URP Rendering Layer `Hero`, 중성 (1,.97,.94))로 올린다. 웅덩이 안 외곽 대비(L-4)는 웅덩이마다 Hero 레이어 전용 Point 림광(웅덩이 광원 색, range 반지름+0.5m)으로 낸다. 웅덩이는 `Lights/Pools`의 `Pool_Hell_*`·`Pool_Toxic_*` | 맵 총괄·디자인총괄 합의, 바이블 정정 main 27ca98941 |
 | 2026-10-28 | 걷기 중 대검은 칼끝이 아래·뒤로 끌리는 자세(원화 warrior_cut의 칼끝 아래 대검). 칼 축은 수평 아래 약 37°: 손 높이 1.0m·손잡이~칼끝 1.45m에서 칼끝-바닥 5cm 이상을 지키는 물리 한계라 목표 50~65°를 낮춰 수용 | 측면 걷기 판정 |
 
+## 3-1. 제작 경로·품질 기준 (영웅·보스 공용, 2026-10-28)
+
+유니티 총괄 요청(10-28): 영웅과 보스가 같은 게임에서 같은 품질로 보여야 한다. 보스전 총괄은 이 절을 기준으로 삼는다. 전사 1명으로 끝까지 검증한 경로다. 유료 호출은 매번 사용자 확인을 받는다.
+
+| 단계 | 도구·설정 | 비용(실측) | 합격 기준 |
+|---|---|---|---|
+| ① 시트 | OpenAI `gpt-image-2.5-sunburst` `/v1/images/edits`, 1536×1024 high. body는 정면·3/4·측면·뒤 4뷰, 빈손 A포즈. 회색 #808080, 평면 조명, 그림자 없음. 무기는 별도 시트로 만들고 "game prop design sheet, prop only, nobody" 문구를 쓴다(weapon/gun/blade 단어는 모더레이션 차단). 레퍼런스는 DESIGN LOCK 원화 크롭 | 장당 약 $0.04~0.06 | LOCK 일치(얼굴·장신구·갑옷·머리), 1x에 점·잔노이즈 없음, 뷰 사이 겹침 없음(최소 전경 열로 분할) |
+| ② 메시 | Meshy `POST /openapi/v1/multi-image-to-3d`, `ai_model=latest`(meshy-7.1), 입력 정면→측면→뒤(첫 장=정면), PBR, 텍스처 2k, `topology=triangle`, remesh. polycount는 body 60k / 무기 20k. 결과는 3일 뒤 만료되므로 즉시 받아 `I:/EXODUSER-Storage/Meshy/`에 사본을 둔다. 장부는 `E:/exoduser-wt/_out/meshy/credits.log` | 30cr/건 | 1회만 생성, 재생성 금지. 실루엣이 시트와 같고 구멍·떠다니는 조각이 없을 것 |
+| ③ 리깅 | Meshy `POST /openapi/v1/rigging`, `input_task_id`=②의 작업 ID, `height_meters`. 뼈 24개, **손가락 뼈 없음**. 기본 걷기·달리기가 함께 나온다 | 5cr/건 | Humanoid 필수 뼈 17개 대응, 가중치 합 1 |
+| ④ Unity 임포트 | Humanoid. HumanDescription을 직접 매핑한다(Spine02→Spine, Spine01→Chest, Spine→UpperChest). URP/Lit, MetallicSmoothness = R metallic · A (1−roughness). 애니메이션 FBX는 `.anim`만 뽑고 메시는 버린다 | 0 | `avatar.isValid`·`isHuman`, 걷기 때 꼬임 없음 |
+| ⑤ 보정(무료) | 텍스처 결함은 재생성하지 않고 Unity에서 고친다: 채도·적색 제거, roughness 재매핑, 하얀 면 메우기. 긴 천은 전용 뼈를 절차적으로 추가해 다리 가중치 0으로 만들고 `CapeSpring`(지연·처짐·다리 캡슐 충돌)을 단다. 손가락이 없으므로 쥐기는 블렌드셰이프 `Fist_R` + 무기 소켓으로 한다 | 0 | 다리 관통 ≤4/32프레임·3cm, 1x에 점 없음 |
+| ⑥ 조명·셰이더 | 바이블 §8: L-8(금속 하이라이트는 중성), L-9(플레이어 전용 Hero Light, 렌더링 레이어 `Hero`), L-4(웅덩이 테두리 = Fresnel 셰이더 `CharacterLit_PoolRim`, 전역 `_HeroPoolRim*`). 보스에 Hero 레이어를 쓸지는 보스전 총괄·디자인총괄이 정한다 | 0 | 흑철 R/G ≤1.25, 날 채도 ≤15%, L-4 ΔE00 ≥15·형광 금지 |
+| ⑦ 판정 | 판정용 중성 조명과 RM-0 조명 두 세트. 근접 정면·3/4·뒤, 게임 시점(FOV 30°·피치 55°·키 17%)으로 걷기 8프레임, 1x 크롭. 2차 판정은 디자인총괄 | 0 | 기존 화면 옆에 두어도 같은 게임으로 보일 것 |
+
+- **애니메이션 기준 (유니티 총괄 10-28, 사용자 "노레위처럼")**: 움직임 레퍼런스는 No Rest for the Wicked다. 무게 있는 예비동작, 끊기지 않는 키 애니메이션, 낮지 않은 프레임 밀도로 만든다. Meshy 기본 걷기·달리기는 자리표시용이며 최종 애니메이션이 아니다. 영웅·보스의 최종 애니메이션 공급원(직접 키 애니메이션·유료 모션 생성·모캡 라이브러리)은 아직 정하지 않았다. 보스전 총괄과 함께 시범(드루이드·전사 공격 1종)으로 비교한 뒤 정한다.
+- 상세 명세·스크립트: `E:/exoduser-wt/_out/unity-charsheet/SPEC_*.md`, Unity 작업물은 worktree `E:/exoduser-wt/pc-unity-char`의 `Editor/CharacterLab/`·`Runtime/CharacterLab/`(미커밋, 브랜치 `claude/unity-pc-char-*`로 낼 예정).
+
 ## 4. 로그
 
 - 2026-10-27 UCH-01 명세 `E:/exoduser-wt/_out/unity-charsheet/SPEC.md`(Git 밖)를 작성하고 Sonnet에 배정했다.
