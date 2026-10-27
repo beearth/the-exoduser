@@ -54,6 +54,8 @@ namespace Exoduser.UnityPort.Core
         public const double MineSpeedMul = 0.7;                                // #11 mine speed (and its cap)
         // RB1-3 (spec §5): four root pillars, 0.55 x the arena radius from the centre, on the diagonals (the entry in the south and the exit in the north stay open), radius 80 (initial value)
         public const int PillarCount = 4;
+        // floating texts the remodelled druid may still raise (boss battle lead decides keep / drop per entry): wall hit damage, poison tick on the player, leaving the grab
+        public static readonly string[] PopupKeep = { "벽 충돌!", "독!", "벗어났다!" };
 
         static BossMove M(string id, int idx, int tele, int rec, int cd, bool feint, double rmin, double rmax, int[] phase, string[] tags)
         { return new BossMove { Id = id, Idx = idx, Tele = tele, Rec = rec, Cd = cd, CanFeint = feint, CanDelay = 0, RangeMin = rmin, RangeMax = rmax, Phase = phase, Combo = new string[0], Tags = tags }; }
@@ -110,7 +112,7 @@ namespace Exoduser.UnityPort.Core
                 Id = SetId, Lives = Lives, LifeHpFraction = LifeHpFraction, BodyScale = BodyScale, ShieldFraction = ShieldFraction, CollapseTicks = CollapseTicks,
                 Moves = Moves, Combos = Combos, Phases = Phases, Parryable = Parryable, Instant = Instant, Forced = new HashSet<string> { "heartbeat" },
                 SlamRadius = SlamRadius, PoisonTrailTicks = PoisonTrailTicks, ChaseZoneRadius = ChaseZoneRadius, ChaseZoneWarn = ChaseZoneWarn, ChaseZoneCount = ChaseZoneCount, SummonMax = SummonMax,
-                WalkSpeed = WalkSpeed, WalkStandOff = WalkStandOff, WalkAccelTicks = WalkAccelTicks, WalkStopTicks = WalkStopTicks, WalkTurn = WalkTurn, TeleTurn = TeleTurn, AimFixTicks = AimFixTicks, GapTicks = GapTicks, ComboLinkTicks = ComboLinkTicks, PillarCount = PillarCount,
+                WalkSpeed = WalkSpeed, WalkStandOff = WalkStandOff, WalkAccelTicks = WalkAccelTicks, WalkStopTicks = WalkStopTicks, WalkTurn = WalkTurn, TeleTurn = TeleTurn, AimFixTicks = AimFixTicks, GapTicks = GapTicks, ComboLinkTicks = ComboLinkTicks, PillarCount = PillarCount, PopupKeep = (string[])PopupKeep.Clone(),
                 Heartbeat = true, GrabAbsorb = true, RootBonus = true, RootHitsNeeded = RootHitsNeeded, RootBonusFraction = RootBonusFraction, Sink = true };
             return s;
         }

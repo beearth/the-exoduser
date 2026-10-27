@@ -86,6 +86,8 @@ namespace Exoduser.UnityPort.Core
         public int ComboLinkTicks = 12;                                     // between the moves of a combo
         // arena furniture (RB1-3): root pillars on a ring of PillarRingFraction x the arena radius, first one at PillarStartDeg (0 = none)
         public int PillarCount; public double PillarRingFraction = 0.55, PillarRadius = 80, PillarStartDeg = 45;
+        // floating texts the remodelled boss may still raise (a text must start with one of these and carry no emoji / symbol glyph). Move names, phase labels and callouts are never shown (spec §6)
+        public string[] PopupKeep = new string[0];
         // druid rules (RM-B1): on in DruidRemodelData.Set only
         public bool Heartbeat;                             // move 12 forced at the last-life entry, then every 40 s
         public bool GrabAbsorb;                            // grab: 2 s hold, heal, mash out

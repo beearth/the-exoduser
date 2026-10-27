@@ -5,7 +5,7 @@
 //  fissure   - the head stops at the pillar; the reach the telegraph shows is the same number
 //  burrow    - the telegraph circle of the underground strike sits on the side of a pillar (checked in MotionChecks)
 //  heartbeat - a player in the shadow of a pillar takes no damage (probe in MotionChecks)
-//  popups    - the remodel raises no floating text with an emoji / symbol glyph; the web-port druid does (so the watcher works)
+//  popups    - the remodel raises no floating text except the PopupKeep entries (no move names, labels, callouts, glyphs); the web-port druid does (so the watcher works)
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,16 +85,19 @@ static partial class P
         for (int i = 0; i < 60 && !f.Done; i++) { s.Tick(0, 0, boss.X, boss.Y, false, false); p.Hp = p.MaxHp; p.Iframes = 600; }
         Check(f.Done && Math.Abs(f.Len - (600 - q0.R)) < 1e-6 && !f.Exploded, "pillars: the fissure head stopped at " + f.Len.ToString("0.000") + " (done " + f.Done + ")");
 
-        // popups: the remodel shows no glyph text, the web-port druid does
+        // popups: the remodel raises no move-name / phase / callout text, only the PopupKeep entries; the web-port druid raises plenty (so the watcher works)
         popupTexts = 0; popupGlyphTexts = 0;
+        Func<string, bool> kept = z => DruidRemodelData.PopupKeep.Any(k => z.StartsWith(k, StringComparison.Ordinal)) && !HasGlyphText(z);
         EnemyState wboss; var w = ArenaSim(20261041u, false, out wboss);
-        int webGlyph = 0; w.ReviveTextRaised += t => { if (HasGlyphText(t.Ko)) webGlyph++; };
+        int webGlyph = 0, webOther = 0; w.ReviveTextRaised += t => { if (HasGlyphText(t.Ko)) webGlyph++; else if (!kept(t.Ko)) webOther++; };
         for (int i = 0; i < 1500 && wboss != null && wboss.Alive; i++) { w.Tick(0, 0, wboss.X, wboss.Y, false, false); w.Player.Hp = w.Player.MaxHp; }
-        Check(webGlyph > 0, "popups: the web-port druid raised glyph texts (" + webGlyph + ") - the watcher works");
+        Check(webGlyph > 0 && webOther > 0, "popups: the web-port druid raised glyph texts (" + webGlyph + ") and plain non-kept texts (" + webOther + ") - the watcher works");
         EnemyState rboss; var r = ArenaSim(20261042u, true, out rboss);
-        int remText = 0, remGlyph = 0; var seen = new List<string>(); r.ReviveTextRaised += t => { remText++; if (HasGlyphText(t.Ko)) { remGlyph++; seen.Add(t.Ko); } };
+        int remText = 0, remBad = 0; var seen = new List<string>(); var kept2 = new List<string>();
+        r.ReviveTextRaised += t => { remText++; if (!kept(t.Ko)) { remBad++; seen.Add(t.Ko); } else kept2.Add(t.Ko); };
         for (int i = 0; i < 1500 && rboss != null && rboss.Alive; i++) { r.Tick(0, 0, rboss.X, rboss.Y, false, false); r.Player.Hp = r.Player.MaxHp; }
-        Check(remGlyph == 0, "popups: the remodel raised glyph texts: " + string.Join(" | ", seen.Distinct().Take(5)));
-        motionNotes.Add("popups: web-port druid " + webGlyph + " glyph texts in 1500 ticks, remodel " + remGlyph + " of " + remText + " texts");
+        Check(remBad == 0, "popups: the remodel raised texts outside PopupKeep: " + string.Join(" | ", seen.Distinct().Take(8)));
+        Check(remText == kept2.Count, "popups: every remodel text is a kept one (" + remText + ")");
+        motionNotes.Add("popups: web-port druid " + webGlyph + " glyph + " + webOther + " plain non-kept texts in 1500 ticks, remodel " + remBad + " non-kept of " + remText + " texts (kept: " + string.Join(", ", kept2.Distinct()) + ")");
     }
 }
