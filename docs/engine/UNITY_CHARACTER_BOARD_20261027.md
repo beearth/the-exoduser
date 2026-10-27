@@ -21,7 +21,8 @@
 |---|---|---|
 | UCH-01 | Unity용 캐릭터 시트 1차: 3명 × body(정면·3/4·측면·뒤, A포즈)·head·weapon, 회색 배경·평면 조명, 뷰 분할(Meshy 다중 입력용) | **완료** (9장 PASS, $0.645) |
 | UCH-02a | 전사 body 시트 → Meshy multi-image-to-3d 1건 | **완료** (30cr, 조건부 PASS) |
-| UCH-02b | 전사 메시 Unity 6000.6.7f1 임포트·스케일·재질·1-1 맵 위 컷, 얼굴 점 1개 텍스처 수정 | 대기 |
+| UCH-02c | 전사 메시 Meshy 리깅 1건(+기본 걷기·달리기) | **완료** (5cr, 조건부 PASS) |
+| UCH-02b | 리깅 전사 Unity 6000.6.7f1 임포트(Humanoid·URP/Lit)·걷기 재생·게임 각도 컷, 얼굴 점 1개 텍스처 수정 | 진행 |
 | UCH-03 | 리깅(휴머노이드)·Animator 기본(대기·이동·구르기·공격 1) | 대기 |
 | UCH-04 | 인게임 판정: 1-1 맵 위 1920×1080·1x 크롭, 전사·실버테일 옆 T1~T8 | 대기 |
 
@@ -56,3 +57,4 @@
   - 총괄 판정 **조건부 PASS**: 시트의 얼굴(평범한 짙은 눈·흉터)·흑발·겹친 둥근 견갑·암적 스카프·후드형 망토가 정면·측면·뒤에서 읽히고, 구멍이나 떠다니는 조각이 없다. A포즈라 리깅할 수 있다.
   - 고칠 점: ① 왼쪽 눈 아래 검은 점 1개(텍스처 수정) ② 정면 망토 폭이 시트보다 좁고 허리·정강이 갑옷이 단순해졌다(실루엣 허용 범위, 인게임 카메라 거리에서 재판정) ③ OBJ의 mtl은 `texture_0.png`를 참조한다(파일명은 `tex_base_color.png`).
 - 메모: Meshy multi-image는 첫 장을 정면으로 본다. `origin_at`은 `auto_size=true`일 때만 적용되고, 크레딧표는 문서에 없어 응답의 `consumed_credits`를 정본으로 한다. 리깅 API는 별도 유료(문서상 5cr)다.
+- 2026-10-27 UCH-02c(사용자 승인 "크레딧은 리깅 1건만"): `POST /openapi/v1/rigging`, `input_task_id`=UCH-02a 작업(multi-image 작업도 수락됨), `height_meters=1.85` → 작업 `01a17d1c-0e10-7148-bb87-ef63742b47d5`, 37초, 5cr(잔액 4405). 결과 = 리깅 GLB·FBX + 기본 걷기·달리기(GLB·FBX·armature GLB), 저장 `E:/exoduser-wt/_out/unity-charsheet/meshy/warrior_rig_20261027_2025/`(사본 I: 같은 이름). 뼈 24개(Hips·Spine02(아래)→Spine01→Spine(위)·neck·Head·좌우 Shoulder/Arm/ForeArm/Hand·UpLeg/Leg/Foot/ToeBase), Humanoid 필수 17개 대응, 정점당 최대 4뼈·가중치 합 오차 1.4e-7·무가중 정점 0, 손가락 뼈 없음. numpy 선형 블렌드 스키닝으로 걷기 4프레임 렌더 확인. 총괄 판정 **조건부 PASS**: 관절 위치·걷기 변형·손발 형태 정상. 고칠 점 = 망토 뒷자락이 다리 뼈에 묶여 걷기 측면 25/75%에서 다리를 따라 끌려 늘어남 → Unity에서 망토 전용 보조 뼈(또는 Cloth/스프링 본)로 분리 필요. Unity Humanoid 척추 매핑 = Spine02→Spine, Spine01→Chest, Spine→UpperChest.
