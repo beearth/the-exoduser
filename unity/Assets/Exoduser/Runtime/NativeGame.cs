@@ -246,7 +246,7 @@ namespace Exoduser.UnityPort
         {
             if(Simulation==null||view==null)return;var p=Simulation.Player;
             float shk=Simulation.ShakeAmount;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
-            view.transform.position=new Vector3(p.X/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-p.Y/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
+            view.transform.position=new Vector3(p.X/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-p.Y/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);BossCameraZoom();StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;

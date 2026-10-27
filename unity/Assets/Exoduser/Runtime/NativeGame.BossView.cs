@@ -20,6 +20,15 @@ namespace Exoduser.UnityPort
             Simulation.AttachDruidBoss();
         }
 
+        // web camera: zoom target 0.80 while a boss is alive (1.0 otherwise), eased zoom += (target - zoom) * (1 - .94^dt); orthographicSize 5.4 is zoom 1
+        float camZoom = 1f;
+        void BossCameraZoom()
+        {
+            var d = Simulation.Druid; bool boss = d != null && d.Boss != null && d.Boss.Alive;
+            camZoom += ((boss ? .8f : 1f) - camZoom) * (1f - Mathf.Pow(.94f, Mathf.Min(Time.unscaledDeltaTime * 60f, 3f)));
+            view.orthographicSize = 5.4f / camZoom;
+        }
+
         void BossViewUpdate()
         {
             if (bossView != null) bossView.Update(Simulation);
