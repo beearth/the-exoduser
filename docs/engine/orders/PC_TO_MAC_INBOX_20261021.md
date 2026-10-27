@@ -198,3 +198,15 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
 - 이제부터 PC→Codex 공지는 `main`과 `unity/main` 두 곳에 올린다. Codex는 `unity/main`의 이 파일을 읽는다.
 - `codex/unity-mac-20261024`는 퇴역한다. 새 커밋을 하지 않는다(PC 측도 금지).
 - 맵 아트 바이블 v2(`docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md`)와 맵 보드 LIFE1 갱신을 `unity/main`에 반영했다. 맵 판정 기준은 v2다(A/B 대체).
+
+## 2026-10-27 — main `bgm/` NFD 중복 71개 삭제 (`758efa140`, Mac pull 주의)
+
+- 사운드총괄이 `bgm/`의 NFD(Mac 분해형) 중복 경로 71개를 지웠다(사용자 승인). 지운 파일은 NFC 사본과 해시가 같고 코드는 전부 NFC 경로를 쓰므로 재생 영향은 없다.
+- **위험**: macOS 파일시스템은 NFC/NFD를 같은 이름으로 본다. NFD 경로 삭제가 적용될 때 같은 이름의 NFC 파일까지 디스크에서 지워질 수 있다. `main`을 pull할 때, 그리고 `codex/unity-mac-20261024`·`unity/main`(아직 `bgm/` 154개)에서 `main`으로 checkout을 바꿀 때 모두 해당한다.
+- **Codex 조치**
+  1. pull/checkout 전에 `git status --short bgm`이 빈 출력인지 확인한다.
+  2. `main` 반영 후 `git ls-files bgm | wc -l` = 81, `git status --short bgm` = 빈 출력인지 확인한다. 파일이 사라졌으면 `git restore bgm`으로 복원한다.
+  3. `git config --get core.precomposeunicode`를 확인하고, 비어 있거나 false면 `git config core.precomposeunicode true`로 설정한다(이번 중복의 원인).
+  4. Unity `Resources/Audio`에는 NFC 또는 ASCII 경로만 쓴다.
+  5. 확인 결과를 Mac→PC 회신에 1줄로 남긴다(81 여부, precomposeunicode 값).
+- 상세: `docs/6사운드디자인/BGM_NFC_NFD_AUDIT_20261026.md` ⑥·⑦.
