@@ -1,0 +1,489 @@
+{
+ "about": "SFX Forge 카탈로그 — 드루이드 보스전 사운드 v2(SND-09) 15키 x 해석 4개(a~d), 키 <key>_v2a~d(문구마다 variant 1개). 사용: node --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <this> --variants 1",
+ "sounds": [
+  {
+   "category": "hit",
+   "key": "druid_hit_v2a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "blade striking dry tree bark, short woody crack and splinter, tight and dry. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_v2b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "weapon hitting a heavy wet cloth robe over a dense body, dull wet thud, soft impact. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_v2c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "impact on a hollow rotten log, hollow wooden knock with a short low resonance. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_v2d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "blunt hit on a thick moss-covered root, thick dull thump with a faint creak. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_heavy_v2a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "heavy blow cracking thick bark, large wood split with a deep thud and falling bark chips. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_heavy_v2b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "massive impact on a giant waterlogged trunk, deep boom, wet crack, slight creak after. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_heavy_v2c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "hard strike staggering a huge rooted body, ground-shaking thump, roots snapping under the weight. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_heavy_v2d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "crushing hit into rotten wood and soil, crunch of bone-like branches breaking, muffled low thud. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_pain_v2a",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.6,
+   "text": "short pained grunt of an old man, dry hoarse exhale through clenched teeth. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_pain_v2b",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.6,
+   "text": "brief low groan, aged throat, cracked and raspy, swallowed back. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_pain_v2c",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.6,
+   "text": "sharp wheezing gasp of an elderly man being struck, hoarse, breathy. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_pain_v2d",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.6,
+   "text": "short guttural pain sound of an old man, gravelly low voice, restrained, humanlike. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_attack_v2a",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.6,
+   "text": "old man's hoarse battle shout, short and forceful, rasping effort. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_attack_v2b",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.6,
+   "text": "low guttural effort grunt heaving a heavy staff down, aged strained voice. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_attack_v2c",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.6,
+   "text": "harsh breathy shout of an old warrior, cracked voice, quick and sharp. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_attack_v2d",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.6,
+   "text": "deep gravelly exhale of exertion, elderly male, hoarse, short, controlled. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_phase_v2a",
+   "raw": true,
+   "duration": 1.8,
+   "promptInfluence": 0.6,
+   "text": "old male voice drawing a deep breath then a long low hoarse call to the forest, trembling, ritual and solemn, wordless. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_phase_v2b",
+   "raw": true,
+   "duration": 1.8,
+   "promptInfluence": 0.6,
+   "text": "elderly man muttering a wordless low incantation that rises into a cracked sustained shout. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_phase_v2c",
+   "raw": true,
+   "duration": 1.8,
+   "promptInfluence": 0.6,
+   "text": "raspy chanting hum in a deep aged voice swelling into a hoarse cry, ritual, wordless. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_phase_v2d",
+   "raw": true,
+   "duration": 1.8,
+   "promptInfluence": 0.6,
+   "text": "long hoarse exhale turning into a low guttural drone, old male throat, solemn invocation, wordless. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_fall_v2a",
+   "raw": true,
+   "duration": 1.2,
+   "promptInfluence": 0.6,
+   "text": "old man collapsing to his knees with a long weary groan, hoarse and breaking. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_fall_v2b",
+   "raw": true,
+   "duration": 1.2,
+   "promptInfluence": 0.6,
+   "text": "heavy labored breathing and a drawn-out pained moan of an aged man, voice cracking. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_fall_v2c",
+   "raw": true,
+   "duration": 1.2,
+   "promptInfluence": 0.6,
+   "text": "low exhausted sigh turning into a shaky groan, elderly male, wet throat. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_fall_v2d",
+   "raw": true,
+   "duration": 1.2,
+   "promptInfluence": 0.6,
+   "text": "strained wheeze and a short broken groan, old hoarse voice, defeated. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_last_v2a",
+   "raw": true,
+   "duration": 1.5,
+   "promptInfluence": 0.6,
+   "text": "one long slow weary exhale of an ancient dying man, hoarse, quiet, resigned, no scream. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_last_v2b",
+   "raw": true,
+   "duration": 1.5,
+   "promptInfluence": 0.6,
+   "text": "faint rattling breath of an old man, a quiet ragged inhale and a long soft release. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_last_v2c",
+   "raw": true,
+   "duration": 1.5,
+   "promptInfluence": 0.6,
+   "text": "barely audible low murmur of breath, aged voice trailing off like a sigh into silence. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_vo_last_v2d",
+   "raw": true,
+   "duration": 1.5,
+   "promptInfluence": 0.6,
+   "text": "deep tired sigh with a slight whistle in the throat, old male, resigned and calm, fading away. dark fantasy ARPG, old hoarse male voice, no words, no monster roar, no music, no synth, dry close recording"
+  },
+  {
+   "category": "skill",
+   "key": "druid_whip_v2a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "long thorny branch whipping through the air, whistling swish with a leafy rustle. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_whip_v2b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "thick supple root lashing out, low heavy whoosh with creaking wood fibers. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_whip_v2c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "vine whip cracking, sharp wooden snap at the end of a fast swing, small leaf scatter. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_whip_v2d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "gnarled twig bundle swung hard, dry brittle rustle and a short whip crack. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_v2a",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.7,
+   "text": "huge rotten log slammed into soft soil, deep wet thud with mud splatter. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_v2b",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.7,
+   "text": "heavy wooden club crushing into the ground, earth shock, dull boom and falling clods. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_v2c",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.7,
+   "text": "massive root fist smashing down on compost and bones, thick squelch and crack. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_v2d",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.7,
+   "text": "giant staff end driven into the swamp floor, deep low impact, water splash, wood creak. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_drag_v2a",
+   "raw": true,
+   "duration": 0.8,
+   "promptInfluence": 0.7,
+   "text": "thick tree roots dragged along rocky dirt, long scraping rumble with pebbles skittering. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_drag_v2b",
+   "raw": true,
+   "duration": 0.8,
+   "promptInfluence": 0.7,
+   "text": "heavy wooden mass sliding across wet ground, grinding scrape and mud suction. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_drag_v2c",
+   "raw": true,
+   "duration": 0.8,
+   "promptInfluence": 0.7,
+   "text": "many roots tearing through the soil as a large body charges, ripping earth and snapping fibers. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_drag_v2d",
+   "raw": true,
+   "duration": 0.8,
+   "promptInfluence": 0.7,
+   "text": "bark-covered body skidding on dry leaves and gravel, rough rasp and a low rumble. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_fissure_v2a",
+   "raw": true,
+   "duration": 1.0,
+   "promptInfluence": 0.7,
+   "text": "ground cracking in a line as thorny roots burst upward one after another, running crack and wood splinters. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_fissure_v2b",
+   "raw": true,
+   "duration": 1.0,
+   "promptInfluence": 0.7,
+   "text": "earth splitting open along a path, rolling rumble with sharp wooden spikes rising and creaking. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_fissure_v2c",
+   "raw": true,
+   "duration": 1.0,
+   "promptInfluence": 0.7,
+   "text": "a line of thorn roots erupting through hard soil, rapid crunching and ripping, trailing dirt rain. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_fissure_v2d",
+   "raw": true,
+   "duration": 1.0,
+   "promptInfluence": 0.7,
+   "text": "fast crawling fissure in dry ground, stone crack and woody thorns snapping out. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_v2a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "fan of toxic spores puffed out, soft pressurized pop and a wet airy hiss. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_v2b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "burst of poisonous mushroom dust spraying out, muffled puff with fine granular rustle. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_v2c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "many small slimy pods spat in a spread, quick wet pops and a gas hiss. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_v2d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "swampy gas exhaled in a wide cloud, low wet breath-like blast, faint bubbling. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_pod_v2a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "swollen spore pod bursting, wet pop with a puff of gas. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_pod_v2b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "fleshy fungal sac rupturing, squelchy burst and a light hiss. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_pod_v2c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "dry seed pod cracking open, brittle snap and a small cloud of powder. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_pod_v2d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "bubble of swamp slime popping, thick blorp and splash. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_summon_v2a",
+   "raw": true,
+   "duration": 1.2,
+   "promptInfluence": 0.7,
+   "text": "corpses stirring in mud and rising, wet slurping, bones creaking, cloth dragging on soil. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_summon_v2b",
+   "raw": true,
+   "duration": 1.2,
+   "promptInfluence": 0.7,
+   "text": "dead bodies twitching back to life under roots, rustling dirt, joints cracking, low groaning wood. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_summon_v2c",
+   "raw": true,
+   "duration": 1.2,
+   "promptInfluence": 0.7,
+   "text": "rotting remains pulled upright by vines, tendons stretching and creaking, soil trickling. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_summon_v2d",
+   "raw": true,
+   "duration": 1.2,
+   "promptInfluence": 0.7,
+   "text": "ground heaving as buried dead claw out of the dirt, hands scraping soil, muffled thumps, wet suction. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "ambient",
+   "key": "amb_druid_arena_v2a",
+   "raw": true,
+   "duration": 10,
+   "promptInfluence": 0.4,
+   "text": "swamp arena bed, slow bubbling mud, occasional wood creak, distant low root groan, damp air, very low level. dark fantasy ARPG, no music, no voice, no synth, seamless loop, even level, no sudden hits",
+   "loop": true
+  },
+  {
+   "category": "ambient",
+   "key": "amb_druid_arena_v2b",
+   "raw": true,
+   "duration": 10,
+   "promptInfluence": 0.4,
+   "text": "rotting forest clearing at night, dripping water, faint insect crawl, wooden trunks creaking under strain, sparse. dark fantasy ARPG, no music, no voice, no synth, seamless loop, even level, no sudden hits",
+   "loop": true
+  },
+  {
+   "category": "ambient",
+   "key": "amb_druid_arena_v2c",
+   "raw": true,
+   "duration": 10,
+   "promptInfluence": 0.4,
+   "text": "oppressive marsh air, gurgling bog gas, slow far-away tree trunk groans, subtle wind through dead branches. dark fantasy ARPG, no music, no voice, no synth, seamless loop, even level, no sudden hits",
+   "loop": true
+  },
+  {
+   "category": "ambient",
+   "key": "amb_druid_arena_v2d",
+   "raw": true,
+   "duration": 10,
+   "promptInfluence": 0.4,
+   "text": "living forest breathing, deep soft rumble beneath wet soil, creaking roots, rare bubble pops, ominous calm. dark fantasy ARPG, no music, no voice, no synth, seamless loop, even level, no sudden hits",
+   "loop": true
+  }
+ ]
+}
