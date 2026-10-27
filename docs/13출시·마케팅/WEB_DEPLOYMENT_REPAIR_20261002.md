@@ -1,5 +1,11 @@
 # 웹 자동 배포 실패 복구 — 2026-10-02
 
+## 2026-10-27 킬루가문 영상 교체 배포의 용량 검사 복구
+
+- 교체 영상이 포함된 `main/0a81912b2e4e86e326538afd7f91626ea1729671`의 [Deploy and Build 실행](https://github.com/beearth/the-exoduser/actions/runs/40450295727)은 정적 업로드 합계 4,003,685,155바이트로 프로젝트 사전 예산 4,000,000,000바이트를 초과해 실패했다. 영상 파일의 게임 로컬 적용과 GitHub main 반영은 이 실패와 구분한다.
+- `tools/web-runtime-manifest.mjs`의 동적 CH1 경로 선택에서 웹 실행에 쓰지 않는 제작 원본 3개만 제외한다: `assets/map/ch1/rottenwood_field_rootworld_master_v2.png`, `assets/map/ch1/rottenwood_poison_master_higgsfield_v2_wide.png`, `assets/map/ch1/rottenwood_poison_tree_detail_v3_source.png`. 원본 파일 자체는 삭제하거나 이동하지 않는다. CH1 실행 청크 선택은 유지한다.
+- 로컬 선택 목록은 2,825개/4,036,367,600바이트에서 2,822개/3,977,014,362바이트로 감소했다(59,353,238바이트). `test/webDeployment.test.js`는 세 제작 원본 제외와 실행 청크 유지를 검증하며 관련 6개 검사가 통과했다. 이 수치는 로컬 선택 목록이며 Vercel 최종 반영 여부는 새 Actions 실행과 공개 URL로 따로 확인한다.
+
 | 항목 | 현행 계약 / 검증 근거 |
 |---|---|
 | 작업 범위 | Vercel `fordeargamers/the-exoduser`의 웹 패키징·GitHub Actions 배포만 수정. 기준 GitHub main `aacc7b02bef9d5cd7db6ea5d6466d7b8e4c11a3c`. 공유 PC의 미완료 변경·Steam/NW 빌드·세이브는 반영하지 않음 |

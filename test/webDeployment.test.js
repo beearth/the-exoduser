@@ -29,6 +29,18 @@ test('web selection retains referenced sound and dynamic chunks while excluding 
   for(const p of ['video/old.mp4','bgm/공통/unused.wav','assets/map/ch1/production_finish/CH1_1_PRODUCTION_MASTER.png','assets/map/ch1/production_finish/outer77_sources/original.png','assets/video-tests/input.png'])assert.ok(!selected.includes(p),p);
 });
 
+test('CH1 dynamic map prefix excludes source paintovers while retaining runtime chunks',()=>{
+  const sources=[
+    'assets/map/ch1/rottenwood_field_rootworld_master_v2.png',
+    'assets/map/ch1/rottenwood_poison_master_higgsfield_v2_wide.png',
+    'assets/map/ch1/rottenwood_poison_tree_detail_v3_source.png',
+  ];
+  const paths=['game.html','assets/map/ch1/runtime_chunk.png',...sources];
+  const selected=manifest.selectWebRuntimeFiles(paths,['game.html'],()=>"const root='assets/map/ch1/'; image.src=root+chunk;");
+  assert.ok(selected.includes('assets/map/ch1/runtime_chunk.png'));
+  for(const source of sources)assert.ok(!selected.includes(source),source);
+});
+
 test('ASCII upload aliases preserve Korean public URLs and collapse identical NFC/NFD files',async t=>{
   const dir=fixture(t),staticDir=join(dir,'static');mkdirSync(staticDir);
   writeFileSync(join(dir,'config.json'),JSON.stringify({version:3}));
