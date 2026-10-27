@@ -179,7 +179,8 @@ static partial class P
     {
         // the game data registry: druid only (no test set leaks in), every set valid
         var reg = BossRemodelSets.Build();
-        Check(reg.Count == 2 && reg[0] == DruidRemodelData.Set && reg[3] == DruidRemodelData.Set && !reg.ContainsKey(1) && !reg.ContainsKey(2), "registry = druid at si0 / si3 only");
+        Check(reg.Count == 2 && reg[0] == DruidRemodelData.Set && reg[3].Moves == DruidRemodelData.Moves && reg[3].Phases == DruidRemodelData.Phases && reg[3].Lives == 3 && !reg[3].Sink && reg[0].Sink
+            && !reg.ContainsKey(1) && !reg.ContainsKey(2), "registry = druid at si0 (sink) / si3 (same tables, no sink) only");
         Check(DruidRemodelData.Set.Validate() == null && SampleSi1().Validate() == null && SampleSi2().Validate() == null, "sets validate");
         var bad = SampleSi2(); bad.Hooks.StartMove = null; Check(bad.Validate() != null, "a custom move without hooks is rejected");
         var bad2 = SampleSi1(); bad2.Moves[1].Idx = 13; Check(bad2.Validate() != null, "a cooldown slot used twice is rejected");
@@ -196,7 +197,7 @@ static partial class P
             Check(!s.Stage.BossSpawners.ContainsKey(si) && s.Stage.LoadPhase == 0 && !s.Stage.InArena && s.Stage.Boss == null && s.Stage.BossAlive && s.ActiveRemodelSet == null
                 && !s.Stage.Events.Any(e => e.Kind == StageEventKind.ArenaLoadStart), "off si" + si + ": no spawner, the exit does not load an arena");
             var s2 = FwSim(si, 9u, x => x.DruidRemodel = true, si == 1 ? SampleSi1() : SampleSi2());
-            Check(!s2.Stage.BossSpawners.ContainsKey(si) && s2.RemodelSetFor(si) == null && s2.RemodelSetFor(0) == DruidRemodelData.Set && s2.RemodelSetFor(3) == DruidRemodelData.Set, "DruidRemodel only: si" + si + " stays off, druid si0 / si3 on");
+            Check(!s2.Stage.BossSpawners.ContainsKey(si) && s2.RemodelSetFor(si) == null && s2.RemodelSetFor(0) == DruidRemodelData.Set && s2.RemodelSetFor(3) != null && s2.RemodelSetFor(3).Moves == DruidRemodelData.Moves, "DruidRemodel only: si" + si + " stays off, druid si0 / si3 on");
         }
 
         hkAttach = hkCollapse = hkLife = hkFinal = hkKneelTicks = 0;
@@ -226,6 +227,102 @@ static partial class P
         }
         fwSummary = "FW-A si1: lives 2, fight " + (a.Moves.Count) + " moves, events " + string.Join(" ", a.Events.Select(e => e.Kind + "@" + e.Tick)) + "\n"
             + "FW-B si2: moves " + b.Moves.Count + ", ring starts " + DruidBoss.SampleRingStarts + ", fires " + DruidBoss.SampleRingFires + ", events " + string.Join(" ", b.Events.Select(e => e.Kind + "@" + e.Tick)) + "\n";
+        RulesChecks();
+    }
+
+    // ---- RM-B0b: the six common rules on one test-only si1 set (FW-C) -------------------------------------------------------------------------------------
+    static int fcBroken, fcDying, fcBump;
+
+    static BossRemodelSet SampleRules(double bx, double by)
+    {
+        var s = SampleSi1(); s.Id = "sampleRules"; s.Hooks = new BossRemodelHooks();
+        s.CollapseVulnerable = true; s.CollapseHpFloor = 0.7; s.CollapseTicks = 120; s.FinalTicks = 60;
+        s.Obstacles.Add(new RemodelObstacleDef { Name = "stump", X = bx, Y = by + 230, R = 90 });
+        s.Hooks.OnAttach = (sim, e, st) => { for (int i = 0; i < 3; i++) sim.SpawnRemodelProp("knot", e.X - 300 + 300 * i, e.Y - 320, 30, 1, i); };
+        s.Hooks.DamageScale = (sim, e, st) => (3 - sim.RemodelProps.Count(p => p.Alive)) / 3.0;   // RM-B4 cord rule: 3 knots = blocked, 2 = 1/3, 1 = 2/3, 0 = full
+        s.Hooks.PropBroken = (sim, p) => fcBroken++;
+        s.Hooks.DyingTick = (sim, e, st) => fcDying++;
+        s.Hooks.ObstacleHit = (bo, e, d, o) => fcBump++;
+        return s;
+    }
+
+    static void RulesChecks()
+    {
+        fcBroken = fcDying = fcBump = 0;
+        var lay = BossArenaLayout.Generate(1); double bx = (lay.BossX + .5) * 40, by = (lay.BossY + .5) * 40;
+        var set = SampleRules(bx, by);
+        Check(set.Validate() == null, "FW-C: set validates");
+        var s = FwSim(1, 20261030u, x => x.RemodelBosses.Add("sampleRules"), set); var p = s.Player; int guard = 0;
+        while (guard++ < 1500 && !(s.Stage.InArena && s.Stage.LoadPhase == 0 && s.Stage.Boss != null)) s.Tick(0, 0, p.X + 100, p.Y, false, false);
+        var boss = s.Stage.Boss; if (boss == null) { Check(false, "FW-C: boss did not spawn"); return; }
+        var props = s.RemodelProps.ToList();
+        Check(props.Count == 3 && props.All(q => q.Alive && s.Enemies.Contains(q.Body) && s.IsRemodelProp(q.Body)) && !s.IsRemodelProp(boss) && s.Stage.Boss == boss, "FW-C(1): 3 props spawned as hit targets, the boss is the stage boss");
+        // 4 obstacles: block movement and shots at the stump, not beside it
+        Check(!s.CanMove((float)bx, (float)(by + 230), 10) && s.CanMove((float)(bx + 400), (float)by, 10) && s.IsProjectileWall((float)bx, (float)(by + 230)) && s.RemodelObstacles.Count == 1, "FW-C(4): stump blocks movement and shots");
+        // 2 blocked: all 3 knots alive -> the boss takes nothing; the player waits south behind the stump so the boss walks into it
+        int hp0 = boss.Hp, landed = 0;
+        for (int i = 0; i < 240; i++)
+        {
+            p.Hp = p.MaxHp; p.X = (float)bx; p.Y = (float)(by + 470);
+            if (i % 20 == 10) { s.HurtEnemy(boss, 500); landed++; }
+            s.Tick(0, 0, boss.X, boss.Y, false, false);
+        }
+        var st = s.DruidLife(boss);
+        Check(boss.Hp == hp0 && st.BlockedHits == landed, "FW-C(2): 3 knots = blocked (" + landed + " hits, counted " + st.BlockedHits + ", HP " + hp0 + " -> " + boss.Hp + ")");
+        Check(fcBump > 0 && s.RemodelObstacles[0].BossBumps == fcBump, "FW-C(4): the boss bumped into the stump " + fcBump + " tick(s), hook called each time");
+        // 1 props break on any player hit, without rewards, and leave Enemies after the enemy loop
+        int kills0 = s.Kills;
+        s.HurtEnemy(props[0].Body, 5);
+        Check(!props[0].Alive && props[0].EndReason == "broken" && fcBroken == 1 && s.Kills == kills0, "FW-C(1): a knot breaks on one hit, PropBroken once, no kill counted");
+        s.Tick(0, 0, boss.X, boss.Y, false, false);
+        Check(!s.Enemies.Contains(props[0].Body), "FW-C(1): the broken knot left Enemies");
+        // 2 scale 1/3 -> 2/3 -> full (web _aDefM on the boss)
+        double[] drop = new double[3]; double[] want = { 1 / 3.0, 2 / 3.0, 1 };
+        for (int k = 0; k < 3; k++)
+        {
+            s.Tick(0, 0, boss.X, boss.Y, false, false);   // the scale is taken at the boss tick
+            bool ok = k < 2 ? boss.Web != null && boss.Web._aDefM.HasValue && Math.Abs(boss.Web._aDefM.Value - want[k]) < 1e-9 : boss.Web == null || !boss.Web._aDefM.HasValue;
+            Check(ok, "FW-C(2): damage scale " + want[k].ToString("0.##") + " on the boss");
+            int h1 = boss.Hp + (int)boss.Shield; s.HurtEnemy(boss, 3000); drop[k] = h1 - (boss.Hp + (int)boss.Shield);
+            if (k < 2) s.HurtEnemy(props[k + 1].Body, 5);
+        }
+        Check(drop[0] > 0 && drop[0] < drop[2] * 0.5 && drop[1] > drop[0] && drop[1] < drop[2], "FW-C(2): damage 1/3 < 2/3 < full (" + string.Join("/", drop) + ")");
+        Check(fcBroken == 3 && s.RemodelProps.All(q => !q.Alive), "FW-C(1): all three knots broken");
+        // kill life 1 -> a change of life that takes damage, floor 70 % of the next life
+        int g2 = 0; while (!s.DruidLife(boss).Collapsing && g2++ < 400) { p.Hp = p.MaxHp; s.HurtEnemy(boss, Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.2))); s.Tick(0, 0, boss.X, boss.Y, false, false); }
+        st = s.DruidLife(boss);
+        Check(st.Collapsing && boss.MaxHp == st.NextMaxHp && boss.Hp == st.NextMaxHp, "FW-C(6): change of life starts with the next life's HP on the line (" + boss.Hp + "/" + st.NextMaxHp + ")");
+        int next = st.NextMaxHp, floorHp = (int)Math.Round(next * 0.7), lowest = int.MaxValue;
+        for (int i = 0; i < 140 && st.Collapsing; i++)
+        {
+            p.Hp = p.MaxHp;
+            if (i == 20 || i == 40 || i == 60) s.HurtEnemy(boss, (int)Math.Ceiling(next * 0.15));
+            s.Tick(0, 0, boss.X, boss.Y, false, false);
+            if (st.Collapsing) lowest = Math.Min(lowest, boss.Hp);
+        }
+        int mx = boss.MaxHp;
+        Check(!st.Collapsing && st.Life == 1 && Math.Abs(boss.Hp - Math.Round(mx * 0.7)) <= 1 && lowest >= floorHp - 1 && lowest < next, "FW-C(6): 45 % dealt while down -> life 2 starts at the 70 % floor (" + boss.Hp + "/" + mx + ", lowest " + lowest + ")");
+        var lifeEv = s.DruidRemodelLog.First(e => e.Kind == "life");
+        Check(lifeEv.Note.Contains("taken while down"), "FW-C(6): life event notes the damage taken while down");
+        // 3 death sequence: 60 ticks, invulnerable, then the kill with die1 (no sink)
+        int g3 = 0; while (!s.DruidLife(boss).Dying && boss.Alive && g3++ < 400) { p.Hp = p.MaxHp; s.HurtEnemy(boss, Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.2))); s.Tick(0, 0, boss.X, boss.Y, false, false); }
+        Check(st.Dying && boss.Alive, "FW-C(3): last life down -> death sequence");
+        for (int i = 0; i < 80 && boss.Alive; i++) { p.Hp = p.MaxHp; if (i % 10 == 5) s.HurtEnemy(boss, 999999); s.Tick(0, 0, boss.X, boss.Y, false, false); }
+        Check(!boss.Alive && !boss.SinkDruid && fcDying == set.FinalTicks, "FW-C(3): the kill after " + fcDying + " DyingTick ticks, no sink");
+        var dyingEv = s.DruidRemodelLog.First(e => e.Kind == "dying"); var finEv = s.DruidRemodelLog.First(e => e.Kind == "final");
+        Check(finEv.Tick - dyingEv.Tick == set.FinalTicks && finEv.Note == "kill", "FW-C(3): final " + (finEv.Tick - dyingEv.Tick) + " ticks after dying");
+        // 5 lines: si1 has no intro line in the web table, die1 once
+        Check(s.BossLineLog.Count == 1 && s.BossLineLog[0] == "die1", "FW-C(5): lines " + string.Join(",", s.BossLineLog));
+        int open = 0; while (s.Stage.Exits.Count == 0 && open++ < 600) { p.Hp = p.MaxHp; p.Iframes = 600; s.Tick(0, 0, p.X + 100, p.Y, false, false); }
+        Check(s.Stage.Exits.Count > 0 && !s.Stage.BossAlive && !s.Enemies.Any(e => s.IsRemodelProp(e)), "FW-C: exit opened, no prop left in Enemies");
+        // druid lines: si0 opens with intro0 (the RM-B1 fight itself is checked byte for byte by the druid fights)
+        var sd = new Simulation(new SimulationConfig { StageIndex = 0, DifficultyIndex = 5, EnemyAiEnabled = true, PlayerMaxHp = 2000000, PlayerBaseAttack = 40 }, 5u);
+        sd.DruidRemodel = true; sd.Player.Level = 8; sd.AttachDruidBoss(); sd.Stage.Enabled = true; sd.Stage.FieldBossDone = true; sd.Stage.BossUnlocked = true;
+        sd.Stage.Exits.Add(new StageFlow.Tile(100, 7)); sd.Player.X = 100.5f * 40; sd.Player.Y = 7.5f * 40; sd.Stage.CheckT = 29; int gd = 0;
+        while (gd++ < 1500 && sd.Stage.Boss == null) sd.Tick(0, 0, sd.Player.X + 100, sd.Player.Y, false, false);
+        Check(sd.BossLineLog.Count == 1 && sd.BossLineLog[0] == "intro0" && sd.RemodelObstacles.Count == 0 && sd.RemodelProps.Count == 0, "FW-C(5): druid si0 fight opens with intro0");
+        fwSummary += "FW-C si1 rules: blocked " + st.BlockedHits + " hits, bumps " + fcBump + ", damage 1/3 2/3 full = " + string.Join("/", drop) + ", life 2 HP " + boss.MaxHp
+            + " (floor 70 %), dying " + fcDying + " ticks, lines " + string.Join(",", s.BossLineLog) + "\n";
     }
     static string fwSummary = "";
 }
