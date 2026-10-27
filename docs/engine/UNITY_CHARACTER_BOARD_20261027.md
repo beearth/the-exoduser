@@ -29,6 +29,9 @@
 | UCH-03e | 웅덩이 테두리광 재설계: 림 Point 재배치 1회 → 안 되면 웅덩이 색 Fresnel(Shader Graph). 이번 단위는 구조만(세기는 Linear 뒤) | **완료** (림 Point 반려, Fresnel 구조 PASS, 세기·지표는 03f) |
 | UCH-03f | VFX 병합(Linear·후처리) + RM0-LIGHT-L 뒤 재조정: Hero·Fresnel 세기 확정, ACES 색 밀림(350~12°)·블룸 번짐 확인, Hero Light 브랜치 merge·재캡처·병합 요청 | 대기 |
 | UCH-03c | Animator 기본(대기·이동·구르기·공격 1) | 대기 |
+| UCH-05 | 실버테일 Meshy body 3D·리깅(1.72m)·단검 3D 각 1건 → Unity 임포트·캡처 | 진행 (Meshy 3건 완료 65cr, Unity는 메모리 여유 대기) |
+| UCH-06 | 아이반 Meshy body 3D·리깅(1.85m)·총 3D 각 1건 → Unity 임포트·캡처 | 진행 (Meshy 3건 완료 65cr, Unity는 메모리 여유 대기) |
+| UCH-A1 | 애니메이션 공급원 비교 시범(보스전 총괄 공동): 무료 1단계 = 문서 조사·Unity 수동 키 "내려찍기"(예비 48f·발동 6f·회복 70f), 유료 2단계는 사용자 확인 후 | 진행 (Unity 단계 메모리 보류) |
 | UCH-04 | 인게임 판정: 1-1 맵 위 1920×1080·1x 크롭, 전사·실버테일 옆 T1~T8 | 대기 |
 
 ## 3. 결정 기록
@@ -43,6 +46,9 @@
 | 2026-10-27 | 생성 결과가 텍스처 조건에 걸리면 재생성하지 않고 Unity 텍스처·머티리얼로 보정 | 크레딧 절약(디자인총괄 합의) |
 | 2026-10-27 | RM-0 키 라이트를 약하게(L-5) 유지하고, 캐릭터 밝기는 캐릭터 전용 Hero Light(URP Rendering Layer `Hero`, 중성 (1,.97,.94))로 올린다. 웅덩이 안 외곽 대비(L-4)는 웅덩이마다 Hero 레이어 전용 Point 림광(웅덩이 광원 색, range 반지름+0.5m)으로 낸다. 웅덩이는 `Lights/Pools`의 `Pool_Hell_*`·`Pool_Toxic_*` | 맵 총괄·디자인총괄 합의, 바이블 정정 main 27ca98941 |
 | 2026-10-28 | 걷기 중 대검은 칼끝이 아래·뒤로 끌리는 자세(원화 warrior_cut의 칼끝 아래 대검). 칼 축은 수평 아래 약 37°: 손 높이 1.0m·손잡이~칼끝 1.45m에서 칼끝-바닥 5cm 이상을 지키는 물리 한계라 목표 50~65°를 낮춰 수용 | 측면 걷기 판정 |
+| 2026-10-28 | **유료 승인 기록**: 사용자가 이 세션 채팅에서 직접 승인 — "Run Meshy for Silvertail and Ivan in parallel: body 3D 1 run, rigging 1 run, weapon 3D 1 run each (130 credits total)." (2026-10-28 02:0x KST 전후, 실행 02:17~02:20). 이전 승인: 10-27 "Meshy로 전사 body 시트 3D 시험 1건 진행해. 크레딧은 1건만."·"Meshy 리깅 1건 진행해. 크레딧은 리깅 1건만."·"Meshy로 전사 대검 3D 1건 진행해. 크레딧은 1건만." | 유료 지출은 사용자 확인 필수(CLAUDE.md), CTO 확인 요청 10-28 |
+| 2026-10-28 | 키(rigging height): 실버테일 1.72m(하이힐 포함), 아이반 1.85m. LOCK 문서에 키 수치가 없어 총괄이 정함 | 전사 1.85m 기준 비례 |
+| 2026-10-28 | 보스는 Hero Light 레이어를 쓰지 않는다(플레이어 가독성 전용). 웅덩이 Fresnel `CharacterLit_PoolRim`은 보스도 쓴다 | 보스전 총괄 회신 |
 
 ## 3-1. 제작 경로·품질 기준 (영웅·보스 공용, 2026-10-28)
 
@@ -118,3 +124,4 @@
   - Fresnel: `Art/Characters/Shaders/CharacterLit_PoolRim.shadergraph`(URP Lit + Emission에 `_HeroPoolRimColor × _HeroPoolRimStrength × Fresnel^_RimPower(3) × 광원 쪽 반구 마스크`), 구동 `Runtime/CharacterLab/PoolRimDriver.cs`(`Lights/Pools`의 가장 가까운 `Pool_Hell_*`·`Pool_Toxic_*`, 0.85R~1.0R에서 0으로), 머티리얼 사본 `Warrior_Mat_Rim`·`Warrior_Greatsword_Mat_Rim`. 테두리 0일 때 원본과 픽셀 차이 0, 웅덩이 밖·없음·멀리 차이 0. 세기 3.0에서 광원 쪽 외곽에 진홍 테두리가 1x로 읽힘(색상각 4°, 채도 0.55) → **구조 PASS**.
   - 미해결: ① L-4 ① 휘도 +20에 Fresnel 1~3은 +6~9로 미달(광원 쪽만 보면 세기 약 6에서 +19.5). 진홍은 휘도 비중이 낮아, 휘도로 맞추면 형광 쪽으로 감 → 지표(휘도 유지 / R +40 / ΔE ≥15)를 디자인총괄에 질의. ② 세기 6~8에서 노멀맵 굴곡마다 붉은 조각(점 금지 위험) → Fresnel 법선을 메시 정점 법선으로 교체(03f).
   - 캡처 `E:/exoduser-wt/_out/unity-charsheet/unity_uch03e_20261028_0106/`. `PoolRimDriver`는 아직 씬·게임 코드에 붙이지 않음(캡처 전용).
+- 2026-10-28 02:17~02:20 UCH-05·06 Meshy 6건(사용자 승인 130cr): 실버테일 body `01a17e5a-2ff9-726d-afcc-2bd2ae0523fc`·리깅 `01a17e5e-e781-7431-a393-fd5fc83bf4d4`·단검 `01a17e5e-eff6-745c-bbed-df9ec4f02f16`, 아이반 body `01a17e59-948d-740c-b539-09bd57b98a6d`·리깅 `01a17e5e-410c-732a-af43-1e9f66766b7f`·총 `01a17e5f-3297-75e9-a637-f9fe008fba69`. 합계 130cr, 잔액 4375→4245(장부 `E:/exoduser-wt/_out/meshy/credits.log`). 결과 판정·Unity 임포트는 진행 중. PC 메모리 커밋 한계(126.4/127.8GB, CTO 공통 규칙)로 Unity는 여유 20GB·PC 전체 1개 조건에서만 실행.
