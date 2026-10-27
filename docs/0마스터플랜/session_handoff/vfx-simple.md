@@ -1,8 +1,8 @@
-# 임펙트(VFX) 단순 세션 인계 — 2026-10-27 (4차 재생성, VFX-12 반영 완료 2152b0f27 기준)
+# 임펙트(VFX) 단순 세션 인계 — 2026-10-27 (5차 재생성, VFX-02 4묶음 반영 완료 e8a95f21e 기준)
 - 세션: Sonnet 5.5 단순 세션(임펙트 총괄 소속). 세션 id는 앱 "Linked sessions" 목록에서 확인. 역할=캡처·측정·제작·문서 반영 같은 명세 정해진 작업
 - 기준 문서(SSOT): `docs/5.1임펙트디자인/VFX_LEAD_MASTER_20261026.md` (§2.7 타격 임팩트 기준, §3.4·§3.5·§3.6 교체 기록, VFX-D10~D16, 백로그 VFX-10·11·12)
 - 소속·연결: 임펙트 총괄 `local_da9cd0e7-37a8-4d5d-9ab6-090f7f9eb8ad`
-- 진행 중 작업 단위: 없음(3묶음·VFX-12까지 전부 원격 반영 완료, 미커밋 작업 없음). 새 작업 임의 착수 금지, 총괄이 재개 메시지와 다음 명세를 보낼 때까지 대기
+- 진행 중 작업 단위: 없음(3묶음·VFX-12·VFX-10·4묶음까지 전부 원격 반영 완료, 미커밋 작업 없음). 새 작업 임의 착수 금지, 총괄이 재개 메시지와 다음 명세를 보낼 때까지 대기
 
 ## 완료한 작업
 1. 타격 임팩트 비교 캡처(우리 vs 노레위 vs PoE2) — 커밋 `607110d52`. 산출물 `G:/exoduser-wt/_vfxref_20261027/`(삭제는 사용자 확인 후에만, 그전엔 유지)
@@ -26,10 +26,15 @@
    - 변경: 새 함수 `_boomGrow(ep)=.6+.4*Math.sqrt(Math.min(1,ep*8))`(`_rainbowImpact` 위)로 `_addBoom` 렌더 크기식 6곳(plague·rainbow_light·rainbow×3·통합 시트) 교체, `_detonateAssaultFlames`의 `G._flashT/_flashCol='#ff4400'` 삭제(shake·chromaT 유지). 판정·수치·수명 불변. 8873·8935행의 `progress*3` 식은 다른 함수라 미변경
    - 결과: 0.066초 몸체/정점(면적 환산) 29~45% → 56~81%, 기동불꽃 국소 밖 ΔR +43 → 0. **정점 시점은 fire_medium·explosion·dark가 0.35초 그대로**(프레임 진행식은 범위 밖, 정점 앞당김은 미결정). 문서: VFX_LEAD_MASTER §3.5 후속·VFX-D14 해소·VFX-13 신설, 탄막시스템_총정리·12퍼포먼스·최적화, 전후 `VFX12_BEFORE_AFTER_20261027.jpg`
    - 작업 폴더 `G:/exoduser-wt/_vfx12/`(SPEC·SUMMARY, mod/game.html=캡처한 수정본, cap/cur·mod, sheets, scripts: apply_vfx12.py·syntax_check.mjs·capture_vfx12.mjs·sheets_vfx12.py)
+6. VFX-10 — 지옥강타 베이지 덮개 → 국소 백열 코어 + 용암 정점 당김(game.html 시각 코드만): 원격 `4b23e2285`. 중앙 폭발 플래시 원판 → 반지름 ≤42px 코어(`#fff4d0`), `_slamFrame=pow(_wP,.6)`(B1, 용암 시작 +0.19→+0.074초). VFX-D11 해소·**VFX-D17 신설**(월드층 이펙트는 조명·대기 패스에 눌려 흰색 알파 1도 약 `[166,170,175]` — 코어 240+ 달성 불가). 작업 폴더 `G:/exoduser-wt/_vfx10/`(apply_vfx10.py·capture_vfx10.mjs·mod/·cap/·sheets/)
+7. VFX-02 2차 4묶음 — 빙결 4종+물 2종 교체(승인 에셋 재채색, 비용 0): 원격 `e8a95f21e`(16개 파일, force 없음). 총괄 1x: 빙결 A(임팩트 3장)·B(안개) PASS, 물 1차 RETOUCH → W1/W2 중 **W2 PASS**
+   - 교체: `Ice_BasicImpact`·`Ice_MediumImpact`·`Ice_ImpactIce_Sheet`(Fire C2→빙결 램프, 반전·회전), `Ice_MistSmoke_FBF_4x4`(자기 형태, 알파 .58·감마 1.3, `#4f8ab8`→`#9ccbe6`), `Water_ImpactWater_Sheet`(Fire C2→새 물 램프 `#0f1c26/#3a6a88/#8db4c8/#dcebf0`·감마 1.6·90° 회전), `Water_Water_FBF_4x4`(원료 `Fire_FBF_4x4`, 좌우 반전, 최대 알파 .85). `Ice_MediumImpact`는 3D `_V3_SHEETS` 전용. 규격 불변, game.html 무수정
+   - 재현성: 원본을 `tools/vfx/src/Ice_MistSmoke_FBF_4x4_orig.png`·`Water_Water_FBF_4x4_orig.png`로 보존, `regrid_dark_pack.py` 원료 경로 변경(암흑 팩 maxdiff 0), `tools/vfx/regrid_icewater_pack.py` 신설(적용 에셋과 바이트 동일)
+   - 문서: VFX_LEAD_MASTER §2.2 물 행·§3.9·§6·§7, 사용처 docs 4곳, 전후 `ICE_WATER_BEFORE_AFTER_20261027.jpg`. 작업 폴더 `G:/exoduser-wt/_vfx2_icewater/`(SPEC·SUMMARY, src/, cand/A·B·W1·W2, cap/, sheets/, scripts: gen_icewater.py·capture_iw.mjs·sheets_iw.py·hue_iw.py·docs_iw.py)
 ## 남은 것·대기
 - VFX-13: Dark 콤보 0.6초 잔여층 부족(`_TVFX2_COMBOS` 레이어 `spd:3`·16프레임이 0.6초 전에 끝남) — game.html 수명·층, 총괄 명세 대기. 폭발 정점 시점(0.35초) 앞당김(프레임 진행식 `~~(_ep*16)`)은 미결정
 - 데모/EA 폴더 동기화는 배포 때(CLAUDE.md 배포 규칙). 열린 게임 창에는 Git 반영만으로 갱신되지 않음
-- VFX-02 다음 묶음 후보(총괄 지시 후): 그 외 네온 팩(`Ice_*`·`Lightning_*`·`Nature_*`·`Water_*`·`Earth_*`·`Light_*`). `rainbow_light` 0.35초 이후 큰 청록 파편은 Light/Ice 시트 몫
+- VFX-02 다음 묶음(총괄 지시 후): 5묶음 번개·빛·바람, 6묶음 대지·자연(`Lightning_*`·`Light_*`·`Nature_*`·`Earth_*` 등). VFX-D17(월드층 밝기 상한 — 코어를 후처리층에 그리는 공통 경로) 검토는 총괄 몫. Water 콤보 2층이 `Ice_BasicImpact`를 공유해 물 코어가 서리 흰색인 점은 game.html 범위. `rainbow_light` 0.35초 이후 큰 청록 파편은 Light/Ice 시트 몫
 - 물리 패링 폭발(`physical`, ImpactFire 첫 행 흰 틴트)은 흰 스플래시로 읽힘 확인, 디자인 판정은 총괄 몫
 
 ## 작업 폴더·스크립트 (저장소 밖 `G:/exoduser-wt/_vfx2_fire/`, 암흑 팩 `_vfx2_dark/`, 아케인·독 `_vfx2_arcpoi/`, VFX-12 `_vfx12/` — 상세는 위 완료한 작업 4·5)
