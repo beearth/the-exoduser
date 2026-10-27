@@ -1,0 +1,93 @@
+{
+ "windowTiles": [
+  60,
+  138,
+  140,
+  192
+ ],
+ "windowWorldPx": [
+  2400,
+  5520,
+  5600,
+  7680
+ ],
+ "texelsPerWorldPx": 1.024,
+ "size": [
+  3276,
+  2212
+ ],
+ "chunks": [
+  {
+   "texture": "Art/map/production_finish/chunk_2_5",
+   "x": 2000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_3_5",
+   "x": 3000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_4_5",
+   "x": 4000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_5_5",
+   "x": 5000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_2_6",
+   "x": 2000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_3_6",
+   "x": 3000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_4_6",
+   "x": 4000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_5_6",
+   "x": 5000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_2_7",
+   "x": 2000,
+   "y": 7000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_3_7",
+   "x": 3000,
+   "y": 7000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_4_7",
+   "x": 4000,
+   "y": 7000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_5_7",
+   "x": 5000,
+   "y": 7000
+  }
+ ],
+ "stitchedWorldPx": [
+  2000,
+  5000,
+  6000,
+  8000
+ ],
+ "cropBoxTexels": [
+  410,
+  532,
+  3686,
+  2744
+ ]
+}
