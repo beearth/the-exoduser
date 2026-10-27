@@ -8,6 +8,8 @@ namespace Exoduser.UnityPort.Core
     {
         public double x, y, hp, mhp, mp, mmp, iframes;
         public double? eShield, eShieldMax, _greedCurse, _killBuff, _killMul, _lBeltT, _lBootsT, _lNextCrit, _lSpearStk, _lSpearT;
+        public double? st, mst; // stamina (CX-04b leech)
+        public string s;        // player state (whirlwind ...)
         public bool? _rageSkCtx;
     }
 
@@ -15,6 +17,8 @@ namespace Exoduser.UnityPort.Core
     public sealed class EnemyHurtOpts
     {
         public bool? dot, shieldHit, bleed, poison, parryBlueBean, noStun, pure, magic, explode, beam, proj, _kiFull;
+        // keys read by the hurtE middle (CX-04b)
+        public bool? bladeShard, maliceHunt, iceBlade, ltnChaser, lightning, detonate, noImpact, bladeOrb, normalBow, mhBlade, blueBean, noKB, _lClubWall, poiseHit;
         public double? maxDist, kbMult, poiseMult;
     }
 
@@ -28,6 +32,12 @@ namespace Exoduser.UnityPort.Core
 
     // Result of _hitSfxForEtype
     public sealed class EnemyHitSfx { public string key; public double pitch; }
+
+    // G._dmgPeak, G._dmgPeakShow, _uqScCtx, _uqS
+    public sealed class EnemyDmgPeak { public double val, t; }
+    public sealed class EnemyDmgPeakShow { public double x, y, dmg; public bool crit; }
+    public sealed class EnemyUqScCtx { public bool? _uqRef; }
+    public sealed class EnemyUqS { public double? poiseOrbT; }
 
     // One push into window._btDmgLog
     public sealed class EnemyHurtLogEntry { public double t; public string src; public double dmg; }
@@ -58,7 +68,7 @@ namespace Exoduser.UnityPort.Core
         public Func<EnemySpawn, double> PredBonus, HunterMul; // _predBonus(e), _hunterMul(e)
         public Action PetOnAtk;                         // _petOnAtk()
         public Func<double, double, double, IList<EnemySpawn>> ShQuery; // shQuery(x, y, r)
-        public Action<EnemySpawn, double, double?, bool, EnemyHurtOpts> HurtEnemy; // hurtE(e, dmg, ang, noSound, opts) — recursion for other targets
+        public Action<EnemySpawn, double, double?, bool, EnemyHurtOpts, double?> HurtEnemy; // hurtE(e, dmg, ang, noSound, opts[, atkEl]) — recursion for other targets (atkEl null = argument omitted)
         public Action<EnemySpawn, double, double?, EnemyHurtOpts> ParryLessonHurt; // window._parryLesson.hurtEnemy(e, dmg, ang, opts)
         public Action<double> HurtPlayer;               // hurtP(dmg)
         public Action<EnemySpawn, EnemyProjectile> SpawnBossProjectile; // _spawnBossProjectile(e, obj)
@@ -70,6 +80,25 @@ namespace Exoduser.UnityPort.Core
         public Func<int, EnemyHitSfx> HitSfxForEtype;   // _hitSfxForEtype(etype)
         public Action Block;                            // SFX.block()
         public Func<string, string> Translate;          // _T(s)
+
+        // --- CX-04b: globals the hurtE middle reads/writes ---
+        public double StatDmgDealt, StatMaxHit;         // G._sStats.dmgDealt / maxHit (valid when HasStats)
+        public EnemyDmgPeak DmgPeak;                    // G._dmgPeak (null = undefined)
+        public EnemyDmgPeakShow DmgPeakShow;            // G._dmgPeakShow (null = undefined)
+        public string FlashCol; public double? FlashT;  // G._flashCol, G._flashT
+        public double? NoHitStopT;                      // G._noHitStopT
+        public double HitStop, SlowMo;                  // G.hitStop, G.slowMo
+        public double CamX, CamY, ViewW = 1600, ViewH = 900; // G.cam, VW, VH
+        public double OptParts = 100;                   // OPT.parts
+        public double DpsDmg;                           // _dpsDmg
+        public double TxtPerFrame, ImpPerFrame;         // _txtPerFrame, _impPerFrame (_TXT_BUDGET = 12)
+        public EnemyUqScCtx UqScCtx; public EnemyUqS UqS; // _uqScCtx, _uqS (null = undefined)
+        public Func<double, double, double, bool> CanMove; // canMv(x, y, r)
+        public Action<double, double, double, double, string, double, double, double?, double?, double?> PoolPart; // poolPart(x,y,vx,vy,col,sz,life[,tp,rot,grav]); trailing three null = omitted
+        public Action<double, double, double, double, string, bool, bool> AddImpact; // _addImpact(x,y,el,ang,type,isBoss,noFlash)
+        public Action<double, double, double, double, string> AddBoom; // _addBoom(x,y,r,dur,col)
+        public Action<double> TickSkyCrusherRecharge;   // _tickSkyCrusherRecharge(frames)
+        public Action SfxGroggy;                        // SFX.groggy()
     }
 
     // Values the head hands to CX-04b: the two parameters it may rewrite plus every local declared at the top level of the web try block.
@@ -84,5 +113,24 @@ namespace Exoduser.UnityPort.Core
         public bool? _isArrow, _isGunpowder, _isMagicDmg;
         public double _cbAf, _cbPas;
         public bool _isRageSk, _isCrit;
+    }
+
+    // Values the hurtE middle (CX-04b) hands to CX-04c: the 14 head values (as given) + every local declared at the top level of the range.
+    public sealed class EnemyHurtBodyResult
+    {
+        public double dmg, atkEl;
+        public bool? isDot;
+        public bool _shBlocked;
+        public double kbM, psM;
+        public bool _isPure;
+        public bool? _isArrow, _isGunpowder, _isMagicDmg;
+        public double _cbAf, _cbPas;
+        public bool _isRageSk, _isCrit;
+        public bool isBoss;
+        public double finalKbM;
+        public bool _isRanged;
+        public bool? _isMH, _isBB, _isMagicProj;
+        public double _kbScale;
+        public bool? _noKB;
     }
 }

@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort.Core
     // Gates, per-etype defence, damage multipliers, crit, stun/freeze x1.5 and the energy-shield absorption. Values and the ORDER of the injected calls
     // equal the web; equipment/passive lookups, other targets (hurtE recursion), text/sound/particles are EnemyHurtContext delegates.
     // Written by hand from the original text; unity/Tools/enemy-hurt-oracle compares it with the original executed in Node.
-    public static class EnemyHurt
+    public static partial class EnemyHurt
     {
         // EL = {P:0,F:1,I:2,D:3,L:4,H:5,E:6}
         const double ElL = 4;
@@ -278,7 +278,7 @@ namespace Exoduser.UnityPort.Core
                         if (ocExpl > 0)
                         {
                             double ocR = 80; double ocD = ToInt32(dmg * ocExpl);
-                            for (int oi = 0; oi < c.Ens.Count; oi++) { var oe = c.Ens[oi]; if (oe != null && oe.alive && oe != e && Dst(e.x, e.y, oe.x, oe.y) < ocR) c.HurtEnemy(oe, ocD, JsMath.Atan2(oe.y - e.y, oe.x - e.x), false, new EnemyHurtOpts { pure = true }); }
+                            for (int oi = 0; oi < c.Ens.Count; oi++) { var oe = c.Ens[oi]; if (oe != null && oe.alive && oe != e && Dst(e.x, e.y, oe.x, oe.y) < ocR) c.HurtEnemy(oe, ocD, JsMath.Atan2(oe.y - e.y, oe.x - e.x), false, new EnemyHurtOpts { pure = true }, null); }
                             c.AddParts(e.x, e.y, "#ff6622", 12);
                         }
                         double ocChain = c.EqAffix("onCritChain");
@@ -286,7 +286,7 @@ namespace Exoduser.UnityPort.Core
                         {
                             EnemySpawn ocTgt = null; double ocMin = 250;
                             for (int oi = 0; oi < c.Ens.Count; oi++) { var oe = c.Ens[oi]; if (oe != null && oe.alive && oe != e) { double od = Dst(e.x, e.y, oe.x, oe.y); if (od < ocMin) { ocMin = od; ocTgt = oe; } } }
-                            if (ocTgt != null) c.HurtEnemy(ocTgt, ToInt32(dmg * ocChain), JsMath.Atan2(ocTgt.y - e.y, ocTgt.x - e.x), false, new EnemyHurtOpts { pure = true });
+                            if (ocTgt != null) c.HurtEnemy(ocTgt, ToInt32(dmg * ocChain), JsMath.Atan2(ocTgt.y - e.y, ocTgt.x - e.x), false, new EnemyHurtOpts { pure = true }, null);
                         }
                         double ocFrz = c.EqAffix("onCritFreeze");
                         if (ocFrz > 0) { e._freezeGauge = Or(e._freezeGauge, 0) + ToInt32(ocFrz * 100); if (e._freezeGauge.Value >= 100 && !Truthy(e._freezeImmune)) { e._frozen = 180; e._freezeGauge = 0; } }
@@ -301,7 +301,7 @@ namespace Exoduser.UnityPort.Core
                     e._lReactF = Or(c.PlayTime, 0);
                     double reD = Math.Max(1, ToInt32(c.MeleeRef() * c.StatStr() * c.PAtkMul() * c.LEq("_lRingElem")));
                     var reQ = c.ShQuery(e.x, e.y, 100);
-                    for (int ri = 0; ri < reQ.Count; ri++) { var re = reQ[ri]; if (re.alive && re != e) c.HurtEnemy(re, reD, JsMath.Atan2(re.y - e.y, re.x - e.x), true, new EnemyHurtOpts { dot = true, shieldHit = true }); }
+                    for (int ri = 0; ri < reQ.Count; ri++) { var re = reQ[ri]; if (re.alive && re != e) c.HurtEnemy(re, reD, JsMath.Atan2(re.y - e.y, re.x - e.x), true, new EnemyHurtOpts { dot = true, shieldHit = true }, null); }
                     c.AddText(e.x, e.y - 40, c.Translate("💥속성 폭발!"), At(EnemyFactory.ElementColors, atkEl) ?? "#ffdd44", 35, null, null); c.AddParts(e.x, e.y, At(EnemyHurtTables.ParticleColors, atkEl) ?? "#ffdd44", 10);
                 }
                 // stun / freeze: x1.5

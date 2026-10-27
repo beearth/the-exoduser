@@ -9,5 +9,9 @@ namespace Exoduser.UnityPort.Core
         {
             return new EnemyHurtHeadResult { dmg = dmg, atkEl = atkEl };
         }
+        public static EnemyHurtBodyResult Body(EnemyHurtContext c, EnemySpawn e, double? ang, bool noSound, EnemyHurtOpts opts, EnemyHurtHeadResult h)
+        {
+            return new EnemyHurtBodyResult { dmg = h.dmg, atkEl = h.atkEl };
+        }
     }
 }

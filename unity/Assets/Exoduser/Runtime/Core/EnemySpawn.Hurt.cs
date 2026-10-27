@@ -6,5 +6,8 @@ namespace Exoduser.UnityPort.Core
     {
         public double? _aDefM, _burning, _poisoned, _slowed, _freezeSlow, _comboBmT, bleedPool, _lReactF;
         public bool? _mgActive, _bcActive, _isGhoul, _freezeImmune;
+        // CX-04b (hurtE middle)
+        public double? burnPool, poisonPool, _shockMul, _iceDotT, _iceDotDmg, _freezeMax;
+        public bool? _iceSlowed;
     }
 }

@@ -46,4 +46,25 @@ return {dmg,atkEl,isDot,_shBlocked,kbM,psM,_isPure,_isArrow,_isGunpowder,_isMagi
 ## 대조 방식 (Program.cs)
 
 - 조기 반환 여부, 반환 객체의 모든 값(웹 이름으로 리플렉션, double 비트 단위, JS 3상태 `undefined/false/true`는 `bool?`), 적 객체 전 필드, 플레이어 `P` 전체, `G._sStats.crits`·`G.playTime`, `_shBufI`, `_hitSfxCd`, `window._btDmgLog`, 주입 호출 전체, `Math.random` 호출 횟수.
-- 웹에서 `undefined`인 필드는 C#에서 null이어야 하고, JSON이 못 담는 −0·NaN은 export가 거부한다.
+- 웹에서 `undefined`인 필드는 C#에서 null이어야 하고, JSON이 못 담는 −0은 export가 거부한다. JS `NaN`은 JSON에서 `null`로 적히므로 비교 때 "기대가 null이면 null 또는 NaN" 둘 다 통과시킨다(예: 스태미나 `P.st`가 없는 플레이어에 `stLeech`를 쓰면 `Math.min(undefined,NaN)=NaN`).
+
+## CX-04b — 중간부(H2) 확장
+
+`hurtE`의 `// ═══ 데미지 → HP 직행 ═══` 줄부터 `  if(e.hp<=0){` 바로 앞 줄(fce195067: 42421~42567)을 같은 방식으로 대조한다. 보고서: `docs/engine/UNITY_CX04B_ENEMY_HURT_BODY_20261027.md`.
+
+### 감싸개 H2 (원문에 덧붙이는 텍스트는 이것뿐)
+
+```js
+function __H2(e,ang,noSound,opts,__h){let {dmg,atkEl,isDot,_shBlocked,kbM,psM,_isPure,_isArrow,_isGunpowder,_isMagicDmg,_cbAf,_cbPas,_isRageSk,_isCrit}=__h;
+  <앵커 줄 `// ═══ 데미지 → HP 직행 ═══`부터 `  if(e.hp<=0){` 앞 줄까지 그대로>
+return {<위 14개>,isBoss,finalKbM,_isRanged,_isMH,_isBB,_isMagicProj,_kbScale,_noKB};}
+```
+
+- 14개는 CX-04a 인계값(H1 반환), 뒤 8개는 범위 최상위 `const`(export가 중괄호 깊이로 추출). `try`/`finally`는 없다(`_shBufI`는 H1 쪽).
+- 시작 앵커는 H1의 끝 앵커와 같은 줄, 끝 앵커 `  if(e.hp<=0){`는 시작 뒤 첫 일치. 범위 안 중괄호 깊이가 0인지 export가 검사한다.
+- 같이 실행하는 원문: `_poiseHit`, `_TXT_BUDGET`(+ H1과 같은 순수 함수·표). 주입: H1 목록 + `poolPart`, `_addImpact`, `_addBoom`, `canMv`(케이스 규칙 `open`/`blockAll`), `_tickSkyCrusherRecharge`, `SFX.groggy`, `hurtE`의 6번째 인자(atkEl, 생략 시 기록 안 함).
+
+### 케이스 종류
+
+- `H1`(기존) · `H2`(인계값 14개를 직접 지정한 격자 + 시드 고정 무작위 500) · `CH`(연결): **H1 케이스 각각을 H1 원문으로 돌려 나온 실제 반환값을 H2에 그대로 이어 붙인다**(H1이 조기 반환하는 케이스는 연결에서 빠진다). 연결 케이스는 H2 쪽 전역(옵션 몇 개, 카메라, 예산, 장비 키)도 무작위로 섞는다.
+- 대조에 `G`의 `_sStats`(crits·dmgDealt·maxHit), `_dmgPeak`, `_dmgPeakShow`, `_flashCol`/`_flashT`, `hitStop`, `slowMo`, `_noHitStopT`, `_dpsDmg`, `_txtPerFrame`, `_uqScCtx`, `_uqS`가 더해졌다. 검사 수는 종류별로 따로 센다(`checksByKind`).

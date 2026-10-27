@@ -9,7 +9,8 @@ using Exoduser.UnityPort.Core;
 
 // Compares C# EnemyHurt.Head (Runtime/Core/EnemyHurt.cs) with oracle.json, which export.cjs produced by running the ORIGINAL head of hurtE from game.html
 // in a Node VM with recording stubs for everything the web code calls but CX-04a does not port.
-// Per case: early-return flag + the returned locals object, every enemy field afterwards, the player object, G._sStats / G.playTime, _shBufI, _hitSfxCd,
+// Per case: early-return flag + the returned locals object(s) (H1 = CX-04a head, H2 = CX-04b middle with given head values, CH = H1 then H2 chained), every enemy field afterwards,
+// the player object, the G globals (_sStats, _dmgPeak, _dmgPeakShow, _flashCol/_flashT, hitStop, slowMo, _noHitStopT, _dpsDmg, _txtPerFrame, _uqScCtx, _uqS), _shBufI, _hitSfxCd,
 // window._btDmgLog, the complete ordered list of injected calls with arguments, and the Math.random() count.
 // Standalone .NET check (not a Unity runtime or whole-game verdict).
 class EnemyHurtProgram
@@ -17,9 +18,12 @@ class EnemyHurtProgram
     static readonly List<object> rows = new List<object>();
     static int failures, total;
     static string currentCase = "";
+    static string currentKind = "tables";
+    static readonly Dictionary<string, int> kindChecks = new Dictionary<string, int>(), kindFailures = new Dictionary<string, int>();
     static void Check(bool pass, string name)
     {
-        total++;
+        total++; kindChecks[currentKind] = (kindChecks.ContainsKey(currentKind) ? kindChecks[currentKind] : 0) + 1;
+        if (!pass) kindFailures[currentKind] = (kindFailures.ContainsKey(currentKind) ? kindFailures[currentKind] : 0) + 1;
         if (pass) { if (total % 20000 == 1) rows.Add(new { name = currentCase + " | " + name, passed = true }); }
         else { failures++; if (failures <= 80) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
     }
@@ -60,7 +64,7 @@ class EnemyHurtProgram
     {
         switch (js.ValueKind)
         {
-            case JsonValueKind.Null: Check(cs == null, path + " expected null"); return;
+            case JsonValueKind.Null: Check(cs == null || (cs is double nd && double.IsNaN(nd)), path + " expected null (JSON null also stands for a JS NaN)"); return;
             case JsonValueKind.Number:
                 if (cs == null || cs is string || cs is bool) { Check(false, path + " C# " + (cs ?? "null") + " vs web " + js.GetDouble().ToString("R")); return; }
                 double d = Convert.ToDouble(cs), w = js.GetDouble();
@@ -89,6 +93,13 @@ class EnemyHurtProgram
                     if (!seen.Contains(f.Name)) Check(f.GetValue(cs) == null, path + "." + f.Name + " set in C# but undefined in web");
                 return;
         }
+    }
+
+    sealed class GStatsView { public double crits, dmgDealt, maxHit; }
+    sealed class GView
+    {
+        public GStatsView sStats; public double? playTime; public EnemyDmgPeak dmgPeak; public EnemyDmgPeakShow dmgPeakShow; public string flashCol; public double? flashT;
+        public double hitStop, slowMo; public double? noHitStopT; public double dpsDmg, txtPerFrame; public EnemyUqScCtx uqScCtx; public EnemyUqS uqS;
     }
 
     // ---- injected-call log ----
@@ -168,11 +179,12 @@ class EnemyHurtProgram
         // elMul over every pair of 0..7 and undefined against the original is covered by the cases (ring-reaction); direct table check:
         var bases = root.GetProperty("bases");
 
-        int caseCount = 0, earlyCount = 0;
+        int caseCount = 0, earlyCount = 0, h1Count = 0, h2Count = 0, chainCount = 0;
         foreach (var cs in root.GetProperty("cases").EnumerateArray())
         {
             caseCount++;
             currentCase = cs.GetProperty("name").GetString();
+            string kind = cs.GetProperty("kind").GetString(); currentKind = kind; if (kind == "H1") h1Count++; else if (kind == "H2") h2Count++; else chainCount++;
             var w = cs.GetProperty("world"); var exp = cs.GetProperty("expected"); var a = cs.GetProperty("args");
             ens = new List<EnemySpawn>(); var finals = new List<JsonDocument>(); var diffs = exp.GetProperty("diffs");
             var specs = new List<(JsonElement baseIdx, JsonElement over)>();
@@ -220,6 +232,19 @@ class EnemyHurtProgram
                 ShBufI = w.GetProperty("shBufI").GetInt32(), HitSfxCd = w.GetProperty("hitSfxCd").GetDouble(), Now = w.GetProperty("now").GetDouble(),
                 BtDmgLog = w.GetProperty("btLog").ValueKind == JsonValueKind.Null ? null : new List<EnemyHurtLogEntry>(), ParryLessonActive = w.GetProperty("lesson").GetBoolean(), Ens = ens
             };
+            var sSt = w.GetProperty("sStats");
+            if (sSt.ValueKind != JsonValueKind.Null) { c.StatDmgDealt = sSt.GetProperty("dmgDealt").GetDouble(); c.StatMaxHit = sSt.GetProperty("maxHit").GetDouble(); }
+            var w2 = cs.GetProperty("w2");
+            c.OptParts = w2.GetProperty("optParts").GetDouble(); c.ViewW = w2.GetProperty("VW").GetDouble(); c.ViewH = w2.GetProperty("VH").GetDouble(); c.DpsDmg = w2.GetProperty("dpsDmg").GetDouble();
+            c.TxtPerFrame = w2.GetProperty("txtPerFrame").GetDouble(); c.ImpPerFrame = w2.GetProperty("impPerFrame").GetDouble();
+            c.CamX = w2.GetProperty("cam").GetProperty("x").GetDouble(); c.CamY = w2.GetProperty("cam").GetProperty("y").GetDouble();
+            c.HitStop = w2.GetProperty("hitStop").GetDouble(); c.SlowMo = w2.GetProperty("slowMo").GetDouble();
+            c.NoHitStopT = w2.GetProperty("noHitStopT").ValueKind == JsonValueKind.Null ? (double?)null : w2.GetProperty("noHitStopT").GetDouble();
+            if (w2.GetProperty("dmgPeak").ValueKind == JsonValueKind.Object) { c.DmgPeak = new EnemyDmgPeak(); Fill(c.DmgPeak, w2.GetProperty("dmgPeak")); }
+            if (w2.GetProperty("dmgPeakShow").ValueKind == JsonValueKind.Object) { c.DmgPeakShow = new EnemyDmgPeakShow(); Fill(c.DmgPeakShow, w2.GetProperty("dmgPeakShow")); }
+            if (w2.GetProperty("uqScCtx").ValueKind == JsonValueKind.Object) { c.UqScCtx = new EnemyUqScCtx(); Fill(c.UqScCtx, w2.GetProperty("uqScCtx")); }
+            if (w2.GetProperty("uqS").ValueKind == JsonValueKind.Object) { c.UqS = new EnemyUqS(); Fill(c.UqS, w2.GetProperty("uqS")); }
+            string canMvRule = w2.GetProperty("canMv").GetString();
             c.Random = () => { if (used >= seq.Length) throw new InvalidOperationException("random sequence exhausted (C# draws more than the web)"); return seq[used++]; };
             c.EqAffix = k => { Log("eqAffix", k); return tab(aff, k); };
             c.LEq = k => { Log("lEq", k); return tab(leq, k); };
@@ -234,7 +259,13 @@ class EnemyHurtProgram
             c.HunterMul = e => { Log("hunterMul", e); return vals.GetProperty("hunterMul").GetDouble(); };
             c.PetOnAtk = () => Log("petOnAtk", c.ShBufI);
             c.ShQuery = (x, y, r) => { Log("shQuery", x, y, r, c.ShBufI); var res = new List<EnemySpawn>(); foreach (var o in ens) if (Math.Sqrt((o.x - x) * (o.x - x) + (o.y - y) * (o.y - y)) <= r) res.Add(o); return res; };
-            c.HurtEnemy = (e, d, ang, ns, o) => Log("hurtE", e, d, ang.HasValue ? (object)ang.Value : null, ns, o);
+            c.HurtEnemy = (e, d, ang, ns, o, el) => { if (el.HasValue) Log("hurtE", e, d, ang.HasValue ? (object)ang.Value : null, ns, o, el.Value); else Log("hurtE", e, d, ang.HasValue ? (object)ang.Value : null, ns, o); };
+            c.CanMove = (x, y, r) => { Log("canMv", x, y, r); return canMvRule != "blockAll"; };
+            c.PoolPart = (x, y, vx, vy, col, sz, life, tp, rot, grav) => { if (tp.HasValue) Log("poolPart", x, y, vx, vy, col, sz, life, tp.Value, rot.Value, grav.Value); else Log("poolPart", x, y, vx, vy, col, sz, life); };
+            c.AddImpact = (x, y, el, ang, type, ib, nf) => Log("addImpact", x, y, el, ang, type, ib, nf);
+            c.AddBoom = (x, y, r, dur, col) => Log("addBoom", x, y, r, dur, col);
+            c.TickSkyCrusherRecharge = fr => Log("tickSkyCrusherRecharge", fr);
+            c.SfxGroggy = () => Log("sfxGroggy");
             c.ParryLessonHurt = (e, d, ang, o) => Log("parryLessonHurt", e, d, ang.HasValue ? (object)ang.Value : null, o);
             c.HurtPlayer = d => Log("hurtP", d);
             c.SpawnBossProjectile = (e, o) => Log("spawnBossProjectile", e, o);
@@ -245,25 +276,39 @@ class EnemyHurtProgram
             c.HitSfxForEtype = et => { Log("hitSfxForEtype", et); return new EnemyHitSfx { key = "hit_" + et, pitch = 1 + et / 1000.0 }; };
             c.Block = () => Log("sfxBlock"); c.Translate = s => { Log("T", s); return s; };
 
-            EnemyHurtHeadResult ret = null; string error = null;
+            EnemyHurtHeadResult ret = null; EnemyHurtBodyResult ret2 = null; string error = null;
             try
             {
                 EnemyHurtOpts opts = null; if (a.TryGetProperty("opts", out var optsJs) && optsJs.ValueKind == JsonValueKind.Object) { opts = new EnemyHurtOpts(); Fill(opts, optsJs); }
                 double? ang = !a.TryGetProperty("ang", out var angJs) || angJs.ValueKind == JsonValueKind.Null ? (double?)null : angJs.GetDouble(); // an undefined ang is omitted by JSON
-                double atkEl = a.GetProperty("atkEl").ValueKind == JsonValueKind.Null ? 0 : a.GetProperty("atkEl").GetDouble();
-                ret = EnemyHurt.Head(c, ens[0], a.GetProperty("dmg").GetDouble(), ang, a.GetProperty("noSound").GetBoolean(), opts, atkEl);
+                bool noSound = a.GetProperty("noSound").GetBoolean();
+                if (kind == "H2") { var head = new EnemyHurtHeadResult(); Fill(head, cs.GetProperty("head")); ret2 = EnemyHurt.Body(c, ens[0], ang, noSound, opts, head); }
+                else
+                {
+                    double atkEl = !a.TryGetProperty("atkEl", out var aeJs) || aeJs.ValueKind == JsonValueKind.Null ? 0 : aeJs.GetDouble();
+                    ret = EnemyHurt.Head(c, ens[0], a.GetProperty("dmg").GetDouble(), ang, noSound, opts, atkEl);
+                    if (kind == "CH" && ret != null) ret2 = EnemyHurt.Body(c, ens[0], ang, noSound, opts, ret);
+                }
             }
             catch (Exception ex) { error = ex.GetType().Name + ": " + ex.Message; }
             Check(error == null, "no exception" + (error == null ? "" : " (" + error + ")"));
             if (error != null) continue;
-            var want = exp.GetProperty("ret");
-            if (want.ValueKind == JsonValueKind.Null) { earlyCount++; Check(ret == null, "web returned early, C# did not"); }
-            else { Check(ret != null, "web fell through, C# returned early"); if (ret != null) Cmp(ret, want, "ret"); }
+            if (kind != "H2")
+            {
+                var want = exp.GetProperty("ret");
+                if (want.ValueKind == JsonValueKind.Null) { earlyCount++; Check(ret == null, "web returned early, C# did not"); }
+                else { Check(ret != null, "web fell through, C# returned early"); if (ret != null) Cmp(ret, want, "ret"); }
+            }
+            if (kind != "H1") { Check(ret2 != null, "Body result missing"); if (ret2 != null) Cmp(ret2, exp.GetProperty("ret2"), "ret2"); }
             for (int i = 0; i < ens.Count; i++) Cmp(ens[i], finals[i].RootElement, "enemy" + i);
             Cmp(P, finalP.RootElement, "P");
             var g = exp.GetProperty("G");
-            if (g.TryGetProperty("sStats", out var ss) && ss.ValueKind == JsonValueKind.Object) Check(c.HasStats && Same(c.StatCrits, ss.GetProperty("crits").GetDouble()), "G._sStats.crits"); else Check(!c.HasStats, "G._sStats undefined");
-            Check(Same(c.PlayTime.Value, g.GetProperty("playTime").GetDouble()), "G.playTime");
+            var gv = new GView
+            {
+                sStats = c.HasStats ? new GStatsView { crits = c.StatCrits, dmgDealt = c.StatDmgDealt, maxHit = c.StatMaxHit } : null, playTime = c.PlayTime, dmgPeak = c.DmgPeak, dmgPeakShow = c.DmgPeakShow, flashCol = c.FlashCol, flashT = c.FlashT,
+                hitStop = c.HitStop, slowMo = c.SlowMo, noHitStopT = c.NoHitStopT, dpsDmg = c.DpsDmg, txtPerFrame = c.TxtPerFrame, uqScCtx = c.UqScCtx, uqS = c.UqS
+            };
+            Cmp(gv, g, "G");
             Check(c.ShBufI == exp.GetProperty("shBufI").GetInt32(), "_shBufI C# " + c.ShBufI + " vs web " + exp.GetProperty("shBufI").GetInt32());
             Check(Same(c.HitSfxCd, exp.GetProperty("hitSfxCd").GetDouble()), "_hitSfxCd");
             Cmp(c.BtDmgLog, exp.GetProperty("btLog"), "window._btDmgLog");
@@ -271,19 +316,21 @@ class EnemyHurtProgram
             CmpLog(log, exp.GetProperty("log"));
             foreach (var d in finals) d.Dispose(); finalP.Dispose();
         }
-        currentCase = "summary";
+        currentCase = "summary"; currentKind = "summary";
         var s = root.GetProperty("summary");
         Check(caseCount == s.GetProperty("cases").GetInt32(), "case count");
         Check(earlyCount == s.GetProperty("earlyReturns").GetInt32(), "early-return count");
+        Check(h1Count == s.GetProperty("h1").GetInt32() && h2Count == s.GetProperty("h2").GetInt32() && chainCount == s.GetProperty("chain").GetInt32(), "case kinds H1/H2/chain");
         var result = JsonSerializer.Serialize(new
         {
-            scope = "standalone_dotnet_original_function_oracle_not_Unity_runtime", passed = failures == 0, failures, total, cases = caseCount, earlyReturns = earlyCount,
+            scope = "standalone_dotnet_original_function_oracle_not_Unity_runtime", passed = failures == 0, failures, total, checksByKind = kindChecks, failuresByKind = kindFailures, cases = caseCount, h1Cases = h1Count, h2Cases = h2Count, chainCases = chainCount, earlyReturns = earlyCount,
             source = new { sha256 = root.GetProperty("source").GetProperty("sha256").GetString(), lines = root.GetProperty("source").GetProperty("lines").GetInt32(), head = root.GetProperty("source").GetProperty("head").GetString() },
             note = "every case compares the early-return flag and returned locals, all enemy fields, player, globals, the ordered injected-call list with arguments and the Math.random count; failing items listed (first 80), passing ones sampled",
             checks = rows
         }, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
         File.WriteAllText(args[0], result);
         Console.WriteLine("ENEMY_HURT_RESULT " + total + " checks / " + failures + " failures (" + caseCount + " cases)");
+        foreach (var kv in kindChecks) Console.WriteLine("  " + kv.Key + ": " + kv.Value + " checks / " + (kindFailures.ContainsKey(kv.Key) ? kindFailures[kv.Key] : 0) + " failures");
         return failures == 0 ? 0 : 2;
     }
 }
