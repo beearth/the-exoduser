@@ -142,6 +142,7 @@ namespace Exoduser.UnityPort.Core
             if (!Data.TryGetValue(e, out d)) d = Attach(e);
             Pull(e, d);
             Tick++;
+            if (Remodel && d.HeartCd > 0) d.HeartCd -= 1;                             // heartbeat cooldown = 40 s of boss ticks (not only idle ticks); the sim skips the boss tick while it kneels
             if (d.PImmune > 0) d.PImmune -= 1;                                        // Step(): `if(e._pImmune>0) e._pImmune-=sp`
             if (d.WasStunned && e.Stunned <= 0)                                       // Step(): stun end (`e.stunned<=0&&e._maxStunned`): poise reset, 5 s immunity, back to idle
             {

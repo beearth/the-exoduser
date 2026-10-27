@@ -97,7 +97,7 @@ static class P
             sb.Append("    \"P").Append(ph + 1).Append("\": {");
             sb.Append(string.Join(", ", g.Select(x => J(x.Key) + ": " + x.Count()))).Append("}").Append(ph < 2 ? ",\n" : "\n");
         }
-        sb.Append("  },\n  \"moveLog\": [");
+        sb.Append("  },\n  \"heartbeatTicks\": [").Append(string.Join(", ", r.Moves.Where(m => m.Move == "heartbeat").Select(m => m.Tick.ToString()))).Append("],\n  \"moveLog\": [");
         sb.Append(string.Join(", ", r.Moves.Select(m => "[" + m.Tick + "," + (m.Phase + 1) + "," + J(m.Move) + "]")));
         sb.Append("]\n}\n");
         return sb.ToString();
@@ -136,6 +136,11 @@ static class P
         // no move started while kneeling
         foreach (var c in ev.Where(e => e.Kind == "collapse")) { var l = ev.First(e => e.Kind == "life" && e.Tick > c.Tick); Check(!r.Moves.Any(m => m.Tick > c.Tick && m.Tick < l.Tick), n + ": a move started during the kneel at " + c.Tick); }
         Check(r.MaxMinionsAlive <= DruidRemodelData.SummonMax, n + ": minions alive " + r.MaxMinionsAlive);
+        // heartbeat: once at P3 entry, then one start per 40 s of real time (the cooldown must not wait for idle ticks)
+        var l3 = ev.First(e => e.Kind == "life" && e.Life == 2); int p3 = ev.First(e => e.Kind == "final").Tick - l3.Tick;
+        var hb = r.Moves.Where(m => m.Move == "heartbeat").Select(m => m.Tick).ToList();
+        Check(hb.Count >= 1 + Math.Max(0, (p3 - 600) / DruidRemodelData.HeartbeatCooldownTicks) && hb.Count <= 1 + p3 / DruidRemodelData.HeartbeatCooldownTicks, n + ": heartbeats " + hb.Count + " in a " + p3 + "-tick P3");
+        for (int i = 1; i < hb.Count; i++) Check(hb[i] - hb[i - 1] >= DruidRemodelData.HeartbeatCooldownTicks && hb[i] - hb[i - 1] <= DruidRemodelData.HeartbeatCooldownTicks + 600, n + ": heartbeat gap " + (hb[i] - hb[i - 1]));
     }
 
     static int Main(string[] args)

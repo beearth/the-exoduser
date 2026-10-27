@@ -37,10 +37,9 @@ namespace Exoduser.UnityPort.Core
             return n;
         }
 
-        // move 12 (P3 entry once, then every 40 idle seconds): checked before the normal pick so the score table never has to choose it
+        // move 12 (P3 entry once, then every 40 s of real time, see TickBoss): checked before the normal pick so the score table never has to choose it
         bool ForceHeartbeat(EnemyState e, DruidData d, double dist)
         {
-            if (d.HeartCd > 0) d.HeartCd -= 1;
             if (d.BossPhase < 2 || d.HeartCd > 0 || d.S != "idle") return false;
             BossMove mv = FindMove("heartbeat"); if (mv == null) return false;
             d.HeartCd = DruidRemodelData.HeartbeatCooldownTicks;
