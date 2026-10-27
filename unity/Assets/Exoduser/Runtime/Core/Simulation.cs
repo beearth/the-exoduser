@@ -163,6 +163,7 @@ namespace Exoduser.UnityPort.Core
             TickAutoPotion();
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
+            TickRegions();   // M1-REGION: _regionTick (every 15th frame)
             Stage.Tick();   // C07: checkRooms (arena entry / boss defeat / exit / clear)
             TickSpawnHoles();   // C01-AI: the 소환굴 update follows checkRooms in the web update()
             TickHurtFx();   // B09: screen shake / flash decay
@@ -260,6 +261,7 @@ namespace Exoduser.UnityPort.Core
             if (!enemy.Alive) return;
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
             enemy.Alive = false; Kills++; Combo++; ComboTicks = enemy.IsBoss ? Math.Min(1800, ComboTicks + 1800) : Math.Min(1200, ComboTicks + 60);
+            RegKill(enemy);   // M1-REGION: _regKill next to G.kills++
             if (enemy.IsGateGuard) Stage.OnGateGuardKilled(enemy);   // C07: _isGateGuard death -> +10 % clear progress
             AddMalice(4);
             // Web kill drop (game.html 43094-43099): hp pays malice (+1, a third of the draws), st/mp are discarded; the old quickslot counters stay unused.
