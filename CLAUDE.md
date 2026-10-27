@@ -54,6 +54,12 @@ for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/exoduser/$f" "G:/exodus
 - **Unity = `unity/main`** (10-27 신설, 시작점 = `codex/unity-mac-20261024` 끝). 작업 브랜치 `claude/unity-pc-*`·`codex/unity-*`는 `unity/main`으로만 병합하고, main으로는 병합하지 않는다. `unity/main` 안의 웹 파일은 이식 대조용 사본이라 고치지 않는다. Codex는 10-27 `unity/main`으로 전환했다(Codex 커밋으로 확인). `codex/unity-mac-20261024`는 퇴역 — 새 커밋 금지. PC→Codex 공지(INBOX)는 main과 `unity/main` 두 곳에 올린다. Unity 이식 문서(`docs/engine/UNITY_*`, INBOX)는 main에 둔다.
 - 엔진 코드를 커밋하기 전에 지금 브랜치가 그 엔진 줄기인지 확인한다. 상세·이력: `docs/0마스터플랜/REPO_SYNC_ENGINE_SPLIT_20261027.md`
 
+## 총괄 자율 결정 (2026-10-27 사용자 확정)
+
+- 게임 전체 레퍼런스·목표는 이미 정해져 있다(웹 = 기준, Hell Gothic 톤, 네온·만화풍 제거, 유니티 이식 = M1 "1-1 한 판 완주" 우선). 이 범위 안의 선택(다음 후보 순서, A/B안, 배정, 세션 증설)은 **각 총괄이 직접 결정하고 진행**한 뒤 결과만 보고한다. 사용자에게 고르라고 묻지 않는다.
+- 사용자에게 묻는 것은 다음뿐이다: 기존 레퍼런스·목표에 없는 새 방향, 유료 크레딧 지출(Higgsfield 등), Steam Set Live·외부 게시·배포, 되돌릴 수 없는 삭제.
+- 결정의 근거와 판정은 해당 SSOT 문서에 남긴다.
+
 ## 서버
 
 ```
