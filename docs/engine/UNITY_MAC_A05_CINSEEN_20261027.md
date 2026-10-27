@@ -41,6 +41,8 @@ PC 최종 판정에 따라 자연 종료와 사용자 수동 마지막 cue를 �
 
 QA 진입 후보는 기존 **고유 Settings QA 앱**의 product `EXODUSER Settings QA`와 identifier `com.fordeargamers.exoduser.settingsqa`를 재사용한다. `--unity-cinematic-persistence-review -output <절대 root>`는 root의 부모가 `_out`, 폴더명이 `UNITY-MAC-A05-IO-*`, marker 내용이 `EXODUSER_MAC_A05_IO_V1\n`일 때만 유효하다. 이때 일반 인트로를 실행하면서 설정은 `<root>/native-settings-v1`, 로스터는 `<root>/character-roster-v1`에만 연결한다. 신원/경로/marker가 틀리면 두 저장소 모두 fail closed. 기존 `--unity-frontend-review`의 설정 I/O 금지는 유지한다. 다른 QA 플래그 혼합도 거부한다. 앱 정상 identity의 사용자 저장 경로와 개인 파일로 QA를 실행하지 않는다.
 
+2026-10-27 CoreTests 복구에서는 이 신원값을 각 Unity 호출부가 Core scope에 인자로 전달하도록만 바꿨다. 인자 없는 기존 일반/fixture `TryResolve`는 A05 QA 플래그를 실패 폐쇄한다. 경로·marker·플래그 조건, `cinSeen` 저장/복원 값 및 codec은 그대로이며 [18/18 격리 회귀](UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md#2026-10-27-coretests-독립-컴파일-복구)를 통과했다.
+
 동일 소스의 격리 Editor fixture는 오류 뒤 수동 완료, 오류만 발생, 기존 true 보존 3검사를 추가해 **24/24 PASS**, exit0/C# 오류0. 기존 UAC1001 경고만 남았다. 전용 receipt: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A15A16-IO-CINSEEN-ERROR-20261027/editor-settings-cinematic.json`. 입력 소스 patch SHA1 `70e6a5600ac0f1e156897d73abbd44bf469fade6`. 실제 Player 결과는 아래와 같다.
 
 고유 Settings QA ARM64 Player **1회 빌드**: Unity 6000.6.7f1, `PortVerification.Build -settingsQa true`, `Succeeded`, errors 0, 출력 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-ERROR-LASTCUE-20261027/player-build/EXODUSER-Unity.app`; receipt `player-build.json`. 전용 root `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-IO-RESTART-20261027`는 marker를 먼저 만들고 Editor fixture의 v2 `cinSeen:false`, revision2, SFX35/BGM45/FPS144/fullscreen false, `up=KeyZ`/보조 `KeyX`, 중첩 `gpKeyMap.pad0.buttons=[1,2]`를 사본으로 넣었다. 일반 사용자 설정/로스터는 입력으로 사용하지 않았다.

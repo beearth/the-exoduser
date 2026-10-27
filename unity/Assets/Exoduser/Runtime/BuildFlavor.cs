@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort {
   [Serializable] sealed class ReleaseInfo {public string version,date,channel;}
   public const string Argument="--unity-build-flavor";
   // Definitions that exist in the web build but have no Unity system yet (shown as "미이식", never as a fake restriction).
-  public static readonly string[] NotPorted={"레벨 캡(데모 100)","데모 어픽스 금지 7종","데모 합성 허용 22종","로그인·데모 입장 버튼(Unity 로비에 로그인 없음)","EA 패키지 식별자"};
+  public static readonly string[] NotPorted={"데모 어픽스 금지 7종","데모 합성 허용 22종","로그인·데모 입장 버튼(Unity 로비에 로그인 없음)","EA 패키지 식별자"};
 
   static Defs defs;static ReleaseInfo release;static BuildFlavor current;
   readonly Def def;
@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort {
   public string Limits{get{return def.limits;}}               // web _LOBBY_VER_LIMITS
   public string LoginHeading(bool english){return def.loginHeading[english?1:0];}
   public bool DemoMode{get{return def.demoMode;}}             // web _DEMO_MODE
-  public int LevelCap{get{return def.levelCap;}}              // 0 = none. Definition only: Simulation has no cap (NotPorted)
+  public int LevelCap{get{return def.levelCap;}}              // 0 = none. Applied to SimulationConfig.LevelCap by NativeGame (web addExp demo cap)
   public string[] AffixBanned{get{return def.demoMode?defs.demoLists.affixBanned:new string[0];}}
   public string[] FuseAllowed{get{return def.demoMode?defs.demoLists.fuseAllowed:new string[0];}}
   public bool Packaged{get{return def.release.packaged;}}

@@ -46,6 +46,13 @@
 !/Tools/enemy-tables-oracle/EnemyTablesTests.csproj
 /Tools/enemy-tables-oracle/runs/
 /Tools/enemy-spawn-oracle/runs/
+!/Tools/level-exp-oracle/LevelExpTests.csproj
+/Tools/level-exp-oracle/runs/
+/Tools/level-exp-oracle/oracle.json
+/Tools/.dotnet-home/
+/Tools/save-oracle/oracle.json
+/Tools/save-oracle/runs/
+!/Tools/save-oracle/SaveTests.csproj
 !/Tools/drop-oracle/DropTests.csproj
 /Tools/drop-oracle/bin/
 /Tools/drop-oracle/obj/

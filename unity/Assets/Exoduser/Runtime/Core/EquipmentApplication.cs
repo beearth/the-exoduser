@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort.Core {
             Config.PlayerMaxHp=s.PlayerMaxHp;Config.PlayerMaxStamina=(float)s.PlayerMaxStamina;Config.PlayerMaxMana=(float)s.PlayerMaxMana;Config.PlayerMaxShield=(float)s.PlayerMaxShield;
             Config.PlayerBaseAttack=s.PlayerBaseAttack;Config.PlayerSpeed=(float)s.PlayerSpeed;Config.PlayerHpRegen=(float)s.PlayerHpRegen;Config.PlayerStaminaRegen=(float)s.PlayerStaminaRegen;Config.PlayerManaRegen=(float)s.PlayerManaRegen;
             Config.PlayerPhysicalDefense=(float)s.PlayerPhysicalDefense;Config.PlayerCriticalChance=(float)s.PlayerCriticalChance;Config.PlayerCriticalMultiplier=(float)s.PlayerCriticalMultiplier;
-            Config.AttackSpeedMultiplier=(float)s.AttackSpeedMultiplier;Config.DamageMultiplier=s.DamageMultiplier;Config.AccessoryDamageBonus=s.AccessoryDamageBonus;Config.DropBonus=(float)s.DropBonus;
+            Config.AttackSpeedMultiplier=(float)s.AttackSpeedMultiplier;Config.DamageMultiplier=s.DamageMultiplier;Config.AccessoryDamageBonus=s.AccessoryDamageBonus;Config.DropBonus=(float)s.DropBonus;Config.ExpBonus=inventory.AffixTotal("expBonus");
             // KiSlash already adds level-derived STR; this config stores equipment STR only.
             Config.StrengthFlat=s.StrengthFlat-(int)(Player.Level*.5);
             Config.WeaponAttack=(float)s.WeaponAttack;Config.WeaponSpeed=(float)s.WeaponSpeed;Config.WeaponRange=(float)s.WeaponRange;Config.WeaponArc=(float)s.WeaponArc;

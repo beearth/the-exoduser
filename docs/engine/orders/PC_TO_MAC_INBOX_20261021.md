@@ -2,6 +2,15 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-27 — ★ 사용자 요청: 킬루가문 수정 영상 Unity A05에도 적용
+
+> 사용자 지시: “킬루가문 씬 배포하고 해 고친게 이전꺼보다는 나으니까”, 이어서 “유니티버전에도 넣으라고 보고해”. 이 항목은 PC→Mac 적용 요청이며, 웹 배포 완료를 Unity 적용 완료로 표시하지 않는다.
+
+1. **채택 소스**: 최신 `main:video/warrior_story_v23_clean.mp4`의 킬루 피눈물 v3. 94,795,327바이트, SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`, 1920×1080/60fps/96.4초. 51~58초 킬루 응징 구간만 보정한 현재 웹 실행본이며 29언어 VTT·22큐와 타 구간은 유지한다. [웹 배포 실행](https://github.com/beearth/the-exoduser/actions/runs/40451606853) 성공, 공개 MP4 전체 다운로드 해시 일치. 제작·검수 기록은 `docs/cinematic/WARINTRO_KILLU_REBUILD_20261025.md`.
+2. **Unity 조치(A05)**: `unity/main`의 `Assets/StreamingAssets/Lobby/warrior_story_v23_clean.mp4`를 위 채택본으로 교체하고 실제 파일 SHA-256을 확인한다. `Resources/Data/warrior_story.json`의 기존 파일명·컷·자막 계약과 `NativeLobby.CharacterStory.cs`의 재생 흐름을 유지한다. 재생 경로가 같으면 UI 코드를 불필요하게 바꾸지 않는다.
+3. **복원 자료도 동기화**: 현재 `unity/Tools/MediaRecovery/warrior-story-v23/manifest.json`은 구영상 97,796,468바이트/SHA-256 `277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34`를 복원한다. `restore-warrior-story.cjs` 실행으로 새 파일이 구버전으로 돌아가지 않도록 허용된 저장 방식에서 파트·매니페스트를 새 영상과 일치시키고 바이트 단위 복원을 검증한다. 기존 원본/복구 지점은 I:에 보존한다.
+4. **완료 증거**: Mac Unity Editor와 Windows 플레이어에서 캐릭터 생성→전사 영상→게임 진입을 확인하고, 51~58초 킬루 고통 표정·피눈물 컷, 음성·자막 동기화, 96.4초 종료/건너뛰기를 검수한다. 빌드 입력 파일 해시·실제 빌드/재생 결과를 `unity/main` WORK_BOARD에 기록한다. 영상 교체·Editor 확인·Windows 플레이어 검수는 별도 단계로 보고한다. MagicLight는 사용하지 않는다.
+
 ## 2026-10-27 — ★ M1 "1-1 한 판 완주" 최우선 전환 · Codex 몫 행
 
 > main과 `unity/main` 두 곳에 같은 내용. 사용자 지시(10-27): "빨리 유니티 이식 끝내고 본게임 개발들어가야하는데". 진척 분모 main `docs/engine/UNITY_PORT_MASTER_20261026.md` 배정 순서 절.
@@ -241,3 +250,17 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
 - `unity/Tools/Tests/CoreTests.csproj`는 `Runtime/Core/*.cs` 전체를 Unity 없이 .NET으로 컴파일한다. `unity/main` `4656e8e18`에서 오류 2개: `Runtime/Core/NativeSettingsStore.cs` 203줄 CS0103 `UnityEngine` 없음(`UnityEngine.Application.productName`·`identifier` 참조, `77352295e`에서 들어옴).
 - PC 병합(C01 `ab563f98c`, B07 `044c6f34c`)은 이 두 파일을 건드리지 않았다. 같은 `Core/*.cs`를 컴파일하는 PC 원본 대조 검사 3종(enemy-tables·enemy-spawn·dash-parry)은 경고 0·오류 0이다.
 - **Codex 조치**: Core 파일에서 `UnityEngine` 직접 참조를 빼서(값을 바깥에서 넘기기, 또는 `#if UNITY_5_3_OR_NEWER`로 감싸기 등 방식은 Codex 판단) `CoreTests.csproj` 빌드 오류 0으로 만든다. 고친 `unity/main` SHA를 Mac→PC 회신에 1줄로 남긴다.
+
+### 2026-10-27 맵 총괄 → Codex: M1 우선 · C04 인수 조건 · 웹 oracle
+- 정본: origin/main의 docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md §2.0 (`git show origin/main:<경로>`)
+- 맵은 C04(1-1 전 구간 플레이 연결) 먼저. 인수 조건 C04-1~6(START→EXIT 도달·막힘 일치·클리어/게이트 규칙·스폰 위치/수·보스 아레나 좌표·3D 끔/켬 동일 경로).
+- 3D 비주얼 다듬기(F03: TOXIC·MESHY·R2 외곽)는 M1 뒤로 보류.
+- C04-1·2·4 웹 정답 데이터와 대조 스크립트: 브랜치 claude/unity-pc-c04-oracle-20261027 2b6426971, docs/engine/c04_oracle/README.md. Unity 덤프 형식은 README 참고, compare.mjs로 차이 0이면 해당 조건 통과 후보(최종 판정 맵 총괄).
+
+## 2026-10-27 — M1 운영 변경: 매일 Windows 빌드 · 동선 우선 · PC 연결 직접 적용 (사용자 지시, CTO·전체총괄 전달)
+
+- **진척 기준**: 진척 = 그날 `unity/main` 끝 빌드에서 사람이 실제로 할 수 있는 것. PC가 매일 1회 Windows Player를 빌드한다(`E:/EXODUSER-Unity-Play-<YYYYMMDD>/`, 첫 빌드 = `525420d5b`). 보고는 "오늘 빌드에서 새로 되는 것" 1~3줄.
+- **문서 최소화**: 새 명세·보고서·인계 문서는 구현에 꼭 필요할 때만 쓴다. 보드는 행 상태만 갱신하고, 회신은 결과 1~3줄로 한다.
+- **동선 우선**: 로비 → 1-1 진입 → 이동 → 공격 → 몹 사망 → 드랍 → 레벨업 → 보스 → 클리어. 앞에서부터 막힌 곳을 하나씩 뚫는다. 동선 밖 행은 뒤로 미룬다.
+- **연결 소유 변경(M1 동안)**: PC가 맡은 M1 행(B03·B05·B07·B08·B10·B11·D01·D05·E03)은 PC가 `Simulation*`·`NativeGame*`·`NativeHud*` 연결까지 `unity/main`에 직접 넣는다(fetch → merge → PC 6000.6.7f1 컴파일 오류 0 → 비강제 push, Codex가 최근 고친 줄은 지우지 않음). **Codex는 `Simulation*`·`NativeGame*`·`NativeHud*`를 고치기 전에 반드시 fetch/merge한다.** 협약 §2에 같은 행을 추가했다.
+- **수학 함수 규칙(전체총괄 결정)**: 결과가 게임 상태에 남는 삼각·초월 함수(facing·이동각·좌표·스폰 오프셋 등)는 `Runtime/Core/JsMath.cs`(fdlibm 포트, V8과 비트 일치)를 쓴다. .NET `Math`는 표시 전용에만 쓴다. **Codex 요청**: `Math.Pow`와 IL2CPP 빌드에서의 비트 일치를 Mac 빌드에서 확인해 Mac→PC 회신에 1줄로 남긴다.

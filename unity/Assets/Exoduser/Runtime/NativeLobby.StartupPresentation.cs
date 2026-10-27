@@ -30,11 +30,15 @@ namespace Exoduser.UnityPort
   void EnsureStartupMedia(){if(startupAudio!=null)return;startupAudio=gameObject.AddComponent<AudioSource>();startupAudio.playOnAwake=false;startupAudio.spatialBlend=0;enterSound=Resources.Load<AudioClip>("Audio/Startup/enter");wakeupSound=Resources.Load<AudioClip>("Audio/Startup/wakeup");}
   void PlayStartupEnter(){EnsureStartupMedia();startupAudio.Stop();startupAudio.clip=enterSound;startupAudio.volume=1;if(enterSound!=null)startupAudio.PlayOneShot(enterSound,2);}
   bool LegacyFrontendFixture(){foreach(var arg in Environment.GetCommandLineArgs())if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&arg.EndsWith("-smoke",StringComparison.Ordinal))return true;return false;}
+  // E03: set by NativeGame. A character with a combat save continues straight into the run (the story / first practice belong to a new character).
+  public System.Func<string,bool> HasCombatSave;
+  public System.Action<string> CharacterDeleted;
   public bool BeginCharacterEntry(bool loadingAlreadyShown)
   {
    if(Flow.Page!=LobbyPage.Lobby||startup.Active||Characters.SelectedIndex<0)return false;
    ActiveCharacterName=Characters.SelectedName;
    if(AutomatedInput||LegacyFrontendFixture()){Flow.SelectPreview();return EnterNativeTest();}
+   if(HasCombatSave!=null&&HasCombatSave(ActiveCharacterName)){StartupGameplayPrepared=false;keepStartupStageMusic=false;CancelCharacterStory();Flow.SelectPreview();return EnterNativeTest();}
    if(startupData==null){var source=Resources.Load<TextAsset>("Data/startup_intro");if(source!=null)startupData=JsonUtility.FromJson<StartupIntroData>(source.text);}
    StartupIntroLine[] lines=null;if(startupData!=null&&startupData.languages!=null){foreach(var language in startupData.languages)if(language.code==Language)lines=language.lines;if(lines==null)foreach(var language in startupData.languages)if(language.code=="en")lines=language.lines;}
    if(lines==null||lines.Length==0){characterError=K("입장 이야기 자료를 읽지 못했습니다.","Entry story data could not be loaded.");return false;}

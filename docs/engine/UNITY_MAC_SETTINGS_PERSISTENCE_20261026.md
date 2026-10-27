@@ -18,6 +18,20 @@
 
 ## 일반 사용자 설정을 보호하는 QA 경계
 
+### 2026-10-27 CoreTests 독립 컴파일 복구
+
+`NativeSettingsStorageScope`의 A05 QA 신원 검사를 Unity API 없이 수행하도록 제품명·identifier를 호출자가 명시 전달한다. `NativeGame.SettingsPersistence`, 로비 캐릭터 저장소, A15/패드 QA 호출부는 실제 `Application.productName`·`Application.identifier`를 전달한다. 기존 4인자 `TryResolve`는 일반 저장·settings fixture를 유지하지만 A05 cinematic QA 요청에는 빈 신원을 전달해 거부한다. Core의 `UnityEngine` 직접 참조는 0개다.
+
+| 경계 | 수치·조건 | 결과 |
+|---|---|---|
+| A05 QA 신원 | product `EXODUSER Settings QA`, identifier `com.fordeargamers.exoduser.settingsqa` 정확히 일치 | 불일치 시 `IoError`, 일반 개인 root로 fallback 없음 |
+| QA 경로 | 절대 `-output`, 부모 `_out`, 폴더 접두사 `UNITY-MAC-A05-IO-`, `qa-output.marker` 정확히 `EXODUSER_MAC_A05_IO_V1\n` | 실패 시 저장소 열지 않음 |
+| QA 플래그 | `--unity-cinematic-persistence-review`; settings fixture 또는 다른 `--unity-*-smoke/capture/review` 혼합 거부 | 기존 다른 QA의 settings I/O 금지 유지 |
+| 저장 위치 | QA `<output>/native-settings-v1`; 일반 `<Application.persistentDataPath>/native-settings-v1` | 로비 roster도 같은 신원·marker 검사를 거쳐 QA `<output>/character-roster-v1` |
+| v2 보존 | `cinSeen:true` boolean, 미지 `gpKeyMap` JSON, 기존 binds·binds2/설정 4값 | scope 수정은 codec/store 저장 공식에 손대지 않음 |
+
+실측: 수정 전 `CoreTests.csproj` CS0103 2건, 수정 후 CoreTests **35/35 PASS·CS0103 0**. 독립 .NET 격리 회귀 **18/18 PASS**는 신원/marker/절대 root/혼합 flag 실패 폐쇄, 일반 경로 비생성, v2 `cinSeen`·미지 JSON 왕복, 손상 파일 쓰기 거부와 원본 bytes 보존을 검사했다. 영수증은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-CORE-SETTINGS-FIX-20261027/`에 있다. 새 Unity Editor/Player 빌드 및 사용자 앱 실행 0회다.
+
 기존 모든 --unity-*-smoke/capture/review는 이 store의 읽기/쓰기를 비활성화한다. 새 --unity-settings-persistence-smoke만 absolute -output이 필수이며 누락/상대경로는 fail closed다. 별도 QA identity가 아니어도 fixture는 거부한다. QA 저장은 해당 output/native-settings-v1만 사용하며 캐릭터 roster는 열지 않는다.
 
 Unity 자체 창 prefs도 격리하기 위해 PortVerification.Build의 `-settingsQa true`는 productName `EXODUSER Settings QA`, identifier `com.fordeargamers.exoduser.settingsqa`, identifier override=true로 빌드한다. finally에서 기존 product/id/override를 복원한다. 일반 build는 기존 identity를 사용한다. ROOT는 실행 전 QA Info.plist identity를 실제 확인하고 일반 prefs hash를 전후 비교한다. runtime receipt는 product, identifier, Application.persistentDataPath 원문, explicit settings directory를 함께 기록한다.
