@@ -4183,6 +4183,7 @@ const BGM={
     if(!force&&OPT.bgmTrack!=='auto'&&OPT.bgmTrack!=='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
     this.stop();
     this._curKey=key;
+    try{_ambSync(key)}catch(e){} // SND-02 앰비언스 동기화
     let src=null;
     if(this._isActKey(key)&&OPT.bgmTrack==='auto'){
       // 장 진입마다 played set 초기화 → 장 BGM 먼저
@@ -10368,6 +10369,11 @@ const _sampleFiles={
   scarecrow_charge:'sfx/scarecrow_charge.mp3',
   footstep:'sfx/misc/footstep_new.mp3',
   footstep2:'sfx/misc/footstep_stone.mp3',
+  // SND-02 (2026-10-27) — SFX Forge R2 채택 4키
+  crit_heavy:'sfx/hit/crit_heavy.mp3',                   // 치명타 묵직한 타격 — hurtE 치명타 블록, 쿨다운 12f
+  ui_button_hover:'sfx/ui/button_hover.mp3',             // 버튼 호버 — document 위임 리스너
+  ui_button_confirm:'sfx/ui/button_confirm.mp3',         // 버튼 클릭 확정 — document 위임 리스너(자체 소리 없을 때만)
+  amb_hell_forest_bed:'sfx/ambient/hell_forest_bed.mp3', // 1장 썩은 숲 앰비언스 루프 — BGM.play('hell1') 연동
 };
 const _audioBuffers={};
 const _audioLoadPending={};
@@ -12411,6 +12417,7 @@ function _sfxFrameReset(){
   _sfxFrameT++;
   if(_deathSfxCd>0)_deathSfxCd--;
   if(_hitSfxCd>0)_hitSfxCd--;
+  if(_critSfxCd>0)_critSfxCd--;
   _mSfxPlaying=0;
   // 큐에서 프레임당 최대 8개만 실제 재생 (나머지는 다음 프레임)
   // 단 키 중복 제거 — 같은 소리 여러개면 1개만
@@ -12469,9 +12476,11 @@ function _sfxCat(key){
 const _SKILL_SFX_KEYS=new Set(['shield_activate','shield_hit','shield_end','heavy_hit','bow_shot','bow_release','fire_magic1','fire_magic2','fireball','crossbow_shot','electric_storm','electric_storm2','electric_storm3','electric_storm4','repentance','chain_throw','chain_fly','chain_land','chain_land2','chain_stick','chain_dash','chain_dash2','chain_dash3','chain_dash4','skull_summon','blue_hit','beam_fire','q_parry','sword_parry']);
 function _isSkillSfx(key){return _SKILL_SFX_KEYS.has(key)||key.startsWith('chain_')||key.startsWith('electric_storm')||key.startsWith('fire_magic')||key.startsWith('sword_swing')}
 const _sfxLastT={};
+let _lastSfxAt=0; // SND-02: 마지막 효과음 요청 시각 — 버튼 클릭 확정음 중복 방지용
 function playSample(key,vol,rate,pri){
   key=_silvertailVoiceKey(key);
   if(!key)return;
+  _lastSfxAt=performance.now();
   if(_gxVolMul<1){vol*=_gxVolMul;if(vol<0.01)return;}
   // 30ms 중복 방지 (스킬 사운드 제외)
   const _isPri=pri||_isSkillSfx(key)||_isFootstepSfx(key);
@@ -12577,6 +12586,7 @@ function mbus(){
 function _r(v,s){return v*(1+(Math.random()-.5)*2*(s||.05))} // pitch randomize
 
 function playTone(freq,dur,type,vol,freqEnd,atk){
+  _lastSfxAt=performance.now();
   if(_activeNodeCnt>=_MAX_ACTIVE_NODES)return;
   const c=actx(),t=c.currentTime,a=atk||.004;
   const o=c.createOscillator(),g=c.createGain();
@@ -12590,6 +12600,7 @@ function playTone(freq,dur,type,vol,freqEnd,atk){
 }
 
 function playNoise(dur,filterFreq,vol,filterEnd,atk,fType){
+  _lastSfxAt=performance.now();
   if(_activeNodeCnt>=_MAX_ACTIVE_NODES)return;
   const c=actx(),t=c.currentTime,a=atk||.002;
   const len=~~(c.sampleRate*dur);
@@ -12672,6 +12683,48 @@ function _stopLoop(ref,fadeMs){
   try{const t=actx().currentTime,f=(fadeMs||150)/1000;
   ref.gain.gain.linearRampToValueAtTime(0,t+f);
   setTimeout(()=>{try{ref.src.stop()}catch(e){}},fadeMs||150)}catch(e){}
+}
+
+// ── SND-02: 버튼 호버/클릭 위임 소리 (game.html 전용, 2026-10-27) ──
+// 호버: 다른 버튼으로 들어갈 때만, 60ms 쿨다운, vol .25 / 클릭: 클릭 처리기가 자기 소리를 안 냈을 때만, 80ms 쿨다운, vol .35
+let _uiHoverBtn=null,_uiHoverAt=0,_uiConfirmAt=0;
+function _uiBtnOf(t){try{const b=t&&t.closest?t.closest('button'):null;return b&&!b.disabled&&!b.classList.contains('disabled')?b:null}catch(e){return null}}
+document.addEventListener('pointerover',function(e){
+  if(e.pointerType==='touch')return;
+  const b=_uiBtnOf(e.target);
+  if(b===_uiHoverBtn)return;
+  _uiHoverBtn=b;
+  if(!b)return;
+  const n=performance.now();if(n-_uiHoverAt<60)return;_uiHoverAt=n;
+  playSample('ui_button_hover',.25,1);
+});
+document.addEventListener('click',function(e){
+  if(!_uiBtnOf(e.target))return;
+  const t0=performance.now();
+  setTimeout(function(){
+    if(_lastSfxAt>=t0)return; // 클릭 처리기가 자기 소리를 냈다
+    if(t0-_uiConfirmAt<80)return;_uiConfirmAt=t0;
+    playSample('ui_button_confirm',.35,1);
+  },0);
+},true);
+// ── SND-02: 1장(hell1) 앰비언스 루프 — BGM.play 끝에서 동기화, 그 외 키는 800ms 페이드 정지 ──
+let _ambRef=null,_ambWant=false;
+function _ambSync(key,_try){
+  _ambWant=(key==='hell1');
+  if(!_ambWant){if(_ambRef){_stopLoop(_ambRef,800);_ambRef=null}return}
+  if(_ambRef)return;
+  // 주의: 이름이 같은 메인 루프 시작기 _startLoop()가 뒤에서 선언돼 오디오용 _startLoop(key,vol)를 가린다 → 여기서 직접 시작
+  const k='amb_hell_forest_bed',go=function(){
+    if(!_ambWant||_ambRef||!_audioBuffers[k])return;
+    try{const c=actx(),s=c.createBufferSource();s.buffer=_audioBuffers[k];s.loop=true;
+      const g=c.createGain();g.gain.value=.15*sfxVol();s.connect(g);g.connect(mbus());s.start();_ambRef={src:s,gain:g}}catch(e){_ambRef=null}
+  };
+  if(_audioBuffers[k]){go();return}
+  if(_audioLoadPending[k]){if((_try||0)<20)setTimeout(function(){if(_ambWant&&!_ambRef)_ambSync('hell1',(_try||0)+1)},500);return}
+  if(!_sampleFiles[k])return;
+  _audioLoadPending[k]=true;
+  fetch(_sampleFiles[k]).then(function(r){return r.arrayBuffer()}).then(function(ab){return actx().decodeAudioData(ab)})
+    .then(function(b){_audioBuffers[k]=b;delete _audioLoadPending[k];go()}).catch(function(){delete _audioLoadPending[k]});
 }
 function _startShieldLoop(){try{_stopShieldLoop();const c=actx(),buf=_audioBuffers['shield_loop'];if(!buf)return;const src=c.createBufferSource();src.buffer=buf;src.loop=true;const g=c.createGain();g.gain.value=.25*sfxVol();src.connect(g);g.connect(mbus());src.start();_shieldLoopSrc=src;_shieldLoopGain=g}catch(e){}}
 function _stopShieldLoop(){
@@ -24914,6 +24967,7 @@ function _hitSfxForEtype(et){
 let _deathSfxCd=0; // 사망 사운드 크로스-프레임 쿨다운
 let _deathSfxFrameMark=-1,_deathSfxFrameN=0,_deathSfxThrottled=false; // 동시-사망 프레임 버스트 (같은 프레임 대량 사망 시 여러 보이스 레이어)
 let _hitSfxCd=0; // 히트사운드 쿨다운
+let _critSfxCd=0; // 치명타 사운드(crit_heavy) 쿨다운 (프레임)
 let _mSfxPlaying=0; // 몬스터 이동음 동시 재생 카운터 (프레임당 3개 제한)
 function _deathBloodScale(r){return Math.max(.8,Math.min(4.8,.35+Math.max(1,Number(r)||8)*.075))}
 function deathFX(x,y,r,col,isBoss,noSound,et,impactId){
@@ -42436,6 +42490,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   var _isCrit=false;const _lDagForce=!isDot&&(P._lNextCrit||0)>0&&_lEq('_lDaggerKill')>0; // 전설 단검: 처치 후 다음 공격 크리 보장 (1회 소모)
   const _ksFC=!isDot&&opts&&opts._kiFull?Math.min(1,_eqAffix('kiSlashFullCrit')):0; // 어픽스 극참의: 기검참 3단 풀차지 검기 확정 치명 + 치명 피해 +100%
   if(Math.random()*100<statCrit()+_crBonus||_lDagForce||_ksFC>0){if(_lDagForce)P._lNextCrit=0;dmg=~~(dmg*(statCritDmg()+_ksFC));_isCrit=true;if(G._sStats)G._sStats.crits++;
+    if(!isDot&&!noSound&&_critSfxCd<=0){_critSfxCd=12;playSample('crit_heavy',.45,_r(1,.05))} // SND-02 치명타 전용음 (HIT 분류, 12f 쿨다운)
     // ═══ 전설 도끼(_lAxeBleed): 출혈 대상 크리 시 잔여 출혈 DoT×300% 즉시 폭발 (출혈 소멸) ═══
     if(!isDot&&_lEq('_lAxeBleed')>0&&(e.bleedT||0)>0&&(e.bleedPool||0)>0){const _abD=Math.max(1,~~(e.bleedPool*_lEq('_lAxeBleed')));e.bleedPool=0;e.bleedT=0;if(e.bleed)e.bleed=0;dmg+=_abD;addTxt(e.x,e.y-55,_T('🩸출혈 폭발!'),'#ff2244',40)}
     // ═══ onCrit 프록 (크리 시 발동) ═══
