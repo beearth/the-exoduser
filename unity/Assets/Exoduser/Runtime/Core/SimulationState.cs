@@ -28,6 +28,16 @@ namespace Exoduser.UnityPort.Core
         public bool EnemyAiEnabled = true;
         public double ExpBonus = 0;   // web _eqAffix('expBonus') (necklace base expBonus field is not an Unity item field)
         public int LevelCap = 0;      // web _DEMO_MODE ? _DEMO_LV_CAP : none (0 = none)
+        // B08 revive/shield inputs the web reads from equipment and passives. All 0 until the owning rows (passives, zones) are ported.
+        public double AntiRevive = 0;     // _eqAffix('antiRevive') = Holy Power (stat panel row "신성력")
+        public double ReviveOnceAffix = 0;// _eqAffix('reviveOnce')
+        public double RevivePow = 0;      // _eqAffix('revivePow') + _eqImplicit('_iRevPow')*.01
+        public double ReviveCdAffix = 0;  // _eqAffix('reviveCd') (negative = shorter)
+        public int PassiveDemon = 0, PassiveHuman = 0; // PASSIVES.pDemon / pHuman
+        public double ShieldStatInt = 0;  // STATS.int (allocated INT, shield regen formula)
+        public double ShieldMRegen = 0;   // PASSIVES.pMRegen
+        public bool DemoMode = false;     // _DEMO_MODE (stage-3 druid finale needs it)
+        public int DemoLastStage = 0;     // _DEMO_LAST_STAGE
     }
 
     [Serializable]
@@ -40,6 +50,10 @@ namespace Exoduser.UnityPort.Core
         public float KiChargeTicks;
         public int Level = 1, Experience, MaxExperience = 15, StatPoints, PassivePoints;
         public string TransDate; public int TransCount; // web P._transLvDate/_transLvCount (one transcend level per local day)
+        // B08: P.shieldRegenT, P._demonRevCd, die() pre-rolled revive (P._fallen*), P._reviveOnceUsed
+        public float ShieldRegenTicks, DemonReviveCd;
+        public bool ReviveOnceUsed, FallenCanRevive;
+        public double FallenReviveChance, FallenReviveCdFrames, FallenReviveRoll;
         public int BaseAttack, BaseDefense = 2;
         public string State = "idle";
     }
@@ -54,6 +68,10 @@ namespace Exoduser.UnityPort.Core
         public float ProjectileTicks, ProjectileChargeTicks;
         public bool Alive = true, Alerted, HasLastMove;
         public bool IsBoss; public int Elite; // web e.ib / e.elite (tier index): kill XP, combo timer
+        // B08 revive / energy-shield state (web e.deaths, _revPts, _revived, _reviveTimer ...). Defaults are the web's undefined/0.
+        public double Deaths, RevPts, MaxRevPts, ReviveIframes, OrigR, ReviveTimer, ReviveX, ReviveY, BossRevChance, BossRevRoll = 1, BossPhase, BossPatCd, SpawnTicks, BossReviveVfxPending;
+        public bool Revived, IsGhoul, ReviveAsGhoul, ReviveChase, BossRevJudged, BossRevived, DruidLastStand, SinkDruid, FmKind, DgRevived, Corpse;
+        public int BaseAttack, DruidBaseAttack; public string Col;
         public string State = "idle";
     }
 

@@ -70,6 +70,7 @@ namespace Exoduser.UnityPort.Core
                 Id = nextEnemyId++, Etype = 0, X = x, Y = y, Hp = hp, MaxHp = hp,
                 Shield = hp, MaxShield = hp, Poise = hp, MaxPoise = hp, Level = level,
                 Attack = (int)Math.Floor((50 + level * 1.95) * .6 * Difficulty[Config.DifficultyIndex]),
+                BaseAttack = (int)Math.Floor((50 + level * 1.95) * .6 * Difficulty[Config.DifficultyIndex]), // mkEn baseAtk (ghoul atk = baseAtk*2)
                 Speed = (float)((.3 * 1.3 + NextRandom() * .08) * 1.5),
                 Radius = (float)((10 + NextRandom() * 2) * 2),
                 StateTicks = (float)(30 + NextRandom() * 50), Facing = (float)(NextRandom() * Math.PI * 2),
@@ -91,7 +92,7 @@ namespace Exoduser.UnityPort.Core
             TickCount++;
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
-            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { UpdateKiProjectiles(); TickKiTimers(); return; }
+            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); TickKiTimers(); return; }
             Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen / regenDivisor);
@@ -99,6 +100,7 @@ namespace Exoduser.UnityPort.Core
             Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen / regenDivisor);
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
+            TickPlayerShieldAndRevive();
             MoveKnockback();
             if (Player.State == "stagger" || Player.State == "pStun") {
                 if (Player.StateTicks <= 0) { Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
@@ -147,6 +149,8 @@ namespace Exoduser.UnityPort.Core
                 if (!enemy.Alive) continue;
                 enemy.HurtTicks = Math.Max(0, enemy.HurtTicks - 1);
                 enemy.HitStun = Math.Max(0, enemy.HitStun - 1);
+                if (enemy.ReviveIframes > 0) enemy.ReviveIframes = Math.Max(0, enemy.ReviveIframes - 1); // updateE 38677
+                if (enemy.SpawnTicks > 0) enemy.SpawnTicks--; if (enemy.BossReviveVfxPending > 0) enemy.BossReviveVfxPending--;
                 if (enemy.Stunned > 0) {
                     enemy.Stunned = Math.Max(0, enemy.Stunned - 1);
                 }
@@ -155,6 +159,7 @@ namespace Exoduser.UnityPort.Core
                 if (enemy.Stunned <= 0 && enemy.MaxStunned > 0) enemy.MaxStunned = 0;
                 if (Config.EnemyAiEnabled) TickEnemy(enemy);
             }
+            TickCorpses();
             UpdateKiProjectiles();
             TickKiTimers();
             // Web update() auto potion block (game.html 35895-35911): runs once per frame after the enemy loop.
@@ -200,26 +205,28 @@ namespace Exoduser.UnityPort.Core
         }
 
         // Ordinary physical, no-status/affix branch of hurtE. Source shield first.
-        public void HurtEnemy(EnemyState enemy, int damage, float angle = 0)
+        public void HurtEnemy(EnemyState enemy, int damage, float angle = 0, bool dot = false, bool shieldHit = false)
         {
-            ApplyEnemyDamage(enemy, damage, angle, false, 1);
+            ApplyEnemyDamage(enemy, damage, angle, false, 1, dot, shieldHit);
         }
 
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier)
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
-            if (enemy.Etype != 0) throw new NotSupportedException("Only admitted normal etype0 profile is implemented.");
+            if (enemy.Etype != 0 && !enemy.IsGhoul) throw new NotSupportedException("Only admitted normal etype0 profile (and its revived ghouls) is implemented.");
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
             if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
+            { double ri = enemy.ReviveIframes; bool swallowed = EnergyShield.SwallowedByReviveIframes(ref ri, dot); enemy.ReviveIframes = ri; if (swallowed) return; } // hurtE 42208-42209
             damage = Math.Max(1, damage);
             if (Config.AccessoryDamageBonus > 0) damage = (int)(damage * (1 + Config.AccessoryDamageBonus));
             if (NextRandom() * 100 < Config.PlayerCriticalChance) damage = (int)(damage * Config.PlayerCriticalMultiplier);
             if (enemy.Stunned > 0) damage = (int)(damage * 1.5);
             int total = damage;
-            int shieldAbsorbed = (int)Math.Min(enemy.Shield, damage);
-            enemy.Shield = Math.Max(0, enemy.Shield - damage);
-            damage = Math.Max(0, damage - shieldAbsorbed);
+            // B08 energy shield: after every multiplier, spent before HP; only the overflow reaches HP; DOT skips it unless shieldHit.
+            var sh = EnergyShield.AbsorbEnemy(enemy.Shield, enemy.MaxShield, damage, dot, shieldHit);
+            enemy.Shield = (float)sh.Shield;
+            damage = (int)sh.Damage;
             LastHitDamage = total; TotalDamage += total; enemy.HurtTicks = 6;
             if (damage > 0) {
                 enemy.Alerted = true;
@@ -236,7 +243,7 @@ namespace Exoduser.UnityPort.Core
                 enemy.PoiseRegenTicks = 0;
                 if (enemy.Poise <= 0) { enemy.Stunned = Math.Max(enemy.Stunned, 180); enemy.MaxStunned = Math.Max(enemy.MaxStunned, 180); }
             }
-            if (enemy.Hp <= 0) KillEnemy(enemy);
+            if (enemy.Hp <= 0) OnEnemyZeroHp(enemy);
         }
 
         private void KillEnemy(EnemyState enemy)
@@ -326,6 +333,8 @@ namespace Exoduser.UnityPort.Core
                 }
             }
             float d = Distance(Player.X, Player.Y, enemy.X, enemy.Y);
+            // updateE 38764: revive aggro, double-speed chase until the player is within 200
+            if (enemy.ReviveChase && d > 200 && (enemy.State == "idle" || enemy.State == "recover")) { MoveEnemyFallback(enemy, 2); d = Distance(Player.X, Player.Y, enemy.X, enemy.Y); if (d <= 200) enemy.ReviveChase = false; }
             if (!enemy.Alerted && d < 800 && (HasLineOfSight == null || HasLineOfSight(enemy.X, enemy.Y, Player.X, Player.Y))) enemy.Alerted = true;
             if (d < 800 && enemy.Alerted) enemy.Facing = (float)Math.Atan2(Player.Y - enemy.Y, Player.X - enemy.X);
             if (enemy.Alerted && d > 30) MoveEnemyFallback(enemy);
@@ -346,12 +355,12 @@ namespace Exoduser.UnityPort.Core
             else { enemy.ProjectileTicks--; if (enemy.ProjectileTicks <= 0 && d < 400) { enemy.ProjectileTicks = 240; enemy.ProjectileChargeTicks = 60; } }
         }
 
-        private void MoveEnemyFallback(EnemyState enemy)
+        private void MoveEnemyFallback(EnemyState enemy, float speedMultiplier = 1)
         {
             double angle = Math.Atan2(Player.Y-enemy.Y, Player.X-enemy.X);
             float dx = enemy.HasLastMove ? enemy.LastMoveX : (float)Math.Cos(angle);
             float dy = enemy.HasLastMove ? enemy.LastMoveY : (float)Math.Sin(angle);
-            float nx=enemy.X+dx*enemy.Speed, ny=enemy.Y+dy*enemy.Speed;
+            float nx=enemy.X+dx*enemy.Speed*speedMultiplier, ny=enemy.Y+dy*enemy.Speed*speedMultiplier;
             if (Pass(nx,ny,enemy.Radius)) { enemy.X=nx; enemy.Y=ny; enemy.StuckTicks=0; }
             else if (Pass(nx,enemy.Y,enemy.Radius)) { enemy.X=nx; enemy.LastMoveX=dx; enemy.LastMoveY=0; enemy.HasLastMove=true; enemy.StuckTicks=0; }
             else if (Pass(enemy.X,ny,enemy.Radius)) { enemy.Y=ny; enemy.LastMoveX=0; enemy.LastMoveY=dy; enemy.HasLastMove=true; enemy.StuckTicks=0; }
@@ -364,12 +373,13 @@ namespace Exoduser.UnityPort.Core
             double dr = Math.Min(.75, Config.PlayerPhysicalDefense / (Config.PlayerPhysicalDefense + 2500.0));
             int capped = Math.Min(damage, (int)(Player.MaxHp * .33));
             int amount = Math.Max(Math.Max(1, (int)(Player.MaxHp * .005)), Math.Max(1, (int)(capped * (1-dr))));
-            float absorbed = Math.Min(Player.Shield, amount); Player.Shield -= absorbed;
-            Player.Hp -= amount-absorbed;
+            var sh = EnergyShield.AbsorbPlayer(Player.Shield, Player.MaxShield, Player.ShieldRegenTicks, amount);
+            Player.Shield = (float)sh.Shield; Player.ShieldRegenTicks = (float)sh.RegenT;
+            Player.Hp -= (float)sh.Damage;
             Player.Poise = Math.Max(0, Player.Poise-1);
             if (Player.Poise <= 0) { Player.State = "pStun"; Player.StateTicks = 240; CancelKiCharge(); }
             else if (!Player.KiChargeActive) { Player.State = "stagger"; Player.StateTicks = 6; }
-            if (Player.Hp <= 0) { Player.Hp=0; Player.State="fallen"; Player.StateTicks=300; Player.Iframes=9999; CancelKiCharge(); }
+            if (Player.Hp <= 0) PlayerDie();
         }
     }
 }

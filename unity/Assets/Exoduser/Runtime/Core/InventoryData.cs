@@ -20,6 +20,8 @@ namespace Exoduser.UnityPort.Core {
   public double PlayerMaxStamina,PlayerMaxMana,PlayerMaxShield,PlayerSpeed,PlayerHpRegen,PlayerStaminaRegen,PlayerManaRegen,PlayerPhysicalDefense,PlayerCriticalChance,PlayerCriticalMultiplier,AttackSpeedMultiplier,DamageMultiplier,AccessoryDamageBonus,DropBonus,StrengthFlat,WeaponAttack,WeaponSpeed,WeaponRange,WeaponArc;
   // Kept separate from DEF, as in the source; parent combat adapter may admit these separately.
   public double PhysicalDamageReduction,ElementResistance,StatusResistance;
+  // B08: web _eqAffix(antiRevive / reviveOnce / revivePow + _iRevPow*.01 / reviveCd) feed the revive rules and the stat panel rows.
+  public double AntiRevive,ReviveOnce,RevivePow,ReviveCd;
   public void ClampResources(PlayerState p) { if(p==null)throw new ArgumentNullException(nameof(p));p.Hp=Math.Min(p.Hp,(float)PlayerMaxHp);p.Stamina=Math.Min(p.Stamina,(float)PlayerMaxStamina);p.Mana=Math.Min(p.Mana,(float)PlayerMaxMana);p.Shield=Math.Min(p.Shield,(float)PlayerMaxShield); }
  }
 }
