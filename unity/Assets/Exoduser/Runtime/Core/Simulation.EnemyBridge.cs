@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort.Core
         public InventoryState EquippedInventory;
 
         /// <summary>mkEn(x, y, stage, etype, false, undefined, undefined) for any ordinary etype; null where mkEn returns null (no free spot).</summary>
-        public EnemyState SpawnEnemy(float x, float y, int etype)
+        public EnemyState SpawnEnemy(float x, float y, int etype, double? room = null, bool countSpawned = true)
         {
             if (!Finite(x) || !Finite(y)) return null;
             var context = new EnemySpawnContext {
@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort.Core
                 DemoMode = Config.DemoMode, DemoLastStage = Config.DemoLastStage,
                 CanMove = (cx, cy, cr) => Pass((float)cx, (float)cy, (float)cr), Random = NextRandom
             };
-            var web = EnemyFactory.Create(context, x, y, Config.StageIndex, etype, false, null, null);
+            var web = EnemyFactory.Create(context, x, y, Config.StageIndex, etype, false, null, room);
             if (web == null) return null;
             var enemy = new EnemyState {
                 Id = nextEnemyId++, Etype = (int)web.etype, X = (float)web.x, Y = (float)web.y, Radius = (float)web.r,
@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort.Core
                 Elite = (int)web.elite, Col = web.col, Web = web
             };
             webOwner[web] = enemy;
-            Enemies.Add(enemy); Stage.TotalSpawned++;   // C07: G._totalSpawned (gate progress denominator)
+            Enemies.Add(enemy); if (countSpawned) Stage.TotalSpawned++;   // C07: G._totalSpawned (gate progress denominator)
             return enemy;
         }
 

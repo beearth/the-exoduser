@@ -123,13 +123,9 @@ namespace Exoduser.UnityPort
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
-            // Source63425-63432: original five ordinary0 enemies on580px ring.
-            for(int i=0;i<5;i++)
-            {
-                double a=Math.PI*2*i/5-Math.PI/2;
-                float x=config.StartX+(float)Math.Cos(a)*580,y=config.StartY+(float)Math.Sin(a)*580;
-                if(SafePoint(ref x,ref y,10))Simulation.SpawnNormalEnemy(x,y);
-            }
+            // C01-AI: the natural 1-1 field spawns come from the 14 소환굴 of initStage(0) (rollEtype pool), not from a fixed ring of etype0.
+            Simulation.FloorTile=(tx,ty)=>!Map.Blocked((tx+.5f)*40,(ty+.5f)*40);
+            Simulation.EnableFieldSpawns();
             UpdateViews();
         }
         bool SafePoint(ref float x,ref float y,float r)

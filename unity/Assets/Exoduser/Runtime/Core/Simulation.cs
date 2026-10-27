@@ -131,20 +131,24 @@ namespace Exoduser.UnityPort.Core
                 }
                 else if (Player.State == "wRecover" && Player.StateTicks <= 0) Player.State = "idle";
             }
-            foreach (var enemy in Enemies) {
+            if (Config.EnemyAiEnabled) TickEnemiesWeb();   // C01-AI: web enemy loop (L1 + updateE head + 1-1 body) for the non-boss enemies
+            foreach (var enemy in Enemies.ToArray()) {
                 if (!enemy.Alive) continue;
-                enemy.HurtTicks = Math.Max(0, enemy.HurtTicks - 1);
+                bool webDriven = Config.EnemyAiEnabled && !enemy.IsBoss;   // timers of these enemies run inside the web loop
+                if (!webDriven) enemy.HurtTicks = Math.Max(0, enemy.HurtTicks - 1);
                 TickBlinkWeak(enemy);
-                enemy.HitStun = Math.Max(0, enemy.HitStun - 1);
-                if (enemy.ReviveIframes > 0) enemy.ReviveIframes = Math.Max(0, enemy.ReviveIframes - 1); // updateE 38677
-                if (enemy.SpawnTicks > 0) enemy.SpawnTicks--; if (enemy.BossReviveVfxPending > 0) enemy.BossReviveVfxPending--;
-                if (enemy.Stunned > 0) {
-                    enemy.Stunned = Math.Max(0, enemy.Stunned - 1);
+                if (!webDriven) {
+                    enemy.HitStun = Math.Max(0, enemy.HitStun - 1);
+                    if (enemy.ReviveIframes > 0) enemy.ReviveIframes = Math.Max(0, enemy.ReviveIframes - 1); // updateE 38677
                 }
-                // Source34456 resets poise here only for bosses. This admitted
-                // ordinary profile only clears the stun presentation marker.
-                if (enemy.Stunned <= 0 && enemy.MaxStunned > 0) enemy.MaxStunned = 0;
-                if (Config.EnemyAiEnabled) { if (enemy.IsBoss && BossTick != null) BossTick(enemy); else TickEnemy(enemy); }   // C07: boss Core plug-in
+                if (enemy.SpawnTicks > 0) enemy.SpawnTicks--; if (enemy.BossReviveVfxPending > 0) enemy.BossReviveVfxPending--;
+                if (!webDriven) {
+                    if (enemy.Stunned > 0) enemy.Stunned = Math.Max(0, enemy.Stunned - 1);
+                    // Source34456 resets poise here only for bosses. This admitted
+                    // ordinary profile only clears the stun presentation marker.
+                    if (enemy.Stunned <= 0 && enemy.MaxStunned > 0) enemy.MaxStunned = 0;
+                }
+                if (Config.EnemyAiEnabled && enemy.IsBoss) { if (BossTick != null) BossTick(enemy); else TickEnemy(enemy); }   // C07: boss Core plug-in
             }
             TickCorpses();
             if (AfterEnemyTick != null) AfterEnemyTick();   // BX: boss projectiles and hazards (Simulation.DruidBoss.cs)
@@ -156,6 +160,7 @@ namespace Exoduser.UnityPort.Core
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
             Stage.Tick();   // C07: checkRooms (arena entry / boss defeat / exit / clear)
+            TickSpawnHoles();   // C01-AI: the 소환굴 update follows checkRooms in the web update()
             TickHurtFx();   // B09: screen shake / flash decay
         }
 

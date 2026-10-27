@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
             if (practice) EndFirstPractice(true);
             frontendEntryInputFence = false; Running = false; yield return null;
             var sim = Simulation; var p = sim.Player;   // EndFirstPractice rebuilds the run: take the live simulation only now
-            sim.Config.EnemyAiEnabled = true; sim.Enemies.Clear(); sim.PotionState.Cooldown = 100000;
+            sim.Config.EnemyAiEnabled = true; sim.Enemies.Clear(); sim.PotionState.Cooldown = 100000; sim.SpawnHoles = null;   // C01-AI: steps 03..09 spawn by hand; the 소환굴 field spawn has its own step (07c)
             Action<float> heal = hp => { if (p.Hp < hp) p.Hp = p.MaxHp; };
 
             // ---- 03 move ----
@@ -119,10 +119,10 @@ namespace Exoduser.UnityPort
             if (attacker != null) { attacker.Alerted = true; attacker.StateTicks = 0; }
             for (int i = 0; i < 900 && attacker != null && secondHit < 0; i++)
             {
-                int hurtsPre = sim.HurtCount; StepInput(0, 0, p.X + 300, p.Y, false, false);
+                int hurtsPre = sim.HurtCount; float shPrev = p.Shield; StepInput(0, 0, p.X + 300, p.Y, false, false);
                 if (sim.HurtCount > hurtsPre)
                 {
-                    if (firstHit < 0) { firstHit = i; hpAfter = p.Hp; shAfter = p.Shield; stateAfter = p.State; kbMag = Mathf.Sqrt(p.KnockbackX * p.KnockbackX + p.KnockbackY * p.KnockbackY); shakeAtHit = sim.ShakeAmount; flashAtHit = sim.ScreenFlashAlpha; if (!captured) { captured = true; yield return M1Shot("07b-enemy-hit"); } }
+                    if (firstHit < 0) { firstHit = i; shBefore = shPrev; hpAfter = p.Hp; shAfter = p.Shield; stateAfter = p.State; kbMag = Mathf.Sqrt(p.KnockbackX * p.KnockbackX + p.KnockbackY * p.KnockbackY); shakeAtHit = sim.ShakeAmount; flashAtHit = sim.ScreenFlashAlpha; if (!captured) { captured = true; yield return M1Shot("07b-enemy-hit"); } }
                     else secondHit = i;
                 }
                 if (p.Hp < p.MaxHp * .5f) p.Hp = p.MaxHp;
@@ -139,6 +139,32 @@ namespace Exoduser.UnityPort
             M1Add("07b", "enemy attack hits the player", hitOk && fell && (gap < 0 || (gap >= 40 && gap <= 200)) ? "ok" : "fail",
                 "etype0 contact hit after " + firstHit + " ticks: shield " + shBefore.ToString("0") + " -> " + shAfter.ToString("0") + ", hp " + hpBefore2.ToString("0") + " -> " + hpAfter.ToString("0") + ", state " + stateAfter + ", knock-back " + kbMag.ToString("0.0") + " px/tick, shake " + shakeAtHit.ToString("0.0") + ", red flash " + flashAtHit.ToString("0.00") + ", floaters [" + string.Join(",", floaters.ToArray()) + "], hit sounds " + (sound.Receipt.requested - soundsBefore) + ", landed hits " + (sim.HurtCount - hurtBefore) + ", next hit after " + gap + " ticks; lethal hit at 1 hp -> fallen " + fell + " (tick " + fallTick + "). Not ported: etype0 field projectile (60f charge ring + shot, needs the enemy-projectile / projectile-parry owner), chromatic pulse, particles",
                 "07b-enemy-hit.png");
+
+            // ---- 07c natural 1-1 field spawn (C01-AI): the player walks up to a 소환굴, the pool summons mixed etypes and each runs its own AI ----
+            {
+                sim.Enemies.Clear(); sim.Config.EnemyAiEnabled = true; sim.EnableFieldSpawns(); p.Hp = p.MaxHp; p.Iframes = 99999; p.Shield = p.MaxShield;
+                var c7_hole = SpawnHoleSystem.Stage0Holes[7]; float c7_hx = (float)c7_hole[0], c7_hy = (float)c7_hole[1];   // size .5 hole at (5620,1820): 15 summons
+                float c7_sx = c7_hx - 260, c7_sy = c7_hy + 200; for (int k = 0; k < 30 && !Map.CanMove(c7_sx, c7_sy, 10); k++) { c7_sx -= 20; c7_sy -= 20; }
+                p.X = c7_sx; p.Y = c7_sy; int c7_ticks = 0, c7_peak = 0, c7_shots0 = sim.ShotsFired; var c7_etypes = new SortedDictionary<int, int>(); var c7_states = new SortedDictionary<string, int>();
+                float c7_travelled = 0; var c7_last = new Dictionary<int, Vector2>(); bool c7_aiFrame = false, c7_midFrame = false;
+                while (c7_ticks++ < 1800)
+                {
+                    StepInput(0, 0, p.X + 1, p.Y, false, false); p.Hp = p.MaxHp; p.Iframes = 99999;
+                    int c7_alive = 0; foreach (var e in sim.Enemies) { if (!e.Alive) continue; c7_alive++; c7_states[e.State] = c7_states.ContainsKey(e.State) ? c7_states[e.State] + 1 : 1; Vector2 c7_pos; if (c7_last.TryGetValue(e.Id, out c7_pos)) c7_travelled += Mathf.Abs(e.X - c7_pos.x) + Mathf.Abs(e.Y - c7_pos.y); c7_last[e.Id] = new Vector2(e.X, e.Y); }
+                    c7_peak = Mathf.Max(c7_peak, c7_alive);
+                    if (!c7_midFrame && sim.Enemies.Count >= 6) { c7_midFrame = true; yield return M1Shot("07c-field-spawn"); }
+                    if (!c7_aiFrame && c7_ticks > 700 && sim.Enemies.Count >= 8) { c7_aiFrame = true; yield return M1Shot("07c-field-ai"); }
+                }
+                foreach (var e in sim.Enemies) { int k7 = e.Etype; c7_etypes[k7] = c7_etypes.ContainsKey(k7) ? c7_etypes[k7] + 1 : 1; }
+                bool c7_distinct = c7_etypes.Count >= 3; bool c7_spawned = sim.Enemies.Count >= 8; bool c7_didMove = c7_travelled > 500;
+                var c7_typeList = new List<string>(); foreach (var kv7 in c7_etypes) c7_typeList.Add(kv7.Key + "x" + kv7.Value);
+                var c7_stateList = new List<string>(); foreach (var kv7 in c7_states) c7_stateList.Add(kv7.Key + ":" + kv7.Value);
+                M1Add("07c", "natural field spawn + enemy AI", c7_spawned && c7_distinct && c7_didMove ? "ok" : "fail",
+                    "소환굴 (" + c7_hx + "," + c7_hy + ") woke at 2000 px: " + sim.Enemies.Count + " enemies in " + c7_ticks + " ticks (peak alive " + c7_peak + ", stage total " + sim.Stage.TotalSpawned + "), etypes [" + string.Join(" ", c7_typeList.ToArray()) + "], states seen {" + string.Join(" ", c7_stateList.ToArray()) + "}, travelled " + c7_travelled.ToString("0") + " px, enemy shots " + (sim.ShotsFired - c7_shots0) + ", holes left " + (sim.SpawnHoles != null ? sim.SpawnHoles.Holes.Count : 0),
+                    "07c-field-spawn.png");
+                sim.SpawnHoles = null; sim.Enemies.Clear(); sim.Config.EnemyAiEnabled = true; p.Iframes = 0; p.Hp = p.MaxHp;
+                sim.Stage.TotalSpawned = 0;
+            }
 
             // ---- 08 drop pickup + equip ----
             sim.Config.EnemyAiEnabled = false; int attempts = 0;

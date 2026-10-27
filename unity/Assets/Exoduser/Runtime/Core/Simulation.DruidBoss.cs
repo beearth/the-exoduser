@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort.Core
         public float PlayerPoison, PlayerWebSlow;            // P.poison (DOT stacks) / P._webSlow (frames, halves the walk speed)
         public event Action<string, double, double, double> BossFx;   // presentation hook: (kind, x, y, radius)
         internal double NextBossRandom() { return NextRandom(); }
-        float MoveSlowMultiplier { get { return PlayerWebSlow > 0 ? .5f : 1f; } }
+        float MoveSlowMultiplier { get { return PlayerWebSlow > 0 || PlayerFreezeSlow > 0 ? .5f : 1f; } }
 
         public void AttachDruidBoss()
         {
@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort.Core
         void TickDruidWorld()
         {
             // PlayerWebSlow / poison belong to the player update of the web (33143, 33151)
-            if (PlayerWebSlow > 0) PlayerWebSlow--;
+            if (PlayerWebSlow > 0) PlayerWebSlow--; if (PlayerFreezeSlow > 0) PlayerFreezeSlow--;
             if (PlayerPoison > 0 && Player.Hp > 0)
             {
                 PlayerPoison -= .02f;

@@ -207,3 +207,17 @@ oracle 케이스 1240개(U1 891 · L1 349, 적 7,232마리, 난수 383회): 명�
 - **CX-03b 착수에 필요한 것**: ① `hurtE`의 실제 구현(CX-04) — DOT 5종·엘리트 모디파이어 틱이 모두 `hurtE`로 피해를 준다 ② 플레이어 스탯 함수 `pDotDur()`/`pDotDmg()`(DOT 지속·배율) ③ `shQuery`(공간 해시) — 오라 ATK·모디파이어가 주변 적을 찾는다 ④ `mkEn`(CX-02, 완료) — 소환·분열 모디파이어. 이동·벽·LOS 함수는 3b에는 필요 없고 3c(상태 머신)와 실플레이 연결 때 필요하다.
 - **미확인**: `JsMath`·`Math.Pow` 비트 일치는 .NET 8 Windows에서만 확인(Mac·IL2CPP는 상태 3 인수 때).
 - **docs**: 이번 단위는 웹 값을 읽었을 뿐 docs 수치를 바꾸지 않았다.
+
+
+## 12. C01-AI — 1-1 필드 몹 구성·AI (2026-10-27, 브랜치 claude/unity-pc-c01ai-20261027)
+
+원본: game.html(main e72118dbd) `HELL_SPAWN`/`rollEtype`/`_spawnHoleCount`, 소환굴 갱신 블록, `updateE` DOT 이후(etype 0~29·47 분기 + `switch(e.s)`).
+
+| 항목 | 내용 |
+|---|---|
+| 스폰 | 1-1 필드에는 웹과 같이 타이머 스폰이 없고 **소환굴 14개**(`godot/data/ch1_map_source/si0.json spawn_holes_final`, 총 168)가 2000px 안에서 깨어나 90프레임 뒤 `rollEtype(0)`(근접/원거리 50:50, 2·22·30·43 제외)로 순차 소환. `EnemyPools.cs`, `SpawnHoles.cs`, `Simulation.Holes.cs`. 분모 `Stage.TotalSpawned`=168(소환마다 증가 안 함) |
+| AI | `EnemyAi.cs`(`UpdateBody`): 공통 앞처리·etype 5/6/7/9/10/11/12/13/14/16/17/19/22/24/25/26/27/28/29/47 스킬, idle 이동(후방 유지 15종·밀착 추적·분리력), 근접 접촉, 60f 탄막 차징(`_fireChargedProj`), 상태 eChargeWind·eCharge·eSwoop·eSlamWind·eShieldBash·eSummon·windup·attack·recover, 엘리트 M04/M29/M30. `Simulation.EnemyAi.cs`가 `EnemyTick`(L1+U1)과 연결 |
+| 투사체 | 필드 탄은 `DruidBoss.SpawnProjectile`(spawnProj)·기존 비행/피격/패링 경로 재사용, 60f 경고 링(`_emitEnemyShot`) 후 발사 |
+| 미이식 | DOT(출혈·중독·화상) 틱, 웹/덫/빙판/눈보라 **지면 탄의 효과**(생성·타이머만, 효과 없음), 플로우필드(직선+축 슬라이드+우회), eCircle/strafe(`atkTicketRequest`가 항상 true라 웹에서도 도달 불가), 엘리트 M31/M32·M05/M18 피격 효과, 방어구 속성 `elMul`(=1), 벽 끼임 구조·사망(`WallStuck` 항상 false), 2장 이후 etype |
+| oracle | `enemy-ai-oracle` 474 시나리오·56,380틱·713,918 검사 / 0 불일치(원본 `updateE` 전체를 Node VM에서 틱 단위 실행, 호출 로그·난수 소비 포함), `enemy-pool-oracle` 35단계×3시드×250 굴림 26,271 검사 / 0, `c01-field-oracle` 소환굴 5 시나리오·소환 433건 / 0 |
+| 회귀 | enemy-tables 2,784, enemy-spawn 204,592, enemy-tick 3,246,746, enemy-hurt 2,439,085, druid-boss 5,421,635, player-hurt 47,559, dash-parry 146,580, shield-revive 34,821 모두 0 실패 (damage-parity·weapon-xbow 종료코드 0) |
