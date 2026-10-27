@@ -11,7 +11,7 @@ module.exports=function(name,oracle,defaultLabel,red){
  let result=build,output=(build.stdout||'')+'\n'+(build.stderr||'');
  if(build.status===0){
   // SDK8 dotnet run ignores a custom OutputPath when it looks for the apphost: run the built DLL explicitly.
-  result=cp.spawnSync(executable,[path.join(binary,name+'.dll'),path.join(out,label+'.json'),path.join(__dirname,oracle)],options);
+  result=cp.spawnSync(executable,[path.join(binary,name+'.dll'),path.join(out,label+'.json'),path.resolve(__dirname,arg('--oracle',oracle))],options);
   output+='\n'+(result.stdout||'')+'\n'+(result.stderr||'');
  }
  fs.writeFileSync(path.join(out,label+'.log'),output);

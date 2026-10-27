@@ -9,5 +9,9 @@ namespace Exoduser.UnityPort.Core
         // CX-04b (hurtE middle)
         public double? burnPool, poisonPool, _shockMul, _iceDotT, _iceDotDmg, _freezeMax;
         public bool? _iceSlowed;
+        // CX-04c1 (hurtE death head: decoy, revive systems, STY-D9 sink, gate guard)
+        public bool? _isDecoy, _revived, _reviveAsGhoul, _bossRevJudged, _bossRevived, _druidTargetLocked, _sinkDruid, _corpseSpawned, _isGateGuard;
+        public double? _reviveX, _reviveY, _bossRevChance, _bossRevRoll, _druidAct, _druidStep, _druidRest, _uqGwExp, _fromHole;
+        public string _fmKind;
     }
 }
