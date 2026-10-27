@@ -53,8 +53,15 @@ namespace Exoduser.UnityPort.Core
 
         void DruidBossTick(EnemyState e)
         {
+            if (remodelPropMap.Count > 0 && remodelPropMap.ContainsKey(e)) return;   // RM-B0b: a boss prop has no AI
             if (druidLives.Count > 0 && RemodelPreTick(e)) return;   // RM-B1: kneeling between lives (the table is empty unless a remodel fight is attached)
-            if (Druid != null && (Config.StageIndex == 0 || Config.StageIndex == 3 || Druid.Remodel)) Druid.TickBoss(e); else TickEnemy(e);
+            if (Druid != null && (Config.StageIndex == 0 || Config.StageIndex == 3 || Druid.Remodel))
+            {
+                if (druidLives.Count > 0) RemodelTickHead(e);   // RM-B0b: damage scale / obstacle bump (no-op for a set without them)
+                Druid.TickBoss(e);
+                if (druidLives.Count > 0) RemodelTickTail(e);
+            }
+            else TickEnemy(e);
         }
 
         void TickDruidWorld()
@@ -67,6 +74,7 @@ namespace Exoduser.UnityPort.Core
                 if ((int)Math.Floor(PlayerPoison * 10) % 6 < 1) { int pd = Js.Int(Player.MaxHp * .008); HurtPlayer(pd, new HurtOptions { Dot = true }); }
             }
             if (Druid == null) return;
+            TickRemodelRules();   // RM-B0b: ended props leave Enemies, obstacles end with the arena
             if (Druid.Boss != null && !Enemies.Contains(Druid.Boss)) { Druid.ClearHazards(); Druid.Data.Clear(); Druid.Boss = null; }
             Druid.TickWorld(Stage.Enabled && Stage.InArena && Stage.BossAlive);
         }

@@ -12,6 +12,10 @@ namespace Exoduser.UnityPort.Core
     public delegate bool BossRmTick(DruidBoss boss, EnemyState e, DruidData d, double dist);
     public delegate void BossRmTele(DruidBoss boss, DruidData d, List<DruidTelegraph> into);
     public delegate void BossRmLife(Simulation sim, EnemyState e, Simulation.DruidLifeState st);
+    // RM-B0b
+    public delegate double BossRmScale(Simulation sim, EnemyState e, Simulation.DruidLifeState st);                         // damage the boss takes: 1 = normal, 0 = blocked
+    public delegate void BossRmProp(Simulation sim, Simulation.RemodelProp p);
+    public delegate void BossRmObstacle(DruidBoss boss, EnemyState e, DruidData d, Simulation.RemodelObstacle o);
 
     // Per-boss rules. Every hook is optional; null = nothing happens. The AI hooks are meant to be static methods inside the boss's own `partial class DruidBoss` file
     // (they then reach the private helpers: StartPattern, PlayerHit, Parry, Tele, RmStartForced ...).
@@ -28,6 +32,31 @@ namespace Exoduser.UnityPort.Core
         public BossRmLife CollapseTick;    // every tick of the kneel (the AI is stopped, HP stays 1): move the body, pull things in ... (e.X / e.Y are the boss position)
         public BossRmLife OnLife;          // the next life starts (after the "life" event; HP / body / shield already set)
         public BossRmLife OnFinal;         // the last life ends: called right before the common kill (rewards, StageFlow opens the exit)
+        // RM-B0b
+        public BossRmLife DyingTick;       // every tick of the death sequence (FinalTicks > 0: invulnerable, AI stopped), before the kill
+        public BossRmProp PropBroken;      // a boss prop (Simulation.SpawnRemodelProp) lost its HP to the player
+        public BossRmScale DamageScale;    // asked every boss tick while a life runs: < 1 scales the damage the boss takes, <= 0 blocks it (the "blocked" event counts the hits)
+        public BossRmObstacle ObstacleHit; // the boss AI asked to move into an obstacle of the set this tick (d.S tells which move: a charge into a stump ...)
+
+        public void CopyTo(BossRemodelHooks o)
+        {
+            o.ForcePick = ForcePick; o.StartMove = StartMove; o.TickState = TickState; o.Telegraphs = Telegraphs; o.OnAttach = OnAttach; o.OnCollapse = OnCollapse; o.CollapseTick = CollapseTick;
+            o.OnLife = OnLife; o.OnFinal = OnFinal; o.DyingTick = DyingTick; o.PropBroken = PropBroken; o.DamageScale = DamageScale; o.ObstacleHit = ObstacleHit;
+        }
+    }
+
+    // RM-B0b: a fixed obstacle of the boss arena (arena px). It is placed when the fight starts and stays until the arena is left.
+    public sealed class RemodelObstacleDef
+    {
+        public string Name; public double X, Y, R;
+        public bool BlocksMove = true;      // player, boss and enemies (Simulation.CanMove)
+        public bool BlocksShots = true;     // projectiles / boss hazards that test walls (Simulation.IsProjectileWall)
+    }
+
+    // RM-B0b: the boss line keys of the web (_BOSS_LINES). A line fires once per key per fight: "intro"+si at the start, "sink"+si / "die"+si at the end.
+    public static class BossLines
+    {
+        public static readonly HashSet<string> Keys = new HashSet<string> { "intro0", "sink0", "die1", "die2", "die3" };
     }
 
     public sealed class BossRemodelSet
@@ -63,12 +92,26 @@ namespace Exoduser.UnityPort.Core
         public bool RootBonus;                             // hits on the root during the kneel: next life -RootBonusFraction, once per fight
         public int RootHitsNeeded = 3; public double RootBonusFraction = 0.10;
         public bool Sink;                                  // last fall = SinkDruid (STY-D9)
-        public readonly BossRemodelHooks Hooks = new BossRemodelHooks();
+        // RM-B0b: life change / death variants (defaults = the RM-B1 behaviour)
+        public bool CollapseVulnerable;                    // the boss takes damage during the change of life; the damage comes off the next life (CollapseTick may switch it per tick)
+        public double CollapseHpFloor;                     // ... but the next life keeps at least this fraction of its HP
+        public int FinalTicks;                             // > 0: the last fall runs a death sequence of this many ticks (invulnerable, DyingTick) before the kill
+        public List<RemodelObstacleDef> Obstacles = new List<RemodelObstacleDef>();
+        public BossRemodelHooks Hooks = new BossRemodelHooks();
 
         // the 23 executors of DruidBoss.StartPattern (+ the druid's heartbeat): a set reuses them by id
         public static readonly HashSet<string> SharedExecutors = new HashSet<string> {
             "burst", "fan", "charge", "jump", "shock", "summon", "grab", "spin", "mine", "multiDash", "slashCombo", "slam", "sweep", "burrowStrike", "beanStorm",
             "chaseAoe", "elemBall", "groundFissure", "tideWave", "seekerMines", "poisonTrail", "lavaPools", "rapidMissile", "heartbeat" };
+
+        // same tables (shared arrays), own switches and hooks: a stage variant of a set (druid si3 = no sink)
+        public BossRemodelSet Clone()
+        {
+            var c = (BossRemodelSet)MemberwiseClone();
+            c.Hooks = new BossRemodelHooks(); Hooks.CopyTo(c.Hooks);
+            c.Obstacles = new List<RemodelObstacleDef>(Obstacles);
+            return c;
+        }
 
         public BossPhaseDef Phase(int life) { return Phases[Math.Min(Math.Max(life, 0), Lives - 1)]; }
 
@@ -124,7 +167,8 @@ namespace Exoduser.UnityPort.Core
         public static Dictionary<int, BossRemodelSet> Build()
         {
             var m = new Dictionary<int, BossRemodelSet>();
-            m[0] = DruidRemodelData.Set; m[3] = DruidRemodelData.Set;   // 1-1 dark druid (RM-B1); 1-4 keeps it until its own remake fills Stage3
+            m[0] = DruidRemodelData.Set;                                // 1-1 dark druid (RM-B1)
+            var d3 = DruidRemodelData.Set.Clone(); d3.Sink = false; m[3] = d3; // 1-4 keeps the druid tables until its own remake fills Stage3, but never sinks (RM-B4 §1: normal death, die3)
             Stage1(m); Stage2(m); Stage3(m);
             foreach (var kv in m) { string bad = kv.Value.Validate(); if (bad != null) throw new InvalidOperationException("BossRemodelSets si" + kv.Key + ": " + bad); }
             return m;
