@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
         {
             if(!Finite(x)||!Finite(y)||x<0||y<0||x>=Data.width*Data.tileSize||y>=Data.height*Data.tileSize)return true;
             int tx=(int)Math.Floor(x/Data.tileSize),ty=(int)Math.Floor(y/Data.tileSize);
-            if(Data.tiles[ty*Data.width+tx]==1)return true;
+            {int tv=Data.tiles[ty*Data.width+tx];if(tv==1||tv==3)return true;}   // 3 = boss gate tile: the web blocks it with boss_gate_col (C04-2)
             var h=Data.hill;
             if(h!=null)
             {
