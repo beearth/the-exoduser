@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort
     // `--unity-m1-check -output <dir>`: M1 route walk-through with the real NativeGame (lobby character creation and story entry, first practice, then gameplay driven through the
     // same Tick / input entry points FixedUpdate uses). Reports "ok / fail / not implemented" per stage with one capture each (<dir>/caps). Nothing is fixed here; the run is isolated
     // (roster and combat save live under <dir>), so a normal player's save is never touched.
+    // Run it in a window (no -batchmode / -nographics, see _out/rmb1/run-rmb1-m1.ps1): NativeBossBar.Active only drops in OnGUI, so steps 12 and 13 read "fail" headless although the flow is correct.
     public sealed partial class NativeGame
     {
         [Serializable] sealed class M1Stage { public string id, name, status, note, capture; }
@@ -65,6 +66,11 @@ namespace Exoduser.UnityPort
             if (practice) EndFirstPractice(true);
             frontendEntryInputFence = false; Running = false; yield return null;
             var sim = Simulation; var p = sim.Player;   // EndFirstPractice rebuilds the run: take the live simulation only now
+            {   // 02b: the fixed enemies of a fresh 1-1 (before the harness clears the field for the hand-spawned steps)
+                int alive0 = 0, guards0 = 0; foreach (var en in sim.Enemies) { if (en.Alive) alive0++; if (en.IsGateGuard) guards0++; }
+                bool startOk = sim.StartEyeMasses == 2 && sim.StartGuards == 1 && guards0 == 1 && sim.StartEscorts + sim.StartWave >= 8 && sim.Stage.TotalSpawned == sim.SpawnHoles.TotalPlanned;
+                M1Add("02b", "1-1 start enemies (fixed)", startOk ? "ok" : "fail", alive0 + " alive at start: " + sim.StartEyeMasses + " 다안 육괴 + " + sim.StartGuards + " gate guard + " + sim.StartEscorts + " escorts + " + sim.StartWave + " wave (denominator " + sim.Stage.TotalSpawned + ", fixed enemies not counted); " + string.Join(" | ", sim.StartMobLog.ToArray()), "02-stage-1-1-entry.png");
+            }
             sim.Config.EnemyAiEnabled = true; sim.Enemies.Clear(); sim.PotionState.Cooldown = 100000; sim.SpawnHoles = null;   // C01-AI: steps 03..09 spawn by hand; the 소환굴 field spawn has its own step (07c)
             Action<float> heal = hp => { if (p.Hp < hp) p.Hp = p.MaxHp; };
 

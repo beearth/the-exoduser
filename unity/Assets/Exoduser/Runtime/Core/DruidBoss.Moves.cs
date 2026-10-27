@@ -21,9 +21,15 @@ namespace Exoduser.UnityPort.Core
             if (Remodel)
             {
                 if (MoveLog != null) MoveLog.Add(new MoveLogEntry { Tick = Clock != null ? Clock() : Tick, Phase = phase, Move = mv.Id });
+                if (!d.RmFire)
+                {   // telegraph list (DruidTelegraph.cs): one serial per move start; the tide-wave gap is drawn now so the ring can show it from the first telegraph frame (same one draw, earlier)
+                    TeleSerial++; d.RmMoveId = mv.Id;
+                    if (mv.Id == "groundFissure") d.RmDir = Atan2(py - d.Y, px - d.X);   // spec #4: the line is aimed once, at the first telegraph tick
+                    if (mv.Id == "tideWave") d.RmGap = R() * Math.PI * 2;
+                }
                 if (!d.RmFire && DruidRemodelData.Instant.Contains(mv.Id))
                 {   // the web fires these the moment they are picked; the remodel shows the telegraph first (spec §4: it never gets shorter)
-                    d.S = "bossRmWind"; d.St2 = Or(tele, 25); d.RmPending = mv; host.Text(d.X, d.Y - 30, "⚠", "#a9cc63", 40); return;
+                    d.S = "bossRmWind"; d.St2 = Or(tele, 25); d.RmTeleTotal = d.St2; d.RmPending = mv; host.Text(d.X, d.Y - 30, "⚠", "#a9cc63", 40); return;
                 }
             }
             switch (mv.Id)
@@ -58,7 +64,7 @@ namespace Exoduser.UnityPort.Core
                 case "chaseAoe":
                     if (Remodel)
                     {   // spec #8: chase zones with a 20 f warning each + the poison trail the boss leaves on his way (no charge)
-                        ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = DruidRemodelData.ChaseZoneCount, T = 0, Interval = 60, R = DruidRemodelData.ChaseZoneRadius, Delay = DruidRemodelData.ChaseZoneWarn, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage });
+                        ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = DruidRemodelData.ChaseZoneCount, T = 0, Interval = 60, R = DruidRemodelData.ChaseZoneRadius, Delay = DruidRemodelData.ChaseZoneWarn, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
                         host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
                         d.PtAng = Atan2(py - d.Y, px - d.X); d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = 50; break;
                     }
@@ -81,12 +87,12 @@ namespace Exoduser.UnityPort.Core
                     }
                 case "groundFissure":
                     {
-                        d.Facing = Atan2(py - d.Y, px - d.X);
-                        int gfPh = d.BossPhase; int n = gfPh >= 3 ? 3 : gfPh >= 1 ? 2 : 1;
+                        d.Facing = Remodel ? d.RmDir : Atan2(py - d.Y, px - d.X);
+                        int gfPh = d.BossPhase; int n = Remodel ? 1 : gfPh >= 3 ? 3 : gfPh >= 1 ? 2 : 1;   // remodel: one straight line
                         for (int fi = 0; fi < n; fi++)
                         {
-                            double off = (fi - (n - 1) / 2.0) * .3, ang = d.Facing + off; int maxLen = I(Math.Max(Or(host.ArenaW / T, 50), Or(host.ArenaH / T, 42)) * T * .45);
-                            Fissures.Add(new Fissure { X = d.X, Y = d.Y, Ang = ang, Spd = 20, Len = 0, MaxLen = maxLen, T = 0, MaxT = 140, W = 140, Dmg = I(d.Atk * 2), Exploded = false, ExplR = Math.Min(750, maxLen * .3), Druid = e.IsBoss && DruidStage });
+                            double off = (fi - (n - 1) / 2.0) * .3, ang = d.Facing + off; int maxLen = FissureMaxLen();
+                            Fissures.Add(new Fissure { X = d.X, Y = d.Y, Ang = ang, Spd = 20, Len = 0, MaxLen = maxLen, T = 0, MaxT = 140, W = 140, Dmg = I(d.Atk * 2), Exploded = false, ExplR = Math.Min(750, maxLen * .3), Druid = e.IsBoss && DruidStage, Serial = TeleSerial, Straight = Remodel });
                         }
                         host.Shake(10); host.Text(d.X, d.Y - 30, "🌋 균열!", "#a9cc63", 50); d.S = "recover"; d.St2 = 30; break;
                     }
@@ -95,8 +101,8 @@ namespace Exoduser.UnityPort.Core
                         int n = Remodel ? 1 : 2 + Math.Min(d.BossPhase, 2);   // remodel: one ring, one gap (spec #10)
                         for (int ti = 0; ti < n; ti++)
                         {
-                            double gap = R() * Math.PI * 2;
-                            TideWaves.Add(new TideWave { X = d.X, Y = d.Y, Rad = 20 + ti * 8, MaxR = 1750, Spd = 15, T = 0, MaxT = 120, GapAng = gap, GapSize = .8, W = 60, Dmg = I(d.Atk * 1.5), HitT = 0, Druid = e.IsBoss && DruidStage });
+                            double gap = Remodel ? d.RmGap : R() * Math.PI * 2;   // remodel: drawn when the move started (one ring, ti == 0)
+                            TideWaves.Add(new TideWave { X = d.X, Y = d.Y, Rad = 20 + ti * 8, MaxR = 1750, Spd = 15, T = 0, MaxT = 120, GapAng = gap, GapSize = .8, W = 60, Dmg = I(d.Atk * 1.5), HitT = 0, Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
                         }
                         host.Text(d.X, d.Y - 30, "🌊 파동!", "#a9cc63", 50); host.Sound("druid_tide", "#10 tideWave ring rises", d.X, d.Y); d.S = "recover"; d.St2 = 35; break;
                     }
@@ -133,6 +139,7 @@ namespace Exoduser.UnityPort.Core
                         host.Shake(8); host.Text(d.X, d.Y - 30, "🚀 미사일!", "#ff2200", 55); d.S = "recover"; d.St2 = 30; break;
                     }
             }
+            if (Remodel && !d.RmFire) d.RmTeleTotal = d.St2;   // telegraph length of the wind state just entered (DruidTelegraph.cs)
         }
 
         // ---- the updateE `switch(e.s)` ------------------------------------------------------------------------------------------------------------------------

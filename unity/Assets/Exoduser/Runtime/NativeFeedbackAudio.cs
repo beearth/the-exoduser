@@ -52,7 +52,7 @@ namespace Exoduser.UnityPort
             this.parent=parent;bus=new NativeAudioMixer();
             var cameraListener=camera.GetComponent<AudioListener>();if(cameraListener!=null)UnityEngine.Object.Destroy(cameraListener);
             listenerObject=new GameObject("Audio listener (player)");listenerObject.transform.SetParent(parent);listenerObject.AddComponent<AudioListener>();
-            foreach(string key in new[]{"sword_swing1","sword_swing2","sword_swing3","scarecrow_charge","sword_parry","player_hit1","player_hit2","player_hit3","player_hit4","spike_trap","heavy_hit","ice_storm","voice_holyDome","voice_holyDome2","voice_grunt","male_grunt"}){
+            foreach(string key in new[]{"sword_swing1","sword_swing2","sword_swing3","scarecrow_charge","sword_parry","player_hit1","player_hit2","player_hit3","player_hit4","spike_trap","fireball","heavy_hit","ice_storm","voice_holyDome","voice_holyDome2","voice_grunt","male_grunt"}){
                 var clip=Resources.Load<AudioClip>("Audio/"+key);
                 if(clip==null)throw new InvalidOperationException("Missing original audio sample "+key);
                 clip.LoadAudioData();clips.Add(key,clip);
@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort
         static void Classify(string key,out int priority,out string group,out float blend,out bool front)
         {
             front=key.StartsWith("sword_swing",StringComparison.Ordinal)||key=="sword_parry";blend=0;
-            if(front||key=="scarecrow_charge"||key=="spike_trap"||key=="heavy_hit"||key=="ice_storm"){priority=PriSkill;group="Skill";}
+            if(front||key=="scarecrow_charge"||key=="spike_trap"||key=="fireball"||key=="heavy_hit"||key=="ice_storm"){priority=PriSkill;group="Skill";}
             else if(key.StartsWith("player_hit",StringComparison.Ordinal)){priority=PriPlayerHit;group="PlayerHit";}
             else if(key.StartsWith("voice_",StringComparison.Ordinal)||key=="male_grunt"){priority=PriVoice;group="Voice";}
             else if(key.StartsWith("tell_",StringComparison.Ordinal)){priority=PriTell;group="Tell";blend=.5f;}
@@ -136,6 +136,7 @@ namespace Exoduser.UnityPort
             if(e.Source!=null){HandleLogical(e);return;}
             if(!clips.ContainsKey(e.SampleKey))throw new NotSupportedException("Audio sample outside admitted scope "+e.SampleKey);
             double now=Time.realtimeSinceStartupAsDouble;var r=Make(e.SampleKey,e.Volume,e.QueuedRate,e.X!=0||e.Y!=0?World(e):Vector3.zero);
+            if(e.SampleKey=="fireball"){r.volume=.9f;r.pitch=Jitter(.7f,.1f);}   // section 6.6: start values of the web E spell cast (vol .9, rate .7 +-.1), the Core only says 'a fireball was cast'
             if(e.SampleKey.StartsWith("tell_",StringComparison.Ordinal)){   // AD3: the same telegraph key at most once per 120 ms
                 if(lastAt.TryGetValue(e.SampleKey,out double lastTell)&&now-lastTell<.12){Receipt.dropped++;return;}
                 lastAt[e.SampleKey]=now;pending.Insert(0,r);return;

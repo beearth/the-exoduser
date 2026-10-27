@@ -238,6 +238,24 @@
     6
    ],
    "note": "웹에는 없음"
+  },
+  {
+   "key": "fireball",
+   "file": "Audio/fireball",
+   "use": "플레이어 E 마법 시전(UI 세션이 unity/main 40256751b에 추가한 키, 웹 E 마법 시전과 같은 값)",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 0.9,
+   "rate": {
+    "center": 0.7,
+    "spread": 0.1
+   },
+   "note": "파일·키 이름은 UI 세션 그대로(RM1 폴더로 옮기지 않음)"
   }
  ]
 }

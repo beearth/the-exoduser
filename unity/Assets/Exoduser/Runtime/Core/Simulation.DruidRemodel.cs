@@ -27,6 +27,9 @@ namespace Exoduser.UnityPort.Core
 
         public DruidLifeState DruidLife(EnemyState e) { DruidLifeState s; return e != null && druidLives.TryGetValue(e, out s) ? s : null; }
 
+        // RM-B1 read-only telegraph list for the presentation (DruidTelegraph.cs): rebuilt from the Core state, empty with the flag off, never written back. Call after Tick.
+        public void DruidTelegraphs(List<DruidTelegraph> into) { if (Druid == null) into.Clear(); else Druid.CollectTelegraphs(into); }
+
         void RemodelEvent(string kind, EnemyState e, DruidLifeState st, string note)
         {
             var ev = new DruidRemodelEvent { Tick = TickCount, Life = st.Life, Kind = kind, Note = note, Hp = e.Hp, MaxHp = e.MaxHp, Shield = e.Shield, Radius = e.Radius };

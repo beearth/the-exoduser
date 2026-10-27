@@ -217,7 +217,7 @@ namespace Exoduser.UnityPort.Core
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
-            if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
+            if(IsFirstPracticeActor(enemy)){ApplyPracticeDamage(enemy,damage);return;}
             bool live = inEnemyLoop && enemy.Web != null;   // inside the L1 loop the web object is the live one (see ApplyEnemyDot): no state -> web copy
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
@@ -266,6 +266,7 @@ namespace Exoduser.UnityPort.Core
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
             enemy.Alive = false; Kills++; Combo++; ComboTicks = enemy.IsBoss ? Math.Min(1800, ComboTicks + 1800) : Math.Min(1200, ComboTicks + 60);
             Feedback.Enqueue(new FeedbackEvent { Kind = enemy.IsBoss ? FeedbackKind.BossDeath : FeedbackKind.EnemyDeath, Tick = TickCount, X = enemy.X, Y = enemy.Y, Etype = enemy.Etype, Size = enemy.Radius, IsBoss = enemy.IsBoss });   // RM-1 sound: notification only
+            if (enemy.IsGateGuard) Stage.OnGateGuardKilled(enemy);   // C07: _isGateGuard death -> +10 % clear progress
             AddMalice(4);
             // Web kill drop (game.html 43094-43099): hp pays malice (+1, a third of the draws), st/mp are discarded; the old quickslot counters stay unused.
             ApplyKillDrop(enemy);
