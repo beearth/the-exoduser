@@ -20,10 +20,11 @@ namespace Exoduser.UnityPort.Core
         public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
     }
 
-    public sealed class ChaseZone { public double X, Y, R, T, Delay, ExplT, ExplMax; public int Dmg; public bool Hit, Druid; }
-    public sealed class ChaseAoe { public int Cnt, MaxCnt, Dmg; public double T, Interval, R, Delay; public bool Druid; public List<ChaseZone> Zones = new List<ChaseZone>(); }
-    public sealed class Fissure { public double X, Y, Ang, Spd, Len, MaxLen, T, MaxT, W, ExplR; public int Dmg; public bool Exploded, Druid; }
-    public sealed class TideWave { public double X, Y, Rad, MaxR, Spd, T, MaxT, GapAng, GapSize, W, HitT; public int Dmg; public bool Druid; }
+    // Serial / Idx: RM-B1 telegraph list (DruidTelegraph.cs) only, the id of the move start that made the hazard; the oracle never reads them
+    public sealed class ChaseZone { public double X, Y, R, T, Delay, ExplT, ExplMax; public int Dmg, Serial, Idx; public bool Hit, Druid; }
+    public sealed class ChaseAoe { public int Cnt, MaxCnt, Dmg, Serial; public double T, Interval, R, Delay; public bool Druid; public List<ChaseZone> Zones = new List<ChaseZone>(); }
+    public sealed class Fissure { public double X, Y, Ang, Spd, Len, MaxLen, T, MaxT, W, ExplR; public int Dmg, Serial; public bool Exploded, Druid; }
+    public sealed class TideWave { public double X, Y, Rad, MaxR, Spd, T, MaxT, GapAng, GapSize, W, HitT; public int Dmg, Serial; public bool Druid; }
     public sealed class SeekerMine { public bool DruidMine; public double X, Y, Vx, Vy, Spd, T, ArmT, MaxT, R; public int Dmg, El, Hp; }
     public sealed class PoisonPool { public double X, Y, T, MaxT, R, TickT; public int Dmg; }
     public sealed class LavaPool { public double X, Y, T, WarnT, MaxT, R, TickT; public int Dmg; }
@@ -207,7 +208,7 @@ namespace Exoduser.UnityPort.Core
                 if (ca.T >= ca.Interval && ca.Cnt < ca.MaxCnt)
                 {
                     ca.T = 0; ca.Cnt++;
-                    ca.Zones.Add(new ChaseZone { X = px, Y = py, R = ca.R, T = 0, Delay = ca.Delay, Dmg = ca.Dmg, Hit = false, Druid = ca.Druid });
+                    ca.Zones.Add(new ChaseZone { X = px, Y = py, R = ca.R, T = 0, Delay = ca.Delay, Dmg = ca.Dmg, Hit = false, Druid = ca.Druid, Serial = ca.Serial, Idx = ca.Cnt });
                 }
                 int zw = 0;
                 for (int zi = 0; zi < ca.Zones.Count; zi++)
