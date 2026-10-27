@@ -14,8 +14,8 @@ namespace Exoduser.UnityPort.Core
     // Numbers are px / radians / 60 fps ticks of the simulation. (Serial, Move, Kind, Index) identifies an entry from one frame to the next.
     public sealed class DruidTelegraph
     {
-        public int Move;                 // 1..12 = row of the RM-B1 §3 move table (DruidRemodelData.Moves order)
-        public string MoveId;            // DruidRemodelData.Moves[Move - 1].Id
+        public int Move;                 // 1..N = row of the remodel set's move table (BossRemodelSet.Moves order; druid: the 12 rows of RM-B1 §3)
+        public string MoveId;            // Set.Moves[Move - 1].Id
         public DruidTeleKind Kind;
         public DruidTeleShape Shape;
         public int Serial;               // one per move start (and shared by every hazard that move makes)
@@ -47,12 +47,7 @@ namespace Exoduser.UnityPort.Core
         // groundFissure: how far the head may crawl (also read by the telegraph)
         int FissureMaxLen() { return I(Math.Max(Or(host.ArenaW / T, 50), Or(host.ArenaH / T, 42)) * T * .45); }
 
-        static int MoveNo(string id)
-        {
-            var mv = DruidRemodelData.Moves;
-            for (int i = 0; i < mv.Length; i++) if (mv[i].Id == id) return i + 1;
-            return 0;
-        }
+        int MoveNo(string id) { return Set.MoveNo(id); }
 
         DruidTelegraph Tele(List<DruidTelegraph> into, string moveId, DruidTeleKind kind, DruidTeleShape shape, double total, double remaining, int index = 0)
         {
@@ -194,6 +189,7 @@ namespace Exoduser.UnityPort.Core
                 into.Add(t);
             }
             foreach (var w in TideWaves) AddTideRing(into, w.MaxT, w.MaxT - w.T, true, w.X, w.Y, w.Rad, w.MaxR, w.GapAng, w.GapSize, w.W, w.Serial);
+            RmTeleHook(d, into);   // RM-B0: the boss's own entries (BossRemodelHooks.Telegraphs)
         }
 
         // the first slash opens its window 4 ticks after the wind ends; hits 2 and 3 run from the start of their own bossSlash state (14 f, window from the 8th)
@@ -210,9 +206,9 @@ namespace Exoduser.UnityPort.Core
         void AddSlam(List<DruidTelegraph> into, DruidData d, double total, double remaining)
         {
             var t = Tele(into, "slam", DruidTeleKind.ParryGlint, DruidTeleShape.Circle, total, remaining, 0);
-            t.X = d.X; t.Y = d.Y; t.Radius = DruidRemodelData.SlamRadius; t.Dir = d.Facing; StaffTip(t, d);
+            t.X = d.X; t.Y = d.Y; t.Radius = Set.SlamRadius; t.Dir = d.Facing; StaffTip(t, d);
             t = Tele(into, "slam", DruidTeleKind.GroundDecal, DruidTeleShape.Circle, total, remaining, 1);
-            t.X = d.X; t.Y = d.Y; t.Radius = DruidRemodelData.SlamRadius; t.Dir = d.Facing;
+            t.X = d.X; t.Y = d.Y; t.Radius = Set.SlamRadius; t.Dir = d.Facing;
         }
 
         // tide wave: the band is [rad - w, rad + w] (UpdateTideWaves tests |dist - rad| < w) and the gap passes when |angle - gapAng| <= gapSize

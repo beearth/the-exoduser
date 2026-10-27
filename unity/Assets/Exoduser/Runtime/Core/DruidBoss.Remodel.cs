@@ -28,10 +28,10 @@ namespace Exoduser.UnityPort.Core
         // SafeZones = centre x, centre y, radius. RB1-3 fills it with the four root pillar shadows; empty means the heartbeat can only be dodged with i-frames.
         public readonly List<double[]> SafeZones = new List<double[]>();
 
-        BossPhaseDef Ph(int phase) { return Remodel ? DruidRemodelData.Phases[Math.Min(Math.Max(phase, 0), DruidRemodelData.Lives - 1)] : DruidBossData.Phases[phase]; }
-        BossMove[] MoveTable { get { return Remodel ? DruidRemodelData.Moves : DruidBossData.Moves; } }
-        BossCombo[] ComboTable { get { return Remodel ? DruidRemodelData.Combos : DruidBossData.Combos; } }
-        double CooldownOf(BossMove mv, BossPhaseDef ph) { return Remodel && mv.Id == "heartbeat" ? mv.Cd : mv.Cd * ph.CdM; }
+        BossPhaseDef Ph(int phase) { return Remodel ? Set.Phases[Math.Min(Math.Max(phase, 0), Set.Lives - 1)] : DruidBossData.Phases[phase]; }
+        BossMove[] MoveTable { get { return Remodel ? Set.Moves : DruidBossData.Moves; } }
+        BossCombo[] ComboTable { get { return Remodel ? Set.Combos : DruidBossData.Combos; } }
+        double CooldownOf(BossMove mv, BossPhaseDef ph) { return Remodel && Set.Forced.Contains(mv.Id) ? mv.Cd : mv.Cd * ph.CdM; }
 
         static int AliveMinions(DruidData d)
         {

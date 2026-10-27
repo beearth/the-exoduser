@@ -73,5 +73,18 @@ namespace Exoduser.UnityPort.Core
             foreach (var m in Moves) if (m.InPhase(phase)) l.Add(m.Id);
             return l.ToArray();
         }
+
+        // RM-B0: the same data as the first BossRemodelSet (declared last: the static initialisers above run first). The druid rules are on here only.
+        public const string SetId = "druid";
+        public static readonly BossRemodelSet Set = MakeSet();
+        static BossRemodelSet MakeSet()
+        {
+            var s = new BossRemodelSet {
+                Id = SetId, Lives = Lives, LifeHpFraction = LifeHpFraction, BodyScale = BodyScale, ShieldFraction = ShieldFraction, CollapseTicks = CollapseTicks,
+                Moves = Moves, Combos = Combos, Phases = Phases, Parryable = Parryable, Instant = Instant, Forced = new HashSet<string> { "heartbeat" },
+                SlamRadius = SlamRadius, PoisonTrailTicks = PoisonTrailTicks, ChaseZoneRadius = ChaseZoneRadius, ChaseZoneWarn = ChaseZoneWarn, ChaseZoneCount = ChaseZoneCount, SummonMax = SummonMax,
+                Heartbeat = true, GrabAbsorb = true, RootBonus = true, RootHitsNeeded = RootHitsNeeded, RootBonusFraction = RootBonusFraction, Sink = true };
+            return s;
+        }
     }
 }

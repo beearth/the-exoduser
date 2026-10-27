@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort.Core
             if (Druid != null) return;
             Druid = new DruidBoss(new BossHostAdapter(this)) { ElementMul = el => EnemyHurt.ElMul(el, ArmorElement()) };
             Stage.BossSpawners[0] = SpawnDruid; Stage.BossSpawners[3] = SpawnDruid;
+            RegisterRemodelSpawners();   // RM-B0: other stages with a registered remodel set, only while its flag is on
             BossTick = DruidBossTick;
             AfterEnemyTick += TickDruidWorld;
         }
@@ -43,16 +44,17 @@ namespace Exoduser.UnityPort.Core
             webOwner[web] = e;
             AddEnemy(e);
             Druid.ClearHazards();
-            Druid.Remodel = DruidRemodel;
+            var rmSet = RemodelSetFor(Config.StageIndex);   // RM-B0: null unless the remodel flag of this stage's set is on
+            Druid.Remodel = rmSet != null; if (rmSet != null) Druid.Set = rmSet;
             Druid.Attach(e);
-            if (DruidRemodel) RemodelAttach(e);
+            if (rmSet != null) RemodelAttach(e, rmSet);
             return e;
         }
 
         void DruidBossTick(EnemyState e)
         {
-            if (DruidRemodel && RemodelPreTick(e)) return;   // RM-B1: kneeling between lives
-            if (Druid != null && (Config.StageIndex == 0 || Config.StageIndex == 3)) Druid.TickBoss(e); else TickEnemy(e);
+            if (druidLives.Count > 0 && RemodelPreTick(e)) return;   // RM-B1: kneeling between lives (the table is empty unless a remodel fight is attached)
+            if (Druid != null && (Config.StageIndex == 0 || Config.StageIndex == 3 || Druid.Remodel)) Druid.TickBoss(e); else TickEnemy(e);
         }
 
         void TickDruidWorld()
