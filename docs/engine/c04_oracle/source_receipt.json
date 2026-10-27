@@ -1,0 +1,47 @@
+{
+ "extractedAt": "2026-10-27T04:25:59.707Z",
+ "mainRef": "origin/main",
+ "mainSha": "cc898c690174208f393b9196b9d7c5f0bda87cf6",
+ "mainRepo": "G:/exoduser",
+ "gameHtml": {
+  "sha256_committed_blob": "d73d691989c1cb847cb500ce02ae81430c575fb90d732a5af131742c96d2c8c5",
+  "sha256_disk_at_extract": "b96ad56000e5bd0d14164ec3b11428911e4dd423162800391e83b8d3004f907a",
+  "usedSource": "committed blob via Playwright route",
+  "diskDiffersFromCommitted": true
+ },
+ "mapsDataJs": {
+  "sha256_committed_blob": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+  "sha256_disk_at_extract": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+  "usedSource": "committed blob via Playwright route"
+ },
+ "worktreeStatusOfSources": "M game.html",
+ "functions": {
+  "isW": 31713,
+  "_rebuildColObjs": 31688,
+  "_ensureColObjs": 31689,
+  "_ch1HillBandBlocks": 31698,
+  "_CH1_HILL": 31692,
+  "genFromTemplate": 30220,
+  "initStage": 31535,
+  "mkP": 29018,
+  "_applyCh1StartNorthGate": 30023
+ },
+ "bootSequence": "G._cutsceneDone=true; if(!P)P=mkP(); G.stage=0; initStage(0) in headless Chrome (--mute-audio), game.html/maps_data.js fulfilled from committed blob",
+ "determinism": {
+  "runs": 5,
+  "tileHash": true,
+  "walk": true,
+  "partial": true,
+  "spawnHolePositions": true,
+  "exits": true,
+  "start": true
+ },
+ "runs": 5,
+ "pageErrors": [
+  [],
+  [],
+  [],
+  [],
+  []
+ ]
+}
