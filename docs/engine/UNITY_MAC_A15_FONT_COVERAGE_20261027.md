@@ -45,6 +45,23 @@ Mac 소유 제목/탭 보정과 F8 QA 순환만 포함한 Unity 6000.6.7f1 ARM64
 
 [수정 후 코드포인트 재대조](/Users/fordeargamers/exoduser-wt/_out/A15-FONT-COVERAGE-20261027/postfix-codepoints.json)는 Mac 적용 Settings 5 ID와 **PC patch 가정** KeyList 38 ID의 미검수23 locale 결손을 각각 0으로 계산했다. PC KeyList 값 0은 제품 적용 전의 정적 예측이다.
 
+## A15 E-to-Q MouseDown trace — 2026-10-27
+
+PC UI handoff `67abbfbba2284d92d48f05d859cfe57390b46771` provides the 1920x1080, scroll-zero game-view centers: E/shield `(1444.895,476)` and Q/parry `(562.895,590)`. Its static source check found disjoint hit rectangles. Mac added the opt-in `-a15-hittrace` flag to the direct Settings QA path. It logs the same MouseDown before the pause menu and before/after `GUI.BeginGroup(content)`. The input, save, and key-list product rectangles did not change.
+
+One ARM64 Settings QA build succeeded with zero compile errors. The isolated marker root was `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-IO-A15-HITTRACE-20261027`, and the final flagged Player was PID 40772. Selecting the app by path initially launched a second, unflagged same-bundle PID 40716, which showed the lobby; both task-owned QA processes were stopped, and PID 40772 was launched with `open -n -a ... --args` and verified by full command line. Existing user app PIDs 38141/48476/52157 were untouched. Raw evidence: `/Users/fordeargamers/exoduser-wt/_out/A15-HITTRACE-20261027/player-open.log` and the adjacent before/after screenshots.
+
+| Player frame and target | CUA requested point in 1920x1144 window capture | Before group `Event.mousePosition` | After `BeginGroup(content)` | Pre-click capture and visible result |
+|---|---|---|---|---|
+| 1287, E button | `(1440,540)` | `(493,590)` | `(413,330)` | `Listening=False`, action empty, consumed frame `-10`; Q/parry entered waiting |
+| 5618, Q button after Escape | `(562,654)` | `(493,590)` | `(413,330)` | `Listening=False`, previous consumed frame `2934`; Q/parry entered waiting |
+| 6932, E again after Escape | `(1440,540)` | `(493,590)` | `(413,330)` | `Listening=False`, previous consumed frame `6848`; Q/parry entered waiting |
+| 7704, 1px drag at E after Escape | `(1440,540)` to `(1441,541)` | `(493,590)` | `(413,330)` | `Listening=False`, previous consumed frame `7693`; Q/parry entered waiting |
+
+Each MouseDown reports `Screen=1920x1080`, `dpi=228`, identity `GUI.matrix`, `content=(80,260,1760,610)`, and `keyScroll=0/max=132`. The local Q/parry main rect `(357.090,309,251.610,42)` contains `(413,330)`; the E/shield rect `(1239.090,195,251.610,42)` does not. The group coordinate delta is exactly the content origin `(80,260)`. Pending Q capture and a misplaced group transformation are therefore unsupported as causes in this reproduction. `Event.Use()` changes the event after the list handles it, so the trace's `rawType=MouseDown` filter emits no `group-after` or root-after line.
+
+**VISUAL VERDICT: RETOUCH/HOLD for mouse input.** CUA screenshots show the pointer at different visible targets, but the Player received the same MouseDown position for all four actions. This evidence does not separate a macOS synthetic-input delivery issue from a physical-mouse product issue. Do not compensate product rectangles from this trace. Retest the same PID/window with a physical mouse or an independent input path, comparing the pre-group and group-local MouseDown values, before assigning a product fix or a physical-mouse PASS.
+
 ## PC 소유 수정본 인수·제품 적용 / 실화면 — 2026-10-27
 
 PC UI 인계 commit `97be6444b6bebe0fba186209191353eb830988fe`의 `docs/engine/ui_handoff/` 세 파일만 읽었다. 대상 `NativeKeyBindList.cs` base blob `4abe399e66264c30f9622c24e1306688e4dcf7fd`가 현재 Mac `unity/main` `94cc7dce1`과 동일함을 확인했다. 승인된 **지역 글꼴 patch** SHA-256 `f706e7b9f270c8b258b7234f782cc48b49be8611a58cdaafec489ce2940cfe14`, **clip 포함 수정 긴 이름 patch** SHA-256 `f456ef12593e4bcd237fc3f5fd9dda0db4043b0751a2643351711502f68c17da`를 그 순서로 `git apply --ignore-space-change` 적용했다. 위 절의 최초 긴 이름 제안은 이 인수에서 적용하지 않았다.

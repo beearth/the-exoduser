@@ -27,6 +27,7 @@ namespace Exoduser.UnityPort
   public void SetKeyScrollForTest(float value){keyScroll=value;}
   public bool English { get; set; }
   public string LocaleCode { get; set; }="ko";
+  public bool HitTraceForQa {get;set;}
   public bool SettingsPersistenceEnabled {get;set;}
   public bool SettingsPersistenceProblem {get;set;}
   public bool SettingsPersistenceRecovered {get;set;}
@@ -188,7 +189,21 @@ namespace Exoduser.UnityPort
    float max=Mathf.Max(0,keyList.ContentHeight+28-content.height);
    if(Event.current.type==EventType.ScrollWheel&&content.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
    keyScroll=Mathf.Clamp(keyScroll,0,max);
-   GUI.BeginGroup(content);keyList.Draw(new Vector2(12,14-keyScroll),new Rect(0,0,content.width,content.height));GUI.EndGroup();
+   TraceHitForQa("menu",content,max);
+   GUI.BeginGroup(content);
+   TraceHitForQa("group-before",content,max);
+   keyList.Draw(new Vector2(12,14-keyScroll),new Rect(0,0,content.width,content.height));
+   TraceHitForQa("group-after",content,max);
+   GUI.EndGroup();
+  }
+  void TraceHitForQa(string phase,Rect content,float max)
+  {
+   if(!HitTraceForQa||Event.current==null||Event.current.rawType!=EventType.MouseDown)return;
+   var e=Event.current;var m=GUI.matrix;var rows=keyList.Bindings.Listed;
+   int shield=-1,parry=-1;for(int i=0;i<rows.Count;i++){if(rows[i]=="shield")shield=i;if(rows[i]=="parry")parry=i;}
+   string shieldRect=shield>=0&&keyList.LastKeyRects.Count>shield*2?keyList.LastKeyRects[shield*2].ToString("F3"):"none";
+   string parryRect=parry>=0&&keyList.LastKeyRects.Count>parry*2?keyList.LastKeyRects[parry*2].ToString("F3"):"none";
+   Debug.Log("A15_HIT_MENU phase="+phase+" frame="+Time.frameCount+" type="+e.type+" raw="+e.rawType+" button="+e.button+" mouse="+e.mousePosition.ToString("F3")+" screen="+Screen.width+"x"+Screen.height+" matrix="+m.m00+","+m.m11+","+m.m03+","+m.m13+" content="+content.ToString("F3")+" scroll="+keyScroll+" max="+max+" listening="+keyList.Listening+" action="+keyList.ListeningAction+" consumed="+keyList.CaptureConsumedFrame+" shieldIndex="+shield+" shieldRect="+shieldRect+" parryIndex="+parry+" parryRect="+parryRect);
   }
   string SettingsPersistenceNotice()
   {

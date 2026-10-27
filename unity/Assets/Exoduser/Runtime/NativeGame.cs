@@ -318,7 +318,9 @@ namespace Exoduser.UnityPort
             else if((menu||p.Hp<=0)&&!hudSmoke&&!inventorySmoke){
                 pauseMenu.English=lobby.Language!="ko";
                 pauseMenu.LocaleCode=lobby.Language;
+                TraceA15HitRoot("before");
                 ApplyPauseCommand(pauseMenu.Draw(p.Hp<=0,Screen.fullScreen));
+                TraceA15HitRoot("after");
             }
             GUI.matrix=old;
         }
