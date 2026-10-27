@@ -398,8 +398,10 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 
 | id/경로 | 시트 | 선택 조건 | 프레임·화면 크기 | 폴백·전투 영향 |
 |---|---|---|---|---|
-| `giant` / `assets/vfx/giant_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | 지옥강타 2가 아닌 `giantSlam2` | `_slamFrame=min(3,floor((t/maxT)×4))`; 지옥강타 2 크기=`maxR×0.9×(0.72→1.0)` | 로딩 실패 시 기존 `img/crater.png` 2×2 크레이터. 피해·범위·포이즈·자원·쿨다운 불변 |
+| `giant` / `assets/vfx/giant_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | 지옥강타 2가 아닌 `giantSlam2` | `_slamFrame=min(3,floor(pow(t/maxT,.6)×4))`(VFX-10 이후; 이전 `floor((t/maxT)×4)`); 지옥강타 2 크기=`maxR×0.9×(0.72→1.0)` | 로딩 실패 시 기존 `img/crater.png` 2×2 크레이터. 피해·범위·포이즈·자원·쿨다운 불변 |
 | `inferno` / `assets/vfx/inferno_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | `srcId==='giantSlam'`, 또는 `srcId==='giantSlam2' && _isFused('infernoSlam')` | 같은 4프레임 진행; 지옥강타 1 크기=`maxR×0.9×(0.72→1.0)`, 지옥진 크기=`maxR×0.98×(0.72→1.0)`. 진행률 62%까지 alpha 1, 이후 38% 동안 페이드 | 같은 크레이터 폴백. 지옥진 자동 발동 등 기존 합체 전투 로직 불변 |
+
+**VFX-10 (2026-10-27)**: 프레임 진행식은 `_slamFrame=min(3,floor(pow(t/maxT,.6)×4))`로 바뀌어 프레임 1(용암 몸체)이 +0.074초, 2가 +0.236초, 3이 +0.46초에 시작한다(기존 +0.19/+0.375/+0.56초). 진동파 렌더의 중앙 플래시는 반지름 `min(maxR×.4,42)×(.55+.45×flashP)`, 색 `#fff4d0`, 알파 `.9×flashP²×fade`(`flashP=max(0,1−4t/maxT)`)의 국소 백열 코어이며 기존 `maxR×.4` 베이지 원판은 삭제됐다. 크기·알파·판정은 불변. 상세 [VFX_LEAD_MASTER §3.8](VFX_LEAD_MASTER_20261026.md).
 
 두 시트는 `_loadSlamVfx()`가 1024×1024와 실제 디코딩 가능 여부를 확인한다. `_gSlamWave`의 `kind`만 시각 재질을 선택하며, 기존 진동파 링과 충돌·피해 처리는 그대로 유지한다.
 

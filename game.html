@@ -56875,7 +56875,7 @@ function drawP(){
       // 1) API 영웅급 임팩트 시트 (지옥강타 1/지옥강타 2 + 기동강타)
       if(_isSlamHero){
         const _slamVfx=(w.vfxKind==='inferno'||w.kind==='inferno')?_infernoSlamVfx:_giantSlamVfx;
-        const _slamFrame=Math.min(3,~~(_wP*4));
+        const _slamFrame=Math.min(3,~~(Math.pow(_wP,.6)*4)); // VFX-10: 용암 몸체 정점 당김
         const _slamSx=(_slamFrame%2)*512,_slamSy=~~(_slamFrame/2)*512;
         const _slamGrow=.72+.28*Math.min(1,_wP*3.5);
         const _slamSize=w.maxR*(w.kind==='inferno'?.98:.9)*_slamGrow;
@@ -56900,9 +56900,10 @@ function drawP(){
       }
       // 2) 중앙 폭발 플래시 (지옥강타 1 전용)
       if(_isGSlam){
+      // VFX-10: 화면 덮던 베이지 원판(반지름 maxR*.4) → 국소 백열 코어(SSOT §2.7 원칙 2·5)
       const _flashP=Math.max(0,1-_wP*4);
-      if(_flashP>0){const _fR=w.maxR*.4*_flashP;
-        X.globalAlpha=.82*_flashP*fade;X.fillStyle=w.kind==='inferno'?'#fff2a0':'#fff0c8';
+      if(_flashP>0){const _fR=Math.min(w.maxR*.4,42)*(.55+.45*_flashP);
+        X.globalAlpha=.9*_flashP*_flashP*fade;X.fillStyle='#fff4d0';
         X.beginPath();X.arc(w.x,w.y,_fR,0,Math.PI*2);X.fill();}
       }
       // 지옥강타 1만의 방사 균열: 기존 원형 지진파 위에 실제 지면이 갈라지는 실루엣을 더한다.
