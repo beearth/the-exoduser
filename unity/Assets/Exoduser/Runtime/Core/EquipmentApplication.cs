@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort.Core {
             Player.MaxHp=s.PlayerMaxHp;Player.MaxStamina=(float)s.PlayerMaxStamina;Player.MaxMana=(float)s.PlayerMaxMana;Player.MaxShield=(float)s.PlayerMaxShield;
             Player.BaseAttack=s.PlayerBaseAttack;Player.Speed=(float)s.PlayerSpeed;s.ClampResources(Player);
             Config.AntiRevive=s.AntiRevive;Config.ReviveOnceAffix=s.ReviveOnce;Config.RevivePow=s.RevivePow;Config.ReviveCdAffix=s.ReviveCd; // B08
+            ApplyCrossbowEquipment(inventory,s.Dex); // B05 bow slot
             ApplyAutoPotionEquipment(inventory); // web _eqAffix('potionPower'), gl().potCd, blt().potCd
         }
     }

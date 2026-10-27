@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
         public bool Running {get; private set;}
         public int LoadedChunks {get {return chunks.Count;}}
         public int RenderedEnemyCount {get {return enemies.Count;}}
-        Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;
+        Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;NativeBoltView boltView;
         KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
         NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;NativeStatPanel stats;bool skillsWasRunning,statsWasRunning,skillInputFence;
@@ -60,6 +60,7 @@ namespace Exoduser.UnityPort
             BuildProps();
             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
             if(kiSheet==null||kiSheet.width%3!=0||kiSheet.height%3!=0)throw new InvalidOperationException("Invalid original kiSlash 3x3 sheet");
+            boltView=new NativeBoltView(transform);
             kiView=new KiSlashView(transform,f=>SpriteFor("Art/vfx/ki_slash_silver_sheet",f%3*(kiSheet.width/3),f/3*(kiSheet.height/3),kiSheet.width/3,kiSheet.height/3,new Vector2(.5f,.5f)));
             var hitSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_hit_silver_sheet");
             if(hitSheet==null||hitSheet.width!=1254||hitSheet.height!=1254)throw new InvalidOperationException("Invalid original kiSlash 2x2 hit sheet");
@@ -97,6 +98,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-canonical-world-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(CanonicalWorldSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-controls-smoke")>=0){lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbyControlsSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbySmoke());}
+            else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-b05-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(B05Smoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-b07-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(B07Smoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-rage-malice-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(RageMaliceSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-drop-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(DropSmoke());}
@@ -110,7 +112,7 @@ namespace Exoduser.UnityPort
             ResetFirstPractice();
             startupResetCount++;
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();
-            kiView?.Reset();impacts?.Reset();sound?.Reset();
+            kiView?.Reset();boltView?.Reset();impacts?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
@@ -192,6 +194,7 @@ namespace Exoduser.UnityPort
             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("skill")){SetSkills(true);return;}
             if(!menu&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("inventory"))SetInventory(!inventory.Open);
+            if(!menu&&!inventory.Open&&Running&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.T))ToggleCrossbow();   // web keydown KeyT (not repeat), G.on && !G.paused
             if(!menu&&!inventory.Open&&!Simulation.PlayerCombatWired&&(NativeKeyBindInput.Down("parry")||NativeKeyBindInput.Down("shield")))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
             UpdateViews();
             if(smokeActive)sound?.Probe();
@@ -275,6 +278,7 @@ namespace Exoduser.UnityPort
             }
             UpdateDropViews();
             kiView?.Update(Simulation);
+            boltView?.Update(Simulation);
             impacts?.Update(Simulation.TickCount);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
@@ -294,6 +298,8 @@ namespace Exoduser.UnityPort
             Texture2D texture=null;foreach(string key in keys){texture=spriteCache[key].texture;Destroy(spriteCache[key]);spriteCache.Remove(key);}if(texture!=null)Resources.UnloadAsset(texture);
         }
         static Vector3 Point(float x,float y){return new Vector3(x/100,-y/100,0);}
+        // Web: _xbowEquipped toggle + showPH('석궁 자동발사 ON/OFF'). OPT.xbowAuto persistence belongs to the settings owner and is not wired here.
+        public void ToggleCrossbow(){Toast(Simulation.ToggleCrossbowAuto()?"석궁 자동발사 ON":"석궁 자동발사 OFF");}
         void Toast(string text){notice=text;noticeUntil=Time.unscaledTime+3;}
         void InitGUI()
         {
@@ -529,6 +535,6 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
+        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
     }
 }

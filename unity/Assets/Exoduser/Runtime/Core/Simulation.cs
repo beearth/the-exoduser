@@ -93,7 +93,7 @@ namespace Exoduser.UnityPort.Core
             TickCount++;
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
-            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); TickKiTimers(); return; }
+            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen / regenDivisor);
@@ -166,6 +166,7 @@ namespace Exoduser.UnityPort.Core
                 if (Config.EnemyAiEnabled) { if (enemy.IsBoss && BossTick != null) BossTick(enemy); else TickEnemy(enemy); }   // C07: boss Core plug-in
             }
             TickCorpses();
+            TickCrossbow(); // B05: auto crossbow fire + bolt update
             UpdateKiProjectiles();
             TickKiTimers();
             // Web update() auto potion block (game.html 35895-35911): runs once per frame after the enemy loop.
@@ -217,7 +218,7 @@ namespace Exoduser.UnityPort.Core
             ApplyEnemyDamage(enemy, damage, angle, false, 1, dot, shieldHit);
         }
 
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false)
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             if (enemy.Etype != 0 && !enemy.IsGhoul && !enemy.IsBoss) throw new NotSupportedException("Only admitted normal etype0 profile (and its revived ghouls) is implemented.");
@@ -226,8 +227,9 @@ namespace Exoduser.UnityPort.Core
             if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
             { double ri = enemy.ReviveIframes; bool swallowed = EnergyShield.SwallowedByReviveIframes(ref ri, dot); enemy.ReviveIframes = ri; if (swallowed) return; } // hurtE 42208-42209
             damage = Math.Max(1, damage);
+            if (typeDamagePct > 0) damage = (int)(damage * (1 + typeDamagePct)); // hurtE Phase2 typed damage % (arrow: rangedDmgPct + projDmgPct)
             if (Config.AccessoryDamageBonus > 0) damage = (int)(damage * (1 + Config.AccessoryDamageBonus));
-            if (NextRandom() * 100 < Config.PlayerCriticalChance) damage = (int)(damage * Config.PlayerCriticalMultiplier);
+            if (NextRandom() * 100 < Config.PlayerCriticalChance + critRateBonus) damage = (int)(damage * Config.PlayerCriticalMultiplier);
             if (enemy.Stunned > 0) damage = (int)(damage * 1.5);
             if (enemy.BlinkWeak > 0 && enemy.BlinkWeakTicks > 0) damage = (int)(damage * (1 + enemy.BlinkWeak));   // u_n02 roll weak
             int total = damage;
