@@ -94,4 +94,4 @@ ROOT는 별도 `manual-d0ea9d1` namespace에서 CUA 실제 D1100ms와 좌클릭/
 - 검증: `Tools/first-practice` 69 PASS(우클릭·가시덫 진짜 Tick, 사슬·구르기·분노 흐름), 실제 플레이어 스크립트 캡처(이동→좌클릭→우클릭→가시덫→사슬→구르기→분노 폭발, 보상 0, 원본 복원).
 - 수정(2차): 연습 틱이 `SetPlayerCombatInput`/`SetRollInput`을 FixedUpdate와 합쳐 틱당 3번 불러 직전 입력 상태가 항상 false가 되어 Shift를 뗀 순간·구르기 키 엣지가 사라졌다 → 연습 중에는 연습 틱이 틱당 1회만 입력을 설정한다.
 - 이식 안 된 단계는 건너뛰고 체크리스트에 "이식 예정"으로 표시한다(`FirstPracticeFlow.Ported`). 패링 반사가 들어오면 해당 플래그만 true로 바꾼다.
-- 카메라: 연습 시작 위치가 1-1 남쪽 맵 가장자리라 화면 아래가 검게 보인다(맵 경계 바깥). 일반 플레이에서 같은 위치에 서도 같다.
+- 카메라: 연습 시작 위치가 1-1 남쪽 맵 가장자리라 화면 아래가 검게 보였다(맵 경계 바깥). 원인은 Unity 카메라에 웹 `_clampCamToMap`(game.html 12023)이 없던 것 — `NativeGame.CameraClamp.cs`로 추가(2026-10-28, 브랜치 camclamp). 웹과 같은 식: 보이는 반폭/반높이=VW,VH/(2·줌), 맵이 더 작으면 가운데, 흔들림은 clamp 뒤에 더함. 보스 아레나는 `BossArenaLayout` 128×108×40px. 1-1(8000×8000) 시작·남·서·동·북·SW·NE 7곳에서 카메라 좌표가 웹과 같고(예: 북 540, 남 7460, 서 960, 동 7040) 화면 밖 영역이 보이지 않는다. `--unity-cam-capture -output <dir>`로 재현.
