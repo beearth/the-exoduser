@@ -38,16 +38,23 @@ namespace Exoduser.UnityPort.Core
             return TurnToward(d.Facing, target, limit);
         }
 
-        // floating text of the boss: with the remodel on, popups that carry an emoji / symbol glyph (the web's "⚔ 난타!", "🌋 균열!" ...) are dropped, plain Korean text stays
-        // (wall hit damage, "벗어났다!"). The remodel tells the player what is coming with the telegraph displays, not with words. Remodel off = host.Text exactly as before.
+        // floating text of the boss: with the remodel on, only the texts in Set.PopupKeep (wall hit damage, poison tick, "벗어났다!") are raised and only without an emoji / symbol glyph;
+        // move names ("균열!", "확산!", "⚔ 난타!"), phase labels, counts and status callouts are dropped. The remodel tells the player what is coming with the telegraph displays,
+        // not with words (spec §6). Remodel off = host.Text exactly as before.
         static bool HasGlyph(string s)
         {
             foreach (char c in s) { int u = c; if ((u >= 0x2190 && u <= 0x2BFF) || char.IsSurrogate(c) || u == 0x200D || (u >= 0xFE00 && u <= 0xFE0F)) return true; }   // arrows .. dingbats .. misc symbols, surrogate pairs (emoji), joiner, variation selectors
             return false;
         }
+        bool PopupKept(string s)
+        {
+            var keep = Set.PopupKeep;
+            for (int i = 0; keep != null && i < keep.Length; i++) if (s.StartsWith(keep[i], StringComparison.Ordinal)) return true;
+            return false;
+        }
         void RmText(double x, double y, string ko, string color, int life)
         {
-            if (Remodel && HasGlyph(ko)) return;
+            if (Remodel && (HasGlyph(ko) || !PopupKept(ko))) return;
             host.Text(x, y, ko, color, life);
         }
 
