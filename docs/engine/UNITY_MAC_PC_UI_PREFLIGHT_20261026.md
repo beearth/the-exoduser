@@ -141,3 +141,16 @@ The preceding checkpoint's Player HOLD was specific to that earlier source. The 
 | ESC close/reopen | At 1280, Skill ESC and Inventory ESC each returned to field; field ESC opened pause menu; pause menu K opened Skill (`u08-1280-after-esc.png`, `u08-1280-inventory-esc-world.png`, `u08-1280-pause-main.png`, `u08-1280-pause-to-skill.png`). At 1920, Inventory ESC returned to field (`u08-1920-after-esc.png`) | As stated | Observed paths PASS |
 
 The tab bar and body did not overlap in these captures; this is a representative 1280/1920 visual verdict, not a pixel parity judgment for all windows. Mouse tab clicks were intentionally not repeated because the prior macOS click-position tool path is unresolved. Forge/Stat panel state, first-practice gating, physical mouse, and web-equivalent color/font pixel parity remain separate. The PC-owned `NativePanelTabBar` and persistence schema were unchanged. Logs: `u08-1280-player.log` and `u08-1920-player.log` beside the screenshots.
+
+## U04B inventory Player screen acceptance — 2026-10-27
+
+PC-U04b 원문과 Mac seed QA 계약을 먼저 대조했다. 최종 ARM64 Settings QA 앱을 그대로 사용해 build 0·제품 수정 0으로 격리 marker 루트 3개에서 `--unity-inventory-smoke`를 실행했다. 정확한 `EXODUSER Settings QA` argv/PID 44276(장비 1920), 44308(유골함 1280), 44315(유골함 1920)을 확인하고 모두 종료했다. 사용자 앱·일반 save/roster는 조작하지 않았다. 기존 U08 키보드 캡처 `u08-1280-inventory.png`/`u08-1920-inventory.png`는 같은 최종 앱의 장비 페이지 양 해상도 증거로 재사용했다.
+
+| 계약/화면 | 1280×720 | 1920×1080 | 판정 |
+|---|---|---|---|
+| 장비 상단·3열·푸터 | U08 캡처: 제목/상단 인벤토리 활성 탭, 장비 하위 탭, 착용 인형·가방·오른쪽 구성, 하단 수치가 화면 안에 있음 | U08 캡처: 같은 배치, 오른쪽 비교 카드와 하단 버튼이 화면 안에 있음 | 대표 화면 배치 PASS |
+| 장비 값 | 전투력 1656, 공격 144, 방어 420, 추가 효과 1092, 악의 1000, 가방 10/300, 장착 부위 15/16, 유물 홈 0/0 | 같은 값. `15/16`은 일반 장비만 세며 유골함 1개는 별도 페이지, belt는 빈칸 | postossuary seed 표시 PASS |
+| 유골함 상단·3열·하단 | `UNITY-MAC-A05-IO-U04B-OSS-1280-20261027/unity-inventory-equipment.png`: 창 x≈345부터 오른쪽 경계 안에 들어옴. 가방 0/300, urn 노드, 미이식 부위, 전대 초상·설명·하단 버튼이 보임 | `UNITY-MAC-A05-IO-U04B-OSS-1920-20261027/unity-inventory-equipment.png`: 창 x≈518, 같은 요소·값이 보임 | 대표 화면 배치 PASS; 왼쪽 게임 배경 여백은 좁은 유골함 창 계약 |
+| 실제 Player 영수증 | `initialEquipped=16`, `initialBag=10`, `maxMana=480`, `mana=330`, `maxHp=526`; 유골함 페이지의 가방 0/300은 별도 범주 수 | 장비·유골함 영수증 모두 같은 초기 값 | U04B seed/MP 계약 PASS |
+
+장비 초기 Player 영수증은 `UNITY-MAC-A05-IO-U04B-SCREEN-20261027/inventory-smoke.json`, 초기 장비 선택 화면은 같은 루트의 `unity-inventory-equipment.png`다. 유골함 두 루트에도 각각 영수증과 스크린샷이 있다. 영수증의 equip/unequip/drop/sort bool은 **픽스처 내부 메모리 조작** 결과이며 실제 물리 mouse 클릭·이동·장착의 증거가 아니다. 유골함 해제/재장착, 뼈 수집·소환, 유물/보관함 본문은 U04B 원문 자체의 미구현 경계를 유지한다. 실제 마우스 tab/아이템 동작은 기존 CUA 클릭 위치 문제 때문에 HOLD다. 이번 대표 컷에서 새 제목·본문 가림 또는 화면 밖 잘림 결함은 보이지 않아 owner patch 요청은 없다. U08의 오래된 Settings TAB 문구는 현행 Settings 초점 이동과 일시정지 루트의 인벤토리 전환을 구분해 [U08 문서](UNITY_PC_TABBAR_U08_20261026.md)에 정정했으며 키 코드는 바꾸지 않았다.
