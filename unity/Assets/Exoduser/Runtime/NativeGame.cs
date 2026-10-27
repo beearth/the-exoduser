@@ -50,6 +50,7 @@ namespace Exoduser.UnityPort
             view=Camera.main;
             if(view==null){view=new GameObject("World Camera").AddComponent<Camera>();view.tag="MainCamera";}
             view.orthographic=true;view.orthographicSize=5.4f;view.backgroundColor=new Color(.015f,.02f,.018f);view.clearFlags=CameraClearFlags.SolidColor;
+            UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(view).renderPostProcessing=true; // RM-1 VFX V0: HDR core + Bloom
             view.transform.position=new Vector3(40.2f,-74.2f,-10);
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
