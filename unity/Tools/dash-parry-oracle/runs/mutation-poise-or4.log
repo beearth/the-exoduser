@@ -1,0 +1,13 @@
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:01.11
+
+
+DASH_PARRY_ORACLE 146580 checks / 440 failures
+  playerHit: {"s":"idle","poise":0,"ccRes":0,"stunRes":0,"kiCharging":false,"dot":false,"optHitStop":0} s C#=pStun web=stagger
+  playerHit: {"s":"idle","poise":0,"ccRes":0,"stunRes":0,"kiCharging":false,"dot":false,"optHitStop":0} poise C#=0 web=3
+  playerHit: {"s":"idle","poise":0,"ccRes":0,"stunRes":0,"kiCharging":false,"dot":false,"optHitStop":0} st2 C#=240 web=6
+
