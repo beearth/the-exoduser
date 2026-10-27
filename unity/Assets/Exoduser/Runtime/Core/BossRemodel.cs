@@ -77,6 +77,13 @@ namespace Exoduser.UnityPort.Core
         public int PoisonTrailTicks = 180;                 // poison trail of chaseAoe / poisonTrail
         public double ChaseZoneRadius = 150; public int ChaseZoneWarn = 20, ChaseZoneCount = 6;   // chaseAoe
         public int SummonMax = 3;                          // summon: alive at once
+        // motion of the remake (RB1-6, boss board §8 M2 / M4 / M5): every boss has its own walking numbers. The defaults are the druid's (B2 / B3 use a walking speed of 1.05).
+        public double WalkSpeed = 1.1, WalkStandOff = 100;                  // px per tick (times Phases[].SpdM); he stops walking once this close to the player
+        public int WalkAccelTicks = 20, WalkStopTicks = 12;                 // 0 -> max / max -> 0
+        public double WalkTurn = 3 * Math.PI / 180, TeleTurn = 2 * Math.PI / 180;   // rad per tick: walking / during a telegraph
+        public int AimFixTicks = 12;                                        // the aim is frozen this many ticks before the move goes off
+        public int[] GapTicks = { 45, 36, 30 };                             // recovery end -> next telegraph, per life
+        public int ComboLinkTicks = 12;                                     // between the moves of a combo
         // druid rules (RM-B1): on in DruidRemodelData.Set only
         public bool Heartbeat;                             // move 12 forced at the last-life entry, then every 40 s
         public bool GrabAbsorb;                            // grab: 2 s hold, heal, mash out

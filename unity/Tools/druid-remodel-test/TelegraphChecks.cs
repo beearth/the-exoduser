@@ -80,7 +80,7 @@ static partial class P
                 if (ev == "groundFissure")
                 {
                     var f = s.Druid.Fissures[s.Druid.Fissures.Count - 1]; var line = warned.FirstOrDefault(w => w.Shape == DruidTeleShape.Line);
-                    Check(line != null && Math.Abs(line.Length - f.MaxLen) < 1e-9 && Math.Abs(line.Width - f.W) < 1e-9 && Math.Abs(line.Dir - f.Ang) < 1e-9 && f.Straight, name + ": fissure length/width/direction differ from the telegraph");
+                    Check(line != null && Math.Abs(line.Length - Math.Min(f.MaxLen, f.Spd * 140)) < 1e-9 && Math.Abs(line.Width - f.W) < 1e-9 && Math.Abs(line.Dir - f.Ang) < 1e-9 && f.Straight, name + ": fissure length/width/direction differ from the telegraph");
                     Check(warned.Count == 1, name + ": fissure telegraph must be one line (" + warned.Count + " entries)");
                 }
                 if (ev == "slam") Check(warned.Count == 2 && warned.All(w => w.Shape == DruidTeleShape.Circle && Math.Abs(w.Radius - DruidRemodelData.SlamRadius) < 1e-9), name + ": slam telegraph is not 2 circles of the slam radius");
