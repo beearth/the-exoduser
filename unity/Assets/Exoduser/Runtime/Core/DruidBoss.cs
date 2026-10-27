@@ -73,7 +73,7 @@ namespace Exoduser.UnityPort.Core
         public double HitSp = 1;
         public int ScoreEvals;                              // oracle counter
 
-        public DruidBoss(IBossHost h) { host = h; }
+        public DruidBoss(IBossHost h) { host = h; reflectHost = h as IBossReflectHost; }
 
         double R() { return host.Rand(); }
         static int I(double v) { return Js.Int(v); }
