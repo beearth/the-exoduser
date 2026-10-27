@@ -53,12 +53,12 @@ namespace Exoduser.UnityPort.Core
             if (st.Collapsing) { e.Hp = 1; return true; }                 // a DOT tick during the kneel: swallowed
             if (st.Life >= DruidRemodelData.Lives - 1)
             {
-                st.Done = true; e.Hp = 0; e.Shield = 0; e.SinkDruid = true;   // STY-D9: the last fall is the sink, then the common kill (rewards, StageFlow exit)
+                st.Done = true; e.Hp = 0; e.Shield = 0; e.SinkDruid = true; QueueLogicalSound("druid_sink", "third fall: sink escape", e.X, e.Y);   // STY-D9: the last fall is the sink, then the common kill (rewards, StageFlow exit)
                 RemodelEvent("final", e, st, "sink");
                 KillEnemy(e);
                 return true;
             }
-            st.Collapsing = true; st.CollapseTicks = DruidRemodelData.CollapseTicks; st.RootHits = 0;
+            st.Collapsing = true; st.CollapseTicks = DruidRemodelData.CollapseTicks; st.RootHits = 0; QueueLogicalSound("druid_root_pierce", "P" + (st.Life + 2) + " entry: root pierces the back", e.X, e.Y);
             e.Hp = 1; e.Shield = 0; e.ReviveIframes = 90;                 // swallowed hits are the root hits (EnemyHurt takes 1 off reviveIframes per hit)
             Druid.BeginCollapse(e);
             RemodelEvent("collapse", e, st, "life " + (st.Life + 1) + " down");

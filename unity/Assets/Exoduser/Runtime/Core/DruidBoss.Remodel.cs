@@ -50,6 +50,26 @@ namespace Exoduser.UnityPort.Core
             return true;
         }
 
+        // RM-1 sound section 6.6: the tell sound of each move (spec section 3 / 4). tell_parry = parryable melee, tell_boss = floor / ranged area, tell_grab = the grab.
+        static string TellKey(string id)
+        {
+            switch (id)
+            {
+                case "slashCombo": case "slam": case "charge": case "tideWave": return "tell_parry";
+                case "grab": return "tell_grab";
+                case "burrowStrike": return "druid_burrow";
+                case "groundFissure": case "fan": case "chaseAoe": case "summon": case "seekerMines": case "heartbeat": return "tell_boss";
+                default: return null;
+            }
+        }
+        void RmTell(BossMove mv, DruidData d, double dist)
+        {
+            string key = TellKey(mv.Id); if (key == null) return;
+            if (mv.Id == "grab" && dist >= 120) key = "tell_parry";   // out of grab range the web turns the grab into a charge wind-up
+            int n = Array.FindIndex(DruidRemodelData.Moves, m => m.Id == mv.Id) + 1;
+            host.Sound(key, "#" + n + " " + mv.Id + " telegraph", d.X, d.Y);
+        }
+
         bool InSafeZone(double x, double y)
         {
             foreach (var z in SafeZones) if (Dst(x, y, z[0], z[1]) < z[2]) return true;
@@ -59,7 +79,7 @@ namespace Exoduser.UnityPort.Core
         // one beat of the arena wave: unparryable magic damage unless the player stands in a safe zone (or is in i-frames); the boss stays put between beats
         void HeartbeatPulse(EnemyState e, DruidData d)
         {
-            host.Fx("druidHeartbeat", d.X, d.Y, 0); host.Shake(10);
+            host.Fx("druidHeartbeat", d.X, d.Y, 0); host.Shake(10); host.Sound("druid_heartbeat", "#12 heartbeat beat " + (d.HbBeat + 1), d.X, d.Y);
             if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY)) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);
             d.HbBeat++;
             if (d.HbBeat >= DruidRemodelData.HeartbeatBeats) { d.S = "bossRec"; d.St2 = DruidRemodelData.HeartbeatRecover; }   // bossRec, not recover: `recover` clamps St2 to 20

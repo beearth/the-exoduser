@@ -64,6 +64,7 @@ namespace Exoduser.UnityPort.Core
             if (Player.State != "sDraw" && Player.State != "kiGather" && !Player.KiChargeActive) { Player.State = "bladeDash"; Player.StateTicks = RollRules.Frames; }
             Player.Facing = (float)ang;
             Player.Iframes = Math.Max(Player.Iframes, RollRules.Iframes);
+            Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Roll, Tick = TickCount, X = Player.X, Y = Player.Y, Angle = (float)ang });   // RM-1 sound
         }
 
         // _tickBladeDash(sp = 1): ease-out 175 px over 18 frames (_rollStepDist), stops on a wall

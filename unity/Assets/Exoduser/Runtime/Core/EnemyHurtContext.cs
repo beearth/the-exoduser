@@ -54,6 +54,7 @@ namespace Exoduser.UnityPort.Core
         public double NecklaceDmg, Ring1Dmg, Ring2Dmg, BeltDmg, BraceletDmg, HeadbandDmg, Headband2Dmg; // nc()/rg1()/rg2()/belt/bracelet/headband/headband2 .dmgBonus||0
         public int ShBufI;                              // _shBufI
         public double HitSfxCd;                         // _hitSfxCd
+        public Action OnCrit;                           // RM-1 sound: the crit branch of hurtE (playSample('crit_heavy') site); optional, no state change
         public double Now;                              // _now
         public List<EnemyHurtLogEntry> BtDmgLog;        // window._btDmgLog (null = undefined)
         public bool ParryLessonActive;                  // window._parryLesson?.active

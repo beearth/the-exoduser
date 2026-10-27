@@ -16,6 +16,7 @@ namespace Exoduser.UnityPort.Core
         {
             d.AtkParryable = (Remodel ? DruidRemodelData.Parryable : Parryable).Contains(mv.Id);
             int tele = I(mv.Tele * Ph(phase).TeleM) + extraDelay;
+            if (!d.RmFire) RmTell(mv, d, dist);   // RM-1 sound: one telegraph = one tell sound, on the frame the telegraph starts
             double px = host.PX, py = host.PY;
             if (Remodel)
             {
@@ -97,7 +98,7 @@ namespace Exoduser.UnityPort.Core
                             double gap = R() * Math.PI * 2;
                             TideWaves.Add(new TideWave { X = d.X, Y = d.Y, Rad = 20 + ti * 8, MaxR = 1750, Spd = 15, T = 0, MaxT = 120, GapAng = gap, GapSize = .8, W = 60, Dmg = I(d.Atk * 1.5), HitT = 0, Druid = e.IsBoss && DruidStage });
                         }
-                        host.Text(d.X, d.Y - 30, "🌊 파동!", "#a9cc63", 50); d.S = "recover"; d.St2 = 35; break;
+                        host.Text(d.X, d.Y - 30, "🌊 파동!", "#a9cc63", 50); host.Sound("druid_tide", "#10 tideWave ring rises", d.X, d.Y); d.S = "recover"; d.St2 = 35; break;
                     }
                 case "seekerMines":
                     {
@@ -363,7 +364,7 @@ namespace Exoduser.UnityPort.Core
                         double up = 1 - d.St2 / (Or(d.UnderMax, 45));
                         d.X = d.TeleOx + (d.DiveTx - d.TeleOx) * up; d.Y = d.TeleOy + (d.DiveTy - d.TeleOy) * up;
                         d.Iframes = Math.Max(d.Iframes, 5);
-                        if (d.St2 <= 0) { d.X = d.DiveTx; d.Y = d.DiveTy; host.Fx("druidDust", d.X, d.Y, d.R * 1.3); d.S = "bossDruidErupt"; d.St2 = 40; d.EruptMax = 40; d.EruptHit = false; host.Text(d.X, d.Y - 40, "🌿💥", "#66dd22", 60); host.Shake(12); }
+                        if (d.St2 <= 0) { d.X = d.DiveTx; d.Y = d.DiveTy; host.Fx("druidDust", d.X, d.Y, d.R * 1.3); host.Sound("druid_erupt", "#7 burrowStrike erupt", d.X, d.Y); d.S = "bossDruidErupt"; d.St2 = 40; d.EruptMax = 40; d.EruptHit = false; host.Text(d.X, d.Y - 40, "🌿💥", "#66dd22", 60); host.Shake(12); }
                         break;
                     }
                 case "bossDruidErupt":
@@ -402,7 +403,7 @@ namespace Exoduser.UnityPort.Core
                         if (d.St2 <= 0)
                         {
                             d.SlashIdx++;
-                            if (d.SlashIdx < d.SlashCnt) { d.Facing = Atan2(py - d.Y, px - d.X); d.S = "bossSlash"; d.St2 = Remodel ? 14 : 8 + I(R() * 4); d.WeaponAng = -.8; host.Shake(3); }
+                            if (d.SlashIdx < d.SlashCnt) { host.Sound(d.SlashIdx == 1 ? "tell_parry" : "tell_boss", "#1 slashCombo hit " + (d.SlashIdx + 1) + " telegraph", d.X, d.Y); d.Facing = Atan2(py - d.Y, px - d.X); d.S = "bossSlash"; d.St2 = Remodel ? 14 : 8 + I(R() * 4); d.WeaponAng = -.8; host.Shake(3); }
                             else { d.S = Remodel ? "bossRec" : "recover"; d.St2 = Remodel ? 40 : 25; d.WeaponAng = 0; host.Shake(5); }   // remodel: bossRec keeps the full 40 f counter window (recover clamps to 20)
                         }
                         break;

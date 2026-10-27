@@ -269,6 +269,7 @@ namespace Exoduser.UnityPort.Core
                     {
                         if (lDagForce) P._lNextCrit = 0;
                         dmg = ToInt32(dmg * (c.StatCritDmg() + ksFC)); isCrit = true; if (c.HasStats) c.StatCrits++;
+                        if (!dotT && c.OnCrit != null) c.OnCrit();
                         if (!dotT && c.LEq("_lAxeBleed") > 0 && e.bleedT > 0 && Or(e.bleedPool, 0) > 0)
                         {
                             double abD = Math.Max(1, ToInt32(e.bleedPool.Value * c.LEq("_lAxeBleed"))); e.bleedPool = 0; e.bleedT = 0; if (e.bleed != 0) e.bleed = 0;

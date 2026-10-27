@@ -49,6 +49,7 @@ namespace Exoduser.UnityPort
   }
   void StartStartupMusic(string key,float gain){StopMusic();music.clip=Resources.Load<AudioClip>("Audio/Startup/"+key);MusicGain(gain);if(music.clip!=null)music.Play();}
   void SetStartupAudioFocus(bool focus){if(startupAudio==null)return;if(!focus){startupVoiceWasPlaying=startupAudio.isPlaying;startupAudio.Pause();}else if(startupVoiceWasPlaying){startupAudio.UnPause();startupVoiceWasPlaying=false;}}
+  public void StopStageMusic(){keepStartupStageMusic=false;StopMusic();}   // RM-1 sound: the in-game BGM bus takes over from the startup stage music
   void CancelStartupEntry(){StartupGameplayPrepared=false;keepStartupStageMusic=false;startup.Cancel();frontendPad.Reset();if(startupAudio!=null)startupAudio.Stop();nemesisMusicDelay=-1;stageMusicDelay=-1;}
   void UpdateStartupEntry(float delta)
   {
