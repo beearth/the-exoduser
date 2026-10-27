@@ -61,6 +61,111 @@
       "id": "chargePrompt",
       "ko": "1·2타 뒤 3타를 2초 누르세요",
       "en": "After hits 1 and 2, hold the third hit for 2 seconds"
+    },
+    {
+      "id": "rightLabel",
+      "ko": "우클릭 · 적 5마리 처치",
+      "en": "Right click · Defeat 5 enemies"
+    },
+    {
+      "id": "rightTitle",
+      "ko": "마법으로 적 5마리를 처치하세요",
+      "en": "Defeat 5 enemies with magic"
+    },
+    {
+      "id": "rightHint",
+      "ko": "적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.\n처치 {p0}/5 · 실제로 처치해야 완료됩니다.",
+      "en": "Aim at an enemy with the mouse and right-click to fire a magic projectile.\nDefeated {p0}/5 · Only actual defeats count."
+    },
+    {
+      "id": "trapLabel",
+      "ko": "1 · 가시덫 설치 후 도망 · 10마리 처치",
+      "en": "1 · Place Spike Trap and retreat · Defeat 10 enemies"
+    },
+    {
+      "id": "trapTitle",
+      "ko": "붙으면 가시덫을 깔고 도망치세요",
+      "en": "Place a Spike Trap and retreat when enemies close in"
+    },
+    {
+      "id": "trapHint",
+      "ko": "몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n{p0} 가시덫 설치 · {p1} 설치 후 이동 · 처치 {p2}/10",
+      "en": "10 monsters are chasing you. When they approach, press 1 to place a Spike Trap at your feet, then retreat with WASD / arrow keys. Enemies inside the trap are slowed and take damage over time.\n{p0} Spike Trap placed · {p1} Moved after placement · Defeated {p2}/10"
+    },
+    {
+      "id": "leftKey",
+      "ko": "좌클릭",
+      "en": "Left click"
+    },
+    {
+      "id": "rightKey",
+      "ko": "우클릭",
+      "en": "Right click"
+    },
+    {
+      "id": "eyebrow",
+      "ko": "직접 실습",
+      "en": "Hands-on practice"
+    },
+    {
+      "id": "parryLabel0",
+      "ko": "마법탄 패링",
+      "en": "Parry magic projectiles"
+    },
+    {
+      "id": "parryLabel1",
+      "ko": "물리탄 패링",
+      "en": "Parry physical projectiles"
+    },
+    {
+      "id": "parryLabel2",
+      "ko": "Q 홀딩 · 다수 마법탄 패링",
+      "en": "Hold Q · Parry multiple magic projectiles"
+    },
+    {
+      "id": "parryLabel3",
+      "ko": "E 홀딩 · 다수 물리탄 패링",
+      "en": "Hold E · Parry multiple physical projectiles"
+    },
+    {
+      "id": "parryLabel4",
+      "ko": "Shift · 사슬 이동",
+      "en": "Shift · Chain movement"
+    },
+    {
+      "id": "parryLabel5",
+      "ko": "방향키 + Space · 구르기",
+      "en": "Direction + Space · Roll"
+    },
+    {
+      "id": "parryLabel6",
+      "ko": "패링 · 분노 축적",
+      "en": "Parry · Build Rage"
+    },
+    {
+      "id": "parryLabel7",
+      "ko": "Space · 분노 발동",
+      "en": "Space · Unleash Rage"
+    },
+    {
+      "id": "stateIntro",
+      "ko": "일시정지",
+      "en": "Paused"
+    },
+    {
+      "id": "statePractice",
+      "ko": "연습 중",
+      "en": "Practicing"
+    },
+    {
+      "id": "stateSuccess",
+      "ko": "성공",
+      "en": "Success"
+    },
+    {
+      "id": "trapShort",
+      "ko": "1 · 가시덫",
+      "en": "1 · Spike Trap"
     }
   ],
   "plaqueSource": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/ui/tutorial/parry-plaque-v1.png",
