@@ -65,7 +65,7 @@ spawn+='    // kb of the web enemy object ({x,y}).\n    public sealed class Enem
 spawn+='    // modT of the web enemy object: elite-modifier timers/flags, all zero/false at spawn.\n    public sealed class EnemyModT\n    {\n'+modFields.map(f=>'        public '+f.t+' '+f.k+';').join('\n')+'\n    }\n\n';
 spawn+='    // Everything mkEn(x,y,si,etype,ib,el,room) puts on a freshly spawned web enemy, with the web field names. Numbers are double (JS number).\n';
 spawn+='    // A null reference/nullable means the web field is undefined (boss-only fields on normal enemies, skin cells on bosses, el/room not passed).\n';
-spawn+='    public sealed class EnemySpawn\n    {\n';
+spawn+='    public sealed partial class EnemySpawn\n    {\n';
 for(const k of keyOrder)spawn+='        public '+typeOf[k]+' '+csId(k)+';\n';
 spawn+='    }\n}\n';
 // ---- EnemyFactory.cs ----
@@ -188,7 +188,7 @@ ${aura.map(a=>`            new AuraDef { Id = ${q(a.id)}, Name = ${q(a.name)}, C
             for (double d = Tile; d <= Tile * 5; d += Tile / 2)
                 for (int a = 0; a < 8; a++)
                 {
-                    double nx = x + Math.Cos(Math.PI / 4 * a) * d, ny = y + Math.Sin(Math.PI / 4 * a) * d;
+                    double nx = x + JsMath.Cos(Math.PI / 4 * a) * d, ny = y + JsMath.Sin(Math.PI / 4 * a) * d;
                     if (c.CanMove(nx, ny, r)) { ox = nx; oy = ny; return true; }
                 }
             ox = 0; oy = 0; return false;

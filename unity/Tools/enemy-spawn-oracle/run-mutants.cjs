@@ -36,7 +36,7 @@ M.forEach(([name,from,to],i)=>{
  const n=fac.split(from).length-1;if(n<1){results.push({i,name,applied:false,note:'pattern not found'});return;}
  const dir=path.join(out,'mut','m'+i);fs.rmSync(dir,{recursive:true,force:true});
  const c2=path.join(dir,'Assets/Exoduser/Runtime/Core');fs.mkdirSync(c2,{recursive:true});
- for(const f of ['EnemyTables.cs','EliteTables.cs','EnemySpawn.cs'])fs.copyFileSync(path.join(core,f),path.join(c2,f));
+ for(const f of ['EnemyTables.cs','EliteTables.cs','EnemySpawn.cs','JsMath.cs'])fs.copyFileSync(path.join(core,f),path.join(c2,f));
  fs.writeFileSync(path.join(c2,'EnemyFactory.cs'),fac.split(from).join(to));
  const r=cp.spawnSync('C:/nvm4w/nodejs/node.exe',[path.join(__dirname,'run.cjs'),'--project',dir,'--out',path.join(out,'mut','o'+i),'--label','mut'],{encoding:'utf8'});
  const m=/ENEMY_SPAWN_RESULT (\d+) checks \/ (\d+) failures/.exec(r.stdout||'');

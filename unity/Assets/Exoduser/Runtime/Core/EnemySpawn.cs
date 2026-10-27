@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort.Core
 
     // Everything mkEn(x,y,si,etype,ib,el,room) puts on a freshly spawned web enemy, with the web field names. Numbers are double (JS number).
     // A null reference/nullable means the web field is undefined (boss-only fields on normal enemies, skin cells on bosses, el/room not passed).
-    public sealed class EnemySpawn
+    public sealed partial class EnemySpawn
     {
         public double x;
         public double y;
