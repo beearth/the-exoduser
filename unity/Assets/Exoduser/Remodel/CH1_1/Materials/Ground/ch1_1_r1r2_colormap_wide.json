@@ -1,0 +1,123 @@
+{
+ "windowTiles": [
+  48,
+  126,
+  152,
+  200
+ ],
+ "windowWorldPx": [
+  1920,
+  5040,
+  6080,
+  8000
+ ],
+ "texelsPerWorldPx": 1.024,
+ "size": [
+  4260,
+  3031
+ ],
+ "chunks": [
+  {
+   "texture": "Art/map/production_finish/chunk_1_5",
+   "x": 1000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_2_5",
+   "x": 2000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_3_5",
+   "x": 3000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_4_5",
+   "x": 4000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_5_5",
+   "x": 5000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_6_5",
+   "x": 6000,
+   "y": 5000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_1_6",
+   "x": 1000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_2_6",
+   "x": 2000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_3_6",
+   "x": 3000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_4_6",
+   "x": 4000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_5_6",
+   "x": 5000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_6_6",
+   "x": 6000,
+   "y": 6000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_1_7",
+   "x": 1000,
+   "y": 7000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_2_7",
+   "x": 2000,
+   "y": 7000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_3_7",
+   "x": 3000,
+   "y": 7000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_4_7",
+   "x": 4000,
+   "y": 7000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_5_7",
+   "x": 5000,
+   "y": 7000
+  },
+  {
+   "texture": "Art/map/production_finish/chunk_6_7",
+   "x": 6000,
+   "y": 7000
+  }
+ ],
+ "stitchedWorldPx": [
+  1000,
+  5000,
+  7000,
+  8000
+ ],
+ "cropBoxTexels": [
+  942,
+  41,
+  5202,
+  3072
+ ]
+}
