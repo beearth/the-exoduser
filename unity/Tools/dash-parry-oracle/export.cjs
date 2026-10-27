@@ -461,6 +461,37 @@ const CAPES = [0, .05, .1, .25, .3, .5, 1, 2];
   for (const hold of [0, 1, 60, 120, 239, 240, 500]) { Object.assign(q.P, { s: 'sBlock', _sbHoldT: hold, _sbParryT: 7, _sbReleaseR: 0 }); m7.rel(); rl.push(J({ in: { holdT: hold }, out: { s: q.P.s, sbParryT: q.P._sbParryT, releaseR: q.P._sbReleaseR, holdT: q.P._sbHoldT } })); }
   sections.sBlockRelease = rl;
 }
+// 14. sBash strike: damage expression (`_gsDmg2`) and the per-enemy _gSlamHit decision (B07b) -------------------------------------
+{
+  const dmgLine = line('const _gsDmg2=~~(meleeRef()*2.0');
+  const dc = { meleeRef: () => dc.mr, statStr: () => dc.ss, pShieldMul: () => dc.ps, mr: 0, ss: 1, ps: 1, P: { _atkBon: 0 } };
+  const dm = load('function f(_sdLv,_chgM){' + dmgLine + '\nreturn _gsDmg2;}', dc, ['f']);
+  const cases = [];
+  for (const c of grid({ mr: [0, 1, 37, 120, 999.5, 54321], lv: [0, 1, 2, 5, 20], ss: [1, 1.37, 2.5], ps: [1, 1.2], chg: [1, 1.5, 2, 2.4, 3], bon: [0, 7, 16] }, 4000)) {
+    dc.mr = c.mr; dc.ss = c.ss; dc.ps = c.ps; dc.P._atkBon = c.bon; const v = dm.f(c.lv, c.chg);
+    cases.push(J({ in: { meleeRef: c.mr, maliceSwipe: c.lv, statStr: c.ss, pShieldMul: c.ps, chgMul: c.chg, atkBon: c.bon }, out: { dmg: v, atkBonAfter: dc.P._atkBon } }));
+  }
+  sections.bashDamage = cases;
+}
+{
+  const gs = fn('function _gSlamHit'), dstF = fn('function dst(a,b,c,d)'), elF = fn('function elMul'), mini = line('const _MINI_STUN=60;');
+  const EL = { P: 0, F: 1, I: 2, D: 3, L: 4, H: 5, E: 6 };
+  const ctx = { P: { x: 0, y: 0, _atkBon: 0, _gslLv: 0, skills: { giantSlam: 1 } }, _shBufI: 0, OPT: { parts: 100 }, EL, ELC: ['#bbbbbb', '#ff5522', '#3388ff', '#9933cc', '#ffee00', '#ff88cc', '#88aa44'], ELP: ['#dddddd', '#ff6622', '#44aaff', '#bb55ee', '#ffee44', '#ffdd55'],
+    cur: null, pam: 1, kills: false, hurt: null, poise: null, texts: [], shQuery: () => [ctx.cur], _T: t => t, addTxt: (x, y, t) => { ctx.texts.push(t); }, poolPart: () => {}, shake: () => {}, _hurtFieldMobs: () => {},
+    hurtE: (e, fd, ang, dot, opts, el) => { ctx.hurt = { fd, opts: { kbMult: opts.kbMult, noPoise: !!opts.noPoise, noImpact: !!opts.noImpact }, el }; if (ctx.kills) e.alive = false; },
+    _poiseHit: (e, amt) => { ctx.poise = amt; return false; }, pAtkMul: () => ctx.pam };
+  const m = load(mini + dstF + '\n' + elF + '\n' + gs + '\nfunction run(dir,range,arcW,dmg,el,kbM,psM,stunRange){return _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange);}', ctx, ['run', 'elMul']);
+  const cases = [], base = [];
+  for (const c of grid({ d: [0, 40, 100, 200, 219, 220, 221, 260, 261, 300, 400], r: [10, 20, 36], range: [160, 220, 330], sr: [0, 400], el: [0, 1, 3, 4], eel: [null, 0, 1, 2, 3, 4, 5, 6], ib: [false, true], poise: [0, 1, 100], maxPoise: [100, 31166], stunned: [0, 30, 100], kills: [false, true], raw: [0, 1, 100, 12345], pam: [1, 1.37], bon: [0, 7], gsl: [0, 1, 3, 20], sk: [1, 5] }, 6000)) {
+    const e = { alive: true, x: c.d, y: 0, r: c.r, ib: c.ib, poise: c.poise, maxPoise: c.maxPoise, stunned: c.stunned, kb: { x: 0, y: 0 }, el: c.eel === null ? undefined : c.eel };
+    ctx.cur = e; ctx.pam = c.pam; ctx.kills = c.kills; ctx.hurt = null; ctx.poise = null; ctx.texts = []; Object.assign(ctx.P, { _atkBon: c.bon, _gslLv: c.gsl, skills: { giantSlam: c.sk } });
+    const mult = m.elMul(c.el, e.el);
+    m.run(0, c.range, Math.PI * .8, c.raw, c.el, 1.5, .8, c.sr === 0 ? undefined : c.sr);
+    cases.push(J({ in: { d: c.d, r: c.r, range: c.range, stunRange: c.sr, mult, ib: c.ib, poise: c.poise, maxPoise: c.maxPoise, stunned: c.stunned, kills: c.kills, raw: c.raw, pAtkMul: c.pam, atkBon: c.bon, gslLv: c.gsl, giantSlam: c.sk },
+      out: { hurt: ctx.hurt, kbX: e.kb.x, stunned: e.stunned, poise: e.poise, poiseAmt: ctx.poise, texts: ctx.texts, bonAfter: ctx.P._atkBon } }));
+  }
+  sections.slamHit = cases;
+}
 // ---- output -----------------------------------------------------------------------------------------------------------------
 const result = { schema: 'exoduser.unity.dash-parry-oracle.v1', source: { file: 'game.html', sha256: sha(text), lines: lines.length, note: 'working-tree file of the extraction machine (may contain uncommitted edits); blocks below are what the oracle actually executed' },
   wrapper: { noops: [...noopUsed].sort(), note: 'identifiers not declared in a section wrapper throw; only these names were allowed as silent no-op functions (audio, text, particles, pet/unique hooks); see README.md for the declared stubs of each section' },

@@ -189,14 +189,23 @@ namespace Exoduser.UnityPort {
 
   Rect R(float x,float y,float w,float h){return new Rect(origin.x+x,origin.y+y,w,h);}
 
+  // ---- quiet tier (ui-quiet-tier.css 2026-10-27): text-weight list, 818px columns / 64px gap, 56px rows, 34px key capsules ----
+  public const float QListW=1700,QColW=818,QColGap=64,QRowsTop=57.5f,QRowPitch=56,QKeyH=34,QAltW=61.7f,QPad=8;
+  static readonly Color QBone=new Color32(223,214,194,255),QTitle=new Color32(235,218,186,255),QDim=new Color32(143,129,112,255),QLine=new Color32(164,147,115,128),QLineSoft=new Color32(164,147,115,46);
+  Font cinzelFont;
+  Font KeyFont(string text){
+   foreach(char ch in text)if(ch>127)return bold;
+   return serif;
+  }
   void DrawTabs(){
    bool paint=Event.current.type==EventType.Repaint;
+   float x=0;
    for(int i=0;i<2;i++){
-    var t=ui.tabs[i];var r=R(i*(TabW+TabGap),0,TabW,TabH);
+    var t=ui.tabs[i];string label=L(t.ko,t.en);float w=Mathf.Max(110,Width(label,semi,16,16f,0,1)+40);var r=R(x,12,w,40);x+=w+6;bool sel=(i==0)==(CurrentTab==Tab.Kbm);
     if(paint&&inView(r)){
-     Fill(r,C(35,34,37));GUI.color=new Color(1,1,1,curA);GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);GUI.color=Color.white;Grad(r,C(21,20,23,.51f),C(11,10,12,.675f));
-     if(Hover(r))Fill(r,new Color(1,1,1,.06f));
-     RunCentered(r.center.x,r.center.y,L(t.ko,t.en),semi,14,14f,.28f,C(199,190,173),1f,1);
+     Fill(r,sel?C(40,32,26):C(23,18,17));Border(r,sel?C(223,214,194,.8f):C(164,147,115,.6f));
+     if(Hover(r))Fill(r,new Color(1,1,1,.05f));
+     RunCentered(r.center.x,r.center.y,label,semi,16,16f,0,QBone,0,1);
     }
     if(Click(r)){CurrentTab=i==0?Tab.Kbm:Tab.Pad;CancelListening();}
    }
@@ -206,79 +215,58 @@ namespace Exoduser.UnityPort {
   float DrawKbm(){
    var rows=keys.Listed;int n=rows.Count;
    for(int i=0;i<n;i++){
-    float rx=(i%2)*(ColW+ColGap),ry=RowsTop+(i/2)*RowPitch;DrawKbmRow(rows[i],rx,ry);
+    float rx=(i%2)*(QColW+QColGap),ry=QRowsTop+(i/2)*QRowPitch;DrawKbmRow(rows[i],rx,ry);
    }
-   int rowCount=(n+1)/2;float resetY=RowsTop+rowCount*RowPitch+12;LastResetY=resetY;
-   DrawResetButton(R(0,resetY,ListW,44),T(ui.texts.reset),true);
-   return resetY+44;
+   int rowCount=(n+1)/2;float resetY=QRowsTop+rowCount*QRowPitch+18.5f;LastResetY=resetY;
+   string reset=T(ui.texts.reset);float rw=Mathf.Max(200,Width(reset,semi,16,16f,0)+48);
+   DrawResetButton(R(0,resetY,rw,40),reset,true);
+   return resetY+40;
   }
 
   void DrawActionName(Rect row,string name){
-   const int px=15;const float letter=.6f;
-   bool oneLine=Width(name,regular,px,15f,letter)<=NameW;
-   GUI.BeginGroup(new Rect(row.x+NameX,row.y,NameW,RowH));
-   try{
-    if(oneLine){Run(0,26,name,regular,px,15f,letter,C(215,200,166));return;}
-   string first="",second="";
-   foreach(var word in name.Split(new[]{' '},StringSplitOptions.RemoveEmptyEntries)){
-    string candidate=first.Length==0?word:first+" "+word;
-    if(second.Length==0&&Width(candidate,regular,px,15f,letter)<=NameW)first=candidate;
-    else second=second.Length==0?word:second+" "+word;
-   }
-   if(first.Length>0&&second.Length>0&&Width(second,regular,px,15f,letter)<=NameW){
-    Run(0,17,first,regular,px,15f,letter,C(215,200,166));
-    Run(0,36,second,regular,px,15f,letter,C(215,200,166));
-    return;
-   }
-   int small=px;while(small>10&&Width(name,regular,small,small,letter*small/px)>NameW)small--;
-   Run(0,26,name,regular,small,small,letter*small/px,C(215,200,166));
-   } finally {GUI.EndGroup();}
+   Run(row.x+QPad,row.y+28,name,serif,17,17f,0,QBone);
   }
   void DrawKbmRow(string action,float rx,float ry){
-   var row=R(rx,ry,ColW,RowH);bool paint=Event.current.type==EventType.Repaint;
-   bool mainL=Listening&&listenAction==action&&!listenAlt,altL=Listening&&listenAction==action&&listenAlt;
-   var mainR=R(rx+MainX,ry+5,MainW,KeyH);var altR=R(rx+AltX,ry+5,AltW,KeyH);string alt=keys.Secondary(action);
-   var delR=R(rx+DelX,ry+8,DelW,DelH);
+   var row=R(rx,ry,QColW,QRowPitch);bool paint=Event.current.type==EventType.Repaint;
+   bool mainL=Listening&&listenAction==action&&!listenAlt,altL=Listening&&listenAction==action&&listenAlt;string alt=keys.Secondary(action);
+   string mainText=mainL?T(ui.texts.listenMain):NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(keys.Primary(action),false),LocaleCode,KeyBindings.KeyName(keys.Primary(action),English));
+   string altText=altL?T(ui.texts.listenAlt):(alt!=null?NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(alt,false),LocaleCode,KeyBindings.KeyName(alt,English)):T(ui.texts.alt));
+   float altW=Mathf.Max(QAltW,Width(altText,KeyFont(altText),14,14f,0)+26),altX=QColW-QPad-altW;
+   float mainW=Mathf.Max(70,Width(mainText,KeyFont(mainText),14,14f,0)+26),mainX=altX-10-mainW;
+   var mainR=R(rx+mainX,ry+11,mainW,QKeyH);var altR=R(rx+altX,ry+11,altW,QKeyH);
+   var delR=new Rect(altR.xMax-22,altR.y,22,QKeyH);
    LastKeyRects.Add(mainR);LastKeyRects.Add(altR);
    if(paint&&inView(row)){
-    if(mainL||altL){Grad(row,C(142,105,51,.18f),C(70,51,33,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(187,150,94));}   // :has(.listening)
-    else if(Hover(row))Fill(row,C(155,112,67,.086f));
-    Fill(new Rect(row.x,row.yMax-1,row.width,1),C(140,121,85,.11f));
+    if(mainL||altL){Grad(row,C(142,105,51,.18f),C(70,51,33,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(187,150,94));}
+    else if(Hover(row))Fill(row,C(155,112,67,.06f));
+    Fill(new Rect(row.x,row.yMax-1,row.width,1),QLineSoft);
     DrawActionName(row,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)));
-    DrawKey(mainR,mainL?T(ui.texts.listenMain):NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(keys.Primary(action),false),LocaleCode,KeyBindings.KeyName(keys.Primary(action),English)),mainL,1f);
-    DrawKey(altR,altL?T(ui.texts.listenAlt):(alt!=null?NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(alt,false),LocaleCode,KeyBindings.KeyName(alt,English)):T(ui.texts.alt)),altL,alt!=null||altL?1f:.5f);
-    if(alt!=null){var dc=Hover(delR)?C(214,170,150):C(171,131,112);RunCentered(delR.center.x,delR.center.y,"✕",regular,16,16f,.32f,dc,1f,5);}
+    DrawKey(mainR,mainText,mainL,1f,false);
+    DrawKey(altR,altText,altL,1f,alt==null&&!altL);
+    if(alt!=null){var dc=Hover(delR)?C(214,170,150):C(171,131,112);RunCentered(delR.center.x,delR.center.y,"✕",regular,14,14f,0,dc,1f,5);}
    }
-   if(Click(mainR))BeginListening(action,false);
+   if(alt!=null&&Click(delR))keys.ClearSecondary(action);
+   else if(Click(mainR))BeginListening(action,false);
    else if(Click(altR))BeginListening(action,true);
-   else if(alt!=null&&Click(delR))keys.ClearSecondary(action);
   }
 
-  // `.set-key`: iron plate under gradient rgba(53,48,43,.85)->rgba(23,21,24,.92), 1px #76634b border (3px #40362b at the bottom), inset top highlight, drop shadow
-  void DrawKey(Rect r,string text,bool listening,float opacity){
-   float keep=curA;curA=keep*opacity;bool hover=Hover(r);float plateA=opacity<1f?.15f*opacity:1f;
-   Fill(new Rect(r.x,r.yMax-1,r.width,3),new Color(0,0,0,.35f*opacity));   // 0 2px 3px rgba(0,0,0,.533)
-   Color txt;
-   if(listening){
-    Grad(r,C(97,74,44,.85f),C(40,28,19,.93f));
-    Fill(new Rect(r.x-1,r.y-1,r.width+2,r.height+2),C(174,124,50,.06f));
-    Border(r,C(203,170,110),1,1,3,1);Fill(new Rect(r.x+1,r.y+1,r.width-2,1),C(255,225,163,.3f));txt=C(255,240,202);
-   } else {
-    GUI.color=new Color(1,1,1,keep*plateA);GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);GUI.color=Color.white;Grad(r,C(53,48,43,.85f),C(23,21,24,.92f));
-    if(hover){Fill(r,new Color(1,1,1,.07f));Border(r,C(183,154,106),1,1,3,1);txt=C(248,232,199);}
-    else{Border(r,C(118,99,75),1,1,1,1);Fill(new Rect(r.x,r.yMax-3,r.width,3),C(64,54,43));Fill(new Rect(r.x,r.yMax-3,1,3),C(118,99,75));Fill(new Rect(r.xMax-1,r.yMax-3,1,3),C(118,99,75));txt=C(223,208,180);}
-    Fill(new Rect(r.x+1,r.y+1,r.width-2,1),C(199,177,139,.19f));
-   }
-   // content box = border box minus 1px top/sides and 3px bottom
-   RunCentered(r.center.x,r.y+1+(r.height-4)/2f,text,bold,14,14f,.28f,txt,1f,4);
+  // `.set-key` in the quiet tier: flat #0e0c0b capsule, 1px hairline, Cinzel 14px; the empty alternate slot is a dim ghost
+  void DrawKey(Rect r,string text,bool listening,float opacity,bool ghost){
+   float keep=curA;bool hover=Hover(r);
+   Fill(r,listening?C(60,40,24):C(14,12,11));
+   Border(r,listening?C(203,170,110):hover?C(223,214,194,.9f):ghost?C(164,147,115,.3f):QLine);
+   if(hover&&!listening)Fill(r,new Color(1,1,1,.05f));
+   Color txt=listening?C(255,240,202):ghost?QDim:QBone;
+   Font f=ghost||text.Length>0&&text[0]>127?semi:KeyFont(text);
+   RunCentered(r.center.x,r.center.y,text,f,14,14f,0,txt,0,4);
    curA=keep;
   }
   void DrawResetButton(Rect r,string text,bool enabled){
    if(Event.current.type!=EventType.Repaint){if(enabled&&Click(r))ResetBindings();return;}
    float keep=curA;if(!enabled)curA=keep*.48f;bool hover=enabled&&Hover(r);
    if(inView(r)){
-    Grad(r,hover?C(89,39,33):C(69,30,25),hover?C(44,16,16):C(32,13,12));Border(r,hover?C(183,95,75):C(132,69,54));Fill(new Rect(r.x+1,r.y+1,r.width-2,1),C(233,147,110,.18f));
-    RunCentered(r.center.x,r.center.y,text,semi,14,14f,.28f,hover?C(255,209,186):C(226,173,151),1f);
+    Fill(r,hover?C(40,32,26):C(23,18,17));Border(r,C(164,147,115,.6f));
+    RunCentered(r.center.x,r.center.y,text,semi,16,16f,0,QBone);
    }
    curA=keep;
   }

@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort
   {
    bool held=Input.GetMouseButton(0);foreach(var key in menuKeys)held|=Input.GetKey(key);navigation.ObserveReleased(held);
    if(!navigation.Focused||navigation.WaitingForRelease)return PauseMenuCommand.None;
+   if(openSelect>=0){A15PopupKeys();return PauseMenuCommand.None;}
    // OnGUI may finish capture before Update polls this same OS key. Keep it out of menu navigation.
    if(keyList!=null&&Time.frameCount<=keyList.CaptureConsumedFrame+1)return PauseMenuCommand.None;
    // The embedded binding list receives KeyDown in OnGUI before menu navigation may use it.
@@ -55,6 +56,7 @@ namespace Exoduser.UnityPort
     case PauseAction.SfxUp:StepVolume(true,1);break;
     case PauseAction.BgmDown:StepVolume(false,-1);break;
     case PauseAction.BgmUp:StepVolume(false,1);break;
+    case PauseAction.RowLeft:case PauseAction.RowRight:case PauseAction.RowAccept:A15RowKey(action,fullscreen);break;
    }
    return PauseMenuCommand.None;
   }

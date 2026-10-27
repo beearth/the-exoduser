@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort.Core
     }
 
     public sealed class FireZone { public int Id; public string Type; public float X, Y, R, TickTimer; public int T, MaxT, Lv, Dmg; }
-    public sealed class SlamWave { public int Id; public float X, Y, MaxR; public int T, MaxT; }
+    public sealed class SlamWave { public int Id; public float X, Y, MaxR; public int T, MaxT; public bool Bash; }   // Bash: the E strike wave (blue-grey, web col #66aadd)
     public sealed class SkillBlade
     {
         public int Id, Dmg, Pierced; public bool Active; public float X, Y, Vx, Vy, Dist, MaxDist, Radius;

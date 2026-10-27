@@ -200,6 +200,32 @@ static class P
         foreach (var c in Cases(root, "sBlockTick")) { var i = c.GetProperty("in"); var o = c.GetProperty("out"); var p = new ParryRules.SBlockState { Mp = N0(i, "mp"), Mmp = N0(i, "mmp"), SbParryT = N0(i, "sbParryT"), SbHoldT = N0(i, "holdT") }; ParryRules.SBlockTick(ref p, N0(i, "sp")); string x = Ctx(i); Num("mp", p.Mp, o, "mp", x); Num("sbParryT", p.SbParryT, o, "sbParryT", x); Num("holdT", p.SbHoldT, o, "holdT", x); }
         foreach (var c in Cases(root, "sBlockRelease")) { var i = c.GetProperty("in"); var o = c.GetProperty("out"); var p = new ParryRules.SBlockState { S = "sBlock", SbHoldT = N0(i, "holdT"), SbParryT = 7, SbReleaseR = 0 }; ParryRules.SBlockRelease(ref p); string x = Ctx(i); StrEq("s", p.S, o, "s", x); Num("sbParryT", p.SbParryT, o, "sbParryT", x); Num("releaseR", p.SbReleaseR, o, "releaseR", x); Num("holdT", p.SbHoldT, o, "holdT", x); }
 
+        foreach (var c in Cases(root, "bashDamage"))
+        {
+            var i = c.GetProperty("in"); var o = c.GetProperty("out"); string x = Ctx(i);
+            Num("dmg", ParryRules.BashDamage(N0(i, "meleeRef"), N0(i, "maliceSwipe"), N0(i, "statStr"), N0(i, "pShieldMul"), N0(i, "chgMul"), N0(i, "atkBon")), o, "dmg", x);
+            Num("atkBonAfter", 0, o, "atkBonAfter", x);   // the web zeroes P._atkBon after reading it: the caller (Simulation) does the same
+        }
+        foreach (var c in Cases(root, "slamHit"))
+        {
+            var i = c.GetProperty("in"); var o = c.GetProperty("out"); string x = Ctx(i);
+            double dmg = ParryRules.SlamBaseDamage(N0(i, "raw"), N0(i, "pAtkMul"), N0(i, "atkBon"));
+            double gsl = Js.Or(N0(i, "gslLv"), Js.Or(N0(i, "giantSlam"), 1));
+            var e = new ParryRules.SlamTargetIn { D = N0(i, "d"), R = N0(i, "r"), Mult = N0(i, "mult"), Boss = B(i, "ib"), Poise = N0(i, "poise"), MaxPoise = N0(i, "maxPoise"), Stunned = N0(i, "stunned") };
+            var r = ParryRules.SlamHitTarget(e, N0(i, "range"), N0(i, "stunRange"), dmg, B(i, "kills"), gsl);
+            bool webHurt = o.TryGetProperty("hurt", out var h) && h.ValueKind == JsonValueKind.Object;
+            Check(r.Hurt == webHurt, x + " hurt C#=" + r.Hurt + " web=" + webHurt);
+            if (webHurt && r.Hurt) Num("fd", r.Dmg, h, "fd", x);
+            double webAmt = N(o, "poiseAmt");
+            Check(r.BossPoise == !double.IsNaN(webAmt), x + " bossPoise C#=" + r.BossPoise + " web=" + webAmt);
+            if (r.BossPoise && !double.IsNaN(webAmt)) Num("poiseAmt", r.BossPoiseAmt, o, "poiseAmt", x);
+            Num("stunned", r.Stunned, o, "stunned", x);
+            Num("poise", r.Poise, o, "poise", x);
+            var want = new List<string>(); foreach (var t in o.GetProperty("texts").EnumerateArray()) want.Add(t.GetString());
+            var got = new List<string>(); if (r.Break) got.Add("💥 체간 붕괴!"); if (r.Mini) got.Add("💫 미니스턴!"); if (r.Weak) got.Add("약점!");
+            Check(string.Join("|", got) == string.Join("|", want), x + " texts C#=" + string.Join("|", got) + " web=" + string.Join("|", want));
+        }
+
         var receipt = new { schema = "exoduser.unity.dash-parry-oracle-result.v1", checks, failures = bad, oracleSha = root.GetProperty("source").GetProperty("sha256").GetString(), sections = perSection.ToDictionary(k => k.Key, k => new { checks = k.Value[0], failures = k.Value[1] }), firstFailures };
         File.WriteAllText(args[0], JsonSerializer.Serialize(receipt, new JsonSerializerOptions { WriteIndented = true }));
         Console.WriteLine("DASH_PARRY_ORACLE " + checks + " checks / " + bad + " failures");

@@ -11,6 +11,10 @@ namespace Exoduser.UnityPort.Core
   static readonly int[] frameCaps={30,60,120,144,244,0};
   public int SfxPercent { get; private set; }
   public int BgmPercent { get; private set; }
+  // Web OPT controls beyond the three native hosts (SFX, BGM, FPS cap); persisted as the snapshot "opt" extra.
+  public readonly NativeOptionSet Options=new NativeOptionSet();
+  // Web hellcave_preset_1/2: JSON {opt,sfxVol,bgmVol,fpsCap} saved by the Game page preset buttons (empty = never saved).
+  public readonly string[] Presets={"",""};
   public int FrameCap { get; private set; }
   public static int FrameCapCount { get { return frameCaps.Length; } }
   public static int GetFrameCap(int index) { return frameCaps[index]; }

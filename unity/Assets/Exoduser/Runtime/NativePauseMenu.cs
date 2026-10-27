@@ -41,8 +41,9 @@ namespace Exoduser.UnityPort
    if(settings==null)throw new ArgumentNullException("settings");
    this.font=font;this.settings=settings;this.sfxChanged=sfxChanged;
    this.bgmChanged=bgmChanged;this.frameCapChanged=frameCapChanged;this.fullscreenChanged=fullscreenChanged;
+   navigation.SettingsRows=A15NavRows();
   }
-  public void Reset() { navigation.Reset();keyPage=false;keyScroll=0;settingsScroll=0;if(keyList!=null)keyList.CancelListening(); }
+  public void Reset() { navigation.Reset();keyPage=false;keyScroll=0;settingsScroll=0;openSelect=-1;resetConfirm=false;if(keyList!=null)keyList.CancelListening(); }
   public void ShowSettings() { page=PausePage.Settings;keyScroll=0;settingsScroll=0; }
   // Call once from the owner's Escape handler BEFORE toggling menu/Running.
   public bool HandleEscape()
@@ -92,8 +93,8 @@ namespace Exoduser.UnityPort
     GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;
     Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.72f));
     // Web common window tab bar at the settings-window position (1920x1080 design space).
+    if(page==PausePage.Settings)return DrawSettingsA15(fullscreen);
     {float s1=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s1)/2,(Screen.height-1080*s1)/2,0),Quaternion.identity,Vector3.one*s1);NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");GUI.matrix=Matrix4x4.identity;}
-    if(page==PausePage.Settings){DrawSettingsA15(fullscreen);return PauseMenuCommand.None;}
     float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2,0),Quaternion.identity,Vector3.one*scale);
     var panel=new Rect(300,72,680,576);Fill(panel,new Color(.055f,.047f,.043f,.98f));
@@ -122,39 +123,12 @@ namespace Exoduser.UnityPort
    if(MenuButton(new Rect(652,588,288,44),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
   }
   // A15: four web page headings with only the controls connected to this native host.
-  void DrawSettingsA15(bool fullscreen)
+  PauseMenuCommand DrawSettingsA15(bool fullscreen)
   {
    SelectExactLabelFont();
    float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
    GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2,(Screen.height-1080*scale)/2,0),Quaternion.identity,Vector3.one*scale);
-   var panel=new Rect(40,100,1840,935);Fill(panel,new Color(.055f,.047f,.043f,.98f));Border(panel,new Color(.48f,.36f,.23f));
-   GUI.Label(new Rect(80,119,1760,55),Exact("settings.title","설정","Settings"),title);
-   string[] tabs={Exact("settings.tab.game","게임","Game"),Exact("settings.tab.display","화면","Display"),Exact("settings.tab.audio","사운드","Audio"),Exact("settings.tab.controls","조작","Controls")};
-   bool navigationEnabled=GUI.enabled;if(keyList!=null&&keyList.Listening)GUI.enabled=false;
-   for(int i=0;i<4;i++)if(MenuButton(new Rect(80+i*442,184,434,48),tabs[i],i,tab==i?activeTab:tabButton)){tab=i;settingsScroll=0;keyScroll=0;}
-   GUI.enabled=navigationEnabled;
-   var content=new Rect(80,260,1760,610);Fill(content,new Color(.035f,.032f,.031f,.96f));Border(content,new Color(.28f,.23f,.18f));
-   if(tab==3)DrawEmbeddedBindings(content);
-   else
-   {
-    bool single=Screen.width<1100;float gap=28,cardW=single?content.width-32:(content.width-48-gap)/2;
-    float contentHeight=single&&tab!=0?238+190+18:18+190+18;
-    float max=Mathf.Max(0,contentHeight-content.height);
-    if(Event.current.type==EventType.ScrollWheel&&content.Contains(Event.current.mousePosition)){settingsScroll=Mathf.Clamp(settingsScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
-    settingsScroll=Mathf.Clamp(settingsScroll,0,max);
-    GUI.BeginGroup(content);
-    float x1=16,x2=single?16:16+cardW+gap,y1=18-settingsScroll,y2=single?238-settingsScroll:y1;
-    if(tab==0)DrawA15FullscreenCard(new Rect(x1,y1,content.width-32,190),fullscreen,4);
-    else if(tab==1){DrawA15FrameCard(new Rect(x1,y1,cardW,190));DrawA15FullscreenCard(new Rect(x2,y2,cardW,190),fullscreen,5);}
-    else{DrawA15VolumeCard(new Rect(x1,y1,cardW,190),true);DrawA15VolumeCard(new Rect(x2,y2,cardW,190),false);}
-    GUI.EndGroup();
-   }
-   Fill(new Rect(80,895,1760,1),new Color(.48f,.36f,.23f,.65f));
-   GUI.Label(new Rect(84,910,1090,82),SettingsPersistenceNotice(),muted);
-   if(keyList!=null&&keyList.Listening)GUI.enabled=false;
-   if(MenuButton(new Rect(1210,924,300,54),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
-   if(MenuButton(new Rect(1530,924,300,54),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
-   GUI.enabled=navigationEnabled;
+   return DrawA15Window(fullscreen);
   }
   void DrawA15FrameCard(Rect card)
   {

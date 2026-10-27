@@ -48,6 +48,12 @@ namespace Exoduser.UnityPort {
     GUI.color=new Color(.87f,.84f,.76f,1f);GUI.Label(slot,Mathf.CeilToInt(cd/60f).ToString(),cooldownText);GUI.color=old;
    }
   }
+  // Web updateHUD (60406): a 3 px bar along the bottom of the Shift slot, width = _harpGauge / _HARP_GAUGE_MAX, #44ffaa full / #88ccff from half / #ff8844 below
+  public static Color ChainGaugeColor(double pct){return pct>=1?new Color(.267f,1f,.667f):pct>=.5f?new Color(.533f,.8f,1f):new Color(1f,.533f,.267f);}
+  void DrawChainGauge(Rect slot,Simulation s){
+   double max=s.HarpGaugeMax;if(!(max>0))return;float pct=(float)Math.Min(1,s.HarpGauge/max);
+   var old=GUI.color;GUI.color=ChainGaugeColor(pct);GUI.DrawTexture(new Rect(slot.x,slot.yMax-3*NativeHudDockLayout.ArtScale,slot.width*pct,3*NativeHudDockLayout.ArtScale),Texture2D.whiteTexture);GUI.color=old;
+  }
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
    if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
     int eventHit=-1,screenHit=-1;Vector2 guiPoint=Event.current.mousePosition;float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);Vector2 screenPoint=new Vector2(Input.mousePosition.x/scale,(Screen.height-Input.mousePosition.y)/scale);
@@ -63,6 +69,7 @@ namespace Exoduser.UnityPort {
    }
    if(simulation==null)return;
    DrawRageSlot(SkillSlotRect(dock,12),simulation);
+   DrawChainGauge(SkillSlotRect(dock,8),simulation);
    if(skillStatus==null){skillStatus=new GUIStyle(keyLabel){fontSize=14,alignment=TextAnchor.MiddleCenter};skillStatus.normal.textColor=new Color(.74f,.69f,.59f);}
    string name=simulation.Config.ActiveAttack=="kiSlash"?"기검참":"기본 무기";
    var statusRect=DockStatusRect(dock,width);

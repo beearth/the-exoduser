@@ -96,12 +96,13 @@ namespace Exoduser.UnityPort
 
             // ---- E shield strike tap: sDraw -> sBash -> sRecover -> idle ----
             for (int i = 0; i < 60; i++) sim.Tick(0, 0, aimX, aimY, false, false);
-            p.State = "idle"; p.Stamina = p.MaxStamina; sim.SetPlayerCombatInput(false, true, false); sim.Tick(0, 0, aimX, aimY, false, false);
+            int bash0 = sim.BashStrikeCount; p.State = "idle"; p.Stamina = p.MaxStamina; sim.SetPlayerCombatInput(false, true, false); sim.Tick(0, 0, aimX, aimY, false, false);
             check(p.State == "sDraw", "E press -> sDraw: " + p.State);
             sim.SetPlayerCombatInput(false, false, false); sim.Tick(0, 0, aimX, aimY, false, false);
             check(p.State == "sBash", "E release -> sBash: " + p.State);
             for (int i = 0; i < 60 && p.State != "idle"; i++) sim.Tick(0, 0, aimX, aimY, false, false);
             check(p.State == "idle", "E strike ends idle: " + p.State);
+            check(sim.BashStrikeCount == bash0 + 1, "E strike landed once (st2 crosses 12): " + sim.BashStrikeCount);
 
             // ---- B08 shield: a normal hit with shield up spends the shield first, hp stays ----
             for (int i = 0; i < 120; i++) sim.Tick(0, 0, aimX, aimY, false, false);
