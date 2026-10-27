@@ -10894,6 +10894,66 @@ function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
     im.onload=(function(kk){return function(){_druidSheets[kk].ready=true}})(k);
     im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260927-edge3';}
 })();
+// ── [STY-D9] 1-1(si0) 다크드루이드 마지막 사망 = 땅속 침강 도주 (표시만 교체 — 수치·부활판정·보상·출구 개방·G.bossAlive 흐름 무변경) ──
+const _DRUID_SINK_SHEET='emerge'; // 침강 시트(4x2, 0→7). 디자인총괄 판정: emerge 확정(dive.png와 바이트 동일) — 바꾸려면 이 한 줄만 교체
+const _DRUID_SINK_FT=8.25,_DRUID_SINK_HOLD=18,_DRUID_SINK_FADE=18; // 디자인총괄 판정(2026-10-27): 8칸 66틱(1.1초) 균등 → 7번 칸 0.3초 유지 → 0.3초 알파 1→0
+function _isSi0DruidSink(e){return !!(e&&e.ib&&!e._fmKind&&G.stage===0&&!_isDruidFinale(e))}
+function _druidSinkStart(e){e._sinkDruid=true;e._corpseSpawned=true;G._druidSink={x:e.x,y:e.y,r:e.r,t:0}} // _corpseSpawned: update()의 시체 보충 생성(미생성 사망체 자동 시체)도 막는다
+function _druidSinkTick(sp){
+  const s=G._druidSink;if(!s)return;
+  const prev=s.t;s.t+=sp;const body=_DRUID_SINK_FT*8;
+  if(s.t<body&&~~(prev/6)!==~~(s.t/6)){ // 침강 중 흙먼지(기존 파티클풀)
+    for(let k=0;k<3;k++){const a=Math.random()*Math.PI*2,d=s.r*(1+Math.random()*2.6);
+      poolPart(s.x+Math.cos(a)*d,s.y+Math.sin(a)*d*.45,Math.cos(a)*.9,-.5-Math.random()*.9,'#5b4a35',2+Math.random()*2.5,16+Math.random()*10,0,0,.05)}
+  }
+  if(s.t>=body+_DRUID_SINK_HOLD+_DRUID_SINK_FADE)G._druidSink=null;
+}
+let _druidSinkCells=null,_druidSinkCellsSrc=null;
+function _druidSinkCell(img,frame){ // 시트 칸 경계에서 그림이 직선으로 잘려 있어(소프트 엣지 없음) 칸마다 사방 가장자리를 부드럽게 지운 캔버스를 한 번만 만들어 쓴다
+  if(!_druidSinkCells||_druidSinkCellsSrc!==img){
+    _druidSinkCells=[];_druidSinkCellsSrc=img;
+    const iw=img.naturalWidth,ih=img.naturalHeight,cols=4,rows=2,_in=3;
+    for(let f=0;f<8;f++){
+      const fc=f%cols,fr=~~(f/cols),sx=Math.round(fc*iw/cols),sy=Math.round(fr*ih/rows);
+      const cw=Math.round((fc+1)*iw/cols)-sx,ch=Math.round((fr+1)*ih/rows)-sy,W=cw-_in*2,H=ch-_in*2;
+      const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+      g.drawImage(img,sx+_in,sy+_in,W,H,0,0,W,H);
+      g.globalCompositeOperation='destination-out';
+      const F=Math.round(H*.09);
+      const edge=(x0,y0,x1,y1,rx,ry,rw,rh)=>{const gr=g.createLinearGradient(x0,y0,x1,y1);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(rx,ry,rw,rh)};
+      edge(0,H,0,H-F,0,H-F,W,F);edge(0,0,0,F,0,0,W,F);edge(W,0,W-F,0,W-F,0,F,H);edge(0,0,F,0,0,0,F,H);
+      _druidSinkCells.push(c);
+    }
+  }
+  return _druidSinkCells[frame];
+}
+function _drawDruidSink(X,vl,vr,vt,vb){
+  const s=G._druidSink;if(!s)return;
+  const S=_druidSheets[_DRUID_SINK_SHEET];if(!S||!S.ready)return;
+  if(s.x<vl-300||s.x>vr+300||s.y<vt-300||s.y>vb+300)return;
+  const spec=_CODEX_BOSS[0],body=_DRUID_SINK_FT*8,t=s.t,frame=Math.min(7,~~(t/_DRUID_SINK_FT));
+  const fadeP=Math.max(0,Math.min(1,(t-body-_DRUID_SINK_HOLD)/_DRUID_SINK_FADE));
+  const cell=_druidSinkCell(S.img,frame);
+  let dw=s.r*spec.dw,dh=s.r*spec.dh; // _drawDruidBoss와 동일한 치수 규칙
+  if(_DRUID_SINK_SHEET==='dive'){dh=s.r*spec.dh;dw=dh*(cell.width/cell.height)*1.12}
+  const _m=window._btScaleMul||1,_yo=window._btOffsetY||0;
+  _fdgNativePerspective?.pushBillboard(s.x,s.y);
+  X.save();X.translate(s.x,s.y+_yo-6*_m); // 보스 본체 기준점(_drawDruidBoss: translate(e.y-6) × 보스 시각배율 보정)과 동일
+  if(t>body*.55){ // 침강 바닥 그림자(어두운 구멍) — 소멸 페이드와 함께 걷힘
+    const holeA=Math.min(1,(t-body*.55)/20)*(1-fadeP);
+    X.globalAlpha=.5*holeA;X.fillStyle='#070906';X.beginPath();X.ellipse(0,dh*.1+6*_m,dw*.2,dw*.07,0,0,Math.PI*2);X.fill();
+  }
+  const a=1-fadeP;
+  if(a>0.01){
+    const dy=fadeP*dh*.08; // 소멸하며 아래로 더 꺼짐
+    X.globalAlpha=a;X.drawImage(cell,-dw/2,-dh*.86+dy,dw,dh);
+    X.globalCompositeOperation='lighter';
+    X.globalAlpha=a*.42;X.drawImage(cell,-dw/2,-dh*.86+dy,dw,dh);
+    X.globalAlpha=a*.42;X.drawImage(cell,-dw/2,-dh*.86+dy,dw,dh);
+    X.globalCompositeOperation='source-over';
+  }
+  X.globalAlpha=1;X.restore();
+}
 // facing/이동각 → 0..7 방향 (행 순서: S,SW,W,NW,N,NE,E,SE — 검증 후 조정)
 const _DRUID_DIRMAP=[6,7,0,1,2,3,4,5];
 function _druidDir(e){
@@ -24849,8 +24909,8 @@ function deathFX(x,y,r,col,isBoss,noSound,et,impactId){
       poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,'#ffffff',4,6,1,0,0);
     }
   }
-  // 6) 사망 피 이펙트 — 모든 몹
-  if(!_tooMany){
+  // 6) 사망 피 이펙트 — 모든 몹 (druid_sink: 1-1 드루이드 침강 도주는 피 없음)
+  if(!_tooMany&&impactId!=='druid_sink'){
     const _dbScale=_deathBloodScale(r);
     const _dbAngle=Math.random()*Math.PI*2;
     if(impactId==='boss_meteor_hit'&&_VFX_SHEETS.boss_meteor_hit?.img)playVFXAng('boss_meteor_hit',x,y,150/768,2,0,false);
@@ -30749,7 +30809,7 @@ function genBossArena(si){
 }
 let _preArenaBackup=null; // 보스 진입 전 맵 백업
 function _enterBossArena(retry=false){
-  G._druidVictory=null;G._druidFinaleBoss=null;G._druidActCue=null;
+  G._druidVictory=null;G._druidFinaleBoss=null;G._druidActCue=null;G._druidSink=null;
   // 보스 진입 전 맵 백업 (사망 시 게이트 입구 리스폰용)
   if(!retry)_preArenaBackup={map:G.map.map(r=>[...r]),mw:G.mw,mh:G.mh,rooms:G.rooms.slice(),exits:G.exits.slice(),
     bossGate:G.bossGate,bossGateOpen:G.bossGateOpen,bossSealed:G.bossSealed,
@@ -34529,8 +34589,10 @@ function update(){
           }else{
             // 부활 실패 → 완전 사망 (G.bossAlive는 true 유지 — 30프레임 체크에서 게이트 열기)
             e._bossRevived=false;e._reviveTimer=0;
+            if(!e._sinkDruid){ // [STY-D9] 1-1 드루이드는 침강 도주 — 사망 문구 2줄 숨김(흔들림·섬광·소리는 그대로)
             addTxt(e._reviveX,e._reviveY-50,_T('☠ 완전 사망!'),'#ff2222',100);
             addTxt(e._reviveX,e._reviveY-30,((e._revPts||0)<=0?_T('부활력 고갈!'):_T('부활 실패...')),((e._revPts||0)<=0?'#ff4444':'#888888'),60);
+            }
             // G.bossAlive는 삭제 — 30프레임 체크(125611)에서 _bossLive=false 감지 후 처리
             shake(8);G._flashT=4;G._flashCol='#ffffff';
             try{playSample('boss_final_death',1.0,_r(1.0,.05))}catch(e){console.error('[SFX] boss final death error:',e)} // 보스 완전 사망 전용 SFX
@@ -34642,6 +34704,7 @@ function update(){
     if(isW(nx,ny)){c.vx*=-.4;c.vy*=-.4;c.rv*=-1;c.bounced++}else{c.x=nx;c.y=ny}
     c.vx*=.85**sp;c.vy*=.85**sp;c.r+=c.rv*sp;c.rv*=.92**sp;
   }
+  _druidSinkTick(sp); // [STY-D9] 1-1 드루이드 침강 도주 타이머(표시 전용 — ens·G.bossAlive·30프레임 생존 확인과 무관)
   // 히트 임팩트 업데이트
   {let iw=0;for(let i=0;i<_impacts.length;i++){const im=_impacts[i];im.t+=sp;if(im.t<im.ml)_impacts[iw++]=im;}_impacts.length=iw;}
   updateHitVFX(sp/60);updateElecVFX(sp/60);updateOldBurstVFX(sp/60);updateDarkBurstVFX(sp/60);updateLightningBurstVFX(sp/60);
@@ -42542,10 +42605,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         addTxt(e.x,e.y-55,_T('💀 ')+e.deaths+_L('차 부활! ',' Revive! ')+_revPct+'%',_revPct>=80?'#ff2244':_revPct>=50?'#ff8844':'#ffcc44',50);
         addTxt(e.x,e.y-70,_L('부활력 -','Revive Power -')+_revCost+' ('+e._revPts+'/'+e._maxRevPts+')',_revCost>=13?'#ffdd44':'#ffffff',60);
         if(_bSuppress>0)addTxt(e.x,e.y-85,_T('✟ 신성력 억제! +')+~~(Math.min(5,_bSuppress*10+2)),_hpZone?'#ffffff':'#ffffff',50);
-      }else if(e._revPts<=0){addTxt(e.x,e.y-55,_T('☠ 부활력 고갈!'),'#ff2222',80);addTxt(e.x,e.y-40,'0/'+e._maxRevPts,'#ff4444',50)}
+      }else if(e._revPts<=0){if(!_isSi0DruidSink(e)){addTxt(e.x,e.y-55,_T('☠ 부활력 고갈!'),'#ff2222',80);addTxt(e.x,e.y-40,'0/'+e._maxRevPts,'#ff4444',50)}} // [STY-D9] 1-1 드루이드의 부활력 고갈 사망 문구 숨김(침강 도주)
       else if(_isDruidFinale(e)){addTxt(e.x,e.y-40,_L('마지막 저항 판정 ','Last stand chance ')+_revPct+'%','#c8dfab',60)}
       else if(_bSuppress>0){addTxt(e.x,e.y-40,_T('✟ 신성력 억제! (')+_revPct+'%)','#ffffff',60)}
-      else{addTxt(e.x,e.y-40,_T('부활 실패 (')+_revPct+'%)','#bbbbbb',40)}
+      else if(!(_isSi0DruidSink(e)&&e._bossRevJudged)){addTxt(e.x,e.y-40,_T('부활 실패 (')+_revPct+'%)','#bbbbbb',40)} // [STY-D9] 이미 부활 판정이 끝난 1-1 드루이드의 최종 사망(타이머 없음)은 문구 숨김
       if(_doRevive){
         // 풀피 부활 (HP 변동 없음)
         e.hp=e.mhp;e.eShield=0;e.eShieldMax=0;
@@ -42702,14 +42765,17 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     const _isBurnDeath=(atkEl===EL.F||(opts&&opts.beam))&&!(opts&&opts.explode); // explode: 화염이어도 고어/시체 정상 출력
     const _isWhirlKill=(P.s==='whirlwind'&&!(opts&&opts.detonate));
     atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_regKill(e);_petOnKill(e);
+    // [STY-D9] 1-1 드루이드의 마지막 사망(부활 없음 확정)만 침강 도주로 표시 — 피·고어·시체·사망 문구 숨김, 판정·보상 로직은 아래 그대로
+    const _sinkDruid=_isSi0DruidSink(e)&&!(e._reviveTimer>0&&e._bossRevived&&(e._bossRevRoll??1)<(e._bossRevChance||0));
+    if(_sinkDruid)_druidSinkStart(e);
     // 버스트루프 광역 사망음 카운터
     if(opts&&opts._blastKill&&G._blDeathSndQ!==undefined){
       // 사망음은 큐에만 쌓고 deathFX는 묵음 처리
       const _dKey=e.ib?'death_boss':('death_'+(e.etype<10?'slime':'demon'));
       G._blDeathSndQ.push({key:_dKey,vol:0.6,rate:_r(1,.1)});
-      deathFX(e.x,e.y,e.r,e.col,!!e.ib,true,e.etype); // VFX만, 사운드 없음
+      deathFX(e.x,e.y,e.r,e.col,!!e.ib,true,e.etype,_sinkDruid?'druid_sink':undefined); // VFX만, 사운드 없음
     }else{
-      deathFX(e.x,e.y,e.r,e.col,!!e.ib,_isBurnDeath,e.etype);
+      deathFX(e.x,e.y,e.r,e.col,!!e.ib,_isBurnDeath,e.etype,_sinkDruid?'druid_sink':undefined);
     }
     if(!(G._noHitStopT>0)){G.hitStop=~~(_HS.kill*OPT.hitStop/100)}
     // ═══ 콤보 시스템: 일반몹 +1초(최대20초), 보스 +30초(최대30초) ═══
@@ -42719,21 +42785,22 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(G.combo>G.comboMax)G.comboMax=G.combo;
     if(G.combo>=1000&&G.combo%1000===0){const _cbPct=~~((~~(G.combo/100)*0.05+Math.max(0,_diffSigned())*0.10)*100);addTxt(P.x,P.y-40,'🔥 '+G.combo+' COMBO!'+(_cbPct>0?' +'+_cbPct+_L('%보상','% Bonus'):''),'#ffaa00',50)}
     const _killAng=ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x);
-    if(!_isWhirlKill)_spawnLargeMonsterDeathFx(e,_killAng);
+    if(!_isWhirlKill&&!_sinkDruid)_spawnLargeMonsterDeathFx(e,_killAng);
     // 시체 잔해 — 모든 사망 (화염 포함, 몬스터가 그냥 사라지면 안 됨)
-    {const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
+    if(!_sinkDruid){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
     // 화염/빔 사망 → 추가로 불타는 시체 + 전용 사운드
-    if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15));playVFXAng('burn_death',e.x,e.y-e.r*0.3,Math.max(0.15,e.r*2.2/211),4,0,false)}
+    if(_isBurnDeath&&!_sinkDruid){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15));playVFXAng('burn_death',e.x,e.y-e.r*0.3,Math.max(0.15,e.r*2.2/211),4,0,false)}
     // gore 파편 + 사망 임팩트 — 모든 사망
-    {const _gL=e.ib||e.r>=18;
+    if(!_sinkDruid){const _gL=e.ib||e.r>=18;
     const _gCommon=['flesh','flesh','flesh','blood','blood','intestine','organ','tendon'];
     const _gRare=['bone','eye','skull','heart','finger','tooth'];
     const _gPick=Math.random()<.8?_gCommon:_gRare;
     _addGorePiece(e.x,e.y,_gPick[~~(Math.random()*_gPick.length)]);
-    if(_gL)_addGorePiece(e.x,e.y,Math.random()<.5?'intestine':'organ')}
-    _addDeathImpact(e.x,e.y,e.r);
+    if(_gL)_addGorePiece(e.x,e.y,Math.random()<.5?'intestine':'organ');
+    _addDeathImpact(e.x,e.y,e.r)}
     if(e._fromHole!=null&&G.spawnHoles[e._fromHole])G.spawnHoles[e._fromHole].alive--;
-    if(e.ib&&e._bossRevJudged){addTxt(e.x,e.y-45,_T('💀 부활 판정 중...'),'#ff8844',90);G._flashT=3;G._flashCol='#ff4400'}
+    if(_sinkDruid){G._flashT=3;G._flashCol='#ff4400'} // 문구 없이 섬광만(기존 '부활 판정 중' 섬광 값 유지)
+    else if(e.ib&&e._bossRevJudged){addTxt(e.x,e.y-45,_T('💀 부활 판정 중...'),'#ff8844',90);G._flashT=3;G._flashCol='#ff4400'}
     else if(e.ib){addTxt(e.x,e.y-45,_T('☠ 완전 사망!'),'#ff4400',90);G._flashT=6;G._flashCol='#ffffff';G._chromaT=5}
     // ── 문지기 사망 → 게이트 해방 연출 ──
     if(e._isGateGuard){
@@ -52697,13 +52764,14 @@ function draw(){
   if(!_ensWarmDone)_warmupEnsAtlas(); // 실제 GPU 워밍업 시작 (로딩 중 즉시, 플레이 중 유휴 콜백)
   else if(++_warmRescanFrame>=180){_warmRescanFrame=0;_ensWarmDone=false;_warmupEnsAtlas()} // 늦게 로드된 아틀라스만 추가 준비
   _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX);
+  _drawDruidSink(X,_vl,_vr,_vt,_vb); // [STY-D9] 1-1 드루이드 침강 도주(표시 전용)
   for(let _eri=0;_eri<ens.length;_eri++){const e=ens[_eri];
     if(!e){continue}
     if(!e.alive){
       // 부활 잔상 방지: 죽은 몹의 피격 플래시 잔여값 즉시 소거(시각 상태만; death/alive/보상/시체 불변)
       if(e._hitFlash)e._hitFlash=0;
       // ── 부활 대기 중: vfx_void_black 렌더링 ──
-      if(e._reviveTimer>0&&e._reviveX!=null){
+      if(e._reviveTimer>0&&e._reviveX!=null&&!e._sinkDruid){ // [STY-D9] 침강 도주 중에는 부활 판정 소용돌이·카운트다운 미표시
         const _rvx=e._reviveX,_rvy=e._reviveY;
         if(_rvx<_vl-100||_rvx>_vr+100||_rvy<_vt-100||_rvy>_vb+100)continue;
         const _rvVfx=_VFX_SHEETS['void_black'];
