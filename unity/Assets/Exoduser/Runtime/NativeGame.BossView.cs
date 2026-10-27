@@ -8,19 +8,22 @@ namespace Exoduser.UnityPort
     // (NativeBossView) and the STY-D9 final death: the last death of the 1-1 druid is a sink into the ground (66 tick body, 18 tick hold, 18 tick fade of the web).
     public sealed partial class NativeGame
     {
-        NativeBossView bossView; readonly Dictionary<int, int> sinkStart = new Dictionary<int, int>();
+        NativeBossView bossView; NativeDruidBody druidBody; readonly Dictionary<int, int> sinkStart = new Dictionary<int, int>();
         public const int SinkBodyTicks = 66, SinkHoldTicks = 18, SinkFadeTicks = 18;
 
         void BossViewAttach()
         {
             if (bossView != null) bossView.Dispose();
+            if (druidBody != null) druidBody.Dispose();
             bossView = new NativeBossView(transform); sinkStart.Clear();
+            druidBody = new NativeDruidBody(transform, DiscSprite());
             Simulation.AttachDruidBoss();
         }
 
         void BossViewUpdate()
         {
             if (bossView != null) bossView.Update(Simulation);
+            if (druidBody != null && druidBody.Stamp != Time.frameCount) druidBody.Hide();   // nobody drew the druid this frame (gone / not on this stage)
             foreach (var e in Simulation.Enemies) if (e.Alive && e.IsBoss && sinkStart.Count > 0) sinkStart.Remove(e.Id);
         }
 
@@ -32,19 +35,40 @@ namespace Exoduser.UnityPort
             return Simulation.TickCount - t0 < SinkBodyTicks + SinkHoldTicks + SinkFadeTicks;
         }
 
+        // the web druid body (8-direction sheets); false = not the 1-1 druid / no art, the generic enemy sprite is used
+        bool BossBodyDraw(EnemyState e, EnemyView ev, bool newTick)
+        {
+            if (!e.IsBoss || druidBody == null || Simulation.Druid == null) return false;
+            DruidData dd; if (!Simulation.Druid.Data.TryGetValue(e, out dd)) return false;
+            if (!druidBody.Draw(e, dd, newTick)) return false;
+            druidBody.Stamp = Time.frameCount; ev.body.enabled = false; ev.walk.enabled = false;
+            return true;
+        }
+
+        static Sprite discSprite;
+        static Sprite DiscSprite()
+        {
+            if (discSprite != null) return discSprite;
+            const int n = 128; var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            var px = new Color32[n * n];
+            for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
+            {
+                float dx = (x + .5f) / n * 2 - 1, dy = (y + .5f) / n * 2 - 1, r = Mathf.Sqrt(dx * dx + dy * dy);
+                px[y * n + x] = new Color32(255, 255, 255, (byte)((r >= 1 ? 0 : Mathf.Clamp01((1 - r) / .22f)) * 255));
+            }
+            tex.SetPixels32(px); tex.Apply(false, true);
+            return discSprite = Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(.5f, .5f), 100f, 0, SpriteMeshType.FullRect);
+        }
+
+        // dead 1-1 druid (SinkDruid): web _drawDruidSink through the emerge sheet
         void BossSinkDraw(EnemyState e, EnemyView ev)
         {
-            if (!e.IsBoss || !e.SinkDruid) return;
+            if (!e.IsBoss || !e.SinkDruid || druidBody == null) return;
             int t0; if (!sinkStart.TryGetValue(e.Id, out t0)) { t0 = Simulation.TickCount; sinkStart[e.Id] = t0; }
             int t = Simulation.TickCount - t0;
-            if (t >= SinkBodyTicks + SinkHoldTicks + SinkFadeTicks) { ev.body.enabled = false; return; }
-            float k = Mathf.Clamp01(t / (float)SinkBodyTicks), a = t < SinkBodyTicks + SinkHoldTicks ? 1f : 1f - (t - SinkBodyTicks - SinkHoldTicks) / (float)SinkFadeTicks;
-            float size = e.Radius * 7 / 256;
-            ev.body.enabled = true; ev.walk.enabled = false;
-            ev.body.transform.position = Point(e.X, e.Y + e.Radius * 1.1f * k);
-            ev.body.transform.localScale = new Vector3(size * (1 + .08f * k), size * (1 - .78f * k), 1);
-            ev.body.sortingOrder = (int)e.Y;
-            ev.body.color = new Color(.62f, .56f, .42f, a);
+            ev.body.enabled = false; ev.walk.enabled = false;
+            if (t >= SinkBodyTicks + SinkHoldTicks + SinkFadeTicks) return;
+            druidBody.DrawSink(e, t, SinkBodyTicks, SinkHoldTicks, SinkFadeTicks); druidBody.Stamp = Time.frameCount;
         }
     }
 }

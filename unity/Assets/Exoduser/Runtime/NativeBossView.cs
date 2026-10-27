@@ -5,31 +5,56 @@ using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort
 {
-    // BX: stand-in presentation of the 1-1 dark druid's projectiles, ground hazards and wind-up rings. Gameplay (timing, damage, positions) is the Core's
-    // (Core/DruidBoss*.cs, oracle-checked against game.html); this file only draws it with procedural discs / rings in the Hell-Gothic poison greens of the web
-    // druid (#66dd22 shots, #84a83d roots, #5e10a8 mines). The web's own druid clips (druid_hit / roots / poison pool atlases) are art tasks of the boss VFX owner.
+    // BX: presentation of the 1-1 dark druid's projectiles, ground hazards and event VFX. Gameplay (timing, damage, positions) is the Core's (Core/DruidBoss*.cs,
+    // oracle-checked against game.html); this file draws it with the web's own art: the poison-pool / orb / hit / roots / shockring / dust atlas clips
+    // (assets/vfx/boss/druid_*_24_*), the corruption ring (druid_corruption_ring.svg) and the grey-then-#66dd22 fire-devil orb sheet for the poison shots,
+    // with the web's sizes, alphas and clip time (24 fps loops from the hazard's own T, once-clips stretched over maxFrames x frameTime ticks).
+    // Still procedural (the web strokes them as vector lines too): fissure crack body, tide-wave beads, seeker mines, rhythm volley.
     public sealed class NativeBossView
     {
-        readonly Transform root; readonly List<SpriteRenderer> pool = new List<SpriteRenderer>(); int used;
-        readonly Sprite disc, ring;
-        static readonly Color Poison = new Color(.40f, .87f, .13f), PoisonDark = new Color(.0f, .45f, .0f), Root = new Color(.52f, .66f, .24f), Mine = new Color(.37f, .06f, .66f), Warn = new Color(.8f, .15f, .1f);
+        readonly Transform root; readonly List<SpriteRenderer> pool = new List<SpriteRenderer>(), addPool = new List<SpriteRenderer>(); int used, addUsed;
+        readonly Sprite disc, ring, thinRing;
+        readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
+        static readonly Color Poison = new Color(.40f, .87f, .13f), Root = new Color(.52f, .66f, .24f), Mine = new Color(.37f, .06f, .66f), RimGreen = new Color(.663f, .843f, .416f);
+
+        // atlas clips: resource, columns, rows, frames, fps (loop = hazard T/60 seconds)
+        struct Clip { public string Res; public int Cols, Rows, Frames; public float Fps; }
+        static readonly Clip PoolClip = new Clip { Res = "druid_poison_pool_24_20261009", Cols = 6, Rows = 4, Frames = 24, Fps = 24f };
+        static readonly Clip OrbClip = new Clip { Res = "druid_orb_24_20261009", Cols = 6, Rows = 4, Frames = 24, Fps = 300f / 7f };
+        static readonly Clip HitClip = new Clip { Res = "druid_hit_24_20261010", Cols = 6, Rows = 4, Frames = 24, Fps = 180f / 7f };
+        static readonly Clip RootsClip = new Clip { Res = "druid_roots_48_20261010", Cols = 8, Rows = 6, Frames = 48, Fps = 288f / 7f };
+        static readonly Clip ShockClip = new Clip { Res = "druid_shockring_24_20261010", Cols = 6, Rows = 4, Frames = 24, Fps = 180f / 7f };
+        static readonly Clip DustClip = new Clip { Res = "druid_dust_24_20261010", Cols = 6, Rows = 4, Frames = 24, Fps = 180f / 7f };
+
+        // game.html playVFXAng: a once-clip lives maxFrames x frameTime ticks and is stretched over that time; additive ('lighter'), alpha 1 - frame/maxFrames*.3
+        sealed class Vfx { public Clip Clip; public float X, Y, W, H; public int Born, FrameTime, MaxFrames; }
+        readonly List<Vfx> vfx = new List<Vfx>();
+        Simulation bound; int boundTick;
+        readonly HashSet<ChaseZone> zoneHit = new HashSet<ChaseZone>();
+        readonly Dictionary<Fissure, int> fissureExploded = new Dictionary<Fissure, int>();
+        string prevBossState;
 
         public NativeBossView(Transform parent)
         {
             root = new GameObject("BossView").transform; root.SetParent(parent, false);
-            disc = MakeSprite(false); ring = MakeSprite(true);
+            disc = MakeSprite(0); ring = MakeSprite(1); thinRing = MakeSprite(2);
         }
 
-        public void Dispose() { if (root != null) UnityEngine.Object.Destroy(root.gameObject); }
-
-        static Sprite MakeSprite(bool ringOnly)
+        public void Dispose()
         {
-            const int n = 128; var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            if (bound != null) bound.BossFx -= OnFx;
+            if (root != null) UnityEngine.Object.Destroy(root.gameObject);
+        }
+
+        static Sprite MakeSprite(int mode)
+        {
+            int n = mode == 2 ? 512 : 128; var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
             var px = new Color32[n * n];
             for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
             {
                 float dx = (x + .5f) / n * 2 - 1, dy = (y + .5f) / n * 2 - 1, r = Mathf.Sqrt(dx * dx + dy * dy), a;
-                if (ringOnly) a = Mathf.Clamp01(1 - Mathf.Abs(r - .93f) / .06f) * (r <= 1 ? 1 : 0);
+                if (mode == 1) a = Mathf.Clamp01(1 - Mathf.Abs(r - .93f) / .06f) * (r <= 1 ? 1 : 0);
+                else if (mode == 2) a = Mathf.Clamp01(1 - Mathf.Abs(r - .99f) / .006f);   // ~1.5 px hairline: the web strokes the pool rim 1.2 px wide
                 else a = r >= 1 ? 0 : Mathf.Clamp01((1 - r) / .22f);
                 px[y * n + x] = new Color32(255, 255, 255, (byte)(a * 255));
             }
@@ -45,37 +70,125 @@ namespace Exoduser.UnityPort
             var r = pool[used++]; r.enabled = true; return r;
         }
 
+        SpriteRenderer NextAdd()
+        {
+            if (addUsed >= addPool.Count) { var go = new GameObject("fxAdd"); go.transform.SetParent(root, false); var rr = go.AddComponent<SpriteRenderer>(); rr.sharedMaterial = NativeDruidArt.Additive; addPool.Add(rr); }
+            var r = addPool[addUsed++]; r.enabled = true; return r;
+        }
+
         // radius in web pixels (the 128 px sprite is 1.28 world units wide at scale 1)
         void Put(Sprite s, double x, double y, double radius, Color c, int order)
         {
-            var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order;
-            r.transform.position = Point(x, y); r.transform.localScale = Vector3.one * (float)(radius * 2 / 128.0);
+            var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order; r.transform.rotation = Quaternion.identity;
+            r.transform.position = Point(x, y); r.transform.localScale = Vector3.one * (float)(radius * 2 / s.rect.width);
+        }
+
+        // a sprite stretched to w x h web pixels, optionally rotated (canvas rotate is clockwise on screen, Unity z-rotation counter-clockwise)
+        void PutBox(Sprite s, double x, double y, double w, double h, Color c, int order, double angle = 0)
+        {
+            var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
+            r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
+        }
+
+        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order)
+        {
+            var r = NextAdd(); r.sprite = s; r.sortingOrder = order; r.color = Color.white; r.transform.rotation = Quaternion.identity;
+            r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
+            r.GetPropertyBlock(block); block.SetFloat(NativeDruidArt.Opacity, opacity); r.SetPropertyBlock(block);
+        }
+
+        static Sprite ClipSprite(Clip c, int frame) { return NativeDruidArt.ClipFrame(NativeDruidArt.VfxDir + c.Res, c.Cols, c.Rows, frame); }
+        static int LoopFrame(Clip c, double ticks) { return (int)Math.Floor(((ticks / 60.0) * c.Fps) % c.Frames); }
+
+        // _drawDruidGroundRing: the corruption ring at diameter 2r, rotated by `angle`; innerFraction > 0 keeps only the band inner..1
+        void GroundRing(double x, double y, double r, double alpha, double angle, int order, float inner = 0)
+        {
+            var s = inner > 0 ? NativeDruidArt.RingBand(inner) : NativeDruidArt.Ring;
+            PutBox(s, x, y, r * 2, r * 2, new Color(1, 1, 1, (float)alpha), order, angle);
+        }
+
+        // _drawDruidPoolClip: pool.t/60 s into the looping 24-frame clip, drawn at 1.12 r with the given alpha, plus a 1.2 px pale-green rim at .55 of it
+        void PoolClipDraw(double x, double y, double r, double t, double alpha, int order)
+        {
+            double R = r * 1.12;
+            PutBox(ClipSprite(PoolClip, LoopFrame(PoolClip, t)), x, y, R * 2, R * 2, new Color(1, 1, 1, (float)alpha), order);
+            Put(thinRing, x, y, r, new Color(RimGreen.r, RimGreen.g, RimGreen.b, (float)(alpha * .55)), order + 1);
+        }
+
+        void Spawn(Clip c, double x, double y, double w, double h, int born, int frameTime, int maxFrames)
+        {
+            if (vfx.Count >= 20) vfx.RemoveAt(0);   // playVFXAng: the 20-entry pool evicts its oldest non-skill entry
+            vfx.Add(new Vfx { Clip = c, X = (float)x, Y = (float)y, W = (float)w, H = (float)h, Born = born, FrameTime = frameTime, MaxFrames = maxFrames });
+        }
+
+        void OnFx(string kind, double x, double y, double r)
+        {
+            int born = boundTick;
+            switch (kind)
+            {
+                case "druidDust": Spawn(DustClip, x, y, r * 2, r * 2, born, 7, 8); break;                                       // playVFXAng('druid_dust',x,y,r*2/256,7)
+                case "druidRoots":
+                    Spawn(HitClip, x, y, 362 * .72, 543 * .72, born, 7, 8);                                                    // druid_hit .72, 7
+                    Spawn(RootsClip, x, y, r * 2, r * 2, born, 7, 10); break;                                                  // druid_roots r*2/256, 7
+            }
         }
 
         public void Update(Simulation sim)
         {
-            used = 0;
+            used = 0; addUsed = 0;
+            if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
             var druid = sim.Druid; if (druid == null) { Finish(); return; }
-            int t = sim.TickCount;
+            int t = sim.TickCount; boundTick = t;
+            double nowMs = Time.unscaledTime * 1000.0;
             // ground hazards first (low sorting order, under the actors)
             foreach (var lp in druid.LavaPools)
             {
-                if (lp.T < lp.WarnT) Put(ring, lp.X, lp.Y, lp.R, new Color(Poison.r, Poison.g, Poison.b, .35f + .35f * Mathf.Abs(Mathf.Sin((float)lp.T * .25f))), -9000);
-                else { float fade = Mathf.Clamp01((float)((lp.MaxT - lp.T) / 40)); Put(disc, lp.X, lp.Y, lp.R, new Color(.22f, .45f, .08f, .55f * fade), -9000); Put(ring, lp.X, lp.Y, lp.R, new Color(Poison.r, Poison.g, Poison.b, .8f * fade), -8999); }
+                double la = lp.T < lp.WarnT ? lp.T / lp.WarnT * .42 : lp.T > lp.MaxT * .8 ? (1 - (lp.T - lp.MaxT * .8) / (lp.MaxT * .2)) * .65 : .65;
+                PoolClipDraw(lp.X, lp.Y, lp.R, lp.T, la, -9000);
             }
-            foreach (var pp in druid.PoisonPools) { float fade = Mathf.Clamp01((float)((pp.MaxT - pp.T) / 40)); Put(disc, pp.X, pp.Y, pp.R, new Color(.2f, .42f, .06f, .42f * fade), -9001); Put(ring, pp.X, pp.Y, pp.R, new Color(Poison.r, Poison.g, Poison.b, .55f * fade), -9000); }
+            foreach (var pp in druid.PoisonPools)
+            {
+                double f = pp.T > pp.MaxT * .8 ? 1 - (pp.T - pp.MaxT * .8) / (pp.MaxT * .2) : Math.Min(1, pp.T * 5 / pp.MaxT);
+                PoolClipDraw(pp.X, pp.Y, pp.R, pp.T, f * .68, -9002);
+            }
+            int zi = 0;
             foreach (var ca in druid.ChaseAoes)
+            {
+                zi = 0;
                 foreach (var z in ca.Zones)
                 {
-                    if (!z.Hit) { float k = Mathf.Clamp01((float)(z.T / z.Delay)); Put(ring, z.X, z.Y, z.R, new Color(Root.r, Root.g, Root.b, .45f + .4f * k), -8990); Put(disc, z.X, z.Y, z.R * k, new Color(Root.r, Root.g, Root.b, .22f), -8991); }
-                    else { float k = Mathf.Clamp01((float)(1 - z.ExplT / z.ExplMax)); Put(disc, z.X, z.Y, z.R, new Color(.72f, .92f, .38f, .55f * k), -8990); }
+                    if (!z.Hit)
+                    {
+                        // rotten-root zone: hollow ring, the damage radius is unchanged
+                        double zp = Math.Min(1, z.T / z.Delay), pulse = .78 + Math.Sin(nowMs * .018 + zi) * .22;
+                        GroundRing(z.X, z.Y, z.R, zp * (.55 + .12 * pulse), zi * .67, -8990);
+                    }
+                    else
+                    {
+                        if (zoneHit.Add(z)) Spawn(HitClip, z.X, z.Y, z.R * 1.7, z.R * 1.7 * 543 / 362, t, 3, 8);   // playVFXAng('druid_hit',z.x,z.y,z.r*1.7/362,3)
+                        double ep = z.ExplMax > 0 ? Math.Min(1, z.ExplT / z.ExplMax) : 1;
+                        GroundRing(z.X, z.Y, z.R * (1 + ep * .25), (1 - ep) * .68, zi * .67, -8990);
+                    }
+                    zi++;
                 }
+            }
+            if (zoneHit.Count > 64) zoneHit.RemoveWhere(z => z.Hit && z.ExplT >= z.ExplMax);
+            int fi = 0;
             foreach (var f in druid.Fissures)
             {
                 int steps = (int)(f.Len / 50) + 1;
-                for (int i = 0; i <= steps; i++) { double d = f.Len * i / steps; Put(disc, f.X + Math.Cos(f.Ang) * d, f.Y + Math.Sin(f.Ang) * d, 46, new Color(Root.r * .6f, Root.g * .5f, Root.b * .3f, .9f), -8980); }
-                Put(ring, f.X + Math.Cos(f.Ang) * f.Len, f.Y + Math.Sin(f.Ang) * f.Len, f.ExplR, new Color(Root.r, Root.g, Root.b, f.Exploded ? .15f : .5f), -8979);
+                // three stroke layers of the web crack (#1c2418 w / #364327 .56w / #a5c568 max(7,.09w) at .31 / .56 / .84)
+                double[] lw = { f.W, f.W * .56, Math.Max(7, f.W * .09) }; float[] la = { .31f, .56f, .84f };
+                Color[] lc = { new Color(.11f, .141f, .094f), new Color(.212f, .263f, .153f), new Color(.647f, .773f, .408f) };
+                for (int layer = 0; layer < 3; layer++)
+                    for (int i = 0; i <= steps; i++) { double d = f.Len * i / steps; Put(disc, f.X + Math.Cos(f.Ang) * d, f.Y + Math.Sin(f.Ang) * d, lw[layer] * .5, new Color(lc[layer].r, lc[layer].g, lc[layer].b, la[layer]), -8980 + layer); }
+                double hx = f.X + Math.Cos(f.Ang) * f.Len, hy = f.Y + Math.Sin(f.Ang) * f.Len;
+                int born; if (f.Exploded && !fissureExploded.TryGetValue(f, out born)) fissureExploded[f] = t;
+                double ep = f.Exploded ? Math.Min(1, (t - fissureExploded[f]) / 30.0) : 0, markR = f.Exploded ? f.ExplR * (1 + ep * .12) : f.ExplR;
+                GroundRing(hx, hy, markR, f.Exploded ? (1 - ep) * .48 : .32 + Math.Sin(nowMs * .018) * .035, fi * .69, -8978, .78f);
+                fi++;
             }
+            if (fissureExploded.Count > 32) { var dead = new List<Fissure>(); foreach (var k in fissureExploded.Keys) if (!druid.Fissures.Contains(k)) dead.Add(k); foreach (var k in dead) fissureExploded.Remove(k); }
             foreach (var w in druid.TideWaves)
             {
                 int segs = 72;
@@ -86,32 +199,54 @@ namespace Exoduser.UnityPort
                     Put(disc, w.X + Math.Cos(a) * w.Rad, w.Y + Math.Sin(a) * w.Rad, 34, new Color(Root.r, Root.g, Root.b, .75f), -8970);
                 }
             }
-            // wind-up warning ring on the boss
-            var boss = druid.Boss;
-            if (boss != null && boss.Alive && druid.Data.TryGetValue(boss, out var dd) && dd.S.EndsWith("Wind"))
-            {
-                float k = Mathf.Clamp01(1f - (float)(dd.St2 / 60));
-                Put(ring, dd.X, dd.Y, dd.R * (1.6f + .4f * Mathf.Sin(t * .4f)), new Color(Warn.r, Warn.g, Warn.b, .45f + .4f * k), (int)dd.Y + 2);
-            }
+            // boss state transitions that carry a web VFX: bossShockWind -> bossShock = druid_shockring r*2.5/256 (512 px frame -> 5 r wide), speed 7, 8 frames
+            var boss = druid.Boss; string bs = null;
+            DruidData dd = null; if (boss != null && boss.Alive && druid.Data.TryGetValue(boss, out dd)) bs = dd.S;
+            if (bs == "bossShock" && prevBossState == "bossShockWind") Spawn(ShockClip, dd.X, dd.Y, dd.R * 5, dd.R * 5, t, 7, 8);
+            prevBossState = bs;
             // things in the air
             foreach (var m in druid.SeekerMines)
             {
                 bool armed = m.T > m.ArmT; Put(disc, m.X, m.Y, 20, armed ? new Color(Mine.r + .3f, Mine.g, Mine.b + .2f, .95f) : new Color(Mine.r, Mine.g, Mine.b, .5f), (int)m.Y + 1);
                 if (armed) Put(ring, m.X, m.Y, m.R, new Color(Mine.r + .3f, 0, Mine.b + .2f, .35f), (int)m.Y);
             }
-            foreach (var o in druid.Orbs) { Put(disc, o.X, o.Y, o.R * 1.6f, new Color(Poison.r, Poison.g, Poison.b, .35f), (int)o.Y + 3); Put(disc, o.X, o.Y, o.R, new Color(.8f, 1f, .5f, .95f), (int)o.Y + 4); }
+            foreach (var o in druid.Orbs)
+            {
+                double R = o.R * 2.4;   // _drawDruidOrbClip: o.t/60 s into the looping clip, 2.4 r
+                PutBox(ClipSprite(OrbClip, LoopFrame(OrbClip, o.T)), o.X, o.Y, R * 2, R * 2, Color.white, (int)o.Y + 4);
+            }
             foreach (var p in druid.Projectiles)
             {
                 if (!p.Active) continue;
-                double r = Math.Max(6, p.Sz * 3 + 3);
                 if (p.Mine) { Put(disc, p.X, p.Y, 18, Mine, (int)p.Y); continue; }
-                Color c = p.BlackBean ? PoisonDark : p.ElemBall ? new Color(.7f, .9f, .25f) : Poison;
+                if (p.DruidPoison)
+                {
+                    // _drawDruidPoisonShot: 16-frame orb at 70 ms/frame, 96..180 px by Sz (240 for mines / element balls), doubled for physical-parry shots
+                    double size = (p.Mine || p.ElemBall ? 240 : Math.Max(96, Math.Min(180, p.Sz * 24))) * (p.ParryClass == "physical" ? 2 : 1);
+                    PutBox(NativeDruidArt.PoisonShot((int)(nowMs / 70) % 16), p.X, p.Y, size, size, Color.white, (int)p.Y + 6);
+                    continue;
+                }
+                double r = Math.Max(6, p.Sz * 3 + 3);
+                Color c = p.BlackBean ? new Color(.0f, .45f, .0f) : p.ElemBall ? new Color(.7f, .9f, .25f) : Poison;
                 Put(disc, p.X, p.Y, r * 1.7, new Color(c.r, c.g, c.b, .30f), (int)p.Y + 5);
                 Put(disc, p.X, p.Y, r, p.BlackBean ? new Color(.05f, .22f, .05f, .98f) : new Color(.86f, 1f, .62f, .97f), (int)p.Y + 6);
+            }
+            // once-clips (additive)
+            for (int i = 0; i < vfx.Count;)
+            {
+                var v = vfx[i]; int age = t - v.Born, life = v.FrameTime * v.MaxFrames;
+                if (age >= life) { vfx.RemoveAt(i); continue; }
+                int legacy = age / v.FrameTime, frame = Math.Min(v.Clip.Frames - 1, (int)((double)age / life * v.Clip.Frames));
+                PutAdd(ClipSprite(v.Clip, frame), v.X, v.Y, v.W, v.H, 1f - (float)legacy / v.MaxFrames * .3f, (int)v.Y + 20);
+                i++;
             }
             Finish();
         }
 
-        void Finish() { for (int i = used; i < pool.Count; i++) pool[i].enabled = false; }
+        void Finish()
+        {
+            for (int i = used; i < pool.Count; i++) pool[i].enabled = false;
+            for (int i = addUsed; i < addPool.Count; i++) addPool[i].enabled = false;
+        }
     }
 }
