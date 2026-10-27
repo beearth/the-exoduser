@@ -198,9 +198,9 @@ namespace Exoduser.UnityPort.Core
  {
   public const string FixtureArgument="--unity-settings-persistence-smoke";
   public const string CinematicReviewArgument="--unity-cinematic-persistence-review";
-  public static bool TryResolveCinematicReview(string[] args,out string root)
+  public static bool TryResolveCinematicReview(string[] args,string productName,string identifier,out string root)
   {
-   root="";if(Array.IndexOf(args,CinematicReviewArgument)<0||Array.IndexOf(args,FixtureArgument)>=0||UnityEngine.Application.productName!="EXODUSER Settings QA"||UnityEngine.Application.identifier!="com.fordeargamers.exoduser.settingsqa")return false;
+   root="";if(Array.IndexOf(args,CinematicReviewArgument)<0||Array.IndexOf(args,FixtureArgument)>=0||productName!="EXODUSER Settings QA"||identifier!="com.fordeargamers.exoduser.settingsqa")return false;
    foreach(string arg in args)if(arg!=CinematicReviewArgument&&arg.StartsWith("--unity-",StringComparison.Ordinal)&&(arg.EndsWith("-smoke",StringComparison.Ordinal)||arg.EndsWith("-capture",StringComparison.Ordinal)||arg.EndsWith("-review",StringComparison.Ordinal)))return false;
    int at=Array.IndexOf(args,"-output");if(at<0||at+1>=args.Length||!Path.IsPathRooted(args[at+1]))return false;
    try{var folder=new DirectoryInfo(Path.GetFullPath(args[at+1]));if(folder.Parent==null||folder.Parent.Name!="_out"||!folder.Name.StartsWith("UNITY-MAC-A05-IO-",StringComparison.Ordinal))return false;string marker=Path.Combine(folder.FullName,"qa-output.marker");if(!File.Exists(marker)||File.ReadAllText(marker)!="EXODUSER_MAC_A05_IO_V1\n")return false;root=folder.FullName;return true;}
@@ -209,10 +209,12 @@ namespace Exoduser.UnityPort.Core
 
   public static bool IsQa(string[] args){foreach(string arg in args)if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&(arg.EndsWith("-smoke",StringComparison.Ordinal)||arg.EndsWith("-capture",StringComparison.Ordinal)||arg.EndsWith("-review",StringComparison.Ordinal)))return true;return false;}
   public static bool TryResolve(string[] args,string nativeRoot,out string directory,out NativeSettingsStoreStatus status)
+  { return TryResolve(args,nativeRoot,"","",out directory,out status); }
+  public static bool TryResolve(string[] args,string nativeRoot,string productName,string identifier,out string directory,out NativeSettingsStoreStatus status)
   {
    directory="";status=NativeSettingsStoreStatus.NotLoaded;
    // The dedicated A05 Player review binds settings and roster to the same marked QA root.
-   if(Array.IndexOf(args,CinematicReviewArgument)>=0){string qaRoot;if(!TryResolveCinematicReview(args,out qaRoot)){status=NativeSettingsStoreStatus.IoError;return false;}directory=Path.Combine(qaRoot,"native-settings-v1");status=NativeSettingsStoreStatus.Missing;return true;}
+   if(Array.IndexOf(args,CinematicReviewArgument)>=0){string qaRoot;if(!TryResolveCinematicReview(args,productName,identifier,out qaRoot)){status=NativeSettingsStoreStatus.IoError;return false;}directory=Path.Combine(qaRoot,"native-settings-v1");status=NativeSettingsStoreStatus.Missing;return true;}
    // All pre-existing QA runs keep session defaults and perform zero settings IO.
    if(IsQa(args)&&Array.IndexOf(args,FixtureArgument)<0)return false;
    string root=nativeRoot;

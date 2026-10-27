@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
   IEnumerator FrontendPadIntegrationQa()
   {
    string output=Argument("-output"),root;
-   if(!SettingsQaIdentity||!NativeSettingsStorageScope.TryResolveCinematicReview(Environment.GetCommandLineArgs(),out root)||
+   if(!SettingsQaIdentity||!NativeSettingsStorageScope.TryResolveCinematicReview(Environment.GetCommandLineArgs(),Application.productName,Application.identifier,out root)||
       string.IsNullOrWhiteSpace(output)||Path.GetFullPath(output)!=root||!lobby.EnableFrontendPadQa()||
       lobby.CharacterStoreDirectory!=Path.Combine(root,"character-roster-v1")||nativeSettingsDirectory!=Path.Combine(root,"native-settings-v1"))
    {Debug.LogError("Frontend pad QA rejected: product, PID, marker or isolated root mismatch");Application.Quit(2);yield break;}

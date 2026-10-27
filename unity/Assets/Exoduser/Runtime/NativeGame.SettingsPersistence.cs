@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
   {
    settings=new NativeSettingsState(120);cinSeen=false;var args=Environment.GetCommandLineArgs();string directory;
    if(SettingsFixtureRequested&&!SettingsQaIdentity){nativeSettingsStatus=NativeSettingsStoreStatus.IoError;return;}
-   if(NativeSettingsStorageScope.TryResolve(args,Application.persistentDataPath,out directory,out nativeSettingsStatus)){
+   if(NativeSettingsStorageScope.TryResolve(args,Application.persistentDataPath,Application.productName,Application.identifier,out directory,out nativeSettingsStatus)){
     nativeSettingsDirectory=directory;nativeSettingsStore=new NativeSettingsStore(directory,NativeSettingsJsonCodec.Encode,NativeSettingsJsonCodec.Decode,settings,Screen.fullScreen);
     NativeSettingsSnapshot snapshot;bool loaded=nativeSettingsStore.TryLoad(out snapshot,out nativeSettingsStatus);
     if(loaded&&snapshot!=null){string raw;cinSeen=snapshot.extra!=null&&snapshot.extra.TryGetValue("cinSeen",out raw)&&raw=="true";settings.TryRestore(snapshot.sfxPercent,snapshot.bgmPercent,snapshot.frameCap);if(nativeSettingsStatus!=NativeSettingsStoreStatus.Missing){RestoreNativeBindings(snapshot);RequestSettingsFullscreen(snapshot.fullscreen,false);}}

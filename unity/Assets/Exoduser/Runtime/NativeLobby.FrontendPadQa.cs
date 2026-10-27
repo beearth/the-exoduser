@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
   internal bool EnableFrontendPadQa()
   {
    var args=Environment.GetCommandLineArgs();string root;
-   if(Array.IndexOf(args,"--unity-frontend-pad-qa")<0||!NativeSettingsStorageScope.TryResolveCinematicReview(args,out root))return false;
+   if(Array.IndexOf(args,"--unity-frontend-pad-qa")<0||!NativeSettingsStorageScope.TryResolveCinematicReview(args,Application.productName,Application.identifier,out root))return false;
    int at=Array.IndexOf(args,"--frontend-pad-qa-pid"),expected;
    if(at<0||at+1>=args.Length||!int.TryParse(args[at+1],out expected)||expected!=System.Diagnostics.Process.GetCurrentProcess().Id)return false;
    string marker=Path.Combine(root,"frontend-pad-qa.marker");
