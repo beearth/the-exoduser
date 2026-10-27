@@ -1,5 +1,19 @@
 # Mac 신규 전사 이야기 — 2026-10-25
 
+## 2026-10-27 킬루 피눈물 v3 미디어 입력 동기화
+
+최신 PC→Mac INBOX의 채택 소스 `main` `d038ba4ab4191921c4e5a52ce92a903e27554244:video/warrior_story_v23_clean.mp4`를 Git blob에서 직접 취득했다. 현재 Unity 입력 영상은 94,795,327B/SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`로 원본과 byte 단위 일치한다. 이전 97,796,468B/`277fbe09…166b34` 기록은 당시 영상·Rev4 검토 앱의 이력이며 현재 Unity 소스 미디어가 아니다.
+
+| ID·적용 위치 | 현재 bytes | SHA-256 | 검증 |
+|---|---:|---|---|
+| `main:video/warrior_story_v23_clean.mp4` → `Assets/StreamingAssets/Lobby/warrior_story_v23_clean.mp4` | 94,795,327 | `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab` | 직접 blob 취득·복원 후 `cmp` 일치 |
+| `Tools/MediaRecovery/warrior-story-v23/part-01.bin` | 31,457,280 | `1156cfbf7f98b5ba3614e6c3e4ce2459ec55e9a20496a2595bed91a2f34cc879` | manifest·복원 스크립트 일치 |
+| `part-02.bin` | 31,457,280 | `ec66db23ae9031b5aa9f0d3503c214b50dd081e1c79f42da2730494b14c0dabb` | 동일 |
+| `part-03.bin` | 31,457,280 | `178e1a4e77fa6e73fc0d0203d009381f51a8bce5a45900a1d9f7058e1911e17a` | 동일 |
+| `part-04.bin` | 423,487 | `ea508b9538d3c6af5cb938e6d01d62970f2e82f6b4e56a7b87fe053c470ed7b9` | 동일 |
+
+4파트 합계와 조립 SHA는 위 실행 영상과 동일하다. `restore-warrior-story.cjs` 실행은 4/4 파트·전체·쓰기 뒤 해시를 검증하고 성공했다. `warrior_story.json`의 영상 파일명·22컷·29언어×22자막, `NativeLobby.CharacterStory`의 `movie.Open(warriorStoryData.video,...)` 참조는 그대로다. 영상/파트 외 제품 UI·컷·자막·세이브 수정 0. Mac의 기존 런타임 영상과 복구 파트는 `_out/UNITY-MAC-KILLU-V3-20261027/backup/`에 별도 보관했으며 PC I:에는 접근하지 않았다. 실제 Unity Editor 디코드·Windows Player 생성→영상→진입·51~58초 표정/피눈물·음성/자막 싱크·종료/건너뛰기 검수는 **별도 gate/HOLD**다. Rev4 검토 앱은 이전 영상 snapshot으로 자동 교체하지 않았다.
+
 2026-10-27 QA 전용 의미 프레임으로 실제 `NativeLobby`의 전사 Next·짧은 hold 해제·1.2초 완료와 안내/필드 연결을 검수했다. 이후 웹 동시 Next+Skip hold 계약을 맞춰 [최종 18/18 영수증·검토 앱·물리 패드 HOLD](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트)로 갱신했다.
 
 동일 Rev4 앱의 별도 빈 검토 root에서 전사 `MacQA27`을 일반 키보드로 생성하고 정본 영상에 Next/skip 입력 없이 자연 종료해 네메시스 대사까지 확인했다. 시작→네메시스 화면 간 105.5초로 원본 영상 96.4초보다 길다. [후속 경로와 캡처](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#rev4-일반-키보드-자연-경로-후속--2026-10-27). 물리 패드·청음 판정은 별도 HOLD다.

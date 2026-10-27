@@ -1,29 +1,30 @@
 {
   "schema": "exoduser.warrior-story.media-recovery.v1",
-  "source": "/Users/fordeargamers/Projects/exoduser-migration-20261001/video/warrior_story_v23_clean.mp4",
+  "source": "main:video/warrior_story_v23_clean.mp4",
+  "sourceRevision": "d038ba4ab4191921c4e5a52ce92a903e27554244",
   "destination": "Assets/StreamingAssets/Lobby/warrior_story_v23_clean.mp4",
-  "bytes": 97796468,
-  "sha256": "277fbe09c4f5c0b70a98aae6376a8d820a7377cbd6f96a3bc62365cf0a166b34",
+  "bytes": 94795327,
+  "sha256": "8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab",
   "parts": [
     {
       "path": "part-01.bin",
       "bytes": 31457280,
-      "sha256": "59bc289bd36ef94804a44ce27ad4a4f554bb90470c5d17a341f00ed91a9285aa"
+      "sha256": "1156cfbf7f98b5ba3614e6c3e4ce2459ec55e9a20496a2595bed91a2f34cc879"
     },
     {
       "path": "part-02.bin",
       "bytes": 31457280,
-      "sha256": "2bd90cc3960c550a3c9ea7130af894ca3553b45610bccbf2f9b86caf43028f59"
+      "sha256": "ec66db23ae9031b5aa9f0d3503c214b50dd081e1c79f42da2730494b14c0dabb"
     },
     {
       "path": "part-03.bin",
       "bytes": 31457280,
-      "sha256": "22ca1d36348687691744017656158cd4ac82c255a58eb71f06f2dc9e15fcd5b7"
+      "sha256": "178e1a4e77fa6e73fc0d0203d009381f51a8bce5a45900a1d9f7058e1911e17a"
     },
     {
       "path": "part-04.bin",
-      "bytes": 3424628,
-      "sha256": "99885d0be78aa9f5fe76cb5d554afaf9b3a0205b7a8ab4a19565c5293c368e79"
+      "bytes": 423487,
+      "sha256": "ea508b9538d3c6af5cb938e6d01d62970f2e82f6b4e56a7b87fe053c470ed7b9"
     }
   ]
 }
