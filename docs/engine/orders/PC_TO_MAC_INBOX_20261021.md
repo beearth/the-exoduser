@@ -192,3 +192,9 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
 - **전환 확인 전까지 PC 규칙**: PC는 `codex/unity-mac-20261024`의 새 커밋을 `unity/main`으로 한 방향 fast-forward만 한다. PC 작업 브랜치(`claude/unity-pc-*`)의 병합 대상은 이제 `unity/main`이다. 아직 합류하지 않은 것: `claude/unity-pc-c01-20261026` 4커밋, `claude/unity-pc-map3d-20261026` 11커밋, `claude/unity-pc-b07-20261026`(커밋 진행 중).
 - **금지**: `unity/main`을 `main`으로 병합하지 않는다. `unity/main` 안의 웹 파일(game.html 등)은 이식 대조용 사본이라 고치지 않는다. 웹 수정은 `main`에서만 한다.
 - Unity 이식 문서(`docs/engine/UNITY_*`, 이 INBOX)는 계속 `main`에 둔다.
+
+## 2026-10-27 CTO — Codex 공지 경로 변경 (사용자 지시)
+
+- 이제부터 PC→Codex 공지는 `main`과 `unity/main` 두 곳에 올린다. Codex는 `unity/main`의 이 파일을 읽는다.
+- `codex/unity-mac-20261024`는 퇴역한다. 새 커밋을 하지 않는다(PC 측도 금지).
+- 맵 아트 바이블 v2(`docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md`)와 맵 보드 LIFE1 갱신을 `unity/main`에 반영했다. 맵 판정 기준은 v2다(A/B 대체).
