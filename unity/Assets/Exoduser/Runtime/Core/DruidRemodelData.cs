@@ -47,6 +47,7 @@ namespace Exoduser.UnityPort.Core
         public const double FanBulletMul = 0.75;                               // #5
         public const int GrabLungeTicks = 18; public const double GrabLungeSpeed = 9, GrabContact = 30;   // #6: lunge 18 f at 9 px/tick, grabs when within body + player + GrabContact
         public const int GrabMissRecovery = 80, GrabHeldRecovery = 60;         // after a missed lunge (table) / after the throw (initial value)
+        public const double PoisonDashSpeed = 4; public const int PoisonDashTicks = 45;   // #8: the poison-trail dash inside the move, 4 px/tick x 45 f = 180 px (boss-battle lead 2026-10-28); its direction is the frozen aim
         public const double BurrowTrackSpeed = 1.4;                            // #7: the marker that follows the player underground moves at most this fast
         public const int BurrowEruptWarn = 30, BurrowEruptPost = 6;            // #7: erupt telegraph 30 f (was 8) then the blast, 6 f after
         public const double TideSpeedMul = 0.75;                               // #10 ring speed
@@ -61,13 +62,13 @@ namespace Exoduser.UnityPort.Core
             M("slashCombo",   13, 32, 80, 110, false,   0, 100, new[] { 0, 1, 2 }, new[] { "melee", "multi-hit" }),
             M("slam",         14, 48, 70, 160, false,   0, 140, new[] { 0, 1, 2 }, new[] { "melee", "aoe" }),
             M("charge",        2, 54, 70, 130, true,   40, 400, new[] { 0, 1, 2 }, new[] { "gap-close", "melee" }),
-            M("groundFissure",34, 40, 50, 160, false,  60, 400, new[] { 0, 1, 2 }, new[] { "aoe", "zone", "ranged" }),
-            M("fan",           1, 38, 50, 120, false,  60, 300, new[] { 0, 1 },    new[] { "ranged", "frontal" }),
+            M("groundFissure",34, 40, 60, 160, false,  60, 400, new[] { 0, 1, 2 }, new[] { "aoe", "zone", "ranged" }),
+            M("fan",           1, 38, 60, 120, false,  60, 300, new[] { 0, 1 },    new[] { "ranged", "frontal" }),
             M("grab",          8, 60, 80, 200, false,   0, 150, new[] { 0, 1, 2 }, new[] { "melee", "punish" }),
             M("burrowStrike", 58, 50, 70, 220, false, 150, 600, new[] { 1, 2 },    new[] { "gap-close", "melee", "ambush" }),
             M("chaseAoe",     21, 30, 60, 200, false,   0, 999, new[] { 1, 2 },    new[] { "aoe", "zone", "utility" }),
             M("summon",        6, 60, 60, 320, false,   0, 999, new[] { 1 },       new[] { "utility" }),
-            M("tideWave",     35, 70, 50, 180, false,   0, 999, new[] { 2 },       new[] { "aoe", "ranged" }),
+            M("tideWave",     35, 70, 70, 180, false,   0, 999, new[] { 2 },       new[] { "aoe", "ranged" }),
             M("seekerMines",  36, 40, 60, 200, false,   0, 999, new[] { 2 },       new[] { "ranged", "zone", "utility" }),
             M("heartbeat",    57, 90, 90, DruidRemodelData.HeartbeatCooldownTicks, false, 0, 999, new[] { 2 }, new[] { "aoe" }),
         };

@@ -15,10 +15,10 @@ static partial class P
 {
     // spec §10.2: telegraph (tele), recovery (rec), cooldown (cd) per move, Moves[] order
     static readonly int[] SpecTele = { 32, 48, 54, 40, 38, 60, 50, 30, 60, 70, 40, 90 };
-    static readonly int[] SpecRec = { 80, 70, 70, 50, 50, 80, 70, 60, 60, 50, 60, 90 };
+    static readonly int[] SpecRec = { 80, 70, 70, 60, 60, 80, 70, 60, 60, 70, 60, 90 };   // 2026-10-28 M3 unification: #4 and #5 -> 60, #10 -> 70
     static readonly int[] SpecCd = { 110, 160, 130, 160, 120, 200, 220, 200, 320, 180, 200, 2400 };
     static readonly List<string> motionNotes = new List<string>();
-    static double maxWalkEver, maxTurnWalkEver, maxTurnWindEver, maxVelEver;
+    static double maxWalkEver, maxTurnWalkEver, maxTurnWindEver, maxVelEver, maxDashEver; static int parryBonusChecks;
     static int gapSamples, gapNear12, gapNearPhase, heartProbes;
 
     static void VerifyMoveTable()
@@ -34,10 +34,10 @@ static partial class P
         }
         var big = mv.Where((m, i) => i != 0 && i != 7).Select(m => m.Tele).Min();
         Check(big >= 30, "M1 smallest non-slash telegraph " + big);
-        // M3 as the principle is written (rec >= max(tele, 60)); the table is the answer where they differ, so the differences are only listed for the boss-battle lead
-        var viol = new List<string>();
-        for (int i = 0; i < mv.Length; i++) if (mv[i].Rec < Math.Max(mv[i].Tele, 60)) viol.Add("#" + (i + 1) + " " + mv[i].Id + " rec " + mv[i].Rec + " < max(tele " + mv[i].Tele + ", 60)");
-        motionNotes.Add("M3 principle (rec >= max(tele, 60)) differs from the table at: " + (viol.Count == 0 ? "none" : string.Join("; ", viol)));
+        // M3 (boss-battle lead 2026-10-28): every move with a telegraph of 40 f or more recovers at least max(telegraph, 60) f; the fan (telegraph 38) was raised to 60 with it
+        for (int i = 0; i < mv.Length; i++) if (mv[i].Tele >= 40) Check(mv[i].Rec >= Math.Max(mv[i].Tele, 60), "M3 #" + (i + 1) + " " + mv[i].Id + " recovery " + mv[i].Rec + " >= max(" + mv[i].Tele + ", 60)");
+        Check(mv[4].Rec >= 60, "M3 fan recovery " + mv[4].Rec);
+        Check(DruidRemodelData.PoisonDashSpeed == 4 && DruidRemodelData.PoisonDashTicks == 45, "#8 poison dash 4 px/tick x 45 f");
         Check(DruidRemodelData.GapTicks.SequenceEqual(new[] { 45, 36, 30 }) && DruidRemodelData.ComboLinkTicks == 12, "M4 gaps 45 / 36 / 30, combo link 12");
         Check(DruidRemodelData.WalkSpeed == 1.1 && DruidRemodelData.WalkAccelTicks == 20 && DruidRemodelData.WalkStopTicks == 12, "M5 walk 1.1 px/tick, accel 20 f, stop 12 f");
         Check(Math.Abs(DruidRemodelData.WalkTurn - 3 * Math.PI / 180) < 1e-12 && Math.Abs(DruidRemodelData.TeleTurn - 2 * Math.PI / 180) < 1e-12 && DruidRemodelData.AimFixTicks == 12, "M2 turn 3 deg / 2 deg, aim fixed 12 f before");
@@ -48,7 +48,7 @@ static partial class P
     sealed class Motion
     {
         public string Name; public bool Placed;
-        string ps = ""; double pst2, pface, px, py, pvel; bool has; int idleSince = -1, lastMoveCount, probeSerial = -1, probeBeat; int pendingProbe = -1; float hpBefore; bool probeDone;
+        string ps = ""; double pst2, pface, px, py, pvel; bool has; int idleSince = -1, lastMoveCount, probeSerial = -1, probeBeat; int pendingProbe = -1; float hpBefore; bool probeDone, paradeDone;
         readonly Dictionary<string, double> totalSeen = new Dictionary<string, double>();
 
         static bool IsWind(string s) { return s.EndsWith("Wind") || s == "bossDruidDive"; }
@@ -93,6 +93,11 @@ static partial class P
             if (has)
             {
                 double moved = Math.Sqrt((d.X - px) * (d.X - px) + (d.Y - py) * (d.Y - py));
+                if (ps == "bossPoisonDash" && d.S == "bossPoisonDash" && !kb)
+                {   // #8: 4 px/tick, straight along the frozen aim
+                    Check(moved <= DruidRemodelData.PoisonDashSpeed + 1e-4, name + ": #8 poison dash moved " + moved.ToString("0.000"));
+                    maxDashEver = Math.Max(maxDashEver, moved);
+                }
                 if (WalkSet(ps) && WalkSet(d.S) && !kb)
                 {
                     maxWalkEver = Math.Max(maxWalkEver, moved);
@@ -111,6 +116,14 @@ static partial class P
                 maxVelEver = Math.Max(maxVelEver, d.RmVel);
             }
             pvel = d.RmVel;
+            // +30 f recovery after a parry, once per move run (also when the parry lands during the recovery)
+            if (d.S == "bossRec" && d.St2 > 45 && !paradeDone && d.RmMoveId == "slam")
+            {
+                double before = d.St2; bool appliedBefore = d.RmBonusApplied;
+                s.Druid.OnBossParried(d); s.Druid.OnBossParried(d);
+                Check(!appliedBefore && Math.Abs(d.St2 - before - DruidRemodelData.ParryRecoveryBonus) < 1e-9, name + ": parry during recovery: +30 once (" + before + " -> " + d.St2 + ")");
+                paradeDone = true; parryBonusChecks++;
+            }
             // gap: the tick the boss reaches idle after a recovery -> the tick the next move starts
             int mc = s.Druid.MoveLog.Count;
             if (ps == "bossRec" && d.S == "idle") idleSince = s.TickCount;
@@ -161,7 +174,8 @@ static partial class P
     static void VerifyMotionTotals()
     {
         Check(heartProbes >= 6, "heartbeat probes " + heartProbes);
+        Check(parryBonusChecks >= 1, "parry bonus checks " + parryBonusChecks);
         Check(gapSamples >= 40, "gap samples " + gapSamples);
-        motionNotes.Add("max walking step " + maxWalkEver.ToString("0.000") + " px/tick, max walking speed " + maxVelEver.ToString("0.000") + " (limit 1.32); max turn walking " + (maxTurnWalkEver * 180 / Math.PI).ToString("0.00") + " deg, in a telegraph " + (maxTurnWindEver * 180 / Math.PI).ToString("0.00") + " deg; gaps " + gapSamples + " (combo link " + gapNear12 + ", phase gap " + gapNearPhase + "); heartbeat probes " + heartProbes);
+        motionNotes.Add("max walking step " + maxWalkEver.ToString("0.000") + " px/tick, max walking speed " + maxVelEver.ToString("0.000") + " (limit 1.32); max turn walking " + (maxTurnWalkEver * 180 / Math.PI).ToString("0.00") + " deg, in a telegraph " + (maxTurnWindEver * 180 / Math.PI).ToString("0.00") + " deg; gaps " + gapSamples + " (combo link " + gapNear12 + ", phase gap " + gapNearPhase + "); heartbeat probes " + heartProbes + "; max poison dash step " + maxDashEver.ToString("0.000") + "; parry-bonus checks " + parryBonusChecks);
     }
 }

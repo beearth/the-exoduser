@@ -91,7 +91,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // a parry of this boss landed (E / Q on a swing, a dash, the slam, the tide ring): the recovery of that move is 30 f longer, once per move
-        void OnBossParried(DruidData d)
+        public void OnBossParried(DruidData d)
         {
             if (d.S == "bossRec") { if (!d.RmBonusApplied) { d.St2 += DruidRemodelData.ParryRecoveryBonus; d.RmBonusApplied = true; } }
             else d.RmParryPending = true;

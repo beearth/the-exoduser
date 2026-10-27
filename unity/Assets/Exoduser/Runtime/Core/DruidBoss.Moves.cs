@@ -65,7 +65,7 @@ namespace Exoduser.UnityPort.Core
                     {   // spec #8: chase zones with a 20 f warning each + the poison trail the boss leaves on his way (no charge)
                         ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = DruidRemodelData.ChaseZoneCount, T = 0, Interval = 60, R = DruidRemodelData.ChaseZoneRadius, Delay = DruidRemodelData.ChaseZoneWarn, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
                         host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
-                        d.PtAng = Atan2(py - d.Y, px - d.X); d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = 50; break;
+                        d.PtAng = d.Facing; d.PtT = 0; d.S = "bossPoisonDash"; d.St2 = DruidRemodelData.PoisonDashTicks; break;   // the dash goes where the telegraph aim was frozen (12 f before), no re-aim
                     }
                     ChaseAoes.Add(new ChaseAoe { Cnt = 0, MaxCnt = 10, T = 0, Interval = 60, R = 450, Delay = 90, Dmg = I(d.Atk * 2), Druid = e.IsBoss && DruidStage });
                     host.Text(d.X, d.Y - 30, "🌿 추적 장판!", "#a9cc63", 55);
@@ -519,7 +519,7 @@ namespace Exoduser.UnityPort.Core
                     break;
                 case "bossPoisonDash":
                     {
-                        double pmx = Cos(d.PtAng) * 5, pmy = Sin(d.PtAng) * 5;
+                        double pdSpd = Remodel ? DruidRemodelData.PoisonDashSpeed : 5, pmx = Cos(d.PtAng) * pdSpd, pmy = Sin(d.PtAng) * pdSpd;
                         if (host.CanMove(d.X + pmx, d.Y + pmy, d.R)) { d.X += pmx; d.Y += pmy; }
                         d.PtT += 1;
                         if (d.PtT >= 8) { d.PtT -= 8; PoisonPools.Add(new PoisonPool { X = d.X, Y = d.Y, T = 0, MaxT = Remodel ? DruidRemodelData.PoisonTrailTicks : 240, R = 175, Dmg = I(d.Atk * .3), TickT = 0 }); host.Fx("druidPoison", d.X, d.Y, 175); }
