@@ -26,7 +26,8 @@
 | UCH-03a | 전사 대검 Meshy multi-image-to-3d 1건(정면+옆면) → Unity 임포트(전장 1.60)·텍스처 보정(핏줄 제거·금속 탈색) | **완료** (30cr, 조건부 PASS, 커밋 보류) |
 | UCH-03b | 망토 전용 뼈 분리(다리 끌림 해소)·손 파지 고정 포즈/무기 소켓·애니 FBX 메시 제거 | **완료** (조건부 PASS, 커밋 보류) |
 | UCH-03d | Hero Light(캐릭터 전용 보조광, 바이블 §8 L-9 캐릭터 총괄 소유)·웅덩이 림광·RM-0 확정 조명(unity/main b280ddf6) 재촬영 | **완료** (Hero 0.6 PASS, L-4 테두리 색 미해결, 디자인총괄 2차 판정 대기) |
-| UCH-03e | 웅덩이 테두리광 재설계: 림 Point를 카메라 기준 옆뒤·가슴 높이로 → 안 되면 웅덩이 색 Fresnel(Shader Graph) | 대기 |
+| UCH-03e | 웅덩이 테두리광 재설계: 림 Point 재배치 1회 → 안 되면 웅덩이 색 Fresnel(Shader Graph). 이번 단위는 구조만(세기는 Linear 뒤) | 대기 |
+| UCH-03f | VFX 병합(Linear·후처리) + RM0-LIGHT-L 뒤 재조정: Hero·Fresnel 세기 확정, ACES 색 밀림(350~12°)·블룸 번짐 확인, Hero Light 브랜치 merge·재캡처·병합 요청 | 대기 |
 | UCH-03c | Animator 기본(대기·이동·구르기·공격 1) | 대기 |
 | UCH-04 | 인게임 판정: 1-1 맵 위 1920×1080·1x 크롭, 전사·실버테일 옆 T1~T8 | 대기 |
 
@@ -91,3 +92,7 @@
   - 측정(Hero 끔 → 0.5/0.6/0.7): 대검 날 p95(단독) 0.226 → 0.367/0.399/0.433(기준 ≥0.35), 바닥 ΔL*(캐릭터 14px 밖) 0, 날 채도 4.8%, 흑철 R/G 1.245/1.243/1.242, 날 하이라이트 R/B 1.03~1.08. L-4 외곽 p95 − 웅덩이 바닥 p50: −1.3 → +16.5/+19.8/+24.1. 림 Point는 카메라 반대쪽이라 +0.4~1.1만 보탬(Hero 0.6+림 2.5 = +20.7).
   - 총괄 판정: **Hero Light 0.6 PASS**(얼굴·날·흑철이 1x로 읽히고 바닥 불변). **L-4 테두리 색 미해결**: 수치는 중성 Hero 덕에 통과하지만 웅덩이 색 테두리광이 눈에 보이지 않는다 → UCH-03e.
   - 공용 설정 필요(로컬 측정만, 미커밋): `ProjectSettings/TagManager.asset` 렌더링 레이어 `Hero` 이름, `URP_PC_High`·`URP_Mac_Balanced`의 `m_SupportsLightLayers: 1`, `RenderSettings.sun`을 Hell Sun으로 고정(Hero가 더 밝으면 메인 라이트가 바뀌어 키 그림자가 사라짐). 소유·커밋 위치를 유니티 총괄에 협의 중. diff는 `E:/exoduser-wt/_out/unity-charsheet/unity_uch03d_20261028_0050/`.
+- 2026-10-28 Hero Light 공용 설정(유니티 총괄이 캐릭터 총괄 소유로 결정, 캐릭터 아트와 분리): 브랜치 `claude/unity-pc-herolight-20261028` `ff20dc2d2`(기준 b280ddf61, 4파일). TagManager 렌더링 레이어 1=`Hero`, URP_PC_High·Mac_Balanced `m_SupportsLightLayers: 1`, `Rm0EngineSetup.ApplyLight`에 `RenderSettings.sun = Hell Sun`.
+  - 검증(RM-0 샌드박스, 캡슐, 1600×900, PC_High·Mac_Balanced 동일): 변경 전 Hero가 바닥까지 밝힘(바닥 |ΔL*| 최대 8.2) → 변경 후 바닥 0.000·피사체 L* 29.3→45.4·키 그림자 유지. 빌드 + `--unity-m1-check` 17단계 ok, Core diff 0. 캡처 `E:/exoduser-wt/_out/unity-herolight/captures_20261028_0039/`.
+  - 발견: 현재 unity/main TagManager의 빈 렌더링 레이어 줄 끝 공백이 지워져 있어 Unity가 파싱 실패(Parser Failure line 41) → 레이어 이름이 정의되지 않음. 이번 커밋에서 Unity 원본 직렬화로 되돌렸다. Codex에 `.asset` 끝 공백 제거 금지 공지(INBOX main `f97725cf2`, unity/main `e7d43d44d`). 임펙트 총괄에 ApplyLight 변경 알림 완료(VFX 브랜치는 URP 자산·TagManager·Rm0EngineSetup을 건드리지 않음 확인).
+  - 병합 대기: VFX 공유 렌더 → RM0-LIGHT-L → Hero Light. 판정 캡처는 그 뒤 Linear·후처리 화면에서 다시 찍는다(현재 캡처는 참고용).
