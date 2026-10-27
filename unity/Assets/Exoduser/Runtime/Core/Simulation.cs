@@ -260,6 +260,7 @@ namespace Exoduser.UnityPort.Core
             if (!enemy.Alive) return;
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
             enemy.Alive = false; Kills++; Combo++; ComboTicks = enemy.IsBoss ? Math.Min(1800, ComboTicks + 1800) : Math.Min(1200, ComboTicks + 60);
+            if (enemy.IsGateGuard) Stage.OnGateGuardKilled(enemy);   // C07: _isGateGuard death -> +10 % clear progress
             AddMalice(4);
             // Web kill drop (game.html 43094-43099): hp pays malice (+1, a third of the draws), st/mp are discarded; the old quickslot counters stay unused.
             ApplyKillDrop(enemy);

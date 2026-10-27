@@ -16,7 +16,8 @@ namespace Exoduser.UnityPort.Core
         ChestSpawned,        // web pushes a treasure chest at the arena centre (chest pickup is not ported)
         ExitOpened,          // arena exit tiles opened (web 41983-41994)
         StageCleared,        // exit stepped on after the boss: +10 SP, stage-clear panel (web 42062-42147)
-        FieldRestored        // death retry inside the arena: back to the field gate (web retryBtn 63627-63657)
+        FieldRestored,       // death retry inside the arena: back to the field gate (web retryBtn 63627-63657)
+        GateGuardDefeated    // the Hell Gate guardian died: +10 % clear progress, gate released (web 42945-42950)
     }
 
     public sealed class StageEvent
@@ -47,6 +48,8 @@ namespace Exoduser.UnityPort.Core
         public readonly List<Tile> Exits = new List<Tile>();
         private readonly List<Tile> fieldExits = new List<Tile>();
         private int fieldBossCx = 100, fieldGateY = 5;
+        public bool HasFieldGate;          // the map has boss gate tiles (web G.bossGate.length > 0 && G._gateY != null)
+        public EnemyState GateGuard;       // G._gateGuard: the sub-boss standing 3 tiles below the gate (null after it died)
 
         // G._bossArena / bossAlive / _bossUnlocked / stageCleared / _bossLoadPhase / _bossLoadT / _bossLoadFade / _crT
         public bool InArena, BossAlive = true, BossUnlocked, StageCleared;
@@ -76,6 +79,7 @@ namespace Exoduser.UnityPort.Core
                 if (tiles[i] == 2) { fieldExits.Add(new Tile(i % width, i / width)); }
                 else if (tiles[i] == 3) { gMinX = Math.Min(gMinX, i % width); gMaxX = Math.Max(gMaxX, i % width); gY = i / width; }
             }
+            HasFieldGate = gY >= 0; GateGuard = null; GateGuardKilled = false;
             if (gY >= 0) { fieldBossCx = (gMinX + gMaxX) / 2; fieldGateY = gY; }
             Exits.AddRange(fieldExits);
             InArena = false; BossAlive = true; BossUnlocked = false; StageCleared = false; LoadPhase = 0; LoadT = 0; LoadFade = 0; CheckT = 0; SurvivorKills = 0; Arena = null; Boss = null;
@@ -214,6 +218,13 @@ namespace Exoduser.UnityPort.Core
                 if (boss != null) { boss.IsBoss = true; Boss = boss; }
             }
             Raise(StageEventKind.ArenaEntered, p.X, p.Y);
+        }
+
+        // web 42945-42950: e._isGateGuard died -> G._gateGuard=null, G._gateGuardKilled=true (+10 % progress weight)
+        public void OnGateGuardKilled(EnemyState guard)
+        {
+            GateGuard = null; GateGuardKilled = true;
+            Raise(StageEventKind.GateGuardDefeated, guard.X, guard.Y);
         }
 
         private void OnBossDefeated()
