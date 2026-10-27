@@ -45487,9 +45487,11 @@ function _applyBlinkWeakPath(ang,len){
     if(!_was)addTxt(e.x,e.y-30,_T('약화!'),'#bb66ff',30);
   }
 }
-// ═══ 구르기 — 전사 기본 기동 (방향키 + 구르기 키). 전격이동 값에서 파생: 거리 250×0.7, 지속 6f 동일, 쿨다운 없음(게이지 게이팅) 동일 ═══
-//  무적 = 시작~끝 직전(6f 중 5f), 피해·착지 장판 없음, 공용 기동게이지 1칸(45), MP 소모 없음, 경직·기절 탈출 가능, 스킬 슬롯 미사용
-const _ROLL_DIST=250*0.7,_ROLL_FRAMES=6,_ROLL_IFRAMES=5,_ROLL_GAUGE_COST=_HARP_GAUGE_COST[1];
+// ═══ 구르기 — 전사 기본 기동 (방향키 + 구르기 키). 거리는 전격이동 250×0.7, 지속은 CTO 조정(2026-10-27)으로 18f, 쿨다운 없음(게이지 게이팅) ═══
+//  지속 18f(0.3초)·무적 앞 14f(뒤 4f 회복, 무적 없음), 이동은 ease-out, 피해·착지 장판 없음, 공용 기동게이지 1칸(45), MP 소모 없음, 경직·기절 탈출 가능, 스킬 슬롯 미사용
+const _ROLL_DIST=250*0.7,_ROLL_FRAMES=18,_ROLL_IFRAMES=14,_ROLL_GAUGE_COST=_HARP_GAUGE_COST[1];
+// 구르기 속도 곡선(ease-out): 프레임 중점 진행도 u(0~1)에서 속도 = 평균 × (1.5 − u) → 시작 1.5배 → 끝 0.5배, 18프레임 합 = _ROLL_DIST 정확히
+function _rollStepDist(step){const u=Math.max(0,Math.min(1,1-(P._bdMoveT-step/2)/_ROLL_FRAMES));return _ROLL_DIST/_ROLL_FRAMES*(1.5-u)*step}
 function _canRoll(){return !!(P&&!(P._bdMoveT>0)&&_harpGauge>=_ROLL_GAUGE_COST)}
 function activateRoll(dir){
   let _rDx=0,_rDy=0;
@@ -45534,7 +45536,7 @@ function _tickBladeDash(sp){
     if(!(P._bdMoveT>0)||!(sp>0))return;
     const _bdStep=Math.min(sp,P._bdMoveT);
     if(!P._bdRoll)P.iframes=Math.max(P.iframes,3); // 구르기 무적은 시작 시 5f 한 번(끝 직전까지)
-    const _bdSpd=(P._bdRoll?_ROLL_DIST:250)/6*_bdStep;
+    const _bdSpd=P._bdRoll?_rollStepDist(_bdStep):250/6*_bdStep;
     const _bdNx=P.x+Math.cos(P._bdAng)*_bdSpd,_bdNy=P.y+Math.sin(P._bdAng)*_bdSpd;
     if(canMvBlink(_bdNx,P.y,P.r))P.x=_bdNx;else if(!canMv(_bdNx,P.y,P.r)){P._bdMoveT=0} // 실제 벽만 정지, 해골무덤 통과
     if(canMvBlink(P.x,_bdNy,P.r))P.y=_bdNy;else if(!canMv(P.x,_bdNy,P.r)){P._bdMoveT=0}

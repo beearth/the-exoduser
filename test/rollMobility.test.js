@@ -7,19 +7,19 @@ function fn(name){const s=html.indexOf('function '+name+'(');let n=0;for(let i=h
 const noop=()=>{};
 function rollCtx(gauge,moving=0){
   const c=vm.createContext({P:{skills:{},x:0,y:0,s:'idle',mp:50,iframes:0,_bdMoveT:moving,facing:0},_harpGauge:gauge,_HARP_GAUGE_COST:[0,45,98,150],_HARP_GAUGE_MAX:225,isAct:()=>false,addTxt:noop,playSample:noop,_r:()=>1,addParts:noop,shake:noop,_uqMoveRefund:noop,_applyBlinkWeakPath:noop,_isKiCharging:()=>false});
-  vm.runInContext('const _ROLL_DIST=250*0.7,_ROLL_FRAMES=6,_ROLL_IFRAMES=5,_ROLL_GAUGE_COST=_HARP_GAUGE_COST[1];'+fn('_canRoll')+fn('activateRoll'),c);
+  vm.runInContext('const _ROLL_DIST=250*0.7,_ROLL_FRAMES=18,_ROLL_IFRAMES=14,_ROLL_GAUGE_COST=_HARP_GAUGE_COST[1];'+fn('_canRoll')+fn('_rollStepDist')+fn('activateRoll'),c);
   return c;
 }
-test('roll spends one shared mobility gauge cell, no MP, runs 6 frames and is invulnerable for 5',()=>{
+test('roll spends one shared mobility gauge cell, no MP, runs 18 frames and is invulnerable for the first 14',()=>{
   const c=rollCtx(225);
   assert.equal(c._canRoll(),true);
   c.activateRoll(3);
   assert.equal(c._harpGauge,180);
   assert.equal(c.P.mp,50);
-  assert.equal(c.P._bdMoveT,6);
+  assert.equal(c.P._bdMoveT,18);
   assert.equal(c.P._bdRoll,true);
   assert.equal(c.P.s,'bladeDash');
-  assert.equal(c.P.iframes,5);
+  assert.equal(c.P.iframes,14);
   assert.equal(c.P._bdAng,0);
 });
 test('roll needs a full gauge cell and cannot start while rolling',()=>{
@@ -28,10 +28,15 @@ test('roll needs a full gauge cell and cannot start while rolling',()=>{
   assert.equal(rollCtx(225,3)._canRoll(),false);
   const c=rollCtx(44.9);c.activateRoll(3);assert.equal(c._harpGauge,44.9);assert.equal(c.P.s,'idle');
 });
-test('roll distance is 70 percent of the Flash Step blink and shares its 6 frame duration',()=>{
-  assert.match(html,/const _ROLL_DIST=250\*0\.7,_ROLL_FRAMES=6,_ROLL_IFRAMES=5,_ROLL_GAUGE_COST=_HARP_GAUGE_COST\[1\];/);
-  assert.match(html,/const _bdSpd=\(P\._bdRoll\?_ROLL_DIST:250\)\/6\*_bdStep;/);
+test('roll covers 70 percent of the Flash Step blink over 18 frames with an ease-out curve',()=>{
+  assert.match(html,/const _ROLL_DIST=250\*0\.7,_ROLL_FRAMES=18,_ROLL_IFRAMES=14,_ROLL_GAUGE_COST=_HARP_GAUGE_COST\[1\];/);
+  assert.match(html,/const _bdSpd=P\._bdRoll\?_rollStepDist\(_bdStep\):250\/6\*_bdStep;/);
   assert.match(html,/P\._bdMoveT=_ROLL_FRAMES;/);
+  assert.match(html,/if\(!P\._bdRoll\)P\.iframes=Math\.max\(P\.iframes,3\);/);
+  const c=rollCtx(225);c.activateRoll(3);
+  let sum=0,prev=Infinity;
+  for(let i=0;i<18;i++){const d=c._rollStepDist(1);assert.ok(d<prev,'speed decreases every frame');prev=d;sum+=d;c.P._bdMoveT-=1;}
+  assert.ok(Math.abs(sum-175)<1e-9,'18 frames sum to exactly 175, got '+sum);
 });
 test('roll key is a configurable binding that defaults to Space and has a named row',()=>{
   assert.match(html,/bow:'Space', charge:'ShiftLeft', roll:'Space',/);
