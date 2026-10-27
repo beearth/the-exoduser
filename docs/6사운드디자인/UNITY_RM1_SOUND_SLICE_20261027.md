@@ -99,6 +99,36 @@
 - Unity: 같은 키를 트랙 A 구조에 등록
 - DEMO·EA 동기화(CLAUDE.md 배포 명령)
 
+## 5. 1차 판정 (2026-10-27 사운드 총괄 — 수치 `metrics_rm1.json` + 시트 16장 눈 확인)
+
+공통 사항
+- ElevenLabs가 낸 skill·hit 후보 대부분이 +2~+4dBTP로, 디코딩하면 1.0을 넘습니다. 디코딩 값에 넘친 부분이 그대로 남아 있어서 게인만 낮춰도 손실 없이 고쳐집니다.
+- 그래서 추천본은 모두 **−1dBTP 게인 정규화 + 뒤 무음 정리(남길 꼬리 30ms, 끝 10ms 페이드)**를 한 가공본으로 청음에 올립니다.
+
+| 키 | 추천 | 판단 근거 | 추가 가공 |
+|---|---|---|---|
+| `tell_melee` | v1 | 0.12초 부근에서 부풀었다 줄어듦. 셋 다 넓은 대역 숨소리 계열이지만 6k 이상 비율이 1.7% 이하라 규칙 안. v1 소리가 가장 큼 | 정규화만 |
+| `tell_ranged` | v2 | 어택 뒤 시위 울림이 2~5kHz에 머물고, 6k 이상 비율은 뒤쪽 1.0%뿐. v1(뒤 14%)·v3(딸깍 연속, 뒤 12%)은 6k 규칙 위반 | 정규화 |
+| `tell_boss` | v2 | 셋 중 유일하게 0.4초까지 부풀다 끊김(예고=상승). v1·v3는 앞에서 터지고 줄어들어 폭발처럼 들림 | 정규화 |
+| `tell_parry` | v2 | 가장 짧음(−40dB까지 245ms). 6k 이상은 어택에 몰림. v3는 100ms에 두 번째 딸깍이 있어 탈락 | 0.25s로 자르고 끝 20ms 페이드 |
+| `tell_grab` | **다시 생성** | 셋 다 빠른 딸깍(래칫) 12~15번이라 "1초 동안 손을 뻗으며 쌓이는 예고"로 읽히지 않음 | r2 |
+| `roll_body` | v1 | 옷 휘익 → 몸 닿음 → 0.13초에 작은 두 번째 닿음(구르고 멈춤)이 들어 있음. v2·v3는 저역 96% 이상이라 둔탁함 | 정규화 |
+| `druid_burrow` | v1 | 흙·나무 삐걱임이 0.7초까지 이어짐. 넘친 샘플이 가장 적음(67) | 정규화 |
+| `druid_erupt` | **다시 생성** | 셋 다 저역 99.8% 붐 하나뿐. 흙·뿌리가 터져 오르는 질감이 없고, 넘친 샘플이 2.6k~3.6k개 | r2 |
+| `druid_sink` | v1 | 거품·삐걱임 펄스가 1.3초에 걸쳐 천천히 가라앉음. v2는 16kHz까지 쏟아지는 소음, v3는 앞에서 크게 터짐 | 정규화 |
+| `amb_toxic_river` | v2 | 이음매 0.7dB, 레벨 편차 1.3dB, 튀는 소리 없음. v1·v3는 이음매 6.8·5.7dB에 펑 하는 튐이 있어 루프용 탈락 | RMS −24dBFS로 올림 |
+| `toxic_bubble` | v3 | 짧고 깨끗한 퐁 소리 한 번이라 3D로 반복해도 거슬리지 않음. v2는 음높이가 올라가는 "뽀옹"(만화풍)이라 탈락. v1은 대안(작은 거품 꼬리) | 정규화 |
+| `druid_staff_tap` | v2 | 저역이 가장 많음(10.8%). 셋 다 −26dBTP로 아주 작음 | −1dBTP로 올림 |
+| `druid_roots_rise` | v3 | 저역 52%로 가장 무거움. 그래도 6k 이상이 뒤쪽까지 9.8% 남아 CH1 규칙 위반 → 가공 필요 | 6.5kHz 로우패스(12dB/oct, 앞 50ms 제외) + 정규화 |
+| `druid_root_pierce` | v3 | 6k 이상은 어택에만 있고(뒤 0.1%), 저역 47%로 묵직함. 뒤 무음 600ms | 뒤 무음 정리 + 정규화 |
+| `druid_heartbeat` | **다시 생성** | 셋 다 0.1초짜리 저음 쿵 하나뿐(킥 드럼). 심장 박동(두 박자 쿵-쿵)과 축축한 조임 질감이 없음 | r2 |
+| `druid_tide` | v2 | 5kHz 위가 어둡고 끈적한 쏟아짐. v1·v3는 14kHz까지 밝은 물소리 | 정규화 |
+
+다시 생성할 3키 (r2, 키마다 3개):
+- `tell_grab` (skill, 1.0s): "slow continuous low swell of straining living wood and roots tightening, one long creak that builds in tension and pressure toward the end, hollow rotten wind drawn in, no rapid clicking"
+- `druid_erupt` (skill, 0.8s): "ground bursting open from below, crunchy dirt explosion with splintering wood and roots tearing upward, debris and soil raining down, moderate low impact, not a pure sub boom"
+- `druid_heartbeat` (skill, 0.8s): "giant organic heartbeat, double thump lub-dub through the ground, wet fibrous muscle squeeze on each beat, short low pressure swell between, no electronic kick"
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -114,3 +144,4 @@
 | 2026-10-27 | 유니티 총괄 요청: 트랙 B2(드루이드 연출음 5키)를 드루이드 명세 커밋을 기다리지 않고 E: 초안 기준으로 바로 생성. 타이밍이 바뀌어도 사용자 청음 전이라 다시 만드는 비용이 작음 |
 | 2026-10-27 | 트랙 B A8 2키 `amb_toxic_river`(ambient 10s 루프)·`toxic_bubble`(hit, 0.4s→API 최소 0.5s) × 3 = 6후보 생성(sound-simple, 카탈로그 `tools/sfx_forge_catalog_rm1.json` 9키로 확장, staging `ambient/amb_toxic_river`·`hit/toxic_bubble`). 측정 `_analysis/metrics_rm1.json`·시트 `sheet_rm1_<key>.png`, 청음 페이지 RM-1 묶음 9키·27후보. 루프 이음매 RMS 차(마지막 50ms−처음 50ms): v1 +6.8dB·v2 +0.7dB·v3 +5.7dB, v2만 잘림 0·피크 −12.1dBTP(v1·v3은 +0.9/+0.6dBTP·잘림 30/9, 음량 RMS는 v2가 −29.2dBFS로 6~7dB 작음) |
 | 2026-10-27 | 트랙 B 추가 2키(`tell_parry`·`tell_grab`)와 트랙 B2 5키(`druid_staff_tap`·`druid_roots_rise`·`druid_root_pierce`·`druid_heartbeat`·`druid_tide`) × 3 = 21후보 생성(sound-simple, 카탈로그 `tools/sfx_forge_catalog_rm1.json` 16키). 이로써 트랙 B 11키 + B2 5키 = 16키 × 3 = 48후보. 측정 `_analysis/metrics_rm1.json`(정점→−30/−40dB 감쇠·저역<120Hz 추가)·시트 `sheet_rm1_<key>.png`, 청음 페이지 RM-1 묶음을 총괄 지정 순서(예고음 5 → roll_body → druid 3 → 독성 강 2 → 드루이드 연출 5)로 재배열. `tell_parry`: 정점→−40dB 240~330ms(전부 400ms 이내)·6kHz 이상은 뒤 구간 0.1~1.1%, v3은 100ms 부근에 2번째 틱. `druid_heartbeat`: 저역<120Hz 98~99.7%, v1 −9.0dBTP 무잘림 / v2·v3 +2.3·+1.8dBTP 잘림 230·356 → −1dBTP 가공본(`_preview_rm1/druid_heartbeat_v2·v3_tp-1.mp3`, 게인 −3.36·−2.88dB, −1.54·−1.55dBTP, 잘림 0) 병기. `druid_staff_tap`은 셋 다 −26dBTP로 매우 작음(승격 때 게인 보정 필요) |
+| 2026-10-27 | 48후보 1차 판정(§5): 13키 추천+가공 방식, 3키(`tell_grab`·`druid_erupt`·`druid_heartbeat`) 다시 생성 r2. 다시 생성된 후보까지 판정한 뒤 사용자 청음 한 번에 요청 |
