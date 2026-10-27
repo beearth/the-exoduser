@@ -12,7 +12,9 @@ namespace Exoduser.UnityPort
   [Serializable] sealed class FrontendPadQaReceipt
   {
    public string scope,product,identifier,output,rosterDirectory,settingsDirectory;
-   public bool passed,storyNext,shortRelease,longHold,guideGate,guideConfirm,guideStart;
+   public bool passed,storyNext,combinedNext,combinedHold,shortRelease,longHold,guideGate,guideConfirm,guideStart;
+   public double combinedBeforeTime,combinedRequestedNextCue,combinedAfterTime;
+   public int combinedBeforeNextConsumptions,combinedAfterNextConsumptions;
    public int failures;public string[] checks;
   }
 
@@ -26,7 +28,7 @@ namespace Exoduser.UnityPort
 
    var checks=new List<string>();int failures=0;
    Action<bool,string> check=(ok,label)=>{checks.Add((ok?"PASS ":"FAIL ")+label);if(!ok)failures++;};
-   bool storyNext=false,shortRelease=false,longHold=false,guideGate=false,guideConfirm=false,guideStart=false;
+   bool storyNext=false,combinedNext=false,combinedHold=false,shortRelease=false,longHold=false,guideGate=false,guideConfirm=false,guideStart=false;
    Screen.SetResolution(1280,720,FullScreenMode.Windowed);
    lobby.ShowLobby();yield return null;
    check(lobby.Characters.Count==0,"new isolated QA roster is empty");
@@ -34,11 +36,25 @@ namespace Exoduser.UnityPort
    float deadline=Time.realtimeSinceStartup+18;
    while((!lobby.CurrentVideo.Prepared||lobby.CurrentVideo.Time<1.3)&&lobby.VideoError.Length==0&&Time.realtimeSinceStartup<deadline)yield return null;
    check(lobby.CurrentVideo.Prepared&&lobby.CurrentVideo.Time>=1.3&&lobby.VideoError.Length==0,"canonical warrior video prepared and playing");
+   yield return SkillCapture(root,"story-pad-hint-720p");
 
    lobby.SetFrontendPadQaState(true,false,false);yield return null;
    lobby.SetFrontendPadQaState(false,false,false);yield return new WaitForSecondsRealtime(.25f);
    storyNext=lobby.CharacterStoryActive&&lobby.CurrentVideo.Time>=5.45;
    check(storyNext,"injected Confirm edge reaches actual NextCharacterStory cut");
+   double beforeCombined=lobby.CurrentVideo.Time;
+   double requestedCue=lobby.FrontendPadQaNextStoryCue;
+   int beforeNextCount=lobby.FrontendPadQaStoryNextConsumptions;
+   lobby.SetFrontendPadQaState(true,true,false);yield return null;
+   int afterNextCount=lobby.FrontendPadQaStoryNextConsumptions;
+   deadline=Time.realtimeSinceStartup+.6f;
+   while(lobby.CurrentVideo.Time<requestedCue-.05&&Time.realtimeSinceStartup<deadline)yield return null;
+   combinedNext=lobby.CharacterStoryActive&&requestedCue>beforeCombined+.5&&afterNextCount==beforeNextCount+1&&lobby.CurrentVideo.Time>=requestedCue-.05;
+   combinedHold=lobby.CharacterStoryHoldProgress>0;
+   double afterCombined=lobby.CurrentVideo.Time;
+   check(combinedNext&&combinedHold,"same-frame Confirm Next and Cancel hold both reach NativeLobby");
+   lobby.SetFrontendPadQaState(false,false,false);yield return null;
+   check(lobby.CharacterStoryHoldProgress==0,"same-frame hold release clears progress");
    yield return null;
    lobby.SetFrontendPadQaState(false,false,true);yield return new WaitForSecondsRealtime(.45f);
    check(lobby.CharacterStoryHoldProgress>0&&!lobby.CharacterStoryEntering,"short injected Start hold remains in story");
@@ -52,6 +68,7 @@ namespace Exoduser.UnityPort
    deadline=Time.realtimeSinceStartup+8;
    while(lobby.StartupStage!="Nemesis"&&Time.realtimeSinceStartup<deadline)yield return null;
    check(lobby.StartupStage=="Nemesis"&&lobby.Characters.Count==1,"story gate reaches Nemesis without duplicate roster");
+   yield return SkillCapture(root,"nemesis-pad-hint-720p");
    yield return null;
    lobby.SetFrontendPadQaState(false,false,true);yield return null;
    lobby.SetFrontendPadQaState(false,false,false);
@@ -89,7 +106,7 @@ namespace Exoduser.UnityPort
     scope="QA-only semantic pad frames through actual NativeLobby; no physical controller, button-label or full web parity claim",
     product=Application.productName,identifier=Application.identifier,output=root,
     rosterDirectory=lobby.CharacterStoreDirectory,settingsDirectory=nativeSettingsDirectory,
-    passed=failures==0,failures=failures,storyNext=storyNext,shortRelease=shortRelease,longHold=longHold,
+    passed=failures==0,failures=failures,storyNext=storyNext,combinedNext=combinedNext,combinedHold=combinedHold,combinedBeforeTime=beforeCombined,combinedRequestedNextCue=requestedCue,combinedAfterTime=afterCombined,combinedBeforeNextConsumptions=beforeNextCount,combinedAfterNextConsumptions=afterNextCount,shortRelease=shortRelease,longHold=longHold,
     guideGate=guideGate,guideConfirm=guideConfirm,guideStart=guideStart,checks=checks.ToArray()},true));
    Debug.Log("FRONTEND_PAD_INTEGRATION "+(failures==0?"PASS":"FAIL")+" checks="+checks.Count+" failures="+failures);
    Application.Quit(failures==0?0:2);

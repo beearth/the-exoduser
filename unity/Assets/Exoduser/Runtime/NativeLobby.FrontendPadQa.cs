@@ -10,6 +10,8 @@ namespace Exoduser.UnityPort
   bool frontendPadQaEnabled,qaConfirm,qaCancel,qaStart,qaPreviousConfirm,qaPreviousStart;
   int qaLastFrame=-1;
   FrontendPadFrame qaFrame;
+  internal int FrontendPadQaStoryNextConsumptions {get;private set;}
+  internal double FrontendPadQaNextStoryCue {get{return frontendPadQaEnabled&&warriorStory!=null?warriorStory.Next(movie.Time):-1;}}
 
   internal bool EnableFrontendPadQa()
   {
@@ -20,7 +22,7 @@ namespace Exoduser.UnityPort
    string marker=Path.Combine(root,"frontend-pad-qa.marker");
    try{if(!File.Exists(marker)||File.ReadAllText(marker)!="EXODUSER_FRONTEND_PAD_QA_V1\n")return false;}
    catch(IOException){return false;}catch(UnauthorizedAccessException){return false;}
-   frontendPadQaEnabled=true;qaConfirm=qaCancel=qaStart=qaPreviousConfirm=qaPreviousStart=false;qaLastFrame=-1;frontendPad.Reset();return true;
+   frontendPadQaEnabled=true;qaConfirm=qaCancel=qaStart=qaPreviousConfirm=qaPreviousStart=false;qaLastFrame=-1;FrontendPadQaStoryNextConsumptions=0;frontendPad.Reset();return true;
   }
 
   internal bool SetFrontendPadQaState(bool confirm,bool cancel,bool start)

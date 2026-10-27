@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort.Core
    if(!hasPhase||phase!=current){phase=current;hasPhase=true;releaseFence=true;}
    if(releaseFence){if(!frame.AnyHeld)releaseFence=false;return default(FrontendPadDecision);}
    if(current==FrontendPadPhase.Story)
-    return new FrontendPadDecision{Next=frame.ConfirmDown&&!frame.CancelHeld&&!frame.StartHeld,Hold=frame.CancelHeld||frame.StartHeld};
+    return new FrontendPadDecision{Next=frame.ConfirmDown,Hold=frame.CancelHeld||frame.StartHeld};
    if(frame.StartDown)return new FrontendPadDecision{Skip=true};
    if(current==FrontendPadPhase.Nemesis)
     return new FrontendPadDecision{Next=frame.ConfirmDown,Hold=frame.CancelHeld};

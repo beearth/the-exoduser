@@ -114,7 +114,8 @@ namespace Exoduser.UnityPort
     string visible=RevealStartupText(l.text,startup.VisibleCharacters);Label(new Rect(153.6f,y+37.8f,1612.8f,bodyH+20),visible,startupBody,TextAnchor.UpperLeft);
     if(startup.VisibleCharacters>=l.text.Replace("\n","").Length&&((int)(Time.unscaledTime*2)%2)==1)Label(new Rect(1740,1080-subH*.2f,40,30),"▼",startupHint,TextAnchor.MiddleCenter);
    }
-   float hold=(float)startup.HoldProgress;var hintColor=GUI.color;GUI.color=new Color(1,1,1,hold>0?.8f:.25f+.1f*Mathf.Sin(Time.unscaledTime*2));Label(new Rect(1300,1032,600,24),K("SPACE 길게 눌러 건너뛰기","Hold SPACE to skip"),startupHint,TextAnchor.MiddleRight);GUI.color=hintColor;Fill(new Rect(1780,1052,120,3),new Color(1,1,1,.15f));Fill(new Rect(1780,1052,120*hold,3),new Color(1,1,1,.8f));
+   bool pad=frontendPadQaEnabled||Array.Exists(Input.GetJoystickNames(),name=>!string.IsNullOrEmpty(name));
+   float hold=(float)startup.HoldProgress;var hintColor=GUI.color;GUI.color=new Color(1,1,1,hold>0?.8f:.25f+.1f*Mathf.Sin(Time.unscaledTime*2));Label(new Rect(1300,1032,600,24),pad?K("A 다음 / B 길게 / Start 건너뛰기","A Next / Hold B / Start Skip"):K("SPACE 길게 눌러 건너뛰기","Hold SPACE to skip"),startupHint,TextAnchor.MiddleRight);GUI.color=hintColor;Fill(new Rect(1780,1052,120,3),new Color(1,1,1,.15f));Fill(new Rect(1780,1052,120*hold,3),new Color(1,1,1,.8f));
    var e=Event.current;if(!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){startup.Advance();e.Use();}
   }
   static string RevealStartupText(string full,int count){int at=0,visible=0;while(at<full.Length&&(visible<count||full[at]=='\n')){if(full[at]!='\n')visible++;at++;}return full.Substring(0,at)+"<color=#00000000>"+full.Substring(at)+"</color>";}

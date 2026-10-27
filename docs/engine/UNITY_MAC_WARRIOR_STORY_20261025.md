@@ -1,6 +1,6 @@
 # Mac 신규 전사 이야기 — 2026-10-25
 
-2026-10-27 QA 전용 의미 프레임으로 실제 `NativeLobby`의 전사 Next·짧은 hold 해제·1.2초 완료와 안내/필드 연결을 검수했다. [16/16 영수증·검토 앱·물리 패드 HOLD](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md).
+2026-10-27 QA 전용 의미 프레임으로 실제 `NativeLobby`의 전사 Next·짧은 hold 해제·1.2초 완료와 안내/필드 연결을 검수했다. 이후 웹 동시 Next+Skip hold 계약을 맞춰 [최종 18/18 영수증·검토 앱·물리 패드 HOLD](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트)로 갱신했다.
 
 ## 2026-10-27 기존 네이티브 패드 입력의 전사 이야기 연결
 
@@ -10,9 +10,13 @@
 |---|---|---|---|
 | 전사 이야기 Confirm Down | `NativeLobby.CharacterStory` → `NextCharacterStory` | 한 edge에 다음 cut 1회, 마지막 cut 뒤 기존 완료 경로 | 버튼 0 기존 매핑만 |
 | 전사 이야기 Cancel 또는 Start Held | `FrontendPadPolicy.Hold` → `WarriorStoryState.SetHeld("pad-skip")` | 기존 1.2초 hold, 해제·focus 이탈 시 0부터 재시작 | 버튼 1 및 기존 Start 7/9만 |
+| 전사 Confirm Down + Cancel/Start Held 동시 프레임 | `NextCharacterStory` + `SetHeld("pad-skip")` | Next cut 1회와 hold 축적을 독립 처리; 해제 뒤 hold 0 | 웹 `index.html` `lobbyNav`의 `setSkipHeld` 후 `next()` 순서 |
+| 패드 감지 중 전사 하단 hint | `DrawCharacterStory` | ko `다음 대사 · A / Enter`, `건너뛰기 · B / Start 길게`; en `Next line · A / Enter`, `Skip · Hold B / Start` | 기존 키보드 hint 분기 유지, 물리 버튼 표기 검수 HOLD |
 | 진입·씬 전환·focus | `FrontendPadPolicy.Reset`/release fence | 눌린 버튼은 모두 해제되기 전 Next/Skip 0회; 프레임 번호당 판정 1회 | 캐릭터 저장·영상·컷·게이트 변경 없음 |
 
 순수 논리 Editor 검사 20/20은 프레임 중복, release/focus/씬 전환 fence, 1.2초 미만/초과 hold를 확인했다. Unity 6000.6.7f1 ARM64 Settings QA 빌드 1회 오류 0. **실제 OS 패드 입력과 모든 기종의 버튼 표기·웹 버튼 2/3 동등성은 미검수/HOLD**다. 기존 키보드·포인터와 로스터·미디어는 변경하지 않았다.
+
+최종 Rev4 후속 Editor는 동시 Confirm+Cancel/Start 2건을 추가해 22/22, 실제 로비는 18/18이다. 위 20/20·빌드1회는 최초 연결 후보의 당시 기록이며 최신 앱 영수증은 [통합 QA 문서](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트)를 따른다.
 
 2026-10-27 일반 생성 → 정본 영상 자연완주 → 네메시아 입장 시네마틱 → 시작 안내 1/4의 실제 키보드 QA는 [별도 시간표와 화면 증거](UNITY_MAC_WARRIOR_NATURAL_QA_20261027.md)에 기록했다. 네메시아 첫 대사는 영상 정지가 아니며 입력 대기다. 제품 코드 최종 변경 없이 PASS, 이번 청각 검수는 HOLD다.
 

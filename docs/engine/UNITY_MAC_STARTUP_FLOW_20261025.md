@@ -16,7 +16,7 @@ PC UI/QA 확정에 따라 `NativeLobby.StartupPresentation.cs`의 4쪽 하단 no
 
 # UNITY Mac — 캐릭터 입장 이야기·최초 안내 연결
 
-2026-10-27 QA 전용 의미 프레임으로 실제 안내 초기 250ms gate, skip focus 중 A=다음, Start=즉시 건너뛰기와 4/4 물약 문구를 확인했다. [16/16 영수증·격리 검토 앱](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md). 실제 OS 패드 판정은 HOLD다.
+2026-10-27 QA 전용 의미 프레임으로 실제 안내 초기 250ms gate, skip focus 중 A=다음, Start=즉시 건너뛰기와 4/4 물약 문구를 확인했다. [최종 18/18 영수증·격리 검토 앱](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트). 실제 OS 패드 판정은 HOLD다.
 
 ## 2026-10-27 기존 패드 Confirm/Start 논리 분기
 
@@ -31,6 +31,8 @@ PC UI/QA 확정에 따라 `NativeLobby.StartupPresentation.cs`의 4쪽 하단 no
 | 진입·페이지 전환·focus | `FrontendPadPolicy` | 현재 눌린 버튼 전부 해제 후 새 edge만 수용, 프레임당 1회 | 실제 OS 패드 입력 미검수 |
 
 순수 논리 Editor 검사 20/20과 ARM64 Settings QA 빌드 1회 오류 0을 확인했다. 이는 물리 패드·기종별 버튼 표기·전체 웹 패드 동등성 PASS가 아니다. 별도 X/Y/2/3 물리 매핑, 새 Input System package, 전투 `Simulation`/세이브 확장은 없다.
+
+최종 Rev4에서 패드 감지 중 네메시스 하단 힌트를 ko `A 다음 / B 길게 / Start 건너뛰기`, en `A Next / Hold B / Start Skip`으로 보강했다. 일반 키보드 힌트는 그대로다. 최종 Editor 22/22·실제 로비 18/18이며 위 20/20·빌드1회는 최초 연결 후보의 당시 기록이다. [최종 앱과 시각 증거](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트).
 
 ## ROOT 최종 인수 — 2026-10-25
 
