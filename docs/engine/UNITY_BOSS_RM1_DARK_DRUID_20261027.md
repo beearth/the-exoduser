@@ -339,4 +339,6 @@
 | 4 | 6번 던진 뒤 회복 60 승인 | §10.2 6번 행에 기록 |
 | 5 | 패링 +30f는 기술 한 번 실행에 1회 | 회복 중 패링도 1회(하니스: 회복 중 `OnBossParried` 2번 호출 → +30 한 번) |
 
-남은 보고 사항: M6(Animator)·M7(히트스톱·흔들림)은 Core 밖(RB1-4·3D 제작). 걷기 속도·가속·회전 상한·기술 사이 빈 시간은 RM-B0 세트 필드로 옮길 예정(RM-B0가 unity/main에 병합된 뒤).
+남은 보고 사항: M6(Animator)·M7(히트스톱·흔들림)은 Core 밖(RB1-4·3D 제작).
+
+**RM-B0 틀 위로 이전 (2026-10-28, 브랜치 병합 커밋 `50dc87980`)**: 걷기 속도 1.1·멈춤 거리 100·가속 20f·정지 12f·회전 상한(걷기 3°/예비동작 2°)·조준 고정 12f·기술 사이 빈 시간 45/36/30·콤보 안 연결 12는 `BossRemodelSet` 필드(`Set.WalkSpeed` 등)로 옮겼고 `DruidRemodelData.MakeSet`이 위 값으로 채운다. 잡기 덮치기(18f·9px/틱)는 `RmGrab`(드루이드 세트)에서만 켜진다 — 다른 세트의 잡기는 웹 접근 이동을 그대로 쓴다. 충돌 해소 규칙 `DruidRemodelData.X → Set.X`를 적용했다. 검증: druid-remodel 96,253 / 0 + remodel-frame 98 / 0, 끈 상태 oracle 5,421,635 / 0, parry-reflect-test 26 / 0 (Unity 빌드·m1-check는 여유 메모리 18GB라 이 병합에서는 안 돌림).
