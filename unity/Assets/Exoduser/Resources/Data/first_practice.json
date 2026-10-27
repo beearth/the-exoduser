@@ -61,6 +61,221 @@
       "id": "chargePrompt",
       "ko": "1·2타 뒤 3타를 2초 누르세요",
       "en": "After hits 1 and 2, hold the third hit for 2 seconds"
+    },
+    {
+      "id": "rightLabel",
+      "ko": "우클릭 · 적 5마리 처치",
+      "en": "Right click · Defeat 5 enemies"
+    },
+    {
+      "id": "rightTitle",
+      "ko": "마법으로 적 5마리를 처치하세요",
+      "en": "Defeat 5 enemies with magic"
+    },
+    {
+      "id": "rightHint",
+      "ko": "적을 마우스로 조준하고 우클릭으로 마법탄을 발사하세요.\n처치 {p0}/5 · 실제로 처치해야 완료됩니다.",
+      "en": "Aim at an enemy with the mouse and right-click to fire a magic projectile.\nDefeated {p0}/5 · Only actual defeats count."
+    },
+    {
+      "id": "trapLabel",
+      "ko": "1 · 가시덫 설치 후 도망 · 10마리 처치",
+      "en": "1 · Place Spike Trap and retreat · Defeat 10 enemies"
+    },
+    {
+      "id": "trapTitle",
+      "ko": "붙으면 가시덫을 깔고 도망치세요",
+      "en": "Place a Spike Trap and retreat when enemies close in"
+    },
+    {
+      "id": "trapHint",
+      "ko": "몬스터 10마리가 쫓아옵니다. 가까이 붙으면 1번으로 발밑에 가시덫을 깔고, WASD / 방향키로 도망치세요. 덫 안의 적은 느려지고 지속 피해로 쓰러집니다.\n{p0} 가시덫 설치 · {p1} 설치 후 이동 · 처치 {p2}/10",
+      "en": "10 monsters are chasing you. When they approach, press 1 to place a Spike Trap at your feet, then retreat with WASD / arrow keys. Enemies inside the trap are slowed and take damage over time.\n{p0} Spike Trap placed · {p1} Moved after placement · Defeated {p2}/10"
+    },
+    {
+      "id": "leftKey",
+      "ko": "좌클릭",
+      "en": "Left click"
+    },
+    {
+      "id": "rightKey",
+      "ko": "우클릭",
+      "en": "Right click"
+    },
+    {
+      "id": "eyebrow",
+      "ko": "직접 실습",
+      "en": "Hands-on practice"
+    },
+    {
+      "id": "parryLabel0",
+      "ko": "마법탄 패링",
+      "en": "Parry magic projectiles"
+    },
+    {
+      "id": "parryLabel1",
+      "ko": "물리탄 패링",
+      "en": "Parry physical projectiles"
+    },
+    {
+      "id": "parryLabel2",
+      "ko": "Q 홀딩 · 다수 마법탄 패링",
+      "en": "Hold Q · Parry multiple magic projectiles"
+    },
+    {
+      "id": "parryLabel3",
+      "ko": "E 홀딩 · 다수 물리탄 패링",
+      "en": "Hold E · Parry multiple physical projectiles"
+    },
+    {
+      "id": "parryLabel4",
+      "ko": "Shift · 사슬 이동",
+      "en": "Shift · Chain movement"
+    },
+    {
+      "id": "parryLabel5",
+      "ko": "방향키 + Space · 구르기",
+      "en": "Direction + Space · Roll"
+    },
+    {
+      "id": "parryLabel6",
+      "ko": "패링 · 분노 축적",
+      "en": "Parry · Build Rage"
+    },
+    {
+      "id": "parryLabel7",
+      "ko": "Space · 분노 발동",
+      "en": "Space · Unleash Rage"
+    },
+    {
+      "id": "stateIntro",
+      "ko": "일시정지",
+      "en": "Paused"
+    },
+    {
+      "id": "statePractice",
+      "ko": "연습 중",
+      "en": "Practicing"
+    },
+    {
+      "id": "stateSuccess",
+      "ko": "성공",
+      "en": "Success"
+    },
+    {
+      "id": "trapShort",
+      "ko": "1 · 가시덫",
+      "en": "1 · Spike Trap"
+    },
+    {
+      "id": "parryTitle4",
+      "ko": "사슬로 이동하라",
+      "en": "Move with your chain"
+    },
+    {
+      "id": "parryTitle5",
+      "ko": "방향을 정해 이동하라",
+      "en": "Choose a direction and dash"
+    },
+    {
+      "id": "parryTitle7",
+      "ko": "분노를 폭발시켜라",
+      "en": "Unleash your Rage"
+    },
+    {
+      "id": "chainLaunched",
+      "ko": "{p0}단 발사 · 기동력 −{p1} · 이동이 끝나면 Shift를 놓으세요.",
+      "en": "Tier {p0} launched · Mobility −{p1} · Release Shift when movement ends."
+    },
+    {
+      "id": "chainComplete",
+      "ko": "{p0}단 이동 완료 · 기동력 −{p1}",
+      "en": "Tier {p0} movement complete · Mobility −{p1}"
+    },
+    {
+      "id": "chainWrongTier",
+      "ko": "{p0}단으로 발사했습니다. {p1}단을 다시 연습하세요.",
+      "en": "You launched at tier {p0}. Practice tier {p1} again."
+    },
+    {
+      "id": "chainBlocked",
+      "ko": "이동이 막히거나 취소됐습니다. 열린 바닥을 가리켜 다시 시도하세요.",
+      "en": "Movement was blocked or cancelled. Point toward open ground and try again."
+    },
+    {
+      "id": "chainTierMark",
+      "ko": "{p0} {p1}단",
+      "en": "{p0} Tier {p1}"
+    },
+    {
+      "id": "chainAll",
+      "ko": "1·2·3단 사슬이동을 모두 완료했습니다.",
+      "en": "All three chain movement tiers are complete."
+    },
+    {
+      "id": "chainNow",
+      "ko": "지금은 {p0}단 연습입니다. 마우스로 열린 바닥을 가리키세요. {p1}",
+      "en": "Practice tier {p0} now. Point the mouse toward open ground. {p1}"
+    },
+    {
+      "id": "chainI1",
+      "ko": "왼쪽 Shift를 {p0}초 전에 짧게 눌렀다 놓으세요.",
+      "en": "Briefly press and release Left Shift before {p0} seconds."
+    },
+    {
+      "id": "chainI2",
+      "ko": "왼쪽 Shift를 {p0}초 이상, {p1}초 전에 놓으세요.",
+      "en": "Hold Left Shift for at least {p0} seconds, then release before {p1} seconds."
+    },
+    {
+      "id": "chainI3",
+      "ko": "왼쪽 Shift를 {p0}초 이상 누르면 자동 발사됩니다.",
+      "en": "Hold Left Shift for at least {p0} seconds to launch automatically."
+    },
+    {
+      "id": "chainCharging",
+      "ko": "현재 {p0}단 충전 중 · 목표 {p1}단",
+      "en": "Charging tier {p0} · Target tier {p1}"
+    },
+    {
+      "id": "chainAllDone",
+      "ko": "모든 단계 완료",
+      "en": "All tiers complete"
+    },
+    {
+      "id": "chainReady",
+      "ko": "{p0}단 준비 · 1단 탭 / 2단 {p1}초 / 3단 {p2}초 자동",
+      "en": "Prepare tier {p0} · Tier 1: tap / Tier 2: {p1}s / Tier 3: auto at {p2}s"
+    },
+    {
+      "id": "rollHint",
+      "ko": "WASD 또는 방향키를 누른 채 Space로 구르기를 5번 사용하세요. 이동이 끝나면 Space를 떼고 다시 누르세요.\n구르기 성공 {p0}/5",
+      "en": "Hold WASD or an arrow key and press Space to Roll 5 times. Release Space after each roll, then press it again.\nSuccessful rolls {p0}/5"
+    },
+    {
+      "id": "rageHint",
+      "ko": "몬스터들이 주변을 둘러쌌습니다. 방향키에서 손을 떼고 Space만 눌러 분노 폭발로 한 번에 쓸어버리세요.",
+      "en": "Monsters surround you. Release the direction keys and press Space only to sweep them away with a Rage burst."
+    },
+    {
+      "id": "rageFocusA",
+      "ko": "아래 SPACE 슬롯을 확인하세요",
+      "en": "Check the SPACE slot below"
+    },
+    {
+      "id": "rageFocusB",
+      "ko": "잠시 후 방향키를 떼고 SPACE만 누르세요.",
+      "en": "In a moment, release the direction keys and press SPACE only."
+    },
+    {
+      "id": "rageZoom",
+      "ko": "분노 {p0}%",
+      "en": "Rage {p0}%"
+    },
+    {
+      "id": "notPorted",
+      "ko": "이식 예정",
+      "en": "Not ported yet"
     }
   ],
   "plaqueSource": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/ui/tutorial/parry-plaque-v1.png",

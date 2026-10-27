@@ -1,0 +1,132 @@
+{
+ "schema": "exoduser.unity.map3d-ch1-lights.v1",
+ "owner": "PC-MAP3D (this file); values are the original web static lights",
+ "sourceBranch": "origin/codex/unity-map-light-01-20261026",
+ "sourceCommit": "8fb4072dbaab414203da69989159c327f9ca53f9",
+ "sourceFile": "unity/Assets/Exoduser/Resources/Data/ch1_lighting.json",
+ "sourceFileSha256": "337e14273d291eab0a958bd97ee0cc066e18423a0f2ab55cd5d3edd57dca4410",
+ "webSource": "game.html:4639-4653 _buildStaticLights (row 0 m_penta_circle|m_skull_altar|m_obelisk r310 a.46 f.6 at 4648; row 1 m_fyellow r240 a.58 f.9 at 4645; rows 2-11 Ch1AltarMoat.lights(_slArr,_CH1_HILL,T) poison-moat green lights, ch1-altar-moat.js); flicker a*(1+sin(_gameFrame*.09+i*1.7)*.10*f) at game.html:4680-4684",
+ "heightNote": "PointLightHeight (96px) is a PC presentation constant: neither the web nor the Godot source supplies a height for these 12 lights (LOOK-001 B variant uses torch height 90, player 110, spawn hole 45)",
+ "statics": [
+  {
+   "x": 5900,
+   "y": 3860,
+   "r": 310,
+   "a": 0.46,
+   "cr": 255,
+   "cg": 72,
+   "cb": 44,
+   "f": 0.6
+  },
+  {
+   "x": 5620,
+   "y": 4060,
+   "r": 240,
+   "a": 0.58,
+   "cr": 255,
+   "cg": 220,
+   "cb": 110,
+   "f": 0.9
+  },
+  {
+   "x": 6523.6750502285595,
+   "y": 4024.571350896482,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 6277.813058751545,
+   "y": 4193.7713508964825,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 5880,
+   "y": 4258.4,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 5482.186941248455,
+   "y": 4193.7713508964825,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 5236.3249497714405,
+   "y": 4024.571350896482,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 5236.3249497714405,
+   "y": 3815.428649103518,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 5482.186941248455,
+   "y": 3646.228649103518,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 5880,
+   "y": 3581.6000000000004,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 6277.813058751545,
+   "y": 3646.228649103518,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  },
+  {
+   "x": 6523.6750502285595,
+   "y": 3815.428649103518,
+   "r": 210,
+   "a": 0.3,
+   "cr": 126,
+   "cg": 236,
+   "cb": 98,
+   "f": 0.7
+  }
+ ]
+}

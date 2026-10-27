@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // ---- IBossHost ------------------------------------------------------------------------------------------------------------------------------------
-        sealed class BossHostAdapter : IBossHost
+        sealed class BossHostAdapter : IBossHost, IBossReflectHost
         {
             readonly Simulation s;
             public BossHostAdapter(Simulation sim) { s = sim; }
@@ -135,6 +135,11 @@ namespace Exoduser.UnityPort.Core
                 return m;
             }
             public void BossMoved(EnemyState boss) { }
+            // parry reflection (ParryReflect.cs)
+            public Combat.ParryReflect.ResolveInput ReflectInput(double playerDistance) { return s.ReflectInput(playerDistance); }
+            public void PayReflectParry(in Combat.ParryReflect.ResolveResult result) { s.PayReflectParry(result); }
+            public bool ReflectHoming(Combat.ReflectProjectile p) { return s.ReflectHoming(p); }
+            public bool ReflectContact(Combat.ReflectProjectile p) { return s.ReflectContact(p); }
         }
     }
 }

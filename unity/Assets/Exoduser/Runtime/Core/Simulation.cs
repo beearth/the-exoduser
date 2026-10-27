@@ -163,6 +163,7 @@ namespace Exoduser.UnityPort.Core
             TickAutoPotion();
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
+            TickRegions();   // M1-REGION: _regionTick (every 15th frame)
             Stage.Tick();   // C07: checkRooms (arena entry / boss defeat / exit / clear)
             TickSpawnHoles();   // C01-AI: the 소환굴 update follows checkRooms in the web update()
             TickHurtFx();   // B09: screen shake / flash decay
@@ -211,17 +212,17 @@ namespace Exoduser.UnityPort.Core
         }
 
         // hurtE: the oracle-checked Core head + middle (EnemyHurt). The death tail (revive / ghoul / boss revive / kill rewards) is the Simulation's.
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false)
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
-            if(IsFirstPracticeActor(enemy)){enemy.Hp=0;KillEnemy(enemy);return;}
+            if(IsFirstPracticeActor(enemy)){ApplyPracticeDamage(enemy,damage);return;}
             bool live = inEnemyLoop && enemy.Web != null;   // inside the L1 loop the web object is the live one (see ApplyEnemyDot): no state -> web copy
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
             var context = BuildHurtContext(player, typeDamagePct, critRateBonus);
-            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null };
+            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null };
             if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
             var head = EnemyHurt.Head(context, web, damage, angle, true, opts, atkEl);
@@ -260,6 +261,7 @@ namespace Exoduser.UnityPort.Core
             if (!enemy.Alive) return;
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
             enemy.Alive = false; Kills++; Combo++; ComboTicks = enemy.IsBoss ? Math.Min(1800, ComboTicks + 1800) : Math.Min(1200, ComboTicks + 60);
+            RegKill(enemy);   // M1-REGION: _regKill next to G.kills++
             if (enemy.IsGateGuard) Stage.OnGateGuardKilled(enemy);   // C07: _isGateGuard death -> +10 % clear progress
             AddMalice(4);
             // Web kill drop (game.html 43094-43099): hp pays malice (+1, a third of the draws), st/mp are discarded; the old quickslot counters stay unused.

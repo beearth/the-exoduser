@@ -48,7 +48,8 @@ namespace Exoduser.UnityPort
                     case StageEventKind.GateUnlocked:
                         WorldTextAdd(e.X, e.Y - 60, "지옥문이 열렸습니다", "The Hell Gate has opened", new Color(.55f, .75f, .95f), 3f); break;
                     case StageEventKind.GateSealed:
-                        WorldTextAdd(e.X, e.Y - 40, "지옥문이 봉인됨 — 처치 " + e.Percent + "% (80% 필요)", "Gate sealed — kills " + e.Percent + "% (80% needed)", new Color(.85f, .35f, .3f), 1.2f); break;
+                        if (e.Regions) WorldTextAdd(e.X, e.Y - 40, "지옥문이 봉인됨 — 지역 클리어 " + e.Percent + "/4", "Gate sealed — regions cleared " + e.Percent + "/4", new Color(.85f, .35f, .3f), 1.2f);
+                        else WorldTextAdd(e.X, e.Y - 40, "지옥문이 봉인됨 — 처치 " + e.Percent + "% (80% 필요)", "Gate sealed — kills " + e.Percent + "% (80% needed)", new Color(.85f, .35f, .3f), 1.2f); break;
                     case StageEventKind.GateAnglerBlocked:
                         WorldTextAdd(e.X, e.Y - 40, "심연의 앵글러를 모두 처치하라", "Slay every Abyssal Angler", new Color(.4f, .8f, .9f), 1.2f); break;
                     case StageEventKind.BossCoreMissing:

@@ -99,7 +99,7 @@ namespace Exoduser.UnityPort.Core
                 if (!(p.BounceCool > 0) && spd > 0 && (TickCount + i) % 4 == 0)
                 {
                     EnemyState best = null; double bestD = SkillRules.FireballHomingRange;
-                    foreach (var e in ShQuery(p.X, p.Y, bestD)) { if (!e.Alive) continue; double d = Distance(p.X, p.Y, e.X, e.Y); if (d < bestD) { bestD = d; best = e; } }
+                    foreach (var e in ShQuery(p.X, p.Y, bestD, true)) { if (!e.Alive) continue; double d = Distance(p.X, p.Y, e.X, e.Y); if (d < bestD) { bestD = d; best = e; } }
                     if (best != null)
                     {
                         double ta = Math.Atan2(best.Y - p.Y, best.X - p.X), ca = Math.Atan2(p.Vy, p.Vx), da = ta - ca;
@@ -126,7 +126,7 @@ namespace Exoduser.UnityPort.Core
                 }
                 if (!dead)
                 {
-                    foreach (var e in ShQuery(p.X, p.Y, p.R + 20))
+                    foreach (var e in ShQuery(p.X, p.Y, p.R + 20, true))
                     {
                         if (!e.Alive || Distance(p.X, p.Y, e.X, e.Y) >= e.Radius + p.R) continue;
                         OrbExplode(p); dead = true; break;
@@ -144,7 +144,7 @@ namespace Exoduser.UnityPort.Core
             double cached; if (p.WeakMul.TryGetValue(e, out cached)) return cached;
             var w = e.Web ?? SyncToWeb(e);
             double step = SkillRules.MaliceWeakStep + (EquippedInventory != null ? EquippedInventory.AffixTotal("maliceWeakAmp") : 0);
-            double st = w._mwStk, mul = 1 + st * step;
+            double st = w._mwStk ?? 0, mul = 1 + st * step;
             p.WeakMul[e] = mul;
             double n = Math.Min(SkillRules.MaliceWeakMax, st + 1); w._mwStk = n;
             if (n > st) RaisePlayerText(e.X, e.Y - 34, "악의 약화 +" + Math.Round(n * step * 100) + "%", "#b07cff", 24);
@@ -156,13 +156,15 @@ namespace Exoduser.UnityPort.Core
         {
             MaliceOrbBlasts++; MaliceOrbLastX = p.X; MaliceOrbLastY = p.Y;
             double r = p.ExplR > 0 ? p.ExplR : 80; int dmg = p.ExplDmg;
-            foreach (var e in ShQuery(p.X, p.Y, r + 20))
+            foreach (var e in ShQuery(p.X, p.Y, r + 20, true))
             {
                 if (!e.Alive || Distance(p.X, p.Y, e.X, e.Y) >= r + e.Radius) continue;
                 float a = (float)Math.Atan2(e.Y - p.Y, e.X - p.X);
                 var web = e.Web ?? SyncToWeb(e);
                 double m = EnemyHurt.ElMul(SkillRules.FireballElement, web.el) * MaliceWeakMul(p, e);
+                bool wasAlive = e.Alive; practiceHitKind = "fireball";
                 ApplyEnemyDamage(e, Js.Int(dmg * m), a, false, (float)SkillRules.FireballKnockback, false, false, 0, 0, false, (int)SkillRules.FireballElement);
+                practiceHitKind = null; EmitFirstPracticeHit(e, "fireball", 0, 0, wasAlive, true);
                 web = e.Web ?? SyncToWeb(e);
                 web.poison = 1; web.poisonT = Math.Max(web.poisonT, SkillRules.FireballPoisonFrames); web.poisonStk = Math.Min(10, web.poisonStk + 1);
                 if (web.poisonStk < 10) web._poisonPool = web._poisonPool + 1 * dmg * 2;   // pDotPool() = 1 until the passive rows are ported
