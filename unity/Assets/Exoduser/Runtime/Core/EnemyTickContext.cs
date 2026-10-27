@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Exoduser.UnityPort.Core
 {
     // One entry of G.rifts (only the fields updateE reads).
-    public sealed class EnemyRift { public double x, y, t, maxT; }
+    public sealed class EnemyRift { public double x, y, t, maxT; public double? si; public bool? spawned; }   // si / spawned: set by the hurtE death tail (CX-04c2) that pushes the rift
     // G._bonfire
     public sealed class EnemyBonfire { public double x, y, r, t; }
 

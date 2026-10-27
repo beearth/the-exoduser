@@ -87,6 +87,16 @@ const locals3=[];{let depth=0,str=null;for(let li=0;li<h3Lines.length;li++){cons
   str=null;for(let i=0;i<l.length;i++){const c=l[i],n=l[i+1];if(str){if(c==='\\'){i++;continue;}if(c===str)str=null;continue;}if(c==='/'&&n==='/')break;if(c==="'"||c==='"'||c==='`'){str=c;continue;}if(c==='{')depth++;else if(c==='}')depth--;}}}
 const H3='function __H3a(e,ang,noSound,opts,__h){let {'+returned2.join(',')+'}=__h;\n'+body3+'\nreturn {__cont:true,'+locals3.join(',')+'};}return {__cont:false};}';
 if(!compiles(H3))throw Error('H3a wrapper does not compile');
+// ---- the hurtE death tail (CX-04c2): from the 잔해 드롭 anchor line to the line before the `  }` that closes `  if(e.hp<=0){` (the line before `  }finally{_shBufI--}`) ----
+const h4Start=h3End;let h4Fin=-1;for(let i=h4Start+1;i<lines.length;i++)if(lines[i].startsWith('  }finally{_shBufI--}')){h4Fin=i;break;}
+if(h4Fin<0)throw Error('H3b end anchor "  }finally{_shBufI--}" not found after the 잔해 드롭 anchor');
+if(lines[h4Fin-1].trim()!=='}')throw Error('H3b: the line before the finally anchor must be the closing brace of if(e.hp<=0){');
+const h4End=h4Fin-2,h4Lines=lines.slice(h4Start,h4End+1);
+if(braceDepth(h4Lines)!==0)throw Error('H3b range braces are not balanced: depth '+braceDepth(h4Lines));
+const body4=record('H3b hurtE death tail (잔해 드롭 anchor .. line before the brace closing if(e.hp<=0))',h4Start,h4End);
+const H4='function __H3b(e,ang,noSound,opts,__h,__d){let {'+returned2.join(',')+'}=__h;let {'+locals3.join(',')+'}=__d;\n'+body4+'\n}';
+if(!compiles(H4))throw Error('H3b wrapper does not compile');
+add(stmt('SLOT_NAMES','const SLOT_NAMES='));add(stmt('POT','const POT={'));add(single('_maliceMul','function _maliceMul('));add(single('_SFX_PRI','const _SFX_PRI='));add(single('_playDruidSfx','function _playDruidSfx('));
 
 // ---- VM ----
 const ctx=vm.createContext({});
@@ -94,7 +104,7 @@ vm.runInContext(`var window=this;var _useGPU=false,_useGL=false,_ESPRITES=[];var
 var __seq=[],__i=0,__log=[],__vals={},__aff={},__leq={},__ueq={};
 Math.random=function(){if(__i>=__seq.length)throw new Error("random sequence exhausted");return __seq[__i++];};
 function __ser(a){if(a===undefined||a===null)return null;if(typeof a==='object'){const i=ens.indexOf(a);if(i>=0)return {e:i};if(Array.isArray(a))throw new Error('array argument');
-  return {o:Object.keys(a).sort().map(k=>[k,a[k]===undefined?null:a[k]])};}return a;}
+  return {o:Object.keys(a).sort().map(k=>[k,a[k]===undefined?null:(a[k]!==null&&typeof a[k]==='object'?__ser(a[k]):a[k])])};}return a;}
 function __rec(name){const a=[];for(let i=1;i<arguments.length;i++)a.push(__ser(arguments[i]));__log.push([name].concat(a));}
 var __canMv='open',__cmN=0;function canMv(x,y,r){__rec('canMv',x,y,r);__cmN++;if(__canMv==='blockAll')return false;if(__canMv.startsWith('first'))return __cmN>Number(__canMv.slice(5));if(__canMv.startsWith('only'))return __cmN!==Number(__canMv.slice(4));return true;}
 function _eqAffix(k){__rec('eqAffix',k);return __aff[k]||0;}
@@ -147,15 +157,23 @@ function _L(ko,en){__rec('L',ko,en);return ko;}
 function _rageMax(){__rec('rageMax');return __w3.rageMax;}
 function buildMapCache(){__rec('buildMapCache');}
 SFX.victory=function(){__rec('sfxVictory');};
+var _critSfxCd=0,__w4=null,__itemN=0;function _bossLine(k){__rec('bossLine',k);}
+function _wiPush(o){__rec('wiPush',o);}
+function magicRef(){__rec('magicRef');return __w4.magicRef;}function statInt(){__rec('statInt');return __w4.statInt;}function pMagicMul(){__rec('pMagicMul');return __w4.pMagicMul;}function _skMul(id){__rec('skMul',id);return __w4.skMul;}
+function eProjAt(e,a,s,m,el,l,c,z){__rec('eProjAt',e,a,s,m,el,l,c,z);}
+function mkItem(s,t,el,r){__rec('mkItem',s,t,el,r);return {stubItem:++__itemN,slot:s,tier:t,el:el,rarity:r};}
+function addPotion(t,n){__rec('addPotion',t,n);return __w4.addPotionOk;}
+function rollDrop(e){__rec('rollDrop',e);}function addExp(){__rec.apply(null,['addExp'].concat(Array.prototype.slice.call(arguments)));}function checkRooms(){__rec('checkRooms');}function dbSaveNow(){__rec('dbSaveNow');}
+SFX.explode=function(){__rec('sfxExplode');};SFX.magicHit=function(){__rec('sfxMagicHit');};SFX.pickup=function(){__rec('sfxPickup');};
 `,ctx);
 for(const b of blocks)vm.runInContext(b,ctx);
 vm.runInContext('var __mkEnOrig=mkEn;mkEn=function(x,y,si,et,ib,el,room){__rec("mkEn",x,y,si,et,ib,el,room);return __mkEnOrig.apply(this,arguments);};',ctx);
-vm.runInContext(H1,ctx);vm.runInContext(H2,ctx);vm.runInContext(H3,ctx);
+vm.runInContext(H1,ctx);vm.runInContext(H2,ctx);vm.runInContext(H3,ctx);vm.runInContext(H4,ctx);
 // numbers JSON cannot carry are recorded as tags so nothing is silently turned into null: {"$n":"NaN"} {"$n":"Infinity"} {"$n":"-Infinity"} {"$n":"-0"}
 const numTag=v=>Number.isNaN(v)?{$n:'NaN'}:v===Infinity?{$n:'Infinity'}:v===-Infinity?{$n:'-Infinity'}:Object.is(v,-0)?{$n:'-0'}:v;
 const plain=o=>JSON.parse(JSON.stringify(o,(k,v)=>ArrayBuffer.isView(v)?Array.from(v):typeof v==='number'?numTag(v):v));
 const get=n=>plain(vm.runInContext(n,ctx));
-const tables={ELC:get('ELC'),ELP:get('ELP'),EL:get('EL'),UNDEAD_ET:get('Array.from(_UNDEAD_ET).sort((a,b)=>a-b)')};
+const tables={POT:get('POT'),ELC:get('ELC'),ELP:get('ELP'),EL:get('EL'),UNDEAD_ET:get('Array.from(_UNDEAD_ET).sort((a,b)=>a-b)')};
 
 // ---- PRNG + base enemies ----
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
@@ -485,6 +503,7 @@ h1Snapshot.forEach((c0)=>{const c=JSON.parse(JSON.stringify(c0));
   if(fc()<0.2)c.leq={...c.leq,_lClubKB:pc([1,2])};
   cases.push(c);});
 // ===== CX-04c1: cases for the hurtE death head (H3a) and chain cases (H1 -> H2 -> H3a, "CH3") =====
+const defW4=()=>({mats:100,chainCnt:0,chainT:0,rifts:[],critSfxCd:0,magicRef:200,statInt:1,pMagicMul:1.5,skMul:2,addPotionOk:true});const W4=o=>({...defW4(),...o});
 const defW3=()=>({stage:0,demoMode:false,demoLast:0,diff:5,optHitStop:100,killedBosses:null,fireZones:null,spawnHoles:[{alive:3},{alive:1},{}],kills:10,stageKills:3,combo:5,comboTimer:100,comboMax:7,gateGuard:true,gateGuardKilled:false,bossGateOpen:false,chromaT:null,blDeathSndQ:null,uqZoneQ:null,shDirty:false,harpGauge:10,harpMax:100,uqHitCtx:null,uqFzCtx:null,rageMax:100});
 const W3=o=>({...defW3(),...o});
 const P3=o=>({x:1000,y:1000,hp:500,mhp:1000,mp:50,mmp:100,iframes:0,eShield:0,eShieldMax:0,st:30,mst:100,s:'idle',lv:100,facing:0.5,rage:10,shield:5,mshield:50,kb:{x:0,y:0},...o});
@@ -719,8 +738,87 @@ for(let i=0;i<500;i++){
   const first=ib&&f3()<0.5?FREV(p3([0.01,0.3,0.7,0.99]),p3([0.05,0.5]),p3([0.1,0.8])):[p3([0.01,0.3,0.5,0.7,0.99]),p3([0.01,0.5,0.99]),p3([0.01,0.5,0.99])];
   h3('fuzz #'+i,{base,over,args:{ang:p3([undefined,0,1.2,-2.5,7]),noSound:f3()<0.3,opts},head3,world,w2,w3,aff,leq,ueq,others,vals:defVals(),seed:1200000+i,first});
 }
+// ===== CX-04c2: cases for the hurtE death tail (H4 = __H3b with given values) and full chains (CH4 = H1 -> H2 -> H3a -> H3b, made from CH3 cases that continue) =====
+const D4=o=>({_isBurnDeath:false,_isWhirlKill:false,_sinkDruid:false,_killAng:0.5,...o});
+const MT=o=>({...bases[BI['etype0']].obj.modT,...o});
+function h4(name,o){const a={ang:0.5,noSound:false,opts:null,...(o.args||{})};const rest={...o};delete rest.args;
+  cases.push({kind:'H4',name:'H4 '+name,base:'etype0',over:ed({}),args:a,head3:B22({}),d4:D4({}),world:WD({}),w2:defW2(),w3:defW3(),w4:defW4(),vals:defVals(),aff:{},leq:{},ueq:{},others:[],seed:cases.length+1,first:[0.9,0.5,0.5],...rest});}
+h4('plain mob',{});
+for(const k of [9,20,0,11])h4('kills '+k,{w3:W3({kills:k})});
+for(const el of [undefined,0,1,2,3,4,5])for(const elite of [0,1,2])for(const r of [0.1,0.2,0.3])h4('death zone el '+el+' elite '+elite+' roll '+r,{over:ed({el,elite}),first:[r,r,0.5,0.5,0.5,0.5]});
+h4('death zone decoy',{over:ed({el:3,_isDecoy:true})});h4('death zone boss',{base:BOSS,over:bo({el:3})});
+for(const elite of [0,1,2,3])for(const r of [0.01,0.08,0.1,0.15,0.2,0.25,0.3])h4('debris elite '+elite+' roll '+r,{over:ed({elite,el:0}),first:[r,0.3,0.7,0.5,0.5,0.5]});
+h4('debris skipped for rare etype',{base:'etype91',over:ed({elite:3})});h4('debris skipped for boss',{base:BOSS,over:bo({elite:3})});
+for(const [cc,ib] of [[0,false],[3,false],[4,false],[4,true],[7,false]])h4('kill chain '+cc+(ib?' boss':''),{base:ib?BOSS:'etype0',over:ib?bo({}):ed({}),w4:W4({chainCnt:cc,chainT:33})});
+h4('M26 avenger near and far',{others:[other('etype0',{x:1100,y:1000,mods:['M26'],baseAtk:31,atk:31,speed:1.9,r:28}),other('etype0',{x:1300,y:1000,mods:['M26']}),other('etype0',{x:1060,y:1000,mods:['M07']})]});
+h4('M26 exactly 200 away',{others:[other('etype0',{x:1250,y:1000,mods:['M26']})]});
+h4('M26 on the dead enemy itself',{over:ed({mods:['M26']})});
+for(const lv of [undefined,1,3])h4('plague lv '+lv,{over:ed({_plagued:true,_plagueLv:lv}),others:[other('etype0',{x:1100,y:1000,hp:50}),other('etype0',{x:1090,y:1000,hp:1}),other('etype0',{x:1080,y:1000,alive:false}),other('etype0',{x:1500,y:1000})],w4:W4({magicRef:333.3,skMul:2.7})});
+for(const [px,ifr,s] of [[1060,0,'idle'],[1060,5,'idle'],[1060,0,'charge'],[1200,0,'idle']])h4('etype8 player '+px+' '+ifr+' '+s,{over:ed({etype:8,atk:77.7}),world:WD({x:px,y:1000,iframes:ifr,s}),others:[other('etype0',{x:1080,y:1000}),other('etype0',{x:1099.9,y:1000}),other('etype0',{x:1080,y:1000,alive:false})]});
+for(const rule of ['open','first1','first2','blockAll'])h4('etype15 split '+rule,{over:ed({etype:15,r:20,el:3,room:2}),w2:W2({canMv:rule})});
+h4('etype15 already split',{over:ed({etype:15,_splitDone:true})});
+h4('etype25 ice zone',{over:ed({etype:25})});
+for(const [px,fs] of [[1060,undefined],[1060,50],[1060,200],[1200,undefined]])h4('etype28 freeze '+px+' '+fs,{over:ed({etype:28}),world:WD({x:px,y:1000,_freezeSlow:fs})});
+h4('etype28 player iframes',{over:ed({etype:28}),world:WD({x:1060,y:1000,iframes:3})});
+for(const rs of [[0.3,0.7,0.5,0.49,0.51,0.1,0.9,0.6],[0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6],[0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]])for(const px of [1060,1300])h4('etype29 beans '+rs[0]+' player '+px,{over:ed({etype:29,atk:101.3,el:2}),world:WD({x:px,y:1000,_freezeSlow:20}),w2:W2({noHitStopT:null,hitStop:3}),first:rs});
+h4('etype29 player freeze undefined',{over:ed({etype:29}),world:WD({x:1060,y:1000})});
+h4('etype29 hitstop suppressed',{over:ed({etype:29}),w2:W2({noHitStopT:5,hitStop:3}),w3:W3({optHitStop:150})});
+h4('etype29 gate guard elite 3',{over:ed({etype:29,elite:3,_isGateGuard:true,atk:62,el:2}),w3:W3({stage:0})});
+h4('etype51 split',{over:ed({etype:51,r:21,el:1}),w3:W3({stage:14})});h4('etype51 already split',{over:ed({etype:51,_amalgSplit:true})});
+for(const bd of [true,false])h4('etype55 bone death '+bd,{over:ed({etype:55,_boneDeath:bd,atk:55.5})});
+for(const [px,ifr] of [[1060,0],[1060,2],[1200,0]])h4('etype57 shock '+px+' '+ifr,{over:ed({etype:57,atk:99}),world:WD({x:px,y:1000,iframes:ifr})});
+for(const el of [undefined,3])h4('etype59 beans el '+el,{over:ed({etype:59,el,atk:88})});
+h4('lava pool death',{over:ed({_lavaPoolDeath:true,atk:70.7})});
+for(const px of [1060,1200])h4('etype72 burst '+px,{over:ed({etype:72,_lavaPoolDeath:true,atk:40}),world:WD({x:px,y:1000})});
+h4('etype79 lava rain',{over:ed({etype:79,atk:120})});
+for(const [px,pr] of [[1090,undefined],[1090,15],[1110,15],[1200,15]])h4('etype80 burst '+px+' r '+pr,{over:ed({etype:80,atk:60}),world:WD({x:px,y:1000,r:pr})});
+for(const [px,fs] of [[1100,undefined],[1100,200],[1300,undefined]])h4('etype84 scream '+px+' '+fs,{over:ed({etype:84}),world:WD({x:px,y:1000,_freezeSlow:fs})});
+for(const et of [85,88,89,60,66,68,69])h4('etype'+et+' death effect',{over:ed({etype:et,atk:50})});
+for(const [et,r] of [[60,0.29],[60,0.3],[65,0.1],[69,0.5],[70,0.1],[59,0.1]])h4('o2bubble etype '+et+' roll '+r,{over:ed({etype:et,el:0}),first:[r,0.2,0.8,0.9,0.5]});
+const RB='etype91';
+for(const et of [90,91,92,93,94,95,96,97,98,99])for(const rs of [[0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1],[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9],[0.5,0.3,0.6,0.2,0.45,0.99,0.01,0.7],[0.14,0.39,0.19,0.49,0.24,0.29,0.5,0.5]])
+  h4('rare '+et+' rolls '+rs.join('/'),{base:RB,over:ed({etype:et,dropTier:2,_grGold:et===96?33.3:0}),first:rs,w3:W3({stage:5})});
+h4('rare 91 dropTier 0 stage 34',{base:RB,over:ed({etype:91,dropTier:0}),w3:W3({stage:34})});
+h4('rare 98 stage out of range',{base:RB,over:ed({etype:98}),w3:W3({stage:40})});h4('rare 99 stage 0',{base:RB,over:ed({etype:99}),w3:W3({stage:0})});
+h4('rare 96 greed curse',{base:RB,over:ed({etype:96,_grGold:10}),world:WD({_greedCurse:300})});h4('rare 96 no gold',{base:RB,over:ed({etype:96,_grGold:0})});
+h4('rare 97 twin same room',{base:RB,over:ed({etype:97,room:2}),others:[other(RB,{etype:97,room:2,x:1200,y:1000,atk:30.3,speed:0.5}),other(RB,{etype:97,room:2,x:1300,y:1000})]});
+h4('rare 97 twin other room / dead',{base:RB,over:ed({etype:97,room:2}),others:[other(RB,{etype:97,room:3}),other(RB,{etype:97,room:2,alive:false})]});
+h4('rare 97 twin room undefined both',{base:RB,over:ed({etype:97,room:undefined}),others:[other(RB,{etype:97,room:undefined})]});
+h4('rare label for unknown etype 9.5',{base:RB,over:ed({etype:9.5})});
+h4('M07 heal',{over:ed({mods:['M07'],elite:1}),others:[other('etype0',{x:1100,y:1000,hp:100,mhp:777}),other('etype0',{x:1100,y:1000,hp:770,mhp:777}),other('etype0',{x:1171,y:1000,hp:1,mhp:100})]});
+for(const sp of [false,true])h4('M08 split '+sp,{over:ed({mods:['M08','M26'],elite:2,r:25,el:4,room:1,modT:MT({split:sp})}),first:[0.9,0.5,0.3,0.7,0.2,0.8,0.6,0.4,0.5,0.5]});
+for(const [px,s,ifr] of [[1060,'idle',0],[1060,'charge',0],[1060,'idle',1],[1200,'idle',0]])h4('M10 blast '+px+' '+s+' '+ifr,{over:ed({mods:['M10'],elite:1,atk:41.1}),world:WD({x:px,y:1000,s,iframes:ifr})});
+h4('M20 empower',{over:ed({mods:['M20'],elite:3}),others:[other('etype0',{x:1100,y:1000,baseAtk:33,atk:12}),other('etype0',{x:1199,y:1000})]});
+for(const elite of [1,2,3])h4('elite notice '+elite,{over:ed({mods:['M01'],elite})});
+h4('mods present but elite 0',{over:ed({mods:['M01'],elite:0})});h4('elite with empty mods',{over:ed({mods:[],elite:2})});
+h4('slime matDrop',{over:ed({_isSlime:true,matDrop:12.6})});h4('slime matDrop 0',{over:ed({_isSlime:true,matDrop:0})});
+h4('slime eaten items',{over:ed({_isSlime:true,matDrop:3,_eatenItems:[{id:1,slot:'ring1'},{id:2,slot:'boots'}]})});
+h4('not slime but eaten items',{over:ed({_eatenItems:[{id:3}]})});h4('slime empty eaten',{over:ed({_isSlime:true,_eatenItems:[]})});
+for(const [ib,elite] of [[false,0],[false,1],[false,2],[false,3],[true,0]])for(const gold of [0,0.35])for(const pm of [0,3])
+  h4('malice drop ib '+ib+' elite '+elite+' gold '+gold+' pMalice '+pm,{base:ib?BOSS:'etype0',over:ib?bo({}):ed({elite}),aff:{goldBonus:gold},world:{...WD({}),PASSIVES:pm?{pMalice:pm}:{}},w3:W3({stage:7})});
+for(const ok of [true,false])for(const t of [0.1,0.5,0.9])for(const ib of [false,true])h4('potion type roll '+t+' ok '+ok+(ib?' boss':''),{base:ib?BOSS:'etype0',over:ib?bo({}):ed({}),w4:W4({addPotionOk:ok}),first:ib?[0.5,0.5,0.5,0.5,0.99,t,0.4,0.6]:[0.99,t,0.5,0.5]});
+for(const r of [0.49,0.5])h4('boss bonus hp potion roll '+r,{base:BOSS,over:bo({}),first:[0.5,0.5,0.5,0.5,0.99,0.1,r,0.6]});
+for(const combo of [0,99,100,250,1000])for(const diff of [null,3,5,7])h4('combo '+combo+' diff '+diff,{over:ed({elite:1}),w3:W3({combo,diff})});
+for(const [plv,elv,ib,elite] of [[100,0,false,0],[100,1,false,0],[100,50,false,0],[100,333.3,false,2],[100,50,true,0],[100,7,true,0],[999,50,false,0],[1000,50,false,0],[1000,50,false,1],[1000,50,true,0],[undefined,50,false,0]])
+  h4('exp player lv '+plv+' enemy lv '+elv+(ib?' boss':'')+' elite '+elite,{base:ib?BOSS:'etype0',over:ib?bo({lv:elv}):ed({lv:elv,elite}),world:WD({lv:plv})});
+// --- H4 seeded fuzz ---
+const f4=mulberry32(7777);const p4=a=>a[Math.floor(f4()*a.length)];const r4=(a,b)=>a+f4()*(b-a);
+for(let i=0;i<600;i++){
+  const base=p4(['etype0','etype0','etype0',BOSS,'etype91','etype6']);const ib=base===BOSS;
+  const et=base==='etype91'?p4([90,91,93,94,95,96,97,98,99]):p4([0,0,3,8,15,25,28,29,29,47,51,55,57,59,60,66,68,69,72,79,80,84,85,88,89]);
+  const mods=p4([[],[],['M07'],['M08'],['M10'],['M20'],['M26'],['M07','M10','M20']]);
+  const over={x:1000+r4(-100,100),y:1000+r4(-100,100),hp:p4([-10,0]),etype:ib?0:et,el:p4([undefined,0,1,2,3,4]),elite:ib?0:p4([0,0,0,1,2,3]),lv:p4([0,1,30,100,250.5]),atk:p4([31,77.7,500]),r:p4([10,20,30]),
+    _plagued:p4([undefined,undefined,true]),_plagueLv:p4([undefined,2]),_lavaPoolDeath:f4()<0.1,_boneDeath:f4()<0.5,_splitDone:f4()<0.3,_amalgSplit:f4()<0.3,_isSlime:p4([undefined,undefined,true]),matDrop:p4([undefined,0,5.5]),
+    mods,_isDecoy:p4([undefined,undefined,undefined,true]),room:p4([1,2]),dropTier:p4([0,2,4]),_grGold:p4([0,20])};
+  if(ib)Object.assign(over,{_revPts:100,_maxRevPts:150});
+  const splits=mods.includes('M08')||over.etype===51;
+  const others=Array.from({length:Math.floor(f4()*4)},()=>other(p4(['etype0','etype0',base==='etype91'?'etype91':'etype0']),{x:1000+r4(-250,250),y:1000+r4(-250,250),alive:f4()<0.85,mods:p4([[],['M26']]),etype:p4([0,97]),room:p4([1,2])}));
+  h4('fuzz #'+i,{base,over:ed(over),others,world:WD({x:1000+r4(-150,150),y:1000+r4(-150,150),iframes:p4([0,0,2]),s:p4(['idle','charge']),lv:p4([100,1000,undefined]),r:p4([undefined,15]),_freezeSlow:p4([undefined,30]),_greedCurse:p4([undefined,100])}),
+    w2:W2({canMv:splits?'open':p4(['open','open','first1']),noHitStopT:p4([null,null,9]),hitStop:p4([0,5])}),w3:W3({stage:p4([0,0,3,5,14,26,34]),kills:p4([9,10,20,33]),combo:p4([0,150,999]),diff:p4([null,5,8])}),
+    w4:W4({chainCnt:p4([0,4,4,2]),addPotionOk:f4()<0.7,magicRef:p4([100,250.5])}),aff:f4()<0.3?{goldBonus:p4([0.1,0.5])}:{},seed:2200000+i,first:[]});
+}
 // normalise: every case has kind/w2/w3, and sStats always carries the counters H2 touches
-for(const c of cases){c.kind=c.kind||'H1';c.w2=c.w2||defW2();c.w3=c.w3||defW3();if(c.world.sStats){c.world.sStats={dmgDealt:0,maxHit:0,...c.world.sStats};}}
+for(const c of cases){c.kind=c.kind||'H1';c.w2=c.w2||defW2();c.w3=c.w3||defW3();c.w4=c.w4||defW4();if(c.world.sStats){c.world.sStats={dmgDealt:0,maxHit:0,...c.world.sStats};}}
 // keys given as undefined in an override mean 'delete the key' (JS undefined); JSON drops them, so record them explicitly as 'del'
 for(const c of cases){c.del=Object.keys(c.over||{}).filter(k=>c.over[k]===undefined);for(const o of c.others)o.del=Object.keys(o.over||{}).filter(k=>o.over[k]===undefined);}
 // ---- run ----
@@ -736,12 +834,13 @@ function setup(c){
    'window._parryLesson=__w.lesson?{active:true,hurtEnemy:function(e,d,a,o){__rec("parryLessonHurt",e,d,a,o);}}:undefined;',ctx);
   ctx.__w2=c.w2;
   vm.runInContext('OPT={diff:__w3.diff,parts:__w2.optParts,hitStop:__w3.optHitStop};__cmN=0;VW=__w2.VW;VH=__w2.VH;_dpsDmg=__w2.dpsDmg;_txtPerFrame=__w2.txtPerFrame;_impPerFrame=__w2.impPerFrame;G.cam={x:__w2.cam.x,y:__w2.cam.y};G.hitStop=__w2.hitStop;G.slowMo=__w2.slowMo;if(__w2.noHitStopT!==null)G._noHitStopT=__w2.noHitStopT;if(__w2.dmgPeak)G._dmgPeak=JSON.parse(JSON.stringify(__w2.dmgPeak));if(__w2.dmgPeakShow)G._dmgPeakShow=JSON.parse(JSON.stringify(__w2.dmgPeakShow));_uqScCtx=__w2.uqScCtx?JSON.parse(JSON.stringify(__w2.uqScCtx)):undefined;_uqS=__w2.uqS?JSON.parse(JSON.stringify(__w2.uqS)):undefined;__canMv=__w2.canMv;',ctx);
+  ctx.__w4=c.w4;vm.runInContext('G.mats=__w4.mats;G._chainCnt=__w4.chainCnt;G._chainT=__w4.chainT;G.rifts=JSON.parse(JSON.stringify(__w4.rifts));_critSfxCd=__w4.critSfxCd;__itemN=0;',ctx);
   ctx.__seq=seqFor(c.seed,c.first);
   const mkObj=s=>{const o=JSON.parse(JSON.stringify(bases[BI[s.base]].obj));for(const [k,v] of Object.entries(s.over||{}))if(v!==undefined)o[k]=JSON.parse(JSON.stringify(v));else delete o[k];return o;};
   ctx.__ens=[mkObj({base:c.base,over:c.over}),...c.others.map(mkObj)];vm.runInContext('ens=__ens;',ctx);
 }
-function snapshot(){return plain(vm.runInContext('({ens:ens,P:P,G:{sStats:G._sStats,playTime:G.playTime,dmgPeak:G._dmgPeak,dmgPeakShow:G._dmgPeakShow,flashCol:G._flashCol,flashT:G._flashT,hitStop:G.hitStop,slowMo:G.slowMo,noHitStopT:G._noHitStopT,dpsDmg:_dpsDmg,txtPerFrame:_txtPerFrame,uqScCtx:_uqScCtx,uqS:_uqS},G3:{kills:G.kills,stageKills:G._stageKills,combo:G.combo,comboTimer:G.comboTimer,comboMax:G.comboMax,druidSink:G._druidSink,druidFinaleBoss:ens.indexOf(G._druidFinaleBoss),gateGuardSet:!!G._gateGuard,gateGuardKilled:G._gateGuardKilled,bossGateOpen:G.bossGateOpen,chromaT:G._chromaT,blDeathSndQ:G._blDeathSndQ,uqZoneQ:G._uqZoneQ,spawnHoles:G.spawnHoles,shDirty:_shDirty,harpGauge:_harpGauge,uqFzCtx:_uqFzCtx,pProjs:pProjs},shBufI:_shBufI,hitSfxCd:_hitSfxCd,btLog:window._btDmgLog,log:__log,consumed:__i})',ctx));}
-const dropped=[];let cur='';const ch3Added={natural:0,forced:0};let chSeq=0;
+function snapshot(){return plain(vm.runInContext('({ens:ens,P:P,G:{sStats:G._sStats,playTime:G.playTime,dmgPeak:G._dmgPeak,dmgPeakShow:G._dmgPeakShow,flashCol:G._flashCol,flashT:G._flashT,hitStop:G.hitStop,slowMo:G.slowMo,noHitStopT:G._noHitStopT,dpsDmg:_dpsDmg,txtPerFrame:_txtPerFrame,uqScCtx:_uqScCtx,uqS:_uqS},G4:{druidFled:G._druidFled,mats:G.mats,chainCnt:G._chainCnt,chainT:G._chainT,rifts:G.rifts,critSfxCd:_critSfxCd},G3:{kills:G.kills,stageKills:G._stageKills,combo:G.combo,comboTimer:G.comboTimer,comboMax:G.comboMax,druidSink:G._druidSink,druidFinaleBoss:ens.indexOf(G._druidFinaleBoss),gateGuardSet:!!G._gateGuard,gateGuardKilled:G._gateGuardKilled,bossGateOpen:G.bossGateOpen,chromaT:G._chromaT,blDeathSndQ:G._blDeathSndQ,uqZoneQ:G._uqZoneQ,spawnHoles:G.spawnHoles,shDirty:_shDirty,harpGauge:_harpGauge,uqFzCtx:_uqFzCtx,pProjs:pProjs},shBufI:_shBufI,hitSfxCd:_hitSfxCd,btLog:window._btDmgLog,log:__log,consumed:__i})',ctx));}
+const dropped=[];let cur='';const ch3Added={natural:0,forced:0};let ch4Added=0;let chSeq=0;
 const exitOf=(r3,log)=>r3===null?(log.some(l=>l[0]==='T'&&l[1]==='환영 소멸!')?'Decoy':log.some(l=>l[0]==='reviveVFX')?'Doppelganger':'BossRevive'):(r3.__cont?'Continue':'NotDead');process.on('uncaughtException',e=>{console.error('CASE:',cur);console.error(e.message);process.exit(1);});
 for(const c of cases){
   cur=c.name;setup(c);const initial=plain(vm.runInContext('ens',ctx)),initP=plain(vm.runInContext('P',ctx));
@@ -749,32 +848,35 @@ for(const c of cases){
   const callH1=()=>vm.runInContext('(function(){const a=__args;const r=a.atkEl===undefined||a.atkEl===null?__H1(ens[0],a.dmg,a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts):__H1(ens[0],a.dmg,a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts,a.atkEl);return r===undefined?null:r;})()',ctx);
   const callH2=()=>vm.runInContext('(function(){const a=__args;return __H2(ens[0],a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts,__h);})()',ctx);
   const callH3=()=>vm.runInContext('(function(){const a=__args;const r=__H3a(ens[0],a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts,__h3);return r===undefined?null:r;})()',ctx);
-  let ret3=null;const pristine=c.kind==='CH'?JSON.stringify(c):null;
+  const callH4=()=>vm.runInContext('(function(){const a=__args;__H3b(ens[0],a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts,__h4,__d4);})()',ctx);
+  let ret3=null;const pristine=(c.kind==='CH'||c.kind==='CH3')?JSON.stringify(c):null;
   if(c.kind==='H2'){ctx.__h=c.head;ret2=plain(callH2());}
   else if(c.kind==='H3'){ctx.__h3=c.head3;ret3=plain(callH3());}
-  else{const r1=callH1();if(r1===null){ret=null;}else{ret=plain(r1);if(c.kind==='CH'||c.kind==='CH3'){ctx.__h=r1;const r2=callH2();ret2=plain(r2);if(c.kind==='CH3'){ctx.__h3=r2;ret3=plain(callH3());}}}}
-  if((c.kind==='CH'||c.kind==='CH3')&&ret===null){dropped.push(c.name);c.drop=true;continue;}
+  else if(c.kind==='H4'){ctx.__h4=c.head3;ctx.__d4=c.d4;callH4();}
+  else{const r1=callH1();if(r1===null){ret=null;}else{ret=plain(r1);if(c.kind==='CH'||c.kind==='CH3'||c.kind==='CH4'){ctx.__h=r1;const r2=callH2();ret2=plain(r2);if(c.kind==='CH3'||c.kind==='CH4'){ctx.__h3=r2;const r3=callH3();ret3=plain(r3);if(c.kind==='CH4'&&r3&&r3.__cont){ctx.__h4=r2;ctx.__d4=r3;callH4();}}}}}
+  if((c.kind==='CH'||c.kind==='CH3'||c.kind==='CH4')&&ret===null){dropped.push(c.name);c.drop=true;continue;}
   const snap=snapshot();
   const diffs=snap.ens.slice(0,initial.length).map((fin,i)=>{const ini=initial[i],d={};for(const k of new Set([...Object.keys(fin),...Object.keys(ini)])){if(JSON.stringify(fin[k])!==JSON.stringify(ini[k])){if(!(k in fin))throw Error('field deleted: '+k);d[k]=fin[k];}}return d;});
   const pdiff={};for(const k of new Set([...Object.keys(snap.P),...Object.keys(initP)]))if(JSON.stringify(snap.P[k])!==JSON.stringify(initP[k])){if(!(k in snap.P))throw Error('P field deleted');pdiff[k]=snap.P[k];}
   const added=snap.ens.slice(initial.length);
-  for(const v of [ret,ret2,ret3,diffs,added,pdiff,snap.log,snap.G,snap.G3,snap.btLog])countTags(v);if(bad.length)throw Error('case '+c.name+': non-JSON-safe numbers '+bad.splice(0).join(','));
-  const is3=c.kind==='H3'||c.kind==='CH3';
-  c.expected={ret,ret2,ret3,exit:is3?exitOf(ret3,snap.log):null,added,G3:snap.G3,diffs,pdiff,G:snap.G,shBufI:snap.shBufI,hitSfxCd:snap.hitSfxCd,btLog:snap.btLog===undefined?null:snap.btLog,log:snap.log,consumed:snap.consumed};
+  for(const v of [ret,ret2,ret3,diffs,added,pdiff,snap.log,snap.G,snap.G3,snap.G4,snap.btLog])countTags(v);if(bad.length)throw Error('case '+c.name+': non-JSON-safe numbers '+bad.splice(0).join(','));
+  const is3=c.kind==='H3'||c.kind==='CH3'||c.kind==='CH4';
+  c.expected={ret,ret2,ret3,exit:is3?exitOf(ret3,snap.log):null,added,G3:snap.G3,G4:snap.G4,diffs,pdiff,G:snap.G,shBufI:snap.shBufI,hitSfxCd:snap.hitSfxCd,btLog:snap.btLog===undefined?null:snap.btLog,log:snap.log,consumed:snap.consumed};
   c.seq=ctx.__seq.slice(0,snap.consumed+4);
   if(c.kind==='CH'){chSeq++;const dead=snap.ens[0].hp<=0;if(dead||chSeq%2===0){const k=JSON.parse(pristine);k.kind='CH3';k.name='CH3 '+c.name.slice(3)+(dead?' [natural death]':' [HP forced low]');if(!dead){k.over={...k.over,hp:[1,3,20][chSeq%3]};k.del=Object.keys(k.over).filter(x=>k.over[x]===undefined);}
     k.world.P={...k.world.P,lv:100,facing:0.5,rage:10,shield:5,mshield:50,kb:{x:0,y:0}};k.w3=defW3();cases.push(k);if(dead)ch3Added.natural++;else ch3Added.forced++;}}
+  if(c.kind==='CH3'&&c.expected.exit==='Continue'){const k=JSON.parse(pristine);k.kind='CH4';k.name='CH4 '+c.name.slice(4);k.w4=defW4();cases.push(k);ch4Added++;}
   delete c.seed;delete c.first;
 }
 for(let i=cases.length-1;i>=0;i--)if(cases[i].drop)cases.splice(i,1);
 const K=k=>cases.filter(c=>c.kind===k);
 const exitCounts={};for(const c of cases)if(c.expected.exit)exitCounts[c.expected.exit]=(exitCounts[c.expected.exit]||0)+1;
-const sum={nonFiniteTags:tagTotals,cases:cases.length,h1:K('H1').length,h2:K('H2').length,chain:K('CH').length,h3:K('H3').length,chain3:K('CH3').length,chain3Natural:ch3Added.natural,chain3Forced:ch3Added.forced,h3Exits:exitCounts,addedEnemies:cases.reduce((n,c)=>n+c.expected.added.length,0),chainDropped:dropped.length,earlyReturns:K('H1').filter(c=>c.expected.ret===null).length,fallThrough:K('H1').filter(c=>c.expected.ret!==null).length,crits:cases.filter(c=>(c.expected.ret&&c.expected.ret._isCrit)).length,
+const sum={nonFiniteTags:tagTotals,cases:cases.length,h1:K('H1').length,h2:K('H2').length,chain:K('CH').length,h3:K('H3').length,chain3:K('CH3').length,h4:K('H4').length,chain4:K('CH4').length,chain3Natural:ch3Added.natural,chain3Forced:ch3Added.forced,h3Exits:exitCounts,addedEnemies:cases.reduce((n,c)=>n+c.expected.added.length,0),chainDropped:dropped.length,earlyReturns:K('H1').filter(c=>c.expected.ret===null).length,fallThrough:K('H1').filter(c=>c.expected.ret!==null).length,crits:cases.filter(c=>(c.expected.ret&&c.expected.ret._isCrit)).length,
   shielded:cases.filter(c=>c.expected.ret&&c.expected.ret._shBlocked).length,logEntries:cases.reduce((s,c)=>s+c.expected.log.length,0),randomDraws:cases.reduce((s,c)=>s+c.expected.consumed,0),enemies:cases.reduce((s,c)=>s+1+c.others.length,0),
   h2Killed:cases.filter(c=>c.expected.ret2&&c.expected.ret2&&c.kind!=='H1').length};
 const callNames={};for(const c of cases)for(const l of c.expected.log)callNames[l[0]]=(callNames[l[0]]||0)+1;sum.injectedCalls=callNames;
 const out={schema:'exoduser.unity.enemy-hurt-oracle.v1',source:{path:sourcePath,sha256:fileSha,lines:lines.length,head:headSha,anchors,wrapper:{header:'function __H1(e,dmg,ang,noSound,opts,atkEl=0){',footer:'return {'+returned.join(',')+'};}finally{_shBufI--}}',locals:returned,h2:{header:'function __H2(e,ang,noSound,opts,__h){let {'+HEAD14.join(',')+'}=__h;',footer:'return {'+returned2.join(',')+'};}',locals:locals2,returned:returned2},
-    h3:{header:'function __H3a(e,ang,noSound,opts,__h){let {'+returned2.join(',')+'}=__h;',footer:'return {__cont:true,'+locals3.join(',')+'};}return {__cont:false};}',locals:locals3}},
+    h3:{header:'function __H3a(e,ang,noSound,opts,__h){let {'+returned2.join(',')+'}=__h;',footer:'return {__cont:true,'+locals3.join(',')+'};}return {__cont:false};}',locals:locals3},h3b:{header:'function __H3b(e,ang,noSound,opts,__h,__d){let {'+returned2.join(',')+'}=__h;let {'+locals3.join(',')+'}=__d;',footer:'}'}},
   note:'blocks located by text anchors and executed unchanged in one Node VM; external pieces = recording stubs with case-defined values, P/G/PASSIVES/INV values, Math.random sequence'},
   tables,bases,summary:sum,cases};
 fs.writeFileSync(outPath,JSON.stringify(out));

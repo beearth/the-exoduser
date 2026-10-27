@@ -14,6 +14,8 @@ namespace Exoduser.UnityPort.Core
         // CX-04c1 (death head): kill rewards, revive shockwave, companion spawn level
         public double? lv, facing, rage, shield, mshield, _okSpdBuff, _okSpdMul;
         public EnemyVec kb;
+        // CX-04c2 (death tail): freeze-slow from icy deaths, body radius for the etype 80 burst
+        public double? _freezeSlow, r;
     }
 
     // `opts` of hurtE (only the keys the head reads). null reference = no opts object (JS undefined); unset keys = undefined.

@@ -18,5 +18,6 @@ namespace Exoduser.UnityPort.Core
             exit = DeathExit.NotDead;
             return new EnemyHurtDeathResult { __cont = false };
         }
+        public static void DeathTail(EnemyHurtContext c, EnemySpawn e, double? ang, bool noSound, EnemyHurtOpts opts, EnemyHurtBodyResult b, EnemyHurtDeathResult d) { }
     }
 }

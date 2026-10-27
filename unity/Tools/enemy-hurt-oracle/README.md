@@ -98,3 +98,20 @@ return {__cont:true,_isBurnDeath,_isWhirlKill,_sinkDruid,_killAng};}return {__co
 - `CH3`: CX-04b 연결 케이스(`CH`)마다 **H1 → H2 → H3a를 실제 반환값으로 이어 붙인 케이스**. 연결 결과 대상이 이미 죽은 것(`[natural death]`)과, 홀수 번째 나머지는 HP를 1·3·20으로 낮춰 사망부까지 가게 한 것(`[HP forced low]`).
 - 대조에 `G3`(kills·combo·druidSink·druidFinaleBoss 색인·gateGuard·queue들·spawnHoles·_shDirty·_harpGauge·_uqFzCtx·pProjs), 동반부활로 늘어난 적(`added`), 반환 지점 이름이 더해졌다.
 - 변이 검사: `death-mutants.cjs`(EnemyHurt.Death.cs 변이 목록) — `node make-h3-oracle.cjs`로 H3+CH3만 담은 `oracle-h3.json`을 만든 뒤 `node run-mutants.cjs --file D --name mutation-death`.
+
+## CX-04c2 (O-1) — 사망부 뒤쪽(H3b) + 함수 전체 체인(CH4)
+
+`    // ═══ 지옥의 잔해 드롭 ═══` 줄부터 `if(e.hp<=0){`를 닫는 `  }` 바로 앞 줄까지(origin/main 5286c0464: 42952~43322)를 같은 방식으로 대조한다. 보고서: `docs/engine/UNITY_O1_KILLTAIL_20261028.md`. Core: `Runtime/Core/EnemyHurt.DeathTail.cs` + `EnemyHurtContext.Tail.cs`. 원본 판을 fce195067에서 5286c0464로 올리며 H1·H3a에 생긴 웹 변경 3건(치명타음 `_critSfxCd`, STY-12 `_bossLine`, `_druidSinkStart`의 효과음·`_druidFled`·`sink0`)도 C#에 반영했다.
+
+```js
+function __H3b(e,ang,noSound,opts,__h,__d){let {<CX-04b 반환값 22개>}=__h;let {_isBurnDeath,_isWhirlKill,_sinkDruid,_killAng}=__d;
+  <앵커 `// ═══ 지옥의 잔해 드롭 ═══` 줄부터 `if(e.hp<=0){`를 닫는 줄 앞까지 그대로>
+}
+```
+
+- 끝 앵커: `  }finally{_shBufI--}` 앞 줄이 `}`(if 닫기)여야 하고, 범위의 중괄호 깊이는 0이어야 한다. 원문은 앞쪽 지역값을 읽지 않지만 같은 이름으로 넘겨 둔다.
+- 원문 그대로: `SLOT_NAMES`, `POT`(hp만 있음), `_maliceMul`, `_SFX_PRI`, `_playDruidSfx`, `RARE_ETYPE`, `ELITE_TIERS`, `isRareEtype`, `SI_TO_HELL`, `mkEn`(분열체: CX-02 원문 실행).
+- 주입(기록용 스텁): `_wiPush`, `magicRef`, `statInt`, `pMagicMul`, `_skMul`, `eProjAt`, `mkItem`(`{stubItem,slot,tier,el,rarity}` 반환), `addPotion`(케이스 값 반환), `rollDrop`, `addExp`, `checkRooms`, `dbSaveNow`, `SFX.explode/magicHit/pickup`, `_bossLine`. `_spawnBossProjectile` 리터럴은 `owner:e` 같은 중첩 적·아이템까지 `{e:i}`·`{o:[…]}`로 재귀 기록한다(C# `JsObj`).
+- 전역(`w4`): `G.mats`, `G._chainCnt`, `G._chainT`, `G.rifts`, `_critSfxCd`, `G._druidFled`. 대조에 `G4`가 더해졌다(모든 케이스).
+- `H4`: 뒷부분 단독 격자 300 + 시드 고정 무작위 600 = 900. `CH4`: `CH3` 중 `Continue`로 끝난 케이스마다 H1 → H2 → H3a → H3b를 실제 반환값으로 이은 함수 전체 체인(202).
+- 결과(5286c0464): **4,968케이스 5,755,060 검사 / 불일치 0**(H4 1,134,027 · CH4 309,621). 변이 13개 중 12개 검출(남은 1개 = 리터럴 키 순서 교환, 동치 변이).

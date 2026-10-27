@@ -125,6 +125,9 @@ class Program
             Check(s.RegionClearedCount() == 3, "3 regions cleared");
             // stand on the gate approach: the sealed text carries 3/4
             var exit = s.Stage.Exits[0]; s.Player.X = (exit.X + .5f) * 40; s.Player.Y = (exit.Y + .5f) * 40; s.Player.Iframes = 99999;
+            // O-1: kills call checkRooms() too (web hurtE tail), which shifts the 30-call check phase; the sealed text needs a check on a frame %45 == 0 (web 42106),
+            // so line the phase up the way an earlier kill could have (first check on tick TickCount + 30 - CheckT, a multiple of 15) instead of relying on the old fixed phase
+            s.Stage.CheckT = s.TickCount % 15;
             Run(s, 100);
             Check(!s.Stage.BossUnlocked, "3/4 regions: the gate stays sealed");
             foreach (var ev in s.Stage.Events) if (ev.Kind == StageEventKind.GateSealed) { Check(ev.Regions, "sealed event is in region mode"); sealedCounts.Add(ev.Percent); }
