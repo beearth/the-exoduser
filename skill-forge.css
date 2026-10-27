@@ -8,9 +8,9 @@
 #skillPanel .skill-pbox.sf-on>.skill-close{flex:0 0 auto;}
 
 #skillForge{
-  --sf-bone:#dfd6c2;--sf-bone2:#b9ab92;--sf-dim:#7d7264;--sf-line:rgba(164,147,115,.5);--sf-fire:#ec7958;--sf-fire2:#a34d3f;--sf-gold:#c9a663;
+  --sf-bone:#d9d6d0;--sf-bone2:#aaadad;--sf-dim:#717474;--sf-line:rgba(146,149,149,.5);--sf-fire:#ec7958;--sf-fire2:#a34d3f;--sf-gold:#a7aaaa;
   position:relative;flex:1 1 0;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;
-  margin:4px 0 8px;padding:10px 12px 10px;border:3px double #3b332c;border-radius:4px;overflow:hidden;
+  margin:4px 0 8px;padding:10px 12px 10px;border:3px double #323535;border-radius:4px;overflow:hidden;
   font-family:var(--font-hell);color:var(--sf-bone);background:#0b0809;user-select:none;
 }
 #skillForge .sf-canvas{position:absolute;inset:0;z-index:0;pointer-events:none;}
@@ -24,7 +24,7 @@
 #skillForge .sf-slots{display:flex;justify-content:center;align-items:flex-start;gap:clamp(4px,.8vw,14px);padding:4px 0 2px;flex-wrap:nowrap;}
 #skillForge .sf-slot{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:3px;width:clamp(56px,5.6vw,92px);cursor:pointer;}
 #skillForge .sf-slot-disc{position:relative;display:grid;place-items:center;width:clamp(44px,4.2vw,70px);aspect-ratio:1;border-radius:50%;
-  background:radial-gradient(circle at 50% 38%,#2b2220,#0e0a0a 70%);border:2px solid #5a4b3c;box-shadow:inset 0 0 0 1px #0008,0 2px 6px #000a;transition:transform .15s,box-shadow .15s;}
+  background:radial-gradient(circle at 50% 38%,#222525,#090c0c 70%);border:2px solid #4b4e4e;box-shadow:inset 0 0 0 1px #0008,0 2px 6px #000a;transition:transform .15s,box-shadow .15s;}
 #skillForge .sf-slot-disc .sf-ico{width:92%;height:92%;border-radius:50%;overflow:hidden;display:grid;place-items:center;}
 #skillForge .sf-slot-disc{height:auto;min-height:0;}
 #skillForge .sf-slot-disc .sf-ico{aspect-ratio:1;height:auto;}
@@ -37,19 +37,19 @@
 #skillForge .sf-slot.on .sf-slot-disc{border-color:var(--sf-fire);box-shadow:0 0 0 2px #ec795855,0 0 18px #ec795899;transform:translateY(-2px) scale(1.06);}
 #skillForge .sf-slot.on .sf-slot-name{color:var(--sf-bone);}
 #skillForge .sf-slot.fused .sf-slot-disc{border-color:var(--sf-gold);}
-#skillForge .sf-slot:focus-visible .sf-slot-disc{outline:2px solid #d6bd89;outline-offset:3px;}
-#skillForge .sf-slot.drop-ok .sf-slot-disc{box-shadow:0 0 0 3px #e6c77a,0 0 22px #e6c77acc;}
+#skillForge .sf-slot:focus-visible .sf-slot-disc{outline:2px solid #c2bfb9;outline-offset:3px;}
+#skillForge .sf-slot.drop-ok .sf-slot-disc{box-shadow:0 0 0 3px #cbc8c2,0 0 22px #cbc8c2cc;}
 #skillForge .sf-slot.drop-no .sf-slot-disc{box-shadow:0 0 0 3px #8a2a22;}
 
 /* ── 가운데 3단 ── */
 #skillForge .sf-mid{display:grid;grid-template-columns:clamp(240px,21vw,360px) minmax(0,1fr) clamp(240px,21vw,360px);gap:12px;min-height:0;}
 #skillForge .sf-info,#skillForge .sf-road{min-height:0;overflow:auto;padding:14px 14px 12px;border:1px solid var(--sf-line);border-radius:3px;
-  background:linear-gradient(180deg,rgba(20,15,14,.86),rgba(12,9,9,.9));box-shadow:inset 0 0 0 1px #0009;scrollbar-width:thin;scrollbar-color:#75674f #121113;}
+  background:linear-gradient(180deg,rgba(14,17,17,.86),rgba(8,11,11,.9));box-shadow:inset 0 0 0 1px #0009;scrollbar-width:thin;scrollbar-color:#666969 #121113;}
 #skillForge .sf-info-head{display:flex;gap:12px;align-items:center;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--sf-line);}
-#skillForge .sf-info-ico{flex:0 0 64px;height:64px;border-radius:50%;overflow:hidden;border:2px solid #5a4b3c;}
+#skillForge .sf-info-ico{flex:0 0 64px;height:64px;border-radius:50%;overflow:hidden;border:2px solid #4b4e4e;}
 #skillForge .sf-info-name{font-family:var(--font-hell-title);font-size:18px;line-height:1.2;color:var(--sf-bone);letter-spacing:.03em;}
 #skillForge .sf-info-sub{font-size:12px;color:var(--sf-gold);margin-top:3px;}
-#skillForge .sf-info-desc{font-size:13px;line-height:1.65;color:#d8ccb8;margin:0 0 10px;}
+#skillForge .sf-info-desc{font-size:13px;line-height:1.65;color:#d0cdc7;margin:0 0 10px;}
 #skillForge .sf-info-cost{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12px;color:var(--sf-bone2);margin-bottom:10px;}
 #skillForge .sf-warn{color:#e08a6a;}
 #skillForge .sf-info-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
@@ -57,17 +57,17 @@
 #skillForge .sf-info-empty,#skillForge .sf-empty{font-size:12px;color:var(--sf-dim);padding:6px 2px;}
 
 #skillForge .sf-btn{all:unset;box-sizing:border-box;cursor:pointer;min-height:32px;padding:6px 14px;font-family:var(--font-hell);font-size:13px;color:var(--sf-bone);
-  border:1px solid #6b5843;border-radius:2px;background:linear-gradient(180deg,#2a211c,#16110f);box-shadow:inset 0 1px 0 #ffffff12,0 1px 3px #000a;text-align:center;}
+  border:1px solid #595c5c;border-radius:2px;background:linear-gradient(180deg,#212424,#101313);box-shadow:inset 0 1px 0 #ffffff12,0 1px 3px #000a;text-align:center;}
 #skillForge .sf-btn:hover:not(:disabled){filter:brightness(1.18);}
-#skillForge .sf-btn:focus-visible{outline:2px solid #d6bd89;outline-offset:2px;}
+#skillForge .sf-btn:focus-visible{outline:2px solid #c2bfb9;outline-offset:2px;}
 #skillForge .sf-btn:disabled{opacity:.42;filter:saturate(.3);cursor:default;}
-#skillForge .sf-btn-fire{border-color:#a34d3f;background:linear-gradient(180deg,#6e2418,#3a120d);color:#fff0df;}
+#skillForge .sf-btn-fire{border-color:#a34d3f;background:linear-gradient(180deg,#6e2418,#3a120d);color:#f5f2ec;}
 #skillForge .sf-btn-ghost{background:transparent;color:var(--sf-bone2);}
 
 /* ── 제단 ── */
 #skillForge .sf-altar{position:relative;min-height:300px;}
 #skillForge .sf-core{position:absolute;left:50%;top:50%;width:120px;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
-  display:grid;place-items:center;background:radial-gradient(circle,#4a1a10 0,#1a0c0a 62%,#0b0808 100%);border:3px solid #6b5843;box-shadow:0 0 30px #ec795866,inset 0 0 20px #000;}
+  display:grid;place-items:center;background:radial-gradient(circle,#4a1a10 0,#1a0c0a 62%,#070a0a 100%);border:3px solid #595c5c;box-shadow:0 0 30px #ec795866,inset 0 0 20px #000;}
 #skillForge .sf-core-ico{width:90%;height:90%;border-radius:50%;overflow:hidden;}
 #skillForge .sf-core.empty{opacity:.4;}
 #skillForge .sf-core.sf-unequip{cursor:grab;}
@@ -75,40 +75,40 @@
 #skillForge .sf-core.fused{border-color:var(--sf-gold);}
 /* 합성 이름 명패: 제단 왼쪽 위 (아래 소켓을 가리지 않게) */
 #skillForge .sf-core-name{position:absolute;left:14px;top:10px;max-width:40%;font-family:var(--font-hell-title);font-size:clamp(16px,1.25vw,22px);letter-spacing:.06em;color:var(--sf-bone);
-  padding:6px 16px 4px 12px;border-left:2px solid var(--sf-fire);background:linear-gradient(90deg,rgba(10,7,7,.88),rgba(10,7,7,0));text-shadow:0 1px 2px #000;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  padding:6px 16px 4px 12px;border-left:2px solid var(--sf-fire);background:linear-gradient(90deg,rgba(6,9,9,.88),rgba(6,9,9,0));text-shadow:0 1px 2px #000;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 #skillForge .sf-core-star{position:absolute;left:28px;top:calc(10px + clamp(16px,1.25vw,22px) * 1.45 + 12px);font-size:13px;letter-spacing:.2em;color:var(--sf-gold);text-shadow:0 0 6px #000;pointer-events:none;}
 #skillForge .sf-nodes{position:absolute;inset:0;}
 #skillForge .sf-node{position:absolute;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;
-  background:radial-gradient(circle at 50% 38%,#2b2220,#0e0a0a 70%);border:2px solid #6b5843;box-shadow:0 2px 8px #000c;transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1);}
+  background:radial-gradient(circle at 50% 38%,#222525,#090c0c 70%);border:2px solid #595c5c;box-shadow:0 2px 8px #000c;transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1);}
 #skillForge .sf-node-ico{width:92%;height:92%;border-radius:50%;overflow:hidden;}
-#skillForge .sf-node-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;color:var(--sf-bone);text-shadow:0 0 6px #000,0 1px 2px #000;padding:1px 6px;border-radius:2px;background:rgba(10,7,7,.72);}
+#skillForge .sf-node-name{position:absolute;top:calc(100% + 3px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;color:var(--sf-bone);text-shadow:0 0 6px #000,0 1px 2px #000;padding:1px 6px;border-radius:2px;background:rgba(6,9,9,.72);}
 #skillForge .sf-node.sf-host{border-color:var(--sf-gold);}
-#skillForge .sf-node.sf-staged{border-color:#ffb347;cursor:grab;animation:sfPulse 1.2s ease-in-out infinite;}
-#skillForge .sf-node.sf-ghost{background:transparent;border:2px dashed #b9ab9288;}
-#skillForge .sf-plus{font-family:var(--font-hell-title);font-size:28px;color:#b9ab92aa;}
+#skillForge .sf-node.sf-staged{border-color:#bebbb5;cursor:grab;animation:sfPulse 1.2s ease-in-out infinite;}
+#skillForge .sf-node.sf-ghost{background:transparent;border:2px dashed #aaadad88;}
+#skillForge .sf-plus{font-family:var(--font-hell-title);font-size:28px;color:#aaadadaa;}
 #skillForge .sf-crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);padding:1px 7px;font-size:10px;letter-spacing:.08em;line-height:1.5;
-  color:#1b130c;background:linear-gradient(180deg,#e6c77a,#a8843f);border:1px solid #5a431c;border-radius:2px;white-space:nowrap;}
+  color:#121515;background:linear-gradient(180deg,#cbc8c2,#858888);border:1px solid #434646;border-radius:2px;white-space:nowrap;}
 #skillForge .sf-altar-hint{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);max-width:92%;text-align:center;font-size:13px;color:var(--sf-bone);text-shadow:0 0 6px #000;pointer-events:none;
-  padding:4px 14px;border:1px solid #6b584355;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(10,7,7,.82) 12%,rgba(10,7,7,.82) 88%,transparent);}
+  padding:4px 14px;border:1px solid #595c5c55;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(6,9,9,.82) 12%,rgba(6,9,9,.82) 88%,transparent);}
 #skillForge .sf-altar-hint:empty{display:none;}
 #skillForge .sf-altar-btns{position:absolute;left:50%;bottom:4px;transform:translateX(-50%);display:flex;gap:8px;}
-#skillForge .sf-altar.drop-ok .sf-core{box-shadow:0 0 0 4px #e6c77a,0 0 40px #e6c77acc;}
+#skillForge .sf-altar.drop-ok .sf-core{box-shadow:0 0 0 4px #cbc8c2,0 0 40px #cbc8c2cc;}
 #skillForge .sf-altar.drop-no .sf-core{box-shadow:0 0 0 4px #8a2a22;}
 
 /* ── 로드맵 ── */
 #skillForge .sf-road-title{font-family:var(--font-hell-title);font-size:16px;letter-spacing:.08em;color:var(--sf-bone);padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid var(--sf-line);}
-#skillForge .sf-road-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2px 8px;padding:8px 8px 8px 10px;margin-bottom:6px;border-left:2px solid #5a4b3c;background:#ffffff06;}
+#skillForge .sf-road-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2px 8px;padding:8px 8px 8px 10px;margin-bottom:6px;border-left:2px solid #4b4e4e;background:#ffffff06;}
 #skillForge .sf-road-star{font-size:11px;color:var(--sf-gold);letter-spacing:.1em;}
 #skillForge .sf-road-name{font-size:13px;color:var(--sf-bone);}
 #skillForge .sf-road-state{font-size:11px;color:var(--sf-bone2);}
 #skillForge .sf-road-ing{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
-#skillForge .sf-road-mat{width:24px;height:24px;border-radius:50%;overflow:hidden;border:1px solid #4a3f35;opacity:.45;filter:grayscale(.8);}
-#skillForge .sf-road-mat.have{opacity:1;filter:none;border-color:#8a7350;}
+#skillForge .sf-road-mat{width:24px;height:24px;border-radius:50%;overflow:hidden;border:1px solid #3f4242;opacity:.45;filter:grayscale(.8);}
+#skillForge .sf-road-mat.have{opacity:1;filter:none;border-color:#737676;}
 #skillForge .sf-mini-ico{display:block;width:100%;height:100%;}
 #skillForge .sf-road-row.done{border-left-color:var(--sf-gold);}
 #skillForge .sf-road-row.done .sf-road-state{color:var(--sf-gold);}
 #skillForge .sf-road-row.now,#skillForge .sf-road-row.can{border-left-color:var(--sf-fire);background:#ec795812;}
-#skillForge .sf-road-row.now .sf-road-state,#skillForge .sf-road-row.can .sf-road-state{color:#ffb08a;}
+#skillForge .sf-road-row.now .sf-road-state,#skillForge .sf-road-row.can .sf-road-state{color:#f29d97;}
 #skillForge .sf-road-row.locked{opacity:.5;}
 
 .sf-drag-ghost{position:fixed;left:0;top:0;width:56px;height:56px;border-radius:50%;overflow:hidden;z-index:100000;pointer-events:none;border:2px solid #ec7958;box-shadow:0 0 18px #ec7958aa;}
@@ -125,7 +125,7 @@
 #skillForge.sf-3d .sf-slot-disc,#skillForge.sf-3d .sf-node,#skillForge.sf-3d .sf-core{background:transparent;border-color:transparent;box-shadow:none;animation:none;}
 #skillForge.sf-3d .sf-slot-disc>.sf-ico,#skillForge.sf-3d .sf-node>.sf-node-ico,#skillForge.sf-3d .sf-node>.sf-plus,#skillForge.sf-3d .sf-core>.sf-core-ico{opacity:0;}
 #skillForge.sf-3d .sf-slot.on .sf-slot-disc{transform:none;}
-#skillForge.sf-3d .sf-slot.drop-ok .sf-slot-disc,#skillForge.sf-3d .sf-altar.drop-ok .sf-core{box-shadow:0 0 0 3px #e6c77acc;}
+#skillForge.sf-3d .sf-slot.drop-ok .sf-slot-disc,#skillForge.sf-3d .sf-altar.drop-ok .sf-core{box-shadow:0 0 0 3px #cbc8c2cc;}
 #skillForge.sf-3d .sf-slot.drop-no .sf-slot-disc,#skillForge.sf-3d .sf-altar.drop-no .sf-core{box-shadow:0 0 0 3px #8a2a22cc;}
 
 @keyframes sfPulse{0%,100%{box-shadow:0 0 14px #ec795855}50%{box-shadow:0 0 30px #ec7958cc}}
@@ -154,16 +154,16 @@
 #skillForge .sf-orb{--o:52px;--lw:110px;position:absolute;width:var(--o);height:var(--o);margin:calc(var(--o) / -2) 0 0 calc(var(--o) / -2);
   pointer-events:auto;cursor:grab;outline:none;-webkit-tap-highlight-color:transparent;}
 #skillForge .sf-orb-float{position:absolute;inset:0;will-change:transform;}
-#skillForge .sf-orb-ball{position:absolute;inset:0;border-radius:50%;background:#0d0909;
-  box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #4d4136,0 0 0 3.5px rgba(164,147,115,.45),0 10px 16px -6px #000;
+#skillForge .sf-orb-ball{position:absolute;inset:0;border-radius:50%;background:#080b0b;
+  box-shadow:0 0 0 1px #060909,0 0 0 2.5px #414444,0 0 0 3.5px rgba(146,149,149,.45),0 10px 16px -6px #000;
   transition:transform .18s ease,box-shadow .18s ease;}
 #skillForge .sf-orb-ball>.sf-orb-ico{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;overflow:hidden;}
 /* 유리 구슬: 왼쪽 위 반사광 · 둥근 가장자리 음영 · 아래 지옥불 반사 */
 #skillForge .sf-orb-ball::after{content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;
-  background:radial-gradient(ellipse 44% 30% at 37% 22%,rgba(255,246,230,.40),rgba(255,246,230,.07) 62%,transparent 74%),
-    radial-gradient(circle at 50% 46%,transparent 54%,rgba(10,5,5,.30) 74%,rgba(0,0,0,.74) 100%),
+  background:radial-gradient(ellipse 44% 30% at 37% 22%,rgba(250,247,241,.40),rgba(250,247,241,.07) 62%,transparent 74%),
+    radial-gradient(circle at 50% 46%,transparent 54%,rgba(4,7,7,.30) 74%,rgba(0,0,0,.74) 100%),
     radial-gradient(ellipse 62% 26% at 50% 97%,rgba(236,121,88,.32),transparent 72%);
-  box-shadow:inset 0 1px 1px rgba(255,238,214,.22),inset 0 -3px 5px rgba(0,0,0,.55);}
+  box-shadow:inset 0 1px 1px rgba(243,240,234,.22),inset 0 -3px 5px rgba(0,0,0,.55);}
 /* 다음 합성을 완성하는 재료: 바깥 불꽃 고리가 숨쉬듯 (opacity·transform만 — 합성 레이어) */
 #skillForge .sf-orb-ball::before{content:'';position:absolute;inset:-10px;border-radius:50%;pointer-events:none;opacity:0;
   background:radial-gradient(circle,rgba(236,121,88,0) 50%,rgba(236,110,70,.42) 61%,rgba(236,121,88,0) 73%);}
@@ -174,30 +174,30 @@
   text-shadow:0 1px 2px #000,0 0 6px #000,0 0 10px #000;}
 #skillForge .sf-orb-sub{max-width:100%;font-family:var(--font-hell);font-size:11px;line-height:1.2;color:var(--sf-bone2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px #000,0 0 6px #000;}
 #skillForge .sf-orb-sub.lv{font-family:var(--font-hell-title);letter-spacing:.06em;color:var(--sf-gold);}
-#skillForge .sf-orb-sub.badge{color:#e8ae86;}
+#skillForge .sf-orb-sub.badge{color:#e88d86;}
 /* 상태 */
-#skillForge .sf-orb.mat .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #6e2c20,0 0 0 3.5px rgba(236,121,88,.55),0 10px 16px -6px #000,0 0 16px -4px rgba(236,90,40,.55);}
-#skillForge .sf-orb.on .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #8f7142,0 0 0 4px #e6c77a,0 10px 16px -6px #000,0 0 20px -4px rgba(230,199,122,.5);}
-#skillForge .sf-orb.on .sf-orb-name{color:#f0dca8;}
+#skillForge .sf-orb.mat .sf-orb-ball{box-shadow:0 0 0 1px #060909,0 0 0 2.5px #6e2c20,0 0 0 3.5px rgba(236,121,88,.55),0 10px 16px -6px #000,0 0 16px -4px rgba(236,90,40,.55);}
+#skillForge .sf-orb.on .sf-orb-ball{box-shadow:0 0 0 1px #060909,0 0 0 2.5px #727575,0 0 0 4px #cbc8c2,0 10px 16px -6px #000,0 0 20px -4px rgba(203,200,194,.5);}
+#skillForge .sf-orb.on .sf-orb-name{color:#dfdcd6;}
 #skillForge .sf-orb:hover .sf-orb-ball,#skillForge .sf-orb:focus-visible .sf-orb-ball{transform:scale(1.08);
-  box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #8a6f4a,0 0 0 4px rgba(230,199,122,.8),0 10px 16px -6px #000,0 0 22px -2px rgba(236,121,88,.55);}
-#skillForge .sf-orb.sel .sf-orb-ball{outline:1px solid #dfd6c2;outline-offset:6px;}
+  box-shadow:0 0 0 1px #060909,0 0 0 2.5px #707373,0 0 0 4px rgba(203,200,194,.8),0 10px 16px -6px #000,0 0 22px -2px rgba(236,121,88,.55);}
+#skillForge .sf-orb.sel .sf-orb-ball{outline:1px solid #d9d6d0;outline-offset:6px;}
 #skillForge .sf-orb.dim{cursor:pointer;}
 #skillForge .sf-orb.dim .sf-orb-ico{filter:grayscale(.75) brightness(.56);}
-#skillForge .sf-orb.dim .sf-orb-name{color:#a39886;}
+#skillForge .sf-orb.dim .sf-orb-name{color:#979a9a;}
 #skillForge .sf-orb.sealed{cursor:default;}
-#skillForge .sf-orb.sealed .sf-orb-ball{background:radial-gradient(circle at 50% 40%,#1d1614,#070505 75%);}
-#skillForge .sf-orb-seal{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-hell-title);font-size:calc(var(--o) * .42);color:#6f6355;}
+#skillForge .sf-orb.sealed .sf-orb-ball{background:radial-gradient(circle at 50% 40%,#151818,#030606 75%);}
+#skillForge .sf-orb-seal{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-hell-title);font-size:calc(var(--o) * .42);color:#636666;}
 /* 제단 오른쪽 위 명패 — 왼쪽 위 모체 명패(.sf-core-name)와 대칭 */
 #skillForge .sf-field-head{position:absolute;right:14px;top:10px;max-width:40%;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:3px;padding:6px 12px 5px 18px;
-  border-right:2px solid var(--sf-fire);background:linear-gradient(270deg,rgba(10,7,7,.88),rgba(10,7,7,0));pointer-events:none;text-align:right;}
+  border-right:2px solid var(--sf-fire);background:linear-gradient(270deg,rgba(6,9,9,.88),rgba(6,9,9,0));pointer-events:none;text-align:right;}
 #skillForge .sf-field-title{font-family:var(--font-hell-title);font-size:clamp(14px,1.05vw,18px);letter-spacing:.06em;color:var(--sf-bone);text-shadow:0 1px 2px #000;white-space:nowrap;}
 #skillForge .sf-field-sub{font-size:11px;line-height:1.35;color:var(--sf-bone2);text-shadow:0 1px 2px #000;}
 /* compact(낮은 화면에 구슬이 많을 때): 이름 한 줄, 레벨은 구슬 오른쪽 아래 숫자 */
 #skillForge .sf-orb-pip{display:none;}
 #skillForge .sf-orb.compact .sf-orb-sub{display:none;}
 #skillForge .sf-orb.compact .sf-orb-pip{display:grid;place-items:center;position:absolute;right:-5px;bottom:-4px;min-width:15px;height:15px;padding:0 3px;box-sizing:border-box;border-radius:8px;
-  background:#120d0c;border:1px solid #8f7142;font-family:var(--font-hell-title);font-size:9.5px;line-height:1;color:var(--sf-bone);box-shadow:0 1px 3px #000;}
+  background:#0c0f0f;border:1px solid #727575;font-family:var(--font-hell-title);font-size:9.5px;line-height:1;color:var(--sf-bone);box-shadow:0 1px 3px #000;}
 @keyframes sfOrbGlow{0%,100%{opacity:.35;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
 @media (max-height:860px){#skillForge .sf-field-sub{display:none;} #skillForge .sf-orb-name{font-size:11.5px;}}
 
@@ -205,31 +205,31 @@
 /* 이름표는 부유 진폭(--lg)만큼 아래에 고정 — 구슬이 내려와도 글자를 덮지 않고, 글자는 흔들리지 않는다 */
 #skillForge .sf-orb-label{top:calc(100% + var(--lg,8px));gap:2px;}
 /* 이름표 바탕: 전류선이 지나가도 글자가 위에서 읽히게(가장자리가 흐린 흑철 연기) */
-#skillForge .sf-orb-name,#skillForge .sf-orb-sub{padding:0 7px;background:radial-gradient(closest-side,rgba(10,7,7,.86) 62%,rgba(10,7,7,0));}
+#skillForge .sf-orb-name,#skillForge .sf-orb-sub{padding:0 7px;background:radial-gradient(closest-side,rgba(6,9,9,.86) 62%,rgba(6,9,9,0));}
 #skillForge .sf-orb-sub{display:flex;align-items:center;justify-content:center;gap:4px;}
 #skillForge .sf-orb-subt{min-width:0;overflow:hidden;text-overflow:ellipsis;}
 /* 모체 = 이름 둘째 줄 앞 금패(고정) + 구슬 안쪽 금빛 가는 테 */
-#skillForge .sf-orb-host{flex:0 0 auto;padding:0 5px;font-family:var(--font-hell);font-size:11.5px;line-height:15px;font-weight:700;letter-spacing:0;color:#f3e2b4;
-  background:linear-gradient(180deg,#3a2812,#1e140b);border:1px solid #b08a48;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,230,170,.18);}
-#skillForge .sf-orb.host .sf-orb-ball::after{outline:1px solid rgba(230,199,122,.55);outline-offset:-4px;}
+#skillForge .sf-orb-host{flex:0 0 auto;padding:0 5px;font-family:var(--font-hell);font-size:11.5px;line-height:15px;font-weight:700;letter-spacing:0;color:#e5e2dc;
+  background:linear-gradient(180deg,#282b2b,#131616);border:1px solid #8b8e8e;border-radius:2px;box-shadow:inset 0 1px 0 rgba(234,231,225,.18);}
+#skillForge .sf-orb.host .sf-orb-ball::after{outline:1px solid rgba(203,200,194,.55);outline-offset:-4px;}
 /* 습득: 안쪽 따뜻한 빛 + 더 밝은 금빛 테 */
-#skillForge .sf-orb.learned .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #6b5638,0 0 0 3.5px rgba(222,192,132,.8),0 10px 16px -6px #000,0 0 16px -5px rgba(236,140,80,.5);}
-#skillForge .sf-orb.learned .sf-orb-ball::after{box-shadow:inset 0 1px 1px rgba(255,238,214,.24),inset 0 -3px 5px rgba(0,0,0,.5),inset 0 0 calc(var(--o) * .3) rgba(255,118,50,.48);}
-#skillForge .sf-orb.learned.mat .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #7a3326,0 0 0 3.5px rgba(244,146,104,.82),0 10px 16px -6px #000,0 0 18px -4px rgba(236,90,40,.6);}
-#skillForge .sf-orb.learned.on .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #8f7142,0 0 0 4px #ecd08a,0 10px 16px -6px #000,0 0 22px -4px rgba(230,199,122,.6);}
+#skillForge .sf-orb.learned .sf-orb-ball{box-shadow:0 0 0 1px #060909,0 0 0 2.5px #565959,0 0 0 3.5px rgba(197,194,188,.8),0 10px 16px -6px #000,0 0 16px -5px rgba(234,92,82,.5);}
+#skillForge .sf-orb.learned .sf-orb-ball::after{box-shadow:inset 0 1px 1px rgba(243,240,234,.24),inset 0 -3px 5px rgba(0,0,0,.5),inset 0 0 calc(var(--o) * .3) rgba(232,83,73,.48);}
+#skillForge .sf-orb.learned.mat .sf-orb-ball{box-shadow:0 0 0 1px #060909,0 0 0 2.5px #7a3326,0 0 0 3.5px rgba(244,146,104,.82),0 10px 16px -6px #000,0 0 18px -4px rgba(236,90,40,.6);}
+#skillForge .sf-orb.learned.on .sf-orb-ball{box-shadow:0 0 0 1px #060909,0 0 0 2.5px #727575,0 0 0 4px #d4d1cb,0 10px 16px -6px #000,0 0 22px -4px rgba(203,200,194,.6);}
 /* 미습득: 채도·밝기 낮춤, 지옥불 반사광·안쪽 빛 없이 유리 반사만. 아이콘 형태는 1x에서 보이게(밝기 .6) */
 #skillForge .sf-orb:not(.learned):not(.sealed) .sf-orb-ico{filter:grayscale(.85) brightness(.6) contrast(.92);}
-#skillForge .sf-orb:not(.learned) .sf-orb-ball{box-shadow:0 0 0 1px #0a0707,0 0 0 2.5px #2f2822,0 0 0 3.5px rgba(120,108,90,.32),0 10px 16px -6px #000;}
-#skillForge .sf-orb:not(.learned) .sf-orb-ball::after{background:radial-gradient(ellipse 44% 30% at 37% 22%,rgba(255,246,230,.34),rgba(255,246,230,.06) 62%,transparent 74%),
-  radial-gradient(circle at 50% 46%,transparent 52%,rgba(6,4,4,.4) 74%,rgba(0,0,0,.78) 100%);}
-#skillForge .sf-orb:not(.learned) .sf-orb-name{color:#958b7b;}
+#skillForge .sf-orb:not(.learned) .sf-orb-ball{box-shadow:0 0 0 1px #060909,0 0 0 2.5px #272a2a,0 0 0 3.5px rgba(107,110,110,.32),0 10px 16px -6px #000;}
+#skillForge .sf-orb:not(.learned) .sf-orb-ball::after{background:radial-gradient(ellipse 44% 30% at 37% 22%,rgba(250,247,241,.34),rgba(250,247,241,.06) 62%,transparent 74%),
+  radial-gradient(circle at 50% 46%,transparent 52%,rgba(2,5,5,.4) 74%,rgba(0,0,0,.78) 100%);}
+#skillForge .sf-orb:not(.learned) .sf-orb-name{color:#8a8d8d;}
 #skillForge .sf-orb.learned.dim .sf-orb-ico{filter:saturate(.6) brightness(.8);}
-#skillForge .sf-orb.learned.dim .sf-orb-name{color:#c2b6a2;}
+#skillForge .sf-orb.learned.dim .sf-orb-name{color:#bab7b1;}
 /* 원판 위 빈 소켓(다음 재료를 넣는 자리): 3D에서도 점선 금테·지옥불 숨결·「+」를 보여 구멍이 아니라 넣을 자리로 읽히게 */
-#skillForge.sf-3d .sf-node.sf-ghost{border:1px dashed rgba(214,184,124,.62);background:radial-gradient(circle,rgba(236,121,88,.22),rgba(60,20,12,.35) 55%,rgba(10,7,7,0) 72%);
+#skillForge.sf-3d .sf-node.sf-ghost{border:1px dashed rgba(189,186,180,.62);background:radial-gradient(circle,rgba(236,121,88,.22),rgba(60,20,12,.35) 55%,rgba(6,9,9,0) 72%);
   box-shadow:inset 0 0 14px rgba(236,121,88,.35);animation:sfGhost 2.6s ease-in-out infinite;}
-#skillForge.sf-3d .sf-node.sf-ghost>.sf-plus{opacity:1;color:#e6c77a;text-shadow:0 0 8px #ec7958,0 1px 2px #000;}
-#skillForge.dragging.sf-3d .sf-node.sf-ghost{border-style:solid;border-color:rgba(236,180,110,.85);}
+#skillForge.sf-3d .sf-node.sf-ghost>.sf-plus{opacity:1;color:#cbc8c2;text-shadow:0 0 8px #ec7958,0 1px 2px #000;}
+#skillForge.dragging.sf-3d .sf-node.sf-ghost{border-style:solid;border-color:rgba(190,187,181,.85);}
 @keyframes sfGhost{0%,100%{box-shadow:inset 0 0 10px rgba(236,121,88,.25),0 0 0 rgba(236,121,88,0)}50%{box-shadow:inset 0 0 18px rgba(236,121,88,.5),0 0 14px rgba(236,121,88,.35)}}
 @media (max-height:860px){#skillForge .sf-orb-host{font-size:11px;line-height:14px;}}
 /* 레벨 숫자: Cinzel의 「1」이 로마자 I로 읽혀 명조 숫자로 */

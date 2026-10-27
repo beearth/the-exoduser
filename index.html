@@ -501,22 +501,22 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   filter:drop-shadow(0 10px 26px rgba(0,0,0,.8)) drop-shadow(0 0 2px rgba(0,0,0,.6))}
 #splashTitleMenu{position:absolute;left:252px;top:548px;width:440px;display:flex;flex-direction:column;gap:9px;margin:0;padding:0;list-style:none}
 #splashTitleMenu .stm-btn{position:relative;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;
-  font:500 20px/1 'Nanum Myeongjo','Noto Serif KR','Noto Serif',serif;letter-spacing:.16em;color:#dfd6c2;white-space:nowrap;
+  font:500 20px/1 'Nanum Myeongjo','Noto Serif KR','Noto Serif',serif;letter-spacing:.16em;color:#e6e3dc;white-space:nowrap;
   text-shadow:0 1px 0 rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.7);transition:color .18s;outline:none}
 #splashTitleMenu .stm-btn svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-#splashTitleMenu .stm-plate{fill:rgba(13,10,9,.8);stroke:rgba(164,147,115,.55);stroke-width:1;transition:stroke .18s}
-#splashTitleMenu .stm-inner{fill:none;stroke:rgba(164,147,115,.17);stroke-width:1}
-#splashTitleMenu .stm-tip{fill:none;stroke:rgba(164,147,115,.55);stroke-width:1;transition:fill .18s,stroke .18s}
+#splashTitleMenu .stm-plate{fill:rgba(13,13,15,.82);stroke:rgba(138,139,136,.75);stroke-width:1;transition:stroke .18s}
+#splashTitleMenu .stm-inner{fill:none;stroke:rgba(201,199,195,.14);stroke-width:1}
+#splashTitleMenu .stm-tip{fill:none;stroke:rgba(138,139,136,.85);stroke-width:1;transition:fill .18s,stroke .18s}
 #splashTitleMenu .stm-glow{opacity:0;transition:opacity .2s}
 #splashTitleMenu .stm-label{position:relative;padding-left:.16em}
-#splashTitleMenu .stm-btn.sel{color:#f3e8cf;text-shadow:0 1px 0 #000,0 0 14px rgba(181,46,37,.55)}
-#splashTitleMenu .stm-btn.sel .stm-plate{stroke:#c9a86a;stroke-opacity:.95}
-#splashTitleMenu .stm-btn.sel .stm-inner{stroke:rgba(201,168,106,.34)}
-#splashTitleMenu .stm-btn.sel .stm-tip{fill:#b52e25;stroke:#e0b878}
+#splashTitleMenu .stm-btn.sel{color:#f6f5f2;text-shadow:0 1px 0 #000,0 0 14px rgba(194,26,16,.55)}
+#splashTitleMenu .stm-btn.sel .stm-plate{stroke:#c9c7c3;stroke-opacity:.95;stroke-width:1.4}
+#splashTitleMenu .stm-btn.sel .stm-inner{stroke:rgba(246,245,242,.3)}
+#splashTitleMenu .stm-btn.sel .stm-tip{fill:#c21a10;stroke:#f6f5f2}
 #splashTitleMenu .stm-btn.sel .stm-glow{opacity:1}
 #splashTitleRule{position:absolute;left:252px;width:440px;height:20px}
 #splashTitleBuild{position:absolute;right:44px;bottom:34px;text-align:right;font:500 12px/1.7 'Cinzel',serif;letter-spacing:.22em;
-  color:rgba(223,214,194,.6);text-shadow:0 1px 3px #000,0 0 10px rgba(0,0,0,.9);pointer-events:none}
+  color:rgba(230,227,220,.6);text-shadow:0 1px 3px #000,0 0 10px rgba(0,0,0,.9);pointer-events:none}
 </style>
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
@@ -608,10 +608,10 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       <img id="splashTitleLogo" src="img/logo_exoduser.png" alt="EXODUSER — HELL LORD" draggable="false">
       <ul id="splashTitleMenu" role="menu" aria-label="EXODUSER"></ul>
       <svg id="splashTitleRule" viewBox="0 0 440 20" aria-hidden="true">
-        <defs><linearGradient id="stmRule" gradientUnits="userSpaceOnUse" x1="40" x2="400" y1="0" y2="0"><stop offset="0" stop-color="#a49373" stop-opacity="0"/><stop offset=".5" stop-color="#a49373" stop-opacity=".9"/><stop offset="1" stop-color="#a49373" stop-opacity="0"/></linearGradient></defs>
+        <defs><linearGradient id="stmRule" gradientUnits="userSpaceOnUse" x1="40" x2="400" y1="0" y2="0"><stop offset="0" stop-color="#8a8b88" stop-opacity="0"/><stop offset=".5" stop-color="#f6f5f2" stop-opacity=".9"/><stop offset="1" stop-color="#8a8b88" stop-opacity="0"/></linearGradient></defs>
         <path d="M40 10H206M234 10H400" stroke="url(#stmRule)" stroke-width="1.2"/>
-        <path d="M220 3L226 10L220 17L214 10Z" fill="none" stroke="#a49373" stroke-opacity=".7"/>
-        <path d="M220 7L223 10L220 13L217 10Z" fill="#b52e25"/>
+        <path d="M220 3L226 10L220 17L214 10Z" fill="none" stroke="#c9c7c3" stroke-opacity=".85"/>
+        <path d="M220 7L223 10L220 13L217 10Z" fill="#c21a10"/>
       </svg>
     </div>
     <div id="splashTitleBuild"></div>
@@ -4586,7 +4586,7 @@ function showCharGate(charId,storySeen=false){
     _titleMenu.replaceChildren();
     _titleItems=defs.map((d,i)=>{
       const li=document.createElement('li');li.className='stm-btn';li.setAttribute('role','menuitem');li.tabIndex=-1;
-      li.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><radialGradient id="stmGlow${i}" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#7a1610" stop-opacity=".62"/><stop offset=".7" stop-color="#3a0b08" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs><path class="stm-plate" d="${plate}"/><path class="stm-glow" d="${plate}" fill="url(#stmGlow${i})"/><path class="stm-inner" d="${inner}"/><path class="stm-tip" d="${tipL}"/><path class="stm-tip" d="${tipR}"/></svg>`;
+      li.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><radialGradient id="stmGlow${i}" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#7e0d07" stop-opacity=".62"/><stop offset=".7" stop-color="#3a0806" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs><path class="stm-plate" d="${plate}"/><path class="stm-glow" d="${plate}" fill="url(#stmGlow${i})"/><path class="stm-inner" d="${inner}"/><path class="stm-tip" d="${tipL}"/><path class="stm-tip" d="${tipR}"/></svg>`;
       const label=document.createElement('span');label.className='stm-label';label.textContent=_TL(d.label);li.appendChild(label);
       li.addEventListener('mouseenter',()=>_selectTitleItem(i));
       li.addEventListener('click',e=>{e.stopPropagation();_activateTitleItem(i)});

@@ -35,7 +35,7 @@
   width:100%;
   margin:0!important;
   padding:0 0 10px;
-  border-bottom:1px solid #77624655;
+  border-bottom:1px solid #62656555;
 }
 #skillPanel #skillInfo{
   display:block;
@@ -67,48 +67,48 @@
   overflow-y:auto;
   overscroll-behavior:contain;
   padding:22px 20px;
-  border:1px solid #564232;
-  background:linear-gradient(155deg,#1e1715ee,#0c0b0bee 65%);
-  box-shadow:inset 0 1px #bd9b6730,inset 4px 0 #b3654122;
-  scrollbar-color:#796b50 #0c100d;
+  border:1px solid #434646;
+  background:linear-gradient(155deg,#161919ee,#0c0b0bee 65%);
+  box-shadow:inset 0 1px #9c9f9f30,inset 4px 0 #71747422;
+  scrollbar-color:#6a6d6d #0c100d;
   scrollbar-width:thin;
 }
 #skillPanel .skill-detail-kicker{
-  color:#ae8567;
+  color:#8a8d8d;
   font:700 11px/1.3 'Noto Sans KR',sans-serif;
   letter-spacing:.22em;
   text-transform:uppercase;
 }
 #skillPanel .skill-detail-title{
   margin:10px 0 8px;
-  color:#f2d6aa;
+  color:#dcd9d3;
   font:700 clamp(20px,2vw,28px)/1.3 'Noto Sans KR',sans-serif;
 }
 #skillPanel .skill-detail-description{
   margin:0 0 18px;
-  color:#c8b6a2;
+  color:#bbb8b2;
   font:400 13px/1.7 'Noto Sans KR',sans-serif;
   word-break:keep-all;
 }
 #skillPanel .skill-detail-section{
   padding:0 0 9px;
   margin-bottom:11px;
-  color:#e1c59e;
-  border-bottom:1px solid #76573b;
+  color:#cbc8c2;
+  border-bottom:1px solid #5a5d5d;
   font:700 13px/1.3 'Noto Sans KR',sans-serif;
   letter-spacing:.13em;
 }
-#skillPanel .skill-detail-empty{color:#978b7f;font-size:13px;}
+#skillPanel .skill-detail-empty{color:#8b8e8e;font-size:13px;}
 #skillPanel .skill-fusion-entry{
   margin-bottom:9px;
   padding:11px 12px;
-  border:1px solid #493c32;
+  border:1px solid #3c3f3f;
   border-left:3px solid var(--fusion-accent);
-  background:#161412d9;
+  background:#121515d9;
 }
 #skillPanel .skill-fusion-entry.is-ready{
-  background:linear-gradient(100deg,#39291bd9,#15120fe8);
-  box-shadow:inset 0 0 16px #b4752a18;
+  background:linear-gradient(100deg,#292c2cd9,#101313e8);
+  box-shadow:inset 0 0 16px #b4332a18;
 }
 #skillPanel .skill-fusion-entry.is-fused{border-color:#5b724b;border-left-color:#8cb66b;}
 #skillPanel .skill-fusion-heading{
@@ -117,29 +117,29 @@
   justify-content:space-between;
   gap:8px;
   margin-bottom:8px;
-  color:#e6d0b3;
+  color:#d6d3cd;
   font:700 13px/1.3 'Noto Sans KR',sans-serif;
 }
 #skillPanel .skill-fusion-state{
   flex:none;
-  color:#b7a489;
+  color:#a4a7a7;
   font:700 10px/1.2 'Noto Sans KR',sans-serif;
 }
-#skillPanel .is-ready .skill-fusion-state{color:#f1bd75;}
+#skillPanel .is-ready .skill-fusion-state{color:#c6c3bd;}
 #skillPanel .is-fused .skill-fusion-state{color:#a9d086;}
 #skillPanel .skill-fusion-ingredients{display:flex;flex-wrap:wrap;gap:5px;}
 #skillPanel .skill-fusion-ingredient{
   min-height:28px;
   padding:3px 7px;
-  border:1px solid #504236;
-  background:#100e0d;
-  color:#ac9a87;
+  border:1px solid #424545;
+  background:#0c0f0f;
+  color:#9a9d9d;
   font:600 11px/1.3 'Noto Sans KR',sans-serif;
   cursor:pointer;
 }
-#skillPanel .skill-fusion-ingredient.is-learned{color:#d3b98e;border-color:#8d6540;}
+#skillPanel .skill-fusion-ingredient.is-learned{color:#bebbb5;border-color:#696c6c;}
 #skillPanel .skill-fusion-ingredient:hover,
-#skillPanel .skill-fusion-ingredient:focus-visible{color:#fff0d0;border-color:#d5a870;background:#332519;outline:none;}
+#skillPanel .skill-fusion-ingredient:focus-visible{color:#f4f1eb;border-color:#acafaf;background:#252828;outline:none;}
 #skillPanel .skill-close{margin-top:4px!important;}
 #skillPanel #skSlotBar{padding:5px 0 1px!important;}
 #skillPanel .skill-close .pclose{margin-top:5px!important;}

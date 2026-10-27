@@ -6,10 +6,10 @@
  * 선택자 앞에 #settings를 두 번 써서(#settings#settings) ID 특이도를 맞추고, 막힌 속성에만 !important를 쓴다. game.html 인라인 style도 !important로만 덮을 수 있다.
  * 설계 근거: docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md "조용한 단계 — 설정", 컨셉 5장 U13.
  */
-#settings.panel.ui-composed{--qt-line:rgba(164,147,115,.5);--qt-line-soft:rgba(164,147,115,.18);--qt-bone:#dfd6c2;--qt-title:#ebdaba;--qt-sub:#b6a58f;--qt-dim:#8f8170;--qt-brass:#ac7953;--qt-gap:64px;--qt-side:56px;}
+#settings.panel.ui-composed{--qt-line:rgba(146,149,149,.5);--qt-line-soft:rgba(146,149,149,.18);--qt-bone:#d9d6d0;--qt-title:#dedbd5;--qt-sub:#a5a8a8;--qt-dim:#818484;--qt-brass:#7f8282;--qt-gap:64px;--qt-side:56px;}
 
 /* ── 바탕·틀 안쪽: 흑철 질감·장미창 제거, 아주 옅은 세로 그라데이션 ── */
-#settings#settings.panel.ui-composed .pbox{background:linear-gradient(180deg,#100d0c,#151110)!important;}
+#settings#settings.panel.ui-composed .pbox{background:linear-gradient(180deg,#0c0f0f,#101313)!important;}
 
 /* ── T7 제목: 큰 돌 명패 대신 분류 줄 + 세리프 제목 + 헤어라인 ── */
 #settings#settings.panel.ui-composed .pbox>.ptitle{
@@ -34,7 +34,7 @@
 #settings#settings.panel.ui-composed .pbox .ui-section-tabs{
   display:flex!important;gap:40px!important;align-items:flex-end!important;flex:0 0 auto!important;
   margin:16px var(--qt-side) 0!important;padding:0!important;background:none!important;
-  border:0!important;border-bottom:1px solid rgba(164,147,115,.3)!important;box-shadow:none!important;
+  border:0!important;border-bottom:1px solid rgba(146,149,149,.3)!important;box-shadow:none!important;
 }
 #settings#settings.panel.ui-composed .pbox .ui-section-tab,
 #settings#settings.panel.ui-composed .pbox .ui-section-tab[aria-selected=true]{
@@ -57,7 +57,7 @@
  * scroll-driven animation(Chromium 115+, NW.js 0.111 포함)이 없는 브라우저는 페이드가 없을 뿐 동작은 같다. */
 #settings#settings.panel.ui-composed .pbox .settings-pages.frame-inner-panel::after{
   content:''!important;display:block!important;position:sticky!important;bottom:-12px;height:24px;margin:-24px 0 0!important;opacity:0;
-  background:linear-gradient(180deg,rgba(20,17,16,0),#141110)!important;border:0!important;pointer-events:none;z-index:2;
+  background:linear-gradient(180deg,rgba(16,19,19,0),#101313)!important;border:0!important;pointer-events:none;z-index:2;
   animation:qtScrollFade linear both;animation-timeline:scroll(nearest block);
 }
 @keyframes qtScrollFade{0%,85%{opacity:1}100%{opacity:0}}
@@ -100,8 +100,8 @@
 /* ── T4 조작부: 드롭다운 / 슬라이더 / 체크박스 ── */
 #settings#settings.panel.ui-composed .pbox select{
   appearance:none;-webkit-appearance:none;min-height:38px!important;height:38px;padding:0 34px 0 14px!important;
-  background:#0e0c0b url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23b6a58f' stroke-width='1.4'/%3E%3C/svg%3E") right 12px center/10px 6px no-repeat!important;
-  border:1px solid rgba(164,147,115,.5)!important;border-radius:0!important;color:var(--qt-bone)!important;
+  background:#0a0d0d url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23a5a8a8' stroke-width='1.4'/%3E%3C/svg%3E") right 12px center/10px 6px no-repeat!important;
+  border:1px solid rgba(146,149,149,.5)!important;border-radius:0!important;color:var(--qt-bone)!important;
   font:400 16px var(--font-hell),serif!important;box-shadow:none!important;
 }
 #settings#settings.panel.ui-composed .pbox .set-range-row>select{flex:0 0 280px!important;width:280px;max-width:100%;margin-left:auto;}
@@ -109,17 +109,17 @@
 #settings#settings.panel.ui-composed .pbox input[type=range]{
   -webkit-appearance:none;appearance:none;flex:1 1 auto;width:auto;min-width:0;height:20px!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important;accent-color:var(--qt-brass)!important;
 }
-#settings#settings.panel.ui-composed .pbox input[type=range]::-webkit-slider-runnable-track{height:1px;background:rgba(164,147,115,.35);border:0;}
+#settings#settings.panel.ui-composed .pbox input[type=range]::-webkit-slider-runnable-track{height:1px;background:rgba(146,149,149,.35);border:0;}
 #settings#settings.panel.ui-composed .pbox input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:9px;height:9px;margin-top:-4px;border:0;border-radius:0;background:var(--qt-brass);transform:rotate(45deg);}
-#settings#settings.panel.ui-composed .pbox input[type=range]::-moz-range-track{height:1px;background:rgba(164,147,115,.35);}
+#settings#settings.panel.ui-composed .pbox input[type=range]::-moz-range-track{height:1px;background:rgba(146,149,149,.35);}
 #settings#settings.panel.ui-composed .pbox input[type=range]::-moz-range-thumb{width:8px;height:8px;border:0;border-radius:0;background:var(--qt-brass);transform:rotate(45deg);}
 #settings#settings.panel.ui-composed .pbox input[type=checkbox]{
   -webkit-appearance:none;appearance:none;flex:0 0 18px!important;width:18px!important;height:18px!important;margin:0!important;
-  border:1px solid rgba(164,147,115,.6)!important;border-radius:0!important;background:#0e0c0b!important;box-shadow:none!important;accent-color:var(--qt-brass)!important;
+  border:1px solid rgba(146,149,149,.6)!important;border-radius:0!important;background:#0a0d0d!important;box-shadow:none!important;accent-color:var(--qt-brass)!important;
 }
 #settings#settings.panel.ui-composed .pbox input[type=checkbox]:checked{
-  border-color:rgba(223,214,194,.8)!important;
-  background:#0e0c0b url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 .5L9.5 5 5 9.5.5 5z' fill='%23ac7953'/%3E%3C/svg%3E") center/10px 10px no-repeat!important;
+  border-color:rgba(217,214,208,.8)!important;
+  background:#0a0d0d url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 .5L9.5 5 5 9.5.5 5z' fill='%237f8282'/%3E%3C/svg%3E") center/10px 10px no-repeat!important;
 }
 #settings#settings.panel.ui-composed .pbox .set-range-row>label{display:flex!important;align-items:center!important;width:100%!important;gap:20px!important;flex-direction:row-reverse;justify-content:space-between;cursor:pointer;}
 #settings#settings.panel.ui-composed .pbox .set-range-row>label>.set-name{flex:1 1 auto!important;width:auto!important;}
@@ -128,14 +128,14 @@
 #settings#settings.panel.ui-composed .pbox :is(#saveP1,#loadP1,#saveP2,#loadP2,#toLobbyBtn2,#resetBtn,#quitBtn,#resetYes,#resetNo,#btnRedetect,#gfxPresetRow button,button[onclick="toggleFullscreen()"],.bind-reset,.bind-mode,#setClose){
   display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;width:auto!important;
   height:40px!important;min-height:0!important;margin:0!important;padding:0 22px!important;
-  border:1px solid rgba(164,147,115,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  border:1px solid rgba(146,149,149,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
   font:700 16px var(--font-hell),serif!important;letter-spacing:0!important;color:var(--qt-bone)!important;text-shadow:none!important;white-space:nowrap;cursor:pointer;filter:none;transition:none!important;
 }
-#settings#settings.panel.ui-composed .pbox :is(#saveP1,#loadP1,#saveP2,#loadP2,#toLobbyBtn2,#resetBtn,#quitBtn,#resetYes,#resetNo,#btnRedetect,#gfxPresetRow button,button[onclick="toggleFullscreen()"],.bind-reset,.bind-mode,#setClose):hover{border-color:rgba(223,214,194,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
+#settings#settings.panel.ui-composed .pbox :is(#saveP1,#loadP1,#saveP2,#loadP2,#toLobbyBtn2,#resetBtn,#quitBtn,#resetYes,#resetNo,#btnRedetect,#gfxPresetRow button,button[onclick="toggleFullscreen()"],.bind-reset,.bind-mode,#setClose):hover{border-color:rgba(217,214,208,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
 #settings#settings.panel.ui-composed .pbox button:is(#resetBtn,#quitBtn,#resetYes){border-color:#6b2a20!important;color:#c9a39a!important;background:transparent!important;}
 #settings#settings.panel.ui-composed .pbox button:is(#resetBtn,#quitBtn,#resetYes):hover{border-color:#8a3a2c!important;color:#d9b5ab!important;background:rgba(107,42,32,.12)!important;}
-#settings#settings.panel.ui-composed .pbox #keyBindList .bind-mode[aria-pressed=true]{background:rgba(172,121,83,.18)!important;border-color:rgba(196,160,118,.7)!important;color:var(--qt-title)!important;}
-#settings#settings.panel.ui-composed .pbox #gfxPresetRow button[style*="border: 1px"]{border-color:rgba(223,214,194,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .bind-mode[aria-pressed=true]{background:rgba(127,130,130,.18)!important;border-color:rgba(163,166,166,.7)!important;color:var(--qt-title)!important;}
+#settings#settings.panel.ui-composed .pbox #gfxPresetRow button[style*="border: 1px"]{border-color:rgba(217,214,208,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
 #settings#settings.panel.ui-composed .pbox #gfxPresetRow{display:flex!important;flex-wrap:wrap;gap:12px!important;justify-content:flex-start!important;margin:12px 0 10px!important;}
 #settings#settings.panel.ui-composed .pbox #saveMsg{margin:0!important;text-align:left!important;font-size:14px!important;color:var(--qt-dim)!important;}
 #settings#settings.panel.ui-composed .pbox #saveMsg:empty{display:none!important;}
@@ -167,11 +167,11 @@
 #settings#settings.panel.ui-composed .pbox #cursorGrid{display:flex!important;flex-wrap:wrap;gap:16px!important;justify-content:flex-start!important;margin-top:12px;}
 #settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice{
   position:relative;display:flex!important;flex-direction:column;align-items:center;width:220px!important;padding:18px 14px 14px!important;
-  border:1px solid rgba(164,147,115,.3)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;text-align:center!important;
+  border:1px solid rgba(146,149,149,.3)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;text-align:center!important;
   font-family:var(--font-hell),serif!important;transition:none!important;cursor:pointer;min-height:0!important;height:auto!important;
 }
-#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice:hover{border-color:rgba(223,214,194,.55)!important;background:rgba(255,255,255,.02)!important;}
-#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice[aria-pressed=true]{border-color:rgba(223,214,194,.8)!important;background:rgba(255,255,255,.035)!important;}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice:hover{border-color:rgba(217,214,208,.55)!important;background:rgba(255,255,255,.02)!important;}
+#settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice[aria-pressed=true]{border-color:rgba(217,214,208,.8)!important;background:rgba(255,255,255,.035)!important;}
 #settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid)>.settings-choice[aria-pressed=true]::after{content:'';position:absolute;right:7px;top:7px;width:9px;height:9px;background:var(--qt-bone);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);}
 #settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid) .settings-choice-name{display:block;margin:0 0 6px!important;font:700 17px var(--font-hell),serif!important;color:var(--qt-bone)!important;}
 #settings#settings.panel.ui-composed .pbox :is(#charSelectGrid,#cursorGrid) .settings-choice[aria-pressed=true] .settings-choice-name{color:var(--qt-title)!important;}
@@ -201,12 +201,12 @@
 #settings#settings.panel.ui-composed .pbox #keyBindList .set-row .set-name{flex:1 1 auto!important;width:auto!important;}
 #settings#settings.panel.ui-composed .pbox #keyBindList .set-key{
   min-width:70px!important;min-height:34px!important;height:34px;padding:0 16px!important;margin:0!important;
-  border:1px solid rgba(164,147,115,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  border:1px solid rgba(146,149,149,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
   font:400 14px 'Cinzel',var(--font-hell),serif!important;letter-spacing:.04em!important;color:var(--qt-title)!important;text-shadow:none!important;
 }
-#settings#settings.panel.ui-composed .pbox #keyBindList .set-key:hover{border-color:rgba(223,214,194,.8)!important;background:rgba(255,255,255,.035)!important;}
-#settings#settings.panel.ui-composed .pbox #keyBindList .set-key[aria-label$="보조"]{color:var(--qt-dim)!important;border-color:rgba(164,147,115,.25)!important;min-width:60px!important;font-family:var(--font-hell),serif!important;}
-#settings#settings.panel.ui-composed .pbox #keyBindList .set-key[aria-pressed=true],#settings#settings.panel.ui-composed .pbox #keyBindList .set-key.listening{border-color:rgba(196,160,118,.9)!important;background:rgba(172,121,83,.18)!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-key:hover{border-color:rgba(217,214,208,.8)!important;background:rgba(255,255,255,.035)!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-key[aria-label$="보조"]{color:var(--qt-dim)!important;border-color:rgba(146,149,149,.25)!important;min-width:60px!important;font-family:var(--font-hell),serif!important;}
+#settings#settings.panel.ui-composed .pbox #keyBindList .set-key[aria-pressed=true],#settings#settings.panel.ui-composed .pbox #keyBindList .set-key.listening{border-color:rgba(163,166,166,.9)!important;background:rgba(127,130,130,.18)!important;}
 
 /* ── 하단: 자동 저장 표시·닫기 ── */
 #settings#settings.panel.ui-composed .pbox>.settings-footer{
@@ -242,10 +242,10 @@
  * 바꾸는 것: 창 제목, 왼쪽 상세 판(.sf-info), 오른쪽 합성 로드맵(.sf-road), 제단 명패 2개(.sf-core-name·.sf-field-head), 버튼.
  * 새 글자 없음 — 분류 줄 "SKILL"만 ::before 영문 고정. 선택자는 #skillPanel#skillPanel(ID 2개)로 시작해 기존 규칙과 특이도를 맞춘다.
  * ═══════════════════════════════════════════════════════════════════════════ */
-#skillPanel.panel{--qt-line:rgba(164,147,115,.5);--qt-line-soft:rgba(164,147,115,.22);--qt-bone:#dfd6c2;--qt-title:#ebdaba;--qt-sub:#b6a58f;--qt-dim:#8f8170;--qt-brass:#ac7953;}
+#skillPanel.panel{--qt-line:rgba(146,149,149,.5);--qt-line-soft:rgba(146,149,149,.22);--qt-bone:#d9d6d0;--qt-title:#dedbd5;--qt-sub:#a5a8a8;--qt-dim:#818484;--qt-brass:#7f8282;}
 
 /* ── 바탕: 장미창 워터마크·질감 대신 옅은 세로 그라데이션(제단 상자 #skillForge는 그대로) ── */
-#skillPanel#skillPanel.panel .pbox.skill-pbox{background:linear-gradient(180deg,#100d0c,#151110)!important;}
+#skillPanel#skillPanel.panel .pbox.skill-pbox{background:linear-gradient(180deg,#0c0f0f,#101313)!important;}
 
 /* ── K2 제목: 큰 돌 명패 대신 분류 줄 + 세리프 제목 + 헤어라인(줄어든 높이만큼 제단이 커진다) ── */
 #skillPanel#skillPanel.panel .pbox.skill-pbox.sf-on>.ptitle{
@@ -267,7 +267,7 @@
 /* ── K3·K4 왼쪽 상세 판·오른쪽 로드맵 판: 질감·이중 프레임 제거, 1px 헤어라인 + 옅은 바탕 ── */
 #skillPanel#skillPanel #skillForge .sf-info,
 #skillPanel#skillPanel #skillForge .sf-road{
-  padding:20px 22px 18px;border:1px solid var(--qt-line-soft);border-radius:0;background:rgba(12,10,9,.72);box-shadow:none;
+  padding:20px 22px 18px;border:1px solid var(--qt-line-soft);border-radius:0;background:rgba(8,11,11,.72);box-shadow:none;
 }
 #skillPanel#skillPanel #skillForge .sf-info-head{gap:14px;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--qt-line);}
 #skillPanel#skillPanel #skillForge .sf-info-ico{flex:0 0 56px;height:56px;border:1px solid var(--qt-line-soft);}
@@ -284,39 +284,39 @@
 
 /* 합성 로드맵: 구역 제목 서식 + 행은 선만 */
 #skillPanel#skillPanel #skillForge .sf-road-title{font:700 15px var(--font-hell),serif;letter-spacing:.08em;color:var(--qt-sub);padding-bottom:9px;margin-bottom:8px;border-bottom:1px solid var(--qt-line);}
-#skillPanel#skillPanel #skillForge .sf-road-row{padding:10px 4px 10px 12px;margin:0;border-left:2px solid rgba(164,147,115,.3);border-bottom:1px solid var(--qt-line-soft);background:none;}
+#skillPanel#skillPanel #skillForge .sf-road-row{padding:10px 4px 10px 12px;margin:0;border-left:2px solid rgba(146,149,149,.3);border-bottom:1px solid var(--qt-line-soft);background:none;}
 #skillPanel#skillPanel #skillForge .sf-road-name{font:400 15px var(--font-hell),serif;color:var(--qt-bone);}
 #skillPanel#skillPanel #skillForge .sf-road-state{font:400 13px var(--font-hell),serif;color:var(--qt-dim);}
-#skillPanel#skillPanel #skillForge .sf-road-star{color:#a49373;}
+#skillPanel#skillPanel #skillForge .sf-road-star{color:#929595;}
 #skillPanel#skillPanel #skillForge .sf-road-row.done{border-left-color:var(--qt-brass);}
 #skillPanel#skillPanel #skillForge .sf-road-row.done .sf-road-state{color:var(--qt-sub);}
-#skillPanel#skillPanel #skillForge .sf-road-row:is(.now,.can){border-left-color:var(--qt-brass);background:rgba(172,121,83,.1);}
+#skillPanel#skillPanel #skillForge .sf-road-row:is(.now,.can){border-left-color:var(--qt-brass);background:rgba(127,130,130,.1);}
 #skillPanel#skillPanel #skillForge .sf-road-row:is(.now,.can) .sf-road-state{color:var(--qt-title);}
-#skillPanel#skillPanel #skillForge .sf-road-mat{border-color:rgba(164,147,115,.25);}
-#skillPanel#skillPanel #skillForge .sf-road-mat.have{border-color:rgba(164,147,115,.6);}
+#skillPanel#skillPanel #skillForge .sf-road-mat{border-color:rgba(146,149,149,.25);}
+#skillPanel#skillPanel #skillForge .sf-road-mat.have{border-color:rgba(146,149,149,.6);}
 
 /* ── K5 제단 명패 2개: 진홍 세로 막대·그라데이션 판 제거, 분류 줄 크기 글자 + 보조 문구(3D 캔버스 위라 글자 그림자는 유지) ── */
 #skillPanel#skillPanel #skillForge .sf-field-head{padding:4px 2px 4px 12px;border-right:0;background:none;}
 #skillPanel#skillPanel #skillForge .sf-field-title{font:700 15px var(--font-hell),serif;letter-spacing:.08em;color:var(--qt-bone);}
 #skillPanel#skillPanel #skillForge .sf-field-sub{font:400 13px var(--font-hell),serif;color:var(--qt-sub);}
 #skillPanel#skillPanel #skillForge .sf-core-name{padding:4px 12px 4px 2px;border-left:0;background:none;font:800 20px var(--font-hell),serif;letter-spacing:.02em;color:var(--qt-title);}
-#skillPanel#skillPanel #skillForge .sf-core-star{left:4px;color:#a49373;}
+#skillPanel#skillPanel #skillForge .sf-core-star{left:4px;color:#929595;}
 
 /* ── K6 버튼: 테두리 칩, 주 행동(강화 +)만 황동 틴트 ── */
 #skillPanel#skillPanel #skillForge .sf-btn{
   display:inline-flex;align-items:center;justify-content:center;min-height:0;height:40px;padding:0 20px;
-  font:700 16px var(--font-hell),serif;color:var(--qt-bone);border:1px solid rgba(164,147,115,.5);border-radius:0;background:transparent;box-shadow:none;
+  font:700 16px var(--font-hell),serif;color:var(--qt-bone);border:1px solid rgba(146,149,149,.5);border-radius:0;background:transparent;box-shadow:none;
 }
-#skillPanel#skillPanel #skillForge .sf-btn:hover:not(:disabled){filter:none;border-color:rgba(223,214,194,.8);color:var(--qt-title);background:rgba(255,255,255,.035);}
-#skillPanel#skillPanel #skillForge .sf-btn-fire{background:rgba(172,121,83,.18);border-color:rgba(196,160,118,.7);color:var(--qt-title);}
+#skillPanel#skillPanel #skillForge .sf-btn:hover:not(:disabled){filter:none;border-color:rgba(217,214,208,.8);color:var(--qt-title);background:rgba(255,255,255,.035);}
+#skillPanel#skillPanel #skillForge .sf-btn-fire{background:rgba(127,130,130,.18);border-color:rgba(163,166,166,.7);color:var(--qt-title);}
 #skillPanel#skillPanel #skillForge .sf-btn-ghost{background:transparent;color:var(--qt-bone);}
 #skillPanel#skillPanel #skillForge .sf-btn:disabled{opacity:.42;filter:none;}
 #skillPanel#skillPanel.panel .pbox .skill-close .pclose{
   display:inline-flex!important;align-items:center;justify-content:center;height:40px!important;min-height:0!important;min-width:0!important;margin:0 6px!important;padding:0 22px!important;
-  border:1px solid rgba(164,147,115,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  border:1px solid rgba(146,149,149,.5)!important;border-image:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
   font:700 16px var(--font-hell),serif!important;letter-spacing:0!important;color:var(--qt-bone)!important;text-shadow:none!important;filter:none!important;transition:none!important;
 }
-#skillPanel#skillPanel.panel .pbox .skill-close .pclose:hover{border-color:rgba(223,214,194,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
+#skillPanel#skillPanel.panel .pbox .skill-close .pclose:hover{border-color:rgba(217,214,208,.8)!important;color:var(--qt-title)!important;background:rgba(255,255,255,.035)!important;}
 /* 하단 버튼 줄이 바깥 틀 안쪽 가장자리에 걸려 잘리던 것을 위로 올린다(제단 상자 아래 여백 + 버튼 줄 위아래 여백) */
 #skillPanel#skillPanel.panel .pbox.skill-pbox.sf-on>#skillForge{margin-bottom:18px;}
 #skillPanel#skillPanel.panel .pbox.skill-pbox.sf-on>.skill-close{margin:0 0 20px!important;padding:0!important;text-align:center;}

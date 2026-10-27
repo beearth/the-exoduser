@@ -79,6 +79,47 @@
 
 각 단계는 실제 게임 화면 1920·1600 캡처 + 1x 크롭으로 이 문서와 대조해 판정한다(같은 게임처럼 보이는가).
 
+### 6.1 1차 이식 (2026-10-28, 사용자 지시 "타이틀 메뉴부터 공통 창 토큰, 스킬창, 인벤, 설정, HUD·미니맵 순서로")
+
+창마다 손으로 고치면 다시 따로 놀기 때문에 **규칙 기반 일괄 변환기**로 바꿨다. 같은 규칙을 다시 돌리면 같은 결과가 나온다(이미 은빛인 색은 거의 그대로).
+
+| 도구 | 규칙 |
+|---|---|
+| `tools/silver_hell_remap.cjs` (CSS·HTML·JS 색 글자) | ① 색상 18~65°(황동·갈색·금빛 뼈색), 채도 ≥ .08 → 같은 밝기(Rec.709)의 은빛: 밝기 ≥180은 `(Y+3,Y,Y−6)`(본문 은빛 글자), 그 아래는 `(Y−2,Y+1,Y+1)`(차가운 흑철). ② 어두운 적갈색 바탕(0~18°·345° 이상, 채도 < .4, 명도 < .25) → 같은 방식으로 흑철. ③ **주황 강조(18~33°, 채도 > .55, 명도 .35~.85)는 상태 구분용(적용 대기·현재 단계·경고)이라 은빛이 아니라 "지옥의 눈" 진홍(색상 4°, 같은 명도)**. ④ 빨강·초록·파랑·보라·무채색은 그대로. 옵션: `--keep-vivid`(채도 > .6 보존 — 보석·등급 색이 섞인 파일), `--style-only`(HTML의 `<style>` 블록만 — JS 속 등급·데미지 색 보호), `--hex0x`(three.js `0xrrggbb`) |
+| `tools/silver_hell_recolor_img.cjs` (PNG·WebP 틀 이미지) | 위 ①② 규칙을 픽셀마다 적용, 밝기 대비 ×1.12(금속 광택 유지). 투명도·밝은 진홍 빛은 그대로 |
+
+| 단계 | 바꾼 파일 | 변환 수 |
+|---|---|---|
+| 1 타이틀 메뉴 | `index.html` 타이틀 메뉴 CSS·장식선 SVG(손 수정 13곳: 판 테두리 `#8a8b88`, 선택 `#c9c7c3`+진홍 마름모 `#c21a10`, 글자 `#e6e3dc`) | 13 |
+| 2 공통 창 | `ui-foundation.css` 81 · `ui-refinement.css` 659 · `ui-quiet-tier.css` 57 · `system-lesson.css` 16 · `parry-lesson.css` 41 · `tutorial-badges.css` 17 / 틀 이미지 `img/ui/iron_covenant_20260924/{button,frame}.webp`, `img/ui/blackiron/{header,sigil,skull2,frame}.png`, `img/ui/hell_gothic/{iron,frame,crest}.png`, `img/ui_refs/window_frames/panel-*.png` 6종 | 871 + 이미지 15 |
+| 3 스킬창 | `skill-forge.css` 105 · `skill-workspace.css` 28 · `skill-forge-3d.js` 28(`--hex0x`, 제단 황동 고리 → 은빛, 각인 텍스처는 `sigil.png` 변환분) | 161 |
+| 4 인벤토리 | `inventory-gems.css` 74 · `inventory-gems-finish.css` 131(둘 다 `--keep-vivid`) · `inventory-space.css` 41 · `inventory-oss-balance.css` 23 / 이미지 `img/ui/gem_socket_v1.png`, `gem_socket_sealed_v1.png`, `ossuary_socket_hf_v2.png`, `ossuary_altar_hf_v2.png` | 269 + 이미지 4 |
+| 5 설정 | 공통 창 파일에 포함(`ui-quiet-tier.css`·`ui-refinement.css`의 `#settings` 규칙) | — |
+| 능력치(J)·성장 | `stat-panel-ui.css` 263 · `growth-tree-detail.css` 29 — 배운 것=은빛, 적용 대기=진홍으로 구분 유지 | 292 |
+| 6 HUD·미니맵 | `game.html` `<style>` 블록만 350(`--style-only --keep-vivid`) / 미니맵 틀 `img/mm_frame.png`, 대장간 탭 바 `output/imagegen/forge-tabs-v4/tab-bar.png`. HUD 구슬 틀 `img/ui_globe_{hp,mp}.png`·하단 바 `img/ui_bar_only.png`은 원래 무채색 흑철이라 그대로 | 350 + 이미지 2 |
+
+건드리지 않은 것: `game.html`의 JS 속 색(아이템 등급·데미지 숫자·속성·VFX), 보석·소켓 돌 이미지(`img/ui/socket-stones/*` — 금·동·은 돌은 등급 의미), 로비(`index.html` 타이틀 메뉴 외 — 7단계), 아이템 아이콘.
+
+손 수정: HUD MP 구슬 이동 게이지 고리 `--ring-col` `#ffcc33`(노랑) → `#e6e3dc`(은빛). HP 구슬 보호막 고리 파랑 `#3399ff`는 보호막 의미라 유지.
+
+**검수 (headless Chromium, 실제 `game.html` 부팅 후 창 열기, 1920×1080, 2026-10-28)** — 캡처 `E:/exoduser-wt/_out/silver-ui/cap/`
+
+| 화면 | 판정 | 메모 |
+|---|---|---|
+| 인벤토리 [TAB] | 통과 | 틀·탭·슬롯·정보칸이 은빛·흑철로 통일. 활성 탭 진홍 바탕 = 눈 |
+| 스킬 [K] | 통과 | 3D 제단이 은빛 가시 고리로 바뀌어 M1 "눈 고리"와 같은 실루엣. 슬롯 줄·버튼 은빛 |
+| 능력치 [J] | 통과 | 제목판·틀 은빛, 적용 대기 = 진홍 구분 유지. 몸통 원화(청동 갑옷 그림)는 원화라 유지 |
+| 설정 [ESC] | 통과 | 바탕 적갈 → 중성 흑철, 위험 구역 진홍 선 유지 |
+| HUD | 부분 | 구슬 틀·하단 바는 원래 흑철. MP 게이지 고리 은빛으로 수정. 미니맵 틀은 적갈 쇠가 흑철로 바뀌었으나 모양은 옛 사각 해골 틀 → 후속 |
+| 대장간 [G] | 미완 | 창 틀·탭은 은빛. 그러나 본문이 `game.html` JS 인라인 색이라 주황 제목·네온 초록 "성공률"·이모지 아이콘이 남음 → 후속 |
+
+**후속 (2차 이식)**
+1. 대장간·장 클리어·로딩 팁 등 `game.html` JS 인라인 글자색: 네온 초록(`#66ee55`, `#44ffaa`, 성공률 초록)·주황 제목 → 은빛 본문/진홍 강조. 스토리 총괄 묶음 A(장 클리어 문구) 커밋 뒤 같은 줄 작업(2026-10-28 합의).
+2. 이모지 아이콘 제거: 대장간 부위 버튼, 로비 캐릭터 특성(⚔🛡💥🌀🗡✨), 비석 "📜", 로딩 팁 "💡" → 벡터 아이콘 또는 은빛 ◆ 장식.
+3. 미니맵 틀을 M1 눈 고리 원형으로 새로 그림(현재 사각 해골 틀).
+4. 7단계 로비·캐릭터 선택·ENTER.
+5. CLAUDE.md 작업물 퀄리티 3의 "금빛 헤어라인" 문구 정정(사용자 확인 필요).
+
 ## 7. 하지 않는 것
 
 - 틀·선·버튼에 금·황동·구리색을 다시 쓰지 않는다. (예외: 금화·골드 아이콘 같은 **아이템 자체의 색**)

@@ -9,7 +9,7 @@ import {OutputPass} from './assets/vendor/three-r186/examples/jsm/postprocessing
 import {RoomEnvironment} from './assets/vendor/three-r186/examples/jsm/environments/RoomEnvironment.js';
 
 const FOV=30;
-const BONE=new THREE.Color('#dfd6c2'),FIRE=new THREE.Color('#ec7958'),GOLD=new THREE.Color('#c9a663');
+const BONE=new THREE.Color('#d9d6d0'),FIRE=new THREE.Color('#ec7958'),GOLD=new THREE.Color('#a7aaaa');
 
 function softSprite(){
   const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');
@@ -43,17 +43,17 @@ function runeTexture(){
     const annulus=(g,r0,r1)=>{g.beginPath();g.arc(C,C,r1,0,Math.PI*2);g.arc(C,C,Math.max(0,r0),0,Math.PI*2,true);g.clip()};
     // ── 색 맵 ──
     const h=cc.getContext('2d');prep(h);
-    const iron=h.createRadialGradient(C,C,rc,C,C,U);iron.addColorStop(0,'#1d1714');iron.addColorStop(1,'#120e0c');
+    const iron=h.createRadialGradient(C,C,rc,C,C,U);iron.addColorStop(0,'#161919');iron.addColorStop(1,'#0d1010');
     h.fillStyle=iron;h.fillRect(0,0,S,S);
     if(art){const half=(U-12)/.848;h.save();annulus(h,rc+8,U);h.drawImage(art,C-half,C-half,half*2,half*2);h.restore();
-      // 원화 바탕색(#14100f)을 흑철 톤에 녹이기: 어두운 부분만 살짝 눌러 각인만 떠오르게
-      h.save();annulus(h,rc+8,U);h.globalCompositeOperation='multiply';h.fillStyle='#d8cfc4';h.fillRect(0,0,S,S);h.restore();}
+      // 원화 바탕색(#0f1212)을 흑철 톤에 녹이기: 어두운 부분만 살짝 눌러 각인만 떠오르게
+      h.save();annulus(h,rc+8,U);h.globalCompositeOperation='multiply';h.fillStyle='#d3d0ca';h.fillRect(0,0,S,S);h.restore();}
     // 궤도 채널: 파낸 홈 — 바닥을 어둡게, 양쪽 모서리 금속 레일
-    h.save();annulus(h,tIn,tOut);h.globalAlpha=.72;h.fillStyle='#070505';h.fillRect(0,0,S,S);h.restore();
-    h.strokeStyle='#9a7a46';ringOn(h,tOut,6);ringOn(h,tIn,6);h.strokeStyle='#5d4a2e';ringOn(h,tOut-10,2);ringOn(h,tIn+10,2);
+    h.save();annulus(h,tIn,tOut);h.globalAlpha=.72;h.fillStyle='#030606';h.fillRect(0,0,S,S);h.restore();
+    h.strokeStyle='#7b7e7e';ringOn(h,tOut,6);ringOn(h,tIn,6);h.strokeStyle='#4a4d4d';ringOn(h,tOut-10,2);ringOn(h,tIn+10,2);
     // 코어 받침 홈 + 바깥 테
-    h.strokeStyle='#a8874f';ringOn(h,rc+5,6);h.strokeStyle='#5d4a2e';ringOn(h,rc+16,2);
-    h.strokeStyle='#8f7142';ringOn(h,U-3,7);
+    h.strokeStyle='#888b8b';ringOn(h,rc+5,6);h.strokeStyle='#4a4d4d';ringOn(h,rc+16,2);
+    h.strokeStyle='#727575';ringOn(h,U-3,7);
     // ── 발광 마스크 ──
     const g=c.getContext('2d');prep(g);g.fillStyle='#000';g.fillRect(0,0,S,S);g.strokeStyle='#fff';g.fillStyle='#fff';
     g.globalAlpha=.55;ringOn(g,tOut-10,2);ringOn(g,tIn+10,2);ringOn(g,rc+16,2);g.globalAlpha=1;
@@ -104,10 +104,10 @@ export async function createForge3D(container){
   runeTex.userData.onReady=()=>resume(); // 시길 원화 로드 후 다시 그리기
 
   // ── lights ──
-  scene.add(new THREE.HemisphereLight(0x8a6f5a,0x120808,.35));
-  const key=new THREE.DirectionalLight(0xffe2c0,2.2);key.position.set(-.6,.9,1.2);scene.add(key);
+  scene.add(new THREE.HemisphereLight(0x717474,0x080b0b,.35));
+  const key=new THREE.DirectionalLight(0xe9e6e0,2.2);key.position.set(-.6,.9,1.2);scene.add(key);
   const rim=new THREE.PointLight(0xff5530,3,0,1.2);scene.add(rim);
-  const coreLight=new THREE.PointLight(0xff7a40,2.5,0,1.4);scene.add(coreLight);
+  const coreLight=new THREE.PointLight(0xea5f55,2.5,0,1.4);scene.add(coreLight);
 
   // ── backdrop: smoke + hellfire under the altar ──
   const backMat=new THREE.ShaderMaterial({uniforms:{t:{value:0},alt:{value:new THREE.Vector2(.5,.5)},res:{value:new THREE.Vector2(1,1)}},
@@ -125,10 +125,10 @@ export async function createForge3D(container){
   const back=new THREE.Mesh(new THREE.PlaneGeometry(1,1),backMat);scene.add(back);
 
   // ── shared materials ──
-  const iron=new THREE.MeshStandardMaterial({color:0x2a2422,metalness:.92,roughness:.38,roughnessMap:noiseTex,envMapIntensity:1});
-  const goldMat=new THREE.MeshStandardMaterial({color:GOLD,metalness:1,roughness:.28,emissive:0x2a1606,emissiveIntensity:.4});
-  const glassEmpty=new THREE.MeshPhysicalMaterial({color:0x0a0606,metalness:0,roughness:.3,clearcoat:.4,transparent:true,opacity:.06,envMapIntensity:.25});
-  const glass=new THREE.MeshPhysicalMaterial({color:0x140c0c,metalness:0,roughness:.12,clearcoat:1,clearcoatRoughness:.08,transparent:true,opacity:.18,envMapIntensity:.7});
+  const iron=new THREE.MeshStandardMaterial({color:0x232626,metalness:.92,roughness:.38,roughnessMap:noiseTex,envMapIntensity:1});
+  const goldMat=new THREE.MeshStandardMaterial({color:GOLD,metalness:1,roughness:.28,emissive:0x171a1a,emissiveIntensity:.4});
+  const glassEmpty=new THREE.MeshPhysicalMaterial({color:0x050808,metalness:0,roughness:.3,clearcoat:.4,transparent:true,opacity:.06,envMapIntensity:.25});
+  const glass=new THREE.MeshPhysicalMaterial({color:0x0c0f0f,metalness:0,roughness:.12,clearcoat:1,clearcoatRoughness:.08,transparent:true,opacity:.18,envMapIntensity:.7});
 
   // ── altar ──
   const altar=new THREE.Group();scene.add(altar);
@@ -153,12 +153,12 @@ export async function createForge3D(container){
   const EMB=360,embGeo=new THREE.BufferGeometry(),embPos=new Float32Array(EMB*3),embSeed=new Float32Array(EMB);
   for(let i=0;i<EMB;i++){embSeed[i]=Math.random()}
   embGeo.setAttribute('position',new THREE.BufferAttribute(embPos,3));
-  const embers=new THREE.Points(embGeo,new THREE.PointsMaterial({map:glowTex,color:0xff8a4a,size:7,sizeAttenuation:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.85}));
+  const embers=new THREE.Points(embGeo,new THREE.PointsMaterial({map:glowTex,color:0xeb675e,size:7,sizeAttenuation:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.85}));
   scene.add(embers);
   // burst particles (fusion)
   const BUR=420,burGeo=new THREE.BufferGeometry(),burPos=new Float32Array(BUR*3),burVel=new Float32Array(BUR*3);
   burGeo.setAttribute('position',new THREE.BufferAttribute(burPos,3));
-  const burstPts=new THREE.Points(burGeo,new THREE.PointsMaterial({map:glowTex,color:0xffc070,size:14,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));
+  const burstPts=new THREE.Points(burGeo,new THREE.PointsMaterial({map:glowTex,color:0xcbc8c2,size:14,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));
   scene.add(burstPts);let burstT=-1;
 
   // ── energy link material ──
@@ -188,13 +188,13 @@ export async function createForge3D(container){
   }
   function setIcon(o,url){
     const u=o.userData;if(u.iconUrl===url)return;u.iconUrl=url;
-    const m=u.face.material;m.map=url?tex(url):null;m.emissiveMap=m.map;m.color.set(url?0xffffff:0x241a18);m.emissive.set(url?0xffffff:0x000000);m.needsUpdate=true;
+    const m=u.face.material;m.map=url?tex(url):null;m.emissiveMap=m.map;m.color.set(url?0xffffff:0x1a1d1d);m.emissive.set(url?0xffffff:0x000000);m.needsUpdate=true;
   }
   const wells=new Map();
-  const wellFloor=new THREE.MeshStandardMaterial({color:0x080505,metalness:.6,roughness:.7,roughnessMap:noiseTex});
+  const wellFloor=new THREE.MeshStandardMaterial({color:0x040707,metalness:.6,roughness:.7,roughnessMap:noiseTex});
   const wellGeo=new THREE.CircleGeometry(1,64),wellLip=new THREE.TorusGeometry(1,.045,12,96),wellLip2=new THREE.TorusGeometry(.9,.012,8,96);
   // 홈 테: 블룸에 걸리지 않게 흑철 + 낮은 반사 청동 가는 선
-  const bronze=new THREE.MeshStandardMaterial({color:0x6e5530,metalness:.9,roughness:.55,envMapIntensity:.35});
+  const bronze=new THREE.MeshStandardMaterial({color:0x565959,metalness:.9,roughness:.55,envMapIntensity:.35});
   function makeWell(){const g=new THREE.Group();g.add(new THREE.Mesh(wellGeo,wellFloor));
     const lip=new THREE.Mesh(wellLip,iron);lip.position.z=.02;lip.scale.z=.5;g.add(lip);
     const in2=new THREE.Mesh(wellLip2,bronze);in2.position.z=.01;g.add(in2);
@@ -239,8 +239,8 @@ export async function createForge3D(container){
       // 소켓 홈: 원판에 파인 우물(어두운 바닥 + 금테). 원판은 돌지만 홈은 소켓 자리에 고정
       let w=wells.get(id);if(!w){w=makeWell();wells.set(id,w)}
       toWorld(n.x,n.y,-52,w.position);w.scale.setScalar(a.nodeR*D/(D-30)*1.16*(D+52)/D);
-      u.col=n.kind==='host'?GOLD:n.kind==='staged'?new THREE.Color('#ffb347'):n.kind==='ghost'?BONE:col2;
-      if(n.kind!=='ghost')link(id,n.kind==='staged'?'#ffb347':a.color2);
+      u.col=n.kind==='host'?GOLD:n.kind==='staged'?new THREE.Color('#bebbb5'):n.kind==='ghost'?BONE:col2;
+      if(n.kind!=='ghost')link(id,n.kind==='staged'?'#bebbb5':a.color2);
     }
     for(const [id,o] of nodeObjs)if(!seen.has(id)){scene.remove(o);nodeObjs.delete(id)}
     for(const [id,w] of wells)if(!seen.has(id)){scene.remove(w);wells.delete(id)}
@@ -306,7 +306,7 @@ export async function createForge3D(container){
   function resume(){if(raf)return;running=true;last=performance.now();raf=requestAnimationFrame(frame)}
   function pause(){if(raf)cancelAnimationFrame(raf);raf=0;running=false}
   function burst(g){
-    const c=new THREE.Color(g&&g.color||'#ffb070');burstPts.material.color.copy(c);
+    const c=new THREE.Color(g&&g.color||'#ef8780');burstPts.material.color.copy(c);
     const p=coreGroup.position;const bp=burGeo.attributes.position.array;
     for(let k=0;k<BUR;k++){bp[k*3]=p.x;bp[k*3+1]=p.y;bp[k*3+2]=p.z+20;const a=Math.random()*Math.PI*2,s=120+Math.random()*520;burVel[k*3]=Math.cos(a)*s;burVel[k*3+1]=Math.sin(a)*s;burVel[k*3+2]=0}
     burGeo.attributes.position.needsUpdate=true;burstT=0;dropFlash=1.2;resume();

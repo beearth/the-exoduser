@@ -1,27 +1,27 @@
 /* Jewel collection finish and character-centred equipment atelier. */
 #invPanel.panel[data-inventory-page=crystals] .pbox{width:min(1100px,calc(100vw - 24px))!important;height:min(780px,94vh)!important;}
-#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:16px 18px 10px;background:radial-gradient(ellipse at 80% 0,#80683b15,transparent 55%),linear-gradient(#0c1115e8,#080b0ef5),var(--ui-surface) center/480px;border:1px solid #786444;box-shadow:inset 0 0 0 3px #080b0d,inset 0 0 0 4px #ac895f16;}
+#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:16px 18px 10px;background:radial-gradient(ellipse at 80% 0,#686b6b15,transparent 55%),linear-gradient(#0c1115e8,#080b0ef5),var(--ui-surface) center/480px;border:1px solid #646767;box-shadow:inset 0 0 0 3px #080b0d,inset 0 0 0 4px #8b8e8e16;}
 #invPanel .inv-cr-head{padding:0 0 12px;}
-#invPanel .inv-cr-heading{font-size:22px;letter-spacing:.14em;color:#e3cf9f;padding-left:26px;position:relative;}
-#invPanel .inv-cr-heading:before{content:'◆';position:absolute;left:0;top:5px;font-size:15px;color:#bc965b;text-shadow:0 0 12px #b3824255;}
-#invPanel .inv-cr-capacity{border:1px solid #7a644444;background:#080b0dd0;padding:5px 12px;font-size:11px;color:#c8b696;}
+#invPanel .inv-cr-heading{font-size:22px;letter-spacing:.14em;color:#d3d0ca;padding-left:26px;position:relative;}
+#invPanel .inv-cr-heading:before{content:'◆';position:absolute;left:0;top:5px;font-size:15px;color:#989b9b;text-shadow:0 0 12px #86898955;}
+#invPanel .inv-cr-capacity{border:1px solid #64676744;background:#080b0dd0;padding:5px 12px;font-size:11px;color:#bbb8b2;}
 #invPanel .inv-cr-filters{padding:10px 0;gap:6px;}
 #invPanel .inv-cr-filter{padding:5px 18px;min-height:31px;font-size:11px;}
 #invPanel .inv-cr-body{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);grid-template-rows:minmax(120px,1fr) 154px;gap:12px;}
-#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(69px,1fr));grid-auto-rows:91px;gap:6px;padding:9px;background:radial-gradient(ellipse at 40% 0,#24444825,transparent 70%),repeating-linear-gradient(0deg,#fff1 0 .2px,transparent .2px 4px),#080d12;box-shadow:inset 0 2px 18px #000d;border:1px solid #65563f;}
-#invPanel .inv-cr-slot{padding:14px 6px 23px;background:radial-gradient(ellipse at 50% 42%,color-mix(in srgb,var(--gem-rank) 12%,transparent),transparent 70%),linear-gradient(145deg,#1d2428,#0a0e12 65%);border-color:#64573f80;box-shadow:inset 0 0 0 2px #060a0d,inset 0 1px #b7a07733,0 2px 4px #0008;}
+#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(69px,1fr));grid-auto-rows:91px;gap:6px;padding:9px;background:radial-gradient(ellipse at 40% 0,#24444825,transparent 70%),repeating-linear-gradient(0deg,#fff1 0 .2px,transparent .2px 4px),#080d12;box-shadow:inset 0 2px 18px #000d;border:1px solid #565959;}
+#invPanel .inv-cr-slot{padding:14px 6px 23px;background:radial-gradient(ellipse at 50% 42%,color-mix(in srgb,var(--gem-rank) 12%,transparent),transparent 70%),linear-gradient(145deg,#1d2428,#0a0e12 65%);border-color:#56595980;box-shadow:inset 0 0 0 2px #060a0d,inset 0 1px #a0a3a333,0 2px 4px #0008;}
 #invPanel .inv-cr-grid .inv-cr-gem{width:34px;height:43px;}
-#invPanel .inv-cr-label{position:absolute;bottom:7px;left:4px;right:15px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:500 10px/1.3 'Noto Sans KR',sans-serif;color:#c5b99f;}
-#invPanel .inv-cr-grid .inv-cr-count{bottom:7px;right:5px;font-size:11px;color:#e6d6ad;}
+#invPanel .inv-cr-label{position:absolute;bottom:7px;left:4px;right:15px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:500 10px/1.3 'Noto Sans KR',sans-serif;color:#bdbab4;}
+#invPanel .inv-cr-grid .inv-cr-count{bottom:7px;right:5px;font-size:11px;color:#d9d6d0;}
 #invPanel .inv-cr-tier{top:5px;left:6px;font-size:9px;}
-#invPanel .inv-cr-slot[aria-pressed=true]{border-color:#d5b67a;background:radial-gradient(ellipse,#8d683634,transparent 80%),#141b20;box-shadow:inset 0 0 0 2px #11100b,inset 0 0 16px #b4914828,0 0 8px #caa06218;}
-#invPanel .inv-cr-equipment{position:relative;isolation:isolate;padding:10px 12px;background:radial-gradient(ellipse at 50% 40%,#6e522025,transparent 68%),linear-gradient(#111416ed,#080d10ed),var(--ui-surface) center/420px;box-shadow:inset 0 0 0 2px #070a0c;}
+#invPanel .inv-cr-slot[aria-pressed=true]{border-color:#bbb8b2;background:radial-gradient(ellipse,#6a6d6d34,transparent 80%),#141b20;box-shadow:inset 0 0 0 2px #0e1111,inset 0 0 16px #91949428,0 0 8px #a2a5a518;}
+#invPanel .inv-cr-equipment{position:relative;isolation:isolate;padding:10px 12px;background:radial-gradient(ellipse at 50% 40%,#52555525,transparent 68%),linear-gradient(#111416ed,#080d10ed),var(--ui-surface) center/420px;box-shadow:inset 0 0 0 2px #070a0c;}
 #invPanel .inv-cr-equipment:before{content:'';position:absolute;inset:48px 20px 20px;background:url('img/ui/ossuary_altar_hf_v2.png') center/contain no-repeat;opacity:.13;filter:saturate(.45);pointer-events:none;z-index:-1;}
-#invPanel .inv-cr-equipment-title{font-size:15px;letter-spacing:.12em;padding-bottom:7px;border-bottom:1px solid #75604470;}
-#invPanel .inv-cr-equipment>.inv-cr-note{font-size:10px;padding:5px 0 3px;color:#a69b87;}
+#invPanel .inv-cr-equipment-title{font-size:15px;letter-spacing:.12em;padding-bottom:7px;border-bottom:1px solid #60636370;}
+#invPanel .inv-cr-equipment>.inv-cr-note{font-size:10px;padding:5px 0 3px;color:#9a9d9d;}
 #invPanel .inv-cr-equipment-list{gap:6px;padding:3px 3px 7px;grid-template-columns:repeat(4,minmax(0,1fr));}
-#invPanel .inv-cr-equipment-card{padding:5px 3px 6px;min-height:78px;box-sizing:border-box;gap:2px;background:linear-gradient(#bea67566,#bea67566) top left/8px 1px no-repeat,linear-gradient(#bea67566,#bea67566) bottom right/8px 1px no-repeat,linear-gradient(145deg,#51442c38,transparent 60%),#090d10c9;border:1px solid #79674770;box-shadow:inset 0 0 0 2px #080b0d,inset 0 0 0 3px #7c653d24,0 2px 4px #0006;}
-#invPanel .inv-cr-equipment-name{font-size:11px;color:#dfceb0;letter-spacing:.025em;}
+#invPanel .inv-cr-equipment-card{padding:5px 3px 6px;min-height:78px;box-sizing:border-box;gap:2px;background:linear-gradient(#a6a9a966,#a6a9a966) top left/8px 1px no-repeat,linear-gradient(#a6a9a966,#a6a9a966) bottom right/8px 1px no-repeat,linear-gradient(145deg,#43464638,transparent 60%),#090d10c9;border:1px solid #676a6a70;box-shadow:inset 0 0 0 2px #080b0d,inset 0 0 0 3px #65686824,0 2px 4px #0006;}
+#invPanel .inv-cr-equipment-name{font-size:11px;color:#d2cfc9;letter-spacing:.025em;}
 #invPanel .inv-cr-equipment-icon{position:relative;isolation:isolate;width:48px;height:38px;flex-shrink:0;}
 #invPanel .inv-cr-equipment-icon:before{content:'';position:absolute;inset:-5px -7px;z-index:-1;background:url('img/ui/ossuary_socket_hf_v2.png') center/100% 100% no-repeat;filter:brightness(.66) saturate(.55);opacity:.75;}
 #invPanel .inv-cr-equipment-icon :is(img,svg){max-width:36px;max-height:32px;filter:drop-shadow(0 3px 3px #000) brightness(1.15);}
@@ -29,12 +29,12 @@
 #invPanel .inv-cr-equipment-card[data-empty=true] .inv-cr-equipment-icon{height:23px;}
 #invPanel .inv-cr-equipment-card[data-empty=true] .inv-cr-equipment-icon:before{display:none;}
 #invPanel .inv-cr-equipment-sockets{gap:3px;min-height:23px;}
-#invPanel .inv-cr-socket{width:23px;height:23px;border:1px solid #958058;border-radius:50%;background:radial-gradient(circle,#070c10 35%,#22251f 65%,#0a0c0e 70%);box-shadow:inset 0 2px 5px #000,0 1px #bb9e6020;}
-#invPanel .inv-cr-socket-empty{font-size:13px;color:#968464;}
-#invPanel .inv-cr-socket[data-filled=true]{border-color:#baab81;background:radial-gradient(circle,#56666b66,#0a0d12 70%);}
+#invPanel .inv-cr-socket{width:23px;height:23px;border:1px solid #808383;border-radius:50%;background:radial-gradient(circle,#070c10 35%,#22251f 65%,#0a0c0e 70%);box-shadow:inset 0 2px 5px #000,0 1px #9ea1a120;}
+#invPanel .inv-cr-socket-empty{font-size:13px;color:#848787;}
+#invPanel .inv-cr-socket[data-filled=true]{border-color:#a9acac;background:radial-gradient(circle,#56666b66,#0a0d12 70%);}
 #invPanel .inv-cr-socket .inv-cr-gem{width:14px;height:18px;}
-#invPanel .inv-cr-equipment-card:has(.inv-cr-socket:hover){border-color:#b09a6a;}
-#invPanel .inv-cr-detail{padding:14px 16px;grid-template-columns:70px minmax(0,1fr);column-gap:14px;background:radial-gradient(ellipse at 12% 50%,#77603925,transparent 50%),linear-gradient(#151c20,#0b1014);border:1px solid #8a724c;box-shadow:inset 0 0 0 3px #080c0e,inset 0 0 0 4px #91734d22;}
+#invPanel .inv-cr-equipment-card:has(.inv-cr-socket:hover){border-color:#999c9c;}
+#invPanel .inv-cr-detail{padding:14px 16px;grid-template-columns:70px minmax(0,1fr);column-gap:14px;background:radial-gradient(ellipse at 12% 50%,#60636325,transparent 50%),linear-gradient(#151c20,#0b1014);border:1px solid #727575;box-shadow:inset 0 0 0 3px #080c0e,inset 0 0 0 4px #75787822;}
 #invPanel .inv-cr-detail>.inv-cr-gem{width:43px;height:54px;}
 #invPanel .inv-cr-name{font-size:16px;}
 #invPanel .inv-cr-stat{font-size:26px;}
@@ -45,38 +45,38 @@
 
 /* Final composition: jewellery tray beside a full character equipment diagram. */
 #invPanel.panel[data-inventory-page=crystals] .pbox{width:min(1280px,calc(100vw - 24px))!important;height:min(860px,96vh)!important;}
-#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:16px 20px 10px;background:radial-gradient(ellipse at 68% 38%,#8c6d3520,transparent 55%),linear-gradient(#11151be8,#070b10f5),var(--ui-surface) center/520px;}
+#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:16px 20px 10px;background:radial-gradient(ellipse at 68% 38%,#6e717120,transparent 55%),linear-gradient(#11151be8,#070b10f5),var(--ui-surface) center/520px;}
 #invPanel .inv-cr-head{padding-bottom:14px;margin-bottom:14px;}
-#invPanel .inv-cr-heading{font-size:25px;letter-spacing:.18em;color:#ead9b4;}
+#invPanel .inv-cr-heading{font-size:25px;letter-spacing:.18em;color:#dddad4;}
 #invPanel .inv-cr-body{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);grid-template-rows:minmax(0,1fr);gap:22px;overflow:hidden;}
 #invPanel .inv-cr-collection{display:grid;grid-template-rows:auto minmax(120px,1fr) 172px;gap:12px;min-width:0;min-height:0;}
 #invPanel .inv-cr-collection-head{display:flex;flex-direction:column;gap:8px;}
-#invPanel .inv-cr-collection-title{font:600 14px/1.4 'Noto Serif KR',serif;letter-spacing:.08em;color:#b9aa8c;margin:0;}
+#invPanel .inv-cr-collection-title{font:600 14px/1.4 'Noto Serif KR',serif;letter-spacing:.08em;color:#a9acac;margin:0;}
 #invPanel .inv-cr-filters{padding:0;gap:5px;}
-#invPanel .inv-cr-filter{flex:1;padding:5px 6px;background:linear-gradient(#1d2328,#0c1116);border-color:#76624655;min-height:30px;}
-#invPanel .inv-cr-filter[aria-pressed=true]{background:linear-gradient(#80633a66,#31261a88);border-color:#b4975d;color:#f0dfb8;box-shadow:inset 0 -2px #c6a268;}
-#invPanel .inv-cr-grid{grid-column:auto;grid-row:auto;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));grid-auto-rows:98px;padding:10px;gap:7px;border:1px solid #856d465c;background:radial-gradient(ellipse at 50% 0,#29464c28,transparent 70%),#060b10;box-shadow:inset 0 0 0 3px #020508,inset 0 0 30px #000b;}
-#invPanel .inv-cr-slot{border:1px solid #8a775542;border-top-color:#a892684f;border-bottom-color:#2c2d28;outline-offset:-4px;background:radial-gradient(ellipse at 50% 46%,color-mix(in srgb,var(--gem-rank) 15%,transparent),transparent 70%),linear-gradient(135deg,#242c334d,#090e15 70%);box-shadow:inset 0 0 0 2px #070c11,inset 0 1px #dacb9a14,0 3px 5px #0009;}
+#invPanel .inv-cr-filter{flex:1;padding:5px 6px;background:linear-gradient(#1d2328,#0c1116);border-color:#62656555;min-height:30px;}
+#invPanel .inv-cr-filter[aria-pressed=true]{background:linear-gradient(#64676766,#25282888);border-color:#979a9a;color:#f0dfb8;box-shadow:inset 0 -2px #a3a6a6;}
+#invPanel .inv-cr-grid{grid-column:auto;grid-row:auto;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));grid-auto-rows:98px;padding:10px;gap:7px;border:1px solid #6d70705c;background:radial-gradient(ellipse at 50% 0,#29464c28,transparent 70%),#060b10;box-shadow:inset 0 0 0 3px #020508,inset 0 0 30px #000b;}
+#invPanel .inv-cr-slot{border:1px solid #777a7a42;border-top-color:#9295954f;border-bottom-color:#2c2d28;outline-offset:-4px;background:radial-gradient(ellipse at 50% 46%,color-mix(in srgb,var(--gem-rank) 15%,transparent),transparent 70%),linear-gradient(135deg,#242c334d,#090e15 70%);box-shadow:inset 0 0 0 2px #070c11,inset 0 1px #cecbc514,0 3px 5px #0009;}
 #invPanel .inv-cr-grid .inv-cr-gem{width:38px;height:48px;filter:saturate(.9) contrast(1.12) drop-shadow(0 4px 3px #000);}
-#invPanel .inv-cr-label{font-size:10px;bottom:8px;left:3px;right:14px;color:#d7cbb5;}
+#invPanel .inv-cr-label{font-size:10px;bottom:8px;left:3px;right:14px;color:#cfccc6;}
 #invPanel .inv-cr-grid .inv-cr-count{bottom:8px;font-size:11px;}
-#invPanel .inv-cr-detail{grid-column:auto;grid-row:auto;grid-template-columns:76px minmax(0,1fr);padding:16px;min-height:0;border:1px solid #a28a5a70;background:radial-gradient(ellipse at 8% 50%,#b29a5230,transparent 48%),linear-gradient(#192127,#0b1117);box-shadow:inset 0 0 0 3px #090d10,inset 0 0 0 4px #af8e4d1c;}
+#invPanel .inv-cr-detail{grid-column:auto;grid-row:auto;grid-template-columns:76px minmax(0,1fr);padding:16px;min-height:0;border:1px solid #8a8d8d70;background:radial-gradient(ellipse at 8% 50%,#989b9b30,transparent 48%),linear-gradient(#192127,#0b1117);box-shadow:inset 0 0 0 3px #090d10,inset 0 0 0 4px #8e91911c;}
 #invPanel .inv-cr-detail>.inv-cr-gem{width:48px;height:62px;}
 #invPanel .inv-cr-name{font-size:17px;letter-spacing:.03em;}
 #invPanel .inv-cr-stat{font-size:28px;line-height:1.2;color:#d4dfbd;}
-#invPanel .inv-cr-equipment{grid-column:2;grid-row:1;position:relative;padding:0 0 0 18px;border:0;border-left:1px solid #a28a5a44;background:radial-gradient(ellipse at 50% 45%,#81643c15,transparent 68%);box-shadow:none;}
+#invPanel .inv-cr-equipment{grid-column:2;grid-row:1;position:relative;padding:0 0 0 18px;border:0;border-left:1px solid #8a8d8d44;background:radial-gradient(ellipse at 50% 45%,#65686815,transparent 68%);box-shadow:none;}
 #invPanel .inv-cr-equipment:before{display:none;}
 #invPanel .inv-cr-equipment-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 0 7px;}
-#invPanel .inv-cr-equipment-title{border:0;padding:0;margin:0;font-size:14px;color:#d6c4a1;}
+#invPanel .inv-cr-equipment-title{border:0;padding:0;margin:0;font-size:14px;color:#c8c5bf;}
 #invPanel .inv-cr-socket-summary{font:500 11px/1.4 'Noto Sans KR',sans-serif;color:#adba9a;border:1px solid #7e8e6744;padding:4px 8px;background:#121b1580;white-space:nowrap;}
 #invPanel .inv-cr-equipment>.inv-cr-note{padding:0;margin:0 0 10px;font-size:10px;color:#8d897d;}
 #invPanel .inv-cr-equipment-list{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(6,minmax(70px,1fr));grid-auto-rows:70px;gap:5px 8px;flex:1;min-height:0;padding:4px 5px 6px;overflow-y:auto;overflow-x:hidden;align-content:stretch;}
-#invPanel .inv-cr-portrait{grid-column:2/5;grid-row:2/7;position:relative;align-self:stretch;min-height:0;overflow:hidden;pointer-events:none;isolation:isolate;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse,#baa26612,transparent 68%);}
+#invPanel .inv-cr-portrait{grid-column:2/5;grid-row:2/7;position:relative;align-self:stretch;min-height:0;overflow:hidden;pointer-events:none;isolation:isolate;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse,#a1a4a412,transparent 68%);}
 #invPanel .inv-cr-portrait:before{content:'';position:absolute;width:100%;aspect-ratio:1;top:20%;background:url('img/ui/ossuary_altar_hf_v2.png') center/contain no-repeat;opacity:.23;filter:saturate(.5);z-index:-1;}
-#invPanel .inv-cr-portrait:after{content:'';position:absolute;inset:6% 5%;border:1px solid #baa26920;border-radius:48% 48% 43% 43%;box-shadow:0 0 0 14px #bca46905,inset 0 0 40px #ad8d3410;z-index:-1;}
+#invPanel .inv-cr-portrait:after{content:'';position:absolute;inset:6% 5%;border:1px solid #a1a4a420;border-radius:48% 48% 43% 43%;box-shadow:0 0 0 14px #a3a6a605,inset 0 0 40px #8b8e8e10;z-index:-1;}
 #invPanel .inv-cr-portrait-image{width:100%;height:100%;object-fit:contain;opacity:.8;filter:brightness(.9) saturate(.55) drop-shadow(0 8px 12px #000);mask-image:radial-gradient(ellipse at 50% 46%,#000 32%,#000e 56%,transparent 76%);}
-#invPanel .inv-cr-equipment-card{z-index:1;position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:13px minmax(32px,1fr) 21px;gap:0;align-items:center;justify-items:center;min-height:70px;padding:1px;border:1px solid #97805266;background:linear-gradient(#b99a625c,#b99a625c) top left/8px 1px no-repeat,linear-gradient(#b99a625c,#b99a625c) bottom right/8px 1px no-repeat,radial-gradient(ellipse at 50% 30%,#56482f40,transparent 75%),linear-gradient(#151a20eb,#070c11f5);box-shadow:inset 0 0 0 2px #080c10,inset 0 0 0 3px #ac8e5220,0 4px 7px #0006;transition:border-color .15s,background-color .15s,opacity .15s;}
-#invPanel .inv-cr-equipment-name{font-size:11px;line-height:13px;color:#d8ccb7;white-space:nowrap;}
+#invPanel .inv-cr-equipment-card{z-index:1;position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:13px minmax(32px,1fr) 21px;gap:0;align-items:center;justify-items:center;min-height:70px;padding:1px;border:1px solid #80838366;background:linear-gradient(#9b9e9e5c,#9b9e9e5c) top left/8px 1px no-repeat,linear-gradient(#9b9e9e5c,#9b9e9e5c) bottom right/8px 1px no-repeat,radial-gradient(ellipse at 50% 30%,#474a4a40,transparent 75%),linear-gradient(#151a20eb,#070c11f5);box-shadow:inset 0 0 0 2px #080c10,inset 0 0 0 3px #8e919120,0 4px 7px #0006;transition:border-color .15s,background-color .15s,opacity .15s;}
+#invPanel .inv-cr-equipment-name{font-size:11px;line-height:13px;color:#d0cdc7;white-space:nowrap;}
 #invPanel .inv-cr-equipment-icon{height:32px;width:42px;}
 #invPanel .inv-cr-equipment-icon:before{inset:-4px -5px;opacity:.65;}
 #invPanel .inv-cr-equipment-icon :is(img,svg){max-width:36px;max-height:32px;}
@@ -84,11 +84,11 @@
 #invPanel .inv-cr-equipment-card[data-empty=true]{opacity:.35;border-style:solid;}
 #invPanel .inv-cr-equipment-card[data-empty=true] .inv-cr-equipment-icon{height:28px;}
 #invPanel .inv-cr-equipment-sockets{gap:3px;min-height:21px;flex-wrap:nowrap;}
-#invPanel .inv-cr-socket{width:21px;height:21px;min-width:0;flex-shrink:1;border-color:#94815a;color:#af9b71;}
+#invPanel .inv-cr-socket{width:21px;height:21px;min-width:0;flex-shrink:1;border-color:#808383;color:#9a9d9d;}
 #invPanel .inv-cr-socket .inv-cr-gem{width:13px;height:17px;}
-#invPanel .inv-cr-equipment-card[data-compatible=true]{border-color:#c8b17a;background-color:#5d4c2e;box-shadow:inset 0 0 0 2px #090d10,0 0 12px #c4a25d24;}
+#invPanel .inv-cr-equipment-card[data-compatible=true]{border-color:#b0b3b3;background-color:#4b4e4e;box-shadow:inset 0 0 0 2px #090d10,0 0 12px #a2a5a524;}
 #invPanel .inv-cr-equipment-card[data-compatible=false]{opacity:.42;}
-#invPanel .inv-cr-equipment-card:focus-within{outline:1px solid #e5cea0;outline-offset:1px;}
+#invPanel .inv-cr-equipment-card:focus-within{outline:1px solid #d3d0ca;outline-offset:1px;}
 #invPanel .inv-cr-equipment-card[data-slot=cape]{grid-column:1;grid-row:1;}
 #invPanel .inv-cr-equipment-card[data-slot=armor]{grid-column:1;grid-row:2;}
 #invPanel .inv-cr-equipment-card[data-slot=weapon]{grid-column:1;grid-row:3;}
@@ -107,7 +107,7 @@
 #invPanel .inv-cr-equipment-card[data-slot=helmet]{grid-column:3;grid-row:1;}
 #invPanel .inv-cr-equipment-card[data-slot=headband2]{grid-column:4;grid-row:1;}
 @media(max-width:900px){#invPanel .inv-cr-body{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:12px;}#invPanel .inv-cr-equipment{padding-left:10px;}#invPanel .inv-cr-equipment-list{gap:5px 3px;grid-template-columns:repeat(5,minmax(0,1fr));}#invPanel .inv-cr-socket{width:17px;height:19px;}#invPanel .inv-cr-equipment-sockets{gap:1px;}#invPanel .inv-cr-equipment-name{font-size:9px;}#invPanel .inv-cr-grid{grid-template-columns:repeat(auto-fill,minmax(66px,1fr));}}
-@media(max-width:700px){#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:10px;}#invPanel .inv-cr-head{margin-bottom:10px;}#invPanel .inv-cr-heading{font-size:20px;}#invPanel .inv-cr-body{display:flex;flex-direction:column;overflow-y:auto;gap:16px;}#invPanel .inv-cr-collection{flex:0 0 490px;grid-template-rows:auto minmax(180px,1fr) 154px;overflow:visible;}#invPanel .inv-cr-equipment{flex:0 0 575px;grid-column:auto;grid-row:auto;border-left:0;border-top:1px solid #a28a5a44;padding:12px 0 0;overflow:visible;}#invPanel .inv-cr-equipment-list{min-height:490px;overflow:visible;}#invPanel .inv-cr-detail{padding:12px;grid-template-columns:58px minmax(0,1fr);}#invPanel .inv-cr-detail>.inv-cr-gem{width:38px;height:48px;}#invPanel .inv-cr-footer>.inv-cr-note{max-width:70%;}}
+@media(max-width:700px){#invPanel.panel[data-inventory-page=crystals] .pbox #invCrystalsPanel{padding:10px;}#invPanel .inv-cr-head{margin-bottom:10px;}#invPanel .inv-cr-heading{font-size:20px;}#invPanel .inv-cr-body{display:flex;flex-direction:column;overflow-y:auto;gap:16px;}#invPanel .inv-cr-collection{flex:0 0 490px;grid-template-rows:auto minmax(180px,1fr) 154px;overflow:visible;}#invPanel .inv-cr-equipment{flex:0 0 575px;grid-column:auto;grid-row:auto;border-left:0;border-top:1px solid #8a8d8d44;padding:12px 0 0;overflow:visible;}#invPanel .inv-cr-equipment-list{min-height:490px;overflow:visible;}#invPanel .inv-cr-detail{padding:12px;grid-template-columns:58px minmax(0,1fr);}#invPanel .inv-cr-detail>.inv-cr-gem{width:38px;height:48px;}#invPanel .inv-cr-footer>.inv-cr-note{max-width:70%;}}
 @media(prefers-reduced-motion:reduce){#invPanel .inv-cr-equipment-card{transition:none;}}
 
 /* Each named relic has its own silhouette, core mark and material color. Star is a separate rim. */
@@ -133,7 +133,7 @@
 #invPanel .inv-cr-grid .inv-cr-gem::after{font-size:14px;}
 #invPanel .inv-cr-socket .inv-cr-gem::after{content:'';}
 #invPanel .inv-cr-stat{font:600 12px/1.55 'Noto Sans KR',sans-serif;color:#d6dfc3;overflow-y:auto;overflow-wrap:anywhere;max-height:74px;align-self:start;}
-#invPanel .inv-cr-detail>.inv-cr-note:nth-child(5){color:#dfc792;}
+#invPanel .inv-cr-detail>.inv-cr-note:nth-child(5){color:#cbc8c2;}
 
 /* Socket rows and skin bounds adapt to the actual equipment column width. */
 #invPanel .inv-cr-equipment-list{grid-template-rows:repeat(6,minmax(min-content,1fr));}
@@ -151,19 +151,19 @@
 #invPanel .inv-cr-grid .inv-cr-gem{width:40px;height:50px;}
 #invPanel .inv-cr-slot:hover .inv-cr-gem,
 #invPanel .inv-cr-slot[aria-pressed=true] .inv-cr-gem{filter:saturate(1.18) contrast(1.14) drop-shadow(0 0 6px var(--gem-color));}
-#invPanel .inv-cr-label{left:4px;right:15px;bottom:6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow:hidden;text-overflow:clip;max-height:27px;text-align:center;font:600 10px/1.25 'Noto Sans KR',sans-serif;color:#e2d6bd;}
+#invPanel .inv-cr-label{left:4px;right:15px;bottom:6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow:hidden;text-overflow:clip;max-height:27px;text-align:center;font:600 10px/1.25 'Noto Sans KR',sans-serif;color:#dad7d1;}
 #invPanel .inv-cr-grid .inv-cr-count{bottom:5px;right:4px;}
 #invPanel .inv-cr-detail{grid-template-columns:78px minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr) auto auto;column-gap:14px;align-content:stretch;padding:12px 16px;}
 #invPanel .inv-cr-detail>.inv-cr-gem{grid-column:1;grid-row:1/5;width:54px;height:70px;align-self:center;filter:saturate(1.12) drop-shadow(0 0 10px var(--gem-color));}
 #invPanel .inv-cr-name{grid-column:2;grid-row:1;font-size:17px;line-height:1.25;margin:0;}
-#invPanel .inv-cr-meta{grid-column:2;grid-row:2;margin:1px 0 2px;color:#d4bb82;font-size:10px;}
-#invPanel .inv-cr-unique{grid-column:2;grid-row:3;margin:0 0 4px;color:#d0b27b;font:700 10px/1.3 'Noto Sans KR',sans-serif;letter-spacing:.1em;}
+#invPanel .inv-cr-meta{grid-column:2;grid-row:2;margin:1px 0 2px;color:#bfbcb6;font-size:10px;}
+#invPanel .inv-cr-unique{grid-column:2;grid-row:3;margin:0 0 4px;color:#b7b4ae;font:700 10px/1.3 'Noto Sans KR',sans-serif;letter-spacing:.1em;}
 #invPanel .inv-cr-stat{grid-column:2;grid-row:4;display:flex;flex-direction:column;gap:2px;min-height:0;max-height:none;overflow-y:auto;margin:0;padding:0;scrollbar-width:thin;}
-#invPanel .inv-cr-effect{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:23px;padding:2px 8px 2px 9px;border-left:2px solid #a58a5b;background:linear-gradient(90deg,#ab835425,#485e5a0d 76%,transparent);font:500 11px/1.35 'Noto Sans KR',sans-serif;}
-#invPanel .inv-cr-effect-name{color:#d5d0c2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#invPanel .inv-cr-effect{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:23px;padding:2px 8px 2px 9px;border-left:2px solid #8a8d8d;background:linear-gradient(90deg,#86898925,#485e5a0d 76%,transparent);font:500 11px/1.35 'Noto Sans KR',sans-serif;}
+#invPanel .inv-cr-effect-name{color:#d3d0ca;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 #invPanel .inv-cr-effect-value{color:#dcebbe;white-space:nowrap;font:700 13px/1.2 'Noto Sans KR',sans-serif;font-variant-numeric:tabular-nums;}
-#invPanel .inv-cr-lore{grid-column:1/-1;grid-row:5;margin:7px 0 2px;padding:5px 0 0;border-top:1px solid #a58a5b44;color:#b7aa91;font:italic 11px/1.4 'Noto Serif KR',serif;}
-#invPanel .inv-cr-slots{grid-column:1/-1;grid-row:6;margin:0;color:#938d7f;font:10px/1.35 'Noto Sans KR',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#invPanel .inv-cr-lore{grid-column:1/-1;grid-row:5;margin:7px 0 2px;padding:5px 0 0;border-top:1px solid #8a8d8d44;color:#a9acac;font:italic 11px/1.4 'Noto Serif KR',serif;}
+#invPanel .inv-cr-slots{grid-column:1/-1;grid-row:6;margin:0;color:#8b8e8e;font:10px/1.35 'Noto Sans KR',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 #invPanel .inv-cr-detail .inv-cr-targets{display:none;}
 @media(max-width:700px){
   #invPanel .inv-cr-collection{flex-basis:555px;grid-template-rows:auto minmax(170px,1fr) 210px;}
@@ -174,12 +174,12 @@
 @media(prefers-reduced-motion:reduce){#invPanel .inv-cr-slot .inv-cr-gem{transition:none;}}
 
 /* Socket readiness is based on an actual empty, compatible socket. */
-#invPanel .inv-cr-equipment-card[data-socket-state=ready]{border-color:#dfc77e;background:radial-gradient(ellipse at 50% 75%,#8b7e4538,transparent 80%),linear-gradient(#171e22,#0b1014);box-shadow:inset 0 0 0 2px #090d10,inset 0 0 0 3px #b9a36235,0 0 13px #d1b76b34;opacity:1;}
-#invPanel .inv-cr-equipment-card[data-socket-state=full]{border-color:#927c55a6;box-shadow:inset 0 0 0 2px #090d10,0 2px 5px #0008;}
+#invPanel .inv-cr-equipment-card[data-socket-state=ready]{border-color:#dfc77e;background:radial-gradient(ellipse at 50% 75%,#7b7e7e38,transparent 80%),linear-gradient(#171e22,#0b1014);box-shadow:inset 0 0 0 2px #090d10,inset 0 0 0 3px #a1a4a435,0 0 13px #bab7b134;opacity:1;}
+#invPanel .inv-cr-equipment-card[data-socket-state=full]{border-color:#7c7f7fa6;box-shadow:inset 0 0 0 2px #090d10,0 2px 5px #0008;}
 #invPanel .inv-cr-equipment-card[data-socket-state=incompatible]{opacity:.38;}
 #invPanel .inv-cr-socket[data-ready=true]{border-color:var(--socket-gem);background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem) 27%,#101414),#0b0f12 72%);color:#f0ddb1;box-shadow:inset 0 0 0 2px #080d10,0 0 8px color-mix(in srgb,var(--socket-gem) 60%,transparent);}
 #invPanel .inv-cr-socket[data-ready=true]:hover{filter:brightness(1.35);box-shadow:inset 0 0 0 2px #080d10,0 0 13px var(--socket-gem);}
-#invPanel .inv-cr-socket[data-filled=true]{border-color:var(--socket-gem,#baab81);box-shadow:inset 0 2px 5px #000,0 0 5px color-mix(in srgb,var(--socket-gem,#baab81) 40%,transparent);}
+#invPanel .inv-cr-socket[data-filled=true]{border-color:var(--socket-gem,#a9acac);box-shadow:inset 0 2px 5px #000,0 0 5px color-mix(in srgb,var(--socket-gem,#a9acac) 40%,transparent);}
 #invPanel .inv-cr-equipment-help{min-height:16px;}
 
 /* Two transparent 3x3 painted relic sheets replace the geometric gem cut. */
@@ -190,20 +190,20 @@
 #invPanel .inv-cr-detail>.inv-cr-gem{width:78px;height:78px;filter:drop-shadow(0 5px 7px #000e) drop-shadow(0 0 9px color-mix(in srgb,var(--gem-color) 42%,transparent));}
 #invPanel .inv-cr-socket .inv-cr-gem{width:20px;height:20px;}
 #invPanel .inv-cr-slot:hover .inv-cr-gem,#invPanel .inv-cr-slot[aria-pressed=true] .inv-cr-gem{filter:drop-shadow(0 0 7px var(--gem-color)) brightness(1.14);transform:translateY(-2px) scale(1.06);}
-#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-slot[data-dragging=true]{border-color:#f1d391;box-shadow:inset 0 0 0 2px #21190b,0 0 18px #ddb66e88;}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-slot[data-dragging=true]{border-color:#f1d391;box-shadow:inset 0 0 0 2px #181b1b,0 0 18px #ddb66e88;}
 #invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-equipment-card[data-socket-state=ready]{border-color:#f4d690;box-shadow:inset 0 0 0 2px #090d10,0 0 18px #e6b85999;}
 #invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-ready=true]{border-color:#ffe5ab;box-shadow:inset 0 0 0 2px #080d10,0 0 12px var(--socket-gem);}
-#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-drop-target=true]{border-color:#fff1ca;box-shadow:inset 0 0 0 2px #171007,0 0 18px #f3cf85;transform:scale(1.18);}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-drop-target=true]{border-color:#fff1ca;box-shadow:inset 0 0 0 2px #0f1212,0 0 18px #f3cf85;transform:scale(1.18);}
 #invPanel .inv-cr-slot[data-dragging=true][data-count="1"]>.inv-cr-gem{visibility:hidden;}
 #invPanel .inv-cr-drag-ghost{position:fixed;z-index:80;display:grid;place-items:center;width:64px;height:64px;padding:0;border:0;background:none;box-shadow:none;pointer-events:none;transform:translate(-50%,-50%);}
 #invPanel .inv-cr-drag-ghost .inv-cr-gem{width:58px;height:58px;filter:drop-shadow(0 4px 5px #000e) drop-shadow(0 0 11px var(--gem-color));transform:none;}
 /* Empty sockets are recessed black holes; readiness changes the rim, never the core. */
-#invPanel .inv-cr-socket[data-filled=false]{border-color:#756c58;background:radial-gradient(circle at 50% 52%,#000 0 43%,#030506 54%,#111817 65%,#050708 77%);box-shadow:inset 0 0 0 2px #171d1d,inset 0 2px 7px #000,0 1px 0 #a3906159;}
+#invPanel .inv-cr-socket[data-filled=false]{border-color:#6a6d6d;background:radial-gradient(circle at 50% 52%,#000 0 43%,#030506 54%,#111817 65%,#050708 77%);box-shadow:inset 0 0 0 2px #171d1d,inset 0 2px 7px #000,0 1px 0 #8f929259;}
 #invPanel .inv-cr-socket[data-filled=false] .inv-cr-socket-empty{visibility:hidden;}
 #invPanel .inv-cr-socket[data-filled=false]:disabled{opacity:.6;}
 #invPanel .inv-cr-socket[data-filled=false][data-ready=true]{border-color:var(--socket-gem);box-shadow:inset 0 0 0 2px #202524,inset 0 2px 7px #000,0 0 0 1px var(--socket-gem),0 0 9px color-mix(in srgb,var(--socket-gem) 75%,transparent);}
 #invPanel .inv-cr-socket[data-filled=false]:not(:disabled):hover{background:radial-gradient(circle at 50% 52%,#000 0 43%,#030506 54%,#1a211d 65%,#050708 77%);border-color:#f4d99d;box-shadow:inset 0 0 0 2px #252724,inset 0 2px 7px #000,0 0 11px #e2bd76a8;}
-#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-filled=false][data-drop-target=true]{background:radial-gradient(circle at 50% 52%,#000 0 43%,#030506 54%,#22261d 65%,#050708 77%);border-color:#fff1ca;box-shadow:inset 0 0 0 2px #303027,inset 0 2px 7px #000,0 0 0 2px #e9bc6d,0 0 18px #f3cf85;}
+#invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-filled=false][data-drop-target=true]{background:radial-gradient(circle at 50% 52%,#000 0 43%,#030506 54%,#22261d 65%,#050708 77%);border-color:#fff1ca;box-shadow:inset 0 0 0 2px #2d3030,inset 0 2px 7px #000,0 0 0 2px #e9bc6d,0 0 18px #f3cf85;}
 .cr-relic-inline{display:inline-block;vertical-align:middle;max-width:100%;}
 .cr-relic-fallback{display:none;}
 html.cr-relic-art-missing-1 #invPanel .inv-cr-gem[data-sheet="1"],html.cr-relic-art-missing-2 #invPanel .inv-cr-gem[data-sheet="2"]{clip-path:var(--cut);background:linear-gradient(125deg,#fffc 0%,#fff2 14%,transparent 27%,#0008 75%,#fff8 100%),conic-gradient(from 16deg at 48% 36%,#fff7 0deg 37deg,#0009 38deg 85deg,#fff1 86deg 131deg,#000b 132deg 180deg,#fff6 181deg 229deg,#0006 230deg 277deg,#fffb 278deg 322deg,#fff2 323deg 360deg),var(--gem-color);}
@@ -223,7 +223,7 @@ html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,
 #invPanel .inv-cr-equipment-icon .iskin-img{transform:none;}
 #invPanel .inv-cr-equipment-sockets{position:absolute;z-index:2;bottom:3px;left:0;right:0;margin:0;}
 #invPanel .inv-cr-socket{background-color:#030506;box-shadow:inset 0 2px 6px #000,0 0 0 2px #080b0dd9,0 2px 4px #000;}
-#invPanel .inv-cr-socket[data-filled=false]{box-shadow:inset 0 0 0 2px #171d1d,inset 0 2px 7px #000,0 0 0 2px #080b0de8,0 1px 0 #a3906159;}
+#invPanel .inv-cr-socket[data-filled=false]{box-shadow:inset 0 0 0 2px #171d1d,inset 0 2px 7px #000,0 0 0 2px #080b0de8,0 1px 0 #8f929259;}
 #invPanel .inv-cr-socket[data-filled=false][data-ready=true]{box-shadow:inset 0 0 0 2px #202524,inset 0 2px 7px #000,0 0 0 2px #080b0de8,0 0 0 3px var(--socket-gem),0 0 9px color-mix(in srgb,var(--socket-gem) 75%,transparent);}
 @media(max-width:700px){
   #invPanel .inv-cr-equipment-list{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:max-content;}
@@ -240,9 +240,9 @@ html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,
 #invPanel .inv-cr-socket[data-filled=false],
 #invPanel .inv-cr-socket[data-filled=true]{position:relative;width:var(--sock);height:var(--sock);min-width:var(--sock);padding:0;border:0;border-radius:50%;background:url('img/ui/gem_socket_v1.png') center/100% 100% no-repeat;box-shadow:0 3px 6px #000c;color:transparent;flex-shrink:0;overflow:visible;transition:filter .15s ease,transform .15s ease;}
 #invPanel .inv-cr-socket .inv-cr-socket-empty{display:none;}
-#invPanel .inv-cr-socket .inv-cr-gem{width:58%;height:64%;filter:drop-shadow(0 0 calc(var(--sock) * .12) var(--socket-gem,#c8ad76)) drop-shadow(0 1px 1px #000);}
+#invPanel .inv-cr-socket .inv-cr-gem{width:58%;height:64%;filter:drop-shadow(0 0 calc(var(--sock) * .12) var(--socket-gem,#adb0b0)) drop-shadow(0 1px 1px #000);}
 #invPanel .inv-cr-socket .inv-cr-gem::before{inset:16% 18% 26%;}
-#invPanel .inv-cr-socket[data-filled=true]::after{content:'';position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem,#c8ad76) 38%,transparent),transparent 70%);z-index:-1;}
+#invPanel .inv-cr-socket[data-filled=true]::after{content:'';position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem,#adb0b0) 38%,transparent),transparent 70%);z-index:-1;}
 #invPanel .inv-cr-socket[data-filled=false][data-ready=true],
 #invPanel #invCrystalsPanel[data-gem-dragging=true] .inv-cr-socket[data-ready=true]{box-shadow:0 0 0 2px color-mix(in srgb,var(--socket-gem) 80%,#000),0 0 calc(var(--sock) * .35) var(--socket-gem),0 3px 6px #000c;animation:invSockPulse 1.6s ease-in-out infinite;}
 #invPanel .inv-cr-socket:not(:disabled):hover{filter:brightness(1.22);transform:scale(1.06);border:0;background:url('img/ui/gem_socket_v1.png') center/100% 100% no-repeat;}
@@ -252,10 +252,10 @@ html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,
 @keyframes invSockPulse{50%{box-shadow:0 0 0 2px var(--socket-gem),0 0 calc(var(--sock) * .55) var(--socket-gem),0 3px 6px #000c;}}
 @media(prefers-reduced-motion:reduce){#invPanel .inv-cr-socket{transition:none;animation:none!important;}}
 #invPanel .inv-cr-equipment-sockets{left:0;right:0;transform:none;margin:0 auto;width:max-content;max-width:100%;flex-wrap:nowrap;}
-#invPanel .inv-cr-socket .inv-cr-gem{width:66%;height:72%;filter:brightness(1.25) saturate(1.2) drop-shadow(0 0 calc(var(--sock) * .14) var(--socket-gem,#c8ad76)) drop-shadow(0 0 2px color-mix(in srgb,var(--socket-gem,#c8ad76) 80%,#fff)) drop-shadow(0 1px 1px #000);}
-#invPanel .inv-cr-socket[data-filled=true]::after{inset:10%;background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem,#c8ad76) 70%,#fff) 0,color-mix(in srgb,var(--socket-gem,#c8ad76) 45%,transparent) 38%,transparent 72%);z-index:0;}
+#invPanel .inv-cr-socket .inv-cr-gem{width:66%;height:72%;filter:brightness(1.25) saturate(1.2) drop-shadow(0 0 calc(var(--sock) * .14) var(--socket-gem,#adb0b0)) drop-shadow(0 0 2px color-mix(in srgb,var(--socket-gem,#adb0b0) 80%,#fff)) drop-shadow(0 1px 1px #000);}
+#invPanel .inv-cr-socket[data-filled=true]::after{inset:10%;background:radial-gradient(circle,color-mix(in srgb,var(--socket-gem,#adb0b0) 70%,#fff) 0,color-mix(in srgb,var(--socket-gem,#adb0b0) 45%,transparent) 38%,transparent 72%);z-index:0;}
 #invPanel .inv-cr-socket[data-filled=true] .inv-cr-gem{position:relative;z-index:1;}
-#invPanel .inv-cr-socket[data-filled=true]{box-shadow:0 0 calc(var(--sock) * .3) color-mix(in srgb,var(--socket-gem,#c8ad76) 55%,transparent),0 3px 6px #000c;}
+#invPanel .inv-cr-socket[data-filled=true]{box-shadow:0 0 calc(var(--sock) * .3) color-mix(in srgb,var(--socket-gem,#adb0b0) 55%,transparent),0 3px 6px #000c;}
 
 /* 2026-10-08 3차: 고정 5홈 배치 — 아이템 그림 위 중앙+4모서리, 채움 순서 1중앙→2좌상→3우상→4좌하→5우하.
    현재 홈 수 밖의 자리는 막힌 구멍(img/ui/gem_socket_sealed_v1.png) — 소켓석으로 개방.
@@ -266,7 +266,7 @@ html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,
 #invPanel .inv-cr-socket,
 #invPanel .inv-cr-socket[data-filled=false],
 #invPanel .inv-cr-socket[data-filled=true]{position:absolute;margin:0;box-shadow:0 4px 10px #000d,0 0 0 1px #0008;}
-#invPanel .inv-cr-socket[data-filled=true]{box-shadow:0 0 calc(var(--sock) * .3) color-mix(in srgb,var(--socket-gem,#c8ad76) 60%,transparent),0 4px 10px #000d;}
+#invPanel .inv-cr-socket[data-filled=true]{box-shadow:0 0 calc(var(--sock) * .3) color-mix(in srgb,var(--socket-gem,#adb0b0) 60%,transparent),0 4px 10px #000d;}
 /* 5점 고정 배치 */
 #invPanel .inv-cr-socket[data-pos=c]{left:50%;top:50%;transform:translate(-50%,-50%);width:calc(var(--sock) * 1.14);height:calc(var(--sock) * 1.14);min-width:0;}
 #invPanel .inv-cr-socket[data-pos=tl]{left:0;top:0;}
@@ -281,12 +281,12 @@ html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,
 #invPanel .inv-cr-socket[data-grp=silver]::before{filter:saturate(.22) brightness(1.42) contrast(1.05);}
 #invPanel .inv-cr-socket[data-grp=gold]::before{filter:sepia(.9) saturate(2.4) hue-rotate(-6deg) brightness(1.24);}
 #invPanel .inv-cr-socket[data-grp=hell]::before{filter:sepia(1) saturate(3.2) hue-rotate(-28deg) brightness(1.18) drop-shadow(0 0 calc(var(--sock) * .1) #ff6a35);}
-#invPanel .inv-cr-socket[data-grp=gold]{box-shadow:0 0 0 1px #a8832f88,0 0 calc(var(--sock) * .16) #e8c26855,0 4px 10px #000d;}
+#invPanel .inv-cr-socket[data-grp=gold]{box-shadow:0 0 0 1px #83868688,0 0 calc(var(--sock) * .16) #e8c26855,0 4px 10px #000d;}
 #invPanel .inv-cr-socket[data-grp=hell]{box-shadow:0 0 0 1px #a8431f,0 0 calc(var(--sock) * .22) #ff7a4577,0 4px 10px #000d;animation:invSockHell 2.4s ease-in-out infinite;}
 @keyframes invSockHell{50%{box-shadow:0 0 0 1px #c85a2a,0 0 calc(var(--sock) * .36) #ff8a50aa,0 4px 10px #000d;}}
 #invPanel .inv-cr-socket .inv-cr-gem{position:relative;z-index:1;}
 /* 홈 티어 숫자 명판 (Cinzel) */
-#invPanel .inv-cr-socket-tier{position:absolute;right:-7%;bottom:-6%;z-index:2;padding:0 3px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:clamp(8px,calc(var(--sock) * .24),12px);font-weight:700;line-height:1.5;color:#dfd6c2;background:linear-gradient(#20242a,#0c0f13);border:1px solid rgba(164,147,115,.5);border-radius:3px;box-shadow:0 1px 3px #000c;pointer-events:none;}
+#invPanel .inv-cr-socket-tier{position:absolute;right:-7%;bottom:-6%;z-index:2;padding:0 3px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:clamp(8px,calc(var(--sock) * .24),12px);font-weight:700;line-height:1.5;color:#d9d6d0;background:linear-gradient(#20242a,#0c0f13);border:1px solid rgba(146,149,149,.5);border-radius:3px;box-shadow:0 1px 3px #000c;pointer-events:none;}
 #invPanel .inv-cr-socket[data-grp=bronze] .inv-cr-socket-tier{color:#e2b184;}
 #invPanel .inv-cr-socket[data-grp=silver] .inv-cr-socket-tier{color:#edf1f5;}
 #invPanel .inv-cr-socket[data-grp=gold] .inv-cr-socket-tier{color:#f2d388;}
@@ -295,23 +295,23 @@ html.cr-relic-art-missing-1 .cr-relic-inline[data-sheet="1"] .cr-relic-fallback,
 #invPanel .inv-cr-socket-sealed::before{background:url('img/ui/gem_socket_sealed_v1.png') center/100% 100% no-repeat;filter:brightness(.8);}
 html.gem-sealed-art-missing #invPanel .inv-cr-socket-sealed::before{background:url('img/ui/gem_socket_v1.png') center/100% 100% no-repeat;filter:brightness(.4) saturate(.2);}
 #invPanel .inv-cr-socket.inv-cr-socket-sealed:disabled{opacity:.5;filter:none;}
-#invPanel .inv-cr-socket-sealed[data-next=true]:not(:disabled){opacity:1;cursor:pointer;box-shadow:0 0 0 2px #c8b17a,0 0 calc(var(--sock) * .35) #e2bd76,0 4px 10px #000d;animation:invSockPulse 1.6s ease-in-out infinite;}
+#invPanel .inv-cr-socket-sealed[data-next=true]:not(:disabled){opacity:1;cursor:pointer;box-shadow:0 0 0 2px #b0b3b3,0 0 calc(var(--sock) * .35) #e2bd76,0 4px 10px #000d;animation:invSockPulse 1.6s ease-in-out infinite;}
 #invPanel .inv-cr-socket-sealed[data-next=true]:not(:disabled)::before{filter:brightness(1.02);}
 /* 승급 가능 홈(선택한 소켓석보다 낮은 품질) 하이라이트 */
-#invPanel .inv-cr-socket[data-upgradable=true]{cursor:pointer;box-shadow:0 0 0 2px #c8b17a,0 0 calc(var(--sock) * .3) #e2bd76aa,0 4px 10px #000d;}
+#invPanel .inv-cr-socket[data-upgradable=true]{cursor:pointer;box-shadow:0 0 0 2px #b0b3b3,0 0 calc(var(--sock) * .3) #e2bd76aa,0 4px 10px #000d;}
 /* 소켓석 진열대 (보석함 아래) */
 #invPanel .inv-cr-collection{grid-template-rows:auto minmax(100px,1fr) auto 208px;}
-#invPanel .inv-cr-stones{border:1px solid #856d465c;background:radial-gradient(ellipse at 50% 0,#3c2f1a22,transparent 70%),#07090d;box-shadow:inset 0 0 0 3px #020508;padding:7px 9px 8px;}
+#invPanel .inv-cr-stones{border:1px solid #6d70705c;background:radial-gradient(ellipse at 50% 0,#2e313122,transparent 70%),#07090d;box-shadow:inset 0 0 0 3px #020508;padding:7px 9px 8px;}
 #invPanel .inv-cr-stones-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:5px;}
-#invPanel .inv-cr-stones-title{margin:0;font:600 12px/1.3 'Noto Serif KR',serif;letter-spacing:.1em;color:#cbb892;}
-#invPanel .inv-cr-stones-count{font-size:10px;color:#a79a82;border:1px solid #7a644444;background:#080b0dd0;padding:2px 8px;}
+#invPanel .inv-cr-stones-title{margin:0;font:600 12px/1.3 'Noto Serif KR',serif;letter-spacing:.1em;color:#bcb9b3;}
+#invPanel .inv-cr-stones-count{font-size:10px;color:#999c9c;border:1px solid #64676744;background:#080b0dd0;padding:2px 8px;}
 #invPanel .inv-cr-stones-grid{display:flex;flex-wrap:wrap;gap:6px;max-height:94px;overflow-y:auto;scrollbar-width:thin;}
 #invPanel .inv-cr-stones-grid .inv-cr-note{margin:2px 0;font-size:10px;color:#8d897d;}
-#invPanel .inv-cr-stone{position:relative;width:58px;height:64px;padding:0;border:1px solid #64573f80;background:linear-gradient(145deg,#1b2125,#0a0e12 70%);box-shadow:inset 0 0 0 2px #060a0d,0 2px 4px #0008;cursor:pointer;}
+#invPanel .inv-cr-stone{position:relative;width:58px;height:64px;padding:0;border:1px solid #56595980;background:linear-gradient(145deg,#1b2125,#0a0e12 70%);box-shadow:inset 0 0 0 2px #060a0d,0 2px 4px #0008;cursor:pointer;}
 #invPanel .inv-cr-stone-art{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:40px;height:40px;background:center/contain no-repeat url(img/ui/socket-stones/stone_iron.png);filter:drop-shadow(0 2px 2px #000c);} /* 2026-10-10 소켓석 원화(Seedream) — 티어 그룹별 재질 그림 */
 #invPanel .inv-cr-stone[data-grp=iron]{--stone-hi:#9aa0a8;--stone-lo:#2f343a;}
 #invPanel .inv-cr-stone[data-grp=iron] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_iron.png);}
-#invPanel .inv-cr-stone[data-grp=bronze]{--stone-hi:#d19a5c;--stone-lo:#4c2f16;}
+#invPanel .inv-cr-stone[data-grp=bronze]{--stone-hi:#d1645c;--stone-lo:#313434;}
 #invPanel .inv-cr-stone[data-grp=bronze] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_bronze.png);}
 #invPanel .inv-cr-stone[data-grp=silver]{--stone-hi:#e7edf3;--stone-lo:#596572;}
 #invPanel .inv-cr-stone[data-grp=silver] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_silver.png);}
@@ -320,17 +320,17 @@ html.gem-sealed-art-missing #invPanel .inv-cr-socket-sealed::before{background:u
 #invPanel .inv-cr-stone[data-grp=hell]{--stone-hi:#ffa76a;--stone-lo:#731f0a;}
 #invPanel .inv-cr-stone[data-grp=hell] .inv-cr-stone-art{background-image:url(img/ui/socket-stones/stone_hell.png);}
 #invPanel .inv-cr-stone[data-grp=hell] .inv-cr-stone-art{filter:drop-shadow(0 2px 2px #000c) drop-shadow(0 0 6px #ff6a3577);}
-#invPanel .inv-cr-stone-tier{position:absolute;top:2px;left:4px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:10px;font-weight:700;color:#dfd6c2;}
-#invPanel .inv-cr-stone-q{position:absolute;bottom:2px;left:4px;font-size:9px;color:#b9ac92;font-variant-numeric:tabular-nums;}
-#invPanel .inv-cr-stone-count{position:absolute;bottom:2px;right:4px;font-size:10px;color:#e6d6ad;font-variant-numeric:tabular-nums;}
-#invPanel .inv-cr-stone[aria-pressed=true]{border-color:#d5b67a;box-shadow:inset 0 0 0 2px #11100b,inset 0 0 14px #b4914833,0 0 10px #caa06240;}
-#invPanel .inv-cr-stone:hover{border-color:#b09a6a;}
+#invPanel .inv-cr-stone-tier{position:absolute;top:2px;left:4px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:10px;font-weight:700;color:#d9d6d0;}
+#invPanel .inv-cr-stone-q{position:absolute;bottom:2px;left:4px;font-size:9px;color:#abaeae;font-variant-numeric:tabular-nums;}
+#invPanel .inv-cr-stone-count{position:absolute;bottom:2px;right:4px;font-size:10px;color:#d9d6d0;font-variant-numeric:tabular-nums;}
+#invPanel .inv-cr-stone[aria-pressed=true]{border-color:#bbb8b2;box-shadow:inset 0 0 0 2px #0e1111,inset 0 0 14px #91949433,0 0 10px #a2a5a540;}
+#invPanel .inv-cr-stone:hover{border-color:#999c9c;}
 #invPanel .inv-cr-stone:focus-visible{outline:2px solid #f2dbac;outline-offset:2px;}
 /* 소켓석 선택 중 장비 카드 상태: add(홈 추가 가능)/upgrade(승급만)/none(불가) */
-#invPanel .inv-cr-equipment-card[data-stone-state=add]{border-color:#dfc77e;box-shadow:inset 0 0 0 2px #090d10,inset 0 0 0 3px #b9a36235,0 0 13px #d1b76b34;cursor:pointer;opacity:1;}
-#invPanel .inv-cr-equipment-card[data-stone-state=upgrade]{border-color:#b6945e;box-shadow:inset 0 0 0 2px #090d10,0 0 9px #c8a25d22;opacity:1;}
+#invPanel .inv-cr-equipment-card[data-stone-state=add]{border-color:#dfc77e;box-shadow:inset 0 0 0 2px #090d10,inset 0 0 0 3px #a1a4a435,0 0 13px #bab7b134;cursor:pointer;opacity:1;}
+#invPanel .inv-cr-equipment-card[data-stone-state=upgrade]{border-color:#959898;box-shadow:inset 0 0 0 2px #090d10,0 0 9px #a3a6a622;opacity:1;}
 #invPanel .inv-cr-equipment-card[data-stone-state=none]{opacity:.45;}
 /* 보석 칸 품질 티어 배지 */
-#invPanel .inv-cr-q{position:absolute;top:5px;right:5px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:9px;font-weight:700;color:#cbb892;}
+#invPanel .inv-cr-q{position:absolute;top:5px;right:5px;font-family:'Cinzel',var(--font-hell-title,serif);font-size:9px;font-weight:700;color:#bcb9b3;}
 @media(max-width:900px){#invPanel .inv-cr-socket-tier{font-size:8px;}#invPanel .inv-cr-stone{width:50px;height:58px;}}
 @media(prefers-reduced-motion:reduce){#invPanel .inv-cr-socket[data-grp=hell],#invPanel .inv-cr-socket-sealed[data-next=true]:not(:disabled),#invPanel .inv-cr-socket[data-upgradable=true]{animation:none!important;}}
