@@ -231,7 +231,7 @@ namespace Exoduser.UnityPort
             M1Add("10", "boss arena entry", arenaOk ? "ok" : "fail", "exit tile -> fade -> name card -> arena " + BossArenaLayout.Width + "x" + BossArenaLayout.Height + " (type " + flow.Arena?.Type + ") -> player at the 6 o'clock entrance, boss at the centre, boss bar shown; " + unlockNote + "; load ticks " + loadTicks + "; field map, props and chunks swapped out", "10a-arena-load-namecard.png, 10-arena-entry-boss-bar.png");
 
             // ---- 11 druid boss fight (BX-02/03/05): the real 23-move AI runs; the player stands in the open and is healed every tick so the fight can be observed ----
-            sim.Config.EnemyAiEnabled = true; var druid = sim.Druid; var moveStates = new HashSet<string>(); int maxPhase = 0, maxShots = 0, fightHurt0 = sim.HurtCount, shotCaptures = 0, hazardCaptures = 0, fightTicks = 0;
+            sim.Config.EnemyAiEnabled = true; var druid = sim.Druid; var moveStates = new HashSet<string>(); int maxPhase = 0, maxShots = 0, fightHurt0 = sim.HurtCount, shotCaptures = 0, hazardCaptures = 0, poolCaptures = 0, fightTicks = 0;
             float hpBefore = bossActor != null ? bossActor.Hp : 0; float shieldBefore = bossActor != null ? bossActor.Shield : 0; bool deathNoted = false;
             if (bossActor != null) { p.X = bossActor.X + 260; p.Y = bossActor.Y; }
             while (druid != null && bossActor != null && fightTicks++ < 2600 && bossActor.Alive)
@@ -243,8 +243,16 @@ namespace Exoduser.UnityPort
                 if (shots >= 8 && shotCaptures < 1 && fightTicks > 480) { shotCaptures++; yield return M1Shot("11a-druid-volley"); }
                 int hazards = druid.LavaPools.Count + druid.Fissures.Count + druid.TideWaves.Count + druid.SeekerMines.Count + druid.PoisonPools.Count;
                 if (hazards > 0 && hazardCaptures < 1 && fightTicks > 540) { hazardCaptures++; yield return M1Shot("11b-druid-hazards"); }
+                // BX art: the natural run never reaches the pool moves, so one lava pool + one poison pool are placed by hand to see the web's poison-pool atlas clip, then removed again
+                if (fightTicks == 500 && poolCaptures < 1 && bossActor != null)
+                {
+                    druid.LavaPools.Add(new LavaPool { X = bossActor.X + 40, Y = bossActor.Y + 330, R = 300, T = 150, WarnT = 60, MaxT = 1e9 });
+                    druid.PoisonPools.Add(new PoisonPool { X = bossActor.X - 380, Y = bossActor.Y + 160, R = 175, T = 60, MaxT = 1e9 });
+                    p.X = bossActor.X; p.Y = bossActor.Y + 260; poolCaptures = 1; yield return null; yield return M1Shot("11c-druid-pools");
+                    druid.LavaPools.Clear(); druid.PoisonPools.Clear();
+                }
                 if (fightTicks % 170 == 0) sim.HurtEnemy(bossActor, (int)Math.Max(1, bossActor.MaxShield * .22f + bossActor.MaxHp * .06f));   // walk the HP phases
-                if (maxPhase >= 3 && fightTicks > 900 && shotCaptures > 0 && hazardCaptures > 0) break;
+                if (maxPhase >= 3 && fightTicks > 900 && shotCaptures > 0 && hazardCaptures > 0 && (poolCaptures > 0 || fightTicks > 2000)) break;
                 if (fightTicks % 30 == 0) yield return null;
             }
             bool fightOk = druid != null && moveStates.Count >= 6 && maxPhase >= 2 && maxShots >= 4 && sim.HurtCount > fightHurt0;
