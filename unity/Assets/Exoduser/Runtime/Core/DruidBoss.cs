@@ -180,14 +180,18 @@ namespace Exoduser.UnityPort.Core
             double dist = Dst(host.PX, host.PY, d.X, d.Y);
             // sight aggro and the alerted chase of the common head (etype 0 range 400: flow move x2 until within 30 px)
             if (!d.Alerted && dist < 800 && (d.S == "idle" || d.S == "recover") && host.Los(d.X, d.Y, host.PX, host.PY)) d.Alerted = true;
-            bool aimLocked = DruidStage && (d.S == "bossCharge" || (d.S == "bossChargeWind" && d.St2 <= 18 + 1));
-            if (dist < 800 && d.Alerted && !aimLocked) d.Facing = Atan2(host.PY - d.Y, host.PX - d.X);
-            if (d.Alerted && (d.S == "idle" || d.S == "recover") && dist > 30) { FlowMove(d, 2); dist = Dst(host.PX, host.PY, d.X, d.Y); }
+            if (!Remodel)   // remodel (RB1-6): facing is limited per state (Face) and the walk is RmWalk, not a snap + a x2 flow chase
+            {
+                bool aimLocked = DruidStage && (d.S == "bossCharge" || (d.S == "bossChargeWind" && d.St2 <= 18 + 1));
+                if (dist < 800 && d.Alerted && !aimLocked) d.Facing = Atan2(host.PY - d.Y, host.PX - d.X);
+                if (d.Alerted && (d.S == "idle" || d.S == "recover") && dist > 30) { FlowMove(d, 2); dist = Dst(host.PX, host.PY, d.X, d.Y); }
+            }
             // ATK reset + projectile charge + clock (38771, 38874-38884): the phase ATK buff lives until the next reset
             // (e.baseAtk is kept by the factory; the phase check multiplies e.atk, the next tick resets it to baseAtk)
             if (e.BaseAttack > 0) d.Atk = e.BaseAttack;
             if (d.ProjChargeT > 0) { d.ProjChargeT -= 1; if (d.ProjChargeT <= 0) FireChargedProj(e, d); }
             d.St2 -= 1;
+            if (Remodel) RmDrift(d);
             UpdateBoss(e, d, dist);
             WriteBack(e, d);
             host.BossMoved(e);
@@ -253,10 +257,11 @@ namespace Exoduser.UnityPort.Core
         void UpdateBoss(EnemyState e, DruidData d, double dist)
         {
             if (e.Alive && !Remodel) PhaseCheck(e, d);   // remodel: the life (Simulation.DruidRemodel) is the phase
-            if (d.S == "idle") { IdleMove(e, d, dist); AI(e, d, dist); }
-            if (d.Feinting && d.S.EndsWith("Wind") && d.St2 <= 0)
+            if (d.S == "idle") { if (Remodel) RmWalk(e, d, dist); else IdleMove(e, d, dist); AI(e, d, dist); }
+            if (d.Feinting && d.S.EndsWith("Wind") && d.St2 <= (Remodel ? d.RmTeleTotal / 2 : 0))   // remodel: a feint cuts the telegraph at its half way point (first half only)
             {
-                d.S = "recover"; d.St2 = 25; d.Feinting = false; host.Text(d.X, d.Y - 30, "...", "#cccccc", 30);
+                if (Remodel) { d.S = "bossRec"; d.St2 = DruidRemodelData.FeintRecovery; } else { d.S = "recover"; d.St2 = 25; }
+                d.Feinting = false; host.Text(d.X, d.Y - 30, "...", "#cccccc", 30);
             }
             StateSwitch(e, d, dist);
         }
@@ -441,7 +446,7 @@ namespace Exoduser.UnityPort.Core
                 {
                     d.ComboIdx++;
                     d.MoveCDs[nmv.Idx] = CooldownOf(nmv, ph);
-                    d.BossPatT = I(6 + R() * 6);
+                    d.BossPatT = Remodel ? DruidRemodelData.ComboLinkTicks : I(6 + R() * 6);
                     d.LastMoves.Add(nmv.Id); if (d.LastMoves.Count > 5) d.LastMoves.RemoveAt(0);
                     d.MeleeStreak = nmv.HasTag("ranged") ? 0 : d.MeleeStreak + 1;
                     d.Feinting = nmv.CanFeint && !(Remodel && d.FeintUsed) && R() < ph.FeintC; if (d.Feinting) d.FeintUsed = true;
@@ -472,7 +477,7 @@ namespace Exoduser.UnityPort.Core
             d.LastMoves.Add(bestMv.Id); if (d.LastMoves.Count > 5) d.LastMoves.RemoveAt(0);
             d.MeleeStreak = bestMv.HasTag("ranged") ? 0 : d.MeleeStreak + 1;
             d.MoveCDs[bestMv.Idx] = CooldownOf(bestMv, ph);
-            d.BossPatT = (d.BossPatCd + R() * 15) * ph.CdM;
+            d.BossPatT = Remodel ? DruidRemodelData.GapTicks[Math.Min(Math.Max(d.BossPhase, 0), 2)] : (d.BossPatCd + R() * 15) * ph.CdM;
             if (R() < ph.ComboC)
             {
                 var mc = new List<BossCombo>();

@@ -39,9 +39,9 @@ namespace Exoduser.UnityPort.Core
     public sealed partial class DruidBoss
     {
         public const double StaffReachExtra = 70;   // staff tip = body radius + 70 along (Facing + WeaponAng): initial value, the web draws no staff
-        public const double ChargeSpeed = 35, ChargeTicks = 50, SlashReach = 300, SlashHalfAngle = 1.2, GrabReachExtra = 200, EruptReachExtra = 120, FanRange = 2000, SummonSpread = 80;
+        public const double ChargeSpeed = DruidRemodelData.ChargeSpeed, ChargeTicks = DruidRemodelData.ChargeTicks, SlashReach = 300, SlashHalfAngle = 1.2, EruptReachExtra = 120, FanRange = 2000, SummonSpread = 80;
         // lead = ticks between the end of the wind state and the damage check of the move (slam: bossSlam 8; first slash: bossSlash 10 -> window at <= 6; burrow: 45 under + 8 erupt)
-        const int SlamLead = 8, FirstSlashLead = 4, SlashWindowAt = 6, BurrowUnder = 45, BurrowEruptLead = 8;
+        const int SlamLead = DruidRemodelData.SlamActive, SlashLead = DruidRemodelData.SlashActive - DruidRemodelData.SlashHitAt, BurrowUnder = 45, BurrowEruptLead = DruidRemodelData.BurrowEruptWarn, FissureMaxT = 140;   // ticks from the end of the wind to the damage check (slam swing 6, slash swing -> check at St2 == 6, erupt warning 30)
         public int TeleSerial;               // counts move starts (remodel only)
 
         // groundFissure: how far the head may crawl (also read by the telegraph)
@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort.Core
                         {
                             // spec #4 (ruling 2026-10-28): a straight line aimed once at the first telegraph tick; only the head hurts (half width 70 + player radius), no end blast
                             t = Tele(into, "groundFissure", DruidTeleKind.GroundDecal, DruidTeleShape.Line, tot, rem, 0);
-                            t.X = d.X; t.Y = d.Y; t.Dir = d.RmDir; t.Length = FissureMaxLen(); t.Width = 2 * FissureHitHalfWidth;
+                            t.X = d.X; t.Y = d.Y; t.Dir = d.RmDir; t.Length = Math.Min(FissureMaxLen(), DruidRemodelData.FissureSpeed * FissureMaxT); t.Width = 2 * FissureHitHalfWidth;
                         }
                         else if (pend.Id == "tideWave")
                         {
@@ -105,12 +105,12 @@ namespace Exoduser.UnityPort.Core
                         break;
                     }
                 case "bossSlashWind":
-                    AddSlash(into, d, pr, 0, d.RmTeleTotal + FirstSlashLead, d.St2 + FirstSlashLead);
+                    AddSlash(into, d, pr, d.SlashIdx, SlashTele(d, d.SlashIdx) + SlashLead, d.St2 + SlashLead);
                     break;
                 case "bossSlash":
                     {
-                        int idx = d.SlashIdx; double left = d.St2 - SlashWindowAt;   // the hit window opens at St2 <= 6 and closes at > 3
-                        if (left > 0) AddSlash(into, d, pr, idx, idx == 0 ? FirstSlashLead : 14 - SlashWindowAt, left);
+                        int idx = d.SlashIdx; double left = d.St2 - DruidRemodelData.SlashHitAt;   // the swing is 8 f and the damage is checked once, when St2 == 6
+                        if (left > 0) AddSlash(into, d, pr, idx, SlashTele(d, idx) + SlashLead, left);
                         break;
                     }
                 case "bossSlamWind":
@@ -135,7 +135,7 @@ namespace Exoduser.UnityPort.Core
                     break;
                 case "bossGrabWind":
                     t = Tele(into, "grab", DruidTeleKind.GrabEyes, DruidTeleShape.None, d.RmTeleTotal, d.St2, 0);
-                    t.X = d.X; t.Y = d.Y; t.Dir = d.GrabAng; t.Radius = d.R + pr + GrabReachExtra;
+                    t.X = d.X; t.Y = d.Y; t.Dir = d.GrabAng; t.Radius = d.R + pr + DruidRemodelData.GrabContact + DruidRemodelData.GrabLungeTicks * DruidRemodelData.GrabLungeSpeed;   // reach = the lunge (18 f x 9) + the contact distance
                     break;
                 case "bossSummonWind":
                     t = Tele(into, "summon", DruidTeleKind.None, DruidTeleShape.None, d.RmTeleTotal, d.St2, 0);
@@ -170,9 +170,11 @@ namespace Exoduser.UnityPort.Core
                     }
                 case "bossHeartWind":
                     {   // every beat: the whole arena except the safe zones; SafeZones is empty until RB1-3 puts the root pillars in
-                        t = Tele(into, "heartbeat", DruidTeleKind.GroundDecal, DruidTeleShape.ArenaMinusSafe, DruidRemodelData.HeartbeatBeatWind, d.St2, d.HbBeat);
+                        // first beat 90 f (Moves[11].Tele), beats 2-3 60 f; the safe zones are the ring of 260 around the boss (always) and the pillar shadows (SafeZones, RB1-3)
+                        t = Tele(into, "heartbeat", DruidTeleKind.GroundDecal, DruidTeleShape.ArenaMinusSafe, d.HbBeat == 0 ? d.RmTeleTotal : DruidRemodelData.HeartbeatBeatWind, d.St2, d.HbBeat);
                         t.X = host.ArenaW / 2; t.Y = host.ArenaH / 2; t.Length = host.ArenaW; t.Width = host.ArenaH;
-                        if (SafeZones.Count > 0) { t.Safe = new double[SafeZones.Count][]; for (int i = 0; i < SafeZones.Count; i++) t.Safe[i] = (double[])SafeZones[i].Clone(); }
+                        t.Safe = new double[SafeZones.Count + 1][]; t.Safe[0] = new[] { d.X, d.Y, DruidRemodelData.HeartbeatSafeRadius };
+                        for (int i = 0; i < SafeZones.Count; i++) t.Safe[i + 1] = (double[])SafeZones[i].Clone();
                         break;
                     }
             }
@@ -188,15 +190,19 @@ namespace Exoduser.UnityPort.Core
             // fissures in flight: the head crawls straight along its fixed direction; the part it has passed stays on screen but is harmless
             foreach (var f in Fissures)
             {
-                double ticks = f.Done ? 0 : Math.Ceiling((f.MaxLen - f.Len) / f.Spd);
+                double reach = Math.Min(f.MaxLen, f.Spd * FissureMaxT);   // the fissure ends after FissureMaxT ticks even if the arena allows more
+                double ticks = f.Done ? 0 : Math.Max(0, Math.Ceiling((reach - f.Len) / f.Spd));
                 t = new DruidTelegraph { Move = MoveNo("groundFissure"), MoveId = "groundFissure", Kind = DruidTeleKind.GroundDecal, Shape = DruidTeleShape.Line, Serial = f.Serial, Index = 0, Live = true,
-                    X = f.X, Y = f.Y, Dir = f.Ang, Length = f.MaxLen, Width = f.W, Progress = f.Len, Total = f.MaxLen / f.Spd, Remaining = ticks };
+                    X = f.X, Y = f.Y, Dir = f.Ang, Length = reach, Width = f.W, Progress = f.Len, Total = reach / f.Spd, Remaining = ticks };
                 into.Add(t);
             }
             foreach (var w in TideWaves) AddTideRing(into, w.MaxT, w.MaxT - w.T, true, w.X, w.Y, w.Rad, w.MaxR, w.GapAng, w.GapSize, w.W, w.Serial);
         }
 
-        // the first slash opens its window 4 ticks after the wind ends; hits 2 and 3 run from the start of their own bossSlash state (14 f, window from the 8th)
+        // telegraph length of hit idx: 32 for the first (Moves[0].Tele), 24 for hits 2 and 3 (their own wind state); the damage is checked 2 ticks after the wind ends
+        static double SlashTele(DruidData d, int idx) { return idx == 0 ? d.RmTeleTotal : DruidRemodelData.SlashLinkTele; }
+
+        // (see SlashTele)
         void AddSlash(List<DruidTelegraph> into, DruidData d, double pr, int idx, double total, double remaining)
         {
             double reach = d.R + pr + SlashReach, angle = SlashHalfAngle * 2;

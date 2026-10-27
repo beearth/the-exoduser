@@ -62,10 +62,10 @@ namespace Exoduser.UnityPort.Core
         void HeartbeatPulse(EnemyState e, DruidData d)
         {
             host.Fx("druidHeartbeat", d.X, d.Y, 0); host.Shake(10);
-            if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY)) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);
+            if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY) && Dst(host.PX, host.PY, d.X, d.Y) > DruidRemodelData.HeartbeatSafeRadius) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);   // safe: the ring of 260 around the boss, plus the root pillar shadows (RB1-3)
             d.HbBeat++;
-            if (d.HbBeat >= DruidRemodelData.HeartbeatBeats) { d.S = "bossRec"; d.St2 = DruidRemodelData.HeartbeatRecover; }   // bossRec, not recover: `recover` clamps St2 to 20
-            else d.St2 = DruidRemodelData.HeartbeatBeatWind;
+            if (d.HbBeat >= DruidRemodelData.HeartbeatBeats) Recover(d, 0);   // bossRec with the table's 90 f (`recover` clamps St2 to 20)
+            else { d.S = "bossHeartPause"; d.St2 = DruidRemodelData.HeartbeatPause; }
         }
 
         // move 6 (grab): while held the boss drains the player's tick and heals 3 % of the life HP in total; enough player hits break the hold
@@ -103,8 +103,8 @@ namespace Exoduser.UnityPort.Core
         {
             DruidData d; if (!Data.TryGetValue(e, out d)) return;
             d.BossPhase = life; e.BossPhase = life;
-            d.S = "bossRec"; d.St2 = 60; d.BossPatT = 30; d.PImmune = 0; d.ComboSeq = null; d.ComboIdx = 0; d.Feinting = false; d.FeintUsed = false; d.Delaying = 0;
-            d.HeartCd = 0; d.R = e.Radius;
+            d.S = "bossRec"; d.St2 = 60; d.BossPatT = DruidRemodelData.GapTicks[Math.Min(Math.Max(life, 0), 2)]; d.PImmune = 0; d.ComboSeq = null; d.ComboIdx = 0; d.Feinting = false; d.FeintUsed = false; d.Delaying = 0;
+            d.HeartCd = 0; d.R = e.Radius; d.RmVel = 0; d.RmParryPending = false; d.RmBonusApplied = false;
             for (int i = 0; i < d.MoveCDs.Length; i++) d.MoveCDs[i] = 0;
             WriteBack(e, d);
         }
