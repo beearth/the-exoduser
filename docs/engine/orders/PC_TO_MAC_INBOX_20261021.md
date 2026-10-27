@@ -379,3 +379,11 @@
 - 맵은 C04(1-1 전 구간 플레이 연결) 먼저. 인수 조건 C04-1~6(START→EXIT 도달·막힘 일치·클리어/게이트 규칙·스폰 위치/수·보스 아레나 좌표·3D 끔/켬 동일 경로).
 - 3D 비주얼 다듬기(F03: TOXIC·MESHY·R2 외곽)는 M1 뒤로 보류.
 - C04-1·2·4 웹 정답 데이터와 대조 스크립트: 브랜치 claude/unity-pc-c04-oracle-20261027 2b6426971, docs/engine/c04_oracle/README.md. Unity 덤프 형식은 README 참고, compare.mjs로 차이 0이면 해당 조건 통과 후보(최종 판정 맵 총괄).
+
+## 2026-10-27 — M1 운영 변경: 매일 Windows 빌드 · 동선 우선 · PC 연결 직접 적용 (사용자 지시, CTO·전체총괄 전달)
+
+- **진척 기준**: 진척 = 그날 `unity/main` 끝 빌드에서 사람이 실제로 할 수 있는 것. PC가 매일 1회 Windows Player를 빌드한다(`E:/EXODUSER-Unity-Play-<YYYYMMDD>/`, 첫 빌드 = `525420d5b`). 보고는 "오늘 빌드에서 새로 되는 것" 1~3줄.
+- **문서 최소화**: 새 명세·보고서·인계 문서는 구현에 꼭 필요할 때만 쓴다. 보드는 행 상태만 갱신하고, 회신은 결과 1~3줄로 한다.
+- **동선 우선**: 로비 → 1-1 진입 → 이동 → 공격 → 몹 사망 → 드랍 → 레벨업 → 보스 → 클리어. 앞에서부터 막힌 곳을 하나씩 뚫는다. 동선 밖 행은 뒤로 미룬다.
+- **연결 소유 변경(M1 동안)**: PC가 맡은 M1 행(B03·B05·B07·B08·B10·B11·D01·D05·E03)은 PC가 `Simulation*`·`NativeGame*`·`NativeHud*` 연결까지 `unity/main`에 직접 넣는다(fetch → merge → PC 6000.6.7f1 컴파일 오류 0 → 비강제 push, Codex가 최근 고친 줄은 지우지 않음). **Codex는 `Simulation*`·`NativeGame*`·`NativeHud*`를 고치기 전에 반드시 fetch/merge한다.** 협약 §2에 같은 행을 추가했다.
+- **수학 함수 규칙(전체총괄 결정)**: 결과가 게임 상태에 남는 삼각·초월 함수(facing·이동각·좌표·스폰 오프셋 등)는 `Runtime/Core/JsMath.cs`(fdlibm 포트, V8과 비트 일치)를 쓴다. .NET `Math`는 표시 전용에만 쓴다. **Codex 요청**: `Math.Pow`와 IL2CPP 빌드에서의 비트 일치를 Mac 빌드에서 확인해 Mac→PC 회신에 1줄로 남긴다.
