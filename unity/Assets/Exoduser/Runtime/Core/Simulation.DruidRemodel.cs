@@ -89,6 +89,7 @@ namespace Exoduser.UnityPort.Core
                 }
             }
             e.ReviveIframes = 90; e.Hp = 1; e.Shield = 0;
+            RemodelHook(st.Set.Hooks.CollapseTick, e, st);
             if (--st.CollapseTicks > 0) return true;
             RemodelNextLife(e, st);
             return true;

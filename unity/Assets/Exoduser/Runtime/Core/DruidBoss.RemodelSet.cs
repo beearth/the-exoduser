@@ -31,16 +31,17 @@ namespace Exoduser.UnityPort.Core
             return true;
         }
 
-        void RmStartHook(EnemyState e, DruidData d, BossMove mv, double dist, int phase, int tele)
+        // true = the boss's own file handled it and the shared executor / state is skipped (always false with the remodel off or without the hook)
+        bool RmStartHook(EnemyState e, DruidData d, BossMove mv, double dist, int phase, int tele)
         {
             var h = Remodel ? Set.Hooks.StartMove : null;
-            if (h != null) h(this, e, d, mv, dist, phase, tele);
+            return h != null && h(this, e, d, mv, dist, phase, tele);
         }
 
-        void RmTickHook(EnemyState e, DruidData d, double dist)
+        bool RmTickHook(EnemyState e, DruidData d, double dist)
         {
             var h = Remodel ? Set.Hooks.TickState : null;
-            if (h != null) h(this, e, d, dist);
+            return h != null && h(this, e, d, dist);
         }
 
         void RmTeleHook(DruidData d, List<DruidTelegraph> into)

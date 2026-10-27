@@ -8,8 +8,8 @@ namespace Exoduser.UnityPort.Core
     // The AI engine is the oracle-checked DruidBoss (score / combo / feint / cooldown, 23 shared move executors picked by id); the lives are Simulation.DruidRemodel.
     // A stage gets its set from BossRemodelSets (one partial-method slot per boss) and runs it only while its remodel flag is on (Simulation.BossRemodel.cs).
     public delegate bool BossRmPick(DruidBoss boss, EnemyState e, DruidData d, double dist);                                // true = the boss started a forced move this tick
-    public delegate void BossRmStart(DruidBoss boss, EnemyState e, DruidData d, BossMove mv, double dist, int phase, int tele);
-    public delegate void BossRmTick(DruidBoss boss, EnemyState e, DruidData d, double dist);
+    public delegate bool BossRmStart(DruidBoss boss, EnemyState e, DruidData d, BossMove mv, double dist, int phase, int tele);
+    public delegate bool BossRmTick(DruidBoss boss, EnemyState e, DruidData d, double dist);
     public delegate void BossRmTele(DruidBoss boss, DruidData d, List<DruidTelegraph> into);
     public delegate void BossRmLife(Simulation sim, EnemyState e, Simulation.DruidLifeState st);
 
@@ -18,11 +18,14 @@ namespace Exoduser.UnityPort.Core
     public sealed class BossRemodelHooks
     {
         public BossRmPick ForcePick;       // idle, before the score table (druid: move 12 heartbeat is forced the same way, see DruidBoss.RmForcedPick)
-        public BossRmStart StartMove;      // StartPattern for a move id the 23 shared executors do not know: set d.S (own state name) and d.St2
-        public BossRmTick TickState;       // updateE `switch(e.s)` for a state name the shared executors do not know; leave through "recover" / "bossRec" / "idle"
+        public BossRmStart StartMove;      // StartPattern, before the shared executors: return true when the move is the boss's own (new id, or a shared id it overrides);
+                                           //   set d.S (own state name) and d.St2. false = the shared executor of that id runs
+        public BossRmTick TickState;       // updateE `switch(e.s)`, before the shared states: return true when d.S is the boss's own state (leave it through
+                                           //   "recover" / "bossRec" / "idle"); false = the shared state machine runs
         public BossRmTele Telegraphs;      // append the boss's own telegraph entries (after the shared ones) — DruidBoss.CollectTelegraphs
         public BossRmLife OnAttach;        // the fight starts (life 1, after the "start" event)
         public BossRmLife OnCollapse;      // a life ends: the boss kneels for CollapseTicks (after the "collapse" event)
+        public BossRmLife CollapseTick;    // every tick of the kneel (the AI is stopped, HP stays 1): move the body, pull things in ... (e.X / e.Y are the boss position)
         public BossRmLife OnLife;          // the next life starts (after the "life" event; HP / body / shield already set)
         public BossRmLife OnFinal;         // the last life ends: called right before the common kill (rewards, StageFlow opens the exit)
     }

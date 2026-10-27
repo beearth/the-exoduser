@@ -17,19 +17,22 @@ namespace Exoduser.UnityPort.Core
         public const double SampleRingRadius = 220;
         public static int SampleRingStarts, SampleRingFires, SampleRingForced;
 
-        internal static void SampleStart(DruidBoss b, EnemyState e, DruidData d, BossMove mv, double dist, int phase, int tele)
+        internal static bool SampleStart(DruidBoss b, EnemyState e, DruidData d, BossMove mv, double dist, int phase, int tele)
         {
-            if (mv.Id != "sampleRing") return;
+            if (mv.Id != "sampleRing") return false;   // charge: the shared executor
             SampleRingStarts++;
             d.S = "rmSampleRingWind"; d.St2 = Or(tele, 40); b.host.Text(d.X, d.Y - 30, "◎", "#dfd6c2", 40);
+            return true;
         }
 
-        internal static void SampleTick(DruidBoss b, EnemyState e, DruidData d, double dist)
+        internal static bool SampleTick(DruidBoss b, EnemyState e, DruidData d, double dist)
         {
-            if (d.S != "rmSampleRingWind" || d.St2 > 0) return;
+            if (d.S != "rmSampleRingWind") return false;
+            if (d.St2 > 0) return true;
             SampleRingFires++;
             if (b.host.PlayerAlive && b.host.PIframes <= 0 && Dst(b.host.PX, b.host.PY, d.X, d.Y) < SampleRingRadius + b.host.PRadius) b.PlayerHit(e, d, 1.0, 6, true);
             d.S = "bossRec"; d.St2 = 30;
+            return true;
         }
 
         internal static void SampleTele(DruidBoss b, DruidData d, List<DruidTelegraph> into)
@@ -52,7 +55,7 @@ namespace Exoduser.UnityPort.Core
 static partial class P
 {
     static readonly int[] L0 = { 0 }, L01 = { 0, 1 }, L1 = { 1 };
-    static int hkAttach, hkCollapse, hkLife, hkFinal;
+    static int hkAttach, hkCollapse, hkLife, hkFinal, hkKneelTicks;
 
     static BossRemodelSet SampleSi1()
     {
@@ -68,6 +71,7 @@ static partial class P
             Parryable = new HashSet<string> { "slashCombo", "charge", "slam" }, SlamRadius = 160 };
         s.Hooks.OnAttach = (sim, e, st) => hkAttach++;
         s.Hooks.OnCollapse = (sim, e, st) => hkCollapse++;
+        s.Hooks.CollapseTick = (sim, e, st) => hkKneelTicks++;
         s.Hooks.OnLife = (sim, e, st) => hkLife++;
         s.Hooks.OnFinal = (sim, e, st) => hkFinal++;
         return s;
@@ -192,10 +196,10 @@ static partial class P
             Check(!s.Stage.BossSpawners.ContainsKey(si) && s.Stage.LoadPhase == 0 && !s.Stage.InArena && s.Stage.Boss == null && s.Stage.BossAlive && s.ActiveRemodelSet == null
                 && !s.Stage.Events.Any(e => e.Kind == StageEventKind.ArenaLoadStart), "off si" + si + ": no spawner, the exit does not load an arena");
             var s2 = FwSim(si, 9u, x => x.DruidRemodel = true, si == 1 ? SampleSi1() : SampleSi2());
-            Check(!s2.Stage.BossSpawners.ContainsKey(si) && s2.RemodelSetFor(si) == null && s2.RemodelSetFor(0) == DruidRemodelData.Set, "DruidRemodel only: si" + si + " stays off, druid on");
+            Check(!s2.Stage.BossSpawners.ContainsKey(si) && s2.RemodelSetFor(si) == null && s2.RemodelSetFor(0) == DruidRemodelData.Set && s2.RemodelSetFor(3) == DruidRemodelData.Set, "DruidRemodel only: si" + si + " stays off, druid si0 / si3 on");
         }
 
-        hkAttach = hkCollapse = hkLife = hkFinal = 0;
+        hkAttach = hkCollapse = hkLife = hkFinal = hkKneelTicks = 0;
         var setA = SampleSi1();
         var a = FwFight("FW-A-si1", 1, 20261028u, x => x.RemodelBosses.Add("sampleSi1"), setA, 2);
         FwVerifyCommon(a, setA, 2);
@@ -205,6 +209,7 @@ static partial class P
             Check(Math.Abs(a.Radius[1] - Math.Round(a.Radius[0] * 0.8)) <= 1, "FW-A: life 2 body " + a.Radius[1]);
             Check(Math.Abs(a.ShieldMax[1] - Math.Round(a.MaxHp[1] * 0.1)) <= 1 && a.ShieldMax[0] == 0, "FW-A: shields " + a.ShieldMax[0] + "/" + a.ShieldMax[1]);
             Check(hkAttach == 1 && hkCollapse == 1 && hkLife == 1 && hkFinal == 1, "FW-A: life hooks " + hkAttach + "/" + hkCollapse + "/" + hkLife + "/" + hkFinal);
+            Check(hkKneelTicks == setA.CollapseTicks, "FW-A: CollapseTick hook ran " + hkKneelTicks + " kneel ticks");
             foreach (var id in new[] { "slashCombo", "charge", "slam" }) Check(a.Moves.Any(m => m.Move == id), "FW-A: move " + id + " was used");
             Check(!a.Moves.Any(m => m.Move == "slam" && m.Phase == 0), "FW-A: slam only in life 2");
         }

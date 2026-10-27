@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort.Core
                     d.S = "bossRmWind"; d.St2 = Or(tele, 25); d.RmTeleTotal = d.St2; d.RmPending = mv; host.Text(d.X, d.Y - 30, "⚠", "#a9cc63", 40); return;
                 }
             }
-            switch (mv.Id)
+            if (!RmStartHook(e, d, mv, dist, phase, tele)) switch (mv.Id)   // RM-B0: the boss's own file may take the move first (BossRemodelHooks.StartMove)
             {
                 case "burst": d.S = "bossBurstWind"; d.St2 = Or(tele, 55); host.Text(d.X, d.Y - 30, "⚠ 광역 발사!", "#ff6600", 50); break;
                 case "fan": d.S = "bossFanWind"; d.St2 = Or(tele, 30); host.Text(d.X, d.Y - 30, "🔥 확산!", "#ff4444", 35); break;
@@ -137,7 +137,6 @@ namespace Exoduser.UnityPort.Core
                         }
                         host.Shake(8); host.Text(d.X, d.Y - 30, "🚀 미사일!", "#ff2200", 55); d.S = "recover"; d.St2 = 30; break;
                     }
-                default: RmStartHook(e, d, mv, dist, phase, tele); break;   // RM-B0: a move of the boss's own file (BossRemodelHooks.StartMove)
             }
             if (Remodel && !d.RmFire) d.RmTeleTotal = d.St2;   // telegraph length of the wind state just entered (DruidTelegraph.cs)
         }
@@ -158,7 +157,7 @@ namespace Exoduser.UnityPort.Core
         {
             double px = host.PX, py = host.PY, pr = host.PRadius;
             int stage = host.Stage;
-            switch (d.S)
+            if (!RmTickHook(e, d, dist)) switch (d.S)   // RM-B0: the boss's own file may take the state first (BossRemodelHooks.TickState)
             {
                 case "idle":
                     {
@@ -500,7 +499,6 @@ namespace Exoduser.UnityPort.Core
                     if (d.St2 > 20) d.St2 = 20;
                     if (d.St2 <= 0) { d.S = "idle"; d.St2 = 3 + R() * 5; }
                     break;
-                default: RmTickHook(e, d, dist); break;   // RM-B0: a state of the boss's own file (BossRemodelHooks.TickState)
             }
         }
 

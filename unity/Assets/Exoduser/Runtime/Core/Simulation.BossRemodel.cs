@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort.Core
 
     // RM-B0: which stage runs a remake. Spec: docs/engine/UNITY_BOSS_RM0_REMODEL_FRAMEWORK_20261028.md.
     //   set   = RemodelSets[si] (BossRemodelSets.Build + whatever a harness adds before AttachDruidBoss)
-    //   flag  = BossRemodel (every set) || RemodelBosses contains set.Id || (DruidRemodel && set.Id == "druid")
+    //   flag  = BossRemodel (every set) || RemodelBosses contains set.Id || (DruidRemodel && si is 0 or 3: the druid stages, whatever set 1-4 ends up with)
     //   on    = set registered && flag: Stage.BossSpawners[si] builds the boss through the same mkEn path (SpawnDruid) and the remodel AI / lives run it.
     // Set the flags before AttachDruidBoss (or call RefreshRemodelSpawners after changing them).
     public sealed partial class Simulation
@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort.Core
         {
             BossRemodelSet set;
             if (!RemodelSets.TryGetValue(si, out set) || set == null) return null;
-            bool on = BossRemodel || RemodelBosses.Contains(set.Id) || (DruidRemodel && set.Id == DruidRemodelData.SetId);
+            bool on = BossRemodel || RemodelBosses.Contains(set.Id) || (DruidRemodel && (si == 0 || si == 3));
             return on ? set : null;
         }
 
