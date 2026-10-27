@@ -11,7 +11,7 @@
 eview_20261026.html` |
 | SND-02 채택본 반영 | **반영 완료**(origin `780ac692b`, DEMO·EA = origin game.html 동일 해시). crit_heavy·ui_button_hover/confirm·amb_hell_forest_bed | 게임 안 음량·쿨다운 실청 조정(1차값). 로컬 G: 작업 트리에 AD3·SND-02 game.html 변경 미커밋 잔존(타세션 WIP와 섞임, origin엔 반영) | `docs/6사운드디자인/SND02_ADOPT_R2_20261027.md` |
 | SND-03 BGM NFD 중복 | **완료**(origin `758efa140`·`2e20e53a4`, 로컬 `db107b6f2`, DEMO·EA 각 71 제거). Mac 후속 공지 main·unity/main INBOX 반영 | Codex 회신(Mac `git ls-files bgm`=81·precomposeunicode) 대기만. DEMO/EA 전용 3곡(Rotten Forest - Ashen Gate, Godot 1-1 데모 신곡 `db6539b7e`, claude/demo11-* 브랜치)은 보존 | `docs/6사운드디자인/BGM_NFC_NFD_AUDIT_20261026.md` ⑦ |
-| **SND-08 RM-1 Unity 1-1 슬라이스(최우선)** | 명세 완료·트랙 B(새 후보 7키×3) sound-simple 배정 | B 생성 → 총괄 판정 → 사용자 청음 / 트랙 A Unity 이식(브랜치 `claude/unity-pc-sound-rm1-20261027`) / 트랙 C 채택 반영(웹+Unity) | `docs/6사운드디자인/UNITY_RM1_SOUND_SLICE_20261027.md` |
+| **SND-08 RM-1 Unity 1-1 슬라이스(최우선)** | 명세 완료·트랙 B(새 후보 7키×3) sound-simple 배정 | **16키 추천본 확정·사용자 청음 대기**(청음 `G:\exoduser-wt\_out\sfx_forgeeview_20261026.html` RM-1 묶음, 13키 가공본 + 3키 합성본, 판정 명세 §5·§5.1) → 채택 후 트랙 C / 트랙 A Unity 이식은 **유니티 총괄(local_59ad835c)이 Sonnet 배정, RM-0 병합 뒤 착수**(명세 origin `30e844ea7` 전달함) / 트랙 C 채택 반영(웹+Unity) | `docs/6사운드디자인/UNITY_RM1_SOUND_SLICE_20261027.md` |
 | SND-07 AD3 예고음 | 1단계 **반영 완료**(origin `c3c2441bf`) | 2단계 `tell_melee`·`tell_ranged`·`tell_boss` Forge 생성 → 사용자 청음 / 3단계 우선순위 전체 재배열 보류 | `docs/6사운드디자인/AD3_ENEMY_TELL_SFX_20261027.md` |
 
 ## 다음 착수 후보 (총괄 자율 결정, 순서)
@@ -22,7 +22,7 @@ eview_20261026.html` |
 
 ## 소속·연결 세션
 - 단순 세션 `local_26395865-a52c-421c-885e-ce7b45e1f7fa`(sound-simple, Sonnet, 152K@10-27) — 재사용. 새 일 전 get_usage 확인
-- CTO 전체 작업 총괄 `local_7072229c-70cf-4fdf-ab35-c3c59e683d53` / 디자인총괄 `local_eb8a8577-c0e4-4a9f-b628-fac0c8549dbf`(7장 사운드 규칙 A1~A10·AD1~AD3) / 맥북 총괄 `local_f25393ea-f5e3-45f1-80fa-c16e9daa4c6c`
+- 유니티 총괄 `local_59ad835c-2e92-44a5-bebf-0f0223217ae0`(10-27 신설, Unity 리모델링 배정권) / - CTO 전체 작업 총괄 `local_7072229c-70cf-4fdf-ab35-c3c59e683d53` / 디자인총괄 `local_eb8a8577-c0e4-4a9f-b628-fac0c8549dbf`(7장 사운드 규칙 A1~A10·AD1~AD3) / 맥북 총괄 `local_f25393ea-f5e3-45f1-80fa-c16e9daa4c6c`
 
 ## 확정 결정·지시
 - 디자인 컨셉 7장(디자인총괄 확정): C8 불씨 금지 = CH1 전체, 차임 경계 = 높은 순음 배음 400ms 초과·6kHz 이상은 어택 순간만, ice_orb는 잔향 400ms로 판정
