@@ -328,6 +328,11 @@
 - 믹스: 피크 제어 2단(SFX Compressor −9.2dB/40ms + Master Compressor −8dB/10ms), R2 RMS 변화 −0.75dB·드루이드 −0.17dB. 그룹 RMS 중앙값 Music Explore −29.7·Boss −23.3, Ambience Explore −38.7·Boss −46.6, SFX Explore −24.0·Boss −23.9 → Ambience−Music −9.1dB, Boss Ambience −7.84dB. Ambience 덕킹 Explore −4.06·Boss −3.68dB. EnemyHit 덕킹 미확정(유지).
 - 청음 페이지 `http://127.0.0.1:3399/listen_trackA.html`(새 녹음 `druid_v2`·`r2_v2`), 시안 폴더 `tmp/design-review/20261028_rm1_sound/`.
 
+**최종 제출 (2026-10-28, `0b7576ec1`, `E:/exoduser-wt/_out/rm1-sound/submit5/`)** — `4dd31bac3`·submit2~4를 대체. 수치 PASS, 사용자 청음 요청
+- 추가 수정: 같은 키 30ms 중복 차단을 `Time.realtimeSinceStartup`에서 Core 틱 기준으로 바꿔 녹음이 결정적이 됨(예고 구간 밖 A/B 에너지 비 ±0.02dB). 덕킹(에너지 가중) EnemyHit Explore −4.18dB·Ambience Explore −3.95dB·Ambience Boss −4.17dB → EnemyHit 포함 목표 −4±1 충족.
+- 피크 제어 최종: SFX Compressor −6dB/40ms + Master Compressor −8dB/10ms. R2 피크 −3.92dBFS·RMS 변화 −0.82dB, 드루이드 −3.95dBFS·−0.18dB.
+- 총괄 재확인: BGM 조각이 원본과 0.2초씩 연속(r=0.96~0.98), 피크 위와 같음, TIME AXIS 0. 장면 시각은 submit4와 같다. 청음 페이지 녹음을 `druid_v3`·`r2_v3`로 교체.
+
 ## 3. 완료 조건 (슬라이스)
 - 기능: Unity 1-1 한 판(START → R2 전투 → 드루이드 → 침강)에서 위 키가 웹과 같은 시점에 나는 것을 수신 로그(Receipt keys)로 확인
 - 귀: 녹음 1개(약 60초)를 사운드 총괄이 듣고 판정. 예고음이 혼전에서 묻히지 않는지, 환경음이 BGM을 덮지 않는지 확인
@@ -361,3 +366,4 @@
 | 2026-10-28 | 사용자 "BGM 포함 전부 메아리" → 녹음 BGM이 0.4초마다 원본 앞부분으로 되돌아감을 원본 대조로 확인. 1차 녹음 무효, RM-0 최우선 지시(런타임/녹음 도구 원인 판별·BGM 연속성 r≥0.9 확인 후 재녹음) |
 | 2026-10-28 | 트랙 A 2차 제출(`5abee7623`) 판정: BGM 0.4초 반복·구르기 발소리 동시 재생 미수정으로 귀 판정 보류. 피크 제어·Ambience 덕킹·그룹 음량·기술 11·fireball은 수치 조건부 인정(재녹음 뒤 재측정), EnemyHit 덕킹 미확정 |
 | 2026-10-28 | 트랙 A 재녹음(`4dd31bac3`) 판정: BGM 되감김(오프라인 녹음×스트리밍 임포트, BGM CompressedInMemory로 변경)·메아리 3건 수정을 원본 대조로 재확인, 수치 PASS(EnemyHit 덕킹만 미확정). 1·2차 녹음 무효. 사용자 청음 요청 |
+| 2026-10-28 | 트랙 A 최종 제출(`0b7576ec1`, submit5): 중복 차단 Core 틱 기준으로 결정화, EnemyHit 덕킹 −4.18dB로 확정, 피크 −3.9dBFS. 총괄 재확인 PASS, 청음 페이지 교체 |
