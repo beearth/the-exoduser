@@ -45,3 +45,4 @@
 /Tools/affix-defs-parity/obj/
 !/Tools/enemy-tables-oracle/EnemyTablesTests.csproj
 /Tools/enemy-tables-oracle/runs/
+/Tools/enemy-spawn-oracle/runs/
