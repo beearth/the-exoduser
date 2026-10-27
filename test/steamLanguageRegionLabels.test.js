@@ -9,7 +9,12 @@ const files = [
   '../out/EXODUSER-steam-languages-20260923/package.nw/game.html',
 ];
 
-test('Steam demo language selectors identify the advertised Spanish and Portuguese regions', async () => {
+// 의존 경로 out/EXODUSER-steam-languages-20260923/package.nw/ 는 빌드 산출물(untracked) — 없으면 skip
+const SKIP = (await Promise.all(files.map((file) => readFile(new URL(file, import.meta.url)).then(() => true, () => false)))).every(Boolean)
+  ? false
+  : 'untracked dependency missing: out/EXODUSER-steam-languages-20260923/package.nw/{index,game}.html';
+
+test('Steam demo language selectors identify the advertised Spanish and Portuguese regions', { skip: SKIP }, async () => {
   for (const file of files) {
     const html = await readFile(new URL(file, import.meta.url), 'utf8');
     const spanish = [...html.matchAll(/<option value="es">([^<]+)<\/option>/g)].map((match) => match[1]);

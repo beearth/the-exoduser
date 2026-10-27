@@ -28,6 +28,7 @@
   "scripts": {
     "start": "node server.cjs",
     "check": "node tools/project-check.mjs",
+    "test": "node --experimental-vm-modules --test \"test/*.test.*\"",
     "engine:check": "node --test test/fdgProject.test.mjs test/fdgRuntime.test.mjs test/fdgLegacy.test.mjs test/fdgCharacterQuality.test.mjs test/fdgCharacterDrafts.test.mjs test/fdgProfiler.test.mjs test/fdgOptimization.test.mjs",
     "engine:qa": "node tools/fdg-studio-smoke.mjs",
     "engine:rig:check": "node --test test/fdgRigProject.test.mjs test/fdgRigRuntime.test.mjs",

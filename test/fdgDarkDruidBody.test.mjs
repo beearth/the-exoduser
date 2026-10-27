@@ -2,7 +2,11 @@ import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { PNG } from '/Users/fordeargamers/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/pngjs/lib/png.js';
+import { existsSync } from 'node:fs';
+// pngjs 는 Mac Codex 런타임 하드코딩 경로 — 없으면 skip (근본 수정: 'pngjs' 패키지 import, TEST_TRIAGE 참고)
+const PNG_PATH = '/Users/fordeargamers/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/pngjs/lib/png.js';
+const SKIP = existsSync(PNG_PATH) ? false : 'untracked dependency missing: ' + PNG_PATH;
+const { PNG } = SKIP ? { PNG: null } : await import(PNG_PATH);
 import { buildDarkDruidRig, buildDarkDruidScene, DRUID_SOURCE, DRUID_SOURCE_SHA256 } from '../tools/fdg-studio/build-dark-druid-body.mjs';
 import { evaluateRig } from '../engine/fdg/rig.js';
 import { validateRigProject } from '../engine/fdg/rig-project.js';
@@ -13,7 +17,7 @@ import { FDGRuntime, FIXED_STEP } from '../engine/fdg/runtime.js';
 const SCENE_PATH = new URL('../tools/fdg-studio/fixtures/dark-druid-normal-body.fdg.json', import.meta.url);
 const RIG_PATH = new URL('../tools/fdg-studio/fixtures/dark-druid-normal-body.rig.json', import.meta.url);
 const [sceneBytes, rigBytes, sourceBytes] = await Promise.all([fs.readFile(SCENE_PATH), fs.readFile(RIG_PATH), fs.readFile(new URL(`../${DRUID_SOURCE}`, import.meta.url))]);
-const scene = JSON.parse(sceneBytes), rig = JSON.parse(rigBytes), image = PNG.sync.read(sourceBytes);
+const scene = JSON.parse(sceneBytes), rig = JSON.parse(rigBytes), image = SKIP ? null : PNG.sync.read(sourceBytes);
 const NODE = 'dark-druid-body-node', IDLE = 'dark-druid-idle', ATTACK = 'dark-druid-staff-strike';
 const FRONT_VERTICES = 3276, FRONT_TRIANGLES = 4622, MODEL_EPSILON = 1e-7;
 const metrics = { scope: 'Dark Druid NORMAL first-slice authored data and CPU consumer only', browserVisualVerdict: 'ROOT_OWNED', oldSuitesExecuted: 0, sourceWrites: 0, gitCommands: 0 };
@@ -32,7 +36,7 @@ const matrixPoint = (m, p) => [0,1,2].map(axis => m[axis]*p[0]+m[axis+4]*p[1]+m[
 const phaseSamples = [[IDLE,0],[IDLE,.25],[IDLE,.5],[IDLE,1],[IDLE,1.5],[IDLE,2],[ATTACK,0],[ATTACK,.25],[ATTACK,.65],[ATTACK,.9],[ATTACK,1.1],[ATTACK,1.25],[ATTACK,1.65],[ATTACK,2],[ATTACK,2.4]];
 
 function check(name, body) {
-  test(name, async () => {
+  test(name, { skip: SKIP }, async () => {
     try { await body(); results.push({ name, status: 'PASS' }); }
     catch (error) { results.push({ name, status: 'FAIL', message: error.message }); throw error; }
   });

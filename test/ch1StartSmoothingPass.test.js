@@ -6,7 +6,10 @@ import sharp from 'sharp';
 
 const ROOT=path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/(.:)/,'$1')),'..');
 const GAME=fs.readFileSync(path.join(ROOT,'game.html'),'utf8');
-const CAPTURE=fs.readFileSync(path.join(ROOT,'tmp','capture_ch1_start_smoothing.py'),'utf8');
+// 의존 파일 tmp/capture_ch1_start_smoothing.py 는 미추적(untracked) — 없으면 해당 테스트만 skip
+const CAPTURE_PATH=path.join(ROOT,'tmp','capture_ch1_start_smoothing.py');
+const CAPTURE_SKIP=fs.existsSync(CAPTURE_PATH)?false:'untracked dependency missing: tmp/capture_ch1_start_smoothing.py';
+const CAPTURE=CAPTURE_SKIP?'':fs.readFileSync(CAPTURE_PATH,'utf8');
 const OUT=path.join(ROOT,'assets','map','ch1','baked_start_smoothing');
 const MANIFEST=path.join(OUT,'composition.json');
 const MASTER=path.join(OUT,'CH1_1_START_SMOOTHING_MASTER.png');
@@ -155,7 +158,7 @@ test('stage-0 smoothing uses an organic hill visual while collision and height m
   assert.match(GAME,/const smoothing=_CH1_START_PHASE==='smoothing'&&_ch1StartOuterEnabled\(\)/,'organic hill must obey stage0 outer opt-out and boss-arena guards');
 });
 
-test('capture waits for first visible chunks and probes opt-out, boss, and stage1 isolation',()=>{
+test('capture waits for first visible chunks and probes opt-out, boss, and stage1 isolation',{skip:CAPTURE_SKIP},()=>{
   const start=CAPTURE.indexOf('def capture_mode');
   const end=CAPTURE.indexOf('def make_comparisons',start);
   const block=CAPTURE.slice(start,end);

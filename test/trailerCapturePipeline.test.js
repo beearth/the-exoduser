@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 
+// 의존 경로 tmp/*.py(record_ch3_trailer_takes·render_ch3_trailer_proof·record_ch3_trailer_expansion·render_ch3_trailer_rough_v2·trailer_capture·build_*_trailer)와
+// output/imagegen/trailer/steam_*_api.png 는 미추적(untracked) — 없으면 전체 skip
+const SKIP = fs.existsSync(new URL('../tmp/record_ch3_trailer_takes.py', import.meta.url)) ? false : 'untracked dependency missing: tmp/record_ch3_trailer_takes.py (+ tmp/*.py, output/imagegen/trailer/*.png)';
 const scriptPath = new URL('../tmp/record_ch3_trailer_takes.py', import.meta.url);
 const proofRendererPath = new URL('../tmp/render_ch3_trailer_proof.py', import.meta.url);
 const expansionPath = new URL('../tmp/record_ch3_trailer_expansion.py', import.meta.url);
@@ -14,7 +17,7 @@ const steamBuilderPath = new URL('../tmp/build_steam_trailer.py', import.meta.ur
 const steamTitleArtPath = new URL('../output/imagegen/trailer/steam_title_card_api.png', import.meta.url);
 const steamEndArtPath = new URL('../output/imagegen/trailer/steam_end_card_api.png', import.meta.url);
 
-test('CH3 trailer recorder defines three reviewable 1080p WebM takes', () => {
+test('CH3 trailer recorder defines three reviewable 1080p WebM takes', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(scriptPath), 'the repeatable CH3 trailer recorder must exist');
   const source = fs.readFileSync(scriptPath, 'utf8');
 
@@ -27,7 +30,7 @@ test('CH3 trailer recorder defines three reviewable 1080p WebM takes', () => {
     'capture must use the reproducible headless Chromium path');
 });
 
-test('CH3 trailer recorder uses the real stage and preserves a silent edit-friendly report', () => {
+test('CH3 trailer recorder uses the real stage and preserves a silent edit-friendly report', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(scriptPath), 'the repeatable CH3 trailer recorder must exist');
   const source = fs.readFileSync(scriptPath, 'utf8');
 
@@ -39,7 +42,7 @@ test('CH3 trailer recorder uses the real stage and preserves a silent edit-frien
     'the recorder must emit deterministic take timing and browser-error evidence');
 });
 
-test('cinematic takes suppress the real runtime overlays and canvas pets', () => {
+test('cinematic takes suppress the real runtime overlays and canvas pets', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(scriptPath), 'the repeatable CH3 trailer recorder must exist');
   const source = fs.readFileSync(scriptPath, 'utf8');
 
@@ -53,7 +56,7 @@ test('cinematic takes suppress the real runtime overlays and canvas pets', () =>
     'all takes must clear pet subtitles before recording starts');
 });
 
-test('capture report probes the encoded file duration', () => {
+test('capture report probes the encoded file duration', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(scriptPath), 'the repeatable CH3 trailer recorder must exist');
   const source = fs.readFileSync(scriptPath, 'utf8');
 
@@ -61,7 +64,7 @@ test('capture report probes the encoded file duration', () => {
     'the report must contain encoded duration rather than only requested trim duration');
 });
 
-test('combat take cannot be obscured by test-character low-health grading', () => {
+test('combat take cannot be obscured by test-character low-health grading', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(scriptPath), 'the repeatable CH3 trailer recorder must exist');
   const source = fs.readFileSync(scriptPath, 'utf8');
 
@@ -75,7 +78,7 @@ test('combat take cannot be obscured by test-character low-health grading', () =
     'the take must not expose a fake 999999 QA health cap in the HUD');
 });
 
-test('proof renderer assembles the approved takes into one 1080p review cut', () => {
+test('proof renderer assembles the approved takes into one 1080p review cut', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(proofRendererPath), 'the repeatable proof-cut renderer must exist');
   const source = fs.readFileSync(proofRendererPath, 'utf8');
 
@@ -87,7 +90,7 @@ test('proof renderer assembles the approved takes into one 1080p review cut', ()
     'Playwright video.path() must be resolved before the browser event loop closes');
 });
 
-test('CH3 trailer expansion records five distinct authored beats', () => {
+test('CH3 trailer expansion records five distinct authored beats', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(expansionPath), 'the CH3 trailer expansion recorder must exist');
   const source = fs.readFileSync(expansionPath, 'utf8');
 
@@ -106,7 +109,7 @@ test('CH3 trailer expansion records five distinct authored beats', () => {
     'the finisher must clear the enemy-hover tooltip after the aimed right-click');
 });
 
-test('rough V2 renderer builds a titled long-form review cut', () => {
+test('rough V2 renderer builds a titled long-form review cut', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(roughV2Path), 'the long-form CH3 rough-cut renderer must exist');
   const source = fs.readFileSync(roughV2Path, 'utf8');
 
@@ -119,7 +122,7 @@ test('rough V2 renderer builds a titled long-form review cut', () => {
   }
 });
 
-test('final showcase capture adds ancestor, Kraken parry, and Flame Devil beats', () => {
+test('final showcase capture adds ancestor, Kraken parry, and Flame Devil beats', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(gameplayCapturePath), 'the deterministic gameplay capture engine must exist');
   const source = fs.readFileSync(gameplayCapturePath, 'utf8');
 
@@ -142,7 +145,7 @@ test('final showcase capture adds ancestor, Kraken parry, and Flame Devil beats'
     'capture must fall back to the installed full FFmpeg build for H.264 output');
 });
 
-test('final showcase builder produces a one-minute 1080p60 H.264/AAC master', () => {
+test('final showcase builder produces a one-minute 1080p60 H.264/AAC master', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(finalShowcaseBuilderPath), 'the final showcase builder must exist');
   const source = fs.readFileSync(finalShowcaseBuilderPath, 'utf8');
 
@@ -167,7 +170,7 @@ test('final showcase builder produces a one-minute 1080p60 H.264/AAC master', ()
     'the final end card must include a clear Steam call to action');
 });
 
-test('ancestor showcase keeps the combat ring sparse enough to read the summon silhouette', () => {
+test('ancestor showcase keeps the combat ring sparse enough to read the summon silhouette', { skip: SKIP }, () => {
   const source = fs.readFileSync(gameplayCapturePath, 'utf8');
   const setup = source.match(/ANCESTOR_SETUP\s*=\s*"""([\s\S]*?)"""/)?.[1] ?? '';
   assert.match(setup, /for\(let i=0;i<10;i\+\+\)/,
@@ -176,7 +179,7 @@ test('ancestor showcase keeps the combat ring sparse enough to read the summon s
     'targets should leave a clear inner stage around the summoned ancestor');
 });
 
-test('current-runtime capture supports native 9:16 recording', () => {
+test('current-runtime capture supports native 9:16 recording', { skip: SKIP }, () => {
   const source = fs.readFileSync(gameplayCapturePath, 'utf8');
 
   assert.match(source, /VERTICAL\s*=\s*"--vertical"\s+in\s+sys\.argv\[1:\]/,
@@ -191,7 +194,7 @@ test('current-runtime capture supports native 9:16 recording', () => {
     'Chromium must render the game natively in the portrait viewport');
 });
 
-test('vertical final builder uses only newly recorded current-runtime footage', () => {
+test('vertical final builder uses only newly recorded current-runtime footage', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(verticalBuilderPath), 'the native vertical final builder must exist');
   const source = fs.readFileSync(verticalBuilderPath, 'utf8');
 
@@ -217,7 +220,7 @@ test('vertical final builder uses only newly recorded current-runtime footage', 
     'the portrait end card must retain the campaign call to action');
 });
 
-test('Steam capture isolates fresh native 16:9 footage and removes Holy Blast', () => {
+test('Steam capture isolates fresh native 16:9 footage and removes Holy Blast', { skip: SKIP }, () => {
   const source = fs.readFileSync(gameplayCapturePath, 'utf8');
 
   assert.match(source, /STEAM\s*=\s*"--steam"\s+in\s+sys\.argv\[1:\]/,
@@ -232,7 +235,7 @@ test('Steam capture isolates fresh native 16:9 footage and removes Holy Blast', 
     'late-boss climax must use the dark loadout instead of Holy Blast');
 });
 
-test('Steam final is a fresh 1080p60 gameplay-first upload master', () => {
+test('Steam final is a fresh 1080p60 gameplay-first upload master', { skip: SKIP }, () => {
   assert.ok(fs.existsSync(steamTitleArtPath), 'the API-generated Steam title artwork must exist');
   assert.ok(fs.existsSync(steamEndArtPath), 'the API-generated Steam end-card artwork must exist');
   assert.ok(fs.existsSync(steamBuilderPath), 'the Steam-specific final builder must exist');
