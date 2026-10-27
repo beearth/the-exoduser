@@ -100,7 +100,7 @@ function makeScope(c,rng,vrng,out){
  const rec=(...a)=>out.ev.push(a);
  const scope={Math:Object.assign(Object.create(Math),{random:rng}),_vr:vrng,_NOP:0,e,P,G,projs,_projFree:[],T:Tn,EL:{P:0,F:1,I:2,D:3,L:4,H:5,E:6},ELC:['#bbbbbb','#ff5522','#3388ff','#9933cc','#ffee00','#ff88cc','#88aa44'],
   window:{},OPT:{bossDebug:false,hitStop:100,shake:100},_HS:{bossPhase:12},_BOSS_PHASE_AURA:['#fff','#fa0','#f80','#f40','#f00'],
-  _T:a=>a,_L:(a,b)=>a,addTxt:noop,addParts:noop,poolPart:noop,deathFX:noop,shake:noop,playVFXAng:noop,playSample:noop,_r:()=>1,_reviveVFX:noop,_bossSfx:()=>null,setTimeout:noop,
+  _T:a=>a,_L:(a,b)=>a,addTxt:noop,addParts:noop,poolPart:noop,deathFX:noop,shake:noop,playVFXAng:noop,playSample:noop,_r:()=>1,_reviveVFX:noop,_bossSfx:()=>null,_bossTellSfx:noop,_playDruidSfx:noop,setTimeout:noop,
   _addBlastLight:noop,_addTpSmoke:noop,_addTpImpact:noop,_addTpBolt:noop,_addTpStar:noop,_addTpVland:noop,
   SFX:new Proxy({},{get:()=>noop}),_recycleProj:noop,_ancestorTargetForEnemy:()=>null,_druidFinaleUpdate:()=>false,_druidFinaleAI:noop,_druidFinaleAtk:()=>0,_druidFinaleAct:()=>0,_druidFinaleTrackBurrow:noop,
   _FDG_DRUID_THORN_FIRST:false,
