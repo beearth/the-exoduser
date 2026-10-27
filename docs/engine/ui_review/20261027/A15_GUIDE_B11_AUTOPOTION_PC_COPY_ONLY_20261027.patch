@@ -1,0 +1,6 @@
+diff --git a/unity/Assets/Exoduser/Runtime/NativeLobby.StartupPresentation.cs b/unity/Assets/Exoduser/Runtime/NativeLobby.StartupPresentation.cs
+--- a/unity/Assets/Exoduser/Runtime/NativeLobby.StartupPresentation.cs
++++ b/unity/Assets/Exoduser/Runtime/NativeLobby.StartupPresentation.cs
+@@ -172 +172 @@
+-   string note=K("물약은 설정한 HP% 이하 시 자동 사용","Potions activate automatically below your configured HP%."),hint=pad?K("A · 다음 / Start · 건너뛰기","A · Next / Start · Skip"):K("클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기","Click / Enter / Space · Next    Hold Space / ESC · Skip");
++   string note=K("물약은 자동 사용","Potions activate automatically"),hint=pad?K("A · 다음 / Start · 건너뛰기","A · Next / Start · Skip"):K("클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기","Click / Enter / Space · Next    Hold Space / ESC · Skip");
