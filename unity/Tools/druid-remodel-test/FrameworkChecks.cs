@@ -238,8 +238,12 @@ static partial class P
         var s = SampleSi1(); s.Id = "sampleRules"; s.Hooks = new BossRemodelHooks();
         s.CollapseVulnerable = true; s.CollapseHpFloor = 0.7; s.CollapseTicks = 120; s.FinalTicks = 60;
         s.Obstacles.Add(new RemodelObstacleDef { Name = "stump", X = bx, Y = by + 230, R = 90 });
-        s.Hooks.OnAttach = (sim, e, st) => { for (int i = 0; i < 3; i++) sim.SpawnRemodelProp("knot", e.X - 300 + 300 * i, e.Y - 320, 30, 1, i); };
-        s.Hooks.DamageScale = (sim, e, st) => (3 - sim.RemodelProps.Count(p => p.Alive)) / 3.0;   // RM-B4 cord rule: 3 knots = blocked, 2 = 1/3, 1 = 2/3, 0 = full
+        s.Hooks.OnAttach = (sim, e, st) =>
+        {
+            for (int i = 0; i < 3; i++) sim.SpawnRemodelProp("knot", e.X - 300 + 300 * i, e.Y - 320, 30, 1, i);   // RM-B2 sprout kind: one hit
+            sim.SpawnRemodelProp("cord", e.X + 500, e.Y, 40, (int)Math.Round(st.BaseMaxHp * 0.05));             // RM-B4 knot kind: base HP x 0.05
+        };
+        s.Hooks.DamageScale = (sim, e, st) => (3 - sim.RemodelProps.Count(p => p.Alive && p.Kind == "knot")) / 3.0;   // RM-B4 cord rule: 3 knots = blocked, 2 = 1/3, 1 = 2/3, 0 = full
         s.Hooks.PropBroken = (sim, p) => fcBroken++;
         s.Hooks.DyingTick = (sim, e, st) => fcDying++;
         s.Hooks.ObstacleHit = (bo, e, d, o) => fcBump++;
@@ -256,7 +260,14 @@ static partial class P
         while (guard++ < 1500 && !(s.Stage.InArena && s.Stage.LoadPhase == 0 && s.Stage.Boss != null)) s.Tick(0, 0, p.X + 100, p.Y, false, false);
         var boss = s.Stage.Boss; if (boss == null) { Check(false, "FW-C: boss did not spawn"); return; }
         var props = s.RemodelProps.ToList();
-        Check(props.Count == 3 && props.All(q => q.Alive && s.Enemies.Contains(q.Body) && s.IsRemodelProp(q.Body)) && !s.IsRemodelProp(boss) && s.Stage.Boss == boss, "FW-C(1): 3 props spawned as hit targets, the boss is the stage boss");
+        Check(props.Count == 4 && props.All(q => q.Alive && s.Enemies.Contains(q.Body) && s.IsRemodelProp(q.Body)) && !s.IsRemodelProp(boss) && s.Stage.Boss == boss, "FW-C(1): 4 props spawned as hit targets, the boss is the stage boss");
+        int baseHp = s.DruidLife(boss).BaseMaxHp, cordHp = (int)Math.Round(baseHp * 0.05);
+        Check(props[3].Body.MaxHp == cordHp && props[3].Body.Hp == cordHp && props.Take(3).All(q => q.Body.MaxHp == 1), "FW-C(1): prop HP = 1 (sprout) / base HP x 0.05 = " + cordHp + " (cord knot)");
+        // counters before any prop ends: kills, stage kills, spawn total, loot, exp, combo, region kills (R-A regions switched on by hand: the arena test map has none)
+        s.Regions = new RegionState[4]; for (int i = 0; i < 4; i++) s.Regions[i] = new RegionState { Id = i, Total = 10 };
+        s.RegMidX = boss.X / 40.0; s.RegMidY = boss.Y / 40.0;
+        Func<string> counters = () => s.Kills + "/" + s.Stage.StageKills + "/" + s.Stage.TotalSpawned + "/" + s.Loot.Count + "/" + s.Player.Experience + "/" + s.Player.Level + "/" + s.Combo + "/" + s.Regions.Sum(r => r.Kills);
+        string c0 = counters();
         // 4 obstacles: block movement and shots at the stump, not beside it
         Check(!s.CanMove((float)bx, (float)(by + 230), 10) && s.CanMove((float)(bx + 400), (float)by, 10) && s.IsProjectileWall((float)bx, (float)(by + 230)) && s.RemodelObstacles.Count == 1, "FW-C(4): stump blocks movement and shots");
         // 2 blocked: all 3 knots alive -> the boss takes nothing; the player waits south behind the stump so the boss walks into it
@@ -287,7 +298,18 @@ static partial class P
             if (k < 2) s.HurtEnemy(props[k + 1].Body, 5);
         }
         Check(drop[0] > 0 && drop[0] < drop[2] * 0.5 && drop[1] > drop[0] && drop[1] < drop[2], "FW-C(2): damage 1/3 < 2/3 < full (" + string.Join("/", drop) + ")");
-        Check(fcBroken == 3 && s.RemodelProps.All(q => !q.Alive), "FW-C(1): all three knots broken");
+        Check(fcBroken == 3 && s.RemodelProps.Where(q => q.Kind == "knot").All(q => !q.Alive), "FW-C(1): all three knots broken");
+        // the cord knot takes several hits: HP goes down, it breaks once the damage reaches its HP
+        var cord = props[3]; int cd = (int)Math.Ceiling(cordHp / 4.0), cordHits = 0;
+        while (cord.Alive && cordHits < 12)
+        {
+            s.HurtEnemy(cord.Body, cd); cordHits++;
+            if (cordHits == 1) Check(cord.Alive && cord.Body.Hp > 0 && cord.Body.Hp < cordHp, "FW-C(1): cord knot survives the first hit (" + cord.Body.Hp + "/" + cordHp + ")");
+        }
+        Check(!cord.Alive && cord.EndReason == "broken" && cordHits >= 2 && cordHits <= 8 && fcBroken == 4, "FW-C(1): cord knot broke after " + cordHits + " hits of " + cd);
+        s.Tick(0, 0, boss.X, boss.Y, false, false);
+        string c1 = counters();
+        Check(c1 == c0 && !s.Enemies.Any(e => s.IsRemodelProp(e)), "FW-C(1): 4 broken props add nothing to kills / stage kills / spawn total / loot / exp / level / combo / region kills (" + c0 + " -> " + c1 + ")");
         // kill life 1 -> a change of life that takes damage, floor 70 % of the next life
         int g2 = 0; while (!s.DruidLife(boss).Collapsing && g2++ < 400) { p.Hp = p.MaxHp; s.HurtEnemy(boss, Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.2))); s.Tick(0, 0, boss.X, boss.Y, false, false); }
         st = s.DruidLife(boss);
@@ -304,6 +326,7 @@ static partial class P
         Check(!st.Collapsing && st.Life == 1 && Math.Abs(boss.Hp - Math.Round(mx * 0.7)) <= 1 && lowest >= floorHp - 1 && lowest < next, "FW-C(6): 45 % dealt while down -> life 2 starts at the 70 % floor (" + boss.Hp + "/" + mx + ", lowest " + lowest + ")");
         var lifeEv = s.DruidRemodelLog.First(e => e.Kind == "life");
         Check(lifeEv.Note.Contains("taken while down"), "FW-C(6): life event notes the damage taken while down");
+        var late = s.SpawnRemodelProp("late", boss.X + 400, boss.Y - 200, 30, 1, 9);   // still standing when the boss dies
         // 3 death sequence: 60 ticks, invulnerable, then the kill with die1 (no sink)
         int g3 = 0; while (!s.DruidLife(boss).Dying && boss.Alive && g3++ < 400) { p.Hp = p.MaxHp; s.HurtEnemy(boss, Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.2))); s.Tick(0, 0, boss.X, boss.Y, false, false); }
         Check(st.Dying && boss.Alive, "FW-C(3): last life down -> death sequence");
@@ -315,6 +338,8 @@ static partial class P
         Check(s.BossLineLog.Count == 1 && s.BossLineLog[0] == "die1", "FW-C(5): lines " + string.Join(",", s.BossLineLog));
         int open = 0; while (s.Stage.Exits.Count == 0 && open++ < 600) { p.Hp = p.MaxHp; p.Iframes = 600; s.Tick(0, 0, p.X + 100, p.Y, false, false); }
         Check(s.Stage.Exits.Count > 0 && !s.Stage.BossAlive && !s.Enemies.Any(e => s.IsRemodelProp(e)), "FW-C: exit opened, no prop left in Enemies");
+        // a prop still alive at the boss's death ends as "final", also without counting: only the boss kill is counted
+        Check(!late.Alive && late.EndReason == "final" && fcBroken == 4 && s.Kills == int.Parse(c0.Split('/')[0]) + 1 &&s.Stage.TotalSpawned == int.Parse(c0.Split('/')[2]) && s.Regions.Sum(r => r.Kills) == 0, "FW-C(1): after the fight only the boss kill counts (" + counters() + ")");
         // druid lines: si0 opens with intro0 (the RM-B1 fight itself is checked byte for byte by the druid fights)
         var sd = new Simulation(new SimulationConfig { StageIndex = 0, DifficultyIndex = 5, EnemyAiEnabled = true, PlayerMaxHp = 2000000, PlayerBaseAttack = 40 }, 5u);
         sd.DruidRemodel = true; sd.Player.Level = 8; sd.AttachDruidBoss(); sd.Stage.Enabled = true; sd.Stage.FieldBossDone = true; sd.Stage.BossUnlocked = true;
