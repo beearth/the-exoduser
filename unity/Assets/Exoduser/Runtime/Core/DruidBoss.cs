@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort.Core
     }
 
     // per-boss web fields that EnemyState does not carry
-    public sealed class DruidData
+    public sealed partial class DruidData
     {
         public double X, Y, Facing, St2, Speed, BaseSpeed, R;                // authoritative copy of e.x/e.y/e.facing/e.st2 (synced back to EnemyState each tick)
         public string S = "idle";
@@ -142,6 +142,7 @@ namespace Exoduser.UnityPort.Core
             if (!Data.TryGetValue(e, out d)) d = Attach(e);
             Pull(e, d);
             Tick++;
+            if (Remodel && d.HeartCd > 0) d.HeartCd -= 1;                             // heartbeat cooldown = 40 s of boss ticks (not only idle ticks); the sim skips the boss tick while it kneels
             if (d.PImmune > 0) d.PImmune -= 1;                                        // Step(): `if(e._pImmune>0) e._pImmune-=sp`
             if (d.WasStunned && e.Stunned <= 0)                                       // Step(): stun end (`e.stunned<=0&&e._maxStunned`): poise reset, 5 s immunity, back to idle
             {
@@ -251,7 +252,7 @@ namespace Exoduser.UnityPort.Core
         // 40588.. : phase check -> idle move + AI -> feint intercept -> state switch
         void UpdateBoss(EnemyState e, DruidData d, double dist)
         {
-            if (e.Alive) PhaseCheck(e, d);
+            if (e.Alive && !Remodel) PhaseCheck(e, d);   // remodel: the life (Simulation.DruidRemodel) is the phase
             if (d.S == "idle") { IdleMove(e, d, dist); AI(e, d, dist); }
             if (d.Feinting && d.S.EndsWith("Wind") && d.St2 <= 0)
             {
@@ -312,7 +313,7 @@ namespace Exoduser.UnityPort.Core
         void IdleMove(EnemyState e, DruidData d, double dist)
         {
             if (e.Stunned > 0) return;
-            var ph = DruidBossData.Phases[d.BossPhase];
+            var ph = Ph(d.BossPhase);
             double spd = d.Speed * ph.SpdM;
             if (dist > 200)
             {
@@ -347,7 +348,8 @@ namespace Exoduser.UnityPort.Core
                     else if (host.CanMove(d.X, d.Y + sy, d.R)) d.Y += sy;
                 }
             }
-            // idle red / black bean volley
+            // idle red / black bean volley (not one of the 12 remodel moves)
+            if (Remodel) return;
             d.IdleRBT += 1;
             double interval = Math.Max(18, 40 - d.BossPhase * 5);
             if (d.IdleRBT >= interval && dist < 1200)
@@ -374,7 +376,7 @@ namespace Exoduser.UnityPort.Core
         double Score(BossMove mv, double dist, int phase, DruidData d)
         {
             ScoreEvals++;
-            if (mv.Id == "cageTrap") return -1;
+            if (mv.Id == "cageTrap" || (Remodel && mv.Id == "heartbeat")) return -1;   // heartbeat is forced by the AI (P3 entry + 40 s cooldown), never scored
             if (!mv.InPhase(phase)) return -1;
             if (d.MoveCDs[mv.Idx] > 0) return 0;
             double mid = (mv.RangeMin + mv.RangeMax) / 2, span = Math.Max(1, (mv.RangeMax - mv.RangeMin) / 2);
@@ -415,19 +417,20 @@ namespace Exoduser.UnityPort.Core
             return sc;
         }
 
-        static BossMove FindMove(string id) { foreach (var m in DruidBossData.Moves) if (m.Id == id) return m; return null; }
-        static bool InMoveSet(string id) { return Array.IndexOf(DruidBossData.MoveSet, id) >= 0; }
+        BossMove FindMove(string id) { foreach (var m in MoveTable) if (m.Id == id) return m; return null; }
+        bool InMoveSet(string id) { return Remodel ? FindMove(id) != null : Array.IndexOf(DruidBossData.MoveSet, id) >= 0; }
 
         // ---- _bossAI ---------------------------------------------------------------------------------------------------------------------------------------------
         public string LastPick;   // oracle trace
         void AI(EnemyState e, DruidData d, double dist)
         {
-            var ph = DruidBossData.Phases[d.BossPhase];
+            var ph = Ph(d.BossPhase);
             for (int i = 0; i < d.MoveCDs.Length; i++) if (d.MoveCDs[i] > 0) d.MoveCDs[i] -= 1;
             if (e.Stunned > 0 || d.S != "idle") return;
             double engDist = 180 - d.BossPhase * 20;
             d.CombatSt = dist > engDist + 30 ? "approach" : dist < 50 ? "retreat" : "engage";
             d.BossPatT -= 1;
+            if (Remodel && ForceHeartbeat(e, d, dist)) return;
             if (d.BossPatT > 0 || dist > 500 || dist < 20) return;
             // G._pStats.avgDist is a statistic nothing else reads in the ported slice
             if (d.ComboSeq != null && d.ComboIdx < d.ComboSeq.Length)
@@ -437,18 +440,18 @@ namespace Exoduser.UnityPort.Core
                 if (nmv != null && nmv.InPhase(d.BossPhase) && InMoveSet(nid) && d.MoveCDs[nmv.Idx] <= 0)
                 {
                     d.ComboIdx++;
-                    d.MoveCDs[nmv.Idx] = nmv.Cd * ph.CdM;
+                    d.MoveCDs[nmv.Idx] = CooldownOf(nmv, ph);
                     d.BossPatT = I(6 + R() * 6);
                     d.LastMoves.Add(nmv.Id); if (d.LastMoves.Count > 5) d.LastMoves.RemoveAt(0);
                     d.MeleeStreak = nmv.HasTag("ranged") ? 0 : d.MeleeStreak + 1;
-                    d.Feinting = nmv.CanFeint && R() < ph.FeintC;
+                    d.Feinting = nmv.CanFeint && !(Remodel && d.FeintUsed) && R() < ph.FeintC; if (d.Feinting) d.FeintUsed = true;
                     int ed = 0; if (nmv.CanDelay > 0 && R() < ph.DelayC) ed = I(nmv.Tele * nmv.CanDelay);
                     LastPick = nmv.Id; StartPattern(e, d, nmv, dist, d.BossPhase, ed); return;
                 }
                 else { d.ComboSeq = null; d.ComboIdx = 0; }
             }
             BossMove bestMv = null; double bestS = -1;
-            var moves = DruidBossData.Moves; var scores = new double[moves.Length];
+            var moves = MoveTable; var scores = new double[moves.Length];
             for (int i = 0; i < moves.Length; i++)
             {
                 double s = Score(moves[i], dist, d.BossPhase, d);
@@ -468,15 +471,16 @@ namespace Exoduser.UnityPort.Core
             }
             d.LastMoves.Add(bestMv.Id); if (d.LastMoves.Count > 5) d.LastMoves.RemoveAt(0);
             d.MeleeStreak = bestMv.HasTag("ranged") ? 0 : d.MeleeStreak + 1;
-            d.MoveCDs[bestMv.Idx] = bestMv.Cd * ph.CdM;
+            d.MoveCDs[bestMv.Idx] = CooldownOf(bestMv, ph);
             d.BossPatT = (d.BossPatCd + R() * 15) * ph.CdM;
             if (R() < ph.ComboC)
             {
                 var mc = new List<BossCombo>();
-                foreach (var c in DruidBossData.Combos) if (c.Seq[0] == bestMv.Id && c.InPhase(d.BossPhase)) mc.Add(c);
+                foreach (var c in ComboTable) if (c.Seq[0] == bestMv.Id && c.InPhase(d.BossPhase)) mc.Add(c);
                 if (mc.Count > 0) { var c = mc[I(R() * mc.Count)]; d.ComboSeq = c.Seq; d.ComboIdx = 1; }
             }
-            d.Feinting = bestMv.CanFeint && R() < ph.FeintC;
+            d.FeintUsed = false;   // a fresh pick starts a new combo window: one feint per combo (remodel)
+            d.Feinting = bestMv.CanFeint && R() < ph.FeintC; if (d.Feinting) d.FeintUsed = true;
             int extraDelay = 0;
             if (bestMv.CanDelay > 0 && R() < ph.DelayC) extraDelay = I(bestMv.Tele * bestMv.CanDelay);
             LastPick = bestMv.Id;

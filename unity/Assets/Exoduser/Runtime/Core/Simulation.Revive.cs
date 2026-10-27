@@ -29,6 +29,7 @@ namespace Exoduser.UnityPort.Core
         // hurtE `if(e.hp<=0)`: revive judgement first, then the ordinary kill path.
         private void OnEnemyZeroHp(EnemyState enemy)
         {
+            if (DruidRemodel && RemodelZeroHp(enemy)) return;   // RM-B1: the druid has lives instead of the judged revive
             var ctx = ReviveCtx();
             var rr = ReviveRules.OnZeroHp(ctx, enemy);
             Raise(rr.Texts);
