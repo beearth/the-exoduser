@@ -1,6 +1,6 @@
 # RM-1 사운드 — 1-1 리모델링 슬라이스 Unity 사운드 (2026-10-27 사운드 총괄)
 
-근거: CTO 지시(2026-10-27, 사용자 원문 "이식작업은 대충 된거같으니까 유니티 리모델링 작업들어간다 오늘부터"). 첫 목표는 1-1 리모델링 슬라이스, 즉 맵 RM-1(`docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md`)과 다크드루이드 리모델링입니다. 사운드 총괄이 맡는 범위는 아래 네 가지입니다.
+근거: 유니티 총괄 공지(local_59ad835c, 10-27): 사운드는 Unity Audio Mixer 기반으로 새로 구성하고, 호출 시점은 Core 이벤트, 공간음은 3D. CTO 지시(2026-10-27, 사용자 원문 "이식작업은 대충 된거같으니까 유니티 리모델링 작업들어간다 오늘부터"). 첫 목표는 1-1 리모델링 슬라이스, 즉 맵 RM-1(`docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md`)과 다크드루이드 리모델링입니다. 사운드 총괄이 맡는 범위는 아래 네 가지입니다.
 - 1-1 숲 배경음·환경음
 - 전투 타격·구르기·패링
 - 드루이드 예고음(AD3 TELL 범주)
@@ -48,20 +48,34 @@
 | A5 | 1-1 적 사망 소리(`_DEATH_VARIANTS` 중 1-1 etype이 쓰는 묶음) | 사망 처리부 |
 | A6 | 드루이드 보스 피격·포효·사망: 1-1 드루이드가 실제로 쓰는 `_BOSS_SFX` 프로필(조회식을 따라가 확인) | `_BOSS_SFX` |
 | A7 | 구르기: 웹과 같은 임시 소리(`footstep`·`footstep2`, 같은 음량·rate). 트랙 B의 `roll_body`가 채택되면 교체 | 구르기 처리부 |
+| A8 | 독성 강(양 사이드 남→북)·비보행 늪의 3D 환경 소스. 위치는 맵 RM-1 씬의 강 스플라인·늪 오브젝트에서 받음(맵 보드 T6: 맵은 위치만, 소리는 사운드 쪽). 강 = 스플라인을 따라 12m 간격 루프 소스, 늪 = 늪마다 기포 원샷 무작위 2~6초 간격. 소리는 트랙 B `amb_toxic_river`·`toxic_bubble` 채택본(채택 전에는 비워 둠) | 맵 RM-1 명세 `E:/exoduser-wt/_out/rm1/SPEC.md` |
 
+- **구조는 Unity Audio Mixer로 새로 만듭니다**(CLAUDE.md §Unity 리모델링, `cf506002d`: Core는 유지하고 표현은 Unity 도구로). 믹서 에셋 `Exoduser.mixer`의 그룹 구성:
+  - `Master` 아래에 `Music`, `Ambience`, `SFX`
+  - `SFX` 아래에 `Tell`, `PlayerHit`, `Skill`, `Voice`, `EnemyHit`, `Death`, `Step`, `UI`
+- 설정 음량(BGM·SFX)은 exposed parameter로 연결합니다.
+- 스냅샷은 `Explore`와 `Boss` 두 개입니다. `Boss`에서는 `Ambience`를 −8dB로 내립니다.
+- `Tell` 그룹에 Send를 걸고 `EnemyHit`·`Ambience`에 Duck Volume(−4dB, attack 10ms, release 250ms)을 넣습니다. 혼전에서도 예고음이 묻히지 않게 하려는 것입니다.
+- 웹 음량·rate·쿨다운은 시작값으로만 쓰고, 최종값은 녹음을 듣고 정합니다.
+- `NativeFeedbackAudio`의 보이스 관리(48보이스 한도·낮은 우선순위부터 밀어내기)는 유지하고, 각 보이스의 출력만 해당 믹서 그룹으로 보냅니다.
+- 드루이드는 리모델링 대상이라(보스는 새로 설계) A6는 임시 연결이고, 트랙 B의 드루이드 키가 채택되면 교체합니다.
 - 오디오 카테고리는 웹 `_SFX_PRI`를 따릅니다(`TELL:12, SKILL:10, VOICE:9, PLAYER_HIT:8, DEATH:4, STEP:3, HIT:2, PROJ:1, AMB:0`). `NativeFeedbackAudio`의 우선순위 정수(지금은 10/2)를 이 표로 넓힙니다.
 - 소리를 낼 지점에 Unity 시뮬레이션 이벤트가 없으면 Core에 `FeedbackEvent` 큐잉 한 줄만 추가합니다. 시뮬레이션 상태는 바꾸지 않으며, 기존 oracle 결과가 같아야 합니다.
 - 브랜치는 `claude/unity-pc-sound-rm1-20261027`입니다(origin/unity/main 기준 worktree `G:\exoduser-wt\`). 병합은 PC 관례대로 origin/unity/main을 브랜치에 merge한 뒤 비강제로 unity/main에 반영합니다. main에는 넣지 않습니다.
+- **구현 배정과 착수 시점(유니티 총괄 local_59ad835c, 10-27)**: 트랙 A 구현 Sonnet은 유니티 총괄이 배정합니다. 착수는 RM-0(URP·패키지, local_7bb6eaac, 브랜치 `claude/unity-rm0-engine-20261027`)이 unity/main에 병합된 뒤입니다. 사운드 총괄은 명세와 귀 판정만 맡습니다.
+- **공간음(3D)**: 환경 소스(독성 강 흐름·늪 기포, A8)는 `AudioSource.spatialBlend=1`, Logarithmic rolloff, min 4m / max 30m, 출력 그룹은 `Ambience`입니다. 숲 바닥 환경음 `amb_hell_forest_bed`는 2D(공간감 없이 화면 전체에 깔림)로 둡니다. 적 피격·예고·사망은 `spatialBlend=0.5`로 방향감만 줍니다(멀어져도 작아지지 않게 rolloff 끔). 플레이어 소리(타격·피격·구르기·패링)와 BGM·UI는 2D입니다. AudioListener는 플레이어 위치에 둡니다(카메라 높이 때문에 거리감이 틀어지지 않게).
 
 ### 트랙 B — 새 후보 생성 (SFX Forge·ElevenLabs, 키마다 3개 → 총괄 판정 → 사용자 청음)
 | 키 | 용도 | 카테고리·길이 | 프롬프트 요지(영문으로 생성) |
 |---|---|---|---|
 | `tell_melee` | 일반 근접몹 `windup` 진입(AD3 2단계) | hit, 0.35s | short low breathy swell, creature inhale and leather creak before a strike, no high tones |
 | `tell_ranged` | 원거리 60f 공격링 시작(AD3 2단계) | skill, 0.6s | taut bowstring and bone scrape tension rising, brief bright attack only, dry |
-| `tell_boss` | 보스 전조. `SFX.charge()` 대체 후보, 드루이드 전 패턴 공통 | skill, 0.9s | deep rising sub swell with rotten wood creak and root tearing, ominous build, cut tail short |
+| `tell_boss` | 보스 전조. `SFX.charge()` 대체 후보, 드루이드 전 패턴 공통. 다크드루이드 RM-B1 명세 §4·RB1-4(텔레그래프 소리)의 기본 소리 — 그 명세가 패턴별로 소리를 나누면 변형 키를 추가 | skill, 0.9s | deep rising sub swell with rotten wood creak and root tearing, ominous build, cut tail short |
 | `roll_body` | 전사 구르기 | hit, 0.45s | armored body roll on damp forest soil, cloth and leather whoosh then dull earth thud, mail jingle minimal |
 | `druid_burrow` | 드루이드 굴파기 진입(`bossDruidUnder`) | skill, 0.9s | heavy body sinking into wet rotten earth, roots snapping, soil collapse rumble |
 | `druid_erupt` | 드루이드 분출(`bossDruidErupt`) | skill, 0.8s | violent eruption from underground, dirt and roots bursting upward, low impact boom, debris patter |
+| `amb_toxic_river` | 1-1 양 사이드 독성 강 흐름(A8, 3D 루프) | ambient, 10s loop | slow viscous toxic sludge river flowing, thick bubbling liquid, low gurgle, no water splash brightness |
+| `toxic_bubble` | 늪·강 기포 터짐(A8, 3D 원샷) | hit, 0.4s | single thick toxic bubble rising and popping in viscous sludge, wet low plop, short |
 | `druid_sink` | 1-1 마지막 사망 침강 도주(1.1s 시트 + 0.3s 유지 + 0.3s 페이드) | skill, 1.7s | wounded creature slowly sinking into swamp soil, wet suction, roots closing over, fading rumble, no scream |
 
 - 모든 프롬프트에 붙이는 공통 금지 조건: CH1 규칙(불씨·차임 금지, 높은 순음 금지), voice/music/melody 금지.
@@ -82,3 +96,5 @@
 | 날짜 | 내용 |
 |---|---|
 | 2026-10-27 | CTO 지시로 착수. 현황 조사(Unity = 게임 안 BGM·환경음·적 피격·구르기·드루이드 소리 없음), 트랙 A·B·C 결정. 트랙 B(7키×3개)를 먼저 sound-simple에 배정하고, 이어서 트랙 A |
+| 2026-10-27 | CLAUDE.md §Unity 리모델링(`cf506002d`)에 맞춰 트랙 A 구조를 Audio Mixer(그룹 11개·스냅샷 Explore/Boss·Tell 덕킹)로 확정. 웹 값은 시작값으로만 사용 |
+| 2026-10-27 | 유니티 총괄 공지 반영: 트랙 A 구현 배정 = 유니티 총괄, 착수 = RM-0 병합 뒤. 공간음 규칙 추가. 맵 RM-1에 독성 강·늪이 합쳐져(fd7bebcc4) A8과 트랙 B 2키(`amb_toxic_river`·`toxic_bubble`)를 추가해 트랙 B는 9키. `tell_boss`는 드루이드 RM-B1 RB1-4 텔레그래프 소리를 맡음 |
