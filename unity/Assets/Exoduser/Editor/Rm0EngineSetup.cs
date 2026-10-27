@@ -193,6 +193,7 @@ namespace Exoduser
             var profile = CreateVolumeProfile();
             var scene = EditorSceneManager.OpenScene(ScenePath);
             var sun = GameObject.Find("Hell Sun").GetComponent<Light>();
+            RenderSettings.sun = sun;   // pin the RM-0 key as the main light: a brighter Hero Light (rendering layer 1) must not become the main light and take over the key shadows
             ApplyHellLighting(sun);
             sun.transform.rotation = Quaternion.Euler(52, -35, 0);
             GameObject.Find("Global Volume").GetComponent<Volume>().sharedProfile = profile;
