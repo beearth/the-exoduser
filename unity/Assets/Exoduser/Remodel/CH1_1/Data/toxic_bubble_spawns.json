@@ -1,0 +1,469 @@
+{
+ "note": "RM-1 독성 기포 스폰. x,y = 웹 px(원점 좌상단, y 아래로 증가), tx,ty = 타일. 독액 몸체 칸에만. VFX는 점마다 size·period·phase로 비동기 스폰(L9).",
+ "seed": 1102,
+ "source": "toxic_river_path.json",
+ "tile": 40,
+ "toWorld": "worldX = x / 100, worldY = -y / 100 (Core 2D 월드: 웹 px / 100, y 아래 = 음수; 3D 층 Z는 RM-1 씬 규칙)",
+ "points": [
+  {
+   "x": 3113,
+   "y": 7712,
+   "tx": 77,
+   "ty": 192,
+   "surface": "riverL",
+   "size": 1.05,
+   "period": 3.83,
+   "phase": 0.73
+  },
+  {
+   "x": 3162,
+   "y": 7647,
+   "tx": 79,
+   "ty": 191,
+   "surface": "riverL",
+   "size": 0.68,
+   "period": 6.56,
+   "phase": 0.63
+  },
+  {
+   "x": 3105,
+   "y": 7619,
+   "tx": 77,
+   "ty": 190,
+   "surface": "riverL",
+   "size": 0.67,
+   "period": 5.64,
+   "phase": 0.18
+  },
+  {
+   "x": 3060,
+   "y": 7569,
+   "tx": 76,
+   "ty": 189,
+   "surface": "riverL",
+   "size": 0.84,
+   "period": 4.84,
+   "phase": 0.07
+  },
+  {
+   "x": 3131,
+   "y": 7533,
+   "tx": 78,
+   "ty": 188,
+   "surface": "riverL",
+   "size": 0.89,
+   "period": 4.08,
+   "phase": 0.81
+  },
+  {
+   "x": 3068,
+   "y": 7507,
+   "tx": 76,
+   "ty": 187,
+   "surface": "riverL",
+   "size": 1.31,
+   "period": 4.9,
+   "phase": 0.42
+  },
+  {
+   "x": 3042,
+   "y": 7408,
+   "tx": 76,
+   "ty": 185,
+   "surface": "riverL",
+   "size": 1.12,
+   "period": 3.77,
+   "phase": 0.76
+  },
+  {
+   "x": 2996,
+   "y": 7368,
+   "tx": 74,
+   "ty": 184,
+   "surface": "riverL",
+   "size": 0.62,
+   "period": 2.83,
+   "phase": 0.01
+  },
+  {
+   "x": 2959,
+   "y": 7293,
+   "tx": 73,
+   "ty": 182,
+   "surface": "riverL",
+   "size": 1,
+   "period": 6.25,
+   "phase": 0.58
+  },
+  {
+   "x": 2912,
+   "y": 7250,
+   "tx": 72,
+   "ty": 181,
+   "surface": "riverL",
+   "size": 0.62,
+   "period": 4.49,
+   "phase": 0.39
+  },
+  {
+   "x": 2841,
+   "y": 7225,
+   "tx": 71,
+   "ty": 180,
+   "surface": "riverL",
+   "size": 0.86,
+   "period": 3.17,
+   "phase": 0.59
+  },
+  {
+   "x": 2872,
+   "y": 7165,
+   "tx": 71,
+   "ty": 179,
+   "surface": "riverL",
+   "size": 1.31,
+   "period": 4,
+   "phase": 0.92
+  },
+  {
+   "x": 2786,
+   "y": 7148,
+   "tx": 69,
+   "ty": 178,
+   "surface": "riverL",
+   "size": 0.96,
+   "period": 5.8,
+   "phase": 0.45
+  },
+  {
+   "x": 2727,
+   "y": 7111,
+   "tx": 68,
+   "ty": 177,
+   "surface": "riverL",
+   "size": 0.64,
+   "period": 4.74,
+   "phase": 0.14
+  },
+  {
+   "x": 2686,
+   "y": 7063,
+   "tx": 67,
+   "ty": 176,
+   "surface": "riverL",
+   "size": 1.07,
+   "period": 3.72,
+   "phase": 0.94
+  },
+  {
+   "x": 2661,
+   "y": 7007,
+   "tx": 66,
+   "ty": 175,
+   "surface": "riverL",
+   "size": 1.35,
+   "period": 6.46,
+   "phase": 0.95
+  },
+  {
+   "x": 2584,
+   "y": 6969,
+   "tx": 64,
+   "ty": 174,
+   "surface": "riverL",
+   "size": 0.61,
+   "period": 6.04,
+   "phase": 0.28
+  },
+  {
+   "x": 2479,
+   "y": 6928,
+   "tx": 61,
+   "ty": 173,
+   "surface": "riverL",
+   "size": 0.71,
+   "period": 6.54,
+   "phase": 0.67
+  },
+  {
+   "x": 2420,
+   "y": 6905,
+   "tx": 60,
+   "ty": 172,
+   "surface": "riverL",
+   "size": 0.94,
+   "period": 4.49,
+   "phase": 0.13
+  },
+  {
+   "x": 4977,
+   "y": 7708,
+   "tx": 124,
+   "ty": 192,
+   "surface": "riverR",
+   "size": 0.7,
+   "period": 3.13,
+   "phase": 0.55
+  },
+  {
+   "x": 4977,
+   "y": 7647,
+   "tx": 124,
+   "ty": 191,
+   "surface": "riverR",
+   "size": 1.15,
+   "period": 2.58,
+   "phase": 0.27
+  },
+  {
+   "x": 5029,
+   "y": 7604,
+   "tx": 125,
+   "ty": 190,
+   "surface": "riverR",
+   "size": 0.79,
+   "period": 4.73,
+   "phase": 0.34
+  },
+  {
+   "x": 4973,
+   "y": 7568,
+   "tx": 124,
+   "ty": 189,
+   "surface": "riverR",
+   "size": 0.93,
+   "period": 6.33,
+   "phase": 0.88
+  },
+  {
+   "x": 5024,
+   "y": 7529,
+   "tx": 125,
+   "ty": 188,
+   "surface": "riverR",
+   "size": 0.72,
+   "period": 4.72,
+   "phase": 0.31
+  },
+  {
+   "x": 4980,
+   "y": 7465,
+   "tx": 124,
+   "ty": 186,
+   "surface": "riverR",
+   "size": 0.85,
+   "period": 6.77,
+   "phase": 0.37
+  },
+  {
+   "x": 5035,
+   "y": 7414,
+   "tx": 125,
+   "ty": 185,
+   "surface": "riverR",
+   "size": 1.33,
+   "period": 6.36,
+   "phase": 0.29
+  },
+  {
+   "x": 5098,
+   "y": 7376,
+   "tx": 127,
+   "ty": 184,
+   "surface": "riverR",
+   "size": 0.64,
+   "period": 5.39,
+   "phase": 0.74
+  },
+  {
+   "x": 5025,
+   "y": 7348,
+   "tx": 125,
+   "ty": 183,
+   "surface": "riverR",
+   "size": 0.61,
+   "period": 5.92,
+   "phase": 0.35
+  },
+  {
+   "x": 5053,
+   "y": 7291,
+   "tx": 126,
+   "ty": 182,
+   "surface": "riverR",
+   "size": 0.87,
+   "period": 3.35,
+   "phase": 0.62
+  },
+  {
+   "x": 5082,
+   "y": 7221,
+   "tx": 127,
+   "ty": 180,
+   "surface": "riverR",
+   "size": 1.22,
+   "period": 2.77,
+   "phase": 0.4
+  },
+  {
+   "x": 5147,
+   "y": 7192,
+   "tx": 128,
+   "ty": 179,
+   "surface": "riverR",
+   "size": 0.87,
+   "period": 6.58,
+   "phase": 0.88
+  },
+  {
+   "x": 5294,
+   "y": 7131,
+   "tx": 132,
+   "ty": 178,
+   "surface": "riverR",
+   "size": 1.26,
+   "period": 3.62,
+   "phase": 0.8
+  },
+  {
+   "x": 5346,
+   "y": 7085,
+   "tx": 133,
+   "ty": 177,
+   "surface": "riverR",
+   "size": 0.83,
+   "period": 6.75,
+   "phase": 0.69
+  },
+  {
+   "x": 5431,
+   "y": 7026,
+   "tx": 135,
+   "ty": 175,
+   "surface": "riverR",
+   "size": 1.15,
+   "period": 3.36,
+   "phase": 0.42
+  },
+  {
+   "x": 5387,
+   "y": 6973,
+   "tx": 134,
+   "ty": 174,
+   "surface": "riverR",
+   "size": 0.6,
+   "period": 4.32,
+   "phase": 0.65
+  },
+  {
+   "x": 5482,
+   "y": 6927,
+   "tx": 137,
+   "ty": 173,
+   "surface": "riverR",
+   "size": 1.25,
+   "period": 2.89,
+   "phase": 1
+  },
+  {
+   "x": 5531,
+   "y": 6889,
+   "tx": 138,
+   "ty": 172,
+   "surface": "riverR",
+   "size": 1.02,
+   "period": 4.86,
+   "phase": 0.91
+  },
+  {
+   "x": 5582,
+   "y": 6850,
+   "tx": 139,
+   "ty": 171,
+   "surface": "riverR",
+   "size": 1.34,
+   "period": 5.12,
+   "phase": 0.02
+  },
+  {
+   "x": 4947,
+   "y": 5992,
+   "tx": 123,
+   "ty": 149,
+   "surface": "poolE",
+   "size": 1.14,
+   "period": 4.93,
+   "phase": 0.86
+  },
+  {
+   "x": 5027,
+   "y": 6014,
+   "tx": 125,
+   "ty": 150,
+   "surface": "poolE",
+   "size": 1.14,
+   "period": 5.41,
+   "phase": 0.48
+  },
+  {
+   "x": 4892,
+   "y": 5941,
+   "tx": 122,
+   "ty": 148,
+   "surface": "poolE",
+   "size": 0.72,
+   "period": 4.75,
+   "phase": 0.94
+  },
+  {
+   "x": 4991,
+   "y": 5897,
+   "tx": 124,
+   "ty": 147,
+   "surface": "poolE",
+   "size": 1.25,
+   "period": 6.98,
+   "phase": 0.23
+  },
+  {
+   "x": 4950,
+   "y": 6061,
+   "tx": 123,
+   "ty": 151,
+   "surface": "poolE",
+   "size": 0.93,
+   "period": 4.13,
+   "phase": 0.01
+  },
+  {
+   "x": 4928,
+   "y": 5892,
+   "tx": 123,
+   "ty": 147,
+   "surface": "poolE",
+   "size": 1.04,
+   "period": 6.03,
+   "phase": 0.43
+  },
+  {
+   "x": 5058,
+   "y": 5942,
+   "tx": 126,
+   "ty": 148,
+   "surface": "poolE",
+   "size": 0.62,
+   "period": 3.97,
+   "phase": 0.01
+  }
+ ],
+ "checks": {
+  "count": 45,
+  "bySurface": {
+   "riverL": 19,
+   "riverR": 19,
+   "poolE": 7
+  },
+  "minPairDistTiles": 1.53,
+  "pointsOffBlockedTile": 0
+ }
+}

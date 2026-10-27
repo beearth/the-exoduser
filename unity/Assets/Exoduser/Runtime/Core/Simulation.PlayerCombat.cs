@@ -160,11 +160,11 @@ namespace Exoduser.UnityPort.Core
             return false;
         }
 
-        private void ApplyParrySuccess(bool qParry)
+        private void ApplyParrySuccess(bool qParry, double resourceMul = 1, string parryEl = null)   // ResourceMul / ParryEl: the doParry arguments of a reflected bullet (ParryReflect)
         {
             var r = ParryRewards.Apply(new ParryRewards.Input
             {
-                PlayerState = Player.State, ForceQ = qParry, SbParryT = SbParryT, ResourceMul = 1, ParryBonus = ParryBonus, PRegen = PRegen, OptHitStop = 100, OptShake = 100,
+                PlayerState = Player.State, ForceQ = qParry, SbParryT = SbParryT, ResourceMul = resourceMul, ParryEl = parryEl, ParryBonus = ParryBonus, PRegen = PRegen, OptHitStop = 100, OptShake = 100,
                 Iframes = Player.Iframes, Hp = Player.Hp, Mhp = Player.MaxHp, St = Player.Stamina, Mst = Player.MaxStamina, Mp = Player.Mana, Mmp = Player.MaxMana, Poise = Player.Poise, MaxPoise = PlayerPoise.MaxPoise,
                 Rage = Rage, RageMax = RageMaximum, Mats = Materials, HarpGauge = HarpGauge, HarpGaugeMax = HarpGaugeMax,
             });

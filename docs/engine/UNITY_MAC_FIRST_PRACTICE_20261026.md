@@ -82,9 +82,16 @@ ROOT는 별도 `manual-d0ea9d1` namespace에서 CUA 실제 D1100ms와 좌클릭/
 | −2 좌클릭 10처치 + 3단 차징 | 이식 | Tick 안 kiSlash/weapon 처치 이벤트 |
 | −1 우클릭 5처치 | 이식(이번) | 악의구(fireball) 폭발 Tick 안 처치 이벤트. 실습 적이 ShQuery에 보이도록 `lessonActors` 인자 추가(석궁은 기존 오라클대로 제외 유지) |
 | 8 가시덫 | 이식(이번) | 가시덫 구역 DOT 틱 처치 이벤트 10 + 설치 후 방향키로 구역 중심 120px 이탈. 적 10마리: hp=max(1,가시덫피해)×(5+n)×.5, 쉴드 동량, 속도 1.6(웹 flow-field 대신 직선 추적+축 슬라이드), 가시덫 슬로(`_spikeSlow`) 반영 |
-| 0..7 패링·홀딩·사슬·구르기·분노 | 미이식 | 적 투사체 발사·패링 반사(청콩) 파이프라인이 Unity Core에 없음(B07b 문서 "NOT YET IMPLEMENTED") |
+| 0·1·2·3 패링·Q/E 홀딩 | 대기 | 적 투사체·패링 반사(청콩)는 Core 규칙이라 unity-rmb1이 oracle과 함께 이식 후 레슨은 그 API를 씀(유니티 총괄 방침 10-28). 원형 시도는 `_out/a18/parry-proto/`(미반영) |
+| 4 Shift 사슬 이동 | 이식(2차) | 1·2·3단을 순서대로, 각 단계 `HarpTier`가 목표와 같고 `DashActive` 뒤 실제 좌표 ≥1px 이동해야 완료. 단계 사이 기동력·스태미나 보충, 틀린 단/막힘 피드백 |
+| 5 방향키+Space 구르기 | 이식(2차) | Space를 방향키와 함께 눌러 `RollActive`가 실제로 켜질 때만 1회, 놓은 뒤 다시 눌러야 다음, 5회 |
+| 6 패링·분노 축적 | 대기 | 패링 반사 대기 |
+| 7 분노 발동 | 이식(2차) | 분노 100 부여(6단계 대기 중 임시), 24마리 두 겹 링, 150틱 SPACE 슬롯 포커스(패널 숨김·화살표), 그 뒤 방향키 뗀 채 Space만으로 `giantSlam` 분노 소비(`RageCastHook`) ≥100 |
 
 - 패널: 웹 `#parryLesson` 1920×1080 실측 좌표(400×1048, right 56, top 16). 틀=웹 실제 패널의 투명 스틸(`Art/ui/tutorial/lesson_base.png`), 12행 체크리스트·현재 행 붉은 강조·힌트·홀드 막대·건너뛰기·진행 헤어라인. 상단 우측 목표 패널은 실습 중 숨긴다.
 - 입력 게이팅(웹 `allowKey`): 좌클릭=무기, 우클릭=E 마법(beam), 가시덫=슬롯 1. 그 외 Q/E/Shift/구르기 입력은 아레나에 전달되지 않는다.
 - 수정: `fireball` 효과음이 `NativeFeedbackAudio` 허용 목록에 없어 우클릭 마법 시전이 예외를 던졌다 → 웹 `sfx/magic/fireball.mp3` 추가.
-- 검증: `Tools/first-practice` 49 PASS(우클릭·가시덫 진짜 Tick 포함), 실제 플레이어 스크립트 캡처 9/9(이동→좌클릭→우클릭→가시덫, 보상 0, 원본 복원).
+- 검증: `Tools/first-practice` 69 PASS(우클릭·가시덫 진짜 Tick, 사슬·구르기·분노 흐름), 실제 플레이어 스크립트 캡처(이동→좌클릭→우클릭→가시덫→사슬→구르기→분노 폭발, 보상 0, 원본 복원).
+- 수정(2차): 연습 틱이 `SetPlayerCombatInput`/`SetRollInput`을 FixedUpdate와 합쳐 틱당 3번 불러 직전 입력 상태가 항상 false가 되어 Shift를 뗀 순간·구르기 키 엣지가 사라졌다 → 연습 중에는 연습 틱이 틱당 1회만 입력을 설정한다.
+- 이식 안 된 단계는 건너뛰고 체크리스트에 "이식 예정"으로 표시한다(`FirstPracticeFlow.Ported`). 패링 반사가 들어오면 해당 플래그만 true로 바꾼다.
+- 카메라: 연습 시작 위치가 1-1 남쪽 맵 가장자리라 화면 아래가 검게 보였다(맵 경계 바깥). 원인은 Unity 카메라에 웹 `_clampCamToMap`(game.html 12023)이 없던 것 — `NativeGame.CameraClamp.cs`로 추가(2026-10-28, 브랜치 camclamp). 웹과 같은 식: 보이는 반폭/반높이=VW,VH/(2·줌), 맵이 더 작으면 가운데, 흔들림은 clamp 뒤에 더함. 보스 아레나는 `BossArenaLayout` 128×108×40px. 1-1(8000×8000) 시작·남·서·동·북·SW·NE 7곳에서 카메라 좌표가 웹과 같고(예: 북 540, 남 7460, 서 960, 동 7040) 화면 밖 영역이 보이지 않는다. `--unity-cam-capture -output <dir>`로 재현.

@@ -18,6 +18,9 @@ namespace Exoduser.UnityPort.Core
         public int El;
         public string Col = "", ParryClass = "";
         public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
+        // parry reflection (ParryReflect.cs): a reflected bullet is friendly and flies back as a blue bean
+        public bool Friendly, BlueBean, ParryBlueBean, Magic, FromRainbow, WaterBean, TitanEye, BwBean, GbBean;
+        public double AoeR, AoeDmg;
     }
 
     // Serial / Idx: RM-B1 telegraph list (DruidTelegraph.cs) only, the id of the move start that made the hazard; the oracle never reads them
@@ -174,7 +177,8 @@ namespace Exoduser.UnityPort.Core
                 }
                 if (dead) { p.Active = false; continue; }
                 double ox = p.X, oy = p.Y;
-                if ((p.Homing || p.BlackBean) && !p.DruidStraight && p.Life > 30)
+                if (p.Friendly && reflectHost != null) ReflectHoming(p);
+                else if ((p.Homing || p.BlackBean) && !p.DruidStraight && p.Life > 30)
                 {
                     double hAng = Atan2(py - p.Y, px - p.X), cAng = Atan2(p.Vy, p.Vx), diff = hAng - cAng;
                     while (diff > Math.PI) diff -= Math.PI * 2; while (diff < -Math.PI) diff += Math.PI * 2;
@@ -184,6 +188,12 @@ namespace Exoduser.UnityPort.Core
                 double nx = p.X + p.Vx, ny = p.Y + p.Vy;
                 p.X = nx; p.Y = ny; p.Dist += Math.Sqrt(p.Vx * p.Vx + p.Vy * p.Vy);
                 if (host.IsWall(nx, ny)) { p.Active = false; continue; }
+                if (p.Friendly)
+                {   // a reflected bullet never hurts the player: it looks for an enemy (ParryReflect.Blast) and is used up on contact
+                    if (reflectHost != null && ReflectContact(p)) { p.Active = false; continue; }
+                    Projectiles[w++] = p; continue;
+                }
+                if (reflectHost != null && TryReflect(p, px, py, pr, ox, oy, nx, ny)) { Projectiles[w++] = p; continue; }
                 double collR = pr + (p.Sz != 0 ? p.Sz : 1) * 3;
                 double pd = Math.Min(Dst(px, py, p.X, p.Y), SegDist(ox, oy, nx, ny, px, py));
                 double hitR = host.ParryWindowOpen() ? collR * 3 + 12 : collR + 4;

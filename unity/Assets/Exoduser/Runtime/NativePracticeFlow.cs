@@ -24,7 +24,7 @@ namespace Exoduser.UnityPort
             config.ActiveAttack="kiSlash";config.EnemyAiEnabled=false;
             practiceSession=new FirstPracticeSession(Simulation,config);Simulation=practiceSession.Arena;
             Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;
-            firstPractice=new FirstPracticeFlow();Simulation.FirstPracticeHit+=OnFirstPracticeHit;
+            firstPractice=new FirstPracticeFlow();Simulation.FirstPracticeHit+=OnFirstPracticeHit;BindPracticeSteps();
             ClearPracticeViews();skillInputFence=true;
         }
         void ClearPracticeViews()
@@ -39,12 +39,12 @@ namespace Exoduser.UnityPort
         void EndFirstPractice(bool skipped)
         {
             if(firstPractice==null)return;
-            firstPractice.End(skipped);Simulation.FirstPracticeHit-=OnFirstPracticeHit;
+            firstPractice.End(skipped);Simulation.FirstPracticeHit-=OnFirstPracticeHit;UnbindPracticeSteps(Simulation);
             Simulation=practiceSession.End();practiceSession=null;firstPractice=null;practiceActors.Clear();
             ClearPracticeViews();skillInputFence=true;frontendEntryInputFence=true;Running=false;
         }
         void ResetFirstPractice()
-        {if(firstPractice!=null){Simulation.FirstPracticeHit-=OnFirstPracticeHit;firstPractice=null;practiceSession=null;practiceActors.Clear();}}
+        {if(firstPractice!=null){Simulation.FirstPracticeHit-=OnFirstPracticeHit;UnbindPracticeSteps(Simulation);firstPractice=null;practiceSession=null;practiceActors.Clear();}}
         // parry-lesson.js allowKey/actions(): which of the weapon, E-slot magic and slot-1 keys reach the arena in each step
         static void PracticeInputAllowed(PracticeStep step,out bool weapon,out bool magic,out bool slot1)
         {weapon=step==PracticeStep.Left;magic=step==PracticeStep.Right;slot1=step==PracticeStep.Trap;}
@@ -54,21 +54,25 @@ namespace Exoduser.UnityPort
             if(firstPractice.Phase==FirstPracticePhase.Intro){if(x!=0||y!=0)firstPractice.Start();else return true;}
             if(firstPractice.Phase==FirstPracticePhase.Done)return true;
             firstPractice.Tick();
+            if((int)firstPractice.Step!=practiceStepSeen&&firstPractice.Practising){practiceStepSeen=(int)firstPractice.Step;OnPracticeStepEnter();}
+            practiceDirHeld=x!=0||y!=0;
             practiceSession.PrepareTick();
             var step=firstPractice.Step;bool practising=firstPractice.Practising;
             bool weapon,magic,slot1;PracticeInputAllowed(step,out weapon,out magic,out slot1);
             if(!practising){weapon=magic=slot1=false;}
-            Simulation.SetPlayerCombatInput(false,false,false);Simulation.SetRollInput(false,false,false,false,false);
             Simulation.SetMagicInput(magic&&(practiceScripted?scriptMagic:NativeKeyBindInput.Held("beam"))&&!pointerBlocked);
-            Simulation.SetSkillInput(slot1&&(practiceScripted?scriptSlot1:Input.GetKey(KeyCode.Alpha1)),false,false,false,false,false,false,false,false);
+            ApplyStepInputs(step,practising);
+            Simulation.SetSkillInput(slot1&&(practiceScripted?scriptSlot1:Input.GetKey(KeyCode.Alpha1)),false,false,false,practiceSpaceForRage||(practising&&step==PracticeStep.RageBurst&&practiceSpaceForRage),false,false,false,false);
             if(practising)
             {
                 if(step==PracticeStep.Left||step==PracticeStep.Right)SupplyFirstPracticeActors();
                 else if(step==PracticeStep.Trap){Simulation.PrepareTrapPractice();SupplyTrapActors();Simulation.TickPracticeTrapActors();}
+                else PrepareStepTick(step);
             }
             float beforeX=Simulation.Player.X,beforeY=Simulation.Player.Y;
             Simulation.Tick(x,y,aimX,aimY,attack&&weapon&&!pointerBlocked,false);
             firstPractice.ObserveMovement(beforeX,beforeY,Simulation.Player.X,Simulation.Player.Y,x!=0||y!=0);
+            if(practising)ObserveStepTick(step,practiceScripted?(scriptUp||scriptDown||scriptLeft||scriptRight):DirectionKeysHeld());
             if(step==PracticeStep.Trap)
             {
                 var zone=Simulation.PracticeTrapZone();

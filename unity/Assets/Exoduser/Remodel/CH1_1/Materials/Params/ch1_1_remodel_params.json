@@ -1,0 +1,44 @@
+{
+  "note": "RM-1 materials sorted from claude/unity-pc-map3d-20261026 (5108c7098) and MAP_ART_BIBLE_v2_20261026 section 3/6/9. Values/rules only; the old Look3D* shaders are not reused.",
+  "palette": {
+    "VOID": "#060403", "SHADOW": "#120c0a",
+    "FLOOR": "#321d1c", "FLOOR_HI": "#4a2c28", "FLOOR_LO": "#1f1312", "FLOOR_BRUISE": "#3b2a2e", "VEIN": "#4a1612",
+    "BARK": "#3a2c22", "FLESH": "#6a2a26", "FLESH_DEEP": "#3a1614", "FLESH_WET": "#b06a5c", "SINEW": "#8a6a52", "SINEW_LIGHT": "#c9b394", "SINEW_SHADE": "#5f4c55", "BONE": "#c9b394",
+    "BLOOD_POOL": "#3a0d0b", "BLOOD_DRY": "#250f0b", "BLOOD_SHEEN": "#7a1a14",
+    "TOXIC_BODY": "#3a2e0a", "TOXIC_BODY_HI": "#4a3a0c", "TOXIC_DEEP": "#2a200a", "TOXIC_SCUM": "#4a4220", "TOXIC_SCUM_HI": "#5a5030", "TOXIC_SHORE": "#5a5020", "TOXIC_FLASH": "#a8a23a", "MOSS": "#5d6a2a",
+    "LIGHT_HELL": "#b0281c", "LIGHT_HELL_EDGE": "#5a1410", "LIGHT_TOXIC": "#b7b54a", "FLAME": "#e8743a",
+    "FOG_LOW": "#2a1a16", "FOG_TOXIC": "#4a4a2e", "FOG_FAR": "#47434b"
+  },
+  "toxic": {
+    "hueDegMin": 40, "hueDegMax": 65, "hueDegForbiddenAbove": 75,
+    "emissiveCoreLstarMax": 35, "emissiveHaloRadiusU": [120, 200], "emissiveVsHellLightMax": 0.5,
+    "flashSeconds": [0.15, 0.3], "flashDiameterVsBubbleMax": 2, "flashSimultaneousMax": 3,
+    "fogHeightU": [0, 40], "fogAlphaMax": 0.25, "fogAlphaCombatCenterMax": 0.10,
+    "screenAreaSurfaceMax": 0.12, "screenAreaEmissiveMax": 0.03,
+    "materialName": "M_ToxicFlow", "walkableTilesDamageOrSlow": false
+  },
+  "lighting": {
+    "pools": [2, 4], "poolRadiusU": [180, 320], "poolMinSeparationPx": 400, "betweenPoolsLstarMax": 10,
+    "hellBeams": [1, 2], "beamColor": "#b0281c", "beamEdge": "#5a1410", "beamHueDeg": [350, 12], "noSunDisc": true,
+    "shadowColor": "#120c0a", "keyLight": "weak", "fogLow": "#2a1a16",
+    "toxicLightOppositeHellLight": true
+  },
+  "life1Grass": {
+    "from": "unity/Assets/Exoduser/Resources/Shaders/Look3DGrass.shader (map3d 5108c7098)",
+    "baseColor": [0.060, 0.040, 0.035], "tipColor": [0.25, 0.135, 0.105],
+    "tintFleshy": [1.0, 0.94, 0.90], "tintOlive": [0.82, 0.84, 0.68], "brightnessRange": [0.8, 1.2],
+    "windAmpPx": 9, "bladeHeightPx": 50, "windFrequencies": 2, "playerPush": true,
+    "life1R": { "clustered": true, "darkerThanFloor": true, "baseAO": true, "combatFloorCoverMax": 0.03 }
+  },
+  "paintground": {
+    "from": "design-director.md PAINTGROUND-R2: floor/light PASS frozen (R/G 1.77, floor center 1.69), flesh masses -> MESHY-0 (this slice builds R2 outskirts in ProBuilder)",
+    "floorTextures": ["floor_v01b", "floor_v02b", "floor_v03b"], "paintedRatio": "70:30 painted:dynamic light"
+  },
+  "materialMap": [
+    { "from": "Resources/Art/map3d/floor_v01b(.png,_nhr.png)", "to": "Remodel/CH1_1/Materials/Ground/" },
+    { "from": "Resources/Art/map3d/floor_v02b(.png,_nhr.png)", "to": "Remodel/CH1_1/Materials/Ground/" },
+    { "from": "Resources/Art/map3d/floor_v03b(.png,_nhr.png)", "to": "Remodel/CH1_1/Materials/Ground/" },
+    { "from": "Resources/Art/map3d/decal_blood*, decal_root*, decal_bone (+_nrm)", "to": "Remodel/CH1_1/Materials/Decals/" },
+    { "from": "Resources/Data/map3d_ch1_lights.json", "to": "Remodel/CH1_1/Materials/Params/map3d_ch1_lights.json" }
+  ]
+}

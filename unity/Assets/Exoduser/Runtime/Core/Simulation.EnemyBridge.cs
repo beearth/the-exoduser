@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort.Core
                 Hp = ToIntClamped(web.hp), MaxHp = ToIntClamped(web.mhp), Attack = ToIntClamped(web.atk), BaseAttack = ToIntClamped(web.baseAtk), Level = (int)web.lv,
                 Shield = (float)web.eShield, MaxShield = (float)web.eShieldMax, Poise = (float)web.poise, MaxPoise = (float)web.maxPoise,
                 Speed = (float)web.speed, Facing = (float)web.facing, StateTicks = (float)web.st2, ProjectileTicks = (float)web.projT,
-                Elite = (int)web.elite, Col = web.col, Web = web
+                Elite = (int)web.elite, Col = web.col, Web = web, HomeX = web._homeX, HomeY = web._homeY, HasHome = true
             };
             webOwner[web] = enemy;
             Enemies.Add(enemy); if (countSpawned) Stage.TotalSpawned++;   // C07: G._totalSpawned (gate progress denominator)
