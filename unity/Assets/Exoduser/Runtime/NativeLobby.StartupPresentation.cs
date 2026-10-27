@@ -169,7 +169,7 @@ namespace Exoduser.UnityPort
    var keys=new List<string>();var descriptions=new List<string>();var heights=new List<float>();float bodyH=0;
    foreach(var row in GuideRows[step]){if(pad&&row[1]==null)continue;string key=pad?row[1]:Language!="ko"&&row[0]=="좌클릭"?"LMB":Language!="ko"&&row[0]=="우클릭"?"RMB":row[0],desc=K(row[2],row[3]);float h=Mathf.Max(GuidePhysicalLines(key,guideKey,keyFont,keyFont*.08f,keyW).Count*lineH,GuidePhysicalLines(desc,guideText,bodyFont,bodyFont*.04f,descW).Count*lineH);keys.Add(key);descriptions.Add(desc);heights.Add(h);bodyH+=h;}
    bodyH+=Mathf.Max(0,heights.Count-1)*9;
-   string note=K("물약은 설정한 HP% 이하 시 자동 사용","Potions activate automatically below your configured HP%."),hint=pad?K("A · 다음 / Start · 건너뛰기","A · Next / Start · Skip"):K("클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기","Click / Enter / Space · Next    Hold Space / ESC · Skip");
+   string note=K("물약은 자동 사용","Potions activate automatically"),hint=pad?K("A · 다음 / Start · 건너뛰기","A · Next / Start · Skip"):K("클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기","Click / Enter / Space · Next    Hold Space / ESC · Skip");
    float noteH=step==3?GuidePhysicalLines(note,guideText,15.2f,0,w).Count*20.52f:0,hintH=GuidePhysicalLines(hint,guideText,13.6f,.544f,w).Count*17;
    // Source normal line boxes: progress16; empty English line still contributes margin-top10.
    float total=20+16+12+dialogueH+10+24+22+titleH+14+bodyH+(step==3?16+noteH:0)+20+hintH+22+45+20;

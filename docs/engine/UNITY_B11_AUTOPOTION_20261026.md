@@ -84,7 +84,7 @@
 
 - 미이식: 자동 물약 효과음(WebAudio 절차음), 떠오르는 텍스트의 화면 표시(웹도 평소엔 안 그림 — §0-1), 전설 벨트 피해 +15%의 피해 적용(`_lBeltT`는 상태만 세움), 회복력 패시브 `pRegen`(값 0), 시스템 튜토리얼 통지(`_systemLesson.recovered`), 구세이브 `qslots` 호환 파서, `potLv` 세이브(Unity 세이브 없음 → 대장간 강화 단계는 실행 중에만 유지), 보스 킬 드랍·상자·파괴물 호출 지점(함수만 준비), 능력치 창 물약쿨 표시.
 - 웹과 다른 점: 대장간 확인 바 "제작" 글자는 웹이 Black Han Sans, Unity는 Noto Sans KR SemiBold(글꼴 파일 없음). 카드의 `악의 N` 줄이 웹은 굵게. 설명 줄의 하트 글리프는 14px 크롭을 12px 줄에 사용. 최대 단계 카드 높이(72)는 추정. `악의가 부족합니다!` 안내는 웹 toast 대신 확인 바 위 문구(웹 toast 위치·모양 미확인).
-- 튜토리얼 문구(`NativeLobby.StartupPresentation.cs:172`)는 웹과 같은 오해 문구라 바꾸지 않았다(기록만).
+- B11 인수 당시에는 튜토리얼 문구(`NativeLobby.StartupPresentation.cs:172`)를 웹과 같은 오해 문구로 유지했다. 2026-10-27 Mac UI 소유 후속에서 4쪽 하단 note만 ko `물약은 자동 사용` / en `Potions activate automatically`로 수정했다. Core 발동 조건과 웹 원본 문구는 변경하지 않았다. [현재 Mac 안내 계약](UNITY_MAC_STARTUP_FLOW_20261025.md#2026-10-27-a05-시작-안내-4쪽-물약-문구).
 - 킬 드랍 난수 소비 수 변화로 같은 시드의 이후 장비 드랍 순서가 기존 Unity와 달라진다(웹 그대로).
 
 ## 총괄 검수 (맥북 총괄, 2026-10-26)

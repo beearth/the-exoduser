@@ -1,3 +1,15 @@
+## 2026-10-27 A05 시작 안내 4쪽 물약 문구
+
+PC UI/QA 확정에 따라 `NativeLobby.StartupPresentation.cs`의 4쪽 하단 note만 수정했다. `GuideRows`·뒤따르는 조작 hint·4쪽 본문·영상·Core·설정 저장은 그대로다.
+
+| 표시 ID·위치 | 언어 | 현재 문자열 | 수치·실제 동작 |
+|---|---|---|---|
+| Guide 4/4 하단 `note` | ko | `물약은 자동 사용` | HP% 설정값·임계값 표시 없음 |
+| Guide 4/4 하단 `note` | en | `Potions activate automatically` | HP% 설정값·임계값 표시 없음 |
+| B11 자동 물약 조건 | Core `AutoPotion.Tick` | 안내문이 아닌 실행 조건 | 부족 HP ≥ `HealAmount`, HP>0, 악의>0, 쿨다운≤0, 패링 실습 중 아님 |
+
+원본 웹/기존 Godot 문구는 그쪽 이력으로 남기며 이 Mac UI 변경과 동일한 구현 상태로 간주하지 않는다. Mac Game 설정 탭은 현재 전체 화면 카드만 제공하고 HP% 설정 API가 없다. 코드 한 줄 문구 변경만 소스 대조했으며 새 Player 화면·청각 검수는 하지 않았다.
+
 ## 2026-10-27 A05 세계관 재방문 진입 후속
 
 이 문서의 캐릭터 입장 이야기·네메시스·안내와 별도로 앱 최초 FDG/제목/세계관 진입에 오프라인 `cinSeen` 완료 표식을 연결했다. 정상 설정 로드에서 boolean true일 때만 재시작 시 로비로 직접 진입하고, 실제 세계관 완료/마지막 cue 또는 5초 명시 hold에서만 기록한다. 인게임 로비 복귀와 이야기 다시 보기는 기존 동선이다. [저장·완료 조건과 Editor 검증](UNITY_MAC_A05_CINSEEN_20261027.md).
