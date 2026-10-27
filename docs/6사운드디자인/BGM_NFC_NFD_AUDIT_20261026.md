@@ -190,7 +190,7 @@ for d in sfx img assets bgm sprites; do cp -r "G:/exoduser/$d/"* "G:/exoduser-DE
 | `bgm/1장_썩은숲/Rotten Forest - Ashen Gate B.mp3` | 5,072,481 B |
 | `bgm/1장_썩은숲/Rotten Forest - Ashen Gate.mp3` | 5,214,259 B |
 
-(합계 15,305,269 B ≈ 15.3 MB. 원본에 없는 옛 곡으로 추정 — 보존/삭제는 사운드 총괄 판단.)
+(합계 15,305,269 B ≈ 15.3 MB. **옛 곡이 아니라 Godot 1-1 데모 전용 Suno 신곡**(2026-10-21 `db6539b7e` "1-1 데모 전용 1장 필드 BGM 덮어쓰기", `claude/demo11-*` 브랜치에만 있고 origin/main 미반영). 웹 `game.html`은 참조하지 않는다. 보존 — 처리는 해당 브랜치 병합 여부를 따른다.)
 
 **Mac 후속:** pull 후 `git ls-files bgm | wc -l` = 81 확인 → NFC `bgm/…` 파일이 사라졌으면 `git restore bgm` → Mac 저장소에서 `git config core.precomposeunicode true` 확인.
 
@@ -198,7 +198,7 @@ for d in sfx img assets bgm sprites; do cp -r "G:/exoduser/$d/"* "G:/exoduser-DE
 
 | 대상 | 해시 |
 |---|---|
-| origin/main 정리 커밋 | _(기록 대기)_ |
-| 로컬 G: main 정리 커밋 | _(기록 대기)_ |
+| origin/main 정리 커밋 | `758efa140` (첫 push는 origin 전진으로 non-fast-forward 거부 → 사운드 총괄이 최신 origin/main 위로 cherry-pick 후 비강제 push, `053c45bc2..758efa140`) |
+| 로컬 G: main 정리 커밋 | `db107b6f2` (71경로) |
 
 관련 문서: `SOUND_LEAD_MASTER_20261026.md` §2.3 SND-D1 · §3 SND-03 · `6사운드디자인.md`
