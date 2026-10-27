@@ -169,4 +169,36 @@ for d in sfx img assets bgm sprites; do cp -r "G:/exoduser/$d/"* "G:/exoduser-DE
 | 누락 15개 | `game.html:10382~10389` `BGM_MAP`, `bgmPlay`(10394) 호출처 0 |
 | DEMO/EA 확인 | `ls`·파이썬 읽기 전용 크기 합산, 변경 없음 |
 
+## ⑦ 실행 결과 (2026-10-27)
+
+**사용자 승인 원문(2026-10-27, 사운드 총괄 경유 · 실행 세션에서 사용자가 「전체 실행」으로 재확인):** "보고서 정리안대로 NFD 중복 71개를 정리해. 단순 세션에 맡기고 DEMO/EA 쪽도 같이."
+
+| 항목 | 결과 |
+|---|---|
+| 사전 점검 | `G:\exoduser\bgm`·`G:\exoduser-DEMO\bgm`·`G:\exoduser-ea\bgm` reparse point(junction·symlink) **0개**. 제거 목록 71개 = key 각 조각 NFD 변환 후 `git ls-files -z bgm` 바이트 일치 71/71, 디스크에서 NFC·NFD 쌍 모두 존재·sha1 동일 71/71 |
+| origin/main 반영 | 별도 worktree(`sound/bgm-nfd-cleanup`, sparse)에서 `git rm --cached --sparse --pathspec-from-file … --pathspec-file-nul` 71경로 → 비강제 push. 검증 `git ls-tree -r --name-only origin/main bgm` = **81** (커밋 해시는 아래 표) |
+| 로컬 `G:\exoduser` main | `git rm --pathspec-from-file`(인덱스+파일) 71경로 → 그 71경로만 경로 지정 커밋. 빈 NFD 폴더 8개 `os.rmdir`. `git ls-files bgm` = **81** |
+| 제거 개수 | G: 71 (1,158.7 MB) · DEMO 71 (1,158.7 MB) · EA 71 (1,158.7 MB) |
+| DEMO/EA 방식 | 파일 단위: 같은 이름 NFC 파일이 있고 sha1 동일할 때만 `os.remove`, 파일이 빠진 NFD 폴더 8개만 `os.rmdir`. `rm -rf`·와일드카드·robocopy·탐색기 미사용. 남긴(해시 불일치·NFC 없음) NFD 파일 **0개**, `rmdir` 실패 0 |
+| NFC 파일 | 삭제 0. 폴더별 파일 수 변동 없음(1장 25·2장 2·3장 4·4장 3·5장 2·6장 2·7장 3·공통 30) |
+
+**DEMO/EA에만 있는 파일(원본 G: `bgm`에 없음 — 건드리지 않음, 보고서 ⑤의 +15.3 MB 정체):** DEMO·EA 동일
+
+| 경로 | 크기 |
+|---|---:|
+| `bgm/1장_썩은숲/Rotten Forest - Ashen Gate A.mp3` | 5,018,529 B |
+| `bgm/1장_썩은숲/Rotten Forest - Ashen Gate B.mp3` | 5,072,481 B |
+| `bgm/1장_썩은숲/Rotten Forest - Ashen Gate.mp3` | 5,214,259 B |
+
+(합계 15,305,269 B ≈ 15.3 MB. 원본에 없는 옛 곡으로 추정 — 보존/삭제는 사운드 총괄 판단.)
+
+**Mac 후속:** pull 후 `git ls-files bgm | wc -l` = 81 확인 → NFC `bgm/…` 파일이 사라졌으면 `git restore bgm` → Mac 저장소에서 `git config core.precomposeunicode true` 확인.
+
+**커밋:**
+
+| 대상 | 해시 |
+|---|---|
+| origin/main 정리 커밋 | _(기록 대기)_ |
+| 로컬 G: main 정리 커밋 | _(기록 대기)_ |
+
 관련 문서: `SOUND_LEAD_MASTER_20261026.md` §2.3 SND-D1 · §3 SND-03 · `6사운드디자인.md`

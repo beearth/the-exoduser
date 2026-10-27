@@ -37,7 +37,7 @@
 
 | ID | 문제 | 영향 | 상태 |
 |---|---|---|---|
-| SND-D1 | `bgm/` 한글 폴더가 Git에 **NFC·NFD 두 벌**로 추적됨(예: `1장_썩은숲` NFC·NFD 각 25파일, `공통` 각 30파일). Mac에서 넣은 NFD 경로가 Windows에서 별도 폴더로 보임 | 저장소·빌드 용량 중복, DEMO/EA `cp -r` 동기화 시 두 벌 복사, 어느 쪽이 실제 참조되는지 혼동 | 조사 완료 → [`BGM_NFC_NFD_AUDIT_20261026.md`](BGM_NFC_NFD_AUDIT_20261026.md), 정리 실행은 사용자 확인 대기 |
+| SND-D1 | `bgm/` 한글 폴더가 Git에 **NFC·NFD 두 벌**로 추적됨(예: `1장_썩은숲` NFC·NFD 각 25파일, `공통` 각 30파일). Mac에서 넣은 NFD 경로가 Windows에서 별도 폴더로 보임 | 저장소·빌드 용량 중복, DEMO/EA `cp -r` 동기화 시 두 벌 복사, 어느 쪽이 실제 참조되는지 혼동 | 정리 완료(2026-10-27) → [보고서 ⑦](BGM_NFC_NFD_AUDIT_20261026.md) |
 | SND-D2 | `SFX_FORGE_ELEVENLABS_20261021.md` §6이 「생성 0건」으로 남아 있었음 | 문서-실물 불일치 | 2026-10-26 정정 |
 | SND-D3 | ElevenLabs MCP 연결 실패(CONNECTION_CLOSED) | 대화 중 MCP 직접 생성 불가 | SFX Forge(`npm run sfx:forge`, SDK 직접 호출)로 우회 가능 |
 
@@ -69,3 +69,4 @@
 | 2026-10-26 | 사운드 총괄 신설. 현황 실측, SND-D1~D3 기록, 백로그 SND-01~06 작성 |
 | 2026-10-26 | SND-01 1차 추천 작성(42후보 수치 측정 + 파형/스펙트로그램 눈 확인). 사용자 청음 대기 |
 | 2026-10-26 | SND-03 조사 완료: NFC·NFD 71쌍 해시 동일·NFD 전용 0·누락 참조 15개 전부 죽은 코드(`bgmPlay` 호출처 0)·`build-nwjs.mjs`가 두 벌 모두 패키징. 보고서 `BGM_NFC_NFD_AUDIT_20261026.md`, 정리 실행은 사용자 확인 대기 |
+| 2026-10-27 | SND-03 정리 실행(사용자 승인): NFD 중복 71경로를 origin/main·로컬 G:에서 제거(`git ls-files bgm` 152→81), DEMO·EA 작업 폴더의 NFD 파일 각 71개 제거(해시 동일 확인분만). DEMO/EA에만 있는 곡 3개(Rotten Forest - Ashen Gate 계열)는 보존. 상세 보고서 ⑦ |
