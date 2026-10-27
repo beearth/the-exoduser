@@ -34,6 +34,18 @@ namespace Exoduser.UnityPort.Core
             }
         }
 
+        // HELL_EL = [theme element, bias] per hell; EL = {P:0,F:1,I:2,D:3,L:4,H:5,E:6}
+        static readonly int[] HellEl = { 0, 0, 2, 1, 3, 3, 3 };
+        static readonly double[] HellElBias = { .40, .40, .45, .45, .45, .45, .35 };
+
+        // rollEl(si): the theme element with probability bias, otherwise one of the six base elements (two draws on the second branch)
+        public static int RollEl(int si, Func<double> random)
+        {
+            int hell = si >= 0 && si < EnemyTables.SiToHell.Length ? EnemyTables.SiToHell[si] : 0;
+            if (random() < HellElBias[hell]) return HellEl[hell];
+            return (int)(random() * 6);
+        }
+
         public static int RollEtype(int si, Func<double> random)
         {
             if (si == 0)

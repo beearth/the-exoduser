@@ -65,6 +65,11 @@ namespace Exoduser.UnityPort
             if (practice) EndFirstPractice(true);
             frontendEntryInputFence = false; Running = false; yield return null;
             var sim = Simulation; var p = sim.Player;   // EndFirstPractice rebuilds the run: take the live simulation only now
+            {   // 02b: the fixed enemies of a fresh 1-1 (before the harness clears the field for the hand-spawned steps)
+                int alive0 = 0, guards0 = 0; foreach (var en in sim.Enemies) { if (en.Alive) alive0++; if (en.IsGateGuard) guards0++; }
+                bool startOk = sim.StartEyeMasses == 2 && sim.StartGuards == 1 && guards0 == 1 && sim.StartEscorts + sim.StartWave >= 8 && sim.Stage.TotalSpawned == sim.SpawnHoles.TotalPlanned;
+                M1Add("02b", "1-1 start enemies (fixed)", startOk ? "ok" : "fail", alive0 + " alive at start: " + sim.StartEyeMasses + " 다안 육괴 + " + sim.StartGuards + " gate guard + " + sim.StartEscorts + " escorts + " + sim.StartWave + " wave (denominator " + sim.Stage.TotalSpawned + ", fixed enemies not counted); " + string.Join(" | ", sim.StartMobLog.ToArray()), "02-stage-1-1-entry.png");
+            }
             sim.Config.EnemyAiEnabled = true; sim.Enemies.Clear(); sim.PotionState.Cooldown = 100000; sim.SpawnHoles = null;   // C01-AI: steps 03..09 spawn by hand; the 소환굴 field spawn has its own step (07c)
             Action<float> heal = hp => { if (p.Hp < hp) p.Hp = p.MaxHp; };
 
