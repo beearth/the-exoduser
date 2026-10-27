@@ -100,10 +100,10 @@ namespace Exoduser.UnityPort
             bool q = sim.ParryCount == parries + 1 && p.Hp >= hpq;
             sim.SetPlayerCombatInput(false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
-            p.State = "idle"; p.Stamina = p.MaxStamina; sim.SetPlayerCombatInput(false, true, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
+            int bashes0 = sim.BashStrikeCount; p.State = "idle"; p.Stamina = p.MaxStamina; sim.SetPlayerCombatInput(false, true, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool eDraw = p.State == "sDraw"; sim.SetPlayerCombatInput(false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false); bool eBash = p.State == "sBash";
             for (int i = 0; i < 60 && p.State != "idle"; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
-            M1Add("06", "parry (Q) and shield strike (E)", q && eDraw && eBash ? "ok" : "fail", "Q parry " + q + ", E sDraw " + eDraw + " sBash " + eBash + "; E deals no damage / reflects no projectile yet (§6 of B07 doc), no sBlock/sBash sprite", "06-parry.png");
+            M1Add("06", "parry (Q) and shield strike (E)", q && eDraw && eBash && sim.BashStrikeCount == bashes0 + 1 ? "ok" : "fail", "Q parry " + q + ", E sDraw " + eDraw + " sBash " + eBash + " strike " + (sim.BashStrikeCount - bashes0) + " hits " + sim.BashHitCount + "; E projectile reflection not ported (B07b doc), no sBlock/sBash sprite", "06-parry.png");
 
             // ---- 07 kill mobs (real hp, AI on) ----
             sim.Config.EnemyAiEnabled = true; sim.Enemies.Clear(); int killsBefore = sim.Kills; int lootBefore = sim.Loot.Count + sim.CollectedLoot.Count; int ticksUsed = 0; int hurt0 = sim.HurtCount; var ttks = new List<int>(); float hpStart = p.Hp;

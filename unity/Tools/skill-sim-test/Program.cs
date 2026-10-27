@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using Exoduser.UnityPort.Core;
 using Exoduser.UnityPort.Core.Skills;
+using Exoduser.UnityPort.Core.Combat;
 
 // PC-B03 behaviour checks of the skill executor on the real Simulation (standalone .NET, no Unity): input edges, costs, cooldowns, zones, slam, ice orb, holy dome,
 // level up and the save round trip. Numeric formulas are the skill-oracle's job; this file checks that the Simulation applies them in the right order.
@@ -112,6 +113,28 @@ class Program
         s = Make(); s.Skills.Levels["fireball"] = 4; s.CaptureSkills(out sk, out slots, out ult, out ct); var t = Make(); t.RestoreSkills(sk, slots, ult, ct);
         Check(t.Skills.Level("fireball") == 4, "the fireball level survives a capture / restore");
         t = Make(); t.RestoreSkills(new Dictionary<string, double> { { "spikeTrap", 1 } }, new string[6], null, null); Check(t.Skills.Level("fireball") == 1, "an old save without the fireball keeps it at Lv1");
+
+        // ---- E strike (B07b): sDraw -> sBash 20 f -> the circular hit at the 8th frame (st2 12), damage + knock-back + mini stun, then sRecover ----
+        {
+            Action<Simulation, bool> eKey = (sim, down) => { sim.SetPlayerCombatInput(false, down, false); sim.Tick(0, 0, 100, 0, false, false); };
+            s = Make(); var near = s.SpawnNormalEnemy(60, 0); var far2 = s.SpawnNormalEnemy(160, 0); float nh = near.Hp + near.Shield, fh = far2.Hp + far2.Shield;
+            eKey(s, true); eKey(s, false);
+            Check(s.Player.State == "sBash", "E tap enters sBash");
+            int tk = 0; while (s.Player.State == "sBash" && s.BashStrikeCount == 0 && tk++ < 30) eKey(s, false);
+            Check(s.BashStrikeCount == 1 && s.Player.StateTicks == 12, "the strike lands when st2 crosses 12 (state ticks " + s.Player.StateTicks + ")");
+            Check(near.Hp + near.Shield < nh, "the E strike hurts an enemy inside the 70 px circle");
+            Check(far2.Hp + far2.Shield == fh, "an enemy outside the circle is untouched");
+            Check(near.Stunned >= ParryRules.MiniStun - 1 || !near.Alive, "the struck enemy gets the 60 f mini stun");
+            Check(s.SlamWaves.Count >= 1 && s.SlamWaves[s.SlamWaves.Count - 1].Bash, "the strike draws the blue shock wave");
+            for (int i = 0; i < 12; i++) eKey(s, false);
+            Check(s.Player.State == "sRecover" || s.Player.State == "idle", "sBash ends in sRecover");
+            s = Make(); var mid = s.SpawnNormalEnemy(160, 0); float mh = mid.Hp + mid.Shield; s.SBashChgMul = 3;
+            s.Player.State = "sBash"; s.Player.StateTicks = 20; for (int i = 0; i < 12; i++) eKey(s, false);
+            Check(s.BashStrikeCount == 1 && mid.Hp + mid.Shield < mh, "a full charge (x3) widens the circle to 210 px");
+            s = Make(); s.Player.State = "sRecover"; s.Player.StateTicks = 20; s.Player.Mana = 100;
+            s.SetPlayerCombatInput(false, false, false); s.Tick(0, 0, 100, 0, false, false); s.SetPlayerCombatInput(true, false, false); s.Tick(0, 0, 100, 0, false, false);
+            Check(s.Player.State == "sBlock", "Q cancels sRecover into the shield");
+        }
 
         // ---- regression: the enemy AI keeps hurting the player after skills were used (M1 07b) ----
         foreach (bool used in new[] { false, true })

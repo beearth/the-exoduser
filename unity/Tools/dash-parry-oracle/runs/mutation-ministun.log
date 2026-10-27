@@ -1,0 +1,13 @@
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:01.54
+
+
+DASH_PARRY_ORACLE 187165 checks / 655 failures
+  slamHit: {"d":0,"r":10,"range":160,"stunRange":0,"mult":1,"ib":false,"poise":1,"maxPoise":100,"stunned":0,"kills":false,"raw":0,"pAtkMul":1,"atkBon":0,"gslLv":0,"giantSlam":1} stunned C#=61 web=60
+  slamHit: {"d":0,"r":10,"range":160,"stunRange":0,"mult":1,"ib":false,"poise":100,"maxPoise":100,"stunned":0,"kills":false,"raw":0,"pAtkMul":1,"atkBon":0,"gslLv":0,"giantSlam":1} stunned C#=61 web=60
+  slamHit: {"d":100,"r":20,"range":160,"stunRange":400,"mult":1,"ib":false,"poise":100,"maxPoise":31166,"stunned":0,"kills":false,"raw":0,"pAtkMul":1,"atkBon":7,"gslLv":3,"giantSlam":5} stunned C#=61 web=60
+

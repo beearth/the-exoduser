@@ -3,11 +3,11 @@ using Exoduser.UnityPort.Core.Combat;
 
 namespace Exoduser.UnityPort.Core
 {
-    // PC-B07 connection DRAFT (second step): player dash / parry / shield state machine on top of the web calculations in ParryRules / ParryRewards / ChainDash /
-    // PlayerPoise. Everything here is inert while PlayerCombatWired is false (the patches B07_simulation_parry_dash / B07_nativegame_qe_input call into it, but the
-    // game behaves exactly as before: Q/E still show the "not available" toast, HurtPlayer keeps the old poise code). Flip the flag only together with the
-    // real-play smoke of the next step. NOT YET IMPLEMENTED (listed in docs/engine/UNITY_B07_CORE_20261026.md): sBash strike damage / projectile reflection
-    // (_gSlamHit), enemy melee parry points (표 A-8) and enemy poise on parry, kiGather release strikes, rage / malice / stat-bank rewards, HUD gauge value.
+    // PC-B07 player dash / parry / shield / E-strike state machine on top of the web calculations in ParryRules / ParryRewards / ChainDash / PlayerPoise (wired:
+    // PlayerCombatWired). B07b added the E strike hit (Simulation.BashStrike.cs: _gSlamHit circle, damage, stun, poise), parryBank, Q cancel of sRecover and the Shift gauge
+    // bar. NOT YET IMPLEMENTED (docs/engine/UNITY_B07B_STRIKE_20261027.md): projectile reflection (the friendly blue-bean pipeline), the sBash / sRecover Shift cancel
+    // and the sRecover -> sDraw re-entry, silvertail lunge parry, unique hooks (_uKiPrecharge ...), the overhead gauge text, melee parry points other than the ones the
+    // ported enemy AI / druid boss already call (Parry / TryParry).
     public sealed partial class Simulation
     {
         public static readonly bool PlayerCombatWired = true;   // static readonly (not const): the guarded branches must not produce CS0162
@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort.Core
             if (SbCd > 0) SbCd--;
             if (SbParryT > 0 && Player.State != "sBlock") SbParryT--;   // release window counts down by itself (12 frames)
             // ---- Q: shield / parry ----
-            if (Player.State == "idle" && qDown && SbCd <= 0)
+            if ((Player.State == "idle" || Player.State == "sRecover") && qDown && SbCd <= 0)   // web sRecover: Q cancels the recovery into the shield
             {
                 var s = new ParryRules.SBlockState { Mp = Player.Mana, Mmp = Player.MaxMana, S = Player.State };
                 if (ParryRules.SBlockEnter(ref s, CapeParry, ShieldCdRed)) { Player.Mana = (float)s.Mp; Player.State = "sBlock"; Player.StateTicks = 999; SbParryT = s.SbParryT; SbHoldT = 0; SbReleaseR = 0; SbCd = s.SbCd; }
@@ -57,6 +57,8 @@ namespace Exoduser.UnityPort.Core
                     Player.State = "idle"; Player.StateTicks = 0; SbParryT = s.SbParryT; SbReleaseR = s.SbReleaseR; SbHoldT = 0;
                 }
             }
+            // ---- E strike moment (st2 crosses 12): the circular hit of _gSlamHit ----
+            if (BashStrikeMoment) BashStrike();
             // ---- E: shield strike (tap = sBash, hold = charge) ----
             if (Player.State == "idle" && eDown) { Player.State = "sDraw"; Player.StateTicks = 999; SdHold = 0; }
             else if (Player.State == "sDraw")
@@ -70,7 +72,7 @@ namespace Exoduser.UnityPort.Core
                 else if (!combatEHeld)
                 {
                     var f = ParryRules.SBashFire(Player.Stamina, MaliceSwipeLevel, Player.State, SBashChgMul, 0);
-                    if (f.Fired) { Player.Stamina = (float)f.St; Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; SBashChgMul = 1; } else Player.State = "idle";
+                    if (f.Fired) { Player.Stamina = (float)f.St; attackBonus = (int)f.AtkBon; Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; SBashChgMul = 1; } else Player.State = "idle";
                 }
             }
             else if (Player.State == "kiGather")

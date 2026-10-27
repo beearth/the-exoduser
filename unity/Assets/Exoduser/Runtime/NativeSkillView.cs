@@ -131,7 +131,7 @@ namespace Exoduser.UnityPort
                 ActiveWaves++; it.go.transform.position = Point(w.X, w.Y);
                 float wp = w.T / (float)w.MaxT, fadeA = wp < .62f ? 1f : Mathf.Max(0, (1 - wp) / .38f);
                 int frame = Mathf.Min(3, Mathf.FloorToInt(Mathf.Pow(wp, .6f) * 4)); it.a.sprite = slamFrames[frame];
-                float size = w.MaxR * .9f * (.72f + .28f * Mathf.Min(1, wp * 3.5f)); Fit(it.a, size, slamFrames[frame].rect.width); it.a.color = new Color(1, 1, 1, fadeA);
+                float size = w.MaxR * .9f * (.72f + .28f * Mathf.Min(1, wp * 3.5f)); Fit(it.a, size, slamFrames[frame].rect.width); it.a.color = w.Bash ? new Color(.4f, .667f, .867f, fadeA) : new Color(1, 1, 1, fadeA);   // E strike: web col #66aadd
                 float flash = Mathf.Max(0, 1 - wp * 4); it.b.enabled = flash > 0;
                 if (flash > 0) { float fr = Mathf.Min(w.MaxR * .4f, 42) * (.55f + .45f * flash); Fit(it.b, fr * 2, disc.rect.width); it.b.color = new Color(1f, .957f, .816f, .9f * flash * flash); }
             }

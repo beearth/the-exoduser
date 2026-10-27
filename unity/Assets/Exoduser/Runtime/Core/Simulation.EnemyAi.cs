@@ -212,6 +212,7 @@ namespace Exoduser.UnityPort.Core
             public void Parry(EnemySpawn e, double atk)
             {
                 bool q = s.Player.State == "sBlock" || s.Player.State == "peaceShield" || s.SbParryT > 0;
+                s.ParryBank += atk != 0 ? atk : 10;   // P.parryBank += e.atk||10
                 s.ApplyParrySuccess(q);
                 EnemyState owner; if (!s.webOwner.TryGetValue(e, out owner)) return;
                 var r = EnemyPoiseRules.PoiseHit(new EnemyPoiseRules.Enemy { Alive = owner.Alive, Boss = false, Poise = owner.Poise, MaxPoise = owner.MaxPoise, PoiseR = owner.PoiseRegenTicks, Stunned = owner.Stunned,

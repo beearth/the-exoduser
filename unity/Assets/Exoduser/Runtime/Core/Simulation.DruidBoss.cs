@@ -113,6 +113,7 @@ namespace Exoduser.UnityPort.Core
                     {
                         int pd = Js.Int((s.Player.BaseAttack + s.Config.WeaponAttack + s.Config.WeaponEnhanceAttack) * dmgMul * ParryRules.ParryCounterDamageMul(s.PParry));
                         s.HurtEnemy(boss, pd, (float)knockAngle);
+                        s.ParryBank += pd;   // P.parryBank += _pd (the counter damage)
                     }
                 }
                 s.ApplyParrySuccess(q);
