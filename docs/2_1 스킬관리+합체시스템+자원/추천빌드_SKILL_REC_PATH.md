@@ -6,7 +6,8 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 
 ## 성급 규칙 (핵심)
 - **동급 별끼리만 합체**: 1★+1★=2★, 2★+2★=3★, 3★+3★=4★ ...
-- 합체 결과 성급 = 구성 스킬 최고 성급 + 1
+- 합체 결과 성급 = 구성 스킬 최고 성급 + 1 (설계 원칙)
+- 코드상 합체 성급 = `_FUSE_GEM_GROUPS[key].star || _FUSE_PAIRS[key].length` (구성 스킬 수 또는 star 오버라이드), 합체 SP = 성급×3
 
 ## 빌드 순서
 
@@ -15,11 +16,11 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 | 1 | 악의기둥+가시덫 | darkPillar, spikeTrap | pillarSpike | 기둥가시 | Pillar Spike | darkPillar + spikeTrap |
 | 2 | 해골무덤+악의폭풍 | boneWall, maliceStorm | boneStorm | 해골번개 | Bone Lightning | maliceStorm + boneWall |
 | 3 | 뇌전창+아이스스톰 (2026-10-27 개정, 구 "전격의창+아이스스톰") | thunderStake, iceStorm | — | — | — | 전격이동(bladeDash)이 마법사 계열 전용이 되어 전사 경로에서 제외, 전격의창 합체(thunderGhost) 불가 → 합체 없음. phase 제목 "3. 뇌전창+아이스스톰" / "3. Thunder Stake + Ice Storm" |
-| 4 | 이동+사슬 | chargeBoost, magicBlink, chainAssault, chainSlam | dimBreach | 사슬기동 / 기동:전폭 | Chain Breach / Maneuver:Thunder | chargeBoost + magicBlink / +chainAssault + chainSlam |
-| 5 | 칼날+역병 | maliceHunt, guardian, plagueBurst | bladeFuse | 칼날 해방 / 독혈 해방 | Blade Liberation / Plague Liberation | maliceHunt + guardian / maliceHunt + guardian + plagueBurst |
+| 4 | 이동+사슬 | chargeBoost, magicBlink, chainAssault, chainSlam | dimBreach | 기동:기습 (→ 기동:파쇄 → 기동:전폭) | Maneuver:Ambush (→ Maneuver:Shatter → Maneuver:Thunder) | dimBreach = chargeBoost + magicBlink. 자동 진행은 `fuse:'dimBreach'`만 실행하며, 상위 dimSlam(+chainAssault)·dimThunder(+chainSlam)는 별도 합체 |
+| 5 | 칼날+역병 | maliceHunt, guardian, plagueBurst | bladeFuse | 악의 해방 (상위 독혈해방=plagueFuse) | Malice Liberation (상위 Plague Liberation) | bladeFuse = maliceHunt + guardian. plagueFuse(+plagueBurst)는 별도 합체 |
 | 6 | 💀 필살기 선택 | blackStar/lavaSummon(탄막블랙홀)/execution (1택) | — | — | — | — |
 | 7 | 멸살+만화+원소 | omniBeam, fanShot, elemMissile | elemFuse | 추적암전 | Tracking Lightning | fanShot + omniBeam + elemMissile |
-| 8 | 허수아비 세트 | voidScarecrow, explodeScarecrow | dualScarecrow | 쌍허수아비 | Dual Scarecrow | voidScarecrow + explodeScarecrow |
+| 8 | 허수아비 세트 | voidScarecrow, explodeScarecrow | dualScarecrow | 쌍둥이허수아비 | Twin Scarecrow | voidScarecrow + explodeScarecrow |
 | 9 | 방패 합체 | maliceSwipe, shieldThrow | shieldFuse | 불꽃칼날 | Flame Blade | maliceSwipe + shieldThrow |
 | 10 | 폭풍소환+얼음보주+뇌전걸음 | maliceMortar, iceOrb, ghostWalk | iceMortar | 얼음소용돌이 | Ice Vortex | maliceMortar + iceOrb |
 | 11 | 신성 영역 | holyDome, holyPrison | holyFuse | 결계의 영역 | Ward Domain | holyDome + holyPrison |
