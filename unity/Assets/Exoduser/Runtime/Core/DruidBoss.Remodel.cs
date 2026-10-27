@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort.Core
         void HeartbeatPulse(EnemyState e, DruidData d)
         {
             host.Fx("druidHeartbeat", d.X, d.Y, 0); host.Shake(10);
-            if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY) && Dst(host.PX, host.PY, d.X, d.Y) > DruidRemodelData.HeartbeatSafeRadius) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);   // safe: the ring of 260 around the boss, plus the root pillar shadows (RB1-3)
+            if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY) && !InPillarShadow(host.PX, host.PY, d.X, d.Y) && Dst(host.PX, host.PY, d.X, d.Y) > DruidRemodelData.HeartbeatSafeRadius) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);   // safe: the ring of 260 around the boss, plus the root pillar shadows (RB1-3)
             d.HbBeat++;
             if (d.HbBeat >= DruidRemodelData.HeartbeatBeats) Recover(d, 0);   // bossRec with the table's 90 f (`recover` clamps St2 to 20)
             else { d.S = "bossHeartPause"; d.St2 = DruidRemodelData.HeartbeatPause; }
@@ -76,7 +76,7 @@ namespace Exoduser.UnityPort.Core
             if (cur < d.GrabLast - .5) d.GrabHits++;
             d.GrabLast = cur;
             if (d.GrabHits < DruidRemodelData.GrabEscapeHits) return false;
-            d.S = "recover"; d.St2 = 40; host.Text(host.PX, host.PY - 25, "벗어났다!", "#dfd6c2", 40);
+            d.S = "recover"; d.St2 = 40; RmText(host.PX, host.PY - 25, "벗어났다!", "#dfd6c2", 40);
             return true;
         }
         void GrabAbsorb(EnemyState e, DruidData d)

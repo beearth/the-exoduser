@@ -107,12 +107,12 @@ namespace Exoduser.UnityPort.Core
             if (w != null) { d.St2 = w.st2; d.Facing = w.facing; d.ProjT = w.projT; d.ProjCd = w.projCd; d.BossPatT = w.bossPatT; d.BossPatCd = w.bossPatCd; d.BossOrbitAng = w._bossOrbitAng; }
             else { d.St2 = 30 + R() * 50; d.Facing = R() * Math.PI * 2; d.ProjT = 70 + R() * 50; d.BossPatT = 30 + R() * 20; d.BossOrbitAng = R() * Math.PI * 2; d.BossPatCd = 35; }
             d.S = "idle"; d.Atk = e.Attack; e.BossPatCd = d.BossPatCd; e.BossPhase = 0;
-            Data[e] = d; WriteBack(e, d); Boss = e;
+            Data[e] = d; WriteBack(e, d); Boss = e; ResetPillars();
             return d;
         }
 
         // oracle / harness: an explicit web-state preset instead of the mkEn record
-        public DruidData Attach(EnemyState e, DruidData preset) { Data[e] = preset; WriteBack(e, preset); Boss = e; return preset; }
+        public DruidData Attach(EnemyState e, DruidData preset) { Data[e] = preset; WriteBack(e, preset); Boss = e; ResetPillars(); return preset; }
 
         // external writers (revive, stun end, hit-stun ...) change EnemyState; pull their changes in before the tick
         void Pull(EnemyState e, DruidData d)
@@ -142,6 +142,7 @@ namespace Exoduser.UnityPort.Core
             if (!Data.TryGetValue(e, out d)) d = Attach(e);
             Pull(e, d);
             Tick++;
+            EnsurePillars();
             if (Remodel && d.HeartCd > 0) d.HeartCd -= 1;                             // heartbeat cooldown = 40 s of boss ticks (not only idle ticks); the sim skips the boss tick while it kneels
             if (d.PImmune > 0) d.PImmune -= 1;                                        // Step(): `if(e._pImmune>0) e._pImmune-=sp`
             if (d.WasStunned && e.Stunned <= 0)                                       // Step(): stun end (`e.stunned<=0&&e._maxStunned`): poise reset, 5 s immunity, back to idle
@@ -162,7 +163,7 @@ namespace Exoduser.UnityPort.Core
                     {
                         double wPct = Math.Min(0.08, kbSpd * 0.004);
                         int wallDmg = Math.Max(I(kbSpd * 4), I(e.MaxHp * wPct));
-                        host.BossHurt(e, wallDmg, 0); host.Shake(8); host.Text(d.X, d.Y - 18, "벽 충돌! " + wallDmg, "#cc8844", 30);
+                        host.BossHurt(e, wallDmg, 0); host.Shake(8); RmText(d.X, d.Y - 18, "벽 충돌! " + wallDmg, "#cc8844", 30);
                     }
                     e.KnockbackX = 0; e.KnockbackY = 0;
                 }
@@ -261,7 +262,7 @@ namespace Exoduser.UnityPort.Core
             if (d.Feinting && d.S.EndsWith("Wind") && d.St2 <= (Remodel ? d.RmTeleTotal / 2 : 0))   // remodel: a feint cuts the telegraph at its half way point (first half only)
             {
                 if (Remodel) { d.S = "bossRec"; d.St2 = DruidRemodelData.FeintRecovery; } else { d.S = "recover"; d.St2 = 25; }
-                d.Feinting = false; host.Text(d.X, d.Y - 30, "...", "#cccccc", 30);
+                d.Feinting = false; RmText(d.X, d.Y - 30, "...", "#cccccc", 30);
             }
             StateSwitch(e, d, dist);
         }
@@ -297,7 +298,7 @@ namespace Exoduser.UnityPort.Core
             {
                 host.HurtPlayer(waveDmg, true);
                 double ka = Atan2(host.PY - d.Y, host.PX - d.X); host.KnockPlayer(Cos(ka) * 10, Sin(ka) * 10);
-                host.Text(host.PX, host.PY - 20, "🌊충격파!", "#ff4400", 30);
+                RmText(host.PX, host.PY - 20, "🌊충격파!", "#ff4400", 30);
             }
             // rage burst of red / rainbow beans
             int bCnt = 8 + bp * 4;
@@ -309,7 +310,7 @@ namespace Exoduser.UnityPort.Core
                 SpawnBossProjectile(e, d, new ProjSpec { X = d.X, Y = d.Y, Vx = Cos(ba) * vs, Vy = Sin(ba) * vs2, Dmg = I(d.Atk * (rb1 ? 1.5 : 1.2)), El = e.Etype == 0 ? EL_P : EL_P, Life = 380, Ml = 380,
                     Col = rb1 ? "#cc1100" : "hsl", Sz = rb1 ? 1.8 : 1.5, RedBean = rb1, Homing = rb1 });
             }
-            host.Text(d.X, d.Y - 50, ph.Label, bp >= 3 ? "#ff0000" : bp >= 2 ? "#cc2200" : "#ff8800", 70);
+            RmText(d.X, d.Y - 50, ph.Label, bp >= 3 ? "#ff0000" : bp >= 2 ? "#cc2200" : "#ff8800", 70);
             host.Shake(14 + bp * 4);
             host.Fx("phaseRoar", d.X, d.Y, d.R);
         }

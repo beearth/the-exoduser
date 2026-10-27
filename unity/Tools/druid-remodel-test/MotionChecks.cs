@@ -18,7 +18,7 @@ static partial class P
     static readonly int[] SpecRec = { 80, 70, 70, 60, 60, 80, 70, 60, 60, 70, 60, 90 };   // 2026-10-28 M3 unification: #4 and #5 -> 60, #10 -> 70
     static readonly int[] SpecCd = { 110, 160, 130, 160, 120, 200, 220, 200, 320, 180, 200, 2400 };
     static readonly List<string> motionNotes = new List<string>();
-    static double maxWalkEver, maxTurnWalkEver, maxTurnWindEver, maxVelEver, maxDashEver; static int parryBonusChecks;
+    static double maxWalkEver, maxTurnWalkEver, maxTurnWindEver, maxVelEver, maxDashEver; static int parryBonusChecks, burrowPillarChecks;
     static int gapSamples, gapNear12, gapNearPhase, heartProbes;
 
     static void VerifyMoveTable()
@@ -72,6 +72,11 @@ static partial class P
                     for (int k = 0; k < 16; k++)
                     {
                         double a = Math.PI * 2 * k / 16, x = d.X + Math.Cos(a) * r, y = d.Y + Math.Sin(a) * r;
+                        if (probeBeat == 2 && s.DruidPillars.Count > 0)
+                        {   // beat 3: behind a root pillar (the shadow), far outside the ring of 260
+                            var pil = s.DruidPillars[k % s.DruidPillars.Count]; double ba = Math.Atan2(pil.Y - d.Y, pil.X - d.X);
+                            x = pil.X + Math.Cos(ba) * (pil.R + 60); y = pil.Y + Math.Sin(ba) * (pil.R + 60);
+                        }
                         if (!s.CanMove((float)x, (float)y, pl.Radius)) continue;
                         pl.X = (float)x; pl.Y = (float)y; pl.Iframes = 0; s.PlayerPoison = 0; pl.Hp = pl.MaxHp; hpBefore = pl.Hp; hurtsBefore = s.HurtCount; pendingProbe = probeBeat == 1 ? 1 : 0; Placed = true; break;
                     }
@@ -147,6 +152,12 @@ static partial class P
                 if (t.Live) continue;
                 string key = t.MoveId + "/" + (int)t.Kind + "/" + t.Index + "/" + t.Serial;
                 if (!totalSeen.ContainsKey(key)) { totalSeen[key] = t.Total; CheckTotal(name, t); }
+                if (t.MoveId == "burrowStrike" && t.Shape == DruidTeleShape.Circle && s.DruidPillars.Count > 0)
+                {   // RB1-3: he comes up on the side of a pillar, just outside it (pillar radius + body + 24)
+                    double want = 80 + d.R + 24; bool onPillar = s.DruidPillars.Any(pi => Math.Abs(Math.Sqrt((t.X - pi.X) * (t.X - pi.X) + (t.Y - pi.Y) * (t.Y - pi.Y)) - want) < 3.0);
+                    Check(onPillar, name + ": burrow circle at " + t.X.ToString("0") + "," + t.Y.ToString("0") + " is not on the side of a pillar");
+                    burrowPillarChecks++;
+                }
             }
             ps = d.S; pst2 = d.St2; pface = d.Facing; px = d.X; py = d.Y; has = true;
         }
@@ -174,8 +185,9 @@ static partial class P
     static void VerifyMotionTotals()
     {
         Check(heartProbes >= 6, "heartbeat probes " + heartProbes);
+        Check(burrowPillarChecks >= 10, "burrow pillar checks " + burrowPillarChecks);
         Check(parryBonusChecks >= 1, "parry bonus checks " + parryBonusChecks);
         Check(gapSamples >= 40, "gap samples " + gapSamples);
-        motionNotes.Add("max walking step " + maxWalkEver.ToString("0.000") + " px/tick, max walking speed " + maxVelEver.ToString("0.000") + " (limit 1.32); max turn walking " + (maxTurnWalkEver * 180 / Math.PI).ToString("0.00") + " deg, in a telegraph " + (maxTurnWindEver * 180 / Math.PI).ToString("0.00") + " deg; gaps " + gapSamples + " (combo link " + gapNear12 + ", phase gap " + gapNearPhase + "); heartbeat probes " + heartProbes + "; max poison dash step " + maxDashEver.ToString("0.000") + "; parry-bonus checks " + parryBonusChecks);
+        motionNotes.Add("max walking step " + maxWalkEver.ToString("0.000") + " px/tick, max walking speed " + maxVelEver.ToString("0.000") + " (limit 1.32); max turn walking " + (maxTurnWalkEver * 180 / Math.PI).ToString("0.00") + " deg, in a telegraph " + (maxTurnWindEver * 180 / Math.PI).ToString("0.00") + " deg; gaps " + gapSamples + " (combo link " + gapNear12 + ", phase gap " + gapNearPhase + "); heartbeat probes " + heartProbes + "; max poison dash step " + maxDashEver.ToString("0.000") + "; parry-bonus checks " + parryBonusChecks + "; burrow-on-pillar checks " + burrowPillarChecks);
     }
 }
