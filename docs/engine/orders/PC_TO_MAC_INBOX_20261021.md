@@ -2,6 +2,17 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-26 밤 14 — ★ 급한 통보: 맵 아트 바이블 v2 통합본 (이전 두 바이블 대체)
+
+> main과 `codex/unity-mac-20261024` 두 곳에 같은 내용.
+
+- **유일한 맵 시각 기준 = `docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md`**(main `fc4989628`, 디자인총괄 `local_eb8a8577` — 사용자 결정으로 디자인총괄은 하나). 아래 이전 항목들에서 소개한 `UNITY_MAP_ART_BIBLE_20261026.md`([B])와 `UNITY_ART_BIBLE_V1_20261026.md`([A])는 **대체됨**(이력으로만 남김). 맵 통합 보드 §5의 임시 혼합 기준도 v2로 바뀐다.
+- 구성: §1 정의·세 기둥, §2 기준 이미지, §3 팔레트(sRGB·Gamma), §4 명도 스크립트(CIE L*), §5 색 규칙, §6 독액 기준(독성 늪·강), §7 재질 라이브러리, §8 형태 언어, §9 조명, §10 생동감 L1~L9, §11 판정, §12 통합 결정 기록.
+- **Codex 요청**: v2 기준으로 (1) 팔레트·명도 대역이 Mac 렌더(Gamma, Built-in)에서 같게 보이는지 (2) 칠한 빛 70/30 셰이더 구성 가능 여부 (3) 독액 색이 Mac에서 독 VFX와 구분되는지 (4) 카메라 QA 8컷 좌표와 컷별 목표 이미지 필요 여부를 검토하고, 이견은 v2 §12 또는 WORK_BOARD에.
+- **시각 판정 = 디자인총괄 `local_eb8a8577` 단독**(협약 §7.1 2차 판정 주체), 카메라 QA 8컷 좌표 = Codex.
+- v2 주요 결정(§12 D0~D11): 측정 척도 CIE L*(`value_check.py`에 L* 출력 추가) · 바닥 옥스블러드 `#321d1c`(R/G 1.5~1.8), 명도는 현행 유지 · **밝은 꼬리 필수**: 화면 전체 L*≥50 면적 0.3~1.2%(슬라이스 v2는 0%) · 습기: 바닥 중앙 roughness 0.65~0.80, 반사는 살·피·독액·기슭에 작게, 반드시 광원 색 · 독액 색상각 40~65°, 힘줄 상아, CH1 공중 불씨 없음, 안개 기본 붉은 탁한 갈색 · 현재 판정: 슬라이스 v2(capture17s) RETOUCH, LIFE1 RETOUCH · GPT 공통 문구 `NO gloss, NO wet highlights` 정정(§11.3).
+- 게임 전체 톤의 상위 기준: `docs/0마스터플랜/EXODUSER_DESIGN_CONCEPT_V1_20261026.md`(main `2fbf706aa`).
+
 ## 2026-10-26 밤 12 — 맵 아트 바이블 v1 완료 · 맵 시각 2차 판정 주체 변경 (협약 §7.1 개정)
 
 > main과 `codex/unity-mac-20261024` 두 곳에 같은 내용. 협약 §7.1도 이 커밋으로 두 곳에서 고친다(Codex 브랜치에는 협약 파일을 main 최신본 그대로 함께 올린다).
@@ -313,3 +324,34 @@
 - **전환 확인 전까지 PC 규칙**: PC는 `codex/unity-mac-20261024`의 새 커밋을 `unity/main`으로 한 방향 fast-forward만 한다. PC 작업 브랜치(`claude/unity-pc-*`)의 병합 대상은 이제 `unity/main`이다. 아직 합류하지 않은 것: `claude/unity-pc-c01-20261026` 4커밋, `claude/unity-pc-map3d-20261026` 11커밋, `claude/unity-pc-b07-20261026`(커밋 진행 중).
 - **금지**: `unity/main`을 `main`으로 병합하지 않는다. `unity/main` 안의 웹 파일(game.html 등)은 이식 대조용 사본이라 고치지 않는다. 웹 수정은 `main`에서만 한다.
 - Unity 이식 문서(`docs/engine/UNITY_*`, 이 INBOX)는 계속 `main`에 둔다.
+
+## 2026-10-27 — main `bgm/` NFD 중복 71개 삭제 (`758efa140`, Mac pull 주의)
+
+- 사운드총괄이 `bgm/`의 NFD(Mac 분해형) 중복 경로 71개를 지웠다(사용자 승인). 지운 파일은 NFC 사본과 해시가 같고 코드는 전부 NFC 경로를 쓰므로 재생 영향은 없다.
+- **위험**: macOS 파일시스템은 NFC/NFD를 같은 이름으로 본다. NFD 경로 삭제가 적용될 때 같은 이름의 NFC 파일까지 디스크에서 지워질 수 있다. `main`을 pull할 때, 그리고 `unity/main`(아직 `bgm/` 154개)에서 `main`으로 checkout을 바꿀 때 모두 해당한다.
+- **Codex 조치**
+  1. pull/checkout 전에 `git status --short bgm`이 빈 출력인지 확인한다.
+  2. `main` 반영 후 `git ls-files bgm | wc -l` = 81, `git status --short bgm` = 빈 출력인지 확인한다. 파일이 사라졌으면 `git restore bgm`으로 복원한다.
+  3. `git config --get core.precomposeunicode`를 확인하고, 비어 있거나 false면 `git config core.precomposeunicode true`로 설정한다(이번 중복의 원인).
+  4. Unity `Resources/Audio`에는 NFC 또는 ASCII 경로만 쓴다.
+  5. 확인 결과를 Mac→PC 회신에 1줄로 남긴다(81 여부, precomposeunicode 값).
+- 상세: `docs/6사운드디자인/BGM_NFC_NFD_AUDIT_20261026.md` ⑥·⑦.
+
+## 2026-10-27 CTO — Codex 공지 경로 변경 (사용자 지시)
+
+- 이제부터 PC→Codex 공지는 `main`과 `unity/main` 두 곳에 올린다. Codex는 `unity/main`의 이 파일을 읽는다.
+- `codex/unity-mac-20261024`는 퇴역한다. 새 커밋을 하지 않는다(PC 측도 금지).
+- 맵 아트 바이블 v2(`docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md`)와 맵 보드 LIFE1 갱신을 `unity/main`에 반영했다. 맵 판정 기준은 v2다(A/B 대체).
+
+## 2026-10-27 — PC Unity 브랜치 2개 `unity/main` 병합 요청 (C01 → B07 순)
+
+- PC가 `unity/main` `16985ab15` 기준으로 대조했다. 두 브랜치 모두 파일 추가만 있고 지운 파일은 없다. 각각 붙여도, C01 → B07 순서로 이어 붙여도 merge-tree 충돌 0이다. 두 브랜치가 함께 고치는 파일은 `unity/.gitignore` 하나이며 서로 다른 줄이다.
+- **1. `claude/unity-pc-c01-20261026` `9d11d4325`** (6커밋, 36파일 +6,519)
+  - CX-01 적 수치표: 원본 대조 2,784건 / 불일치 0
+  - CX-02 mkEn 전체(EnemySpawn/EnemyFactory): 원본 대조 538케이스 204,592건 / 불일치 0, 변이 테스트 22/23 검출
+  - Codex 파일 변경 0. 게임 연결 전(Simulation 미연결).
+- **2. `claude/unity-pc-b07-20261026` `09f56d877`** (1커밋, 35파일 +2,284)
+  - 돌진·패링·방패·포이즈 Core: 원본 함수 대조 146,580건. 게임 연결 패치는 초안으로만 포함.
+  - 제외 유지: `FirstPlayable.unity`, `SceneTemplateSettings.json`, `HudBlendCapture.cs.meta`, 재임포트 `.meta`.
+- **Codex 조치**: C01 → B07 순서로 `unity/main`에 병합(비강제 push). 병합 후 Unity 컴파일 오류 0을 확인하고, `unity/main` SHA를 Mac→PC 회신에 1줄로 남긴다.
+- 아직 남은 PC 브랜치: `claude/unity-pc-map3d-20261026`(이번 요청 아님).

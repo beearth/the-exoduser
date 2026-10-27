@@ -4,7 +4,7 @@
 ## 기준 문서(SSOT)
 - 100% 분모: `docs/engine/UNITY_PORT_MASTER_20261026.md` (main, 64행, 상태 0/1/2/3)
 - 업무협약: `docs/engine/orders/UNITY_CLAUDE_CODEX_AGREEMENT_20261026.md` (§1 Unity 6000.6.7f1 통일, §2 소유, §5 결정, §7 3D 맵 분담)
-- PC→Mac 요청: `docs/engine/orders/PC_TO_MAC_INBOX_20261021.md` — **main과 codex/unity-mac-20261024 두 곳에 동시 게시**(Codex는 자기 브랜치만 읽음) 병합 대상은 unity/main(10-27, CLAUDE.md §엔진별 버전 분리).
+- PC→Mac 요청: `docs/engine/orders/PC_TO_MAC_INBOX_20261021.md` — **main과 unity/main 두 곳에 동시 게시**(codex/unity-mac-20261024는 10-27 퇴역) 병합 대상은 unity/main(10-27, CLAUDE.md §엔진별 버전 분리).
 - 3D 맵 기획서: `docs/4.1맵디자인+설정/UNITY_MAP_HQ_PRODUCTION_PLAN_20261026.md` (§4.5 생동감 L1~L9, §4.6 Moon Studios 방식)
 - 맵 아트 바이블 통합본 v2: main `fc4989628` (디자인총괄 eb8a8577, `MAP_ART_BIBLE_v2_*`). 이전 두 바이블(UNITY_MAP_ART_BIBLE / UNITY_ART_BIBLE_V1)은 대체
 - 메모리: `unity-port-overall-lead.md`, `sonnet-simple-session-always-on.md`, `port-switched-to-unity-codex.md`
@@ -18,7 +18,7 @@
 | 맵 총괄 (맵 계획·판정 G1~G8) | local_9d17d95b-239c-4254-8bef-555b6c5e16e8 | 단순작업3 local_b8b2b4c2-0b81-4237-88d7-3eac922ffdb1 (700K, 재생성 대상, LIFE1→PAINTGROUND→TOXIC→M1) |
 | 보스전 총괄 (A23·C01·C03) | local_a98acebe-ea98-4dda-9441-d10b1c7622ed | 단순작업2 local_f5128d34-7688-41f5-aadd-cfd69014d707 (CX-01 진행) |
 | (종료) 내가 만든 디자인 세션 | local_a1efbc31-1a15-4010-a047-552782aa3c3e | 인계 완료·idle. 새 작업 주지 말 것. 보관은 사용자 결정 |
-| Codex (Mac) | 직접 연락 불가 → INBOX 두 곳 | — |
+| Codex (Mac) | 직접 연락 불가 → INBOX 두 곳(main·unity/main) | — |
 
 ## 진척 (마스터 보드 기준, 22시 무렵)
 - 상태 2: A07 탭바·A08 인벤·A09 유골함·A10 보관함·A11 유물·A12 스킬·A13 능력치·A14 대장간·A16 키바인딩·A19·A20 레벨업·A21 사망·A24 구역제목·A25 툴팁·A26 빌드분기·B02·B11 자동물약·E01·E02

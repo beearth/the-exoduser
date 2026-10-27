@@ -2957,3 +2957,15 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
  #lobby .lobby-content>.lobby-divider{height:24px!important;}
 }
 ```
+
+## 2026-10-27 첫 화면(타이틀·ENTER) 재디자인 기록
+
+| 항목 | 내용 |
+|---|---|
+| 진단 | 로고 RGB 검정판(런타임 키잉 실패 시 검은 사각형)·검이 U를 관통해 EXODIUSER로 읽힘·화면 전체 무채색·로고와 문 분리·첫 화면과 로비 로고 불일치 |
+| 결정 | 후보 A/B/C 중 사용자가 **C(지옥왕의 관)** 선택, 로비 로고도 C로 통일 |
+| 로고 파일 | `img/logo_exoduser.png` 1551×740 RGBA(첫 화면·로비 `.lobby-brand-logo`·게이트 `#chGateImg`·인트로 컷 `#cinImg19`·`game.html` 타이틀 컷 공용). 이전 해골 로고는 `img/logo_exoduser_v1_skull.png` |
+| 첫 화면 구성 | 로고=문 아치 위 여백·프레임 폭 46%·위 1/3, 로고 뒤 진홍 후광(알파 ≤.15)+검정 drop-shadow, 문 상부 어둡게, 문 가운데 틈에만 진홍 빛줄기(알파 .26), ENTER=녹슨 황동 RGBA, 펄스 진홍·약하게 |
+| 규칙 | 로고 이미지는 항상 RGBA로 굳혀서 쓴다(런타임 캔버스 키잉·밝기 키 금지 — 어두운 철 면이 같이 지워짐). 하이라이트는 진홍·잉걸불, 흰·중성 회색 금지 |
+| 로비 | `.lobby-divider` 높이 104→148px(index.html 507행, 761px 이상 높이)로 키워 1920·1600 모두 로고 폭 310px. 문구·찜 블록과 겹침 없음. 미검증: 캐릭터 목록이 있는 로비 화면 |
+| 상세 | `docs/cinematic/ENTER_ENGRAVED_20260907.md` §2026-10-27 개정, `docs/17게임아트팀/ART_TEAM_MASTER.md` 현황표·로그 |

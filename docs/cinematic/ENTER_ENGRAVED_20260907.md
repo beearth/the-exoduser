@@ -58,3 +58,23 @@
 | 입력 | 제목은 pointer-events:none. 기존 ENTER 클릭·Enter/Space·게임패드 처리 유지 |
 | 번역 안전 | `_applyLobbyLang`의 광범위한 h1 → HELL 치환 제거. EXODUSER / HELL LORD 리프 노드 보존 |
 | 검증 | 기존 3개 화면 크기 테스트에 제목 문구 및 ENTER 위 배치 검증 추가 |
+
+## 2026-10-27 개정 — 첫 화면 재디자인(안 C 지옥왕의 관)
+
+사용자 "간판인데 너무 구리다" → 디자인총괄 재디자인, 사용자가 후보 C를 선택. 위 표 중 아래 항목이 바뀐다(나머지 계약 유지).
+
+| 항목 | 이전 | 현재 |
+|---|---|---|
+| 연결 | `cin-enter-engraved.css?v=20260907-enter-4` + `cin-logo-art.js` | `cin-enter-engraved.css?v=20261027-title-c`만. `cin-logo-art.js` 로드 제거(파일은 미참조 보존) |
+| 타이틀 이미지 | `output/imagegen/exoduser-hell-lord-logo-api-v1.png`(RGB 검정판, 런타임 키잉) | `img/logo_exoduser.png`(안 C, 1551×740 RGBA). 로비·게이트·인트로 컷과 같은 파일 |
+| 타이틀 배치 | left 53.3% top 37% width 52% | left 53.3% top 23% width 46%(프레임 기준, 1920×1080에서 852×406 @ x595 y45 — 문 아치 위쪽 여백·위 1/3) |
+| 타이틀 뒤 | 검정 타원판(알파 .94) | 진홍 후광 radial `#b0281c` 알파 .14→.07→0, 아래 drop-shadow 검정(3px/.75 + 16px 20px/.85) |
+| 문 감광 | 비네트만 | `.cin-hell-frame::before` 위→아래 검정 .62→.5(22%)→.2(40%)→0(56%) + 전체 균일 .14 + 가장자리 radial(53% 55%, 투명 42%→.22). ENTER 주변은 mask `radial-gradient(ellipse 17% 14% at 53.3% 80%,transparent 35%,#000 100%)`로 비워 이전 밝기 유지 |
+| 문 틈 | 없음 | `.cin-hell-frame::after` left 53.2% top 0 width 6.8% height 100%. 코어 가로 49.3→50→50.7% `#b0281c` 알파 .22(약 1.5px) + 넓은 번짐 알파 .04/.08/.04. 세로 마스크(프레임 %) 0~37 투명·41~50 켜짐·53~69 투명(잠금쇠 철판 y≈570~750)·71.5~75 켜짐·79↑ 투명. 로고 부제 아래 y≈410 위는 지움. dissolve 시 같이 사라짐(1.1s). 1x에서는 약하게 보이는 것이 의도(넓은 어둠+작은 밝음, 붉은 빛은 로고가 맡음) |
+| ENTER 이미지 | `enter-gothic-api-v1.png`(RGB 은빛, 런타임 키잉) | `output/imagegen/enter-gothic-v2-brass.png`(RGBA 1536×1024). 오프라인 키잉 alpha=clamp((max(r,g,b)-8)/24)+binary_closing 2회로 어두운 홈 구멍 메움, 색 램프 어두운 면 `#5a4426` → 빛면 `#c9a46a`(감마 1.35, 중성 회색·흰 없음) |
+| 폴백 span | 로딩·실패 시 노출 | 항상 visibility:hidden(이미지는 처음부터 보임, 런타임 게이트 `data-ready`·`data-art-ready` 폐기) |
+| 펄스 | cinEnterBreathe 2.6s, opacity .45↔1 | cinEnterBreathe 3s, opacity .74↔1 + 진홍 drop-shadow 7px/.16 ↔ 14px/.34 (진폭 약 절반) |
+| hover | 흰 밝기 | brightness 1.1 + 진홍 drop-shadow 10px/.5 |
+| 버전 보존 | — | 해골 로고 `img/logo_exoduser_v1_skull.png` 보존 |
+
+캡처·후보·목업: `E:/exoduser-wt/_out/title-logo-redesign/`(Git 밖). 로비 로고(`.lobby-brand-logo`)는 `.lobby-divider` 안에서 object-fit:contain이라 비율이 2.40→2.10이 되어, 높이 104px에서는 폭이 250→218px로 작아져 HELL LORD가 안 읽혔다. `index.html` 507행 divider 높이를 148px로 키워 1920·1600 모두 폭 310px(310×148)로 한다(max-height:760px 이하 규칙은 그대로). 캐릭터 문구·찜 블록과 겹침 없음(캐릭터 없는 상태 캡처). **미검증: 캐릭터 목록이 있는 로비 화면(로그인 필요)** — 추정 콘텐츠 높이 약 711px(900 높이에서 여유 약 190px, 761 높이에서 약 50px).

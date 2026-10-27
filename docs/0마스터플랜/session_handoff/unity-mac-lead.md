@@ -17,6 +17,7 @@
 | `claude/unity-pc-inventory-u04-20261026` (누적, worktree `E:/exoduser-wt/pc-unity-win`) | `a48faf9ea` | UI A07~A26·A16 병합·B11. **Codex patch 19개** 순서(INBOX 최신 ★9 항목) |
 | `claude/unity-pc-b07-20261026` (worktree `E:/exoduser-wt/pc-unity-a16`) | `24c20a94a` 기반 | B07 진행 중(원 Sonnet, 미커밋) |
 | `claude/unity-pc-map3d-20261026` (worktree `E:/exoduser-wt/pc-unity-map3d`) | `0bf374355` | 슬라이스 v1 `e64e57889`, v2 `23451c97a`(RETOUCH), LIFE1+M1 본체 |
+| unity/main (Unity 대표 브랜치, 2026-10-27 사용자 결정, 시작점=codex/unity-mac-20261024 끝) | — | PC Unity 작업 브랜치 병합 대상. Codex 전환 확인 전까지 codex/unity-mac→unity/main 단방향 ff만 |
 - patch 순서: U04B→U08×2→U05→A07B×2→A13→A14→A20→A21→A22→A23→A24→A26×2(14·15)→A16×3(16~18)→B11(19). 다음 번호는 인수 순서로 정함(파일 이름엔 번호 안 넣음).
 
 ## 진행 중 작업 단위
@@ -28,7 +29,7 @@
 - 문서 반영 대기열: `E:/exoduser-wt/_out/macbook-docs-queue/QUEUE.md` — **Q2 급한 통보(통합 바이블 v2 INBOX 두 곳)를 먼저**, 그다음 Q1(맵 보드 LIFE1 RETOUCH·§5 기준=v2). 원 Sonnet 재생성 뒤 실행(급하면 다른 방법을 전체총괄과 정함).
 
 ## 대기 중
-- 원 Sonnet B07 결과 보고 → 검수(oracle 수·RED→GREEN·patch 1~19 위 적용·Codex 파일 변경 0) → 커밋은 Sonnet이 경로 지정으로 → 누적 브랜치 병합 → INBOX 두 곳.
+- 원 Sonnet B07 결과 보고 → 검수(oracle 수·RED→GREEN·patch 1~19 위 적용·Codex 파일 변경 0) → 커밋은 Sonnet이 경로 지정으로(커밋 09f56d8775bb4f7b8cb7e90ce366206f33e56d43(claude/unity-pc-b07-20261026)) → unity/main 병합(patch 20·21) 후 INBOX 두 곳.
 - 디자인총괄 `local_eb8a8577-c0e4-4a9f-b628-fac0c8549dbf`(유일): **통합 바이블 v2 완료** main `fc4989628` `docs/4.1맵디자인+설정/MAP_ART_BIBLE_v2_20261026.md` → 대기열 Q2로 INBOX 두 곳 + 맵·보스전 총괄 공지, TOXIC 색 상수 교체(맵 총괄이 TOXIC 명세를 이미 고쳤을 수 있음 — 현재 파일 확인). 맵 보드 §5 임시 기준(두 바이블 혼합) 확인도 eb8a8577에 받을 것(대조표 `_out/design-reconcile/COMPARE.md`).
 - 맵 총괄에 미전송 답장: "LIFE1 보드 수정 = 대기열 Q1, 급하면 단순작업3이 같은 절차로 해도 됨" (메시지 상한으로 못 보냄).
 - `_out/inbox-artbible-v1/`은 **보류**(구 디자인 총괄 기준, 게시 금지).
@@ -51,4 +52,4 @@
 ## 재개 후 첫 행동
 1. MEMORY.md와 이 문서, `unity-port-mac-supervisor-role.md`를 읽는다.
 2. 맵 총괄에 미전송 답장 1줄 보내기(위 "대기 중").
-3. 원 Sonnet 재생성 완료 확인(`get_usage`) 뒤 대기열 Q2(급함)→Q3(B07 커밋)→Q1 실행시키고 SHA 검증, B07 브랜치를 누적 브랜치에 병합(patch 20·21) 후 INBOX 두 곳. 다음 단위 = B05 Core 구현(명세 작성 필요, 추출표 `UNITY_B05_WEB_EXTRACT_20261026.md`).
+3. 원 Sonnet 재생성 완료 확인(`get_usage`) 뒤 대기열 Q2(급함)→Q3(B07 커밋)→Q1 실행시키고 SHA 검증, B07 브랜치를 unity/main에 병합(patch 20·21) 후 INBOX 두 곳. 다음 단위 = B05 Core 구현(명세 작성 필요, 추출표 `UNITY_B05_WEB_EXTRACT_20261026.md`).
