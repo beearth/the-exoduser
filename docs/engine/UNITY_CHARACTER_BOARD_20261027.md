@@ -26,7 +26,7 @@
 | UCH-03a | 전사 대검 Meshy multi-image-to-3d 1건(정면+옆면) → Unity 임포트(전장 1.60)·텍스처 보정(핏줄 제거·금속 탈색) | **완료** (30cr, 조건부 PASS, 커밋 보류) |
 | UCH-03b | 망토 전용 뼈 분리(다리 끌림 해소)·손 파지 고정 포즈/무기 소켓·애니 FBX 메시 제거 | **완료** (조건부 PASS, 커밋 보류) |
 | UCH-03d | Hero Light(캐릭터 전용 보조광, 바이블 §8 L-9 캐릭터 총괄 소유)·웅덩이 림광·RM-0 확정 조명(unity/main b280ddf6) 재촬영 | **완료** (Hero 0.6 PASS, L-4 테두리 색 미해결, 디자인총괄 2차 판정 대기) |
-| UCH-03e | 웅덩이 테두리광 재설계: 림 Point 재배치 1회 → 안 되면 웅덩이 색 Fresnel(Shader Graph). 이번 단위는 구조만(세기는 Linear 뒤) | 대기 |
+| UCH-03e | 웅덩이 테두리광 재설계: 림 Point 재배치 1회 → 안 되면 웅덩이 색 Fresnel(Shader Graph). 이번 단위는 구조만(세기는 Linear 뒤) | **완료** (림 Point 반려, Fresnel 구조 PASS, 세기·지표는 03f) |
 | UCH-03f | VFX 병합(Linear·후처리) + RM0-LIGHT-L 뒤 재조정: Hero·Fresnel 세기 확정, ACES 색 밀림(350~12°)·블룸 번짐 확인, Hero Light 브랜치 merge·재캡처·병합 요청 | 대기 |
 | UCH-03c | Animator 기본(대기·이동·구르기·공격 1) | 대기 |
 | UCH-04 | 인게임 판정: 1-1 맵 위 1920×1080·1x 크롭, 전사·실버테일 옆 T1~T8 | 대기 |
@@ -96,3 +96,8 @@
   - 검증(RM-0 샌드박스, 캡슐, 1600×900, PC_High·Mac_Balanced 동일): 변경 전 Hero가 바닥까지 밝힘(바닥 |ΔL*| 최대 8.2) → 변경 후 바닥 0.000·피사체 L* 29.3→45.4·키 그림자 유지. 빌드 + `--unity-m1-check` 17단계 ok, Core diff 0. 캡처 `E:/exoduser-wt/_out/unity-herolight/captures_20261028_0039/`.
   - 발견: 현재 unity/main TagManager의 빈 렌더링 레이어 줄 끝 공백이 지워져 있어 Unity가 파싱 실패(Parser Failure line 41) → 레이어 이름이 정의되지 않음. 이번 커밋에서 Unity 원본 직렬화로 되돌렸다. Codex에 `.asset` 끝 공백 제거 금지 공지(INBOX main `f97725cf2`, unity/main `e7d43d44d`). 임펙트 총괄에 ApplyLight 변경 알림 완료(VFX 브랜치는 URP 자산·TagManager·Rm0EngineSetup을 건드리지 않음 확인).
   - 병합 대기: VFX 공유 렌더 → RM0-LIGHT-L → Hero Light. 판정 캡처는 그 뒤 Linear·후처리 화면에서 다시 찍는다(현재 캡처는 참고용).
+- 2026-10-28 UCH-03e(무료, Gamma·후처리 꺼짐 잠정): 시험 구도 = 캐릭터를 웅덩이 반경 60~80% 가장자리에 세우고 광원을 화면 한쪽 옆에 둠.
+  - 림 Point 1회(캐릭터→광원 쪽 0.6m, 높이 1.2m, 세기 2.5): 수치 +95·색상각 9°로 통과하지만, 광원 쪽 몸 면 전체가 붉게 칠해짐(L* p95 75.7) → **반려**.
+  - Fresnel: `Art/Characters/Shaders/CharacterLit_PoolRim.shadergraph`(URP Lit + Emission에 `_HeroPoolRimColor × _HeroPoolRimStrength × Fresnel^_RimPower(3) × 광원 쪽 반구 마스크`), 구동 `Runtime/CharacterLab/PoolRimDriver.cs`(`Lights/Pools`의 가장 가까운 `Pool_Hell_*`·`Pool_Toxic_*`, 0.85R~1.0R에서 0으로), 머티리얼 사본 `Warrior_Mat_Rim`·`Warrior_Greatsword_Mat_Rim`. 테두리 0일 때 원본과 픽셀 차이 0, 웅덩이 밖·없음·멀리 차이 0. 세기 3.0에서 광원 쪽 외곽에 진홍 테두리가 1x로 읽힘(색상각 4°, 채도 0.55) → **구조 PASS**.
+  - 미해결: ① L-4 ① 휘도 +20에 Fresnel 1~3은 +6~9로 미달(광원 쪽만 보면 세기 약 6에서 +19.5). 진홍은 휘도 비중이 낮아, 휘도로 맞추면 형광 쪽으로 감 → 지표(휘도 유지 / R +40 / ΔE ≥15)를 디자인총괄에 질의. ② 세기 6~8에서 노멀맵 굴곡마다 붉은 조각(점 금지 위험) → Fresnel 법선을 메시 정점 법선으로 교체(03f).
+  - 캡처 `E:/exoduser-wt/_out/unity-charsheet/unity_uch03e_20261028_0106/`. `PoolRimDriver`는 아직 씬·게임 코드에 붙이지 않음(캡처 전용).
