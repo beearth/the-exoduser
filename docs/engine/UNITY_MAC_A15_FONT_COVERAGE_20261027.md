@@ -66,6 +66,19 @@ Each MouseDown reports `Screen=1920x1080`, `dpi=228`, identity `GUI.matrix`, `co
 
 The documented macOS computer-use `Target`/`App` methods expose `click`, `drag`, and `scroll`, but no pointer-only `move` or `hover` method. `drag` is a pressed-button operation and cannot establish a hover position before an independent click. The documented macOS `getApp(path)` may launch an app; it previously created an unflagged duplicate QA process. Consequently, a safe same-PID pointer-move-then-click cross-check is unavailable through this tool. No additional Player, build, click loop, or undocumented native event injection was performed for this follow-up. The source rectangle and group arithmetic pass their static check; OS input delivery and physical-mouse behavior remain HOLD. The repeated `(493,590)` observation is insufficient grounds for a product coordinate correction.
 
+## 1280 bottom-scroll and Greek/Thai representative Player review — 2026-10-27
+
+Reused the final ARM64 Settings QA app from `/Users/fordeargamers/exoduser-wt/_out/A15-GAME-FULLSCREEN-20261027/build/EXODUSER-Unity.app`; **new build 0**. Only flagged PID 43099 ran with `--unity-cinematic-persistence-review --unity-a15-direct -a15-phase read` and the exact marker root `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-A05-IO-A15-TAIL-20261027`. The requested Game viewport was 1280x720; the window screenshot was 1280x784 including the 64px title area. `A15_QA_DIRECT` logged `listening=False`. The Player was stopped afterward, with no unflagged duplicate app and no user app interaction.
+
+| Gate | Player observation | Verdict |
+|---|---|---|
+| 1280 top/footer | `tail-ko-top.png`: first key rows, two columns, fixed footer and both footer buttons visible | Top/footer visual PASS at 1280 |
+| 1280 bottom | One documented CUA `scroll([600,500], 'down', 2)` within the visible list produced `tail-ko-scroll-attempt.png`; first rows remained in the same place. The direct A15 path has no keyboard key-scroll command. No repeated ineffective scroll or alternate native event injection | Bottom rows and scroll behavior HOLD; no claim that the list reached its end |
+| Greek long shield label | F8 QA sequence logged `code=el`; `tail-el-top.png` shows `key.action.shield` on two lines ending before its E key button, with no visible collision at the 1280 viewport | This representative row visual PASS; all long-name locale rows remain outside scope |
+| Thai combining text | F8 QA sequence logged `code=th`; `tail-th-top.png` and `tail-th-top-detail.png` show visible Thai text across the first rows with no obvious row/button collision or tofu box at screenshot resolution | Presence and gross layout observed. Combining-mark placement/shaping correctness HOLD; cmap coverage alone is not a rendering PASS |
+
+Raw log: `/Users/fordeargamers/exoduser-wt/_out/A15-GAME-FULLSCREEN-20261027/tail-player.log`. The 1280 bottom-scroll and Thai shaping gates remain separate from the already proven 1920 scroll and Greek shield row. Product code and keyboard/mouse binding data did not change in this review.
+
 ## PC 소유 수정본 인수·제품 적용 / 실화면 — 2026-10-27
 
 PC UI 인계 commit `97be6444b6bebe0fba186209191353eb830988fe`의 `docs/engine/ui_handoff/` 세 파일만 읽었다. 대상 `NativeKeyBindList.cs` base blob `4abe399e66264c30f9622c24e1306688e4dcf7fd`가 현재 Mac `unity/main` `94cc7dce1`과 동일함을 확인했다. 승인된 **지역 글꼴 patch** SHA-256 `f706e7b9f270c8b258b7234f782cc48b49be8611a58cdaafec489ce2940cfe14`, **clip 포함 수정 긴 이름 patch** SHA-256 `f456ef12593e4bcd237fc3f5fd9dda0db4043b0751a2643351711502f68c17da`를 그 순서로 `git apply --ignore-space-change` 적용했다. 위 절의 최초 긴 이름 제안은 이 인수에서 적용하지 않았다.
