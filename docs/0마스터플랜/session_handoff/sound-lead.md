@@ -1,4 +1,4 @@
-# 사운드 총괄 인계 — 2026-10-27 18:40 KST
+# 사운드 총괄 인계 — 2026-10-28 KST
 
 - 세션 id `local_9c9b2f79-f02e-404e-ba44-282d087fa454` / Opus 5.5 / 사운드 전 영역(SFX·BGM·보이스·믹스·Unity F04) 총괄. 조사·판단·명세·검수·배정만, 실행은 단순 세션
 - SSOT: `docs/6사운드디자인/SOUND_LEAD_MASTER_20261026.md` (현황·백로그 SND-01~06·기록), 상세 계약 `docs/6사운드디자인/6사운드디자인.md`
@@ -11,7 +11,10 @@
 eview_20261026.html` |
 | SND-02 채택본 반영 | **반영 완료**(origin `780ac692b`, DEMO·EA = origin game.html 동일 해시). crit_heavy·ui_button_hover/confirm·amb_hell_forest_bed | 게임 안 음량·쿨다운 실청 조정(1차값). 로컬 G: 작업 트리에 AD3·SND-02 game.html 변경 미커밋 잔존(타세션 WIP와 섞임, origin엔 반영) | `docs/6사운드디자인/SND02_ADOPT_R2_20261027.md` |
 | SND-03 BGM NFD 중복 | **완료**(origin `758efa140`·`2e20e53a4`, 로컬 `db107b6f2`, DEMO·EA 각 71 제거). Mac 후속 공지 main·unity/main INBOX 반영 | Codex 회신(Mac `git ls-files bgm`=81·precomposeunicode) 대기만. DEMO/EA 전용 3곡(Rotten Forest - Ashen Gate, Godot 1-1 데모 신곡 `db6539b7e`, claude/demo11-* 브랜치)은 보존 | `docs/6사운드디자인/BGM_NFC_NFD_AUDIT_20261026.md` ⑦ |
-| **SND-08 RM-1 Unity 1-1 슬라이스(최우선)** | 명세 완료·트랙 B(새 후보 7키×3) sound-simple 배정 | **16키 추천본 확정·사용자 청음 대기**(청음 `G:\exoduser-wt\_out\sfx_forgeeview_20261026.html` RM-1 묶음, 13키 가공본 + 3키 합성본, 판정 명세 §5·§5.1) → 채택 후 트랙 C / 트랙 A Unity 이식은 **유니티 총괄(local_59ad835c)이 Sonnet 배정, RM-0 병합 뒤 착수**(명세 origin `30e844ea7` 전달함) / 트랙 C 채택 반영(웹+Unity) | `docs/6사운드디자인/UNITY_RM1_SOUND_SLICE_20261027.md` |
+| **SND-08 RM-1 Unity 1-1 슬라이스(최우선)** | 사용자 고르기(장면 기준 `pick_rm1.html`)로 **11키 채택**·웹 7키 반영(origin `05d519db7`, DEMO·EA 동기화)·Unity 브랜치 `claude/unity-pc-sound-rm1-20261027` `48fdc2e29`(11키+`RM1_AUDIO_KEYS.json`, unity/main 미병합) | ①3차 5키(`tell_parry`·`roll_body`·`druid_burrow`·`druid_staff_tap`·`druid_root_pierce`, s3 a~d) 사용자 고르기 대기 — 서버 `C:
+vm4w
+odejs
+ode.exe G:\exoduser-wt\_out\sfx_forge\_tools\serve.cjs` → `http://127.0.0.1:3399/pick_rm1.html`, 결과 `picks_rm1.json` ②트랙 A(A1~A8)는 유니티 총괄이 RM-0 세션 `local_7bb6eaac`에 배정(10-28), 판정 기준 §6.6(main `acfa3a43a`) 전달 → Receipt·녹음 2개 오면 귀 판정 ③웹 음량 1차값 실청 조정, 드루이드 분출·해일 실제 발동 확인 미완 ④`tell_parry` 채택 시 웹 연결 위치 결정 | `docs/6사운드디자인/UNITY_RM1_SOUND_SLICE_20261027.md` §6 |
 | SND-07 AD3 예고음 | 1단계 **반영 완료**(origin `c3c2441bf`) | 2단계 `tell_melee`·`tell_ranged`·`tell_boss` Forge 생성 → 사용자 청음 / 3단계 우선순위 전체 재배열 보류 | `docs/6사운드디자인/AD3_ENEMY_TELL_SFX_20261027.md` |
 
 ## 다음 착수 후보 (총괄 자율 결정, 순서)
