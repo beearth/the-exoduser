@@ -270,6 +270,7 @@ namespace Exoduser.UnityPort
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
             foreach(var e in Simulation.Enemies)
             {
+                if(Simulation.IsRemodelProp(e)){if(enemies.TryGetValue(e.Id,out var pv)){pv.body.enabled=false;pv.walk.enabled=false;if(pv.arc!=null)pv.arc.enabled=false;}continue;}   // RM-B0b: a boss prop (sprout, cord knot) is no enemy: the boss presentation draws it from Simulation.RemodelProps
                 if(!enemies.TryGetValue(e.Id,out var ev)){
                     // web _assignMobSkin: the fixed atlas cell the factory rolled from the etype and the spawn x (_mob8Col/_mob8Row); revived ghouls have none and keep the position hash
                     int idx=e.Web!=null&&e.Web._mob8Col.HasValue&&e.Web._mob8Row.HasValue?(int)e.Web._mob8Row.Value*8+(int)e.Web._mob8Col.Value:((int)(e.X*31)&0x7fffffff)%40;
@@ -391,6 +392,7 @@ namespace Exoduser.UnityPort
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);var keep=center.normal.textColor;if(d.shield)center.normal.textColor=new Color(.4f,.87f,1f);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);center.normal.textColor=keep;}
+            DrawPracticeShots();
             revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
             if(levelUp.Active){var lp=view.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
