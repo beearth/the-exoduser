@@ -50,6 +50,7 @@ namespace Exoduser.UnityPort
             view=Camera.main;
             if(view==null){view=new GameObject("World Camera").AddComponent<Camera>();view.tag="MainCamera";}
             view.orthographic=true;view.orthographicSize=5.4f;view.backgroundColor=new Color(.015f,.02f,.018f);view.clearFlags=CameraClearFlags.SolidColor;
+            UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(view).renderPostProcessing=true; // RM-1 VFX V0: HDR core + Bloom
             view.transform.position=new Vector3(40.2f,-74.2f,-10);
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
@@ -393,6 +394,7 @@ namespace Exoduser.UnityPort
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);var keep=center.normal.textColor;if(d.shield)center.normal.textColor=new Color(.4f,.87f,1f);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);center.normal.textColor=keep;}
+            DrawPracticeShots();
             revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
             if(levelUp.Active){var lp=view.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}

@@ -146,7 +146,7 @@ namespace Exoduser.UnityPort.Core
             double cached; if (p.WeakMul.TryGetValue(e, out cached)) return cached;
             var w = e.Web ?? SyncToWeb(e);
             double step = SkillRules.MaliceWeakStep + (EquippedInventory != null ? EquippedInventory.AffixTotal("maliceWeakAmp") : 0);
-            double st = w._mwStk, mul = 1 + st * step;
+            double st = w._mwStk ?? 0, mul = 1 + st * step;
             p.WeakMul[e] = mul;
             double n = Math.Min(SkillRules.MaliceWeakMax, st + 1); w._mwStk = n;
             if (n > st) RaisePlayerText(e.X, e.Y - 34, "악의 약화 +" + Math.Round(n * step * 100) + "%", "#b07cff", 24);

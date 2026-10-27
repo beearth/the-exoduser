@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort
             firstPractice.Tick();
             if((int)firstPractice.Step!=practiceStepSeen&&firstPractice.Practising){practiceStepSeen=(int)firstPractice.Step;OnPracticeStepEnter();}
             practiceDirHeld=x!=0||y!=0;
-            practiceSession.PrepareTick();
+            practiceSession.PrepareTick(practiceFailTicks>0);
             var step=firstPractice.Step;bool practising=firstPractice.Practising;
             bool weapon,magic,slot1;PracticeInputAllowed(step,out weapon,out magic,out slot1);
             if(!practising){weapon=magic=slot1=false;}
@@ -67,10 +67,12 @@ namespace Exoduser.UnityPort
             {
                 if(step==PracticeStep.Left||step==PracticeStep.Right)SupplyFirstPracticeActors();
                 else if(step==PracticeStep.Trap){Simulation.PrepareTrapPractice();SupplyTrapActors();Simulation.TickPracticeTrapActors();}
+                else if(ParryStep(step))ParryStepTick(step);
                 else PrepareStepTick(step);
             }
             float beforeX=Simulation.Player.X,beforeY=Simulation.Player.Y;
             Simulation.Tick(x,y,aimX,aimY,attack&&weapon&&!pointerBlocked,false);
+            AfterSimTickParry();
             firstPractice.ObserveMovement(beforeX,beforeY,Simulation.Player.X,Simulation.Player.Y,x!=0||y!=0);
             if(practising)ObserveStepTick(step,practiceScripted?(scriptUp||scriptDown||scriptLeft||scriptRight):DirectionKeysHeld());
             if(step==PracticeStep.Trap)
