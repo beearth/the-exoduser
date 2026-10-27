@@ -59,7 +59,7 @@ namespace Exoduser.UnityPort
    var sim=info.sim;int T=info.map.Data.tileSize;if(T<=0)T=64;
    foreach(var e in sim.Enemies)
    {
-    if(!e.Alive)continue;float ex=ox+e.X/T*mapSc,ey=oy+e.Y/T*mapSc;if(ex<0||ex>130||ey<0||ey>130)continue;
+    if(!e.Alive||sim.IsRemodelProp(e))continue;float ex=ox+e.X/T*mapSc,ey=oy+e.Y/T*mapSc;if(ex<0||ex>130||ey<0||ey>130)continue;
     Color col=new Color32(187,187,187,255);if(!string.IsNullOrEmpty(e.Col))ColorUtility.TryParseHtmlString(e.Col,out col);
     Fill(new Rect(canvas.x+(ex-1)*k,canvas.y+(ey-1)*k,2*k,2*k),new Color(col.r,col.g,col.b,.94f));
    }

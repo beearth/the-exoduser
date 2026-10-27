@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort.Core
             if (Druid != null) return;
             Druid = new DruidBoss(new BossHostAdapter(this)) { ElementMul = el => EnemyHurt.ElMul(el, ArmorElement()) };
             Stage.BossSpawners[0] = SpawnDruid; Stage.BossSpawners[3] = SpawnDruid;
+            RegisterRemodelSpawners();   // RM-B0: other stages with a registered remodel set, only while its flag is on
             BossTick = DruidBossTick;
             AfterEnemyTick += TickDruidWorld;
         }
@@ -43,16 +44,24 @@ namespace Exoduser.UnityPort.Core
             webOwner[web] = e;
             AddEnemy(e);
             Druid.ClearHazards();
-            Druid.Remodel = DruidRemodel;
+            var rmSet = RemodelSetFor(Config.StageIndex);   // RM-B0: null unless the remodel flag of this stage's set is on
+            Druid.Remodel = rmSet != null; if (rmSet != null) Druid.Set = rmSet;
             Druid.Attach(e);
-            if (DruidRemodel) RemodelAttach(e);
+            if (rmSet != null) RemodelAttach(e, rmSet);
             return e;
         }
 
         void DruidBossTick(EnemyState e)
         {
-            if (DruidRemodel && RemodelPreTick(e)) return;   // RM-B1: kneeling between lives
-            if (Druid != null && (Config.StageIndex == 0 || Config.StageIndex == 3)) Druid.TickBoss(e); else TickEnemy(e);
+            if (remodelPropMap.Count > 0 && remodelPropMap.ContainsKey(e)) return;   // RM-B0b: a boss prop has no AI
+            if (druidLives.Count > 0 && RemodelPreTick(e)) return;   // RM-B1: kneeling between lives (the table is empty unless a remodel fight is attached)
+            if (Druid != null && (Config.StageIndex == 0 || Config.StageIndex == 3 || Druid.Remodel))
+            {
+                if (druidLives.Count > 0) RemodelTickHead(e);   // RM-B0b: damage scale / obstacle bump (no-op for a set without them)
+                Druid.TickBoss(e);
+                if (druidLives.Count > 0) RemodelTickTail(e);
+            }
+            else TickEnemy(e);
         }
 
         void TickDruidWorld()
@@ -65,6 +74,7 @@ namespace Exoduser.UnityPort.Core
                 if ((int)Math.Floor(PlayerPoison * 10) % 6 < 1) { int pd = Js.Int(Player.MaxHp * .008); HurtPlayer(pd, new HurtOptions { Dot = true }); }
             }
             if (Druid == null) return;
+            TickRemodelRules();   // RM-B0b: ended props leave Enemies, obstacles end with the arena
             if (Druid.Boss != null && !Enemies.Contains(Druid.Boss)) { Druid.ClearHazards(); Druid.Data.Clear(); Druid.Boss = null; }
             Druid.TickWorld(Stage.Enabled && Stage.InArena && Stage.BossAlive);
         }
