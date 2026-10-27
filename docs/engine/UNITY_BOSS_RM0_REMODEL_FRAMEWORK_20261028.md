@@ -11,7 +11,7 @@ RM-B1 드루이드 전용이던 리모델 구조를 **"스테이지별 기술 �
 
 | 층 | 파일 | 하는 일 |
 |---|---|---|
-| 세트(데이터) | `Core/BossRemodel.cs` — `BossRemodelSet` | 목숨 수, 목숨별 HP 비율·몸 크기·쉴드 비율, 쓰러짐 틱, `Moves`·`Combos`·`Phases`(목숨 = 페이즈), `Parryable`·`Instant`·`Forced`, 공용 실행기 리모델 변형 수치(`SlamRadius`·`PoisonTrailTicks`·`ChaseZone*`·`SummonMax`), 드루이드 규칙 스위치 4개, **움직임 수치(RB1-6, 보스마다 다름)** `WalkSpeed`·`WalkStandOff`·`WalkAccelTicks`·`WalkStopTicks`·`WalkTurn`·`TeleTurn`·`AimFixTicks`·`GapTicks`(목숨별)·`ComboLinkTicks`(기본값 = 드루이드, B2·B3는 `WalkSpeed` 1.05 등으로 덮어씀), `Hooks`, `Validate()` |
+| 세트(데이터) | `Core/BossRemodel.cs` — `BossRemodelSet` | 목숨 수, 목숨별 HP 비율·몸 크기·쉴드 비율, 쓰러짐 틱, `Moves`·`Combos`·`Phases`(목숨 = 페이즈), `Parryable`·`Instant`·`Forced`, 공용 실행기 리모델 변형 수치(`SlamRadius`·`PoisonTrailTicks`·`ChaseZone*`·`SummonMax`), 드루이드 규칙 스위치 4개, **움직임 수치(RB1-6, 보스마다 다름)** `WalkSpeed`·`WalkStandOff`·`WalkAccelTicks`·`WalkStopTicks`·`WalkTurn`·`TeleTurn`·`AimFixTicks`·`GapTicks`(목숨별)·`ComboLinkTicks`(기본값 = 드루이드, B2·B3는 `WalkSpeed` 1.05 등으로 덮어씀), **아레나 기둥(RB1-3)** `PillarCount`(0 = 없음, 드루이드 4)·`PillarRingFraction`(0.55 × 아레나 반지름)·`PillarRadius`(80)·`PillarStartDeg`(45), `Hooks`, `Validate()` |
 | 보스 규칙(훅) | `Core/BossRemodel.cs` — `BossRemodelHooks` | AI 쪽 4개(`ForcePick`·`StartMove`·`TickState`·`Telegraphs`), 목숨 쪽 5개(`OnAttach`·`OnCollapse`·`CollapseTick`·`OnLife`·`OnFinal`). 전부 선택, null = 아무 일 없음 |
 | 스테이지 슬롯 | `Core/BossRemodel.cs` — `BossRemodelSets.Build()` | si → 세트. 게임 데이터는 **si0·si3 = 드루이드 세트뿐**. si1·si2·si3 교체는 `static partial void Stage1/2/3(...)` 슬롯을 보스 파일이 채운다(빈 슬롯은 컴파일에서 사라짐). 등록 시 `Validate()` 실패면 예외 |
 | 드루이드 세트 | `Core/DruidRemodelData.cs` — `DruidRemodelData.Set` | 첫 인스턴스. 기존 상수·표를 그대로 묶음(값 복사 없음, 같은 배열 참조). 수치를 바꿀 때는 지금처럼 `DruidRemodelData.cs` 상수만 고친다 |
