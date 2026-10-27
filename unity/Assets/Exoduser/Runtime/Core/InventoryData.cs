@@ -22,6 +22,8 @@ namespace Exoduser.UnityPort.Core {
   public double PhysicalDamageReduction,ElementResistance,StatusResistance;
   // B08: web _eqAffix(antiRevive / reviveOnce / revivePow + _iRevPow*.01 / reviveCd) feed the revive rules and the stat panel rows.
   public double AntiRevive,ReviveOnce,RevivePow,ReviveCd;
+  // B05: web STATS.dex-side total (level bonus + equipment bDex) that bowRef() and the auto crossbow read.
+  public double Dex;
   public void ClampResources(PlayerState p) { if(p==null)throw new ArgumentNullException(nameof(p));p.Hp=Math.Min(p.Hp,(float)PlayerMaxHp);p.Stamina=Math.Min(p.Stamina,(float)PlayerMaxStamina);p.Mana=Math.Min(p.Mana,(float)PlayerMaxMana);p.Shield=Math.Min(p.Shield,(float)PlayerMaxShield); }
  }
 }
