@@ -96,7 +96,7 @@ namespace Exoduser
 
         // RM0-LIGHT: art bible v2 §9 L-5 (weak key). Sun is nearly neutral-warm; crimson comes from pools (Pool_Hell_Test), not from the key.
         public static readonly Color SunColor = new Color(1f, .95f, .92f);
-        public const float SunIntensity = 0.6f, SunShadowStrength = 0.85f, ReflectionIntensity = 0.6f;
+        public const float SunIntensity = 0.6f, SunShadowStrength = 0.85f, ReflectionIntensity = 1.0f;
         public static readonly Color AmbientSky = new Color(.16f, .16f, .18f), AmbientEquator = new Color(.11f, .10f, .095f), AmbientGround = new Color(.05f, .04f, .036f);
         public static readonly Color ColorFilter = new Color(1f, .98f, .97f);
         public static readonly Color PoolColor = new Color(0xb0 / 255f, 0x28 / 255f, 0x1c / 255f);   // LIGHT-HELL #b0281c
@@ -117,7 +117,7 @@ namespace Exoduser
         // 64px three-stop gradient (up / horizon / down), written in place when it already exists so the GUID stays stable.
         public static Cubemap EnsureEnvCubemap()
         {
-            var up = new Color(.30f, .31f, .34f); var hor = new Color(.17f, .16f, .16f); var down = new Color(.06f, .045f, .04f);
+            var up = new Color(.48f, .49f, .53f); var hor = new Color(.24f, .22f, .21f); var down = new Color(.06f, .045f, .04f);
             const int n = 64;
             var cm = new Cubemap(n, TextureFormat.RGBA32, true);
             for (int f = 0; f < 6; f++)
