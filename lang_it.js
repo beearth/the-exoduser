@@ -2842,3 +2842,5 @@ Object.assign(_IT,{"유물함":"Scrigno delle reliquie","유물 분류":"Categor
 Object.assign(_IT,{"새 거름이 떨어졌군.":"È caduto del concime fresco.","숲은 아직 배고프다. 둥지에서 보자.":"La foresta ha ancora fame. Ci vediamo al nido.","…아직 거둘 때가 아닌데.":"…Non è ancora tempo di raccogliere.","…밥 먹을 시간인데.":"…Ed era già ora di mangiare.","…죽기 싫었을 뿐이다.":"…Non volevo solo morire."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_IT,{"다크드루이드":"Druido Oscuro","지옥기형":"Aberrazione Infernale"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_IT,{"…달아났다. 숲 깊은 곳으로.":"…È fuggito. Nel profondo della foresta.","도망갔어! 그래도 우리가 이긴 거 맞지?":"È scappato! Ma abbiamo vinto noi, vero?"});

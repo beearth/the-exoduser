@@ -2819,3 +2819,5 @@ Object.assign(_FI,{"유물함":"Reliikkiarkku","유물 분류":"Reliikkiluokat",
 Object.assign(_FI,{"새 거름이 떨어졌군.":"Tuoretta lantaa putosi.","숲은 아직 배고프다. 둥지에서 보자.":"Metsä on yhä nälkäinen. Nähdään pesässä.","…아직 거둘 때가 아닌데.":"…Ei ole vielä sadonkorjuun aika.","…밥 먹을 시간인데.":"…Ja ruoka-aika oli juuri käsillä.","…죽기 싫었을 뿐이다.":"…En vain halunnut kuolla."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_FI,{"다크드루이드":"Pimeä druidi","지옥기형":"Helvetin epämuodostuma"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_FI,{"…달아났다. 숲 깊은 곳으로.":"…Se pakeni. Metsän syvyyksiin.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Se pakeni! Mutta me silti voitimme, eikö niin?"});

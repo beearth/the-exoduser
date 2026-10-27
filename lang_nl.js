@@ -3971,3 +3971,5 @@ Object.assign(_NL,{"유물함":"Reliekenkist","유물 분류":"Reliekcategorieë
 Object.assign(_NL,{"새 거름이 떨어졌군.":"Verse mest is gevallen.","숲은 아직 배고프다. 둥지에서 보자.":"Het bos heeft nog steeds honger. Tot ziens in het nest.","…아직 거둘 때가 아닌데.":"…Het is nog geen tijd om te oogsten.","…밥 먹을 시간인데.":"…Terwijl het etenstijd was.","…죽기 싫었을 뿐이다.":"…Ik wilde gewoon niet dood."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_NL,{"다크드루이드":"Duistere druïde","지옥기형":"Helse gedrocht"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_NL,{"…달아났다. 숲 깊은 곳으로.":"…Hij is gevlucht. Diep het bos in.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Hij is gevlucht! Maar wij hebben toch gewonnen, of niet?"});

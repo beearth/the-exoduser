@@ -2821,3 +2821,5 @@ Object.assign(_HU,{"유물함":"Ereklyeláda","유물 분류":"Ereklyekategóri�
 Object.assign(_HU,{"새 거름이 떨어졌군.":"Friss trágya hullott le.","숲은 아직 배고프다. 둥지에서 보자.":"Az erdő még mindig éhes. A fészekben találkozunk.","…아직 거둘 때가 아닌데.":"…Még nincs itt az aratás ideje.","…밥 먹을 시간인데.":"…Pedig épp ebédidő van.","…죽기 싫었을 뿐이다.":"…Én csak nem akartam meghalni."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_HU,{"다크드루이드":"Sötét druida","지옥기형":"Pokoli torzszülött"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_HU,{"…달아났다. 숲 깊은 곳으로.":"…Elmenekült. Az erdő mélyére.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Elmenekült! De mi nyertünk, ugye?"});

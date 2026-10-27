@@ -3459,3 +3459,5 @@ Object.assign(_SV,{"유물함":"Relikkista","유물 분류":"Relikkategorier","�
 Object.assign(_SV,{"새 거름이 떨어졌군.":"Nytt gödsel har fallit.","숲은 아직 배고프다. 둥지에서 보자.":"Skogen är fortfarande hungrig. Vi ses i boet.","…아직 거둘 때가 아닌데.":"…Det är inte dags att skörda än.","…밥 먹을 시간인데.":"…Och det var ju matdags.","…죽기 싫었을 뿐이다.":"…Jag ville bara inte dö."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_SV,{"다크드루이드":"Mörk druid","지옥기형":"Helvetesavart"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_SV,{"…달아났다. 숲 깊은 곳으로.":"…Den flydde. Djupt in i skogen.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Den flydde! Men vi vann ändå, eller hur?"});

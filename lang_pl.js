@@ -3964,3 +3964,5 @@ Object.assign(_PL,{"유물함":"Skarbiec reliktów","유물 분류":"Kategorie r
 Object.assign(_PL,{"새 거름이 떨어졌군.":"Spadł świeży nawóz.","숲은 아직 배고프다. 둥지에서 보자.":"Las wciąż jest głodny. Do zobaczenia w gnieździe.","…아직 거둘 때가 아닌데.":"…To jeszcze nie pora na żniwa.","…밥 먹을 시간인데.":"…A przecież pora na posiłek.","…죽기 싫었을 뿐이다.":"…Po prostu nie chciałem umierać."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_PL,{"다크드루이드":"Mroczny Druid","지옥기형":"Piekielna Aberracja"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_PL,{"…달아났다. 숲 깊은 곳으로.":"…Uciekł. W głąb lasu.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Uciekł! Ale chyba wygraliśmy, prawda?"});

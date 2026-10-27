@@ -2819,3 +2819,5 @@ Object.assign(_ID,{"유물함":"Peti relik","유물 분류":"Kategori relik","�
 Object.assign(_ID,{"새 거름이 떨어졌군.":"Pupuk baru telah jatuh.","숲은 아직 배고프다. 둥지에서 보자.":"Hutan masih lapar. Sampai jumpa di sarang.","…아직 거둘 때가 아닌데.":"…Belum waktunya menuai.","…밥 먹을 시간인데.":"…Padahal sudah waktunya makan.","…죽기 싫었을 뿐이다.":"…Aku hanya tidak ingin mati."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_ID,{"다크드루이드":"Druid Gelap","지옥기형":"Aberasi Neraka"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_ID,{"…달아났다. 숲 깊은 곳으로.":"…Dia kabur. Ke dalam hutan.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Dia kabur! Tapi kita tetap menang, kan?"});

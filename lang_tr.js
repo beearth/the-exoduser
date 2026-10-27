@@ -2837,3 +2837,5 @@ Object.assign(_TR,{"유물함":"Kalıntı sandığı","유물 분류":"Kalıntı
 Object.assign(_TR,{"새 거름이 떨어졌군.":"Taze gübre düştü.","숲은 아직 배고프다. 둥지에서 보자.":"Orman hâlâ aç. Yuvada görüşürüz.","…아직 거둘 때가 아닌데.":"…Henüz hasat zamanı değildi.","…밥 먹을 시간인데.":"…Yemek vakti gelmişti oysa.","…죽기 싫었을 뿐이다.":"…Sadece ölmek istemedim."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_TR,{"다크드루이드":"Karanlık Druid","지옥기형":"Cehennem Ucubesi"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_TR,{"…달아났다. 숲 깊은 곳으로.":"…Kaçtı. Ormanın derinliklerine.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Kaçtı! Yine de biz kazandık, değil mi?"});

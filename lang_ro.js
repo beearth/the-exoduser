@@ -2824,3 +2824,5 @@ Object.assign(_RO,{"유물함":"Cufăr de relicve","유물 분류":"Categorii de
 Object.assign(_RO,{"새 거름이 떨어졌군.":"A căzut îngrășământ proaspăt.","숲은 아직 배고프다. 둥지에서 보자.":"Pădurea încă mai este flămândă. Ne vedem în cuib.","…아직 거둘 때가 아닌데.":"…Încă nu e vremea recoltei.","…밥 먹을 시간인데.":"…Și tocmai era ora mesei.","…죽기 싫었을 뿐이다.":"…Pur și simplu nu am vrut să mor."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_RO,{"다크드루이드":"Druid Întunecat","지옥기형":"Aberație Infernală"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_RO,{"…달아났다. 숲 깊은 곳으로.":"…A fugit. În adâncul pădurii.","도망갔어! 그래도 우리가 이긴 거 맞지?":"A fugit! Dar tot noi am câștigat, nu?"});

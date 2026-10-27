@@ -3419,3 +3419,5 @@ Object.assign(_DE,{"유물함":"Reliktkammer","유물 분류":"Relikt-Kategorien
 Object.assign(_DE,{"새 거름이 떨어졌군.":"Neuer Dünger ist gefallen.","숲은 아직 배고프다. 둥지에서 보자.":"Der Wald hungert noch. Wir sehen uns im Nest.","…아직 거둘 때가 아닌데.":"…Es ist noch nicht Zeit zu ernten.","…밥 먹을 시간인데.":"…Dabei ist es Essenszeit.","…죽기 싫었을 뿐이다.":"…Ich wollte nur nicht sterben."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_DE,{"다크드루이드":"Dunkler Druide","지옥기형":"Höllenmissgeburt"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_DE,{"…달아났다. 숲 깊은 곳으로.":"…Er ist geflohen. Tief in den Wald.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Er ist abgehauen! Aber wir haben trotzdem gewonnen, oder?"});

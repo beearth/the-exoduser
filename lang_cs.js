@@ -3874,3 +3874,5 @@ Object.assign(_CS,{"유물함":"Pokladnice relikvií","유물 분류":"Kategorie
 Object.assign(_CS,{"새 거름이 떨어졌군.":"Spadlo čerstvé hnojivo.","숲은 아직 배고프다. 둥지에서 보자.":"Les má stále hlad. Uvidíme se v hnízdě.","…아직 거둘 때가 아닌데.":"…Ještě není čas sklizně.","…밥 먹을 시간인데.":"…A přitom byl čas jídla.","…죽기 싫었을 뿐이다.":"…Jen jsem nechtěl umřít."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_CS,{"다크드루이드":"Temný druid","지옥기형":"Pekelná zrůda"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_CS,{"…달아났다. 숲 깊은 곳으로.":"…Utekl. Hluboko do lesa.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Utekl! Ale my jsme vyhráli, ne?"});

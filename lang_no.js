@@ -3971,3 +3971,5 @@ Object.assign(_NO,{"유물함":"Relikviekiste","유물 분류":"Relikviekategori
 Object.assign(_NO,{"새 거름이 떨어졌군.":"Ny gjødsel har falt ned.","숲은 아직 배고프다. 둥지에서 보자.":"Skogen er fortsatt sulten. Vi ses i redet.","…아직 거둘 때가 아닌데.":"…Det er ikke tid for innhøsting ennå.","…밥 먹을 시간인데.":"…Og det var jo spisetid.","…죽기 싫었을 뿐이다.":"…Jeg ville bare ikke dø."});
 // [STY-12] 보스 이름표 번역 보충 (번역대상 No.3348~3349)
 Object.assign(_NO,{"다크드루이드":"Mørk druide","지옥기형":"Helvetes-misdannelse"});
+// [STY-12] 펫 보스 처치 대사 — 1-1 드루이드 침강 도주용 2줄 (번역대상 No.3350~3351)
+Object.assign(_NO,{"…달아났다. 숲 깊은 곳으로.":"…Den flyktet. Dypt inn i skogen.","도망갔어! 그래도 우리가 이긴 거 맞지?":"Den stakk av! Men vi vant likevel, ikke sant?"});

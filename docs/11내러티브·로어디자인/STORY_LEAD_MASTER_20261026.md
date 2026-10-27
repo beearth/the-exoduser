@@ -120,6 +120,7 @@
 
 | 날짜 | 내용 | 조치 |
 |---|---|---|
+| 2026-10-27 | story-simple의 펫 대사 커밋 `8bf094fe6`(로컬)에 타 세션이 인덱스에 미리 스테이징한 파일이 함께 들어감 — 총 512파일(output/new_heroes_refinement 151·output/cinematic 92·assets/character-concepts 75·steam_maintenance 등, `video/world_intro_v16_clean_en.mp4` 102MB, 0바이트 쓰레기 파일 `x.startsWith('13')))`, index.html·character-story-player.js·test 캐시키). 원인: `git commit` 전 인덱스 확인 생략 | reset 시도 안 함(권한 게이트), 이력 유지. CTO에 push 시 스토리 경로(game.html·lang_*.js 27·번역대상_전체목록.md·CH1_STORY_SPINE)만 가져가도록 통보. 재발 방지: `git commit -m ... -- <경로>`만 사용(인덱스의 타 세션 스테이징 무시) |
 | 2026-10-26 22:30~22:45 | 공유 작업트리에서 `NEW_HEROES_DESIGN_LOCK.md`(staged 신규, 커밋 이력 없음)가 디스크·인덱스에서 사라짐. 같은 시각 `character-story-player.js`의 타 세션 미커밋 변경(캐시키 `killu-bloodtears-v3`)도 커밋본으로 되돌아감, `test/*.test.js` 다수가 삭제 상태. 주체 미확인 | git 미참조 blob `6a599015b`(35,791B, 사라지기 전 크기와 일치)로 신규3종 LOCK 문서를 원위치에 복원(미스테이징). 나머지는 소유 세션 확인 필요 |
 
 ## 변경 이력
@@ -133,3 +134,4 @@
 - 2026-10-27: STY-D9 웹 반영 fb4c929aa 검수 PASS 기록, 디자인총괄 캡처 판정·보스전 총괄 BX-08 이식 기준 전달.
   - provenance: 커밋 c0463b47c에 타 세션의 미커밋 1줄(§1 전사 영상 캐시키 `20261026`→`20261027-killu-bloodtears-v3`)이 함께 들어감. 현행 `character-story-player.js:21`·`index.html:1114`와 일치하는 사실 표기라 유지, history rewrite 안 함.
 - 2026-10-27: STY-D9 디자인총괄 PASS 채택, si0 도주용 펫 대사 2줄 총괄 결정(story-simple 대사 작업에 포함).
+- 2026-10-27: STY-12 대사 7줄 웹 반영 검수 PASS(616f707e9·8bf094fe6, 28언어), 8bf094fe6 번들 사고 §6 기록.
