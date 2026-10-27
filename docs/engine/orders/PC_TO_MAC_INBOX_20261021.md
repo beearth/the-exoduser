@@ -2,6 +2,23 @@
 
 > Mac 맥북총괄과의 직접 메시지가 끊겼을 때(브리지 주소 만료) PC 총괄이 남기는 전달 사항. 최신 항목이 위. Mac은 확인 후 WORK_BOARD에 반영한다.
 
+## 2026-10-28 — Hero Light 공용 설정 예고 · ProjectSettings 2곳 (캐릭터 총괄, 유니티 총괄 결정)
+
+> main과 `unity/main` 두 곳에 같은 내용을 올린다. 유니티 총괄이 이 공용 설정 3곳을 캐릭터 총괄 소유로 정했다(아트 바이블 §8 L-9 Hero Light).
+
+1. **브랜치**: `claude/unity-pc-herolight-20261028` `ff20dc2d2`. 4개 파일만 담은 단독 커밋이다(기준 `b280ddf61`). 아직 `unity/main`에 병합하지 않았다. 병합 순서는 VFX 공유 렌더 → Hero Light → 맵이다.
+2. **바뀌는 것**:
+   - `ProjectSettings/TagManager.asset`: `m_RenderingLayers` **1번 = `Hero` 예약**. 플레이어 캐릭터와 무기 렌더러만 이 레이어를 쓴다. 지형·외곽·데칼·독액 렌더러는 넣지 않는다(맵 RM-1 명세).
+   - `Assets/Exoduser/Rendering/URP_PC_High.asset`, `URP_Mac_Balanced.asset`: `m_SupportsLightLayers` 0→1(**Light Layers 켜짐**).
+   - `Editor/Rm0EngineSetup.cs` `ApplyLight`: `RenderSettings.sun = Hell Sun` 고정. Hero Light가 더 밝아도 메인 라이트와 키 그림자가 바뀌지 않게 한다.
+3. **주의 — TagManager 끝 공백**: 현재 `unity/main`의 TagManager는 빈 렌더링 레이어 줄 `  - `의 끝 공백이 지워진 상태(`  -`)다. 이대로면 Unity가 `Parser Failure at line 41`로 파싱하지 못하고, 렌더링 레이어 이름이 정의되지 않는다. 이번 커밋에서 Unity 원본 직렬화(끝 공백 있음)로 되돌렸다. **`.asset`·`ProjectSettings` 파일에는 끝 공백 제거 도구(포매터·에디터 설정)를 쓰지 말 것.**
+4. **검증**(RM-0 샌드박스, 1600×900, PC_High·Mac_Balanced 동일):
+   - 변경 전: Hero Light가 바닥까지 밝힌다(바닥 |ΔL*| 최대 8.2).
+   - 변경 후: 바닥 0.000이고 피사체만 L* 29.3→45.4로 밝아진다. 키 그림자는 유지된다.
+   - `--unity-m1-check` 17단계 모두 ok, `Runtime/Core` diff 0.
+   - VFX 병합(Linear·후처리) 뒤에 판정 캡처를 다시 찍는다.
+5. **Codex 조치**: 없음. ProjectSettings를 고칠 때 렌더링 레이어 1번(`Hero`)과 두 URP 자산의 Light Layers 값을 유지한다.
+
 ## 2026-10-27 — ★ UI 완료 = 리메이크 진입 조건 · A01~A05 최우선 (Codex)
 
 > main과 `unity/main` 두 곳에 같은 내용. 사용자 지시(10-27): "ux ui다 들어갔으면 이제 유니티버전으로 다시만들자", "보스전 대충구현해", "맵도 대충하고".
