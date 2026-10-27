@@ -96,6 +96,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-canonical-world-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(CanonicalWorldSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-controls-smoke")>=0){lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbyControlsSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbySmoke());}
+            else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-b07-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(B07Smoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-rage-malice-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(RageMaliceSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-drop-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(DropSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-revive-smoke")>=0){reviveSmoke=true;dropSmoke=true;menu=false;Running=false;StartCoroutine(ReviveSmokeRun());} // B08 (dropSmoke keeps focus loss from opening the pause menu)
@@ -189,7 +190,7 @@ namespace Exoduser.UnityPort
             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("skill")){SetSkills(true);return;}
             if(!menu&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("inventory"))SetInventory(!inventory.Open);
-            if(!menu&&!inventory.Open&&(NativeKeyBindInput.Down("parry")||NativeKeyBindInput.Down("shield")))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
+            if(!menu&&!inventory.Open&&!Simulation.PlayerCombatWired&&(NativeKeyBindInput.Down("parry")||NativeKeyBindInput.Down("shield")))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
             UpdateViews();
             if(smokeActive)sound?.Probe();
         }
@@ -201,6 +202,8 @@ namespace Exoduser.UnityPort
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
             if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
             bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition),p.KiChargeActive);
+            Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
+            Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
             DispatchFeedback();
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
@@ -247,6 +250,8 @@ namespace Exoduser.UnityPort
             playerView.sprite=attack?SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80)):
                 SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f));
             playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2;playerView.sortingOrder=(int)p.Y;
+            // web roll: the body curls up and turns once (360 degrees) over the 6 frames, dust trail
+            playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/6f)):Quaternion.identity;
             foreach(var e in Simulation.Enemies)
             {
                 if(!enemies.TryGetValue(e.Id,out var ev)){

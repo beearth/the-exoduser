@@ -37,5 +37,7 @@ namespace Exoduser.UnityPort {
   // web _chkJust / _chkHeld over both slots
   public static bool Down(string action){return CodeDown(Bindings.Primary(action))||CodeDown(Bindings.Secondary(action));}
   public static bool Held(string action){return CodeHeld(Bindings.Primary(action))||CodeHeld(Bindings.Secondary(action));}
+  // web roll: BINDS.roll / BINDS2.roll keyboard keys only (mouse buttons are filtered out of _rlKeys)
+  public static bool HeldKeyboard(string action){string a=Bindings.Primary(action),b=Bindings.Secondary(action);return a!=null&&!a.StartsWith("mouse")&&CodeHeld(a)||b!=null&&!b.StartsWith("mouse")&&CodeHeld(b);}
  }
 }

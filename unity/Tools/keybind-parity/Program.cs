@@ -24,9 +24,9 @@ static class P
         Check(webActions.SequenceEqual(KeyBindings.Actions), "action list and order equal the web BINDS keys (" + webActions.Length + ")");
         var kb = new KeyBindings();
         foreach (var act in webActions) Check(kb.Primary(act) == S(root.GetProperty("binds").GetProperty(act)), "default primary of " + act);
-        Check(root.GetProperty("binds2Order").GetArrayLength() == webActions.Length, "web BINDS2 has the same 20 actions");
+        Check(root.GetProperty("binds2Order").GetArrayLength() == webActions.Length, "web BINDS2 has the same actions");
         foreach (var act in webActions) Check(kb.Secondary(act) == S(root.GetProperty("binds2").GetProperty(act)) && kb.Secondary(act) == null, "default alternate of " + act + " is unbound");
-        Check(kb.Listed.SequenceEqual(webActions), "initial list rows = 20 in BINDS order");
+        Check(kb.Listed.SequenceEqual(webActions), "initial list rows in BINDS order");
         // 2. names ko / en (web: ko = BIND_NAMES; en = _T(ko) from _EN, else BIND_NAMES_EN)
         foreach (var act in webActions)
         {
@@ -60,7 +60,7 @@ static class P
             else kb.ResetAll();
             string tag = "step " + step + " " + kind + (kind == "set" ? " " + op[1] + " " + (op[2].ValueKind == JsonValueKind.Null ? "null" : op[2].GetString()) + (op[3].GetBoolean() ? " alt" : "") : kind == "clear" ? " " + op[1] : "");
             Check(ok == webOk, tag + ": accepted=" + webOk);
-            Check(ok || rej == KeyBindings.ChainConflictKo, tag + ": rejection message");
+            Check(ok || rej == KeyBindings.ChainConflictKo || rej == KeyBindings.RollKeyboardKo, tag + ": rejection message");
             Check(kb.InteractResetCount - before == sc.GetProperty("interactReset").GetInt32(), tag + ": interact reset count " + sc.GetProperty("interactReset"));
             var st = sc.GetProperty("state");
             var listed = st.GetProperty("listed").EnumerateArray().Select(x => x.GetString()).ToArray();

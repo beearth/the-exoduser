@@ -93,7 +93,7 @@ namespace Exoduser.UnityPort.Core
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
             if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); TickKiTimers(); return; }
-            Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
+            if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen / regenDivisor);
             Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + Config.PlayerStaminaRegen / regenDivisor);
@@ -101,8 +101,12 @@ namespace Exoduser.UnityPort.Core
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
             TickPlayerShieldAndRevive();
+            ConsumeRollTrigger();
+            TickPlayerCombat();
+            TickRoll();
             MoveKnockback();
-            if (Player.State == "stagger" || Player.State == "pStun") {
+            if (Player.State == "bladeDash") { }   // roll: TickRoll moves the player, no walking / attacking meanwhile (web case 'bladeDash')
+            else if (Player.State == "stagger" || Player.State == "pStun") {
                 if (Player.StateTicks <= 0) { Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
             }
             else {
@@ -148,6 +152,7 @@ namespace Exoduser.UnityPort.Core
             foreach (var enemy in Enemies) {
                 if (!enemy.Alive) continue;
                 enemy.HurtTicks = Math.Max(0, enemy.HurtTicks - 1);
+                TickBlinkWeak(enemy);
                 enemy.HitStun = Math.Max(0, enemy.HitStun - 1);
                 if (enemy.ReviveIframes > 0) enemy.ReviveIframes = Math.Max(0, enemy.ReviveIframes - 1); // updateE 38677
                 if (enemy.SpawnTicks > 0) enemy.SpawnTicks--; if (enemy.BossReviveVfxPending > 0) enemy.BossReviveVfxPending--;
@@ -222,6 +227,7 @@ namespace Exoduser.UnityPort.Core
             if (Config.AccessoryDamageBonus > 0) damage = (int)(damage * (1 + Config.AccessoryDamageBonus));
             if (NextRandom() * 100 < Config.PlayerCriticalChance) damage = (int)(damage * Config.PlayerCriticalMultiplier);
             if (enemy.Stunned > 0) damage = (int)(damage * 1.5);
+            if (enemy.BlinkWeak > 0 && enemy.BlinkWeakTicks > 0) damage = (int)(damage * (1 + enemy.BlinkWeak));   // u_n02 roll weak
             int total = damage;
             // B08 energy shield: after every multiplier, spent before HP; only the overflow reaches HP; DOT skips it unless shieldHit.
             var sh = EnergyShield.AbsorbEnemy(enemy.Shield, enemy.MaxShield, damage, dot, shieldHit);
@@ -372,15 +378,19 @@ namespace Exoduser.UnityPort.Core
         public void HurtPlayer(int damage)
         {
             if (Player.Hp <= 0 || Player.Iframes > 0) return;
+            if (CombatBeforeHurt(ref damage)) return;
             double dr = Math.Min(.75, Config.PlayerPhysicalDefense / (Config.PlayerPhysicalDefense + 2500.0));
             int capped = Math.Min(damage, (int)(Player.MaxHp * .33));
             int amount = Math.Max(Math.Max(1, (int)(Player.MaxHp * .005)), Math.Max(1, (int)(capped * (1-dr))));
             var sh = EnergyShield.AbsorbPlayer(Player.Shield, Player.MaxShield, Player.ShieldRegenTicks, amount);
             Player.Shield = (float)sh.Shield; Player.ShieldRegenTicks = (float)sh.RegenT;
             Player.Hp -= (float)sh.Damage;
+            if (PlayerCombatWired) CombatApplyHitPoise();
+            else {
             Player.Poise = Math.Max(0, Player.Poise-1);
             if (Player.Poise <= 0) { Player.State = "pStun"; Player.StateTicks = 240; CancelKiCharge(); }
             else if (!Player.KiChargeActive) { Player.State = "stagger"; Player.StateTicks = 6; }
+            }
             if (Player.Hp <= 0) PlayerDie();
         }
     }

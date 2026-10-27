@@ -48,15 +48,15 @@ namespace Exoduser.UnityPort {
     Check(list.GlyphCount==7,"7 baked symbols (⌨ 🎮x3 ⟨ ⟩ ✕)");
     // ---- 1 default ----
     scroll=0;yield return Frame("unity_kb_1_default",true);
-    Check(Mathf.Abs(list.ContentHeight-list.WebHeight-26f)<.01f&&Mathf.Abs(list.WebHeight-688f)<.01f,"default web height 688 (+26 saving-note line); got "+list.WebHeight.ToString("0.00")+" / "+list.ContentHeight.ToString("0.00"));
-    Check(Mathf.Abs(list.LastResetY-644f)<.01f,"reset button y 644 (got "+list.LastResetY+")");
-    Check(list.LastKeyRects.Count==40&&Mathf.Abs(list.LastKeyRects[0].x-(ListX-Pane.x+345.09f))<.01f&&Mathf.Abs(list.LastKeyRects[0].width-251.61f)<.01f&&Mathf.Abs(list.LastKeyRects[1].x-(ListX-Pane.x+606.7f))<.01f,"key rects: 40 buttons, first main x/w and alternate x match the web dump");
+    Check(Mathf.Abs(list.ContentHeight-list.WebHeight-26f)<.01f&&Mathf.Abs(list.WebHeight-745f)<.01f,"default web height 745 (+26 saving-note line); got "+list.WebHeight.ToString("0.00")+" / "+list.ContentHeight.ToString("0.00"));
+    Check(Mathf.Abs(list.LastResetY-701f)<.01f,"reset button y 701 (got "+list.LastResetY+")");
+    Check(list.LastKeyRects.Count==42&&Mathf.Abs(list.LastKeyRects[0].x-(ListX-Pane.x+345.09f))<.01f&&Mathf.Abs(list.LastKeyRects[0].width-251.61f)<.01f&&Mathf.Abs(list.LastKeyRects[1].x-(ListX-Pane.x+606.7f))<.01f,"key rects: 42 buttons, first main x/w and alternate x match the web dump");
     scroll=End();yield return Frame("unity_kb_1_default_bottom",true);
     // ---- 2 listening (weapon main) ----
     list.BeginListening("weapon",false);list.ForceListeningAge(1);
     scroll=0;yield return Frame("unity_kb_2_listening_main",true);
     Check(list.Listening&&list.ListeningAction=="weapon"&&!list.ListeningAlt,"weapon main key waiting");
-    Check(Mathf.Abs(list.ContentHeight-list.WebHeight-26f)<.01f&&Mathf.Abs(list.WebHeight-717f)<.01f,"waiting list height 717 (reset 44 + gap 4 + margin 6 + hint 19); got "+list.WebHeight.ToString("0.00"));
+    Check(Mathf.Abs(list.ContentHeight-list.WebHeight-26f)<.01f&&Mathf.Abs(list.WebHeight-774f)<.01f,"waiting list height 774 (reset 44 + gap 4 + margin 6 + hint 19); got "+list.WebHeight.ToString("0.00"));
     scroll=End();yield return Frame("unity_kb_2_listening_main_bottom",true);
     list.CancelListening();
     // ---- 3 alternate set (weapon alt = F; web states: click alt, press F) ----
@@ -75,12 +75,12 @@ namespace Exoduser.UnityPort {
     scroll=End();yield return Frame("unity_kb_5_gamepad_tab_bottom",true);
     // ---- 6 after reset ----
     list.CurrentTab=NativeKeyBindList.Tab.Kbm;list.ResetBindings();
-    Check(keys.Listed.Count==18&&keys.Secondary("weapon")==null,"after reset 18 rows (web quirk) and no alternate keys");
+    Check(keys.Listed.Count==19&&keys.Secondary("weapon")==null,"after reset 19 rows (web quirk) and no alternate keys");
     scroll=End();yield return Frame("unity_kb_6_after_reset_notif",true);
     list.ToastsVisible=true;yield return Frame("unity_kb_6_after_reset_notif_toast",true);list.ToastsVisible=false;
     yield return new WaitForSecondsRealtime(1.6f);
     scroll=0;yield return Frame("unity_kb_6_after_reset",true);
-    Check(Mathf.Abs(list.WebHeight-(62+9*57+12+44))<.02f,"after reset 18 rows: web height "+(62+9*57+12+44)+" (got "+list.WebHeight.ToString("0.00")+")");
+    Check(Mathf.Abs(list.WebHeight-(62+10*57+12+44))<.02f,"after reset 19 rows: web height "+(62+10*57+12+44)+" (got "+list.WebHeight.ToString("0.00")+")");
     scroll=End();yield return Frame("unity_kb_6_after_reset_bottom",true);
     show=false;
     var rec=new Receipt{passed=failures==0,failures=failures,width=Screen.width,height=Screen.height,mappedCodes=NativeKeyBindInput.MappedCodeCount,

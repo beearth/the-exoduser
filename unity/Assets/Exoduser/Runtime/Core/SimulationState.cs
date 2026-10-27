@@ -72,6 +72,7 @@ namespace Exoduser.UnityPort.Core
         public double Deaths, RevPts, MaxRevPts, ReviveIframes, OrigR, ReviveTimer, ReviveX, ReviveY, BossRevChance, BossRevRoll = 1, BossPhase, BossPatCd, SpawnTicks, BossReviveVfxPending;
         public bool Revived, IsGhoul, ReviveAsGhoul, ReviveChase, BossRevJudged, BossRevived, DruidLastStand, SinkDruid, FmKind, DgRevived, Corpse;
         public int BaseAttack, DruidBaseAttack; public string Col;
+        public double BlinkWeak; public int BlinkWeakTicks; // u_n02 roll weak (e._blinkWeak / _blinkWeakT)
         public string State = "idle";
     }
 

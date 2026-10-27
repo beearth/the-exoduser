@@ -58,7 +58,7 @@ vm.runInContext(resetBody, ctx);
 const snap = () => JSON.parse(vm.runInContext('JSON.stringify({binds:BINDS,binds2:BINDS2,listed:Object.keys(BINDS)})', ctx));
 const ops = [['set', 'weapon', 'KeyF', true], ['set', 'charge', 'KeyF', false], ['set', 'charge', 'KeyE', true], ['set', 'shield', 'ShiftLeft', false], ['set', 'shield', 'KeyZ', false], ['set', 'charge', 'mouse0', false],
   ['set', 'charge', 'KeyE', false], ['set', 'weapon', 'KeyE', false], ['set', 'weapon', 'KeyE', true], ['clear', 'weapon'], ['set', 'weapon', 'KeyE', false], ['set', 'charge', null, false], ['set', 'interact', 'KeyF', false], ['set', 'interact', 'mouse3', true],
-  ['set', 'forge', 'KeyG', true], ['set', 'inventory', 'Escape', false], ['clear', 'interact'], ['reset'], ['set', 'shield', 'ShiftLeft', false], ['set', 'irisToggle', 'KeyP', false], ['reset']];
+  ['set', 'forge', 'KeyG', true], ['set', 'inventory', 'Escape', false], ['clear', 'interact'], ['reset'], ['set', 'shield', 'ShiftLeft', false], ['set', 'irisToggle', 'KeyP', false], ['reset'], ['set', 'roll', 'mouse0', false], ['set', 'roll', 'KeyV', false], ['set', 'roll', 'KeyE', true], ['set', 'charge', 'KeyV', false], ['reset']];
 const scenarios = [];
 for (const op of ops) {
   const before = ctx.interactResets; let ok = null;

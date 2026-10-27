@@ -143,3 +143,8 @@ patch 번호: 1~15 + **16** `A16_nativepausemenu_keybinds` + **17** `A16_nativeg
 - 목록에서 키를 바꾼 뒤 게임(이동·창 열기)에 반영되는 것은 patch 17 컴파일·적용만 확인, 입력 주입 실험은 없음.
 - **제목 교체(총괄 후속)**: 키 페이지 제목을 웹 `#settings-page-controls .set-label` 계산 스타일 그대로 그렸다 — Noto Sans KR 600 16px, letter-spacing .64px, rgb(200,181,143), 왼쪽 정렬, 박스 1736×39(패딩 4/0/10), 아래 헤어라인 rgb(73,65,54), 목록은 12px 아래. game.html 2059-2085의 중앙 정렬·#ffcd97 글로 규칙은 실제 렌더에서 뒤쪽 규칙(ui-foundation)에 덮여 쓰이지 않는다(계산 스타일·스크린샷 `a16_1_default` 확인). patch 16만 수정(큰 흰 제목 삭제, 영역 y 150→60), patch 18은 재생성. 1~18 적용 빌드 errors 0·warning 0, `keys-smoke.json` 7/7, 역순 `apply -R` 후 Codex 파일 변경 0. 1x 비교 `E:/exoduser-wt/_out/pc-a16/cmp/a16_title_1x.jpg`·`a16_title_3x.jpg`: 색 최대값 (200,181,143) 동일, 획이 웹보다 약간 가늘다(잉크량 약 84%).
 - (맥북 총괄 인수, 2026-10-26) 페이지 제목은 웹 원문 CSS(2059-2085)가 아니라 실제 렌더 **계산 스타일**(ui-foundation이 덮어씀: Noto Sans KR 600 16px·rgb(200,181,143)·왼쪽 정렬·헤어라인)을 따른다 — "웹 화면 그대로" 원칙상 맞다. 1x 비교 일치, 획이 약간 가늚(잉크 약 84%)은 남은 차이. 일시정지 메뉴 실화면 7/7 확인으로 보드 **A16 = 2**. patch 18 `A16_nativegame_pausesmoke_keys`는 검증 훅(스모크 전용).
+
+
+## 구르기 키 줄 추가 (2026-10-27, PC B07 연결)
+
+웹 614cf73a0(`BINDS.roll`)에 맞춰 `KeyBindings.Actions`에 **`roll`(구르기 (방향키 +) / Roll (Arrow Keys +), 기본 Space, 보조 없음)** 을 `charge` 다음에 추가했다. 처음 행 수 20→**21**, 초기화 후 18→**19**. 마우스 버튼 지정은 거부("구르기는 키보드 키로 지정하세요." / "Bind Roll to a keyboard key."). 설정 파일(JSON)은 이름 키라 옛 파일에 `roll`이 없으면 기본 Space. `keybind_web.json`·`keybind_ui_web.json`은 웹 593be3aa4에서 `extract_keybind_defs.cjs`로 다시 뽑았고 시나리오에 roll 4개를 넣었다(keybind-parity 1,346 checks / 0 failures). 캡처 자체검사의 높이·좌표(기본 688→745, 초기화 버튼 644→701, 키 사각형 40→42, 대기 717→774, 초기화 후 19행)는 행 하나(피치 57)가 늘어난 계산값이며 새 캡처로 재확인은 안 했다.

@@ -67,7 +67,7 @@ namespace Exoduser.UnityPort {
   public void ResetBindings(){keys.ResetAll();CancelListening();ShowNotif(T(ui.texts.resetDone));}
   bool Apply(string code){
    string rej;
-   if(!keys.TrySet(listenAction,code,listenAlt,out rej))ShowPh(L(rej,ui.texts.chainConflictEn));
+   if(!keys.TrySet(listenAction,code,listenAlt,out rej))ShowPh(L(rej,rej==KeyBindings.RollKeyboardKo?KeyBindings.RollKeyboardEn:ui.texts.chainConflictEn));
    CancelListening();return true;
   }
 

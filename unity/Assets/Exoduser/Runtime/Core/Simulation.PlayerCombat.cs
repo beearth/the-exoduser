@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort.Core
     // (_gSlamHit), enemy melee parry points (표 A-8) and enemy poise on parry, kiGather release strikes, rage / malice / stat-bank rewards, HUD gauge value.
     public sealed partial class Simulation
     {
-        public static readonly bool PlayerCombatWired = false;   // static readonly (not const): the guarded branches must not produce CS0162
+        public static readonly bool PlayerCombatWired = true;   // static readonly (not const): the guarded branches must not produce CS0162
 
         // equipment / passive inputs (0 until the inventory layer feeds them)
         public double CapeParry, ShieldCdRed, CcRes, StunRes, ParryBonus, PParry, PRegen, PGuard, ShieldBlockDR, MaliceSwipeLevel, ShieldThrowLevel, ChargeBoostLevel, PCharge;
@@ -160,6 +160,7 @@ namespace Exoduser.UnityPort.Core
             });
             Player.Iframes = (float)r.Iframes; Player.Hp = (float)r.Hp; Player.Stamina = (float)r.St; Player.Mana = (float)r.Mp; Player.Poise = (float)r.Poise; HarpGauge = r.HarpGauge; AddMalice((int)r.Mats - Materials); SetRage(r.Rage);
             ParryCount++; LastParryHp = r.Hp;
+            RaisePlayerText(Player.X, Player.Y - 42, "PARRY!", "#ffdd00", 45);   // web '⚡PARRY!' (addTxt 45f)
         }
 
         // HurtPlayer poise tail through the web rule (focus states, pStun guard, ccRes/stunRes, `(poise||4)-1`)

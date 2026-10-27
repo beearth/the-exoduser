@@ -9,13 +9,15 @@ namespace Exoduser.UnityPort.Core
     public sealed class KeyBindings
     {
         // BINDS order = row order of the web list.
-        public static readonly string[] Actions = {"up","down","left","right","weapon","shield","bow","charge","parry","beam","forge","inventory","settings","interact","storage","stats","skill","skillCycle","irisToggle","bladeToggle"};
-        static readonly string[] DefaultPrimary = {"KeyW","KeyS","KeyA","KeyD","mouse0","KeyE","Space","ShiftLeft","KeyQ","mouse2","KeyG","Tab","Escape","KeyR","KeyN","KeyJ","KeyK","KeyL","KeyY","KeyU"};
-        // window._resetBinds: its BINDS / BINDS2 literals only list these 18 actions (no irisToggle, bladeToggle).
-        static readonly string[] ResetActions = {"up","down","left","right","weapon","shield","bow","charge","parry","beam","forge","inventory","settings","interact","storage","stats","skill","skillCycle"};
-        static readonly string[] NamesKo = {"위로 이동","아래로 이동","왼쪽 이동","오른쪽 이동","무기 공격","칼등 처내기 (탭=처내기, 홀드=연사)","Space 분노 폭발","사슬 이동","데빌포스 흡수","마법 (탭=투사체, 홀드=빔)","대장간","인벤토리","설정","아이템 줍기","보관함","능력치 (스탯/패시브)","전투 스킬","스킬 슬롯 배정","유령불꽃 켜기/끄기","기동칼날개 자동 켜기/끄기"};
-        static readonly string[] NamesEn = {"Move Up","Move Down","Move Left","Move Right","Weapon Attack","Blade Parry (tap=parry, hold=rapid)","Space Rage Burst","Chain Dash","Devilforce Absorb","Magic (tap=projectile, hold=beam)","Forge","Inventory","Settings","Pick Up Item","Storage","Stats (Stats/Passives)","Combat Skills","Skill Slot Assign","Ghost Flame On/Off","Bladewing Auto On/Off"};
+        public static readonly string[] Actions = {"up","down","left","right","weapon","shield","bow","charge","roll","parry","beam","forge","inventory","settings","interact","storage","stats","skill","skillCycle","irisToggle","bladeToggle"};
+        static readonly string[] DefaultPrimary = {"KeyW","KeyS","KeyA","KeyD","mouse0","KeyE","Space","ShiftLeft","Space","KeyQ","mouse2","KeyG","Tab","Escape","KeyR","KeyN","KeyJ","KeyK","KeyL","KeyY","KeyU"};
+        // window._resetBinds: its BINDS / BINDS2 literals only list these 19 actions (no irisToggle, bladeToggle).
+        static readonly string[] ResetActions = {"up","down","left","right","weapon","shield","bow","charge","roll","parry","beam","forge","inventory","settings","interact","storage","stats","skill","skillCycle"};
+        static readonly string[] NamesKo = {"위로 이동","아래로 이동","왼쪽 이동","오른쪽 이동","무기 공격","칼등 처내기 (탭=처내기, 홀드=연사)","Space 분노 폭발","사슬 이동","구르기 (방향키 +)","데빌포스 흡수","마법 (탭=투사체, 홀드=빔)","대장간","인벤토리","설정","아이템 줍기","보관함","능력치 (스탯/패시브)","전투 스킬","스킬 슬롯 배정","유령불꽃 켜기/끄기","기동칼날개 자동 켜기/끄기"};
+        static readonly string[] NamesEn = {"Move Up","Move Down","Move Left","Move Right","Weapon Attack","Blade Parry (tap=parry, hold=rapid)","Space Rage Burst","Chain Dash","Roll (Arrow Keys +)","Devilforce Absorb","Magic (tap=projectile, hold=beam)","Forge","Inventory","Settings","Pick Up Item","Storage","Stats (Stats/Passives)","Combat Skills","Skill Slot Assign","Ghost Flame On/Off","Bladewing Auto On/Off"};
         public const string ChainConflictKo = "사슬 이동과 공격에는 서로 다른 키를 지정하세요.";
+        public const string RollKeyboardKo = "구르기는 키보드 키로 지정하세요.";
+        public const string RollKeyboardEn = "Bind Roll to a keyboard key.";
         public const string ChainConflictEn = "Use separate keys for chain movement and attacks.";
         // keyName(): plain keyboard names (mouse buttons and "none" are language dependent)
         static readonly Dictionary<string,string> KeyLabels = new Dictionary<string,string> {
@@ -29,7 +31,7 @@ namespace Exoduser.UnityPort.Core
 
         public KeyBindings() { Reset(true); }
 
-        // Object.keys(BINDS): the rows the list shows (20 at start, 18 after the web reset quirk).
+        // Object.keys(BINDS): the rows the list shows (21 at start, 19 after the web reset quirk).
         public IReadOnlyList<string> Listed { get { return listed; } }
         // Bumped whenever the interact binding changes (web _resetInteractInput(): pending "fresh press" edges are dropped).
         public int InteractResetCount { get; private set; }
@@ -53,6 +55,7 @@ namespace Exoduser.UnityPort.Core
         public bool TrySet(string action, string code, bool alternate, out string rejection)
         {
             rejection = null;
+            if (action == "roll" && code != null && code.StartsWith("mouse", StringComparison.Ordinal)) { rejection = RollKeyboardKo; return false; }   // web _setInputBinding: roll is keyboard only
             if (ChainAttackConflict(action, code)) { rejection = ChainConflictKo; return false; }
             if (!alternate && !primary.ContainsKey(action)) listed.Add(action);   // web: BINDS[action]=key creates the property again
             (alternate ? secondary : primary)[action] = code;
@@ -70,7 +73,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // window._resetBinds. Web quirk kept: the reset literals leave out irisToggle and bladeToggle, so after a reset those two actions disappear from the list and
-        // are unbound (Object.keys(BINDS) has 18 entries) until the page is reloaded. See docs/engine/UNITY_A16_KEYBINDS_20261026.md.
+        // are unbound (Object.keys(BINDS) has 19 entries) until the page is reloaded. See docs/engine/UNITY_A16_KEYBINDS_20261026.md.
         public void ResetAll() { Reset(false); InteractResetCount++; }
 
         void Reset(bool initial)
