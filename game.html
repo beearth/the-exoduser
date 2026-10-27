@@ -10369,6 +10369,14 @@ const _sampleFiles={
   scarecrow_charge:'sfx/scarecrow_charge.mp3',
   footstep:'sfx/misc/footstep_new.mp3',
   footstep2:'sfx/misc/footstep_stone.mp3',
+  // SND-08 §6.5 (2026-10-27) — 사용자 청음 채택 예고음 4키·드루이드 연출음 3키 (SFX Forge s2)
+  tell_melee:'sfx/tell/tell_melee.mp3',     // 일반 근접몹 windup 진입 — updateE, 같은 키 120ms 쿨다운·화면 밖 제외, TELL
+  tell_ranged:'sfx/tell/tell_ranged.mp3',   // 원거리 60f 공격링 시작 — _emitEnemyShot 경고 생성
+  tell_boss:'sfx/tell/tell_boss.mp3',       // 다크드루이드 전조(SFX.charge 대체) — _bossTellSfx
+  tell_grab:'sfx/tell/tell_grab.mp3',       // 다크드루이드 잡기 전조 — _bossTellSfx(e,1)
+  druid_erupt:'sfx/boss/druid_erupt.mp3',   // 굴파기 분출 — bossDruidUnder 이탈
+  druid_sink:'sfx/boss/druid_sink.mp3',     // 침강 도주 — _druidSinkStart
+  druid_tide:'sfx/boss/druid_tide.mp3',     // 독액 해일 — tideWave(드루이드)
   // SND-02 (2026-10-27) — SFX Forge R2 채택 4키
   crit_heavy:'sfx/hit/crit_heavy.mp3',                   // 치명타 묵직한 타격 — hurtE 치명타 블록, 쿨다운 12f
   ui_button_hover:'sfx/ui/button_hover.mp3',             // 버튼 호버 — document 위임 리스너
@@ -10958,7 +10966,7 @@ function _bossLine(key){
 const _DRUID_SINK_SHEET='emerge'; // 침강 시트(4x2, 0→7). 디자인총괄 판정: emerge 확정(dive.png와 바이트 동일) — 바꾸려면 이 한 줄만 교체
 const _DRUID_SINK_FT=8.25,_DRUID_SINK_HOLD=18,_DRUID_SINK_FADE=18; // 디자인총괄 판정(2026-10-27): 8칸 66틱(1.1초) 균등 → 7번 칸 0.3초 유지 → 0.3초 알파 1→0
 function _isSi0DruidSink(e){return !!(e&&e.ib&&!e._fmKind&&G.stage===0&&!_isDruidFinale(e))}
-function _druidSinkStart(e){e._sinkDruid=true;G._druidFled=true;e._corpseSpawned=true;G._druidSink={x:e.x,y:e.y,r:e.r,t:0};_bossLine('sink0')} // _corpseSpawned: update()의 시체 보충 생성(미생성 사망체 자동 시체)도 막는다
+function _druidSinkStart(e){_playDruidSfx('druid_sink',.55);e._sinkDruid=true;G._druidFled=true;e._corpseSpawned=true;G._druidSink={x:e.x,y:e.y,r:e.r,t:0};_bossLine('sink0')} // _corpseSpawned: update()의 시체 보충 생성(미생성 사망체 자동 시체)도 막는다
 function _druidSinkTick(sp){
   const s=G._druidSink;if(!s)return;
   const prev=s.t;s.t+=sp;const body=_DRUID_SINK_FT*8;
@@ -12355,6 +12363,8 @@ function _sfxPri(key){
   if(key.startsWith('voice_')||key==='male_grunt'||key.startsWith('silvertail_'))return _SFX_PRI.VOICE;
   if(key==='ghost_laugh')return _SFX_PRI.VOICE; // 유령허수아비 설치=궁극기 바로 아래 (9)
   if(key.startsWith('boss_'))return _SFX_PRI.SKILL; // 보스=스킬급
+  if(key.startsWith('tell_'))return _SFX_PRI.TELL; // SND-08 §6.5 예고음
+  if(key.startsWith('druid_'))return _SFX_PRI.SKILL; // SND-08 §6.5 드루이드 연출음
   if(_isSkillSfx(key))return _SFX_PRI.SKILL;
   if(key.startsWith('death_')||key==='monster_die1'||key==='death_grunt')return _SFX_PRI.DEATH;
   if(key==='bullet_hit'||key==='bean_hit'||key==='bolt_hit')return _SFX_PRI.PROJ;
@@ -20244,6 +20254,7 @@ function _emitEnemyShot(e,props){
     const lane=list.filter(w=>w.owner===e&&w.world===ens).length;
     w={owner:e,world:ens,frame:_gameFrame,t:60,dead:!e.alive,x:e.x,y:e.y,r:(e.r||12)+lane*8,el:props.el,blackBean:!!props.blackBean,parryClass:_parryClass,col:_parryClass==='physical'?'#f4f4f4':props.col||'#ff6644',shots:[]};
     e._shotWarning=w;list.push(w);
+    if(!e.ib)_playTell('tell_ranged',.45,e); // SND-08 §6.5 60f 공격링 시작
   }
   w.shots.push({...props});return null;
 }
@@ -37874,6 +37885,17 @@ function _bossScore(mv,d,ps,phase,e){
 const _HELL_ABERRANT_FACE=new Set(['jump','charge','slashCombo','sweep','tailSwipe','beanStorm']);
 // 빨간색 = 패링 가능, 보라색 = 패링 불가
 const _PARRYABLE_ATK=new Set(['charge','slashCombo','slam','sweep','tailSwipe','spin','multiDash','teleStrike','swordWave','jump','judgeCut','delaySlash','perilThrust','phantomSwords','crescendoCombo','tideWave','rewindStrike','mirrorClone','shieldBash2','mirrorGuard','chainLightning','cageTrap','doppelganger']);
+// ── SND-08 §6.5 채택 예고음·드루이드 연출음 (1차 음량: 예고 .45 · 연출 .5 · 침강 .55) ──
+const _tellLastT={};
+function _tellOnScreen(e){const z=G._camZoom||1;return !!(G.cam&&Math.abs(e.x-G.cam.x)*z<=VW/2&&Math.abs(e.y-G.cam.y)*z<=VH/2)}
+function _playTell(key,vol,e){ // 같은 키 120ms 쿨다운, 화면 밖 제외, 분류 TELL(_sfxPri)
+  if(e&&!_tellOnScreen(e))return;
+  const t=performance.now();if(t-(_tellLastT[key]||0)<120)return;_tellLastT[key]=t;
+  playSample(key,vol,_r(1,.05),_SFX_PRI.TELL);
+}
+function _playDruidSfx(key,vol){playSample(key,vol,_r(1,.04),_SFX_PRI.SKILL)}
+function _isDruidTellBoss(e){return !!(e&&e.ib&&(G.stage===0||G.stage===3))}
+function _bossTellSfx(e,grab){if(_isDruidTellBoss(e))_playTell(grab?'tell_grab':'tell_boss',.45,e);else SFX.charge()}
 function _bossStartPattern(e,mv,d,phase,extraDelay){
   e._atkParryable=_PARRYABLE_ATK.has(mv.id);
   let tele=~~(mv.tele*BOSS_PHASES[phase].teleM)+(extraDelay||0);
@@ -37885,23 +37907,23 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
     e._feinting=false;
   }
   switch(mv.id){
-    case'burst':e.s='bossBurstWind';e.st2=tele||55;addTxt(e.x,e.y-30,_T('⚠ 광역 발사!'),'#ff6600',50);SFX.charge();break;
-    case'fan':e.s='bossFanWind';e.st2=tele||30;if(_FDG_DRUID_THORN_FIRST&&_isNormalDruidBoss(e)&&(e._bossPhase||0)<=1){e._druidFanWindMax=e.st2;e.facing=Math.atan2(P.y-e.y,P.x-e.x);}addTxt(e.x,e.y-30,_T('🔥 확산!'),'#ff4444',35);SFX.charge();break;
-    case'charge':e.s='bossChargeWind';e.st2=tele||55;addTxt(e.x,e.y-30,_T('⚠ 돌진!'),'#ffaa00',50);SFX.charge();break;
+    case'burst':e.s='bossBurstWind';e.st2=tele||55;addTxt(e.x,e.y-30,_T('⚠ 광역 발사!'),'#ff6600',50);_bossTellSfx(e);break;
+    case'fan':e.s='bossFanWind';e.st2=tele||30;if(_FDG_DRUID_THORN_FIRST&&_isNormalDruidBoss(e)&&(e._bossPhase||0)<=1){e._druidFanWindMax=e.st2;e.facing=Math.atan2(P.y-e.y,P.x-e.x);}addTxt(e.x,e.y-30,_T('🔥 확산!'),'#ff4444',35);_bossTellSfx(e);break;
+    case'charge':e.s='bossChargeWind';e.st2=tele||55;addTxt(e.x,e.y-30,_T('⚠ 돌진!'),'#ffaa00',50);_bossTellSfx(e);break;
     case'jump':{let jx=P.x,jy=P.y;
       if(!canMv(jx,jy,e.r)){const _jp=safePt(jx,jy,e.r);if(_jp){jx=_jp.x;jy=_jp.y}else{jx=e.x;jy=e.y}}
       e.jumpX=jx;e.jumpY=jy;e.jumpOx=e.x;e.jumpOy=e.y;
-      e.s='bossJumpWind';e.st2=tele||34;e._telegraphT=tele||34;e._telegraphR=e.r+30;addTxt(e.x,e.y-30,_T('🦅 도약 준비!'),'#cc66ff',40);SFX.charge();break;}
+      e.s='bossJumpWind';e.st2=tele||34;e._telegraphT=tele||34;e._telegraphR=e.r+30;addTxt(e.x,e.y-30,_T('🦅 도약 준비!'),'#cc66ff',40);_bossTellSfx(e);break;}
     case'laser':e.laserAng=e.facing;e.laserLen=0;
       e.s='bossLaserWind';e.st2=tele||50;addTxt(e.x,e.y-30,_T('⚡ 레이저!'),'#ff00ff',50);SFX.magic(0);break;
-    case'shock':e.s='bossShockWind';e.st2=tele||45;addTxt(e.x,e.y-30,_T('🌊 충격파!'),'#44aaff',40);SFX.charge();break;
+    case'shock':e.s='bossShockWind';e.st2=tele||45;addTxt(e.x,e.y-30,_T('🌊 충격파!'),'#44aaff',40);_bossTellSfx(e);break;
     case'summon':e.s='bossSummonWind';e.st2=tele||55;addTxt(e.x,e.y-30,_T('👹 소환!'),'#aa00ff',50);SFX.magic(3);break;
     case'meteor':{const mc=~~((6+~~(G.stage*.8))*(1+(phase-1)*.3));e.meteors=[];
       const _mtW=(G.mw||50)*T,_mtH=(G.mh||42)*T,_mtCx=_mtW/2,_mtCy=_mtH/2;
       for(let mi=0;mi<mc;mi++)e.meteors.push({x:_mtCx+(Math.random()-.5)*(_mtW*.65),y:_mtCy+(Math.random()-.5)*(_mtH*.65),t:50});
       e.s='bossMeteorWind';e.st2=tele||50;addTxt(e.x,e.y-30,_T('☄ 유성우!'),'#ff8800',50);break;}
-    case'grab':if(d<120){e.s='bossGrabWind';e.st2=tele||40;e._grabWindMax=e.st2;e._grabAng=e.facing;addTxt(e.x,e.y-30,_T('🖐 잡기!'),'#cc00ff',45);SFX.charge()}
-      else{e.s='bossChargeWind';e.st2=~~(55*BOSS_PHASES[phase].teleM)+(extraDelay||0)||55;addTxt(e.x,e.y-30,_T('⚠ 돌진!'),'#ffaa00',50);SFX.charge()}break;
+    case'grab':if(d<120){e.s='bossGrabWind';e.st2=tele||40;e._grabWindMax=e.st2;e._grabAng=e.facing;addTxt(e.x,e.y-30,_T('🖐 잡기!'),'#cc00ff',45);_bossTellSfx(e,1)}
+      else{e.s='bossChargeWind';e.st2=~~(55*BOSS_PHASES[phase].teleM)+(extraDelay||0)||55;addTxt(e.x,e.y-30,_T('⚠ 돌진!'),'#ffaa00',50);_bossTellSfx(e)}break;
     case'spin':e.s='bossSpinWind';e.st2=tele||35;e._spinAng=0;addTxt(e.x,e.y-30,_T('🌀 회전참!'),'#ff6644',45);SFX.swing();break;
     case'mine':e.s='bossMineWind';e.st2=tele||30;addTxt(e.x,e.y-30,_T('💣 지뢰!'),'#5e10a8',40);SFX.magic(0);break;
     case'vortex':e.s='bossVortexWind';e.st2=tele||30;addTxt(e.x,e.y-30,_T('🌀 흡인!'),'#6644ff',45);SFX.magic(3);break;
@@ -37920,16 +37942,16 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       e._teleOx=e.x;e._teleOy=e.y;
       e._telePrepMax=tele||40;
       e.s='bossTelePrep';e.st2=tele||40;
-      addTxt(e.x,e.y-30,_T('⚡ 순간이동 준비!'),'#aa00ff',50);SFX.charge();break;
+      addTxt(e.x,e.y-30,_T('⚡ 순간이동 준비!'),'#aa00ff',50);_bossTellSfx(e);break;
     }
     case'burrowStrike':{ // [다크드루이드 전용] 일정거리서 발동: 땅속 다이빙→잠행→분출 매복공격
       e._teleOx=e.x;e._teleOy=e.y;e.facing=Math.atan2(P.y-e.y,P.x-e.x);
       e.s='bossDruidDive';e.st2=tele||50;e._diveMax=tele||50;
-      addTxt(e.x,e.y-30,'🌿⚠',60);SFX.charge();break;
+      addTxt(e.x,e.y-30,'🌿⚠',60);_bossTellSfx(e);break;
     }
-    case'beanStorm':e.s='bossBeanStormWind';e.st2=tele||25;e._bsWave=0;e._bsMaxWave=3+~~(phase);addTxt(e.x,e.y-30,_T('🔴 빨간콩 폭풍!'),'#cc1100',50);SFX.charge();break;
+    case'beanStorm':e.s='bossBeanStormWind';e.st2=tele||25;e._bsWave=0;e._bsMaxWave=3+~~(phase);addTxt(e.x,e.y-30,_T('🔴 빨간콩 폭풍!'),'#cc1100',50);_bossTellSfx(e);break;
     case'beanRain':e.s='bossBeanRainWind';e.st2=tele||35;e._brT=0;e._brDur=80+phase*20;addTxt(e.x,e.y-30,_T('🔴🔴 콩 비!'),'#ff2200',55);SFX.magic(0);break;
-    case'fanWave':e.s='bossFanWaveAim';e.st2=90;e.facing=Math.atan2(P.y-e.y,P.x-e.x);e._fwAng=e.facing;e._fwR=500;addTxt(e.x,e.y-30,_T('🌊 부채꼴 충격파!'),'#ff6600',55);SFX.charge();break;
+    case'fanWave':e.s='bossFanWaveAim';e.st2=90;e.facing=Math.atan2(P.y-e.y,P.x-e.x);e._fwAng=e.facing;e._fwR=500;addTxt(e.x,e.y-30,_T('🌊 부채꼴 충격파!'),'#ff6600',55);_bossTellSfx(e);break;
     case'radialLaser':e.s='bossRadialAim';e.st2=60;e._rlR=500;addTxt(e.x,e.y-30,_T('✴ 멸광 레이저!'),'#ff00ff',55);SFX.magic(0);break;
     case'chaseAoe':{
       // 추적 장판 10발 시작 — 보스는 즉시 다음 행동 가능
@@ -38024,13 +38046,13 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       e.s='bossDelaySlashHold';
       e.st2=30+~~(Math.random()*90); // 0.5~2초 랜덤 홀드
       e._dsMaxT=e.st2;
-      addTxt(e.x,e.y-30,'⚠ ...!','#ff4400',60);SFX.charge();break;
+      addTxt(e.x,e.y-30,'⚠ ...!','#ff4400',60);_bossTellSfx(e);break;
     }
     case'perilThrust':{
       // 위험찌르기 — 장거리 돌진 찌르기, 패링 시 체간 3배
       e.facing=Math.atan2(P.y-e.y,P.x-e.x);
       e.s='bossPerilWind';e.st2=tele||25;
-      addTxt(e.x,e.y-30,_T('⚠ 찌르기!'),'#ff0000',50);SFX.charge();break;
+      addTxt(e.x,e.y-30,_T('⚠ 찌르기!'),'#ff0000',50);_bossTellSfx(e);break;
     }
     case'pillars':{
       // 지옥기둥 — 맵 전체에 기둥 분출, 틈새로 회피
@@ -38066,7 +38088,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       // 폭발반격 — 때리면 반격당함
       e.s='bossBurstCounter';e.st2=60; // 1초 카운터 자세
       e._bcActive=true;
-      addTxt(e.x,e.y-30,_T('💢 반격자세!'),'#cc00ff',55);SFX.charge();break;
+      addTxt(e.x,e.y-30,_T('💢 반격자세!'),'#cc00ff',55);_bossTellSfx(e);break;
     }
     case'crescendoCombo':{
       // 점층연격 — 갈수록 빨라지는 5~7타 콤보
@@ -38133,7 +38155,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
           dmg:~~(e.atk*1.5),el:e.el,hitT:0,druid:!!(e.ib&&(G.stage===0||G.stage===3))});
         {const _vl=G._tideWaves[G._tideWaves.length-1];}
       }
-      SFX.magic(0);addTxt(e.x,e.y-30,_T('🌊 파동!'),e.ib&&(G.stage===0||G.stage===3)?'#a9cc63':(ELC[e.el]||'#4488ff'),50);
+      (e.ib&&(G.stage===0||G.stage===3))?_playDruidSfx('druid_tide',.5):SFX.magic(0);addTxt(e.x,e.y-30,_T('🌊 파동!'),e.ib&&(G.stage===0||G.stage===3)?'#a9cc63':(ELC[e.el]||'#4488ff'),50);
       e.s='recover';e.st2=35;break;
     }
     case'seekerMines':{
@@ -38148,7 +38170,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
           t:0,armT:60,maxT:360,r:60,dmg:~~(e.atk*2),el:EL.D,hp:1});
         {const _vl=G._seekerMines[G._seekerMines.length-1];}
       }
-      SFX.charge();addTxt(e.x,e.y-30,_T('💣 추적지뢰!'),'#5e10a8',50);
+      _bossTellSfx(e);addTxt(e.x,e.y-30,_T('💣 추적지뢰!'),'#5e10a8',50);
       e.s='recover';e.st2=25;break;
     }
     case'rewindStrike':{
@@ -38255,7 +38277,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       // 아이템 탈취 — 보스가 무기를 빼앗으려 시도
       e._isAng=Math.atan2(P.y-e.y,P.x-e.x);
       e.s='bossItemStealWind';e.st2=tele||25;
-      addTxt(e.x,e.y-30,_T('🖐 탈취!'),'#cc00ff',50);SFX.charge();break;
+      addTxt(e.x,e.y-30,_T('🖐 탈취!'),'#cc00ff',50);_bossTellSfx(e);break;
     }
     case'lavaPools':{
       // 용암 장판 — 맵 전체에 대형 용암, 안전지대 2~3곳만 남김
@@ -38318,7 +38340,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
           len:_sgLen,w:250+_sgPh*25,dmg:~~(e.atk*1.8),el:e.el,tickT:0});
           {const _vl=G._shockGrids[G._shockGrids.length-1];}
       }
-      addTxt(e.x,e.y-30,_T('⚡⚡ 전격 장막!'),'#44ccff',70);SFX.charge();shake(12);
+      addTxt(e.x,e.y-30,_T('⚡⚡ 전격 장막!'),'#44ccff',70);_bossTellSfx(e);shake(12);
       e.s='recover';e.st2=35;break;
     }
     case'donutSlam':{
@@ -38330,7 +38352,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       G._donutSlams.push({x:e.x,y:e.y,innerR:_dsInner,outerR:_dsOuter,
         t:0,warnT:90,maxT:120,dmg:~~(e.atk*2.5),el:e.el,hit:false});
       {const _vl=G._donutSlams[G._donutSlams.length-1];}
-      addTxt(e.x,e.y-30,_T('💀 내 곁으로!'),'#ff0044',80);SFX.charge();shake(8);
+      addTxt(e.x,e.y-30,_T('💀 내 곁으로!'),'#ff0044',80);_bossTellSfx(e);shake(8);
       e.s='recover';e.st2=50;break;
     }
     case'safeCorner':{
@@ -38361,7 +38383,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         dmg:~~(e.atk*2),el:e.el,tickT:0,
         waves:2+~~(_cwPh/2)});
       {const _vl=G._crossWipes[G._crossWipes.length-1];} // 2~4파
-      addTxt(e.x,e.y-30,_T('⚡ 쐐기 소멸!'),'#ff44ff',70);SFX.charge();shake(8);
+      addTxt(e.x,e.y-30,_T('⚡ 쐐기 소멸!'),'#ff44ff',70);_bossTellSfx(e);shake(8);
       e.s='recover';e.st2=45;break;
     }
     case'tidalWipe':{
@@ -38399,7 +38421,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
           col:'#ff4444',sz:3,homing:true, // 약한 유도
           _missileTrail:true}); // 미사일 트레일 플래그
       }
-      SFX.charge();shake(8);
+      _bossTellSfx(e);shake(8);
       addTxt(e.x,e.y-30,_T('🚀 미사일!'),'#ff2200',55);
       addParts(e.x,e.y,'#ff4444',12);
       e.s='recover';e.st2=30;break;
@@ -38758,6 +38780,8 @@ function atkTicketRelease(e){
 // ─── [S16f] ENEMY_UPD — 적 업데이트 (AI/이동/공격) ───
 function updateE(e,sp){
   if(e._lessonEnemy&&window._parryLesson?.active)return;
+  if(!e.ib&&e.s==='windup'&&e._tellS!=='windup')_playTell('tell_melee',.45,e); // SND-08 §6.5 일반 근접몹 windup 진입
+  e._tellS=e.s;
   // ═══ 텔레그래프 VFX 타이머 감소 ═══
   if(e._telegraphT>0){e._telegraphT-=sp;e._telegraphR=e.r+20}
   // 벽 안에 있는 적 밀어내기 (넉백/텔레포트 등으로 벽에 끼인 경우)
@@ -41230,7 +41254,7 @@ function updateE(e,sp){
     e.x=e._teleOx+(e._diveTx-e._teleOx)*_up;e.y=e._teleOy+(e._diveTy-e._teleOy)*_up;
     e.iframes=Math.max(e.iframes||0,5);
     // [DEDUP] under 초록 poolPart 제거 — 흙두둑 ellipse(렌더)+dust 이탈과 3중 중복
-    if(e.st2<=0){e.x=e._diveTx;e.y=e._diveTy;if(typeof playVFXAng==='function')playVFXAng('druid_dust',e.x,e.y,e.r*2*1.3/256,7,0,false);e.s='bossDruidErupt';e.st2=40;e._eruptMax=40;e._eruptHit=false;addTxt(e.x,e.y-40,'🌿💥',60);SFX.detonate();shake(12);}break} // 굴파기 이탈 dust(1.3배)
+    if(e.st2<=0){e.x=e._diveTx;e.y=e._diveTy;if(typeof playVFXAng==='function')playVFXAng('druid_dust',e.x,e.y,e.r*2*1.3/256,7,0,false);e.s='bossDruidErupt';e.st2=40;e._eruptMax=40;e._eruptHit=false;addTxt(e.x,e.y-40,'🌿💥',60);_playDruidSfx('druid_erupt',.5);shake(12);}break} // 굴파기 이탈 dust(1.3배)
   case'bossDruidErupt':{
     if(!e._eruptHit&&e.st2<=(e._eruptMax-8)){
       e._eruptHit=true;
