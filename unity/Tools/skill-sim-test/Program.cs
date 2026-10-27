@@ -1,0 +1,115 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using Exoduser.UnityPort.Core;
+using Exoduser.UnityPort.Core.Skills;
+
+// PC-B03 behaviour checks of the skill executor on the real Simulation (standalone .NET, no Unity): input edges, costs, cooldowns, zones, slam, ice orb, holy dome,
+// level up and the save round trip. Numeric formulas are the skill-oracle's job; this file checks that the Simulation applies them in the right order.
+class Program
+{
+    static readonly List<object> Rows = new List<object>(); static int failed;
+    static void Check(bool ok, string name) { Rows.Add(new { name, passed = ok }); if (!ok) { failed++; Console.WriteLine("FAIL " + name); } }
+    static Simulation Make()
+    {
+        var cfg = new SimulationConfig { EnemyAiEnabled = false, PlayerMaxStamina = 300, PlayerMaxMana = 300, PlayerMaxHp = 1000 };
+        var s = new Simulation(cfg); s.Random01 = () => .5; s.Materials = 100; s.Player.Stamina = 300; s.Player.Mana = 300; return s;
+    }
+    static void Release(Simulation s) { s.SetSkillInput(false, false, false, false, false, false, false, false); s.Tick(0, 0, 100, 0, false, false); }
+    static void Press(Simulation s, bool d1 = false, bool space = false, bool f = false, bool ctrl = false)
+    {
+        Release(s);                                                                                                         // released frame
+        s.SetSkillInput(d1, false, false, false, space, f, ctrl, false); s.Tick(0, 0, 100, 0, false, false);                // pressed frame
+    }
+    static void Idle(Simulation s, int n) { s.SetSkillInput(false, false, false, false, false, false, false, false); for (int i = 0; i < n; i++) s.Tick(0, 0, 100, 0, false, false); }
+    static int Main(string[] args)
+    {
+        // ---- start state ----
+        var s = Make();
+        Check(s.Skills.Level("giantSlam") == 1 && s.Skills.Level("holyDome") == 1 && s.Skills.Level("spikeTrap") == 1 && s.Skills.Level("iceOrb") == 1, "new character starts with giantSlam / holyDome / spikeTrap / iceOrb Lv1");
+        Check(s.Skills.Slots[0] == "spikeTrap" && s.Skills.Slots[4] == "giantSlam" && s.Skills.Slots[5] == "holyDome" && s.Skills.CtSkill == "iceOrb", "slots: 1 spikeTrap, Space giantSlam, F holyDome, Ctrl iceOrb");
+
+        // ---- spike trap: malice 5, cooldown 600, zone with radius 300, DOT every 25 frames, slow ----
+        s = Make(); var e = s.SpawnNormalEnemy(100, 0); int mats0 = s.Materials; int hp0 = e.Hp; float sh0 = e.Shield;
+        Press(s, d1: true);
+        Check(s.FireZones.Count == 1 && s.FireZones[0].Type == "spikeTrap" && s.FireZones[0].R == 300, "key 1 plants a spike trap (r300)");
+        Check(s.Materials == mats0 - 5, "spike trap costs 5 malice (10 halved)");
+        Check(s.SpikeTrapCd > 590 && s.SpikeTrapCd <= 600, "spike trap cooldown ~600 frames");
+        Press(s, d1: true); Check(s.FireZones.Count == 1, "a second press during the cooldown plants nothing");
+        Idle(s, 60); Check(e.Shield < sh0 || e.Hp < hp0, "spike trap ticks damage the enemy inside");
+        Check(e.Web != null && (e.Web._spikeSlow ?? 0) > 0, "spike trap applies the slow flag");
+        var far = Make(); far.Materials = 4; Press(far, d1: true); Check(far.FireZones.Count == 0 && far.Materials == 4, "spike trap refused below 5 malice");
+
+        // ---- giant slam: ST 50, malice 10, 10-frame windup -> strike -> recover, shock wave, enemy hit ----
+        s = Make(); e = s.SpawnNormalEnemy(200, 0); mats0 = s.Materials; float st0 = s.Player.Stamina; sh0 = e.Shield; hp0 = e.Hp;
+        Press(s, space: true);
+        Check(s.Player.State == "gSlamWindup" || s.Player.State == "gSlam1", "Space starts the slam windup state");
+        Check(s.SlamWaves.Count == 1, "shock wave created");
+        Check(s.Materials == mats0 - 10, "giant slam costs 10 malice (20 halved)");
+        Check(s.Player.Stamina < st0 - 49 && s.Player.Stamina > st0 - 52, "giant slam costs 50 stamina");
+        Check(e.Shield < sh0 || e.Hp < hp0, "giant slam hits an enemy inside its 500 range");
+        Check(e.Stunned >= SkillRules.GiantSlamMiniStun - 1, "giant slam stuns an ordinary enemy (mini stun 60)");
+        Check(s.GiantSlamCd > 1700, "giant slam cooldown 1800");
+        Idle(s, 40); Check(s.Player.State == "idle", "slam states end after 10+10+12 frames");
+        s = Make(); Press(s, space: true); s.GiantSlamCd = 0; Idle(s, 40); Press(s, space: true); Check(s.SlamWaves.Count == 2, "slam can be recast once the cooldown is 0");
+        s = Make(); s.Player.Stamina = 10; Press(s, space: true); Check(s.SlamWaves.Count == 0, "no slam without stamina");
+        s = Make(); Release(s); s.SetRollInput(false, false, false, true, true); s.SetSkillInput(false, false, false, false, true, false, false, false, true); s.Tick(0, 0, 100, 0, false, false);
+        Check(s.SlamWaves.Count == 0 && s.RollActive, "Space with a direction held is the roll, not the slam");
+
+        // ---- holy dome: zone, 30 s cooldown, regeneration inside ----
+        s = Make(); s.Player.Hp = 500; s.Player.Mana = 100; s.Player.Stamina = 100;
+        Press(s, f: true);
+        Check(s.FireZones.Count == 1 && s.FireZones[0].Type == "holyDome" && s.FireZones[0].R == 520 && s.FireZones[0].MaxT == 750, "F plants the holy dome (r520, 750 frames)");
+        Check(s.HolyDomeCd > 1790, "holy dome cooldown 1800");
+        float hp1 = s.Player.Hp; Idle(s, 60); Check(s.Player.Hp > hp1 + 10 && s.Player.Mana > 105 && s.Player.Stamina > 105, "inside the dome HP / MP / ST regenerate");
+        Idle(s, 800); Check(s.FireZones.Count == 0, "the dome expires after 750 frames");
+
+        // ---- ice orb: MP 50, orb state, shatter after 120 frames or by Ctrl, blades, cooldown 1200 ----
+        s = Make(); e = s.SpawnNormalEnemy(60, 0); float mp0 = s.Player.Mana; sh0 = e.Shield; hp0 = e.Hp;
+        Press(s, ctrl: true);
+        Check(s.IceOrbActive && s.Player.State == "iceOrb", "Ctrl enters the ice orb");
+        Check(s.Player.Mana < mp0 - 49 && s.Player.Mana > mp0 - 52, "ice orb costs 50 MP");
+        int hpBefore = (int)s.Player.Hp; s.HurtPlayer(50); Check((int)s.Player.Hp == hpBefore, "nothing hurts the player inside the orb");
+        Idle(s, 125); Check(!s.IceOrbActive && s.Player.State == "idle", "the orb shatters by itself after 120 frames");
+        Check(s.IceOrbCd > 1000 && s.IceOrbCd <= 1200, "ice orb cooldown 1200");
+        Check(e.Shield < sh0 || e.Hp < hp0, "shatter reaches the enemy next to the orb");
+        s = Make(); Press(s, ctrl: true); Press(s, ctrl: true); Check(!s.IceOrbActive, "Ctrl again inside the orb shatters it");
+        s = Make(); Press(s, ctrl: true); Press(s, d1: true); Check(s.FireZones.Count == 0, "no other skill inside the orb");
+        s = Make(); s.Player.Mana = 20; Press(s, ctrl: true); Check(!s.IceOrbActive, "no orb without MP");
+        s = Make(); Press(s, ctrl: true); Idle(s, 125); Check(s.SkillBlades.Count > 0, "shatter launches blades"); Idle(s, 20); Check(s.SkillBlades.Count > 0, "blades keep flying");
+
+        // ---- level up ----
+        s = Make(); s.Player.StatPoints = 5; s.Player.Level = 1;
+        Check(!s.CanUpgradeSkill("spikeTrap"), "Lv1 player: skill level lock 1 blocks the upgrade");
+        s.Player.Level = 50; Check(s.CanUpgradeSkill("spikeTrap") && s.UpgradeSkill("spikeTrap") && s.Skills.Level("spikeTrap") == 2 && s.Player.StatPoints == 4, "Lv50 player upgrades spikeTrap to Lv2 for 1 SP");
+        Check(!s.UpgradeSkill("spikeTrap"), "Lv2 reached the lock (50/50+1=2)");
+        s.Player.StatPoints = 0; s.Player.Level = 100; Check(!s.CanUpgradeSkill("spikeTrap"), "no SP no upgrade");
+
+        // ---- regression: the enemy AI keeps hurting the player after skills were used (M1 07b) ----
+        foreach (bool used in new[] { false, true })
+        {
+            s = Make(); s.Config.EnemyAiEnabled = true; s.Player.Hp = s.Player.MaxHp;
+            if (used)
+            {
+                var a = s.SpawnNormalEnemy(130, 0);
+                Press(s, d1: true); Idle(s, 70); s.Player.Stamina = 300; Press(s, space: true); Idle(s, 46); Press(s, f: true); Idle(s, 60); Press(s, ctrl: true); Idle(s, 100);
+                s.SkillBlades.Clear(); s.FireZones.Clear(); s.SlamWaves.Clear(); s.Enemies.Clear(); s.SpikeTrapCd = s.GiantSlamCd = s.HolyDomeCd = s.IceOrbCd = 0; s.Player.State = "idle";
+            }
+            s.Enemies.Clear(); s.Player.Hp = s.Player.MaxHp; s.Player.Iframes = 0; s.Player.Shield = 40;
+            var atk = s.SpawnNormalEnemy(s.Player.X + 70, s.Player.Y); atk.Alerted = true; atk.StateTicks = 0; int hurt0 = s.HurtCount; int first = -1;
+            for (int i = 0; i < 900 && first < 0; i++) { s.Tick(0, 0, s.Player.X + 300, s.Player.Y, false, false); if (s.HurtCount > hurt0) first = i; }
+            Check(first >= 0, "enemy contact hits the player " + (used ? "after" : "without") + " skill use (first hit tick " + first + ")");
+        }
+
+        // ---- save round trip ----
+        s = Make(); s.Skills.Levels["spikeTrap"] = 3;
+        Dictionary<string, double> sk; string[] slots; string ult, ct; s.CaptureSkills(out sk, out slots, out ult, out ct);
+        var t = Make(); t.Skills.Levels["spikeTrap"] = 1; t.Skills.Slots[0] = null; t.RestoreSkills(sk, slots, ult, ct);
+        Check(t.Skills.Level("spikeTrap") == 3 && t.Skills.Slots[0] == "spikeTrap" && t.Skills.CtSkill == "iceOrb", "skills survive a capture / restore");
+        var legacy = Make(); legacy.RestoreSkills(null, null, null, null); Check(legacy.Skills.Level("giantSlam") == 1, "a save without skills keeps the start state");
+
+        var result = JsonSerializer.Serialize(new { scope = "standalone_dotnet_not_Unity_runtime", passed = failed == 0, failed, checks = Rows }, new JsonSerializerOptions { WriteIndented = true });
+        if (args.Length > 0) File.WriteAllText(args[0], result); Console.WriteLine("SKILL_SIM " + Rows.Count + " checks / " + failed + " failures"); return failed == 0 ? 0 : 2;
+    }
+}

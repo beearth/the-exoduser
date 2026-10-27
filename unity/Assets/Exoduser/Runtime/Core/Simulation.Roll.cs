@@ -37,6 +37,7 @@ namespace Exoduser.UnityPort.Core
             if (rollPending < 0) return;
             int dir = rollPending; rollPending = -1;
             if (Player.State == "fallen" || Player.State == "dead" || Player.Hp <= 0) return;
+            if (IceOrbActive) return;                                                      // B03: the orb blocks every action (web 33178)
             if (!CanRollNow) { RollDenied++; return; }
             if (Player.State == "stagger") Player.StateTicks = 0;
             else if (Player.State == "pStun") Player.Poise = PlayerPoise.MaxPoise;

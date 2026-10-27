@@ -16,6 +16,9 @@ namespace Exoduser.UnityPort.Core
   public readonly List<InventoryItem> Bag=new List<InventoryItem>();
   public double Stage,Kills,PotLvHp,BagMax=300;
   public JsonValue Raw;   // loaded `data` root (unmodeled sections), null for a first save
+  // B03: the skill sections the Unity skill executor owns (web `skills` {id:Lv}, `skillSlots`[6], `ultSlot`, `activeCtSk`). null = never saved / not loaded:
+  // entries of skills Unity cannot run yet stay as the raw save has them, so a web import after a Unity autosave still finds them.
+  public Dictionary<string,double> Skills;public string[] SkillSlots;public string UltSlot,ActiveCtSk;
  }
 
  public static class CombatSaveCodec
@@ -57,11 +60,35 @@ namespace Exoduser.UnityPort.Core
     {
      case "player":root.Set(key,player);break;case "inv":root.Set(key,inv);break;case "game":root.Set(key,game);break;
      case "bagMax":root.Set(key,JsonValue.Of(m.BagMax));break;case "potLv":root.Set(key,pot);break;
+     case "skills":root.Set(key,m.Skills!=null?EncodeSkills(m,Raw(m,key)):Raw(m,key));break;
+     case "skillSlots":root.Set(key,m.SkillSlots!=null?EncodeSlots(m,Raw(m,key)):Raw(m,key));break;
+     case "ultSlot":if(m.Skills!=null)root.Set(key,m.UltSlot!=null?JsonValue.Of(m.UltSlot):JsonValue.Null);else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
+     case "activeCtSk":if(m.ActiveCtSk!=null)root.Set(key,JsonValue.Of(m.ActiveCtSk));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      default:{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);break;}
     }
    }
    if(m.Raw!=null&&m.Raw.Kind==JsonKind.Object)foreach(var kv in m.Raw.Members)if(!root.Has(kv.Key))root.Set(kv.Key,kv.Value);   // future/unknown keys survive
    return root;
+  }
+
+  // B03: raw entries are copied; the ids in SkillIds are the ones the Unity executor owns and are written from the model (Lv 0 = key removed)
+  static JsonValue EncodeSkills(CombatSaveModel m,JsonValue raw)
+  {
+   var o=Obj();
+   if(raw!=null&&raw.Kind==JsonKind.Object)foreach(var kv in raw.Members)if(!m.Skills.ContainsKey(kv.Key))o.Set(kv.Key,kv.Value);
+   foreach(var kv in m.Skills)if(kv.Value>=1)o.Set(kv.Key,JsonValue.Of(kv.Value));
+   return o;
+  }
+  static JsonValue EncodeSlots(CombatSaveModel m,JsonValue raw)
+  {
+   var a=Arr();
+   for(int i=0;i<m.SkillSlots.Length;i++)
+   {
+    string s=m.SkillSlots[i];
+    if(s==null&&raw!=null&&raw.Kind==JsonKind.Array&&i<raw.Items.Count){var r=raw.Items[i];if(r!=null&&r.Kind==JsonKind.String&&!m.Skills.ContainsKey(r.Text)){a.Add(r);continue;}}
+    a.Add(s!=null?JsonValue.Of(s):JsonValue.Null);
+   }
+   return a;
   }
 
   public static double Or(double v,double fallback){return v==0||double.IsNaN(v)?fallback:v;}   // JS `v||fallback`
@@ -113,6 +140,15 @@ namespace Exoduser.UnityPort.Core
    m.BagMax=bm!=null&&bm.Kind==JsonKind.Number?Or(bm.Number,300):300;
    var pot=data.Get("potLv");
    if(Valid(pot,JsonKind.Object))m.PotLvHp=Number(pot,"hp",0);
+   var sk=data.Get("skills");
+   if(Valid(sk,JsonKind.Object))
+   {
+    m.Skills=new Dictionary<string,double>();foreach(var kv in sk.Members)if(kv.Value!=null&&kv.Value.Kind==JsonKind.Number)m.Skills[kv.Key]=kv.Value.Number;
+    var slots=data.Get("skillSlots");m.SkillSlots=new string[6];
+    if(Valid(slots,JsonKind.Array))for(int i=0;i<6&&i<slots.Items.Count;i++){var v=slots.Items[i];if(v!=null&&v.Kind==JsonKind.String)m.SkillSlots[i]=v.Text;}
+    var ult=data.Get("ultSlot");m.UltSlot=ult!=null&&ult.Kind==JsonKind.String?ult.Text:null;
+    var ct=data.Get("activeCtSk");m.ActiveCtSk=ct!=null&&ct.Kind==JsonKind.String?ct.Text:null;
+   }
    model=m;return true;
   }
 

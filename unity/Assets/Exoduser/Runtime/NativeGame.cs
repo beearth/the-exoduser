@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         public int LoadedChunks {get {return chunks.Count;}}
         public int RenderedEnemyCount {get {return enemies.Count;}}
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;NativeBoltView boltView;
-        KiImpactView impacts; NativeFeedbackAudio sound; bool smokeActive;
+        KiImpactView impacts; NativeSkillView skillView; NativeFeedbackAudio sound; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
         NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;NativeStatPanel stats;bool skillsWasRunning,statsWasRunning,skillInputFence;
         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
@@ -65,6 +65,7 @@ namespace Exoduser.UnityPort
             var hitSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_hit_silver_sheet");
             if(hitSheet==null||hitSheet.width!=1254||hitSheet.height!=1254)throw new InvalidOperationException("Invalid original kiSlash 2x2 hit sheet");
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
+            skillView=new NativeSkillView(transform);   // B03 skill effects
             sound=new NativeFeedbackAudio(transform,view);
             ResetRun();
             worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
@@ -112,7 +113,7 @@ namespace Exoduser.UnityPort
             ResetFirstPractice();
             startupResetCount++;
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();
-            kiView?.Reset();boltView?.Reset();impacts?.Reset();sound?.Reset();
+            kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
@@ -205,6 +206,7 @@ namespace Exoduser.UnityPort
             bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition)||PointerOverStageClear(),p.KiChargeActive);
             Simulation.Stage.Enabled=firstPractice==null;
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
+            SetSkillKeys();
             Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
             StageFlowPump();DispatchFeedback();
@@ -278,6 +280,7 @@ namespace Exoduser.UnityPort
             kiView?.Update(Simulation);
             boltView?.Update(Simulation);BossViewUpdate();
             impacts?.Update(Simulation.TickCount);
+            skillView?.Update(Simulation,Time.time);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
@@ -296,6 +299,14 @@ namespace Exoduser.UnityPort
             Texture2D texture=null;foreach(string key in keys){texture=spriteCache[key].texture;Destroy(spriteCache[key]);spriteCache.Remove(key);}if(texture!=null)Resources.UnloadAsset(texture);
         }
         static Vector3 Point(float x,float y){return new Vector3(x/100,-y/100,0);}
+        // B03: held states of the skill keys (web keydown: Digit1-4 slots, Space rage burst, F area, Ctrl fixed skill, Z ult); Space shares the roll key by default
+        void SetSkillKeys()
+        {
+            string bow=NativeKeyBindInput.Bindings.Primary("bow"),roll=NativeKeyBindInput.Bindings.Primary("roll");
+            if(menu||skills.Open||inventory.Open||stats.Open||forge.Open){Simulation.SetSkillInput(false,false,false,false,false,false,false,false);return;}   // the panels use the digit keys themselves
+            Simulation.SetSkillInput(Input.GetKey(KeyCode.Alpha1),Input.GetKey(KeyCode.Alpha2),Input.GetKey(KeyCode.Alpha3),Input.GetKey(KeyCode.Alpha4),
+                NativeKeyBindInput.Held("bow"),Input.GetKey(KeyCode.F),Input.GetKey(KeyCode.LeftControl),Input.GetKey(KeyCode.Z),bow!=null&&bow==roll);
+        }
         // Web: _xbowEquipped toggle + showPH('석궁 자동발사 ON/OFF'). OPT.xbowAuto persistence belongs to the settings owner and is not wired here.
         public void ToggleCrossbow(){Toast(Simulation.ToggleCrossbowAuto()?"석궁 자동발사 ON":"석궁 자동발사 OFF");}
         void Toast(string text){notice=text;noticeUntil=Time.unscaledTime+3;}
@@ -536,6 +547,6 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
+        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
     }
 }
