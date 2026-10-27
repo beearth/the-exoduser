@@ -35,6 +35,14 @@
 
 화면 원본·시간·SHA256·경로·격리 저장 증거는 `_out/UNITY-MAC-A05-IO-FRONTEND-PAD-KEYBOARD-REV4-20261027/normal-keyboard-review.json`과 같은 폴더의 `02-after-splash.jpg`, `05-world-middle.jpg`, `06-world-late.jpg`, `11-story-start.jpg`, `13-story-end.jpg`, `21-guide-start.jpg`, `24-guide-4-potion.jpg`, `26-field-hud-before-w.jpg`, `27-field-hud-after-w.jpg`에 고정했다. 두 정본 영상의 소스/앱 SHA는 위 Rev4 값과 각각 일치한다. 물리 패드, 마우스·공격, 실제 전투, 청음, 픽셀 동등성은 이 후속의 PASS 범위가 아니다. 사용자 앱 PID 38141/48476/52157, 일반 저장, Godot, 기본 앱/설치·배포는 건드리지 않았다.
 
+## Finder용 검토 실행 앱 — 2026-10-27
+
+`_out/UNITY-MAC-FRONTEND-PAD-INTEGRATED-REV4-20261027/EXODUSER 검토 실행.app`은 Finder에서 열 수 있는 로컬 helper다. AppleScript 앱은 기존 `launch-review.command`만 백그라운드 호출하므로 터미널 창을 열지 않는다. 기존 `.command`도 그대로 쓸 수 있다. 같은 폴더의 `RUNME-검토실행.md`에 사용법·고정 A05 검토 root·완료/HOLD를 적었다. 설치·기본 앱 교체·공개 배포와 새 Unity 빌드·게임 코드 변경은 없다.
+
+`Info.plist` lint와 ad hoc 서명 검사를 통과했다. Finder 앱 실제 실행에서 PID 55075는 기존 스크립트와 동일한 `--unity-cinematic-persistence-review -output <REV4 REVIEW root> -screen-width 1280 -screen-height 720 -screen-fullscreen 0 -logFile <root>/player.log`만 받았고, 주입/직접 진입 flag는 없었다. 첫 제목 화면 `finder-helper-first-screen.jpg`를 확인한 뒤 그 PID만 종료했다. helper 경로·해시·PID·argv·화면은 `finder-helper-review.json`과 최종 `manifest.json`에 기록했다.
+
+Rev4 제품 소스 기준 `2c54cc4c88de21b3e38be4ff2aa6920138e4e239` 이후 원격 병합 HEAD `ade9908ae35a9670aaf899178b86e83f449ae903`까지 Unity Runtime/Editor/StreamingAssets 경로 diff는 0이며, 매니페스트의 소스 파일 SHA는 현재 checkout과 일치한다. 앱 실행 파일 SHA도 `6594af88ead86e476eb24e142aa5e19082496c998c9abfc400219e11fe363f2f` 그대로다. 원격의 지도/사운드/INBOX 문서 WIP를 Rev4 앱에 재빌드해 섞지 않았다. 일반 키보드 동선 PASS와 물리 패드·마우스/공격·실전투·청음 HOLD의 범위도 그대로다.
+
 ## 첫 후보 기록 — superseded
 
 | ID | 위치·값 | 범위 |
