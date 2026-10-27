@@ -22,7 +22,8 @@
 | UCH-01 | Unity용 캐릭터 시트 1차: 3명 × body(정면·3/4·측면·뒤, A포즈)·head·weapon, 회색 배경·평면 조명, 뷰 분할(Meshy 다중 입력용) | **완료** (9장 PASS, $0.645) |
 | UCH-02a | 전사 body 시트 → Meshy multi-image-to-3d 1건 | **완료** (30cr, 조건부 PASS) |
 | UCH-02c | 전사 메시 Meshy 리깅 1건(+기본 걷기·달리기) | **완료** (5cr, 조건부 PASS) |
-| UCH-02b | 리깅 전사 Unity 6000.6.7f1 임포트(Humanoid·URP/Lit)·걷기 재생·게임 각도 컷, 얼굴 점 1개 텍스처 수정 | 진행 |
+| UCH-02b | 리깅 전사 Unity 6000.6.7f1 임포트(Humanoid·URP/Lit)·걷기 재생·게임 각도 컷, 얼굴 점 1개 텍스처 수정 | **완료** (PASS, 커밋 보류) |
+| UCH-03 | 망토 전용 뼈 분리(다리 끌림 해소)·대검 3D·손 파지/무기 소켓·애니 FBX 메시 제거 후 커밋 | 대기 |
 | UCH-03 | 리깅(휴머노이드)·Animator 기본(대기·이동·구르기·공격 1) | 대기 |
 | UCH-04 | 인게임 판정: 1-1 맵 위 1920×1080·1x 크롭, 전사·실버테일 옆 T1~T8 | 대기 |
 
@@ -58,3 +59,7 @@
   - 고칠 점: ① 왼쪽 눈 아래 검은 점 1개(텍스처 수정) ② 정면 망토 폭이 시트보다 좁고 허리·정강이 갑옷이 단순해졌다(실루엣 허용 범위, 인게임 카메라 거리에서 재판정) ③ OBJ의 mtl은 `texture_0.png`를 참조한다(파일명은 `tex_base_color.png`).
 - 메모: Meshy multi-image는 첫 장을 정면으로 본다. `origin_at`은 `auto_size=true`일 때만 적용되고, 크레딧표는 문서에 없어 응답의 `consumed_credits`를 정본으로 한다. 리깅 API는 별도 유료(문서상 5cr)다.
 - 2026-10-27 UCH-02c(사용자 승인 "크레딧은 리깅 1건만"): `POST /openapi/v1/rigging`, `input_task_id`=UCH-02a 작업(multi-image 작업도 수락됨), `height_meters=1.85` → 작업 `01a17d1c-0e10-7148-bb87-ef63742b47d5`, 37초, 5cr(잔액 4405). 결과 = 리깅 GLB·FBX + 기본 걷기·달리기(GLB·FBX·armature GLB), 저장 `E:/exoduser-wt/_out/unity-charsheet/meshy/warrior_rig_20261027_2025/`(사본 I: 같은 이름). 뼈 24개(Hips·Spine02(아래)→Spine01→Spine(위)·neck·Head·좌우 Shoulder/Arm/ForeArm/Hand·UpLeg/Leg/Foot/ToeBase), Humanoid 필수 17개 대응, 정점당 최대 4뼈·가중치 합 오차 1.4e-7·무가중 정점 0, 손가락 뼈 없음. numpy 선형 블렌드 스키닝으로 걷기 4프레임 렌더 확인. 총괄 판정 **조건부 PASS**: 관절 위치·걷기 변형·손발 형태 정상. 고칠 점 = 망토 뒷자락이 다리 뼈에 묶여 걷기 측면 25/75%에서 다리를 따라 끌려 늘어남 → Unity에서 망토 전용 보조 뼈(또는 Cloth/스프링 본)로 분리 필요. Unity Humanoid 척추 매핑 = Spine02→Spine, Spine01→Chest, Spine→UpperChest.
+- 2026-10-27 UCH-02b(비용 0): worktree `E:/exoduser-wt/pc-unity-char`(origin/unity/main detached)의 `unity/Assets/Exoduser/Art/Characters/Warrior/`(Rigged·Walk·Run FBX, BaseColor·Normal·MetallicSmoothness 2048² BC7, `Warrior_Mat` URP/Lit, `Warrior_Locomotion.controller`, `Warrior.prefab`) + `Editor/CharacterLab/WarriorImport.cs`·`WarriorCapture.cs`·`WarriorCaptureR2.cs`. 아바타 isValid·isHuman, 22뼈 수동 매핑, Walk 1.033s·Run 0.633s 루프, bbox 1.850 유닛(Scale 1), 임포트 오류 0. 얼굴 점 = UV 차트 틈 픽셀이 렌더에 찍힌 것 → 틈 채움으로 제거.
+  - 1차 캡처는 판정 불가(림 Point 과다로 망토 원색 빨강·갑옷 구리색·바닥 얼룩, Animator 첫 렌더 전 포즈 미적용으로 뒤 샷 부양) → R2: RM-0 조명(`Rm0EngineSetup.BuildSandbox` Hell Sun + `GlobalVolume_Hell`)과 판정용 중성 조명 두 세트, 프레임별 BakeMesh 최저점 접지, 골반 추적 게임 시점(FOV 30°·피치 55°·키 17%). 산출 `E:/exoduser-wt/_out/unity-charsheet/unity_import_r2_20261027_2044/{key,rm0}/`.
+  - 총괄 판정 **PASS**: 근접 3방향에서 시트·LOCK(평범한 짙은 눈·흑발·겹친 둥근 견갑·탁한 암적 스카프/망토·흑철)이 유지되고 접지·걷기 정상, 1x 점 없음. 남은 결함(UCH-03): ① 망토 뒷자락이 다리 뼈에 묶여 걷기 때 다리와 겹침 ② 손가락 뼈 없음 → 대검 파지는 고정 손 포즈+무기 소켓으로 ③ 게임 시점 17%에서 몸통 대비가 약함 — 모델보다 맵 조명 문제, RM-1 조명과 함께 재판정 ④ RM-0 Hell Sun(1,.62,.5)에서는 흑철이 구리색으로 기움 → 디자인총괄·맵 총괄에 조명 색 공유 필요. 재질 A/B(metallic ×0.5) 차이는 미미해 원본 맵 유지.
+  - **커밋 보류(총괄 결정)**: 바이너리 약 76MB(FBX 19MB×3)이고 Walk·Run FBX가 메시를 통째로 담고 있다. UCH-03에서 망토 뼈를 고친 최종 FBX와 메시를 뺀 애니메이션 FBX로 바꾼 뒤 브랜치 `claude/unity-pc-char-*`에 커밋하고, unity/main 병합은 맥북 총괄 창구로 요청한다. 그 전까지 worktree를 유지한다(기존 tracked `.meta` 412개·URP GlobalSettings를 Unity가 건드리면 되돌릴 것, 미추적 `NativeGame.HudBlendCapture.cs.meta`는 내 것 아님).
