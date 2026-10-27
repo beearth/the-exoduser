@@ -71,7 +71,7 @@
 | 타이틀 뒤 | 검정 타원판(알파 .94) | 진홍 후광 radial `#b0281c` 알파 .14→.07→0, 아래 drop-shadow 검정(3px/.75 + 16px 20px/.85) |
 | 문 감광 | 비네트만 | `.cin-hell-frame::before` 위→아래 검정 .62→.5(22%)→.2(40%)→0(56%) + 전체 균일 .14 + 가장자리 radial(53% 55%, 투명 42%→.22). ENTER 주변은 mask `radial-gradient(ellipse 17% 14% at 53.3% 80%,transparent 35%,#000 100%)`로 비워 이전 밝기 유지 |
 | 문 틈 | 없음 | `.cin-hell-frame::after` left 53.2% top 0 width 6.8% height 100%. 코어 가로 49.3→50→50.7% `#b0281c` 알파 .22(약 1.5px) + 넓은 번짐 알파 .04/.08/.04. 세로 마스크(프레임 %) 0~37 투명·41~50 켜짐·53~69 투명(잠금쇠 철판 y≈570~750)·71.5~75 켜짐·79↑ 투명. 로고 부제 아래 y≈410 위는 지움. dissolve 시 같이 사라짐(1.1s). 1x에서는 약하게 보이는 것이 의도(넓은 어둠+작은 밝음, 붉은 빛은 로고가 맡음) |
-| ENTER 이미지 | `enter-gothic-api-v1.png`(RGB 은빛, 런타임 키잉) | `output/imagegen/enter-gothic-v2-brass.png`(RGBA 1536×1024). 오프라인 키잉 alpha=clamp((max(r,g,b)-8)/24)+binary_closing 2회로 어두운 홈 구멍 메움, 색 램프 어두운 면 `#5a4426` → 빛면 `#c9a46a`(감마 1.35, 중성 회색·흰 없음) |
+| ENTER 이미지 | `enter-gothic-api-v1.png`(RGB 은빛, 런타임 키잉) | `img/ui/enter_gothic_brass.png`(RGBA 1536×1024; 처음엔 `output/imagegen/enter-gothic-v2-brass.png`였으나 build-nwjs.mjs가 `output/`은 화이트리스트(82~84행)만 출시본에 넣어 Steam smoke 404 → `img/`(통째 복사 DIRS)로 이동, 2026-10-27). 오프라인 키잉 alpha=clamp((max(r,g,b)-8)/24)+binary_closing 2회로 어두운 홈 구멍 메움, 색 램프 어두운 면 `#5a4426` → 빛면 `#c9a46a`(감마 1.35, 중성 회색·흰 없음) |
 | 폴백 span | 로딩·실패 시 노출 | 항상 visibility:hidden(이미지는 처음부터 보임, 런타임 게이트 `data-ready`·`data-art-ready` 폐기) |
 | 펄스 | cinEnterBreathe 2.6s, opacity .45↔1 | cinEnterBreathe 3s, opacity .74↔1 + 진홍 drop-shadow 7px/.16 ↔ 14px/.34 (진폭 약 절반) |
 | hover | 흰 밝기 | brightness 1.1 + 진홍 drop-shadow 10px/.5 |
