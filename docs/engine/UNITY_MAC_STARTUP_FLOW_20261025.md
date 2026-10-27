@@ -18,6 +18,8 @@ PC UI/QA 확정에 따라 `NativeLobby.StartupPresentation.cs`의 4쪽 하단 no
 
 2026-10-27 QA 전용 의미 프레임으로 실제 안내 초기 250ms gate, skip focus 중 A=다음, Start=즉시 건너뛰기와 4/4 물약 문구를 확인했다. [최종 18/18 영수증·격리 검토 앱](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트). 실제 OS 패드 판정은 HOLD다.
 
+같은 Rev4 앱의 별도 빈 root에서 제목→정본 세계관 자연 종료→전사 생성/영상 자연 종료→네메시스 Return 대사→안내 1~4→필드 HUD/W 이동까지 일반 키보드 동선도 [후속 화면·설정·로스터](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#rev4-일반-키보드-자연-경로-후속--2026-10-27)로 확인했다. 4/4 `물약은 자동 사용` 실화면 포함. 물리 패드·마우스·공격·청음 검수는 아니다.
+
 ## 2026-10-27 기존 패드 Confirm/Start 논리 분기
 
 전사 이야기와 공유하는 `FrontendPadPolicy`가 기존 네이티브 Confirm(버튼 0), Cancel(버튼 1), Start(기존 버튼 7/9) 읽기만 소비한다. `GuideRows`·표시 hint·키보드 Tab/Enter/Space·마우스·영상·저장은 그대로다.

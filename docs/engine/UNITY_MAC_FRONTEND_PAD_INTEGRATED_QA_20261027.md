@@ -18,7 +18,22 @@
 
 실제 주입 앱의 전사 초반 `story-pad-hint-720p.png`, 네메시스 `nemesis-pad-hint-720p.png`, 안내 4/4 `guide-4-potion-720p.png`를 시각 확인했다. 패드 감지 시 전사 Next는 `A / Enter`, 1.2초 Skip은 `B / Start 길게`, 네메시스는 `A 다음 / B 길게 / Start 건너뛰기`로 표시한다. 기존 키보드 분기와 입력 동작은 유지한다. 버튼명은 기존 Guide의 A/B/Start 표현만 사용하며 새 기종 매핑을 주장하지 않는다. 네메시스 하단 힌트는 기존 11px 스타일 때문에 720p에서 작게 보인다.
 
-`manifest.json`은 최종 커밋 SHA·코드 파일 해시·앱/영상 해시·실행 경로와 영수증을 묶는다. 아래 첫 앱과 중간 Rev2/Rev3 앱은 **superseded**이며 최종 인수 대상이 아니다. Rev2의 1/18 실패는 seek 직후 표시 시간을 같은 프레임에 읽은 검수 계측 문제였다. Rev4는 다음 cue 요청·수용 횟수·hold·bounded seek 완료를 한 영수증에서 판정한다. 물리 OS 패드/기종별 번호·청음은 HOLD, 일반 launcher의 전체 세계관→필드 재완주도 미실시다. 사용자 앱·기본 앱·일반 저장·Godot는 조작하지 않았다.
+`manifest.json`은 최종 커밋 SHA·코드 파일 해시·앱/영상 해시·실행 경로와 영수증을 묶는다. 아래 첫 앱과 중간 Rev2/Rev3 앱은 **superseded**이며 최종 인수 대상이 아니다. Rev2의 1/18 실패는 seek 직후 표시 시간을 같은 프레임에 읽은 검수 계측 문제였다. Rev4는 다음 cue 요청·수용 횟수·hold·bounded seek 완료를 한 영수증에서 판정한다. 물리 OS 패드/기종별 번호·청음은 HOLD. 이 시점에는 일반 launcher의 전체 세계관→필드 재완주가 미실시였으며 다음 절의 별도 빈 root에서 후속 완료했다. 사용자 앱·기본 앱·일반 저장·Godot는 조작하지 않았다.
+
+## Rev4 일반 키보드 자연 경로 후속 — 2026-10-27
+
+최종 **동일 Rev4 앱/실행 파일 SHA256 `6594af88ead86e476eb24e142aa5e19082496c998c9abfc400219e11fe363f2f`**, 소스 `2c54cc4c88de21b3e38be4ff2aa6920138e4e239`에서 새 빌드·코드 변경 없이 일반 UI를 검수했다. `launch-full-keyboard-review.command`는 별도 빈 `UNITY-MAC-A05-IO-FRONTEND-PAD-KEYBOARD-REV4-20261027` root와 정확한 A05 marker만 사용한다. 실제 PID 54220 인자는 `--unity-cinematic-persistence-review -output <그 root> -screen-width 1280 -screen-height 720 -screen-fullscreen 0 -logFile <그 root>/player.log`뿐이었다. `--unity-frontend-pad-qa`, 직접 진입 flag, `cinSeen:true` seed는 없다. 종료 때 해당 PID만 멈췄다.
+
+| ID | 실제 키보드/화면 경로·증거 | 판정 |
+|---|---|---|
+| 제목→세계관→로비 | FDG Return→제목 Return→문→정본 세계관 **무입력 자연 종료**→빈 로비. 문 캡처 12:56:34~로비 캡처 12:58:41 = 127.5초, 원본 영상 메타데이터 113.678초보다 길다. 격리 설정 `cinSeen:true` | PASS |
+| 캐릭터 생성 | 로비 N→전사 아이콘 focus에서 Tab×6→생성 Return→`MacQA27` 이름 입력→Return. 격리 로스터 `revision:1`, 이름 1명 | PASS |
+| 전사 이야기 자연 종료 | 정본 영상에 Next/hold/skip 입력 0, 시작 캡처12:59:19→네메시스 캡처13:01:05 =105.5초, 원본 영상 메타데이터96.4초보다 길다 | PASS |
+| 네메시스 대사 | Return만 반복해 전문/다음 대사 순서로 27줄의 마지막 장면까지 진행하고 안내 1/4 진입. Escape·Start 건너뛰기 0 | PASS |
+| 안내 1~4 | Return으로 네 쪽 순서대로 진행. 4/4 `살아남아` 하단 `물약은 자동 사용` 화면 확인 | PASS |
+| 필드 HUD·W | `시작` Return 뒤 연습 필드 HUD/HP 526·마나480·실습 패널 표시. W 700ms 전후 화면에서 카메라가 따르는 지형 이동 관찰 | 범위 내 PASS |
+
+화면 원본·시간·SHA256·경로·격리 저장 증거는 `_out/UNITY-MAC-A05-IO-FRONTEND-PAD-KEYBOARD-REV4-20261027/normal-keyboard-review.json`과 같은 폴더의 `02-after-splash.jpg`, `05-world-middle.jpg`, `06-world-late.jpg`, `11-story-start.jpg`, `13-story-end.jpg`, `21-guide-start.jpg`, `24-guide-4-potion.jpg`, `26-field-hud-before-w.jpg`, `27-field-hud-after-w.jpg`에 고정했다. 두 정본 영상의 소스/앱 SHA는 위 Rev4 값과 각각 일치한다. 물리 패드, 마우스·공격, 실제 전투, 청음, 픽셀 동등성은 이 후속의 PASS 범위가 아니다. 사용자 앱 PID 38141/48476/52157, 일반 저장, Godot, 기본 앱/설치·배포는 건드리지 않았다.
 
 ## 첫 후보 기록 — superseded
 

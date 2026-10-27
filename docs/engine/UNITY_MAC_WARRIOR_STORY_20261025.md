@@ -2,6 +2,8 @@
 
 2026-10-27 QA 전용 의미 프레임으로 실제 `NativeLobby`의 전사 Next·짧은 hold 해제·1.2초 완료와 안내/필드 연결을 검수했다. 이후 웹 동시 Next+Skip hold 계약을 맞춰 [최종 18/18 영수증·검토 앱·물리 패드 HOLD](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#최종-rev4--동시-입력-회귀와-패드-힌트)로 갱신했다.
 
+동일 Rev4 앱의 별도 빈 검토 root에서 전사 `MacQA27`을 일반 키보드로 생성하고 정본 영상에 Next/skip 입력 없이 자연 종료해 네메시스 대사까지 확인했다. 시작→네메시스 화면 간 105.5초로 원본 영상 96.4초보다 길다. [후속 경로와 캡처](UNITY_MAC_FRONTEND_PAD_INTEGRATED_QA_20261027.md#rev4-일반-키보드-자연-경로-후속--2026-10-27). 물리 패드·청음 판정은 별도 HOLD다.
+
 ## 2026-10-27 기존 네이티브 패드 입력의 전사 이야기 연결
 
 `FrontendPadPolicy`는 Unity 입력 번호를 직접 해석하지 않는 순수 프레임 정책이다. `NativeLobby`가 현재 프로젝트의 Submit/Confirm(버튼 0), Cancel(버튼 1), 기존 Start 처리(버튼 7/9)를 읽어 전달한다. 웹 원본의 추가 Next 버튼 2/3을 새 물리 매핑으로 추정해 연결하지 않았다.
