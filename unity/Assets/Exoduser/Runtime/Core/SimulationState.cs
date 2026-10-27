@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort.Core
         public float PlayerMaxShield = 100, PlayerStartingShield = 0;
         public float InitialIframes = 0;
         public float PlayerHpRegen = .05f, PlayerStaminaRegen = .05f, PlayerManaRegen = .05f;
-        public float PlayerPhysicalDefense = 2, PlayerCriticalChance = 0, PlayerCriticalMultiplier = 1.5f;
+        public float PlayerPhysicalDefense = 2, PlayerEnergyDefense = 0, PlayerCriticalChance = 0, PlayerCriticalMultiplier = 1.5f;   // PlayerEnergyDefense: totalEDef of hurtP (magic / parry damage), 0 until the energy-defence equipment rows feed it
         public float AttackSpeedMultiplier = 1;
         public double DamageMultiplier = .7, AccessoryDamageBonus = 0;
         public float DropBonus = 1;

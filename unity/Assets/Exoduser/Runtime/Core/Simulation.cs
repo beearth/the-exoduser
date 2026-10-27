@@ -93,7 +93,7 @@ namespace Exoduser.UnityPort.Core
             TickCount++;
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
-            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); return; }
+            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen / regenDivisor);
@@ -174,6 +174,7 @@ namespace Exoduser.UnityPort.Core
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
             Stage.Tick();   // C07: checkRooms (arena entry / boss defeat / exit / clear)
+            TickHurtFx();   // B09: screen shake / flash decay
         }
 
         private void MovePlayer(float x, float y, float multiplier)
@@ -379,23 +380,5 @@ namespace Exoduser.UnityPort.Core
             else enemy.StuckTicks++; // full flow-field/stuck escape remains pending
         }
 
-        public void HurtPlayer(int damage)
-        {
-            if (Player.Hp <= 0 || Player.Iframes > 0) return;
-            if (CombatBeforeHurt(ref damage)) return;
-            double dr = Math.Min(.75, Config.PlayerPhysicalDefense / (Config.PlayerPhysicalDefense + 2500.0));
-            int capped = Math.Min(damage, (int)(Player.MaxHp * .33));
-            int amount = Math.Max(Math.Max(1, (int)(Player.MaxHp * .005)), Math.Max(1, (int)(capped * (1-dr))));
-            var sh = EnergyShield.AbsorbPlayer(Player.Shield, Player.MaxShield, Player.ShieldRegenTicks, amount);
-            Player.Shield = (float)sh.Shield; Player.ShieldRegenTicks = (float)sh.RegenT;
-            Player.Hp -= (float)sh.Damage;
-            if (PlayerCombatWired) CombatApplyHitPoise();
-            else {
-            Player.Poise = Math.Max(0, Player.Poise-1);
-            if (Player.Poise <= 0) { Player.State = "pStun"; Player.StateTicks = 240; CancelKiCharge(); }
-            else if (!Player.KiChargeActive) { Player.State = "stagger"; Player.StateTicks = 6; }
-            }
-            if (Player.Hp <= 0) PlayerDie();
-        }
     }
 }

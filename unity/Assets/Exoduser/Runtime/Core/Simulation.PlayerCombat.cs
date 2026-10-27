@@ -133,19 +133,27 @@ namespace Exoduser.UnityPort.Core
             HarpGauge = ChainDash.RegenGauge(HarpGauge, HarpGaugeMax, ChargeBoostLevel, PCharge, 1, DashHold, HarpActive, DashActive, false, false);
         }
 
+        // what the sBlock / peaceShield branch of hurtP did to a non-parried hit (rate text, knock-back, shake, flash are applied by HurtPlayer in the web's order)
+        private struct BlockFx { public bool Active, Peace, Failed, FocusKeep; public double Rate, KbMagnitude, Shake; }
+
         // HurtPlayer hook: true = the hit was fully handled (parry success). `damage` may be reduced by a failed-parry absorb.
-        private bool CombatBeforeHurt(ref int damage)
+        private bool CombatBeforeHurt(ref int damage, bool dot, out BlockFx fx)
         {
+            fx = default(BlockFx);
             if (!PlayerCombatWired) return false;
             if (HarpActive || DashActive) return true;   // web: no damage while the chain move runs
             // E strike window (sBash): isPWin
             if (ParryRules.IsParryWindow(Player.State, Player.StateTicks, 0, SbParryT, CapeParry) && Player.State == "sBash") { ApplyParrySuccess(false); return true; }
-            var b = PlayerPoise.ShieldBranch(new PlayerPoise.BlockInput { S = Player.State, SbParryT = SbParryT, Dmg = damage, Poise = Player.Poise, PGuard = PGuard, ShieldBlockDR = ShieldBlockDR, CcRes = CcRes, StunRes = StunRes, Dot = false, RedBean = false });
+            string stateBefore = Player.State; double parryBefore = SbParryT, poiseBefore = Player.Poise;
+            var b = PlayerPoise.ShieldBranch(new PlayerPoise.BlockInput { S = Player.State, SbParryT = SbParryT, Dmg = damage, Poise = Player.Poise, PGuard = PGuard, ShieldBlockDR = ShieldBlockDR, CcRes = CcRes, StunRes = StunRes, Dot = dot, RedBean = false });
             if (!b.ReachedDamage) { SbParryT = b.SbParryT; ApplyParrySuccess(true); return true; }
-            if (Player.State == "sBlock" || Player.State == "peaceShield")
+            if (stateBefore == "sBlock" || stateBefore == "peaceShield")
             {
                 damage = (int)b.Dmg; Player.Poise = (float)b.Poise; SbParryT = b.SbParryT;
                 if (b.S == "pStun") { Player.State = "pStun"; Player.StateTicks = (float)b.St2; Player.Iframes = (float)b.Iframes; }
+                bool failed = parryBefore <= 0 && !dot;
+                double blkBase = (ParryRules.GuardAbsorb(PGuard, ShieldBlockDR) + ParryRules.ShieldBlock()) * (dot ? .5 : 1);
+                fx = new BlockFx { Active = true, Peace = stateBefore == "peaceShield", Failed = failed, FocusKeep = failed && b.S != "pStun" && Math.Max(0, Js.Or(poiseBefore, 4) - 1) <= 0, Rate = Math.Min(failed ? .25 : .50, failed ? blkBase * .5 : blkBase), KbMagnitude = b.KbMagnitude, Shake = b.Shake };
             }
             return false;
         }

@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
         public float listenerPeak;
         public List<string> keys=new List<string>();
     }
-    // Admitted five-sample source slice. EQ/compressor and the rest of the
+    // Admitted source samples (ki slash cast / charge / parry, B09 player_hit1-4). EQ/compressor and the rest of the
     // game's audio graph are deliberately outside this adapter's scope.
     public sealed class NativeFeedbackAudio : IDisposable
     {
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
         {
             this.parent=parent;
             if(camera.GetComponent<AudioListener>()==null)camera.gameObject.AddComponent<AudioListener>();
-            foreach(string key in new[]{"sword_swing1","sword_swing2","sword_swing3","scarecrow_charge","sword_parry"}){
+            foreach(string key in new[]{"sword_swing1","sword_swing2","sword_swing3","scarecrow_charge","sword_parry","player_hit1","player_hit2","player_hit3","player_hit4"}){
                 var clip=Resources.Load<AudioClip>("Audio/"+key);
                 if(clip==null)throw new InvalidOperationException("Missing original audio sample "+key);
                 clip.LoadAudioData();clips.Add(key,clip);

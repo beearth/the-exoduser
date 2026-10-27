@@ -247,7 +247,8 @@ namespace Exoduser.UnityPort
         void UpdateViews()
         {
             if(Simulation==null||view==null)return;var p=Simulation.Player;
-            view.transform.position=new Vector3(p.X/100,-p.Y/100,-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
+            float shk=Simulation.ShakeAmount;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
+            view.transform.position=new Vector3(p.X/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-p.Y/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;
@@ -321,6 +322,9 @@ namespace Exoduser.UnityPort
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
             var p=Simulation.Player;
+            // B09: web draws the hit flash (_hitFlash) and the red damage flash (scrFlash) over the canvas, under the DOM HUD (game.html 55077-55078)
+            if(Simulation.HitFlashAlpha>0){Color hc=Color.white;ColorUtility.TryParseHtmlString(Simulation.HitFlashColor,out hc);hc.a=Simulation.HitFlashAlpha;Fill(new Rect(0,0,1920,1080),hc);}
+            if(Simulation.ScreenFlashAlpha>0)Fill(new Rect(0,0,1920,1080),new Color(200f/255,0,0,Simulation.ScreenFlashAlpha));
             StageFlowDrawLoad();   // C07: black load screen under the HUD (the web draws it on the canvas, below the DOM HUD)
             var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);

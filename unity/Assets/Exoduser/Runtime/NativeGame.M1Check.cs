@@ -98,16 +98,47 @@ namespace Exoduser.UnityPort
             M1Add("06", "parry (Q) and shield strike (E)", q && eDraw && eBash ? "ok" : "fail", "Q parry " + q + ", E sDraw " + eDraw + " sBash " + eBash + "; E deals no damage / reflects no projectile yet (§6 of B07 doc), no sBlock/sBash sprite", "06-parry.png");
 
             // ---- 07 kill mobs (real hp, AI on) ----
-            sim.Config.EnemyAiEnabled = true; sim.Enemies.Clear(); int killsBefore = sim.Kills; int lootBefore = sim.Loot.Count + sim.CollectedLoot.Count; int ticksUsed = 0; int playerHitTicks = 0; var ttks = new List<int>(); float hpStart = p.Hp;
+            sim.Config.EnemyAiEnabled = true; sim.Enemies.Clear(); int killsBefore = sim.Kills; int lootBefore = sim.Loot.Count + sim.CollectedLoot.Count; int ticksUsed = 0; int hurt0 = sim.HurtCount; var ttks = new List<int>(); float hpStart = p.Hp;
             for (int k = 0; k < 3; k++)
             {
                 var e = sim.SpawnNormalEnemy(p.X + 60 + k * 15, p.Y + k * 10); if (e == null) continue;
-                int t0 = ticksUsed; for (int i = 0; i < 900 && e.Alive; i++) { StepInput(0, 0, e.X, e.Y, true, false); ticksUsed++; if (p.Hp < hpStart - 1) playerHitTicks++; heal(p.MaxHp * .5f); hpStart = p.Hp; if (!e.Alive) break; }
+                int t0 = ticksUsed; for (int i = 0; i < 900 && e.Alive; i++) { StepInput(0, 0, e.X, e.Y, true, false); ticksUsed++; heal(p.MaxHp * .5f); hpStart = p.Hp; if (!e.Alive) break; }
                 ttks.Add(ticksUsed - t0); yield return null;
             }
             yield return M1Shot("07-kill");
             int killed = sim.Kills - killsBefore;
-            M1Add("07", "kill mobs", killed >= 1 ? "ok" : "fail", killed + "/3 killed (ticks per enemy " + string.Join(",", ttks.ToArray()) + ") at full enemy hp, loot rolls " + (sim.Loot.Count + sim.CollectedLoot.Count - lootBefore) + ", enemy hits on player ticks " + playerHitTicks, "07-kill.png");
+            M1Add("07", "kill mobs", killed >= 1 ? "ok" : "fail", killed + "/3 killed (ticks per enemy " + string.Join(",", ttks.ToArray()) + ") at full enemy hp, loot rolls " + (sim.Loot.Count + sim.CollectedLoot.Count - lootBefore) + ", enemy hits landed on the player " + (sim.HurtCount - hurt0), "07-kill.png");
+
+            // ---- 07b enemy attack hits the player (B09): etype0 contact attack -> shield first -> knock-back, shake, flash, floater, hit sound; second hit after the 40..60 tick cooldown; lethal hit -> fallen ----
+            sim.Enemies.Clear(); sim.Config.EnemyAiEnabled = true; p.Hp = p.MaxHp; p.Iframes = 0; p.State = "idle"; p.StateTicks = 0; p.KnockbackX = 0; p.KnockbackY = 0; p.Poise = 4;
+            p.Shield = Mathf.Min(p.MaxShield, 40); sim.Feedback.Clear(); revive.Reset(); damage.Clear();   // clean capture: no floaters left over from the parry / kill steps
+            var attacker = sim.SpawnNormalEnemy(p.X + 70, p.Y); if (attacker == null) attacker = sim.SpawnNormalEnemy(p.X - 70, p.Y);
+            var floaters = new List<string>(); Action<ReviveText> catchText = t => floaters.Add(t.Ko); sim.ReviveTextRaised += catchText;
+            int soundsBefore = sound.Receipt.requested, hurtBefore = sim.HurtCount; float hpBefore2 = p.Hp, shBefore = p.Shield;
+            int firstHit = -1, secondHit = -1; float kbMag = 0, shakeAtHit = 0, flashAtHit = 0, hpAfter = p.Hp, shAfter = p.Shield; string stateAfter = p.State; bool captured = false;
+            if (attacker != null) { attacker.Alerted = true; attacker.StateTicks = 0; }
+            for (int i = 0; i < 900 && attacker != null && secondHit < 0; i++)
+            {
+                int hurtsPre = sim.HurtCount; StepInput(0, 0, p.X + 300, p.Y, false, false);
+                if (sim.HurtCount > hurtsPre)
+                {
+                    if (firstHit < 0) { firstHit = i; hpAfter = p.Hp; shAfter = p.Shield; stateAfter = p.State; kbMag = Mathf.Sqrt(p.KnockbackX * p.KnockbackX + p.KnockbackY * p.KnockbackY); shakeAtHit = sim.ShakeAmount; flashAtHit = sim.ScreenFlashAlpha; if (!captured) { captured = true; yield return M1Shot("07b-enemy-hit"); } }
+                    else secondHit = i;
+                }
+                if (p.Hp < p.MaxHp * .5f) p.Hp = p.MaxHp;
+            }
+            sim.ReviveTextRaised -= catchText;
+            bool hitOk = firstHit >= 0 && (shAfter < shBefore || hpAfter < hpBefore2) && (shBefore <= 0 || hpAfter >= hpBefore2 - 1) && kbMag > .5f && shakeAtHit >= 3 && flashAtHit > .2f && sound.Receipt.requested > soundsBefore && floaters.Count > 0;
+            // lethal: no shield, 1 hp -> the next contact hit lets the player fall (A21 death flow takes over)
+            sim.Enemies.Clear(); p.Shield = 0; p.Hp = 1; p.Iframes = 0; p.State = "idle"; p.StateTicks = 0;
+            var killer = sim.SpawnNormalEnemy(p.X + 60, p.Y); if (killer != null) { killer.Alerted = true; killer.StateTicks = 0; }
+            int fallTick = -1; for (int i = 0; i < 400 && killer != null && p.State != "fallen"; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); if (p.State == "fallen") fallTick = i; }
+            bool fell = p.State == "fallen";
+            sim.Enemies.Clear(); p.State = "idle"; p.StateTicks = 0; p.Hp = p.MaxHp; p.Iframes = 0; p.KnockbackX = 0; p.KnockbackY = 0; p.Poise = 4;   // back to a living player for the next steps (the fallen -> death flow is covered by the revive smoke)
+            int gap = secondHit >= 0 && firstHit >= 0 ? secondHit - firstHit : -1;
+            M1Add("07b", "enemy attack hits the player", hitOk && fell && (gap < 0 || (gap >= 40 && gap <= 200)) ? "ok" : "fail",
+                "etype0 contact hit after " + firstHit + " ticks: shield " + shBefore.ToString("0") + " -> " + shAfter.ToString("0") + ", hp " + hpBefore2.ToString("0") + " -> " + hpAfter.ToString("0") + ", state " + stateAfter + ", knock-back " + kbMag.ToString("0.0") + " px/tick, shake " + shakeAtHit.ToString("0.0") + ", red flash " + flashAtHit.ToString("0.00") + ", floaters [" + string.Join(",", floaters.ToArray()) + "], hit sounds " + (sound.Receipt.requested - soundsBefore) + ", landed hits " + (sim.HurtCount - hurtBefore) + ", next hit after " + gap + " ticks; lethal hit at 1 hp -> fallen " + fell + " (tick " + fallTick + "). Not ported: etype0 field projectile (60f charge ring + shot, needs the enemy-projectile / projectile-parry owner), chromatic pulse, particles",
+                "07b-enemy-hit.png");
 
             // ---- 08 drop pickup + equip ----
             sim.Config.EnemyAiEnabled = false; int attempts = 0;
