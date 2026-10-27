@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 // RM-1 V0 shared render assets. `Unity -batchmode -executeMethod Exoduser.VfxRm1SharedRender.Run -quit` (idempotent):
-// Bloom on the shared GlobalVolume_Hell, Decal renderer feature + postProcessData on both URP renderers. Nothing else is touched.
+// Decal renderer feature + postProcessData on both URP renderers. The Volume (Bloom/Tonemapping) belongs to RM0-LIGHT and is not touched.
 namespace Exoduser
 {
     public static class VfxRm1SharedRender
@@ -16,30 +15,9 @@ namespace Exoduser
 
         public static void Run()
         {
-            AddBloom();
             foreach (var name in new[] { "URP_PC_High_Renderer", "URP_Mac_Balanced_Renderer" }) PatchRenderer($"{Dir}/{name}.asset");
             AssetDatabase.SaveAssets();
             Debug.Log("[VFXRM1] shared render assets patched");
-        }
-
-        static void AddBloom()
-        {
-            var path = $"{Dir}/GlobalVolume_Hell.asset";
-            var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(path);
-            // RM-0 left four null component slots (sub-assets were never saved); drop them, keep real components.
-            profile.components.RemoveAll(c => c == null);
-            Bloom bloom = null;
-            foreach (var c in profile.components) if (c is Bloom b) bloom = b;
-            if (bloom == null)
-            {
-                bloom = ScriptableObject.CreateInstance<Bloom>();
-                bloom.name = "Bloom";
-                profile.components.Add(bloom);
-                AssetDatabase.AddObjectToAsset(bloom, profile);
-            }
-            bloom.active = true;
-            bloom.threshold.Override(1.0f); bloom.intensity.Override(0.6f);
-            EditorUtility.SetDirty(bloom); EditorUtility.SetDirty(profile);
         }
 
         static void PatchRenderer(string path)
