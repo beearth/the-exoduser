@@ -294,6 +294,18 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 40; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             float domeHp0 = p.Hp; skPress(false, false, true, false); for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool domeOk = sim.FireZones.Exists(z => z.Type == "holyDome") && p.Hp > domeHp0 + 10 && sim.HolyDomeCd > 0; yield return M1Shot("09b-skill-holy-dome");
+            // holy dome vs enemy bullets (web: zone drawn under the bullets, which must stay readable): 4 inert druid poison bullets around the player; needs the druid Core, which only exists in the arena
+            if (sim.Druid != null)
+            {
+                var domeBullets = new List<BossProjectile>(); var domeIf0 = p.Iframes; p.Iframes = 600;
+                foreach (var o in new[] { new[] { -150f, -210f }, new[] { 190f, -70f }, new[] { -260f, 120f }, new[] { 60f, 250f } })
+                    domeBullets.Add(new BossProjectile { X = p.X + o[0], Y = p.Y + o[1], Vx = 0, Vy = 0, Dmg = 0, Sz = 5, R = 4, Life = 6000, Ml = 6000, DruidPoison = true, ParryClass = "physical", Active = true });
+                sim.Druid.Projectiles.AddRange(domeBullets);
+                yield return M1Shot("09b-skill-holy-dome-bullets");
+                foreach (var b in domeBullets) { b.Active = false; sim.Druid.Projectiles.Remove(b); }
+                p.Iframes = domeIf0;
+            }
+            else Debug.Log("[m1] 09b-skill-holy-dome-bullets skipped: sim.Druid is null (no druid Core in the field map)");
             float orbMp0 = p.Mana; skPress(false, false, false, true); for (int i = 0; i < 40; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool orbIn = sim.IceOrbActive && p.State == "iceOrb" && p.Mana < orbMp0 - 40; yield return M1Shot("09b-skill-ice-orb");
             for (int i = 0; i < 90; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); if (i == 8) yield return M1Shot("09b-skill-ice-shatter"); }

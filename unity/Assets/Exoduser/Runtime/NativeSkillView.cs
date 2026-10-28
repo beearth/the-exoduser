@@ -15,6 +15,10 @@ namespace Exoduser.UnityPort
         readonly Dictionary<int, Item> zones = new Dictionary<int, Item>(), waves = new Dictionary<int, Item>(), blades = new Dictionary<int, Item>(), orbs = new Dictionary<int, Item>();
         readonly Dictionary<int, List<Vector3>> orbTrails = new Dictionary<int, List<Vector3>>();   // web p._trail: the last 14 positions of a malice orb
         readonly List<int> stale = new List<int>();
+        // The web draws fire zones in the world layer, then the dynamic lighting pass (game.html _renderLighting, line 55344) darkens them; Unity has no such overlay. Factor measured web|Unity capture 2026-10-28.
+        const float WebLitHolyDome = .11f;
+        // Web lighting presses the ring band (.62~.90 r) down to almost 0, so the two rings are practically invisible there (web|Unity capture 10-28).
+        const float WebLitHolyDomeRing = .03f;
         Sprite spike, dome, shard, disc; readonly Sprite[] slamFrames = new Sprite[4], orbFrames = new Sprite[9], maliceFrames = new Sprite[20];
         Item orb; int lastTick = -1;
         public int ActiveZones, ActiveWaves, ActiveBlades, ActiveMaliceOrbs; public bool OrbShown;
@@ -114,11 +118,11 @@ namespace Exoduser.UnityPort
                 {
                     float t = time; float sz = z.R * 2 * deploy;
                     it.a.transform.localRotation = Quaternion.Euler(0, 0, time * 1000f * 0.00005f * Mathf.Rad2Deg);
-                    Fit(it.a, sz * 1.02f, dome.rect.width); it.a.color = new Color(182 / 255f, 1f, 84 / 255f, (.52f + .12f * Mathf.Sin(t * 3)) * fade);
+                    Fit(it.a, sz * 1.02f, dome.rect.width); it.a.color = new Color(182 / 255f, 1f, 84 / 255f, (.52f + .12f * Mathf.Sin(t * 3)) * fade * WebLitHolyDome);
                     for (int ri = 0; ri < 2; ri++)
                     {
                         float rp = (Mathf.Sin(t * (2.1f + ri * .35f) + ri * 2.4f) + 1) * .5f;
-                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade));
+                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing));
                     }
                 }
             }
