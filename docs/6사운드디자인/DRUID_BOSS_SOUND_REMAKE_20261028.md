@@ -63,9 +63,39 @@
 - 보스 피격 쿨다운 8f는 Core `hurtE`가 이미 모든 적 피격에 공유하고 있어 걸러지는 소리가 없다. 110회는 공격 리듬에서 나온 수다. **결정(총괄)**: 쿨다운을 늘리지 않고 소리 설계로 푼다 — `druid_hit` 변형 4개 무작위 순환(같은 변형 연속 금지)·rate ±6%·시작 음량 .3, **연타 감쇠**(앞 피격과 0.6초 안이면 음량 ×0.85씩, 바닥 ×0.55, 0.6초 쉬면 원래대로), `druid_hit_heavy`는 치명타·휘청임에서만.
 - 패링 성공 소리가 Unity에 없음(Core가 큐잉 안 함, 성공 7회 무음). **결정**: 웹 `doParry`와 같게 연결 — Q 패링 `q_parry`(.9, rate 1±.08) / 그 외 `sword_parry`(1, 1±.1)+`sword_back`·`sword_back2`·`sword_back3` 중 1(.5, 1.1±.1), 그리고 50%로 `voice_parry1~4` 중 1(1, 1±.03) 아니면 `male_grunt`(1, 1±.15). 분류는 웹 `_sfxPri`대로(`q_parry`·`sword_parry` SKILL, `voice_*`·`male_grunt` VOICE, `sword_back*`는 웹 기본 HIT), 그룹 SFX/Skill·SFX/Voice·SFX/PlayerHit, 2D.
 
+## 6. 사용자 고르기 결과 (2026-10-28 09:39, `picks_druid.json` 16/16, 백업 `_picks_backup/picks_druid_20261028_final.json`)
+
+| 층 | 키 | 결과 | 채택 후보 |
+|---|---|---|---|
+| L1 | `druid_hit` | **전부 안 맞음 → 다시** | — |
+| L1 | `druid_hit_heavy` | **전부 안 맞음 → 다시** | — |
+| L2 | `druid_vo_pain` | 채택 | `druid_vo_pain_v2a` |
+| L2 | `druid_vo_attack` | 채택 | `druid_vo_attack_v2a` |
+| L2 | `druid_vo_phase` | 채택 | `druid_vo_phase_v2c` |
+| L2 | `druid_vo_fall` | 채택 | `druid_vo_fall_v2a` |
+| L2 | `druid_vo_last` | 채택 | `druid_vo_last_v2a` |
+| L4 | `druid_whip` | **전부 안 맞음 → 다시** | — |
+| L4 | `druid_slam` | **전부 안 맞음 → 다시** | — |
+| L4 | `druid_drag` | 채택 | `druid_drag_v2a` |
+| L4 | `druid_fissure` | 채택 | `druid_fissure_v2b` |
+| L4 | `druid_spore` | **전부 안 맞음 → 다시** | — |
+| L4 | `druid_pod` | 채택 | `druid_pod_v2d` |
+| L4 | `druid_summon` | 채택 | `druid_summon_v2c` |
+| L5 | `amb_druid_arena` | 채택 | `amb_druid_arena_v2d` |
+| L6 | `bgm_druid_boss` | 채택 | `druid_bgm_b`(B 장송곡 ~70bpm) |
+
+- 메모는 0건이다. "다시" 5키는 무엇이 안 맞았는지 알 수 없으므로, 2차는 1차 4해석과 **겹치지 않는 방향**으로 새로 만든다(총괄 결정).
+- **2차 방향**: 피격 2키는 "나무를 치는 소리"보다 **살·젖은 천·속이 빈 고목이 함께 울리는 둔탁한 타격**으로 한다. 금속 칼날음은 플레이어 무기 쪽에 이미 있으므로 넣지 않는다. 채택된 목소리(늙은 쉰 남자)와 섞여도 묻히지 않게 저역 몸통을 강하게 한다.
+  - `druid_whip`은 **휘는 생가지의 휙 소리와 끝의 젖은 찰싹**으로 만든다.
+  - `druid_slam`은 **무거운 흙덩이·썩은 둥치가 떨어지는 착지 + 짧은 진흙 튐**으로 만든다.
+  - `druid_spore`는 **마른 꼬투리가 터지며 가루가 퍼지는 부드러운 푸슉**으로 만든다. 마법 차임은 넣지 않는다.
+  - 키마다 4후보, "장면에서 듣기"는 채택된 BGM B 위에서 듣게 한다.
+- **연결**: 채택 11키는 지금 Unity 브랜치에 연결한다. 녹음 v4는 "다시" 5키를 채택한 뒤 한 번만 한다(PC 메모리 한계로 Unity batch 1개 원칙). BGM B는 원본 피크가 높으므로 게인을 낮춰 피크 −3dBFS 안쪽으로 맞춘다(§4.1 덕킹 기준 유지).
+
 ## 5. 기록
 | 날짜 | 내용 |
 |---|---|
 | 2026-10-28 | 사용자 지시로 착수. v3 Receipt 진단(60초에 `boss_hit` 108·`player_hit` 43·드루이드 고유음 11), 6층 세트·제작 절차·녹음 현실화 결정. 생성 sound-simple, 녹음 RM-0 |
 | 2026-10-28 | RM-0 기준 녹음(`71bed2766`): 스크립트 플레이어 85% 회피·`player_hit` 43→19 인정. 보스 피격 110회는 공격 리듬 수 → 쿨다운 대신 `druid_hit` 변형 순환+연타 감쇠로 결정. 패링 성공 소리 웹 `doParry`대로 연결 지시 |
 | 2026-10-28 | sound-simple 제작: 새 키 15개 x 해석 4개 = 60후보(`<key>_v2a~d`, 카탈로그 `tools/sfx_forge_catalog_druid_v2.json`, 장면 카드·문구 키마다 직접 작성, 목소리 키 꼬리 "old hoarse male voice, no words, no monster roar") + L6 BGM 3곡(ElevenLabs Music `/v1/music` `music_v1` 120초 mp3, A 행진 북 ~100bpm·B 장송곡 ~70bpm·C 질주 ~140bpm, API 정상). 가공 SND-08과 같음(-1dBTP·뒤 무음 정리, 아레나는 크로스페이드 후 RMS -24dBFS). 고르기 `pick_druid.html`(127.0.0.1:3399, `picks_druid.json`) 16카드 63후보, 수치 주의 32개(BGM 원본 피크 3 포함), 헤드리스·음소거 검수 audio 63/63 오류 0·저장·복원 통과. 선택 대기(사용자 청음) |
+| 2026-10-28 | 사용자 고르기 16/16 완료: 채택 11·다시 5(`druid_hit`·`druid_hit_heavy`·`druid_whip`·`druid_slam`·`druid_spore`). §6 기록, 2차 방향 결정, 채택 11키 Unity 연결 지시 |
