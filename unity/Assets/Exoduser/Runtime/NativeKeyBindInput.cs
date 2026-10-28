@@ -31,7 +31,9 @@ namespace Exoduser.UnityPort {
   public static bool TryKey(string code,out KeyCode key){key=KeyCode.None;return code!=null&&toUnity.TryGetValue(code,out key);}
   // Unity key -> web code (null = not bindable)
   public static string CodeFor(KeyCode key){string c;return toWeb.TryGetValue(key,out c)?c:null;}
-  static bool IsMouse(string code,out int button){button=0;if(code!=null&&code.Length==6&&code.StartsWith("mouse")&&char.IsDigit(code[5])){button=code[5]-'0';return true;}return false;}
+  // Web MouseEvent.button uses 1=middle, 2=right; Unity GetMouseButton uses 1=right, 2=middle.
+  public static int WebMouseButton(int unityButton){return unityButton==1?2:unityButton==2?1:unityButton;}
+  static bool IsMouse(string code,out int button){button=0;if(code!=null&&code.Length==6&&code.StartsWith("mouse")&&char.IsDigit(code[5])){button=WebMouseButton(code[5]-'0');return true;}return false;}
   public static bool CodeDown(string code){int b;KeyCode k;if(IsMouse(code,out b))return Input.GetMouseButtonDown(b);return TryKey(code,out k)&&Input.GetKeyDown(k);}
   public static bool CodeHeld(string code){int b;KeyCode k;if(IsMouse(code,out b))return Input.GetMouseButton(b);return TryKey(code,out k)&&Input.GetKey(k);}
   // web _chkJust / _chkHeld over both slots

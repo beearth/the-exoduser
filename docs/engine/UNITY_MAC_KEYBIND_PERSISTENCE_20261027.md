@@ -14,6 +14,8 @@ A05 오류 뒤 수동 마지막 cue 검증: 독립 Editor fixture 24/24 PASS. �
 
 # Mac A15/A16 키바인딩 저장 schema v2 후보 — 2026-10-27
 
+2026-10-29 입력 후속: 저장된 웹 코드 `beam=mouse2`를 Unity 실제 오른쪽 버튼(1)으로 읽고, Unity IMGUI 오른쪽 버튼(1) 캡처를 웹 코드 `mouse2`로 쓰도록 변환했다. schema v2·revision·20동작 기본값은 불변이다. 실제 기본 우클릭 공격 5/5는 확인했고 재바인딩 UI 클릭은 미검증이다. [대응표·QA](UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
+
 ## 범위와 소유
 
 Mac 소유 `NativeSettingsStore`, `NativeSettingsJsonCodec`, `NativeGame.SettingsPersistence`, `NativePauseMenu` 연결만 수정했다. PC 소유 `KeyBindings`, `NativeKeyBindInput`, `NativeKeyBindList`, 전투 Core는 변경하지 않았다. `NativePauseMenu`는 기존 key list의 공개 안내 문구만 저장 상태에 맞게 설정한다. 이 문서는 제품 Player/실입력 인수가 아니라 후보 코드와 격리 모델 검증의 현행 계약이다.

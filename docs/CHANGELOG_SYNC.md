@@ -1,3 +1,5 @@
+2026-10-29 Mac 첫 연습 마우스 버튼 브리지: 웹 `mouse2`(오른쪽)/`mouse1`(가운데)와 Unity 버튼 1(오른쪽)/2(가운데)을 입력 및 바인딩 캡처 양쪽에서 변환. ARM64 Settings QA build Succeeded/errors0; 실제 오른쪽 클릭 마법 처치 5/5, 첫 연습 1~9단계 PASS. 방향+Space 구르기 0/5는 CUA 동시 일반키 입력 제한으로 HOLD, 일반 몹·드롭 미검증. [번호표·증거](engine/UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
+
 2026-10-27 Mac A15 설정 4탭 후보/Player 후속: 게임/화면/사운드/조작 구조와 지원된 FPS/fullscreen/SFX/BGM·기존 key list 연결. 설정 비대기 Tab은 메뉴 초점 이동, 루트 Tab 인벤토리와 대기 중 Tab 바인딩은 기존 분기. Navigation42/42·최종 ARM64 QA Player 빌드 Succeeded/오류0. 격리 PID의 720p 4탭·SFX60→61% 키 입력과 1080p 화면/사운드 2열 확인; 좁은 1열·실제 key capture/청취/재시작은 HOLD. [계약·귀속](engine/UNITY_MAC_A15_4TAB_20261027.md).
 
 2026-10-27 Mac 표시 릴리스 메타: main `607110d52`의 `release-version.json` blob `528ad945f`를 `release_web.json`에 동일 bytes 반영. 현재 표시 0.7.5/2026-10-20/ea-full; 기존 0.7.7 WIP 스냅샷 대체. `8adfcc577` Editor 전체 Verify 1회 exit0/receipt PASS. [SHA·범위](engine/UNITY_MAC_RELEASE_METADATA_20261027.md).

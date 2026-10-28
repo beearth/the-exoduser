@@ -168,7 +168,7 @@ namespace Exoduser.UnityPort {
     if(e.keyCode==KeyCode.F5&&!repeat){ResetBindings();e.Use();}      // F5 = reset while the list is shown
     return;
    }
-   if(Listening&&e.type==EventType.MouseDown&&Time.unscaledTime-listenAt>=.12f){Apply("mouse"+e.button);e.Use();}   // overlay is active 120ms after it opened
+   if(Listening&&e.type==EventType.MouseDown&&Time.unscaledTime-listenAt>=.12f){Apply("mouse"+NativeKeyBindInput.WebMouseButton(e.button));e.Use();}   // overlay is active 120ms after it opened
   }
 
   // ---- window ----

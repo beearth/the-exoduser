@@ -1,5 +1,7 @@
 # PC-A16 키 바인딩 변경 (웹 `#keyBindList`) — 2026-10-26
 
+2026-10-29 Mac 후속: `mouse1`/`mouse2`의 웹 코드와 Unity 버튼 번호를 입력·캡처 양쪽에서 교환하는 브리지를 수정했다. 기본 `beam=mouse2`와 20동작 값은 그대로다. 실제 오른쪽 버튼으로 첫 연습 마법 처치 5/5 확인; 설정 UI에서 마우스 재바인딩 실클릭은 미검증. [번호표·실기 근거](UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
+
 worktree `E:/exoduser-wt/pc-unity-a16`, 브랜치 `claude/unity-pc-a16-20261026`, 베이스 `f9636b021`(patch 검사는 `9ec4a3274`의 1~15번 기준), Unity 6000.6.7f1. 산출물 `E:/exoduser-wt/_out/pc-a16/`.
 
 ## 1. 웹 근거 (game.html, 현재 main 줄)
