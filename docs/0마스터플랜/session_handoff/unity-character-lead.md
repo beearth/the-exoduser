@@ -37,3 +37,11 @@
 1. UCH-A1 §3 로컬 판정 자료를 Sonnet 1개에 맡긴다. 유료 호출 금지, Unity 금지.
 2. 유니티 총괄에게 Unity 실행 순번을 받고, 실버테일 → 아이반 순서로 Unity 임포트·캡처를 진행한다(한 번에 1개).
 3. 결과가 나오면 보드 갱신 → 디자인총괄·보스전 총괄에 전달한다.
+
+## Codex 인수 갱신 — 2026-10-28 22:58 KST
+
+- 현재 보드 §3·§4가 이 문서의 UCH-A1 진행 중 표보다 최신이다. `E:/exoduser-wt/_out/anim-trial/step2_compare.md`와 6개 클립의 게임 시점 띠가 이미 만들어졌고, 보스전 총괄 공동 판정과 공급원 결정도 보드에 기록됐다. Codex가 게임 시점 띠 6장을 모두 다시 보고 237의 내려찍기 부재·382의 공중제비·TM-A 양손 원형이라는 기존 판정을 확인했다. 유료 호출은 추가하지 않았다.
+- UCH-05·06 원본 3D 에셋 각 10개와 기존 임포트/캡처 스크립트를 읽기 전용 원 작업트리에서 `E:/exoduser-wt/codex-character`로 동일 바이트 이송했다(각 10개 SHA-256 불일치 0). `codex/pc-character-heroes-20261028`의 `52d8a923293eb78ec899a56819979ea00b771bb9`에 **검증 전 후보**로 코드+관련 문서를 커밋·비강제 push했고 원격 SHA를 대조했다. 원 작업트리 WIP와 `G:/exoduser` INDEX/WORK는 건드리지 않았다.
+- `CharacterImportVerification`을 추가해 Humanoid avatar·URP/Lit·텍스처 색공간·독립 `.anim` 참조를 검증하도록 준비했다. **Unity에서는 아직 실행하지 못했다.** 공용 Unity FIFO에서 선행 작업을 기다린 뒤 차례가 왔으나 커밋 메모리 여유가 20GB 시작 조건 아래(최저 9.9GB, 뒤이어 2.4GB)여서 실행기를 취소하고 자기 티켓만 정리했다. 따라서 UCH-05·06 컴파일·Unity 캡처·1x 판정·Player 빌드·인게임 통합은 미확인이다.
+- 로컬 이미지로는 실버테일 등검 ㄱ자 접힘이 직선에 가깝고, 아이반 머리가 드레드가 아닌 것이 확인된다. 둘 다 DESIGN LOCK 위험으로 남긴다. Unity 캡처 후 메시 보정 범위와 천 뼈 분리를 정한다. `origin/unity/main`에는 RM0-LIGHT-L `f639cd4d4`와 VFX Linear `c7de5781e`가 아직 조상으로 들어오지 않아 UCH-03f의 시작 조건도 충족되지 않았다.
+- 재개 순서: PC 커밋 여유 20GB·Unity 0개·HALT 없음·실행기 순번을 다시 확인 → 이 브랜치에서 UCH-05 import/verification/캡처 → UCH-06 순서 → 결과에 따라 무료 메시·천 보정 → 최신 `origin/unity/main` merge 뒤 필수 빌드/oracle/m1-check/Player·1x 판정 → 디자인총괄 판정 → 통합 담당에게 병합 요청. 현재 후보 SHA는 병합하지 않는다.
