@@ -22,6 +22,7 @@ param(
     [string]$Script,
     [int]$KillAfterSec = 0,
     [switch]$KeepReservation,
+    [switch]$AllowPlayer,
     [string]$NodeModules = 'G:\exoduser\node_modules'
 )
 
@@ -183,6 +184,7 @@ function Get-UserSaveSnapshot {
     if (-not (Test-Path -LiteralPath $root)) { return $h }
     $sha = [Security.Cryptography.SHA256]::Create()
     foreach ($f in [IO.Directory]::EnumerateFiles($root, '*', [IO.SearchOption]::AllDirectories)) {
+        if ($f -match '[\/]Unity[\/]local\.[0-9a-f]+[\/]Editor[\/]') { continue }   # 에디터 자체 상태(Analytics 등)는 세이브가 아님 - 에디터를 띄우면 항상 갱신됨
         try {
             $fi = New-Object IO.FileInfo $f
             $hash = ''
@@ -845,6 +847,7 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
 }
 
 function Cmd-Player {
+    if (-not $AllowPlayer) { Reject 'player 실행은 NativeQaSandbox fail-closed 가 unity/main 에 병합되기 전까지 기본 거부(사용자 실제 세이브 보호). 병합 공지 뒤 -AllowPlayer 로만 실행' }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
     $exeFull = (Resolve-Path -LiteralPath $Exe).Path
