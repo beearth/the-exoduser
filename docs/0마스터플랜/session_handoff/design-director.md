@@ -35,3 +35,11 @@
 - 영상·이미지 서비스: Sora API 2026-09-24 종료, MagicLight VIP 10-24 만료(포인트 30,390 잔존), Higgsfield 0.13cr(11-09 충전 3,000 예정), Kling Pro 구독(약 3,000cr), OpenAI 이미지 API(`gpt-image-2`, `gpt-image-2.5-sunburst`) 사용 가능, xAI·Ludo 키 무효, Meshy는 영상 없음.
 - **대기 판정(10-28 맵 총괄 요청)**: RM0-LIGHT-L 2차 톤 판정 — RM-0 브랜치 d6d17bab2, postExposure −0.15→1.85, 캡처 `E:/exoduser-wt/_out/rm0-light/finalL2/e1.85/`(neutral·after_out·after_in), 수치는 `docs/engine/UNITY_RM0_ENGINE_20261027.md` 끝 RM0-LIGHT-L 절. 볼 것: V2 빛 리듬, 웅덩이 색상각(10.6°, 350~12° 안), 금속 채도 6.2%·갑옷 R/G 1.294(기준 1.25 초과, 맵 총괄은 양자화 범위로 수용·Hero Light에서 재측정 제안). 회신 대상 맵 총괄 local_9d17d95b.
 - **[사용자 지시 10-28, CTO 전달] 첫 화면 배경도 움직이게**: "실버테일만 움직이고 배경은 전혀 안 움직인다. 구름이나 안개, 강물 같은 건 좀 움직여야지." CTO 확인: `video/title_motion_20261028.mp4`는 하늘·구름·지평선이 사실상 고정, 머리카락·천만 움직임 → `스플래시_인트로_시퀀스.md` 98행 "구름·안개·핏빛 강·태양빛만 움직임"은 사실과 다름, 고칠 것. 권장안(무료): splashCanvas에 영상 위 덧그림 층 — ① 하늘 구름 흐름 ② 절벽 아래 안개 띠 ③ 핏빛 강 일렁임(띠별 사인 변위·반짝임) ④ 태양빛 약한 맥동. 인물은 `title_bg_20261028.jpg`에서 알파 마스크를 만들어 제외. prefers-reduced-motion이면 끔, 30fps 이하, 루프 이음매 없음. 유료 크레딧(Kling 재생성 등) 금지 — 필요하면 CTO 보고. 판정은 짧은 영상·프레임 3장 비교로 눈으로, 시안은 `tmp/design-review/20261028_title/`. 구현은 단순 세션, 총괄은 명세·검수. docs(스플래시·UI_COMPOSITION)·DEMO/EA 동기화. 순서: 실버 헬 2차 검수·커밋 → 이 작업.
+
+## 2026-10-28 밤 — 인계(재생성 대비)
+- 완료: 첫 화면(ENTER) = 인장 락업(검정 + 일곱 지옥 고리·끊어진 사슬 인장 + 눈알 로고 A), main 4f6f4ecc9, 라이브·DEMO·EA 반영. 근거 LOBBY_AAA_REFERENCE_STUDY §17-1. 사용자 기준 "깔끔해도 디테일이 살아있어야"(엘든링) → 메모리 clean-but-detailed.
+- 이미지 생성은 OpenAI API(OPENAI_API_KEY, curl로 호출 — node fetch는 연결 타임아웃), 영상은 Kling Pro. MagicLight VIP 만료·Higgsfield 0.13·Ludo 키 무효.
+- 보관 후보: 월드 키아트 k1 `tmp/design-review/20261028_keyart/candidate_world_k1.png`(미적용).
+- 판정 회신함: 다크드루이드 LOCK v0.1 조건부 PASS(GLOW #9ea83a), ① 시트 PASS(트리퀘트라 인장은 정본 아님 → Unity 디칼로 LOCK 모양, Emission #9ea83a, 지팡이 금빛 테 덮기).
+- 다음: 타이틀 메뉴 배경 움직임(구름·안개·핏빛 강·태양 맥동, 무료 덧그림 층, 인물 마스크 제외) — 구현은 codex exec 브리프. CTO 지시: Claude 주간 94%, 판정·검수·커밋만, 진행 알림 금지.
+- logo-c-apply(local_b5335432) 보관 가능 통보함.
