@@ -68,3 +68,12 @@
 - 공용 실행기 빌드 1차 `a734042a`는 Runtime Cinemachine 참조 누락으로 실패했다. 별도 `c36431bc7`에서 asmdef·관련 docs를 수정했다. 2차 `930e5a24`는 Editor `Rm4SliceBuilder.cs:1004`의 `Rm4PoolLightCuller` CS0246으로 실패했다. 파일은 존재하지만 Remodel 폴더가 명시 asmdef 바깥 기본 어셈블리에 남아 참조 경계가 끊겼다. 같은 경계의 `Rm3PoolLightCuller`·`ArenaChannelPlan`도 함께 검토해야 한다.
 - COMMON_RULES의 “테스트 실패는 원인 수정 후 1회 재실행, 2번 실패면 멈추고 기록”을 적용해 추가 실행을 중단했다. 성공 빌드·M1·장면 캡처·격자·미리보기 바로가기는 미완료다. 기존 Unity 바로가기는 보존했다. 사용자 세이브 변경 두 작업 모두 0, 종료 뒤 Unity·Player 잔존 없음.
 - 결과·로그·원격 증거: `I:/EXODUSER-Storage/unity-preview/REPORT.md`, `a734042a.log/json`, `930e5a24.log/json`, `integration.json`, `source-proof.json`, `remote-proof.json`. E 여유 약 48.45GiB로 30GiB 조건은 충족했다. 전체 완료·디자인 PASS·Mac 동기화로 보고하지 않는다. 다음 단위는 Remodel 어셈블리 경계 수정이다.
+
+## Unity 전체 미리보기 재개 결과 — 2026-10-29 08:53 KST
+
+- 전용 `codex/pc-preview-all-20261029`: 코드 `6da76bcce70607a2d95098b803f7874c1d4439fc`, 보고 커밋 `a3f183b39`. 후보 원격 16개 tip이 모두 같은 코드의 조상이며 재개 fetch 뒤 변경 없음. `unity/main`은 `1ae7366a3d17272db4ff8871ff9fc180a21c13b7` 그대로다.
+- `dc2a83856`은 `Remodel/Exoduser.Runtime.asmref`로 C# 3개를 Runtime에 귀속해 이전 RM4 CS0246을 해소했다. 파일 이동·Core 규칙 변경 없음. `6da76bcce`는 M1 비 batch 원본 캡처의 강제 해상도를 1600×900으로 맞췄다. 실제 캡처는 아직 없다.
+- 새 단위 Unity 1회 `a5d1e9f0`: 컴파일 전 UPM IPC 초기화 실패. 상속 Windows 기본 경로 누락을 진단해 작업 자식 환경만 보완했다. 2회 `41bfcae6`: Runtime 진행 뒤 `Rm0LightCapture.cs:169,196,218`의 `WeaponImport`·`WarriorImport` CS0103 세 곳에서 실패했다. COMMON_RULES의 2회 실패 중단 규칙에 따라 추가 실행하지 않았다. 두 실행 사용자 세이브 변경 0, 종료 Unity 0개·잠금/예약 없음.
+- 두 임포터와 `Art/Characters/Warrior/`는 `E:/exoduser-wt/pc-unity-rm0`의 미추적 WIP다. 원격 통합 브랜치에는 없다. 미인수 WIP이므로 읽기만 했고 복사·stage·삭제하지 않았다. 다음 단위는 소유권 인수 뒤 컴파일을 검수해야 한다.
+- 다음 빌드는 `-remodel-scenes,1`을 반드시 전달해야 RM1_Slice가 포함된다. 기본 빌드는 FirstPlayable만 넣는다. RM2·RM3·RM4와 3D 영웅의 실제 동선 연결은 소스 포함과 별도다.
+- EXE·M1·로비/3D/전투/보스/HUD 캡처·격자·미리보기 바로가기는 미완료다. 기존 Unity 바로가기는 `unity-latest/build/EXODUSER-Unity.exe` 대상을 보존했다. 상세 원장 `docs/engine/UNITY_PC_PREVIEW_ALL_20261029.md`, 원본 보고·영수증 `I:/EXODUSER-Storage/unity-preview/REPORT.md`와 `resume-assembly/`. 코드 수정·보고 모두 미리보기 브랜치에 비강제 push했다.
