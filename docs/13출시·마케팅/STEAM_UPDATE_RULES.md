@@ -36,7 +36,7 @@
 
 1. 전날 업데이트 태그 이후 커밋 확인 → 없으면 종료.
 2. `release-version.json` 버전 올림 + 패치노트 초안 생성.
-3. **커밋된 HEAD 기준**으로 빌드(다른 세션의 미커밋 작업이 섞이지 않게). 작업 트리를 그대로 빌드하지 않는다. **2026-10-27 CTO 결정: 기준 HEAD = fetch한 원격 `origin/main`** — `E:\exoduser-wt\steam-build-<날짜>` worktree로 떼어 내 그 안에서 버전 커밋·빌드하고, 업로드 성공 시에만 로컬 태그 + `git push origin HEAD:main`(비강제, 거절 시 merge 1회 후 재시도), 끝나면 worktree 제거. 공유 폴더 `G:\exoduser`의 로컬 main은 쓰지 않는다. 태그 push는 7번(공개 후) 그대로.
+3. **커밋된 HEAD 기준**으로 빌드(다른 세션의 미커밋 작업이 섞이지 않게). 작업 트리를 그대로 빌드하지 않는다. **2026-10-27 CTO 결정: 기준 HEAD = fetch한 원격 `origin/main`** — `E:\exoduser-wt\steam-build-<날짜>` worktree로 떼어 내 그 안에서 버전 커밋·빌드하고, 업로드 성공 시에만 로컬 태그 + `git push origin HEAD:main`(비강제, 거절 시 fetch+merge+push 최대 5회 재시도), 끝나면 worktree 제거. 공유 폴더 `G:\exoduser`의 로컬 main은 쓰지 않는다. 태그 push는 7번(공개 후) 그대로.
 4. smoke(실제 실행 점검) → preview(SteamPipe 미리 올리기) → upload(`setlive ""`, 공개 전환 안 함).
 5. 사용자에게 알림: 새 BuildID·버전·패치노트 초안.
 6. **공개 전환(Set Live)과 패치노트 게시는 사용자 확인 후에만.** 자동 공개 금지(기존 안전장치 유지: DEPLOY/SETLIVE 입력, smoke/preview 통과 필수).
@@ -82,7 +82,7 @@
 
 | 파일 | 역할 |
 |---|---|
-| `G:\exoduser-steam\daily_release.ps1` (+`daily_release.bat`) | §4 1~5단계 구현. 신규 커밋 없으면/오늘 이미 릴리스했으면 종료 → bump patch → 패치노트 초안 → **경로지정 커밋**(버전 파일+초안만, `git add -A` 금지) + 로컬 태그 `v<version>` → `git worktree add --detach`로 **커밋된 HEAD export** 후 그 트리에서 빌드(작업 트리 빌드 금지 보장; export 트리는 clean이므로 steam_update의 DEPLOY 프롬프트는 설계상 발화하지 않음) → smoke → preview → upload(`setlive ""`) → `state/daily_release_<날짜>.md` 요약+알림. `-DryRun`은 계획만 출력 |
+| `G:\exoduser-steam\daily_release.ps1` (+`daily_release.bat`) | §4 1~5단계 구현. fetch한 origin/main을 별도 worktree로 준비 → 신규 커밋 없으면/오늘 이미 릴리스했으면 종료 → bump patch → 다음 버전 노트가 있으면 보존, 없으면 초안 생성 → final 노트만 `patch-notes.js`로 생성 → 버전 파일·생성물·해당 노트만 **경로지정 커밋**(`git add -A` 금지) → 잔여 dirty 게이트 → 그 커밋에서 build·smoke·preview·upload(`setlive ""`) → 성공 시에만 로컬 태그 `v<version>`·원격 main 비강제 push → `state/daily_release_<날짜>.md` 요약. `-DryRun`도 fetch·worktree export·check·정리는 수행하며 bump·commit·tag·push·build·upload는 하지 않음 |
 | `G:\exoduser-steam\steam_update.ps1` | `-SourceRoot`(대체 체크아웃 빌드), `-BuildId`, `-RuntimeDir`(검증 런타임), `-AppVdfPath/-PreviewVdfPath`(desc에 버전을 넣은 런타임 생성 VDF — 커밋된 scripts\*.vdf는 불변) 지원. 기존 안전장치(smoke/preview 게이트·SETLIVE 수동) 유지 |
 | 로그인 | steamcmd 캐시 로그인만. `-Account`/`STEAM_BUILD_ACCOUNT` 미지정이면 preview 전에 "로그인 필요"로 중단 |
 | VDF desc | 실행 시 `output/daily/app_build_4749590_v<ver>.vdf` 생성 — `"desc" "EXODUSER: HELL LORD v<ver> (<YYYYMMDD>, win x64, full)"` |
@@ -134,3 +134,35 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 | 2026-10-28 | 사용자 지시: 자동 실행이 창·브라우저를 띄우거나 소리를 내지 말 것 | 예약 작업이 Interactive 로그온으로 `cmd.exe`를 직접 실행해 09:00에 콘솔 창이 뜸, 끝날 때 `msg.exe` 팝업, smoke Chromium에 음소거 옵션 없음, setlive가 브라우저를 자동으로 엶 | §7.3 무창·무음 실행 표대로 수정 |
 
 **9009 점검법**: 예약 작업 `LastTaskResult`가 9009이고 `logs\daily_release_<오늘>-*.log`가 없으면 PATH 문제다. 레지스트리 PATH로 새 cmd를 띄워 `where powershell`이 되는지 확인한다(이미 떠 있는 셸은 예전 PATH를 물려받으므로 판정에 쓰지 않는다).
+
+## 10. 10-29 v0.7.10 사전 준비 (2026-10-28 Codex 인수)
+
+| 항목 | 확인·준비 결과 |
+|---|---|
+| 작업 범위 | 문서 준비와 예약 작업 읽기 점검. 실제 빌드·업로드·Set Live·Steam 게시·steamcmd 로그인·태그 push 미실행 |
+| 버전 | 원격 `release-version.json` = 0.7.9(2026-10-28). 다음 예약 실행 때 PATCH +1로 0.7.10. 지금 버전을 올리지 않음 |
+| 검토 범위 | 로컬 태그 `v0.7.9` = `d04602919` → 검토 당시 원격 `62b538d0063fbf045d0ed97fca3cac1c2580d198`. 일반 커밋 169개, 출시본 소스·에셋 변경을 선별 |
+| 패치노트 | `patch_notes/v0.7.10.md` 한국어·영어 final 사전 작성. 문구 확정이며 출시 완료가 아님. `steam_event_v0.7.10.md` 합본에도 현재 검토분 반영 |
+| 게임 내 반영 | 미리 작성한 final 노트는 예약 스크립트가 보존하고 `patch-notes.mjs build`로 생성한다. 준비 커밋이 빌드 기준에 포함되면 v0.7.10 노트가 해당 빌드에 들어갈 예정. 현재 `patch-notes.js`·게임 코드는 보존 |
+| 예약 상태 | `EXODUSER_DailySteamRelease` = Enabled=true·Ready, 다음 **2026-10-29 09:00:00 KST**, 최근 2026-10-28 09:16:09, 결과 0, 누락 0 |
+| 예약 정의 | `conhost.exe --headless cmd.exe /c G:\exoduser-steam\daily_release.bat`(기존 계정 인수 유지), 제한 PT3H, 중복 IgnoreNew, 매일 간격 1일. InteractiveToken이므로 사용자 로그온 필요. 등록·설정 변경 0 |
+| 실행 source | 실제 예약 체인 = G:의 daily_release.bat → daily_release.ps1 → fetch한 origin/main → E:의 steam-build 날짜별 worktree. G: 공유 로컬 main·Codex 작업 브랜치에서 직접 빌드하지 않음 |
+| 근거 위치 | `I:\EXODUSER-Storage\codex-takeover\steam\evidence-20261028-2255\예약작업.xml`·`준비근거.json`(조회 시각·일반 커밋 목록·스크립트 해시·변경 전 문서 사본). 최종 SHA·원격 확인은 상위 `REPORT.md` |
+| 빌드 뒤 할 일 | 실제 source SHA까지 추가 변경 재대조, BuildID·smoke·preview·upload·push 결과와 1600×900 무창·무음 패치노트 화면 확인. 그 뒤 확정 BuildID 및 합본 최종 게시 사용자 확인 |
+
+주요 문구의 소스 근거는 아래와 같다. 이 표는 코드 차이 대조이며 실제 Player·소리·디자인 검수를 뜻하지 않는다.
+
+| 노트 항목 | main에 포함된 근거 커밋 |
+|---|---|
+| 2·3장 보스 대사·펫 반응 | `14de6fda3`, `4042e959d` |
+| 펫 말투·이야기 정합·보스명 번역 | `2acde58ac`, `7e90f22f6`, `10521fa7f` |
+| 대사·배너·로딩 팁 번역 | `db4c64f34`, `511278b65` |
+| UI 열기·닫기·취소·실패·분해·탭 소리 | `c0913f138`, `d40568974` |
+| 첫 진입 인장·로고(이전 문 배경을 대체한 최종 상태) | `4f6f4ecc9` |
+| 메뉴·로비·캐릭터 선택·명조·난이도 카드 | `1e2f79a40`, `3fe35d78b`, `6d63b42e9`, `6350adb2f`, `a0ebc8cc7`, `3531d110b`, `d131d9a67` |
+| 튜토리얼·막 전환·승리·장 클리어 표기 | `caceafdc7`, `6f3d94cd0`, `7f45c0101` |
+| 드루이드 침강 시 남은 위험물 정리 | `91e5dee2b` |
+| 연사·마력석궁 발사음 | `264cffe06` |
+| 한국어 말풍선·장 클리어 줄바꿈 | `3b8892fda`, `294d173be` |
+
+기존 인계의 **26258132(v0.7.9)는 Set Live하지 않음**과 **v0.7.0~v0.7.10 합본 방향**을 보존한다. 다음 BuildID는 아직 없으므로 임의로 지정하지 않고 공용 `USER_CONFIRM.md`에 최종 실행 확인만 모은다.
