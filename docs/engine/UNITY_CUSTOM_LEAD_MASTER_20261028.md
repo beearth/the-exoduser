@@ -97,6 +97,14 @@ Unity 6000.6.7f1 · URP 17.6.0 · C# 파일 240개 · 씬 4개(`FirstPlayable`·
 
 배정(10-28 유니티 총괄 결정): 구현 = `unity-core-oracle-opus` `local_eedbb777`(Core·oracle 담당 Opus). 그 세션의 LT-5·oracle 결함 2건 다음 세 번째 일. 병합 순번 = RM-INT → RM-0(조명·사운드) → **C-01**. 유니티 총괄 병합 체크에 "새 패키지 참조(UnityEngine.VFX 등)를 Runtime asmdef에 넣었는가"가 추가됨(C-01 뒤 병합 브랜치에 적용).
 
+C-01 결과(10-28, 브랜치 `claude/unity-pc-c01-asmdef-20261028` @ 6f1637b02, 빌드 커밋 d2321dbba = 6d8d6e2cd + 2271793ee + unity/main 4a22a22af 병합, 충돌 0). 보고서 `docs/engine/UNITY_C01_ASMDEF_20261028.md`(main 사본).
+- 커스텀 총괄이 diff를 직접 검수했다. 변경은 asmdef 3개 + `.meta` + `PortVerification.cs` 5줄 + 보고서이고 파일 이동은 0이다. `Exoduser.Core`는 `noEngineReferences: true`·참조 없음, Runtime은 Core·URP·RP Core 참조, Editor는 Editor 전용 패키지 12종을 참조하며 모든 참조를 이름으로 적었다.
+- 컴파일 오류 0, 숨은 의존성 0, `BigInteger` 정상. `CheckCorePresence`는 `Exoduser.Core`로 통과했다. Win 빌드 성공(80초, 씬 스크립트 연결 끊김 0).
+- 1줄 수정(`Runtime/NativeHud.cs`): 기준 938394077 **3.709초**(Assembly-CSharp 재컴파일) → C-01 **3.079초**(Exoduser.Runtime만 재컴파일, Core·Editor는 재컴파일 없음). 1회 수정당 줄어든 시간은 약 0.6초(17%)로 작다. 효과가 큰 쪽은 Core·Editor만 고칠 때와 병합 직후 재컴파일인데, 이번에는 재지 않았다(추후 DT-10 회귀 측정에 포함).
+- `PortVerification.Verify`는 기준·C-01 둘 다 같은 지점에서 exit 2로 끝났다("A15 SFX right must step by one and write once"). 앞 5단계는 통과. unity/main에 원래 있던 결함이며 C-01 회귀가 아니다. Verify는 GPU로 돌려야 한다(`-nographics`면 HUD 픽셀 검사에서 먼저 멈춤).
+- 남은 것: 1-1 GPU 렌더 스모크(m1). CTO의 플레이어 실행 보류가 풀린 뒤 돌린다. **스모크 통과 전에는 병합하지 않는다.**
+- 판정: 코드·컴파일·빌드 검수는 통과. 병합은 스모크 뒤 유니티 총괄 순번(RM-INT → RM-0 → C-01)으로 한다.
+
 ### P1 — 리메이크 화질 (맵·보스 리메이크와 같이)
 
 | id | 과제 | 쓰는 팀 | 첫 적용 |
