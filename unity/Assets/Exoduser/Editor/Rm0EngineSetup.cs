@@ -99,6 +99,7 @@ namespace Exoduser
         public const float SunIntensity = 0.6f, SunShadowStrength = 0.85f, ReflectionIntensity = 1.0f;
         public static readonly Color AmbientSky = new Color(.16f, .16f, .18f), AmbientEquator = new Color(.11f, .10f, .095f), AmbientGround = new Color(.05f, .04f, .036f);
         public static readonly Color ColorFilter = new Color(1f, .98f, .97f);
+        public const float PostExposure = 1.85f;   // RM0-LIGHT-L: picked from the 14-step sweep (-0.15..3.00) with the Linear + post-processing pipeline (was -0.15 under Gamma)
         public static readonly Color PoolColor = new Color(0xb0 / 255f, 0x28 / 255f, 0x1c / 255f);   // LIGHT-HELL #b0281c
         const string EnvCubemapPath = "Assets/Exoduser/Remodel/Common/Lighting/Env_NeutralSteel.cubemap";
 
@@ -171,7 +172,7 @@ namespace Exoduser
             bloom.threshold.Override(1.05f); bloom.intensity.Override(0.28f); bloom.scatter.Override(0.55f); bloom.tint.Override(new Color(1f, .82f, .72f));
             var grade = Ensure<ColorAdjustments>(profile);
             // Art bible v2: dark oxblood hell. Slightly under-exposed, contrast up, saturation held back, light warm filter (no cold/blue cast; metal must read neutral).
-            grade.postExposure.Override(-0.15f); grade.contrast.Override(10f); grade.saturation.Override(-8f); grade.colorFilter.Override(ColorFilter);
+            grade.postExposure.Override(PostExposure); grade.contrast.Override(10f); grade.saturation.Override(-8f); grade.colorFilter.Override(ColorFilter);
             var vig = Ensure<Vignette>(profile);
             vig.intensity.Override(0.28f); vig.smoothness.Override(0.55f); vig.color.Override(new Color(.07f, .025f, .02f));
             EditorUtility.SetDirty(profile);
