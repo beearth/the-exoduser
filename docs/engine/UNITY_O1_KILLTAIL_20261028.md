@@ -113,3 +113,4 @@ O-1판(1332dcc96)은 m1 19/20(09b 가시덫 실패), 기준판(c7b497131, 새 de
 - **③ 판정 = 테스트 기대값 수정, Core 수정 없음.** "70틱 뒤 악의가 정확히 −5"는 그 창 안에 처치가 없을 때만 맞는 값이었고, 기준판 통과도 무작위 흐름 덕이었다. 09b는 시전 프레임 직후 악의를 읽어 비용(5)을 확인하도록 고쳤다. 70틱 창의 처치 수는 메모에 같이 적는다. 물약 차단 같은 우회는 넣지 않았다.
 - **후속 보강 후보(이번 병합 조건 아님)**: rage-malice oracle에 DOT 처치 경로(hurtE `{dot:true}` → 42699 사망 분기 → 43307 `G.mats+=4`)를 넣는다. 지금은 enemy-hurt-oracle CH4 dot 케이스만 이 경로를 대조한다.
 - 승인(유니티 총괄 10-28): Core 수정 없이 09b 기대값만 고친다. 검증은 수정본 빌드 1회 + m1 1회.
+- **병합 전 검증(완료 규칙 ①, 10-28 10:19~10:21)**: 09b 수정 eb6b0f46a에 origin/unity/main 26a11fd2f(RM-3)·4ceb18b51(M1 지역 HUD)를 차례로 merge(rebase 없음, 충돌 0) → cf266944a. `_pc_lock.json` 잠금 아래 빌드 1회(오류 0, 66초) + batchmode m1-check 1회 = **20/20**. 09b 메모 "malice 5, DOT, kills in window 1"(이번에도 창 안 DOT 처치가 있었고 비용 판정은 통과). Unity 빌드 영수증에는 커밋 필드가 없어, 검증 스크립트가 빌드 전후 HEAD 동일을 대조하고 영수증 옆 `build-commit.json`에 commit cf266944a·parents를 남겼다. 산출: `I:\EXODUSER-Storage\qa\o1-killtail\diag-o1fix\`.
