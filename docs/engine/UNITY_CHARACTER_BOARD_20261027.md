@@ -47,6 +47,7 @@
 | 2026-10-27 | RM-0 키 라이트를 약하게(L-5) 유지하고, 캐릭터 밝기는 캐릭터 전용 Hero Light(URP Rendering Layer `Hero`, 중성 (1,.97,.94))로 올린다. 웅덩이 안 외곽 대비(L-4)는 웅덩이마다 Hero 레이어 전용 Point 림광(웅덩이 광원 색, range 반지름+0.5m)으로 낸다. 웅덩이는 `Lights/Pools`의 `Pool_Hell_*`·`Pool_Toxic_*` | 맵 총괄·디자인총괄 합의, 바이블 정정 main 27ca98941 |
 | 2026-10-28 | 걷기 중 대검은 칼끝이 아래·뒤로 끌리는 자세(원화 warrior_cut의 칼끝 아래 대검). 칼 축은 수평 아래 약 37°: 손 높이 1.0m·손잡이~칼끝 1.45m에서 칼끝-바닥 5cm 이상을 지키는 물리 한계라 목표 50~65°를 낮춰 수용 | 측면 걷기 판정 |
 | 2026-10-28 | **유료 승인 기록**: 사용자가 이 세션 채팅에서 직접 승인 — "Run Meshy for Silvertail and Ivan in parallel: body 3D 1 run, rigging 1 run, weapon 3D 1 run each (130 credits total)." (2026-10-28 02:0x KST 전후, 실행 02:17~02:20). 이전 승인: 10-27 "Meshy로 전사 body 시트 3D 시험 1건 진행해. 크레딧은 1건만."·"Meshy 리깅 1건 진행해. 크레딧은 리깅 1건만."·"Meshy로 전사 대검 3D 1건 진행해. 크레딧은 1건만." | 유료 지출은 사용자 확인 필수(CLAUDE.md), CTO 확인 요청 10-28 |
+| 2026-10-28 | **유료 승인 기록**: 사용자 직접 승인 "Run the animation trial step 2: Meshy animation 4 runs (128, 237, 127, 382) plus Text to Motion prime 2 runs, about 32 credits, on the rigged warrior." | 유료 지출은 사용자 확인 필수 |
 | 2026-10-28 | 키(rigging height): 실버테일 1.72m(하이힐 포함), 아이반 1.85m. LOCK 문서에 키 수치가 없어 총괄이 정함 | 전사 1.85m 기준 비례 |
 | 2026-10-28 | 보스는 Hero Light 레이어를 쓰지 않는다(플레이어 가독성 전용). 웅덩이 Fresnel `CharacterLit_PoolRim`은 보스도 쓴다 | 보스전 총괄 회신 |
 
@@ -146,3 +147,4 @@
   - Mixamo(무료, 로그인은 사용자가 직접)와 Quaternius UAL(CC0)도 후보다.
   - Unity 수동 키 시범은 메모리 부족 크래시가 2회 나서 중단했다.
   - 2단계 유료 추천: Meshy 동작 4건 + Text to Motion 2건, 약 32cr. 사용자 확인이 필요하다.
+- 2026-10-28 08:51~08:54 UCH-A1 2단계: Meshy 애니메이션 6건 모두 SUCCEEDED, 32cr 사용(4245→4213). 전사 리깅 `01a17d1c…`에 128 Heavy_Hammer_Swing·237 Charged_Axe_Chop·127 Charged_Ground_Slam·382 Jump_and_Slam_Back_Down(60fps, 각 3cr), Text to Motion prime TM-A 8s·TM-B 7s(각 10cr). 결과 `E:/exoduser-wt/_out/anim-trial/meshy_*_20261028_08xx/`. PC 재부팅으로 실행 에이전트가 중단되어 로컬 판정 자료(§3: 구간·M1·M6·발 미끄러짐·비교표)는 아직 없다. 재생성 후 이어서 만든다.
