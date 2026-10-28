@@ -40,7 +40,7 @@
 | L4 | `druid_spore` | 독포자 부채 발사(기술 5) | 0.5s | |
 | L4 | `druid_pod` | 포자 꼬투리 터짐(기술 11) | 0.4s | |
 | L4 | `druid_summon` | 바닥 시체가 꿈틀거리며 일어남(기술 9) | 1.2s | |
-| L4 | 기존 | `druid_erupt`·`druid_tide`·`druid_heartbeat`·`druid_roots_rise`·`druid_sink` 채택본 유지, `druid_burrow`·`druid_staff_tap`·`druid_root_pierce`는 3차 고르기 | — | |
+| L4 | 기존 | `druid_erupt`·`druid_tide`·`druid_heartbeat`·`druid_roots_rise`·`druid_sink` 채택본 유지. `druid_burrow`는 3차 s3d 사용자 선택본을 Unity 전용 브랜치에 연결, `druid_staff_tap`·`druid_root_pierce`는 3차 전부 안 맞음 | — | Unity 새 빌드·청음 미확인 |
 | L5 아레나 | `amb_druid_arena` | 보스 아레나: 늪 거품·나무 삐걱임·멀리 뿌리 신음 | 10s 루프 | 보스 스냅샷에서 숲 바닥음 대신 |
 | L6 BGM | `bgm_druid_boss` | 드루이드전 주제곡 | 2분 안팎, 반복 가능 | 낮은 현악·남성 합창·전쟁 북·나무/뼈 타악, 신스·EDM 금지. ElevenLabs Music API(`/v1/music`)로 3곡 시험, 실패하면 Suno 프롬프트를 만들어 사용자 생성 요청 |
 
