@@ -66,13 +66,15 @@ namespace Exoduser.UnityPort
                 p.X = s.Item2; p.Y = s.Item3;
                 for (int i = 0; i < 6; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); p.X = s.Item2; p.Y = s.Item3; p.Iframes = 1e9f; yield return null; }
                 menu = false; gameFocused = true; UpdateViews(); yield return new WaitForSecondsRealtime(.8f); menu = false; gameFocused = true; UpdateViews(); yield return null;
+                yield return new WaitForEndOfFrame();   // after this frame's LateUpdate: the billboard / marker pass of the 3D layer has run, as it has when the player sees the frame
                 RmIntShot(Path.Combine(caps, (NativeRemodel3D.Requested ? "3d-" : "2d-") + s.Item1 + ".png")); shots.Add(s.Item1); yield return null;
             }
+            yield return new WaitForEndOfFrame();
             if (NativeRemodel3D.Active) rc.debug = RmIntDebug();
             if (NativeRemodel3D.Active && NativeRemodel3D.Ground != null)
             {   // is the player's sprite hidden by the terrain? one more shot of the start spot without it
                 p.X = 4020f; p.Y = 7420f; StepInput(0, 0, p.X + 300, p.Y, false, false); UpdateViews(); yield return null; yield return null;
-                NativeRemodel3D.Ground.gameObject.SetActive(false); yield return null; yield return null; RmIntShot(Path.Combine(caps, "3d-start-noterrain.png")); NativeRemodel3D.Ground.gameObject.SetActive(true); shots.Add("start-noterrain");
+                NativeRemodel3D.Ground.gameObject.SetActive(false); yield return null; yield return null; yield return new WaitForEndOfFrame(); RmIntShot(Path.Combine(caps, "3d-start-noterrain.png")); NativeRemodel3D.Ground.gameObject.SetActive(true); shots.Add("start-noterrain");
             }
             rc.shots = shots.ToArray();
             File.WriteAllText(Path.Combine(output, "ticklog.json"), JsonUtility.ToJson(rc, true));
