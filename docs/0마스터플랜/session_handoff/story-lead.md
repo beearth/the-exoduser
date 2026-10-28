@@ -8,7 +8,13 @@
 
 ## 실버테일 개인사 — 완료 (2026-10-28)
 - 모녀 원문 = 복원 바이블 `bdcb770a2` §6-3 **위니 13막**(소설 사본이 아니라 바이블). 사용자 "실버테일로 옮겨" → 정본 `docs/11내러티브·로어디자인/SILVERTAIL_STORY_CANON_20261028.md`, AI 초안 폐기, STY-D21~D23 총괄 판정(본명 위니·표현 수위·13막 B), STY-D24 미정(모친 출신·무기 이유 등, 지어내지 말 것).
-- 묶음 A: 총괄이 origin/main에 push 완료 `2acde58ac`, 디자인총괄 전달. story-simple은 로컬 적용·캡처 진행 → 결과 검수.
+- 원격 반영: 실버테일 정본·SSOT·인계 = `b0d8a8bc7`, 대사 검수 A7 완료 기록 = `aa385d73f` (둘 다 origin/main). 로컬 main 커밋 a3290219b·2fd48ec13은 같은 내용.
+- 묶음 A: 원격 `2acde58ac` + 디자인총괄 색 정리 `7f45c0101`(장 클리어 #44ffaa→#e6e3dc, 자물쇠→진홍 눈, .ph 글꼴 --font-hell). story-simple 로컬 적용(커밋 없음)·캡처 완료 `G:/exoduser/tmp/design-review/20261028_dialogue_A/`(A·B 장 클리어 톤 PASS, B는 7f45 이전 로컬본). **C 데모 종료 화면 톤 이탈**(노랑 #ffcc44·네온 주황 버튼·Noto Sans 단독·Steam 파랑) → 디자인총괄에 이관 완료, SHA 회신 대기.
+
+## ★ 재개 후 첫 행동
+1. story-simple(local_a128282e, idle) get_usage 확인 → 묶음 C(STY-15 2장 보스 대사) 또는 묶음 B(번역 없는 대사 126건 _T 배선) 착수 지시. 순서는 총괄 결정(C가 작고 보스전 총괄 회신 완료라 C 먼저 권장).
+2. 디자인총괄 SHA 회신 오면 데모 종료 화면 캡처 확인(문구 무변경 여부).
+3. 사고 기록: 10-28 이 세션이 `python -` 1회 실수(로그 192MB, 즉시 중지, 파일 삭제는 권한 거부 — `C:/Users/심도진/AppData/Local/Temp/claude/G--exoduser/6e2ee6ef-d29a-45ca-a415-eab6989e299f/tasks/boum20xqt.output` 잔존, 사용자에게 보고함). story-simple도 1회(EOF로 즉시 종료). SSOT §6 사고 기록에 아직 안 적음 → 적을 것.
 
 ## 진행 중 작업 단위
 | 단위 | 상태 | 남은 일 |
