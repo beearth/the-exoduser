@@ -8,7 +8,7 @@
 | 어셈블리 | 위치 | 설정 |
 |---|---|---|
 | `Exoduser.Core` | `Runtime/Core/Exoduser.Core.asmdef` | `noEngineReferences: true`, 참조 없음, autoReferenced |
-| `Exoduser.Runtime` | `Runtime/Exoduser.Runtime.asmdef` | Core, `Unity.RenderPipelines.Universal.Runtime`, `Unity.RenderPipelines.Core.Runtime`(NativeGame.cs:53 `CameraExtensions`) |
+| `Exoduser.Runtime` | `Runtime/Exoduser.Runtime.asmdef` | Core, Input System, Cinemachine, `Unity.RenderPipelines.Universal.Runtime`, `Unity.RenderPipelines.Core.Runtime`(NativeGame.cs:53 `CameraExtensions`) |
 | `Exoduser.Editor` | `Editor/Exoduser.Editor.asmdef` | Editor 전용. Core, Runtime, URP Runtime·Editor, RP Core Runtime·Editor, Cinemachine, AI Navigation, ProBuilder, VFX Graph Runtime·Editor, Timeline |
 
 참조는 모두 어셈블리 이름으로 적었다(GUID 아님). `PortVerification.CheckCorePresence`는 `Type.GetType("…, Assembly-CSharp")` 대신 `typeof(Simulation).AssemblyQualifiedName`으로 찾고, 로그에 실제 어셈블리 이름을 남긴다.
