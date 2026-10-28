@@ -133,10 +133,10 @@
 | 8 | DT-08 | VFX 프리뷰 벤치(고정 틱 7시점, 판정 바닥 3종, 측정 패널, 효과별 GPU ms) | 임펙트 총괄과 명세 후 | 독 폭발 1종 7시점 시트+수치 |
 | 9 | DT-09 | 캐릭터 임포트·리깅 검사기+3방향 캡처 프리셋(DT-03 확장) | 캐릭터 총괄과 명세 후 | 전사 1종 검사 리포트 |
 | 10 | DT-10 | 성능 계측·회귀: 프레임 예산표, 드로우콜·SetPass·메모리 계측, 같은 컷 자동 성능 회귀(작업 서버 job), SRP Batcher·GPU 인스턴싱 점검, 텍스처·메시 임포트 프리셋 | Sonnet | RM-1 슬라이스 기준선 json+회귀 1회 |
-| 11 | DT-11 | URP Renderer Feature: 탑다운 가림 페이드(맵 총괄 후속 후보 "공용 단위"), 외곽선, 높이 안개(FOG-LOW) | 맵·디자인총괄 명세 후 | 1-3 키 큰 버섯 가림 페이드 캡처 |
-| 12 | DT-12 | 프로젝트 셰이더 라이브러리 정리(`SpriteLit3D`·CG 언릿 5종·Shader Graph 서브그래프 목록·공통 HLSL include)+에디터 메뉴 `Exoduser/` 통합·단축키 | Sonnet | 메뉴 목록, 셰이더 표 |
+| 11 | DT-11 | **이관 → 유니티 커스텀 총괄 C-03**(10-28, `docs/engine/UNITY_CUSTOM_LEAD_MASTER_20261028.md`). URP Renderer Feature: 탑다운 가림 페이드(맵 총괄 후속 후보 "공용 단위"), 외곽선, 높이 안개(FOG-LOW) | 맵·디자인총괄 명세 후 | 1-3 키 큰 버섯 가림 페이드 캡처 |
+| 12 | DT-12 | **이관 → 유니티 커스텀 총괄 C-04**(10-28). 프로젝트 셰이더 라이브러리 정리(`SpriteLit3D`·CG 언릿 5종·Shader Graph 서브그래프 목록·공통 HLSL include)+에디터 메뉴 `Exoduser/` 통합·단축키 | Sonnet | 메뉴 목록, 셰이더 표 |
 | 13 | DT-13 | 원클릭 PC·Mac 빌드(작업 서버 job로 `PortVerification.Build`+스모크, Mac은 Codex 쪽 확인) | Sonnet | PC 빌드 job 1회+시간. 스모크 판정에 빌드 로그 셰이더 의존성 누락 줄 집계 포함(임펙트 총괄 제보 10-28: unity/main 8d34eb653 빌드는 passed인데 `Universal Render Pipeline/Terrain/Lit` dependency not found 6줄·`Nature/SpeedTree7 Billboard` 1줄) |
-| 14 | DT-14 | 커밋 전 빠른 컴파일 검사(Unity 없이 `Library/ScriptAssemblies` 참조로 csc 컴파일 — RM-2가 `I:\rm2\compilecheck`에서 시도한 방식 정식화) | DT-01에 흡수 여부 판단 | 컴파일 오류 13건 유형을 Unity 없이 잡는지 |
+| 14 | DT-14 | (경로는 커스텀 총괄 C-01 asmdef·자체 패키지 구조에 맞춤) 커밋 전 빠른 컴파일 검사(Unity 없이 `Library/ScriptAssemblies` 참조로 csc 컴파일 — RM-2가 `I:\rm2\compilecheck`에서 시도한 방식 정식화) | DT-01에 흡수 여부 판단 | 컴파일 오류 13건 유형을 Unity 없이 잡는지 |
 
 ## 4. 공통 설계 규칙
 
@@ -174,3 +174,6 @@
 | 10-28 | 스모크 판정에서 알려진 결함을 통과로 치지 않는다. 교체는 기본 거부, `-AllowKnown`일 때만 | 규칙 ④ "0이 아니면 실패" |
 | 10-28 | RM0-LIGHT-L 병합은 미루지 않는다(유니티 총괄 협의 회신) | DT-03은 조명값을 고정하지 않고 Volume에서 읽어 기록하며, `-override postExposure`로 병합 전후 모두 검증 가능 |
 | 10-28 | 손코딩 빌더 대체(DT-05)는 DT-02 뒤 | 검사기가 먼저 있어야 공용 빌더 전환 전후 동일성을 증명할 수 있다 |
+| 10-28 | DT-11(URP Renderer Feature)·DT-12(셰이더 라이브러리)를 유니티 커스텀 총괄(`local_143f9249`) C-03·C-04로 이관. asmdef·자체 패키지 구조(C-01)는 커스텀 총괄, DT-14는 그 구조를 따른다. 테스트(C-06)는 공동: 러너·job = 개발툴, 테스트 구조·스모크 내용 = 커스텀 총괄. 패키지 추가·버전 변경은 커스텀 총괄 §5 승인 | 커스텀 총괄 SSOT `docs/engine/UNITY_CUSTOM_LEAD_MASTER_20261028.md` §6 경계(main 8b5e5e464) |
+| 10-28 | 창 모드 스모크 취소. 모든 자동 실행은 공용 무창 실행기(DT-01 `exo-unity.ps1`)를 거친다: 플레이어 `-batchmode`(GPU 유지, `-nographics` 금지)+`--unity-mute`, 캡처는 RenderTexture, `-popupwindow`·`-screen-fullscreen`·headed 브라우저는 거부, 실행 뒤 창 핸들 0 검사, 장치 Null이면 실패 | 사용자 지시 "유령같이 브라우저도 안 뜨고 소리 안 나오게"(CTO 10-28 전달). 10:30 DT-15 창 모드 스모크가 사용자 화면에 창을 띄움 |
+| 10-28 | 잠금 규칙 보강: pid = 끝까지 기다리는 실행 스크립트 `$PID`, 삭제는 owner·pid가 자기일 때만, pid가 죽었어도 startedAt 10분 이내이고 Unity가 살아 있으면 덮어쓰지 않음, 시작 조건은 커밋 여유(디스크 아님) | 10:19 maplint가 O-1 잠금을 덮어쓴 사고(유니티 총괄 실측) |
