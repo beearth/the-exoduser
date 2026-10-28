@@ -8,6 +8,7 @@ namespace Exoduser.UnityPort.Core
     {
         public bool RmFire, FeintUsed;                 // StartPattern re-entry after a telegraph / one feint per combo
         public BossMove RmPending;                     // move waiting behind the bossRmWind telegraph
+        public string CurMove = "", PrevMove = "";   // RM-1 sound: the move now running / the one before (druid_vo_attack is skipped when the same move repeats)
         public int HbBeat;                             // heartbeat: beats already pulsed
         public string RmMoveId;                        // move started last (a grab picked beyond 120 px turns into a charge wind: only the id tells them apart)
         public double RmTeleTotal, RmGap, RmDir;              // frames of the wind state just entered / tide-wave gap angle drawn at the move start (telegraph list)
@@ -71,6 +72,9 @@ namespace Exoduser.UnityPort.Core
             int n = Array.FindIndex(DruidRemodelData.Moves, m => m.Id == mv.Id) + 1;
             host.Sound(key, "#" + n + " " + mv.Id + " telegraph", d.X, d.Y);
         }
+
+        // RM-1 sound SND-09: the big-move kiai (slam / charge / tide wave), skipped when the same move just ran
+        void AttackVoice(DruidData d, string move) { if (d.PrevMove != move) host.Sound("druid_vo_attack", "#" + (Array.FindIndex(DruidRemodelData.Moves, m => m.Id == move) + 1) + " " + move + " kiai", d.X, d.Y); }
 
         bool InSafeZone(double x, double y)
         {

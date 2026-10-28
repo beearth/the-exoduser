@@ -234,7 +234,7 @@ namespace Exoduser.UnityPort.Core
             hitSfxCd = (int)context.HitSfxCd; hurtSfxEnemy = null;
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
-            LastHitDamage = total; TotalDamage += total;
+            LastHitDamage = total; TotalDamage += total; BossPainCheck(enemy);
             if (enemy.Hp <= 0) OnEnemyZeroHp(enemy);
             if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }
         }

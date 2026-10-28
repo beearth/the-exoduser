@@ -135,7 +135,7 @@ namespace Exoduser.UnityPort.Editor
         void Feed(Rm1Row r)
         {
             lastTick = r.tick;
-            if (r.type == "note") { parryNotes.Add("PARRY frame=" + r.tick + " rec=" + (frame / (float)Fps).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "s " + r.source + " -- the Core queues no parry sound (web doParry plays q_parry / sword_parry + sword_back + a voice)"); return; }
+            if (r.type == "note") { parryNotes.Add("PARRY frame=" + r.tick + " rec=" + (frame / (float)Fps).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "s " + r.source + " (the Core queues a Parry feedback event for it: see the q_parry / sword_parry / sword_back / voice lines at this frame)"); return; }
             if (r.type == "stage")
             {
                 if (r.kind == "ArenaEntered") { inArena = true; bossAlive = true; }
@@ -194,7 +194,7 @@ namespace Exoduser.UnityPort.Editor
             sb.AppendLine("TIME AXIS CHECK: Core frames whose sounds start at different rec times = " + skewed + " (0 = every sound of one Core frame sits on the same recording time)");
             sb.AppendLine("SUMMARY lines=" + sound.Lines.Count + " played=" + played.Count + " dropped(adapter)=" + sound.Receipt.dropped + " same-key tell overlaps<120ms=" + overlaps);
             foreach (var g in played.GroupBy(l => Field(l, "key=")).OrderBy(g => g.Key)) sb.AppendLine("  " + g.Key + " x" + g.Count() + " groups=" + string.Join("/", g.Select(l => Field(l, "group=")).Distinct()));
-            sb.AppendLine("  parry successes in the fight: " + parryNotes.Count + " (parry sounds queued by the Core: 0)");
+            sb.AppendLine("  parry successes in the fight: " + parryNotes.Count + " (parry sound lines in this receipt: " + sound.Lines.Count(l => l.Contains("from=\"Core Parry\"")) + ")");
             sb.AppendLine("  per-key counts (played): " + string.Join(", ", played.GroupBy(l => Field(l, "key=")).OrderBy(g => g.Key).Select(g => g.Key + " x" + g.Count())));
             sb.AppendLine("  no-file keys: " + string.Join(", ", sound.Lines.Where(l => l.Contains("no file yet")).Select(l => Field(l, "key=")).Distinct()));
             sb.AppendLine("  temporary-file keys: " + string.Join(", ", sound.Lines.Where(l => l.Contains("temporary file")).Select(l => Field(l, "key=")).Distinct()));

@@ -61,7 +61,7 @@ namespace Exoduser.UnityPort.Core
                 KillEnemy(e);
                 return true;
             }
-            st.Collapsing = true; st.CollapseTicks = DruidRemodelData.CollapseTicks; st.RootHits = 0; QueueLogicalSound("druid_root_pierce", "P" + (st.Life + 2) + " entry: root pierces the back", e.X, e.Y);
+            st.Collapsing = true; st.CollapseTicks = DruidRemodelData.CollapseTicks; st.RootHits = 0; QueueLogicalSound("druid_vo_fall", "P" + (st.Life + 1) + " down: he kneels", e.X, e.Y); scheduledSounds.Add(new KeyValuePair<int, string[]>(TickCount + 40, new[] { "druid_root_pierce", "P" + (st.Life + 2) + " entry: root pierces the back" }));
             e.Hp = 1; e.Shield = 0; e.ReviveIframes = 90;                 // swallowed hits are the root hits (EnemyHurt takes 1 off reviveIframes per hit)
             Druid.BeginCollapse(e);
             RemodelEvent("collapse", e, st, "life " + (st.Life + 1) + " down");
@@ -101,7 +101,7 @@ namespace Exoduser.UnityPort.Core
             int sh = (int)Math.Round(mx * DruidRemodelData.ShieldFraction[st.Life]); e.MaxShield = sh; e.Shield = sh;
             e.Radius = (float)Math.Max(10, Math.Round(st.OrigR * DruidRemodelData.BodyScale[st.Life]));
             e.ReviveIframes = 0; e.Poise = e.MaxPoise;
-            Druid.BeginLife(e, st.Life);
+            Druid.BeginLife(e, st.Life); QueueLogicalSound("druid_vo_phase", "P" + (st.Life + 1) + " start", e.X, e.Y);
             RemodelEvent("life", e, st, note);
         }
     }

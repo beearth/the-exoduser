@@ -5,7 +5,7 @@ namespace Exoduser.UnityPort.Core
 {
     // RM-1 sound: EnemyHit / EnemyCrit / EnemyDeath / BossHit / BossDeath / Roll are plain notifications (position, etype, source volume and rate).
     // The sample choice among variants is the audio adapter's (the Core never draws a random number for sound, so every oracle stays unchanged).
-    public enum FeedbackKind { Sample, KiChargeFlash, KiSlashHit, EnemyHit, EnemyCrit, EnemyDeath, BossHit, BossDeath, Roll }
+    public enum FeedbackKind { Sample, KiChargeFlash, KiSlashHit, EnemyHit, EnemyCrit, EnemyDeath, BossHit, BossDeath, Roll, Parry }
 
     // Native view drains once after Tick. Pixel coordinates retain positive Y down.
     public sealed class FeedbackEvent
@@ -23,7 +23,14 @@ namespace Exoduser.UnityPort.Core
         public readonly Queue<FeedbackEvent> Feedback = new Queue<FeedbackEvent>();
 
         // RM-1 sound notifications (no state change, no RNG). hitSfxCd / critSfxCd are the web _hitSfxCd (8f) / _critSfxCd (12f) cooldowns, counted per Tick.
-        private int hitSfxCd, critSfxCd;
+        private int hitSfxCd, critSfxCd, painAnchorHp, lastPainTick = -1000;
+        // RM-1 sound SND-09: druid_vo_pain once for every 8 % of the (life) HP the boss loses, at least 3 s apart; the anchor follows the HP up on a new life
+        private void BossPainCheck(EnemyState enemy)
+        {
+            if (!enemy.IsBoss || enemy.Hp <= 1) return;
+            if (enemy.Hp > painAnchorHp) painAnchorHp = enemy.Hp;
+            if (painAnchorHp - enemy.Hp >= enemy.MaxHp * .08 && TickCount - lastPainTick >= 180) { QueueLogicalSound("druid_vo_pain", "boss lost 8 % HP", enemy.X, enemy.Y); painAnchorHp = enemy.Hp; lastPainTick = TickCount; }
+        }
         // RM-1 sound section 6.6, P1 entry: three staff taps (24 f apart), then the four root pillars rise. Plain ticks: nothing here touches the simulation state.
         private readonly List<KeyValuePair<int, string[]>> scheduledSounds = new List<KeyValuePair<int, string[]>>();
         public void ScheduleDruidIntroSounds()

@@ -45,7 +45,8 @@ namespace Exoduser.UnityPort
             {"tell_parry",new[]{"tell_melee"}},{"druid_burrow",new[]{"tell_boss"}},{"druid_staff_tap",new string[0]},{"druid_root_pierce",new string[0]}};
         // adopted start volumes (RM1_AUDIO_KEYS.json); the final values are set by ear
         static readonly Dictionary<string,float> StartVolume=new Dictionary<string,float>{
-            {"tell_melee",.45f},{"tell_ranged",.45f},{"tell_boss",.45f},{"tell_grab",.45f},{"tell_parry",.45f},{"druid_erupt",.5f},{"druid_sink",.55f},{"druid_tide",.5f},{"druid_roots_rise",.5f},{"druid_heartbeat",.5f},{"druid_burrow",.45f},{"druid_staff_tap",.5f},{"druid_root_pierce",.5f}};
+            {"tell_melee",.45f},{"tell_ranged",.45f},{"tell_boss",.45f},{"tell_grab",.45f},{"tell_parry",.45f},{"druid_erupt",.5f},{"druid_sink",.55f},{"druid_tide",.5f},{"druid_roots_rise",.5f},{"druid_heartbeat",.5f},{"druid_burrow",.45f},{"druid_staff_tap",.5f},{"druid_root_pierce",.5f},
+            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f}};
         readonly Dictionary<string,int> lastTellTick=new Dictionary<string,int>();
         int lastPlayerHitTick=-1000;
         public NativeFeedbackAudio(Transform parent,Camera camera)
@@ -70,9 +71,11 @@ namespace Exoduser.UnityPort
         static void Classify(string key,out int priority,out string group,out float blend,out bool front)
         {
             front=key.StartsWith("sword_swing",StringComparison.Ordinal)||key=="sword_parry";blend=0;
-            if(front||key=="scarecrow_charge"||key=="spike_trap"||key=="fireball"||key=="heavy_hit"||key=="ice_storm"){priority=PriSkill;group="Skill";}
+            if(front||key=="q_parry"||key=="scarecrow_charge"||key=="spike_trap"||key=="fireball"||key=="heavy_hit"||key=="ice_storm"){priority=PriSkill;group="Skill";}
+            else if(key.StartsWith("sword_back",StringComparison.Ordinal)){priority=PriHit;group="PlayerHit";}   // web: HIT class
             else if(key.StartsWith("player_hit",StringComparison.Ordinal)){priority=PriPlayerHit;group="PlayerHit";}
             else if(key.StartsWith("voice_",StringComparison.Ordinal)||key=="male_grunt"){priority=PriVoice;group="Voice";}
+            else if(key.StartsWith("druid_vo_",StringComparison.Ordinal)){priority=PriVoice;group="Voice";blend=.5f;}   // SND-09 druid voices
             else if(key.StartsWith("tell_",StringComparison.Ordinal)){priority=PriTell;group="Tell";blend=.5f;}
             else if(key.StartsWith("boss_howl",StringComparison.Ordinal)){priority=PriSkill;group="Skill";blend=.5f;}
             else if(key.StartsWith("death_",StringComparison.Ordinal)||key=="monster_die1"){priority=PriDeath;group="Death";blend=.5f;}
@@ -94,15 +97,37 @@ namespace Exoduser.UnityPort
             switch(e.Kind){
                 case FeedbackKind.Sample:HandleSample(e);break;
                 case FeedbackKind.EnemyHit:Receipt.requested++;Queue(HitRequest(e));break;
-                case FeedbackKind.BossHit:Receipt.requested++;Queue(Make("boss_hit",e.Volume,.7f,World(e),e));break;   // _BOSS_SFX[0].hit pitch .7
+                case FeedbackKind.BossHit:Receipt.requested++;Queue(BossHitRequest(e));break;   // _BOSS_SFX[0].hit pitch .7
                 case FeedbackKind.EnemyCrit:Receipt.requested++;Queue(Make("crit_heavy",e.Volume,Jitter(1,.05f),World(e),e));break;
                 case FeedbackKind.EnemyDeath:HandleDeath(e);break;
-                case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));break;   // _BOSS_SFX[0].die
+                case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(HasClip("druid_vo_last")?Make("druid_vo_last",.75f,Jitter(1,.03f),World(e),e):Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));break;   // _BOSS_SFX[0].die
+                case FeedbackKind.Parry:   // game.html doParry (38667): Q parry -> q_parry .9 (1+-.08); otherwise sword_parry 1 (1+-.1) + one sword_back* .5 (1.1+-.1); then 50 % voice_parry1-4 (1+-.03) else male_grunt (1+-.15)
+                    Receipt.requested++;
+                    if(e.Step==1)direct.Add(Make("q_parry",.9f,Jitter(1,.08f),World(e),e));
+                    else{
+                        direct.Add(Make("sword_parry",1f,Jitter(1,.1f),World(e),e));
+                        direct.Add(Make(new[]{"sword_back","sword_back2","sword_back3"}[rng.Next(3)],.5f,Jitter(1.1f,.1f),World(e),e));
+                    }
+                    if(rng.NextDouble()<.5)direct.Add(Make("voice_parry"+(1+rng.Next(4)),1f,Jitter(1,.03f),World(e),e));
+                    else direct.Add(Make("male_grunt",1f,Jitter(1,.15f),World(e),e));
+                    break;
                 case FeedbackKind.Roll:
                     Receipt.requested++;   // the web has no roll sample yet: it borrows footstep at the roll start and footstep2 in _finishRoll (roll_body replaces them)
                     var step=e.Step==0?Make("roll_body",.55f,Jitter(1.15f,.1f),World(e),e):Make("roll_body",.5f,Jitter(1f,.1f),World(e),e);
                     step.fileKey=e.Step==0?"footstep":"footstep2";step.source=e.Step==0?"roll start":"roll end (_finishRoll)";direct.Add(step);break;
             }
+        }
+        // boss hit voicing (sound lead SND-09): variants rotate at random but never the same one twice in a row, rate +-6 %, a hit within 0.6 s of the last one is x.85 quieter
+        // than that one (floor x.55), a 0.6 s pause restores the start volume. Only boss_hit exists today; the adopted druid_hit variants go into BossHitVariants.
+        static readonly string[] BossHitVariants={"boss_hit"};
+        int lastBossHitVariant=-1,lastComboTick=-1000;float comboAtten=1;
+        Req BossHitRequest(FeedbackEvent e)
+        {
+            int v=BossHitVariants.Length==1?0:rng.Next(BossHitVariants.Length);
+            if(BossHitVariants.Length>1&&v==lastBossHitVariant)v=(v+1+rng.Next(BossHitVariants.Length-1))%BossHitVariants.Length;
+            lastBossHitVariant=v;
+            comboAtten=e.Tick-lastComboTick<=36?Mathf.Max(.55f,comboAtten*.85f):1f;lastComboTick=e.Tick;
+            return Make(BossHitVariants[v],e.Volume*comboAtten,Jitter(.7f,.06f),World(e),e);
         }
         // _hitSfxForEtype: Core names the category (EnemySoundTables.Hit) and the base pitch; the variant is drawn here, never in the Core
         Req HitRequest(FeedbackEvent e)
@@ -157,7 +182,7 @@ namespace Exoduser.UnityPort
         {
             string[] files;if(!LogicalFiles.TryGetValue(e.SampleKey,out files))files=new[]{e.SampleKey};
             float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
-            string note=files.Length==0?"no file yet (3rd-round pending, left empty)":(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok");
+            string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?"no file yet (3rd-round pending, left empty)":(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
             var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal);
             if(tell){
                 int last;if(lastTellTick.TryGetValue(e.SampleKey,out last)&&e.Tick-last<8){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED same key within 120 ms"));return;}
@@ -169,11 +194,17 @@ namespace Exoduser.UnityPort
             if(files.Length==0){Lines.Add(Line(e.Tick,e.SampleKey,e.Source,druid?"Skill":"Tell",volume,note));return;}
             for(int i=0;i<files.Length;i++){
                 var r=Make(files[i],volume,1,pos,e);r.logical=e.SampleKey;r.pitch=e.SampleKey=="druid_staff_tap"?Jitter(1,.04f):1;r.delay=i*.08f;r.front=false;r.note=note;
-                if(druid){r.group="Skill";r.priority=PriSkill;}
+                if(druid){if(e.SampleKey.StartsWith("druid_vo_",StringComparison.Ordinal)){r.group="Voice";r.priority=PriVoice;if(e.SampleKey=="druid_vo_pain"||e.SampleKey=="druid_vo_attack")r.pitch=Jitter(1,.05f);}else{r.group="Skill";r.priority=PriSkill;}}
                 if(tell){r.group="Tell";r.priority=PriTell;}
                 direct.Add(r);
             }
         }
+        // SND-09 adopted processed files (RM1_AUDIO_KEYS.json "source"); the Receipt shows the adoption path next to each of these keys
+        static readonly Dictionary<string,string> Adopted=new Dictionary<string,string>{
+            {"druid_vo_pain","_preview_druid/druid_vo_pain_v2a_proc"},{"druid_vo_attack","_preview_druid/druid_vo_attack_v2a_proc"},{"druid_vo_phase","_preview_druid/druid_vo_phase_v2c_proc"},
+            {"druid_vo_fall","_preview_druid/druid_vo_fall_v2a_proc"},{"druid_vo_last","_preview_druid/druid_vo_last_v2a_proc"},{"druid_drag","_preview_druid/druid_drag_v2a_proc"},
+            {"druid_fissure","_preview_druid/druid_fissure_v2b_proc"},{"druid_pod","_preview_druid/druid_pod_v2d_proc"},{"druid_summon","_preview_druid/druid_summon_v2c_proc"}};
+        static string AdoptedSource(string key){string s;return Adopted.TryGetValue(key,out s)?s:null;}
         static string Line(int tick,string key,string source,string group,float volume,string file){return "frame="+tick+" key="+key+" from=\""+source+"\" group="+group+" vol="+volume.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+" file="+file;}
         int lastBossHitTick = -1000;
         void Queue(Req r)
@@ -239,7 +270,7 @@ namespace Exoduser.UnityPort
             AudioListener.GetOutputData(output,0);
             foreach(float value in output)Receipt.listenerPeak=Mathf.Max(Receipt.listenerPeak,Mathf.Abs(value));
         }
-        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();lastPlayerHitTick=-1000;lastBossHitTick=-1000;foreach(var v in voices){v.source.Stop();v.ends=0;}}
+        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();lastPlayerHitTick=-1000;lastBossHitTick=-1000;lastBossHitVariant=-1;lastComboTick=-1000;comboAtten=1;foreach(var v in voices){v.source.Stop();v.ends=0;}}
         public void Dispose(){Reset();foreach(var v in voices)UnityEngine.Object.Destroy(v.source.gameObject);voices.Clear();if(listenerObject!=null)UnityEngine.Object.Destroy(listenerObject);}
     }
 }

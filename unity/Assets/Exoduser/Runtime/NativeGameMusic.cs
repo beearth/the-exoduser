@@ -9,8 +9,8 @@ namespace Exoduser.UnityPort
     public sealed class NativeGameMusic : IDisposable
     {
         public const float MusicBase = .6f, BedGain = .15f, FadeOutSeconds = .5f, FadeInSeconds = .3f, BedFadeSeconds = .8f;
-        readonly NativeAudioMixer bus; readonly GameObject root; readonly AudioSource music, bed;
-        string playing = "", wanted = ""; float musicLevel, bedLevel; bool bedWanted;
+        readonly NativeAudioMixer bus; readonly GameObject root; readonly AudioSource music, bed, arenaBed;
+        string playing = "", wanted = ""; float musicLevel, bedLevel, arenaLevel; bool bedWanted, arenaWanted;
         public string Playing { get { return playing; } }
         public string Wanted { get { return wanted; } }
         public bool BedWanted { get { return bedWanted; } }
@@ -20,10 +20,12 @@ namespace Exoduser.UnityPort
         public NativeGameMusic(Transform parent, NativeAudioMixer bus)
         {
             this.bus = bus; root = new GameObject("Game music"); root.transform.SetParent(parent);
-            music = Make("BGM", "Music"); bed = Make("Forest bed", "Ambience");
+            music = Make("BGM", "Music"); bed = Make("Forest bed", "Ambience"); arenaBed = Make("Druid arena bed", "Ambience");
             var clip = Resources.Load<AudioClip>("Audio/Ambient/amb_hell_forest_bed");
             if (clip == null) throw new InvalidOperationException("Missing original ambience amb_hell_forest_bed");
             clip.LoadAudioData(); bed.clip = clip;
+            var arena = Resources.Load<AudioClip>("Audio/RM1/amb_druid_arena");   // SND-09: boss-arena bed (10 s loop), takes the forest bed's place while the boss track plays
+            if (arena != null) { arena.LoadAudioData(); arenaBed.clip = arena; }
         }
         AudioSource Make(string name, string group)
         {
@@ -38,7 +40,7 @@ namespace Exoduser.UnityPort
             if (key == wanted) return;
             wanted = key; Switches++; Log.Add(key);
             bus.Snapshot(key == "boss");
-            bedWanted = key == "hell1";
+            bedWanted = key == "hell1"; arenaWanted = key == "boss" && arenaBed.clip != null;
         }
         public void Tick(float dt)
         {
@@ -47,7 +49,8 @@ namespace Exoduser.UnityPort
                 if (music.isPlaying && musicLevel > 0) { musicLevel = Mathf.Max(0, musicLevel - dt / FadeOutSeconds); music.volume = musicLevel * MusicBase; }
                 else
                 {
-                    music.Stop(); playing = wanted; var clip = playing.Length > 0 ? Resources.Load<AudioClip>("Audio/Bgm/" + playing) : null;
+                    music.Stop(); playing = wanted; var clip = playing.Length > 0 ? Resources.Load<AudioClip>("Audio/Bgm/" + (playing == "boss" ? "bgm_druid_boss" : playing)) : null;   // 1-1 slice: the boss is the druid (SND-09)
+                    if (clip == null && playing.Length > 0) clip = Resources.Load<AudioClip>("Audio/Bgm/" + playing);
                     music.clip = clip; musicLevel = 0;
                     if (clip != null) music.Play();
                 }
@@ -58,13 +61,24 @@ namespace Exoduser.UnityPort
                 if (!bed.isPlaying) { bed.Play(); bedLevel = 0; }
                 bedLevel = Mathf.Min(1, bedLevel + dt / FadeInSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain;   // web: 0.15 x sfxVol
             }
+            if (arenaWanted)
+            {
+                if (!arenaBed.isPlaying) { arenaBed.Play(); arenaLevel = 0; }
+                arenaLevel = Mathf.Min(1, arenaLevel + dt / FadeInSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain;
+            }
+            else if (arenaBed.isPlaying)
+            {
+                arenaLevel = Mathf.Max(0, arenaLevel - dt / BedFadeSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain;
+                if (arenaLevel <= 0) arenaBed.Stop();
+            }
+            if (bedWanted) { }
             else if (bed.isPlaying)
             {
                 bedLevel = Mathf.Max(0, bedLevel - dt / BedFadeSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain;
                 if (bedLevel <= 0) bed.Stop();
             }
         }
-        public void Silence() { wanted = ""; playing = ""; bedWanted = false; music.Stop(); bed.Stop(); musicLevel = bedLevel = 0; bus.Snapshot(false, 0); }
+        public void Silence() { wanted = ""; playing = ""; bedWanted = false; arenaWanted = false; music.Stop(); bed.Stop(); arenaBed.Stop(); musicLevel = bedLevel = arenaLevel = 0; bus.Snapshot(false, 0); }
         public void Dispose() { if (root != null) UnityEngine.Object.Destroy(root); }
     }
 }

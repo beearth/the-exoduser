@@ -137,3 +137,29 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 - 결과(이번 시드): 본 공격 53개 중 구르기 회피 36, 패링 시도 11, 안 피함 6. 플레이어 피격음은 1분당 약 20번(이전 스크립트 43번). 피한 공격 비율이 높은데도 피격음이 남는 것은 텔레그래프로 읽히지 않는 피해(독 웅덩이·투사체·장판 틱)가 계속 들어오기 때문이다 — 목표였던 "받은 공격의 약 30%"에는 미치지 못하고 약 65 % 수준이다.
 - 패링 성공 7회(Receipt에 `PARRY` 줄). **Core는 패링 성공에 소리를 큐잉하지 않는다**(웹 `doParry`는 Q 패링이면 `q_parry`, 아니면 `sword_parry`+`sword_back`에 50 % 확률로 `voice_parry1~4`/`male_grunt`). 이 소리는 Unity에 아직 연결되어 있지 않다.
 - 보스 피격음: `boss_hit`에 8틱 쿨다운을 어댑터에서도 명시했다. Core의 `hurtE` 컨텍스트가 이미 모든 적 피격에 같은 8틱 쿨다운을 공유하므로 이 규칙은 추가로 걸러내는 소리가 없다. 60초 창의 `boss_hit` 110번은 쿨다운이 아니라 플레이어 공격 리듬(22틱)이 낸 수이다.
+
+### 6.3 패링 소리와 SND-09 드루이드 채택 11키 연결 (2026-10-28)
+
+**패링 성공 소리(웹 `doParry`, game.html 38667):** Core `ApplyParrySuccess`가 `FeedbackKind.Parry`를 큐잉(`Step` 1 = Q 패링: `qParry || sBlock || peaceShield || SbParryT>0`, 상태·난수 변경 없음). 어댑터: Q 패링 `q_parry` .9(1±.08) / 그 외 `sword_parry` 1(1±.1) + `sword_back`·`sword_back2`·`sword_back3` 중 하나 .5(1.1±.1), 이어서 50 % `voice_parry1~4`(1±.03) 아니면 `male_grunt`(1±.15). 분류 SKILL/Skill(`q_parry`·`sword_parry`)·VOICE/Voice(`voice_*`·`male_grunt`)·HIT/PlayerHit(`sword_back*`), 2D. 파일은 웹 sfx에서 그대로(`voice_parry4`는 웹 표가 `voice_parry3.mp3`를 가리켜서 같은 파일).
+
+**보스 피격 구조(`BossHitRequest`):** 변형 목록(`BossHitVariants`, 지금은 `boss_hit` 1개, 채택된 `druid_hit` 4개가 들어올 자리)을 무작위 순환하되 같은 변형 연속 금지, rate ±6 %, 연타 감쇠(앞 피격과 0.6초(36틱) 안이면 ×0.85씩, 바닥 ×0.55, 쉬면 원래대로), 어댑터의 `boss_hit` 8틱 쿨다운 명시. 지금은 `boss_hit`에 먼저 걸려 있다.
+
+**SND-09 채택 11키(사용자 청음 2026-10-28, 가공본 `G:/exoduser-wt/_out/sfx_forge/` 기준, 경로는 `RM1_AUDIO_KEYS.json` `source`와 Receipt의 `(adopted …)`에 남음):**
+
+| 키 | 채택본 | 트리거(Core 이벤트) | 그룹 | 시작 음량 |
+|---|---|---|---|---|
+| `druid_vo_pain` | `_preview_druid/druid_vo_pain_v2a_proc` | 보스가 HP 8 %를 잃을 때마다(`BossPainCheck`), 최소 3초 간격, 새 라이프 HP 회복 시 기준 갱신. rate ±5 % | Voice | .6 |
+| `druid_vo_attack` | `…vo_attack_v2a_proc` | 내려찍기(`bossSlam` 진입)·돌진(`bossCharge` 진입)·해일 고리 솟음, 직전 기술이 같으면 생략(`PrevMove`). rate ±5 % | Voice | .7 |
+| `druid_vo_phase` | `…vo_phase_v2c_proc` | P1 인트로(호스트 `NativeBossSounds.Howl`, `boss_howl` 대체)·P2·P3 시작(`BeginLife`) | Voice | 1.0 |
+| `druid_vo_fall` | `…vo_fall_v2a_proc` | P1·P2 끝 쓰러질 때(`RemodelZeroHp`), `druid_root_pierce`는 40틱 뒤로 미룸 | Voice | .7 |
+| `druid_vo_last` | `…vo_last_v2a_proc` | `BossDeath`(마지막 침강 직전), `death_boss` 대체 | Voice | .75 |
+| `druid_drag` | `…drag_v2a_proc` | 기술 3 돌진 시작 1회 | Skill | .6 |
+| `druid_fissure` | `…fissure_v2b_proc` | 기술 4 균열이 달려가는 순간 | Skill | .6 |
+| `druid_pod` | `…pod_v2d_proc` | 기술 11 꼬투리 배치 | Skill | .5 |
+| `druid_summon` | `…summon_v2c_proc` | 기술 9 졸개가 나오는 순간 | Skill | .6 |
+| `amb_druid_arena` | `…amb_druid_arena_v2d_proc` | 보스 BGM 동안 숲 바닥음 대신 루프(`NativeGameMusic`, 같은 .15×SFX, Boss 스냅샷 −8 dB 적용) | Ambience | .15 |
+| `bgm_druid_boss` | `music/druid_bgm_b.mp3` | 보스 아레나 BGM. 게인 −3.4 dB 후 192k mp3 재인코딩(원본 피크 −0.8 → −4.4 dBFS), `CompressedInMemory` | Music | .6 |
+
+음량은 임시 시작값(명세는 `druid_hit` .3만 지정)이고 청음 뒤 조정한다. 다시 만드는 5키(`druid_hit`·`druid_hit_heavy`·`druid_whip`·`druid_slam`·`druid_spore`)는 지금 소리 그대로(`boss_hit`) 두었다.
+
+**확인:** Unity 컴파일 오류 0. 같은 시드 13 드루이드 타임라인 Receipt(녹음 v4 아님): `druid_vo_pain` 25 · `druid_vo_attack` 17 · `druid_vo_phase` 3 · `druid_vo_fall` 2 · `druid_vo_last` 1 · `druid_drag` 8 · `druid_fissure` 5 · `druid_pod` 1 · `druid_summon` 0(이 시드 전투에서 기술 9 미사용), 패링 소리 14줄(성공 7회 × 2). 녹음의 보스 구간 BGM은 새 `bgm_druid_boss`와 일치(r=0.99, 일정 오프셋), 옛 `boss.mp3`와는 불일치.
