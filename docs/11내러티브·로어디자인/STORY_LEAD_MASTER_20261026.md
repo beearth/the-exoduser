@@ -143,6 +143,7 @@
 | 날짜 | 내용 | 조치 |
 |---|---|---|
 | 2026-10-27 | story-simple의 펫 대사 커밋 `8bf094fe6`(로컬)에 타 세션이 인덱스에 미리 스테이징한 파일이 함께 들어감 — 총 512파일(output/new_heroes_refinement 151·output/cinematic 92·assets/character-concepts 75·steam_maintenance 등, `video/world_intro_v16_clean_en.mp4` 102MB, 0바이트 쓰레기 파일 `x.startsWith('13')))`, index.html·character-story-player.js·test 캐시키). 원인: `git commit` 전 인덱스 확인 생략 | reset 시도 안 함(권한 게이트), 이력 유지. CTO에 push 시 스토리 경로(game.html·lang_*.js 27·번역대상_전체목록.md·CH1_STORY_SPINE)만 가져가도록 통보. 재발 방지: `git commit -m ... -- <경로>`만 사용(인덱스의 타 세션 스테이징 무시) |
+| 2026-10-28 | 스토리 총괄 세션이 백그라운드 명령에 `python -`(stdin 대기)를 1회 사용 → 대화형 REPL 오류 반복으로 로그 192MB(`C:/Users/심도진/AppData/Local/Temp/claude/G--exoduser/6e2ee6ef-…/tasks/boum20xqt.output`). story-simple도 1회 같은 실수(EOF로 즉시 종료, 피해 없음). CLAUDE.md 디스크 규칙(10-27 162GB 사고) 위반 | 즉시 중지. 로그 삭제는 세션 권한 설정이 2회 거부(10-28 사용자 "알아서 지워" 뒤에도) → 우회하지 않고 사용자에게 직접 삭제 명령 안내. 재발 방지: 스크립트는 반드시 파일로 넘기고(`python <파일>`), story-simple 지시문에 금지 문구 상시 포함 |
 | 2026-10-26 22:30~22:45 | 공유 작업트리에서 `NEW_HEROES_DESIGN_LOCK.md`(staged 신규, 커밋 이력 없음)가 디스크·인덱스에서 사라짐. 같은 시각 `character-story-player.js`의 타 세션 미커밋 변경(캐시키 `killu-bloodtears-v3`)도 커밋본으로 되돌아감, `test/*.test.js` 다수가 삭제 상태. 주체 미확인 | git 미참조 blob `6a599015b`(35,791B, 사라지기 전 크기와 일치)로 신규3종 LOCK 문서를 원위치에 복원(미스테이징). 나머지는 소유 세션 확인 필요 |
 
 ## 변경 이력
@@ -163,3 +164,4 @@
 - 2026-10-28: STY-15 묶음 C 반영(SHA 14de6fda3) — `_BOSS_LINES` 2장 7키·펫 si4/si9 교체, 번역대상 No.3588~3598.
 - 2026-10-28: 사용자 결정 4건(실버테일 초안 위임·D15 암시 허용·D16 채택·D17 후반 장 사용) 기록.
 - 2026-10-28: 모녀 원문 = 위니 13막 발견, 사용자 "실버테일로 옮겨" → 실버테일 개인사 정본 v1 신설, AI 초안 폐기, STY-D21~D24.
+- 2026-10-28: STY-15 묶음 C 검수 PASS(14de6fda3) — `_bossLine` 키 없음 즉시 return·아레나당 키별 1회 확인, si5 사망 한 줄 1600×900·1x 크롭 눈 판정(1장 `#bossLine`과 같은 틀·뼈색, 가독성 OK, `tmp/design-review/20261028_dialogue_C/`). `python -` 사고 §6 기록. 묶음 B는 B1(전수 목록·현행 문장 추출, 코드 무변경) → 총괄 문장 확정 → B2(번역·`_T` 배선) 2단계로 결정, 스테이지 전환 문구 "위층으로 오르는 중..." 채택.
