@@ -1,5 +1,14 @@
 # DT-01 Unity 작업 서버 + PC 순번 큐
 
+## 브리프에 그대로 붙일 짧은 예시 (Codex·다른 세션)
+```powershell
+$x = 'G:\exoduser\unity\Tools\devtools\exo-unity.ps1'; $wt = '<내 워크트리 경로>'   # 창 0 · 소리 0 · 세이브 격리 · 잠금·순번 자동 (Unity·플레이어·브라우저는 이 실행기로만)
+& $x run    -Worktree $wt -Method <클래스.메서드> -Args '-a,1,-b,2'                         # 에디터 job
+& $x build  -Worktree $wt -Args '-output,<dir>,-receipt,<json>'                              # 빌드(PortVerification.Build)
+& $x player -Worktree $wt -Exe <exe> -Args '--unity-m1-check,-output,<dir>'                  # 플레이어(숨은 데스크톱 기본)
+& $x status                                                                                  # 잠금·예약·메모리·서버 상태
+```
+
 Unity를 작업마다 새로 띄우면 고정 비용(라이선스·첫 Refresh·엔진 초기화/종료)이 9~10초씩 든다.
 작업 서버는 워크트리당 Unity 1개를 batchmode로 계속 띄워 두고, 작업을 파일로 받아 실행한다. 컴파일 오류는 Unity를 다시 띄우지 않고 결과 json에 바로 담긴다.
 
