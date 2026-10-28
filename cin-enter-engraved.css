@@ -114,3 +114,32 @@
  background:linear-gradient(90deg,rgba(194,26,16,0),rgba(194,26,16,.26) 50%,rgba(194,26,16,0))}
 .cin-enter-btn span{position:static;transform:none;visibility:visible;font:300 20px 'Hahmlet','Nanum Myeongjo',serif;letter-spacing:.6em;padding-left:.6em;color:#f2f0ec;text-shadow:0 1px 6px #000}
 @media(prefers-reduced-motion:reduce){#gateFx::after,#gateFx>i{animation:none}}
+
+/* ── 첫 화면 = 인장 락업 (2026-10-28 사용자 "올드버전은 버리고 다시해보자" + 엘든링 타이틀 "깔끔해도 디테일이 살아있어야") ──
+   옛 문(인트로 첫 프레임)은 검정 락업 뒤로 숨기고, ENTER를 누르면 락업이 걷히며 문 영상이 시작된다.
+   인장 img/ui/silver_hell/gate_sigil_20261028.jpg (gpt-image-2.5-sunburst, 2560×1440): 일곱 고리 = 일곱 지옥, 세로축 사슬의 끊어진 고리 = 최초의 탈주, 가운데 빈 눈 자리에 로고 O의 지옥의 눈이 들어간다.
+   로고 = 현행 눈알 로고 A 그대로. 좌표는 16:9 상자(.gl-in) 기준: 인장 눈 (50%, 48%), 로고 폭 57.3%·좌 23.86%·위 26.2% → 로고 O 눈과 인장 눈이 겹친다. 근거: LOBBY_AAA_REFERENCE_STUDY_20261028.md §17 */
+#gateLock{position:absolute;inset:0;background:#000;overflow:hidden;pointer-events:none;transition:opacity 1.4s ease}
+.cin-hell-frame.dissolve #gateLock{opacity:0}
+#gateLock .gl-in{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);aspect-ratio:16/9}
+#gateLock .gl-sigil{position:absolute;inset:0;width:100%;height:100%;opacity:0;animation:glSigilIn 2.6s ease-out .2s forwards,glBreath 7s ease-in-out 2.8s infinite}
+#gateLock .gl-halo{position:absolute;left:18%;right:18%;top:36%;height:44%;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(0,0,0,.62),transparent 72%);opacity:0;animation:glSigilIn 2s ease-out .8s forwards}
+#gateLock .gl-logo{position:absolute;left:23.86%;top:26.2%;width:57.3%;height:auto;opacity:0;filter:drop-shadow(0 0 18px rgba(0,0,0,.9));animation:glLogoIn 1.8s ease-out 1.1s forwards}
+@keyframes glSigilIn{from{opacity:0;transform:scale(1.035)}to{opacity:1;transform:none}}
+@keyframes glLogoIn{from{opacity:0;transform:translateY(1.2%)}to{opacity:1;transform:none}}
+@keyframes glBreath{0%,100%{opacity:1}50%{opacity:.82}}
+.cin-hell-frame #gateFx{display:none}
+.cin-hell-frame .cin-enter-btn{top:88%;animation:glFadeIn 1.4s ease-out 2.4s both}
+@keyframes glFadeIn{from{opacity:0}to{opacity:1}}
+.cin-hell-frame.dissolve .cin-enter-btn{animation:none;opacity:0}
+@media(prefers-reduced-motion:reduce){#gateLock .gl-sigil,#gateLock .gl-halo,#gateLock .gl-logo{animation:none;opacity:1}.cin-hell-frame .cin-enter-btn{animation:none}}
+/* ENTER 띠: 끝이 사각으로 끊기지 않게 양끝을 녹이고, 가운데는 검정 바탕을 깔아 인장 아래 창끝이 글자 뒤로 숨게 */
+.cin-hell-frame .cin-enter-btn{padding:0 220px;border:0;
+ background:linear-gradient(180deg,transparent,rgba(230,227,220,.2) 1px,transparent 1px,transparent calc(100% - 1px),rgba(230,227,220,.2) calc(100% - 1px)),
+  radial-gradient(ellipse 50% 70% at 50% 50%,rgba(194,26,16,.30),transparent 75%),
+  radial-gradient(ellipse 38% 100% at 50% 50%,rgba(0,0,0,.92),rgba(0,0,0,.6) 60%,transparent);
+ -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
+/* 32:9 등 프레임 바깥도 같은 검정(경계선 방지). ENTER 뒤에는 투명으로 돌아가 문 영상이 보인다 */
+#cinClickPrompt{transition:background-color 1.2s ease}
+#cinClickPrompt:has(#gateLock):has(.cin-hell-frame:not(.dissolve)){background:#000!important}
+#cinClickPrompt:has(#gateLock)::before{display:none} /* 옛 문 비네트(푸른 기 검정 rgba(5,6,7)) — 인장 화면에선 끔 */

@@ -264,3 +264,22 @@ BG3·토치라이트 공통 "깔끔함" 5원칙: ① 장면이 화면 대부분 
 - 주인공 판정(총괄): 첫 화면과 타이틀 메뉴를 한 장으로 잇기 위해 §15 I1대로 **실버테일(DESIGN LOCK)** 로 간다. 전사 레퍼런스(`ref_warrior.jpg`)로 쓴 프롬프트는 쓰지 않는다.
 - **막힘**: MagicLight 잔액 30,390pt가 남아 있으나 요금제(Standard VIP)가 2026-10-24에 끝나 GPT Image 2.5 sunburst·Seedream 5.0 Pro 모두 Create 시 요금제 구매 창만 뜨고 생성되지 않음(차감 0 확인). Higgsfield 잔액 0.13 크레딧. Ludo API 키 거부. → 유료 생성 불가, 지출 0.
 - 재개 조건(사용자 결정): MagicLight 요금제 갱신 또는 Higgsfield 크레딧 충전. 재개 시 첫 장은 Seedream 1장(100)으로 구도 확인 → GPT Image sunburst로 인물 LOCK 마감.
+
+### 17-1. 재개 — GPT API로 생성, 첫 화면 = 인장 락업 적용 (2026-10-28 밤)
+
+- 정정: 생성 서비스는 막히지 않았다. 디자인총괄 인계(`design-director.md`)에 적힌 대로 **OpenAI 이미지 API(OPENAI_API_KEY)** 와 **Kling Pro(영상)** 를 쓸 수 있다. 위 17절의 '막힘'은 MagicLight·Higgsfield에만 해당한다.
+- 사용자 추가 기준(엘든링 타이틀 캡처): "저렇게 깔끔하게 한다고해도 디테일이 살아있어야 완성도가 느껴지는거야" → 첫 화면은 **검정 바탕 + 로고 + 로고 뒤 인장 + ENTER 띠** 로 비우되, 인장·로고의 재질(단조강·균열·음각)이 1x에서 살아 있게 한다.
+- 주인공 판정 정정: 첫 화면은 인물 없는 인장 락업으로 결정(엘든링·MH 공통 = 로고가 주인공). 실버테일은 다음 타이틀 메뉴 배경 그대로.
+
+| 항목 | 값 |
+|---|---|
+| 인장 | `img/ui/silver_hell/gate_sigil_20261028.jpg` 2560×1440 — gpt-image-2.5-sunburst images/edits, 참조 = 현행 눈알 로고 A(검정 바탕), quality high, 1장 생성·채택(s1). 밝기 ×0.55 + 가장자리 원형 감쇠(반지름 55%→100% 검정)를 구워 넣음 |
+| 인장 의미 | 일곱 고리 = 일곱 지옥, 세로축 사슬 + 위쪽 끊어진 고리 하나 = 최초의 탈주자(EXODUSER), 가운데 빈 아몬드 자리 = 로고 O의 지옥의 눈이 들어가는 곳 |
+| 로고 | `img/logo_exoduser.png`(눈알 로고 A) 그대로. 16:9 상자 기준 폭 57.3%·좌 23.86%·위 26.2% → 로고 O 눈 = 인장 눈(50%, 48%). 글자 뒤 어두운 후광(좌우 18%, 위 36%, 높이 44%) |
+| 움직임 | 인장 2.6초 페이드·축소(1.035→1), 로고 1.1초 뒤 1.8초 떠오름, ENTER 2.4초 뒤 페이드, 인장 7초 숨쉬기(불투명도 1↔0.82). reduced-motion이면 정지 |
+| ENTER | 글자 Hahmlet 300 20px, 띠는 양끝 마스크로 녹이고 가운데 검정 바탕(인장 아래 창끝이 글자 뒤로 숨음), y 88% |
+| 흐름 | ENTER → `.dissolve` → 락업 1.4초 걷힘 → 기존 문 영상(`video/intro.mp4`) 재생. 옛 문 정지 프레임·`#gateFx`·옛 비네트(`#cinClickPrompt::before`, rgba(5,6,7) 푸른 기)는 인장 화면에서 끔. 32:9 바깥도 순검정(측정 0,0,0) |
+| 코드 | `index.html` `#gateLock`(`.cin-hell-frame` 안), `cin-enter-engraved.css` 끝 "첫 화면 = 인장 락업" 절, 캐시 `?v=20261028-gate-sigil` |
+| 검수 | headless 1920×1080·3840×1080 실제 흐름(타이틀 메뉴 → 인트로 다시 보기): pageerror 0, 인장·로고·ENTER 표시, 1x 크롭 잔점 없음, ENTER 후 문 영상 재생 프레임 확인. 시안 `tmp/design-review/20261028_keyart/applied/` |
+| 비용 | OpenAI 이미지 2장(인장 s1 2560×1440 + 월드 키아트 후보 k1 3840×1280), quality high |
+| 보류 후보 | 월드 키아트 k1(`tmp/design-review/20261028_keyart/candidate_world_k1.png`, 전사 뒷모습·핏빛 강·성채) — 첫 화면엔 쓰지 않음. 붉은 태양 중심이 바래지 않아 하늘 LOCK S3 일부 미달, 화면 전체 적색 과다. 상점 캡슐·로딩 후보로 보관 |
