@@ -120,7 +120,7 @@ namespace Exoduser
 
         public static void Run()
         {
-            Directory.CreateDirectory(GenDir); AssetDatabase.Refresh();
+            AudioListener.volume = 0f; Directory.CreateDirectory(GenDir); AssetDatabase.Refresh();
             Load(); fps.Clear(); ribbonQuads.Clear();
             var mats = MakeMaterials();
             var td = BuildTerrainData();
@@ -697,7 +697,7 @@ namespace Exoduser
         public static void Fps()
         {
             var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
-            var outJson = Arg("-out", "rm1-fps.json"); Load(); EditorSceneManager.OpenScene(ScenePath);
+            AudioListener.volume = 0f; var outJson = Arg("-out", "rm1-fps.json"); Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var w0 = W(100f, 185f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); brain.ManualUpdate();
             var world = GameObject.Find("World"); var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
@@ -905,7 +905,7 @@ namespace Exoduser
         public static void Capture()
         {
             var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
-            var outDir = Arg("-outDir", "rm1-cuts"); Directory.CreateDirectory(outDir);
+            AudioListener.volume = 0f; var outDir = Arg("-outDir", "rm1-cuts"); Directory.CreateDirectory(outDir);
             var cuts = Arg("-cuts", "start,r2,river").Split(',');
             Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>();
