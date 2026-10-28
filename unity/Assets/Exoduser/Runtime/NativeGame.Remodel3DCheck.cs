@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort
             AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;
             string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { Application.Quit(1); yield break; }
             string caps = Path.Combine(output, "caps"); Directory.CreateDirectory(caps);
-            Screen.SetResolution(1600, 900, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);
+            Screen.SetResolution(1600, 900, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);   // no window in batchmode; the size only fixes the logic camera aspect
             lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.6f);
             string fresh = "RI" + (DateTime.Now.Ticks % 100000).ToString("00000");
             if (lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual()) lobby.CreateCharacter(fresh);
@@ -63,12 +63,23 @@ namespace Exoduser.UnityPort
             {
                 p.X = s.Item2; p.Y = s.Item3;
                 for (int i = 0; i < 6; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); p.X = s.Item2; p.Y = s.Item3; p.Iframes = 1e9f; yield return null; }
-                menu = false; gameFocused = true; UpdateViews(); yield return new WaitForSecondsRealtime(.8f); menu = false; gameFocused = true; UpdateViews(); yield return new WaitForEndOfFrame();
-                ScreenCapture.CaptureScreenshot(Path.Combine(caps, (NativeRemodel3D.Requested ? "3d-" : "2d-") + s.Item1 + ".png")); shots.Add(s.Item1); yield return null; yield return new WaitForSecondsRealtime(.3f);
+                menu = false; gameFocused = true; UpdateViews(); yield return new WaitForSecondsRealtime(.8f); menu = false; gameFocused = true; UpdateViews(); yield return null;
+                RmIntShot(Path.Combine(caps, (NativeRemodel3D.Requested ? "3d-" : "2d-") + s.Item1 + ".png")); shots.Add(s.Item1); yield return null;
             }
             rc.shots = shots.ToArray();
             File.WriteAllText(Path.Combine(output, "ticklog.json"), JsonUtility.ToJson(rc, true));
             Application.Quit(0);
+        }
+
+        // Windowless capture (batchmode with the GPU): the world cameras render into a 1600x900 RenderTexture, in the order the player sees them (the 2D camera first: it clears the frame; the 3D camera on top).
+        // The IMGUI HUD is not part of it (OnGUI does not run in batchmode).
+        void RmIntShot(string path)
+        {
+            var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32); var tex = new Texture2D(1600, 900, TextureFormat.RGB24, false);
+            var cams = new List<Camera> { view }; if (NativeRemodel3D.Active && r3Cam != null) { r3Cam.enabled = true; cams.Add(r3Cam); }
+            foreach (var c in cams) { var old = c.targetTexture; c.targetTexture = rt; c.Render(); c.targetTexture = old; }
+            var prev = RenderTexture.active; RenderTexture.active = rt; tex.ReadPixels(new Rect(0, 0, 1600, 900), 0, 0); tex.Apply(); RenderTexture.active = prev;
+            File.WriteAllBytes(path, tex.EncodeToPNG()); Destroy(tex); rt.Release(); Destroy(rt);
         }
     }
 }
