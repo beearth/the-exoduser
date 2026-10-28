@@ -1,0 +1,197 @@
+{
+ "about": "SFX Forge 카탈로그 — UI 새 소리 SND-10 2단계 6키 x 해석 4개(a~d), 키 <key>_s10a~d(문구마다 variant 1개). 사용: node --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <this> --variants 1",
+ "sounds": [
+  {
+   "category": "ui",
+   "key": "ui_cancel_s10a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.8,
+   "text": "short loose iron chain slack, a quick dull jingle of a few links falling limp. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_cancel_s10b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.8,
+   "text": "taut leather strap released with a soft dry slap, quick and muted. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_cancel_s10c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.8,
+   "text": "small iron latch released, a single short dry click-clack, low pitched. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_cancel_s10d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.8,
+   "text": "dull muffled tap of a small iron plate being set down, short, slightly falling in pitch. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_panel_open_s10a",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "heavy leather bound tome cover opening, soft leather creak and a few pages settling, dry. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_panel_open_s10b",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "iron clasp unlatching and a heavy metal lid lifting, one dull click then a low creak. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_panel_open_s10c",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "old parchment scroll unrolling, dry papery rustle with a soft wooden roller knock. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_panel_open_s10d",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "heavy iron chest drawer sliding open on rough rails, low scrape and a small stop thud. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_panel_close_s10a",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "heavy leather bound tome cover closing, dull soft thud with a short leather creak, dry. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_panel_close_s10b",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "heavy metal lid lowered and iron clasp locking, one low thud then a dull latch click. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_panel_close_s10c",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "old parchment scroll rolled up and tied, dry papery rustle ending in a soft knock. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_panel_close_s10d",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "heavy iron chest drawer pushed shut, short scrape and a dull metal stop. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_tab_s10a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.8,
+   "text": "single tiny dry bone tap, extremely short, soft. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_tab_s10b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.8,
+   "text": "tiny soft leather tap, very short and muted, dry. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_tab_s10c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.8,
+   "text": "small iron pin flicked, one very short dry tick, low pitched, no ring. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_tab_s10d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.8,
+   "text": "small wooden token set down on a wooden table, one very short dry knock. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_fail_s10a",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "heavy iron padlock rattling once and refusing to open, dull short clunk. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_fail_s10b",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "short dull wooden thunk against a blocked door, muffled and low. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_fail_s10c",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "muffled low thud of a leather bundle dropped on a stone floor, soft and short, slightly downward. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_fail_s10d",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.8,
+   "text": "short dull chain slack dropping onto iron, a quiet low clank, no jingle. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_salvage_s10a",
+   "raw": true,
+   "duration": 0.9,
+   "promptInfluence": 0.8,
+   "text": "small piece of worn metal breaking apart and scraps falling onto an iron plate, short crunch then a few dull clinks. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_salvage_s10b",
+   "raw": true,
+   "duration": 0.9,
+   "promptInfluence": 0.8,
+   "text": "one short hammer tap on an anvil followed by small metal shards settling, dry. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_salvage_s10c",
+   "raw": true,
+   "duration": 0.9,
+   "promptInfluence": 0.8,
+   "text": "leather seams ripping apart and small fittings dropping on a wooden table, quick and dry. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  },
+  {
+   "category": "ui",
+   "key": "ui_salvage_s10d",
+   "raw": true,
+   "duration": 0.9,
+   "promptInfluence": 0.8,
+   "text": "handful of scrap metal bits poured into an iron bowl, short rattle that settles quickly. dark gothic fantasy game UI, black iron, worn leather and old metal, short and dry, no music, no voice, no synth, no electronic beep, no bright chime, no reverb tail"
+  }
+ ]
+}
