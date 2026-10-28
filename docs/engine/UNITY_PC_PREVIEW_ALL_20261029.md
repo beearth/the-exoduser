@@ -111,3 +111,13 @@ NEXT PASS: Remodel 어셈블리 경계 수정 → 새 검증 단위 → 성공 �
 | 대상 | `BossArenas/ArenaChannelPlan.cs`, `CH1_3/Rm3PoolLightCuller.cs`, `CH1_4/Rm4PoolLightCuller.cs` |
 | 보존 | 파일 이동·스크립트 GUID·Core·게임 규칙·장면 배치 변경 0. 기본 어셈블리를 향한 역참조 추가 0 |
 | 검증 | 새 사용자 재개 지시에 따른 참조 경계 수정 단위. Unity 빌드 결과는 후속 보고에 기록하며 기존 실패 2회를 성공으로 바꾸지 않음 |
+
+### 캡처 해상도 계약 보완
+
+| 위치 | 이전 | 미리보기 변경 |
+|---|---|---|
+| `NativeGame.M1Check.cs` 비 batch 스모크 | `Screen.SetResolution(1920,1080)` 강제 | `1600,900` 고정. 숨은 데스크톱에서 ScreenCapture 원본이 브리프 요구와 같도록 변경 |
+| batch RenderTexture | 1600×900 | 보존 |
+| Core·게임 규칙 | — | 변경 0 |
+
+새 참조 경계 단위의 첫 Unity 실행 `a5d1e9f0`은 Package Manager IPC 초기화에서 실패했고 컴파일은 시작되지 않았다. Node 도구의 자식 환경에 APPDATA·ProgramFiles 등 Windows 기본 경로가 누락된 것을 확인했다. 레지스트리를 읽어 확인한 기본값을 이번 작업 자식 프로세스에만 보완한 뒤 한 번 재실행한다. 시스템 환경·패키지·실행기 소스는 변경하지 않는다.
