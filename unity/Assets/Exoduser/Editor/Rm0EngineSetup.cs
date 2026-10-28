@@ -167,7 +167,7 @@ namespace Exoduser
             var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(path);
             if (profile == null) { profile = ScriptableObject.CreateInstance<VolumeProfile>(); AssetDatabase.CreateAsset(profile, path); }
             profile.components.RemoveAll(x => x == null);   // drop the null entries left by the empty e10b54d36 asset
-            Ensure<Tonemapping>(profile).mode.Override(TonemappingMode.ACES);
+            Ensure<Tonemapping>(profile).mode.Override(TonemappingMode.Neutral);   // RM0-LIGHT-L design-director condition: Neutral (was ACES)
             var bloom = Ensure<Bloom>(profile);
             bloom.threshold.Override(1.05f); bloom.intensity.Override(0.28f); bloom.scatter.Override(0.55f); bloom.tint.Override(new Color(1f, .82f, .72f));
             var grade = Ensure<ColorAdjustments>(profile);

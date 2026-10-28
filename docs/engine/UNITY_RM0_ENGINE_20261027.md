@@ -16,7 +16,7 @@
 | com.unity.timeline | 6.6.0 | 연출 |
 | com.unity.modules.terrain / terrainphysics / physics / ai | 1.0.0 | 지형·3D 물리·NavMesh |
 
-- 샌드박스 씬: `Assets/Exoduser/Scenes/RM_Sandbox.unity` — XZ 지면 위 Terrain 1·ProBuilder 블록·NavMesh Surface·VFX Graph 샘플·Timeline·Cinemachine(정사영 5.4, 수직 하향)·Global Volume(`Rendering/GlobalVolume_Hell`: ACES·블룸·어두운 붉은 톤 보정·비네트). 재생성: `Unity -batchmode -executeMethod Exoduser.Rm0EngineSetup.Run`, 렌더 캡처: `-executeMethod Exoduser.Rm0EngineSetup.Capture -output <png>`.
+- 샌드박스 씬: `Assets/Exoduser/Scenes/RM_Sandbox.unity` — XZ 지면 위 Terrain 1·ProBuilder 블록·NavMesh Surface·VFX Graph 샘플·Timeline·Cinemachine(정사영 5.4, 수직 하향)·Global Volume(`Rendering/GlobalVolume_Hell`: Neutral(톤매핑)·블룸·어두운 붉은 톤 보정·비네트). 재생성: `Unity -batchmode -executeMethod Exoduser.Rm0EngineSetup.Run`, 렌더 캡처: `-executeMethod Exoduser.Rm0EngineSetup.Capture -output <png>`.
 - 스프라이트 3D 라이팅: `Resources/Shaders/SpriteLit3D.shader`(URP HLSL — 메인·추가 라이트, 그림자 수신·투사; Shader Graph 아님). 기존 커스텀 셰이더 5종(CG 언릿)·`Sprites/Default`는 URP에서 그대로 동작해 변환 불필요. 샌드박스 스프라이트는 라이트 과노출 — RM-1에서 `_Ambient`·조명 세기 조정 필요.
 - Mac(ARM64): Mac 빌드는 이번에 미검증. VFX Graph(컴퓨트/Metal)·Burst·Input System은 Apple Silicon 지원 패키지. `URP_Mac_Balanced` = MSAA 2x·그림자 32m·추가광 6.
 - 주의: 게임 씬(코드 생성)은 아직 URP Lit·Volume을 쓰지 않는다. 월드 3D화·카메라 교체는 RM-1 이후.
@@ -85,3 +85,9 @@
 - colorFilter를 한 번 조정해 봤다((0.98, 1.0, 0.95), 단일 시도): 갑옷 R/G 1.18·B≤G는 맞았지만 웅덩이 색상각 17.5°(>12°)·바닥 R/G 1.41~1.48(<1.5)로 더 나빠져 **채택하지 않고 기존 colorFilter (1, .98, .97)를 유지**했다. 항목당 한 번 규칙에 따라 colorFilter는 더 조정하지 않았다. 남은 선택지: ① 두 항목을 8비트 양자화 오차로 보고 수용 ② colorFilter를 더 약하게(예 (.99, 1, .97)) ③ 광원값(Sun·Trilight) 조정 — 맵 총괄 결정.
 
 **반영:** `Rm0EngineSetup.PostExposure = 1.85f` 상수로 올리고 `ApplyLight`로 `GlobalVolume_Hell.asset`의 postExposure만 −0.15 → 1.85로 바꿨다(다른 값·씬·렌더러 변화 없음, 씬 해시 동일).
+
+### 톤매핑 Neutral (디자인총괄 2차 PASS 조건, 2026-10-28)
+
+- 디자인총괄이 postExposure 1.85를 2차 PASS로 확정하면서 **톤매핑을 Neutral로 바꾸는 조건**을 붙였다. `Rm0EngineSetup.CreateVolumeProfile`의 `TonemappingMode.ACES` → `TonemappingMode.Neutral`, `GlobalVolume_Hell.asset`의 Tonemapping `mode` m_Value 2(ACES) → 1(Neutral). 다른 값(노출 1.85·대비 10·채도 −8·colorFilter·블룸·비네트)은 그대로다.
+- 위의 "웅덩이 색상각이 12° 안이라 Neutral 비교 컷은 만들지 않았다"는 ACES 기준의 판정이었다. Neutral은 색상 곡선이 달라 **웅덩이 색상각(350~12°)·화면 중앙값(≥ 23.7)·바닥 R/G(1.5~1.8)·날 채도(≤ 15 %)를 다시 재야 한다.** 재측정은 맵 총괄이 하며, 캡처는 같은 구도(`Rm0LightCapture` 스윕 하니스)로 낸다.
+- 확인 상태: 값 변경만 했고 **재측정·플레이어 빌드 미확인**.
