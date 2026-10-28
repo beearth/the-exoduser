@@ -499,21 +499,14 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 #splashTitleStage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
 #splashTitleLogo{position:absolute;left:96px;top:96px;width:520px;height:auto;user-select:none;
   filter:drop-shadow(0 10px 26px rgba(0,0,0,.8)) drop-shadow(0 0 2px rgba(0,0,0,.6))}
-#splashTitleMenu{position:absolute;left:232px;top:436px;width:248px;display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
-#splashTitleMenu .stm-btn{position:relative;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;
-  font:400 15px/1 'Hahmlet','Nanum Myeongjo','Noto Serif KR','Noto Serif',serif;letter-spacing:.16em;color:#d6d3cd;white-space:nowrap;
+#splashTitleMenu{position:absolute;left:116px;top:436px;width:380px;display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(230,227,220,.1);margin:0;padding:0;list-style:none}
+#splashTitleMenu .stm-btn{position:relative;height:48px;display:flex;align-items:center;justify-content:flex-start;padding-left:36px;border-bottom:1px solid rgba(230,227,220,.1);transition:color .18s,background .25s;cursor:pointer;pointer-events:auto;
+  font:300 18px/1 'Hahmlet','Nanum Myeongjo','Noto Serif KR','Noto Serif',serif;letter-spacing:.14em;color:#c9c7c3;white-space:nowrap;
   text-shadow:0 1px 0 rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.7);transition:color .18s;outline:none}
-#splashTitleMenu .stm-btn svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-#splashTitleMenu .stm-plate{fill:rgba(13,13,15,.82);stroke:rgba(138,139,136,.75);stroke-width:1;transition:stroke .18s}
-#splashTitleMenu .stm-inner{fill:none;stroke:rgba(201,199,195,.14);stroke-width:1}
-#splashTitleMenu .stm-tip{fill:none;stroke:rgba(138,139,136,.85);stroke-width:1;transition:fill .18s,stroke .18s}
-#splashTitleMenu .stm-glow{opacity:0;transition:opacity .2s}
 #splashTitleMenu .stm-label{position:relative;padding-left:.16em}
-#splashTitleMenu .stm-btn.sel{color:#f8f5ef;text-shadow:0 1px 0 #000,0 0 14px rgba(194,26,16,.55)}
-#splashTitleMenu .stm-btn.sel .stm-plate{stroke:#c9c7c3;stroke-opacity:.95;stroke-width:1.4}
-#splashTitleMenu .stm-btn.sel .stm-inner{stroke:rgba(248,245,239,.3)}
-#splashTitleMenu .stm-btn.sel .stm-tip{fill:#c21a10;stroke:#f8f5ef}
-#splashTitleMenu .stm-btn.sel .stm-glow{opacity:1}
+#splashTitleMenu .stm-btn.sel{color:#f2f0ec;background:linear-gradient(90deg,rgba(194,26,16,.48),rgba(194,26,16,.16) 55%,rgba(194,26,16,0));text-shadow:0 1px 0 #000}
+#splashTitleMenu .stm-dot{position:absolute;left:13px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:#ff6a50;box-shadow:0 0 8px 2px rgba(255,80,50,.8);opacity:0;transition:opacity .18s}
+#splashTitleMenu .stm-btn.sel .stm-dot{opacity:1}
 #splashTitleRule{position:absolute;left:232px;width:248px;height:20px;display:none} /* 실버 헬 패키지: 장식선 없음 */
 #splashTitleBuild{position:absolute;right:36px;bottom:26px;text-align:right;font:600 11px/1.7 'Cinzel',serif;letter-spacing:.28em;
   color:rgba(230,227,221,.6);text-shadow:0 1px 3px #000,0 0 10px rgba(0,0,0,.9);pointer-events:none}
@@ -4586,21 +4579,18 @@ function showCharGate(charId,storySeen=false){
     ];
     if(_LOBBY_BUILD==='demo')defs.push({label:'STEAM 위시리스트 추가',act:()=>openWishlist()});
     if(window.nw?.App?.quit||window.electronAPI?.quitApp)defs.push({label:'게임 종료',act:_titleQuit});
-    const W=248,H=40; // 실버 헬 UI 패키지 버튼 규격(2026-10-28 승인)
-    const plate=`M14 .5H${W-14}L${W-.5} ${H/2}L${W-14} ${H-.5}H14L.5 ${H/2}Z`;
-    const inner=`M16.5 4.5H${W-16.5}L${W-6} ${H/2}L${W-16.5} ${H-4.5}H16.5L6 ${H/2}Z`;
-    const tipL=`M-9 ${H/2}L-3 ${H/2-6}L3 ${H/2}L-3 ${H/2+6}Z`,tipR=`M${W+9} ${H/2}L${W+3} ${H/2-6}L${W-3} ${H/2}L${W+3} ${H/2+6}Z`;
+    const H=48; // 메뉴 B(글자 목록 + 사라지는 선택 띠, 2026-10-28 사용자 승인 [승인-디자인-5]) 한 줄 높이
     _titleMenu.replaceChildren();
     _titleItems=defs.map((d,i)=>{
       const li=document.createElement('li');li.className='stm-btn';li.setAttribute('role','menuitem');li.tabIndex=-1;
-      li.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><radialGradient id="stmGlow${i}" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#7e0d07" stop-opacity=".62"/><stop offset=".7" stop-color="#3a0806" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs><path class="stm-plate" d="${plate}"/><path class="stm-glow" d="${plate}" fill="url(#stmGlow${i})"/><path class="stm-inner" d="${inner}"/><path class="stm-tip" d="${tipL}"/><path class="stm-tip" d="${tipR}"/></svg>`;
+      li.innerHTML='<i class="stm-dot" aria-hidden="true"></i>';
       const label=document.createElement('span');label.className='stm-label';label.textContent=_TL(d.label);li.appendChild(label);
       li.addEventListener('mouseenter',()=>_selectTitleItem(i));
       li.addEventListener('click',e=>{e.stopPropagation();_activateTitleItem(i)});
       _titleMenu.appendChild(li);
       return {li,label,act:d.act};
     });
-    document.getElementById('splashTitleRule').style.top=(436+defs.length*(H+12)+12)+'px';
+    document.getElementById('splashTitleRule').style.top=(436+defs.length*H+12)+'px';
     const r=window.EXODUSER_RELEASE;
     document.getElementById('splashTitleBuild').innerHTML=`${_LOBBY_VER_LABEL[_LOBBY_BUILD]||''}${r&&r.version?' · v'+r.version:''}<br>FOR DEAR GAMERS`;
     _selectTitleItem(0);
@@ -4612,10 +4602,10 @@ function showCharGate(charId,storySeen=false){
     if(_titleUI.style.display!=='block')return;
     _titleItems.forEach(({label})=>{
       label.style.letterSpacing='';label.style.paddingLeft='';label.style.fontSize='';
-      // 버튼 248px(실버 헬 패키지) 안쪽 글자 폭 상한 210px — 긴 번역은 자간 → 크기 순서로 줄인다
-      if(label.offsetWidth>210){label.style.letterSpacing='.04em';label.style.paddingLeft='.04em';}
-      if(label.offsetWidth>210)label.style.fontSize='13px';
-      if(label.offsetWidth>210)label.style.fontSize='12px';
+      // 메뉴 B 한 줄(380px, 왼쪽 여백 36px) 글자 폭 상한 330px — 긴 번역은 자간 → 크기 순서로 줄인다
+      if(label.offsetWidth>330){label.style.letterSpacing='.04em';label.style.paddingLeft='.04em';}
+      if(label.offsetWidth>330)label.style.fontSize='16px';
+      if(label.offsetWidth>330)label.style.fontSize='14px';
     });
   }
   function _selectTitleItem(i){
