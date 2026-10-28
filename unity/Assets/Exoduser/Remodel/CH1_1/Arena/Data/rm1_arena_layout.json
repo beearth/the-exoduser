@@ -1,0 +1,260 @@
+{
+ "source": "Core BossArenaLayout.Generate(0) ported 1:1 (python, no Unity) + DruidBoss.Pillars.cs placement; unity = x px/100, z -py/100 (same rule as RM1_Slice)",
+ "grid": {
+  "width": 128,
+  "height": 108,
+  "tile_px": 40,
+  "world_px": [
+   5120,
+   4320
+  ],
+  "unity_world_u": [
+   51.2,
+   43.2
+  ],
+  "tile_u": 0.4
+ },
+ "tiles": {
+  "wall": 5651,
+  "floor": 7885,
+  "rune": 288,
+  "walkable": 8173
+ },
+ "circle": {
+  "centre_tile": [
+   64,
+   54
+  ],
+  "radius_tiles": 51.0,
+  "centre_of_tile_px": [
+   2580.0,
+   2180.0
+  ],
+  "core_arena_centre_px": [
+   2560.0,
+   2160.0
+  ],
+  "offset_between_the_two_px": [
+   20.0,
+   20.0
+  ],
+  "core_arena_radius_px": 2040.0,
+  "unity_core_arena_centre": [
+   25.6,
+   -21.6
+  ],
+  "farthest_walkable_radius_from_core_centre_px": {
+   "E": 2079,
+   "SE": 2093,
+   "S": 2079,
+   "SW": 2036,
+   "W": 2040,
+   "NW": 2036,
+   "N": 2000,
+   "NE": 2036
+  }
+ },
+ "entry": {
+  "tiles_x": [
+   61,
+   67
+  ],
+  "tiles_y": [
+   101,
+   104
+  ],
+  "px_x": [
+   2440,
+   2720
+  ],
+  "px_y": [
+   4040,
+   4200
+  ],
+  "tiles_added_to_floor": 0,
+  "note": "entry rectangle lies fully inside the 51-tile circle: it adds 0 tiles, there is no corridor in the Core data"
+ },
+ "boss_spot": {
+  "tile": [
+   64,
+   54
+  ],
+  "tiles_added_to_floor": 0
+ },
+ "exit": {
+  "x_tile": 64,
+  "y_tile": 2,
+  "px_centre": [
+   2580.0,
+   100.0
+  ],
+  "unity": [
+   25.8,
+   -1.0
+  ],
+  "note": "Rebuild() opens |tx-exitX|<=1 at row ExitY (3 tiles wide); read ExitY from Generate, never hard-code"
+ },
+ "pillars": {
+  "count": 4,
+  "ring_fraction": 0.55,
+  "ring_radius_px": 1122.0,
+  "start_deg": 45.0,
+  "radius_px": 80.0,
+  "positions": [
+   {
+    "index": 0,
+    "deg": 45.0,
+    "px": 3353.374,
+    "py": 2953.374,
+    "radius_px": 80.0,
+    "unity_x": 33.5337,
+    "unity_z": -29.5337,
+    "unity_radius": 0.8,
+    "footprint_on_walk_tiles": true,
+    "dir": "SE"
+   },
+   {
+    "index": 1,
+    "deg": 135.0,
+    "px": 1766.626,
+    "py": 2953.374,
+    "radius_px": 80.0,
+    "unity_x": 17.6663,
+    "unity_z": -29.5337,
+    "unity_radius": 0.8,
+    "footprint_on_walk_tiles": true,
+    "dir": "SW"
+   },
+   {
+    "index": 2,
+    "deg": 225.0,
+    "px": 1766.626,
+    "py": 1366.626,
+    "radius_px": 80.0,
+    "unity_x": 17.6663,
+    "unity_z": -13.6663,
+    "unity_radius": 0.8,
+    "footprint_on_walk_tiles": true,
+    "dir": "NW"
+   },
+   {
+    "index": 3,
+    "deg": 315.0,
+    "px": 3353.374,
+    "py": 1366.626,
+    "radius_px": 80.0,
+    "unity_x": 33.5337,
+    "unity_z": -13.6663,
+    "unity_radius": 0.8,
+    "footprint_on_walk_tiles": true,
+    "dir": "NE"
+   }
+  ],
+  "tolerance_px": 8,
+  "rise": {
+   "param": "_Rise",
+   "underground": 0.0,
+   "risen": 1.0,
+   "note": "Timeline (boss side) drives it"
+  }
+ },
+ "channel": {
+  "spec_annulus_px": [
+   2060,
+   2200
+  ],
+  "spec_annulus_about": [
+   2560.0,
+   2160.0
+  ],
+  "spec_annulus_cells_10px": 18744,
+  "spec_annulus_cells_on_walkable_tiles": 342,
+  "spec_annulus_cells_closer_than_20px_to_walkable": 1251,
+  "recommended": {
+   "rule": "band of wall-side points whose distance to the nearest walkable tile rectangle is 20..160 px (follows the tile staircase)",
+   "inner_px": 20.0,
+   "outer_px": 160.0,
+   "cells_10px": 20104,
+   "cells_after_gaps": 18892,
+   "cells_on_walkable_tiles": 0,
+   "gap": {
+    "centre_x_px": 2580.0,
+    "half_width_px": 200.0,
+    "applies_to": "entry (south) and exit (north)"
+   }
+  },
+  "width_px": 140.0,
+  "material": "Remodel/CH1_1/Materials/M_ToxicFlow.mat (shader EXODUSER/ToxicFlow)",
+  "level_param": {
+   "name": "_Level",
+   "range": [
+    0.0,
+    1.0
+   ],
+   "note": "0 = P1/P2 low water, 1 = P3 high; height only, no collision change; Timeline connection is boss side"
+  }
+ },
+ "outside": {
+  "layers": [
+   "lip (0..20 px, low mass, roots rim, h<=0.9u)",
+   "channel (20..160 px)",
+   "thorn forest x3 (>160 px)"
+  ],
+  "grid_margin_px": {
+   "north": 120,
+   "south": 80,
+   "west": 520,
+   "east": 480,
+   "note": "north and south the walkable disc is only 120 / 80 px from the grid edge (west / east 520 / 480): channel and forest must extend beyond the Core grid in world space"
+  },
+  "wedge": {
+   "pitch_rad": 0.85,
+   "tan": 1.1383,
+   "rule": "h <= 0.9 + tan(0.85) * D, D = distance (u) from the wall mass north to the nearest walkable cell",
+   "table": [
+    {
+     "D_u": 0.0,
+     "hmax_wedge_u": 0.9
+    },
+    {
+     "D_u": 0.2,
+     "hmax_wedge_u": 1.128
+    },
+    {
+     "D_u": 0.4,
+     "hmax_wedge_u": 1.355
+    },
+    {
+     "D_u": 0.8,
+     "hmax_wedge_u": 1.811
+    },
+    {
+     "D_u": 1.2,
+     "hmax_wedge_u": 2.266
+    },
+    {
+     "D_u": 1.6,
+     "hmax_wedge_u": 2.721
+    },
+    {
+     "D_u": 2.4,
+     "hmax_wedge_u": 3.632
+    },
+    {
+     "D_u": 3.2,
+     "hmax_wedge_u": 4.543
+    },
+    {
+     "D_u": 4.8,
+     "hmax_wedge_u": 6.364
+    },
+    {
+     "D_u": 6.4,
+     "hmax_wedge_u": 8.185
+    }
+   ],
+   "wall_tiles_with_walkable_within_16_tiles_north": 1008,
+   "note": "RM1 field used the stricter flat 0.9u for the camera-side mass; the arena spec asks for the wedge formula"
+  }
+ }
+}
