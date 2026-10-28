@@ -14,7 +14,7 @@
 
 보고서 기본 경로는 `I:\EXODUSER-Storage\worktree-clean\scan-<시각>.json/.md`이며, `apply` 로그도 같은 저장소에 둔다. 원격 판정은 로컬 remote ref 기준이다. 최신 원격을 요구하면 담당자가 별도 fetch 결과를 확인해야 한다.
 
-10-28 인수 시 `apply`의 `git worktree prune` 호출을 제거했다(`codex/pc-devtools-tools-20261028` 최초 `465bb875e`, 최종 `33ef33763`). 미등록 폴더와 링크 루트는 내부를 따라가지 않고 `keep`으로 남긴다. 접근 거부된 전역 ignore 파일은 Git 조회 한 번에만 제외하며, 새로 보이는 미추적 파일은 `keep`으로 처리한다. 영구 삭제 경로인 `apply`는 실행하지 않았다.
+10-28 인수 시 `apply`의 `git worktree prune` 호출을 제거했다(`codex/pc-devtools-tools-20261028` 최초 `465bb875e`, 최종 `94b8e6590`). 미등록 폴더와 링크 루트는 내부를 따라가지 않고 `keep`으로 남긴다. 접근 거부된 전역 ignore 파일은 Git 조회 한 번에만 제외하며, 새로 보이는 미추적 파일은 `keep`으로 처리한다. 허용 루트는 E:/G:의 `exoduser-wt` 두 곳이다. 제거 실패 원인이 무시된 캐시라고 확인된 경우에만 링크 없는 캐시를 정리해 1회 재시도한다. I: 루트를 준 음성 시험은 종료 2로 거부됐다. 영구 삭제 경로인 `apply`는 실행하지 않았다.
 
 원본 워크트리의 `scan-20261028-223208` 보고서를 `I:\EXODUSER-Storage\worktree-clean\devtools-source-scan-20261028-223208.json/.md`로 보존했다. **후보 0개, 예상 회수 0.00GB, keep 87개, 링크 46개**다. Git 전역 ignore 접근 거부와 Win32_Process 조회 실패가 있어 후보 0개는 실제 정리 가능량 0GB의 확증이 아니다. 수정본의 전체 재검수는 이 기록에 포함되지 않았으며, 삭제 결정을 위한 유효한 후보 보고서는 아직 없다.
 

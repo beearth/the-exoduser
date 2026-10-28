@@ -1,5 +1,9 @@
 # vfx-simple 세션 인계 (2026-10-28 오후, 2차 재생성 — 컨텍스트 283K로 임펙트 총괄 100K 규칙에 따라 멈춤)
 
+## Codex 인수 갱신 — 2026-10-28 22:51 KST
+
+아래 「다음 세션이 할 일」 1~5의 소스 작성은 Codex가 전용 `E:/exoduser-wt/codex-vfx`에서 수행했다. 후보 브랜치 `codex/pc-vfx-rm1-int-20261028`의 원격 SHA는 `919fd0597714e2544a8ceb3905aedfa57442ff56`이다. 새 통합 worktree나 `claude/unity-pc-vfx-rm1-int-20261028` 브랜치를 중복 생성하지 않는다. `UNITY_RM1_VFX_IMPLEMENTATION_20261028.md`의 구현값과 미검증 게이트를 따른다. `--unity-vfx-check` partial은 아직 기존 NativeGame 진입에 연결되지 않았고, Unity 컴파일·샌드박스·Player 실화면·탄막 중첩 1x 판정이 남았다. RM-INT 1단계가 `unity/main`에 들어온 뒤 `VfxWorld`를 `RemodelWorld.ToWorld`로 한 커밋에서 바꾸고 순번·메모리 조건이 충족되면 실행한다. 아래 10:xx 작업 지시는 당시 이력이다.
+
 - 세션: RM-1 VFX 구현(Sonnet), 시작 = 임펙트 총괄(`local_da9cd0e7`), 명세 = `docs/5.1임펙트디자인/UNITY_RM1_VFX_SPEC_20261027.md` v2.1(main). 재개·순번 담당 = 임펙트 총괄.
 - 상태: **아래 「다음 세션이 할 일」 1번 착수 전에 멈췄다.** 미커밋 작업 없음, 이 세션이 띄운 Unity 없음(마지막 m1-check 종료 09:29 이후).
 - 이전 대기 사유(메모리 조건)는 해소됨. Unity 실행은 **순번제**: 총괄이 유니티 총괄에게 순번을 받아 「지금 시작」을 보낼 때만 띄운다(조건 재측정: 실행 중 Unity 0개 `Get-Process EXODUSER-Unity,Unity | Where-Object { -not $_.HasExited }` AND 커밋 여유 20GB 이상 `(Get-CimInstance Win32_OperatingSystem).FreeVirtualMemory/1MB`). 다른 세션의 Unity는 절대 종료하지 않는다. 같은 이유로 2회 실패하면 멈추고 보고.
