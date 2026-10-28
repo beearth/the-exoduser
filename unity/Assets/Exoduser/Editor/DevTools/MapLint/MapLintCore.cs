@@ -130,8 +130,8 @@ namespace Exoduser.DevTools.MapLint
 
             // ---- 삼각형 스윕: 걷기 칸 / 막힌 칸의 9점 샘플 덮임 마스크
             int N = p.gridW * p.gridH;
-            var solid = new uint[N]; var vis = new uint[N]; var coverY = new float[N]; var coverR = new int[N];
-            for (int i = 0; i < N; i++) { coverY[i] = float.NegativeInfinity; coverR[i] = -1; }
+            var solid = new uint[N]; var vis = new uint[N]; var coverY = new float[N]; var coverR = new int[N]; var minY = new float[N]; var minR = new int[N];
+            for (int i = 0; i < N; i++) { coverY[i] = float.NegativeInfinity; coverR[i] = -1; minY[i] = float.PositiveInfinity; minR[i] = -1; }
             float rDeep = p.deepTiles * T, rVis = p.visTiles * T, rMax = Mathf.Max(rDeep, rVis);
             var off = new Vector2[17]; off[0] = Vector2.zero;
             for (int k = 0; k < 8; k++) { float a = k * Mathf.PI / 4f; var d = new Vector2(Mathf.Cos(a), Mathf.Sin(a)); off[1 + k] = d * rDeep; off[9 + k] = d * rVis; }
@@ -184,6 +184,7 @@ namespace Exoduser.DevTools.MapLint
                                         solid[i] |= 1u << s;
                                         if (s == 0 && py - plane <= p.agentHeight) solid[i] |= 0x80000000u;   // 에이전트 키 안에서 길을 막는 덮임
                                         if (s == 0 && py > coverY[i]) { coverY[i] = py; coverR[i] = ri; }
+                                        if (s == 0 && py < minY[i]) { minY[i] = py; minR[i] = ri; }
                                     }
                                 }
                                 if (nv && isVisSample) vis[i] |= (s == 0) ? 1u : (1u << s);
@@ -194,14 +195,21 @@ namespace Exoduser.DevTools.MapLint
 
             // ---- L1 걷기 칸 덮임
             var L1 = new CheckResult("L1", "걷기 칸 덮임(메시 삼각형 기준)");
-            int centre = 0, deep = 0, walkTiles = 0, centreLow = 0, fromPile = 0;
+            int centre = 0, deep = 0, walkTiles = 0, centreLow = 0, fromPile = 0, centreRaw = 0; var overheadTiles = new List<Vector2Int>();
+            var clsPile = new List<L1Rec>(); var clsArch = new List<L1Rec>(); var clsOther = new List<L1Rec>(); var clsTerrain = new List<L1Rec>();
             for (int y = wy0; y < wy1; y++) for (int x = wx0; x < wx1; x++)
                 {
                     if (!walk[x, y]) continue; walkTiles++; int i = y * p.gridW + x;
                     if ((solid[i] & 1u) == 0) continue;
+                    centreRaw++;
+                    if (minY[i] - plane >= p.overheadMinH) { overheadTiles.Add(new Vector2Int(x, y)); continue; }   // L1b 로 이관
                     centre++; bool dp = (solid[i] & SolidAll) == SolidAll; if (dp) deep++;
                     if ((solid[i] & 0x80000000u) != 0) centreLow++;
-                    { var cc = maps[coverR[i]].b.center; if (new Vector2(cc.x, cc.z).magnitude < 2f * p.originRadius) fromPile++; }
+                    {
+                        var cov = maps[coverR[i]]; var cc = cov.b.center; bool pile = new Vector2(cc.x, cc.z).magnitude < 2f * p.originRadius; if (pile) fromPile++;
+                        var rec = new L1Rec { tx = x, ty = y, h = coverY[i] - plane, deep = dp, path = cov.path };
+                        if (pile) clsPile.Add(rec); else if ((solid[i] & 0x80000000u) == 0) clsArch.Add(rec); else clsOther.Add(rec);
+                    }
                     res.coveredCentre.Add(new Vector2Int(x, y)); if (dp) res.coveredDeep.Add(new Vector2Int(x, y));
                     if (L1.items.Count < 200)
                     {
@@ -217,15 +225,17 @@ namespace Exoduser.DevTools.MapLint
                     terrTested++; float h = ty0v - plane; if (h > terrMax) terrMax = h; if (h < terrMin) terrMin = h;
                     if (h > tol)
                     {
-                        terrAbove++;
+                        terrAbove++; clsTerrain.Add(new L1Rec { tx = x, ty = y, h = h, deep = false, path = "Terrain" });
                         if (L1.items.Count < 260) L1.items.Add(new LintItem { path = "Terrain", pos = TileCentre(p, x, y), tx = x, ty = y, v1 = h, note = "terrain" });
                     }
                 }
             L1.count = centre + terrAbove; L1.pass = L1.count == 0;
-            L1.Add("walkTiles", walkTiles); L1.Add("centre", centre); L1.Add("deep05", deep); L1.Add("centreBelowAgentHeight", centreLow); L1.Add("centreFromOriginPile", fromPile); L1.Add("agentHeight", p.agentHeight);
+            L1.Add("walkTiles", walkTiles); L1.Add("centreRawBeforeL1bSplit", centreRaw); L1.Add("movedToL1b", overheadTiles.Count); L1.Add("overheadMinH", p.overheadMinH); L1.Add("centre", centre); L1.Add("deep05", deep); L1.Add("centreBelowAgentHeight", centreLow); L1.Add("centreFromOriginPile", fromPile); L1.Add("agentHeight", p.agentHeight);
             L1.Add("terrainTested", terrTested); L1.Add("terrainAboveTol", terrAbove); L1.Add("terrainMaxUp", terrMax); L1.Add("terrainMaxDown", terrMin);
+            L1.AddRaw("classes", "{" + ClassJson("terrainUndulation", clsTerrain, p, "지형 굴곡: 걷기 칸 지형이 걷기 면보다 허용값 이상 높음(메시와 별개 집계)") + "," + ClassJson("archBelowOverheadMinH", clsArch, p, "낮은 아치: 가장 낮은 표면이 에이전트 키~L1b 기준(2.5u) 사이(L1에 남음)") + "," + ClassJson("originPile", clsPile, p, "원점 쌓임 기인: 덮은 렌더러 bounds 중심이 월드 원점 근처(L6 버그 결과)") + "," + ClassJson("otherMesh", clsOther, p, "그 밖의 메시: 키 안 높이에서 덮음(실제로 길을 막는 후보)") + "}");
             L1.Add("triangles", (int)triCount); L1.Add("meshRenderers", maps.FindAll(q => q.isMesh).Count);
             res.checks.Add(L1);
+            res.checks.Add(CheckOverhead(res, p, maps, overheadTiles, minR, minY));
 
             // ---- L2 NavMesh <-> Core
             var L2 = new CheckResult("L2", "NavMesh와 Core 걷기 차이");
@@ -346,6 +356,78 @@ namespace Exoduser.DevTools.MapLint
 
             res.durMs = sw.ElapsedMilliseconds;
             return res;
+        }
+
+        // L1b 머리 위 덮개: 걷기 칸 위 메시의 가장 낮은 점이 overheadMinH 이상. 캡슐 중심(지면+capsuleCentreY)에서 카메라 LOOK-001 위치로 선을 쏴 그 메시 삼각형에 맞으면 위반.
+        static CheckResult CheckOverhead(MapLintResult res, MapLintProfile p, List<RInfo> maps, List<Vector2Int> tiles, int[] minR, float[] minY)
+        {
+            var L1b = new CheckResult("L1b", "머리 위 덮개 가림(캡슐→카메라 선, 최저점>=" + p.overheadMinH.ToString("0.#") + "u)");
+            var used = new HashSet<int>(); foreach (var t in tiles) { int r = minR[t.y * p.gridW + t.x]; if (r >= 0) used.Add(r); }
+            var geo = new Dictionary<int, Vector3[]>(); var idxs = new Dictionary<int, int[]>(); var verts = new List<Vector3>();
+            foreach (int r in used)
+            {
+                var info = maps[r]; info.mesh.GetVertices(verts); var m = info.r.localToWorldMatrix; var wv = new Vector3[verts.Count];
+                for (int i = 0; i < wv.Length; i++) wv[i] = m.MultiplyPoint3x4(verts[i]); geo[r] = wv; idxs[r] = info.mesh.triangles;
+            }
+            var offset = new Vector3(0f, p.camOffsetY, p.camOffsetZ); var perMesh = new Dictionary<int, int>(); int violating = 0;
+            foreach (var t in tiles)
+            {
+                var cap = TileCentre(p, t.x, t.y) + Vector3.up * p.capsuleCentreY; var cam = cap + offset; var dir = cam - cap; float len = dir.magnitude; dir /= len;
+                var ray = new Ray(cap, dir); int hitMesh = -1;
+                foreach (int r in used)
+                {
+                    float dist; var bb = maps[r].b; bb.Expand(0.02f); if (!bb.IntersectRay(ray, out dist) || dist > len) { if (!bb.Contains(cap)) continue; }
+                    var wv = geo[r]; var ix = idxs[r]; bool hit = false;
+                    for (int k = 0; k + 2 < ix.Length && !hit; k += 3) hit = RayTri(cap, dir, len, wv[ix[k]], wv[ix[k + 1]], wv[ix[k + 2]]);
+                    if (hit) { hitMesh = r; break; }
+                }
+                if (hitMesh < 0) continue; violating++; res.overheadViolations.Add(t); int c; perMesh.TryGetValue(hitMesh, out c); perMesh[hitMesh] = c + 1;
+            }
+            foreach (var t in tiles) res.overheadTiles.Add(t);
+            var list = new List<KeyValuePair<int, int>>(perMesh); list.Sort((a, b) => b.Value.CompareTo(a.Value));
+            for (int k = 0; k < Mathf.Min(20, list.Count); k++) { var ri = maps[list[k].Key]; L1b.items.Add(new LintItem { t = ri.t, path = ri.path, pos = ri.b.center, v1 = list[k].Value, v2 = ri.b.min.y - p.walkPlaneY, note = list[k].Value + " 칸 위반, 메시 최저점 " + (ri.b.min.y - p.walkPlaneY).ToString("0.0") + "u" }); }
+            L1b.count = violating; L1b.pass = violating == 0;
+            L1b.Add("overheadTiles", tiles.Count); L1b.Add("violatingTiles", violating); L1b.Add("overheadMeshes", used.Count); L1b.Add("violatingMeshes", perMesh.Count);
+            L1b.Add("cameraOffsetY", p.camOffsetY); L1b.Add("cameraOffsetZ", p.camOffsetZ); L1b.Add("capsuleCentreY", p.capsuleCentreY);
+            var sb = new System.Text.StringBuilder("["); int n = Mathf.Min(5, tiles.Count);
+            for (int k = 0; k < n; k++) { var t = tiles[n == 1 ? 0 : (int)((long)k * (tiles.Count - 1) / (n - 1))]; if (k > 0) sb.Append(','); sb.Append("{\"tile\":[").Append(t.x).Append(',').Append(t.y).Append("],\"minSurfaceH\":").Append(Jw.F(minY[t.y * p.gridW + t.x] - p.walkPlaneY)).Append(",\"path\":").Append(Jw.S(maps[minR[t.y * p.gridW + t.x]].path)).Append('}'); }
+            sb.Append(']'); L1b.AddRaw("sampleTiles", sb.ToString());
+            return L1b;
+        }
+
+        static bool RayTri(Vector3 o, Vector3 d, float maxT, Vector3 a, Vector3 b, Vector3 c)
+        {
+            Vector3 e1 = b - a, e2 = c - a, pv = Vector3.Cross(d, e2); float det = Vector3.Dot(e1, pv); if (Mathf.Abs(det) < 1e-9f) return false;
+            float inv = 1f / det; Vector3 tv = o - a; float u = Vector3.Dot(tv, pv) * inv; if (u < 0f || u > 1f) return false;
+            Vector3 qv = Vector3.Cross(tv, e1); float v = Vector3.Dot(d, qv) * inv; if (v < 0f || u + v > 1f) return false;
+            float t = Vector3.Dot(e2, qv) * inv; return t > 0.01f && t < maxT;
+        }
+
+        sealed class L1Rec { public int tx, ty; public float h; public bool deep; public string path; }
+        // 종류별 개수·깊이·높이 범위와 대표 좌표 5개(위치순으로 고르게 뽑음)
+        static string ClassJson(string key, List<L1Rec> l, MapLintProfile p, string desc)
+        {
+            l.Sort((a, b) => a.ty != b.ty ? a.ty.CompareTo(b.ty) : a.tx.CompareTo(b.tx));
+            int deep = 0; float maxH = 0, minH = float.MaxValue; foreach (var r in l) { if (r.deep) deep++; if (r.h > maxH) maxH = r.h; if (r.h < minH) minH = r.h; }
+            if (l.Count == 0) minH = 0;
+            var sb = new System.Text.StringBuilder(); sb.Append(Jw.S(key)).Append(":{\"desc\":").Append(Jw.S(desc)).Append(",\"count\":").Append(l.Count).Append(",\"deep05\":").Append(deep).Append(",\"minH\":").Append(Jw.F(minH)).Append(",\"maxH\":").Append(Jw.F(maxH)).Append(",\"samples\":[");
+            int n = Mathf.Min(5, l.Count);
+            for (int k = 0; k < n; k++)
+            {
+                var r = l[n == 1 ? 0 : (int)((long)k * (l.Count - 1) / (n - 1))]; if (k > 0) sb.Append(',');
+                sb.Append("{\"tile\":[").Append(r.tx).Append(',').Append(r.ty).Append("],\"world\":[").Append(Jw.F((r.tx + .5f) * p.tileSize)).Append(',').Append(Jw.F(-(r.ty + .5f) * p.tileSize)).Append("],\"h\":").Append(Jw.F(r.h)).Append(",\"deep\":").Append(r.deep ? "true" : "false").Append(",\"path\":").Append(Jw.S(r.path)).Append('}');
+            }
+            sb.Append("],\"byGroup\":{");
+            var grp = new Dictionary<string, int>();
+            foreach (var r in l)
+            {
+                var seg = r.path.Split('/'); string gk = seg.Length > 1 ? seg[1] : seg[0];
+                if (gk == "Blockout" && seg.Length > 2) gk += "/" + System.Text.RegularExpressions.Regex.Replace(seg[2], "[_0-9]+$", "");
+                int c; grp.TryGetValue(gk, out c); grp[gk] = c + 1;
+            }
+            var gl = new List<KeyValuePair<string, int>>(grp); gl.Sort((a, b) => b.Value.CompareTo(a.Value)); int gi = 0;
+            foreach (var kv in gl) { if (gi >= 10) break; if (gi++ > 0) sb.Append(','); sb.Append(Jw.S(kv.Key)).Append(':').Append(kv.Value); }
+            sb.Append("}}"); return sb.ToString();
         }
 
         static bool HasVisible(GameObject go)
@@ -506,6 +588,16 @@ namespace Exoduser.DevTools.MapLint
             for (int i = 0; i < Mathf.Min(20, a.Count); i++) L6.items.Add(new LintItem { t = a[i].t, path = a[i].path, pos = a[i].b.center, note = "(a) bounds 중심이 원점 반경 " + R.ToString("0.#") + "u 안" });
             for (int i = 0; i < Mathf.Min(20, bList.Count); i++) { var ri = bList[i].Value; L6.items.Add(new LintItem { t = ri.t, path = ri.path, pos = ri.t.position, v1 = bList[i].Key, v2 = ri.t.localPosition.x, v3 = ri.t.localPosition.z, note = "(b) 부모 월드 xz=" + bList[i].Key.ToString("0.0") + "u 인데 자식 월드 위치는 원점" }); }
             for (int i = 0; i < Mathf.Min(20, cList.Count); i++) { var t = cList[i].Value; L6.items.Add(new LintItem { t = t, path = PathOf(t), pos = t.position, v1 = cList[i].Key, note = "(c) 그룹 위치와 렌더러 bounds 중심이 " + cList[i].Key.ToString("0.0") + "u 어긋남" }); }
+            res.originPileCount = Mathf.Max(a.Count, bList.Count);
+            foreach (var par in bParents) { if (res.intendedPts.Count >= 2000) break; res.intendedPts.Add(par.position); }
+            { // 쌓임 부모 대표 목록: Heart 등 이름 우선 + 경로순 고르게 60개
+                var ps = new List<Transform>(bParents); ps.Sort((x, y) => string.CompareOrdinal(PathOf(x), PathOf(y))); var pick = new List<Transform>();
+                foreach (var t in ps) if (t.name.StartsWith("Heart") && pick.Count < 12) pick.Add(t);
+                for (int k = 0; k < ps.Count && pick.Count < 60; k += Mathf.Max(1, ps.Count / 48)) if (!pick.Contains(ps[k])) pick.Add(ps[k]);
+                var sb2 = new System.Text.StringBuilder("["); for (int k = 0; k < pick.Count; k++) { if (k > 0) sb2.Append(','); var t = pick[k]; sb2.Append("{\"path\":").Append(Jw.S(PathOf(t))).Append(",\"parentWorld\":[").Append(Jw.F(t.position.x)).Append(',').Append(Jw.F(t.position.y)).Append(',').Append(Jw.F(t.position.z)).Append("],\"children\":").Append(t.childCount).Append('}'); }
+                sb2.Append(']'); L6.AddRaw("pileParentsSample", sb2.ToString());
+            }
+            L6.Add("originPileCount", res.originPileCount);
             int shown = 0; foreach (var ri in a) { if (shown++ >= 400) break; res.originPts.Add(ri.b.center); }
             foreach (var kv in bList) { if (res.originPts.Count > 800) break; res.originPts.Add(kv.Value.t.position); }
             L6.Add("originRadius", R);
@@ -562,8 +654,19 @@ namespace Exoduser.DevTools.MapLint
                 if (!l.enabled || l.type == LightType.Directional || l.lightmapBakeType == LightmapBakeType.Baked) continue; rt++;
                 foreach (var tb in terrBounds) if (tb.SqrDistance(l.transform.position) <= l.range * l.range) { near++; break; }
             }
+            // 카메라 근처 광원만 켜는 컬러(이름에 LightCull/LightStream 포함, 또는 Light 를 참조하는 MonoBehaviour)
+            var cull = new System.Text.StringBuilder("["); int cn = 0;
+            foreach (var mono in UnityEngine.Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude))
+            {
+                if (mono == null) continue; var ty = mono.GetType(); string tn = ty.Name; string ns = ty.Namespace ?? "";
+                if (ns.StartsWith("UnityEngine") || ns.StartsWith("Unity.") || ns.StartsWith("Cinemachine") || ns.StartsWith("UnityEditor")) continue;
+                bool hit = tn.Contains("LightCull") || tn.Contains("LightStream");
+                if (!hit) { var so2 = new SerializedObject(mono); var it = so2.GetIterator(); bool en = true; while (it.Next(en)) { en = true; if (it.propertyType == SerializedPropertyType.ObjectReference && it.objectReferenceValue is Light) { hit = true; break; } } }
+                if (!hit) continue; if (cn++ > 0) cull.Append(','); cull.Append("{\"type\":").Append(Jw.S(tn)).Append(",\"path\":").Append(Jw.S(PathOf(mono.transform))).Append('}');
+            }
+            cull.Append(']'); L7.AddRaw("lightCullers", cull.ToString()); L7.Add("lightCullerPresent", cn > 0);
             L7.Add("realtimeAdditionalLights", rt); L7.Add("lightsReachingTerrain", near);
-            if (near > perObj) L7.warns.Add("지형에 닿는 실시간 추가광 " + near + "개 > URP 오브젝트당 한도 " + perObj);
+            if (near > perObj) L7.warns.Add("지형에 닿는 실시간 추가광 " + near + "개 > URP 오브젝트당 한도 " + perObj + (cn > 0 ? " (광원 컬러 있음: " + cn + "개)" : " (광원 컬러 없음)"));
             L7.count = L7.warns.Count; L7.pass = true;   // 판정하지 않는다
             return L7;
         }

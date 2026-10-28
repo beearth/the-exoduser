@@ -20,6 +20,9 @@ namespace Exoduser.DevTools.MapLint
         public float heightTolerance = 0.04f;    // 걷기 면 위로 이 값을 넘으면 덮임
         public float walkPlaneY = 0f;            // 걷기 면 월드 y
         public float agentHeight = 1.6f;         // 이 높이 안의 덮임은 길을 막는 것으로 따로 센다(centreBelowAgentHeight)
+        public float overheadMinH = 2.5f;        // 걷기 칸 위 메시의 가장 낮은 점이 이 높이 이상이면 L1 에서 빼고 L1b(머리 위 덮개)로 센다
+        public float capsuleCentreY = 1f;        // L1b 선의 시작점: 걷기 면 + 이 높이
+        public float camOffsetY = 10.52f, camOffsetZ = -9.24f;   // 카메라 LOOK-001 오프셋(피치 48.70도, 거리 14u): 카메라 위치 = 캡슐 + 오프셋
         public float deepTiles = 0.5f;           // 덮임 "깊이" 기준(칸). 중심에서 이 거리 둘레 8점까지 모두 덮이면 deep
         public float visTiles = 0.6f;            // 섬 타일이 보인다고 인정하는 반경(칸)
         public string worldRoot = "World";       // 이 이름의 루트 아래만 맵으로 본다(비우면 전부)
@@ -101,6 +104,9 @@ namespace Exoduser.DevTools.MapLint
         public List<Vector3> originPts = new List<Vector3>();
         public List<Vector3> invisPts = new List<Vector3>();
         public List<Vector2Int> uncoveredIslandTiles = new List<Vector2Int>();
+        public List<Vector2Int> overheadTiles = new List<Vector2Int>(), overheadViolations = new List<Vector2Int>();
+        public int originPileCount;                                   // 월드 원점에 쌓인 렌더러 수(L6)
+        public List<Vector3> intendedPts = new List<Vector3>();       // 쌓인 자식들의 부모(의도 위치) 월드 좌표
         public CheckResult Get(string id) { foreach (var c in checks) if (c.id == id) return c; return null; }
 
         public string ToJson()

@@ -79,6 +79,7 @@ namespace Exoduser.DevTools.MapLint
             EditorGUILayout.EndHorizontal();
             if (!string.IsNullOrEmpty(status)) EditorGUILayout.LabelField(status, EditorStyles.miniLabel);
             if (result == null) return;
+            if (result.originPileCount > 0) EditorGUILayout.HelpBox("원점 쌓임 감지: 렌더러 " + result.originPileCount + "개가 월드 원점에 쌓여 있음(L6). 의도 위치는 보라 X 표시.", MessageType.Error);
 
             scroll = EditorGUILayout.BeginScrollView(scroll);
             foreach (var c in result.checks)
@@ -139,10 +140,29 @@ namespace Exoduser.DevTools.MapLint
                 Handles.DrawWireDisc(new Vector3(c.x, profile.walkPlaneY + w.limit, c.z), Vector3.up, Mathf.Max(0.3f, Mathf.Max(w.b.extents.x, w.b.extents.z)));
                 Handles.Label(top + Vector3.up * 0.2f, "h " + w.h.ToString("0.00") + " / limit " + w.limit.ToString("0.00") + "  D " + w.D.ToString("0.0") + "  terrain " + w.terrainH.ToString("0.00"));
             }
-            Handles.color = new Color(.78f, .35f, 1f, 1f);
-            foreach (var o in result.originPts) { if (budget-- <= 0) break; Handles.DrawWireDisc(o, Vector3.up, 0.25f); Handles.DrawLine(o + Vector3.left * .4f, o + Vector3.right * .4f); Handles.DrawLine(o + Vector3.back * .4f, o + Vector3.forward * .4f); }
-            Handles.DrawWireDisc(new Vector3(0, y, 0), Vector3.up, profile.originRadius);
-            Handles.Label(new Vector3(0, y + 0.3f, 0), "world origin");
+            var purple = new Color(.78f, .35f, 1f, 1f); var bright = new Color(.92f, .63f, 1f, 1f);
+            int pile = result.originPileCount; var org = new Vector3(0, y, 0);
+            if (pile > 0)
+            {
+                // 큰 보라 원(쌓인 개수에 비례) + 화살표 + 문구, 의도 위치(부모)마다 보라 X
+                float rad = 1.5f + 0.12f * Mathf.Sqrt(pile);
+                Handles.color = new Color(.78f, .35f, 1f, .35f); Handles.DrawSolidDisc(org, Vector3.up, rad);
+                Handles.color = purple; Handles.DrawWireDisc(org, Vector3.up, rad, 4f);
+                Vector3 tail = org + new Vector3(rad * 2.6f, 0, -rad * 2.6f), head = org + new Vector3(rad * 0.75f, 0, -rad * 0.75f);
+                Handles.color = bright; Handles.DrawAAPolyLine(8f, tail, head);
+                Handles.DrawAAPolyLine(8f, head, head + new Vector3(rad * 0.5f, 0, 0)); Handles.DrawAAPolyLine(8f, head, head + new Vector3(0, 0, -rad * 0.5f));
+                var st = new GUIStyle(EditorStyles.boldLabel) { fontSize = 20 }; st.normal.textColor = bright;
+                Handles.Label(tail + new Vector3(0.3f, 0, -0.3f), "원점 쌓임 " + pile + "개", st);
+                Handles.color = bright;
+                foreach (var o in result.intendedPts) { if (budget-- <= 0) break; Handles.DrawLine(o + new Vector3(-.4f, y, -.4f), o + new Vector3(.4f, y, .4f), 3f); Handles.DrawLine(o + new Vector3(-.4f, y, .4f), o + new Vector3(.4f, y, -.4f), 3f); }
+            }
+            else
+            {
+                Handles.color = purple;
+                foreach (var o in result.originPts) { if (budget-- <= 0) break; Handles.DrawWireDisc(o, Vector3.up, 0.25f); }
+            }
+            Handles.color = purple; Handles.DrawWireDisc(org, Vector3.up, profile.originRadius);
+            Handles.Label(org + Vector3.up * 0.3f, "world origin");
         }
     }
 }
