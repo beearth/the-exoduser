@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort
         public int CurrentTick;               // host fallback for sounds the host asks for itself
         // 3rd-round candidates that have no adopted file yet (section 6.6 "pending" column): logical key -> temporary file keys ({} = leave empty, still logged)
         static readonly Dictionary<string,string[]> LogicalFiles=new Dictionary<string,string[]>{
-            {"tell_parry",new[]{"tell_melee"}},{"druid_burrow",new[]{"tell_boss"}},{"druid_staff_tap",new string[0]},{"druid_root_pierce",new string[0]}};
+            {"tell_parry",new[]{"tell_melee"}},{"druid_staff_tap",new string[0]},{"druid_root_pierce",new string[0]}};
         // adopted start volumes (RM1_AUDIO_KEYS.json); the final values are set by ear
         static readonly Dictionary<string,float> StartVolume=new Dictionary<string,float>{
             {"tell_melee",.45f},{"tell_ranged",.45f},{"tell_boss",.45f},{"tell_grab",.45f},{"tell_parry",.45f},{"druid_erupt",.5f},{"druid_sink",.55f},{"druid_tide",.5f},{"druid_roots_rise",.5f},{"druid_heartbeat",.5f},{"druid_burrow",.45f},{"druid_staff_tap",.5f},{"druid_root_pierce",.5f},
@@ -248,7 +248,7 @@ namespace Exoduser.UnityPort
             {"druid_vo_pain","_preview_druid/druid_vo_pain_v2a_proc"},{"druid_vo_attack","_preview_druid/druid_vo_attack_v2a_proc"},{"druid_vo_phase","_preview_druid/druid_vo_phase_v2c_proc"},
             {"druid_vo_fall","_preview_druid/druid_vo_fall_v2a_proc"},{"druid_vo_last","_preview_druid/druid_vo_last_v2a_proc"},{"druid_drag","_preview_druid/druid_drag_v2a_proc"},
             {"druid_fissure","_preview_druid/druid_fissure_v2b_proc"},{"druid_pod","_preview_druid/druid_pod_v2d_proc"},{"druid_summon","_preview_druid/druid_summon_v2c_proc"},
-            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"},{"druid_spore","_preview_r3/druid_spore_r3a_proc"},{"druid_slam","_preview_r4/druid_slam_r4e2_proc"}};
+            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"},{"druid_spore","_preview_r3/druid_spore_r3a_proc"},{"druid_slam","_preview_r4/druid_slam_r4e2_proc"},{"druid_burrow","_preview_s3/druid_burrow_s3d_proc"}};
         static string AdoptedSource(string key){string s;return Adopted.TryGetValue(key,out s)?s:null;}
         static string Line(int tick,string key,string source,string group,float volume,string file){return "frame="+tick+" key="+key+" from=\""+source+"\" group="+group+" vol="+volume.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+" file="+file;}
         int lastBossHitTick = -1000;

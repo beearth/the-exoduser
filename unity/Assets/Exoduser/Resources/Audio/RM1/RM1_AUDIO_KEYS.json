@@ -194,6 +194,23 @@
    "beatFrames": 45
   },
   {
+   "key": "druid_burrow",
+   "file": "Audio/RM1/druid_burrow",
+   "use": "드루이드 기술 7 땅속 잠행 전조. burrowStrike 텔레그래프 시작 알림에 재생",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 거리 감쇠 없음"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.554,
+   "bytes": 10074,
+   "source": "SND-09 3차 사용자 선택 _preview_s3/druid_burrow_s3d_proc.mp3"
+  },
+  {
    "key": "amb_toxic_river",
    "file": "Audio/RM1/amb_toxic_river",
    "use": "1-1 양 사이드 독성 강 흐름(A8). 강 스플라인을 따라 12m 간격 루프 소스",

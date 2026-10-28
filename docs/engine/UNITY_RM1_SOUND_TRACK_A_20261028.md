@@ -41,16 +41,17 @@
 | P1 진입 | `StageFlow` BossIntro → `ScheduleDruidIntroSounds` | 지팡이 3번(24f 간격) → 뿌리 기둥 |
 | P2·P3 진입 / 침강 | `Simulation.DruidRemodel` | `druid_root_pierce` / `druid_sink` |
 
-### 3차 청음 대기 키 (파일 없음 처리)
+### 미채택 키의 임시 처리
 
 | 논리 키 | 임시 처리 |
 |---|---|
 | `tell_parry` | `tell_melee` 파일 |
-| `druid_burrow` | `tell_boss` 파일 |
 | `druid_staff_tap` · `druid_root_pierce` | 비움 — Receipt에 "no file yet"으로 한 줄 찍음 |
 | `roll_body` | `footstep`·`footstep2` |
 
 `NativeFeedbackAudio.LogicalFiles`의 한 줄을 바꾸면 채택본이 들어간다.
+
+`druid_burrow`는 사용자 3차 선택본을 연결해 임시 `tell_boss` 대체를 해제했다(§6.6).
 
 ### 규칙 구현
 
@@ -192,3 +193,7 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 | `druid_slam.mp3` | `309cae39b15a49bca3b5966814f8d7ab` | `Audio/RM1` 기술 2 착지 |
 | `druid_spore.mp3` | `199527322ffb4f959a119648d81e5d4a` | `Audio/RM1` 기술 5 발사 |
 | `druid_whip.mp3` | `6eb1775ab7c04ed7ad61a518861a10fe` | `Audio/RM1` 기술 1 3타 |
+
+### 6.6 드루이드 잠행 전조 채택본 연결 (2026-10-28)
+
+`G:/exoduser-wt/_out/sfx_forge/picks_rm1.json`에 기록된 사용자 3차 선택 `_preview_s3/druid_burrow_s3d_proc.mp3`를 `Audio/RM1/druid_burrow.mp3`로 동일 바이트 복사했다. `NativeFeedbackAudio`의 임시 `tell_boss` 매핑을 제거하고 `burrowStrike`의 `druid_burrow` 알림을 해당 파일에 연결했다. 시작 음량 .45, `SFX/Skill`, 우선순위 10, 공간 혼합 .5·거리 감쇠 없음. Core와 발생 시점은 바꾸지 않았다. 파일 길이는 약 0.554초, 크기 10074바이트다. Unity 메타 GUID는 `dc99856a5cff4e75bd13dafc0d1237aa`다. 이 후보의 새 Unity 빌드·녹음·Player 청음은 아직 수행되지 않았다.
