@@ -10,12 +10,14 @@ namespace Exoduser.UnityPort
     {
         NativeBossView bossView; NativeDruidBody druidBody; readonly Dictionary<int, int> sinkStart = new Dictionary<int, int>();
         public const int SinkBodyTicks = 66, SinkHoldTicks = 18, SinkFadeTicks = 18;
+        public const int SinkHoleTick = (int)(SinkBodyTicks * .55f) + 1;   // first tick NativeDruidBody.DrawSink shows the hole (t > bodyTicks * .55); the sink sound plays here
+        readonly HashSet<int> sinkSounded = new HashSet<int>();
 
         void BossViewAttach()
         {
             if (bossView != null) bossView.Dispose();
             if (druidBody != null) druidBody.Dispose();
-            bossView = new NativeBossView(transform); sinkStart.Clear();
+            bossView = new NativeBossView(transform); sinkStart.Clear(); sinkSounded.Clear();
             druidBody = new NativeDruidBody(transform, DiscSprite());
             Simulation.AttachDruidBoss();
         }
@@ -33,7 +35,7 @@ namespace Exoduser.UnityPort
         {
             if (bossView != null) bossView.Update(Simulation);
             if (druidBody != null && druidBody.Stamp != Time.frameCount) druidBody.Hide();   // nobody drew the druid this frame (gone / not on this stage)
-            foreach (var e in Simulation.Enemies) if (e.Alive && e.IsBoss && sinkStart.Count > 0) sinkStart.Remove(e.Id);
+            foreach (var e in Simulation.Enemies) if (e.Alive && e.IsBoss && sinkStart.Count > 0) { sinkStart.Remove(e.Id); sinkSounded.Remove(e.Id); }
         }
 
         // dead 1-1 druid (SinkDruid): the body sinks, holds on the last frame, then fades. Returns true while the sink is still on screen.
@@ -75,6 +77,7 @@ namespace Exoduser.UnityPort
             if (!e.IsBoss || !e.SinkDruid || druidBody == null) return;
             int t0; if (!sinkStart.TryGetValue(e.Id, out t0)) { t0 = Simulation.TickCount; sinkStart[e.Id] = t0; }
             int t = Simulation.TickCount - t0;
+            if (t >= SinkHoleTick && sound != null && sinkSounded.Add(e.Id)) sound.PlaySinkHole(e.X, e.Y, Simulation.TickCount);
             ev.body.enabled = false; ev.walk.enabled = false;
             if (t >= SinkBodyTicks + SinkHoldTicks + SinkFadeTicks) return;
             druidBody.DrawSink(e, t, SinkBodyTicks, SinkHoldTicks, SinkFadeTicks); druidBody.Stamp = Time.frameCount;

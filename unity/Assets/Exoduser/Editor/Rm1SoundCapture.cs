@@ -61,7 +61,7 @@ namespace Exoduser.UnityPort.Editor
         {
             try
             {
-                var doc = JsonUtility.FromJson<Rm1Doc>(File.ReadAllText(Timeline)); rows = doc.rows.OrderBy(r => r.tick).ToArray();
+                var doc = JsonUtility.FromJson<Rm1Doc>(File.ReadAllText(Timeline)); rows = SinkOnDrawing(doc.rows).OrderBy(r => r.tick).ToArray();
                 playFrame = new int[rows.Length]; int f = LeadFrames, prev = rows[0].tick;
                 for (int i = 0; i < rows.Length; i++) { f += Math.Min(rows[i].tick - prev, MaxGapFrames); prev = rows[i].tick; playFrame[i] = f; }
                 endFrame = f + TailFrames;
@@ -130,6 +130,16 @@ namespace Exoduser.UnityPort.Editor
             using (var buf = new NativeArray<float>(n * channels, Allocator.Temp)) { if (AudioRenderer.Render(buf)) for (int i = 0; i < buf.Length; i++) pcm.Add(buf[i]); }
             frame++;
             if (frame >= endFrame) EndPass();
+        }
+
+        // the game plays the druid sink sound from the sink drawing (NativeGame.SinkHoleTick ticks after the kill); the replay puts it at the same offset
+        static Rm1Row[] SinkOnDrawing(Rm1Row[] all)
+        {
+            var death = all.FirstOrDefault(r => r.type == "feedback" && r.kind == "BossDeath");
+            if (death == null || !all.Any(r => r.key == "druid_sink")) return all;
+            var list = all.Where(r => r.key != "druid_sink").ToList();
+            list.Add(new Rm1Row { tick = death.tick + NativeGame.SinkHoleTick, type = "feedback", kind = "Sample", key = "druid_sink", source = NativeFeedbackAudio.SinkViewSource, x = death.x, y = death.y, rate = 1 });
+            return list.ToArray();
         }
 
         void Feed(Rm1Row r)

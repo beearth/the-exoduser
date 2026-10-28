@@ -95,7 +95,7 @@ namespace Exoduser.UnityPort
         public void Handle(FeedbackEvent e)
         {
             switch(e.Kind){
-                case FeedbackKind.Sample:HandleSample(e);break;
+                case FeedbackKind.Sample:if(e.SampleKey=="druid_sink"&&e.Source==SinkCoreSource)break;HandleSample(e);break;   // the Core's sink notification is ignored: the sink sound rides on the sink drawing (PlaySinkHole)
                 case FeedbackKind.EnemyHit:Receipt.requested++;Queue(HitRequest(e));break;
                 case FeedbackKind.BossHit:Receipt.requested++;Queue(BossHitRequest(e));break;   // _BOSS_SFX[0].hit pitch .7
                 case FeedbackKind.EnemyCrit:Receipt.requested++;Queue(Make("crit_heavy",e.Volume,Jitter(1,.05f),World(e),e));break;
@@ -215,6 +215,9 @@ namespace Exoduser.UnityPort
             lastAt[r.key]=now;pending.Add(r);
         }
         // host-driven one-shot (boss howl at the arena intro, tell keys, A8 bubbles): same routing as a Core event
+        public const string SinkCoreSource="third fall: sink escape",SinkViewSource="view: sink hole opens (body sink 55 %)";
+        // 1-1 druid sink: called by the sink drawing (NativeGame.BossSinkDraw) when the hole shows; same routing and Receipt line as a Core sample event
+        public void PlaySinkHole(float x,float y,int tick){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey="druid_sink",Source=SinkViewSource,Rate=1,QueuedRate=1});}
         public void PlayNow(string key,float volume,float pitch,Vector3 world){Receipt.requested++;direct.Add(Make(key,volume,pitch,world));}
         public void Flush()
         {
