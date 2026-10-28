@@ -84,7 +84,8 @@ Unity 6000.6.7f1 · URP 17.6.0 · C# 파일 240개 · 씬 4개(`FirstPlayable`·
 | `Exoduser.Runtime` | `Runtime/Exoduser.Runtime.asmdef` | Core + URP·Cinemachine·Timeline·VFX 등 필요한 패키지(컴파일 오류로 확정), Auto Referenced 켬 |
 | `Exoduser.Editor` | `Editor/Exoduser.Editor.asmdef` | `includePlatforms: ["Editor"]`, Core·Runtime·ProBuilder·AI Navigation·URP 등 |
 | `Exoduser.DevTools.Editor` | `Editor/DevTools/` | DT 브랜치 병합 뒤. Core 참조. 빌더 타입 참조 여부 먼저 확인 |
-| 보류 | `Rendering`·`Remodel` | C#이 들어오면 그때 |
+| 보류 | `Rendering` | C#이 들어오면 그때 |
+| 미리보기 통합 보완(10-29) | `Remodel/Exoduser.Runtime.asmref` | Remodel의 C# 3개를 기존 Runtime으로 귀속. 파일 이동 없이 Editor 참조 경계 해소; 결과는 `UNITY_PC_PREVIEW_ALL_20261029.md` |
 | 2차 | 독립 캡처 9개 → `Runtime/Capture/` | 진행 브랜치 병합 뒤 |
 | 3차 | `NativeGame` 스모크 | 호출부를 등록(레지스트리) 방식으로 바꾼 뒤 |
 

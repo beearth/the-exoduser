@@ -43,3 +43,14 @@
 - DT-01이 먼저 병합되면 `Editor/DevTools/**`는 `Exoduser.Editor`에 그대로 들어간다(MapLint가 쓰는 URP·RP Core 참조 포함). 병합 때 컴파일로 한 번 더 확인.
 - 기존 결함 후보: Verify `A15 SFX right must step by one and write once`(unity/main).
 - 산출: `I:\EXODUSER-Storage\qa\c01\` (로그 `base-*.log`·`c01-*.log`·`verify-gpu-*.log`, `build-commit.json`).
+
+## 2026-10-29 미리보기 재개: Remodel 어셈블리 경계
+
+| 항목 | 변경·근거 |
+|---|---|
+| 실패 재현 근거 | 이전 job `930e5a24`의 Editor CS0246, `Rm4PoolLightCuller` |
+| 원인 | `Remodel`의 C# 3개가 명시 asmdef 바깥 기본 `Assembly-CSharp`에 들어가 `Exoduser.Editor`에서 참조 불가 |
+| 수정 | `Remodel/Exoduser.Runtime.asmref`로 기존 `Exoduser.Runtime`에 귀속. Runtime은 이미 Core를, Editor는 이미 Runtime을 참조 |
+| 대상 | `BossArenas/ArenaChannelPlan.cs`, `CH1_3/Rm3PoolLightCuller.cs`, `CH1_4/Rm4PoolLightCuller.cs` |
+| 보존 | 파일 이동·스크립트 GUID·Core·게임 규칙·장면 배치 변경 0. 기본 어셈블리를 향한 역참조 추가 0 |
+| 검증 | 새 사용자 재개 지시에 따른 참조 경계 수정 단위. Unity 빌드 결과는 후속 보고에 기록하며 기존 실패 2회를 성공으로 바꾸지 않음 |
