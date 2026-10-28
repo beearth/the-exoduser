@@ -267,7 +267,7 @@ UI 전용으로 `_sampleFiles`에 등록된 샘플은 **`ui_button_hover`, `ui_b
 |---|---|---|
 | `ui_cancel` | 호출은 있으나 `_sampleFiles`에 키가 없고 `sfx/ui/`에도 파일이 없어 무음이었다 → **해결 2026-10-28(SND-10 2단계)**: `sfx/ui/cancel.mp3` 등록 | 13405 |
 | `bow_shot` | `SFX.bow()`가 부르는 키가 `_sampleFiles`에 없음 → 활 발사 소리 무음(전투 쪽, UI 아님). **해결 2026-10-28(SND-10 1단계)**: `SFX.bow(bt)`가 `crossbow_shot`을 재사용 | 12778 |
-| `_startLoop` 이름 중복 | 오디오용 `_startLoop(key,vol)`(12684)이 뒤쪽 메인 루프 시작기에 가려짐(sound-simple 인계 메모에 이미 기록) | 12684 |
+| `_startLoop` 이름 중복 | 뒤의 메인 루프 시작기가 오디오용 선언(12709행)을 가리지만 오디오용 호출 0곳. `_ambSync`는 직접 버퍼 소스를 만들고, `P._blueLpSrc`는 정지·null 대입만 2곳이다. 현재 재생 결함의 원인으로 확인되지 않음(2026-10-28 정적 조사) | 12709·60783 |
 | 컷신 `sfx:` 10종·`voice_cut_NN` | 위 F-17 | 63014–63034 |
 | `SFX.click` | 정의만 있고 호출 0 | 13017 |
 
