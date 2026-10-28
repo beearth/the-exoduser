@@ -57,3 +57,8 @@
 - SSOT `docs/3.1 ui hud 디자인/DESIGN_CONCEPT_SILVER_HELL_20261028.md` §6.4에 1920×1080 실제 게임 화면 비교와 판정을 기록했다. 성장 나무는 브라우저 전용 무채색 필터 시안의 톤을 PASS로 보되 붉은 재질까지 없애므로 런타임에 채택하지 않았다. 제단의 기존 장미창은 중심 구슬과 겹쳐 약하게만 읽히며, 눈 고리 문장을 통째로 바꾸는 방식도 채택하지 않았다.
 - 시안 `G:/exoduser/tmp/design-review/20261028_growth_tree/`, `G:/exoduser/tmp/design-review/20261028_skill_sigil/`; 검수 스크립트 `I:/EXODUSER-Storage/codex-takeover/design/`. 두 화면 모두 headless 1920×1080 pageerror 0. 원화·CSS·`skill-forge-3d.js`·게임 데이터 변경 0, 유료 생성 0.
 - 다음 후보: 원화의 은빛 금속만 분리한 로컬 성장 나무 시안, 제단용 중심이 빈 바깥 가시 고리 각인. 아트 후보는 사용자 1x 검토 전 런타임에 넣지 않는다. UI 인라인 창은 게임 화면별로 남은 색을 조사한다.
+
+## 2026-10-28 Codex 인수 후속 — I5 인트로 색감
+
+- `LOBBY_AAA_REFERENCE_STUDY_20261028.md` §18에 현행 `video/world_intro_v17_blood_en.mp4`(약 113.29초)의 10초 간격 접촉판과 20·55·85·105초 원본 1x 프레임 판정을 기록했다. 검붉은 도입에서 회청색 후반으로 넘어가는 저채도 흐름을 확인해 영상 전체 감마·채도 일괄 보정은 채택하지 않았다.
+- 폴백 JPG 18컷은 별도 접촉판으로 확인했다. 증거는 `G:/exoduser/tmp/design-review/20261028_intro_tone/`; 영상·이미지·코드 변경 0, 유료 생성 0. 이는 원본 프레임 검수이며 실제 NW.js 재생·자막·음향 동기화 검수가 아니다. 특정 구간의 색 튐이 재현되면 그 구간만 스토리·아트 총괄과 비교한다.
