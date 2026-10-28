@@ -29,7 +29,6 @@ namespace Exoduser.UnityPort
         {
             var flow = Simulation.Stage;
             flow.InitializeField(Map.Data.tiles, Map.Data.width);
-            flow.FieldBossDone = true;   // G._fbDone: the stage-0 abyssal angler field boss is not ported, so the gate does not wait for it
             flow.Enabled = firstPractice == null;
             DestroyArenaView();BossViewAttach();   // BX: druid boss behind the BossSpawners extension point + its view
             foreach (var r in props) if (r != null) r.enabled = true;
@@ -51,6 +50,7 @@ namespace Exoduser.UnityPort
                     case StageEventKind.GateSealed:        // web 42106 addTxt: the floating text is not on the web's draw whitelist (55092-55100: only 시전/그로기/무적/CRIT/사망/탈출 pass outside the test bed),
                     case StageEventKind.GateAnglerBlocked: // so the web player only sees the portal label ("▼ 지옥문 봉인 (지역 N/4) ▼", NativeRegionHud.DrawGateLabel); the event stays for logs / harness
                         break;
+                    case StageEventKind.AnglerWoke: case StageEventKind.AnglerSlain: AnglerEvent(e); break;
                     case StageEventKind.BossCoreMissing:
                         WorldTextAdd(e.X, e.Y - 40, "보스전 이식 대기 — 아레나는 아직 열리지 않습니다", "Boss battle not ported yet — the arena stays closed", new Color(.78f, .7f, .55f), 2.2f); break;
                     case StageEventKind.ArenaLoadStart:

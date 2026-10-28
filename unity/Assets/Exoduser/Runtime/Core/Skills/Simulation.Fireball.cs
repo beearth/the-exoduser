@@ -13,6 +13,7 @@ namespace Exoduser.UnityPort.Core
     {
         public int Id, Dmg, ExplDmg, Bounces; public bool Active;
         public float X, Y, Vx, Vy, Dist, MaxDist, R, R0, RMax, ExplR, BounceCool;
+        internal readonly HashSet<FieldBossState> HitFieldMobs = new HashSet<FieldBossState>();
         internal readonly Dictionary<EnemyState, double> WeakMul = new Dictionary<EnemyState, double>();   // p._mwMul: the direct hit + the blast stack once per orb
     }
 
@@ -124,6 +125,7 @@ namespace Exoduser.UnityPort.Core
                     }
                     else { OrbExplode(p); dead = true; }
                 }
+                if (!dead && HurtFieldMobs(p.X, p.Y, p.R + 8, p.Dmg, p.HitFieldMobs)) { OrbExplode(p); dead = true; }   // web pProj loop 35466: an angler touched by the orb takes p.dmg, the orb bursts
                 if (!dead)
                 {
                     foreach (var e in ShQuery(p.X, p.Y, p.R + 20, true))

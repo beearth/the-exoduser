@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
   static readonly string[] EnNames = { "Northwest · Dark", "Northeast · Lightning", "Southwest · Water", "Southeast · Fire" };
   static readonly string[] ElKo = { "어둠", "번개", "물", "불" }, ElEn = { "Dark", "Lightning", "Water", "Fire" };   // _REG_EL_KO/EN
   static readonly string[] ElColor = { "#9933cc", "#ffee00", "#3388ff", "#ff5522" };   // ELC[_FB_ELS[fb]] per region idx (fb 2,3,0,1 -> D,L,I,F)
-  static readonly double[,] FbSites = { { 52, 42 }, { 148, 42 }, { 58, 158 }, { 148, 150 } };   // _FB_SITES by region idx (R-B places the angler here)
+  static readonly double[,] FbSites = { { 52, 42 }, { 148, 42 }, { 58, 158 }, { 148, 150 } };   // _FB_SITES by region idx (angler spawn site; used until the angler exists)
 
   public bool English;
   // ---- banner state (web G._regCurIdx / G._regBannerCd + the DOM element)
@@ -261,10 +261,13 @@ namespace Exoduser.UnityPort
    for (int ri = 0; ri < 4; ri++)
    {
     var r = R[ri]; if (r.Cleared) continue;
-    double tx, ty; bool isFb = false; bool fbAlive = sim.RegionFbAlive(r);
-    if (fbAlive && sim.RegionRatio(r, ri) >= Simulation.RegionClearRatio - 1e-9) { tx = (FbSites[ri, 0] + .5) * T; ty = (FbSites[ri, 1] + .5) * T; isFb = true; }   // kills done, only the angler is left
-    else if (raSums[ri * 3 + 2] > 0) { tx = raSums[ri * 3] / raSums[ri * 3 + 2]; ty = raSums[ri * 3 + 1] / raSums[ri * 3 + 2]; }
-    else if (fbAlive) { tx = (FbSites[ri, 0] + .5) * T; ty = (FbSites[ri, 1] + .5) * T; isFb = true; }
+    double tx, ty; bool isFb = false;
+    var fb = (r.FbIdx >= 0 && sim.FieldBosses != null && r.FbIdx < sim.FieldBosses.Length) ? sim.FieldBosses[r.FbIdx] : null;
+    bool fbLive = fb != null && fb.Hp > 0;
+    if (fbLive && sim.RegionRatio(r, ri) >= Simulation.RegionClearRatio - 1e-9) { tx = fb.X; ty = fb.Y; isFb = true; }   // kills done, only the angler is left: straight to it
+    else if (raSums[ri * 3 + 2] > 0) { tx = raSums[ri * 3] / raSums[ri * 3 + 2]; ty = raSums[ri * 3 + 1] / raSums[ri * 3 + 2]; }   // living-mob centroid
+    else if (fbLive) { tx = fb.X; ty = fb.Y; isFb = true; }
+    else if (r.FbIdx >= 0 && !sim.FieldBossSpawned && !sim.Stage.FieldBossDone) { tx = (FbSites[ri, 0] + .5) * T; ty = (FbSites[ri, 1] + .5) * T; isFb = true; }   // angler not spawned yet: its site
     else { double x0 = (ri & 1) != 0 ? sim.RegMidX : 0, x1 = (ri & 1) != 0 ? sim.MapTilesWide : sim.RegMidX, y0 = (ri >> 1) != 0 ? sim.RegMidY : 0, y1 = (ri >> 1) != 0 ? sim.MapTilesHigh : sim.RegMidY; tx = (x0 + x1) / 2 * T; ty = (y0 + y1) / 2 * T; }
     double d = (tx - P.X) * (tx - P.X) + (ty - P.Y) * (ty - P.Y);
     if (d < bd) { bd = d; bx = tx; by = ty; bIdx = ri; bFb = isFb; found = true; }

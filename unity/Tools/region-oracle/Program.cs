@@ -133,6 +133,24 @@ static class P
             Check(s.Stage.BossUnlocked == B(t, "unlocked"), what + " web " + B(t, "unlocked") + " cs " + s.Stage.BossUnlocked);
         }
 
+        // ---- enemy list hard cap (> 800 -> 700, culled = kills) ----
+        n = 0;
+        foreach (var t in Cases(root, "cap"))
+        {
+            var s = new Simulation(new SimulationConfig { StageIndex = 0, EnemyAiEnabled = false }); var rng = new Random(11); s.Random01 = () => rng.NextDouble();
+            var pj = t.GetProperty("P"); s.Player.X = (float)D(pj, "x"); s.Player.Y = (float)D(pj, "y");
+            int idx = 0;
+            foreach (var e in t.GetProperty("input").EnumerateArray())
+            {
+                s.Enemies.Add(new EnemyState { Id = idx++, X = (float)D(e, "x"), Y = (float)D(e, "y"), Alive = B(e, "alive"), IsBoss = B(e, "ib"), ReviveTimer = D(e, "reviveTimer") });
+            }
+            int kills0 = s.Kills; s.CapEnemies();
+            string what = "cap#" + n++ + " n=" + I(t, "n");
+            var kept = t.GetProperty("kept").EnumerateArray().Select(x => x.GetInt32()).ToList();
+            Check(s.Enemies.Select(e => e.Id).SequenceEqual(kept), what + " kept list (web " + kept.Count + ", cs " + s.Enemies.Count + ")");
+            Check(s.Kills - kills0 == I(t, "kills") && s.Kills - kills0 == I(t, "stageKills"), what + " kills web " + I(t, "kills") + " cs " + (s.Kills - kills0));
+        }
+
         Console.WriteLine("REGION_RESULT " + checks + " checks / " + bad + " failures");
         foreach (var kv in perSection) Console.WriteLine("  " + kv.Key + ": " + kv.Value[0] + " checks, " + kv.Value[1] + " failures");
         foreach (var f in firstFailures) Console.WriteLine("FAIL " + f);

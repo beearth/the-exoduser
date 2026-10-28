@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort
             if (firstPractice != null) EndFirstPractice(true);
             frontendEntryInputFence = false; Running = false; yield return null;
             var sim = Simulation; var p = sim.Player; sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); p.Iframes = 1e9f; p.Hp = p.MaxHp;
-            areaTitle.Hide(); sim.Stage.FieldBossDone = false;   // the real web run has its anglers (R-B): keep the angler flag like the web so the banner sub line / arrow target match
+            areaTitle.Hide();
             var rc = new RhReceipt { regions = sim.Regions != null ? 4 : 0 };
             double ex = 0, ey = 0; foreach (var t in sim.Stage.Exits) { ex += t.X; ey += t.Y; } ex /= Math.Max(1, sim.Stage.Exits.Count); ey /= Math.Max(1, sim.Stage.Exits.Count);
             rc.exitCx = (float)((ex + .5) * NativeRegionHud.T); rc.exitCy = (float)((ey + .5) * NativeRegionHud.T);
