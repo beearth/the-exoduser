@@ -569,6 +569,8 @@ namespace Exoduser.UnityPort
             }
             File.WriteAllText(Path.Combine(output,"hud-smoke.json"),JsonUtility.ToJson(new HudSmokeReceipt{scope="actual_native_player_controlled_HUD_fixture",activeSkill=hud.ActiveSkill,iconResource="Art/ui/skill_icons/kiSlash",iconDrawn=hud.IconDrawn,cases=cases.ToArray()},true));
             hudSmoke=false;ResetRun();menu=true;Running=false;
+            // DBT-6: this smoke never quit (the receipt was written, then the pause menu stayed up until the caller killed the player). Unattended -batchmode runs end themselves; a windowed manual run is unchanged.
+            if(Application.isBatchMode)Application.Quit(0);
         }
         void SetInventory(bool open){
             if(open&&firstPractice!=null)return;
