@@ -4,6 +4,7 @@
     "references": [
         "Exoduser.Core",
         "Exoduser.Runtime",
+        "Unity.InputSystem",
         "Unity.RenderPipelines.Universal.Runtime",
         "Unity.RenderPipelines.Universal.Editor",
         "Unity.RenderPipelines.Core.Runtime",

@@ -12,10 +12,10 @@ namespace Exoduser.UnityPort
   readonly FrontendPadPolicy frontendPad=new FrontendPadPolicy();
   FrontendPadFrame ReadFrontendPadFrame(){if(frontendPadQaEnabled)return ReadFrontendPadQaFrame();return new FrontendPadFrame{
    Number=Time.frameCount,
-   ConfirmDown=Input.GetKeyDown(KeyCode.JoystickButton0),ConfirmHeld=Input.GetKey(KeyCode.JoystickButton0),
-   CancelHeld=Input.GetKey(KeyCode.JoystickButton1),
-   StartDown=Input.GetKeyDown(KeyCode.JoystickButton7)||Input.GetKeyDown(KeyCode.JoystickButton9),
-   StartHeld=Input.GetKey(KeyCode.JoystickButton7)||Input.GetKey(KeyCode.JoystickButton9)
+   ConfirmDown=ExoInput.KeyDown(KeyCode.JoystickButton0),ConfirmHeld=ExoInput.Key(KeyCode.JoystickButton0),
+   CancelHeld=ExoInput.Key(KeyCode.JoystickButton1),
+   StartDown=ExoInput.KeyDown(KeyCode.JoystickButton7)||ExoInput.KeyDown(KeyCode.JoystickButton9),
+   StartHeld=ExoInput.Key(KeyCode.JoystickButton7)||ExoInput.Key(KeyCode.JoystickButton9)
   };}
   GUIStyle startupBody,startupName,startupHint,guideTitle,guideDialogue,guideText,guideKey,guideProgress,guideAction;
   internal FrontendEntryFlow StartupCaptureState {get{return startup;}}
@@ -54,17 +54,17 @@ namespace Exoduser.UnityPort
   {
    if(!startup.Active)return;
    if(!focused){frontendPad.Reset();startup.Tick(0,false,false);return;}
-   if(startupInputFence&&!Input.anyKey&&!Input.GetMouseButton(0))startupInputFence=false;
+   if(startupInputFence&&!ExoInput.AnyKey&&!ExoInput.Mouse(0))startupInputFence=false;
    var before=startup.Page;
    var pad=startup.Page==FrontendEntryPage.Nemesis||startup.Page==FrontendEntryPage.Guide
     ?frontendPad.Step(startup.Page==FrontendEntryPage.Guide?FrontendPadPhase.Guide:FrontendPadPhase.Nemesis,ReadFrontendPadFrame(),!AutomatedInput&&!startupInputFence)
     :default(FrontendPadDecision);
    if(!AutomatedInput&&!startupInputFence){
-    if(Input.GetKeyDown(KeyCode.Escape)||pad.Skip)startup.Skip();
-    else if(startup.Page==FrontendEntryPage.Nemesis&&(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.Z)||pad.Next))startup.Advance();
-    else if(startup.Page==FrontendEntryPage.Guide){if(Input.GetKeyDown(KeyCode.Tab))guideSkipFocus=!guideSkipFocus;else if(pad.Next)startup.Advance();else if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.Space)){if(guideSkipFocus)startup.Skip();else startup.Advance();}}
+    if(ExoInput.KeyDown(KeyCode.Escape)||pad.Skip)startup.Skip();
+    else if(startup.Page==FrontendEntryPage.Nemesis&&(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Z)||pad.Next))startup.Advance();
+    else if(startup.Page==FrontendEntryPage.Guide){if(ExoInput.KeyDown(KeyCode.Tab))guideSkipFocus=!guideSkipFocus;else if(pad.Next)startup.Advance();else if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Space)){if(guideSkipFocus)startup.Skip();else startup.Advance();}}
    }
-   bool held=!AutomatedInput&&!startupInputFence&&(Input.GetKey(KeyCode.Space)||pad.Hold);
+   bool held=!AutomatedInput&&!startupInputFence&&(ExoInput.Key(KeyCode.Space)||pad.Hold);
    startup.Tick(delta,held,focused);
    if(startup.Page!=before){startupInputFence=true;guideSkipFocus=false;frontendPad.Reset();}
    if(startup.Page!=startupShown){startupShown=startup.Page;if(startupShown==FrontendEntryPage.Nemesis){nemesisMusicDelay=.4f;StopMusic();}else if(startupShown==FrontendEntryPage.Guide){StartupGameplayPrepare?.Invoke();StartupGameplayPrepared=true;nemesisMusicDelay=-1;stageMusicDelay=.6f;EnsureStartupMedia();if(wakeupSound!=null)startupAudio.PlayOneShot(wakeupSound,startupSfxGain*startupSfxGain);} }
@@ -118,7 +118,7 @@ namespace Exoduser.UnityPort
     string visible=RevealStartupText(l.text,startup.VisibleCharacters);Label(new Rect(153.6f,y+37.8f,1612.8f,bodyH+20),visible,startupBody,TextAnchor.UpperLeft);
     if(startup.VisibleCharacters>=l.text.Replace("\n","").Length&&((int)(Time.unscaledTime*2)%2)==1)Label(new Rect(1740,1080-subH*.2f,40,30),"▼",startupHint,TextAnchor.MiddleCenter);
    }
-   bool pad=frontendPadQaEnabled||Array.Exists(Input.GetJoystickNames(),name=>!string.IsNullOrEmpty(name));
+   bool pad=frontendPadQaEnabled||ExoInput.PadConnected;
    float hold=(float)startup.HoldProgress;var hintColor=GUI.color;GUI.color=new Color(1,1,1,hold>0?.8f:.25f+.1f*Mathf.Sin(Time.unscaledTime*2));Label(new Rect(1300,1032,600,24),pad?K("A 다음 / B 길게 / Start 건너뛰기","A Next / Hold B / Start Skip"):K("SPACE 길게 눌러 건너뛰기","Hold SPACE to skip"),startupHint,TextAnchor.MiddleRight);GUI.color=hintColor;Fill(new Rect(1780,1052,120,3),new Color(1,1,1,.15f));Fill(new Rect(1780,1052,120*hold,3),new Color(1,1,1,.8f));
    var e=Event.current;if(!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){startup.Advance();e.Use();}
   }
@@ -175,7 +175,7 @@ namespace Exoduser.UnityPort
    if(startupGuideDrawBarrier)DrawStartupBarrier();
    EnsureStartupGradients();GUI.DrawTexture(new Rect(0,0,sw,sh),startupGuideGradient);
    int step=startup.Page==FrontendEntryPage.Curtain?Mathf.Clamp(guidePhysicalStep,0,3):startup.GuideStep;if(guidePhysicalStep!=step){guidePhysicalStep=step;guideScroll=Vector2.zero;}
-   bool pad=Array.Exists(Input.GetJoystickNames(),name=>!string.IsNullOrEmpty(name));
+   bool pad=ExoInput.PadConnected;
    float panelW=Mathf.Min(720,Mathf.Max(120,sw-96)),w=panelW-24,keyW=Mathf.Max(160,w*.38f),descW=Mathf.Max(20,w-keyW-20);
    float dialogueFont=GuideClamp(28.8f,sw*.026f,41.6f),titleFont=GuideClamp(20.8f,sw*.018f,28),bodyFont=GuideClamp(16,sw*.0135f,20.8f),keyFont=bodyFont*.86f;
    float dialogueH=dialogueFont*1.25f,titleH=titleFont*(31/23.04f),lineH=bodyFont*1.65f;

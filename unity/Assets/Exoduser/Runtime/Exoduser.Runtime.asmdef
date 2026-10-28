@@ -3,6 +3,7 @@
     "rootNamespace": "",
     "references": [
         "Exoduser.Core",
+        "Unity.InputSystem",
         "Unity.RenderPipelines.Universal.Runtime",
         "Unity.RenderPipelines.Core.Runtime"
     ],

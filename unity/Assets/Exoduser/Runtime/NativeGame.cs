@@ -172,7 +172,7 @@ namespace Exoduser.UnityPort
             if(HandlePanelHotkeys())return;
             // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
             if(stats.Open){
-                if(Input.GetKeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
+                if(ExoInput.KeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
                 else if(!stats.TextInputActive&&NativeKeyBindInput.Down("skill"))OnPanelRequested("skillPanel");
                 else if(!stats.TextInputActive&&NativeKeyBindInput.Down("inventory"))OnPanelRequested("invPanel");
                 else stats.HandleKeys(()=>SetStats(false));
@@ -184,7 +184,7 @@ namespace Exoduser.UnityPort
             }
             // Web forge window (#forge): G toggles it in HandlePanelHotkeys; ESC closes (_panelBack); K / TAB switch directly to that window.
             if(forge.Open){
-                if(Input.GetKeyDown(KeyCode.Escape)){SetForge(false);return;}
+                if(ExoInput.KeyDown(KeyCode.Escape)){SetForge(false);return;}
                 if(NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
                 if(NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
                 UpdateViews();return;
@@ -192,8 +192,8 @@ namespace Exoduser.UnityPort
             // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
             if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
             if(inventory.Open){if(!inventoryKeysSmoke&&inventory.PollKeys(Simulation.Player.Level))SetInventory(false);UpdateViews();return;}
-            if(skillInputFence&&!Input.GetMouseButton(0))skillInputFence=false;
-            if(Input.GetKeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
+            if(skillInputFence&&!ExoInput.Mouse(0))skillInputFence=false;
+            if(ExoInput.KeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
                 if(skills.Open){SetSkills(false);return;}
                 if(inventory.Open)SetInventory(false);
                 else {menu=true;pauseMenu.OpenSettingsDirect();Running=false;}
@@ -203,7 +203,7 @@ namespace Exoduser.UnityPort
             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("skill")){SetSkills(true);return;}
             if(!menu&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("inventory"))SetInventory(!inventory.Open);
-            if(!menu&&!inventory.Open&&Running&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.T))ToggleCrossbow();   // web keydown KeyT (not repeat), G.on && !G.paused
+            if(!menu&&!inventory.Open&&Running&&Simulation.Player.Hp>0&&ExoInput.KeyDown(KeyCode.T))ToggleCrossbow();   // web keydown KeyT (not repeat), G.on && !G.paused
             if(!menu&&!inventory.Open&&!Simulation.PlayerCombatWired&&(NativeKeyBindInput.Down("parry")||NativeKeyBindInput.Down("shield")))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
             UpdateViews();
             if(smokeActive)sound?.Probe();
@@ -211,11 +211,11 @@ namespace Exoduser.UnityPort
         void FixedUpdate()
         {
             if(practiceScripted||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
-            var p=Simulation.Player;var aim=view.ScreenToWorldPoint(Input.mousePosition);
+            var p=Simulation.Player;var aim=view.ScreenToWorldPoint(ExoInput.MousePosition);
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
-            if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
-            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition)||PointerOverStageClear(),p.KiChargeActive);
+            if(firstPractice!=null){x+=(ExoInput.Key(KeyCode.RightArrow)?1:0)-(ExoInput.Key(KeyCode.LeftArrow)?1:0);y+=(ExoInput.Key(KeyCode.DownArrow)?1:0)-(ExoInput.Key(KeyCode.UpArrow)?1:0);}
+            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(ExoInput.MousePosition)||PointerOverStageClear(),p.KiChargeActive);
             Simulation.Stage.Enabled=firstPractice==null;
             if(firstPractice==null){   // the first-practice tick sets these once per tick itself (the combat / roll inputs detect edges against the previous call)
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
@@ -354,8 +354,8 @@ namespace Exoduser.UnityPort
             string bow=NativeKeyBindInput.Bindings.Primary("bow"),roll=NativeKeyBindInput.Bindings.Primary("roll");
             if(menu||skills.Open||inventory.Open||stats.Open||forge.Open){Simulation.SetSkillInput(false,false,false,false,false,false,false,false);Simulation.SetMagicInput(false);return;}   // the panels use the digit keys themselves
             Simulation.SetMagicInput(NativeKeyBindInput.Held("beam"));   // B03b: E-slot malice orb (web 'beam' action, default mouse2)
-            Simulation.SetSkillInput(Input.GetKey(KeyCode.Alpha1),Input.GetKey(KeyCode.Alpha2),Input.GetKey(KeyCode.Alpha3),Input.GetKey(KeyCode.Alpha4),
-                NativeKeyBindInput.Held("bow"),Input.GetKey(KeyCode.F),Input.GetKey(KeyCode.LeftControl),Input.GetKey(KeyCode.Z),bow!=null&&bow==roll);
+            Simulation.SetSkillInput(ExoInput.Key(KeyCode.Alpha1),ExoInput.Key(KeyCode.Alpha2),ExoInput.Key(KeyCode.Alpha3),ExoInput.Key(KeyCode.Alpha4),
+                NativeKeyBindInput.Held("bow"),ExoInput.Key(KeyCode.F),ExoInput.Key(KeyCode.LeftControl),ExoInput.Key(KeyCode.Z),bow!=null&&bow==roll);
         }
         // Web: _xbowEquipped toggle + showPH('석궁 자동발사 ON/OFF'). OPT.xbowAuto persistence belongs to the settings owner and is not wired here.
         public void ToggleCrossbow(){Toast(Simulation.ToggleCrossbowAuto()?"석궁 자동발사 ON":"석궁 자동발사 OFF");}
@@ -492,7 +492,7 @@ namespace Exoduser.UnityPort
             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive)return false;   // A16: a key waiting in the binding page must not open windows
             if(NativeKeyBindInput.Down("forge")){OnPanelRequested("forge");return true;}
             if(NativeKeyBindInput.Down("stats")){OnPanelRequested("statPanel");return true;}
-            if(Input.GetKeyDown(KeyCode.F10)){
+            if(ExoInput.KeyDown(KeyCode.F10)){
                 if(menu){if(gameFocused){menu=false;skillInputFence=true;Running=true;}}   // togglePanel('settings') while settings is open closes it
                 else OnPanelRequested("settings");
                 return true;

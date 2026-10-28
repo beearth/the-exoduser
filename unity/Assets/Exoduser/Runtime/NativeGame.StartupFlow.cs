@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
   {
    if(!frontendEntryInputFence)return false;
    Running=false;
-   if(gameFocused&&!Input.anyKey&&!Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&!Input.GetMouseButton(2)){frontendEntryInputFence=false;frontendFenceReleasedFrame=Time.frameCount;Running=true;}
+   if(gameFocused&&!ExoInput.AnyKey&&!ExoInput.Mouse(0)&&!ExoInput.Mouse(1)&&!ExoInput.Mouse(2)){frontendEntryInputFence=false;frontendFenceReleasedFrame=Time.frameCount;Running=true;}
    return true;
   }
   void DrawStartupWorldHud()

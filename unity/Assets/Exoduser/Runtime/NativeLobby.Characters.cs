@@ -102,7 +102,7 @@ namespace Exoduser.UnityPort
    if(Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||Characters.SelectedIndex<0)return false;
    ActiveCharacterName=Characters.SelectedName;characterInputFence=true;return BeginCharacterEntry(false);
   }
-  void UpdateCharacterFence(){if(characterInputFence&&!Input.GetKey(KeyCode.Return)&&!Input.GetKey(KeyCode.KeypadEnter)&&!Input.GetKey(KeyCode.Escape)&&!Input.GetKey(KeyCode.N)&&!Input.GetKey(KeyCode.Delete)&&!Input.GetKey(KeyCode.Backspace)&&!Input.GetKey(KeyCode.Space))characterInputFence=false;}
+  void UpdateCharacterFence(){if(characterInputFence&&!ExoInput.Key(KeyCode.Return)&&!ExoInput.Key(KeyCode.KeypadEnter)&&!ExoInput.Key(KeyCode.Escape)&&!ExoInput.Key(KeyCode.N)&&!ExoInput.Key(KeyCode.Delete)&&!ExoInput.Key(KeyCode.Backspace)&&!ExoInput.Key(KeyCode.Space))characterInputFence=false;}
   void HandleCharacterKeys()
   {
    var e=Event.current;if(AutomatedInput||e.type!=EventType.KeyDown||showLanguages||lobbyQuitPrompt)return;
@@ -110,7 +110,7 @@ namespace Exoduser.UnityPort
    if(CharacterModalOpen){
     if(CharacterDeleteOpen){HandleCharacterDeleteKeys(e);return;}
     // Enter must commit the current IME composition before it can submit a name.
-    if(Input.compositionString.Length>0)return;
+    if(ExoInput.CompositionString.Length>0)return;
     if(e.keyCode==KeyCode.Escape){CloseCharacterCreation();e.Use();return;}
     if(characterStep==1){
      string focused=GUI.GetNameOfFocusedControl();

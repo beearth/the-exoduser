@@ -38,7 +38,7 @@ namespace Exoduser.UnityPort
                 Simulation.RegisterFirstPracticeActor(actor);practiceActors.Add(actor);
             }
         }
-        static bool DirectionKeysHeld(){return NativeKeyBindInput.Held("up")||NativeKeyBindInput.Held("down")||NativeKeyBindInput.Held("left")||NativeKeyBindInput.Held("right")||Input.GetKey(KeyCode.UpArrow)||Input.GetKey(KeyCode.DownArrow)||Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.RightArrow);}
+        static bool DirectionKeysHeld(){return NativeKeyBindInput.Held("up")||NativeKeyBindInput.Held("down")||NativeKeyBindInput.Held("left")||NativeKeyBindInput.Held("right")||ExoInput.Key(KeyCode.UpArrow)||ExoInput.Key(KeyCode.DownArrow)||ExoInput.Key(KeyCode.LeftArrow)||ExoInput.Key(KeyCode.RightArrow);}
         // inputs that reach the arena in these steps (web allowKey: chain = Shift, roll = direction + Space, rage = Space alone once the focus ends)
         void ApplyStepInputs(PracticeStep step,bool practising)
         {
@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
             bool shift=practiceScripted?scriptShift:NativeKeyBindInput.Held("charge"),space=practiceScripted?scriptSpace:NativeKeyBindInput.HeldKeyboard("roll");
             bool parry=practising&&(step==PracticeStep.ParryMagic||step==PracticeStep.ParryPhysical||step==PracticeStep.HoldMagic||step==PracticeStep.HoldPhysical||step==PracticeStep.RageParry);
             Simulation.SetPlayerCombatInput(parry&&(practiceScripted?scriptQ:NativeKeyBindInput.Held("parry")),parry&&(practiceScripted?scriptE:NativeKeyBindInput.Held("shield")),chain&&shift);
-            if(roll)Simulation.SetRollInput(practiceScripted?scriptUp:NativeKeyBindInput.Held("up")||Input.GetKey(KeyCode.UpArrow),practiceScripted?scriptDown:NativeKeyBindInput.Held("down")||Input.GetKey(KeyCode.DownArrow),practiceScripted?scriptLeft:NativeKeyBindInput.Held("left")||Input.GetKey(KeyCode.LeftArrow),practiceScripted?scriptRight:NativeKeyBindInput.Held("right")||Input.GetKey(KeyCode.RightArrow),space);
+            if(roll)Simulation.SetRollInput(practiceScripted?scriptUp:NativeKeyBindInput.Held("up")||ExoInput.Key(KeyCode.UpArrow),practiceScripted?scriptDown:NativeKeyBindInput.Held("down")||ExoInput.Key(KeyCode.DownArrow),practiceScripted?scriptLeft:NativeKeyBindInput.Held("left")||ExoInput.Key(KeyCode.LeftArrow),practiceScripted?scriptRight:NativeKeyBindInput.Held("right")||ExoInput.Key(KeyCode.RightArrow),space);
             else Simulation.SetRollInput(false,false,false,false,false);
             practiceSpaceForRage=rage&&space;
         }

@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort
             if(!practising){weapon=magic=slot1=false;}
             Simulation.SetMagicInput(magic&&(practiceScripted?scriptMagic:NativeKeyBindInput.Held("beam"))&&!pointerBlocked);
             ApplyStepInputs(step,practising);
-            Simulation.SetSkillInput(slot1&&(practiceScripted?scriptSlot1:Input.GetKey(KeyCode.Alpha1)),false,false,false,practiceSpaceForRage||(practising&&step==PracticeStep.RageBurst&&practiceSpaceForRage),false,false,false,false);
+            Simulation.SetSkillInput(slot1&&(practiceScripted?scriptSlot1:ExoInput.Key(KeyCode.Alpha1)),false,false,false,practiceSpaceForRage||(practising&&step==PracticeStep.RageBurst&&practiceSpaceForRage),false,false,false,false);
             if(practising)
             {
                 if(step==PracticeStep.Left||step==PracticeStep.Right)SupplyFirstPracticeActors();
