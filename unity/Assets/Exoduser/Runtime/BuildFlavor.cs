@@ -81,6 +81,7 @@ namespace Exoduser.UnityPort {
   public string DemoEndSub(bool english){var s=HasClearFinal?def.clearFinal.sub:null;return s==null?null:(english&&s.Length>1&&!string.IsNullOrEmpty(s[1])?s[1]:s[0]);}
   public string DemoEndButton(bool english){var s=HasClearFinal?def.clearFinal.button:null;return s==null?null:(english&&s.Length>1&&!string.IsNullOrEmpty(s[1])?s[1]:s[0]);}
   // web: 'v'+version+' · '+date without dashes (index.html _LOBBY_VER)
+  public static string ReleaseVersion{get{Load();return release.version??"";}}   // release-version.json (web EXODUSER_RELEASE.version)
   public static string VersionLine{get{Load();return "v"+release.version+" · "+(release.date??"").Replace("-","");}}
   public static LobbyLabelStyle LobbyStyle{get{Load();return new LobbyLabelStyle{overlayX=defs.lobby.overlay.x,overlayY=defs.lobby.overlay.y,fontSize=defs.lobby.overlay.fontSize,ls=defs.lobby.overlay.letterSpacing,lineHeight=defs.lobby.overlay.lineHeight,color=ToColor(defs.lobby.overlay.color),limitsColor=ToColor(defs.lobby.overlay.limitsColor),modeOffline=defs.lobby.overlay.modeOffline,modeOnline=defs.lobby.overlay.modeOnline,cornerSize=defs.lobby.corner.fontSize,cornerLs=defs.lobby.corner.letterSpacing,cornerRight=defs.lobby.corner.rightEdge,cornerColor=ToColor(defs.lobby.corner.color)};}}
   static Color ToColor(float[] c){return new Color(c[0]/255f,c[1]/255f,c[2]/255f,c[3]);}
