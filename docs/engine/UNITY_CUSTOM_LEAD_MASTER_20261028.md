@@ -227,3 +227,7 @@ C-02a 검증: 컴파일 0 · `ExoInputVerification`(웹 코드 전부 `Key`로 �
 - worktree **94개**: 깨끗하고 원격에 들어간 것 26개(Steam `rel-0.7.1~0.7.7`·Godot 시절 `codex-*`·`docs-merge` 등), 더러움 표시 66개(Unity worktree 다수는 `.meta` 400여 개 — 에디터가 연 흔적일 가능성, 실제 작업 여부는 소유자 확인 필요), 디스크에 없는 등록 1개(`G:/exoduser-wt/snd10-ui`), C 드라이브 worktree 1개(`C:\Users\심도진\.codex\worktrees\5615`). 삭제는 사용자 승인 사항.
 - git: gc 꺼짐(10-27 팩 손상 대응, 유지), 팩 24개 21.8GB, 느슨한 객체 3.97GB. 공유 폴더 main은 로컬 19 / 원격 246 갈라짐(각 세션이 다른 SHA로 원격 반영 중).
 - PATH 25항목·938자 정상, `DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false` 유지. REPL 감시기 23:30까지 실행 중. API 실행기 키 파일 없음. `python -` 루프 0개.
+
+### 10-29 미리보기 통합의 C-01 후속 경계
+
+미리보기 전용 `dc2a83856`의 Remodel asmref로 RM4 타입 참조 오류는 해소됐다. 후속 `41bfcae6`은 RM0 검수 코드가 미제출 전사 임포터 두 클래스를 찾지 못해 CS0103 세 곳에서 실패했다. `unity/main` 반영·전체 컴파일·Player PASS는 없다. 두 번 실패 중단과 미인수 WIP 보존을 적용했으며 상세는 `UNITY_PC_PREVIEW_ALL_20261029.md`다.

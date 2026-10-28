@@ -54,3 +54,7 @@
 | 대상 | `BossArenas/ArenaChannelPlan.cs`, `CH1_3/Rm3PoolLightCuller.cs`, `CH1_4/Rm4PoolLightCuller.cs` |
 | 보존 | 파일 이동·스크립트 GUID·Core·게임 규칙·장면 배치 변경 0. 기본 어셈블리를 향한 역참조 추가 0 |
 | 검증 | 새 사용자 재개 지시에 따른 참조 경계 수정 단위. Unity 빌드 결과는 후속 보고에 기록하며 기존 실패 2회를 성공으로 바꾸지 않음 |
+
+### 미리보기 재개 검증 결과(10-29)
+
+`41bfcae6`에서 Remodel의 기존 CS0246은 사라졌다. 전체 컴파일은 RM0 검수 도구의 미제출 `WarriorImport`·`WeaponImport` 참조 CS0103 세 곳으로 실패했다. asmref의 Player 성공·전체 컴파일 PASS로 확대하지 않는다. 실제 원인·파일 소유권·중단 근거는 `UNITY_PC_PREVIEW_ALL_20261029.md`에 기록했다.
