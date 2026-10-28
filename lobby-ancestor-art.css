@@ -8,8 +8,8 @@
 .lobby-ancestor-sprite.sprite-loaded{background:none;}
 .lobby-ancestor-shadow{position:absolute;z-index:1;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#0009,transparent 68%);transform:translate(-50%,-50%);}
 .lobby .char-disp-empty{bottom:3%;display:flex;flex-direction:column;align-items:center;gap:4px;max-width:min(500px,50vw);}
-.lobby .char-disp-sub{order:-1;height:auto;margin:0;opacity:1;font-size:13px;letter-spacing:2px;color:#d1bea0;}
-.lobby .char-disp-detail{font-size:12px;line-height:1.4;letter-spacing:.4px;color:#b4ab9c;white-space:normal;}
+.lobby .char-disp-sub{order:-1;height:auto;margin:0;opacity:1;font-size:13px;letter-spacing:2px;color:#c3c0ba;}
+.lobby .char-disp-detail{font-size:12px;line-height:1.4;letter-spacing:.4px;color:#aaadad;white-space:normal;}
 .lobby .lobby-char-preview{display:none;}
 .lobby.has-selected-character>.lobby-ancestor-sprite,.lobby.has-selected-character>.lobby-ancestor-shadow,.lobby.has-selected-character>.lobby-ambient-video{display:none;}
 .lobby.has-selected-character>.lobby-bg-img{background-position:center;}
