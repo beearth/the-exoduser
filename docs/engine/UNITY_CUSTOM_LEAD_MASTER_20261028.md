@@ -105,6 +105,26 @@ C-01 결과(10-28, 브랜치 `claude/unity-pc-c01-asmdef-20261028` @ 6f1637b02, 
 - 남은 것: 1-1 GPU 렌더 스모크(m1). CTO의 플레이어 실행 보류가 풀린 뒤 돌린다. **스모크 통과 전에는 병합하지 않는다.**
 - 판정: 코드·컴파일·빌드 검수는 통과. 병합은 스모크 뒤 유니티 총괄 순번(RM-INT → RM-0 → C-01)으로 한다.
 
+### C-02 상세 명세 — Input System 전환 (10-28)
+
+실측(`origin/unity/main` b0f9a0c52):
+- `activeInputHandler: 2`(구형·신형 둘 다 켜짐). Input System 1.20.1은 설치돼 있지만 `UnityEngine.InputSystem`을 쓰는 파일은 0개다.
+- 구형 호출 135건이 20개 파일에 있다: `GetKeyDown` 65 · `GetKey` 39 · `GetMouseButton` 12 · `mousePosition` 8 · `GetJoystickNames` 3 · `anyKey`/`anyKeyDown` 4 · `GetMouseButtonDown` 1 · `GetAxisRaw("Vertical")` 1 · `compositionString` 1. 많은 파일: `NativePauseMenu.Keyboard` 12 · `NativeLobby.StartupPresentation` 11 · `NativeGame` 11 · `NativeInventory.Keyboard` 8.
+- 바인딩 구조는 그대로 쓴다. Core `KeyBindings`는 웹 BINDS를 웹 키 코드("KeyW"·"mouse0"·"ShiftLeft")로 저장하고, `NativeKeyBindInput`이 웹 코드↔`KeyCode` 다리 역할을 한다. 웹 코드 이름은 Input System `Key` 열거와 거의 1:1로 맞는다.
+- `NativeGame.FixedUpdate`(212행)는 `Held`와 `mousePosition` 같은 상태만 읽는다. 눌린 순간(Down) 판정은 `Update`/`OnGUI`에서 한다. 신형의 `wasPressedThisFrame`·`isPressed`와 의미가 같다.
+- 지금 스모크는 실제 키를 넣을 수 없다. 신형의 가상 장치(`InputSystem.AddDevice`·`QueueStateEvent`)를 쓰면 키 입력 스모크를 진짜로 돌릴 수 있다. C-06 테스트의 기초가 된다.
+
+단계:
+
+| 단계 | 내용 | 동작 변화 |
+|---|---|---|
+| C-02a | `Runtime/Input/ExoInput.cs`(신형 위의 정적 파사드)를 추가하고, 구형 호출 135건을 1:1로 바꾼다. `NativeKeyBindInput`의 `KeyCode` 대신 `Key`를 쓴다. `Exoduser.Runtime` asmdef에 `Unity.InputSystem` 참조를 추가한다. 가상 장치 검증 `Editor/ExoInputVerification.Run`을 넣는다. `activeInputHandler`는 2로 둔다 | 없음(같은 키·같은 프레임) |
+| C-02b | 패드: 웹 `navigator.getGamepads()` 처리(game.html 13592·13969·20071 부근)와 Core `FrontendPadPolicy`를 그대로 신형 `Gamepad`에 연결한다. `GetJoystickNames` 대체 | 웹과 같은 패드 지원 |
+| C-02c | Input Actions 에셋(Gameplay·UI 맵)을 만들고 키 재설정은 `KeyBindings` 저장값을 바인딩 덮어쓰기로 넣는다. 구형 호출 0을 확인한 뒤 `activeInputHandler: 1`(신형만) | 구형 입력 끔 |
+
+C-02a 검증: 컴파일 0 · `ExoInputVerification`(웹 코드 전부 `Key`로 변환됨, 가상 키보드·마우스로 Down은 누른 프레임에만·Held는 누르는 동안·AnyKeyDown·`NativeKeyBindInput.Down("weapon")`=mouse0) · `PortVerification.CheckCorePresence` · `FrontendPadVerification.Run` · Win 빌드 · (플레이어 보류가 풀린 뒤) 1-1 직접 조작 판정.
+실행: 구현 = PC `codex exec`(worktree `E:\exoduser-wt\pc-unity-c02-input`, 브랜치 `claude/unity-pc-c02-input-20261028`, **C-01 브랜치 6f1637b02 기준** — asmdef 참조를 추가해야 하므로). Unity 검증·커밋·push는 커스텀 총괄이 `exo-unity.ps1`로 한다. 병합 순번은 C-01 다음이다.
+
 ### P1 — 리메이크 화질 (맵·보스 리메이크와 같이)
 
 | id | 과제 | 쓰는 팀 | 첫 적용 |
