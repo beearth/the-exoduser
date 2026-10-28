@@ -2,6 +2,8 @@
 
 ARM64 Settings QA 앱에서 웹 `mouse2`↔Unity 오른쪽 버튼 1을 입력/캡처 양쪽에 맞춰 수정했다. 실제 OS 오른쪽 클릭으로 마법 처치 5/5, 첫 연습 1~9단계 완료. 10단계 방향+Space 동시 키 입력은 현재 CUA가 일반키 2개 조합을 거부해 구르기 0/5 HOLD. 이어질 11~12단계·일반 1-1 몹/드롭은 미검증. PC A18 `NativePractice*` 변경0. [증거·다음 관문](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
 
+같은 날 정식 보조키 UI 재시도: 격리 QA 조작 탭을 실제 Right 키로 열었으나 구르기 보조 버튼 CUA 클릭 2좌표가 키 대기 화면을 열지 못했다. QA 설정 SHA 불변, 보조키 `null` 유지. 제품 코드·새 빌드 없음. 실제 물리 마우스 클릭으로 대기 진입을 확인한 뒤 `ControlLeft` 지정·Control+W 구르기 검수로 이어갈 것. [추가 증거](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md#같은-날-정식-구르기-보조키-경로-재시도).
+
 ## 2026-10-29 Mac A15 1%·M1 최종 gate
 
 PC A15 원본 `2ac579319…`의 SFX/BGM 좌우 1%를 정상 인수. Mac Editor 전체 Verify PASS, ARM64 QA build Succeeded/errors0, 격리 M1 자동 Player 전 stage ok. 이 시점의 실제 OS UI·PC checkout pending은 위 후속에서 각각 해소됐다. [상세·영수증](../UNITY_MAC_A15_M1_FINAL_20261029.md).

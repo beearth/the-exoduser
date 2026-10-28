@@ -33,3 +33,11 @@ Unity 6000.6.7f1 ARM64 Settings QA 빌드 1회: `_out/UNITY-MAC-A05-IO-PRACTICE-
 10단계는 방향키와 Space의 동시 key-down이 필요하다. 현재 CUA `pressKey('w+space')`는 `keyPressIncludedMultipleNonModifierKeys`로 입력 전 거부했다. 별도 `pressKey` 호출의 `Promise.all` 및 키를 동반한 마우스 hold와 Space 병행은 연습 카운터 0/5였다. 게임의 구르기 로직이 실패했다고 판정할 근거는 없다. 이 지점은 **OS 입력 도구의 동시 일반키 표현 제한으로 인한 인수 HOLD**다. 실제 물리 키보드에서 방향+Space 5회, 뒤의 분노 단계, 완료 후 1-1 일반 몹 처치·드롭을 이어 검수해야 한다. PC A18 `NativePractice*` 소유자는 건드리지 않는다. 제품 변경 없이 적합한 동시 키 입력 수단을 먼저 확인한다.
 
 범위: 첫 연습의 1~9 실제 입력 PASS, 수정된 오른쪽 마우스 5/5 PASS. 첫 연습 전체 완료와 첫 일반 몹·드롭은 **HOLD**다. 스크립트형 `NativePracticeCapture` 전체 PASS는 이 실입력 결과를 대체하지 않는다.
+
+## 같은 날 정식 구르기 보조키 경로 재시도
+
+제품 코드는 바꾸지 않고 동일 SHA의 ARM64 Settings QA 앱을 새 격리 루트 `_out/UNITY-MAC-A05-IO-PRACTICE-REMAP-20261029/`에서 실행했다. 기존 QA roster와 설정만 복사했고 marker `EXODUSER_MAC_A05_IO_V1`, 전용 `--unity-qa-sandbox` 및 단일 PID 54850을 확인했다. 로비 `A15Mac29`에서 Return, 영상·안내 Escape로 첫 연습 화면에 진입한 뒤 Escape로 설정을 열었다. 게임→화면→사운드→조작 탭은 실제 Right 키로 이동했다.
+
+조작 탭의 `구르기 (방향키+)` 행은 주 키 `SPACE`, 보조키 `보조`로 표시됐다. CUA의 실제 왼쪽 클릭을 보조키 표시 위치(1280×784 전체 창 좌표 [581,610], 100ms)에 보내고, 제목막대 좌표 가설을 확인하려고 [581,546]도 130ms 클릭했으나 둘 다 키 입력 대기 표시로 전환되지 않았다. 두 번째 클릭 뒤 화면 `controls-roll-alt-click-unchanged.jpg`를 저장했다. QA 설정 파일 SHA-256은 실행 전후 `155431d9df1df65865aa749063340a64c9f2ae3ad0b35f2e8ea3bdf02a401c76`으로 동일하며 `binds.roll=Space`, `binds2.roll=null`이다. 보조키를 적용하거나 사용자 기본값을 바꾸지 않았다. 종료 후 PID 54850만 종료하고 기존 사용자 앱 3개는 유지했다.
+
+현재 증거는 **CUA의 이 Unity IMGUI 키 버튼 클릭이 대기 상태를 열지 못함**이다. `ControlLeft` 캡처와 Control+W 구르기의 성공/실패는 아직 시험하지 못했으며, 게임의 바인딩 기능 자체가 고장 났다고 판정하지 않는다. 이 경로의 최소 다음 행동은 실제 물리 마우스로 격리 QA 앱의 구르기 보조 버튼을 클릭하여 대기 상태를 열고 `ControlLeft`를 지정한 뒤, 지원되는 Control+W 실입력으로 구르기 5회 및 11~12단계·첫 일반 몹/드롭을 이어 검수하는 것이다. PC A18 `NativePractice*`는 변경하지 않는다.
