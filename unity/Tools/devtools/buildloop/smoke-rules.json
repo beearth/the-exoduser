@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "doc": "buildloop.ps1 판정 규칙. 로그의 각 줄을 ignore -> fail/knownIssues 순으로 검사한다. fail 에 걸리고 knownIssues 에도 걸리면 '알려진 결함'으로 센다(통과로 바꾸지 않는다, CTO 규칙 UNITY_DONE_BUILD_PLAYTEST_RULE_20261028 4번). scope: build=빌드 로그, player=스모크 플레이어 로그.",
+  "ignore": [
+    "^\\s*[\\d.]+ (kb|mb|b)\\s",
+    "Native extension for WindowsStandalone target not found",
+    "\\[Licensing::Module\\] Error: Access token is unavailable",
+    "^Dependency assembly - ",
+    "\\.cs\\s*$",
+    "warning (UAC|CS|CA)\\d+"
+  ],
+  "fail": [
+    { "id": "invalid-pass", "pattern": "Invalid pass number", "scope": ["build", "player"], "title": "Graphics.Blit 패스 번호 오류" },
+    { "id": "shader-not-found", "pattern": "[Ss]hader .*not found", "scope": ["build", "player"], "title": "셰이더 못 찾음" },
+    { "id": "dependency-not-found", "pattern": "dependency .*not found", "scope": ["build", "player"], "title": "셰이더 의존성 못 찾음" },
+    { "id": "video-shaders", "pattern": "Video shaders not found|Could not find (video decode shader pass|material Hidden/Video)", "scope": ["build", "player"], "title": "비디오 셰이더 없음" },
+    { "id": "render-path-passes", "pattern": "custom render path shader needs to have at least", "scope": ["build", "player"], "title": "셰이더 패스 0개" },
+    { "id": "exception", "pattern": "\\w*Exception\\b", "scope": ["build", "player"], "title": "예외" },
+    { "id": "logerror", "pattern": "UnityEngine\\.Debug:LogError|: error CS\\d+|^Error building Player|Build Finished, Result: (Failure|Canceled)|^\\[Error\\]", "scope": ["build", "player"], "title": "LogError / 컴파일 오류" },
+    { "id": "gfx-null", "pattern": "Forcing GfxDevice: Null|Renderer:\\s+Null Device|NullGfxDevice", "scope": ["player"], "title": "Null 그래픽 장치(화면 안 그림)" }
+  ],
+  "companions": [
+    "custom render path shader needs to have at least"
+  ],
+  "knownIssues": [
+    { "id": "DBT-1", "title": "HUD 구슬 셰이더 SourceHudOrb 패스 0개", "pattern": "SourceHudOrb", "scope": ["build", "player"] },
+    { "id": "DBT-2", "title": "플레이 빌드에 Video 셰이더 없음(Hidden/VideoDecode, VideoComposite)", "pattern": "Video shaders not found|Hidden/Video|video decode shader pass", "scope": ["build", "player"] },
+    { "id": "DBT-N1", "title": "URP Terrain/Lit·SpeedTree 의존 셰이더 누락(번호 미배정)", "pattern": "Terrain/Lit|Nature/SpeedTree|SpeedTree.*Billboard", "scope": ["build", "player"] }
+  ],
+  "requireGraphics": {
+    "pattern": "Version:\\s+Direct3D 1[12]",
+    "rendererPattern": "Renderer:\\s+(.+)$"
+  },
+  "m1": {
+    "failStatuses": ["fail", "missing"],
+    "okStatuses": ["ok"],
+    "neutralStatuses": ["pending-core"]
+  }
+}
