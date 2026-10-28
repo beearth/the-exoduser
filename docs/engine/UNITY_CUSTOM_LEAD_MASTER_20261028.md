@@ -93,7 +93,9 @@ Unity 6000.6.7f1 · URP 17.6.0 · C# 파일 240개 · 씬 4개(`FirstPlayable`·
 2. `Exoduser.Core.asmdef`(+`.meta`)만 추가. 파일 이동 없음. csproj 54개는 손대지 않음. 컴파일 오류 = 숨은 의존성 목록 → 기록.
 3. `Exoduser.Runtime`·`Exoduser.Editor` asmdef 추가. `FirstPlayable.unity`·`RM1_Slice`·`RM3_Slice` 스크립트 연결(GUID) 유지 확인.
 4. 검증: oracle(dotnet) 불일치 0 · `exo-unity.ps1`로 `PortVerification.CheckCorePresence`·`Verify` 배치 실행 · Win 빌드 1회 · 1-1 실제 렌더 스모크 · **같은 Runtime 파일 1줄 수정 후 컴파일 시간 전후 비교**(목표: Core 재컴파일 없음).
-5. 브랜치 `claude/unity-pc-c01-asmdef-20261028`, worktree `E:\exoduser-wt\pc-unity-c01-asmdef`, 병합은 유니티 총괄 순번. Unity 실행은 PC 전체 1개 규칙·`exo-unity.ps1` 경유.
+5. 브랜치 `claude/unity-pc-c01-asmdef-20261028`, worktree `E:\exoduser-wt\pc-unity-c01-asmdef`. Unity 실행은 PC 전체 1개 규칙·`exo-unity.ps1` 경유.
+
+배정(10-28 유니티 총괄 결정): 구현 = `unity-core-oracle-opus` `local_eedbb777`(Core·oracle 담당 Opus). 그 세션의 LT-5·oracle 결함 2건 다음 세 번째 일. 병합 순번 = RM-INT → RM-0(조명·사운드) → **C-01**. 유니티 총괄 병합 체크에 "새 패키지 참조(UnityEngine.VFX 등)를 Runtime asmdef에 넣었는가"가 추가됨(C-01 뒤 병합 브랜치에 적용).
 
 ### P1 — 리메이크 화질 (맵·보스 리메이크와 같이)
 
