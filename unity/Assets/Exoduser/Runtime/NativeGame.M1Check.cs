@@ -14,15 +14,44 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         [Serializable] sealed class M1Stage { public string id, name, status, note, capture; }
-        [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; }
+        [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; public string device, deviceType, captureMode; public bool headless; public int guiRepaints, guiBridged; }
         M1Receipt m1; string m1Caps; int m1Index;
 
         // BX art: a stray OS key (ESC / TAB) during the unattended run must not leave the pause menu / a window over the comparison scenes
         void ArtScreenClear() { if (menu) { menu = false; pauseMenu.Reset(); Running = true; } if (inventory.Open) SetInventory(false); if (skills.Open) SetSkills(false); }
+        // `--unity-mute` + -batchmode (no -nographics, so the GPU device stays): no window exists, so ScreenCapture has nothing to read. The shot is taken by rendering the world camera into a 1600x900
+        // RenderTexture and reading it back. IMGUI (OnGUI, the whole HUD) is drawn into the same RenderTexture only if the player still sends Repaint events in batchmode; guiRepaints in
+        // m1-check.json says whether it did (0 = the captures are world only, no HUD). Normal play and the windowed m1-check keep ScreenCapture.
+        bool m1Headless; RenderTexture m1GuiTarget; int m1GuiRepaints, m1GuiBridged;
+        sealed class M1GuiProbe : MonoBehaviour { public NativeGame game; void OnGUI() { if (game != null && Event.current.type == EventType.Repaint) game.M1GuiRepaint(); } }
+        internal void M1GuiRepaint()
+        {
+            m1GuiRepaints++;
+            if (m1GuiTarget == null) return;
+            var previous = RenderTexture.active;
+            try { RenderTexture.active = m1GuiTarget; OnGUI(); m1GuiBridged++; } finally { RenderTexture.active = previous; m1GuiTarget = null; }
+        }
         IEnumerator M1Shot(string name)
         {
             UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
-            ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null;
+            if (!m1Headless) { ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null; yield break; }
+            const int w = 1600, h = 900;
+            var rt = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGB32);
+            var previousTarget = view.targetTexture; var previousActive = RenderTexture.active; Texture2D tex = null;
+            try
+            {
+                view.targetTexture = rt; view.Render(); view.targetTexture = previousTarget;
+                m1GuiTarget = rt;                       // the next Repaint (if any) draws the IMGUI over this frame's world
+            }
+            catch (Exception e) { view.targetTexture = previousTarget; Debug.LogWarning("[M1] headless world render failed: " + e.Message); }
+            yield return null; yield return new WaitForEndOfFrame();
+            m1GuiTarget = null;
+            try
+            {
+                RenderTexture.active = rt; tex = new Texture2D(w, h, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, w, h), 0, 0); tex.Apply();
+                File.WriteAllBytes(Path.Combine(m1Caps, name + ".png"), tex.EncodeToPNG());
+            }
+            finally { RenderTexture.active = previousActive; RenderTexture.ReleaseTemporary(rt); if (tex != null) Destroy(tex); }
         }
         // status: "ok", "fail", "missing", "pending-core" (needs the boss Core, not a flow gap)
         void M1Add(string id, string name, string status, string note, string cap)
@@ -33,11 +62,17 @@ namespace Exoduser.UnityPort
 
         IEnumerator M1Check()
         {
-            AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;
+            AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;   // (always muted here; --unity-mute below is the explicit flag the build loop passes)
+            bool mute = Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-mute") >= 0;
+            if (mute) { AudioListener.volume = 0; AudioListener.pause = true; }
+            m1Headless = mute && Application.isBatchMode;
             string output = Argument("-output"); if (string.IsNullOrEmpty(output)) yield break;
             m1Caps = Path.Combine(output, "caps"); Directory.CreateDirectory(m1Caps);
             m1 = new M1Receipt { scope = "real NativeGame; lobby/story/practice through the lobby API, gameplay through Simulation.Tick (not OS input)" };
-            Screen.SetResolution(1920, 1080, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);
+            m1.headless = m1Headless; m1.device = SystemInfo.graphicsDeviceName; m1.deviceType = SystemInfo.graphicsDeviceType.ToString(); m1.captureMode = m1Headless ? "headless-rendertexture-1600x900" : "screen-capture";
+            if (m1Headless) { var probe = gameObject.AddComponent<M1GuiProbe>(); probe.game = this; }
+            else Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
+            yield return new WaitForSecondsRealtime(.5f);
             float deadline;
 
             // ---- 01 lobby -> warrior -> 1-1 ----
@@ -349,6 +384,7 @@ namespace Exoduser.UnityPort
 
         IEnumerator M1Finish(string output)
         {
+            m1.guiRepaints = m1GuiRepaints; m1.guiBridged = m1GuiBridged;
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
             yield return null; Application.Quit(0);
         }
