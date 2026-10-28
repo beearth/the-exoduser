@@ -81,3 +81,9 @@
 - 섬 지형(격자 안 막힌 칸) 상한 `min(1.5,…)` → `IslandMaxH = 0.6`(칸별 ×0.75~1.25 흔들림·블러 전). 격자 밖 지형은 1.5 유지.
 - 쐐기 검사 h = 걷기 면 위 지형 높이(`ground`) + 덩어리 높이(`mass`). `rm3_wedge_masses.json`에 `ground`·`mass`·`h` 열.
 - 무창·무음: `tools/rm3/run-rm3.ps1`(-batchmode, -nographics 없음, 숨김 창, 공용 Unity 잠금 `I:\EXODUSER-Storage\unity-jobs\_pc_lock.json` 원자 생성·종료 시 삭제), `Capture`·`Fps`에서 `AudioListener.volume = 0`.
+
+### 8-c. MapLint(DT-02) 지적 반영 (10-28)
+- **걷기 칸 지형 굴곡**: 걷기 칸과 그 둘레 0.5칸 안의 지형 높이를 ±0.04u(`WalkFlatTol`)로 클램프하고, 그 바깥은 `0.04 + 0.28×(걷기 칸까지 거리−0.5)u`를 넘지 못하게 막는다(`DistToWalkTile`, `ComputeHeights` 끝). 섬 융기는 걷기 칸에서 0.5칸 넘게 떨어진 곳부터 시작한다. 허용값 0.04u는 유지(런타임 z=0, RM-INT 검증 뒤 재검토).
+- **추가광 한도**: `Remodel/CH1_3/Rm3PoolLightCuller.cs`(RM-4 `Rm4PoolLightCuller` 방식, 카메라 포커스 근처 8개만 `Light.enabled`)를 `Pools` 부모에 붙인다. 점광 14개, URP Forward 한도 8.
+- **원점 쌓임·막힌 섬 미덮임**: 8절 버섯 좌표 수정으로 해소 예상, 다음 실행의 MapLint json으로 0 확인.
+- 판정 기준: 맵 구조 판정은 MapLint 결과 json. 빌더 자체 수치 5종은 참고용.

@@ -32,6 +32,7 @@ namespace Exoduser
         const int TX0 = -20, TX1 = 220, TY0 = -20, TY1 = 220;   // padded terrain window (tiles): outer masses, rivers and background live here
         const float T = 0.4f, TerrainH = 4f, BaseY = -0.5f, Pitch = 0.85f, DistU = 14f, CamSideMax = 0.9f;
         const int HRes = 1025, ARes = 512;
+        const float WalkFlatTol = 0.04f;   // terrain on a walk tile and within 0.5 tile of one stays within +-0.04u (MapLint walk-tile roughness limit); the island rise starts beyond that
         const float IslandMaxH = 0.6f;   // island terrain (in-grid blocked tiles) base height cap, before the x0.75..1.25 per-tile jitter and blur (map lead 10-28)
 
         [Serializable] class WalkJ { public string[] rows; }
@@ -196,6 +197,7 @@ namespace Exoduser
             BuildDecals(world.transform, mats);
             BuildLighting(mats);
             BuildCamera(mats);
+            var pm = GameObject.Find("Player Marker").transform; var cull = GameObject.Find("Pools").AddComponent<Rm3PoolLightCuller>(); cull.focus = pm; cull.Refresh(pm.position);
             BuildNavMesh(world.transform);
             FlushMeshes();
             WriteStructureReports();
@@ -306,9 +308,21 @@ namespace Exoduser
                         float d = DistToSegs(segs, X, Y);
                         if (d < 3.4f) { float w = Smooth(2.9f, 1.3f, d); v = Mathf.Lerp(v, -0.42f, w); v += 0.05f * Smooth(1.9f, 2.7f, d) * Smooth(3.4f, 2.8f, d); }
                     }
+                    float wd = DistToWalkTile(X, Y);
+                    if (wd <= 0.5f) v = Mathf.Clamp(v, -WalkFlatTol, WalkFlatTol); else v = Mathf.Min(v, WalkFlatTol + 0.28f * (wd - 0.5f));
                     h[i, j] = Mathf.Clamp01((v - BaseY) / TerrainH);
                 }
             return h;
+        }
+        // distance (tiles) from a point to the nearest walk tile square; 99 when none lies within two tiles
+        static float DistToWalkTile(float X, float Y)
+        {
+            int cx = Mathf.FloorToInt(X), cy = Mathf.FloorToInt(Y); float best = 99f;
+            for (int ty = cy - 2; ty <= cy + 2; ty++) for (int tx = cx - 2; tx <= cx + 2; tx++)
+                {
+                    if (!Walk(tx, ty)) continue; float dx = Mathf.Max(0f, Mathf.Abs(X - (tx + .5f)) - .5f), dy = Mathf.Max(0f, Mathf.Abs(Y - (ty + .5f)) - .5f); float d = Mathf.Sqrt(dx * dx + dy * dy); if (d < best) best = d;
+                }
+            return best;
         }
         static void BoxBlur(float[,] h, int r, bool horiz)
         {
@@ -924,7 +938,7 @@ namespace Exoduser
         {
             AudioListener.volume = 0f; var outJson = Arg("-fpsOut", Arg("-out", "rm3-fps.json")); Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
-            var w0 = W(100f, 185f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); brain.UpdateMethod = CinemachineBrain.UpdateMethods.ManualUpdate; brain.ManualUpdate();
+            var w0 = W(100f, 185f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); var cull = UnityEngine.Object.FindFirstObjectByType<Rm3PoolLightCuller>(); if (cull != null) cull.Refresh(marker.position); brain.UpdateMethod = CinemachineBrain.UpdateMethods.ManualUpdate; brain.ManualUpdate();
             var world = GameObject.Find("World"); var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
             var tex = new Texture2D(4, 4, TextureFormat.RGB24, false); var res = new List<string>();
             foreach (var on in new[] { true, false, true })
@@ -956,7 +970,7 @@ namespace Exoduser
             {
                 if (cut == "top") { CaptureTop(outDir); continue; }
                 if (!focus.TryGetValue(cut, out var f)) continue;
-                var w = W(f.x, f.y); marker.position = new Vector3(w.x, GroundY(w.x, w.z), w.z);
+                var w = W(f.x, f.y); marker.position = new Vector3(w.x, GroundY(w.x, w.z), w.z); var cull = UnityEngine.Object.FindFirstObjectByType<Rm3PoolLightCuller>(); if (cull != null) cull.Refresh(marker.position);
                 var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
                 brain.UpdateMethod = CinemachineBrain.UpdateMethods.ManualUpdate; brain.ManualUpdate(); cam.Render();
                 RenderTexture.active = rt; var tex = new Texture2D(1600, 900, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, 1600, 900), 0, 0); tex.Apply();
