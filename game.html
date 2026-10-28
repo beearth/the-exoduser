@@ -10393,6 +10393,12 @@ const _sampleFiles={
   crit_heavy:'sfx/hit/crit_heavy.mp3',                   // 치명타 묵직한 타격 — hurtE 치명타 블록, 쿨다운 12f
   ui_button_hover:'sfx/ui/button_hover.mp3',             // 버튼 호버 — document 위임 리스너
   ui_button_confirm:'sfx/ui/button_confirm.mp3',         // 버튼 클릭 확정 — document 위임 리스너(자체 소리 없을 때만)
+  // SND-10 2단계 (2026-10-28) — UI 새 소리 5키, 사용자 청음 채택 (SFX Forge s10)
+  ui_cancel:'sfx/ui/cancel.mp3',                         // 사슬 이동·돌진 캔슬 — 캔슬 글자와 함께(.28)
+  ui_panel_open:'sfx/ui/panel_open.mp3',                 // 인벤토리·대장간·스킬·능력치·설정 열기 — togglePanel·openPanel(.22)
+  ui_panel_close:'sfx/ui/panel_close.mp3',               // 같은 창 닫기 — closeAllPanels·closePanel(.22)
+  ui_fail:'sfx/ui/fail.mp3',                             // 자원 부족·쿨다운(전사)·장착 실패 — _uiFail, 400ms 쿨다운(.2)
+  ui_salvage:'sfx/ui/salvage.mp3',                       // 장비 분해 완료 — 가방 분해 4곳·대장간 분해(.5)
   amb_hell_forest_bed:'sfx/ambient/hell_forest_bed.mp3', // 1장 썩은 숲 앰비언스 루프 — BGM.play('hell1') 연동
 };
 const _audioBuffers={};
@@ -12733,6 +12739,9 @@ document.addEventListener('click',function(e){
     playSample('ui_button_confirm',.35,1);
   },0);
 },true);
+// ── SND-10: 실패 소리 — 자원 부족·쿨다운(전사)·장착 실패. 실버테일은 기존 음성(voice_*)이 있어 showPH에서 부르지 않는다. 400ms 쿨다운 ──
+let _uiFailAt=0;
+function _uiFail(){const n=performance.now();if(n-_uiFailAt<400)return;_uiFailAt=n;playSample('ui_fail',.2,1)}
 // ── SND-02: 1장(hell1) 앰비언스 루프 — BGM.play 끝에서 동기화, 그 외 키는 800ms 페이드 정지 ──
 let _ambRef=null,_ambWant=false;
 function _ambSync(key,_try){
@@ -13420,7 +13429,7 @@ addEventListener('keydown',e=>{
   }
   // ── Shift 사슬: 홀드 시작 ──
   if(e.code==='ShiftLeft'&&G.on&&!G.paused&&!e.repeat&&P.s!=='fallen'&&P.s!=='dead'){
-    if(_harpActive||_dashActive){_harpActive=false;_dashActive=false;_dashHold=false;_dashLeft=0;_dashTier=0;_dashVX=0;_dashVY=0;_dashPhase=0;P._chainSlamReady=false;P._chainAssaultReady=false;addTxt(P.x,P.y-20,_T('캔슬'),'#ff6666',20);playSample('ui_cancel',.4,1)}
+    if(_harpActive||_dashActive){_harpActive=false;_dashActive=false;_dashHold=false;_dashLeft=0;_dashTier=0;_dashVX=0;_dashVY=0;_dashPhase=0;P._chainSlamReady=false;P._chainAssaultReady=false;addTxt(P.x,P.y-20,_T('캔슬'),'#ff6666',20);playSample('ui_cancel',.28,1)}
     else if(!_dashHold&&_harpGauge>0){_dashHold=true;_dashHoldF=0;_dashTier=0}
     else if(!_dashHold&&_harpGauge<=0){showPH(_T('충전 중...'),'#ff8844')}
   }
@@ -16494,7 +16503,7 @@ function equipItem(item){
   if(item&&item.slot==='bonePart'){registerBonePart(item);return}
   // 레벨 제한 체크
   if(item.reqLv&&P&&P.lv<item.reqLv){
-    notify(_L('⚠ 아이템 레벨이 높습니다! (요구 Lv.'+item.reqLv+' / 현재 Lv.'+P.lv+')','⚠ Item level too high! (Req. Lv.'+item.reqLv+' / Current Lv.'+P.lv+')'));return;
+    notify(_L('⚠ 아이템 레벨이 높습니다! (요구 Lv.'+item.reqLv+' / 현재 Lv.'+P.lv+')','⚠ Item level too high! (Req. Lv.'+item.reqLv+' / Current Lv.'+P.lv+')'));_uiFail();return;
   }
   const equipSlot=_earringSlot(item.slot)&&_earringEquipTarget?_earringEquipTarget:_equipSlot(item);
   const old=INV.equipped[equipSlot];
@@ -16513,7 +16522,7 @@ function equipItem(item){
     }else{
       // 악의 부족 → 강화 이전 불가, 교체 차단
       notify(_L('악의 부족! 강화 이전 비용 ','Not enough Malice! Transfer cost ')+xc.toLocaleString()+_L('악의 (보유: ',' (Have: ')+(G.mats||0).toLocaleString()+')');
-      return;
+      _uiFail();return;
     }
   }
   // ═══ 결정 자동 전승 ═══
@@ -16532,7 +16541,7 @@ function equipItem(item){
       }
       if(!_placed){
         // 슬롯 부족 → 주머니로 자동 탈착 (CRYSTAL_BAG_MAX 제한)
-        if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니가 가득 찼습니다!'));continue}
+        if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니가 가득 찼습니다!'));_uiFail();continue}
         CRYSTAL_BAG.push(_cr);
         const _cd=CRYSTAL_DEFS[_cr.id];
         _crMsg.push((_cd?_cd.sigil:'💎')+(_cd?_crDefN(_cd):_cr.id));
@@ -16587,7 +16596,7 @@ function dropItem(idx){
   const mats=salvageVal(it);
   if(!Number.isFinite(mats)||mats<0)return false;
   G.mats+=mats;
-  SFX.pickup();
+  playSample('ui_salvage',.5,1);
   INV.bag.splice(idx,1);
   if(INV.bag.length===0) INV.selected=null;
   else INV.selected=Math.min(idx, INV.bag.length-1);
@@ -43844,7 +43853,7 @@ function hurtP(dmg,opts){
   if(P.hp<=0&&_eqAffix('lastStand')>=1&&!P._lastStandUsed){P.hp=1;P._lastStandUsed=true;P.iframes=120;addTxt(P.x,P.y-25,_T('💀 불굴!'),'#ffdd44',60);return}
   if(P.hp<=0)die()}
 let scrFlash=null,scrFlashA=0;
-function showPH(t,c,duration=500){if(_charIdx===1&&t==='쿨다운 중...')playSample('voice_cooldown',1,1);if(_charIdx===1&&/^(MP|ST|HP) 부족!|^악의 부족!/.test(t))playSample('voice_resource_fail',1,1);const el=$('ph');el.textContent=_T(t);el.style.color=c;el.classList.add('on');clearTimeout(showPH._timer);showPH._timer=setTimeout(()=>el.classList.remove('on'),duration)}
+function showPH(t,c,duration=500){if(_charIdx===1&&t==='쿨다운 중...')playSample('voice_cooldown',1,1);if(_charIdx===1&&/^(MP|ST|HP) 부족!|^악의 부족!/.test(t))playSample('voice_resource_fail',1,1);if(_charIdx!==1&&(t==='쿨다운 중...'||/^(MP|ST|HP) 부족!|^악의 부족!/.test(t)))_uiFail();const el=$('ph');el.textContent=_T(t);el.style.color=c;el.classList.add('on');clearTimeout(showPH._timer);showPH._timer=setTimeout(()=>el.classList.remove('on'),duration)}
 function notify(msg){const el=$('notif');el.textContent=_T(msg);el.classList.add('on');el.style.bottom='260px';setTimeout(()=>{el.style.bottom='270px';el.classList.remove('on')},1500)}
 
 // ═══════════════════════════════════════
@@ -44286,8 +44295,8 @@ function _injectPanelNav(activeId){
     pbox.insertBefore(nav,pbox.firstChild);
   });
 }
-function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){if(id==='invPanel'){_invAutoPlace();_invSalSel.clear();INV.selected=null}el.classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
-function openPanel(id){closeAllPanels();if(id==='invPanel'){_invAutoPlace();_invSalSel.clear();INV.selected=null}$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
+function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels(true);if(isOn)playSample('ui_panel_close',.22,1);const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){if(id==='invPanel'){_invAutoPlace();_invSalSel.clear();INV.selected=null}el.classList.add('on');G.paused=true;playSample('ui_panel_open',.22,1);_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
+function openPanel(id){const _wasOn=$(id).classList.contains('on');closeAllPanels(true);if(id==='invPanel'){_invAutoPlace();_invSalSel.clear();INV.selected=null}$(id).classList.add('on');G.paused=true;if(!_wasOn)playSample('ui_panel_open',.22,1);_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
 function openInventoryStorage(){
   const panel=$('invPanel');
   if(panel.classList.contains('on')&&panel.dataset.inventoryPage==='storage'){closeAllPanels();return}
@@ -44315,8 +44324,8 @@ function _panelBack(){
   if($('settings')&&$('settings').classList.contains('on')){closePanel('settings');return true}
   return false
 }
-function closePanel(id){$(id).classList.remove('on');G.paused=false}
-function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
+function closePanel(id){const _w=$(id).classList.contains('on');$(id).classList.remove('on');G.paused=false;if(_w)playSample('ui_panel_close',.22,1)}
+function closeAllPanels(_quiet){const _wasOpen=['settings','invPanel','forge','statPanel','skillPanel'].some(id=>$(id)&&$(id).classList.contains('on'));$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}});if(_wasOpen&&!_quiet)playSample('ui_panel_close',.22,1)}
 
 // ═══ 스킬 패널 ═══
 const SKILL_CATS=[
@@ -50663,7 +50672,7 @@ _isBtn.style.display='';_isBtn.textContent=_L("선택분해 ({p0}개 -> 악의 +
         const _currentTotal=_currentSelected.reduce((sum,it)=>sum+salvageVal(it),0);if(!Number.isFinite(_currentTotal)||_currentTotal<0)return;
         INV.bag=INV.bag.filter(it=>!_currentSelected.includes(it));
         G.mats+=_currentTotal;_invSalSel.clear();INV.selected=null;
-        SFX.pickup();
+        playSample('ui_salvage',.5,1);
         dbSaveNow();renderInv();
       };
     }else{_isBtn.style.display='none'}
@@ -50693,7 +50702,7 @@ _jkBtn.style.display='';_jkBtn.textContent=_L("쓰레기 전부 분해 ({p0}개 
         const _currentTotal=_currentJunk.reduce((sum,it)=>sum+salvageVal(it),0);
         INV.bag=INV.bag.filter(it=>!_currentJunk.includes(it));
         G.mats+=_currentTotal;_invSalSel.clear();INV.selected=null;
-        SFX.pickup();dbSaveNow();renderInv();
+        playSample('ui_salvage',.5,1);dbSaveNow();renderInv();
       };
     }else{_jkBtn.style.display='none'}
   }
@@ -51074,7 +51083,7 @@ btn.textContent=_L("분해 ({p0}개 -> 악의 {p1})","Salvage ({p0} -> {p1} Mali
         idxs.forEach(i=>INV.bag.splice(i,1));
         G.mats+=totalMats;
         _salSel.clear();
-        SFX.forge();addTxt(P.x,P.y-20,'+'+totalMats+_L(' 악의',' Malice'),'#cc66ff',80);addParts(P.x,P.y,'#ff4422',20);
+        playSample('ui_salvage',.5,1);addTxt(P.x,P.y-20,'+'+totalMats+_L(' 악의',' Malice'),'#cc66ff',80);addParts(P.x,P.y,'#ff4422',20);
         G.shake=3;renderForge();dbSaveNow();
       };
       sumDiv.appendChild(btn);
@@ -51702,7 +51711,7 @@ function renderStatSummary(){
   }
   
   const _spCntEl=$('spCnt');if(_spCntEl)_spCntEl.onclick=()=>{if(G.on)togglePanel('statPanel')};
-const _matCntEl=$('matCnt');if(_matCntEl)_matCntEl.onclick=()=>{if(G.on){closeAllPanels();openPanel('forge')}};
+const _matCntEl=$('matCnt');if(_matCntEl)_matCntEl.onclick=()=>{if(G.on){closeAllPanels(true);openPanel('forge')}};
 const _kgTEl=$('keyGuideToggle');if(_kgTEl)_kgTEl.onclick=()=>{const g=$('keyGuide');if(g)g.style.display=g.style.display==='none'?'block':'none'};
 const _kgEl=$('keyGuide');if(_kgEl)_kgEl.onclick=()=>{_kgEl.style.display='none'};
 
