@@ -68,3 +68,11 @@
 
 - 규칙: h ≤ 0.9 + 1.14×D(D = 덩어리 북쪽 끝에서 북쪽 가장 가까운 걷기 칸 중심까지의 수평 거리, u). 0.9u를 넘는 덩어리는 북쪽 걷기 칸에 캡슐을 세워 찍고 h·D·통과를 json으로 남긴다.
 - **P1 빌더는 들판 안 전부 0.9u로 짰으므로 그대로 PASS 기준에 맞는다.** 쐐기로 높이는 것은 선택이며, P1 판정 뒤 "거대 버섯 정체성" 보강(P2)에서 D가 큰 덩어리(LM2 심장 등)만 골라 적용한다. 그때 `rm3_wedge_masses.json`(h·D·통과)과 덩어리별 캡슐 캡처를 함께 낸다.
+
+## 8. P1 실행 후 정정·P2 정리 (2026-10-28)
+
+- **P1 PASS(e7e67eb6c)는 씬 배치 결함 위에서 나온 수치였다.** `MakeMushroom`이 줄기·갓을 `MakeLump`에 넘길 때 `Vector3.zero` / `(0, stemH-0.04, 0)`를 줬는데 `MakeLump`는 그 값을 **월드 좌표**로 쓰므로(`SetPositionAndRotation`) 버섯 줄기·갓이 전부 월드 원점(타일 0,0)에 쌓였고 버섯 부모(`Heart_01` 등)만 제자리에 있었다. 걷기 겹침·막힌 섬 노출 json은 계산상 발자국(`fps`)으로 증명하는 값이라 통과로 나왔지만 실제 렌더에는 심장 군집·굴 입구·외곽 장벽이 없었다(heart·cave 캡처에서 군집이 안 읽힌 원인은 어두움만이 아니었다). 줄기·갓을 부모 위치(`go.transform.position`) 기준으로 놓도록 고쳤다. 그루터기·뿌리·말뚝·가죽 매단 덩어리는 월드 좌표를 직접 넘겨 영향이 없다.
+- **씬 크기**: 씬 73MB 중 Mesh 오브젝트 1252개가 73.1MB(나머지 약 4MB). 절차 메시를 `Generated/Pieces_<섬 또는 Outer_방향>.asset` 컨테이너(섬당 1개 + 외곽 4방향)로 분리한다(`Keep`/`FlushMeshes`). 씬 목표 10MB 이하·에셋 1개 50MB 미만.
+- **Cinemachine 오류**: `Capture`·`Fps`에서 `brain.UpdateMethod = ManualUpdate`를 먼저 설정(편집기에서 연 씬은 저장하지 않으므로 런타임 카메라 설정은 그대로 SmartUpdate).
+- **쐐기 보고**: `WriteStructureReports`가 `Data/rm3_wedge_masses.json`(덩어리별 grp·r·h·D·limit·pass)을 낸다. D = 덩어리 북쪽 끝에서 북쪽 가장 가까운 걷기 칸 중심까지 거리.
+- 검증은 조명 병합 뒤 Unity 1회 실행으로 한다(수치 5종 + 쐐기 json + 캡슐 컷 재촬영).
