@@ -127,6 +127,9 @@ class Program
             Check(s.RegionClearedCount() == 3, "3 regions cleared");
             // stand on the gate approach: the sealed text carries 3/4
             var exit = s.Stage.Exits[0]; s.Player.X = (exit.X + .5f) * 40; s.Player.Y = (exit.Y + .5f) * 40; s.Player.Iframes = 99999;
+            // O-1: kills call checkRooms() too (web hurtE tail), which shifts the 30-call check phase; the sealed text needs a check on a frame %45 == 0 (web 42106),
+            // so line the phase up the way an earlier kill could have (first check on tick TickCount + 30 - CheckT, a multiple of 15) instead of relying on the old fixed phase
+            s.Stage.CheckT = s.TickCount % 15;
             Run(s, 100);
             Check(!s.Stage.BossUnlocked, "3/4 regions: the gate stays sealed");
             foreach (var ev in s.Stage.Events) if (ev.Kind == StageEventKind.GateSealed) { Check(ev.Regions, "sealed event is in region mode"); sealedCounts.Add(ev.Percent); }
@@ -295,6 +298,52 @@ class Program
                 Check(!e.Alive && s.Kills == k0 + 1 && s.Regions[idx].Kills == r0 + 1, "kills " + k0 + " -> " + s.Kills + ", " + RegionNames[idx] + " " + r0 + " -> " + s.Regions[idx].Kills);
                 Say("RegKill callback (stuck-in-wall death): kills " + k0 + " -> " + s.Kills + ", " + RegionNames[idx] + " " + r0 + " -> " + s.Regions[idx].Kills);
             }
+        }
+
+        // ---- 8. O-1: a kill through the web death part (EnemyHurt.DeathHead/DeathTail) calls _regKill once and the guard's +10 % once; the stuck-in-wall death
+        //         (EnemyTick 34625: rollDrop, addExp(e.exp||1), kills++, _regKill) is not the hurtE death part: no malice, no combo ----
+        {
+            var s = Make(43); var g = s.Stage.GateGuard;
+            Check(g != null, "guard present");
+            if (g != null)
+            {
+                int gi = s.RegionIdxAt(g.HomeX, g.HomeY), r0 = s.Regions[gi].Kills, k0 = s.Kills;
+                Func<int> guardEvents = () => s.Stage.Events.Count(ev => ev.Kind == StageEventKind.GateGuardDefeated);
+                int ev0 = guardEvents(); g.Shield = 0; g.Hp = 1; s.Player.Iframes = 99999; s.HurtEnemy(g, 50);
+                Check(!g.Alive && s.Kills == k0 + 1 && s.Regions[gi].Kills == r0 + 1 && guardEvents() == ev0 + 1 && s.Stage.GateGuardKilled,
+                    "hurt kill of the guard: kills +1 (" + (s.Kills - k0) + "), " + RegionNames[gi] + " +1 (" + (s.Regions[gi].Kills - r0) + "), GateGuardDefeated +1 (" + (guardEvents() - ev0) + ")");
+                s.HurtEnemy(g, 50);
+                Check(s.Kills == k0 + 1 && s.Regions[gi].Kills == r0 + 1 && guardEvents() == ev0 + 1, "hitting the dead guard again counts nothing");
+            }
+            var s2 = Make(44); s2.Config.EnemyAiEnabled = true; s2.Enemies.Clear(); s2.Player.Iframes = 99999;
+            var e = s2.SpawnEnemy(2420, 2420, 0, null, false); Run(s2, 2);
+            var field = typeof(Simulation).GetField("tickCtx", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var ctx = field != null ? field.GetValue(s2) as EnemyTickContext : null;
+            if (e != null && ctx != null)
+            {
+                int idx = s2.RegionIdxAt(e.HomeX, e.HomeY), k0 = s2.Kills, r0 = s2.Regions[idx].Kills, m0 = s2.Materials, c0 = s2.Combo, x0 = s2.Player.Experience;
+                ctx.RollDrop(e.Web); ctx.AddExp(1); ctx.RegKill(e.Web);   // the web order of the stuck branch
+                Check(!e.Alive && s2.Kills == k0 + 1 && s2.Regions[idx].Kills == r0 + 1 && s2.Materials == m0 && s2.Combo == c0 && s2.Player.Experience == x0,
+                    "stuck-in-wall death: kills +1, region +1, malice / combo unchanged, addExp(1) -> ~~(1/3) = 0 exp (kills " + (s2.Kills - k0) + " region " + (s2.Regions[idx].Kills - r0) + " malice " + (s2.Materials - m0) + ")");
+            }
+            else Check(false, "tick context for the stuck-in-wall check");
+        }
+
+        // ---- 9. LT-5: the HUD "지역 처치" row (#mmLvl killCnt, 60584~60586) and G._stageKills. The start enemies (guard, escorts, 다안 육괴) are born in a region
+        //         but are not part of its hole total, so a region's kills can pass its total: the row is capped (web Math.min), never "17 / 14".
+        //         G._stageKills is 0 at initStage (31750) while G.kills runs on through the save: kills made before InitializeField are not stage kills ----
+        {
+            var s = Make(45); int gi = s.RegGateIdx, tot = s.Regions[gi].Total;
+            int k, t; s.AreaKills(gi, out k, out t);
+            Check(k == s.Regions[gi].Kills && t == tot, RegionNames[gi] + " row " + k + " / " + t + " = region kills / region total");
+            s.Regions[gi].Kills = tot + 3; s.AreaKills(gi, out k, out t);
+            Check(k == tot && t == tot, RegionNames[gi] + " kills " + (tot + 3) + " of " + tot + ": row capped " + k + " / " + t);
+            s.AreaKills(-1, out k, out t);
+            Check(k == s.Stage.StageKills && t == s.Stage.TotalSpawned, "no current region (G._regCurIdx -1): stage-wide " + k + " / " + t);
+            var s2 = Make(46); s2.Kills = 120; s2.Stage.InitializeField(data.tiles, data.width);   // a save restored G.kills 120 before initStage
+            Check(s2.Stage.StageKills == 0 && s2.Kills == 120, "initStage after a restored G.kills 120: stage kills " + s2.Stage.StageKills + ", G.kills " + s2.Kills);
+            KillBornIn(s2, 2, 3);
+            Check(s2.Stage.StageKills == 3 && s2.Kills == 123, "three kills: stage kills " + s2.Stage.StageKills + ", G.kills " + s2.Kills);
         }
 
         var result = JsonSerializer.Serialize(new { scope = "standalone_dotnet_real_ch1_map_not_Unity_runtime", passed = failed == 0, failed, log = Log, checks = Rows }, new JsonSerializerOptions { WriteIndented = true });

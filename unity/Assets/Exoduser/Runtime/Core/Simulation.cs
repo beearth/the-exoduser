@@ -75,6 +75,7 @@ namespace Exoduser.UnityPort.Core
             TickCount++;
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
+            TickDeathFrameStart();   // O-1: _sfxFrameReset (_critSfxCd)
             if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
             float regenDivisor = Player.State == "idle" ? 8 : 16;
@@ -166,8 +167,10 @@ namespace Exoduser.UnityPort.Core
             CapEnemies();   // web 34540: ens hard cap 800 -> 700
             TickFieldBosses();   // M1-REGION R-B: _fbTick
             TickRegions();   // M1-REGION: _regionTick (every 15th frame)
+            TickDeathFrameEnd();   // O-1: split / companion spawns, the checkRooms() calls of this frame's kills (web: at the kill, before this checkRooms)
             Stage.Tick();   // C07: checkRooms (arena entry / boss defeat / exit / clear)
             TickSpawnHoles();   // C01-AI: the 소환굴 update follows checkRooms in the web update()
+            TickKillChain();   // O-1: kill-chain timer (web 35880, right after the 소환굴 update)
             TickHurtFx();   // B09: screen shake / flash decay
         }
 
@@ -212,10 +215,11 @@ namespace Exoduser.UnityPort.Core
         public void HurtEnemy(EnemyState enemy, int damage, float angle = 0, bool dot = false, bool shieldHit = false)
         {
             ApplyEnemyDamage(enemy, damage, angle, false, 1, dot, shieldHit);
+            if (!inEnemyLoop) FlushDeathSpawns();   // O-1: split / companion enemies of a kill made outside the frame loop (harness, smoke)
         }
 
-        // hurtE: the oracle-checked Core head + middle (EnemyHurt). The death tail (revive / ghoul / boss revive / kill rewards) is the Simulation's.
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false)
+        // hurtE: the oracle-checked Core head + middle (EnemyHurt) and, at zero HP, the death part (EnemyHurt.DeathHead + DeathTail, Simulation.Death.cs).
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
@@ -224,17 +228,17 @@ namespace Exoduser.UnityPort.Core
             bool live = inEnemyLoop && enemy.Web != null;   // inside the L1 loop the web object is the live one (see ApplyEnemyDot): no state -> web copy
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
-            var context = BuildHurtContext(player, typeDamagePct, critRateBonus);
-            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null };
+            var context = BuildHurtContext(player, typeDamagePct, critRateBonus); context.CritSfxCd = critSfxCd;
+            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null, poiseMult = poiseMult };
             if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
             var head = EnemyHurt.Head(context, web, damage, angle, true, opts, atkEl);
-            if (head == null) { SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }   // revive iframes swallowed it / parry lesson
-            EnemyHurt.Body(context, web, angle, true, opts, head);
+            if (head == null) { critSfxCd = context.CritSfxCd; SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }   // revive iframes swallowed it / parry lesson
+            var body = EnemyHurt.Body(context, web, angle, true, opts, head); critSfxCd = context.CritSfxCd;
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
             LastHitDamage = total; TotalDamage += total;
-            if (enemy.Hp <= 0) OnEnemyZeroHp(enemy);
+            if (enemy.Hp <= 0) OnEnemyZeroHp(enemy, context, web, angle, opts, body);
             if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }
         }
 
@@ -245,35 +249,29 @@ namespace Exoduser.UnityPort.Core
             bool live = inEnemyLoop && enemy.Web != null;
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
-            var context = BuildHurtContext(player, 0, 0);
+            var context = BuildHurtContext(player, 0, 0); context.CritSfxCd = critSfxCd;
             var opts = new EnemyHurtOpts { dot = true, shieldHit = true, maliceHunt = maliceHunt ? (bool?)true : null, noImpact = true };
             if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
             var head = EnemyHurt.Head(context, web, damage, null, true, opts, atkEl);
-            if (head == null) { SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }
-            EnemyHurt.Body(context, web, null, true, opts, head);
+            if (head == null) { critSfxCd = context.CritSfxCd; SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }
+            var body = EnemyHurt.Body(context, web, null, true, opts, head); critSfxCd = context.CritSfxCd;
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
             LastHitDamage = total; TotalDamage += total;
-            if (enemy.Hp <= 0) OnEnemyZeroHp(enemy);
+            if (enemy.Hp <= 0) OnEnemyZeroHp(enemy, context, web, null, opts, body);
             if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }
         }
 
+        // A kill that must not revive (RM-B1 last life, harness, practice trap): the web death part (Simulation.Death.cs) with the revive judgement already spent.
+        // The old hand-assembled path (kills, combo, malice +4, potion, elite malice, equipment, exp in Unity order) is replaced by EnemyHurt.DeathHead + DeathTail (O-1).
         private void KillEnemy(EnemyState enemy)
         {
             if (!enemy.Alive) return;
             if(IsFirstPracticeActor(enemy)){enemy.Alive=false;return;}
-            enemy.Alive = false; Kills++; Combo++; ComboTicks = enemy.IsBoss ? Math.Min(1800, ComboTicks + 1800) : Math.Min(1200, ComboTicks + 60);
-            RegKill(enemy);   // M1-REGION: _regKill next to G.kills++
-            if (enemy.IsGateGuard) Stage.OnGateGuardKilled(enemy);   // C07: _isGateGuard death -> +10 % clear progress
-            AddMalice(4);
-            // Web kill drop (game.html 43094-43099): hp pays malice (+1, a third of the draws), st/mp are discarded; the old quickslot counters stay unused.
-            ApplyKillDrop(enemy);
-            double comboBonus = LevelExp.ComboBonus(Combo, Config.DifficultyIndex - 5);
-            AddEliteKillMalice(enemy, comboBonus); // B10: elite / boss malice (43170-43201), after the potion draw like the web
-            RollNormalEquipment(enemy);
-            bool trans; int xp = LevelExp.KillValue(Player.Level, enemy.Level, enemy.IsBoss, enemy.Elite, comboBonus, out trans);
-            AddExperience(xp, trans);
+            var context = BuildHurtContext(HurtPlayerView(), 0, 0); context.CritSfxCd = critSfxCd;
+            var web = SyncToWeb(enemy); if (web.hp > 0) web.hp = 0;
+            RunWebDeath(enemy, context, web, null, null, new EnemyHurtBodyResult(), true);
         }
 
         // D01: web rollDrop equipment half (WorldDrop/ItemFactory, oracle-checked against game.html). Bone parts, crystals and socket stones the

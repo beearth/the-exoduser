@@ -13,5 +13,11 @@ namespace Exoduser.UnityPort.Core
         {
             return new EnemyHurtBodyResult { dmg = h.dmg, atkEl = h.atkEl };
         }
+        public static EnemyHurtDeathResult DeathHead(EnemyHurtContext c, EnemySpawn e, double? ang, bool noSound, EnemyHurtOpts opts, EnemyHurtBodyResult b, out DeathExit exit)
+        {
+            exit = DeathExit.NotDead;
+            return new EnemyHurtDeathResult { __cont = false };
+        }
+        public static void DeathTail(EnemyHurtContext c, EnemySpawn e, double? ang, bool noSound, EnemyHurtOpts opts, EnemyHurtBodyResult b, EnemyHurtDeathResult d) { }
     }
 }

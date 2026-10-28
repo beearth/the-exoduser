@@ -13,31 +13,75 @@ namespace Exoduser.UnityPort
     // (roster and combat save live under <dir>), so a normal player's save is never touched.
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class M1Stage { public string id, name, status, note, capture; }
-        [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; }
+        [Serializable] sealed class M1Stage { public string id, name, status, note, capture, overlay; }
+        [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; public string device, deviceType, captureMode; public bool headless; public int guiRepaints, guiBridged; }
         M1Receipt m1; string m1Caps; int m1Index;
 
         // BX art: a stray OS key (ESC / TAB) during the unattended run must not leave the pause menu / a window over the comparison scenes
         void ArtScreenClear() { if (menu) { menu = false; pauseMenu.Reset(); Running = true; } if (inventory.Open) SetInventory(false); if (skills.Open) SetSkills(false); }
+        // `--unity-mute` + -batchmode (no -nographics, so the GPU device stays): no window exists, so ScreenCapture has nothing to read. The shot is taken by rendering the world camera into a 1600x900
+        // RenderTexture and reading it back. IMGUI (OnGUI, the whole HUD) is drawn into the same RenderTexture only if the player still sends Repaint events in batchmode; guiRepaints in
+        // m1-check.json says whether it did (0 = the captures are world only, no HUD). Normal play and the windowed m1-check keep ScreenCapture.
+        // Which UI was open when each capture was taken (pause menu / inventory / skills / stats / forge). A pause menu over a capture fails the stage (LT-2: focus loss paused the windowed run).
+        readonly Dictionary<string, string> m1Overlays = new Dictionary<string, string>();
+        static bool m1ModeFlag { get { return Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-m1-check") >= 0; } }
+        string M1Overlay() { var o = new List<string>(); bool inLobby = lobby != null && lobby.IsBlocking; if (inLobby) o.Add("lobby"); else if (menu) o.Add("pause"); if (inventory.Open) o.Add("inventory"); if (skills.Open) o.Add("skills"); if (stats.Open) o.Add("stats"); if (forge.Open) o.Add("forge"); return string.Join(",", o.ToArray()); }
+        bool m1Headless; RenderTexture m1GuiTarget; int m1GuiRepaints, m1GuiBridged;
+        sealed class M1GuiProbe : MonoBehaviour { public NativeGame game; void OnGUI() { if (game != null && Event.current.type == EventType.Repaint) game.M1GuiRepaint(); } }
+        internal void M1GuiRepaint()
+        {
+            m1GuiRepaints++;
+            if (m1GuiTarget == null) return;
+            var previous = RenderTexture.active;
+            try { RenderTexture.active = m1GuiTarget; OnGUI(); m1GuiBridged++; } finally { RenderTexture.active = previous; m1GuiTarget = null; }
+        }
         IEnumerator M1Shot(string name)
         {
             UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
-            ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null;
+            m1Overlays[name] = M1Overlay();
+            if (playerView != null) Debug.Log("[M1CAP] " + name + " player.enabled=" + playerView.enabled + " active=" + playerView.gameObject.activeInHierarchy + " sprite=" + (playerView.sprite != null) + " visibleToCamera=" + playerView.isVisible + " sort=" + playerView.sortingOrder + " pos=" + playerView.transform.position + " cam=" + view.transform.position + " alpha=" + playerView.color.a + " state=" + (Simulation != null ? Simulation.Player.State : "?") + " inArena=" + (Simulation != null && Simulation.Stage.InArena) + " focus=" + Application.isFocused + " guiRepaints=" + m1GuiRepaints);
+            if (!m1Headless) { ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null; yield break; }
+            const int w = 1600, h = 900;
+            var rt = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGB32);
+            var previousTarget = view.targetTexture; var previousActive = RenderTexture.active; Texture2D tex = null;
+            try
+            {
+                view.targetTexture = rt; view.Render(); view.targetTexture = previousTarget;
+                m1GuiTarget = rt;                       // the next Repaint (if any) draws the IMGUI over this frame's world
+            }
+            catch (Exception e) { view.targetTexture = previousTarget; Debug.LogWarning("[M1] headless world render failed: " + e.Message); }
+            yield return null; yield return new WaitForEndOfFrame();
+            m1GuiTarget = null;
+            try
+            {
+                RenderTexture.active = rt; tex = new Texture2D(w, h, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, w, h), 0, 0); tex.Apply();
+                File.WriteAllBytes(Path.Combine(m1Caps, name + ".png"), tex.EncodeToPNG());
+            }
+            finally { RenderTexture.active = previousActive; RenderTexture.ReleaseTemporary(rt); if (tex != null) Destroy(tex); }
         }
         // status: "ok", "fail", "missing", "pending-core" (needs the boss Core, not a flow gap)
         void M1Add(string id, string name, string status, string note, string cap)
         {
-            m1.stages.Add(new M1Stage { id = id, name = name, status = status, note = note, capture = cap });
+            string ov; if (string.IsNullOrEmpty(cap) || !m1Overlays.TryGetValue(Path.GetFileNameWithoutExtension(cap), out ov)) ov = "";
+            if (ov.Contains("pause") && status == "ok") { status = "fail"; note += " [pause menu was open over the capture " + cap + "]"; }
+            m1.stages.Add(new M1Stage { id = id, name = name, status = status, note = note, capture = cap, overlay = ov });
             if (status != "ok" && status != "pending-core" && m1.firstBlocked == null) m1.firstBlocked = id + " " + name + " (" + status + "): " + note;
         }
 
         IEnumerator M1Check()
         {
-            AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;
+            AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;   // (always muted here; --unity-mute below is the explicit flag the build loop passes)
+            bool mute = Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-mute") >= 0;
+            if (mute) { AudioListener.volume = 0; AudioListener.pause = true; }
+            Application.runInBackground = true;   // focus loss must not pause the unattended run (LT-2); NativeGame.OnApplicationFocus also skips the auto-pause in --unity-m1-check
+            m1Headless = mute && Application.isBatchMode;
             string output = Argument("-output"); if (string.IsNullOrEmpty(output)) yield break;
             m1Caps = Path.Combine(output, "caps"); Directory.CreateDirectory(m1Caps);
             m1 = new M1Receipt { scope = "real NativeGame; lobby/story/practice through the lobby API, gameplay through Simulation.Tick (not OS input)" };
-            Screen.SetResolution(1920, 1080, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);
+            m1.headless = m1Headless; m1.device = SystemInfo.graphicsDeviceName; m1.deviceType = SystemInfo.graphicsDeviceType.ToString(); m1.captureMode = m1Headless ? "headless-rendertexture-1600x900" : "screen-capture";
+            { var probe = gameObject.AddComponent<M1GuiProbe>(); probe.game = this; }   // counts IMGUI Repaint events in every mode (guiRepaints in m1-check.json)
+            if (!m1Headless) Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
+            yield return new WaitForSecondsRealtime(.5f);
             float deadline;
 
             // ---- 01 lobby -> warrior -> 1-1 ----
@@ -191,6 +235,26 @@ namespace Exoduser.UnityPort
                 p.X = Map.Data.startX; p.Y = Map.Data.startY; p.KnockbackX = 0; p.KnockbackY = 0; p.State = "idle"; p.StateTicks = 0; p.Iframes = 0;
             }
 
+            // ---- 07e field enemy bullets (VFX-D18): one of each kind standing still beside the player, drawn by the field bullet view (07c-field-ai showed them as a lime plate) ----
+            {
+                var dr = sim.Druid; sim.Enemies.Clear(); sim.Config.EnemyAiEnabled = false; p.Iframes = 1e9f;
+                if (dr != null && bossView != null)
+                {
+                    dr.Projectiles.Clear();
+                    Action<double, double, int, string, double> shot = (dx, dy, el, cls, sz) => dr.Projectiles.Add(new BossProjectile { X = p.X + dx, Y = p.Y + dy, Vx = 3, Vy = 0, Sz = sz, R = 4, El = el, ParryClass = cls, Life = 1e6, Ml = 1e6, RedBean = cls == "physical" });
+                    for (int i = 0; i < 3; i++) shot(-300 + i * 150, -230, 0, "physical", 2);                    // E-parry bullets: the toothed mouth
+                    dr.Projectiles.Add(new BossProjectile { X = p.X + 150, Y = p.Y - 230, Vx = 3, Vy = 0, Sz = 1.5, R = 4, Web = true, ParryClass = "forbidden", Life = 1e6, Ml = 1e6 });   // web bullet: mouth
+                    for (int el = 1; el <= 6; el++) shot(-450 + (el - 1) * 150, -90, el, "magic", 2);        // magic bullets: the comet tinted per element
+                    for (int el = 1; el <= 6; el++) dr.Projectiles.Add(new BossProjectile { X = p.X - 560 + (el - 1) * 230, Y = p.Y + 90, Vx = 3, Vy = 0, Sz = 18, R = 4, El = el, ElemBall = true, ParryClass = "forbidden", Life = 1e6, Ml = 1e6 });   // element balls: the orb sheet
+                    dr.Projectiles.Add(new BossProjectile { X = p.X, Y = p.Y + 260, Vx = 3, Vy = 0, Sz = 2, R = 4, BlackBean = true, ParryClass = "magic", Life = 1e6, Ml = 1e6 });   // rainbow bean: the untinted comet
+                }
+                yield return M1Shot("07e-field-bullets");
+                int mouths = bossView != null ? bossView.FieldMouthsDrawn : -1, comets = bossView != null ? bossView.FieldCometsDrawn : -1, orbs = bossView != null ? bossView.FieldOrbsDrawn : -1, fall = bossView != null ? bossView.FieldBulletFallbacks : -1;
+                bool bulletsOk = mouths == 4 && comets == 7 && orbs == 6 && fall == 0;
+                M1Add("07e", "field enemy bullets drawn per kind (VFX-D18)", bulletsOk ? "ok" : "fail", "mouths " + mouths + "/4, element comets " + comets + "/7, element orbs " + orbs + "/6, fallback dots " + fall + " (the druid poison orb is not used for field bullets)", "07e-field-bullets.png");
+                if (dr != null) dr.Projectiles.Clear();
+            }
+
             // ---- 08 drop pickup + equip ----
             sim.Config.EnemyAiEnabled = false; int attempts = 0;
             while (sim.Loot.Count < 3 && attempts < 40)
@@ -220,9 +284,10 @@ namespace Exoduser.UnityPort
                 sim.SetSkillInput(false, false, false, false, false, false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
                 sim.SetSkillInput(d1, false, false, false, sp, fk, ct, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
                 sim.SetSkillInput(false, false, false, false, false, false, false, false); };
-            int skMats0 = sim.Materials; int skHpA = skA != null ? skA.Hp + (int)skA.Shield : 0;
-            skPress(true, false, false, false); for (int i = 0; i < 70; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
-            bool spikeOk = sim.FireZones.Exists(z => z.Type == "spikeTrap") && skA != null && skA.Hp + (int)skA.Shield < skHpA && sim.Materials == skMats0 - 5;
+            int skMats0 = sim.Materials; int skHpA = skA != null ? skA.Hp + (int)skA.Shield : 0, skKills0 = sim.Kills;
+            // the malice cost is read right after the cast frames: a trap DOT kill later in the window pays the web kill malice (hurtE 42699 death -> G.mats+=4, 43307; DOT is not excepted), and whether the DOT kills within 70 ticks depends on the random stream (O-1 09b)
+            skPress(true, false, false, false); int skCost = skMats0 - sim.Materials; for (int i = 0; i < 70; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
+            bool spikeOk = sim.FireZones.Exists(z => z.Type == "spikeTrap") && skA != null && skA.Hp + (int)skA.Shield < skHpA && skCost == 5; int skKillsW = sim.Kills - skKills0;
             yield return M1Shot("09b-skill-spike-trap");
             p.Stamina = p.MaxStamina; int slamMats0 = sim.Materials; skPress(false, true, false, false); for (int i = 0; i < 6; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool slamOk = sim.SlamWaves.Count == 1 && sim.GiantSlamCd > 1700 && p.Stamina < p.MaxStamina - 40;   // malice: the slam kills the spike-trapped enemy (+4 each), so the cost is checked by the sim test yield return M1Shot("09b-skill-giant-slam");
@@ -234,7 +299,7 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 90; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); if (i == 8) yield return M1Shot("09b-skill-ice-shatter"); }
             bool orbOk = orbIn && !sim.IceOrbActive && p.State == "idle" && sim.IceOrbCd > 0;
             sim.SkillBlades.Clear(); sim.FireZones.Clear(); sim.SlamWaves.Clear(); sim.Enemies.Clear(); sim.SpikeTrapCd = sim.GiantSlamCd = sim.HolyDomeCd = sim.IceOrbCd = 0; p.State = "idle"; p.Hp = p.MaxHp; p.Stamina = p.MaxStamina; p.Mana = p.MaxMana;
-            M1Add("09b", "skill use (1 / Space / F / Ctrl)", spikeOk && slamOk && domeOk && orbOk ? "ok" : "fail", "spike trap " + spikeOk + " (zone, malice 5, DOT), giant slam " + slamOk + " (wave, malice 10, cd 1800), holy dome " + domeOk + " (zone, regen), ice orb " + orbOk + " (MP 50, orb -> auto shatter); " + sim.SkillCastCount + " casts, denied " + sim.SkillDeniedCount, "09b-skill-spike-trap.png");
+            M1Add("09b", "skill use (1 / Space / F / Ctrl)", spikeOk && slamOk && domeOk && orbOk ? "ok" : "fail", "spike trap " + spikeOk + " (zone, malice " + skCost + ", DOT, kills in window " + skKillsW + "), giant slam " + slamOk + " (wave, malice 10, cd 1800), holy dome " + domeOk + " (zone, regen), ice orb " + orbOk + " (MP 50, orb -> auto shatter); " + sim.SkillCastCount + " casts, denied " + sim.SkillDeniedCount, "09b-skill-spike-trap.png");
 
             // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). The druid is the boss Core's job (pending): a harness stand-in boss walks the real flow. ----
             levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();   // BX: the real druid (Simulation.AttachDruidBoss) is the BossSpawners entry; AI stays off until the arena intro is over
@@ -348,6 +413,11 @@ namespace Exoduser.UnityPort
 
         IEnumerator M1Finish(string output)
         {
+            m1.guiRepaints = m1GuiRepaints; m1.guiBridged = m1GuiBridged;
+            {   // 99: no capture of the whole run sits under the pause menu (art-* shots belong to no stage, so they are checked here)
+                var paused = new List<string>(); foreach (var kv in m1Overlays) if (kv.Value.Contains("pause")) paused.Add(kv.Key);
+                M1Add("99", "captures free of the pause menu", paused.Count == 0 ? "ok" : "fail", m1Overlays.Count + " captures, " + (paused.Count == 0 ? "none under the pause menu" : "pause menu over: " + string.Join(", ", paused.ToArray())), "");
+            }
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
             yield return null; Application.Quit(0);
         }
