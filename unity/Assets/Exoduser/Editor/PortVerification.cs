@@ -80,18 +80,22 @@ public static class PortVerification {
   foreach(var weight in new[]{"Regular","SemiBold","Bold"})if(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-"+weight)==null)throw new Exception("Missing static lobby font "+weight);
  }
  static void VerifyA15Settings(){
-  var state=new NativeSettingsState(120);int writes=0;
-  var menu=new NativePauseMenu(null,state,value=>writes++,null,null,null);
+  var state=new NativeSettingsState(120);int writes=0,savedSfx=-1,bgmWrites=0,savedBgm=-1;
+  var menu=new NativePauseMenu(null,state,value=>{writes++;savedSfx=value;},value=>{bgmWrites++;savedBgm=value;},null,null);
   menu.ShowSettings();menu.Navigation.SelectTab(2);
   menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Down,false,false);
   menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Down,false,false);
   if(menu.Navigation.Cursor!=4)throw new Exception("A15 audio SFX keyboard focus");
   menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Right,false,false);
-  if(state.SfxPercent!=61||writes!=1)throw new Exception("A15 SFX right must step by one and write once");
+  if(state.SfxPercent!=61||writes!=1||savedSfx!=61)throw new Exception("A15 SFX right must step by one and hand off once");
   state.SetSfxPercent(0);menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Right,false,false);
-  if(state.SfxPercent!=1||writes!=2)throw new Exception("A15 SFX minimum step");
+  if(state.SfxPercent!=1||writes!=2||savedSfx!=1)throw new Exception("A15 SFX minimum step and handoff");
+  state.SetSfxPercent(0);menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Left,false,false);
+  if(state.SfxPercent!=0||writes!=2||savedSfx!=1)throw new Exception("A15 SFX lower clamp must not write unchanged value");
   state.SetSfxPercent(100);menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Right,false,false);
-  if(state.SfxPercent!=100||writes!=2)throw new Exception("A15 SFX maximum must not write unchanged value");
+  if(state.SfxPercent!=100||writes!=2||savedSfx!=1)throw new Exception("A15 SFX upper clamp must not write unchanged value");
+  menu.Navigation.PointAt(5);menu.Navigation.ObserveReleased(false);menu.HandleKey(PauseKey.Right,false,false);
+  if(state.BgmPercent!=61||bgmWrites!=1||savedBgm!=61)throw new Exception("A15 BGM right must step by one and hand off once");
   var bindings=new KeyBindings();var list=new NativeKeyBindList(bindings);
   list.BeginListening("up",false);list.CancelListening();
   if(list.Listening||bindings.Primary("up")!="KeyW")throw new Exception("A15 Escape cancel must not alter binding");

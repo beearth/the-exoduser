@@ -6,6 +6,10 @@
 
 # PC·Mac·Git 통합 — 2026-10-16
 
+## 2026-10-29 Mac A15 1% 인수·검증
+
+PC owner `claude/unity-pc-a15-rangestep-20261028:2ac579319…`의 제품 1줄을 Mac 기준 `unity/main:e4fc056ae…`에 정상 merge했다. Mac 추가는 `PortVerification.VerifyA15Settings`의 SFX/BGM 1% callback·clamp 검증이다. Metal Editor 전체 PASS, ARM64 Settings QA build PASS, 격리 M1 Player 자동 시나리오 PASS. 원격 `unity/main` 비강제 push와 실제 PC checkout 확인은 각각 Git 결과로 확정하며, PC checkout은 아직 pending이다. [원본·수치·영수증](UNITY_MAC_A15_M1_FINAL_20261029.md). 아래 2026-10-28 5% HOLD는 당시 이력이다.
+
 ## 2026-10-28 Unity PC↔GitHub↔Mac 현행 동기화 규칙
 
 사용자 최신 지시대로 Unity의 공통 줄기는 GitHub `unity/main`이며 웹 본편 `main`과 구분한다. 매 개발 단위 시작에 fetch한 뒤 실제 소유 checkout·실행 source 경로, 원격 SHA, branch/HEAD, tracked INDEX/WORK와 미추적 파일을 확인한다. 자기 코드+관련 docs만 commit → 최신 `unity/main` 정상 merge → 비강제 push → 반대편 소유자 fetch·정상 반영 → PC/Mac **각 실제 checkout**의 공통 checkpoint 조상 관계와 필요한 파일 byte 일치 순서로 확인한다. WIP는 보존해 담당자와 조율하고, PC checkout을 읽지 못했으면 `PC pending`이다. 작업 브랜치 push만으로 세 곳 동기화 완료라고 쓰지 않는다. 소스 정렬은 Editor/Player/기존 실행 앱의 검증 및 자동 교체와 별개이며, 통과 검사 재실행·자동 서버 재시작·새 자동화/팀 생성은 하지 않는다. 아래 2026-10-16 웹/Godot 통합 기록과 당시 한계는 이력으로 보존한다.

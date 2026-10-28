@@ -1,3 +1,7 @@
+## 2026-10-29 Mac A15 1%·M1 최종 gate
+
+PC A15 원본 `2ac579319…`의 SFX/BGM 좌우 1%를 정상 인수. Mac Editor 전체 Verify PASS, ARM64 QA build Succeeded/errors0, 격리 M1 자동 Player 전 stage ok. 실제 OS 설정 UI·자연 로비→1-1 및 PC 실제 checkout은 pending. [상세·영수증](../UNITY_MAC_A15_M1_FINAL_20261029.md).
+
 ## 2026-10-27 Mac A15 설정 4탭 최소 연결·Player 후속
 
 PC `f0f882c19`의 레이아웃 명세/입력 oracle을 Mac `a3869387` blob과 대조했다. Mac 소유 PauseMenu/Navigation/Keyboard의 게임·화면·사운드·조작 4탭, 실제 FPS/fullscreen/SFX/BGM callback, 조작 탭 내 기존 key list와 scroll/footer를 연결. 게임 옵션·패드 재지정은 미지원 명시. 후속 비대기 Tab은 설정 초점을 옮기며, 순수 navigation42/42, 최종 Unity ARM64 Settings QA Player 빌드 Succeeded/오류0. 귀속 확인된 QA PID의 720p 4탭/SFX60→61%와 1080p 화면·사운드 2열 캡처 확인. 좁은 1열·실기 key capture·청취/재시작은 HOLD. [범위·근거](../UNITY_MAC_A15_4TAB_20261027.md).

@@ -45,3 +45,5 @@ Unity import가 자동 재작성한 tracked `.meta` 411개와 신규 `.meta` 1�
 | 2 empty | 97% / 0 / 0 | HP 중앙 RGB `0.19216→0.03071`; MP·ST 중앙 B `0.19216→0.03071` | 세 자원 모두 빈 영역 |
 
 수정 전 Mac Verify 1회는 HUD 상태1 `hpUpperEmpty=false/manaUpperEmpty=false`로 종료2/receipt 없음. 수정 후 **같은 gate 1회**에서 `UNITY_UI_COMPOSITION_BOUNDS_PASS`와 세 상태 `UNITY_HUD_GPU_RESOURCE_MASK_PASS`, C# 오류0을 확인했다. 그 다음 **별개 A15 SFX 기대값**에서 `A15 SFX right must step by one and write once` 예외로 종료2/Unity receipt 없음. `NativePauseMenu.A15Web` 현재 `optSfx` range 키 단계는 5지만 A15 Editor 기대는 60→61(1)이다. A15 계약·소유자가 키 단계 1의 복구 여부를 판단해야 하며 이번 HUD 범위에서 고치거나 gate를 재실행하지 않았다. 첫·둘째 로그와 18개 raw/정규화 픽셀의 구조화 자료는 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-SYNC-20261028/hud-linear/gate-result.json`에 있다. 이는 **HUD GPU 수치 판정 PASS, 전체 Editor FAIL/HOLD**이며 실제 Player 화면·Windows/GPU·청음 검수는 아니다.
+
+2026-10-29 후속: 위 전체 Editor HOLD는 PC A15 1% 원본 `2ac579319…` 인수 뒤 해소됐다. 같은 Mac Metal Editor 전체 `PortVerification.Verify` 1회 exit0/receipt PASS, 로그의 `UNITY_HUD_GPU_RESOURCE_MASK_PASS`와 `UNITY_A15_SETTINGS_NAV_SFX_CAPTURE_PASS` 및 `UNITY_VERIFY_PASS`를 확인했다. A06 GPU probe 수식과 제품 HUD는 추가 변경하지 않았다. [최종 gate 영수증](UNITY_MAC_A15_M1_FINAL_20261029.md).
