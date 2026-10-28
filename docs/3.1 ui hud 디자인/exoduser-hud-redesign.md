@@ -804,6 +804,7 @@ const HUD_ICON = {
 - **베스트 행**: 상단 헤어라인 구분, `베스트 t · s · r`(랭크 레터는 랭크색 제목체). **신기록 씰**: 금 보더 소형 태그(rgba(216,183,120,.6) 보더, #d8b778, ls.2em) — 이모지 아님.
 - **[4차] 헤더/버튼**: `#clearTitle` #areaTitle 계열(제목체 1.3rem+금 헤어라인)+`#clearTitleEn`(Cinzel 영문 장식줄 ZONE CLEARED/LAYER BROKEN, 항상 영어), `#clearSub` 명조 뼈-은은, `#nextBtn` UI_COMPOSITION 표준 암적색 행동 버튼 마감(min 44px, 기능·id·리스너 무변). 본행/breakdown/베스트 라벨 13px(#cfc3b0/#c5b8a3), par 12px, 타임 1.12rem/점수 1.3rem.
 - **하위 `#clearStats`**: 이모지·원색 제거, 명조 #9a8a72/#bcab90 저채도 톤 + `·` 구분자(데이터·의미 무변, 뱃지 텍스트만 유지).
+- **[2026-10-28 실버 헬] 지옥보스 클리어**: 제목 아이콘 진홍 눈(`_glyph('eye','#c21a10',16)`, 옛 금색 자물쇠), `showPH`·떠오르는 글자 "{장} 돌파!"·`+10 SP` 은빛 `#e6e3dc`(옛 네온 초록 `#44ffaa`), `.ph` 팝업 글꼴 `var(--font-hell)` 800(옛 Noto Sans KR 900). 상세 `DESIGN_CONCEPT_SILVER_HELL_20261028.md` §6.2.
 클리어 타임=보스 사망 시점 `G.stageTime` 스냅샷(일시정지/튜토리얼/시네마틱 자동 제외). DOM 안전: 전용 리프 innerHTML만. 데모에선 demoEnd 이전에 표시. nextBtn 진행 흐름 무변경.
 
 ### 지역 진입 연출

@@ -684,7 +684,7 @@ canvas{display:block;position:fixed;inset:0}
 .v-tbc.on{opacity:1}
 .v-end{color:#545757;font-size:clamp(1.2rem,3.5vw,2.5rem);font-weight:900;opacity:0;transition:opacity 3s;letter-spacing:.6em;margin-top:16px}
 .v-end.on{opacity:1}
-.ph{position:fixed;bottom:180px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:none;opacity:0;transition:opacity .1s;font-weight:900;font-size:clamp(1.2rem,2.5vw,1.8rem);letter-spacing:.2em;text-shadow:0 0 25px currentColor}
+.ph{position:fixed;bottom:180px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:none;opacity:0;transition:opacity .1s;font-family:var(--font-hell);font-weight:800;font-size:clamp(1.2rem,2.5vw,1.8rem);letter-spacing:.2em;text-shadow:0 0 25px currentColor}
 .ph.on{opacity:1}
 
 /* Drop item on ground */
@@ -42117,7 +42117,7 @@ function checkRooms(){
         // ── 보스 아레나에서 출구 밟음 → 스테이지 클리어 ──
         if(!G.bossAlive){
           G.stageCleared=true;playSample('voice_clear',1,1);
-          P.sp+=10;addTxt(P.x,P.y-60,'+10 SP','#44ffaa',60);
+          P.sp+=10;addTxt(P.x,P.y-60,'+10 SP','#e6e3dc',60);
           // ═══ 타임어택 기록 (90%+ 킬 시) ═══
           const _taTotal=G._totalSpawned||1,_taKills=G._stageKills||0;
           const _taKillPct=_taKills/_taTotal;
@@ -42181,10 +42181,10 @@ function checkRooms(){
             const hellIdx=cur.hell;
             if(!G.hellCleared)G.hellCleared=[];
             G.hellCleared[hellIdx]=true;
-            showPH(_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!'),'#44ffaa');
-            addTxt(P.x,P.y-50,_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!'),'#44ffaa',100);
+            showPH(_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!'),'#e6e3dc');
+            addTxt(P.x,P.y-50,_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!'),'#e6e3dc',100);
             SFX.victory();G.shake=15*OPT.shake/100;
-            $('clearTitle').innerHTML=_glyph('lock','#d8b778',16)+' '+_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!');
+            $('clearTitle').innerHTML=_glyph('eye','#c21a10',16)+' '+_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!');
             {const _cte=$('clearTitleEn');if(_cte)_cte.textContent='LAYER BROKEN'} // areaTitle 관례의 영문 장식줄 (항상 영어)
             $('clearSub').textContent=_L('위층이 기다린다...','The layer above awaits...');
             $('nextBtn').textContent=_L('위층으로 ▶','Ascend ▶');
