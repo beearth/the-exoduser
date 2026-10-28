@@ -40,7 +40,7 @@
 |---|---|
 | Library가 있는 워크트리 | **33개**(`E:\exoduser-wt\*\unity\Library`) |
 | 워크트리 1개 Library | 5.6~5.9GB·약 31,000파일(최신 unity/main 기준), 오래된 것 3.5~4.8GB |
-| Library 합계(중복) | §1.3a 참조(측정 완료 후 기입) |
+| Library 합계(중복) | **158.4GB / 32개**(§1.3a) |
 | Library 복사 1회 | robocopy `/MT:8` **5.95GB·31,211파일·1분**(`I:\rm3\library-copy.log`). 복사 중 Unity가 돌면 안 돼서 `BUSY` 검사 후 대기(`I:\rm4\diag\libcopy.ps1`) |
 | `RM3_Slice.unity` | **73.4MB**(unity/main 26a11fd2f) — Mesh 오브젝트 1,252개가 73.1MB. 씬 안에 절차 메시가 직렬화됨 |
 | `RM1_Slice.unity` | 1.35MB(메시는 `Generated/*.asset`) |
