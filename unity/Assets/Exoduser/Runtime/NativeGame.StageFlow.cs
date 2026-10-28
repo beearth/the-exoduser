@@ -33,6 +33,7 @@ namespace Exoduser.UnityPort
             DestroyArenaView();BossViewAttach();   // BX: druid boss behind the BossSpawners extension point + its view
             foreach (var r in props) if (r != null) r.enabled = true;
             worldTexts.Clear(); bossBar.Hide(); BossBarShown = false; stageClear.OnNext = StageClearNext;
+            RegionHudAttach();
         }
 
         // Called after every Simulation.Tick (FixedUpdate and the harness StepInput).
@@ -46,12 +47,10 @@ namespace Exoduser.UnityPort
                 {
                     case StageEventKind.GateUnlocked:
                         WorldTextAdd(e.X, e.Y - 60, "지옥문이 열렸습니다", "The Hell Gate has opened", new Color(.55f, .75f, .95f), 3f); break;
-                    case StageEventKind.GateSealed:
-                        if (e.Regions) WorldTextAdd(e.X, e.Y - 40, "지옥문이 봉인됨 — 지역 클리어 " + e.Percent + "/4", "Gate sealed — regions cleared " + e.Percent + "/4", new Color(.85f, .35f, .3f), 1.2f);
-                        else WorldTextAdd(e.X, e.Y - 40, "지옥문이 봉인됨 — 처치 " + e.Percent + "% (80% 필요)", "Gate sealed — kills " + e.Percent + "% (80% needed)", new Color(.85f, .35f, .3f), 1.2f); break;
+                    case StageEventKind.GateSealed:        // web 42106 addTxt: the floating text is not on the web's draw whitelist (55092-55100: only 시전/그로기/무적/CRIT/사망/탈출 pass outside the test bed),
+                    case StageEventKind.GateAnglerBlocked: // so the web player only sees the portal label ("▼ 지옥문 봉인 (지역 N/4) ▼", NativeRegionHud.DrawGateLabel); the event stays for logs / harness
+                        break;
                     case StageEventKind.AnglerWoke: case StageEventKind.AnglerSlain: AnglerEvent(e); break;
-                    case StageEventKind.GateAnglerBlocked:
-                        WorldTextAdd(e.X, e.Y - 40, "심연의 앵글러를 모두 처치하라", "Slay every Abyssal Angler", new Color(.4f, .8f, .9f), 1.2f); break;
                     case StageEventKind.BossCoreMissing:
                         WorldTextAdd(e.X, e.Y - 40, "보스전 이식 대기 — 아레나는 아직 열리지 않습니다", "Boss battle not ported yet — the arena stays closed", new Color(.78f, .7f, .55f), 2.2f); break;
                     case StageEventKind.ArenaLoadStart:
@@ -74,6 +73,7 @@ namespace Exoduser.UnityPort
                 }
             }
             worldTexts.RemoveAll(t => Time.unscaledTime > t.until);
+            RegionHudTick();
         }
 
         // Boss bar: web 35966-35972 shows it as soon as a boss exists (the bar owns the 2 s intro); it stays off the black load screen.
@@ -121,6 +121,7 @@ namespace Exoduser.UnityPort
         void StageFlowDrawWorld()
         {
             var flow = Simulation.Stage;
+            regionHud.DrawWorld(Simulation);   // gate portal label (web 52269)
             foreach (var t in worldTexts)
             {
                 var pt = ToGUI(t.x, t.y); float a = Mathf.Clamp01((t.until - Time.unscaledTime) / .5f);
