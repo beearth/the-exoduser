@@ -46,13 +46,13 @@ namespace Exoduser.UnityPort
                 var gate = flow.Exits[1];
                 bool onGate = Math.Abs(p.X - (gate.X + .5f) * 40) < 1 && Math.Abs(p.Y - (gate.Y + .5f) * 40) < 1;
                 add("--unity-boss-direct: player on the gate tile, gate open, anglers counted done", onGate && flow.BossUnlocked && flow.FieldBossDone, "player " + p.X + "," + p.Y + " gate " + gate.X + "," + gate.Y + " unlocked " + flow.BossUnlocked + " anglers " + flow.FieldBossDone);
-                yield return M1Shot("rv1-boss-direct-start");
+                yield return ReviewShot("rv1-boss-direct-start");
                 int loadTicks = 0, guard = 0;
                 while (flow.LoadPhase == 0 && !flow.InArena && guard++ < 120) StepInput(0, 0, p.X + 100, p.Y, false, false);
                 bool loadStarted = flow.LoadPhase == 1;
                 while (flow.LoadPhase != 2 && loadTicks++ < 400) StepInput(0, 0, p.X + 100, p.Y, false, false);
                 for (int i = 0; i < 70; i++) StepInput(0, 0, p.X + 100, p.Y, false, false);
-                yield return M1Shot("rv2-arena-load-namecard");
+                yield return ReviewShot("rv2-arena-load-namecard");
                 while (flow.LoadPhase != 0 && loadTicks++ < 800) StepInput(0, 0, p.X + 100, p.Y, false, false);
                 for (int i = 0; i < 30; i++) StepInput(0, 0, p.X + 100, p.Y + 1, false, false);
                 var boss = flow.FindBoss(); DruidData dd = null; bool hasData = boss != null && sim.Druid != null && sim.Druid.Data.TryGetValue(boss, out dd);
@@ -63,10 +63,41 @@ namespace Exoduser.UnityPort
                     add("arena fight uses the " + (NativeReviewArgs.DruidRemodel ? "remodelled" : "web-port") + " druid", rm == NativeReviewArgs.DruidRemodel && (!NativeReviewArgs.DruidRemodel || pillars), "Remodel " + rm + ", pillars " + sim.Druid.Pillars.Count + ", boss hp " + boss.Hp + "/" + boss.MaxHp);
                 }
                 for (int i = 0; i < 30; i++) StepInput(0, 0, p.X, p.Y - 100, false, false);
-                yield return new WaitForSecondsRealtime(2.3f);
-                yield return M1Shot("rv3-arena-entry-boss-bar");
+                yield return ReviewShot("rv3-arena-entry");
+                if (hasData && NativeReviewArgs.DruidRemodel)
+                {
+                    // RB1-3: let the remodelled druid fight (the player stands 220 px from him, invulnerable, AI on) and shoot every telegraph kind once, in the middle of its warning
+                    sim.Config.EnemyAiEnabled = true; p.X = boss.X; p.Y = boss.Y + 220;
+                    var shot = new HashSet<string>(); var tl = new List<DruidTelegraph>(); int shots = 0, seenTicks = 0, maxList = 0;
+                    for (int tk = 0; tk < 14000 && shots < 40; tk++)
+                    {
+                        p.Hp = p.MaxHp; p.Iframes = 600; p.Stamina = p.MaxStamina;
+                        StepInput(0, 0, boss.X, boss.Y, false, false);
+                        sim.DruidTelegraphs(tl); if (tl.Count > 0) seenTicks++; if (tl.Count > maxList) maxList = tl.Count;
+                        foreach (var te in tl)
+                        {
+                            string key = te.MoveId + "-" + te.Kind + "-" + te.Shape + (te.Live ? "-live" : "");
+                            bool mid = te.Live ? te.Progress > 40 : (te.Total > 0 && te.Elapsed >= te.Total * .6 && te.Remaining > 5);
+                            if (shot.Contains(key) || !mid) continue;
+                            shot.Add(key); shots++; yield return ReviewShot("tele-" + key); break;
+                        }
+                    }
+                    add("RB1-3: telegraphs drawn by the view while the druid fought", teleView != null && teleView.SeenKinds.Count >= 6 && shots >= 6, shots + " shots, " + teleView.SeenKinds.Count + " move/kind/shape combinations seen, ticks with an entry " + seenTicks + ", most entries at once " + maxList + ": " + string.Join(", ", new List<string>(shot).ToArray()));
+                }
             }
             yield return ReviewFinish(output, rc);
+        }
+
+        // world capture without a window: the world camera renders into a RenderTexture (the ScreenCapture of a windowless player writes nothing). The IMGUI HUD is not part of it.
+        IEnumerator ReviewShot(string name)
+        {
+            UpdateViews(); yield return new WaitForEndOfFrame();
+            const int W = 1920, H = 1080; var rt = new RenderTexture(W, H, 24, RenderTextureFormat.ARGB32); var tex = new Texture2D(W, H, TextureFormat.RGB24, false);
+            var prevTarget = view.targetTexture; var prevActive = RenderTexture.active;
+            view.targetTexture = rt; view.Render(); view.targetTexture = prevTarget;
+            RenderTexture.active = rt; tex.ReadPixels(new Rect(0, 0, W, H), 0, 0); tex.Apply(); RenderTexture.active = prevActive;
+            File.WriteAllBytes(Path.Combine(m1Caps, name + ".png"), tex.EncodeToPNG());
+            UnityEngine.Object.Destroy(tex); rt.Release(); UnityEngine.Object.Destroy(rt);
         }
 
         IEnumerator ReviewFinish(string output, ReviewReceipt rc)

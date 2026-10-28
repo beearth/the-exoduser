@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
     // (NativeBossView) and the STY-D9 final death: the last death of the 1-1 druid is a sink into the ground (66 tick body, 18 tick hold, 18 tick fade of the web).
     public sealed partial class NativeGame
     {
-        NativeBossView bossView; NativeDruidBody druidBody; readonly Dictionary<int, int> sinkStart = new Dictionary<int, int>();
+        NativeBossView bossView; NativeDruidBody druidBody; NativeDruidTelegraphView teleView; readonly Dictionary<int, int> sinkStart = new Dictionary<int, int>();
         public const int SinkBodyTicks = 66, SinkHoldTicks = 18, SinkFadeTicks = 18;
         public const int SinkHoleTick = (int)(SinkBodyTicks * .55f) + 1;   // first tick NativeDruidBody.DrawSink shows the hole (t > bodyTicks * .55); the sink sound plays here
         readonly HashSet<int> sinkSounded = new HashSet<int>();
@@ -17,7 +17,8 @@ namespace Exoduser.UnityPort
         {
             if (bossView != null) bossView.Dispose();
             if (druidBody != null) druidBody.Dispose();
-            bossView = new NativeBossView(transform); sinkStart.Clear(); sinkSounded.Clear();
+            if (teleView != null) teleView.Dispose();
+            bossView = new NativeBossView(transform); teleView = new NativeDruidTelegraphView(transform); sinkStart.Clear(); sinkSounded.Clear();
             druidBody = new NativeDruidBody(transform, DiscSprite());
             Simulation.AttachDruidBoss();
         }
@@ -34,6 +35,7 @@ namespace Exoduser.UnityPort
         void BossViewUpdate()
         {
             if (bossView != null) bossView.Update(Simulation);
+            if (teleView != null) teleView.Update(Simulation, view);   // RB1-3: reads Simulation.DruidTelegraphs only (remodel off = empty list = nothing drawn)
             if (druidBody != null && druidBody.Stamp != Time.frameCount) druidBody.Hide();   // nobody drew the druid this frame (gone / not on this stage)
             foreach (var e in Simulation.Enemies) if (e.Alive && e.IsBoss && sinkStart.Count > 0) { sinkStart.Remove(e.Id); sinkSounded.Remove(e.Id); }
         }

@@ -61,6 +61,13 @@ namespace Exoduser.UnityPort.Core
             VolleyT = 0; OrbT = 0; VolleyN = 0;
         }
 
+        // game.html _druidSinkStart: remove only hostile druid poison bullets; reflected bullets keep flying.
+        public void ClearSinkHazards()
+        {
+            Projectiles.RemoveAll(p => p.DruidPoison && !p.Friendly);
+            LavaPools.Clear(); Orbs.Clear();
+        }
+
         // _projectileParryClass
         static string ClassOf(BossProjectile p)
         {
