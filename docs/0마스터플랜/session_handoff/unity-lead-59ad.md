@@ -50,3 +50,8 @@
 - `I:/EXODUSER-Storage/unity-latest/build`는 안전한 I: 사본 복사·전 파일 SHA-256 대조 뒤 `f61bbcaf5`로 교체했다. 앞선 `b0f9a0c52`, `34bae665b`, `f334935d0` 실행본은 I:의 별도 이전 빌드로 보존했다. 설치 경로에서 M1 22/22, AMD Radeon RX 9070 XT, 사용자 창 0, 세이브 변경 0을 재확인했다. 원본 `update_unity_latest.ps1`은 직접 Unity 실행·기존 빌드 삭제 동작 때문에 사용하지 않았다.
 - 1600×900 시작·클리어 UI 캡처는 확인했다. 기능 스모크는 PASS이나 맵 외곽의 검은 영역·어두운 톤·작은 결과 문구로 시각 판정은 `RETOUCH`다. M1은 실제 조작이 아닌 스크립트 `Simulation.Tick`이며 보스 게이트를 강제 개방하므로 LT-10 자연 개방 검증이 남는다. Unity 빌드 뒤 Editor가 `ProjectSettings`와 `.meta`를 자동 변경한 사본은 I: 패치로 보존하고 통합 소스에서는 제거했다. PC·Mac 각 실제 체크아웃의 조상/바이트 대조와 손 조작 Player 검수는 아직 확인되지 않았다.
 - sound, buildloop3, tools, RM0/RM2/RM3/RM4, arena, VFX graph, character 후보는 `I:/EXODUSER-Storage/codex-takeover/MERGE_QUEUE.md`의 미충족 검수·시각 판정·선택 조건 때문에 `unity/main`에 넣지 않았다. 상세 영수증과 남은 일은 `I:/EXODUSER-Storage/codex-takeover/integrator-final/REPORT.md`를 따른다.
+
+### 색공간 정정 — 2026-10-28 23:45 KST
+
+- 위 세 빌드의 `PortVerification.MakeScene`이 `PlayerSettings.colorSpace=ColorSpace.Gamma`를 강제로 실행하는 결함을 발견했다. 따라서 앞의 `34bae665b`·`f334935d0`·`f61bbcaf5` Player 화면은 커밋된 Linear 1과 달리 Gamma 0의 결과였다. 통합 코드와 RM-0 문서를 수정한 `63daee099a2ed8e2556f4e2299dea3fb7fb94f8b`가 현재 원격 `unity/main`이며, 빌드 후에도 `ProjectSettings.asset`의 Linear 1을 유지했다.
+- `63daee099`에서 Unity 6000.6.7f1 빌드 오류 0, 숨은 Player M1 22/22, RM-INT 2D·3D 각 1800틱 동일 해시 `11640a5da4a88c94`를 다시 확인했다. `unity-latest/build`도 전 파일 SHA-256 대조·이전 빌드 보존 뒤 이 Linear 빌드로 교체했으며 설치 경로 M1 22/22·사용자 창 감지 0·세이브 변경 0을 재확인했다. 최종 최신 SHA는 `63daee099`다. 1600×900 3D 시작 화면은 매우 어두워 `VISUAL VERDICT: RETOUCH`; 디자인 총괄 1x 판정과 손 조작 Player 검수는 남는다.
