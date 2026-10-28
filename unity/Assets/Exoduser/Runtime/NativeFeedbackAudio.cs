@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
         // adopted start volumes (RM1_AUDIO_KEYS.json); the final values are set by ear
         static readonly Dictionary<string,float> StartVolume=new Dictionary<string,float>{
             {"tell_melee",.45f},{"tell_ranged",.45f},{"tell_boss",.45f},{"tell_grab",.45f},{"tell_parry",.45f},{"druid_erupt",.5f},{"druid_sink",.55f},{"druid_tide",.5f},{"druid_roots_rise",.5f},{"druid_heartbeat",.5f},{"druid_burrow",.45f},{"druid_staff_tap",.5f},{"druid_root_pierce",.5f},
-            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f},{"druid_hit",.3f},{"druid_hit_heavy",.6f},{"druid_whip",.55f},{"druid_spore",.55f}};
+            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f},{"druid_hit",.3f},{"druid_hit_heavy",.6f},{"druid_whip",.55f},{"druid_spore",.55f},{"druid_slam",.7f}};
         readonly Dictionary<string,int> lastTellTick=new Dictionary<string,int>();
         int lastPlayerHitTick=-1000;
         public NativeFeedbackAudio(Transform parent,Camera camera)
@@ -164,6 +164,14 @@ namespace Exoduser.UnityPort
             var r=Make("druid_spore",.55f,Jitter(1,.05f),World(e),e);r.logical="druid_spore";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#5 fan fires (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_spore")+")";
             Receipt.requested++;direct.Add(r);
         }
+        // SND-09 round 4 druid_slam: the dung slam (move #2 "slam") landing. The Core's "#2 slam telegraph" event is the cue; the swing starts when the telegraph ends (move data Tele 48) and lands SlamActive (6) ticks later (shock wave + damage check).
+        void SlamOnLanding(FeedbackEvent e)
+        {
+            if(e.Source!="#2 slam telegraph"||!HasClip("druid_slam"))return;
+            int after=Array.Find(DruidRemodelData.Moves,m=>m.Id=="slam").Tele+DruidRemodelData.SlamActive;
+            var r=Make("druid_slam",.7f,Jitter(1,.04f),World(e),e);r.logical="druid_slam";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#2 slam lands (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_slam")+")";
+            Receipt.requested++;direct.Add(r);
+        }
         // _hitSfxForEtype: Core names the category (EnemySoundTables.Hit) and the base pitch; the variant is drawn here, never in the Core
         Req HitRequest(FeedbackEvent e)
         {
@@ -218,7 +226,7 @@ namespace Exoduser.UnityPort
             string[] files;if(!LogicalFiles.TryGetValue(e.SampleKey,out files))files=new[]{e.SampleKey};
             float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
             string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?"no file yet (3rd-round pending, left empty)":(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
-            WhipOnSwing(e);SporeOnFan(e);
+            WhipOnSwing(e);SporeOnFan(e);SlamOnLanding(e);
             var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal);
             if(tell){
                 int last;if(lastTellTick.TryGetValue(e.SampleKey,out last)&&e.Tick-last<8){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED same key within 120 ms"));return;}
@@ -240,7 +248,7 @@ namespace Exoduser.UnityPort
             {"druid_vo_pain","_preview_druid/druid_vo_pain_v2a_proc"},{"druid_vo_attack","_preview_druid/druid_vo_attack_v2a_proc"},{"druid_vo_phase","_preview_druid/druid_vo_phase_v2c_proc"},
             {"druid_vo_fall","_preview_druid/druid_vo_fall_v2a_proc"},{"druid_vo_last","_preview_druid/druid_vo_last_v2a_proc"},{"druid_drag","_preview_druid/druid_drag_v2a_proc"},
             {"druid_fissure","_preview_druid/druid_fissure_v2b_proc"},{"druid_pod","_preview_druid/druid_pod_v2d_proc"},{"druid_summon","_preview_druid/druid_summon_v2c_proc"},
-            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"},{"druid_spore","_preview_r3/druid_spore_r3a_proc"}};
+            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"},{"druid_spore","_preview_r3/druid_spore_r3a_proc"},{"druid_slam","_preview_r4/druid_slam_r4e2_proc"}};
         static string AdoptedSource(string key){string s;return Adopted.TryGetValue(key,out s)?s:null;}
         static string Line(int tick,string key,string source,string group,float volume,string file){return "frame="+tick+" key="+key+" from=\""+source+"\" group="+group+" vol="+volume.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+" file="+file;}
         int lastBossHitTick = -1000;

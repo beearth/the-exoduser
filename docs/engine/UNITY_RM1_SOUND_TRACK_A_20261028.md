@@ -179,3 +179,4 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 
 - 3차 채택 `druid_spore`: `Audio/RM1/druid_spore.mp3` ← `_preview_r3/druid_spore_r3a_proc.mp3`(웹 `pickup_rummage2.mp3` 가공본). 기술 5 독포자 부채(fan): Core의 `#5 fan telegraph` 알림을 신호로 발사 시점(텔레그래프 38틱 뒤)에 1회, rate ±5 %, Skill 그룹, 시작 음량 .55.
 - `druid_spore` 원본이 웹에서는 아이템 줍기 소리다. Unity에 줍기 소리를 넣을 때 같은 파일이 들어가면 사운드 총괄에 알린다. `druid_slam`은 가공본을 다시 고르는 중이라 소리를 그대로 둔다.
+- 4차 `druid_slam`(`Audio/RM1/druid_slam.mp3` ← `_preview_r4/druid_slam_r4e2_proc.mp3`, 3차 선택 r3d에 음량 상향·중간 메아리 약 0.22초를 반영한 추천안 e2, **사용자 컨펌 전 선반영(pick_r4)** — 다른 후보를 고르면 파일 교체 커밋 하나만 바꾼다): 거름 내려찍기(기술 2) 착지 순간 1회. Core의 `#2 slam telegraph` 알림을 신호로 텔레그래프(기술 데이터 48) + SlamActive(6) = 54틱 뒤에 재생, Skill 그룹, 음량 .7, rate ±4 %.
