@@ -90,3 +90,26 @@ dotnet build unity/Tools/kill-wire-test/KillWireTests.csproj -p:ExoduserProject=
 | 보스 대사 | unity/main의 `RemodelLine`(한 판에 한 번, `BossLineRaised`/`BossLineLog`)을 그대로 씀. O-1이 새로 만들었던 같은 이름의 이벤트는 삭제 |
 
 회귀(merge 뒤, 31종, 전부 불일치 0): enemy-hurt 5,755,060 · fieldboss 302,271 · region-oracle 204,391 · region-test 117 · start-mobs 24 · kill-wire 28 · enemy-spawn 204,592 · tick 3,253,978 · ai 2,323,428 · pool 26,271 · tables 2,784 · dash-parry 187,165 · parry-reflect 48,708 · player-hurt 47,559 · druid-boss 5,421,635 · druid-remodel 97,830 + 124 · stage-flow 7,076 · c01 448 · damage-parity 18,354 · ki-slash 93 · skill 8,416 · xbow 108,780 · auto-potion 2,438 · drop 5,900 · shield-revive 34,821 · rage-malice 12,765 · skill-sim 67 · CoreTests 35 · parry-reflect-test 26 · first-practice 88. roll-oracle은 기존 결함(csproj 없음)으로 실행 불가.
+
+## 8. m1-check 09b 진단 (10-28, 판정 불변·기록 추가 패치로 두 판 각 빌드 1회 + m1 1회)
+
+O-1판(1332dcc96)은 m1 19/20(09b 가시덫 실패), 기준판(c7b497131, 새 detach worktree, o1-killtail Library를 robocopy /E /XJ로 복사)은 20/20. 산출: `I:\EXODUSER-Storage\qa\o1-killtail\diag-o1\`, `diag-base\` (빌드 receipt 출력 == 실행 exe 확인, 두 판 빌드 오류 0).
+
+| 항목 | O-1판 | 기준판 |
+|---|---|---|
+| 09b 시작 물약 쿨다운 | 97297 | 97471 |
+| 시작 물약 사용 수 | 0 | 0 |
+| 시작 HP | 346.8 / 578 | 295.8 / 493 |
+| 시작 악의 | 3065 | 3063 |
+| 종료 물약 사용 수 | 0 (안 마심) | 0 (안 마심) |
+| 처치 수 | 15 → 16 | 15 → 15 |
+| 악의 변화 | −1 (이벤트 −5@틱0, +4@틱49) | −5 (이벤트 −5@틱0) |
+| 처치 출처 | 가시덫 DOT가 A(etype0, 엘리트 0)를 49틱에 처치, 물약 뽑기 악의 0 | 처치 없음, A는 HP 246으로 생존 |
+
+- 쿨다운 97k는 m1-check 73줄이 일부러 넣은 100000에서 줄어든 값이다(자동 물약 차단). 물약 가설은 빠진다.
+- **① 갈린 원인**: 두 판의 무작위 흐름이 07 단계부터 다르다. O-1 사망 꼬리가 웹 순서대로 무작위 값을 뽑아서(물약 뽑기·rollDrop 등) 07 전리품 뽑기 2회 대 1회, 07b 접촉 시각 151 대 134틱, 07c 소환굴 적 73 대 63, 08 착용 장비(불꽃 허리띠 대 그림자 전투화), 09 경험치 6 대 9로 갈린다. 그래서 09b의 시작 상태(최대 HP 578 대 493, 무작위로 소환된 A)가 다르고, O-1판에서는 가시덫 DOT가 70틱 창 안(49틱)에 A를 죽였다. 처치 악의 규칙이 바뀐 것은 아니다. 두 판 모두 처치 1회에 +4를 준다(기준판 `KillEnemy` AddMalice(4), O-1 DeathTail `G.mats+=4`).
+- **웹 근거**: `hurtE`(game.html 42308)에서 DOT도 `e.hp<=0`(42699) 사망 분기로 들어가고, 42699~43307 사이에 `isDot` 예외가 없어 DOT 처치도 모든 처치 기본 악의 `G.mats+=4`(43307)를 받는다. 가시덫 DOT는 25프레임마다 `hurtE(e,fz.dmg,…,{dot:true,shieldHit:true})`(37597·37649~37656).
+- **oracle 범위**: enemy-hurt-oracle의 `CH4 … dot [HP forced low]` 11케이스가 DOT 처치의 사망 꼬리 전체(G.mats 포함)를 대조한다. rage-malice oracle(12,765)은 43307 공식 조각만 대조하고 DOT 경로 자체는 덮지 않는다.
+- **③ 판정 = 테스트 기대값 수정, Core 수정 없음.** "70틱 뒤 악의가 정확히 −5"는 그 창 안에 처치가 없을 때만 맞는 값이었고, 기준판 통과도 무작위 흐름 덕이었다. 09b는 시전 프레임 직후 악의를 읽어 비용(5)을 확인하도록 고쳤다. 70틱 창의 처치 수는 메모에 같이 적는다. 물약 차단 같은 우회는 넣지 않았다.
+- **후속 보강 후보(이번 병합 조건 아님)**: rage-malice oracle에 DOT 처치 경로(hurtE `{dot:true}` → 42699 사망 분기 → 43307 `G.mats+=4`)를 넣는다. 지금은 enemy-hurt-oracle CH4 dot 케이스만 이 경로를 대조한다.
+- 승인(유니티 총괄 10-28): Core 수정 없이 09b 기대값만 고친다. 검증은 수정본 빌드 1회 + m1 1회.
