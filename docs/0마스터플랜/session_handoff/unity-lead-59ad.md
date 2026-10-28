@@ -60,3 +60,11 @@
 
 - 현재 원격 `unity/main`은 `6d920689dc916748352e8c92e2facf018fcac0a3`다. M1의 임시 `18/15` 분모와 `FieldBossDone=true`·`ForceUnlock()` 강제 개방을 제거했다. 실제 1-1 지역 4곳 각 80% 처치와 앵글러 4마리 피격·사망 뒤 자연 개방하는 `09c`를 추가했다. Unity 6000.6.7f1 빌드 오류 0, 숨은 Player M1 23/23, RM-INT 2D·3D 각 1800틱 해시 일치, 웹 지역·앵글러 oracle 실패 0, 실제 맵 .NET 122/0. `unity-latest`도 전 파일 SHA-256 대조·기존 빌드 보존 뒤 같은 SHA로 교체했으며 설치 경로 M1 23/23을 재확인했다. 스크립트 구동 검수라 손 조작 Player는 별도다.
 - LT-11은 배치 HUD 스모크의 IMGUI `Repaint` 부재에 따른 관찰값이었다. 숨은 데스크톱 스모크에서 기검참 `iconDrawn=true`와 첫 슬롯 아이콘 캡처를 확인했으며 런타임 코드 수정은 하지 않았다. 상세 근거·남은 게이트는 `I:/EXODUSER-Storage/codex-takeover/integrator-final/REPORT.md`에 있다. 디자인 시각 판정은 `RETOUCH`, PC·Mac 실제 checkout 소스 동기화는 미확인이다.
+
+## PC 전체 미리보기 별도 통합 — 2026-10-29
+
+- 사용자 지정 `unity-preview-brief.md`에 따라 `origin/unity/main` `1ae7366a3d17272db4ff8871ff9fc180a21c13b7` 위에 `codex/pc-preview-all-20261029`를 만들었다. 지정 원격 끝점 16개 전부 조상 포함을 확인했다. 최종 원격 체크포인트 `9c3420aa564329c0490811fe627f62cf6693613e`를 비강제 push하고 SHA를 대조했다. `unity/main`에는 반영하지 않았다.
+- 입력·보스 예고/침강 사운드·RM-1 job 인자/무음 충돌은 내용을 결합해 해결했다. 파일별 선택은 `docs/engine/UNITY_PC_PREVIEW_ALL_20261029.md`에 있다.
+- 공용 실행기 빌드 1차 `a734042a`는 Runtime Cinemachine 참조 누락으로 실패했다. 별도 `c36431bc7`에서 asmdef·관련 docs를 수정했다. 2차 `930e5a24`는 Editor `Rm4SliceBuilder.cs:1004`의 `Rm4PoolLightCuller` CS0246으로 실패했다. 파일은 존재하지만 Remodel 폴더가 명시 asmdef 바깥 기본 어셈블리에 남아 참조 경계가 끊겼다. 같은 경계의 `Rm3PoolLightCuller`·`ArenaChannelPlan`도 함께 검토해야 한다.
+- COMMON_RULES의 “테스트 실패는 원인 수정 후 1회 재실행, 2번 실패면 멈추고 기록”을 적용해 추가 실행을 중단했다. 성공 빌드·M1·장면 캡처·격자·미리보기 바로가기는 미완료다. 기존 Unity 바로가기는 보존했다. 사용자 세이브 변경 두 작업 모두 0, 종료 뒤 Unity·Player 잔존 없음.
+- 결과·로그·원격 증거: `I:/EXODUSER-Storage/unity-preview/REPORT.md`, `a734042a.log/json`, `930e5a24.log/json`, `integration.json`, `source-proof.json`, `remote-proof.json`. E 여유 약 48.45GiB로 30GiB 조건은 충족했다. 전체 완료·디자인 PASS·Mac 동기화로 보고하지 않는다. 다음 단위는 Remodel 어셈블리 경계 수정이다.
