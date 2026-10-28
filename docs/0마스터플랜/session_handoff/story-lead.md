@@ -1,5 +1,7 @@
 # 스토리 총괄 인계 — 2026-10-28 14:30 STY-17 진행 중 (재생성: 컨텍스트 278K)
 
+> **Codex 인수 최신 기록(2026-10-28):** 아래 14:30의 “재개 후 첫 행동”은 역사적 스냅샷이다. 이 문서 맨 끝 **「Codex 인수 후 최신 상태」**가 현재 재개 기준이다.
+
 - 세션: 스토리 총괄 / Opus 5.5. 원칙: 스토리가 맵·보스보다 먼저(사용자 2026-10-26). 총괄 자율 결정(CLAUDE.md 10-27): 정본 안 선택은 총괄이 결정·SSOT 기록, 사용자에겐 새 설정·유료·게시·삭제만 질문.
 - SSOT: `docs/11내러티브·로어디자인/STORY_LEAD_MASTER_20261026.md` (STY-D1~D30, 백로그 STY-01~17, §5 결정 기록, §6 사고 기록)
 - 세계관: `docs/HELL_EXODUSER_WORLDVIEW_v2.md` ([1-1] 하늘·날씨·지형, [20-1] 원문 정합 판정)
@@ -56,3 +58,14 @@
 
 ## 연결 세션
 CTO local_7072229c · 디자인총괄 local_eb8a8577 · 보스전 총괄 local_a98acebe · 맵 총괄 local_9d17d95b · 사운드 총괄 local_cf0cb8d7 · story-simple local_a128282e-ce62-42e3-9605-7a48d256c19d(묶음 B1) · 번역 누락 점검 local_2a4889ed
+
+## Codex 인수 후 최신 상태 — 2026-10-28
+
+- 작업 경로 `E:/exoduser-wt/codex-story`, 브랜치 `codex/pc-story-ch4-spine-20261028`. 시작은 깨끗한 detached `3622a222b`; fetch 후 `origin/main`을 부모로 새 브랜치 생성. `G:/exoduser` WIP·인덱스는 건드리지 않았다.
+- **STY-12 CH1~7 서사 뼈대 v1 문서 완료**: CH4 `c3bb34f4d`, CH5 `cf0341231`, CH6 `728f1f79e`, CH7 `dd72d9c5e`. `STORY_LEAD_MASTER_20261026.md` STY-D31~D38·결정기록 갱신. CH4~7은 런타임 보스 수/이름과 옛 5보스 로어 차이를 표시한 `[제안]`; 게임·맵·대사·번역 구현이 아니다. CH5/6 작업 사이 원격 docs 변경은 정상 merge로 보존.
+- **STY-13 P1 구조 검토 후보**: `I:/EXODUSER-Storage/codex-takeover/story/animatic/STY13_P1_animatic_125s_20261028.mp4`, SHA-256 `c17efc782dcd453dbeb05d4c56db0909e9fd87449a6199005add6f9be429f6fc`. H.264/AAC 1600×900/24fps/125.000초. 기존 영상·승인 아이반 T8 컷·로컬 임시 영어 TTS·기존 BGM 사용. 00:40·01:18·01:45 프레임 1x 직접 확인. 실제 보스 아트·게임플레이·최종 음성 청취/믹스·컷다운·다국어 자막·게시 없음. 계획 문서 기록 `d77b3e921`·`7eccd8fc9`, I: `receipt.json`.
+- **STY-17·18은 인수 전에 완료/PASS**. 17의 대사·18의 보스 이름을 재작업하지 않았다. STY-18 SSOT의 낡은 “총괄 검수 대기”를 PASS 기록으로 정정했다.
+- **STY-19 대기 근거**: 2장 2-5(si8)·3장 3-3(si12) 비문 문구는 사용자 확정이나, 맵 총괄 인계는 “si5~9 손배치 때”로 남아 있고 현재 게임에서 그 두 비문 텍스트/자리 확인 0. 실제 오브젝트 자리 확정 뒤 번역목록·`_EN`·27언어와 함께 반영한다.
+- **STY-10 대기 근거**: 디자인총괄의 T8 r4 투명 컷·초상은 E:에 있지만 현행 `index.html`의 scene/idleVid/poster/emblemImg가 옛 헬거너다. 문구·초상만 교체하면 두 인물이 한 카드에 섞인다. 아이반 장면/영상 시각 판정과 로비 전용 `localization/resume-source.json`·27개 `localization/resume/*.json`·목록 동기화가 필요하다. H5 `index.html`은 자기 브랜치까지만 push, main 반영은 별도 검수/큐.
+- 다음 작업 순서: (1) STY-10의 전체 카드 시각 소스가 확정되면 29언어와 함께 후보 브랜치 구현·1600×900 검수, (2) 맵의 si8·si12 비문 자리 확정 때 STY-19, (3) STY-D25 영웅별 엔딩/사망 대사 분기 명세와 실제 구현, (4) STY-13 P1 검토 뒤 P2~P6. STY-D2·D3·D20·D25는 `STORY_LEAD_MASTER`의 권고/미결 경계를 따른다.
+- 원격 `main`은 각 문서 단위를 비강제 fast-forward로 반영했고, 마지막 인계 커밋 SHA는 본 항목 아래 후속 보고서에 적는다. 실제 PC Player·Steam·Unity 동기화/배포를 주장하지 않는다.

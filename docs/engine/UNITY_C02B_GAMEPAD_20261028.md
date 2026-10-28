@@ -1,6 +1,6 @@
 # C-02b Input System 패드 연결 계약 — 2026-10-28
 
-상태: **명세 완료, 구현·Unity 검증 대기**. 기준은 `origin/main`의 웹 `game.html` 13573, 13625–13638, 13967–14060, 14087–14242와 `docs/3.3 키바인딩+설정/게임패드_매핑표.md`, Unity `FrontendPadPolicy`·`NativeKeyBindInput`이다. C-02a의 `ExoInput`은 키보드·마우스 폴링을 신형 API로 옮겼으나 전투용 웹 패드 키 주입과 UI 차단은 아직 없다. 이 문서를 C-02b의 구현·검수 기준으로 쓴다.
+상태: **명세 완료, 구현·Unity 검증 대기**. 기준은 원격 `main`의 웹 `game.html` blob `d676c50e236bca7159d28e1c9d2ec5a9ce640a66`(13651, 13703–13718, 14045–14086, 14165–14320)와 `docs/3.3 키바인딩+설정/게임패드_매핑표.md`, Unity `FrontendPadPolicy`·`NativeKeyBindInput`이다. 공유 `G:\exoduser\game.html`은 별도 미커밋 변경이 있어 이 명세의 원본으로 사용하지 않았다. C-02a의 `ExoInput`은 키보드·마우스 폴링을 신형 API로 옮겼으나 전투용 웹 패드 키 주입과 UI 차단은 아직 없다. 이 문서를 C-02b의 구현·검수 기준으로 쓴다.
 
 ## 1. 입력 경계
 
