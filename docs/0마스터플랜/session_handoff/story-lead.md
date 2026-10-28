@@ -1,46 +1,35 @@
-# 스토리 총괄 인계 — 2026-10-27
+# 스토리 총괄 인계 — 2026-10-28 (재생성: 컨텍스트 317K, CTO 100K 규칙)
 
-- 세션: 스토리 총괄 / Opus 5.5 / 세계관·캐릭터 개인사·보스 사연·컷신 대사·트레일러 대본의 정합성과 정본 판정. **원칙: 스토리가 맵·보스보다 먼저 나간다**(사용자 2026-10-26).
-- 기준 문서(SSOT): `docs/11내러티브·로어디자인/STORY_LEAD_MASTER_20261026.md` (정본 계층·인물 현황·충돌 STY-D·백로그 STY-01~13·결정·사고 기록·§7 아이반 카드 문구)
-- 출처 색인: `docs/11내러티브·로어디자인/CHARACTER_STORY_SOURCE_INDEX_20261025.md`, 세계관 `docs/HELL_EXODUSER_WORLDVIEW_v2.md`(S0~S2 스포일러 티어 [20])
+- 세션: 스토리 총괄 / Opus 5.5. 원칙: 스토리가 맵·보스보다 먼저(사용자 2026-10-26). 총괄 자율 결정(CLAUDE.md 10-27): 정본 안 선택은 총괄이 결정·SSOT 기록, 사용자에겐 새 설정·유료·게시·삭제만 질문.
+- SSOT: `docs/11내러티브·로어디자인/STORY_LEAD_MASTER_20261026.md` (STY-D1~D20, 백로그 STY-01~15, §5 결정 기록)
+- 세계관: `docs/HELL_EXODUSER_WORLDVIEW_v2.md` ([1-1] 하늘·날씨·지형, [20-1] 원문 정합 판정)
 - 메모리: `story-lead-role.md`
+- **재생성 기준(CTO 10-28)**: 작업 단위마다 get_usage(self), 100K 넘으면 이 문서 갱신 후 재생성, 200K 넘으면 즉시. story-simple도 같음.
+
+## 실버테일 개인사 — 완료 (2026-10-28)
+- 모녀 원문 = 복원 바이블 `bdcb770a2` §6-3 **위니 13막**(소설 사본이 아니라 바이블). 사용자 "실버테일로 옮겨" → 정본 `docs/11내러티브·로어디자인/SILVERTAIL_STORY_CANON_20261028.md`, AI 초안 폐기, STY-D21~D23 총괄 판정(본명 위니·표현 수위·13막 B), STY-D24 미정(모친 출신·무기 이유 등, 지어내지 말 것).
+- 묶음 A: 총괄이 origin/main에 push 완료 `2acde58ac`, 디자인총괄 전달. story-simple은 로컬 적용·캡처 진행 → 결과 검수.
 
 ## 진행 중 작업 단위
-| 단위 | 단계 | 남은 일 |
+| 단위 | 상태 | 남은 일 |
 |---|---|---|
-| **STY-12 CH1 스토리 뼈대 (P0)** | **CH1 v1 완료 2026-10-27** `docs/11내러티브·로어디자인/CH1_STORY_SPINE_20261027.md`(2ea6a8dbb 로컬, D7~D10 확정분 외 `[제안]`). 현행 보스 = 다크드루이드·독버섯 거인·지옥기형·다크드루이드 + si0 앵글러4(흑요염 파괴자는 2026-09-06 철회, 숲의 기생수는 런타임 없음) | STY-D7~D10 **확정 2026-10-27**(권고안대로, 뼈대 v1.1). 보스전 총괄 STY-D9 회신 받음(웹 가능, 뼈대 §3.1) → 문구 숨김 방식 사용자 승인, 웹 반영 fb4c929aa 완료·스토리 검수 PASS·디자인총괄 PASS 채택. 후속(story-simple): 도주용 펫 대사 2줄·bossTelePrep 샘플링 마감·f092 보라 빛줄기 출처 확인. §5 보스 대사 7줄(보스 5·펫 2) 반영·검수 PASS(616f707e9·8bf094fe6, 로컬) — **8bf094fe6는 타 세션 512파일 번들, push 시 스토리 경로만**(SSOT §6). 남은 것: 순간이동 emerge 마감(story-simple), 디자인총괄 자막 캡처 판정. 맵 총괄 R4 얼굴 진행 가능 통보. §5 대사 초안은 사용자 채택 미결(채택 시 게임 반영+번역목록+28언어). 그다음 CH2 |
-| STY-13 스토리 트레일러(엘든 링 스타일 120초) | 기획 v1 완료 `docs/13출시·마케팅/STORY_TRAILER_ELDENRING_STYLE_PLAN_20261027.md` | D1~D5 총괄 결정 완료(2026-10-27, 1장 군주 다크드루이드로 정정). 다음 = P1 애니매틱 단순작업. 외부 게시는 사용자 확인 |
-| STY-10 아이반 로비 카드 | 문구 초안·T8 키아트 r4 경로 확정(SSOT §7) | 단순작업 카드 task_254a4fa9 사용자 시작 대기. 반짝임 보정본은 디자인총괄 확인 후 복사 |
+| STY-14 대사 정합 검수 1차 | 판정 완료 `DIALOGUE_CANON_AUDIT_20261028.md` (원격 cf1f767da·f6190b6b9) | **묶음 A 13건**: story-simple(local_a128282e)이 E:/exoduser-wt/dialogue-a에 39파일 변경 준비·검증까지 완료, **커밋 대기(시스템 커밋 메모리 20GB 이상일 때 1회 재시도, 지금 5~8GB)**. 메모리 확인: `powershell -NoProfile -Command '$o=Get-CimInstance Win32_OperatingSystem; "{0:N1} GB free commit" -f ($o.FreeVirtualMemory/1MB)'`. 20GB↑이면 story-simple에 재시도 지시. push 후 원격 SHA를 **디자인총괄에 전달**(그 뒤 디자인총괄이 같은 줄 색 #66ee55/#44ffaa·이모지 처리). 묶음 B(번역 없는 대사 126건, game.html _T 배선 필요 — 번역 세션이 스토리 소관으로 넘김)는 A 뒤 |
+| STY-15 2장 보스 대사 반영(묶음 C) | 보스전 총괄 회신 받음(CH2 뼈대 §5에 기록) | A 뒤 story-simple. `_bossLine('intro'+G.stage)` + 사망 조건 `G.stage>=1&&G.stage<=3&&` 삭제, 7줄 + §6 펫 교체 2건 + 번역목록·28언어 |
+| STY-12 CH2 뼈대 v1.1 | 완료 `CH2_STORY_SPINE_20261028.md` (원격 16f518e17) | D11~D14 총괄 확정, D15 암시 허용(§3.2), D16 첫 비문 채택(맵 총괄 통보, si5~9 손배치 때), D17 아이 원형 후반 장 사용. 다음 CH3 뼈대 |
+| STY-13 트레일러 | 기획 v1 | P1 애니매틱 단순작업 미착수 |
+| STY-10 아이반 로비 카드 | 문구·T8 r4 확정 | 변성술사 카드 문구(LOCK 문구로)와 같이 처리 |
 
-## 병렬 진행 (2026-10-28 CTO 사용량 제한 해제 지시)
-원격 조작 중이라 세션 카드를 띄울 수 없어 스토리 총괄 서브에이전트 3개로 동시 진행. 결과는 총괄이 검수 후 반영.
-| 작업 | 모델 | 산출 |
-|---|---|---|
-| STY-12 CH2 스토리 뼈대 v1 | Opus | `docs/11내러티브·로어디자인/CH2_STORY_SPINE_20261028.md`(미커밋, 검수 후 커밋) |
-| 실버테일 개인사 원문 회수 | Sonnet | 보고만(사용자 발언 vs AI 문서 구분, 지어내기 금지) |
-| 게임 내 대사 전수 정합 검수 | Opus | 보고만(P0 설정 모순 / P1 톤·호칭 / P2 번역목록 누락) |
+## 보류·후속
+- STY-D19 펫 성격 정본 충돌(인트로 vs 게임 vs PETS_DESIGN_LOCK) — 총괄 판정 후 펫 대사 일괄 정리
+- STY-D20 7장 "지옥 군주" vs "지옥왕" — 7장 뼈대 때
+- STY-D2 네메시아 정체, STY-D3 킬루 악의충 — 사용자 결정 대상
 
-## 대기 중
-- 사용자: 없음(총괄 자율 결정 규칙 2026-10-27 — 정본 밖 새 설정·유료 크레딧·게시·삭제만 질문). STY-10 카드 task_254a4fa9는 총괄이 다음 기회에 직접 시작
-- 보스전 총괄(local_a98acebe): 웹 담당 정해지면 STY-D9 수정 줄·검증 명세 인계 예정
-- 디자인총괄(local_eb8a8577): STY-D9 침강 시트 emerge.png vs dive.png 판정
-- 디자인총괄(local_eb8a8577): 아이반 키아트 반짝임 보정본 갱신 / 헬거너 카드 scene·emblem·aura 교체 여부 판정
+## 운영 제약
+- CTO 10-28: PC 커밋 메모리 한계 → 서브에이전트 총괄당 최대 2개, 새 세션 증설 금지(20GB 회복 전), dev서버·Playwright 즉시 종료.
+- 원격 반영: 로컬 main(8bf094fe6 번들) push 금지 → `git worktree add --detach E:/exoduser-wt/<이름> origin/main` → cherry-pick → push(거절 시 fetch·checkout·cherry-pick 재시도) → junction 0 확인 → `worktree remove --force`.
+- 커밋은 `git commit -m ... -- <경로>`만(새 파일은 그 경로만 git add 먼저). 공유 작업트리에 타 세션 WIP(game.html 사운드 hunk 등) 상존.
+- 제목 화면 로고 검은 박스는 사용자 직접 처리 — 손대지 말 것.
+- 로컬 미푸시: 이 인계 문서 갱신분(재생성 전 로컬 커밋만 함 — 다음 세션이 원격 반영).
 
 ## 연결 세션
-CTO local_7072229c · 디자인총괄 local_eb8a8577(유일) · 보스전 총괄 local_a98acebe · 맵 총괄 local_9d17d95b · 사운드 총괄 local_cf0cb8d7 · 전체총괄 local_a65bb55a. 소속 단순 세션 없음(카드만 제안).
-
-## 이번 대화 확정 결정 (SSOT 결정 기록에 있음)
-- 총기 슬롯 = 검은 연기 아이반, 갤럭시 헌터 보관 / 네메시아 이름 유지("네세론" 기각) / 아이반 원화 = V29, 로비 키아트 = T8 r4
-- 완료: STY-03 실버테일 문구 29언어(16f8dedad·b7d5eb9b5), STY-04 내러티브 문서 현행화, STY-09 결정 전파
-
-## 금지·주의
-- G:\exoduser main 직접 push는 계속 거절됨(origin과 갈라짐). 로컬 커밋 a37793bd2·0016e0f04·16f8dedad·fe52d8779·b7d5eb9b5·4c8d4a441·9670ed56d·9a68189d3 미푸시. GIT_INDEX_FILE·commit-tree 방식은 권한 거부.
-- index.html·공유 작업트리에 타세션 WIP 상존. `git commit -- <경로>`만. 미추적 타세션 문서(BLACK_SMOKE·GALAXY_HUNTER·NEW_HEROES)는 내용 메모만 추가했고 미커밋.
-- 2026-10-26 22:30경 공유 작업트리 사고(NEW_HEROES 소실→blob 6a599015b로 복원, character-story-player.js WIP 되돌림, test 삭제) — 주체 미확인, SSOT §6.
-- 제목 화면 로고 검은 박스(RGB 로고 + cin-logo-art.js 매트 제거 실패 추정)는 **사용자가 직접 처리**. 손대지 말 것.
-- 실버테일 개인사 미회수 — 지어내지 말 것. 보스 칭호(트레일러 §4.1)는 제안 상태.
-
-## 재개 후 첫 행동
-1. 이 문서·SSOT·MEMORY.md 확인
-2. STY-12 CH1 자료 수집(위 목록) → CH1 스토리 뼈대 문서 작성(`docs/11내러티브·로어디자인/CH1_STORY_SPINE_<날짜>.md`)
-3. 맵 총괄·보스전 총괄에 경로 전달
+CTO local_7072229c · 디자인총괄 local_eb8a8577 · 보스전 총괄 local_a98acebe · 맵 총괄 local_9d17d95b · 사운드 총괄 local_cf0cb8d7 · story-simple local_a128282e(묶음 A 커밋 대기) · 번역 누락 점검 local_2a4889ed
