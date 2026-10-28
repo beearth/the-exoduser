@@ -50,3 +50,42 @@
 - 대기: 사용자가 s3 5키를 고르면 `picks_rm1.json`을 읽어 채택본을 같은 방식으로 승격(웹 대응 장면 있는 키: `tell_parry`는 드루이드 패링 가능 근접 전조에 연결할 곳이 아직 없음 — 총괄 결정 필요).
 - 파일을 쓸 때 줄바꿈: Windows 파이썬 텍스트 모드는 LF를 CRLF로 바꾼다 → 항상 바이트로 쓰거나 `newline='
 '`.
+
+## 2026-10-28 갱신 — 컨텍스트 ~510K에서 재생성 인계 (보고 대상: 사운드 총괄 `local_cf0cb8d7-22f7-46be-b65d-fc242dc2bc23`)
+이 절이 위 절들보다 새롭다. 위의 "재개 후 첫 행동"은 아래 "재개 후 첫 행동(10-28)"으로 대체한다.
+
+### 완료 (origin/main, 전부 비강제 push)
+| 단위 | 결과 | 커밋 |
+|---|---|---|
+| SND-08 §5.1 합성 3키 | `druid_heartbeat_comp`·`druid_erupt_comp`·`tell_grab_comp`, 시트·청음 페이지·§4 행 | (이전 인계 절 참조) |
+| SND-08 §6 2차 | 16키 x 4 = 64후보(`<key>_s2`), 고르기 페이지 `pick_rm1.html`, 서버, 검수 | (이전 인계 절 참조) |
+| SND-08 §6.4 3차 | 5키 x 4 해석(`<key>_s3a~d`) 생성·가공·페이지 반영 | 7e230f30e |
+| SND-08 §6.5 트랙 C 웹 | `game.html` 연결(`tell_*`·`druid_*`, `_playTell` 120ms 쿨다운·화면 밖 제외), sfx 7파일, 키 표, DEMO/EA 동기화 | 05d519db7, d863bb782 |
+| SND-08 트랙 C Unity | 브랜치 `claude/unity-pc-sound-rm1-20261027`(브랜치만 push)에 11 mp3 + `RM1_AUDIO_KEYS.json` | 48fdc2e29 |
+| AD2 웹 UI 소리 전수조사 | `docs/6사운드디자인/AD2_UI_SOUND_INVENTORY_20261028.md`(정적 읽기, 코드 변경 없음) | 1a903b250 |
+| SND-09 드루이드 v2 제작 | 15키 x 4 = 60후보(`<key>_v2a~d`) + BGM 3곡(ElevenLabs Music `/v1/music` 정상) + 고르기 `pick_druid.html`(16카드·63후보), 검수 통과 | 2dd2db74b |
+
+### 대기·미완 (내가 시작하면 안 되는 것 포함)
+- **사용자 청음 선택 대기**: `pick_rm1.html`의 3차(s3) 5키, `pick_druid.html` 16카드(BGM 3곡 + 소리 15키). 선택 결과는 `G:\exoduser-wt\_out\sfx_forge\picks_rm1.json` / `picks_druid.json`. 선택 뒤 승격·반영 지시는 총괄이 낸다.
+- **SND-05 (미착수, 총괄이 SND-09 뒤로 미룸)**: `docs/6사운드디자인/6사운드디자인.md` 「예정 항목」 보이스 키 매핑·파일 포맷 규칙 표 완결. 문서만 수정. (1) `_sampleFiles`의 보이스 계열 키 표(키·파일·쓰는 곳 줄·음량·rate·`_sfxPri` 분류·캐릭터, 파일 없음·호출처 없음 별도 표시) (2) sfx/·bgm/ ffprobe 집계(확장자·샘플레이트·채널·비트레이트·길이 분포), 규칙은 사실, 권장은 "제안" 구분, 스크립트는 파일로 실행 (3) `SOUND_LEAD_MASTER_20261026.md` 백로그 SND-05 상태 + 기록 표 1줄. 보고는 AD2와 따로.
+- `tell_parry`(웹 연결 위치 미정 — 드루이드 패링 가능 근접 전조 코드 미확인), 웹 음량은 1차값(게임 안 청음 후 조정), Unity 믹서 구현은 Unity 총괄 몫.
+- SND-09 이후 단계(사용자 선택 → 채택본을 Unity 브랜치에 추가 → 녹음 v4)는 지시를 받아 진행.
+
+### 작업 도구·경로 (저장소 밖 `G:\exoduser-wt\_out\sfx_forge\`)
+- 서버: `C:\nvm4w\nodejs\node.exe G:\exoduser-wt\_out\sfx_forge\_tools\serve.cjs` → http://127.0.0.1:3399/ (`/api/picks?set=rm1|druid`, `/game/`은 **로컬 G:\exoduser의 bgm·sfx 읽기 전용 별칭** — 로컬 트리가 origin보다 뒤처져 있어 없는 파일(`sfx/tell/*`, `sfx/boss/druid_*`)은 `git show origin/main:<경로>`로 `_druid/follow/`에 복사해 쓴다). 10-28에 한 번 재시작함(picks 파일 무손상).
+- SND-09: `_druid/mkcat_druid.py`(문구·장면 카드), `_druid/mk_pick_druid.py`+`pick_druid_tpl.html`(페이지), `_druid/music_druid.mjs`(Music API 3곡), `_analysis/druid_proc.py`(가공: −1dBTP·뒤 무음 정리, 아레나 루프는 크로스페이드→RMS −24), 산출 `_preview_druid/`, `music/druid_bgm_{a,b,c}.mp3`. 헤드리스 검수 `G:\exoduser\tmp\pick_check_druid.mjs`(저장 파일이 이미 있으면 중단·끝나면 삭제).
+- SND-08: `_analysis/rm1_*.py`, `_s2/mk_pick.py`+`pick_tpl.html`, `_s2/web/patch_web.py`(game.html 앵커 패치).
+- 생성: `cd G:\exoduser; C:/nvm4w/nodejs/node.exe --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <절대경로> --variants 1 [--dry-run]`(카테고리는 skill·hit·ui·ambient만, 최소 0.5s, 문구 450자 이내).
+
+### 이번에 겪은 함정 (재발 방지)
+- **Write 도구는 CRLF로 저장**한다 → 저장 직후 `sed -i 's/\r$//' <파일>` 후 `tr -cd '\r' < 파일 | wc -c`로 0 확인(`grep -c $'\r'`는 신뢰 불가). 문서는 LF.
+- **`python -` 형태·빈 heredoc 금지**(REPL이 떠서 로그를 채울 수 있음, 이번에 2번 실수). 스크립트는 파일로 만들어 실행.
+- `sleep N` 뒤 명령 연쇄는 차단됨 → 긴 일은 `run_in_background`.
+- git-bash `fork: Resource temporarily unavailable`가 간헐 발생 → 명령을 나눠 재실행(원인 해결이 아니라 재시도 1회).
+- push 전 `git fetch` 후 `merge-base --is-ancestor origin/main HEAD` 확인(그 사이 origin/main이 자주 오름), 앞서면 `git checkout -B <새 브랜치> FETCH_HEAD` + cherry-pick 1회. hook이 바꾼 `tools/guard.baseline.json`은 `git checkout --`로 되돌린 뒤 worktree 제거(`git worktree remove --force`).
+- 헤드리스 audio 검수는 간헐적으로 일부 `readyState<1`(경쟁 상태)가 나온다 — 원인 목록을 출력하게 하고, 같은 결과가 반복될 때만 고친다.
+
+### 재개 후 첫 행동(10-28)
+1. 이 문서·MEMORY.md를 읽고 총괄의 다음 지시를 기다린다(선택 결과 반영, SND-05, SND-09 후속).
+2. 작업 시작 전 `git fetch origin main`, 공유 트리(G:\exoduser)는 타 세션 WIP가 있으니 경로 지정 커밋만.
+3. 단위가 끝날 때마다 `get_usage(self)` — 100K 초과 시 마무리 후 인계·알림·`clear_session(self)`, 200K 초과 시 즉시 같은 절차.
