@@ -19,13 +19,17 @@ function convert(r,g,b){const [H,S,L]=hsl(r,g,b);
  if(!darkRedBrown&&(H<18||H>=65))return null;
  if(keepVivid&&S>0.6)return null;
  // 주황 강조(색상 18~33°, 채도 .55 초과, 명도 .35~.85)는 상태 구분용(적용 대기·현재 단계 등)이라 은빛이 아니라 "지옥의 눈" 진홍으로
- if(!darkRedBrown&&H<33&&S>0.55&&L>0.35&&L<0.85)return hslToRgb(4,Math.min(S,0.78),L);
+ // 단, 밝은 주황(명도 .6 초과)은 진홍으로 보내면 분홍·산호색이 되므로 은빛으로 (2026-10-28 2차)
+ if(!darkRedBrown&&H<33&&S>0.55&&L>0.35&&L<=0.6)return hslToRgb(4,Math.min(S,0.78),L);
  return silver(r,g,b);}
 function hslToRgb(h,s,l){h/=360;const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;const f=t=>{t<0&&(t+=1);t>1&&(t-=1);return t<1/6?p+(q-p)*6*t:t<1/2?q:t<2/3?p+(q-p)*(2/3-t)*6:p};return [cl(f(h+1/3)*255),cl(f(h)*255),cl(f(h-1/3)*255)]}
 const hex2=v=>v.toString(16).padStart(2,'0');
 const styleOnly=args.includes('--style-only'); // HTML의 <style> 블록 안만 바꾼다(JS 속 등급·데미지 색 보호)
 for(const f of files){
  const whole=fs.readFileSync(f,'utf8');let n=0;
+ const rg=(args.find(a=>a.startsWith('--range='))||'').slice(8); // --range=시작줄-끝줄 (그 줄들만 바꾼다, 1부터)
+ if(rg){const [a,b]=rg.split('-').map(Number);const L=whole.split('\n');const r=remapText(L.slice(a-1,b).join('\n'));
+  console.log(f,`(${a}~${b}줄만) 바뀐 색`,r.n);if(!dry&&r.n){const out=[...L.slice(0,a-1),...r.out.split('\n'),...L.slice(b)].join('\n');const t=f+'.tmp';fs.writeFileSync(t,out);fs.renameSync(t,f);}continue;}
  if(styleOnly){let total=0;const out=whole.replace(/(<style[^>]*>)([\s\S]*?)(<\/style>)/g,(m,a,css,c)=>{const r=remapText(css);total+=r.n;return a+r.out+c;});
   console.log(f,'(style만) 바뀐 색',total);if(!dry&&total){const t=f+'.tmp';fs.writeFileSync(t,out);fs.renameSync(t,f);}continue;}
  const r=remapText(whole);n=r.n;console.log(f,'바뀐 색',n);
