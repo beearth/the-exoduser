@@ -657,7 +657,10 @@ canvas{display:block;position:fixed;inset:0}
 #ikHint{margin-top:22px;font-family:var(--font-hell);font-size:1rem;color:rgba(141,144,144,.67);letter-spacing:.15em;animation:guideBreath 1.4s ease-in-out infinite}
 /* Four-cut wake-up + controls */
 #introKeys{cursor:default}
-#introKeys .intro-key-panel{width:min(720px,calc(100vw - 96px));max-height:calc(100vh - 48px);overflow-y:auto;padding:20px 12px}
+#introKeys .intro-key-panel{width:min(720px,calc(100vw - 96px));max-height:calc(100vh - 48px);overflow-y:auto;padding:24px 36px 26px}
+/* 글자 열 뒤 실버 헬 패키지 판(2026-10-28 사용자 승인 [승인-A3-b] "반영"): 반투명 흑철 + 1px 은빛 테 + 안쪽 옅은 선 + 네 모서리 마름모 마디. 마법진은 판 너머로 계속 보인다.
+   모서리 마디가 판 밖으로 4px 나가므로 화면 높이가 넉넉하면 스크롤을 끈다(낮은 화면은 스크롤 유지, 마디 일부가 가려져도 됨) */
+@media (min-height:620px){#introKeys .intro-key-panel{overflow:visible}}
 #introKeys #introTextPanel{width:100%;min-width:0;padding:12px 0 24px;margin-bottom:22px}
 #introKeys #introTextKr{font-size:clamp(1.8rem,2.6vw,2.6rem)}
 #introKeys #introTextEn{font-size:.85rem}
@@ -3211,7 +3214,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 
 <!-- 시작 대사 + 키 안내 (4컷) -->
 <div id="introKeys" role="dialog" aria-modal="true" aria-labelledby="introTextKr">
-  <div class="intro-key-panel">
+  <div class="intro-key-panel sh-panel"><span class="k tl"></span><span class="k tr"></span><span class="k bl"></span><span class="k br"></span>
     <div id="ikProgress"></div>
     <div id="introTextPanel">
       <div id="introTextKr"></div>
