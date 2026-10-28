@@ -58,7 +58,7 @@
 | 1 | SND-01 | SFX Forge 42후보 사용자 청음 → 키별 채택 1개 선택 | 사용자 청음 / 총괄이 1차 추천 | 14키 각각 채택 또는 「재생성」 판정 — **R2 4키 청음·채택 완료(2026-10-27, 총괄 추천 가공본)**, 나머지 키는 해당 문서 참조 |
 | 2 | SND-02 | 채택본 `promote` → `game.html` 매핑 연결(기존 키 교체 or 신규 키) → 문서 표 갱신 → DEMO/EA 동기화 | 총괄 명세 / Sonnet 구현 | 게임 안 실제 재생 청음 확인 — **R2 4키 반영 완료(2026-10-27, `SND02_ADOPT_R2_20261027.md`)**, 게임 안 청음 대기 |
 | 3 | SND-03 | `bgm/` NFC·NFD 중복 대조(파일명·해시) → 정리안 | 총괄 | 정리안 문서 + 사용자 확인 |
-| 4 | SND-04 | Unity F04 이식 명세: 웹 사운드 시스템 표(키·파일·음량·rate·우선순위·쿨다운) 추출 → Unity `AudioDirector` 계약 | 총괄 명세 / 맥북 총괄·Codex 구현 | 명세 문서 + PC_TO_MAC_INBOX 양쪽 통보 |
+| 4 | SND-04 | Unity F04 이식 명세: 웹 사운드 시스템 표(키·파일·음량·rate·우선순위·쿨다운) 추출 → Unity `AudioDirector` 계약. **1-1 범위 명세 작성**: `SND04_UNITY_AUDIO_DIRECTOR_CONTRACT_20261028.md`; 전 장 키·설정 분리 음량·양쪽 INBOX는 미완 | 총괄 명세 / Unity 통합 담당 구현·인수 | 전체 명세 + PC_TO_MAC_INBOX 양쪽 통보 + Unity Player 청음 |
 | 5 | SND-05 | 6사운드디자인.md 「예정 항목」(보이스 키 매핑, 포맷 규칙) 정리 | 총괄 | 표로 완결 — **완료(2026-10-28, sound-simple)**: `6사운드디자인.md` 「보이스 키 매핑표 · 파일 포맷 규칙 (SND-05)」 §1~8. 보이스 계열 71키 표(공용 `voice_*`·`male_grunt` 32 + `ghost_laugh` 1 + 실버테일 38)·`sfx/`·`bgm/` 410개 `ffprobe` 집계·사실/제안(F-1~F-5) 분리. 코드·에셋 변경 0, 제안은 총괄 판단 대기 |
 | 6 | SND-06 | 2장 이후 BGM 보강(장2~7 각 2~4곡뿐) — Suno 프롬프트 기획 | 총괄 기획 / 사용자 생성 | 장별 최소 곡 수 목표 합의 |
 | 7 | SND-07 (AD3) | 적 공격 예고음 범주 `TELL` 신설·예고음 오용 7곳 제거·새 예고음 3키 — `AD3_ENEMY_TELL_SFX_20261027.md` | 총괄 명세 / Sonnet 구현 / 사용자 청음(2단계) | 1단계 반영 + 2단계 후보 청음 선택 |
@@ -83,3 +83,4 @@
 | 2026-10-28 | SND-10 2단계 웹 반영(sound-simple): 사용자 청음 채택 `ui_cancel` s10b·`ui_panel_open` s10c·`ui_panel_close` s10c·`ui_fail` s10a·`ui_salvage` s10a → `sfx/ui/{cancel,panel_open,panel_close,fail,salvage}.mp3` + `_sampleFiles` 5키. 연결: 패널 열기·닫기(`togglePanel`·`openPanel`·`closePanel`·`closeAllPanels(_quiet)`), `ui_fail`(`showPH` 전사 등 + 장착 실패 3곳, 400ms), `ui_salvage`(분해 완료 4곳), `ui_cancel`(기존 호출 .4→.28). 음량은 기존 버튼음 실효레벨(−36dB) 기준 .22/.28/.20/.50. 헤드리스 계측 통과, 분해 버튼 3곳·게임 안 청음·Unity 빌드 미확인. `ui_tab`은 전부 안 맞음 → 재생성 대기 |
 | 2026-10-28 | SND-10 `ui_tab` 웹 반영(sound-simple): 3차 청음 r3c(조약돌 똑) → `sfx/ui/tab.mp3` + `_sampleFiles`. 패널 상단 탭(`openPanel(id,true)`: `ui_tab`만, `ui_panel_open` 생략)·대장간 탭·결정 서브탭·스킬 대분류 탭(구 카드형 창)·창고 접기, 탭이 바뀔 때만, 음량 .22(실효 −34.9dB). 헤드리스 계측 통과(결정 서브탭·스킬 탭·게임 안 청음·Unity 빌드 미확인). `druid_slam` r3d 4차 가공본 e1~e3(`pick_r4.html`, 청음 전) |
 | 2026-10-28 | `_startLoop` 중복 정적 조사: 오디오용 선언은 메인 루프 선언에 가리지만 실제 호출 0곳. `_ambSync`는 버퍼 소스를 직접 생성하고 `P._blueLpSrc`는 정지·null 대입 2곳뿐이다. 현재 사운드 재생 결함으로 확정하지 않음. `SND02_ADOPT_R2_20261027.md`의 초기 명세와 실제 구현 설명을 일치시킴(코드 변경 없음) |
+| 2026-10-28 | SND-04 1-1 계약 `SND04_UNITY_AUDIO_DIRECTOR_CONTRACT_20261028.md` 작성: `game.html` blob `d676c50e`에서 키·파일·음량·rate·우선순위·큐 우회·동시성 게이트를 대조했다. `AudioDirector`는 역할 계약이며 기존 Unity `NativeFeedbackAudio` 등과 중복 구현하지 않는다. 전 장 F04와 Player 검증은 미완 |
