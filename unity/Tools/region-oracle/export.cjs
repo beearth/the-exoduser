@@ -147,6 +147,32 @@ function buildG(c) {
   sections.unlock = out;
 }
 
+// ---- the enemy list hard cap (update(), 34540~34562): > 800 entries -> 700; culled enemies count as kills ----
+{
+  const a = at('  if(ens.length>800){'), capSrc = span(a, 'update ens hard cap');
+  const dst2 = one('function dst2(');
+  const out = [];
+  for (let k = 0; k < 120; k++) {
+    const n = pick([100, 700, 800, 801, 830, 900, 1000, 1200, 1700, 2500]);
+    const P = { x: 4000 + Math.round((rnd() - .5) * 1000), y: 4000 + Math.round((rnd() - .5) * 1000) };
+    const ens = [];
+    for (let i = 0; i < n; i++) {
+      const r = rnd();
+      const e = { __i: i, alive: true, ib: false, _reviveTimer: 0, x: Math.round(rnd() * 8000), y: Math.round(rnd() * 8000) };
+      if (rnd() < .3) { e.x = P.x + Math.round((rnd() - .5) * 400); e.y = P.y + Math.round((rnd() - .5) * 400); }   // a cluster at the player
+      if (rnd() < .1) { e.x = P.x + 300; e.y = P.y; }                                                                // exact ties
+      if (r < .02) e.ib = true; else if (r < .06) { e.alive = false; e._reviveTimer = 1 + Math.floor(rnd() * 100); } else if (r < .3) e.alive = false;
+      ens.push(e);
+    }
+    const input = ens.map(e => ({ x: e.x, y: e.y, alive: e.alive, ib: e.ib, reviveTimer: e._reviveTimer }));
+    const G = { kills: 0, _stageKills: 0, _aliveEns: 0 }; const regKilled = [];
+    const ctx = vm.createContext({ Math, G, P, ens, console: { warn: noop }, _shDirty: false, _regKill: e => regKilled.push(e.__i) });
+    vm.runInContext(dst2 + 'function __cap(){' + capSrc + '}', ctx); vm.runInContext('__cap()', ctx);
+    out.push({ n, P, input, kept: ctx.ens.map(e => e.__i), kills: G.kills, stageKills: G._stageKills, regKilled });
+  }
+  sections.cap = out;
+}
+
 const result = { source: { file: path.basename(SRC), sha256: sha(text), note: 'web game.html [REGION] block + checkRooms Hell Gate unlock' }, blocks, sections };
 fs.writeFileSync(OUT, JSON.stringify(result));
-console.log(JSON.stringify({ out: OUT, blocks: blocks.length, holeCount: sections.holeCount.length, init: sections.init.length, sequence: sections.sequence.length, unlock: sections.unlock.length }));
+console.log(JSON.stringify({ out: OUT, blocks: blocks.length, holeCount: sections.holeCount.length, init: sections.init.length, sequence: sections.sequence.length, unlock: sections.unlock.length, cap: sections.cap.length }));

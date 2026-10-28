@@ -10,9 +10,9 @@ namespace Exoduser.UnityPort.Core
             if(object.ReferenceEquals(original.Config,arenaConfig))throw new System.ArgumentException("Arena requires an independent config.");
             Original=original;Arena=new Simulation(arenaConfig,SourceStarterFixture.Seed);PrepareTick();
         }
-        public void PrepareTick()
+        public void PrepareTick(bool keepHp=false)
         {
-            Arena.Player.Hp=Original.Player.Hp;Arena.Player.Shield=Original.Player.Shield;
+            if(!keepHp)Arena.Player.Hp=Original.Player.Hp;Arena.Player.Shield=Original.Player.Shield;
             Arena.Player.Mana=Arena.Player.MaxMana;Arena.Player.Stamina=Arena.Player.MaxStamina;
             Arena.Player.Iframes=0;Arena.Player.KnockbackX=Arena.Player.KnockbackY=0;
         }

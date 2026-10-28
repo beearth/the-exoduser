@@ -1,0 +1,76 @@
+{
+ "extractedAt": "2026-10-27T17:56:07.184Z",
+ "mainRef": "origin/main",
+ "mainSha": "f103990b06c5f5e96a7096bb67c7d1b825a24b2f",
+ "mainRepo": "G:/exoduser",
+ "gameHtml": {
+  "sha256_committed_blob": "cfb0a739454f330733547c7a15a58301461b68193197ca04a824d83815b88122",
+  "sha256_disk_at_extract": "2e5caefd04e80ad42af0cf8b9f82f7663bb85b8d199a01ddb09277096aa10a3e",
+  "usedSource": "committed blob via Playwright route",
+  "diskDiffersFromCommitted": true
+ },
+ "mapsDataJs": {
+  "sha256_committed_blob": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+  "sha256_disk_at_extract": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+  "usedSource": "committed blob via Playwright route"
+ },
+ "worktreeStatusOfSources": "M game.html",
+ "functions": {
+  "isW": 31894,
+  "_rebuildColObjs": 31869,
+  "_ensureColObjs": 31870,
+  "_ch1HillBandBlocks": 31879,
+  "_CH1_HILL": 31873,
+  "genFromTemplate": 30401,
+  "initStage": 31716,
+  "mkP": 29199,
+  "_applyCh1StartNorthGate": 30204
+ },
+ "bootSequence": "G._cutsceneDone=true; if(!P)P=mkP(); G.stage=2; initStage(2); if(!_bgInitDone)_tickBgInit(9999) in headless Chrome (--mute-audio), game.html/maps_data.js fulfilled from committed blob",
+ "determinism": {
+  "runs": 5,
+  "tileHash": true,
+  "walk": true,
+  "partial": true,
+  "spawnHolePositions": true,
+  "exits": true,
+  "start": true,
+  "seeds": [
+   11,
+   22,
+   33
+  ],
+  "walkSameAcrossSeeds": true,
+  "walkDiffTilesVsRun0PerSeed": [
+   0,
+   0,
+   0
+  ],
+  "colObjsPerSeed": [
+   47,
+   47,
+   47
+  ],
+  "colObjsPerRun": [
+   47,
+   47,
+   47,
+   47,
+   47
+  ],
+  "holesSameAcrossSeeds": true,
+  "enemyCountPerSeed": [
+   0,
+   0,
+   0
+  ]
+ },
+ "runs": 5,
+ "pageErrors": [
+  [],
+  [],
+  [],
+  [],
+  []
+ ]
+}

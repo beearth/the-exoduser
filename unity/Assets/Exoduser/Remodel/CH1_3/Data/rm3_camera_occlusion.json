@@ -1,0 +1,1 @@
+{"rule":"masses on the camera side (inside the grid, and the south band) are <= 0.9u above ground; only the north/west/east outer wall may be taller","limit":0.9,"inGridMasses":498,"inGridMaxTop":0.880,"southBandMasses":40,"southBandMaxTop":0.000,"overLimit":0,"outerTallMasses":98,"outerTallMaxTop":4.834}

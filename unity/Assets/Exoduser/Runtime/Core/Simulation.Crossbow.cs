@@ -32,6 +32,7 @@ namespace Exoduser.UnityPort.Core
         public bool Active, Fresh;                      // Fresh: created by _mkPProj (no _pierceRate), not recycled by _resetPProj
         public double X, Y, Vx, Vy, Dist, MaxDist, Radius = 3, PierceRate;
         internal readonly HashSet<EnemyState> HitSet = new HashSet<EnemyState>();
+        internal readonly HashSet<FieldBossState> HitFieldSet = new HashSet<FieldBossState>();   // p._hitSet for the anglers
     }
 
     public sealed partial class Simulation
@@ -207,6 +208,7 @@ namespace Exoduser.UnityPort.Core
                 }
                 if (dead) { p.Active = false; continue; }   // a bolt that ends by range / wall is not recycled (web: `continue` before _recyclePProj)
                 bool hit = false;
+                if (HurtFieldMobs(p.X, p.Y, p.Radius + 8, p.Damage, p.HitFieldSet)) hit = true;   // web 35466: _hurtFieldMobs(p.x, p.y, (p.r||6)+8, p.dmg, p._hitSet)
                 foreach (var e in ShQuery(p.X, p.Y, p.Radius + 20))
                 {
                     if (!e.Alive) continue;
