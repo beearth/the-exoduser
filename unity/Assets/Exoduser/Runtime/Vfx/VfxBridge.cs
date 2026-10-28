@@ -99,12 +99,196 @@ namespace Exoduser.UnityPort.Vfx
         }
     }
 
+    // ---- poison burst (spec v2.1 3.2): ONE graph VFX_PoisonBurst, two variants ---------------------------------------------------------------------------
+    // The graph holds no palette (U7): every colour / size / lifetime / velocity box below is pushed into its exposed properties right before a burst.
+    // Variant A = enemy (dark druid poison landing / pool / chase-zone burst), variant B = player malice orb blast. Colours: VFX_LEAD_MASTER 2.2 rows "enemy poison" and "arcane".
+    public enum PoisonVariant { A_Druid, B_Malice }
+
+    public sealed class PoisonPreset
+    {
+        public PoisonVariant Variant;
+        public uint PaletteCore, PaletteMid, PaletteShadow;   // 0xRRGGBB, sRGB
+        public uint HdrCore;                                   // colour of the HDR core (A: the palette core, B: #f6f2fc)
+        public float CoreHdr;                                  // HDR multiplier of the core colour (bloom threshold is above 1)
+        public float CoreSize;                                 // metres (0.5 x character height 0.6 m)
+        public float ChunkSizeMin, ChunkSizeMax;               // metres (width; the quad is stretched x2.6 along its velocity)
+        public float ChunkSpeed, ChunkBias;                    // m/s half-extent of the velocity box; bias = share of that speed pushed along the projectile direction
+        public float MistSize, MistLifeMin, MistLifeMax, MistAlpha;   // metres, seconds, per-puff alpha peak (4 overlapping puffs stay <= 0.58)
+        public int TaintCount; public float TaintSize, TaintAlpha;    // variant B only: poison tint inside the inner 20 percent of the smoke
+        public uint TaintColour;
+        public int StainTicks; public float StainRadius;       // ground stain (SG_GroundDecal), visual only
+        public uint StainEdge, StainFill;
+    }
+
+    public static class PoisonBurstPresets
+    {
+        public const string EventName = "OnBurst";
+        public const float Lift = 0.25f;                       // metres above the ground plane: the camera-facing quads never z-fight the ground
+
+        public static readonly PoisonPreset A = new PoisonPreset
+        {
+            Variant = PoisonVariant.A_Druid, PaletteCore = 0xc8e8a8, PaletteMid = 0x5f8a2e, PaletteShadow = 0x1c2810, HdrCore = 0xc8e8a8, CoreHdr = 5.0f, CoreSize = 0.30f,
+            ChunkSizeMin = 0.18f, ChunkSizeMax = 0.30f, ChunkSpeed = 6.0f, ChunkBias = 0.45f,
+            MistSize = 1.10f, MistLifeMin = 0.6f, MistLifeMax = 0.8f, MistAlpha = 0.30f, TaintCount = 0, TaintSize = 0.20f, TaintAlpha = 0f, TaintColour = 0x5f8a2e,
+            StainTicks = 90, StainRadius = 0.8f, StainEdge = 0x5f8a2e, StainFill = 0x1c2810
+        };
+
+        public static readonly PoisonPreset B = new PoisonPreset
+        {
+            Variant = PoisonVariant.B_Malice, PaletteCore = 0xe4dcf4, PaletteMid = 0x6a56a8, PaletteShadow = 0x161226, HdrCore = 0xf6f2fc, CoreHdr = 4.0f, CoreSize = 0.30f,
+            ChunkSizeMin = 0.14f, ChunkSizeMax = 0.24f, ChunkSpeed = 5.0f, ChunkBias = 0f,
+            MistSize = 0.95f, MistLifeMin = 0.5f, MistLifeMax = 0.6f, MistAlpha = 0.30f, TaintCount = 3, TaintSize = 0.19f, TaintAlpha = 0.22f, TaintColour = 0x5f8a2e,
+            StainTicks = 60, StainRadius = 0.6f, StainEdge = 0x6a56a8, StainFill = 0x161226
+        };
+
+        public static PoisonPreset Get(PoisonVariant v) { return v == PoisonVariant.A_Druid ? A : B; }
+
+        // sRGB hex -> linear colour x multiplier. The project is Linear and VFX Graph gradients are used as linear values (same maths as gen_vfx.py hdr()).
+        public static Color Lin(uint hex, float mul)
+        {
+            var c = new Color32((byte)(hex >> 16), (byte)(hex >> 8), (byte)hex, 255);
+            Color l = ((Color)c).linear;
+            return new Color(l.r * mul, l.g * mul, l.b * mul, 1f);
+        }
+
+        static Gradient Grad(GradientColorKey[] ck, GradientAlphaKey[] ak)
+        {
+            var g = new Gradient(); g.mode = GradientMode.Blend; g.SetKeys(ck, ak); return g;
+        }
+
+        // Same shapes as the defaults baked by gen_vfx_poison.py (U2 core curve 1 -> 0.225 at 20 percent -> 0; chunks and mist go from the mid colour to the shadow colour).
+        public static Gradient CoreGradient(PoisonPreset p)
+        {
+            return Grad(new[] { new GradientColorKey(Lin(p.HdrCore, p.CoreHdr), 0f) },
+                        new[] { new GradientAlphaKey(0.35f, 0f), new GradientAlphaKey(1f, 0.16f), new GradientAlphaKey(0.225f, 0.4f), new GradientAlphaKey(0f, 1f) });
+        }
+
+        public static Gradient ChunkGradient(PoisonPreset p)
+        {
+            return Grad(new[] { new GradientColorKey(Lin(p.PaletteMid, 1f), 0f), new GradientColorKey(Lin(p.PaletteShadow, 1f), 1f) },
+                        new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.9f, 0.55f), new GradientAlphaKey(0f, 1f) });
+        }
+
+        public static Gradient MistGradient(PoisonPreset p)
+        {
+            return Grad(new[] { new GradientColorKey(Lin(p.PaletteMid, 1f), 0f), new GradientColorKey(Lin(p.PaletteShadow, 1f), 1f) },
+                        new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(p.MistAlpha, 0.12f), new GradientAlphaKey(p.MistAlpha * 0.67f, 0.6f), new GradientAlphaKey(0f, 1f) });
+        }
+
+        public static Gradient TaintGradient(PoisonPreset p)
+        {
+            return Grad(new[] { new GradientColorKey(Lin(p.TaintColour, 1f), 0f), new GradientColorKey(Lin(p.PaletteShadow, 1f), 1f) },
+                        new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(p.TaintAlpha, 0.2f), new GradientAlphaKey(0f, 1f) });
+        }
+
+        // Velocity box of the chunks (world XZ, y = 0): centred on dir * bias * speed, half-extent speed. Uniform random per component inside the box (graph: Set Velocity Random).
+        public static void ChunkBox(PoisonPreset p, Vector2 dir, float scale, out Vector3 min, out Vector3 max)
+        {
+            float s = p.ChunkSpeed * scale;
+            Vector2 c = dir.sqrMagnitude > 1e-6f ? dir.normalized * (p.ChunkBias * s) : Vector2.zero;
+            min = new Vector3(c.x - s, 0f, c.y - s); max = new Vector3(c.x + s, 0f, c.y + s);
+        }
+
+        // Push the variant into the exposed properties. A property the asset lacks is skipped (never an error).
+        public static void Apply(VisualEffect fx, PoisonPreset p, Vector2 dir, float scale)
+        {
+            if (fx == null) return;
+            if (fx.HasGradient("CoreGradient")) fx.SetGradient("CoreGradient", CoreGradient(p));
+            if (fx.HasFloat("CoreSize")) fx.SetFloat("CoreSize", p.CoreSize * scale);
+            if (fx.HasGradient("ChunkGradient")) fx.SetGradient("ChunkGradient", ChunkGradient(p));
+            if (fx.HasFloat("ChunkSizeMin")) fx.SetFloat("ChunkSizeMin", p.ChunkSizeMin * scale);
+            if (fx.HasFloat("ChunkSizeMax")) fx.SetFloat("ChunkSizeMax", p.ChunkSizeMax * scale);
+            Vector3 vmin, vmax; ChunkBox(p, dir, scale, out vmin, out vmax);
+            if (fx.HasVector3("ChunkVelMin")) fx.SetVector3("ChunkVelMin", vmin);
+            if (fx.HasVector3("ChunkVelMax")) fx.SetVector3("ChunkVelMax", vmax);
+            if (fx.HasGradient("MistGradient")) fx.SetGradient("MistGradient", MistGradient(p));
+            if (fx.HasFloat("MistSize")) fx.SetFloat("MistSize", p.MistSize * scale);
+            if (fx.HasFloat("MistLifeMin")) fx.SetFloat("MistLifeMin", p.MistLifeMin);
+            if (fx.HasFloat("MistLifeMax")) fx.SetFloat("MistLifeMax", p.MistLifeMax);
+            if (fx.HasGradient("TaintGradient")) fx.SetGradient("TaintGradient", TaintGradient(p));
+            if (fx.HasFloat("TaintSize")) fx.SetFloat("TaintSize", p.TaintSize * scale);
+            if (fx.HasFloat("TaintCount")) fx.SetFloat("TaintCount", p.TaintCount);
+        }
+
+        static readonly Dictionary<VisualEffect, VFXEventAttribute> attrs = new Dictionary<VisualEffect, VFXEventAttribute>();
+
+        // One burst: properties first, then the OnBurst event with the event attributes position (world metres, XZ ground plane) and direction. Returns false when fx is null.
+        public static bool Fire(VisualEffect fx, PoisonVariant v, Vector2 pos, Vector2 dir, float scale)
+        {
+            if (fx == null) return false;
+            Apply(fx, Get(v), dir, scale);
+            VFXEventAttribute a;
+            if (!attrs.TryGetValue(fx, out a) || a == null) { a = fx.CreateVFXEventAttribute(); attrs[fx] = a; }
+            if (a.HasVector3("position")) a.SetVector3("position", new Vector3(pos.x, Lift, pos.y));
+            if (a.HasVector3("direction")) a.SetVector3("direction", new Vector3(dir.x, 0f, dir.y));
+            fx.SendEvent(EventName, a);
+            return true;
+        }
+    }
+
+    // Ground stain of a poison burst: a pooled DecalProjector with SG_GroundDecal (shape 0, circle), visual only (spec 3.2 layer 4). Ticks, not seconds (Core clock),
+    // so it stays in step with the simulation and with the capture rig.
+    public sealed class PoisonStainPool
+    {
+        sealed class Stain { public GameObject Go; public Material Mat; public UnityEngine.Rendering.Universal.DecalProjector Proj; public int Age, Life; }
+
+        public const int Cap = 8;
+        public const float Margin = 0.3f;
+        readonly Transform root; readonly Material baseMat;
+        readonly List<Stain> live = new List<Stain>(); readonly Stack<Stain> free = new Stack<Stain>();
+        public int Active { get { return live.Count; } }
+
+        public PoisonStainPool(Transform parent, Material decalMaterial) { root = parent; baseMat = decalMaterial; }
+
+        static void SetCol(Material m, string prop, uint hex) { if (m.HasProperty(prop)) m.SetColor(prop, new Color32((byte)(hex >> 16), (byte)(hex >> 8), (byte)hex, 255)); }
+        static void SetF(Material m, string prop, float v) { if (m.HasProperty(prop)) m.SetFloat(prop, v); }
+
+        public bool Spawn(PoisonVariant v, Vector2 pos, float scale)
+        {
+            if (baseMat == null || live.Count >= Cap) return false;
+            var p = PoisonBurstPresets.Get(v);
+            Stain s;
+            if (free.Count > 0) s = free.Pop();
+            else
+            {
+                var go = new GameObject("RM1 PoisonStain"); go.transform.SetParent(root, false);
+                s = new Stain { Go = go, Mat = new Material(baseMat) };
+                s.Proj = go.AddComponent<UnityEngine.Rendering.Universal.DecalProjector>();
+                s.Proj.material = s.Mat; s.Proj.pivot = Vector3.zero;
+            }
+            float r = p.StainRadius * scale, box = 2f * r + 2f * Margin;
+            SetF(s.Mat, "_Shape", 0f); SetF(s.Mat, "_Progress", 1f); SetF(s.Mat, "_Radius", r); SetF(s.Mat, "_SizeX", box); SetF(s.Mat, "_SizeY", box); SetF(s.Mat, "_Flash", 0f);
+            SetF(s.Mat, "_EdgeGlow", 0.25f);
+            SetCol(s.Mat, "_EdgeColor", p.StainEdge); SetCol(s.Mat, "_FillColor", p.StainFill);
+            s.Proj.size = new Vector3(box, box, 2f); s.Proj.fadeFactor = 1f;
+            s.Go.transform.position = new Vector3(pos.x, 0f, pos.y);
+            s.Go.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+            s.Age = 0; s.Life = p.StainTicks; s.Go.SetActive(true);
+            live.Add(s); return true;
+        }
+
+        // Once per simulation tick: full opacity for the first 40 percent of the life, then a linear fade to nothing.
+        public void Tick()
+        {
+            for (int i = live.Count - 1; i >= 0; i--)
+            {
+                var s = live[i]; s.Age++;
+                if (s.Age >= s.Life) { s.Go.SetActive(false); free.Push(s); live.RemoveAt(i); continue; }
+                float hold = s.Life * 0.4f;
+                s.Proj.fadeFactor = s.Age <= hold ? 1f : Mathf.Clamp01(1f - (s.Age - hold) / (s.Life - hold));
+            }
+        }
+
+        public void Clear() { for (int i = live.Count - 1; i >= 0; i--) { live[i].Go.SetActive(false); free.Push(live[i]); } live.Clear(); }
+    }
+
     public sealed class VfxBridge : MonoBehaviour
     {
-        public const string GraphDecal = "decal", GraphGlint = "parryGlint", GraphGrab = "grabEyes", GraphPoison = "poisonBurst", GraphBubble = "bubble";
+        public const string GraphDecal = "decal", GraphGlint = "parryGlint", GraphGrab = "grabEyes", GraphPoison = "poisonBurst", GraphPoisonA = "poisonBurstA", GraphBubble = "bubble";
 
         public Simulation Sim;
         public VisualEffect GlintFx, GrabFx, PoisonFx;            // optional: assigned when the RM-1 graphs exist; a null graph is skipped, never an error
+        public VisualEffect PoisonFxA;                            // VFX_PoisonBurst instance for variant A (enemy); PoisonFx above = variant B (player malice orb)
         public Material DecalMaterial;                            // SG_GroundDecal instance; each pooled projector gets its own copy
         public readonly EventBudget Budget = new EventBudget();
 
@@ -115,19 +299,28 @@ namespace Exoduser.UnityPort.Vfx
         readonly HashSet<long> glinted = new HashSet<long>();
         int lastMaliceBlasts;
         int frame;
+        PoisonStainPool stains;
+        readonly HashSet<BossProjectile> poisonShots = new HashSet<BossProjectile>(), shotsNow = new HashSet<BossProjectile>();
+        readonly List<BossProjectile> gone = new List<BossProjectile>();
+        readonly HashSet<PoisonPool> seenPools = new HashSet<PoisonPool>(), poolsNow = new HashSet<PoisonPool>();
+        readonly HashSet<ChaseZone> seenZones = new HashSet<ChaseZone>(), zonesNow = new HashSet<ChaseZone>();
 
         // Test hooks: what the last Pump produced (read by the editor checks).
         public readonly List<DecalParams> LastDecals = new List<DecalParams>();
-        public int LastGlints, LastGrabs, LastPoisonBursts;
+        public int LastGlints, LastGrabs, LastPoisonBursts, LastPoisonBurstsA;     // poison: LastPoisonBursts = variant B (player), LastPoisonBurstsA = variant A (enemy)
 
         sealed class DecalHandle { public GameObject Go; public Material Mat; public long Key; public int Frame; }
 
         void Awake()
         {
-            Budget.Cap(GraphDecal, 12); Budget.Cap(GraphGlint, 4); Budget.Cap(GraphGrab, 2); Budget.Cap(GraphPoison, 6); Budget.Cap(GraphBubble, 24);
+            Budget.Cap(GraphDecal, 12); Budget.Cap(GraphGlint, 4); Budget.Cap(GraphGrab, 2); Budget.Cap(GraphPoison, 6); Budget.Cap(GraphPoisonA, 6); Budget.Cap(GraphBubble, 24);
         }
 
-        public void Bind(Simulation sim) { Sim = sim; lastMaliceBlasts = sim != null ? sim.MaliceOrbBlasts : 0; }
+        public void Bind(Simulation sim)
+        {
+            Sim = sim; lastMaliceBlasts = sim != null ? sim.MaliceOrbBlasts : 0;
+            poisonShots.Clear(); seenPools.Clear(); seenZones.Clear(); if (stains != null) stains.Clear();
+        }
 
         static long Key(DruidTelegraph t) { return ((long)t.Serial << 24) ^ ((long)t.Move << 16) ^ ((long)(int)t.Kind << 8) ^ (long)t.Index; }
 
@@ -135,7 +328,7 @@ namespace Exoduser.UnityPort.Vfx
         public void Pump()
         {
             if (Sim == null) return;
-            frame++; Budget.NewFrame(); LastDecals.Clear(); LastGlints = LastGrabs = LastPoisonBursts = 0;
+            frame++; Budget.NewFrame(); LastDecals.Clear(); LastGlints = LastGrabs = LastPoisonBursts = LastPoisonBurstsA = 0;
             Sim.DruidTelegraphs(list);
             for (int i = 0; i < list.Count; i++)
             {
@@ -151,14 +344,74 @@ namespace Exoduser.UnityPort.Vfx
             stale.Clear();
             foreach (var kv in live) if (kv.Value.Frame != frame) stale.Add(kv.Key);
             for (int i = 0; i < stale.Count; i++) { var h = live[stale[i]]; live.Remove(stale[i]); h.Go.SetActive(false); pool.Push(h); }
-            // player poison burst: one event per MaliceOrbBlasts increment, at the Core position
+            PumpPoison();
+        }
+
+        // ---- poison burst (spec 3.2): variant B = player malice orb, variant A = enemy druid. Reads only; the stains advance one step per call (= per simulation tick). ----
+        PoisonStainPool Stains
+        {
+            get
+            {
+                if (stains == null && DecalMaterial != null) stains = new PoisonStainPool(transform, DecalMaterial);
+                return stains;
+            }
+        }
+
+        void BurstPoison(PoisonVariant v, VisualEffect fx, string graph, Vector2 pos, Vector2 dir, float scale)
+        {
+            if (!Budget.TryTake(graph, pos)) return;
+            if (v == PoisonVariant.A_Druid) LastPoisonBurstsA++; else LastPoisonBursts++;
+            PoisonBurstPresets.Fire(fx, v, pos, dir, scale);
+            var st = Stains; if (st != null) st.Spawn(v, pos, scale);
+        }
+
+        static Vector2 PxToWorld(double x, double y) { return new Vector2((float)x * DecalParams.PxToM, -(float)y * DecalParams.PxToM); }
+
+        void PumpPoison()
+        {
+            var sp = stains; if (sp != null) sp.Tick();
+            // B (player): one burst per MaliceOrbBlasts increment (PC-B03b), at the Core position
             int blasts = Sim.MaliceOrbBlasts;
             for (; lastMaliceBlasts < blasts; lastMaliceBlasts++)
+                BurstPoison(PoisonVariant.B_Malice, PoisonFx, GraphPoison, PxToWorld(Sim.MaliceOrbLastX, Sim.MaliceOrbLastY), Vector2.zero, 1f);
+            var d = Sim.Druid;
+            if (d == null) { poisonShots.Clear(); seenPools.Clear(); seenZones.Clear(); return; }
+            // A1: druid poison shots (move 5). A tracked shot that is no longer in the live list has landed (player hit, wall or end of life); position = its last Core position.
+            shotsNow.Clear();
+            var ps = d.Projectiles;
+            for (int i = 0; i < ps.Count; i++) { var p = ps[i]; if (p.DruidPoison && !p.Friendly && !p.Mine && p.Active) { shotsNow.Add(p); poisonShots.Add(p); } }
+            gone.Clear();
+            foreach (var p in poisonShots) if (!shotsNow.Contains(p)) gone.Add(p);
+            for (int i = 0; i < gone.Count; i++)
             {
-                var pos = new Vector2(Sim.MaliceOrbLastX * DecalParams.PxToM, -Sim.MaliceOrbLastY * DecalParams.PxToM);
-                if (!Budget.TryTake(GraphPoison, pos)) continue;
-                LastPoisonBursts++; Send(PoisonFx, "OnBurst", pos, Vector2.zero, 1f, 0);
+                var p = gone[i]; poisonShots.Remove(p);
+                if (p.Active) continue;                                 // dropped by ClearHazards (arena reset), not a landing
+                var dir = new Vector2((float)p.Vx, -(float)p.Vy);
+                BurstPoison(PoisonVariant.A_Druid, PoisonFxA, GraphPoisonA, PxToWorld(p.X, p.Y), dir, 1f);
             }
+            // A2: new poison pools (move 2 phase 3 and the trail pools); radius scales the burst (140 px = 1)
+            poolsNow.Clear();
+            var pools = d.PoisonPools;
+            for (int i = 0; i < pools.Count; i++)
+            {
+                var pp = pools[i]; poolsNow.Add(pp);
+                if (seenPools.Add(pp)) BurstPoison(PoisonVariant.A_Druid, PoisonFxA, GraphPoisonA, PxToWorld(pp.X, pp.Y), Vector2.zero, Mathf.Clamp((float)pp.R / 140f, 0.8f, 1.6f));
+            }
+            seenPools.IntersectWith(poolsNow);
+            // A3: druid chase zones going off (move 8, parasite root)
+            zonesNow.Clear();
+            var aoes = d.ChaseAoes;
+            for (int i = 0; i < aoes.Count; i++)
+            {
+                var zs = aoes[i].Zones;
+                for (int j = 0; j < zs.Count; j++)
+                {
+                    var z = zs[j]; if (!z.Druid) continue;
+                    zonesNow.Add(z);
+                    if (z.Hit && seenZones.Add(z)) BurstPoison(PoisonVariant.A_Druid, PoisonFxA, GraphPoisonA, PxToWorld(z.X, z.Y), Vector2.zero, Mathf.Clamp((float)z.R / 100f, 0.8f, 1.4f));
+                }
+            }
+            seenZones.IntersectWith(zonesNow);
         }
 
         void PumpDecal(DruidTelegraph t)
