@@ -189,7 +189,7 @@
 | DT-01 runner2 | `claude/unity-pc-devtools-runner2-20261028` `2aa218bcd` 원격 보존, `unity/main` 미병합 | 시작 조건 12/20/10GB·숨은 데스크톱·build 인자 분리·14건 자체 시험 코드 확인. 현 `unity/main`과 `merge-tree` 충돌 0. 실제 숨은 데스크톱 Player 영수증은 이 인수에서 새로 만들지 않음. 통합 담당 검증 대기 |
 | DT-15 buildloop3 | `claude/unity-pc-devtools-buildloop3-20261028` `0ea27c069` 원격 보존, `unity/main` 미병합 | `merge-tree` 충돌 0. 기본 숨은 데스크톱 스모크·타이틀 영상 필수 검사·11a/12a/12b 하네스 위치를 정적 확인. 현재 `Run-DesktopSmoke`가 플레이어를 직접 `CreateProcess`로 띄워 공통 규칙의 `exo-unity.ps1` 전용 실행과 충돌. 이 경로를 정리하기 전에는 새 통합 빌드·`unity-latest` 교체를 수행하지 않음 |
 | DT-16 웹 인트로 진단 | 키 주입·PC 진단 커밋 `65e14f1bb`는 `unity/main`의 조상. `claude/unity-pc-devtools-web-introdiag-20261028` 끝 `219cdef80`은 웹 빌드 브랜치의 임시 merge 포함 | 원격 브랜치를 그대로 병합하면 최신 타이틀 메뉴·미디어·다른 팀 코드를 되돌릴 위험이 있어 병합 대상에서 제외. PC 재현 불가와 웹 가설은 `UNITY_INTRO_KEYS_20261028.md`에 기록됨. 최신 Unity Web 실측은 별도 필요 |
-| Codex 실행·정리 도구 | `codex/pc-devtools-tools-20261028` `465bb875e` 원격 보존, `unity/main` 미병합 | 실행 없는 자체 시험 종료 0. 종단 시험 메타 종료 1이므로 Codex 실제 작업 성공 미확인. 정리 도구의 금지된 `worktree prune` 호출 제거. `apply` 미실행 |
+| Codex 실행·정리 도구 | `codex/pc-devtools-tools-20261028` `33ef33763` 원격 보존, `unity/main` 미병합 | 실행 없는 자체 시험 종료 0. 종단 시험 메타 종료 1이므로 Codex 실제 작업 성공 미확인. 정리 도구의 금지된 `worktree prune` 호출 제거, 미등록·링크 루트 비순회, 전역 ignore 접근 오류 보수 처리. `apply` 미실행 |
 
 DT-01 runner2와 Codex 도구 브랜치를 함께 병합하면 `unity/Tools/devtools/README.md`에 내용 충돌 1건이 난다(`merge-tree` 정적 검사). 통합 담당은 두 설명을 함께 보존하고 충돌을 해소해야 한다. 브랜치 push는 `unity/main` 통합이나 PC·Mac 실행 일치를 뜻하지 않는다.
 

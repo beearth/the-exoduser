@@ -4,7 +4,7 @@
 
 - DT-01 runner2 `2aa218bcd`, DT-15 buildloop3 `0ea27c069`는 각 원격 브랜치에 보존됨. 현재 `unity/main`과의 `merge-tree`는 각각 충돌 0이다. buildloop3의 숨은 데스크톱 스모크가 플레이어를 직접 `CreateProcess`로 띄우므로 `exo-unity.ps1` 전용 실행 규칙과 충돌한다. 이 경로를 정리하고 통합 담당의 컴파일·oracle·m1 검증을 마칠 때까지 `unity/main` 병합 및 `unity-latest` 교체는 대기한다.
 - 인트로 키 진단 `65e14f1bb`는 `unity/main`의 조상이다. `web-introdiag` 브랜치 끝 `219cdef80`에는 임시 웹 빌드 merge가 포함돼 있어 브랜치 전체 병합 대상이 아니다. 최신 WebGL 키 동작 재검증은 남았다.
-- 미커밋 도구를 원본 워크트리에서 읽어 별도 `codex/pc-devtools-tools-20261028` `465bb875e`로 커밋·push했다. 원본 미커밋 파일은 보존했다. `exo-codex` 자체 점검은 종료 0, 종단 시험 메타는 종료 1로 실패 판정한다. `exo-worktree-clean`의 금지된 `git worktree prune` 호출을 제거했고 `apply`는 실행하지 않았다.
+- 미커밋 도구를 원본 워크트리에서 읽어 별도 `codex/pc-devtools-tools-20261028` 최종 `33ef33763`으로 커밋·push했다(최초 인수 `465bb875e`). 원본 미커밋 파일은 보존했다. `exo-codex` 자체 점검은 종료 0, 종단 시험 메타는 종료 1로 실패 판정한다. `exo-worktree-clean`의 금지된 `git worktree prune` 호출과 미등록/링크 루트 순회를 제거했고 `apply`는 실행하지 않았다. 원본 scan 보고서: 후보 0·회수 0.00GB·keep 87·링크 46, Git/프로세스 조회 실패 때문에 삭제 후보 판정은 미완료.
 - 코드와 수치의 상세 근거는 `docs/engine/UNITY_DEVTOOLS_MASTER_20261028.md`, `PC_CODEX_EXECUTION_20261028.md`, `PC_WORKTREE_CLEAN_20261028.md`에 갱신했다. 세 Unity 브랜치의 최종 통합과 Windows Player 검증, Mac 반영은 별도 게이트다.
 
 - 세션 `local_55f5cfd6` (Opus). 역할: Unity 개발툴·실행 기반 총괄(명세·검수·커밋). 구현은 **Codex(`exo-codex.ps1`)** 로만(10-28 사용자 지시, Sonnet 하위 에이전트 추가 금지). 보고는 CTO(`local_7072229c`)에게만, 작업 단위 끝에 한 번.
