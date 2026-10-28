@@ -1,12 +1,13 @@
 using System;
 using System.IO;
 using UnityEngine;
+using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort
 {
     // QA / automated runs must never read or write the player's real save, settings or character roster (LocalLow\ForDearGamers\<product>).
     // `--unity-qa-sandbox <absolute dir>` points every persistentDataPath consumer (character roster, combat save next to it, native settings,
-    // forge capture default) at that folder. `--unity-m1-check` in -batchmode without the argument gets <persistentDataPath>\qa\<time>-<pid> automatically.
+    // forge capture default) at that folder. an automated run (QaRunPolicy: -batchmode or a QA argument) without the argument gets <persistentDataPath>\qa\<time>-<pid> automatically.
     // Ordinary play (no argument, not m1-check in batchmode) keeps persistentDataPath untouched.
     // FAIL-CLOSED: when a sandbox was requested (argument present, or batchmode m1-check) and it cannot be created, the run logs an error, quits with exit code 3
     // and throws, so nothing ever falls back to the real persistentDataPath.
@@ -21,7 +22,7 @@ namespace Exoduser.UnityPort
         static string Compute()
         {
             var args = Environment.GetCommandLineArgs(); int at = Array.IndexOf(args, Argument);
-            bool automatic = Application.isBatchMode && Array.IndexOf(args, "--unity-m1-check") >= 0;
+            bool automatic = QaRunPolicy.IsAutomated(args, Application.isBatchMode);   // batchmode, or any --unity-*-smoke/-capture/-review/-check/--unity-qa-* argument
             if (at < 0 && !automatic) return "";
             string reason = "";
             try
