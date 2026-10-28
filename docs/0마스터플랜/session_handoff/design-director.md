@@ -68,3 +68,9 @@
 - 최초 눈 문장 비교 스크립트가 `SIGIL_URL` 선언보다 앞의 주석만 치환한 것을 확인해 그때 캡처의 후보 증거를 무효화했다. 정확한 선언을 치환해 원본·눈 문장·중심을 빈 바깥 고리 SVG를 1920×1080으로 다시 캡처하고 후보 자산 요청·pageerror 0을 확인했다. SSOT §6.4에 정정·1x 판정을 남겼다.
 - 눈 문장은 중심 구슬 아래에서 약하고, 바깥 고리(`G:/exoduser/tmp/design-review/20261028_skill_sigil/outer_ring_candidate.svg`)는 일곱 사슬 고리가 1x에서 읽히지 않아 RETOUCH. 게임 원화·`SIGIL_URL` 변경 0, 유료 생성 0. 사용자 아트 검토 전 런타임 채택 없음.
 - 별도 H5 후보: `codex/pc-design-stat-summary-20261028` tip `79f8c34b7ca05fd3cb5f8ef2c08d7655d7217cff`의 능력치 서랍 색·표제 정리. 소스+SSOT 함께 push, `MERGE_QUEUE.md`에 main/DEMO/EA/NW.js 게이트를 남겼다. 이 main 문서 기록은 코드 병합이 아니다.
+
+## 2026-10-29 Codex 인수 — 다크드루이드 ②③ 정적 디자인 판정
+
+- 승인 시트 S1/S2b/S3와 보관된 본체 GLB 전·측·후·55° 독립 렌더, 보행 GLB 4자세를 직접 대조했다. 결과는 **RETOUCH(제작 후보)**: 뿔·깃털 망토·새발 실루엣과 큰 보행 파열 없음은 확인했지만 이마·앞자락의 트리퀘트라는 LOCK 정본 인장으로 두 곳 모두 교체해야 한다.
+- 왼손 2.30m 지팡이·`#9ea83a` Emission·노인 아래 얼굴 가독성·Unity idle/walk/mirror 127 slam의 접지·망토 관통·접촉 프레임을 ④·⑤ 게이트로 남겼다. 실제 Unity 보스방 1x 캡처 전에는 채택 PASS가 아니다. 상세는 `DARK_DRUID_DESIGN_LOCK.md` §15, 보스 보드는 §8, 캡처는 `I:/EXODUSER-Storage/codex-takeover/design/druid_review/`.
+- 본 리뷰는 문서만 변경했다. 모델·Animator·런타임 자산·유료 생성은 변경하거나 실행하지 않았다. 다음 디자인 순서는 RM-B1 실제 1x 판정 뒤 RM-B4→RM-B2→RM-B3이며, 각 후보는 해당 DESIGN LOCK과 승인 시트를 우선 대조한다.
