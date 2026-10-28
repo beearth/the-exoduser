@@ -1,5 +1,13 @@
 # 임펙트 총괄 VFX 인계 — 2026-10-28 10:20 KST
 
+## Codex 인수 갱신 — 2026-10-28 22:51 KST
+
+- 전용 작업 트리 `E:/exoduser-wt/codex-vfx`, 브랜치 `codex/pc-vfx-rm1-int-20261028`, 커밋·원격 SHA `919fd0597714e2544a8ceb3905aedfa57442ff56`. 시작점은 독 폭발 `c1f8f769b`이고 원격 `unity/main` `b0f9a0c52`를 비강제 병합했다. Core와 기존 `NativeGame.cs`는 수정하지 않았다.
+- 기검참 VFX Graph(코어·속도 방향 조각·투사체별 스트립), `KiSlashVfxView`, 3타 그을음 데칼, `VfxWorld`, 독 브리지 좌표 경유, 새 `NativeGame.VfxCheck.cs`를 작성했다. 상세 수치·파일·검증 경계는 `docs/5.1임펙트디자인/UNITY_RM1_VFX_IMPLEMENTATION_20261028.md`.
+- 정적 근거: 그래프 생성 2회 동일 SHA256, YAML 183문서·노출 속성 8개·구조 오류 0, Roslyn 구문 오류 0(`nostdlib` 검사), `git diff --cached --check` 통과. **Unity 임포트·컴파일·에디터 캡처·Player 빌드·GPU 스모크·1x 판정은 미실행.** 이 시점에 타인 Unity PID 7068이 실행 중이고 사용 가능 메모리 18.9GB라 순번 조건에 미달했다.
+- RM-INT 좌표 API 이름은 인계에 이미 확정됨. `RemodelWorld`가 아직 `origin/unity/main`에 없어 `VfxWorld`는 임시 XZ 변환 한 곳만 사용한다. RM-INT 브랜치를 VFX에 직접 병합하지 않는다. 병합 대상이 아니라 **통합 검증 대기 후보**로 `MERGE_QUEUE.md`에 기록한다. 적 독 탄 중첩 1x 캡처와 웹 기준 비교는 필수 남은 게이트다.
+- 아래 10:20 표·세션 재개 절차는 당시 이력이다. 다음 실제 행동: RM-INT 1단계의 `unity/main` 병합 확인 → 최신 줄기 병합·좌표 어댑터 교체 → Unity 실행 순번/메모리 확보 → 임포트·빌드 영수증·RM-1 1x 캡처 → 통합 담당에 검증 후보 전달.
+
 - 세션 id `local_da9cd0e7-37a8-4d5d-9ab6-090f7f9eb8ad` / Opus / 역할: 이펙트 일관성 디자인·총괄. 명세·1x 판정만 하고 구현은 Sonnet(vfx-simple)에게 맡긴다.
 - SSOT: `docs/5.1임펙트디자인/VFX_LEAD_MASTER_20261026.md`(§2 기준·§6 백로그·§7 기록), Unity 명세 `docs/5.1임펙트디자인/UNITY_RM1_VFX_SPEC_20261027.md` v2.1 **§7 마지막 행(746269dae)이 오늘 결정 전부**.
 - 완료 정의(사용자, CTO 10-28): `docs/engine/UNITY_DONE_BUILD_PLAYTEST_RULE_20261028.md` 6단계 — ① 최신 unity/main 합친 상태 플레이어 빌드 오류 0(영수증을 병합 요청에 첨부) ② 병합(유니티 총괄) ③ 통합 빌드 ④ 실제 GPU 스모크 ⑤ unity-latest ⑥ 총괄이 실제 빌드 1x 판정. 에디터 캡처 = 비교 시안일 뿐.
@@ -11,7 +19,7 @@
 | 단위 | 상태 | 다음 |
 |---|---|---|
 | unity/main `8d34eb653` 빌드 검증 | **PASS** — 오류 0, m1-check 18/18, 유니티 총괄 전달 완료 | 끝 |
-| 통합 VFX 구현 | vfx-simple에 지시 완료(10:1x): 새 브랜치 `claude/unity-pc-vfx-rm1-int-20261028` = 로컬 poison 브랜치 `c1f8f769b`(V0 + 독 폭발 + unity/main 26a11fd2f)에서, worktree `E:/exoduser-wt/pc-unity-vfx-int`, Library는 poison worktree에서 /XJ 복사. 할 일: 기검참(VFX Graph 안 속도 방향 조각·스트립, 2회 실패 시만 C# 쿼드/Trail), `KiSlashVfxView.Bind/Handle`, 좌표 어댑터 `VfxWorld.ToWorld`, partial `NativeGame.VfxCheck.cs`(`--unity-vfx-check`: 독 A·B, 기검참 1·2·3타·충전 tier, 2/4/6/12/21틱, 1920×1080 + 1x 크롭) | Unity 없는 단계 끝나면 보고 → 에디터 임포트·RM_Sandbox 비교 캡처 순번을 유니티 총괄에게 요청 → 1x 1차 판정 |
+| 통합 VFX 구현 | Codex 후보 `919fd0597` 원격 보존. 그래프·뷰·좌표·검수 partial 작성, Unity 미실행 | RM-INT 선행 병합 뒤 좌표 연결·Unity 컴파일·캡처·1x 판정 |
 | 독 폭발 A/B | 생성기 단계 끝(로컬 `6b4b8a380`, 병합 `c1f8f769b`, Unity 미실행). 에이전트 종료, vfx-simple이 이어받음. Unity 임포트 위험 목록은 커밋 6b4b8a380 메시지·명세 §7 | RM-INT 1단계 뒤 순번(유니티 총괄이 알림) |
 | RM-INT 연결 | RM-INT 세션 `local_b01f8fea-01cc-4c3d-b238-14752c64cb47`(unity-m1-sonnet)에 연결 줄 목록 + **Core 좌표→3D 월드 변환 함수 공개 요청** 보냄. 회신 대기 | 함수 이름 오면 vfx-simple에 전달(VfxWorld가 그것을 부르게) → VFX 새 파일 먼저 병합 요청(① 영수증) → RM-INT가 연결 줄 |
 | Gamma 대 Linear UI 쌍 | Unity 없는 준비 끝(`E:/exoduser-wt/_out/vfx-rm1/shared_render/gamma_vs_linear/`, 7쌍·표본 76, gvl.py). 표본 위치 총괄 확인 OK | 순번 = Hero Light(UCH-03f) 뒤. 유니티 총괄 신호 → vfx-simple "지금 시작" |

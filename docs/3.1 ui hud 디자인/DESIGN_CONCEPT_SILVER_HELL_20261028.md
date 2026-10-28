@@ -196,6 +196,15 @@
 4. CLAUDE.md "금빛 헤어라인" 문구 정정(사용자 확인 필요, 6.1 후속 5).
 5. 스킬 창 3D 제단 바닥 각인(`skill-forge-3d.js` `SIGIL_URL`)이 아직 옛 장미창 `sigil.png` — 구슬 배치와 겹치므로 눈 고리 문장으로 바꿀지 제단 화면에서 따로 판정.
 
+### 6.4 성장 나무·스킬 제단 1x 비교 (2026-10-28, Codex 디자인 인수)
+
+| 대상 | 실제 화면·비교 | 판정·다음 단계 |
+|---|---|---|
+| 능력치 [J] 성장 나무 | `growth-tree-fixed-background.css`의 원화는 CloudFront URL을 `::before` 배경으로 참조한다. 1920×1080 현행 화면에서 중앙 기사 갑옷과 노드 뒤 큰 원의 청동색이 은빛 프레임과 갈라져 보였다. 브라우저에만 `filter: grayscale(1) contrast(1.07) brightness(1.06)`을 주입한 시안은 청동을 중성 강철로 바꾸면서 노드와 본문 가독성을 보존했다. 두 화면 `G:/exoduser/tmp/design-review/20261028_growth_tree/`, 재현 스크립트 `I:/EXODUSER-Storage/codex-takeover/design/growth_review.cjs`; headless 1920×1080, pageerror 0 | **시안 톤 PASS / 런타임 채택 대기.** 원화 전체 필터는 갑옷의 붉은 재질도 함께 없애므로, 최종은 은빛 금속만 선별한 로컬 원화 후보와 1x 비교 후 사용자 아트 검토를 받는다. 외부 URL·현행 CSS는 그대로 둔다 |
+| 스킬 창 [K] 3D 제단 | `img/ui/blackiron/sigil.png` 원화는 사엽 장미창이다. 실제 1920×1080 화면에서는 소켓 궤도와 밝은 중심 스킬 구슬 뒤에 묻혀 문양이 작게만 읽힌다. `img/ui/silver_hell/eye_crest_20261028.png`를 단순 URL 교체하는 브라우저 시안도 비교했으나 중심 눈은 구슬과 겹쳐 독립된 상징으로 읽히지 않았다. 비교 `G:/exoduser/tmp/design-review/20261028_skill_sigil/`, 재현 스크립트 `I:/EXODUSER-Storage/codex-takeover/design/sigil_review.cjs`; headless 1920×1080, pageerror 0 | **단순 교체 보류.** 제단 전용 바깥 가시 고리만 남기고 중심 눈을 비운 각인 원화가 필요하다. 후보 제작·1x 판정 전 `SIGIL_URL`과 런타임을 유지한다 |
+
+두 비교는 격리된 `server.cjs` 테스트 화면의 디자인 판정이다. 캐릭터 능력치·스킬 데이터, 실제 NW.js 빌드, 원격 원화의 영구 보존 여부를 검증한 것은 아니다. 유료 생성·런타임 변경은 없었다.
+
 ## 7. 하지 않는 것
 
 - 틀·선·버튼에 금·황동·구리색을 다시 쓰지 않는다. (예외: 금화·골드 아이콘 같은 **아이템 자체의 색**)
