@@ -1,0 +1,68 @@
+/* 로비 — 실버 헬 UI 패키지 v1 (2026-10-28 사용자 승인 [승인-디자인-3], BG3·토치라이트 원칙)
+   무대(묘실·선대)가 화면을 끈다. 오른쪽 단단한 판·붉은 가시 테두리·문장 워터마크를 없애고, 화면 가장자리 어둠 위에 글자를 바로 얹는다.
+   DOM·게임패드 조작은 그대로 두고 생김새만 바꾼다. ui-refinement.css·ui-foundation.css 뒤에 연결. 근거: docs/3.1 ui hud 디자인/LOBBY_AAA_REFERENCE_STUDY_20261028.md §9·§12 */
+
+/* 무대: 오른쪽 판이 사라진 만큼 무대 그림이 화면 끝까지 보이게, 오른쪽만 어둠이 번진다 */
+#lobby .lobby-right{background:linear-gradient(90deg,rgba(3,3,4,0),rgba(3,3,4,.72) 26%,rgba(3,3,4,.9))!important;padding:56px 72px 40px 64px!important}
+#lobby .lobby-right::before,#lobby .lobby-right::after{display:none!important}
+#lobby #lobbyVerOverlay{display:none!important} /* 개발 정보(빌드·스테이지 제한) — 출시 화면에서 숨김 */
+
+/* 위 줄: 언어·모드는 작은 캡션 */
+#lobby .lobby-header{min-height:28px}
+#lobby #lobbyLangSelect{background:transparent!important;border:0!important;border-bottom:1px solid rgba(155,158,158,.3)!important;border-radius:0!important;color:var(--sh-text-dim)!important;font:600 11px var(--sh-latin)!important;letter-spacing:.2em;padding:2px 4px!important}
+#lobby .lobby-mode{font:600 11px var(--sh-latin)!important;letter-spacing:.24em;color:var(--sh-text-dim)!important}
+
+/* 로고: 시작 화면보다 작게 */
+#lobby .lobby-divider{height:132px!important;margin:18px 0 6px}
+
+/* 캐릭터 목록: 판·썸네일 없이 글자 행, 선택 행만 진홍 2px 막대 */
+#lobby .char-list::before{content:'';display:block;height:1px;margin:0 0 10px;background:linear-gradient(90deg,var(--sh-line),transparent)}
+#lobby .lobby-right :is(.char-item,.char-item-new){background:transparent!important;border:0!important;border-bottom:1px solid rgba(155,158,158,.13)!important;border-radius:0!important;box-shadow:none!important;padding:14px 8px 13px 22px!important;min-height:0!important;height:auto!important}
+#lobby .lobby-right .char-item .char-thumb,#lobby .lobby-right .char-item-new .char-thumb{display:none!important}
+#lobby .lobby-right .char-item .char-name{display:flex!important;flex-direction:row!important;align-items:baseline!important;gap:14px!important}
+#lobby .lobby-right .char-item .char-name-label{font:300 22px var(--sh-font)!important;letter-spacing:.08em;color:var(--sh-text)!important;text-shadow:0 2px 8px #000;width:auto!important}
+#lobby .lobby-right .char-item .char-cls{border:0!important;background:none!important;padding:0!important;margin:0!important;font:600 11px var(--sh-latin)!important;letter-spacing:.22em;color:var(--sh-text-dim)!important;text-transform:uppercase}
+#lobby .lobby-right .char-item .char-info{margin-top:6px;font:400 13px var(--sh-font)!important;letter-spacing:.06em;color:var(--sh-text-dim)!important;opacity:1!important}
+#lobby .lobby-right .char-item .char-del{opacity:0;transition:opacity .15s}
+#lobby .lobby-right .char-item:hover .char-del,#lobby .lobby-right .char-item.active .char-del,#lobby .lobby-right .char-item:focus-within .char-del{opacity:.7}
+#lobby .lobby-right .char-item.active{background:linear-gradient(90deg,rgba(194,26,16,.16),transparent 80%)!important;box-shadow:inset 2px 0 var(--sh-eye)!important}
+#lobby .lobby-right .char-item.active .char-name,#lobby .lobby-right .char-item.active .char-name-label{color:var(--sh-text-hi)!important}
+#lobby .lobby-right .char-item:hover{background:linear-gradient(90deg,rgba(230,227,220,.06),transparent 80%)!important}
+#lobby .lobby-right .char-item[style*="dashed"]{display:none!important} /* 빈 슬롯 점선 상자 → "+ 새 캐릭터" 한 줄만 */
+#lobby .lobby-right .char-item-new .char-name{font:300 15px var(--sh-font)!important;letter-spacing:.14em;color:var(--sh-text-dim)!important}
+#lobby .lobby-right .char-item-new .char-name::before{content:'+ ';color:var(--sh-text)}
+#lobby .lobby-right .char-item-new:hover .char-name{color:var(--sh-text)!important}
+
+/* Steam 홍보 블록 → 아래 작은 줄의 글자 링크(홍보는 구석에 작게) */
+#lobby #lobbyMidArea{display:none!important}
+
+/* 입장: 패키지 강조 버튼과 같은 모양(뾰족한 이중선 판·진홍 빛) — 원본 보라 ENTER 그림은 숨김 */
+#lobby .lobby-footer{display:flex;justify-content:flex-start;margin-top:22px}
+#lobby #enterGameBtn{width:100%!important;max-width:420px;height:52px!important;padding:0!important;border:0!important;background:var(--sh-line-hi)!important;clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,12px 100%,0 50%);position:relative;filter:none!important}
+#lobby #enterGameBtn img{display:none!important}
+#lobby #enterGameBtn::before{content:'';position:absolute;inset:1px;background:var(--sh-plate-solid);clip-path:inherit}
+#lobby #enterGameBtn::after{content:var(--sh-enter-label,'입장');position:absolute;inset:5px;display:flex;align-items:center;justify-content:center;clip-path:inherit;background:radial-gradient(ellipse 70% 120% at 50% 50%,rgba(194,26,16,.5),rgba(60,10,8,.6) 60%,#120707);font:400 18px var(--sh-font);letter-spacing:.4em;color:var(--sh-text-hi);text-shadow:0 1px 4px #000}
+#lobby #enterGameBtn:disabled{background:rgba(155,158,158,.22)!important;cursor:default}
+#lobby #enterGameBtn:disabled::after{background:#0b0c0d;color:var(--sh-text-off)}
+#lobby #enterGameBtn:not(:disabled):hover{filter:brightness(1.18)!important}
+
+/* 아래 작은 줄: 시네마틱·STEAM 찜하기·버전·종료 */
+#lobby .lobby-bottom-actions{margin-top:18px;justify-content:flex-start!important;gap:26px!important}
+#lobby .lobby-corner-actions{flex:0 0 auto!important;margin-left:auto}
+#lobby #replayCinBtn,#lobby .lobby-steam-link{background:none!important;border:0!important;padding:0!important;font:600 11px var(--sh-latin)!important;letter-spacing:.2em;color:var(--sh-text-dim)!important;cursor:pointer;white-space:nowrap}
+#lobby #lobbyQuitBtn{border-color:rgba(155,158,158,.3)!important;background:transparent!important}
+#lobby #replayCinBtn:hover,#lobby .lobby-steam-link:hover{color:var(--sh-text)!important}
+#lobby .ll-version-txt{font:600 11px var(--sh-latin)!important;letter-spacing:.2em;color:#6f7272!important}
+
+/* 선대 이름(무대 아래 가운데): 칭호·이름 2단 */
+#lobby .char-disp-sub{font:600 11px var(--sh-latin)!important;letter-spacing:.32em}
+#lobby .char-disp-title{font-family:var(--sh-font)!important;font-weight:300!important}
+
+/* 목록 아래 겹선 하나만 */
+#lobby .lobby-right .char-list{border-bottom:0!important;box-shadow:none!important}
+/* 좁은 화면(≤1440): 아래 작은 줄 간격·자간 줄이기, 판 여백 줄이기 */
+@media (max-width:1440px){
+ #lobby .lobby-right{padding:40px 36px 28px 40px!important}
+ #lobby .lobby-bottom-actions{gap:14px!important}
+ #lobby #replayCinBtn,#lobby .lobby-steam-link,#lobby .ll-version-txt{letter-spacing:.1em!important;font-size:10px!important}
+}

@@ -521,6 +521,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
 <link rel="stylesheet" href="ui-refinement.css?v=20261028-eye-crest">
+<link rel="stylesheet" href="silver-hell-ui-kit.css?v=20261028-v1">
+<link rel="stylesheet" href="lobby-silver-hell.css?v=20261028-v1">
 <link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart3">
 <script src="lobby-ancestor-sprite.js?v=20260929-slotart2" defer></script>
 
@@ -853,7 +855,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
     </div>
     <div class="status" id="lobbyStatus" role="status" aria-live="polite" style="font-size:.75rem;min-height:0;flex-shrink:0"></div>
     <div class="lobby-bottom-actions" style="display:flex;justify-content:space-between;align-items:center;padding:4px 0 2px;flex-shrink:0;gap:12px">
-      <button type="button" id="replayCinBtn" onclick="_goCinematic()">▶ 시네마틱</button>
+      <button type="button" id="replayCinBtn" onclick="_goCinematic()">▶ 시네마틱</button><button type="button" class="lobby-steam-link" id="lobbySteamLink" onclick="openWishlist()">STEAM 위시리스트 추가</button>
       <div class="lobby-corner-actions" id="lobbyCornerActions"><span class="ll-version-txt" id="lobbyVersionTxt"></span><button type="button" id="lobbyQuitBtn" onclick="_showLobbyQuit()" onkeydown="_lobbyQuitKeydown(event)" aria-label="게임 종료" title="게임 종료"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v9M6.3 5.7a8 8 0 1 0 11.4 0"/></svg></button></div>
     </div>
   </div>
@@ -2260,6 +2262,8 @@ function _applyLobbyLang(){
     const detail=document.getElementById('charDispDetail');if(detail)detail.textContent=_lobbyAncestorDetail();
   }
   const entry=document.getElementById('enterGameBtn');if(entry)entry.setAttribute('aria-label',_TL('입장'));
+  if(entry)entry.style.setProperty('--sh-enter-label',JSON.stringify(_TL('입장'))); // 실버 헬 입장 버튼 글자(lobby-silver-hell.css ::after)
+  const _sl=document.getElementById('lobbySteamLink');if(_sl)_sl.textContent=_TL('STEAM 위시리스트 추가');
   const wishlist=document.getElementById('lobbyWishlistBtn');
   if(wishlist){const label=_TL('STEAM 위시리스트 추가');wishlist.setAttribute('aria-label',label);wishlist.title=label;}
   // Google 버튼 (SVG 보존)
