@@ -155,7 +155,7 @@ namespace Exoduser.UnityPort
   // soft shadow / blur approximation: ring of offset copies with the total alpha preserved
   void Ring(string s, float cx, float cy, int size, float ls, Font lc, Color col, float radius, float dy)
   {
-   for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; SpacedLine(s, cx, cy, size, ls, new Color(col.r, col.g, col.b, col.a * .16f), lc, new Vector2(Mathf.Cos(a) * radius, dy + Mathf.Sin(a) * radius)); }
+   for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; SpacedLine(s, cx, cy, size, ls, new Color(col.r, col.g, col.b, col.a * .07f), lc, new Vector2(Mathf.Cos(a) * radius, dy + Mathf.Sin(a) * radius)); }
   }
   static float Ease(float x)   // cubic-bezier(.42,0,.58,1) by bisection
   {
@@ -214,7 +214,7 @@ namespace Exoduser.UnityPort
    float gemHalf = 3f, gemGap = 12f + 3f;   // 6px diamond, margin 0 12px
    DrawGem(cx - kw / 2f - gemGap, top + KrCy, bGem, op); DrawGem(cx + kw / 2f + gemGap, top + KrCy, bGem, op);
    // row 2: English line, uppercase Cinzel .32em
-   string en = bEn.ToUpperInvariant(); latinFs = FontStyle.Bold;
+   string en = bEn.ToUpperInvariant(); latinFs = FontStyle.Normal;   // Bold made the line ~7 % wider than the web's; Normal matches its measured width
    Ring(en, cx, top + EnCy, EnSize, EnLs, cinzel, new Color(0, 0, 0, .9f * op), 5f, 4f);
    SpacedLine(en, cx, top + EnCy, EnSize, EnLs, C(168, 153, 127, .72f * op), cinzel, Vector2.zero); latinFs = FontStyle.Normal;
    // row 3: sub line
@@ -232,7 +232,7 @@ namespace Exoduser.UnityPort
    var m = GUI.matrix; var oc = GUI.color;
    RotateLocal(new Vector2(cx, cy), 45);
    float glow = bannerPurge ? 9f : 5f; Color gc = bannerPurge ? C(216, 183, 120, .7f * op) : new Color(0, 0, 0, .6f * op);
-   GUI.color = new Color(gc.r, gc.g, gc.b, gc.a * .35f); GUI.DrawTexture(new Rect(cx - 3 - glow * .4f, cy - 3 - glow * .4f, 6 + glow * .8f, 6 + glow * .8f), Texture2D.whiteTexture);
+   GUI.color = new Color(gc.r, gc.g, gc.b, gc.a * .14f); GUI.DrawTexture(new Rect(cx - 3 - glow * .25f, cy - 3 - glow * .25f, 6 + glow * .5f, 6 + glow * .5f), Texture2D.whiteTexture);
    GUI.color = new Color(16 / 255f, 11 / 255f, 8 / 255f, .9f * op); GUI.DrawTexture(new Rect(cx - 3, cy - 3, 6, 6), Texture2D.whiteTexture);   // 6px border-box with a 1px border
    GUI.color = new Color(col.r, col.g, col.b, op); GUI.DrawTexture(new Rect(cx - 2, cy - 2, 4, 4), Texture2D.whiteTexture);
    GUI.matrix = m; GUI.color = oc;
