@@ -182,6 +182,17 @@
 | DT-15 | `claude/unity-pc-devtools-buildloop-20261028` → unity/main **d30ea8607 병합됨**. fail-closed `…-buildloop2-20261028` 91f376ffd 병합 요청 | 일부 병합 | `I:\EXODUSER-Storage\unity-latest\status\index.html`, `loop\runs\20261028-1414_51f130f\` | 창 없는 실제 GPU 스모크(D3D12, `-batchmode` GPU 유지, `--unity-mute`, RenderTexture 캡처), m1 21/21, overlay 판정(LT-2 일시정지 가림 FAIL), 필수 영상 9개 검사, 크래시 1회 재시도 후 HALT, 세이브 격리 `--unity-qa-sandbox` + USER_SAVE 비교, hud-smoke 자동 종료(DBT-6), 영수증 최종 경로(DBT-7), 상태판(커밋 여유 추이 포함). fail-closed: `QaRunPolicy.IsAutomated`(`Runtime/Core/Platform/`, 단위 테스트 62건) |
 | DT-16 | `claude/unity-pc-devtools-web-20261028` 4af345fc5(병합 안 함) | 배포됨(비공개 미리보기) | `I:\EXODUSER-Storage\devtools\web\RESULT.md` | Vercel 미리보기(로그인 필요, 비로그인 302 확인). 770MB → 175MB(웹 전용 DXT·ASTC, 영상 720p), 로드 10~14초, WebGPU, FDG → 1-1 → 이동·공격까지 스모크 통과, 게임 톤 로딩 템플릿 |
 
+### 10-28 22시 Codex 인수 검수
+
+| 단위 | 원격 SHA·현재 판정 | 검증·다음 단계 |
+|---|---|---|
+| DT-01 runner2 | `claude/unity-pc-devtools-runner2-20261028` `2aa218bcd` 원격 보존, `unity/main` 미병합 | 시작 조건 12/20/10GB·숨은 데스크톱·build 인자 분리·14건 자체 시험 코드 확인. 현 `unity/main`과 `merge-tree` 충돌 0. 실제 숨은 데스크톱 Player 영수증은 이 인수에서 새로 만들지 않음. 통합 담당 검증 대기 |
+| DT-15 buildloop3 | `claude/unity-pc-devtools-buildloop3-20261028` `0ea27c069` 원격 보존, `unity/main` 미병합 | `merge-tree` 충돌 0. 기본 숨은 데스크톱 스모크·타이틀 영상 필수 검사·11a/12a/12b 하네스 위치를 정적 확인. 현재 `Run-DesktopSmoke`가 플레이어를 직접 `CreateProcess`로 띄워 공통 규칙의 `exo-unity.ps1` 전용 실행과 충돌. 이 경로를 정리하기 전에는 새 통합 빌드·`unity-latest` 교체를 수행하지 않음 |
+| DT-16 웹 인트로 진단 | 키 주입·PC 진단 커밋 `65e14f1bb`는 `unity/main`의 조상. `claude/unity-pc-devtools-web-introdiag-20261028` 끝 `219cdef80`은 웹 빌드 브랜치의 임시 merge 포함 | 원격 브랜치를 그대로 병합하면 최신 타이틀 메뉴·미디어·다른 팀 코드를 되돌릴 위험이 있어 병합 대상에서 제외. PC 재현 불가와 웹 가설은 `UNITY_INTRO_KEYS_20261028.md`에 기록됨. 최신 Unity Web 실측은 별도 필요 |
+| Codex 실행·정리 도구 | `codex/pc-devtools-tools-20261028` `465bb875e` 원격 보존, `unity/main` 미병합 | 실행 없는 자체 시험 종료 0. 종단 시험 메타 종료 1이므로 Codex 실제 작업 성공 미확인. 정리 도구의 금지된 `worktree prune` 호출 제거. `apply` 미실행 |
+
+DT-01 runner2와 Codex 도구 브랜치를 함께 병합하면 `unity/Tools/devtools/README.md`에 내용 충돌 1건이 난다(`merge-tree` 정적 검사). 통합 담당은 두 설명을 함께 보존하고 충돌을 해소해야 한다. 브랜치 push는 `unity/main` 통합이나 PC·Mac 실행 일치를 뜻하지 않는다.
+
 **남은 결함·후속**
 - 무창(batchmode) 캡처에는 OnGUI가 돌지 않아 HUD·UI가 없다(`guiRepaints=0`). 숨은 Windows 데스크톱(`CreateDesktop` + `lpDesktop`)에서 batchmode 없이 띄우는 방식을 DT-15 2단계로 시험한다(`desktop-probe.ps1` 준비, 미실행).
 - 웹: HUD 스킬 바가 회색 띠(WebGPU Readback 실패 추정, `NativeHud.cs:89~90` `BuildLabelCleanBar`) — 런타임 수정, 유니티 총괄 배정. Unity 스플래시 끄기(다음 웹 빌드). Production 빈 페이지(`exoduser-unity-web-test.vercel.app`, 200)와 예전 미리보기는 사용자가 대시보드에서 정리(영구 삭제라 개발툴이 하지 않음).
