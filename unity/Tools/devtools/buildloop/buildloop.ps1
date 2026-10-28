@@ -12,7 +12,7 @@ param(
   [switch]$HudSmoke,           # m1-check 뒤에 hud-smoke 도 무창으로 돌려 스스로 종료하는지 기록(DBT-6)
   [switch]$NoSwap,             # build 를 교체하지 않는다(브랜치 시험용). -Ref 가 origin/unity/main 이 아니면 자동으로 켜진다
   [string]$JudgeOnly,          # 빌드 없이 로그 한 개만 판정(예: -JudgeOnly C:\x\build.log -Scope build)
-  [ValidateSet('build', 'player')][string]$Scope = 'build',
+  [ValidateSet('build', 'player', 'caps')][string]$Scope = 'build',
   [string]$Ref = 'origin/unity/main'
 )
 $ErrorActionPreference = 'Stop'
@@ -251,6 +251,44 @@ function Judge-Log([string]$path, [string]$scope, $rules) {
   $res.top = @($grp | Sort-Object @{ e = { if ($_.known) { 1 } else { 0 } } }, @{ e = { -$_.count } }, no | Select-Object -First 10)
   return [pscustomobject]$res
 }
+# 캡처가 전부 검은 화면이면(batchmode 에서 ScreenCapture 는 검은 PNG 를 쓴다) 스모크는 화면을 확인하지 못한 것이다.
+function Measure-Caps([string]$dir) {
+  $res = [ordered]@{ total = 0; black = 0; blackNames = @() }
+  if (-not (Test-Path -LiteralPath $dir)) { return [pscustomobject]$res }
+  Add-Type -AssemblyName System.Drawing
+  foreach ($f in @(Get-ChildItem -LiteralPath $dir -Filter *.png | Sort-Object Name)) {
+    $res.total++
+    $bmp = $null
+    try {
+      $bmp = New-Object Drawing.Bitmap($f.FullName); $maxL = 0
+      for ($yy = 0; $yy -lt 14; $yy++) { for ($xx = 0; $xx -lt 24; $xx++) {
+        $c = $bmp.GetPixel([int](($xx + .5) * $bmp.Width / 24), [int](($yy + .5) * $bmp.Height / 14)); $l = [math]::Max($c.R, [math]::Max($c.G, $c.B)); if ($l -gt $maxL) { $maxL = $l }
+      } }
+      if ($maxL -lt 12) { $res.black++; $res.blackNames += $f.BaseName }
+    } catch { } finally { if ($null -ne $bmp) { $bmp.Dispose() } }
+  }
+  return [pscustomobject]$res
+}
+# 사용자 실제 세이브 보호: 실행 전후 LocalLow\ForDearGamers 스냅샷을 비교한다(읽기만, 절대 수정·복원하지 않는다).
+# Unity 에디터가 쓰는 Unity\local.* (Analytics) 는 세이브가 아니므로 제외한다.
+function Get-UserSaveSnapshot {
+  $snap = @{}
+  $root = Join-Path $env:USERPROFILE 'AppData\LocalLow\ForDearGamers'
+  if (-not (Test-Path -LiteralPath $root)) { return $snap }
+  foreach ($f in @(Get-ChildItem -LiteralPath $root -Recurse -File -ErrorAction SilentlyContinue)) {
+    if ($f.FullName -match '\Unity\local\.') { continue }
+    $h = ''
+    if ($f.Length -le 2097152) { try { $h = (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256 -ErrorAction Stop).Hash.Substring(0, 16) } catch { $h = 'locked' } }
+    $snap[$f.FullName] = ('{0}|{1}|{2}' -f $f.Length, $f.LastWriteTimeUtc.Ticks, $h)
+  }
+  return $snap
+}
+function Compare-UserSave($before, $after) {
+  $ch = @()
+  foreach ($k in $after.Keys) { if (-not $before.ContainsKey($k)) { $ch += ('추가 ' + $k) } elseif ($before[$k] -ne $after[$k]) { $ch += ('변경 ' + $k) } }
+  foreach ($k in $before.Keys) { if (-not $after.ContainsKey($k)) { $ch += ('삭제 ' + $k) } }
+  return [pscustomobject]@{ changed = $ch.Count; files = @($ch | Select-Object -First 12) }
+}
 function Judge-M1($path, $rules) {
   $m = ReadJson $path
   if ($null -eq $m) { return [pscustomobject]@{ present = $false; ok = 0; fail = 0; neutral = 0; stages = @(); firstBlocked = ''; device = ''; deviceType = ''; captureMode = ''; headless = $false; guiRepaints = 0; guiBridged = 0 } }
@@ -270,8 +308,9 @@ function Test-OwnWindow($proc) { try { $proc.Refresh(); return ($proc.MainWindow
 function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json') {
   $r = [ordered]@{ ran = $false; exit = $null; timedOut = $false; windowSeen = $false; slowExit = $false; receiptWritten = $false; exitAfterReceiptSec = $null; note = ''; seconds = 0 }
   New-Item -ItemType Directory -Force -Path $smokeDir | Out-Null
+  New-Item -ItemType Directory -Force -Path (Join-Path $smokeDir 'sandbox') | Out-Null
   $sw = [Diagnostics.Stopwatch]::StartNew()
-  $args2 = @('-batchmode', $flag, '--unity-mute', '-output', $smokeDir, '-screen-width', $Cfg.SmokeW, '-screen-height', $Cfg.SmokeH, '-logFile', (Join-Path $smokeDir 'player.log'))
+  $args2 = @('-batchmode', $flag, '--unity-mute', '--unity-qa-sandbox', (Join-Path $smokeDir 'sandbox'), '-output', $smokeDir, '-screen-width', $Cfg.SmokeW, '-screen-height', $Cfg.SmokeH, '-logFile', (Join-Path $smokeDir 'player.log'))
   $p = Start-Process -FilePath (Join-Path $buildDir 'EXODUSER-Unity.exe') -ArgumentList $args2 -PassThru
   $r.ran = $true
   $deadline = (Get-Date).AddMinutes($Cfg.SmokeTimeoutMin); $receipt = Join-Path $smokeDir $receiptName; $receiptSeen = $null
@@ -437,6 +476,10 @@ ul{margin:6px 0 0;padding-left:18px}
     $cr = Prop $latest 'crash' $null; $bcr = Prop $latest 'buildCrash' $null
     if ($null -ne $cr) { [void]$sb.AppendLine('<div class="warnbox">플레이어 크래시 의심 - 플레이어 크래시 폴더: ' + (Esc $cr.playerDir) + ' · 로그: loopuns' + (Esc $latest.id) + '\smoke\player.log</div>') }
     if ($null -ne $bcr) { [void]$sb.AppendLine('<div class="warnbox">빌드 비정상 종료 - Unity 크래시 폴더: ' + (Esc $bcr.editorDir) + ' · 로그: loopuns' + (Esc $latest.id) + 'uild.log</div>') }
+    $us = Prop $latest 'userSave' $null
+    if ($null -ne $us) { $ucls = 'note'; if ([int]$us.changed -gt 0) { $ucls = 'warnbox' }; [void]$sb.AppendLine('<div class="' + $ucls + '" style="margin-top:6px">USER_SAVE changed=' + (Esc $us.changed) + (Esc $(if ([int]$us.changed -gt 0) { ' - ' + (@($us.files) -join ' | ') } else { ' (LocalLow\ForDearGamers 전후 비교, Unity Analytics 제외)' })) + '</div>') }
+    $cb = Prop $latest 'capsBlack' $null
+    if ($null -ne $cb) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">캡처 ' + (Esc $cb.total) + '장 중 검은 화면 ' + (Esc $cb.black) + '장' + (Esc $(if (@($cb.blackNames).Count -gt 0) { ': ' + (@($cb.blackNames) -join ', ') } else { '' })) + '</div>') }
     if ($null -ne (Prop $latest 'captureNote' $null)) { [void]$sb.AppendLine('<div class="warnbox">' + (Esc $latest.captureNote) + '</div>') }
     $kn = @{}
     foreach ($src in @($b, $p)) { if ($null -ne $src -and $null -ne $src.knownById) { foreach ($prop in $src.knownById.PSObject.Properties) { $cur = 0; if ($kn.ContainsKey($prop.Name)) { $cur = $kn[$prop.Name] }; $kn[$prop.Name] = $cur + [int]$prop.Value } } }
@@ -570,7 +613,7 @@ function Cmd-Run {
   $runId = '{0}_{1}' -f (Get-Date -Format 'yyyyMMdd-HHmm'), $head.short.Substring(0, 7)
   $runDir = Join-Path $RunsDir $runId; New-Item -ItemType Directory -Force -Path $runDir | Out-Null
   $branchName = 'unity/main'; if ($Ref -ne $MainRef) { $branchName = $Ref }
-  $run = [ordered]@{ id = $runId; sha = $head.short; shaFull = $head.full; branch = $branchName; subject = $head.subject; startedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); finishedAt = ''; buildSeconds = 0; smokeSeconds = 0; buildExit = $null; receiptPassed = $null; verdict = 'ABORT'; replaced = $false; replaceNote = ''; changedCount = 0; changed = @(); smokeNote = ''; build = $null; player = $null; m1 = $null; caps = @(); hud = $null; smoke = $null; crash = $null; buildCrash = $null; restoreFailed = ''; mediaMissing = @(); extraKnown = @{}; captureNote = $null; failReasons = @(); knownTotal = 0; buildWindow = $false }
+  $run = [ordered]@{ id = $runId; sha = $head.short; shaFull = $head.full; branch = $branchName; subject = $head.subject; startedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); finishedAt = ''; buildSeconds = 0; smokeSeconds = 0; buildExit = $null; receiptPassed = $null; verdict = 'ABORT'; replaced = $false; replaceNote = ''; changedCount = 0; changed = @(); smokeNote = ''; build = $null; player = $null; m1 = $null; caps = @(); hud = $null; userSave = $null; capsBlack = $null; smoke = $null; crash = $null; buildCrash = $null; restoreFailed = ''; mediaMissing = @(); extraKnown = @{}; captureNote = $null; failReasons = @(); knownTotal = 0; buildWindow = $false }
   $ch = Get-Changed $depFull $head.full; $run.changedCount = $ch.count; $run.changed = $ch.items
   $rules = Load-Rules
   $runStart = Get-Date
@@ -580,6 +623,7 @@ function Cmd-Run {
     if (-not (Acquire-Lock $runId)) { $run.replaceNote = '잠금 대기 초과 - 이번 회차 중단'; return }
     $got = $true
     Write-MemLog
+    $userBefore = Get-UserSaveSnapshot
     $libExists = Test-Path -LiteralPath (Join-Path $Cfg.Worktree 'unity\Library')
     if (-not (Wait-Ready $libExists)) { $run.replaceNote = 'Unity 프로세스 대기/커밋 여유 부족으로 중단'; return }
 
@@ -662,6 +706,9 @@ function Cmd-Run {
         $pj = Judge-Log (Join-Path $smokeDir 'player.log') 'player' $rules
         $m1 = Judge-M1 (Join-Path $smokeDir 'm1-check.json') $rules
         $run.caps = @(Make-Thumbs $runId (Join-Path $smokeDir 'caps'))
+        $run.capsBlack = Measure-Caps (Join-Path $smokeDir 'caps')
+        $run.userSave = Compare-UserSave $userBefore (Get-UserSaveSnapshot)
+        Log ('USER_SAVE changed=' + $run.userSave.changed + $(if ($run.userSave.changed -gt 0) { ' : ' + ($run.userSave.files -join ' | ') } else { '' }))
         $crashLogs = @($pj.failById.Keys | Where-Object { $_ -eq 'crash' })
         if (($null -ne $sm.exit -and [int]$sm.exit -ne 0) -or $crashLogs.Count -gt 0) { $run.crash = Get-CrashInfo $runStart; Log ('플레이어 크래시 의심: 로그 ' + (Join-Path $smokeDir 'player.log') + ' / 크래시 폴더 ' + $run.crash.playerDir) }
       }
@@ -694,6 +741,8 @@ function Cmd-Run {
         if ($null -ne $m1 -and $m1.present -and $m1.deviceType -match 'Null') { $reasons += 'Null 그래픽 장치(m1-check.json)' }
         if ($null -ne $m1 -and $m1.present -and $m1.headless -and $m1.guiRepaints -eq 0) { $run.captureNote = 'batchmode 에서 IMGUI Repaint 이벤트가 오지 않음 - 캡처에는 HUD/UI 가 없음(월드만)' }
         if ($null -eq $m1 -or -not $m1.present) { $reasons += 'm1-check.json 없음' } elseif ($m1.fail -gt 0) { $reasons += "m1 단계 실패 $($m1.fail)건" }
+        if ($null -ne $run.userSave -and $run.userSave.changed -gt 0) { $reasons += ('USER_SAVE changed={0} (사용자 실제 세이브/설정이 바뀜)' -f $run.userSave.changed) }
+        if ($null -ne $run.capsBlack -and $run.capsBlack.total -gt 0 -and $run.capsBlack.black -gt [math]::Max(3, [math]::Floor($run.capsBlack.total * 0.2))) { $reasons += ('캡처가 검은 화면 {0}/{1}장 - 화면을 확인하지 못함' -f $run.capsBlack.black, $run.capsBlack.total) }
         if ($null -ne $m1 -and $m1.present -and @($run.caps).Count -eq 0) { $reasons += '캡처 0장(이 빌드는 무창 캡처를 지원하지 않거나 저장 실패)' }
         if ($null -ne $run.hud) { if ($run.hud.windowSeen) { $reasons += 'hud-smoke 가 창을 띄움' } elseif ($run.hud.timedOut) { $reasons += 'hud-smoke 시간 초과' } elseif (-not $run.hud.receiptWritten) { $reasons += 'hud-smoke 영수증 없음' } }
       }
@@ -755,6 +804,7 @@ function Cmd-Run {
   Log ("=== 끝 {0}: {1}" -f $runId, $run.verdict)
 }
 
+if ($JudgeOnly -and $Scope -eq 'caps') { Measure-Caps $JudgeOnly | ConvertTo-Json -Depth 4; return }
 if ($JudgeOnly) {
   $rules = Load-Rules; $j = Judge-Log $JudgeOnly $Scope $rules
   $j | ConvertTo-Json -Depth 6

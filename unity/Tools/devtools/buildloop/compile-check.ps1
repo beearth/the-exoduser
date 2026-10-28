@@ -16,7 +16,7 @@ $t = $t.Replace('"Library/', '"' + $lib + 'Library/').Replace('"Packages/', '"' 
 $t = [regex]::Replace($t, '-out:"[^"]*"', '-out:"' + $out.Replace([string][char]92, '/') + '/Assembly-CSharp.dll"')
 $t = [regex]::Replace($t, '-refout:"[^"]*"', '-refout:"' + $out.Replace([string][char]92, '/') + '/Assembly-CSharp.ref.dll"')
 $t = $t.Replace('"Assets/', '"' + $mine + 'Assets/')
-$files = @(& git.exe -C $Project ls-files 'Assets/*.cs') | Where-Object { $_ -and $_ -notmatch '/Editor/' }
+$files = @(& git.exe -C $Project ls-files -co --exclude-standard 'Assets/*.cs') | Where-Object { $_ -and $_ -notmatch '/Editor/' }
 $have = [Collections.Generic.HashSet[string]]::new()
 foreach ($m in [regex]::Matches($t, '(?m)^"' + [regex]::Escape($mine) + '(Assets/[^"]+\.cs)"')) { [void]$have.Add($m.Groups[1].Value) }
 $set = [Collections.Generic.HashSet[string]]::new([string[]]$files)

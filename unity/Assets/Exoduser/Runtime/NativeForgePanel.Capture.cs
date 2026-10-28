@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeForgePanel {
   const string CaptureArg="--unity-forge-capture";
   static bool HasCaptureArg(){return Array.IndexOf(Environment.GetCommandLineArgs(),CaptureArg)>=0;}
-  static string CaptureDir(){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,CaptureArg);return i>=0&&i+1<a.Length?a[i+1]:Path.Combine(Application.persistentDataPath,"forge-capture");}
+  static string CaptureDir(){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,CaptureArg);return i>=0&&i+1<a.Length?a[i+1]:Path.Combine(NativeQaSandbox.Resolve(Application.persistentDataPath),"forge-capture");}
   public void SetScrollForTest(string tab,float v){gridScroll[tab]=v;}
   public void SetListScrollForTest(float v){listScroll=v;}
 
