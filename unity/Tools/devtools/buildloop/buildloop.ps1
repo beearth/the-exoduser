@@ -41,6 +41,7 @@ $StatusDir = Join-Path $Cfg.Out 'status'
 $StateFile = Join-Path $LoopDir 'state.json'
 $LogFile   = Join-Path $LoopDir 'buildloop.log'
 $RulesFile = Join-Path $PSScriptRoot 'smoke-rules.json'
+$HaltFile = 'I:\EXODUSER-Storage\unity-jobs\HALT'
 $MemLog = 'I:\EXODUSER-Storage\unity-jobs\memlog.csv'
 $MainRef = 'origin/unity/main'
 if ($Ref -ne $MainRef) { $NoSwap = [switch]$true }
@@ -123,6 +124,27 @@ function Mem-Svg {
   } else { [void]$o.AppendLine("<text x=`"$($w / 2)`" y=`"$($h / 2)`" text-anchor=`"middle`" fill=`"#9b9078`" font-size=`"13`">기록 없음 (memlog.csv)</text>") }
   [void]$o.AppendLine('</svg>')
   return $o.ToString()
+}
+# 크래시 정지 규칙: 종료 코드 0xC0000005(-1073741819) 또는 로그에 access violation / crash has been intercepted -> 1회 재시도, 또 크래시면 HALT 파일을 만들고 멈춘다.
+function Test-CrashRun($exitCode, [string]$logPath) {
+  if ($null -ne $exitCode -and [int]$exitCode -eq -1073741819) { return $true }
+  if ($logPath -and (Test-Path -LiteralPath $logPath)) { foreach ($l in [IO.File]::ReadLines($logPath)) { if ($l -match '(?i)access violation|crash has been intercepted') { return $true } } }
+  return $false
+}
+function Set-Halt([string]$cause, [string]$log, [string]$crashDir, [string]$runId) {
+  $o = [ordered]@{ time = (Get-Date).ToString('s'); cause = $cause; log = $log; crashDir = $crashDir; run = $runId; by = 'devtools-buildloop' }
+  WriteJson $HaltFile $o 4
+  Log ("HALT 파일 작성: $HaltFile ($cause)")
+}
+function Test-RequiredMedia([string]$proj, $rules) {
+  $missing = @()
+  foreach ($m in @($rules.requiredMedia)) {
+    $f = Join-Path $proj ([string]$m.path)
+    if (-not (Test-Path -LiteralPath $f)) { $missing += ([IO.Path]::GetFileName([string]$m.path) + ' (없음)'); continue }
+    $len = (Get-Item -LiteralPath $f).Length
+    if ($len -lt [long]$m.minBytes) { $missing += ([IO.Path]::GetFileName([string]$m.path) + " ($len 바이트 < $($m.minBytes))") }
+  }
+  return $missing
 }
 function Get-CrashInfo([datetime]$since) {
   $info = [ordered]@{ editorDir = ''; playerDir = '' }
@@ -410,6 +432,8 @@ ul{margin:6px 0 0;padding-left:18px}
     if ($null -ne $hudx) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">hud-smoke(무창): 종료코드 ' + (Esc $hudx.exit) + ' · 영수증 ' + (Esc $hudx.receiptWritten) + ' · 영수증 뒤 종료까지 ' + (Esc $hudx.exitAfterReceiptSec) + '초 · 시간 초과 ' + (Esc $hudx.timedOut) + '</div>') }
     $smx = Prop $latest 'smoke' $null
     if ($null -ne $smx) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">m1-check(무창): 종료코드 ' + (Esc $smx.exit) + ' · 영수증 뒤 종료까지 ' + (Esc $smx.exitAfterReceiptSec) + '초 · 창 핸들 감지 ' + (Esc $smx.windowSeen) + '</div>') }
+    $mm = Prop $latest 'mediaMissing' $null
+    if ($null -ne $mm -and @($mm).Count -gt 0) { [void]$sb.AppendLine('<div class="warnbox" style="border-color:#c0341d;color:#e0472a">필수 영상 누락: ' + (Esc (@($mm) -join ', ')) + '</div>') }
     $cr = Prop $latest 'crash' $null; $bcr = Prop $latest 'buildCrash' $null
     if ($null -ne $cr) { [void]$sb.AppendLine('<div class="warnbox">플레이어 크래시 의심 - 플레이어 크래시 폴더: ' + (Esc $cr.playerDir) + ' · 로그: loopuns' + (Esc $latest.id) + '\smoke\player.log</div>') }
     if ($null -ne $bcr) { [void]$sb.AppendLine('<div class="warnbox">빌드 비정상 종료 - Unity 크래시 폴더: ' + (Esc $bcr.editorDir) + ' · 로그: loopuns' + (Esc $latest.id) + 'uild.log</div>') }
@@ -455,6 +479,7 @@ ul{margin:6px 0 0;padding-left:18px}
     [void]$sb.AppendLine('</div>')
   }
 
+  if (Test-Path -LiteralPath $HaltFile) { [void]$sb.AppendLine('<div class="warnbox" style="border-color:#c0341d;color:#e0472a">정지(HALT): ' + (Esc (Get-Content -LiteralPath $HaltFile -Raw -Encoding UTF8)) + '</div>') }
   # 메모리
   [void]$sb.AppendLine('<h2>MEMORY (커밋 여유 GB, 최근 24시간)</h2><div class="panel">' + (Mem-Svg) + '<div class="note">memlog.csv 기준. 점선 = 시작 조건(Library 있음 20GB / 없음 30GB).</div></div>')
   # 이력
@@ -485,6 +510,7 @@ function Get-Changed([string]$fromFull, [string]$toFull) {
 }
 
 function Cmd-Check {
+  if (Test-Path -LiteralPath $HaltFile) { Write-Host "HALT 파일 있음: $HaltFile - run 은 실행되지 않는다" }
   $st = Load-State; $head = Get-HeadInfo
   $depFull = ''; $depShort = '(없음)'
   if ($null -ne $st.deployed) { $depFull = [string]$st.deployed.shaFull; $depShort = [string]$st.deployed.sha }
@@ -533,6 +559,7 @@ function Cmd-Swap {
 }
 
 function Cmd-Run {
+  if (Test-Path -LiteralPath $HaltFile) { Log "HALT 파일이 있어 실행하지 않는다: $HaltFile (지우기 전까지 정지)"; return }
   $st = Load-State; $head = Get-HeadInfo
   $depFull = ''; if ($null -ne $st.deployed) { $depFull = [string]$st.deployed.shaFull }
   if ($null -ne $st.pending) { Cmd-Swap; $st = Load-State }   # 이전에 미룬 교체 먼저 시도
@@ -543,7 +570,7 @@ function Cmd-Run {
   $runId = '{0}_{1}' -f (Get-Date -Format 'yyyyMMdd-HHmm'), $head.short.Substring(0, 7)
   $runDir = Join-Path $RunsDir $runId; New-Item -ItemType Directory -Force -Path $runDir | Out-Null
   $branchName = 'unity/main'; if ($Ref -ne $MainRef) { $branchName = $Ref }
-  $run = [ordered]@{ id = $runId; sha = $head.short; shaFull = $head.full; branch = $branchName; subject = $head.subject; startedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); finishedAt = ''; buildSeconds = 0; smokeSeconds = 0; buildExit = $null; receiptPassed = $null; verdict = 'ABORT'; replaced = $false; replaceNote = ''; changedCount = 0; changed = @(); smokeNote = ''; build = $null; player = $null; m1 = $null; caps = @() }
+  $run = [ordered]@{ id = $runId; sha = $head.short; shaFull = $head.full; branch = $branchName; subject = $head.subject; startedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); finishedAt = ''; buildSeconds = 0; smokeSeconds = 0; buildExit = $null; receiptPassed = $null; verdict = 'ABORT'; replaced = $false; replaceNote = ''; changedCount = 0; changed = @(); smokeNote = ''; build = $null; player = $null; m1 = $null; caps = @(); hud = $null; smoke = $null; crash = $null; buildCrash = $null; restoreFailed = ''; mediaMissing = @(); extraKnown = @{}; captureNote = $null; failReasons = @(); knownTotal = 0; buildWindow = $false }
   $ch = Get-Changed $depFull $head.full; $run.changedCount = $ch.count; $run.changed = $ch.items
   $rules = Load-Rules
   $runStart = Get-Date
@@ -562,7 +589,14 @@ function Cmd-Run {
     if ($LASTEXITCODE -ne 0) { throw '워크트리 checkout 실패' }
     foreach ($s in 'restore-lobby-media.cjs', 'restore-warrior-story.cjs') {
       $sp = Join-Path $Cfg.Worktree "unity\Tools\$s"
-      if (Test-Path -LiteralPath $sp) { & $Cfg.Node $sp --project (Join-Path $Cfg.Worktree 'unity') | Out-Null; Log "$s 종료코드 $LASTEXITCODE" } else { Log "$s 없음(이 커밋엔 불필요)" }
+      if (Test-Path -LiteralPath $sp) { & $Cfg.Node $sp --project (Join-Path $Cfg.Worktree 'unity') | Out-Null; Log "$s 종료코드 $LASTEXITCODE"; if ($LASTEXITCODE -ne 0) { $run.restoreFailed = [string]$run.restoreFailed + "$s(exit $LASTEXITCODE) " } } else { Log "$s 없음(이 커밋엔 불필요)" }
+    }
+    $mediaMissing = @(Test-RequiredMedia (Join-Path $Cfg.Worktree 'unity') $rules)
+    if ($mediaMissing.Count -gt 0 -or $run.restoreFailed) {
+      $run.mediaMissing = $mediaMissing
+      $why = '필수 영상 누락: ' + ($mediaMissing -join ', '); if ($run.restoreFailed) { $why += ' / 복원 스크립트 실패: ' + $run.restoreFailed }
+      $run.verdict = 'FAIL'; $run.failReasons = @($why); $run.replaceNote = $why; $run.smokeNote = '빌드 전 단계에서 중단'
+      Log $why; return
     }
 
     # 2) 빌드 -> build_new
@@ -573,6 +607,7 @@ function Cmd-Run {
       & robocopy 'E:\exoduser-wt\pc-unity-rm0\unity\Library' (Join-Path $proj 'Library') /E /XJ /MT:16 /NFL /NDL /NJH /NP | Out-Null
     }
     $stage = Join-Path $Cfg.Out 'build_new'
+    for ($ba = 1; $ba -le 2; $ba++) {
     if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
     Write-MemLog
     $sw = [Diagnostics.Stopwatch]::StartNew()
@@ -591,6 +626,16 @@ function Cmd-Run {
     $rcpt = ReadJson (Join-Path $runDir 'build-receipt.json'); if ($null -ne $rcpt) { $run.receiptPassed = [bool]$rcpt.passed }
     $bj = Judge-Log (Join-Path $runDir 'build.log') 'build' $rules
     $run.build = $bj
+    if (Test-CrashRun $run.buildExit (Join-Path $runDir 'build.log')) {
+      $run.buildCrash = Get-CrashInfo $runStart
+      Copy-Item -LiteralPath (Join-Path $runDir 'build.log') -Destination (Join-Path $runDir "build.crash$ba.log") -Force -ErrorAction SilentlyContinue
+      Log ("빌드 크래시 감지(시도 $ba/2): 종료코드 $($run.buildExit), 로그 $(Join-Path $runDir "build.crash$ba.log"), 크래시 폴더 $($run.buildCrash.editorDir)")
+      if ($ba -eq 1) { Log '1회 재시도'; continue }
+      Set-Halt 'Unity 에디터 빌드 크래시 2회' (Join-Path $runDir 'build.crash2.log') $run.buildCrash.editorDir $runId
+      $run.verdict = 'ABORT'; $run.replaceNote = '빌드 크래시 2회 - HALT'; return
+    }
+    break
+    }
     $exeOk = Test-Path -LiteralPath (Join-Path $stage 'EXODUSER-Unity.exe')
     $buildOk = ($run.buildExit -eq 0) -and $exeOk -and ($run.receiptPassed -eq $true)
 
@@ -600,7 +645,9 @@ function Cmd-Run {
       # 다른 Unity 가 끼어들지 않았는지 다시 확인(우리 빌드 프로세스는 이미 종료)
       $others = @(Get-UnityProcs)
       if ($others.Count -gt 0) { Log ("스모크 전 대기: 다른 Unity {0}개" -f $others.Count); [void](Wait-Ready $true) }
+      for ($sa = 1; $sa -le 2; $sa++) {
       $smokeDir = Join-Path $runDir 'smoke'
+      if ($sa -gt 1 -and (Test-Path -LiteralPath $smokeDir)) { Remove-Item -LiteralPath $smokeDir -Recurse -Force }
       $sm = Run-Smoke $stage $smokeDir
       $run.smokeSeconds = $sm.seconds; $run.smokeNote = $sm.note
       Log ("스모크: ran={0} exit={1} timedOut={2} windowSeen={3} slowExit={4} {5}" -f $sm.ran, $sm.exit, $sm.timedOut, $sm.windowSeen, $sm.slowExit, $sm.note)
@@ -617,6 +664,16 @@ function Cmd-Run {
         $run.caps = @(Make-Thumbs $runId (Join-Path $smokeDir 'caps'))
         $crashLogs = @($pj.failById.Keys | Where-Object { $_ -eq 'crash' })
         if (($null -ne $sm.exit -and [int]$sm.exit -ne 0) -or $crashLogs.Count -gt 0) { $run.crash = Get-CrashInfo $runStart; Log ('플레이어 크래시 의심: 로그 ' + (Join-Path $smokeDir 'player.log') + ' / 크래시 폴더 ' + $run.crash.playerDir) }
+      }
+      if ($sm.ran -and (Test-CrashRun $sm.exit (Join-Path $smokeDir 'player.log'))) {
+        $run.crash = Get-CrashInfo $runStart
+        Copy-Item -LiteralPath (Join-Path $smokeDir 'player.log') -Destination (Join-Path $runDir "player.crash$sa.log") -Force -ErrorAction SilentlyContinue
+        Log ("플레이어 크래시 감지(시도 $sa/2): 종료코드 $($sm.exit), 로그 $(Join-Path $runDir "player.crash$sa.log"), 크래시 폴더 $($run.crash.playerDir)")
+        if ($sa -eq 1) { Log '1회 재시도'; continue }
+        Set-Halt '플레이어 스모크 크래시 2회' (Join-Path $runDir 'player.crash2.log') $run.crash.playerDir $runId
+        $run.verdict = 'ABORT'; $run.replaceNote = '스모크 크래시 2회 - HALT'; return
+      }
+      break
       }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
     $run.player = $pj; $run.m1 = $m1
