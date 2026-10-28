@@ -328,7 +328,7 @@ namespace Exoduser.UnityPort
             // ---- 11 druid boss fight (BX-02/03/05): the real 23-move AI runs; the player stands in the open and is healed every tick so the fight can be observed ----
             sim.Config.EnemyAiEnabled = true; var druid = sim.Druid; var moveStates = new HashSet<string>(); int maxPhase = 0, maxShots = 0, fightHurt0 = sim.HurtCount, shotCaptures = 0, hazardCaptures = 0, poolCaptures = 0, fightTicks = 0;
             float hpBefore = bossActor != null ? bossActor.Hp : 0; float shieldBefore = bossActor != null ? bossActor.Shield : 0; bool deathNoted = false;
-            if (bossActor != null) { p.X = bossActor.X + 260; p.Y = bossActor.Y; }
+            if (bossActor != null) { p.X = bossActor.X + 260; p.Y = bossActor.Y + 150; }   // harness placement only: the web draw order is (int)Y, so 150 px below the boss keeps the player in front of the druid body in 11a (same Y was hidden behind it)
             while (druid != null && bossActor != null && fightTicks++ < 2600 && bossActor.Alive)
             {
                 p.Hp = p.MaxHp; p.Shield = p.MaxShield; if (fightTicks > 420) p.Iframes = 600;   // first 420 ticks: let hits land (the point is to see the moves hit); afterwards untouchable so the captures stay readable
@@ -360,10 +360,10 @@ namespace Exoduser.UnityPort
                 p.Hp = p.MaxHp;
                 if (bossActor != null && bossActor.Alive) { sim.HurtEnemy(bossActor, bossActor.MaxHp * 4); kills++; }
                 StepInput(0, 0, p.X + 100, p.Y, false, false);
-                if (bossActor != null && !bossActor.Alive && bossActor.SinkDruid && sinkSeenAt < 0) { sinkSeenAt = killGuard; p.X = bossActor.X; p.Y = bossActor.Y + 240; p.Iframes = 600; }
+                if (bossActor != null && !bossActor.Alive && bossActor.SinkDruid && sinkSeenAt < 0) { sinkSeenAt = killGuard; p.X = bossActor.X; p.Y = bossActor.Y + 420; p.Iframes = 600; }
             }
             bool sunk = bossActor != null && !bossActor.Alive && bossActor.SinkDruid;
-            if (sunk) { p.X = bossActor.X; p.Y = bossActor.Y + 240; p.Iframes = 600; for (int k = 0; k < 90; k++) { StepInput(0, 0, bossActor.X, bossActor.Y, false, false); if (k == 6) yield return M1Shot("12a-druid-sink-start"); if (k == 40) yield return M1Shot("12b-druid-sink-mid"); } }   // the sink plays on the render frames after the final death (66 tick body, 18 hold, 18 fade)
+            if (sunk) { p.X = bossActor.X; p.Y = bossActor.Y + 420; p.Iframes = 600; for (int k = 0; k < 90; k++) { StepInput(0, 0, bossActor.X, bossActor.Y, false, false); if (k == 6) yield return M1Shot("12a-druid-sink-start"); if (k == 40) yield return M1Shot("12b-druid-sink-mid"); } }   // the sink plays on the render frames after the final death (66 tick body, 18 hold, 18 fade)
             int open = 0; while (flow.Exits.Count == 0 && open++ < 500) StepInput(0, 0, p.X + 100, p.Y, false, false);
             StepInput(0, 0, p.X + 100, p.Y, false, false);
             yield return new WaitForSecondsRealtime(.8f);

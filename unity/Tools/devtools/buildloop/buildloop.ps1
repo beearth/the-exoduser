@@ -12,6 +12,7 @@ param(
   [switch]$HudSmoke,           # m1-check 뒤에 hud-smoke 도 무창으로 돌려 스스로 종료하는지 기록(DBT-6)
   [switch]$KeepStage,          # 브랜치 시험 뒤에도 build_new 를 지우지 않는다(데스크톱 시험용)
   [switch]$SkipSmoke,          # 빌드까지만(스모크 생략, 판정 ABORT 로 기록)
+  [ValidateSet('desktop', 'batch')][string]$Mode = 'desktop',   # 스모크 방식: desktop=숨은 데스크톱(기본, HUD/UI 캡처 포함) / batch=batchmode GPU(월드만)
   [switch]$NoSwap,             # build 를 교체하지 않는다(브랜치 시험용). -Ref 가 origin/unity/main 이 아니면 자동으로 켜진다
   [string]$JudgeOnly,          # 빌드 없이 로그 한 개만 판정(예: -JudgeOnly C:\x\build.log -Scope build)
   [ValidateSet('build', 'player', 'caps')][string]$Scope = 'build',
@@ -318,12 +319,74 @@ function Judge-M1($path, $rules) {
   return [pscustomobject]@{ present = $true; ok = $ok; fail = $fail; neutral = $neu; stages = $stages; firstBlocked = [string](Prop $m 'firstBlocked' ''); device = [string](Prop $m 'device' ''); deviceType = [string](Prop $m 'deviceType' ''); captureMode = [string](Prop $m 'captureMode' ''); headless = [bool](Prop $m 'headless' $false); guiRepaints = [int](Prop $m 'guiRepaints' 0); guiBridged = [int](Prop $m 'guiBridged' 0) }
 }
 
-# ---------- 스모크(실제 GPU, 무창) ----------
+# ---------- 숨은 데스크톱 스모크 (기본 방식) ----------
+# 별도 Windows 데스크톱(CreateDesktop)에 플레이어를 batchmode 없이 띄운다. 사용자 화면에는 창이 없고, D3D12 Present·OnGUI·ScreenCapture 가 모두 실제로 돌아 HUD/UI 가 캡처에 찍힌다.
+function Add-HiddenDesktopType {
+  if ('HDL' -as [type]) { return }
+  Add-Type -TypeDefinition @'
+using System; using System.Runtime.InteropServices; using System.Text; using System.Collections.Generic;
+public static class HDL {
+  public delegate bool EnumProc(IntPtr h, IntPtr l);
+  [DllImport("user32.dll", SetLastError=true, CharSet=CharSet.Unicode)] public static extern IntPtr CreateDesktop(string name, IntPtr dev, IntPtr devmode, int flags, uint access, IntPtr sa);
+  [DllImport("user32.dll")] public static extern bool CloseDesktop(IntPtr h);
+  [DllImport("user32.dll")] public static extern bool EnumDesktopWindows(IntPtr hDesk, EnumProc p, IntPtr l);
+  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
+  [DllImport("kernel32.dll", SetLastError=true, CharSet=CharSet.Unicode)] public static extern bool CreateProcess(string app, StringBuilder cmd, IntPtr pa, IntPtr ta, bool inherit, uint flags, IntPtr env, string cwd, ref STARTUPINFO si, out PROCESS_INFORMATION pi);
+  [DllImport("kernel32.dll")] public static extern uint WaitForSingleObject(IntPtr h, uint ms);
+  [DllImport("kernel32.dll")] public static extern bool GetExitCodeProcess(IntPtr h, out uint code);
+  [DllImport("kernel32.dll")] public static extern bool TerminateProcess(IntPtr h, uint code);
+  [DllImport("kernel32.dll")] public static extern bool CloseHandle(IntPtr h);
+  [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)] public struct STARTUPINFO { public int cb; public string lpReserved; public string lpDesktop; public string lpTitle; public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags; public short wShowWindow, cbReserved2; public IntPtr lpReserved2, hStdInput, hStdOutput, hStdError; }
+  [StructLayout(LayoutKind.Sequential)] public struct PROCESS_INFORMATION { public IntPtr hProcess, hThread; public int dwProcessId, dwThreadId; }
+  public static int CountVisible(IntPtr desk) { int n = 0; EnumDesktopWindows(desk, delegate(IntPtr h, IntPtr p) { if (IsWindowVisible(h)) n++; return true; }, IntPtr.Zero); return n; }
+}
+'@
+}
+function Run-DesktopSmoke([string]$buildDir, [string]$smokeDir, [string]$flag, [string]$receiptName) {
+  $r = [ordered]@{ mode = 'hidden-desktop'; ran = $false; exit = $null; timedOut = $false; windowSeen = $false; slowExit = $false; receiptWritten = $false; exitAfterReceiptSec = $null; hiddenVisibleWindows = 0; desktopClosed = $false; note = ''; seconds = 0 }
+  Add-HiddenDesktopType
+  New-Item -ItemType Directory -Force -Path (Join-Path $smokeDir 'sandbox') | Out-Null
+  $exe = Join-Path $buildDir 'EXODUSER-Unity.exe'
+  $name = 'ExoLoop{0}_{1}' -f $PID, (Get-Random)
+  $desk = [HDL]::CreateDesktop($name, [IntPtr]::Zero, [IntPtr]::Zero, 0, 0x10000000, [IntPtr]::Zero)
+  if ($desk -eq [IntPtr]::Zero) { $r.note = 'CreateDesktop 실패 ' + [Runtime.InteropServices.Marshal]::GetLastWin32Error(); return [pscustomobject]$r }
+  $pi = New-Object HDL+PROCESS_INFORMATION
+  $sw = [Diagnostics.Stopwatch]::StartNew()
+  try {
+    $cmdText = '"{0}" {1} --unity-mute --unity-qa-sandbox "{2}" -output "{3}" -screen-width {4} -screen-height {5} -screen-fullscreen 0 -logFile "{6}"' -f $exe, $flag, (Join-Path $smokeDir 'sandbox'), $smokeDir, 1600, 900, (Join-Path $smokeDir 'player.log')
+    $cmd = New-Object Text.StringBuilder $cmdText
+    $si = New-Object HDL+STARTUPINFO; $si.cb = [Runtime.InteropServices.Marshal]::SizeOf($si); $si.lpDesktop = 'WinSta0\' + $name
+    $ok = [HDL]::CreateProcess([NullString]::Value, $cmd, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0, [IntPtr]::Zero, $buildDir, [ref]$si, [ref]$pi)
+    if (-not $ok) { $r.note = 'CreateProcess 실패 ' + [Runtime.InteropServices.Marshal]::GetLastWin32Error(); return [pscustomobject]$r }
+    $r.ran = $true
+    $deadline = (Get-Date).AddMinutes($Cfg.SmokeTimeoutMin); $receipt = Join-Path $smokeDir $receiptName; $receiptSeen = $null
+    while ([HDL]::WaitForSingleObject($pi.hProcess, 2000) -eq 258) {
+      $pp = Get-Process -Id $pi.dwProcessId -ErrorAction SilentlyContinue
+      if ($null -ne $pp) { $pp.Refresh(); if ($pp.MainWindowHandle -ne [IntPtr]::Zero) { $r.windowSeen = $true; $r.note = '사용자 데스크톱에 플레이어 창이 보임(숨은 데스크톱 위반) - 강제 종료'; [void][HDL]::TerminateProcess($pi.hProcess, 98); break } }
+      $vis = [HDL]::CountVisible($desk); if ($vis -gt $r.hiddenVisibleWindows) { $r.hiddenVisibleWindows = $vis }
+      if ($null -eq $receiptSeen -and (Test-Path -LiteralPath $receipt)) { $receiptSeen = Get-Date }
+      if ($null -ne $receiptSeen -and ((Get-Date) - $receiptSeen).TotalSeconds -gt $Cfg.ExitGraceSec) { $r.slowExit = $true; $r.note = "$receiptName 을 쓴 뒤 $($Cfg.ExitGraceSec)초 안에 종료하지 않음(DBT-6) - 강제 종료"; [void][HDL]::TerminateProcess($pi.hProcess, 97); break }
+      if ((Get-Date) -gt $deadline) { $r.timedOut = $true; $r.note = "스모크 시간 초과($($Cfg.SmokeTimeoutMin)분), 강제 종료"; [void][HDL]::TerminateProcess($pi.hProcess, 99); break }
+    }
+    [void][HDL]::WaitForSingleObject($pi.hProcess, 10000)
+    [uint32]$code = 0; [void][HDL]::GetExitCodeProcess($pi.hProcess, [ref]$code); $r.exit = [int]$code
+    if ($null -ne $receiptSeen) { $r.receiptWritten = $true; $r.exitAfterReceiptSec = [int]((Get-Date) - $receiptSeen).TotalSeconds }
+  } finally {
+    if ($pi.hProcess -ne [IntPtr]::Zero) { [void][HDL]::CloseHandle($pi.hProcess); [void][HDL]::CloseHandle($pi.hThread) }
+    if ($pi.dwProcessId) { Get-Process -Id $pi.dwProcessId -ErrorAction SilentlyContinue | Stop-Process -Force }
+    [void][HDL]::CloseDesktop($desk); $r.desktopClosed = $true
+    $r.seconds = [int]$sw.Elapsed.TotalSeconds
+  }
+  return [pscustomobject]$r
+}
+
+# ---------- 스모크(실제 GPU, batchmode 대체 방식) ----------
 # 플레이어는 -batchmode(-nographics 없음)로 띄워 GPU 장치를 유지하고 창은 만들지 않는다. 소리: --unity-mute (AudioListener.volume=0, pause=true).
 # 자기가 띄운 프로세스의 MainWindowHandle 이 0 이 아니면 실패로 친다.
 function Test-OwnWindow($proc) { try { $proc.Refresh(); return ($proc.MainWindowHandle -ne [IntPtr]::Zero) } catch { return $false } }
 function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json') {
-  $r = [ordered]@{ ran = $false; exit = $null; timedOut = $false; windowSeen = $false; slowExit = $false; receiptWritten = $false; exitAfterReceiptSec = $null; note = ''; seconds = 0 }
+  if ($Mode -eq 'desktop') { return (Run-DesktopSmoke $buildDir $smokeDir $flag $receiptName) }
+  $r = [ordered]@{ mode = 'batch'; ran = $false; exit = $null; timedOut = $false; windowSeen = $false; slowExit = $false; receiptWritten = $false; exitAfterReceiptSec = $null; note = ''; seconds = 0 }
   New-Item -ItemType Directory -Force -Path $smokeDir | Out-Null
   New-Item -ItemType Directory -Force -Path (Join-Path $smokeDir 'sandbox') | Out-Null
   $sw = [Diagnostics.Stopwatch]::StartNew()
@@ -489,7 +552,7 @@ ul{margin:6px 0 0;padding-left:18px}
     $hudx = Prop $latest 'hud' $null
     if ($null -ne $hudx) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">hud-smoke(무창): 종료코드 ' + (Esc $hudx.exit) + ' · 영수증 ' + (Esc $hudx.receiptWritten) + ' · 영수증 뒤 종료까지 ' + (Esc $hudx.exitAfterReceiptSec) + '초 · 시간 초과 ' + (Esc $hudx.timedOut) + '</div>') }
     $smx = Prop $latest 'smoke' $null
-    if ($null -ne $smx) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">m1-check(무창): 종료코드 ' + (Esc $smx.exit) + ' · 영수증 뒤 종료까지 ' + (Esc $smx.exitAfterReceiptSec) + '초 · 창 핸들 감지 ' + (Esc $smx.windowSeen) + '</div>') }
+    if ($null -ne $smx) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">스모크 방식 <b>' + (Esc (Prop $smx 'mode' 'batch')) + '</b> · m1-check: 종료코드 ' + (Esc $smx.exit) + ' · 영수증 뒤 종료까지 ' + (Esc $smx.exitAfterReceiptSec) + '초 · 창 핸들 감지 ' + (Esc $smx.windowSeen) + '</div>') }
     $mm = Prop $latest 'mediaMissing' $null
     if ($null -ne $mm -and @($mm).Count -gt 0) { [void]$sb.AppendLine('<div class="warnbox" style="border-color:#c0341d;color:#e0472a">필수 영상 누락: ' + (Esc (@($mm) -join ', ')) + '</div>') }
     $cr = Prop $latest 'crash' $null; $bcr = Prop $latest 'buildCrash' $null
@@ -760,6 +823,7 @@ function Cmd-Run {
         if ($sm.windowSeen) { $reasons += '플레이어가 창을 띄움(무창 위반)' }
         if ($null -ne $sm.exit -and [int]$sm.exit -ne 0 -and [int]$sm.exit -ne -1073740771 -and -not $sm.slowExit -and -not $sm.timedOut -and -not $sm.windowSeen) { $reasons += ('플레이어 비정상 종료 exit={0}' -f $sm.exit) }
         if ($null -ne $m1 -and $m1.present -and $m1.deviceType -match 'Null') { $reasons += 'Null 그래픽 장치(m1-check.json)' }
+        if ($Mode -eq 'desktop' -and $null -ne $m1 -and $m1.present -and $m1.guiRepaints -eq 0) { $reasons += 'OnGUI 가 한 번도 안 돌았다(guiRepaints=0) - UI 미검증' }
         if ($null -ne $m1 -and $m1.present -and $m1.headless -and $m1.guiRepaints -eq 0) { $run.captureNote = 'batchmode 에서 IMGUI Repaint 이벤트가 오지 않음 - 캡처에는 HUD/UI 가 없음(월드만)' }
         if ($null -eq $m1 -or -not $m1.present) { $reasons += 'm1-check.json 없음' } elseif ($m1.fail -gt 0) { $reasons += "m1 단계 실패 $($m1.fail)건" }
         if ($null -ne $run.userSave -and $run.userSave.changed -gt 0) { $reasons += ('USER_SAVE changed={0} (사용자 실제 세이브/설정이 바뀜)' -f $run.userSave.changed) }
@@ -782,7 +846,7 @@ function Cmd-Run {
 
     # 5) 교체
     $builtAt = Get-Date -Format 'yyyy-MM-dd HH:mm'
-    $loopReceipt = [ordered]@{ sha = $head.short; shaFull = $head.full; branch = $branchName; builtAt = $builtAt; verdict = $run.verdict; failReasons = $reasons; knownTotal = $knownTotal; buildSeconds = $run.buildSeconds; smokeSeconds = $run.smokeSeconds; buildExit = $run.buildExit; receiptPassed = $run.receiptPassed; gfx = $(if ($null -ne $pj) { $pj.gfx } else { @() }); m1 = $(if ($null -ne $m1) { @{ ok = $m1.ok; fail = $m1.fail; neutral = $m1.neutral } } else { $null }); exe = $(Join-Path $Cfg.Out 'build\EXODUSER-Unity.exe'); headless = $(if ($null -ne $m1) { $m1.headless } else { $null }); device = $(if ($null -ne $m1) { $m1.device } else { '' }); captureMode = $(if ($null -ne $m1) { $m1.captureMode } else { '' }); guiRepaints = $(if ($null -ne $m1) { $m1.guiRepaints } else { 0 }); windowSeen = $(if ($null -ne $sm) { $sm.windowSeen } else { $false }); extraKnown = $extra; by = 'devtools-buildloop' }
+    $loopReceipt = [ordered]@{ sha = $head.short; shaFull = $head.full; branch = $branchName; builtAt = $builtAt; verdict = $run.verdict; failReasons = $reasons; knownTotal = $knownTotal; buildSeconds = $run.buildSeconds; smokeSeconds = $run.smokeSeconds; buildExit = $run.buildExit; receiptPassed = $run.receiptPassed; gfx = $(if ($null -ne $pj) { $pj.gfx } else { @() }); m1 = $(if ($null -ne $m1) { @{ ok = $m1.ok; fail = $m1.fail; neutral = $m1.neutral } } else { $null }); exe = $(Join-Path $Cfg.Out 'build\EXODUSER-Unity.exe'); headless = $(if ($null -ne $m1) { $m1.headless } else { $null }); device = $(if ($null -ne $m1) { $m1.device } else { '' }); captureMode = $(if ($null -ne $m1) { $m1.captureMode } else { '' }); guiRepaints = $(if ($null -ne $m1) { $m1.guiRepaints } else { 0 }); windowSeen = $(if ($null -ne $sm) { $sm.windowSeen } else { $false }); extraKnown = $extra; mode = $Mode; by = 'devtools-buildloop' }
     $eligible = ($run.verdict -eq 'PASS') -or ($run.verdict -eq 'KNOWN' -and $AllowKnown)
     if ($NoSwap) {
       $run.replaceNote = '브랜치 시험 빌드/-NoSwap - build 교체 안 함'
