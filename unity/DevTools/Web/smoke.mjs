@@ -39,8 +39,12 @@ const env = await page.evaluate(async () => ({ hasGpu: !!navigator.gpu, adapter:
 // loader finished: loading bar hidden or canvas getContext resolved
 let loadMs = null;
 for (let i = 0; i < 240; i++) {
-  const buf = await page.screenshot({ clip: { x: 500, y: 300, width: 600, height: 300 } }).catch(() => null);
-  if (buf && buf.length > 6000) { loadMs = Date.now() - t0; break; }
+  const hidden = await page.evaluate(() => { const c = document.querySelector('#unity-loading-container'); return c ? getComputedStyle(c).display === 'none' : null; }).catch(() => false);
+  if (hidden === true) { loadMs = Date.now() - t0; break; }
+  if (hidden === null) {
+    const buf = await page.screenshot({ clip: { x: 500, y: 300, width: 600, height: 300 } }).catch(() => null);
+    if (buf && buf.length > 6000) { loadMs = Date.now() - t0; break; }
+  }
   await page.waitForTimeout(500);
 }
 const timing = await page.evaluate(() => performance.getEntriesByType('resource').filter(e => /build2\.(data|wasm|framework)/.test(e.name)).map(e => ({ n: e.name.split('/').pop(), startMs: Math.round(e.startTime), endMs: Math.round(e.responseEnd), enc: e.encodedBodySize })));
@@ -56,7 +60,7 @@ for (const s of steps) {
   else if (kind === 'hold') { await page.keyboard.down(arg); await page.waitForTimeout(ms || 2500); await page.keyboard.up(arg); }
   else if (kind === 'holdmulti') { for (const k of arg) await page.keyboard.down(k); await page.waitForTimeout(ms || 1500); for (const k of arg) await page.keyboard.up(k); }
   else if (kind === 'type') await page.keyboard.type(arg, { delay: 80 });
-  else if (kind === 'click') await page.mouse.click(arg, ms);
+  else if (kind === 'click') await page.mouse.click(arg <= 1 ? arg * 1600 : arg, ms <= 1 ? ms * 900 : ms);   // fractions of the 1600x900 viewport
   else if (kind === 'wait') await page.waitForTimeout(arg);
   await page.waitForTimeout(kind === 'wait' ? 0 : 1500);
   if (kind === 'shot' || kind !== 'wait' || (label === 'shot')) {

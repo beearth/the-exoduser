@@ -163,6 +163,7 @@ namespace Exoduser.DevTools
                 PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.WebGL, ManagedStrippingLevel.Medium);
                 PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.WebGL, Il2CppCodeGeneration.OptimizeSize);
                 PlayerSettings.runInBackground = true;
+                PlayerSettings.WebGL.template = "PROJECT:Exoduser";   // Assets/WebGLTemplates/Exoduser (dark stage, gold hairline loader, no Unity logo)
 
                 if (!File.Exists(ScenePath)) throw new FileNotFoundException(ScenePath);
                 Directory.CreateDirectory(outDir);
