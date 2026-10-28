@@ -24,8 +24,10 @@ P1 승인 사항: 범위 x0~199 × y32~199 + 지도 밖 띠, 보스방(x80~119 �
 - 데이터: `Remodel/CH1_4/Data/ch1_4_{walk,rooms,spawns,reach,receipt,core_compare,plan,build}.json`. 생성기 `tools/rm4/{extract,compare_core,plan,sketch}.mjs`(plan.mjs가 build.json까지 쓴다). 계획서 `docs/engine/UNITY_RM4_PLAN_20261028.md`, 탑뷰 `tools/rm4/ch1_4_plan_topview.png`.
 
 ## 다음 할 일 (순서)
-1. **Unity 실행 순번을 받는다.** 맵 RM 순서는 RM-3 → RM-2 → RM-4. 유니티 총괄에게 순번과 Library 복사 허가를 물었고(10-28 메시지 a3c7d5c8) 답을 못 받았다.
-   - 제 worktree에는 Library가 없어서 첫 실행이 전체 임포트다. 다른 worktree(예: `pc-unity-rm1/unity/Library`)를 `robocopy /XJ`로 복사해도 되는지 확인한다. Unity가 열려 있는 프로젝트의 Library는 복사하지 않는다.
+1. **Unity 실행은 유니티 총괄이 알려 줄 때까지 하지 않는다.** 순번은 전체 9번(맨 끝)이다: rmb1 → O-1 → HUD → UI → UCH-05 → UCH-06 → RM-3 → RM-2 → **RM-4**. 그 전에는 `run-unity.ps1`도 돌리지 않는다(바쁘면 끝나는 스크립트도 포함).
+   - Library 복사는 유니티 총괄이 허용했다(조건: 원본은 Unity가 안 쓰는 worktree, 버전 6000.6.7f1 동일, `/E /XJ`(/MIR·/MOVE 금지), 원본에 junction 없음, 대상 드라이브 여유 20GB 이상, 복사만 하고 Unity는 안 띄움).
+   - **10-28 복사 완료:** 원본 `pc-unity-rm1/unity/Library`(버전 동일, junction 0개, E: 918GB 여유, Unity 프로세스 0개 확인) → `pc-unity-rm4/unity/Library`. 디렉터리 2,752 / 파일 31,211 / 5.95GB 복사, 실패·불일치 0, robocopy 종료 코드 1, 대상 junction 0개. 로그 `I:/EXODUSER-Storage/rm4/logs/library-copy.log`. 스크립트는 `I:/EXODUSER-Storage/rm4/diag/libcopy.ps1`. Git Bash에서 robocopy를 직접 부르면 `/E` 같은 옵션이 경로로 바뀌어 종료 코드 16이 난다(PowerShell 스크립트로 부를 것). 원본 Library에는 Unity가 한 번도 열지 않은 rm4 소스 변경(Rm4SliceBuilder 등)이 없으므로 첫 실행은 증분 임포트와 컴파일이 일어난다.
+   - 컴파일 오류는 1회만 고쳐서 다시 돌리고, 두 번째도 실패하면 멈추고 보고한다. 병합은 맵 총괄 구조 PASS 뒤 유니티 총괄이 한다.
 2. 실행 전 점검: `tools/rm4/run-unity.ps1`이 가드한다(Unity·EXODUSER-Unity 중 HasExited=false가 있으면 BUSY로 종료, 커밋 여유 20GB 미만이면 종료). 끝난 뒤 프로세스가 실제로 종료됐는지 확인한다. DOTNET env 4종은 스크립트가 설정한다.
    - `unity/Tools/restore-lobby-media.cjs`와 `restore-warrior-story.cjs`는 10-28에 이미 실행했다(`--project <unity 폴더>`). 미디어는 git 미추적이다.
 3. 실행 4번(각각 `-Log`를 다르게): `Exoduser.Rm4SliceBuilder.Run` → `Wedge` → `Capture`(`-outDir I:/EXODUSER-Storage/rm4/cuts -cuts start,heart,gate,top`, 이어서 `-capsule 1`로 start,heart,gate) → `Fps`(`-out I:/EXODUSER-Storage/rm4/out/rm4-fps.json`). 컴파일 오류가 나면 원인을 고치고 한 번만 다시 돌린다. 같은 실패가 2번이면 멈추고 보고한다.
