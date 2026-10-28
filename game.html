@@ -9712,7 +9712,7 @@ function _checkPetDialogue(){
     if(!_petBossPhase.p4&&_bHpR<.15){_petBossPhase.p4=true;_petBidCD('boss_p4','cat','마지막이야! 끝장내!',4,9999,'crow','…빈틈을 노려.',3)}
   }
   // 보스 킬 — 기존 대사 강제 종료 후 처치 대사 무조건 재생
-  if(_petBossAliveLast&&!G.bossAlive){_petBubble.t=0;_petBubble.pair=null;_petBubble._uid=null;delete _petDlgCD['boss_kill'];if(G._druidFled&&G.stage===0)_petSay('boss_kill','crow','…달아났다. 숲 깊은 곳으로.',4,'cat','도망갔어! 그래도 우리가 이긴 거 맞지?',4);else _petSay('boss_kill','crow','…끝났다. 다음으로.',4,'cat','해냈어! 여신님이 기뻐하시겠어!',4);_petBossPhase.p2=false;_petBossPhase.p3=false;_petBossPhase.p4=false}
+  if(_petBossAliveLast&&!G.bossAlive){_petBubble.t=0;_petBubble.pair=null;_petBubble._uid=null;delete _petDlgCD['boss_kill'];if(G._druidFled&&G.stage===0)_petSay('boss_kill','crow','…달아났다. 숲 깊은 곳으로.',4,'cat','도망갔어! 그래도 우리가 이긴 거 맞지?',4);else if(G.stage===9)_petSay('boss_kill','crow','…여왕이 쓰러졌다. 굴이 조용하군.',4,'cat','끝났어! 이제 위로 올라가자!',4);else _petSay('boss_kill','crow','…끝났다. 다음으로.',4,'cat','해냈어! 여신님이 기뻐하시겠어!',4);_petBossPhase.p2=false;_petBossPhase.p3=false;_petBossPhase.p4=false}
   _petBossAliveLast=G.bossAlive;
   // 스테이지 클리어
   {let _ac=0;for(let i=0;i<ens.length;i++){if(ens[i].alive)_ac++}
@@ -9727,7 +9727,7 @@ function _checkPetDialogue(){
   _petBossPrevAlive=G.bossAlive;
   if(G.bossAlive&&G._bossRef&&G._bossRef.alive&&!_petBossIntroSeen[_ch]){
     _petBossIntroSeen[_ch]=true;
-    const _bi=[['crow','…첫 번째다. 부담 갖지 마. 죽어도 다시 와.',5,'cat','첫 보스! 우리 같이 잡자!',4],['crow','벌레의 왕이다. 꺼림칙하게 생겼군.',5,'cat','으으! 큰 벌레야! 진짜 끔찍해!',4],['crow','…빙결 마법을 쓴다. 화염 무기로 가.',5,'cat','얼음 보스! 화염 칼 꺼내!',4],['crow','화염의 군주야. 빙결 무기로 꺼 버려.',5,'cat','불 보스! 얼음 무기 꺼내라구!',4],['crow','군단의 우두머리다. 잡몹부터 정리해.',5,'cat','부하 먼저! 안 그럼 끝없이 나와!',4],['crow','…사도다. 패턴이 복잡해. 집중해.',5,'cat','사도 보스 진짜 강해! 정신 똑바로 차려!',4],['crow','…마지막이다. 여신도 더는 도와줄 수 없어.',5,'cat','마지막!! 우리 다 같이 끝내자!!',4]];
+    const _bi=[['crow','…첫 번째다. 부담 갖지 마. 죽어도 다시 와.',5,'cat','첫 보스! 우리 같이 잡자!',4],(G.stage===4?['crow','…문지기다. 저놈을 넘어야 굴로 들어간다.',5,'cat','으으! 큰 벌레가 길을 막고 있어!',4]:['crow','벌레의 왕이다. 꺼림칙하게 생겼군.',5,'cat','으으! 큰 벌레야! 진짜 끔찍해!',4]),['crow','…빙결 마법을 쓴다. 화염 무기로 가.',5,'cat','얼음 보스! 화염 칼 꺼내!',4],['crow','화염의 군주야. 빙결 무기로 꺼 버려.',5,'cat','불 보스! 얼음 무기 꺼내라구!',4],['crow','군단의 우두머리다. 잡몹부터 정리해.',5,'cat','부하 먼저! 안 그럼 끝없이 나와!',4],['crow','…사도다. 패턴이 복잡해. 집중해.',5,'cat','사도 보스 진짜 강해! 정신 똑바로 차려!',4],['crow','…마지막이다. 여신도 더는 도와줄 수 없어.',5,'cat','마지막!! 우리 다 같이 끝내자!!',4]];
     if(_bi[_ch])_petBidCD('boss_intro_ch'+_ch,_bi[_ch][0],_bi[_ch][1],_bi[_ch][2],99999,_bi[_ch][3],_bi[_ch][4],_bi[_ch][5]);
   }
 
@@ -10943,8 +10943,10 @@ function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
     im.src='assets/sprites/boss/boss_dark_druid_'+files[k]+'?v=20260927-edge3';}
 })();
 // ── [STY-12] 1장 보스 한 줄 대사 자막 (번역대상 No.3343~3347) — 부활 판정이 있는 보스는 마지막 사망 때만. 펫 말풍선(_petSay)과 별개 UI(#bossLine)
-const _BOSS_LINES={intro0:'새 거름이 떨어졌군.',sink0:'숲은 아직 배고프다. 둥지에서 보자.',die1:'…아직 거둘 때가 아닌데.',die2:'…밥 먹을 시간인데.',die3:'…죽기 싫었을 뿐이다.'};
+const _BOSS_LINES={intro0:'새 거름이 떨어졌군.',sink0:'숲은 아직 배고프다. 둥지에서 보자.',die1:'…아직 거둘 때가 아닌데.',die2:'…밥 먹을 시간인데.',die3:'…죽기 싫었을 뿐이다.',intro4:'여기는 아무도 지나가지 못한다.',die4:'…이번엔… 열지 않았다.',die5:'…셈이… 아직 안 끝났다.',die6:'…결과를 보지 못했군.',die8:'…박자가… 끊겼어.',intro9:'무릎 꿇어라. 너도 곧 내 신도다.',die9:'…아직 기도가 끝나지 않았다.'}; // [STY-15] 2장 키 7개(die7 없음 — 소리로만)
 Object.assign(_EN,{'다크드루이드':'Dark Druid',"…달아났다. 숲 깊은 곳으로.":"…It fled. Deeper into the forest.","도망갔어! 그래도 우리가 이긴 거 맞지?":"It ran away! We still won, right?",'새 거름이 떨어졌군.':'Fresh compost has fallen.','숲은 아직 배고프다. 둥지에서 보자.':'The forest is still hungry. See you at the nest.','…아직 거둘 때가 아닌데.':"…It isn't harvest time yet.",'…밥 먹을 시간인데.':"…It's time to eat.",'…죽기 싫었을 뿐이다.':"…I just didn't want to die."});
+// [STY-15] 2장 보스 한 줄 7키 + 펫 교체 4줄 (번역대상 No.3588~3598)
+Object.assign(_EN,{"여기는 아무도 지나가지 못한다.":"None shall pass this place.","…이번엔… 열지 않았다.":"…This time… I did not open it.","…셈이… 아직 안 끝났다.":"…The tally… isn't settled yet.","…결과를 보지 못했군.":"…So I never saw the result.","…박자가… 끊겼어.":"…The rhythm… broke.","무릎 꿇어라. 너도 곧 내 신도다.":"Kneel. You too will soon be my faithful.","…아직 기도가 끝나지 않았다.":"…The prayer… is not yet finished.","…문지기다. 저놈을 넘어야 굴로 들어간다.":"…A gatekeeper. We get past him, or we never enter the burrow.","으으! 큰 벌레가 길을 막고 있어!":"Ugh! A huge bug is blocking the way!","…여왕이 쓰러졌다. 굴이 조용하군.":"…The queen has fallen. The burrow's gone quiet.","끝났어! 이제 위로 올라가자!":"It's over! Let's head back up!"});
 // [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 + 옛 No.0874/0912/0989/1000/2905/2938 교체)
 Object.assign(_EN,{"썩은 숲은 아직 끝나지 않았다.":"The Rotten Forest is not finished yet.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"...We left the Rotten Forest. It gets worse above.","살았어! 반이나 올라왔어!":"We made it! Halfway up!","…네 층을 넘었다. 진짜 시작은 여기서부터야.":"...Four layers behind us. The real start is here.","네 층 돌파! 우리가 진짜 해냈어!":"Four layers cleared! We really did it!","해냈어! 여신님이 기뻐하시겠어!":"You did it! The Goddess will be pleased!","…여신님이 실망하시겠군.":"...The Goddess will be disappointed."," 돌파!":" Broken Through!","킬루":"Killu","…보통 놈이 아니야. 악의가 덧씌워졌군.":"...Not a regular one. Malice clings to it.","신기록!! 이건 기억해 둬야 해!":"New record!! Remember this one!","화염의 군주야. 빙결 무기로 꺼 버려.":"Lord of flame. Douse it with frost.","…마지막이다. 여신도 더는 도와줄 수 없어.":"...This is the last. Even the Goddess can't help now.","…새 한 마리 안 우네. 숲이 다 먹었어.":"...Not a single bird. The forest ate them all.","위층이 기다린다...":"The layer above awaits...","위층으로 ▶":"Ascend ▶"});
 // [ROLL] 전사 구르기·키 설정 (2026-10-27, 번역대상 No.3372~3376)
@@ -42004,7 +42006,7 @@ function checkRooms(){
           // 포효 SFX
           const _bsf=_bossSfx(G.stage);
           playSample(_bsf?_bsf.howl:'boss_howl',1.0,_r(_bsf?_bsf.howlP:.9,.1));
-          if(G.stage===0)_bossLine('intro0'); // [STY-12] 1-1 드루이드 등장 대사
+          _bossLine('intro'+G.stage); // [STY-12·15] 등장 대사 — 스테이지 조건 없이 _BOSS_LINES 키(intro0·intro4·intro9)가 있는 곳만 표시
         }
       }
       if(G._bossLoadT>=100){G._bossLoadPhase=0;G._bossLoadT=0;G._bossLoadFade=0}
@@ -42902,7 +42904,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // [STY-D9] 1-1 드루이드의 마지막 사망(부활 없음 확정)만 침강 도주로 표시 — 피·고어·시체·사망 문구 숨김, 판정·보상 로직은 아래 그대로
     const _sinkDruid=_isSi0DruidSink(e)&&!(e._reviveTimer>0&&e._bossRevived&&(e._bossRevRoll??1)<(e._bossRevChance||0));
     if(_sinkDruid)_druidSinkStart(e);
-    else if(e.ib&&!e._fmKind&&G.stage>=1&&G.stage<=3&&!_isDruidFinale(e)&&!(e._reviveTimer>0&&e._bossRevived&&(e._bossRevRoll??1)<(e._bossRevChance||0)))_bossLine('die'+G.stage); // [STY-12] si1~3 보스 마지막 사망 한 줄
+    else if(e.ib&&!e._fmKind&&!_isDruidFinale(e)&&!(e._reviveTimer>0&&e._bossRevived&&(e._bossRevRoll??1)<(e._bossRevChance||0)))_bossLine('die'+G.stage); // [STY-12·15] 보스 마지막 사망 한 줄 — _BOSS_LINES 키(die1~6·8·9)가 있는 스테이지만 표시
     // 버스트루프 광역 사망음 카운터
     if(opts&&opts._blastKill&&G._blDeathSndQ!==undefined){
       // 사망음은 큐에만 쌓고 deathFX는 묵음 처리

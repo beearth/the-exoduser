@@ -3048,7 +3048,7 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | 표면 | 좌우 페이드 흑철 반투명 띠 `rgba(7,6,6,.74)`, 위·아래 1px 금빛 헤어라인 `rgba(164,147,115,.5)`, 그림자 `drop-shadow(0 5px 12px)` |
 | 글꼴·색 | 화자: `'Cinzel',var(--font-hell)` `clamp(.52rem,.72vw,.7rem)` 자간.32em `rgba(168,153,127,.72)`. 대사: `var(--font-hell)` `clamp(.95rem,1.4vw,1.3rem)` 자간.05em 뼈색 `rgba(223,214,194,.93)` |
 | 표시 | `.show` 애니메이션 `hudBossLine` 3.2s(14%까지 페이드 인·78%부터 아웃, 위로 4px). 재표시 시 class 제거→reflow→추가 |
-| 호출 | `_bossLine(key)` — 키 `intro0/sink0/die1/die2/die3`, 아레나 진입(`_enterBossArena`) 시 `G._bossLineSeen` 초기화, 키별 1회. 보스 대사 5줄·번역: `번역대상_전체목록.md` No.3343~3349 |
+| 호출 | `_bossLine(key)` — 키 `intro0/sink0/die1/die2/die3` + 2장 `intro4/die4/die5/die6/die8/intro9/die9`(STY-15, 2026-10-28, `die7` 없음 — 사운드 처리). 등장·사망 트리거는 스테이지 범위 조건 없이 `_BOSS_LINES` 키 존재로 거르며(키 없으면 즉시 return), 아레나 진입(`_enterBossArena`) 시 `G._bossLineSeen` 초기화, 키별 1회. 보스 대사 5줄·번역: `번역대상_전체목록.md` No.3343~3349 |
 | 불변 | 순수 DOM — 보스 생사·`G.bossAlive`·출구 개방 틱과 무관(헤드리스 A/B 209/210틱·29틱 동일) |
 
 ## 조용한 단계 — 스킬 창 [K] 웹 반영 (2026-10-27)
