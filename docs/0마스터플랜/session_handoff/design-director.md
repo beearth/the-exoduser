@@ -62,3 +62,9 @@
 
 - `LOBBY_AAA_REFERENCE_STUDY_20261028.md` §18에 현행 `video/world_intro_v17_blood_en.mp4`(약 113.29초)의 10초 간격 접촉판과 20·55·85·105초 원본 1x 프레임 판정을 기록했다. 검붉은 도입에서 회청색 후반으로 넘어가는 저채도 흐름을 확인해 영상 전체 감마·채도 일괄 보정은 채택하지 않았다.
 - 폴백 JPG 18컷은 별도 접촉판으로 확인했다. 증거는 `G:/exoduser/tmp/design-review/20261028_intro_tone/`; 영상·이미지·코드 변경 0, 유료 생성 0. 이는 원본 프레임 검수이며 실제 NW.js 재생·자막·음향 동기화 검수가 아니다. 특정 구간의 색 튐이 재현되면 그 구간만 스토리·아트 총괄과 비교한다.
+
+## 2026-10-28 Codex 인수 후속 — 제단 각인 비교 정정
+
+- 최초 눈 문장 비교 스크립트가 `SIGIL_URL` 선언보다 앞의 주석만 치환한 것을 확인해 그때 캡처의 후보 증거를 무효화했다. 정확한 선언을 치환해 원본·눈 문장·중심을 빈 바깥 고리 SVG를 1920×1080으로 다시 캡처하고 후보 자산 요청·pageerror 0을 확인했다. SSOT §6.4에 정정·1x 판정을 남겼다.
+- 눈 문장은 중심 구슬 아래에서 약하고, 바깥 고리(`G:/exoduser/tmp/design-review/20261028_skill_sigil/outer_ring_candidate.svg`)는 일곱 사슬 고리가 1x에서 읽히지 않아 RETOUCH. 게임 원화·`SIGIL_URL` 변경 0, 유료 생성 0. 사용자 아트 검토 전 런타임 채택 없음.
+- 별도 H5 후보: `codex/pc-design-stat-summary-20261028` tip `79f8c34b7ca05fd3cb5f8ef2c08d7655d7217cff`의 능력치 서랍 색·표제 정리. 소스+SSOT 함께 push, `MERGE_QUEUE.md`에 main/DEMO/EA/NW.js 게이트를 남겼다. 이 main 문서 기록은 코드 병합이 아니다.
