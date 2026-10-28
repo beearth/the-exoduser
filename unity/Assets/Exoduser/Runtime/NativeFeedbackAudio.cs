@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
         // adopted start volumes (RM1_AUDIO_KEYS.json); the final values are set by ear
         static readonly Dictionary<string,float> StartVolume=new Dictionary<string,float>{
             {"tell_melee",.45f},{"tell_ranged",.45f},{"tell_boss",.45f},{"tell_grab",.45f},{"tell_parry",.45f},{"druid_erupt",.5f},{"druid_sink",.55f},{"druid_tide",.5f},{"druid_roots_rise",.5f},{"druid_heartbeat",.5f},{"druid_burrow",.45f},{"druid_staff_tap",.5f},{"druid_root_pierce",.5f},
-            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f}};
+            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f},{"druid_hit",.3f},{"druid_hit_heavy",.6f},{"druid_whip",.55f}};
         readonly Dictionary<string,int> lastTellTick=new Dictionary<string,int>();
         int lastPlayerHitTick=-1000;
         public NativeFeedbackAudio(Transform parent,Camera camera)
@@ -87,7 +87,7 @@ namespace Exoduser.UnityPort
         {
             if(key.StartsWith("sword_swing",StringComparison.Ordinal))return "g_swing";
             if(key.StartsWith("monster_hit",StringComparison.Ordinal)||key=="flat_hit")return "g_monHit";
-            if(key=="boss_hit")return "g_bossHit";
+            if(key=="boss_hit"||key=="druid_hit")return "g_bossHit";
             return key;
         }
         Req Make(string key,float volume,float pitch,Vector3 pos,FeedbackEvent e=null){var r=new Req{key=key,logical=key,volume=volume,pitch=pitch,pos=pos,tick=e!=null?e.Tick:CurrentTick,source=e!=null?(e.Source??("Core "+e.Kind)):"host"};Classify(key,out r.priority,out r.group,out r.blend,out r.front);r.category=Category(key);return r;}
@@ -98,7 +98,7 @@ namespace Exoduser.UnityPort
                 case FeedbackKind.Sample:if(e.SampleKey=="druid_sink"&&e.Source==SinkCoreSource)break;HandleSample(e);break;   // the Core's sink notification is ignored: the sink sound rides on the sink drawing (PlaySinkHole)
                 case FeedbackKind.EnemyHit:Receipt.requested++;Queue(HitRequest(e));break;
                 case FeedbackKind.BossHit:Receipt.requested++;Queue(BossHitRequest(e));break;   // _BOSS_SFX[0].hit pitch .7
-                case FeedbackKind.EnemyCrit:Receipt.requested++;Queue(Make("crit_heavy",e.Volume,Jitter(1,.05f),World(e),e));break;
+                case FeedbackKind.EnemyCrit:Receipt.requested++;if(e.IsBoss&&HasClip("druid_hit_heavy"))HeavyHit(e);else Queue(Make("crit_heavy",e.Volume,Jitter(1,.05f),World(e),e));break;
                 case FeedbackKind.EnemyDeath:HandleDeath(e);break;
                 case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(HasClip("druid_vo_last")?Make("druid_vo_last",.75f,Jitter(1,.03f),World(e),e):Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));break;   // _BOSS_SFX[0].die
                 case FeedbackKind.Parry:   // game.html doParry (38667): Q parry -> q_parry .9 (1+-.08); otherwise sword_parry 1 (1+-.1) + one sword_back* .5 (1.1+-.1); then 50 % voice_parry1-4 (1+-.03) else male_grunt (1+-.15)
@@ -118,8 +118,10 @@ namespace Exoduser.UnityPort
             }
         }
         // boss hit voicing (sound lead SND-09): variants rotate at random but never the same one twice in a row, rate +-6 %, a hit within 0.6 s of the last one is x.85 quieter
-        // than that one (floor x.55), a 0.6 s pause restores the start volume. Only boss_hit exists today; the adopted druid_hit variants go into BossHitVariants.
-        static readonly string[] BossHitVariants={"boss_hit"};
+        // than that one (floor x.55), a 0.6 s pause restores the start volume. SND-09 round 2: druid_hit (one adopted variant, v3d) replaces boss_hit; a is not used, b..d were not picked.
+        // Every boss hit in the Unity build today is the 1-1 druid; the next boss gets its own set here.
+        static readonly string[] BossHitVariantsDruid={"druid_hit"},BossHitVariantsOld={"boss_hit"};
+        string[] BossHitVariants{get{return HasClip("druid_hit")?BossHitVariantsDruid:BossHitVariantsOld;}}
         int lastBossHitVariant=-1,lastComboTick=-1000;float comboAtten=1;
         Req BossHitRequest(FeedbackEvent e)
         {
@@ -127,7 +129,26 @@ namespace Exoduser.UnityPort
             if(BossHitVariants.Length>1&&v==lastBossHitVariant)v=(v+1+rng.Next(BossHitVariants.Length-1))%BossHitVariants.Length;
             lastBossHitVariant=v;
             comboAtten=e.Tick-lastComboTick<=36?Mathf.Max(.55f,comboAtten*.85f):1f;lastComboTick=e.Tick;
-            return Make(BossHitVariants[v],e.Volume*comboAtten,Jitter(.7f,.06f),World(e),e);
+            string key=BossHitVariants[v];
+            var r=Make(key,e.Volume*comboAtten,key=="druid_hit"?Jitter(1,.06f):Jitter(.7f,.06f),World(e),e);
+            if(key=="druid_hit")r.note="file ok (adopted "+AdoptedSource(key)+")";
+            return r;
+        }
+        // SND-09 round 2 druid_hit_heavy: a critical hit on the boss (the Core's EnemyCrit event) sounds this instead of crit_heavy, 30 tick cooldown (spec L1). No stagger event exists in the Core yet.
+        int lastHeavyTick=-1000;
+        void HeavyHit(FeedbackEvent e)
+        {
+            if(e.Tick-lastHeavyTick<30){Receipt.dropped++;Lines.Add(Line(e.Tick,"druid_hit_heavy",e.Source??("Core "+e.Kind),"EnemyHit",.6f,"DROPPED 30 f cooldown"));return;}
+            lastHeavyTick=e.Tick;
+            var r=Make("druid_hit_heavy",.6f,Jitter(1,.05f),World(e),e);r.note="file ok (adopted "+AdoptedSource("druid_hit_heavy")+")";Queue(r);
+        }
+        // SND-09 round 2 druid_whip: the third swing of move #1 (slashCombo hit 3). The Core's hit-3 telegraph event is the cue; the whip sounds when the swing lands (telegraph + link tele + swing check)
+        void WhipOnThirdSwing(FeedbackEvent e)
+        {
+            if(e.Source==null||!e.Source.EndsWith("slashCombo hit 3 telegraph",StringComparison.Ordinal)||!HasClip("druid_whip"))return;
+            int after=DruidRemodelData.SlashLinkTele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt);
+            var r=Make("druid_whip",.55f,Jitter(1,.05f),World(e),e);r.logical="druid_whip";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#1 slashCombo hit 3 swing (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_whip")+")";
+            Receipt.requested++;direct.Add(r);
         }
         // _hitSfxForEtype: Core names the category (EnemySoundTables.Hit) and the base pitch; the variant is drawn here, never in the Core
         Req HitRequest(FeedbackEvent e)
@@ -183,6 +204,7 @@ namespace Exoduser.UnityPort
             string[] files;if(!LogicalFiles.TryGetValue(e.SampleKey,out files))files=new[]{e.SampleKey};
             float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
             string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?"no file yet (3rd-round pending, left empty)":(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
+            WhipOnThirdSwing(e);
             var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal);
             if(tell){
                 int last;if(lastTellTick.TryGetValue(e.SampleKey,out last)&&e.Tick-last<8){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED same key within 120 ms"));return;}
@@ -203,13 +225,14 @@ namespace Exoduser.UnityPort
         static readonly Dictionary<string,string> Adopted=new Dictionary<string,string>{
             {"druid_vo_pain","_preview_druid/druid_vo_pain_v2a_proc"},{"druid_vo_attack","_preview_druid/druid_vo_attack_v2a_proc"},{"druid_vo_phase","_preview_druid/druid_vo_phase_v2c_proc"},
             {"druid_vo_fall","_preview_druid/druid_vo_fall_v2a_proc"},{"druid_vo_last","_preview_druid/druid_vo_last_v2a_proc"},{"druid_drag","_preview_druid/druid_drag_v2a_proc"},
-            {"druid_fissure","_preview_druid/druid_fissure_v2b_proc"},{"druid_pod","_preview_druid/druid_pod_v2d_proc"},{"druid_summon","_preview_druid/druid_summon_v2c_proc"}};
+            {"druid_fissure","_preview_druid/druid_fissure_v2b_proc"},{"druid_pod","_preview_druid/druid_pod_v2d_proc"},{"druid_summon","_preview_druid/druid_summon_v2c_proc"},
+            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"}};
         static string AdoptedSource(string key){string s;return Adopted.TryGetValue(key,out s)?s:null;}
         static string Line(int tick,string key,string source,string group,float volume,string file){return "frame="+tick+" key="+key+" from=\""+source+"\" group="+group+" vol="+volume.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+" file="+file;}
         int lastBossHitTick = -1000;
         void Queue(Req r)
         {
-            if(r.key=="boss_hit"){if(r.tick-lastBossHitTick<8){Receipt.dropped++;return;}lastBossHitTick=r.tick;}   // A3: same 8 f cooldown as every enemy hit
+            if(r.key=="boss_hit"||r.key=="druid_hit"){if(r.tick-lastBossHitTick<8){Receipt.dropped++;return;}lastBossHitTick=r.tick;}   // A3: same 8 f cooldown as every enemy hit
             double now=r.tick/60.0;   // Core clock, see HandleSample
             if(r.priority<PriSkill&&lastAt.TryGetValue(r.key,out double last)&&now-last<.03){Receipt.dropped++;return;}
             lastAt[r.key]=now;pending.Add(r);

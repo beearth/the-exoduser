@@ -163,3 +163,16 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 음량은 임시 시작값(명세는 `druid_hit` .3만 지정)이고 청음 뒤 조정한다. 다시 만드는 5키(`druid_hit`·`druid_hit_heavy`·`druid_whip`·`druid_slam`·`druid_spore`)는 지금 소리 그대로(`boss_hit`) 두었다.
 
 **확인:** Unity 컴파일 오류 0. 같은 시드 13 드루이드 타임라인 Receipt(녹음 v4 아님): `druid_vo_pain` 25 · `druid_vo_attack` 17 · `druid_vo_phase` 3 · `druid_vo_fall` 2 · `druid_vo_last` 1 · `druid_drag` 8 · `druid_fissure` 5 · `druid_pod` 1 · `druid_summon` 0(이 시드 전투에서 기술 9 미사용), 패링 소리 14줄(성공 7회 × 2). 녹음의 보스 구간 BGM은 새 `bgm_druid_boss`와 일치(r=0.99, 일정 오프셋), 옛 `boss.mp3`와는 불일치.
+
+### 6.4 sound-lead SND-09 2차 채택 3키와 sink 이동 (2026-10-28)
+
+| 키 | 파일(`Audio/RM1/`) | 채택본 | 연결 | 시작 음량 |
+|---|---|---|---|---|
+| `druid_hit` | `druid_hit.mp3` | `_preview_druid2/druid_hit_v3d_proc.mp3` | 보스 피격(`BossHit`)에서 `boss_hit` 대신. 변형 1개(a~c 사용 안 함), rate ±6 %(중심 1.0), 연타 감쇠(0.6초 안 ×0.85, 바닥 ×0.55), 8틱 쿨다운 그대로 | Core 전달값 .3 |
+| `druid_hit_heavy` | `druid_hit_heavy.mp3` | `_preview_druid2/druid_hit_heavy_v3d_proc.mp3` | 보스에 대한 치명타(`EnemyCrit`)에서 `crit_heavy` 대신, 쿨다운 30틱, rate ±5 %. 휘청임(poise) 알림은 Core에 없어 연결하지 않음 | .6 |
+| `druid_whip` | `druid_whip.mp3` | `_preview_druid2/druid_whip_v3a_proc.mp3` | 기술 1(slashCombo) 3타: Core의 `#1 slashCombo hit 3 telegraph` 알림을 신호로, 타격 시점(텔레그래프 + SlashLinkTele 24 + 스윙 확인 2 = 26틱 뒤)에 재생. rate ±5 %, Skill 그룹 | .55 |
+
+- `druid_slam`·`druid_spore`는 3차 제작 중이라 소리를 그대로 둔다. 키별 음량은 임시값이고 실제 플레이 판정 때 조정한다.
+- 변경은 어댑터(`NativeFeedbackAudio`)와 `RM1_AUDIO_KEYS.json`·mp3뿐이고 Core는 바뀌지 않았다.
+- `druid_sink`: Core 알림은 어댑터가 무시하고, `NativeGame.BossSinkDraw`가 침강 구멍이 보이는 첫 틱(`SinkHoleTick` = 37)에 `PlaySinkHole`을 호출한다. 녹음 하니스는 `BossDeath` 틱 + 37에 같은 행을 넣는다(`051af9033`).
+- 확인 상태: Roslyn(Core + 어댑터) 오류 0. Unity 플레이어 빌드 오류 0은 **빌드 미확인**.
