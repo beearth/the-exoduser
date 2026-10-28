@@ -74,3 +74,9 @@
 - 승인 시트 S1/S2b/S3와 보관된 본체 GLB 전·측·후·55° 독립 렌더, 보행 GLB 4자세를 직접 대조했다. 결과는 **RETOUCH(제작 후보)**: 뿔·깃털 망토·새발 실루엣과 큰 보행 파열 없음은 확인했지만 이마·앞자락의 트리퀘트라는 LOCK 정본 인장으로 두 곳 모두 교체해야 한다.
 - 왼손 2.30m 지팡이·`#9ea83a` Emission·노인 아래 얼굴 가독성·Unity idle/walk/mirror 127 slam의 접지·망토 관통·접촉 프레임을 ④·⑤ 게이트로 남겼다. 실제 Unity 보스방 1x 캡처 전에는 채택 PASS가 아니다. 상세는 `DARK_DRUID_DESIGN_LOCK.md` §15, 보스 보드는 §8, 캡처는 `I:/EXODUSER-Storage/codex-takeover/design/druid_review/`.
 - 본 리뷰는 문서만 변경했다. 모델·Animator·런타임 자산·유료 생성은 변경하거나 실행하지 않았다. 다음 디자인 순서는 RM-B1 실제 1x 판정 뒤 RM-B4→RM-B2→RM-B3이며, 각 후보는 해당 DESIGN LOCK과 승인 시트를 우선 대조한다.
+
+## 2026-10-29 사용자 교정 — 다크드루이드 전사형 체형 폐기
+
+- 사용자 직접 지시: 현재 후보는 근육질 전사처럼 보인다. 목표는 **길쭉하고 마른 저주받은 괴물 드루이드**. 기존 S1 본체 시트 PASS와 Meshy 본체·리그 RETOUCH는 체형에 대해 철회했다. 현행 본체 후보는 VISUAL FAIL이며 ④ Unity 임포트 채택 대상으로 삼지 않는다. 원본은 보존한다.
+- `DARK_DRUID_DESIGN_LOCK.md` v0.4 §4·§16에 2.70m 전체 높이 안의 9.2등신/정수리 2.30m, 몸통 0.44m·처진 깃털 망토 포함 0.70m, 꺼진 늑골·긴 전완·비대칭 굽은 기본 자세를 새 현행 체형으로 고정했다. 보스 보드 §8에도 철회·재조형 게이트를 전달했다.
+- 비용 0 비율 실험: 원본 GLB를 보존하고 정적 복사본 `I:/EXODUSER-Storage/codex-takeover/design/druid_review/cursed_lean_PROPORTION_ONLY.glb`(SHA-256 `0954efc7edc66373cc7b232650956bf0dfff0c5b6d8bdaeb1281dd4a2ea202f6`)과 정면·측면·55° 렌더를 만들었다. 폭 축소·세로 연장 방향은 보이지만 대칭 외투·견고한 발이 남아 완성 모델이나 승인 자산이 아니다. UV·스킨·Animator 재작업 및 Unity 1x 판정은 대기.
