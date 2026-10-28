@@ -12,6 +12,8 @@ using Exoduser.UnityPort.Core;
 //   3. the guard's +10 % lands on the northeast only; the other regions keep kills / total.
 //   4. 3 of 4 regions cleared keeps the gate sealed (sealed event carries "3"), the 4th opens it within one 30-frame block.
 //   5. one full run with a per-region (kills/total, cleared at tick) table: gate opens -> arena -> boss dies -> exit -> StageCleared.
+//   6. (R-B) the four abyssal anglers on the real map: sites / hp / atk, the 1000 px wake line, the attack order, a region at 80 % stays sealed while its angler lives,
+//      the field boss flag only after all four died, the exit tile says slay-every-angler until then, then the whole run to StageCleared.
 // usage: RegionRealMapTests.dll <ch1_map.json> [receipt.json]
 class Program
 {
@@ -152,6 +154,150 @@ class Program
             var aex = s.Stage.Exits[s.Stage.Exits.Count - 1]; int sp0 = s.Player.StatPoints; s.Player.X = (aex.X + .5f) * 40; s.Player.Y = (aex.Y + .5f) * 40; Run(s, 70);
             Check(s.Stage.StageCleared && s.Player.StatPoints == sp0 + 10, "arena exit -> stage cleared (+10 SP)");
             Say("stage cleared at tick " + s.TickCount + ", clear time " + s.Stage.BossClearSeconds + "s; regions " + Table(s));
+        }
+
+
+        // ---- 6. R-B: the four abyssal anglers ----
+        {
+            Func<int, int, Simulation> MakeB = (seed, lv) =>
+            {
+                var rng = new Random(seed);
+                var cfg = new SimulationConfig { StageIndex = 0, EnemyAiEnabled = false, StartX = data.startX, StartY = data.startY, PlayerMaxHp = 1000000000, PlayerMaxStamina = 300, PlayerMaxMana = 300 };
+                var sim = new Simulation(cfg); sim.Random01 = () => rng.NextDouble(); sim.Player.Level = lv;
+                sim.CanMove = map.CanMove; sim.HasLineOfSight = map.LineOfSight; sim.IsProjectileWall = (x, y) => map.Blocked(x, y);
+                sim.FloorTile = (tx, ty) => !map.Blocked((tx + .5f) * 40, (ty + .5f) * 40);
+                sim.Stage.InitializeField(data.tiles, data.width); sim.Stage.Enabled = true;   // FieldBossDone stays down: the anglers decide it
+                sim.Stage.BossSpawners[0] = (s2, x, y) => s2.AddEnemy(new EnemyState { Etype = 0, Hp = 100, MaxHp = 100, X = x, Y = y, Radius = 20, IsBoss = true });
+                sim.EnableFieldSpawns(); sim.SpawnStartEnemies(); sim.InitRegions(); sim.SpawnHoles = null; sim.EnableFieldBosses();
+                return sim;
+            };
+            int[][] sites = { new[] { 58, 158 }, new[] { 148, 150 }, new[] { 52, 42 }, new[] { 148, 42 } }; int[] els = { 2, 1, 3, 4 };
+            foreach (int lv in new[] { 1, 10 })
+            {
+                var s = MakeB(31, lv); Run(s, 1);
+                Check(s.FieldBosses != null && s.FieldBosses.Length == 4 && s.FieldBosses.All(f => f != null && f.Asleep && f.Hid), "Lv" + lv + ": four anglers asleep after the first tick");
+                int hpExp = Simulation.FieldBossHp(lv), atkExp = (int)Math.Floor((20 + lv * 3) * 1.2);
+                for (int i = 0; i < 4; i++)
+                {
+                    var f = s.FieldBosses[i];
+                    Check(f.X == (sites[i][0] + .5) * 40 && f.Y == (sites[i][1] + .5) * 40 && f.El == els[i] && f.R == 120, "Lv" + lv + " site " + i + " (" + sites[i][0] + "," + sites[i][1] + ") element " + els[i]);
+                    Check(f.Hp == hpExp && f.MaxHp == hpExp && f.Atk == atkExp, "Lv" + lv + " site " + i + " hp " + f.Hp + " atk " + f.Atk);
+                    Check(map.CanMove((float)f.X, (float)f.Y, 15), "Lv" + lv + " site " + i + " stands on walkable ground");
+                }
+                Say("anglers Lv" + lv + ": " + string.Join("  ", s.FieldBosses.Select(f => "(" + (int)(f.X / 40) + "," + (int)(f.Y / 40) + ") el" + f.El + " hp " + f.Hp + " atk " + f.Atk)));
+            }
+            { var sx = MakeB(1, 1); Say("regions with anglers: " + string.Join(" ", Enumerable.Range(0, 4).Select(i => RegionNames[i] + "<-site" + sx.Regions[i].FbIdx))); }
+
+            // wake line: 1001 px sleeps, 1000 px wakes (and announces once)
+            {
+                var s = MakeB(32, 1); Run(s, 1); var sw = s.FieldBosses[0];
+                s.Player.X = (float)(sw.X + 1001); s.Player.Y = (float)sw.Y; s.Player.Iframes = 99999; s.TickFieldBosses(); s.TickFieldBosses(); s.TickFieldBosses();
+                Check(sw.Asleep, "1001 px from the south-west angler: still asleep");
+                s.Player.X = (float)(sw.X + 1000); s.TickFieldBosses();
+                Check(!sw.Asleep && sw.TpT == 54 && sw.Hid, "1000 px: awake, rising from the ground (54 frames), hidden");
+                Check(s.Stage.Events.Count(e => e.Kind == StageEventKind.AnglerWoke) == 1, "one 'Abyssal Angler' announcement");
+                for (int k = 0; k < 54; k++) { s.Player.X = (float)(sw.X + 1000); s.TickFieldBosses(); }
+                Check(!sw.Hid && sw.TpT == 0 && !sw.SpawnIn, "after 54 frames it stands (can be hit, blocks the way)");
+            }
+
+            // attack order, 520 px from the south-west angler (inside the 1920x1080 shooting box)
+            {
+                var s = MakeB(33, 1); Run(s, 1); var sw = s.FieldBosses[0];
+                int wake = -1, rise = -1, energy = -1; var energies = new List<int>(); var emits = new List<int>(); var tele = new List<int>(); var landed = new List<int>(); bool hidPrev = true;
+                for (int t = 1; t <= 1500; t++)
+                {
+                    s.Player.X = (float)(sw.X + 520); s.Player.Y = (float)sw.Y; s.Player.Iframes = 99999; s.Player.Hp = s.Player.MaxHp;
+                    int sc = s.FieldBossShotCount, tpb = s.FieldBossTeleports; bool wasAsleep = sw.Asleep;
+                    s.TickFieldBosses();
+                    if (wasAsleep && !sw.Asleep) wake = t;
+                    if (rise < 0 && !sw.Asleep && !sw.Hid) rise = t;
+                    if (s.FieldBossShotCount > sc) { var spec = s.FieldBossShots[s.FieldBossShots.Count - 1]; if (spec.ElemBall) { energies.Add(t); if (energy < 0) energy = t; } else emits.Add(t); }
+                    if (s.FieldBossTeleports > tpb) tele.Add(t);
+                    if (hidPrev && !sw.Hid && rise >= 0 && t > rise) landed.Add(t);
+                    hidPrev = sw.Hid;
+                }
+                Say("attack order (frames after waking at tick " + wake + "): stands +" + (rise - wake) + ", energy balls at +" + string.Join(", +", energies.Take(4).Select(e => e - wake)) + ", eye shots " + emits.Count + ", teleport announced +" + (tele.Count > 0 ? tele[0] - wake : -1) + ", lands +" + (landed.Count > 0 ? landed[0] - wake : -1));
+                Check(wake > 0 && rise - wake == 54, "stands 54 frames after waking");
+                Check(energy - wake == 299, "first energy ball 299 frames after waking (120 frame shot timer, then the 180 frame charge) (+" + (energy - wake) + ")");
+                Check(energies.Count >= 2 && energies[1] - energies[0] == 180, "the next charge starts the frame after the ball: balls 180 frames apart (" + string.Join(",", energies.Take(3)) + ")");
+                // web quirk, kept: shotCd reaches 0 the frame after the ball, so the next charge (enChg > 0) starts at once and blocks the 3 eye shots that the same block wants to release
+                Check(emits.Count == 0 && s.FieldBossBurstShots == 0, "web behaviour: the 3-shot eye burst never gets out (0 eye shots in 1500 frames)");
+                Check(tele.Count > 0 && tele[0] - energy == 599, "teleport announced 599 frames after the first energy ball (tpCd 600 set that frame, counted down the same frame) (+" + (tele.Count > 0 ? tele[0] - energy : -1) + ")");
+                Check(landed.Count > 0 && tele.Count > 0 && landed[0] - tele[0] == 54, "lands 54 frames after the announcement");
+                var e0 = s.FieldBossShots.First(sp => sp.ElemBall);
+                Check(e0.Dmg == Math.Floor(sw.Atk * 2.8) && Math.Abs(Math.Sqrt(e0.Vx * e0.Vx + e0.Vy * e0.Vy) - 10) < 1e-9 && e0.El == 2 && e0.Life == 320, "energy ball: atk x 2.8, speed 10, water, life 320");
+            }
+
+            // regions: 80 % with the angler alive stays open, the angler's death clears it; the field boss flag needs all four
+            {
+                var s = MakeB(34, 1); Run(s, 1);
+                KillBornIn(s, 1, need[1] + 5); Run(s, 45);
+                Check(s.RegionRatio(s.Regions[1], 1) >= 0.8 && !s.Regions[1].Cleared, "northeast at " + s.Regions[1].Kills + "/60 but its angler lives: not cleared");
+                var ne = s.FieldBosses[3];
+                s.Player.X = (float)(ne.X + 500); s.Player.Y = (float)ne.Y; s.Player.Iframes = 99999; Run(s, 60);
+                Check(!ne.Hid && !ne.Asleep, "northeast angler awake and standing");
+                bool hit = s.HurtFieldMobs(ne.X, ne.Y, 10, 1e9, null);
+                Check(hit && s.FieldBosses[3] == null && !s.Stage.FieldBossDone && s.FieldBossAliveCount() == 3, "killing it leaves three; the field boss flag stays down");
+                Run(s, 15);
+                Check(s.Regions[1].Cleared, "northeast clears at the next check once its angler is dead");
+                Check(s.Stage.Events.Count(e => e.Kind == StageEventKind.AnglerSlain) == 1, "one 'Field Boss Slain' announcement");
+            }
+
+            // the whole run
+            {
+                var s = MakeB(2027, 1); Run(s, 1);
+                int[] order = { 3, 0, 2, 1 };   // site indices: NE, SW, NW, SE
+                int[] regionOfSite = { 2, 3, 0, 1 };
+                var log = new List<string>(); var exit = s.Stage.Exits[0];
+                s.HarnessKill(s.Stage.GateGuard); KillBornIn(s, 1, 41); KillBornIn(s, 0, need[0]); KillBornIn(s, 2, need[2]); KillBornIn(s, 3, need[3]); Run(s, 45);
+                Check(s.RegionClearedCount() == 0, "all four regions at 80 % but every angler lives: nothing cleared");
+                Say("run: all regions at 80 %, no angler dead -> cleared " + s.RegionClearedCount() + "/4, field boss flag " + (s.Stage.FieldBossDone ? "up" : "down"));
+                int step = 0;
+                foreach (int k in order)
+                {
+                    var fb = s.FieldBosses[k];
+                    s.Player.X = (float)(fb.X + 500); s.Player.Y = (float)fb.Y; s.Player.Iframes = 99999; Run(s, 70);
+                    s.HurtFieldMobs(fb.X, fb.Y, 10, 1e9, null); Run(s, 15); step++;
+                    Check(s.Regions[regionOfSite[k]].Cleared, "region " + RegionNames[regionOfSite[k]] + " clears when its angler (site " + k + ") dies");
+                    log.Add("angler " + k + " dead @tick " + s.TickCount + " -> " + RegionNames[regionOfSite[k]] + " cleared@" + s.Regions[regionOfSite[k]].ClearedTick + " (" + s.RegionClearedCount() + "/4, flag " + (s.Stage.FieldBossDone ? "up" : "down") + ")");
+                    if (step < 4) Check(!s.Stage.FieldBossDone, "field boss flag still down after " + step + " of 4");
+                }
+                foreach (var l in log) Say("run: " + l);
+                Check(s.Stage.FieldBossDone && s.FieldBossAliveCount() == 0 && s.RegionClearedCount() == 4, "all four dead -> flag up, 4/4 regions");
+                s.Player.X = (exit.X + .5f) * 40; s.Player.Y = (exit.Y + .5f) * 40; s.Player.Iframes = 99999; Run(s, 60);
+                Check(s.Stage.BossUnlocked, "gate opened by 4/4 regions + the flag");
+                Run(s, 480);
+                Check(s.Stage.InArena && s.Stage.Boss != null, "arena entered");
+                Check(s.FieldBosses == null, "no field angler inside the arena");
+                s.HarnessKill(s.Stage.Boss); Run(s, 70);
+                var aex = s.Stage.Exits[s.Stage.Exits.Count - 1]; s.Player.X = (aex.X + .5f) * 40; s.Player.Y = (aex.Y + .5f) * 40; Run(s, 70);
+                Check(s.Stage.StageCleared, "arena exit -> stage cleared");
+                Say("run: stage cleared at tick " + s.TickCount + "; regions " + Table(s));
+            }
+            // the exit tile before the flag says "slay every angler"
+            {
+                var s = MakeB(35, 1); Run(s, 1); var exit = s.Stage.Exits[0];
+                s.Stage.ForceUnlock(); s.Player.X = (exit.X + .5f) * 40; s.Player.Y = (exit.Y + .5f) * 40; s.Player.Iframes = 99999; Run(s, 100);
+                Check(s.Stage.Events.Any(e => e.Kind == StageEventKind.GateAnglerBlocked) && !s.Stage.InArena && s.Stage.LoadPhase == 0, "exit tile with the flag down: blocked, no arena");
+            }
+        }
+
+
+        // ---- 7. follow-up: the death EnemyTick hands to ctx.RegKill (web 34625, stuck in a wall) is a kill of the region the enemy was born in ----
+        // The branch itself cannot trigger in Unity yet: the tick context stubs WallStuck (false), Map (1x1) and PushOutWall, so this drives the connected callback directly.
+        {
+            var s = Make(41); s.Config.EnemyAiEnabled = true; s.Enemies.Clear(); s.Player.Iframes = 99999;
+            var e = s.SpawnEnemy(2420, 2420, 0, null, false); Run(s, 2);
+            var field = typeof(Simulation).GetField("tickCtx", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var ctx = field != null ? field.GetValue(s) as EnemyTickContext : null;
+            Check(e != null && ctx != null && ctx.RegKill != null, "tick context built and RegKill connected");
+            if (e != null && ctx != null)
+            {
+                int idx = s.RegionIdxAt(e.HomeX, e.HomeY), k0 = s.Kills, r0 = s.Regions[idx].Kills;
+                ctx.RegKill(e.Web);
+                Check(!e.Alive && s.Kills == k0 + 1 && s.Regions[idx].Kills == r0 + 1, "kills " + k0 + " -> " + s.Kills + ", " + RegionNames[idx] + " " + r0 + " -> " + s.Regions[idx].Kills);
+                Say("RegKill callback (stuck-in-wall death): kills " + k0 + " -> " + s.Kills + ", " + RegionNames[idx] + " " + r0 + " -> " + s.Regions[idx].Kills);
+            }
         }
 
         var result = JsonSerializer.Serialize(new { scope = "standalone_dotnet_real_ch1_map_not_Unity_runtime", passed = failed == 0, failed, log = Log, checks = Rows }, new JsonSerializerOptions { WriteIndented = true });

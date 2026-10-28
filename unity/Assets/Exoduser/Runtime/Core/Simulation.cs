@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort.Core
             return value;
         }
 
-        private bool Pass(float x, float y, float radius) => CanMove == null || CanMove(x, y, radius);
+        private bool Pass(float x, float y, float radius) => (CanMove == null || CanMove(x, y, radius)) && !PillarBlocked(x, y, radius);   // RB1-3: the root pillars of the remodelled boss arena are solid
         private static float Distance(float x, float y, float xx, float yy) { return (float)Math.Sqrt((x-xx)*(x-xx)+(y-yy)*(y-yy)); }
         private static bool Finite(float value) => !float.IsInfinity(value) && !float.IsNaN(value);
 
@@ -164,6 +164,8 @@ namespace Exoduser.UnityPort.Core
             TickAutoPotion();
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
+            CapEnemies();   // web 34540: ens hard cap 800 -> 700
+            TickFieldBosses();   // M1-REGION R-B: _fbTick
             TickRegions();   // M1-REGION: _regionTick (every 15th frame)
             TickDeathFrameEnd();   // O-1: kill-chain timer, split / companion spawns, the checkRooms() calls of this frame's kills
             Stage.Tick();   // C07: checkRooms (arena entry / boss defeat / exit / clear)
@@ -205,6 +207,7 @@ namespace Exoduser.UnityPort.Core
                 HurtEnemy(enemy, damage, (float)angle);
                 EmitFirstPracticeHit(enemy,"weapon",0,0,wasAlive,true);
             }
+            HurtFieldMobs(Player.X, Player.Y, Config.WeaponRange != 0 ? Config.WeaponRange : 50, damage, null);   // hitArc ends with _hurtFieldMobs(P.x, P.y, range, baseDmg) (web 37832)
         }
 
         // Ordinary physical, no-status/affix branch of hurtE. Source shield first.

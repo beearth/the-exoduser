@@ -80,6 +80,12 @@ namespace Exoduser.UnityPort
             float moved = Mathf.Sqrt((p.X - x0) * (p.X - x0) + (p.Y - y0) * (p.Y - y0));
             yield return M1Shot("03-move");
             M1Add("03", "move", moved > 100 ? "ok" : "fail", "moved " + moved.ToString("0") + " px in 80 ticks", "03-move.png");
+            {   // 03b: the four 심연의 앵글러 stand on their sites from the first tick (web _FB_SITES; hp (1800 + lv * 350) * 7.5)
+                var fbs = sim.FieldBosses; int n = 0; var sites = new List<string>();
+                if (fbs != null) foreach (var a in fbs) if (a != null && a.Hp > 0) { n++; sites.Add("(" + (int)(a.X / 40) + "," + (int)(a.Y / 40) + ") el " + a.El + " hp " + a.Hp + " atk " + a.Atk + (a.Asleep ? " asleep" : " awake")); }
+                bool fbOk = n == 4 && !sim.Stage.FieldBossDone && fbs[0].Hp == Simulation.FieldBossHp(p.Level);
+                M1Add("03b", "abyssal anglers (4)", fbOk ? "ok" : "fail", n + " alive, field boss flag " + (sim.Stage.FieldBossDone ? "up" : "down") + ": " + string.Join(" | ", sites.ToArray()), "03-move.png");
+            }
 
             // ---- 04 attack (LMB, real enemy hp) ----
             sim.Enemies.Clear(); var target = sim.SpawnNormalEnemy(p.X + 45, p.Y); if (target == null) target = sim.SpawnNormalEnemy(p.X - 45, p.Y);
@@ -177,6 +183,12 @@ namespace Exoduser.UnityPort
                     "07c-field-spawn.png");
                 sim.SpawnHoles = null; sim.Enemies.Clear(); sim.Config.EnemyAiEnabled = true; p.Iframes = 0; p.Hp = p.MaxHp;
                 sim.Stage.TotalSpawned = 0;
+                {   // 07d: the walk to the hole passes the north-east angler's lair - it wakes (1000 px), rises, hits back
+                    int awake = 0, standing = 0; if (sim.FieldBosses != null) foreach (var a in sim.FieldBosses) if (a != null && !a.Asleep) { awake++; if (!a.Hid) standing++; }
+                    M1Add("07d", "abyssal angler wakes near the hole", sim.FieldBossAnnounced && awake >= 1 ? "ok" : "fail", awake + " awake (" + standing + " standing), announced " + sim.FieldBossAnnounced + ", contact hits on the player " + sim.FieldBossPlayerHits.Count + ", energy balls " + sim.FieldBossEnergyShots + ", landing slams " + sim.FieldBossSlams, "07c-field-spawn.png");
+                }
+                // the 소환굴 walk ends 320 px from the north-east abyssal angler (148,42), which now wakes and hits back (M1-REGION R-B): steps 08..09b go on from the start spot, away from the anglers
+                p.X = Map.Data.startX; p.Y = Map.Data.startY; p.KnockbackX = 0; p.KnockbackY = 0; p.State = "idle"; p.StateTicks = 0; p.Iframes = 0;
             }
 
             // ---- 08 drop pickup + equip ----
@@ -227,6 +239,7 @@ namespace Exoduser.UnityPort
             // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). The druid is the boss Core's job (pending): a harness stand-in boss walks the real flow. ----
             levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();   // BX: the real druid (Simulation.AttachDruidBoss) is the BossSpawners entry; AI stays off until the arena intro is over
             var flow = sim.Stage; bool naturalUnlock = flow.BossUnlocked; string unlockNote = naturalUnlock ? "gate opened by the kill ratio (" + sim.Stage.StageKills + "/" + flow.TotalSpawned + ")" : "gate still sealed at " + flow.StageKills + "/" + flow.TotalSpawned + " kills: forced open by the harness";
+            flow.FieldBossDone = true;   // the route check does not fight the four anglers (M1-REGION R-B, covered by Tools/fieldboss-oracle + region-test): with the flag down the exit tile only says "slay every angler"
             if (!naturalUnlock) flow.ForceUnlock();
             // the field route (~7000 px of forest) is not walked: the player is placed on the gate approach, like the web's own checkRooms would see him
             var gate = flow.Exits[1]; p.X = (gate.X + .5f) * 40; p.Y = (gate.Y + .5f) * 40; p.Hp = p.MaxHp; p.Iframes = 600;

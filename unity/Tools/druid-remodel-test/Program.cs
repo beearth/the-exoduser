@@ -11,7 +11,24 @@ using Exoduser.UnityPort.Core;
 static partial class P
 {
     static int checks, bad; static readonly List<string> failures = new List<string>();
-    static void Check(bool ok, string what) { checks++; if (!ok) { bad++; failures.Add(what); Console.WriteLine("FAIL " + what); } }
+    // checks per kind (the total moves with the order of the moves in a fight, so reports carry this table)
+    static readonly SortedDictionary<string, int> cats = new SortedDictionary<string, int>();
+    static string Cat(string w)
+    {
+        if (w.Contains("pillars:")) return "pillars (geometry, solid, bullets, fissure)";
+        if (w.Contains("popups:")) return "popups (no glyph text)";
+        if (w.Contains("burrow circle")) return "burrow on a pillar";
+        if (w.Contains("telegraph ")) return "api telegraph entry (per entry per tick)";
+        if (w.Contains("M2 aim")) return "M2 aim (per tick)";
+        if (w.Contains("M5")) return "M5 speed/accel (per tick)";
+        if (w.Contains("M4")) return "M4 gap";
+        if (w.Contains("heartbeat")) return "heartbeat (probes, safe ring, pillar shadow)";
+        if (w.Contains("API")) return "api Total / Safe";
+        if (w.Contains("§10.2") || w.Contains("M3 ") || w.Contains("M1 ") || w.Contains("move table")) return "spec table (10.2, M1, M3)";
+        if (w.Contains("parry guard")) return "parry guard (no reflection)";
+        return "other (lives, kneel, shield, per-move allowed list, spawn checks ...)";
+    }
+    static void Check(bool ok, string what) { checks++; { var c = Cat(what); int n; cats.TryGetValue(c, out n); cats[c] = n + 1; } if (!ok) { bad++; failures.Add(what); Console.WriteLine("FAIL " + what); } }
 
     sealed class Run
     {
@@ -34,7 +51,7 @@ static partial class P
         boss = s.Stage.Boss; if (boss == null) { r.Error = "boss did not spawn"; return r; }
         r.ArenaTick = s.TickCount; r.BaseHp = boss.MaxHp;
         int hitCd = 0, rootLeft = rootHit ? 3 : 0, killGuard = 0, lastLife = 0, hurt0 = s.HurtCount, collapseTick = -1;
-        var tele = new TeleTrack();
+        var tele = new TeleTrack(); var mot = new Motion { Name = name };
         r.MaxHp[0] = boss.MaxHp; r.Radius[0] = boss.Radius; r.Shield[0] = boss.Shield; r.ShieldMax[0] = boss.MaxShield;
         int dmg = Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.012));
         // the intro stun / revive-iframes of StageFlow (90 / 110 f) run out first
@@ -44,7 +61,8 @@ static partial class P
             p.Hp = p.MaxHp;
             var st = s.DruidLife(boss);
             // stay ~110 px from the boss on the side he is facing away from the arena wall (arena centre pull keeps the player out of the corners)
-            if (st == null || !st.Collapsing)
+            bool placed = mot.Before(s, boss, p);
+            if (!placed && (st == null || !st.Collapsing))
             {
                 double ang = Math.Atan2(boss.Y - 800, boss.X - 800) + 0.9; p.X = (float)(boss.X + Math.Cos(ang) * 110); p.Y = (float)(boss.Y + Math.Sin(ang) * 110);
                 if (!s.CanMove((float)p.X, (float)p.Y, p.Radius)) { p.X = boss.X + 110; p.Y = boss.Y; }
@@ -60,15 +78,17 @@ static partial class P
             else
             {
                 collapseTick = -1;
-                if (hitCd-- <= 0) { s.HurtEnemy(boss, dmg); hitCd = 30; }
+                if (hitCd-- <= 0 && !placed) { s.HurtEnemy(boss, dmg); hitCd = 30; }   // no hit (no knock-back) on a heartbeat probe tick
                 if (rootHit && st != null && st.Life != lastLife) rootLeft = 3;
             }
             if (st != null && st.Life != lastLife)
             {
                 lastLife = st.Life; if (st.Life < 3) { r.MaxHp[st.Life] = boss.MaxHp; r.Radius[st.Life] = boss.Radius; r.Shield[st.Life] = boss.Shield; r.ShieldMax[st.Life] = boss.MaxShield; dmg = Math.Max(1, (int)Math.Ceiling(boss.MaxHp * 0.012)); }
             }
+            mot.PreTick(boss);
             s.Tick(0, 0, boss.X, boss.Y, false, false);
             ObserveTelegraphs(name, s, boss, tele);
+            mot.After(name, s, boss, p);
             if (s.Druid != null) { int alive = 0; foreach (var d in s.Druid.Data.Values) foreach (var m in d.Minions) if (m.Alive) alive++; r.MaxMinionsAlive = Math.Max(r.MaxMinionsAlive, alive); }
         }
         r.FightTicks = s.TickCount - r.ArenaTick; r.FinalTick = s.TickCount; r.PlayerHits = s.HurtCount - hurt0;
@@ -150,7 +170,7 @@ static partial class P
     {
         string dir = args.Length > 0 ? args[0] : "remodel-out"; Directory.CreateDirectory(dir);
         var a = Fight("A-root-cut", true, 20261027u); var b = Fight("B-root-not-hit", false, 20261028u);
-        Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard();
+        Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); PillarChecks(); VerifyMoveTable(); VerifyMotionTotals();
         int druidChecks = checks, druidBad = bad;
         FrameworkChecks();
         int fwChecks = checks - druidChecks, fwBad = bad - druidBad;
@@ -158,6 +178,8 @@ static partial class P
         File.WriteAllText(Path.Combine(dir, "remodel-fight-A.json"), ToJson(a), new UTF8Encoding(false));
         File.WriteAllText(Path.Combine(dir, "remodel-fight-B.json"), ToJson(b), new UTF8Encoding(false));
         var sb = new StringBuilder("# RM-B1 RB1-1/2 fight check\n\nchecks " + druidChecks + ", failed " + druidBad + "\n\n# RM-B0 remake frame check\n\nchecks " + fwChecks + ", failed " + fwBad + "\n\n" + fwSummary);
+        foreach (var kv in cats) sb.Append("- CAT ").Append(kv.Key).Append(" = ").Append(kv.Value).Append('\n');
+        foreach (var kv in cats) Console.WriteLine("CAT " + kv.Key + " = " + kv.Value);
         foreach (var f in failures) sb.Append("- FAIL ").Append(f).Append('\n');
         File.WriteAllText(Path.Combine(dir, "remodel-report.md"), sb.ToString(), new UTF8Encoding(false));
         Console.WriteLine("druid-remodel: " + druidChecks + " checks, " + druidBad + " failed");
