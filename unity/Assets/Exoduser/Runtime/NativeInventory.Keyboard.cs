@@ -9,17 +9,17 @@ namespace Exoduser.UnityPort {
   static readonly KeyCode[] inventoryKeys={KeyCode.Tab,KeyCode.Escape,KeyCode.Return,KeyCode.KeypadEnter,KeyCode.LeftArrow,KeyCode.RightArrow,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.Home,KeyCode.End,KeyCode.C,KeyCode.PageUp,KeyCode.PageDown};
   public void SetFocus(bool focus){Navigation.SetFocus(focus);drag=null;dragging=false;}
   public bool PollKeys(int level){
-   bool held=Input.GetMouseButton(0)||Input.GetMouseButton(1);foreach(var key in inventoryKeys)held|=Input.GetKey(key);held|=NativeKeyBindInput.Held("inventory");Navigation.ObserveReleased(held);   // A16: the inventory key is a web binding
+   bool held=ExoInput.Mouse(0)||ExoInput.Mouse(1);foreach(var key in inventoryKeys)held|=ExoInput.Key(key);held|=NativeKeyBindInput.Held("inventory");Navigation.ObserveReleased(held);   // A16: the inventory key is a web binding
    if(!Navigation.Focused||Navigation.WaitingForRelease)return false;
    InventoryKey? input=null;
-   if(NativeKeyBindInput.Down("inventory")||Input.GetKeyDown(KeyCode.Escape))input=InventoryKey.Close;   // web: BINDS.inventory toggles the window, ESC is the fixed back key
-   else if(Input.GetKeyDown(KeyCode.LeftArrow))input=InventoryKey.Left;else if(Input.GetKeyDown(KeyCode.RightArrow))input=InventoryKey.Right;
-   else if(Input.GetKeyDown(KeyCode.UpArrow))input=InventoryKey.Up;else if(Input.GetKeyDown(KeyCode.DownArrow))input=InventoryKey.Down;
-   else if(Input.GetKeyDown(KeyCode.Home))input=InventoryKey.Home;else if(Input.GetKeyDown(KeyCode.End))input=InventoryKey.End;
+   if(NativeKeyBindInput.Down("inventory")||ExoInput.KeyDown(KeyCode.Escape))input=InventoryKey.Close;   // web: BINDS.inventory toggles the window, ESC is the fixed back key
+   else if(ExoInput.KeyDown(KeyCode.LeftArrow))input=InventoryKey.Left;else if(ExoInput.KeyDown(KeyCode.RightArrow))input=InventoryKey.Right;
+   else if(ExoInput.KeyDown(KeyCode.UpArrow))input=InventoryKey.Up;else if(ExoInput.KeyDown(KeyCode.DownArrow))input=InventoryKey.Down;
+   else if(ExoInput.KeyDown(KeyCode.Home))input=InventoryKey.Home;else if(ExoInput.KeyDown(KeyCode.End))input=InventoryKey.End;
    // A07b: G no longer switches bag/equipment panes; it is left unconsumed so the window layer can treat it as the web forge key.
-   else if(Input.GetKeyDown(KeyCode.C))input=InventoryKey.Details;
-   else if(Input.GetKeyDown(KeyCode.PageUp))input=InventoryKey.PageUp;else if(Input.GetKeyDown(KeyCode.PageDown))input=InventoryKey.PageDown;
-   else if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter))input=InventoryKey.Accept;
+   else if(ExoInput.KeyDown(KeyCode.C))input=InventoryKey.Details;
+   else if(ExoInput.KeyDown(KeyCode.PageUp))input=InventoryKey.PageUp;else if(ExoInput.KeyDown(KeyCode.PageDown))input=InventoryKey.PageDown;
+   else if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter))input=InventoryKey.Accept;
    // The ossuary page has no bag/equipment selection to navigate; only Tab/Esc close it.
    if(Page!=PageEquipment&&input!=InventoryKey.Close)return false;
    return input.HasValue&&HandleKey(input.Value,level);

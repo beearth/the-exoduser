@@ -51,11 +51,11 @@ namespace Exoduser.UnityPort {
   public void Select(int slot){SelectedSlot=Mathf.Clamp(slot,0,12);selectedOrb=null;}
   public void HandleKeys(Action close,Action equip){
    if(NativeKeyBindInput.Down("skill")){close();return;}   // A16: web BINDS.skill
-   if(Input.GetKeyDown(KeyCode.LeftArrow))Select(SelectedSlot-1);
-   if(Input.GetKeyDown(KeyCode.RightArrow))Select(SelectedSlot+1);
-   if(Input.GetKeyDown(KeyCode.Home))Select(0);if(Input.GetKeyDown(KeyCode.End))Select(12);
-   if(Input.GetKeyDown(KeyCode.Alpha1))Select(0);if(Input.GetKeyDown(KeyCode.Alpha2))Select(1);if(Input.GetKeyDown(KeyCode.Alpha3))Select(2);if(Input.GetKeyDown(KeyCode.Alpha4))Select(3);
-   if(Input.GetKeyDown(KeyCode.Return)&&SelectedSlot==SkillUiState.LmbSlot)equip();
+   if(ExoInput.KeyDown(KeyCode.LeftArrow))Select(SelectedSlot-1);
+   if(ExoInput.KeyDown(KeyCode.RightArrow))Select(SelectedSlot+1);
+   if(ExoInput.KeyDown(KeyCode.Home))Select(0);if(ExoInput.KeyDown(KeyCode.End))Select(12);
+   if(ExoInput.KeyDown(KeyCode.Alpha1))Select(0);if(ExoInput.KeyDown(KeyCode.Alpha2))Select(1);if(ExoInput.KeyDown(KeyCode.Alpha3))Select(2);if(ExoInput.KeyDown(KeyCode.Alpha4))Select(3);
+   if(ExoInput.KeyDown(KeyCode.Return)&&SelectedSlot==SkillUiState.LmbSlot)equip();
   }
 
   // ---- resources / primitives ----

@@ -1,0 +1,45 @@
+# C-01 asmdef 1차 분리 (2026-10-28, unity-core-oracle)
+
+> 명세: main `docs/engine/UNITY_CUSTOM_LEAD_MASTER_20261028.md` "C-01 상세 명세". 브랜치 `claude/unity-pc-c01-asmdef-20261028`.
+> 커밋: ① 6d8d6e2cd PortVerification typeof · ②③ 2271793ee asmdef 3개 · d2321dbba origin/unity/main 4a22a22af merge(충돌 0).
+
+## 1. 바뀐 것 (파일 이동 0, `unity/Tools` csproj 0)
+
+| 어셈블리 | 위치 | 설정 |
+|---|---|---|
+| `Exoduser.Core` | `Runtime/Core/Exoduser.Core.asmdef` | `noEngineReferences: true`, 참조 없음, autoReferenced |
+| `Exoduser.Runtime` | `Runtime/Exoduser.Runtime.asmdef` | Core, `Unity.RenderPipelines.Universal.Runtime`, `Unity.RenderPipelines.Core.Runtime`(NativeGame.cs:53 `CameraExtensions`) |
+| `Exoduser.Editor` | `Editor/Exoduser.Editor.asmdef` | Editor 전용. Core, Runtime, URP Runtime·Editor, RP Core Runtime·Editor, Cinemachine, AI Navigation, ProBuilder, VFX Graph Runtime·Editor, Timeline |
+
+참조는 모두 어셈블리 이름으로 적었다(GUID 아님). `PortVerification.CheckCorePresence`는 `Type.GetType("…, Assembly-CSharp")` 대신 `typeof(Simulation).AssemblyQualifiedName`으로 찾고, 로그에 실제 어셈블리 이름을 남긴다.
+
+## 2. 사전 점검 (정적)
+
+- Core의 UnityEngine 사용 0. API 프로필은 .NET Standard 2.1(`apiCompatibilityLevel: 6`)이라 `System.Numerics.BigInteger`(ItemFactory)도 컴파일된다(실제 컴파일로 확인).
+- Core의 `internal` 멤버(Js, KiSlash.HitEnemies, Simulation.TickCrossbow/StartRoll 등)를 어셈블리 밖에서 쓰는 곳 0. Editor가 쓰는 Runtime 타입 20개는 전부 public.
+- `Type.GetType` 문자열 조회는 PortVerification 1곳뿐.
+
+## 3. Unity 검증 (10-28 15:38~15:46, `_pc_lock.json` 잠금, 창 없음, 플레이어 없음)
+
+| 항목 | 기준(asmdef 없음) | C-01 |
+|---|---|---|
+| 기준 커밋 | o1-killtail 938394077 (= unity/main efae9aa11에 병합된 O-1 끝) | d2321dbba (efae9aa11 + C-01 + unity/main 4a22a22af) |
+| 첫 컴파일 | — | 오류 0, 84초(전체 674항목, Exoduser.Core·Runtime·Editor 새로 생성) |
+| CheckCorePresence | — | 통과, `UNITY_CORE_PRESENCE True Exoduser.Core` |
+| `Runtime/NativeHud.cs` 끝에 같은 주석 1줄 → 컴파일 | script compilation 3.709초, Tundra 3.14초/6항목, 다시 컴파일 = **Assembly-CSharp** | script compilation 3.079초, Tundra 2.54초/6항목, 다시 컴파일 = **Exoduser.Runtime만** (Core·Editor 재컴파일 없음) |
+| Windows 빌드 | — | 성공, 빌드 오류 0, 80초, 영수증 출력 == exe |
+| 씬 스크립트 연결(GUID) | 끊김 경고 0 | 끊김 경고 0 (FirstPlayable·빌드 씬) |
+| 경고 | — | CS0618 30 · CS0219 · CS0414 (기존 코드, asmdef와 무관) |
+| PortVerification.Verify (GPU, D3D12) | exit 2: `A15 SFX right must step by one and write once` | exit 2: **같은 지점·같은 메시지**. 앞 5단계(FEEDBACK_FRAME_SEQUENCE·UI_COMPOSITION_BOUNDS·HUD_GPU_RESOURCE_MASK·INVENTORY_SEED_STATS_UNARMED·LOBBY_MEDIA_CAPTIONS_29X32) 둘 다 통과 |
+
+- Verify 실패는 C-01 회귀가 아니다. 기준에서도 같은 단계에서 멈추는 기존 결함이다. `-nographics`(GfxDevice Null)로 돌리면 그 앞 HUD GPU 픽셀 검사에서 먼저 멈추므로, Verify는 GPU 장치로 돌려야 한다.
+- 1줄 수정 시간은 약 17 %(3.71→3.08초) 줄었다. 큰 이득은 "Runtime만 고치면 Core·Editor를 다시 컴파일하지 않는다"는 구조이고, Core 쪽 수정의 이득은 Core가 커질수록 커진다.
+
+## 4. 남은 것
+
+- 1-1 실제 렌더 스모크(GPU m1-check): CTO 지시로 플레이어 실행 보류(NativeQaSandbox fail-closed 병합 전). 재개 신호 뒤 실행.
+- oracle(dotnet)은 csproj가 `Runtime/Core/**/*.cs`를 직접 넣어 asmdef와 무관하다(LT-5 브랜치에서 31종 0 확인, C-01은 .cs 변경 0).
+- `Editor/Rm3SliceBuilder.cs`에 .meta가 없다(RM-3에서 온 것, 손대지 않음) — C-01 뒤에도 GUID가 worktree마다 새로 생긴다.
+- DT-01이 먼저 병합되면 `Editor/DevTools/**`는 `Exoduser.Editor`에 그대로 들어간다(MapLint가 쓰는 URP·RP Core 참조 포함). 병합 때 컴파일로 한 번 더 확인.
+- 기존 결함 후보: Verify `A15 SFX right must step by one and write once`(unity/main).
+- 산출: `I:\EXODUSER-Storage\qa\c01\` (로그 `base-*.log`·`c01-*.log`·`verify-gpu-*.log`, `build-commit.json`).

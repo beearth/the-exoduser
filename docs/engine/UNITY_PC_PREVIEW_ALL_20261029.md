@@ -1,0 +1,14 @@
+# PC Unity 전체 미리보기 — 2026-10-29
+
+별도 브랜치 `codex/pc-preview-all-20261029`에 대기 후보를 통합한다. `unity/main`에는 반영하지 않는다. 빌드·캡처·로그 원본은 `I:/EXODUSER-Storage/unity-preview/`에 보존한다.
+
+## 충돌 처리
+
+| 파일 | 선택과 이유 |
+|---|---|
+| `NativeGame.cs` | 최신 공통 줄기의 `AimWorld()`를 보존해 3D 바닥 투영을 유지한다. 자동 병합된 `ExoInput` 전환은 보존한다. |
+| `NativeKeyBindInput.cs` | 10-29 `4d7b82a0b`의 웹 마우스 1=중간·2=오른쪽 변환을 보존하고, 10-28 입력 후보의 `ExoInput.MouseDown/Mouse/KeyDown/Key`로 읽는다. |
+
+## 검증 상태
+
+통합 진행 중. 컴파일·Player·시각 판정은 아직 미확인이다. 원격 기준 SHA·포함 후보·최종 검증은 완료 시 갱신한다.

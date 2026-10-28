@@ -181,7 +181,7 @@ namespace Exoduser.UnityPort
         {
             if (!stageClear.Active) return false;
             float s = Mathf.Min(Screen.width / 1920f, Screen.height / 1080f);
-            float x0 = (Screen.width - 1920 * s) / 2 + 850 * s, y0 = (Screen.height - 1080 * s) / 2 + 956 * s; var m = Input.mousePosition;
+            float x0 = (Screen.width - 1920 * s) / 2 + 850 * s, y0 = (Screen.height - 1080 * s) / 2 + 956 * s; var m = ExoInput.MousePosition;
             return m.x >= x0 && m.x <= x0 + 220 * s && Screen.height - m.y >= y0 && Screen.height - m.y <= y0 + 44 * s;
         }
 

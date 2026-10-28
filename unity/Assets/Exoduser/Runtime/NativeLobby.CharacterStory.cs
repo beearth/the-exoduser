@@ -39,9 +39,9 @@ namespace Exoduser.UnityPort
     var pad=frontendPad.Step(FrontendPadPhase.Story,ReadFrontendPadFrame(),!AutomatedInput&&!characterInputFence);
     HoldCharacterStory("pad-skip",pad.Hold);
     if(!AutomatedInput&&!characterInputFence){
-     if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.Space)||pad.Next)NextCharacterStory();
-     HoldCharacterStory("keyboard-Escape",Input.GetKey(KeyCode.Escape));HoldCharacterStory("keyboard-Space",Input.GetKey(KeyCode.Space));
-     if(!Input.GetMouseButton(0))HoldCharacterStory("pointer",false);
+     if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.RightArrow)||ExoInput.KeyDown(KeyCode.Space)||pad.Next)NextCharacterStory();
+     HoldCharacterStory("keyboard-Escape",ExoInput.Key(KeyCode.Escape));HoldCharacterStory("keyboard-Space",ExoInput.Key(KeyCode.Space));
+     if(!ExoInput.Mouse(0))HoldCharacterStory("pointer",false);
     }
     SubtitleText="";foreach(var language in warriorStoryData.captions)if(language.code==Language){foreach(var cue in language.cues)if(movie.Time>=cue.start&&movie.Time<cue.end){SubtitleText=cue.text;break;}break;}
    }
@@ -60,7 +60,7 @@ namespace Exoduser.UnityPort
    if(warriorCaption==null){warriorCaption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=36,alignment=TextAnchor.MiddleCenter,wordWrap=true};warriorCaption.normal.textColor=Color.white;}
    if(SubtitleText.Length>0){var box=new Rect(180,864,1560,120);Fill(box,new Color(0,0,0,.64f));Label(box,SubtitleText,warriorCaption,TextAnchor.MiddleCenter);CaptionVisible=true;}
    Rect next=new Rect(1050,1000,360,52),skip=new Rect(1430,1000,440,52);var e=Event.current;
-   if(warriorStory.HintsOpacity>0){bool pad=frontendPadQaEnabled||Array.Exists(Input.GetJoystickNames(),name=>!string.IsNullOrEmpty(name));Color hintColor=GUI.color;GUI.color=new Color(hintColor.r,hintColor.g,hintColor.b,(float)warriorStory.HintsOpacity);Label(next,pad?K("다음 대사 · A / Enter","Next line · A / Enter"):K("다음 대사 · Enter","Next line · Enter"),small,TextAnchor.MiddleCenter);Label(skip,pad?K("건너뛰기 · B / Start 길게","Skip · Hold B / Start"):K("건너뛰기 · Space / Esc 길게","Skip · Hold Space / Esc"),small,TextAnchor.MiddleCenter);Fill(new Rect(skip.x,1054,skip.width*(float)warriorStory.HoldProgress,3),new Color(.8f,.72f,.55f));GUI.color=hintColor;}
+   if(warriorStory.HintsOpacity>0){bool pad=frontendPadQaEnabled||ExoInput.PadConnected;Color hintColor=GUI.color;GUI.color=new Color(hintColor.r,hintColor.g,hintColor.b,(float)warriorStory.HintsOpacity);Label(next,pad?K("다음 대사 · A / Enter","Next line · A / Enter"):K("다음 대사 · Enter","Next line · Enter"),small,TextAnchor.MiddleCenter);Label(skip,pad?K("건너뛰기 · B / Start 길게","Skip · Hold B / Start"):K("건너뛰기 · Space / Esc 길게","Skip · Hold Space / Esc"),small,TextAnchor.MiddleCenter);Fill(new Rect(skip.x,1054,skip.width*(float)warriorStory.HoldProgress,3),new Color(.8f,.72f,.55f));GUI.color=hintColor;}
    if(!AutomatedInput&&e.type==EventType.MouseDown&&e.button==0){if(!warriorStory.HintsHidden&&skip.Contains(e.mousePosition))HoldCharacterStory("pointer",true);else NextCharacterStory();e.Use();}
    if(!AutomatedInput&&e.type==EventType.MouseDrag&&!skip.Contains(e.mousePosition))HoldCharacterStory("pointer",false);
    if(e.isKey)e.Use();

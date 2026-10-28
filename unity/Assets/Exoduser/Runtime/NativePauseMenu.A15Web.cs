@@ -466,9 +466,9 @@ namespace Exoduser.UnityPort
   {
    var items=Items();if(openSelect<0||openSelect>=items.Count){openSelect=-1;return;}
    var it=items[openSelect];int cur;List<string> values;SelectLabels(it,out cur,out values);
-   if(Input.GetKeyDown(KeyCode.Escape)||Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)){openSelect=-1;navigation.Fence();return;}
-   if(Input.GetKeyDown(KeyCode.UpArrow)&&cur>0){ApplySelect(it,cur-1,values);popupScroll=Mathf.Max(0,(cur-1)*34-100);}
-   if(Input.GetKeyDown(KeyCode.DownArrow)&&cur<values.Count-1){ApplySelect(it,cur+1,values);popupScroll=Mathf.Max(0,(cur+1)*34-100);}
+   if(ExoInput.KeyDown(KeyCode.Escape)||ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)){openSelect=-1;navigation.Fence();return;}
+   if(ExoInput.KeyDown(KeyCode.UpArrow)&&cur>0){ApplySelect(it,cur-1,values);popupScroll=Mathf.Max(0,(cur-1)*34-100);}
+   if(ExoInput.KeyDown(KeyCode.DownArrow)&&cur<values.Count-1){ApplySelect(it,cur+1,values);popupScroll=Mathf.Max(0,(cur+1)*34-100);}
   }
   // ---- keyboard rows (PauseNavigation row mode) ----
   void A15RowKey(PauseAction action,bool fullscreen)

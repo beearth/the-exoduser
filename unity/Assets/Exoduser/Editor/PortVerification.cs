@@ -5,10 +5,11 @@ using Exoduser.UnityPort;
 using Exoduser.UnityPort.Core;
 public static class PortVerification {
  public static void CheckCorePresence(){
-  var found=Type.GetType("Exoduser.UnityPort.Core.Simulation, Assembly-CSharp")!=null;
+  var core=typeof(Exoduser.UnityPort.Core.Simulation);   // C-01: no hard-coded assembly name (Assembly-CSharp before the asmdef split, Exoduser.Core after)
+  var found=Type.GetType(core.AssemblyQualifiedName)!=null;
   var result=new {check="native_CSharp_core_exists",passed=found,engine=Application.unityVersion};
   File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new Receipt{check="native_CSharp_core_exists",passed=found,engine=Application.unityVersion},true));
-  Debug.Log("UNITY_CORE_PRESENCE "+found); EditorApplication.Exit(found?0:2);
+  Debug.Log("UNITY_CORE_PRESENCE "+found+" "+core.Assembly.GetName().Name); EditorApplication.Exit(found?0:2);
  }
  public static string Argument(string key){var a=Environment.GetCommandLineArgs();var i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
  [Serializable]class Receipt {public string check;public bool passed;public string engine;}
