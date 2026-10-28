@@ -93,6 +93,7 @@
 | STY-15 | **2장 보스 대사 반영(묶음 C)** — CH2 뼈대 §5 7줄 + 트리거 확장(보스전 총괄 회신 방식) + §6 펫 교체 2건(si4 첫 대면·si9 처치) | P1 | **반영 완료 2026-10-28**(묶음 C, SHA 14de6fda3) — 보스 7줄 + 펫 교체 4줄, 번역대상 No.3588~3598·27언어 |
 | STY-16 | **펫 말투 교체(묶음 D)** — `PET_VOICE_CANON_20261028.md` §4 61줄 game.html 교체 + `_EN`·27언어 새 키 + 번역목록 + 펫 문서 본문 표 동기 | P1 | **반영 완료·검수 PASS 2026-10-28**(story-simple 7e90f22f6, 33파일): game.html 61줄·`_EN` `// [STY-16]` 61키·27언어 각 +61키(옛 키 유지), 번역목록 옛 행 61개 KO/EN 교체(번호 유지, 신규 No. 없음), 펫 문서 3곳 동기. 총괄 독립 검사(§4 표 파싱) 옛 문장 0·새 문장 61·27언어 키 61/61·빈값/한글 잔존 0. 캡처 톤 PASS(`I:/EXODUSER-Storage/_out_pet/`). 기계 번역 초안 |
 | STY-17 | **3장 대사 반영(묶음 E)** — CH3 뼈대 §5 보스 6줄 + §6 디로이 5줄(+선택 si13 처치 분기), 번역목록·27언어, 펫 문서 동기 | P1 | 판정 완료 2026-10-28(STY-D28·D29). 반영 = 스토리 단순작업, STY-16 뒤 |
+| STY-18 | **보스 표시명 영어 30개** — `HELL_BOSSES` 2~7장 이름이 `_EN`에 없어 외국어판 이름표가 한국어로 나옴. 정본 표 `BOSS_NAME_EN_20261028.md`(군주=Sovereign, "Hell Lord" 금지) | P1 | 표 확정 2026-10-28(총괄, CTO 요청 — i18n-fill 세션 보관). 반영 = 스토리 단순작업, STY-17 뒤 |
 | STY-01 | 충돌표 STY-D2~D6를 사용자 결정 질문지로 정리 | P0 | 대기 |
 | STY-02 | WORLD_CORE T1~T11 ↔ 세계관 v2 대조표 작성 | P1 | 대기 |
 | STY-03 | (index.html 본문 b7d5eb9b5) 실버테일 traits[1] `쌍단검 기동` → `멈추지 않는 기동 / 쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.` 29언어·번역목록 No.3341~3342 | P1 | **완료 2026-10-26** (DOM 확인, 화면 캡처 미확보) |
@@ -155,6 +156,7 @@
 
 | 날짜 | 내용 | 조치 |
 |---|---|---|
+| 2026-10-28 14:20 | 스토리 총괄이 Bash 한 명령 끝에 빈 heredoc을 붙인 `python - <<'EOF'`를 다시 사용함(10-28 오전 사고와 같은 금지 형태). 명령이 120초 제한에 걸려 백그라운드로 넘어감 | 즉시 TaskStop. 로그 65바이트, 디스크 피해 없음. 재발 방지: `python -`는 heredoc이 있어도 쓰지 않는다. 스크립트는 scratchpad 파일로 쓰고 `python <파일> </dev/null`로 실행 |
 | 2026-10-27 | story-simple의 펫 대사 커밋 `8bf094fe6`(로컬)에 타 세션이 인덱스에 미리 스테이징한 파일이 함께 들어감 — 총 512파일(output/new_heroes_refinement 151·output/cinematic 92·assets/character-concepts 75·steam_maintenance 등, `video/world_intro_v16_clean_en.mp4` 102MB, 0바이트 쓰레기 파일 `x.startsWith('13')))`, index.html·character-story-player.js·test 캐시키). 원인: `git commit` 전 인덱스 확인 생략 | reset 시도 안 함(권한 게이트), 이력 유지. CTO에 push 시 스토리 경로(game.html·lang_*.js 27·번역대상_전체목록.md·CH1_STORY_SPINE)만 가져가도록 통보. 재발 방지: `git commit -m ... -- <경로>`만 사용(인덱스의 타 세션 스테이징 무시) |
 | 2026-10-28 | 스토리 총괄 세션이 백그라운드 명령에 `python -`(stdin 대기)를 1회 사용 → 대화형 REPL 오류 반복으로 로그 192MB(`C:/Users/심도진/AppData/Local/Temp/claude/G--exoduser/6e2ee6ef-…/tasks/boum20xqt.output`). story-simple도 1회 같은 실수(EOF로 즉시 종료, 피해 없음). CLAUDE.md 디스크 규칙(10-27 162GB 사고) 위반 | 즉시 중지. 로그 삭제는 세션 권한 설정이 2회 거부(10-28 사용자 "알아서 지워" 뒤에도) → 우회하지 않고 사용자에게 직접 삭제 명령 안내. 재발 방지: 스크립트는 반드시 파일로 넘기고(`python <파일>`), story-simple 지시문에 금지 문구 상시 포함 |
 | 2026-10-26 22:30~22:45 | 공유 작업트리에서 `NEW_HEROES_DESIGN_LOCK.md`(staged 신규, 커밋 이력 없음)가 디스크·인덱스에서 사라짐. 같은 시각 `character-story-player.js`의 타 세션 미커밋 변경(캐시키 `killu-bloodtears-v3`)도 커밋본으로 되돌아감, `test/*.test.js` 다수가 삭제 상태. 주체 미확인 | git 미참조 blob `6a599015b`(35,791B, 사라지기 전 크기와 일치)로 신규3종 LOCK 문서를 원위치에 복원(미스테이징). 나머지는 소유 세션 확인 필요 |
@@ -183,3 +185,4 @@
 - 2026-10-28: STY-D19 펫 말투 판정(`PET_VOICE_CANON_20261028.md`) — 디로이 도도·직설·실용, 핵터 유지, 교체 61줄 → STY-16 신설, STY-D25 범위에 사망 화면 가족·복수 줄 추가.
 - 2026-10-28: STY-12 CH3 뼈대 v1(`CH3_STORY_SPINE_20261028.md`) — STY-D26~D30 추가(D26~D29 총괄 확정, D30 사용자 확인), STY-17(3장 대사 반영) 신설.
 - 2026-10-28: STY-16 펫 말투 61줄 반영 검수 PASS(7e90f22f6), 말풍선 낱말 중간 줄바꿈 디자인총괄 이관.
+- 2026-10-28: STY-18(보스 표시명 영어 30개, `BOSS_NAME_EN_20261028.md`) 신설, `python -` 재사용 근접 사고 §6 기록.
