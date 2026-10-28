@@ -65,6 +65,36 @@ Unity 6000.6.7f1 · URP 17.6.0 · C# 파일 240개 · 씬 4개(`FirstPlayable`·
 | C-05 | **Profiler 마커 + Memory Profiler·Profile Analyzer 도입**: Core 틱·몹 갱신·렌더 준비·UI 구간에 `ProfilerMarker` | 프레임 예산을 구간별로 본다 → DT-10 회귀 측정의 기초 | 소속 Sonnet | 1-1 표준 컷에서 구간별 ms 표 |
 | C-06 | **Unity Test Framework**: EditMode(에디터 도구·임포터), PlayMode 스모크(씬 열기→Core 틱 N프레임→예외 0), `com.unity.test-framework.performance`로 성능 기준선 | 캡처 스크립트 대신 표준 테스트 러너, 작업 서버(DT-01)가 그대로 돌림 | 개발툴 총괄과 공동(러너는 그쪽, 테스트 구조는 이쪽) | 스모크 3종이 작업 서버 job으로 통과 |
 
+### C-01 상세 명세 (10-28 사전 조사 반영, `origin/unity/main` 기준)
+
+사전 조사(읽기 전용, Sonnet) 사실 — 총괄이 핵심 3건 직접 재확인함:
+- C# 240 = Core 112(`Runtime/Core` 109 + `Core/Skills` 3) · Runtime 나머지 119 · Editor 9. `Rendering`·`Remodel`에는 C# 0개(진행 브랜치에서 `Remodel/CH1_4/Rm4PoolLightCuller.cs`가 생김).
+- **Core → 비Core 참조 0건, Core의 UnityEngine 사용 0건**(주석 2줄뿐). Core는 이미 `unity/Tools/*.csproj` 54개(그중 52개가 `Runtime/Core` 경로 직접 포함)에서 net8.0 순수 C#으로 컴파일된다 → `noEngineReferences: true` 가능. `System.Numerics.BigInteger`(`ItemFactory.cs:4`)는 Unity API 프로필에서 확인 필요.
+- **깨지는 곳 1건 확정**: `Editor/PortVerification.cs:8` `Type.GetType("Exoduser.UnityPort.Core.Simulation, Assembly-CSharp")` — 어셈블리 이름이 바뀌면 null.
+- Runtime에 `UnityEditor`·`#if UNITY_EDITOR` 0건. Editor → Runtime·Core 단방향.
+- `NativeGame` partial 46개 파일 중 스모크·캡처 약 29개가 partial이고 `NativeGame.cs:80-116`이 인자로 직접 호출 → **이번에 분리 불가**. 독립 캡처 클래스 9개(`Native{AreaTitle,BossBar,BuildFlavor,DeathOverlay,KeyBind,LevelExp,LevelUpOverlay,StageClearOverlay}Capture`·`NativeAutoPotionSmoke`)는 참조 0이라 나중에 분리 가능.
+- Editor가 `Assets/Exoduser/Rendering`·`Remodel/CH1_1`·`CH1_3` 경로를 문자열로 가짐(`Rm0EngineSetup.cs:21`·`Rm1SliceBuilder.cs:22`·`Rm3SliceBuilder.cs:26`) → 폴더 이동 금지.
+- 진행 브랜치(10-26~28)는 `.cs` 이동·삭제 0건. `NativeGame.cs`를 고치는 브랜치 7개(sound-rm1·rm-int·vfx-rm1·Codex start-parity·pet·moat·map-light). **asmdef 파일만 추가하고 파일을 옮기지 않으면 병합이 안 깨진다**(새 파일은 가장 가까운 상위 asmdef로 들어감).
+
+분할(1차):
+
+| 어셈블리 | 위치 | 설정 |
+|---|---|---|
+| `Exoduser.Core` | `Runtime/Core/Exoduser.Core.asmdef` | `noEngineReferences: true`, 참조 없음, Auto Referenced 켬 |
+| `Exoduser.Runtime` | `Runtime/Exoduser.Runtime.asmdef` | Core + URP·Cinemachine·Timeline·VFX 등 필요한 패키지(컴파일 오류로 확정), Auto Referenced 켬 |
+| `Exoduser.Editor` | `Editor/Exoduser.Editor.asmdef` | `includePlatforms: ["Editor"]`, Core·Runtime·ProBuilder·AI Navigation·URP 등 |
+| `Exoduser.DevTools.Editor` | `Editor/DevTools/` | DT 브랜치 병합 뒤. Core 참조. 빌더 타입 참조 여부 먼저 확인 |
+| 보류 | `Rendering`·`Remodel` | C#이 들어오면 그때 |
+| 2차 | 독립 캡처 9개 → `Runtime/Capture/` | 진행 브랜치 병합 뒤 |
+| 3차 | `NativeGame` 스모크 | 호출부를 등록(레지스트리) 방식으로 바꾼 뒤 |
+
+작업 순서:
+1. `PortVerification.cs:8`을 `typeof(Exoduser.UnityPort.Core.Simulation)` 기반으로 바꾼다(asmdef 없이도 동작 → 단독 커밋).
+2. `Exoduser.Core.asmdef`(+`.meta`)만 추가. 파일 이동 없음. csproj 54개는 손대지 않음. 컴파일 오류 = 숨은 의존성 목록 → 기록.
+3. `Exoduser.Runtime`·`Exoduser.Editor` asmdef 추가. `FirstPlayable.unity`·`RM1_Slice`·`RM3_Slice` 스크립트 연결(GUID) 유지 확인.
+4. 검증: oracle(dotnet) 불일치 0 · `exo-unity.ps1`로 `PortVerification.CheckCorePresence`·`Verify` 배치 실행 · Win 빌드 1회 · 1-1 실제 렌더 스모크 · **같은 Runtime 파일 1줄 수정 후 컴파일 시간 전후 비교**(목표: Core 재컴파일 없음).
+5. 브랜치 `claude/unity-pc-c01-asmdef-20261028`, worktree `E:\exoduser-wt\pc-unity-c01-asmdef`, 병합은 유니티 총괄 순번. Unity 실행은 PC 전체 1개 규칙·`exo-unity.ps1` 경유.
+
 ### P1 — 리메이크 화질 (맵·보스 리메이크와 같이)
 
 | id | 과제 | 쓰는 팀 | 첫 적용 |
@@ -127,6 +157,7 @@ Unity 6000.6.7f1 · URP 17.6.0 · C# 파일 240개 · 씬 4개(`FirstPlayable`·
 개발툴 총괄 합의(10-28, 그쪽 main e9b2ccd8d에 반영):
 - C-01에서 `unity/Assets/Exoduser/Editor/DevTools/<도구>/` 전체를 **에디터 전용 asmdef 하나**(`Exoduser.DevTools.Editor`)로 묶는다. 실행 스크립트 `unity/Tools/devtools/`는 asmdef 대상이 아니다.
 - 모든 자동 실행은 공용 무창 실행기 DT-01 `exo-unity.ps1`을 거친다(사용자 지시: 창·소리 없이). C-06 스모크도 이 실행기로 돌린다.
+- C-01 순서: ① `Exoduser.Core`(Runtime/Core/**, Auto Referenced 켬 — DT-07 보스 판정 오버레이·아레나 오버레이가 `BossArenaLayout.Generate`를 직접 참조) → ② `Exoduser.DevTools.Editor`(Auto Referenced 켬 — asmdef 없는 `Rm0EngineSetup`·`Rm1/Rm3SliceBuilder`가 DT-01 `ExoArgs`를 부름. 반대 방향 참조는 불가하므로 착수 전 DevTools의 빌더·런타임 타입 참조 전수 확인, 있으면 인터페이스·콜백 등록으로 바꿈) → ③ 나머지 Runtime·Rendering·Editor.
 - DT-15 브랜치에서 `NativeGame.M1Check.cs` 캡처를 RenderTexture로 바꾸고 `--unity-mute` 플래그를 추가하는 중이다. C-06 테스트 구조와 C-01 partial 분리는 이 변경이 병합된 뒤의 형태를 기준으로 한다.
 
 ## 7. 운영
