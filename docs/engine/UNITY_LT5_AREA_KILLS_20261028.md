@@ -55,7 +55,15 @@ shield-revive·rage-malice·save의 `oracle.json`은 저장소에 없고(앞 둘
 
 ## 5. Unity 빌드 검증
 
-(검증 뒤 기록)
+| 항목 | 결과 |
+|---|---|
+| 병합 전 기준 | origin/unity/main 4a22a22af → 06b86008c(DT-01·02·03, QaRunPolicy, NativeQaSandbox fail-closed 37f1360df)를 차례로 merge, 충돌 0 → 6ee479b6a |
+| 빌드 | 공용 실행기 `exo-unity.ps1 run -Method PortVerification.Build`(잠금·샌드박스), 오류 0, 빌드 전후 HEAD 동일 |
+| m1-check | `exo-unity.ps1 player -AllowPlayer`(batchmode·GPU AMD RX 9070 XT·무음·창 0·사용자 세이브 변경 0) **21/21** |
+| 화면 실측 | **미확인.** 무창 실행(headless RenderTexture)은 OnGUI를 그리지 않아(`guiRepaints 0`) 목표 패널이 캡처에 없다. `--unity-region-hud-capture`도 창 화면 캡처라 무창 규칙에서 못 쓴다. 숫자 표기는 통합 빌드에서 최신버전 테스트로 확인 필요 |
+| .NET 회귀(merge 뒤) | 31종 0. merge로 들어온 `Core/Platform/QaRunPolicy.cs`를 fieldboss-oracle csproj(Core/*.cs만 포함)가 못 찾아 깨진 것을 고침(302,271/0). settings-persistence도 QaRunPolicy와 원래 빠져 있던 NativeOptionSet을 넣어 write 3·read 2 PASS |
+
+실행기 결함: `exo-unity.ps1 build -Args '-output,…,-receipt,…'`는 build가 `-buildTarget Win64`를 먼저 붙여 -File 모드 쉼표 분리가 안 된다(-output 빈 값 → PortVerification.cs:232 ArgumentException). `run -Method PortVerification.Build -Args '-buildTarget,Win64,-output,…'`로 우회.
 
 ## 6. 후속 후보 (이번 범위 밖)
 
