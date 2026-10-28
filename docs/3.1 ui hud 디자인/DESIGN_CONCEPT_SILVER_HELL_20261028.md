@@ -234,3 +234,6 @@
 | 3단계 · 시작 화면 | `index.html` 타이틀 메뉴: 로고 760 → 520px(왼쪽 위), 버튼 440×52 → 패키지 규격 248×40(`_buildTitleMenu` W·H, SVG 판 그대로 축소), 글자 Hahmlet 400 15px, 아래 장식선 `#splashTitleRule` 숨김, 판권·버전 Cinzel 11px. 긴 번역 맞춤(`_fitTitleLabels`) 상한 390 → 210px(자간 → 13px → 12px). 메뉴 항목·조작은 그대로 |
 
 시작 화면 검수: 1920·1600 한국어, 1280 영어 `tmp/design-review/20261028_ui_apply/3_title/`(before = 직전 커밋 index.html, after, 메뉴 1x). 키아트 비중 약 84% → 약 90%. 영어 "ADD TO STEAM WISHLIST"도 버튼 안. pageerror 0. 판정: 통과.
+| 4단계 · 캐릭터 선택 | 새 `charselect-silver-hell.css`(넓은 화면 ≥1100px만, 좁은 화면은 기존 반응형 유지). DOM·키보드·게임패드 그대로. 큰 테두리 틀 `.cs-frame` 제거, 위 제목 = 패키지 제목 띠(Hahmlet 300 18px, 부제 숨김). 정보 판(`#csLeft`)을 왼쪽에서 오른쪽 위로 옮겨 플레이 방식 판과 오른쪽 가장자리 한 열(380px)로 모음 → 원화(대검)를 가리지 않음. 중복 초상 `.cs-thumb-wrap` 숨김. 판 = 패키지 판(이중선, 장식 왕관 `.cs-crest`·모서리 숨김). 직업 아이콘 = 패키지 카드(사각 이중선, 고른 것만 컬러·밝은 테·진홍 빛, 잠금 흑백). 취소/생성 = 패키지 버튼(생성 = 강조, 배경 두 겹 padding-box/border-box). 높이 ≤940px 화면은 판 간격·카드 크기를 줄이고 플레이 방식 설명 줄을 숨김 |
+
+캐릭터 선택 검수: 1920·1600 한국어, 1280 영어 `tmp/design-review/20261028_ui_apply/4_charselect/`(before = 새 CSS 차단, after, 오른쪽 1x). 판·카드·버튼 겹침 0(좌표 측정), → 키로 직업 이동 정상, Hahmlet 로딩, pageerror 0. 원화 비중 약 72% → 약 80%. 판정: 통과.

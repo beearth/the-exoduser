@@ -1,0 +1,77 @@
+/* 캐릭터 선택 — 실버 헬 UI 패키지 v1 (2026-10-28 사용자 승인 [승인-디자인-3], 4단계)
+   원화(무대)가 화면을 끈다. 정보 판·플레이 방식 판은 오른쪽 가장자리에 모아 대검을 가리지 않는다. 중복 초상 제거.
+   직업 아이콘 줄 = 패키지 카드(잠긴 직업 흑백), 취소/생성 = 패키지 버튼. DOM·조작(키보드·게임패드)은 그대로.
+   넓은 화면(≥1100px)만 적용 — 좁은 화면은 기존 반응형 배치를 유지. 근거: LOBBY_AAA_REFERENCE_STUDY_20261028.md §9 */
+@media (min-width:1100px){
+ /* 큰 테두리 틀·측면 질감 제거, 오른쪽만 어둠 */
+ #charVisualPop .cs-frame{display:none!important}
+ #charVisualPop .cs-vig{background:linear-gradient(90deg,rgba(0,0,0,.35),transparent 18%,transparent 64%,rgba(0,0,0,.66) 84%),linear-gradient(0deg,rgba(0,0,0,.72),transparent 30%)!important}
+
+ /* 위 제목 → 패키지 제목 띠(작게) */
+ #charVisualPop .cs-head{padding-top:30px!important}
+ #charVisualPop h2{font:300 18px var(--sh-font)!important;letter-spacing:.2em!important;color:var(--sh-text)!important;text-shadow:0 2px 8px #000!important}
+ #charVisualPop h2::before,#charVisualPop h2::after{width:220px!important;background:linear-gradient(90deg,transparent,var(--sh-line))!important;margin:0 18px!important}
+ #charVisualPop h2::after{background:linear-gradient(90deg,var(--sh-line),transparent)!important}
+ #charVisualPop .cs-sub{display:none!important}
+
+ /* 판 두 개를 오른쪽 가장자리로: 왼쪽 판을 오른쪽 위로 옮긴다(무대는 가운데가 아니라 왼쪽~가운데로 넓게) */
+ #charVisualPop .cs-body{position:relative}
+ #charVisualPop .cs-side.left{position:absolute!important;right:40px;top:0;width:380px!important;flex:none!important;padding:26px 28px 24px!important;
+  background:var(--sh-plate)!important;border:1px solid var(--sh-line)!important;box-shadow:inset 0 0 0 4px rgba(9,10,11,.6),inset 0 0 0 5px var(--sh-line-in),0 18px 50px rgba(0,0,0,.5)!important;gap:10px!important}
+ #charVisualPop .cs-side.right{position:absolute!important;right:40px;top:var(--cs-right-top,300px);width:380px!important;flex:none!important}
+ #charVisualPop .cs-stage{margin-right:440px}
+ #charVisualPop .cs-thumb-wrap{display:none!important} /* 중복 초상 */
+ #charVisualPop #csClsName{font:600 11px var(--sh-latin)!important;letter-spacing:.28em!important;color:var(--sh-text-dim)!important}
+ #charVisualPop #csCharName{font:300 28px var(--sh-font)!important;letter-spacing:.12em!important;color:var(--sh-text-hi)!important;text-shadow:0 2px 10px #000}
+ #charVisualPop #csCharName::after{display:none!important}
+ #charVisualPop #csCharDesc{font:400 14px/1.75 var(--sh-font)!important;letter-spacing:.03em;color:#b9b6b0!important;max-width:none!important}
+
+ /* 플레이 방식 판 → 패키지 판 */
+ #charVisualPop .cs-frame-box{background:var(--sh-plate)!important;border:1px solid var(--sh-line)!important;border-radius:0!important;box-shadow:inset 0 0 0 4px rgba(9,10,11,.6),inset 0 0 0 5px var(--sh-line-in),0 18px 50px rgba(0,0,0,.5)!important;padding:22px 26px 14px!important}
+ #charVisualPop .cs-frame-box .cnr,#charVisualPop .cs-crest{display:none!important}
+ #charVisualPop .cs-right-title{font:300 16px var(--sh-font)!important;letter-spacing:.2em!important;color:var(--sh-text)!important;display:flex;align-items:center;gap:12px;justify-content:center}
+ #charVisualPop .cs-right-title::before,#charVisualPop .cs-right-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--sh-line))}
+ #charVisualPop .cs-right-title::after{background:linear-gradient(90deg,var(--sh-line),transparent)}
+ #charVisualPop .cs-trait{border-bottom:1px solid rgba(155,158,158,.12);padding:12px 0!important}
+ #charVisualPop .cs-trait:last-child{border-bottom:0}
+ #charVisualPop .cs-trait .ti{flex:0 0 22px!important;height:22px!important;background:none!important;border:0!important;box-shadow:none!important}
+ #charVisualPop .cs-trait .tt{font:300 15px var(--sh-font)!important;letter-spacing:.08em;color:var(--sh-text)!important}
+ #charVisualPop .cs-trait .td{font:400 13px/1.6 var(--sh-font)!important;color:var(--sh-text-dim)!important}
+
+ /* 직업 아이콘 줄 → 오른쪽 아래 패키지 카드 5장 */
+ #charVisualPop .cs-foot{position:absolute!important;right:40px;bottom:40px;width:380px;padding:0!important}
+ #charVisualPop #visualGrid{display:flex!important;justify-content:space-between!important;gap:0!important;margin-bottom:26px}
+ #charVisualPop .cs-ico{gap:7px!important}
+ #charVisualPop .cs-ico:hover{transform:none!important}
+ #charVisualPop .cs-ico-ring{width:64px!important;border-radius:0!important;border:1px solid var(--sh-line)!important;box-shadow:none!important;padding:3px;background:var(--sh-plate)!important;position:relative}
+ #charVisualPop .cs-ico-ring img{filter:grayscale(1) brightness(.62)!important}
+ #charVisualPop .cs-ico.sel .cs-ico-ring{border-color:var(--sh-line-hi)!important;box-shadow:0 0 0 1px rgba(0,0,0,.8),0 0 22px var(--sh-eye-glow)!important}
+ #charVisualPop .cs-ico.sel .cs-ico-ring img{filter:none!important}
+ #charVisualPop .cs-ico:focus-visible{outline:none!important}
+ #charVisualPop .cs-ico:focus-visible .cs-ico-ring{outline:1px solid var(--sh-text-hi);outline-offset:3px}
+ #charVisualPop .cs-ico .lbl{font:400 13px var(--sh-font)!important;letter-spacing:.06em;color:var(--sh-text-dim)!important}
+ #charVisualPop .cs-ico.sel .lbl{color:var(--sh-text-hi)!important}
+ #charVisualPop .cs-ico .cs-soon{font:600 10px var(--sh-latin)!important;letter-spacing:.12em;color:#6f7272!important}
+
+ /* 취소/생성 → 패키지 버튼(생성 = 강조). 글자가 버튼 바로 안에 있어 가상요소 대신 배경 두 겹(테 1px + 속)으로 그린다 */
+ #charVisualPop .cs-actions{display:flex!important;justify-content:space-between!important;gap:0!important}
+ #charVisualPop :is(#visualCancelBtn,#visualCreateBtn){position:relative;width:180px;height:42px;padding:0!important;border:1px solid transparent!important;border-radius:0!important;box-shadow:none!important;text-shadow:0 1px 4px #000!important;
+  clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,12px 100%,0 50%);font:400 15px var(--sh-font)!important;letter-spacing:.2em!important;color:var(--sh-text)!important;
+  background:linear-gradient(#16181a,#0c0d0e) padding-box,linear-gradient(var(--sh-line),var(--sh-line)) border-box!important}
+ #charVisualPop #visualCreateBtn{color:var(--sh-text-hi)!important;filter:none!important;
+  background:radial-gradient(ellipse 70% 120% at 50% 50%,#5a120d,#2a0907 60%,#120707) padding-box,linear-gradient(var(--sh-line-hi),var(--sh-line-hi)) border-box!important}
+ #charVisualPop :is(#visualCancelBtn,#visualCreateBtn):hover{filter:brightness(1.18)!important}
+ #charVisualPop #visualCreateBtn:disabled{color:var(--sh-text-off)!important;background:#0b0c0d padding-box,linear-gradient(rgba(155,158,158,.22),rgba(155,158,158,.22)) border-box!important}
+}
+/* 높이가 낮은 화면(≤940px): 판 사이 간격을 줄이고 플레이 방식은 제목만(설명은 마우스·포커스 때 위 판의 설명으로 충분) */
+@media (min-width:1100px) and (max-height:940px){
+ #charVisualPop{--cs-right-top:190px}
+ #charVisualPop .cs-side.left{padding:18px 22px 16px!important}
+ #charVisualPop #csCharName{font-size:24px!important}
+ #charVisualPop .cs-frame-box{padding:14px 22px 8px!important}
+ #charVisualPop .cs-trait{padding:7px 0!important}
+ #charVisualPop .cs-trait .td{display:none!important}
+ #charVisualPop .cs-foot{bottom:24px}
+ #charVisualPop #visualGrid{margin-bottom:16px}
+ #charVisualPop .cs-ico-ring{width:54px!important}
+}
