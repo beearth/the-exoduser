@@ -4,19 +4,20 @@
 //  - 시간 고정: ml을 크게 잡고 t를 비율로 넣어 p=t/ml이 사실상 멈추게 한다(게임 update는 정상 진행).
 // 사용: node tools/vfx/capture_hit_impacts.mjs --label=old|new [--sheets=<dir>] [--out=<dir>]
 import { chromium } from 'playwright';
-import { readFileSync, existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { readFileSync, existsSync, mkdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
 const ARG = new Map(process.argv.slice(2).map(a => { const m = a.match(/^--([^=]+)(?:=(.*))?$/); return m ? [m[1], m[2] ?? '1'] : [a, '1']; }));
 const LABEL = ARG.get('label') || 'cap';
 const SHEETS = ARG.get('sheets') || '';
-const OUT = ARG.get('out') || os.tmpdir();
+const OUT = ARG.get('out') || 'E:/exoduser-wt/_out/vfx_capture';   // C 드라이브 금지(CLAUDE.md 디스크 사용)
 const ORIGIN = ARG.get('origin') || 'http://[::1]:3333';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 mkdirSync(OUT, { recursive: true });
 
-const ctx = await chromium.launchPersistentContext(mkdtempSync(path.join(os.tmpdir(), 'exo-vfx-ab-')), {
+const PROF = mkdtempSync(path.join(OUT, 'prof-'));   // 임시 프로필은 OUT 아래에 만들고 끝나면 지운다
+const ctx = await chromium.launchPersistentContext(PROF, {
   headless: true, executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
   viewport: { width: 1920, height: 1080 },
   args: ['--mute-audio', '--autoplay-policy=no-user-gesture-required', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--no-first-run'],
@@ -66,3 +67,4 @@ for (const sc of scenes) {
 writeFileSync(path.join(OUT, `hit_ab_${LABEL}.json`), JSON.stringify({ info, errors }, null, 1));
 console.log(LABEL, JSON.stringify(info), 'errors', errors.length);
 await ctx.close();
+try { rmSync(PROF, { recursive: true, force: true }); } catch (e) {}
