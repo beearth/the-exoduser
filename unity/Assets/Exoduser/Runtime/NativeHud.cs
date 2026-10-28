@@ -156,6 +156,13 @@ namespace Exoduser.UnityPort
             var old=RenderTexture.active;var copy=new Texture2D(256,256,TextureFormat.RGBA32,false);
             try{RenderTexture.active=rt;copy.ReadPixels(new Rect(0,0,256,256),0,0);copy.Apply();}finally{RenderTexture.active=old;}return copy;
         }
+        static Color ProbeColor(Texture2D image,int x,int y)
+        {
+            var c=image.GetPixel(x,y);
+            // ARGB32 readback is sRGB-encoded in a Linear project; compare shader-space RGB in both project color spaces.
+            if(QualitySettings.activeColorSpace==ColorSpace.Linear){c.r=Mathf.GammaToLinearSpace(c.r);c.g=Mathf.GammaToLinearSpace(c.g);c.b=Mathf.GammaToLinearSpace(c.b);}
+            return c;
+        }
         public HudPixelProbe Probe(string name)
         {
             var h=Pixels(hp);var m=Pixels(mana);
@@ -163,10 +170,10 @@ namespace Exoduser.UnityPort
                 Func<Color,bool> red=c=>c.r>c.g*2&&c.r>.08f;Func<Color,bool> blue=c=>c.b>c.g*1.15f&&c.b>.08f;Func<Color,bool> green=c=>c.g>c.b*1.15f&&c.g>.08f;
                 Func<Color,bool> dark=c=>Mathf.Max(c.r,c.g,c.b)<.05f;
                 return new HudPixelProbe{name=name,hpText=values.HpCurrentText,manaText=values.ManaCurrentText,staminaText=values.StaminaCurrentText,
-                    cornerTransparent=h.GetPixel(2,2).a<.01f&&m.GetPixel(253,253).a<.01f,
-                    hpRed=red(h.GetPixel(128,128)),hpLowerRed=red(h.GetPixel(128,80)),hpUpperEmpty=dark(h.GetPixel(128,180)),
-                    manaBlue=blue(m.GetPixel(80,128)),manaUpperEmpty=dark(m.GetPixel(80,180)),staminaGreen=green(m.GetPixel(180,128)),
-                    hpEmpty=dark(h.GetPixel(128,128)),manaEmpty=dark(m.GetPixel(80,128)),staminaEmpty=dark(m.GetPixel(180,128))};
+                    cornerTransparent=ProbeColor(h,2,2).a<.01f&&ProbeColor(m,253,253).a<.01f,
+                    hpRed=red(ProbeColor(h,128,128)),hpLowerRed=red(ProbeColor(h,128,80)),hpUpperEmpty=dark(ProbeColor(h,128,180)),
+                    manaBlue=blue(ProbeColor(m,80,128)),manaUpperEmpty=dark(ProbeColor(m,80,180)),staminaGreen=green(ProbeColor(m,180,128)),
+                    hpEmpty=dark(ProbeColor(h,128,128)),manaEmpty=dark(ProbeColor(m,80,128)),staminaEmpty=dark(ProbeColor(m,180,128))};
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}

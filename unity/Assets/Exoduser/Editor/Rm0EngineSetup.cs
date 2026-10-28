@@ -39,7 +39,7 @@ namespace Exoduser
         // `-executeMethod Exoduser.Rm0EngineSetup.Capture -output <png>`: renders the sandbox through the main camera (URP + Global Volume).
         public static void Capture()
         {
-            var args = System.Environment.GetCommandLineArgs();
+            var args = Exoduser.DevTools.ExoArgs.Get();
             var i = System.Array.IndexOf(args, "-output");
             var png = i >= 0 ? args[i + 1] : "rm0-sandbox.png";
             EditorSceneManager.OpenScene(ScenePath);

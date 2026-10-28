@@ -22,7 +22,8 @@ namespace Exoduser.UnityPort
    // Existing scripted fixtures keep their direct entry contract.
    bool fixture=false;foreach(var arg in Environment.GetCommandLineArgs())if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&arg.EndsWith("-smoke",StringComparison.Ordinal))fixture=true;
    frontendEntryInputFence=!fixture;if(frontendEntryInputFence)frontendFenceSetFrame=Time.frameCount;Running=fixture;
-   if(!fixture&&lobby.StartupGameplayPrepared)BeginFirstPractice();
+   if(!fixture&&NativeReviewArgs.BossDirect&&BossDirectEnter()){}   // review: start at the boss arena entry, no first practice
+   else if(!fixture&&lobby.StartupGameplayPrepared)BeginFirstPractice();
   }
   bool WaitForFrontendEntryInput()
   {

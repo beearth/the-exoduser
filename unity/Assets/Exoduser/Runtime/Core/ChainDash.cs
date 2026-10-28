@@ -103,6 +103,22 @@ namespace Exoduser.UnityPort.Core.Combat
         public static double PullIframes(double iframes) { return Math.Max(iframes, MoveIframesMin); }
         // landing (32363-32378): 48 invulnerable frames, 30 animation frames, shake 10/20/30 by tier (not for dim-breach unless a slam is ready)
         public static double LandingInvulnerable(double iframes) { return Math.Max(iframes, LandingIframes); }
+
+        // Pass-through hit while the player is pulled (the `_dashActive` loop, game.html 32474-32505, STR branch; the magicBlink / dimBreach fire branch, the blade-wing
+        // wide slash and the crowd refund are skills / uniques that are not ported). Every enemy within e.r + 20 of the player is hit once per chain cast.
+        public const double PathHitReachExtra = 20, PathHitKnockbackMult = 2, PathHitPoiseMult = 2.0, PathHitPush = 25, PathHitShake = 4;
+        public static bool IsPathHit(double px, double py, double ex, double ey, double er, bool alive, bool alreadyHit)
+        {
+            if (!alive || alreadyHit) return false;
+            double dx = ex - px, dy = ey - py;
+            return Math.Sqrt(dx * dx + dy * dy) <= er + PathHitReachExtra;
+        }
+        // const _cbMul = lv >= 1 ? 1.5 + (lv - 1) * .25 : 1; ~~(((ar().charge || 10) + P.baseAtk) * cbMul * statStr() * (1 + _eqAffix('dashBoost')))
+        public static int PathHitDamage(double chargeBoostLevel, double armorCharge, double baseAtk, double statStr, double dashBoost)
+        {
+            double cbMul = chargeBoostLevel >= 1 ? 1.5 + (chargeBoostLevel - 1) * 0.25 : 1.0;
+            return Js.Int(((Js.Or(armorCharge, 10)) + baseAtk) * cbMul * statStr * (1 + dashBoost));
+        }
         public static double LandingShake(int tier, bool dimBreach, bool slamLand) { return !dimBreach || slamLand ? (tier >= 3 ? 30 : tier >= 2 ? 20 : 10) : double.NaN; }
     }
 }

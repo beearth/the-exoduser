@@ -220,7 +220,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // hurtE: the oracle-checked Core head + middle (EnemyHurt) and, at zero HP, the death part (EnemyHurt.DeathHead + DeathTail, Simulation.Death.cs).
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false)
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
@@ -230,7 +230,7 @@ namespace Exoduser.UnityPort.Core
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
             var context = BuildHurtContext(player, typeDamagePct, critRateBonus); context.CritSfxCd = critSfxCd;
-            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null };
+            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null, poiseMult = poiseMult };
             if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
             hurtSfxEnemy = enemy;   // RM-1 sound: the hurt context reports hit / crit sounds for this enemy

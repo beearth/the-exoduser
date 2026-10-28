@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "doc": "buildloop.ps1 판정 규칙. 로그의 각 줄을 ignore -> fail/knownIssues 순으로 검사한다. fail 에 걸리고 knownIssues 에도 걸리면 '알려진 결함'으로 센다(통과로 바꾸지 않는다, CTO 규칙 UNITY_DONE_BUILD_PLAYTEST_RULE_20261028 4번). scope: build=빌드 로그, player=스모크 플레이어 로그.",
+  "ignore": [
+    "^\\s*[\\d.]+ (kb|mb|b)\\s",
+    "Native extension for WindowsStandalone target not found",
+    "\\[Licensing::Module\\] Error: Access token is unavailable",
+    "^Dependency assembly - ",
+    "\\.cs\\s*$",
+    "warning (UAC|CS|CA)\\d+"
+  ],
+  "fail": [
+    {
+      "id": "invalid-pass",
+      "pattern": "Invalid pass number",
+      "scope": [
+        "build",
+        "player"
+      ],
+      "title": "Graphics.Blit 패스 번호 오류"
+    },
+    {
+      "id": "shader-not-found",
+      "pattern": "[Ss]hader .*not found",
+      "scope": [
+        "build",
+        "player"
+      ],
+      "title": "셰이더 못 찾음"
+    },
+    {
+      "id": "dependency-not-found",
+      "pattern": "dependency .*not found",
+      "scope": [
+        "build",
+        "player"
+      ],
+      "title": "셰이더 의존성 못 찾음"
+    },
+    {
+      "id": "video-shaders",
+      "pattern": "Video shaders not found|Could not find (video decode shader pass|material Hidden/Video)",
+      "scope": [
+        "build",
+        "player"
+      ],
+      "title": "비디오 셰이더 없음"
+    },
+    {
+      "id": "render-path-passes",
+      "pattern": "custom render path shader needs to have at least",
+      "scope": [
+        "build",
+        "player"
+      ],
+      "title": "셰이더 패스 0개"
+    },
+    {
+      "id": "exception",
+      "pattern": "\\w*Exception\\b",
+      "scope": [
+        "build",
+        "player"
+      ],
+      "title": "예외"
+    },
+    {
+      "id": "logerror",
+      "pattern": "UnityEngine\\.Debug:LogError|: error CS\\d+|^Error building Player|Build Finished, Result: (Failure|Canceled)|^\\[Error\\]",
+      "scope": [
+        "build",
+        "player"
+      ],
+      "title": "LogError / 컴파일 오류"
+    },
+    {
+      "id": "crash",
+      "pattern": "^Crash!!!|crash has been intercepted by the crash handler",
+      "scope": [
+        "player"
+      ],
+      "title": "플레이어 크래시"
+    },
+    {
+      "id": "gfx-null",
+      "pattern": "Forcing GfxDevice: Null|Renderer:\\s+Null Device|NullGfxDevice",
+      "scope": [
+        "player"
+      ],
+      "title": "Null 그래픽 장치(화면 안 그림)"
+    }
+  ],
+  "companions": [
+    "custom render path shader needs to have at least"
+  ],
+  "knownIssues": [
+    {
+      "id": "DBT-1",
+      "title": "HUD 구슬 셰이더 SourceHudOrb 패스 0개",
+      "pattern": "SourceHudOrb",
+      "scope": [
+        "build",
+        "player"
+      ]
+    },
+    {
+      "id": "DBT-5",
+      "title": "플레이어 종료 크래시 0xC000041D",
+      "pattern": "^Crash!!!|crash has been intercepted by the crash handler",
+      "scope": [
+        "player"
+      ]
+    },
+    {
+      "id": "DBT-2",
+      "title": "플레이 빌드에 Video 셰이더 없음(Hidden/VideoDecode, VideoComposite)",
+      "pattern": "Video shaders not found|Hidden/Video|video decode shader pass",
+      "scope": [
+        "build",
+        "player"
+      ]
+    },
+    {
+      "id": "DBT-N1",
+      "title": "URP Terrain/Lit·SpeedTree 의존 셰이더 누락(번호 미배정)",
+      "pattern": "Terrain/Lit|Nature/SpeedTree|SpeedTree.*Billboard",
+      "scope": [
+        "build",
+        "player"
+      ]
+    }
+  ],
+  "signalIssues": [
+    {
+      "id": "DBT-5",
+      "title": "플레이어 종료 크래시 0xC000041D (유니티 총괄 실측: lobby 영상 76초 지점)",
+      "signal": "플레이어 종료코드 -1073740771"
+    },
+    {
+      "id": "DBT-6",
+      "title": "결과 파일을 쓴 뒤 플레이어가 종료하지 않음(hud-smoke 240초, m1-check 창 모드)",
+      "signal": "m1-check.json 작성 후 60초 안에 종료 안 함"
+    }
+  ],
+  "requireGraphics": {
+    "pattern": "Version:\\s+Direct3D 1[12]",
+    "rendererPattern": "Renderer:\\s+(.+)$"
+  },
+  "m1": {
+    "failStatuses": [
+      "fail",
+      "missing"
+    ],
+    "okStatuses": [
+      "ok"
+    ],
+    "neutralStatuses": [
+      "pending-core"
+    ]
+  },
+  "requiredMedia": [
+    {
+      "path": "Assets/StreamingAssets/Lobby/cs_idle_silvertail_4k.mp4",
+      "minBytes": 1000000
+    },
+    {
+      "path": "Assets/StreamingAssets/Lobby/cs_idle_warrior_cs3_4k.mp4",
+      "minBytes": 1000000
+    },
+    {
+      "path": "Assets/StreamingAssets/Lobby/fdg_intro.mp4",
+      "minBytes": 1000000
+    },
+    {
+      "path": "Assets/StreamingAssets/Lobby/intro.mp4",
+      "minBytes": 1000000
+    },
+    {
+      "path": "Assets/StreamingAssets/Lobby/lobby_varkan_crypt_loop_v2_unity.mp4",
+      "minBytes": 1000000
+    },
+    {
+      "path": "Assets/StreamingAssets/Lobby/title_motion_20260929.mp4",
+      "minBytes": 1000000
+    },
+    {
+      "path": "Assets/StreamingAssets/Lobby/title_motion_hd_20260929.mp4",
+      "minBytes": 1000000
+    },
+    {
+      "path": "Assets/StreamingAssets/Lobby/warrior_story_v23_clean.mp4",
+      "minBytes": 1000000
+    },
+    {
+      "path": "Assets/StreamingAssets/Lobby/world_intro_v22b_steam.mp4",
+      "minBytes": 1000000
+    }
+  ]
+}
