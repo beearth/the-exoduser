@@ -394,3 +394,28 @@
 | 예고 표시 3종(§4) | `DruidTelegraph` 목록을 읽는 VFX 세션 몫. Core 값은 §9 그대로 |
 | 소리 | 사운드 총괄 |
 | 판정 캡처 | RM0-LIGHT 재조정 뒤 |
+
+## 12. 리뷰용 실행 인자 (2026-10-28, PC Sonnet 세션, 브랜치 `claude/unity-pc-rmb1-20261027` = `d1bac7735`, 보스전 총괄 지시)
+
+리모델 플래그 기본값(`DruidRemodelSettings.Default = false`)과 기본 실행 경로는 그대로 두고, 리뷰할 때만 쓰는 런타임(Core 밖) 인자 두 개를 넣었다. 둘 다 `NativeReviewArgs`(`Runtime/NativeReviewArgs.cs`)가 읽고, 적용은 `NativeGame.ReviewArgs.cs`에 있다.
+
+| 인자 | 동작 |
+|---|---|
+| `--unity-druid-remodel` | 각 판의 `Simulation`을 만든 직후(`ResetRun`, 아레나 입장 전) `Simulation.DruidRemodel = true`. `DruidRemodelSettings.Default`는 false 유지 |
+| `--unity-boss-direct <스테이지>` | 로비에서 입장하면 첫 연습을 건너뛰고(`EnterFromLobby`) 1-1 문 타일(`Stage.Exits[1]`)에서 시작한다: `FieldBossDone = true`, `ForceUnlock()`, 플레이어를 문 타일 중심에 놓고 HP 가득·무적 600틱. 값이 없으면 0. 0 외의 값은 경고만 남기고 무시(보스 방이 1-1뿐). 문 타일 위에서 시작하므로 입력 대기가 풀리면 바로 암전·이름 카드로 들어간다 |
+
+- 두 인자 중 하나라도 있으면 전투 저장을 쓰지 않는다(`CombatSaveAllowed`): 강제로 연 상태가 사용자 세이브에 남지 않게 한다.
+- 두 인자는 "테스트 인자" 판정(`areaTitleAllowed`)에서 제외해 지역 제목이 그대로 나온다.
+- 확인용 `--unity-review-args-capture -output <dir> --unity-druid-remodel --unity-boss-direct 0`: 새 캐릭터로 로비를 지나 입장하고 6가지를 검사한다 — 로비에서 입장, `DruidRemodel` 켜짐(기본값 꺼짐), 첫 연습 생략, 문 타일 위·문 열림·앵글러 처치 처리, 문을 지나 보스 아레나 열림, 아레나의 드루이드가 리모델(기둥 4개). 결과 `<dir>/review-args.json`.
+- 실행은 공용 실행기 `unity/Tools/devtools/exo-unity.ps1`로만 한다(`build`, `player -AllowPlayer`).
+
+### 12.1 병합 전 빌드 영수증 (완료 정의 ①)
+
+| 항목 | 값 |
+|---|---|
+| 대상 | 브랜치 `claude/unity-pc-rmb1-20261027` `d1bac7735` (포함한 unity/main = `06b86008c`, fail-closed `37f1360df`·`444ee86fc` 포함) |
+| Windows 플레이어 빌드 | `exo-unity.ps1 build` 성공, 영수증 `passed=true`·`errors=0`·`result=Succeeded` (`E:/exoduser-wt/_out/rmb1/build/build-receipt.json`, 로그 `I:\EXODUSER-Storage\unity-jobs\pc-unity-rmb1\logs\45b90c5f.log`) |
+| 리뷰 인자 확인 | `exo-unity.ps1 player -AllowPlayer` 1회, `ok=True exit=0 windows=0 leftovers=0 gpu=AMD Radeon RX 9070 XT`, `review-args.json` 6/6 통과(문 타일 (100,7), 아레나 열림, `Remodel True`, 기둥 4, 보스 HP 21017/21017). 사용자 세이브 변경 없음(`usersave.log`에 이번 실행 항목 없음) |
+| 이 확인으로 말할 수 없는 것 | 캡처 PNG는 만들어지지 않았다(창 없는 플레이어에서 `ScreenCapture`는 파일을 못 씀). 실제 화면 판정(④ 렌더 스모크 이미지·⑥)은 아직 |
+
+참고: 앞선 실행(10-28 10:25, 병합 전 unity/main)에서는 같은 확인이 문 타일 검사에서 인덱스 오류로 끝났다. 진단 로그를 넣어 다시 돌린 이번에는 같은 `Simulation`(문 타일 3개)로 통과했고, 처음 실패의 원인은 특정하지 못했다(재현 안 됨).
