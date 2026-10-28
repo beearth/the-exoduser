@@ -51,3 +51,10 @@
 - 새로 만든 드루이드 2차(`_v3`)는 원본 에너지 대부분이 40Hz 아래(예 `druid_hit_v3a` 94%)여서 HPF 이득이 후보별 약 4~10dB로 훨씬 컸다(`DRUID_BOSS_SOUND_REMAKE_20261028.md` §5). 채택본 중에는 `amb_hell_forest_bed`(74%)·`druid_sink`(57%)·`druid_pod`(55%)가 비슷하게 초저역이 지배적이고, 그중 피크가 실제로 내려가 재정규화 이득이 생기는 것은 `amb_hell_forest_bed`(+3.7dB)뿐이다(`druid_sink`·`druid_pod`는 피크가 초저역에서 나오지 않아 이득이 −0.8·+0.5dB).
 - 이 문서는 측정이다. 채택본을 다시 가공할지는 사운드 총괄이 사용자가 고른 들리는 결을 해치지 않는 범위에서 결정한다.
 - 재현: `G:/exoduser-wt/_out/sfx_forge/_analysis/hpf_audit.py`(저장소 밖), 결과 `hpf_audit.json`.
+
+## 결정 (2026-10-28 사운드 총괄)
+
+- 기존 채택본 27개는 **재가공하지 않는다.** 18개는 변화가 ±0.6dB 이내라 사실상 차이가 없고, `druid_erupt`·`druid_roots_rise`·`crit_heavy` 3개는 재정규화하면 오히려 손해다. `amb_hell_forest_bed`(+3.7dB)는 환경음 바닥이라 초저역 울림이 의도된 질감일 수 있고 게임 안 음량은 루프 볼륨으로 맞추므로 파일을 바꿀 이유가 약하다. 사용자가 고른 결을 지키는 쪽을 택한다.
+- Unity 쪽은 Audio Mixer의 Ambience 그룹 HPF(30~35Hz) 적용 여부를 녹음 v4 청음 때 판단한다(SND-08 메모).
+- 새 후보는 35Hz HPF 기본값을 유지한다(`6사운드디자인.md` SND-05 §8 「SFX 가공 기본값」).
+
