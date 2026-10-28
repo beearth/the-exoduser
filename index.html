@@ -4565,6 +4565,7 @@ function showCharGate(charId,storySeen=false){
   // ── SCREEN 3: 타이틀 키아트 (여캐 고정, 클릭/키 입력 시 진행) ──
   const _titleArt=new Image();
   _titleArt.src='img/title_bg_20261028.jpg';
+  let _titleWideBackdrop=null;
   const _titleVideo=document.getElementById('splashTitleVideo');
   const _titleUI=document.getElementById('splashTitleUI'),_titleStage=document.getElementById('splashTitleStage');
   const _titleMenu=document.getElementById('splashTitleMenu');
@@ -4627,10 +4628,57 @@ function showCharGate(charId,storySeen=false){
   window.addEventListener('resize',_fitTitleStage);
   // 영상 오류 시 titleLoop가 같은 장면의 정지 그림(_titleArt)으로 그린다.
   function syncTitlePlayback(){
-    if(done||phase!==2||document.hidden){_titleVideo.pause();return;}
+    if(done||phase!==2||document.hidden||_titleMotionReduced.matches){_titleVideo.pause();return;}
     _titleVideo.play().catch(()=>{});
   }
   document.addEventListener('visibilitychange',syncTitlePlayback);
+
+  // 원화의 왼쪽 하늘·원경·강 영역만 움직인다. 오른쪽 실버테일 실루엣은 마스크 밖이다.
+  // 모든 좌표는 타이틀 원화와 같은 16:9(1920×1080) 공간이며, 사인 위상은 16초마다 이어진다.
+  const _titleMotionReduced=matchMedia('(prefers-reduced-motion: reduce)');
+  _titleMotionReduced.addEventListener('change',syncTitlePlayback);
+  function drawTitleAtmosphere(dx,dy,dw,dh,now){
+    if(_titleMotionReduced.matches)return;
+    const a=now*Math.PI*2/16000;
+    cx.save();cx.translate(dx,dy);cx.scale(dw/1920,dh/1080);
+    // 원화에서 실버테일의 머리카락·갑옷·검이 시작되는 x≈1160 앞에서 마스크를 끝낸다.
+    cx.beginPath();cx.moveTo(0,0);cx.lineTo(1120,0);cx.lineTo(1100,500);
+    cx.lineTo(1050,720);cx.lineTo(1080,1080);cx.lineTo(0,1080);cx.closePath();cx.clip();
+    function haze(x,y,rx,ry,phase,color,alpha){
+      const drift=Math.sin(a+phase)*64;
+      cx.save();cx.translate(x+drift,y);cx.scale(rx,ry);
+      const g=cx.createRadialGradient(0,0,.08,0,0,1);
+      g.addColorStop(0,color.replace('ALPHA',String(alpha)));
+      g.addColorStop(.58,color.replace('ALPHA',String(alpha*.44)));
+      g.addColorStop(1,color.replace('ALPHA','0'));
+      cx.fillStyle=g;cx.beginPath();cx.arc(0,0,1,0,Math.PI*2);cx.fill();cx.restore();
+    }
+    // 구름은 태양보다 어두운 검붉은 장막만 사용한다. 가는 하이라이트·점광원은 넣지 않는다.
+    haze(290,258,350,112,0,'rgba(18,5,7,ALPHA)',.48);
+    haze(605,390,430,96,2.1,'rgba(92,15,17,ALPHA)',.30);
+    haze(980,306,250,92,4.2,'rgba(18,5,7,ALPHA)',.38);
+    // 절벽 아래 원경 안개는 느리게 좌우로 밀리고, 인물 아래 전경에는 닿지 않는다.
+    haze(455,668,420,66,1.3,'rgba(166,74,69,ALPHA)',.23);
+    haze(870,706,285,57,3.4,'rgba(118,51,53,ALPHA)',.21);
+    // 핏빛 강의 긴 반사띠. 강 윤곽 밖으로 빛이 새지 않도록 별도 경로로 자른다.
+    cx.save();cx.beginPath();cx.moveTo(875,716);cx.lineTo(974,753);
+    cx.lineTo(1010,842);cx.lineTo(1090,1080);cx.lineTo(610,1080);
+    cx.lineTo(677,906);cx.lineTo(695,794);cx.closePath();cx.clip();
+    cx.lineCap='round';
+    for(let i=0;i<9;i++){
+      const y=759+i*36, center=860+Math.sin(a+i*.76)*16;
+      const width=18+i*8, glow=.20+.10*Math.sin(a+i*1.18);
+      cx.strokeStyle=`rgba(243,112,92,${glow})`;cx.lineWidth=2.5+i*.25;
+      cx.beginPath();cx.moveTo(center-width,y);cx.quadraticCurveTo(center,y-3,center+width,y);
+      cx.stroke();
+    }
+    cx.restore();
+    // 태양 원반 내부만 약하게 호흡한다. 테두리를 흐리거나 주황으로 바꾸지 않는다.
+    cx.save();cx.beginPath();cx.arc(790,190,77,0,Math.PI*2);cx.clip();
+    cx.fillStyle=`rgba(235,44,35,${.035+.03*(1+Math.sin(a))})`;
+    cx.fillRect(710,108,160,164);cx.restore();
+    cx.restore();
+  }
 
   // ── SCREEN 2: FDG 영상 인트로 (3.2초) ──
   const FDG_DUR=3200;
@@ -4716,15 +4764,17 @@ function showCharGate(charId,storySeen=false){
       syncTitlePlayback();
       t0=performance.now();
       console.log('[SPLASH] TITLE screen shown (art: '+_titleArt.src.split('/').pop()+')');
-      let titleHasVideoFrame=false,lastTitleFrame=-1,lastTitleW=0,lastTitleH=0;
+      let titleHasVideoFrame=false,lastTitleFrame=-1,lastTitleW=0,lastTitleH=0,lastTitleDraw=0;
       function titleLoop(){
         if(done||phase!==2)return;
+        const now=performance.now();
+        if(document.hidden||now-lastTitleDraw<1000/30){rafId=requestAnimationFrame(titleLoop);return;}
         if(!_titleVideo.error&&_titleVideo.readyState>=2)titleHasVideoFrame=true;
         // 루프 seek 중 readyState가 잠깐 낮아져도 정지 원본으로 되돌리지 않는다.
         if(titleHasVideoFrame&&!_titleVideo.error&&_titleVideo.readyState<2){
           rafId=requestAnimationFrame(titleLoop);return;
         }
-        const elapsed=performance.now()-t0;
+        const elapsed=now-t0;
         const w=cv.offsetWidth,h=cv.offsetHeight;
         const fadeIn=Math.min(1,elapsed/1000);
         // Keep UI text native and avoid redrawing an identical 24fps video frame at monitor refresh rate.
@@ -4733,19 +4783,34 @@ function showCharGate(charId,storySeen=false){
         if(uiReady&&_titleUI.style.display!=='block'){_titleUI.style.display='block';_fitTitleLabels();}
         else if(!uiReady)_titleUI.style.display='none';
         _titleUI.style.opacity=String(fadeIn);
-        if(elapsed>1000&&frame>=0&&frame===lastTitleFrame&&w===lastTitleW&&h===lastTitleH){rafId=requestAnimationFrame(titleLoop);return;}
-        lastTitleFrame=frame;lastTitleW=w;lastTitleH=h;
+        if(_titleMotionReduced.matches&&elapsed>1000&&frame>=0&&frame===lastTitleFrame&&w===lastTitleW&&h===lastTitleH){rafId=requestAnimationFrame(titleLoop);return;}
+        lastTitleFrame=frame;lastTitleW=w;lastTitleH=h;lastTitleDraw=now;
         cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
         cx.save();cx.globalAlpha=fadeIn;
-        const titleSource=!_titleVideo.error&&_titleVideo.readyState>=2?_titleVideo:_titleArt;
+        const titleSource=!_titleMotionReduced.matches&&!_titleVideo.error&&_titleVideo.readyState>=2?_titleVideo:_titleArt;
         const titleWidth=titleSource.videoWidth||titleSource.naturalWidth;
         const titleHeight=titleSource.videoHeight||titleSource.naturalHeight;
         if(titleWidth&&titleHeight){
-          // 16:9 전체 화면 그림을 cover로 채운다. 좁은 화면은 오른쪽 인물을 살리도록 가로 62% 기준으로 자른다.
-          const k=Math.max(w/titleWidth,h/titleHeight);
+          // 32:9에서는 cover가 인물의 머리와 태양을 자르므로 중앙 원화를 온전히 보여준다.
+          const wide=w/h>2;
+          if(wide){
+            if(_titleArt.complete&&_titleArt.naturalWidth&&
+               (!_titleWideBackdrop||_titleWideBackdrop.width!==Math.ceil(w)||_titleWideBackdrop.height!==Math.ceil(h))){
+              _titleWideBackdrop=document.createElement('canvas');
+              _titleWideBackdrop.width=Math.ceil(w);_titleWideBackdrop.height=Math.ceil(h);
+              const bc=_titleWideBackdrop.getContext('2d');
+              const bk=Math.max(w/_titleArt.naturalWidth,h/_titleArt.naturalHeight);
+              bc.filter='blur(48px) brightness(.38)';
+              bc.drawImage(_titleArt,(w-_titleArt.naturalWidth*bk)/2,(h-_titleArt.naturalHeight*bk)/2,
+                _titleArt.naturalWidth*bk,_titleArt.naturalHeight*bk);
+            }
+            if(_titleWideBackdrop)cx.drawImage(_titleWideBackdrop,0,0);
+          }
+          const k=wide?Math.min(w/titleWidth,h/titleHeight):Math.max(w/titleWidth,h/titleHeight);
           const dw=titleWidth*k,dh=titleHeight*k;
-          const dx=Math.min(0,Math.max(w-dw,(w-dw)*0.62)),dy=(h-dh)/2;
+          const dx=wide?(w-dw)/2:Math.min(0,Math.max(w-dw,(w-dw)*0.62)),dy=(h-dh)/2;
           cx.drawImage(titleSource,dx,dy,dw,dh);
+          drawTitleAtmosphere(dx,dy,dw,dh,now);
         }else{
           cx.textAlign='center';cx.textBaseline='middle';
           cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
@@ -4776,6 +4841,7 @@ function showCharGate(charId,storySeen=false){
   function endSplash(){
     done=true;clearInterval(blinkId);cancelAnimationFrame(rafId);
     document.removeEventListener('visibilitychange',syncTitlePlayback);
+    _titleMotionReduced.removeEventListener('change',syncTitlePlayback);
     _titleVideo.pause();_titleVideo.removeAttribute('src');_titleVideo.load();
     hideFDGScreen();
     overlay.style.opacity='0';
