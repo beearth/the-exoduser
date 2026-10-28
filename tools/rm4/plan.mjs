@@ -126,7 +126,7 @@ const P1 = { x0: 0, y0: 32, x1: 199, y1: 199, rimTiles: MARGIN, note: 'y<32(보�
 
 // ---- 뿌리 흐름선·등줄기 (P0 판정 조건 2) ----
 // 모든 뿌리가 북쪽 심장(L1)으로 모이고, 심장에서 보스문 앞(100,34)으로 굵은 줄기가 이어진다. 굵기·밀도는 북쪽일수록 커진다.
-// 흐름선 = 바닥 데칼 곡선(시각 전용, 걷기 칸 위 메시 없음). 등줄기 = 그중 굵은 7줄, 지형 높이 0.10u 이하의 낮은 둔덕(충돌·덩어리 아님, 시선 쐐기 이내).
+// 흐름선 = 바닥 데칼 곡선(시각 전용, 걷기 칸 위 메시 없음). 등줄기 = 그중 굵은 7줄, 지형 높이 0.04u 이하의 낮은 둔덕(충돌·덩어리 아님, 시선 쐐기 이내).
 const HEART = [100.5, 60.5], HEART_R = 4.6, GATE_FRONT = [100.5, 34];
 const bez = (p0, p1, p2, t) => [(1 - t) * (1 - t) * p0[0] + 2 * (1 - t) * t * p1[0] + t * t * p2[0], (1 - t) * (1 - t) * p0[1] + 2 * (1 - t) * t * p1[1] + t * t * p2[1]];
 const flowLines = [];
@@ -165,7 +165,7 @@ for (const l of flowLines) for (let k = 0; k + 1 < l.pts.length; k++) {
   const c = (vx * tx + vy * ty) / ((Math.hypot(vx, vy) * Math.hypot(tx, ty)) || 1); alignSum += c; alignN++; if (c >= 0.5) aligned60++; // cos>=0.5 = 60도 이내
 }
 const endNearAttractor = flowLines.filter(l => { const e = l.pts[l.pts.length - 1]; return Math.hypot(e[0] - HEART[0], e[1] - HEART[1]) <= HEART_R + 1.5 || Math.hypot(e[0] - GATE_FRONT[0], e[1] - GATE_FRONT[1]) <= 3; }).length;
-const rootFlow = { note: '흐름선=바닥 데칼(시각 전용). ridge=낮은 뿌리 둔덕(Terrain 높이 <=0.10u, 충돌·덩어리 아님). trunk=심장→보스문 앞 5가닥', heart: HEART, heartR: HEART_R, gateFront: GATE_FRONT, lines: flowLines,
+const rootFlow = { note: '흐름선=바닥 데칼(시각 전용). ridge=낮은 뿌리 둔덕(Terrain 높이 <=0.04u, 충돌·덩어리 아님). trunk=심장→보스문 앞 5가닥', heart: HEART, heartR: HEART_R, gateFront: GATE_FRONT, lines: flowLines,
   convergence: { lines: flowLines.length, ridges: flowLines.filter(l => l.ridge).length, endNearAttractor, meanCosToAttractor: +(alignSum / alignN).toFixed(3), segmentsWithin60deg: +(aligned60 / alignN).toFixed(3) } };
 
 // ---- 시선 쐐기(맵 총괄 공통 규칙): h <= 0.9 + tan(0.85)*D. D = 덩어리 북쪽 끝에서 북쪽 가장 가까운 걷기 칸 중심까지(u, 1칸=0.4u) ----

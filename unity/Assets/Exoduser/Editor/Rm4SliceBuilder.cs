@@ -370,7 +370,7 @@ namespace Exoduser
                 }
             for (int pass = 0; pass < 2; pass++) { BoxBlur(h, 6, true); BoxBlur(h, 6, false); }
             var ridgeNear = new bool[200, 200]; for (int ty = 0; ty < 200; ty++) for (int tx = 0; tx < 200; tx++) ridgeNear[ty, tx] = Walk(tx, ty) && DistToSegs(ridgeSegs, tx + .5f, ty + .5f) < 3.2f;
-            const float RidgeH = 0.10f;   // low root ridges: visual relief only, never a collider / lump; judged separately from the walk-cover count
+            const float RidgeH = 0.04f;   // low root ridges: visual relief only, never a collider / lump; judged separately from the walk-cover count. 0.04u max: the runtime does not lift the hero to the terrain height (NativeGame.Point z=0), so a walk-tile ridge buries the feet by up to RidgeH (map lead decision 10-28); the lost relief comes from normal map / decals
             for (int i = 0; i < HRes; i++) for (int j = 0; j < HRes; j++)
                 {
                     float X = TX0 + (TX1 - TX0) * (j / (float)(HRes - 1)), Y = TY1 - (TY1 - TY0) * (i / (float)(HRes - 1));
@@ -967,7 +967,7 @@ namespace Exoduser
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var cull = UnityEngine.Object.FindFirstObjectByType<Rm4PoolLightCuller>();
             var focus = new Dictionary<string, Vector2> { { "start", new Vector2(100f, 185f) }, { "heart", new Vector2(100f, 70f) }, { "gate", new Vector2(100f, 38f) } };
-            bool capsule = Arg("-capsule", "0") == "1";
+            bool ridgeCut = Array.IndexOf(cuts, "ridge") >= 0; bool capsule = Arg("-capsule", "0") == "1" || ridgeCut;   // the ridge cut needs the capsule; run it alone: -cuts ridge
             if (capsule)
             {   // player-size stand-in (1.6u tall, 0.5u wide) to judge occlusion; hides the sandbox marker sprite
                 var ms = marker.Find("Marker Sprite"); if (ms != null) ms.gameObject.SetActive(false);
@@ -978,6 +978,7 @@ namespace Exoduser
             foreach (var cut in cuts)
             {
                 if (cut == "top") { CaptureTop(outDir); continue; }
+                if (cut == "ridge") { CaptureRidge(outDir, marker, cam, brain, cull); continue; }
                 if (!focus.TryGetValue(cut, out var f)) continue;
                 var w = W(f.x, f.y); marker.position = new Vector3(w.x, GroundY(w.x, w.z), w.z); if (cull != null) cull.Refresh(marker.position);
                 var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
@@ -987,6 +988,31 @@ namespace Exoduser
                 UnityEngine.Object.DestroyImmediate(tex); rt.Release();
                 Debug.Log("[RM4] captured " + cut);
             }
+        }
+        // walk tile on a root-ridge crest nearest the heart; capsule stands once at y=0 (what the runtime does: no terrain lift) and once on the terrain (GroundY), side by side in two files
+        static void CaptureRidge(string outDir, Transform marker, Camera cam, CinemachineBrain brain, Rm4PoolLightCuller cull)
+        {
+            int bx = -1, by = -1; float best = 1e9f;
+            for (int ty = WY0; ty < WY1; ty++) for (int tx = WX0; tx < WX1; tx++)
+                {
+                    if (!Walk(tx, ty)) continue;
+                    float rd = DistToSegs(ridgeSegs, tx + .5f, ty + .5f); if (rd > 0.25f) continue;
+                    float sc = rd * 40f + Mathf.Abs(tx - 100) + Mathf.Abs(ty - 70) * 0.5f; if (sc < best) { best = sc; bx = tx; by = ty; }
+                }
+            if (bx < 0) { Debug.LogError("[RM4] ridge cut: no walk tile on a ridge crest"); return; }
+            var w = W(bx + .5f, by + .5f); float gy = GroundY(w.x, w.z);
+            Debug.Log("[RM4] ridge cut tile " + bx + "," + by + " groundY=" + gy.ToString("F3") + " (feet at y=0 are buried by " + Mathf.Max(0f, gy).ToString("F3") + "u)");
+            File.WriteAllText(Root + "/Data/rm4_ridge_cut.json", "{\"tile\":[" + bx + "," + by + "],\"groundY\":" + gy.ToString("F4", System.Globalization.CultureInfo.InvariantCulture) + "}");
+            foreach (var v in new[] { "y0", "ground" })
+            {
+                marker.position = new Vector3(w.x, v == "y0" ? 0f : gy, w.z); if (cull != null) cull.Refresh(marker.position);
+                var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
+                brain.ManualUpdate(); cam.Render();
+                RenderTexture.active = rt; var tex = new Texture2D(1600, 900, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, 1600, 900), 0, 0); tex.Apply();
+                File.WriteAllBytes(Path.Combine(outDir, "rm4_ridge_" + v + ".png"), tex.EncodeToPNG()); RenderTexture.active = null; cam.targetTexture = null;
+                UnityEngine.Object.DestroyImmediate(tex); rt.Release();
+            }
+            Debug.Log("[RM4] captured ridge");
         }
         // orthographic top view of the slice window (x0..199 y32..199) with the Core walk tiles overlaid in translucent green
         static void CaptureTop(string outDir)
