@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
     // (roster and combat save live under <dir>), so a normal player's save is never touched.
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class M1Stage { public string id, name, status, note, capture; }
+        [Serializable] sealed class M1Stage { public string id, name, status, note, capture, overlay; }
         [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; public string device, deviceType, captureMode; public bool headless; public int guiRepaints, guiBridged; }
         M1Receipt m1; string m1Caps; int m1Index;
 
@@ -22,6 +22,10 @@ namespace Exoduser.UnityPort
         // `--unity-mute` + -batchmode (no -nographics, so the GPU device stays): no window exists, so ScreenCapture has nothing to read. The shot is taken by rendering the world camera into a 1600x900
         // RenderTexture and reading it back. IMGUI (OnGUI, the whole HUD) is drawn into the same RenderTexture only if the player still sends Repaint events in batchmode; guiRepaints in
         // m1-check.json says whether it did (0 = the captures are world only, no HUD). Normal play and the windowed m1-check keep ScreenCapture.
+        // Which UI was open when each capture was taken (pause menu / inventory / skills / stats / forge). A pause menu over a capture fails the stage (LT-2: focus loss paused the windowed run).
+        readonly Dictionary<string, string> m1Overlays = new Dictionary<string, string>();
+        static bool m1ModeFlag { get { return Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-m1-check") >= 0; } }
+        string M1Overlay() { var o = new List<string>(); if (menu) o.Add("pause"); if (inventory.Open) o.Add("inventory"); if (skills.Open) o.Add("skills"); if (stats.Open) o.Add("stats"); if (forge.Open) o.Add("forge"); return string.Join(",", o.ToArray()); }
         bool m1Headless; RenderTexture m1GuiTarget; int m1GuiRepaints, m1GuiBridged;
         sealed class M1GuiProbe : MonoBehaviour { public NativeGame game; void OnGUI() { if (game != null && Event.current.type == EventType.Repaint) game.M1GuiRepaint(); } }
         internal void M1GuiRepaint()
@@ -34,6 +38,7 @@ namespace Exoduser.UnityPort
         IEnumerator M1Shot(string name)
         {
             UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
+            m1Overlays[name] = M1Overlay();
             if (!m1Headless) { ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null; yield break; }
             const int w = 1600, h = 900;
             var rt = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGB32);
@@ -56,7 +61,9 @@ namespace Exoduser.UnityPort
         // status: "ok", "fail", "missing", "pending-core" (needs the boss Core, not a flow gap)
         void M1Add(string id, string name, string status, string note, string cap)
         {
-            m1.stages.Add(new M1Stage { id = id, name = name, status = status, note = note, capture = cap });
+            string ov; if (string.IsNullOrEmpty(cap) || !m1Overlays.TryGetValue(Path.GetFileNameWithoutExtension(cap), out ov)) ov = "";
+            if (ov.Contains("pause") && status == "ok") { status = "fail"; note += " [pause menu was open over the capture " + cap + "]"; }
+            m1.stages.Add(new M1Stage { id = id, name = name, status = status, note = note, capture = cap, overlay = ov });
             if (status != "ok" && status != "pending-core" && m1.firstBlocked == null) m1.firstBlocked = id + " " + name + " (" + status + "): " + note;
         }
 
@@ -65,6 +72,7 @@ namespace Exoduser.UnityPort
             AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;   // (always muted here; --unity-mute below is the explicit flag the build loop passes)
             bool mute = Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-mute") >= 0;
             if (mute) { AudioListener.volume = 0; AudioListener.pause = true; }
+            Application.runInBackground = true;   // focus loss must not pause the unattended run (LT-2); NativeGame.OnApplicationFocus also skips the auto-pause in --unity-m1-check
             m1Headless = mute && Application.isBatchMode;
             string output = Argument("-output"); if (string.IsNullOrEmpty(output)) yield break;
             m1Caps = Path.Combine(output, "caps"); Directory.CreateDirectory(m1Caps);
@@ -385,6 +393,10 @@ namespace Exoduser.UnityPort
         IEnumerator M1Finish(string output)
         {
             m1.guiRepaints = m1GuiRepaints; m1.guiBridged = m1GuiBridged;
+            {   // 99: no capture of the whole run sits under the pause menu (art-* shots belong to no stage, so they are checked here)
+                var paused = new List<string>(); foreach (var kv in m1Overlays) if (kv.Value.Contains("pause")) paused.Add(kv.Key);
+                M1Add("99", "captures free of the pause menu", paused.Count == 0 ? "ok" : "fail", m1Overlays.Count + " captures, " + (paused.Count == 0 ? "none under the pause menu" : "pause menu over: " + string.Join(", ", paused.ToArray())), "");
+            }
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
             yield return null; Application.Quit(0);
         }

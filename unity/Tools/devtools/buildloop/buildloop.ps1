@@ -182,7 +182,7 @@ function Judge-M1($path, $rules) {
   foreach ($s in @($m.stages)) {
     $st = [string]$s.status
     if ($rules.m1.failStatuses -contains $st) { $fail++ } elseif ($rules.m1.okStatuses -contains $st) { $ok++ } else { $neu++ }
-    $stages += [pscustomobject]@{ id = [string]$s.id; name = [string]$s.name; status = $st; note = [string]$s.note; capture = [string]$s.capture }
+    $stages += [pscustomobject]@{ id = [string]$s.id; name = [string]$s.name; status = $st; note = [string]$s.note; capture = [string]$s.capture; overlay = [string](Prop $s 'overlay' '') }
   }
   return [pscustomobject]@{ present = $true; ok = $ok; fail = $fail; neutral = $neu; stages = $stages; firstBlocked = [string](Prop $m 'firstBlocked' ''); device = [string](Prop $m 'device' ''); deviceType = [string](Prop $m 'deviceType' ''); captureMode = [string](Prop $m 'captureMode' ''); headless = [bool](Prop $m 'headless' $false); guiRepaints = [int](Prop $m 'guiRepaints' 0); guiBridged = [int](Prop $m 'guiBridged' 0) }
 }
@@ -369,8 +369,8 @@ ul{margin:6px 0 0;padding-left:18px}
     [void]$sb.AppendLine('<h2>SMOKE (m1-check)</h2><div class="panel">')
     if ($null -ne $latest.m1 -and $latest.m1.present) {
       [void]$sb.AppendLine('<div class="note">ok ' + $latest.m1.ok + ' · fail ' + $latest.m1.fail + ' · 기타 ' + $latest.m1.neutral + (Esc $(if ($latest.m1.firstBlocked) { ' · 첫 막힘: ' + $latest.m1.firstBlocked } else { '' })) + '</div>')
-      [void]$sb.AppendLine('<table><tr><th>단계</th><th>이름</th><th>결과</th><th>메모</th></tr>')
-      foreach ($s in @($latest.m1.stages)) { $note = [string]$s.note; if ($note.Length -gt 200) { $note = $note.Substring(0, 200) + '...' }; [void]$sb.AppendLine('<tr><td class="mono">' + (Esc $s.id) + '</td><td>' + (Esc $s.name) + '</td><td class="st-' + (Esc $s.status) + '">' + (Esc $s.status) + '</td><td class="note">' + (Esc $note) + '</td></tr>') }
+      [void]$sb.AppendLine('<table><tr><th>단계</th><th>이름</th><th>결과</th><th>화면 위 UI</th><th>메모</th></tr>')
+      foreach ($s in @($latest.m1.stages)) { $note = [string]$s.note; if ($note.Length -gt 200) { $note = $note.Substring(0, 200) + '...' }; [void]$sb.AppendLine('<tr><td class="mono">' + (Esc $s.id) + '</td><td>' + (Esc $s.name) + '</td><td class="st-' + (Esc $s.status) + '">' + (Esc $s.status) + '</td><td class="mono">' + (Esc $(if ($s.overlay) { $s.overlay } else { '-' })) + '</td><td class="note">' + (Esc $note) + '</td></tr>') }
       [void]$sb.AppendLine('</table>')
     } else { [void]$sb.AppendLine('<div class="note">m1-check.json 없음 - ' + (Esc $latest.smokeNote) + '</div>') }
     [void]$sb.AppendLine('</div>')
