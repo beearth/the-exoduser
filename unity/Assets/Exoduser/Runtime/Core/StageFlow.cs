@@ -18,7 +18,9 @@ namespace Exoduser.UnityPort.Core
         StageCleared,        // exit stepped on after the boss: +10 SP, stage-clear panel (web 42062-42147)
         FieldRestored,       // death retry inside the arena: back to the field gate (web retryBtn 63627-63657)
         GateGuardDefeated,   // the Hell Gate guardian died: +10 % clear progress, gate released (web 42945-42950)
-        RegionCleared        // one of the four regions reached its clear condition (web _regionCheckClears 61032); Percent = regions cleared so far
+        RegionCleared,       // one of the four regions reached its clear condition (web _regionCheckClears 61032); Percent = regions cleared so far
+        AnglerWoke,          // the first 심연의 앵글러 woke (showPH '심연의 앵글러', web 61338); Percent = its element
+        AnglerSlain          // an angler died (showPH '필드보스 처치!', web 18890); Percent = its element
     }
 
     public sealed class StageEvent
@@ -93,6 +95,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         public void RaiseRegionCleared(int region, int clearedCount) { Raise(StageEventKind.RegionCleared, 0, 0, clearedCount); }
+        public void RaiseAngler(StageEventKind kind, float x, float y, int element) { Raise(kind, x, y, element); }
 
         public EnemyState FindBoss()
         {

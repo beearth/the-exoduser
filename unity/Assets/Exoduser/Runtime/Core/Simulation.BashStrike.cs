@@ -47,6 +47,7 @@ namespace Exoduser.UnityPort.Core
                 }
                 if (r.Weak) RaisePlayerText(e.X, e.Y - 28, "약점!", "#bbbbbb", 38);
             }
+            HurtFieldMobs(Player.X, Player.Y, range, dmg, null);   // _gSlamHit's closing _hurtFieldMobs (web 46824)
             HurtShake(10);   // shake(10) of the strike, then _gSlamHit's own shake(18)
             HurtShake(18);
             SlamWaves.Add(new SlamWave { Id = nextWaveId++, X = Player.X, Y = Player.Y, MaxR = (float)(range * 1.6), MaxT = 35, Bash = true });

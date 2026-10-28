@@ -53,12 +53,8 @@ namespace Exoduser.UnityPort.Core
             return (y / StartMobTile < RegMidY ? 0 : 2) + (x / StartMobTile < RegMidX ? 0 : 1);
         }
 
-        /// <summary>_regionFbAlive: the angler of the region is alive. R-A: the angler is not ported, <see cref="StageFlow.FieldBossDone"/> decides (true = dead).</summary>
-        public bool RegionFbAlive(RegionState r)
-        {
-            if (r == null || r.FbIdx < 0 || Config.StageIndex != 0 || Stage.FieldBossDone) return false;
-            return true;
-        }
+        /// <summary>_regionFbAlive: see <see cref="FieldBossAliveForRegion"/> (R-B). Without anglers (FieldBossDone) nobody is alive.</summary>
+        public bool RegionFbAlive(RegionState r) { return FieldBossAliveForRegion(r); }
 
         /// <summary>_regionRatio: kills / total (+0.10 on the gate region once the guard died); an empty region counts as 1.</summary>
         public double RegionRatio(RegionState r, int i)
