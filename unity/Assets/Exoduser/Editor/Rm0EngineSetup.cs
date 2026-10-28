@@ -46,7 +46,7 @@ namespace Exoduser
             var cam = Camera.main;
             var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32);
             cam.targetTexture = rt;
-            Object.FindFirstObjectByType<CinemachineBrain>().ManualUpdate();
+            { var brain = Object.FindFirstObjectByType<CinemachineBrain>(); brain.UpdateMethod = CinemachineBrain.UpdateMethods.ManualUpdate; brain.ManualUpdate(); }   // capture only: the scene is not saved
             cam.Render();
             RenderTexture.active = rt;
             var tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
@@ -99,7 +99,7 @@ namespace Exoduser
         public const float SunIntensity = 0.6f, SunShadowStrength = 0.85f, ReflectionIntensity = 1.0f;
         public static readonly Color AmbientSky = new Color(.16f, .16f, .18f), AmbientEquator = new Color(.11f, .10f, .095f), AmbientGround = new Color(.05f, .04f, .036f);
         public static readonly Color ColorFilter = new Color(1f, .98f, .97f);
-        public const float PostExposure = 1.85f;   // RM0-LIGHT-L: picked from the 14-step sweep (-0.15..3.00) with the Linear + post-processing pipeline (was -0.15 under Gamma)
+        public const float PostExposure = 1.3f;   // RM0-LIGHT-L (Neutral tonemap re-pick 1.30, was 1.85 under ACES): picked from the 14-step sweep (-0.15..3.00) with the Linear + post-processing pipeline (was -0.15 under Gamma)
         public static readonly Color PoolColor = new Color(0xb0 / 255f, 0x28 / 255f, 0x1c / 255f);   // LIGHT-HELL #b0281c
         const string EnvCubemapPath = "Assets/Exoduser/Remodel/Common/Lighting/Env_NeutralSteel.cubemap";
 
