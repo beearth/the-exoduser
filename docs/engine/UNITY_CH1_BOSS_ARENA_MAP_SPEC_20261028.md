@@ -74,4 +74,6 @@
 6. **아트 수치 보조:** 바이블 V1~V7·C1~C8·독액 §6을 현재 Linear/Neutral 렌더의 실제 캡처에 적용해 기록한다. 특히 바닥 R/G 1.5~1.8, 독액 색상각 40~65°, 독액 표면 화면 12% 이하, 빛 웅덩이 화면당 2~4개, 과한 원색·남색 void 0. 수치 충족만으로 시각 PASS를 내지 않는다.
 7. **실행·반영:** Unity는 `unity/Tools/devtools/exo-unity.ps1`의 무창·무음·세이브 격리 경로만 사용하고 PC 전체 동시 1개 규칙을 지킨다. 고유 I: 출력에 컴파일 로그·캡처·30초 FPS·셰이더 오류를 남긴다. 변경 코드가 있으면 `docs/` 관련 키워드를 전수 검색해 해당 수치·상태를 같은 커밋에 맞춘다. 자기 파일만 정확한 경로로 stage/commit하고 비강제 branch push; `unity/main` 병합은 통합 담당에게 SHA와 검수 증거를 넘긴다.
 
-각 단계의 보고는 제작 가이드 §23 `MAP PRODUCTION REPORT`의 MASTER / OUTER MASS / LARGE / MEDIUM / GROUND / PLAYABLE / LANDMARK / CAMERA QA / TECH QA / FILES / GIT / `VISUAL VERDICT: PASS | RETOUCH | FAIL`을 채운다. 지금 네 아레나 모두 **제작 전**이며, 이 문서의 수치와 기존 Core 구현만으로 화면 완성을 주장하지 않는다.
+각 단계의 보고는 제작 가이드 §23 `MAP PRODUCTION REPORT`의 MASTER / OUTER MASS / LARGE / MEDIUM / GROUND / PLAYABLE / LANDMARK / CAMERA QA / TECH QA / FILES / GIT / `VISUAL VERDICT: PASS | RETOUCH | FAIL`을 채운다. 네 아레나의 **게임 화면은 제작 전**이며, 이 문서의 수치와 기존 Core 구현만으로 화면 완성을 주장하지 않는다.
+
+2026-10-28 첫 기하 후보: `codex/pc-map-arena-20261028` `2f2e8bc9b`의 `ArenaChannelPlan.Build(BossArenaLayout.Generate(0))`가 1-1 원형 보행 바깥에 붙은 막힘 타일 278개를 고른다. 실제 Core를 링크한 .NET 검사 11/0, 보행 선택 0, 타일 변경 0. 렌더 메시·재질·보스방 연결·Unity 컴파일·Player·1x 판정은 미완료이므로 `VISUAL VERDICT: RETOUCH`이며 통합 HOLD다. 세부 영수증은 같은 브랜치의 `docs/engine/UNITY_RM1_ARENA_CHANNEL_20261028.md`에 있다.
