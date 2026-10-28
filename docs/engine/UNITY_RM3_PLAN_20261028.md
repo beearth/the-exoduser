@@ -76,3 +76,8 @@
 - **Cinemachine 오류**: `Capture`·`Fps`에서 `brain.UpdateMethod = ManualUpdate`를 먼저 설정(편집기에서 연 씬은 저장하지 않으므로 런타임 카메라 설정은 그대로 SmartUpdate).
 - **쐐기 보고**: `WriteStructureReports`가 `Data/rm3_wedge_masses.json`(덩어리별 grp·r·h·D·limit·pass)을 낸다. D = 덩어리 북쪽 끝에서 북쪽 가장 가까운 걷기 칸 중심까지 거리.
 - 검증은 조명 병합 뒤 Unity 1회 실행으로 한다(수치 5종 + 쐐기 json + 캡슐 컷 재촬영).
+
+### 8-b. 맵 총괄 결정 반영 (10-28)
+- 섬 지형(격자 안 막힌 칸) 상한 `min(1.5,…)` → `IslandMaxH = 0.6`(칸별 ×0.75~1.25 흔들림·블러 전). 격자 밖 지형은 1.5 유지.
+- 쐐기 검사 h = 걷기 면 위 지형 높이(`ground`) + 덩어리 높이(`mass`). `rm3_wedge_masses.json`에 `ground`·`mass`·`h` 열.
+- 무창·무음: `tools/rm3/run-rm3.ps1`(-batchmode, -nographics 없음, 숨김 창, 공용 Unity 잠금 `I:\EXODUSER-Storage\unity-jobs\_pc_lock.json` 원자 생성·종료 시 삭제), `Capture`·`Fps`에서 `AudioListener.volume = 0`.

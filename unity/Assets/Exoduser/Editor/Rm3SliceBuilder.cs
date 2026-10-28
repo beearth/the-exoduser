@@ -32,6 +32,7 @@ namespace Exoduser
         const int TX0 = -20, TX1 = 220, TY0 = -20, TY1 = 220;   // padded terrain window (tiles): outer masses, rivers and background live here
         const float T = 0.4f, TerrainH = 4f, BaseY = -0.5f, Pitch = 0.85f, DistU = 14f, CamSideMax = 0.9f;
         const int HRes = 1025, ARes = 512;
+        const float IslandMaxH = 0.6f;   // island terrain (in-grid blocked tiles) base height cap, before the x0.75..1.25 per-tile jitter and blur (map lead 10-28)
 
         [Serializable] class WalkJ { public string[] rows; }
         [Serializable] class IObj { public string type; public float[] tile; }
@@ -52,7 +53,7 @@ namespace Exoduser
         static readonly List<FP> fps = new List<FP>();
         static readonly List<Vector2[]> ribbonQuads = new List<Vector2[]>();
         static readonly List<(Vector2 c, float r)> flatCover = new List<(Vector2, float)>();   // pool discs / spore pits, tile coords
-        class MassRec { public string name, kind, grp; public float cx, cz, top, r = 0.3f; public bool inGrid, south; }
+        class MassRec { public string name, kind, grp; public float cx, cz, top, gy, r = 0.3f; public bool inGrid, south; }
         static readonly List<MassRec> massRecs = new List<MassRec>();
         // procedural pieces are written to Generated/Pieces_<group>.asset (one container per island / outer side) so the scene file stays small and no asset nears 50 MB
         static string meshGroup = "Misc";
@@ -284,7 +285,7 @@ namespace Exoduser
             if (pool.TryGetValue((tx, ty), out var ph)) return ph;
             if (Walk(tx, ty)) return 0f;
             int d = (tx < TX0 || ty < TY0 || tx >= TX1 || ty >= TY1) ? 8 : DW(tx, ty);
-            return Mathf.Min(1.5f, 0.28f * (d - 0.2f)) * (0.75f + 0.5f * Hash(tx, ty));
+            bool outside = tx < 0 || ty < 0 || tx >= GN || ty >= GN; return Mathf.Min(outside ? 1.5f : IslandMaxH, 0.28f * (d - 0.2f)) * (0.75f + 0.5f * Hash(tx, ty));
         }
         static float[,] ComputeHeights()
         {
@@ -496,7 +497,7 @@ namespace Exoduser
             var cap = MakeLump("Cap", go.transform, go.transform.position + new Vector3(0f, s.stemH - 0.04f, 0f), yaw, s.capR, s.capR * (0.86f + 0.14f * Hash(s.seed, 3)), s.capH, s.seed + 2, s.cap, 2.4f, false, lp => { lp.n = 2f; lp.sink = 0.02f; lp.body = .92f; lp.top = .6f; lp.lobeAmp = .10f; lp.noise = .10f; lp.lean = .05f; lp.dome = .34f; lp.topBump = .10f; });
             float top = 0f; foreach (var r in go.GetComponentsInChildren<Renderer>()) top = Mathf.Max(top, r.bounds.max.y - gy);
             if (maxTop > 0f && top > maxTop) { go.transform.localScale = new Vector3(1f, maxTop / top, 1f); top = maxTop; }
-            massRecs.Add(new MassRec { name = name, grp = meshGroup, kind = kind, cx = wx, cz = wz, top = top, r = s.capR, inGrid = inGrid, south = south });
+            massRecs.Add(new MassRec { name = name, grp = meshGroup, kind = kind, cx = wx, cz = wz, top = top, gy = gy, r = s.capR, inGrid = inGrid, south = south });
             return top;
         }
         // greedy cover of an island's tiles: big caps first, then smaller ones, until every tile centre lies inside a footprint (radius 0.3u always fits a blocked tile centre)
@@ -553,7 +554,7 @@ namespace Exoduser
             var fp = new FP { kind = "trunk", cx = wx, cz = wz, hw = r, circle = true }; int sh = 0; while (FpHitsWalk(fp) && sh++ < 8) { r *= .85f; fp.hw = r; }
             var go = MakeLump(name, parent, new Vector3(wx, gy, wz), 0f, r, r, h, seed, mat, 2.0f, true);
             float top = go.GetComponent<Renderer>().bounds.max.y - gy; if (top > CamSideMax - 0.02f) { go.transform.localScale = new Vector3(1f, (CamSideMax - 0.02f) / top, 1f); top = CamSideMax - 0.02f; }
-            massRecs.Add(new MassRec { name = name, grp = meshGroup, kind = "stump", cx = wx, cz = wz, top = top, r = r, inGrid = true, south = false }); fps.Add(fp);
+            massRecs.Add(new MassRec { name = name, grp = meshGroup, kind = "stump", cx = wx, cz = wz, top = top, gy = gy, r = r, inGrid = true, south = false }); fps.Add(fp);
             AddRoots(parent, new Vector3(wx, gy, wz), gy, r, 3 + (seed % 3), seed, mat, name);
             return go;
         }
@@ -640,7 +641,7 @@ namespace Exoduser
             float gy = GroundY(mx, mz); float r = 0.62f; var fp = new FP { kind = "fleshball", cx = mx, cz = mz, hw = r, circle = true }; int sh = 0; while (FpHitsWalk(fp) && sh++ < 8) { r *= .86f; fp.hw = r; }
             var go = MakeLump("Bulb", isRoot, new Vector3(mx, gy, mz), (float)rnd.NextDouble() * 360f, r, r * .9f, 0.8f, seed, mats.Mass, 2.4f, false, lp => { lp.n = 2f; lp.dome = .3f; });
             float top = go.GetComponent<Renderer>().bounds.max.y - gy; if (top > CamSideMax - 0.02f) { go.transform.localScale = new Vector3(1f, (CamSideMax - 0.02f) / top, 1f); top = CamSideMax - 0.02f; }
-            massRecs.Add(new MassRec { name = go.name, grp = meshGroup, kind = "bulb", cx = mx, cz = mz, top = top, r = r, inGrid = true, south = false }); fps.Add(fp);
+            massRecs.Add(new MassRec { name = go.name, grp = meshGroup, kind = "bulb", cx = mx, cz = mz, top = top, gy = gy, r = r, inGrid = true, south = false }); fps.Add(fp);
             return 1 + GreedyFill(isRoot, mats, tiles, new[] { .4f, .3f }, seed, rnd, "Tumor", false, out var _b);
         }
         static int Maw(Transform isRoot, Mats mats, List<(int, int)> tiles, float mx, float mz, System.Random rnd, int seed)
@@ -648,7 +649,7 @@ namespace Exoduser
             float gy = GroundY(mx, mz); float r = 0.5f; var fp = new FP { kind = "maw", cx = mx, cz = mz, hw = r, circle = true }; int sh = 0; while (FpHitsWalk(fp) && sh++ < 8) { r *= .86f; fp.hw = r; }
             var go = MakeLump("Maw", isRoot, new Vector3(mx, gy, mz), 0f, r, r, 0.7f, seed, mats.Mass, 2.4f, false, lp => { lp.n = 2f; lp.dome = .2f; });
             float top = go.GetComponent<Renderer>().bounds.max.y - gy; if (top > CamSideMax - 0.02f) { go.transform.localScale = new Vector3(1f, (CamSideMax - 0.02f) / top, 1f); top = CamSideMax - 0.02f; }
-            massRecs.Add(new MassRec { name = "Maw", grp = meshGroup, kind = "maw", cx = mx, cz = mz, top = top, r = r, inGrid = true, south = false }); fps.Add(fp);
+            massRecs.Add(new MassRec { name = "Maw", grp = meshGroup, kind = "maw", cx = mx, cz = mz, top = top, gy = gy, r = r, inGrid = true, south = false }); fps.Add(fp);
             var v = GameObject.CreatePrimitive(PrimitiveType.Sphere); v.name = "MawVoid"; UnityEngine.Object.DestroyImmediate(v.GetComponent<Collider>()); v.transform.SetParent(isRoot, false);
             v.transform.position = new Vector3(mx, gy + 0.22f, mz - r * .55f); v.transform.localScale = new Vector3(r * 1.0f, 0.22f, 0.25f); v.GetComponent<MeshRenderer>().sharedMaterial = mats.VoidDark; v.GetComponent<MeshRenderer>().shadowCastingMode = ShadowCastingMode.Off;
             return 1 + GreedyFill(isRoot, mats, tiles, new[] { .3f }, seed, rnd, "Under", false, out var _b);
@@ -662,7 +663,7 @@ namespace Exoduser
                 var fp = new FP { kind = "stake", cx = p.x, cz = p.z, hw = 0.14f, circle = true }; if (FpHitsWalk(fp)) continue; float gy = GroundY(p.x, p.z);
                 var path = new List<Vector3>(); for (int q = 0; q <= 6; q++) { float t = q / 6f; path.Add(new Vector3(p.x + 0.06f * Mathf.Sin(t * 3f + k), gy - 0.02f + h * t, p.z)); }
                 var go = AddMeshObj("Stake_" + k, parent, TubeMesh(path, 0.07f, 0.035f, 6, seed + k, 1.2f, true, 1.0f), mats.Bark); fps.Add(fp);
-                float top = go.GetComponent<Renderer>().bounds.max.y - gy; massRecs.Add(new MassRec { name = go.name, grp = meshGroup, kind = "stake", cx = p.x, cz = p.z, top = top, r = 0.14f, inGrid = true, south = false });
+                float top = go.GetComponent<Renderer>().bounds.max.y - gy; massRecs.Add(new MassRec { name = go.name, grp = meshGroup, kind = "stake", cx = p.x, cz = p.z, top = top, gy = gy, r = 0.14f, inGrid = true, south = false });
                 if (n > 1) { var hang = MakeLump("Hide_" + k, parent, new Vector3(p.x + .02f, gy + h - 0.2f, p.z - .03f), 0f, .1f, .07f, .2f, seed + 50 + k, mats.Mass, 1.2f, false, lp => { lp.n = 2f; lp.dome = .1f; lp.sink = .02f; }); }
             }
         }
@@ -905,10 +906,10 @@ namespace Exoduser
                 float zN = r.cz + r.r, dBest = 99f; int c0 = Mathf.FloorToInt((r.cx - r.r) / T), c1 = Mathf.FloorToInt((r.cx + r.r) / T);
                 for (int tx = Mathf.Max(0, c0); tx <= Mathf.Min(GN - 1, c1); tx++)
                     for (int ty = 0; ty < GN; ty++) { if (!Walk(tx, ty)) continue; float dz = -(ty + .5f) * T - zN; if (dz < 0f) continue; if (dz < dBest) dBest = dz; }
-                float lim = CamSideMax + tanP * dBest; bool ok = r.top <= lim + 1e-3f; if (!ok) wedgeFail++;
-                wl.Add("{\"name\":\"" + r.name + "\",\"grp\":\"" + r.grp + "\",\"kind\":\"" + r.kind + "\",\"cx\":" + r.cx.ToString("F2") + ",\"cz\":" + r.cz.ToString("F2") + ",\"r\":" + r.r.ToString("F2") + ",\"h\":" + r.top.ToString("F3") + ",\"D\":" + dBest.ToString("F2") + ",\"limit\":" + Mathf.Min(lim, 99f).ToString("F2") + ",\"pass\":" + (ok ? "true" : "false") + "}");
+                float ground = Mathf.Max(0f, r.gy), hTot = ground + r.top; float lim = CamSideMax + tanP * dBest; bool ok = hTot <= lim + 1e-3f; if (!ok) wedgeFail++;
+                wl.Add("{\"name\":\"" + r.name + "\",\"grp\":\"" + r.grp + "\",\"kind\":\"" + r.kind + "\",\"cx\":" + r.cx.ToString("F2") + ",\"cz\":" + r.cz.ToString("F2") + ",\"r\":" + r.r.ToString("F2") + ",\"ground\":" + ground.ToString("F3") + ",\"mass\":" + r.top.ToString("F3") + ",\"h\":" + hTot.ToString("F3") + ",\"D\":" + dBest.ToString("F2") + ",\"limit\":" + Mathf.Min(lim, 99f).ToString("F2") + ",\"pass\":" + (ok ? "true" : "false") + "}");
             }
-            File.WriteAllText(DataDir + "/rm3_wedge_masses.json", "{\"rule\":\"h <= 0.9 + tan(0.85) x D ; D = distance (u) from the mass north edge (cz + r) to the nearest walk-tile centre north of it (columns cx-r..cx+r)\",\"masses\":" + wl.Count + ",\"fail\":" + wedgeFail + ",\"list\":[" + string.Join(",", wl) + "]}");
+            File.WriteAllText(DataDir + "/rm3_wedge_masses.json", "{\"rule\":\"h (= terrain height above the walk plane + mass height) <= 0.9 + tan(0.85) x D ; D = distance (u) from the mass north edge (cz + r) to the nearest walk-tile centre north of it (columns cx-r..cx+r)\",\"masses\":" + wl.Count + ",\"fail\":" + wedgeFail + ",\"list\":[" + string.Join(",", wl) + "]}");
             Debug.Log($"[RM3] wedge masses={wl.Count} fail={wedgeFail}");
             // 5) rendering layers: nothing in the scene may use a non-default rendering layer (Hero)
             int nonDefault = 0, total = 0; foreach (var r in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None)) { total++; if (r.renderingLayerMask != 1u) nonDefault++; }
@@ -921,7 +922,7 @@ namespace Exoduser
         static string Arg(string k, string d) { var a = Args(); int i = Array.IndexOf(a, k); return i >= 0 && i + 1 < a.Length ? a[i + 1] : d; }
         public static void Fps()
         {
-            var outJson = Arg("-fpsOut", Arg("-out", "rm3-fps.json")); Load(); EditorSceneManager.OpenScene(ScenePath);
+            AudioListener.volume = 0f; var outJson = Arg("-fpsOut", Arg("-out", "rm3-fps.json")); Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var w0 = W(100f, 185f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); brain.UpdateMethod = CinemachineBrain.UpdateMethods.ManualUpdate; brain.ManualUpdate();
             var world = GameObject.Find("World"); var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
@@ -937,7 +938,7 @@ namespace Exoduser
         }
         public static void Capture()
         {
-            var outDir = Arg("-outDir", "rm3-cuts"); Directory.CreateDirectory(outDir); var cuts = Arg("-cuts", "start,heart,cave,front,river,top").Split(',');
+            AudioListener.volume = 0f; var outDir = Arg("-outDir", "rm3-cuts"); Directory.CreateDirectory(outDir); var cuts = Arg("-cuts", "start,heart,cave,front,river,top").Split(',');
             Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>();
             terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
