@@ -140,3 +140,29 @@
 ### 재개 후 첫 행동(10-28 저녁)
 1. 이 절을 읽고 ①→②→③ 순서로 진행(총괄이 같은 지시를 다시 보낼 수 있음). `get_usage(self)`는 단위마다.
 2. ①은 `game.html`이 큰 파일이라 앵커 문자열 + 등장 횟수 1 확인으로 패치하고, 호출 위치는 함수명으로 다시 찾는다(줄 번호는 밀림).
+
+## 2026-10-28 밤 갱신 — ①②③ 완료, 컨텍스트 ~290K에서 인계 (이 절이 위 절들보다 새롭다. 보고 대상: 사운드 총괄 `local_cf0cb8d7-22f7-46be-b65d-fc242dc2bc23`)
+
+### 완료 (origin/main, 전부 비강제 push)
+| 단위 | 결과 | 커밋 |
+|---|---|---|
+| ① SND-10 2단계 웹 반영 | 5키(`ui_cancel` s10b·`ui_panel_open/close` s10c·`ui_fail` s10a·`ui_salvage` s10a) → `sfx/ui/{cancel,panel_open,panel_close,fail,salvage}.mp3`(`ui_` 접두 뗌) + `_sampleFiles`. 패널 열기·닫기(`closeAllPanels(_quiet)`·`closePanel`·`togglePanel`·`openPanel`), `_uiFail()`(400ms, `showPH` 전사 등 `_charIdx!==1` + 장착 실패 3곳), 분해 완료 4곳 `ui_salvage`, `ui_cancel` .4→.28. 음량 .22/.22/.20/.50. docs 4곳 갱신, DEMO/EA는 같은 곳만 패치+mp3 5개 | c0913f138 |
+| ② 드루이드 2차 결과 기록 | `DRUID_BOSS_SOUND_REMAKE_20261028.md` §6.1 + 기록 행: `druid_hit`=v3d(1개만 → 변형 순환 없이 rate ±6%·연타 감쇠)·`druid_hit_heavy`=v3d·`druid_whip`=v3a, `druid_slam`·`druid_spore` 2회 연속 불채택 | c2499457a |
+| ③ 3차 후보 생성 | `druid_slam`·`druid_spore`·`ui_tab` 각 4후보: a·b = 웹 기존 소리(slam `heavy_hit`·`scarecrow_boom`, spore `pickup_rummage2`·`pickup_rummage1`)/ui_tab은 기존 버튼음 변형(confirm 앞 0.19초 +25%, hover −20%, 0.15초), c·d = ElevenLabs 새 생성 6개. 가공=35Hz HPF→−1dBTP. 카탈로그 `tools/sfx_forge_catalog_druid_r3.json`. 고르기 `pick_r3.html`(3카드·12후보). **사용자에게는 아직 알리지 않음(총괄 지시)** | e05b26752 |
+
+### 대기·미완
+- **서버 재시작 필요(총괄이 함)**: `_tools/serve.cjs` PICKSETS에 `r3`(`picks_r3.json`)를 추가했다. 실행 중인 서버(3399)는 옛 코드라 `?set=r3`가 400이다. 헤드리스 점검은 3413 포트 복사본 + `/api/picks` 모의로 했고 실서버·picks 파일은 건드리지 않았다.
+- 못 한 것: 선택분해·쓰레기 일괄분해·대장간 분해 버튼 3곳과 장착 실패 중 악의 부족·주머니 가득 2곳 실제 클릭 확인, 게임 안 청음, Unity 빌드(웹 UI 소리는 Unity에 그대로 이식 범위 — 미확인). 계측 중 `createRadialGradient` r0<0 pageerror 1건(변경 전 재현 대조 안 함).
+- `ui_tab`·3차 후보 선택 뒤 반영, 드루이드 채택 3키 Unity 브랜치 추가·녹음 v4는 총괄 지시를 받아 진행.
+- 남은 임시 파일(rm 권한 거부): `G:\exoduser\tmp\snd10_ui_smoke.mjs`·`pick_r3_check.mjs`(gitignored). staging은 저장소 밖 `G:\exoduser-wt\_out\sfx_forge\`(`_preview_r3/`, `_r3/src/`, `_druid/mkcat_r3.py`·`mk_pick_r3.py`·`scan_existing.py`, `_analysis/r3_proc.py`·`metrics_r3.json`).
+
+### 이번에 겪은 함정
+- 희소 체크아웃 워크트리(`sparse-checkout`)에는 `git add`가 범위 밖 경로를 거절한다 → 새 파일은 `git add --sparse -- <경로>`.
+- `git commit -- <경로>`가 hook 통과 후 `tools/guard.baseline.json`을 바꾼다 → 매번 `git checkout --`로 복구, 이어서 `git fetch` + `merge-base --is-ancestor`는 별도 명령(origin이 자주 오름 → `git checkout -B <새> FETCH_HEAD` + cherry-pick 1회).
+- 정적 서버로 워크트리 game.html을 검증할 때는 임시 서버(예: 3412, 워크트리 우선·없으면 G:\exoduser)를 쓰고 끝나면 `taskkill`. `.mjs` MIME 때문에 일부 콘솔 404/모듈 오류가 난다(검증 대상 아님).
+- `rm`은 권한 거부된다(복합 명령 안에서도) → 임시 스크립트는 gitignored 경로에 두고 보고에 남긴다.
+
+### 재개 후 첫 행동(10-28 밤)
+1. 이 절·MEMORY.md를 읽고 총괄의 다음 지시(3차 선택 반영, `ui_tab` 반영, 드루이드 채택 Unity 연결 등)를 기다린다.
+2. 작업 전 `git fetch origin main`, 공유 트리는 타 세션 WIP가 있으니 origin/main 기준 sparse worktree + 경로 지정 커밋 + 비강제 push.
+3. 단위가 끝날 때마다 `get_usage(self)`, 100K 초과 시 마무리·인계·알림·`clear_session(self)`.
