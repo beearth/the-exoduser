@@ -220,9 +220,10 @@ namespace Exoduser.UnityPort
                 sim.SetSkillInput(false, false, false, false, false, false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
                 sim.SetSkillInput(d1, false, false, false, sp, fk, ct, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
                 sim.SetSkillInput(false, false, false, false, false, false, false, false); };
-            int skMats0 = sim.Materials; int skHpA = skA != null ? skA.Hp + (int)skA.Shield : 0;
-            skPress(true, false, false, false); for (int i = 0; i < 70; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
-            bool spikeOk = sim.FireZones.Exists(z => z.Type == "spikeTrap") && skA != null && skA.Hp + (int)skA.Shield < skHpA && sim.Materials == skMats0 - 5;
+            int skMats0 = sim.Materials; int skHpA = skA != null ? skA.Hp + (int)skA.Shield : 0, skKills0 = sim.Kills;
+            // the malice cost is read right after the cast frames: a trap DOT kill later in the window pays the web kill malice (hurtE 42699 death -> G.mats+=4, 43307; DOT is not excepted), and whether the DOT kills within 70 ticks depends on the random stream (O-1 09b)
+            skPress(true, false, false, false); int skCost = skMats0 - sim.Materials; for (int i = 0; i < 70; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
+            bool spikeOk = sim.FireZones.Exists(z => z.Type == "spikeTrap") && skA != null && skA.Hp + (int)skA.Shield < skHpA && skCost == 5; int skKillsW = sim.Kills - skKills0;
             yield return M1Shot("09b-skill-spike-trap");
             p.Stamina = p.MaxStamina; int slamMats0 = sim.Materials; skPress(false, true, false, false); for (int i = 0; i < 6; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool slamOk = sim.SlamWaves.Count == 1 && sim.GiantSlamCd > 1700 && p.Stamina < p.MaxStamina - 40;   // malice: the slam kills the spike-trapped enemy (+4 each), so the cost is checked by the sim test yield return M1Shot("09b-skill-giant-slam");
@@ -234,7 +235,7 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 90; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); if (i == 8) yield return M1Shot("09b-skill-ice-shatter"); }
             bool orbOk = orbIn && !sim.IceOrbActive && p.State == "idle" && sim.IceOrbCd > 0;
             sim.SkillBlades.Clear(); sim.FireZones.Clear(); sim.SlamWaves.Clear(); sim.Enemies.Clear(); sim.SpikeTrapCd = sim.GiantSlamCd = sim.HolyDomeCd = sim.IceOrbCd = 0; p.State = "idle"; p.Hp = p.MaxHp; p.Stamina = p.MaxStamina; p.Mana = p.MaxMana;
-            M1Add("09b", "skill use (1 / Space / F / Ctrl)", spikeOk && slamOk && domeOk && orbOk ? "ok" : "fail", "spike trap " + spikeOk + " (zone, malice 5, DOT), giant slam " + slamOk + " (wave, malice 10, cd 1800), holy dome " + domeOk + " (zone, regen), ice orb " + orbOk + " (MP 50, orb -> auto shatter); " + sim.SkillCastCount + " casts, denied " + sim.SkillDeniedCount, "09b-skill-spike-trap.png");
+            M1Add("09b", "skill use (1 / Space / F / Ctrl)", spikeOk && slamOk && domeOk && orbOk ? "ok" : "fail", "spike trap " + spikeOk + " (zone, malice " + skCost + ", DOT, kills in window " + skKillsW + "), giant slam " + slamOk + " (wave, malice 10, cd 1800), holy dome " + domeOk + " (zone, regen), ice orb " + orbOk + " (MP 50, orb -> auto shatter); " + sim.SkillCastCount + " casts, denied " + sim.SkillDeniedCount, "09b-skill-spike-trap.png");
 
             // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). The druid is the boss Core's job (pending): a harness stand-in boss walks the real flow. ----
             levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();   // BX: the real druid (Simulation.AttachDruidBoss) is the BossSpawners entry; AI stays off until the arena intro is over
