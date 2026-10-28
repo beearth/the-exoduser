@@ -51,3 +51,9 @@
 - 병합 경계: H5 `index.html` 변경이므로 자기 브랜치까지만 push. `I:/EXODUSER-Storage/codex-takeover/MERGE_QUEUE.md`에 대기열 추가. DEMO·EA 동기화 및 실제 NW.js 실기 확인은 main 반영 이후 진행한다. 이 브랜치의 캡처를 main/배포 검증으로 세지 않는다.
 - RM0-LIGHT-L은 이 인계의 d6d17bab2 대기보다 진도가 나갔다. 맵 총괄 인계는 Neutral/postExposure 1.30 `dc929d682` 맵 판정을 PASS로 기록하며, 공용 MERGE_QUEUE는 아직 실제 RM-1 기준 옆 1x 톤·컴파일·oracle·m1-check·Player 영수증을 통합 게이트로 남긴다. 본 인수에서 중복 판정이나 Unity 병합은 하지 않았다.
 - 다음 디자인 작업: 실버 헬 §6.3 잔여 중 성장 나무 원화의 청동색과 스킬 제단 각인부터 실화면·레퍼런스 공통 원칙으로 조사·시안화. 맵·캐릭터의 새 캡처가 오면 각 SSOT에 묶어 1x 판정. `CLAUDE.md`의 금빛 헤어라인 문구 변경은 기존 사용자 확인 대기 상태를 유지.
+
+## 2026-10-28 Codex 인수 후속 — 성장 나무·제단 시안
+
+- SSOT `docs/3.1 ui hud 디자인/DESIGN_CONCEPT_SILVER_HELL_20261028.md` §6.4에 1920×1080 실제 게임 화면 비교와 판정을 기록했다. 성장 나무는 브라우저 전용 무채색 필터 시안의 톤을 PASS로 보되 붉은 재질까지 없애므로 런타임에 채택하지 않았다. 제단의 기존 장미창은 중심 구슬과 겹쳐 약하게만 읽히며, 눈 고리 문장을 통째로 바꾸는 방식도 채택하지 않았다.
+- 시안 `G:/exoduser/tmp/design-review/20261028_growth_tree/`, `G:/exoduser/tmp/design-review/20261028_skill_sigil/`; 검수 스크립트 `I:/EXODUSER-Storage/codex-takeover/design/`. 두 화면 모두 headless 1920×1080 pageerror 0. 원화·CSS·`skill-forge-3d.js`·게임 데이터 변경 0, 유료 생성 0.
+- 다음 후보: 원화의 은빛 금속만 분리한 로컬 성장 나무 시안, 제단용 중심이 빈 바깥 가시 고리 각인. 아트 후보는 사용자 1x 검토 전 런타임에 넣지 않는다. UI 인라인 창은 게임 화면별로 남은 색을 조사한다.
