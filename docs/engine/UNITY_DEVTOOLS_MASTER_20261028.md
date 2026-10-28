@@ -172,6 +172,30 @@
 - 실행 방식: 이 총괄 세션은 다른 세션(CTO) 메시지로 시작돼 새 세션을 띄울 수 없다(앱 제약). 그래서 Sonnet 구현은 이 세션의 Sonnet 하위 에이전트가 맡는다.
 - 임시 Unity 잠금: DT-01이 끝나기 전까지 `I:\EXODUSER-Storage\unity-jobs\_pc_lock.json`을 `CreateNew`로 원자적으로 만들어 잡는다(내용 owner·pid·worktree·startedAt, 죽은 pid면 stale). DT-01 완성 뒤에는 `unity/Tools/devtools/exo-unity.ps1`가 같은 파일을 관리한다. 유니티 총괄 순번(10-28)은 개발툴을 맨 앞에 둔다.
 
+## 5.1 진행 현황 (10-28 저녁)
+
+| ID | 브랜치 / SHA | 상태 | 증거 | 핵심 결과 |
+|---|---|---|---|---|
+| DT-01 | `claude/unity-pc-devtools-runner-20261028` 36448bdb9 | 병합 요청 | `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`, 빌드 영수증 `dt01\build\receipt.json` | 같은 캡처 job: 1회 batch 7.1초 → 상주 서버 1.07초(Rm0), 10.7초 → 1.46초(Rm1), 6.6~7.3배. 스크립트 1줄 수정 job 6.1초, 컴파일 오류 1.2초 만에 json·서버 생존. 서버 메모리 idle 1.7~2.2GB·최대 2.35GB, 플레이어 1.6~2.3GB. 창 옵션 거부·headless 창 핸들 0·예약 큐·HALT·USER_SAVE 스냅샷·WHEA 표시·memlog. 빌드 전 영상 복원·필수 영상 검사 |
+| DT-02 | `claude/unity-pc-devtools-maplint-20261028` 9a96d08bd | 병합 요청 | `I:\EXODUSER-Storage\devtools\dt02\RESULT.md`, `rm3_run3.png`, `rm1_run3.png` | unity/main RM3_Slice에서 **원점 쌓임 렌더러 1,170개**(부모 583곳)·안 덮인 막힌 섬 41/50 검출(빌더 수치는 둘 다 0). 맵 총괄이 맵 구조 판정 기준 도구로 채택. L1b(머리 위 덮개 2.5u+, 가림 검사) 신설. 검사 1회 RM-3 0.5초·RM-1 0.08초. 데칼 판정 대기 |
+| DT-03 | `claude/unity-pc-devtools-lookdev-20261028` 3ef2607ac | 병합 요청 | `I:\EXODUSER-Storage\devtools\dt03\RESULT.md`, `out\RM_Sandbox__ov-postExposure-1.85_compare.png` | `measure_L.py`와 지표 차이 0(15단계). unity/main 기본(−0.15) 화면 중앙값 4.06 → `DARK` 경고, 1.85 override 25.76(문서 25.8). 캡처마다 렌더 상태 json |
+| DT-15 | `claude/unity-pc-devtools-buildloop-20261028` → unity/main **d30ea8607 병합됨**. fail-closed `…-buildloop2-20261028` 91f376ffd 병합 요청 | 일부 병합 | `I:\EXODUSER-Storage\unity-latest\status\index.html`, `loop\runs\20261028-1414_51f130f\` | 창 없는 실제 GPU 스모크(D3D12, `-batchmode` GPU 유지, `--unity-mute`, RenderTexture 캡처), m1 21/21, overlay 판정(LT-2 일시정지 가림 FAIL), 필수 영상 9개 검사, 크래시 1회 재시도 후 HALT, 세이브 격리 `--unity-qa-sandbox` + USER_SAVE 비교, hud-smoke 자동 종료(DBT-6), 영수증 최종 경로(DBT-7), 상태판(커밋 여유 추이 포함). fail-closed: `QaRunPolicy.IsAutomated`(`Runtime/Core/Platform/`, 단위 테스트 62건) |
+| DT-16 | `claude/unity-pc-devtools-web-20261028` 4af345fc5(병합 안 함) | 배포됨(비공개 미리보기) | `I:\EXODUSER-Storage\devtools\web\RESULT.md` | Vercel 미리보기(로그인 필요, 비로그인 302 확인). 770MB → 175MB(웹 전용 DXT·ASTC, 영상 720p), 로드 10~14초, WebGPU, FDG → 1-1 → 이동·공격까지 스모크 통과, 게임 톤 로딩 템플릿 |
+
+**남은 결함·후속**
+- 무창(batchmode) 캡처에는 OnGUI가 돌지 않아 HUD·UI가 없다(`guiRepaints=0`). 숨은 Windows 데스크톱(`CreateDesktop` + `lpDesktop`)에서 batchmode 없이 띄우는 방식을 DT-15 2단계로 시험한다(`desktop-probe.ps1` 준비, 미실행).
+- 웹: HUD 스킬 바가 회색 띠(WebGPU Readback 실패 추정, `NativeHud.cs:89~90` `BuildLabelCleanBar`) — 런타임 수정, 유니티 총괄 배정. Unity 스플래시 끄기(다음 웹 빌드). Production 빈 페이지(`exoduser-unity-web-test.vercel.app`, 200)와 예전 미리보기는 사용자가 대시보드에서 정리(영구 삭제라 개발툴이 하지 않음).
+- 새 worktree는 .gitignore된 로비 영상 2개·`Rendering/Sandbox/test_sprite.png`가 없다 → 빌드 전 restore 스크립트로 복원(실행기·buildloop에 반영).
+- 에디터 창(MapLint·LookDev)은 batchmode 검증만 했고 눈 검수 전이다.
+
+**사고 기록**
+- 10:30 DT-15 창 모드 스모크가 사용자 화면에 플레이어 창을 띄움 → 무창 규칙으로 전환(같은 날 "유령같이" 지시).
+- 11:11 개발툴 총괄이 문서 편집 명령에 stdin 대기 `python -I -`를 섞어 실행 → 3분 안에 종료, 로그 폭주 없음.
+- 14:17 DT-01 정리 단계가 재사용 pid 5개(63284·60904·63164·51452·60708)를 종료했을 가능성 → "자기 자손 + 생성 시각 일치"만 정리하도록 수정.
+- 14:16 DT-01 서버 세션 중 다른 세션 Unity 8개가 잠금 없이 실행됨 → 공용 실행기 사용 공지 요청.
+- 13:52 RM-INT 검증 실행이 사용자 실제 세이브(`LocalLow\ForDearGamers\…\combat-save-v1`)를 바꿈 → 세이브 격리·fail-closed·USER_SAVE 판정 도입.
+- DT-16 웹 빌드가 시작 조건을 10GB로 낮춰 실행(규칙 위반, 기록만).
+
 ## 6. 결정 기록
 
 | 날짜 | 결정 | 근거 |
@@ -187,3 +211,7 @@
 | 10-28 | DT-11(URP Renderer Feature)·DT-12(셰이더 라이브러리)를 유니티 커스텀 총괄(`local_143f9249`) C-03·C-04로 이관. asmdef·자체 패키지 구조(C-01)는 커스텀 총괄, DT-14는 그 구조를 따른다. 테스트(C-06)는 공동: 러너·job = 개발툴, 테스트 구조·스모크 내용 = 커스텀 총괄. 패키지 추가·버전 변경은 커스텀 총괄 §5 승인 | 커스텀 총괄 SSOT `docs/engine/UNITY_CUSTOM_LEAD_MASTER_20261028.md` §6 경계(main 8b5e5e464) |
 | 10-28 | 창 모드 스모크 취소. 모든 자동 실행은 공용 무창 실행기(DT-01 `exo-unity.ps1`)를 거친다: 플레이어 `-batchmode`(GPU 유지, `-nographics` 금지)+`--unity-mute`, 캡처는 RenderTexture, `-popupwindow`·`-screen-fullscreen`·headed 브라우저는 거부, 실행 뒤 창 핸들 0 검사, 장치 Null이면 실패 | 사용자 지시 "유령같이 브라우저도 안 뜨고 소리 안 나오게"(CTO 10-28 전달). 10:30 DT-15 창 모드 스모크가 사용자 화면에 창을 띄움 |
 | 10-28 | 잠금 규칙 보강: pid = 끝까지 기다리는 실행 스크립트 `$PID`, 삭제는 owner·pid가 자기일 때만, pid가 죽었어도 startedAt 10분 이내이고 Unity가 살아 있으면 덮어쓰지 않음, 시작 조건은 커밋 여유(디스크 아님) | 10:19 maplint가 O-1 잠금을 덮어쓴 사고(유니티 총괄 실측) |
+| 10-28 | 시작 조건은 커밋 여유 20GB(Library 없음 30GB) 유지. DT-01 실측 근거의 완화안(에디터 12GB·Library 없음 20GB·플레이어 10GB)은 `-Profile proposed`로만 두고 유니티 총괄 합의 뒤 적용. 동시 실행 1 유지 | 작업당 커밋 최대 3.5GB, 시스템 커밋 10초에 5~6GB 흔들림, 상주 서버가 7배 빨라 직렬로 충분, XMP 6400·WHEA·access violation 이력 |
+| 10-28 | 자동 실행은 세이브 격리 필수(fail-closed): 격리 실패 시 Quit(3). 판정은 `QaRunPolicy.IsAutomated` 한 곳(`Runtime/Core/Platform/`, 커스텀 총괄 판정 — 규칙 아닌 플랫폼 코드, oracle 대상 아님) | 13:52 사용자 세이브 변경 사고 |
+| 10-28 | 웹 테스트 빌드는 Vercel 비공개 미리보기만(사용자 직접 승인). `--prod`·promote·alias 금지. 영구 삭제(Production 빈 페이지 등)는 사용자가 직접 | 사용자 선택(이 세션 질문 카드), 안전 규칙 |
+| 10-28 | unity-latest `efae9aa11` 유지(구 캡처 코드라 화면 미검증, 로그 0·m1 20/20·D3D12). 다음 교체는 fail-closed 병합 뒤 최신 unity/main | 되돌리면 더 오래된 빌드가 됨 |
