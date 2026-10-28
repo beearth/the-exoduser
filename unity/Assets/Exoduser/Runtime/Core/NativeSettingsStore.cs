@@ -209,7 +209,7 @@ namespace Exoduser.UnityPort.Core
    catch(ArgumentException){return false;}catch(NotSupportedException){return false;}catch(IOException){return false;}catch(UnauthorizedAccessException){return false;}
   }
 
-  public static bool IsQa(string[] args){foreach(string arg in args)if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&(arg.EndsWith("-smoke",StringComparison.Ordinal)||arg.EndsWith("-capture",StringComparison.Ordinal)||arg.EndsWith("-review",StringComparison.Ordinal)))return true;return false;}
+  public static bool IsQa(string[] args){return QaRunPolicy.IsAutomated(args,false);}   // one shared decision (QaRunPolicy); a -batchmode player is handled by NativeQaSandbox
   public static bool TryResolve(string[] args,string nativeRoot,out string directory,out NativeSettingsStoreStatus status)
   { return TryResolve(args,nativeRoot,"","",out directory,out status); }
   public static bool TryResolve(string[] args,string nativeRoot,string productName,string identifier,out string directory,out NativeSettingsStoreStatus status)

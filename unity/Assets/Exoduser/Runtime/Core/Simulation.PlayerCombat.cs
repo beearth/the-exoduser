@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Exoduser.UnityPort.Core.Combat;
 
 namespace Exoduser.UnityPort.Core
@@ -93,6 +95,28 @@ namespace Exoduser.UnityPort.Core
             if (Player.State == "pStun" && Player.StateTicks <= 0) { Player.Iframes = (float)PlayerPoise.NaturalEndIframes; Player.Poise = PlayerPoise.MaxPoise; }
         }
 
+        /// <summary>The enemies already hit by the current chain pull (web _harpHits): each is hit once per cast.</summary>
+        public readonly List<EnemyState> DashHits = new List<EnemyState>();
+
+        // `_dashActive` pass-through hit loop (game.html 32474-32505, STR branch): after the pull step every living enemy within r + 20 of the player that is not in _harpHits is hit.
+        // The web asks shQuery(P, 40) first; the existing shQuery port (NearbyWebs) is the exact radius r + other.r, which contains the r + 20 reach, so the candidate set is the same here.
+        private void TickDashPathHits()
+        {
+            if (Enemies.Count == 0) return;
+            var armor = EquippedInventory != null ? EquippedInventory.GetEquipped("armor") : null;
+            foreach (var e in Enemies.ToArray())
+            {
+                if (!ChainDash.IsPathHit(Player.X, Player.Y, e.X, e.Y, e.Radius, e.Alive, DashHits.Contains(e))) continue;
+                DashHits.Add(e);
+                double ang = Math.Atan2(e.Y - Player.Y, e.X - Player.X);
+                int dmg = ChainDash.PathHitDamage(ChargeBoostLevel, armor != null ? armor.charge : 0, Player.BaseAttack, 1, EquippedInventory != null ? EquippedInventory.AffixTotal("dashBoost") : 0);
+                ApplyEnemyDamage(e, dmg, (float)ang, true, (float)ChainDash.PathHitKnockbackMult, false, false, 0, 0, false, armor != null ? armor.el : 0, false, false, false, false, ChainDash.PathHitPoiseMult);
+                e.KnockbackX += (float)(Math.Cos(ang) * ChainDash.PathHitPush); e.KnockbackY += (float)(Math.Sin(ang) * ChainDash.PathHitPush);
+                ShakeAmount = (float)(ChainDash.PathHitShake * OptShake / 100);   // G.shake = 4 * OPT.shake / 100 (G.hitStop is not modelled in the Core)
+                if (!inEnemyLoop) FlushDeathSpawns();
+            }
+        }
+
         private void TickChainDash()
         {
             bool shiftUp = !combatShiftHeld && combatShiftPrev;
@@ -109,6 +133,7 @@ namespace Exoduser.UnityPort.Core
                     {
                         HarpGauge = r.Gauge; Player.Stamina = (float)r.St; HarpTier = tier; HarpActive = true; HarpDist = 0; HarpMaxDist = r.MaxDist;
                         HarpDirX = (float)Math.Cos(Player.Facing); HarpDirY = (float)Math.Sin(Player.Facing); HarpX = Player.X; HarpY = Player.Y;
+                        DashHits.Clear();   // _harpHits = []
                     }
                 }
             }
@@ -128,6 +153,7 @@ namespace Exoduser.UnityPort.Core
                 double step = ChainDash.PullStep(1, DashLeft);
                 float nx = Player.X + (float)(DashVx * step), ny = Player.Y + (float)(DashVy * step);
                 if (Pass(nx, ny, Player.Radius)) { Player.X = nx; Player.Y = ny; } else DashLeft = 0;
+                TickDashPathHits();
                 DashLeft -= step;
                 if (DashLeft <= 0) { DashActive = false; HarpActive = false; Player.Iframes = (float)ChainDash.LandingInvulnerable(Player.Iframes); }
             }
