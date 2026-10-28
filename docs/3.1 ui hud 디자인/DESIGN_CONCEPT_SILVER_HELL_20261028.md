@@ -175,6 +175,16 @@
 - 후: 인라인 스타일을 클래스(`.de-title`·`.de-rule`·`.de-msg`·`.de-support`·`.de-btns`·`.de-btn`·`.de-btn.primary`)로 옮김. 제목 `var(--font-hell-title)` 은빛 `#e6e3dc`, 그 아래 M3 가시 끝 헤어라인(양끝 화살 가시 + 가운데 마름모 속 진홍 점), 본문·응원·버튼 `var(--font-hell)`, 버튼 = 흑철(테두리 `#5e6161`), 위시리스트만 지옥의 눈 진홍 강조(테두리 `#7a1410` + 옅은 진홍 빛). ✦ 글자 제거(JS는 `#demoEndTitle` 등 글자만 채우므로 영향 없음).
 - 판정(1600×900, 1x 확대, `round2/15_demo_end_1600x900.png`): 장 클리어 패널·타이틀 메뉴와 같은 톤 — 통과. pageerror 0.
 
+**피날레 배너 (같은 날, 스토리 총괄 문의 — 문구는 그대로)** — 캔버스로 그리는 배너라 CSS 변환에 안 걸렸던 곳. 대사 감사 문서의 "비활성"은 사실과 다름: `_drawDruidFinaleAct`는 `G._druidActCue`(막 전환 38480행 부근·마지막 저항)로, `_drawDruidFinaleVictory`는 `G._druidVictory`로 켜지고 매 프레임 `_drawDruidFinaleVictory(X); _drawDruidFinaleAct(X);`로 그려진다(데모 마지막 보스 다크드루이드).
+
+| 위치 (`game.html`) | 전 | 후 |
+|---|---|---|
+| `_drawDruidFinaleAct` 막 전환 배너("II · 숲의 포식자"·"III · 숲의 단말마"·"마지막 저항") | 바탕 `#10150d` 녹흑, 글자 연두 `#c8dfab`/살구 `#e8c294`, `18px "Noto Sans KR"` | 바탕 흑철 `#0b0d0d`, 위아래 M3 헤어라인, 제목 글꼴 700 19px, 은빛 `#c9c7c3`(앞 막)·`#e6e3dc`(단말마·마지막 저항) |
+| `_drawDruidFinaleVictory` 승리 배너("다크드루이드 격파"·"썩은 숲 해방"·"보상을 회수하고 출구로 향하세요") | 바탕 `#0b100d`, 연두 `#d4dda0`·`#bbc8b0`, 구분선 녹색 `#849565`, Noto Sans | 바탕 흑철, 위 줄 `#9b9e9e` 명조, 큰 줄 제목 글꼴 `#e6e3dc`, 구분선 = M3 헤어라인(가운데 진홍 점), 아래 줄 `#b9b6b0` 명조 |
+| 보스 등장 이름(`_bossCine.name`, 레터박스 아래) | `bold "Noto Sans KR"`, 구릿빛 `rgba(200,170,120,.8)` | 제목 글꼴 700, 은빛 `rgba(214,211,205,.9)` |
+
+공통 도우미: `_SH_TITLE_FONT`·`_SH_BODY_FONT`(캔버스는 CSS 변수를 못 읽어 같은 글꼴 목록을 문자열로), `_shFillText`(검정 오프셋 외곽 — GPU 프록시 strokeText 문제 회피), `_shRule`(M3 헤어라인). 판정(1600×900, 1x 확대, `round2/17_finale_act_crop1x.png`·`18_finale_victory_crop1x.png`): 통과, pageerror 0. 문구는 `_L()` 한·영 쌍 그대로(번역 등록은 스토리 총괄).
+
 **남은 것 (3차 후보)**
 1. 능력치 [J] 성장 나무 원화(청동 갑옷·청동 노드 테두리)는 이미지 에셋이라 색 변환 대상 밖 → 은빛 재채색 또는 재생성 검토.
 2. 1-1 시작 지점 금빛 마법진(VFX)은 UI가 아니라 임팩트 총괄 영역 → 실버 헬 톤 여부를 임팩트 총괄에 전달.
