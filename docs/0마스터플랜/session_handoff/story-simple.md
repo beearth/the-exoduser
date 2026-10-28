@@ -1,32 +1,36 @@
-# 단순작업(Sonnet): 스토리총괄 인계 — 2026-10-28 09:15 KST (재생성: 컨텍스트 311K)
+# 단순작업(Sonnet): 스토리총괄 인계 — 2026-10-28 09:55 KST (재생성: 컨텍스트 253K)
 
 - 세션: `local_a128282e` / Sonnet 5.5 / 스토리 총괄(`local_0b7b50a3`) 소속 단순작업. 명세는 총괄, 구현·검증·커밋만.
-- 판정 문서(SSOT): `docs/11내러티브·로어디자인/DIALOGUE_CANON_AUDIT_20261028.md` §2 묶음 A1~A13
+- 판정 문서(SSOT): `docs/11내러티브·로어디자인/DIALOGUE_CANON_AUDIT_20261028.md` §3(묶음 B)·§4(보류)
 - 스토리 총괄 SSOT: `docs/11내러티브·로어디자인/STORY_LEAD_MASTER_20261026.md`
-- 재생성 기준: 작업 단위마다 `get_usage(self)`, 100K 넘으면 이 문서 갱신 후 총괄에 보고, 200K 넘으면 즉시 멈춤.
+- 재생성 기준: 작업 단위마다 `get_usage(self)`(deferred 도구 → ToolSearch `select:mcp__ccd_session_mgmt__get_usage`), 100K 넘으면 이 문서 갱신 후 총괄에 보고, 200K 넘으면 즉시 멈춤. **이번에 253K라 B1 착수 전에 멈췄다.**
 
-## 진행 중 — STY-14 묶음 A 13건 (커밋·push만 남음)
-- 워크트리 `E:/exoduser-wt/dialogue-a` (origin/main `2dd2db74b` 기준)에 변경 39개가 **커밋 없이** 있음: game.html 1, lang_*.js 27, docs 11.
-- 검증 통과: 27언어 × 새 키 16개 존재, 한글 잔존 0, 옛 키 0, _EN 블록 16, 인라인 스크립트 문법 OK.
-- 막힌 이유: origin/main이 앞서 push 거절 2회 → 그 뒤 pre-commit 가드가 메모리 부족(OOM·fork 실패)으로 2회 실패. `--no-verify`는 쓰지 않았다(계속 금지).
-- 커밋 메모리: 09:13 확인 34.2GB(20GB 이상) → 재시도 가능.
-- 스크립트·메시지 보관 위치: `I:\EXODUSER-Storage\_handoff\story-simple-dlgA\` — `dlgA_apply.py`(적용, 인자 = 대상 루트, `--no-docs` 옵션), `dlgA_tr.py`(27언어 번역표, apply가 같은 폴더에서 읽음), `chk.cjs <루트>`·`syn.cjs <game.html>`(검증), `dlgA_msg.txt`(커밋 메시지).
-- 번역목록 번호: 신규 No.3473~3482(10개) + 옛 0874·0912·0989·1000·2905·2938 교체. 번역 점검 세션(`local_2a4889ed`)과 범위 합의 완료(그쪽은 3500~).
+## 완료한 것 (원격 반영됨)
+- 묶음 A(STY-14, 대사 13건): 원격 `2acde58ac`(총괄이 cherry-pick). 번역 No.3473~3482 + 옛 6건, 27언어. 로컬 G:\exoduser에도 `--no-docs`로 적용했고 캡처 `G:/exoduser/tmp/design-review/20261028_dialogue_A/`. 데모 종료 화면 디자인(노랑·네온 버튼)은 디자인총괄 이관.
+- 묶음 C(STY-15, 2장 보스 대사): 코드 `14de6fda3` + SHA 기록 docs `77125bc6f`. 번역 No.3588~3598, 27언어. 총괄 검수 PASS.
+- 스크립트·메시지 보관: `I:\EXODUSER-Storage\_handoff\story-simple-dlgA\`(A), `...\story-simple-dlgC\`(C). 번역표 `dlg*_tr.py`는 키 순서대로 27언어(ar bg cs da de el es fi fr hu id it ja ms nl no pl ptbr ro ru sv th tr uk vi zh zht), 적용 `dlg*_apply.py <루트>`, 검증 `chk*.cjs <루트>`, 문법 `syn.cjs <game.html>`(A 폴더).
 
-## 재개 후 첫 행동 (한 번만, 실패하면 원인 보고하고 멈춤)
-1. 커밋 메모리 확인: `powershell -NoProfile -Command '$o=Get-CimInstance Win32_OperatingSystem; "{0:N1} GB free commit" -f ($o.FreeVirtualMemory/1MB)'` → 20GB 미만이면 멈추고 총괄에 보고.
-2. 워크트리에서: `git fetch origin` → `git checkout --detach origin/main`(미커밋 변경과 충돌하면 `git stash` 대신 `git checkout -- .`로 되돌린 뒤 스크립트로 다시 적용) → `python I:/EXODUSER-Storage/_handoff/story-simple-dlgA/dlgA_apply.py /e/exoduser-wt/dialogue-a` → `node chk.cjs /e/exoduser-wt/dialogue-a`·`node syn.cjs /e/exoduser-wt/dialogue-a/game.html`.
-3. `git diff --name-only -z`에서 `tools/guard.baseline.json`을 뺀 경로만 `git commit -F I:/EXODUSER-Storage/_handoff/story-simple-dlgA/dlgA_msg.txt -- <경로들>` → `git show HEAD:game.html` 문법검사 → `git push origin HEAD:main`. 거절되면 fetch부터 같은 순서를 한 번 더(총 1회 재시도).
-4. push 뒤 원격 SHA를 스토리 총괄에 보고. 총괄이 디자인총괄에 전달한다(그쪽이 같은 줄 색 #66ee55/#44ffaa·이모지 처리).
-5. 그 다음 로컬 `G:\exoduser`에 같은 스크립트를 `--no-docs`로 실행(로컬 커밋 없음 — 로컬 main 번들 8bf094fe6 push 금지). headless·음소거로 장 클리어·데모 종료 화면을 캡처해 `G:/exoduser/tmp/design-review/20261028_dialogue_A/`에 저장, 1x 크롭 포함. 캡처 뒤 dev서버·Playwright 프로필 즉시 종료·삭제.
+## 지금 받은 일 — 묶음 B1 (아직 시작 안 함, 코드 변경 없음)
+총괄 지시(2026-10-28 09:5x): 번역 없는 대사 126건의 **전수 목록 작성**만. 번역목록 정식 No.는 받지 않는다(총괄이 문장 확정 뒤 B2에서 번호).
+1. 읽기 전용 워크트리 `E:/exoduser-wt/dialogue-b`(origin/main). 만들어 둠 → 새 세션은 `git fetch origin && git checkout --detach origin/main`으로 최신화. 이 인계 문서 커밋도 이 워크트리에서 함.
+2. `game.html`·`index.html`에서 명세 §3 범위 전수 추출(묶음 A·C로 바뀐 문장은 **현행 문장** 기준): `_tips`(로딩·펫 팁 18쌍), 펫끼리 잡담 5쌍, `_envDlg`(장 환경 7쌍), `_bi`(보스 등장 7쌍), `_cc`(장 클리어 7쌍), 번역 없는 고양이 대사, 피날레 배너(비활성), 데모 종료 문구, **_EN만 있고 번역목록에 없는 펫 대사 3곳**, 로비 카드 문구(`localization/resume`), 스테이지 전환 기본 문구("지옥으로 내려가는 중..."), 구 프롤로그 행(§4 마지막 행 요구).
+3. 항목마다: 임시 번호 B-001~, 위치(파일:줄·변수명), 화자(까마귀/고양이/시스템), 현행 한국어 원문, `_EN` 유무, 번역목록 등록 여부(있으면 No.), 27언어 유무(`lang_*.js`에 키 존재). **126건과 다르면 차이 이유 기재.** 로딩 팁은 말투(해요체/반말/합니다체)를 별도 열로.
+4. 결과 파일 `docs/11내러티브·로어디자인/DIALOGUE_B_INVENTORY_20261028.md`(표) **1개만** 경로 지정 커밋·push(거절 시 fetch 후 1회, 총괄이 승인한 방식 = 가드 통과 커밋을 최신 origin/main에 `git checkout --detach origin/main && git cherry-pick <SHA>` 후 즉시 push). 끝나면 junction 0 확인 후 `git worktree remove --force E:/exoduser-wt/dialogue-b`.
+5. 주의: STY-D19(펫 성격) 판정 전이라 **문장 수정 제안 금지, 사실만**. `python -` 금지(스크립트는 파일로, 반드시 파일 경로로 실행). `rm`은 권한 거부될 수 있으니 필요 없으면 남기고 보고. 타 세션 WIP 불간섭.
+6. 보고(스토리 총괄에게): push SHA, 총 건수(분류별), 126건과의 차이.
+
+### 추출 팁 (이번 세션에서 확인한 위치, 줄 번호는 이동하니 문자열로 grep)
+- 펫 대사: `game.html` `[S03e] PET_DIALOGUE`, 보스 등장 `const _bi=[[`, 보스 킬 `_petSay('boss_kill'`, 장 클리어 `const _cc=[[`, 장 환경 `const _envDlg=[[`, 챕터 트로피 `trophy_act1_clear`. 펫 함수 `_petSay`·`_petSayCD`·`_petBidCD`.
+- `_EN`은 `Object.assign(_EN,{…})` 여러 블록 + 큰 `const _EN={…}`. 번역 유무 판정은 (a) game.html `_EN` 키, (b) `lang_*.js` 27개의 같은 한글 키 존재. 키 비교는 정확한 문자열 일치.
+- 번역목록 = `docs/16번역·로컬라이제이션/번역대상_전체목록.md`(표 행 `| No. | KO | EN | …|`). 최대 번호 확인용: 이번엔 3598(묶음 C)까지, i18n-fill 3500~3587 선점.
+- 로비 카드: `index.html`·`localization/` 폴더·`resume` 관련 문구(명세 §3 "로비 카드 문구(localization/resume)").
 
 ## 이후 대기 작업 (총괄 지시 받고 착수)
-- 묶음 B: 번역 없는 대사 126건 game.html `_T` 배선 (A 뒤)
-- 묶음 C(STY-15): 2장 보스 대사 7줄 + 펫 교체 2건 + 번역목록·28언어. `_bossLine('intro'+G.stage)`·사망 조건 `G.stage>=1&&G.stage<=3&&` 삭제
+- 묶음 B2: 총괄이 문장 확정 뒤 번호 매기고 game.html `_T` 배선·번역·27언어 전파(묶음 A 방식)
 - 순간이동 마감(`_emCell`) 커밋은 계속 **보류**
 
 ## 금지·주의
-- `git add -A`·`--no-verify`·force push·history rewrite 금지. 커밋은 경로 지정만.
-- 워크트리 `E:/exoduser-wt/dialogue-a`는 push 확인 후 junction 0 확인 → `git worktree remove --force` (그 전엔 지우지 않음).
-- 백그라운드 `python -`(stdin 대기) 금지. 테스트는 수정 후 1회, 2번 실패면 멈추고 보고.
+- `git add -A`·`--no-verify`·force push·history rewrite(rebase 포함) 금지. 커밋은 경로 지정만(`git commit -F msg -- <경로>`). 로컬 G:\exoduser main 커밋·push 금지(로컬 main 번들 8bf094fe6).
+- 워크트리는 push 확인 후 junction 0 확인 → `git worktree remove --force`. 커밋 메모리 20GB 이상일 때만 커밋(`Get-CimInstance Win32_OperatingSystem` FreeVirtualMemory).
+- 테스트는 수정 후 1회, 2번 실패면 멈추고 보고. 백그라운드 `python -` 절대 금지(10-28 한 번 위반함, 즉시 EOF로 끝남).
 - 공유 작업트리 G:\exoduser에 타 세션 WIP(game.html 사운드 hunk 등) 상존 — 건드리지 않는다.
