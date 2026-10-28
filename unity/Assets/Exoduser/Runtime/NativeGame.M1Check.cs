@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort
         // Which UI was open when each capture was taken (pause menu / inventory / skills / stats / forge). A pause menu over a capture fails the stage (LT-2: focus loss paused the windowed run).
         readonly Dictionary<string, string> m1Overlays = new Dictionary<string, string>();
         static bool m1ModeFlag { get { return Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-m1-check") >= 0; } }
-        string M1Overlay() { var o = new List<string>(); if (menu) o.Add("pause"); if (inventory.Open) o.Add("inventory"); if (skills.Open) o.Add("skills"); if (stats.Open) o.Add("stats"); if (forge.Open) o.Add("forge"); return string.Join(",", o.ToArray()); }
+        string M1Overlay() { var o = new List<string>(); bool inLobby = lobby != null && lobby.IsBlocking; if (inLobby) o.Add("lobby"); else if (menu) o.Add("pause"); if (inventory.Open) o.Add("inventory"); if (skills.Open) o.Add("skills"); if (stats.Open) o.Add("stats"); if (forge.Open) o.Add("forge"); return string.Join(",", o.ToArray()); }
         bool m1Headless; RenderTexture m1GuiTarget; int m1GuiRepaints, m1GuiBridged;
         sealed class M1GuiProbe : MonoBehaviour { public NativeGame game; void OnGUI() { if (game != null && Event.current.type == EventType.Repaint) game.M1GuiRepaint(); } }
         internal void M1GuiRepaint()
