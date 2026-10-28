@@ -23,6 +23,8 @@ param(
     [int]$KillAfterSec = 0,
     [switch]$KeepReservation,
     [switch]$AllowPlayer,
+    [switch]$DryRun,
+    [ValidateSet("hidden", "batch")][string]$Desktop = "hidden",
     [string]$NodeModules = 'G:\exoduser\node_modules'
 )
 
@@ -532,9 +534,20 @@ function Ensure-LobbyMedia([string]$wt) {
     Say '필수 영상 확인 완료'
 }
 
+# build: Resolve-JobArgs 로 먼저 쪼갠 뒤 -buildTarget Win64 를 앞에 붙인다(쉼표 문자열·배열·-ArgsJson 모두 같은 결과).
+# 쪼개기 전에 앞에 붙이면 "요소 1개 + 쉼표" 조건이 깨져 쉼표 문자열이 통째로 넘어간다(O-1 결함).
+function Prepare-BuildArgs {
+    $a = @(Resolve-JobArgs)
+    if ($a -notcontains '-buildTarget') { $a = @('-buildTarget', 'Win64') + $a }
+    return @($a)
+}
+
+function Format-ArgList($list) { return '[' + ((@($list) | ForEach-Object { '"' + $_ + '"' }) -join ',') + ']' }
+
 function Cmd-Run {
     if ([string]::IsNullOrWhiteSpace($Method)) { throw '-Method 가 필요합니다.' }
     $wt = Norm-Worktree $Worktree
+    if ($DryRun) { Write-Output ('[dryrun] run method=' + $Method + ' args=' + (Format-ArgList (Resolve-JobArgs))); exit 0 }
     if ($Method -eq 'PortVerification.Build') { Ensure-LobbyMedia $wt }
     $qd = Get-QueueDir $wt
     $argList = Resolve-JobArgs
@@ -809,19 +822,35 @@ function Get-WindowHits($pids, $label) {
 }
 
 # 프로세스 1개를 띄우고 끝까지 지켜본다: 창(MainWindowHandle) 감시, 트리 정리 확인
-function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$limitSec, [int]$killAfter, [string[]]$ownTokens) {
+function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$limitSec, [int]$killAfter, [string[]]$ownTokens, [bool]$HiddenDesktop = $false) {
     $pre = @{}
     foreach ($p in @(Get-Process -Name $WatchNames -ErrorAction SilentlyContinue)) { $pre[$p.Id] = 1 }
     $t0 = Get-Date
-    $sp = @{ FilePath = $File; ArgumentList = $ArgList; PassThru = $true; WindowStyle = 'Hidden' }
-    if ($Cwd) { $sp.WorkingDirectory = $Cwd }
-    $proc = Start-Process @sp
+    $desk = $null; $dproc = $null; $hiddenMax = 0; $hiddenTitles = @(); $desktopClosed = $false
+    if ($HiddenDesktop) {
+        # 숨은 Windows 데스크톱에서 실행: 사용자 화면에는 창이 생기지 않는다(HiddenDesktop.psm1)
+        $desk = New-HiddenDesktop
+        $cmdLine = '"' + $File + '" ' + ($ArgList -join ' ')
+        $dproc = Start-DesktopProcess -Desktop $desk -CommandLine $cmdLine -WorkingDirectory $Cwd
+        $proc = Get-Process -Id $dproc.ProcessId -ErrorAction SilentlyContinue
+        if ($null -eq $proc) {
+            $proc = [pscustomobject]@{ Id = $dproc.ProcessId; HasExited = $true; ExitCode = (Get-DesktopProcessExitCode $dproc) }
+            $proc | Add-Member -MemberType ScriptMethod -Name WaitForExit -Value { param($ms) $true } -Force
+        }
+    } else {
+        $sp = @{ FilePath = $File; ArgumentList = $ArgList; PassThru = $true; WindowStyle = 'Hidden' }
+        if ($Cwd) { $sp.WorkingDirectory = $Cwd }
+        $proc = Start-Process @sp
+    }
     $tree = @{}; $violations = @(); $warnings = @(); $timedOut = $false; $expectedKill = $false
     $sw = [Diagnostics.Stopwatch]::StartNew()
     while ($true) {
         $t = Get-ProcTree $proc.Id
         foreach ($id in $t.pids) { foreach ($c in $t.all) { if ([int]$c.ProcessId -eq [int]$id) { $tree[[int]$id] = $c.CreationDate } } }
-        $violations += @(Get-WindowHits $t.pids 'tree')
+        # 숨은 데스크톱의 정상 창도 MainWindowHandle에 잡힌다.
+        # 이 경로는 별도 데스크톱에서만 실행하므로 사용자 창 위반에 넣지 않는다.
+        if (-not $HiddenDesktop) { $violations += @(Get-WindowHits $t.pids 'tree') }
+        if ($desk) { $dw = @(Get-DesktopWindows $desk); if ($dw.Count -gt $hiddenMax) { $hiddenMax = $dw.Count; $hiddenTitles = $dw } }
         foreach ($p in @(Get-Process -Name $WatchNames -ErrorAction SilentlyContinue)) {
             if ($pre.ContainsKey($p.Id) -or $tree.ContainsKey($p.Id)) { continue }
             try { if ($p.StartTime -lt $t0) { continue } } catch { continue }
@@ -839,7 +868,10 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
         Start-Sleep -Milliseconds 700
     }
     $exit = 0
-    if ($proc.HasExited) { $exit = $proc.ExitCode }
+    if ($proc.HasExited) {
+        if ($HiddenDesktop) { $exit = Get-DesktopProcessExitCode $dproc }
+        else { $exit = $proc.ExitCode }
+    }
     else {
         & taskkill.exe /PID $proc.Id /T /F 2>&1 | Out-Null
         $proc.WaitForExit(15000) | Out-Null
@@ -855,11 +887,12 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     }
     $killed = @()
     foreach ($id in $left) { try { Stop-Process -Id ([int]$id) -Force -ErrorAction Stop; $killed += $id } catch { } }
+    if ($HiddenDesktop) { Close-DesktopProcess $dproc; $desktopClosed = [bool](Close-HiddenDesktop $desk) }
     $sw.Stop()
     return [pscustomobject]@{
         exitCode = $exit; timedOut = $timedOut; expectedKill = $expectedKill; durMs = $sw.ElapsedMilliseconds
         windowHits = @($violations | Select-Object -Unique); warnings = @($warnings | Select-Object -Unique)
-        leftovers = @($left); leftoversKilled = @($killed); treeCount = $tree.Count
+        leftovers = @($left); leftoversKilled = @($killed); treeCount = $tree.Count; hiddenWindows = $hiddenMax; hiddenTitles = @($hiddenTitles); desktopClosed = $desktopClosed
     }
 }
 
@@ -883,6 +916,7 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
     Write-JsonAtomic (Join-Path $ExecDir ('done\' + $id + '.json')) $res
     $gpuText = ''
     if ($extra.Contains('gpu')) { $gpuText = ' gpu=[' + $extra['gpu'] + ']' }
+    if ($extra.Contains('desktop')) { $gpuText += ' desktop=' + $extra['desktop'] + ' hiddenWindows=' + $extra['hiddenWindows'] + ' desktopClosed=' + $extra['desktopClosed'] }
     Write-Output ('[result] kind={0} ok={1} exit={2} dur={3}ms windows={4} leftovers={5}{6}' -f $kind, $ok, $g.exitCode, $g.durMs, $g.windowHits.Count, $g.leftovers.Count, $gpuText)
     if ($res.note) { Write-Output ('  note: ' + $res.note) }
     if ($sc.Count -gt 0) { Write-Output ('USER_SAVE changed=' + $sc.Count); foreach ($uf in $sc) { Write-Output ('  ' + $uf) } }
@@ -897,20 +931,30 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
 }
 
 function Cmd-Player {
-    if (-not $AllowPlayer) { Reject 'player 실행은 NativeQaSandbox fail-closed 가 unity/main 에 병합되기 전까지 기본 거부(사용자 실제 세이브 보호). 병합 공지 뒤 -AllowPlayer 로만 실행' }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
     $exeFull = (Resolve-Path -LiteralPath $Exe).Path
     $user = Resolve-JobArgs
     $lower = @($user | ForEach-Object { $_.ToLower() })
-    foreach ($bad in '-popupwindow', '-screen-fullscreen') {
-        if ($lower -contains $bad) { Reject "$bad 는 창을 띄우므로 허용되지 않음 (플레이어는 -batchmode 로만, 창 없이)" }
+    if ($lower -contains '-batchmode') { $Desktop = 'batch' }
+    if ($Desktop -eq 'batch') {
+        foreach ($bad in '-popupwindow', '-screen-fullscreen') {
+            if ($lower -contains $bad) { Reject "$bad 는 창을 띄우므로 허용되지 않음 (사용자 데스크톱에서는 -batchmode 로만. 창이 필요하면 기본 -Desktop hidden 을 사용)" }
+        }
     }
     if ($lower -contains '-nographics') { Reject '-nographics 는 GPU 를 끄므로 허용되지 않음 (GPU 캡처가 목적이면 -batchmode 만 사용)' }
+    if ($DryRun) { Write-Output ('[dryrun] player exe=' + $exeFull + ' desktop=' + $Desktop + ' args=' + (Format-ArgList $user)); exit 0 }
     $id = [Guid]::NewGuid().ToString('N').Substring(0, 8)
     New-Item -ItemType Directory -Force -Path (Join-Path $ExecDir 'logs') | Out-Null
     $log = Join-Path $ExecDir ('logs\player-' + $id + '.log')
-    $ia = @('-batchmode')
+    $ia = @()
+    if ($Desktop -eq 'batch') { $ia = @('-batchmode') }
+    else {
+        Import-Module (Join-Path $PSScriptRoot 'HiddenDesktop.psm1') -Force -DisableNameChecking
+        if ($lower -notcontains '-screen-width') { $ia += @('-screen-width', '1600') }
+        if ($lower -notcontains '-screen-height') { $ia += @('-screen-height', '900') }
+        if ($lower -notcontains '-screen-fullscreen') { $ia += @('-screen-fullscreen', '0') }
+    }
     $userLog = $null
     for ($i = 0; $i -lt $user.Count; $i++) { if ($user[$i].ToLower() -eq '-logfile' -and $i + 1 -lt $user.Count) { $userLog = $user[$i + 1] } }
     if (-not $userLog) { $ia += @('-logFile', (Q $log)) } else { $log = $userLog }
@@ -922,7 +966,7 @@ function Cmd-Player {
     try {
         $g = $null; $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date
         for ($attempt = 1; $attempt -le 2; $attempt++) {
-            $g = Invoke-Guarded $exeFull $ia (Split-Path $exeFull -Parent) $TimeoutSec $KillAfterSec @($log)
+            $g = Invoke-Guarded $exeFull $ia (Split-Path $exeFull -Parent) $TimeoutSec $KillAfterSec @($log) ($Desktop -eq 'hidden')
             $crashCause = Test-UnityCrash $log $g.exitCode
             if (-not $crashCause) { break }
             Record-Crash $crashCause 'player' $log
@@ -944,7 +988,7 @@ function Cmd-Player {
         $extraOk = $true
         if ($nullGfx) { $extraOk = $false; $fail = 'Forcing GfxDevice: Null - GPU 렌더링 아님' }
         elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
-        Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log }) $extraOk $fail
+        Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed }) $extraOk $fail
     } finally { Release-Lock $PID }
     if ($rejected) { $script:ExitRc = 2 }
     exit $script:ExitRc
@@ -994,7 +1038,7 @@ Test-HaltGate
 switch ($Command.ToLower()) {
     'start'     { Cmd-Start }
     'run'       { Cmd-Run }
-    'build'     { if (-not $Method) { $Method = 'PortVerification.Build' }; if (-not ($JobArgs -contains '-buildTarget')) { $JobArgs = @('-buildTarget', 'Win64') + @($JobArgs) }; Cmd-Run }
+    'build'     { if (-not $Method) { $Method = 'PortVerification.Build' }; $JobArgs = @(Prepare-BuildArgs); $ArgsJson = $null; Cmd-Run }
     'status'    { Cmd-Status }
     'stop'      { Cmd-Stop }
     'reap'      { Cmd-Reap }

@@ -11,29 +11,8 @@ param(
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8
 $lockFile = 'I:\EXODUSER-Storage\unity-jobs\_pc_lock.json'
-Add-Type -TypeDefinition @'
-using System; using System.Runtime.InteropServices; using System.Text; using System.Collections.Generic;
-public static class HD {
-  public delegate bool EnumProc(IntPtr h, IntPtr l);
-  [DllImport("user32.dll", SetLastError=true, CharSet=CharSet.Unicode)] public static extern IntPtr CreateDesktop(string name, IntPtr dev, IntPtr devmode, int flags, uint access, IntPtr sa);
-  [DllImport("user32.dll")] public static extern bool CloseDesktop(IntPtr h);
-  [DllImport("user32.dll")] public static extern bool EnumDesktopWindows(IntPtr hDesk, EnumProc p, IntPtr l);
-  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
-  [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetWindowText(IntPtr h, StringBuilder s, int n);
-  [DllImport("kernel32.dll", SetLastError=true, CharSet=CharSet.Unicode)] public static extern bool CreateProcess(string app, StringBuilder cmd, IntPtr pa, IntPtr ta, bool inherit, uint flags, IntPtr env, string cwd, ref STARTUPINFO si, out PROCESS_INFORMATION pi);
-  [DllImport("kernel32.dll")] public static extern uint WaitForSingleObject(IntPtr h, uint ms);
-  [DllImport("kernel32.dll")] public static extern bool GetExitCodeProcess(IntPtr h, out uint code);
-  [DllImport("kernel32.dll")] public static extern bool TerminateProcess(IntPtr h, uint code);
-  [DllImport("kernel32.dll")] public static extern bool CloseHandle(IntPtr h);
-  [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)] public struct STARTUPINFO { public int cb; public string lpReserved; public string lpDesktop; public string lpTitle; public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags; public short wShowWindow, cbReserved2; public IntPtr lpReserved2, hStdInput, hStdOutput, hStdError; }
-  [StructLayout(LayoutKind.Sequential)] public struct PROCESS_INFORMATION { public IntPtr hProcess, hThread; public int dwProcessId, dwThreadId; }
-  public static string[] Windows(IntPtr desk) {
-    var l = new List<string>();
-    EnumDesktopWindows(desk, delegate(IntPtr h, IntPtr p) { var sb = new StringBuilder(256); GetWindowText(h, sb, 256); l.Add((IsWindowVisible(h) ? "V " : "H ") + sb.ToString()); return true; }, IntPtr.Zero);
-    return l.ToArray();
-  }
-}
-'@
+# P/Invoke(HD 클래스)는 공용 모듈 HiddenDesktop.psm1 로 옮겼다(exo-unity.ps1 player -Desktop hidden 과 공용)
+Import-Module (Join-Path $PSScriptRoot '..\HiddenDesktop.psm1') -Force -DisableNameChecking
 $exe = Join-Path $BuildDir 'EXODUSER-Unity.exe'
 if (-not (Test-Path -LiteralPath $exe)) { throw "플레이어가 없다: $exe" }
 New-Item -ItemType Directory -Force -Path $Out | Out-Null
@@ -61,7 +40,7 @@ try {
   $sandbox = Join-Path $Out 'sandbox'; New-Item -ItemType Directory -Force -Path $sandbox | Out-Null
   $cmd = New-Object Text.StringBuilder ('"{0}" {1} --unity-mute --unity-qa-sandbox "{2}" -output "{3}" -screen-width 1600 -screen-height 900 -screen-fullscreen 0 -logFile "{4}"' -f $exe, $Flag, $sandbox, $Out, (Join-Path $Out 'player.log'))
   $si = New-Object HD+STARTUPINFO; $si.cb = [Runtime.InteropServices.Marshal]::SizeOf($si); $si.lpDesktop = 'WinSta0\' + $name
-  $ok = [HD]::CreateProcess($null, $cmd, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0, [IntPtr]::Zero, (Split-Path -Parent $exe), [ref]$si, [ref]$pi)
+  $ok = [HD]::CreateProcess([NullString]::Value, $cmd, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0, [IntPtr]::Zero, (Split-Path -Parent $exe), [ref]$si, [ref]$pi)
   if (-not $ok) { throw ('CreateProcess 실패 ' + [Runtime.InteropServices.Marshal]::GetLastWin32Error()) }
   $result.pid = $pi.dwProcessId
   $sw = [Diagnostics.Stopwatch]::StartNew(); $userWin = 0; $maxHidden = 0; $titles = @()
