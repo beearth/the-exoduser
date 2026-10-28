@@ -61,7 +61,7 @@ try {
   $sandbox = Join-Path $Out 'sandbox'; New-Item -ItemType Directory -Force -Path $sandbox | Out-Null
   $cmd = New-Object Text.StringBuilder ('"{0}" {1} --unity-mute --unity-qa-sandbox "{2}" -output "{3}" -screen-width 1600 -screen-height 900 -screen-fullscreen 0 -logFile "{4}"' -f $exe, $Flag, $sandbox, $Out, (Join-Path $Out 'player.log'))
   $si = New-Object HD+STARTUPINFO; $si.cb = [Runtime.InteropServices.Marshal]::SizeOf($si); $si.lpDesktop = 'WinSta0\' + $name
-  $ok = [HD]::CreateProcess($null, $cmd, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0, [IntPtr]::Zero, (Split-Path -Parent $exe), [ref]$si, [ref]$pi)
+  $ok = [HD]::CreateProcess([NullString]::Value, $cmd, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0, [IntPtr]::Zero, (Split-Path -Parent $exe), [ref]$si, [ref]$pi)
   if (-not $ok) { throw ('CreateProcess 실패 ' + [Runtime.InteropServices.Marshal]::GetLastWin32Error()) }
   $result.pid = $pi.dwProcessId
   $sw = [Diagnostics.Stopwatch]::StartNew(); $userWin = 0; $maxHidden = 0; $titles = @()

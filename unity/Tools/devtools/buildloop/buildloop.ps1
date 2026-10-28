@@ -163,6 +163,20 @@ function Acquire-Lock([string]$runId) {
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Cfg.LockFile) | Out-Null
   $deadline = (Get-Date).AddMinutes($Cfg.WaitMaxMin)
   while ($true) {
+    # DT-01 순번 예약(queue\*.json): 예약이 있고 맨 앞이 내가 아니면 잠금을 잡지 않고 기다린다. 만료된 예약은 무시.
+    $qdir = Join-Path (Split-Path -Parent $Cfg.LockFile) 'queue'; $front = $null
+    if (Test-Path -LiteralPath $qdir) {
+      foreach ($qf in @(Get-ChildItem -LiteralPath $qdir -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
+        $q = $null; try { $q = ReadJson $qf.FullName } catch { }; if ($null -eq $q) { continue }
+        $exp = $null; try { $exp = [DateTime]::Parse([string]$q.expiresAt).ToUniversalTime() } catch { }
+        if ($exp -and $exp -lt [DateTime]::UtcNow) { continue }
+        $front = $q; break
+      }
+    }
+    if ($null -ne $front -and [string]$front.owner -ne 'devtools-buildloop') {
+      if ((Get-Date) -gt $deadline) { Log "예약 대기 초과 (맨 앞: $($front.owner))"; return $false }
+      Log "예약 대기: 맨 앞 예약자 $($front.owner) ($($front.note))"; Start-Sleep -Seconds 30; continue
+    }
     try {
       $fs = [IO.File]::Open($Cfg.LockFile, 'CreateNew', 'Write', 'None')
       $body = @{ owner = 'devtools-buildloop'; pid = $PID; worktree = $Cfg.Worktree; startedAt = (Get-Date).ToString('s'); run = $runId } | ConvertTo-Json
