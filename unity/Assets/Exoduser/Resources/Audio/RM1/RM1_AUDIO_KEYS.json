@@ -671,6 +671,22 @@
    "startVolume": 0.55,
    "source": "SND-09 3차 _preview_r3/druid_spore_r3a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/), 원본 웹 sfx/pickup/pickup_rummage2.mp3 35Hz HPF→-1dBTP",
    "note": "사용자 청음 채택 2026-10-28. 시작 음량은 임시. 같은 원본이 웹에서는 아이템 줍기 소리 — Unity 줍기 소리에 같은 파일을 넣으면 사운드 총괄에 알릴 것"
+  },
+  {
+   "key": "druid_slam",
+   "file": "Audio/RM1/druid_slam",
+   "use": "L4: 기술 2 거름 내려찍기 착지 순간 1회, rate ±4%",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.7,
+   "source": "SND-09 4차 _preview_r4/druid_slam_r4e2_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/), 3차 선택 r3d에 음량 상향·중간 메아리 약 0.22초 반영(추천안 e2)",
+   "note": "사용자 컨펌 전 선반영(pick_r4). 사용자가 다른 후보를 고르면 이 항목의 파일만 교체. 시작 음량은 임시"
   }
  ]
 }
