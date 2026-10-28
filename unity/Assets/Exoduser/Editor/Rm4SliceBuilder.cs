@@ -919,7 +919,7 @@ namespace Exoduser
         // sight-wedge check: for every lump with a walk tile north of it, stand the capsule (1.6u) on that tile with the game camera and cast rays to its head and body. Colliders are added at runtime only (the scene is not saved).
         public static void Wedge()
         {
-            Load(); EditorSceneManager.OpenScene(ScenePath);
+            AudioListener.volume = 0f; Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); var cam = Camera.main; terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var cand = JsonUtility.FromJson<WedgeFile>(File.ReadAllText(Root + "/Data/rm4_wedge_candidates.json"));
             foreach (var mf in GameObject.Find("Blockout").GetComponentsInChildren<MeshFilter>()) if (mf.GetComponent<Collider>() == null) mf.gameObject.AddComponent<MeshCollider>();
@@ -932,6 +932,17 @@ namespace Exoduser
                 string by = headHit ? hh.collider.name : (bodyHit ? bh.collider.name : ""); bool pass = !headHit && !bodyHit; tested++; if (!pass) fail++; bool big = it.h > 0.9f; if (big) { over09++; if (!pass) over09fail++; }
                 res.Add("{\"name\":\"" + it.name + "\",\"h\":" + it.h.ToString("F2") + ",\"D_u\":" + it.D_u.ToString("F2") + ",\"hMax_u\":" + it.hMax_u.ToString("F2") + ",\"over0_9\":" + (big ? "true" : "false") + ",\"tile\":[" + it.northWalkTile[0] + "," + it.northWalkTile[1] + "],\"headVisible\":" + (!headHit ? "true" : "false") + ",\"bodyVisible\":" + (!bodyHit ? "true" : "false") + ",\"blockedBy\":\"" + by + "\",\"pass\":" + (pass ? "true" : "false") + "}");
             }
+            // terrain sweep (lumps are not the only occluders): every walk tile with a non-walk tile directly north, same capsule rays; only TerrainCollider hits count here (lump hits are listed above)
+            int tEdge = 0, tFail = 0; var tList = new List<string>();
+            for (int ty = WY0; ty < WY1; ty++) for (int tx = WX0; tx < WX1; tx++)
+                {
+                    if (!Walk(tx, ty) || Walk(tx, ty - 1)) continue;
+                    var tw = W(tx + .5f, ty + .5f); float tg = GroundY(tw.x, tw.z); marker.position = new Vector3(tw.x, tg, tw.z); brain.ManualUpdate();
+                    var tcp = cam.transform.position; bool th = Physics.Linecast(tcp, new Vector3(tw.x, tg + 1.6f, tw.z), out var thit) && thit.collider is TerrainCollider; bool tb = Physics.Linecast(tcp, new Vector3(tw.x, tg + 0.8f, tw.z), out var tbit) && tbit.collider is TerrainCollider;
+                    tEdge++; if (th || tb) { tFail++; if (tList.Count < 60) tList.Add("[" + tx + "," + ty + "]"); }
+                }
+            File.WriteAllText(Root + "/Data/rm4_wedge_terrain.json", "{\"rule\":\"walk tiles with a non-walk tile directly north: capsule 1.6u rays to head and body must not hit the TerrainCollider\",\"tested\":" + tEdge + ",\"failed\":" + tFail + ",\"firstFailedTiles\":\"" + string.Join("", tList) + "\"}");
+            Debug.Log("[RM4] wedge terrain edge tiles=" + tEdge + " failed=" + tFail);
             File.WriteAllText(Root + "/Data/rm4_wedge.json", "{\"rule\":\"capsule 1.6u on the walk tile north of each lump, game camera, rays to head (1.6u) and body (0.8u) must reach it\",\"tested\":" + tested + ",\"failed\":" + fail + ",\"lumpsOver0_9u\":" + over09 + ",\"lumpsOver0_9uFailed\":" + over09fail + ",\"items\":[" + string.Join(",", res) + "]}");
             Debug.Log("[RM4] wedge tested=" + tested + " failed=" + fail + " over0.9u=" + over09 + " over0.9uFailed=" + over09fail);
         }
@@ -942,7 +953,7 @@ namespace Exoduser
         public static void Fps()
         {
             var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
-            var outJson = Arg("-out", Out("rm4-fps.json")); Load(); EditorSceneManager.OpenScene(ScenePath);
+            var outJson = Arg("-out", Out("rm4-fps.json")); AudioListener.volume = 0f; Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var w0 = W(100f, 185f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); brain.ManualUpdate(); var cull = UnityEngine.Object.FindFirstObjectByType<Rm4PoolLightCuller>(); if (cull != null) cull.Refresh(marker.position);
             var world = GameObject.Find("World"); var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
@@ -963,7 +974,7 @@ namespace Exoduser
             var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
             var outDir = Arg("-outDir", "I:/EXODUSER-Storage/rm4/cuts"); Directory.CreateDirectory(outDir);
             var cuts = Arg("-cuts", "start,heart,gate").Split(',');
-            Load(); EditorSceneManager.OpenScene(ScenePath);
+            AudioListener.volume = 0f; Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var cull = UnityEngine.Object.FindFirstObjectByType<Rm4PoolLightCuller>();
             var focus = new Dictionary<string, Vector2> { { "start", new Vector2(100f, 185f) }, { "heart", new Vector2(100f, 70f) }, { "gate", new Vector2(100f, 38f) } };
