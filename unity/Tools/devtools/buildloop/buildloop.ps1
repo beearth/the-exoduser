@@ -10,6 +10,8 @@ param(
   [switch]$Force,
   [switch]$AllowKnown,
   [switch]$HudSmoke,           # m1-check 뒤에 hud-smoke 도 무창으로 돌려 스스로 종료하는지 기록(DBT-6)
+  [switch]$KeepStage,          # 브랜치 시험 뒤에도 build_new 를 지우지 않는다(데스크톱 시험용)
+  [switch]$SkipSmoke,          # 빌드까지만(스모크 생략, 판정 ABORT 로 기록)
   [switch]$NoSwap,             # build 를 교체하지 않는다(브랜치 시험용). -Ref 가 origin/unity/main 이 아니면 자동으로 켜진다
   [string]$JudgeOnly,          # 빌드 없이 로그 한 개만 판정(예: -JudgeOnly C:\x\build.log -Scope build)
   [ValidateSet('build', 'player', 'caps')][string]$Scope = 'build',
@@ -277,6 +279,7 @@ function Get-UserSaveSnapshot {
   if (-not (Test-Path -LiteralPath $root)) { return $snap }
   foreach ($f in @(Get-ChildItem -LiteralPath $root -Recurse -File -ErrorAction SilentlyContinue)) {
     if ($f.FullName -like '*\Unity\local.*') { continue }
+    if ($f.FullName -like '*\qa\*') { continue }   # NativeQaSandbox 자동 격리 폴더(persistentDataPath\qa\<시각>-<pid>)
     $h = ''
     if ($f.Length -le 2097152) { try { $h = (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256 -ErrorAction Stop).Hash.Substring(0, 16) } catch { $h = 'locked' } }
     $snap[$f.FullName] = ('{0}|{1}|{2}' -f $f.Length, $f.LastWriteTimeUtc.Ticks, $h)
@@ -392,7 +395,7 @@ function Write-Status($stateObj) {
   $rules = Load-Rules
   $hist = @($stateObj.history)
   $latest = $null
-  if ($hist.Count -gt 0) { $latest = ReadJson (Join-Path $RunsDir ($hist[0].id + '\run.json')) }
+  if ($hist.Count -gt 0) { $latest = ReadJson (Join-Path $RunsDir (Join-Path $hist[0].id 'run.json')) }
   $dep = $stateObj.deployed
   $json = [ordered]@{
     generatedAt = (Get-Date).ToString('s')
@@ -441,8 +444,10 @@ ul{margin:6px 0 0;padding-left:18px}
   # 배포 빌드 / 최신 시도
   [void]$sb.AppendLine('<h2>BUILD</h2><div class="grid">')
   $dtxt = '아직 없음'; $dv = ''; $dat = ''
+  $dunv = ''
+  if ($null -ne $dep -and $dep.runId -ne 'legacy') { $drun = ReadJson (Join-Path (Join-Path $RunsDir ([string]$dep.runId)) 'run.json'); if ($null -ne $drun -and (($null -ne (Prop $drun 'capsBlack' $null) -and [int]$drun.capsBlack.total -gt 0 -and [int]$drun.capsBlack.black -eq [int]$drun.capsBlack.total) -or ($null -ne $drun.m1 -and $drun.m1.present -and [string]$drun.m1.captureMode -eq ''))) { $dunv = '<div class="note" style="margin-top:8px;color:#d4a24a">화면 미검증(구 캡처 코드)</div>' } }
   if ($null -ne $dep) { $dtxt = [string]$dep.sha; $dv = [string]$dep.verdict; $dat = [string]$dep.at }
-  [void]$sb.AppendLine('<div class="panel"><div class="k">바로가기 빌드 (unity-latest\build)</div><div class="v mono">' + (Esc $dtxt) + '</div><div class="k" style="margin-top:6px">' + (Esc $dat) + ' &nbsp; <span class="badge b-' + (Esc $dv) + '">' + (Esc (Verdict-Label $dv)) + '</span></div></div>')
+  [void]$sb.AppendLine('<div class="panel"><div class="k">바로가기 빌드 (unity-latest\build)</div><div class="v mono">' + (Esc $dtxt) + '</div><div class="k" style="margin-top:6px">' + (Esc $dat) + ' &nbsp; <span class="badge b-' + (Esc $dv) + '">' + (Esc (Verdict-Label $dv)) + '</span></div>' + $dunv + '</div>')
   if ($null -ne $latest) {
     $lv = [string]$latest.verdict
     [void]$sb.AppendLine('<div class="panel"><div class="k">최근 시도</div><div class="v mono">' + (Esc $latest.sha) + ' <span class="badge b-' + (Esc $lv) + '">' + (Esc (Verdict-Label $lv)) + '</span></div><div class="k" style="margin-top:6px">' + (Esc $latest.startedAt) + ' · 빌드 ' + ([math]::Round([double]$latest.buildSeconds / 60, 1)) + '분 · 스모크 ' + ([math]::Round([double]$latest.smokeSeconds / 60, 1)) + '분</div><div class="note" style="margin-top:6px">' + (Esc $latest.subject) + '</div><div class="note">build 교체: ' + (Esc $(if ($latest.replaced) { '했음' } else { '안 함' })) + ' - ' + (Esc $latest.replaceNote) + '</div></div>')
@@ -479,6 +484,7 @@ ul{margin:6px 0 0;padding-left:18px}
     $us = Prop $latest 'userSave' $null
     if ($null -ne $us) { $ucls = 'note'; if ([int]$us.changed -gt 0) { $ucls = 'warnbox' }; [void]$sb.AppendLine('<div class="' + $ucls + '" style="margin-top:6px">USER_SAVE changed=' + (Esc $us.changed) + (Esc $(if ([int]$us.changed -gt 0) { ' - ' + (@($us.files) -join ' | ') } else { ' (LocalLow\ForDearGamers 전후 비교, Unity Analytics 제외)' })) + '</div>') }
     $cb = Prop $latest 'capsBlack' $null
+    if ($null -ne $cb -and [int]$cb.total -gt 0 -and [int]$cb.black -eq [int]$cb.total) { [void]$sb.AppendLine('<div class="warnbox">화면 미검증(구 캡처 코드) - 캡처 ' + (Esc $cb.total) + '장이 전부 검은 화면. 로그·m1 단계는 정상.</div>') }
     if ($null -ne $cb) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">캡처 ' + (Esc $cb.total) + '장 중 검은 화면 ' + (Esc $cb.black) + '장' + (Esc $(if (@($cb.blackNames).Count -gt 0) { ': ' + (@($cb.blackNames) -join ', ') } else { '' })) + '</div>') }
     if ($null -ne (Prop $latest 'captureNote' $null)) { [void]$sb.AppendLine('<div class="warnbox">' + (Esc $latest.captureNote) + '</div>') }
     $kn = @{}
@@ -685,6 +691,7 @@ function Cmd-Run {
 
     # 3) 스모크
     $pj = $null; $m1 = $null; $sm = $null
+    if ($SkipSmoke -and $buildOk) { $run.verdict = 'ABORT'; $run.replaceNote = '빌드만(-SkipSmoke) - build_new 보관'; $run.smokeNote = '스모크 생략'; Log 'SkipSmoke: 빌드만 하고 종료'; return }
     if ($buildOk) {
       # 다른 Unity 가 끼어들지 않았는지 다시 확인(우리 빌드 프로세스는 이미 종료)
       $others = @(Get-UnityProcs)
@@ -766,7 +773,7 @@ function Cmd-Run {
     if ($NoSwap) {
       $run.replaceNote = '브랜치 시험 빌드/-NoSwap - build 교체 안 함'
       WriteJson (Join-Path $runDir 'loop-receipt.json') $loopReceipt
-      if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue }
+      if (-not $KeepStage -and (Test-Path -LiteralPath $stage)) { Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue }
     } elseif ($eligible -and $buildOk) {
       WriteJson (Join-Path $runDir 'loop-receipt.json') $loopReceipt
       $sr = Swap-Build $st $runDir ([pscustomobject]$loopReceipt)

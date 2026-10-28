@@ -167,6 +167,10 @@ public static class PortVerification {
       Debug.Log("A06_HUD_GPU_RGBA hpCorner="+HudProbePixel(hud,"hp",2,2)+" hpCenter="+HudProbePixel(hud,"hp",128,128)+" manaBlue="+HudProbePixel(hud,"mana",80,128)+" staminaGreen="+HudProbePixel(hud,"mana",180,128)+" manaCorner="+HudProbePixel(hud,"mana",253,253));
      }catch(Exception e){Debug.Log("A06_HUD_GPU_RGBA_READ_ERROR "+e.GetType().Name+" "+e.Message);}
     }
+    var ratios=HudValues.From(p);
+    Debug.Log("A06_HUD_GPU_STATE state="+i+" hpTranslatePercent="+ratios.HpTranslatePercent+" manaRatio="+ratios.ManaRatio+" staminaRatio="+ratios.StaminaRatio+
+     " hpCenter="+HudProbePixel(hud,"hp",128,128)+" hpUpper="+HudProbePixel(hud,"hp",128,180)+" hpLower="+HudProbePixel(hud,"hp",128,80)+
+     " manaCenter="+HudProbePixel(hud,"mana",80,128)+" manaUpper="+HudProbePixel(hud,"mana",80,180)+" staminaCenter="+HudProbePixel(hud,"mana",180,128));
     var v=hud.Probe(i.ToString());
     bool ok=v.cornerTransparent&&(i==0?v.hpRed&&v.manaBlue&&v.staminaGreen:i==1?v.hpUpperEmpty&&v.hpLowerRed&&v.manaUpperEmpty&&v.staminaGreen:v.hpEmpty&&v.manaEmpty&&v.staminaEmpty);
     if(!ok)throw new Exception("Native HUD GPU pixel mismatch "+JsonUtility.ToJson(v));
@@ -181,10 +185,12 @@ public static class PortVerification {
   var old=RenderTexture.active;var pixel=new Texture2D(1,1,TextureFormat.RGBA32,false);
   try{
    RenderTexture.active=rt;pixel.ReadPixels(new Rect(x,y,1,1),0,0);pixel.Apply();
-   var c=pixel.GetPixel(0,0);
-   return "("+c.r.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.g.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.b.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.a.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+")";
+   var c=pixel.GetPixel(0,0);var shader=c;
+   if(QualitySettings.activeColorSpace==ColorSpace.Linear){shader.r=Mathf.GammaToLinearSpace(c.r);shader.g=Mathf.GammaToLinearSpace(c.g);shader.b=Mathf.GammaToLinearSpace(c.b);}
+   return "raw="+HudPixelText(c)+" shader="+HudPixelText(shader);
   }finally{RenderTexture.active=old;UnityEngine.Object.DestroyImmediate(pixel);}
  }
+ static string HudPixelText(Color c){return "("+c.r.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.g.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.b.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.a.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+")";}
  static string MakeScene(){
   var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
   new GameObject("EXODUSER Native CSharp").AddComponent<NativeGame>();
