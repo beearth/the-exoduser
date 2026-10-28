@@ -122,6 +122,8 @@ C-01 결과(10-28, 브랜치 `claude/unity-pc-c01-asmdef-20261028` @ 6f1637b02, 
 | C-02b | 패드: 웹 `navigator.getGamepads()` 처리(game.html 13592·13969·20071 부근)와 Core `FrontendPadPolicy`를 그대로 신형 `Gamepad`에 연결한다. `GetJoystickNames` 대체 | 웹과 같은 패드 지원 |
 | C-02c | Input Actions 에셋(Gameplay·UI 맵)을 만들고 키 재설정은 `KeyBindings` 저장값을 바인딩 덮어쓰기로 넣는다. 구형 호출 0을 확인한 뒤 `activeInputHandler: 1`(신형만) | 구형 입력 끔 |
 
+C-02b의 웹 인덱스→신형 명명 control 표, 연결/해제·UI 차단·LT 조합·가상 장치/실물 패드 검수 경계는 [`UNITY_C02B_GAMEPAD_20261028.md`](UNITY_C02B_GAMEPAD_20261028.md)를 따른다. 10-28 인수 시점에는 **명세만 완료**되었고 C-02a 공용 Unity 검증은 대기 중이다.
+
 C-02a 검증: 컴파일 0 · `ExoInputVerification`(웹 코드 전부 `Key`로 변환됨, 가상 키보드·마우스로 Down은 누른 프레임에만·Held는 누르는 동안·AnyKeyDown·`NativeKeyBindInput.Down("weapon")`=mouse0) · `PortVerification.CheckCorePresence` · `FrontendPadVerification.Run` · Win 빌드 · (플레이어 보류가 풀린 뒤) 1-1 직접 조작 판정.
 실행: 구현 = PC `codex exec`(worktree `E:\exoduser-wt\pc-unity-c02-input`, 브랜치 `claude/unity-pc-c02-input-20261028`, **C-01 브랜치 6f1637b02 기준** — asmdef 참조를 추가해야 하므로). Unity 검증·커밋·push는 커스텀 총괄이 `exo-unity.ps1`로 한다. 병합 순번은 C-01 다음이다.
 
