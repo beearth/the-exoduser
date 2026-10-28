@@ -22,6 +22,7 @@ namespace Exoduser.UnityPort
   RegionState[] seen; bool[] prevCleared = new bool[4]; int curIdx = -1, bannerCd;
   bool bannerOn, bannerPurge; float bannerStart; string bKr, bEn, bSub; Color bGem;
   public float? ForcedBannerAge;
+  public int CurIdx { get { return curIdx; } }   // G._regCurIdx (the objective panel's "지역 처치" row reads the current region through it)
   public bool BannerActive { get { return bannerOn; } }
   public string BannerKr { get { return bKr; } }
   public string BannerEn { get { return bEn; } }
