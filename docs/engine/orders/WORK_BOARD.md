@@ -1,6 +1,6 @@
 ## 2026-10-29 Mac A15 1%·M1 최종 gate
 
-PC A15 원본 `2ac579319…`의 SFX/BGM 좌우 1%를 정상 인수. Mac Editor 전체 Verify PASS, ARM64 QA build Succeeded/errors0, 격리 M1 자동 Player 전 stage ok. 실제 OS 설정 UI·자연 로비→1-1 및 PC 실제 checkout은 pending. [상세·영수증](../UNITY_MAC_A15_M1_FINAL_20261029.md).
+PC A15 원본 `2ac579319…`의 SFX/BGM 좌우 1%를 정상 인수. Mac Editor 전체 Verify PASS, ARM64 QA build Succeeded/errors0, 격리 M1 자동 Player 전 stage ok. 이 시점의 실제 OS UI·PC checkout pending은 위 후속에서 각각 해소됐다. [상세·영수증](../UNITY_MAC_A15_M1_FINAL_20261029.md).
 
 ## 2026-10-27 Mac A15 설정 4탭 최소 연결·Player 후속
 
@@ -625,3 +625,6 @@ Mac 소유 `/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024`의 clean `15483
 **2026-10-28 PC↔GitHub↔Mac 동기화:** 사용자 확정 규칙을 [AGENTS](../../../AGENTS.md)와 [동기화 문서](../FDG_PC_MAC_GIT_SYNC_20261016.md#2026-10-28-unity-pcgithubmac-현행-동기화-규칙)에 보충했다. Mac 소유 checkout의 HUD 수정·관련 docs를 `unity/main`에 정상 비강제 반영하고 원격 SHA를 확인한다. PC 소유 실제 checkout fetch·필요 파일 byte 대조는 **pending**. HUD 3상태 GPU PASS/C#0이나 전체 Verify의 A15 5%/1% 불일치 HOLD 유지. 이번 단위 새 검사·빌드·Player·앱 교체 0.
 
 **2026-10-29 Mac M1 동기화·A15 blocker:** clean Mac 소유 checkout을 `06b86008c`→최신 `unity/main:6d920689dc916748352e8c92e2facf018fcac0a3`로 fast-forward. LT-10 자연 지옥문·M1 HUD 및 Linear 보존을 소스로 인수했으나 새 Player 결과로 확대하지 않는다. 웹 `optSfx` 기본 step1·Unity `DefSfx/DefBgm.Step=1`·A15 계약/Editor 60→61과 달리 PC UI 소유 `NativePauseMenu.A15Web.A15RowKey` 한 줄이 음량 step5로 덮어쓴다. [정확 수정 후보](../UNITY_MAC_A15_4TAB_20261027.md#2026-10-28-linear-통합-editor에서-발견된-sfx-키-단계-불일치): `step=5`→`step=d.Step`. 소유자 정합 전 Mac QA 예상 변경·Editor/ARM64 build/격리 M1 Player 실행 0; 기존 앱/개인 저장 보존. **전체 Editor gate·최신 Mac M1 실플레이 HOLD**, PC 실제 checkout 동기화 확인 pending. 다음 한 blocker는 PC UI 소유 음량 키 단계 정합이다.
+## 2026-10-29 Mac A15 실창 OS 키·격리 복원 후속
+
+최종 ARM64 앱을 재빌드 없이 QA marker 루트의 일반 UI에서 실행. 타이틀→세계관 지원 스킵→로비 전사 생성→전사 이야기/네메시스/안내 지원 스킵→1-1 첫 연습 HUD, 설정 사운드 SFX/BGM 각각 OS Right 1회 `60→61`, v2 revision3 저장과 같은 루트 재시작 `61/61` 실창 복원 PASS. 자동 M1과 실제 OS UI 증거를 분리했다. 기존 앱3 유지, 검수 PID 종료. PC·GitHub·Mac **소스** 공통 `79907fac` byte 일치, PC 실행 앱 교체·검증은 pending. [PNG·실행 인자·범위](../UNITY_MAC_A15_M1_FINAL_20261029.md#같은-최종-앱의-일반-실창-os-키-후속).

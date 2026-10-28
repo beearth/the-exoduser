@@ -8,7 +8,7 @@
 
 ## 2026-10-29 Mac A15 1% 인수·검증
 
-PC owner `claude/unity-pc-a15-rangestep-20261028:2ac579319…`의 제품 1줄을 Mac 기준 `unity/main:e4fc056ae…`에 정상 merge했다. Mac 추가는 `PortVerification.VerifyA15Settings`의 SFX/BGM 1% callback·clamp 검증이다. Metal Editor 전체 PASS, ARM64 Settings QA build PASS, 격리 M1 Player 자동 시나리오 PASS. 원격 `unity/main` 비강제 push와 실제 PC checkout 확인은 각각 Git 결과로 확정하며, PC checkout은 아직 pending이다. [원본·수치·영수증](UNITY_MAC_A15_M1_FINAL_20261029.md). 아래 2026-10-28 5% HOLD는 당시 이력이다.
+PC owner `claude/unity-pc-a15-rangestep-20261028:2ac579319…`의 제품 1줄을 Mac 기준 `unity/main:e4fc056ae…`에 정상 merge했다. Mac 추가는 `PortVerification.VerifyA15Settings`의 SFX/BGM 1% callback·clamp 검증이다. Metal Editor 전체 PASS, ARM64 Settings QA build PASS, 격리 M1 Player 자동 시나리오 PASS. 공통 `79907fac`는 GitHub `unity/main`·Mac·PC 실제 통합 checkout에 반영됐고 핵심 두 파일 raw bytes가 일치한다. 별도 Mac 일반 UI 실창의 SFX/BGM 60→61·격리 저장 복원도 PASS. PC 실행 앱의 최종 source 버전 확인은 pending이다. [원본·수치·영수증](UNITY_MAC_A15_M1_FINAL_20261029.md). 아래 2026-10-28 5% HOLD는 당시 이력이다.
 
 ## 2026-10-28 Unity PC↔GitHub↔Mac 현행 동기화 규칙
 
