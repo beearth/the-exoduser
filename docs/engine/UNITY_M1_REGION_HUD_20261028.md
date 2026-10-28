@@ -48,3 +48,22 @@
 
 - 캡처 하네스: `--unity-region-hud-capture -output <dir>` (`NativeGame.RegionHudCapture.cs`) — A 진입 배너 / B 정화 배너 / C 화살표 / D 게이트 라벨 + 진행바 2/4.
 - 웹 대조 캡처: `E:/exoduser-wt/_out/m1hud/webscenes.mjs`(origin/main game.html을 개발 서버에 주입, 같은 위치·몹 없음·같은 클리어 집합).
+
+## 5. 실행 결과 (Unity)
+
+빌드: StandaloneWindows64, Unity 6000.6.7f1, **Succeeded, errors 0** (`E:/exoduser-wt/_out/m1hud-build/build-receipt.json`, 배치 -nographics 빌드). 브랜치 `claude/unity-pc-m1-hud-20261028`, 최신 unity/main(R-B 앵글러 포함) merge 뒤 기준.
+
+| 항목 | 결과 |
+|---|---|
+| m1-check | **20/20 ok** — **창 모드**(`run-m1hud-m1.ps1`, 보조 모니터 5120,0, 1920×1080), `E:/exoduser-wt/_out/m1hud-build/m1run/m1-check.json`. (배치 모드는 돌리지 않았다) |
+| 캡처 모드 `--unity-region-hud-capture` | 4장 + `region-hud.json`(passed true), 창 모드 1920×1080. 웹 대조 `E:/exoduser-wt/_out/m1hud/side/` (`*_full.png` 전체 나란히, `*_1x.png`/`D-progress_1x.png` 1x 크롭, 위=웹·아래=Unity) |
+| 배너(진입·정화) | 위치·한글/영문/보조 줄 폭·보석 크기가 웹과 일치. 값은 `region-hud.json`에서 읽은 글자가 웹과 같다(북동 · 번개 / Northeast · Lightning / 처치 0 / 60 · 앵글러 생존, 북서 · 어둠 — 정화 / REGION PURGED · 1 / 4) |
+| 화살표 | 웹 `앵글러 · 번개 38m` 위치 (1330,70) ↔ Unity (1356,66), 글로우·라벨 모양 일치 |
+| 게이트 라벨 | `▼ 지옥문 봉인 (지역 2/4) ▼` 위치·색·서체 일치(보스 게이트 나무 없이 비교, §3 참조) |
+| 진행바 2/4 | 50 % 채움, 3단 그라데이션 일치 |
+
+남은 차이(캡처에서 보이는 것):
+- 영문 줄(`NORTHEAST · LIGHTNING` 등)은 웹이 Cinzel 500, Unity는 가변 Cinzel 400이라 획이 얇다. Bold로 하면 줄 폭이 7 % 늘어서 폭을 맞추는 쪽을 택했다.
+- 정화 배너의 따뜻한 번짐(`regionBannerFlare`)은 웹보다 약하다.
+- 배경 땅 질감·밝기는 웹과 Unity 맵 렌더 차이(이번 범위 밖).
+- 시계 숫자(`00:18`)의 굵기는 A06 시계의 기존 차이.
