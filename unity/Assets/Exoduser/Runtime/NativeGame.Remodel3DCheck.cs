@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
     {
         const int RmIntTicks = 1800;
         [Serializable] sealed class RmIntRec { public int tick, kills, enemies; public float x, y, hp; public long enemyHash; }
-        [Serializable] sealed class RmIntReceipt { public bool remodel3d, active, sceneReady; public int ticks; public string logHash; public float loadSeconds, fps; public string[] shots; public List<RmIntRec> records = new List<RmIntRec>(); }
+        [Serializable] sealed class RmIntReceipt { public bool remodel3d, active, sceneReady; public int ticks, startTick; public string logHash, debug; public float loadSeconds, fps; public string[] shots; public List<RmIntRec> records = new List<RmIntRec>(); }
 
         IEnumerator RemodelIntCheck()
         {
@@ -39,7 +39,9 @@ namespace Exoduser.UnityPort
             float t0 = Time.realtimeSinceStartup;
             if (NativeRemodel3D.Requested) { while (!NativeRemodel3D.Active && Time.realtimeSinceStartup - t0 < 40) { UpdateViews(); yield return null; } }
             rc.loadSeconds = Time.realtimeSinceStartup - t0; rc.active = NativeRemodel3D.Active; rc.sceneReady = Remodel3DReady;
-            var sim = Simulation; var p = sim.Player;
+            // both modes start the replay from the same fresh Core: the entry flow before this point is frame-timed (first-practice scripting, async scene load) and not part of the comparison
+            ResetRun(); if (firstPractice != null) EndFirstPractice(true); frontendEntryInputFence = false; Running = false; menu = false; gameFocused = true; yield return null; UpdateViews(); yield return null;
+            var sim = Simulation; var p = sim.Player; rc.startTick = sim.TickCount;
             // ---- 1. scripted replay: walk a square, attack held every other 3 seconds, aim along +x
             var sb = new StringBuilder(); long h = 1469598103934665603L; float fpsT0 = Time.realtimeSinceStartup;
             for (int t = 0; t < RmIntTicks; t++)
@@ -66,6 +68,12 @@ namespace Exoduser.UnityPort
                 menu = false; gameFocused = true; UpdateViews(); yield return new WaitForSecondsRealtime(.8f); menu = false; gameFocused = true; UpdateViews(); yield return null;
                 RmIntShot(Path.Combine(caps, (NativeRemodel3D.Requested ? "3d-" : "2d-") + s.Item1 + ".png")); shots.Add(s.Item1); yield return null;
             }
+            if (NativeRemodel3D.Active) rc.debug = RmIntDebug();
+            if (NativeRemodel3D.Active && NativeRemodel3D.Ground != null)
+            {   // is the player's sprite hidden by the terrain? one more shot of the start spot without it
+                p.X = 4020f; p.Y = 7420f; StepInput(0, 0, p.X + 300, p.Y, false, false); UpdateViews(); yield return null; yield return null;
+                NativeRemodel3D.Ground.gameObject.SetActive(false); yield return null; yield return null; RmIntShot(Path.Combine(caps, "3d-start-noterrain.png")); NativeRemodel3D.Ground.gameObject.SetActive(true); shots.Add("start-noterrain");
+            }
             rc.shots = shots.ToArray();
             File.WriteAllText(Path.Combine(output, "ticklog.json"), JsonUtility.ToJson(rc, true));
             Application.Quit(0);
@@ -80,6 +88,19 @@ namespace Exoduser.UnityPort
             foreach (var c in cams) { var old = c.targetTexture; c.targetTexture = rt; c.Render(); c.targetTexture = old; }
             var prev = RenderTexture.active; RenderTexture.active = rt; tex.ReadPixels(new Rect(0, 0, 1600, 900), 0, 0); tex.Apply(); RenderTexture.active = prev;
             File.WriteAllBytes(path, tex.EncodeToPNG()); Destroy(tex); rt.Release(); Destroy(rt);
+        }
+
+        string RmIntDebug()
+        {
+            var sb = new StringBuilder(); var p = Simulation.Player; var g = NativeRemodel3D.Ground; var pv = playerView;
+            sb.AppendLine("player core " + p.X + "," + p.Y + " world " + NativeRemodel3D.Point(p.X, p.Y).ToString("F3"));
+            if (g != null) sb.AppendLine("terrain pos " + g.transform.position.ToString("F2") + " size " + g.terrainData.size.ToString("F2") + " height@player " + NativeRemodel3D.GroundY(p.X / 100f, -p.Y / 100f).ToString("F3") + " active " + g.gameObject.activeInHierarchy + " layer " + g.gameObject.layer);
+            if (r3Cam != null) sb.AppendLine("r3cam pos " + r3Cam.transform.position.ToString("F3") + " euler " + r3Cam.transform.eulerAngles.ToString("F2") + " fov " + r3Cam.fieldOfView.ToString("F2") + " near " + r3Cam.nearClipPlane + " far " + r3Cam.farClipPlane + " mask " + r3Cam.cullingMask + " enabled " + r3Cam.enabled + " ortho " + r3Cam.orthographic + " aspect " + r3Cam.aspect.ToString("F3"));
+            if (r3Marker != null) sb.AppendLine("marker " + r3Marker.position.ToString("F3") + " children " + r3Marker.childCount);
+            if (pv != null) { var b = pv.bounds; sb.AppendLine("playerView enabled " + pv.enabled + " go " + pv.gameObject.activeInHierarchy + " pos " + pv.transform.position.ToString("F3") + " euler " + pv.transform.eulerAngles.ToString("F1") + " lossy " + pv.transform.lossyScale.ToString("F3") + " bounds c " + b.center.ToString("F3") + " s " + b.size.ToString("F3") + " order " + pv.sortingOrder + " layer " + pv.gameObject.layer + " mat " + (pv.sharedMaterial != null ? pv.sharedMaterial.name + "/" + pv.sharedMaterial.shader.name : "null") + " sprite " + (pv.sprite != null ? pv.sprite.name + " ppu " + pv.sprite.pixelsPerUnit + " pivot " + pv.sprite.pivot : "null")); }
+            int n = 0; foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None)) if (sr != null && sr.enabled && sr.gameObject.scene == r3Scene) { n++; sb.AppendLine("scene sprite " + sr.name + " at " + sr.transform.position.ToString("F2") + " lossy " + sr.transform.lossyScale.ToString("F2")); }
+            sb.AppendLine("scene sprites " + n + " pipeline " + (UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline != null ? UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline.name : "none"));
+            return sb.ToString();
         }
     }
 }
