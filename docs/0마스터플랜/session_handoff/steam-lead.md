@@ -23,6 +23,7 @@
 `daily_release.ps1`은 git 밖 파일(UTF-8 BOM 필수). 수정 전 사본 `state\daily_release.ps1.bak_20261027`. DryRun: `daily_release.bat -DryRun`.
 
 ## 남은 일
+0. **무창·무음 전환 완료(10-28 10:30, 사용자 지시 CTO 경유)**: 예약 작업 = `conhost.exe --headless`·제한 3시간, smoke `--mute-audio`·서버 windowsHide, msg.exe 팝업·setlive 브라우저 자동 열기 제거. 10-29 09:00이 숨김 실행 첫 검증 — 창이 없으므로 로그·summary 파일로만 확인한다. 상세 STEAM_UPDATE_RULES §7.3.
 1. ~~패치노트 v0.7.8+v0.7.9 정리~~ **완료(10-28 재개)**: `v0.7.8.md`·`v0.7.9.md` status: final(출시본 파일을 바꾼 커밋만 수동 큐레이션, 영문 이름은 게임 _EN 기준 Lightning Dash·Ceaseless Motion·Hell Slam), `patch-notes.js` 재생성(다음 빌드부터 게임 내 반영), Steam 이벤트 게시본(EN/KO BBCode) `docs/13출시·마케팅/patch_notes/steam_event_v0.7.9.md`. **주의**: 26258132 안의 게임 내 패치노트는 정리 전 초안 문구 그대로다(게시본 하단 표). 게시·Set Live는 CTO 경유 사용자 확인 대기.
 2. **사용자 확인 후**: Steamworks에서 26258132 Set Live(`steam_update.bat setlive`, SETLIVE 입력) → Steam 이벤트 패치노트 게시(§7) → `git push origin v0.7.9` → §6 기록표 한 줄.
 3. Set Live 뒤 설치본 확인: `package.nw/package.json` main = `nw-boot.html`, 포트 바인딩 로그(10ce8d7ba 수정분).
