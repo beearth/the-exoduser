@@ -478,7 +478,7 @@ namespace Exoduser.UnityPort
    if(openSelect>=0)return;
    switch(it.k)
    {
-    case K.Range:{var d=it.def;int step=d.Step>1?d.Step:(d.Max-d.Min>=100?5:1);if(d.Id=="optSfx"||d.Id=="optBgm")step=5;if(dir!=0)SetVal(d,GetVal(d)+dir*step);break;}
+    case K.Range:{var d=it.def;int step=d.Step>1?d.Step:1;if(dir!=0)SetVal(d,GetVal(d)+dir*step);break;}   // web _gpUIStep (13810): +(cur.step)||1 - a range without a step attribute (optSfx, optBgm, optShake, optIrisGlow ...) moves by 1
     case K.Check:if(dir!=0||action==PauseAction.RowAccept)SetVal(it.def,GetVal(it.def)!=0?0:1);break;
     case K.Select:{int cur;List<string> values;SelectLabels(it,out cur,out values);if(dir!=0)ApplySelect(it,Mathf.Clamp(cur+dir,0,values.Count-1),values);else if(action==PauseAction.RowAccept){openSelect=items.IndexOf(it);popupScroll=Mathf.Max(0,cur*34-100);}break;}
     case K.Button:case K.Card:if(action==PauseAction.RowAccept){if(it.k==K.Card&&it.id.StartsWith("cur",StringComparison.Ordinal)){settings.Options.Set("cursor",it.id.EndsWith("1",StringComparison.Ordinal)?1:0);if(OptionChanged!=null)OptionChanged("cursor");}else if(it.k==K.Button)Activate(it,fullscreen);}break;
