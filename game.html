@@ -2484,6 +2484,8 @@ canvas{display:block;position:fixed;inset:0}
   border-top:1px solid rgba(146,149,149,.2);padding-top:10px!important;flex-basis:68px!important;
 }
 #invPanel .inv-actions .pclose{min-height:38px;border-radius:4px!important;padding:7px 14px!important;letter-spacing:.025em}
+/* 펫 말풍선 한국어는 낱말(어절) 단위로만 줄바꿈 — "우리 / 도"처럼 낱말 중간에서 꺾이지 않게(2026-10-28 STY-16). 띄어쓰기 없는 일본어·중국어는 영향 없게 ko에만 */
+html:lang(ko) #petBubbleTxt{word-break:keep-all;overflow-wrap:anywhere}
 
 /* Inventory is a full-screen mode: clear the combat scene and give the paper doll room to read. */
 body:has(#invPanel.on) #petSubtitle,

@@ -136,6 +136,8 @@
 
 **장 클리어 패널 제목 줄바꿈 (같은 날, CTO 경유 스토리 총괄 B2 문의)** — B2 캡처의 "AREA/CLEAR!"·「エリアクリ/ア！」 두 줄은 로딩 화면 위에 강제로 합성하면서 패널이 가로 배치가 되어 생긴 것으로, 실제 흐름(opacity만 켬, `display:block`)에서는 1600·1280 모두 한 줄이다. 대신 실측 중 진짜 결함을 찾았다: `#stageClear`가 `left:50%`+`translateX(-50%)`라 쓸 수 있는 폭이 화면 절반으로 묶여, 영어 "CH1 — Rotten Forest Broken Through!"가 1280×720에서 두 줄로 꺾였다. → `#stageClear`에 `width:max-content;max-width:min(92vw,980px)`. 재측정(1280×720·각 언어에서 가장 긴 장 이름): en 740px·de 823px·ru 628px·ja 396px 모두 한 줄, 1600도 한 줄. 캡처 `E:/exoduser-wt/_out/silver-ui/cleartitle2/`.
 
+**펫 말풍선 한국어 줄바꿈 (같은 날, 스토리 총괄 STY-16 이관)** — 디로이 「첫 보스야. 겁먹지 마, 우리도 있어.」가 고양이 말풍선 본문 폭 190px에서 「…우리 / 도 있어.」로 낱말 중간에서 꺾임. → `html:lang(ko) #petBubbleTxt{word-break:keep-all;overflow-wrap:anywhere}`(한국어만. 띄어쓰기 없는 일본어·중국어에 keep-all을 걸면 상자를 넘치므로 제외). 실측: ko 「첫 보스야. 겁먹지 마, / 우리도 있어.」, ja는 word-break normal 그대로. 문구 무변경. 말풍선 글꼴 `Malgun Gothic`은 명조 전환 백로그(§8)에서 함께 다룬다.
+
 1장 강조색 `#66ee55`: `STG[].ac`·`_MTHEME[0].ac` 값으로만 남아 있고 읽는 코드가 없다(소비처 0, 화면 영향 없음). 다른 장 `ac`(`#aacc44`·`#ff8844`·`#ffcc44`·`#bb77ff`·`#cc88ff`)도 같은 처지라 한 장만 바꾸지 않고, 맵 테마 표를 정리할 때 함께 지운다.
 
 ### 6.3 2차 이식 — 로비 전체·UI 마감 (2026-10-28, 사용자 지시 "빨리 로비디자인 끝내서 접목시켜라", "ui 총 디자인도")
