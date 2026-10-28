@@ -37,6 +37,7 @@ namespace Exoduser.UnityPort.Core
         void Text(double x, double y, string ko, string color, int life);
         void Shake(double n);
         void Fx(string kind, double x, double y, double r);         // presentation hook (flash, rings, dust ...)
+        void Sound(string key, string source, double x, double y) { }   // RM-1 sound: a logical sound key (tell_* / druid_*) at the moment the web would telegraph / fire it; no state, no RNG
         EnemyState SpawnMinion(double x, double y, int element, int etype);   // mkEn(...) child of bossSummonWind (hp/shield handled by the caller)
         void BossMoved(EnemyState boss);
     }

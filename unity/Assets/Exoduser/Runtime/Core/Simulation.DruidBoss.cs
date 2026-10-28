@@ -137,6 +137,7 @@ namespace Exoduser.UnityPort.Core
             public void Text(double x, double y, string ko, string color, int life) { s.HurtText(x, y, ko, ko, color, life); }
             public void Shake(double n) { s.HurtShake(n); }
             public void Fx(string kind, double x, double y, double r) { var h = s.BossFx; if (h != null) h(kind, x, y, r); }
+            public void Sound(string key, string source, double x, double y) { s.QueueLogicalSound(key, source, x, y); }
             public EnemyState SpawnMinion(double x, double y, int element, int etype)
             {
                 var m = s.SpawnNormalEnemy((float)x, (float)y);

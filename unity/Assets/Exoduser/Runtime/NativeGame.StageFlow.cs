@@ -57,6 +57,11 @@ namespace Exoduser.UnityPort
                         sound.Reset(); break;
                     case StageEventKind.ArenaEntered:
                         worldTexts.Clear(); WorldTextAdd(p.X, p.Y - 50, "봉인됨!", "Sealed!", new Color(.75f, .45f, .95f), 1.6f); break;
+                    case StageEventKind.BossIntro:
+                    {   // web: playSample(_bossSfx(stage).howl, 1.0, _r(howlP .7, .1)); the remodel's P1 entry sounds (staff taps, root pillars) come from the Core (Simulation.ScheduleDruidIntroSounds)
+                        var bossAt=flow.FindBoss();NativeBossSounds.Howl(sound,bossAt!=null?bossAt.X:p.X,bossAt!=null?bossAt.Y:p.Y);
+                        break;
+                    }
                     case StageEventKind.BossDefeated:
                         WorldTextAdd(p.X, p.Y - 40, "출구가 열렸다!", "The exit is open!", new Color(.5f, .85f, .55f), 2.6f); break;
                     case StageEventKind.ExitOpened:

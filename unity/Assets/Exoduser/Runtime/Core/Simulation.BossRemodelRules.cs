@@ -212,6 +212,7 @@ namespace Exoduser.UnityPort.Core
             RemodelHook(st.Set.Hooks.OnFinal, e, st);
             EndAllRemodelProps("final");
             RemodelLine((st.Set.Sink ? "sink" : "die") + Config.StageIndex);
+            if (st.Set.Sink && Config.StageIndex == 0) QueueLogicalSound("druid_sink", "third fall: sink escape", e.X, e.Y);   // RM-1 sound SND-09 (1-1 druid)
             KillEnemy(e);
         }
 
