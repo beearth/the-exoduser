@@ -1,0 +1,62 @@
+/* 실버 헬 UI 패키지 v1 (2026-10-28 사용자 승인 [승인-디자인-3]) — 한 벌의 부품: 버튼(기본·강조·비활성)·판·카드 테·제목 띠·안내 판·글꼴 위계
+   원칙: 무대(키아트)가 화면을 끈다. UI는 작고 얇다. 장식은 테 끝 마디뿐. 색 = 흑철 판 + 은빛 테 + 강조 진홍 한 색.
+   글꼴 = Hahmlet 300(사용자 선택), 작은 글자만 400. 캡션 = Cinzel. 근거: docs/3.1 ui hud 디자인/LOBBY_AAA_REFERENCE_STUDY_20261028.md §9 */
+@font-face{font-family:'Hahmlet';font-style:normal;font-weight:300;font-display:swap;src:url('fonts/hahmlet/Hahmlet-300-ko.woff') format('woff')}
+@font-face{font-family:'Hahmlet';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/hahmlet/Hahmlet-400-ko.woff') format('woff')}
+:root{
+ --sh-plate:rgba(9,10,11,.84);--sh-plate-solid:#0b0c0d;
+ --sh-line:rgba(155,158,158,.62);--sh-line-hi:#cfccc6;--sh-line-in:rgba(230,227,220,.13);
+ --sh-text:#d6d3cd;--sh-text-hi:#f2f0ec;--sh-text-dim:#8a8d8d;--sh-text-off:#55595a;
+ --sh-eye:#c21a10;--sh-eye-glow:rgba(194,26,16,.32);
+ --sh-font:'Hahmlet','Nanum Myeongjo','Noto Serif KR',serif;--sh-latin:'Cinzel','Hahmlet','Nanum Myeongjo',serif;
+ --sh-tip:12px; /* 버튼·안내 판 양끝 뾰족 길이 */
+}
+/* ── 글꼴 위계 (4단) ── */
+.sh-h1{font:300 30px var(--sh-font);letter-spacing:.2em;color:var(--sh-text-hi);text-shadow:0 2px 10px #000}
+.sh-h2{font:300 18px var(--sh-font);letter-spacing:.14em;color:var(--sh-text)}
+.sh-body{font:400 14px/1.75 var(--sh-font);letter-spacing:.04em;color:var(--sh-text-dim)}
+.sh-cap{font:600 11px var(--sh-latin);letter-spacing:.28em;color:var(--sh-text-dim);text-transform:uppercase}
+
+/* ── 버튼: 양끝 뾰족한 판, 이중선(바깥 은빛 1px + 안쪽 옅은 1px), 글자 작고 가늘게 ── */
+.sh-btn{--w:248px;--h:40px;position:relative;width:var(--w);height:var(--h);border:0;padding:0;background:var(--sh-line);cursor:pointer;
+ clip-path:polygon(var(--sh-tip) 0,calc(100% - var(--sh-tip)) 0,100% 50%,calc(100% - var(--sh-tip)) 100%,var(--sh-tip) 100%,0 50%);
+ font:400 15px var(--sh-font);letter-spacing:.16em;color:var(--sh-text);transition:filter .15s}
+.sh-btn::before,.sh-btn::after,.sh-btn>span{content:'';position:absolute;clip-path:inherit}
+.sh-btn::before{inset:1px;background:var(--sh-plate-solid)}
+.sh-btn::after{inset:4px;background:var(--sh-line-in)}
+.sh-btn>span{inset:5px;display:flex;align-items:center;justify-content:center;background:linear-gradient(#16181a,#0c0d0e);z-index:1}
+.sh-btn:hover{filter:brightness(1.18)}
+.sh-btn.on{background:var(--sh-line-hi);color:var(--sh-text-hi)}
+.sh-btn.on>span{background:radial-gradient(ellipse 70% 120% at 50% 50%,rgba(194,26,16,.42),rgba(60,10,8,.55) 60%,#120707)}
+.sh-btn.off{background:rgba(155,158,158,.22);color:var(--sh-text-off);cursor:default}
+.sh-btn.off>span{background:#0b0c0d}
+.sh-btn.sm{--w:200px;--h:34px;font-size:13px}
+
+/* ── 판: 반투명 흑철 + 이중선 + 네 모서리 마디(작은 마름모) ── */
+.sh-panel{position:relative;background:var(--sh-plate);border:1px solid var(--sh-line);box-shadow:inset 0 0 0 4px rgba(9,10,11,.6),inset 0 0 0 5px var(--sh-line-in),0 18px 50px rgba(0,0,0,.5)}
+.sh-panel>.k{position:absolute;width:9px;height:9px;transform:rotate(45deg);background:var(--sh-plate-solid);border:1px solid var(--sh-line-hi)}
+.sh-panel>.k.tl{left:-5px;top:-5px}.sh-panel>.k.tr{right:-5px;top:-5px}.sh-panel>.k.bl{left:-5px;bottom:-5px}.sh-panel>.k.br{right:-5px;bottom:-5px}
+
+/* ── 카드 테: 얇은 이중선 + 모서리 마디, 고르지 않은 카드는 흑백 ── */
+.sh-card{position:relative;border:1px solid var(--sh-line);padding:6px;background:var(--sh-plate)}
+.sh-card::after{content:'';position:absolute;inset:3px;border:1px solid var(--sh-line-in);pointer-events:none}
+.sh-card .art{width:100%;display:block;filter:grayscale(1) brightness(.62) contrast(1.05);transition:filter .2s}
+.sh-card.sel{border-color:var(--sh-line-hi);box-shadow:0 0 0 1px rgba(0,0,0,.8),0 0 28px var(--sh-eye-glow)}
+.sh-card.sel .art{filter:none}
+.sh-card>.k{position:absolute;width:9px;height:9px;transform:rotate(45deg);background:var(--sh-plate-solid);border:1px solid var(--sh-line-hi)}
+.sh-card>.k.tl{left:-5px;top:-5px}.sh-card>.k.tr{right:-5px;top:-5px}.sh-card>.k.bl{left:-5px;bottom:-5px}.sh-card>.k.br{right:-5px;bottom:-5px}
+.sh-card.sel>.k{background:var(--sh-eye);border-color:var(--sh-text-hi)}
+
+/* ── 제목 띠: 가운데 글자 + 양쪽으로 사라지는 헤어라인 + 끝 마름모 ── */
+.sh-band{display:flex;align-items:center;justify-content:center;gap:18px}
+.sh-band::before,.sh-band::after{content:'';width:220px;height:1px;background:linear-gradient(90deg,transparent,var(--sh-line))}
+.sh-band::after{background:linear-gradient(90deg,var(--sh-line),transparent)}
+.sh-band>span{white-space:nowrap}
+.sh-band>i{width:7px;height:7px;transform:rotate(45deg);border:1px solid var(--sh-line-hi);background:var(--sh-plate-solid);flex:none}
+.sh-band>i.eye{background:var(--sh-eye)}
+
+/* ── 안내 판: 화면 아래 가운데 작은 판("아무 키나 누르십시오") — 버튼과 같은 모양, 글자 더 작게 ── */
+.sh-prompt{--w:440px;--h:38px;position:relative;width:var(--w);height:var(--h);background:rgba(155,158,158,.5);
+ clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,18px 100%,0 50%);font:400 14px var(--sh-font);letter-spacing:.2em;color:var(--sh-text)}
+.sh-prompt::before{content:'';position:absolute;inset:1px;background:rgba(8,9,10,.78);clip-path:inherit}
+.sh-prompt>span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1}
