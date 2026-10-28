@@ -166,3 +166,16 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 | 한국어 말풍선·장 클리어 줄바꿈 | `3b8892fda`, `294d173be` |
 
 기존 인계의 **26258132(v0.7.9)는 Set Live하지 않음**과 **v0.7.0~v0.7.10 합본 방향**을 보존한다. 다음 BuildID는 아직 없으므로 임의로 지정하지 않고 공용 `USER_CONFIRM.md`에 최종 실행 확인만 모은다.
+
+### 10-29 08:49 KST 사전 준비 재확인
+
+| 항목 | 결과 |
+|---|---|
+| 원격 포함 | `5d0d4d44aba03f618b2139e690fbab466f168a0e` 실조회. 노트·합본·규칙·인계 4개 문서가 기존 준비 커밋과 동일 blob |
+| 추가 변경 | 사전 검토 `62b538d0063fbf045d0ed97fca3cac1c2580d198` 이후 비문서 변경 0개. 플레이어 노트 내용 유지 |
+| 버전·노트 | 현재 0.7.9 / 다음 0.7.10 / 기존 파서로 한·영 각 12항목·final 확인. 버전·생성물 변경 없음 |
+| 예약 작업 | Enabled=true·Ready / 다음 2026-10-29 09:00:00 KST / 최근 10-28 09:16:09·결과 0·누락 0 / 숨김 실행·PT3H·IgnoreNew 유지 |
+| 결과 경계 | 10-29 결과 요약 없음·실행 전. 예약 설정·등록·수동 실행·빌드·업로드·steamcmd 로그인·Set Live·Steam 게시·태그 push 모두 미실행 |
+| 근거 | `I:\EXODUSER-Storage\codex-takeover\steam\evidence-20261029-preflight\재확인.json`·`예약작업.xml` |
+
+브리프의 사전 준비는 완료다. 빌드 뒤 실제 source SHA·BuildID·검증 결과와 게임 내 노트 화면을 확인하는 후속 절차는 그대로 유지한다. 기존 공용 사용자 확인 항목은 유효하므로 같은 요청을 중복 추가하지 않았다.

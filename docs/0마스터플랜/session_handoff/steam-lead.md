@@ -6,6 +6,12 @@
 - 메모리: `steam-update-rules.md`, `steam-steampipe-setup.md`, `user-path-dotnet-pollution-9009.md`, `git-pack-corruption-20261027.md`
 
 ## 현재 상태 (10-28 밤, 사전 준비)
+### 10-29 08:49 KST 재개 확인
+- 조회 기준 원격 `5d0d4d44aba03f618b2139e690fbab466f168a0e`에 기존 준비 문서 4개가 모두 동일 blob으로 포함됨을 확인했다. 사전 검토 `62b538d0063fbf045d0ed97fca3cac1c2580d198` 이후 비문서 변경은 0개라 플레이어 노트 문구를 중복 수정하지 않았다.
+- `release-version.json` = 0.7.9, 다음 버전 0.7.10. 기존 파서로 한·영 각 12항목·final을 재확인했다. 예약 작업은 Enabled=true·Ready, 다음 10-29 09:00 KST, 최근 결과 0·누락 0이다. 숨김 실행·PT3H·IgnoreNew·InteractiveToken 유지. 예약 등록·변경·실행 0회.
+- 10-29 결과 요약은 아직 없으며 빌드 실행 전이다. 인수 브리프의 사전 준비 범위는 완료되어 있다. 예약 실행 이후 검증과 확정 BuildID의 사용자 확인은 아래 남은 일에 유지한다. 이번 확인으로 빌드·업로드·공개 완료를 주장하지 않는다.
+- 재확인 근거: `I:\EXODUSER-Storage\codex-takeover\steam\evidence-20261029-preflight\재확인.json`·`예약작업.xml`. 전용 브랜치의 tracked INDEX/WORK는 시작 시 비어 있었으며 G: 공유 작업 트리는 읽기만 했다.
+
 - **10-29 09:00 KST 준비 완료, 빌드 실행 전**: `release-version.json`은 아직 **0.7.9**. 예약 작업이 실행 때 PATCH를 올려 **0.7.10**으로 만든다. 이번에는 버전·런타임 파일을 수정하지 않았다.
 - `v0.7.10.md` 한·영 플레이어 문구를 **final**로 사전 작성했다. 범위는 `v0.7.9` = `d04602919` → 검토 기준 `origin/main 62b538d0063fbf045d0ed97fca3cac1c2580d198`, 일반 커밋 169개. 문서·도구·Unity·Godot·미반영 후보는 노트에서 제외했다. final은 문구 확정이며 출시 완료가 아니다.
 - `daily_release.ps1` 183~187행을 읽어 확인: 다음 버전 노트가 이미 있으면 초안 생성을 건너뛰고 final 노트로 `patch-notes.js`를 생성한다. 따라서 이 문서가 포함된 원격 기준으로 예약 빌드가 성공하면 **v0.7.10 노트도 해당 빌드에 포함**된다. 현재 main의 `patch-notes.js`는 그대로 보존했다.
