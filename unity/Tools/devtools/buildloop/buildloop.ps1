@@ -276,7 +276,7 @@ function Get-UserSaveSnapshot {
   $root = Join-Path $env:USERPROFILE 'AppData\LocalLow\ForDearGamers'
   if (-not (Test-Path -LiteralPath $root)) { return $snap }
   foreach ($f in @(Get-ChildItem -LiteralPath $root -Recurse -File -ErrorAction SilentlyContinue)) {
-    if ($f.FullName -match '\Unity\local\.') { continue }
+    if ($f.FullName -like '*\Unity\local.*') { continue }
     $h = ''
     if ($f.Length -le 2097152) { try { $h = (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256 -ErrorAction Stop).Hash.Substring(0, 16) } catch { $h = 'locked' } }
     $snap[$f.FullName] = ('{0}|{1}|{2}' -f $f.Length, $f.LastWriteTimeUtc.Ticks, $h)
