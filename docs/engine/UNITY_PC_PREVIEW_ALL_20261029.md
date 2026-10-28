@@ -14,3 +14,5 @@
 통합 진행 중. 컴파일·Player·시각 판정은 아직 미확인이다. 원격 기준 SHA·포함 후보·최종 검증은 완료 시 갱신한다.
 
 보스 충돌: `NativeGame.BossView.cs`는 최신 10-28 21:57 RB1-3 예고 뷰 초기화·해제를 채택하고, 오전 사운드 변경의 `sinkSounded.Clear()`를 함께 유지한다. 예고와 침강 소리의 상태 초기화가 모두 필요하다.
+
+RM-1 충돌: `Rm1SliceBuilder.cs`의 FPS·캡처 진입부는 공용 job 서버용 `ExoArgs.Get()`를 보존하고, 최신 RM-1의 `AudioListener.volume = 0f` 무음 처리를 결합했다. 원시 프로세스 인자로 되돌리면 job 인자 전달이 끊어진다.
