@@ -186,4 +186,19 @@ const plan = {
   counts: { islands: isl.length, massIslands: masses.length, landmarks: landmarks.length, skippedBoss: skipped.length, massTiles, massTilesSouthOfWalk, lightPools: pools.length, hell: pools.filter(p => p.kind === 'hell').length, toxic: pools.filter(p => p.kind === 'toxic').length },
 };
 fs.writeFileSync(path.join(D, 'ch1_4_plan.json'), JSON.stringify(plan));
+
+// ---- Unity 빌더 입력(JsonUtility가 읽을 수 있는 평평한 배열만). 걷기 격자 rows 포함, P1 창(y>=32) 안 요소만 ----
+const inWin = (y) => y >= P1.y0;
+let hn = 0, tn = 0;
+const build = {
+  rows: walk.rows, window: [P1.x0, P1.y0, P1.x1, P1.y1], margin: MARGIN,
+  masses: masses.filter(m => m.bbox[1] >= P1.y0).map(m => { const lm = landmarks.find(l => l.bbox === m.bbox); return { kind: m.kind, id: lm ? lm.id : '', web: m.webType || '', size: m.size, cx: m.cx, cy: m.cy, bx0: m.bbox[0], by0: m.bbox[1], bx1: m.bbox[2], by1: m.bbox[3], hMax: m.hMax_u }; }),
+  pools: pools.filter(p => inWin(p.y)).sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'hell' ? -1 : 1)).map(p => ({ name: p.kind === 'hell' ? 'Pool_Hell_' + String(++hn).padStart(2, '0') : 'Pool_Toxic_' + String(++tn).padStart(2, '0'), kind: p.kind, label: p.label, x: p.x, y: p.y, r: p.r })),
+  shafts: shafts.filter(sh => sh.y1 >= P1.y0).map(sh => ({ x0: sh.x0, y0: sh.y0, x1: sh.x1, y1: sh.y1 })),
+  flow: flowLines.map(l => ({ id: l.id, ridge: !!l.ridge, trunk: !!l.trunk, w0: l.w0, w1: l.w1, xs: l.pts.map(p => p[0]), ys: l.pts.map(p => p[1]) })),
+  rivers: [riverW, riverE].map(r => ({ id: r.id, half: r.w / 2, xs: r.pts.map(p => p[0]), ys: r.pts.map(p => p[1]) })),
+  toxic: toxicPools.filter(t => t.id === 'poolE').map(t => ({ id: t.id, tx: t.tiles.map(v => v[0]), ty: t.tiles.map(v => v[1]) })),
+};
+fs.writeFileSync(path.join(D, 'ch1_4_build.json'), JSON.stringify(build));
+console.log('build.json masses', build.masses.length, 'pools', build.pools.length, 'hell', hn, 'toxic', tn, 'flow', build.flow.length, 'shafts', build.shafts.length);
 console.log(JSON.stringify({ counts: plan.counts, conv: rootFlow.convergence, hMaxSet, lightWindowHist, poolSepViolations, landmarks: landmarks.map(l => [l.id, l.x, l.y, l.r, l.webType]), skipped, toxicPools: toxicPools.map(t => [t.id, t.body, t.shore]) }, null, 1));
