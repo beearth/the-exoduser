@@ -124,6 +124,11 @@ Unity 6000.6.7f1 · URP 17.6.0 · C# 파일 240개 · 씬 4개(`FirstPlayable`·
 | 데이터 기반 맵(DT-05) | SO 표준(C-11) | MapKit 빌더 |
 | 성능 회귀(DT-10) | 마커(C-05) | 자동 측정·회귀 job |
 
+개발툴 총괄 합의(10-28, 그쪽 main e9b2ccd8d에 반영):
+- C-01에서 `unity/Assets/Exoduser/Editor/DevTools/<도구>/` 전체를 **에디터 전용 asmdef 하나**(`Exoduser.DevTools.Editor`)로 묶는다. 실행 스크립트 `unity/Tools/devtools/`는 asmdef 대상이 아니다.
+- 모든 자동 실행은 공용 무창 실행기 DT-01 `exo-unity.ps1`을 거친다(사용자 지시: 창·소리 없이). C-06 스모크도 이 실행기로 돌린다.
+- DT-15 브랜치에서 `NativeGame.M1Check.cs` 캡처를 RenderTexture로 바꾸고 `--unity-mute` 플래그를 추가하는 중이다. C-06 테스트 구조와 C-01 partial 분리는 이 변경이 병합된 뒤의 형태를 기준으로 한다.
+
 ## 7. 운영
 
 - 소속 Sonnet 세션: (생성 후 기입). 첫 배정 = C-01 사전 조사(어셈블리 경계 후보·순환 참조 목록·진행 중 브랜치 충돌 예상) → 그다음 C-01 구현.
