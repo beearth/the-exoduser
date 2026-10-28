@@ -79,3 +79,14 @@ node unity/Tools/enemy-hurt-oracle/export.cjs --source <scratch>/game.html --hea
 node unity/Tools/enemy-hurt-oracle/run.cjs --project <unity 폴더> --label green
 dotnet build unity/Tools/kill-wire-test/KillWireTests.csproj -p:ExoduserProject=<unity 폴더>   # 실행: KillWireTests.dll [receipt.json]
 ```
+
+## 7. R-B 병합 뒤 정리 (origin/unity/main c7b497131 merge = 89524e910)
+
+| 항목 | 내용 |
+|---|---|
+| Tick 순서 | `TickDeathFrameStart`(프레임 시작, `_sfxFrameReset`) … `CapEnemies` → `TickFieldBosses` → `TickRegions` → `TickDeathFrameEnd`(분열·동반부활 등록 + 처치 때 checkRooms: 웹은 처치 순간에 불러 그 프레임의 정규 checkRooms보다 앞섬) → `Stage.Tick` → `TickSpawnHoles` → **`TickKillChain`**(킬 체인 타이머, 웹 35880 = 소환굴 업데이트 바로 뒤로 분리) |
+| RegKill · 문지기 +10% | 처치 1회당 각 1회. `_regKill`은 DeathHead 안에서 웹 순서(atkTicketRelease → alive=false → kills++ → _stageKills++ → **_regKill** → _petOnKill)로, `Stage.OnGateGuardKilled`는 DeathHead 끝의 문지기 블록이 `G._gateGuardKilled`를 세운 직후 RunWebDeath에서 한 번. region-test 8번이 피격 처치 1회(처치 +1·지역 +1·GateGuardDefeated +1)와 죽은 문지기 재타격(추가 집계 0)을 확인 |
+| 벽 끼임 사망 (EnemyTick 34625) | R-B의 `RegKill → KillEnemy(o)`를 웹대로 바꿈: `RollDrop → RollNormalEquipment`, `AddExp → AddExperience(e.exp||1)`, `RegKill → Kills++ · Alive=false · RegKill`. 웹 분기는 hurtE 사망부(콤보·악의·물약)를 타지 않는다. region-test 7번(R-B, 처치 0→1·지역 0→1) 통과 + 8번에서 악의·콤보 불변, addExp(1) → ~~(1/3) = 0 확인. 분기 자체는 Unity에서 아직 꺼져 있음(WallStuck 스텁) |
+| 보스 대사 | unity/main의 `RemodelLine`(한 판에 한 번, `BossLineRaised`/`BossLineLog`)을 그대로 씀. O-1이 새로 만들었던 같은 이름의 이벤트는 삭제 |
+
+회귀(merge 뒤, 31종, 전부 불일치 0): enemy-hurt 5,755,060 · fieldboss 302,271 · region-oracle 204,391 · region-test 117 · start-mobs 24 · kill-wire 28 · enemy-spawn 204,592 · tick 3,253,978 · ai 2,323,428 · pool 26,271 · tables 2,784 · dash-parry 187,165 · parry-reflect 48,708 · player-hurt 47,559 · druid-boss 5,421,635 · druid-remodel 97,830 + 124 · stage-flow 7,076 · c01 448 · damage-parity 18,354 · ki-slash 93 · skill 8,416 · xbow 108,780 · auto-potion 2,438 · drop 5,900 · shield-revive 34,821 · rage-malice 12,765 · skill-sim 67 · CoreTests 35 · parry-reflect-test 26 · first-practice 88. roll-oracle은 기존 결함(csproj 없음)으로 실행 불가.

@@ -300,6 +300,35 @@ class Program
             }
         }
 
+        // ---- 8. O-1: a kill through the web death part (EnemyHurt.DeathHead/DeathTail) calls _regKill once and the guard's +10 % once; the stuck-in-wall death
+        //         (EnemyTick 34625: rollDrop, addExp(e.exp||1), kills++, _regKill) is not the hurtE death part: no malice, no combo ----
+        {
+            var s = Make(43); var g = s.Stage.GateGuard;
+            Check(g != null, "guard present");
+            if (g != null)
+            {
+                int gi = s.RegionIdxAt(g.HomeX, g.HomeY), r0 = s.Regions[gi].Kills, k0 = s.Kills;
+                Func<int> guardEvents = () => s.Stage.Events.Count(ev => ev.Kind == StageEventKind.GateGuardDefeated);
+                int ev0 = guardEvents(); g.Shield = 0; g.Hp = 1; s.Player.Iframes = 99999; s.HurtEnemy(g, 50);
+                Check(!g.Alive && s.Kills == k0 + 1 && s.Regions[gi].Kills == r0 + 1 && guardEvents() == ev0 + 1 && s.Stage.GateGuardKilled,
+                    "hurt kill of the guard: kills +1 (" + (s.Kills - k0) + "), " + RegionNames[gi] + " +1 (" + (s.Regions[gi].Kills - r0) + "), GateGuardDefeated +1 (" + (guardEvents() - ev0) + ")");
+                s.HurtEnemy(g, 50);
+                Check(s.Kills == k0 + 1 && s.Regions[gi].Kills == r0 + 1 && guardEvents() == ev0 + 1, "hitting the dead guard again counts nothing");
+            }
+            var s2 = Make(44); s2.Config.EnemyAiEnabled = true; s2.Enemies.Clear(); s2.Player.Iframes = 99999;
+            var e = s2.SpawnEnemy(2420, 2420, 0, null, false); Run(s2, 2);
+            var field = typeof(Simulation).GetField("tickCtx", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var ctx = field != null ? field.GetValue(s2) as EnemyTickContext : null;
+            if (e != null && ctx != null)
+            {
+                int idx = s2.RegionIdxAt(e.HomeX, e.HomeY), k0 = s2.Kills, r0 = s2.Regions[idx].Kills, m0 = s2.Materials, c0 = s2.Combo, x0 = s2.Player.Experience;
+                ctx.RollDrop(e.Web); ctx.AddExp(1); ctx.RegKill(e.Web);   // the web order of the stuck branch
+                Check(!e.Alive && s2.Kills == k0 + 1 && s2.Regions[idx].Kills == r0 + 1 && s2.Materials == m0 && s2.Combo == c0 && s2.Player.Experience == x0,
+                    "stuck-in-wall death: kills +1, region +1, malice / combo unchanged, addExp(1) -> ~~(1/3) = 0 exp (kills " + (s2.Kills - k0) + " region " + (s2.Regions[idx].Kills - r0) + " malice " + (s2.Materials - m0) + ")");
+            }
+            else Check(false, "tick context for the stuck-in-wall check");
+        }
+
         var result = JsonSerializer.Serialize(new { scope = "standalone_dotnet_real_ch1_map_not_Unity_runtime", passed = failed == 0, failed, log = Log, checks = Rows }, new JsonSerializerOptions { WriteIndented = true });
         if (args.Length > 1) File.WriteAllText(args[1], result);
         Console.WriteLine("REGION_REAL_MAP " + Rows.Count + " checks / " + failed + " failures"); return failed == 0 ? 0 : 2;

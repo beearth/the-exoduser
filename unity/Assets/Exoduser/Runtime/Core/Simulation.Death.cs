@@ -19,7 +19,6 @@ namespace Exoduser.UnityPort.Core
         public readonly List<JsObj> UnportedWorldItems = new List<JsObj>();   // _wiPush debris / o2bubble (no Unity pickup yet)
         public int DroppedDeathShots;                                         // death bullets lost because no projectile owner exists (field bullets need the druid host)
         public bool DruidFled;                                                // G._druidFled
-        public event Action<string> BossLineRaised;                           // _bossLine(key): presentation hook (STY-12 / sink0)
         public event Action AutosaveRequested;                                // dbSaveNow() every 10th kill
         double critSfxCd;                                                     // _critSfxCd (SND-02 crit sound, 12 frames); _sfxFrameReset counts it down
         int pendingKillRoomChecks;                                            // checkRooms() calls made by kills, run before this frame's own Stage.Tick
@@ -28,14 +27,16 @@ namespace Exoduser.UnityPort.Core
         // Frame start: _sfxFrameReset (`if(_critSfxCd>0)_critSfxCd--`).
         void TickDeathFrameStart() { if (critSfxCd > 0) critSfxCd--; }
 
-        // Before Stage.Tick: kill-chain timer of update() (`if(G._chainT>0){G._chainT-=sp;if(G._chainT<=0){G._chainCnt=0;G._chainT=0}}`), the deferred spawns and the
-        // checkRooms() calls of the kills (each call advances the 30-frame check counter, as in the web).
+        // Before Stage.Tick: the deferred spawns and the checkRooms() calls of the kills (the web calls checkRooms() at the kill, before the frame's own checkRooms;
+        // each call advances the 30-frame check counter).
         void TickDeathFrameEnd()
         {
-            if (KillChainTicks > 0) { KillChainTicks -= 1; if (KillChainTicks <= 0) { KillChainCount = 0; KillChainTicks = 0; } }
             FlushDeathSpawns();
             while (pendingKillRoomChecks > 0) { pendingKillRoomChecks--; Stage.Tick(); }
         }
+
+        // After the 소환굴 update: kill-chain timer of update() (game.html 35880 `if(G._chainT>0){G._chainT-=sp;if(G._chainT<=0){G._chainCnt=0;G._chainT=0}}`)
+        void TickKillChain() { if (KillChainTicks > 0) { KillChainTicks -= 1; if (KillChainTicks <= 0) { KillChainCount = 0; KillChainTicks = 0; } } }
 
         void FlushDeathSpawns()
         {
@@ -124,7 +125,7 @@ namespace Exoduser.UnityPort.Core
             c.DeathFx = (x, y, r, col, ib, burn, et, kind) => { }; c.SpawnLargeMonsterDeathFx = (x, a) => { }; c.AddCorpse = (x, a, pw) => { }; c.AddBurnCorpse = x => { };
             c.AddGorePiece = (x, y, k) => { }; c.AddDeathImpact = (x, y, r) => { }; c.GetPProj = () => new EnemyPProj();
             c.RageMax = () => RageMaximum; c.SfxVictory = () => { }; c.BuildMapCache = () => { };
-            c.BossLine = k => BossLineRaised?.Invoke(k);
+            c.BossLine = RemodelLine;   // _bossLine(key): once per fight (G._bossLineSeen) -> BossLineRaised / BossLineLog (Simulation.BossRemodelRules)
             bool shockwave = false;
             c.HurtPlayerTyped = (d, m) => { shockwave = true; HurtPlayer((int)d, new HurtOptions { Magic = m != null && m.dtype == "magic" }); };
             c.SpawnBossShot = (x, o) => SpawnDeathBullet(x, new ProjSpec { X = o.x, Y = o.y, Vx = o.vx, Vy = o.vy, Dmg = o.dmg, Life = o.life, Ml = o.ml, Sz = o.sz, El = (int)(o.el ?? 0), Col = o.col ?? "", RedBean = o.redBean == true, Homing = o.homing == true });

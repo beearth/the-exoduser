@@ -167,9 +167,10 @@ namespace Exoduser.UnityPort.Core
             CapEnemies();   // web 34540: ens hard cap 800 -> 700
             TickFieldBosses();   // M1-REGION R-B: _fbTick
             TickRegions();   // M1-REGION: _regionTick (every 15th frame)
-            TickDeathFrameEnd();   // O-1: kill-chain timer, split / companion spawns, the checkRooms() calls of this frame's kills
+            TickDeathFrameEnd();   // O-1: split / companion spawns, the checkRooms() calls of this frame's kills (web: at the kill, before this checkRooms)
             Stage.Tick();   // C07: checkRooms (arena entry / boss defeat / exit / clear)
             TickSpawnHoles();   // C01-AI: the 소환굴 update follows checkRooms in the web update()
+            TickKillChain();   // O-1: kill-chain timer (web 35880, right after the 소환굴 update)
             TickHurtFx();   // B09: screen shake / flash decay
         }
 
