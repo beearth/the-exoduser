@@ -72,3 +72,4 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - player 는 NativeQaSandbox fail-closed 가 unity/main 에 병합되기 전까지 기본 거부(종료 코드 2), 병합 공지 뒤 `-AllowPlayer` 로만 실행.
 - 세이브 스냅샷은 에디터 자체 상태(`Unityocal.*ditor`, Analytics 등)를 제외한다(에디터를 띄우면 항상 바뀌어 오탐).
 - 시작 조건 기본값: 커밋 여유 20GB(Library 없음 30GB), 플레이어 8GB, 동시 실행 1(잠금). 실측 근거 제안값(12/20/10GB)은 `-Profile proposed` 로만 선택(유니티 총괄과 합의 전)는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 커밋 여유 에디터(Library 있음) 12GB, Library 없음 20GB, 플레이어 10GB. 동시 실행 수 1(잠금). 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만(pid 재사용으로 남의 프로세스를 건드리지 않음).
+- 빌드 전 필수 영상: `run -Method PortVerification.Build` 또는 `build -Worktree <wt> -Args '-output,<dir>,-receipt,<file>'`(자동으로 `-buildTarget Win64` 추가) 는 Unity 를 띄우기 전에 `restore-lobby-media.cjs`·`restore-warrior-story.cjs` 를 실행하고, `StreamingAssets\Lobby` 필수 영상 9개(각 1MB 이상, buildloop `smoke-rules.json` 의 `requiredMedia` 가 있으면 그 목록)가 하나라도 없으면 실패한다(종료 코드 6, `필수 영상 누락`).
