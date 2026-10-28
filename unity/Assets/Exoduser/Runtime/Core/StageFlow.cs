@@ -17,12 +17,16 @@ namespace Exoduser.UnityPort.Core
         ExitOpened,          // arena exit tiles opened (web 41983-41994)
         StageCleared,        // exit stepped on after the boss: +10 SP, stage-clear panel (web 42062-42147)
         FieldRestored,       // death retry inside the arena: back to the field gate (web retryBtn 63627-63657)
-        GateGuardDefeated    // the Hell Gate guardian died: +10 % clear progress, gate released (web 42945-42950)
+        GateGuardDefeated,   // the Hell Gate guardian died: +10 % clear progress, gate released (web 42945-42950)
+        RegionCleared,       // one of the four regions reached its clear condition (web _regionCheckClears 61032); Percent = regions cleared so far
+        AnglerWoke,          // the first 심연의 앵글러 woke (showPH '심연의 앵글러', web 61338); Percent = its element
+        AnglerSlain          // an angler died (showPH '필드보스 처치!', web 18890); Percent = its element
     }
 
     public sealed class StageEvent
     {
         public StageEventKind Kind; public int Tick, Percent; public float X, Y; public int Stage;
+        public bool Regions;   // GateSealed: Percent is the number of cleared regions (of 4), not a kill percentage
     }
 
     public delegate EnemyState BossSpawner(Simulation sim, float x, float y);
@@ -85,10 +89,13 @@ namespace Exoduser.UnityPort.Core
             InArena = false; BossAlive = true; BossUnlocked = false; StageCleared = false; LoadPhase = 0; LoadT = 0; LoadFade = 0; CheckT = 0; SurvivorKills = 0; Arena = null; Boss = null;
         }
 
-        private void Raise(StageEventKind kind, float x = 0, float y = 0, int percent = 0)
+        private void Raise(StageEventKind kind, float x = 0, float y = 0, int percent = 0, bool regions = false)
         {
-            Events.Enqueue(new StageEvent { Kind = kind, Tick = sim.TickCount, X = x, Y = y, Percent = percent, Stage = sim.Config.StageIndex });
+            Events.Enqueue(new StageEvent { Kind = kind, Tick = sim.TickCount, X = x, Y = y, Percent = percent, Regions = regions, Stage = sim.Config.StageIndex });
         }
+
+        public void RaiseRegionCleared(int region, int clearedCount) { Raise(StageEventKind.RegionCleared, 0, 0, clearedCount); }
+        public void RaiseAngler(StageEventKind kind, float x, float y, int element) { Raise(kind, x, y, element); }
 
         public EnemyState FindBoss()
         {
@@ -152,9 +159,13 @@ namespace Exoduser.UnityPort.Core
 
             if (!InArena && BossAlive && !BossUnlocked)
             {
-                // Region-less fallback of the web gate rule (42023-42033): the original 1-1 counts four cleared regions, which Unity does not have yet.
+                // web 42069-42094: with regions the gate opens on 4/4 cleared regions (+ the stage-0 angler flag); the global 80 % rule is the region-less fallback
                 int tot = TotalSpawned; bool krakenOk = sim.Config.StageIndex != 0 || FieldBossDone;
-                if (tot <= 0) { if (krakenOk) BossUnlocked = true; }
+                if (sim.Regions != null)
+                {
+                    if (krakenOk && sim.RegionClearedCount() >= 4) { BossUnlocked = true; Raise(StageEventKind.GateUnlocked, p.X, p.Y); }
+                }
+                else if (tot <= 0) { if (krakenOk) BossUnlocked = true; }
                 else
                 {
                     double gk = GateGuardKilled ? 0.10 : 0;
@@ -175,8 +186,12 @@ namespace Exoduser.UnityPort.Core
                         {
                             if (sim.TickCount % 45 == 0)
                             {
-                                int total = Math.Max(1, TotalSpawned), pct = Math.Min(100, (int)((double)StageKills / total * 100) + (GateGuardKilled ? 10 : 0));
-                                Raise(StageEventKind.GateSealed, p.X, p.Y, pct);
+                                if (sim.Regions != null) Raise(StageEventKind.GateSealed, p.X, p.Y, sim.RegionClearedCount(), true);   // web 42106: "지옥문이 봉인됨 — 지역 클리어 N/4"
+                                else
+                                {
+                                    int total = Math.Max(1, TotalSpawned), pct = Math.Min(100, (int)((double)StageKills / total * 100) + (GateGuardKilled ? 10 : 0));
+                                    Raise(StageEventKind.GateSealed, p.X, p.Y, pct);
+                                }
                             }
                             break;
                         }

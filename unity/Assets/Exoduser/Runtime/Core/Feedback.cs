@@ -27,7 +27,7 @@ namespace Exoduser.UnityPort.Core
         // RM-1 sound SND-09: druid_vo_pain once for every 8 % of the (life) HP the boss loses, at least 3 s apart; the anchor follows the HP up on a new life
         private void BossPainCheck(EnemyState enemy)
         {
-            if (!enemy.IsBoss || enemy.Hp <= 1) return;
+            if (!enemy.IsBoss || Config.StageIndex != 0 || enemy.Hp <= 1) return;
             if (enemy.Hp > painAnchorHp) painAnchorHp = enemy.Hp;
             if (painAnchorHp - enemy.Hp >= enemy.MaxHp * .08 && TickCount - lastPainTick >= 180) { QueueLogicalSound("druid_vo_pain", "boss lost 8 % HP", enemy.X, enemy.Y); painAnchorHp = enemy.Hp; lastPainTick = TickCount; }
         }

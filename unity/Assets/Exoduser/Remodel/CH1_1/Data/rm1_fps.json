@@ -1,0 +1,1 @@
+{"gpu":"AMD Radeon RX 9070 XT","note":"batchmode camera.Render loop (editor), no vsync cap; relative on/off comparison","runs":[{"world3d":true,"frames":240,"ms":313,"fps":766.8},{"world3d":false,"frames":240,"ms":105,"fps":2285.7},{"world3d":true,"frames":240,"ms":257,"fps":933.9}]}

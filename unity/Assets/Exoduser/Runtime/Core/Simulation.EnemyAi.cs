@@ -33,7 +33,8 @@ namespace Exoduser.UnityPort.Core
                 HasLos = (a, b, c, d) => HasLineOfSight == null || HasLineOfSight((float)a, (float)b, (float)c, (float)d),
                 WallStuck = (x, y) => false, PushOutWall = w => { }, PushOutsideBonfire = (w, bf, c) => { }, BonfireClearance = w => w.r * 1.5 + 2,
                 FlowMove = FlowMove, HurtEnemy = (w, dmg) => { EnemyState o; if (webOwner.TryGetValue(w, out o)) ApplyEnemyDamage(o, (int)dmg, 0, false, 1); }, CancelProjCharge = w => { w._projChargeT = 0; w._projChargeCol = null; w._projChargeBean = null; w._projChargeParryClass = null; },
-                RollDrop = w => { }, AddExp = n => { }, RegKill = w => { }, BossReviveGrandVfx = (w, r) => { }, UpdateE = UpdateEnemyBody,
+                RollDrop = w => { }, AddExp = n => { }, RegKill = w => { EnemyState o; if (webOwner.TryGetValue(w, out o)) KillEnemy(o); },   // EnemyTick 34625: the stuck-in-a-wall clean-up death counts as a kill (kills, _stageKills, _regKill, drops, xp)
+                 BossReviveGrandVfx = (w, r) => { }, UpdateE = UpdateEnemyBody,
                 Translate = s => s, AddText = (x, y, t, c, l) => { }, AddParts = (x, y, c, n) => { }, Block = () => { }, Shake = n => { }, PlaySample = (n, v, r) => { }, RandomRate = (a, b) => a + b * .5,
                 Stage = 0, DemoLastStage = Config.DemoLastStage, DemoMode = Config.DemoMode
             };

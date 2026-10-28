@@ -29,10 +29,10 @@ namespace Exoduser.UnityPort.Core
         // SafeZones = centre x, centre y, radius. RB1-3 fills it with the four root pillar shadows; empty means the heartbeat can only be dodged with i-frames.
         public readonly List<double[]> SafeZones = new List<double[]>();
 
-        BossPhaseDef Ph(int phase) { return Remodel ? DruidRemodelData.Phases[Math.Min(Math.Max(phase, 0), DruidRemodelData.Lives - 1)] : DruidBossData.Phases[phase]; }
-        BossMove[] MoveTable { get { return Remodel ? DruidRemodelData.Moves : DruidBossData.Moves; } }
-        BossCombo[] ComboTable { get { return Remodel ? DruidRemodelData.Combos : DruidBossData.Combos; } }
-        double CooldownOf(BossMove mv, BossPhaseDef ph) { return Remodel && mv.Id == "heartbeat" ? mv.Cd : mv.Cd * ph.CdM; }
+        BossPhaseDef Ph(int phase) { return Remodel ? Set.Phases[Math.Min(Math.Max(phase, 0), Set.Lives - 1)] : DruidBossData.Phases[phase]; }
+        BossMove[] MoveTable { get { return Remodel ? Set.Moves : DruidBossData.Moves; } }
+        BossCombo[] ComboTable { get { return Remodel ? Set.Combos : DruidBossData.Combos; } }
+        double CooldownOf(BossMove mv, BossPhaseDef ph) { return Remodel && Set.Forced.Contains(mv.Id) ? mv.Cd : mv.Cd * ph.CdM; }
 
         static int AliveMinions(DruidData d)
         {
@@ -86,10 +86,10 @@ namespace Exoduser.UnityPort.Core
         void HeartbeatPulse(EnemyState e, DruidData d)
         {
             host.Fx("druidHeartbeat", d.X, d.Y, 0); host.Shake(10); host.Sound("druid_heartbeat", "#12 heartbeat beat " + (d.HbBeat + 1), d.X, d.Y);
-            if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY)) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);
+            if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY) && !InPillarShadow(host.PX, host.PY, d.X, d.Y) && Dst(host.PX, host.PY, d.X, d.Y) > DruidRemodelData.HeartbeatSafeRadius) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);   // safe: the ring of 260 around the boss, plus the root pillar shadows (RB1-3)
             d.HbBeat++;
-            if (d.HbBeat >= DruidRemodelData.HeartbeatBeats) { d.S = "bossRec"; d.St2 = DruidRemodelData.HeartbeatRecover; }   // bossRec, not recover: `recover` clamps St2 to 20
-            else d.St2 = DruidRemodelData.HeartbeatBeatWind;
+            if (d.HbBeat >= DruidRemodelData.HeartbeatBeats) Recover(d, 0);   // bossRec with the table's 90 f (`recover` clamps St2 to 20)
+            else { d.S = "bossHeartPause"; d.St2 = DruidRemodelData.HeartbeatPause; }
         }
 
         // move 6 (grab): while held the boss drains the player's tick and heals 3 % of the life HP in total; enough player hits break the hold
@@ -100,7 +100,7 @@ namespace Exoduser.UnityPort.Core
             if (cur < d.GrabLast - .5) d.GrabHits++;
             d.GrabLast = cur;
             if (d.GrabHits < DruidRemodelData.GrabEscapeHits) return false;
-            d.S = "recover"; d.St2 = 40; host.Text(host.PX, host.PY - 25, "벗어났다!", "#dfd6c2", 40);
+            d.S = "recover"; d.St2 = 40; RmText(host.PX, host.PY - 25, "벗어났다!", "#dfd6c2", 40);
             return true;
         }
         void GrabAbsorb(EnemyState e, DruidData d)
@@ -127,8 +127,8 @@ namespace Exoduser.UnityPort.Core
         {
             DruidData d; if (!Data.TryGetValue(e, out d)) return;
             d.BossPhase = life; e.BossPhase = life;
-            d.S = "bossRec"; d.St2 = 60; d.BossPatT = 30; d.PImmune = 0; d.ComboSeq = null; d.ComboIdx = 0; d.Feinting = false; d.FeintUsed = false; d.Delaying = 0;
-            d.HeartCd = 0; d.R = e.Radius;
+            d.S = "bossRec"; d.St2 = 60; d.BossPatT = Set.GapTicks[Math.Min(Math.Max(life, 0), 2)]; d.PImmune = 0; d.ComboSeq = null; d.ComboIdx = 0; d.Feinting = false; d.FeintUsed = false; d.Delaying = 0;
+            d.HeartCd = 0; d.R = e.Radius; d.RmVel = 0; d.RmParryPending = false; d.RmBonusApplied = false;
             for (int i = 0; i < d.MoveCDs.Length; i++) d.MoveCDs[i] = 0;
             WriteBack(e, d);
         }

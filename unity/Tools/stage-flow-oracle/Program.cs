@@ -145,13 +145,13 @@ static class P
             s.Stage.Exits.Add(new StageFlow.Tile(100, 7)); s.Player.X = 100.5f * 40; s.Player.Y = 7.5f * 40; s.Stage.CheckT = 29; s.TickCount = 44;
             s.Tick(0, 0, s.Player.X + 100, s.Player.Y, false, false);
             Check(s.Stage.LoadPhase == 0 && Count(s, StageEventKind.BossCoreMissing) == 1 && !s.Stage.InArena, "no spawner => BossCoreMissing, no arena");
-            // a boss etype other than 0 is accepted once it is flagged IsBoss (boss Core extension), a non-boss one still throws
+            // C01 wire (8fec34897) removed the etype-0-only guard: hurtE is the Core port for every etype, so a boss flag no longer gates damage (it only selects BossTick / boss rewards)
             var s2 = NewSim(0); var b = s2.AddEnemy(new EnemyState { Etype = 77, Hp = 1000, MaxHp = 1000, Shield = 0, MaxShield = 0, X = 500, Y = 500, Radius = 20, IsBoss = true, Level = 1 });
             bool threw = false; try { s2.HurtEnemy(b, 10); } catch (NotSupportedException) { threw = true; }
             Check(!threw && b.Hp < 1000, "IsBoss etype 77 takes damage");
             var plain = s2.AddEnemy(new EnemyState { Etype = 77, Hp = 1000, MaxHp = 1000, X = 600, Y = 600, Radius = 20, Level = 1 });
             threw = false; try { s2.HurtEnemy(plain, 10); } catch (NotSupportedException) { threw = true; }
-            Check(threw, "non-boss etype 77 still throws");
+            Check(!threw && plain.Hp < 1000, "non-boss etype 77 takes damage too (the etype-0-only guard is gone since the C01 wire)");
             // BossTick replaces the generic enemy tick for IsBoss
             var s3 = NewSim(0); s3.Config.EnemyAiEnabled = true; int calls = 0; s3.BossTick = e => calls++;
             var bb = s3.AddEnemy(new EnemyState { Etype = 0, Hp = 100, MaxHp = 100, X = 500, Y = 500, Radius = 20, IsBoss = true });

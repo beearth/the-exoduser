@@ -1,0 +1,1 @@
+{"note":"NavMesh baked from the walk-tile mesh, agentRadius 0.1u, voxel 0.05u, agentHeight 1.6u. coreOnlyTiles entries carry boundary=true when the tile touches a blocked tile.","grid":[0,0,200,200],"tested":40000,"coreWalkNavNo":0,"navWalkCoreNo":0,"navOnlyTiles":[],"coreOnlyTiles":[]}

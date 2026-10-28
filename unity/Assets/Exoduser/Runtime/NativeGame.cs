@@ -50,6 +50,7 @@ namespace Exoduser.UnityPort
             view=Camera.main;
             if(view==null){view=new GameObject("World Camera").AddComponent<Camera>();view.tag="MainCamera";}
             view.orthographic=true;view.orthographicSize=5.4f;view.backgroundColor=new Color(.015f,.02f,.018f);view.clearFlags=CameraClearFlags.SolidColor;
+            UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(view).renderPostProcessing=true; // RM-1 VFX V0: HDR core + Bloom
             view.transform.position=new Vector3(40.2f,-74.2f,-10);
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
             Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
@@ -93,6 +94,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-c04-dump")>=0){Running=false;StartCoroutine(C04Dump());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
             else if(Array.IndexOf(args,"--unity-field-compare")>=0){Running=false;StartCoroutine(FieldCompare());}
+            else if(Array.IndexOf(args,"--unity-cam-capture")>=0){Running=false;StartCoroutine(CameraClampCapture());}
             else if(Array.IndexOf(args,"--unity-hud-blend-smoke")>=0){menu=true;Running=false;StartCoroutine(HudBlendCapture());}
             else if(Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0){inventoryKeysSmoke=true;traceInventoryKeys=true;pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();StartCoroutine(InventoryKeysSmoke());}
             else if(Array.IndexOf(args,"--unity-ui-finish-capture")>=0){menu=true;Running=false;pauseSmoke=true;StartCoroutine(UiFinishCapture());}
@@ -119,7 +121,7 @@ namespace Exoduser.UnityPort
         {
             ResetFirstPractice();
             startupResetCount++;
-            foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();
+            foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();ResetFieldBossViews();
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ApplySettingsOptions();
@@ -135,6 +137,9 @@ namespace Exoduser.UnityPort
             Simulation.FloorTile=(tx,ty)=>!Map.Blocked((tx+.5f)*40,(ty+.5f)*40);
             Simulation.EnableFieldSpawns();
             Simulation.SpawnStartEnemies();   // M1 fix: the fixed 다안 육괴 x2 + 문지기 + 호위 12~16 initStage(0) places on top of the holes
+            Simulation.InitRegions();   // M1-REGION R-A: _regionInit after the holes, start enemies and the gate guard exist
+            Simulation.EnableFieldBosses();   // M1-REGION R-B: the four 심연의 앵글러 (spawned by the first tick); the camera decides when they may shoot (_fieldEnemyCanShoot)
+            Simulation.FieldEnemyCanShoot=(x,y)=>{float hh=view.orthographicSize*100f,hw=hh*view.aspect,cx=view.transform.position.x*100f,cy=-view.transform.position.y*100f;return Math.Abs(x-cx)<=Math.Max(0,hw-64)&&Math.Abs(y-cy)<=Math.Max(0,hh-64);};
             UpdateViews();
         }
         bool SafePoint(ref float x,ref float y,float r)
@@ -213,9 +218,10 @@ namespace Exoduser.UnityPort
             if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
             bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition)||PointerOverStageClear(),p.KiChargeActive);
             Simulation.Stage.Enabled=firstPractice==null;
+            if(firstPractice==null){   // the first-practice tick sets these once per tick itself (the combat / roll inputs detect edges against the previous call)
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
             SetSkillKeys();
-            Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
+            Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));}
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
             StageFlowPump();DispatchFeedback();
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
@@ -272,7 +278,8 @@ namespace Exoduser.UnityPort
         {
             if(Simulation==null||view==null)return;var p=Simulation.Player;
             float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
-            view.transform.position=new Vector3(p.X/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-p.Y/100+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);BossCameraZoom();StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
+            float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
+            view.transform.position=new Vector3(camX+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),camY+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;
@@ -285,6 +292,7 @@ namespace Exoduser.UnityPort
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
             foreach(var e in Simulation.Enemies)
             {
+                if(Simulation.IsRemodelProp(e)){if(enemies.TryGetValue(e.Id,out var pv)){pv.body.enabled=false;pv.walk.enabled=false;if(pv.arc!=null)pv.arc.enabled=false;}continue;}   // RM-B0b: a boss prop (sprout, cord knot) is no enemy: the boss presentation draws it from Simulation.RemodelProps
                 if(!enemies.TryGetValue(e.Id,out var ev)){
                     // web _assignMobSkin: the fixed atlas cell the factory rolled from the etype and the spawn x (_mob8Col/_mob8Row); revived ghouls have none and keep the position hash
                     int idx=e.Web!=null&&e.Web._mob8Col.HasValue&&e.Web._mob8Row.HasValue?(int)e.Web._mob8Row.Value*8+(int)e.Web._mob8Col.Value:((int)(e.X*31)&0x7fffffff)%40;
@@ -306,6 +314,7 @@ namespace Exoduser.UnityPort
                 ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f,tint.a):tint;
                 UpdateEnemyShieldArc(e,ev);
             }
+            PruneEnemyViews();FieldBossViews();
             UpdateDropViews();
             kiView?.Update(Simulation);
             boltView?.Update(Simulation);BossViewUpdate();
@@ -405,7 +414,9 @@ namespace Exoduser.UnityPort
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
+            DrawFieldBossBars();
             foreach(var d in damage){var pt=ToGUI(d.x,d.y);var keep=center.normal.textColor;if(d.shield)center.normal.textColor=new Color(.4f,.87f,1f);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);center.normal.textColor=keep;}
+            DrawPracticeShots();
             revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
             if(levelUp.Active){var lp=view.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}

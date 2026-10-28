@@ -14,12 +14,13 @@ class EnemySpawnProgram
 {
     static readonly List<object> rows = new List<object>();
     static int failures, total;
+    static readonly List<string> allFailures = new List<string>();   // every failing check (the receipt keeps the first 80); written next to the receipt as <receipt>.fails.txt
     static string currentCase = "";
     static void Check(bool pass, string name)
     {
         total++;
         if (pass) { if (total % 5000 == 1) rows.Add(new { name = currentCase + " | " + name, passed = true }); }
-        else { failures++; if (failures <= 80) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
+        else { failures++; allFailures.Add(currentCase + " | " + name); if (failures <= 80) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
     }
     static bool Same(double a, double b) => BitConverter.DoubleToInt64Bits(a) == BitConverter.DoubleToInt64Bits(b);
     static double Num(JsonElement e) => e.ValueKind == JsonValueKind.String ? double.Parse(e.GetString() == "NaN" ? "NaN" : e.GetString() == "Infinity" ? "Infinity" : e.GetString() == "-Infinity" ? "-Infinity" : e.GetString(), System.Globalization.CultureInfo.InvariantCulture) : e.GetDouble();
@@ -174,6 +175,7 @@ class EnemySpawnProgram
             checks = rows
         }, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
         File.WriteAllText(args[0], result);
+        File.WriteAllLines(args[0] + ".fails.txt", allFailures);
         Console.WriteLine("ENEMY_SPAWN_RESULT " + total + " checks / " + failures + " failures (" + caseCount + " cases)");
         return failures == 0 ? 0 : 2;
     }

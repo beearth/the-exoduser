@@ -211,6 +211,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // ---- 지옥강타 1 (13135 + activateGiantSlam 46596 + _gSlamHit 46675) ----
+        public event Action<double> RageCastHook;
         private bool CastGiantSlam(string srcId)
         {
             int stCost = SkillStCost("giantSlam", "giantSlam");
@@ -223,6 +224,7 @@ namespace Exoduser.UnityPort.Core
             GiantSlamCd = SkillRules.GiantSlamCooldown(slv, CooldownReduction); GiantSlamLevel = slv;
             Player.State = "gSlamWindup"; Player.StateTicks = SkillRules.GiantSlamWindup;
             var rage = ConsumeRageForSlam();   // _rageMul (1 + rage*0.19*(1+pRage*.10)*(1+rageDmg)) and spends the rage
+            if (RageCastHook != null) RageCastHook(rage.Consumed);   // parry-lesson.js rageCast(amount)
             int dmg = SkillRules.GiantSlamDamage(MeleeReference(), 1, slv, rage.DamageMul);
             double range = SkillRules.GiantSlamRange(slv);
             GiantSlamHit(range, dmg, slv);
@@ -253,6 +255,7 @@ namespace Exoduser.UnityPort.Core
                     if (e.Web != null) e.Web.stunned = e.Stunned;
                 }
             }
+            HurtFieldMobs(Player.X, Player.Y, range, dmg, null);   // _gSlamHit ends with _hurtFieldMobs(P.x, P.y, range, dmg) (web 46824)
             HurtShake(18);
         }
 

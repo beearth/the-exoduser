@@ -13,6 +13,7 @@ namespace Exoduser.UnityPort.Core
     {
         public int Id, Dmg, ExplDmg, Bounces; public bool Active;
         public float X, Y, Vx, Vy, Dist, MaxDist, R, R0, RMax, ExplR, BounceCool;
+        internal readonly HashSet<FieldBossState> HitFieldMobs = new HashSet<FieldBossState>();
         internal readonly Dictionary<EnemyState, double> WeakMul = new Dictionary<EnemyState, double>();   // p._mwMul: the direct hit + the blast stack once per orb
     }
 
@@ -124,6 +125,7 @@ namespace Exoduser.UnityPort.Core
                     }
                     else { OrbExplode(p); dead = true; }
                 }
+                if (!dead && HurtFieldMobs(p.X, p.Y, p.R + 8, p.Dmg, p.HitFieldMobs)) { OrbExplode(p); dead = true; }   // web pProj loop 35466: an angler touched by the orb takes p.dmg, the orb bursts
                 if (!dead)
                 {
                     foreach (var e in ShQuery(p.X, p.Y, p.R + 20, true))
@@ -144,7 +146,7 @@ namespace Exoduser.UnityPort.Core
             double cached; if (p.WeakMul.TryGetValue(e, out cached)) return cached;
             var w = e.Web ?? SyncToWeb(e);
             double step = SkillRules.MaliceWeakStep + (EquippedInventory != null ? EquippedInventory.AffixTotal("maliceWeakAmp") : 0);
-            double st = w._mwStk, mul = 1 + st * step;
+            double st = w._mwStk ?? 0, mul = 1 + st * step;
             p.WeakMul[e] = mul;
             double n = Math.Min(SkillRules.MaliceWeakMax, st + 1); w._mwStk = n;
             if (n > st) RaisePlayerText(e.X, e.Y - 34, "악의 약화 +" + Math.Round(n * step * 100) + "%", "#b07cff", 24);
