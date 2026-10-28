@@ -294,6 +294,18 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 40; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             float domeHp0 = p.Hp; skPress(false, false, true, false); for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool domeOk = sim.FireZones.Exists(z => z.Type == "holyDome") && p.Hp > domeHp0 + 10 && sim.HolyDomeCd > 0; yield return M1Shot("09b-skill-holy-dome");
+            // holy dome vs enemy bullets (web: zone drawn under the bullets, which must stay readable): 4 inert druid poison bullets around the player; needs the druid Core, which only exists in the arena
+            if (sim.Druid != null)
+            {
+                var domeBullets = new List<BossProjectile>(); var domeIf0 = p.Iframes; p.Iframes = 600;
+                foreach (var o in new[] { new[] { -150f, -210f }, new[] { 190f, -70f }, new[] { -260f, 120f }, new[] { 60f, 250f } })
+                    domeBullets.Add(new BossProjectile { X = p.X + o[0], Y = p.Y + o[1], Vx = 0, Vy = 0, Dmg = 0, Sz = 5, R = 4, Life = 6000, Ml = 6000, DruidPoison = true, ParryClass = "physical", Active = true });
+                sim.Druid.Projectiles.AddRange(domeBullets);
+                yield return M1Shot("09b-skill-holy-dome-bullets");
+                foreach (var b in domeBullets) { b.Active = false; sim.Druid.Projectiles.Remove(b); }
+                p.Iframes = domeIf0;
+            }
+            else Debug.Log("[m1] 09b-skill-holy-dome-bullets skipped: sim.Druid is null (no druid Core in the field map)");
             float orbMp0 = p.Mana; skPress(false, false, false, true); for (int i = 0; i < 40; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool orbIn = sim.IceOrbActive && p.State == "iceOrb" && p.Mana < orbMp0 - 40; yield return M1Shot("09b-skill-ice-orb");
             for (int i = 0; i < 90; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); if (i == 8) yield return M1Shot("09b-skill-ice-shatter"); }
@@ -301,11 +313,44 @@ namespace Exoduser.UnityPort
             sim.SkillBlades.Clear(); sim.FireZones.Clear(); sim.SlamWaves.Clear(); sim.Enemies.Clear(); sim.SpikeTrapCd = sim.GiantSlamCd = sim.HolyDomeCd = sim.IceOrbCd = 0; p.State = "idle"; p.Hp = p.MaxHp; p.Stamina = p.MaxStamina; p.Mana = p.MaxMana;
             M1Add("09b", "skill use (1 / Space / F / Ctrl)", spikeOk && slamOk && domeOk && orbOk ? "ok" : "fail", "spike trap " + spikeOk + " (zone, malice " + skCost + ", DOT, kills in window " + skKillsW + "), giant slam " + slamOk + " (wave, malice 10, cd 1800), holy dome " + domeOk + " (zone, regen), ice orb " + orbOk + " (MP 50, orb -> auto shatter); " + sim.SkillCastCount + " casts, denied " + sim.SkillDeniedCount, "09b-skill-spike-trap.png");
 
-            // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). The druid is the boss Core's job (pending): a harness stand-in boss walks the real flow. ----
-            levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();   // BX: the real druid (Simulation.AttachDruidBoss) is the BossSpawners entry; AI stays off until the arena intro is over
-            var flow = sim.Stage; bool naturalUnlock = flow.BossUnlocked; string unlockNote = naturalUnlock ? "gate opened by the kill ratio (" + sim.Stage.StageKills + "/" + flow.TotalSpawned + ")" : "gate still sealed at " + flow.StageKills + "/" + flow.TotalSpawned + " kills: forced open by the harness";
-            flow.FieldBossDone = true;   // the route check does not fight the four anglers (M1-REGION R-B, covered by Tools/fieldboss-oracle + region-test): with the flag down the exit tile only says "slay every angler"
-            if (!naturalUnlock) flow.ForceUnlock();
+            // ---- 09c LT-10: exercise the real regional kill and angler death paths; never set the gate or field-boss flags by hand. ----
+            levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();
+            var flow = sim.Stage; bool sealedAtSparseKills = !flow.BossUnlocked && !flow.FieldBossDone && sim.Regions != null && sim.RegionClearedCount() < 4;
+            int planned = 0; if (sim.Regions != null) foreach (var region in sim.Regions) planned += region.Total;
+            flow.TotalSpawned = planned;   // 07c reset the harness denominator to zero; the field's actual 14-hole plan is 168.
+            float[][] spots = { new[] { 2420f, 2420f }, new[] { 5620f, 1820f }, new[] { 2980f, 6740f }, new[] { 5620f, 6420f } };
+            bool regionKillsReached = sim.Regions != null;
+            if (sim.Regions != null) for (int regionId = 0; regionId < sim.Regions.Length; regionId++)
+            {
+                var region = sim.Regions[regionId]; int required = (int)Math.Ceiling(region.Total * Simulation.RegionClearRatio - 1e-9); int gateAttempts = 0;
+                while (region.Kills < required && gateAttempts++ < required * 40)
+                {
+                    float x = spots[regionId][0] + (gateAttempts % 8) * 37, y = spots[regionId][1] + (gateAttempts / 8 % 5) * 37;
+                    var enemy = sim.SpawnEnemy(x, y, 0, null, false);
+                    if (enemy == null) continue;
+                    if (sim.RegionIdxAt(enemy.HomeX, enemy.HomeY) != regionId) { enemy.Alive = false; sim.Enemies.Remove(enemy); continue; }
+                    sim.HarnessKill(enemy);   // same kill/RegKill path as an actual lethal hit, without inflating TotalSpawned
+                }
+                if (region.Kills < required) regionKillsReached = false;
+            }
+            sim.Enemies.Clear(); sim.Loot.Clear(); p.Iframes = 99999;
+            for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 100, p.Y, false, false);
+            bool anglersStillBlock = !flow.BossUnlocked && !flow.FieldBossDone && sim.RegionClearedCount() == 0;
+            bool anglerHits = sim.FieldBosses != null && sim.FieldBosses.Length == 4;
+            for (int k = 0; k < 4 && anglerHits; k++)
+            {
+                var angler = sim.FieldBosses[k]; if (angler == null) { anglerHits = false; break; }
+                p.X = (float)angler.X + 500; p.Y = (float)angler.Y; p.Iframes = 99999;
+                for (int i = 0; i < 70; i++) StepInput(0, 0, p.X, p.Y, false, false);
+                anglerHits = sim.HurtFieldMobs(angler.X, angler.Y, 10, 1e9, null);
+                for (int i = 0; i < 30; i++) StepInput(0, 0, p.X, p.Y, false, false);
+            }
+            bool naturalUnlock = sealedAtSparseKills && regionKillsReached && anglersStillBlock && anglerHits && flow.FieldBossDone && sim.FieldBossAliveCount() == 0 && sim.RegionClearedCount() == 4 && flow.BossUnlocked;
+            M1Add("09c", "LT-10 regional Hell Gate", naturalUnlock ? "ok" : "fail", "sparse kills sealed " + sealedAtSparseKills + ", real kill thresholds reached " + regionKillsReached + ", all four living anglers still blocked " + anglersStillBlock + ", four angler hit paths " + anglerHits + ", all dead " + flow.FieldBossDone + ", regions " + sim.RegionClearedCount() + "/4, naturally unlocked " + flow.BossUnlocked + "; stage kills " + flow.StageKills + "/" + flow.TotalSpawned + " (harness combat, not OS input)", "");
+            if (!naturalUnlock) { yield return M1Finish(output); yield break; }
+            sim.Enemies.Clear(); sim.Loot.Clear(); p.Hp = p.MaxHp;
+            // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). ----
+            string unlockNote = "gate naturally opened by 4/4 regions and all four angler deaths";
             // the field route (~7000 px of forest) is not walked: the player is placed on the gate approach, like the web's own checkRooms would see him
             var gate = flow.Exits[1]; p.X = (gate.X + .5f) * 40; p.Y = (gate.Y + .5f) * 40; p.Hp = p.MaxHp; p.Iframes = 600;
             int guardTicks = 0; while (flow.LoadPhase == 0 && !flow.InArena && guardTicks++ < 120) StepInput(0, 0, p.X + 100, p.Y, false, false);

@@ -93,6 +93,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-review-args-capture")>=0){Running=false;StartCoroutine(ReviewArgsCapture());}
             else if(Array.IndexOf(args,"--unity-field-compare")>=0){Running=false;StartCoroutine(FieldCompare());}
             else if(Array.IndexOf(args,"--unity-cam-capture")>=0){Running=false;StartCoroutine(CameraClampCapture());}
+            else if(Array.IndexOf(args,"--unity-rmint-check")>=0){Running=false;StartCoroutine(RemodelIntCheck());}
             else if(Array.IndexOf(args,"--unity-region-hud-capture")>=0){Running=false;StartCoroutine(RegionHudCapture());}
             else if(Array.IndexOf(args,"--unity-hud-blend-smoke")>=0){menu=true;Running=false;StartCoroutine(HudBlendCapture());}
             else if(Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0){inventoryKeysSmoke=true;traceInventoryKeys=true;pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();StartCoroutine(InventoryKeysSmoke());}
@@ -126,7 +127,7 @@ namespace Exoduser.UnityPort
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
-            Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(Point(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};
+            Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(NativeRemodel3D.Point2D(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};   // RM-INT: Core callback, always the 2D logic camera
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
@@ -212,7 +213,7 @@ namespace Exoduser.UnityPort
         void FixedUpdate()
         {
             if(practiceScripted||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
-            var p=Simulation.Player;var aim=view.ScreenToWorldPoint(Input.mousePosition);
+            var p=Simulation.Player;var aim=AimWorld();
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
             if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
@@ -348,7 +349,7 @@ namespace Exoduser.UnityPort
             var keys=new List<string>();foreach(var pair in spriteCache)if(pair.Key.StartsWith(resource+":"))keys.Add(pair.Key);
             Texture2D texture=null;foreach(string key in keys){texture=spriteCache[key].texture;Destroy(spriteCache[key]);spriteCache.Remove(key);}if(texture!=null)Resources.UnloadAsset(texture);
         }
-        static Vector3 Point(float x,float y){return new Vector3(x/100,-y/100,0);}
+        static Vector3 Point(float x,float y){return NativeRemodel3D.Point(x,y);}   // RM-INT: off = the 2D mapping unchanged
         // B03: held states of the skill keys (web keydown: Digit1-4 slots, Space rage burst, F area, Ctrl fixed skill, Z ult); Space shares the roll key by default
         void SetSkillKeys()
         {
@@ -401,7 +402,7 @@ namespace Exoduser.UnityPort
             DrawPracticeShots();
             revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
-            if(levelUp.Active){var lp=view.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
+            if(levelUp.Active){var lp=HudCamera.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
             // Stage-clear panel: Unity has no stage-clear / boss / exit event yet, so nothing calls stageClear.Show(); once an event exists it is drawn here.
             if(stageClear.Active)stageClear.Draw();
             if(areaTitle.Active)areaTitle.Draw();
@@ -515,7 +516,7 @@ namespace Exoduser.UnityPort
                 case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
             }
         }
-        Vector2 ToGUI(float x,float y){var v=view.WorldToViewportPoint(Point(x,y));return new Vector2(v.x*1920,(1-v.y)*1080);}
+        Vector2 ToGUI(float x,float y){var v=HudCamera.WorldToViewportPoint(Point(x,y));return new Vector2(v.x*1920,(1-v.y)*1080);}
         static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
         static void Panel(Rect r){Fill(r,new Color(.025f,.032f,.027f,.94f));Fill(new Rect(r.x,r.y,r.width,1),new Color(.49f,.4f,.24f));Fill(new Rect(r.x,r.y+r.height-1,r.width,1),new Color(.28f,.24f,.16f));}
         static void StatusBackdrop(Rect r)

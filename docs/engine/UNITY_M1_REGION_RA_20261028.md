@@ -101,6 +101,8 @@ gate opened at tick 150 -> arena -> boss killed -> exit -> StageCleared at tick 
 - 02b(시작 몹 16마리, 분모 168) ok. 07c(소환굴 필드 스폰) ok.
 - **10단계 시나리오는 고치지 않았다.** 10단계는 필드 7,000px를 걷지 않고 `flow.ForceUnlock()`으로 게이트를 연다. 이 단계의 메모가 "gate still sealed at 17/15 kills: forced open by the harness"로 나온다. 이전 전역 80% 규칙이었다면 17/15 로 자연 개방이었지만, 지역 규칙에서는 손으로 만든 처치가 네 지역 80%를 채우지 못해 봉인이 유지된다. 이것이 웹 규칙이다(전역 처치 수로는 열리지 않음). 자연 개방 경로(4/4 → 개방 → 아레나 → 클리어)는 `Tools/region-test`와 region-oracle이 실제 맵·원본 함수로 덮는다.
 
+2026-10-28 LT-10 후속: 위 문장은 당시 하네스 이력이다. 현재 M1의 `09c`는 실제 `RegKill` 처치 경로로 네 지역 80%를 채우고 실제 앵글러 피격·사망 경로로 네 마리를 없앤 뒤 `Stage.CheckRooms`의 자연 개방을 요구한다. `FieldBossDone=true`와 `ForceUnlock()` 직접 설정을 제거했다. 분모를 0으로 만들던 07c 이후의 `18/15`는 하네스의 임시 소환 수치였으므로 09c에서 실제 14굴 계획 합계 168로 복원한다. 최종 Unity 영수증은 `UNITY_LT10_LT11_20261028.md`를 따른다.
+
 ## 5. 웹과 다르게 한 점 / 미이식
 
 | 항목 | 내용 |

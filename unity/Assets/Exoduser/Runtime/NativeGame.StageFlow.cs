@@ -93,6 +93,7 @@ namespace Exoduser.UnityPort
         void StageFlowSyncViews()
         {
             var flow = Simulation.Stage;
+            Remodel3DSync();   // RM-INT: remodel 3D layer on/off (no-op without --remodel3d)
             if (flow.InArena && arenaView == null)
             {
                 foreach (var c in chunks.Values) { Destroy(c.renderer.gameObject); ReleaseSprites(c.path); }

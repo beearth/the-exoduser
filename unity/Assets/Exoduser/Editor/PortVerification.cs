@@ -198,7 +198,7 @@ public static class PortVerification {
   EditorSceneManager.SaveScene(scene,name);EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(name,true)};
   PlayerSettings.companyName="ForDearGamers";PlayerSettings.productName="EXODUSER · Unity 이식 검증판";
   PlayerSettings.defaultScreenWidth=1920;PlayerSettings.defaultScreenHeight=1080;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
-  PlayerSettings.runInBackground=true;PlayerSettings.colorSpace=ColorSpace.Gamma;
+  PlayerSettings.runInBackground=true;
   return name;
  }
  static bool SettingsIdentifierOverride(){var so=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);var value=so.FindProperty("overrideDefaultApplicationIdentifier");if(value==null)throw new Exception("Cannot preserve application identifier override state");return value.boolValue;}
@@ -234,7 +234,8 @@ public static class PortVerification {
    if(uiQa){PlayerSettings.productName="EXODUSER A03 A04 QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.a03a04qa20261027");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("A03/A04 UI QA must have a distinct application identifier");}
    var output=Path.Combine(directory,target==BuildTarget.StandaloneOSX?"EXODUSER-Unity.app":"EXODUSER-Unity.exe");
    // Local frontend verification needs no development PlayerConnection listener.
-   var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{scene},locationPathName=output,target=target,options=BuildOptions.None});
+   var buildScenes=Argument("-remodel-scenes")=="1"?new[]{scene,"Assets/Exoduser/Remodel/CH1_1/RM1_Slice.unity"}:new[]{scene};   // RM-INT: the remodel scene rides along only when asked (-remodel-scenes 1); the default build is unchanged
+   var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=buildScenes,locationPathName=output,target=target,options=BuildOptions.None});
    bool ok=report.summary.result==BuildResult.Succeeded;
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion,target=target.ToString(),architecture=architecture,output=output,settingsQa=settingsQa,uiQa=uiQa,product=PlayerSettings.productName,identifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)},true));
    Debug.Log("UNITY_BUILD "+report.summary.result);exitCode=ok?0:2;
