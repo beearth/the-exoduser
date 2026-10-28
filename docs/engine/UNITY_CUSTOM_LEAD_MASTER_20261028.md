@@ -137,6 +137,7 @@ C-01 결과(10-28, 브랜치 `claude/unity-pc-c01-asmdef-20261028` @ 6f1637b02, 
 5. 새 스크립트는 맞는 asmdef 폴더에 둔다(C-01 이후). Core 어셈블리는 표현·에디터 코드를 참조하지 않는다.
 6. 무거운 구간에는 `ProfilerMarker`를 단다.
 7. 패키지 추가·버전 변경은 이 문서 §5에 기록하고 이 총괄이 승인한다(`manifest.json` 충돌 방지).
+8. **`Exoduser.Core` 안의 규칙 아닌 순수 C#**(세이브·설정 저장, QA 실행 판정처럼 Core 쪽 코드가 불러야 하는 플랫폼 코드)은 새 파일을 `Runtime/Core/Platform/`에 둔다. 네임스페이스는 `Exoduser.UnityPort.Core` 그대로 쓴다. 이 폴더는 같은 Core 어셈블리이지만 게임 규칙 정답(oracle 대상)이 아니다. 기존 `CharacterRosterStore`·`CombatSaveStore`·`NativeSettingsStore`는 진행 중인 병합 때문에 지금 옮기지 않는다. 나중에 C-01 2차에서 `Exoduser.Platform` asmdef로 떼어낼지 판단한다. 첫 사례는 `QaRunPolicy`(10-28)다. Core 쪽 `NativeSettingsStore.IsQa`가 이 파일을 부르기 때문에 Runtime에 둘 수 없다.
 
 ## 5. 패키지 계획
 
