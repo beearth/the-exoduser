@@ -207,11 +207,9 @@ namespace Exoduser.DevTools.LookDev
             readonly List<Action> undo = new List<Action>(); readonly List<GameObject> created = new List<GameObject>();
             public Camera Cam; Vector3 target; Terrain terrain; bool overridden;
             public string TargetDescription = "";
-            bool prevAsync;
 
             public Session(LookDevShot shot, LookDevOverrides ov)
             {
-                prevAsync = ShaderUtil.allowAsyncCompilation; ShaderUtil.allowAsyncCompilation = false;   // 셰이더가 덜 컴파일돼 물체가 빠지는 첫 프레임 방지
                 this.shot = shot; this.ov = ov; terrain = Object.FindAnyObjectByType<Terrain>();
                 Cam = Camera.main; if (Cam == null) Cam = Object.FindAnyObjectByType<Camera>();
                 if (Cam == null) { var g = new GameObject("LookDev Camera"); created.Add(g); Cam = g.AddComponent<Camera>(); g.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = true; }
@@ -338,7 +336,7 @@ namespace Exoduser.DevTools.LookDev
             {
                 for (int i = undo.Count - 1; i >= 0; i--) { try { undo[i](); } catch (Exception e) { Debug.LogWarning("[LOOKDEV] 복원 실패: " + e.Message); } }
                 foreach (var g in created) if (g) Object.DestroyImmediate(g);
-                undo.Clear(); created.Clear(); ShaderUtil.allowAsyncCompilation = prevAsync;
+                undo.Clear(); created.Clear();
             }
         }
 
