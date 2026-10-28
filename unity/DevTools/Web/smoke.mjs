@@ -48,18 +48,27 @@ await page.waitForTimeout(4000);
 const api = await page.evaluate(() => { const c = document.querySelector('canvas'); if (!c) return 'no canvas'; const g2 = c.getContext('webgl2'); if (g2) return 'webgl2'; const gp = c.getContext('webgpu'); return gp ? 'webgpu' : 'unknown'; });
 await page.screenshot({ path: path.join(outDir, 'shot0_load.png') });
 const steps = process.env.STEPS ? JSON.parse(process.env.STEPS) : [['press','Enter'], ['press','Space'], ['press','Enter']];
-let n = 1;
+let n = 1; const stepLog = []; let lastLogN = 0, lastErrN = 0;
 for (const s of steps) {
-  const [kind, arg, ms] = s;
+  const [kind, arg, ms, label] = s;
   if (kind === 'press') await page.keyboard.press(arg);
+  else if (kind === 'rep') { for (let i = 0; i < ms; i++) { await page.keyboard.press(arg); await page.waitForTimeout(label || 600); } }
   else if (kind === 'hold') { await page.keyboard.down(arg); await page.waitForTimeout(ms || 2500); await page.keyboard.up(arg); }
+  else if (kind === 'holdmulti') { for (const k of arg) await page.keyboard.down(k); await page.waitForTimeout(ms || 1500); for (const k of arg) await page.keyboard.up(k); }
+  else if (kind === 'type') await page.keyboard.type(arg, { delay: 80 });
   else if (kind === 'click') await page.mouse.click(arg, ms);
   else if (kind === 'wait') await page.waitForTimeout(arg);
-  await page.waitForTimeout(kind === 'wait' ? 0 : 2500);
-  await page.screenshot({ path: path.join(outDir, `shot${n++}_${kind}_${arg}.png`) });
+  await page.waitForTimeout(kind === 'wait' ? 0 : 1500);
+  if (kind === 'shot' || kind !== 'wait' || (label === 'shot')) {
+    const file = `shot${n++}_${kind}_${String(arg).slice(0, 12)}.png`;
+    const buf = await page.screenshot({ path: path.join(outDir, file) });
+    const newErr = logs.slice(lastLogN).filter(l => /^\[error\]/.test(l) && !/Failed to load resource/.test(l)); lastLogN = logs.length;
+    const newPageErr = errors.slice(lastErrN).filter(e => !/^HTTP|^REQFAIL/.test(e)); lastErrN = errors.length;
+    stepLog.push({ file, step: s.slice(0, 3), newConsoleErrors: newErr.slice(0, 5), newPageErrors: newPageErr.slice(0, 5), pngBytes: buf.length });
+  }
 }
 const bytes = await page.evaluate(() => performance.getEntriesByType('resource').reduce((a, e) => a + (e.encodedBodySize || 0), 0));
-const res = { url, loadMs, timing, api, env, transferEncodedBytes: bytes, servedBytes: served, served_files, errors: errors.slice(0, 60), consoleTail: logs.slice(-80), consoleErrors: logs.filter(l => /^\[(error|warning)\]/.test(l)).slice(0, 60) };
+const res = { url, loadMs, timing, stepLog, api, env, transferEncodedBytes: bytes, servedBytes: served, served_files, errors: errors.slice(0, 60), consoleTail: logs.slice(-80), consoleErrors: logs.filter(l => /^\[(error|warning)\]/.test(l)).slice(0, 60) };
 fs.writeFileSync(path.join(outDir, 'smoke.json'), JSON.stringify(res, null, 1));
 await ctx.close(); if (server) server.close();
 try { fs.rmSync(prof, { recursive: true, force: true }); } catch {}

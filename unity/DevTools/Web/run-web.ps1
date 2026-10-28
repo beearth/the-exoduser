@@ -1,4 +1,4 @@
-param([string]$Api='both',[string]$Log='unity-web2.log',[string]$Out='I:/EXODUSER-Storage/devtools/web/build2',[string]$Extra='-compression br -keepVideos true')
+param([string]$Method='Exoduser.DevTools.WebBuild.Run',[string]$Log='unity-web3.log',[string]$Extra='-api both -compression br -keepVideos true')
 $ErrorActionPreference='Stop'
 $lockPath='I:\EXODUSER-Storage\unity-jobs\_pc_lock.json'
 $wt='E:\exoduser-wt\pc-unity-devtools-web'
@@ -17,7 +17,7 @@ while((Get-Date) -lt $deadline){
     }
   }
   if(-not $busy -and (Unity-Alive)){ $busy=$true }
-  if(-not $busy -and (Free-Commit-GB) -lt 10){ $busy=$true }
+  if(-not $busy -and (Free-Commit-GB) -lt 20){ $busy=$true }
   if(-not $busy){
     try{ if(Test-Path $lockPath){ Remove-Item $lockPath -Force }
       $fs=[IO.File]::Open($lockPath,'CreateNew'); $json=(@{owner='devtools-web';pid=$PID;worktree=$wt;startedAt=(Get-Date -Format 's');note='web build'} | ConvertTo-Json)
@@ -33,9 +33,8 @@ try{
     robocopy 'E:\exoduser-wt\o1-base-c7b4\unity\Library' "$wt\unity\Library" /E /XJ /NFL /NDL /NP /R:1 /W:1 /MT:8 | Out-Null
   }
   $env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH='false'; $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE='1'; $env:DOTNET_NOLOGO='1'; $env:DOTNET_CLI_HOME='E:/exoduser-wt/_dotnet-home'
-  $a=@('-batchmode','-quit','-nographics','-buildTarget','WebGL','-projectPath',"$wt/unity",'-executeMethod','Exoduser.DevTools.WebBuild.Run','-logFile',"$base/$Log",'-outDir',$Out,'-receipt',"$base/build-receipt2.json",'-api',$Api) + ($Extra -split ' ')
+  $a=@('-batchmode','-quit','-buildTarget','WebGL','-projectPath',"$wt/unity",'-executeMethod',$Method,'-logFile',"$base/$Log") + ($Extra -split ' ')
   # NOTE: -nographics removed below if shader compile for WebGL needs it
-  $a = $a | ?{ $_ -ne '-nographics' }
   $p=Start-Process -FilePath 'G:\unity\Editor\6000.6.7f1\Editor\Unity.exe' -ArgumentList $a -PassThru -WindowStyle Hidden
   $win=$false
   while(-not $p.HasExited){ $p.Refresh(); if($p.MainWindowHandle -ne 0 -and -not $win){$win=$true; Write-Output 'WINDOW_SEEN'}; if(((Get-Date)-$p.StartTime).TotalMinutes -gt 120){ Write-Output 'TIMEOUT'; break }; Start-Sleep 5 }
