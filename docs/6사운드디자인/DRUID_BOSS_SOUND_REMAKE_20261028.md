@@ -92,6 +92,20 @@
   - 키마다 4후보, "장면에서 듣기"는 채택된 BGM B 위에서 듣게 한다.
 - **연결**: 채택 11키는 지금 Unity 브랜치에 연결한다. 녹음 v4는 "다시" 5키를 채택한 뒤 한 번만 한다(PC 메모리 한계로 Unity batch 1개 원칙). BGM B는 원본 피크가 높으므로 게인을 낮춰 피크 −3dBFS 안쪽으로 맞춘다(§4.1 덕킹 기준 유지).
 
+### 6.1 2차 결과 (2026-10-28, `pick_druid2.html` 제출 01:08 UTC, 5/5, 백업 `_picks_backup/picks_druid2_20261028_final.json`, 메모 0건)
+
+| 키 | 결과 | 채택본(가공본, `_out/sfx_forge/_preview_druid2/`) | 쓰는 방식 |
+|---|---|---|---|
+| `druid_hit` | 채택 | `druid_hit_v3d_proc.mp3` (원본 `hit/druid_hit_v3d`) | **d 1개만 채택** → 변형 4개 순환은 하지 않는다(총괄 결정). 대신 rate ±6%·연타 감쇠(앞 피격과 0.6초 안이면 음량 ×0.85씩, 바닥 ×0.55, 0.6초 쉬면 원래대로)로 110회/분의 반복감을 줄인다. 시작 음량 .3 |
+| `druid_hit_heavy` | 채택 | `druid_hit_heavy_v3d_proc.mp3` (원본 `hit/druid_hit_heavy_v3d`) | 치명타·휘청임에서만(§4.1 결정 그대로) |
+| `druid_whip` | 채택 | `druid_whip_v3a_proc.mp3` (원본 `skill/druid_whip_v3a`) | |
+| `druid_slam` | **전부 안 맞음 (2회 연속)** | — | 1차(v2)·2차(v3) 모두 불채택. 메모가 없어 이유를 알 수 없다 |
+| `druid_spore` | **전부 안 맞음 (2회 연속)** | — | 1차(v2)·2차(v3) 모두 불채택. 메모가 없어 이유를 알 수 없다 |
+
+- `druid_hit`·`druid_hit_heavy`의 a·b·c, `druid_whip`의 b~d는 쓰지 않는다(파일은 staging에만 있고 저장소에 넣지 않았다).
+- 2회 연속 불채택인 `druid_slam`·`druid_spore`는 같은 방향으로 세 번째 생성하지 않는다. 방향 전환은 총괄 결정 사항이다.
+- 반영(Unity 브랜치에 채택 3키 추가·녹음 v4)은 지시를 받아 진행한다. 이 절은 기록만 한다.
+
 ## 5. 기록
 | 날짜 | 내용 |
 |---|---|
@@ -100,3 +114,4 @@
 | 2026-10-28 | sound-simple 제작: 새 키 15개 x 해석 4개 = 60후보(`<key>_v2a~d`, 카탈로그 `tools/sfx_forge_catalog_druid_v2.json`, 장면 카드·문구 키마다 직접 작성, 목소리 키 꼬리 "old hoarse male voice, no words, no monster roar") + L6 BGM 3곡(ElevenLabs Music `/v1/music` `music_v1` 120초 mp3, A 행진 북 ~100bpm·B 장송곡 ~70bpm·C 질주 ~140bpm, API 정상). 가공 SND-08과 같음(-1dBTP·뒤 무음 정리, 아레나는 크로스페이드 후 RMS -24dBFS). 고르기 `pick_druid.html`(127.0.0.1:3399, `picks_druid.json`) 16카드 63후보, 수치 주의 32개(BGM 원본 피크 3 포함), 헤드리스·음소거 검수 audio 63/63 오류 0·저장·복원 통과. 선택 대기(사용자 청음) |
 | 2026-10-28 | 사용자 고르기 16/16 완료: 채택 11·다시 5(`druid_hit`·`druid_hit_heavy`·`druid_whip`·`druid_slam`·`druid_spore`). §6 기록, 2차 방향 결정, 채택 11키 Unity 연결 지시 |
 | 2026-10-28 | sound-simple 2차 제작: "다시" 5키(`druid_hit`·`druid_hit_heavy`·`druid_whip`·`druid_slam`·`druid_spore`) x §6 2차 방향 4해석 = 20후보(`<key>_v3a~d`, 카탈로그 `tools/sfx_forge_catalog_druid_v3.json`, 1차와 겹치지 않게 피격=살·젖은 천·속 빈 고목+금속 없음 / 채찍=생가지 휙+젖은 찰싹 / 내려찍기=흙덩이·썩은 둥치 착지+진흙 튐 / 포자=마른 꼬투리 푸슉). 가공은 1차와 같되 **35Hz 하이패스(4차)를 먼저 건다**: 생성 원본의 에너지 대부분이 40Hz 아래(예: `druid_hit_v3a` 94%)라 들리지 않는 성분이 −1dBTP 천장을 먹어 들리는 부분이 약 4~10dB 작았다(후보별)(HPF 뒤 피크 −1.7→−9.1dBFS). 고르기 페이지 `pick_druid2.html`(PICKSETS `druid2`, 제출 버튼, 장면=BGM B+채택 아레나 앰비언스), `druid_hit` 4후보 계열 측정은 카드에 표시. 서버 재시작 전이라 `?set=druid2`는 아직 400 |
+| 2026-10-28 | 2차 고르기 결과 기록(§6.1): `druid_hit`=v3d(1개만 채택 → 변형 순환 없이 rate ±6%·연타 감쇠로 감)·`druid_hit_heavy`=v3d·`druid_whip`=v3a 채택, `druid_slam`·`druid_spore`는 2회 연속 전부 안 맞음. a·b 등 나머지는 미사용 |
