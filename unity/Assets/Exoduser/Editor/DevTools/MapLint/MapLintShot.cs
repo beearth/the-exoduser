@@ -164,7 +164,7 @@ namespace Exoduser.DevTools.MapLint
             Swatch(x, y, yellow); Text(x + 60, y, "L2 NAV DIFF CORE " + ex(g("L2"), "coreWalkNavNo") + " NAV " + ex(g("L2"), "navWalkCoreNo"), 4, white); y += 46;
             Swatch(x, y, cyan); Text(x + 60, y, "L3 UNCOVERED ISLAND " + ex(g("L3"), "uncoveredAfterFill") + " TILES " + ex(g("L3"), "uncoveredTilesTotal"), 4, white); y += 56;
             foreach (var c in res.checks) { Text(x, y, c.id + (c.id == "L7" ? "  WARN " + c.count : (c.pass ? "  PASS" : "  FAIL ") + (c.pass ? "" : c.count.ToString())), 4, c.pass ? new Color32(120, 220, 130, 255) : red); y += 36; }
-            y += 20; Text(x, y, originInside ? "PURPLE BOX = WORLD ORIGIN RADIUS" : "WORLD ORIGIN IS OUTSIDE THIS WINDOW", 3, dim); y += 28;
+            y += 20; Text(x, y, res.originPileCount > 0 ? "PURPLE CIRCLE = WORLD ORIGIN PILE (SIZE = COUNT)  X = INTENDED POSITION" : (originInside ? "PURPLE SQUARE = WORLD ORIGIN RADIUS" : "WORLD ORIGIN IS OUTSIDE THIS WINDOW"), 3, dim); y += 28;
             Text(x, y, "TOP VIEW  NORTH UP  1 TILE = " + scale + " PX", 3, dim);
         }
         static string Up(string s) { return (s ?? "").ToUpperInvariant(); }
