@@ -38,6 +38,7 @@
 | 3 | 보이지 않는 벽 (섬 11개 덮임) | `Run` → `Data/rm2_islands.json` (`uncoveredBeforeFill`, `uncoveredAfterFill`) |
 | 4 | 카메라 쪽 가림 — 시선 쐐기 | `Run` → `Data/rm2_wedge.json`(0.9u 초과 덩어리 목록·h·D·cap), `Wedge` → `Data/rm2_wedge_result.json`(캡슐 머리·몸통 가시 여부) + `wedge/rm2_wedge_sheet_NN.png`. START + REP-A·B·C 캡슐 컷은 `Cap` |
 | 5 | `Hero` 렌더링 레이어 사용 0 | `Run` → `Data/rm2_hero_layer.json`(전 렌더러 기본 마스크) |
+| 6 | 렌더된 객체 위치 (RM-3 교훈: 수치 PASS여도 메시가 원점에 쌓일 수 있음) | `Run` → `Data/rm2_render_bounds.json`(World·Blockout 항등 변환, 모든 MeshRenderer 경계 중심이 터레인 창 +6u 안·원점 0개) |
 | — | FPS 3D 켬/끔 | `Fps` → `rm2_fps.json` |
 
 ## 이번 단계에서 뺀 것 (구조 PASS 뒤 룩 단계)
@@ -48,3 +49,9 @@
 ## 알려진 위험
 - 첫 Unity 실행 전이라 Library가 없다(RM-1에서 복사 필요), 컴파일은 확인했으나 런타임 동작(예: NavMesh 굽기 시간, MeshCollider cooking, 터레인 해상도 메모리)은 미확인이다.
 - 쐐기 캡은 풋프린트 가장자리 기준 보수 계산이다. 통과해도 Wedge 캡슐 검사로 따로 확인한다.
+
+## 실행 규칙 (맵 총괄 10-28 사용자 지시 반영)
+- 무창·무음: `run-rm2.ps1`은 `-batchmode`(`-nographics` 없음 = GPU RenderTexture 캡처)·`Start-Process -WindowStyle Hidden`, 빌더 진입점 4개(Run·Capture·Wedge·Fps) 모두 `AudioListener.volume = 0`. `-popupwindow`·전체화면·보조 모니터 창 없음.
+- Unity 잠금: 실행 전에 `I:\EXODUSER-Storage\unity-jobs\_pc_lock.json`을 `CreateNew`로 만들고(owner `rm-2`, pid) 끝나면 `finally`로 지운다. 이미 있으면 기록된 pid가 죽었을 때만 stale로 보고 교체, 아니면 `WAIT`(exit 2). Library를 복사할 원본이 없으면 커밋 여유 30GB, 있으면 20GB.
+- 좌표 패턴 점검(RM-3 "로컬 값을 월드로 넘김"): 빌더의 모든 위치는 월드 값(`SetPositionAndRotation`·월드 좌표 메시 정점)이며 `World`·`Blockout`이 항등 변환이라 맞다. 이 전제를 `RenderBoundsCheck`가 실행 때마다 검사한다.
+- 에디터 캡처는 RM-INT 전까지 참고용이다. 보고에 "런타임 미연결"을 적는다.

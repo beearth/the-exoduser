@@ -117,6 +117,7 @@ namespace Exoduser
 
         public static void Run()
         {
+            AudioListener.volume = 0f;   // no sound from any automated run
             Directory.CreateDirectory(GenDir); Directory.CreateDirectory(Root + "/Materials"); AssetDatabase.Refresh();
             Load(); fps.Clear(); masses.Clear();
             var mats = MakeMaterials();
@@ -137,6 +138,7 @@ namespace Exoduser
             BuildCamera();
             BuildNavMesh(world.transform);
             HeroCheck();
+            RenderBoundsCheck(world.transform, blockout);
             WriteWedge();
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
@@ -543,6 +545,23 @@ namespace Exoduser
             Debug.Log("[RM2] hero layer renderers=" + total + " nonDefault=" + nonDefault);
         }
 
+        // Rendered-object check (RM-3 lesson: footprint / wedge numbers come from the placement data, not from what is drawn; RM-3 passed all numbers while its mushroom meshes piled up at the origin).
+        // Every position in this builder is passed as a WORLD value (SetPositionAndRotation, mesh vertices in world space), which is only right while World and Blockout sit at identity, so that is asserted here;
+        // then every MeshRenderer's world bounds centre must lie inside the terrain window (+6u for hanging cocoons / lean) and none may sit at the origin.
+        static void RenderBoundsCheck(Transform world, Transform blockout)
+        {
+            bool Ident(Transform t) { return t.position.sqrMagnitude < 1e-8f && Quaternion.Angle(t.rotation, Quaternion.identity) < 1e-3f && (t.lossyScale - Vector3.one).sqrMagnitude < 1e-8f; }
+            bool parentsIdentity = Ident(world) && Ident(blockout);
+            float x0 = TX0 * T - 6f, x1 = TX1 * T + 6f, zS = -TY1 * T - 6f, zN = -TY0 * T + 6f; int total = 0, outside = 0, atOrigin = 0; var bad = new List<string>();
+            foreach (var r in UnityEngine.Object.FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None))
+            {
+                total++; var c = r.bounds.center; bool origin = Mathf.Abs(c.x) < 0.5f && Mathf.Abs(c.z) < 0.5f; bool outWin = c.x < x0 || c.x > x1 || c.z < zS || c.z > zN;
+                if (origin) atOrigin++; if (outWin) outside++; if ((origin || outWin) && bad.Count < 40) bad.Add("\"" + r.gameObject.name + "\"");
+            }
+            WriteData("rm2_render_bounds.json", "{\"rule\":\"World and Blockout at identity (all builder positions are world values); every MeshRenderer bounds centre inside the terrain window +6u and none at the origin\",\"parentsIdentity\":" + (parentsIdentity ? "true" : "false") + ",\"renderers\":" + total + ",\"outsideWindow\":" + outside + ",\"atOrigin\":" + atOrigin + ",\"offenders\":[" + string.Join(",", bad) + "]}");
+            if (!parentsIdentity || outside > 0 || atOrigin > 0) Debug.LogError("[RM2] render bounds FAIL parentsIdentity=" + parentsIdentity + " outside=" + outside + " atOrigin=" + atOrigin); else Debug.Log("[RM2] render bounds ok renderers=" + total);
+        }
+
         // ---------------------------------------------------------------- lighting: weak key, light pools (Lights/Pools/Pool_Hell_NN, Pool_Toxic_NN), hell shafts, low fog (same values as RM-1 / RM0-LIGHT defaults)
         static void BuildLighting(Mats mats)
         {
@@ -645,7 +664,7 @@ namespace Exoduser
         public static void Fps()
         {
             var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
-            var outJson = Arg("-out", "rm2-fps.json"); Load(); EditorSceneManager.OpenScene(ScenePath);
+            AudioListener.volume = 0f; var outJson = Arg("-out", "rm2-fps.json"); Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var w0 = W(100.5f, 185.5f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); brain.ManualUpdate();
             var world = GameObject.Find("World"); var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
@@ -677,7 +696,7 @@ namespace Exoduser
         public static void Capture()
         {
             var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
-            var outDir = Arg("-outDir", "rm2-cuts"); Directory.CreateDirectory(outDir);
+            AudioListener.volume = 0f; var outDir = Arg("-outDir", "rm2-cuts"); Directory.CreateDirectory(outDir);
             var cuts = Arg("-cuts", "start,repa,repb,repc").Split(',');
             Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
@@ -722,7 +741,7 @@ namespace Exoduser
         public static void Wedge()
         {
             var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
-            var outDir = Arg("-outDir", "rm2-wedge"); Directory.CreateDirectory(outDir);
+            AudioListener.volume = 0f; var outDir = Arg("-outDir", "rm2-wedge"); Directory.CreateDirectory(outDir);
             Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var wf = JsonUtility.FromJson<WedgeFile>(File.ReadAllText(DataDir + "/rm2_wedge.json"));
