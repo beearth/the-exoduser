@@ -5,7 +5,7 @@ const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_pro
 const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1];};
 const project=path.resolve(arg('--project',path.join(__dirname,'../..'))),out=path.resolve(arg('--out',path.join(__dirname,'runs')));
 const core=path.join(project,'Assets/Exoduser/Runtime/Core');
-const FILES=['EnemyTables.cs','EliteTables.cs','EnemySpawn.cs','EnemySpawn.Tick.cs','EnemySpawn.Hurt.cs','EnemyFactory.cs','JsMath.cs','EnemyHurtContext.cs','EnemyHurtTables.cs','EnemyHurt.cs','EnemyHurt.Body.cs'];
+const FILES=['EnemyTables.cs','EliteTables.cs','EnemySpawn.cs','EnemySpawn.Tick.cs','EnemySpawn.Hurt.cs','EnemyFactory.cs','JsMath.cs','EnemyHurtContext.cs','EnemyHurtTables.cs','EnemyHurt.cs','EnemyHurt.Body.cs','EnemyHurtContext.Death.cs','EnemyHurt.Death.cs'];
 const src={};for(const f of FILES)src[f]=fs.readFileSync(path.join(core,f),'utf8');
 const T='EnemyHurt.cs',B='EnemyHurt.Body.cs';
 const M=[
@@ -291,20 +291,24 @@ const M=[
  [B,'body result drops finalKbM','finalKbM = finalKbM,','finalKbM = kbM,'],
  [T,'ring particle colour fallback changed','At(EnemyHurtTables.ParticleColors, atkEl) ?? "#ffdd44"','At(EnemyHurtTables.ParticleColors, atkEl) ?? "#ffdd45"'],
 ];
-const only=arg('--only',null);const onlySet=only?new Set(only.split(',').map(Number)):null;
+// CX-04c1: mutants of EnemyHurt.Death.cs (death-mutants.cjs: [name, from, to]); they run against oracle-h3.json (made by make-h3-oracle.cjs: H3 + CH3 cases only)
+const D='EnemyHurt.Death.cs';for(const [n,f,t] of require('./death-mutants.cjs'))M.push([D,n,f,t]);
+const onlyFile=arg('--file',null);const only=arg('--only',null);const onlySet=only?new Set(only.split(',').map(Number)):null;
 const results=[];
 M.forEach(([file,name,from,to],i)=>{
  if(onlySet&&!onlySet.has(i))return;
+ if(onlyFile==='D'&&file!==D)return;
+ if(onlyFile==='old'&&file===D)return;
  const n=src[file].split(from).length-1;if(n<1){results.push({i,name,applied:false,note:'pattern not found'});return;}
  const dir=path.join(out,'mut','m'+i);fs.rmSync(dir,{recursive:true,force:true});
  const c2=path.join(dir,'Assets/Exoduser/Runtime/Core');fs.mkdirSync(c2,{recursive:true});
  for(const f of FILES)fs.writeFileSync(path.join(c2,f),f===file?src[f].split(from).join(to):src[f]);
- const r=cp.spawnSync('C:/nvm4w/nodejs/node.exe',[path.join(__dirname,'run.cjs'),'--project',dir,'--out',path.join(out,'mut','o'+i),'--label','mut'],{encoding:'utf8'});
+ const r=cp.spawnSync('C:/nvm4w/nodejs/node.exe',[path.join(__dirname,'run.cjs'),'--project',dir,'--out',path.join(out,'mut','o'+i),'--label','mut'].concat(file===D?['--oracle',path.join(__dirname,arg('--death-oracle','oracle-h3.json'))]:[]),{encoding:'utf8'});
  const m=/ENEMY_HURT_RESULT (\d+) checks \/ (\d+) failures/.exec(r.stdout||'');
  results.push({i,name,applied:true,occurrences:n,checks:m?+m[1]:null,failures:m?+m[2]:null,buildOrRunError:m?undefined:(r.stdout||'').slice(-300)});
  fs.rmSync(dir,{recursive:true,force:true});
 });
 const survived=results.filter(r=>r.applied&&(r.failures===0||r.failures===null));
-fs.writeFileSync(path.join(out,'mutation.json'),JSON.stringify({mutants:results.length,applied:results.filter(r=>r.applied).length,survived:survived.length,notApplied:results.filter(r=>!r.applied).length,results},null,1));
+fs.writeFileSync(path.join(out,arg('--name','mutation')+'.json'),JSON.stringify({mutants:results.length,applied:results.filter(r=>r.applied).length,survived:survived.length,notApplied:results.filter(r=>!r.applied).length,results},null,1));
 for(const r of results)console.log((r.applied?(r.failures>0?'KILLED  ':'SURVIVED'):'NOT-APPLIED'),r.failures,'|',r.name,r.buildOrRunError?'| '+r.buildOrRunError.replace(/\s+/g,' '):'');
 console.log(JSON.stringify({mutants:results.length,applied:results.filter(r=>r.applied).length,survived:survived.length,notApplied:results.filter(r=>!r.applied).length}));

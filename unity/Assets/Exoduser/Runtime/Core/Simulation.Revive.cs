@@ -26,29 +26,12 @@ namespace Exoduser.UnityPort.Core
 
         private void Raise(List<ReviveText> texts) { var h = ReviveTextRaised; if (h != null) foreach (var t in texts) h(t); }
 
-        // hurtE `if(e.hp<=0)`: revive judgement first, then the ordinary kill path.
-        private void OnEnemyZeroHp(EnemyState enemy)
+        // hurtE `if(e.hp<=0)`: the web death part (O-1: EnemyHurt.DeathHead + DeathTail through Simulation.RunWebDeath). ReviveRules.OnZeroHp / SinkOnDeath below are
+        // no longer on this path (kept: shield-revive-oracle still checks them, and ReviveRules.TickCorpse resolves the revives DeathHead reserves).
+        private void OnEnemyZeroHp(EnemyState enemy, EnemyHurtContext context, EnemySpawn web, double? ang, EnemyHurtOpts opts, EnemyHurtBodyResult body)
         {
             if (druidLives.Count > 0 && RemodelZeroHp(enemy)) return;   // RM-B1/B0: a remodelled boss has lives instead of the judged revive
-            var ctx = ReviveCtx();
-            var rr = ReviveRules.OnZeroHp(ctx, enemy);
-            Raise(rr.Texts);
-            if (rr.Revived)
-            {
-                if (rr.Boss != null)
-                {
-                    if (rr.Boss.ShockwaveHitsPlayer)
-                    { // 42677-42681: hurtP(wave) + knockback 12 away from the boss
-                        HurtPlayer((int)rr.Boss.ShockwaveDamage);
-                        double ka = JsMath.Atan2(Player.Y - enemy.Y, Player.X - enemy.X);
-                        Player.KnockbackX += (float)(JsMath.Cos(ka) * 12); Player.KnockbackY += (float)(JsMath.Sin(ka) * 12);
-                    }
-                    var h = BossRevived; if (h != null) h(enemy, rr.Boss);
-                }
-                return;
-            }
-            if (ReviveRules.SinkOnDeath(ctx, enemy)) enemy.SinkDruid = true;
-            KillEnemy(enemy);
+            RunWebDeath(enemy, context, web, ang, opts, body, false);
         }
 
         // update() dead-enemy branch: `else if(e._reviveTimer>0)`
