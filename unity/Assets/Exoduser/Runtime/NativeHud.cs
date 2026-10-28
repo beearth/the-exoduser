@@ -117,7 +117,9 @@ namespace Exoduser.UnityPort
             var old=RenderTexture.active;var rt=RenderTexture.GetTemporary(bar.width,bar.height,0,RenderTextureFormat.ARGB32);
             var copy=new Texture2D(bar.width,bar.height,TextureFormat.RGBA32,false){name="HUD bar with source key glyphs removed",filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
             try{
-                Graphics.Blit(bar,rt);RenderTexture.active=rt;copy.ReadPixels(new Rect(0,0,bar.width,bar.height),0,0);copy.Apply(false,false);
+                if(NativeCpuPixels.UseCpu(bar))copy.SetPixels32(bar.GetPixels32());   // web: no synchronous RenderTexture readback (blank copy -> grey bar); desktop keeps the Blit path below
+                else{Graphics.Blit(bar,rt);RenderTexture.active=rt;copy.ReadPixels(new Rect(0,0,bar.width,bar.height),0,0);}
+                copy.Apply(false,false);
                 var pixels=copy.GetPixels32();var glyph=new bool[pixels.Length];int h=bar.height,w=bar.width;
                 int y0=Mathf.RoundToInt(h*.222f),y1=Mathf.RoundToInt(h*.332f);
                 for(int i=0;i<NativeHudDockLayout.KeyNames.Length;i++){
