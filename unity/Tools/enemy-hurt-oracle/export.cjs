@@ -6,6 +6,8 @@
 //   + original lines 2 .. (anchor line - 1) unchanged
 //   + "return {<top-level locals + the two reassigned parameters>};}finally{_shBufI--}}"
 // A bare `return;` in the original leaves the function with `undefined` (early return); falling off the range returns the locals object.
+// CX-04c1 adds H3a (the death head: `  if(e.hp<=0){` .. the line before "    // ═══ 지옥의 잔해 드롭 ═══"):
+//   "function __H3a(e,ang,noSound,opts,__h){let {<the 22 CX-04b values>}=__h;" + original lines unchanged + "return {__cont:true,<block-level locals>};}return {__cont:false};}"
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),crypto=require('node:crypto');
 const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1];};
 const sourcePath=arg('--source'),outPath=arg('--out',path.join(__dirname,'oracle.json')),headSha=arg('--head','');
@@ -37,6 +39,8 @@ add(stmt('mkEn','function mkEn('));
 add(single('ELP','const ELP='));add(single('_UNDEAD_ET','const _UNDEAD_ET='));add(single('elMul','function elMul('));
 for(const n of ['ar','wp','nc','rg1','rg2'])add(single(n,'function '+n+'(){'));
 add(single('dst','function dst('));
+add(stmt('_HS','const _HS={'));add(single('_diffSigned','const _diffSigned='));add(single('_isSi0DruidSink','function _isSi0DruidSink('));add(single('_druidSinkStart','function _druidSinkStart('));
+add(stmt('_druidFinaleReviveChance','function _druidFinaleReviveChance('));add(single('_r','function _r(v,s){'));add(single('_eMouthXY','function _eMouthXY('));
 add(single('_TXT_BUDGET','const _TXT_BUDGET='));add(stmt('_poiseHit','function _poiseHit('));
 // ---- the hurtE head ----
 const hStart=find('function hurtE(e,dmg,ang,noSound,opts,atkEl=0){'),hEnd=find('  // ═══ 데미지 → HP 직행 ═══');
@@ -72,15 +76,37 @@ const returned2=[...HEAD14,...locals2];
 const H2='function __H2(e,ang,noSound,opts,__h){let {'+HEAD14.join(',')+'}=__h;\n'+body2+'\nreturn {'+returned2.join(',')+'};}';
 if(!compiles(H2))throw Error('H2 wrapper does not compile');
 
+// ---- the hurtE death head (CX-04c1): from the first `  if(e.hp<=0){` (= H2's end anchor) to the line before the drop section ----
+const h3Start=h2End,h3End=find('    // ═══ 지옥의 잔해 드롭 ═══');
+if(h3End<=h3Start)throw Error('H3a end anchor before start');
+const h3Lines=lines.slice(h3Start,h3End);
+if(braceDepth(h3Lines)!==1)throw Error('H3a range must leave the if-block open (depth 1), got '+braceDepth(h3Lines));
+const body3=record('H3a hurtE death head ("  if(e.hp<=0){" .. line before the 잔해 드롭 anchor)',h3Start,h3End-1);
+const locals3=[];{let depth=0,str=null;for(let li=0;li<h3Lines.length;li++){const l=h3Lines[li];const declHere=/^\s*(const|let)\s+([A-Za-z_]\w*)/.exec(l);if(depth===1&&declHere)locals3.push(declHere[2]);
+  for(const m of l.matchAll(/\bvar\s+([A-Za-z_]\w*)/g))if(!locals3.includes(m[1]))locals3.push(m[1]);
+  str=null;for(let i=0;i<l.length;i++){const c=l[i],n=l[i+1];if(str){if(c==='\\'){i++;continue;}if(c===str)str=null;continue;}if(c==='/'&&n==='/')break;if(c==="'"||c==='"'||c==='`'){str=c;continue;}if(c==='{')depth++;else if(c==='}')depth--;}}}
+const H3='function __H3a(e,ang,noSound,opts,__h){let {'+returned2.join(',')+'}=__h;\n'+body3+'\nreturn {__cont:true,'+locals3.join(',')+'};}return {__cont:false};}';
+if(!compiles(H3))throw Error('H3a wrapper does not compile');
+// ---- the hurtE death tail (CX-04c2): from the 잔해 드롭 anchor line to the line before the `  }` that closes `  if(e.hp<=0){` (the line before `  }finally{_shBufI--}`) ----
+const h4Start=h3End;let h4Fin=-1;for(let i=h4Start+1;i<lines.length;i++)if(lines[i].startsWith('  }finally{_shBufI--}')){h4Fin=i;break;}
+if(h4Fin<0)throw Error('H3b end anchor "  }finally{_shBufI--}" not found after the 잔해 드롭 anchor');
+if(lines[h4Fin-1].trim()!=='}')throw Error('H3b: the line before the finally anchor must be the closing brace of if(e.hp<=0){');
+const h4End=h4Fin-2,h4Lines=lines.slice(h4Start,h4End+1);
+if(braceDepth(h4Lines)!==0)throw Error('H3b range braces are not balanced: depth '+braceDepth(h4Lines));
+const body4=record('H3b hurtE death tail (잔해 드롭 anchor .. line before the brace closing if(e.hp<=0))',h4Start,h4End);
+const H4='function __H3b(e,ang,noSound,opts,__h,__d){let {'+returned2.join(',')+'}=__h;let {'+locals3.join(',')+'}=__d;\n'+body4+'\n}';
+if(!compiles(H4))throw Error('H3b wrapper does not compile');
+add(stmt('SLOT_NAMES','const SLOT_NAMES='));add(stmt('POT','const POT={'));add(single('_maliceMul','function _maliceMul('));add(single('_SFX_PRI','const _SFX_PRI='));add(single('_playDruidSfx','function _playDruidSfx('));
+
 // ---- VM ----
 const ctx=vm.createContext({});
 vm.runInContext(`var window=this;var _useGPU=false,_useGL=false,_ESPRITES=[];var P={},G={stage:0,_stageDiffOff:0},OPT={diff:5},_DEMO_MODE=false,_DEMO_LAST_STAGE=0,ens=[],PASSIVES={},INV={equipped:{}},_shBufI=0,_hitSfxCd=0,_now=0;
 var __seq=[],__i=0,__log=[],__vals={},__aff={},__leq={},__ueq={};
 Math.random=function(){if(__i>=__seq.length)throw new Error("random sequence exhausted");return __seq[__i++];};
 function __ser(a){if(a===undefined||a===null)return null;if(typeof a==='object'){const i=ens.indexOf(a);if(i>=0)return {e:i};if(Array.isArray(a))throw new Error('array argument');
-  return {o:Object.keys(a).sort().map(k=>[k,a[k]===undefined?null:a[k]])};}return a;}
+  return {o:Object.keys(a).sort().map(k=>[k,a[k]===undefined?null:(a[k]!==null&&typeof a[k]==='object'?__ser(a[k]):a[k])])};}return a;}
 function __rec(name){const a=[];for(let i=1;i<arguments.length;i++)a.push(__ser(arguments[i]));__log.push([name].concat(a));}
-var __canMv='open';function canMv(x,y,r){__rec('canMv',x,y,r);return __canMv!=='blockAll';}
+var __canMv='open',__cmN=0;function canMv(x,y,r){__rec('canMv',x,y,r);__cmN++;if(__canMv==='blockAll')return false;if(__canMv.startsWith('first'))return __cmN>Number(__canMv.slice(5));if(__canMv.startsWith('only'))return __cmN!==Number(__canMv.slice(4));return true;}
 function _eqAffix(k){__rec('eqAffix',k);return __aff[k]||0;}
 function _lEq(k){__rec('lEq',k);return __leq[k]||0;}
 function _uEq(k){__rec('uEq',k);return __ueq[k]||0;}
@@ -110,13 +136,44 @@ function _addBoom(x,y,r,d,c){__rec('addBoom',x,y,r,d,c);}
 function _tickSkyCrusherRecharge(f){__rec('tickSkyCrusherRecharge',f);}
 var _dpsDmg=0,_txtPerFrame=0,_impPerFrame=0,_uqScCtx,_uqS,VW=1600,VH=900;
 var SFX={block:function(){__rec('sfxBlock');},groggy:function(){__rec('sfxGroggy');}};`,ctx);
+vm.runInContext(`
+var pProjs=[],_shDirty=false,_harpGauge=0,_HARP_GAUGE_MAX=0,_uqHitCtx=null,_uqFzCtx=null,__w3=null;
+function hurtP(){__rec.apply(null,['hurtP'].concat(Array.prototype.slice.call(arguments)));}
+function atkTicketRelease(e){__rec('atkTicketRelease',e);}
+function _regKill(e){__rec('regKill',e);}
+function _petOnKill(e){__rec('petOnKill',e);}
+function _reviveVFX(x,y,c,l,o){__rec('reviveVFX',x,y,c,l,o);}
+function playVFXAng(k,x,y,sc,a,b,f){__rec('playVFXAng',k,x,y,sc,a,b,f);}
+function _addBlastLight(x,y,r,t,cr,cg,cb){__rec('addBlastLight',x,y,r,t,cr,cg,cb);}
+function _addTpBolt(a,b,c,d,w,col){__rec('addTpBolt',a,b,c,d,w,col);}
+function deathFX(x,y,r,col,ib,burn,et,kind){__rec('deathFX',x,y,r,col,ib,burn,et,kind);}
+function _spawnLargeMonsterDeathFx(e,a){__rec('spawnLargeDeathFx',e,a);}
+function _addCorpse(e,a,p){__rec('addCorpse',e,a,p);}
+function _addBurnCorpse(e){__rec('addBurnCorpse',e);}
+function _addGorePiece(x,y,k){__rec('addGorePiece',x,y,k);}
+function _addDeathImpact(x,y,r){__rec('addDeathImpact',x,y,r);}
+function _getPProj(){__rec('getPProj');return {};}
+function _L(ko,en){__rec('L',ko,en);return ko;}
+function _rageMax(){__rec('rageMax');return __w3.rageMax;}
+function buildMapCache(){__rec('buildMapCache');}
+SFX.victory=function(){__rec('sfxVictory');};
+var _critSfxCd=0,__w4=null,__itemN=0;function _bossLine(k){__rec('bossLine',k);}
+function _wiPush(o){__rec('wiPush',o);}
+function magicRef(){__rec('magicRef');return __w4.magicRef;}function statInt(){__rec('statInt');return __w4.statInt;}function pMagicMul(){__rec('pMagicMul');return __w4.pMagicMul;}function _skMul(id){__rec('skMul',id);return __w4.skMul;}
+function eProjAt(e,a,s,m,el,l,c,z){__rec('eProjAt',e,a,s,m,el,l,c,z);}
+function mkItem(s,t,el,r){__rec('mkItem',s,t,el,r);return {stubItem:++__itemN,slot:s,tier:t,el:el,rarity:r};}
+function addPotion(t,n){__rec('addPotion',t,n);return __w4.addPotionOk;}
+function rollDrop(e){__rec('rollDrop',e);}function addExp(){__rec.apply(null,['addExp'].concat(Array.prototype.slice.call(arguments)));}function checkRooms(){__rec('checkRooms');}function dbSaveNow(){__rec('dbSaveNow');}
+SFX.explode=function(){__rec('sfxExplode');};SFX.magicHit=function(){__rec('sfxMagicHit');};SFX.pickup=function(){__rec('sfxPickup');};
+`,ctx);
 for(const b of blocks)vm.runInContext(b,ctx);
-vm.runInContext(H1,ctx);vm.runInContext(H2,ctx);
+vm.runInContext('var __mkEnOrig=mkEn;mkEn=function(x,y,si,et,ib,el,room){__rec("mkEn",x,y,si,et,ib,el,room);return __mkEnOrig.apply(this,arguments);};',ctx);
+vm.runInContext(H1,ctx);vm.runInContext(H2,ctx);vm.runInContext(H3,ctx);vm.runInContext(H4,ctx);
 // numbers JSON cannot carry are recorded as tags so nothing is silently turned into null: {"$n":"NaN"} {"$n":"Infinity"} {"$n":"-Infinity"} {"$n":"-0"}
 const numTag=v=>Number.isNaN(v)?{$n:'NaN'}:v===Infinity?{$n:'Infinity'}:v===-Infinity?{$n:'-Infinity'}:Object.is(v,-0)?{$n:'-0'}:v;
 const plain=o=>JSON.parse(JSON.stringify(o,(k,v)=>ArrayBuffer.isView(v)?Array.from(v):typeof v==='number'?numTag(v):v));
 const get=n=>plain(vm.runInContext(n,ctx));
-const tables={ELC:get('ELC'),ELP:get('ELP'),EL:get('EL'),UNDEAD_ET:get('Array.from(_UNDEAD_ET).sort((a,b)=>a-b)')};
+const tables={POT:get('POT'),ELC:get('ELC'),ELP:get('ELP'),EL:get('EL'),UNDEAD_ET:get('Array.from(_UNDEAD_ET).sort((a,b)=>a-b)')};
 
 // ---- PRNG + base enemies ----
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
@@ -445,48 +502,381 @@ h1Snapshot.forEach((c0)=>{const c=JSON.parse(JSON.stringify(c0));
   if(fc()<0.4){const base=c.args.opts||{};c.args.opts={...base};for(const [k,v] of [['poiseHit',true],['noKB',true],['detonate',true],['noImpact',true],['blueBean',true],['maliceHunt',true],['bladeShard',true],['normalBow',true],['lightning',true]])if(fc()<0.15)c.args.opts[k]=v;}
   if(fc()<0.2)c.leq={...c.leq,_lClubKB:pc([1,2])};
   cases.push(c);});
-// normalise: every case has kind/w2, and sStats always carries the counters H2 touches
-for(const c of cases){c.kind=c.kind||'H1';c.w2=c.w2||defW2();if(c.world.sStats){c.world.sStats={dmgDealt:0,maxHit:0,...c.world.sStats};}}
+// ===== CX-04c1: cases for the hurtE death head (H3a) and chain cases (H1 -> H2 -> H3a, "CH3") =====
+const defW4=()=>({mats:100,chainCnt:0,chainT:0,rifts:[],critSfxCd:0,magicRef:200,statInt:1,pMagicMul:1.5,skMul:2,addPotionOk:true});const W4=o=>({...defW4(),...o});
+const defW3=()=>({stage:0,demoMode:false,demoLast:0,diff:5,optHitStop:100,killedBosses:null,fireZones:null,spawnHoles:[{alive:3},{alive:1},{}],kills:10,stageKills:3,combo:5,comboTimer:100,comboMax:7,gateGuard:true,gateGuardKilled:false,bossGateOpen:false,chromaT:null,blDeathSndQ:null,uqZoneQ:null,shDirty:false,harpGauge:10,harpMax:100,uqHitCtx:null,uqFzCtx:null,rageMax:100});
+const W3=o=>({...defW3(),...o});
+const P3=o=>({x:1000,y:1000,hp:500,mhp:1000,mp:50,mmp:100,iframes:0,eShield:0,eShieldMax:0,st:30,mst:100,s:'idle',lv:100,facing:0.5,rage:10,shield:5,mshield:50,kb:{x:0,y:0},...o});
+const WD=o=>({...defWorld(),P:P3(o||{})});               // death-head world: player with the extra fields
+const B22=o=>({dmg:100,atkEl:0,_shBlocked:false,kbM:1,psM:1,_isPure:false,_cbAf:0,_cbPas:0,_isRageSk:false,_isCrit:false,isBoss:false,finalKbM:1,_isRanged:false,_kbScale:1,...o});
+const ed=o=>({x:1050,y:1000,hp:-10,...o});               // a dead target
+const R72=Array(72).fill(0.5);
+// first-draw lists. Boss revive success: [revive roll, tp angle, pitch, 72 particle draws, companion roll, companion index, angle, distance]
+const FREV=(rev,comp,idx)=>[rev,0.5,0.5,...R72,comp===undefined?0.9:comp,idx===undefined?0.1:idx,0.3,0.4];
+const BOSS='boss si0',BOSS3='boss si3';
+function h3(name,o){const a={ang:0.5,noSound:false,opts:null,...(o.args||{})};const rest={...o};delete rest.args;
+  cases.push({kind:'H3',name:'H3 '+name,base:'etype0',over:ed({}),args:a,head3:B22({}),world:WD({}),w2:defW2(),w3:defW3(),vals:defVals(),aff:{},leq:{},ueq:{},others:[],seed:cases.length+1,first:[0.9],...rest});}
+const bo=o=>ed({_revPts:100,_maxRevPts:150,...o});         // dead boss override
+// --- gate ---
+h3('hp 1 (not dead)',{over:ed({hp:1})});h3('hp 0 (dead)',{over:ed({hp:0})});h3('hp -0.5',{over:ed({hp:-0.5})});h3('hp 0.0001 (not dead)',{over:ed({hp:0.0001})});
+// --- decoy ---
+h3('decoy',{over:ed({_isDecoy:true})});h3('decoy with boss flag and etype 87',{base:BOSS,over:bo({_isDecoy:true,etype:87})});h3('decoy without stage kills',{over:ed({_isDecoy:true}),w3:W3({stageKills:null})});h3('decoy kills 0',{over:ed({_isDecoy:true}),w3:W3({kills:0,stageKills:0})});
+// --- 87 doppelganger ---
+for(const [mhp,rv] of [[1001,false],[1000,false],[1,false],[0.5,false],[1000,true]])h3('87 doppelganger mhp '+mhp+' revived '+rv,{over:ed({etype:87,mhp,_dgRevived:rv,eShield:50,eShieldMax:80,stunned:9,s:'windup',st2:5})});
+h3('87 boss form skips doppelganger? (boss etype 87)',{base:BOSS,over:bo({etype:87}),first:FREV(0.01)});
+// --- boss revive: success grid ---
+for(const [stage,t] of [[0,'hell0'],[3,'finale stage 3 (demo off)'],[5,'hell1'],[10,'hell2'],[14,'hell3'],[21,'hell4'],[26,'hell5'],[31,'hell5 last'],[32,'hell6 first (H7)'],[34,'hell6 last']])
+  for(const deaths of [0,1,2,5])h3('boss revive '+t+' deaths '+deaths,{base:BOSS,over:bo({deaths}),w3:W3({stage}),first:FREV(0.01),world:WD({facing:1.1})});
+for(const [rp,t] of [[100,'plenty'],[11,'11 -> 1'],[10,'10 -> 0 (no revive)'],[9,'9 -> 0'],[20,'20 -> 10'],[0,'0 (already empty)'],[undefined,'undefined']])h3('boss revive points '+t,{base:BOSS,over:bo({_revPts:rp,deaths:1}),first:FREV(0.01)});
+for(const [sup,t] of [[0,'none'],[0.1,'0.1 -> +3'],[0.29,'0.29 -> +4'],[0.3,'0.3 -> +5'],[0.5,'0.5 -> capped +5'],[1.5,'1.5 -> revCh 0.5']])
+  for(const hp of [1000,999])h3('boss revive suppress '+t+' player hp '+hp,{base:BOSS,over:bo({deaths:1}),aff:{antiRevive:sup},world:WD({hp}),first:FREV(0.01)});
+for(const r of [0.4999999,0.5,0.5000001])h3('boss revive roll '+r+' vs revCh 0.5',{base:BOSS,over:bo({deaths:0}),aff:{antiRevive:1.5},first:FREV(r)});
+for(const r of [0.6499999,0.65,0.6500001])h3('boss revive roll '+r+' vs revCh 0.65 (deaths 10)',{base:BOSS,over:bo({deaths:9}),first:FREV(r)});
+h3('boss revive roll fails (revCh 0)',{base:BOSS,over:bo({deaths:0}),aff:{antiRevive:3},first:[0.0001,0.9,0.5]});
+for(const [zone,t] of [[{type:'holyPrison',x:1050,y:1000,r:50,lv:1},'in zone lv1'],[{type:'holyPrison',x:1050,y:1000,r:50,lv:10},'in zone lv10'],[{type:'holyPrison',x:1050,y:1000,r:50},'in zone lv undefined'],[{type:'holyPrison',x:1050,y:1000,r:0.5,lv:1},'zone too small'],[{type:'holyPrison',x:1100,y:1000,r:50,lv:1},'zone edge exactly 50 (not <)'],[{type:'fireWall',x:1050,y:1000,r:50,lv:1},'other zone type']])
+  h3('boss revive holy prison '+t,{base:BOSS,over:bo({deaths:1}),w3:W3({fireZones:[zone]}),first:FREV(0.01)});
+h3('boss revive two zones: first match breaks',{base:BOSS,over:bo({deaths:1}),w3:W3({fireZones:[{type:'holyPrison',x:1050,y:1000,r:50,lv:1},{type:'holyPrison',x:1050,y:1000,r:50,lv:10}]}),first:FREV(0.01)});
+h3('boss revive fireZones empty array',{base:BOSS,over:bo({deaths:1}),w3:W3({fireZones:[]}),first:FREV(0.01)});
+// revive state changes
+h3('boss revive state: maxPoise 333 poise 7 speed cap 1.6',{base:BOSS,over:bo({deaths:1,maxPoise:333,poise:7,speed:1.4,atk:101,bossPatCd:80,_bossPhase:3,_comboIdx:2,_feinting:true,_delaying:4,eShield:9,eShieldMax:9,stunned:40}),first:FREV(0.01)});
+h3('boss revive state: H7 speed cap 2.0 bossPatCd floor 20',{base:BOSS,over:bo({deaths:1,speed:1.9,bossPatCd:30,atk:101}),w3:W3({stage:32}),first:FREV(0.01)});
+h3('boss revive state: bossPatCd 100 -> 70',{base:BOSS,over:bo({deaths:1,bossPatCd:100}),first:FREV(0.01)});
+h3('boss revive state: bossPatCd 70 -> 60 floor',{base:BOSS,over:bo({deaths:1,bossPatCd:70}),first:FREV(0.01)});
+h3('boss revive state: bossPatCd 40 -> 60 (floor raises)',{base:BOSS,over:bo({deaths:1,bossPatCd:40}),first:FREV(0.01)});
+h3('boss revive state: speed low stays x1.25',{base:BOSS,over:bo({deaths:1,speed:1.0}),first:FREV(0.01)});
+for(const [orig,rp,mrp,t] of [[undefined,100,150,'origR unset'],[40,100,150,'origR kept 40'],[0,100,150,'origR 0 -> reset'],[30,15,150,'scale floor 0.4'],[30,60,150,'scale 0.4'],[30,61,150,'scale just over 0.4'],[30,100,0,'maxRevPts 0 -> 150'],[30,160,150,'scale > 1'],[12,100,150,'radius floor 10 (r*scale<10)']])
+  h3('boss revive shrink '+t,{base:BOSS,over:bo({deaths:1,_origR:orig,_revPts:rp+10,_maxRevPts:mrp,r:30}),first:FREV(0.01)});
+h3('boss revive shrink no text when scale 1',{base:BOSS,over:bo({deaths:1,_origR:30,_revPts:260,_maxRevPts:150,r:30}),first:FREV(0.01)});
+// teleport
+for(const [rule,t] of [['open','free'],['first1','first spot blocked'],['first2','first two blocked'],['first3','three blocked'],['blockAll','all blocked']])h3('boss revive teleport '+t,{base:BOSS,over:bo({deaths:1}),w2:W2({canMv:rule}),first:FREV(0.01)});
+for(const [dx,dy,t] of [[0,0,'on top of the player'],[50,0,'near'],[159,0,'just inside'],[160,0,'exactly at the wave radius'],[161,0,'just outside']])h3('boss revive shockwave '+t,{base:BOSS,over:bo({deaths:1,x:1000+dx,y:1000+dy,r:20}),w2:W2({canMv:'blockAll'}),first:FREV(0.01),world:WD({facing:3.14159})});
+for(const [ifr,s,t] of [[0,'idle','hit'],[1,'idle','iframes'],[0,'charge','charging'],[-1,'idle','negative iframes']])h3('boss revive shockwave player '+t,{base:BOSS,over:bo({deaths:1,x:1020,y:1000}),world:WD({iframes:ifr,s,facing:3.14159}),w2:W2({canMv:'blockAll'}),first:FREV(0.01)});
+h3('boss revive shockwave knockback accumulates',{base:BOSS,over:bo({deaths:1,x:1020,y:1000}),world:WD({kb:{x:3,y:-2},facing:3.14159}),w2:W2({canMv:'blockAll'}),first:FREV(0.01)});
+h3('boss revive facing undefined (NaN position)',{base:BOSS,over:bo({deaths:1}),world:WD({facing:undefined}),first:FREV(0.01)});
+// anger burst + companion
+for(const deaths of [1,2,3,6])for(const el of [undefined,0,2])h3('boss revive anger burst deaths '+deaths+' el '+el,{base:BOSS,over:bo({deaths:deaths-1,el,atk:100.7,r:18,facing:1}),first:FREV(0.01)});
+h3('boss revive anger burst: boss r 0 and facing 0 (mouth offset fallbacks)',{base:BOSS,over:bo({deaths:1,r:0,facing:0,atk:50}),first:FREV(0.01)});
+for(const [kb,comp,idx,t] of [[[],0.05,0.1,'empty list'],[[3],0.05,0.1,'only itself (etype filtered)'],[[3,5],0.05,0.1,'one other'],[[5,6,7],0.05,0,'idx 0'],[[5,6,7],0.05,0.5,'idx 0.5 -> 1'],[[5,6,7],0.05,0.9999,'idx last'],[[5,6,7],0.1,0.1,'roll exactly 0.1 (no)'],[[5,6,7],0.0999999,0.1,'roll just under'],[[5,6,7],0.9,0.1,'roll over'],[null,0.01,0.1,'undefined list']])
+  h3('boss revive companion '+t,{base:BOSS,over:bo({deaths:1,etype:3,x:1050,y:1000,mhp:777,atk:90}),w3:W3({killedBosses:kb}),first:FREV(0.01,comp,idx),w2:W2({canMv:'open'})});
+for(const rule of ['first1','first2','first3','first4'])h3('boss revive companion with blocked spots '+rule,{base:BOSS,over:bo({deaths:1,etype:3,mhp:777,atk:90}),w3:W3({killedBosses:[5,6]}),first:FREV(0.01,0.05,0.3),w2:W2({canMv:rule})});
+h3('boss revive companion stage 5',{base:BOSS,over:bo({deaths:1,etype:3,mhp:777,atk:91}),w3:W3({stage:5,killedBosses:[5,6]}),first:FREV(0.01,0.05,0.3)});
+h3('boss revive companion odd mhp',{base:BOSS,over:bo({deaths:1,etype:3,mhp:1001,atk:91}),w3:W3({killedBosses:[9]}),first:FREV(0.01,0.05,0.3)});
+// --- druid finale (demo last stage 3) ---
+for(const [deaths,sup,rp,t] of [[0,0,100,'first death'],[0,0.4,100,'suppress 0.4'],[0,1.2,100,'suppress > 1'],[1,0,100,'second death (chance 0)'],[0,0,10,'points exhausted'],[0,0,11,'points left 1']])
+  h3('druid finale '+t,{base:BOSS3,over:bo({deaths,_revPts:rp}),w3:W3({stage:3,demoMode:true,demoLast:3}),aff:{antiRevive:sup},first:[0.2,0.7,0.5]});
+h3('druid finale: demo mode off at stage 3',{base:BOSS3,over:bo({deaths:0}),w3:W3({stage:3,demoMode:false,demoLast:3}),first:FREV(0.01)});
+h3('druid finale: demo last stage differs',{base:BOSS3,over:bo({deaths:0}),w3:W3({stage:3,demoMode:true,demoLast:4}),first:FREV(0.01)});
+h3('druid finale: stage 2 (not finale)',{base:BOSS3,over:bo({deaths:0}),w3:W3({stage:2,demoMode:true,demoLast:2}),first:FREV(0.01)});
+h3('druid finale: non-boss',{over:ed({}),w3:W3({stage:3,demoMode:true,demoLast:3}),first:[0.5]});
+h3('druid finale: judged already',{base:BOSS3,over:bo({deaths:0,_bossRevJudged:true,_bossRevived:true,_reviveTimer:100,_bossRevRoll:0.1,_bossRevChance:0.9}),w3:W3({stage:3,demoMode:true,demoLast:3})});
+// --- si0 druid sink (STY-D9) ---
+for(const [stage,fm,t] of [[0,undefined,'stage 0 plain boss'],[0,'fb','stage 0 with _fmKind'],[0,'','stage 0 empty _fmKind'],[1,undefined,'stage 1'],[2,undefined,'stage 2'],[3,undefined,'stage 3']])
+  for(const sup of [0,3])h3('sink '+t+' suppress '+sup,{base:BOSS,over:bo({deaths:0,_fmKind:fm,_revPts:100}),w3:W3({stage}),aff:{antiRevive:sup},first:[0.9,0.5,0.5,0.5,0.5]});
+for(const [rp,t] of [[10,'points exhausted'],[100,'points left']])
+  h3('sink points '+t+' roll fails',{base:BOSS,over:bo({deaths:0,_revPts:rp}),aff:{antiRevive:3},first:[0.9,0.5,0.5,0.5,0.5]});
+for(const [judged,timer,rev,roll,chance,t] of [[true,100,true,0.1,0.9,'timer, roll under chance -> not sink'],[true,100,true,0.9,0.1,'timer, roll over chance -> sink'],[true,100,true,0.5,0.5,'roll equals chance -> sink'],[true,0,true,0.1,0.9,'timer 0 -> sink'],[true,100,false,0.1,0.9,'not _bossRevived -> sink'],[true,100,true,undefined,0.9,'roll undefined -> 1 -> sink'],[true,100,true,0.1,undefined,'chance undefined -> 0 -> sink'],[true,undefined,true,0.1,0.9,'timer undefined -> sink'],[true,-5,true,0.1,0.9,'timer negative'],[true,100,true,0,0.0001,'roll 0 chance tiny -> not sink']])
+  h3('sink resolved: '+t,{base:BOSS,over:bo({deaths:5,_bossRevJudged:judged,_reviveTimer:timer,_bossRevived:rev,_bossRevRoll:roll,_bossRevChance:chance,_revPts:0}),aff:{antiRevive:0},first:[0.9]});
+h3('sink judge block draws roll under chance (timer 180) -> not sink',{base:BOSS,over:bo({deaths:0,_revPts:100}),aff:{antiRevive:1.5},first:[0.9,0.0001,0.5]});
+h3('sink: boss blastKill sink',{base:BOSS,over:bo({deaths:0,_revPts:5}),args:{opts:{_blastKill:true}},w3:W3({blDeathSndQ:[]}),first:[0.5,0.5,0.5]});
+h3('sink: whirlwind kill',{base:BOSS,over:bo({deaths:0,_revPts:5}),world:WD({s:'whirlwind'}),first:[0.5,0.5]});
+h3('sink: burn death skipped',{base:BOSS,over:bo({deaths:0,_revPts:5}),head3:B22({atkEl:1}),first:[0.5,0.5]});
+// --- boss death texts (non-revive) ---
+for(const [rp,sup,t] of [[10,0,'points exhausted'],[100,0,'points left, no suppress'],[100,0.1,'suppress'],[100,3,'huge suppress']])
+  for(const stage of [0,2])h3('boss death texts '+t+' stage '+stage,{base:BOSS,over:bo({deaths:0,_revPts:rp}),w3:W3({stage}),aff:{antiRevive:sup},first:[0.99,0.5,0.5,0.5]});
+h3('boss death text: already judged and not sink (stage 2)',{base:BOSS,over:bo({deaths:0,_bossRevJudged:true}),w3:W3({stage:2}),aff:{antiRevive:3},first:[0.99,0.5,0.5]});
+h3('boss death text: already judged, stage 0 sink hides text',{base:BOSS,over:bo({deaths:0,_bossRevJudged:true}),w3:W3({stage:0}),aff:{antiRevive:3},first:[0.99,0.5,0.5]});
+h3('boss death text: exhausted and stage 0 hides',{base:BOSS,over:bo({deaths:0,_revPts:5}),first:[0.99,0.5,0.5]});
+// --- normal-mob revive ---
+for(const [elite,lv] of [[0,1],[0,99],[0,100],[0,199],[0,200],[0,0],[1,50],[2,50],[3,50],[2,350],[1,1000],[0,150.5]])
+  for(const r of [0.1,0.99])h3('mob revive elite '+elite+' lv '+lv+' roll '+r,{over:ed({elite,lv}),first:[r,0.3,0.5,0.5]});
+for(const [sup,elite] of [[0,0],[0.2,0],[0.5,0],[0.6,2],[0.7,2],[0.45,0],[0.49,0]])for(const r of [0.0001,0.5])h3('mob revive suppress '+sup+' elite '+elite+' roll '+r,{over:ed({elite}),aff:{antiRevive:sup},first:[r,0.3,0.5,0.5]});
+for(const [pt,fr,t] of [[0.3,0.4999999,'ghoul roll just under 0.5'],[0.3,0.5,'ghoul roll 0.5'],[0.3,0.5000001,'ghoul roll over']])h3('mob revive '+t,{over:ed({}),first:[0.1,fr,0.5]});
+for(const r of [0.4999999,0.5,0.5000001])h3('mob revive roll '+r+' vs 0.5',{over:ed({}),first:[r,0.3,0.5]});
+h3('mob revive already revived',{over:ed({_revived:true}),first:[0.1,0.3,0.5]});h3('mob revive ghoul flag',{over:ed({_isGhoul:true}),first:[0.1,0.3,0.5]});h3('mob revive ghoul flag false',{over:ed({_isGhoul:false}),first:[0.1,0.3,0.5]});
+for(const [zone,t] of [[{type:'holyPrison',x:1050,y:1000,r:50,lv:1},'zone lv1'],[{type:'holyPrison',x:1050,y:1000,r:50,lv:10},'zone lv10'],[{type:'holyPrison',x:1050,y:1000,r:50},'zone lv undefined']])
+  for(const elite of [0,2])h3('mob revive holy prison '+t+' elite '+elite,{over:ed({elite}),w3:W3({fireZones:[zone]}),first:[0.3,0.3,0.5]});
+h3('mob revive elite revive timer 120',{over:ed({elite:1}),first:[0.1,0.3,0.5]});h3('mob revive sets reviveX reviveY',{over:ed({x:1234.5,y:999.25}),first:[0.1,0.3,0.5]});
+// --- killSlayer / On-Kill affixes ---
+h3('killSlayer',{aff:{killSlayer:0.37}});h3('killSlayer zero',{aff:{killSlayer:0}});
+for(const [k,v] of [['onKillHeal',30],['hpOnKill',40],['onKillMana',20],['onKillStam',25],['shieldOnKill',15],['onKillSpeed',0.3]])h3('on-kill '+k,{aff:{[k]:v}});
+h3('on-kill heal both sources',{aff:{onKillHeal:30,hpOnKill:40}});h3('on-kill heal capped',{aff:{onKillHeal:500},world:WD({hp:900,mhp:1000})});h3('on-kill mana capped',{aff:{onKillMana:500},world:WD({mp:90,mmp:100})});h3('on-kill stamina capped',{aff:{onKillStam:500},world:WD({st:90,mst:100})});h3('on-kill shield capped',{aff:{shieldOnKill:500},world:WD({shield:40,mshield:50})});
+h3('on-kill stamina undefined (NaN)',{aff:{onKillStam:20},world:WD({st:undefined})});h3('on-kill stamina max undefined (NaN)',{aff:{onKillStam:20},world:WD({mst:undefined})});h3('on-kill shield undefined (NaN)',{aff:{shieldOnKill:20},world:WD({shield:undefined})});h3('on-kill shield max undefined (NaN)',{aff:{shieldOnKill:20},world:WD({mshield:undefined})});
+// --- unique on-kill ---
+for(const [v,t] of [[0.3,'0.3'],[1,'1']])h3('mace explode '+t,{ueq:{_uMaceExplode:v},over:ed({mhp:1000}),others:[other('etype0',{x:1100,y:1000}),other('etype0',{x:1140,y:1000}),other('etype0',{x:1200,y:1000}),other('etype0',{x:1080,y:1000,alive:false})]});
+h3('mace explode: none nearby',{ueq:{_uMaceExplode:0.3},over:ed({mhp:1000})});h3('mace explode: mhp fractional',{ueq:{_uMaceExplode:0.3},over:ed({mhp:333.7}),others:[other('etype0',{x:1100,y:1000})]});
+h3('mace explode: edge 150',{ueq:{_uMaceExplode:0.3},over:ed({x:1000,y:1000}),others:[other('etype0',{x:1150,y:1000}),other('etype0',{x:1150.5,y:1000})]});
+for(const [gw,pt,fuel,refund,hg,t] of [[1200,1000,1,0,10,'ok'],[1000,1000,1,0,10,'expired exactly now'],[999,1000,1,0,10,'expired'],[0,1000,1,0,10,'no mark'],[1200,1000,0,0,10,'fuel 0'],[1200,1000,1,27,10,'refund at cap'],[1200,1000,1,26.5,10,'refund 26.5'],[1200,1000,2,0,10,'fuel 2 caps at 27'],[1200,1000,1,0,95,'gauge capped'],[1200,undefined,1,0,10,'playTime undefined'],[1200,0,1,0,10,'playTime 0'],[undefined,1000,1,0,10,'mark undefined']])
+  h3('ghost fuel '+t,{over:ed({_uqGwExp:gw}),world:{...WD({}),playTime:pt},ueq:{_uGhostFuel:fuel},w2:W2({uqS:{gwRefund:refund}}),w3:W3({harpGauge:hg,harpMax:100})});
+h3('ghost fuel: gwRefund undefined',{over:ed({_uqGwExp:1200}),ueq:{_uGhostFuel:1},w2:W2({uqS:{}})});
+for(const [ctx0,bleed,bleedT,used,v,t] of [['chainSlash',1,0,false,0.5,'bleed'],['chainSlash',0,5,false,0.5,'bleedT'],['chainSlash',0,0,false,0.5,'no bleed'],['chainSlash',1,0,true,0.5,'already used'],['chainSlash',1,0,false,0,'value 0'],['other',1,0,false,0.5,'other ctx'],[null,1,0,false,0.5,'no ctx'],['chainSlash',-1,0,false,0.5,'negative bleed'],['chainSlash',0,-1,false,0.5,'negative bleedT']])
+  h3('chain echo '+t,{over:ed({bleed,bleedT}),w3:W3({uqHitCtx:ctx0}),w2:W2({uqS:{csEchoUsed:used?true:undefined}}),ueq:{_uChainBleedEcho:v},head3:B22({dmg:200.7}),others:[other('etype0',{x:1300,y:1000}),other('etype0',{x:1100,y:1000}),other('etype0',{x:1200,y:1000,alive:false})]});
+h3('chain echo: no targets',{over:ed({bleed:1}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[]});
+h3('chain echo: target edge 600 not included',{over:ed({bleed:1,x:1000,y:1000}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[other('etype0',{x:1600,y:1000}),other('etype0',{x:1599.5,y:1000})]});
+h3('chain echo: tie keeps first',{over:ed({bleed:1,x:1000,y:1000}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[other('etype0',{x:1100,y:1000}),other('etype0',{x:900,y:1000})]});
+h3('chain echo: dmg tiny -> min 1',{over:ed({bleed:1}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.001},head3:B22({dmg:3}),others:[other('etype0',{x:1100,y:1000})]});
+h3('chain echo: another uniq projectile already queued',{over:ed({bleed:1}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[other('etype0',{x:1100,y:1000})]});
+for(const [ft,ch,sp,off,dm,lv,t] of [['spikeTrap',undefined,undefined,undefined,100,3,'ok'],['spikeTrap',true,undefined,undefined,100,3,'child'],['spikeTrap',undefined,true,undefined,100,3,'pillar'],['spikeTrap',undefined,undefined,true,100,3,'already spawned'],['other',undefined,undefined,undefined,100,3,'other type'],['spikeTrap',undefined,undefined,undefined,100,undefined,'lv undefined'],['spikeTrap',undefined,undefined,undefined,undefined,3,'dmg undefined'],['spikeTrap',false,false,false,100,0,'flags false, lv 0'],['spikeTrap',undefined,undefined,undefined,0.3,3,'tiny dmg']])
+  for(const q of [null,[{x:1,y:1,r:5,t:0,maxT:10,dmg:3,el:0,lv:1,type:'spikeTrap',_uqChild:false}]])h3('trap offshoot '+t+(q?' with queue':''),{over:ed({}),w3:W3({uqFzCtx:{type:ft,_uqChild:ch,_pillarSpike:sp,_uqSpawned:off,dmg:dm,lv},uqZoneQ:q}),ueq:{_uTrapOffshoot:0.5}});
+h3('trap offshoot: value 0',{w3:W3({uqFzCtx:{type:'spikeTrap',dmg:100,lv:3}}),ueq:{}});h3('trap offshoot: no ctx',{w3:W3({uqFzCtx:null}),ueq:{_uTrapOffshoot:0.5}});
+// --- legendary on-kill ---
+h3('legend dagger',{leq:{_lDaggerKill:1},world:WD({_okSpdBuff:300,_okSpdMul:0.7})});h3('legend dagger lower existing',{leq:{_lDaggerKill:1},world:WD({_okSpdBuff:10,_okSpdMul:0.1})});h3('legend dagger fresh',{leq:{_lDaggerKill:1},world:WD({_okSpdBuff:undefined,_okSpdMul:undefined})});
+h3('legend dagger plus speed affix',{leq:{_lDaggerKill:1},aff:{onKillSpeed:0.9}});
+for(const [rage,lv,rm,t] of [[10,0.05,100,'basic'],[99,0.05,100,'capped'],[10,0.0001,100,'min 1'],[10,0.5,333,'big max'],[undefined,0.05,100,'rage undefined (NaN)'],[10,0.05,undefined,'rageMax undefined (NaN)']])h3('legend ring '+t,{leq:{_lRingKill:lv},world:WD({rage}),w3:W3({rageMax:rm})});
+// --- death effects ---
+for(const atkEl of [0,1,2])for(const [o,t] of [[null,'no opts'],[{},'empty opts'],[{beam:true},'beam'],[{beam:false},'beam false'],[{explode:true},'explode'],[{beam:true,explode:true},'beam+explode'],[{explode:false,beam:true},'beam, explode false'],[{detonate:true},'detonate']])
+  for(const wh of [false,true])h3('burn/whirl atkEl '+atkEl+' '+t+(wh?' whirlwind':''),{args:{opts:o},head3:B22({atkEl}),world:WD({s:wh?'whirlwind':'idle'}),first:[0.9,0.5,0.5,0.5,0.5,0.5]});
+for(const r of [0,0.3333,0.3334,0.6666,0.6667,0.99999])h3('beam fire death pick roll '+r,{args:{opts:{beam:true}},over:ed({_revived:true}),first:[r,0.5,0.5,0.5,0.5,0.5]});
+h3('burn death fire_hit (atkEl 1)',{head3:B22({atkEl:1}),first:[0.5,0.5,0.5,0.5]});
+for(const [er,t] of [[10,'r 10'],[18,'r 18'],[17.99,'r 17.99'],[0,'r 0'],[100,'r 100']])h3('burn death vfx scale '+t,{head3:B22({atkEl:1}),over:ed({r:er})});
+for(const [kd,ib,et,t] of [[true,false,5,'mob slime'],[true,false,10,'mob demon etype 10'],[true,true,5,'boss'],[true,false,9.5,'etype 9.5']])
+  for(const q of [[],null])h3('blastKill '+t+(q?' queue':' no queue'),{args:{opts:{_blastKill:kd}},base:ib?BOSS:'etype0',over:ed({etype:et,_revPts:5,deaths:0}),w3:W3({blDeathSndQ:q}),first:[0.99,0.5,0.5,0.5,0.5,0.5]});
+h3('blastKill false',{args:{opts:{_blastKill:false}},w3:W3({blDeathSndQ:[]})});h3('blastKill with burn',{args:{opts:{_blastKill:true,beam:true}},w3:W3({blDeathSndQ:[]}),head3:B22({atkEl:1})});
+for(const [nh,hs,t] of [[null,100,'no timer'],[0,100,'timer 0'],[1,100,'timer 1'],[-1,100,'timer negative']])h3('hit stop '+t,{w2:W2({noHitStopT:nh,hitStop:7}),w3:W3({optHitStop:hs})});
+for(const hs of [0,25,100,137,250,9999])h3('hit stop OPT.hitStop '+hs,{w3:W3({optHitStop:hs})});
+for(const [combo,timer,max,ib,t] of [[5,100,7,false,'basic'],[5,1190,7,false,'timer cap'],[5,1140,7,false,'timer 1140 -> 1200'],[5,1139,7,false,'timer 1139'],[5,100,3,false,'new max'],[5,100,6,false,'combo equals max after ++'],[5,100,5,false,'combo below max'],[5,0,7,true,'boss'],[5,500,7,true,'boss timer 500'],[5,100,7,true,'boss cap'],[998,100,7,false,'998'],[999,100,7,false,'999 -> 1000 text'],[1999,100,7,false,'1999 -> 2000'],[2998,100,7,false,'2998 -> 2999 none'],[999,100,7,true,'boss 999 -> 1000'],[9999,100,7,false,'9999 -> 10000']])
+  h3('combo '+t,{base:ib?BOSS:'etype0',over:ed({_revPts:5,deaths:0}),w3:W3({combo,comboTimer:timer,comboMax:max}),first:[0.99,0.5,0.5,0.5,0.5]});
+for(const [diff,t] of [[5,'diff 5'],[9,'diff 9'],[10,'diff 10'],[2,'diff 2 (negative signed)'],[0,'diff 0'],[null,'diff undefined'],[5.5,'diff 5.5'],[7.3,'diff 7.3']])for(const combo of [999,4999,29999])h3('combo bonus text '+t+' combo '+combo,{w3:W3({combo,diff})});
+for(const [ang,t] of [[undefined,'no angle (atan2 from player)'],[0,'angle 0'],[1.234,'angle 1.234'],[-3,'angle -3']])h3('kill angle '+t,{args:{ang},over:ed({x:1050,y:1030})});
+h3('kill angle on top of the player',{args:{ang:undefined},over:ed({x:1000,y:1000})});
+for(const [dmg,mhp] of [[100,1000],[100,0.5],[100,0],[1e9,10],[0,10],[250,100]])h3('corpse power dmg '+dmg+' mhp '+mhp,{head3:B22({dmg}),over:ed({mhp})});
+for(const [r,pk,rare,second,t] of [[10,0.7999999,0,0,'common'],[10,0.8,0.5,0,'rare roll 0.8'],[10,0.8000001,0.99999,0,'rare last'],[18,0.1,0.1,0.4999999,'big (r 18) intestine'],[18,0.1,0.1,0.5,'big organ'],[17.99,0.1,0.1,0.1,'small'],[10,0.1,0.9999,0.1,'common last']])
+  h3('gore '+t,{over:ed({r,_revived:true}),first:[pk,rare,second,0.5,0.5]});
+h3('gore boss big piece',{base:BOSS,over:bo({r:10,_revPts:5}),first:[0.99,0.5,0.8,0.2,0.2]});
+// --- spawn holes ---
+for(const [fh,t] of [[0,'hole 0'],[1,'hole 1'],[2,'hole without alive field'],[3,'hole out of range'],[1.5,'hole fractional'],[undefined,'no hole'],[-1,'hole negative']])h3('spawn '+t,{over:ed({_fromHole:fh})});
+h3('spawn hole list empty',{over:ed({_fromHole:0}),w3:W3({spawnHoles:[]})});
+// --- gate guard ---
+h3('gate guard',{over:ed({_isGateGuard:true,r:30}),first:[0.5,0.5,0.5,0.5,0.5,...Array(60).fill(0.4)]});h3('gate guard boss',{base:BOSS,over:bo({_isGateGuard:true,deaths:0,_revPts:5}),first:[0.99,0.5,0.5,0.5,0.5,...Array(60).fill(0.4)]});h3('gate guard false',{over:ed({_isGateGuard:false})});
+h3('gate guard flags already set',{over:ed({_isGateGuard:true}),w3:W3({gateGuard:false,gateGuardKilled:true,bossGateOpen:true,shDirty:true})});
+// --- lethal revive combinations ---
+h3('boss revive then nothing else (return keeps kills)',{base:BOSS,over:bo({deaths:1}),w3:W3({kills:77,combo:9}),first:FREV(0.01),aff:{killSlayer:0.5,onKillHeal:50},leq:{_lDaggerKill:1}});
+h3('doppelganger revive keeps kills',{over:ed({etype:87}),w3:W3({kills:77,combo:9}),aff:{killSlayer:0.5,onKillHeal:50}});
+h3('decoy ignores kill rewards',{over:ed({_isDecoy:true}),w3:W3({kills:77,combo:9}),aff:{killSlayer:0.5,onKillHeal:50},leq:{_lDaggerKill:1}});
+// --- boundary cases added after the first mutation pass (each kills a mutant the grid let survive) ---
+for(const st of [32.5,-1,35,100,1.5])h3('stage '+st+' (no STG entry or fractional)',{base:BOSS,over:bo({deaths:1}),w3:W3({stage:st}),first:FREV(0.01)});
+h3('decoy flag false (normal death continues)',{over:ed({_isDecoy:false})});
+h3('boss revive roll vs revCh 0.8 (suppress 1.2) pct 80',{base:BOSS,over:bo({deaths:0}),aff:{antiRevive:1.2},first:FREV(0.01)});
+h3('boss revive pct 50 exactly (suppress 1.5)',{base:BOSS,over:bo({deaths:0}),aff:{antiRevive:1.5},first:FREV(0.01)});
+h3('boss revive maxRevPts 0.5',{base:BOSS,over:bo({deaths:1,_maxRevPts:0.5,_revPts:80}),first:FREV(0.01)});
+h3('boss revive maxRevPts 1.5',{base:BOSS,over:bo({deaths:1,_maxRevPts:1.5,_revPts:80}),first:FREV(0.01)});
+h3('on-kill with player hp above max (no affix)',{world:WD({hp:1200,mhp:1000,mp:150,mmp:100,st:150,mst:100,shield:70,mshield:50})});
+h3('on-kill with player hp above max (with affixes)',{aff:{onKillHeal:5,onKillMana:5,onKillStam:5,shieldOnKill:5,onKillSpeed:0.2},world:WD({hp:1200,mhp:1000,mp:150,mmp:100,st:150,mst:100,shield:70,mshield:50})});
+h3('boss revive player at full hp above max',{base:BOSS,over:bo({deaths:1}),world:WD({hp:1200,mhp:1000}),first:FREV(0.01)});
+h3('boss revive with elite/lv fields on the boss',{base:BOSS,over:bo({deaths:1,elite:2,lv:900}),first:FREV(0.01)});
+h3('boss death with druid finale chance and suppress above 1',{base:BOSS3,over:bo({deaths:0,_revPts:100}),w3:W3({stage:3,demoMode:true,demoLast:3}),aff:{antiRevive:1.0},first:[0.3,0.5]});
+h3('boss death with druid finale and suppress exactly 1 (chance 0)',{base:BOSS3,over:bo({deaths:0,_revPts:100}),w3:W3({stage:3,demoMode:true,demoLast:3}),aff:{antiRevive:1.0},first:[0.3,0.5]});
+h3('boss death druid finale deaths already 1 (second death)',{base:BOSS3,over:bo({deaths:1,_revPts:100}),w3:W3({stage:3,demoMode:true,demoLast:3}),first:[0.3,0.5]});
+h3('boss death druid finale deaths 1 revPts exhausted',{base:BOSS3,over:bo({deaths:1,_revPts:10}),w3:W3({stage:3,demoMode:true,demoLast:3}),first:[0.3,0.5]});
+h3('doppelganger on a boss (etype 87) already revived',{base:BOSS,over:bo({etype:87,_dgRevived:true,deaths:1}),first:FREV(0.01)});
+h3('mob revive: elite exactly 1 lv 100',{over:ed({elite:1,lv:100}),first:[0.55,0.3,0.5]});
+h3('mob revive: elite 2 lv 100 revPow 0.7',{over:ed({elite:2,lv:100}),first:[0.69,0.3,0.5]});
+h3('mob revive: roll equals finalRev (0.5 - 0)',{over:ed({}),first:[0.5,0.3,0.5]});
+h3('mob revive: roll equals finalRev 0.2 (suppress 0.3)',{over:ed({}),aff:{antiRevive:0.3},first:[0.2,0.3,0.5]});
+h3('mob revive: suppress equals revPow (finalRev 0)',{over:ed({}),aff:{antiRevive:0.5},first:[0.0001,0.3,0.5]});
+h3('hp exactly 0 with decoy',{over:ed({hp:0,_isDecoy:true})});
+h3('boss judge block: revPts 1 -> chance uses roll',{base:BOSS,over:bo({deaths:0,_revPts:11}),aff:{antiRevive:3},first:[0.99,0.123,0.5,0.5]});
+h3('boss judge block: chance positive stage 2',{base:BOSS,over:bo({deaths:2,_revPts:100}),w3:W3({stage:2}),aff:{antiRevive:3},first:[0.99,0.321,0.5,0.5]});
+h3('boss judge block: chance floor 0 (deaths 9)',{base:BOSS,over:bo({deaths:9,_revPts:100}),aff:{antiRevive:3},first:[0.99,0.321,0.5,0.5]});
+h3('boss judge block: chance with zone suppress',{base:BOSS,over:bo({deaths:0,_revPts:100}),w3:W3({fireZones:[{type:'holyPrison',x:1050,y:1000,r:50,lv:4}]}),aff:{antiRevive:3},first:[0.99,0.321,0.5,0.5]});
+h3('boss judge block: chance without suppress (stage 6)',{base:BOSS,over:bo({deaths:0,_revPts:100}),w3:W3({stage:6}),aff:{antiRevive:3},first:[0.99,0.321,0.5,0.5]});
+h3('mob judged flag keeps killers: ghoul true',{over:ed({_isGhoul:true,elite:3,lv:500}),first:[0.1,0.3,0.5]});
+h3('kill angle zero is a given angle',{args:{ang:0},over:ed({x:1010,y:1050})});
+h3('ghost fuel: refund 20 adds up to cap 27',{over:ed({_uqGwExp:1200}),ueq:{_uGhostFuel:1},w2:W2({uqS:{gwRefund:20}})});
+h3('ghost fuel: refund 0 gauge exactly at cap',{over:ed({_uqGwExp:1200}),ueq:{_uGhostFuel:1},w2:W2({uqS:{gwRefund:0}}),w3:W3({harpGauge:55,harpMax:100})});
+h3('ghost fuel: gauge cap below add',{over:ed({_uqGwExp:1200}),ueq:{_uGhostFuel:0.2},w2:W2({uqS:{gwRefund:0}}),w3:W3({harpGauge:99,harpMax:100})});
+h3('chain echo: bleed exactly 0.5',{over:ed({bleed:0.5}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[other('etype0',{x:1100,y:1000})]});
+h3('chain echo: only bleedT',{over:ed({bleed:0,bleedT:0.5}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[other('etype0',{x:1100,y:1000})]});
+h3('chain echo: nearer target found later',{over:ed({bleed:1,x:1000,y:1000}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[other('etype0',{x:1500,y:1000}),other('etype0',{x:1200,y:1000}),other('etype0',{x:1300,y:1000})]});
+h3('chain echo: boss-sized target skipped when dead, other alive farther',{over:ed({bleed:1,x:1000,y:1000}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[other('etype0',{x:1050,y:1000,alive:false}),other('etype0',{x:1400,y:1000})]});
+h3('mace explode: dead neighbour and a far one',{ueq:{_uMaceExplode:0.3},over:ed({mhp:1000}),others:[other('etype0',{x:1100,y:1000,alive:false}),other('etype0',{x:1100,y:1100})]});
+h3('combo exactly at 1000 by boss',{base:BOSS,over:bo({_revPts:5,deaths:0}),w3:W3({combo:999,diff:9}),first:[0.99,0.5,0.5,0.5]});
+h3('combo bonus pct zero (diff below 5, combo 1000)',{w3:W3({combo:999,diff:5})});
+h3('combo 1000 diff 5.5',{w3:W3({combo:999,diff:5.5})});
+h3('combo comboMax equal',{w3:W3({combo:7,comboMax:8})});
+h3('hit stop not applied when noHitStopT is exactly 0.5',{w2:W2({noHitStopT:0.5,hitStop:7})});
+h3('sink: stage 0 boss blastKill queue absent',{base:BOSS,over:bo({deaths:0,_revPts:5}),args:{opts:{_blastKill:true}},first:[0.5,0.5,0.5]});
+h3('burn death: atkEl 1 with explode true skips burn',{head3:B22({atkEl:1}),args:{opts:{explode:true}},first:[0.5,0.5,0.5,0.5]});
+h3('burn death pick with beam and atkEl 0 index 2',{args:{opts:{beam:true}},over:ed({_revived:true}),first:[0.7,0.5,0.5,0.5,0.5]});
+h3('spawn hole: alive undefined hole decremented',{over:ed({_fromHole:2})});
+h3('spawn hole index equals count',{over:ed({_fromHole:3}),w3:W3({spawnHoles:[{alive:3},{alive:1},{alive:5}]})});
+h3('gate guard: boss with revive pending (return before gate)',{base:BOSS,over:bo({_isGateGuard:true,deaths:1}),first:FREV(0.01)});
+h3('gate guard: sink druid',{base:BOSS,over:bo({_isGateGuard:true,deaths:0,_revPts:5}),first:[0.99,0.5,0.5,0.5,...Array(60).fill(0.4)]});
+// --- cases added after the full mutation pass ---
+for(const r of [0.7999999,0.8,0.8000001])h3('gore common/rare roll exactly '+r+' (mob not revivable)',{over:ed({_revived:true}),first:[r,0.5,0.5,0.5,0.5]});
+for(const r of [0,0.3333,0.3334,0.6666,0.6667,0.99999])h3('beam pick '+r+' (mob not revivable)',{args:{opts:{beam:true}},over:ed({_revived:true}),first:[r,0.5,0.5,0.5,0.5]});
+h3('finale chance with a negative suppress affix',{base:BOSS3,over:bo({deaths:0,_revPts:100}),w3:W3({stage:3,demoMode:true,demoLast:3}),aff:{antiRevive:-0.5},first:[0.3,0.5]});
+for(const [d,sup] of [[20,0],[20,0.1]])for(const [judged,stage] of [[false,0],[true,0],[false,2],[true,2]])h3('boss death text with chance floor deaths '+d+' sup '+sup+' judged '+judged+' stage '+stage,{base:BOSS,over:bo({deaths:d,_revPts:100,_bossRevJudged:judged}),w3:W3({stage}),aff:{antiRevive:sup},first:[0.99,0.5,0.5,0.5]});
+h3('revive scale exactly 1 (no shrink text)',{base:BOSS,over:bo({deaths:1,_origR:30,_revPts:160,_maxRevPts:150,r:30}),first:FREV(0.01)});
+h3('revive tp warn fields cleared',{base:BOSS,over:bo({deaths:1,_tpWarnT:9,_tpWarnX:5,_tpWarnY:7}),first:FREV(0.01)});
+for(const [st,sup,d,zone,roll] of [[0,1.1,0,null,0.95],[5,1.4,0,null,0.95],[0,0.95,1,null,0.95],[0,0.9,0,{type:'holyPrison',x:1050,y:1000,r:50,lv:4},0.95],[2,1.2,0,null,0.95]])
+  h3('judge block positive chance stage '+st+' sup '+sup+' deaths '+d+(zone?' zone':''),{base:BOSS,over:bo({deaths:d,_revPts:100}),w3:W3({stage:st,fireZones:zone?[zone]:null}),aff:{antiRevive:sup},first:[roll,0.321,0.5,0.5]});
+h3('echo target exactly 600 away is not chosen',{over:ed({bleed:1,x:1000,y:1000}),w3:W3({uqHitCtx:'chainSlash'}),ueq:{_uChainBleedEcho:0.5},others:[other('etype0',{x:1600,y:1000})]});
+h3('boss combo timer negative',{base:BOSS,over:bo({_revPts:5,deaths:0}),w3:W3({comboTimer:-5}),first:[0.99,0.5,0.5,0.5]});
+h3('corpse power dmg 0 mhp 0 (0/0)',{head3:B22({dmg:0}),over:ed({mhp:0,_revived:true})});
+h3('corpse power small dmg mhp 0.5',{head3:B22({dmg:0.01}),over:ed({mhp:0.5,_revived:true})});
+for(const dx of [1,2])for(const rule of ['only2'])h3('companion fallback probe blocked once ('+rule+') '+dx,{base:BOSS,over:bo({deaths:1,etype:3,mhp:777,atk:90}),w3:W3({killedBosses:[5,6]}),first:FREV(0.01,0.05,dx===1?0.3:0.9),w2:W2({canMv:rule})});
+h3('companion fallback probe blocked once, player far away',{base:BOSS,over:bo({deaths:1,etype:3,mhp:777,atk:90,x:1300,y:1200}),w3:W3({killedBosses:[5,6]}),first:FREV(0.01,0.05,0.3),w2:W2({canMv:'only2'})});
+// --- H3 seeded fuzz ---
+const f3=mulberry32(4242);const p3=a=>a[Math.floor(f3()*a.length)];const r3=(a,b)=>a+f3()*(b-a);
+const OPT3=[['_blastKill',true],['beam',true],['explode',true],['detonate',true],['dot',true]];
+for(let i=0;i<500;i++){
+  const base=p3([BOSS,BOSS,BOSS3,'etype0','etype0','etype6','etype40','etype92','etype99','undead4']);const ib=base===BOSS||base===BOSS3;
+  const opts=f3()<0.3?null:Object.fromEntries(OPT3.filter(()=>f3()<0.25));
+  const stage=p3([0,0,0,1,2,3,3,5,14,26,32,34]);const demoMode=stage===3&&f3()<0.5;
+  const over=ed({x:1000+r3(-200,200),y:1000+r3(-200,200),hp:p3([-10,0,-0.5]),mhp:p3([1000,777,1001]),etype:p3([5,9.5,10,87,3,40]),deaths:p3([0,0,1,2,5]),_revPts:p3([5,10,11,100,150]),_maxRevPts:p3([150,0]),elite:p3([0,0,1,2,3]),lv:p3([1,100,250,0]),
+    _bossRevJudged:p3([undefined,undefined,true]),_bossRevived:p3([undefined,true,false]),_reviveTimer:p3([undefined,0,100]),_bossRevRoll:p3([undefined,0.1,0.9]),_bossRevChance:p3([undefined,0.5]),_isDecoy:p3([undefined,undefined,undefined,undefined,true]),_dgRevived:p3([false,false,true]),_revived:p3([undefined,undefined,true]),_isGhoul:p3([undefined,undefined,true]),_fmKind:p3([undefined,undefined,undefined,'fb']),
+    _fromHole:p3([undefined,undefined,0,1,2,5]),_isGateGuard:p3([undefined,undefined,undefined,true]),bleed:p3([0,1]),bleedT:p3([0,4]),_uqGwExp:p3([undefined,undefined,1200,900]),_origR:p3([undefined,30]),r:p3([10,18,30]),el:p3([undefined,0,2]),atk:p3([100,100.7,333]),maxPoise:p3([100,333]),poise:p3([5,50]),speed:p3([1,1.5,1.9]),bossPatCd:p3([20,80]),facing:p3([0,1,2]),eShield:p3([0,30]),eShieldMax:p3([0,60])});
+  const aff={};for(const k of ['antiRevive','killSlayer','onKillHeal','hpOnKill','onKillMana','onKillStam','shieldOnKill','onKillSpeed'])if(f3()<0.25)aff[k]=p3(k==='antiRevive'?[0,0.1,0.3,0.6,1.5,3]:[0.2,30,500]);
+  const leq={};for(const k of ['_lDaggerKill','_lRingKill'])if(f3()<0.25)leq[k]=p3([0.05,1]);
+  const ueq={};for(const k of ['_uMaceExplode','_uGhostFuel','_uChainBleedEcho','_uTrapOffshoot'])if(f3()<0.25)ueq[k]=p3([0.3,1,2]);
+  const w3=W3({stage,demoMode,demoLast:demoMode?3:p3([0,3]),diff:p3([5,9,2,6]),optHitStop:p3([0,100,200]),killedBosses:p3([null,[],[3],[5,6],[5,6,7]]),fireZones:p3([null,[],[{type:'holyPrison',x:1000,y:1000,r:400,lv:p3([1,10,undefined])}]]),spawnHoles:[{alive:3},{alive:1},{}],kills:p3([0,10]),stageKills:p3([null,3]),combo:p3([0,5,998,999,1999]),comboTimer:p3([0,100,1190,1790]),comboMax:p3([0,7,2000]),gateGuard:f3()<0.5,gateGuardKilled:false,bossGateOpen:false,chromaT:p3([null,0]),blDeathSndQ:p3([null,[]]),uqZoneQ:p3([null,[]]),shDirty:false,harpGauge:p3([10,95]),harpMax:100,uqHitCtx:p3([null,'chainSlash','x']),uqFzCtx:p3([null,{type:'spikeTrap',dmg:100,lv:p3([1,undefined])}]),rageMax:p3([100,undefined])});
+  const w2=W2({canMv:p3(['open','open','first1','first2','first3']),noHitStopT:p3([null,null,0,20]),uqS:p3([{},{gwRefund:0},{gwRefund:26.5},{csEchoUsed:true}])});
+  const world=WD({hp:p3([100,1000]),mhp:1000,mp:p3([10,95]),mmp:100,st:p3([10,95,undefined]),mst:100,shield:p3([5,45,undefined]),mshield:50,s:p3(['idle','idle','whirlwind','charge']),iframes:p3([0,0,1]),facing:p3([0,1.1,3.14,2]),rage:p3([10,99,undefined]),_okSpdBuff:p3([undefined,50,300]),_okSpdMul:p3([undefined,0.1,0.7]),kb:{x:p3([0,5]),y:0}});
+  world.playTime=p3([0,1000,5000]);
+  const head3=B22({dmg:p3([0,1,100,5000,3e9]),atkEl:p3([0,0,1,2,3])});
+  const others=Array.from({length:Math.floor(f3()*4)},()=>other(p3([BOSS,'etype0','etype0']),{x:1000+r3(-300,300),y:1000+r3(-300,300),alive:f3()<0.9}));
+  const first=ib&&f3()<0.5?FREV(p3([0.01,0.3,0.7,0.99]),p3([0.05,0.5]),p3([0.1,0.8])):[p3([0.01,0.3,0.5,0.7,0.99]),p3([0.01,0.5,0.99]),p3([0.01,0.5,0.99])];
+  h3('fuzz #'+i,{base,over,args:{ang:p3([undefined,0,1.2,-2.5,7]),noSound:f3()<0.3,opts},head3,world,w2,w3,aff,leq,ueq,others,vals:defVals(),seed:1200000+i,first});
+}
+// ===== CX-04c2: cases for the hurtE death tail (H4 = __H3b with given values) and full chains (CH4 = H1 -> H2 -> H3a -> H3b, made from CH3 cases that continue) =====
+const D4=o=>({_isBurnDeath:false,_isWhirlKill:false,_sinkDruid:false,_killAng:0.5,...o});
+const MT=o=>({...bases[BI['etype0']].obj.modT,...o});
+function h4(name,o){const a={ang:0.5,noSound:false,opts:null,...(o.args||{})};const rest={...o};delete rest.args;
+  cases.push({kind:'H4',name:'H4 '+name,base:'etype0',over:ed({}),args:a,head3:B22({}),d4:D4({}),world:WD({}),w2:defW2(),w3:defW3(),w4:defW4(),vals:defVals(),aff:{},leq:{},ueq:{},others:[],seed:cases.length+1,first:[0.9,0.5,0.5],...rest});}
+h4('plain mob',{});
+for(const k of [9,20,0,11])h4('kills '+k,{w3:W3({kills:k})});
+for(const el of [undefined,0,1,2,3,4,5])for(const elite of [0,1,2])for(const r of [0.1,0.2,0.3])h4('death zone el '+el+' elite '+elite+' roll '+r,{over:ed({el,elite}),first:[r,r,0.5,0.5,0.5,0.5]});
+h4('death zone decoy',{over:ed({el:3,_isDecoy:true})});h4('death zone boss',{base:BOSS,over:bo({el:3})});
+for(const elite of [0,1,2,3])for(const r of [0.01,0.08,0.1,0.15,0.2,0.25,0.3])h4('debris elite '+elite+' roll '+r,{over:ed({elite,el:0}),first:[r,0.3,0.7,0.5,0.5,0.5]});
+h4('debris skipped for rare etype',{base:'etype91',over:ed({elite:3})});h4('debris skipped for boss',{base:BOSS,over:bo({elite:3})});
+for(const [cc,ib] of [[0,false],[3,false],[4,false],[4,true],[7,false]])h4('kill chain '+cc+(ib?' boss':''),{base:ib?BOSS:'etype0',over:ib?bo({}):ed({}),w4:W4({chainCnt:cc,chainT:33})});
+h4('M26 avenger near and far',{others:[other('etype0',{x:1100,y:1000,mods:['M26'],baseAtk:31,atk:31,speed:1.9,r:28}),other('etype0',{x:1300,y:1000,mods:['M26']}),other('etype0',{x:1060,y:1000,mods:['M07']})]});
+h4('M26 exactly 200 away',{others:[other('etype0',{x:1250,y:1000,mods:['M26']})]});
+h4('M26 on the dead enemy itself',{over:ed({mods:['M26']})});
+for(const lv of [undefined,1,3])h4('plague lv '+lv,{over:ed({_plagued:true,_plagueLv:lv}),others:[other('etype0',{x:1100,y:1000,hp:50}),other('etype0',{x:1090,y:1000,hp:1}),other('etype0',{x:1080,y:1000,alive:false}),other('etype0',{x:1500,y:1000})],w4:W4({magicRef:333.3,skMul:2.7})});
+for(const [px,ifr,s] of [[1060,0,'idle'],[1060,5,'idle'],[1060,0,'charge'],[1200,0,'idle']])h4('etype8 player '+px+' '+ifr+' '+s,{over:ed({etype:8,atk:77.7}),world:WD({x:px,y:1000,iframes:ifr,s}),others:[other('etype0',{x:1080,y:1000}),other('etype0',{x:1099.9,y:1000}),other('etype0',{x:1080,y:1000,alive:false})]});
+for(const rule of ['open','first1','first2','blockAll'])h4('etype15 split '+rule,{over:ed({etype:15,r:20,el:3,room:2}),w2:W2({canMv:rule})});
+h4('etype15 already split',{over:ed({etype:15,_splitDone:true})});
+h4('etype25 ice zone',{over:ed({etype:25})});
+for(const [px,fs] of [[1060,undefined],[1060,50],[1060,200],[1200,undefined]])h4('etype28 freeze '+px+' '+fs,{over:ed({etype:28}),world:WD({x:px,y:1000,_freezeSlow:fs})});
+h4('etype28 player iframes',{over:ed({etype:28}),world:WD({x:1060,y:1000,iframes:3})});
+for(const rs of [[0.3,0.7,0.5,0.49,0.51,0.1,0.9,0.6],[0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6],[0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]])for(const px of [1060,1300])h4('etype29 beans '+rs[0]+' player '+px,{over:ed({etype:29,atk:101.3,el:2}),world:WD({x:px,y:1000,_freezeSlow:20}),w2:W2({noHitStopT:null,hitStop:3}),first:rs});
+h4('etype29 player freeze undefined',{over:ed({etype:29}),world:WD({x:1060,y:1000})});
+h4('etype29 hitstop suppressed',{over:ed({etype:29}),w2:W2({noHitStopT:5,hitStop:3}),w3:W3({optHitStop:150})});
+h4('etype29 gate guard elite 3',{over:ed({etype:29,elite:3,_isGateGuard:true,atk:62,el:2}),w3:W3({stage:0})});
+h4('etype51 split',{over:ed({etype:51,r:21,el:1}),w3:W3({stage:14})});h4('etype51 already split',{over:ed({etype:51,_amalgSplit:true})});
+for(const bd of [true,false])h4('etype55 bone death '+bd,{over:ed({etype:55,_boneDeath:bd,atk:55.5})});
+for(const [px,ifr] of [[1060,0],[1060,2],[1200,0]])h4('etype57 shock '+px+' '+ifr,{over:ed({etype:57,atk:99}),world:WD({x:px,y:1000,iframes:ifr})});
+for(const el of [undefined,3])h4('etype59 beans el '+el,{over:ed({etype:59,el,atk:88})});
+h4('lava pool death',{over:ed({_lavaPoolDeath:true,atk:70.7})});
+for(const px of [1060,1200])h4('etype72 burst '+px,{over:ed({etype:72,_lavaPoolDeath:true,atk:40}),world:WD({x:px,y:1000})});
+h4('etype79 lava rain',{over:ed({etype:79,atk:120})});
+for(const [px,pr] of [[1090,undefined],[1090,15],[1110,15],[1200,15]])h4('etype80 burst '+px+' r '+pr,{over:ed({etype:80,atk:60}),world:WD({x:px,y:1000,r:pr})});
+for(const [px,fs] of [[1100,undefined],[1100,200],[1300,undefined]])h4('etype84 scream '+px+' '+fs,{over:ed({etype:84}),world:WD({x:px,y:1000,_freezeSlow:fs})});
+for(const et of [85,88,89,60,66,68,69])h4('etype'+et+' death effect',{over:ed({etype:et,atk:50})});
+for(const [et,r] of [[60,0.29],[60,0.3],[65,0.1],[69,0.5],[70,0.1],[59,0.1]])h4('o2bubble etype '+et+' roll '+r,{over:ed({etype:et,el:0}),first:[r,0.2,0.8,0.9,0.5]});
+const RB='etype91';
+for(const et of [90,91,92,93,94,95,96,97,98,99])for(const rs of [[0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1],[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9],[0.5,0.3,0.6,0.2,0.45,0.99,0.01,0.7],[0.14,0.39,0.19,0.49,0.24,0.29,0.5,0.5]])
+  h4('rare '+et+' rolls '+rs.join('/'),{base:RB,over:ed({etype:et,dropTier:2,_grGold:et===96?33.3:0}),first:rs,w3:W3({stage:5})});
+h4('rare 91 dropTier 0 stage 34',{base:RB,over:ed({etype:91,dropTier:0}),w3:W3({stage:34})});
+h4('rare 98 stage out of range',{base:RB,over:ed({etype:98}),w3:W3({stage:40})});h4('rare 99 stage 0',{base:RB,over:ed({etype:99}),w3:W3({stage:0})});
+h4('rare 96 greed curse',{base:RB,over:ed({etype:96,_grGold:10}),world:WD({_greedCurse:300})});h4('rare 96 no gold',{base:RB,over:ed({etype:96,_grGold:0})});
+h4('rare 97 twin same room',{base:RB,over:ed({etype:97,room:2}),others:[other(RB,{etype:97,room:2,x:1200,y:1000,atk:30.3,speed:0.5}),other(RB,{etype:97,room:2,x:1300,y:1000})]});
+h4('rare 97 twin other room / dead',{base:RB,over:ed({etype:97,room:2}),others:[other(RB,{etype:97,room:3}),other(RB,{etype:97,room:2,alive:false})]});
+h4('rare 97 twin room undefined both',{base:RB,over:ed({etype:97,room:undefined}),others:[other(RB,{etype:97,room:undefined})]});
+h4('rare label for unknown etype 9.5',{base:RB,over:ed({etype:9.5})});
+h4('M07 heal',{over:ed({mods:['M07'],elite:1}),others:[other('etype0',{x:1100,y:1000,hp:100,mhp:777}),other('etype0',{x:1100,y:1000,hp:770,mhp:777}),other('etype0',{x:1171,y:1000,hp:1,mhp:100})]});
+for(const sp of [false,true])h4('M08 split '+sp,{over:ed({mods:['M08','M26'],elite:2,r:25,el:4,room:1,modT:MT({split:sp})}),first:[0.9,0.5,0.3,0.7,0.2,0.8,0.6,0.4,0.5,0.5]});
+for(const [px,s,ifr] of [[1060,'idle',0],[1060,'charge',0],[1060,'idle',1],[1200,'idle',0]])h4('M10 blast '+px+' '+s+' '+ifr,{over:ed({mods:['M10'],elite:1,atk:41.1}),world:WD({x:px,y:1000,s,iframes:ifr})});
+h4('M20 empower',{over:ed({mods:['M20'],elite:3}),others:[other('etype0',{x:1100,y:1000,baseAtk:33,atk:12}),other('etype0',{x:1199,y:1000})]});
+for(const elite of [1,2,3])h4('elite notice '+elite,{over:ed({mods:['M01'],elite})});
+h4('mods present but elite 0',{over:ed({mods:['M01'],elite:0})});h4('elite with empty mods',{over:ed({mods:[],elite:2})});
+h4('slime matDrop',{over:ed({_isSlime:true,matDrop:12.6})});h4('slime matDrop 0',{over:ed({_isSlime:true,matDrop:0})});
+h4('slime eaten items',{over:ed({_isSlime:true,matDrop:3,_eatenItems:[{id:1,slot:'ring1'},{id:2,slot:'boots'}]})});
+h4('not slime but eaten items',{over:ed({_eatenItems:[{id:3}]})});h4('slime empty eaten',{over:ed({_isSlime:true,_eatenItems:[]})});
+for(const [ib,elite] of [[false,0],[false,1],[false,2],[false,3],[true,0]])for(const gold of [0,0.35])for(const pm of [0,3])
+  h4('malice drop ib '+ib+' elite '+elite+' gold '+gold+' pMalice '+pm,{base:ib?BOSS:'etype0',over:ib?bo({}):ed({elite}),aff:{goldBonus:gold},world:{...WD({}),PASSIVES:pm?{pMalice:pm}:{}},w3:W3({stage:7})});
+for(const ok of [true,false])for(const t of [0.1,0.5,0.9])for(const ib of [false,true])h4('potion type roll '+t+' ok '+ok+(ib?' boss':''),{base:ib?BOSS:'etype0',over:ib?bo({}):ed({}),w4:W4({addPotionOk:ok}),first:ib?[0.5,0.5,0.5,0.5,0.99,t,0.4,0.6]:[0.99,t,0.5,0.5]});
+for(const r of [0.49,0.5])h4('boss bonus hp potion roll '+r,{base:BOSS,over:bo({}),first:[0.5,0.5,0.5,0.5,0.99,0.1,r,0.6]});
+for(const combo of [0,99,100,250,1000])for(const diff of [null,3,5,7])h4('combo '+combo+' diff '+diff,{over:ed({elite:1}),w3:W3({combo,diff})});
+for(const [plv,elv,ib,elite] of [[100,0,false,0],[100,1,false,0],[100,50,false,0],[100,333.3,false,2],[100,50,true,0],[100,7,true,0],[999,50,false,0],[1000,50,false,0],[1000,50,false,1],[1000,50,true,0],[undefined,50,false,0]])
+  h4('exp player lv '+plv+' enemy lv '+elv+(ib?' boss':'')+' elite '+elite,{base:ib?BOSS:'etype0',over:ib?bo({lv:elv}):ed({lv:elv,elite}),world:WD({lv:plv})});
+// --- H4 seeded fuzz ---
+const f4=mulberry32(7777);const p4=a=>a[Math.floor(f4()*a.length)];const r4=(a,b)=>a+f4()*(b-a);
+for(let i=0;i<600;i++){
+  const base=p4(['etype0','etype0','etype0',BOSS,'etype91','etype6']);const ib=base===BOSS;
+  const et=base==='etype91'?p4([90,91,93,94,95,96,97,98,99]):p4([0,0,3,8,15,25,28,29,29,47,51,55,57,59,60,66,68,69,72,79,80,84,85,88,89]);
+  const mods=p4([[],[],['M07'],['M08'],['M10'],['M20'],['M26'],['M07','M10','M20']]);
+  const over={x:1000+r4(-100,100),y:1000+r4(-100,100),hp:p4([-10,0]),etype:ib?0:et,el:p4([undefined,0,1,2,3,4]),elite:ib?0:p4([0,0,0,1,2,3]),lv:p4([0,1,30,100,250.5]),atk:p4([31,77.7,500]),r:p4([10,20,30]),
+    _plagued:p4([undefined,undefined,true]),_plagueLv:p4([undefined,2]),_lavaPoolDeath:f4()<0.1,_boneDeath:f4()<0.5,_splitDone:f4()<0.3,_amalgSplit:f4()<0.3,_isSlime:p4([undefined,undefined,true]),matDrop:p4([undefined,0,5.5]),
+    mods,_isDecoy:p4([undefined,undefined,undefined,true]),room:p4([1,2]),dropTier:p4([0,2,4]),_grGold:p4([0,20])};
+  if(ib)Object.assign(over,{_revPts:100,_maxRevPts:150});
+  const splits=mods.includes('M08')||over.etype===51;
+  const others=Array.from({length:Math.floor(f4()*4)},()=>other(p4(['etype0','etype0',base==='etype91'?'etype91':'etype0']),{x:1000+r4(-250,250),y:1000+r4(-250,250),alive:f4()<0.85,mods:p4([[],['M26']]),etype:p4([0,97]),room:p4([1,2])}));
+  h4('fuzz #'+i,{base,over:ed(over),others,world:WD({x:1000+r4(-150,150),y:1000+r4(-150,150),iframes:p4([0,0,2]),s:p4(['idle','charge']),lv:p4([100,1000,undefined]),r:p4([undefined,15]),_freezeSlow:p4([undefined,30]),_greedCurse:p4([undefined,100])}),
+    w2:W2({canMv:splits?'open':p4(['open','open','first1']),noHitStopT:p4([null,null,9]),hitStop:p4([0,5])}),w3:W3({stage:p4([0,0,3,5,14,26,34]),kills:p4([9,10,20,33]),combo:p4([0,150,999]),diff:p4([null,5,8])}),
+    w4:W4({chainCnt:p4([0,4,4,2]),addPotionOk:f4()<0.7,magicRef:p4([100,250.5])}),aff:f4()<0.3?{goldBonus:p4([0.1,0.5])}:{},seed:2200000+i,first:[]});
+}
+// normalise: every case has kind/w2/w3, and sStats always carries the counters H2 touches
+for(const c of cases){c.kind=c.kind||'H1';c.w2=c.w2||defW2();c.w3=c.w3||defW3();c.w4=c.w4||defW4();if(c.world.sStats){c.world.sStats={dmgDealt:0,maxHit:0,...c.world.sStats};}}
 // keys given as undefined in an override mean 'delete the key' (JS undefined); JSON drops them, so record them explicitly as 'del'
 for(const c of cases){c.del=Object.keys(c.over||{}).filter(k=>c.over[k]===undefined);for(const o of c.others)o.del=Object.keys(o.over||{}).filter(k=>o.over[k]===undefined);}
 // ---- run ----
 const tagTotals={NaN:0,Infinity:0,'-Infinity':0,'-0':0};function countTags(v){if(v&&typeof v==='object'){if(Array.isArray(v)){for(const x of v)countTags(x);}else if(Object.keys(v).length===1&&typeof v.$n==='string'){tagTotals[v.$n]++;}else for(const k of Object.keys(v))countTags(v[k]);}}
 const bad=[];function safe(v,p){if(typeof v==='number'&&(!isFinite(v)||Object.is(v,-0)))bad.push(p+'='+(Object.is(v,-0)?'-0':v));else if(v&&typeof v==='object')for(const k of Object.keys(v))safe(v[k],p+'.'+k);}
 function setup(c){
-  const w=c.world;ctx.__w=w;ctx.__vals=c.vals;ctx.__aff=c.aff;ctx.__leq=c.leq;ctx.__ueq=c.ueq;
+  const w=c.world;ctx.__w3=c.w3;ctx.__w=w;ctx.__vals=c.vals;ctx.__aff=c.aff;ctx.__leq=c.leq;ctx.__ueq=c.ueq;
   vm.runInContext('P=JSON.parse(JSON.stringify(__w.P));PASSIVES=JSON.parse(JSON.stringify(__w.PASSIVES));INV={equipped:JSON.parse(JSON.stringify(__w.equipped))};_shBufI=__w.shBufI;_hitSfxCd=__w.hitSfxCd;_now=__w.now;__log=[];__i=0;'+
-   'G={stage:0,playTime:__w.playTime};if(__w.sStats)G._sStats=JSON.parse(JSON.stringify(__w.sStats));window._btDmgLog=__w.btLog?JSON.parse(JSON.stringify(__w.btLog)):undefined;'+
+   'G={stage:__w3.stage,playTime:__w.playTime,_stageDiffOff:0,kills:__w3.kills,combo:__w3.combo,comboTimer:__w3.comboTimer,comboMax:__w3.comboMax,spawnHoles:JSON.parse(JSON.stringify(__w3.spawnHoles)),_gateGuard:__w3.gateGuard?{}:null,_gateGuardKilled:__w3.gateGuardKilled,bossGateOpen:__w3.bossGateOpen};'+
+   'if(__w3.stageKills!==null)G._stageKills=__w3.stageKills;if(__w3.killedBosses)G._killedBosses=__w3.killedBosses.slice();if(__w3.fireZones)G._fireZones=JSON.parse(JSON.stringify(__w3.fireZones));if(__w3.chromaT!==null)G._chromaT=__w3.chromaT;if(__w3.blDeathSndQ!==null)G._blDeathSndQ=[];if(__w3.uqZoneQ!==null)G._uqZoneQ=JSON.parse(JSON.stringify(__w3.uqZoneQ));'+
+   '_DEMO_MODE=__w3.demoMode;_DEMO_LAST_STAGE=__w3.demoLast;_shDirty=__w3.shDirty;_harpGauge=__w3.harpGauge;_HARP_GAUGE_MAX=__w3.harpMax;_uqHitCtx=__w3.uqHitCtx;_uqFzCtx=__w3.uqFzCtx?JSON.parse(JSON.stringify(__w3.uqFzCtx)):null;pProjs=[];'+
+   'if(__w.sStats)G._sStats=JSON.parse(JSON.stringify(__w.sStats));window._btDmgLog=__w.btLog?JSON.parse(JSON.stringify(__w.btLog)):undefined;'+
    'window._parryLesson=__w.lesson?{active:true,hurtEnemy:function(e,d,a,o){__rec("parryLessonHurt",e,d,a,o);}}:undefined;',ctx);
   ctx.__w2=c.w2;
-  vm.runInContext('OPT={diff:5,parts:__w2.optParts};VW=__w2.VW;VH=__w2.VH;_dpsDmg=__w2.dpsDmg;_txtPerFrame=__w2.txtPerFrame;_impPerFrame=__w2.impPerFrame;G.cam={x:__w2.cam.x,y:__w2.cam.y};G.hitStop=__w2.hitStop;G.slowMo=__w2.slowMo;if(__w2.noHitStopT!==null)G._noHitStopT=__w2.noHitStopT;if(__w2.dmgPeak)G._dmgPeak=JSON.parse(JSON.stringify(__w2.dmgPeak));if(__w2.dmgPeakShow)G._dmgPeakShow=JSON.parse(JSON.stringify(__w2.dmgPeakShow));_uqScCtx=__w2.uqScCtx?JSON.parse(JSON.stringify(__w2.uqScCtx)):undefined;_uqS=__w2.uqS?JSON.parse(JSON.stringify(__w2.uqS)):undefined;__canMv=__w2.canMv;',ctx);
+  vm.runInContext('OPT={diff:__w3.diff,parts:__w2.optParts,hitStop:__w3.optHitStop};__cmN=0;VW=__w2.VW;VH=__w2.VH;_dpsDmg=__w2.dpsDmg;_txtPerFrame=__w2.txtPerFrame;_impPerFrame=__w2.impPerFrame;G.cam={x:__w2.cam.x,y:__w2.cam.y};G.hitStop=__w2.hitStop;G.slowMo=__w2.slowMo;if(__w2.noHitStopT!==null)G._noHitStopT=__w2.noHitStopT;if(__w2.dmgPeak)G._dmgPeak=JSON.parse(JSON.stringify(__w2.dmgPeak));if(__w2.dmgPeakShow)G._dmgPeakShow=JSON.parse(JSON.stringify(__w2.dmgPeakShow));_uqScCtx=__w2.uqScCtx?JSON.parse(JSON.stringify(__w2.uqScCtx)):undefined;_uqS=__w2.uqS?JSON.parse(JSON.stringify(__w2.uqS)):undefined;__canMv=__w2.canMv;',ctx);
+  ctx.__w4=c.w4;vm.runInContext('G.mats=__w4.mats;G._chainCnt=__w4.chainCnt;G._chainT=__w4.chainT;G.rifts=JSON.parse(JSON.stringify(__w4.rifts));_critSfxCd=__w4.critSfxCd;__itemN=0;',ctx);
   ctx.__seq=seqFor(c.seed,c.first);
   const mkObj=s=>{const o=JSON.parse(JSON.stringify(bases[BI[s.base]].obj));for(const [k,v] of Object.entries(s.over||{}))if(v!==undefined)o[k]=JSON.parse(JSON.stringify(v));else delete o[k];return o;};
   ctx.__ens=[mkObj({base:c.base,over:c.over}),...c.others.map(mkObj)];vm.runInContext('ens=__ens;',ctx);
 }
-function snapshot(){return plain(vm.runInContext('({ens:ens,P:P,G:{sStats:G._sStats,playTime:G.playTime,dmgPeak:G._dmgPeak,dmgPeakShow:G._dmgPeakShow,flashCol:G._flashCol,flashT:G._flashT,hitStop:G.hitStop,slowMo:G.slowMo,noHitStopT:G._noHitStopT,dpsDmg:_dpsDmg,txtPerFrame:_txtPerFrame,uqScCtx:_uqScCtx,uqS:_uqS},shBufI:_shBufI,hitSfxCd:_hitSfxCd,btLog:window._btDmgLog,log:__log,consumed:__i})',ctx));}
-const dropped=[];let cur='';process.on('uncaughtException',e=>{console.error('CASE:',cur);console.error(e.message);process.exit(1);});
+function snapshot(){return plain(vm.runInContext('({ens:ens,P:P,G:{sStats:G._sStats,playTime:G.playTime,dmgPeak:G._dmgPeak,dmgPeakShow:G._dmgPeakShow,flashCol:G._flashCol,flashT:G._flashT,hitStop:G.hitStop,slowMo:G.slowMo,noHitStopT:G._noHitStopT,dpsDmg:_dpsDmg,txtPerFrame:_txtPerFrame,uqScCtx:_uqScCtx,uqS:_uqS},G4:{druidFled:G._druidFled,mats:G.mats,chainCnt:G._chainCnt,chainT:G._chainT,rifts:G.rifts,critSfxCd:_critSfxCd},G3:{kills:G.kills,stageKills:G._stageKills,combo:G.combo,comboTimer:G.comboTimer,comboMax:G.comboMax,druidSink:G._druidSink,druidFinaleBoss:ens.indexOf(G._druidFinaleBoss),gateGuardSet:!!G._gateGuard,gateGuardKilled:G._gateGuardKilled,bossGateOpen:G.bossGateOpen,chromaT:G._chromaT,blDeathSndQ:G._blDeathSndQ,uqZoneQ:G._uqZoneQ,spawnHoles:G.spawnHoles,shDirty:_shDirty,harpGauge:_harpGauge,uqFzCtx:_uqFzCtx,pProjs:pProjs},shBufI:_shBufI,hitSfxCd:_hitSfxCd,btLog:window._btDmgLog,log:__log,consumed:__i})',ctx));}
+const dropped=[];let cur='';const ch3Added={natural:0,forced:0};let ch4Added=0;let chSeq=0;
+const exitOf=(r3,log)=>r3===null?(log.some(l=>l[0]==='T'&&l[1]==='환영 소멸!')?'Decoy':log.some(l=>l[0]==='reviveVFX')?'Doppelganger':'BossRevive'):(r3.__cont?'Continue':'NotDead');process.on('uncaughtException',e=>{console.error('CASE:',cur);console.error(e.message);process.exit(1);});
 for(const c of cases){
   cur=c.name;setup(c);const initial=plain(vm.runInContext('ens',ctx)),initP=plain(vm.runInContext('P',ctx));
   ctx.__args=c.args;let ret=null,ret2=null;
   const callH1=()=>vm.runInContext('(function(){const a=__args;const r=a.atkEl===undefined||a.atkEl===null?__H1(ens[0],a.dmg,a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts):__H1(ens[0],a.dmg,a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts,a.atkEl);return r===undefined?null:r;})()',ctx);
   const callH2=()=>vm.runInContext('(function(){const a=__args;return __H2(ens[0],a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts,__h);})()',ctx);
+  const callH3=()=>vm.runInContext('(function(){const a=__args;const r=__H3a(ens[0],a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts,__h3);return r===undefined?null:r;})()',ctx);
+  const callH4=()=>vm.runInContext('(function(){const a=__args;__H3b(ens[0],a.ang===null?undefined:a.ang,a.noSound,a.opts===null?undefined:a.opts,__h4,__d4);})()',ctx);
+  let ret3=null;const pristine=(c.kind==='CH'||c.kind==='CH3')?JSON.stringify(c):null;
   if(c.kind==='H2'){ctx.__h=c.head;ret2=plain(callH2());}
-  else{const r1=callH1();if(r1===null){ret=null;}else{ret=plain(r1);if(c.kind==='CH'){ctx.__h=r1;ret2=plain(callH2());}}}
-  if(c.kind==='CH'&&ret===null){dropped.push(c.name);c.drop=true;continue;}
+  else if(c.kind==='H3'){ctx.__h3=c.head3;ret3=plain(callH3());}
+  else if(c.kind==='H4'){ctx.__h4=c.head3;ctx.__d4=c.d4;callH4();}
+  else{const r1=callH1();if(r1===null){ret=null;}else{ret=plain(r1);if(c.kind==='CH'||c.kind==='CH3'||c.kind==='CH4'){ctx.__h=r1;const r2=callH2();ret2=plain(r2);if(c.kind==='CH3'||c.kind==='CH4'){ctx.__h3=r2;const r3=callH3();ret3=plain(r3);if(c.kind==='CH4'&&r3&&r3.__cont){ctx.__h4=r2;ctx.__d4=r3;callH4();}}}}}
+  if((c.kind==='CH'||c.kind==='CH3'||c.kind==='CH4')&&ret===null){dropped.push(c.name);c.drop=true;continue;}
   const snap=snapshot();
-  const diffs=snap.ens.map((fin,i)=>{const ini=initial[i],d={};for(const k of new Set([...Object.keys(fin),...Object.keys(ini)])){if(JSON.stringify(fin[k])!==JSON.stringify(ini[k])){if(!(k in fin))throw Error('field deleted: '+k);d[k]=fin[k];}}return d;});
+  const diffs=snap.ens.slice(0,initial.length).map((fin,i)=>{const ini=initial[i],d={};for(const k of new Set([...Object.keys(fin),...Object.keys(ini)])){if(JSON.stringify(fin[k])!==JSON.stringify(ini[k])){if(!(k in fin))throw Error('field deleted: '+k);d[k]=fin[k];}}return d;});
   const pdiff={};for(const k of new Set([...Object.keys(snap.P),...Object.keys(initP)]))if(JSON.stringify(snap.P[k])!==JSON.stringify(initP[k])){if(!(k in snap.P))throw Error('P field deleted');pdiff[k]=snap.P[k];}
-  for(const v of [ret,ret2,diffs,pdiff,snap.log,snap.G,snap.btLog])countTags(v);if(bad.length)throw Error('case '+c.name+': non-JSON-safe numbers '+bad.splice(0).join(','));
-  c.expected={ret,ret2,diffs,pdiff,G:snap.G,shBufI:snap.shBufI,hitSfxCd:snap.hitSfxCd,btLog:snap.btLog===undefined?null:snap.btLog,log:snap.log,consumed:snap.consumed};
-  c.seq=ctx.__seq.slice(0,snap.consumed+4);delete c.seed;delete c.first;
+  const added=snap.ens.slice(initial.length);
+  for(const v of [ret,ret2,ret3,diffs,added,pdiff,snap.log,snap.G,snap.G3,snap.G4,snap.btLog])countTags(v);if(bad.length)throw Error('case '+c.name+': non-JSON-safe numbers '+bad.splice(0).join(','));
+  const is3=c.kind==='H3'||c.kind==='CH3'||c.kind==='CH4';
+  c.expected={ret,ret2,ret3,exit:is3?exitOf(ret3,snap.log):null,added,G3:snap.G3,G4:snap.G4,diffs,pdiff,G:snap.G,shBufI:snap.shBufI,hitSfxCd:snap.hitSfxCd,btLog:snap.btLog===undefined?null:snap.btLog,log:snap.log,consumed:snap.consumed};
+  c.seq=ctx.__seq.slice(0,snap.consumed+4);
+  if(c.kind==='CH'){chSeq++;const dead=snap.ens[0].hp<=0;if(dead||chSeq%2===0){const k=JSON.parse(pristine);k.kind='CH3';k.name='CH3 '+c.name.slice(3)+(dead?' [natural death]':' [HP forced low]');if(!dead){k.over={...k.over,hp:[1,3,20][chSeq%3]};k.del=Object.keys(k.over).filter(x=>k.over[x]===undefined);}
+    k.world.P={...k.world.P,lv:100,facing:0.5,rage:10,shield:5,mshield:50,kb:{x:0,y:0}};k.w3=defW3();cases.push(k);if(dead)ch3Added.natural++;else ch3Added.forced++;}}
+  if(c.kind==='CH3'&&c.expected.exit==='Continue'){const k=JSON.parse(pristine);k.kind='CH4';k.name='CH4 '+c.name.slice(4);k.w4=defW4();cases.push(k);ch4Added++;}
+  delete c.seed;delete c.first;
 }
 for(let i=cases.length-1;i>=0;i--)if(cases[i].drop)cases.splice(i,1);
 const K=k=>cases.filter(c=>c.kind===k);
-const sum={nonFiniteTags:tagTotals,cases:cases.length,h1:K('H1').length,h2:K('H2').length,chain:K('CH').length,chainDropped:dropped.length,earlyReturns:K('H1').filter(c=>c.expected.ret===null).length,fallThrough:K('H1').filter(c=>c.expected.ret!==null).length,crits:cases.filter(c=>(c.expected.ret&&c.expected.ret._isCrit)).length,
+const exitCounts={};for(const c of cases)if(c.expected.exit)exitCounts[c.expected.exit]=(exitCounts[c.expected.exit]||0)+1;
+const sum={nonFiniteTags:tagTotals,cases:cases.length,h1:K('H1').length,h2:K('H2').length,chain:K('CH').length,h3:K('H3').length,chain3:K('CH3').length,h4:K('H4').length,chain4:K('CH4').length,chain3Natural:ch3Added.natural,chain3Forced:ch3Added.forced,h3Exits:exitCounts,addedEnemies:cases.reduce((n,c)=>n+c.expected.added.length,0),chainDropped:dropped.length,earlyReturns:K('H1').filter(c=>c.expected.ret===null).length,fallThrough:K('H1').filter(c=>c.expected.ret!==null).length,crits:cases.filter(c=>(c.expected.ret&&c.expected.ret._isCrit)).length,
   shielded:cases.filter(c=>c.expected.ret&&c.expected.ret._shBlocked).length,logEntries:cases.reduce((s,c)=>s+c.expected.log.length,0),randomDraws:cases.reduce((s,c)=>s+c.expected.consumed,0),enemies:cases.reduce((s,c)=>s+1+c.others.length,0),
   h2Killed:cases.filter(c=>c.expected.ret2&&c.expected.ret2&&c.kind!=='H1').length};
 const callNames={};for(const c of cases)for(const l of c.expected.log)callNames[l[0]]=(callNames[l[0]]||0)+1;sum.injectedCalls=callNames;
-const out={schema:'exoduser.unity.enemy-hurt-oracle.v1',source:{path:sourcePath,sha256:fileSha,lines:lines.length,head:headSha,anchors,wrapper:{header:'function __H1(e,dmg,ang,noSound,opts,atkEl=0){',footer:'return {'+returned.join(',')+'};}finally{_shBufI--}}',locals:returned,h2:{header:'function __H2(e,ang,noSound,opts,__h){let {'+HEAD14.join(',')+'}=__h;',footer:'return {'+returned2.join(',')+'};}',locals:locals2,returned:returned2}},
+const out={schema:'exoduser.unity.enemy-hurt-oracle.v1',source:{path:sourcePath,sha256:fileSha,lines:lines.length,head:headSha,anchors,wrapper:{header:'function __H1(e,dmg,ang,noSound,opts,atkEl=0){',footer:'return {'+returned.join(',')+'};}finally{_shBufI--}}',locals:returned,h2:{header:'function __H2(e,ang,noSound,opts,__h){let {'+HEAD14.join(',')+'}=__h;',footer:'return {'+returned2.join(',')+'};}',locals:locals2,returned:returned2},
+    h3:{header:'function __H3a(e,ang,noSound,opts,__h){let {'+returned2.join(',')+'}=__h;',footer:'return {__cont:true,'+locals3.join(',')+'};}return {__cont:false};}',locals:locals3},h3b:{header:'function __H3b(e,ang,noSound,opts,__h,__d){let {'+returned2.join(',')+'}=__h;let {'+locals3.join(',')+'}=__d;',footer:'}'}},
   note:'blocks located by text anchors and executed unchanged in one Node VM; external pieces = recording stubs with case-defined values, P/G/PASSIVES/INV values, Math.random sequence'},
   tables,bases,summary:sum,cases};
 fs.writeFileSync(outPath,JSON.stringify(out));
