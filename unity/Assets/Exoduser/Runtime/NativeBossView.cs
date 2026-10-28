@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
     // (assets/vfx/boss/druid_*_24_*), the corruption ring (druid_corruption_ring.svg) and the grey-then-#66dd22 fire-devil orb sheet for the poison shots,
     // with the web's sizes, alphas and clip time (24 fps loops from the hazard's own T, once-clips stretched over maxFrames x frameTime ticks).
     // Still procedural (the web strokes them as vector lines too): fissure crack body, tide-wave beads, seeker mines, rhythm volley.
-    public sealed class NativeBossView
+    public sealed partial class NativeBossView
     {
         readonly Transform root; readonly List<SpriteRenderer> pool = new List<SpriteRenderer>(), addPool = new List<SpriteRenderer>(); int used, addUsed;
         readonly Sprite disc, ring, thinRing, hardDisc;
@@ -138,7 +138,7 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim)
         {
-            used = 0; addUsed = 0;
+            used = 0; addUsed = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0;
             if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
             DrawFieldZones(sim);
             var druid = sim.Druid; if (druid == null) { Finish(); return; }
@@ -230,10 +230,7 @@ namespace Exoduser.UnityPort
                     PutBox(NativeDruidArt.PoisonShot((int)(nowMs / 70) % 16), p.X, p.Y, size, size, Color.white, (int)p.Y + 6);
                     continue;
                 }
-                double r = Math.Max(6, p.Sz * 3 + 3);
-                Color c = p.BlackBean ? new Color(.0f, .45f, .0f) : p.ElemBall ? new Color(.7f, .9f, .25f) : Poison;
-                Put(disc, p.X, p.Y, r * 1.7, new Color(c.r, c.g, c.b, .30f), (int)p.Y + 5);
-                Put(disc, p.X, p.Y, r, p.BlackBean ? new Color(.05f, .22f, .05f, .98f) : new Color(.86f, 1f, .62f, .97f), (int)p.Y + 6);
+                DrawFieldBullet(p, t);   // VFX-D18: field enemies' bullets, per kind as game.html pass 2 (NativeBossView.FieldBullets.cs)
             }
             // once-clips (additive)
             for (int i = 0; i < vfx.Count;)

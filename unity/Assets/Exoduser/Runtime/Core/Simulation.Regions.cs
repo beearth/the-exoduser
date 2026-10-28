@@ -64,6 +64,15 @@ namespace Exoduser.UnityPort.Core
             return r.Total > 0 ? (double)r.Kills / r.Total + bonus : 1;
         }
 
+        /// <summary>The HUD "지역 처치" row (#mmLvl killCnt, web 60584-60586): the current region's min(kills, total) / total (a cleared region is capped at its total),
+        /// the stage-wide G._stageKills / G._totalSpawned on a map without regions or before the current region is known (G._regCurIdx -1, kept by the HUD).</summary>
+        public void AreaKills(int regCurIdx, out int kills, out int total)
+        {
+            var r = Regions != null && regCurIdx >= 0 && regCurIdx < Regions.Length ? Regions[regCurIdx] : null;
+            total = r != null ? r.Total : Stage.TotalSpawned;
+            kills = r != null ? Math.Min(r.Kills, r.Total) : Stage.StageKills;
+        }
+
         public int RegionClearedCount()
         {
             if (Regions == null) return 0;
