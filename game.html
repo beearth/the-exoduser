@@ -10989,7 +10989,9 @@ function _bossLine(key){
 const _DRUID_SINK_SHEET='emerge'; // 침강 시트(4x2, 0→7). 디자인총괄 판정: emerge 확정(dive.png와 바이트 동일) — 바꾸려면 이 한 줄만 교체
 const _DRUID_SINK_FT=8.25,_DRUID_SINK_HOLD=18,_DRUID_SINK_FADE=18; // 디자인총괄 판정(2026-10-27): 8칸 66틱(1.1초) 균등 → 7번 칸 0.3초 유지 → 0.3초 알파 1→0
 function _isSi0DruidSink(e){return !!(e&&e.ib&&!e._fmKind&&G.stage===0&&!_isDruidFinale(e))}
-function _druidSinkStart(e){_playDruidSfx('druid_sink',.55);e._sinkDruid=true;G._druidFled=true;e._corpseSpawned=true;G._druidSink={x:e.x,y:e.y,r:e.r,t:0};_bossLine('sink0')} // _corpseSpawned: update()의 시체 보충 생성(미생성 사망체 자동 시체)도 막는다
+function _druidSinkStart(e){_playDruidSfx('druid_sink',.55);e._sinkDruid=true;G._druidFled=true;e._corpseSpawned=true;G._druidSink={x:e.x,y:e.y,r:e.r,t:0};_bossLine('sink0');
+  for(let i=projs.length-1;i>=0;i--){const p=projs[i];if(p._druidPoison&&!p.friendly){_recycleProj(p);projs.splice(i,1);}} // [LT-8] 1-1 침강 시작 시 드루이드 위험물(독 탄·구슬·늪) 정리 — 1-4 _finishDruidFinale과 동일 방식
+  if(G._lavaPools)G._lavaPools.length=0;if(G._druidOrbs)G._druidOrbs.length=0;} // _corpseSpawned: update()의 시체 보충 생성(미생성 사망체 자동 시체)도 막는다
 function _druidSinkTick(sp){
   const s=G._druidSink;if(!s)return;
   const prev=s.t;s.t+=sp;const body=_DRUID_SINK_FT*8;

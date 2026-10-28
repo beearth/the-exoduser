@@ -233,3 +233,11 @@ HP는 **현재 생명 주기의 `hp/mhp`**다. 부활 이후에는 이 구성이
 | si0 침강 시작(STY-D9) | 숲은 아직 배고프다. 둥지에서 보자. | The forest is still hungry. See you at the nest. | 3344 |
 | si3 마지막 사망 | …죽기 싫었을 뿐이다. | …I just didn't want to die. | 3347 |
 `#bossLine` 자막(`game.html` `_bossLine`). 부활 판정이 걸린 사망에서는 띄우지 않고, 아레나 진입당 키별 1회. 피날레(`_isDruidFinale`) 분기에는 연결하지 않았다. 근거 `11내러티브·로어디자인/CH1_STORY_SPINE_20261027.md` §5.
+
+## 2026-10-28 LT-8 — 1-1(si0) 침강 시작 시 드루이드 위험물 정리
+- 1-1 다크드루이드 사망(침강) 항목에 추가: **1-1 침강 시작 시 구슬·드루이드 독 탄·늪 정리.** `_druidSinkStart`(game.html `_isSi0DruidSink` 경로)가 `_druidPoison && !friendly` 적 탄(`_recycleProj` 후 제거), `G._lavaPools`(독 늪), `G._druidOrbs`(독 구슬)를 비운다. 방식은 1-4 `_finishDruidFinale`의 정리(17349행 부근)와 동일.
+- 원인: 구슬 갱신은 `(stage 0·3)&&G.bossAlive` 안이고 그리기는 무조건이라, 사망 뒤 갱신이 멈춘 구슬이 화면에 얼어붙어 남았다(웹 동일 현상). 침강 시작 시점에는 보스가 이미 사망(`alive=false`)이라 신규 생성이 없어 정리 한 번으로 충분.
+- 정리하지 않는 경로: 1-4 최종전(`_isDruidFinale`)의 마지막 버티기·판정 부활(`_reviveTimer>0`) 대기 — 아직 전투 중이다. 1-4 승리 정리(`_finishDruidFinale`)는 기존대로.
+- 수치·패턴·부활 판정·보상·출구 개방 무변경(표시·잔존물만).
+- 검증(headless·음소거 Playwright, `?bosstest=0`, 1600×900): 사살 직전 구슬 6·늪 3·독 탄 10을 주입 → 정리 전(origin/main) 침강 시작·클리어 시점 구슬 6·늪 3(독 탄 10→5), 정리 후 침강 시작·침강 0.7초·클리어 시점 모두 구슬 0·늪 0·독 탄 0, pageerror 0. 캡처 `E:/exoduser-wt/_out/lt8_druid_sink/`(`after_0_before_kill`·`after_1_sink_start`·`after_3_clear`, 정리 전 비교 `before_*_result.json`).
+- Unity 짝: `DruidBoss.Hazards`(`bossAliveFlag` 갱신 게이트)의 1-1 침강 시작 정리는 유니티 총괄이 이 커밋 SHA 기준으로 수정·druid-boss-oracle 재대조.
