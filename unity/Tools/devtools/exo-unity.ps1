@@ -23,6 +23,7 @@ param(
     [int]$KillAfterSec = 0,
     [switch]$KeepReservation,
     [switch]$AllowPlayer,
+    [ValidateSet("default", "proposed")][string]$Profile = "default",
     [string]$NodeModules = 'G:\exoduser\node_modules'
 )
 
@@ -363,8 +364,10 @@ function Try-TakeoverFrom($lock) {
 function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queueDir, [double]$MinFreeGB = 0) {
     $script:LockToken = [Guid]::NewGuid().ToString("N")
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
-    $needGB = 12
-    if ($MinFreeGB -gt 0) { $needGB = $MinFreeGB } elseif (-not (Test-Path -LiteralPath (Join-Path $wt 'unity\Library'))) { $needGB = 20 }
+    # 기본: 20GB(Library 없음 30GB). -Profile proposed: 12GB / 20GB(실측 근거 제안값, 유니티 총괄과 합의 전)
+    $hasLib = Test-Path -LiteralPath (Join-Path $wt 'unity\Library')
+    if ($Profile -eq 'proposed') { $needGB = 12; if (-not $hasLib) { $needGB = 20 } } else { $needGB = 20; if (-not $hasLib) { $needGB = 30 } }
+    if ($MinFreeGB -gt 0) { $needGB = $MinFreeGB }
     $deadline = (Get-Date).AddMinutes($WaitMin)
     $lastMsg = ''
     while ($true) {
@@ -867,7 +870,8 @@ function Cmd-Player {
     if ($lower -notcontains '--unity-mute') { $ia += '--unity-mute' }
     $sbx = New-Sandbox $id; if ($lower -notcontains '--unity-qa-sandbox') { $ia += @('--unity-qa-sandbox', (Q $sbx)) }
     foreach ($u in $user) { if ($u.ToLower() -ne '-batchmode') { $ia += (Q $u) } }
-    Acquire-Slot 'devtools-player' (Split-Path $exeFull -Parent) $PID $ExecDir 10
+    $plGB = 8; if ($Profile -eq 'proposed') { $plGB = 10 }
+    Acquire-Slot 'devtools-player' (Split-Path $exeFull -Parent) $PID $ExecDir $plGB
     $script:SaveBefore = Get-UserSaveSnapshot
     try {
         $g = $null; $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date

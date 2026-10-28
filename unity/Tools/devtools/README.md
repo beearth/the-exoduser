@@ -50,7 +50,7 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - `browser`: node 를 `exo-pw-guard.cjs` 와 함께 띄운다. 가드가 Playwright `launch`/`launchPersistentContext` 에 `headless:true` + 크로미움 `--mute-audio` 를 강제하고, `headless:false`/`--headed` 는 스크립트 문구와 실행 중 호출 모두 거부한다. playwright 는 `-NodeModules`(기본 `G:\exoduser\node_modules`)에서 찾는다. 자체 점검: `selftest\pw-smoke.mjs`.
 - 거부(종료 코드 2, 사유 출력): `-popupwindow`, `-screen-fullscreen`, `-nographics`, Playwright `headless:false`/`--headed`, nw.js.
 - 실행 뒤 검사: 띄운 프로세스 트리와 실행 중 새로 생긴 `EXODUSER-Unity/Unity/nw` 프로세스 중 `MainWindowHandle ≠ 0` 이면 실패(종료 코드 4). 새로 생긴 `chrome/msedge` 는 우리 명령줄과 겹칠 때만 위반으로 보고, 아니면 경고만 한다(사용자가 같은 시각에 연 브라우저일 수 있음). 끝난 뒤 트리 프로세스가 사라졌는지 확인하고 남은 것은 정리해 결과에 적는다. 결과 json: `_exec\done\<id>.json`.
-- `player` 는 Unity 잠금(`_pc_lock.json`)과 예약 큐를 거친다(커밋 여유 10GB). `browser` 는 잠금을 쓰지 않는다.
+- `player` 는 Unity 잠금(`_pc_lock.json`)과 예약 큐를 거친다(커밋 여유 8GB, -Profile proposed 10GB). `browser` 는 잠금을 쓰지 않는다.
 - 잠금의 pid 는 Unity 를 띄우고 끝까지 기다리는 이 실행기의 `$PID` 다(서버는 서버 Unity pid). 삭제는 pid·token 이 자기일 때만 한다. pid 가 죽었어도 Unity 가 돌고 있고 잠금이 15분 안쪽이면 보유 중으로 본다.
 - 예약을 여러 단계에 걸쳐 쥐고 싶으면 `-Owner 이름 -KeepReservation`(획득해도 예약이 남음), 끝나면 `unreserve`.
 
@@ -71,4 +71,4 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - `status`: 커밋 사용·한도·여유, Unity 프로세스, 서버 메모리, Library 불완전 경고, 최근 1시간 WHEA-Logger 건수(읽기만)를 출력한다. 실행할 때마다 `unity-jobs\memlog.csv` 에 `time,commitUsedGB,commitLimitGB,commitFreeGB,unity,claude,node` 한 줄이 쌓인다.
 - player 는 NativeQaSandbox fail-closed 가 unity/main 에 병합되기 전까지 기본 거부(종료 코드 2), 병합 공지 뒤 `-AllowPlayer` 로만 실행.
 - 세이브 스냅샷은 에디터 자체 상태(`Unityocal.*ditor`, Analytics 등)를 제외한다(에디터를 띄우면 항상 바뀌어 오탐).
-- 시작 조건(실측 근거는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 커밋 여유 에디터(Library 있음) 12GB, Library 없음 20GB, 플레이어 10GB. 동시 실행 수 1(잠금). 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만(pid 재사용으로 남의 프로세스를 건드리지 않음).
+- 시작 조건 기본값: 커밋 여유 20GB(Library 없음 30GB), 플레이어 8GB, 동시 실행 1(잠금). 실측 근거 제안값(12/20/10GB)은 `-Profile proposed` 로만 선택(유니티 총괄과 합의 전)는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 커밋 여유 에디터(Library 있음) 12GB, Library 없음 20GB, 플레이어 10GB. 동시 실행 수 1(잠금). 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만(pid 재사용으로 남의 프로세스를 건드리지 않음).
