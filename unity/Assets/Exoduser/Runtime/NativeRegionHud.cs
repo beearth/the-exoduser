@@ -136,9 +136,10 @@ namespace Exoduser.UnityPort
   {
    float w = 0; foreach (char ch in s) w += CharW(ch, size, latin) + ls; return w;
   }
+  FontStyle latinFs = FontStyle.Normal;   // weight of the Latin glyphs (web Cinzel 500 for the English line: Bold is the closest face IMGUI can pick)
   float CharW(char ch, int size, Font latin)
   {
-   var f = latin != null && Latin(ch) ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft);
+   bool lt = latin != null && Latin(ch); var f = lt ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft, lt ? latinFs : FontStyle.Normal);
    return st.CalcSize(new GUIContent(ch.ToString())).x;
   }
   void SpacedLine(string s, float cx, float cy, int size, float ls, Color col, Font latin, Vector2 off)
@@ -146,7 +147,7 @@ namespace Exoduser.UnityPort
    float w = SpacedWidth(s, size, ls, latin); float x = cx - w / 2f + off.x;
    foreach (char ch in s)
    {
-    var f = latin != null && Latin(ch) ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft); st.normal.textColor = col;
+    bool lt = latin != null && Latin(ch); var f = lt ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft, lt ? latinFs : FontStyle.Normal); st.normal.textColor = col;
     GUI.Label(new Rect(x, cy + off.y - size, 80, size * 2), ch.ToString(), st);
     x += CharW(ch, size, latin) + ls;
    }
@@ -213,9 +214,9 @@ namespace Exoduser.UnityPort
    float gemHalf = 3f, gemGap = 12f + 3f;   // 6px diamond, margin 0 12px
    DrawGem(cx - kw / 2f - gemGap, top + KrCy, bGem, op); DrawGem(cx + kw / 2f + gemGap, top + KrCy, bGem, op);
    // row 2: English line, uppercase Cinzel .32em
-   string en = bEn.ToUpperInvariant();
+   string en = bEn.ToUpperInvariant(); latinFs = FontStyle.Bold;
    Ring(en, cx, top + EnCy, EnSize, EnLs, cinzel, new Color(0, 0, 0, .9f * op), 5f, 4f);
-   SpacedLine(en, cx, top + EnCy, EnSize, EnLs, C(168, 153, 127, .72f * op), cinzel, Vector2.zero);
+   SpacedLine(en, cx, top + EnCy, EnSize, EnLs, C(168, 153, 127, .72f * op), cinzel, Vector2.zero); latinFs = FontStyle.Normal;
    // row 3: sub line
    if (!string.IsNullOrEmpty(bSub))
    {
@@ -232,8 +233,8 @@ namespace Exoduser.UnityPort
    RotateLocal(new Vector2(cx, cy), 45);
    float glow = bannerPurge ? 9f : 5f; Color gc = bannerPurge ? C(216, 183, 120, .7f * op) : new Color(0, 0, 0, .6f * op);
    GUI.color = new Color(gc.r, gc.g, gc.b, gc.a * .35f); GUI.DrawTexture(new Rect(cx - 3 - glow * .4f, cy - 3 - glow * .4f, 6 + glow * .8f, 6 + glow * .8f), Texture2D.whiteTexture);
-   GUI.color = new Color(16 / 255f, 11 / 255f, 8 / 255f, .9f * op); GUI.DrawTexture(new Rect(cx - 4, cy - 4, 8, 8), Texture2D.whiteTexture);
-   GUI.color = new Color(col.r, col.g, col.b, op); GUI.DrawTexture(new Rect(cx - 3, cy - 3, 6, 6), Texture2D.whiteTexture);
+   GUI.color = new Color(16 / 255f, 11 / 255f, 8 / 255f, .9f * op); GUI.DrawTexture(new Rect(cx - 3, cy - 3, 6, 6), Texture2D.whiteTexture);   // 6px border-box with a 1px border
+   GUI.color = new Color(col.r, col.g, col.b, op); GUI.DrawTexture(new Rect(cx - 2, cy - 2, 4, 4), Texture2D.whiteTexture);
    GUI.matrix = m; GUI.color = oc;
   }
   static void RotateLocal(Vector2 pivot, float deg) { GUI.matrix = GUI.matrix * Matrix4x4.TRS(pivot, Quaternion.Euler(0, 0, deg), Vector3.one) * Matrix4x4.TRS(-pivot, Quaternion.identity, Vector3.one); }
