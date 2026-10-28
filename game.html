@@ -3258,7 +3258,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
     <div style="width:240px;height:4px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden;margin:0 auto 6px">
       <div id="stLoadBar" style="height:100%;background:var(--c-accent);width:0%;transition:width .2s"></div>
     </div>
-    <div id="stLoadTip" style="color:#888;font-size:.85rem;letter-spacing:.15em;transition:opacity .3s">위층으로 오르는 중...</div>
+    <div id="stLoadTip" style="color:#888;font-size:.85rem;letter-spacing:.15em;transition:opacity .3s"></div>
   </div>
 </div>
 <div class="ph" id="ph"></div>
@@ -62977,7 +62977,7 @@ const PROLOGUE_LINES={
     {id:'wa30',img:null,t:94000,dur:800,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:300}},
     {id:'wa31',img:'warintro/cin_nemesia_hd.jpg',t:94800,dur:2200,speaker:null,narr:1,text:'"Why have you come to hell?"',col:'#ffcc55',cam:{zs:1.08,ze:1.04,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:600}},
     {id:'wa32',img:'warintro/cin_nemesia_hd.jpg',t:97000,dur:2000,speaker:null,narr:1,text:'',cam:{zs:1.04,ze:1.04},vfx:{vig:.5},fade:{type:'cross',in:1}},
-    {id:'wa33',img:'warintro/cin_nemesia_hd.jpg',t:99000,dur:4000,speaker:null,narr:1,text:'"Escape from hell, sinner."',col:'#ffcc55',cam:{zs:1.04,ze:1.04},vfx:{vig:.5,shake:1},fade:{type:'cross',in:1}},
+    {id:'wa33',img:'warintro/cin_nemesia_hd.jpg',t:99000,dur:4000,speaker:null,narr:1,text:'"Escape from hell. You... who bear the weight of sin."',col:'#ffcc55',cam:{zs:1.04,ze:1.04},vfx:{vig:.5,shake:1},fade:{type:'cross',in:1}},
     {id:'wa34',img:null,t:103000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ],ja:[
     {id:'wa01',img:'warintro/cin_war.jpg',t:0,dur:2500,speaker:null,narr:1,text:'',cam:{zs:1.08,ze:1.04,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:800}},
@@ -63012,7 +63012,7 @@ const PROLOGUE_LINES={
     {id:'wa30',img:null,t:94000,dur:800,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:300}},
     {id:'wa31',img:'warintro/cin_nemesia_hd.jpg',t:94800,dur:2200,speaker:null,narr:1,text:'"お前はなぜ地獄に来た？"',col:'#ffcc55',cam:{zs:1.08,ze:1.04,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:600}},
     {id:'wa32',img:'warintro/cin_nemesia_hd.jpg',t:97000,dur:2000,speaker:null,narr:1,text:'',cam:{zs:1.04,ze:1.04},vfx:{vig:.5},fade:{type:'cross',in:1}},
-    {id:'wa33',img:'warintro/cin_nemesia_hd.jpg',t:99000,dur:4000,speaker:null,narr:1,text:'"地獄から脱出せよ、罪人よ。"',col:'#ffcc55',cam:{zs:1.04,ze:1.04},vfx:{vig:.5,shake:1},fade:{type:'cross',in:1}},
+    {id:'wa33',img:'warintro/cin_nemesia_hd.jpg',t:99000,dur:4000,speaker:null,narr:1,text:'"地獄から脱出せよ。罪の重荷を背負いし者よ。"',col:'#ffcc55',cam:{zs:1.04,ze:1.04},vfx:{vig:.5,shake:1},fade:{type:'cross',in:1}},
     {id:'wa34',img:null,t:103000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ],zh:[
     {id:'wa01',img:'warintro/cin_war.jpg',t:0,dur:2500,speaker:null,narr:1,text:'',cam:{zs:1.08,ze:1.04,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:800}},
@@ -63047,7 +63047,7 @@ const PROLOGUE_LINES={
     {id:'wa30',img:null,t:94000,dur:800,speaker:null,narr:1,text:'',vfx:{vig:.5},fade:{type:'cross',in:300}},
     {id:'wa31',img:'warintro/cin_nemesia_hd.jpg',t:94800,dur:2200,speaker:null,narr:1,text:'"你为什么来到地狱？"',col:'#ffcc55',cam:{zs:1.08,ze:1.04,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:600}},
     {id:'wa32',img:'warintro/cin_nemesia_hd.jpg',t:97000,dur:2000,speaker:null,narr:1,text:'',cam:{zs:1.04,ze:1.04},vfx:{vig:.5},fade:{type:'cross',in:1}},
-    {id:'wa33',img:'warintro/cin_nemesia_hd.jpg',t:99000,dur:4000,speaker:null,narr:1,text:'"逃出地狱吧，罪人。"',col:'#ffcc55',cam:{zs:1.04,ze:1.04},vfx:{vig:.5,shake:1},fade:{type:'cross',in:1}},
+    {id:'wa33',img:'warintro/cin_nemesia_hd.jpg',t:99000,dur:4000,speaker:null,narr:1,text:'"逃离地狱。你……背负罪孽之人。"',col:'#ffcc55',cam:{zs:1.04,ze:1.04},vfx:{vig:.5,shake:1},fade:{type:'cross',in:1}},
     {id:'wa34',img:null,t:103000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ]
 };
@@ -64047,8 +64047,8 @@ let _loadTipIdx=0,_loadTipIv=null;
 function _startLoadTips(){
   const el=$('stLoadTip');if(!el)return;
   const tips=_LOAD_TIPS_KO.map(s=>_T(s).replace(/^\u{1F4A1}\uFE0F?\s*/u,'\u25C6 '));
-  _loadTipIdx=~~(Math.random()*tips.length);
-  el.textContent=tips[_loadTipIdx];
+  _loadTipIdx=(~~(Math.random()*tips.length)-1+tips.length)%tips.length;
+  el.textContent=_T('위층으로 오르는 중...');
   _loadTipIv=setInterval(()=>{_loadTipIdx=(_loadTipIdx+1)%tips.length;el.style.opacity='0';setTimeout(()=>{el.textContent=tips[_loadTipIdx];el.style.opacity='1'},300)},3000);
 }
 function _stopLoadTips(){if(_loadTipIv){clearInterval(_loadTipIv);_loadTipIv=null}}
