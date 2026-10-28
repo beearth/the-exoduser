@@ -47,4 +47,5 @@
 | 결정 | 유니티 총괄 (2026-10-28) |
 | 실행 | RM-1 VFX 세션 (브랜치 `claude/unity-pc-vfx-shared-render-20261028`, 공유 렌더 커밋 다음의 별도 커밋) |
 | 소유 | RM-0 (엔진 기반) |
+| 빌드 경로 정정 | `PortVerification.MakeScene`에서 남아 있던 `PlayerSettings.colorSpace=ColorSpace.Gamma` 강제 할당을 제거한다. 기존 빌드 진입 시 소스의 Linear 1이 Gamma 0으로 변경돼 Player 캡처가 현재 색공간 결정을 반영하지 못했다. 이후 빌드는 `ProjectSettings.asset`의 Linear 1을 유지해야 한다. 2026-10-28 Unity 2차 통합에서 발견·정정. |
 | 되돌리기 | 이 커밋만 revert |
