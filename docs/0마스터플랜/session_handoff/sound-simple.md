@@ -89,3 +89,26 @@
 1. 이 문서·MEMORY.md를 읽고 총괄의 다음 지시를 기다린다(선택 결과 반영, SND-05, SND-09 후속).
 2. 작업 시작 전 `git fetch origin main`, 공유 트리(G:\exoduser)는 타 세션 WIP가 있으니 경로 지정 커밋만.
 3. 단위가 끝날 때마다 `get_usage(self)` — 100K 초과 시 마무리 후 인계·알림·`clear_session(self)`, 200K 초과 시 즉시 같은 절차.
+
+## 2026-10-28 오후 갱신 — SND-10 A·B·C 완료, 컨텍스트 ~250K에서 인계 (이 절이 위 절들보다 새롭다)
+
+사운드 총괄 지시(SND-10, A→B→C→D)를 받아 A·B·C를 끝냈다. **D(SND-05)는 미착수** — 위 "대기·미완"의 SND-05 항목 그대로 새 컨텍스트에서 시작한다. 보고 대상은 사운드 총괄(`local_cf0cb8d7-22f7-46be-b65d-fc242dc2bc23`).
+
+| 단위 | 결과 | 커밋·위치 |
+|---|---|---|
+| A 고르기 페이지 선택 백업 | `pick_druid.html`·`pick_rm1.html`·`_druid/pick_druid_tpl.html`에 localStorage(`picks_<set>`) 즉시 저장·서버 `{}`/꺼짐이면 복원·서버가 `{}`면 다시 POST·오른쪽 아래 "서버 저장됨 HH:MM:SS / 서버 꺼짐 · 브라우저에만 보관됨". 서버 응답 모의 헤드리스로 4경우 확인(실서버·picks 파일 무접촉) | 저장소 밖 staging(미커밋, 커밋 대상 아님) |
+| B SND-10 1단계 | 연사·마력석궁 발사 무음 수정: `SFX.bow(bt)`가 `crossbow_shot` 재사용(repeater vol .55·rate 1.15, arcane vol .7·rate .88, ±.08), 호출부 `SFX.bow(bw().btype)`. 헤드리스·음소거로 `fireBow()` 3종 호출→playSample 로그 확인, pageerror 0. docs 3곳 + SSOT 2줄. DEMO/EA는 같은 2곳만 패치(G: 파일 통째 복사 안 함) | **264cffe06** (origin/main, 비강제) |
+| C SND-10 2단계 | UI 새 소리 6키(`ui_cancel`·`ui_panel_open`·`ui_panel_close`·`ui_tab`·`ui_fail`·`ui_salvage`) x 4해석 = 24후보 생성·가공(−1dBTP, `ui_tab`은 0.15s 컷)·`pick_ui.html`(6카드·24후보·추천 표시 없음, 수치 "주의" 10건). 기록 문서 `docs/6사운드디자인/SND10_UI_NEW_SOUNDS_20261028.md`, 카탈로그 `tools/sfx_forge_catalog_ui_s10.json` | **4bd46faf8** (origin/main, 비강제) |
+
+- **서버 재시작 필요(미실행)**: `_tools/serve.cjs` PICKSETS에 `ui`를 추가했지만 실행 중인 서버(3399)는 옛 코드다. 재시작 전에는 `?set=ui`가 400이라 `pick_ui.html` 선택이 브라우저 localStorage에만 남는다. 드루이드 고르기가 끝난 뒤 사운드 총괄이 열 때 재시작한다(PowerShell Start-Process 방식, picks 파일은 무손상 — 열려 있는 사용자 탭은 건드리지 않는다).
+- **사용자 열린 탭 주의**: 드루이드 페이지 옛 탭은 localStorage 백업 코드가 없다. 새로고침하면 DOM 선택이 사라질 수 있다. 서버가 켜져 있을 때 카드 하나를 다시 누르면 전체 state가 POST된다.
+- 도구 메모: 이번 분석·가공 스크립트는 `python`(numpy는 사용자 site-packages라 `-I` 금지)으로 실행. 가공 함수 모듈 `_analysis/druid_proc_lib.py`(druid_proc.py는 임포트 시 전체 실행되어 분리), `_analysis/ui_proc.py`, `_ui/mkcat_ui.py`·`_ui/mk_pick_ui.py`. 가공 결과 `_preview_ui/`, 측정 `_analysis/metrics_ui.json`.
+- **빈 `python -` 실수 1회**(heredoc 앞에 붙여서 REPL이 약 1분 돌고 로그 147MB, TaskStop으로 중단). 위 함정 목록과 동일 — 스크립트는 반드시 파일로.
+- 알림해 둔 것(내 작업 외): 다른 세션 두 곳에서 `python -` REPL이 CPU를 쓰며 돌고 있었다(scratchpad 514df884 세션, `E:/exoduser-wt/boss-board-rmb2` bash). 확인은 해당 세션/사용자 몫.
+- DEMO/EA: 석궁 수정은 `G:\exoduser-DEMO\game.html`·`gamedemo.html`·`G:\exoduser-ea\game.html`에 같은 2곳 패치 완료. index.html·lang·assets 전체 동기화는 하지 않았다.
+- 확인하지 못한 것: 석궁 발사음과 UI 후보의 게임 안 실제 청음.
+
+### 재개 후 첫 행동(10-28 오후)
+1. 이 문서·MEMORY.md를 읽는다. 위 절의 SND-05 명세(「예정 항목」 보이스 키 매핑·포맷 규칙 표, 문서만 수정)를 시작한다. 정적 집계는 `G:\exoduser\sfx`·`bgm`이 origin보다 뒤처져 있으니 누락 파일은 `git show origin/main:<경로>`로 임시 폴더에 꺼내 ffprobe에 포함하거나 "로컬 트리 기준 + 누락 N개"로 명시한다.
+2. 작업 전 `git fetch origin main`, 공유 트리는 타 세션 WIP가 있으니 origin/main 기준 sparse worktree + 경로 지정 커밋 + 비강제 push.
+3. 단위가 끝날 때마다 `get_usage(self)`, 100K 초과 시 마무리·인계·알림.
