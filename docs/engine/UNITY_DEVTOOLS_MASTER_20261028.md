@@ -51,7 +51,15 @@
 
 #### 1.3a Library 합계
 
-(측정 완료 후 기입 — `I:\EXODUSER-Storage\devtools\survey\libsize.txt`)
+전수 측정(10-28, `du -sm`, `I:\EXODUSER-Storage\devtools\survey\libsize.txt`): Library가 있는 32개 합계 **158.4GB**.
+
+| 구분 | 개수 | 크기·파일 수 | 예 |
+|---|---|---|---|
+| 완전(지금 unity/main과 맞음) | 20 | 5.5~6.1GB·약 30,000~31,400파일 | rm0~4·rmb1·vfx-*·ui·sound·latest·m1hud·o1-* |
+| 오래된 이식 단계 | 10 | 3.4~4.7GB·1,300~2,700파일(합계 약 39GB) | c01wire·d01·maps·dmg·d05·map3d·win·a16·char·a14 |
+| 불완전 | 2 | 0.9GB·약 26,000파일 | silvertail·ivan |
+
+정리 후보는 오래된 10개와 불완전 2개다. 삭제는 사용자 확인 뒤, junction 전수 확인(`/XJ`, reparse point) 후에만 한다(robocopy·worktree remove가 junction을 따라가 원본을 지운 사고 이력).
 
 ### 1.4 동시 실행이 안 되는 원인
 
