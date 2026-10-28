@@ -17,16 +17,15 @@
 | DEMO·EA 동기화(원격 커밋본 기준, `_BIC=true`, EA package.json `exoduser.target='ea'`) | 폴더 반영(비Git) |
 | Unity 판정: 전사 대검 R3 PASS, RM-0 B안 환경 PASS(Gamma 기준 잠정), Hero Light 0.6 잠정, 웅덩이 테두리 Fresnel 3.0 구조 PASS | 바이블 27ca98941·656c0f216 |
 
-## 미커밋 — 2차 이식 진행 중 (다음 세션이 이어서)
-- 작업 사본: `E:/exoduser-wt/title-eye-logo` (detached, 기준 1cb1f77a8). **검수 전이라 커밋하지 않음.**
-- 바뀐 것:
-  - `game.html`: 대장간(`renderForge`) 범위 색 변환 56곳(`--keep-vivid --range`), `enhRateColor` 초록/노랑/주황 → 은빛/진홍, 강화 제목·MAX·충분 색, 분해 필터 이모지 → 부위 아이템 그림(`output/imagegen/item-skins/*_phys.png`), `_uiStripEmoji`(그린 뒤 글자 노드에서 이모지 제거 — 번역 키 보존), 떠오르는 글자 👿 제거, 로딩 팁 💡 → ◆(표시 때만), 비석 이름표 📜·Noto Sans·파랑 → ◆·나눔명조·은빛, 미니맵 틀 `img/mm_frame_ring_20261028.png`(눈 고리, `tools/make_mm_ring_frame.cjs`) + `#mm` 원형 자르기
-  - `index.html`: 로비 캐릭터 특성 이모지 14종 → 은빛 선 SVG(`_TRAIT_SVG`, 같은 키 매핑), `.ti` 흑철, `<style>` 블록 색 129곳(`--style-only --keep-vivid`)
-  - `lobby-ancestor-art.css` 2곳, `cin-enter-engraved.css` 9곳, `img/ui/enter_gothic_brass.png` 은빛 변환
-  - `tools/silver_hell_remap.cjs`에 `--range=시작-끝` 추가
-- 검수 상태: 로비 캡처 `E:/exoduser-wt/_out/silver-ui/cap2/lobby*.png`만 찍힘. **캐릭터 특성 팝업 SVG 0개 확인됨 → 특성 팝업이 안 열린 상태로 찍힘(카드 클릭만으로는 안 열림, `_closeVisualSelect`·선택창 여는 함수 찾아 다시)**. 게임(HUD·미니맵·대장간) 캡처는 PC 프로세스 한계(fork 실패)로 미실시.
-- 다음 할 일: ① 메모리 여유 20GB 확인 → ② 검수 서버(scratchpad `overlay_server2.cjs`, 3395, worktree 우선·없으면 G:)로 `cap_round2.mjs` 1회(애니메이션 끔, swiftshader 플래그 없이) → ③ 1x 판정(미니맵 원형·대장간 이모지 0·로비 특성 아이콘·ENTER) → ④ 기준서 §6.1에 2차 기록 → ⑤ 경로 커밋·push(원격 앞서면 cherry-pick, 시도 3회) → ⑥ DEMO·EA 동기화(원격 커밋본, gamedemo/indexdemo, `_BIC=true`)
-- ~~보류: 장 클리어 문구 줄~~ → **완료(10-28)**: 스토리 묶음 A `2acde58ac` 위에서 색·아이콘·`.ph` 글꼴 정리, 기준서 §6.2. 1장 `#66ee55`는 소비처 0(화면 영향 없음) → 맵 테마 표 정리 때. 2차 작업 사본 `E:/exoduser-wt/title-eye-logo`는 원격 최신으로 옮겨 같은 4곳이 이미 들어 있음(커밋 때 겹쳐도 동일 변경).
+## 2차 이식 — 완료 (2026-10-28, 사용자 "빨리 로비디자인 끝내서 접목시켜라"·"ui 총 디자인도"·"로비 연꽃은 게임에 안어울린다")
+- 커밋: `1e2f79a40`(로비 전체·UI 색 토큰·HUD 기동 고리·대장간·미니맵 눈 고리), `3fe35d78b`(로비 연꽃 장미창 → 눈 고리 문장 `img/ui/silver_hell/eye_crest_20261028.png`, `--menu-sigil`·`--info-sigil`). 둘 다 origin/main push.
+- 기록: 기준서 `DESIGN_CONCEPT_SILVER_HELL_20261028.md` §6.3(바꾼 것·보존 목록·판정), `UI_COMPOSITION_20260925.md` 2026-10-28 절.
+- 시안: `tmp/design-review/20261028_silver_ui/round2/` 14장(바탕화면 "디자인 시안"). 사용자에게 5장 전송함.
+- DEMO·EA: 커밋본(작업 사본, sparse라 `git show HEAD:경로`로 꺼냄) 기준 game/gamedemo/index/indexdemo·lang 29·CSS·에셋 반영, `_BIC=true`·`_DEMO_LV_CAP=100` 확인. `_LOBBY_BUILD`는 이제 `build-target.js`/EA `package.json` 방식이라 sed 대상 없음(정상).
+- 변환기 규칙 변경: 밝은 주황(명도 .6 초과)은 진홍 대신 은빛(분홍 글자 방지).
+- 작업 사본 `E:/exoduser-wt/title-eye-logo` = 3fe35d78b, 미커밋 없음. 검수 서버 3395 끔.
+- 3차 후보(기준서 §6.3 남은 것): 능력치 성장 나무 원화 청동색, 1-1 시작 금빛 마법진(VFX → 임팩트 총괄), 대장간·HUD 밖 JS 인라인 창, CLAUDE.md 금빛 헤어라인 문구(사용자 확인), 스킬 제단 바닥 각인 `skill-forge-3d.js` `SIGIL_URL`.
+- 사고: 10-28 이 세션에서 `python -`를 `</dev/null`로 실수 실행 → 프로세스가 남아 CPU 사용(로그 174바이트, 디스크 영향 없음), PID 확인 후 즉시 종료. 또 `cat >` 빈 입력 대기 1회(즉시 정지). **스크립트는 Write 도구로 파일을 만든 뒤 실행.**
 
 ## 남은 백로그
 - CLAUDE.md 작업물 퀄리티 3 "금빛 헤어라인" 문구 → 은빛 정정: **사용자 확인 필요**(보고함, 답 없음).
