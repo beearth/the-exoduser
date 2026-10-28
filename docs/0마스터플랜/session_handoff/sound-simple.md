@@ -112,3 +112,31 @@
 1. 이 문서·MEMORY.md를 읽는다. 위 절의 SND-05 명세(「예정 항목」 보이스 키 매핑·포맷 규칙 표, 문서만 수정)를 시작한다. 정적 집계는 `G:\exoduser\sfx`·`bgm`이 origin보다 뒤처져 있으니 누락 파일은 `git show origin/main:<경로>`로 임시 폴더에 꺼내 ffprobe에 포함하거나 "로컬 트리 기준 + 누락 N개"로 명시한다.
 2. 작업 전 `git fetch origin main`, 공유 트리는 타 세션 WIP가 있으니 origin/main 기준 sparse worktree + 경로 지정 커밋 + 비강제 push.
 3. 단위가 끝날 때마다 `get_usage(self)`, 100K 초과 시 마무리·인계·알림.
+
+## 2026-10-28 저녁 갱신 — 컨텍스트 ~400K에서 재생성 인계 (이 절이 위 절들보다 새롭다. 보고 대상: 사운드 총괄 `local_cf0cb8d7-22f7-46be-b65d-fc242dc2bc23`)
+
+### 오늘 오후~저녁 완료 (origin/main, 전부 비강제 push)
+| 단위 | 결과 | 커밋 |
+|---|---|---|
+| SND-05 | `6사운드디자인.md` 「보이스 키 매핑표·파일 포맷 규칙」 §1~8(보이스 71키·sfx/bgm ffprobe·사실/제안 F-1~F-5), 백로그·기록 갱신 | 89d904786 |
+| 제출 버튼 | pick_ui·pick_rm1·pick_druid·`_druid/pick_druid_tpl.html`에 "n/N 골라짐+제출"(`_submitted` ISO를 POST, 다시 바꾸면 해제, 서버 꺼짐 문구). 패치 `_out/sfx_forge/_tools/add_submit.py`. 커밋 없음(_out) | — |
+| 드루이드 2차 | 다시 5키 x4=20후보(`<key>_v3a~d`), **35Hz HPF(4차)→−1dBTP 가공**, `pick_druid2.html`·`mk_pick_druid2.py`·`mkcat_druid2.py`·`_analysis/druid2_proc.py`, 카탈로그 `tools/sfx_forge_catalog_druid_v3.json` | 67843c9ea |
+| HPF 규칙·감사 | 가공 기본값 "35Hz HPF→−1dBTP"(6사운드디자인 §8), 채택 27개 측정 `SFX_HPF_AUDIT_20261028.md`, 결정 "기존 채택본 재가공 안 함·새 후보는 HPF 유지" | a43982935 · 7a6d18ce4 |
+
+### 지금 받은 지시 ①→②→③ (미착수. 사용자가 pick_druid2·pick_ui를 제출함, 백업 `_picks_backup/*_20261028_final.json`)
+- 결과 — 드루이드 2차: `druid_hit`=**v3d**, `druid_hit_heavy`=**v3d**, `druid_whip`=**v3a** / `druid_slam`·`druid_spore`=**2회 연속 전부 안 맞음**(메모 없음). UI: `ui_cancel`=**s10b**, `ui_panel_open`=**s10c**, `ui_panel_close`=**s10c**, `ui_fail`=**s10a**, `ui_salvage`=**s10a** / `ui_tab`=전부 안 맞음. (정확한 파일 경로는 `picks_druid2.json`·`picks_ui.json`의 `pick`)
+- **① 웹 반영(SND-10 2단계, game.html, origin/main 기준 sparse worktree)**: UI 5키를 promote해 `sfx/ui/`에 넣고 `_sampleFiles`에 등록. 연결은 `SND10_UI_NEW_SOUNDS_20261028.md` §4 「채택 후 반영 계획」대로. `ui_cancel`=사슬 캔슬 호출(키 이름이 이미 있음, 파일만 등록). `ui_panel_open/close`=`togglePanel`·`openPanel`·`_panelBack`·`closeAllPanels`, 실제로 열고 닫힐 때 1회씩, 이미 열린 패널 전환에서는 open만. `ui_fail`=전사의 `showPH` "MP/ST/HP 부족!"·"악의 부족!"·"쿨다운 중..." + 장착 실패 notify 3곳(요구 레벨·악의 부족·주머니 가득); 실버테일은 기존 음성 그대로이고 음성이 나는 경우 ui_fail 안 냄; 쿨다운 400ms. `ui_salvage`=가방 분해 완료(50633·50663·16572)·대장간 분해 완료(51041)의 기존 `SFX.pickup`/`SFX.forge` 대체(줄 번호는 당시 기준, 함수명으로 다시 찾기). 음량은 기존 UI 버튼음(hover .25·confirm .35) 기준으로 정해 문서 표에 적기. 검증=헤드리스·음소거로 각 키 `playSample` 호출 1회씩 확인(실패하면 재실행 말고 원인 보고). docs=6사운드디자인.md·AD2 인벤토리 해당 행·SND10 문서 채택표. 번역 목록 불필요. DEMO/EA는 같은 곳만 패치(G: 파일 통째 복사 금지). 커밋은 기존 방식. 끝나면 SHA·확인한 것·못 한 것 보고(Unity 빌드 미확인 여부 병기).
+- **② 기록**: `DRUID_BOSS_SOUND_REMAKE_20261028.md` §6 아래 "2차 결과" 표. `druid_hit`은 d 1개만 채택 → 변형 순환 안 하고 rate ±6%·연타 감쇠로 감(총괄 결정). a·b는 쓰지 않음.
+- **③ 3차 후보(생성만, 사용자에게 알리지 말 것)**: `druid_slam`·`druid_spore` 각 4후보 + `ui_tab` 4후보. slam·spore: 후보 4개 중 2개는 게임에 이미 있는 소리(`sfx/boss`·`sfx/hit`·`sfx/monster` 등에서 장면에 맞는 웹 원본), 가공은 35Hz HPF→−1dBTP만; 나머지 2개는 ElevenLabs 새 생성, 1·2차와 다른 해석(slam="거대한 나무 둥치가 땅을 내려쳐 땅이 울림", spore="축축한 버섯갓이 터지며 쉭 퍼짐"). 장면 카드에 "웹 기존 소리"/"새로 만듦" 표기. `ui_tab`: 기존 채택 버튼음(`ui_button_hover`/`confirm`)을 짧게 잘라 높낮이를 바꾼 변형 2개 + 새로 만든 2개, 0.15초 이하. 고르기 `pick_druid3.html`(3카드), serve.cjs PICKSETS `r3`. 서버 재시작은 총괄이 함.
+
+### 도구·함정 (이번에 추가로 알게 된 것)
+- 고르기 페이지 생성: `_out/sfx_forge/_druid/mk_pick_druid2.py`(druid2 모델: 템플릿 `pick_druid_tpl.html` + DATA 주입, 아레나 앰비언스 고정 `arenaPick`, 후보 `주의` 플래그에 60Hz 이하 쏠림 포함), `_ui/mk_pick_ui.py`. 카탈로그 생성 `_druid/mkcat_druid2.py`·`_ui/mkcat_ui.py`(후보 문구 450자 이내). 가공 `_analysis/druid2_proc.py`(HPF 포함, `ui_proc.py` 형제), 스펙트럼 `_analysis/druid2_spec.py`(`load`·`spec`), HPF 감사 `_analysis/hpf_audit.py`·`hpf_doc.py`.
+- 생성 명령: `cd G:\exoduser; C:/nvm4w/nodejs/node.exe --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <절대경로> --variants 1 [--dry-run]`, 결과는 `_out/sfx_forge/<cat>/<key>/v1.mp3`(카테고리 skill·hit·ui·ambient만).
+- 헤드리스 검증 스크립트는 `G:\exoduser\tmp\*.mjs`에 파일로 두고 `C:/nvm4w/nodejs/node.exe --preserve-symlinks --preserve-symlinks-main tmp/x.mjs`, 프로필은 `I:/EXODUSER-Storage/…`에 두고 끝에 `fs.rmSync`. `/api/picks`는 `page.route`로 모의(실서버 picks 무접촉). 남은 임시 파일(`tmp/pick_submit_check.mjs`·`pick_druid2_check.mjs`, `I:/EXODUSER-Storage/tmp_pick_*.png`)은 rm 권한 거부로 못 지웠다(사용자 몫).
+- 커밋 절차: origin/main 기준 sparse worktree(`git worktree add --no-checkout -B <브랜치> <경로> FETCH_HEAD` → `sparse-checkout set`(MSYS_NO_PATHCONV=1) → `git checkout`) → 수정 → `git add -- <경로>` + `git commit -- <경로>`(Co-Authored-By 줄 포함) → hook이 바꾼 `tools/guard.baseline.json`은 `git checkout --`로 복구 → `git fetch` 후 `merge-base --is-ancestor`(별도 명령) → `git push origin <브랜치>:main` → `git worktree remove --force` + `git branch -D`.
+- 파일 쓰기: Write 도구는 CRLF로 저장 → 문서는 python `open(f+'.tmp','wb')` + `os.replace`(LF 유지, `grep -c $'\r'`가 0인지 확인).
+- 알림 규칙: 사운드 총괄에게만 보고(사용자에게 알리지 말라는 지시가 있으면 지킴). Unity에 들어가는 소리는 "Unity 빌드 미확인" 여부를 같이 적는다(CTO 6단계 완료 규칙 `UNITY_DONE_BUILD_PLAYTEST_RULE_20261028.md`).
+
+### 재개 후 첫 행동(10-28 저녁)
+1. 이 절을 읽고 ①→②→③ 순서로 진행(총괄이 같은 지시를 다시 보낼 수 있음). `get_usage(self)`는 단위마다.
+2. ①은 `game.html`이 큰 파일이라 앵커 문자열 + 등장 횟수 1 확인으로 패치하고, 호출 위치는 함수명으로 다시 찾는다(줄 번호는 밀림).
