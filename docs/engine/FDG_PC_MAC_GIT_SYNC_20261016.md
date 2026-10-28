@@ -6,6 +6,12 @@
 
 # PC·Mac·Git 통합 — 2026-10-16
 
+## 2026-10-28 Unity PC↔GitHub↔Mac 현행 동기화 규칙
+
+사용자 최신 지시대로 Unity의 공통 줄기는 GitHub `unity/main`이며 웹 본편 `main`과 구분한다. 매 개발 단위 시작에 fetch한 뒤 실제 소유 checkout·실행 source 경로, 원격 SHA, branch/HEAD, tracked INDEX/WORK와 미추적 파일을 확인한다. 자기 코드+관련 docs만 commit → 최신 `unity/main` 정상 merge → 비강제 push → 반대편 소유자 fetch·정상 반영 → PC/Mac **각 실제 checkout**의 공통 checkpoint 조상 관계와 필요한 파일 byte 일치 순서로 확인한다. WIP는 보존해 담당자와 조율하고, PC checkout을 읽지 못했으면 `PC pending`이다. 작업 브랜치 push만으로 세 곳 동기화 완료라고 쓰지 않는다. 소스 정렬은 Editor/Player/기존 실행 앱의 검증 및 자동 교체와 별개이며, 통과 검사 재실행·자동 서버 재시작·새 자동화/팀 생성은 하지 않는다. 아래 2026-10-16 웹/Godot 통합 기록과 당시 한계는 이력으로 보존한다.
+
+Mac Unity 현재 인수 범위는 `unity/main:444ee86fc16d862edce5eb2897f777253ec257dd`의 자식 `codex/unity-mac-sync-20261028:f8447bc66ebad5c66d003b32d8261f01d7636ee6`에 있는 HUD Linear probe 수리·관련 docs다. Metal HUD 3상태 GPU 판정 PASS/C# 오류0, 전체 `PortVerification.Verify`는 별개 A15 SFX 현행 5%와 Editor 기대 1% 불일치로 종료2/receipt 없음. 이번 공통 원격 반영은 이 HOLD를 해제하거나 PC 실제 checkout·Player 인수를 뜻하지 않는다.
+
 | 항목 | 이번 통합의 계약·현재 한계 |
 |---|---|
 | 첫 웹 통합 기준 | base main c844a3ecd38973e2bc53b8db8af8efe5ca880794. 현재 반영 상태는 아래 후속 단위를 따른다. build-target·player-attack-remaster·WarriorDashFlight·Skill Forge·최신 튜토리얼 배지/난이도 마커를 보존한다. |
