@@ -12769,9 +12769,11 @@ const SFX={
     playSub(90,.06,.05,40);
     playFM(300,150,200,.08,.03);
   },
-  // ── Bow: sample + string snap ──
-  bow(){
-    playSample('bow_shot',.85,_r(1,.08));
+  // ── Bow(연사/마력석궁 발사): 석궁 계열이므로 crossbow_shot 재사용, 종류별 음량·rate만 다름 (SND-10) ──
+  bow(bt){
+    if(bt==='repeater')playSample('crossbow_shot',.55,_r(1.15,.08));
+    else if(bt==='arcane')playSample('crossbow_shot',.7,_r(.88,.08));
+    else playSample('crossbow_shot',.7,_r(1,.08));
   },
   // ── Crossbow: mechanical loading + string tension + click ──
   crossbowLoad(){
@@ -28871,7 +28873,7 @@ function fireBow(){
         const _lbA=P.atkArc+(Math.random()<.5?.12:-.12),_lbx=Math.cos(_lbA),_lby=Math.sin(_lbA);
         const _pp2=_getPProj();_pp2.x=P.x+_lbx*12;_pp2.y=P.y+_lby*12;_pp2.vx=_lbx*bspd;_pp2.vy=_lby*bspd;_pp2.dmg=dmg;_pp2.el=ael;_pp2.maxDist=range;_pp2.dist=0;_pp2.r=3;_pp2.stagger=0;_pp2.kb=0;_pp2.pierce=0;_pp2.pierceMax=0;_pp2.normalBow=true;pProjs[pProjs.length]=_pp2;
       }
-      if((bw().btype||'')==='crossbow'){playSample('crossbow_shot',.7,_r(1,.1))}else SFX.bow();
+      if((bw().btype||'')==='crossbow'){playSample('crossbow_shot',.7,_r(1,.1))}else SFX.bow(bw().btype);
       P.s='bowRecover';P.st2=~~(45/(pBowSpd()*(1+_eqAffix('bowAtkSpd'))));
       return true;
     }

@@ -265,7 +265,7 @@ UI 전용으로 `_sampleFiles`에 등록된 샘플은 **`ui_button_hover`, `ui_b
 | 항목 | 내용 | 줄 |
 |---|---|---|
 | `ui_cancel` | 호출은 있으나 `_sampleFiles`에 키가 없고 `sfx/ui/`에도 파일이 없다 → 실제로는 무음 | 13405 |
-| `bow_shot` | `SFX.bow()`가 부르는 키가 `_sampleFiles`에 없음 → 활 발사 소리 무음(전투 쪽, UI 아님) | 12778 |
+| `bow_shot` | `SFX.bow()`가 부르는 키가 `_sampleFiles`에 없음 → 활 발사 소리 무음(전투 쪽, UI 아님). **해결 2026-10-28(SND-10 1단계)**: `SFX.bow(bt)`가 `crossbow_shot`을 재사용 | 12778 |
 | `_startLoop` 이름 중복 | 오디오용 `_startLoop(key,vol)`(12684)이 뒤쪽 메인 루프 시작기에 가려짐(sound-simple 인계 메모에 이미 기록) | 12684 |
 | 컷신 `sfx:` 10종·`voice_cut_NN` | 위 F-17 | 63014–63034 |
 | `SFX.click` | 정의만 있고 호출 0 | 13017 |
