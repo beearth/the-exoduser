@@ -95,7 +95,7 @@ namespace Exoduser.UnityPort
             // SpriteRenderer color uniforms or multiplying its alpha twice.
             r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);r.SetPropertyBlock(properties);
         }
-        static Vector3 Point(float x,float y){return new Vector3(x/100,-y/100,0);}
+        static Vector3 Point(float x,float y){return NativeRemodel3D.Point(x,y);}
         public void Dispose(){Reset();foreach(var r in charge)UnityEngine.Object.Destroy(r.gameObject);foreach(var r in tiers)UnityEngine.Object.Destroy(r.gameObject);UnityEngine.Object.Destroy(line);UnityEngine.Object.Destroy(additive);UnityEngine.Object.Destroy(ink);}
     }
 }

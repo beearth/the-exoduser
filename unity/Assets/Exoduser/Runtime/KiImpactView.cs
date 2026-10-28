@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
         {
             var go=new GameObject(ink?"Ki hit ink":"Ki impact light");go.transform.SetParent(parent);
             var r=go.AddComponent<SpriteRenderer>();r.sharedMaterial=ink?inkMaterial:addMaterial;
-            r.transform.position=new Vector3(e.X/100,-e.Y/100,0);r.transform.rotation=Quaternion.Euler(0,0,-e.Angle*Mathf.Rad2Deg);
+            r.transform.position=NativeRemodel3D.Point(e.X,e.Y);r.transform.rotation=Quaternion.Euler(0,0,-e.Angle*Mathf.Rad2Deg);
             r.transform.localScale=Vector3.one*(width/627);r.color=Color.white;
             return new Flash{renderer=r,source=e};
         }

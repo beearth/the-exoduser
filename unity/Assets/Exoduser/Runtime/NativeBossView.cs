@@ -65,7 +65,7 @@ namespace Exoduser.UnityPort
             return Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(.5f, .5f), 100f, 0, SpriteMeshType.FullRect);
         }
 
-        static Vector3 Point(double x, double y) { return new Vector3((float)x / 100, -(float)y / 100, 0); }
+        static Vector3 Point(double x, double y) { return NativeRemodel3D.Point(x, y); }
 
         SpriteRenderer Next()
         {
