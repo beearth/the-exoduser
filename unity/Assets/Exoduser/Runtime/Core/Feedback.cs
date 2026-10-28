@@ -22,8 +22,8 @@ namespace Exoduser.UnityPort.Core
     {
         public readonly Queue<FeedbackEvent> Feedback = new Queue<FeedbackEvent>();
 
-        // RM-1 sound notifications (no state change, no RNG). hitSfxCd / critSfxCd are the web _hitSfxCd (8f) / _critSfxCd (12f) cooldowns, counted per Tick.
-        private int hitSfxCd, critSfxCd, painAnchorHp, lastPainTick = -1000;
+        // RM-1 sound notifications (no state change, no RNG). hitSfxCd is the web _hitSfxCd (8f) cooldown, counted per Tick (the crit cooldown _critSfxCd is the Core's own: Simulation.Death).
+        private int hitSfxCd, painAnchorHp, lastPainTick = -1000;
         // RM-1 sound SND-09: druid_vo_pain once for every 8 % of the (life) HP the boss loses, at least 3 s apart; the anchor follows the HP up on a new life
         private void BossPainCheck(EnemyState enemy)
         {
@@ -59,6 +59,7 @@ namespace Exoduser.UnityPort.Core
         private void QueueHurtSample(string key, double volume, double rate)
         {
             if (hurtSfxEnemy == null || string.IsNullOrEmpty(key)) return;
+            if (key == "crit_heavy") { QueueEnemySound(FeedbackKind.EnemyCrit, hurtSfxEnemy, key, volume, rate); return; }   // the web crit site (O-1 port, its cooldown is the Core's): the adapter voices it
             QueueEnemySound(hurtSfxEnemy.IsBoss ? FeedbackKind.BossHit : FeedbackKind.EnemyHit, hurtSfxEnemy, key, volume, rate);
         }
         // a named sound the boss / enemy logic asks for (RM-1 sound section 6.6); the adapter maps the logical key to a file (or to "no file yet")
@@ -66,12 +67,6 @@ namespace Exoduser.UnityPort.Core
         {
             Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Sample, Tick = TickCount, X = (float)x, Y = (float)y, SampleKey = key, Source = source, Volume = (float)volume, Rate = 1, QueuedRate = 1 });
         }
-        private void QueueCritSfx()
-        {
-            if (critSfxCd > 0 || hurtSfxEnemy == null) return;
-            critSfxCd = 12; QueueEnemySound(FeedbackKind.EnemyCrit, hurtSfxEnemy, "crit_heavy", .45, 1);
-        }
-
         private FeedbackEvent KiFeedback(FeedbackKind kind, int step, float chargeFrames = 0)
         {
             int tier = step == 3 ? KiChargeTier(chargeFrames) : 0;

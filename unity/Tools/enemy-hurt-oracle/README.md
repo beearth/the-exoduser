@@ -68,3 +68,50 @@ return {<위 14개>,isBoss,finalKbM,_isRanged,_isMH,_isBB,_isMagicProj,_kbScale,
 
 - `H1`(기존) · `H2`(인계값 14개를 직접 지정한 격자 + 시드 고정 무작위 500) · `CH`(연결): **H1 케이스 각각을 H1 원문으로 돌려 나온 실제 반환값을 H2에 그대로 이어 붙인다**(H1이 조기 반환하는 케이스는 연결에서 빠진다). 연결 케이스는 H2 쪽 전역(옵션 몇 개, 카메라, 예산, 장비 키)도 무작위로 섞는다.
 - 대조에 `G`의 `_sStats`(crits·dmgDealt·maxHit), `_dmgPeak`, `_dmgPeakShow`, `_flashCol`/`_flashT`, `hitStop`, `slowMo`, `_noHitStopT`, `_dpsDmg`, `_txtPerFrame`, `_uqScCtx`, `_uqS`가 더해졌다. 검사 수는 종류별로 따로 센다(`checksByKind`).
+
+## CX-04c1 — 사망부 앞쪽(H3a) 확장
+
+`hurtE`의 `  if(e.hp<=0){` 줄부터 `    // ═══ 지옥의 잔해 드롭 ═══` 바로 앞 줄까지(fce195067: 42568~42817)를 같은 방식으로 대조한다. 보고서: `docs/engine/UNITY_CX04C1_ENEMY_HURT_DEATH_HEAD_20261027.md`. Core: `Runtime/Core/EnemyHurt.Death.cs`(+`EnemyHurtContext.Death.cs`).
+
+### 감싸개 H3a (원문에 덧붙이는 텍스트는 이것뿐)
+
+```js
+function __H3a(e,ang,noSound,opts,__h){let {<CX-04b 반환값 22개>}=__h;
+  <앵커 `  if(e.hp<=0){` 줄부터 `// ═══ 지옥의 잔해 드롭 ═══` 앞 줄까지 그대로>
+return {__cont:true,_isBurnDeath,_isWhirlKill,_sinkDruid,_killAng};}return {__cont:false};}
+```
+
+- 22개 = CX-04a 인계값 14 + CX-04b 반환값 8(`isBoss,finalKbM,_isRanged,_isMH,_isBB,_isMagicProj,_kbScale,_noKB`). 뒤의 `}`가 `if` 블록을, 마지막 `}`가 함수를 닫는다(원문의 블록은 잔해 드롭 구간에서 이어서 닫힌다).
+- 원문 `return;`(디코이·도플갱어·보스 부활 성공)은 `undefined`, HP가 0 초과면 `{__cont:false}`, 끝까지 가면 `{__cont:true,…}`. 반환 지점 이름(Decoy/Doppelganger/BossRevive/Continue/NotDead)은 원문을 실행한 호출 기록에서 뽑는다(디코이=`환영 소멸!` 문구, 도플갱어=`_reviveVFX`, 나머지=보스 부활).
+- 앵커 둘 다 정확히 1줄과 일치해야 하고, 범위의 중괄호 깊이는 1(열린 `if`)이어야 한다.
+
+### 같이 실행한 원문 / 주입
+
+- 원문 그대로: `_HS`, `_diffSigned`, `_isSi0DruidSink`, `_druidSinkStart`(`G._druidSink` 포함), `_druidFinaleReviveChance`, `_isDruidFinale`, `_r`(피치 난수 1회), `_eMouthXY`, `safePt`, **`mkEn`**(동반부활: CX-02 원문 실행 ↔ C# `EnemyFactory.Create`를 그대로 호출, 호출 인자는 기록).
+- 주입(기록용 스텁): `atkTicketRelease`, `_regKill`, `_petOnKill`, `_reviveVFX`, `playVFXAng`, `_addBlastLight`, `_addTpBolt`, `deathFX`, `_spawnLargeMonsterDeathFx`, `_addCorpse`, `_addBurnCorpse`, `_addGorePiece`, `_addDeathImpact`, `_getPProj`(빈 객체), `_L`(한국어 문구 그대로 반환), `_rageMax`, `buildMapCache`, `SFX.victory`, `hurtP`(인자 전부 기록), 기존 스텁(`canMv`, `shQuery`, `hurtE`, `addTxt`, `poolPart`, `_spawnBossProjectile`, `_eqAffix`·`_lEq`·`_uEq`, `shake`, `playSample`, `_T`).
+- `canMv` 규칙: `open` · `blockAll` · `firstN`(처음 N번 거짓, 그 뒤 참 — 순간이동/동반부활의 안전지점 탐색 경로).
+- 범위가 읽고 쓰는 전역(`w3`): `G.stage·kills·_stageKills·combo·comboTimer·comboMax·_killedBosses·_fireZones·spawnHoles·_druidFinaleBoss·_druidSink·_gateGuard·_gateGuardKilled·bossGateOpen·_chromaT·_blDeathSndQ·_uqZoneQ·_flashT/_flashCol·hitStop·_noHitStopT`, `OPT.diff·hitStop`, `_DEMO_MODE`, `_DEMO_LAST_STAGE`, `_shDirty`, `_harpGauge`, `_HARP_GAUGE_MAX`, `_uqHitCtx`, `_uqFzCtx`, `_uqS`, `pProjs`, 플레이어 `P`(`lv·facing·rage·shield·mshield·_okSpdBuff·_okSpdMul·kb` 추가).
+
+### 케이스 종류
+
+- `H3`: 22개 인계값을 직접 지정한 격자(디코이·도플갱어·보스 부활 전 경로·드루이드 피날레·STY-D9 침강·일반몹 부활·킬 보상·유니크/전설 On-Kill·사망 표현·콤보·구멍·문지기) + 시드 고정 무작위 500.
+- `CH3`: CX-04b 연결 케이스(`CH`)마다 **H1 → H2 → H3a를 실제 반환값으로 이어 붙인 케이스**. 연결 결과 대상이 이미 죽은 것(`[natural death]`)과, 홀수 번째 나머지는 HP를 1·3·20으로 낮춰 사망부까지 가게 한 것(`[HP forced low]`).
+- 대조에 `G3`(kills·combo·druidSink·druidFinaleBoss 색인·gateGuard·queue들·spawnHoles·_shDirty·_harpGauge·_uqFzCtx·pProjs), 동반부활로 늘어난 적(`added`), 반환 지점 이름이 더해졌다.
+- 변이 검사: `death-mutants.cjs`(EnemyHurt.Death.cs 변이 목록) — `node make-h3-oracle.cjs`로 H3+CH3만 담은 `oracle-h3.json`을 만든 뒤 `node run-mutants.cjs --file D --name mutation-death`.
+
+## CX-04c2 (O-1) — 사망부 뒤쪽(H3b) + 함수 전체 체인(CH4)
+
+`    // ═══ 지옥의 잔해 드롭 ═══` 줄부터 `if(e.hp<=0){`를 닫는 `  }` 바로 앞 줄까지(origin/main 5286c0464: 42952~43322)를 같은 방식으로 대조한다. 보고서: `docs/engine/UNITY_O1_KILLTAIL_20261028.md`. Core: `Runtime/Core/EnemyHurt.DeathTail.cs` + `EnemyHurtContext.Tail.cs`. 원본 판을 fce195067에서 5286c0464로 올리며 H1·H3a에 생긴 웹 변경 3건(치명타음 `_critSfxCd`, STY-12 `_bossLine`, `_druidSinkStart`의 효과음·`_druidFled`·`sink0`)도 C#에 반영했다.
+
+```js
+function __H3b(e,ang,noSound,opts,__h,__d){let {<CX-04b 반환값 22개>}=__h;let {_isBurnDeath,_isWhirlKill,_sinkDruid,_killAng}=__d;
+  <앵커 `// ═══ 지옥의 잔해 드롭 ═══` 줄부터 `if(e.hp<=0){`를 닫는 줄 앞까지 그대로>
+}
+```
+
+- 끝 앵커: `  }finally{_shBufI--}` 앞 줄이 `}`(if 닫기)여야 하고, 범위의 중괄호 깊이는 0이어야 한다. 원문은 앞쪽 지역값을 읽지 않지만 같은 이름으로 넘겨 둔다.
+- 원문 그대로: `SLOT_NAMES`, `POT`(hp만 있음), `_maliceMul`, `_SFX_PRI`, `_playDruidSfx`, `RARE_ETYPE`, `ELITE_TIERS`, `isRareEtype`, `SI_TO_HELL`, `mkEn`(분열체: CX-02 원문 실행).
+- 주입(기록용 스텁): `_wiPush`, `magicRef`, `statInt`, `pMagicMul`, `_skMul`, `eProjAt`, `mkItem`(`{stubItem,slot,tier,el,rarity}` 반환), `addPotion`(케이스 값 반환), `rollDrop`, `addExp`, `checkRooms`, `dbSaveNow`, `SFX.explode/magicHit/pickup`, `_bossLine`. `_spawnBossProjectile` 리터럴은 `owner:e` 같은 중첩 적·아이템까지 `{e:i}`·`{o:[…]}`로 재귀 기록한다(C# `JsObj`).
+- 전역(`w4`): `G.mats`, `G._chainCnt`, `G._chainT`, `G.rifts`, `_critSfxCd`, `G._druidFled`. 대조에 `G4`가 더해졌다(모든 케이스).
+- `H4`: 뒷부분 단독 격자 300 + 시드 고정 무작위 600 = 900. `CH4`: `CH3` 중 `Continue`로 끝난 케이스마다 H1 → H2 → H3a → H3b를 실제 반환값으로 이은 함수 전체 체인(202).
+- 결과(5286c0464): **4,968케이스 5,755,060 검사 / 불일치 0**(H4 1,134,027 · CH4 309,621). 변이 13개 중 12개 검출(남은 1개 = 리터럴 키 순서 교환, 동치 변이).

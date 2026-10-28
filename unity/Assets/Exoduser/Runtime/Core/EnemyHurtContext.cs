@@ -11,12 +11,18 @@ namespace Exoduser.UnityPort.Core
         public double? st, mst; // stamina (CX-04b leech)
         public string s;        // player state (whirlwind ...)
         public bool? _rageSkCtx;
+        // CX-04c1 (death head): kill rewards, revive shockwave, companion spawn level
+        public double? lv, facing, rage, shield, mshield, _okSpdBuff, _okSpdMul;
+        public EnemyVec kb;
+        // CX-04c2 (death tail): freeze-slow from icy deaths, body radius for the etype 80 burst
+        public double? _freezeSlow, r;
     }
 
     // `opts` of hurtE (only the keys the head reads). null reference = no opts object (JS undefined); unset keys = undefined.
     public sealed class EnemyHurtOpts
     {
         public bool? dot, shieldHit, bleed, poison, parryBlueBean, noStun, pure, magic, explode, beam, proj, _kiFull;
+        public bool? _blastKill; // CX-04c1: opts._blastKill (buster-loop area kill)
         // keys read by the hurtE middle (CX-04b)
         public bool? bladeShard, maliceHunt, iceBlade, ltnChaser, lightning, detonate, noImpact, bladeOrb, normalBow, mhBlade, blueBean, noKB, _lClubWall, poiseHit;
         public double? maxDist, kbMult, poiseMult;
@@ -37,13 +43,13 @@ namespace Exoduser.UnityPort.Core
     public sealed class EnemyDmgPeak { public double val, t; }
     public sealed class EnemyDmgPeakShow { public double x, y, dmg; public bool crit; }
     public sealed class EnemyUqScCtx { public bool? _uqRef; }
-    public sealed class EnemyUqS { public double? poiseOrbT; }
+    public sealed class EnemyUqS { public double? poiseOrbT, gwRefund; public bool? csEchoUsed; }
 
     // One push into window._btDmgLog
     public sealed class EnemyHurtLogEntry { public double t; public string src; public double dmg; }
 
     // Everything the hurtE head reads from globals plus the functions it calls that are NOT ported (CX-04a).
-    public sealed class EnemyHurtContext
+    public sealed partial class EnemyHurtContext
     {
         // --- globals ---
         public EnemyHurtPlayer P;                       // P
@@ -54,7 +60,6 @@ namespace Exoduser.UnityPort.Core
         public double NecklaceDmg, Ring1Dmg, Ring2Dmg, BeltDmg, BraceletDmg, HeadbandDmg, Headband2Dmg; // nc()/rg1()/rg2()/belt/bracelet/headband/headband2 .dmgBonus||0
         public int ShBufI;                              // _shBufI
         public double HitSfxCd;                         // _hitSfxCd
-        public Action OnCrit;                           // RM-1 sound: the crit branch of hurtE (playSample('crit_heavy') site); optional, no state change
         public double Now;                              // _now
         public List<EnemyHurtLogEntry> BtDmgLog;        // window._btDmgLog (null = undefined)
         public bool ParryLessonActive;                  // window._parryLesson?.active

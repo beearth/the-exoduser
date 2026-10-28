@@ -5,7 +5,7 @@ class Program {
  static bool Near(double a,double b)=>Math.Abs(a-b)<.0001;
  static int Finish(string p){File.WriteAllText(p,JsonSerializer.Serialize(new{scope="standalone_dotnet_source_oracle_not_Unity_runtime",passed=failed==0,failed,checks=Rows},new JsonSerializerOptions{WriteIndented=true}));Console.WriteLine("FEEDBACK_RESULT "+Rows.Count+" checks / "+failed+" failures");return failed==0?0:2;}
  static dynamic New(){var c=SourceStarterFixture.CreateKiSlash();c.StartX=10;c.StartY=20;c.EnemyAiEnabled=false;dynamic s=new Simulation(c);s.Random01=(Func<double>)(()=>.5);return s;}
- static List<dynamic> Drain(dynamic s){var a=new List<dynamic>();while(s.Feedback.Count>0)a.Add(s.Feedback.Dequeue());return a;}
+ static List<dynamic> Drain(dynamic s){var a=new List<dynamic>();while(s.Feedback.Count>0){var f=s.Feedback.Dequeue();string k=f.Kind.ToString();if(k=="EnemyHit"||k=="EnemyCrit"||k=="EnemyDeath"||k=="BossHit"||k=="BossDeath"||k=="Roll"||k=="Parry")continue;a.Add(f);}return a;}   // RM-1 sound notifications (no state, no RNG) are not part of the ki slash packets
  static int Main(string[] args){
   Check(typeof(Simulation).GetField("Feedback")!=null,"native feedback queue exists");if(failed>0)return Finish(args[0]);
   using(var o=JsonDocument.Parse(File.ReadAllText(args[1]))){
