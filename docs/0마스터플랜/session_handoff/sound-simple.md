@@ -166,3 +166,58 @@
 1. 이 절·MEMORY.md를 읽고 총괄의 다음 지시(3차 선택 반영, `ui_tab` 반영, 드루이드 채택 Unity 연결 등)를 기다린다.
 2. 작업 전 `git fetch origin main`, 공유 트리는 타 세션 WIP가 있으니 origin/main 기준 sparse worktree + 경로 지정 커밋 + 비강제 push.
 3. 단위가 끝날 때마다 `get_usage(self)`, 100K 초과 시 마무리·인계·알림·`clear_session(self)`.
+
+
+## 10-28 정리 — sound-simple 보관 전 마무리 (이 절이 위 절들보다 새롭다. 보고 대상: 사운드 총괄 `local_cf0cb8d7-22f7-46be-b65d-fc242dc2bc23`, 이후 작업은 Codex 브리프로)
+
+### 끝난 일 (origin/main, 전부 비강제 push)
+| 단위 | 커밋 |
+|---|---|
+| SND-03 BGM NFC/NFD 정리 | 758efa140 · 2e20e53a4 |
+| AD3 1단계 (`_SFX_PRI.TELL`, `SFX.charge()` 오용 제거) | c3c2441bf |
+| SND-02 R2 4키 (crit_heavy·ui_button_hover/confirm·앰비언스) | 780ac692b |
+| SND-08 RM-1 트랙 B/B2 | 1d4e4137c · d5d096ab2 · fcf60a7c7 · 0e9c79cd4 |
+| SND-10 1단계 (석궁 무음 수정) | 264cffe06 |
+| SND-10 2단계 생성 기록 | 4bd46faf8 |
+| SND-05 보이스 키 매핑표·포맷 규칙 | 89d904786 |
+| SND-09 드루이드 2차 후보 기록 | 67843c9ea |
+| SFX 가공 기본값(35Hz HPF) 규칙·감사 | a43982935 · 7a6d18ce4 |
+| SND-10 2단계 5키 웹 반영 | c0913f138 |
+| 드루이드 2차 결과 기록 | c2499457a |
+| 3차 후보(slam·spore·ui_tab) 생성 기록 | e05b26752 |
+| **`ui_tab` 웹 반영 + 3차 결과·4차 slam 기록** (`sfx/ui/tab.mp3`, 음량 .22, 5곳 연결) | **d40568974** |
+| 이 절(인계 마무리) | 이 커밋 |
+- DEMO/EA(`G:\exoduser-DEMO`·`G:\exoduser-ea`, git 저장소 아님)에는 `ui_tab` 패치+`sfx/ui/tab.mp3`를 직접 반영했다(`game.html`·`gamedemo.html`·EA `game.html`). index.html·lang·assets 전체 동기화는 하지 않았다.
+- 4차 `druid_slam` 가공본 e1~e3(원본 r3d + 압축/리미터 +3.5dB + 에코 3종)와 고르기 `pick_r4.html`은 **저장소 밖**(`G:\exoduser-wt\_out\sfx_forge\`)에 있다. 수치·기록은 `DRUID_BOSS_SOUND_REMAKE_20261028.md` §6.3.
+
+### 미완 (Codex 브리프로 넘길 수 있게)
+| # | 항목 | 파일·경로 | 완료 조건 |
+|---|---|---|---|
+| 1 | `pick_r4.html` 서버 노출 | `G:\exoduser-wt\_out\sfx_forge\_tools\serve.cjs`(PICKSETS에 `r4` 이미 추가) | 실행 중인 3399 서버 재시작(사운드 총괄 담당, 3399·`_submitted/` 감시는 건드리지 말 것) 뒤 `?set=r4` 200 |
+| 2 | `druid_slam` 반영 | 사용자 청음 결과 `picks_r4.json` → 선택본 `_preview_r4/druid_slam_r4{d,e1,e2,e3}_proc.mp3` | **사용자 청음 전 반영 금지**(필수 승인 게이트). 선택 뒤 `sfx/boss/druid_slam.mp3` 등 기존 키 위치에 복사(Unity 브랜치는 총괄 지시). `druid_hit`은 변형 순환 없이 rate ±6%·연타 감쇠 |
+| 3 | `druid_spore` 반영 | r3a = 웹 기존 `pickup_rummage2.mp3`의 35Hz HPF→−1dBTP 가공본 `_preview_r3/druid_spore_r3a_proc.mp3` | 총괄 지시 받으면 드루이드 키로 연결(Unity 포함) |
+| 4 | `ui_tab` 확인 못 한 곳 | `game.html` 결정 서브탭(`_crForgeTab`), 스킬 대분류 탭(구 카드형 창만 — 기본 3D 합성 창 `SkillForge` 내부 탭은 미연결), 게임패드·키보드 탭 이동 | 헤드리스 계측으로 `ui_tab` 1회, 같은 탭 재클릭 0회. SkillForge 탭에 소리를 넣을지는 총괄 결정 |
+| 5 | SND-10 2단계 확인 못 한 곳 | 선택분해·쓰레기 일괄분해·대장간 분해 버튼 3곳(`gameConfirm` 거침), 장착 실패 중 악의 부족·주머니 가득 | 실제 클릭 계측으로 `ui_salvage`·`ui_fail` 1회 |
+| 6 | 게임 안 실제 청음·Unity 빌드 | 웹 UI 소리 6키·AD3·SND-02 | Unity 이식 범위라 빌드→플레이 판정은 CTO 완료 규칙(`UNITY_DONE_BUILD_PLAYTEST_RULE_20261028.md`)에 따름 |
+| 7 | AD2 3단계 | `AD2_UI_SOUND_INVENTORY_20261028.md` §후속(확인창 `gameConfirm`·on/off 구분·`.dis` 버튼 확정음·게임패드 포커스) | 총괄 명세 먼저 |
+| 8 | AD3 2단계(보류) | `tell_melee`·`tell_ranged`·`tell_boss` Forge 생성 → 사용자 청음 → 3단계 우선순위 재배열 | 사용자 청음 뒤 |
+| 9 | `_startLoop` 이름 중복(발견만) | `game.html`에 `function _startLoop`가 둘 — 오디오용 `(key,vol)`이 뒤쪽 메인 루프 시작기에 가려짐 | 조사 후 이름 분리(`P._blueLpSrc` 영향 확인). 소리 검증 필요 |
+| 10 | 계측 중 pageerror 1건 | `createRadialGradient` r0<0 | 변경 전 재현 대조(이 변경 때문인지) |
+
+### 도구 경로
+- 생성: `G:\exoduser` 저장소 루트에서 `C:/nvm4w/nodejs/node.exe --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <절대경로> --variants N [--only <키>] [--dry-run]` (`npm` 불가: node shim). 카탈로그 `tools/sfx_forge_catalog_*.json`(rm1·ui_s10·druid_v2·druid_v3·druid_r3). 결과 `_out/sfx_forge/<cat>/<key>/v1.mp3`(카테고리 skill·hit·ui·ambient). ElevenLabs 크레딧 넉넉, 반영은 청음 선택 후.
+- 가공(저장소 밖 `G:\exoduser-wt\_out\sfx_forge\_analysis\`, python=`python`, numpy·scipy 있음, `-I` 금지): `rm1_lib.py`(measure·decode) · `druid_proc_lib.py`(trim_tail·normalize_to_tp·encode) · `druid2_proc.py`(HPF 포함) · `ui_proc.py` · `r3_proc.py` · `r4_proc.py`(리미터+에코+잔향, 에코 경로만 HPF150) · `hpf_audit.py`·`hpf_doc.py` · `druid2_spec.py`(스펙트럼) · `review.py`(RM-1 청음 페이지). 측정 결과 `metrics_*.json`(**UTF-8로 열고 쓸 것**, 기본 인코딩 cp949면 한글에서 깨진다).
+- 고르기 페이지: `_druid/pick_druid_tpl.html` + `mk_pick_druid2.py`·`mk_pick_r3.py`·`mk_pick_r4.py`(템플릿에 DATA 주입), `_ui/mk_pick_ui.py`, 카탈로그 `_druid/mkcat_*.py`·`_ui/mkcat_ui.py`. 제출 버튼 패치 `_tools/add_submit.py`. 서버 `_tools/serve.cjs`(PICKSETS: rm1·druid·ui·druid2·r3·r4, 3399, `_submitted/`는 총괄 소유).
+- 커밋: origin/main 기준 sparse worktree(`git worktree add --no-checkout -B <브랜치> G:\exoduser-wt\<이름> origin/main` → `MSYS_NO_PATHCONV=1 git sparse-checkout set --no-cone <경로들>` → `git checkout`) → 수정 → `git add --sparse -- <경로>`(새 파일) + `git commit -- <경로>`(Co-Authored-By 줄) → hook이 바꾼 `tools/guard.baseline.json`은 `git checkout --`로 복구 → `git fetch origin main` → `git merge-base --is-ancestor origin/main HEAD`(별도 명령) → 비강제 `git push origin <브랜치>:main`. 거부되면 `git checkout -B <새> origin/main` + cherry-pick 1회. 끝나면 `git worktree remove --force` + `git branch -D`.
+- 헤드리스 검증: `G:\exoduser\tmp\*.mjs`(gitignored, I: 정션)에 파일로 두고 `C:/nvm4w/nodejs/node.exe --preserve-symlinks --preserve-symlinks-main tmp/x.mjs`, `--mute-audio`, 프로필 `I:/EXODUSER-Storage/…`는 끝에 삭제, `/api/*`는 `page.route`로 모의. 워크트리 game.html 검증은 임시 정적 서버(예: `tmp/snd_tab_srv.cjs`, 3412, 워크트리 우선·없으면 G:\exoduser)를 띄우고 끝나면 PID로 `taskkill`. 호출 계측은 `window.playSample`을 감싸 키@음량을 기록.
+- 남은 임시 파일(rm 권한 거부, gitignored): `G:\exoduser\tmp\snd_tab_srv.cjs`·`snd_tab_smoke.mjs`·`snd10_ui_smoke.mjs`·`pick_r3_check.mjs`·`pick_submit_check.mjs`·`pick_druid2_check.mjs`, `I:/EXODUSER-Storage/tmp_pick_*.png`.
+
+### 함정
+- **빈 `python -`(heredoc 본문 없음)을 실행하면 REPL이 stdin을 기다리며 돈다** — 이번 세션에도 1회 실수(즉시 TaskStop). 스크립트는 반드시 파일로.
+- `sed -i`로 정규식을 고칠 때 백슬래시(`\s`·`\(`)가 사라진다 → Read 후 Edit 도구로 고친다. Bash heredoc 안 한글·따옴표가 섞이면 `unexpected EOF`가 나므로 Write 도구로 파일을 만든다.
+- `git rev-parse --short A B`처럼 인자 둘은 실패한다. `git fetch origin main` 직후엔 `FETCH_HEAD` 대신 `origin/main`을 쓴다. origin이 자주 올라가므로 push 직전에 다시 fetch.
+- Write 도구는 CRLF로 저장한다 → 문서는 python `open(f+'.tmp','wb')` + `os.replace`로 LF를 유지하고 `grep -c $'\r'`가 0인지 확인.
+- 희소 체크아웃에서 새 파일 `git add`는 `--sparse`가 필요. `rm`·복합 `git checkout`은 권한 거부될 수 있다(우회 말고 보고).
+- 대장간 UI의 탭 `div.fg-tab`은 `#forge` 안, 스킬 대분류 탭은 `SkillForge`가 켜져 있으면 안 그려진다. 인벤토리 창고 토글 `div.inv-storage-toggle`은 `#invPanel` 안 선택자로 못 찾는 경우가 있어 전역 선택자로 잡는다.
+- 계측 스크립트의 `style` 속성 정규식은 브라우저가 `rgb(…)`·`border: 1px`로 정규화한 값을 기준으로 쓴다.
+- 반영은 **사용자 청음(필수 승인 게이트) 뒤**에만. 자동 실행은 창·소리 없이.
