@@ -43,8 +43,10 @@
 | LT-7 | Unity VFX (07c·09b) | 형광 연두 원판(07c 지름 약 300px 발광)·연두 마법진(회복의 영역·얼음 보주)이 Hell Gothic 톤보다 밝고 네온 | **판정(VFX 총괄 ead93b7ef)**: 07c = Unity 이식 결함 VFX-D18(필드 적 탄이 드루이드 탄 목록으로 들어가 `NativeBossView`가 독 구슬로 그림 → 렌더 경로 수정, 필드 AI 담당 배정은 CTO 경유) · 09b = 웹과 같은 사용자 지정 라임 #b6ff54 유지 VFX-D19(톤 변경은 사용자 확인 사항). 나란히 캡처 대조는 미실시 | 임펙트 총괄 → 필드 AI 담당 |
 | LT-8 | Unity 드루이드 처치 뒤 (06b86008c 12·12a·12b·13) | 보스가 죽은 뒤에도 독 구슬 수십 개가 아레나에 남고, 침강 중(12a)에는 화면을 덮을 만큼 늘어난다. 스테이지 클리어 화면(13)에도 구슬 8개 이상이 남아 있다. 웹이 보스 사망 때 탄을 지우는지는 확인하지 못함(game.html 탄 배열 초기화 문구 검색 0건) | **판정(보스전 총괄 10-28)**: (a) 사망 뒤 구슬이 멈춰 남는 것 = 웹 동일(웹 37334행 갱신은 `bossAlive` 조건, 58287행 그리기는 무조건, 일괄 삭제는 1-4 최종전 17286·17349행뿐) · (b) 12a 구슬 수십 개·고리 배열 = **Unity 결함**(웹 동시 최대 약 13개, 원인 미특정, 스모크 무적·강제 처치·부활 반복 조건부터 확인) · (c) 1-1 침강 시작에도 구슬·독 탄·늪 정리를 넣는 수정을 웹·Unity 함께 — 배정은 유니티 총괄·CTO | 보스전 총괄 → 유니티 총괄·CTO |
 | LT-9 | Unity 클리어 기록 (06b86008c m1 13) | "kills 19/15" — LT-5와 같은 분자>분모 | 결함(LT-5 묶음) → **b0f9a0c52에서 근거 철회**: 하네스 원값(처치/할당)이라 표시 결함 근거가 아님, 클리어 패널 화면으로 재확인 | unity-core-oracle-opus (LT-5 담당) |
-| LT-10 | Unity 1-1 보스 게이트 (06b86008c·b0f9a0c52 m1 10) | "gate still sealed at 18/15 kills: forced open by the harness" — 처치 수가 할당 15를 넘었는데 아레나 게이트가 열리지 않아 하네스가 강제로 연다. 실제 플레이에서 보스 진입이 막힐 수 있다 | 결함(추천) — 웹 게이트 조건(지역 처치·문지기 등)과 대조 필요 | 유니티 총괄 |
+| LT-10 | Unity 1-1 보스 게이트 (06b86008c·b0f9a0c52 m1 10) | "gate still sealed at 18/15 kills: forced open by the harness" | **제품 결함 추천 철회, 자연 개방 미검증으로 정정(이번 인수)**: `NativeGame.M1Check.cs:306`이 `FieldBossDone=true` 설정(307행)보다 먼저 잠금을 조회한다. `StageFlow.cs:166~175`의 1-1 개방에는 앵글러 완료가 필요하다. 하네스는 앵글러 전투와 약 7,000px 필드 동선을 생략하고 강제 개방·위치 이동하므로 18/15 기록만으로 실제 게이트 결함을 확정할 수 없다. 정상 동선 재현은 남음 | 유니티 총괄·개발툴 총괄 |
 | LT-11 | Unity HUD 스모크 (b0f9a0c52 hud-smoke.json) | `iconResource: Art/ui/skill_icons/kiSlash`, `iconDrawn: false` — HUD 고정 장면에서 기검참 스킬 아이콘이 그려지지 않음 | 관찰 — 장면 설정 탓인지 확인 | 유니티 총괄·개발툴 총괄 |
+| LT-12 | H5 전사 선택·1-1 HUD | 1600×900에서 전사 선택 중앙이 비고(05), 첫 실습·필드 HUD의 스킬 칸이 빈 테두리로 표시됨(13·14). 종료 직전 스킬 이미지 9개와 커서 2개의 `complete=false`, `naturalWidth=0` | **P1 관찰, 원인 미확정**. 아래 §6 경로의 `05-create-character.png`, `13-practice-movement.png`, `14-field-entry.png`, `cmd-012.json.result.json`. 네트워크 지연·자원 부족·에셋 준비 상태를 분리해야 한다. 로컬 이미지 HEAD는 200이고 브라우저 HTTP 4xx/5xx는 0이어서 누락 파일로 단정하지 않는다 | H5 담당·개발툴 총괄 |
+| LT-13 | 공용 실행기 브라우저 창 감지 | headless·mute 설정으로 진행한 두 번째 실행의 자식 종료 코드 0, USER_SAVE 변경 0, 잔존 프로세스 0인데 `windowHandleCount=1`, `tree::pid76416:title=[]`로 전체 실패 | **P1 실행기 조사 필요**. `_exec/done/8e105aad.json`. 프로세스명·제목이 비어 실제 표시 창인지 판정 불가. `Get-WindowHits`의 종료 중 프로세스 조회 경합 가능성은 가설이다. 창 감지 게이트 실패를 무시하거나 무창 PASS로 바꾸지 않는다 | 개발툴 총괄 |
 
 ## 5. 다음 회차
 
@@ -54,3 +56,22 @@
 
 - Unity 4ceb18b51(또는 그 뒤 최신) 무창 실제 GPU 실행: **열린 확인 항목 = DBT-1 HUD 구슬 셰이더 패스 0개·DBT-2 영상 셰이더 누락이 플레이어 로그·화면에서 실제 재현되는지**, 그다음 M1 지역 HUD(배너·화살표·게이트 라벨)·1-1 전투·드루이드까지.
 - H5 6~9단계(드랍·레벨업·드루이드·데모 종료 화면 5f4172a0a·피날레 배너 6f3d94cd0·UI 새 소리 c0913f138)를 1600×900에서.
+
+## 6. Codex 인수 검수 — 2026-10-28 23:03 KST 기록
+
+이 회차의 판정은 **부분 검수·실행 게이트 미통과**다. 두 엔진의 M1 사용자 동선 완주, UI 전체 PASS, 무창 전체 PASS를 선언하지 않는다. 제품 코드 수정은 0이다.
+
+| 구분 | 실제 확인·판정 | 근거 |
+|---|---|---|
+| H5 소스 | 전용 워크트리 `E:/exoduser-wt/codex-latest-test`, 브랜치 `codex/pc-latest-test-qa-20261028`, 실행 기준 `72080e465baa324e0c228aa83bce9c693c96e8e5` | 실행 뒤 조회한 `origin/main=f8d472ea957c981a1ad88c8e0a468aa9f6606a53`까지 차이는 docs뿐. `game.html`, `index.html`, `engine`, `server.cjs`, `lang_*.js` 차이 0 |
+| H5 환경 | 포트 3347, `server.cjs`, `EXODUSER_SAVE_DIR` 별도 지정, I: 전용 프로필, Playwright headless·mute 설정, 1600×900·deviceScaleFactor 1 | `I:/EXODUSER-Storage/codex-takeover/latest-test/h5/result.json`, 공용 실행기 영수증 `55fb2f2c`, `8e105aad` |
+| H5 입력·화면 | 타이틀→데모 입장→전사 생성→스토리 건너뛰기→첫 실습 WASD 성공→연습 건너뛰기→1-1 필드·적 탄에 의한 사망까지 직접 확인 | 같은 폴더의 `h5/01-lobby.png`, `05-create-character.png`, `06-warrior-story.png`, `11-intro-or-tutorial.png`, `13-practice-movement.png`, `14-field-entry.png`, `15-field-movement.png`, `16-death.png`를 1x로 열어 검토. 페이지 오류 0, HTTP 4xx/5xx 0. 조작 사이 조사 대기로 사망했으므로 난이도 결함으로 판정하지 않음 |
+| H5 미확인 | 드랍·레벨업·보스·클리어·저장 후 이어하기 | 처치 0, 레벨 1. 저장 키 존재만으로 저장·복원 성공을 주장하지 않음. LT-1은 판 뒤 글자가 보이지만 설정창이 배경에 열린 장면이므로 정상 배경의 최종 재판정은 유보 |
+| H5 중단 근거 | 첫 실행은 탐색 `networkidle` 12초 제한으로 종료 코드 1. 대기 조건을 조정한 한 번의 재실행은 자식 0·전체 4(창 감지) | 공통 규칙의 두 번 실패 시 중단 적용. 같은 설정으로 세 번째 실행하지 않음. LT-13 해결 전 무창 게이트 미통과 |
+| Unity 최신 기준 | `unity-latest/build-commit.json`과 `loop-receipt.json`은 `b0f9a0c5277e7c76af0d318da4b5050cfa5635e3`, `origin/unity/main`과 일치 | 빌드 메타데이터는 `unity-latest` 루트에 있음. `build/build-commit.json`은 없음. 실행 파일은 브리프 경로에 존재 |
+| Unity 신규 실행 | **자원 게이트에서 보류, Player 신규 실행 0회** | 시작 시 다른 Unity·잠금 보유자 존재. 이후 Unity 0개에서도 커밋 여유 4.3→10.6→11.4GB, 전용 사전검사 최종 11.6GB. 이 역할의 보드 기준 20GB 미달. `unity-preflight.log` 종료 3. 공용 실행기 자체 최소 10GB와 역할의 20GB를 혼동하지 않음 |
+| Unity 기존 증거 열람 | 동일 SHA의 기존 DT-15 22/22와 캡처를 참고 자료로 검토. 전투 월드·필드 탄·드랍 빔·보스·침강·클리어 위치·재개 위치가 그려짐. **독립 재실행 아님** | `I:/EXODUSER-Storage/unity-latest/loop/runs/20261028-2205_b0f9a0c/smoke/caps/`의 02, 07e, 09, 10, 12a, 13, 14를 1600×900로 직접 열람. 12a의 녹색 구슬 과다는 LT-8 관찰 유지 |
+| Unity 증거 한계 | UI·로비는 이 무창 캡처로 판정 불가. 22/22는 자연 동선 완주 증거가 아님 | `m1-check.json`은 OS 입력이 아닌 `Simulation.Tick` 범위. 첫 실습 종료, 수동 적 생성·회복, 레벨업용 HP 1 적 생성, 앵글러 완료 플래그, 게이트 강제 개방, 필드 위치 이동이 있음. 로비 영상·자연 개방·실전 생존·정상 UI 판정 별도 필요 |
+| 정리 | 소유 서버·브라우저 종료, 프로필 삭제 확인. Unity·타인 서버·작업·세이브 변경 안 함 | H5 `프로필정리=true`, `서버종료=true`; 실행기 `leftovers=[]`, `userSaveChanged=0`. 캡처·로그·실패 영수증 보존 |
+
+다음 실행은 LT-13 진단과 20GB 이상 자원 확보 후 진행한다. H5는 전투 중 조사 대기를 두지 않는 입력 동선으로 드랍부터 이어서 확인하고, Unity는 공용 실행기의 무창·무음·샌드박스 보호를 유지한 상태에서 자연 동선 및 UI 증거를 확보해야 한다. 이미 판정한 SHA의 예약을 남기지 않는다.
