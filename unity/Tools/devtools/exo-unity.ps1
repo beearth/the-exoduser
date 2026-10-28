@@ -29,6 +29,7 @@ $ErrorActionPreference = 'Stop'
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
 $Root      = 'I:\EXODUSER-Storage\unity-jobs'
 $LockPath  = Join-Path $Root '_pc_lock.json'
+$HaltPath  = Join-Path $Root 'HALT'; if ($env:EXO_HALT_PATH) { $HaltPath = $env:EXO_HALT_PATH }   # 환경변수는 자체 점검용
 $QueueRoot = Join-Path $Root 'queue'
 $Tickets   = Join-Path $Root '_tickets'
 $UnityExe  = 'G:\unity\Editor\6000.6.7f1\Editor\Unity.exe'
@@ -71,6 +72,33 @@ function Get-UnityProcs {
 function Get-CommitFreeGB {
     $os = Get-CimInstance Win32_OperatingSystem
     return [math]::Round($os.FreeVirtualMemory / 1MB, 1)
+}
+
+function Get-CommitInfo {
+    $os = Get-CimInstance Win32_OperatingSystem
+    $limit = [math]::Round($os.TotalVirtualMemorySize / 1MB, 1)
+    $free = [math]::Round($os.FreeVirtualMemory / 1MB, 1)
+    return [pscustomobject]@{ limit = $limit; free = $free; used = [math]::Round($limit - $free, 1) }
+}
+
+# memlog.csv: (시각, 커밋 사용, 한도, 여유, Unity 수, claude 수, node 수) - 실행할 때마다 한 줄. 상태판(DT-15)이 추이를 그린다.
+function Write-MemLog {
+    try {
+        $c = Get-CommitInfo
+        $u = @(Get-Process Unity, 'EXODUSER-Unity' -ErrorAction SilentlyContinue).Count
+        $cl = @(Get-Process claude -ErrorAction SilentlyContinue).Count
+        $nd = @(Get-Process node -ErrorAction SilentlyContinue).Count
+        $p = Join-Path $Root 'memlog.csv'
+        New-Item -ItemType Directory -Force -Path $Root | Out-Null
+        $line = '{0},{1},{2},{3},{4},{5},{6}' -f (NowIso), $c.used, $c.limit, $c.free, $u, $cl, $nd
+        for ($i = 0; $i -lt 5; $i++) {
+            try {
+                if (-not (Test-Path -LiteralPath $p)) { [IO.File]::AppendAllText($p, "time,commitUsedGB,commitLimitGB,commitFreeGB,unity,claude,node`r`n", $Utf8NoBom) }
+                [IO.File]::AppendAllText($p, $line + "`r`n", $Utf8NoBom)
+                break
+            } catch { Start-Sleep -Milliseconds 100 }
+        }
+    } catch { }
 }
 
 function Norm-Worktree([string]$w) {
@@ -139,7 +167,133 @@ function Cmd-Unreserve {
     Cmd-Queue
 }
 
+# ------------------------------------------------------------------ HALT / 크래시 재시도 (XMP 메모리 의심, 10-28)
+# ------------------------------------------------------------------ 사용자 실제 세이브 보호 (10-28)
+# 자동 실행은 --unity-qa-sandbox <dir> 로 격리 저장소를 쓴다. 실행 전후로 LocalLow\ForDearGamers 를 비교해
+# 바뀐 파일이 있으면 실패로 판정한다. 사용자 파일은 읽기만 한다(수정·복원 금지).
+function New-Sandbox([string]$runId) {
+    $d = Join-Path $Root ('sandbox\' + $runId)
+    New-Item -ItemType Directory -Force -Path $d | Out-Null
+    return $d
+}
+
+function Get-UserSaveSnapshot {
+    $h = @{}
+    $root = Join-Path $env:USERPROFILE 'AppData\LocalLow\ForDearGamers'
+    if (-not (Test-Path -LiteralPath $root)) { return $h }
+    $sha = [Security.Cryptography.SHA256]::Create()
+    foreach ($f in [IO.Directory]::EnumerateFiles($root, '*', [IO.SearchOption]::AllDirectories)) {
+        try {
+            $fi = New-Object IO.FileInfo $f
+            $hash = ''
+            if ($fi.Length -le 64MB) {
+                $fs = New-Object IO.FileStream($f, 'Open', 'Read', 'ReadWrite, Delete')
+                try { $hash = [BitConverter]::ToString($sha.ComputeHash($fs)) } finally { $fs.Dispose() }
+            }
+            $h[$f] = '{0}|{1}|{2}' -f $fi.Length, $fi.LastWriteTimeUtc.Ticks, $hash
+        } catch { }
+    }
+    return $h
+}
+
+function Compare-UserSave($before) {
+    if ($null -eq $before) { return @() }
+    $after = Get-UserSaveSnapshot
+    $out = @()
+    foreach ($k in $after.Keys) {
+        if (-not $before.ContainsKey($k)) { $out += ('추가 ' + $k) }
+        elseif ($before[$k] -ne $after[$k]) { $out += ('변경 ' + $k + ' (' + ($before[$k].Split('|')[0]) + ' -> ' + ($after[$k].Split('|')[0]) + ' bytes)') }
+    }
+    foreach ($k in $before.Keys) { if (-not $after.ContainsKey($k)) { $out += ('삭제 ' + $k) } }
+    if ($out.Count -gt 0) {
+        try { Add-Content -LiteralPath (Join-Path $Root 'usersave.log') -Value ((NowIso) + ' USER_SAVE changed=' + $out.Count + ' ' + ($out -join ' ; ')) -Encoding UTF8 } catch { }
+    }
+    return $out
+}
+
+function Apply-SaveCheck($r, $before, [string]$sbx) {
+    $sc = @(Compare-UserSave $before)
+    if ($r -is [System.Collections.IDictionary]) {
+        $r['userSaveChanged'] = $sc.Count; $r['userSaveFiles'] = @($sc); if ($sbx) { $r['sandbox'] = $sbx }
+        if ($sc.Count -gt 0) { $r['ok'] = $false; $r['note'] = (([string]$r['note']) + ' USER_SAVE changed=' + $sc.Count).Trim() }
+    } else {
+        $r | Add-Member -NotePropertyName userSaveChanged -NotePropertyValue $sc.Count -Force
+        $r | Add-Member -NotePropertyName userSaveFiles -NotePropertyValue @($sc) -Force
+        if ($sbx) { $r | Add-Member -NotePropertyName sandbox -NotePropertyValue $sbx -Force }
+        if ($sc.Count -gt 0) { $r.ok = $false }
+    }
+}
+
+function Test-UnityCrash([string]$log, [int]$exit) {
+    if ($exit -eq -1073741819) { return 'exit code 0xC0000005 (access violation)' }
+    try {
+        if (Test-Path -LiteralPath $log) {
+            $fs = New-Object IO.FileStream($log, 'Open', 'Read', 'ReadWrite')
+            $sr = New-Object IO.StreamReader($fs)
+            $t = $sr.ReadToEnd(); $sr.Dispose()
+            if ($t -match '(?i)access violation') { return 'log: access violation' }
+            if ($t.Contains('crash has been intercepted')) { return 'log: crash has been intercepted' }
+        }
+    } catch { }
+    return $null
+}
+
+function Find-CrashDumps([datetime]$since) {
+    $r = @()
+    foreach ($pat in ($env:TEMP + '\Unity\Editor\Crashes\Crash_*'), ($env:TEMP + '\*\*\Crashes\Crash_*'), ($env:LOCALAPPDATA + '\Temp\Unity\Editor\Crashes\Crash_*')) {
+        $r += @(Get-ChildItem -Path $pat -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -ge $since } | ForEach-Object { $_.FullName })
+    }
+    return @($r | Select-Object -Unique)
+}
+
+function Record-Crash([string]$cause, [string]$what, [string]$log) {
+    try { Add-Content -LiteralPath (Join-Path $Root 'crashes.log') -Value ([ordered]@{ time = (NowIso); cause = $cause; what = $what; log = $log } | ConvertTo-Json -Compress) -Encoding UTF8 } catch { }
+}
+
+function New-Halt([string]$cause, [string]$what, $logs, [datetime]$since) {
+    $dumps = Find-CrashDumps $since
+    $o = [ordered]@{ time = (NowIso); cause = $cause; what = $what; logs = @($logs); crashDumps = @($dumps); note = '크래시가 재시도 뒤에도 반복됨 - 해제는 이 파일을 지우는 것(유니티 총괄)' }
+    try {
+        $fs = [IO.File]::Open($HaltPath, 'CreateNew', 'Write', 'Read')
+        $b = $Utf8NoBom.GetBytes(($o | ConvertTo-Json -Depth 5)); $fs.Write($b, 0, $b.Length); $fs.Dispose()
+    } catch { }
+    Say ('HALT 생성: ' + $HaltPath + ' (' + $cause + ')')
+}
+
+function Show-Halt {
+    if (Test-Path -LiteralPath $HaltPath) {
+        Write-Output ('HALT: ' + $HaltPath + ' 존재 - 모든 실행(start/run/player/browser) 중지')
+        Write-Output ([IO.File]::ReadAllText($HaltPath))
+    }
+}
+
+function Check-ServerCrash([string]$qd) {
+    $l = Read-Json (Join-Path $qd 'launcher.json')
+    if (-not $l -or -not $l.log) { return }
+    $c = Test-UnityCrash $l.log 0
+    if (-not $c) { return }
+    Record-Crash $c 'server' $l.log
+    $recent = 0
+    try {
+        foreach ($ln in (Get-Content -LiteralPath (Join-Path $Root 'crashes.log'))) {
+            $o = $ln | ConvertFrom-Json
+            if ([DateTime]::Parse($o.time).ToUniversalTime() -gt [DateTime]::UtcNow.AddMinutes(-60)) { $recent++ }
+        }
+    } catch { }
+    Say ('서버 크래시 감지(' + $c + ') 최근 60분 ' + $recent + '회')
+    if ($recent -ge 2) { New-Halt $c 'server' @($l.log) (Get-Date).AddHours(-1) }
+}
+
+function Test-HaltGate {
+    if (($Command.ToLower() -in 'start', 'run', 'player', 'browser') -and (Test-Path -LiteralPath $HaltPath)) {
+        Say 'HALT 파일이 있어 실행하지 않음'
+        Show-Halt
+        exit 3
+    }
+}
+
 function Cmd-Queue {
+    Show-Halt
     $lock = Read-Json $LockPath
     if ($lock) {
         $alive = Test-LockHolderAlive $lock
@@ -207,8 +361,8 @@ function Try-TakeoverFrom($lock) {
 function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queueDir, [double]$MinFreeGB = 0) {
     $script:LockToken = [Guid]::NewGuid().ToString("N")
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
-    $needGB = 20
-    if ($MinFreeGB -gt 0) { $needGB = $MinFreeGB } elseif (-not (Test-Path -LiteralPath (Join-Path $wt 'unity\Library'))) { $needGB = 30 }
+    $needGB = 12
+    if ($MinFreeGB -gt 0) { $needGB = $MinFreeGB } elseif (-not (Test-Path -LiteralPath (Join-Path $wt 'unity\Library'))) { $needGB = 20 }
     $deadline = (Get-Date).AddMinutes($WaitMin)
     $lastMsg = ''
     while ($true) {
@@ -275,6 +429,7 @@ function Cmd-Start {
         Set-DotnetEnv
         $log = Join-Path $qd ('logs\server-' + (Stamp) + '.log')
         $a = @('-batchmode', '-projectPath', (Q (Join-Path $wt 'unity')), '-exoJobServer', (Q $qd), '-logFile', (Q $log))
+        $a += @('--unity-qa-sandbox', (Q (New-Sandbox ('server-' + (Stamp)))))
         $p = Start-Process -FilePath $UnityExe -ArgumentList $a -PassThru -WindowStyle Hidden
         # 잠금 소유자를 서버로 바꾼다(이 CLI 가 끝나도 서버 pid 로 stale 판정)
         [IO.File]::WriteAllText($LockPath, ([ordered]@{ owner = 'devtools-server'; pid = $p.Id; worktree = $wt; queueDir = $qd; startedAt = (NowIso); startedBy = $PID; reservedAs = [string]$Owner; token = $script:LockToken } | ConvertTo-Json), $Utf8NoBom)
@@ -317,6 +472,8 @@ function Show-Result($r, [long]$wallMs) {
     Write-Output ('[result] ok={0} exit={1} wall={2}ms dur={3}ms refresh={4}ms compile={5}ms exec={6}ms errorLogs={7} reloads={8}{9}' -f $r.ok, $r.exitCode, $wallMs, $r.durMs, $r.refreshMs, $r.compileMs, $r.execMs, $r.errorLogs, $r.domainReloads, $ex)
     if ($r.note) { Write-Output ('  note: ' + $r.note) }
     foreach ($e in @($r.compileErrors)) { if ($e) { Write-Output ('  compileError: ' + $e) } }
+    if ($r.sandbox) { Write-Output ('  sandbox: ' + $r.sandbox) }
+    if ($r.userSaveChanged -gt 0) { Write-Output ('USER_SAVE changed=' + $r.userSaveChanged); foreach ($uf in @($r.userSaveFiles)) { Write-Output ('  ' + $uf) } }
     if ($r.logFile) { Write-Output ('  log: ' + $r.logFile) }
     if ($Json) { Write-Output ($r | ConvertTo-Json -Depth 6 -Compress) }
 }
@@ -324,6 +481,7 @@ function Show-Result($r, [long]$wallMs) {
 function Result-ExitCode($r) {
     if ($r.ok) { return 0 }
     if ([int]$r.exitCode -ne 0) { return [int]$r.exitCode }
+    if ($r.userSaveChanged -gt 0) { return 5 }
     return 1
 }
 
@@ -338,6 +496,7 @@ function Cmd-Run {
 
     if ($sv -and (Test-Alive $sv.pid)) {
         # --- 서버 모드: inbox 에 제출(파일명 = UTC 타임스탬프_id → 실행 순서)
+        $saveBefore = Get-UserSaveSnapshot
         $job = [ordered]@{ id = $id; method = $Method; args = @($argList); refresh = (-not $NoRefresh.IsPresent); timeoutSec = $TimeoutSec }
         $name = (Stamp) + '_' + $id
         $inbox = Join-Path $qd 'inbox'
@@ -350,12 +509,13 @@ function Cmd-Run {
         while ($true) {
             if (Test-Path -LiteralPath $donePath) {
                 $r = Read-Json $donePath
-                if ($r) { $sw.Stop(); Show-Result $r $sw.ElapsedMilliseconds; exit (Result-ExitCode $r) }
+                if ($r) { $sw.Stop(); Apply-SaveCheck $r $saveBefore $null; Show-Result $r $sw.ElapsedMilliseconds; exit (Result-ExitCode $r) }
             }
             if (((Get-Date) - $lastCheck).TotalSeconds -ge 2) {
                 $lastCheck = Get-Date
                 if (-not (Test-Alive $sv.pid)) {
                     Say ("서버 pid {0} 가 job 도중 사라짐(메서드가 EditorApplication.Exit/크래시 가능). 로그: logs\{1}.log" -f $sv.pid, $id)
+                    Check-ServerCrash $qd
                     exit 90
                 }
             }
@@ -388,16 +548,32 @@ function Cmd-Run {
             $log = Join-Path $qd ('logs\' + $id + '.log')
             $a = @('-batchmode', '-quit', '-projectPath', (Q (Join-Path $wt 'unity')), '-executeMethod', $Method, '-logFile', (Q $log))
             foreach ($x in $argList) { $a += (Q $x) }
+            $sbx = New-Sandbox $id; $a += @('--unity-qa-sandbox', (Q $sbx))
+            $saveBefore = Get-UserSaveSnapshot
             $sw2 = [Diagnostics.Stopwatch]::StartNew()
-            $p = Start-Process -FilePath $UnityExe -ArgumentList $a -PassThru -WindowStyle Hidden
-            $done = $p.WaitForExit($TimeoutSec * 1000)
-            if (-not $done) { try { Stop-Process -Id $p.Id -Force } catch { }; $p.WaitForExit(15000) | Out-Null }
+            $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date
+            for ($attempt = 1; $attempt -le 2; $attempt++) {
+                $p = Start-Process -FilePath $UnityExe -ArgumentList $a -PassThru -WindowStyle Hidden
+                $done = $p.WaitForExit($TimeoutSec * 1000)
+                if (-not $done) { try { Stop-Process -Id $p.Id -Force } catch { }; $p.WaitForExit(15000) | Out-Null }
+                $crashCause = Test-UnityCrash $log $p.ExitCode
+                if (-not $crashCause) { break }
+                Record-Crash $crashCause $Method $log
+                if ($attempt -eq 1) {
+                    Say ("크래시 감지($crashCause) → 1회만 재시도")
+                    Wait-Gone $p.Id 20 | Out-Null
+                    $log = $log -replace '\.log$', '-retry.log'; $logsUsed += $log
+                    for ($k = 0; $k -lt $a.Count - 1; $k++) { if ($a[$k] -eq '-logFile') { $a[$k + 1] = (Q $log) } }
+                }
+            }
+            if ($crashCause) { New-Halt $crashCause $Method $logsUsed $t0c }
             $sw2.Stop()
             # 종료 확인: 프로세스가 실제로 사라졌는지
             $gone = $false
             for ($i = 0; $i -lt 30; $i++) { if (-not (Test-Alive $p.Id)) { $gone = $true; break }; Start-Sleep -Milliseconds 500 }
             if ($gone) { Say ("확인: Unity pid {0} 종료됨" -f $p.Id) } else { Say ("경고: Unity pid {0} 가 아직 살아 있음" -f $p.Id) }
             $res = Parse-BatchLog $log $id $Method $p.ExitCode $done $sw2.ElapsedMilliseconds
+            Apply-SaveCheck $res $saveBefore $sbx
             Write-JsonAtomic (Join-Path $qd ('done\' + $id + '.json')) $res
             $sw.Stop()
             Show-Result $res $sw.ElapsedMilliseconds
@@ -415,7 +591,7 @@ function Parse-BatchLog([string]$log, [string]$id, [string]$method, [int]$exit, 
         $m = [regex]::Match($txt, 'Total: ([0-9.]+) seconds - Initiated by InitialRefreshV2')
         if ($m.Success) { $refreshMs = [long]([double]::Parse($m.Groups[1].Value, [Globalization.CultureInfo]::InvariantCulture) * 1000) }
         $m2 = [regex]::Match($txt, 'compile time=([0-9.]+)')
-        if ($m2.Success) { $compileMs = [long]([double]::Parse($m2.Groups[1].Value, [Globalization.CultureInfo]::InvariantCulture) * 1000) }
+        if ($m2.Success) { $compileMs = [long]([double]::Parse($m2.Groups[1].Value, [Globalization.CultureInfo]::InvariantCulture)) }
         if ($txt.Contains('Scripts have compiler errors')) { $failed = $true }
         if ($txt.Contains('crash has been intercepted')) { $crash = $true }
         foreach ($mm in [regex]::Matches($txt, '(?m)^.*error CS\d+.*$')) { $errs += $mm.Value.Trim() }
@@ -458,9 +634,15 @@ function Cmd-Status {
     $procs = Get-UnityProcs
     if ($procs.Count -eq 0) { Write-Output 'Unity 프로세스: 0개' }
     foreach ($pr in $procs) { Write-Output ('Unity 프로세스: pid={0} ws={1:N0}MB start={2}' -f $pr.Id, ($pr.WorkingSet64 / 1MB), $pr.StartTime) }
-    Write-Output ('PC 커밋 여유: {0}GB' -f (Get-CommitFreeGB))
+    $ci = Get-CommitInfo
+    Write-Output ('PC 커밋: 사용 {0}GB / 한도 {1}GB / 여유 {2}GB' -f $ci.used, $ci.limit, $ci.free)
+    $wh = -1
+    try { $wh = @(Get-WinEvent -FilterHashtable @{ LogName = 'System'; ProviderName = 'Microsoft-Windows-WHEA-Logger'; StartTime = (Get-Date).AddHours(-1) } -ErrorAction Stop).Count } catch { if ($_.FullyQualifiedErrorId -like 'NoMatchingEventsFound*') { $wh = 0 } }
+    if ($wh -ge 0) { Write-Output ('WHEA-Logger 최근 1시간: {0}건 (읽기만)' -f $wh) } else { Write-Output 'WHEA-Logger 최근 1시간: 조회 불가' }
     foreach ($w in ($wts | Select-Object -Unique)) {
-        if (-not (Test-Path -LiteralPath $w)) { continue }
+        $okp = $false
+        try { $okp = Test-Path -LiteralPath $w -ErrorAction Stop } catch { }
+        if (-not $okp) { continue }
         $warn = Test-LibraryIncomplete $w
         if ($warn) { Write-Output ('경고: {0} - {1} → 첫 실행에 전체 임포트 약 100초(빌드 포함 219초) + 커밋 약 9GB 소모' -f $w, $warn) }
         else { Write-Output ('Library 정상: ' + $w) }
@@ -539,8 +721,18 @@ function Reject([string]$why) {
     exit 2
 }
 
+# pid 재사용으로 남의 프로세스를 우리 것으로 착각하지 않도록, 기록해 둔 생성 시각과 같은 프로세스일 때만 true
+function Test-SameProc($procId, $created) {
+    try {
+        $pr = Get-Process -Id ([int]$procId) -ErrorAction Stop
+        if ($pr.HasExited -or $null -eq $created) { return $false }
+        $d = [math]::Abs(($pr.StartTime.ToUniversalTime() - ([datetime]$created).ToUniversalTime()).TotalSeconds)
+        return ($d -lt 2)
+    } catch { return $false }
+}
+
 function Get-ProcTree([int]$rootPid) {
-    $all = @(Get-CimInstance Win32_Process | Select-Object ProcessId, ParentProcessId, Name, CommandLine)
+    $all = @(Get-CimInstance Win32_Process | Select-Object ProcessId, ParentProcessId, Name, CommandLine, CreationDate)
     $set = @{}; $set[$rootPid] = 1
     $changed = $true
     while ($changed) {
@@ -576,7 +768,7 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     $sw = [Diagnostics.Stopwatch]::StartNew()
     while ($true) {
         $t = Get-ProcTree $proc.Id
-        foreach ($id in $t.pids) { $tree[[int]$id] = 1 }
+        foreach ($id in $t.pids) { foreach ($c in $t.all) { if ([int]$c.ProcessId -eq [int]$id) { $tree[[int]$id] = $c.CreationDate } } }
         $violations += @(Get-WindowHits $t.pids 'tree')
         foreach ($p in @(Get-Process -Name $WatchNames -ErrorAction SilentlyContinue)) {
             if ($pre.ContainsKey($p.Id) -or $tree.ContainsKey($p.Id)) { continue }
@@ -585,13 +777,9 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
             foreach ($c in $t.all) { if ([int]$c.ProcessId -eq $p.Id) { $cl = [string]$c.CommandLine } }
             $ours = $false
             foreach ($tok in $ownTokens) { if ($tok -and $cl -and $cl.Contains($tok)) { $ours = $true } }
-            if ($p.ProcessName -in @('chrome', 'msedge', 'firefox') -and -not $ours) {
-                $h = @(Get-WindowHits @($p.Id) 'new-unrelated')
-                if ($h.Count -gt 0) { $warnings += $h }   # 사용자가 같은 시간에 연 브라우저일 수 있어 경고만
-            } else {
-                $tree[$p.Id] = 1
-                $violations += @(Get-WindowHits @($p.Id) 'new')
-            }
+            # 우리 자손이 아닌 새 프로세스(다른 세션의 실행·사용자 브라우저일 수 있음)는 창이 있어도 경고만 하고 절대 종료하지 않는다.
+            $h = @(Get-WindowHits @($p.Id) 'new-other')
+            if ($h.Count -gt 0) { $warnings += $h }
         }
         if ($proc.HasExited) { break }
         if ($killAfter -gt 0 -and $sw.Elapsed.TotalSeconds -ge $killAfter) { $expectedKill = $true; break }
@@ -609,7 +797,7 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     $left = @()
     $t1 = Get-Date
     while ($true) {
-        $left = @($tree.Keys | Where-Object { Test-Alive $_ })
+        $left = @($tree.Keys | Where-Object { Test-SameProc $_ $tree[$_] })
         if ($left.Count -eq 0 -or ((Get-Date) - $t1).TotalSeconds -ge 20) { break }
         Start-Sleep -Milliseconds 500
     }
@@ -625,15 +813,18 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
 
 function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, [string]$failNote) {
     $ok = $extraOk -and ($g.windowHits.Count -eq 0) -and (-not $g.timedOut) -and ($g.exitCode -eq 0 -or $g.expectedKill)
+    $sc = @(); if ($null -ne $script:SaveBefore) { $sc = @(Compare-UserSave $script:SaveBefore) }
+    if ($sc.Count -gt 0) { $ok = $false }
     $notes = @()
     if ($failNote) { $notes += $failNote }
+    if ($sc.Count -gt 0) { $notes += ('USER_SAVE changed=' + $sc.Count) }
     if ($g.timedOut) { $notes += '시간 초과로 종료시킴' }
     if ($g.windowHits.Count -gt 0) { $notes += '창 감지: ' + ($g.windowHits -join '; ') }
     if ($g.leftovers.Count -gt 0) { $notes += '종료 뒤 남은 프로세스 정리: ' + ($g.leftovers -join ',') }
     $res = [ordered]@{
         id = $id; kind = $kind; ok = $ok; exitCode = $g.exitCode; durMs = $g.durMs; expectedKill = $g.expectedKill; timedOut = $g.timedOut
         windowHandleCount = $g.windowHits.Count; windowHits = @($g.windowHits); warnings = @($g.warnings); treeProcesses = $g.treeCount
-        leftovers = @($g.leftovers); note = ($notes -join ' | ')
+        leftovers = @($g.leftovers); note = ($notes -join ' | '); userSaveChanged = $sc.Count; userSaveFiles = @($sc)
     }
     foreach ($k in $extra.Keys) { $res[$k] = $extra[$k] }
     New-Item -ItemType Directory -Force -Path (Join-Path $ExecDir 'done') | Out-Null
@@ -642,12 +833,14 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
     if ($extra.Contains('gpu')) { $gpuText = ' gpu=[' + $extra['gpu'] + ']' }
     Write-Output ('[result] kind={0} ok={1} exit={2} dur={3}ms windows={4} leftovers={5}{6}' -f $kind, $ok, $g.exitCode, $g.durMs, $g.windowHits.Count, $g.leftovers.Count, $gpuText)
     if ($res.note) { Write-Output ('  note: ' + $res.note) }
+    if ($sc.Count -gt 0) { Write-Output ('USER_SAVE changed=' + $sc.Count); foreach ($uf in $sc) { Write-Output ('  ' + $uf) } }
     foreach ($w in $g.warnings) { Write-Output ('  warn: ' + $w) }
     if ($extra.Contains('log')) { Write-Output ('  log: ' + $extra['log']) }
     if ($Json) { Write-Output ($res | ConvertTo-Json -Depth 6 -Compress) }
     $script:ExitRc = 1
     if ($ok) { $script:ExitRc = 0 }
     elseif ($g.windowHits.Count -gt 0) { $script:ExitRc = 4 }
+    elseif ($sc.Count -gt 0) { $script:ExitRc = 5 }
     elseif ($g.exitCode -ne 0 -and -not $g.expectedKill) { $script:ExitRc = [math]::Abs([int]$g.exitCode) }
 }
 
@@ -669,10 +862,24 @@ function Cmd-Player {
     for ($i = 0; $i -lt $user.Count; $i++) { if ($user[$i].ToLower() -eq '-logfile' -and $i + 1 -lt $user.Count) { $userLog = $user[$i + 1] } }
     if (-not $userLog) { $ia += @('-logFile', (Q $log)) } else { $log = $userLog }
     if ($lower -notcontains '--unity-mute') { $ia += '--unity-mute' }
+    $sbx = New-Sandbox $id; if ($lower -notcontains '--unity-qa-sandbox') { $ia += @('--unity-qa-sandbox', (Q $sbx)) }
     foreach ($u in $user) { if ($u.ToLower() -ne '-batchmode') { $ia += (Q $u) } }
-    Acquire-Slot 'devtools-player' (Split-Path $exeFull -Parent) $PID $ExecDir 8
+    Acquire-Slot 'devtools-player' (Split-Path $exeFull -Parent) $PID $ExecDir 10
+    $script:SaveBefore = Get-UserSaveSnapshot
     try {
-        $g = Invoke-Guarded $exeFull $ia (Split-Path $exeFull -Parent) $TimeoutSec $KillAfterSec @($exeFull, $log)
+        $g = $null; $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date
+        for ($attempt = 1; $attempt -le 2; $attempt++) {
+            $g = Invoke-Guarded $exeFull $ia (Split-Path $exeFull -Parent) $TimeoutSec $KillAfterSec @($log)
+            $crashCause = Test-UnityCrash $log $g.exitCode
+            if (-not $crashCause) { break }
+            Record-Crash $crashCause 'player' $log
+            if ($attempt -eq 1) {
+                Say ("크래시 감지($crashCause) → 1회만 재시도")
+                $log = $log -replace '\.log$', '-retry.log'; $logsUsed += $log
+                for ($k = 0; $k -lt $ia.Count - 1; $k++) { if ($ia[$k].ToLower() -eq '-logfile') { $ia[$k + 1] = (Q $log) } }
+            }
+        }
+        if ($crashCause) { New-Halt $crashCause 'player' $logsUsed $t0c }
         $gpu = ''; $nullGfx = $false
         if (Test-Path -LiteralPath $log) {
             $txt = [IO.File]::ReadAllText($log)
@@ -713,6 +920,7 @@ function Cmd-Browser {
     foreach ($u in $user) { $ia += (Q $u) }
     # Start-Process 는 한 프로세스의 출력만 리다이렉트하므로 cmd 로 감싸 로그 파일에 쓴다
     $cmdline = '/c ""{0}" {1} > "{2}" 2> "{3}""' -f $node, ($ia -join ' '), $out, $err
+    $script:SaveBefore = Get-UserSaveSnapshot
     $g = Invoke-Guarded 'cmd.exe' @($cmdline) (Split-Path $scr -Parent) $TimeoutSec $KillAfterSec @($scr, $guard)
     $fail = ''; $extraOk = $true; $rejected = $false
     foreach ($f in @($out, $err)) { if ((Test-Path -LiteralPath $f) -and ([IO.File]::ReadAllText($f)).Contains('EXO_REJECT')) { $rejected = $true } }
@@ -727,6 +935,9 @@ function Cmd-Nw {
 }
 
 # ------------------------------------------------------------------ 진입
+Write-MemLog
+Test-HaltGate
+
 switch ($Command.ToLower()) {
     'start'     { Cmd-Start }
     'run'       { Cmd-Run }

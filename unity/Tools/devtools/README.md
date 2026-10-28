@@ -63,3 +63,10 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - job이 `AssetDatabase.Refresh`로 도메인 리로드를 일으키면 그 job은 exit 5로 중단 처리된다.
 - 서버를 띄운 사람은 끝나면 `stop` 한다(잠금이 서버에 묶여 있다). 새 워크트리는 Library가 없어 첫 실행에 임포트 약 100초·빌드 포함 219초·커밋 약 9GB가 든다 — `robocopy ... /E /XJ`로 기존 Library를 복사해 시작한다(PowerShell에서 실행).
 - Unity는 항상 batchmode(창 없음). 다른 사람이 띄운 Unity는 건드리지 않는다.
+
+## 안전 규칙 (모든 자동 실행은 이 실행기로만)
+**Unity 에디터·플레이어·Playwright 를 직접 실행하지 않는다. 직접 실행하면 사용자 실제 세이브(`LocalLow\ForDearGamers`) 오염, 창·소리, 메모리·크래시 연쇄 위험이 있다(10-28 실제 세이브 덮어쓰기 사고).**
+- 세이브 보호: `player` 와 에디터 batch(`run` 서버 없음)·서버 `start` 는 항상 `--unity-qa-sandbox <I:\EXODUSER-Storage\unity-jobs\sandbox\<runId>>` 를 붙인다(런타임 지원은 DT-15). 모든 실행 전후로 `LocalLow\ForDearGamers` 를 스냅샷(경로·크기·수정 시각·SHA256)으로 비교해 바뀐 파일이 있으면 결과를 실패(종료 코드 5)로 판정하고 `USER_SAVE changed=N` 과 파일 목록을 출력하며 `unity-jobs\usersave.log` 에 남긴다. 사용자 파일은 읽기만 한다(수정·복원 안 함). 같은 시각에 사용자가 직접 플레이하면 오탐이 날 수 있다.
+- HALT: `I:\EXODUSER-Storage\unity-jobs\HALT` 파일이 있으면 `start`/`run`/`player`/`browser` 는 사유를 출력하고 종료 코드 3 으로 끝난다(`queue`·`status` 에도 표시). Unity 종료 코드가 `0xC0000005`(-1073741819)이거나 로그에 `access violation`·`crash has been intercepted` 가 있으면 1회만 재시도하고, 다시 크래시하면 HALT 를 만든다(시각·원인·로그·크래시 덤프 경로). 서버가 job 도중 크래시하면 `crashes.log` 에 기록하고 60분 안에 2회면 HALT. 해제는 사람(유니티 총괄)이 파일을 지운다.
+- `status`: 커밋 사용·한도·여유, Unity 프로세스, 서버 메모리, Library 불완전 경고, 최근 1시간 WHEA-Logger 건수(읽기만)를 출력한다. 실행할 때마다 `unity-jobs\memlog.csv` 에 `time,commitUsedGB,commitLimitGB,commitFreeGB,unity,claude,node` 한 줄이 쌓인다.
+- 시작 조건(실측 근거는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 커밋 여유 에디터(Library 있음) 12GB, Library 없음 20GB, 플레이어 10GB. 동시 실행 수 1(잠금). 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만(pid 재사용으로 남의 프로세스를 건드리지 않음).

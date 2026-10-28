@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using UnityEditor;
@@ -433,6 +434,15 @@ namespace Exoduser.DevTools
 
         static void SaveState(ExoJobState c) { WriteAtomic(Path.Combine(Running, c.id + ".json"), JsonUtility.ToJson(c, true)); }
 
+
+        // Mono 의 Process.WorkingSet64 는 0 을 돌려주므로 psapi 로 직접 읽는다(PagefileUsage = 프로세스 커밋).
+        [StructLayout(LayoutKind.Sequential)]
+        struct PMC
+        {
+            public uint cb, PageFaultCount;
+            public UIntPtr PeakWorkingSetSize, WorkingSetSize, QuotaPeakPagedPoolUsage, QuotaPagedPoolUsage, QuotaPeakNonPagedPoolUsage, QuotaNonPagedPoolUsage, PagefileUsage, PeakPagefileUsage;
+        }
+        [DllImport("psapi.dll")] static extern bool GetProcessMemoryInfo(IntPtr hProcess, out PMC counters, uint size);
         // ------------------------------------------------------------------ 하트비트(백그라운드 스레드: 메인 스레드가 job으로 막혀 있어도 계속 갱신)
         static void BeatSafe(object o)
         {
@@ -454,9 +464,17 @@ namespace Exoduser.DevTools
                 sb.Append(",\"currentJob\":").Append(Q(_curId));
                 sb.Append(",\"jobsDone\":").Append(_jobsDone);
                 sb.Append(",\"idleSec\":").Append(idle);
-                sb.Append(",\"workingSetMB\":").Append(p.WorkingSet64 >> 20);
-                sb.Append(",\"privateMB\":").Append(p.PrivateMemorySize64 >> 20);
-                sb.Append(",\"peakWorkingSetMB\":").Append(p.PeakWorkingSet64 >> 20);
+                long wsB = 0, peakWsB = 0, commitB = 0, peakCommitB = 0;
+                PMC pmc;
+                if (GetProcessMemoryInfo(p.Handle, out pmc, (uint)Marshal.SizeOf(typeof(PMC))))
+                {
+                    wsB = (long)(ulong)pmc.WorkingSetSize; peakWsB = (long)(ulong)pmc.PeakWorkingSetSize;
+                    commitB = (long)(ulong)pmc.PagefileUsage; peakCommitB = (long)(ulong)pmc.PeakPagefileUsage;
+                }
+                sb.Append(",\"workingSetMB\":").Append(wsB >> 20);
+                sb.Append(",\"privateMB\":").Append(commitB >> 20);
+                sb.Append(",\"peakWorkingSetMB\":").Append(peakWsB >> 20);
+                sb.Append(",\"peakPrivateMB\":").Append(peakCommitB >> 20);
                 sb.Append(",\"queueDir\":").Append(Q(_q));
                 sb.Append("}");
                 WriteAtomic(Path.Combine(_q, "server.json"), sb.ToString());
