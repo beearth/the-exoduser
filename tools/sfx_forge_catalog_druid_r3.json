@@ -1,0 +1,53 @@
+{
+ "about": "SFX Forge 카탈로그 — 3차 후보(druid_slam·druid_spore·ui_tab) 중 새로 만듦 c,d. 키 <key>_r3c~d. 사용: node --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <this> --variants 1",
+ "sounds": [
+  {
+   "category": "skill",
+   "key": "druid_slam_r3c",
+   "raw": true,
+   "duration": 0.9,
+   "promptInfluence": 0.7,
+   "text": "colossal tree trunk swung down and smashing into the ground, one deep resonant boom that makes the whole ground shake, then a long low rumble fading out. dark fantasy ARPG, rotting forest druid boss, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_r3d",
+   "raw": true,
+   "duration": 0.9,
+   "promptInfluence": 0.7,
+   "text": "giant log used as a club hitting hard packed earth, a short sharp woody crack immediately followed by a heavy ground-shaking thump and a dull low rumble. dark fantasy ARPG, rotting forest druid boss, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_r3c",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.7,
+   "text": "wet fat mushroom cap bursting with a soft squelchy pop, followed by a damp gentle hiss of spores spreading outward. dark fantasy ARPG, rotting forest druid boss, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_r3d",
+   "raw": true,
+   "duration": 0.6,
+   "promptInfluence": 0.7,
+   "text": "swollen damp fungus bulb popping, a wet muffled burst then a fine soft spray spreading, organic and moist, no magic. dark fantasy ARPG, rotting forest druid boss, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "ui",
+   "key": "ui_tab_r3c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "single tiny pebble dropping onto a stone slab, one short dry tick, no bounce. dark fantasy game UI, very short dry single sound, worn leather, old iron and stone, no synth, no electronic beep, no bright chime, no reverb tail, no music, no voice"
+  },
+  {
+   "category": "ui",
+   "key": "ui_tab_r3d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "quick single brush of rough cloth over a wooden board, one soft dry scuff, very short. dark fantasy game UI, very short dry single sound, worn leather, old iron and stone, no synth, no electronic beep, no bright chime, no reverb tail, no music, no voice"
+  }
+ ]
+}

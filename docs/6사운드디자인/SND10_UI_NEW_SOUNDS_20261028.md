@@ -81,3 +81,7 @@ open/close는 a=가죽 책, b=철 걸쇠·뚜껑, c=두루마리, d=서랍으로
 | `ui_salvage` | **a** 금속 부서져 흩어짐 | `sfx/ui/salvage.mp3` | .50 | |
 
 연결 위치·쿨다운·검증·확인하지 못한 것은 [6사운드디자인.md](6사운드디자인.md) 「SND-10 2단계 — UI 새 소리 5키 웹 반영」. §4의 계획과 달라진 점: ① 파일명은 기존 `button_hover.mp3` 규칙대로 `ui_` 접두를 뗐다 ② `ui_tab` 미채택으로 탭 연결(§4-4)은 하지 않았다 ③ `ui_fail`은 실버테일이 기존 음성(`voice_resource_fail`·`voice_cooldown`)을 쓰므로 `showPH`에서는 전사 등 `_charIdx!==1`만 부르고, 장착 실패 3곳은 모든 캐릭터에 부른다 ④ 패널은 `closeAllPanels(_quiet)` 인자로 전환 시 닫기음을 생략한다.
+
+### 5.1 `ui_tab` 후속 (2026-10-28)
+
+4후보 모두 안 맞음(메모 없음) → 다른 해석으로 4후보를 새로 만들었다(청음 전). a·b는 기존 채택 버튼음을 0.15초로 자르고 음정만 바꾼 변형(`ui_button_confirm` 앞 0.19초 +25%, `ui_button_hover` −20%), c·d는 ElevenLabs 새 생성(조약돌 한 번 틱, 거친 천이 나무를 스침; 1차의 뼈·가죽·철 핀·나무 패와 겹치지 않게). 카탈로그 `tools/sfx_forge_catalog_druid_r3.json`(키 `ui_tab_r3c`·`_r3d`), 고르기 `pick_r3.html`(드루이드 `druid_slam`·`druid_spore`와 한 페이지). 상세·측정은 `DRUID_BOSS_SOUND_REMAKE_20261028.md` §5 기록의 같은 날 3차 행.
