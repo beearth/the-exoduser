@@ -37,8 +37,11 @@ function ReadJson([string]$Path) {
 function Git([string]$At, [string[]]$Arguments) {
     # 접근 불가한 사용자 전역 excludes로 Git이 실패할 수 있다. 비활성화하면 그 파일은 미추적으로 잡혀 keep된다.
     $ErrorActionPreference = 'Continue'
-    $lines = @(& git.exe -c ('safe.directory=' + $At) -c 'core.quotePath=false' -c 'core.excludesFile=' -C $At @Arguments 2>$null)
-    return [pscustomobject]@{ code = $LASTEXITCODE; text = (($lines | Out-String).TrimEnd()); lines = $lines }
+    $all = @(& git.exe -c ('safe.directory=' + $At) -c 'core.quotePath=false' -c 'core.excludesFile=' -C $At @Arguments 2>&1)
+    $code = $LASTEXITCODE
+    $lines = @($all | Where-Object { $_ -isnot [Management.Automation.ErrorRecord] } | ForEach-Object { [string]$_ })
+    $errors = @($all | Where-Object { $_ -is [Management.Automation.ErrorRecord] } | ForEach-Object { [string]$_ })
+    return [pscustomobject]@{ code = $code; text = (($lines | Out-String).TrimEnd()); lines = $lines; stderr = ($errors -join "`n") }
 }
 function GitOk([string]$At, [string[]]$Arguments) {
     $result = Git $At $Arguments
@@ -49,7 +52,7 @@ function IsCache([string]$Relative) {
     $p = $Relative.Replace('\', '/').TrimEnd('/')
     if ($p -match '^(?i:unity)/(?:Library|Temp|Logs|obj|UserSettings)(?:/|$)') { return $true }
     if ($p -match '(?i)(?:^|/)(?:node_modules|\.vs)(?:/|$)') { return $true }
-    if ($p -match '(?i)(?:^|/)(?:Build|Builds|BuildOutput|build-output)(?:/|$)') { return $true }
+    if ($p -match '^(?i:unity)/(?:Build|Builds|BuildOutput|build-output)(?:/|$)') { return $true }
     if ($p -match '(?i)\.(?:csproj|sln)$') { return $true }
     return $false
 }
@@ -62,7 +65,15 @@ function GetIgnoreOther([string]$Path) {
         $relative = $s.Substring(3).Trim('"')
         if (-not (IsCache $relative)) { $other.Add($relative) }
     }
-    return ,$other.ToArray()
+    return $other.ToArray()
+}
+function HasIgnoredCache([string]$Path) {
+    $status = GitOk $Path @('status', '--porcelain=v1', '--ignored', '-uall')
+    foreach ($line in $status.lines) {
+        $s = [string]$line
+        if ($s.StartsWith('!! ') -and (IsCache ($s.Substring(3).Trim('"')))) { return $true }
+    }
+    return $false
 }
 function GetActivePaths([string]$Path) {
     $raw = [IO.File]::ReadAllText($Path)
@@ -267,6 +278,12 @@ function Assess([string]$Path, $Context) {
     }
 }
 function GetContext([string[]]$Roots, [string]$Repo, [double]$Hours, [string]$KeepPath, [string]$ActivePath) {
+    foreach ($rootPath in $Roots) {
+        $normalized = Norm $rootPath
+        if ($normalized -ine 'E:\exoduser-wt' -and $normalized -ine 'G:\exoduser-wt') {
+            throw ('허용되지 않은 워크트리 루트: ' + $normalized)
+        }
+    }
     $protected = GetProtections $KeepPath $ActivePath
     return [pscustomobject]@{ roots = @($Roots | ForEach-Object { Norm $_ }); repo = (Norm $Repo)
         idleHours = $Hours; protected = $protected; map = (GetWorktreeMap (Norm $Repo)); busy = (GetBusyPaths) }
@@ -352,20 +369,29 @@ function DeleteTreeNoLinks([string]$Path) {
     for ($i = $dirs.Count - 1; $i -ge 0; $i--) { [IO.Directory]::Delete($dirs[$i]) }
 }
 function RemoveCacheSafely([string]$Path) {
-    $cache = @('unity\Library', 'unity\Temp', 'unity\Logs', 'unity\obj', 'unity\UserSettings', 'node_modules', 'unity\node_modules', '.vs', 'unity\.vs', 'unity\Build', 'unity\Builds')
-    foreach ($relative in $cache) {
-        $target = Join-Path $Path $relative
-        if (-not [IO.Directory]::Exists($target)) { continue }
-        $facts = GetTreeFacts $target
-        if (@($facts.links).Count) { throw ('캐시에 링크 발견: ' + $target) }
-        DeleteTreeNoLinks $target
-    }
-    foreach ($extension in @('*.csproj', '*.sln')) {
-        foreach ($file in [IO.Directory]::EnumerateFiles((Join-Path $Path 'unity'), $extension)) {
-            $item = Get-Item -LiteralPath $file -Force
-            if (($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { throw ('생성 파일 링크 발견: ' + $file) }
-            [IO.File]::Delete($file)
+    $stack = New-Object 'System.Collections.Generic.Stack[string]'
+    $cacheDirs = New-Object 'System.Collections.Generic.List[string]'
+    $stack.Push($Path)
+    while ($stack.Count -gt 0) {
+        $dir = $stack.Pop()
+        foreach ($child in [IO.Directory]::EnumerateDirectories($dir)) {
+            if (([IO.File]::GetAttributes($child) -band [IO.FileAttributes]::ReparsePoint) -ne 0) { throw ('캐시 검사 중 링크 발견: ' + $child) }
+            $relative = $child.Substring($Path.Length).TrimStart([char[]]@('\', '/'))
+            if (IsCache $relative) { $cacheDirs.Add($child) }
+            else { $stack.Push($child) }
         }
+    }
+    foreach ($target in $cacheDirs) { DeleteTreeNoLinks $target }
+    $ignored = GitOk $Path @('status', '--porcelain=v1', '--ignored', '-uall')
+    foreach ($line in $ignored.lines) {
+        $s = [string]$line
+        if (-not $s.StartsWith('!! ')) { continue }
+        $relative = $s.Substring(3).Trim('"')
+        if ($relative -notmatch '(?i)\.(?:csproj|sln)$') { continue }
+        $file = Norm (Join-Path $Path $relative)
+        if (-not (Under $file $Path) -or -not [IO.File]::Exists($file)) { continue }
+        if (([IO.File]::GetAttributes($file) -band [IO.FileAttributes]::ReparsePoint) -ne 0) { throw ('생성 파일 링크 발견: ' + $file) }
+        [IO.File]::Delete($file)
     }
 }
 function Apply {
@@ -403,11 +429,14 @@ function Apply {
             if (@($after.links).Count) { throw '링크가 남아 있습니다.' }
             $result = Git $context.repo @('worktree', 'remove', $path)
             if ($result.code -ne 0) {
-                $log.Add('worktree remove 실패, 캐시 정리 뒤 재시도: ' + $path)
+                if ($result.stderr -notmatch '(?i)untracked|modified|dirty' -or -not (HasIgnoredCache $path)) {
+                    throw ('worktree remove 실패 (캐시 원인 확인 안 됨): ' + $result.stderr)
+                }
+                $log.Add('worktree remove 실패, 무시된 캐시 정리 뒤 재시도: ' + $path)
                 RemoveCacheSafely $path
                 $result = Git $context.repo @('worktree', 'remove', $path)
             }
-            if ($result.code -ne 0) { throw 'worktree remove 재시도 실패' }
+            if ($result.code -ne 0) { throw ('worktree remove 재시도 실패: ' + $result.stderr) }
             $removed++
             $log.Add('제거 완료: ' + $path)
         } catch { $log.Add(('항목 실패: {0}: {1}' -f $path, $_.Exception.Message)) }
