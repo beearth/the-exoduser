@@ -211,11 +211,18 @@ function Assess([string]$Path, $Context) {
     $reasons = New-Object 'System.Collections.Generic.List[string]'
     $ignored = @()
     $branch = ''; $head = ''
+    $registered = $Context.map.ContainsKey($Path.ToLowerInvariant())
+    $rootItem = Get-Item -LiteralPath $Path -Force
+    $rootIsLink = (($rootItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0)
     if (Same $Path 'G:\exoduser' -or (Same $Path 'G:\exoduser-steam') -or (Under $Path 'G:\exoduser-steam')) { $reasons.Add('사용자 체크아웃 보호') }
     if ($Context.protected.paths | Where-Object { Same $Path $_ }) { $reasons.Add('보호 목록 또는 활성 세션') }
-    if (-not $Context.map.ContainsKey($Path.ToLowerInvariant())) { $reasons.Add('Git 등록 워크트리 아님') }
-    if (((Get-Item -LiteralPath $Path -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { $reasons.Add('워크트리 경로가 링크') }
-    if ($Context.map.ContainsKey($Path.ToLowerInvariant())) {
+    if (-not $registered) { $reasons.Add('Git 등록 워크트리 아님(크기 미측정)') }
+    $rootLinks = @()
+    if ($rootIsLink) {
+        $reasons.Add('워크트리 경로가 링크(내부 미순회)')
+        $rootLinks = @([pscustomobject]@{ path = $Path; target = [string]($rootItem.Target -join '; '); external = $true; kind = 'directory' })
+    }
+    if ($registered -and -not $rootIsLink) {
         try {
             $head = (GitOk $Path @('rev-parse', 'HEAD')).text.Trim()
             $clean = GitOk $Path @('status', '--porcelain=v1', '-uall')
@@ -241,17 +248,19 @@ function Assess([string]$Path, $Context) {
     }
     if (IsBusy $Path $Context.busy) { $reasons.Add('프로세스 또는 작업 잠금 사용 중') }
     $facts = $null
-    try {
-        $facts = GetTreeFacts $Path
-        if ($facts.latestUtc -gt [DateTime]::UtcNow.AddHours(-$Context.idleHours)) { $reasons.Add('최근 파일 변경') }
-    } catch { $reasons.Add('파일 순회 실패: ' + $_.Exception.Message) }
+    if ($registered -and -not $rootIsLink) {
+        try {
+            $facts = GetTreeFacts $Path
+            if ($facts.latestUtc -gt [DateTime]::UtcNow.AddHours(-$Context.idleHours)) { $reasons.Add('최근 파일 변경') }
+        } catch { $reasons.Add('파일 순회 실패: ' + $_.Exception.Message) }
+    }
     return [pscustomobject]@{
         path = $Path; name = [IO.Path]::GetFileName($Path); branch = $branch; head = $head
         decision = $(if ($reasons.Count -eq 0) { 'candidate' } else { 'keep' }); reasons = $reasons.ToArray()
         ignoredOtherCount = $ignored.Count; ignoredOtherTop10 = @($ignored | Select-Object -First 10)
         latestUtc = $(if ($facts) { $facts.latestUtc.ToString('o') } else { $null })
         bytes = $(if ($facts) { $facts.bytes } else { 0L }); libraryBytes = $(if ($facts) { $facts.libraryBytes } else { 0L })
-        links = $(if ($facts) { $facts.links } else { @() })
+        links = $(if ($facts) { $facts.links } else { $rootLinks })
     }
 }
 function GetContext([string[]]$Roots, [string]$Repo, [double]$Hours, [string]$KeepPath, [string]$ActivePath) {
