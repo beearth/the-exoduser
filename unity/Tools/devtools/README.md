@@ -1,5 +1,52 @@
 # DT-01 Unity 작업 서버 + PC 순번 큐
 
+## Codex 실행(exo-codex.ps1)
+
+여러 총괄이 PC의 Codex CLI 0.165를 쓸 때 워크트리·메모리·HALT·동시 실행을 확인하고 실행 기록을 I: 보관소에 남긴다. `codex exec`의 stdin은 빈 파일로 닫는다. 긴 브리프는 `prompt.md`에 복사하고 CLI에는 그 파일을 읽으라는 짧은 인수만 전달한다.
+
+```powershell
+$wt = 'E:\exoduser-wt\<작업 워크트리>'
+$codex = Join-Path $wt 'unity\Tools\devtools\exo-codex.ps1'
+& $codex run -Worktree $wt -Brief "$wt\brief.md" -Name 'hud-fix' -Owner 'unity-lead'
+& $codex run -Worktree $wt -Brief "$wt\brief.md" -Name 'hud-check' -Owner 'unity-lead' -Background
+& $codex status -Last 20
+& $codex show -Run '20261028-143000_hud-fix'
+```
+
+`-Model <id>`와 `-TimeoutMin 90`, `-MinCommitFreeGB 4`를 선택할 수 있다. `-DryRun`은 입력 검사 후 `brief.md`, `prompt.md`, 실행하지 않음 표시가 든 `meta.json`까지만 만든다. 허용 경로는 `E:\exoduser-wt\` 또는 `G:\exoduser-wt\` 바로 아래의 Git 워크트리다. `G:\exoduser`는 거부한다. 기본 동시 실행 상한은 3건이며 워크트리마다 잠금 1건이다.
+
+| 종료 코드 | 뜻 |
+|---:|---|
+| 0 | 성공 또는 DryRun 성공 |
+| 1 | Codex 비정상 종료 또는 실행 실패 |
+| 2 | 입력·메모리 검사 실패 |
+| 3 | Unity HALT 존재 |
+| 4 | 워크트리 잠금 또는 동시 실행 상한 |
+| 5 | 실행 중 Codex가 커밋함(되돌리지 않음) |
+| 6 | 시간 초과, 해당 실행기가 띄운 프로세스 트리 종료 |
+
+실행 폴더는 `I:\EXODUSER-Storage\codex-runs\<yyyyMMdd-HHmmss>_<Name>\`이다. `brief.md`는 원본, `prompt.md`는 표준 규칙을 덧붙인 지시문, `codex.log`는 표준 출력과 오류, `result.md`는 마지막 메시지다. `meta.json`은 SHA·시각·종료 코드 등, `diff.patch`·`status.txt`·`diffstat.txt`는 실행 후 변경 근거다. 잠금은 `_locks\<워크트리 폴더명>.json`에 둔다. DryRun에는 Codex 로그와 diff 산출물이 없다.
+
+**Codex는 커밋하지 않는다. 총괄이 diff를 검수한 뒤 필요한 파일의 경로를 지정해 직접 커밋한다.**
+
+병합 뒤 워크트리 정리는 아래 `exo-worktree-clean.ps1`의 `scan`으로 확인하고 총괄에게 요청한다.
+
+## 워크트리 정리(exo-worktree-clean.ps1)
+
+`scan`은 Git에 등록된 워크트리와 E:/G:의 작업 폴더를 대조해 JSON·Markdown 보고서를 만든다. 후보는 **① Git 변경·미추적·재생성 불가 무시 파일 없음, ② HEAD와 로컬 브랜치의 모든 커밋이 원격에 보존됨, ③ 지정 시간 동안 파일 변경 없음, ④ 프로세스·Unity/Codex 잠금·예약에서 사용 중이지 않음, ⑤ 보호 목록·활성 세션·사용자 체크아웃이 아님**을 모두 만족해야 한다. 하나라도 어긋나거나 검사가 실패하면 `keep`이다. 캐시는 Unity Library/Temp/Logs/obj/UserSettings, node_modules, 빌드 출력, `.vs`, 생성된 csproj/sln으로 한정한다.
+
+링크(junction·symlink)는 대상과 함께 보고한다. 사람이 `apply`할 때는 후보를 다시 검사한 다음 **링크 자체만 먼저 제거 → 링크 0개 재확인 → force 없는 `git worktree remove`** 순서로 처리한다. 실패한 항목은 건너뛰고 로그에 남긴다. 공통 규칙에 따라 `git worktree prune`은 실행하지 않는다. `apply`는 자동 세션에서 실행하지 않는다.
+
+```powershell
+$clean = Join-Path $wt 'unity\Tools\devtools\exo-worktree-clean.ps1'
+& $clean scan -Root 'E:\exoduser-wt','G:\exoduser-wt' -RepoRoot 'G:\exoduser' -IdleHours 2 -ActiveJson 'I:\EXODUSER-Storage\worktree-clean\active.json'
+# I:\EXODUSER-Storage\worktree-clean\scan-<시각>.json/.md를 사람이 검토한다.
+& $clean apply -Plan 'I:\EXODUSER-Storage\worktree-clean\scan-<시각>.json' -Confirm '<보고서의 6자리 코드>' -WhatIf
+# 실제 정리가 필요할 때 사람이 직접 -WhatIf 없이 같은 명령을 실행한다.
+```
+
+**각 총괄은 자기 브랜치가 병합되면 자기 워크트리를 scan으로 확인한 뒤 정리 요청한다.** 새 워크트리는 `E:\exoduser-wt\`에만 만들고, Library는 필요할 때만 복사한다. 보고서 기본 위치는 `I:\EXODUSER-Storage\worktree-clean\`이다.
+
 Unity를 작업마다 새로 띄우면 고정 비용(라이선스·첫 Refresh·엔진 초기화/종료)이 9~10초씩 든다.
 작업 서버는 워크트리당 Unity 1개를 batchmode로 계속 띄워 두고, 작업을 파일로 받아 실행한다. 컴파일 오류는 Unity를 다시 띄우지 않고 결과 json에 바로 담긴다.
 
