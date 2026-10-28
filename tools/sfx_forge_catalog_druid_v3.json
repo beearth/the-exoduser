@@ -1,0 +1,165 @@
+{
+ "about": "SFX Forge 카탈로그 — 드루이드 보스전 2차(다시 5키) x 해석 4개(a~d), 키 <key>_v3a~d(문구마다 variant 1개). 사용: node --env-file-if-exists=.env.local tools/sfx_forge.mjs batch --catalog <this> --variants 1",
+ "sounds": [
+  {
+   "category": "hit",
+   "key": "druid_hit_v3a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "dull thick thud of a heavy weapon hitting a wet cloth robe over dense flesh, a hollow rotten trunk faintly resonating underneath, strong low body, short. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar, no metal, no blade ring, no sword clang"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_v3b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "heavy wet thud into dense flesh through soaked cloth, soft and fleshy, deep low body, very little wood resonance, short. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar, no metal, no blade ring, no sword clang"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_v3c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "hit on soaked cloth over a hollow rotten tree trunk, deep hollow knock with a short low resonance, fleshy thump underneath, short. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar, no metal, no blade ring, no sword clang"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_v3d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "glancing hit, a lighter dull thump into a wet cloth robe over flesh and hollow wood, low body, quick and short. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar, no metal, no blade ring, no sword clang"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_heavy_v3a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "very heavy blow into soaked cloth and flesh, a deep hollow rotten trunk booming underneath, large low body, slow decay. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar, no metal, no blade ring, no sword clang"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_heavy_v3b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "massive fleshy thud through wet cloth, deep low impact with a slight creak of hollow wood after, dense and heavy. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar, no metal, no blade ring, no sword clang"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_heavy_v3c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "huge dull blow that shakes the ground, deep low thump of flesh and hollow wood, wet cloth slap on top. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar, no metal, no blade ring, no sword clang"
+  },
+  {
+   "category": "hit",
+   "key": "druid_hit_heavy_v3d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.85,
+   "text": "heavy dull impact on flesh and wet cloth, then the hollow trunk body groaning and creaking as it sways, low and thick. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar, no metal, no blade ring, no sword clang"
+  },
+  {
+   "category": "skill",
+   "key": "druid_whip_v3a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "green flexible branch whipped through the air, a clean airy swish then a wet slap at the end, short. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_whip_v3b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "supple fresh-cut sapling swung fast, soft whistling swish and a damp wet smack at the end. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_whip_v3c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "bending green wood whoosh with a faint leaf rustle ending in a heavy lash on wet cloth. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_whip_v3d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "thick bendy green branch swung low, deep airy swoosh with a slight creak and a flat wet slap. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_v3a",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.7,
+   "text": "heavy clump of soil and rotten trunk dropping from height, deep low landing thud then a short mud splash. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_v3b",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.7,
+   "text": "huge chunk of rotten tree trunk crashing onto wet ground, dull boom, falling soil clods, short mud splatter. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_v3c",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.7,
+   "text": "very heavy dirt mass landing flat, soft low thump with a brief wet mud squirt, almost no ring. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_slam_v3d",
+   "raw": true,
+   "duration": 0.7,
+   "promptInfluence": 0.7,
+   "text": "rotting stump slammed down into mud, deep thud, quick splash and a couple of dirt clods dropping. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_v3a",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "dry seed pod bursting open with a soft papery pop and a puff of fine powder spreading, gentle and airy. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_v3b",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "several dry pods popping softly in quick succession, dusty powder cloud puffing outward, muted. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_v3c",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "one dry husk splitting with a soft crackle and a gentle fine-powder poof, airy and quiet. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  },
+  {
+   "category": "skill",
+   "key": "druid_spore_v3d",
+   "raw": true,
+   "duration": 0.5,
+   "promptInfluence": 0.7,
+   "text": "soft muffled poof of dry spore dust spreading in a wide fan, light papery rustle, no hiss, no chime. dark fantasy ARPG, rotting forest druid, organic and physical, no synth, no electronic whoosh, no magic chime, no music, no voice, no monster roar"
+  }
+ ]
+}
