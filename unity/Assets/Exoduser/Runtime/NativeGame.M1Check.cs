@@ -235,6 +235,26 @@ namespace Exoduser.UnityPort
                 p.X = Map.Data.startX; p.Y = Map.Data.startY; p.KnockbackX = 0; p.KnockbackY = 0; p.State = "idle"; p.StateTicks = 0; p.Iframes = 0;
             }
 
+            // ---- 07e field enemy bullets (VFX-D18): one of each kind standing still beside the player, drawn by the field bullet view (07c-field-ai showed them as a lime plate) ----
+            {
+                var dr = sim.Druid; sim.Enemies.Clear(); sim.Config.EnemyAiEnabled = false; p.Iframes = 1e9f;
+                if (dr != null && bossView != null)
+                {
+                    dr.Projectiles.Clear();
+                    Action<double, double, int, string, double> shot = (dx, dy, el, cls, sz) => dr.Projectiles.Add(new BossProjectile { X = p.X + dx, Y = p.Y + dy, Vx = 3, Vy = 0, Sz = sz, R = 4, El = el, ParryClass = cls, Life = 1e6, Ml = 1e6, RedBean = cls == "physical" });
+                    for (int i = 0; i < 3; i++) shot(-300 + i * 150, -230, 0, "physical", 2);                    // E-parry bullets: the toothed mouth
+                    dr.Projectiles.Add(new BossProjectile { X = p.X + 150, Y = p.Y - 230, Vx = 3, Vy = 0, Sz = 1.5, R = 4, Web = true, ParryClass = "forbidden", Life = 1e6, Ml = 1e6 });   // web bullet: mouth
+                    for (int el = 1; el <= 6; el++) shot(-450 + (el - 1) * 150, -90, el, "magic", 2);        // magic bullets: the comet tinted per element
+                    for (int el = 1; el <= 6; el++) dr.Projectiles.Add(new BossProjectile { X = p.X - 560 + (el - 1) * 230, Y = p.Y + 90, Vx = 3, Vy = 0, Sz = 18, R = 4, El = el, ElemBall = true, ParryClass = "forbidden", Life = 1e6, Ml = 1e6 });   // element balls: the orb sheet
+                    dr.Projectiles.Add(new BossProjectile { X = p.X, Y = p.Y + 260, Vx = 3, Vy = 0, Sz = 2, R = 4, BlackBean = true, ParryClass = "magic", Life = 1e6, Ml = 1e6 });   // rainbow bean: the untinted comet
+                }
+                yield return M1Shot("07e-field-bullets");
+                int mouths = bossView != null ? bossView.FieldMouthsDrawn : -1, comets = bossView != null ? bossView.FieldCometsDrawn : -1, orbs = bossView != null ? bossView.FieldOrbsDrawn : -1, fall = bossView != null ? bossView.FieldBulletFallbacks : -1;
+                bool bulletsOk = mouths == 4 && comets == 7 && orbs == 6 && fall == 0;
+                M1Add("07e", "field enemy bullets drawn per kind (VFX-D18)", bulletsOk ? "ok" : "fail", "mouths " + mouths + "/4, element comets " + comets + "/7, element orbs " + orbs + "/6, fallback dots " + fall + " (the druid poison orb is not used for field bullets)", "07e-field-bullets.png");
+                if (dr != null) dr.Projectiles.Clear();
+            }
+
             // ---- 08 drop pickup + equip ----
             sim.Config.EnemyAiEnabled = false; int attempts = 0;
             while (sim.Loot.Count < 3 && attempts < 40)
