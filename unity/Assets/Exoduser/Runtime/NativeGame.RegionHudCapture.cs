@@ -22,7 +22,8 @@ namespace Exoduser.UnityPort
             lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.6f);
             string fresh = "RH" + (DateTime.Now.Ticks % 100000).ToString("00000");
             if (lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual()) lobby.CreateCharacter(fresh);
-            lobby.ShowLobby(); yield return null;
+            lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.8f); yield return new WaitForEndOfFrame();
+            yield return GuiShot(Path.Combine(output, "E-lobby.png"), false);   // LT-3 / LT-4: lobby with the new character card (version overlay, save caption)
             lobby.BeginCharacterEntry(false);
             float deadline = Time.realtimeSinceStartup + 15; while (lobby.StartupCaptureState.Page != FrontendEntryPage.Nemesis && Time.realtimeSinceStartup < deadline) yield return null;
             lobby.StartupCaptureState.Skip(); yield return null; lobby.StartupCaptureState.Skip(); yield return null;
@@ -44,7 +45,7 @@ namespace Exoduser.UnityPort
             regionHud.ForcedBannerAge = null; regionHud.Reset();
             // D: gate label + progress bar with 2/4
             yield return RegionHudShot(rc, "D-gate-label", rc.exitCx, rc.exitCy + 50, () => { sim.Regions[0].Cleared = true; sim.Regions[1].Cleared = true; regionHud.Sync(sim); sim.Stage.HasFieldGate = false; /* web side: G.bossGate = [] (the tree art covers the label) */ });
-            bool ok = rc.shots.Count == 4; rc.passed = ok;
+            bool ok = rc.shots.Count == 4; rc.passed = ok;   // the lobby shot E-lobby.png is a separate file
             File.WriteAllText(Path.Combine(output, "region-hud.json"), JsonUtility.ToJson(rc, true));
             Application.Quit(ok ? 0 : 2);
         }
@@ -58,7 +59,21 @@ namespace Exoduser.UnityPort
             var s = new RhShot { name = name, playerX = p.X, playerY = p.Y, cleared = sim.RegionClearedCount(), banner = regionHud.BannerKr, bannerEn = regionHud.BannerEn, bannerSub = regionHud.BannerSub, bannerActive = regionHud.BannerActive,
                 arrowShown = regionHud.ArrowShown, arrowLabel = regionHud.ArrowLabel, arrowX = regionHud.ArrowPos.x, arrowY = regionHud.ArrowPos.y, gateShown = regionHud.GateLabelShown, gateLabel = regionHud.GateLabelText };
             rc.shots.Add(s);
-            ScreenCapture.CaptureScreenshot(Path.Combine(Argument("-output"), name + ".png")); yield return null; yield return new WaitForSecondsRealtime(.3f);
+            yield return GuiShot(Path.Combine(Argument("-output"), name + ".png"), true); yield return new WaitForSecondsRealtime(.3f);
+        }
+
+        // 1920x1080 frame with the IMGUI HUD drawn over the world (windowless: NativeGuiCapture). world=false: the GUI alone on black (lobby).
+        IEnumerator GuiShot(string path, bool world)
+        {
+            var rt = new RenderTexture(1920, 1080, 24, RenderTextureFormat.ARGB32);
+            Action<RenderTexture> bg = null;
+            if (world) bg = target => { var old = view.targetTexture; view.targetTexture = target; view.Render(); view.targetTexture = old; };
+            NativeGuiCapture.Begin(rt, bg);
+            for (int i = 0; i < 3; i++) yield return null;
+            yield return new WaitForEndOfFrame();
+            NativeGuiCapture.Save(path);
+            Debug.Log("[GUI-CAPTURE] " + Path.GetFileName(path) + " gui repaints into the target: " + NativeGuiCapture.RepaintFrames);
+            NativeGuiCapture.End(); rt.Release(); Destroy(rt);
         }
     }
 }
