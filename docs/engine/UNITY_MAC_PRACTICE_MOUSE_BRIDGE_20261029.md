@@ -41,3 +41,9 @@ Unity 6000.6.7f1 ARM64 Settings QA 빌드 1회: `_out/UNITY-MAC-A05-IO-PRACTICE-
 조작 탭의 `구르기 (방향키+)` 행은 주 키 `SPACE`, 보조키 `보조`로 표시됐다. CUA의 실제 왼쪽 클릭을 보조키 표시 위치(1280×784 전체 창 좌표 [581,610], 100ms)에 보내고, 제목막대 좌표 가설을 확인하려고 [581,546]도 130ms 클릭했으나 둘 다 키 입력 대기 표시로 전환되지 않았다. 두 번째 클릭 뒤 화면 `controls-roll-alt-click-unchanged.jpg`를 저장했다. QA 설정 파일 SHA-256은 실행 전후 `155431d9df1df65865aa749063340a64c9f2ae3ad0b35f2e8ea3bdf02a401c76`으로 동일하며 `binds.roll=Space`, `binds2.roll=null`이다. 보조키를 적용하거나 사용자 기본값을 바꾸지 않았다. 종료 후 PID 54850만 종료하고 기존 사용자 앱 3개는 유지했다.
 
 현재 증거는 **CUA의 이 Unity IMGUI 키 버튼 클릭이 대기 상태를 열지 못함**이다. `ControlLeft` 캡처와 Control+W 구르기의 성공/실패는 아직 시험하지 못했으며, 게임의 바인딩 기능 자체가 고장 났다고 판정하지 않는다. 이 경로의 최소 다음 행동은 실제 물리 마우스로 격리 QA 앱의 구르기 보조 버튼을 클릭하여 대기 상태를 열고 `ControlLeft`를 지정한 뒤, 지원되는 Control+W 실입력으로 구르기 5회 및 11~12단계·첫 일반 몹/드롭을 이어 검수하는 것이다. PC A18 `NativePractice*`는 변경하지 않는다.
+
+## Finder 검토 실행기
+
+`_out/UNITY-MAC-A05-IO-PRACTICE-20261029/launch-current-practice-review.command`와 옆의 `READ-ME-current-practice-review.txt`를 마련했다. 실행기는 앞서 빌드한 동일 앱 `rebuild/EXODUSER-Unity.app`만 사용하며 receipt의 ARM64/Settings QA/Succeeded/errors0, `CFBundleIdentifier=com.fordeargamers.exoduser.settingsqa`, 실행 파일 SHA-256 `22a177a31717f396e47ce33334ccbab254f82508c1ade3aff2d854cc0809d1cc`를 검사한다. 별도 QA 루트 `_out/UNITY-MAC-A05-IO-PRACTICE-HUMAN-20261029/`에는 처음에 `qa-output.marker`와 빈 `qa-sandbox/`만 있었고, 실행 인자로 `--unity-cinematic-persistence-review`, 절대 `-output`, `--unity-qa-sandbox`, 전용 로그를 강제한다. 앱 자체를 인자 없이 열거나 사용자 앱·저장을 교체하지 않는다.
+
+`zsh -n` 통과, 실행 파일 권한 `755`. 실행기 직접 호출의 단일 QA PID 55303에서 빈 로비 첫 화면 `launcher-first-screen.jpg`를 확인했다. 그때 QA 루트에 캐릭터·설정 파일이 생성되지 않았고 기존 사용자 앱 PID 38141/48476/52157은 유지됐다. 같은 앱 실행 중 두 번째 실행기 호출은 exit 3과 중복 거부 문구를 반환했으며 새 Player는 뜨지 않았다. PID 55303은 검수 뒤 종료했다. **Finder 더블클릭 자체와 물리 W+Space·전체 연습·일반 몹/드롭은 여전히 미검증**이다. 사용자는 실행기를 Finder에서 열어 새 QA 캐릭터로 이를 수동 확인할 수 있다.
