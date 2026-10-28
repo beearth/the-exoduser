@@ -994,6 +994,19 @@
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
 
+## 2026-10-20 게임 홍보팀 승계·프레스킷·실행 초안
+
+| 항목 | 내용 |
+|---|---|
+| 지시 | “게임 홍보 담당팀” → “기존게임홍보 담당팀 문서들 열람해서 작업 계속해” |
+| 신규 docs | `docs/13출시·마케팅/PROMOTION_TEAM_MASTER.md` — 10-20 상태 점검, 승계 팀 구성, 실행 경계, 파일럿 일정, 우선 크리에이터 5, 행사 일정(Next Fest 2027-02 등록 마감 01-10 PST), 백로그 PROMO-001~015 |
+| 신규 소재 | `marketing/presskit/EXODUSER_HELL_LORD_PRESS_KIT.md`(영문 초안, `[CONFIRM]` 항목 사용자 확정 필요), `marketing/promotion/OUTREACH_AND_POSTS_20261020.md`(Discord·Reddit·itch Devlog·Steam 공지·크리에이터 메일 초안, 신규 UTM content 5종) |
+| 갱신 | 총괄 팀 등록부 PROMO 행, 해외 홍보팀·착수 기록·13출시·마케팅 상단 안내, Next Fest 예정 항목 |
+| Steam 상점 최신화 | `docs/13출시·마케팅/STEAM_STORE_REFRESH_20261020.md` — 9-09 감사 미해결 항목(스크린샷 워터마크·비율·한국어 HUD, 영어 About 과장·라이브 서비스, 사양 메모 오타, 29개 언어 라벨) 교체안. `marketing/steam-store-refresh-20261020/` 30개 언어 교체 JSON·생성 스크립트. 실행은 VS Code 세션, PROMO-026 |
+| 홍보 기획 | `docs/13출시·마케팅/PROMOTION_PLAN_20261020.md` — 캠페인 DEFY THE FALL, 경쟁작 일정(PoE2 1.0 12-11·D4 시즌15·LE 시즌5), 단계별 일정 ~2027-03, 성과 측정, 결정 D1~D5. 운영 대장 백로그 PROMO-016~025 추가 |
+| 외부 실행 | 로그인·게시·발송·초대 0건. 클라우드 네트워크 정책으로 Steam·Discord·Reddit·itch.io 공개 페이지 재확인 불가 |
+| 게임 | 코드·수치·맵·세이브·에셋 변경 없음 |
+
 ## 2026-10-16 기존 R playTone 시작·종료 예약 예외 정리
 
 | id / 적용 위치 | 현재 정확 계약 |

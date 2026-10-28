@@ -1,0 +1,129 @@
+{
+ "source": "final_reexport_all.json",
+ "source_sha256": "b2a1f9a5c327dfc71ca8cca298a084edaf5042f28574dfa0ccd44db5030713fb",
+ "itemid": "1189321",
+ "languages": {
+  "french": {
+   "removed_label": "Description courte",
+   "about_chars": 3023
+  },
+  "italian": {
+   "removed_label": "Descrizione breve",
+   "about_chars": 2746
+  },
+  "german": {
+   "removed_label": "Kurzbeschreibung",
+   "about_chars": 2922
+  },
+  "spanish": {
+   "removed_label": "Descripción breve",
+   "about_chars": 2805
+  },
+  "greek": {
+   "removed_label": "Σύντομη περιγραφή",
+   "about_chars": 2890
+  },
+  "dutch": {
+   "removed_label": "Korte beschrijving",
+   "about_chars": 2805
+  },
+  "norwegian": {
+   "removed_label": "Kort beskrivelse",
+   "about_chars": 2525
+  },
+  "danish": {
+   "removed_label": "Kort beskrivelse",
+   "about_chars": 2572
+  },
+  "russian": {
+   "removed_label": "Краткое описание",
+   "about_chars": 2516
+  },
+  "romanian": {
+   "removed_label": "Descriere scurtă",
+   "about_chars": 2738
+  },
+  "malay": {
+   "removed_label": "Penerangan ringkas",
+   "about_chars": 2784
+  },
+  "vietnamese": {
+   "removed_label": "Mô tả ngắn",
+   "about_chars": 2485
+  },
+  "bulgarian": {
+   "removed_label": "Кратко описание",
+   "about_chars": 2592
+  },
+  "swedish": {
+   "removed_label": "Kort beskrivning",
+   "about_chars": 2569
+  },
+  "latam": {
+   "removed_label": "Descripción breve",
+   "about_chars": 2869
+  },
+  "ukrainian": {
+   "removed_label": "Короткий опис",
+   "about_chars": 2493
+  },
+  "indonesian": {
+   "removed_label": "Deskripsi singkat",
+   "about_chars": 2684
+  },
+  "japanese": {
+   "removed_label": "短い説明",
+   "about_chars": 1251
+  },
+  "schinese": {
+   "removed_label": "简短描述",
+   "about_chars": 976
+  },
+  "tchinese": {
+   "removed_label": "簡短說明",
+   "about_chars": 977
+  },
+  "czech": {
+   "removed_label": "Krátký popis",
+   "about_chars": 2364
+  },
+  "thai": {
+   "removed_label": "คำอธิบายสั้น",
+   "about_chars": 2057
+  },
+  "turkish": {
+   "removed_label": "Kısa açıklama",
+   "about_chars": 2618
+  },
+  "brazilian": {
+   "removed_label": "Descrição curta",
+   "about_chars": 2746
+  },
+  "portuguese": {
+   "removed_label": "Descrição breve",
+   "about_chars": 2762
+  },
+  "polish": {
+   "removed_label": "Krótki opis",
+   "about_chars": 2587
+  },
+  "finnish": {
+   "removed_label": "Lyhyt kuvaus",
+   "about_chars": 2658
+  },
+  "koreana": {
+   "removed_label": "짧은 설명",
+   "about_chars": 1361,
+   "short_period_added": true
+  },
+  "hungarian": {
+   "removed_label": "Rövid leírás",
+   "about_chars": 2706
+  },
+  "english": {
+   "replaced": true,
+   "about_chars": 2501,
+   "previous_about_chars": 1663
+  }
+ }
+}
