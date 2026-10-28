@@ -95,11 +95,9 @@ namespace Exoduser.UnityPort
   void DrawPatchNotesLauncher()
   {
    LoadPatchNotes();
-   string version="",date="";
-   if(patchNotesCatalog!=null&&patchNotesCatalog.notes!=null&&patchNotesCatalog.notes.Length>0){version=patchNotesCatalog.notes[0].version;date=patchNotesCatalog.notes[0].date;}
    Rect rect=new Rect(14,12,370,102);
-   string label=(version.Length>0?"v"+version+" · "+date.Replace("-",""):"")+"\nOFFLINE";
-   Label(rect,label,lobbyMicro,TextAnchor.UpperLeft);
+   // LT-3: the web has ONE top-left overlay (#lobbyVerOverlay, drawn by NativeLobbyBuildLabels) and it is also the patch-notes opener; this launcher only owns the click area / focus ring.
+   // It used to draw its own "vX / OFFLINE" text from the first patch-notes entry on top of that overlay (two shifted copies, an old version).
    GUI.SetNextControlName("patch-notes-open");
    if(GUI.Button(rect,"",GUIStyle.none))OpenPatchNotes();
    if(patchNotesRestoreFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl(string.IsNullOrEmpty(patchNotesPreviousFocus)?"patch-notes-open":patchNotesPreviousFocus);patchNotesRestoreFocus=false;}
