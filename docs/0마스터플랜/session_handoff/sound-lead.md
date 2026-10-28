@@ -20,7 +20,7 @@
 | 단위 | 상태 | 남은 일 |
 |---|---|---|
 | SND-09 드루이드 v2 | 사용자 채택: 1차 11키(6c8c61c3b §6)·2차 hit/hit_heavy/whip(c2499457a §6.1)·3차 spore=r3a(웹 pickup_rummage2), slam=r3d+메모 "볼륨을 키우고 에코" → 가공본 e2 선반영 | **컨펌 대기 pick_r4**(d·e1·e2·e3). 다르게 고르면 sound 브랜치 `3e56f5a60`의 파일만 교체한다 |
-| Unity sound 브랜치 | `claude/unity-pc-sound-rm1-20261027` 팁 e6c5b63ad(unity/main f49b6d625 merge), 회귀 불일치 0, 0f6216143 플레이어 빌드 오류 0 | 최신 unity/main merge → 공용 실행기 `unity/Tools/devtools/exo-unity.ps1` 빌드 1회 → 영수증 → 유니티 총괄 병합 → ⑥ unity-latest에서 드루이드전 직접 플레이 판정(Receipt 4항목: 채택 경로·패링 7회·boss_hit 감쇠·BGM 피크). 담당 확인 중(유니티 총괄에 질문함). RM-0 인계 `unity-rm0.md`(main 506ae6bc7) |
+| Unity sound 브랜치 | **사운드 총괄이 빌드 담당(유니티 총괄 지정 10-28)**. 팁 `acf2fb948` = unity/main b0f9a0c52 merge(충돌 0·Core 변경 0이라 oracle 생략, push 완료) | **빌드 진행 중(22시대 시작)**: `exo-unity.ps1 build`, 출력 `I:/EXODUSER-Storage/sound-build/20261028_acf2fb948/`(run.log·receipt.json·build/). 결과를 확인해 오류 0이면 유니티 총괄(`local_59ad835c`)에 merge SHA·영수증·USER_SAVE 0을 보낸다. 실패하면 run.log 원인 분석 후 1회만 수정·재빌드. 작업트리에 RM-0이 남긴 .meta/URP 재직렬화 잔여 441개(미커밋)가 있으니 커밋하지 않는다. 그 뒤 ⑥ unity-latest 드루이드전 직접 판정(Receipt 4항목). RM-0 인계 `unity-rm0.md` |
 | SND-10 웹 UI | 석궁 발사 264cffe06 · UI 5키 c0913f138 · ui_tab d40568974 | 게임 안 청음은 미확인. 분해 버튼 3곳·장착 실패 2곳·결정 서브탭·스킬 대분류 탭은 코드만 확인. pageerror createRadialGradient r0<0은 대조하지 않음 |
 | HPF | 새 후보 가공 기본값 35Hz HPF→−1dBTP. 기존 채택 27개는 재가공하지 않음(7a6d18ce4) | Unity Ambience 그룹 HPF 여부는 ⑥ 청음 때 판단 |
 | SND-05 | 89d904786(sound-simple 보고 기준) | 총괄이 내용을 검토하지 않음 |
@@ -34,6 +34,7 @@
 origin/main 기준 sparse worktree(`MSYS_NO_PATHCONV=1`, 자기 경로 + `/tools/guard.js` `/tools/guard.baseline.json` `/game.html`) → `git commit -- <경로>` → `git push origin HEAD:main`(거부되면 fetch 후 새 브랜치에 cherry-pick) → guard가 바꾼 baseline은 `git checkout --`로 되돌림 → reparse 0 확인 → worktree·브랜치 삭제. 문서는 LF. `git add -A`·force·rebase·reset 금지
 
 ## 재개 후 첫 행동
+0. 10-28 밤 CTO: 주간 사용량 94%(리셋 11-01). 구현·캡처는 Codex, Claude 턴은 판정·검수·커밋만. 진행 알림 금지, 200K 넘으면 즉시 재생성, 대기만 하는 턴 금지
 1. 이 문서와 MEMORY.md 읽기 → 3399 서버 응답 확인(꺼져 있으면 띄움) → `_submitted/` 감시 다시 걸기
 2. `_submitted/`에 남은 파일이 있으면 결과를 CTO에 보고하고 반영
 3. sound 브랜치 빌드 담당·결과 확인 → ⑥ 판정 준비
