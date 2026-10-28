@@ -16,6 +16,18 @@
 
 첫 Unity 컴파일에서 `IMECompositionString` 형식 조회가 CS0246으로 실패했다. Input System 1.20.1 패키지 선언(`InputSystem/Runtime/Events/IMECompositionEvent.cs`)의 실제 네임스페이스는 `UnityEngine.InputSystem.LowLevel`이므로 `ExoInput.cs`에 해당 using 한 줄을 추가했다. 수정 뒤 컴파일·가상 장치 검증은 별도 재실행 결과로 판정한다.
 
+### Codex 재실행 결과 — 10-28 23:09 KST
+
+| 항목 | 결과 | 증거 |
+|---|---|---|
+| 첫 실행(기존 C-02a) | `DONE`, 4개 작업 exit 1. `IMECompositionString` CS0246으로 컴파일 중단 | `I:\EXODUSER-Storage\custom\c02\verify\verify.log`, `run.log` |
+| 수정본 Unity 6000.6.7f1 컴파일 | CS0246 해소, 스크립트 컴파일 51.610초, 이 실행의 컴파일 오류 0 | `I:\EXODUSER-Storage\custom\c02\verify-fix\run.log`, `unity-jobs\codex-custom\logs\7ccc2968.log` |
+| 웹 코드 매핑 | 107개 모두 변환 검사를 지나감. 이 지점까지 검사 카운트 109 | `verify-fix\exoinput\exo-input-verification.json` |
+| 가상 W 입력 | **FAIL** `W press frame` (exit 2). `KeyDown(W) && Key(W) && AnyKeyDown` 결합 단언 중 어느 값이 false인지는 현재 영수증에 없음 | 동일 JSON의 `error`, `ExoInputVerification.cs:50` |
+| 후속 Core presence·FrontendPad·Win 빌드·Player | 수정본에서 **미실행**. 첫 실패에서 fail-fast로 중단 | `verify-fix\verify.log` |
+
+초기 실패 뒤 원인 한 건만 고쳐 재실행 한 번을 수행했다. 공통 인수 규칙의 2회 실패 한도에 따라 이 상태에서 추가 재실행하지 않는다. `W press frame` 원인은 아직 분리되지 않았으며 물리 키보드/패드 동작 결함으로 단정하지 않는다. C-02a는 **컴파일 통과·가상 입력 실패·병합 보류**다.
+
 `NativeKeyBindInput`의 웹 코드↔`KeyCode` 107개 표는 유지했다. 새 파사드는 이 107개를 `InputSystem.Key`로 매핑하고, 매핑 없는 키는 false 및 `KeyCode`당 경고 1회로 처리한다. 로비에 직접 쓰인 `JoystickButton0/1/7/9`는 각각 Gamepad South/East/Start/RightStick 버튼에 연결했다. `CodeDown`/`CodeHeld`와 그 위의 주·보조 바인딩은 파사드를 거친다. Core 게임 규칙, 입력 바인딩 저장 포맷, `activeInputHandler: 2`, 패키지 버전은 변경하지 않았다.
 
 ## 검증 경계
