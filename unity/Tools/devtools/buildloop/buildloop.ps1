@@ -9,6 +9,7 @@ param(
   [Parameter(Position = 0)][ValidateSet('check', 'run', 'status', 'swap', 'install')][string]$Command = 'status',
   [switch]$Force,
   [switch]$AllowKnown,
+  [switch]$HudSmoke,           # m1-check 뒤에 hud-smoke 도 무창으로 돌려 스스로 종료하는지 기록(DBT-6)
   [switch]$NoSwap,             # build 를 교체하지 않는다(브랜치 시험용). -Ref 가 origin/unity/main 이 아니면 자동으로 켜진다
   [string]$JudgeOnly,          # 빌드 없이 로그 한 개만 판정(예: -JudgeOnly C:\x\build.log -Scope build)
   [ValidateSet('build', 'player')][string]$Scope = 'build',
@@ -40,6 +41,7 @@ $StatusDir = Join-Path $Cfg.Out 'status'
 $StateFile = Join-Path $LoopDir 'state.json'
 $LogFile   = Join-Path $LoopDir 'buildloop.log'
 $RulesFile = Join-Path $PSScriptRoot 'smoke-rules.json'
+$MemLog = 'I:\EXODUSER-Storage\unity-jobs\memlog.csv'
 $MainRef = 'origin/unity/main'
 if ($Ref -ne $MainRef) { $NoSwap = [switch]$true }
 $Utf8 = New-Object System.Text.UTF8Encoding($false)
@@ -78,6 +80,58 @@ function Load-State {
   return $s
 }
 function Save-State($s) { WriteJson $StateFile $s 8 }
+
+# ---------- 메모리 기록 (DT-01 과 같은 열: 시각, 커밋 사용, 한도, 여유, Unity 수, claude 수, node 수) ----------
+function Write-MemLog {
+  try {
+    $os = Get-CimInstance Win32_OperatingSystem
+    $limit = [math]::Round($os.TotalVirtualMemorySize / 1MB, 1); $free = [math]::Round($os.FreeVirtualMemory / 1MB, 1); $used = [math]::Round($limit - $free, 1)
+    $nu = @(Get-Process Unity, EXODUSER-Unity -ErrorAction SilentlyContinue).Count; $nc = @(Get-Process claude -ErrorAction SilentlyContinue).Count; $nn = @(Get-Process node -ErrorAction SilentlyContinue).Count
+    if (-not (Test-Path -LiteralPath $MemLog)) { New-Item -ItemType Directory -Force -Path (Split-Path -Parent $MemLog) | Out-Null; [IO.File]::WriteAllText($MemLog, "time,commit_used_gb,commit_limit_gb,commit_free_gb,unity,claude,node`r`n", $Utf8) }
+    [IO.File]::AppendAllText($MemLog, ('{0},{1},{2},{3},{4},{5},{6}' -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $used, $limit, $free, $nu, $nc, $nn) + "`r`n", $Utf8)
+  } catch { }
+}
+function Read-MemLog([int]$hours) {
+  $pts = @(); if (-not (Test-Path -LiteralPath $MemLog)) { return $pts }
+  $since = (Get-Date).AddHours(-$hours)
+  foreach ($line in [IO.File]::ReadAllLines($MemLog)) {
+    $c = $line.Split(','); if ($c.Count -lt 4) { continue }
+    $t = [datetime]::MinValue; if (-not [datetime]::TryParse($c[0], [Globalization.CultureInfo]::InvariantCulture, 'None', [ref]$t)) { continue }
+    $f = 0.0; if (-not [double]::TryParse($c[3], [Globalization.NumberStyles]::Float, [Globalization.CultureInfo]::InvariantCulture, [ref]$f)) { continue }
+    if ($t -ge $since) { $pts += [pscustomobject]@{ t = $t; free = $f } }
+  }
+  return $pts
+}
+function Mem-Svg {
+  $pts = @(Read-MemLog 24)
+  $w = 1200; $h = 230; $l = 52; $r = 14; $tp = 14; $b = 28
+  $now = Get-Date; $t0 = $now.AddHours(-24)
+  $maxY = 40.0; foreach ($p in $pts) { if ($p.free -gt $maxY) { $maxY = $p.free } }; $maxY = [math]::Ceiling($maxY / 10) * 10
+  $sx = { param($t) $l + ($w - $l - $r) * (($t - $t0).TotalSeconds / 86400.0) }
+  $sy = { param($v) $tp + ($h - $tp - $b) * (1 - $v / $maxY) }
+  $o = New-Object Text.StringBuilder
+  [void]$o.AppendLine("<svg viewBox=`"0 0 $w $h`" width=`"100%`" role=`"img`" aria-label=`"commit free GB, last 24h`" xmlns=`"http://www.w3.org/2000/svg`">")
+  for ($g = 0; $g -le $maxY; $g += 10) { $y = [math]::Round((& $sy $g), 1); [void]$o.AppendLine("<line x1=`"$l`" y1=`"$y`" x2=`"$($w - $r)`" y2=`"$y`" stroke=`"rgba(164,147,115,.18)`"/><text x=`"$($l - 8)`" y=`"$($y + 4)`" text-anchor=`"end`" fill=`"#9b9078`" font-size=`"11`" font-family=`"Consolas,monospace`">$g</text>") }
+  for ($k = 0; $k -le 6; $k++) { $tt = $t0.AddHours($k * 4); $x = [math]::Round((& $sx $tt), 1); [void]$o.AppendLine("<text x=`"$x`" y=`"$($h - 8)`" text-anchor=`"middle`" fill=`"#9b9078`" font-size=`"11`" font-family=`"Consolas,monospace`">$($tt.ToString('HH:mm'))</text>") }
+  foreach ($th in @(@{ v = 20; c = '#d4a24a'; n = '시작 조건 20GB' }, @{ v = 30; c = '#c0341d'; n = 'Library 없음 30GB' })) {
+    if ($th.v -le $maxY) { $y = [math]::Round((& $sy $th.v), 1); [void]$o.AppendLine("<line x1=`"$l`" y1=`"$y`" x2=`"$($w - $r)`" y2=`"$y`" stroke=`"$($th.c)`" stroke-dasharray=`"6 4`"/><text x=`"$($w - $r - 4)`" y=`"$($y - 5)`" text-anchor=`"end`" fill=`"$($th.c)`" font-size=`"11`">$($th.n)</text>") }
+  }
+  if ($pts.Count -ge 1) {
+    $poly = ($pts | ForEach-Object { '{0},{1}' -f [math]::Round((& $sx $_.t), 1), [math]::Round((& $sy $_.free), 1) }) -join ' '
+    [void]$o.AppendLine("<polyline points=`"$poly`" fill=`"none`" stroke=`"#dfd6c2`" stroke-width=`"1.6`"/>")
+    $last = $pts[$pts.Count - 1]; [void]$o.AppendLine("<circle cx=`"$([math]::Round((& $sx $last.t), 1))`" cy=`"$([math]::Round((& $sy $last.free), 1))`" r=`"3.5`" fill=`"#e0472a`"/>")
+  } else { [void]$o.AppendLine("<text x=`"$($w / 2)`" y=`"$($h / 2)`" text-anchor=`"middle`" fill=`"#9b9078`" font-size=`"13`">기록 없음 (memlog.csv)</text>") }
+  [void]$o.AppendLine('</svg>')
+  return $o.ToString()
+}
+function Get-CrashInfo([datetime]$since) {
+  $info = [ordered]@{ editorDir = ''; playerDir = '' }
+  $ed = Join-Path $env:LOCALAPPDATA 'Temp\Unity\Editor\Crashes'
+  if (Test-Path -LiteralPath $ed) { $d = Get-ChildItem -LiteralPath $ed -Directory -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($null -ne $d -and $d.LastWriteTime -ge $since) { $info.editorDir = $d.FullName } }
+  $pr = Join-Path $env:LOCALAPPDATA 'Temp\ForDearGamers'
+  if (Test-Path -LiteralPath $pr) { $d = Get-ChildItem -LiteralPath $pr -Directory -Recurse -Filter Crashes -ErrorAction SilentlyContinue | ForEach-Object { Get-ChildItem -LiteralPath $_.FullName -Directory -ErrorAction SilentlyContinue } | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($null -ne $d -and $d.LastWriteTime -ge $since) { $info.playerDir = $d.FullName } }
+  return [pscustomobject]$info
+}
 
 # ---------- 잠금 / 대기 ----------
 function Test-PidAlive([int]$p) { return [bool](Get-Process -Id $p -ErrorAction SilentlyContinue) }
@@ -191,21 +245,22 @@ function Judge-M1($path, $rules) {
 # 플레이어는 -batchmode(-nographics 없음)로 띄워 GPU 장치를 유지하고 창은 만들지 않는다. 소리: --unity-mute (AudioListener.volume=0, pause=true).
 # 자기가 띄운 프로세스의 MainWindowHandle 이 0 이 아니면 실패로 친다.
 function Test-OwnWindow($proc) { try { $proc.Refresh(); return ($proc.MainWindowHandle -ne [IntPtr]::Zero) } catch { return $false } }
-function Run-Smoke([string]$buildDir, [string]$smokeDir) {
-  $r = [ordered]@{ ran = $false; exit = $null; timedOut = $false; windowSeen = $false; slowExit = $false; note = ''; seconds = 0 }
+function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json') {
+  $r = [ordered]@{ ran = $false; exit = $null; timedOut = $false; windowSeen = $false; slowExit = $false; receiptWritten = $false; exitAfterReceiptSec = $null; note = ''; seconds = 0 }
   New-Item -ItemType Directory -Force -Path $smokeDir | Out-Null
   $sw = [Diagnostics.Stopwatch]::StartNew()
-  $args2 = @('-batchmode', '--unity-m1-check', '--unity-mute', '-output', $smokeDir, '-screen-width', $Cfg.SmokeW, '-screen-height', $Cfg.SmokeH, '-logFile', (Join-Path $smokeDir 'player.log'))
+  $args2 = @('-batchmode', $flag, '--unity-mute', '-output', $smokeDir, '-screen-width', $Cfg.SmokeW, '-screen-height', $Cfg.SmokeH, '-logFile', (Join-Path $smokeDir 'player.log'))
   $p = Start-Process -FilePath (Join-Path $buildDir 'EXODUSER-Unity.exe') -ArgumentList $args2 -PassThru
   $r.ran = $true
-  $deadline = (Get-Date).AddMinutes($Cfg.SmokeTimeoutMin); $receipt = Join-Path $smokeDir 'm1-check.json'; $receiptSeen = $null
+  $deadline = (Get-Date).AddMinutes($Cfg.SmokeTimeoutMin); $receipt = Join-Path $smokeDir $receiptName; $receiptSeen = $null
   while (-not $p.WaitForExit(2000)) {
     if (Test-OwnWindow $p) { $r.windowSeen = $true; $r.note = '플레이어가 창을 만들었다(무창 위반) - 강제 종료'; try { $p.Kill() } catch { }; break }
     if ($null -eq $receiptSeen -and (Test-Path -LiteralPath $receipt)) { $receiptSeen = Get-Date }
-    if ($null -ne $receiptSeen -and ((Get-Date) - $receiptSeen).TotalSeconds -gt $Cfg.ExitGraceSec) { $r.slowExit = $true; $r.note = "m1-check.json 을 쓴 뒤 $($Cfg.ExitGraceSec)초 안에 종료하지 않음(DBT-6) - 강제 종료"; try { $p.Kill() } catch { }; break }
+    if ($null -ne $receiptSeen -and ((Get-Date) - $receiptSeen).TotalSeconds -gt $Cfg.ExitGraceSec) { $r.slowExit = $true; $r.note = "$receiptName 을 쓴 뒤 $($Cfg.ExitGraceSec)초 안에 종료하지 않음(DBT-6) - 강제 종료"; try { $p.Kill() } catch { }; break }
     if ((Get-Date) -gt $deadline) { $r.timedOut = $true; $r.note = "스모크 시간 초과($($Cfg.SmokeTimeoutMin)분), 강제 종료"; try { $p.Kill() } catch { }; break }
   }
   try { $p.WaitForExit(10000) | Out-Null; $r.exit = $p.ExitCode } catch { }
+  if ($null -ne $receiptSeen) { $r.receiptWritten = $true; $r.exitAfterReceiptSec = [int]((Get-Date) - $receiptSeen).TotalSeconds }
   $r.seconds = [int]$sw.Elapsed.TotalSeconds
   return [pscustomobject]$r
 }
@@ -308,7 +363,7 @@ h2::before{content:"";display:inline-block;width:8px;height:8px;margin-right:10p
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{font:600 12px 'Cinzel','Nanum Myeongjo',serif;letter-spacing:.12em;color:var(--dim);text-align:left;border-bottom:1px solid var(--line);padding:6px 10px}
 td{padding:6px 10px;border-bottom:1px solid var(--line2);vertical-align:top}
-th{white-space:nowrap}td.mono,td.st-ok,td.st-fail,td.st-missing,td.st-pending-core{white-space:nowrap}td.mono.wrap{white-space:normal}
+th{white-space:nowrap}td.nm,td.mono,td.st-ok,td.st-fail,td.st-missing,td.st-pending-core{white-space:nowrap}td.mono.wrap{white-space:normal}
 .mono{font-family:Consolas,'D2Coding',monospace;font-size:12.5px;color:#cfc6b2;word-break:break-all}
 .st-ok{color:var(--ok)}.st-fail,.st-missing{color:var(--redhot)}.st-pending-core{color:var(--warn)}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
@@ -351,6 +406,13 @@ ul{margin:6px 0 0;padding-left:18px}
     } else { [void]$sb.AppendLine('<tr><td>플레이어 로그</td><td colspan="3" class="note">스모크 실행 안 함: ' + (Esc $latest.smokeNote) + '</td></tr>') }
     [void]$sb.AppendLine('</table>')
     if ($null -ne $latest.m1 -and $latest.m1.present) { [void]$sb.AppendLine('<div class="note" style="margin-top:8px">그래픽 장치 ' + (Esc $latest.m1.deviceType) + ' · ' + (Esc $latest.m1.device) + ' · 캡처 방식 ' + (Esc $latest.m1.captureMode) + ' · IMGUI Repaint ' + (Esc $latest.m1.guiRepaints) + ' / 캡처에 그려진 횟수 ' + (Esc $latest.m1.guiBridged) + '</div>') }
+    $hudx = Prop $latest 'hud' $null
+    if ($null -ne $hudx) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">hud-smoke(무창): 종료코드 ' + (Esc $hudx.exit) + ' · 영수증 ' + (Esc $hudx.receiptWritten) + ' · 영수증 뒤 종료까지 ' + (Esc $hudx.exitAfterReceiptSec) + '초 · 시간 초과 ' + (Esc $hudx.timedOut) + '</div>') }
+    $smx = Prop $latest 'smoke' $null
+    if ($null -ne $smx) { [void]$sb.AppendLine('<div class="note" style="margin-top:6px">m1-check(무창): 종료코드 ' + (Esc $smx.exit) + ' · 영수증 뒤 종료까지 ' + (Esc $smx.exitAfterReceiptSec) + '초 · 창 핸들 감지 ' + (Esc $smx.windowSeen) + '</div>') }
+    $cr = Prop $latest 'crash' $null; $bcr = Prop $latest 'buildCrash' $null
+    if ($null -ne $cr) { [void]$sb.AppendLine('<div class="warnbox">플레이어 크래시 의심 - 플레이어 크래시 폴더: ' + (Esc $cr.playerDir) + ' · 로그: loopuns' + (Esc $latest.id) + '\smoke\player.log</div>') }
+    if ($null -ne $bcr) { [void]$sb.AppendLine('<div class="warnbox">빌드 비정상 종료 - Unity 크래시 폴더: ' + (Esc $bcr.editorDir) + ' · 로그: loopuns' + (Esc $latest.id) + 'uild.log</div>') }
     if ($null -ne (Prop $latest 'captureNote' $null)) { [void]$sb.AppendLine('<div class="warnbox">' + (Esc $latest.captureNote) + '</div>') }
     $kn = @{}
     foreach ($src in @($b, $p)) { if ($null -ne $src -and $null -ne $src.knownById) { foreach ($prop in $src.knownById.PSObject.Properties) { $cur = 0; if ($kn.ContainsKey($prop.Name)) { $cur = $kn[$prop.Name] }; $kn[$prop.Name] = $cur + [int]$prop.Value } } }
@@ -370,7 +432,7 @@ ul{margin:6px 0 0;padding-left:18px}
     if ($null -ne $latest.m1 -and $latest.m1.present) {
       [void]$sb.AppendLine('<div class="note">ok ' + $latest.m1.ok + ' · fail ' + $latest.m1.fail + ' · 기타 ' + $latest.m1.neutral + (Esc $(if ($latest.m1.firstBlocked) { ' · 첫 막힘: ' + $latest.m1.firstBlocked } else { '' })) + '</div>')
       [void]$sb.AppendLine('<table><tr><th>단계</th><th>이름</th><th>결과</th><th>화면 위 UI</th><th>메모</th></tr>')
-      foreach ($s in @($latest.m1.stages)) { $note = [string]$s.note; if ($note.Length -gt 200) { $note = $note.Substring(0, 200) + '...' }; [void]$sb.AppendLine('<tr><td class="mono">' + (Esc $s.id) + '</td><td>' + (Esc $s.name) + '</td><td class="st-' + (Esc $s.status) + '">' + (Esc $s.status) + '</td><td class="mono">' + (Esc $(if ($s.overlay) { $s.overlay } else { '-' })) + '</td><td class="note">' + (Esc $note) + '</td></tr>') }
+      foreach ($s in @($latest.m1.stages)) { $note = [string]$s.note; if ($note.Length -gt 200) { $note = $note.Substring(0, 200) + '...' }; [void]$sb.AppendLine('<tr><td class="mono">' + (Esc $s.id) + '</td><td class="nm">' + (Esc $s.name) + '</td><td class="st-' + (Esc $s.status) + '">' + (Esc $s.status) + '</td><td class="mono ' + $(if ([string]$s.overlay -match 'pause') { 'st-fail' } else { '' }) + '">' + (Esc $(if ($s.overlay) { $s.overlay } else { '-' })) + '</td><td class="note">' + (Esc $note) + '</td></tr>') }
       [void]$sb.AppendLine('</table>')
     } else { [void]$sb.AppendLine('<div class="note">m1-check.json 없음 - ' + (Esc $latest.smokeNote) + '</div>') }
     [void]$sb.AppendLine('</div>')
@@ -393,6 +455,8 @@ ul{margin:6px 0 0;padding-left:18px}
     [void]$sb.AppendLine('</div>')
   }
 
+  # 메모리
+  [void]$sb.AppendLine('<h2>MEMORY (커밋 여유 GB, 최근 24시간)</h2><div class="panel">' + (Mem-Svg) + '<div class="note">memlog.csv 기준. 점선 = 시작 조건(Library 있음 20GB / 없음 30GB).</div></div>')
   # 이력
   [void]$sb.AppendLine('<h2>HISTORY (최근 ' + $Cfg.KeepRuns + '회)</h2><div class="panel"><table><tr><th>시각</th><th>SHA</th><th>판정</th><th>결함</th><th>알려진</th><th>m1 ok/fail</th><th>빌드/스모크(분)</th><th>교체</th></tr>')
   foreach ($h in ($hist | Select-Object -First $Cfg.KeepRuns)) {
@@ -482,11 +546,13 @@ function Cmd-Run {
   $run = [ordered]@{ id = $runId; sha = $head.short; shaFull = $head.full; branch = $branchName; subject = $head.subject; startedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); finishedAt = ''; buildSeconds = 0; smokeSeconds = 0; buildExit = $null; receiptPassed = $null; verdict = 'ABORT'; replaced = $false; replaceNote = ''; changedCount = 0; changed = @(); smokeNote = ''; build = $null; player = $null; m1 = $null; caps = @() }
   $ch = Get-Changed $depFull $head.full; $run.changedCount = $ch.count; $run.changed = $ch.items
   $rules = Load-Rules
+  $runStart = Get-Date
   $got = $false
   try {
     Log "=== run $runId  HEAD $($head.short) $($head.subject)"
     if (-not (Acquire-Lock $runId)) { $run.replaceNote = '잠금 대기 초과 - 이번 회차 중단'; return }
     $got = $true
+    Write-MemLog
     $libExists = Test-Path -LiteralPath (Join-Path $Cfg.Worktree 'unity\Library')
     if (-not (Wait-Ready $libExists)) { $run.replaceNote = 'Unity 프로세스 대기/커밋 여유 부족으로 중단'; return }
 
@@ -508,6 +574,7 @@ function Cmd-Run {
     }
     $stage = Join-Path $Cfg.Out 'build_new'
     if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
+    Write-MemLog
     $sw = [Diagnostics.Stopwatch]::StartNew()
     $bargs = @('-batchmode', '-quit', '-projectPath', $proj, '-buildTarget', 'Win64', '-executeMethod', 'PortVerification.Build', '-output', $stage, '-receipt', (Join-Path $runDir 'build-receipt.json'), '-logFile', (Join-Path $runDir 'build.log'))
     $bp = Start-Process -FilePath $Cfg.UnityExe -ArgumentList $bargs -PassThru
@@ -520,6 +587,7 @@ function Cmd-Run {
     $run.buildWindow = $buildWindow
     $run.buildSeconds = [int]$sw.Elapsed.TotalSeconds
     Log ("빌드 종료코드 {0}, {1}초" -f $run.buildExit, $run.buildSeconds)
+    if ($run.buildExit -ne 0) { $run.buildCrash = Get-CrashInfo $runStart; Log ('빌드 비정상 종료: 로그 ' + (Join-Path $runDir 'build.log') + ' / Unity 크래시 폴더 ' + $run.buildCrash.editorDir) }
     $rcpt = ReadJson (Join-Path $runDir 'build-receipt.json'); if ($null -ne $rcpt) { $run.receiptPassed = [bool]$rcpt.passed }
     $bj = Judge-Log (Join-Path $runDir 'build.log') 'build' $rules
     $run.build = $bj
@@ -537,10 +605,18 @@ function Cmd-Run {
       $run.smokeSeconds = $sm.seconds; $run.smokeNote = $sm.note
       Log ("스모크: ran={0} exit={1} timedOut={2} windowSeen={3} slowExit={4} {5}" -f $sm.ran, $sm.exit, $sm.timedOut, $sm.windowSeen, $sm.slowExit, $sm.note)
       $run.smoke = $sm
+      Write-MemLog
+      if ($HudSmoke -and $sm.ran -and -not $sm.windowSeen) {
+        $hs = Run-Smoke $stage (Join-Path $runDir 'hud') '--unity-hud-smoke' 'hud-smoke.json'
+        $run.hud = $hs
+        Log ("hud-smoke: ran={0} exit={1} receipt={2} exitAfterReceipt={3}s timedOut={4} windowSeen={5} {6}" -f $hs.ran, $hs.exit, $hs.receiptWritten, $hs.exitAfterReceiptSec, $hs.timedOut, $hs.windowSeen, $hs.note)
+      }
       if ($sm.ran) {
         $pj = Judge-Log (Join-Path $smokeDir 'player.log') 'player' $rules
         $m1 = Judge-M1 (Join-Path $smokeDir 'm1-check.json') $rules
         $run.caps = @(Make-Thumbs $runId (Join-Path $smokeDir 'caps'))
+        $crashLogs = @($pj.failById.Keys | Where-Object { $_ -eq 'crash' })
+        if (($null -ne $sm.exit -and [int]$sm.exit -ne 0) -or $crashLogs.Count -gt 0) { $run.crash = Get-CrashInfo $runStart; Log ('플레이어 크래시 의심: 로그 ' + (Join-Path $smokeDir 'player.log') + ' / 크래시 폴더 ' + $run.crash.playerDir) }
       }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
     $run.player = $pj; $run.m1 = $m1
@@ -561,13 +637,15 @@ function Cmd-Run {
         if ($null -ne $m1 -and $m1.present -and $m1.deviceType -match 'Null') { $reasons += 'Null 그래픽 장치(m1-check.json)' }
         if ($null -ne $m1 -and $m1.present -and $m1.headless -and $m1.guiRepaints -eq 0) { $run.captureNote = 'batchmode 에서 IMGUI Repaint 이벤트가 오지 않음 - 캡처에는 HUD/UI 가 없음(월드만)' }
         if ($null -eq $m1 -or -not $m1.present) { $reasons += 'm1-check.json 없음' } elseif ($m1.fail -gt 0) { $reasons += "m1 단계 실패 $($m1.fail)건" }
+        if ($null -ne $m1 -and $m1.present -and @($run.caps).Count -eq 0) { $reasons += '캡처 0장(이 빌드는 무창 캡처를 지원하지 않거나 저장 실패)' }
+        if ($null -ne $run.hud) { if ($run.hud.windowSeen) { $reasons += 'hud-smoke 가 창을 띄움' } elseif ($run.hud.timedOut) { $reasons += 'hud-smoke 시간 초과' } elseif (-not $run.hud.receiptWritten) { $reasons += 'hud-smoke 영수증 없음' } }
       }
     }
     $knownTotal = [int]$bj.known; if ($null -ne $pj) { $knownTotal += [int]$pj.known }
     $extra = @{}
     if ($buildOk -and $null -ne $sm) {
       if ($null -ne $sm.exit -and [int]$sm.exit -eq -1073740771) { $extra['DBT-5'] = 1 }       # 0xC000041D 종료 크래시
-      if ($sm.slowExit) { $extra['DBT-6'] = 1 }                                               # 영수증 뒤 종료 지연
+      if ($sm.slowExit -or ($null -ne $run.hud -and $run.hud.slowExit)) { $extra['DBT-6'] = 1 }                                               # 영수증 뒤 종료 지연
     }
     foreach ($k in $extra.Keys) { $knownTotal += $extra[$k] }
     $run.extraKnown = $extra
@@ -606,7 +684,7 @@ function Cmd-Run {
   } finally {
     # 남은 자식 프로세스 확인(우리가 띄운 것만)
     $run.finishedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
-    if ($got) { Release-Lock }
+    if ($got) { Write-MemLog; Release-Lock }
     if ($true) {
       WriteJson (Join-Path $runDir 'run.json') $run 10
       $m1ok = 0; $m1fail = 0; if ($null -ne $run.m1) { $m1ok = $run.m1.ok; $m1fail = $run.m1.fail }
