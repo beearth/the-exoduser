@@ -1,0 +1,396 @@
+{
+ "si": 3,
+ "note": "웹 1-4 스폰 정답. holes = 런타임 소환굴(G.spawnHoles). enemies = initStage(3) 직후 ens[] — 고정/무작위 구분. 소환굴 타이머 몬스터는 범위 밖.",
+ "holesRuntime": [
+  {
+   "tx": 66,
+   "ty": 160,
+   "px": [
+    2660,
+    6420
+   ],
+   "size": 0.5,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 123,
+   "ty": 174,
+   "px": [
+    4940,
+    6980
+   ],
+   "size": 0.3,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 52,
+   "ty": 126,
+   "px": [
+    2100,
+    5060
+   ],
+   "size": 0.5,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 146,
+   "ty": 114,
+   "px": [
+    5860,
+    4580
+   ],
+   "size": 0.3,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 83,
+   "ty": 98,
+   "px": [
+    3340,
+    3940
+   ],
+   "size": 0.5,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 137,
+   "ty": 71,
+   "px": [
+    5500,
+    2860
+   ],
+   "size": 0.5,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 60,
+   "ty": 67,
+   "px": [
+    2420,
+    2700
+   ],
+   "size": 0.3,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 147,
+   "ty": 30,
+   "px": [
+    5900,
+    1220
+   ],
+   "size": 0.5,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 113,
+   "ty": 38,
+   "px": [
+    4540,
+    1540
+   ],
+   "size": 0.8,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 94,
+   "ty": 155,
+   "px": [
+    3780,
+    6220
+   ],
+   "size": 0.3,
+   "room": 1,
+   "geomRoom": 1,
+   "blocked": 0
+  },
+  {
+   "tx": 76,
+   "ty": 85,
+   "px": [
+    3060,
+    3420
+   ],
+   "size": 0.55,
+   "room": 1,
+   "geomRoom": 3,
+   "blocked": 0
+  },
+  {
+   "tx": 120,
+   "ty": 53,
+   "px": [
+    4820,
+    2140
+   ],
+   "size": 0.8,
+   "room": 1,
+   "geomRoom": 4,
+   "blocked": 0
+  },
+  {
+   "tx": 100,
+   "ty": 138,
+   "px": [
+    4020,
+    5540
+   ],
+   "size": 0.3,
+   "room": -1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 100,
+   "ty": 103,
+   "px": [
+    4020,
+    4140
+   ],
+   "size": 0.3,
+   "room": -1,
+   "geomRoom": -1,
+   "blocked": 0
+  }
+ ],
+ "holesDefinition": [
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 66,
+   "ty": 160,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 0,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 123,
+   "ty": 174,
+   "type": "S",
+   "nearestRuntimeHole": {
+    "index": 1,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 52,
+   "ty": 126,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 2,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 146,
+   "ty": 114,
+   "type": "S",
+   "nearestRuntimeHole": {
+    "index": 3,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 83,
+   "ty": 98,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 4,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 137,
+   "ty": 71,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 5,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 60,
+   "ty": 67,
+   "type": "S",
+   "nearestRuntimeHole": {
+    "index": 6,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 147,
+   "ty": 30,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 7,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 113,
+   "ty": 38,
+   "type": "L",
+   "nearestRuntimeHole": {
+    "index": 8,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "rooms[r1].spawns",
+   "tx": 94,
+   "ty": 155,
+   "grade": 0,
+   "room": "r1",
+   "nearestRuntimeHole": {
+    "index": 9,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "rooms[r1].spawns",
+   "tx": 106,
+   "ty": 155,
+   "grade": 0,
+   "room": "r1",
+   "nearestRuntimeHole": {
+    "index": 9,
+    "distTiles": 12
+   }
+  },
+  {
+   "src": "rooms[r2].spawns",
+   "tx": 76,
+   "ty": 85,
+   "grade": 1,
+   "room": "r2",
+   "nearestRuntimeHole": {
+    "index": 10,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "rooms[r2].spawns",
+   "tx": 84,
+   "ty": 85,
+   "grade": 1,
+   "room": "r2",
+   "nearestRuntimeHole": {
+    "index": 10,
+    "distTiles": 8
+   }
+  },
+  {
+   "src": "rooms[r3].spawns",
+   "tx": 120,
+   "ty": 47,
+   "grade": 2,
+   "room": "r3",
+   "nearestRuntimeHole": {
+    "index": 11,
+    "distTiles": 6
+   }
+  },
+  {
+   "src": "rooms[r3].spawns",
+   "tx": 120,
+   "ty": 53,
+   "grade": 2,
+   "room": "r3",
+   "nearestRuntimeHole": {
+    "index": 11,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "rooms[r3].spawns",
+   "tx": 115,
+   "ty": 50,
+   "grade": 2,
+   "room": "r3",
+   "nearestRuntimeHole": {
+    "index": 11,
+    "distTiles": 5.83
+   }
+  },
+  {
+   "src": "corridorSpawns",
+   "tx": 100,
+   "ty": 138,
+   "grade": 0,
+   "nearestRuntimeHole": {
+    "index": 12,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "corridorSpawns",
+   "tx": 100,
+   "ty": 103,
+   "grade": 0,
+   "nearestRuntimeHole": {
+    "index": 13,
+    "distTiles": 0
+   }
+  }
+ ],
+ "holesPerRunIdentical": true,
+ "enemies": {
+  "perRun": [
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "fixedAcrossAllRuns": [],
+  "roomCountRange": {},
+  "totalRange": [
+   0,
+   0
+  ],
+  "bossRoomEtypeSets": [
+   [],
+   [],
+   [],
+   [],
+   []
+  ]
+ },
+ "blocked": {
+  "holes": 0,
+  "enemiesPerRun": [
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ }
+}
