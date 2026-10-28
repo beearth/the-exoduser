@@ -140,6 +140,7 @@ namespace Exoduser.UnityPort.Core
             double oldX = enemy.X, oldY = enemy.Y, oldR = enemy.Radius;
             bool guardBefore = Stage.GateGuardKilled;
             var head = EnemyHurt.DeathHead(c, w, ang, true, opts, body, out var exit);
+            if (head._sinkDruid == true && Druid != null) Druid.ClearSinkHazards(); // LT-8: _druidSinkStart clears hazards at the death event, before the next world tick
             DeathFromWeb(enemy, w);
             if (exit == DeathExit.Continue)
             {
