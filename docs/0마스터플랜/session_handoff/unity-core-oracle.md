@@ -25,3 +25,8 @@
 
 ## 재개 첫 행동
 - `Get-Process EXODUSER-Unity,Unity`가 0개인지 확인 → `powershell -File I:\EXODUSER-Storage\qa\o1-killtail\run-diag.ps1 -Tag o1 -Project E:\exoduser-wt\o1-killtail` → 끝나면 `-Tag base -Project E:\exoduser-wt\o1-base-c7b4`.
+
+## Codex 인수 시점 확인 — 2026-10-28 22:30 KST
+
+- 원격 `unity/main` `b0f9a0c5277e`에서 O-1 브랜치 팁 `938394077`의 조상 관계를 확인했다. 위의 진단·병합 보류 지시는 당시 상태 기록이며, O-1을 새로 병합하지 않는다. 독립 Player 검증의 상세 영수증은 이 인수 작업에서 다시 판정하지 않았다.
+- 공용 Unity 실행기는 임시 티켓과 예약 큐의 우선순위가 충돌해 대기 중이다. 기존 `o1-killtail` 및 기준판 작업 트리와 사용자 세이브는 건드리지 않았다.

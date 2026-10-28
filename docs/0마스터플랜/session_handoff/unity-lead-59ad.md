@@ -34,3 +34,11 @@
 - 1-2 이후 맵은 maps-rough 금지, `_tickBgInit(9999)`로 큐 비운 웹 재추출 격자(RM-2/3/4 Data) 사용. Unity는 현재 항상 1-1 맵 로드(NativeGame.cs:54).
 - oracle 감사 main 18a5fbf02: O-2 흐름장·O-3 applyStats·O-5 행동 상태 머신(Opus), O-4·O-7·O-8(Sonnet) 미배정 — 사용량 페이스 보며 순차.
 - 웹 버그 기록: 앵글러 혈안 3연사 웹도 0발(보스전 총괄·CTO 결정 사항).
+
+## Codex 인수 보충 — 2026-10-28 22:30 KST
+
+- 확인한 원격 `unity/main`은 `b0f9a0c5277e`다. 위의 `c7b497131` 시점 이후 M1 지역 HUD(`4ceb18b51`), O-1 처치 꼬리(`938394077` 조상 관계 확인), 돌진 경로 피격(`f49b6d625`), 타이틀 메뉴(`b0f9a0c52`)가 이미 병합됐다. 이 네 건을 다시 병합하지 않는다.
+- RM-INT `f1af4da10`은 Codex 전용 후보 `codex/pc-unity-integrator-merge-20261028` @ `34bae665b`에 충돌 없이 병합하고 원격 백업했다. 비 Editor C# 정적 컴파일에서 오류가 나오지 않았으나 최신 Unity 플레이어 빌드·격리 `m1-check` 영수증이 없어 `unity/main` 반영은 보류했다.
+- 기존 `unity-lead-rmint` 검증 프로세스(PID 47292)가 실제로 같은 후보 빌드·`m1-check`를 기다리는 것을 확인했다. 중복 실행을 중단했고, 그 프로세스·예약은 건드리지 않았다. 결과 위치는 `I:/EXODUSER-Storage/lead-runs/rmint-verify/`다.
+- 공용 실행기의 두 순서 계층이 현재 맞물렸다. 첫 임시 티켓은 `unity-core-oracle-lt8`(PID 68684), 첫 예약은 `custom-c02`다. `Cmd-Run`은 첫 티켓만 잠금 신청으로 보내고 `Acquire-Slot`은 첫 예약자만 허용하므로 실제 작업이 진행되지 않는다. 타인 티켓·예약·프로세스는 보존했다. 증거와 병합 보류표는 `I:/EXODUSER-Storage/codex-takeover/unity-integrator/REPORT.md`에 기록했다.
+- `I:/EXODUSER-Storage/unity-latest/update_unity_latest.ps1`은 Unity 직접 실행 및 기존 빌드 삭제 교체를 하므로, 현 공통 규칙의 공용 실행기·보존 조건을 충족하도록 안전 절차가 마련되기 전에는 실행하지 않는다. 따라서 최신 바로가기 빌드 갱신도 미완료다.
