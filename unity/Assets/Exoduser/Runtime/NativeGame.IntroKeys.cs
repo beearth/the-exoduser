@@ -40,8 +40,20 @@ namespace Exoduser.UnityPort
             // 2. title splash: any key -> title page
             limit = Now() + 10; while ((!lobby.CurrentVideo.Prepared || lobby.CurrentVideo.Frame < 0) && Now() < limit) yield return null;
             limit = Now() + 12; while (lobby.CurrentVideo.Time < 4.8 && Now() < limit) yield return null;   // DT-16 pressed Enter at about 4.8 s of the title movie
+            {   // title menu (web phase 2): labels, Down / Up / S / W move with wrap, a key that is not a menu key does nothing, Enter runs the selected row
+                yield return null;
+                rc.steps.Add(new IntroKeysStep { name = "title menu rows", before = lobby.StageName, after = lobby.StageName, note = string.Join(" | ", new List<string>(lobby.TitleLabels).ToArray()) + "; selected " + lobby.TitleSelected });
+                int rows = lobby.TitleLabels.Count;
+                KeyCode[] seq = { KeyCode.DownArrow, KeyCode.UpArrow, KeyCode.S, KeyCode.W, KeyCode.W, KeyCode.DownArrow, KeyCode.A, KeyCode.Escape, KeyCode.Tab };
+                string[] seqNames = { "Down", "Up", "S", "W", "W (wrap up)", "Down (wrap down)", "A (not a menu key)", "Escape (not a menu key)", "Tab (not a menu key)" };
+                for (int i = 0; i < seq.Length; i++)
+                {
+                    int before = lobby.TitleSelected; string stg = lobby.StageName; LobbyKeys.Press(seq[i]); yield return null; yield return null; yield return null;
+                    rc.steps.Add(new IntroKeysStep { name = "title menu: " + seqNames[i], before = stg, after = lobby.StageName, note = "selected " + before + " -> " + lobby.TitleSelected + " of " + rows });
+                }
+            }
             b0 = lobby.StageName; double tTitle = lobby.CurrentVideo.Time; LobbyKeys.Press(KeyCode.Return); yield return null; yield return null; yield return new WaitForSecondsRealtime(.3f);
-            add("title splash: Enter at 4.8 s", b0, lobby.StageName, tTitle, lobby.CurrentVideo.Time);
+            add("title menu: Enter on the selected row (start game)", b0, lobby.StageName, tTitle, lobby.CurrentVideo.Time);
             // 3. title page: Enter -> gate (door video)
             limit = Now() + 10; while ((!lobby.CurrentVideo.Prepared || lobby.CurrentVideo.Frame < 0) && Now() < limit) yield return null;
             yield return new WaitForSecondsRealtime(.5f);
