@@ -58,6 +58,7 @@
 /Tools/save-oracle/runs/
 !/Tools/save-oracle/SaveTests.csproj
 !/Tools/drop-oracle/DropTests.csproj
+!/Tools/roll-oracle/RollTests.csproj
 /Tools/drop-oracle/bin/
 /Tools/drop-oracle/obj/
 /Tools/.dotnet-cli-home/
