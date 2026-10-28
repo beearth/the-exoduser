@@ -14,7 +14,7 @@ const files=extract('FILES');
 const tracked=execFileSync('git',['ls-files','-z'],{maxBuffer:16*1024*1024}).toString().split('\0').filter(Boolean);
 const selected=selectWebRuntimeFiles(tracked,files,p=>readFileSync(resolve(root,p),'utf8'));
 for(const p of selected)if(!existsSync(resolve(root,p)))throw new Error('Missing tracked web runtime file: '+p);
-for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js','video/title_motion_hd_20260929.mp4',
+for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js','video/title_motion_20261028.mp4',
   'three-runtime.js','assets/vendor/three-r160/build/three.module.js',
   'assets/vendor/three-r160/examples/jsm/loaders/GLTFLoader.js',
   'assets/vendor/three-r160/examples/jsm/utils/BufferGeometryUtils.js']){

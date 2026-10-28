@@ -62,6 +62,9 @@ const FILES = [
   'growth-tree-detail.css', 'growth-tree-fixed-background.css', 'growth-tree-information.css',
   'ui-foundation.css',
   'ui-refinement.css',
+  // 실버 헬 UI 패키지 v1 (2026-10-28 사용자 승인) — 부품·로비·캐릭터 선택 CSS + Hahmlet 글꼴(OFL 1.1, 라이선스 문서 동봉)
+  'silver-hell-ui-kit.css', 'lobby-silver-hell.css', 'charselect-silver-hell.css',
+  'fonts/hahmlet/Hahmlet-300-ko.woff', 'fonts/hahmlet/Hahmlet-400-ko.woff', 'fonts/hahmlet/OFL.txt',
   'ui-quiet-tier.css',
   'inventory-gems.css',
   'inventory-gems-finish.css',
