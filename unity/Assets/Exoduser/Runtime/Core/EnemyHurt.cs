@@ -269,6 +269,8 @@ namespace Exoduser.UnityPort.Core
                     {
                         if (lDagForce) P._lNextCrit = 0;
                         dmg = ToInt32(dmg * (c.StatCritDmg() + ksFC)); isCrit = true; if (c.HasStats) c.StatCrits++;
+                        // SND-02 치명타 전용음 (HIT 분류, 12f 쿨다운) — web 780ac692b, after the fce195067 port: one more Math.random (_r pitch)
+                        if (!dotT && !noSound && c.CritSfxCd <= 0) { c.CritSfxCd = 12; c.PlaySample("crit_heavy", .45, Rnd(c, 1, .05)); }
                         if (!dotT && c.LEq("_lAxeBleed") > 0 && e.bleedT > 0 && Or(e.bleedPool, 0) > 0)
                         {
                             double abD = Math.Max(1, ToInt32(e.bleedPool.Value * c.LEq("_lAxeBleed"))); e.bleedPool = 0; e.bleedT = 0; if (e.bleed != 0) e.bleed = 0;
