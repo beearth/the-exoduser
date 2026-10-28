@@ -186,6 +186,18 @@ namespace Exoduser.UnityPort
   const int KrSize = 21, EnSize = 11, SubSize = 15;
   const float KrLs = .16f * 20.8f, EnLs = .32f * 10.56f, SubLs = .18f * 15f;
 
+  // Bold English line with the web's width: target = Normal glyphs at EnSize + EnLs per glyph (the web DOM width); spacing = what is left after the heavier glyphs, size steps down if the spacing would go under 0.6 px.
+  void FitBoldLine(string en, out int size, out float ls)
+  {
+   latinFs = FontStyle.Normal; float target = SpacedWidth(en, EnSize, EnLs, cinzel);
+   latinFs = FontStyle.Bold; size = EnSize; ls = EnLs;
+   for (int sz = EnSize; sz >= 8; sz--)
+   {
+    float glyphs = SpacedWidth(en, sz, 0f, cinzel); float l = en.Length > 0 ? (target - glyphs) / en.Length : EnLs;
+    size = sz; ls = Mathf.Max(0f, l); if (l >= 0.6f) break;
+   }
+   latinFs = FontStyle.Normal;
+  }
   void DrawBanner()
   {
    if (!bannerOn) return;
@@ -215,9 +227,12 @@ namespace Exoduser.UnityPort
    float gemHalf = 3f, gemGap = 12f + 3f;   // 6px diamond, margin 0 12px
    DrawGem(cx - kw / 2f - gemGap, top + KrCy, bGem, op); DrawGem(cx + kw / 2f + gemGap, top + KrCy, bGem, op);
    // row 2: English line, uppercase Cinzel .32em
-   string en = bEn.ToUpperInvariant(); latinFs = FontStyle.Normal;   // Bold made the line ~7 % wider than the web's; Normal matches its measured width
-   Ring(en, cx, top + EnCy, EnSize, EnLs, cinzel, new Color(0, 0, 0, .9f * op), 5f, 4f);
-   SpacedLine(en, cx, top + EnCy, EnSize, EnLs, C(168, 153, 127, .72f * op), cinzel, Vector2.zero); latinFs = FontStyle.Normal;
+   // HUD condition of the map lead (4ceb18b51 verdict): the English line must read as heavy and bright as the web's (Cinzel 500). IMGUI only has Normal / Bold of the variable font,
+   // so the line is drawn Bold and the width the web measures (Normal glyphs + .32em spacing) is kept by shrinking the letter-spacing and, when needed, the size.
+   string en = bEn.ToUpperInvariant(); int enSize; float enLs; FitBoldLine(en, out enSize, out enLs);
+   latinFs = FontStyle.Bold;
+   Ring(en, cx, top + EnCy, enSize, enLs, cinzel, new Color(0, 0, 0, .9f * op), 5f, 4f);
+   SpacedLine(en, cx, top + EnCy, enSize, enLs, C(168, 153, 127, .72f * op), cinzel, Vector2.zero); latinFs = FontStyle.Normal;
    // row 3: sub line
    if (!string.IsNullOrEmpty(bSub))
    {
