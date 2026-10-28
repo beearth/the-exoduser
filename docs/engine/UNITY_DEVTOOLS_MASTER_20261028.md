@@ -86,6 +86,33 @@
 | VFX (`docs/5.1임펙트디자인/VFX_LEAD_MASTER_20261026.md`) | 7시점(0~0.6초) 고정 틱 캡처, 상위 1% 휘도 ≥240·지름/키·색상각·반경 밖 ΔRGB 측정, `VfxRm1*Capture` | 고정 틱 프리뷰 벤치, 측정 패널, 판정 바닥 프리셋(실제/중성/검정), 효과별 GPU 비용, PC_High/Mac_Balanced A/B |
 | 캐릭터 (`docs/engine/UNITY_CHARACTER_BOARD_20261027.md`) | 캐릭터마다 Import/Capture 스크립트 복제, 3방향+게임 시점, 흑철 R/G ≤1.25·날 채도 ≤15%·바닥 ΔL* 0 | 범용 임포트 검사기(아바타·뼈·가중치), 룩데브 캡처 프리셋(조명 2세트·Animator 사전 샘플·접지), 재질 지표 측정기, Hero 레이어 누수 검사 |
 
+### 2.1 맵 총괄 요구 17항목 대응 (10-28 수신, 맵 총괄 우선순위 12 → A → 8~10 → 6·7 → 16)
+
+| 맵 id | 요구 | 대응 DT |
+|---|---|---|
+| 12 | Unity 1개 보장(순번 큐·HasExited·커밋 여유·실행별 로그·종료 확인·좀비 감지) | DT-01(+순번 예약 `reserve`/`queue`) |
+| 1 | 걷기 칸 덮임(발자국 깊이 0.5칸 이상 0) | DT-02 L1(중심 교차·깊이 0.5칸 둘 다) |
+| 2 | NavMesh↔Core 걷기 차이 0/0 | DT-02 L2 |
+| 3 | 보이지 않는 벽(막힌 섬마다 보이는 객체, uncoveredAfterFill 0) | DT-02 L3(+L3b 렌더러 없는 콜라이더) |
+| 4 | 시선 쐐기 h ≤ 0.9 + tan(0.85)·D | DT-02 L4(지형 높이 합산, terrainH 열) |
+| 5 | Hero 렌더링 레이어 nonDefault 0 | DT-02 L5 |
+| (사고) | 원점 쌓임·의도 위치 불일치 | DT-02 L6 |
+| 8 | 고정 컷(이름 붙은 지점)+탑뷰 걷기 오버레이 | DT-03 프리셋(지점 이름) / DT-02 `-shot` |
+| 9 | 캡슐 높이 2종(y=0, 지형 위) | DT-03 프리셋 옵션 |
+| 10 | 웹·2D·3D 같은 지점 나란히+1x 크롭 | DT-03 비교판(웹 캡처 입력은 DT-06) |
+| 11 | 톤 계측(`measure_L.py` 기준, 기준값 차이 표) | DT-03 LookDevMetrics |
+| 6 | 웹 맵 정답 추출기 하나(`_tickBgInit(9999)`, `--single-process` 금지, 원본 변경 때만) | DT-06 |
+| 7 | 보스 아레나 오버레이(Core `BossArenaLayout.Generate`·보스 세트 값을 읽어 겹침) | DT-06/DT-07 |
+| 13 | 씬 50MB 초과 경고 | DT-02 L7 |
+| 14 | URP 추가광 8개 한도 표시 | DT-02 L7 |
+| 15 | FPS 고정 절차(START·240프레임·3D 켬/끔) | DT-10(작업 서버 job) |
+| 16 | 구역 json을 읽는 공용 빌더 | DT-05 |
+| 17 | 런타임 연결 뒤 켬/끔 Core 틱 동일·지형 높이 샘플·발 위치 검사 | DT-05 뒤 RM-INT와 공동(유니티 총괄 결정 범위) |
+
+### 2.2 유니티 총괄이 본 병목 (10-28 수신)
+
+새 worktree는 전체 임포트 100초 + 임포트 포함 빌드 219초 + m1-check 47초 = Unity 4분 26초 점유, 커밋 여유 약 9GB 소모(28.9→19.6GB). 그 밖에 ① worktree마다 Library를 robocopy로 손 복사(Git Bash에서는 `/E`가 깨짐) ② git에 없는 영상 2개 때문에 첫 빌드 실패 → `restore-*.cjs`로 복원 ③ 빌드 경로 치환 실수로 엉뚱한 빌드 실행(receipt·exe 대조 필요) ④ 자동 대기 루프가 다른 세션 단계 사이에 끼어듦 ⑤ 순번을 메시지로만 운영해 메시지 상한(10건)에 닿음 ⑥ `RM3_Slice.unity` 77MB ⑦ RM-0 조명 unity/main 미반영으로 캡처 어두움. 일부 worktree에는 0.9GB짜리 불완전 Library가 있다.
+
 4팀 공통: ① 실행 큐+상주 에디터 ② 캡처 전에 렌더 상태(Linear·후처리·Volume·조명 SHA)를 확인하고 어두우면 경고 ③ 표준 캡처 프리셋(1600×900/1920×1080, 1x 크롭, 게임 시점) ④ 수치 리포트에 "실제로 그려진 것" 증거 묶기 ⑤ Core 판정 오버레이 공유(맵 충돌·NavMesh, 보스 히트박스, VFX 텔레그래프 ±4px).
 
 ## 3. 도구 목록·우선순위
@@ -97,6 +124,8 @@
 | **1** | DT-01 | **Unity 작업 서버 + PC 순번 큐**: 워크트리별 상주 에디터(batchmode, `-quit` 없음)가 작업 폴더의 job json을 받아 정적 메서드를 실행. 실행 전 Refresh·컴파일 대기, 컴파일 오류·예외를 결과 json으로 돌려줌(에디터는 죽지 않음). PC 전역 잠금·메모리 사전 검사(커밋 여유 20GB)·죽은 Unity 정리·하트비트·타임아웃. 서버가 없으면 같은 잠금 아래 1회 실행으로 대체 | Sonnet `devtools-runner` | ① 같은 작업(`Rm1SliceBuilder.Capture` 1컷, `Rm0EngineSetup.Capture`) 1회 실행 3번 vs 상주 서버 3번 시간 비교표(목표: 반복 작업 고정 비용 9~10초 → 2초 이하) ② 스크립트 1줄 수정 뒤 작업(Refresh+컴파일) 시간 ③ 컴파일 오류를 넣었을 때 서버 생존+오류 json ④ 서버 1개 메모리(작업 중 최대) 측정 → 슬롯 수 권고 ⑤ 두 세션이 동시에 제출해도 순서대로 실행 ⑥ 에디터 캡처 1장 |
 | **2** | DT-02 | **맵 구조 검사기(MapLint)**: 열린 씬의 실제 Renderer·Collider·Terrain·NavMesh를 읽어 검사. 걷기 칸 덮임, NavMesh↔Core 걷기 차이, 보이지 않는 벽(렌더러 없는 콜라이더), 시선 쐐기(지형 높이+덩어리 합산), Hero 레이어 누수, **원점 쌓임·의도 위치 불일치**, 렌더 상태. SceneView 기즈모 오버레이+EditorWindow(편집할 때마다 다시 검사), batch 진입점(json 출력) | Sonnet `devtools-maplint` | ① unity/main 26a11fd2f의 `RM3_Slice.unity`에서 원점 쌓임을 **잡아낸다**(실패 유형 B 재현) ② `RM1_Slice.unity`에서 기존 수치 5종과 같은 결과 ③ 쐐기 json에 지형 높이 열 ④ 기즈모 켠 SceneView 캡처 ⑤ 검사 1회 시간 |
 | **3** | DT-03 | **룩데브 캡처 리그(LookDev)**: 표준 샷 프리셋(게임 카메라 LOOK-001·탑뷰·캡슐·캐릭터 3방향, 1600×900/1920×1080), 렌더 상태 기록(색공간·후처리·Volume·postExposure·워크트리 SHA), 계측(화면 중앙값·바닥 패치 luma·R/G·상위 5% 채도·색상각), **어두운 화면 경고**, 웹 기준 PNG와 나란히 붙인 비교판(1x 크롭 포함), EditorWindow 실시간 계측 | Sonnet `devtools-lookdev` | ① RM_Sandbox·RM1_Slice 프리셋 컷+metrics json ② RM0-LIGHT-L 측정값(화면 중앙값 25.8 등)을 같은 방법으로 재현(±1) ③ 어두운 컷(Linear+후처리, postExposure −0.15)에서 경고 발생 ④ 웹|Unity 나란히 비교판 1장 ⑤ 에디터 창 캡처 |
+| **1** | DT-15 | **통합 빌드 → 실제 GPU 스모크 → 바로가기 빌드 자동 교체 → 빌드 상태판**(CTO 10-28 1순위 추가, 규칙 `docs/engine/UNITY_DONE_BUILD_PLAYTEST_RULE_20261028.md` ③④⑤, DBT-3·DBT-4). `unity/main` HEAD가 바뀌면 `PortVerification.Build` → m1-check를 D3D12 창 모드로(보조 모니터 5120,0, `Forcing GfxDevice: Null`이면 즉시 실패) → 빌드·플레이어 로그의 셰이더 패스 누락·셰이더/의존성 못 찾음·Video 셰이더 없음·예외·LogError 집계(0이 아니면 실패, 알려진 결함은 따로 세되 통과로 치지 않음) → 통과 때만 `I:\EXODUSER-Storage\unity-latest\build` 교체(1세대 보관, 사용자가 실행 중이면 대기) → `unity-latest\status\index.html`(SHA·시각·바뀐 커밋·스모크 단계표·오류 상위 10줄·캡처 썸네일·이력 10회) | Sonnet `devtools-buildloop` | ① 실제 실행 1회(빌드·스모크 시간, Direct3D 확인, 판정) ② 상태판 캡처 ③ 기존 `passed:true` 빌드 로그에서 결함을 잡는지 ④ 교체 여부·이유. 예약 작업 등록은 스크립트만 만들고 등록은 총괄 결정 |
+| **1** | DT-16 | **Unity Web(WebGPU/WebGL2) 테스트 빌드 조사**: VFX Graph 컴퓨트 제약, URP 후처리·Linear, 영상·파일 IO·스레드, 빌드 크기, 배포 후보(같은 Wi-Fi LAN 로컬 서버·itch.io 비공개·Cloudflare Pages+Access·Vercel 등). 이 PC의 6000.6.7f1에는 WebGL 모듈이 설치돼 있지 않음(`PlaybackEngines\windowsstandalonesupport`만) | 조사 에이전트 → CTO 보고 | 가능 경로·막히는 것·시험 순서·사용자 승인 항목(모듈 설치 다운로드, 외부 주소 배포) |
 | 4 | DT-04 | 공유 Library 정리·캐시: 비활성 워크트리 Library 정리 목록(삭제는 사용자 확인), Unity Accelerator(로컬 캐시 서버) 도입 검토 — 설치 파일 다운로드는 사용자 확인 사항 | 개발툴 총괄 | 합계 용량 전후, 새 워크트리 첫 Refresh 시간 전후 |
 | 5 | DT-05 | 데이터 기반 맵 정의(ScriptableObject `MapSliceDef`)+공용 빌더 라이브러리(`MapKit`: LumpMesh·TubeMesh·NavMesh·Terrain·Decal·카메라 리그). Rm1~4 복사 함수 31~44개를 한곳으로. 절차 메시는 `Generated/*.asset`로만 저장(씬 ≤10MB) | Sonnet(DT-02 뒤) | RM-1 씬을 공용 빌더로 다시 만들어 DT-02 결과 동일, 씬 용량 |
 | 6 | DT-06 | 웹 맵 추출기 공용화(`tools/rm*/extract.mjs` 통합, `_tickBgInit(9999)`·close race 내장)+웹/2D/3D 나란히 캡처 | Sonnet | 1-1~1-4 추출 결과가 RM P0 수치와 동일 |
@@ -125,8 +154,13 @@
 | DT-01 | `devtools-runner` (Sonnet) | `claude/unity-pc-devtools-runner-20261028` / `E:\exoduser-wt\pc-unity-devtools-runner` | 유니티 총괄 순번 최우선(개발툴 요청 우선, 10-28 CTO) |
 | DT-02 | `devtools-maplint` (Sonnet) | `claude/unity-pc-devtools-maplint-20261028` / `E:\exoduser-wt\pc-unity-devtools-maplint` | 코드 먼저, 검증은 DT-01 서버 또는 순번 1회 |
 | DT-03 | `devtools-lookdev` (Sonnet) | `claude/unity-pc-devtools-lookdev-20261028` / `E:\exoduser-wt\pc-unity-devtools-lookdev` | 〃 |
+| DT-15 | `devtools-buildloop` (Sonnet) | `claude/unity-pc-devtools-buildloop-20261028` / `E:\exoduser-wt\pc-unity-devtools-buildloop`(스크립트), 빌드는 기존 `E:\exoduser-wt\pc-unity-latest` | 같은 잠금으로 순번 |
+| DT-16 | 조사 에이전트 (Sonnet) | 파일 변경 없음 | 없음 |
 
-세 도구는 파일이 겹치지 않는다(`Editor/DevTools/JobServer|MapLint|LookDev/`). 공용 파일 수정은 DT-01의 `ExoArgs` 치환 4줄뿐.
+네 도구는 파일이 겹치지 않는다(`Editor/DevTools/JobServer|MapLint|LookDev/`, `Tools/devtools/buildloop/`). 공용 파일 수정은 DT-01의 `ExoArgs` 치환 4줄뿐.
+
+- 실행 방식: 이 총괄 세션은 다른 세션(CTO) 메시지로 시작돼 새 세션을 띄울 수 없다(앱 제약). 그래서 Sonnet 구현은 이 세션의 Sonnet 하위 에이전트가 맡는다.
+- 임시 Unity 잠금: DT-01이 끝나기 전까지 `I:\EXODUSER-Storage\unity-jobs\_pc_lock.json`을 `CreateNew`로 원자적으로 만들어 잡는다(내용 owner·pid·worktree·startedAt, 죽은 pid면 stale). DT-01 완성 뒤에는 `unity/Tools/devtools/exo-unity.ps1`가 같은 파일을 관리한다. 유니티 총괄 순번(10-28)은 개발툴을 맨 앞에 둔다.
 
 ## 6. 결정 기록
 
@@ -136,4 +170,7 @@
 | 10-28 | "PC 전체 Unity 1개" 규칙은 유지하되 사람 신호 대신 기계 잠금으로 | 메모리 고갈 크래시 실사고. 슬롯 2개는 DT-01 메모리 실측 뒤 판단 |
 | 10-28 | 2순위 = 실제 렌더 기준 구조 검사기 | 실패 유형 B(RM-3 원점 쌓임)가 병합까지 통과 |
 | 10-28 | 3순위 = 룩데브 캡처 리그(렌더 상태 기록+어두움 경고) | 실패 유형 A가 맵·보스·VFX·캐릭터 4팀 공통 |
+| 10-28 | DT-15(통합 빌드·GPU 스모크·바로가기 교체·상태판)를 1순위에 추가 | CTO 규칙 UNITY_DONE_BUILD_PLAYTEST_RULE(사용자 "배포하고 테스트하는 작업이 없어서 이상하다"). 스모크가 Null 장치라 화면 결함을 못 잡았다 |
+| 10-28 | 스모크 판정에서 알려진 결함을 통과로 치지 않는다. 교체는 기본 거부, `-AllowKnown`일 때만 | 규칙 ④ "0이 아니면 실패" |
+| 10-28 | RM0-LIGHT-L 병합은 미루지 않는다(유니티 총괄 협의 회신) | DT-03은 조명값을 고정하지 않고 Volume에서 읽어 기록하며, `-override postExposure`로 병합 전후 모두 검증 가능 |
 | 10-28 | 손코딩 빌더 대체(DT-05)는 DT-02 뒤 | 검사기가 먼저 있어야 공용 빌더 전환 전후 동일성을 증명할 수 있다 |
